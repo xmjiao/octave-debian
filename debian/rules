@@ -3,7 +3,7 @@
 # debian/rules file for the Debian/GNU Linux octave package
 # Copyright 1997-99,2000-03 by Dirk Eddelbuettel <edd@debian.org>
 #
-# $Id: rules,v 1.7 2004/03/04 18:52:52 edd Exp edd $
+# $Id$
 
 
 include /usr/share/dpatch/dpatch.make
@@ -161,12 +161,12 @@ clean: unpatch
         ##doc/interpreter/octave.{dvi,ps} doc/faq/Octave-FAQ_*.html
         ##scripts/DOCSTRINGS
 	test ! -f octave-bug.in.orig || mv octave-bug.in.orig octave-bug.in
-	for i in octave2.1 octave2.1-headers octave2.1-emacsen; do \
+	for i in $(PACKAGE) $(PACKAGE)-headers $(PACKAGE)-emacsen; do \
 		for j in postinst prerm; do \
 			rm -f debian/$${i}.$${j} ; \
 		done ; \
 	done
-	rm -f debian/octave2.1.lintian octave-depends.1
+	rm -f debian/$(PACKAGE).lintian octave-depends.1
 	
 	for in in debian/in/PACKAGE* ; do \
 		rm -f `echo $$in | sed 's:/in/:/:;s/PACKAGE/$(PACKAGE)/'` ; \
@@ -260,7 +260,7 @@ binary-arch: build install check
         # install /etc/octave.conf
 	install -p -m 0644  debian/octave.conf  $(debtmp)/etc/$(PACKAGE).conf
         # install lintian overrride
-	install -p -m 0644  debian/octave2.1.lintian \
+	install -p -m 0644  debian/$(PACKAGE).lintian \
 			$(debtmp)/usr/share/lintian/overrides/$(PACKAGE)
         ## link the conf.file back from /etc over the version.spec. rc
 	ln -sf /etc/$(PACKAGE).conf 		$(debininew)/octaverc
@@ -292,7 +292,7 @@ binary-arch: build install check
 	dh_installdeb -a
 	dh_shlibdeps -a
 	if [ `dpkg-architecture -qDEB_BUILD_ARCH` = "m68k" ];then \
-		echo "m68k:Depends=f2c" >> debian/octave2.1-headers.substvars; \
+		echo "m68k:Depends=f2c" >> debian/$(PACKAGE)-headers.substvars; \
 	fi
 	dh_gencontrol -a
 #	dh_makeshlibs -a
