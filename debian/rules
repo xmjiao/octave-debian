@@ -45,7 +45,7 @@ fc_libs		=
 compilerflags	= -O2
 linkerflags	= -s
 
-# default to blas, atlas can overload where available (see README.Debian)
+# default to blas, atlas can overload where available (see README.Atlas)
 #atlas		= --with-blas=/usr/lib/libblas.so \
 #		  --with-lapack=/usr/lib/liblapack.so
 #atlas		= --with-blas=/usr/lib/libblas-3.so \
