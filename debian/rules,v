@@ -1,0 +1,931 @@
+head	1.7;
+access;
+symbols;
+locks
+	edd:1.7; strict;
+comment	@# @;
+
+
+1.7
+date	2004.03.04.18.52.52;	author edd;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2003.06.27.23.13.06;	author edd;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2003.01.03.20.25.27;	author edd;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2001.11.24.14.17.29;	author edd;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2001.11.24.14.16.35;	author edd;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2001.07.12.03.21.42;	author edd;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	99.09.11.15.00.46;	author edd;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.7
+log
+@frozen on 4 Mar 2004 with what worked for 2.1.55
+will now change --with-g77 to --with-f77
+@
+text
+@#!/usr/bin/make -f
+# 							-*- makefile -*-
+# debian/rules file for the Debian/GNU Linux octave package
+# Copyright 1997-99,2000-03 by Dirk Eddelbuettel <edd@@debian.org>
+#
+# $Id: rules,v 1.6 2003/06/27 23:13:06 edd Exp edd $
+
+# in order: octave, octave2.1, 2.1.28, 2.1  (or whatever the version is)
+source		:= $(shell head -1 debian/changelog | \
+			perl -nle 'm/^([a-z]+)/ and print $$1')
+package		:= $(shell head -1 debian/changelog | \
+			perl -nle 'm/^(\S+)\s+/ and print $$1')
+version       	:= $(shell head -1 debian/changelog | \
+			perl -nle 'm/\S+\s+\((\S+)-\S+\)/ and print $$1')
+major       	:= $(shell head -1 debian/changelog | perl -nle \
+			'm/\S+\s+\((\d\.\d)\.\d+-\S+\)/ and print $$1')
+
+doc_package	= $(package)-doc
+html_package	= $(package)-htmldoc
+dev_package	= $(package)-headers
+emacs_package	= $(package)-emacsen
+info_package	= $(package)-info
+
+debbase		:= $(CURDIR)/debian
+debtmp		:= $(debbase)/tmp
+debdoc		:= $(debtmp)/usr/share/doc/$(package)
+deblsp		:= $(debbase)/$(emacs_package)/usr/share/emacs/site-lisp/$(emacs_package)
+debini		:= $(debtmp)/usr/share/octave/site/m/startup
+debininew	:= $(debtmp)/usr/share/octave/$(version)/m/startup
+
+## edd  3 Feb 2003  gcc 3.2, also imposed uniformly via Build-Depends
+## edd 27 Jun 2003  now that gcc 3.3 is in unstable and testing, relax this
+#c_compiler	= /usr/bin/gcc-3.2
+#cxx_compiler	= /usr/bin/g++-3.2
+#f77_compiler	= /usr/bin/g77-3.2
+c_compiler	= /usr/bin/gcc
+cxx_compiler	= /usr/bin/g++
+f77_compiler	= /usr/bin/g77
+fc_flag		= --with-g77=$(f77_compiler)
+fc_libs		= 
+compilerflags	= -O2
+linkerflags	= -s
+
+# default to blas, atlas can overload where available (see README.Debian)
+atlas		= --with-blas=/usr/lib/libblas-3.so \
+		  --with-lapack=/usr/lib/liblapack-3.so
+
+arch 		:= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+
+## edd 20 Jun 2002      no optimisation or debugging on baby systems
+ifneq "$(findstring $(arch), m68k-linux arm-linux)" ""
+compilerflags	= -O0 -g0
+endif
+
+# edd 25 Aug 2002  arm does not have atlas
+ifeq ($(arch),arm-linux)
+atlas		= --without-blas
+endif
+
+## edd 25 May 2003      actually, we need -O1 on m68k, as well as f2c
+## edd 02 Jul 2003      use fort77 instead for its comman cmdline options
+#ifeq ($(arch),m68k-linux)
+ifneq "$(findstring $(arch), m68k-linux)" ""
+f77_compiler	= /usr/bin/fort77
+fc_flag		= --with-f77=/usr/bin/fort77 --without-f2c --without-g77
+fc_libs		= -lf2c
+compilerflags	= -O1 -g0
+endif
+
+#export DH_VERBOSE=1
+#export DH_COMPAT=3
+
+get-orig-source: upstream
+upstream:
+	links ftp://ftp.octave.org/pub/octave/bleeding-edge	
+
+build: build-stamp configure-stamp make-stamp check-stamp
+build-stamp: configure make check
+	touch build-stamp
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+
+        #cat debian/2.1.54_arrayindex.patch | patch -p0 --verbose
+
+        # use Debian's tempfile(1) for enhanced security
+	perl -p -i -e 's|/tmp/octave-bug.\$$\$$|`tempfile`|' octave-bug.in
+
+	[ -f autogen.sh ] &&  ./autogen.sh && chmod 0755 configure
+
+	DEFAULT_PAGER=pager	\
+	CC=$(c_compiler) 	\
+	CXX=$(cxx_compiler)	\
+	F77=$(f77_compiler)	\
+	FLIBS=$(fc_libs)	\
+	./configure		\
+			--prefix=/usr				\
+			--datadir=/usr/share			\
+			--libdir=/usr/lib			\
+			--libexecdir=/usr/lib		 	\
+			--infodir=/usr/share/info		\
+			--mandir=/usr/share/man			\
+			$(atlas)				\
+			--with-hdf5				\
+			--with-fftw				\
+			$(fc_flag)				\
+			--enable-shared				\
+			--enable-rpath				\
+			--disable-static			\
+			--build $(arch)
+
+        # prepare the postinst and prerm files for the given version number
+	@@for i in octave2.1 octave2.1-headers octave2.1-emacsen; do \
+		perl -p -i -e "s/VERSION=.*/VERSION=$(version)/" \
+			debian/$${i}.postinst; \
+		perl -p -i -e "s/VERSION=.*/VERSION=$(version)/" \
+			debian/$${i}.prerm; \
+	done
+
+        # fix the lintian override and bring it up to date 
+	perl -p -i -e 's/-2.1.\d\d/-$(version)/g' debian/octave2.1.lintian
+
+	touch configure-stamp
+
+make: configure-stamp make-stamp 
+make-stamp: 
+	$(MAKE)		CFLAGS="$(compilerflags)"		\
+			CXXFLAGS="$(compilerflags)"		\
+			FFLAGS="$(compilerflags)"		\
+			LDFLAGS="$(linkerflags)"		\
+			CC="$(c_compiler)"			\
+			CXX="$(cxx_compiler)"			\
+			F77="$(f77_compiler)"			
+	touch make-stamp
+
+check: configure-stamp make-stamp check-stamp
+check-stamp: 
+	-$(MAKE) 	check
+	touch check-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp configure-stamp make-stamp check-stamp \
+		install-stamp
+	-rm -vf libcruft/libcruft.so libcruft/*/Makefile \
+		install.octave  scripts/gethelp  libcruft/misc/*.d
+        ##doc/interpreter/octave.{dvi,ps} doc/faq/Octave-FAQ_*.html 
+        ##scripts/DOCSTRINGS	
+	-$(MAKE) -i distclean || $(MAKE) -f Makefile.in distclean
+	dh_clean
+
+# install files
+install: configure-stamp make-stamp check-stamp install-stamp 
+install-stamp: 
+	dh_testdir 
+	dh_testroot 
+#	dh_clean -a -k 
+	dh_installdirs -A
+	$(MAKE) INSTALL_PROGRAM="install -s" 			\
+		prefix=$(debtmp)/usr 				\
+		datadir=$(debtmp)/usr/share			\
+		infodir=$(debtmp)/usr/share/info		\
+		libdir=$(debtmp)/usr/lib			\
+		libexecdir=$(debtmp)/usr/lib			\
+		mandir=$(debtmp)/usr/share/man		install
+#	dh_installman -p$(package) debian/octave-config.1
+	(cd $(debtmp)/usr/share/man/man1; 				\
+		mv -v	octave.1	octave-$(version).1;    	\
+		mv -v   octave-bug.1	octave-bug-$(version).1;	\
+		mv -v	octave-config.1	octave-config-$(version).1;   	\
+		mv -v   mkoctfile.1	mkoctfile-$(version).1;		)
+	(cd $(debtmp)/usr/bin; 						\
+		rm -v   octave	octave-bug mkoctfile octave-config)
+	touch install-stamp
+
+binary-indep: build install check
+	dh_testdir -i
+	dh_testroot -i
+#	dh_clean -i -k
+        #$(MAKE) prefix=`pwd`/debian/tmp install
+	dh_installdocs -n -p$(doc_package) doc/*/*.ps
+	dh_installdocs -n -p$(html_package) doc/*/*.html
+	dh_installdocs -i
+        # install Octave Emacs files and Debian Emacsen files
+	dh_installdirs -p$(emacs_package)
+	dh_installdirs -p$(emacs_package) \
+		usr/share/emacs/site-lisp/$(emacs_package)
+	install -p -m 0644 emacs/*.el		$(deblsp)
+	dh_installemacsen -p$(emacs_package) 
+	install -p -m 0755 emacs/otags			\
+		$(debbase)/$(emacs_package)/usr/bin/otags-$(version)
+	install -p -m 0644 emacs/otags.1			\
+	     $(debbase)/$(emacs_package)/usr/share/man/man1/otags-$(version).1
+        # fix emacs startup name
+	(cd debian/$(emacs_package)/etc/emacs/site-start.d/; \
+		mv 50$(emacs_package).el 50$(source).el)
+#	dh_installexamples -i
+#	dh_installmenu -p$(html_package)
+#	dh_installinit -i
+#	dh_installcron -i
+#	dh_installmanpages -i
+#	dh_undocumented -p$(dev_package) 	mkoctfile.1 
+#	dh_undocumented -p$(emacs_package)	otags-$(version).1
+	dh_installchangelogs -i			ChangeLog 
+	dh_compress -i
+	dh_fixperms -i
+#	dh_suidregister -i
+	dh_installdeb -i
+	dh_gencontrol -i
+#	dh_md5sums -i
+	dh_builddeb -i
+
+# Build architecture-dependent files here.
+binary-arch: build install check
+	dh_testdir -a 
+	dh_testroot -a
+#	dh_clean -a -k 
+	dh_installdirs -p$(package)
+        # remove the /usr/share/info/dir stab
+	rm -vf $(debtmp)/usr/share/info/dir
+        # save the static libs for seperate package octave-staticlibs
+#	dh_movefiles -p$(lib_package) 	usr/lib/$(source)-$(version)/*.a 
+        # save the include files for the header package
+	dh_movefiles -p$(dev_package) 	usr/include/ 			\
+					usr/bin/mkoctfile-$(version) 	\
+			usr/share/man/man1/mkoctfile-$(version).1
+	rm -r $(debtmp)/usr/include
+        # save the info files for the info package
+	dh_movefiles -p$(info_package) 	usr/share/info/
+        # install /etc/octave.conf
+	install -p -m 0644  debian/octave.conf  $(debtmp)/etc/$(package).conf
+        # install lintian overrride
+	install -p -m 0644  debian/octave2.1.lintian \
+			$(debtmp)/usr/share/lintian/overrides/$(package)
+        ## link the conf.file back from /etc over the version.spec. rc
+	ln -sf /etc/$(package).conf 		$(debininew)/octaverc
+        ## this file would exist under 2.0 and 2.1 with the same name
+	rm -v 					$(debini)/octaverc
+        # already installed by make
+	dh_installinfo -n -p$(info_package)  	doc/*/*.info*
+	dh_installdocs -a			README README.kpathsea \
+						NEWS* PROJECTS 
+	dh_installdocs -p$(package) 		debian/README.Atlas
+        # recreated in postinst in share/, not needed in lib
+	rm -vf	$(debtmp)/usr/lib/octave/ls-R \
+		$(debtmp)/usr/share/octave/ls-R 
+#	dh_installexamples -a
+	dh_installexamples  -p$(dev_package)  	examples/*
+#	dh_installmenu -a
+	dh_installmenu -p$(package)
+#	dh_installinit -a
+#	dh_installcron -a
+#	dh_installmanpages -a
+#	dh_undocumented	-p$(package)		octave-config-$(version).1 
+	dh_installchangelogs -a ChangeLog ChangeLog.1
+	for i in glob libcruft liboctave src scripts test doc; do \
+		cp -vax $$i/ChangeLog $(debdoc)/changelog.$$i; done	
+	dh_strip -a
+	dh_compress -a
+	dh_fixperms -a
+#	dh_suidregister -a
+	dh_installdeb -a
+	dh_shlibdeps -a
+	dh_gencontrol -a
+#	dh_makeshlibs -a
+#	dh_md5sums -a
+	dh_builddeb -a
+
+source diff:                                                                  
+	@@echo >&2 'source and diff are obsolete - use dpkg-source -b'; false
+
+binary: install binary-arch binary-indep 
+.PHONY: build clean make configure binary-indep binary-arch binary
+
+@
+
+
+1.6
+log
+@used for 2.1.49-* up to at least 3, uses gcc 3.2 and 3.3 on hppa
+@
+text
+@d6 1
+a6 1
+# $Id: rules,v 1.5 2003/01/03 20:25:27 edd Exp edd $
+d31 8
+a38 4
+## edd 3 Feb 2003  also imposed uniformly via debian/control's Build-Depends
+c_compiler	= /usr/bin/gcc-3.2
+cxx_compiler	= /usr/bin/g++-3.2
+f77_compiler	= /usr/bin/g77-3.2
+d40 1
+d45 2
+a46 2
+atlas		= --with-blas=/usr/lib/libblas2.so \
+		  --with-lapack=/usr/lib/liblapack2.so
+d61 6
+a66 3
+ifeq ($(arch),m68k-linux)
+f77_compiler	= /usr/bin/f2c
+fc_flag		= --with-f2c
+a69 8
+## edd 30 May 2003	hppa requires 3.3, else C++ errors occur
+ifeq ($(arch),hppa-linux)
+c_compiler	= /usr/bin/gcc-3.3
+cxx_compiler	= /usr/bin/g++-3.3
+f77_compiler	= /usr/bin/g77-3.3
+fc_flag		= --with-g77=$(f77_compiler)
+endif
+
+d85 2
+d92 1
+d96 1
+d105 1
+a105 1
+			--without-hdf5				\
+d120 4
+d147 4
+a150 4
+	-rm -f libcruft/libcruft.so scripts/gethelp \
+		doc/interpreter/octave.dvi \
+		doc/faq/Octave-FAQ_toc.html \
+		libcruft/misc/*.d
+@
+
+
+1.5
+log
+@current as of 2.1.42-2, with
+  gcc-3.2 default
+  g77 everywhere, no f2c on m68k
+  hdf5 enabled
+  fftw enabled
+we can simplify
+@
+text
+@d6 1
+a6 1
+# $Id: rules,v 1.4 2001/11/24 14:17:29 edd Exp $
+d29 1
+d31 5
+a35 4
+compilerpath	= /usr/bin/gcc-3.2
+cpppath		= /usr/bin/g++-3.2
+fortrancompiler	= g77
+fortranpath	= /usr/bin/g77-3.2
+a44 36
+# m68k barks when using g77; the m68k-buildd crew suggests this:
+# edd 17 Jul 2002 no longer needed, g77 works again
+#ifeq ($(arch),m68k-linux)
+#fortrancompiler	= f2c
+#endif
+
+# ia64 needs (at least) gcc/g++/g77 3.0
+#ifeq ($(arch),ia64-linux)
+#compilerpath	= /usr/bin/gcc-3.0
+#cpppath		= /usr/bin/g++-3.0
+#fortranpath	= /usr/bin/g77-3.0
+#endif
+
+# i386 uses gcc/g++/g77 3.0 for testing
+#ifeq ($(arch),i386-linux)
+#compilerpath	= /usr/bin/gcc-3.0
+#cpppath	= /usr/bin/g++-3.0
+#fortranpath	= /usr/bin/g77-3.0
+#endif
+
+ifdef fortranpath
+fortran		= --with-$(fortrancompiler)=$(fortranpath)
+else
+fortran		= --with-$(fortrancompiler)
+endif
+
+# default to not using HDF5 libraries as only i386 has them available
+# 3 Jan 2003  now default to enabling it
+hdf5		= --with-hdf5
+
+## ... but allow these chosen few to use hdf5
+# edd 24 Nov 01  disabled to expedite transfer into testing
+#ifneq ($(filter i386-linux,$(arch)),)
+#hdf5		= --with-hdf5
+#endif
+
+a47 3
+#ifeq ($(arch),m68k-linux)
+#compilerflags	= -O0 -g0 -ffloat-store
+#endif
+d55 18
+d75 1
+a75 1
+	lynx ftp://ftp.octave.org/pub/octave/bleeding-edge	
+d87 6
+a92 11
+        # tell kpathsea that the config dir is .., not .    
+	(cd kpathsea; \
+		perl -p -i -e \
+			's|--config-dir \.\.|--config-dir \.|' \
+			acklibtool.m4; \
+	    	autoconf; )
+
+        ## only for CVS  [ -f autogen.sh ] &&  ./autogen.sh
+	CC=$(compilerpath) 	\
+	CXX=$(cpppath) 		\
+	FC=$(fortranpath)	\
+a99 1
+			$(fortran)				\
+d101 1
+a101 1
+			$(hdf5)					\
+d103 1
+d105 1
+d107 1
+a107 3
+			--host $(arch)
+        ## now implied by --enable-shared as of 2.1.37:	
+        ##		--enable-lite-kernel	--enable-dl
+d124 3
+a126 1
+			CC="$(compilerpath)"			
+d141 2
+a142 1
+		doc/faq/Octave-FAQ_toc.html
+d160 7
+a166 5
+	(cd $(debtmp)/usr/share/man/man1; 			\
+		mv -v	octave.1	octave-$(version).1;    \
+		mv -v   octave-bug.1	octave-bug-$(version).1;\
+		mv -v   mkoctfile.1	mkoctfile-$(version).1;)	
+	(cd $(debtmp)/usr/bin; 					\
+d186 1
+a186 1
+	install -p -m 0644 debian/otags.1			\
+a197 1
+	dh_installexamples  -p$(dev_package)  	examples/*
+d229 3
+a231 1
+	ln -sf /etc/$(package).conf 		$(debini)/octaverc-$(version)
+d235 2
+a236 1
+	dh_installdocs -a			README NEWS* PROJECTS 
+d242 1
+d244 1
+d248 1
+a248 1
+	dh_undocumented	-p$(package)		octave-config-$(version).1 
+d250 1
+a250 2
+	for i in glob kpathsea libcruft liboctave \
+		 	src scripts test doc; do \
+@
+
+
+1.4
+log
+@disabled hdf5 on i386
+@
+text
+@d4 1
+a4 1
+# Copyright 1997-99,2000 by Dirk Eddelbuettel <edd@@debian.org>
+d6 1
+a6 1
+# $Id: rules,v 1.3 2001/11/24 14:16:35 edd Exp edd $
+d30 2
+a31 4
+compiler	= gcc
+compilerpath	= /usr/bin/gcc
+cppcompiler	= g++
+cpppath		= /usr/bin/g++
+d33 3
+a35 2
+compilerflags	= "-O2"
+linkerflags	= "-s"
+d38 2
+a39 1
+atlas 		= --with-fastblas=blas
+d44 11
+a54 4
+ifeq ($(arch),m68k-linux)
+fortrancompiler	= f2c
+compilerflags	= "-O2 -ffloat-store"
+endif
+d56 6
+a61 6
+# ia64 needs gcc/g++/g77 3.0
+ifeq ($(arch),ia64-linux)
+compilerpath	= /usr/bin/gcc-3.0
+cpppath		= /usr/bin/g++-3.0
+fortranpath	= /usr/bin/g77-3.0
+endif
+d70 2
+a71 1
+hdf5		= --without-hdf5
+d74 1
+a74 1
+# edd 24 Nov 01  disables to expedite transfer into testing
+d79 12
+d94 1
+a94 1
+	lynx ftp://ftp.octave.org	
+d96 1
+a96 1
+build: build-stamp configure-stamp check-stamp
+d114 4
+a117 2
+
+	CC=$(compilerpath) CXX=$(cpppath) ./configure		\
+a127 1
+			--enable-dl				\
+a128 1
+			--enable-lite-kernel			\
+d131 2
+d135 6
+a140 7
+	perl -p -i -e "s/VERSION=.*/VERSION=$(version)/" debian/octave2.1.postinst
+	perl -p -i -e "s/VERSION=.*/VERSION=$(version)/" debian/octave2.1.prerm
+	perl -p -i -e "s/VERSION=.*/VERSION=$(version)/" debian/octave2.1-headers.postinst
+	perl -p -i -e "s/VERSION=.*/VERSION=$(version)/" debian/octave2.1-headers.prerm
+	perl -p -i -e "s/VERSION=.*/VERSION=$(version)/" debian/octave2.1-emacsen.postinst
+	perl -p -i -e "s/VERSION=.*/VERSION=$(version)/" debian/octave2.1-emacsen.prerm
+
+d145 5
+a149 5
+	$(MAKE)		CFLAGS=$(compilerflags)			\
+			CXXFLAGS=$(compilerflags)		\
+			FFLAGS=$(compilerflags)			\
+			LDFLAGS=$(linkerflags)			\
+			CC=$(compilerpath)
+d163 2
+a164 1
+		doc/interpreter/octave.dvi
+d184 2
+a185 1
+		mv -v   octave-bug.1	octave-bug-$(version).1;)	
+d203 1
+a203 1
+	dh_installemacsen -p$(emacs_package) -n
+d206 2
+a207 2
+	install -p -m 0755 debian/otags.1			\
+		$(debbase)/$(emacs_package)/usr/share/man/man1/otags-$(version).1
+d216 1
+a216 1
+	dh_undocumented -p$(dev_package) 	mkoctfile.1 
+d239 3
+a241 2
+	dh_movefiles -p$(dev_package) 	usr/include/ 	\
+					usr/bin/mkoctfile-$(version)
+d264 1
+a264 1
+#	dh_undocumented	-a	octave-bug-$(version).1 
+d285 1
+@
+
+
+1.3
+log
+@checked in as used for 2.1.35-2
+@
+text
+@d6 1
+a6 1
+# $Id: rules,v 1.2 2001/07/12 03:21:42 edd Exp edd $
+d65 5
+a69 4
+# ... but allow these chosen few to use hdf5
+ifneq ($(filter i386-linux,$(arch)),)
+hdf5		= --with-hdf5
+endif
+@
+
+
+1.2
+log
+@corresponds to 2.1.34-4, with atlas conditional
+@
+text
+@d6 1
+a6 1
+# $Id: rules,v 1.1 1999/09/11 15:00:46 edd Exp edd $
+a19 1
+#lib_package	= $(package)-staticlibs
+d24 1
+a24 1
+debbase		:= $(shell pwd)/debian
+d27 1
+a27 1
+deblsp		:= $(debbase)/$(emacs_package)/usr/share/emacs/site-lisp/$(source)
+d31 3
+d36 4
+d49 6
+a54 5
+# default to not using the Atlas fast basic linear algebra subroutines (as
+# provided by atlas2) as too few architectures can compile it ...
+# and don't use HDF5 either
+atlas		= --without-fastblas
+hdf5		= --without-hdf5
+d56 4
+a59 3
+# ... but allow these chosen few to use atlas2
+ifneq ($(filter i386-linux alpha-linux sparc-linux,$(arch)),)
+atlas 		= --with-fastblas
+d62 3
+d70 4
+a73 7
+checkvariables:
+	@@echo "$(source) -- $(package) -- $(version) -- $(major)"
+	@@echo "$(package) -- $(doc_package) -- $(debini)"
+	@@echo "$(arch)"
+ifneq ($(filter i386-linux alpha-linux sparc-linux,$(arch)),)
+	@@echo "It is true"
+endif
+d82 1
+d91 1
+a91 4
+        # let's ignore the readline directory
+	perl -p -i -e 's|readline | |' Makefile.in
+	perl -p -i -e 's|READLINE_DIR=readline|READLINE_DIR= |' configure.in
+        #
+d94 2
+a95 4
+        ## current issue with Makeconf.in's mk-libdir-link function
+	cp -vax debian/Makeconf.in .
+        #
+	./configure	--prefix=/usr				\
+d101 1
+a101 1
+			--with-$(fortrancompiler)		\
+d104 1
+a110 3
+        # have to do this after configure
+	perl -p -i -e 's|readline | |' octMakefile
+        #
+d116 2
+d121 1
+a121 1
+make: make-stamp configure-stamp
+d126 2
+a127 3
+			LDFLAGS=-s 				\
+			CC=$(compiler) 				\
+			LIBREADLINE=/lib/libreadline.so.4
+d140 3
+a142 2
+	-rm -f libcruft/libcruft.so scripts/gethelp
+	-$(MAKE) -i maintainer-clean || $(MAKE) -f Makefile.in distclean
+d146 1
+a146 1
+install: install-stamp check-stamp
+a147 1
+	dh_testversion ge 2.0.40
+d163 1
+a163 3
+		rm -v   octave	octave-bug mkoctfile )
+	(cd $(debtmp)/usr/lib/octave; 				\
+		rm -v   octave-$(version) || true)
+a166 1
+	dh_testversion ge 2.0.40
+d176 3
+a178 1
+	install -p -m 0644 emacs/*.el		$(deblsp)/.
+d180 4
+d193 1
+a193 1
+	dh_undocumented -p$(emacs_package)	otags-$(version).1
+a205 1
+	dh_testversion ge 2.0.40
+a209 2
+	install -p -m 0755 emacs/otags			\
+			$(debbase)/$(emacs_package)/usr/bin/otags-$(version)
+d229 2
+a230 1
+	dh_installdocs -a	README NEWS* PROJECTS 
+d241 1
+a241 1
+	for i in glob kpathsea readline libcruft liboctave \
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d4 1
+a4 1
+# Copyright 1997-99 by Dirk Eddelbuettel <edd@@debian.org>
+d6 1
+a6 1
+# $Id$
+d8 16
+a23 8
+package		= octave
+doc_package	= octave-doc
+html_package	= octave-htmldoc
+lib_package	= octave-staticlibs
+
+# extract the upstream version
+version       	= $(shell head -1 debian/changelog | \
+			perl -nle 'm/\S+\s+\((\S+)-\S+\)/ && print $$1')
+d28 1
+a28 1
+deblsp		:= $(debtmp)/usr/share/emacs/site-lisp/$(package)
+a29 2
+debema		:= $(debtmp)/usr/lib/emacsen-common/packages
+debest		:= $(debtmp)/etc/emacs/site-start.d/
+d31 3
+a33 1
+doc_doc		:= $(debbase)/$(doc_package)/usr/share/doc/$(doc_package)
+d35 1
+a35 2
+html_doc	:= $(debbase)/$(html_package)/usr/share/doc/$(html_package)
+html_dbs	:= $(debbase)/$(html_package)/usr/share/doc-base
+d37 4
+a40 14
+lib_doc		:= $(debbase)/$(lib_package)/usr/share/doc/$(lib_package)
+lib_lib		:= $(debbase)/$(lib_package)/usr/lib/$(package)-$(version)
+
+
+# We need the egcc compiler driver on some platforms as Octave uses C++ and
+# Fortran and only egcc know how to combine with the eg++/eg77-derived g++ 
+# and g77 compilers. I know it's needed on i386, and Joel Klecker says it's
+# also needed on alpha and sparc	--edd
+compiler=gcc
+fortrancompiler=f2c
+arch = $(shell dpkg --print-architecture)
+ifeq (i386,$(arch))
+compiler=egcc
+fortrancompiler=g77
+d42 10
+a51 3
+ifeq (alpha,$(arch))
+compiler=egcc
+fortrancompiler=g77
+d53 4
+a56 3
+ifeq (sparc,$(arch))
+compiler=egcc
+fortrancompiler=g77
+d58 7
+a64 3
+ifeq (powerpc,$(arch))
+compiler=gcc
+fortrancompiler=g77
+d67 2
+a68 11
+
+# edd 10 Feb 98	See section 4.1 of Policy Manual
+arch 		= $(shell dpkg --print-architecture)-linux
+
+
+compilerflags	= "-O2"
+
+# export DH_VERBOSE=1
+
+build: build-stamp
+build-stamp: configure-stamp make-stamp check-stamp
+d74 1
+a74 1
+	# use Debian's tempfile(1) for enhanced security
+d76 1
+a76 1
+	# tell kpathsea that the config dir is .., not .    
+d82 22
+a103 13
+	# let's ignore the readline directory
+#	perl -p -i -e 's|readline | |' Makefile.in
+#	perl -p -i -e 's|READLINE_DIR=readline|READLINE_DIR= |' configure.in
+
+	./configure	--prefix=/usr			\
+			--libdir=/usr/lib		\
+			--libexecdir=/usr/lib		\
+			--infodir=/usr/share/info	\
+			--mandir=/usr/share/man		\
+			--with-$(fortrancompiler)	\
+			--enable-dl			\
+			--enable-shared			\
+			--enable-lite-kernel		\
+d106 8
+a113 2
+	# have to do this after configure
+#	perl -p -i -e 's|readline | |' octMakefile
+d117 2
+a118 2
+make: make-stamp
+make-stamp:
+d123 2
+a124 2
+			CC=$(compiler) 				
+#\			LIBREADLINE=/lib/libreadline.so.2
+d127 2
+a128 2
+check: make-check
+check-stamp:
+d135 4
+a138 2
+	rm -f build-stamp configure-stamp make-stamp check-stamp
+	-$(MAKE) -i distclean || $(MAKE) -f Makefile.in distclean
+d141 25
+a165 1
+binary-indep: build
+d169 1
+a169 4
+	dh_clean -i -k
+#	dh_installdirs -p$(doc_package)		usr/share/doc/$(doc_package) 
+#	dh_installdirs -p$(html_package)	usr/share/doc/$(html_package)
+#	dh_installdirs -p$(html_package)	usr/share/doc-base
+d171 10
+a180 7
+	# copy .ps for the -doc package
+#	cp -a doc/*/*.ps			$(doc_doc)/.
+	dh_installdocs -p$(doc_package) doc/*/*.ps
+	# copy .html for the -htmldoc package
+	#cp -a doc/*/*.html			$(html_doc)/.
+	dh_installdocs -p$(html_package) doc/*/*.html
+#	dh_movefiles -i
+d182 1
+a182 7
+	dh_installmenu -p$(html_package)
+	#install -p -m 0644 debian/octave-htmldoc.doc-base.faq \
+	#				 	$(html_dbs)/octave-faq
+	#install -p -m 0644 debian/octave-htmldoc.doc-base.lib \
+	#				 	$(html_dbs)/octave-lib
+	#install -p -m 0644 debian/octave-htmldoc.doc-base.manual \
+					 	$(html_dbs)/octave-manual
+d186 3
+a188 1
+#	dh_undocumented
+d199 1
+a199 1
+binary-arch: build
+d203 5
+a207 11
+	dh_clean -a -k 
+	dh_installdirs -a -p$(package)
+	# debhelper can't do versioned expansions
+	install -d -m 0755 $(lib_lib)
+	$(MAKE) INSTALL_PROGRAM="install -s" 		\
+		prefix=$(debtmp)/usr 			\
+		infodir=$(debtmp)/usr/share/info	\
+		libdir=$(debtmp)/usr/lib		\
+		libexecdir=$(debtmp)/usr/lib		\
+		mandir=$(debtmp)/usr/share/man		install
+	# remove the /usr/share/info/dir stab
+d209 14
+a222 4
+	# save the static libs for seperate package octave-staticlibs
+	mv -v -f $(debtmp)/usr/lib/$(package)-$(version)/*.a $(lib_lib)/
+	# install /etc/octave.conf
+	install -p -m 0644  debian/octave.conf  $(debtmp)/etc/
+d224 2
+a225 10
+	ln -sf /etc/octave.conf 		$(debini)/octaverc
+	# install Octave Emacs files and Debian Emacsen files
+	install -p -m 0644 emacs/*.el		$(deblsp)/.
+	dh_installemacsen  
+	## no longer needed
+	#install -p -m 0755 debian/octave.install $(debema)/install/$(package)
+	#install -p -m 0755 debian/octave.remove $(debema)/remove/$(package)
+	#install -p -m 0644 debian/octave.el	$(debest)/50octave.el
+	dh_installinfo -a 
+	install -p -m 0755 emacs/otags		$(debtmp)/usr/bin/.
+d227 4
+a230 1
+	dh_installexamples -a   examples/*
+d235 1
+a235 1
+	dh_undocumented	-a	mkoctfile.1 octave-bug.1 otags.1
+d239 1
+a239 1
+		cp -v $$i/ChangeLog $(debdoc)/changelog.$$i; done	
+d254 1
+a254 1
+binary: binary-indep binary-arch
+@

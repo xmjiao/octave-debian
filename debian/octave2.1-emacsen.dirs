@@ -1,0 +1,5 @@
+etc/emacs/site-start.d
+usr/bin
+usr/lib/emacsen-common/packages/install
+usr/lib/emacsen-common/packages/remove
+usr/share/man/man1

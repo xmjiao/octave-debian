@@ -1,0 +1,11 @@
+
+The octave-doc package contains extra documentation in postscript form which
+can be found in the directory /usr/share/doc/octave-doc once this supplementary
+package is installed. 
+
+Further information on Octave, the Octave mailing-lists and the Octave 
+source archive can be found at http://www.che.wisc.edu/octave/.
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Tue, 25 Mar 1997 23:16:54 -0500
+
+

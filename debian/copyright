@@ -1,0 +1,38 @@
+
+This is the Debian GNU/Linux prepackaged version of the GNU Octave
+interactive numerical programming language.  GNU Octave was written by 
+John W. Eaton <jwe@bevo.che.wisc.edu>.
+
+This package was first initially maintained by Andrew D. Fernandes
+<adfernan@cnd.mcgill.ca> who passed it to Dale Scheetz <dwarf@polaris.net>.
+The current maintainer is Dirk Eddelbuettel <edd@debian.org>.  
+
+The original sources can be obtained at 
+	ftp://bevo.che.wisc.edu/pub/octave 
+	http://www.octave.org  
+
+See /usr/share/doc/octave/changelog.Debian.gz for details on the 
+applied changes.
+
+GNU Octave is Copyright (C) 1992 - 2003 John W. Eaton
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; version 2 dated June, 1991.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program;  if not, write to the Free Software Foundation, 
+   Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+
+On Debian GNU/Linux systems, the complete text of the GNU General
+Public License can be found in `/usr/share/common-licenses/GPL'.
+
+
+
+
+

@@ -1,0 +1,1316 @@
+octave2.1 (2.1.64-3) unstable; urgency=low
+
+  +++ Changes by Rafael Laboissiere:
+
+  * debian/rules: Get the logic around octave-bug.in right.  This was
+    causing a FTBFS in all architectures because the test failed and,
+    consequently, maker failed (closes: #292403).
+  * debian/changelog: Start using "Debian Octave Group" in the signature
+    of entries.  Also, added Emacs variable settings at the end, handy
+    when using debian-changelog-mode.  This avoids two warnings issued by
+    Lintian regarding mismatch between maintainer and uploader, and the
+    necessity to document NMU.
+
+ -- Debian Octave Group <pkg-octave-devel@lists.alioth.debian.org>  Thu, 27 Jan 2005 10:11:21 +0100
+
+octave2.1 (2.1.64-2) unstable; urgency=low
+
+  * Uploaded in behalf of the new maintainer of the octave2.1 packages: the
+    Debian Octave Group <pkg-octave-devel@lists.alioth.debian.org>
+  * debian/control:
+    - Changed Maintainer
+    - Build-depends on libreadline5-dev
+    - octave2.1-headers depends on libreadline5-dev
+    - Lower-cased the first word and removed some "The" words in the short
+      description of packages, as per the Developers Reference, section
+      6.2.2.  This makes Lintian happy.
+  * debian/rules:
+    - (clean) Inverse the order of the calls to rm libcruft/*/Makefile and
+      make distclean.  This was causing several *.o in libcruft to be left
+      after debian/rules clean, which resulted in dpkg-source breakage when
+      building the diff.gz package file.
+    - (configure) Save the original octave-bug.in file as octave-bug.in.orig
+      prior to the tempfile substitution
+    - (clean) Restore octave-bug.in.orig as octave-bug.in, such that the
+      patch does not end up in the diff.gz file
+
+ -- Rafael Laboissiere <rafael@debian.org>  Mon, 24 Jan 2005 16:39:08 +0100
+
+octave2.1 (2.1.64-1) unstable; urgency=low
+
+  * New upstream release 2.1.64 released today
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri,  3 Dec 2004 15:28:18 -0600
+
+octave2.1 (2.1.63-1) unstable; urgency=low
+
+  * New upstream release 2.1.63 released today
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Wed, 17 Nov 2004 13:33:59 -0600
+
+octave2.1 (2.1.62-1) unstable; urgency=low
+
+  * New upstream release 2.1.62 released today
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri, 12 Nov 2004 08:46:26 -0600
+
+octave2.1 (2.1.61-1) unstable; urgency=low
+
+  * New upstream release 2.1.61 released today
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri,  5 Nov 2004 21:56:02 -0600
+
+octave2.1 (2.1.60-1) unstable; urgency=low
+
+  * New upstream version 2.1.60 released today
+  * debian/watch: Added watch file
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri, 24 Sep 2004 14:51:13 -0500
+
+octave2.1 (2.1.59-1) unstable; urgency=low
+
+  * New upstream version 2.1.59 released today
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Wed, 22 Sep 2004 12:20:14 -0500
+
+octave2.1 (2.1.58-1) unstable; urgency=low
+
+  * New upstream version 2.1.58 released today
+  * This upstream contains fixes for the following bug reports:
+    -  "for i=1:5; (tril(..." segfaults octave 2.1.57" (Closes: #240117)
+    -  "Problem with built-in function frewind" (Closes: #268907)
+    -  "Problem with function errorbar" (Closes: #269525)
+
+  * debian/rules: Configure with atlas variable
+    --with-blas=-lblas-3 --with-lapack=-llapack-3
+  * debian/control: octave2.1-headers now Depends on
+    lapack3-dev | atlas3-base-dev | liblapack-3.so,
+    refblas3-dev | atlas3-base-dev | libblas-3.so
+    to ensure simpler defaults before atlas or the virtual package
+  * debian/control: Rewrote Description for octave-doc (Closes: #263492)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Thu,  2 Sep 2004 18:55:04 -0500
+
+octave2.1 (2.1.57-4) unstable; urgency=low
+
+  * debian/control: Change Build-Depends for Atlas again to
+    refblas3-dev | atlas3-base-dev, lapack3-dev | atlas3-base-dev
+  * debian/control: Also remove '... | liblapack.so.3, ... | libblas.so.3'
+    from Depends for octave2.1-headers
+  * debian/rules: Also update atlas configure argument
+  * debian/control: Upgrade Standards-Version: to 3.6.1.1
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Wed,  7 Jul 2004 17:47:25 -0500
+
+octave2.1 (2.1.57-3) unstable; urgency=low
+
+  * debian/control: Update Build-Depends to new Atlas scheme:
+    refblas3-dev | libblas-3.so, lapack3-dev | liblapack-3.so
+  * debian/control: Similarly, Depends of octave2.1-headers set to
+    "atlas-base-dev | lapack3-dev | liblapack.so.3, atlas3-base-dev |
+    refblas3-dev | libblas.so.3"   (Closes: #253477)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Thu, 10 Jun 2004 21:49:17 -0500
+
+octave2.1 (2.1.57-2) unstable; urgency=low
+
+  * Rebuild required by hdf5 library .so number change (Closes: #243095)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sun, 11 Apr 2004 21:58:36 -0500
+
+octave2.1 (2.1.57-1) unstable; urgency=low
+
+  * New upstream version 2.1.57 released today
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri, 12 Mar 2004 14:52:12 -0600
+
+octave2.1 (2.1.56-1) unstable; urgency=low
+
+  * New upstream version 2.1.56 released today
+  * debian/rules: Adapted to only --with-f77 (without --with-g77) upstream
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri,  5 Mar 2004 14:24:50 -0600
+
+octave2.1 (2.1.55-1) unstable; urgency=low
+
+  * New upstream version 2.1.55 released an hour ago
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri, 20 Feb 2004 18:48:53 -0600
+
+octave2.1 (2.1.54-2) unstable; urgency=low
+
+  * debian/control: Build-Depends for octave2.1-headers expanded by
+    refblas3-dev | atlas3-base-dev, lapack3-dev | atlas3-base-dev, fftw3-dev
+  * debian/rules: Apply debian/2.1.54_arrayindex.patch from octave-maintainers
+    list to correct a slowdown in array indexing operation due to N-d code
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Thu, 19 Feb 2004 07:55:28 -0600
+
+octave2.1 (2.1.54-1) unstable; urgency=low
+
+  * New upstream version 2.1.54 released today
+  * Upstream changes to close the two open bugs
+    octave2.1-emacsen: strings between single quotes containing % troubles
+    							(Closes: #231272)
+    Missing file from html documentatios (Closes: #231451)
+
+  * debian/control: Build-Depends changed from fftw-dev to fftw3-dev
+    to match upstream change to support the faster fftw3
+
+  * debian/control: Build-Depends upgraded from atlas2 to atlas3 using
+    'refblas3-dev | atlas3-base-dev, lapack3-dev | atlas3-base-dev'
+    Previous value was the slighty more complex 'atlas2-base-dev
+    (>= 3.2.1ln-6) [!arm] | atlas2-3dnow-dev (>= 3.2.1ln-6) [!arm], blas-dev'
+  * debian/rules: Consequently, change configure targets for blas and lapack
+  	  --with-blas=/usr/lib/libblas2.so \
+          --with-lapack=/usr/lib/liblapack2.so
+    to
+  	  --with-blas=/usr/lib/libblas-3.so \
+	  --with-lapack=/usr/lib/liblapack-3.so
+    Thanks to Camm Maguire for all his work on the Atlas et al libraries
+
+  * debian/control: (Finally) changed Depends for octave2.1-emacsen from
+    'emacs20 | ...' to 'emacs21 | xemacs21 | emacsen' (Closes: #232778)
+
+  * debian/octave2.1.lintian: Added a new entry
+    'octave2.1: binary-or-shlib-defines-rpath \
+    	./usr/lib/octave-2.1.54/liboctave.so.2. 1.54 /usr/lib/octave-2.1.54'
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Mon, 16 Feb 2004 17:07:03 -0600
+
+octave2.1 (2.1.53-4) unstable; urgency=low
+
+  * debian/control: Corrected Depends for octave2.1-headers to
+    "libhdf5-serial-dev | libhdf5-lam-dev | libhdf5-mpich-dev" (Closes: #231114)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Wed,  4 Feb 2004 20:08:15 -0600
+
+octave2.1 (2.1.53-3) unstable; urgency=low
+
+  * debian/rules: Run configure with DEFAULT_PAGER=pager (Closes: #230524)
+  * debian/control: No longer Depends: on less as /etc/alternatives for
+    /usr/bin/pager must be present, and allows user to override locally
+
+  * debian/control: Added "libreadline4-dev, libncurses5-dev,
+    libhdf5-serial-dev" to Depends for octave2.1-headers
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Mon,  2 Feb 2004 18:53:58 -0600
+
+octave2.1 (2.1.53-2) unstable; urgency=low
+
+  * debian/rules: Run configure again --with-hdf5
+  * debian/control: Add libhdf5-serial-dev to Build-Depends
+
+  * liboctave/Array-flags.h: Apply patch by Jakub Bogusz which stops
+    both a segfault on Sparc and unaligned traps on Alpha.
+
+  * emacs/octave-mod.el: Apply patch by John Eaton to correct octave mode
+    error with very recent XEmacs versions (Closes: #229336)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri, 30 Jan 2004 23:00:00 -0600
+
+octave2.1 (2.1.53-1) unstable; urgency=low
+
+  * New upstream version 2.1.53 released today
+
+  * This new version contains upstream fixes for the pending Debian bugs:
+    - octave-config echoes an empty path (Closes: #222225)
+    - online docs of plot contains non-working example (Closes: #223473)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Thu, 22 Jan 2004 23:33:21 -0600
+
+octave2.1 (2.1.52-1) unstable; urgency=low
+
+  * New upstream version octave 2.1.52 released today
+  * Includes change to concatenation bug (Closes: #221685)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Tue, 25 Nov 2003 16:18:43 -0600
+
+octave2.1 (2.1.51-1) unstable; urgency=low
+
+  * New upstream version octave 2.1.51 released today
+
+  * This represents a fairly major change from the last release. Quoting from
+    the announcement:
+       This version has many new features and bug fixes.  The biggest change
+       is that N-d arrays (for numbers, structs, and cells) are mostly
+       working, though there are some significant features that still need to
+       be implemented.  For example, the [] operator will fail to concatenate
+       N-d arrays, but we hope to fix this for 2.1.52.  If you find that
+       another of your favorite N-d array operations doesn't work, please
+       mention it so we can have some idea of what features are missed the
+       most.
+    See http://www.octave.org/mailing-lists/octave-maintainers/2003/353
+    for the full announcement, or the upstream ChangeLog in the package.
+
+  * debian/control: Standards-Version increased to 3.6.1.0
+  * debian/control: octave2.1-doc suggests reduced to 'gv | postscript-viewer'
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sat, 15 Nov 2003 22:09:59 -0600
+
+octave2.1 (2.1.50-3) unstable; urgency=low
+
+  * src/utils.cc: Patch by Eric de Castro Lopo which fix usages of vsnprintf;
+    a similar patch is already in the upstream CVS earlier (Closes: #204391)
+  * debian/octave2.1.menu: Small beautification
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Tue,  4 Nov 2003 20:33:12 -0600
+
+octave2.1 (2.1.50-2) unstable; urgency=low
+
+  * debian/{rules,control}: For m68k, switch from f2c to fort77 as some
+    add-on packages' Makefiles cannot cope with the f2c invocation.
+    Also add FFLIBS=-lf2c in call to configure. Spezial thanks to
+    Christian Steigies for testing all this prior to this upload.
+  * debian/control: Added blas-dev and less to Build-Depends
+  * debian/copyright: Add www.octave.org as upstream location (Closes: #199561)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sat,  5 Jul 2003 08:49:51 -0500
+
+octave2.1 (2.1.50-1) unstable; urgency=low
+
+  * New upstream version octave 2.1.50 released today
+  * debian/{rules,control}: Revert back to using default gcc suite now
+    that version 3.3 is in unstable and testing; still use f2c for m68k
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri, 27 Jun 2003 18:21:52 -0500
+
+octave2.1 (2.1.49-3.0.1) unstable; urgency=low
+
+  * The "don't type 3.2 when you want 3.3 release"
+  * debian/rules: now really use g77-3.3 if arch is hppa-linux
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sun,  1 Jun 2003 08:08:32 -0500
+
+octave2.1 (2.1.49-3) unstable; urgency=low
+
+  * The "another ones bites the dust" release
+  * debian/rules: Another minor little change needed for hppa and g77-3.3
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sat, 31 May 2003 23:54:28 -0500
+
+octave2.1 (2.1.49-2) unstable; urgency=low
+
+  * The "will we get this into testing now?" release
+  * As we managed to get octave2.1 compiled on m68k (using f2c) and on
+    hppa (using gcc/g++ 3.3), let's remove the last problem: hdf5 which has
+    a grave upstream bug (#193033) and will not currently enter testing
+  * debian/rules: Configure call (temporarily) changed to  --without-hdf5
+  * debian/control: Build-Depends on libhdf5-serial-dev (>= 1.4.5) removed
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sat, 31 May 2003 19:10:58 -0500
+
+octave2.1 (2.1.49-1.0.1) unstable; urgency=low
+
+  * debian/{control,rules}: Use gcc/g++/g77 3.3 on hppa.
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri, 30 May 2003 20:30:56 -0500
+
+octave2.1 (2.1.49-1) unstable; urgency=low
+
+  * New upstream version octave 2.1.49 released today
+  * debian/{control,rules}: Use f2c on m68k, again. Whatever it takes.
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Tue, 27 May 2003 19:39:27 -0500
+
+octave2.1 (2.1.48-3) unstable; urgency=low
+
+  * debian/control: Hardwire Depends: on gcc et al to 3.2 as some of
+    Octave's C++ code is not yet ready for release 3.3 of g++
+  * debian/rules: After days of experimenting with crest.debian.org (scoring
+    an impressive 96 bogomips), we found that g77 -O0 and -O2 really don't
+    work for m68k on some of the legacy Fortran, but miracously f2c -O1 does
+    -- and so does gcc -O1. Luckily it only took about 26 hours for each
+    'make' run, and I am really glad that Debian Policy more or less forces
+    me to care so much about m68k. If only there were any users for this
+    architecture ...
+    .
+    Needless to say, it is somewhat sad that this recompilation is forced
+    upon the other architectures on which gcc/g++/g77 are working just fine.
+    Oh the things one has to do to get Octave back into Debian testing.
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sun, 25 May 2003 23:25:55 -0500
+
+octave2.1 (2.1.48-2) unstable; urgency=low
+
+  * liboctave/kpse.cc: Applied two upstream patches
+  * liboctave/Array-idx.h: Applied one-byte upstream patch
+  * debian/rules: Make sure .oct file examples get into octave2.1-headers
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri, 16 May 2003 19:18:40 -0500
+
+octave2.1 (2.1.48-1) unstable; urgency=low
+
+  * New upstream version octave 2.1.48 released today
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Tue,  6 May 2003 14:51:34 -0500
+
+octave2.1 (2.1.47-2) unstable; urgency=low
+
+  * liboctave/kpse.cc: Applied patch by JWE to ensure that directory
+    ends with directory separator (Closes: #191859)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sun,  4 May 2003 20:06:24 -0500
+
+octave2.1 (2.1.47-1) unstable; urgency=low
+
+  * New upstream version octave 2.1.47 released this evening
+  * scripts/control/base/__bodquist__.m: Fixed (Closes: #187427)
+  * debian/control: s/eisspack/eispack/ in Description
+  * debian/control: Raised Standards-Version to 3.5.9q
+  * debian/octave2.1.postinst: Raise update-alternatives priority for
+    octave entry, default is no longer provided by the octave2.0 package
+  * debian/control: Added entry for 'octave' package from 2.0 branch as the
+    'octave' package now Depends on octave2.1 as per discussion with JWE
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri,  2 May 2003 21:54:50 -0500
+
+octave2.1 (2.1.46-3) unstable; urgency=low
+
+  * Rebuilt against new hdf5 packages. Thanks for the heads-up, Josselin!
+  * debian/control: Updated Build-Depends to libhdf5-serial-dev (>= 1.4.5)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Mon, 10 Mar 2003 20:49:18 -0600
+
+octave2.1 (2.1.46-2) unstable; urgency=low
+
+  * debian/rules: Configure with --enable-rpath
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Wed,  5 Mar 2003 09:28:32 -0600
+
+octave2.1 (2.1.46-1) unstable; urgency=low
+
+  * New upstream version octave 2.1.46 released this evening
+  * debian/rules: Correct softlink for /etc/octave2.1.conf (Closes: #182000)
+  * debian/octave2.1.menu: Corrected the menu entry
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Mon,  3 Mar 2003 21:44:04 -0600
+
+octave2.1 (2.1.45-1) unstable; urgency=low
+
+  * New upstream version octave 2.1.45 released today
+  * debian/rules: Ensure that 3.2 versions of gcc et al are called
+  * debian/rules: Install emacs/otags.1 as debian/otags.1 is upstream too
+  * debian/octave-config.1: Contributed manual page
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Wed, 19 Feb 2003 19:57:24 -0600
+
+octave2.1 (2.1.44-1) unstable; urgency=low
+
+  * New upstream version octave 2.1.44 released today
+  * debian/control: Build-Depends on gcc/g77/g++ (>= 3.2.2)
+  * debian/rules: Adjusted accordingly
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Mon,  3 Feb 2003 18:49:10 -0600
+
+octave2.1 (2.1.43-2) unstable; urgency=low
+
+  * Added scrips/mkpkgadd from upstream email by JWE
+  * debian/rules: configure to --build $(system), not --host $(system)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sun,  5 Jan 2003 07:59:10 -0600
+
+octave2.1 (2.1.43-1) unstable; urgency=low
+
+  * New upstream version octave 2.1.43 released this evening
+  * Added acx_blas.m4 and acx_lapack.m4 from email from JWE as well
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sat,  4 Jan 2003 22:29:27 -0600
+
+octave2.1 (2.1.42-4) unstable; urgency=low
+
+  * debian/rules: Don't use Debian's kpathsea with gcc 3.2
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri,  3 Jan 2003 21:00:45 -0600
+
+octave2.1 (2.1.42-3) unstable; urgency=low
+
+  * debian/rules: Use F77, not FC, to set the fortran compiler
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri,  3 Jan 2003 17:15:35 -0600
+
+octave2.1 (2.1.42-2) unstable; urgency=low
+
+  * Rebuilt again from pristine sources, some intermediate .d files had
+    not been cleaned and thus crept into the .diff.gz which leads to
+    failures on all non-i386 autobuilders.
+  * debian/{control,rules}: Re-enable hdf5 support
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri,  3 Jan 2003 14:02:20 -0600
+
+octave2.1 (2.1.42-1) unstable; urgency=low
+
+  * New upstream version octave 2.1.42 released today (as was 2.1.41)
+  * debian/{control,rules}: Adjusted to require gcc/g77/g++ 3.2
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Thu,  2 Jan 2003 20:56:57 -0600
+
+octave2.1 (2.1.40-1) unstable; urgency=low
+
+  * New upstream version octave 2.1.40 released earlier today
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Wed, 20 Nov 2002 20:25:23 -0600
+
+octave2.1 (2.1.39-1) unstable; urgency=low
+
+  * New upstream version octave 2.1.39 released earlier today
+  * debian/mkoctfile.1: Contributed manual page
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri,  1 Nov 2002 18:14:39 -0600
+
+octave2.1 (2.1.38-1) unstable; urgency=low
+
+  * Upgraded to Octave 2.1.38 released earlier this evening
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Tue, 29 Oct 2002 21:04:44 -0600
+
+octave2.1 (2.1.37-2) unstable; urgency=low
+
+  * src/Makefile.in, liboctave/Makefile.in: Applied upstream patch to
+    build kpathsea library correctly on hppa (Closes: #166179)
+  * src/ov-mapper.cc: Applied small patch by JWE from bug-octave ML
+  * debian/control: Section on octave2.1-doc to 'doc' as per override file
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Thu, 24 Oct 2002 20:26:33 -0500
+
+octave2.1 (2.1.37-1) unstable; urgency=low
+
+  * Upgraded to new Octave development release 2.1.37 released today
+  * mk-opts.pl: Applied three-line post-release patch from JWE
+  * debian/control: Added Depends: g++ | g++-3.0, g77 | g77-3.0 for the
+    octave2.1-headers sub-package as configure hard-wires a dependency to
+    these at built time; ia64 needs the g*-3.0 version (Closes: #160818)
+  * This release also closes the following bug report
+    - lsode documentation (Closes: #151026)
+    - gammainc breaks on large values (Closes: #165808)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Wed, 23 Oct 2002 21:32:52 -0500
+
+octave2.1 (2.1.36-6) unstable; urgency=low
+
+  * debian/rules: Brown bag fix for m68k/g77; and Debian has currently no
+    infrastructure to hand-compile on m68k, this unfortunately needs to
+    recompile needlessly on ten other architectures too. (Closes: #159765)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri,  6 Sep 2002 20:35:56 -0500
+
+octave2.1 (2.1.36-5) unstable; urgency=low
+
+  * debian/octave2.1-emacsen.emacsen-startup: Autoload octave-hlp under
+    the correct function label of octave-help (Closes: #154045)
+  * debian/{rules,control}: Do not configure for Atlas on arm
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Mon, 26 Aug 2002 06:16:13 -0500
+
+octave2.1 (2.1.36-3woody4) woody-proposed-updates; urgency=low
+
+  * Backport for woody built against atlas with corrected virtual Depends
+    on blas/atlas to prevent bugs like #150253 and #152284 in woody
+  * debian/octave2.1-emacsen.emacsen-startup: Autoload inferior-octave
+  * debian/rules: Use "-O0 -g0" on arm and m68k to shorten compile time
+  * debian/rules: No longer use f2c on m68k
+  * debian/control: Adjusted Build-Depends accordingly
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Thu, 18 Jul 2002 21:49:44 -0500
+
+octave2.1 (2.1.36-4) unstable; urgency=low
+
+  * debian/rules: Configure with --with-lapack=/usr/lib/liblapack2.so
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Tue,  4 Jun 2002 21:07:15 -0500
+
+octave2.1 (2.1.36-3) unstable; urgency=low
+
+  * debian/control: Build-Depends on atlas2-base-dev, not blas-dev
+  * debian/rules: Configure with --with-blas=/usr/lib/libblas2.so
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri, 24 May 2002 22:32:17 -0500
+
+octave2.1 (2.1.36-2) unstable; urgency=low
+
+  * debian/octave2.1.lintian: Updated rpath warning for octave-2.1.36
+  * debian/rules: Reset default compiler(s) on i386 to gcc 2.9* and
+    rebuilt, the test value of 3.0.* was used which will then require
+    the same compilers for add-on packages.
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sat,  4 May 2002 12:25:40 -0500
+
+octave2.1 (2.1.36-1) unstable; urgency=low
+
+  * Upgraded to new Octave development release 2.1.36
+  * debian/control: Added Build-Depends on texi2html (split from tetex-bin)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri,  3 May 2002 00:22:42 -0500
+
+octave2.1 (2.1.35-7) unstable; urgency=low
+
+  * debian/rules: Remove doc/faq/Octave-FAQ_toc.html during clean so that
+    the html version of the Octave FAQ gets rebuilt (Closes: #134046)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri, 15 Feb 2002 12:06:39 -0600
+
+octave2.1 (2.1.35-6) unstable; urgency=low
+
+  * debian/control: Spelling correction (Closes: #125202)
+  * debian/control: Labelled Description: lines with (2.1 branch)
+  * Bbuilt against new fftw libraries for finer-grained fftw dependencies
+  * debian/control: Build-Depends: fftw-dev (>= 2.1.3-10) (Closes: #128778)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sun, 13 Jan 2002 14:40:21 -0600
+
+octave2.1 (2.1.35-5) unstable; urgency=low
+
+  * debian/octave2.0-emacsen-{prerm,postinst}: Let dh_installemacsen deal
+    with the call to emacsen-install (Closes: #123900)
+  * debian/rules: Still rename emacsen startup to 50octave.el rather
+    than the default 50octave2.0-emacsen.el of its package name
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Thu, 13 Dec 2001 19:28:11 -0600
+
+octave2.1 (2.1.35-4) unstable; urgency=low
+
+  * debian/control: Added Depends: texinfo for octave2.1 (Closes: #122857)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri,  7 Dec 2001 19:22:25 -0600
+
+octave2.1 (2.1.35-3) unstable; urgency=low
+
+  * debian/control: Added dejagnu to Build-Depends
+  * debian/README.Atlas: Updated to reflect autoMAGIC loading of Atlas lib
+    with ldconfig from libc6_2.2.4-5 or later -- thanks, Ben Collins!
+  * debian/rules: Do not configure --with-hdf5 as this appears to prevent
+    transition into the testing distribution, was only used on i386 anyway
+  * debian/control: Removed Build-Depends on "libhdf5-serial-dev [i386]"
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sat, 24 Nov 2001 08:18:46 -0600
+
+octave2.1 (2.1.35-2) unstable; urgency=low
+
+  * debian/octave2.1-emacsen.emacsen-startup: Applied patch by Rafael
+    Laboissiere <rafael@debian.org> (Closes: #118188)
+  * debian/octave2.1-emacsen.emacsen-remove: Make corresponding change
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sun,  4 Nov 2001 07:25:02 -0600
+
+octave2.1 (2.1.35-1) unstable; urgency=low
+
+  * Upgraded to new Octave development release 2.1.35
+  * This upstream release supports gcc versions 2.9.x and 3.0.x so
+    we do not need the full patch by Jeff Licquia <jlicquia@progeny.com>
+    but use parts of it (in deban/rules and debian/control) to select
+    gcc/g++/g77 3.0 on the ia64 architecture. (Closes: #117929)
+  * debian/rules: Added --with-fftw to use Fast Fourier Transf. libraries
+  * debian/control: Added fftw-dev to Build-Depends
+  * debian/rules: Install .el files into octave2.1-emacsen, not octave
+  * debian/50octave.el: Apply small patch to correct loading
+  * Thanks to Rafael Laboissiere <rafael@debian.org> for both the
+    suggestion and the patch (Closes: #117581)
+  * debian/otags.1: contributed simple manual page (lintian)
+  * debian/octave2.1-emacsen.{postinst,prerm}: dpkg-alternatives for otags
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri,  2 Nov 2001 18:53:02 -0600
+
+octave2.1 (2.1.34-6) unstable; urgency=low
+
+  * debian/rules: Configure --with-fastblas=blas (available on nine
+    architectures), Atlas can dynamically override this where available
+  * debian/control: Changed atlas reference to blas for Build-Depends,
+    requires versioned Build-Depends on blas-dev (>= 1.0-9)
+  * debian/README.Atlas: Added simple README file on Atlas
+  * debian/mkoctfile.in: New upstream version, better f2c treatment
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Tue, 21 Aug 2001 21:37:15 -0500
+
+octave2.1 (2.1.34-5) unstable; urgency=low
+
+  * Rebuilt against atlas2 3.2.1 (Closes: #104014)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sat, 14 Jul 2001 11:52:06 -0500
+
+octave2.1 (2.1.34-4) unstable; urgency=low
+
+  * debian/rules: Make support for Atlas and HDF5 conditional on the
+    build architecture -- i386, alpha and sparc have atlas2 packages,
+    the others do not. Similarly, currently only i386 has hdf5 support.
+  * debian/control: Adjust Build-Depends accordingly
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri, 22 Jun 2001 22:45:08 -0500
+
+octave2.1 (2.1.34-3) unstable; urgency=low
+
+  * debian/rules: configure with support for HDF5 data (thanks wolfie!)
+  * debian/control: Build-Depends on libhdf5-serial-dev
+  * debian/control: Upgraded Standards-Version
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Thu, 14 Jun 2001 22:27:52 -0500
+
+octave2.1 (2.1.34-2) unstable; urgency=low
+
+  * Makeconf.in: Reverted back to version as of a few days ago as the patch
+    included into 2.1.34 at the last minute prevents a proper installation
+    of the octave header files
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sun, 22 Apr 2001 16:18:03 -0500
+
+octave2.1 (2.1.34-1) unstable; urgency=low
+
+  * Upgraded to new Octave development release 2.1.34
+  * debian/octave2.1-info.{prerm,postinst}: small lintian cleanups
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri, 20 Apr 2001 21:24:18 -0500
+
+octave2.1 (2.1.33-3) unstable; urgency=low
+
+  * liboctave/oct-rl-edit.c: Applied patch by Rene H. Larsen <rhl@traceroute.dk>
+    to update Octave to the API of version 4.2 of the readline library;
+    this is also fixed upstream in CVS (Closes: #93539, #93564, #94093)
+  * debian/rules: install lintian overrides file to tell lintian to not
+    worry about the dynamic libraries in /usr/lib/octave-2.1.33/
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Tue, 17 Apr 2001 21:44:43 -0500
+
+octave2.1 (2.1.33-2) unstable; urgency=low
+
+  * debian/control: Declare octave2.1-headers as Architecture: any as it
+    contains mkoctfile with its arch-specific options (Closes: #89563)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Wed, 14 Mar 2001 19:59:54 -0600
+
+octave2.1 (2.1.33-1) unstable; urgency=low
+
+  * Upgraded to new Octave development release 2.1.33
+  * debian/control: octave2.1-emacsen depends on octave2.1 || octave2.0
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Mon, 26 Feb 2001 20:51:23 -0600
+
+octave2.1 (2.1.32-2) unstable; urgency=low
+
+  * liboctave/Range.cc: Applied another patch by JWE
+  * debian/control: octave2.1 conflicts with octave (<= 2.0.16-2)
+  * debian/control: octave2.1-htmldoc conflicts with octave-htmldoc
+  * debian/control: octave2.1* packages depend on octave (= ${Source-Version})
+    to ensure proper transition from the pre-octave2.{0,1} packages in potato
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sun, 17 Dec 2000 16:11:41 -0600
+
+octave2.1 (2.1.32-1) unstable; urgency=low
+
+  * Upgraded to new Octave development release 2.1.32
+  * debian/rules: Applied small Hurd patch by Marcus (Closes: #77939)
+    Patch is also integrated upstream for configure.in
+  * debian/control: octave2.1-emacsen conflicts with octave (<= 2.0.16)
+    in case new "empty transition" octave (>= 2.0.16.91) is not installed
+  * liboctave/Range.cc: Applied patch by JWE
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sun, 10 Dec 2000 20:13:11 -0600
+
+octave2.1 (2.1.31-5) unstable; urgency=low
+
+  * debian/control: Added gnuplot to build-depends
+  * debian/rules: Added dependencies on install and check for binary-indep
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sat, 28 Oct 2000 11:04:35 -0500
+
+octave2.1 (2.1.31-4) unstable; urgency=low
+
+  * debian/rules: Add -n to package-specific dh_installdocs calls
+    to suppress double post{inst,rm} entries (Closes: #75474)
+  * debian/control: Add Provides: octave for octave2.1 (Closes: #75489)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Tue, 24 Oct 2000 21:38:29 -0500
+
+octave2.1 (2.1.31-3) unstable; urgency=low
+
+  * debian/control: Let octave2.1-htmldoc also provide octave-htmldoc
+    to satisfy outside dependencies as in task-science (Closes: #74866)
+  * debian/control: Corresponding changes for the -doc and -info packages
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Thu, 19 Oct 2000 20:18:59 -0500
+
+octave2.1 (2.1.31-2) unstable; urgency=low
+
+  * debian/control: Let octave2.1-htmldoc conflict with and replace the
+    older octave-htmldoc to allow overwriting of files (Closes: #69573)
+  * debian/control: octave2.0-info conflicts with octave (<= 2.0.16)
+  * debian/rules: Comment out dh_undocumented call (Closes: #70495)
+  * Bug report #70037 cannot be replicated here on a fresh install, the
+    likely cause is probably an upgrade issue which is tougher to debug
+    leading to a tentative closing of the bug report and the suggestion
+    to reopen should the bug reappear. (Closes: #70037)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Tue,  2 Oct 2000 19:16:29 -0500
+
+octave2.0 (2.0.16.91-4) unstable; urgency=low
+
+  * debian/rules: Remove spurious ":/usr/local/" file tree below
+    /usr/share/octave/$(version)/site/m/  (Closes: #68515)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Tue,  8 Aug 2000 19:36:32 -0400
+
+octave2.1 (2.1.31-1) unstable; urgency=low
+
+  * Upgraded to new Octave development release 2.1.31
+  * debian/rules: Configure and build with the newly added support for the
+    self-tuning Atlas blas (this creates a dependency on atlas2)
+  * debian/control: Added gperf and atlas2-dev to Build-Depends
+  * debian/rules: Ensure man page for mkoctfile-$VERSION is picked up by
+    update-alternatice for the octace2.1-headers package (Closes: #67080)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Tue, 18 Jul 2000 21:23:55 -0400
+
+octave2.1 (2.1.30-2) unstable; urgency=low
+
+  * debian/octave2.1-emacsen.emacsen-install:  added '-vanilla' to $flags
+  * debian/control: Added g77, libreadline4-dev and libncurses5-dev to
+    Build-Depends
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Wed,  7 Jun 2000 19:57:54 -0400
+
+octave (2.0.16-2) frozen; urgency=low
+
+  * Added code to emacsen-installer to define the defgroup macro (which is
+    needed for emacs19) (Closes: #62822)
+  * Added Depends: on debianutils (>= 1.6) as we need tempfile(1) in the
+    emacsen installer script (Closes: #62825)
+  * Thanks to Yann Dirson <ydirson@altern.org> for help on this one.
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Thu, 27 Apr 2000 21:24:06 -0400
+
+octave2.1 (2.1.30-1) unstable; urgency=low
+
+  * First release of Octave based on the 2.1.* development series
+  * Built with a new setup which allows a parallel installation of 2.0.*
+    and 2.1.* -- this requires matching octave2.0 packages which are being
+    provided based on 2.0.16.91, the most recent stable release.
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Thu,  6 Apr 2000 19:14:17 -0400
+
+octave (2.0.16.91-1) unstable; urgency=low
+
+  * Upgraded to second pre-release of Octave 2.0.17
+  * emacs/octave-mod.el: Applied patch by Stephen Eglen to suppress
+    (innocent) font-lock warning by xemacs on operators (Closes: #60920)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Wed, 22 Mar 2000 23:42:08 -0500
+
+octave (2.0.16.90-3) unstable; urgency=low
+
+  * debian/rules: Delete some files that are erroneously left over from
+    the package building process (Closes: #59994)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Thu,  9 Mar 2000 20:24:47 -0500
+
+octave (2.0.16.90-2) unstable; urgency=low
+
+  * Contributed a manual page octave-bug.1 (Closes: #59353)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Wed,  8 Mar 2000 20:48:44 -0500
+
+octave (2.0.16.90-1) unstable; urgency=low
+
+  * Upgraded to first pre-release of Octave 2.0.17
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sat, 12 Feb 2000 13:12:58 -0500
+
+octave (2.0.16-1) frozen unstable; urgency=low
+
+  * Upgraded to new upstream stable release
+  * As this fixes several small bugs reported on the bug-octave mailing
+    list, it would be good if this version could be included in potato
+  * Applied trivial patch to saveimage.m (Closes: #29932)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Mon, 31 Jan 2000 19:14:45 -0500
+
+octave (2.0.15-1) unstable; urgency=low
+
+  * Upgraded to release 2.0.15 of Octave
+  * Created new package octave-headers as the include files are only
+    needed for compiling C++ (or C or Fortran) against Octave -- this
+    saves over 700kB (installed) from the basic Octave package.
+  * Built using the libreadline4 package
+  * debian/control: Added Build-Depends
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Wed, 12 Jan 2000 16:20:19 -0500
+
+octave (2.0.14.93-1) unstable; urgency=low
+
+  * Upgraded to fourth pre-release of Octave 2.0.15
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Thu, 11 Nov 1999 18:12:58 -0500
+
+octave (2.0.14.92-1) unstable; urgency=low
+
+  * Upgraded to third pre-release of Octave 2.0.15
+  * debian/control: Changed Standards-Version to 3.1.0
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Thu,  4 Nov 1999 20:34:06 -0500
+
+octave (2.0.14.91-1) unstable; urgency=low
+
+  * Upgraded to second pre-release of Octave 2.0.15
+  * debian/menu: Created as the menu package will stop providing one
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri, 15 Oct 1999 00:35:55 -0400
+
+octave (2.0.14.90-2) unstable; urgency=low
+
+  * debian/rules: Don't let dh_installemacsen modify postinst and prerm,
+    rather use our previous code which first tests for emacsen-commen so
+    that we don't have to depend on it (Closes: #44924)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sun, 12 Sep 1999 14:39:11 -0400
+
+octave (2.0.14.90-1) unstable; urgency=low
+
+  * Upgraded to first pre-release of Octave 2.0.15
+  * Reverted back to using the supplied readline sources instead of our
+    library as we do not carry libreadline-4.0 ourselves. Once Guy
+    provides it, Octave will use it.
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sat, 11 Sep 1999 11:43:48 -0400
+
+octave (2.0.14-4) unstable; urgency=low
+
+  * debian/rules: Adapted to use /usr/share/ following the recommendation
+    on FHS transition from the Technical Committee (Closes: #44594)
+  * debian/rules: Test for debhelper >= 2.0.40 for FHS compliance
+  * debian/control: Upgraded to Debian Policy 3.0.1
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Thu,  9 Sep 1999 21:04:15 -0400
+
+octave (2.0.14-3) unstable; urgency=low
+
+  * Recompiled under libstdc++2.10 trying to get rid of the errorneous
+    double Depends: on libstdc++ (Closes: #44388)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sun,  5 Sep 1999 16:31:51 -0400
+
+octave (2.0.14-2) unstable; urgency=low
+
+  * Recompiled under libc6_2.1.2-0pre7 and libstdc++2.9-glib2.1_2.91.66-2
+
+  * src/sysdep.cc: Added `#include termcap' conditional on HAVE_TERMCAP_H
+    and modified one prototype to compile with gcc-2.95 as suggested by
+    John W. Eaton and discussed on the octave-bug mailing list
+
+  * debian/octave.install: Corrected (harmless) typo in emacsen install
+    script (Closes: #36860)
+  * debian/octave.el: Added call of octave-hlp to Emacsen startup file
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sun, 15 Aug 1999 17:26:47 -0400
+
+octave (2.0.14-1) unstable; urgency=low, Closes=35751
+
+  * Upgraded to new upstream release 2.0.14
+
+  * debian/postinst: Set ownership and mode of /usr/local/share/octave
+    explicitly to root.staff and 2755 (fixes #35751)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri, 16 Apr 1999 23:11:36 -0400
+
+octave (2.0.13.97-1) unstable; urgency=low
+
+  * Upgraded to eigth pre-release of Octave 2.0.14
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Wed, 31 Mar 1999 07:58:40 -0500
+
+octave (2.0.13.96-3) unstable; urgency=low, Closes=27707
+
+  * Starting with this release of the Debian package, Octave is linked
+    against Debian's copy of libreadline (instead of its own) as Debian's
+    libreadline package now provides all the needed symbols (fixes #27707)
+  * debian/shlibs.local: Added to depend on libreadline2g-2.1-13
+
+  * debian/rules: Added powerpc support. Thanks to Konstantinos
+    Margaritis <kmargar@cc.uoa.gr> for the patch.
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Wed, 24 Mar 1999 20:15:53 -0500
+
+octave (2.0.13.96-2) unstable; urgency=low, Closes=32802
+
+  * debian/octave.conffiles: Registered the emacs config file
+    /etc/emacs/site-start.d/50octave.el as a conffile (fixes #32802)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Tue,  9 Feb 1999 19:05:03 -0500
+
+octave (2.0.13.96-1) unstable; urgency=low
+
+  * Upgraded to seventh pre-release of Octave 2.0.14
+  * Also install the contributed otags script for tags generation
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Mon, 25 Jan 1999 19:09:47 -0500
+
+octave (2.0.13.95-1) frozen unstable; urgency=low
+
+  * Upgraded to sixth pre-release of Octave 2.0.14
+  * Recompiled under libc6_2.0.7u-7.1 to get rid of libc6_2.0.7u dependence
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Thu, 10 Dec 1998 19:52:59 -0500
+
+octave (2.0.13.94-2) frozen unstable; urgency=low, Closes=30377
+
+  * Applied patch from foka@debian.org to mkoctfile.in (fixes #30377)
+  * Made emacsen install script output slightly less verbose
+  * Upgraded to Standards-Version 2.5.0
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sat,  5 Dec 1998 11:55:59 -0500
+
+octave (2.0.13.94-1) frozen unstable; urgency=low
+
+  * Upgraded to fifth pre-release of Octave 2.0.14
+  * Applied (modified) patch by Rafael Laboissiere <rafael@icp.inpg.fr> to
+    emacsen install script for [x]emacs handling of 'no-site-file' script
+  * While this does not formally close an open Debian bug, it should go
+    into frozen as the previous four pre-releases of Octave-2.0.14
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri,  4 Dec 1998 20:44:57 -0500
+
+octave (2.0.13.93-1) frozen unstable; urgency=low, Closes=29674
+
+  * Upgraded to fourth pre-release of Octave 2.0.14 which contains
+    an upstream bug fix to Bessel function arguments
+  * Built properly with upstream sources in octave_2.0.13.93.orig.tar.gz
+    so that a .diff.gz is built (fixes #29674)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Wed, 18 Nov 1998 19:51:24 -0500
+
+octave (2.0.13.92-1) frozen unstable; urgency=low, Closes=27516
+
+  * Upgraded to third pre-release of Octave 2.0.14
+  * Among other things, this defines __NO_MATH_INLINES to prevent the use
+    of inlines in /usr/include/__math.h which cannot cope with expressions
+    like exp(Inf). My thanks to John Eaton for having debugged this, on my
+    computer ;-) (fixed #27516)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri,  6 Nov 1998 23:35:06 -0500
+
+octave (2.0.13.91-1) unstable; urgency=low
+
+  * Upgraded to second pre-release of Octave 2.0.14
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Thu, 29 Oct 1998 20:12:40 -0500
+
+octave (2.0.13.90-1) unstable; urgency=low
+
+  * Upgraded to first pre-release of Octave 2.0.14
+  * Modified emacsen install file to be more silent
+  * Added new package octave-htmldoc with html documentation
+  * debian/rules: Added 'make check' to use DejaGnu regression suite
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Thu, 22 Oct 1998 19:16:46 -0400
+
+octave (2.0.13-6) unstable; urgency=low, Closes=26468 26776
+
+  * Recompiled under egcs_2.91.57 and libstdc++_2.91.57 (fixes #26776)
+  * Changed cursor keybindings for inferior-octave-mode to comments in
+    /etc/emacs/site-start.d/50octave.el; now the Emacs mode for Octave is
+    consistent with other comint modes, on the other hand, the code that is
+    commented out makes the mode consistent with Octave's own shell. The
+    difference is whether cursor keys or M-p,M-n are used to scroll
+    through the readline history (fixes #26468)
+  * Applied patch by Mumit Khan for use with newer egcs compiler
+    (http://www.che.wisc.edu/octave/mailing-lists/bug-octave/1998/270)
+  * Changed debian/rules to also install ChangeLog file from
+    subdirectories of the Octave source tree
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sat, 19 Sep 1998 12:34:22 -0400
+
+octave (2.0.13-5) unstable; urgency=low, Closes=24490 24497
+
+  * Added the default LOADPATH to LOADPATH setting in /etc/octave.conf
+  * Changed emacsen-common to be more tolerant on rmdir (fixes #24490)
+  * Corrected cosmetic type in emacsen-common 'remove' script (fixes #24497)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri, 17 Jul 1998 18:21:34 -0400
+
+octave (2.0.13-4) frozen unstable; urgency=medium, Closes=23674
+
+  * Applied patch by Roman Hodek <Roman.Hodek@informatik.uni-erlangen.de>
+    to configure{,.in} to also use the -rpath linker option on non-Intel
+    Linux systems to allow for dynamic linking of Octave libraries. While
+    this change does not affect i386 systems, it fixes an important bug for
+    other Debian architectures and should go into frozen (fixes #23674)
+  * Changed debian/rules to use --with-f2c argument for configure under
+    m68k, and --with-g77 (from the egcs suite) under i386, sparc and alpha.
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri, 19 Jun 1998 19:47:42 -0400
+
+octave (2.0.13-3) unstable; urgency=low, Closes=23293
+
+  * Changed debian/rules to set CC=egcc only after an explicit test for
+    either of i386, alpha or sparc (fixes #23293)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Tue,  9 Jun 1998 18:51:59 -0400
+
+octave (2.0.13-2) frozen unstable; urgency=low
+
+  * Reuploaded stable release 2.0.13 to replace the test-release 2.0.12.90 in
+    'frozen' which corrects one serious bug in 2.0.12.90 (fixes #22807)
+  * Changed /etc/emacs/site-start.d/50octave.el to add a flavour-dependent
+    directory to emacs load-path
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Mon, 25 May 1998 20:16:24 -0400
+
+octave (2.0.13-1) unstable; urgency=low
+
+  * Upgraded to new upstream release 2.0.13
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Thu, 21 May 1998 22:11:22 -0400
+
+octave (2.0.12.91-1) unstable; urgency=low
+
+  * Upgraded to new upstream test-release 2.0.12.91
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Tue, 19 May 1998 20:00:25 -0400
+
+octave (2.0.12.90-1) unstable frozen; urgency=low, Closes=22424 22491
+
+  * Upgraded to new upstream test-release 2.0.12.90 (fixes #22424)
+  * Changed debian/rules to remove usr/info/dir (fixes #22491)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sat, 16 May 1998 13:09:40 -0400
+
+octave (2.0.12-1) unstable frozen; urgency=low
+
+  * Upgraded to new upstream version.
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Mon,  4 May 1998 08:20:05 -0400
+
+octave (2.0.11.94-1) unstable; urgency=low
+
+  * Upgraded to new upstream test-release 2.0.11.94
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Wed, 29 Apr 1998 07:46:22 -0400
+
+octave (2.0.11.93-1) unstable; urgency=low, Closes=20372 21222
+
+  * Upgraded to new upstream test-release 2.0.11.93
+  * Adapted to new Emacsen policy (fixes #20372, #21222)
+  * Converted debian/rules to debhelper
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri, 24 Apr 1998 18:28:31 -0400
+
+octave (2.0.11.92-3) unstable; urgency=low
+
+  * Fixed dependency on info to "info (>= 3.12)"
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri, 17 Apr 1998 18:44:10 -0400
+
+octave (2.0.11.92-2) unstable; urgency=low, closes=20033 20978
+
+  * Added Depends: on "info (>= 3.12-1) | info-browser" to debian/control
+    as Octave no longer comes with an info binary
+  * Added explicit setting of INFO_PROGRAM = "/usr/bin/info" to
+    /etc/octave.conf as the default INFO_PROGRAM still points to the old
+    location
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Thu, 16 Apr 1998 22:46:32 -0400
+
+octave (2.0.11.92-1) unstable; urgency=low, closes=20033 20978
+
+  * Upgraded to new upstream test-release 2.0.11.92
+  * Compiled with libstdc++2.8_2.90.27-0.6 which provides a correctly
+    versioned shlibs file (fixes #20033, #20978)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Thu, 16 Apr 1998 18:41:21 -0400
+
+octave (2.0.11.91-1) unstable; urgency=low
+
+  * Upgraded to new upstream test-release 2.0.11.91
+  * This fixes a couple of small bugs, one of them dear to to fellow
+    Debianer Jim van Zandt, and as a test-release might as well go into
+    our current 'unstable' distribution. I have used previous pre-releases
+    and they work just as well --- call it the pre-patch methodology
+    spreading into application space ;-)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri, 10 Apr 1998 11:51:56 -0400
+
+octave (2.0.11-2) frozen unstable; urgency=low
+
+  * Compilation with new gcc/g77/g++ 2.90.26 based on egcs
+  * Changed debian/rules by adding a Perl one-liner substition so that
+    /usr/bin/octave-bug will use tempfile(1) to create a temporary
+    filename; also sent the sources for debianutils-1.8 upstream so that
+    they might be included in the next release (fixes #19804)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Wed, 18 Mar 1998 18:41:12 -0500
+
+octave (2.0.11-1) unstable; urgency=low
+
+  * Upgraded to new upstream version
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Wed, 25 Feb 1998 18:33:04 -0500
+
+octave (2.0.10-2) unstable; urgency=low
+
+  * Compilation with f2c instead of g77 in order to get a libc6 version
+    going (see bug report #17963 filed against g77)
+
+  * Added Replaces: octave (<= 2.0.5-2) to control for octave-staticlibs
+    to cleanly replace the static libraries from the older octave package
+    as well as an explicit version number for the Depends: on octave
+    (thanks to Richard Braakman for the hints)
+
+  * Fixed FSF address in copyright (lintian)
+  * Made octave.rc to /etc/octave.conf symlink absolute (lintian)
+  * Created links to ../man7/undocumented.7.gz in lieu of manual pages
+    for the two utility scripts octave-bug and mkoctfile (lintian)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Wed, 25 Feb 1998 18:32:27 -0500
+
+octave (2.0.10-1) unstable; urgency=low
+
+  * Upgraded to new upstream version
+
+  * This version is compiled on a libc5 system as g77/gcc and eg77/egcc
+    (including the new {gcc,g77}_2.90.23-1) both die on some legacy
+    Fortran code on a libc6 system. Major bummer.
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sun, 8 Feb 1998 17:05:07 -0500
+
+octave (2.0.9-2) unstable; urgency=low
+
+  * Compiled with GNU libc2 aka libc6 (fixes bug #11739)
+  * Create a new file /usr/share/octave/ls-R file from the postinst
+  * Now ships the unmodified upstream source as octave_2.0.9.orig.tar.gz
+  * Byte-compile the octave-{mod,hlp,inf}.el files
+  * Includes two newer octave-{mod,inf} files and add an elisp startup
+    file /etc/emacs/site-start.d/50octave.el (thanks to Nils Naumann)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sat,  1 Nov 1997 17:13:31 -0500
+
+octave (2.0.9-1) unstable; urgency=low
+
+  * Upgraded to new upstream version
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Thu, 10 Jul 1997 19:19:12 -0400
+
+octave (2.0.8-1) unstable; urgency=low
+
+  * Upgraded to new upstream version
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Mon, 23 Jun 1997 20:02:03 -0400
+
+octave (2.0.7-1) unstable; urgency=low
+
+  * upgraded to new upstream version (bug #10419)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sat, 7 Jun 1997 13:42:21 -0400
+
+octave (2.0.6-1) unstable; urgency=low
+
+  * upgraded to new upstream version
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Wed, 28 May 1997 18:50:13 -0400
+
+octave (2.0.5-3) unstable; urgency=low
+
+  * added creation of /usr/local/share/octave/site-m in the postinst if
+    /usr/local filesystem is writable and removal of the directories
+    /usr/local/share/octave/site-m and /usr/local/share/octave/site-m in
+    the prerm if they are empty to reflect Debian policy on /usr/local/
+  * moved configuration file /usr/share/octave/site/m/startup/octaverc
+    into /etc/octave.conf and provided a softlink from the default location
+  * added LOADPATH setting to octave.conf aka octaverc for the local tree
+  * made /etc/octave.conf a conffile
+  * moved static libs into a seperate package (which is not needed for
+    normal use of octave) --- this saves 4.4 MB of diskspace
+  * patched mkoctfile.in to add a flag for stripping to /usr/bin/mkoctfile
+  * changed configure to explicit setting of host architecture
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sun, 27 Apr 1997 19:06:03 -0400
+
+octave (2.0.5-2) unstable; urgency=low
+
+  * rewrote debian/rules:
+    - configure for dynamic loading, shared libs  and lite kernel which
+      allows dynamic extension of the octave language via user provided
+      C++ programs; examples are in /usr/doc/octave/examples
+    - configure prefix /usr; install prefix debian/tmp/usr (fixes bug #8139)
+    - configure for libs in /usr/lib/octave to avoid clashed
+    - include upstream postscript docs
+  * rewrote Description in debian/control:
+  * changed Priority: to optional as per overrides file
+  * changed Suggests: from info to virtual package info-browser
+  * created new package octave-doc for postscript docs on octave
+  * updated debian/copyright
+  * new maintainer
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Wed, 26 Mar 1997 22:15:30 -0500
+
+octave (2.0.5-1) unstable; urgency=low
+
+  * tracking upstream source, upgraded to newest release
+  * put *.el files back in /usr/lib/emacs/site-lisp bug #7457
+  * also bugs #7144, 7282, and 7532 are fixed with this release.
+
+ -- Dale Scheetz <dwarf@polaris.net>  Mon, 10 Mar 1997 21:47:07 -0500
+
+octave (2.0.2-2) unstable; urgency=low
+
+  * bug#7020 removed static libraries from the installation
+  * bug#7021 corrected spelling errors
+  * applied patch from upstream for pipes fix
+
+ -- Dale Scheetz <dwarf@polaris.net>  Sun, 2 Feb 1997 20:19:27 -0500
+
+octave (2.0.2-1) unstable; urgency=low
+
+  * New upstream source
+
+ -- Dale Scheetz <dwarf@polaris.net>  Wed, 29 Jan 1997 12:18:29 -0500
+
+octave (2.0.1-2) unstable; urgency=low
+
+  * corrected unreferenced dependencies
+
+ -- Dale Scheetz <dwarf@polaris.net>  Mon, 27 Jan 1997 09:45:30 -0500
+
+octave (2.0.1-1) unstable; urgency=low
+
+  * Bug# 6028, 6044, 6416, Moved to newer release.
+  * Bug# 5096, referenced binary no longer exists.
+
+ -- Dale Scheetz <dwarf@polaris.net>  Sun, 26 Jan 1997 16:16:43 -0500
+
+octave (1.1.1-8) frozen unstable; urgency=low
+
+  * built with static libc5.2.18
+
+ -- Dale Scheetz <dwarf@polaris.net>  Tue, 26 Nov 1996 13:49:37 -0500
+
+octave (1.1.1-7) unstable; urgency=low
+
+  * converted to Standards-Version 2.1.0.0
+
+ -- Dale Scheetz <dwarf@polaris.net>  Mon, 14 Oct 1996 08:42:54 -0400
+
+Octave-1.1.1-5 dcs
+ * Added extended description field.
+
+Octave-1.1.1-4 dcs
+ * Added dependencies for libc5, ncurses3.0, libgr++27 to debian.control.
+
+Octave-1.1.1-3 dcs
+ * Removed dld to repair symbol loading problems in ELF.
+
+Octave-1.1.1-2 dcs
+Dale Scheetz <dwarf@polaris.net>
+ * Took over package maintenance from Andrew
+ * Added this change log
+ * Built as ELF with a change from termcap to ncurses
+
+Octave-1.1.1-1 adf
+Andrew D. Fernandes <adfernan@cnd.mcgill.ca>
+ * added Debian GNU/Linux package maintenance system files
+ * changed configure and configure.in to use debian's dld
+	instead of the dld packaged here
+
+GNU Octave is Copyright (C) 1992, 1993, 1994, 1995, 1996, 1997 John W. Eaton
+Source available from: http://bevo.che.utexas.edu/octave
+
+
+Local Variables:
+debian-changelog-full-name: "Debian Octave Group"
+debian-changelog-mailing-address: "pkg-octave-devel@lists.alioth.debian.org"
+End:

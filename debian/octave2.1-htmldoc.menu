@@ -1,0 +1,32 @@
+?package(octave-htmldoc):needs="dwww" \
+	section="Apps/Math" \
+	title="Octave FAQ" \
+	longtitle="The GNU Octave FAQ" \
+	description="This document provides answers to Frequently Asked \
+		Questions about Octave, a (mostly Matlab (R) compatible) \
+		high-level language, primarily intended for numerical \
+		computations. Octave provides a convenient command-line \
+		interface for solving linear and nonlinear problems \
+		numerically." \
+	command="/usr/share/doc/octave2.1-htmldoc/Octave-FAQ_toc.html"	
+
+?package(octave-htmldoc):needs="dwww" \
+	section="Apps/Math" \
+	title="Octave" \
+	longtitle="The GNU Octave language for numerical computations"\
+	description="Octave is a (mostly Matlab (R) compatible) high-level \
+		language, primarily intended for numerical computations. \
+		It provides a convenient command-line interface for solving \
+		linear and nonlinear problems numerically." \
+	command="/usr/share/doc/octave2.1-htmldoc/octave_toc.html"	
+
+?package(octave-htmldoc):needs="dwww" \
+	section="Apps/Math" \
+	title="Octave Library" \
+	longtitle="The GNU Octave Library"\
+	description="This document describes the Octave libraries. Octave \
+		is a (mostly Matlab (R) compatible) high-level \
+		language, primarily intended for numerical computations. \
+		It provides a convenient command-line interface for solving \
+		linear and nonlinear problems numerically." \
+	command="/usr/share/doc/octave2.1-htmldoc/liboctave_toc.html"	

@@ -1,0 +1,31 @@
+#!/bin/sh
+#
+# postinst script for the Debian GNU/Linux octave package
+#
+# Initial version written by Andrew D. Fernandes <adfernan@cnd.mcgill.ca>
+# This version written by Dirk Eddelbuettel <edd@debian.org>   
+
+set -e
+
+#DEBHELPER#
+
+case "$1" in
+    configure)     
+	install-info --quiet --section "Math" "Octave" \
+	   --description="The GNU Octave language for numerical computations."\
+	   /usr/share/info/octave.info.gz
+	install-info --quiet --section "Math" "Octave Library" \
+	   --description="The GNU Octave C++ library."\
+	   /usr/share/info/liboctave.info.gz
+	install-info --quiet --section "Math" "Octave FAQ" \
+	   --description="The GNU Octave FAQ."\
+	   /usr/share/info/Octave-FAQ.info.gz
+       ;;
+    abort-upgrade|abort-remove|abort-deconfigure)
+        ;;
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        ;;
+esac
+
+exit 0                 

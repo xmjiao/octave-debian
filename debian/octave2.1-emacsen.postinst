@@ -1,0 +1,32 @@
+#!/bin/sh
+#
+# postinst script for the Debian GNU/Linux octave package
+#
+# Initial version written by Andrew D. Fernandes <adfernan@cnd.mcgill.ca>
+# This version written by Dirk Eddelbuettel <edd@debian.org>   
+
+set -e
+
+#DEBHELPER#
+
+# The current Octave version, known to debian/rules at build time
+VERSION=2.1.64
+
+case "$1" in
+    configure)     
+	#
+	# update-alternatives for multiple Octave versions
+	update-alternatives --install /usr/bin/otags  otags  \
+				    /usr/bin/otags-$VERSION 10 \
+			    --slave /usr/share/man/man1/otags.1.gz \
+				    otags.1.gz \
+				    /usr/share/man/man1/otags-$VERSION.1.gz
+       ;;
+    abort-upgrade|abort-remove|abort-deconfigure)
+        ;;
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        ;;
+esac
+
+exit 0                 

@@ -1,0 +1,26 @@
+
+	      Announcing Octave 2.0 and 2.1 packages for Debian
+
+This is to announce the upload of new Octave packages for Debian, taken from
+both the stable octave-2.0.* as well as the development octave-2.1.* branch,
+to Debian's master archive.
+
+Using Debian's update-alternatives mechanism, as well as minor reorganisation
+of the Octave file tree which John Eaton kindly provided in the upstream
+sources, permits to install *both* at the same time providing two main
+binaries octave2.0 and octave2.1 as well as the alternative octave which
+defaults to the stable 2.0 branch. The adjunct packages for Emacs support,
+info docs, html docs and ps docs are also versioned.
+
+With this mechanism, Debian allows for the stability of the 2.0.* release
+(and thereby provides continued support for "legacy" applications in Octave
+which could break by subtle, but important, changes in Octave 2.1). At same
+time, it finally introduces the newer Octave 2.1.* which is the centre of
+current development into Debian.  The transition might introduce a few bugs,
+but the package layout and build process has undergone some testing over the
+last few weeks.
+
+As these are "new" packages as far as the Debian archive is concerned, it
+might be a few days until they show up in "unstable" aka "woody", Debian's
+current development distribution.
+

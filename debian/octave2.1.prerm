@@ -1,0 +1,37 @@
+#!/bin/sh -e
+#
+# prerm script for the Debian GNU/Linux octave package
+#
+# Written by Dirk Eddelbuettel <edd@debian.org>   
+
+#DEBHELPER# 
+
+# The current Octave version, known to debian/rules at build time
+VERSION=2.1.64
+
+case "$1" in
+    remove|upgrade|deconfigure)
+	#
+	# remove the /usr/local package, if we may
+	if [ -w /usr/local/share/octave/site-m ]
+	then 
+	    rmdir /usr/local/share/octave/site-m 2>/dev/null || true
+	    rmdir /usr/local/share/octave        2>/dev/null || true
+	fi
+	#
+	# update-alternatives for multiple Octave versions
+	update-alternatives --remove octave /usr/bin/octave-$VERSION
+	update-alternatives --remove octave2.1 /usr/bin/octave-$VERSION
+	update-alternatives --remove octave-bug /usr/bin/octave-bug-$VERSION
+	update-alternatives --remove octave-config /usr/bin/octave-config-$VERSION
+	;;
+    failed-upgrade)
+	;;
+    *)
+        echo "prerm called with unknown argument \`$1'" >&2
+        exit 0
+    ;;
+esac                                     
+
+
+

@@ -1,0 +1,33 @@
+#!/bin/sh -e
+#
+# postinst script for the Debian GNU/Linux octave2.0-headers package
+#
+# This version written by Dirk Eddelbuettel <edd@debian.org>   
+
+#DEBHELPER#
+
+# The current Octave version, known to debian/rules at build time
+VERSION=2.1.64
+
+case "$1" in
+    configure)     
+	#
+	# update-alternatives for multiple Octave versions
+	update-alternatives --install /usr/bin/mkoctfile  mkoctfile  \
+				    /usr/bin/mkoctfile-$VERSION 15 \
+# 	update-alternatives --install /usr/bin/mkoctfile  mkoctfile  \
+# 				    /usr/bin/mkoctfile-$VERSION 15 \
+# 			    --slave /usr/share/man/man1/mkoctfile.1.gz \
+# 				    mkoctfile.1.gz \
+# 				    /usr/share/man/man1/mkoctfile-$VERSION.1.gz
+	update-alternatives --install /usr/include/octave octave-include  \
+				    /usr/include/octave-$VERSION 15 \
+       ;;
+    abort-upgrade|abort-remove|abort-deconfigure)
+        ;;
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        ;;
+esac
+
+exit 0                 
