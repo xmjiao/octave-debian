@@ -1,14 +1,20 @@
-octave2.1 (2.1.65-2) unstable; urgency=low
-
-   NOT YET RELEASED!
+octave2.1 (2.1.66-1) unstable; urgency=low
 
    +++ Changes by Rafael Laboissiere
 
-  * debian/rules: Use compiler flag "-O0" instead of "-O1" for the m68k
-    architecture.  Let us hope that this will fix the buildd problem on
-    the m68k architecture.
+  * New upstream release
+  * debian/control: Build-depend on dpatch
+  * debian/rules:
+    - Adjust for using dpatch
+    - Use compiler flag "-O0" instead of "-O1" for the m68k architecture.
+      Let us hope that this will fix the buildd problem on the m68k
+      architecture.
+    - Removed hack to build the PDF documentation files, since they are
+      now built by the upstream Makefile
+  * debian/patches/50_build-faq-pdf.dpatch: Added patch for building
+    Octave-FAQ.pdf
 
- --
+ -- Debian Octave Group <pkg-octave-devel@lists.alioth.debian.org>  Fri, 25 Feb 2005 11:17:08 +0100
 
 octave2.1 (2.1.65-1) unstable; urgency=low
 

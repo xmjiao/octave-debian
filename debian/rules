@@ -5,32 +5,31 @@
 #
 # $Id: rules,v 1.7 2004/03/04 18:52:52 edd Exp edd $
 
+
+include /usr/share/dpatch/dpatch.make
+
 # in order: octave, octave2.1, 2.1.28, 2.1  (or whatever the version is)
 source		:= $(shell head -1 debian/changelog | \
 			perl -nle 'm/^([a-z]+)/ and print $$1')
-package		:= $(shell head -1 debian/changelog | \
+PACKAGE		:= $(shell head -1 debian/changelog | \
 			perl -nle 'm/^(\S+)\s+/ and print $$1')
 version       	:= $(shell head -1 debian/changelog | \
 			perl -nle 'm/\S+\s+\((\S+)-\S+\)/ and print $$1')
 major       	:= $(shell head -1 debian/changelog | perl -nle \
 			'm/\S+\s+\((\d\.\d)\.\d+-\S+\)/ and print $$1')
 
-doc_package	= $(package)-doc
-html_package	= $(package)-htmldoc
-dev_package	= $(package)-headers
-emacs_package	= $(package)-emacsen
-info_package	= $(package)-info
+doc_package	= $(PACKAGE)-doc
+html_package	= $(PACKAGE)-htmldoc
+dev_package	= $(PACKAGE)-headers
+emacs_package	= $(PACKAGE)-emacsen
+info_package	= $(PACKAGE)-info
 
 debbase		:= $(CURDIR)/debian
 debtmp		:= $(debbase)/tmp
-debdoc		:= $(debtmp)/usr/share/doc/$(package)
+debdoc		:= $(debtmp)/usr/share/doc/$(PACKAGE)
 deblsp		:= $(debbase)/$(emacs_package)/usr/share/emacs/site-lisp/$(emacs_package)
 debini		:= $(debtmp)/usr/share/octave/site/m/startup
 debininew	:= $(debtmp)/usr/share/octave/$(version)/m/startup
-
-pdfdocs		:= doc/faq/Octave-FAQ.pdf         \
-		   doc/interpreter/octave.pdf     \
-		   doc/liboctave/liboctave.pdf
 
 ## edd  3 Feb 2003  gcc 3.2, also imposed uniformly via Build-Depends
 ## edd 27 Jun 2003  now that gcc 3.3 is in unstable and testing, relax this
@@ -83,17 +82,9 @@ upstream:
 
 build: build-stamp configure-stamp make-stamp check-stamp
 build-stamp: configure make check
-        # make all PDF documentation files
-	@for i in $(pdfdocs) ; do                          \
-		d=`dirname $$i` ;                          \
-		f=`basename $$i .pdf` ;                    \
-		( cd $$d ;                                 \
-		  TEXINPUTS=".:./..::" texi2pdf $$f.texi ; \
-		  echo "Generated $$d/$$f.pdf" ) ;         \
-	done
 	touch build-stamp
 
-configure: configure-stamp
+configure:  patch-stamp configure-stamp
 configure-stamp:
 	dh_testdir
 
@@ -158,7 +149,7 @@ check-stamp:
 	-$(MAKE) 	check
 	touch check-stamp
 
-clean:
+clean: unpatch
 	dh_testdir
 	dh_testroot
 	-$(MAKE) -i distclean || $(MAKE) -f Makefile.in distclean
@@ -174,7 +165,7 @@ clean:
 			rm -f debian/$${i}.$${j} ; \
 		done ; \
 	done
-	rm -f debian/octave2.1.lintian octave-depends.1 $(pdfdocs)
+	rm -f debian/octave2.1.lintian octave-depends.1
 	dh_clean
 
 # install files
@@ -245,7 +236,7 @@ binary-arch: build install check
 	dh_testdir -a
 	dh_testroot -a
 #	dh_clean -a -k
-	dh_installdirs -p$(package)
+	dh_installdirs -p$(PACKAGE)
         # remove the /usr/share/info/dir stab
 	rm -vf $(debtmp)/usr/share/info/dir
         # save the static libs for seperate package octave-staticlibs
@@ -261,30 +252,30 @@ binary-arch: build install check
         # save the info files for the info package
 	dh_movefiles -p$(info_package) 	usr/share/info/
         # install /etc/octave.conf
-	install -p -m 0644  debian/octave.conf  $(debtmp)/etc/$(package).conf
+	install -p -m 0644  debian/octave.conf  $(debtmp)/etc/$(PACKAGE).conf
         # install lintian overrride
 	install -p -m 0644  debian/octave2.1.lintian \
-			$(debtmp)/usr/share/lintian/overrides/$(package)
+			$(debtmp)/usr/share/lintian/overrides/$(PACKAGE)
         ## link the conf.file back from /etc over the version.spec. rc
-	ln -sf /etc/$(package).conf 		$(debininew)/octaverc
+	ln -sf /etc/$(PACKAGE).conf 		$(debininew)/octaverc
         ## this file would exist under 2.0 and 2.1 with the same name
 	rm -v 					$(debini)/octaverc
         # already installed by make
 	dh_installinfo -n -p$(info_package)  	doc/*/*.info*
 	dh_installdocs -a			README README.kpathsea \
 						NEWS* PROJECTS
-	dh_installdocs -p$(package) 		debian/README.Atlas
+	dh_installdocs -p$(PACKAGE) 		debian/README.Atlas
         # recreated in postinst in share/, not needed in lib
 	rm -vf	$(debtmp)/usr/lib/octave/ls-R \
 		$(debtmp)/usr/share/octave/ls-R
 #	dh_installexamples -a
 	dh_installexamples  -p$(dev_package)  	examples/*
 #	dh_installmenu -a
-	dh_installmenu -p$(package)
+	dh_installmenu -p$(PACKAGE)
 #	dh_installinit -a
 #	dh_installcron -a
 #	dh_installmanpages -a
-#	dh_undocumented	-p$(package)		octave-config-$(version).1
+#	dh_undocumented	-p$(PACKAGE)		octave-config-$(version).1
 	dh_installchangelogs -a ChangeLog ChangeLog.1
 	for i in glob libcruft liboctave src scripts test doc; do \
 		cp -vax $$i/ChangeLog $(debdoc)/changelog.$$i; done
