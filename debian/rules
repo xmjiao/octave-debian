@@ -268,6 +268,9 @@ binary-arch: build install check
 #	dh_suidregister -a
 	dh_installdeb -a
 	dh_shlibdeps -a
+	if [ `dpkg-architecture -qDEB_BUILD_ARCH` = "m68k" ];then \
+		echo "m68k:Depends=f2c" >> debian/octave2.1-headers.substvars; \
+	fi
 	dh_gencontrol -a
 #	dh_makeshlibs -a
 #	dh_md5sums -a

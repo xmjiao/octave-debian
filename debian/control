@@ -57,7 +57,7 @@ Description: HTML documentation on the GNU Octave language (2.1 branch)
 
 Package: octave2.1-headers
 Architecture: any
-Depends: octave2.1 (= ${Source-Version}), g++, g77 | fort77, libreadline5-dev, libncurses5-dev, libhdf5-serial-dev | libhdf5-lam-dev | libhdf5-mpich-dev, lapack3-dev | atlas3-base-dev | liblapack-3.so, refblas3-dev | atlas3-base-dev | libblas-3.so, fftw3-dev
+Depends: octave2.1 (= ${Source-Version}), g++, g77 | fort77, libreadline5-dev, libncurses5-dev, libhdf5-serial-dev | libhdf5-lam-dev | libhdf5-mpich-dev, lapack3-dev | atlas3-base-dev | liblapack-3.so, refblas3-dev | atlas3-base-dev | libblas-3.so, fftw3-dev, ${m68k:Depends}
 Conflicts: octave-headers
 Provides: octave-headers
 Replaces: octave-headers
