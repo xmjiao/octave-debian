@@ -19,10 +19,9 @@ octave2.1 (2.1.65-1) unstable; urgency=low
       automatically
     - (install) Install files defs.make and octave-depends in
       octave2.1-headers package
-  * debian/control,v, debian/rules,v: Removed these obsolete files
   * Install PDF documentation files instead of the PS ones.  There is a
     pdfdocs variable in debian/rules now that control which files are
-    built/installed.  Added tetex-bin to Build-Depends. (Closes: #293562)
+    built/installed.  Build-Depends on tetex-bin. (Closes: #293562)
 
   +++ Changes by Adam Conrad:
 
