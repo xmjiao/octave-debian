@@ -37,7 +37,7 @@ c_compiler	= /usr/bin/gcc
 cxx_compiler	= /usr/bin/g++
 f77_compiler	= /usr/bin/g77
 fc_flag		= --with-f77=$(f77_compiler)
-fc_libs		= 
+fc_libs		=
 compilerflags	= -O2
 linkerflags	= -s
 
@@ -65,7 +65,7 @@ endif
 #ifeq ($(arch),m68k-linux)
 ifneq "$(findstring $(arch), m68k-linux)" ""
 f77_compiler	= /usr/bin/fort77
-fc_flag		= --with-f77=/usr/bin/fort77 --without-f2c 
+fc_flag		= --with-f77=/usr/bin/fort77 --without-f2c
 fc_libs		= -lf2c
 compilerflags	= -O1 -g0
 endif
@@ -75,7 +75,7 @@ endif
 
 get-orig-source: upstream
 upstream:
-	links ftp://ftp.octave.org/pub/octave/bleeding-edge	
+	links ftp://ftp.octave.org/pub/octave/bleeding-edge
 
 build: build-stamp configure-stamp make-stamp check-stamp
 build-stamp: configure make check
@@ -122,25 +122,25 @@ configure-stamp:
 		done ; \
 	done
 
-        # fix the lintian override and bring it up to date 
+        # fix the lintian override and bring it up to date
 	perl -p -e 's/\@VERSION@/$(version)/g' < debian/octave2.1.lintian.in \
 		> debian/octave2.1.lintian
-		
+
 	touch configure-stamp
 
-make: configure-stamp make-stamp 
-make-stamp: 
+make: configure-stamp make-stamp
+make-stamp:
 	$(MAKE)		CFLAGS="$(compilerflags)"		\
 			CXXFLAGS="$(compilerflags)"		\
 			FFLAGS="$(compilerflags)"		\
 			LDFLAGS="$(linkerflags)"		\
 			CC="$(c_compiler)"			\
 			CXX="$(cxx_compiler)"			\
-			F77="$(f77_compiler)"			
+			F77="$(f77_compiler)"
 	touch make-stamp
 
 check: configure-stamp make-stamp check-stamp
-check-stamp: 
+check-stamp:
 	-$(MAKE) 	check
 	touch check-stamp
 
@@ -152,23 +152,23 @@ clean:
 		install-stamp
 	-rm -vf libcruft/libcruft.so libcruft/*/Makefile \
 		install.octave  scripts/gethelp  libcruft/misc/*.d
-        ##doc/interpreter/octave.{dvi,ps} doc/faq/Octave-FAQ_*.html 
+        ##doc/interpreter/octave.{dvi,ps} doc/faq/Octave-FAQ_*.html
         ##scripts/DOCSTRINGS
 	test ! -f octave-bug.in.orig || mv octave-bug.in.orig octave-bug.in
 	for i in octave2.1 octave2.1-headers octave2.1-emacsen; do \
 		for j in postinst prerm; do \
-			rm -f $${i}.$${j} ; \
+			rm -f debian/$${i}.$${j} ; \
 		done ; \
 	done
 	rm -f octave2.1.lintian
 	dh_clean
 
 # install files
-install: configure-stamp make-stamp check-stamp install-stamp 
-install-stamp: 
-	dh_testdir 
-	dh_testroot 
-#	dh_clean -a -k 
+install: configure-stamp make-stamp check-stamp install-stamp
+install-stamp:
+	dh_testdir
+	dh_testroot
+#	dh_clean -a -k
 	dh_installdirs -A
 	$(MAKE) INSTALL_PROGRAM="install -s" 			\
 		prefix=$(debtmp)/usr 				\
@@ -200,7 +200,7 @@ binary-indep: build install check
 	dh_installdirs -p$(emacs_package) \
 		usr/share/emacs/site-lisp/$(emacs_package)
 	install -p -m 0644 emacs/*.el		$(deblsp)
-	dh_installemacsen -p$(emacs_package) 
+	dh_installemacsen -p$(emacs_package)
 	install -p -m 0755 emacs/otags			\
 		$(debbase)/$(emacs_package)/usr/bin/otags-$(version)
 	install -p -m 0644 emacs/otags.1			\
@@ -213,9 +213,9 @@ binary-indep: build install check
 #	dh_installinit -i
 #	dh_installcron -i
 #	dh_installmanpages -i
-#	dh_undocumented -p$(dev_package) 	mkoctfile.1 
+#	dh_undocumented -p$(dev_package) 	mkoctfile.1
 #	dh_undocumented -p$(emacs_package)	otags-$(version).1
-	dh_installchangelogs -i			ChangeLog 
+	dh_installchangelogs -i			ChangeLog
 	dh_compress -i
 	dh_fixperms -i
 #	dh_suidregister -i
@@ -226,14 +226,14 @@ binary-indep: build install check
 
 # Build architecture-dependent files here.
 binary-arch: build install check
-	dh_testdir -a 
+	dh_testdir -a
 	dh_testroot -a
-#	dh_clean -a -k 
+#	dh_clean -a -k
 	dh_installdirs -p$(package)
         # remove the /usr/share/info/dir stab
 	rm -vf $(debtmp)/usr/share/info/dir
         # save the static libs for seperate package octave-staticlibs
-#	dh_movefiles -p$(lib_package) 	usr/lib/$(source)-$(version)/*.a 
+#	dh_movefiles -p$(lib_package) 	usr/lib/$(source)-$(version)/*.a
         # save the include files for the header package
 	dh_movefiles -p$(dev_package) 	usr/include/ 			\
 					usr/bin/mkoctfile-$(version) 	\
@@ -253,11 +253,11 @@ binary-arch: build install check
         # already installed by make
 	dh_installinfo -n -p$(info_package)  	doc/*/*.info*
 	dh_installdocs -a			README README.kpathsea \
-						NEWS* PROJECTS 
+						NEWS* PROJECTS
 	dh_installdocs -p$(package) 		debian/README.Atlas
         # recreated in postinst in share/, not needed in lib
 	rm -vf	$(debtmp)/usr/lib/octave/ls-R \
-		$(debtmp)/usr/share/octave/ls-R 
+		$(debtmp)/usr/share/octave/ls-R
 #	dh_installexamples -a
 	dh_installexamples  -p$(dev_package)  	examples/*
 #	dh_installmenu -a
@@ -265,10 +265,10 @@ binary-arch: build install check
 #	dh_installinit -a
 #	dh_installcron -a
 #	dh_installmanpages -a
-#	dh_undocumented	-p$(package)		octave-config-$(version).1 
+#	dh_undocumented	-p$(package)		octave-config-$(version).1
 	dh_installchangelogs -a ChangeLog ChangeLog.1
 	for i in glob libcruft liboctave src scripts test doc; do \
-		cp -vax $$i/ChangeLog $(debdoc)/changelog.$$i; done	
+		cp -vax $$i/ChangeLog $(debdoc)/changelog.$$i; done
 	dh_strip -a
 	dh_compress -a
 	dh_fixperms -a
@@ -283,9 +283,9 @@ binary-arch: build install check
 #	dh_md5sums -a
 	dh_builddeb -a
 
-source diff:                                                                  
+source diff:
 	@echo >&2 'source and diff are obsolete - use dpkg-source -b'; false
 
-binary: install binary-arch binary-indep 
+binary: install binary-arch binary-indep
 .PHONY: build clean make configure binary-indep binary-arch binary
 
