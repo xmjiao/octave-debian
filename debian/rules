@@ -160,7 +160,7 @@ clean:
 			rm -f debian/$${i}.$${j} ; \
 		done ; \
 	done
-	rm -f octave2.1.lintian
+	rm -f debian/octave2.1.lintian
 	dh_clean
 
 # install files
