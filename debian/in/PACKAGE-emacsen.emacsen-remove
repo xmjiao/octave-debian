@@ -9,7 +9,7 @@ set -e
 # Canadian spelling ;-)
 flavour=$1
 
-package=octave2.1-emacsen
+package=@PACKAGE@-emacsen
 source=/usr/share/emacs/site-lisp/${package}
 destination=/usr/share/${flavour}/site-lisp/${package}
 

@@ -32,10 +32,10 @@ case "$1" in
 			    --slave /usr/share/man/man1/octave.1.gz \
 				    octave.1.gz \
 				    /usr/share/man/man1/octave-$VERSION.1.gz
-	update-alternatives --install /usr/bin/octave2.1  octave2.1  \
+	update-alternatives --install /usr/bin/@PACKAGE@  @PACKAGE@  \
 				    /usr/bin/octave-$VERSION 30 \
-			    --slave /usr/share/man/man1/octave2.1.1.gz \
-				    octave2.1.1.gz \
+			    --slave /usr/share/man/man1/@PACKAGE@.1.gz \
+				    @PACKAGE@.1.gz \
 				    /usr/share/man/man1/octave-$VERSION.1.gz
 	update-alternatives --install /usr/bin/octave-bug  octave-bug  \
 				    /usr/bin/octave-bug-$VERSION 30 \

@@ -1,0 +1,10 @@
+
+ /usr/share/octave/site/exec
+                  /site/oct      
+
+	are accessed by both versions -- if your scripts or .oct files
+	conflict between the two, I suggest that you version these and set
+	the LOADPATH accordingly
+
+If you have two packages installed, make sure you call the correct mkoctfile
+and octave bug 

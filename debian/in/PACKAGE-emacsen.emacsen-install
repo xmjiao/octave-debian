@@ -9,7 +9,7 @@
 # Canadian spelling ;-)
 flavour=$1
 
-package=octave2.1-emacsen
+package=@PACKAGE@-emacsen
 files="octave-hlp.el octave-inf.el octave-mod.el"
 source=/usr/share/emacs/site-lisp/${package}
 destination=/usr/share/${flavour}/site-lisp/${package}

@@ -9,5 +9,5 @@ Abstract: This document describes the Octave libraries. Octave
 Section: Apps/Math
 
 Format: HTML
-Index: 	/usr/share/doc/octave2.1-htmldoc/liboctave_toc.html
-Files:  /usr/share/doc/octave2.1-htmldoc/liboctave_*.html
+Index: 	/usr/share/doc/@PACKAGE@-htmldoc/liboctave_toc.html
+Files:  /usr/share/doc/@PACKAGE@-htmldoc/liboctave_*.html

@@ -8,7 +8,7 @@
 		computations. Octave provides a convenient command-line \
 		interface for solving linear and nonlinear problems \
 		numerically." \
-	command="/usr/share/doc/octave2.1-htmldoc/Octave-FAQ_toc.html"	
+	command="/usr/share/doc/@PACKAGE@-htmldoc/Octave-FAQ_toc.html"	
 
 ?package(octave-htmldoc):needs="dwww" \
 	section="Apps/Math" \
@@ -18,7 +18,7 @@
 		language, primarily intended for numerical computations. \
 		It provides a convenient command-line interface for solving \
 		linear and nonlinear problems numerically." \
-	command="/usr/share/doc/octave2.1-htmldoc/octave_toc.html"	
+	command="/usr/share/doc/@PACKAGE@-htmldoc/octave_toc.html"	
 
 ?package(octave-htmldoc):needs="dwww" \
 	section="Apps/Math" \
@@ -29,4 +29,4 @@
 		language, primarily intended for numerical computations. \
 		It provides a convenient command-line interface for solving \
 		linear and nonlinear problems numerically." \
-	command="/usr/share/doc/octave2.1-htmldoc/liboctave_toc.html"	
+	command="/usr/share/doc/@PACKAGE@-htmldoc/liboctave_toc.html"	

@@ -76,6 +76,19 @@ endif
 #export DH_VERBOSE=1
 #export DH_COMPAT=3
 
+debian/control: debian/in/control
+	slice -o UNDEF+V_`echo $(major) | sed s/\\\\./_/g`:$@ $<
+
+maintainer-clean: 
+	rm -f debian/control
+
+helper-files:
+	for in in debian/in/PACKAGE* ; do \
+		out=`echo $$in | sed 's:/in/:/:;s/PACKAGE/$(PACKAGE)/'` ; \
+		sed 's/@VERSION@/$(version)/g;s/@PACKAGE@/$(PACKAGE)/g;s/@MAJOR@/$(major)/g' \
+			< $$in > $$out ; \
+	done	
+			
 get-orig-source: upstream
 upstream:
 	links ftp://ftp.octave.org/pub/octave/bleeding-edge
@@ -84,7 +97,7 @@ build: build-stamp configure-stamp make-stamp check-stamp
 build-stamp: configure make check
 	touch build-stamp
 
-configure:  patch-stamp configure-stamp
+configure: helper-files patch-stamp configure-stamp
 configure-stamp:
 	dh_testdir
 
@@ -116,18 +129,6 @@ configure-stamp:
 			--enable-rpath				\
 			--disable-static			\
 			--build $(arch)
-
-        # prepare the postinst and prerm files for the given version number
-	@for i in octave2.1 octave2.1-headers octave2.1-emacsen; do \
-		for j in postinst prerm; do \
-			perl -p -e 's/\@VERSION@/$(version)/' \
-				< debian/$${i}.$${j}.in > debian/$${i}.$${j}; \
-		done ; \
-	done
-
-        # fix the lintian override and bring it up to date
-	perl -p -e 's/\@VERSION@/$(version)/g' < debian/octave2.1.lintian.in \
-		> debian/octave2.1.lintian
 
 	pod2man debian/octave-depends > octave-depends.1
 
@@ -166,6 +167,11 @@ clean: unpatch
 		done ; \
 	done
 	rm -f debian/octave2.1.lintian octave-depends.1
+	
+	for in in debian/in/PACKAGE* ; do \
+		rm -f `echo $$in | sed 's:/in/:/:;s/PACKAGE/$(PACKAGE)/'` ; \
+	done	
+	
 	dh_clean
 
 # install files
@@ -296,6 +302,6 @@ binary-arch: build install check
 source diff:
 	@echo >&2 'source and diff are obsolete - use dpkg-source -b'; false
 
-binary: install binary-arch binary-indep
+binary: install helper-files binary-arch binary-indep
 .PHONY: build clean make configure binary-indep binary-arch binary
 

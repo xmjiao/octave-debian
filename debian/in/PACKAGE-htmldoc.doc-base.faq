@@ -10,5 +10,5 @@ Abstract: This document provides answers to Frequently Asked
 Section: Apps/Math
 
 Format: HTML
-Index: 	/usr/share/doc/octave2.1-htmldoc/Octave-FAQ_toc.html
-Files:  /usr/share/doc/octave2.1-htmldoc/Octave-FAQ*.html
+Index: 	/usr/share/doc/@PACKAGE@-htmldoc/Octave-FAQ_toc.html
+Files:  /usr/share/doc/@PACKAGE@-htmldoc/Octave-FAQ*.html

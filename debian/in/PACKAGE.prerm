@@ -21,7 +21,7 @@ case "$1" in
 	#
 	# update-alternatives for multiple Octave versions
 	update-alternatives --remove octave /usr/bin/octave-$VERSION
-	update-alternatives --remove octave2.1 /usr/bin/octave-$VERSION
+	update-alternatives --remove @PACKAGE@ /usr/bin/octave-$VERSION
 	update-alternatives --remove octave-bug /usr/bin/octave-bug-$VERSION
 	update-alternatives --remove octave-config /usr/bin/octave-config-$VERSION
 	;;
