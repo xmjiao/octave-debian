@@ -9,7 +9,7 @@ set -e
 #DEBHELPER# 
 
 # The current Octave version, known to debian/rules at build time
-VERSION=2.1.64
+VERSION=@VERSION@
 
 case "$1" in
     remove|upgrade|deconfigure)

@@ -116,15 +116,16 @@ configure-stamp:
 
         # prepare the postinst and prerm files for the given version number
 	@for i in octave2.1 octave2.1-headers octave2.1-emacsen; do \
-		perl -p -i -e "s/VERSION=.*/VERSION=$(version)/" \
-			debian/$${i}.postinst; \
-		perl -p -i -e "s/VERSION=.*/VERSION=$(version)/" \
-			debian/$${i}.prerm; \
+		for j in postinst prerm; do \
+			perl -p -e 's/@VERSION@/$(version)/' \
+				< debian/$${i}.$${j}.in > debian/$${i}.$${j}; \
+		done ; \
 	done
 
         # fix the lintian override and bring it up to date 
-	perl -p -i -e 's/2.1.\d\d/$(version)/g' debian/octave2.1.lintian
-
+	perl -p -e 's/@VERSION@/$(version)/g' < debian/octave2.1.lintian.in \
+		> debian/octave2.1.lintian
+		
 	touch configure-stamp
 
 make: configure-stamp make-stamp 
@@ -154,6 +155,12 @@ clean:
         ##doc/interpreter/octave.{dvi,ps} doc/faq/Octave-FAQ_*.html 
         ##scripts/DOCSTRINGS
 	test ! -f octave-bug.in.orig || mv octave-bug.in.orig octave-bug.in
+	for i in octave2.1 octave2.1-headers octave2.1-emacsen; do \
+		for j in postinst prerm; do \
+			rm -f $${i}.$${j} ; \
+		done ; \
+	done
+	rm -f octave2.1.lintian
 	dh_clean
 
 # install files

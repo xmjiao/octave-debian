@@ -6,6 +6,18 @@ octave2.1 (2.1.65-1) unstable; urgency=low
 
   * New upstream release 2.1.65 released 24 hours ago
 
+  +++ Changes by Rafael Laboissiere
+  
+  * debian/*.postinst.in, debian/*.prerm.in: Moved these files from the
+    original *.postinst and *. prerm ones
+  * debian/octave2.1.lintian.in: Idem from octave2.1.lintian
+  * debian/rules: 
+    - (configure-stamp) Generate *.postinst, *.prerm, and *.lintian by
+      replacing the  @VERSION@ string with the current Octave version number
+    - (clean) Remove the *.postinst, *.prerm, *.lintian files generated
+      automatically 
+  * debian/control,v, debian/rules,v: Removed these obsolete files
+
   +++ Changes by Adam Conrad:
 
   * Add logic to debian/rules and debian/control to make sure that

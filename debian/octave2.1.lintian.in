@@ -1,5 +1,5 @@
-octave2.1: binary-or-shlib-defines-rpath ./usr/bin/octave-2.1.64 /usr/lib/octave-2.1.64
-octave2.1: binary-or-shlib-defines-rpath ./usr/lib/octave-2.1.64/liboctave.so.2.1.64 /usr/lib/octave-2.1.64
+octave2.1: binary-or-shlib-defines-rpath ./usr/bin/octave-@VERSION@ /usr/lib/octave-@VERSION@
+octave2.1: binary-or-shlib-defines-rpath ./usr/lib/octave-@VERSION@/liboctave.so.@VERSION@ /usr/lib/octave-@VERSION@
 octave2.1: package-contains-hardlink 
 octave2.1: package-has-a-duplicate-relation atlas2-base | blas | blas2, atlas2-base | lapack | lapack2
 octave2.1: menu-command-not-in-package /usr/lib/menu/octave2.1:4 /usr/bin/octave2.1
