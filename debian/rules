@@ -156,8 +156,10 @@ clean: unpatch
 	-$(MAKE) -i distclean || $(MAKE) -f Makefile.in distclean
 	rm -f build-stamp configure-stamp make-stamp check-stamp \
 		install-stamp
-	-rm -vf libcruft/libcruft.so libcruft/*/Makefile \
-		install.octave  scripts/gethelp  libcruft/misc/*.d
+	-rm -vrf libcruft/libcruft.so libcruft/*/Makefile		\
+		install.octave  scripts/gethelp  libcruft/misc/*.d	\
+		scripts/autom4te.cache config.log Makefrag.f77		\
+		src/PKG_ADD src/gplot.cc
         ##doc/interpreter/octave.{dvi,ps} doc/faq/Octave-FAQ_*.html
         ##scripts/DOCSTRINGS
 	test ! -f octave-bug.in.orig || mv octave-bug.in.orig octave-bug.in
