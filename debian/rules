@@ -28,6 +28,14 @@ deblsp		:= $(debbase)/$(emacs_package)/usr/share/emacs/site-lisp/$(emacs_package
 debini		:= $(debtmp)/usr/share/octave/site/m/startup
 debininew	:= $(debtmp)/usr/share/octave/$(version)/m/startup
 
+pdfdocs		:= doc/faq/Octave-FAQ.pdf         \
+		   doc/interpreter/octave.pdf     \
+		   doc/liboctave/liboctave.pdf    \
+		   doc/refcard/refcard-a4.pdf     \
+		   doc/refcard/refcard-legal.pdf  \
+		   doc/refcard/refcard-letter.pdf
+
+
 ## edd  3 Feb 2003  gcc 3.2, also imposed uniformly via Build-Depends
 ## edd 27 Jun 2003  now that gcc 3.3 is in unstable and testing, relax this
 #c_compiler	= /usr/bin/gcc-3.2
@@ -79,6 +87,16 @@ upstream:
 
 build: build-stamp configure-stamp make-stamp check-stamp
 build-stamp: configure make check
+        # make all PDF documentation files
+	@for i in $(pdfdocs) ; do                                \
+		d=`dirname $$i` ;                                \
+		f=`basename $$i .pdf` ;                          \
+		( cd $$d ;                                       \
+		  if test ! -e $$f.pdf ; then                    \
+			TEXINPUTS=".:./..::" texi2pdf $$f.texi ; \
+			echo "Generated $$d/$$f.pdf" ;           \
+		  fi ) ;                                         \
+	done
 	touch build-stamp
 
 configure: configure-stamp
@@ -126,6 +144,8 @@ configure-stamp:
 	perl -p -e 's/\@VERSION@/$(version)/g' < debian/octave2.1.lintian.in \
 		> debian/octave2.1.lintian
 
+	pod2man debian/octave-depends > octave-depends.1
+
 	touch configure-stamp
 
 make: configure-stamp make-stamp
@@ -160,7 +180,7 @@ clean:
 			rm -f debian/$${i}.$${j} ; \
 		done ; \
 	done
-	rm -f debian/octave2.1.lintian
+	rm -f debian/octave2.1.lintian octave-depends.1 $(pdfdocs)
 	dh_clean
 
 # install files
@@ -177,7 +197,9 @@ install-stamp:
 		libdir=$(debtmp)/usr/lib			\
 		libexecdir=$(debtmp)/usr/lib			\
 		mandir=$(debtmp)/usr/share/man		install
-#	dh_installman -p$(package) debian/octave-config.1
+	dh_installman octave-depends.1
+	install debian/octave-depends $(debtmp)/usr/bin
+	install --mode=644 debian/defs.make $(debtmp)/usr/share/octave/debian
 	(cd $(debtmp)/usr/share/man/man1; 				\
 		mv -v	octave.1	octave-$(version).1;    	\
 		mv -v   octave-bug.1	octave-bug-$(version).1;	\
@@ -192,7 +214,7 @@ binary-indep: build install check
 	dh_testroot -i
 #	dh_clean -i -k
         #$(MAKE) prefix=`pwd`/debian/tmp install
-	dh_installdocs -n -p$(doc_package) doc/*/*.ps
+	dh_installdocs -n -p$(doc_package) doc/*/*.pdf
 	dh_installdocs -n -p$(html_package) doc/*/*.html
 	dh_installdocs -i
         # install Octave Emacs files and Debian Emacsen files
@@ -237,7 +259,10 @@ binary-arch: build install check
         # save the include files for the header package
 	dh_movefiles -p$(dev_package) 	usr/include/ 			\
 					usr/bin/mkoctfile-$(version) 	\
-			usr/share/man/man1/mkoctfile-$(version).1
+					usr/bin/octave-depends 		\
+			usr/share/man/man1/mkoctfile-$(version).1	\
+			usr/share/man/man1/octave-depends.1		\
+			usr/share/octave/debian/defs.make
 	rm -r $(debtmp)/usr/include
         # save the info files for the info package
 	dh_movefiles -p$(info_package) 	usr/share/info/

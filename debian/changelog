@@ -1,29 +1,35 @@
 octave2.1 (2.1.65-1) unstable; urgency=low
 
   NOT YET RELEASED!
-  
+
   +++ Changes by J. Rafael Rodriguez Galvan:
 
   * New upstream release 2.1.65 released 24 hours ago
 
   +++ Changes by Rafael Laboissiere
-  
+
   * debian/*.postinst.in, debian/*.prerm.in: Moved these files from the
     original *.postinst and *. prerm ones
   * debian/octave2.1.lintian.in: Idem from octave2.1.lintian
-  * debian/rules: 
+  * debian/defs.make, debian/octave-depends: Added files
+  * debian/rules:
     - (configure-stamp) Generate *.postinst, *.prerm, and *.lintian by
       replacing the  @VERSION@ string with the current Octave version number
     - (clean) Remove the *.postinst, *.prerm, *.lintian files generated
-      automatically 
+      automatically
+    - (install) Install files defs.make and octave-depends in
+      octave2.1-headers package
   * debian/control,v, debian/rules,v: Removed these obsolete files
+  * Install PDF documentation files instead of the PS ones.  There is a
+    pdfdocs variable in debian/rules now that control which files are
+    built/installed.  Added tetex-bin to Build-Depends. (Closes: #293562)
 
   +++ Changes by Adam Conrad:
 
   * Add logic to debian/rules and debian/control to make sure that
     octave2.1-headers depends on f2c on m68k (closes: #292917)
 
- -- 
+ --
 
 octave2.1 (2.1.64-3) unstable; urgency=low
 
@@ -31,7 +37,7 @@ octave2.1 (2.1.64-3) unstable; urgency=low
 
   * debian/rules: Get the logic around octave-bug.in right.  This was
     causing a FTBFS in all architectures because the test failed and,
-    consequently, maker failed (closes: #292403).
+    consequently, make failed (closes: #292403).
   * debian/changelog: Start using "Debian Octave Group" in the signature
     of entries.  Also, added Emacs variable settings at the end, handy
     when using debian-changelog-mode.  This avoids two warnings issued by
