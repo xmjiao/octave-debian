@@ -71,7 +71,7 @@ ifneq "$(findstring $(arch), m68k-linux)" ""
 f77_compiler	= /usr/bin/fort77
 fc_flag		= --with-f77=/usr/bin/fort77 --without-f2c
 fc_libs		= -lf2c
-compilerflags	= -O1 -g0
+compilerflags	= -O0 -g0
 endif
 
 #export DH_VERBOSE=1
