@@ -1,8 +1,0 @@
-octave2.1: binary-or-shlib-defines-rpath ./usr/bin/octave-2.1.35 /usr/lib/octave-2.1.35
-octave2.1: non-dev-pkg-with-shlib-symlink usr/lib/octave-2.1.35/libcruft.so.2.1.35 usr/lib/octave-2.1.35/libcruft.so
-octave2.1: non-dev-pkg-with-shlib-symlink usr/lib/octave-2.1.35/liboctinterp.so.2.1.35 usr/lib/octave-2.1.35/liboctinterp.so
-octave2.1: non-dev-pkg-with-shlib-symlink usr/lib/octave-2.1.35/liboctave.so.2.1.35 usr/lib/octave-2.1.35/liboctave.so
-octave2.1: no-shlibs-control-file usr/lib/octave-2.1.35/libcruft.so.2.1.35
-octave2.1: no-shlibs-control-file usr/lib/octave-2.1.35/liboctinterp.so.2.1.35
-octave2.1: no-shlibs-control-file usr/lib/octave-2.1.35/liboctave.so.2.1.35
-octave2.1: package-contains-hardlink 
