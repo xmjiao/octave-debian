@@ -1,0 +1,31 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 50_build-faq-pdf.dpatch by Rafael Laboissiere <rafael@debian.org>
+##
+## DP: Build Octave-FAQ.pdf from texi sources
+
+@DPATCH@
+
+--- octave2.1-2.1.66.orig/doc/faq/Makefile.in
++++ octave2.1-2.1.66/doc/faq/Makefile.in
+@@ -22,7 +22,8 @@
+ 
+ TEXINFO := Octave-FAQ.texi
+ 
+-FORMATTED := Octave-FAQ.info Octave-FAQ.dvi Octave-FAQ.ps Octave-FAQ*.html
++FORMATTED := Octave-FAQ.info Octave-FAQ.dvi Octave-FAQ.ps Octave-FAQ.pdf \
++	Octave-FAQ*.html
+ 
+ DISTFILES := Makefile.in $(TEXINFO) $(FORMATTED)
+ 
+@@ -49,6 +50,11 @@
+ Octave-FAQ.ps: Octave-FAQ.dvi
+ 	-dvips -o Octave-FAQ.ps Octave-FAQ.dvi
+ 
++Octave-FAQ.pdf: Octave-FAQ.texi
++	-TEXINPUTS="$(srcdir):$(srcdir)/..:$(TEXINPUTS):"; \
++	  export TEXINPUTS; \
++	  $(TEXI2PDF) $(srcdir)/Octave-FAQ.texi
++
+ # These option forms are supported by texi2html 1.65 and probably also
+ # more recent versions.
+ Octave-FAQ_toc.html:
