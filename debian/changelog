@@ -1,7 +1,5 @@
 octave2.1 (2.1.65-1) unstable; urgency=low
 
-  NOT YET RELEASED!
-
   +++ Changes by J. Rafael Rodriguez Galvan:
 
   * New upstream release 2.1.65 released 24 hours ago
@@ -28,7 +26,7 @@ octave2.1 (2.1.65-1) unstable; urgency=low
   * Add logic to debian/rules and debian/control to make sure that
     octave2.1-headers depends on f2c on m68k (closes: #292917)
 
- --
+ -- Debian Octave Group <pkg-octave-devel@lists.alioth.debian.org>  Tue, 22 Feb 2005 09:39:05 +0100
 
 octave2.1 (2.1.64-3) unstable; urgency=low
 
