@@ -1,3 +1,11 @@
+octave2.1 (2.1.68-1) experimental; urgency=low
+
+   +++ Changes by Rafael Laboissiere
+
+  * New upstream release
+
+ -- Debian Octave Group <pkg-octave-devel@lists.alioth.debian.org>  Mon, 28 Mar 2005 20:27:37 +0200
+
 octave2.1 (2.1.67-1) unstable; urgency=low
 
    +++ Changes by Rafael Laboissiere
