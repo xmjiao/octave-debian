@@ -30,11 +30,7 @@ debininew	:= $(debtmp)/usr/share/octave/$(version)/m/startup
 
 pdfdocs		:= doc/faq/Octave-FAQ.pdf         \
 		   doc/interpreter/octave.pdf     \
-		   doc/liboctave/liboctave.pdf    \
-		   doc/refcard/refcard-a4.pdf     \
-		   doc/refcard/refcard-legal.pdf  \
-		   doc/refcard/refcard-letter.pdf
-
+		   doc/liboctave/liboctave.pdf
 
 ## edd  3 Feb 2003  gcc 3.2, also imposed uniformly via Build-Depends
 ## edd 27 Jun 2003  now that gcc 3.3 is in unstable and testing, relax this
@@ -88,14 +84,12 @@ upstream:
 build: build-stamp configure-stamp make-stamp check-stamp
 build-stamp: configure make check
         # make all PDF documentation files
-	@for i in $(pdfdocs) ; do                                \
-		d=`dirname $$i` ;                                \
-		f=`basename $$i .pdf` ;                          \
-		( cd $$d ;                                       \
-		  if test ! -e $$f.pdf ; then                    \
-			TEXINPUTS=".:./..::" texi2pdf $$f.texi ; \
-			echo "Generated $$d/$$f.pdf" ;           \
-		  fi ) ;                                         \
+	@for i in $(pdfdocs) ; do                          \
+		d=`dirname $$i` ;                          \
+		f=`basename $$i .pdf` ;                    \
+		( cd $$d ;                                 \
+		  TEXINPUTS=".:./..::" texi2pdf $$f.texi ; \
+		  echo "Generated $$d/$$f.pdf" ) ;         \
 	done
 	touch build-stamp
 
