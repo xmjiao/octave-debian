@@ -117,13 +117,13 @@ configure-stamp:
         # prepare the postinst and prerm files for the given version number
 	@for i in octave2.1 octave2.1-headers octave2.1-emacsen; do \
 		for j in postinst prerm; do \
-			perl -p -e 's/@VERSION@/$(version)/' \
+			perl -p -e 's/\@VERSION@/$(version)/' \
 				< debian/$${i}.$${j}.in > debian/$${i}.$${j}; \
 		done ; \
 	done
 
         # fix the lintian override and bring it up to date 
-	perl -p -e 's/@VERSION@/$(version)/g' < debian/octave2.1.lintian.in \
+	perl -p -e 's/\@VERSION@/$(version)/g' < debian/octave2.1.lintian.in \
 		> debian/octave2.1.lintian
 		
 	touch configure-stamp
