@@ -14,7 +14,7 @@ octave2.1 (2.1.66-1) unstable; urgency=low
   * debian/patches/50_build-faq-pdf.dpatch: Added patch for building
     Octave-FAQ.pdf
 
- -- Debian Octave Group <pkg-octave-devel@lists.alioth.debian.org>  Fri, 25 Feb 2005 11:17:08 +0100
+ --
 
 octave2.1 (2.1.65-1) unstable; urgency=low
 
