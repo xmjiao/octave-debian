@@ -1,3 +1,12 @@
+octave2.9 (2.9.2-1) experimental; urgency=low
+
+   +++ Changes by Rafael Laboissiere
+
+  * New upstream release
+  * debian/rules: Remove generated files that were left after make clean
+
+ -- Debian Octave Group <pkg-octave-devel@lists.alioth.debian.org>  Mon, 25 Apr 2005 14:05:27 +0200
+
 octave2.9 (2.9.1-1) experimental; urgency=low
 
    +++ Changes by Rafael Laboissiere
