@@ -1,3 +1,13 @@
+octave2.9 (2.9.2-2) experimental; urgency=low
+
+   +++ Changes by Rafael Laboissiere
+
+  * debian/rules: Do not remove src/gplot.cc in clean target.  This file
+    is built upstream from gplot.l using flex and its removal was causing
+    the build daemons to fail.
+
+ -- Debian Octave Group <pkg-octave-devel@lists.alioth.debian.org>  Wed, 27 Apr 2005 13:38:04 +0200
+
 octave2.9 (2.9.2-1) experimental; urgency=low
 
    +++ Changes by Rafael Laboissiere
