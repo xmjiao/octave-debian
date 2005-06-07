@@ -1,3 +1,16 @@
+octave2.1 (2.1.69-2) unstable; urgency=low
+
+  NOT YET RELEASED !!!
+
+  +++ Changes by Rafael Laboissiere
+
+  * debian/in/watch: New template file for debian/watch, which takes into
+    account the MAJR number of the Octave branch (currently either 2.1 or
+    2.9).
+  * debian/rules (helper-files): Generate debian/watch from debian/in/watch
+
+ --
+
 octave2.9 (2.9.2-2) experimental; urgency=low
 
    +++ Changes by Rafael Laboissiere

@@ -87,7 +87,8 @@ helper-files:
 		out=`echo $$in | sed 's:/in/:/:;s/PACKAGE/$(PACKAGE)/'` ; \
 		sed 's/@VERSION@/$(version)/g;s/@PACKAGE@/$(PACKAGE)/g;s/@MAJOR@/$(major)/g' \
 			< $$in > $$out ; \
-	done	
+	done
+	sed 's/@MAJOR@/$(major)/g' < debian/in/watch > debian/watch
 			
 get-orig-source: upstream
 upstream:
