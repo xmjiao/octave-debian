@@ -2,4 +2,4 @@
 version=2
 
 # This is one format for an HTTP site, which is the same as the FTP format
-ftp://ftp.octave.org/pub/octave/bleeding-edge/octave-@MAJOR@.([-0-9\.]*).tar.gz
+ftp://ftp.octave.org/pub/octave/bleeding-edge/octave-(@MAJOR@)\.([-0-9]+)\.tar.gz
