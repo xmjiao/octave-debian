@@ -1,13 +1,17 @@
-octave2.1 (2.1.69-2) unstable; urgency=low
+octave2.1 (2.1.71-1) unstable; urgency=low
 
   NOT YET RELEASED !!!
 
   +++ Changes by Rafael Laboissiere
 
+  * New upstream release
   * debian/in/watch: New template file for debian/watch, which takes into
-    account the MAJR number of the Octave branch (currently either 2.1 or
+    account the MAJOR number of the Octave branch (currently either 2.1 or
     2.9).
-  * debian/rules (helper-files): Generate debian/watch from debian/in/watch
+  * debian/rules (helper-files): Generate debian/watch from
+    debian/in/watch
+  * debian/in/control: Versioned build-dependency on libhdf5-serial-dev (>=
+    1.6.4)
 
  --
 
