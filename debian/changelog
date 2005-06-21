@@ -1,10 +1,11 @@
-octave2.1 (2.1.71-1) unstable; urgency=low
-
-  NOT YET RELEASED !!!
+octave2.1 (2.1.71-1) experimental; urgency=low
 
   +++ Changes by Rafael Laboissiere
 
-  * New upstream release
+  * New upstream release, released to experimental because the API number
+    bumped from api-v13 to api-v15.  This makes several other
+    Octave-related package unusable and the uploads to unstable must be
+    coordinated.
   * debian/in/watch: New template file for debian/watch, which takes into
     account the MAJOR number of the Octave branch (currently either 2.1 or
     2.9).
@@ -13,7 +14,7 @@ octave2.1 (2.1.71-1) unstable; urgency=low
   * debian/in/control: Versioned build-dependency on libhdf5-serial-dev (>=
     1.6.4)
 
- --
+ -- Debian Octave Group <pkg-octave-devel@lists.alioth.debian.org>  Sun, 19 Jun 2005 15:39:44 +0200
 
 octave2.9 (2.9.2-2) experimental; urgency=low
 
