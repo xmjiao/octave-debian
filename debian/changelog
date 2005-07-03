@@ -1,3 +1,18 @@
+octave2.1 (2.1.71-2) unstable; urgency=low
+
+  +++ Changes by Rafael Laboissiere
+
+  * Uploaded to the unstable distribution.  Actually, there was no bump in
+    the API version, it is still api-v13
+  * This version fixes the FTBFS problem on amd64 using g++ 4.0 related to
+    wrong enum declarations in src/lex.l and src/toplevel.cc (closes:
+    #314705).
+  * debian/in/control: Bumped Standards-Version to 3.6.2. No changes needed.
+  * debian/in/PACKAGE.menu: Use full version number for the menu command.
+    This makes Lintian happy.
+
+ -- Debian Octave Group <pkg-octave-devel@lists.alioth.debian.org>  Sun,  3 Jul 2005 21:43:30 +0200
+
 octave2.1 (2.1.71-1) experimental; urgency=low
 
   +++ Changes by Rafael Laboissiere
