@@ -25,7 +25,7 @@ emacs_package	= $(PACKAGE)-emacsen
 info_package	= $(PACKAGE)-info
 
 debbase		:= $(CURDIR)/debian
-debtmp		:= $(debbase)/tmp
+debtmp		:= $(debbase)/octave2.1
 debdoc		:= $(debtmp)/usr/share/doc/$(PACKAGE)
 deblsp		:= $(debbase)/$(emacs_package)/usr/share/emacs/site-lisp/$(emacs_package)
 debini		:= $(debtmp)/usr/share/octave/site/m/startup
@@ -33,12 +33,12 @@ debininew	:= $(debtmp)/usr/share/octave/$(version)/m/startup
 
 ## edd  3 Feb 2003  gcc 3.2, also imposed uniformly via Build-Depends
 ## edd 27 Jun 2003  now that gcc 3.3 is in unstable and testing, relax this
-#c_compiler	= /usr/bin/gcc-3.2
-#cxx_compiler	= /usr/bin/g++-3.2
-#f77_compiler	= /usr/bin/g77-3.2
+#c_compiler	= /usr/bin/gcc-3.3
+#cxx_compiler	= /usr/bin/g++-3.3
+#f77_compiler	= /usr/bin/g77-3.3
 c_compiler	= /usr/bin/gcc
 cxx_compiler	= /usr/bin/g++
-f77_compiler	= /usr/bin/g77
+f77_compiler	= /usr/bin/gfortran
 fc_flag		= --with-f77=$(f77_compiler)
 fc_libs		=
 compilerflags	= -O2
@@ -79,7 +79,7 @@ endif
 debian/control: debian/in/control
 	slice -o UNDEF+V_`echo $(major) | sed s/\\\\./_/g`:$@ $<
 
-maintainer-clean: 
+maintainer-clean:
 	rm -f debian/control
 
 helper-files:
@@ -89,7 +89,7 @@ helper-files:
 			< $$in > $$out ; \
 	done
 	sed 's/@MAJOR@/$(major)/g' < debian/in/watch > debian/watch
-			
+
 get-orig-source: upstream
 upstream:
 	links ftp://ftp.octave.org/pub/octave/bleeding-edge
@@ -170,11 +170,11 @@ clean: unpatch
 		done ; \
 	done
 	rm -f debian/$(PACKAGE).lintian octave-depends.1
-	
+
 	for in in debian/in/PACKAGE* ; do \
 		rm -f `echo $$in | sed 's:/in/:/:;s/PACKAGE/$(PACKAGE)/'` ; \
-	done	
-	
+	done
+
 	dh_clean
 
 # install files
@@ -251,15 +251,17 @@ binary-arch: build install check
         # save the static libs for seperate package octave-staticlibs
 #	dh_movefiles -p$(lib_package) 	usr/lib/$(source)-$(version)/*.a
         # save the include files for the header package
-	dh_movefiles -p$(dev_package) 	usr/include/ 			\
-					usr/bin/mkoctfile-$(version) 	\
-					usr/bin/octave-depends 		\
+	dh_movefiles -p$(dev_package) --sourcedir=debian/octave2.1	\
+			usr/include/		 			\
+			usr/bin/mkoctfile-$(version) 			\
+			usr/bin/octave-depends		 		\
 			usr/share/man/man1/mkoctfile-$(version).1	\
 			usr/share/man/man1/octave-depends.1		\
 			usr/share/octave/debian/defs.make
 	rm -r $(debtmp)/usr/include
         # save the info files for the info package
-	dh_movefiles -p$(info_package) 	usr/share/info/
+	dh_movefiles -p$(info_package) --sourcedir=debian/octave2.1	\
+			usr/share/info/
         # install /etc/octave.conf
 	install -p -m 0644  debian/octave.conf  $(debtmp)/etc/$(PACKAGE).conf
         # install lintian overrride
