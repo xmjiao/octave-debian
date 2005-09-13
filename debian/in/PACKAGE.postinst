@@ -3,7 +3,7 @@
 # postinst script for the Debian GNU/Linux octave2.0 package
 #
 # Initial version written by Andrew D. Fernandes <adfernan@cnd.mcgill.ca>
-# This version written by Dirk Eddelbuettel <edd@debian.org>   
+# This version written by Dirk Eddelbuettel <edd@debian.org>
 
 #DEBHELPER#
 
@@ -11,7 +11,7 @@
 VERSION=@VERSION@
 
 case "$1" in
-    configure)     
+    configure)
 	#
 	# create /usr/local/ directory, if we may
 	install -d /usr/local/share/octave/site-m \
@@ -19,12 +19,12 @@ case "$1" in
 	#
 	# if it exists, update the ls-R database for kpathsea
 	if [ -d /usr/local/share/octave/ ]
-	then 
+	then
 	    ls -LR /usr/lib/octave/ /usr/share/octave \
 		    /usr/local/share/octave > /usr/share/octave/ls-R
 	else
 	    ls -LR /usr/lib/octave/ /usr/share/octave > /usr/share/octave/ls-R
-	fi 
+	fi
 	#
 	# update-alternatives for multiple Octave versions
 	update-alternatives --install /usr/bin/octave  octave  \
@@ -42,11 +42,6 @@ case "$1" in
 			    --slave /usr/share/man/man1/octave-bug.1.gz \
 				    octave-bug.1.gz \
 				    /usr/share/man/man1/octave-bug-$VERSION.1.gz
-	update-alternatives --install /usr/bin/octave-config  octave-config  \
-				    /usr/bin/octave-config-$VERSION 30 \
-			    --slave /usr/share/man/man1/octave-config.1.gz \
-				    octave-config.1.gz \
-				    /usr/share/man/man1/octave-config-$VERSION.1.gz
 	;;
     abort-upgrade|abort-remove|abort-deconfigure)
         ;;
@@ -55,4 +50,4 @@ case "$1" in
         ;;
 esac
 
-exit 0                 
+exit 0

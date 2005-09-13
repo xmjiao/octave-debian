@@ -34,7 +34,13 @@ octave2.1 (2.1.71-3) unstable; urgency=low
   * debian/octave-config.1: Removed this file, since there is another one
     upstream which is up-to-date (in doc/interpreter).
 
- -- 
+  * debian/rules: The octave-config script is now part of the
+    octave($version)-headers package.
+  * debian/in/PACKAGE.postinst, debian/in/PACKAGE-headers.postinst: Update
+    alternatives for octave-config and octave-config.1 in
+    octave($version)-headers package instead of octave($version).
+
+ --
 
 octave2.1 (2.1.71-2) unstable; urgency=low
 
