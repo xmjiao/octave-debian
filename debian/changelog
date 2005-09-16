@@ -1,11 +1,12 @@
 octave2.1 (2.1.71-3) unstable; urgency=low
 
-  NOT YET RELEASED !!!
-
   +++ Changes by Rafael Laboissiere
 
-  * Recompiled against libhdf5-serial-1.6.4-0c2.  This should complete the
-    C++ ABI transition for the octave2.1 package.
+  * Recompiled against libhdf5-serial-1.6.4-0c2 and with g++ 4.0.  This
+    should complete the C++ ABI transition for the octave2.1 package
+    (closes: #327027).
+  * Also, once this version will reach unstable, problems with using
+    mkoctfile with g++ 4.0 will disappear (closes: #327509).
 
   * debian/compat: Created this file, containing the compatibility level 4
     for debhelper.  This avoids warning messages from the debhelper
@@ -40,7 +41,7 @@ octave2.1 (2.1.71-3) unstable; urgency=low
     alternatives for octave-config and octave-config.1 in
     octave($version)-headers package instead of octave($version).
 
- --
+ -- Debian Octave Group <pkg-octave-devel@lists.alioth.debian.org>  Fri, 16 Sep 2005 10:20:17 +0200
 
 octave2.1 (2.1.71-2) unstable; urgency=low
 
