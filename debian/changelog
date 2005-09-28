@@ -5,9 +5,9 @@ octave2.1 (2.1.71-5) unstable; urgency=low
    +++ Changes by Rafael Laboissiere
 
   * debian/in/PACKAGE.prerm: Remove ls-R database for kpathsea (this bug
-    was spotted byt piuparts).
+    was spotted by piuparts).
 
- -- Debian Octave Group <pkg-octave-devel@lists.alioth.debian.org>  Wed, 28 Sep 2005 10:50:39 +0200
+ --
 
 octave2.1 (2.1.71-4) unstable; urgency=low
 
