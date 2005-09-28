@@ -82,7 +82,7 @@ debian/control: debian/in/control
 maintainer-clean:
 	rm -f debian/control
 
-helper-files:
+maintainer-scripts:
 	for in in debian/in/PACKAGE* ; do \
 		out=`echo $$in | sed 's:/in/:/:;s/PACKAGE/$(PACKAGE)/'` ; \
 		sed 's/@VERSION@/$(version)/g;s/@PACKAGE@/$(PACKAGE)/g;s/@MAJOR@/$(major)/g' \
@@ -98,7 +98,7 @@ build: build-stamp configure-stamp make-stamp check-stamp
 build-stamp: configure make check
 	touch build-stamp
 
-configure: helper-files patch-stamp configure-stamp
+configure: maintainer-scripts patch-stamp configure-stamp
 configure-stamp:
 	dh_testdir
 
@@ -309,6 +309,6 @@ binary-arch: build install check
 source diff:
 	@echo >&2 'source and diff are obsolete - use dpkg-source -b'; false
 
-binary: install helper-files binary-arch binary-indep
+binary: install maintainer-scripts binary-arch binary-indep
 .PHONY: build clean make configure binary-indep binary-arch binary
 
