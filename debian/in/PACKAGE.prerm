@@ -2,9 +2,9 @@
 #
 # prerm script for the Debian GNU/Linux octave package
 #
-# Written by Dirk Eddelbuettel <edd@debian.org>   
+# Written by Dirk Eddelbuettel <edd@debian.org>
 
-#DEBHELPER# 
+#DEBHELPER#
 
 # The current Octave version, known to debian/rules at build time
 VERSION=@VERSION@
@@ -14,9 +14,15 @@ case "$1" in
 	#
 	# remove the /usr/local package, if we may
 	if [ -w /usr/local/share/octave/site-m ]
-	then 
+	then
 	    rmdir /usr/local/share/octave/site-m 2>/dev/null || true
 	    rmdir /usr/local/share/octave        2>/dev/null || true
+	fi
+	#
+	# remove the ls-R database for kpathsea
+	if [ -f /usr/share/octave/ls-R ]
+	then
+	    rm -f /usr/share/octave/ls-R
 	fi
 	#
 	# update-alternatives for multiple Octave versions
@@ -31,7 +37,7 @@ case "$1" in
         echo "prerm called with unknown argument \`$1'" >&2
         exit 0
     ;;
-esac                                     
+esac
 
 
 
