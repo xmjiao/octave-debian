@@ -1,13 +1,13 @@
 octave2.1 (2.1.71-5) unstable; urgency=low
 
-   NOT YET RELEASED!
-
    +++ Changes by Rafael Laboissiere
 
-  * debian/in/PACKAGE.prerm: Remove ls-R database for kpathsea (this bug
-    was spotted by piuparts).
+  * debian/in/PACKAGE.prerm: Remove ls-R database for kpathsea
+    (closes: #332492)
+  * debian/in/control: Build-depend on fort77 for the m68k architecture and
+    on gfortran for the others (closes: #333463)
 
- --
+ -- Debian Octave Group <pkg-octave-devel@lists.alioth.debian.org>  Wed, 12 Oct 2005 08:44:01 +0200
 
 octave2.1 (2.1.71-4) unstable; urgency=low
 
