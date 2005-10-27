@@ -1,13 +1,11 @@
 octave2.1 (2.1.71-6) unstable; urgency=low
 
-   NOT YET RELEASED!
-
    +++ Changes by Rafael Laboissiere
 
   * debian/in/PACKAGE-emacsen.emacsen-startup: Commented out code that
     fiddles with user preferences (closes: #334347)
 
- --
+ -- Debian Octave Group <pkg-octave-devel@lists.alioth.debian.org>  Wed, 26 Oct 2005 23:26:27 +0200
 
 octave2.1 (2.1.71-5) unstable; urgency=low
 
