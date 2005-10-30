@@ -1,0 +1,70 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 50_mkoctfile.1-no-negative.dpatch by  <colin@localhost.localdomain>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: No description.
+
+@DPATCH@
+diff -urNad octave2.9-2.9.3/doc/interpreter/mkoctfile.1 /tmp/dpep.ZFAvG6/octave2.9-2.9.3/doc/interpreter/mkoctfile.1
+--- octave2.9-2.9.3/doc/interpreter/mkoctfile.1	2004-02-17 09:54:36.000000000 -0600
++++ /tmp/dpep.ZFAvG6/octave2.9-2.9.3/doc/interpreter/mkoctfile.1	2005-10-29 20:28:33.934580151 -0500
+@@ -4,9 +4,30 @@
+ .SH NAME
+ mkoctfile - Compile dynamic-load modules for GNU Octave
+ .SH SYNOPSIS
+-.BR mkoctfile\  [-IDIR]\ [-DDEF]\ [-lLIB]\ [-LDIR]\ [-M|--depend]\ 
+-[-c]\ [-o FILE|--output FILE]\ [-p VAR|--print VAR]\ [-s|\--strip]\ 
+-[-v|--verbose]\ [-h|-?|--help]\ \fIfile\fP .\|.\|.  
++.B mkoctfile
++.RB [\| \-I \|\c
++.RI \| DIR \|\|]
++.RB [\| \-D \|\c
++.RI \| DEF \|\|]
++.RB [\| \-l \|\c
++.RI \| LIB \|\|] 
++.RB [\| \-L \|\c
++.RI [\| DIR \|\|]
++.RB [\| \-M \||\| \-\-depend \|]
++.RB [\| \-c \|]
++.RB [\| \-o 
++.IR FILE \||\c
++.RB \| \-\-output 
++.IR FILE \|]
++.RB [\| \-p 
++.IR VAR \||\c
++.RB \| \-\-print
++.IR VAR \|]
++.RB [\| \-s \||\| \-\-strip \|]
++.RB [\| \-v \||\| \-\-verbose \|]
++.RB [\| \-h \||\| \-? \||\| \-\-help \|]
++.RI \| file \| 
++.RB ...  
+ .SH DESCRIPTION
+ .PP
+ \fImkoctfile\fP is used to compile source C, C++ or Fortran source code in
+@@ -52,10 +73,10 @@
+     CFLAGS      SH_LDFLAGS
+ .RE
+ .TP 8
+-.B \-s|--strip
++.B \-s|\-\-strip
+ Strip the output file.
+ .TP 8
+-.B \-v|--verbose
++.B \-v|\-\-verbose
+ Echo commands as they are executed.
+ .TP 8
+ .B file
+@@ -67,9 +88,9 @@
+     .cpp  C++ source
+     .f    Fortran source
+     .F    Fortran source
+-    .o    object file
+-    .SH SEE ALSO
+-    .BR octave (1).
++    .o    object file  
++.SH SEE ALSO
++.BR octave (1).
+ .RE
+ .SH AUTHOR
+ John W. Eaton <jwe@bevo.che.wisc.edu>

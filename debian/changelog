@@ -1,3 +1,16 @@
+octave2.9 (2.9.3-1) experimental; urgency=low
+
+	NOT YET RELEASED
+	
+   +++ Changes by Colin Ingram
+
+  * New Upstream Release
+  * debian/rules: adjusted to build from octave2.9 source directory
+  * debian/patches/50_no-check-nested-functions.dpatch removed
+  * debian/patches/50_mkoctfile.1-no-negative.dpatch added	
+
+ -- 
+
 octave2.1 (2.1.71-6) unstable; urgency=low
 
    +++ Changes by Rafael Laboissiere

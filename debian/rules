@@ -25,7 +25,7 @@ emacs_package	= $(PACKAGE)-emacsen
 info_package	= $(PACKAGE)-info
 
 debbase		:= $(CURDIR)/debian
-debtmp		:= $(debbase)/octave2.1
+debtmp		:= $(debbase)/$(PACKAGE)
 debdoc		:= $(debtmp)/usr/share/doc/$(PACKAGE)
 deblsp		:= $(debbase)/$(emacs_package)/usr/share/emacs/site-lisp/$(emacs_package)
 debini		:= $(debtmp)/usr/share/octave/site/m/startup
@@ -251,7 +251,7 @@ binary-arch: build install check
         # save the static libs for seperate package octave-staticlibs
 #	dh_movefiles -p$(lib_package) 	usr/lib/$(source)-$(version)/*.a
         # save the include files for the header package
-	dh_movefiles -p$(dev_package) --sourcedir=debian/octave2.1	\
+	dh_movefiles -p$(dev_package) --sourcedir=debian/$(PACKAGE)	\
 			usr/include/		 			\
 			usr/bin/mkoctfile-$(version) 			\
 			usr/bin/octave-config-$(version)		\
@@ -262,7 +262,7 @@ binary-arch: build install check
 			usr/share/octave/debian/defs.make
 	rm -r $(debtmp)/usr/include
         # save the info files for the info package
-	dh_movefiles -p$(info_package) --sourcedir=debian/octave2.1	\
+	dh_movefiles -p$(info_package) --sourcedir=debian/$(PACKAGE)	\
 			usr/share/info/
         # install /etc/octave.conf
 	install -p -m 0644  debian/octave.conf  $(debtmp)/etc/$(PACKAGE).conf
