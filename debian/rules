@@ -89,6 +89,7 @@ maintainer-scripts:
 			< $$in > $$out ; \
 	done
 	sed 's/@MAJOR@/$(major)/g' < debian/in/watch > debian/watch
+	cp debian/in/$(PACKAGE)-00list debian/patches/00list
 
 get-orig-source: upstream
 upstream:

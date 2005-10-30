@@ -1,8 +1,7 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
-## 50_mkoctfile.1-no-negative.dpatch by  <colin@localhost.localdomain>
+## 50_mkoctfile.1-no-negative.dpatch by Colin Ingram <synergizedmusic@gmail.com>
 ##
-## All lines beginning with `## DP:' are a description of the patch.
-## DP: No description.
+## DP: back-slash escape all minus characters ("-")
 
 @DPATCH@
 diff -urNad octave2.9-2.9.3/doc/interpreter/mkoctfile.1 /tmp/dpep.ZFAvG6/octave2.9-2.9.3/doc/interpreter/mkoctfile.1

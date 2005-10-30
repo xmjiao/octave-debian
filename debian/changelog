@@ -1,15 +1,31 @@
 octave2.9 (2.9.3-1) experimental; urgency=low
 
-	NOT YET RELEASED
-	
+   NOT YET RELEASED
+
    +++ Changes by Colin Ingram
 
   * New Upstream Release
   * debian/rules: adjusted to build from octave2.9 source directory
   * debian/patches/50_no-check-nested-functions.dpatch removed
-  * debian/patches/50_mkoctfile.1-no-negative.dpatch added	
+  * debian/patches/50_mkoctfile.1-no-negative.dpatch added
 
- -- 
+   +++ Changes by Rafael Laboissiere
+
+  * The patches applied by dpatch are now done selectively according to
+    the version of Octave.  For that, the debian/patches/00list file is
+    now generated when running "./debian/rules maintainer-scripts" from
+    the files debian/in/$(PACKAGE)-00list.
+  * debian/rules (maintainer-scripts): Generate file
+    debian/patches/00list
+  * debian/in/octave2.1-00list, debian/in/octave2.9-00list: New files.
+  * debian/patches/50_no-check-nested-functions-2.1.dpatch: New patch,
+    which is actually the same used in the last version of the package
+    octave2.1.
+  * debian/patches/50_no-check-nested-functions-2.9.dpatch: New patch,
+    only for octave2.9, which is equivalent to the one used for
+    octave2.1.
+
+ -- Debian Octave Group <pkg-octave-devel@lists.alioth.debian.org>  Sun, 30 Oct 2005 19:54:29 +0100
 
 octave2.1 (2.1.71-6) unstable; urgency=low
 
