@@ -24,6 +24,9 @@ octave2.9 (2.9.3-1) experimental; urgency=low
   * debian/patches/50_no-check-nested-functions-2.9.dpatch: New patch,
     only for octave2.9, which is equivalent to the one used for
     octave2.1.
+  * debian/in/PACKAGE.lintian:
+    - Made this file package-independent, really
+    - Removed old Lintian error/warnings
 
  --
 
@@ -32,9 +35,9 @@ octave2.1 (2.1.71-7) unstable; urgency=low
    +++ Changes by Rafael Laboissiere
 
   * debian/patches/50_no-check-nested-functions-2.1.dpatch: Added patch
-    applied to the upstream CVS sources to avoid detrimental effects of
-    cd() commands in ~/.octavrc when running octave-inferior-mode in
-    (X)Emacs (closes: #324471).
+    from the upstream CVS sources to avoid detrimental effects of cd()
+    commands in ~/.octaverc when running octave-inferior-mode in (X)Emacs
+    (closes: #324471).
 
  -- Debian Octave Group <pkg-octave-devel@lists.alioth.debian.org>  Thu,  3 Nov 2005 10:19:22 +0100
 
