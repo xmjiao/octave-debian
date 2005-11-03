@@ -165,16 +165,9 @@ clean: unpatch
         ##doc/interpreter/octave.{dvi,ps} doc/faq/Octave-FAQ_*.html
         ##scripts/DOCSTRINGS
 	test ! -f octave-bug.in.orig || mv octave-bug.in.orig octave-bug.in
-	for i in $(PACKAGE) $(PACKAGE)-headers $(PACKAGE)-emacsen; do \
-		for j in postinst prerm; do \
-			rm -f debian/$${i}.$${j} ; \
-		done ; \
-	done
-	rm -f debian/$(PACKAGE).lintian octave-depends.1
 
-	for in in debian/in/PACKAGE* ; do \
-		rm -f `echo $$in | sed 's:/in/:/:;s/PACKAGE/$(PACKAGE)/'` ; \
-	done
+	rm -f `ls debian/in/PACKAGE* | sed 's/PACKAGE/$(PACKAGE)/;s:/in::'`
+	rm -f octave-depends.1
 
 	dh_clean
 
