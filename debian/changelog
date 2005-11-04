@@ -1,10 +1,8 @@
 octave2.9 (2.9.3-1) experimental; urgency=low
 
-   NOT YET RELEASED
-
    +++ Changes by Colin Ingram
 
-  * New Upstream Release
+  * New upstream release
   * debian/rules: adjusted to build from octave2.9 source directory
   * debian/patches/50_no-check-nested-functions.dpatch removed
   * debian/patches/50_mkoctfile.1-no-negative.dpatch added
@@ -26,9 +24,9 @@ octave2.9 (2.9.3-1) experimental; urgency=low
     octave2.1.
   * debian/in/PACKAGE.lintian:
     - Made this file package-independent, really
-    - Removed old Lintian error/warnings
+    - Removed old Lintian overrides
 
- --
+ -- Debian Octave Group <pkg-octave-devel@lists.alioth.debian.org>  Fri,  4 Nov 2005 10:30:54 +0100
 
 octave2.1 (2.1.71-7) unstable; urgency=low
 
