@@ -1,3 +1,15 @@
+octave2.9 (2.1.71-8) unstable; urgency=low
+
+   NOT YET RELEASED!
+
+   +++ Changes by Rafael Laboissiere
+
+  * debian/rules: cope with the new output of dpkg-architecture for arm
+    and m68k, which changed recently (thanks to Christian T. Steigies
+    <cts@debian.org> for spotting the problem)
+
+ --
+
 octave2.9 (2.9.3-1) experimental; urgency=low
 
    +++ Changes by Colin Ingram
