@@ -132,7 +132,7 @@ configure-stamp:
 			--disable-static			\
 			--build $(arch)
 
-	pod2man debian/octave-depends > octave-depends.1
+	pod2man debian/octave-depends > octave-depends-$(version).1
 
 	touch configure-stamp
 
@@ -167,7 +167,7 @@ clean: unpatch
 	test ! -f octave-bug.in.orig || mv octave-bug.in.orig octave-bug.in
 
 	rm -f `ls debian/in/PACKAGE* | sed 's/PACKAGE/$(PACKAGE)/;s:/in::'`
-	rm -f octave-depends.1
+	rm -f octave-depends-$(version).1
 
 	dh_clean
 
@@ -185,9 +185,11 @@ install-stamp:
 		libdir=$(debtmp)/usr/lib			\
 		libexecdir=$(debtmp)/usr/lib			\
 		mandir=$(debtmp)/usr/share/man		install
-	dh_installman octave-depends.1
-	install debian/octave-depends $(debtmp)/usr/bin
-	install --mode=644 debian/defs.make $(debtmp)/usr/share/octave/debian
+	dh_installman octave-depends-$(version).1
+	install debian/octave-depends \
+		 $(debtmp)/usr/bin/octave-depends-$(version)
+	install --mode=644 debian/defs.make \
+		$(debtmp)/usr/share/octave/debian/defs.make-$(version)
 	(cd $(debtmp)/usr/share/man/man1; 				\
 		mv -v	octave.1	octave-$(version).1;    	\
 		mv -v   octave-bug.1	octave-bug-$(version).1;	\
@@ -216,8 +218,8 @@ binary-indep: build install check
 	install -p -m 0644 emacs/otags.1			\
 	     $(debbase)/$(emacs_package)/usr/share/man/man1/otags-$(version).1
         # fix emacs startup name
-	(cd debian/$(emacs_package)/etc/emacs/site-start.d/; \
-		mv 50$(emacs_package).el 50$(source).el)
+#	(cd debian/$(emacs_package)/etc/emacs/site-start.d/; \
+#		mv 50$(emacs_package).el 50$(source).el)
 #	dh_installexamples -i
 #	dh_installmenu -p$(html_package)
 #	dh_installinit -i
@@ -249,11 +251,11 @@ binary-arch: build install check
 			usr/include/		 			\
 			usr/bin/mkoctfile-$(version) 			\
 			usr/bin/octave-config-$(version)		\
-			usr/bin/octave-depends		 		\
+			usr/bin/octave-depends-$(version) 		\
 			usr/share/man/man1/mkoctfile-$(version).1	\
 			usr/share/man/man1/octave-config-$(version).1	\
-			usr/share/man/man1/octave-depends.1		\
-			usr/share/octave/debian/defs.make
+			usr/share/man/man1/octave-depends-$(version).1	\
+			usr/share/octave/debian/defs.make-$(version)
 	rm -r $(debtmp)/usr/include
         # save the info files for the info package
 	dh_movefiles -p$(info_package) --sourcedir=debian/$(PACKAGE)	\

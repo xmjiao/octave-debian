@@ -1,8 +1,19 @@
-octave2.9 (2.1.71-8) unstable; urgency=low
+octave2.9 (2.9.3-2) experimental; urgency=low
 
    NOT YET RELEASED!
 
    +++ Changes by Rafael Laboissiere
+
+  * Packages octave2.1-* and octave2.9-* can now be installed together
+    (FIXME: THIS DOES NOT WORK FOR octave2.x-info YET!!!)
+  * debian/control: Packages octave*-headers, octave*-doc, and
+    octave*-htmldoc conflict with versions << 2.1
+  * debian/in/PACKAGE-htmldoc.doc-base.*: Make versioned documents for
+    doc-base
+  * debian/rules: Install versioned octave-depends, defs.make, and
+    and 50octave.el files
+  * debian/in/PACKAGE-headers.postinst: Install alternatives to
+    octave-depends and defs.make
 
   * debian/rules: cope with the new output of dpkg-architecture for arm
     and m68k, which changed recently (thanks to Christian T. Steigies

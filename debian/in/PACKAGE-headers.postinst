@@ -14,20 +14,17 @@ case "$1" in
 	#
 	# update-alternatives for multiple Octave versions
 
- 	update-alternatives --install /usr/bin/mkoctfile mkoctfile	\
- 				/usr/bin/mkoctfile-$VERSION 15		\
- 			    --slave /usr/share/man/man1/mkoctfile.1.gz	\
- 				mkoctfile.1.gz				\
- 				/usr/share/man/man1/mkoctfile-$VERSION.1.gz
-
-	update-alternatives --install /usr/bin/octave-config octave-config \
-				/usr/bin/octave-config-$VERSION 30	\
-			    --slave /usr/share/man/man1/octave-config.1.gz \
-				octave-config.1.gz			\
-				/usr/share/man/man1/octave-config-$VERSION.1.gz
-
-	update-alternatives --install /usr/include/octave octave-include\
-				    /usr/include/octave-$VERSION 15	\
+	for f in mkoctfile octave-config octave-depends ; do
+		update-alternatives --install /usr/bin/$f $f		\
+ 				/usr/bin/$f-$VERSION 15			\
+ 			    --slave /usr/share/man/man1/$f.1.gz $f.1.gz	\
+ 				/usr/share/man/man1/$f-$VERSION.1.gz
+	done
+	
+	for f in /usr/include/octave /usr/share/octave/debian/defs.make ; do
+		l=`echo $f | sed "s:.*/::"`
+		update-alternatives --install $f $l $f-$VERSION 15
+	done
 
        ;;
     abort-upgrade|abort-remove|abort-deconfigure)
