@@ -26,7 +26,7 @@ Package: octave[V_2_1:2.1:][V_2_9:2.9:]-doc
 Architecture: all
 Section: doc
 Suggests: octave[V_2_1:2.1:][V_2_9:2.9:], xpdf | pdf-viewer
-Conflicts: octave-doc
+Conflicts: octave-doc (<< 2.1)
 Provides: octave-doc
 Replaces: octave-doc
 Description: PDF documentation on the GNU Octave language ([V_2_1:2.1:][V_2_9:2.9:] branch)
@@ -42,7 +42,7 @@ Description: PDF documentation on the GNU Octave language ([V_2_1:2.1:][V_2_9:2.
 Package: octave[V_2_1:2.1:][V_2_9:2.9:]-htmldoc
 Architecture: all
 Suggests: octave[V_2_1:2.1:][V_2_9:2.9:], lynx | www-browser
-Conflicts: octave-htmldoc, octave2.0-htmldoc
+Conflicts: octave-htmldoc (<< 2.1), octave2.0-htmldoc
 Replaces: octave-htmldoc
 Provides: octave-htmldoc
 Description: HTML documentation on the GNU Octave language ([V_2_1:2.1:][V_2_9:2.9:] branch)
@@ -58,7 +58,7 @@ Description: HTML documentation on the GNU Octave language ([V_2_1:2.1:][V_2_9:2
 Package: octave[V_2_1:2.1:][V_2_9:2.9:]-headers
 Architecture: any
 Depends: octave[V_2_1:2.1:][V_2_9:2.9:] (= ${Source-Version}), g++, gfortran, libreadline5-dev, libncurses5-dev, libhdf5-serial-dev (>= 1.6.4-2) | libhdf5-lam-dev (>= 1.6.4-2) | libhdf5-mpich-dev (>= 1.6.4-2), refblas3-dev | atlas3-base-dev, lapack3-dev | atlas3-base-dev, fftw3-dev, ${m68k:Depends}
-Conflicts: octave-headers
+Conflicts: octave-headers (<< 2.1)
 Provides: octave-headers
 Replaces: octave-headers
 Description: header files for the GNU Octave language ([V_2_1:2.1:][V_2_9:2.9:] branch)
