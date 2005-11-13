@@ -31,6 +31,10 @@ deblsp		:= $(debbase)/$(emacs_package)/usr/share/emacs/site-lisp/$(emacs_package
 debini		:= $(debtmp)/usr/share/octave/site/m/startup
 debininew	:= $(debtmp)/usr/share/octave/$(version)/m/startup
 
+texifiles	:= doc/interpreter/octave.texi		\
+			doc/liboctave/liboctave.texi	\
+			doc/faq/Octave-FAQ.texi
+
 ## edd  3 Feb 2003  gcc 3.2, also imposed uniformly via Build-Depends
 ## edd 27 Jun 2003  now that gcc 3.3 is in unstable and testing, relax this
 #c_compiler	= /usr/bin/gcc-3.3
@@ -111,25 +115,26 @@ configure-stamp:
 
 	[ -f autogen.sh ] &&  ./autogen.sh && chmod 0755 configure
 
-	DEFAULT_PAGER=pager	\
-	CC=$(c_compiler) 	\
-	CXX=$(cxx_compiler)	\
-	F77=$(f77_compiler)	\
-	FLIBS=$(fc_libs)	\
-	./configure		\
-			--prefix=/usr				\
-			--datadir=/usr/share			\
-			--libdir=/usr/lib			\
-			--libexecdir=/usr/lib		 	\
-			--infodir=/usr/share/info		\
-			--mandir=/usr/share/man			\
-			$(atlas)				\
-			--with-hdf5				\
-			--with-fftw				\
-			$(fc_flag)				\
-			--enable-shared				\
-			--enable-rpath				\
-			--disable-static			\
+	DEFAULT_PAGER=pager				\
+	CC=$(c_compiler) 				\
+	CXX=$(cxx_compiler)				\
+	F77=$(f77_compiler)				\
+	FLIBS=$(fc_libs)				\
+	infofile=/usr/share/info/$(PACKAGE).info	\
+	./configure					\
+			--prefix=/usr			\
+			--datadir=/usr/share		\
+			--libdir=/usr/lib		\
+			--libexecdir=/usr/lib		\
+			--infodir=/usr/share/info	\
+			--mandir=/usr/share/man		\
+			$(atlas)			\
+			--with-hdf5			\
+			--with-fftw			\
+			$(fc_flag)			\
+			--enable-shared			\
+			--enable-rpath			\
+			--disable-static		\
 			--build $(arch)
 
 	pod2man debian/octave-depends > octave-depends-$(version).1
@@ -138,6 +143,14 @@ configure-stamp:
 
 make: configure-stamp make-stamp
 make-stamp:
+
+	for f in $(texifiles) ; do					\
+		cp $$f $$f-save ; 					\
+		perl -pi -e 's/^(\@setfilename .ctave)/${1}$(major)/'	\
+			$$f ; 						\
+	done
+
+
 	$(MAKE)		CFLAGS="$(compilerflags)"		\
 			CXXFLAGS="$(compilerflags)"		\
 			FFLAGS="$(compilerflags)"		\
@@ -161,13 +174,17 @@ clean: unpatch
 	-rm -vrf libcruft/libcruft.so libcruft/*/Makefile		\
 		install.octave  scripts/gethelp  libcruft/misc/*.d	\
 		scripts/autom4te.cache config.log Makefrag.f77		\
-		src/PKG_ADD src/pic src/*.oct src/*.df
+		src/PKG_ADD src/pic src/*.oct src/*.df doc/*/HTML
         ##doc/interpreter/octave.{dvi,ps} doc/faq/Octave-FAQ_*.html
         ##scripts/DOCSTRINGS
 	test ! -f octave-bug.in.orig || mv octave-bug.in.orig octave-bug.in
 
 	rm -f `ls debian/in/PACKAGE* | sed 's/PACKAGE/$(PACKAGE)/;s:/in::'`
 	rm -f octave-depends-$(version).1
+
+	for f in $(texifiles) ; do			\
+		test ! -f $ff-save || mv $ff-save $ff ;	\
+	done
 
 	dh_clean
 

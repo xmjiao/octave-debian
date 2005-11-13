@@ -7,19 +7,30 @@
 
 set -e
 
+# The current Octave version, known to debian/rules at build time
+MAJOR=@MAJOR@
+
 #DEBHELPER#
 
 case "$1" in
     configure)     
 	install-info --quiet --section "Math" "Octave" \
-	   --description="The GNU Octave language for numerical computations."\
-	   /usr/share/info/octave.info.gz
+	   --description="The GNU Octave ($MAJOR) language for numerical computations."\
+	   /usr/share/info/octave$MAJOR.info.gz
 	install-info --quiet --section "Math" "Octave Library" \
-	   --description="The GNU Octave C++ library."\
-	   /usr/share/info/liboctave.info.gz
+	   --description="The GNU Octave ($MAJOR) C++ library."\
+	   /usr/share/info/liboctave$MAJOR.info.gz
 	install-info --quiet --section "Math" "Octave FAQ" \
-	   --description="The GNU Octave FAQ."\
-	   /usr/share/info/Octave-FAQ.info.gz
+	   --description="The GNU Octave ($MAJOR) FAQ."\
+	   /usr/share/info/Octave$MAJOR-FAQ.info.gz
+
+	for f in octave liboctave Octave-FAQ ; do		\
+		update-alternatives --install			\
+			/usr/share/info/$f.info.gz		\
+			$f.info.gz				\
+			/usr/share/info/$f$MAJOR.info.gz 15
+	done
+
        ;;
     abort-upgrade|abort-remove|abort-deconfigure)
         ;;

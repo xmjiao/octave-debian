@@ -1,23 +1,39 @@
-octave2.9 (2.9.3-2) experimental; urgency=low
+octave2.1 (2.1.72-1) unstable; urgency=low
 
    NOT YET RELEASED!
 
    +++ Changes by Rafael Laboissiere
 
+  * New upstream release
+  * debian/in/octave2.1-00list: Removed patch
+    50_no-check-nested-functions-2.1, which has been applied upstream
+
   * Packages octave2.1-* and octave2.9-* can now be installed together
     (FIXME: THIS DOES NOT WORK FOR octave2.x-info YET!!!)
-  * debian/control: Packages octave*-headers, octave*-doc, and
+  * debian/in/control: Packages octave*-headers, octave*-doc, and
     octave*-htmldoc conflict with versions << 2.1
   * debian/in/PACKAGE-htmldoc.doc-base.*: Make versioned documents for
     doc-base
-  * debian/rules: Install versioned octave-depends, defs.make, and
-    and 50octave.el files
+  * debian/rules:
+    - Install versioned octave-depends, defs.make, and and 50octave.el
+      files
+    - (configure-stamp) Set versioned infofile variable in call to
+      configure
+    - (make-stamp) Save texi files in *-save and replace setfilename
+      macros with versioned names
+    - (clean) Recover original *.texi files
   * debian/in/PACKAGE-headers.postinst: Install alternatives to
     octave-depends and defs.make
+  * debian/in/PACKAGE-info.postinst:
+    - Install versioned info files
+    - Set alternatives to all versioned info files
 
   * debian/rules: cope with the new output of dpkg-architecture for arm
     and m68k, which changed recently (thanks to Christian T. Steigies
     <cts@debian.org> for spotting the problem)
+
+  * debian/in/PACKAGE-htmldoc.postinst: Removed this script, because it
+    does nothing more than include the debhelper-generated one
 
  --
 
