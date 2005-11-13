@@ -146,9 +146,11 @@ make-stamp:
 
 	for f in $(texifiles) ; do					\
 		cp $$f $$f-save ; 					\
-		perl -pi -e 's/^(\@setfilename .ctave)/${1}$(major)/'	\
+		perl -pi -e 's/^(\@setfilename .+ctave)/$${1}$(major)/'	\
 			$$f ; 						\
 	done
+	# The following will prevent the build of pre-formatted docs
+	touch doc/*/*.{dvi,ps,pdf,html}
 
 
 	$(MAKE)		CFLAGS="$(compilerflags)"		\
@@ -174,7 +176,7 @@ clean: unpatch
 	-rm -vrf libcruft/libcruft.so libcruft/*/Makefile		\
 		install.octave  scripts/gethelp  libcruft/misc/*.d	\
 		scripts/autom4te.cache config.log Makefrag.f77		\
-		src/PKG_ADD src/pic src/*.oct src/*.df doc/*/HTML
+		src/PKG_ADD src/pic src/*.oct src/*.df
         ##doc/interpreter/octave.{dvi,ps} doc/faq/Octave-FAQ_*.html
         ##scripts/DOCSTRINGS
 	test ! -f octave-bug.in.orig || mv octave-bug.in.orig octave-bug.in
@@ -183,8 +185,9 @@ clean: unpatch
 	rm -f octave-depends-$(version).1
 
 	for f in $(texifiles) ; do			\
-		test ! -f $ff-save || mv $ff-save $ff ;	\
+		test ! -f $$f-save || mv $$f-save $$f ;	\
 	done
+	rm -f doc/*/*ctave$(major)*.info*
 
 	dh_clean
 

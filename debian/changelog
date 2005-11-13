@@ -2,7 +2,7 @@ octave2.1 (2.1.72-1) unstable; urgency=low
 
    NOT YET RELEASED!
 
-   +++ Changes by Rafael Laboissiere
+  +++ Changes by Rafael Laboissiere
 
   * New upstream release
   * debian/in/octave2.1-00list: Removed patch
