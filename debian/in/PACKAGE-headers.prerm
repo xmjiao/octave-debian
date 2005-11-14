@@ -2,9 +2,9 @@
 #
 # prerm script for the Debian GNU/Linux octave2.0-headers package
 #
-# Written by Dirk Eddelbuettel <edd@debian.org>   
+# Written by Dirk Eddelbuettel <edd@debian.org>
 
-#DEBHELPER# 
+#DEBHELPER#
 
 # The current Octave version, known to debian/rules at build time
 VERSION=@VERSION@
@@ -13,8 +13,14 @@ case "$1" in
     remove|upgrade|deconfigure)
 	#
 	# update-alternatives for multiple Octave versions
-	update-alternatives --remove mkoctfile /usr/bin/mkoctfile-$VERSION
-	update-alternatives --remove octave-include /usr/include/octave-$VERSION
+	for f in mkoctfile octave-config octave-depends ; do
+		update-alternatives --remove $f /usr/bin/$f-$VERSION
+	done
+	update-alternatives --remove octave-include \
+		/usr/include/octave-$VERSION
+	update-alternatives --remove octave-defs.make \
+		/usr/share/octave/debian/defs.make-$VERSION
+
 	;;
     failed-upgrade)
 	;;
@@ -22,7 +28,7 @@ case "$1" in
         echo "prerm called with unknown argument \`$1'" >&2
         exit 0
     ;;
-esac                                     
+esac
 
 
 

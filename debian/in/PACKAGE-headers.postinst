@@ -8,6 +8,7 @@
 
 # The current Octave version, known to debian/rules at build time
 VERSION=@VERSION@
+PRIORITY=@PRIORITY@
 
 case "$1" in
     configure)
@@ -16,15 +17,20 @@ case "$1" in
 
 	for f in mkoctfile octave-config octave-depends ; do
 		update-alternatives --install /usr/bin/$f $f		\
- 				/usr/bin/$f-$VERSION 15			\
+ 				/usr/bin/$f-$VERSION $PRIORITY		\
  			    --slave /usr/share/man/man1/$f.1.gz $f.1.gz	\
  				/usr/share/man/man1/$f-$VERSION.1.gz
 	done
-	
-	for f in /usr/include/octave /usr/share/octave/debian/defs.make ; do
-		l=`echo $f | sed "s:.*/::"`
-		update-alternatives --install $f $l $f-$VERSION 15
-	done
+
+	update-alternatives					\
+		--install /usr/include/octave octave-include	\
+			/usr/include/octave-$VERSION $PRIORITY
+
+	update-alternatives						\
+		--install /usr/share/octave/debian/defs.make		\
+			octave-defs.make				\
+			/usr/share/octave/debian/defs.make-$VERSION	\
+			$PRIORITY
 
        ;;
     abort-upgrade|abort-remove|abort-deconfigure)

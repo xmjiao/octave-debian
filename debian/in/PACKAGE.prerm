@@ -26,10 +26,10 @@ case "$1" in
 	fi
 	#
 	# update-alternatives for multiple Octave versions
-	update-alternatives --remove octave /usr/bin/octave-$VERSION
-	update-alternatives --remove @PACKAGE@ /usr/bin/octave-$VERSION
-	update-alternatives --remove octave-bug /usr/bin/octave-bug-$VERSION
-	update-alternatives --remove octave-config /usr/bin/octave-config-$VERSION
+	for f in octave octave-bug ; do
+		update-alternatives --remove $f /usr/bin/$f-$VERSION
+	done
+
 	;;
     failed-upgrade)
 	;;

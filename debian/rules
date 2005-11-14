@@ -18,6 +18,12 @@ version       	:= $(shell head -1 debian/changelog | \
 major       	:= $(shell head -1 debian/changelog | perl -nle \
 			'm/\S+\s+\((\d\.\d)\.\d+-\S+\)/ and print $$1')
 
+ifeq ($(major),2.1)
+priority	:= 80
+else
+priority	:= 70
+endif
+
 doc_package	= $(PACKAGE)-doc
 html_package	= $(PACKAGE)-htmldoc
 dev_package	= $(PACKAGE)-headers
@@ -89,7 +95,7 @@ maintainer-clean:
 maintainer-scripts:
 	for in in debian/in/PACKAGE* ; do \
 		out=`echo $$in | sed 's:/in/:/:;s/PACKAGE/$(PACKAGE)/'` ; \
-		sed 's/@VERSION@/$(version)/g;s/@PACKAGE@/$(PACKAGE)/g;s/@MAJOR@/$(major)/g' \
+		sed 's/@VERSION@/$(version)/g;s/@PACKAGE@/$(PACKAGE)/g;s/@MAJOR@/$(major)/g;s/@PRIORITY@/$(priority)/g;' \
 			< $$in > $$out ; \
 	done
 	sed 's/@MAJOR@/$(major)/g' < debian/in/watch > debian/watch
@@ -139,11 +145,6 @@ configure-stamp:
 
 	pod2man debian/octave-depends > octave-depends-$(version).1
 
-	touch configure-stamp
-
-make: configure-stamp make-stamp
-make-stamp:
-
 	for f in $(texifiles) ; do					\
 		cp $$f $$f-save ; 					\
 		perl -pi -e 's/^(\@setfilename .+ctave)/$${1}$(major)/'	\
@@ -152,7 +153,10 @@ make-stamp:
 	# The following will prevent the build of pre-formatted docs
 	touch doc/*/*.{dvi,ps,pdf,html}
 
+	touch configure-stamp
 
+make: configure-stamp make-stamp
+make-stamp:
 	$(MAKE)		CFLAGS="$(compilerflags)"		\
 			CXXFLAGS="$(compilerflags)"		\
 			FFLAGS="$(compilerflags)"		\
@@ -176,7 +180,7 @@ clean: unpatch
 	-rm -vrf libcruft/libcruft.so libcruft/*/Makefile		\
 		install.octave  scripts/gethelp  libcruft/misc/*.d	\
 		scripts/autom4te.cache config.log Makefrag.f77		\
-		src/PKG_ADD src/pic src/*.oct src/*.df
+		src/PKG_ADD src/pic src/*.oct src/*.df doc/*/HTML
         ##doc/interpreter/octave.{dvi,ps} doc/faq/Octave-FAQ_*.html
         ##scripts/DOCSTRINGS
 	test ! -f octave-bug.in.orig || mv octave-bug.in.orig octave-bug.in
@@ -277,9 +281,10 @@ binary-arch: build install check
 			usr/share/man/man1/octave-depends-$(version).1	\
 			usr/share/octave/debian/defs.make-$(version)
 	rm -r $(debtmp)/usr/include
+	rm -rf $(debtmp)/usr/share/info
         # save the info files for the info package
-	dh_movefiles -p$(info_package) --sourcedir=debian/$(PACKAGE)	\
-			usr/share/info/
+	#dh_movefiles -p$(info_package) --sourcedir=debian/$(PACKAGE)	\
+	#		usr/share/info/
         # install /etc/octave.conf
 	install -p -m 0644  debian/octave.conf  $(debtmp)/etc/$(PACKAGE).conf
         # install lintian overrride
@@ -290,7 +295,7 @@ binary-arch: build install check
         ## this file would exist under 2.0 and 2.1 with the same name
 	rm -v 					$(debini)/octaverc
         # already installed by make
-	dh_installinfo -n -p$(info_package)  	doc/*/*.info*
+	dh_installinfo -n -p$(info_package)  	doc/*/*$(major)*.info*
 	dh_installdocs -a			README README.kpathsea \
 						NEWS* PROJECTS
 	dh_installdocs -p$(PACKAGE) 		debian/README.Atlas

@@ -3,7 +3,7 @@
 # postinst script for the Debian GNU/Linux octave package
 #
 # Initial version written by Andrew D. Fernandes <adfernan@cnd.mcgill.ca>
-# This version written by Dirk Eddelbuettel <edd@debian.org>   
+# This version written by Dirk Eddelbuettel <edd@debian.org>
 
 set -e
 
@@ -11,13 +11,14 @@ set -e
 
 # The current Octave version, known to debian/rules at build time
 VERSION=@VERSION@
+PRIORITY=@PRIORITY@
 
 case "$1" in
-    configure)     
+    configure)
 	#
 	# update-alternatives for multiple Octave versions
 	update-alternatives --install /usr/bin/otags  otags  \
-				    /usr/bin/otags-$VERSION 10 \
+				    /usr/bin/otags-$VERSION $PRIORITY \
 			    --slave /usr/share/man/man1/otags.1.gz \
 				    otags.1.gz \
 				    /usr/share/man/man1/otags-$VERSION.1.gz
@@ -29,4 +30,4 @@ case "$1" in
         ;;
 esac
 
-exit 0                 
+exit 0
