@@ -1,3 +1,16 @@
+octave2.9 (2.9.4-1) unstable; urgency=low
+
+   +++ Changes by Rafael Laboissiere
+
+  * New upstream release
+  * debian/in/octave2.9-00list:
+    - Removed patch 50_no-check-nested-functions-2.9, which has been
+      applied upstream
+    - Added patch 50_install-liboctinterp, necessary for installing
+      liboctinterp.so in /usr/lib/octave-<version>
+
+ -- Debian Octave Group <pkg-octave-devel@lists.alioth.debian.org>  Mon, 14 Nov 2005 22:58:56 +0100
+
 octave2.1 (2.1.72-1) unstable; urgency=low
 
    +++ Changes by Rafael Laboissiere
