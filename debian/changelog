@@ -1,3 +1,13 @@
+octave2.1 (2.1.72-2) unstable; urgency=low
+
+   +++ Changes by Rafael Laboissiere
+
+  * debian/patches/50_octave-value-list-resize-2.1.dpatch: Added patch
+    posted by J. W. Eaton in the help-octave mailing list for avoiding
+    crashes in the octave_value_list destructor
+
+ -- Debian Octave Group <pkg-octave-devel@lists.alioth.debian.org>  Tue, 15 Nov 2005 22:16:18 +0100
+
 octave2.9 (2.9.4-1) unstable; urgency=low
 
    +++ Changes by Rafael Laboissiere

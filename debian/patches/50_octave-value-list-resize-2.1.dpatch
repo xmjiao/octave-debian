@@ -1,0 +1,59 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 50_octave-value-list-resize-2.1.dpatch by Rafael Laboissiere <rafael@debian.org>
+##
+## DP: Avoid crashes in the octave_value_list destructor.  This patch was
+## DP: posted by J. W. Eaton in the help-octave mailing list.
+## DP: See http://www.octave.org/mailing-lists/help-octave/2005/4266
+## DP: (this patch only applies to octave2.1)
+
+@DPATCH@
+
+--- octave2.1-2.1.72.orig/src/oct-obj.h
++++ octave2.1-2.1.72/src/oct-obj.h
+@@ -100,7 +100,20 @@
+ 
+   void resize (int n) { data.resize (n); }
+ 
+-  void resize (int n, const octave_value& val);
++  void octave_value_list::resize (int n, const octave_value& val)
++  {
++    int len = length ();
++    
++    if (n > len)
++      {
++        data.resize (n);
++        
++        for (int i = len; i < n; i++)
++          data[i] = val;
++      }
++    else if (n < len)
++      data.resize (n);
++  }
+ 
+   octave_value_list& prepend (const octave_value& val);
+ 
+--- octave2.1-2.1.72.orig/src/oct-obj.cc
++++ octave2.1-2.1.72/src/oct-obj.cc
+@@ -47,22 +47,6 @@
+   return true;
+ }
+ 
+-void
+-octave_value_list::resize (int n, const octave_value& val)
+-{
+-  int len = length ();
+-
+-  if (n > len)
+-    {
+-      data.resize (n);
+-
+-      for (int i = len; i < n; i++)
+-	data[i] = val;
+-    }
+-  else if (n < len)
+-    data.resize (n);
+-}
+-
+ octave_value_list&
+ octave_value_list::prepend (const octave_value& val)
+ {
