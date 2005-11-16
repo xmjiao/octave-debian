@@ -1,3 +1,12 @@
+octave2.9 (2.9.4-4) unstable; urgency=low
+
+   +++ Changes by Rafael Laboissiere
+
+  * Recompiled to drop the binary dependency on libglpk0, which sneaked
+    into the last release
+
+ -- Debian Octave Group <pkg-octave-devel@lists.alioth.debian.org>  Wed, 16 Nov 2005 22:56:02 +0100
+
 octave2.9 (2.9.4-3) unstable; urgency=low
 
    +++ Changes by Rafael Laboissiere
