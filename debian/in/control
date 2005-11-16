@@ -105,7 +105,7 @@ Description: GNU Info documentation on the GNU Octave language ([V_2_1:2.1:][V_2
 
 [V_2_1:
 Package: octave
-Architecture: any
+Architecture: all
 Depends: octave2.1 (>= ${Source-Version})
 Description: GNU Octave language for numerical computations (2.1 branch)
  Octave is a (mostly Matlab (R) compatible) high-level language, primarily

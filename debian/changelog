@@ -1,3 +1,11 @@
+octave2.1 (2.1.72-3) unstable; urgency=low
+
+   +++ Changes by Rafael Laboissiere
+
+  * debian/in/control: Make the virtual octave package architecture =  all
+
+ -- Debian Octave Group <pkg-octave-devel@lists.alioth.debian.org>  Wed, 16 Nov 2005 14:28:48 +0100
+
 octave2.9 (2.9.4-2) unstable; urgency=low
 
    +++ Changes by Rafael Laboissiere
