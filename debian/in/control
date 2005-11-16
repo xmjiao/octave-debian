@@ -103,15 +103,18 @@ Description: GNU Info documentation on the GNU Octave language ([V_2_1:2.1:][V_2
  octave documentation which is needed for the 'help -i foo' command within
  Octave.
 
+[V_2_1:
 Package: octave
 Architecture: any
-Depends: octave[V_2_1:2.1:][V_2_9:2.9:] (>= ${Source-Version})
-Description: GNU Octave language for numerical computations ([V_2_1:2.1:][V_2_9:2.9:] branch)
+Depends: octave2.1 (>= ${Source-Version})
+Description: GNU Octave language for numerical computations (2.1 branch)
  Octave is a (mostly Matlab (R) compatible) high-level language, primarily
  intended for numerical computations. It provides a convenient command-line
  interface for solving linear and nonlinear problems numerically.
  .
  This package is an empty 'virtual' package whose sole purpose is to
- install the current Octave version from the [V_2_1:2.1:][V_2_9:2.9:] branch.
+ install the current Octave version from the 2.1 branch (the recommended
+ testing branch) .
  .
- Once you have the octave[V_2_1:2.1:][V_2_9:2.9:] package installed, you can remove this package.
+ Once you have the octave2.1 package installed, you can remove this package.
+:]
