@@ -202,13 +202,7 @@ install-stamp:
 	dh_testroot
 #	dh_clean -a -k
 	dh_installdirs -A
-	$(MAKE) INSTALL_PROGRAM="install -s" 			\
-		prefix=$(debtmp)/usr 				\
-		datadir=$(debtmp)/usr/share			\
-		infodir=$(debtmp)/usr/share/info		\
-		libdir=$(debtmp)/usr/lib			\
-		libexecdir=$(debtmp)/usr/lib			\
-		mandir=$(debtmp)/usr/share/man		install
+	$(MAKE) INSTALL_PROGRAM="install -s" DESTDIR=$(debtmp) install
 	dh_installman octave-depends-$(version).1
 	install debian/octave-depends \
 		 $(debtmp)/usr/bin/octave-depends-$(version)
