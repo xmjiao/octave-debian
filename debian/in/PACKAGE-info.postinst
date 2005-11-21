@@ -25,11 +25,13 @@ case "$1" in
 	   --description="The GNU Octave ($MAJOR) FAQ."\
 	   /usr/share/info/Octave$MAJOR-FAQ.info.gz
 
-	for f in octave liboctave Octave-FAQ ; do			\
+	for f in octave@v liboctave@v Octave@v-FAQ ; do
+		g=`echo $f | sed s/@v//`
+		h=`echo $f | sed s/@v/$MAJOR/`
 		update-alternatives --install				\
-			/usr/share/info/$f.info.gz			\
-			$f.info.gz					\
-			/usr/share/info/$f$MAJOR.info.gz $PRIORITY
+			/usr/share/info/$g.info.gz			\
+			$g.info.gz					\
+			/usr/share/info/$h.info.gz $PRIORITY
 	done
 
        ;;
