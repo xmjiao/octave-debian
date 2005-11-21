@@ -180,7 +180,8 @@ clean: unpatch
 	-rm -vrf libcruft/libcruft.so libcruft/*/Makefile		\
 		install.octave  scripts/gethelp  libcruft/misc/*.d	\
 		scripts/autom4te.cache config.log Makefrag.f77		\
-		src/PKG_ADD src/pic src/*.oct src/*.df doc/*/HTML
+		src/PKG_ADD src/pic src/*.oct src/*.df doc/*/HTML	\
+		examples/octave.desktop
         ##doc/interpreter/octave.{dvi,ps} doc/faq/Octave-FAQ_*.html
         ##scripts/DOCSTRINGS
 	test ! -f octave-bug.in.orig || mv octave-bug.in.orig octave-bug.in
