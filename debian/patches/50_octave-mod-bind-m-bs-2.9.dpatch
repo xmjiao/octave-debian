@@ -1,0 +1,38 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 50_octave-mod-bind-m-bs-2.9.dpatch by Rafael Laboissiere <rafael@debian.org>
+##
+## DP: Bind M-BS key sequence to backward-kill-word in XEmacs
+
+@DPATCH@
+
+--- octave2.9-2.9.4.orig/emacs/octave-mod.el
++++ octave2.9-2.9.4/emacs/octave-mod.el
+@@ -203,6 +203,9 @@
+ 
+ (defvar inferior-octave-process nil)
+ 
++(defvar octave-xemacs-p
++  (string-match "XEmacs\\|Lucid" emacs-version))
++
+ (defvar octave-mode-map nil
+   "Keymap used in Octave mode.")
+ (if octave-mode-map
+@@ -219,6 +222,8 @@
+     (define-key map "\M-\C-a" 'octave-beginning-of-defun)
+     (define-key map "\M-\C-e" 'octave-end-of-defun)
+     (define-key map "\M-\C-h" 'octave-mark-defun)
++    (if octave-xemacs-p
++        (define-key map [(meta backspace)] 'backward-kill-word))
+     (define-key map "\M-\C-q" 'octave-indent-defun)
+     (define-key map "\C-c;" 'octave-comment-region)
+     (define-key map "\C-c:" 'octave-uncomment-region)
+@@ -638,9 +643,6 @@
+     (delete-horizontal-space)
+     (insert (concat " " octave-continuation-string))))
+ 
+-(defvar octave-xemacs-p
+-  (string-match "XEmacs\\|Lucid" emacs-version))
+-
+ ;;; Comments
+ (defun octave-comment-region (beg end &optional arg)
+   "Comment or uncomment each line in the region as Octave code.

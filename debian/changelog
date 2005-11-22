@@ -1,3 +1,12 @@
+octave2.9 (2.9.4-6) unstable; urgency=low
+
+   +++ Changes by Rafael Laboissiere
+
+  * debian/patches/50_octave-mod-bind-m-bs-2.9.dpatch: Bind M-BS key
+    sequence to backward-kill-word in XEmacs (closes: #340125)
+
+ -- Debian Octave Group <pkg-octave-devel@lists.alioth.debian.org>  Tue, 22 Nov 2005 14:48:51 +0100
+
 octave2.1 (2.1.72-5) unstable; urgency=low
 
    +++ Changes by Rafael Laboissiere
