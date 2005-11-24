@@ -1,3 +1,13 @@
+octave2.9 (2.9.4-7) unstable; urgency=low
+
+   +++ Changes by Rafael Laboissiere
+
+  * debian/in/control: Added libglpk0 to the build-dependencies for
+    octave2.9.  The __glpk__.oct module, which is dynamically loadable,
+    nows links against a shared library (libglpk0.so) (closes: #310226).
+
+ -- Debian Octave Group <pkg-octave-devel@lists.alioth.debian.org>  Thu, 24 Nov 2005 09:44:21 +0100
+
 octave2.9 (2.9.4-6) unstable; urgency=low
 
    +++ Changes by Rafael Laboissiere

@@ -3,7 +3,7 @@ Section: math
 Priority: optional
 Maintainer: Debian Octave Group <pkg-octave-devel@lists.alioth.debian.org>
 Uploaders: Rafael Laboissiere <rafael@debian.org>
-Build-Depends: debhelper (>= 4.0.0), autoconf, texinfo, tetex-bin, gfortran [!m68k], fort77 [m68k], libreadline5-dev, libncurses5-dev, gperf, libhdf5-serial-dev (>= 1.6.4-2) | libhdf5-lam-dev (>= 1.6.4-2) | libhdf5-mpich-dev (>= 1.6.4-2), refblas3-dev | atlas3-base-dev, lapack3-dev | atlas3-base-dev, gnuplot, fftw3-dev, dejagnu, texi2html, less, dpatch[V_2_9:, glpk, libumfpack4-dev (>= 4.4):]
+Build-Depends: debhelper (>= 4.0.0), autoconf, texinfo, tetex-bin, gfortran [!m68k], fort77 [m68k], libreadline5-dev, libncurses5-dev, gperf, libhdf5-serial-dev (>= 1.6.4-2) | libhdf5-lam-dev (>= 1.6.4-2) | libhdf5-mpich-dev (>= 1.6.4-2), refblas3-dev | atlas3-base-dev, lapack3-dev | atlas3-base-dev, gnuplot, fftw3-dev, dejagnu, texi2html, less, dpatch[V_2_9:, glpk, libglpk0, libumfpack4-dev (>= 4.4):]
 Standards-Version: 3.6.2
 
 Package: octave[V_2_1:2.1:][V_2_9:2.9:]
