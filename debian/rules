@@ -64,23 +64,13 @@ atlas		= --with-blas=-lblas-3 --with-lapack=-llapack-3
 arch 		:= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
 
 ## edd 20 Jun 2002      no optimisation or debugging on baby systems
-ifneq "$(findstring $(arch), m68k-linux-gnu arm-linux-gnu)" ""
+ifneq "$(findstring $(arch), arm-linux-gnu)" ""
 compilerflags	= -O0 -g0
 endif
 
 # edd 25 Aug 2002  arm does not have atlas
 ifeq ($(arch),arm-linux)
 atlas		= --without-blas
-endif
-
-## edd 25 May 2003      actually, we need -O1 on m68k, as well as f2c
-## edd 02 Jul 2003      use fort77 instead for its comman cmdline options
-#ifeq ($(arch),m68k-linux)
-ifneq "$(findstring $(arch), m68k-linux-gnu)" ""
-f77_compiler	= /usr/bin/fort77
-fc_flag		= --with-f77=/usr/bin/fort77 --without-f2c
-fc_libs		= -lf2c
-compilerflags	= -O0 -g0
 endif
 
 #export DH_VERBOSE=1
