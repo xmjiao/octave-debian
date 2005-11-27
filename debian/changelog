@@ -1,3 +1,16 @@
+octave2.9 (2.9.4-8) unstable; urgency=low
+
+   +++ Changes by Rafael Laboissiere
+
+  * Rebuilt the 2.9 branch with the m68k-specific settings removed.
+  * debian/in/control: The octave virtual package is now only generated
+    for the 2.9 branch, but depends on octave2.1, which is the recommended
+    version for end-users.  This is counter-intuitive, but is necessary
+    due to a mistake in uploading the octave virtual package with version
+    2.9.4-1, which is still stuck in unstable.
+
+ -- Debian Octave Group <pkg-octave-devel@lists.alioth.debian.org>  Sun, 27 Nov 2005 12:39:36 +0100
+
 octave2.1 (2.1.72-6) unstable; urgency=low
 
    +++ Changes by Rafael Laboissiere

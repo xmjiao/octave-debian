@@ -104,10 +104,10 @@ Description: GNU Info documentation on the GNU Octave language ([V_2_1:2.1:][V_2
  octave documentation which is needed for the 'help -i foo' command within
  Octave.
 
-[V_2_1:
+[V_2_9:
 Package: octave
 Architecture: all
-Depends: octave2.1 (>= ${Source-Version})
+Depends: octave2.1
 Description: GNU Octave language for numerical computations (2.1 branch)
  Octave is a (mostly Matlab (R) compatible) high-level language, primarily
  intended for numerical computations. It provides a convenient command-line
