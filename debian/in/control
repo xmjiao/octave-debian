@@ -104,7 +104,7 @@ Description: GNU Info documentation on the GNU Octave language ([V_2_1:2.1:][V_2
  octave documentation which is needed for the 'help -i foo' command within
  Octave.
 
-[V_2_9:
+[V_2_1:
 Package: octave
 Architecture: all
 Depends: octave2.1
