@@ -18,7 +18,7 @@
 
 =head1 NAME
 
-octave-deps - calculates Octave dependencies
+octave-depends - calculates Octave dependencies
 
 =cut
 
@@ -49,7 +49,7 @@ my $octpkg = 'octave@MAJOR@';
 my $octver = `$octcfg --version 2>&1`
 	or die "Command $octcfg not found";
 chomp $octver;
-  
+
 foreach my $package (@{$dh{DOPACKAGES}}) {
 
 	delsubstvar($package, "octave:Depends");

@@ -1,3 +1,10 @@
+octave2.1 (1:2.1.72-9) unstable; urgency=low
+
+  * debian/in/deps.make: Added this template file, where the octave-config
+    command is versioned.
+
+ -- Rafael Laboissiere <rafael@debian.org>  Sun, 22 Jan 2006 17:07:19 +0100
+
 octave2.9 (2.9.4-10) unstable; urgency=low
 
   * debian/in/control: Generate octave package only for the 2.1 branch.
