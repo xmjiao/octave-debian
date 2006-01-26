@@ -1,3 +1,10 @@
+octave2.1 (1:2.1.72-10) unstable; urgency=low
+
+  * debian/rules: Symlink /usr/bin/octave<major> to
+    /usr/bin/octave-<version>
+
+ -- Rafael Laboissiere <rafael@debian.org>  Thu, 26 Jan 2006 13:49:23 +0100
+
 octave2.1 (1:2.1.72-9) unstable; urgency=low
 
   * debian/in/deps.make: Added this template file, where the octave-config
