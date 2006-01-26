@@ -1,0 +1,20 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 70_octave-mod-honor-auto-indent.dpatch by  <rafael@debian.org>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: New patch generated from octave2.9 2.9.4-11 diff.gz
+
+@DPATCH@
+
+--- octave2.9-2.9.4.orig/emacs/octave-mod.el
++++ octave2.9-2.9.4/emacs/octave-mod.el
+@@ -1329,7 +1335,8 @@
+ Reindent the line of `octave-auto-indent' is non-nil."
+   (interactive)
+   (setq last-command-char ? )
+-  (if (not (octave-not-in-string-or-comment-p))
++  (if (and octave-auto-indent
++           (not (octave-not-in-string-or-comment-p)))
+       (progn
+ 	(indent-according-to-mode)
+ 	(self-insert-command 1))

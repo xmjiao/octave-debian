@@ -2,3 +2,4 @@
 50_install-liboctinterp
 50_octave-value-list-resize-2.9
 50_octave-mod-bind-m-bs-2.9
+70_octave-mod-honor-auto-indent

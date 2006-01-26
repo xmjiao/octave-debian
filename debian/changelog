@@ -1,3 +1,11 @@
+octave2.9 (2.9.4-11) unstable; urgency=low
+
+  * debian/patches/70_octave-mod-honor-auto-indent.dpatch: Upstream patch
+    for honoring the octave-auto-indent variable in emacs/octave-mod.el
+    (closes: #341759)
+
+ -- Rafael Laboissiere <rafael@debian.org>  Thu, 26 Jan 2006 17:51:55 +0100
+
 octave2.1 (1:2.1.72-10) unstable; urgency=low
 
   * debian/rules: Symlink /usr/bin/octave<major> to
