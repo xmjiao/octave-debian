@@ -1,3 +1,11 @@
+octave2.9 (2.9.4-12) unstable; urgency=low
+
+  * debian/patches/50_glpk-sparse.dpatch: Patch to make glpk work with
+    sparse matrices (thanks to Kim Hansen <k-reportbug@oek.dk>,
+    closes: 350230)
+
+ -- Rafael Laboissiere <rafael@debian.org>  Sat, 28 Jan 2006 15:23:55 +0100
+
 octave2.9 (2.9.4-11) unstable; urgency=low
 
   * debian/patches/70_octave-mod-honor-auto-indent.dpatch: Upstream patch
