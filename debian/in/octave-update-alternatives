@@ -1,5 +1,7 @@
 #!/bin/bash
 
+if [ $1 = "--remove" ];then REMOVE=$1; fi
+
 major_versions="2.1 2.9"
 man="/usr/share/man/man1/"
 bin="/usr/bin/"
@@ -30,7 +32,8 @@ do
                                         ${man}octave-bug-$VERSION.1.gz" 
                  	;;
 	    
-	    octave2.?-headers ) HEADERS="--slave ${bin}mkoctfile mkoctfile \
+	    octave2.?-headers ) if [ $REMOVE = $g ];then ;; fi
+                                HEADERS="--slave ${bin}mkoctfile mkoctfile \
                                                  ${bin}mkoctfile-$VERSION \
                                          --slave ${man}mkoctfile.1.gz      \
                                                  mkoctfile.1.gz            \
@@ -55,7 +58,8 @@ do
                                                  ${debian}defs.make-$VERSION"
 		                ;;
 
-	    octave2.?-emacsen ) EMACS="--slave ${bin}otags otags           \
+	    octave2.?-emacsen ) if [ $REMOVE = $g ];then ;; fi
+                                EMACS="--slave ${bin}otags otags           \
                                                ${bin}otags-$VERSION        \
                                        --slave ${man}otags.1.gz otags.1.gz \
                                                ${man}otags-$VERSION.1.gz"
@@ -63,6 +67,7 @@ do
 
 	    octave2.?-info ) if [ -n `dpgk -l | grep -o "octave$v` ]
                              then
+                                 if [ $REMOVE = $g ];then ;; fi
                                  INFO="--slave ${info}octave.info.gz       \
                                                octave.info.gz              \
                                                ${info}octave$v.info.gz     \
@@ -75,17 +80,24 @@ do
                              else
 	                         for f in octave@v liboctave@v Octave@v-FAQ 
                                  do
-	                           g=`echo $f | sed s/@v//`
+	                           i=`echo $f | sed s/@v//`
 	                           h=`echo $f | sed s/@v/$v/`
-	                           INFO="--install ${info}$h.info.gz \
-		                                  $g.info.gz         \
-		                                  ${info}$i.info.gz  \
-                                                  $PRIORITY"
+                                   if [ $REMOVE = $g ];
+                                   then
+                                       INFO="--remove $i.info.gz         \
+                                                      /usr/share/info/$h.info.gz"
+                                   else 
+	                               INFO="--install ${info}$h.info.gz \
+		                                       $i.info.gz        \
+		                                       ${info}$i.info.gz \
+                                                       $PRIORITY"
+                                   fi
                                  done
                              fi
 		             ;;
 	    # In anticipation of octave-forge package split
-#	    octave-forge2.? ) FORGE="--slave ${bin}mex mex           \
+#	    octave-forge2.? ) if [ $REMOVE = $g ];then ;; fi
+#                             FORGE="--slave ${bin}mex mex            \
 #                                             ${bin}mex-$VERSION      \
 #                                     --slave ${man}mex.1.gz          \
 #                                             mex.1.gz                \
