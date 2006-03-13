@@ -1,3 +1,20 @@
+octave2.1 (1:2.1.72-11) unstable; urgency=low
+
+   [ Rafael Laboissiere ]
+  
+  * debian/patches/50_g++4.1.dpatch: Added patch proposed by John W. Eaton
+    to allow compilation with g++ 4.1.
+  * debian/patches/50_octave-value-list-resize-2.1.dpatch: Adjusted patch
+    for compilation with g++ 4.1 (thanks to Martin Michlmayr)
+  * With the two changes above, closes: #355980
+
+  * N.B.: the present version of the package was compiled with g++ 4.0,
+    because this is the version of the GCC suite in sid.  However, the
+    changes were tested with g++ 4.1 available from experimental, and it
+    worked.
+
+ -- Rafael Laboissiere <rafael@debian.org>  Mon, 13 Mar 2006 10:04:42 +0100
+
 octave2.9 (2.9.4-12) unstable; urgency=low
 
   * debian/patches/50_glpk-sparse.dpatch: Patch to make glpk work with
