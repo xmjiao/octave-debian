@@ -1,8 +1,7 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
-## 50_g++4.1.dpatch by  <rafael@debian.org>
+## 50_g++4.1.dpatch by Rafael Laboissiere <rafael@debian.org>
 ##
-## All lines beginning with `## DP:' are a description of the patch.
-## DP: New patch generated from octave2.1 2.1.72-11 diff.gz
+## DP: Allow compilation with g++ 4.1
 
 @DPATCH@
 
