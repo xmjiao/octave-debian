@@ -9,6 +9,14 @@ octave2.1 (1:2.1.72-12) unstable; urgency=low
 
  --
 
+octave2.9 (2.9.4-13) unstable; urgency=low
+
+  * debian/patches/50_octave-value-list-resize-2.9.dpatch: Adjusted patch
+    for compilation with g++ 4.1 (thanks to Martin Michlmayr,
+    closes: #356634)
+
+ -- Rafael Laboissiere <rafael@debian.org>  Mon, 13 Mar 2006 14:49:30 +0100
+
 octave2.1 (1:2.1.72-11) unstable; urgency=low
 
   * debian/patches/50_g++4.1.dpatch: Added patch proposed by John W. Eaton
