@@ -15,7 +15,7 @@
    void resize (octave_idx_type n) { data.resize (n); }
  
 -  void resize (octave_idx_type n, const octave_value& val);
-+  void octave_value_list::resize (octave_idx_type n, const octave_value& val)
++  void resize (octave_idx_type n, const octave_value& val)
 +  {
 +    octave_idx_type len = length ();
 +  
