@@ -87,11 +87,12 @@ maintainer-scripts:
 		sed 's/@VERSION@/$(version)/g;s/@PACKAGE@/$(PACKAGE)/g;s/@MAJOR@/$(major)/g;s/@PRIORITY@/$(priority)/g;' \
 			< $$in > $$out ; \
 	done
-	for f in watch octave-depends defs.make ; do \
+	for f in octave-depends defs.make ; do \
 		sed 's/@VERSION@/$(version)/g;s/@MAJOR@/$(major)/g' \
 			< debian/in/$$f > debian/$$f ; \
 	done
 	cp debian/in/$(PACKAGE)-00list debian/patches/00list
+	cp debian/in/$(PACKAGE)-watch debian/watch
 
 get-orig-source: upstream
 upstream:

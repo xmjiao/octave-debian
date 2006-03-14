@@ -1,7 +1,16 @@
-octave2.1 (1:2.1.72-11) unstable; urgency=low
+octave2.1 (1:2.1.72-12) unstable; urgency=low
+
+   NOT YET RELEASED!
 
    [ Rafael Laboissiere ]
-  
+  * New mechanism for obtaining the versioned debian/watch files
+  * debian/in/octave*-watch: Source files the uscan files
+  * debian/rules: Geenrated debian/watch from debian/in/octave*-watch
+
+ --
+
+octave2.1 (1:2.1.72-11) unstable; urgency=low
+
   * debian/patches/50_g++4.1.dpatch: Added patch proposed by John W. Eaton
     to allow compilation with g++ 4.1.
   * debian/patches/50_octave-value-list-resize-2.1.dpatch: Adjusted patch
