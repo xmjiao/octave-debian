@@ -1,13 +1,14 @@
 octave2.1 (1:2.1.72-12) unstable; urgency=low
 
-   NOT YET RELEASED!
-
-   [ Rafael Laboissiere ]
   * New mechanism for obtaining the versioned debian/watch files
   * debian/in/octave*-watch: Source files the uscan files
-  * debian/rules: Geenrated debian/watch from debian/in/octave*-watch
+  * debian/rules:
+    - Generate debian/watch from debian/in/octave*-watch
+    - Link the manpage for octave$(major) to that for octave-$(version),
+      such that there will be no binary without manpage
+  * debian/in/octave2.1-00list: Really apply patch 50_g++4.1
 
- --
+ -- Rafael Laboissiere <rafael@debian.org>  Thu, 16 Mar 2006 18:31:11 +0100
 
 octave2.9 (2.9.4-13) unstable; urgency=low
 

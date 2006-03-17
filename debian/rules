@@ -205,6 +205,7 @@ install-stamp:
 		$(debtmp)/usr/share/octave/debian/defs.make-$(version)
 	(cd $(debtmp)/usr/share/man/man1; 				\
 		mv -v	octave.1	octave-$(version).1;    	\
+		ln -s	octave-$(version).1	octave$(major).1;	\
 		mv -v   octave-bug.1	octave-bug-$(version).1;	\
 		mv -v	octave-config.1	octave-config-$(version).1;   	\
 		mv -v   mkoctfile.1	mkoctfile-$(version).1;		)
