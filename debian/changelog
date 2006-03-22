@@ -1,3 +1,10 @@
+octave2.1 (1:2.1.72-12+b1) unstable; urgency=low
+
+  * Binary-only non-maintainer upload for i386; no source changes.
+  * Rebuild against libhdf5 1.6.5
+
+ -- Debian/i386 Build Daemon <buildd_i386-cyberhq>  Fri, 17 Mar 2006 21:31:52 -0800
+
 octave2.1 (1:2.1.72-12) unstable; urgency=low
 
   * New mechanism for obtaining the versioned debian/watch files
