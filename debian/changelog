@@ -1,3 +1,13 @@
+octave2.1 (2.1.72-13) unstable; urgency=low
+
+   NOT YET RELEASED!
+
+  [ Thomas Weber ]
+  * debian/rules: Add octave2.X.1.gz link for man page which makes lintian
+    happy
+
+ --
+
 octave2.9 (2.9.4-13+b1) unstable; urgency=low
 
   * Binary-only non-maintainer upload for i386; no source changes.
@@ -15,7 +25,7 @@ octave2.1 (1:2.1.72-12+b1) unstable; urgency=low
 octave2.1 (1:2.1.72-12) unstable; urgency=low
 
   * New mechanism for obtaining the versioned debian/watch files
-  * debian/in/octave*-watch: Source files the uscan files
+  * debian/in/octave*-watch: Source files for the the debian/uscan files
   * debian/rules:
     - Generate debian/watch from debian/in/octave*-watch
     - Link the manpage for octave$(major) to that for octave-$(version),
@@ -1842,7 +1852,7 @@ eval: (add-hook
     (save-excursion
       (forward-line -1)
       (beginning-of-line)
-      (insert "\n   NOT YET RELEASED!\n\n   [ "
+      (insert "\n   NOT YET RELEASED!\n\n  [ "
         (or (getenv "DEBFULLNAME") (user-full-name)) " ]")))
   nil t)
 End:
