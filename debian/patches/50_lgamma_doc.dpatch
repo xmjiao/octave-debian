@@ -1,0 +1,22 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 50_lgamma_doc.dpatch by Thomas Weber <thomas.weber.mail@gmail.com>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: Patch for #335373; this was applied upstream only for Octave 2.9;
+##     it fixes the documentation of th lgamma mapper function
+
+@DPATCH@
+diff -urNad octave-2.1.73~/src/mappers.cc octave-2.1.73/src/mappers.cc
+--- octave-2.1.73~/src/mappers.cc	2005-05-02 13:17:13.000000000 +0200
++++ octave-2.1.73/src/mappers.cc	2006-03-24 13:47:00.000000000 +0100
+@@ -537,8 +537,8 @@
+ 
+   DEFUN_MAPPER (lgamma, 0, 0, 0, xlgamma, 0, 0, 0.0, 0.0, 0, 0,
+     "-*- texinfo -*-\n\
+-@deftypefn {Mapping Function} {} lgamma (@var{a}, @var{x})\n\
+-@deftypefnx {Mapping Function} {} gammaln (@var{a}, @var{x})\n\
++@deftypefn {Mapping Function} {} lgamma (@var{x})\n\
++@deftypefnx {Mapping Function} {} gammaln (@var{x})\n\
+ Return the natural logarithm of the gamma function.\n\
+ @end deftypefn\n\
+ @seealso{gamma and gammai}");

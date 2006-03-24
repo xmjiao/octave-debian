@@ -1,12 +1,22 @@
-octave2.1 (2.1.72-13) unstable; urgency=low
+octave2.1 (1:2.1.73-1) unstable; urgency=low
 
    NOT YET RELEASED!
 
   [ Thomas Weber ]
+  * New upstream release
   * debian/rules: Add octave2.X.1.gz link for man page which makes lintian
     happy
+  * removed patches (applied upstream):
+    - 50_g++4.1.dpatch
+    - 50_inferior-octave-resync-dirs.dpatch
+    - 50_octave-value-list-resize-2.1.dpatch (not applied upstream, but it was
+      only a work-around for a gcc bug)
+    - 50_octave-mod-bind-m-bs-2.1.dpatch
+  * new patches:
+    - 50_lgamma_doc.dpatch (Closes: #335373)
+    - 50_incomplete_gamma.dpatch (Closes: #335195)
 
- --
+ -- 
 
 octave2.9 (2.9.4-13+b1) unstable; urgency=low
 

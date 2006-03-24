@@ -1,0 +1,41 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 50_incomplete_gamma.dpatch by Thomas Weber <thomas.weber.mail@gmail.com>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: Patch for #335195, taken from Octave 2.9;
+##     it enhances the documentation of the gammainc function
+
+@DPATCH@
+diff -urNad octave-2.1.73~/src/DLD-FUNCTIONS/gammainc.cc octave-2.1.73/src/DLD-FUNCTIONS/gammainc.cc
+--- octave-2.1.73~/src/DLD-FUNCTIONS/gammainc.cc	2005-05-02 13:17:21.000000000 +0200
++++ octave-2.1.73/src/DLD-FUNCTIONS/gammainc.cc	2006-03-24 14:29:33.000000000 +0100
+@@ -36,7 +36,7 @@
+ DEFUN_DLD (gammainc, args, ,
+   "-*- texinfo -*-\n\
+ @deftypefn {Mapping Function} {} gammainc (@var{x}, @var{a})\n\
+-Computes the incomplete gamma function,\n\
++Compute the normalized incomplete gamma function,\n\
+ @iftex\n\
+ @tex\n\
+ $$\n\
+@@ -53,15 +53,18 @@
+                   gamma (a)    /\n\
+                             t=0\n\
+ @end smallexample\n\
++\n\
+ @end ifinfo\n\
++with the limiting value of 1 as @var{x} approaches infinity.\n\
++The standard notation is @math{P(a,x)}, e.g. Abramowitz and Stegun (6.5.1).\n\
+ \n\
+ If @var{a} is scalar, then @code{gammainc (@var{x}, @var{a})} is returned\n\
+ for each element of @var{x} and vice versa.\n\
+ \n\
+ If neither @var{x} nor @var{a} is scalar, the sizes of @var{x} and\n\
+ @var{a} must agree, and @var{gammainc} is applied element-by-element.\n\
+-@end deftypefn\n\
+-@seealso{gamma and lgamma}")
++@seealso{gamma, lgamma}\n\
++@end deftypefn")
+ {
+   octave_value retval;
+ 
