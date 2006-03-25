@@ -6,5 +6,8 @@ package is installed.
 Further information on Octave, the Octave mailing-lists and the Octave 
 source archive can be found at http://www.octave.org
 
- -- Dirk Eddelbuettel <edd@debian.org>  Tue, 25 Mar 1997 23:16:54 -0500
+The Debian Octave-related packages are collectively maintained by the Debian
+Octave Group (http://pkg-octave.alioth.debian.org).
+
+ -- Rafael Laboissiere <rafael@debian.org>  Tue, 25 Mar 2006 18:16:54 -0100
 
