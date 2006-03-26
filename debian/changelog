@@ -1,7 +1,5 @@
 octave2.1 (1:2.1.73-1) unstable; urgency=low
 
-   NOT YET RELEASED!
-
   [ Thomas Weber ]
   * New upstream release
   * debian/rules: Add octave2.X.1.gz link for man page which makes lintian
@@ -16,7 +14,7 @@ octave2.1 (1:2.1.73-1) unstable; urgency=low
     - 50_lgamma_doc.dpatch (Closes: #335373)
     - 50_incomplete_gamma.dpatch (Closes: #335195)
 
- -- 
+ -- Rafael Laboissiere <rafael@debian.org>  Sat, 25 Mar 2006 18:11:10 +0100
 
 octave2.9 (2.9.4-13+b1) unstable; urgency=low
 
