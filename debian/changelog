@@ -1,3 +1,21 @@
+octave2.9 (2.9.5-1) unstable; urgency=low
+
+  NOT YET RELEASED!
+
+  [ Rafael Laboissiere ]
+  * New upstream release
+  * Redesigned the build & install processes for the html documentation,
+    since it is now shipped in HTML directories under doc/.
+  * debian/in/octave2.9-00list: Removed from the list the following
+    patches:
+    - 50_install-liboctinterp
+    - 50_glpk-sparse
+    - 50_octave-mod-bind-m-bs-2.9
+    - 70_octave-mod-honor-auto-indent
+    which have been applied upstream.
+
+ --
+
 octave2.1 (1:2.1.73-1) unstable; urgency=low
 
   [ Thomas Weber ]
@@ -1860,7 +1878,7 @@ eval: (add-hook
     (save-excursion
       (forward-line -1)
       (beginning-of-line)
-      (insert "\n   NOT YET RELEASED!\n\n  [ "
+      (insert "\n  NOT YET RELEASED!\n\n  [ "
         (or (getenv "DEBFULLNAME") (user-full-name)) " ]")))
   nil t)
 End:
