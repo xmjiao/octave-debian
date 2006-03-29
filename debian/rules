@@ -32,6 +32,7 @@ info_package	= $(PACKAGE)-info
 debbase		:= $(CURDIR)/debian
 debtmp		:= $(debbase)/$(PACKAGE)
 debdoc		:= $(debtmp)/usr/share/doc/$(PACKAGE)
+debhtmldoc	:= $(debtmp)-htmldoc/usr/share/doc/$(PACKAGE)-htmldoc
 deblsp		:= $(debbase)/$(emacs_package)/usr/share/emacs/site-lisp/$(emacs_package)
 debini		:= $(debtmp)/usr/share/octave/site/m/startup
 debininew	:= $(debtmp)/usr/share/octave/$(version)/m/startup
@@ -228,11 +229,12 @@ binary-indep: build install check
 #	dh_clean -i -k
         #$(MAKE) prefix=`pwd`/debian/tmp install
 	dh_installdocs -n -p$(doc_package) doc/*/*.pdf
-	for dir in faq interpreter liboctave ; do\
-		dh_installdocs -n -p$(html_package)\
-			`find doc/$$dir -name \*.html` ;\
-		mkdir $(debdoc)-htmldoc/$$dir;\
-		mv $(debdoc)-htmldoc/*.html $(debdoc)-htmldoc/$$dir;\
+	for dir in faq interpreter liboctave ; do		\
+		dh_installdocs -n -p$(html_package)		\
+			`find doc/$$dir -name \*.html` ;	\
+		mkdir $(debhtmldoc)/$$dir ;			\
+		find doc/$$dir -name *.html	 		\
+			-exec mv \{} $(debhtmldoc)/$$dir \; ;	\
 	done
 
 	dh_installdocs -i
