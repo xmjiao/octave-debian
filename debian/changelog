@@ -1,4 +1,4 @@
-octave2.9 (2.9.5-1) unstable; urgency=low
+octave2.9 (2.9.5-1) experimental; urgency=low
 
   NOT YET RELEASED!
 
@@ -12,7 +12,9 @@ octave2.9 (2.9.5-1) unstable; urgency=low
     - 50_glpk-sparse
     - 50_octave-mod-bind-m-bs-2.9
     - 70_octave-mod-honor-auto-indent
-    which have been applied upstream.
+    which have been applied upstream, and:
+    - 50_mkoctfile.1-no-negative
+    which does not seem really necessary.
 
  --
 
