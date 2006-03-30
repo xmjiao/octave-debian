@@ -1,22 +1,9 @@
-octave2.9 (2.9.5-1) experimental; urgency=low
+octave2.1 (1:2.1.73-2) unstable; urgency=low
 
-  NOT YET RELEASED!
+  * debian/in/control: Adjusted dependencies on libhdf5 >= 1.6.5 (both
+    Build-Depends and octave<version>-headers Depends)
 
-  [ Rafael Laboissiere ]
-  * New upstream release
-  * Redesigned the build & install processes for the html documentation,
-    since it is now shipped in HTML directories under doc/.
-  * debian/in/octave2.9-00list: Removed from the list the following
-    patches:
-    - 50_install-liboctinterp
-    - 50_glpk-sparse
-    - 50_octave-mod-bind-m-bs-2.9
-    - 70_octave-mod-honor-auto-indent
-    which have been applied upstream, and:
-    - 50_mkoctfile.1-no-negative
-    which does not seem really necessary.
-
- --
+ -- Rafael Laboissiere <rafael@debian.org>  Wed, 29 Mar 2006 21:25:24 +0200
 
 octave2.1 (1:2.1.73-1) unstable; urgency=low
 
