@@ -186,7 +186,9 @@ clean: unpatch
 		install.octave  scripts/gethelp  libcruft/misc/*.d	\
 		scripts/autom4te.cache config.log Makefrag.f77		\
 		src/PKG_ADD src/pic src/*.oct src/*.df doc/*/HTML	\
-		examples/octave.desktop
+		examples/octave.desktop scripts/*/PKG_ADD		\
+		doc/Makefile doc/*/Makefile doc/*/*/Makefile		\
+		test/test_sparse.m
         ##doc/interpreter/octave.{dvi,ps} doc/faq/Octave-FAQ_*.html
         ##scripts/DOCSTRINGS
 	test ! -f octave-bug.in.orig || mv octave-bug.in.orig octave-bug.in
@@ -229,15 +231,14 @@ binary-indep: build install check
 #	dh_clean -i -k
         #$(MAKE) prefix=`pwd`/debian/tmp install
 	dh_installdocs -n -p$(doc_package) doc/*/*.pdf
-	for dir in faq interpreter liboctave ; do		\
-		dh_installdocs -n -p$(html_package)		\
-			`find doc/$$dir -name \*.html` ;	\
-		mkdir $(debhtmldoc)/$$dir ;			\
-		find doc/$$dir -name *.html	 		\
-			-exec mv \{} $(debhtmldoc)/$$dir \; ;	\
+	dh_installdocs -i
+	for dir in faq interpreter liboctave ; do			\
+		test -d $(debhtmldoc)/$$dir				\
+			|| mkdir $(debhtmldoc)/$$dir ;			\
+		find doc/$$dir \( -name \*.html -o -name \*.png \) 	\
+			 -exec cp \{} $(debhtmldoc)/$$dir \; ;		\
 	done
 
-	dh_installdocs -i
         # install Octave Emacs files and Debian Emacsen files
 	dh_installdirs -p$(emacs_package)
 	dh_installdirs -p$(emacs_package) \
