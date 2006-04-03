@@ -1,3 +1,9 @@
+octave2.1 (1:2.1.73-4) experimental; urgency=low
+
+  * debian/in/octave2.1-00list: Added 50_g++4.1-fixes to the list
+
+ -- Rafael Laboissiere <rafael@debian.org>  Mon,  3 Apr 2006 14:44:34 +0200
+
 octave2.1 (1:2.1.73-3) experimental; urgency=low
 
   * Uploading to experimental until the hdf5 transition is finished
