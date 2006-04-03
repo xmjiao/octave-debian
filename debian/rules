@@ -41,6 +41,9 @@ texifiles	:= doc/interpreter/octave.texi		\
 			doc/liboctave/liboctave.texi	\
 			doc/faq/Octave-FAQ.texi
 
+origdoc		:= interpreter/octave.pdf faq/Octave-FAQ.pdf \
+			liboctave/liboctave.pdf
+
 ## edd  3 Feb 2003  gcc 3.2, also imposed uniformly via Build-Depends
 ## edd 27 Jun 2003  now that gcc 3.3 is in unstable and testing, relax this
 #c_compiler	= /usr/bin/gcc-3.3
@@ -114,8 +117,6 @@ configure: maintainer-scripts patch-stamp configure-stamp
 configure-stamp:
 	dh_testdir
 
-        #cat debian/2.1.54_arrayindex.patch | patch -p0 --verbose
-
         # use Debian's tempfile(1) for enhanced security
 	cp octave-bug.in octave-bug.in.orig
 	perl -p -i -e 's|/tmp/octave-bug.\$$\$$|`tempfile`|' octave-bug.in
@@ -146,7 +147,6 @@ configure-stamp:
 
 	pod2man debian/octave-depends > octave-depends-$(version).1
 
-	if test ! -d doc-orig ; then cp -a doc doc-orig ; fi
 	for f in $(texifiles) ; do					\
 		cp $$f $$f-save ; 					\
 		perl -pi -e 's/^(\@setfilename .+ctave)/$${1}$(major)/'	\
@@ -157,6 +157,14 @@ configure-stamp:
 
 make: configure-stamp make-stamp
 make-stamp:
+
+
+	if test ! -d doc-orig; then				\
+		for f in $(origdoc); do				\
+			mkdir -p doc-orig/`dirname $$f`;	\
+			cp doc/$$f doc-orig/$$f ;		\
+		done;						\
+	fi
 
 	$(MAKE)		CFLAGS="$(compilerflags)"		\
 			CXXFLAGS="$(compilerflags)"		\
@@ -177,9 +185,17 @@ clean: unpatch
 	dh_testdir
 	dh_testroot
 
-	if test ! -d doc-orig ; then cp -a doc doc-orig ; fi
+	find doc -name Makefile | xargs rm -f
 
 	-$(MAKE) -i distclean || $(MAKE) -f Makefile.in distclean
+
+	if test -d doc-orig; then			\
+		for f in $(origdoc) ; do		\
+			mv doc-orig/$$f doc/$$f ;	\
+		done;					\
+		rm -rf doc-orig ;			\
+	fi
+
 	rm -f build-stamp configure-stamp make-stamp check-stamp \
 		install-stamp Makefile.tmp
 	-rm -vrf libcruft/libcruft.so libcruft/*/Makefile		\
@@ -187,18 +203,15 @@ clean: unpatch
 		scripts/autom4te.cache config.log Makefrag.f77		\
 		src/PKG_ADD src/pic src/*.oct src/*.df doc/*/HTML	\
 		examples/octave.desktop scripts/*/PKG_ADD		\
-		doc/Makefile doc/*/Makefile doc/*/*/Makefile		\
-		test/test_sparse.m
-        ##doc/interpreter/octave.{dvi,ps} doc/faq/Octave-FAQ_*.html
-        ##scripts/DOCSTRINGS
+		test/test_sparse.m doc/interpreter/munge-texi
+	find doc -name \*.html -exec rm -f \{} \;
+	find doc -name HTML -exec rm -rf \{} \;
+
 	test ! -f octave-bug.in.orig || mv octave-bug.in.orig octave-bug.in
 
 	rm -f `ls debian/in/PACKAGE* | sed 's/PACKAGE/$(PACKAGE)/;s:/in::'`
 	rm -f octave-depends-$(version).1
 	( cd debian ; rm -f watch octave-depends defs.make )
-
-	rm -rf doc
-	mv doc-orig doc
 
 	dh_clean
 

@@ -1,3 +1,14 @@
+octave2.1 (1:2.1.73-3) experimental; urgency=low
+
+  * Uploading to experimental until the hdf5 transition is finished
+  * debian/patches/50_g++4.1-fixes.dpatch: Allow compilation with g++ 4.1
+  * debian/rules:
+    - Cruft removal
+    - Mode robust treatment of changed files in doc/ such that there is no
+      problem at creation of the diff.gz file
+
+ -- Rafael Laboissiere <rafael@debian.org>  Mon,  3 Apr 2006 09:11:21 +0200
+
 octave2.9 (2.9.5-2) experimental; urgency=low
 
   * debian/in/control: Build-Depends on slice (closes: #360219)
