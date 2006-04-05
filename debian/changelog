@@ -1,3 +1,12 @@
+octave2.1 (1:2.1.73-5) unstable; urgency=low
+
+  NOT YET RELEASED!
+
+  [ Rafael Laboissiere ]
+  * Uploaded to unstable, now that the libhdf5 transition is over
+
+ --
+
 octave2.1 (1:2.1.73-4) experimental; urgency=low
 
   * debian/in/octave2.1-00list: Added 50_g++4.1-fixes to the list
