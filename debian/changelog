@@ -4,6 +4,7 @@ octave2.1 (1:2.1.73-5) unstable; urgency=low
 
   [ Rafael Laboissiere ]
   * Uploaded to unstable, now that the libhdf5 transition is over
+  * debian/rules: Cruft removal operation, dropped old and useless comments
 
  --
 

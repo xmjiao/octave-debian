@@ -77,7 +77,6 @@ atlas		= --without-blas
 endif
 
 #export DH_VERBOSE=1
-#export DH_COMPAT=3
 
 sliceterm = UNDEF+V_$(shell echo $(major) | sed s/\\./_/g)
 
@@ -215,12 +214,10 @@ clean: unpatch
 
 	dh_clean
 
-# install files
 install: configure-stamp make-stamp check-stamp install-stamp
 install-stamp:
 	dh_testdir
 	dh_testroot
-#	dh_clean -a -k
 	dh_installdirs -A
 	$(MAKE) INSTALL_PROGRAM="install -s" DESTDIR=$(debtmp) install
 	dh_installman octave-depends-$(version).1
@@ -241,8 +238,7 @@ install-stamp:
 binary-indep: build install check
 	dh_testdir -i
 	dh_testroot -i
-#	dh_clean -i -k
-        #$(MAKE) prefix=`pwd`/debian/tmp install
+
 	dh_installdocs -n -p$(doc_package) doc/*/*.pdf
 	dh_installdocs -i
 	for dir in faq interpreter liboctave ; do			\
@@ -262,35 +258,23 @@ binary-indep: build install check
 		$(debbase)/$(emacs_package)/usr/bin/otags-$(version)
 	install -p -m 0644 emacs/otags.1			\
 	     $(debbase)/$(emacs_package)/usr/share/man/man1/otags-$(version).1
-        # fix emacs startup name
-#	(cd debian/$(emacs_package)/etc/emacs/site-start.d/; \
-#		mv 50$(emacs_package).el 50$(source).el)
-#	dh_installexamples -i
-#	dh_installmenu -p$(html_package)
-#	dh_installinit -i
-#	dh_installcron -i
-#	dh_installmanpages -i
-#	dh_undocumented -p$(dev_package) 	mkoctfile.1
-#	dh_undocumented -p$(emacs_package)	otags-$(version).1
+
 	dh_installchangelogs -i			ChangeLog
 	dh_compress -i
 	dh_fixperms -i
-#	dh_suidregister -i
 	dh_installdeb -i
 	dh_gencontrol -i
-#	dh_md5sums -i
 	dh_builddeb -i
 
 # Build architecture-dependent files here.
 binary-arch: build install check
 	dh_testdir -a
 	dh_testroot -a
-#	dh_clean -a -k
 	dh_installdirs -p$(PACKAGE)
+
         # remove the /usr/share/info/dir stab
 	rm -vf $(debtmp)/usr/share/info/dir
-        # save the static libs for seperate package octave-staticlibs
-#	dh_movefiles -p$(lib_package) 	usr/lib/$(source)-$(version)/*.a
+
         # save the include files for the header package
 	dh_movefiles -p$(dev_package) --sourcedir=debian/$(PACKAGE)	\
 			usr/include/		 			\
@@ -303,14 +287,13 @@ binary-arch: build install check
 			usr/share/octave/debian/defs.make-$(version)
 	rm -r $(debtmp)/usr/include
 	rm -rf $(debtmp)/usr/share/info
-        # save the info files for the info package
-	#dh_movefiles -p$(info_package) --sourcedir=debian/$(PACKAGE)	\
-	#		usr/share/info/
-        # install /etc/octave.conf
+
 	install -p -m 0644  debian/octave.conf  $(debtmp)/etc/$(PACKAGE).conf
+
         # install lintian overrride
 	install -p -m 0644  debian/$(PACKAGE).lintian \
 			$(debtmp)/usr/share/lintian/overrides/$(PACKAGE)
+
         ## link the conf.file back from /etc over the version.spec. rc
 	ln -sf /etc/$(PACKAGE).conf 		$(debininew)/octaverc
         ## this file would exist under 2.0 and 2.1 with the same name
@@ -323,14 +306,9 @@ binary-arch: build install check
         # recreated in postinst in share/, not needed in lib
 	rm -vf	$(debtmp)/usr/lib/octave/ls-R \
 		$(debtmp)/usr/share/octave/ls-R
-#	dh_installexamples -a
+
 	dh_installexamples  -p$(dev_package)  	examples/*
-#	dh_installmenu -a
 	dh_installmenu -p$(PACKAGE)
-#	dh_installinit -a
-#	dh_installcron -a
-#	dh_installmanpages -a
-#	dh_undocumented	-p$(PACKAGE)		octave-config-$(version).1
 	dh_installchangelogs -a ChangeLog ChangeLog.1
 	for i in glob libcruft liboctave src scripts test doc; do \
 		cp -vax $$i/ChangeLog $(debdoc)/changelog.$$i; done
@@ -341,15 +319,12 @@ binary-arch: build install check
 	dh_strip -a
 	dh_compress -a
 	dh_fixperms -a
-#	dh_suidregister -a
 	dh_installdeb -a
 	dh_shlibdeps -a
 	if [ `dpkg-architecture -qDEB_BUILD_ARCH` = "m68k" ];then \
 		echo "m68k:Depends=f2c" >> debian/$(PACKAGE)-headers.substvars; \
 	fi
 	dh_gencontrol -a
-#	dh_makeshlibs -a
-#	dh_md5sums -a
 	dh_builddeb -a
 
 source diff:
