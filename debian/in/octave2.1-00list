@@ -1,3 +1,4 @@
 50_lgamma_doc.dpatch
 50_incomplete_gamma.dpatch
 50_g++4.1-fixes.dpatch
+50_automatic-replot-docstring

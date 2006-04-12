@@ -1,12 +1,14 @@
 octave2.1 (1:2.1.73-5) unstable; urgency=low
 
-  NOT YET RELEASED!
-
-  [ Rafael Laboissiere ]
   * Uploaded to unstable, now that the libhdf5 transition is over
   * debian/rules: Cruft removal operation, dropped old and useless comments
+  * debian/patches/50_automatic-replot-docstring.dpatch: Patch for adding
+    a docstring for the automatic_replot built-in variable (closes:
+    #361705, although only partially, because the "return" keyword is
+    still indexed as a variable and I do not think the upstream author
+    will change this)
 
- --
+ -- Rafael Laboissiere <rafael@debian.org>  Wed, 12 Apr 2006 09:43:41 +0200
 
 octave2.1 (1:2.1.73-4) experimental; urgency=low
 
