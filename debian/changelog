@@ -1923,13 +1923,15 @@ octave (1.1.1-7) unstable; urgency=low
 
 
 Local Variables:
-eval: (add-hook
-  'debian-changelog-add-version-hook
-  (lambda ()
-    (save-excursion
-      (forward-line -1)
-      (beginning-of-line)
-      (insert "\n  NOT YET RELEASED!\n\n  [ "
-        (or (getenv "DEBFULLNAME") (user-full-name)) " ]")))
-  nil t)
+eval: (progn
+  (make-local-hook 'debian-changelog-add-version-hook)
+  (add-hook
+    'debian-changelog-add-version-hook
+      (lambda ()
+      (save-excursion
+        (forward-line -1)
+        (beginning-of-line)
+        (insert "\n  NOT YET RELEASED!\n\n  [ "
+          (or (getenv "DEBFULLNAME") (user-full-name)) " ]")))
+    nil t))
 End:
