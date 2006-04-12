@@ -1,3 +1,12 @@
+octave2.9 (2.9.5-3) unstable; urgency=low
+
+  * Uploaded to unstable
+  * Closes: #360219, which was already fixed in experimental
+  * debian/in/octave2.9-00list: Added 50_automatic-replot-docstring to the
+    list.
+
+ -- Rafael Laboissiere <rafael@debian.org>  Wed, 12 Apr 2006 11:30:01 +0200
+
 octave2.1 (1:2.1.73-5) unstable; urgency=low
 
   * Uploaded to unstable, now that the libhdf5 transition is over
