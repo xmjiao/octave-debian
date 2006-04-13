@@ -8,5 +8,5 @@ Abstract: Octave is a (mostly Matlab (R) compatible) high-level
 Section: Apps/Math
 
 Format: HTML
-Index: 	/usr/share/doc/@PACKAGE@-htmldoc/[V_2_1:octave_toc:][V_2_9:interpreter/index:].html
-Files:  /usr/share/doc/@PACKAGE@-htmldoc/[V_2_1:octave_:][V_2_9:interpreter/:]*.html
+Index: 	/usr/share/doc/@PACKAGE@-htmldoc/interpreter/index.html
+Files:  /usr/share/doc/@PACKAGE@-htmldoc/interpreter/*.html

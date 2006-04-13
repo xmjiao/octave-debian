@@ -92,10 +92,6 @@ maintainer-scripts:
 		sed 's/@VERSION@/$(version)/g;s/@PACKAGE@/$(PACKAGE)/g;s/@MAJOR@/$(major)/g;s/@PRIORITY@/$(priority)/g;' \
 			< $$in > $$out ; \
 	done
-	for doc in faq manual lib ; do\
-		slice -o $(sliceterm):$(debtmp)-htmldoc.doc-base.$$doc \
-			$(debtmp)-htmldoc.doc-base.$$doc ; \
-	done
 
 	for f in octave-depends defs.make ; do \
 		sed 's/@VERSION@/$(version)/g;s/@MAJOR@/$(major)/g' \

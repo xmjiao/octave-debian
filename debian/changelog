@@ -1,3 +1,12 @@
+octave2.1 (1:2.1.73-6) unstable; urgency=low
+
+  * debian/in/PACKAGE-htmldoc.doc-base.*: Fixed path for documentation
+    files (closes: #362251)
+  * debian/in/control: Removed build-dependency on slice, which was only
+    needed for processing he files above
+
+ -- Rafael Laboissiere <rafael@debian.org>  Thu, 13 Apr 2006 08:59:28 +0200
+
 octave2.9 (2.9.5-3) unstable; urgency=low
 
   * Uploaded to unstable
