@@ -11,7 +11,7 @@ Architecture: any
 Depends: ${shlibs:Depends}, texinfo
 Suggests: gnuplot, octave[V_2_1:2.1:][V_2_9:2.9:]-info, octave[V_2_1:2.1:][V_2_9:2.9:]-doc, octave[V_2_1:2.1:][V_2_9:2.9:]-htmldoc, octave[V_2_1:2.1:][V_2_9:2.9:]-headers (= ${Source-Version}), octave[V_2_1:2.1:][V_2_9:2.9:]-emacsen
 Replaces: octave (<= 2.0.16-2)
-Conflicts: octave (<= 2.0.16-2)
+Conflicts: octave (<= 2.0.16-2)[V_2_9:, octave-forge:]
 Provides: octave
 Description: GNU Octave language for numerical computations ([V_2_1:2.1:][V_2_9:2.9:] branch)
  Octave is a (mostly Matlab (R) compatible) high-level language, primarily

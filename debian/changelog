@@ -1,3 +1,9 @@
+octave2.9 (2.9.5-4) unstable; urgency=low
+
+  * debian/in/control: Conflicts with octave-forge (closes: #362591)
+
+ -- Rafael Laboissiere <rafael@debian.org>  Sat, 15 Apr 2006 00:13:27 +0200
+
 octave2.1 (1:2.1.73-7) unstable; urgency=low
 
   * debian/in/PACKAGE-htmldoc.doc-base.lib: Fixed path for HTML files.
