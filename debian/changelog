@@ -1,3 +1,15 @@
+octave2.9 (2.9.5-5) unstable; urgency=low
+
+  NOT YET RELEASED!
+
+  [ Thomas Weber ]
+  * 50_mkoctfile.1-no-negative.dpatch: restore api versioned directories
+  * introduce octave-config2.X symlink in preparation of dual built packages
+    for Octave 2.1 and 2.9
+  * remove dependency on Octave2.0 for -emacsen package
+
+ -- 
+
 octave2.9 (2.9.5-4) unstable; urgency=low
 
   * debian/in/control: Conflicts with octave-forge (closes: #362591)
