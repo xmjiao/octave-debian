@@ -1,10 +1,9 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
-## 50_fix-apiversion.dpatch by  <root@localhost>
+## 50_fix-apiversion.dpatch by Thomas Weber <thomas.weber.mail@gmail.com>
 ##
-## All lines beginning with `## DP:' are a description of the patch.
 ## DP: Switching from 2.9.4 to 2.9.5, upstream changed 'aptversion' to
-## 'api_version' everywhere execpt in configure.in. This results in
-## non-apiversioned m- and oct-direcotries.
+## DP: 'api_version' everywhere except in configure.in. This results in
+## DP: non-apiversioned m- and oct-directories.
 
 @DPATCH@
 diff -urNad octave2.9-2.9.5~/configure.in octave2.9-2.9.5/configure.in
