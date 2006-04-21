@@ -1,7 +1,7 @@
 octave2.9 (2.9.5-5) unstable; urgency=low
 
   [ Thomas Weber ]
-  * debian/patches/50_mkoctfile.1-no-negative.dpatch: restore api
+  * debian/patches/50_fix-apiversion-2.9.dpatch: restore api
     versioned directories
   * debian/rules: introduce octave-config2.X symlink in preparation of
     dual built packages for Octave 2.1 and 2.9
