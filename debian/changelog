@@ -1,3 +1,9 @@
+octave2.9 (2.9.5-6) unstable; urgency=low
+
+  * debian/in/control: Build-depends on libufsparse-dev in the 2.9 branch
+
+ -- Rafael Laboissiere <rafael@debian.org>  Mon, 24 Apr 2006 14:34:29 +0200
+
 octave2.9 (2.9.5-5) unstable; urgency=low
 
   [ Thomas Weber ]
