@@ -1,3 +1,12 @@
+octave2.9 (2.9.5-7) unstable; urgency=low
+
+  [ Thomas Weber ]
+
+  * debian/patches/50_system_doc-2.9.dpatch: adapt the example in the
+    documentation for the new output order of system()
+
+ -- 
+
 octave2.9 (2.9.5-6) unstable; urgency=low
 
   * debian/in/control: Build-depends on libufsparse-dev in the 2.9 branch
