@@ -1,15 +1,18 @@
 octave2.9 (2.9.5-7) unstable; urgency=low
 
   [ Thomas Weber ]
-
   * debian/patches/50_system_doc-2.9.dpatch: adapt the example in the
     documentation for the new output order of system()
 
- -- 
+  [ Rafael Laboissiere ]
+  * Install doc files BUGS, SENDING-PATCHES, and THANKS
+  * debian/in/octave*-watch: Fixed URLs
+
+ -- Rafael Laboissiere <rafael@debian.org>  Wed, 26 Apr 2006 18:46:07 +0200
 
 octave2.9 (2.9.5-6) unstable; urgency=low
 
-  * debian/in/control: Build-depends on libufsparse-dev in the 2.9 branch
+  * debian/in/control: Build-depends on libufsparse-dev incon the 2.9 branch
 
  -- Rafael Laboissiere <rafael@debian.org>  Mon, 24 Apr 2006 14:34:29 +0200
 

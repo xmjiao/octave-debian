@@ -296,8 +296,9 @@ binary-arch: build install check
 	rm -v 					$(debini)/octaverc
         # already installed by make
 	dh_installinfo -n -p$(info_package)  	doc/*/*$(major)*.info*
-	dh_installdocs -a			README README.kpathsea \
-						NEWS* PROJECTS
+	dh_installdocs -a			README README.kpathsea	\
+						NEWS* PROJECTS THANKS	\
+						BUGS SENDING-PATCHES
 	dh_installdocs -p$(PACKAGE) 		debian/README.Atlas
         # recreated in postinst in share/, not needed in lib
 	rm -vf	$(debtmp)/usr/lib/octave/ls-R \
