@@ -313,10 +313,6 @@ binary-arch: build install check
 		usr/bin/octave-$(version) usr/bin/$(PACKAGE)
 	dh_link --package=$(PACKAGE) \
 		/usr/share/man/man1/octave-$(version).1.gz /usr/share/man/man1/octave$(major).1.gz
-	dh_link --package=$(PACKAGE) \
-		usr/bin/octave-config-$(version) usr/bin/octave-config$(major)
-	dh_link --package=$(PACKAGE) \
-		/usr/share/man/man1/octave-config-$(version).1.gz /usr/share/man/man1/octave-config$(major).1.gz
 	dh_strip -a
 	dh_compress -a
 	dh_fixperms -a
@@ -333,4 +329,6 @@ source diff:
 
 binary: install maintainer-scripts binary-arch binary-indep
 .PHONY: build clean make configure binary-indep binary-arch binary
+
+.NOTPARALLEL:
 

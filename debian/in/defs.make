@@ -2,5 +2,5 @@
 # Written by Rafael Laboissiere <rafael@debian.org>
 # $Id$
 
-MDIR = $(shell octave-config-@VERSION@  --print LOCALFCNFILEDIR)
+MDIR = $(shell octave-config-@VERSION@  --print LOCALAPIFCNFILEDIR)
 OCTDIR = $(shell octave-config-@VERSION@  --print LOCALAPIOCTFILEDIR)
