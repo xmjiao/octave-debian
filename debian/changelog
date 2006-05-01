@@ -1,16 +1,15 @@
-octave2.9 (2.9.5-8) unstable; urgency=low
-
-  NOT YET RELEASED!
+octave2.1 (1:2.1.73-8) unstable; urgency=low
 
   [ Rafael Laboissiere ]
+  * Integrate last changes from the 2.9 branch into octave2.1
   * debian/control: Bumped Standards-Version to 3.7.0 (no changes needed)
-  
+
   [ Thomas Weber ]
   * debian/rules: Make parallel build possible and remove octave-config2.X
     link -- it is not needed
     defs.make: use api-versioned directory for m-files
 
- --
+ -- Rafael Laboissiere <rafael@debian.org>  Mon,  1 May 2006 00:35:14 +0200
 
 octave2.9 (2.9.5-7) unstable; urgency=low
 
