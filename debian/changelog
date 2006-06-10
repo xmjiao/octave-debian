@@ -1,3 +1,20 @@
+octave2.9 (1:2.9.6-1) unstable; urgency=low
+
+  NOT YET RELEASED!
+
+  [ Thomas Weber ]
+  * New upstream release
+  * debian/in/octave2.9-00list: Removed from the list the following
+    patches:
+    - 50_fix-apiversion-2.9.dpatch (applied upstream)
+    - 50_system_doc-2.9.dpatch (applied upstream)
+    - 50_octave-value-list-resize-2.9.dpatch (this was a gcc bug)
+    - 50_automatic-replot-docstring (behaviour changed in 2.9)
+    Put a space into the file -- otherwise it's empty and won't get included
+    in the diff, thus breaking the build.
+  
+ --
+
 octave2.1 (1:2.1.73-9) unstable; urgency=low
 
   NOT YET RELEASED!
