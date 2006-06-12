@@ -1,9 +1,10 @@
-octave2.9 (1:2.9.6-1) unstable; urgency=low
-
-  NOT YET RELEASED!
+octave2.9 (2.9.6-1) unstable; urgency=low
 
   [ Thomas Weber ]
   * New upstream release
+  * debian/in/control: Don't conflict with octave-forge anymore
+    (Bug #362591 was indeed a problem with the configure script and is
+    addressed by 50_fix-apiversion-2.9)
   * debian/in/octave2.9-00list: Removed from the list the following
     patches:
     - 50_fix-apiversion-2.9.dpatch (applied upstream)
@@ -12,23 +13,12 @@ octave2.9 (1:2.9.6-1) unstable; urgency=low
     - 50_automatic-replot-docstring (behaviour changed in 2.9)
     Put a space into the file -- otherwise it's empty and won't get included
     in the diff, thus breaking the build.
-  
+
+  [ Rafael Laboissiere ]
+  * debian/in/control: Bumped Standards-Version to 3.7.2 (no changes needed)
+
  --
 
-octave2.1 (1:2.1.73-9) unstable; urgency=low
-
-  NOT YET RELEASED!
-  
-  [ Rafael Laboissiere ]
-  * debian/control: Bumped Standards-Version to 3.7.2 (no changes needed)
-
-  [ Thomas Weber ]
-  * debian/in/control: Don't conflict with octave-forge anymore 
-    (Bug #362591 was indeed a problem with the configure script and is
-    addressed by 50_fix-apiversion-2.9)
-
- -- 
- 
 octave2.1 (1:2.1.73-8) unstable; urgency=low
 
   [ Rafael Laboissiere ]
