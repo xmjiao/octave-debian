@@ -2,9 +2,9 @@ octave2.9 (2.9.6-1) unstable; urgency=low
 
   [ Thomas Weber ]
   * New upstream release
-  * debian/in/control: Don't conflict with octave-forge anymore
-    (Bug #362591 was indeed a problem with the configure script and is
-    addressed by 50_fix-apiversion-2.9)
+  * debian/in/control: Don't conflict with octave-forge anymore.  Bug
+    #362591 was indeed a problem with the configure script and has been
+    fixed upstream.
   * debian/in/octave2.9-00list: Removed from the list the following
     patches:
     - 50_fix-apiversion-2.9.dpatch (applied upstream)
@@ -15,9 +15,16 @@ octave2.9 (2.9.6-1) unstable; urgency=low
     in the diff, thus breaking the build.
 
   [ Rafael Laboissiere ]
-  * debian/in/control: Bumped Standards-Version to 3.7.2 (no changes needed)
+  * debian/in/control:
+    - Bumped Standards-Version to 3.7.2 (no changes needed)
+    - Constrain build-dependency on g++-4.1 >= 4.1.1-4, because the
+      previous version wrongly triggers a "operator delete" compilation
+      error  (see bugs #372705, #372152, and #372559).  This is only
+      temporary, to insure that the autobuilders will work correctly.  In
+      the next version of the package, this build-dependency will be
+      dropped.
 
- --
+ -- Rafael Laboissiere <rafael@debian.org>  Tue, 13 Jun 2006 08:06:25 +0200
 
 octave2.1 (1:2.1.73-8) unstable; urgency=low
 
