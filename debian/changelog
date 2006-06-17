@@ -1,3 +1,14 @@
+octave2.9 (2.9.6-2) unstable; urgency=low
+
+  * debian/in/PACKAGE.conf: Renamed from debian/octave.conf.  Contains
+    slice directives for initializing the Octave path differently
+    according to the branch: for 2.1, use the LOADPATH variable; for 2.9,
+    use the addpath function (closes: #373965)
+  * debian/control: Build-Depends on slice for doing the above
+  * debian/rules: Install $(PACKAGE).conf instead of octave.conf
+
+ -- Rafael Laboissiere <rafael@debian.org>  Sat, 17 Jun 2006 04:46:35 +0200
+
 octave2.9 (2.9.6-1) unstable; urgency=low
 
   [ Thomas Weber ]

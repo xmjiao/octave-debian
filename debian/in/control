@@ -8,7 +8,7 @@ Build-Depends: g++-4.1 (>= 4.1.1-4), debhelper (>= 4.0.0), autoconf, texinfo,
  libhdf5-serial-dev (>= 1.6.5) | libhdf5-lam-dev (>= 1.6.5)
  | libhdf5-mpich-dev (>= 1.6.5), refblas3-dev | atlas3-base-dev,
  lapack3-dev | atlas3-base-dev, gnuplot, fftw3-dev, dejagnu, texi2html,
- less, dpatch[V_2_9:, glpk, libglpk0, libufsparse-dev:]
+ less, dpatch, slice[V_2_9:, glpk, libglpk0, libufsparse-dev:]
 Standards-Version: 3.7.2
 
 Package: octave[V_2_1:2.1:][V_2_9:2.9:]

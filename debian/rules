@@ -99,6 +99,7 @@ maintainer-scripts:
 	done
 	cp debian/in/$(PACKAGE)-00list debian/patches/00list
 	cp debian/in/$(PACKAGE)-watch debian/watch
+	slice -o $(sliceterm):debian/$(PACKAGE).conf debian/in/PACKAGE.conf
 
 get-orig-source: upstream
 upstream:
@@ -284,7 +285,7 @@ binary-arch: build install check
 	rm -r $(debtmp)/usr/include
 	rm -rf $(debtmp)/usr/share/info
 
-	install -p -m 0644  debian/octave.conf  $(debtmp)/etc/$(PACKAGE).conf
+	install -p -m 0644  debian/$(PACKAGE).conf  $(debtmp)/etc
 
         # install lintian overrride
 	install -p -m 0644  debian/$(PACKAGE).lintian \
