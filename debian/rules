@@ -199,7 +199,8 @@ clean: unpatch
 		scripts/autom4te.cache config.log Makefrag.f77		\
 		src/PKG_ADD src/pic src/*.oct src/*.df doc/*/HTML	\
 		examples/octave.desktop scripts/*/PKG_ADD		\
-		test/test_sparse.m doc/interpreter/munge-texi
+		test/test_sparse.m doc/interpreter/munge-texi		\
+		run-octave
 	find doc -name \*.html -exec rm -f \{} \;
 	find doc -name HTML -exec rm -rf \{} \;
 

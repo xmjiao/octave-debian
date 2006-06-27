@@ -1,3 +1,13 @@
+octave2.9 (2.9.6-3) unstable; urgency=low
+
+  * debian/in/PACKAGE.conf: Added code for removing all the directories
+    containing octave-forge .m scripts.  This allows octave2.9 and
+    octave-forge to be installed together and avoids errors in octave2.9
+    such as etime calling an outdated datenum function from octave-forge
+    (closes: #375646).
+
+ -- Rafael Laboissiere <rafael@debian.org>  Tue, 27 Jun 2006 16:57:16 +0200
+
 octave2.9 (2.9.6-2) unstable; urgency=low
 
   * debian/in/PACKAGE.conf: Renamed from debian/octave.conf.  Contains
