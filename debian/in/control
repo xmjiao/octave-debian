@@ -27,6 +27,8 @@ Description: GNU Octave language for numerical computations ([V_2_1:2.1:][V_2_9:
  balgen, dassl, eispack, fftpack, lapack, linpack, minpack, odepack,
  ranlib, slatec-fn and villad. Octave can be dynamically extended with
  user-supplied C++ files.
+ .
+  Homepage: http://www.octave.org/
 
 Package: octave[V_2_1:2.1:][V_2_9:2.9:]-doc
 Architecture: all
@@ -44,6 +46,8 @@ Description: PDF documentation on the GNU Octave language ([V_2_1:2.1:][V_2_9:2.
  the FAQ, a reference card in a4, letter and legal formats, a document on the
  C++ classes used by Octave, as well as the main octave documentation which
  is also included in info format in the octave[V_2_1:2.1:][V_2_9:2.9:]-info package.
+ .
+  Homepage: http://www.octave.org/
 
 Package: octave[V_2_1:2.1:][V_2_9:2.9:]-htmldoc
 Architecture: all
@@ -60,6 +64,8 @@ Description: HTML documentation on the GNU Octave language ([V_2_1:2.1:][V_2_9:2
  the FAQ, a document on the C++ classes used by Octave, as well as the main
  octave documentation which is also included in info format in the main
  Octave package.
+ .
+  Homepage: http://www.octave.org/
 
 Package: octave[V_2_1:2.1:][V_2_9:2.9:]-headers
 Architecture: any
@@ -78,6 +84,8 @@ Description: header files for the GNU Octave language ([V_2_1:2.1:][V_2_9:2.9:] 
  .
  The package is "Architecture: any" specific as it contains architecture-
  specific compiler switches in the mkoctfile script.
+ .
+  Homepage: http://www.octave.org/
 
 Package: octave[V_2_1:2.1:][V_2_9:2.9:]-emacsen
 Architecture: all
@@ -92,6 +100,8 @@ Description: Emacs support for the GNU Octave language ([V_2_1:2.1:][V_2_9:2.9:]
  .
  This packages provides the elisp files for the Octave modes for GNU Emacs
  and XEmacs.
+ .
+  Homepage: http://www.octave.org/
 
 Package: octave[V_2_1:2.1:][V_2_9:2.9:]-info
 Architecture: all
@@ -108,6 +118,8 @@ Description: GNU Info documentation on the GNU Octave language ([V_2_1:2.1:][V_2
  the FAQ, a document on the C++ classes used by Octave, as well as the main
  octave documentation which is needed for the 'help -i foo' command within
  Octave.
+ .
+  Homepage: http://www.octave.org/
 
 [V_2_1:
 Package: octave
