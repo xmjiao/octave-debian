@@ -1,0 +1,16 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 50_desktop-category-no-space.dpatch by Rafael Laboissiere <rafael@debian.org>
+##
+## DP: Get rid of a space character in the Categories field
+
+@DPATCH@
+
+--- octave2.9-2.9.6.orig/examples/octave.desktop.in
++++ octave2.9-2.9.6/examples/octave.desktop.in
+@@ -7,5 +7,5 @@
+ Icon=%OCTAVE_IMAGEDIR%/octave-sombrero.png
+ Terminal=true
+ Type=Application
+-Categories=Development; Science;
++Categories=Development;Science;
+ StartupNotify=false

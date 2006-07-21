@@ -2,12 +2,12 @@ octave2.9 (2.9.6-4) unstable; urgency=low
 
   NOT YET RELEASED!
 
-  [ Thomas Weber ]
-  * Introduce mkoctfile<major> symlink:
-    /usr/bin/mkoctfile<major> -> /usr/bin/mkoctfile-<version>,
-    needed for octave2.X-forge mex binary
+  [ Rafael Laboissiere ]
+  * debian/patches/50_desktop-category-no-space.dpatch: remove extraneous
+    space character in the Categories filed.  This is needed when building
+    the package with desktop-file-utils version 0.11-1.
 
- --
+ -- 
 
 octave2.1 (1:2.1.73-9) unstable; urgency=low
 
