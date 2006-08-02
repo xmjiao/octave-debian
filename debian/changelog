@@ -1,12 +1,14 @@
-octave2.9 (2.9.6-5) unstable; urgency=low
+octave2.9 (2.9.7-1) unstable; urgency=low
 
   NOT YET RELEASED!
 
   [ Thomas Weber ]
-  * new patches: 
-    - 50_array-out-of-bounds-2.9.dpatch: fixes an array out of bounds
-    error, thanks to Atsushi Kajita
-    - 50_fix_path-2.9.dpatch: (closes: #374943), thanks to John W Eaton
+  * New upstream release (Closes: #374943)
+  * Removed patches (applied upstream)
+    - 50_array-out-of-bounds-2.9
+    - 50_desktop-category-no-space
+    - 50_fix_path-2.9
+  * debian/control: Bump compat level to 5; depend on debhelper >= 5
 
  -- 
 
