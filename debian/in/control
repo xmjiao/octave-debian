@@ -15,7 +15,10 @@ Standards-Version: 3.7.2
 Package: octave[V_2_1:2.1:][V_2_9:2.9:]
 Architecture: any
 Depends: ${shlibs:Depends}, texinfo
-Suggests: gnuplot, octave[V_2_1:2.1:][V_2_9:2.9:]-info, octave[V_2_1:2.1:][V_2_9:2.9:]-doc, octave[V_2_1:2.1:][V_2_9:2.9:]-htmldoc, octave[V_2_1:2.1:][V_2_9:2.9:]-headers (= ${Source-Version}), octave[V_2_1:2.1:][V_2_9:2.9:]-emacsen
+Suggests: gnuplot, octave[V_2_1:2.1:][V_2_9:2.9:]-info,
+ octave[V_2_1:2.1:][V_2_9:2.9:]-doc, octave[V_2_1:2.1:][V_2_9:2.9:]-htmldoc,
+ octave[V_2_1:2.1:][V_2_9:2.9:]-headers (= ${Source-Version}),
+ octave[V_2_1:2.1:][V_2_9:2.9:]-emacsen
 Replaces: octave (<= 2.0.16-2)
 Conflicts: octave (<= 2.0.16-2)
 Provides: octave
@@ -70,7 +73,11 @@ Description: HTML documentation on the GNU Octave language ([V_2_1:2.1:][V_2_9:2
 
 Package: octave[V_2_1:2.1:][V_2_9:2.9:]-headers
 Architecture: any
-Depends: octave[V_2_1:2.1:][V_2_9:2.9:] (= ${Source-Version}), g++, gfortran, libreadline5-dev, libncurses5-dev, libhdf5-serial-dev (>= 1.6.5) | libhdf5-lam-dev (>= 1.6.5) | libhdf5-mpich-dev (>= 1.6.5), refblas3-dev | atlas3-base-dev, lapack3-dev | atlas3-base-dev, fftw3-dev, ${m68k:Depends}
+Depends: octave[V_2_1:2.1:][V_2_9:2.9:] (= ${Source-Version}), g++, gfortran,
+ libreadline5-dev, libncurses5-dev, libhdf5-serial-dev (>= 1.6.5)
+ | libhdf5-lam-dev (>= 1.6.5) | libhdf5-mpich-dev (>= 1.6.5),
+ refblas3-dev | atlas3-base-dev, lapack3-dev | atlas3-base-dev, fftw3-dev,
+ ${m68k:Depends}
 Conflicts: octave-headers (<< 2.1)
 Provides: octave-headers
 Replaces: octave-headers
@@ -90,7 +97,8 @@ Description: header files for the GNU Octave language ([V_2_1:2.1:][V_2_9:2.9:] 
 
 Package: octave[V_2_1:2.1:][V_2_9:2.9:]-emacsen
 Architecture: all
-Depends: octave[V_2_1:2.1:][V_2_9:2.9:], emacs21 | xemacs21 | emacsen, debianutils (>= 1.6)
+Depends: octave[V_2_1:2.1:][V_2_9:2.9:], emacs21 | xemacs21 | emacsen,
+ debianutils (>= 1.6)
 Replaces: octave (<= 2.0.16-2)
 Conflicts: octave2.0-emacsen
 Provides: octave-emacsen
