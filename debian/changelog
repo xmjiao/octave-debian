@@ -1,16 +1,16 @@
 octave2.9 (2.9.7-1) unstable; urgency=low
 
-  NOT YET RELEASED!
-
   [ Thomas Weber ]
-  * New upstream release (Closes: #374943)
+  * New upstream release.  A bug in the path function has been fixed
+    upstream allowing again this function to accept more than one argument
+    (closes: #374943).
   * Removed patches (applied upstream)
     - 50_array-out-of-bounds-2.9
     - 50_desktop-category-no-space
     - 50_fix_path-2.9
-  * debian/control: Bump compat level to 5; depend on debhelper >= 5
+  * debian/in/control: Bump compat level to 5; depend on debhelper >= 5
 
- -- 
+ -- Rafael Laboissiere <rafael@debian.org>  Sat, 12 Aug 2006 12:01:23 +0200
 
 octave2.9 (2.9.6-4) unstable; urgency=low
 
