@@ -1,0 +1,69 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 50_fixed-freqz.dpatch by Rafael Laboissiere <rafael@debian.org>
+##
+## DP: Fixed freqz.m (patch taken from upstream CVS)
+
+@DPATCH@
+
+--- octave2.1-2.1.73.orig/scripts/signal/freqz.m
++++ octave2.1-2.1.73/scripts/signal/freqz.m
+@@ -84,7 +84,7 @@
+     region = Fs = [];
+   elseif (nargin == 4)
+     Fs = [];
+-    if (! isstr (region) && ! isempty (region))
++    if (! ischar (region) && ! isempty (region))
+       Fs = region; 
+       region = [];
+     endif
+@@ -114,26 +114,27 @@
+     endif
+   endif
+ 
+-  a = a(:).';
+-  b = b(:).';
++  a = a(:);
++  b = b(:);
+ 
+   if (! isscalar (n)) ## Explicit frequency vector given
+     w = f = n;
+     if (nargin == 4)  ## Sampling rate Fs was specified
+       w = 2*pi*f/Fs;
+     endif
+-    hb = polyval (fliplr(b), exp(-j*w));
+-    ha = polyval (fliplr(a), exp(-j*w));
++    hb = polyval (fliplr(b), exp(j*w));
++    ha = polyval (fliplr(a), exp(j*w));
+   elseif (strcmp (region, "whole"))
+-    f = Fs * (0:n-1) / n;
+-    ## polyval(fliplr(P),exp(-jw)) is O(p n) and fft(x) is O(n log(n)), where p is the 
+-    ## order of the the polynomial P.  For small p it would be faster to use polyval  
+-    ## but in practice the overhead for polyval is much higher and the little bit of
+-    ## time saved isn't worth the extra code.
++    f = Fs * (0:n-1)' / n;
++    ## polyval(fliplr(P),exp(jw)) is O(p n) and fft(x) is O(n log(n)),
++    ## where p is the order of the the polynomial P.  For small p it
++    ## would be faster to use polyval but in practice the overhead for
++    ## polyval is much higher and the little bit of time saved isn't
++    ## worth the extra code.
+     hb = fft (postpad (b, n));
+     ha = fft (postpad (a, n));
+   else
+-    f = Fs/2 * (0:n-1) / n;
++    f = Fs/2 * (0:n-1)' / n;
+     hb = fft (postpad (b, 2*n))(1:n);
+     ha = fft (postpad (a, 2*n))(1:n);
+   endif
+@@ -169,9 +170,9 @@
+ %!test # Sampling frequency properly interpreted
+ %! b = [1 1 1]/3;
+ %! [h,f] = freqz(b,1,16,320);
+-%! assert(f,[0:15]*10,10*eps);
++%! assert(f,[0:15]'*10,10*eps);
+ %! [h2,f2] = freqz(b,1,[0:15]*10,320);
+ %! assert(f2,[0:15]*10,10*eps);
+-%! assert(h,h2,20*eps);
++%! assert(h,h2',20*eps);
+ %! [h3,f3] = freqz(b,1,32,'whole',320);
+-%! assert(f3,[0:31]*10,10*eps);
++%! assert(f3,[0:31]'*10,10*eps);

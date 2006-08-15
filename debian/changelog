@@ -1,3 +1,12 @@
+octave2.1 (1:2.1.73-10) unstable; urgency=low
+
+  * Regenerated octave2.1 packages for integrating the last changes
+    regarding octave-depends
+  * debian/patches/50_fixed-freqz.dpatch: Fix script/general/freqz.m,
+    patch taken from upstream CVS (closes: #383097)
+
+ -- Rafael Laboissiere <rafael@debian.org>  Tue, 15 Aug 2006 19:05:49 +0200
+
 octave2.9 (2.9.7-2) unstable; urgency=low
 
   * debian/in/octave-depends:
