@@ -1,3 +1,12 @@
+octave2.9 (2.9.7-2) unstable; urgency=low
+
+  * debian/in/octave-depends:
+    - Introduced substitution variables ${octave<major>:Depends}
+    - Updated POD section accordingly
+  * debian/rules: Create symlink for octave<major>-depends
+
+ -- Rafael Laboissiere <rafael@debian.org>  Mon, 14 Aug 2006 15:10:09 +0200
+
 octave2.9 (2.9.7-1) unstable; urgency=low
 
   [ Thomas Weber ]

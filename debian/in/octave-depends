@@ -28,15 +28,18 @@ use Debian::Debhelper::Dh_Lib;
 
 =head1 SYNOPSIS
 
-B<octave-deps> [S<I<debhelper options>>]
+B<octave-depends> [S<I<debhelper options>>]
 
 =head1 DESCRIPTION
 
-octave-deps is a debhelper-like program that is responsible for generating
-the ${octave:Depends} substitutions and adding them to substvars files.
+octave-depends is a debhelper-like program that is responsible for
+generating the ${octave:Depends} substitutions and adding them to
+substvars files.  Variables ${octave<major>:Depends} are also
+available, where <major> is currently either "-2-1" or "-2-9" (N.B.:
+periods are not allowed in substvar names).
 
 If you use this program, your package must build-depend on octave2.1-headers
-(>= 2.1.65).
+(>= 2.1.73-10) or octave2.9-headers (>= 2.9.7-2).
 
 =cut
 
@@ -44,6 +47,8 @@ init ();
 
 my $octcfg = '/usr/bin/octave-config-@VERSION@';
 my $octpkg = 'octave@MAJOR@';
+my $octpfx = 'octave-@MAJOR@';
+$octpfx =~ s/\./-/;
 
 # The current Octave version
 my $octver = `$octcfg --version 2>&1`
@@ -55,6 +60,8 @@ foreach my $package (@{$dh{DOPACKAGES}}) {
 	delsubstvar($package, "octave:Depends");
 	addsubstvar($package, "octave:Depends", $octpkg, ">= $octver");
 
+	delsubstvar($package, "$octpfx:Depends");
+	addsubstvar($package, "$octpfx:Depends", $octpkg, ">= $octver");
 }
 
 =head1 SEE ALSO
