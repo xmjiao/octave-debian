@@ -3,11 +3,11 @@ octave2.1 (1:2.1.73-11) unstable; urgency=low
   NOT YET RELEASED!
 
   [ Rafael Laboissiere ]
-  * debian/patches/50_OCTAVEHOME-2.1.dpatch: Change OCTAVEHOME to
+  * debian/patches/50_OCTAVEHOME-texi.dpatch: Change OCTAVEHOME to
     /usr, which is the correct value in Debian systems
   * debian/in/octave2.1-00list: Include the above
 
- -- Rafael Laboissiere <rafael@debian.org>  Sat, 19 Aug 2006 00:46:57 +0200
+ --
 
 octave2.1 (1:2.1.73-10) unstable; urgency=low
 
