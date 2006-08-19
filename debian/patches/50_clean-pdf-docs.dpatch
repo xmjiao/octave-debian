@@ -1,7 +1,7 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
 ## 50_clean-pdf-docs.dpatch by Rafael Laboissiere <rafael@debian.org>
 ##
-## DP: Clean PDF files in doc/ not cleaned by maintainer-clean target
+## DP: Clean PDF files in doc/ not cleaned by the maintainer-clean target
 
 @DPATCH@
 
@@ -10,10 +10,10 @@
 @@ -79,7 +79,7 @@
 
  maintainer-clean: distclean
-        rm -f tags TAGS Octave-FAQ.info Octave-FAQ.info-*
--       rm -f Octave-FAQ.dvi Octave-FAQ.ps
-+       rm -f Octave-FAQ.dvi Octave-FAQ.ps Octave-FAQ.pdf
-        rm -rf HTML
+ 	rm -f tags TAGS Octave-FAQ.info Octave-FAQ.info-*
+-	rm -f Octave-FAQ.dvi Octave-FAQ.ps
++	rm -f Octave-FAQ.dvi Octave-FAQ.ps Octave-FAQ.pdf
+ 	rm -rf HTML
  .PHONY: maintainer-clean
 
 --- octave2.1-2.1.73.orig/doc/liboctave/Makefile.in
@@ -21,9 +21,9 @@
 @@ -95,7 +95,7 @@
 
  maintainer-clean: distclean
-        rm -f tags TAGS liboctave.info liboctave.info-*
--       rm -f liboctave.dvi liboctave.ps
-+       rm -f liboctave.dvi liboctave.ps liboctave.pdf
-        rm -rf HTML
+ 	rm -f tags TAGS liboctave.info liboctave.info-*
+-	rm -f liboctave.dvi liboctave.ps
++	rm -f liboctave.dvi liboctave.ps liboctave.pdf
+ 	rm -rf HTML
  .PHONY: maintainer-clean
 
