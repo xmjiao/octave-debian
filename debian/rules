@@ -37,12 +37,10 @@ deblsp		:= $(debbase)/$(emacs_package)/usr/share/emacs/site-lisp/$(emacs_package
 debini		:= $(debtmp)/usr/share/octave/site/m/startup
 debininew	:= $(debtmp)/usr/share/octave/$(version)/m/startup
 
+savefiles	:= configure config.h.in scripts/configure
 texifiles	:= doc/interpreter/octave.texi		\
 			doc/liboctave/liboctave.texi	\
 			doc/faq/Octave-FAQ.texi
-
-origdoc		:= interpreter/octave.pdf faq/Octave-FAQ.pdf \
-			liboctave/liboctave.pdf
 
 ## edd  3 Feb 2003  gcc 3.2, also imposed uniformly via Build-Depends
 ## edd 27 Jun 2003  now that gcc 3.3 is in unstable and testing, relax this
@@ -105,13 +103,19 @@ get-orig-source: upstream
 upstream:
 	links ftp://ftp.octave.org/pub/octave/bleeding-edge
 
-build: build-stamp configure-stamp make-stamp check-stamp
-build-stamp: configure make check
-	touch build-stamp
+$(patsubst %,build-%,arch indep) :: build-% : \
+		build-%-stamp configure-stamp make-%-stamp check-stamp
+$(patsubst %,build-%-stamp,arch indep) :: build-%-stamp : \
+		configure make-% check
+	touch $@
 
 configure: maintainer-scripts patch-stamp configure-stamp
 configure-stamp:
 	dh_testdir
+
+	for f in $(savefiles) ; do	\
+		cp $$f $$f-save ;				\
+	done
 
 	[ -f autogen.sh ] &&  ./autogen.sh && chmod 0755 configure
 
@@ -145,31 +149,40 @@ configure-stamp:
 			$$f ; 						\
 	done
 
+	chmod +x debian/subdirs-vars.pl
+	cp octMakefile octMakefile-orig
+	for i in no-doc only-doc ; do				\
+		debian/subdirs-vars.pl $$i			\
+			< octMakefile > octMakefile-$$i ;	\
+	done
+
 	touch configure-stamp
 
-make: configure-stamp make-stamp
-make-stamp:
+make-arch: configure-stamp make-arch-stamp
+make-arch-stamp:
 
-
-	if test ! -d doc-orig; then				\
-		for f in $(origdoc); do				\
-			mkdir -p doc-orig/`dirname $$f`;	\
-			cp doc/$$f doc-orig/$$f ;		\
-		done;						\
-	fi
-
+	ln -fs octMakefile-no-doc octMakefile
 	$(MAKE)		CFLAGS="$(compilerflags)"		\
 			CXXFLAGS="$(compilerflags)"		\
 			FFLAGS="$(compilerflags)"		\
 			LDFLAGS="$(linkerflags)"		\
 			CC="$(c_compiler)"			\
 			CXX="$(cxx_compiler)"			\
-			F77="$(f77_compiler)"			\
+			F77="$(f77_compiler)"
 
-	touch make-stamp
+	touch make-arch-stamp
 
-check: configure-stamp make-stamp check-stamp
+make-indep: configure-stamp make-indep-stamp
+make-indep-stamp:
+
+	ln -fs octMakefile-only-doc octMakefile
+	$(MAKE)
+
+	touch make-indep-stamp
+
+check: configure-stamp make-arch-stamp check-stamp
 check-stamp:
+	ln -fs octMakefile-no-doc octMakefile
 	-$(MAKE) 	check
 	touch check-stamp
 
@@ -177,46 +190,75 @@ clean: unpatch
 	dh_testdir
 	dh_testroot
 
-	find doc -name Makefile | xargs rm -f
+	-$(MAKE) -C doc clean
+	-$(MAKE) -C doc/interpreter/images distclean
+	-$(MAKE) -C doc maintainer-clean
+	find doc -name \*.info\* | xargs rm -f
 
+	-test -f octMakefile-orig && mv octMakefile-orig octMakefile
 	-$(MAKE) -i distclean || $(MAKE) -f Makefile.in distclean
 
-	if test -d doc-orig; then			\
-		for f in $(origdoc) ; do		\
-			mv doc-orig/$$f doc/$$f ;	\
-		done;					\
-		rm -rf doc-orig ;			\
-	fi
+	rm -f build-*-stamp configure-stamp make-*-stamp check-stamp	\
+		install-*-stamp Makefile.tmp octMakefile-*
 
-	rm -f build-stamp configure-stamp make-stamp check-stamp \
-		install-stamp Makefile.tmp
-	-rm -vrf libcruft/libcruft.so libcruft/*/Makefile		\
-		install.octave  scripts/gethelp  libcruft/misc/*.d	\
-		scripts/autom4te.cache config.log Makefrag.f77		\
-		src/PKG_ADD src/pic src/*.oct src/*.df doc/*/HTML	\
-		examples/octave.desktop scripts/*/PKG_ADD		\
-		test/test_sparse.m doc/interpreter/munge-texi		\
-		run-octave
-	find doc -name \*.html -exec rm -f \{} \;
-	find doc -name HTML -exec rm -rf \{} \;
+#	-rm -vrf libcruft/libcruft.so libcruft/*/Makefile		\
+#		install.octave  scripts/gethelp  libcruft/misc/*.d	\
+#		scripts/autom4te.cache config.log Makefrag.f77		\
+#		src/PKG_ADD src/pic src/*.oct src/*.df			\
+#		examples/octave.desktop scripts/*/PKG_ADD		\
+#		test/test_sparse.m doc/interpreter/munge-texi		\
+#		run-octave
+
+	-for f in $(savefiles) ; do	\
+		test -f $$f-save && mv $$f-save $$f ;			\
+	done
 
 	rm -f `ls debian/in/PACKAGE* | sed 's/PACKAGE/$(PACKAGE)/;s:/in::'`
 	rm -f octave-depends-$(version).1
 	( cd debian ; rm -f watch octave-depends defs.make )
 
+	-for f in $(texifiles) ; do					\
+		test -f $$f-save && mv $$f-save $$f ;			\
+	done
+
 	dh_clean
 
-install: configure-stamp make-stamp check-stamp install-stamp
-install-stamp:
+install: install-arch install-indep
+
+install-indep: configure-stamp make-indep-stamp install-indep-stamp
+install-indep-stamp :
 	dh_testdir
 	dh_testroot
 	dh_installdirs -A
-	$(MAKE) INSTALL_PROGRAM="install -s" DESTDIR=$(debtmp) install
-	dh_installman octave-depends-$(version).1
+
+	ln -fs octMakefile-only-doc octMakefile
+	$(MAKE) INSTALL_PROGRAM="install -s" DESTDIR=$(debtmp)	\
+		install
+
+	touch install-indep-stamp
+
+install-arch: configure-stamp make-arch-stamp check-stamp install-arch-stamp
+install-arch-stamp :
+	dh_testdir
+	dh_testroot
+	dh_installdirs -A
+
+	ln -fs octMakefile-no-doc octMakefile
+	$(MAKE) INSTALL_PROGRAM="install -s" DESTDIR=$(debtmp)	\
+		install
+
+	dh_installman				\
+		octave-depends-$(version).1	\
+		doc/interpreter/octave.1	\
+		doc/interpreter/octave-bug.1	\
+		doc/interpreter/mkoctfile.1	\
+		doc/interpreter/octave-config.1
+
 	install debian/octave-depends \
 		 $(debtmp)/usr/bin/octave-depends-$(version)
 	install --mode=644 debian/defs.make \
 		$(debtmp)/usr/share/octave/debian/defs.make-$(version)
+
 	(cd $(debtmp)/usr/share/man/man1; 				\
 		mv -v	octave.1	octave-$(version).1;    	\
 		ln -s	octave-$(version).1	octave$(major).1;	\
@@ -225,11 +267,15 @@ install-stamp:
 		mv -v   mkoctfile.1	mkoctfile-$(version).1;		)
 	(cd $(debtmp)/usr/bin; 						\
 		rm -v   octave	octave-bug mkoctfile octave-config)
-	touch install-stamp
 
-binary-indep: build install check
+	touch install-arch-stamp
+
+binary-indep: build-indep install-indep
 	dh_testdir -i
 	dh_testroot -i
+
+        # already installed by make
+	dh_installinfo -n -p$(info_package)  	doc/*/*$(major)*.info*
 
 	dh_installdocs -n -p$(doc_package) doc/*/*.pdf
 	dh_installdocs -i
@@ -259,7 +305,7 @@ binary-indep: build install check
 	dh_builddeb -i
 
 # Build architecture-dependent files here.
-binary-arch: build install check
+binary-arch: build-arch install-arch check
 	dh_testdir -a
 	dh_testroot -a
 	dh_installdirs -p$(PACKAGE)
@@ -290,8 +336,7 @@ binary-arch: build install check
 	ln -sf /etc/$(PACKAGE).conf 		$(debininew)/octaverc
         ## this file would exist under 2.0 and 2.1 with the same name
 	rm -v 					$(debini)/octaverc
-        # already installed by make
-	dh_installinfo -n -p$(info_package)  	doc/*/*$(major)*.info*
+
 	dh_installdocs -a			README README.kpathsea	\
 						NEWS* PROJECTS THANKS	\
 						BUGS SENDING-PATCHES
@@ -338,7 +383,7 @@ binary-arch: build install check
 source diff:
 	@echo >&2 'source and diff are obsolete - use dpkg-source -b'; false
 
-binary: install maintainer-scripts binary-arch binary-indep
+binary: binary-arch binary-indep
 .PHONY: build clean make configure binary-indep binary-arch binary
 
 .NOTPARALLEL:
