@@ -113,10 +113,6 @@ configure: maintainer-scripts patch-stamp configure-stamp
 configure-stamp:
 	dh_testdir
 
-        # use Debian's tempfile(1) for enhanced security
-	cp octave-bug.in octave-bug.in.orig
-	perl -p -i -e 's|/tmp/octave-bug.\$$\$$|`tempfile`|' octave-bug.in
-
 	[ -f autogen.sh ] &&  ./autogen.sh && chmod 0755 configure
 
 	DEFAULT_PAGER=pager				\
@@ -203,8 +199,6 @@ clean: unpatch
 		run-octave
 	find doc -name \*.html -exec rm -f \{} \;
 	find doc -name HTML -exec rm -rf \{} \;
-
-	test ! -f octave-bug.in.orig || mv octave-bug.in.orig octave-bug.in
 
 	rm -f `ls debian/in/PACKAGE* | sed 's/PACKAGE/$(PACKAGE)/;s:/in::'`
 	rm -f octave-depends-$(version).1

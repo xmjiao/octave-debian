@@ -1,0 +1,18 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 50_octave-bug-tempfile.dpatch by Rafael Laboissiere <rafael@debian.org>
+##
+## DP: Use Debian's tempfile(1) for enhanced security
+
+@DPATCH@
+
+--- octave2.1-2.1.73.orig/octave-bug.in	2006-08-19 02:58:39.000000000 +0200
++++ octave2.1-2.1.73/octave-bug.in	2006-08-19 11:11:51.172397104 +0200
+@@ -61,7 +61,7 @@
+ PATH=/bin:/usr/bin:/usr/ucb:/usr/local/bin:$PATH
+ export PATH
+ 
+-TEMP=/tmp/octave-bug.$$
++TEMP=`tempfile`
+ 
+ if [ -z "$DEFEDITOR" ] && [ -z "$EDITOR" ]; then
+   if [ -x /usr/bin/editor ]; then

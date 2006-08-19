@@ -7,6 +7,11 @@ octave2.1 (1:2.1.73-11) unstable; urgency=low
     /usr, which is the correct value in Debian systems
   * debian/in/octave2.1-00list: Include the above
 
+  * debian/patches/50_octave-bug-tempfile.dpatch: In octave-bug, use
+    Debian's tempfile(1) for enhanced security
+  * debian/rules: Removed the Perl hack that used to implement the
+    patch above
+
  --
 
 octave2.1 (1:2.1.73-10) unstable; urgency=low
