@@ -12,6 +12,9 @@ octave2.1 (1:2.1.73-11) unstable; urgency=low
   * debian/rules: Removed the Perl hack that used to implement the
     patch above
 
+  * debian/patches/50_clean-pdf-docs: Clean PDF files in doc/ not cleaned
+    by the maintainer-clean target
+
  --
 
 octave2.1 (1:2.1.73-10) unstable; urgency=low
