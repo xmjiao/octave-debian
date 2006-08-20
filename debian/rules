@@ -201,14 +201,6 @@ clean: unpatch
 	rm -f build-*-stamp configure-stamp make-*-stamp check-stamp	\
 		install-*-stamp Makefile.tmp octMakefile-*
 
-#	-rm -vrf libcruft/libcruft.so libcruft/*/Makefile		\
-#		install.octave  scripts/gethelp  libcruft/misc/*.d	\
-#		scripts/autom4te.cache config.log Makefrag.f77		\
-#		src/PKG_ADD src/pic src/*.oct src/*.df			\
-#		examples/octave.desktop scripts/*/PKG_ADD		\
-#		test/test_sparse.m doc/interpreter/munge-texi		\
-#		run-octave
-
 	-for f in $(savefiles) ; do	\
 		test -f $$f-save && mv $$f-save $$f ;			\
 	done
