@@ -1,3 +1,15 @@
+octave2.9 (2.9.7-3) unstable; urgency=low
+
+  NOT YET RELEASED!
+
+  [ Rafael Laboissiere ]
+  * debian/patches/50_detect-empty-arrays.dpatch: Correctly detect empty
+    arrays.  If array is empty, return/produce value is same size as
+    array. (Patch proposed by John W. Eaton in the pkg-octave-devel
+    mailing list, closes: #384195.)
+
+ --
+
 octave2.1 (1:2.1.73-11) unstable; urgency=low
 
   NOT YET RELEASED!
