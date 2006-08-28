@@ -1,20 +1,5 @@
-octave2.9 (2.9.7-3) unstable; urgency=low
-
-  NOT YET RELEASED!
-
-  [ Rafael Laboissiere ]
-  * debian/patches/50_detect-empty-arrays.dpatch: Correctly detect empty
-    arrays.  If array is empty, return/produce value is same size as
-    array. (Patch proposed by John W. Eaton in the pkg-octave-devel
-    mailing list, closes: #384195.)
-
- --
-
 octave2.1 (1:2.1.73-11) unstable; urgency=low
 
-  NOT YET RELEASED!
-
-  [ Rafael Laboissiere ]
   * debian/patches/50_OCTAVEHOME-texi.dpatch: Change OCTAVEHOME to
     /usr, which is the correct value in Debian systems
   * debian/in/octave2.1-00list: Include the above
@@ -35,7 +20,7 @@ octave2.1 (1:2.1.73-11) unstable; urgency=low
     INSTALL_SUBDIRS variables in octMakefile, allowing the build/install
     of the documentation files separately
 
- --
+ -- Rafael Laboissiere <rafael@debian.org>  Mon, 28 Aug 2006 21:23:33 +0200
 
 octave2.1 (1:2.1.73-10) unstable; urgency=low
 
