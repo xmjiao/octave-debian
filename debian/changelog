@@ -1,3 +1,12 @@
+octave2.9 (2.9.8-1) unstable; urgency=low
+
+  * New upstream release.   Empty arrays are correctly detect.  If array
+    is empty, return/produce value is same size as array (closes: #384195)
+  * debian/patches/50_clean-mat-files.dpatch: Clean *.mat files left by
+    make check
+
+ -- Rafael Laboissiere <rafael@debian.org>  Tue, 29 Aug 2006 00:03:33 +0200
+
 octave2.1 (1:2.1.73-11) unstable; urgency=low
 
   * debian/patches/50_OCTAVEHOME-texi.dpatch: Change OCTAVEHOME to
