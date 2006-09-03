@@ -1,3 +1,13 @@
+octave2.9 (2.9.8-2) unstable; urgency=low
+
+  NOT YET RELEASED!
+
+  [ Rafael Laboissiere ]
+  * debian/patches/50_info-emacs-info-invocation.dpatch: Fixes parsing of
+    options by the info-emacs-info script (closes: #368843)
+
+ --
+
 octave2.9 (2.9.8-1) unstable; urgency=low
 
   * New upstream release.   Empty arrays are correctly detect.  If array
