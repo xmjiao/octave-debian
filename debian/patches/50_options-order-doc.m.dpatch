@@ -1,0 +1,20 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 50_options-order-doc.m.dpatch by Rafael Laboissiere <rafael@debian.org>
+##
+## DP: Fix the order of the options in the invocation of the info program,
+## DP: such that the info-emacs-info and info-emacs-octave-help scripts
+## DP: work again
+
+@DPATCH@
+
+--- octave-2.9.8.orig/scripts/miscellaneous/doc.m	2006-09-03 17:04:16.216249600 +0200
++++ octave-2.9.8/scripts/miscellaneous/doc.m	2006-09-03 17:05:35.275230808 +0200
+@@ -73,7 +73,7 @@
+       info_file_name = info_file ();
+     endif
+ 
+-    cmd = sprintf ("\"%s\" --directory \"%s\" --file \"%s\"",
++    cmd = sprintf ("\"%s\" --file \"%s\" --directory \"%s\"",
+ 		   info_program (), info_dir, info_file_name);
+ 
+     if (! isempty (fname))
