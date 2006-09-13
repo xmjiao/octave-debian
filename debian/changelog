@@ -1,14 +1,16 @@
 octave2.9 (2.9.8-2) unstable; urgency=low
 
-  NOT YET RELEASED!
-
-  [ Rafael Laboissiere ]
   * debian/patches/50_options-order-doc.m.dpatch: Fix the order of
     the options in the invocation of the info program, such that the
     info-emacs-info and info-emacs-octave-help scripts work again
     (closes: #368843)
 
- --
+  * debian/patches/50_sparse-fct-scalar-arg.patch.dpatch: Make spkron
+    (and other sparse matrix functions) accept scalar arguments. Thanks to
+    David Bateman <adb014 AT gmail DOT com> for posting the patch in
+    bug@octave.org (closes: #387137).
+
+ -- Rafael Laboissiere <rafael@debian.org>  Wed, 13 Sep 2006 15:43:12 +0200
 
 octave2.9 (2.9.8-1) unstable; urgency=low
 
