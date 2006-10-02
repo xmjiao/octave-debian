@@ -1,3 +1,13 @@
+octave2.9 (2.9.8-3) unstable; urgency=low
+
+  * debian/patches/50_options-order-doc.m.dpatch: Update patch to work
+    with plain Octave prompt as well.
+  * debian/in/control: build-depend on gnuplot-nox instead of gnuplot; maybe
+    this will allow us to circumvent a temporary dependency problem with
+    gnuplot on several architectures (alpha, mips, mipsel).
+
+ -- 
+
 octave2.9 (2.9.8-2) unstable; urgency=low
 
   * debian/patches/50_options-order-doc.m.dpatch: Fix the order of

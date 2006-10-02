@@ -7,7 +7,7 @@ Build-Depends: g++-4.1 (>= 4.1.1-4), debhelper (>= 5.0.0), autoconf, texinfo,
  tetex-bin, gfortran, libreadline5-dev, libncurses5-dev, gperf,
  libhdf5-serial-dev (>= 1.6.5) | libhdf5-lam-dev (>= 1.6.5)
  | libhdf5-mpich-dev (>= 1.6.5), refblas3-dev | atlas3-base-dev,
- lapack3-dev | atlas3-base-dev, gnuplot, fftw3-dev, dejagnu, texi2html,
+ lapack3-dev | atlas3-base-dev, gnuplot-nox, fftw3-dev, dejagnu, texi2html,
  less, dpatch, slice[V_2_9:, glpk, libglpk0, libufsparse-dev:]
 Standards-Version: 3.7.2
 
