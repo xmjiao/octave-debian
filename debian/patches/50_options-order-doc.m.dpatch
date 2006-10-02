@@ -6,15 +6,17 @@
 ## DP: work again
 
 @DPATCH@
-
---- octave-2.9.8.orig/scripts/miscellaneous/doc.m	2006-09-03 17:04:16.216249600 +0200
-+++ octave-2.9.8/scripts/miscellaneous/doc.m	2006-09-03 17:05:35.275230808 +0200
-@@ -73,7 +73,7 @@
+diff -urNad octave2.9-2.9.8~/scripts/miscellaneous/doc.m octave2.9-2.9.8/scripts/miscellaneous/doc.m
+--- octave2.9-2.9.8~/scripts/miscellaneous/doc.m	2006-05-26 21:04:08.000000000 +0200
++++ octave2.9-2.9.8/scripts/miscellaneous/doc.m	2006-10-02 16:17:44.000000000 +0200
+@@ -73,8 +73,8 @@
        info_file_name = info_file ();
      endif
  
 -    cmd = sprintf ("\"%s\" --directory \"%s\" --file \"%s\"",
+-		   info_program (), info_dir, info_file_name);
 +    cmd = sprintf ("\"%s\" --file \"%s\" --directory \"%s\"",
- 		   info_program (), info_dir, info_file_name);
++		   info_program (), info_file_name, info_dir);
  
      if (! isempty (fname))
+       cmd = sprintf ("%s --index-search %s", cmd, fname);
