@@ -1,0 +1,17 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 50_mkoctifle-man-indent-option.dpatch by Rafael Laboissiere <rafael@debian.org>
+##
+## DP: Indent correctly option --mex
+
+@DPATCH@
+
+--- octave2.9-2.9.8.orig/doc/interpreter/mkoctfile.1
++++ octave2.9-2.9.8/doc/interpreter/mkoctfile.1
+@@ -66,6 +66,7 @@
+ .TP 8
+ .B \-\-link-stand-alone
+ Link a stand-alone executable file.
++.TP 8
+ .B \-\-mex
+ Assume we are creating a MEX file.  Set the default output extension
+ to .mex.
