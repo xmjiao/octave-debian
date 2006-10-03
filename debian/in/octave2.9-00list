@@ -1,5 +1,3 @@
 50_octave-bug-tempfile
 50_clean-mat-files
-50_options-order-doc.m
-50_sparse-fct-scalar-arg.patch
 50_mkoctifle-man-indent-option

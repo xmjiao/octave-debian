@@ -1,17 +1,20 @@
-octave2.9 (2.9.8-3) unstable; urgency=low
+octave2.9 (2.9.9-1) unstable; urgency=low
+
+  [ Rafael Laboissiere ]
+  * New upstream release
+  * debian/patches/50_sparse-fct-scalar-arg.patch.dpatch,
+    debian/patches/50_options-order-doc.m.dpatch: Removed patches
+    (applied upstream)
+  * debian/patches/50_mkoctifle-man-indent-option.dpatch: New patch for
+    indenting correctly the description of option --mex in the mkoctfile
+    man page
 
   [ Thomas Weber ]
-  * debian/patches/50_options-order-doc.m.dpatch: Update patch to work
-    with plain Octave prompt as well.
   * debian/in/control: build-depend on gnuplot-nox instead of gnuplot; maybe
     this will allow us to circumvent a temporary dependency problem with
     gnuplot on several architectures (alpha, mips, mipsel).
 
-  [ Rafael Laboissiere ]
-  * debian/patches/50_mkoctifle-man-indent-option.dpatch: Indent correctly
-    option --mex in the mkoctfile man page
-
- --
+ -- Rafael Laboissiere <rafael@debian.org>  Tue,  3 Oct 2006 14:43:07 +0200
 
 octave2.9 (2.9.8-2) unstable; urgency=low
 
