@@ -1,3 +1,10 @@
+octave2.1 (1:2.1.73-12) unstable; urgency=low
+
+  * Rebuilt with gnuplot-nox build-dependency instead of gnuplot, in order
+    to make some autobuilders happier
+
+ -- Rafael Laboissiere <rafael@debian.org>  Sat,  7 Oct 2006 12:40:54 +0200
+
 octave2.9 (2.9.9-2) unstable; urgency=low
 
   [ Thomas Weber ]
