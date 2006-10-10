@@ -2,7 +2,7 @@
 ## 50_fix_hold_state.dpatch by  <root@localhost>
 ##
 ## All lines beginning with `## DP:' are a description of the patch.
-## DP: No description.
+## DP: Fix for #391033, thanks John Eaton
 
 @DPATCH@
 diff -urNad octave2.9-2.9.9~/scripts/plot/__clear_plot__.m octave2.9-2.9.9/scripts/plot/__clear_plot__.m
