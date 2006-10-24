@@ -17,11 +17,11 @@ case "$1" in
     configure)
 	#
 	# update-alternatives for multiple Octave versions
-	update-alternatives --install /usr/bin/otags  otags  \
-				    /usr/bin/otags-$VERSION $PRIORITY \
-			    --slave /usr/share/man/man1/otags.1.gz \
-				    otags.1.gz \
-				    /usr/share/man/man1/otags-$VERSION.1.gz
+	update-alternatives --install /usr/bin/octave-tags  octave-tags  \
+				    /usr/bin/octave-tags-$VERSION $PRIORITY \
+			    --slave /usr/share/man/man1/octave-tags.1.gz \
+				    octave-tags.1.gz \
+				    /usr/share/man/man1/octave-tags-$VERSION.1.gz
        ;;
     abort-upgrade|abort-remove|abort-deconfigure)
         ;;

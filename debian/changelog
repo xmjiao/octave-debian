@@ -1,3 +1,14 @@
+octave2.1 (1:2.1.73-13) unstable; urgency=low
+
+  * debian/rules, debian/in/PACKAGE-emacsen.{postinst,prerm}: Renamed
+    otags to be octave-tags, avoiding clashes with the Ocaml otags package
+    (closes: #394789).
+  * debian/patches/50_rename-octave-tags.dpatch: Added patch for renaming
+    otags to be octave-tags in the upstream files.  These changes have been
+    also applied in upstream CVS.
+
+ -- Rafael Laboissiere <rafael@debian.org>  Tue, 24 Oct 2006 02:41:03 +0200
+
 octave2.1 (1:2.1.73-12) unstable; urgency=low
 
   * Rebuilt with gnuplot-nox build-dependency instead of gnuplot, in order

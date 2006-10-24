@@ -15,7 +15,7 @@ case "$1" in
     remove|upgrade|deconfigure)
 	#
 	# update-alternatives for multiple Octave versions
-	update-alternatives --remove otags /usr/bin/otags-$VERSION
+	update-alternatives --remove octave-tags /usr/bin/octave-tags-$VERSION
 	;;
     failed-upgrade)
 	;;

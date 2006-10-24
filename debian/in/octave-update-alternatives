@@ -29,9 +29,9 @@ do
                                         ${bin}octave-bug-$VERSION         \
                                 --slave ${man}octave-bug.1.gz             \
                                         octave-bug.1.gz                   \
-                                        ${man}octave-bug-$VERSION.1.gz" 
+                                        ${man}octave-bug-$VERSION.1.gz"
                  	;;
-	    
+
 	    octave2.?-headers ) if [ $REMOVE = $g ];then ;; fi
                                 HEADERS="--slave ${bin}mkoctfile mkoctfile \
                                                  ${bin}mkoctfile-$VERSION \
@@ -59,10 +59,10 @@ do
 		                ;;
 
 	    octave2.?-emacsen ) if [ $REMOVE = $g ];then ;; fi
-                                EMACS="--slave ${bin}otags otags           \
-                                               ${bin}otags-$VERSION        \
-                                       --slave ${man}otags.1.gz otags.1.gz \
-                                               ${man}otags-$VERSION.1.gz"
+                                EMACS="--slave ${bin}octave-tags octave-tags           \
+                                               ${bin}octave-tags-$VERSION        \
+                                       --slave ${man}octave-tags.1.gz octave-tags.1.gz \
+                                               ${man}octave-tags-$VERSION.1.gz"
                                 ;;
 
 	    octave2.?-info ) if [ -n `dpgk -l | grep -o "octave$v` ]
@@ -78,7 +78,7 @@ do
                                                Octave-FAQ.info.gz          \
                                                ${info}Octave$v-FAQ.info.gz"
                              else
-	                         for f in octave@v liboctave@v Octave@v-FAQ 
+	                         for f in octave@v liboctave@v Octave@v-FAQ
                                  do
 	                           i=`echo $f | sed s/@v//`
 	                           h=`echo $f | sed s/@v/$v/`
@@ -86,7 +86,7 @@ do
                                    then
                                        INFO="--remove $i.info.gz         \
                                                       /usr/share/info/$h.info.gz"
-                                   else 
+                                   else
 	                               INFO="--install ${info}$h.info.gz \
 		                                       $i.info.gz        \
 		                                       ${info}$i.info.gz \
@@ -103,9 +103,9 @@ do
 #                                             mex.1.gz                \
 #                                             ${man}mex-$VERSION.1.gz"
 #		              ;;
-	    
+
 	esac
     fi
   done
   update-alternatives $OCTAVE $HEADERS $EMACS $INFO $FORGE
-done	
+done

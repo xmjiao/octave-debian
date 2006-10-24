@@ -285,9 +285,9 @@ binary-indep: build-indep install-indep
 	install -p -m 0644 emacs/*.el		$(deblsp)
 	dh_installemacsen -p$(emacs_package)
 	install -p -m 0755 emacs/otags			\
-		$(debbase)/$(emacs_package)/usr/bin/otags-$(version)
+		$(debbase)/$(emacs_package)/usr/bin/octave-tags-$(version)
 	install -p -m 0644 emacs/otags.1			\
-	     $(debbase)/$(emacs_package)/usr/share/man/man1/otags-$(version).1
+	     $(debbase)/$(emacs_package)/usr/share/man/man1/octave-tags-$(version).1
 
 	dh_installchangelogs -i			ChangeLog
 	dh_compress -i
