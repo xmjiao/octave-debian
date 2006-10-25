@@ -1,3 +1,11 @@
+octave2.9 (2.9.9-4) unstable; urgency=low
+
+  * debian/patches/50_empty-lhs-sparse.dpatch: Added patch to avoid
+    crashes when calling sparse function with an unitialized LHS
+    (closes: #394982).  Thanks to David Bateman.
+
+ -- Rafael Laboissiere <rafael@debian.org>  Wed, 25 Oct 2006 01:30:56 +0200
+
 octave2.9 (2.9.9-3) unstable; urgency=low
 
   * Rebuilt to get the last changes regarding the renaming of otags

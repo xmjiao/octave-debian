@@ -1,0 +1,35 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 50_empty-lhs-sparse.dpatch by Rafael Laboissiere <rafael@debian.org>
+##
+## DP: Resize the lhs at the point we know the assignment can succeed if the
+## DP: lhs is empty.  Patch posted in octave-maintainers@octave.org by
+## DP: David Bateman.
+
+@DPATCH@
+
+--- octave2.9-2.9.9.orig/liboctave/Sparse.cc
++++ octave2.9-2.9.9/liboctave/Sparse.cc
+@@ -2471,6 +2471,11 @@
+ 
+ 		      Sparse<LT> stmp (new_nr, new_nc, new_nzmx);
+ 
++		      // Started with an empty matrix. Now that we know
++		      // the assignment will succeed, resize lhs 
++		      if (lhs_nr <= 0 || lhs_nc <= 0)
++			lhs = Sparse<RT>(n, m);
++
+ 		      octave_idx_type jji = 0;
+ 		      octave_idx_type jj = idx_j.elem (jji);
+ 		      octave_idx_type kk = 0;
+@@ -2623,6 +2628,11 @@
+ 
+ 		      Sparse<LT> stmp (new_nr, new_nc, new_nzmx);
+ 
++		      // Started with an empty matrix. Now that we know
++		      // the assignment will succeed, resize lhs 
++		      if (lhs_nr <= 0 || lhs_nc <= 0)
++			lhs = Sparse<RT>(n, m);
++
+ 		      octave_idx_type jji = 0;
+ 		      octave_idx_type jj = idx_j.elem (jji);
+ 		      octave_idx_type kk = 0;
