@@ -1,6 +1,16 @@
+octave2.9 (2.9.9-6) unstable; urgency=low
+
+  NOT YET RELEASED!
+
+  [ Thomas Weber ]
+  * debian/patches/50_sparse_constructors.dpatch: Patch for mixing bool
+    with sparse matrices in kron() (closes: 395293). Thanks John Eaton.
+
+ --
+
 octave2.9 (2.9.9-5) unstable; urgency=low
 
-  * debian/patches/50_empty-lhs-sparse.dpatch: NModified this patch
+  * debian/patches/50_empty-lhs-sparse.dpatch: Modified this patch
     to treat cases when the size of the LHS sparse matrix is reajusted
     while assigning to it (really closes: #394982).  Thanks to David
     Bateman and John W. Eaton.
