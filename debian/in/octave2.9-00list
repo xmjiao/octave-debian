@@ -5,3 +5,4 @@
 50_rename-octave-tags
 50_empty-lhs-sparse
 50_sparse_constructors.dpatch
+50_invalid_indexes
