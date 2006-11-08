@@ -1,7 +1,5 @@
 octave2.9 (2.9.9-6) unstable; urgency=low
 
-  NOT YET RELEASED!
-
   [ Thomas Weber ]
   * debian/patches/50_sparse_constructors.dpatch: Patch for mixing bool
     with sparse matrices in kron() (closes: 395293). Thanks John Eaton.
@@ -9,7 +7,7 @@ octave2.9 (2.9.9-6) unstable; urgency=low
     http://www.cae.wisc.edu/pipermail/bug-octave/2006-November/001077.html
     Thanks John Eaton.
 
- -- 
+ -- Rafael Laboissiere <rafael@debian.org>  Wed,  8 Nov 2006 18:19:49 +0100
 
 octave2.9 (2.9.9-5) unstable; urgency=low
 
