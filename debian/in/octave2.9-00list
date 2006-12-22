@@ -4,5 +4,6 @@
 50_fix_hold_state.dpatch
 50_rename-octave-tags
 50_empty-lhs-sparse
-50_sparse_constructors.dpatch
+50_sparse_constructors
 50_invalid_indexes
+50_plot-doc

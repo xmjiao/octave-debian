@@ -1,12 +1,13 @@
 octave2.9 (2.9.9-7) unstable; urgency=low
 
-  NOT YET RELEASED!
+  * debian/in/control: Changed wording of octave*-headers description.
+    Thanks to Reuben Thomas for the suggestion (closes: #399190).
+  * debian/patches/50_plot-doc.dpatch:Fixes a long-standing documentation
+    bug in Octave, regarding the plot function.  Thanks to Francesco
+    Potortì for the patch, which has been also applied to the 2.9 branch
+    upstream (closes: #398935).
 
-  [ Rafael Laboissiere ]
-  * debian/in/control: Changed wording of octave*-headers description
-    (thanks to Reuben Thomas for the suggestion, closes: #399190)
-
- --
+ -- Rafael Laboissiere <rafael@debian.org>  Fri, 22 Dec 2006 11:54:57 +0100
 
 octave2.9 (2.9.9-6) unstable; urgency=low
 
