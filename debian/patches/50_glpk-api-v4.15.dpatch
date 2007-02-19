@@ -1,0 +1,79 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 50_glpk-api-v4.15.dpatch by Rafael Laboissiere <rafael@debian.org>
+##
+## DP: Adapt __glpk__.cc to the new API for GLPK 4.15, as well as the
+## DP: autoconf check 
+
+@DPATCH@
+
+--- octave2.9-2.9.9.orig/configure.in
++++ octave2.9-2.9.9/configure.in
+@@ -535,12 +535,20 @@
+ 
+ GLPK_LIBS=
+ if test -n "$glpk_lib"; then
+-  AC_CHECK_LIB($glpk_lib, glp_lpx_simplex, [
++  AC_CHECK_LIB($glpk_lib, _glp_lpx_simplex, [GLPK_LIBS="-l$glpk_lib"], [])
++  if test -n "$GLPK_LIBS"; then
+     AC_CHECK_HEADERS(glpk.h, [
+       GLPK_LIBS="-l$glpk_lib"
+-      AC_DEFINE(HAVE_GLPK, 1, [Define if GLPK is available.])])])
++      AC_DEFINE(HAVE_GLPK, 1, [Define if GLPK is available.])], [
++        GLPK_LIBS=
++        glpk_missing=yes])
++  fi
+ fi
+ AC_SUBST(GLPK_LIBS)
++if test "$glpk_missing" = yes; then
++  warn_glpk="GLPK library not found.  The glpk function for solving linear programs will be disabled."
++fi
++
+ 
+ OCTAVE_IEEE754_DATA_FORMAT
+ 
+--- octave2.9-2.9.9.orig/src/DLD-FUNCTIONS/__glpk__.cc
++++ octave2.9-2.9.9/src/DLD-FUNCTIONS/__glpk__.cc
+@@ -38,8 +38,10 @@
+ 
+ #if defined (HAVE_GLPK)
+ 
+-extern "C" {
+ #include <glpk.h>
++extern "C" {
++void _glp_lib_print_hook(int (*func)(void *info, char *buf), void *info);
++void _glp_lib_fault_hook(int (*func)(void *info, char *buf), void *info);
+ }
+ 
+ #define NIntP 17
+@@ -141,10 +143,10 @@
+ 
+   clock_t t_start = clock();
+ 
+-  lib_set_fault_hook (NULL, glpk_fault_hook);
++  _glp_lib_fault_hook (glpk_fault_hook, NULL);
+ 
+   if (lpxIntParam[0] > 1)
+-    lib_set_print_hook (NULL, glpk_print_hook);
++    _glp_lib_print_hook (glpk_print_hook, NULL);
+ 
+   LPX *lp = lpx_create_prob ();
+ 
+@@ -277,7 +279,7 @@
+       break;
+ 
+     default:
+-      insist (method != method);
++      glpk_fault_hook (NULL, "method != method");
+     }
+ 
+   /*  errnum assumes the following results:
+@@ -342,7 +344,8 @@
+ 	}
+ 
+       *time = (clock () - t_start) / CLOCKS_PER_SEC;
+-      *mem = (lib_env_ptr () -> mem_tpeak);
++      /* currently there is no way to determine memory usage */
++      *mem = 0;
+ 
+       lpx_delete_prob (lp);
+       return 0;

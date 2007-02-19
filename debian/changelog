@@ -1,3 +1,14 @@
+octave2.9 (2.9.9-9) unstable; urgency=low
+
+  NOT YET RELEASED!
+
+  [ Rafael Laboissiere ]
+  * debian/patches/50_glpk-api-v4.15.dpatch: Adapt the glpk binding to the
+    new API for GLPK 4.15, as well as the autoconf check
+  * debian/in/control: Build-depends on libglpk0 (>= 4.15)
+
+ --
+
 octave2.9 (2.9.9-8) unstable; urgency=low
 
   [ Rafael Laboissiere ]
@@ -15,7 +26,7 @@ octave2.9 (2.9.9-7) unstable; urgency=low
 
   * debian/in/control: Changed wording of octave*-headers description.
     Thanks to Reuben Thomas for the suggestion (closes: #399190).
-  * debian/patches/50_plot-doc.dpatch:Fixes a long-standing documentation
+  * debian/patches/50_plot-doc.dpatch: Fixes a long-standing documentation
     bug in Octave, regarding the plot function.  Thanks to Francesco
     Potortì for the patch, which has been also applied to the 2.9 branch
     upstream (closes: #398935).
