@@ -6,3 +6,5 @@
 50_empty-lhs-sparse
 50_sparse_constructors.dpatch
 50_invalid_indexes
+50_correct_test
+50_parse-inline-brackets

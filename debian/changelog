@@ -1,3 +1,24 @@
+octave2.9 (2.9.9-6etch1) unstable; urgency=low
+
+  NOT YET RELEASED!
+
+  [ Rafael Laboissiere ]
+  * This is a release for the testing (etch) distribution.  It is
+    coordinated with the release 2006.07.09+dfsg1-8 of octave2.9-forge,
+    necessary for fixing Bug#410463.  In order to have this fixed, two
+    changes in the octave2.9 upstream sources are needed:
+
+    - debian/patches/50_correct_test.dpatch: Use first file in loadpath
+      for tests.  This is taken from the upstream CVS repository, see
+      http://www.cae.wisc.edu/pipermail/bug-octave/2007-January/001464.html
+
+    - debian/patches/50_parse-inline-brackets.dpatch: Fix a parsing
+      problem in function handles and inlines were brackets are present.
+      This patch has been applied upstream in CVS  (closes: #411863). See
+      http://www.cae.wisc.edu/pipermail/bug-octave/2006-October/000903.html
+
+ --
+
 octave2.9 (2.9.9-6) unstable; urgency=low
 
   [ Thomas Weber ]
