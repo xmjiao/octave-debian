@@ -1,23 +1,41 @@
-octave2.9 (2.9.9-6etch1) unstable; urgency=low
+octave2.9 (2.9.9-8etch1) unstable; urgency=low
 
   NOT YET RELEASED!
 
   [ Rafael Laboissiere ]
-  * This is a release for the testing (etch) distribution.  It is
+  * This release is intended for the testing (etch) distribution.  It is
     coordinated with the release 2006.07.09+dfsg1-8 of octave2.9-forge,
-    necessary for fixing Bug#410463.  In order to have this fixed, two
-    changes in the octave2.9 upstream sources are needed:
-
-    - debian/patches/50_correct_test.dpatch: Use first file in loadpath
-      for tests.  This is taken from the upstream CVS repository, see
-      http://www.cae.wisc.edu/pipermail/bug-octave/2007-January/001464.html
-
-    - debian/patches/50_parse-inline-brackets.dpatch: Fix a parsing
-      problem in function handles and inlines were brackets are present.
-      This patch has been applied upstream in CVS  (closes: #411863). See
-      http://www.cae.wisc.edu/pipermail/bug-octave/2006-October/000903.html
+    necessary for fixing Bug#410463.  The fix for this bug revealed a
+    nasty bug in Octave related to the parsing of inline functions.  File
+    debian/patches/50_parse-inline-brackets.dpatch fixes it (closes:
+    #411863). This patch was proposed by the upstream author, see
+    http://www.cae.wisc.edu/pipermail/bug-octave/2006-October/000903.html
 
  --
+
+octave2.9 (2.9.9-8) unstable; urgency=low
+
+  [ Rafael Laboissiere ]
+  * debian/patches/50_print-imagemagick-extensions.dpatch: Added patch to
+    avoid failures in print() when file extensions needing call to convert
+    are specified by the user (closes: #408992)
+
+  [ Thomas Weber ]
+  * debian/patches/50_correct_test.dpatch: Use first file in loadpath for
+    tests (closes: #410070)
+
+ -- Rafael Laboissiere <rafael@debian.org>  Thu,  8 Feb 2007 00:44:16 +0100
+
+octave2.9 (2.9.9-7) unstable; urgency=low
+
+  * debian/in/control: Changed wording of octave*-headers description.
+    Thanks to Reuben Thomas for the suggestion (closes: #399190).
+  * debian/patches/50_plot-doc.dpatch:Fixes a long-standing documentation
+    bug in Octave, regarding the plot function.  Thanks to Francesco
+    Potortì for the patch, which has been also applied to the 2.9 branch
+    upstream (closes: #398935).
+
+ -- Rafael Laboissiere <rafael@debian.org>  Fri, 22 Dec 2006 11:54:57 +0100
 
 octave2.9 (2.9.9-6) unstable; urgency=low
 

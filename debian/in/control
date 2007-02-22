@@ -90,8 +90,8 @@ Description: header files for the GNU Octave language ([V_2_1:2.1:][V_2_9:2.9:] 
  user-supplied code with GNU Octave. If you only write interpreted .m files,
  you do not need this package.
  .
- The package is "Architecture: any" specific as it contains architecture-
- specific compiler switches in the mkoctfile script.
+ The package is architecture-specific as it contains machine-dependent
+ compiler switches in the mkoctfile script.
  .
   Homepage: http://www.octave.org/
 
