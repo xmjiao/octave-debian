@@ -1,8 +1,5 @@
 octave2.9 (2.9.9-8etch1) unstable; urgency=low
 
-  NOT YET RELEASED!
-
-  [ Rafael Laboissiere ]
   * This release is intended for the testing (etch) distribution.  It is
     coordinated with the release 2006.07.09+dfsg1-8 of octave2.9-forge,
     necessary for fixing Bug#410463.  The fix for this bug revealed a
@@ -11,7 +8,10 @@ octave2.9 (2.9.9-8etch1) unstable; urgency=low
     #411863). This patch was proposed by the upstream author, see
     http://www.cae.wisc.edu/pipermail/bug-octave/2006-October/000903.html
 
- --
+  * Tighten build-dependency on glpk and libglpk0 to << 4.15, to avoid
+    problems with the new glpk 4.15 package now in experimental.
+
+ -- Rafael Laboissiere <rafael@debian.org>  Fri, 23 Feb 2007 10:47:51 +0100
 
 octave2.9 (2.9.9-8) unstable; urgency=low
 
