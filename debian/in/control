@@ -11,6 +11,8 @@ Build-Depends: g++-4.1 (>= 4.1.1-4), debhelper (>= 5.0.0), autoconf, texinfo,
  less, dpatch, slice[V_2_9:, libpcre3-dev, flex, libglpk-dev (>= 4.15),
  libufsparse-dev:]
 Standards-Version: 3.7.2
+XS-Vcs-Svn: svn://svn.debian.org/svn/pkg-octave/octave/
+XS-Vcs-Browser: http://svn.debian.org/wsvn/pkg-octave/octave/
 
 Package: octave[V_2_1:2.1:][V_2_9:2.9:]
 Architecture: any
