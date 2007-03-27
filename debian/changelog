@@ -1,4 +1,4 @@
-octave2.9 (2.9.10-1) unstable; urgency=low
+octave2.9 (2.9.10-1) experimental; urgency=low
 
   NOT YET RELEASED!
 
@@ -17,10 +17,6 @@ octave2.9 (2.9.10-1) unstable; urgency=low
     + 50_correct_test
     + 50_glpk-api-v4.15
     + 50_parse-inline-brackets
-
-  * This version of the package is uploaded to unstable.  The chances that
-    RC bugs will appear in 2.9.9-8etch1 before etch is released are very
-    low.
 
   * debian/control: Added XS-Vcs-Svn and XS-Vcs-Browser fields
 
