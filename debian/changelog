@@ -1,3 +1,31 @@
+octave2.9 (2.9.10-1) unstable; urgency=low
+
+  NOT YET RELEASED!
+
+  [ Rafael Laboissiere ]
+  * New upstream release.  The emacs/octave-inf.el file correctly calls
+    the pwd command (closes: #416048).
+
+  * Removed dpatches (applied upstream):
+    + 50_mkoctifle-man-indent-option
+    + 50_fix_hold_state
+    + 50_rename-octave-tags
+    + 50_clean-mat-files
+    + 50_empty-lhs-sparse
+    + 50_plot-doc
+    + 50_print-imagemagick-extensions
+    + 50_correct_test
+    + 50_glpk-api-v4.15
+    + 50_parse-inline-brackets
+
+  * This version of the package is uploaded to unstable.  The chances that
+    RC bugs will appear in 2.9.9-8etch1 before etch is released are very
+    low.
+
+  * debian/control: Added XS-Vcs-Svn and XS-Vcs-Browser fields
+
+ --
+
 octave2.9 (2.9.9-9) experimental; urgency=low
 
   * debian/patches/50_glpk-api-v4.15.dpatch: Adapt the glpk binding to the
