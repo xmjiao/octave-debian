@@ -17,10 +17,11 @@ octave2.9 (2.9.10-1) experimental; urgency=low
     + 50_correct_test
     + 50_glpk-api-v4.15
     + 50_parse-inline-brackets
+    + 50_sparse_constructors
 
   * debian/control: Added XS-Vcs-Svn and XS-Vcs-Browser fields
 
- --
+ -- Rafael Laboissiere <rafael@debian.org>  Wed, 28 Mar 2007 02:50:33 +0200
 
 octave2.9 (2.9.9-9) experimental; urgency=low
 
