@@ -2,9 +2,13 @@ octave2.9 (2.9.10-1) experimental; urgency=low
 
   NOT YET RELEASED!
 
-  [ Rafael Laboissiere ]
-  * New upstream release.  The emacs/octave-inf.el file correctly calls
-    the pwd command (closes: #416048).
+  * New upstream release:
+    + The emacs/octave-inf.el file correctly calls the pwd command
+      (closes: #416048).
+    + debian/patches/50_glpk-pre-ifdef-logic.dpatch: Fixed #ifdef logic
+      around macro GLPK_PRE_4_14, which was causing an extra closing brace
+      to be introduced for the extern "C"  declaration when GLPK_PRE_4_14
+      was not defined.  This patch has been sent to bug@octave.org.
 
   * Removed dpatches (applied upstream):
     + 50_mkoctifle-man-indent-option
@@ -19,9 +23,9 @@ octave2.9 (2.9.10-1) experimental; urgency=low
     + 50_parse-inline-brackets
     + 50_sparse_constructors
 
-  * debian/control: Added XS-Vcs-Svn and XS-Vcs-Browser fields
+  * debian/in/control: Added XS-Vcs-Svn and XS-Vcs-Browser fields
 
- -- Rafael Laboissiere <rafael@debian.org>  Wed, 28 Mar 2007 02:50:33 +0200
+ --
 
 octave2.9 (2.9.9-9) experimental; urgency=low
 
