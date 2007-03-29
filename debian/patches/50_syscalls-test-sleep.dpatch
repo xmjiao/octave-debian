@@ -1,0 +1,20 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 50_syscalls-test-sleep.dpatch by Rafael Laboissiere <rafael@debian.org>
+##
+## DP: Increase the amount of time to sleep, in case of errno == EAGAIN
+## DP: when running the test for syscalls.cc ("make check" hangs in an
+## DP: unpredictable way without this patch)
+
+@DPATCH@
+
+--- octave2.9-2.9.10.orig/src/syscalls.cc
++++ octave2.9-2.9.10/src/syscalls.cc
+@@ -372,7 +372,7 @@
+ %!       idx++;
+ %!       str{idx} = s;
+ %!     elseif (errno () == EAGAIN)
+-%!       sleep (0.1);
++%!       sleep (1);
+ %!       fclear (out);
+ %!     else
+ %!       done = true;

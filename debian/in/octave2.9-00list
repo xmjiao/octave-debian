@@ -1,2 +1,4 @@
 50_octave-bug-tempfile
 50_invalid_indexes
+50_glpk-pre-ifdef-logic
+50_syscalls-test-sleep

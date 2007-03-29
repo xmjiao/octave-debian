@@ -1,6 +1,6 @@
 octave2.9 (2.9.10-1) experimental; urgency=low
 
-  NOT YET RELEASED!
+   NOT YET RELEASED!
 
   * New upstream release:
     + The emacs/octave-inf.el file correctly calls the pwd command
@@ -9,6 +9,10 @@ octave2.9 (2.9.10-1) experimental; urgency=low
       around macro GLPK_PRE_4_14, which was causing an extra closing brace
       to be introduced for the extern "C"  declaration when GLPK_PRE_4_14
       was not defined.  This patch has been sent to bug@octave.org.
+    + debian/patches/50_syscalls-test-sleep.dpatch: Increase the amount of
+      time to sleep, in case of errno == EAGAIN when running the test for
+      syscalls.cc ("make check" hangs in an unpredictable way without this
+      patch)
 
   * Removed dpatches (applied upstream):
     + 50_mkoctifle-man-indent-option
