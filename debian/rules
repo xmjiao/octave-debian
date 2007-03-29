@@ -37,7 +37,7 @@ deblsp		:= $(debbase)/$(emacs_package)/usr/share/emacs/site-lisp/$(emacs_package
 debini		:= $(debtmp)/usr/share/octave/site/m/startup
 debininew	:= $(debtmp)/usr/share/octave/$(version)/m/startup
 
-savefiles	:= configure config.h.in scripts/configure
+savefiles	:= configure config.h.in scripts/configure doc/conf.texi
 texifiles	:= doc/interpreter/octave.texi		\
 			doc/liboctave/liboctave.texi	\
 			doc/faq/Octave-FAQ.texi
@@ -176,7 +176,7 @@ make-indep: configure-stamp make-indep-stamp
 make-indep-stamp:
 
 	ln -fs octMakefile-only-doc octMakefile
-	$(MAKE)
+	$(MAKE) AWK=gawk
 
 	touch make-indep-stamp
 
@@ -212,6 +212,10 @@ clean: unpatch
 	-for f in $(texifiles) ; do					\
 		test -f $$f-save && mv $$f-save $$f ;			\
 	done
+
+	# The following must be dropped when the upstream Makefile.in
+	# is fixed
+	rm -rf libcruft/mkf77def libcruft/misc/pic test/a.wav
 
 	dh_clean
 
@@ -284,9 +288,9 @@ binary-indep: build-indep install-indep
 		usr/share/emacs/site-lisp/$(emacs_package)
 	install -p -m 0644 emacs/*.el		$(deblsp)
 	dh_installemacsen -p$(emacs_package)
-	install -p -m 0755 emacs/otags			\
+	install -p -m 0755 emacs/octave-tags			\
 		$(debbase)/$(emacs_package)/usr/bin/octave-tags-$(version)
-	install -p -m 0644 emacs/otags.1			\
+	install -p -m 0644 emacs/octave-tags.1			\
 	     $(debbase)/$(emacs_package)/usr/share/man/man1/octave-tags-$(version).1
 
 	dh_installchangelogs -i			ChangeLog

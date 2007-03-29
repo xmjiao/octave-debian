@@ -27,7 +27,20 @@ octave2.9 (2.9.10-1) experimental; urgency=low
     + 50_parse-inline-brackets
     + 50_sparse_constructors
 
-  * debian/in/control: Added XS-Vcs-Svn and XS-Vcs-Browser fields
+  * debian/rules:
+    + Install emacs/octave-tags* files instead of emacs/otags*
+    + Added conf.texi to $(savefiles)
+    + Added hack for removing the libcruft/misc/pic directory left after
+      "make clean", as well as the libcruft/mkf77def script and the test
+      file test/a.wav
+    + When building the architecture independent part of the pacakge, call
+      make with AWK=gawk, otherwise mawk will be used and the infamous
+      error message "program limit exceeded: sprintf buffer size=1020"
+      will be issued.
+
+  * debian/in/control:
+    + Added XS-Vcs-Svn and XS-Vcs-Browser fields
+    + Build-depends on gawk
 
  --
 
