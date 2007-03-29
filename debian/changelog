@@ -1,7 +1,5 @@
 octave2.9 (2.9.10-1) experimental; urgency=low
 
-   NOT YET RELEASED!
-
   * New upstream release:
     + The emacs/octave-inf.el file correctly calls the pwd command
       (closes: #416048).
@@ -42,7 +40,7 @@ octave2.9 (2.9.10-1) experimental; urgency=low
     + Added XS-Vcs-Svn and XS-Vcs-Browser fields
     + Build-depends on gawk
 
- --
+ -- Rafael Laboissiere <rafael@debian.org>  Thu, 29 Mar 2007 08:06:16 +0200
 
 octave2.9 (2.9.9-9) experimental; urgency=low
 
