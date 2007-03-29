@@ -1,0 +1,273 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 50_doc-builtin-vars.dpatch by Rafael Laboissiere <rafael@debian.org>
+##
+## DP: Fix documentation for obsolete built-in variables LOADPATH,
+## DP: INFO_FILE, and INFO_PROGRAM.  Also, fix the octave-variables 
+## DP: variable in octave-mod.el. This patch is taken from the upstream CVS.
+
+@DPATCH@
+
+--- octave2.9-2.9.10.orig/ChangeLog
++++ octave2.9-2.9.10/ChangeLog
+@@ -1,3 +1,8 @@
++2007-03-29  Rafael Laboissiere  <rafael@debian.org>
++
++	* emacs/octave-mod.el: Drop LOADPATH, INFO_FILE, and
++	INFO_PROGRAM from octave-variables.
++
+ 2007-03-27  John W. Eaton  <jwe@octave.org>
+ 
+ 	* octMakefile.in (dist, conf-dist): Use ln, not $(LN_S).
+--- octave2.9-2.9.10.orig/doc/ChangeLog
++++ octave2.9-2.9.10/doc/ChangeLog
+@@ -1,3 +1,15 @@
++2007-03-29  Rafael Laboissiere  <rafael@debian.org>
++
++	* faq/Octave-FAQ.texi, interpreter/basics.txi,
++	interpreter/emacs.txi, interpreter/func.tx, interpreter/var.txi:
++	Make it clear that the old built-in LOADPATH is an internal
++	variable, accessible through path ().
++	Drop references to DEFAULT_LOADPATH.
++	Chang references to the old built-in variables INFO_FILE and
++	INFO_PROGRAM to the respective fucntions info_file and
++	info_program.
++	* refcard/refcard.tex: Drop LOADPATH from list of built-in variables.
++
+ 2007-03-27  John W. Eaton  <jwe@octave.org>
+ 
+ 	* Makefile.in, interpreter/Makefile.in, faq/Makefile.in,
+--- octave2.9-2.9.10.orig/doc/faq/Octave-FAQ.texi
++++ octave2.9-2.9.10/doc/faq/Octave-FAQ.texi
+@@ -623,11 +623,12 @@
+ @item
+ Octave takes a long time to find symbols.
+ 
+-Octave is probably spending this time recursively searching directories
+-for function files.  Check the value of your LOADPATH.  For those
++Octave is probably spending this time recursively searching directories for
++function files.  Check the value of the internal variable LOADPATH,
++accessible through the Octave fucntion @code{path}.  For those
+ elements that end in @samp{//}, do any name a very large directory tree?
+-Does it contain directories that have a mixture of files and
+-directories?  In order for the recursive directory searching code to
++Does it contain directories that have a mixture of files and 
++directories?  In order for the recursive directory searching code to 
+ work efficiently, directories that are to be searched recursively should
+ have either function files only, or subdirectories only, but not a
+ mixture of both.  Check to make sure that Octave's standard set of
+--- octave2.9-2.9.10.orig/doc/interpreter/basics.txi
++++ octave2.9-2.9.10/doc/interpreter/basics.txi
+@@ -91,16 +91,16 @@
+ Specify the name of the info file to use.  The value of @var{filename}
+ specified on the command line will override any value of
+ @code{OCTAVE_INFO_FILE} found in the environment, but not any commands
+-in the system or user startup files that set the built-in variable
+-@code{INFO_FILE}.
++in the system or user startup files that use the the @code{info_file}
++function.
+ 
+ @item --info-program @var{program}
+ @cindex @code{--info-program @var{program}}
+ Specify the name of the info program to use.  The value of @var{program}
+ specified on the command line will override any value of
+ @code{OCTAVE_INFO_PROGRAM} found in the environment, but not any
+-commands in the system or user startup files that set the built-in
+-variable @code{INFO_PROGRAM}.
++commands in the system or user startup files that use the
++@code{info_program} function.
+ 
+ @item --interactive
+ @itemx -i
+@@ -141,7 +141,8 @@
+ Specify the path to search for function files.  The value of @var{path}
+ specified on the command line will override any value of
+ @code{OCTAVE_PATH} found in the environment, but not any commands in the
+-system or user startup files that set the built-in variable @code{LOADPATH}.
++system or user startup files that set the internal variable @code{LOADPATH}
++through one of the path functions.
+ 
+ @item --persist
+ Go to interactive mode after @code{--eval} or reading from a file
+@@ -297,11 +298,11 @@
+ comma and semicolons that are used as command separators.  To get help
+ for those, you must type @kbd{help comma} or @kbd{help semicolon}.
+ 
+-@DOCSTRING(INFO_FILE)
++@DOCSTRING(info_file)
+ 
+-@DOCSTRING(INFO_PROGRAM)
++@DOCSTRING(info_program)
+ 
+-@DOCSTRING(MAKEINFO_PROGRAM)
++@DOCSTRING(makeinfo_program)
+ 
+ @DOCSTRING(suppress_verbose_help_message)
+ 
+--- octave2.9-2.9.10.orig/doc/interpreter/emacs.txi
++++ octave2.9-2.9.10/doc/interpreter/emacs.txi
+@@ -328,7 +328,7 @@
+ @code{font-lock-reference-face}
+ @item
+ the builtin variables (such as @samp{warn_fortran_indexing}, @samp{NaN}
+-or @samp{LOADPATH}) in @code{font-lock-variable-name-face}
++or @samp{EDITOR}) in @code{font-lock-variable-name-face}
+ @item
+ and the function names in function declarations in
+ @code{font-lock-function-name-face}.
+@@ -488,11 +488,11 @@
+ 
+ You can use either `plain' Emacs Info or the function @code{octave-help}
+ as your Octave info reader (for @samp{help -i}).  In the former case,
+-set the Octave variable @code{INFO_PROGRAM} to @code{"info-emacs-info"}.
++use @code{info_program ("info-emacs-info")}.
+ The latter is perhaps more attractive because it allows to look up keys
+ in the indices of @emph{several} info files related to Octave (provided
+ that the Emacs variable @code{octave-help-files} is set correctly).  In
+-this case, set @code{INFO_PROGRAM} to @code{"info-emacs-octave-help"}.
++this case, use @code{info_program ("info-emacs-octave-help")}.
+ 
+ If you use Octave from within Emacs, these settings are best done in the
+ @file{~/.emacs-octave} startup file (or the file pointed to by the Emacs
+--- octave2.9-2.9.10.orig/doc/interpreter/func.txi
++++ octave2.9-2.9.10/doc/interpreter/func.txi
+@@ -398,7 +398,7 @@
+ When Octave encounters an identifier that is undefined, it first looks
+ for variables or functions that are already compiled and currently
+ listed in its symbol table.  If it fails to find a definition there, it
+-searches the list of directories specified by the built-in variable
++searches the list of directories specified by the internal variable
+ @code{LOADPATH} for files ending in @file{.m} that have the same base
+ name as the undefined identifier.@footnote{The @samp{.m} suffix was
+ chosen for compatibility with @sc{Matlab}.}  Once Octave finds a file
+@@ -437,9 +437,7 @@
+ 
+ @c FIXME -- note about time stamps on files in NFS environments?
+ 
+-@DOCSTRING(DEFAULT_LOADPATH)
+-
+-@DOCSTRING(LOADPATH)
++@DOCSTRING(path)
+ 
+ @DOCSTRING(rehash)
+ 
+@@ -491,10 +489,11 @@
+ @end example
+ 
+ To have Octave read and compile these functions into an internal form,
+-you need to make sure that the file is in Octave's @code{LOADPATH}, then
+-simply type the base name of the file that contains the commands.
+-(Octave uses the same rules to search for script files as it does to
+-search for function files.)
++you need to make sure that the file is in Octave's @code{LOADPATH}
++(accessible through the @code{path} function), then simply type the
++base name of the file that contains the commands.  (Octave uses the
++same rules to search for script files as it does to search for
++function files.)
+ 
+ If the first token in a file (ignoring comments) is @code{function},
+ Octave will compile the function and try to execute it, printing a
+@@ -529,7 +528,7 @@
+ following code will always print @samp{bar = 3} whether it is typed
+ directly on the command line, read from a script file, or is part of a
+ function body, even if there is a function or script file called
+-@file{bar.m} in Octave's @code{LOADPATH}.
++@file{bar.m} in Octave's path.
+ 
+ @example
+ @group
+--- octave2.9-2.9.10.orig/doc/interpreter/var.txi
++++ octave2.9-2.9.10/doc/interpreter/var.txi
+@@ -229,11 +229,6 @@
+ Octave was compiled (for example, @code{x86_64-unknown-linux-gnu}).
+ 
+ @vtable @code
+-@item DEFAULT_LOADPATH
+-@xref{Function Files}.
+-
+-Default value: @code{".:@var{octave-home}/lib/@var{version}"}.
+-
+ @item EDITOR
+ @xref{Commands For History}.
+ 
+@@ -244,22 +239,6 @@
+ 
+ Default value: @code{":$PATH"}.
+ 
+-@item INFO_FILE
+-@xref{Getting Help}.
+-
+-Default value: @code{"@var{octave-home}/info/octave.info"}.
+-
+-@item INFO_PROGRAM
+-@xref{Getting Help}.
+-
+-Default value: @code{"@var{octave-home}/libexec/octave/@var{version}/exec/@var{arch}/info"}.
+-
+-@item LOADPATH
+-@xref{Function Files}.
+-
+-Default value: @code{":"}, which tells Octave to use the directories
+-specified by the built-in variable @code{DEFAULT_LOADPATH}.
+-
+ @item OCTAVE_HOME
+ 
+ Default value: @code{"@value{OCTAVEHOME}"}.
+@@ -495,9 +474,9 @@
+ @section Defaults from the Environment
+ 
+ Octave uses the values of the following environment variables to set the
+-default values for the corresponding built-in variables.  In addition,
+-the values from the environment may be overridden by command-line
+-arguments.  @xref{Command Line Options}.
++default values for the corresponding built-in or internal variables.
++In addition, the values from the environment may be overridden by
++command-line arguments.  @xref{Command Line Options}.
+ 
+ @vtable @code
+ @item EDITOR
+@@ -514,19 +493,19 @@
+ @item OCTAVE_PATH
+ @xref{Function Files}.
+ 
+-Built-in variable: @code{LOADPATH}.
++Internal variable changed by function @code{path}.
+ Command-line argument: @code{--path}.
+ 
+ @item OCTAVE_INFO_FILE
+ @xref{Getting Help}.
+ 
+-Built-in variable: @code{INFO_FILE}.
++Internal variable changed by function @code{info_file}.
+ Command-line argument: @code{--info-file}.
+ 
+ @item OCTAVE_INFO_PROGRAM
+ @xref{Getting Help}.
+ 
+-Built-in variable: @code{INFO_PROGRAM}.
++Internal variable changed by function @code{info_program}.
+ Command-line argument: @code{--info-program}.
+ 
+ @item OCTAVE_HISTSIZE
+--- octave2.9-2.9.10.orig/doc/refcard/refcard.tex
++++ octave2.9-2.9.10/doc/refcard/refcard.tex
+@@ -558,7 +558,6 @@
+ \sec Selected Built-in Variables;
+ EDITOR&editor to use with {\tt edit\_history}\cr
+ Inf, NaN&IEEE infinity, NaN\cr
+-LOADPATH&path to search for function files\cr
+ PAGER&program to use to paginate output\cr
+ ans&last result not explicitly assigned\cr
+ eps&machine precision\cr
+--- octave2.9-2.9.10.orig/emacs/octave-mod.el
++++ octave2.9-2.9.10/emacs/octave-mod.el
+@@ -129,8 +129,8 @@
+ (defvar octave-variables
+   '("DEFAULT_EXEC_PATH" "DEFAULT_LOADPATH"
+     "EDITOR" "EXEC_PATH" "F_DUPFD" "F_GETFD" "F_GETFL" "F_SETFD"
+-    "F_SETFL" "I" "IMAGE_PATH" "INFO_FILE" "INFO_PROGRAM" "Inf" "J"
+-    "LOADPATH" "NaN" "OCTAVE_VERSION" "O_APPEND" "O_CREAT" "O_EXCL"
++    "F_SETFL" "I" "IMAGE_PATH" "Inf" "J"
++    "NaN" "OCTAVE_VERSION" "O_APPEND" "O_CREAT" "O_EXCL"
+     "O_NONBLOCK" "O_RDONLY" "O_RDWR" "O_TRUNC" "O_WRONLY" "PAGER" "PS1"
+     "PS2" "PS4" "PWD" "SEEK_CUR" "SEEK_END" "SEEK_SET" "__F_DUPFD__"
+     "__F_GETFD__" "__F_GETFL__" "__F_SETFD__" "__F_SETFL__" "__I__"

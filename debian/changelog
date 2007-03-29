@@ -1,3 +1,15 @@
+octave2.9 (2.9.10-2) experimental; urgency=low
+
+  NOT YET RELEASED!
+
+  [ Rafael Laboissiere ]
+  * debian/patches/50_doc-builtin-vars: Fix documentation for obsolete
+    built-in variables LOADPATH, INFO_FILE, and INFO_PROGRAM.  Also, fix
+    the octave-variables variable in octave-mod.el. This patch is taken
+    from the upstream CVS. (Closes: #416046)
+
+ --
+
 octave2.9 (2.9.10-1) experimental; urgency=low
 
   * New upstream release:
