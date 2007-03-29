@@ -1,0 +1,24 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 50_examples-use-gnuclient.dpatch by Rafael Laboissiere <rafael@debian.org>
+##
+## DP: Use gnuclient instead of the deprecated gnudoit in the info-emacs-* 
+## DP: examples
+
+@DPATCH@
+
+--- octave2.9-2.9.10.orig/examples/info-emacs-info
++++ octave2.9-2.9.10/examples/info-emacs-info
+@@ -11,4 +11,4 @@
+ fi
+ cmd="(require 'info) $cmd"
+ [ $4 ] && cmd="$cmd (Info-index \"$4\")"
+-gnudoit -q $cmd
++gnuclient -batch -q -eval "$cmd"
+--- octave2.9-2.9.10.orig/examples/info-emacs-octave-help
++++ octave2.9-2.9.10/examples/info-emacs-octave-help
+@@ -11,4 +11,4 @@
+     shift 2
+ fi
+ cmd="$cmd (octave-help \"$4\")"
+-gnudoit -q $cmd
++gnuclient -batch -q -eval "$cmd"

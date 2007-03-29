@@ -3,3 +3,4 @@
 50_glpk-pre-ifdef-logic
 50_syscalls-test-sleep
 50_doc-builtin-vars
+50_examples-use-gnuclient
