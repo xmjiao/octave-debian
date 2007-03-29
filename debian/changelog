@@ -8,7 +8,10 @@ octave2.9 (2.9.10-2) experimental; urgency=low
       variables LOADPATH, INFO_FILE, and INFO_PROGRAM.  Also, fix
       the octave-variables variable in octave-mod.el (closes: #416046).
     + 50_examples-use-gnuclient: Use gnuclient instead of the deprecated
-      gnudoit in the info-emacs-* examples
+      gnudoit in the info-emacs-* examples (closes: #416431)
+
+  * debian/patches/50_invalid_indexes.dpatch: Removed the useless creation
+    of liboctave/Array.cc.orig
 
  --
 
