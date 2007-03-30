@@ -29,7 +29,7 @@
 +	variable, accessible through path ().
 +	Drop references to DEFAULT_LOADPATH.
 +	Chang references to the old built-in variables INFO_FILE and
-+	INFO_PROGRAM to the respective fucntions info_file and
++	INFO_PROGRAM to the respective functions info_file and
 +	info_program.
 +	* refcard/refcard.tex: Drop LOADPATH from list of built-in variables.
 +
@@ -46,7 +46,7 @@
 -for function files.  Check the value of your LOADPATH.  For those
 +Octave is probably spending this time recursively searching directories for
 +function files.  Check the value of the internal variable LOADPATH,
-+accessible through the Octave fucntion @code{path}.  For those
++accessible through the Octave function @code{path}.  For those
  elements that end in @samp{//}, do any name a very large directory tree?
 -Does it contain directories that have a mixture of files and
 -directories?  In order for the recursive directory searching code to
