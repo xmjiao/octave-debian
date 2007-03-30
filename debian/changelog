@@ -1,6 +1,6 @@
 octave2.9 (2.9.10-2) experimental; urgency=low
 
-  NOT YET RELEASED!
+   NOT YET RELEASED!
 
   [ Rafael Laboissiere ]
   * debian/patches taken from upstream CVS:
@@ -12,6 +12,9 @@ octave2.9 (2.9.10-2) experimental; urgency=low
 
   * debian/patches/50_invalid_indexes.dpatch: Removed the useless creation
     of liboctave/Array.cc.orig
+
+  * debian/in/PACKAGE.lintian: Added override for Lintian warning regarding
+    m/miscellaneous/license.m being an extra-license-file
 
  --
 
