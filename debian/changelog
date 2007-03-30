@@ -1,8 +1,5 @@
 octave2.9 (2.9.10-2) experimental; urgency=low
 
-   NOT YET RELEASED!
-
-  [ Rafael Laboissiere ]
   * debian/patches taken from upstream CVS:
     + 50_doc-builtin-vars: Fix documentation for obsolete built-in
       variables LOADPATH, INFO_FILE, and INFO_PROGRAM.  Also, fix
@@ -21,7 +18,7 @@ octave2.9 (2.9.10-2) experimental; urgency=low
     patching Octave-FAQ.texi and manipulating its @setfilename
     declaration.
 
- --
+ -- Rafael Laboissiere <rafael@debian.org>  Fri, 30 Mar 2007 13:10:19 +0200
 
 octave2.9 (2.9.10-1) experimental; urgency=low
 
