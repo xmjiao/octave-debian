@@ -109,13 +109,15 @@ $(patsubst %,build-%-stamp,arch indep) :: build-%-stamp : \
 		configure make-% check
 	touch $@
 
-configure: maintainer-scripts patch-stamp configure-stamp
+.PHONY: save-files
+save-files:
+	for f in $(savefiles) $(texifiles) ; do	\
+		cp $$f $$f-save ;		\
+	done
+
+configure: maintainer-scripts save-files patch-stamp configure-stamp
 configure-stamp:
 	dh_testdir
-
-	for f in $(savefiles) ; do	\
-		cp $$f $$f-save ;				\
-	done
 
 	[ -f autogen.sh ] &&  ./autogen.sh && chmod 0755 configure
 
@@ -144,7 +146,6 @@ configure-stamp:
 	pod2man debian/octave-depends > octave-depends-$(version).1
 
 	for f in $(texifiles) ; do					\
-		cp $$f $$f-save ; 					\
 		perl -pi -e 's/^(\@setfilename .+ctave)/$${1}$(major)/'	\
 			$$f ; 						\
 	done
@@ -201,16 +202,12 @@ clean: unpatch
 	rm -f build-*-stamp configure-stamp make-*-stamp check-stamp	\
 		install-*-stamp Makefile.tmp octMakefile-*
 
-	-for f in $(savefiles) ; do	\
-		test -f $$f-save && mv $$f-save $$f ;			\
-	done
-
 	rm -f `ls debian/in/PACKAGE* | sed 's/PACKAGE/$(PACKAGE)/;s:/in::'`
 	rm -f octave-depends-$(version).1
 	( cd debian ; rm -f watch octave-depends defs.make )
 
-	-for f in $(texifiles) ; do					\
-		test -f $$f-save && mv $$f-save $$f ;			\
+	-for f in $(savefiles) $(texifiles) ; do	\
+		test -f $$f-save && mv $$f-save $$f ;	\
 	done
 
 	# The following must be dropped when the upstream Makefile.in

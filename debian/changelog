@@ -16,6 +16,11 @@ octave2.9 (2.9.10-2) experimental; urgency=low
   * debian/in/PACKAGE.lintian: Added override for Lintian warning regarding
     m/miscellaneous/license.m being an extra-license-file
 
+  * debian/rules: Create new rule save-files, on which configure depends
+    and is run before patch-stamp.  This was necessary due to a problem in
+    patching Octave-FAQ.texi and manipulating its @setfilename
+    declaration.
+
  --
 
 octave2.9 (2.9.10-1) experimental; urgency=low
