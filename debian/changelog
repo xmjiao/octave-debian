@@ -1,3 +1,14 @@
+octave2.9 (2.9.10-4) unstable; urgency=low
+
+  NOT YET RELEASED!
+
+  [ Rafael Laboissiere ]
+  * debian/copyright: Updated this long outdated file, who still cited
+    Dirk as the package maintainer.  In particular, added the mention that
+    Octave is released under version 2 or later of the GPL.
+
+ --
+
 octave2.9 (2.9.10-3) unstable; urgency=low
 
   * Uploaded to sid, now that glpk 4.15 went out from the NEW queue
