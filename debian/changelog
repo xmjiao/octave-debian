@@ -3,8 +3,8 @@ octave2.9 (2.9.10-4) unstable; urgency=low
   NOT YET RELEASED!
 
   [ Rafael Laboissiere ]
-  * debian/copyright: Updated this long outdated file, who still cited
-    Dirk as the package maintainer.  In particular, added the mention that
+  * debian/copyright: Updated this long outdated file, that still cited
+    Dirk as the package maintainer.  In particular, mention that
     Octave is released under version 2 or later of the GPL.
 
  --
