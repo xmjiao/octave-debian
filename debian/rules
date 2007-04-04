@@ -84,7 +84,7 @@ debian/control: debian/in/control
 maintainer-clean:
 	rm -f debian/control
 
-maintainer-scripts:
+maintainer-scripts: debian/control
 	for in in debian/in/PACKAGE* ; do \
 		out=`echo $$in | sed 's:/in/:/:;s/PACKAGE/$(PACKAGE)/'` ; \
 		sed 's/@VERSION@/$(version)/g;s/@PACKAGE@/$(PACKAGE)/g;s/@MAJOR@/$(major)/g;s/@PRIORITY@/$(priority)/g;' \

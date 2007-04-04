@@ -24,7 +24,7 @@ case "$1" in
 
 	update-alternatives					\
 		--install /usr/include/octave octave-include	\
-			/usr/include/octave-$VERSION $PRIORITY
+			/usr/include/octave-$VERSION/octave $PRIORITY
 
 	update-alternatives						\
 		--install /usr/share/octave/debian/defs.make		\

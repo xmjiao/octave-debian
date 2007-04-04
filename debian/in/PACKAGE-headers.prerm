@@ -17,7 +17,7 @@ case "$1" in
 		update-alternatives --remove $f /usr/bin/$f-$VERSION
 	done
 	update-alternatives --remove octave-include \
-		/usr/include/octave-$VERSION
+		/usr/include/octave-$VERSION/octave
 	update-alternatives --remove octave-defs.make \
 		/usr/share/octave/debian/defs.make-$VERSION
 
