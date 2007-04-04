@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-### Manipulates the SUBDIRS adn INSTALL_SUBDIRS variables. Run like this
+### Manipulates the SUBDIRS and INSTALL_SUBDIRS variables. Run like this
 ### subdirs-vars.pl no-doc
 ### subdirs-vars.pl only-doc
 
