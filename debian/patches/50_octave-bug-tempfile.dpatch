@@ -7,7 +7,7 @@
 
 --- octave2.1-2.1.73.orig/octave-bug.in	2006-08-19 02:58:39.000000000 +0200
 +++ octave2.1-2.1.73/octave-bug.in	2006-08-19 11:11:51.172397104 +0200
-@@ -61,7 +61,7 @@
+@@ -60,7 +60,7 @@
  PATH=/bin:/usr/bin:/usr/ucb:/usr/local/bin:$PATH
  export PATH
  

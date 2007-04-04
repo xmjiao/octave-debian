@@ -6,17 +6,19 @@ octave2.9 (2.9.10-4) unstable; urgency=low
   * debian/copyright: Updated this long outdated file, that still cited
     Dirk as the package maintainer.  In particular, mention that
     Octave is released under version 2 or later of the GPL.
+  * debian/patches/50_octave-bug-tempfile.dpatch: Adjusted for Octave
+    2.9.10
 
   [ Thomas Weber ]
   * PACKAGE-headers.postinst, PACKAGE-headers.prerm:
     Let the /usr/include/octave symlink point to the octave/ subdirectory of
     /usr/include/octave-X.Y.Z (Closes: #400246). This was clarified with
-    upstream, see 
+    upstream, see
     http://www.cae.wisc.edu/pipermail/octave-maintainers/2006-December/001384.html
   * debian/rules: Generate debian/control as part of the maintainer-scripts
     target.
   * removed patches (applied upstream): 50_invalid_indexes
-  * new patches: 
+  * new patches:
     50_dont_resize_empty_dimensions: fix assignments to empty matrices and add
     testcases for this (Closes: #417671). Thanks John Eaton and Kim Hansen.
 
