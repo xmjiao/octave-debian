@@ -8,6 +8,9 @@ octave2.9 (2.9.10-4) unstable; urgency=low
     Octave is released under version 2 or later of the GPL.
   * debian/patches/50_octave-bug-tempfile.dpatch: Adjusted for Octave
     2.9.10
+  * debian/in/control:
+    + Changed relationship to gnuplot from Suggests to Recommends
+      (closes: #418503)
 
   [ Thomas Weber ]
   * PACKAGE-headers.postinst, PACKAGE-headers.prerm:
