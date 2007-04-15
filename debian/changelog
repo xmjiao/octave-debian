@@ -8,7 +8,7 @@ octave2.9 (2.9.10-4) unstable; urgency=low
     2.9.10
   * debian/in/control:
     + Changed relationship to gnuplot from Suggests to Recommends
-      (closes: #418503)
+      (closes: #415780)
     + Replaced build-dependency on tetex-bin by texlive-latex-base and
       texlive-generic-recommended (teTeX is deprecated in lenny, in favor
       of TeXlive)
