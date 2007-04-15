@@ -1,7 +1,5 @@
 octave2.9 (2.9.10-4) unstable; urgency=low
 
-  NOT YET RELEASED!
-
   [ Rafael Laboissiere ]
   * debian/copyright: Updated this long outdated file, that still cited
     Dirk as the package maintainer.  In particular, mention that
@@ -30,7 +28,7 @@ octave2.9 (2.9.10-4) unstable; urgency=low
     50_dont_resize_empty_dimensions: fix assignments to empty matrices and add
     testcases for this (Closes: #417671). Thanks John Eaton and Kim Hansen.
 
- --
+ -- Rafael Laboissiere <rafael@debian.org>  Sun, 15 Apr 2007 23:13:13 +0200
 
 octave2.9 (2.9.10-3) unstable; urgency=low
 
