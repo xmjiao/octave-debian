@@ -11,6 +11,11 @@ octave2.9 (2.9.10-4) unstable; urgency=low
   * debian/in/control:
     + Changed relationship to gnuplot from Suggests to Recommends
       (closes: #418503)
+    + Replaced build-dependency on tetex-bin by texlive-latex-base and
+      texlive-generic-recommended (teTeX is deprecated in lenny, in favor
+      of TeXlive)
+  * debian/rules: make-indep depends on make-arch-stamp because run-octave
+    is invoked when building the docs
 
   [ Thomas Weber ]
   * PACKAGE-headers.postinst, PACKAGE-headers.prerm:
