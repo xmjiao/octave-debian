@@ -173,7 +173,7 @@ make-arch-stamp:
 
 	touch make-arch-stamp
 
-make-indep: configure-stamp make-indep-stamp
+make-indep: configure-stamp make-arch-stamp make-indep-stamp
 make-indep-stamp:
 
 	ln -fs octMakefile-only-doc octMakefile
