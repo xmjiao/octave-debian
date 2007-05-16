@@ -1,3 +1,13 @@
+octave2.9 (2.9.10-5) unstable; urgency=low
+
+  NOT YET RELEASED!
+
+  [ Rafael Laboissiere ]
+  * debian/in/control: Build-depend on gs-gpl, such that building the
+    package twice in a row will succeed (closes: #424381)
+
+ --
+
 octave2.9 (2.9.10-4) unstable; urgency=low
 
   [ Rafael Laboissiere ]
