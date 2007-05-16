@@ -6,6 +6,10 @@ octave2.9 (2.9.10-5) unstable; urgency=low
   * debian/in/control: Build-depend on gs-gpl, such that building the
     package twice in a row will succeed (closes: #424381)
 
+  [ Thomas Weber ]
+  * debian/patches/50_fft_with_empty_matrix.dpatch: 
+    Sync fft.cc with upstream (closes: #423278)
+
  --
 
 octave2.9 (2.9.10-4) unstable; urgency=low
