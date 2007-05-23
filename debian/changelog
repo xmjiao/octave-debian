@@ -1,4 +1,4 @@
-octave2.9 (2.9.10-5) unstable; urgency=low
+octave2.9 (2.9.12-1) unstable; urgency=low
 
   NOT YET RELEASED!
 
@@ -7,10 +7,26 @@ octave2.9 (2.9.10-5) unstable; urgency=low
     package twice in a row will succeed (closes: #424381)
 
   [ Thomas Weber ]
-  * debian/patches/50_fft_with_empty_matrix.dpatch: 
-    Sync fft.cc with upstream (closes: #423278)
+  * New upstream release 
+    (2.9.11 had a problem when building, so we didn't package it)
+  * This release fixes the problem with handing empty matrices to fft.m 
+    (closes: #423278)
+  * Dropped patches (applied upstream):
+    + 50_fft_with_empty_matrix.dpatch
+    + 50_doc-builtin-vars.dpatch
+    + 50_glpk-pre-ifdef-logic.dpatch
+    + 50_dont_resize_empty_dimensions.dpatch
+    + 50_examples-use-gnuclient.dpatch
+    + 50_syscalls-test-sleep.dpatch
+    The first of these patches was never applied to any Debian release; it was
+    meant to fix #423278 and is included in this upstream release.
 
- --
+    FIXME: I'm unsure about the last patch. There seems to be a change in the
+    order of sleep and fclear calls, but I don't know if this fixes the "make
+    check" hangs
+  * debian/in/control: Add build-dep on libcurl4-dev for the url* functions
+
+ -- Rafael Laboissiere <rafael@debian.org>  Sun, 15 Apr 2007 23:13:13 +0200
 
 octave2.9 (2.9.10-4) unstable; urgency=low
 

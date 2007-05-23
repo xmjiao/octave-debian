@@ -10,7 +10,7 @@ Build-Depends: g++-4.1 (>= 4.1.1-4), debhelper (>= 5.0.0), autoconf, texinfo,
  refblas3-dev | atlas3-base-dev, lapack3-dev | atlas3-base-dev,
  gnuplot-nox, fftw3-dev, dejagnu, texi2html, less, dpatch,
  slice[V_2_9:, libpcre3-dev, flex, libglpk-dev (>= 4.15),
- libufsparse-dev, gawk, gs-gpl:]
+ libufsparse-dev, gawk, gs-gpl, libcurl4-dev:]
 Standards-Version: 3.7.2
 XS-Vcs-Svn: svn://svn.debian.org/svn/pkg-octave/octave/
 XS-Vcs-Browser: http://svn.debian.org/wsvn/pkg-octave/octave/
