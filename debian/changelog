@@ -7,7 +7,7 @@ octave2.9 (2.9.12-1) unstable; urgency=low
     package twice in a row will succeed (closes: #424381)
 
   [ Thomas Weber ]
-  * New upstream release 
+  * New upstream release (closes: #417487)
     (2.9.11 had a problem when building, so we didn't package it)
   * This release fixes the problem with handing empty matrices to fft.m 
     (closes: #423278)
@@ -26,7 +26,7 @@ octave2.9 (2.9.12-1) unstable; urgency=low
     check" hangs
   * debian/in/control: Add build-dep on libcurl4-dev for the url* functions
 
- -- Rafael Laboissiere <rafael@debian.org>  Sun, 15 Apr 2007 23:13:13 +0200
+ --
 
 octave2.9 (2.9.10-4) unstable; urgency=low
 
