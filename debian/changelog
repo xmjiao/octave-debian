@@ -12,7 +12,6 @@ octave2.9 (2.9.12-1) unstable; urgency=low
   * This release fixes the problem with handing empty matrices to fft.m 
     (closes: #423278)
   * Dropped patches (applied upstream):
-    + 50_fft_with_empty_matrix.dpatch
     + 50_doc-builtin-vars.dpatch
     + 50_glpk-pre-ifdef-logic.dpatch
     + 50_dont_resize_empty_dimensions.dpatch
