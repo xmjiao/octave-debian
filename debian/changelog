@@ -1,16 +1,12 @@
-octave2.9 (2.9.12-1) unstable; urgency=low
+octave2.9 (1:2.9.12-1) unstable; urgency=low
 
   NOT YET RELEASED!
 
-  [ Rafael Laboissiere ]
-  * debian/in/control: Build-depend on gs-gpl, such that building the
-    package twice in a row will succeed (closes: #424381)
-
   [ Thomas Weber ]
-  * New upstream release 
+  * New upstream release
     (2.9.11 had a problem when building, so we didn't package it)
   * data-conv.cc now #include's cstdlib (closes: #417487)
-  * This release fixes the problem with handing empty matrices to fft.m 
+  * This release fixes the problem with handing empty matrices to fft.m
     (closes: #423278)
   * Dropped patches (applied upstream):
     + 50_doc-builtin-vars.dpatch
@@ -18,10 +14,20 @@ octave2.9 (2.9.12-1) unstable; urgency=low
     + 50_dont_resize_empty_dimensions.dpatch
     + 50_examples-use-gnuclient.dpatch
     + 50_syscalls-test-sleep.dpatch
-  * New patches:
+  * New patch:
     + 50_fix_pkg_rebuild.m.dpatch: fix issue with pkg -rebuild, see
-    http://www.nabble.com/Small-bug-in-%22pkg-rebuild%22-tf3807246.html
+      http://www.nabble.com/Small-bug-in-%22pkg-rebuild%22-tf3807246.html
   * debian/in/control: Add build-dep on libcurl4-dev for the url* functions
+
+  [ Rafael Laboissiere ]
+  * debian/in/control:
+    + Build-depend on gs-gpl, such that building the package twice in a
+      row will succeed (closes: #424381)
+    + Since 2.9.12 is marked as the "testing" (AKA "recommended") version
+      by the upstream author, the octave virtual package depends now on
+      octave2.9.  Since the previous version of this package was
+      1:2.1.73-13, we need to add an epoch to the version number in the
+      2.9 branch.
 
  --
 

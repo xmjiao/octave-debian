@@ -134,18 +134,18 @@ Description: GNU Info documentation on the GNU Octave language ([V_2_1:2.1:][V_2
  .
   Homepage: http://www.octave.org/
 
-[V_2_1:
+[V_2_9:
 Package: octave
 Architecture: all
-Depends: octave2.1
-Description: GNU Octave language for numerical computations (2.1 branch)
+Depends: octave2.9
+Description: GNU Octave language for numerical computations (2.9 branch)
  Octave is a (mostly Matlab (R) compatible) high-level language, primarily
  intended for numerical computations. It provides a convenient command-line
  interface for solving linear and nonlinear problems numerically.
  .
  This package is an empty 'virtual' package whose sole purpose is to
- install the current Octave version from the 2.1 branch (the recommended
+ install the current Octave version from the 2.9 branch (the recommended
  testing branch) .
  .
- Once you have the octave2.1 package installed, you can remove this package.
+ Once you have the octave2.9 package installed, you can remove this package.
 :]
