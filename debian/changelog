@@ -18,6 +18,9 @@ octave2.9 (2.9.12-1) unstable; urgency=low
     + 50_dont_resize_empty_dimensions.dpatch
     + 50_examples-use-gnuclient.dpatch
     + 50_syscalls-test-sleep.dpatch
+  * New patches:
+    + 50_fix_pkg_rebuild.m.dpatch: fix issue with pkg -rebuild, see
+    http://www.nabble.com/Small-bug-in-%22pkg-rebuild%22-tf3807246.html
   * debian/in/control: Add build-dep on libcurl4-dev for the url* functions
 
  --
