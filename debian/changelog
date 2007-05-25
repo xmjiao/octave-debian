@@ -1,7 +1,5 @@
 octave2.9 (1:2.9.12-1) unstable; urgency=low
 
-  NOT YET RELEASED!
-
   [ Thomas Weber ]
   * New upstream release
     (2.9.11 had a problem when building, so we didn't package it)
@@ -29,7 +27,7 @@ octave2.9 (1:2.9.12-1) unstable; urgency=low
       1:2.1.73-13, we need to add an epoch to the version number in the
       2.9 branch.
 
- --
+ -- Rafael Laboissiere <rafael@debian.org>  Fri, 25 May 2007 06:06:51 +0200
 
 octave2.9 (2.9.10-4) unstable; urgency=low
 
