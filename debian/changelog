@@ -1,3 +1,18 @@
+octave2.9 (1:2.9.12-2) unstable; urgency=low
+
+  * debian/in/control, debian/rules:
+    + Switch back to g77 from gfortran (closes: #427257). 
+      This has been discussed with the toolchain guys and is the easist
+      solution for now, see
+      http://lists.debian.org/debian-gcc/2007/06/msg00024.html
+    + Switch to SuiteSparse from UFSparse.
+  * New patch:
+    01_use_suitesparse_for_ufsparse.dpatch
+    SuiteSparse introduced a new type in 3.0, see
+    http://www.cae.wisc.edu/pipermail/help-octave/2007-June/004188.html
+
+ -- Thomas Weber <thomas.weber.mail@gmail.com>  Wed, 06 Jun 2007 07:48:32 +0000
+
 octave2.9 (1:2.9.12-1) unstable; urgency=low
 
   [ Thomas Weber ]

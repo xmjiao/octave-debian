@@ -4,13 +4,13 @@ Priority: optional
 Maintainer: Debian Octave Group <pkg-octave-devel@lists.alioth.debian.org>
 Uploaders: Rafael Laboissiere <rafael@debian.org>
 Build-Depends: g++-4.1 (>= 4.1.1-4), debhelper (>= 5.0.0), autoconf, texinfo,
- texlive-latex-base, texlive-generic-recommended, gfortran, libreadline5-dev,
+ texlive-latex-base, texlive-generic-recommended, g77, libreadline5-dev,
  libncurses5-dev, gperf, libhdf5-serial-dev (>= 1.6.5) |
  libhdf5-lam-dev (>= 1.6.5) | libhdf5-mpich-dev (>= 1.6.5),
  refblas3-dev | atlas3-base-dev, lapack3-dev | atlas3-base-dev,
  gnuplot-nox, fftw3-dev, dejagnu, texi2html, less, dpatch,
  slice[V_2_9:, libpcre3-dev, flex, libglpk-dev (>= 4.15),
- libufsparse-dev, gawk, gs-gpl, libcurl4-dev:]
+ libsuitesparse-dev, gawk, gs-gpl, libcurl4-dev:]
 Standards-Version: 3.7.2
 XS-Vcs-Svn: svn://svn.debian.org/svn/pkg-octave/octave/
 XS-Vcs-Browser: http://svn.debian.org/wsvn/pkg-octave/octave/
@@ -77,7 +77,7 @@ Description: HTML documentation on the GNU Octave language ([V_2_1:2.1:][V_2_9:2
 
 Package: octave[V_2_1:2.1:][V_2_9:2.9:]-headers
 Architecture: any
-Depends: octave[V_2_1:2.1:][V_2_9:2.9:] (= ${Source-Version}), g++, gfortran,
+Depends: octave[V_2_1:2.1:][V_2_9:2.9:] (= ${Source-Version}), g++, g77,
  libreadline5-dev, libncurses5-dev, libhdf5-serial-dev (>= 1.6.5)
  | libhdf5-lam-dev (>= 1.6.5) | libhdf5-mpich-dev (>= 1.6.5),
  refblas3-dev | atlas3-base-dev, lapack3-dev | atlas3-base-dev, fftw3-dev,

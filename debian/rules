@@ -49,7 +49,7 @@ texifiles	:= doc/interpreter/octave.texi		\
 #f77_compiler	= /usr/bin/g77-3.3
 c_compiler	= /usr/bin/gcc
 cxx_compiler	= /usr/bin/g++
-f77_compiler	= /usr/bin/gfortran
+f77_compiler	= /usr/bin/g77
 fc_flag		= --with-f77=$(f77_compiler)
 fc_libs		=
 compilerflags	= -O2
