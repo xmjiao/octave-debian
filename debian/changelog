@@ -7,6 +7,9 @@ octave2.9 (1:2.9.12-3) unstable; urgency=low
   * debian/in/PACKAGE.dirs: Added directory for enscript
   * debian/rules: Install octave.st
 
+  * debian/in/PACKAGE.menu: Changed section according to new menu
+    hierarchy (as in version 2.1.35 of the menu package)
+
  --
 
 octave2.9 (1:2.9.12-2) unstable; urgency=low

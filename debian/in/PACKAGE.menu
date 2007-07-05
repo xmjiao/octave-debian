@@ -1,4 +1,4 @@
 ?package(@PACKAGE@):needs="text"		\
- 	 section="Apps/Math"			\
+ 	 section="Applications/Mathematics"	\
 	 title="Octave (@MAJOR@)"		\
 	 command="/usr/bin/octave-@VERSION@"
