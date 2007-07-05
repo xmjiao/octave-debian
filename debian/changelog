@@ -1,7 +1,18 @@
+octave2.9 (1:2.9.12-3) unstable; urgency=low
+
+  NOT YET RELEASED!
+
+  [ Rafael Laboissiere ]
+  * debian/octave.st: Added enscript highlighting rules for Octave
+  * debian/in/PACKAGE.dirs: Added directory for enscript
+  * debian/rules: Install octave.st
+
+ --
+
 octave2.9 (1:2.9.12-2) unstable; urgency=low
 
   * debian/in/control, debian/rules:
-    + Switch back to g77 from gfortran (closes: #427257). 
+    + Switch back to g77 from gfortran (closes: #427257).
       This has been discussed with the toolchain guys and is the easist
       solution for now, see
       http://lists.debian.org/debian-gcc/2007/06/msg00024.html
