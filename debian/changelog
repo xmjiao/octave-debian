@@ -2413,18 +2413,3 @@ octave (1.1.1-7) unstable; urgency=low
   * converted to Standards-Version 2.1.0.0
 
  -- Dale Scheetz <dwarf@polaris.net>  Mon, 14 Oct 1996 08:42:54 -0400
-
-
-Local Variables:
-eval: (progn
-  (make-local-hook 'debian-changelog-add-version-hook)
-  (add-hook
-    'debian-changelog-add-version-hook
-      (lambda ()
-      (save-excursion
-        (forward-line -1)
-        (beginning-of-line)
-        (insert "\n  NOT YET RELEASED!\n\n  [ "
-          (or (getenv "DEBFULLNAME") (user-full-name)) " ]")))
-    nil t))
-End:
