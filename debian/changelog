@@ -693,7 +693,7 @@ octave2.1 (1:2.1.72-7) unstable; urgency=low
 
    +++ Changes by Rafael Laboissiere
 
-  * This version use an epoch in his number.  This is necessary due to the
+  * This version use an epoch in its number.  This is necessary due to the
     mistake I did in uploading the octave_2.9.4-1 virtual package to
     unstable.  The 2.9.4-1 version replaced the 2.1.72-* version and this
     is wrong because the 2.1 (testing) branch should take precedence over
