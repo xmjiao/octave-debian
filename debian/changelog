@@ -7,6 +7,7 @@ octave2.9 (1:2.9.12-3) UNRELEASED; urgency=low
   * debian/in/control: Removed the obsolete build-dependency on dejagnu
     (over two years ago, DejaGNU was replaced by the test/assert
     infrastructure for running the tests)
+  * debian/rules: Do not ignore make clean error
 
  -- Rafael Laboissiere <rafael@debian.org>  Mon, 23 Jul 2007 23:06:54 +0200
 

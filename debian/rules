@@ -184,20 +184,21 @@ make-indep-stamp:
 check: configure-stamp make-arch-stamp check-stamp
 check-stamp:
 	ln -fs octMakefile-no-doc octMakefile
-	-$(MAKE) 	check
+	-$(MAKE) check
 	touch check-stamp
 
 clean: unpatch
 	dh_testdir
 	dh_testroot
 
-	-$(MAKE) -C doc clean
-	-$(MAKE) -C doc/interpreter/images distclean
-	-$(MAKE) -C doc maintainer-clean
+	[ ! -f doc/Makefile ] || $(MAKE) -C doc clean
+	[ ! -f doc/Makefile ] || $(MAKE) -C doc/interpreter/images distclean
+	[ ! -f doc/Makefile ] || $(MAKE) -C doc maintainer-clean
 	find doc -name \*.info\* | xargs rm -f
 
 	-test -f octMakefile-orig && mv octMakefile-orig octMakefile
-	-$(MAKE) -i distclean || $(MAKE) -f Makefile.in distclean
+	[ ! -f Makefile ] || $(MAKE) -i distclean \
+		|| $(MAKE) -f Makefile.in distclean
 
 	rm -f build-*-stamp configure-stamp make-*-stamp check-stamp	\
 		install-*-stamp Makefile.tmp octMakefile-*
