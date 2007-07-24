@@ -9,7 +9,8 @@ octave2.9 (1:2.9.12-3) UNRELEASED; urgency=low
       ago, DejaGNU was replaced by the test/assert infrastructure for
       running the tests)
     + Use the substitution variable ${source:Version} instead of the
-      deprecated ${Source-Version}
+      deprecated ${Source-Version}.  Also, make the package binNMUable by
+      using ${binary:Version} in octave2.9-headers dependency
   * debian/rules: Do not ignore make clean error
 
  -- Rafael Laboissiere <rafael@debian.org>  Mon, 23 Jul 2007 23:06:54 +0200
