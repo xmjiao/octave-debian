@@ -214,7 +214,7 @@ clean: unpatch
 
 	# The following must be dropped when the upstream Makefile.in
 	# is fixed
-	rm -rf libcruft/mkf77def libcruft/misc/pic test/a.wav
+#	rm -rf libcruft/misc/pic
 
 	dh_clean
 
