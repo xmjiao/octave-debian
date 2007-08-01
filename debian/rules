@@ -212,10 +212,6 @@ clean: unpatch
 		test -f $$f-save && mv $$f-save $$f ;	\
 	done
 
-	# The following must be dropped when the upstream Makefile.in
-	# is fixed
-#	rm -rf libcruft/misc/pic
-
 	dh_clean
 
 install: install-arch install-indep
