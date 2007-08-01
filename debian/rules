@@ -17,10 +17,12 @@ version       	:= $(shell head -1 debian/changelog | \
 major       	:= $(shell echo $(version) | perl -nle \
 			'm/(\d\.\d)\.\d+/ and print $$1')
 
+ifeq ($(major),2.9)
+priority	:= 90
+else
 ifeq ($(major),2.1)
 priority	:= 80
-else
-priority	:= 70
+endif
 endif
 
 doc_package	= $(PACKAGE)-doc

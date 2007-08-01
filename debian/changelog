@@ -3,7 +3,10 @@ octave2.9 (1:2.9.13-2) UNRELEASED; urgency=low
   * debian/in/PACKAGE.menu: Adapted to the new menu hierarchy, which will
     be in the next release of Policy
 
- -- Rafael Laboissiere <rafael@debian.org>  Wed,  1 Aug 2007 19:04:43 +0200
+  * debian/rules: Increased the update-alternatives priority of octave2.9
+    to 90 and keep that of octave2.1 at 80
+
+ -- Rafael Laboissiere <rafael@debian.org>  Wed,  1 Aug 2007 19:06:54 +0200
 
 octave2.9 (1:2.9.13-1) unstable; urgency=low
 
