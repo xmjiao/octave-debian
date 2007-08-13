@@ -55,7 +55,7 @@ f77_compiler	= /usr/bin/g77
 fc_flag		= --with-f77=$(f77_compiler)
 fc_libs		=
 compilerflags	= -O2
-linkerflags	= -s
+# linkerflags	= -s
 
 # default to blas, atlas can overload where available (see README.Atlas)
 #atlas		= --with-blas=/usr/lib/libblas.so \
