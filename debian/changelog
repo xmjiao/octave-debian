@@ -6,11 +6,15 @@ octave2.9 (1:2.9.13-2) UNRELEASED; urgency=low
 
   * debian/rules: Increased the update-alternatives priority of octave2.9
     to 90 and keep that of octave2.1 at 80
-    
-  [ Thomas Weber ]
-  * debian/rules: Don't force mkoctfile to strip .oct files (closes: #437672)
 
- -- Rafael Laboissiere <rafael@debian.org>  Wed,  1 Aug 2007 19:06:54 +0200
+  [ Thomas Weber ]
+  * debian/rules:
+    + Don't force mkoctfile to strip .oct files (closes: #437672)
+  * patches/50_use_wxt_for_gnuplot.dpatch: Allow choice of wxt terminal in
+    gnuplot via GNUTERM, see
+    https://www.cae.wisc.edu/pipermail/help-octave/2007-July/004977.html
+
+ -- Thomas Weber <thomas.weber.mail@gmail.com>  Wed, 22 Aug 2007 08:57:52 +0000
 
 octave2.9 (1:2.9.13-1) unstable; urgency=low
 
