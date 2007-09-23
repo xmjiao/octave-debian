@@ -20,6 +20,8 @@ octave2.9 (1:2.9.14-1) unstable; urgency=low
   * debian/in/control:
     + octave*-emacsen package depends on newer emacs22
     + Added Homepage field
+  * debian/in/PACKAGE-htmldoc.doc-base.faq: Reference the correct HTML
+    files of the FAQ
 
  -- Thomas Weber <thomas.weber.mail@gmail.com>  Sat, 22 Sep 2007 17:13:51 +0000
 
