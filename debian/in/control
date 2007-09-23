@@ -103,7 +103,7 @@ Description: header files for the GNU Octave language ([V_2_1:2.1:][V_2_9:2.9:] 
 
 Package: octave[V_2_1:2.1:][V_2_9:2.9:]-emacsen
 Architecture: all
-Depends: octave[V_2_1:2.1:][V_2_9:2.9:], emacs21 | xemacs21 | emacsen,
+Depends: octave[V_2_1:2.1:][V_2_9:2.9:], emacs22 | xemacs21 | emacsen,
  debianutils (>= 1.6)
 Replaces: octave (<= 2.0.16-2)
 Conflicts: octave2.0-emacsen

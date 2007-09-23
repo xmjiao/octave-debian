@@ -1,11 +1,4 @@
-octave2.9 (1:2.9.14-1) UNRELEASED; urgency=low
-
-  [ Rafael Laboissiere ]
-  * debian/in/PACKAGE.menu: Adapted to the new menu hierarchy, which will
-    be in the next release of Policy
-  * debian/rules: Increased the update-alternatives priority of octave2.9
-    to 90 and keep that of octave2.1 at 80
-  * debian/in/control: Added Homepage field
+octave2.9 (1:2.9.14-1) unstable; urgency=low
 
   [ Thomas Weber ]
   * New upstream release
@@ -15,9 +8,18 @@ octave2.9 (1:2.9.14-1) UNRELEASED; urgency=low
   * debian/in/control:
     + Add qhull to build-dependencies. Octave-forge's geometry toolbox was
       merged with Octave and needs this.
-  * patches/01_include_missing_files:  
-    + Include .m files that were missed in the distribution tarball 
+  * patches/01_include_missing_files:
+    + Include .m files that were missed in the distribution tarball
       (closes the other half of #441722)
+
+  [ Rafael Laboissiere ]
+  * debian/in/PACKAGE.menu: Adapted to the new menu hierarchy, which will
+    be in the next release of Policy
+  * debian/rules: Increased the update-alternatives priority of octave2.9
+    to 90 and keep that of octave2.1 at 80
+  * debian/in/control:
+    + octave*-emacsen package depends on newer emacs22
+    + Added Homepage field
 
  -- Thomas Weber <thomas.weber.mail@gmail.com>  Sat, 22 Sep 2007 17:13:51 +0000
 
