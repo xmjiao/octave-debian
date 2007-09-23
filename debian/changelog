@@ -1,4 +1,4 @@
-octave2.9 (1:2.9.13-2) UNRELEASED; urgency=low
+octave2.9 (1:2.9.14-1) UNRELEASED; urgency=low
 
   [ Rafael Laboissiere ]
   * debian/in/PACKAGE.menu: Adapted to the new menu hierarchy, which will
@@ -8,13 +8,18 @@ octave2.9 (1:2.9.13-2) UNRELEASED; urgency=low
   * debian/in/control: Added Homepage field
 
   [ Thomas Weber ]
+  * New upstream release
   * debian/rules:
     + Don't force mkoctfile to strip .oct files (closes: #437672)
-  * patches/50_use_wxt_for_gnuplot.dpatch: Allow choice of wxt terminal in
-    gnuplot via GNUTERM, see
-    https://www.cae.wisc.edu/pipermail/help-octave/2007-July/004977.html
+    + Don't compress PDF files (partly (closes: #441722))
+  * debian/in/control:
+    + Add qhull to build-dependencies. Octave-forge's geometry toolbox was
+      merged with Octave and needs this.
+  * patches/01_include_missing_files:  
+    + Include .m files that were missed in the distribution tarball 
+      (closes the other half of #441722)
 
- -- Thomas Weber <thomas.weber.mail@gmail.com>  Wed, 22 Aug 2007 08:57:52 +0000
+ -- Thomas Weber <thomas.weber.mail@gmail.com>  Sat, 22 Sep 2007 17:13:51 +0000
 
 octave2.9 (1:2.9.13-1) unstable; urgency=low
 
