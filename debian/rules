@@ -39,7 +39,8 @@ deblsp		:= $(debbase)/$(emacs_package)/usr/share/emacs/site-lisp/$(emacs_package
 debini		:= $(debtmp)/usr/share/octave/site/m/startup
 debininew	:= $(debtmp)/usr/share/octave/$(version)/m/startup
 
-savefiles	:= configure config.h.in scripts/configure doc/conf.texi
+savefiles	:= configure config.h.in scripts/configure	\
+			doc/conf.texi examples/octave.desktop.in
 texifiles	:= doc/interpreter/octave.texi		\
 			doc/liboctave/liboctave.texi	\
 			doc/faq/Octave-FAQ.texi
@@ -122,6 +123,10 @@ configure-stamp:
 	dh_testdir
 
 	[ -f autogen.sh ] &&  ./autogen.sh && chmod 0755 configure
+
+	# Patch desktop file such that the referenced command exists
+	perl -pi -e 's:/bin/octave:/bin/octave-$(version):' \
+		examples/octave.desktop.in
 
 	DEFAULT_PAGER=pager				\
 	CC=$(c_compiler) 				\
