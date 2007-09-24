@@ -11,7 +11,8 @@ Build-Depends: g++-4.1 (>= 4.1.1-4), debhelper (>= 5.0.0), autoconf, texinfo,
  refblas3-dev | atlas3-base-dev, lapack3-dev | atlas3-base-dev,
  gnuplot-nox, fftw3-dev, texi2html, less, dpatch,
  slice[V_2_9:, libpcre3-dev, flex, libglpk-dev (>= 4.15),
- libsuitesparse-dev, gawk, gs-gpl, libcurl4-dev, libqhull-dev:]
+ libsuitesparse-dev, gawk, gs-gpl, libcurl4-dev, libqhull-dev,
+ desktop-file-utils:]
 Standards-Version: 3.7.2
 Homepage: http://www.octave.org/
 XS-Vcs-Svn: svn://svn.debian.org/svn/pkg-octave/octave/

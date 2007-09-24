@@ -33,11 +33,13 @@ info_package	= $(PACKAGE)-info
 
 debbase		:= $(CURDIR)/debian
 debtmp		:= $(debbase)/$(PACKAGE)
-debdoc		:= $(debtmp)/usr/share/doc/$(PACKAGE)
+debshare	:= $(debtmp)/usr/share
+debdoc		:= $(debshare)/doc/$(PACKAGE)
 debhtmldoc	:= $(debtmp)-htmldoc/usr/share/doc/$(PACKAGE)-htmldoc
 deblsp		:= $(debbase)/$(emacs_package)/usr/share/emacs/site-lisp/$(emacs_package)
-debini		:= $(debtmp)/usr/share/octave/site/m/startup
-debininew	:= $(debtmp)/usr/share/octave/$(version)/m/startup
+debini		:= $(debshare)/octave/site/m/startup
+debininew	:= $(debshare)/octave/$(version)/m/startup
+debapp		:= $(debshare)/applications
 
 savefiles	:= configure config.h.in scripts/configure	\
 			doc/conf.texi examples/octave.desktop.in
@@ -345,7 +347,14 @@ binary-arch: build-arch install-arch check
 	rm -vf	$(debtmp)/usr/lib/octave/ls-R \
 		$(debtmp)/usr/share/octave/ls-R
 
-	dh_installexamples  -p$(dev_package)  	examples/*
+	## Rename the desktop file
+	[ -e $(debapp)/www.octave.org-octave.desktop ]		\
+		&& mv $(debapp)/www.octave.org-octave.desktop	\
+			$(debapp)/octave$(major).desktop
+
+	dh_installexamples -p$(dev_package) examples/* \
+		--exclude=octave.desktop
+
 	dh_installmenu -p$(PACKAGE)
 	dh_installchangelogs -a ChangeLog ChangeLog.1
 	for i in glob libcruft liboctave src scripts test doc; do \
