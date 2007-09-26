@@ -21,7 +21,7 @@ XS-Vcs-Browser: http://svn.debian.org/wsvn/pkg-octave/octave/
 Package: octave[V_2_1:2.1:][V_2_9:2.9:]
 Architecture: any
 Depends: ${shlibs:Depends}, texinfo
-Recommends: gnuplot
+Recommends: gnuplot, atlas3-base
 Suggests: octave[V_2_1:2.1:][V_2_9:2.9:]-info,
  octave[V_2_1:2.1:][V_2_9:2.9:]-doc, octave[V_2_1:2.1:][V_2_9:2.9:]-htmldoc,
  octave[V_2_1:2.1:][V_2_9:2.9:]-headers (= ${binary:Version}),
