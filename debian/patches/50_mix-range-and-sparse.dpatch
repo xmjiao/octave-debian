@@ -1,0 +1,104 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 50_mix-range-and-sparse.dpatch by Rafael Laboissiere <rafael@debian.org>
+##
+## DP: Allow mixing range constructs and sparse matirx inside "[...]"
+## DP: Take from the bug-octave mailing list:
+## DP: https://www.cae.wisc.edu/pipermail/bug-octave/attachments/20070928/35718ff4/attachment.ksh
+## DP: https://www.cae.wisc.edu/pipermail/bug-octave/attachments/20070929/4668456b/attachment.bin
+
++++ octave2.9-2.9.14.orig/src/ov-range.h.orig11	2007-09-28 12:32:44.916893775 +0200
+--- octave2.9-2.9.14/src/ov-range.h	2007-09-28 12:04:42.511152742 +0200
+@@ -163,6 +163,36 @@
+   NDArray array_value (bool = false) const
+     { return range.matrix_value (); }
+ 
++  int8NDArray
++  int8_array_value (void) const { return int8NDArray (array_value ()); }
++
++  int16NDArray
++  int16_array_value (void) const { return int16NDArray (array_value ()); }
++
++  int32NDArray
++  int32_array_value (void) const { return int32NDArray (array_value ()); }
++
++  int64NDArray
++  int64_array_value (void) const { return int64NDArray (array_value ()); }
++
++  uint8NDArray
++  uint8_array_value (void) const { return uint8NDArray (array_value ()); }
++
++  uint16NDArray
++  uint16_array_value (void) const { return uint16NDArray (array_value ()); }
++
++  uint32NDArray
++  uint32_array_value (void) const { return uint32NDArray (array_value ()); }
++
++  uint64NDArray
++  uint64_array_value (void) const { return uint64NDArray (array_value ()); }
++
++  SparseMatrix sparse_matrix_value (bool = false) const
++    { return SparseMatrix (range.matrix_value ()); }
++
++  SparseComplexMatrix sparse_complex_matrix_value (bool = false) const
++    { return SparseComplexMatrix (sparse_matrix_value ()); }
++
+   Complex complex_value (bool = false) const;
+ 
+   boolNDArray bool_array_value (bool warn = false) const
+--- octave2.9-2.9.14.orig/test/test_range.m	1 Jan 1970 00:00:00 -0000
++++ octave2.9-2.9.14/test/test_range.m	29 Sep 2007 14:40:53 -0000
+@@ -0,0 +1,53 @@
++## Test values of range
++
++%!assert(full(1:9), [ 1 2 3 4 5 6 7 8 9 ])
++%!assert(full(1:0.4:3), [ 1.0 1.4 1.8 2.2 2.6 3.0 ])
++%!assert(full(9:1), zeros(1,0))
++%!assert(full(9:-1:1), [ 9 8 7 6 5 4 3 2 1 ])
++%!assert(full(1:-1:9), zeros(1,0))
++
++
++## Test mixing integer range with other types
++
++%!shared expect, r, z
++%! expect = [ 1 2 3 4 5 6 7 8 9
++%!            0 0 0 0 0 0 0 0 0 ];
++%! z = zeros(1,9);
++%! r = 1:9;
++
++%!assert([ r ; z                  ], expect)
++%!assert([ r ; logical(z)         ], expect)
++%!assert([ r ; sparse(z)          ], expect)
++%!assert([ r ; sparse(logical(z)) ], expect)
++
++%!assert([ r ; int8(z)            ], int8(expect))
++%!assert([ r ; int16(z)           ], int16(expect))
++%!assert([ r ; int32(z)           ], int32(expect))
++%!assert([ r ; int64(z)           ], int64(expect))
++%!assert([ r ; uint8(z)           ], uint8(expect))
++%!assert([ r ; uint16(z)          ], uint16(expect))
++%!assert([ r ; uint32(z)          ], uint32(expect))
++%!assert([ r ; uint64(z)          ], uint64(expect))
++
++
++## Test mixing non integer range with other types
++
++%!shared expect, r, z
++%! expect = [ 1.0 1.4 1.8 2.2 2.6 3.0
++%!            0   0   0   0   0   0   ];
++%! z = zeros(1,6);
++%! r = 1:0.4:3;
++
++%!assert([ r ; z                  ], expect)
++%!assert([ r ; logical(z)         ], expect)
++%!assert([ r ; sparse(z)          ], expect)
++%!assert([ r ; sparse(logical(z)) ], expect)
++
++%!assert([ r ; int8(z)            ], int8(expect))
++%!assert([ r ; int16(z)           ], int16(expect))
++%!assert([ r ; int32(z)           ], int32(expect))
++%!assert([ r ; int64(z)           ], int64(expect))
++%!assert([ r ; uint8(z)           ], uint8(expect))
++%!assert([ r ; uint16(z)          ], uint16(expect))
++%!assert([ r ; uint32(z)          ], uint32(expect))
++%!assert([ r ; uint64(z)          ], uint64(expect))
++

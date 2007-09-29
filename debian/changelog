@@ -1,8 +1,14 @@
 octave2.9 (1:2.9.14-2) UNRELEASED; urgency=low
 
+  [ Thomas Weber ]
   * Add atlas3-base to recommends (closes: #419556)
 
- -- Thomas Weber <thomas.weber.mail@gmail.com>  Wed, 26 Sep 2007 11:20:13 +0200
+  [ Rafael Laboissiere ]
+  * debian/patches/50_mix-range-and-sparse.dpatch: Allow mixing range
+    constructs and sparse matrix definitions when building matrices with
+    brackets (thanks to Kim Hansen and David Bateman, closes: #444420)
+
+ -- Rafael Laboissiere <rafael@debian.org>  Sat, 29 Sep 2007 16:55:16 +0200
 
 octave2.9 (1:2.9.14-1) unstable; urgency=low
 
