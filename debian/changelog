@@ -1,7 +1,7 @@
-octave3.0 (2.9.14-1) UNRELEASED; urgency=low
+octave3.0 (2.9.15-1) UNRELEASED; urgency=low
 
   [ Thomas Weber ]
-  * Declare 2.9.14 as release candidate for 3.0. This has been discussed with
+  * Declare 2.9.15 as release candidate for 3.0. This has been discussed with
     upstream and is encouraged.
 
  -- Thomas Weber <thomas.weber.mail@gmail.com>  Thu, 11 Oct 2007 22:39:42 +0000
