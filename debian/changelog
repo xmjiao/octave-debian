@@ -5,8 +5,9 @@ octave3.0 (2.9.15-1) UNRELEASED; urgency=low
     upstream and is encouraged.
 
   [ Rafael Laboissiere ]
-  * debian/patches/01_include_missing_files.dpatch: Removed patch (applied
-    upstream)
+  * Removed patch (applied upstream):
+    + debian/patches/01_include_missing_files.dpatch
+    + debian/patches/50_mix-range-and-sparse.dpatch
 
  -- Thomas Weber <thomas.weber.mail@gmail.com>  Thu, 11 Oct 2007 22:39:42 +0000
 
