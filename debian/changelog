@@ -2,7 +2,7 @@ octave3.0 (2.9.15-1) UNRELEASED; urgency=low
 
   [ Thomas Weber ]
   * Declare 2.9.15 as release candidate for 3.0. This has been discussed with
-    upstream and is encouraged.
+    upstream and is encouraged (closes: #446639)
 
   [ Rafael Laboissiere ]
   * Removed patch (applied upstream):
