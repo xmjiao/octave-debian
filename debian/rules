@@ -7,7 +7,10 @@
 
 include /usr/share/dpatch/dpatch.make
 
-# in order: octave, octave2.1, 2.1.28, 2.1  (or whatever the version is)
+# in order: octave, octave2.1, 2.1.28, 2.1  (or whatever the version is), 3.0
+# the difference in major and PACKAGEVER: first one is taken from the octave
+# version (ie 2.1.69), the second one from the binary package name in Debian
+# (ie octave2.1); necessary for the 3.0 rc uploads.
 source		:= $(shell head -1 debian/changelog | \
 			perl -nle 'm/^([a-z]+)/ and print $$1')
 PACKAGE		:= $(shell head -1 debian/changelog | \
@@ -16,6 +19,9 @@ version       	:= $(shell head -1 debian/changelog | \
 			perl -nle 'm/\S+\s+\((?:\d:)*(\S+)-\S+\)/ and print $$1')
 major       	:= $(shell echo $(version) | perl -nle \
 			'm/(\d\.\d)\.\d+/ and print $$1')
+PACKAGEVER	:= $(shell echo $(PACKAGE) | \
+			perl -nle 'm/.*(\d.\d)/ and print $$1')
+#FIXME: drop PACKAGEVER after the release of 3.0 source packages!
 
 ifeq ($(major),2.9)
 priority	:= 90
@@ -81,7 +87,7 @@ endif
 
 #export DH_VERBOSE=1
 
-sliceterm = UNDEF+V_$(shell echo $(major) | sed s/\\./_/g)
+sliceterm = UNDEF+V_$(shell echo $(PACKAGEVER) | sed s/\\./_/g)
 
 debian/control: debian/in/control
 	slice -o $(sliceterm):$@ $<
@@ -299,7 +305,7 @@ binary-indep: build-indep install-indep
 	install -p -m 0644 emacs/octave-tags.1			\
 	     $(debbase)/$(emacs_package)/usr/share/man/man1/octave-tags-$(version).1
 
-	dh_installchangelogs -i			ChangeLog
+	dh_installchangelogs -i	ChangeLog
 	dh_compress -i --exclude=.pdf
 	dh_fixperms -i
 	dh_installdeb -i
@@ -339,6 +345,7 @@ binary-arch: build-arch install-arch check
         ## this file would exist under 2.0 and 2.1 with the same name
 	rm -v 					$(debini)/octaverc
 
+	
 	dh_installdocs -a			README README.kpathsea	\
 						NEWS* PROJECTS THANKS	\
 						BUGS SENDING-PATCHES

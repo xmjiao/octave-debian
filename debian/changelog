@@ -1,14 +1,10 @@
-octave2.9 (1:2.9.14-2) unstable; urgency=low
+octave3.0 (2.9.14-1) UNRELEASED; urgency=low
 
   [ Thomas Weber ]
-  * Add atlas3-base to recommends (closes: #419556)
+  * Declare 2.9.14 as release candidate for 3.0. This has been discussed with
+    upstream and is encouraged.
 
-  [ Rafael Laboissiere ]
-  * debian/patches/50_mix-range-and-sparse.dpatch: Allow mixing range
-    constructs and sparse matrix definitions when building matrices with
-    brackets (thanks to Kim Hansen and David Bateman, closes: #444420)
-
- -- Rafael Laboissiere <rafael@debian.org>  Sat, 29 Sep 2007 16:55:16 +0200
+ -- Thomas Weber <thomas.weber.mail@gmail.com>  Thu, 11 Oct 2007 22:39:42 +0000
 
 octave2.9 (1:2.9.14-1) unstable; urgency=low
 

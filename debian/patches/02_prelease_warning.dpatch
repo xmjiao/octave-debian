@@ -1,0 +1,23 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 02_prelease_warning.dpatch by Thomas Weber <thomas.weber.mail@gmail.com>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: No description.
+
+@DPATCH@
+diff -urNad octave2.9-2.9.14~/src/version.h octave2.9-2.9.14/src/version.h
+--- octave2.9-2.9.14~/src/version.h	2007-09-17 17:31:10.000000000 +0000
++++ octave2.9-2.9.14/src/version.h	2007-10-12 14:49:19.000000000 +0000
+@@ -65,6 +65,12 @@
+ 
+ #define OCTAVE_NAME_VERSION_AND_COPYRIGHT \
+   OCTAVE_NAME_AND_VERSION "\n" \
++"***********************************************************************\n\
++* WARNING: Although this version of Octave was launched as octave3.0, *\n\
++* it is actually version 2.9.14, which is considered by the upstream  *\n\
++* authors as a release candidate for the upcoming 3.0 version.  This  *\n\
++* version is specific to the Debian GNU/Linux distribution.           *\n\
++***********************************************************************\n" \
+   OCTAVE_COPYRIGHT
+ 
+ #define OCTAVE_NAME_VERSION_COPYRIGHT_COPYING_AND_WARRANTY \
