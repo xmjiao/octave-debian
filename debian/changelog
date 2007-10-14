@@ -4,6 +4,10 @@ octave3.0 (2.9.15-1) UNRELEASED; urgency=low
   * Declare 2.9.15 as release candidate for 3.0. This has been discussed with
     upstream and is encouraged.
 
+  [ Rafael Laboissiere ]
+  * debian/patches/01_include_missing_files.dpatch: Removed patch (applied
+    upstream)
+
  -- Thomas Weber <thomas.weber.mail@gmail.com>  Thu, 11 Oct 2007 22:39:42 +0000
 
 octave2.9 (1:2.9.14-1) unstable; urgency=low
