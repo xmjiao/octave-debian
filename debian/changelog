@@ -6,7 +6,11 @@ octave2.9 (1:2.9.15-1) unstable; urgency=low
     + 01_include_missing_files
     + 50_mix-range-and-sparse
 
- -- Thomas Weber <thomas.weber.mail@gmail.com>  Sun, 14 Oct 2007 16:31:27 +0000
+  [ Rafael Laboissiere ]
+  * debian/rules: Only do extra links for the manpages when we are
+    packaging a pre-release version
+
+ -- Rafael Laboissiere <rafael@debian.org>  Mon, 15 Oct 2007 17:19:21 +0200
 
 octave3.0 (2.9.15-1) experimental; urgency=low
 
