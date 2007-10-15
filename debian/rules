@@ -345,7 +345,6 @@ binary-arch: build-arch install-arch check
         ## this file would exist under 2.0 and 2.1 with the same name
 	rm -v 					$(debini)/octaverc
 
-	
 	dh_installdocs -a			README README.kpathsea	\
 						NEWS* PROJECTS THANKS	\
 						BUGS SENDING-PATCHES
@@ -372,12 +371,20 @@ binary-arch: build-arch install-arch check
 	dh_link --package=$(PACKAGE) \
 		usr/share/man/man1/octave-$(version).1.gz \
 		usr/share/man/man1/octave$(major).1.gz
+	# FIXME: The following should be removed after the final 3.0 release
+	dh_link --package=$(PACKAGE) \
+		usr/share/man/man1/octave$(major).1.gz \
+		usr/share/man/man1/octave$(PACKAGEVER).1.gz \
 	# make mkoctfileX.Y a symlink and symlink the manpage as well
 	dh_link --package=$(dev_package) \
 		usr/bin/mkoctfile-$(version) usr/bin/mkoctfile$(major)
 	dh_link --package=$(dev_package) \
 		usr/share/man/man1/mkoctfile-$(version).1.gz \
 		usr/share/man/man1/mkoctfile$(major).1.gz
+	# FIXME: The following should be removed after the final 3.0 release
+	dh_link --package=$(dev_package) \
+		usr/share/man/man1/mkoctfile$(major).1.gz \
+		usr/share/man/man1/mkoctfile$(PACKAGEVER).1.gz
 	# make octaveX.Y-depends a symlink and symlink the manpage as well
 	dh_link --package=$(dev_package) \
 		usr/bin/octave-depends-$(version) \
@@ -385,6 +392,10 @@ binary-arch: build-arch install-arch check
 	dh_link --package=$(dev_package) \
 		usr/share/man/man1/octave-depends-$(version).1.gz \
 		usr/share/man/man1/octave$(major)-depends.1.gz
+	# FIXME: The following should be removed after the final 3.0 release
+	dh_link --package=$(dev_package) \
+		usr/share/man/man1/octave$(major)-depends.1.gz \
+		usr/share/man/man1/octave$(PACKAGEVER)-depends.1.gz
 	dh_strip -a
 	dh_compress -a
 	dh_fixperms -a
