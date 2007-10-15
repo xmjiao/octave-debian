@@ -1,15 +1,15 @@
-octave3.0 (2.9.15-1) UNRELEASED; urgency=low
+octave3.0 (2.9.15-1) experimental; urgency=low
 
   [ Thomas Weber ]
   * Declare 2.9.15 as release candidate for 3.0. This has been discussed with
     upstream and is encouraged (closes: #446639)
 
   [ Rafael Laboissiere ]
-  * Removed patch (applied upstream):
+  * Removed patches (applied upstream):
     + debian/patches/01_include_missing_files.dpatch
     + debian/patches/50_mix-range-and-sparse.dpatch
 
- -- Thomas Weber <thomas.weber.mail@gmail.com>  Thu, 11 Oct 2007 22:39:42 +0000
+ -- Rafael Laboissiere <rafael@debian.org>  Sun, 14 Oct 2007 23:36:10 +0200
 
 octave2.9 (1:2.9.14-1) unstable; urgency=low
 
