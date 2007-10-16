@@ -1,3 +1,9 @@
+octave2.9 (1:2.9.15-2) UNRELEASED; urgency=low
+
+  * debian/copyright: Updated licensing terms to GPL v3 or later
+
+ -- Rafael Laboissiere <rafael@debian.org>  Tue, 16 Oct 2007 09:08:09 +0200
+
 octave2.9 (1:2.9.15-1) unstable; urgency=low
 
   [ Thomas Weber ]
