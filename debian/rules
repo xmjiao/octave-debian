@@ -112,6 +112,7 @@ maintainer-scripts: debian/control
 	cp debian/in/$(PACKAGE)-00list debian/patches/00list
 	cp debian/in/$(PACKAGE)-watch debian/watch
 	slice -o $(sliceterm):debian/$(PACKAGE).conf debian/in/PACKAGE.conf
+	-cp debian/in/$(PACKAGE)-NEWS debian/NEWS
 
 get-orig-source: upstream
 upstream:
@@ -229,6 +230,8 @@ clean: unpatch
 	-for f in $(savefiles) $(texifiles) ; do	\
 		test -f $$f-save && mv $$f-save $$f ;	\
 	done
+
+	rm -f debian/NEWS
 
 	dh_clean
 
