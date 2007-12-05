@@ -15,7 +15,7 @@ Build-Depends: g++-4.1 (>= 4.1.1-4), debhelper (>= 5.0.0), autoconf, texinfo,
  desktop-file-utils:][V_3_0:, libpcre3-dev, flex, libglpk-dev (>= 4.15),
  libsuitesparse-dev, gawk, gs-gpl, libcurl4-dev, libqhull-dev,
  desktop-file-utils:]
-Standards-Version: 3.7.2
+Standards-Version: 3.7.3
 Homepage: http://www.octave.org/
 XS-Vcs-Svn: svn://svn.debian.org/svn/pkg-octave/octave/
 XS-Vcs-Browser: http://svn.debian.org/wsvn/pkg-octave/octave/
@@ -25,7 +25,7 @@ Architecture: any
 Depends: ${shlibs:Depends}, texinfo
 Recommends: gnuplot, atlas3-base
 Suggests: octave[V_2_1:2.1:][V_2_9:2.9:][V_3_0:3.0:]-info,
- octave[V_2_1:2.1:][V_2_9:2.9:][V_3_0:3.0:]-doc, 
+ octave[V_2_1:2.1:][V_2_9:2.9:][V_3_0:3.0:]-doc,
  octave[V_2_1:2.1:][V_2_9:2.9:][V_3_0:3.0:]-htmldoc,
  octave[V_2_1:2.1:][V_2_9:2.9:][V_3_0:3.0:]-headers (= ${binary:Version}),
  octave[V_2_1:2.1:][V_2_9:2.9:][V_3_0:3.0:]-emacsen
@@ -41,8 +41,6 @@ Description: GNU Octave language for numerical computations ([V_2_1:2.1:][V_2_9:
  balgen, dassl, eispack, fftpack, lapack, linpack, minpack, odepack,
  ranlib, slatec-fn and villad. Octave can be dynamically extended with
  user-supplied C++ files.
- .
-  Homepage: http://www.octave.org/
 
 Package: octave[V_2_1:2.1:][V_2_9:2.9:][V_3_0:3.0:]-doc
 Architecture: all
@@ -60,8 +58,6 @@ Description: PDF documentation on the GNU Octave language ([V_2_1:2.1:][V_2_9:2.
  the FAQ, a reference card in a4, letter and legal formats, a document on the
  C++ classes used by Octave, as well as the main octave documentation which
  is also included in info format in the octave[V_2_1:2.1:][V_2_9:2.9:][V_3_0:3.0:]-info package.
- .
-  Homepage: http://www.octave.org/
 
 Package: octave[V_2_1:2.1:][V_2_9:2.9:][V_3_0:3.0:]-htmldoc
 Architecture: all
@@ -78,8 +74,6 @@ Description: HTML documentation on the GNU Octave language ([V_2_1:2.1:][V_2_9:2
  the FAQ, a document on the C++ classes used by Octave, as well as the main
  octave documentation which is also included in info format in the main
  Octave package.
- .
-  Homepage: http://www.octave.org/
 
 Package: octave[V_2_1:2.1:][V_2_9:2.9:][V_3_0:3.0:]-headers
 Architecture: any
@@ -102,8 +96,6 @@ Description: header files for the GNU Octave language ([V_2_1:2.1:][V_2_9:2.9:][
  .
  The package is architecture-specific as it contains machine-dependent
  compiler switches in the mkoctfile script.
- .
-  Homepage: http://www.octave.org/
 
 Package: octave[V_2_1:2.1:][V_2_9:2.9:][V_3_0:3.0:]-emacsen
 Architecture: all
@@ -119,8 +111,6 @@ Description: Emacs support for the GNU Octave language ([V_2_1:2.1:][V_2_9:2.9:]
  .
  This packages provides the elisp files for the Octave modes for GNU Emacs
  and XEmacs.
- .
-  Homepage: http://www.octave.org/
 
 Package: octave[V_2_1:2.1:][V_2_9:2.9:][V_3_0:3.0:]-info
 Architecture: all
@@ -137,8 +127,6 @@ Description: GNU Info documentation on the GNU Octave language ([V_2_1:2.1:][V_2
  the FAQ, a document on the C++ classes used by Octave, as well as the main
  octave documentation which is needed for the 'help -i foo' command within
  Octave.
- .
-  Homepage: http://www.octave.org/
 
 [V_2_9:
 Package: octave

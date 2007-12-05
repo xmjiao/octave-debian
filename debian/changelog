@@ -4,8 +4,11 @@ octave2.9 (1:2.9.17-2) UNRELEASED; urgency=low
     order to avoid warnings about the private libraries of Octave not
     being found.  These warnings have been introduced in a recent version
     of dpkg-shlibdeps.
+  * debian/control:
+    + Dropped the Homepage pseudo-header for the extended description
+    + Bumped Standards-Version to 3.7.3
 
- -- Rafael Laboissiere <rafael@debian.org>  Tue, 04 Dec 2007 10:31:42 +0100
+ -- Rafael Laboissiere <rafael@debian.org>  Wed, 05 Dec 2007 12:38:10 +0100
 
 octave2.9 (1:2.9.17-1) unstable; urgency=low
 
