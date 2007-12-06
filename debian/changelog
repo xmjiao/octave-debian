@@ -1,6 +1,7 @@
-octave2.9 (1:2.9.17-2) UNRELEASED; urgency=low
+octave2.9 (1:2.9.18-1) UNRELEASED; urgency=low
 
-  * debian/rules: 
+  * New upstream release
+  * debian/rules:
     + Call dh_shlibdeps with the appropriate -l option in order to avoid
       warnings about the private libraries of Octave not being found.  These
       warnings have been introduced in a recent version of dpkg-shlibdeps.
@@ -11,7 +12,7 @@ octave2.9 (1:2.9.17-2) UNRELEASED; urgency=low
     + Dropped the Homepage pseudo-header for the extended description
     + Bumped Standards-Version to 3.7.3
 
- -- Rafael Laboissiere <rafael@debian.org>  Wed, 05 Dec 2007 12:38:10 +0100
+ -- Rafael Laboissiere <rafael@debian.org>  Thu, 06 Dec 2007 09:13:48 +0100
 
 octave2.9 (1:2.9.17-1) unstable; urgency=low
 
