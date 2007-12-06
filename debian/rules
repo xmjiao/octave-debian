@@ -338,7 +338,7 @@ binary-arch: build-arch install-arch check
 			usr/share/man/man1/octave-depends-$(version).1	\
 			usr/share/octave/debian/defs.make-$(version)
 	rm -r $(debtmp)/usr/include
-	rm -rf $(debtmp)/usr/share/info
+	rm -rf $(debtmp)/usr/share/info $(debtmp)/usr/share/octave
 
 	install -p -m 0644  debian/$(PACKAGE).conf  $(debtmp)/etc
 
