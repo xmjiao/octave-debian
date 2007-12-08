@@ -338,7 +338,8 @@ binary-arch: build-arch install-arch check
 			usr/share/man/man1/octave-depends-$(version).1	\
 			usr/share/octave/debian/defs.make-$(version)
 	rm -r $(debtmp)/usr/include
-	rm -rf $(debtmp)/usr/share/info $(debtmp)/usr/share/octave
+	rm -rf $(debtmp)/usr/share/info
+	rm -rf $(debtmp)/usr/share/octave/debian/
 
 	install -p -m 0644  debian/$(PACKAGE).conf  $(debtmp)/etc
 
@@ -349,7 +350,7 @@ binary-arch: build-arch install-arch check
         ## link the conf.file back from /etc over the version.spec. rc
 	ln -sf /etc/$(PACKAGE).conf 		$(debininew)/octaverc
         ## this file would exist under 2.0 and 2.1 with the same name
-	rm -v 					$(debini)/octaverc
+	rm -rf 					$(debini)
 
 	dh_installdocs -a			README README.kpathsea	\
 						NEWS* PROJECTS THANKS	\

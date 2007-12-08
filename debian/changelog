@@ -7,7 +7,7 @@ octave2.9 (1:2.9.18-1) UNRELEASED; urgency=low
       warnings have been introduced in a recent version of dpkg-shlibdeps.
     + Copy version NEWS files from debian/in/ directory into debian/
     + Remove debian/NEWS at clean rule
-    + Remove directory /usr/share/octave from the main octave*.* package
+    + Remove some empty directories from the main octave*.* package
   * debian/in/octave3.0-NEWS: Moved from debian/NEWS
   * debian/control:
     + Dropped the Homepage pseudo-header for the extended description
