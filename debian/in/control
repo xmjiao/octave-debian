@@ -1,3 +1,4 @@
+[EMACS: -*- debian-control -*- :]
 Source: octave[V_2_1:2.1:][V_2_9:2.9:][V_3_0:3.0:]
 Section: math
 Priority: optional
