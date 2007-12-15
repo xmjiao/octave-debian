@@ -1,8 +1,11 @@
-octave2.9 (1:2.9.19-1) unstable; urgency=low
+octave2.9 (1:2.9.19-1) UNRELEASED; urgency=low
 
   * New upstream release
+  * debian/in/PACKAGE-htmldoc.doc-base.*: Replaced tabulations by single
+    spaces at the beginning of continuation lines of the Abstract fields
+    (cf Debian doc-base Manual section 2.3.2)
 
- -- Thomas Weber <thomas.weber.mail@gmail.com>  Wed, 12 Dec 2007 23:06:53 +0100
+ -- Rafael Laboissiere <rafael@debian.org>  Sat, 15 Dec 2007 12:57:43 +0100
 
 octave2.9 (1:2.9.18-1) unstable; urgency=low
 

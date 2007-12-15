@@ -2,11 +2,11 @@ Document: octave@MAJOR@-manual
 Title: The GNU Octave Manual (@MAJOR@ branch)
 Author: John W. Eaton
 Abstract: Octave is a (mostly Matlab (R) compatible) high-level
-	language, primarily intended for numerical computations.
-	It provides a convenient command-line interface for solving
-	linear and nonlinear problems numerically.
+ language, primarily intended for numerical computations.  It provides
+ a convenient command-line interface for solving linear and nonlinear
+ problems numerically.
 Section: Apps/Math
 
 Format: HTML
-Index: 	/usr/share/doc/@PACKAGE@-htmldoc/interpreter/index.html
-Files:  /usr/share/doc/@PACKAGE@-htmldoc/interpreter/*.html
+Index: /usr/share/doc/@PACKAGE@-htmldoc/interpreter/index.html
+Files: /usr/share/doc/@PACKAGE@-htmldoc/interpreter/*.html
