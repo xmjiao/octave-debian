@@ -1,4 +1,4 @@
-octave2.9 (1:2.9.19-1) UNRELEASED; urgency=low
+octave2.9 (1:2.9.19-1) unstable; urgency=low
 
   * New upstream release
   * debian/in/PACKAGE-htmldoc.doc-base.*: Replaced tabulations by single
