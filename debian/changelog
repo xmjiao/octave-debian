@@ -4,8 +4,9 @@ octave2.9 (1:2.9.19-1) UNRELEASED; urgency=low
   * debian/in/PACKAGE-htmldoc.doc-base.*: Replaced tabulations by single
     spaces at the beginning of continuation lines of the Abstract fields
     (cf Debian doc-base Manual section 2.3.2)
+  * debian/rules: Remove empty dirs (usr/{share,lib}/[...]/site/[...])
 
- -- Rafael Laboissiere <rafael@debian.org>  Sat, 15 Dec 2007 12:57:43 +0100
+ -- Rafael Laboissiere <rafael@debian.org>  Sat, 15 Dec 2007 13:19:17 +0100
 
 octave2.9 (1:2.9.18-1) unstable; urgency=low
 

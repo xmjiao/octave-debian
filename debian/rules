@@ -43,6 +43,7 @@ info_package	= $(PACKAGE)-info
 debbase		:= $(CURDIR)/debian
 debtmp		:= $(debbase)/$(PACKAGE)
 debshare	:= $(debtmp)/usr/share
+deblib		:= $(debtmp)/usr/lib
 debdoc		:= $(debshare)/doc/$(PACKAGE)
 debhtmldoc	:= $(debtmp)-htmldoc/usr/share/doc/$(PACKAGE)-htmldoc
 deblsp		:= $(debbase)/$(emacs_package)/usr/share/emacs/site-lisp/$(emacs_package)
@@ -349,8 +350,11 @@ binary-arch: build-arch install-arch check
 
         ## link the conf.file back from /etc over the version.spec. rc
 	ln -sf /etc/$(PACKAGE).conf 		$(debininew)/octaverc
-        ## this file would exist under 2.0 and 2.1 with the same name
-	rm -rf 					$(debini)
+
+	# Remove empty dirs
+	rm -rf $(debshare)/octave/site	\
+		$(deblib)/octave/*/site	\
+		$(deblib)/octave/site
 
 	dh_installdocs -a			README README.kpathsea	\
 						NEWS* PROJECTS THANKS	\
