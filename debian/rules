@@ -366,7 +366,7 @@ binary-arch: build-arch install-arch check
 		$(debtmp)/usr/share/octave/ls-R
 
 	## Rename the desktop file
-	[ -e $(debapp)/www.octave.org-octave.desktop ]		\
+	-[ -e $(debapp)/www.octave.org-octave.desktop ]		\
 		&& mv $(debapp)/www.octave.org-octave.desktop	\
 			$(debapp)/octave$(major).desktop
 
