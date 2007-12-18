@@ -16,7 +16,7 @@ case "$1" in
 	for f in octave@v liboctave@v Octave@v-FAQ ; do
 		g=`echo $f | sed s/@v//`
 		h=`echo $f | sed s/@v/$MAJOR/`
-		install-info --quiet --remove $g
+		install-info --quiet --remove $h
 		update-alternatives --remove $g.info.gz	\
 			/usr/share/info/$h.info.gz
 	done

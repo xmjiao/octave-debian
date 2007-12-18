@@ -1,3 +1,11 @@
+octave2.1 (1:2.1.73-14) UNRELEASED; urgency=low
+
+  * debian/in/PACKAGE-info.prerm: Fixed a typo that was preventing the
+    *octave<version> info files from being removed by "install-info
+    --remove" (closes: #456636)
+
+ -- Rafael Laboissiere <rafael@debian.org>  Tue, 18 Dec 2007 09:55:13 +0100
+
 octave2.9 (1:2.9.19-1) unstable; urgency=low
 
   * New upstream release
