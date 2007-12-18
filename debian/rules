@@ -127,7 +127,7 @@ $(patsubst %,build-%-stamp,arch indep) :: build-%-stamp : \
 
 .PHONY: save-files
 save-files:
-	for f in $(savefiles) $(texifiles) ; do		\
+	-for f in $(savefiles) $(texifiles) ; do	\
 		test -f $$f && cp $$f $$f-save ;	\
 	done
 
@@ -138,7 +138,7 @@ configure-stamp:
 	[ -f autogen.sh ] &&  ./autogen.sh && chmod 0755 configure
 
 	# Patch desktop file such that the referenced command exists
-	test -f examples/octave.desktop.in				\
+	-test -f examples/octave.desktop.in				\
 		&& perl -pi -e 's:/bin/octave:/bin/octave-$(version):'	\
 			examples/octave.desktop.in
 
