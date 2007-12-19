@@ -1,18 +1,14 @@
-octave2.9 (1:2.9.19-2) UNRELEASED; urgency=low
-
-  * Synched with the last octave2.1 release
-
- -- Rafael Laboissiere <rafael@debian.org>  Tue, 18 Dec 2007 10:01:37 +0100
-
 octave2.1 (1:2.1.73-14) UNRELEASED; urgency=low
 
   * debian/in/PACKAGE-info.prerm: Fixed a typo that was preventing the
     *octave<version> info files from being removed by "install-info
     --remove" (closes: #456636)
-  * debian/rules: Make sure that the octave.desktop.in exists before
-    manipulating/moving it
+  * debian/rules: Make sure that the octave.desktop.in and octave-tags
+    exist before manipulating/moving them
+  * debian/in/PACKAGE-emacsen.dirs: Enable some directories only for
+    octave2.9
 
- -- Rafael Laboissiere <rafael@debian.org>  Tue, 18 Dec 2007 15:11:46 +0100
+ -- Rafael Laboissiere <rafael@debian.org>  Wed, 19 Dec 2007 15:36:52 +0100
 
 octave2.9 (1:2.9.19-1) unstable; urgency=low
 
