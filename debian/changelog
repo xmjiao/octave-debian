@@ -1,4 +1,4 @@
-octave2.1 (1:2.1.73-14) UNRELEASED; urgency=low
+octave2.1 (1:2.1.73-14) unstable; urgency=low
 
   * debian/in/PACKAGE-info.prerm: Fixed a typo that was preventing the
     *octave<version> info files from being removed by "install-info
@@ -7,8 +7,11 @@ octave2.1 (1:2.1.73-14) UNRELEASED; urgency=low
     exist before manipulating/moving them
   * debian/in/PACKAGE-emacsen.dirs: Enable some directories only for
     octave2.9
+  * debian/in/control: Since the fftw3 package have been renamed,
+    build-depends on libfft3-dev and make octave*.*-headers depend on
+    libfft3-dev as well
 
- -- Rafael Laboissiere <rafael@debian.org>  Wed, 19 Dec 2007 15:36:52 +0100
+ -- Rafael Laboissiere <rafael@debian.org>  Wed, 19 Dec 2007 17:01:51 +0100
 
 octave2.9 (1:2.9.19-1) unstable; urgency=low
 
