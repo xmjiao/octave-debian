@@ -1,4 +1,4 @@
-octave2.1 (1:2.1.73-14) unstable; urgency=low
+octave2.1 (1:2.1.73-14) UNRELEASED; urgency=low
 
   * debian/in/PACKAGE-info.prerm: Fixed a typo that was preventing the
     *octave<version> info files from being removed by "install-info
