@@ -1,3 +1,11 @@
+octave2.9 (1:2.9.19-3) UNRELEASED; urgency=low
+
+  * debian/in/control:
+    Build-conflict with atlas3-base-dev and remove it from build-depends
+    (closes: 457167)
+
+ -- Thomas Weber <thomas.weber.mail@gmail.com>  Thu, 20 Dec 2007 12:32:57 +0100
+
 octave2.1 (1:2.1.73-15) UNRELEASED; urgency=low
 
   * debian/rules: Kludge for preventing octave.st from being installed in
