@@ -1,3 +1,11 @@
+octave2.9 (1:2.9.19-3) unstable; urgency=low
+
+  * debian/in/control: 
+    Build-conflict with atlas3-base-dev and remove it from build-depends
+    (closes: 457167)
+
+ -- Thomas Weber <thomas.weber.mail@gmail.com>  Thu, 20 Dec 2007 12:32:57 +0100
+
 octave2.9 (1:2.9.19-2) unstable; urgency=low
 
   * Synched with the last octave2.1 release

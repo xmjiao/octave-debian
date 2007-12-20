@@ -9,13 +9,14 @@ Build-Depends: g++-4.1 (>= 4.1.1-4), debhelper (>= 5.0.0), autoconf, texinfo,
  texlive-latex-base, texlive-generic-recommended, g77, libreadline5-dev,
  libncurses5-dev, gperf, libhdf5-serial-dev (>= 1.6.5) |
  libhdf5-lam-dev (>= 1.6.5) | libhdf5-mpich-dev (>= 1.6.5),
- refblas3-dev | atlas3-base-dev, lapack3-dev | atlas3-base-dev,
+ refblas3-dev, lapack3-dev,
  gnuplot-nox, libfftw3-dev, texi2html, less, dpatch,
  slice[V_2_9:, libpcre3-dev, flex, libglpk-dev (>= 4.15),
  libsuitesparse-dev, gawk, gs-gpl, libcurl4-dev, libqhull-dev,
  desktop-file-utils:][V_3_0:, libpcre3-dev, flex, libglpk-dev (>= 4.15),
  libsuitesparse-dev, gawk, gs-gpl, libcurl4-dev, libqhull-dev,
  desktop-file-utils:]
+Build-Conflicts: atlas3-base-dev
 Standards-Version: 3.7.3
 Homepage: http://www.octave.org/
 Vcs-Svn: svn://svn.debian.org/svn/pkg-octave/octave/
@@ -81,7 +82,7 @@ Architecture: any
 Depends: octave[V_2_1:2.1:][V_2_9:2.9:][V_3_0:3.0:] (= ${binary:Version}), g++, g77,
  libreadline5-dev, libncurses5-dev, libhdf5-serial-dev (>= 1.6.5)
  | libhdf5-lam-dev (>= 1.6.5) | libhdf5-mpich-dev (>= 1.6.5),
- refblas3-dev | atlas3-base-dev, lapack3-dev | atlas3-base-dev, libfftw3-dev,
+ refblas3-dev, lapack3-dev, libfftw3-dev,
  ${m68k:Depends}
 Conflicts: octave-headers (<< 2.1)[V_3_0:,octave2.9-headers:]
 Provides: octave-headers
