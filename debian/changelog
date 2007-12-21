@@ -1,19 +1,16 @@
-octave2.9 (1:2.9.19-3) UNRELEASED; urgency=low
-
-  * debian/in/control:
-    Build-conflict with atlas3-base-dev and remove it from build-depends
-    (closes: 457167)
-
- -- Thomas Weber <thomas.weber.mail@gmail.com>  Thu, 20 Dec 2007 12:32:57 +0100
-
 octave2.1 (1:2.1.73-15) UNRELEASED; urgency=low
 
+  [ Rafael Laboissiere ]
   * debian/rules: Kludge for preventing octave.st from being installed in
     version 2.1 of the octave*.* package, avoiding clashes with octave2.9
     (closes: #457191).  This is a temporary solution; octave.st will
     eventually be incorporated into the enscript package (see Bug#457244).
 
- -- Rafael Laboissiere <rafael@debian.org>  Fri, 21 Dec 2007 00:12:43 +0100
+  [ Thomas Weber ]
+  * debian/in/control: Build-conflict with atlas3-base-dev and remove it
+    from build-depends (closes: 457167)
+
+ -- Rafael Laboissiere <rafael@debian.org>  Fri, 21 Dec 2007 08:36:27 +0100
 
 octave2.9 (1:2.9.19-2) unstable; urgency=low
 
