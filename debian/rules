@@ -284,7 +284,7 @@ install-arch-stamp :
 	(cd $(debtmp)/usr/bin; 						\
 		rm -v   octave	octave-bug mkoctfile octave-config)
 
-	-test "$(PACKAGEVER)" != 2.1			\
+	-test "$(PACKAGEVER)" = 2.1			\
 		|| install --mode=644 debian/octave.st	\
 			$(debtmp)/usr/share/enscript/hl
 
