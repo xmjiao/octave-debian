@@ -1,8 +1,11 @@
 octave3.0 (3.0.0-1) UNRELEASED; urgency=low
 
   * New upstream release
+  * debian/in/control: Replaced most of the references to octave2.9 by
+    octave3.0.  Made all octave3.0* packages provide/replace/conflict with
+    the respective octave2.9* packages.
 
- -- Rafael Laboissiere <rafael@debian.org>  Fri, 21 Dec 2007 14:26:31 +0100
+ -- Rafael Laboissiere <rafael@debian.org>  Fri, 21 Dec 2007 15:49:52 +0100
 
 octave2.1 (1:2.1.73-15) unstable; urgency=low
 
