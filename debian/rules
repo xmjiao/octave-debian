@@ -26,7 +26,7 @@ PACKAGEVER	:= $(shell echo $(PACKAGE) | \
 hack:
 	@echo $(PACKAGEVER)
 
-ifeq ($(major),2.9)
+ifeq ($(major),3.0)
 priority	:= 90
 else
 ifeq ($(major),2.1)
