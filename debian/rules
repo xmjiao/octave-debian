@@ -112,9 +112,10 @@ maintainer-scripts: debian/control
 	done
 	cp debian/in/$(PACKAGE)-00list debian/patches/00list
 	cp debian/in/$(PACKAGE)-watch debian/watch
-	slice -o $(sliceterm):debian/$(PACKAGE).conf debian/in/PACKAGE.conf
-	slice -o $(sliceterm):debian/$(PACKAGE)-emacsen.dirs	\
-		debian/in/PACKAGE-emacsen.dirs
+	for ext in .conf .dirs -emacsen.dirs ; do		\
+		slice -o $(sliceterm):debian/$(PACKAGE)$$ext	\
+			debian/in/PACKAGE$$ext ;		\
+	done
 	-cp debian/in/$(PACKAGE)-NEWS debian/NEWS
 
 get-orig-source: upstream

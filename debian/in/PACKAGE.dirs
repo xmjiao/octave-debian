@@ -2,4 +2,4 @@ etc
 usr/bin
 usr/share/lintian/overrides
 usr/share/octave/debian
-usr/share/enscript/hl
+[V_2_9:usr/share/enscript/hl:]
