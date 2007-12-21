@@ -1,4 +1,4 @@
-octave2.1 (1:2.1.73-15) UNRELEASED; urgency=low
+octave2.1 (1:2.1.73-15) unstable; urgency=low
 
   [ Rafael Laboissiere ]
   * debian/rules: Kludge for preventing octave.st from being installed in
