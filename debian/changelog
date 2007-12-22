@@ -4,8 +4,10 @@ octave3.0 (3.0.0-1) UNRELEASED; urgency=low
   * debian/in/control, debian/rules: Replaced most of the references to
     octave2.9 by octave3.0.  Made all octave3.0* packages
     provide/replace/conflict with the respective octave2.9* packages.
+  * debian/patches/02_prelease_warning.dpatch: Dropped patch, since this
+    is the real 3.0 release
 
- -- Rafael Laboissiere <rafael@debian.org>  Fri, 21 Dec 2007 15:49:52 +0100
+ -- Rafael Laboissiere <rafael@debian.org>  Sat, 22 Dec 2007 16:49:54 +0100
 
 octave2.1 (1:2.1.73-15) unstable; urgency=low
 
