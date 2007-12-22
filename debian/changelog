@@ -6,8 +6,10 @@ octave3.0 (3.0.0-1) UNRELEASED; urgency=low
     provide/replace/conflict with the respective octave2.9* packages.
   * debian/patches/02_prelease_warning.dpatch: Dropped patch, since this
     is the real 3.0 release
+  * debian/in/control: Dropped the build-conflict on atlas3-base-dev.  This
+    will make the autobuilders happy.
 
- -- Rafael Laboissiere <rafael@debian.org>  Sat, 22 Dec 2007 16:49:54 +0100
+ -- Rafael Laboissiere <rafael@debian.org>  Sat, 22 Dec 2007 23:26:49 +0100
 
 octave2.1 (1:2.1.73-15) unstable; urgency=low
 
