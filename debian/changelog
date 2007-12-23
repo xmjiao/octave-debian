@@ -8,8 +8,12 @@ octave3.0 (3.0.0-1) UNRELEASED; urgency=low
     is the real 3.0 release
   * debian/in/control: Dropped the build-conflict on atlas3-base-dev.  This
     will make the autobuilders happy.
+  * debian/in/control: Dropped the empty octave package.  This will allow
+    releasing octave3.0 without an epoch in its version number.  We will
+    introduce this package later, if necessary (anyway, octave3.0 provides
+    octave).
 
- -- Rafael Laboissiere <rafael@debian.org>  Sat, 22 Dec 2007 23:26:49 +0100
+ -- Rafael Laboissiere <rafael@debian.org>  Sun, 23 Dec 2007 09:16:22 +0100
 
 octave2.1 (1:2.1.73-15) unstable; urgency=low
 

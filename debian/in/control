@@ -128,19 +128,3 @@ Description: GNU Info documentation on the GNU Octave language ([V_2_1:2.1:][V_3
  the FAQ, a document on the C++ classes used by Octave, as well as the main
  octave documentation which is needed for the 'help -i foo' command within
  Octave.
-
-[V_3_0:
-Package: octave
-Architecture: all
-Depends: octave3.0
-Description: GNU Octave language for numerical computations (3.0 branch)
- Octave is a (mostly Matlab (R) compatible) high-level language, primarily
- intended for numerical computations. It provides a convenient command-line
- interface for solving linear and nonlinear problems numerically.
- .
- This package is an empty 'virtual' package whose sole purpose is to
- install the current Octave version from the 3.0 branch (the recommended
- testing branch) .
- .
- Once you have the octave3.0 package installed, you can remove this package.
-:]
