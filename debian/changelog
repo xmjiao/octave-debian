@@ -1,6 +1,10 @@
-octave3.0 (3.0.0-1) UNRELEASED; urgency=low
+octave3.0 (3.0.0-1) unstable; urgency=low
 
-  * New upstream release
+  The "Seasons Greetings" release
+
+  * New upstream release.  A big thanks to John W. Eaton and all the
+    Octave development team for this most awaited release.
+
   * debian/in/control, debian/rules: Replaced most of the references to
     octave2.9 by octave3.0.  Made all octave3.0* packages
     provide/replace/conflict with the respective octave2.9* packages.
@@ -13,7 +17,7 @@ octave3.0 (3.0.0-1) UNRELEASED; urgency=low
     reintroduce this package later, if necessary (anyway, octave3.0
     provides octave).
 
- -- Rafael Laboissiere <rafael@debian.org>  Sun, 23 Dec 2007 09:16:22 +0100
+ -- Rafael Laboissiere <rafael@debian.org>  Sun, 23 Dec 2007 16:04:15 +0100
 
 octave2.1 (1:2.1.73-15) unstable; urgency=low
 
