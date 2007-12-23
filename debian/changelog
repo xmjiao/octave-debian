@@ -1,4 +1,4 @@
-octave3.0 (3.0.0-1) unstable; urgency=low
+octave3.0 (3.0.0-1) UNRELEASED; urgency=low
 
   * New upstream release
   * debian/in/control, debian/rules: Replaced most of the references to
