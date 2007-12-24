@@ -62,6 +62,7 @@ Description: PDF documentation on the GNU Octave language ([V_2_1:2.1:][V_3_0:3.
 
 Package: octave[V_2_1:2.1:][V_3_0:3.0:]-htmldoc
 Architecture: all
+Section: doc
 Suggests: octave[V_2_1:2.1:][V_3_0:3.0:], lynx | www-browser
 Conflicts: octave-htmldoc (<< 2.1), octave2.0-htmldoc[V_3_0:,octave2.9-htmldoc:]
 Replaces: octave-htmldoc[V_3_0:,octave2.9-htmldoc:]
