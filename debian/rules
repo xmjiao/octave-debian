@@ -21,7 +21,6 @@ major       	:= $(shell echo $(version) | perl -nle \
 			'm/(\d\.\d)\.\d+/ and print $$1')
 PACKAGEVER	:= $(shell echo $(PACKAGE) | \
 			perl -nle 'm/.*(\d.\d)/ and print $$1')
-#FIXME: drop PACKAGEVER after the release of 3.0 source packages!
 
 hack:
 	@echo $(PACKAGEVER)
