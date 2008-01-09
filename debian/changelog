@@ -1,9 +1,11 @@
 octave3.0 (3.0.0-2) UNRELEASED; urgency=low
 
-  * debian/in/control: Put the -htmldoc package in section "doc", agreeing
-    with the override set by the Debian Installer
+  * debian/in/control:
+    + Put the -htmldoc package in section "doc", agreeing with the
+      override set by the Debian Installer
+    + Set Architecture of octave*-headers package to "all" (closes: 459950)
 
- -- Rafael Laboissiere <rafael@debian.org>  Mon, 24 Dec 2007 09:12:15 +0100
+ -- Rafael Laboissiere <rafael@debian.org>  Wed, 09 Jan 2008 22:36:44 +0100
 
 octave2.1 (1:2.1.73-16) unstable; urgency=low
 

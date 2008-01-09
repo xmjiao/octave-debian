@@ -78,7 +78,7 @@ Description: HTML documentation on the GNU Octave language ([V_2_1:2.1:][V_3_0:3
  Octave package.
 
 Package: octave[V_2_1:2.1:][V_3_0:3.0:]-headers
-Architecture: any
+Architecture: all
 Depends: octave[V_2_1:2.1:][V_3_0:3.0:] (= ${binary:Version}), g++, g77,
  libreadline5-dev, libncurses5-dev, libhdf5-serial-dev (>= 1.6.5)
  | libhdf5-lam-dev (>= 1.6.5) | libhdf5-mpich-dev (>= 1.6.5),
