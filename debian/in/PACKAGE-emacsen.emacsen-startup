@@ -7,7 +7,7 @@
 
 ;; The Octave package follows the Debian/GNU Linux 'emacsen' policy and
 ;; byte-compiles its elisp files for each 'emacs flavour' ({,x}emacs{19,20}).
-;; The compiled code is then installed in a subdirectory of the of the
+;; The compiled code is then installed in a subdirectory of the 
 ;; respective site-lisp directory. We have to add this back to the load-path:
 ;; Modified per Rafael's patch to only execute for emacs19
 
