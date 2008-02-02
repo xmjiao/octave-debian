@@ -8,6 +8,10 @@ octave3.0 (3.0.0-2) UNRELEASED; urgency=low
   [ Thomas Weber ]
   * debian/compat: switch to level 6
   * debian/in/control: depend on debhelper >= 6
+  * change slice term for 3.0 from 2.9:
+    + debian/in/PACKAGE.conf
+    + debian/in/PACKAGE-emacsen.dirs
+    + debian/in/PACKAGE.dirs
 
  -- Rafael Laboissiere <rafael@debian.org>  Wed, 09 Jan 2008 22:36:44 +0100
 
