@@ -6,13 +6,13 @@ Maintainer: Debian Octave Group <pkg-octave-devel@lists.alioth.debian.org>
 Uploaders: Rafael Laboissiere <rafael@debian.org>,
  Thomas Weber <thomas.weber.mail@gmail.com>
 Build-Depends: debhelper (>= 6.0.0), autoconf, texinfo,
- texlive-latex-base, texlive-generic-recommended, g77, libreadline5-dev,
+ texlive-latex-base, texlive-generic-recommended, gfortran, libreadline5-dev,
  libncurses5-dev, gperf, libhdf5-serial-dev (>= 1.6.5) |
  libhdf5-lam-dev (>= 1.6.5) | libhdf5-mpich-dev (>= 1.6.5),
- refblas3-dev, lapack3-dev,
+ libblas-dev, liblapack-dev,
  gnuplot-nox, libfftw3-dev, texi2html, less, dpatch,
  slice[V_3_0:, libpcre3-dev, flex, libglpk-dev (>= 4.15),
- libsuitesparse-dev, gawk, gs-gpl, libcurl4-dev, libqhull-dev,
+ libsuitesparse-dev (>= 3.1.0-1), gawk, gs-gpl, libcurl4-dev, libqhull-dev,
  desktop-file-utils:][V_3_0:, libpcre3-dev, flex, libglpk-dev (>= 4.15),
  libsuitesparse-dev, gawk, gs-gpl, libcurl4-dev, libqhull-dev,
  desktop-file-utils:]
@@ -24,7 +24,7 @@ Vcs-Browser: http://svn.debian.org/wsvn/pkg-octave/octave/
 Package: octave[V_2_1:2.1:][V_3_0:3.0:]
 Architecture: any
 Depends: ${shlibs:Depends}, texinfo
-Recommends: gnuplot, atlas3-base
+Recommends: gnuplot, libatlas3gf-base
 Suggests: octave[V_2_1:2.1:][V_3_0:3.0:]-info,
  octave[V_2_1:2.1:][V_3_0:3.0:]-doc,
  octave[V_2_1:2.1:][V_3_0:3.0:]-htmldoc,
@@ -79,7 +79,7 @@ Description: HTML documentation on the GNU Octave language ([V_2_1:2.1:][V_3_0:3
 
 Package: octave[V_2_1:2.1:][V_3_0:3.0:]-headers
 Architecture: any
-Depends: octave[V_2_1:2.1:][V_3_0:3.0:] (= ${binary:Version}), g++, g77,
+Depends: octave[V_2_1:2.1:][V_3_0:3.0:] (= ${binary:Version}), g++, gfortran,
  libreadline5-dev, libncurses5-dev, libhdf5-serial-dev (>= 1.6.5)
  | libhdf5-lam-dev (>= 1.6.5) | libhdf5-mpich-dev (>= 1.6.5),
  refblas3-dev, lapack3-dev, libfftw3-dev,
