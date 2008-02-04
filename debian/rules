@@ -74,7 +74,7 @@ compilerflags	= -O2
 #		  --with-lapack=/usr/lib/liblapack.so
 #atlas		= --with-blas=/usr/lib/libblas-3.so \
 #		  --with-lapack=/usr/lib/liblapack-3.so
-atlas		= --with-blas=-lblas-3 --with-lapack=-llapack-3
+atlas		= --with-blas=-lblas-3 --with-lapack=-llapackgf-3
 
 arch 		:= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
 

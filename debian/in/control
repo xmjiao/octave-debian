@@ -82,7 +82,7 @@ Architecture: any
 Depends: octave[V_2_1:2.1:][V_3_0:3.0:] (= ${binary:Version}), g++, gfortran,
  libreadline5-dev, libncurses5-dev, libhdf5-serial-dev (>= 1.6.5)
  | libhdf5-lam-dev (>= 1.6.5) | libhdf5-mpich-dev (>= 1.6.5),
- refblas3-dev, lapack3-dev, libfftw3-dev,
+ libblas-dev, liblapack-dev, libfftw3-dev,
  ${m68k:Depends}
 Conflicts: octave-headers (<< 2.1)[V_3_0:,octave2.9-headers:]
 Provides: octave-headers[V_3_0:,octave2.9-headers:]
