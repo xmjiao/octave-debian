@@ -129,3 +129,55 @@ Description: GNU Info documentation on the GNU Octave language ([V_2_1:2.1:][V_3
  the FAQ, a document on the C++ classes used by Octave, as well as the main
  octave documentation which is needed for the 'help -i foo' command within
  Octave.
+
+[V_3_0:
+Package: octave2.9
+Architecture: all
+Depends: octave3.0
+Description: GNU Octave language for numerical computations (dummy package)
+ This is a dummy package for easying the transition from octave2.9 to
+ octave3.0.  Once octave3.0 is installed in the system, this package
+ can be removed.
+
+Package: octave2.9-doc
+Architecture: all
+Section: doc
+Depends: octave3.0-doc
+Description: PDF documentation on the GNU Octave language (dummy package)
+ This is a dummy package for easying the transition from octave2.9 to
+ octave3.0.  Once octave3.0-doc is installed in the system, this package
+ can be removed.
+
+Package: octave2.9-htmldoc
+Architecture: all
+Section: doc
+Depends: octave3.0-htmldoc
+Description: HTML documentation on the GNU Octave language (dummy package)
+ This is a dummy package for easying the transition from octave2.9 to
+ octave3.0.  Once octave3.0-htmldoc is installed in the system, this package
+ can be removed.
+
+Package: octave2.9-headers
+Architecture: all
+Depends: octave3.0-headers
+Description: header files for the GNU Octave language (dummy package)
+ This is a dummy package for easying the transition from octave2.9 to
+ octave3.0.  Once octave3.0-headers is installed in the system, this package
+ can be removed.
+
+Package: octave2.9-emacsen
+Architecture: all
+Depends: octave3.0-emacsen
+Description: Emacs support for the GNU Octave language (dummy package)
+ This is a dummy package for easying the transition from octave2.9 to
+ octave3.0.  Once octave3.0-emacsen is installed in the system, this package
+ can be removed.
+
+Package: octave2.9-info
+Architecture: all
+Depends: octave3.0-info
+Description: GNU Info documentation on the GNU Octave language (dummy package)
+ This is a dummy package for easying the transition from octave2.9 to
+ octave3.0.  Once octave3.0-info is installed in the system, this package
+ can be removed.
+:]
