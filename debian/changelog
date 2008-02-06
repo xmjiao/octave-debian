@@ -14,7 +14,7 @@ octave3.0 (1:3.0.0-2) UNRELEASED; urgency=low
       libblas-dev and liblapack-dev, respectively
     + Changed the recommendation on atlas3-base to libatlas3gf-base
     + Thanks to Pascal Dupuis for the original patch
-    + Thanks to this change, the octave3.0-headers pacakge do not depend
+    + Thanks to this change, the octave3.0-headers package do not depend
       gcc-3.4 anymore (closes: #435275)
     + The F77_FUNC_ macro in config.h does have the double underscore
       that appeared in version 2.9.12-2+b3 of the octave2.9-headers
@@ -356,7 +356,7 @@ octave2.9 (2.9.10-1) experimental; urgency=low
     + Added hack for removing the libcruft/misc/pic directory left after
       "make clean", as well as the libcruft/mkf77def script and the test
       file test/a.wav
-    + When building the architecture independent part of the pacakge, call
+    + When building the architecture independent part of the package, call
       make with AWK=gawk, otherwise mawk will be used and the infamous
       error message "program limit exceeded: sprintf buffer size=1020"
       will be issued.
