@@ -6,12 +6,19 @@ octave3.0 (1:3.0.0-2) UNRELEASED; urgency=low
       override set by the Debian Installer
     + Generate dummy octave2.9* packages that depend on the corresponding
       octave3.0 ones. For this to work, we have to reintroduce the epoch in
-      the package version number.
+      the package version number.  Also, do not conflict/replace/provide
+      the octave2.9* anymore (closes: #463039).  Thanks to Steve Langasek
+      for the discussion and the suggestions.
   * debian/in/control, debian/rules: Switched from g77 to gfortran.
     + Changed the build-dependencies on refblas3-dev and lapack3-dev to
       libblas-dev and liblapack-dev, respectively
     + Changed the recommendation on atlas3-base to libatlas3gf-base
     + Thanks to Pascal Dupuis for the original patch
+    + Thanks to this change, the octave3.0-headers pacakge do not depend
+      gcc-3.4 anymore (closes: #435275)
+    + The F77_FUNC_ macro in config.h does have the double underscore
+      that appeared in version 2.9.12-2+b3 of the octave2.9-headers
+      package (closes: #434415)
 
   [ Thomas Weber ]
   * debian/compat: switch to level 6
@@ -23,7 +30,7 @@ octave3.0 (1:3.0.0-2) UNRELEASED; urgency=low
     + debian/in/PACKAGE-emacsen.dirs
     + debian/in/PACKAGE.dirs
 
- -- Rafael Laboissiere <rafael@debian.org>  Wed, 09 Jan 2008 22:36:44 +0100
+ -- Rafael Laboissiere <rafael@debian.org>  Wed, 06 Feb 2008 08:41:29 +0100
 
 octave2.1 (1:2.1.73-16) unstable; urgency=low
 
