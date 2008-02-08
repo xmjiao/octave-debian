@@ -1,0 +1,51 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 50_drop-lo-manpages.dpatch by Rafael Laboissiere <rafael@debian.org>
+
+@DPATCH@
+
+# HG changeset patch
+# User Rafael Laboissiere <rafael@debian.org>
+# Date 1202453731 -3600
+# Node ID 8aac910c2ea0b6f2480c39359dcdd6766afc0f75
+# Parent  1032e24f199f6679577c9f73af138913705d27d5
+Drop .LO macros from manpages
+
+The .LO are not documented anywhere and processing the manpages through man
+(e.g. "man --warnings -l octave.1") yields:
+
+<standard input>:20: warning: `LO' not defined
+
+diff -r 1032e24f199f -r 8aac910c2ea0 doc/ChangeLog
+--- a/doc/ChangeLog	Thu Feb 07 22:36:11 2008 -0500
++++ b/doc/ChangeLog	Fri Feb 08 07:55:31 2008 +0100
+@@ -1,1 +1,6 @@ 2008-02-07  David Bateman  <dbateman@fre
++2008-02-08  Rafael Laboissiere  <rafael@debian.org>
++
++	* interpreter/octave.1: Dropped unknow LO macro
++	* interpreter/octave-bug.1: Likewise	
++
+ 2007-12-21  John W. Eaton  <jwe@octave.org>
+
+ 	Version 3.0.0 released.
+diff -r 1032e24f199f -r 8aac910c2ea0 doc/interpreter/octave-bug.1
+--- a/doc/interpreter/octave-bug.1	Thu Feb 07 22:36:11 2008 -0500
++++ b/doc/interpreter/octave-bug.1	Fri Feb 08 07:55:31 2008 +0100
+@@ -19,7 +19,6 @@
+ .\" This page was contributed by Dirk Eddelbuettel <edd@debian.org>
+ .\" 
+ .TH octave-bug 1 "6 March 2000" GNU
+-.LO 1
+ .SH NAME
+ octave-bug \- report a bug in GNU Octave
+ .SH SYNOPSIS
+diff -r 1032e24f199f -r 8aac910c2ea0 doc/interpreter/octave.1
+--- a/doc/interpreter/octave.1	Thu Feb 07 22:36:11 2008 -0500
++++ b/doc/interpreter/octave.1	Fri Feb 08 07:55:31 2008 +0100
+@@ -17,7 +17,6 @@
+ .\" <http://www.gnu.org/licenses/>.
+ .\"
+ .TH Octave 1 "Jan 8 1996"
+-.LO 1
+ .SH NAME
+ octave \- A high-level interactive language for numerical computations.
+ .SH SYNOPSIS

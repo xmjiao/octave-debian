@@ -1,0 +1,35 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 50_include-cstring-mxarray.dpatch by Rafael Laboissiere <rafael@debian.org>
+
+@DPATCH@
+
+# HG changeset patch
+# User jwe
+# Date 1201224095 0
+# Node ID 33577b0d4df210f9dc907c6e825747c2c6d337fb
+# Parent  a7a987b229b7b0e16b2ae8748e147c2caffa815d
+[project @ 2008-01-25 01:21:35 by jwe]
+
+diff -r a7a987b229b7 -r 33577b0d4df2 src/ChangeLog
+--- a/src/ChangeLog	Thu Jan 24 08:31:36 2008 +0000
++++ b/src/ChangeLog	Fri Jan 25 01:21:35 2008 +0000
+@@ -1,1 +1,5 @@ 2008-01-22  John W. Eaton  <jwe@octave.o
++2008-01-24  Pascal Dupuis  <Pascal.Dupuis@worldonline.be>
++
++	* mxarray.h.in: Include <cstring>.
++
+ 2007-12-21  John W. Eaton  <jwe@octave.org>
+
+ 	Version 3.0.0 released.
+diff -r a7a987b229b7 -r 33577b0d4df2 src/mxarray.h.in
+--- a/src/mxarray.h.in	Thu Jan 24 08:31:36 2008 +0000
++++ b/src/mxarray.h.in	Fri Jan 25 01:21:35 2008 +0000
+@@ -89,6 +89,8 @@ typedef @OCTAVE_IDX_TYPE@ mwIndex;
+ typedef @OCTAVE_IDX_TYPE@ mwIndex;
+ 
+ #if ! defined (MXARRAY_TYPEDEFS_ONLY)
++
++#include <cstring>
+ 
+ class octave_value;
+ 
