@@ -12,7 +12,7 @@ Build-Depends: debhelper (>= 6.0.0), autoconf, texinfo,
  libblas-dev, liblapack-dev,
  gnuplot-nox, libfftw3-dev, texi2html, less, dpatch,
  slice[V_3_0:, libpcre3-dev, flex, libglpk-dev (>= 4.15),
- libsuitesparse-dev (>= 3.1.0-1), gawk, gs-gpl, libcurl4-dev, libqhull-dev,
+ libsuitesparse-dev (>= 3.1.0-2), gawk, gs-gpl, libcurl4-dev, libqhull-dev,
  desktop-file-utils:][V_3_0:, libpcre3-dev, flex, libglpk-dev (>= 4.15),
  libsuitesparse-dev, gawk, gs-gpl, libcurl4-dev, libqhull-dev,
  desktop-file-utils:]
