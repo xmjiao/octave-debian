@@ -1,4 +1,4 @@
-octave3.0 (1:3.0.0-3) UNRELEASED; urgency=low
+octave3.0 (1:3.0.0-3) experimental; urgency=low
 
   * Added dpatches:
     + 50_include-cstring-mxarray: Compile successfully with GCC 4.3
