@@ -1,0 +1,21 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 50_build-octave-faq.dpatch by Rafael Laboissiere <rafael@debian.org>
+##
+## DP: Build correctly the PS form of the Octave-FAQ documentation
+
+@DPATCH@
+
+--- octave2.1-2.1.73.orig/doc/faq/Makefile.in
++++ octave2.1-2.1.73/doc/faq/Makefile.in
+@@ -43,9 +43,9 @@
+ 	-$(MAKEINFO) -I$(srcdir) $<
+ 
+ Octave-FAQ.dvi: $(TEXINFO)
+-	-TEXINPUTS="$(srcdir):$(srcdir)/..:$(TEXINPUTS):" $(TEXI2DVI) $<
++	-TEXINPUTS="$(srcdir):$(srcdir)/..:$(TEXINPUTS):" TEX=tex $(TEXI2DVI) $<
+ 
+-Octave-FAQ.ps: $(TEXINFO)
++Octave-FAQ.ps: Octave-FAQ.dvi
+ 	-dvips -o $@ $<
+ 
+ Octave-FAQ.pdf: $(TEXINFO)

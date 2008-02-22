@@ -9,5 +9,5 @@ Abstract: This document provides answers to Frequently Asked Questions
 Section: Apps/Math
 
 Format: HTML
-Index: /usr/share/doc/@PACKAGE@-htmldoc/faq/Octave-FAQ.html
+Index: /usr/share/doc/@PACKAGE@-htmldoc/faq/index.html
 Files: /usr/share/doc/@PACKAGE@-htmldoc/faq/*.html
