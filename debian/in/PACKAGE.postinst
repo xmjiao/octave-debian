@@ -21,10 +21,10 @@ case "$1" in
 	# if it exists, update the ls-R database for kpathsea
 	if [ -d /usr/local/share/octave/ ]
 	then
-	    ls -LR /usr/lib/octave/ /usr/share/octave \
+	    ls -R /usr/lib/octave/ /usr/share/octave \
 		    /usr/local/share/octave > /usr/share/octave/ls-R
 	else
-	    ls -LR /usr/lib/octave/ /usr/share/octave > /usr/share/octave/ls-R
+	    ls -R /usr/lib/octave/ /usr/share/octave > /usr/share/octave/ls-R
 	fi
 	#
 	# update-alternatives for multiple Octave versions

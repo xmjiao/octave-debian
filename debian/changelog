@@ -1,7 +1,7 @@
 octave2.1 (1:2.1.73-17) UNRELEASED; urgency=low
 
   * Synched with octave3.0; in particular, switch from g77 to gfortran;
-    also, don't depend on a specific g++ version (closes: #463301).
+    also, don't depend on a specific g++ version (closes: #463301)
   * debian/control: Build-depend on dejagnu (for make check)
   * Moved debian/copyright into debian/in/copyright and generated the
     former using the slice command.  This is necessary because Octave 2.1
@@ -11,9 +11,11 @@ octave2.1 (1:2.1.73-17) UNRELEASED; urgency=low
     version 2 or later of the GPL (closes: #435205)
   * debian/patches/50_compile-with-g++-4.3.dpatch: Fixes for compiling the
     octave2.1 with the GCC 4.3 suite (closes: #417486)
-  * debian/rules: Remove the *.html at clean target. This will result in
-    the package having the same contents when built twice in a row
-    (closes: #441721)
+  * debian/rules: Remove the *.html at clean target, such that the package
+    have the same contents when built twice in a row (closes: #441721)
+  * debian/in/PACKAGE.postinst: Drop option -L given to the ls command
+    when building the ls-R database, such that simultaneous installation
+    of octave2.1 and octave3.0 will not fail (closes: #464334)
 
  -- Rafael Laboissiere <rafael@debian.org>  Fri, 22 Feb 2008 14:15:22 +0100
 
