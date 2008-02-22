@@ -1,6 +1,7 @@
 octave2.1 (1:2.1.73-17) UNRELEASED; urgency=low
 
-  * Synched with octave3.0; in particular, switch from g77 to gfortran
+  * Synched with octave3.0; in particular, switch from g77 to gfortran;
+    also, don't depend on a specific g++ version (closes: #463301).
   * debian/control: Build-depend on dejagnu (for make check)
   * Moved debian/copyright into debian/in/copyright and generated the
     former using the slice command.  This is necessary because Octave 2.1
