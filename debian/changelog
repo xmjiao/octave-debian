@@ -2,6 +2,12 @@ octave2.1 (1:2.1.73-17) UNRELEASED; urgency=low
 
   * Synched with octave3.0; in particular, switch from g77 to gfortran
   * debian/control: Build-depend on dejagnu (for make check)
+  * Moved debian/copyright into debian/in/copyright and generated the
+    former using the slice command.  This is necessary because Octave 2.1
+    and 3.0 are released under different versions of the GPL.  Changed
+    debian/rules accordingly.
+  * debian/in/copyright: Added the mention that Octave 2.1 is released under
+    version 2 or later of the GPL (closes: #435205)
 
  -- Rafael Laboissiere <rafael@debian.org>  Fri, 22 Feb 2008 10:30:25 +0100
 

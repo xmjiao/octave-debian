@@ -97,13 +97,13 @@ endif
 
 sliceterm = UNDEF+V_$(shell echo $(PACKAGEVER) | sed s/\\./_/g)
 
-debian/control: debian/in/control
+debian/%: debian/in/%
 	slice -o $(sliceterm):$@ $<
 
 maintainer-clean:
-	rm -f debian/control
+	rm -f debian/control debian/copyright
 
-maintainer-scripts: debian/control
+maintainer-scripts: debian/control debian/copyright
 	for in in debian/in/PACKAGE* ; do \
 		out=`echo $$in | sed 's:/in/:/:;s/PACKAGE/$(PACKAGE)/'` ; \
 		sed 's/@VERSION@/$(version)/g;s/@PACKAGE@/$(PACKAGE)/g;s/@MAJOR@/$(major)/g;s/@PRIORITY@/$(priority)/g;' \

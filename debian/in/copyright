@@ -19,7 +19,7 @@ GNU Octave is Copyright (C) 1992 - 2007 John W. Eaton and others
 
     Octave is free software; you can redistribute it and/or modify it under
     the terms of the GNU General Public License as published by the Free
-    Software Foundation; either version 3, or (at your option) any later
+    Software Foundation; either version [V_2_1:2:][V_3_0:3:], or (at your option) any later
     version.
 
     Octave is distributed in the hope that it will be useful, but WITHOUT
@@ -33,4 +33,4 @@ GNU Octave is Copyright (C) 1992 - 2007 John W. Eaton and others
     02110-1301, USA.
 
 On Debian GNU/Linux systems, the complete text of the GNU General
-Public License can be found in `/usr/share/common-licenses/GPL-3'.
+Public License can be found in `/usr/share/common-licenses/GPL-[V_2_1:2:][V_3_0:3:]'.
