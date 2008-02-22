@@ -13,7 +13,7 @@ Build-Depends: g++-4.3 [arm], debhelper (>= 6.0.0), autoconf, texinfo,
  gnuplot-nox, libfftw3-dev, texi2html, less, dpatch,
  slice[V_3_0:, libpcre3-dev, flex, libglpk-dev (>= 4.15),
  libsuitesparse-dev (>= 3.1.0-2), gawk, gs-gpl, libcurl4-dev, libqhull-dev,
- desktop-file-utils:]
+ desktop-file-utils:][V_2_1:, dejagnu:]
 Standards-Version: 3.7.3
 Homepage: http://www.octave.org/
 Vcs-Svn: svn://svn.debian.org/svn/pkg-octave/octave/
