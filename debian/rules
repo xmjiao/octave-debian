@@ -224,6 +224,11 @@ clean: unpatch
 		|| $(MAKE) -C doc/interpreter/images distclean
 	[ ! -f doc/Makefile ] || $(MAKE) -C doc maintainer-clean
 	find doc -name \*.info\* | xargs rm -f
+	# Remove all *.html shipped with the upstream tarball, such that
+	# when the package is build twice in a row it will have the same
+	# contents.  This bug happens because makeinfo yields different
+	# names for the HTML files than those in the tarball.
+	find doc -name \*.html | xargs rm -f
 
 	-test -f octMakefile-orig && mv octMakefile-orig octMakefile
 	[ ! -f Makefile ] || $(MAKE) -i distclean \

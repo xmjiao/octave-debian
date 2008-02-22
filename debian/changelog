@@ -11,8 +11,11 @@ octave2.1 (1:2.1.73-17) UNRELEASED; urgency=low
     version 2 or later of the GPL (closes: #435205)
   * debian/patches/50_compile-with-g++-4.3.dpatch: Fixes for compiling the
     octave2.1 with the GCC 4.3 suite (closes: #417486)
+  * debian/rules: Remove the *.html at clean target. This will result in
+    the package having the same contents when built twice in a row
+    (closes: #441721)
 
- -- Rafael Laboissiere <rafael@debian.org>  Fri, 22 Feb 2008 10:30:25 +0100
+ -- Rafael Laboissiere <rafael@debian.org>  Fri, 22 Feb 2008 14:15:22 +0100
 
 octave3.0 (1:3.0.0-4) unstable; urgency=low
 
