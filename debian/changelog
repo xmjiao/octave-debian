@@ -9,6 +9,8 @@ octave2.1 (1:2.1.73-17) UNRELEASED; urgency=low
     debian/rules accordingly.
   * debian/in/copyright: Added the mention that Octave 2.1 is released under
     version 2 or later of the GPL (closes: #435205)
+  * debian/patches/50_compile-with-g++-4.3.dpatch: Fixes for compiling the
+    octave2.1 with the GCC 4.3 suite (closes: #417486)
 
  -- Rafael Laboissiere <rafael@debian.org>  Fri, 22 Feb 2008 10:30:25 +0100
 

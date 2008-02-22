@@ -9,3 +9,4 @@
 50_clean-pdf-docs
 50_rename-octave-tags
 50_drop-lo-manpages
+50_compile-with-g++-4.3
