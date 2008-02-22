@@ -1,3 +1,9 @@
+octave2.1 (1:2.1.73-17) UNRELEASED; urgency=low
+
+  * Synched with octave3.0; in particular, switch from g77 to gfortran
+
+ -- Rafael Laboissiere <rafael@debian.org>  Fri, 22 Feb 2008 10:30:25 +0100
+
 octave3.0 (1:3.0.0-4) unstable; urgency=low
 
   [ Rafael Laboissiere ]
