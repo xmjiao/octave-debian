@@ -1,4 +1,4 @@
-octave2.1 (1:2.1.73-17) UNRELEASED; urgency=low
+octave2.1 (1:2.1.73-17) unstable; urgency=low
 
   * Synched with octave3.0; in particular, switch from g77 to gfortran;
     also, don't depend on a specific g++ version (closes: #463301)
