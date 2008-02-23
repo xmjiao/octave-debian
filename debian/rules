@@ -105,10 +105,12 @@ maintainer-clean:
 
 maintainer-scripts: debian/control debian/copyright
 	for in in debian/in/PACKAGE* ; do \
+		slice -o $(sliceterm):debian/temp $$in ; \
 		out=`echo $$in | sed 's:/in/:/:;s/PACKAGE/$(PACKAGE)/'` ; \
 		sed 's/@VERSION@/$(version)/g;s/@PACKAGE@/$(PACKAGE)/g;s/@MAJOR@/$(major)/g;s/@PRIORITY@/$(priority)/g;' \
-			< $$in > $$out ; \
+			< debian/temp > $$out ; \
 	done
+	rm -f debian/temp
 
 	for f in octave-depends defs.make ; do \
 		sed 's/@VERSION@/$(version)/g;s/@MAJOR@/$(major)/g' \
@@ -116,10 +118,6 @@ maintainer-scripts: debian/control debian/copyright
 	done
 	cp debian/in/$(PACKAGE)-00list debian/patches/00list
 	cp debian/in/$(PACKAGE)-watch debian/watch
-	for ext in .conf .dirs -emacsen.dirs ; do		\
-		slice -o $(sliceterm):debian/$(PACKAGE)$$ext	\
-			debian/in/PACKAGE$$ext ;		\
-	done
 	-cp debian/in/$(PACKAGE)-NEWS debian/NEWS
 
 get-orig-source: upstream
@@ -245,7 +243,7 @@ clean: unpatch
 		test -f $$f-save && mv $$f-save $$f ;	\
 	done
 
-	rm -f debian/NEWS
+	rm -f debian/NEWS debian/temp
 
 	dh_clean
 
