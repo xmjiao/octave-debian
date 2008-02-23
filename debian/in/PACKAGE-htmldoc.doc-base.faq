@@ -8,7 +8,6 @@ Abstract: This document provides answers to Frequently Asked Questions
  problems numerically.
 Section: Apps/Math
 
-Format: HTML[V_2_1:
-Index: /usr/share/doc/@PACKAGE@-htmldoc/faq/index.html
-Files: /usr/share/doc/@PACKAGE@-htmldoc/faq/*.html:][V_3_0:
-Index: /usr/share/doc/@PACKAGE@-htmldoc/faq/Octave-FAQ.html:]
+Format: HTML
+Index: /usr/share/doc/@PACKAGE@-htmldoc/faq/[V_2_1:index:][V_3_0:Octave-FAQ:].html
+Files: /usr/share/doc/@PACKAGE@-htmldoc/faq/*.html
