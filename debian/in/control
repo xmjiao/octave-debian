@@ -29,7 +29,7 @@ Suggests: octave[V_2_1:2.1:][V_3_0:3.0:]-info,
  octave[V_2_1:2.1:][V_3_0:3.0:]-headers (= ${binary:Version}),
  octave[V_2_1:2.1:][V_3_0:3.0:]-emacsen
 Replaces: octave (<= 2.0.16-2)
-Conflicts: octave (<= 2.0.16-2)
+Conflicts: octave (<= 2.0.16-2)[V_3_0:, octave2.9 (<< 3):]
 Provides: octave
 Description: GNU Octave language for numerical computations ([V_2_1:2.1:][V_3_0:3.0:] branch)
  Octave is a (mostly Matlab (R) compatible) high-level language, primarily
@@ -45,7 +45,7 @@ Package: octave[V_2_1:2.1:][V_3_0:3.0:]-doc
 Architecture: all
 Section: doc
 Suggests: octave[V_2_1:2.1:][V_3_0:3.0:], xpdf | pdf-viewer
-Conflicts: octave-doc (<< 2.1)
+Conflicts: octave-doc (<< 2.1)[V_3_0:, octave2.9-doc (<< 3):]
 Provides: octave-doc
 Replaces: octave-doc
 Description: PDF documentation on the GNU Octave language ([V_2_1:2.1:][V_3_0:3.0:] branch)
@@ -62,7 +62,7 @@ Package: octave[V_2_1:2.1:][V_3_0:3.0:]-htmldoc
 Architecture: all
 Section: doc
 Suggests: octave[V_2_1:2.1:][V_3_0:3.0:], lynx | www-browser
-Conflicts: octave-htmldoc (<< 2.1), octave2.0-htmldoc
+Conflicts: octave-htmldoc (<< 2.1), octave2.0-htmldoc[V_3_0:, octave2.9-htmldoc (<< 3):]
 Replaces: octave-htmldoc
 Provides: octave-htmldoc
 Description: HTML documentation on the GNU Octave language ([V_2_1:2.1:][V_3_0:3.0:] branch)
@@ -82,7 +82,7 @@ Depends: octave[V_2_1:2.1:][V_3_0:3.0:] (= ${binary:Version}), g++, gfortran,
  | libhdf5-lam-dev (>= 1.6.5) | libhdf5-mpich-dev (>= 1.6.5),
  libblas-dev, liblapack-dev, libfftw3-dev,
  ${m68k:Depends}
-Conflicts: octave-headers (<< 2.1)
+Conflicts: octave-headers (<< 2.1)[V_3_0:, octave2.9-headers (<< 3):]
 Provides: octave-headers
 Replaces: octave-headers
 Description: header files for the GNU Octave language ([V_2_1:2.1:][V_3_0:3.0:] branch)
@@ -101,7 +101,7 @@ Package: octave[V_2_1:2.1:][V_3_0:3.0:]-emacsen
 Architecture: all
 Depends: octave[V_2_1:2.1:][V_3_0:3.0:], emacs22 | xemacs21 | emacsen,
  debianutils (>= 1.6)
-Conflicts: octave2.0-emacsen
+Conflicts: octave2.0-emacsen[V_3_0:, octave2.9-emacsen (<< 3):]
 Replaces: octave (<= 2.0.16-2)
 Provides: octave-emacsen
 Description: Emacs support for the GNU Octave language ([V_2_1:2.1:][V_3_0:3.0:] branch)
@@ -115,7 +115,7 @@ Description: Emacs support for the GNU Octave language ([V_2_1:2.1:][V_3_0:3.0:]
 Package: octave[V_2_1:2.1:][V_3_0:3.0:]-info
 Architecture: all
 Depends: info (>= 3.12) | info-browser
-Conflicts: octave2.0-info
+Conflicts: octave2.0-info[V_3_0:, octave2.9-info (<< 3):]
 Replaces: octave (<= 2.0.16-2)
 Provides: octave-info
 Description: GNU Info documentation on the GNU Octave language ([V_2_1:2.1:][V_3_0:3.0:] branch)
