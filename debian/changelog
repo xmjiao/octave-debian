@@ -1,14 +1,16 @@
-octave3.0 (1:3.0.0-6) UNRELEASED; urgency=low
+octave3.0 (1:3.0.0-6) unstable; urgency=low
 
   [ Rafael Laboissiere ]
-  * debian/in/control: Make all octave3.0* packages conflict with the
-    corresponding octave2.9* packages.  This is a correction for the fix
-    to Bug#463039.
-  
+  * debian/in/control:
+    + Make all octave3.0* packages conflict with the corresponding
+      octave2.9* packages.  This is a correction for the fix to
+      Bug#463039.
+    + Build-depends on GCC 4.1 suite for the arm architecture
+
   [ Thomas Weber ]
   * debian/rules:
     + Pass DEB_HOST_GNU_TYPE and DEB_BUILD_GNU_TYPE to ./configure, as
-      suggested by dh-make 
+      suggested by dh-make
     + Search for "arm" in DEB_BUILD_ARCH and use gcc-4.1 and friends on
       that architecture (attempt to fix #458852)
 
