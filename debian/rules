@@ -56,18 +56,16 @@ texifiles	:= doc/interpreter/octave.texi		\
 			doc/liboctave/liboctave.texi	\
 			doc/faq/Octave-FAQ.texi
 
+
+DEB_HOST_GNU_TYPE   ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+DEB_BUILD_ARCH ?= $(shell dpkg-architecture -qDEB_BUILD_ARCH)
+
 ## edd  3 Feb 2003  gcc 3.2, also imposed uniformly via Build-Depends
 ## edd 27 Jun 2003  now that gcc 3.3 is in unstable and testing, relax this
 #c_compiler	= /usr/bin/gcc-3.3
 #cxx_compiler	= /usr/bin/g++-3.3
 #f77_compiler	= /usr/bin/g77-3.3
-ifneq "$(findstring $(arch), arm-linux-gnu)" ""
-c_compiler	= gcc-4.3
-cxx_compiler	= g++-4.3
-else
-c_compiler	= gcc
-cxx_compiler	= g++
-endif
 f77_compiler	= gfortran
 fc_flag		=
 fc_libs		=
@@ -81,16 +79,17 @@ compilerflags	= -O2
 #		  --with-lapack=/usr/lib/liblapack-3.so
 atlas		= --with-blas=-lblas-3 --with-lapack=-llapackgf-3
 
-arch 		:= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
-
+ifeq ($(DEB_BUILD_ARCH),arm)
 ## edd 20 Jun 2002      no optimisation or debugging on baby systems
-ifneq "$(findstring $(arch), arm-linux-gnu)" ""
-compilerflags	= -O0 -g0
-endif
-
 # edd 25 Aug 2002  arm does not have atlas
-ifeq ($(arch),arm-linux)
+compilerflags	= -O0 -g0
 atlas		= --without-blas
+c_compiler	= gcc-4.1
+cxx_compiler	= g++-4.1
+f77_compiler	= gfortran-4.1
+else
+c_compiler	= gcc
+cxx_compiler	= g++
 endif
 
 #export DH_VERBOSE=1
@@ -154,6 +153,8 @@ configure-stamp:
 	FLIBS=$(fc_libs)				\
 	infofile=/usr/share/info/$(PACKAGE).info	\
 	./configure					\
+			--host=$(DEB_HOST_GNU_TYPE)	\
+			--build=$(DEB_BUILD_GNU_TYPE)	\
 			--prefix=/usr			\
 			--datadir=/usr/share		\
 			--libdir=/usr/lib		\
@@ -166,8 +167,7 @@ configure-stamp:
 			$(fc_flag)			\
 			--enable-shared			\
 			--enable-rpath			\
-			--disable-static		\
-			--build $(arch)
+			--disable-static
 
 	pod2man debian/octave-depends > octave-depends-$(version).1
 
