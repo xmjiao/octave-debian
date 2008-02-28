@@ -1,5 +1,7 @@
 octave3.0 (1:3.0.0-7) UNRELEASED; urgency=low
 
+  * debian/rules: Use correct linker option for BLAS library (closes:
+    #468323)
   * debian/in/control: Do not build-depend on gfortran on arm
 
  -- Rafael Laboissiere <rafael@debian.org>  Thu, 28 Feb 2008 10:24:06 +0100

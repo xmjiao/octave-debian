@@ -77,7 +77,7 @@ compilerflags	= -O2
 #		  --with-lapack=/usr/lib/liblapack.so
 #atlas		= --with-blas=/usr/lib/libblas-3.so \
 #		  --with-lapack=/usr/lib/liblapack-3.so
-atlas		= --with-blas=-lblas-3 --with-lapack=-llapackgf-3
+atlas		= --with-blas=-lblas-3gf --with-lapack=-llapackgf-3
 
 ifeq ($(DEB_BUILD_ARCH),arm)
 ## edd 20 Jun 2002      no optimisation or debugging on baby systems
