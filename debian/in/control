@@ -6,15 +6,14 @@ Maintainer: Debian Octave Group <pkg-octave-devel@lists.alioth.debian.org>
 Uploaders: Rafael Laboissiere <rafael@debian.org>,
  Thomas Weber <thomas.weber.mail@gmail.com>
 Build-Depends: g++-4.1 [arm], gcc-4.1 [arm], gfortran-4.1 [arm],
- debhelper (>= 6.0.0), autoconf, texinfo,
- texlive-latex-base, texlive-generic-recommended, gfortran, libreadline5-dev,
+ gfortran [!arm], debhelper (>= 6.0.0), autoconf, texinfo,
+ texlive-latex-base, texlive-generic-recommended, libreadline5-dev,
  libncurses5-dev, gperf, libhdf5-serial-dev (>= 1.6.5) |
  libhdf5-lam-dev (>= 1.6.5) | libhdf5-mpich-dev (>= 1.6.5),
- libblas-dev, liblapack-dev,
- gnuplot-nox, libfftw3-dev, texi2html, less, dpatch,
- slice[V_3_0:, libpcre3-dev, flex, libglpk-dev (>= 4.15),
- libsuitesparse-dev (>= 3.1.0-2), gawk, gs-gpl, libcurl4-dev, libqhull-dev,
- desktop-file-utils:][V_2_1:, dejagnu:]
+ libblas-dev, liblapack-dev, gnuplot-nox, libfftw3-dev, texi2html,
+ less, dpatch, slice[V_3_0:, libpcre3-dev, flex, libglpk-dev (>= 4.15),
+ libsuitesparse-dev (>= 3.1.0-2), gawk, gs-gpl, libcurl4-dev,
+ libqhull-dev, desktop-file-utils:][V_2_1:, dejagnu:]
 Standards-Version: 3.7.3
 Homepage: http://www.octave.org/
 Vcs-Svn: svn://svn.debian.org/svn/pkg-octave/octave/
