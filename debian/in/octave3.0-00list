@@ -2,3 +2,4 @@
 50_drop-lo-manpages
 50_include-cstring-mxarray
 50_clean-doc
+50_dont_downcase_font_names
