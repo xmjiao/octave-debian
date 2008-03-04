@@ -1,4 +1,4 @@
-octave3.0 (1:3.0.0-8) UNRELEASED; urgency=low
+octave3.0 (1:3.0.0-8) unstable; urgency=low
 
   * Don't uppercase font names for Postscript printing (closes: #469240)
     Thanks John Eaton for the patch.
