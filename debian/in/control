@@ -5,7 +5,7 @@ Priority: optional
 Maintainer: Debian Octave Group <pkg-octave-devel@lists.alioth.debian.org>
 Uploaders: Rafael Laboissiere <rafael@debian.org>,
  Thomas Weber <thomas.weber.mail@gmail.com>
-Build-Depends: g++-4.1 [arm], gcc-4.1 [arm], gfortran, 
+Build-Depends: g++-4.1 [arm], gcc-4.1 [arm], gfortran,
  debhelper (>= 6.0.0), autoconf, texinfo,
  texlive-latex-base, texlive-generic-recommended, libreadline5-dev,
  libncurses5-dev, gperf, libhdf5-serial-dev (>= 1.6.5) |
@@ -39,7 +39,11 @@ Description: GNU Octave language for numerical computations ([V_2_1:2.1:][V_3_0:
  Octave uses some of the best and most respected numerical libraries as
  balgen, dassl, eispack, fftpack, lapack, linpack, minpack, odepack,
  ranlib, slatec-fn and villad. Octave can be dynamically extended with
- user-supplied C++ files.
+ user-supplied C++ files.[V_2_1:
+ .
+ The recommended branch of Octave is 3.0.  Please, use the octave3.0
+ package instead of this one, since it will be dropped after the Debian
+ lenny release.:]
 
 Package: octave[V_2_1:2.1:][V_3_0:3.0:]-doc
 Architecture: all
@@ -56,7 +60,12 @@ Description: PDF documentation on the GNU Octave language ([V_2_1:2.1:][V_3_0:3.
  This packages provides the following documentation in PDF format:
  the FAQ, a reference card in a4, letter and legal formats, a document on the
  C++ classes used by Octave, as well as the main octave documentation which
- is also included in info format in the octave[V_2_1:2.1:][V_3_0:3.0:]-info package.
+ is also included in info format in the octave[V_2_1:2.1:][V_3_0:3.0:]-info package.[V_2_1:
+ .
+ The recommended branch of Octave is 3.0.  Please, use the octave3.0-doc
+ package instead of this one, since it will be dropped after the Debian
+ lenny release.:]
+
 
 Package: octave[V_2_1:2.1:][V_3_0:3.0:]-htmldoc
 Architecture: all
@@ -73,7 +82,11 @@ Description: HTML documentation on the GNU Octave language ([V_2_1:2.1:][V_3_0:3
  This packages provides the following documentation in html format:
  the FAQ, a document on the C++ classes used by Octave, as well as the main
  octave documentation which is also included in info format in the main
- Octave package.
+ Octave package.[V_2_1:
+ .
+ The recommended branch of Octave is 3.0.  Please, use the octave3.0-htmldoc
+ package instead of this one, since it will be dropped after the Debian
+ lenny release.:]
 
 Package: octave[V_2_1:2.1:][V_3_0:3.0:]-headers
 Architecture: any
@@ -95,7 +108,11 @@ Description: header files for the GNU Octave language ([V_2_1:2.1:][V_3_0:3.0:] 
  you do not need this package.
  .
  The package is architecture-specific as it contains machine-dependent
- compiler switches in the mkoctfile script.
+ compiler switches in the mkoctfile script.[V_2_1:
+ .
+ The recommended branch of Octave is 3.0.  Please, use the octave3.0-headers
+ package instead of this one, since it will be dropped after the Debian
+ lenny release.:]
 
 Package: octave[V_2_1:2.1:][V_3_0:3.0:]-emacsen
 Architecture: all
@@ -110,7 +127,12 @@ Description: Emacs support for the GNU Octave language ([V_2_1:2.1:][V_3_0:3.0:]
  interface for solving linear and nonlinear problems numerically.
  .
  This packages provides the elisp files for the Octave modes for GNU Emacs
- and XEmacs.
+ and XEmacs.[V_2_1:
+ .
+ The recommended branch of Octave is 3.0.  Please, use the octave3.0-emacsen
+ package instead of this one, since it will be dropped after the Debian
+ lenny release.:]
+
 
 Package: octave[V_2_1:2.1:][V_3_0:3.0:]-info
 Architecture: all
@@ -126,7 +148,11 @@ Description: GNU Info documentation on the GNU Octave language ([V_2_1:2.1:][V_3
  This packages provides the following documentation in info format:
  the FAQ, a document on the C++ classes used by Octave, as well as the main
  octave documentation which is needed for the 'help -i foo' command within
- Octave.
+ Octave.[V_2_1:
+ .
+ The recommended branch of Octave is 3.0.  Please, use the octave3.0-info
+ package instead of this one, since it will be dropped after the Debian
+ lenny release.:]
 
 [V_3_0:
 Package: octave2.9

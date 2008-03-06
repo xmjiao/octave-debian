@@ -1,3 +1,11 @@
+octave2.1 (1:2.1.73-18) UNRELEASED; urgency=low
+
+  * debian/in/control, debian/in/octave2.1-NEWS: Add notice in the package
+    descriptions and in the NEWS file telling that the octave2.1* packages
+    will be dropped post-lenny
+
+ -- Rafael Laboissiere <rafael@debian.org>  Thu, 06 Mar 2008 15:28:08 +0100
+
 octave3.0 (1:3.0.0-9) unstable; urgency=low
 
   * debian/in/control: drop gfortran-4.1 from the build-deps list. It doesn't
@@ -9,7 +17,7 @@ octave3.0 (1:3.0.0-8) unstable; urgency=low
 
   * Don't uppercase font names for Postscript printing (closes: #469240)
     Thanks John Eaton for the patch.
-  * Use default gfortran compiler on ARM. 
+  * Use default gfortran compiler on ARM.
 
  -- Thomas Weber <thomas.weber.mail@gmail.com>  Tue, 04 Mar 2008 10:47:33 +0100
 
