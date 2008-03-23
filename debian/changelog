@@ -4,6 +4,9 @@ octave2.1 (1:2.1.73-18) UNRELEASED; urgency=low
   * debian/in/control, debian/in/octave2.1-NEWS: Add notice in the package
     descriptions and in the NEWS file telling that the octave2.1* packages
     will be dropped post-lenny
+  * debian/in/control: octave*-headers depends on g++ 4.1 on arm.  This is
+    necessary because mkoctfile on arm has the CXX variable hardcoded to
+    g++-4.1.
 
   [ Thomas Weber ]
   * debian/rules: Call dh_md5sums, such that md5sums control files are
