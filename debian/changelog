@@ -1,8 +1,13 @@
 octave2.1 (1:2.1.73-18) UNRELEASED; urgency=low
 
+  [ Rafael Laboissiere ]
   * debian/in/control, debian/in/octave2.1-NEWS: Add notice in the package
     descriptions and in the NEWS file telling that the octave2.1* packages
     will be dropped post-lenny
+
+  [ Thomas Weber ]
+  * debian/rules: Call dh_md5sums, such that md5sums control files are
+    added to the package
 
  -- Rafael Laboissiere <rafael@debian.org>  Thu, 06 Mar 2008 15:28:08 +0100
 
