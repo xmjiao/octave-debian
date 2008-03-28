@@ -1,11 +1,16 @@
-octave3.0 (1:3.0.0-1) UNRELEASED; urgency=low
+octave3.0 (1:3.0.0-10) UNRELEASED; urgency=low
 
+  [ Rafael Laboissiere ]
   * Synched with the octave2.1 branch
   * debian/rules, debian/in/control: Use the architecture tag "[m68k]" for
     the octave*-headers dependency on f2c.  This eliminates the need for
     using the substitution variable ${m68k:Depends}.
 
- -- Rafael Laboissiere <rafael@debian.org>  Sun, 23 Mar 2008 16:04:13 +0100
+  [ Thomas Weber ]
+  * Apply patch from David Bateman to fix the handle treatment in plotyy
+    (closes: #472069).
+
+ -- Thomas Weber <thomas.weber.mail@gmail.com>  Fri, 28 Mar 2008 12:16:11 +0100
 
 octave2.1 (1:2.1.73-18) unstable; urgency=low
 
