@@ -1,12 +1,14 @@
-octave3.0 (1:3.0.0-10) UNRELEASED; urgency=low
+octave3.0 (1:3.0.0-10) unstable; urgency=high
 
   [ Rafael Laboissiere ]
+  * debian/in/control: Bump to 1.6.6 the minimal version of the
+    libhdf5-*-dev build-dependencies.  This is the reason the urgency is set
+    to "high", since octave3.0 is currently uninstallable on all
+    architectures du to the upgrade in hdf5.
   * Synched with the octave2.1 branch
   * debian/rules, debian/in/control: Use the architecture tag "[m68k]" for
     the octave*-headers dependency on f2c.  This eliminates the need for
     using the substitution variable ${m68k:Depends}.
-  * debian/in/control: Bump to 1.6.6 the minimal version of the
-    libhdf5-*-dev build-dependencies
 
   [ Thomas Weber ]
   * Apply patch from David Bateman to fix the handle treatment in plotyy
