@@ -4,9 +4,33 @@
 ## DP: Fixes for compiling octave2.1 with g++-4.3
 
 @DPATCH@
-
---- octave2.1-2.1.73.orig/liboctave/data-conv.cc
-+++ octave2.1-2.1.73/liboctave/data-conv.cc
+diff -urNad octave2.1-2.1.73~/doc/interpreter/munge-texi.cc octave2.1-2.1.73/doc/interpreter/munge-texi.cc
+--- octave2.1-2.1.73~/doc/interpreter/munge-texi.cc	2005-05-02 13:15:47.000000000 +0200
++++ octave2.1-2.1.73/doc/interpreter/munge-texi.cc	2008-04-08 12:03:29.000000000 +0200
+@@ -29,6 +29,8 @@
+ #include <iostream>
+ #include <fstream>
+ #include <string>
++#include <cstring>
++#include <cstdlib>
+ #include <map>
+ 
+ static const char doc_delim = '';
+diff -urNad octave2.1-2.1.73~/liboctave/chMatrix.cc octave2.1-2.1.73/liboctave/chMatrix.cc
+--- octave2.1-2.1.73~/liboctave/chMatrix.cc	2005-05-02 13:16:21.000000000 +0200
++++ octave2.1-2.1.73/liboctave/chMatrix.cc	2008-04-08 12:02:13.000000000 +0200
+@@ -30,6 +30,8 @@
+ #include <config.h>
+ #endif
+ 
++#include <cstring>
++
+ #include <iostream>
+ #include <string>
+ 
+diff -urNad octave2.1-2.1.73~/liboctave/data-conv.cc octave2.1-2.1.73/liboctave/data-conv.cc
+--- octave2.1-2.1.73~/liboctave/data-conv.cc	2005-05-02 13:16:22.000000000 +0200
++++ octave2.1-2.1.73/liboctave/data-conv.cc	2008-04-08 12:02:13.000000000 +0200
 @@ -26,6 +26,7 @@
  #endif
  
@@ -15,8 +39,9 @@
  
  #include <iostream>
  
---- octave2.1-2.1.73.orig/liboctave/lo-utils.cc
-+++ octave2.1-2.1.73/liboctave/lo-utils.cc
+diff -urNad octave2.1-2.1.73~/liboctave/lo-utils.cc octave2.1-2.1.73/liboctave/lo-utils.cc
+--- octave2.1-2.1.73~/liboctave/lo-utils.cc	2005-05-02 13:16:26.000000000 +0200
++++ octave2.1-2.1.73/liboctave/lo-utils.cc	2008-04-08 12:02:13.000000000 +0200
 @@ -29,6 +29,7 @@
  #include <climits>
  #include <cstdlib>
@@ -25,8 +50,9 @@
  
  #include <string>
  
---- octave2.1-2.1.73.orig/liboctave/oct-env.cc
-+++ octave2.1-2.1.73/liboctave/oct-env.cc
+diff -urNad octave2.1-2.1.73~/liboctave/oct-env.cc octave2.1-2.1.73/liboctave/oct-env.cc
+--- octave2.1-2.1.73~/liboctave/oct-env.cc	2005-05-02 13:16:27.000000000 +0200
++++ octave2.1-2.1.73/liboctave/oct-env.cc	2008-04-08 12:02:13.000000000 +0200
 @@ -43,6 +43,7 @@
  
  #include <cctype>
@@ -35,37 +61,21 @@
  
  #include <string>
  
---- octave2.1-2.1.73.orig/src/unwind-prot.cc
-+++ octave2.1-2.1.73/src/unwind-prot.cc
-@@ -30,6 +30,7 @@
+diff -urNad octave2.1-2.1.73~/liboctave/oct-sort.cc octave2.1-2.1.73/liboctave/oct-sort.cc
+--- octave2.1-2.1.73~/liboctave/oct-sort.cc	2005-05-02 13:16:28.000000000 +0200
++++ octave2.1-2.1.73/liboctave/oct-sort.cc	2008-04-08 12:02:13.000000000 +0200
+@@ -84,6 +84,8 @@
+ #include <config.h>
  #endif
  
- #include <cstddef>
-+#include <cstring>
- 
- #include "CMatrix.h"
- 
---- octave2.1-2.1.73.orig/src/pr-output.cc
-+++ octave2.1-2.1.73/src/pr-output.cc
-@@ -32,6 +32,7 @@
- 
- #include <iomanip>
- #include <iostream>
-+#include <sstream>
- #include <string>
- 
- #include "Array-util.h"
-@@ -1602,7 +1603,7 @@
- }
- 
- template <>
--static inline void
-+/* static */ inline void
- pr_plus_format (std::ostream& os, const Complex& c)
- {
-   double rp = c.real ();
---- octave2.1-2.1.73.orig/src/DLD-FUNCTIONS/sort.cc
-+++ octave2.1-2.1.73/src/DLD-FUNCTIONS/sort.cc
++#include <cstdlib>
++
+ #include "lo-mappers.h"
+ #include "quit.h"
+ #include "oct-sort.h"
+diff -urNad octave2.1-2.1.73~/src/DLD-FUNCTIONS/sort.cc octave2.1-2.1.73/src/DLD-FUNCTIONS/sort.cc
+--- octave2.1-2.1.73~/src/DLD-FUNCTIONS/sort.cc	2006-03-20 22:11:03.000000000 +0100
++++ octave2.1-2.1.73/src/DLD-FUNCTIONS/sort.cc	2008-04-08 12:02:13.000000000 +0200
 @@ -26,6 +26,8 @@
  #include <config.h>
  #endif
@@ -93,25 +103,34 @@
  mx_sort_indexed (ArrayN<double> &m, int dim, sortmode mode)
  {
    octave_value_list retval;
---- octave2.1-2.1.73.orig/liboctave/oct-sort.cc
-+++ octave2.1-2.1.73/liboctave/oct-sort.cc
-@@ -84,6 +84,8 @@
- #include <config.h>
- #endif
+diff -urNad octave2.1-2.1.73~/src/pr-output.cc octave2.1-2.1.73/src/pr-output.cc
+--- octave2.1-2.1.73~/src/pr-output.cc	2005-05-02 13:17:17.000000000 +0200
++++ octave2.1-2.1.73/src/pr-output.cc	2008-04-08 12:02:13.000000000 +0200
+@@ -32,6 +32,7 @@
  
-+#include <cstdlib>
-+
- #include "lo-mappers.h"
- #include "quit.h"
- #include "oct-sort.h"
---- octave2.1-2.1.73.orig/liboctave/chMatrix.cc
-+++ octave2.1-2.1.73/liboctave/chMatrix.cc
-@@ -30,6 +30,8 @@
- #include <config.h>
- #endif
- 
-+#include <cstring>
-+
+ #include <iomanip>
  #include <iostream>
++#include <sstream>
  #include <string>
+ 
+ #include "Array-util.h"
+@@ -1602,7 +1603,7 @@
+ }
+ 
+ template <>
+-static inline void
++/* static */ inline void
+ pr_plus_format (std::ostream& os, const Complex& c)
+ {
+   double rp = c.real ();
+diff -urNad octave2.1-2.1.73~/src/unwind-prot.cc octave2.1-2.1.73/src/unwind-prot.cc
+--- octave2.1-2.1.73~/src/unwind-prot.cc	2005-05-02 13:17:20.000000000 +0200
++++ octave2.1-2.1.73/src/unwind-prot.cc	2008-04-08 12:02:13.000000000 +0200
+@@ -30,6 +30,7 @@
+ #endif
+ 
+ #include <cstddef>
++#include <cstring>
+ 
+ #include "CMatrix.h"
  
