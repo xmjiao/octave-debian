@@ -6,8 +6,7 @@ octave2.1 (1:2.1.73-19) UNRELEASED; urgency=low
 
   [ Rafael Laboissiere ]
   * debian/in/PACKAGE-htmldoc.doc-base.*: Change Section to
-    Applications/Science/Mathematics, which is one of the standard
-    doc-base sections
+    Science/Mathematics, which is one of the standard doc-base sections
 
  -- Rafael Laboissiere <rafael@debian.org>  Sun, 13 Apr 2008 12:04:35 +0200
 
