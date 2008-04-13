@@ -7,8 +7,10 @@ octave2.1 (1:2.1.73-19) UNRELEASED; urgency=low
   [ Rafael Laboissiere ]
   * debian/in/PACKAGE-htmldoc.doc-base.*: Change Section to
     Science/Mathematics, which is one of the standard doc-base sections
+  * debian/in/PACKAGE.lintian: Only override license.m as
+    extra-license-file for octave3.0, since this file does not exist in 2.1
 
- -- Rafael Laboissiere <rafael@debian.org>  Sun, 13 Apr 2008 12:04:35 +0200
+ -- Rafael Laboissiere <rafael@debian.org>  Sun, 13 Apr 2008 13:28:13 +0200
 
 octave3.0 (1:3.0.0-10) unstable; urgency=high
 
