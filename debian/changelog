@@ -1,4 +1,4 @@
-octave2.1 (1:2.1.73-19) UNRELEASED; urgency=low
+octave2.1 (1:2.1.73-19) unstable; urgency=low
 
   [ Thomas Weber ]
   * Updated patch: 50_compile-with-g++-4.3: More fixes for compiling
