@@ -244,8 +244,7 @@ clean: unpatch
 
 	rm -f debian/NEWS debian/temp
 
-	# The following was not necessary until 3.0.0 and should be fixed
-	# upstream
+	# The following was not necessary until 3.0.0
 	rm -f config.log
 
 	dh_clean
