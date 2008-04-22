@@ -228,8 +228,13 @@ clean: unpatch
 	find doc -name \*.html | xargs rm -f
 
 	-test -f octMakefile-orig && mv octMakefile-orig octMakefile
-	[ ! -f Makefile ] || $(MAKE) -i distclean \
-		|| $(MAKE) -f Makefile.in distclean
+
+	# In order to run distclean, octMakefile should be used (actually
+	# octMakefile.in, which always exist).  However, Makeconf must
+	# always be present.
+	touch Makeconf
+	[ ! -f octMakefile.in ]	\
+		|| $(MAKE) -f octMakefile.in distclean
 
 	rm -f build-*-stamp configure-stamp make-*-stamp check-stamp	\
 		install-*-stamp Makefile.tmp octMakefile-*
@@ -243,9 +248,6 @@ clean: unpatch
 	done
 
 	rm -f debian/NEWS debian/temp
-
-	# The following was not necessary until 3.0.0
-	rm -f config.log
 
 	dh_clean
 
