@@ -207,3 +207,20 @@ Description: GNU Info documentation on the GNU Octave language (dummy package)
  octave3.0.  Once octave3.0-info is installed in the system, this package
  can be removed.
 :]
+
+Package: octave[V_2_1:2.1:][V_3_0:3.0:]-dbg
+Section: devel
+Priority: extra
+Architecture: any
+Depends: octave[V_2_1:2.1:][V_3_0:3.0:] (=${binary:Version})
+Description: Debug symbols for octave[V_2_1:2.1:][V_3_0:3.0:]
+ Octave is a (mostly Matlab (R) compatible) high-level language, primarily
+ intended for numerical computations. It provides a convenient command-line
+ interface for solving linear and nonlinear problems numerically.
+ .
+ Octave uses some of the best and most respected numerical libraries as
+ balgen, dassl, eispack, fftpack, lapack, linpack, minpack, odepack,
+ ranlib, slatec-fn and villad. Octave can be dynamically extended with
+ user-supplied C++ files.
+ .
+ This package provides the debug symbols.

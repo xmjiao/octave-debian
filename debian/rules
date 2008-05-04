@@ -69,7 +69,7 @@ DEB_BUILD_ARCH ?= $(shell dpkg-architecture -qDEB_BUILD_ARCH)
 f77_compiler	= gfortran
 fc_flag		=
 fc_libs		=
-compilerflags	= -O2
+compilerflags	= -O2 -g
 # linkerflags	= -s
 
 # default to blas, atlas can overload where available (see README.Atlas)
@@ -431,7 +431,7 @@ ifneq ($(PACKAGEVER),$(major))
 		usr/share/man/man1/octave$(major)-depends.1.gz \
 		usr/share/man/man1/octave$(PACKAGEVER)-depends.1.gz
 endif
-	dh_strip -a
+	dh_strip -a --dbg-package=$(PACKAGE)-dbg
 	dh_compress -a
 	dh_fixperms -a
 	dh_installdeb -a
