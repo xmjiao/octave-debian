@@ -1,4 +1,4 @@
-octave3.0 (1:3.0.1-3) experimental; urgency=low
+octave3.0 (1:3.0.1-3) unstable; urgency=low
 
   [ Rafael Laboissiere ]
   * debian/in/PACKAGE.conf: Substitute version of package in the
