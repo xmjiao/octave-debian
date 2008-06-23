@@ -1,5 +1,4 @@
 etc
 usr/bin
-usr/share/lintian/overrides
 usr/share/octave/debian
 [V_3_0:usr/share/enscript/hl:]

@@ -7,7 +7,7 @@ Uploaders: Rafael Laboissiere <rafael@debian.org>,
  Thomas Weber <thomas.weber.mail@gmail.com>
 DM-Upload-Allowed: yes
 Build-Depends: g++-4.1 [arm], gcc-4.1 [arm], gfortran,
- debhelper (>= 6.0.0), autoconf, texinfo,
+ debhelper (>= 6.0.7), autoconf, texinfo,
  texlive-latex-base, texlive-generic-recommended, libreadline5-dev,
  libncurses5-dev, gperf, libhdf5-serial-dev (>= 1.6.6) |
  libhdf5-lam-dev (>= 1.6.6) | libhdf5-mpich-dev (>= 1.6.6),

@@ -363,8 +363,7 @@ binary-arch: build-arch install-arch check
 	install -p -m 0644  debian/$(PACKAGE).conf  $(debtmp)/etc
 
         # install lintian overrride
-	install -p -m 0644  debian/$(PACKAGE).lintian \
-			$(debtmp)/usr/share/lintian/overrides/$(PACKAGE)
+	dh_lintian -p$(PACKAGE)
 
         ## link the conf.file back from /etc over the version.spec. rc
 	ln -sf /etc/$(PACKAGE).conf 		$(debininew)/octaverc
