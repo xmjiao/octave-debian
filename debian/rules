@@ -241,13 +241,16 @@ clean: unpatch
 
 	rm -f `ls debian/in/PACKAGE* | sed 's/PACKAGE/$(PACKAGE)/;s:/in::'`
 	rm -f octave-depends-$(version).1
-	( cd debian ; rm -f watch octave-depends defs.make )
+	( cd debian ; rm -f octave-depends defs.make )
 
 	-for f in $(savefiles) $(texifiles) ; do	\
 		test -f $$f-save && mv $$f-save $$f ;	\
 	done
 
 	rm -f debian/NEWS debian/temp
+
+	# Make sure a debian/watch file is included in the source package
+	cp debian/in/$(PACKAGE)-watch debian/watch
 
 	dh_clean
 
