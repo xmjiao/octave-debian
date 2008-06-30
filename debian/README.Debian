@@ -1,3 +1,19 @@
+Why is mkoctfile not in octave3.0, but in octave3.0-headers?
+============================================================
+
+In order to use mkoctfile, one needs the development packages (headers, .a
+libraries) of the libraries used by Octave (fftw, blas, ...). These sum up to
+a lot of space; an installation of octave3.0-headers will trigger the
+installation of these package, so one can use mkoctfile then.
+
+pkg.m is not part of octave3.0-headers as it's used to find already installed
+packages (via /etc/octave3.0.conf).
+
+  -- Thomas Weber <thomas.weber.mail@gmail.com>  Mon, 30 Jun 2008 10:05:05 +0200
+
+
+General information
+===================
 
 The octave-doc package contains extra documentation in PDF form which
 can be found in the directory /usr/share/doc/octave-doc once this supplementary
@@ -9,5 +25,5 @@ source archive can be found at http://www.octave.org
 The Debian Octave-related packages are collectively maintained by the Debian
 Octave Group (http://pkg-octave.alioth.debian.org).
 
- -- Rafael Laboissiere <rafael@debian.org>  Tue, 25 Mar 2006 18:16:54 -0100
+ -- Thomas Weber <thomas.weber.mail@gmail.com>, Mon, 30 Jun 2008 10:05:36 +0200
 
