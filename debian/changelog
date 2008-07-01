@@ -1,5 +1,6 @@
 octave3.0 (1:3.0.1-5) UNRELEASED; urgency=low
 
+  [ Rafael Laboissiere ]
   * debian/rules: Use dh_lintian for installing the Lintian overrides file
   * debian/in/PACKAGE.lintian-overrides: Renamed for PACKAGE.lintian
   * debian/control: Set build-dependency on debhelper to >= 6.0.7, since
@@ -14,7 +15,10 @@ octave3.0 (1:3.0.1-5) UNRELEASED; urgency=low
   * debian/rules: Include the debian/watch file the source package
     (complies with Policy 4.11)
 
- -- Rafael Laboissiere <rafael@debian.org>  Mon, 23 Jun 2008 20:38:00 +0200
+  [ Thomas Weber ]
+  * Replace obsolete build-dependency on gs-gpl by ghostscript
+
+ -- Rafael Laboissiere <rafael@debian.org>  Mon, 30 Jun 2008 17:08:43 +0200
 
 octave3.0 (1:3.0.1-4) unstable; urgency=low
 
