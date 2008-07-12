@@ -1,4 +1,4 @@
-octave3.0 (1:3.0.1-6) UNRELEASED; urgency=low
+octave3.0 (1:3.0.1-6) unstable; urgency=low
 
   * debian/in/PACKAGE-info.postinst: Remove the info entries for octave2.9
     in /usr/share/info/dir, left by versions until 2.9.9-8etch1.  This
