@@ -1,7 +1,0 @@
-50_octave-bug-tempfile
-50_include-cstring-mxarray
-50_fix_handle_for_plotyy.dpatch
-50_add_syspath.dpatch
-randn_doc.dpatch
-no_pdf_in_print.dpatch
-dont_set_helvetica.dpatch
