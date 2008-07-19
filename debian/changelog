@@ -1,6 +1,8 @@
 octave3.1 (3.1.50-1) UNRELEASED; urgency=low
 
   * New upstream release (development branch)
+  * debian/in/control: Build-depends on libfltk1.1-dev, mesa-common-dev,
+    and libgraphicsmagick++1-dev
   * debian/rules: Process 00list, NEWS and watch files through slice
   * debian/in/{00list,NEWS,watch}: New files
   * debian/patches/add-acx_blas_f77_func.m4.dpatch: Include m4 file that
