@@ -1,3 +1,9 @@
+octave3.1 (3.1.50-1) UNRELEASED; urgency=low
+
+  * New upstream release (development branch)
+
+ -- Rafael Laboissiere <rafael@debian.org>  Sat, 19 Jul 2008 10:27:26 +0200
+
 octave3.0 (1:3.0.1-6) unstable; urgency=low
 
   * debian/in/PACKAGE-info.postinst: Remove the info entries for octave2.9
