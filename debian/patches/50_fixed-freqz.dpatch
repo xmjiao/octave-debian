@@ -1,4 +1,5 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
+## -*- diff -*-
 ## 50_fixed-freqz.dpatch by Rafael Laboissiere <rafael@debian.org>
 ##
 ## DP: Fixed freqz.m (patch taken from upstream CVS)

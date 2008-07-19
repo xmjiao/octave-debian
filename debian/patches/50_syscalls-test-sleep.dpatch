@@ -1,4 +1,5 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
+## -*- diff -*-
 ## 50_syscalls-test-sleep.dpatch by Rafael Laboissiere <rafael@debian.org>
 ##
 ## DP: Increase the amount of time to sleep, in case of errno == EAGAIN

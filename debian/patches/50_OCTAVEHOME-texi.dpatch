@@ -1,4 +1,5 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
+## -*- diff -*-
 ## 50_OCTAVEHOME-2.9.dpatch by Rafael Laboissiere <rafael@debian.org>
 ##
 ## DP: Correct value for OCTAVEHOME in Debian systems

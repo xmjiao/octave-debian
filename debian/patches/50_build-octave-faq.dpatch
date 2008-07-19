@@ -1,4 +1,5 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
+## -*- diff -*-
 ## 50_build-octave-faq.dpatch by Rafael Laboissiere <rafael@debian.org>
 ##
 ## DP: Build correctly the PS form of the Octave-FAQ documentation

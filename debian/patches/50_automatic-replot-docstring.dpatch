@@ -1,4 +1,5 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
+## -*- diff -*-
 ## 50_automatic-replot-docstring.dpatch by Rafael Laboissiere <rafael@debian.org>
 ##
 ## Introduce documentation string for the varaible automatic_replot

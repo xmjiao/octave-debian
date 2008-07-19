@@ -1,4 +1,5 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
+## -*- diff -*-
 ## randn_doc.dpatch by Thomas Weber <thomas.weber.mail@gmail.com>
 ##
 ## All lines beginning with `## DP:' are a description of the patch.

@@ -1,4 +1,5 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
+## -*- diff -*-
 ## 50_clean-pdf-docs.dpatch by Rafael Laboissiere <rafael@debian.org>
 ##
 ## DP: Clean PDF files in doc/ not cleaned by the maintainer-clean target

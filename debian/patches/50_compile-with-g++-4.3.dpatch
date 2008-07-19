@@ -1,4 +1,5 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
+## -*- diff -*-
 ## 50_compile-with-g++-4.3.dpatch by Rafael Laboissiere <rafael@debian.org>
 ##
 ## DP: Fixes for compiling octave2.1 with g++-4.3

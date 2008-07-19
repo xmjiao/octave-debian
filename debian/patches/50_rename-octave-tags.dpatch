@@ -1,4 +1,5 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
+## -*- diff -*-
 ## 50_rename-octave-tags.dpatch by Rafael Laboissiere <rafael@debian.org>
 ##
 ## DP: Rename otags to be octave-tags, to avoid conflict with the Ocaml otags

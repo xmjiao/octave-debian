@@ -1,4 +1,5 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
+## -*- diff -*-
 ## add-acx_blas_f77_func.m4.dpatch by Rafael Laboissiere <rafael@debian.org>
 ##
 ## DP: Add lacking m4 file, such that autoconf works

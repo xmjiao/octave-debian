@@ -1,4 +1,5 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
+## -*- diff -*-
 ## 50_octave-bug-tempfile.dpatch by Rafael Laboissiere <rafael@debian.org>
 ##
 ## DP: Use Debian's tempfile(1) for enhanced security

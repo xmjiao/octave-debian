@@ -1,4 +1,5 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
+## -*- diff -*-
 ## 50_drop-lo-manpages.dpatch by Rafael Laboissiere <rafael@debian.org>
 
 @DPATCH@

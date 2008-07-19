@@ -1,4 +1,5 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
+## -*- diff -*-
 ## 50_return-deffn.dpatch by Rafael Laboissiere <rafael@debian.org>
 ##
 ## The "return" keyword will appear in the function index, instead of the
