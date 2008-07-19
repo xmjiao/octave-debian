@@ -5,6 +5,11 @@ octave3.1 (3.1.50-1) UNRELEASED; urgency=low
   * debian/in/{00list,NEWS,watch}: New files
   * debian/patches/add-acx_blas_f77_func.m4.dpatch: Include m4 file that
     is lacking from the tarball and is necessary for autoconf
+  * Drop dpatches (applied upstream):
+    + 50_fix_handle_for_plotyy.dpatch
+    + 50_add_syspath.dpatch
+    + randn_doc.dpatch
+    + dont_set_helvetica.dpatch
 
  -- Rafael Laboissiere <rafael@debian.org>  Sat, 19 Jul 2008 10:27:26 +0200
 
