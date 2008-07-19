@@ -115,9 +115,10 @@ maintainer-scripts: debian/control debian/copyright
 			< debian/in/$$f > debian/$$f ; \
 	done
 
-	for f in  00list watch NEWS ; do				\
+	for f in watch NEWS ; do				\
 		slice -o $(sliceterm):debian/$$f debian/in/$$f ;	\
 	done
+	slice -o $(sliceterm):debian/patches/00list debian/in/00list
 
 get-orig-source: upstream
 upstream:
