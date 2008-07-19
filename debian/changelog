@@ -11,7 +11,7 @@ octave3.1 (3.1.50-1) UNRELEASED; urgency=low
     + 50_fix_handle_for_plotyy.dpatch
     + 50_add_syspath.dpatch
     + randn_doc.dpatch
-    + dont_set_helvetica.dpatch
+  * debian/patches/dont_set_helvetica-3.1.dpatch: Adapted for octave3.1
 
  -- Rafael Laboissiere <rafael@debian.org>  Sat, 19 Jul 2008 10:27:26 +0200
 
