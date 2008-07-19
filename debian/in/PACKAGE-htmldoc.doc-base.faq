@@ -9,5 +9,5 @@ Abstract: This document provides answers to Frequently Asked Questions
 Section: Science/Mathematics
 
 Format: HTML
-Index: /usr/share/doc/@PACKAGE@-htmldoc/faq/[V_2_1:index:][V_3_0:Octave-FAQ:].html
+Index: /usr/share/doc/@PACKAGE@-htmldoc/faq/[V_2_1:index:][V_3_0:[V_3_1:Octave-FAQ:]:].html
 Files: /usr/share/doc/@PACKAGE@-htmldoc/faq/*.html
