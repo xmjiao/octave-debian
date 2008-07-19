@@ -1,5 +1,7 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
 ## 50_include-cstring-mxarray.dpatch by Rafael Laboissiere <rafael@debian.org>
+##
+## DP: Compile successfully with GCC 4.3
 
 @DPATCH@
 
