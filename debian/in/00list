@@ -13,7 +13,7 @@
 50_compile-with-g++-4.3
 50_build-octave-faq
 :]
-[V_3_0:[V_3_1:
+[V_3_1:[V_3_0:
 50_octave-bug-tempfile
 50_include-cstring-mxarray
 50_fix_handle_for_plotyy.dpatch
@@ -21,4 +21,4 @@
 randn_doc.dpatch
 no_pdf_in_print.dpatch
 dont_set_helvetica.dpatch
-:]:]
+:]add-acx_blas_f77_func.m4.dpatch:]

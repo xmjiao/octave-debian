@@ -3,6 +3,8 @@ octave3.1 (3.1.50-1) UNRELEASED; urgency=low
   * New upstream release (development branch)
   * debian/rules: Process 00list, NEWS and watch files through slice
   * debian/in/{00list,NEWS,watch}: New files
+  * debian/patches/add-acx_blas_f77_func.m4.dpatch: Include m4 file that
+    is lacking from the tarball and is necessary for autoconf
 
  -- Rafael Laboissiere <rafael@debian.org>  Sat, 19 Jul 2008 10:27:26 +0200
 
