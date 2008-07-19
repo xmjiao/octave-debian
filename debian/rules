@@ -114,9 +114,10 @@ maintainer-scripts: debian/control debian/copyright
 		sed 's/@VERSION@/$(version)/g;s/@MAJOR@/$(major)/g' \
 			< debian/in/$$f > debian/$$f ; \
 	done
-	cp debian/in/$(PACKAGE)-00list debian/patches/00list
-	cp debian/in/$(PACKAGE)-watch debian/watch
-	-cp debian/in/$(PACKAGE)-NEWS debian/NEWS
+	
+	for f in  00list watch NEWS ; do				\
+		slice -o $(sliceterm):debian/$$f debian/in/$$f ;	\
+	done
 
 get-orig-source: upstream
 upstream:

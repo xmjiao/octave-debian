@@ -1,0 +1,3 @@
+version=3
+opts=pasv \
+ftp://ftp.octave.org/pub/octave/[V_2_1:obsolete/:][V_3_1:bleeding-edge/:]octave-([\d\.]+)\.tar\.gz
