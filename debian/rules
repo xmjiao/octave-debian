@@ -114,7 +114,7 @@ maintainer-scripts: debian/control debian/copyright
 		sed 's/@VERSION@/$(version)/g;s/@MAJOR@/$(major)/g' \
 			< debian/in/$$f > debian/$$f ; \
 	done
-	
+
 	for f in  00list watch NEWS ; do				\
 		slice -o $(sliceterm):debian/$$f debian/in/$$f ;	\
 	done
@@ -251,7 +251,7 @@ clean: unpatch
 	rm -f debian/NEWS debian/temp
 
 	# Make sure a debian/watch file is included in the source package
-	cp debian/in/$(PACKAGE)-watch debian/watch
+	slice -o $(sliceterm):debian/watch debian/in/watch
 
 	dh_clean
 
