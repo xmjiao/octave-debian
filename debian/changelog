@@ -6,8 +6,8 @@ octave3.1 (3.1.50-2) UNRELEASED; urgency=low
     octave3.1
   * debian/patches/add-gl-render-cc.dpatch: Add patch for including a file
     lacking in the upstream tarball
-  * debian/patches/drop-comma-in-configure.dpatch: Add patch for avoiding
-    a syntax error in configure
+  * debian/patches/fix-comma-in-configure.dpatch: Add patch for avoiding
+    syntax errors in configure
   * debian/in/control: Build-depend on libgl1-mesa-swx11-dev and
     libglu1-mesa-dev
 
