@@ -26,4 +26,5 @@ dont_set_helvetica.dpatch
 no_pdf_in_print.dpatch
 dont_set_helvetica-3.1.dpatch
 add-acx_blas_f77_func.m4.dpatch
+add-gl-render-cc.dpatch
 :]
