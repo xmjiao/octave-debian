@@ -14,8 +14,8 @@ Build-Depends: g++-4.1 [arm], gcc-4.1 [arm], gfortran,
  libblas-dev, liblapack-dev, gnuplot-nox, libfftw3-dev, texi2html,
  less, dpatch, slice[V_3_1:[V_3_0:, libpcre3-dev, flex, libglpk-dev (>= 4.15),
  libsuitesparse-dev (>= 3.1.0-2), gawk, ghostscript, libcurl4-dev,
- libqhull-dev, desktop-file-utils:], libfltk1.1-dev, mesa-common-dev,
- libgraphicsmagick++1-dev:][V_2_1:, dejagnu:]
+ libqhull-dev, desktop-file-utils:], libfltk1.1-dev, libgl1-mesa-swx11-dev,
+ libglu1-mesa-dev, libgraphicsmagick++1-dev:][V_2_1:, dejagnu:]
 Standards-Version: 3.8.0
 Homepage: http://www.octave.org/
 Vcs-Svn: svn://svn.debian.org/svn/pkg-octave/octave/
