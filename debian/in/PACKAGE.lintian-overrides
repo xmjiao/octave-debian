@@ -1,3 +1,3 @@
-[V_3_1:[V_3_0:@PACKAGE@: extra-license-file usr/share/octave/@VERSION@/m/miscellaneous/license.m:]
-@PACKAGE@: package-contains-empty-directory usr/share/octave/@VERSION@/site/m/
-@PACKAGE@: package-contains-empty-directory usr/lib/octave/api-v33/:]
+[V_3_1:[V_3_0:@PACKAGE@: extra-license-file usr/share/octave/@VERSION@/m/miscellaneous/license.m
+@PACKAGE@: package-contains-empty-directory usr/share/octave/@VERSION@/site/m/:]
+@PACKAGE@: package-contains-empty-directory usr/lib/octave/api-v33+/:]
