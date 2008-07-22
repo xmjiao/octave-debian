@@ -3,6 +3,7 @@ octave3.1 (3.1.50-3) UNRELEASED; urgency=low
   * debian/rules:
     + Do not install octave.st for octave3.1 (avoid conflict with
       octave3.0)
+    + Set alternatives priority value for octave3.1
 
  -- Rafael Laboissiere <rafael@debian.org>  Tue, 22 Jul 2008 17:30:55 +0200
 
