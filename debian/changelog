@@ -5,6 +5,8 @@ octave3.1 (3.1.51-1) UNRELEASED; urgency=low
     + Do not install octave.st for octave3.1 (avoid conflict with
       octave3.0)
     + Set alternatives priority value for octave3.1
+  * debian/patches/fix-comma-in-configure.dpatch: Drop patch (applied
+    upstream)
 
  -- Rafael Laboissiere <rafael@debian.org>  Tue, 22 Jul 2008 17:30:55 +0200
 
