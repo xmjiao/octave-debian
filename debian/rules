@@ -69,16 +69,10 @@ ifneq ($(DEB_BUILD_GNU_TYPE), $(DEB_HOST_GNU_TYPE))
 endif
 DEB_BUILD_ARCH ?= $(shell dpkg-architecture -qDEB_BUILD_ARCH)
 
-## edd  3 Feb 2003  gcc 3.2, also imposed uniformly via Build-Depends
-## edd 27 Jun 2003  now that gcc 3.3 is in unstable and testing, relax this
-#c_compiler	= /usr/bin/gcc-3.3
-#cxx_compiler	= /usr/bin/g++-3.3
-#f77_compiler	= /usr/bin/g77-3.3
 f77_compiler	= gfortran
 fc_flag		=
 fc_libs		=
 compilerflags	= -O2 -g
-# linkerflags	= -s
 
 # default to blas, atlas can overload where available (see README.Atlas)
 #atlas		= --with-blas=/usr/lib/libblas.so \
@@ -202,7 +196,6 @@ make-arch-stamp:
 	$(MAKE)		CFLAGS="$(compilerflags)"		\
 			CXXFLAGS="$(compilerflags)"		\
 			FFLAGS="$(compilerflags)"		\
-			LDFLAGS="$(linkerflags)"		\
 			CC="$(c_compiler)"			\
 			CXX="$(cxx_compiler)"			\
 			F77="$(f77_compiler)"
