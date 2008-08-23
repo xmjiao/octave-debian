@@ -121,7 +121,7 @@ maintainer-scripts: debian/control debian/copyright
 		slice -o $(sliceterm):debian/$$f debian/in/$$f ;	\
 	done
 	## Remove empty NEWS file
-	test ! -s debian/NEWS && rm -f debian/NEWS
+	-test ! -s debian/NEWS && rm -f debian/NEWS
 	slice -o $(sliceterm):debian/patches/00list debian/in/00list
 
 get-orig-source: upstream
