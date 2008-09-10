@@ -35,8 +35,13 @@ case "$1" in
 			--slave /usr/share/man/man1/$f.1.gz $f.1.gz	\
 				/usr/share/man/man1/$f-$VERSION.1.gz
 	done
-
 	;;
+
+    triggered)
+        octave-$VERSION --silent --no-history --no-init-file	\
+             --eval "pkg ('rebuild');"
+        ;;
+
     abort-upgrade|abort-remove|abort-deconfigure)
         ;;
     *)
