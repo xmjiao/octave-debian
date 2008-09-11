@@ -1,3 +1,5 @@
 [V_3_1:[V_3_0:@PACKAGE@: extra-license-file usr/share/octave/@VERSION@/m/miscellaneous/license.m
-@PACKAGE@: package-contains-empty-directory usr/share/octave/@VERSION@/site/m/:]
+@PACKAGE@: package-contains-empty-directory usr/share/octave/@VERSION@/site/m/
+@PACKAGE@: binary-or-shlib-defines-rpath ./usr/bin/octave-@VERSION@ /usr/lib/octave-@VERSION@
+@PACKAGE@: binary-or-shlib-defines-rpath ./usr/lib/octave-@VERSION@/liboctave.so.@VERSION@ /usr/lib/octave-@VERSION@:]
 @PACKAGE@: package-contains-empty-directory usr/lib/octave/api-v33+/:]
