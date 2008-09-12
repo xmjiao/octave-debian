@@ -1,4 +1,4 @@
-octave3.0 (1:3.0.2-3) UNRELEASED; urgency=low
+octave3.0 (1:3.0.2-3) experimental; urgency=low
 
   * debian/in/PACKAGE.triggers, debian/in/PACKAGE.postinst: Use a dpkg
     trigger for updating the Octave's pkg database (via "pkg rebuild").  A
