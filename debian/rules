@@ -54,7 +54,7 @@ debini		:= $(debshare)/octave/site/m/startup
 debininew	:= $(debshare)/octave/$(version)/m/startup
 debapp		:= $(debshare)/applications
 
-savefiles	:= configure config.h.in scripts/configure	\
+savefiles	:= BUGS configure config.h.in scripts/configure	\
 			doc/conf.texi examples/octave.desktop.in
 texifiles	:= doc/interpreter/octave.texi		\
 			doc/liboctave/liboctave.texi	\
