@@ -27,9 +27,11 @@ hack:
 
 ifeq ($(major),3.1)
 priority	:= 70
+api_version	:= 33+
 else
 ifeq ($(major),3.0)
 priority	:= 90
+api_version	:= 32
 else
 ifeq ($(major),2.1)
 priority	:= 80
@@ -42,6 +44,7 @@ html_package	= $(PACKAGE)-htmldoc
 dev_package	= $(PACKAGE)-headers
 emacs_package	= $(PACKAGE)-emacsen
 info_package	= $(PACKAGE)-info
+common_package = $(PACKAGE)-common
 
 debbase		:= $(CURDIR)/debian
 debtmp		:= $(debbase)/$(PACKAGE)
@@ -50,8 +53,7 @@ deblib		:= $(debtmp)/usr/lib
 debdoc		:= $(debshare)/doc/$(PACKAGE)
 debhtmldoc	:= $(debtmp)-htmldoc/usr/share/doc/$(PACKAGE)-htmldoc
 deblsp		:= $(debbase)/$(emacs_package)/usr/share/emacs/site-lisp/$(emacs_package)
-debini		:= $(debshare)/octave/site/m/startup
-debininew	:= $(debshare)/octave/$(version)/m/startup
+debini		:= $(debbase)/$(common_package)/usr/share/octave/$(version)/m/startup
 debapp		:= $(debshare)/applications
 
 savefiles	:= BUGS configure config.h.in scripts/configure	\
@@ -107,7 +109,7 @@ maintainer-scripts: debian/control debian/copyright
 	for in in debian/in/PACKAGE* ; do \
 		slice -o $(sliceterm):debian/temp $$in ; \
 		out=`echo $$in | sed 's:/in/:/:;s/PACKAGE/$(PACKAGE)/'` ; \
-		sed 's/@VERSION@/$(version)/g;s/@PACKAGE@/$(PACKAGE)/g;s/@MAJOR@/$(major)/g;s/@PRIORITY@/$(priority)/g;' \
+		sed 's/@VERSION@/$(version)/g;s/@PACKAGE@/$(PACKAGE)/g;s/@MAJOR@/$(major)/g;s/@PRIORITY@/$(priority)/g;s/@APIVERSION@/$(api_version)/g;' \
 			< debian/temp > $$out ; \
 	done
 	rm -f debian/temp
@@ -336,6 +338,12 @@ binary-indep: build-indep install-indep
 	-install -p -m 0644 emacs/octave-tags.1			\
 	     $(debbase)/$(emacs_package)/usr/share/man/man1/octave-tags-$(version).1
 
+        ## link the conf.file back from /etc over the version.spec. rc
+	ln -sf /etc/$(PACKAGE).conf 		$(debini)/octaverc
+
+        # install lintian overrride
+	dh_lintian -p$(common_package)
+
 	dh_installchangelogs -i	ChangeLog
 	dh_compress -i --exclude=.pdf
 	dh_fixperms -i
@@ -353,6 +361,9 @@ binary-arch: build-arch install-arch check
         # remove the /usr/share/info/dir stab
 	rm -vf $(debtmp)/usr/share/info/dir
 
+        # Remove empty site/ dirs
+	rm -rf $$(find debian/ -name site -type d)
+
         # save the include files for the header package
 	dh_movefiles -p$(dev_package) --sourcedir=debian/$(PACKAGE)	\
 			usr/include/		 			\
@@ -365,20 +376,18 @@ binary-arch: build-arch install-arch check
 			usr/share/octave/debian/defs.make-$(version)
 	rm -r $(debtmp)/usr/include
 	rm -rf $(debtmp)/usr/share/info
-	rm -rf $(debtmp)/usr/share/octave/debian/
+
+	# install files for the common package
+	dh_movefiles -p$(common_package) --sourcedir=debian/$(PACKAGE)	\
+			usr/share/octave				\
+			usr/share/enscript
+
+	rm -rf $(debtmp)/usr/share/octave $(debtmp)/usr/share/enscript
 
 	install -p -m 0644  debian/$(PACKAGE).conf  $(debtmp)/etc
 
         # install lintian overrride
 	dh_lintian -p$(PACKAGE)
-
-        ## link the conf.file back from /etc over the version.spec. rc
-	ln -sf /etc/$(PACKAGE).conf 		$(debininew)/octaverc
-
-	# Remove empty dirs
-	rm -rf $(debshare)/octave/site	\
-		$(deblib)/octave/*/site	\
-		$(deblib)/octave/site
 
 	dh_installdocs -a			README README.kpathsea	\
 						NEWS* PROJECTS THANKS	\
