@@ -15,7 +15,7 @@ diff -urNad octave3.0-3.0.1~/scripts/plot/__go_draw_axes__.m octave3.0-3.0.1/scr
  function [f, s, fnt, it, bld] = get_fontname_and_size (t)
    if (isempty (t.fontname))
 -    fnt = "Helvetica";
-+    fnt = "";
++    fnt = "*";
    else
      fnt = t.fontname;
    endif
@@ -24,7 +24,7 @@ diff -urNad octave3.0-3.0.1~/scripts/plot/__go_draw_axes__.m octave3.0-3.0.1/scr
      [f, s, fnt, it, bld] = get_fontname_and_size (obj);
    else
 -    f = "Helvetica";
-+    f = "";
++    f = "*";
      s = 10;
      fnt = f;
      it = false;
@@ -36,7 +36,7 @@ diff -urNad octave3.0-3.0.1~/src/graphics.cc octave3.0-3.0.1/src/graphics.cc
      horizontalalignment ("left"),
      color (Matrix (1, 3, 0.0)),
 -    fontname ("Helvetica"),
-+    fontname (""),
++    fontname ("*"),
      fontsize (10),
      fontangle (radio_values ("{normal}|italic|oblique")),
      fontweight (radio_values ("{normal}|bold|demi|light")),
@@ -45,7 +45,7 @@ diff -urNad octave3.0-3.0.1~/src/graphics.cc octave3.0-3.0.1/src/graphics.cc
    m["horizontalalignment"] = "left";
    m["color"] = Matrix (1, 3, 1.0);
 -  m["fontname"] = "Helvetica";
-+  m["fontname"] = "";
++  m["fontname"] = "*";
    m["fontsize"] = 10;
    m["fontangle"] = radio_property (radio_values ("{normal}|italic|oblique"));
    m["fontweight"] = radio_property (radio_values ("{normal}|bold|demi|light"));

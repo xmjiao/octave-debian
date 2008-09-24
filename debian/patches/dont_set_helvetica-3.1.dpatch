@@ -15,7 +15,7 @@ diff -urNad octave3.0-3.0.1~/scripts/plot/__go_draw_axes__.m octave3.0-3.0.1/scr
  function [f, s, fnt, it, bld] = get_fontname_and_size (t)
    if (isempty (t.fontname))
 -    fnt = "Helvetica";
-+    fnt = "";
++    fnt = "*";
    else
      fnt = t.fontname;
    endif
@@ -24,7 +24,7 @@ diff -urNad octave3.0-3.0.1~/scripts/plot/__go_draw_axes__.m octave3.0-3.0.1/scr
      [f, s, fnt, it, bld] = get_fontname_and_size (obj);
    else
 -    f = "Helvetica";
-+    f = "";
++    f = "*";
      s = 10;
      fnt = f;
      it = false;
@@ -35,7 +35,7 @@ diff -urNad octave3.0-3.0.1~/scripts/plot/__go_draw_axes__.m octave3.0-3.0.1/scr
    drawmode = "normal";
    fontangle = "normal";
 -  fontname = "Helvetica";
-+  fontname = "";
++  fontname = "*";
    fontsize = 12;
    fontunits = "points";
    fontweight = "normal";
