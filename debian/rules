@@ -16,14 +16,14 @@ source		:= $(shell head -1 debian/changelog | \
 PACKAGE		:= $(shell head -1 debian/changelog | \
 			perl -nle 'm/^(\S+)\s+/ and print $$1')
 version       	:= $(shell head -1 debian/changelog | \
-			perl -nle 'm/\S+\s+\((?:\d:)*(\S+)-\S+\)/ and print $$1')
+			perl -nle 'm/\S+\s+\((?:\d:)*([\d.]+)(~[^-]+)*-\S+\)/ and print $$1')
 major       	:= $(shell echo $(version) | perl -nle \
 			'm/(\d\.\d)\.\d+/ and print $$1')
 PACKAGEVER	:= $(shell echo $(PACKAGE) | \
 			perl -nle 'm/.*(\d.\d)/ and print $$1')
 
 hack:
-	@echo $(PACKAGEVER)
+	@echo $(version)
 
 ifeq ($(major),3.1)
 priority	:= 70
@@ -77,8 +77,7 @@ fc_libs		=
 compilerflags	= -O2 -g
 
 # default to blas, atlas can overload where available (see README.Atlas)
-#atlas		= --with-blas=/usr/lib/libblas.so \
-#		  --with-lapack=/usr/lib/liblapack.so
+#atlas		= --with-blas=/usr/lib/libblas.so \#		  --with-lapack=/usr/lib/liblapack.so
 #atlas		= --with-blas=/usr/lib/libblas-3.so \
 #		  --with-lapack=/usr/lib/liblapack-3.so
 atlas		= --with-blas=-lblas-3gf --with-lapack=-llapackgf-3
