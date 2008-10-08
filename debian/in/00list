@@ -15,7 +15,6 @@
 :][V_3_0:
 50_octave-bug-tempfile
 50_fix_handle_for_plotyy.dpatch
-randn_doc.dpatch
 no_pdf_in_print.dpatch
 dont_set_helvetica.dpatch
 :][V_3_1:
