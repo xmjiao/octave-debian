@@ -1,9 +1,18 @@
+octave3.0 (1:3.0.3-2) UNRELEASED; urgency=low
+
+  * debian/patches/polyfit-scaling.dpatch: Add patch for introducing a new
+    polyfit.m taken from the Mercurial upstream repository.  This version
+    has a new algorithm that improves the numerical stability of the
+    results for ill-conditioned input values (closes: #510577).
+
+ -- Rafael Laboissiere <rafael@debian.org>  Sat, 03 Jan 2009 12:28:47 +0100
+
 octave3.0 (1:3.0.3-1) experimental; urgency=low
 
   [ Thomas Weber ]
   * New upstream release:
     + Improved documentation about axes properties (closes: #492070)
-    + Check that X and Y are of same size when calling contourf 
+    + Check that X and Y are of same size when calling contourf
       (closes: #492223)
     + varargin is now in the manual index (closes: #492992)
     + Better description for shading (closes: #492168)
