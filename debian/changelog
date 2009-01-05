@@ -4,7 +4,9 @@ octave3.0 (1:3.0.3-2) UNRELEASED; urgency=low
     polyfit.m taken from the Mercurial upstream repository.  This version
     has a new algorithm that improves the numerical stability of the
     results for ill-conditioned input values (closes: #510577).
-  * debian/in/control: Synch with the lenny branch
+  * debian/in/control:
+    + Synch with the lenny branch
+    + Build-depend on libsuitesparse-dev >= 3.2.0
 
  -- Rafael Laboissiere <rafael@debian.org>  Sat, 03 Jan 2009 12:28:47 +0100
 
@@ -102,12 +104,12 @@ octave3.1 (3.1.50-2) experimental; urgency=low
  -- Rafael Laboissiere <rafael@debian.org>  Tue, 22 Jul 2008 00:50:49 +0200
 
 octave3.0 (1:3.0.1-6lenny1) unstable; urgency=low
-  
+
   * Allow libhdf5-openmpi-dev to satisfy Octave's hdf5 dependency (closes:
     #494139)
-  
+
  -- Thomas Weber <thomas.weber.mail@gmail.com>  Tue, 12 Aug 2008 22:28:01 +0000
-  
+
 octave3.1 (3.1.50-1) experimental; urgency=low
 
   * New upstream release (development branch)
