@@ -23,4 +23,5 @@ suitesparse-3.2.0.dpatch
 50_octave-bug-tempfile
 no_pdf_in_print.dpatch
 dont_set_helvetica-3.1.dpatch
+suitesparse-3.2.0.dpatch
 :]
