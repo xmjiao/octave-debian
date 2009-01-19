@@ -17,8 +17,6 @@
 50_fix_handle_for_plotyy.dpatch
 no_pdf_in_print.dpatch
 dont_set_helvetica.dpatch
-polyfit-scaling.dpatch
-suitesparse-3.2.0.dpatch
 :][V_3_1:
 50_octave-bug-tempfile
 no_pdf_in_print.dpatch
