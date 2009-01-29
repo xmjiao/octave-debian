@@ -1,3 +1,1 @@
-@PACKAGE@: binary-or-shlib-defines-rpath ./usr/bin/octave-@VERSION@ /usr/lib/octave-@VERSION@
-@PACKAGE@: binary-or-shlib-defines-rpath ./usr/lib/octave-@VERSION@/liboctave.so.@VERSION@ /usr/lib/octave-@VERSION@
 @PACKAGE@: package-contains-empty-directory usr/lib/octave/api-v@APIVERSION@/
