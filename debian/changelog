@@ -1,13 +1,13 @@
-octave3.0 (1:3.0.4~rc3-1) UNRELEASED; urgency=low
+octave3.0 (1:3.0.4~rc3-1) experimental; urgency=low
 
   * New upstream release candidate
   * Dropped patches (applied upstream):
     + debian/patches/polyfit-scaling.dpatch
     + debian/patches/suitesparse-3.2.0.dpatch
-  * debian/in/PACKAGE.lintian-overrides: Drop the overrides for 
-    binary-or-shlib-defines-rpath, since they are not needed anymore 
-    
- -- Rafael Laboissiere <rafael@debian.org>  Mon, 19 Jan 2009 16:09:37 +0100
+  * debian/in/PACKAGE.lintian-overrides: Drop the overrides for
+    binary-or-shlib-defines-rpath, since they are not needed anymore
+
+ -- Rafael Laboissiere <rafael@debian.org>  Thu, 29 Jan 2009 22:47:16 +0100
 
 octave3.1 (3.1.51-3) experimental; urgency=low
 
