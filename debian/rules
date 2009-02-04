@@ -294,6 +294,7 @@ install-arch-stamp :
 		 $(debtmp)/usr/bin/octave-depends-$(version)
 	install --mode=644 debian/defs.make \
 		$(debtmp)/usr/share/octave/debian/defs.make-$(version)
+	install -d $(debtmp)/usr/share/octave/packages
 
 	(cd $(debtmp)/usr/share/man/man1; 				\
 		mv -v	octave.1	octave-$(version).1;    	\
