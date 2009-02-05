@@ -294,7 +294,6 @@ install-arch-stamp :
 		 $(debtmp)/usr/bin/octave-depends-$(version)
 	install --mode=644 debian/defs.make \
 		$(debtmp)/usr/share/octave/debian/defs.make-$(version)
-	install -d $(debtmp)/usr/share/octave/packages
 
 	(cd $(debtmp)/usr/share/man/man1; 				\
 		mv -v	octave.1	octave-$(version).1;    	\
@@ -337,6 +336,9 @@ binary-indep: build-indep install-indep
 		$(debbase)/$(emacs_package)/usr/bin/octave-tags-$(version)
 	-install -p -m 0644 emacs/octave-tags.1			\
 	     $(debbase)/$(emacs_package)/usr/share/man/man1/octave-tags-$(version).1
+
+	# install the directory for Octave packages
+	install -d $(debbase)/$(common_package)/usr/share/octave/packages
 
         ## link the conf.file back from /etc over the version.spec. rc
 	ln -sf /etc/$(PACKAGE).conf 		$(debini)/octaverc
