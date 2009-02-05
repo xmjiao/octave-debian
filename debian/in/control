@@ -62,7 +62,7 @@ Description: PDF documentation on the GNU Octave language ([V_2_1:2.1:][V_3_0:3.
  intended for numerical computations. It provides a convenient command-line
  interface for solving linear and nonlinear problems numerically.
  .
- This packages provides the following documentation in PDF format:
+ This package provides the following documentation in PDF format:
  the FAQ, a reference card in a4, letter and legal formats, a document on the
  C++ classes used by Octave, as well as the main octave documentation which
  is also included in info format in the octave[V_2_1:2.1:][V_3_0:3.0:][V_3_1:3.1:]-info package.[V_2_1:
@@ -87,7 +87,7 @@ Description: HTML documentation on the GNU Octave language ([V_2_1:2.1:][V_3_0:3
  intended for numerical computations. It provides a convenient command-line
  interface for solving linear and nonlinear problems numerically.
  .
- This packages provides the following documentation in html format:
+ This package provides the following documentation in html format:
  the FAQ, a document on the C++ classes used by Octave, as well as the main
  octave documentation which is also included in info format in the main
  Octave package.[V_2_1:
@@ -115,7 +115,7 @@ Description: header files for the GNU Octave language ([V_2_1:2.1:][V_3_0:3.0:][
  intended for numerical computations. It provides a convenient command-line
  interface for solving linear and nonlinear problems numerically.
  .
- This packages provides the include files needed to compile and link
+ This package provides the include files needed to compile and link
  user-supplied code with GNU Octave. If you only write interpreted .m files,
  you do not need this package.
  .
@@ -141,7 +141,7 @@ Description: Emacs support for the GNU Octave language ([V_2_1:2.1:][V_3_0:3.0:]
  intended for numerical computations. It provides a convenient command-line
  interface for solving linear and nonlinear problems numerically.
  .
- This packages provides the elisp files for the Octave modes for GNU Emacs
+ This package provides the elisp files for the Octave modes for GNU Emacs
  and XEmacs.[V_2_1:
  .
  The recommended branch of Octave is 3.0.  Please, use the octave3.0-emacsen
@@ -162,7 +162,7 @@ Description: GNU Info documentation on the GNU Octave language ([V_2_1:2.1:][V_3
  intended for numerical computations. It provides a convenient command-line
  interface for solving linear and nonlinear problems numerically.
  .
- This packages provides the following documentation in info format:
+ This package provides the following documentation in info format:
  the FAQ, a document on the C++ classes used by Octave, as well as the main
  octave documentation which is needed for the 'help -i foo' command within
  Octave.[V_2_1:
