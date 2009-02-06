@@ -1,0 +1,79 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## -*- diff -*-
+## sane-file-stat-return.dpatch by Rafael Laboissiere <rafael@debian.org>
+##
+## DP: Avoid calls to deprecated __glp_lib_* functions which are deprecated
+## DP: and have been removed for the GLPK public API since version 4.32.
+## DP:
+## DP: Adapted from the upstream changesets in:
+## DP: http://hg.savannah.gnu.org/hgweb/octave/rev/ddbe87599331
+## DP: http://hg.savannah.gnu.org/hgweb/octave/rev/6e9887f9cf9f
+## DP:
+## DP: # HG changeset patch
+## DP: # User John W. Eaton <jwe@octave.org>
+## DP: # Date 1233873504 18000
+## DP: # Node ID ddbe875993314945753a2b3fed6d75d2fa741e0a
+## DP: # Parent d7306ecd077a45c41801796e13ab791dcc630511
+## DP: base_file_stat::is_XXX: return false if object is not initialized
+## DP:
+## DP: # HG changeset patch                                     
+## DP: # User John W. Eaton <jwe@octave.org>                    
+## DP: # Date 1233880778 18000                                  
+## DP: # Node ID 6e9887f9cf9f646de4e166f3236279e106c071b0       
+## DP: # Parent ddbe875993314945753a2b3fed6d75d2fa741e0a        
+## DP: file-stat.cc: use EXISTS instead of OK in previuos change
+
+@DPATCH@
+--- a/liboctave/file-stat.cc	Thu Feb 05 17:14:44 2009 -0500
++++ b/liboctave/file-stat.cc	Thu Feb 05 17:38:24 2009 -0500
+@@ -54,43 +54,43 @@
+ bool
+ file_stat::is_blk (void) const
+ {
+-  return is_blk (fs_mode);
++  return exists () && is_blk (fs_mode);
+ }
+ 
+ bool
+ file_stat::is_chr (void) const
+ {
+-  return is_chr (fs_mode);
++  return exists () && is_chr (fs_mode);
+ }
+ 
+ bool
+ file_stat::is_dir (void) const
+ { 
+-  return is_dir (fs_mode);
++  return exists () && is_dir (fs_mode);
+ }
+ 
+ bool
+ file_stat::is_fifo (void) const
+ { 
+-  return is_fifo (fs_mode);
++  return exists () && is_fifo (fs_mode);
+ }
+ 
+ bool
+ file_stat::is_lnk (void) const
+ { 
+-  return is_lnk (fs_mode);
++  return exists () && is_lnk (fs_mode);
+ }
+ 
+ bool
+ file_stat::is_reg (void) const
+ { 
+-  return is_reg (fs_mode);
++  return exists () && is_reg (fs_mode);
+ }
+ 
+ bool
+ file_stat::is_sock (void) const
+ { 
+-  return is_sock (fs_mode);
++  return exists () && is_sock (fs_mode);
+ }
+ 
+ bool

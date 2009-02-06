@@ -24,4 +24,5 @@ no_pdf_in_print.dpatch
 dont_set_helvetica-3.1.dpatch
 suitesparse-3.2.0.dpatch
 glpk-new-api.dpatch
+sane-file-stat-return.dpatch
 :]

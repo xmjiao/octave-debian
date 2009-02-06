@@ -1,3 +1,11 @@
+octave3.1 (3.1.51-4) UNRELEASED; urgency=low
+
+  * Synch with octave3.0.
+  * debian/patches/sane-file-stat-return.dpatch: Avoid random errors when
+    calling fopen on files that do not exist in the file system
+
+ -- Rafael Laboissiere <rafael@debian.org>  Wed, 04 Feb 2009 14:00:42 +0100
+
 octave3.0 (1:3.0.4~rc3-2) experimental; urgency=low
 
   [ Thomas Weber ]
