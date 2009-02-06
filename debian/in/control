@@ -47,7 +47,7 @@ Description: GNU Octave language for numerical computations ([V_2_1:2.1:][V_3_0:
  package instead of this one, since it will be dropped after the Debian
  lenny release.:][V_3_1:
  .
- This recommended branch of Octave is 3.0.  The 3.1 branch is
+ The recommended branch of Octave is 3.0.  The 3.1 branch is
  experimental and is considered to be unstable.:]
 
 Package: octave[V_2_1:2.1:][V_3_0:3.0:][V_3_1:3.1:]-doc
@@ -71,7 +71,7 @@ Description: PDF documentation on the GNU Octave language ([V_2_1:2.1:][V_3_0:3.
  package instead of this one, since it will be dropped after the Debian
  lenny release.:][V_3_1:
  .
- This recommended branch of Octave is 3.0.  The 3.1 branch is
+ The recommended branch of Octave is 3.0.  The 3.1 branch is
  experimental and is considered to be unstable.:]
 
 
@@ -96,7 +96,7 @@ Description: HTML documentation on the GNU Octave language ([V_2_1:2.1:][V_3_0:3
  package instead of this one, since it will be dropped after the Debian
  lenny release.:][V_3_1:
  .
- This recommended branch of Octave is 3.0.  The 3.1 branch is
+ The recommended branch of Octave is 3.0.  The 3.1 branch is
  experimental and is considered to be unstable.:]
 
 Package: octave[V_2_1:2.1:][V_3_0:3.0:][V_3_1:3.1:]-headers
@@ -126,7 +126,7 @@ Description: header files for the GNU Octave language ([V_2_1:2.1:][V_3_0:3.0:][
  package instead of this one, since it will be dropped after the Debian
  lenny release.:][V_3_1:
  .
- This recommended branch of Octave is 3.0.  The 3.1 branch is
+ The recommended branch of Octave is 3.0.  The 3.1 branch is
  experimental and is considered to be unstable.:]
 
 Package: octave[V_2_1:2.1:][V_3_0:3.0:][V_3_1:3.1:]-emacsen
@@ -148,7 +148,7 @@ Description: Emacs support for the GNU Octave language ([V_2_1:2.1:][V_3_0:3.0:]
  package instead of this one, since it will be dropped after the Debian
  lenny release.:][V_3_1:
  .
- This recommended branch of Octave is 3.0.  The 3.1 branch is
+ The recommended branch of Octave is 3.0.  The 3.1 branch is
  experimental and is considered to be unstable.:]
 
 Package: octave[V_2_1:2.1:][V_3_0:3.0:][V_3_1:3.1:]-info
@@ -171,7 +171,7 @@ Description: GNU Info documentation on the GNU Octave language ([V_2_1:2.1:][V_3
  package instead of this one, since it will be dropped after the Debian
  lenny release.:][V_3_1:
  .
- This recommended branch of Octave is 3.0.  The 3.1 branch is
+ The recommended branch of Octave is 3.0.  The 3.1 branch is
  experimental and is considered to be unstable.:]
 
 [V_3_0:
