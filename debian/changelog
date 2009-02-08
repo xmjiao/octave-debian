@@ -1,3 +1,19 @@
+octave3.0 (1:3.0.1-7) unstable; urgency=low
+
+  * Upload to unstable, such that the package will have a higher version
+    number in this distribution in comparison with testing.  This is
+    necessary, otherwise the Debian installer refuses to install the
+    previous version in testing-proposed-updates.
+
+ -- Rafael Laboissiere <rafael@debian.org>  Sat, 07 Feb 2009 17:32:48 +0100
+
+octave3.0 (1:3.0.1-6lenny3) testing-proposed-updates; urgency=low
+
+  * Upload to t-p-u in order to get the correct dependencies for lenny, in
+    particular libpcre3
+
+ -- Rafael Laboissiere <rafael@debian.org>  Sat, 07 Feb 2009 11:54:49 +0100
+
 octave3.1 (3.1.51-4) experimental; urgency=low
 
   * Synch with octave3.0.
