@@ -19,7 +19,7 @@ case "$1" in
 	    rmdir /usr/local/share/octave        2>/dev/null || true
 	fi
 	#
-	# remove the ls-R database for kpathsea
+	# This is for old installations of the octave package
 	if [ -f /usr/share/octave/ls-R ]
 	then
 	    rm -f /usr/share/octave/ls-R

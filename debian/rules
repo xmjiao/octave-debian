@@ -343,6 +343,9 @@ binary-indep: build-indep install-indep
         ## link the conf.file back from /etc over the version.spec. rc
 	ln -sf /etc/$(PACKAGE).conf 		$(debini)/octaverc
 
+        # The ls-R database is not needed anymore
+	rm -vf $(debbase)/$(common_package)/usr/share/octave/ls-R
+
         # install lintian overrride
 	dh_lintian -p$(common_package)
 
@@ -397,9 +400,9 @@ binary-arch: build-arch install-arch check
 						NEWS* PROJECTS THANKS	\
 						BUGS SENDING-PATCHES
 	dh_installdocs -p$(PACKAGE) 		debian/README.Atlas
-        # recreated in postinst in share/, not needed in lib
-	rm -vf	$(debtmp)/usr/lib/octave/ls-R \
-		$(debtmp)/usr/share/octave/ls-R
+
+        # The ls-R database is not needed anymore
+	rm -vf $(debtmp)/usr/lib/octave/ls-R
 
 	## Rename the desktop file
 	-[ -e $(debapp)/www.octave.org-octave.desktop ]		\
