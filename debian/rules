@@ -334,7 +334,7 @@ binary-indep: build-indep install-indep
 	     $(debbase)/$(emacs_package)/usr/share/man/man1/octave-tags-$(version).1
 
 	# install the directory for Octave packages
-	install -d $(debbase)/$(common_package)/usr/share/octave/packages
+	install -d $(debbase)/$(common_package)/usr/share/octave/packages/$(major)
 
         ## link the conf.file back from /etc over the version.spec. rc
 	ln -sf /etc/$(PACKAGE).conf 		$(debini)/octaverc
