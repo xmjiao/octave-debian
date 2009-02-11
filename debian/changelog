@@ -10,7 +10,12 @@ octave3.1 (3.1.52-1) UNRELEASED; urgency=low
   * debian/in/control: Build-depend on libftgl-dev, such that Octave is
     compiled with the experimental OpenGL/FLTK based backend, which will
     replace gnuplot
+  * debian/texmf.cnf: Add TeX configuration file for increasing the save
+    size for pdfetex.  This is necessary for building the documentation
+    files from the texi sources.
   * debian/rules:
+    + Export the TEXMFCNF variable such that texi2df will be able to find
+      the debian/texmf.cnf file
     + In the binary-indep rule, remove the ls-R file installed in the
       /usr/share directory.
     + Do not install enscript's syntax file octave.st.  This file is now

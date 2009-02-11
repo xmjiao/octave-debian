@@ -39,6 +39,9 @@ endif
 endif
 endif
 
+## The following is necessary when building the documentation file octave.pdf
+export TEXMFCNF = $(CURDIR)/debian:
+
 doc_package	= $(PACKAGE)-doc
 html_package	= $(PACKAGE)-htmldoc
 dev_package	= $(PACKAGE)-headers
