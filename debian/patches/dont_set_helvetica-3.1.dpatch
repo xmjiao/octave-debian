@@ -39,3 +39,23 @@ diff -urNad octave3.0-3.0.1~/scripts/plot/__go_draw_axes__.m octave3.0-3.0.1/scr
        fontsize = 12;
        fontunits = "points";
        fontweight = "normal";
+--- octave3.1-3.1.52.orig/src/graphics.h.in
++++ octave3.1-3.1.52/src/graphics.h.in
+@@ -2686,7 +2686,7 @@
+       array_property currentpoint , Matrix (2, 3, 0.0)
+       radio_property drawmode , "{normal}|fast"
+       radio_property fontangle , "{normal}|italic|oblique"
+-      string_property fontname , "Helvetica"
++      string_property fontname , "*"
+       double_property fontsize , 12
+       radio_property fontunits , "{points}|normalized|inches|centimeters|pixels"
+       radio_property fontweight , "{normal}|light|demi|bold"
+@@ -2966,7 +2966,7 @@
+       double_property rotation , 0
+       radio_property horizontalalignment , "{left}|center|right"
+       color_property color , color_values (0, 0, 0)
+-      string_property fontname , "Helvetica"
++      string_property fontname , "*"
+       double_property fontsize , 10
+       radio_property fontangle , "{normal}|italic|oblique"
+       radio_property fontweight , "light|{normal}|demi|bold"
