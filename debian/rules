@@ -393,8 +393,10 @@ binary-arch: build-arch install-arch check
 	dh_lintian -p$(PACKAGE)
 
 	dh_installdocs -a			README README.kpathsea	\
-						NEWS* PROJECTS THANKS	\
+						NEWS* PROJECTS		\
 						BUGS SENDING-PATCHES
+	-test "$(PACKAGEVER)" != 3.1 && dh_installdocs -a THANKS
+							
 	dh_installdocs -p$(PACKAGE) 		debian/README.Atlas
 
         # The ls-R database is not needed anymore
