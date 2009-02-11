@@ -4,7 +4,9 @@ octave3.1 (3.1.52-1) UNRELEASED; urgency=low
   * debian/patches/:
     + dont_set_helvetica.dpatch: Adapt patch for this new release
     + glpk-new-api.dpatch, sane-file-stat-return.dpatch: Drop patches
-    (applied upstream)
+      (applied upstream)
+    + clean-examples-subdir.dpatch: Avoid files left in examples/@polynomial
+      after make distclean
   * debian/in/control: Build-depend on libftgl-dev, such that Octave is
     compiled with the experimental OpenGL/FLTK based backend, which will
     replace gnuplot
