@@ -1,1 +1,2 @@
 @PACKAGE@: package-contains-empty-directory usr/lib/octave/api-v@APIVERSION@/
+@PACKAGE@: package-contains-empty-directory usr/lib/octave/packages/@MAJOR@/

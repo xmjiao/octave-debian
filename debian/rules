@@ -307,6 +307,9 @@ install-arch-stamp :
 	(cd $(debtmp)/usr/bin; 						\
 		rm -v   octave	octave-bug mkoctfile octave-config)
 
+	# install the directory for Octave packages
+	install -d $(debtmp)/usr/lib/octave/packages/$(major)
+
 	touch install-arch-stamp
 
 binary-indep: build-indep install-indep
