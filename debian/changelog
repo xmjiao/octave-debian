@@ -24,6 +24,8 @@ octave3.1 (3.1.52-1) UNRELEASED; urgency=low
     file.  It is not used by Octave anymore.
   * debian/in/PACKAGE.conf: Use versioned prefixes for the Octave packages
     directory
+  * debian/in/PACKAGE-common.lintian-overrides: Adjust for the nwe
+    versioned packages directory
 
  -- Rafael Laboissiere <rafael@debian.org>  Fri, 06 Feb 2009 11:23:15 +0100
 
