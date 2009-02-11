@@ -27,7 +27,7 @@ hack:
 
 ifeq ($(major),3.1)
 priority	:= 70
-api_version	:= 33+
+api_version	:= 34
 else
 ifeq ($(major),3.0)
 priority	:= 90

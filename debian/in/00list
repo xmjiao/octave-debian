@@ -22,4 +22,5 @@ glpk-new-api.dpatch
 50_octave-bug-tempfile
 no_pdf_in_print.dpatch
 dont_set_helvetica-3.1.dpatch
+clean-examples-subdir.dpatch
 :]
