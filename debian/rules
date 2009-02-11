@@ -313,7 +313,8 @@ binary-indep: build-indep install-indep
         # already installed by make
 	dh_installinfo -n -p$(info_package)  	doc/*/*$(major)*.info*
 
-	dh_installdocs -n -p$(doc_package) doc/*/*.pdf
+	dh_installdocs -n -p$(doc_package) doc/liboctave/*.pdf	\
+		doc/interpreter/octave-a4.pdf doc/refcard/*.pdf doc/faq/*.pdf
 	dh_installdocs -i
 	for dir in faq interpreter liboctave ; do			\
 		test -d $(debhtmldoc)/$$dir				\
@@ -396,7 +397,7 @@ binary-arch: build-arch install-arch check
 						NEWS* PROJECTS		\
 						BUGS SENDING-PATCHES
 	-test "$(PACKAGEVER)" != 3.1 && dh_installdocs -a THANKS
-							
+
 	dh_installdocs -p$(PACKAGE) 		debian/README.Atlas
 
         # The ls-R database is not needed anymore
