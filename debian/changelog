@@ -1,4 +1,4 @@
-octave3.1 (3.1.52-1) UNRELEASED; urgency=low
+octave3.1 (3.1.52-1) experimental; urgency=low
 
   * New upstream development snapshot
   * debian/patches/:
