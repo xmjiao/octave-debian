@@ -3,6 +3,8 @@ octave3.0 (1:3.0.4~rc3-3) UNRELEASED; urgency=low
   * Sync with the development branch
   * debian/in/PACKAGE.conf: Set the global_list of Octave packages inside
     the versioned directory for packages.
+  * debian/in/PACKAGE.triggers: Interests on the versioned packages
+    directory
 
  -- Rafael Laboissiere <rafael@debian.org>  Thu, 12 Feb 2009 02:32:55 +0100
 
