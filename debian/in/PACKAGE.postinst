@@ -11,6 +11,11 @@
 VERSION=@VERSION@
 PRIORITY=@PRIORITY@
 
+rebuild_pkg_database () {
+    octave-$VERSION --silent --no-history --no-init-file	\
+                    --eval "pkg ('rebuild');"
+}
+
 case "$1" in
     configure)
 	#
@@ -26,11 +31,11 @@ case "$1" in
 			--slave /usr/share/man/man1/$f.1.gz $f.1.gz	\
 				/usr/share/man/man1/$f-$VERSION.1.gz
 	done
+	rebuild_pkg_database
 	;;
 
     triggered)
-        octave-$VERSION --silent --no-history --no-init-file	\
-             --eval "pkg ('rebuild');"
+        rebuild_pkg_database
         ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
