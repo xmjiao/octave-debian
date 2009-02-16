@@ -6,6 +6,18 @@ octave3.0 (1:3.0.4~rc3-4) UNRELEASED; urgency=low
   * debian/patches/real-no-history.dpatch: Add patch for only reading and
     saving history if Vsaving_history is true.  Thanks to John Eaton for
     the patch and the suggestions.  Closes: #514802.
+  * The removal of octave2.1 from squeeze has been requested.  The
+    following files are affected:
+    + debian/rules, debian/in/00list, debian/in/NEWS,
+      debian/in/PACKAGE-htmldoc.doc-base.faq, debian/in/PACKAGE.conf,
+      debian/in/control, debian/in/copyright, debian/in/watch: Remove all
+      inclusions conditional on 2.1
+    + Dropped patches: 50_OCTAVEHOME-texi, 50_automatic-replot-docstring,
+      50_build-octave-faq, 50_clean-pdf-docs, 50_compile-with-g++-4.3,
+      50_drop-lo-manpages, 50_fixed-freqz, 50_g++4.1-fixes,
+      50_incomplete_gamma, 50_lgamma_doc, 50_rename-octave-tags,
+      50_return-deffn, 50_syscalls-test-sleep,
+      imshow_only_handles_octave_images, sane-file-stat-return
 
  -- Rafael Laboissiere <rafael@debian.org>  Fri, 13 Feb 2009 19:52:37 +0100
 
