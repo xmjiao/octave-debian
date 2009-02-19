@@ -1,3 +1,9 @@
+octave3.1 (3.1.52-3) UNRELEASED; urgency=low
+
+  * Sync with the stable branch
+
+ -- Rafael Laboissiere <rafael@debian.org>  Sat, 14 Feb 2009 13:48:26 +0100
+
 octave3.0 (1:3.0.4~rc4-1) experimental; urgency=low
 
   * New upstream release candidate.  Although lenny is already released,
