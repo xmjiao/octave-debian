@@ -1,3 +1,13 @@
+octave3.1 (3.1.52-4) UNRELEASED; urgency=low
+
+  * debian/patches/visit-script-call-accept.dpatch: Add patch to call
+    accept for function and script commands, avoiding crashes when user
+    scripts are loaded again after being changed in the file system
+    (closes: #516136).  This patch was taken from the upstream Mercurial
+    repository, thanks to John W. Eaton.
+
+ -- Rafael Laboissiere <rafael@debian.org>  Sat, 21 Feb 2009 10:16:14 +0100
+
 octave3.1 (3.1.52-3) experimental; urgency=low
 
   * Sync with the stable branch

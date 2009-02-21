@@ -1,0 +1,46 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## -*- diff -*-
+## visit-script-call-accept.dpatch by Rafael Laboissiere <rafael@debian.org>
+##
+## DP: Avoids crashes when user scripts are loaded again after being
+## DP: changed in the file system (fixes Bug#516136).  This patch was
+## DP: taken from the upstream Mercurial repository, thanks to John
+## DP: W. Eaton.
+
+@DPATCH@
+# HG changeset patch
+# User John W. Eaton <jwe@octave.org>
+# Date 1235157064 18000
+# Node ID 71742f45571ed96e0cc91b14c3647276c0a03994
+# Parent fa981a0530644364cbddbabfae8d218100066c67
+pt-bp.cc: call accept for function and script commands
+
+--- a/src/pt-bp.cc	Fri Feb 20 12:24:03 2009 -0500
++++ b/src/pt-bp.cc	Fri Feb 20 14:11:04 2009 -0500
+@@ -160,15 +160,21 @@
+ }
+ 
+ void
+-tree_breakpoint::visit_octave_user_script (octave_user_script&)
++tree_breakpoint::visit_octave_user_script (octave_user_script& fcn)
+ {
+-  panic_impossible ();
++  tree_statement_list *cmd_list = fcn.body ();
++
++  if (cmd_list)
++    cmd_list->accept (*this);
+ }
+ 
+ void
+-tree_breakpoint::visit_octave_user_function (octave_user_function&)
++tree_breakpoint::visit_octave_user_function (octave_user_function& fcn)
+ {
+-  panic_impossible ();
++  tree_statement_list *cmd_list = fcn.body ();
++
++  if (cmd_list)
++    cmd_list->accept (*this);
+ }
+ 
+ void
+
