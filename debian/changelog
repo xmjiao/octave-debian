@@ -1,3 +1,13 @@
+octave3.1 (3.1.52-5) UNRELEASED; urgency=low
+
+  * debian/patches/compile-inttypes-on-short-double-arches.dpatch:
+    Workaround gcc 4.3 explicit instantiation bug in octave_int_cmp_op.
+    This was causing FTBFS on architectures with no long double type, like
+    mipsel and hppa (closes: #516588). Thanks to Jaroslav Hajek for the
+    patch.
+
+ -- Rafael Laboissiere <rafael@debian.org>  Mon, 23 Feb 2009 18:42:48 +0100
+
 octave3.1 (3.1.52-4) experimental; urgency=low
 
   * debian/patches/visit-script-call-accept.dpatch: Add patch to call
