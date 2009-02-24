@@ -1,0 +1,28 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## -*- diff -*-
+## normal-markersize.dpatch by Rafael Laboissiere <rafael@debian.org>
+##
+## DP: Revert the symbol markers in plots to their normal size.  Thanks to 
+## DP: Francesco Potorti for the patch.
+
+@DPATCH@
+--- octave3.1-3.1.52.orig/scripts/plot/__go_draw_axes__.m
++++ octave3.1-3.1.52/scripts/plot/__go_draw_axes__.m
+@@ -594,7 +594,7 @@
+ 	     usingclause{data_idx} = sprintf ("record=%d", numel (obj.xdata));
+ 
+ 	     if (isfield (obj, "markersize"))
+-	       mdat = obj.markersize / 3;
++	       mdat = obj.markersize / 6;
+ 	     endif
+ 
+              if (isfield (obj, "edgecolor"))
+@@ -1320,7 +1320,7 @@
+     endif
+ 
+     if (isfield (obj, "markersize"))
+-      fprintf (plot_stream, " pointsize %f", obj.markersize / 3);
++      fprintf (plot_stream, " pointsize %f", obj.markersize / 6);
+       found_style = true;
+     endif
+   else

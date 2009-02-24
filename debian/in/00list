@@ -13,4 +13,5 @@ clean-examples-subdir.dpatch
 real-no-history-3.1.dpatch
 visit-script-call-accept.dpatch
 compile-inttypes-on-short-double-arches.dpatch
+normal-markersize.dpatch
 :]
