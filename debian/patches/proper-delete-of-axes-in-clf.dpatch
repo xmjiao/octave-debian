@@ -1,0 +1,23 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## -*- diff -*-
+## proper-delete-of-axes-in-clf.dpatch by Rafael Laboissiere <rafael@debian.org>
+##
+## DP: Proper deletion of axes in clf.m.  Fix a regression problem 
+## DP: between version 3.0.3 and 3.04-rc5.  Proposed by Marco Caliari
+## DP: in the octave-maintainers mailing list on 2008-02-25.
+
+@DPATCH@
+--- octave3.0-3.0.4~rc5.orig/scripts/plot/clf.m
++++ octave3.0-3.0.4~rc5/scripts/plot/clf.m
+@@ -71,7 +71,9 @@
+     hc = get (hfig, "children");
+   endif
+ 
++  set (hfig, "currentaxes", []);
+   ## Delete the children.
+-  delete (hc);
+-
++  if (ishandle (hc))
++    delete (hc);
++  endif
+ endfunction

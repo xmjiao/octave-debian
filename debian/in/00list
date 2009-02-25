@@ -5,6 +5,7 @@ no_pdf_in_print.dpatch
 dont_set_helvetica.dpatch
 glpk-new-api.dpatch
 real-no-history.dpatch
+proper-delete-of-axes-in-clf.dpatch
 :][V_3_1:
 50_octave-bug-tempfile
 no_pdf_in_print.dpatch
