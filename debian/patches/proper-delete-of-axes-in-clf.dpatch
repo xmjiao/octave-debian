@@ -9,7 +9,7 @@
 @DPATCH@
 --- octave3.0-3.0.4~rc5.orig/scripts/plot/clf.m
 +++ octave3.0-3.0.4~rc5/scripts/plot/clf.m
-@@ -71,7 +71,9 @@
+@@ -71,7 +71,11 @@
      hc = get (hfig, "children");
    endif
  
@@ -17,7 +17,31 @@
    ## Delete the children.
 -  delete (hc);
 -
-+  if (ishandle (hc))
-+    delete (hc);
-+  endif
++  for k = get (hfig, "children")
++    if (ishandle (k))
++      delete (k);
++    endif
++  endfor
  endfunction
+--- octave3.0-3.0.4~rc5.orig/src/graphics.cc
++++ octave3.0-3.0.4~rc5/src/graphics.cc
+@@ -715,7 +715,7 @@
+ 
+   if (k >= 0)
+     {
+-      Matrix new_kids (n-1, 1);
++      Matrix new_kids (1, n-1);
+       octave_idx_type j = 0;
+       for (octave_idx_type i = 0; i < n; i++)
+ 	{
+--- octave3.0-3.0.4~rc5.orig/scripts/plot/legend.m
++++ octave3.0-3.0.4~rc5/scripts/plot/legend.m
+@@ -171,7 +171,7 @@
+   endif
+ 
+   warned = false;
+-  for i = nargs:-1:1
++  for i = 1:nargs
+     arg = varargin{i};
+     if (ischar (arg))
+       while (k <= nkids
