@@ -1,12 +1,13 @@
-octave3.0 (1:3.0.4~rc5-1) UNRELEASED; urgency=low
+octave3.0 (1:3.0.4~rc5-1) experimental; urgency=low
 
-  * New upstream release candidate
+  * New upstream release candidate.  Still released to experimental, since
+    this version has still some issues.
   * debian/patches/proper-delete-of-axes-in-clf.dpatch: Proper deletion of
     axes in clf.m.  Fix a regression problem between version 3.0.3 and
     3.04-rc5.  Proposed by Marco Caliari in the octave-maintainers mailing
     list on 2008-02-25.
 
- -- Rafael Laboissiere <rafael@debian.org>  Wed, 25 Feb 2009 00:56:16 +0100
+ -- Rafael Laboissiere <rafael@debian.org>  Wed, 25 Feb 2009 15:58:10 +0100
 
 octave3.1 (3.1.52-6) experimental; urgency=low
 
