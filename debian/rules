@@ -23,18 +23,19 @@ PACKAGEVER	:= $(shell echo $(PACKAGE) | \
 			perl -nle 'm/.*(\d.\d)/ and print $$1')
 
 hack:
-	@echo $(version)
+	@echo $(api_version)
 
 ifeq ($(major),3.1)
 priority	:= 70
-api_version	:= 34
 else
 ifeq ($(major),3.0)
 priority	:= 90
-api_version	:= 32
 else
 endif
 endif
+
+api_version = $(shell perl -ne 'if (/OCTAVE_API_VERSION\s+"api-v(.*)"/)	\
+	                          { print "$$1\n" ; last }' < src/version.h)
 
 ## The following is necessary when building the documentation file octave.pdf
 export TEXMFCNF = $(CURDIR)/debian:
