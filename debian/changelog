@@ -8,6 +8,8 @@ octave3.1 (3.1.54-1) UNRELEASED; urgency=low
     + Do not install the enscript directory into the common package.  This
       is now obsolete.
     + Get API version directly from the upstream version.h file
+  * debian/in/PACKAGE-htmldoc.prerm: Drop this almost empty template file,
+    since th prerm script will be generated automatically by debhelper
 
  -- Rafael Laboissiere <rafael@debian.org>  Mon, 09 Mar 2009 01:36:46 +0100
 
