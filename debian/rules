@@ -33,9 +33,6 @@ ifeq ($(major),3.0)
 priority	:= 90
 api_version	:= 32
 else
-ifeq ($(major),2.1)
-priority	:= 80
-endif
 endif
 endif
 
