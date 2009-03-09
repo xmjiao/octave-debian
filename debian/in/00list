@@ -11,4 +11,5 @@ proper-delete-of-axes-in-clf.dpatch
 no_pdf_in_print.dpatch
 dont_set_helvetica-3.1.dpatch
 normal-markersize.dpatch
+remove-y.tab.h-in-maintainer-clean.dpatch
 :]

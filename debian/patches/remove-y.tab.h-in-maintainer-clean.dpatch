@@ -1,0 +1,27 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## -*- diff -*-
+## remove-y.tab.h-in-maintainer-clean.dpatch by Rafael Laboissiere <rafael@debian.org>
+##
+## DP: Do not remove y.tab.h in the distclean rule. Built sources
+## DP: distributed in the tarball must be removed in maintainer-clean rule.
+
+@DPATCH@
+diff -r 346fde2030b5 src/Makefile.in
+--- a/src/Makefile.in	Sun Mar 08 19:18:44 2009 +0100
++++ b/src/Makefile.in	Mon Mar 09 08:43:20 2009 +0100
+@@ -562,13 +562,13 @@ mostlyclean: clean
+ 
+ distclean: clean
+ 	rm -f Makefile octave$(EXEEXT) .fname so_locations oct-errno.cc
+-	rm -f tags TAGS y.tab.h y.output yy.lex.c parse.output
++	rm -f tags TAGS y.output yy.lex.c parse.output
+ 	rm -f stamp-liboctave-prereq
+ 	rm -f doc-files gendoc.cc graphics.h graphics-props.cc mxarray.h DOCSTRINGS
+ .PHONY: distclean
+ 
+ maintainer-clean: distclean
+-	rm -f lex.cc parse.cc
++	rm -f lex.cc parse.cc y.tab.h
+ 	rm -f oct-gperf.h $(OPT_HANDLERS)
+ .PHONY: maintainer-clean
+ 
