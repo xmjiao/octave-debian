@@ -388,9 +388,6 @@ binary-arch: build-arch install-arch check
 	# install files for the common package
 	dh_movefiles -p$(common_package) --sourcedir=debian/$(PACKAGE)	\
 			usr/share/octave
-	-test "$(PACKAGEVER)" = 2.1 -o "$(PACKAGEVER)" = 3.1		\
-		|| dh_movefiles --sourcedir=debian/$(PACKAGE)		\
-			-p$(common_package) usr/share/enscript
 
 	rm -rf $(debtmp)/usr/share/octave $(debtmp)/usr/share/enscript
 

@@ -4,6 +4,8 @@ octave3.1 (3.1.54-1) UNRELEASED; urgency=low
   * debian/in/control: Build-Depend on libqrupdate-dev for octave3.1
   * debian/patches/remove-y.tab.h-in-maintainer-clean.dpatch: New patch
     for avoiding src/y.tab.h to be removed by make distclean
+  * debian/rules: Do not install the enscript directory into the common
+    package.  This is now obsolete
 
  -- Rafael Laboissiere <rafael@debian.org>  Mon, 09 Mar 2009 01:36:46 +0100
 
