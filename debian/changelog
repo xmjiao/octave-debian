@@ -3,6 +3,9 @@ octave3.1 (3.1.54-2) UNRELEASED; urgency=low
   * debian/in/PACKAGE.conf: Use strsplit instead of the deprecated split
     when checking the path (closes: #519429).  Thanks to Francesco Potortì
     for the patch.
+  * patches/pretty-png-svg-print.dpatch: Restore pretty printing in png
+    and svg formats (closes: #519572).  Thanks to Ben Abbott for the
+    patch.
 
  -- Rafael Laboissiere <rafael@debian.org>  Thu, 12 Mar 2009 23:32:03 +0100
 
