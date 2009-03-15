@@ -203,7 +203,7 @@ Description: GNU Info documentation on the GNU Octave language (dummy package)
 :]
 
 Package: octave[V_3_0:3.0:][V_3_1:3.1:]-dbg
-Section: devel
+Section: debug
 Priority: extra
 Architecture: any
 Depends: octave[V_3_0:3.0:][V_3_1:3.1:] (=${binary:Version})
