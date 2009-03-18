@@ -223,7 +223,6 @@ Package: octave[V_3_0:3.0:][V_3_1:3.1:]-common
 Section: devel
 Priority: extra
 Architecture: all
-Depends: octave[V_3_0:3.0:][V_3_1:3.1:] (>= ${source:Version})
 Description: architecture-independent files for octave[V_3_0:3.0:][V_3_1:3.1:]
  Octave is a (mostly Matlab (R) compatible) high-level language, primarily
  intended for numerical computations. It provides a convenient command-line

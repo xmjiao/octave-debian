@@ -7,10 +7,13 @@ octave3.1 (3.1.54-2) UNRELEASED; urgency=low
   * patches/pretty-png-svg-print.dpatch: Restore pretty printing in png
     and svg formats (closes: #519572).  Thanks to Ben Abbott for the
     patch.
+  * debian/in/control: Drop dependency of octaveX.Y-common on octaveX.Y,
+    in order to avoid circular dependencies.  Thanks to Bill Allombert for
+    the heads up and the suggestion (closes: #520125).
 
   [ Thomas Weber ]
   * debian/in/control: Move -dbg package from Section: devel to Section:
-    debug. 
+    debug.
 
  -- Rafael Laboissiere <rafael@debian.org>  Thu, 12 Mar 2009 23:32:03 +0100
 
