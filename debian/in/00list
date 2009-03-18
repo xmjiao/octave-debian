@@ -13,4 +13,5 @@ dont_set_helvetica-3.1.dpatch
 normal-markersize.dpatch
 remove-y.tab.h-in-maintainer-clean.dpatch
 pretty-png-svg-print.dpatch
+termios-h-check-3.1.dpatch
 :]
