@@ -1,4 +1,4 @@
-octave3.0 (1:3.0.4~rc5-3) UNRELEASED; urgency=low
+octave3.0 (1:3.0.4~rc5-3) unstable; urgency=low
 
   * Sync with the octave3.1 branch
   * debian/patches/termios-h-check-3.0.dpatch: Fix termios.h check, as
