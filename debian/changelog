@@ -1,4 +1,4 @@
-octave3.1 (3.1.54-3) UNRELEASED; urgency=low
+octave3.1 (3.1.54-3) experimental; urgency=low
 
   * debian/in/control: Add libarpack2-dev to the list of build
     dependencies, which makes the eigs function available
