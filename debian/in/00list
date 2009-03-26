@@ -12,7 +12,5 @@ termios-h-check-3.0.dpatch
 no_pdf_in_print.dpatch
 dont_set_helvetica-3.1.dpatch
 normal-markersize.dpatch
-remove-y.tab.h-in-maintainer-clean.dpatch
-pretty-png-svg-print.dpatch
 termios-h-check-3.1.dpatch
 :]

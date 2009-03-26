@@ -10,7 +10,7 @@
 diff -urNad octave3.0-3.0.1~/scripts/plot/__go_draw_axes__.m octave3.0-3.0.1/scripts/plot/__go_draw_axes__.m
 --- octave3.0-3.0.1~/scripts/plot/__go_draw_axes__.m	2008-04-21 18:00:20.000000000 +0200
 +++ octave3.0-3.0.1/scripts/plot/__go_draw_axes__.m	2008-05-25 17:30:08.000000000 +0200
-@@ -1570,7 +1570,7 @@
+@@ -1619,7 +1619,7 @@
  
  function [f, s, fnt, it, bld] = get_fontname_and_size (t)
    if (isempty (t.fontname))
@@ -19,7 +19,7 @@ diff -urNad octave3.0-3.0.1~/scripts/plot/__go_draw_axes__.m octave3.0-3.0.1/scr
    else
      fnt = t.fontname;
    endif
-@@ -1639,7 +1639,7 @@
+@@ -1657,7 +1657,7 @@
    if (strcmp (fld, "string"))
      [f, s, fnt, it, bld] = get_fontname_and_size (obj);
    else
@@ -28,34 +28,3 @@ diff -urNad octave3.0-3.0.1~/scripts/plot/__go_draw_axes__.m octave3.0-3.0.1/scr
      s = 10;
      fnt = f;
      it = false;
---- octave3.1-3.1.50.orig/src/graphics.cc
-+++ octave3.1-3.1.50/src/graphics.cc
-@@ -2528,7 +2528,7 @@
-   if (mode != "replace")
-     {
-       fontangle = "normal";
--      fontname = "Helvetica";
-+      fontname = "*";
-       fontsize = 12;
-       fontunits = "points";
-       fontweight = "normal";
---- octave3.1-3.1.52.orig/src/graphics.h.in
-+++ octave3.1-3.1.52/src/graphics.h.in
-@@ -2686,7 +2686,7 @@
-       array_property currentpoint , Matrix (2, 3, 0.0)
-       radio_property drawmode , "{normal}|fast"
-       radio_property fontangle , "{normal}|italic|oblique"
--      string_property fontname , "Helvetica"
-+      string_property fontname , "*"
-       double_property fontsize , 12
-       radio_property fontunits , "{points}|normalized|inches|centimeters|pixels"
-       radio_property fontweight , "{normal}|light|demi|bold"
-@@ -2966,7 +2966,7 @@
-       double_property rotation , 0
-       radio_property horizontalalignment , "{left}|center|right"
-       color_property color , color_values (0, 0, 0)
--      string_property fontname , "Helvetica"
-+      string_property fontname , "*"
-       double_property fontsize , 10
-       radio_property fontangle , "{normal}|italic|oblique"
-       radio_property fontweight , "light|{normal}|demi|bold"
