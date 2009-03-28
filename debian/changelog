@@ -7,6 +7,9 @@ octave3.0 (1:3.0.4~rc7-1) UNRELEASED; urgency=low
 
   * debian/patches/proper-delete-of-axes-in-clf.dpatch: Remove patch
     (applied upstream)
+  * debian/patches/idx-not-volatile-in-eig.dpatch: New patch for avoiding
+    memory exhaustion when calling eig on amd64 (closes: #521345).  Thanks
+    to John Eaton for the patch.
 
  -- Rafael Laboissiere <rafael@debian.org>  Thu, 26 Mar 2009 07:22:41 +0100
 

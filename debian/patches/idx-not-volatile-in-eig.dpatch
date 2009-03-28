@@ -1,0 +1,21 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## -*- diff -*-
+## idx-not-volatile-in-eig.dpatch by Rafael Laboissiere <rafael@debian.org>
+##
+## DP: Avoid memory exhaustion when calling eig on amd64 (fixes Bug#521345).
+## DP: This is an adaptation of a patch taken from the 3.1 branch in
+## DP: the upstream Mercurial repository 
+## DP: http://hg.savannah.gnu.org/hgweb/octave/raw-rev/728e7943752d
+
+@DPATCH@
+--- octave3.0-3.0.4~rc6.orig/liboctave/EIG.cc
++++ octave3.0-3.0.4~rc6/liboctave/EIG.cc
+@@ -99,7 +99,7 @@
+   Array<double> wi (n);
+   double *pwi = wi.fortran_vec ();
+ 
+-  volatile octave_idx_type nvr = calc_ev ? n : 0;
++  octave_idx_type nvr = calc_ev ? n : 0;
+   Matrix vr (nvr, nvr);
+   double *pvr = vr.fortran_vec ();
+ 
