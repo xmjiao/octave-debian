@@ -1,4 +1,4 @@
-octave3.0 (1:3.0.4~rc7-1) UNRELEASED; urgency=low
+octave3.0 (1:3.0.4~rc7-1) unstable; urgency=low
 
   * New upstream release candidate.  This version has release-quality,
     IMO, even though it is a "release candidate".  Let us allow it into
@@ -11,7 +11,7 @@ octave3.0 (1:3.0.4~rc7-1) UNRELEASED; urgency=low
     memory exhaustion when calling eig on amd64 (closes: #521345).  Thanks
     to John Eaton for the patch.
 
- -- Rafael Laboissiere <rafael@debian.org>  Thu, 26 Mar 2009 07:22:41 +0100
+ -- Rafael Laboissiere <rafael@debian.org>  Sat, 28 Mar 2009 10:55:06 +0100
 
 octave3.1 (3.1.55-1) experimental; urgency=low
 
