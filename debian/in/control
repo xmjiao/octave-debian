@@ -20,7 +20,7 @@ Build-Depends: g++-4.1 [arm], gcc-4.1 [arm], gfortran,
 Standards-Version: 3.8.1
 Homepage: http://www.octave.org/
 Vcs-Svn: svn://svn.debian.org/svn/pkg-octave/octave/
-Vcs-Browser: http://svn.debian.org/wsvn/pkg-octave/octave/
+Vcs-Browser: http://svn.debian.org/viewsvn/pkg-octave/octave/
 
 Package: octave[V_3_0:3.0:][V_3_1:3.1:]
 Architecture: any
