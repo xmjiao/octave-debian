@@ -89,8 +89,7 @@ Description: HTML documentation on the GNU Octave language ([V_3_0:3.0:][V_3_1:3
 
 Package: octave[V_3_0:3.0:][V_3_1:3.1:]-headers
 Architecture: any
-Depends: octave[V_3_0:3.0:][V_3_1:3.1:] (= ${binary:Version}),
- gfortran ${gcc:Depends}, gcc ${gcc:Depends}, g++ ${gcc:Depends},
+Depends: octave[V_3_0:3.0:][V_3_1:3.1:] (= ${binary:Version}), ${gcc:Depends},
  libreadline5-dev, libncurses5-dev, libhdf5-serial-dev (>= 1.6.5)
  | libhdf5-lam-dev (>= 1.6.5) | libhdf5-mpich-dev (>= 1.6.5) | libhdf5-openmpi-dev (>= 1.6.5),
  libblas-dev, liblapack-dev, libfftw3-dev,

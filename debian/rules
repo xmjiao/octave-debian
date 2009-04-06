@@ -21,10 +21,15 @@ major       	:= $(shell echo $(version) | perl -nle \
 			'm/(\d\.\d)\.\d+/ and print $$1')
 PACKAGEVER	:= $(shell echo $(PACKAGE) | \
 			perl -nle 'm/.*(\d.\d)/ and print $$1')
-GCCVERSION	:= $(shell gcc --version | perl -ne '/Debian (.*)-/; print "$$1"; last')
+GCCCURVER	:= $(shell gcc --version | perl -ne '/Debian (.*)-/; print "$$1"; last')
+GCCNEXTVER	:= $(shell echo "$(GCCCURVER)" | \
+			perl -nle '@v=split(/\./);print join(".",(@v[0,$$\#v-1],$$v[$$\#v]+1))')
+GCCDEPS		:= $(shell perl -e 'print join (", ", map {					\
+					"$$_ (>= $(GCCCURVER)), $$_ (<< $(GCCNEXTVER))"	\
+				} ("gcc", "g++", "gfortran"))')
 
 hack:
-	@echo $(api_version)
+	@echo "$(GCCDEPS)"
 
 ifeq ($(major),3.1)
 priority	:= 70
@@ -459,7 +464,7 @@ endif
 	dh_fixperms -a
 	dh_installdeb -a
 	dh_shlibdeps -a -l/usr/lib/octave-$(version)
-	echo 'gcc:Depends=(>= $(GCCVERSION))' >> $(debbase)/$(PACKAGE)-headers.substvars
+	echo 'gcc:Depends=$(GCCDEPS)' >> $(debbase)/$(PACKAGE)-headers.substvars
 	dh_gencontrol -a
 	dh_md5sums -a
 	dh_builddeb -a

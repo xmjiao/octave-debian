@@ -4,10 +4,11 @@ octave3.0 (1:3.0.4-1) UNRELEASED; urgency=low
   * debian/patches/idx-not-volatile-in-eig.dpatch: Remove patch (applied
     upstream)
   * debian/in/control, debian/rules: For the octaveX.Y-headers package,
-    use versioned dependencies on gcc, gfortran, and g++.  This is needed
-    because mkoctfiles hardcodes the directories in OCTAVE_CONF_FLIBS with
-    the gcc upstream version number.  This should partially fix issue
-    LP#348472 reported against the Ubuntu package.
+    use versioned dependencies on gcc, gfortran, and g++.  Tighten the
+    dependency to be exactly on the version of the GCC suite which was used
+    to build the package.  This is needed because mkoctfiles hardcodes the
+    directories in OCTAVE_CONF_FLIBS with the gcc upstream version number.
+    This should fix issue LP#348472 reported against the Ubuntu package.
   * debian/in/control: The arm port has been dropped from Debian
     post-lenny.  Drop the special dependencies on the GCC suite packages
     for the arm architecture.
