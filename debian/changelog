@@ -3,6 +3,11 @@ octave3.0 (1:3.0.4-1) UNRELEASED; urgency=low
   * New upstream release
   * debian/patches/idx-not-volatile-in-eig.dpatch: Remove patch (applied
     upstream)
+  * debian/in/control, debian/rules: For the octaveX.Y-headers package,
+    use versioned dependencies on gcc, gfortran, and g++.  This is needed
+    because mkoctfiles hardcodes the directories in OCTAVE_CONF_FLIBS with
+    the gcc upstream version number.  This should partially fix issue
+    LP#348472 reported against the Ubuntu package.
 
  -- Rafael Laboissiere <rafael@debian.org>  Sun, 05 Apr 2009 15:36:41 +0200
 
