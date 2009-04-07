@@ -1,0 +1,29 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## -*- diff -*-
+## fix-ascii-load.dpatch by Rafael Laboissiere <rafael@debian.org>
+##
+## DP: Fix eating a whole line when only newline should be read. fixes
+## DP: broken ascii matrix loading.  Patch proposed by Benjamin Lindner in
+## DP: the bug-octave mailing list.
+
+@DPATCH@
+# HG changeset patch
+# User Benjamin Lindner <lindnerb@users.sourceforge.net>
+# Date 1238948977 -7200
+# Node ID 7064e7eebb0abd101a7ae1337e8f9bd14680ca2e
+# Parent  ffb20e8faf5bfaff8cc6c22521c4a8fd36b2dcfb
+fix broken ascii loading
+
+diff -r ffb20e8faf5b -r 7064e7eebb0a src/ls-mat-ascii.cc
+--- a/src/ls-mat-ascii.cc	Sun Apr 05 18:05:33 2009 +0200
++++ b/src/ls-mat-ascii.cc	Sun Apr 05 18:29:37 2009 +0200
+@@ -84,7 +84,8 @@
+ 	  if (c == '\n' || c == '\r')
+ 	    {
+ 	      // Let skip_until_newline handle CR/LF issues...
+-	      skip_until_newline (is, false);
++	      is.putback (c);
++	      skip_preceeding_newline (is);
+ 	      break;
+ 	    }
+ 

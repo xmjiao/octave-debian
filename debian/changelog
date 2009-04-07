@@ -14,6 +14,8 @@ octave3.0 (1:3.0.4-1) UNRELEASED; urgency=low
       special dependencies on the GCC suite packages for the arm
       architecture.
     + Use viewsvn instead of wsvn in Vcs-Browser
+  * debian/patches/fix-ascii-load.dpatch: Add patch for fixing loading of
+    ascii files
 
  -- Rafael Laboissiere <rafael@debian.org>  Sun, 05 Apr 2009 15:36:41 +0200
 
