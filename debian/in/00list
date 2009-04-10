@@ -6,7 +6,6 @@ dont_set_helvetica.dpatch
 glpk-new-api.dpatch
 real-no-history.dpatch
 termios-h-check-3.0.dpatch
-fix-ascii-load.dpatch
 :][V_3_1:
 50_octave-bug-tempfile
 no_pdf_in_print.dpatch
