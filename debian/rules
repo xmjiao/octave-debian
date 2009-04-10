@@ -21,12 +21,18 @@ major       	:= $(shell echo $(version) | perl -nle \
 			'm/(\d\.\d)\.\d+/ and print $$1')
 PACKAGEVER	:= $(shell echo $(PACKAGE) | \
 			perl -nle 'm/.*(\d.\d)/ and print $$1')
+
 GCCCURVER	:= $(shell gcc --version | perl -ne '/Debian (.*)-/; print "$$1"; last')
-GCCNEXTVER	:= $(shell echo "$(GCCCURVER)" | \
-			perl -nle '@v=split(/\./);print join(".",(@v[0,$$\#v-1],$$v[$$\#v]+1))')
-GCCDEPS		:= $(shell perl -e 'print join (", ", map {					\
-					"$$_ (>= $(GCCCURVER)), $$_ (<< $(GCCNEXTVER))"	\
-				} ("gcc", "g++", "gfortran"))')
+GCCMAJOR	:= $(shell echo "$(GCCCURVER)" | perl -nle '@v=split(/\./);print $$v[0]')
+GCCMINOR	:= $(shell echo "$(GCCCURVER)" | perl -nle '@v=split(/\./);print $$v[1]')
+GCCMICRO	:= $(shell echo "$(GCCCURVER)" | perl -nle '@v=split(/\./);print $$v[2]')
+GCCDEPS		:= $(shell perl -e '										\
+	print join (", ", map {											\
+		join (", ", ("$$_ (>= 4:$(GCCMAJOR).$(GCCMINOR))",						\
+			"$$_ (<< 4:$(GCCMAJOR)." . ($(GCCMINOR)+1) . ")",					\
+			"$$_-$(GCCMAJOR).$(GCCMINOR) (>= $(GCCCURVER))",					\
+			"$$_-$(GCCMAJOR).$(GCCMINOR) (<< $(GCCMAJOR).$(GCCMINOR)." . ($(GCCMICRO)+1) .")"))	\
+	} ("gcc", "g++", "gfortran"))')
 
 hack:
 	@echo "$(GCCDEPS)"
