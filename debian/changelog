@@ -1,3 +1,12 @@
+octave3.0 (1:3.0.5-3) UNRELEASED; urgency=low
+
+  * debian/in/PACKAGE.postinst: Add -verbose option when calling 'pkg
+    rebuild' in octave and redirect stdin from /dev/null.  This is just to
+    help debugging the hang up on the mipsel buildd when installing
+    octave3.0 for building other packages (Bug#524745).
+
+ -- Rafael Laboissiere <rafael@debian.org>  Tue, 28 Apr 2009 15:17:35 +0200
+
 octave3.0 (1:3.0.5-2) unstable; urgency=low
 
   * debian/rules: Fix versioned dependencies on gcc, g++ and gfortran by
