@@ -5,7 +5,7 @@
 #DEBHELPER#
 
 # The current Octave version, known to debian/rules at build time
-VERSION=@VERSION@
+VERSION=@MAJOR@
 
 if [ "$1" = purge ] ; then
 	# Remove the packages database file
