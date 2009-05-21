@@ -1,3 +1,12 @@
+octave3.0 (1:3.0.5-5) UNRELEASED; urgency=low
+
+  * debian/patches/no-argout-intersect.dpatch: Take a bug fix for the
+    intersect.m script from the Octave Forge package bugfix-3.0.5.  This
+    avoids the creation of the octave-bugfix-3.0.5 package (closes:
+    #529049).  Thanks to Adeodato Simó for the suggestion.
+
+ -- Rafael Laboissiere <rafael@debian.org>  Mon, 18 May 2009 08:39:08 +0200
+
 octave3.0 (1:3.0.5-4) unstable; urgency=low
 
   * debian/control: The Debian packaging files are now maintained through
