@@ -1,3 +1,12 @@
+octave3.0 (1:3.0.5-6) UNRELEASED; urgency=low
+
+  * debian/patches/datenum-vector-input-any-orientation.dpatch: New patch
+    for making datenum accept vector inputs in any orientation.  This is
+    necessary for making the tests in the octave-time package succeed.
+    (Taken from the upstream Mercurial repository.)
+
+ -- Rafael Laboissiere <rafael@debian.org>  Sat, 23 May 2009 15:14:52 +0200
+
 octave3.0 (1:3.0.5-5) unstable; urgency=low
 
   * debian/patches/no-argout-intersect.dpatch: Take a bug fix for the
