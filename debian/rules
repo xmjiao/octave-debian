@@ -5,7 +5,7 @@
 #
 # $Id$
 
-include /usr/share/dpatch/dpatch.make
+include /usr/share/quilt/quilt.make
 
 # in order: octave, octave2.1, 2.1.28, 2.1  (or whatever the version is), 3.0
 # the difference in major and PACKAGEVER: first one is taken from the octave
@@ -136,7 +136,7 @@ maintainer-scripts: debian/control debian/copyright
 	done
 	## Remove empty NEWS file
 	-test ! -s debian/NEWS && rm -f debian/NEWS
-	slice -o $(sliceterm):debian/patches/00list debian/in/00list
+	slice -o $(sliceterm):debian/patches/series debian/in/series
 
 get-orig-source: upstream
 upstream:
@@ -154,7 +154,7 @@ save-files:
 		test -f $$f && cp $$f $$f-save ;	\
 	done
 
-configure: maintainer-scripts save-files patch-stamp configure-stamp
+configure: maintainer-scripts save-files patch configure-stamp
 configure-stamp:
 	dh_testdir
 

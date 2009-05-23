@@ -12,7 +12,7 @@ Build-Depends: g++-4.1 [arm], gcc-4.1 [arm], gfortran,
  libncurses5-dev, gperf, libhdf5-serial-dev (>= 1.6.6) |
  libhdf5-lam-dev (>= 1.6.6) | libhdf5-mpich-dev (>= 1.6.6) | libhdf5-openmpi-dev (>= 1.6.6),
  libblas-dev, liblapack-dev, gnuplot-nox, libfftw3-dev, texi2html,
- less, dpatch, slice[V_3_1:[V_3_0:, libpcre3-dev, flex, libglpk-dev (>= 4.15),
+ less, quilt, slice[V_3_1:[V_3_0:, libpcre3-dev, flex, libglpk-dev (>= 4.15),
  libsuitesparse-dev (>= 1:3.2.0), gawk, ghostscript, libcurl4-dev,
  libqhull-dev, desktop-file-utils:], libfltk1.1-dev, libgl1-mesa-swx11-dev,
  libglu1-mesa-dev, libgraphicsmagick++1-dev, libftgl-dev,
