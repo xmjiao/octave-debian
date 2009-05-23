@@ -1,11 +1,8 @@
-#! /bin/sh /usr/share/dpatch/dpatch-run
-## -*- diff -*-
-## 50_fix_handle_for_plotyy.dpatch by Thomas Weber <thomas.weber.mail@gmail.com>
-##
-## All lines beginning with `## DP:' are a description of the patch.
-## DP: Bug fix for 472069
+Apply patch from David Bateman to fix the handle treatment in plotyy
+(closes: #472069).
 
-@DPATCH@
+ -- Thomas Weber <thomas.weber.mail@gmail.com>  Sat, 29 Mar 2008 10:32:15 +0100
+
 diff -urNad octave3.0-3.0.0~/scripts/plot/plotyy.m octave3.0-3.0.0/scripts/plot/plotyy.m
 --- octave3.0-3.0.0~/scripts/plot/plotyy.m	2007-12-13 18:48:59.000000000 +0100
 +++ octave3.0-3.0.0/scripts/plot/plotyy.m	2008-03-28 12:20:12.000000000 +0100

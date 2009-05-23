@@ -1,12 +1,8 @@
-#! /bin/sh /usr/share/dpatch/dpatch-run
-## -*- diff -*-
-## don_set_helvetica.dpatch by Thomas Weber <thomas.weber.mail@gmail.com>
-##
-## All lines beginning with `## DP:' are a description of the patch.
-## DP: Don't set Helvetica as default font, it's not available as TrueType font
-## DP: #477688
+Don't set Helvetica as default font, it's not available as TrueType
+font.  Fixes Bug#477688.
 
-@DPATCH@
+ -- Thomas Weber <thomas.weber.mail@gmail.com>  Sat, 24 May 2008 13:49:51 +0200
+
 diff -urNad octave3.0-3.0.1~/scripts/plot/__go_draw_axes__.m octave3.0-3.0.1/scripts/plot/__go_draw_axes__.m
 --- octave3.0-3.0.1~/scripts/plot/__go_draw_axes__.m	2008-04-21 18:00:20.000000000 +0200
 +++ octave3.0-3.0.1/scripts/plot/__go_draw_axes__.m	2008-05-25 17:30:08.000000000 +0200

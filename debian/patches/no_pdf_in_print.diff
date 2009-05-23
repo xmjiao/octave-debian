@@ -1,12 +1,8 @@
-#! /bin/sh /usr/share/dpatch/dpatch-run
-## -*- diff -*-
-## no_pdf_in_print.dpatch by Thomas Weber <thomas.weber.mail@gmail.com>
-##
-## All lines beginning with `## DP:' are a description of the patch.
-## DP: Warning about missing pdflib
-## DP: #478677
+Warn that PDF generation is not possible packaged gnuplot, due to the
+missing pdflib (closes: #478677)
 
-@DPATCH@
+ -- Thomas Weber <thomas.weber.mail@gmail.com>  Sat, 24 May 2008 13:49:51 +0200
+
 diff -urNad octave3.0-3.0.1~/scripts/plot/print.m octave3.0-3.0.1/scripts/plot/print.m
 --- octave3.0-3.0.1~/scripts/plot/print.m	2008-04-21 18:00:20.000000000 +0200
 +++ octave3.0-3.0.1/scripts/plot/print.m	2008-05-21 12:17:20.000000000 +0200

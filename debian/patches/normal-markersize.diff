@@ -1,11 +1,8 @@
-#! /bin/sh /usr/share/dpatch/dpatch-run
-## -*- diff -*-
-## normal-markersize.dpatch by Rafael Laboissiere <rafael@debian.org>
-##
-## DP: Revert the symbol markers in plots to their normal size.  Thanks to 
-## DP: Francesco Potorti for the patch.
+Revert the symbol markers in plots to their normal size.  Thanks to
+Francesco Potorti for the patch.
 
-@DPATCH@
+ -- Rafael Laboissiere <rafael@debian.org>  Tue, 24 Feb 2009 11:40:01 +0100
+
 --- octave3.1-3.1.52.orig/scripts/plot/__go_draw_axes__.m
 +++ octave3.1-3.1.52/scripts/plot/__go_draw_axes__.m
 @@ -594,7 +594,7 @@

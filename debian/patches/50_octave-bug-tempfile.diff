@@ -1,10 +1,10 @@
-#! /bin/sh /usr/share/dpatch/dpatch-run
-## -*- diff -*-
-## 50_octave-bug-tempfile.dpatch by Rafael Laboissiere <rafael@debian.org>
-##
-## DP: Use Debian's tempfile(1) for enhanced security
+Adjusted for Octave 2.9.10
 
-@DPATCH@
+ -- Rafael Laboissiere <rafael@debian.org>  Sun, 15 Apr 2007 23:13:13 +0200
+
+Use Debian's tempfile(1) for enhanced security
+
+ -- Rafael Laboissiere <rafael@debian.org>  Mon, 28 Aug 2006 21:23:33 +0200
 
 --- octave2.1-2.1.73.orig/octave-bug.in	2006-08-19 02:58:39.000000000 +0200
 +++ octave2.1-2.1.73/octave-bug.in	2006-08-19 11:11:51.172397104 +0200

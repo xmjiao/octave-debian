@@ -1,15 +1,12 @@
-#! /bin/sh /usr/share/dpatch/dpatch-run
-## -*- diff -*-
-## datenum-vector-input-any-orientation.dpatch by Rafael Laboissiere <rafael@debian.org>
-##
-## DP: Description: datenum: allow vector inputs in any orientation 
-## DP: Author: author Bill Denney
-## DP: Date: Thu Mar 27 15:17:53 2008 -0400
-## DP:
-## DP: Taken from upstream Mercurial repository at:
-## DP: http://hg.savannah.gnu.org/hgweb/octave/raw-rev/4ab2488ab2b4
+Description: datenum: allow vector inputs in any orientation 
+Author: author Bill Denney
+Date: Thu Mar 27 15:17:53 2008 -0400
 
-@DPATCH@
+Taken from upstream Mercurial repository at:
+http://hg.savannah.gnu.org/hgweb/octave/raw-rev/4ab2488ab2b4
+
+ -- Rafael Laboissiere <rafael@debian.org>  Sat, 23 May 2009 15:14:52 +0200
+
 --- a/scripts/time/datenum.m    Thu Mar 27 15:14:10 2008 -0400
 +++ b/scripts/time/datenum.m    Thu Mar 27 15:17:53 2008 -0400
 @@ -1,4 +1,4 @@

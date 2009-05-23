@@ -1,11 +1,8 @@
-#! /bin/sh /usr/share/dpatch/dpatch-run
-## -*- diff -*-
-## real-no-history.dpatch by Rafael Laboissiere <rafael@debian.org>
-##
-## DP: Only save history if Vsaving_history is true.  Thanks to John Eaton
-## DP: for the patch and the comments.  Closes Bug#514802.
+Only save history if Vsaving_history is true.  Thanks to John Eaton
+for the patch and the comments.  Closes Bug#514802.
 
-@DPATCH@
+ -- Rafael Laboissiere <rafael@debian.org>  Fri, 13 Feb 2009 19:52:37 +0100
+
 --- octave3.0-3.0.4~rc3.orig/src/toplev.cc
 +++ octave3.0-3.0.4~rc3/src/toplev.cc
 @@ -643,7 +643,8 @@

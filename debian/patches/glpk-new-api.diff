@@ -1,14 +1,11 @@
-#! /bin/sh /usr/share/dpatch/dpatch-run
-## -*- diff -*-
-## glpk-new-api.dpatch by Rafael Laboissiere <rafael@debian.org>
-##
-## DP: Avoid calls to deprecated __glp_lib_* functions which are deprecated
-## DP: and have been removed for the GLPK public API since version 4.32.
-## DP:
-## DP: Taken from the Mercurial usptream repostory:
-## DP: http://hg.savannah.gnu.org/hgweb/octave/raw-diff/aaccb1362347/src/DLD-FUNCTIONS/__glpk__.cc
+Avoid calls to deprecated __glp_lib_* functions which are deprecated
+and have been removed for the GLPK public API since version 4.32.
 
-@DPATCH@
+Taken from the Mercurial usptream repostory:
+http://hg.savannah.gnu.org/hgweb/octave/raw-diff/aaccb1362347/src/DLD-FUNCTIONS/__glpk__.cc
+
+ -- Rafael Laboissiere <rafael@debian.org>  Wed, 04 Feb 2009 11:56:17 +0100
+
 --- a/src/DLD-FUNCTIONS/__glpk__.cc	Wed Aug 27 09:59:55 2008 -0400
 +++ b/src/DLD-FUNCTIONS/__glpk__.cc	Mon Oct 27 14:25:30 2008 -0400
 @@ -45,6 +45,7 @@
