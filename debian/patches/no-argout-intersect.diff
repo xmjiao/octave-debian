@@ -3,8 +3,8 @@ This was taken from package bugfix-3.0.5 of Otave Forge
 
  -- Rafael Laboissiere <rafael@debian.org>  Fri, 22 May 2009 23:54:24 +0200
 
---- ../../../octave/octave/scripts/set/intersect.m	2009-02-18 07:57:46.000000000 +0100
-+++ ../../octave-bugfix-3.0.5/octave-bugfix-3.0.5/inst/intersect.m	2009-05-08 15:16:47.000000000 +0200
+--- a/scripts/set/intersect.m	2009-02-18 07:57:46.000000000 +0100
++++ b/scripts/set/intersect.m	2009-05-08 15:16:47.000000000 +0200
 @@ -1,5 +1,5 @@
 +## Copyright (C) 2008, 2009 Jaroslav Hajek
  ## Copyright (C) 2000, 2006, 2007 Paul Kienzle

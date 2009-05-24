@@ -1,5 +1,7 @@
 octave3.0 (1:3.0.5-6) UNRELEASED; urgency=low
 
+  * debian/patches/no-argout-intersect.dpatch: Fix paths of the patch,
+    such that it succeeds when applied (closes: #530369)
   * debian/patches/datenum-vector-input-any-orientation.dpatch: New patch
     for making datenum accept vector inputs in any orientation.  This is
     necessary for making the tests in the octave-time package succeed.
