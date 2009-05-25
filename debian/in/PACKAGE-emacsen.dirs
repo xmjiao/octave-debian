@@ -1,5 +1,5 @@
 etc/emacs/site-start.d
 usr/lib/emacsen-common/packages/install
 usr/lib/emacsen-common/packages/remove
-[V_3_1:[V_3_0:usr/bin
+[V_3_2:[V_3_0:usr/bin
 usr/share/man/man1:]:]

@@ -409,7 +409,7 @@ binary-arch: build-arch install-arch check
 	dh_installdocs -a			README README.kpathsea	\
 						NEWS* PROJECTS		\
 						BUGS SENDING-PATCHES
-	-test "$(PACKAGEVER)" != 3.1 && dh_installdocs -a THANKS
+	-test "$(PACKAGEVER)" != 3.2 && dh_installdocs -a THANKS
 
 	dh_installdocs -p$(PACKAGE) 		debian/README.Atlas
 
