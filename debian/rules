@@ -37,6 +37,9 @@ GCCDEPS		:= $(shell perl -e '										\
 hack:
 	@echo "$(GCCDEPS)"
 
+ifeq ($(major),3.2)
+priority	:= 80
+else
 ifeq ($(major),3.1)
 priority	:= 70
 else

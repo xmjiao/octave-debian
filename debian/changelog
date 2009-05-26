@@ -1,10 +1,12 @@
 octave3.2 (3.2.0~rc3-1) UNRELEASED; urgency=low
 
   * New upstream release candidate.
-  * debian/rules (configure-stamp): Instead of calling autogen.sh, call
-    explicitly autoconf and autoheader, otherwise these autotools will be
-    run inside one of the directories under .pc, which contain a copy of
-    configure.in after "quilt push" is run.
+  * debian/rules:
+    + (configure-stamp) Instead of calling autogen.sh, call explicitly
+      autoconf and autoheader, otherwise these autotools will be run inside
+      one of the directories under .pc, which contain a copy of configure.in
+      after "quilt push" is run.
+    + Set a value for the priority variable when version of Octave is 3.2
 
  -- Rafael Laboissiere <rafael@debian.org>  Mon, 25 May 2009 10:43:29 +0200
 
