@@ -3,10 +3,9 @@ font. Fixes Bug#477688.
 
  -- Rafael Laboissiere <rafael@debian.org>  Sat, 19 Jul 2008 10:27:26 +0200
 
-diff -urNad octave3.0-3.0.1~/scripts/plot/__go_draw_axes__.m octave3.0-3.0.1/scripts/plot/__go_draw_axes__.m
---- octave3.0-3.0.1~/scripts/plot/__go_draw_axes__.m	2008-04-21 18:00:20.000000000 +0200
-+++ octave3.0-3.0.1/scripts/plot/__go_draw_axes__.m	2008-05-25 17:30:08.000000000 +0200
-@@ -1619,7 +1619,7 @@
+--- a/scripts/plot/__go_draw_axes__.m
++++ b/scripts/plot/__go_draw_axes__.m
+@@ -1700,7 +1700,7 @@
  
  function [f, s, fnt, it, bld] = get_fontname_and_size (t)
    if (isempty (t.fontname))
@@ -15,7 +14,7 @@ diff -urNad octave3.0-3.0.1~/scripts/plot/__go_draw_axes__.m octave3.0-3.0.1/scr
    else
      fnt = t.fontname;
    endif
-@@ -1657,7 +1657,7 @@
+@@ -1738,7 +1738,7 @@
    if (strcmp (fld, "string"))
      [f, s, fnt, it, bld] = get_fontname_and_size (obj);
    else

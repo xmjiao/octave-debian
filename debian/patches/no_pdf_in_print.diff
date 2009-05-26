@@ -3,10 +3,9 @@ missing pdflib (closes: #478677)
 
  -- Thomas Weber <thomas.weber.mail@gmail.com>  Sat, 24 May 2008 13:49:51 +0200
 
-diff -urNad octave3.0-3.0.1~/scripts/plot/print.m octave3.0-3.0.1/scripts/plot/print.m
---- octave3.0-3.0.1~/scripts/plot/print.m	2008-04-21 18:00:20.000000000 +0200
-+++ octave3.0-3.0.1/scripts/plot/print.m	2008-05-21 12:17:20.000000000 +0200
-@@ -93,6 +93,9 @@
+--- a/scripts/plot/print.m
++++ b/scripts/plot/print.m
+@@ -101,6 +101,9 @@
  ##     Scalable vector graphics
  ##   @item pdf
  ##     Portable document format
@@ -15,4 +14,4 @@ diff -urNad octave3.0-3.0.1~/scripts/plot/print.m octave3.0-3.0.1/scripts/plot/p
 +##
  ##   @end table
  ##
- ##   Other devices are supported by "convert" from ImageMagick.  Type
+ ##   If the device is omitted, it is inferred from the file extension,
