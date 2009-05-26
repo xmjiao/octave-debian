@@ -158,7 +158,8 @@ configure: maintainer-scripts save-files patch configure-stamp
 configure-stamp:
 	dh_testdir
 
-	[ -f autogen.sh ] &&  ./autogen.sh && chmod 0755 configure
+	autoconf --force
+	autoheader --force
 
 	# Patch desktop file such that the referenced command exists
 	-test -f examples/octave.desktop.in				\
