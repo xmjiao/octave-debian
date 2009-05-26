@@ -7,6 +7,7 @@ octave3.2 (3.2.0~rc3-1) UNRELEASED; urgency=low
       one of the directories under .pc, which contain a copy of configure.in
       after "quilt push" is run.
     + Set a value for the priority variable when version of Octave is 3.2
+  * debian/in/control: Include the Breaks field only for octave3.0
 
  -- Rafael Laboissiere <rafael@debian.org>  Mon, 25 May 2009 10:43:29 +0200
 
