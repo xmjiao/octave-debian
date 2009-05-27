@@ -1,6 +1,7 @@
 octave3.2 (3.2.0~rc4-1) UNRELEASED; urgency=low
 
   * New upstream release candidate
+  * debian/patches/termios-h-check-3.1.diff: Drop patch (applied upstream)
 
  -- Rafael Laboissiere <rafael@debian.org>  Wed, 27 May 2009 10:56:36 +0200
 
