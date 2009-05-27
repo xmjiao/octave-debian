@@ -45,7 +45,7 @@ priority	:= 70
 else
 ifeq ($(major),3.0)
 priority	:= 90
-else
+endif
 endif
 endif
 
