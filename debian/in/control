@@ -31,9 +31,9 @@ Suggests: octave[V_3_0:3.0:][V_3_2:3.2:]-info,
  octave[V_3_0:3.0:][V_3_2:3.2:]-htmldoc,
  octave[V_3_0:3.0:][V_3_2:3.2:]-headers (= ${binary:Version}),
  octave[V_3_0:3.0:][V_3_2:3.2:]-emacsen
-Replaces: octave (<= 2.0.16-2)
-Conflicts: octave (<= 2.0.16-2)[V_3_0:, octave2.9 (<< 1:3):]
-Provides: octave[V_3_0:
+Replaces: octave (<= 2.0.16-2)[V_3_2:, octave3.1:]
+Conflicts: octave (<= 2.0.16-2)[V_3_0:, octave2.9 (<< 1:3):][V_3_2:, octave3.1:]
+Provides: octave[V_3_2:, octave3.1:][V_3_0:
 Breaks: octave-ad (<< 1.0.4-2), octave-audio (<< 1.1.2-2),
  octave-bioinfo (<< 0.1.1-2), octave-combinatorics (<< 1.0.7-2),
  octave-communications (<< 1.0.8-2), octave-control (<< 1.0.7-2),
@@ -71,9 +71,9 @@ Package: octave[V_3_0:3.0:][V_3_2:3.2:]-doc
 Architecture: all
 Section: doc
 Suggests: octave[V_3_0:3.0:][V_3_2:3.2:], xpdf | pdf-viewer
-Conflicts: octave-doc (<< 2.1)[V_3_0:, octave2.9-doc (<< 1:3):]
-Provides: octave-doc
-Replaces: octave-doc
+Conflicts: octave-doc (<< 2.1)[V_3_0:, octave2.9-doc (<< 1:3):][V_3_2:, octave3.1-doc:]
+Provides: octave-doc[V_3_2:, octave3.1-doc:]
+Replaces: octave-doc[V_3_2:, octave3.1-doc:]
 Description: PDF documentation on the GNU Octave language ([V_3_0:3.0:][V_3_2:3.2:] branch)
  Octave is a (mostly Matlab (R) compatible) high-level language, primarily
  intended for numerical computations. It provides a convenient command-line
@@ -88,9 +88,9 @@ Package: octave[V_3_0:3.0:][V_3_2:3.2:]-htmldoc
 Architecture: all
 Section: doc
 Suggests: octave[V_3_0:3.0:][V_3_2:3.2:], lynx | www-browser
-Conflicts: octave-htmldoc (<< 2.1), octave2.0-htmldoc[V_3_0:, octave2.9-htmldoc (<< 1:3):]
-Replaces: octave-htmldoc
-Provides: octave-htmldoc
+Conflicts: octave-htmldoc (<< 2.1), octave2.0-htmldoc[V_3_0:, octave2.9-htmldoc (<< 1:3):][V_3_2:, octave3.1-htmldoc:]
+Replaces: octave-htmldoc[V_3_2:, octave3.1-htmldoc:]
+Provides: octave-htmldoc[V_3_2:, octave3.1-htmldoc:]
 Description: HTML documentation on the GNU Octave language ([V_3_0:3.0:][V_3_2:3.2:] branch)
  Octave is a (mostly Matlab (R) compatible) high-level language, primarily
  intended for numerical computations. It provides a convenient command-line
@@ -108,9 +108,9 @@ Depends: octave[V_3_0:3.0:][V_3_2:3.2:] (= ${binary:Version}), ${gcc:Depends},
  | libhdf5-lam-dev (>= 1.6.5) | libhdf5-mpich-dev (>= 1.6.5) | libhdf5-openmpi-dev (>= 1.6.5),
  libblas-dev, liblapack-dev, libfftw3-dev,
  f2c [m68k]
-Conflicts: octave-headers (<< 2.1)[V_3_0:, octave2.9-headers (<< 1:3):]
-Provides: octave-headers
-Replaces: octave-headers
+Conflicts: octave-headers (<< 2.1)[V_3_0:, octave2.9-headers (<< 1:3):][V_3_2:, octave3.1-headers:]
+Provides: octave-headers[V_3_2:, octave3.1-headers:]
+Replaces: octave-headers[V_3_2:, octave3.1-headers:]
 Description: header files for the GNU Octave language ([V_3_0:3.0:][V_3_2:3.2:] branch)
  Octave is a (mostly Matlab (R) compatible) high-level language, primarily
  intended for numerical computations. It provides a convenient command-line
@@ -127,9 +127,9 @@ Package: octave[V_3_0:3.0:][V_3_2:3.2:]-emacsen
 Architecture: all
 Depends: octave[V_3_0:3.0:][V_3_2:3.2:], emacs22 | xemacs21 | emacsen,
  debianutils (>= 1.6)
-Conflicts: octave2.0-emacsen[V_3_0:, octave2.9-emacsen (<< 1:3):]
-Replaces: octave (<= 2.0.16-2)
-Provides: octave-emacsen
+Conflicts: octave2.0-emacsen[V_3_0:, octave2.9-emacsen (<< 1:3):][V_3_2:, octave3.1-emacsen:]
+Replaces: octave (<= 2.0.16-2)[V_3_2:, octave3.1-emacsen:]
+Provides: octave-emacsen[V_3_2:, octave3.1-emacsen:]
 Description: Emacs support for the GNU Octave language ([V_3_0:3.0:][V_3_2:3.2:] branch)
  Octave is a (mostly Matlab (R) compatible) high-level language, primarily
  intended for numerical computations. It provides a convenient command-line
@@ -141,9 +141,9 @@ Description: Emacs support for the GNU Octave language ([V_3_0:3.0:][V_3_2:3.2:]
 Package: octave[V_3_0:3.0:][V_3_2:3.2:]-info
 Architecture: all
 Depends: info (>= 3.22) | info-browser
-Conflicts: octave2.0-info[V_3_0:, octave2.9-info (<< 1:3):]
-Replaces: octave (<= 2.0.16-2)
-Provides: octave-info
+Conflicts: octave2.0-info[V_3_0:, octave2.9-info (<< 1:3):][V_3_2:, octave3.1-info:]
+Replaces: octave (<= 2.0.16-2)[V_3_2:, octave3.1-info:]
+Provides: octave-info[V_3_2:, octave3.1-info:]
 Description: GNU Info documentation on the GNU Octave language ([V_3_0:3.0:][V_3_2:3.2:] branch)
  Octave is a (mostly Matlab (R) compatible) high-level language, primarily
  intended for numerical computations. It provides a convenient command-line

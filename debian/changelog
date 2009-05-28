@@ -1,3 +1,10 @@
+octave3.2 (3.2.0~rc4-2) UNRELEASED; urgency=low
+
+  * debian/in/control: Make the octave3.2* packages Conflict/
+    Replace/Provide the corresponding octave3.1* packages
+
+ -- Rafael Laboissiere <rafael@debian.org>  Thu, 28 May 2009 20:18:08 +0200
+
 octave3.2 (3.2.0~rc4-1) experimental; urgency=low
 
   * New upstream release candidate
