@@ -1,3 +1,10 @@
+octave3.0 (1:3.0.5-7) UNRELEASED; urgency=low
+
+  * debian/in/control: Fix minimal version of octave-optiminterp in the
+    Breaks field
+
+ -- Rafael Laboissiere <rafael@debian.org>  Thu, 28 May 2009 19:24:56 +0200
+
 octave3.0 (1:3.0.5-6) unstable; urgency=low
 
   * debian/patches/no-argout-intersect.diff: Fix paths of the patch,
