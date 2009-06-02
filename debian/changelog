@@ -1,4 +1,4 @@
-octave3.2 (3.2.0~rc4-2) UNRELEASED; urgency=low
+octave3.2 (3.2.0~rc4-2) experimental; urgency=low
 
   * debian/in/control: Make the octave3.2* packages Conflict/
     Replace/Provide the corresponding octave3.1* packages
