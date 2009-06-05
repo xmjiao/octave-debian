@@ -13,8 +13,7 @@ PRIORITY=@PRIORITY@
 
 rebuild_pkg_database () {
     octave-$VERSION --silent --no-history --no-init-file	\
-                    --eval "pkg ('-verbose', 'rebuild');"	\
-                    < /dev/null
+                    --eval "pkg ('rebuild');"
 }
 
 case "$1" in

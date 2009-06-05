@@ -1,6 +1,9 @@
 octave3.2 (3.2.0-1) UNRELEASED; urgency=low
 
   * New upstream release
+  * debian/in/PACKAGE.postinst: Remove an old hack added in the code of
+    the package database rebuild.  This was added for debugging purposes
+    on some autobuilders and is not necessary anymore.
 
  -- Rafael Laboissiere <rafael@debian.org>  Fri, 05 Jun 2009 22:29:11 +0200
 
