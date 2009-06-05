@@ -1,3 +1,9 @@
+octave3.2 (3.2.0-1) UNRELEASED; urgency=low
+
+  * New upstream release
+
+ -- Rafael Laboissiere <rafael@debian.org>  Fri, 05 Jun 2009 22:29:11 +0200
+
 octave3.2 (3.2.0~rc5-1) experimental; urgency=low
 
   * New upstream release candidate
