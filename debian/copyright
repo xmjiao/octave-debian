@@ -15,7 +15,7 @@ The original sources can be obtained at
 See /usr/share/doc/octave/changelog.Debian.gz for details on the
 applied changes.
 
-GNU Octave is Copyright (C) 1992 - 2008 John W. Eaton and others
+GNU Octave is Copyright (C) 1996, 1997, 1998, 2002, 2007, 2009 John W. Eaton
 
     Octave is free software; you can redistribute it and/or modify it under
     the terms of the GNU General Public License as published by the Free
