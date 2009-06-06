@@ -73,7 +73,10 @@ debini		:= $(debbase)/$(common_package)/usr/share/octave/$(version)/m/startup
 debapp		:= $(debshare)/applications
 
 savefiles	:= BUGS configure config.h.in scripts/configure	\
-			doc/conf.texi examples/octave.desktop.in
+			examples/octave.desktop.in
+ifneq ($(major),3.2)
+savefiles	+= doc/conf.texi
+endif
 texifiles	:= doc/interpreter/octave.texi		\
 			doc/liboctave/liboctave.texi	\
 			doc/faq/Octave-FAQ.texi
