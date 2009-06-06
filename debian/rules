@@ -243,6 +243,9 @@ clean: unpatch
 	dh_testroot
 
 	[ ! -f doc/Makefile ] || $(MAKE) -C doc clean
+ifeq ($(major),3.2)
+	rm -f doc/conf.texi
+endif
 	[ ! -f doc/interpreter/images/Makefile ] \
 		|| $(MAKE) -C doc/interpreter/images distclean
 	[ ! -f doc/Makefile ] || $(MAKE) -C doc maintainer-clean
