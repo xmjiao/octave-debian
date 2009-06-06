@@ -213,6 +213,7 @@ configure-stamp:
 make-arch: configure-stamp make-arch-stamp
 make-arch-stamp:
 
+	make -C doc conf.texi
 	ln -fs octMakefile-no-doc octMakefile
 	$(MAKE)		CFLAGS="$(compilerflags)"		\
 			CXXFLAGS="$(compilerflags)"		\

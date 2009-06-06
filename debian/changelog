@@ -13,6 +13,7 @@ octave3.2 (3.2.0-1) UNRELEASED; urgency=low
     + Do not generate debian/copyright from the file in debian/in/
     + In this new upstream version, doc/conf.texi is not distribute in the
       tarball.  Include it optionally in the savefiles list, accordingly.
+    + (make-arch): Explicitly build the doc/conf.texi file
   * debian/in/control: Fix minimal version of octave-optiminterp in the
     Breaks field
 
