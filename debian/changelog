@@ -4,9 +4,15 @@ octave3.2 (3.2.0-1) UNRELEASED; urgency=low
   * debian/in/PACKAGE.postinst: Remove an old hack added in the code of
     the package database rebuild.  This was added for debugging purposes
     on some autobuilders and is not necessary anymore.
-  * debian/rules: In this new upstream version, doc/conf.texi is not
-    distribute in the tarball.  Include it optionally in the savefiles
-    list, accordingly.
+  * debian/copyright:
+    + Update the release years in the upstream copyright notice
+    + This file is moved from debian/in/copyright.  There is no need for
+      keeping the file in debian/in/ because there is no version-specific
+      changes in it.
+  * debian/rules:
+    + Do not generate debian/copyright from the file in debian/in/
+    + In this new upstream version, doc/conf.texi is not distribute in the
+      tarball.  Include it optionally in the savefiles list, accordingly.
 
  -- Rafael Laboissiere <rafael@debian.org>  Fri, 05 Jun 2009 22:29:11 +0200
 

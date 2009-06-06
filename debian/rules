@@ -121,9 +121,9 @@ debian/%: debian/in/%
 	slice -o $(sliceterm):$@ $<
 
 maintainer-clean:
-	rm -f debian/control debian/copyright
+	rm -f debian/control
 
-maintainer-scripts: debian/control debian/copyright
+maintainer-scripts: debian/control
 	for in in debian/in/PACKAGE* ; do \
 		slice -o $(sliceterm):debian/temp $$in ; \
 		out=`echo $$in | sed 's:/in/:/:;s/PACKAGE/$(PACKAGE)/'` ; \
