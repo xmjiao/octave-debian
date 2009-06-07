@@ -14,7 +14,7 @@ Francesco Potorti for the patch.
  	     endif
  
               if (isfield (obj, "edgecolor"))
-@@ -1450,7 +1450,7 @@
+@@ -1456,7 +1456,7 @@
      endif
  
      if (isfield (obj, "markersize"))
