@@ -1,4 +1,4 @@
-octave3.2 (3.2.0-1) UNRELEASED; urgency=low
+octave3.2 (3.2.0-1) unstable; urgency=low
 
   * New upstream release
   * debian/in/PACKAGE.postinst: Remove an old hack added in the code of
@@ -17,7 +17,7 @@ octave3.2 (3.2.0-1) UNRELEASED; urgency=low
   * debian/in/control: Fix minimal version of octave-optiminterp in the
     Breaks field
 
- -- Rafael Laboissiere <rafael@debian.org>  Fri, 05 Jun 2009 22:29:11 +0200
+ -- Rafael Laboissiere <rafael@debian.org>  Sat, 06 Jun 2009 21:59:49 +0200
 
 octave3.2 (3.2.0~rc5-1) experimental; urgency=low
 
