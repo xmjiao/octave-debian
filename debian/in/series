@@ -13,4 +13,5 @@ datenum-vector-input-any-orientation.diff
 no_pdf_in_print.diff
 dont_set_helvetica-3.1.diff
 normal-markersize.diff
+complex-nan-print.diff
 :]

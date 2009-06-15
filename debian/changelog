@@ -1,3 +1,12 @@
+octave3.2 (3.2.0-2) UNRELEASED; urgency=low
+
+  * debian/patches/complex-nan-print.diff: New patch for fixing the
+    problem in mips and mipsel about printing the value of
+    'complex(NaN,0)'.  This was causing the package to FTBFS when running
+    the test of function log2 in data.cc (closes: #532656).
+
+ -- Rafael Laboissiere <rafael@debian.org>  Mon, 15 Jun 2009 12:56:53 +0200
+
 octave3.2 (3.2.0-1) unstable; urgency=low
 
   * New upstream release
