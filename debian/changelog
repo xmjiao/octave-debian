@@ -1,3 +1,11 @@
+octave3.2 (3.2.0-3) UNRELEASED; urgency=low
+
+  * debian/in/control: The arm architecture has been abandoned by Debian.
+    Drop the arm-specific build-dependencies on gcc and g++ 4.1
+    (closes: #533802).
+
+ -- Rafael Laboissiere <rafael@debian.org>  Sat, 20 Jun 2009 19:16:45 +0200
+
 octave3.2 (3.2.0-2) unstable; urgency=low
 
   * debian/patches/complex-nan-print.diff: New patch for fixing the
