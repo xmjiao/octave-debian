@@ -5,7 +5,7 @@ Francesco Potorti for the patch.
 
 --- a/scripts/plot/__go_draw_axes__.m
 +++ b/scripts/plot/__go_draw_axes__.m
-@@ -674,7 +674,7 @@
+@@ -689,7 +689,7 @@
  	     usingclause{data_idx} = sprintf ("record=%d", numel (obj.xdata));
  
  	     if (isfield (obj, "markersize"))
@@ -14,7 +14,7 @@ Francesco Potorti for the patch.
  	     endif
  
               if (isfield (obj, "edgecolor"))
-@@ -1456,7 +1456,7 @@
+@@ -1471,7 +1471,7 @@
      endif
  
      if (isfield (obj, "markersize"))

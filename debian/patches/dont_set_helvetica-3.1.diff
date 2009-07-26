@@ -5,7 +5,7 @@ font. Fixes Bug#477688.
 
 --- a/scripts/plot/__go_draw_axes__.m
 +++ b/scripts/plot/__go_draw_axes__.m
-@@ -1719,7 +1719,7 @@
+@@ -1751,7 +1751,7 @@
  
  function [f, s, fnt, it, bld] = get_fontname_and_size (t)
    if (isempty (t.fontname))
@@ -14,7 +14,7 @@ font. Fixes Bug#477688.
    else
      fnt = t.fontname;
    endif
-@@ -1757,7 +1757,7 @@
+@@ -1789,7 +1789,7 @@
    if (strcmp (fld, "string"))
      [f, s, fnt, it, bld] = get_fontname_and_size (obj);
    else
