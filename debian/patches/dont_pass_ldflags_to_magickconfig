@@ -1,0 +1,13 @@
+magickconfig includes a -pie switch in its ldflags, which is a problem
+Patch taken from upstream (db08c2376970), bug fix for 535080
+--- a/Makeconf.in
++++ b/Makeconf.in
+@@ -153,7 +153,7 @@
+ 
+ MAGICK_CONFIG = @MAGICK_CONFIG@
+ MAGICK_INCFLAGS = $(shell $(MAGICK_CONFIG) --cppflags)
+-MAGICK_LIBS = $(shell $(MAGICK_CONFIG) --ldflags --libs)
++MAGICK_LIBS = $(shell $(MAGICK_CONFIG) --libs)
+ 
+ LIBFLAGS = -L$(TOPDIR)
+ 
