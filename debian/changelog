@@ -1,8 +1,12 @@
 octave3.2 (3.2.0-3) UNRELEASED; urgency=low
 
+  [ Rafael Laboissiere ]
   * debian/in/control: The arm architecture has been abandoned by Debian.
     Drop the arm-specific build-dependencies on gcc and g++ 4.1
     (closes: #533802).
+
+  [ Thomas Weber ]
+  * New upstream release (closes: #541036)
 
  -- Rafael Laboissiere <rafael@debian.org>  Sat, 20 Jun 2009 19:16:45 +0200
 
