@@ -104,11 +104,10 @@ Description: HTML documentation on the GNU Octave language ([V_3_0:3.0:][V_3_2:3
 
 Package: octave[V_3_0:3.0:][V_3_2:3.2:]-headers
 Architecture: any
-Depends: octave[V_3_0:3.0:][V_3_2:3.2:] (= ${binary:Version}), ${gcc:Depends}, ${misc:Depends},
+Depends: octave[V_3_0:3.0:][V_3_2:3.2:] (= ${binary:Version}), ${misc:Depends},
  libreadline5-dev, libncurses5-dev, libhdf5-serial-dev (>= 1.6.5)
  | libhdf5-lam-dev (>= 1.6.5) | libhdf5-mpich-dev (>= 1.6.5) | libhdf5-openmpi-dev (>= 1.6.5),
- libblas-dev, liblapack-dev, libfftw3-dev,
- f2c [m68k]
+ libblas-dev, liblapack-dev, libfftw3-dev, gfortran, gcc, g++, f2c [m68k]
 Conflicts: octave-headers (<< 2.1)[V_3_0:, octave2.9-headers (<< 1:3):][V_3_2:, octave3.1-headers:]
 Provides: octave-headers[V_3_2:, octave3.1-headers:]
 Replaces: octave-headers[V_3_2:, octave3.1-headers:]

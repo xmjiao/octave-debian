@@ -22,21 +22,6 @@ major       	:= $(shell echo $(version) | perl -nle \
 PACKAGEVER	:= $(shell echo $(PACKAGE) | \
 			perl -nle 'm/.*(\d.\d)/ and print $$1')
 
-GCCCURVER	:= $(shell gcc --version | perl -ne '/Debian (.*)-/; print "$$1"; last')
-GCCMAJOR	:= $(shell echo "$(GCCCURVER)" | perl -nle '@v=split(/\./);print $$v[0]')
-GCCMINOR	:= $(shell echo "$(GCCCURVER)" | perl -nle '@v=split(/\./);print $$v[1]')
-GCCMICRO	:= $(shell echo "$(GCCCURVER)" | perl -nle '@v=split(/\./);print $$v[2]')
-GCCDEPS		:= $(shell perl -e '										\
-	print join (", ", map {											\
-		join (", ", ("$$_ (>= 4:$(GCCMAJOR).$(GCCMINOR))",						\
-			"$$_ (<< 4:$(GCCMAJOR)." . ($(GCCMINOR)+1) . ")",					\
-			"$$_-$(GCCMAJOR).$(GCCMINOR) (>= $(GCCCURVER))",					\
-			"$$_-$(GCCMAJOR).$(GCCMINOR) (<< $(GCCMAJOR).$(GCCMINOR)." . ($(GCCMICRO)+1) .")"))	\
-	} ("gcc", "g++", "gfortran"))')
-
-hack:
-	@echo "$(GCCDEPS)"
-
 ifeq ($(major),3.2)
 priority	:= 80
 else
@@ -92,7 +77,7 @@ DEB_BUILD_ARCH ?= $(shell dpkg-architecture -qDEB_BUILD_ARCH)
 
 f77_compiler	= gfortran
 fc_flag		=
-fc_libs		=
+fc_libs		= "-lgfortranbegin -lgfortran"
 compilerflags	= -O2 -g
 
 # default to blas, atlas can overload where available (see README.Atlas)
@@ -106,12 +91,10 @@ ifeq ($(DEB_BUILD_ARCH),arm)
 # edd 25 Aug 2002  arm does not have atlas
 compilerflags	= -O0 -g0
 atlas		= --without-blas
-c_compiler	= gcc-4.1
-cxx_compiler	= g++-4.1
-else
+endif
+
 c_compiler	= gcc
 cxx_compiler	= g++
-endif
 
 #export DH_VERBOSE=1
 
@@ -481,7 +464,6 @@ endif
 	dh_fixperms -a
 	dh_installdeb -a
 	dh_shlibdeps -a -l/usr/lib/octave-$(version)
-	echo 'gcc:Depends=$(GCCDEPS)' >> $(debbase)/$(PACKAGE)-headers.substvars
 	dh_gencontrol -a
 	dh_md5sums -a
 	dh_builddeb -a

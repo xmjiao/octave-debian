@@ -12,6 +12,10 @@ octave3.2 (3.2.0-3) UNRELEASED; urgency=low
   * Bump standards version to 3.8.2, no changes needed
   * Add ${misc:Depends} to all Depends: lines in debian/in/control, thanks
     lintian.
+  * Pass explicit FLIBS to ./configure, to avoid a library path with an
+    explicit compiler path in mkoctfile. This allows us to depend on gcc and
+    friends without a version (closes: #541444, #540455). Consequently, drop
+    the explicit dependencies from debian/in/control and debian/rules.
 
  -- Rafael Laboissiere <rafael@debian.org>  Sat, 20 Jun 2009 19:16:45 +0200
 
