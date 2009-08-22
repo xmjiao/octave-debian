@@ -16,7 +16,7 @@ Build-Depends: gfortran, debhelper (>= 6.0.7), autoconf, texinfo,
  libqhull-dev, desktop-file-utils:], libfltk1.1-dev, libgl1-mesa-swx11-dev,
  libglu1-mesa-dev, libgraphicsmagick++1-dev, libftgl-dev,
  libqrupdate-dev, libarpack2-dev (>= 2.1+parpack96.dfsg-2):]
-Standards-Version: 3.8.1
+Standards-Version: 3.8.2
 Homepage: http://www.octave.org/
 Vcs-Git: git://git.debian.org/git/pkg-octave/octave.git
 Vcs-Browser: http://git.debian.org/?p=pkg-octave/octave.git

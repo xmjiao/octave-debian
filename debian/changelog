@@ -9,6 +9,7 @@ octave3.2 (3.2.0-3) UNRELEASED; urgency=low
   * New upstream release (closes: #541036)
   * New patch: dont_pass_ldflags_to_magickconfig: don't pass magickconfig's
     ldflags into MAGICK_LIBS (closes: #535080)
+  * Bump standards version to 3.8.2, no changes needed
 
  -- Rafael Laboissiere <rafael@debian.org>  Sat, 20 Jun 2009 19:16:45 +0200
 
