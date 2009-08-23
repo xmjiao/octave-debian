@@ -1,4 +1,4 @@
-octave3.2 (3.2.0-3) UNRELEASED; urgency=low
+octave3.2 (3.2.2-1) experimental; urgency=low
 
   [ Rafael Laboissiere ]
   * debian/in/control: The arm architecture has been abandoned by Debian.
@@ -17,7 +17,7 @@ octave3.2 (3.2.0-3) UNRELEASED; urgency=low
     friends without a version (closes: #541444, #540455). Consequently, drop
     the explicit dependencies from debian/in/control and debian/rules.
 
- -- Rafael Laboissiere <rafael@debian.org>  Sat, 20 Jun 2009 19:16:45 +0200
+ -- Thomas Weber <thomas.weber.mail@gmail.com>  Sun, 23 Aug 2009 22:13:45 +0200
 
 octave3.2 (3.2.0-2) unstable; urgency=low
 
