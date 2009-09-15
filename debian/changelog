@@ -1,3 +1,10 @@
+octave3.2 (3.2.2-3) UNRELEASED; urgency=low
+
+  * Change build-dependency on libreadline, as per
+    http://lists.debian.org/debian-devel/2009/09/msg00562.html 
+
+ -- Thomas Weber <thomas.weber.mail@gmail.com>  Tue, 15 Sep 2009 08:45:00 +0200
+
 octave3.2 (3.2.2-2) unstable; urgency=low
 
   * Upload to unstable 
