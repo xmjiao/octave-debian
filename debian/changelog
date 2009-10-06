@@ -1,7 +1,11 @@
-octave3.2 (3.2.2-3) UNRELEASED; urgency=low
+octave3.2 (3.2.3-1) UNRELEASED; urgency=low
 
+  * New upstream release
   * Change build-dependency on libreadline, as per
     http://lists.debian.org/debian-devel/2009/09/msg00562.html 
+  * Dropped patches (applied upstream):
+    - complex-nan-print.diff
+    - dont_pass_ldflags_to_magickconfig
 
  -- Thomas Weber <thomas.weber.mail@gmail.com>  Tue, 15 Sep 2009 08:45:00 +0200
 
