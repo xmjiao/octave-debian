@@ -1,4 +1,4 @@
-octave3.2 (3.2.3-1) UNRELEASED; urgency=low
+octave3.2 (3.2.3-1) unstable; urgency=low
 
   * New upstream release
   * Change build-dependency on libreadline, as per
@@ -7,7 +7,7 @@ octave3.2 (3.2.3-1) UNRELEASED; urgency=low
     - complex-nan-print.diff
     - dont_pass_ldflags_to_magickconfig
 
- -- Thomas Weber <thomas.weber.mail@gmail.com>  Tue, 15 Sep 2009 08:45:00 +0200
+ -- Thomas Weber <thomas.weber.mail@gmail.com>  Tue, 06 Oct 2009 20:03:30 +0200
 
 octave3.2 (3.2.2-2) unstable; urgency=low
 
