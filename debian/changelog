@@ -1,3 +1,15 @@
+octave3.0 (1:3.0.5-7) unstable; urgency=low
+ 
+  * Merge changes from the 3.2 branch into the 3.0 upload:
+    - Drop the arm-specific build-dependencies on gcc and g++ 4.1 
+      (closes: #533803)
+    - Pass explicit FLIBS to ./configure, to avoid a library path with an
+      explicit compiler path in mkoctfile. This allows us to depend on gcc and
+      friends without a version (closes: #543291). Consequently, drop
+      the explicit dependencies from debian/in/control and debian/rules.
+
+ -- Thomas Weber <thomas.weber.mail@gmail.com>  Mon, 12 Oct 2009 20:15:16 +0200
+
 octave3.2 (3.2.3-1) unstable; urgency=low
 
   * New upstream release
