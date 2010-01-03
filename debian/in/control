@@ -142,7 +142,7 @@ Description: Emacs support for the GNU Octave language ([V_3_0:3.0:][V_3_2:3.2:]
 
 Package: octave[V_3_0:3.0:][V_3_2:3.2:]-info
 Architecture: all
-Depends: info (>= 3.22) | info-browser, ${misc:Depends}
+Depends: info (>= 3.22), ${misc:Depends}
 Conflicts: octave2.0-info[V_3_0:, octave2.9-info (<< 1:3):][V_3_2:, octave3.1-info:]
 Replaces: octave (<= 2.0.16-2)[V_3_2:, octave3.1-info:]
 Provides: octave-info[V_3_2:, octave3.1-info:]
