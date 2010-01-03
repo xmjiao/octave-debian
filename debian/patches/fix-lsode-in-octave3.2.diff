@@ -1,0 +1,32 @@
+Bug fix for #550828
+
+Taken from http://hg.savannah.gnu.org/hgweb/octave/rev/04386b72d3df
+# HG changeset patch
+# User Jaroslav Hajek <highegg@gmail.com>
+# Date 1255604808 -7200
+# Node ID 04386b72d3dfe46650d15dda48c1f9a4d8212244
+# Parent  b7b89061bd0e5164d36c2cd951e797d077e1c51d
+fix extract_function & add obsoleteness warning
+
+--- a/src/variables.cc	Thu Oct 15 08:38:07 2009 +0200
++++ b/src/variables.cc	Thu Oct 15 13:06:48 2009 +0200
+@@ -159,7 +159,7 @@
+ 	{
+ 	  int parse_status;
+ 
+-	  eval_string (cmd, true, parse_status);
++	  eval_string (cmd, true, parse_status, 0);
+ 
+ 	  if (parse_status == 0)
+ 	    {
+@@ -171,6 +171,9 @@
+ 			 warn_for.c_str (), fname.c_str ());
+ 		  return retval;
+ 		}
++
++              warning ("%s: passing function body as a string is obsolete."
++                       " Please use anonymous functions.", warn_for.c_str ());
+ 	    }
+ 	  else
+ 	    error ("%s: `%s' is not valid as a function",
+
