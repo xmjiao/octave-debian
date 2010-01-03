@@ -127,7 +127,7 @@ Description: header files for the GNU Octave language ([V_3_0:3.0:][V_3_2:3.2:] 
 
 Package: octave[V_3_0:3.0:][V_3_2:3.2:]-emacsen
 Architecture: all
-Depends: octave[V_3_0:3.0:][V_3_2:3.2:], emacs22 | xemacs21 | emacsen,
+Depends: octave[V_3_0:3.0:][V_3_2:3.2:], emacs23 | emacs22 | xemacs21 | emacsen,
  debianutils (>= 1.6), ${misc:Depends}
 Conflicts: octave2.0-emacsen[V_3_0:, octave2.9-emacsen (<< 1:3):][V_3_2:, octave3.1-emacsen:]
 Replaces: octave (<= 2.0.16-2)[V_3_2:, octave3.1-emacsen:]
