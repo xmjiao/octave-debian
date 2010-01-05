@@ -4,7 +4,7 @@ Why is mkoctfile not in octave3.0, but in octave3.0-headers?
 In order to use mkoctfile, one needs the development packages (headers, .a
 libraries) of the libraries used by Octave (fftw, blas, ...). These sum up to
 a lot of space; an installation of octave3.0-headers will trigger the
-installation of these package, so one can use mkoctfile then.
+installation of these packages, so one can use mkoctfile then.
 
 pkg.m is not part of octave3.0-headers as it's used to find already installed
 packages (via /etc/octave3.0.conf).
