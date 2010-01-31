@@ -1,10 +1,10 @@
-octave3.2 (3.2.4-1) UNRELEASED; urgency=low
+octave3.2 (3.2.4-1) unstable; urgency=low
 
   * New upstream release 
   * debian/control: Build against new hdf5 version (closes: #567057)
   * Drop patch fix-lsode-in-octave3.2.diff, applied upstream
 
- -- Thomas Weber <thomas.weber.mail@gmail.com>  Sun, 31 Jan 2010 17:49:42 +0100
+ -- Thomas Weber <thomas.weber.mail@gmail.com>  Sun, 31 Jan 2010 17:57:10 +0100
 
 octave3.2 (3.2.3-2) unstable; urgency=low
 
