@@ -1,4 +1,4 @@
-octave3.2 (3.2.4-3) UNRELEASED; urgency=low
+octave3.2 (3.2.4-3) unstable; urgency=low
 
   * debian/control: Remove Rafael Laboissiere from Uploaders (closes: #571833,
     #571835)
@@ -8,7 +8,7 @@ octave3.2 (3.2.4-3) UNRELEASED; urgency=low
   * New patch: handle_new_graphicsmagic, allows building with graphicsmagic >
     1.3.8. Thanks to John Eaton for the patch.
 
- -- Thomas Weber <thomas.weber.mail@gmail.com>  Sun, 28 Feb 2010 20:22:41 +0100
+ -- Thomas Weber <thomas.weber.mail@gmail.com>  Thu, 04 Mar 2010 01:50:32 +0100
 
 octave3.2 (3.2.4-2) unstable; urgency=low
 
