@@ -93,6 +93,14 @@ compilerflags	= -O0 -g0
 atlas		= --without-blas
 endif
 
+# drop debugging symbols for now (#570771)
+ifeq ($(DEB_BUILD_ARCH),mips)
+compilerflags	= -O2 
+endif
+ifeq ($(DEB_BUILD_ARCH),mipsel)
+compilerflags	= -O2 
+endif
+
 c_compiler	= gcc
 cxx_compiler	= g++
 
@@ -459,7 +467,18 @@ ifneq ($(PACKAGEVER),$(major))
 		usr/share/man/man1/octave$(major)-depends.1.gz \
 		usr/share/man/man1/octave$(PACKAGEVER)-depends.1.gz
 endif
+
+# crude hack for #570771
+ifeq ($(DEB_BUILD_ARCH),mips)
+	dh_strip -a 
+else 
+ifeq ($(DEB_BUILD_ARCH),mipsel)
+	dh_strip -a 
+else
 	dh_strip -a --dbg-package=$(PACKAGE)-dbg
+endif
+endif
+	dh_strip -a
 	dh_compress -a
 	dh_fixperms -a
 	dh_installdeb -a
