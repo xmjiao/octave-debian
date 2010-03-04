@@ -1,0 +1,35 @@
+From: John W. Eaton  <jwe@octave.org>
+Description: Allow compilation with graphicsmagick >= 1.3.8.
+ The patch is slightly adapted (header inclusions) to the 3.2 series
+
+Origin: upstream, http://hg.savannah.gnu.org/hgweb/octave/rev/ad0b54ae206a
+Bug: http://www-old.cae.wisc.edu/pipermail/octave-maintainers/2010-February/015292.html
+
+--- a/src/DLD-FUNCTIONS/__magick_read__.cc
++++ b/src/DLD-FUNCTIONS/__magick_read__.cc
+@@ -29,6 +29,7 @@
+ 
+ #include "defun-dld.h"
+ #include "error.h"
++#include "oct-env.h"
+ #include "ov-struct.h"
+ 
+ #ifdef HAVE_MAGICK
+@@ -358,6 +359,17 @@
+ 
+ #ifdef HAVE_MAGICK
+ 
++  static bool initialized = false;
++
++  if (! initialized)
++    {
++      std::string program_name = octave_env::get_program_invocation_name ();
++
++      Magick::InitializeMagick (program_name.c_str ());
++
++      initialized = true;
++    }
++
+   if (args.length () > 2 || args.length () < 1 || ! args(0).is_string ()
+       || nargout > 3)
+     {
