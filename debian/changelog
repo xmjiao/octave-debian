@@ -1,10 +1,10 @@
-octave3.2 (3.2.4-4) UNRELEASED; urgency=low
+octave3.2 (3.2.4-4) unstable; urgency=low
 
   * Rebuild and bump build-depends on libblas-dev to (>= 1.2.-7) and on
     liblapack-dev to (>= 3.2.1-7) to pick up the new alternatives
     configuration in the BLAS libraries (closes: #576812).
 
- -- Thomas Weber <thomas.weber.mail@gmail.com>  Mon, 12 Apr 2010 23:21:25 +0200
+ -- Thomas Weber <thomas.weber.mail@gmail.com>  Mon, 12 Apr 2010 23:22:49 +0200
 
 octave3.2 (3.2.4-3) unstable; urgency=low
 
