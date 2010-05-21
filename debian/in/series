@@ -9,6 +9,7 @@ termios-h-check-3.0.diff
 no-argout-intersect.diff
 datenum-vector-input-any-orientation.diff
 :][V_3_2:
+fix-interp2
 50_octave-bug-tempfile.diff
 no_pdf_in_print.diff
 dont_set_helvetica-3.1.diff
