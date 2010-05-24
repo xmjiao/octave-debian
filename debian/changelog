@@ -1,3 +1,10 @@
+octave3.2 (3.2.4-6) UNRELEASED; urgency=low
+
+  * New patch: scale_image_point_color, scale image point color (closes:
+    #581998)
+
+ -- Thomas Weber <tweber@debian.org>  Mon, 24 May 2010 16:03:02 +0200
+
 octave3.2 (3.2.4-5) unstable; urgency=low
 
   * New patch: fix-interp2; fixes wrong bicubic interpolation, triggered by
