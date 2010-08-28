@@ -17,4 +17,5 @@ dont_set_helvetica-3.1.diff
 normal-markersize.diff
 filter_empty_vector
 handle_new_graphicsmagic
+fix_relative_addpath
 :]
