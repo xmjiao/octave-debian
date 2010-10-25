@@ -1,9 +1,9 @@
-octave3.2 (3.2.4-8) UNRELEASED; urgency=low
+octave3.2 (3.2.4-8) unstable; urgency=low
 
   * New patch: include_mpi_headers, includes /usr/include/mpi by default when
     using mkoctfile (closes: #598227)
 
- -- Thomas Weber <tweber@debian.org>  Sun, 24 Oct 2010 22:08:19 +0200
+ -- Thomas Weber <tweber@debian.org>  Mon, 25 Oct 2010 21:44:40 +0200
 
 octave3.2 (3.2.4-7) unstable; urgency=low
 
