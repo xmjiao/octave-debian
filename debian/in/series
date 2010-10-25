@@ -18,4 +18,5 @@ normal-markersize.diff
 filter_empty_vector
 handle_new_graphicsmagic
 fix_relative_addpath
+include_mpi_headers
 :]
