@@ -1,3 +1,10 @@
+octave3.2 (3.2.4-9) UNRELEASED; urgency=low
+
+  * debian/in/control: Give an explicit package name as preference for the
+    virtual build-dependency on libcurl4-dev (closes: #618139).
+
+ -- Thomas Weber <tweber@debian.org>  Sun, 20 Mar 2011 14:52:22 +0100
+
 octave3.2 (3.2.4-8) unstable; urgency=low
 
   * New patch: include_mpi_headers, includes /usr/include/mpi by default when
