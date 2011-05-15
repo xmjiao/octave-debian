@@ -6,6 +6,8 @@ octave3.2 (3.2.4-10) UNRELEASED; urgency=low
     instantiations either (closes: #603046). The latter bug isn't mentioned in
     the bug report, but was seen once the first bug was fixed. Thanks to Orion
     Poplawski from Fedora for the original patch.
+    - avoid-implicit-conversion: explicitly convert strings to numbers
+    (closes: 603046). Thanks to Kim Hansen for the patch.
 
  -- Thomas Weber <tweber@debian.org>  Sun, 15 May 2011 07:51:18 +0200
 

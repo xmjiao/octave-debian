@@ -20,4 +20,5 @@ handle_new_graphicsmagic
 fix_relative_addpath
 include_mpi_headers
 fixes-for-gcc-4.6
+avoid-implicit-conversion
 :]

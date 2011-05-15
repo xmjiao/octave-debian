@@ -1,0 +1,20 @@
+From: Kim Hansen <kim@i9.dk>
+Description: Explicitly converts strings to numbers
+Bug: https://savannah.gnu.org/bugs/index.php?32546
+Bug-Debian: http://bugs.debian.org/603046
+Applied-Upstream: http://hg.savannah.gnu.org/hgweb/octave/rev/26d3164fd58d
+--- a/scripts/strings/strchr.m
++++ b/scripts/strings/strchr.m
+@@ -34,10 +34,10 @@
+     print_usage ();
+   endif
+   f = false (1, 256);
+-  f(chars + 1) = true;
++  f(uint8(chars)+1) = true;
+   varargout = cell (1, nargout);
+   varargout{1} = [];
+-  [varargout{:}] = find (reshape (f(str + 1), size (str)), varargin{:});
++  [varargout{:}] = find (reshape (f(uint8(str) + 1), size (str)), varargin{:});
+ endfunction 
+ 
+ %!assert(strchr("Octave is the best software","best"),[3, 6, 9, 11, 13, 15, 16, 17, 18, 20, 23, 27])
