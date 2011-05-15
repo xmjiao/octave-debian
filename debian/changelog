@@ -1,4 +1,4 @@
-octave3.2 (3.2.4-10) UNRELEASED; urgency=low
+octave3.2 (3.2.4-10) unstable; urgency=low
 
   * New patches
     - fixes-for-gcc-4.6: GCC 4.6 no longer includes the headers that defined
@@ -9,7 +9,7 @@ octave3.2 (3.2.4-10) UNRELEASED; urgency=low
     - avoid-implicit-conversion: explicitly convert strings to numbers
     (closes: 603046). Thanks to Kim Hansen for the patch.
 
- -- Thomas Weber <tweber@debian.org>  Sun, 15 May 2011 07:51:18 +0200
+ -- Thomas Weber <tweber@debian.org>  Sun, 15 May 2011 08:21:49 +0200
 
 octave3.2 (3.2.4-9) unstable; urgency=low
 
