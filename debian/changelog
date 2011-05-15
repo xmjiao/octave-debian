@@ -1,3 +1,14 @@
+octave3.2 (3.2.4-10) UNRELEASED; urgency=low
+
+  * New patches
+    - fixes-for-gcc-4.6: GCC 4.6 no longer includes the headers that defined
+    size_t automatically; and it doesn't like 'inline' in explicit
+    instantiations either (closes: #603046). The latter bug isn't mentioned in
+    the bug report, but was seen once the first bug was fixed. Thanks to Orion
+    Poplawski from Fedora for the original patch.
+
+ -- Thomas Weber <tweber@debian.org>  Sun, 15 May 2011 07:51:18 +0200
+
 octave3.2 (3.2.4-9) unstable; urgency=low
 
   * debian/in/control: Give an explicit package name as preference for the
