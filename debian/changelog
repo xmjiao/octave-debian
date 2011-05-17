@@ -3,7 +3,7 @@ octave3.2 (3.2.4-10) unstable; urgency=low
   * New patches
     - fixes-for-gcc-4.6: GCC 4.6 no longer includes the headers that defined
     size_t automatically; and it doesn't like 'inline' in explicit
-    instantiations either (closes: #603046). The latter bug isn't mentioned in
+    instantiations either (closes: #624960). The latter bug isn't mentioned in
     the bug report, but was seen once the first bug was fixed. Thanks to Orion
     Poplawski from Fedora for the original patch.
     - avoid-implicit-conversion: explicitly convert strings to numbers
