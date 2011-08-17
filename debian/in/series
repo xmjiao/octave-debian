@@ -9,6 +9,7 @@ termios-h-check-3.0.diff
 no-argout-intersect.diff
 datenum-vector-input-any-orientation.diff
 :][V_3_2:
+drop_old_curl_header
 scale_image_point_color
 fix-interp2
 50_octave-bug-tempfile.diff
