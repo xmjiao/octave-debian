@@ -2,6 +2,8 @@ octave3.2 (3.2.4-11) UNRELEASED; urgency=low
 
   * New patch: drop_old_curl_header: curl no longer ships types.h (closes:
     #637787) 
+  * Add lintian override for usage of install-info; this is a temporary
+    measure.
 
  -- Thomas Weber <tweber@debian.org>  Wed, 17 Aug 2011 19:40:07 +0200
 

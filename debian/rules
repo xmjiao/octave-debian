@@ -355,6 +355,7 @@ binary-indep: build-indep install-indep
 
         # install lintian overrride
 	dh_lintian -p$(common_package)
+	dh_lintian -p$(info_package)
 
 	dh_installchangelogs -i	ChangeLog
 	dh_compress -i --exclude=.pdf
