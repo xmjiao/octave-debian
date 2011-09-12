@@ -1,0 +1,90 @@
+Description: Clean up top-level variables when exiting Octave
+ This fixes this assertion failure:
+ .
+  Inconsistency detected by ld.so: dl-close.c: 736: _dl_close: Assertion
+  `map->l_init_called' failed!
+ .
+ This patch is slightly modified from the upstream commits to add
+ __attribute__ ((visibility ("hidden"))) to the symbol_table::cleanup
+ method, in order that this patch does not change the externally-visible
+ ABI.  That modification can and should be dropped when moving to a new
+ upstream version containing this fix.
+Origin: upstream, http://hg.savannah.gnu.org/hgweb/octave/rev/692ab4eaf965
+Origin: upstream, http://hg.savannah.gnu.org/hgweb/octave/rev/a5a05b2ebb9d
+Author: Jaroslav Hajek <highegg@gmail.com>
+Bug: http://savannah.gnu.org/bugs/?34195
+Bug-Debian: http://bugs.debian.org/633719
+Bug-Debian: http://bugs.debian.org/628353
+Bug-Ubuntu: https://bugs.launchpad.net/bugs/831157
+
+Index: b/src/symtab.cc
+===================================================================
+--- a/src/symtab.cc
++++ b/src/symtab.cc
+@@ -1193,6 +1193,39 @@
+     }
+ }
+ 
++void symbol_table::cleanup (void)
++{
++  // Clear variables in top scope.
++  all_instances[xtop_scope]->clear_variables ();
++
++  // Clear function table. This is a hard clear, ignoring mlocked functions.
++  fcn_table.clear ();
++
++  // Clear variables in global scope.
++  // FIXME: are there any?
++  all_instances[xglobal_scope]->clear_variables ();
++
++  // Clear global variables.
++  global_table.clear ();
++
++  // Delete all possibly remaining scopes. 
++  for (all_instances_iterator iter = all_instances.begin (); 
++       iter != all_instances.end (); iter++)
++    {
++      scope_id scope = iter->first;
++      if (scope != xglobal_scope && scope != xtop_scope)
++        scope_id_cache::free (scope);
++
++      // First zero the table entry to avoid possible duplicate delete.
++      symbol_table *inst = iter->second;
++      iter->second = 0;
++
++      // Now delete the scope. Note that there may be side effects, such as
++      // deleting other scopes.
++      delete inst;
++    }
++}
++
+ DEFUN (ignore_function_time_stamp, args, nargout,
+     "-*- texinfo -*-\n\
+ @deftypefn {Built-in Function} {@var{val} =} ignore_function_time_stamp ()\n\
+Index: b/src/symtab.h
+===================================================================
+--- a/src/symtab.h
++++ b/src/symtab.h
+@@ -1838,6 +1838,8 @@
+   static void stash_dir_name_for_subfunctions (scope_id scope,
+ 					       const std::string& dir_name);
+ 
++  static void cleanup (void) __attribute__ ((visibility ("hidden")));
++
+ private:
+ 
+   typedef std::map<std::string, symbol_record>::const_iterator table_const_iterator;
+Index: b/src/toplev.cc
+===================================================================
+--- a/src/toplev.cc
++++ b/src/toplev.cc
+@@ -673,6 +673,9 @@
+ {
+   do_octave_atexit ();
+ 
++  // Clean up symbol table.
++  SAFE_CALL (symbol_table::cleanup, ());
++
+   SAFE_CALL (sysdep_cleanup, ())
+ 
+   if (octave_exit)

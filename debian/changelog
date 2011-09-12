@@ -1,3 +1,11 @@
+octave3.2 (3.2.4-12) UNRELEASED; urgency=low
+
+  [ Colin Watson ]
+  * New patch: clear_symbol_table: Clean up top-level variables when exiting
+    Octave (closes: #628353, LP: #831157).
+
+ -- Thomas Weber <tweber@debian.org>  Mon, 12 Sep 2011 10:34:45 +0200
+
 octave3.2 (3.2.4-11) unstable; urgency=low
 
   * New patch: drop_old_curl_header: curl no longer ships types.h (closes:
