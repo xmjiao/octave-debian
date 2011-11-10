@@ -1,0 +1,60 @@
+@c DO NOT EDIT!  Generated automatically by munge-texi.
+
+@c Copyright (C) 1996, 1997, 2007 John W. Eaton
+@c
+@c This file is part of Octave.
+@c
+@c Octave is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU General Public License as published by the
+@c Free Software Foundation; either version 3 of the License, or (at
+@c your option) any later version.
+@c 
+@c Octave is distributed in the hope that it will be useful, but WITHOUT
+@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@c for more details.
+@c 
+@c You should have received a copy of the GNU General Public License
+@c along with Octave; see the file COPYING.  If not, see
+@c <http://www.gnu.org/licenses/>.
+
+@node Grammar
+@appendix Grammar
+@cindex grammar rules
+@cindex language definition
+
+This appendix should eventually contain a semi-formal description of
+Octave's language.
+
+@menu
+* Keywords::                    
+@end menu
+
+@node Keywords
+@section Keywords
+@cindex keywords
+
+The following identifiers are keywords, and may not be used as variable
+or function names:
+
+@multitable @columnfractions .33 .33 .33
+@item @code{break} @tab @code{case} @tab @code{catch}
+@item @code{continue} @tab @code{do} @tab @code{else}
+@item @code{elseif} @tab @code{end} @tab @code{end_try_catch}
+@item @code{end_unwind_protect} @tab @code{endfor} @tab @code{endfunction}
+@item @code{endif} @tab @code{endswitch} @tab @code{endwhile}
+@item @code{for} @tab @code{function} @tab @code{global}
+@item @code{if} @tab @code{otherwise} @tab @code{persistent}
+@item @code{return} @tab @code{static} @tab @code{switch}
+@item @code{try} @tab @code{until} @tab @code{unwind_protect}
+@item @code{unwind_protect_cleanup} @tab @code{varargin} @tab @code{varargout}
+@item @code{while} @tab @code{__FILE__} @tab @code{__LINE__}
+@end multitable
+
+@c lex.cc
+@anchor{doc-iskeyword}
+@deftypefn {Built-in Function} {} iskeyword (@var{name})
+Return true if @var{name} is an Octave keyword.  If @var{name}
+is omitted, return a list of keywords.
+@end deftypefn
+

@@ -1,0 +1,1660 @@
+@c DO NOT EDIT!  Generated automatically by munge-texi.
+
+@c Copyright (C) 1996, 1997, 2007, 2008, 2009 John W. Eaton
+@c
+@c This file is part of Octave.
+@c
+@c Octave is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU General Public License as published by the
+@c Free Software Foundation; either version 3 of the License, or (at
+@c your option) any later version.
+@c 
+@c Octave is distributed in the hope that it will be useful, but WITHOUT
+@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@c for more details.
+@c 
+@c You should have received a copy of the GNU General Public License
+@c along with Octave; see the file COPYING.  If not, see
+@c <http://www.gnu.org/licenses/>.
+
+@node Linear Algebra
+@chapter Linear Algebra
+
+This chapter documents the linear algebra functions of Octave.
+Reference material for many of these functions may be found in
+Golub and Van Loan, @cite{Matrix Computations, 2nd Ed.}, Johns Hopkins,
+1989, and in the @cite{@sc{lapack} Users' Guide}, SIAM, 1992.
+
+@menu
+* Techniques used for Linear Algebra::
+* Basic Matrix Functions::      
+* Matrix Factorizations::       
+* Functions of a Matrix::       
+* Specialized Solvers::
+@end menu
+
+@node Techniques used for Linear Algebra
+@section Techniques used for Linear Algebra
+
+Octave includes a polymorphic solver, that selects an appropriate
+matrix factorization depending on the properties of the matrix itself. 
+Generally, the cost of determining the matrix type is small relative to 
+the cost of factorizing the matrix itself, but in any case the matrix 
+type is cached once it is calculated, so that it is not re-determined 
+each time it is used in a linear equation.
+
+The selection tree for how the linear equation is solve or a matrix
+inverse is form is given by
+
+@enumerate 1
+@item If the matrix is upper or lower triangular sparse a forward or
+backward substitution using the @sc{lapack} xTRTRS function, and goto 4.
+
+@c Permuted triangular matrices currently disabled in the code
+@c
+@c @item If the matrix is a upper triangular matrix with column permutations
+@c or lower triangular matrix with row permutations, perform a forward or
+@c backward substitution, and goto 5.
+
+@item If the matrix is square, hermitian with a real positive diagonal,
+attempt Cholesky factorization using the @sc{lapack} xPOTRF function.
+
+@item If the Cholesky factorization failed or the matrix is not
+hermitian with a real positive diagonal, and the matrix is square, factorize 
+using the @sc{lapack} xGETRF function.
+
+@item If the matrix is not square, or any of the previous solvers flags
+a singular or near singular matrix, find a least squares solution using
+the @sc{lapack} xGELSD function.
+@end enumerate
+
+The user can force the type of the matrix with the @code{matrix_type}
+function.  This overcomes the cost of discovering the type of the matrix.
+However, it should be noted that identifying the type of the matrix incorrectly
+will lead to unpredictable results, and so @code{matrix_type} should be
+used with care.
+
+It should be noted that the test for whether a matrix is a candidate for
+Cholesky factorization, performed above and by the @code{matrix_type}
+function, does not give a certainty that the matrix is
+Hermitian.  However, the attempt to factorize the matrix will quickly
+flag a non-Hermitian matrix.
+
+@node Basic Matrix Functions
+@section Basic Matrix Functions
+
+@c ./DLD-FUNCTIONS/balance.cc
+@anchor{doc-balance}
+@deftypefn {Loadable Function} {@var{aa} =} balance (@var{a}, @var{opt})
+@deftypefnx {Loadable Function} {[@var{dd}, @var{aa}] =} balance (@var{a}, @var{opt})
+@deftypefnx {Loadable Function} {[@var{d}, @var{p}, @var{aa}] =} balance (@var{a}, @var{opt})
+@deftypefnx {Loadable Function} {[@var{cc}, @var{dd}, @var{aa}, @var{bb}] =} balance (@var{a}, @var{b}, @var{opt})
+
+Compute @code{aa = dd \ a * dd} in which @code{aa} is a matrix whose
+row and column norms are roughly equal in magnitude, and
+@code{dd} = @code{p * d}, in which @code{p} is a permutation
+matrix and @code{d} is a diagonal matrix of powers of two.  This allows
+the equilibration to be computed without roundoff.  Results of
+eigenvalue calculation are typically improved by balancing first.
+
+If two output values are requested, @code{balance} returns 
+the diagonal @code{d} and the permutation @code{p} separately as vectors.  
+In this case, @code{dd = eye(n)(:,p) * diag (d)}, where @code{n} is the matrix 
+size.  
+
+If four output values are requested, compute @code{aa = cc*a*dd} and
+@code{bb = cc*b*dd)}, in which @code{aa} and @code{bb} have non-zero
+elements of approximately the same magnitude and @code{cc} and @code{dd}
+are permuted diagonal matrices as in @code{dd} for the algebraic
+eigenvalue problem.
+
+The eigenvalue balancing option @code{opt} may be one of:
+
+@table @asis
+@item @code{"noperm"}, @code{"S"}
+Scale only; do not permute.
+
+@item @code{"noscal"}, @code{"P"}
+Permute only; do not scale.
+@end table
+
+Algebraic eigenvalue balancing uses standard @sc{lapack} routines.
+
+Generalized eigenvalue problem balancing uses Ward's algorithm
+(SIAM Journal on Scientific and Statistical Computing, 1981).
+@end deftypefn
+
+
+@c ./linear-algebra/cond.m
+@anchor{doc-cond}
+@deftypefn {Function File} {} cond (@var{a},@var{p})
+Compute the @var{p}-norm condition number of a matrix.  @code{cond (@var{a})} is
+defined as @code{norm (@var{a}, @var{p}) * norm (inv (@var{a}), @var{p})}.
+By default @code{@var{p}=2} is used which implies a (relatively slow)
+singular value decomposition.  Other possible selections are 
+@code{@var{p}= 1, Inf, inf, 'Inf', 'fro'} which are generally faster.
+@seealso{@ref{doc-condest,,condest}, @ref{doc-rcond,,rcond}, @ref{doc-norm,,norm}, @ref{doc-svd,,svd}}
+@end deftypefn
+
+
+@c ./DLD-FUNCTIONS/det.cc
+@anchor{doc-det}
+@deftypefn {Loadable Function} {[@var{d}, @var{rcond}] =} det (@var{a})
+Compute the determinant of @var{a} using @sc{lapack} for full and UMFPACK
+for sparse matrices.  Return an estimate of the reciprocal condition number
+if requested.
+@end deftypefn
+
+
+@c ./deprecated/dmult.m
+@anchor{doc-dmult}
+@deftypefn {Function File} {} dmult (@var{a}, @var{b})
+This function has been deprecated.  Use the direct syntax @code{diag(A)*B}
+which is more readable and now also more efficient.
+@end deftypefn
+
+
+@c ./linear-algebra/dot.m
+@anchor{doc-dot}
+@deftypefn {Function File} {} dot (@var{x}, @var{y}, @var{dim})
+Computes the dot product of two vectors.  If @var{x} and @var{y}
+are matrices, calculate the dot-product along the first 
+non-singleton dimension.  If the optional argument @var{dim} is
+given, calculate the dot-product along this dimension.
+@end deftypefn
+
+
+@c ./DLD-FUNCTIONS/eig.cc
+@anchor{doc-eig}
+@deftypefn  {Loadable Function} {@var{lambda} =} eig (@var{a})
+@deftypefnx {Loadable Function} {@var{lambda} =} eig (@var{a}, @var{b})
+@deftypefnx {Loadable Function} {[@var{v}, @var{lambda}] =} eig (@var{a})
+@deftypefnx {Loadable Function} {[@var{v}, @var{lambda}] =} eig (@var{a}, @var{b})
+The eigenvalues (and eigenvectors) of a matrix are computed in a several
+step process which begins with a Hessenberg decomposition, followed by a
+Schur decomposition, from which the eigenvalues are apparent.  The
+eigenvectors, when desired, are computed by further manipulations of the
+Schur decomposition.
+
+The eigenvalues returned by @code{eig} are not ordered.
+@seealso{@ref{doc-eigs,,eigs}}
+@end deftypefn
+
+
+@c ./DLD-FUNCTIONS/givens.cc
+@anchor{doc-givens}
+@deftypefn {Loadable Function} {@var{g} =} givens (@var{x}, @var{y})
+@deftypefnx {Loadable Function} {[@var{c}, @var{s}] =} givens (@var{x}, @var{y})
+@iftex
+@tex
+Return a $2\times 2$ orthogonal matrix
+$$
+ G = \left[\matrix{c & s\cr -s'& c\cr}\right]
+$$
+such that
+$$
+ G \left[\matrix{x\cr y}\right] = \left[\matrix{\ast\cr 0}\right]
+$$
+with $x$ and $y$ scalars.
+@end tex
+@end iftex
+@ifnottex
+Return a 2 by 2 orthogonal matrix
+@code{@var{g} = [@var{c} @var{s}; -@var{s}' @var{c}]} such that
+@code{@var{g} [@var{x}; @var{y}] = [*; 0]} with @var{x} and @var{y} scalars.
+@end ifnottex
+
+For example,
+
+@example
+@group
+givens (1, 1)
+     @result{}   0.70711   0.70711
+         -0.70711   0.70711
+@end group
+@end example
+@end deftypefn
+
+
+@c ./linear-algebra/planerot.m
+@anchor{doc-planerot}
+@deftypefn {Function File} {[@var{g}, @var{y}] =} planerot (@var{x})
+Given a two-element column vector, returns the
+@tex
+$2 \times 2$ orthogonal matrix
+@end tex
+@ifnottex
+2 by 2 orthogonal matrix
+@end ifnottex
+@var{G} such that
+@code{@var{y} = @var{g} * @var{x}} and @code{@var{y}(2) = 0}.
+@seealso{@ref{doc-givens,,givens}}
+@end deftypefn
+
+
+@c ./DLD-FUNCTIONS/inv.cc
+@anchor{doc-inv}
+@deftypefn {Loadable Function} {[@var{x}, @var{rcond}] =} inv (@var{a})
+@deftypefnx {Loadable Function} {[@var{x}, @var{rcond}] =} inverse (@var{a})
+Compute the inverse of the square matrix @var{a}.  Return an estimate
+of the reciprocal condition number if requested, otherwise warn of an
+ill-conditioned matrix if the reciprocal condition number is small.
+
+If called with a sparse matrix, then in general @var{x} will be a full
+matrix, and so if possible forming the inverse of a sparse matrix should
+be avoided.  It is significantly more accurate and faster to do
+@code{@var{y} = @var{a} \ @var{b}}, rather than
+@code{@var{y} = inv (@var{a}) * @var{b}}.
+@end deftypefn
+
+
+@c ./DLD-FUNCTIONS/matrix_type.cc
+@anchor{doc-matrix_type}
+@deftypefn {Loadable Function} {@var{type} =} matrix_type (@var{a})
+@deftypefnx {Loadable Function} {@var{a} =} matrix_type (@var{a}, @var{type})
+@deftypefnx {Loadable Function} {@var{a} =} matrix_type (@var{a}, 'upper', @var{perm})
+@deftypefnx {Loadable Function} {@var{a} =} matrix_type (@var{a}, 'lower', @var{perm})
+@deftypefnx {Loadable Function} {@var{a} =} matrix_type (@var{a}, 'banded', @var{nl}, @var{nu})
+Identify the matrix type or mark a matrix as a particular type.  This allows rapid
+for solutions of linear equations involving @var{a} to be performed.  Called with a
+single argument, @code{matrix_type} returns the type of the matrix and caches it for
+future use.  Called with more than one argument, @code{matrix_type} allows the type
+of the matrix to be defined.
+
+The possible matrix types depend on whether the matrix is full or sparse, and can be
+one of the following
+
+@table @asis
+@item 'unknown'
+Remove any previously cached matrix type, and mark type as unknown
+
+@item 'full'
+Mark the matrix as full.
+
+@item 'positive definite'
+Probable full positive definite matrix.
+
+@item 'diagonal'
+Diagonal Matrix.  (Sparse matrices only)
+
+@item 'permuted diagonal'
+Permuted Diagonal matrix.  The permutation does not need to be specifically
+indicated, as the structure of the matrix explicitly gives this.  (Sparse matrices
+only)
+
+@item 'upper'
+Upper triangular.  If the optional third argument @var{perm} is given, the matrix is
+assumed to be a permuted upper triangular with the permutations defined by the
+vector @var{perm}.
+
+@item 'lower'
+Lower triangular.  If the optional third argument @var{perm} is given, the matrix is
+assumed to be a permuted lower triangular with the permutations defined by the
+vector @var{perm}.
+
+@item 'banded'
+@itemx 'banded positive definite'
+Banded matrix with the band size of @var{nl} below the diagonal and @var{nu} above
+it.  If @var{nl} and @var{nu} are 1, then the matrix is tridiagonal and treated
+with specialized code.  In addition the matrix can be marked as probably a
+positive definite (Sparse matrices only)
+
+@item 'singular'
+The matrix is assumed to be singular and will be treated with a minimum norm solution
+
+@end table
+
+Note that the matrix type will be discovered automatically on the first attempt to
+solve a linear equation involving @var{a}.  Therefore @code{matrix_type} is only
+useful to give Octave hints of the matrix type.  Incorrectly defining the
+matrix type will result in incorrect results from solutions of linear equations,
+and so it is entirely the responsibility of the user to correctly identify the
+matrix type.
+
+Also the test for positive definiteness is a low-cost test for a hermitian
+matrix with a real positive diagonal.  This does not guarantee that the matrix
+is positive definite, but only that it is a probable candidate.  When such a
+matrix is factorized, a Cholesky factorization is first attempted, and if
+that fails the matrix is then treated with an LU factorization.  Once the
+matrix has been factorized, @code{matrix_type} will return the correct
+classification of the matrix.
+@end deftypefn
+
+
+@c data.cc
+@anchor{doc-norm}
+@deftypefn {Built-in Function} {} norm (@var{a}, @var{p}, @var{opt})
+Compute the p-norm of the matrix @var{a}.  If the second argument is
+missing, @code{p = 2} is assumed.
+
+If @var{a} is a matrix (or sparse matrix):
+
+@table @asis
+@item @var{p} = @code{1}
+1-norm, the largest column sum of the absolute values of @var{a}.
+
+@item @var{p} = @code{2}
+Largest singular value of @var{a}.
+
+@item @var{p} = @code{Inf} or @code{"inf"}
+@cindex infinity norm
+Infinity norm, the largest row sum of the absolute values of @var{a}.
+
+@item @var{p} = @code{"fro"}
+@cindex Frobenius norm
+Frobenius norm of @var{a}, @code{sqrt (sum (diag (@var{a}' * @var{a})))}.
+
+@item other @var{p}, @code{@var{p} > 1}
+@cindex general p-norm 
+maximum @code{norm (A*x, p)} such that @code{norm (x, p) == 1}
+@end table
+
+If @var{a} is a vector or a scalar:
+
+@table @asis
+@item @var{p} = @code{Inf} or @code{"inf"}
+@code{max (abs (@var{a}))}.
+
+@item @var{p} = @code{-Inf}
+@code{min (abs (@var{a}))}.
+
+@item @var{p} = @code{"fro"}
+Frobenius norm of @var{a}, @code{sqrt (sumsq (abs (a)))}.
+
+@item @var{p} = 0
+Hamming norm - the number of nonzero elements.
+
+@item other @var{p}, @code{@var{p} > 1}
+p-norm of @var{a}, @code{(sum (abs (@var{a}) .^ @var{p})) ^ (1/@var{p})}.
+
+@item other @var{p} @code{@var{p} < 1}
+the p-pseudonorm defined as above.
+@end table
+
+If @code{"rows"} is given as @var{opt}, the norms of all rows of the matrix @var{a} are
+returned as a column vector.  Similarly, if @code{"columns"} or @code{"cols"} is passed
+column norms are computed.
+@seealso{@ref{doc-cond,,cond}, @ref{doc-svd,,svd}}
+@end deftypefn
+
+
+@c ./linear-algebra/null.m
+@anchor{doc-null}
+@deftypefn {Function File} {} null (@var{a}, @var{tol})
+Return an orthonormal basis of the null space of @var{a}.
+
+The dimension of the null space is taken as the number of singular
+values of @var{a} not greater than @var{tol}.  If the argument @var{tol}
+is missing, it is computed as
+
+@example
+max (size (@var{a})) * max (svd (@var{a})) * eps
+@end example
+@end deftypefn
+
+
+@c ./linear-algebra/orth.m
+@anchor{doc-orth}
+@deftypefn {Function File} {} orth (@var{a}, @var{tol})
+Return an orthonormal basis of the range space of @var{a}.
+
+The dimension of the range space is taken as the number of singular
+values of @var{a} greater than @var{tol}.  If the argument @var{tol} is
+missing, it is computed as
+
+@example
+max (size (@var{a})) * max (svd (@var{a})) * eps
+@end example
+@end deftypefn
+
+
+@c ./DLD-FUNCTIONS/pinv.cc
+@anchor{doc-pinv}
+@deftypefn {Loadable Function} {} pinv (@var{x}, @var{tol})
+Return the pseudoinverse of @var{x}.  Singular values less than
+@var{tol} are ignored.  
+
+If the second argument is omitted, it is assumed that
+
+@example
+tol = max (size (@var{x})) * sigma_max (@var{x}) * eps,
+@end example
+
+@noindent
+where @code{sigma_max (@var{x})} is the maximal singular value of @var{x}.
+@end deftypefn
+
+
+@c ./linear-algebra/rank.m
+@anchor{doc-rank}
+@deftypefn {Function File} {} rank (@var{a}, @var{tol})
+Compute the rank of @var{a}, using the singular value decomposition.
+The rank is taken to be the number of singular values of @var{a} that
+are greater than the specified tolerance @var{tol}.  If the second
+argument is omitted, it is taken to be
+
+@example
+tol = max (size (@var{a})) * sigma(1) * eps;
+@end example
+
+@noindent
+where @code{eps} is machine precision and @code{sigma(1)} is the largest
+singular value of @var{a}.
+@end deftypefn
+
+
+@c ./DLD-FUNCTIONS/rcond.cc
+@anchor{doc-rcond}
+@deftypefn {Loadable Function} {@var{c} =} rcond (@var{a})
+Compute the 1-norm estimate of the reciprocal condition as returned
+by @sc{lapack}.  If the matrix is well-conditioned then @var{c} will be near
+1 and if the matrix is poorly conditioned it will be close to zero.
+
+The matrix @var{a} must not be sparse.  If the matrix is sparse then
+@code{condest (@var{a})} or @code{rcond (full (@var{a}))} should be used
+instead.
+@seealso{@ref{doc-inv,,inv}}
+@end deftypefn
+
+
+@c ./linear-algebra/trace.m
+@anchor{doc-trace}
+@deftypefn {Function File} {} trace (@var{a})
+Compute the trace of @var{a}, @code{sum (diag (@var{a}))}.
+@end deftypefn
+
+
+@c ./linear-algebra/rref.m
+@anchor{doc-rref}
+@deftypefn {Function File} {[@var{r}, @var{k}] =} rref (@var{a}, @var{tol})
+
+Returns the reduced row echelon form of @var{a}.  @var{tol} defaults
+to @code{eps * max (size (@var{a})) * norm (@var{a}, inf)}.
+
+Called with two return arguments, @var{k} returns the vector of
+"bound variables", which are those columns on which elimination 
+has been performed.
+
+@end deftypefn
+
+
+@node Matrix Factorizations
+@section Matrix Factorizations
+
+@c ./DLD-FUNCTIONS/chol.cc
+@anchor{doc-chol}
+@deftypefn {Loadable Function} {@var{r} =} chol (@var{a})
+@deftypefnx {Loadable Function} {[@var{r}, @var{p}] =} chol (@var{a})
+@deftypefnx {Loadable Function} {[@var{r}, @var{p}, @var{q}] =} chol (@var{s})
+@deftypefnx {Loadable Function} {[@var{r}, @var{p}, @var{q}] =} chol (@var{s}, 'vector')
+@deftypefnx {Loadable Function} {[@var{l}, @dots{}] =} chol (@dots{}, 'lower')
+@cindex Cholesky factorization
+Compute the Cholesky factor, @var{r}, of the symmetric positive definite
+matrix @var{a}, where
+@iftex
+@tex
+$ R^T R = A $.
+@end tex
+@end iftex
+@ifnottex
+
+@example
+@var{r}' * @var{r} = @var{a}.
+@end example
+@end ifnottex
+
+Called with one output argument @code{chol} fails if @var{a} or @var{s} is
+not positive definite.  With two or more output arguments @var{p} flags
+whether the matrix was positive definite and @code{chol} does not fail.  A
+zero value indicated that the matrix was positive definite and the @var{r}
+gives the factorization, and @var{p} will have a positive value otherwise.
+
+If called with 3 outputs then a sparsity preserving row/column permutation
+is applied to @var{a} prior to the factorization.  That is @var{r}
+is the factorization of @code{@var{a}(@var{q},@var{q})} such that
+@iftex
+@tex
+$ R^T R = Q^T A Q$.
+@end tex
+@end iftex
+@ifnottex
+
+@example
+@var{r}' * @var{r} = @var{q}' * @var{a} * @var{q}.
+@end example
+@end ifnottex
+
+The sparsity preserving permutation is generally returned as a matrix.
+However, given the flag 'vector', @var{q} will be returned as a vector
+such that
+@iftex
+@tex
+$ R^T R = A (Q, Q)$.
+@end tex
+@end iftex
+@ifnottex
+
+@example
+@var{r}' * @var{r} = a (@var{q}, @var{q}).
+@end example
+@end ifnottex
+
+Called with either a sparse or full matrix and using the 'lower' flag,
+@code{chol} returns the lower triangular factorization such that
+@iftex
+@tex
+$ L L^T = A $.
+@end tex
+@end iftex
+@ifnottex
+
+@example
+@var{l} * @var{l}' = @var{a}.
+@end example
+@end ifnottex
+
+In general the lower triangular factorization is significantly faster for
+sparse matrices.
+@seealso{@ref{doc-cholinv,,cholinv}, @ref{doc-chol2inv,,chol2inv}}
+@end deftypefn
+
+
+@c ./DLD-FUNCTIONS/chol.cc
+@anchor{doc-cholinv}
+@deftypefn {Loadable Function} {} cholinv (@var{a})
+Use the Cholesky factorization to compute the inverse of the
+symmetric positive definite matrix @var{a}.
+@seealso{@ref{doc-chol,,chol}, @ref{doc-chol2inv,,chol2inv}}
+@end deftypefn
+
+
+@c ./DLD-FUNCTIONS/chol.cc
+@anchor{doc-chol2inv}
+@deftypefn {Loadable Function} {} chol2inv (@var{u})
+Invert a symmetric, positive definite square matrix from its Cholesky
+decomposition, @var{u}.  Note that @var{u} should be an upper-triangular
+matrix with positive diagonal elements.  @code{chol2inv (@var{u})}
+provides @code{inv (@var{u}'*@var{u})} but it is much faster than
+using @code{inv}.
+@seealso{@ref{doc-chol,,chol}, @ref{doc-cholinv,,cholinv}}
+@end deftypefn
+
+
+@c ./DLD-FUNCTIONS/chol.cc
+@anchor{doc-cholupdate}
+@deftypefn {Loadable Function} {[@var{R1}, @var{info}] =} cholupdate (@var{R}, @var{u}, @var{op})
+Update or downdate a Cholesky factorization.  Given an upper triangular
+matrix @var{R} and a column vector @var{u}, attempt to determine another
+upper triangular matrix @var{R1} such that
+@itemize @bullet
+@item
+@var{R1}'*@var{R1} = @var{R}'*@var{R} + @var{u}*@var{u}'
+if @var{op} is "+"
+@item
+@var{R1}'*@var{R1} = @var{R}'*@var{R} - @var{u}*@var{u}'
+if @var{op} is "-"
+@end itemize
+
+If @var{op} is "-", @var{info} is set to
+@itemize
+@item 0 if the downdate was successful,
+@item 1 if @var{R}'*@var{R} - @var{u}*@var{u}' is not positive definite,
+@item 2 if @var{R} is singular.
+@end itemize
+
+If @var{info} is not present, an error message is printed in cases 1 and 2.
+@seealso{@ref{doc-chol,,chol}, @ref{doc-qrupdate,,qrupdate}}
+@end deftypefn
+
+
+@c ./DLD-FUNCTIONS/chol.cc
+@anchor{doc-cholinsert}
+@deftypefn {Loadable Function} {[@var{R1}, @var{info}] =} cholinsert (@var{R}, @var{j}, @var{u})
+Given a Cholesky@tie{}factorization of a real symmetric or complex hermitian
+positive definite matrix @w{@var{A} = @var{R}'*@var{R}}, @var{R}@tie{}upper triangular,
+return the Cholesky@tie{}factorization of
+@var{A1}, where @w{A1(p,p) = A}, @w{A1(:,j) = A1(j,:)' = u} and
+@w{p = [1:j-1,j+1:n+1]}.  @w{u(j)} should be positive.
+On return, @var{info} is set to
+@itemize
+@item 0 if the insertion was successful,
+@item 1 if @var{A1} is not positive definite,
+@item 2 if @var{R} is singular.
+@end itemize
+
+If @var{info} is not present, an error message is printed in cases 1 and 2.
+@seealso{@ref{doc-chol,,chol}, @ref{doc-cholupdate,,cholupdate}, @ref{doc-choldelete,,choldelete}}
+@end deftypefn
+
+
+@c ./DLD-FUNCTIONS/chol.cc
+@anchor{doc-choldelete}
+@deftypefn {Loadable Function} {@var{R1} =} choldelete (@var{R}, @var{j})
+Given a Cholesky@tie{}factorization of a real symmetric or complex hermitian
+positive definite matrix @w{@var{A} = @var{R}'*@var{R}}, @var{R}@tie{}upper triangular,
+return the Cholesky@tie{}factorization of @w{A(p,p)}, where @w{p = [1:j-1,j+1:n+1]}.
+@seealso{@ref{doc-chol,,chol}, @ref{doc-cholupdate,,cholupdate}, @ref{doc-cholinsert,,cholinsert}}
+@end deftypefn
+
+
+@c ./DLD-FUNCTIONS/chol.cc
+@anchor{doc-cholshift}
+@deftypefn {Loadable Function} {@var{R1} =} cholshift (@var{R}, @var{i}, @var{j})
+Given a Cholesky@tie{}factorization of a real symmetric or complex hermitian
+positive definite matrix @w{@var{A} = @var{R}'*@var{R}}, @var{R}@tie{}upper triangular,
+return the Cholesky@tie{}factorization of
+@w{@var{A}(p,p)}, where @w{p} is the permutation @*
+@code{p = [1:i-1, shift(i:j, 1), j+1:n]} if @w{@var{i} < @var{j}} @*
+ or @*
+@code{p = [1:j-1, shift(j:i,-1), i+1:n]} if @w{@var{j} < @var{i}}.  @*
+
+@seealso{@ref{doc-chol,,chol}, @ref{doc-cholinsert,,cholinsert}, @ref{doc-choldelete,,choldelete}}
+@end deftypefn
+
+
+@c ./DLD-FUNCTIONS/hess.cc
+@anchor{doc-hess}
+@deftypefn {Loadable Function} {@var{h} =} hess (@var{a})
+@deftypefnx {Loadable Function} {[@var{p}, @var{h}] =} hess (@var{a})
+@cindex Hessenberg decomposition
+Compute the Hessenberg decomposition of the matrix @var{a}.
+
+The Hessenberg decomposition is usually used as the first step in an
+eigenvalue computation, but has other applications as well (see Golub,
+Nash, and Van Loan, IEEE Transactions on Automatic Control, 1979).  The
+Hessenberg decomposition is
+@iftex
+@tex
+$$
+A = PHP^T
+$$
+where $P$ is a square unitary matrix ($P^HP = I$), and $H$
+is upper Hessenberg ($H_{i,j} = 0, \forall i \ge j+1$).
+@end tex
+@end iftex
+@ifnottex
+@code{p * h * p' = a} where @code{p} is a square unitary matrix
+(@code{p' * p = I}, using complex-conjugate transposition) and @code{h}
+is upper Hessenberg (@code{i >= j+1 => h (i, j) = 0}).
+@end ifnottex
+@end deftypefn
+
+
+@c ./DLD-FUNCTIONS/lu.cc
+@anchor{doc-lu}
+@deftypefn {Loadable Function} {[@var{l}, @var{u}, @var{p}] =} lu (@var{a})
+@deftypefnx {Loadable Function} {[@var{l}, @var{u}, @var{p}, @var{q}] =} lu (@var{s})
+@deftypefnx {Loadable Function} {[@var{l}, @var{u}, @var{p}, @var{q}, @var{r}] =} lu (@var{s})
+@deftypefnx {Loadable Function} {[@dots{}] =} lu (@var{s}, @var{thres})
+@deftypefnx {Loadable Function} {@var{y} =} lu (@dots{})
+@deftypefnx {Loadable Function} {[@dots{}] =} lu (@dots{}, 'vector')
+@cindex LU decomposition
+Compute the LU decomposition of @var{a}.  If @var{a} is full subroutines from
+@sc{lapack} are used and if @var{a} is sparse then UMFPACK is used.  The
+result is returned in a permuted form, according to the optional return
+value @var{p}.  For example, given the matrix @code{a = [1, 2; 3, 4]},
+
+@example
+[l, u, p] = lu (a)
+@end example
+
+@noindent
+returns
+
+@example
+@group
+l =
+
+  1.00000  0.00000
+  0.33333  1.00000
+
+u =
+
+  3.00000  4.00000
+  0.00000  0.66667
+
+p =
+
+  0  1
+  1  0
+@end group
+@end example
+
+The matrix is not required to be square.
+
+Called with two or three output arguments and a spare input matrix,
+then @dfn{lu} does not attempt to perform sparsity preserving column
+permutations.  Called with a fourth output argument, the sparsity
+preserving column transformation @var{Q} is returned, such that
+@code{@var{p} * @var{a} * @var{q} = @var{l} * @var{u}}.
+
+Called with a fifth output argument and a sparse input matrix, then
+@dfn{lu} attempts to use a scaling factor @var{r} on the input matrix
+such that @code{@var{p} * (@var{r} \ @var{a}) * @var{q} = @var{l} * @var{u}}.
+This typically leads to a sparser and more stable factorization.
+
+An additional input argument @var{thres}, that defines the pivoting
+threshold can be given.  @var{thres} can be a scalar, in which case
+it defines UMFPACK pivoting tolerance for both symmetric and unsymmetric
+cases.  If @var{thres} is a two element vector, then the first element
+defines the pivoting tolerance for the unsymmetric UMFPACK pivoting
+strategy and the second the symmetric strategy.  By default, the values
+defined by @code{spparms} are used and are by default @code{[0.1, 0.001]}.
+
+Given the string argument 'vector', @dfn{lu} returns the values of @var{p}
+@var{q} as vector values, such that for full matrix, @code{@var{a}
+(@var{p},:) = @var{l} * @var{u}}, and @code{@var{r}(@var{p},:) * @var{a}
+(:, @var{q}) = @var{l} * @var{u}}.
+
+With two output arguments, returns the permuted forms of the upper and
+lower triangular matrices, such that @code{@var{a} = @var{l} * @var{u}}.
+With one output argument @var{y}, then the matrix returned by the @sc{lapack}
+routines is returned.  If the input matrix is sparse then the matrix @var{l}
+is embedded into @var{u} to give a return value similar to the full case.
+For both full and sparse matrices, @dfn{lu} looses the permutation
+information.
+@end deftypefn
+
+
+@c ./DLD-FUNCTIONS/qr.cc
+@anchor{doc-qr}
+@deftypefn {Loadable Function} {[@var{q}, @var{r}, @var{p}] =} qr (@var{a})
+@deftypefnx {Loadable Function} {[@var{q}, @var{r}, @var{p}] =} qr (@var{a}, '0')
+@cindex QR factorization
+Compute the QR factorization of @var{a}, using standard @sc{lapack}
+subroutines.  For example, given the matrix @code{a = [1, 2; 3, 4]},
+
+@example
+[q, r] = qr (a)
+@end example
+
+@noindent
+returns
+
+@example
+@group
+q =
+
+  -0.31623  -0.94868
+  -0.94868   0.31623
+
+r =
+
+  -3.16228  -4.42719
+   0.00000  -0.63246
+@end group
+@end example
+
+The @code{qr} factorization has applications in the solution of least
+squares problems
+@iftex
+@tex
+$$
+\min_x \left\Vert A x - b \right\Vert_2
+$$
+@end tex
+@end iftex
+@ifnottex
+
+@example
+@code{min norm(A x - b)}
+@end example
+
+@end ifnottex
+for overdetermined systems of equations (i.e.,
+@iftex
+@tex
+$A$
+@end tex
+@end iftex
+@ifnottex
+@code{a}
+@end ifnottex
+ is a tall, thin matrix).  The QR factorization is
+@iftex
+@tex
+$QR = A$ where $Q$ is an orthogonal matrix and $R$ is upper triangular.
+@end tex
+@end iftex
+@ifnottex
+@code{q * r = a} where @code{q} is an orthogonal matrix and @code{r} is
+upper triangular.
+@end ifnottex
+
+If given a second argument of '0', @code{qr} returns an economy-sized
+QR factorization, omitting zero rows of @var{R} and the corresponding
+columns of @var{Q}.
+
+If the matrix @var{a} is full, the permuted QR factorization
+@code{[@var{q}, @var{r}, @var{p}] = qr (@var{a})} forms the QR factorization
+such that the diagonal entries of @code{r} are decreasing in magnitude
+order.  For example,given the matrix @code{a = [1, 2; 3, 4]},
+
+@example
+[q, r, p] = qr(a)
+@end example
+
+@noindent
+returns
+
+@example
+@group
+q = 
+
+  -0.44721  -0.89443
+  -0.89443   0.44721
+
+r =
+
+  -4.47214  -3.13050
+   0.00000   0.44721
+
+p =
+
+   0  1
+   1  0
+@end group
+@end example
+
+The permuted @code{qr} factorization @code{[q, r, p] = qr (a)}
+factorization allows the construction of an orthogonal basis of
+@code{span (a)}.
+
+If the matrix @var{a} is sparse, then compute the sparse QR factorization
+of @var{a}, using @sc{CSparse}.  As the matrix @var{Q} is in general a full
+matrix, this function returns the @var{Q}-less factorization @var{r} of
+@var{a}, such that @code{@var{r} = chol (@var{a}' * @var{a})}.
+
+If the final argument is the scalar @code{0} and the number of rows is
+larger than the number of columns, then an economy factorization is
+returned.  That is @var{r} will have only @code{size (@var{a},1)} rows.
+
+If an additional matrix @var{b} is supplied, then @code{qr} returns
+@var{c}, where @code{@var{c} = @var{q}' * @var{b}}.  This allows the
+least squares approximation of @code{@var{a} \ @var{b}} to be calculated
+as
+
+@example
+@group
+[@var{c},@var{r}] = spqr (@var{a},@var{b})
+@var{x} = @var{r} \ @var{c}
+@end group
+@end example
+@end deftypefn
+
+
+@c ./DLD-FUNCTIONS/qr.cc
+@anchor{doc-qrupdate}
+@deftypefn {Loadable Function} {[@var{Q1}, @var{R1}] =} qrupdate (@var{Q}, @var{R}, @var{u}, @var{v})
+Given a QR@tie{}factorization of a real or complex matrix
+@w{@var{A} = @var{Q}*@var{R}}, @var{Q}@tie{}unitary and
+@var{R}@tie{}upper trapezoidal, return the QR@tie{}factorization
+of @w{@var{A} + @var{u}*@var{v}'}, where @var{u} and @var{v} are
+column vectors (rank-1 update) or matrices with equal number of columns
+(rank-k update).  Notice that the latter case is done as a sequence of rank-1 updates;
+thus, for k large enough, it will be both faster and more accurate to recompute
+the factorization from scratch.
+
+The QR factorization supplied may be either full
+(Q is square) or economized (R is square).
+
+@seealso{@ref{doc-qr,,qr}, @ref{doc-qrinsert,,qrinsert}, @ref{doc-qrdelete,,qrdelete}}
+@end deftypefn
+
+
+@c ./DLD-FUNCTIONS/qr.cc
+@anchor{doc-qrinsert}
+@deftypefn {Loadable Function} {[@var{Q1}, @var{R1}] =} qrinsert (@var{Q}, @var{R}, @var{j}, @var{x}, @var{orient})
+Given a QR@tie{}factorization of a real or complex matrix
+@w{@var{A} = @var{Q}*@var{R}}, @var{Q}@tie{}unitary and
+@var{R}@tie{}upper trapezoidal, return the QR@tie{}factorization of
+@w{[A(:,1:j-1) x A(:,j:n)]}, where @var{u} is a column vector to be
+inserted into @var{A} (if @var{orient} is @code{"col"}), or the
+QR@tie{}factorization of @w{[A(1:j-1,:);x;A(:,j:n)]}, where @var{x}
+is a row vector to be inserted into @var{A} (if @var{orient} is
+@code{"row"}).
+
+The default value of @var{orient} is @code{"col"}.
+If @var{orient} is @code{"col"},
+@var{u} may be a matrix and @var{j} an index vector
+resulting in the QR@tie{}factorization of a matrix @var{B} such that
+@w{B(:,@var{j})} gives @var{u} and @w{B(:,@var{j}) = []} gives @var{A}.
+Notice that the latter case is done as a sequence of k insertions;
+thus, for k large enough, it will be both faster and more accurate to recompute
+the factorization from scratch.
+
+If @var{orient} is @code{"col"},
+the QR factorization supplied may be either full
+(Q is square) or economized (R is square).
+
+If @var{orient} is @code{"row"}, full factorization is needed.
+@seealso{@ref{doc-qr,,qr}, @ref{doc-qrupdate,,qrupdate}, @ref{doc-qrdelete,,qrdelete}}
+@end deftypefn
+
+
+@c ./DLD-FUNCTIONS/qr.cc
+@anchor{doc-qrdelete}
+@deftypefn {Loadable Function} {[@var{Q1}, @var{R1}] =} qrdelete (@var{Q}, @var{R}, @var{j}, @var{orient})
+Given a QR@tie{}factorization of a real or complex matrix
+@w{@var{A} = @var{Q}*@var{R}}, @var{Q}@tie{}unitary and
+@var{R}@tie{}upper trapezoidal, return the QR@tie{}factorization of
+@w{[A(:,1:j-1) A(:,j+1:n)]}, i.e., @var{A} with one column deleted
+(if @var{orient} is "col"), or the QR@tie{}factorization of
+@w{[A(1:j-1,:);A(:,j+1:n)]}, i.e., @var{A} with one row deleted (if
+@var{orient} is "row").
+
+The default value of @var{orient} is "col".
+
+If @var{orient} is @code{"col"},
+@var{j} may be an index vector
+resulting in the QR@tie{}factorization of a matrix @var{B} such that
+@w{A(:,@var{j}) = []} gives @var{B}.
+Notice that the latter case is done as a sequence of k deletions;
+thus, for k large enough, it will be both faster and more accurate to recompute
+the factorization from scratch.
+
+If @var{orient} is @code{"col"},
+the QR factorization supplied may be either full
+(Q is square) or economized (R is square).
+
+If @var{orient} is @code{"row"}, full factorization is needed.
+@seealso{@ref{doc-qr,,qr}, @ref{doc-qrinsert,,qrinsert}, @ref{doc-qrupdate,,qrupdate}}
+@end deftypefn
+
+
+@c ./DLD-FUNCTIONS/qr.cc
+@anchor{doc-qrshift}
+@deftypefn {Loadable Function} {[@var{Q1}, @var{R1}] =} qrshift (@var{Q}, @var{R}, @var{i}, @var{j})
+Given a QR@tie{}factorization of a real or complex matrix
+@w{@var{A} = @var{Q}*@var{R}}, @var{Q}@tie{}unitary and
+@var{R}@tie{}upper trapezoidal, return the QR@tie{}factorization
+of @w{@var{A}(:,p)}, where @w{p} is the permutation @*
+@code{p = [1:i-1, shift(i:j, 1), j+1:n]} if @w{@var{i} < @var{j}} @*
+ or @*
+@code{p = [1:j-1, shift(j:i,-1), i+1:n]} if @w{@var{j} < @var{i}}.  @*
+
+@seealso{@ref{doc-qr,,qr}, @ref{doc-qrinsert,,qrinsert}, @ref{doc-qrdelete,,qrdelete}}
+@end deftypefn
+
+
+@c ./DLD-FUNCTIONS/qz.cc
+@anchor{doc-qz}
+@deftypefn {Loadable Function} {@var{lambda} =} qz (@var{a}, @var{b})
+Generalized eigenvalue problem @math{A x = s B x},
+@var{QZ} decomposition.  There are three ways to call this function:
+@enumerate
+@item @code{lambda = qz(A,B)}
+
+Computes the generalized eigenvalues
+@iftex
+@tex
+$\lambda$
+@end tex
+@end iftex
+@ifnottex
+@var{lambda}
+@end ifnottex
+of @math{(A - s B)}.
+@item @code{[AA, BB, Q, Z, V, W, lambda] = qz (A, B)}
+
+Computes qz decomposition, generalized eigenvectors, and 
+generalized eigenvalues of @math{(A - sB)}
+@iftex
+@tex
+$$ AV = BV{ \rm diag }(\lambda) $$
+$$ W^T A = { \rm diag }(\lambda)W^T B $$
+$$ AA = Q^T AZ, BB = Q^T BZ $$
+@end tex
+@end iftex
+@ifnottex
+@example
+@group
+
+    A*V = B*V*diag(lambda)
+    W'*A = diag(lambda)*W'*B
+    AA = Q'*A*Z, BB = Q'*B*Z
+
+@end group
+@end example
+@end ifnottex
+with @var{Q} and @var{Z} orthogonal (unitary)= @var{I}
+
+@item @code{[AA,BB,Z@{, lambda@}] = qz(A,B,opt)}
+
+As in form [2], but allows ordering of generalized eigenpairs
+for (e.g.) solution of discrete time algebraic Riccati equations.
+Form 3 is not available for complex matrices, and does not compute
+the generalized eigenvectors @var{V}, @var{W}, nor the orthogonal matrix @var{Q}.
+@table @var
+@item opt
+for ordering eigenvalues of the GEP pencil.  The leading block
+of the revised pencil contains all eigenvalues that satisfy:
+@table @code
+@item "N"
+= unordered (default) 
+
+@item "S"
+= small: leading block has all |lambda| <=1 
+
+@item "B"
+= big: leading block has all |lambda| >= 1 
+
+@item "-"
+= negative real part: leading block has all eigenvalues
+in the open left half-plane
+
+@item "+"
+= non-negative real part: leading block has all eigenvalues
+in the closed right half-plane
+@end table
+@end table
+@end enumerate
+
+Note: qz performs permutation balancing, but not scaling (see balance).
+Order of output arguments was selected for compatibility with @sc{matlab}
+
+@seealso{@ref{doc-balance,,balance}, @ref{doc-eig,,eig}, @ref{doc-schur,,schur}}
+@end deftypefn
+
+
+@c ./linear-algebra/qzhess.m
+@anchor{doc-qzhess}
+@deftypefn {Function File} {[@var{aa}, @var{bb}, @var{q}, @var{z}] =} qzhess (@var{a}, @var{b})
+Compute the Hessenberg-triangular decomposition of the matrix pencil
+@code{(@var{a}, @var{b})}, returning
+@code{@var{aa} = @var{q} * @var{a} * @var{z}},
+@code{@var{bb} = @var{q} * @var{b} * @var{z}}, with @var{q} and @var{z}
+orthogonal.  For example,
+
+@example
+@group
+[aa, bb, q, z] = qzhess ([1, 2; 3, 4], [5, 6; 7, 8])
+     @result{} aa = [ -3.02244, -4.41741;  0.92998,  0.69749 ]
+     @result{} bb = [ -8.60233, -9.99730;  0.00000, -0.23250 ]
+     @result{}  q = [ -0.58124, -0.81373; -0.81373,  0.58124 ]
+     @result{}  z = [ 1, 0; 0, 1 ]
+@end group
+@end example
+
+The Hessenberg-triangular decomposition is the first step in
+Moler and Stewart's QZ decomposition algorithm.
+
+Algorithm taken from Golub and Van Loan, @cite{Matrix Computations, 2nd
+edition}.
+@end deftypefn
+
+
+@c ./DLD-FUNCTIONS/schur.cc
+@anchor{doc-schur}
+@deftypefn {Loadable Function} {@var{s} =} schur (@var{a})
+@deftypefnx {Loadable Function} {[@var{u}, @var{s}] =} schur (@var{a}, @var{opt})
+@cindex Schur decomposition
+The Schur decomposition is used to compute eigenvalues of a
+square matrix, and has applications in the solution of algebraic
+Riccati equations in control (see @code{are} and @code{dare}).
+@code{schur} always returns
+@iftex
+@tex
+$S = U^T A U$
+@end tex
+@end iftex
+@ifnottex
+@code{s = u' * a * u}
+@end ifnottex
+where
+@iftex
+@tex
+$U$
+@end tex
+@end iftex
+@ifnottex
+@code{u}
+@end ifnottex
+ is a unitary matrix
+@iftex
+@tex
+($U^T U$ is identity)
+@end tex
+@end iftex
+@ifnottex
+(@code{u'* u} is identity)
+@end ifnottex
+and
+@iftex
+@tex
+$S$
+@end tex
+@end iftex
+@ifnottex
+@code{s}
+@end ifnottex
+is upper triangular.  The eigenvalues of
+@iftex
+@tex
+$A$ (and $S$)
+@end tex
+@end iftex
+@ifnottex
+@code{a} (and @code{s})
+@end ifnottex
+are the diagonal elements of
+@iftex
+@tex
+$S$.
+@end tex
+@end iftex
+@ifnottex
+@code{s}.
+@end ifnottex
+If the matrix
+@iftex
+@tex
+$A$
+@end tex
+@end iftex
+@ifnottex
+@code{a}
+@end ifnottex
+is real, then the real Schur decomposition is computed, in which the
+matrix
+@iftex
+@tex
+$U$
+@end tex
+@end iftex
+@ifnottex
+@code{u}
+@end ifnottex
+is orthogonal and
+@iftex
+@tex
+$S$
+@end tex
+@end iftex
+@ifnottex
+@code{s}
+@end ifnottex
+is block upper triangular
+with blocks of size at most
+@iftex
+@tex
+$2\times 2$
+@end tex
+@end iftex
+@ifnottex
+@code{2 x 2}
+@end ifnottex
+along the diagonal.  The diagonal elements of
+@iftex
+@tex
+$S$
+@end tex
+@end iftex
+@ifnottex
+@code{s}
+@end ifnottex
+(or the eigenvalues of the
+@iftex
+@tex
+$2\times 2$
+@end tex
+@end iftex
+@ifnottex
+@code{2 x 2}
+@end ifnottex
+blocks, when
+appropriate) are the eigenvalues of
+@iftex
+@tex
+$A$
+@end tex
+@end iftex
+@ifnottex
+@code{a}
+@end ifnottex
+and
+@iftex
+@tex
+$S$.
+@end tex
+@end iftex
+@ifnottex
+@code{s}.
+@end ifnottex
+
+The eigenvalues are optionally ordered along the diagonal according to
+the value of @code{opt}.  @code{opt = "a"} indicates that all
+eigenvalues with negative real parts should be moved to the leading
+block of
+@iftex
+@tex
+$S$
+@end tex
+@end iftex
+@ifnottex
+@code{s}
+@end ifnottex
+(used in @code{are}), @code{opt = "d"} indicates that all eigenvalues
+with magnitude less than one should be moved to the leading block of
+@iftex
+@tex
+$S$
+@end tex
+@end iftex
+@ifnottex
+@code{s}
+@end ifnottex
+(used in @code{dare}), and @code{opt = "u"}, the default, indicates that
+no ordering of eigenvalues should occur.  The leading
+@iftex
+@tex
+$k$
+@end tex
+@end iftex
+@ifnottex
+@code{k}
+@end ifnottex
+columns of
+@iftex
+@tex
+$U$
+@end tex
+@end iftex
+@ifnottex
+@code{u}
+@end ifnottex
+always span the
+@iftex
+@tex
+$A$-invariant
+@end tex
+@end iftex
+@ifnottex
+@code{a}-invariant
+@end ifnottex
+subspace corresponding to the
+@iftex
+@tex
+$k$
+@end tex
+@end iftex
+@ifnottex
+@code{k}
+@end ifnottex
+leading eigenvalues of
+@iftex
+@tex
+$S$.
+@end tex
+@end iftex
+@ifnottex
+@code{s}.
+@end ifnottex
+@end deftypefn
+
+
+@c ./linear-algebra/subspace.m
+@anchor{doc-subspace}
+@deftypefn {Function File} {@var{angle} =} subspace (@var{a}, @var{B})
+Determine the largest principal angle between two subspaces
+spanned by columns of matrices @var{a} and @var{b}.
+@end deftypefn
+
+
+@c ./DLD-FUNCTIONS/svd.cc
+@anchor{doc-svd}
+@deftypefn {Loadable Function} {@var{s} =} svd (@var{a})
+@deftypefnx {Loadable Function} {[@var{u}, @var{s}, @var{v}] =} svd (@var{a})
+@cindex singular value decomposition
+Compute the singular value decomposition of @var{a}
+@iftex
+@tex
+$$
+ A = U S V^H
+$$
+@end tex
+@end iftex
+@ifnottex
+
+@example
+A = U*S*V'
+@end example
+@end ifnottex
+
+The function @code{svd} normally returns the vector of singular values.
+If asked for three return values, it computes
+@iftex
+@tex
+$U$, $S$, and $V$.
+@end tex
+@end iftex
+@ifnottex
+U, S, and V.
+@end ifnottex
+For example,
+
+@example
+svd (hilb (3))
+@end example
+
+@noindent
+returns
+
+@example
+@group
+ans =
+
+  1.4083189
+  0.1223271
+  0.0026873
+@end group
+@end example
+
+@noindent
+and
+
+@example
+[u, s, v] = svd (hilb (3))
+@end example
+
+@noindent
+returns
+
+@example
+@group
+u =
+
+  -0.82704   0.54745   0.12766
+  -0.45986  -0.52829  -0.71375
+  -0.32330  -0.64901   0.68867
+
+s =
+
+  1.40832  0.00000  0.00000
+  0.00000  0.12233  0.00000
+  0.00000  0.00000  0.00269
+
+v =
+
+  -0.82704   0.54745   0.12766
+  -0.45986  -0.52829  -0.71375
+  -0.32330  -0.64901   0.68867
+@end group
+@end example
+
+If given a second argument, @code{svd} returns an economy-sized
+decomposition, eliminating the unnecessary rows or columns of @var{u} or
+@var{v}.
+@end deftypefn
+
+
+@c FIXME -- should there be a new section here?
+
+@c ./linear-algebra/housh.m
+@anchor{doc-housh}
+@deftypefn {Function File} {[@var{housv}, @var{beta}, @var{zer}] =} housh (@var{x}, @var{j}, @var{z})
+Compute Householder reflection vector @var{housv} to reflect @var{x}
+to be the j-th column of identity, i.e.,
+
+@example
+@group
+(I - beta*housv*housv')x =  norm(x)*e(j) if x(1) < 0,
+(I - beta*housv*housv')x = -norm(x)*e(j) if x(1) >= 0
+@end group
+@end example
+
+@noindent
+Inputs
+
+@table @var
+@item x
+vector
+@item j
+index into vector
+@item z
+threshold for zero  (usually should be the number 0)
+@end table
+
+@noindent
+Outputs (see Golub and Van Loan):
+
+@table @var
+@item beta
+If beta = 0, then no reflection need be applied (zer set to 0)
+@item housv
+householder vector
+@end table
+@end deftypefn
+
+
+@c ./linear-algebra/krylov.m
+@anchor{doc-krylov}
+@deftypefn {Function File} {[@var{u}, @var{h}, @var{nu}] =} krylov (@var{a}, @var{v}, @var{k}, @var{eps1}, @var{pflg})
+Construct an orthogonal basis @var{u} of block Krylov subspace
+
+@example
+[v a*v a^2*v @dots{} a^(k+1)*v]
+@end example
+
+@noindent
+Using Householder reflections to guard against loss of orthogonality.
+
+If @var{v} is a vector, then @var{h} contains the Hessenberg matrix
+such that @code{a*u == u*h+rk*ek'}, in which @code{rk =
+a*u(:,k)-u*h(:,k)}, and @code{ek'} is the vector
+@code{[0, 0, @dots{}, 1]} of length @code{k}.  Otherwise, @var{h} is
+meaningless.
+
+If @var{v} is a vector and @var{k} is greater than
+@code{length(A)-1}, then @var{h} contains the Hessenberg matrix such
+that @code{a*u == u*h}.
+
+The value of @var{nu} is the dimension of the span of the krylov
+subspace (based on @var{eps1}).
+
+If @var{b} is a vector and @var{k} is greater than @var{m-1}, then
+@var{h} contains the Hessenberg decomposition of @var{a}.
+
+The optional parameter @var{eps1} is the threshold for zero.  The
+default value is 1e-12.
+
+If the optional parameter @var{pflg} is nonzero, row pivoting is used
+to improve numerical behavior.  The default value is 0.
+
+Reference: Hodel and Misra, "Partial Pivoting in the Computation of
+Krylov Subspaces", to be submitted to Linear Algebra and its
+Applications
+@end deftypefn
+
+
+@node Functions of a Matrix
+@section Functions of a Matrix
+
+@c ./linear-algebra/expm.m
+@anchor{doc-expm}
+@deftypefn {Function File} {} expm (@var{a})
+Return the exponential of a matrix, defined as the infinite Taylor
+series
+@tex
+$$
+ \exp (A) = I + A + {A^2 \over 2!} + {A^3 \over 3!} + \cdots
+$$
+@end tex
+@ifnottex
+
+@example
+expm(a) = I + a + a^2/2! + a^3/3! + @dots{}
+@end example
+
+@end ifnottex
+The Taylor series is @emph{not} the way to compute the matrix
+exponential; see Moler and Van Loan, @cite{Nineteen Dubious Ways to
+Compute the Exponential of a Matrix}, SIAM Review, 1978.  This routine
+uses Ward's diagonal
+@tex
+Pad\'e
+@end tex
+@ifnottex
+Pade'
+@end ifnottex
+approximation method with three step preconditioning (SIAM Journal on
+Numerical Analysis, 1977).  Diagonal
+@tex
+Pad\'e
+@end tex
+@ifnottex
+Pade'
+@end ifnottex
+ approximations are rational polynomials of matrices
+@tex
+$D_q(a)^{-1}N_q(a)$
+@end tex
+@ifnottex
+
+@example
+@group
+     -1
+D (a)   N (a)
+@end group
+@end example
+
+@end ifnottex
+ whose Taylor series matches the first
+@tex
+$2 q + 1 $
+@end tex
+@ifnottex
+@code{2q+1}
+@end ifnottex
+terms of the Taylor series above; direct evaluation of the Taylor series
+(with the same preconditioning steps) may be desirable in lieu of the
+@tex
+Pad\'e
+@end tex
+@ifnottex
+Pade'
+@end ifnottex
+approximation when
+@tex
+$D_q(a)$
+@end tex
+@ifnottex
+@code{Dq(a)}
+@end ifnottex
+is ill-conditioned.
+@end deftypefn
+
+
+@c ./linear-algebra/logm.m
+@anchor{doc-logm}
+@deftypefn {Function File} {} logm (@var{a})
+Compute the matrix logarithm of the square matrix @var{a}.  Note that
+this is currently implemented in terms of an eigenvalue expansion and
+needs to be improved to be more robust.
+@end deftypefn
+
+
+@c ./DLD-FUNCTIONS/sqrtm.cc
+@anchor{doc-sqrtm}
+@deftypefn {Loadable Function} {[@var{result}, @var{error_estimate}] =} sqrtm (@var{a})
+Compute the matrix square root of the square matrix @var{a}.
+
+Ref: Nicholas J. Higham.  A new sqrtm for @sc{matlab}.  Numerical Analysis
+Report No. 336, Manchester Centre for Computational Mathematics,
+Manchester, England, January 1999.
+@seealso{@ref{doc-expm,,expm}, @ref{doc-logm,,logm}}
+@end deftypefn
+
+
+@c ./DLD-FUNCTIONS/kron.cc
+@anchor{doc-kron}
+@deftypefn {Loadable Function} {} kron (@var{a}, @var{b})
+Form the kronecker product of two matrices, defined block by block as
+
+@example
+x = [a(i, j) b]
+@end example
+
+For example,
+
+@example
+@group
+kron (1:4, ones (3, 1))
+      @result{}  1  2  3  4
+          1  2  3  4
+          1  2  3  4
+@end group
+@end example
+@end deftypefn
+
+
+@c ./DLD-FUNCTIONS/syl.cc
+@anchor{doc-syl}
+@deftypefn {Loadable Function} {@var{x} =} syl (@var{a}, @var{b}, @var{c})
+Solve the Sylvester equation
+@iftex
+@tex
+$$
+ A X + X B + C = 0
+$$
+@end tex
+@end iftex
+@ifnottex
+
+@example
+A X + X B + C = 0
+@end example
+@end ifnottex
+using standard @sc{lapack} subroutines.  For example,
+
+@example
+@group
+syl ([1, 2; 3, 4], [5, 6; 7, 8], [9, 10; 11, 12])
+     @result{} [ -0.50000, -0.66667; -0.66667, -0.50000 ]
+@end group
+@end example
+@end deftypefn
+
+
+@node Specialized Solvers
+@section Specialized Solvers
+
+@c ./sparse/bicgstab.m
+@anchor{doc-bicgstab}
+@deftypefn {Function File} {} bicgstab (@var{A}, @var{b})
+@deftypefnx {Function File} {} bicgstab (@var{A}, @var{b}, @var{tol}, @var{maxit}, @var{M1}, @var{M2}, @var{x0})
+This procedure attempts to solve a system of linear equations A*x = b for x.
+The @var{A} must be square, symmetric and positive definite real matrix N*N.
+The @var{b} must be a one column vector with a length of N.
+The @var{tol} specifies the tolerance of the method, the default value is 1e-6.
+The @var{maxit} specifies the maximum number of iterations, the default value is min(20,N).
+The @var{M1} specifies a preconditioner, can also be a function handler which returns M\X.
+The @var{M2} combined with @var{M1} defines preconditioner as preconditioner=M1*M2.
+The @var{x0} is the initial guess, the default value is zeros(N,1).
+
+The value @var{x} is a computed result of this procedure.
+The value @var{flag} can be 0 when we reach tolerance in @var{maxit} iterations, 1 when
+we don't reach tolerance in @var{maxit} iterations and 3 when the procedure stagnates.
+The value @var{relres} is a relative residual - norm(b-A*x)/norm(b).
+The value @var{iter} is an iteration number in which x was computed.
+The value @var{resvec} is a vector of @var{relres} for each iteration.
+
+@end deftypefn
+
+
+@c ./sparse/cgs.m
+@anchor{doc-cgs}
+@deftypefn {Function File} {} cgs (@var{A}, @var{b})
+@deftypefnx {Function File} {} cgs (@var{A}, @var{b}, @var{tol}, @var{maxit}, @var{M1}, @var{M2}, @var{x0})
+This procedure attempts to solve a system of linear equations A*x = b for x.
+The @var{A} must be square, symmetric and positive definite real matrix N*N.
+The @var{b} must be a one column vector with a length of N.
+The @var{tol} specifies the tolerance of the method, default value is 1e-6.
+The @var{maxit} specifies the maximum number of iteration, default value is MIN(20,N).
+The @var{M1} specifies a preconditioner, can also be a function handler which returns M\X.
+The @var{M2} combined with @var{M1} defines preconditioner as preconditioner=M1*M2.
+The @var{x0} is initial guess, default value is zeros(N,1).
+
+@end deftypefn
+

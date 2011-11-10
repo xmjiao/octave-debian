@@ -1,0 +1,335 @@
+@c DO NOT EDIT!  Generated automatically by munge-texi.
+
+@c Copyright (C) 1996, 1997, 2007, 2008, 2009 John W. Eaton
+@c
+@c This file is part of Octave.
+@c
+@c Octave is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU General Public License as published by the
+@c Free Software Foundation; either version 3 of the License, or (at
+@c your option) any later version.
+@c 
+@c Octave is distributed in the hope that it will be useful, but WITHOUT
+@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@c for more details.
+@c 
+@c You should have received a copy of the GNU General Public License
+@c along with Octave; see the file COPYING.  If not, see
+@c <http://www.gnu.org/licenses/>.
+
+@node Debugging
+@chapter Debugging
+
+Octave includes a built-in debugger to aid in the development of
+scripts.  This can be used to interrupt the execution of an Octave script
+at a certain point, or when certain conditions are met.  Once execution
+has stopped, and debug mode is entered, the symbol table at the point
+where execution has stopped can be examined and modified to check for
+errors.
+
+The normal command-line editing and history functions are available in
+debug mode.
+
+@menu
+* Entering Debug Mode::
+* Leaving Debug Mode::
+* Breakpoints::
+* Debug Mode::
+* Call Stack::
+@end menu
+
+@node Entering Debug Mode
+@section Entering Debug Mode
+
+There are two basic means of interrupting the execution of an Octave
+script.  These are breakpoints @pxref{Breakpoints}, discussed in the next
+section and interruption based on some condition.
+
+Octave supports three means to stop execution based on the values set in
+the functions @code{debug_on_interrupt}, @code{debug_on_warning} and
+@code{debug_on_error}.
+
+@c sighandlers.cc
+@anchor{doc-debug_on_interrupt}
+@deftypefn {Built-in Function} {@var{val} =} debug_on_interrupt ()
+@deftypefnx {Built-in Function} {@var{old_val} =} debug_on_interrupt (@var{new_val})
+Query or set the internal variable that controls whether Octave will try
+to enter debugging mode when it receives an interrupt signal (typically
+generated with @kbd{C-c}).  If a second interrupt signal is received
+before reaching the debugging mode, a normal interrupt will occur.
+@end deftypefn
+
+
+@c error.cc
+@anchor{doc-debug_on_warning}
+@deftypefn {Built-in Function} {@var{val} =} debug_on_warning ()
+@deftypefnx {Built-in Function} {@var{old_val} =} debug_on_warning (@var{new_val})
+Query or set the internal variable that controls whether Octave will try
+to enter the debugger when a warning is encountered.
+@end deftypefn
+
+
+@c error.cc
+@anchor{doc-debug_on_error}
+@deftypefn {Built-in Function} {@var{val} =} debug_on_error ()
+@deftypefnx {Built-in Function} {@var{old_val} =} debug_on_error (@var{new_val})
+Query or set the internal variable that controls whether Octave will try
+to enter the debugger when an error is encountered.  This will also
+inhibit printing of the normal traceback message (you will only see
+the top-level error message).
+@end deftypefn
+
+
+@node Leaving Debug Mode
+@section Leavinging Debug Mode
+
+To leave the debug mode, use either @code{dbcont} 
+or @code{return}.
+
+@c debug.cc
+@anchor{doc-dbcont}
+@deftypefn {Command} {} dbcont ()
+In debugging mode, quit debugging mode and continue execution.
+@seealso{@ref{doc-dbstep,,dbstep}, @ref{doc-dbstep,,dbstep}}
+@end deftypefn
+
+
+To quit debug mode and return directly to the prompt @code{dbquit}
+should be used instead
+
+@c debug.cc
+@anchor{doc-dbquit}
+@deftypefn {Command} {} dbquit ()
+In debugging mode, quit debugging mode and return to the top level.
+@seealso{@ref{doc-dbstep,,dbstep}, @ref{doc-dbcont,,dbcont}}
+@end deftypefn
+
+
+Finally, typing @code{exit} or @code{quit} at the debug prompt will
+result in Octave terminating normally.
+
+@node Breakpoints
+@section Breakpoints
+
+Breakpoints can be set in any Octave function, using the @code{dbstop}
+function.
+
+@c debug.cc
+@anchor{doc-dbstop}
+@deftypefn {Loadable Function} {@var{rline} =} dbstop (@var{func}, @var{line}, @dots{})
+Set a breakpoint in a function
+@table @code
+@item func
+String representing the function name.  When already in debug
+mode this should be left out and only the line should be given.
+@item line
+Line number you would like the breakpoint to be set on.  Multiple
+lines might be given as separate arguments or as a vector.
+@end table
+
+The rline returned is the real line that the breakpoint was set at.
+@seealso{@ref{doc-dbclear,,dbclear}, @ref{doc-dbstatus,,dbstatus}, @ref{doc-dbstep,,dbstep}}
+@end deftypefn
+
+
+@noindent
+Note that breakpoints cannot be set in built-in functions
+(e.g., @code{sin}, etc.) or dynamically loaded function (i.e., oct-files).  To
+set a breakpoint immediately on entering a function, the breakpoint
+should be set to line 1. The leading comment block will be ignored and
+the breakpoint will be set to the first executable statement in the
+function.  For example
+
+@example
+@group
+dbstop ("asind", 1)
+@result{} 27
+@end group
+@end example
+
+@noindent
+Note that the return value of @code{27} means that the breakpoint was
+effectively set to line 27.  The status of breakpoints in a function can
+be queried with the @code{dbstatus} function.
+
+@c debug.cc
+@anchor{doc-dbstatus}
+@deftypefn {Loadable Function} {lst =} dbstatus (@var{func})
+Return a vector containing the lines on which a function has 
+breakpoints set.
+@table @code
+@item func
+String representing the function name.  When already in debug
+mode this should be left out.
+@end table
+@seealso{@ref{doc-dbclear,,dbclear}, @ref{doc-dbwhere,,dbwhere}}
+@end deftypefn
+
+
+@noindent
+Taking the above as an example, @code{dbstatus ("asind")} should return
+27.  The breakpoints can then be cleared with the @code{dbclear} function
+
+@c debug.cc
+@anchor{doc-dbclear}
+@deftypefn {Loadable Function} {} dbclear (@var{func}, @var{line}, @dots{})
+Delete a breakpoint in a function
+@table @code
+@item func
+String representing the function name.  When already in debug
+mode this should be left out and only the line should be given.
+@item line
+Line number where you would like to remove the breakpoint.  Multiple
+lines might be given as separate arguments or as a vector.
+@end table
+No checking is done to make sure that the line you requested is really
+a breakpoint.  If you get the wrong line nothing will happen.
+@seealso{@ref{doc-dbstop,,dbstop}, @ref{doc-dbstatus,,dbstatus}, @ref{doc-dbwhere,,dbwhere}}
+@end deftypefn
+
+
+@noindent
+These functions can be used to clear all the breakpoints in a function.  For example,
+
+@example
+dbclear ("asind", dbstatus ("asind"));
+@end example
+
+A breakpoint can be set in a subfunction.  For example if a file contains
+the functions
+
+@example
+@group
+function y = func1 (x)
+  y = func2 (x);
+endfunction
+function y = func2 (x)
+  y = x + 1;
+endfunction
+@end group
+@end example
+
+@noindent
+then a breakpoint can be set at the start of the subfunction directly
+with
+
+@example
+@group
+dbstop (["func1", filemarker(), "func2"])
+@result{} 5
+@end group
+@end example
+
+Note that @code{filemarker} returns a character that marks the
+subfunctions from the file containing them.
+
+Another simple way of setting a breakpoint in an Octave script is the
+use of the @code{keyboard} function.
+
+@c input.cc
+@anchor{doc-keyboard}
+@deftypefn  {Built-in Function} {} keyboard ()
+@deftypefnx {Built-in Function} {} keyboard (@var{prompt})
+This function is normally used for simple debugging.  When the
+@code{keyboard} function is executed, Octave prints a prompt and waits
+for user input.  The input strings are then evaluated and the results
+are printed.  This makes it possible to examine the values of variables
+within a function, and to assign new values if necessary.  To leave the
+prompt and return to normal execution type @samp{return} or @samp{dbcont}.
+The @code{keyboard} function does not return an exit status.
+
+If @code{keyboard} is invoked without arguments, a default prompt of
+@samp{debug> } is used.
+@seealso{@ref{doc-dbcont,,dbcont}, @ref{doc-dbquit,,dbquit}}
+@end deftypefn
+
+
+@noindent
+The @code{keyboard} function is typically placed in a script at the
+point where the user desires that the execution is stopped.  It
+automatically sets the running script into the debug mode.
+
+@node Debug Mode
+@section Debug Mode
+
+There are two additional support functions that allow the user to
+interrogate where in the execution of a script Octave entered the debug
+mode and to print the code in the script surrounding the point where
+Octave entered debug mode.
+
+@c debug.cc
+@anchor{doc-dbwhere}
+@deftypefn {Loadable Function} {} dbwhere ()
+Show where we are in the code
+@seealso{@ref{doc-dbclear,,dbclear}, @ref{doc-dbstatus,,dbstatus}, @ref{doc-dbstop,,dbstop}}
+@end deftypefn
+
+
+@c debug.cc
+@anchor{doc-dbtype}
+@deftypefn {Loadable Function} {} dbtype ()
+List script file with line numbers.
+@seealso{@ref{doc-dbclear,,dbclear}, @ref{doc-dbstatus,,dbstatus}, @ref{doc-dbstop,,dbstop}}
+@end deftypefn
+
+
+You may also use @code{isdebugmode} to determine whether the debugger is
+currently active.
+
+@c debug.cc
+@anchor{doc-isdebugmode}
+@deftypefn {Command} {} isdebugmode ()
+Return true if debug mode is on, otherwise false.
+@seealso{@ref{doc-dbstack,,dbstack}, @ref{doc-dbclear,,dbclear}, @ref{doc-dbstop,,dbstop}, @ref{doc-dbstatus,,dbstatus}}
+@end deftypefn
+
+
+Debug mode also allows single line stepping through a function using
+the commands @code{dbstep}.
+
+@c debug.cc
+@anchor{doc-dbstep}
+@deftypefn {Command} {} dbstep @var{n}
+@deftypefnx {Command} {} dbstep in
+@deftypefnx {Command} {} dbstep out
+In debugging mode, execute the next @var{n} lines of code.  If @var{n} is
+omitted execute the next line of code.  If the next line of code is itself
+defined in terms of an m-file remain in the existing function.
+
+Using @code{dbstep in} will cause execution of the next line to step into
+any m-files defined on the next line.  Using @code{dbstep out} with cause
+execution to continue until the current function returns.
+@seealso{@ref{doc-dbcont,,dbcont}, @ref{doc-dbquit,,dbquit}}
+@end deftypefn
+
+
+@node Call Stack
+@section Call Stack
+
+@c debug.cc
+@anchor{doc-dbstack}
+@deftypefn {Loadable Function} {[@var{stack}, @var{idx}]} dbstack (@var{n})
+Print or return current stack information.  With optional argument
+@var{n}, omit the @var{n} innermost stack frames.
+@seealso{@ref{doc-dbclear,,dbclear}, @ref{doc-dbstatus,,dbstatus}, @ref{doc-dbstop,,dbstop}}
+@end deftypefn
+
+
+@c debug.cc
+@anchor{doc-dbup}
+@deftypefn {Loadable Function} {} dbup (@var{n})
+In debugging mode, move up the execution stack @var{n} frames.
+If @var{n} is omitted, move up one frame.
+@seealso{@ref{doc-dbstack,,dbstack}}
+@end deftypefn
+
+
+@c debug.cc
+@anchor{doc-dbdown}
+@deftypefn {Loadable Function} {} dbdown (@var{n})
+In debugging mode, move down the execution stack @var{n} frames.
+If @var{n} is omitted, move down one frame.
+@seealso{@ref{doc-dbstack,,dbstack}}
+@end deftypefn
+
