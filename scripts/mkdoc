@@ -1,0 +1,59 @@
+#! /bin/sh
+#
+# Copyright (C) 1999, 2002, 2005, 2007, 2009 John W. Eaton
+#
+# This file is part of Octave.
+# 
+# Octave is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the
+# Free Software Foundation; either version 3 of the License, or (at
+# your option) any later version.
+# 
+# Octave is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+# for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with Octave; see the file COPYING.  If not, see
+# <http://www.gnu.org/licenses/>.
+
+set -e
+
+FIND=${FIND:-'find'}
+
+PERL=${PERL:-'perl'}
+
+if test $# -eq 1; then
+  d=$1
+elif test $# -eq 0; then
+  d=.
+else
+  echo "usage: mkdoc [directory]" 1>&2
+  exit 1
+fi
+
+if test -f gethelp; then
+  cat << EOF
+### DO NOT EDIT!
+###
+### This file is generated automatically from the Octave sources.
+### Edit those files instead and run make to update this file.
+
+EOF
+  $FIND $d -name '*.m' | \
+    $PERL -n -e 'chop;
+               $f = "$_";
+               m{(.*)/(.*)\.m};
+               for (qx{./gethelp $2 "$f" < "$f"}) {
+                 s/^\s+\@/\@/ unless $i_am_in_example;
+                 s/^\s+\@group/\@group/;
+                 s/^\s+\@end\s+group/\@end\s+group/;
+                 $i_am_in_example = 1 if /\s*\@example/;
+                 $i_am_in_example = 0 if /\s*\@end\s+example/;
+                 print;
+               }'
+else
+  echo "gethelp program seems to be missing!" 1>&2
+  exit 1
+fi

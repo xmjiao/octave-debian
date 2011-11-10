@@ -1,0 +1,728 @@
+@c DO NOT EDIT!  Generated automatically by munge-texi.
+
+@c Copyright (C) 1996, 1997, 1999, 2000, 2002, 2007, 2008, 2009 John W. Eaton
+@c
+@c This file is part of Octave.
+@c
+@c Octave is free software; you can redistribute it and/or modify it
+@c under the terms of the GNU General Public License as published by the
+@c Free Software Foundation; either version 3 of the License, or (at
+@c your option) any later version.
+@c 
+@c Octave is distributed in the hope that it will be useful, but WITHOUT
+@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+@c for more details.
+@c 
+@c You should have received a copy of the GNU General Public License
+@c along with Octave; see the file COPYING.  If not, see
+@c <http://www.gnu.org/licenses/>.
+
+@node Polynomial Manipulations
+@chapter Polynomial Manipulations
+
+In Octave, a polynomial is represented by its coefficients (arranged
+in descending order).  For example, a vector @var{c} of length
+@math{N+1} corresponds to the following polynomial of order
+@tex
+ $N$
+$$
+ p (x) = c_1 x^N + \ldots + c_N x + c_{N+1}.
+$$
+@end tex
+@ifinfo
+ @var{N}
+
+@example
+p(x) = @var{c}(1) x^@var{N} + @dots{} + @var{c}(@var{N}) x + @var{c}(@var{N}+1).
+@end example
+@end ifinfo
+
+@menu
+* Evaluating Polynomials::
+* Finding Roots::
+* Products of Polynomials::
+* Derivatives and Integrals::
+* Polynomial Interpolation::
+* Miscellaneous Functions::
+@end menu
+
+@node Evaluating Polynomials
+@section Evaluating Polynomials
+
+The value of a polynomial represented by the vector @var{c} can be evaluated
+at the point @var{x} very easily, as the following example shows:
+
+@example
+@group
+N = length(c)-1;
+val = dot( x.^(N:-1:0), c );
+@end group
+@end example
+
+@noindent
+While the above example shows how easy it is to compute the value of a
+polynomial, it isn't the most stable algorithm.  With larger polynomials
+you should use more elegant algorithms, such as Horner's Method, which
+is exactly what the Octave function @code{polyval} does.
+
+In the case where @var{x} is a square matrix, the polynomial given by
+@var{c} is still well-defined.  As when @var{x} is a scalar the obvious
+implementation is easily expressed in Octave, but also in this case
+more elegant algorithms perform better.  The @code{polyvalm} function
+provides such an algorithm.
+
+@c ./polynomial/polyval.m
+@anchor{doc-polyval}
+@deftypefn {Function File} {@var{y} =} polyval (@var{p}, @var{x})
+@deftypefnx {Function File} {@var{y} =} polyval (@var{p}, @var{x}, [], @var{mu})
+Evaluate the polynomial at of the specified values for @var{x}.  When @var{mu}
+is present evaluate the polynomial for (@var{x}-@var{mu}(1))/@var{mu}(2).
+If @var{x} is a vector or matrix, the polynomial is evaluated for each of
+the elements of @var{x}.
+@deftypefnx {Function File} {[@var{y}, @var{dy}] =} polyval (@var{p}, @var{x}, @var{s})
+@deftypefnx {Function File} {[@var{y}, @var{dy}] =} polyval (@var{p}, @var{x}, @var{s}, @var{mu})
+In addition to evaluating the polynomial, the second output 
+represents the prediction interval, @var{y} +/- @var{dy}, which
+contains at least 50% of the future predictions.  To calculate the
+prediction interval, the structured variable @var{s}, originating
+form `polyfit', must be present.
+@seealso{@ref{doc-polyfit,,polyfit}, @ref{doc-polyvalm,,polyvalm}, @ref{doc-poly,,poly}, @ref{doc-roots,,roots}, @ref{doc-conv,,conv}, @ref{doc-deconv,,deconv}, @ref{doc-residue,,residue}, @ref{doc-filter,,filter}, @ref{doc-polyderiv,,polyderiv}, @ref{doc-polyinteg,,polyinteg}}
+@end deftypefn
+
+
+@c ./polynomial/polyvalm.m
+@anchor{doc-polyvalm}
+@deftypefn {Function File} {} polyvalm (@var{c}, @var{x})
+Evaluate a polynomial in the matrix sense.
+
+@code{polyvalm (@var{c}, @var{x})} will evaluate the polynomial in the
+matrix sense, i.e., matrix multiplication is used instead of element by
+element multiplication as is used in polyval.
+
+The argument @var{x} must be a square matrix.
+@seealso{@ref{doc-polyval,,polyval}, @ref{doc-poly,,poly}, @ref{doc-roots,,roots}, @ref{doc-conv,,conv}, @ref{doc-deconv,,deconv}, @ref{doc-residue,,residue}, @ref{doc-filter,,filter}, @ref{doc-polyderiv,,polyderiv}, @ref{doc-polyinteg,,polyinteg}}
+@end deftypefn
+
+
+@node Finding Roots
+@section Finding Roots
+
+Octave can find the roots of a given polynomial.  This is done by computing
+the companion matrix of the polynomial (see the @code{compan} function
+for a definition), and then finding its eigenvalues.
+
+@c ./polynomial/roots.m
+@anchor{doc-roots}
+@deftypefn {Function File} {} roots (@var{v})
+
+For a vector @var{v} with @math{N} components, return
+the roots of the polynomial
+@tex
+$$
+v_1 z^{N-1} + \cdots + v_{N-1} z + v_N.
+$$
+@end tex
+@ifnottex
+
+@example
+v(1) * z^(N-1) + @dots{} + v(N-1) * z + v(N)
+@end example
+@end ifnottex
+
+As an example, the following code finds the roots of the quadratic
+polynomial
+@tex
+$$ p(x) = x^2 - 5. $$
+@end tex
+@ifnottex
+@example
+p(x) = x^2 - 5.
+@end example
+@end ifnottex
+@example
+@group
+c = [1, 0, -5];
+roots(c)
+@result{}  2.2361
+@result{} -2.2361
+@end group
+@end example
+Note that the true result is
+@tex
+$\pm \sqrt{5}$
+@end tex
+@ifnottex
+@math{+/- sqrt(5)}
+@end ifnottex
+which is roughly
+@tex
+$\pm 2.2361$.
+@end tex
+@ifnottex
+@math{+/- 2.2361}.
+@end ifnottex
+@seealso{@ref{doc-compan,,compan}}
+@end deftypefn
+
+
+@c ./polynomial/compan.m
+@anchor{doc-compan}
+@deftypefn {Function File} {} compan (@var{c})
+Compute the companion matrix corresponding to polynomial coefficient
+vector @var{c}.
+
+The companion matrix is
+@tex
+$$
+A = \left[\matrix{
+ -c_2/c_1 & -c_3/c_1 & \cdots & -c_N/c_1 & -c_{N+1}/c_1\cr
+     1    &     0    & \cdots &     0    &         0   \cr
+     0    &     1    & \cdots &     0    &         0   \cr
+  \vdots  &   \vdots & \ddots &  \vdots  &      \vdots \cr
+     0    &     0    & \cdots &     1    &         0}\right].
+$$
+@end tex
+@ifnottex
+
+@c Set example in small font to prevent overfull line
+@smallexample
+     _                                                        _
+    |  -c(2)/c(1)   -c(3)/c(1)  @dots{}  -c(N)/c(1)  -c(N+1)/c(1)  |
+    |       1            0      @dots{}       0             0      |
+    |       0            1      @dots{}       0             0      |
+A = |       .            .   .            .             .      |
+    |       .            .       .        .             .      |
+    |       .            .           .    .             .      |
+    |_      0            0      @dots{}       1             0     _|
+@end smallexample
+@end ifnottex
+
+The eigenvalues of the companion matrix are equal to the roots of the
+polynomial.
+@seealso{@ref{doc-poly,,poly}, @ref{doc-roots,,roots}, @ref{doc-residue,,residue}, @ref{doc-conv,,conv}, @ref{doc-deconv,,deconv}, @ref{doc-polyval,,polyval}, @ref{doc-polyderiv,,polyderiv}, @ref{doc-polyinteg,,polyinteg}}
+@end deftypefn
+
+
+@c ./polynomial/mpoles.m
+@anchor{doc-mpoles}
+@deftypefn {Function File} {[@var{multp}, @var{indx}] =} mpoles (@var{p})
+@deftypefnx {Function File} {[@var{multp}, @var{indx}] =} mpoles (@var{p}, @var{tol})
+@deftypefnx {Function File} {[@var{multp}, @var{indx}] =} mpoles (@var{p}, @var{tol}, @var{reorder})
+Identify unique poles in @var{p} and associates their multiplicity,
+ordering them from largest to smallest.
+
+If the relative difference of the poles is less than @var{tol}, then
+they are considered to be multiples.  The default value for @var{tol}
+is 0.001.
+
+If the optional parameter @var{reorder} is zero, poles are not sorted.
+
+The value @var{multp} is a vector specifying the multiplicity of the
+poles.  @var{multp}(:) refers to multiplicity of @var{p}(@var{indx}(:)).
+
+For example,
+
+@example
+@group
+p = [2 3 1 1 2];
+[m, n] = mpoles(p);
+  @result{} m = [1; 1; 2; 1; 2]
+  @result{} n = [2; 5; 1; 4; 3]
+  @result{} p(n) = [3, 2, 2, 1, 1]
+@end group
+@end example
+
+@seealso{@ref{doc-poly,,poly}, @ref{doc-roots,,roots}, @ref{doc-conv,,conv}, @ref{doc-deconv,,deconv}, @ref{doc-polyval,,polyval}, @ref{doc-polyderiv,,polyderiv}, @ref{doc-polyinteg,,polyinteg}, @ref{doc-residue,,residue}}
+@end deftypefn
+
+
+@node Products of Polynomials
+@section Products of Polynomials
+
+@c ./polynomial/conv.m
+@anchor{doc-conv}
+@deftypefn {Function File} {} conv (@var{a}, @var{b})
+Convolve two vectors.
+
+@code{y = conv (a, b)} returns a vector of length equal to
+@code{length (a) + length (b) - 1}.
+If @var{a} and @var{b} are polynomial coefficient vectors, @code{conv}
+returns the coefficients of the product polynomial.
+@seealso{@ref{doc-deconv,,deconv}, @ref{doc-poly,,poly}, @ref{doc-roots,,roots}, @ref{doc-residue,,residue}, @ref{doc-polyval,,polyval}, @ref{doc-polyderiv,,polyderiv}, @ref{doc-polyinteg,,polyinteg}}
+@end deftypefn
+
+
+@c ./polynomial/convn.m
+@anchor{doc-convn}
+@deftypefn {Function File} {@var{c} =} convn (@var{a}, @var{b}, @var{shape})
+@math{N}-dimensional convolution of matrices @var{a} and @var{b}.
+
+The size of the output is determined by the @var{shape} argument.
+This can be any of the following character strings:
+
+@table @asis
+@item "full"
+The full convolution result is returned.  The size out of the output is
+@code{size (@var{a}) + size (@var{b})-1}.  This is the default behavior.
+@item "same"
+The central part of the convolution result is returned.  The size out of the
+output is the same as @var{a}.
+@item "valid"
+The valid part of the convolution is returned.  The size of the result is
+@code{max (size (@var{a}) - size (@var{b})+1, 0)}.
+@end table
+
+@seealso{@ref{doc-conv,,conv}, @ref{doc-conv2,,conv2}}
+@end deftypefn
+
+
+@c ./polynomial/deconv.m
+@anchor{doc-deconv}
+@deftypefn {Function File} {} deconv (@var{y}, @var{a})
+Deconvolve two vectors.
+
+@code{[b, r] = deconv (y, a)} solves for @var{b} and @var{r} such that
+@code{y = conv (a, b) + r}.
+
+If @var{y} and @var{a} are polynomial coefficient vectors, @var{b} will
+contain the coefficients of the polynomial quotient and @var{r} will be
+a remainder polynomial of lowest order.
+@seealso{@ref{doc-conv,,conv}, @ref{doc-poly,,poly}, @ref{doc-roots,,roots}, @ref{doc-residue,,residue}, @ref{doc-polyval,,polyval}, @ref{doc-polyderiv,,polyderiv}, @ref{doc-polyinteg,,polyinteg}}
+@end deftypefn
+
+
+@c ./DLD-FUNCTIONS/conv2.cc
+@anchor{doc-conv2}
+@deftypefn {Loadable Function} {y =} conv2 (@var{a}, @var{b}, @var{shape})
+@deftypefnx {Loadable Function} {y =} conv2 (@var{v1}, @var{v2}, @var{M}, @var{shape})
+
+Returns 2D convolution of @var{a} and @var{b} where the size
+of @var{c} is given by
+
+@table @asis
+@item @var{shape}= 'full'
+returns full 2-D convolution
+@item @var{shape}= 'same'
+same size as a. 'central' part of convolution
+@item @var{shape}= 'valid'
+only parts which do not include zero-padded edges
+@end table
+
+By default @var{shape} is 'full'.  When the third argument is a matrix
+returns the convolution of the matrix @var{M} by the vector @var{v1}
+in the column direction and by vector @var{v2} in the row direction
+@end deftypefn
+
+
+@c ./polynomial/polygcd.m
+@anchor{doc-polygcd}
+@deftypefn {Function File} {@var{q} =} polygcd (@var{b}, @var{a}, @var{tol})
+
+Find greatest common divisor of two polynomials.  This is equivalent
+to the polynomial found by multiplying together all the common roots.
+Together with deconv, you can reduce a ratio of two polynomials.
+Tolerance defaults to 
+@example 
+sqrt(eps).
+@end example
+ Note that this is an unstable
+algorithm, so don't try it on large polynomials.
+
+Example
+@example
+@group
+polygcd (poly(1:8), poly(3:12)) - poly(3:8)
+@result{} [ 0, 0, 0, 0, 0, 0, 0 ]
+deconv (poly(1:8), polygcd (poly(1:8), poly(3:12))) ...
+  - poly(1:2)
+@result{} [ 0, 0, 0 ]
+@end group
+@end example
+@seealso{@ref{doc-poly,,poly}, @ref{doc-polyinteg,,polyinteg}, @ref{doc-polyderiv,,polyderiv}, @ref{doc-polyreduce,,polyreduce}, @ref{doc-roots,,roots}, @ref{doc-conv,,conv}, @ref{doc-deconv,,deconv}, @ref{doc-residue,,residue}, @ref{doc-filter,,filter}, @ref{doc-polyval,,polyval}, @ref{doc-polyvalm,,polyvalm}}
+@end deftypefn
+
+
+@c ./polynomial/residue.m
+@anchor{doc-residue}
+@deftypefn {Function File} {[@var{r}, @var{p}, @var{k}, @var{e}] =} residue (@var{b}, @var{a})
+Compute the partial fraction expansion for the quotient of the
+polynomials, @var{b} and @var{a}.
+
+@tex
+$$
+{B(s)\over A(s)} = \sum_{m=1}^M {r_m\over (s-p_m)^e_m}
+  + \sum_{i=1}^N k_i s^{N-i}.
+$$
+@end tex
+@ifnottex
+
+@example
+@group
+ B(s)    M       r(m)         N
+ ---- = SUM -------------  + SUM k(i)*s^(N-i)
+ A(s)   m=1 (s-p(m))^e(m)    i=1
+@end group
+@end example
+@end ifnottex
+
+@noindent
+where @math{M} is the number of poles (the length of the @var{r},
+@var{p}, and @var{e}), the @var{k} vector is a polynomial of order @math{N-1}
+representing the direct contribution, and the @var{e} vector specifies
+the multiplicity of the m-th residue's pole.
+
+For example,
+
+@example
+@group
+b = [1, 1, 1];
+a = [1, -5, 8, -4];
+[r, p, k, e] = residue (b, a);
+     @result{} r = [-2; 7; 3]
+     @result{} p = [2; 2; 1]
+     @result{} k = [](0x0)
+     @result{} e = [1; 2; 1]
+@end group
+@end example
+
+@noindent
+which represents the following partial fraction expansion
+@tex
+$$
+{s^2+s+1\over s^3-5s^2+8s-4} = {-2\over s-2} + {7\over (s-2)^2} + {3\over s-1}
+$$
+@end tex
+@ifnottex
+
+@example
+@group
+        s^2 + s + 1       -2        7        3
+   ------------------- = ----- + ------- + -----
+   s^3 - 5s^2 + 8s - 4   (s-2)   (s-2)^2   (s-1)
+@end group
+@end example
+
+@end ifnottex
+
+@deftypefnx {Function File} {[@var{b}, @var{a}] =} residue (@var{r}, @var{p}, @var{k})
+@deftypefnx {Function File} {[@var{b}, @var{a}] =} residue (@var{r}, @var{p}, @var{k}, @var{e})
+Compute the reconstituted quotient of polynomials,
+@var{b}(s)/@var{a}(s), from the partial fraction expansion;
+represented by the residues, poles, and a direct polynomial specified
+by @var{r}, @var{p} and @var{k}, and the pole multiplicity @var{e}.
+
+If the multiplicity, @var{e}, is not explicitly specified the multiplicity is
+determined by the script mpoles.m.
+
+For example,
+
+@example
+@group
+r = [-2; 7; 3];
+p = [2; 2; 1];
+k = [1, 0];
+[b, a] = residue (r, p, k);
+     @result{} b = [1, -5, 9, -3, 1]
+     @result{} a = [1, -5, 8, -4]
+
+where mpoles.m is used to determine e = [1; 2; 1]
+
+@end group
+@end example
+
+Alternatively the multiplicity may be defined explicitly, for example,
+
+@example
+@group
+r = [7; 3; -2];
+p = [2; 1; 2];
+k = [1, 0];
+e = [2; 1; 1];
+[b, a] = residue (r, p, k, e);
+     @result{} b = [1, -5, 9, -3, 1]
+     @result{} a = [1, -5, 8, -4]
+@end group
+@end example
+
+@noindent
+which represents the following partial fraction expansion
+@tex
+$$
+{-2\over s-2} + {7\over (s-2)^2} + {3\over s-1} + s = {s^4-5s^3+9s^2-3s+1\over s^3-5s^2+8s-4}
+$$
+@end tex
+@ifnottex
+
+@example
+@group
+    -2        7        3         s^4 - 5s^3 + 9s^2 - 3s + 1
+   ----- + ------- + ----- + s = --------------------------
+   (s-2)   (s-2)^2   (s-1)          s^3 - 5s^2 + 8s - 4
+@end group
+@end example
+@end ifnottex
+@seealso{@ref{doc-poly,,poly}, @ref{doc-roots,,roots}, @ref{doc-conv,,conv}, @ref{doc-deconv,,deconv}, @ref{doc-mpoles,,mpoles}, @ref{doc-polyval,,polyval}, @ref{doc-polyderiv,,polyderiv}, @ref{doc-polyinteg,,polyinteg}}
+@end deftypefn
+
+
+@node Derivatives and Integrals
+@section Derivatives and Integrals
+
+Octave comes with functions for computing the derivative and the integral
+of a polynomial.  The functions @code{polyderiv} and @code{polyint}
+both return new polynomials describing the result.  As an example we'll
+compute the definite integral of @math{p(x) = x^2 + 1} from 0 to 3.
+
+@example
+@group
+c = [1, 0, 1];
+integral = polyint(c);
+area = polyval(integral, 3) - polyval(integral, 0)
+@result{} 12
+@end group
+@end example
+
+@c ./polynomial/polyderiv.m
+@anchor{doc-polyderiv}
+@deftypefn {Function File} {} polyderiv (@var{c})
+@deftypefnx {Function File} {[@var{q}] =} polyderiv (@var{b}, @var{a})
+@deftypefnx {Function File} {[@var{q}, @var{r}] =} polyderiv (@var{b}, @var{a})
+Return the coefficients of the derivative of the polynomial whose
+coefficients are given by vector @var{c}.  If a pair of polynomials
+is given @var{b} and @var{a}, the derivative of the product is
+returned in @var{q}, or the quotient numerator in @var{q} and the
+quotient denominator in @var{r}.
+@seealso{@ref{doc-poly,,poly}, @ref{doc-polyinteg,,polyinteg}, @ref{doc-polyreduce,,polyreduce}, @ref{doc-roots,,roots}, @ref{doc-conv,,conv}, @ref{doc-deconv,,deconv}, @ref{doc-residue,,residue}, @ref{doc-filter,,filter}, @ref{doc-polygcd,,polygcd}, @ref{doc-polyval,,polyval}, @ref{doc-polyvalm,,polyvalm}}
+@end deftypefn
+
+
+@c ./polynomial/polyder.m
+@anchor{doc-polyder}
+@deftypefn {Function File} {} polyder (@var{c})
+@deftypefnx {Function File} {[@var{q}] =} polyder (@var{b}, @var{a})
+@deftypefnx {Function File} {[@var{q}, @var{r}] =} polyder (@var{b}, @var{a})
+See polyderiv.
+@end deftypefn
+
+
+@c ./deprecated/polyinteg.m
+@anchor{doc-polyinteg}
+@deftypefn {Function File} {} polyinteg (@var{c})
+Return the coefficients of the integral of the polynomial whose
+coefficients are represented by the vector @var{c}.
+
+The constant of integration is set to zero.
+@seealso{@ref{doc-polyint,,polyint}, @ref{doc-poly,,poly}, @ref{doc-polyderiv,,polyderiv}, @ref{doc-polyreduce,,polyreduce}, @ref{doc-roots,,roots}, @ref{doc-conv,,conv}, @ref{doc-deconv,,deconv}, @ref{doc-residue,,residue}, @ref{doc-filter,,filter}, @ref{doc-polyval,,polyval}, @ref{doc-polyvalm,,polyvalm}}
+@end deftypefn
+
+
+@c ./polynomial/polyint.m
+@anchor{doc-polyint}
+@deftypefn {Function File} {} polyint (@var{c}, @var{k})
+Return the coefficients of the integral of the polynomial whose
+coefficients are represented by the vector @var{c}.  The variable
+@var{k} is the constant of integration, which by default is set to zero.
+@seealso{@ref{doc-poly,,poly}, @ref{doc-polyderiv,,polyderiv}, @ref{doc-polyreduce,,polyreduce}, @ref{doc-roots,,roots}, @ref{doc-conv,,conv}, @ref{doc-deconv,,deconv}, @ref{doc-residue,,residue}, @ref{doc-filter,,filter}, @ref{doc-polyval,,polyval}, @ref{doc-polyvalm,,polyvalm}}
+@end deftypefn
+
+
+@node Polynomial Interpolation
+@section Polynomial Interpolation
+
+Octave comes with good support for various kinds of interpolation,
+most of which are described in @ref{Interpolation}.  One simple alternative
+to the functions described in the aforementioned chapter, is to fit
+a single polynomial to some given data points.  To avoid a highly
+fluctuating polynomial, one most often wants to fit a low-order polynomial
+to data.  This usually means that it is necessary to fit the polynomial
+in a least-squares sense, which is what the @code{polyfit} function does.
+
+@c ./polynomial/polyfit.m
+@anchor{doc-polyfit}
+@deftypefn {Function File} {[@var{p}, @var{s}, @var{mu}] =} polyfit (@var{x}, @var{y}, @var{n})
+Return the coefficients of a polynomial @var{p}(@var{x}) of degree
+@var{n} that minimizes the least-squares-error of the fit.
+
+The polynomial coefficients are returned in a row vector.
+
+The second output is a structure containing the following fields:
+
+@table @samp
+@item R
+Triangular factor R from the QR decomposition.
+@item X
+The Vandermonde matrix used to compute the polynomial coefficients.
+@item df
+The degrees of freedom.
+@item normr
+The norm of the residuals.
+@item yf
+The values of the polynomial for each value of @var{x}.
+@end table
+
+The second output may be used by @code{polyval} to calculate the 
+statistical error limits of the predicted values.
+
+When the third output, @var{mu}, is present the 
+coefficients, @var{p}, are associated with a polynomial in
+@var{xhat} = (@var{x}-@var{mu}(1))/@var{mu}(2).
+Where @var{mu}(1) = mean (@var{x}), and @var{mu}(2) = std (@var{x}).
+This linear transformation of @var{x} improves the numerical
+stability of the fit.
+@seealso{@ref{doc-polyval,,polyval}, @ref{doc-residue,,residue}}
+@end deftypefn
+
+
+In situations where a single polynomial isn't good enough, a solution
+is to use several polynomials pieced together.  The function @code{mkpp}
+creates a piece-wise polynomial, @code{ppval} evaluates the function 
+created by @code{mkpp}, and @code{unmkpp} returns detailed information
+about the function.
+
+The following example shows how to combine two linear functions and a
+quadratic into one function.  Each of these functions is expressed
+on adjoined intervals.
+
+@example
+@group
+x = [-2, -1, 1, 2];
+p = [ 0,  1, 0;
+      1, -2, 1;
+      0, -1, 1 ];
+pp = mkpp(x, p);
+xi = linspace(-2, 2, 50);
+yi = ppval(pp, xi);
+plot(xi, yi);
+@end group
+@end example
+
+@c ./polynomial/ppval.m
+@anchor{doc-ppval}
+@deftypefn {Function File} {@var{yi} =} ppval (@var{pp}, @var{xi})
+Evaluate piece-wise polynomial @var{pp} at the points @var{xi}.  
+If @code{@var{pp}.d} is a scalar greater than 1, or an array,
+then the returned value @var{yi} will be an array that is 
+@code{d1, d1, @dots{}, dk, length (@var{xi})]}.
+@seealso{@ref{doc-mkpp,,mkpp}, @ref{doc-unmkpp,,unmkpp}, @ref{doc-spline,,spline}}
+@end deftypefn 
+
+
+@c ./polynomial/mkpp.m
+@anchor{doc-mkpp}
+@deftypefn {Function File} {@var{pp} =} mkpp (@var{x}, @var{p})
+@deftypefnx {Function File} {@var{pp} =} mkpp (@var{x}, @var{p}, @var{d})
+
+Construct a piece-wise polynomial structure from sample points
+@var{x} and coefficients @var{p}.  The i-th row of @var{p},
+@code{@var{p} (@var{i},:)}, contains the coefficients for the polynomial
+over the @var{i}-th interval, ordered from highest to 
+lowest.  There must be one row for each interval in @var{x}, so 
+@code{rows (@var{p}) == length (@var{x}) - 1}.  
+
+You can concatenate multiple polynomials of the same order over the 
+same set of intervals using @code{@var{p} = [ @var{p1}; @var{p2}; 
+@dots{}; @var{pd} ]}.  In this case, @code{rows (@var{p}) == @var{d} 
+* (length (@var{x}) - 1)}.
+
+@var{d} specifies the shape of the matrix @var{p} for all except the
+last dimension.  If @var{d} is not specified it will be computed as
+@code{round (rows (@var{p}) / (length (@var{x}) - 1))} instead.
+
+@seealso{@ref{doc-unmkpp,,unmkpp}, @ref{doc-ppval,,ppval}, @ref{doc-spline,,spline}}
+@end deftypefn
+
+
+@c ./polynomial/unmkpp.m
+@anchor{doc-unmkpp}
+@deftypefn {Function File} {[@var{x}, @var{p}, @var{n}, @var{k}, @var{d}] =} unmkpp (@var{pp})
+
+Extract the components of a piece-wise polynomial structure @var{pp}.
+These are as follows:
+
+@table @asis
+@item @var{x}
+Sample points.
+@item @var{p}
+Polynomial coefficients for points in sample interval.  @code{@var{p}
+(@var{i}, :)} contains the coefficients for the polynomial over
+interval @var{i} ordered from highest to lowest.  If @code{@var{d} >
+1}, @code{@var{p} (@var{r}, @var{i}, :)} contains the coefficients for 
+the r-th polynomial defined on interval @var{i}.  However, this is 
+stored as a 2-D array such that @code{@var{c} = reshape (@var{p} (:,
+@var{j}), @var{n}, @var{d})} gives @code{@var{c} (@var{i},  @var{r})}
+is the j-th coefficient of the r-th polynomial over the i-th interval.
+@item @var{n}
+Number of polynomial pieces.
+@item @var{k}
+Order of the polynomial plus 1.
+@item @var{d}
+Number of polynomials defined for each interval.
+@end table
+
+@seealso{@ref{doc-mkpp,,mkpp}, @ref{doc-ppval,,ppval}, @ref{doc-spline,,spline}}
+@end deftypefn
+
+
+@node Miscellaneous Functions
+@section Miscellaneous Functions
+
+@c ./polynomial/poly.m
+@anchor{doc-poly}
+@deftypefn {Function File} {} poly (@var{a})
+If @var{a} is a square @math{N}-by-@math{N} matrix, @code{poly (@var{a})}
+is the row vector of the coefficients of @code{det (z * eye (N) - a)},
+the characteristic polynomial of @var{a}.  As an example we can use
+this to find the eigenvalues of @var{a} as the roots of @code{poly (@var{a})}.
+@example
+@group
+roots(poly(eye(3)))
+@result{} 1.00000 + 0.00000i
+@result{} 1.00000 - 0.00000i
+@result{} 1.00000 + 0.00000i
+@end group
+@end example
+In real-life examples you should, however, use the @code{eig} function
+for computing eigenvalues.
+
+If @var{x} is a vector, @code{poly (@var{x})} is a vector of coefficients
+of the polynomial whose roots are the elements of @var{x}.  That is,
+of @var{c} is a polynomial, then the elements of 
+@code{@var{d} = roots (poly (@var{c}))} are contained in @var{c}.
+The vectors @var{c} and @var{d} are, however, not equal due to sorting
+and numerical errors.
+@seealso{@ref{doc-eig,,eig}, @ref{doc-roots,,roots}}
+@end deftypefn
+
+
+@c ./polynomial/polyout.m
+@anchor{doc-polyout}
+@deftypefn {Function File} {} polyout (@var{c}, @var{x})
+Write formatted polynomial
+@tex
+$$ c(x) = c_1 x^n + \ldots + c_n x + c_{n+1} $$
+@end tex
+@ifnottex
+@example
+   c(x) = c(1) * x^n + @dots{} + c(n) x + c(n+1)
+@end example
+@end ifnottex
+ and return it as a string or write it to the screen (if
+@var{nargout} is zero).
+@var{x} defaults to the string @code{"s"}.
+@seealso{@ref{doc-polyval,,polyval}, @ref{doc-polyvalm,,polyvalm}, @ref{doc-poly,,poly}, @ref{doc-roots,,roots}, @ref{doc-conv,,conv}, @ref{doc-deconv,,deconv}, @ref{doc-residue,,residue}, @ref{doc-filter,,filter}, @ref{doc-polyderiv,,polyderiv}, @ref{doc-polyinteg,,polyinteg}}
+@end deftypefn
+
+
+@c ./polynomial/polyreduce.m
+@anchor{doc-polyreduce}
+@deftypefn {Function File} {} polyreduce (@var{c})
+Reduces a polynomial coefficient vector to a minimum number of terms by
+stripping off any leading zeros.
+@seealso{@ref{doc-poly,,poly}, @ref{doc-roots,,roots}, @ref{doc-conv,,conv}, @ref{doc-deconv,,deconv}, @ref{doc-residue,,residue}, @ref{doc-filter,,filter}, @ref{doc-polyval,,polyval}, @ref{doc-polyvalm,,polyvalm}, @ref{doc-polyderiv,,polyderiv}, @ref{doc-polyinteg,,polyinteg}}
+@end deftypefn
+
+
+
+
+
