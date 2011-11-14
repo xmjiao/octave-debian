@@ -1,5 +1,4 @@
-## Copyright (C) 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2002,
-##               2003, 2004, 2005, 2006, 2007, 2008 Shai Ayal
+## Copyright (C) 1993-2011 Shai Ayal
 ##
 ## This file is part of Octave.
 ##
@@ -18,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} contour (@var{z})
+## @deftypefn  {Function File} {} contour (@var{z})
 ## @deftypefnx {Function File} {} contour (@var{z}, @var{vn})
 ## @deftypefnx {Function File} {} contour (@var{x}, @var{y}, @var{z})
 ## @deftypefnx {Function File} {} contour (@var{x}, @var{y}, @var{z}, @var{vn})
@@ -43,7 +42,7 @@
 ## in a similar manner to the line styles used with the @code{plot} command.
 ## Any markers defined by @var{style} are ignored.
 ##
-## The optional input and output argument @var{h} allows an axis handle to 
+## The optional input and output argument @var{h} allows an axis handle to
 ## be passed to @code{contour} and the handles to the contour objects to be
 ## returned.
 ## @seealso{contourc, patch, plot}
@@ -72,11 +71,22 @@ function [c, h] = contour (varargin)
 endfunction
 
 %!demo
+%! clf ()
 %! [x, y, z] = peaks ();
 %! contour (x, y, z);
 
 %!demo
+%! clf ()
 %! [theta, r] = meshgrid (linspace (0, 2*pi, 64), linspace(0,1,64));
 %! [X, Y] = pol2cart (theta, r);
 %! Z = sin(2*theta).*(1-r);
 %! contour(X, Y, abs(Z), 10)
+
+%!demo
+%! clf ()
+%! x = linspace (-2, 2);
+%! [x, y] = meshgrid (x);
+%! z = sqrt (x.^2 + y.^2) ./ (x.^2 + y.^2+1);
+%! contourf (x, y, z, [0.4, 0.4])
+%! title ("The hole should be filled with the background color")
+

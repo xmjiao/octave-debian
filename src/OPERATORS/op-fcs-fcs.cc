@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2000, 2002, 2003, 2004, 2005, 2007, 2008
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -42,8 +41,10 @@ along with Octave; see the file COPYING.  If not, see
 DEFUNOP (not, float_complex)
 {
   CAST_UNOP_ARG (const octave_float_complex&);
-
-  return octave_value (v.float_complex_value () == 0.0);
+  FloatComplex x = v.float_complex_value ();
+  if (xisnan (x))
+    gripe_nan_to_logical_conversion ();
+  return octave_value (x == 0.0f);
 }
 
 DEFUNOP_OP (uplus, float_complex, /* no-op */)
@@ -92,47 +93,12 @@ DEFBINOP (ldiv, float_complex, float_complex)
   return octave_value (v2.float_complex_value () / d);
 }
 
-DEFBINOP (lt, float_complex, float_complex)
-{
-  CAST_BINOP_ARGS (const octave_float_complex&, const octave_float_complex&);
-
-  return real (v1.float_complex_value ()) < real (v2.float_complex_value ());
-}
-
-DEFBINOP (le, float_complex, float_complex)
-{
-  CAST_BINOP_ARGS (const octave_float_complex&, const octave_float_complex&);
-
-  return real (v1.float_complex_value ()) <= real (v2.float_complex_value ());
-}
-
-DEFBINOP (eq, float_complex, float_complex)
-{
-  CAST_BINOP_ARGS (const octave_float_complex&, const octave_float_complex&);
-
-  return v1.float_complex_value () == v2.float_complex_value ();
-}
-
-DEFBINOP (ge, float_complex, float_complex)
-{
-  CAST_BINOP_ARGS (const octave_float_complex&, const octave_float_complex&);
-
-  return real (v1.float_complex_value ()) >= real (v2.float_complex_value ());
-}
-
-DEFBINOP (gt, float_complex, float_complex)
-{
-  CAST_BINOP_ARGS (const octave_float_complex&, const octave_float_complex&);
-
-  return real (v1.float_complex_value ()) > real (v2.float_complex_value ());
-}
-
-DEFBINOP (ne, float_complex, float_complex)
-{
-  CAST_BINOP_ARGS (const octave_float_complex&, const octave_float_complex&);
-
-  return v1.float_complex_value () != v2.float_complex_value ();
-}
+DEFCMPLXCMPOP_OP (lt, float_complex, float_complex, <)
+DEFCMPLXCMPOP_OP (le, float_complex, float_complex, <=)
+DEFCMPLXCMPOP_OP (eq, float_complex, float_complex, ==)
+DEFCMPLXCMPOP_OP (ge, float_complex, float_complex, >=)
+DEFCMPLXCMPOP_OP (gt, float_complex, float_complex, >)
+DEFCMPLXCMPOP_OP (ne, float_complex, float_complex, !=)
 
 DEFBINOP_OP (el_mul, float_complex, float_complex, *)
 
@@ -166,26 +132,26 @@ DEFBINOP (el_and, float_complex, float_complex)
 {
   CAST_BINOP_ARGS (const octave_float_complex&, const octave_float_complex&);
 
-  return (v1.float_complex_value () != static_cast<float>(0.0) && 
-	  v2.float_complex_value () != static_cast<float>(0.0));
+  return (v1.float_complex_value () != static_cast<float>(0.0) &&
+          v2.float_complex_value () != static_cast<float>(0.0));
 }
 
 DEFBINOP (el_or, float_complex, float_complex)
 {
   CAST_BINOP_ARGS (const octave_float_complex&, const octave_float_complex&);
 
-  return (v1.float_complex_value () != static_cast<float>(0.0) || 
-	  v2.float_complex_value () != static_cast<float>(0.0));
+  return (v1.float_complex_value () != static_cast<float>(0.0) ||
+          v2.float_complex_value () != static_cast<float>(0.0));
 }
 
-DEFNDCATOP_FN (fcs_fcs, float_complex, float_complex, float_complex_array, 
-	       float_complex_array, concat)
+DEFNDCATOP_FN (fcs_fcs, float_complex, float_complex, float_complex_array,
+               float_complex_array, concat)
 
-DEFNDCATOP_FN (cs_fcs, complex, float_complex, float_complex_array, 
-	       float_complex_array, concat)
+DEFNDCATOP_FN (cs_fcs, complex, float_complex, float_complex_array,
+               float_complex_array, concat)
 
-DEFNDCATOP_FN (fcs_cs, float_complex, complex, float_complex_array, 
-	       float_complex_array, concat)
+DEFNDCATOP_FN (fcs_cs, float_complex, complex, float_complex_array,
+               float_complex_array, concat)
 
 CONVDECL (float_complex_to_complex)
 {
@@ -237,12 +203,6 @@ install_fcs_fcs_ops (void)
   INSTALL_ASSIGNCONV (octave_float_complex, octave_null_str, octave_float_complex_matrix);
   INSTALL_ASSIGNCONV (octave_float_complex, octave_null_sq_str, octave_float_complex_matrix);
 
-  INSTALL_CONVOP (octave_float_complex, octave_complex_matrix, 
-		  float_complex_to_complex);
+  INSTALL_CONVOP (octave_float_complex, octave_complex_matrix,
+                  float_complex_to_complex);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

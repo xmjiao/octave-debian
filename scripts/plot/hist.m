@@ -1,5 +1,4 @@
-## Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2002, 2003,
-##               2004, 2005, 2006, 2007, 2008, 2009 John W. Eaton
+## Copyright (C) 1994-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -18,27 +17,54 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} hist (@var{y}, @var{x}, @var{norm})
+## @deftypefn  {Function File} {} hist (@var{y})
+## @deftypefnx {Function File} {} hist (@var{y}, @var{x})
+## @deftypefnx {Function File} {} hist (@var{y}, @var{nbins})
+## @deftypefnx {Function File} {} hist (@var{y}, @var{x}, @var{norm})
+## @deftypefnx {Function File} {[@var{nn}, @var{xx}] =} hist (@dots{})
+## @deftypefnx {Function File} {[@dots{}] =} hist (@dots{}, @var{prop}, @var{val})
+##
 ## Produce histogram counts or plots.
 ##
-## With one vector input argument, plot a histogram of the values with
-## 10 bins.  The range of the histogram bins is determined by the range
-## of the data.  With one matrix input argument, plot a histogram where
-## each bin contains a bar per input column.
+## With one vector input argument, @var{y}, plot a histogram of the values
+## with 10 bins.  The range of the histogram bins is determined by the
+## range of the data.  With one matrix input argument, @var{y}, plot a
+## histogram where each bin contains a bar per input column.
 ##
-## Given a second scalar argument, use that as the number of bins.
+## Given a second vector argument, @var{x}, use that as the centers of
+## the bins, with the width of the bins determined from the adjacent
+## values in the vector.
 ##
-## Given a second vector argument, use that as the centers of the bins,
-## with the width of the bins determined from the adjacent values in
-## the vector.
+## If scalar, the second argument, @var{nbins}, defines the number of bins.
 ##
-## If third argument is provided, the histogram is normalized such that
+## If a third argument is provided, the histogram is normalized such that
 ## the sum of the bars is equal to @var{norm}.
 ##
 ## Extreme values are lumped in the first and last bins.
 ##
 ## With two output arguments, produce the values @var{nn} and @var{xx} such
 ## that @code{bar (@var{xx}, @var{nn})} will plot the histogram.
+##
+## The histogram's appearance may be modified by specifying property/value
+## pairs, @var{prop} and @var{val} pairs.  For example the face and edge
+## color may be modified.
+##
+## @example
+## @group
+## hist (randn (1, 100), 25, "facecolor", "r", "edgecolor", "b")
+## @end group
+## @end example
+##
+## @noindent
+## The histograms colors also depend upon the colormap.
+##
+## @example
+## @group
+## hist (rand (10, 3))
+## colormap (summer ())
+## @end group
+## @end example
+##
 ## @seealso{bar}
 ## @end deftypefn
 
@@ -80,7 +106,7 @@ function [nn, xx] = hist (y, varargin)
       x = x * (max_val - min_val) + ones (size (x)) * min_val;
     elseif (isreal (x))
       if (isvector (x))
-	x = x(:);
+        x = x(:);
       endif
       tmp = sort (x);
       if (any (tmp != x))
@@ -114,8 +140,8 @@ function [nn, xx] = hist (y, varargin)
     len = rows (y);
     chist = cumsum (idx <= len);
     chist = [(zeros (1, y_nc));
-	     (reshape (chist(idx > len), rows (cutoff), y_nc));
-	     (chist(end,:) - sum (isnan (y)))];
+             (reshape (chist(idx > len), rows (cutoff), y_nc));
+             (chist(end,:) - sum (isnan (y)))];
   endif
 
   freq = diff (chist);

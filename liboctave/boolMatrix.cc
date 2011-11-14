@@ -1,8 +1,8 @@
 // Matrix manipulations.
 /*
 
-Copyright (C) 1996, 1997, 1998, 2000, 2001, 2002, 2003, 2004, 2005,
-              2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
+Copyright (C) 2009-2010 VZLU Prague, a.s.
 
 This file is part of Octave.
 
@@ -43,7 +43,7 @@ boolMatrix::operator == (const boolMatrix& a) const
   if (rows () != a.rows () || cols () != a.cols ())
     return 0;
 
-  return mx_inline_equal (data (), a.data (), length ());
+  return mx_inline_equal (length (), data (), a.data ());
 }
 
 bool
@@ -55,7 +55,7 @@ boolMatrix::operator != (const boolMatrix& a) const
 boolMatrix&
 boolMatrix::insert (const boolMatrix& a, octave_idx_type r, octave_idx_type c)
 {
-  Array2<bool>::insert (a, r, c);
+  Array<bool>::insert (a, r, c);
   return *this;
 }
 
@@ -81,7 +81,7 @@ boolMatrix::operator ! (void) const
 boolMatrix
 boolMatrix::diag (octave_idx_type k) const
 {
-  return Array2<bool>::diag (k);
+  return Array<bool>::diag (k);
 }
 
 // FIXME Do these really belong here?  Maybe they should be
@@ -90,19 +90,16 @@ boolMatrix::diag (octave_idx_type k) const
 boolMatrix
 boolMatrix::all (int dim) const
 {
-  return do_mx_red_op<boolMatrix, bool> (*this, dim, mx_inline_all);
+  return do_mx_red_op<bool, bool> (*this, dim, mx_inline_all);
 }
 
 boolMatrix
 boolMatrix::any (int dim) const
 {
-  return do_mx_red_op<boolMatrix, bool> (*this, dim, mx_inline_any);
+  return do_mx_red_op<bool, bool> (*this, dim, mx_inline_any);
 }
 
-MM_CMP_OPS (boolMatrix, , boolMatrix, )
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+MM_BOOL_OPS (boolMatrix, boolMatrix)
+MS_BOOL_OPS (boolMatrix, bool)
+SM_BOOL_OPS (bool, boolMatrix)
+MM_CMP_OPS (boolMatrix, boolMatrix)

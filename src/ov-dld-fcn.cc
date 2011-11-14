@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1999, 2000, 2002, 2003, 2004, 2005, 2007, 2008
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -37,8 +36,8 @@ along with Octave; see the file COPYING.  If not, see
 DEFINE_OCTAVE_ALLOCATOR (octave_dld_function);
 
 DEFINE_OV_TYPEID_FUNCTIONS_AND_DATA (octave_dld_function,
-				     "dynamically-linked function",
-				     "dynamically-linked function");
+                                     "dynamically-linked function",
+                                     "dynamically-linked function");
 
 
 octave_dld_function::octave_dld_function
@@ -85,13 +84,7 @@ octave_dld_function::time_parsed (void) const
 
 octave_dld_function*
 octave_dld_function::create (octave_builtin::fcn ff, const octave_shlib& shl,
-			     const std::string& nm, const std::string& ds)
+                             const std::string& nm, const std::string& ds)
 {
   return new octave_dld_function (ff, shl, nm, ds);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

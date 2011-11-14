@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 1999, 2000, 2002, 2005, 2006, 2007, 2009
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -28,9 +27,7 @@ along with Octave; see the file COPYING.  If not, see
 
 #include "oct-time.h"
 
-#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#endif
 
 class
 OCTAVE_API
@@ -56,28 +53,35 @@ public:
   {
     if (this != &fs)
       {
-	initialized = fs.initialized;
-	fail = fs.fail;
-	errmsg = fs.errmsg;
-	fs_mode = fs.fs_mode;
-	fs_ino = fs.fs_ino;
-	fs_dev = fs.fs_dev;
-	fs_nlink = fs.fs_nlink;
-	fs_uid = fs.fs_uid;
-	fs_gid = fs.fs_gid;
-	fs_size = fs.fs_size;
-	fs_atime = fs.fs_atime;
-	fs_mtime = fs.fs_mtime;
-	fs_ctime = fs.fs_ctime;
-	fs_rdev = fs.fs_rdev;
-	fs_blksize = fs.fs_blksize;
-	fs_blocks = fs.fs_blocks;
+        initialized = fs.initialized;
+        fail = fs.fail;
+        errmsg = fs.errmsg;
+        fs_mode = fs.fs_mode;
+        fs_ino = fs.fs_ino;
+        fs_dev = fs.fs_dev;
+        fs_nlink = fs.fs_nlink;
+        fs_uid = fs.fs_uid;
+        fs_gid = fs.fs_gid;
+        fs_size = fs.fs_size;
+        fs_atime = fs.fs_atime;
+        fs_mtime = fs.fs_mtime;
+        fs_ctime = fs.fs_ctime;
+        fs_rdev = fs.fs_rdev;
+        fs_blksize = fs.fs_blksize;
+        fs_blocks = fs.fs_blocks;
       }
 
     return *this;
   }
 
-  ~base_file_stat (void) { }
+  // The minimum difference in file time stamp values.
+  // FIXME -- this value should come from the filesystem itself.  How
+  // can we get that info?
+  octave_time time_resolution (void) const
+  {
+    static octave_time resolution (1.0);
+    return resolution;
+  }
 
   // File status and info.  The is_XXX functions will return false for
   // file_stat objects that are not properly initialized.  The others
@@ -139,6 +143,8 @@ public:
   static int is_newer (const std::string&, const octave_time&);
 
 protected:
+
+  virtual ~base_file_stat (void) { }
 
   // TRUE means we have already called stat.
   bool initialized;
@@ -210,10 +216,10 @@ public:
   {
     if (this != &fs)
       {
-	base_file_stat::operator = (fs);
+        base_file_stat::operator = (fs);
 
-	file_name = fs.file_name;
-	follow_links = fs.follow_links;
+        file_name = fs.file_name;
+        follow_links = fs.follow_links;
       }
 
     return *this;
@@ -231,11 +237,11 @@ public:
   {
     if (n != file_name || ! initialized  || force)
       {
-	initialized = false;
+        initialized = false;
 
-	file_name = n;
+        file_name = n;
 
-	update_internal (force);
+        update_internal (force);
       }
   }
 
@@ -269,9 +275,9 @@ public:
   {
     if (this != &fs)
       {
-	base_file_stat::operator = (fs);
+        base_file_stat::operator = (fs);
 
-	fid = fs.fid;
+        fid = fs.fid;
       }
 
     return *this;
@@ -289,11 +295,11 @@ public:
   {
     if (n != fid || ! initialized  || force)
       {
-	initialized = false;
+        initialized = false;
 
-	fid = n;
+        fid = n;
 
-	update_internal (force);
+        update_internal (force);
       }
   }
 
@@ -306,9 +312,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

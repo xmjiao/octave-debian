@@ -1,4 +1,4 @@
-## Copyright (C) 2008 Radek Salac
+## Copyright (C) 2008-2011 Radek Salac
 ##
 ## This file is part of Octave.
 ##
@@ -17,20 +17,26 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} bicgstab (@var{A}, @var{b})
+## @deftypefn  {Function File} {} bicgstab (@var{A}, @var{b})
 ## @deftypefnx {Function File} {} bicgstab (@var{A}, @var{b}, @var{tol}, @var{maxit}, @var{M1}, @var{M2}, @var{x0})
 ## This procedure attempts to solve a system of linear equations A*x = b for x.
 ## The @var{A} must be square, symmetric and positive definite real matrix N*N.
 ## The @var{b} must be a one column vector with a length of N.
-## The @var{tol} specifies the tolerance of the method, the default value is 1e-6.
-## The @var{maxit} specifies the maximum number of iterations, the default value is min(20,N).
-## The @var{M1} specifies a preconditioner, can also be a function handler which returns M\X.
-## The @var{M2} combined with @var{M1} defines preconditioner as preconditioner=M1*M2.
+## The @var{tol} specifies the tolerance of the method, the default value is
+## 1e-6.
+## The @var{maxit} specifies the maximum number of iterations, the default value
+## is min(20,N).
+## The @var{M1} specifies a preconditioner, can also be a function handler which
+## returns M\X.
+## The @var{M2} combined with @var{M1} defines preconditioner as
+## preconditioner=M1*M2.
 ## The @var{x0} is the initial guess, the default value is zeros(N,1).
 ##
 ## The value @var{x} is a computed result of this procedure.
-## The value @var{flag} can be 0 when we reach tolerance in @var{maxit} iterations, 1 when
-## we don't reach tolerance in @var{maxit} iterations and 3 when the procedure stagnates.
+## The value @var{flag} can be 0 when we reach tolerance in @var{maxit}
+## iterations, 1 when
+## we don't reach tolerance in @var{maxit} iterations and 3 when the procedure
+## stagnates.
 ## The value @var{relres} is a relative residual - norm(b-A*x)/norm(b).
 ## The value @var{iter} is an iteration number in which x was computed.
 ## The value @var{resvec} is a vector of @var{relres} for each iteration.
@@ -41,26 +47,26 @@ function [x, flag, relres, iter, resvec] = bicgstab (A, b, tol, maxit, M1, M2, x
 
   if (nargin < 2 || nargin > 7 || nargout > 5)
     print_usage ();
-  elseif (!isnumeric (A) || rows (A) != columns (A))
-    error ("bicgstab: the first argument must be a n-by-n matrix");
+  elseif (!(isnumeric (A) && issquare (A)))
+    error ("bicgstab: A must be a square numeric matrix");
   elseif (!isvector (b))
-    error ("bicgstab: b must be a vector");
+    error ("bicgstab: B must be a vector");
   elseif (!any (b))
-    error ("bicgstab: b shuldn't be a vector of zeros");
+    error ("bicgstab: B must not be a vector of all zeros");
   elseif (rows (A) != rows (b))
-    error ("bicgstab: the first and second argument must have the same number of rows");
+    error ("bicgstab: A and B must have the same number of rows");
   elseif (nargin > 2 && !isscalar (tol))
-    error ("bicgstab: tol must be a scalar");
+    error ("bicgstab: TOL must be a scalar");
   elseif (nargin > 3 && !isscalar (maxit))
-    error ("bicgstab: maxit must be a scalar");
+    error ("bicgstab: MAXIT must be a scalar");
   elseif (nargin > 4 && ismatrix (M1) && (rows (M1) != rows (A) || columns (M1) != columns (A)))
     error ("bicgstab: M1 must have the same number of rows and columns as A");
   elseif (nargin > 5 && (!ismatrix (M2) || rows (M2) != rows (A) || columns (M2) != columns (A)))
     error ("bicgstab: M2 must have the same number of rows and columns as A");
   elseif (nargin > 6 && !isvector (x0))
-    error ("bicgstab: x0 must be a vector");
+    error ("bicgstab: X0 must be a vector");
   elseif (nargin > 6 && rows (x0) != rows (b))
-    error ("bicgstab: x0 must have the same number of rows as b");
+    error ("bicgstab: X0 must have the same number of rows as B");
   endif
 
   ## Default tolerance.
@@ -125,7 +131,7 @@ function [x, flag, relres, iter, resvec] = bicgstab (A, b, tol, maxit, M1, M2, x
 
     shat = precon (s);
 
-    t = A * shat; 
+    t = A * shat;
     omega = (t' * s) / (t' * t);
     x = x + alpha * phat + omega * shat;
     res = s - omega * t;
@@ -138,7 +144,7 @@ function [x, flag, relres, iter, resvec] = bicgstab (A, b, tol, maxit, M1, M2, x
       ## We reach tolerance tol within maxit iterations.
       flag = 0;
       break;
-    elseif (resvec (end) == resvec (end - 1)) 
+    elseif (resvec (end) == resvec (end - 1))
       ## The method stagnates.
       flag = 3;
       break;
@@ -146,7 +152,7 @@ function [x, flag, relres, iter, resvec] = bicgstab (A, b, tol, maxit, M1, M2, x
   endfor
 
   if (nargout < 2)
-    if (flag == 0) 
+    if (flag == 0)
       printf (["bicgstab converged at iteration %i ",
       "to a solution with relative residual %e\n"],iter,relres);
     elseif (flag == 3)

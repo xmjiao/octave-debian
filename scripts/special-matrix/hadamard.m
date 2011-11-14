@@ -1,5 +1,4 @@
-## Copyright (C) 1993, 1994, 1995, 1996, 1997, 1998, 2004, 2006, 2007, 2009
-##               Paul Kienzle
+## Copyright (C) 1993-2011 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -22,41 +21,45 @@
 
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} hadamard (@var{n})
-## Construct a Hadamard matrix @var{Hn} of size @var{n}-by-@var{n}.  The 
-## size @var{n} must be of the form @code{2 ^ @var{k} * @var{p}} in which
-## @var{p} is one of 1, 12, 20 or 28.  The returned matrix is normalized,
-## meaning @code{Hn(:,1) == 1} and @code{H(1,:) == 1}.
+## Construct a Hadamard matrix (@nospell{Hn}) of size @var{n}-by-@var{n}.  The
+## size @var{n} must be of the form @math{2^k * p} in which
+## p is one of 1, 12, 20 or 28.  The returned matrix is normalized,
+## meaning @w{@code{Hn(:,1) == 1}} and @w{@code{Hn(1,:) == 1}}.
 ##
 ## Some of the properties of Hadamard matrices are:
 ##
 ## @itemize @bullet
 ## @item
-## @code{kron (@var{Hm}, @var{Hn})} is a Hadamard matrix of size 
-## @var{m}-by-@var{n}.
-## @item
-## @code{Hn * Hn' == @var{n} * eye (@var{n})}.
-## @item
-## The rows of @var{Hn} are orthogonal.
-## @item
-## @code{det (@var{A}) <= abs(det (@var{Hn}))} for all @var{A} with
-## @code{abs (@var{A} (@var{i}, @var{j})) <= 1}.
-## @item
-## Multiply any row or column by -1 and still have a Hadamard matrix.
-## @end itemize
+## @code{kron (Hm, Hn)} is a Hadamard matrix of size @var{m}-by-@var{n}.
 ##
+## @item
+## @code{Hn * Hn' = @var{n} * eye (@var{n})}.
+##
+## @item
+## The rows of @nospell{Hn} are orthogonal.
+##
+## @item
+## @code{det (@var{A}) <= abs (det (Hn))} for all @var{A} with
+## @w{@code{abs (@var{A}(i, j)) <= 1}}.
+##
+## @item
+## Multiplying any row or column by -1 and the matrix will remain a Hadamard
+## matrix.
+## @end itemize
+## @seealso{compan, hankel, toeplitz}
 ## @end deftypefn
 
-   
+
 ## Reference [1] contains a list of Hadamard matrices up to n=256.
 ## See code for h28 in hadamard.m for an example of how to extend
 ## this function for additional p.
 ##
 ## References:
-## [1] A Library of Hadamard Matrices, N. J. A. Sloane 
+## [1] A Library of Hadamard Matrices, N. J. A. Sloane
 ##     http://www.research.att.com/~njas/hadamard/
 
 function h = hadamard (n)
-  
+
   if (nargin != 1)
     print_usage ();
   endif
@@ -64,14 +67,14 @@ function h = hadamard (n)
   ## Find k if n = 2^k*p.
   k = 0;
   while (n > 1 && floor (n/2) == n/2)
-    k++; 
-    n = n/2; 
+    k++;
+    n = n/2;
   endwhile
-  
+
   ## Find base hadamard.
   ## Except for n=2^k, need a multiple of 4.
   if (n != 1)
-    k -= 2; 
+    k -= 2;
   endif
 
   ## Trigger error if not a multiple of 4.
@@ -89,18 +92,18 @@ function h = hadamard (n)
     case 7
       h = hnormalize (h28 ());
     otherwise
-      error ("n must be 2^k*p, for p = 1, 12, 20 or 28");
+      error ("hadamard: N must be 2^k*p, for p = 1, 12, 20 or 28");
   endswitch
 
   ## Build H(2^k*n) from kron(H(2^k),H(n)).
   h2 = [1,1;1,-1];
   while (true)
     if (floor (k/2) != k/2)
-      h = kron (h2, h); 
+      h = kron (h2, h);
     endif
     k = floor (k/2);
-    if (k == 0) 
-      break; 
+    if (k == 0)
+      break;
     endif
     h2 = kron (h2, h2);
   endwhile

@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 1999, 2000, 2002, 2005, 2006,
-##               2007, 2008, 2009 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -31,7 +30,7 @@
 ##
 ## If the data contains ties (some value appears more than once)
 ## @var{k} is divided by
-## 
+##
 ## 1 - @var{sum_ties} / (@var{n}^3 - @var{n})
 ##
 ## where @var{sum_ties} is the sum of @var{t}^2 - @var{t} over each group
@@ -87,7 +86,7 @@ function [pval, k, df] = kruskal_wallis_test (varargin)
   k = k / (1 - sum_ties / (n^3 - n));
 
   df = m - 1;
-  pval = 1 - chisquare_cdf (k, df);
+  pval = 1 - chi2cdf (k, df);
 
   if (nargout == 0)
     printf ("pval: %g\n", pval);

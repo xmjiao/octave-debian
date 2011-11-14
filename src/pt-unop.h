@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2000, 2002, 2003, 2004, 2005, 2006,
-              2007, 2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -43,13 +42,13 @@ tree_unary_expression : public tree_expression
 public:
 
   tree_unary_expression (int l = -1, int c = -1,
-			 octave_value::unary_op t
-			   = octave_value::unknown_unary_op)
+                         octave_value::unary_op t
+                           = octave_value::unknown_unary_op)
     : tree_expression (l, c), op (0), etype (t)  { }
 
   tree_unary_expression (tree_expression *e, int l = -1, int c = -1,
-			 octave_value::unary_op t
-			   = octave_value::unknown_unary_op)
+                         octave_value::unary_op t
+                           = octave_value::unknown_unary_op)
     : tree_expression (l, c), op (e), etype (t) { }
 
   ~tree_unary_expression (void) { delete op; }
@@ -61,7 +60,7 @@ public:
   tree_expression *operand (void) { return op; }
 
   std::string oper (void) const;
-  
+
   octave_value::unary_op op_type (void) const { return etype; }
 
 protected:
@@ -92,8 +91,8 @@ public:
     : tree_unary_expression (l, c, octave_value::unknown_unary_op) { }
 
   tree_prefix_expression (tree_expression *e, int l = -1, int c = -1,
-			  octave_value::unary_op t
-			    = octave_value::unknown_unary_op)
+                          octave_value::unary_op t
+                            = octave_value::unknown_unary_op)
     : tree_unary_expression (e, l, c, t) { }
 
   ~tree_prefix_expression (void) { }
@@ -105,7 +104,7 @@ public:
   octave_value_list rvalue (int nargout);
 
   tree_expression *dup (symbol_table::scope_id scope,
-			symbol_table::context_id context) const;
+                        symbol_table::context_id context) const;
 
   void accept (tree_walker& tw);
 
@@ -129,8 +128,8 @@ public:
     : tree_unary_expression (l, c, octave_value::unknown_unary_op) { }
 
   tree_postfix_expression (tree_expression *e, int l = -1, int c = -1,
-			   octave_value::unary_op t
-			     = octave_value::unknown_unary_op)
+                           octave_value::unary_op t
+                             = octave_value::unknown_unary_op)
     : tree_unary_expression (e, l, c, t) { }
 
   ~tree_postfix_expression (void) { }
@@ -142,7 +141,7 @@ public:
   octave_value_list rvalue (int nargout);
 
   tree_expression *dup (symbol_table::scope_id scope,
-			symbol_table::context_id context) const;
+                        symbol_table::context_id context) const;
 
   void accept (tree_walker& tw);
 
@@ -156,9 +155,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

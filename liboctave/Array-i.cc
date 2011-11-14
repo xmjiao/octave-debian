@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 1998, 2001, 2003, 2004, 2005,
-              2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -68,17 +67,7 @@ INSTANTIATE_ARRAY (octave_uint16, OCTAVE_API);
 INSTANTIATE_ARRAY (octave_uint32, OCTAVE_API);
 INSTANTIATE_ARRAY (octave_uint64, OCTAVE_API);
 
-#include "Array2.h"
-
-template class OCTAVE_API Array2<int>;
-
 #include "DiagArray2.h"
 #include "DiagArray2.cc"
 
 template class OCTAVE_API DiagArray2<int>;
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

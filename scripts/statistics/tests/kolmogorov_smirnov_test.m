@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 2000, 2002, 2003, 2004, 2005,
-##               2006, 2007, 2009 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -29,7 +28,7 @@
 ## a uniform distribution on [2,4], use
 ##
 ## @example
-## kolmogorov_smirnov_test(x, "uniform", 2, 4)
+## kolmogorov_smirnov_test(x, "unif", 2, 4)
 ## @end example
 ##
 ## @noindent
@@ -39,7 +38,7 @@
 ## With the optional argument string @var{alt}, the alternative of
 ## interest can be selected.  If @var{alt} is @code{"!="} or
 ## @code{"<>"}, the null is tested against the two-sided alternative F
-## != G.  In this case, the test statistic @var{ks} follows a two-sided
+## != G@.  In this case, the test statistic @var{ks} follows a two-sided
 ## Kolmogorov-Smirnov distribution.  If @var{alt} is @code{">"}, the
 ## one-sided alternative F > G is considered.  Similarly for @code{"<"},
 ## the one-sided alternative F > G is considered.  In this case, the
@@ -61,29 +60,36 @@ function [pval, ks] = kolmogorov_smirnov_test (x, dist, varargin)
   endif
 
   if (! isvector (x))
-    error ("kolmogorov_smirnov_test: x must be a vector");
+    error ("kolmogorov_smirnov_test: X must be a vector");
   endif
 
   n = length (x);
   s = sort (x);
-  f = str2func (sprintf ("%s_cdf", dist));
+  try
+    f = str2func (sprintf ("%scdf", dist));
+  catch
+    try
+      f = str2func (sprintf ("%s_cdf", dist));
+    catch
+      error ("kolmogorov_smirnov_test: no %scdf or %s_cdf function found",
+             dist, dist);
+    end_try_catch
+  end_try_catch
 
   alt  = "!=";
 
-  if (nargin == 2)
-    z = reshape (feval (f, s), 1, n);
-  else
-    args = "";
-    for k = 1 : (nargin-2);
-      tmp  = varargin{k};
-      if ischar (tmp)
-        alt = tmp;
-      else
-        args = sprintf ("%s, %g", args, tmp);
-      endif
-    endfor
-    z = reshape (eval (sprintf ("%s(s%s);", func2str (f), args)), 1, n);
+  args{1} = s;
+  nvargs = numel (varargin);
+  if (nvargs > 0)
+    if (ischar (varargin{end}))
+      alt = varargin{end};
+      args(2:nvargs) = varargin(1:end-1);
+    else
+      args(2:nvargs+1) = varargin;
+    endif
   endif
+
+  z = reshape (feval (f, args{:}), 1, n);
 
   if (strcmp (alt, "!=") || strcmp (alt, "<>"))
     ks   = sqrt (n) * max (max ([abs(z - (0:(n-1))/n); abs(z - (1:n)/n)]));
@@ -103,3 +109,18 @@ function [pval, ks] = kolmogorov_smirnov_test (x, dist, varargin)
   endif
 
 endfunction
+
+%!error <Invalid call to kolmogorov_smirnov_test>
+%!  kolmogorov_smirnov_test (1);
+%!error <kolmogorov_smirnov_test: X must be a vector>
+%!  kolmogorov_smirnov_test ({}, "unif", 2, 4);
+%!error <kolmogorov_smirnov_test: no not_a_distcdf or not_a_dist_cdf function found>
+%!  kolmogorov_smirnov_test (1, "not_a_dist");
+%!error <kolmogorov_smirnov_test: alternative bla not recognized>
+%!  kolmogorov_smirnov_test (1, "unif", 2, 4, "bla");
+%!test # for recognition of unifcdf function
+%!  assert (kolmogorov_smirnov_test (0:100, "unif", 0, 100), 1.0, eps);
+%!test # for recognition of logistic_cdf function
+%!  assert (kolmogorov_smirnov_test (0:100, "logistic"), 0);
+%!test # F < G
+%!  assert (kolmogorov_smirnov_test (50:100, "unif", 0, 50, "<"));

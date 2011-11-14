@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2001, 2002, 2004, 2005, 2006, 2007, 2008, 2009
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -40,7 +39,7 @@ int tree_break_command::breaking = 0;
 
 tree_command *
 tree_break_command::dup (symbol_table::scope_id,
-			 symbol_table::context_id) const
+                         symbol_table::context_id) const
 {
   return new tree_break_command (line (), column ());
 }
@@ -58,7 +57,7 @@ int tree_continue_command::continuing = 0;
 
 tree_command *
 tree_continue_command::dup (symbol_table::scope_id,
-			    symbol_table::context_id) const
+                            symbol_table::context_id) const
 {
   return new tree_continue_command (line (), column ());
 }
@@ -76,7 +75,7 @@ int tree_return_command::returning = 0;
 
 tree_command *
 tree_return_command::dup (symbol_table::scope_id,
-			  symbol_table::context_id) const
+                          symbol_table::context_id) const
 {
   return new tree_return_command (line (), column ());
 }
@@ -86,9 +85,3 @@ tree_return_command::accept (tree_walker& tw)
 {
   tw.visit_return_command (*this);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

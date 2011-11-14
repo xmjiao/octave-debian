@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 1999, 2000, 2002, 2003,
-              2005, 2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -43,12 +42,8 @@ Software Foundation, Inc.
 
 #include <fstream>
 
-#ifdef HAVE_UNISTD_H
-#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#endif
 #include <unistd.h>
-#endif
 
 #include "cmd-hist.h"
 #include "file-ops.h"
@@ -88,7 +83,7 @@ default_history_file (void)
 
   if (file.empty ())
     file = file_ops::concat (octave_env::get_home_directory (),
-			     ".octave_hist");
+                             ".octave_hist");
 
   return file;
 }
@@ -108,7 +103,7 @@ default_history_size (void)
       int val;
 
       if (sscanf (env_size.c_str (), "%d", &val) == 1)
-	size = val > 0 ? val : 0;
+        size = val > 0 ? val : 0;
     }
 
   return size;
@@ -116,6 +111,24 @@ default_history_size (void)
 
 // The number of lines to keep in the history file.
 static int Vhistory_size = default_history_size ();
+
+static std::string
+default_history_control (void)
+{
+  std::string retval;
+
+  std::string env_histcontrol = octave_env::getenv ("OCTAVE_HISTCONTROL");
+
+  if (! env_histcontrol.empty ())
+    {
+      return env_histcontrol;
+    }
+
+  return retval;
+}
+
+// The number of lines to keep in the history file.
+static std::string Vhistory_control = default_history_control ();
 
 static std::string
 default_history_timestamp_format (void)
@@ -140,7 +153,7 @@ bool Vsaving_history = true;
 //
 // Arg of -w FILENAME means write file, arg of -r FILENAME
 // means read file, arg of -q means don't number lines.  Arg of N
-// means only display that many items. 
+// means only display that many items.
 
 static void
 do_history (int argc, const string_vector& argv)
@@ -153,41 +166,41 @@ do_history (int argc, const string_vector& argv)
       std::string option = argv[i];
 
       if (option == "-r" || option == "-w" || option == "-a"
-	  || option == "-n")
-	{
-	  if (i < argc - 1)
-	    command_history::set_file (argv[i+1]);
+          || option == "-n")
+        {
+          if (i < argc - 1)
+            command_history::set_file (argv[i+1]);
 
-	  if (option == "-a")
-	    // Append `new' lines to file.
-	    command_history::append ();
+          if (option == "-a")
+            // Append `new' lines to file.
+            command_history::append ();
 
-	  else if (option == "-w")
-	    // Write entire history.
-	    command_history::write ();
+          else if (option == "-w")
+            // Write entire history.
+            command_history::write ();
 
-	  else if (option == "-r")
-	    // Read entire file.
-	    command_history::read ();
+          else if (option == "-r")
+            // Read entire file.
+            command_history::read ();
 
-	  else if (option == "-n")
-	    // Read `new' history from file.
-	    command_history::read_range ();
+          else if (option == "-n")
+            // Read `new' history from file.
+            command_history::read_range ();
 
-	  else
-	    panic_impossible ();
+          else
+            panic_impossible ();
 
-	  return;
-	}
+          return;
+        }
       else if (argv[i] == "-q")
-	numbered_output = 0;
+        numbered_output = 0;
       else if (argv[i] == "--")
-	{
-	  i++;
-	  break;
-	}
+        {
+          i++;
+          break;
+        }
       else
-	break;
+        break;
     }
 
   int limit = -1;
@@ -196,16 +209,16 @@ do_history (int argc, const string_vector& argv)
     {
       if (sscanf (argv[i].c_str (), "%d", &limit) != 1)
         {
-	  if (argv[i][0] == '-')
-	    error ("history: unrecognized option `%s'", argv[i].c_str ());
-	  else
-	    error ("history: bad non-numeric arg `%s'", argv[i].c_str ());
+          if (argv[i][0] == '-')
+            error ("history: unrecognized option `%s'", argv[i].c_str ());
+          else
+            error ("history: bad non-numeric arg `%s'", argv[i].c_str ());
 
-	  return;
+          return;
         }
 
       if (limit < 0)
-	limit = -limit;
+        limit = -limit;
     }
 
   string_vector hlist = command_history::list (limit, numbered_output);
@@ -232,21 +245,21 @@ edit_history_readline (std::fstream& stream)
   while (stream.get (c))
     {
       if (lindex + 2 >= line_len)
-	{
-	  char *tmp_line = new char [line_len += 128];
-	  strcpy (tmp_line, line);
-	  delete [] line;
-	  line = tmp_line;
-	}
+        {
+          char *tmp_line = new char [line_len += 128];
+          strcpy (tmp_line, line);
+          delete [] line;
+          line = tmp_line;
+        }
 
       if (c == '\n')
-	{
-	  line[lindex++] = '\n';
-	  line[lindex++] = '\0';
-	  return line;
-	}
+        {
+          line[lindex++] = '\n';
+          line[lindex++] = '\0';
+          return line;
+        }
       else
-	line[lindex++] = c;
+        line[lindex++] = c;
     }
 
   if (! lindex)
@@ -286,24 +299,24 @@ edit_history_repl_hist (const std::string& command)
       int len = hlist.length ();
 
       if (len > 0)
-	{
-	  int i = len - 1;
+        {
+          int i = len - 1;
 
-	  std::string histent = command_history::get_entry (i);
+          std::string histent = command_history::get_entry (i);
 
-	  if (! histent.empty ())
-	    {
-	      std::string cmd = command;
+          if (! histent.empty ())
+            {
+              std::string cmd = command;
 
-	      int cmd_len = cmd.length ();
+              int cmd_len = cmd.length ();
 
-	      if (cmd[cmd_len - 1] == '\n')
-		cmd.resize (cmd_len - 1);
+              if (cmd[cmd_len - 1] == '\n')
+                cmd.resize (cmd_len - 1);
 
-	      if (! cmd.empty ())
-		command_history::replace_entry (i, cmd);
-	    }
-	}
+              if (! cmd.empty ())
+                command_history::replace_entry (i, cmd);
+            }
+        }
     }
 }
 
@@ -315,18 +328,18 @@ edit_history_add_hist (const std::string& line)
       std::string tmp = line;
 
       int len = tmp.length ();
-	
+
       if (len > 0 && tmp[len-1] == '\n')
-	tmp.resize (len - 1);
+        tmp.resize (len - 1);
 
       if (! tmp.empty ())
-	command_history::add (tmp);
+        command_history::add (tmp);
     }
 }
 
 static std::string
 mk_tmp_hist_file (int argc, const string_vector& argv,
-		  int insert_curr, const char *warn_for) 
+                  int insert_curr, const char *warn_for)
 {
   std::string retval;
 
@@ -357,23 +370,23 @@ mk_tmp_hist_file (int argc, const string_vector& argv,
   if (argc == 3)
     {
       if (sscanf (argv[1].c_str (), "%d", &hist_beg) != 1
-	  || sscanf (argv[2].c_str (), "%d", &hist_end) != 1)
-	usage_error = 1;
+          || sscanf (argv[2].c_str (), "%d", &hist_end) != 1)
+        usage_error = 1;
       else
-	{
-	  hist_beg--;
-	  hist_end--;
-	}
+        {
+          hist_beg--;
+          hist_end--;
+        }
     }
   else if (argc == 2)
     {
       if (sscanf (argv[1].c_str (), "%d", &hist_beg) != 1)
-	usage_error = 1;
+        usage_error = 1;
       else
-	{
-	  hist_beg--;
-	  hist_end = hist_beg;
-	}
+        {
+          hist_beg--;
+          hist_end = hist_beg;
+        }
     }
 
   if (hist_beg < 0 || hist_end < 0 || hist_beg > hist_count
@@ -397,31 +410,37 @@ mk_tmp_hist_file (int argc, const string_vector& argv,
       reverse = 1;
     }
 
-  std::string name = file_ops::tempnam ("", "oct-");
+  std::string name = octave_tempnam ("", "oct-");
 
   std::fstream file (name.c_str (), std::ios::out);
 
   if (! file)
     {
       error ("%s: couldn't open temporary file `%s'", warn_for,
-	     name.c_str ());
+             name.c_str ());
       return retval;
     }
 
   if (reverse)
     {
       for (int i = hist_end; i >= hist_beg; i--)
-	file << hlist[i] << "\n";
+        file << hlist[i] << "\n";
     }
   else
     {
       for (int i = hist_beg; i <= hist_end; i++)
-	file << hlist[i] << "\n";
+        file << hlist[i] << "\n";
     }
 
   file.close ();
 
   return name;
+}
+
+static void
+unlink_cleanup (const char *file)
+{
+  gnulib::unlink (file);
 }
 
 static void
@@ -461,18 +480,18 @@ do_edit_history (int argc, const string_vector& argv)
       // Skip blank lines.
 
       if (line[0] == '\n')
-	{
-	  delete [] line;
-	  continue;
-	}
+        {
+          delete [] line;
+          continue;
+        }
 
       if (first)
-	{
-	  first = 0;
-	  edit_history_repl_hist (line);
-	}
+        {
+          first = 0;
+          edit_history_repl_hist (line);
+        }
       else
-	edit_history_add_hist (line);
+        edit_history_add_hist (line);
     }
 
   file.close ();
@@ -480,22 +499,16 @@ do_edit_history (int argc, const string_vector& argv)
   // Turn on command echo, so the output from this will make better
   // sense.
 
-  unwind_protect::begin_frame ("do_edit_history");
+  unwind_protect frame;
 
-  unwind_protect_int (Vecho_executing_commands);
-  unwind_protect_bool (input_from_tmp_history_file);
+  frame.add_fcn (unlink_cleanup, name.c_str ());
+  frame.protect_var (Vecho_executing_commands);
+  frame.protect_var (input_from_tmp_history_file);
 
   Vecho_executing_commands = ECHO_CMD_LINE;
   input_from_tmp_history_file = true;
 
   source_file (name);
-
-  unwind_protect::run_frame ("do_edit_history");
-
-  // Delete the temporary file.  Should probably be done with an
-  // unwind_protect.
-
-  unlink (name.c_str ());
 }
 
 static void
@@ -509,33 +522,23 @@ do_run_history (int argc, const string_vector& argv)
   // Turn on command echo so the output from this will make better
   // sense.
 
-  unwind_protect::begin_frame ("do_run_history");
+  unwind_protect frame;
 
-  unwind_protect_int (Vecho_executing_commands);
-  unwind_protect_bool (input_from_tmp_history_file);
+  frame.add_fcn (unlink_cleanup, name.c_str ());
+  frame.protect_var (Vecho_executing_commands);
+  frame.protect_var (input_from_tmp_history_file);
 
   Vecho_executing_commands = ECHO_CMD_LINE;
   input_from_tmp_history_file = true;
 
   source_file (name);
-
-  unwind_protect::run_frame ("do_run_history");
-
-  // Delete the temporary file.
-
-  // FIXME -- should probably be done using an unwind_protect.
-
-  unlink (name.c_str ());
 }
 
 void
 initialize_history (bool read_history_file)
 {
-  command_history::set_file (Vhistory_file);
-  command_history::set_size (Vhistory_size);
-
-  if (read_history_file)
-    command_history::read (false);
+  command_history::initialize (read_history_file, Vhistory_file, Vhistory_size,
+                               Vhistory_control);
 }
 
 void
@@ -551,12 +554,12 @@ octave_history_write_timestamp (void)
 
 DEFUN (edit_history, args, ,
   "-*- texinfo -*-\n\
-@deffn {Command} edit_history [@var{first}] [@var{last}]\n\
+@deftypefn {Command} {} edit_history [@var{first}] [@var{last}]\n\
 If invoked with no arguments, @code{edit_history} allows you to edit the\n\
-history list using the editor named by the variable @w{@code{EDITOR}}.  The\n\
+history list using the editor named by the variable @w{@env{EDITOR}}.  The\n\
 commands to be edited are first copied to a temporary file.  When you\n\
 exit the editor, Octave executes the commands that remain in the file.\n\
-It is often more convenient to use @code{edit_history} to define functions \n\
+It is often more convenient to use @code{edit_history} to define functions\n\
 rather than attempting to enter them directly on the command line.\n\
 By default, the block of commands is executed as soon as you exit the\n\
 editor.  To avoid executing any commands, simply delete all the lines\n\
@@ -584,7 +587,7 @@ the first command than the last command reverses the list of commands\n\
 before placing them in the buffer to be edited.  If both arguments are\n\
 omitted, the previous command in the history list is used.\n\
 @seealso{run_history}\n\
-@end deffn")
+@end deftypefn")
 {
   octave_value_list retval;
 
@@ -602,7 +605,7 @@ omitted, the previous command in the history list is used.\n\
 
 DEFUN (history, args, ,
   "-*- texinfo -*-\n\
-@deffn {Command} history options\n\
+@deftypefn {Command} {} history options\n\
 If invoked with no arguments, @code{history} displays a list of commands\n\
 that you have executed.  Valid options are:\n\
 \n\
@@ -612,8 +615,8 @@ Write the current history to the file @var{file}.  If the name is\n\
 omitted, use the default history file (normally @file{~/.octave_hist}).\n\
 \n\
 @item -r @var{file}\n\
-Read the file @var{file}, replacing the current history list with its\n\
-contents.  If the name is omitted, use the default history file\n\
+Read the file @var{file}, appending its contents to the current\n\
+history list.  If the name is omitted, use the default history file\n\
 (normally @file{~/.octave_hist}).\n\
 \n\
 @item @var{n}\n\
@@ -627,7 +630,7 @@ and pasting commands using the X Window System.\n\
 For example, to display the five most recent commands that you have\n\
 typed without displaying line numbers, use the command\n\
 @kbd{history -q 5}.\n\
-@end deffn")
+@end deftypefn")
 {
   octave_value_list retval;
 
@@ -645,11 +648,11 @@ typed without displaying line numbers, use the command\n\
 
 DEFUN (run_history, args, ,
   "-*- texinfo -*-\n\
-@deffn {Command} run_history [@var{first}] [@var{last}]\n\
+@deftypefn {Command} {} run_history [@var{first}] [@var{last}]\n\
 Similar to @code{edit_history}, except that the editor is not invoked,\n\
 and the commands are simply executed as they appear in the history list.\n\
 @seealso{edit_history}\n\
-@end deffn")
+@end deftypefn")
 {
   octave_value_list retval;
 
@@ -665,13 +668,46 @@ and the commands are simply executed as they appear in the history list.\n\
   return retval;
 }
 
+DEFUN (history_control, args, nargout,
+  "-*- texinfo -*-\n\
+@deftypefn  {Built-in Function} {@var{val} =} history_control ()\n\
+@deftypefnx {Built-in Function} {@var{old_val} =} history_control (@var{new_val})\n\
+Query or set the internal variable that specifies how commands are saved\n\
+to the history list.  The default value is an empty character string,\n\
+but may be overridden by the environment variable\n\
+@w{@env{OCTAVE_HISTCONTROL}}.\n\
+\n\
+The value of @code{history_control} is a colon-separated list of values\n\
+controlling how commands are saved on the history list.  If the list\n\
+of values includes @code{ignorespace}, lines which begin with a space\n\
+character are not saved in the history list.  A value of @code{ignoredups}\n\
+causes lines matching the previous history entry to not be saved.\n\
+A value of @code{ignoreboth} is shorthand for @code{ignorespace} and\n\
+@code{ignoredups}.  A value of @code{erasedups} causes all previous lines\n\
+matching the current line to be removed from the history list before that\n\
+line is saved.  Any value not in the above list is ignored.  If\n\
+@code{history_control} is the empty string, all commands are saved on\n\
+the history list, subject to the value of @code{saving_history}.\n\
+@seealso{history_file, history_size, history_timestamp_format_string, saving_history}\n\
+@end deftypefn")
+{
+  std::string saved_history_control = Vhistory_control;
+
+  octave_value retval = SET_INTERNAL_VARIABLE (history_control);
+
+  if (Vhistory_control != saved_history_control)
+    command_history::process_histcontrol (Vhistory_control);
+
+  return retval;
+}
+
 DEFUN (history_size, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {@var{val} =} history_size ()\n\
+@deftypefn  {Built-in Function} {@var{val} =} history_size ()\n\
 @deftypefnx {Built-in Function} {@var{old_val} =} history_size (@var{new_val})\n\
 Query or set the internal variable that specifies how many entries\n\
 to store in the history file.  The default value is @code{1024},\n\
-but may be overridden by the environment variable @w{@code{OCTAVE_HISTSIZE}}.\n\
+but may be overridden by the environment variable @w{@env{OCTAVE_HISTSIZE}}.\n\
 @seealso{history_file, history_timestamp_format_string, saving_history}\n\
 @end deftypefn")
 {
@@ -688,12 +724,12 @@ but may be overridden by the environment variable @w{@code{OCTAVE_HISTSIZE}}.\n\
 
 DEFUN (history_file, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {@var{val} =} history_file ()\n\
+@deftypefn  {Built-in Function} {@var{val} =} history_file ()\n\
 @deftypefnx {Built-in Function} {@var{old_val} =} history_file (@var{new_val})\n\
 Query or set the internal variable that specifies the name of the\n\
 file used to store command history.  The default value is\n\
 @file{~/.octave_hist}, but may be overridden by the environment\n\
-variable @w{@code{OCTAVE_HISTFILE}}.\n\
+variable @w{@env{OCTAVE_HISTFILE}}.\n\
 @seealso{history_size, saving_history, history_timestamp_format_string}\n\
 @end deftypefn")
 {
@@ -709,7 +745,7 @@ variable @w{@code{OCTAVE_HISTFILE}}.\n\
 
 DEFUN (history_timestamp_format_string, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {@var{val} =} history_timestamp_format_string ()\n\
+@deftypefn  {Built-in Function} {@var{val} =} history_timestamp_format_string ()\n\
 @deftypefnx {Built-in Function} {@var{old_val} =} history_timestamp_format_string (@var{new_val})\n\
 Query or set the internal variable that specifies the format string\n\
 for the comment line that is written to the history file when Octave\n\
@@ -727,11 +763,11 @@ value is\n\
 
 DEFUN (saving_history, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {@var{val} =} saving_history ()\n\
+@deftypefn  {Built-in Function} {@var{val} =} saving_history ()\n\
 @deftypefnx {Built-in Function} {@var{old_val} =} saving_history (@var{new_val})\n\
 Query or set the internal variable that controls whether commands entered\n\
 on the command line are saved in the history file.\n\
-@seealso{history_file, history_size, history_timestamp_format_string}\n\
+@seealso{history_control, history_file, history_size, history_timestamp_format_string}\n\
 @end deftypefn")
 {
   octave_value retval = SET_INTERNAL_VARIABLE (saving_history);
@@ -740,9 +776,3 @@ on the command line are saved in the history file.\n\
 
   return retval;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

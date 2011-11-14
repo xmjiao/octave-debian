@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 1999, 2000, 2002, 2003, 2004, 2005,
-              2007, 2008 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -40,35 +39,43 @@ octave_builtin : public octave_function
 {
 public:
 
-  octave_builtin (void) { }
+  octave_builtin (void) : octave_function (), f (0) { }
 
   typedef octave_value_list (*fcn) (const octave_value_list&, int);
 
   octave_builtin (fcn ff, const std::string& nm = std::string (),
-		  const std::string& ds = std::string ())
+                  const std::string& ds = std::string ())
     : octave_function (nm, ds), f (ff) { }
 
   ~octave_builtin (void) { }
 
   octave_value subsref (const std::string& type,
-			const std::list<octave_value_list>& idx)
+                        const std::list<octave_value_list>& idx)
     {
       octave_value_list tmp = subsref (type, idx, 1);
       return tmp.length () > 0 ? tmp(0) : octave_value ();
     }
 
   octave_value_list subsref (const std::string& type,
-			     const std::list<octave_value_list>& idx,
-			     int nargout);
+                             const std::list<octave_value_list>& idx,
+                             int nargout);
+
+  octave_value_list subsref (const std::string& type,
+                             const std::list<octave_value_list>& idx,
+                             int nargout, const std::list<octave_lvalue>* lvalue_list);
 
   octave_function *function_value (bool = false) { return this; }
-
-  const octave_function *function_value (bool = false) const { return this; }
 
   bool is_builtin_function (void) const { return true; }
 
   octave_value_list
   do_multi_index_op (int nargout, const octave_value_list& args);
+
+  octave_value_list
+  do_multi_index_op (int nargout, const octave_value_list& args,
+                     const std::list<octave_lvalue>* lvalue_list);
+
+  static const std::list<octave_lvalue> *curr_lvalue_list;
 
 protected:
 
@@ -89,9 +96,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

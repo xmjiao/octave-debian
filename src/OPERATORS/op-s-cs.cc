@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2000, 2002, 2003, 2004, 2005, 2007, 2008
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -70,47 +69,12 @@ DEFBINOP (ldiv, scalar, complex)
   return octave_value (v2.complex_value () / d);
 }
 
-DEFBINOP (lt, scalar, complex)
-{
-  CAST_BINOP_ARGS (const octave_scalar&, const octave_complex&);
-
-  return v1.double_value () < real (v2.complex_value ());
-}
-
-DEFBINOP (le, scalar, complex)
-{
-  CAST_BINOP_ARGS (const octave_scalar&, const octave_complex&);
-
-  return v1.double_value () <= real (v2.complex_value ());
-}
-
-DEFBINOP (eq, scalar, complex)
-{
-  CAST_BINOP_ARGS (const octave_scalar&, const octave_complex&);
-
-  return v1.double_value () == v2.complex_value ();
-}
-
-DEFBINOP (ge, scalar, complex)
-{
-  CAST_BINOP_ARGS (const octave_scalar&, const octave_complex&);
-
-  return v1.double_value () >= real (v2.complex_value ());
-}
-
-DEFBINOP (gt, scalar, complex)
-{
-  CAST_BINOP_ARGS (const octave_scalar&, const octave_complex&);
-
-  return v1.double_value () > real (v2.complex_value ());
-}
-
-DEFBINOP (ne, scalar, complex)
-{
-  CAST_BINOP_ARGS (const octave_scalar&, const octave_complex&);
-
-  return v1.double_value () != v2.complex_value ();
-}
+DEFCMPLXCMPOP_OP (lt, scalar, complex, <)
+DEFCMPLXCMPOP_OP (le, scalar, complex, <=)
+DEFCMPLXCMPOP_OP (eq, scalar, complex, ==)
+DEFCMPLXCMPOP_OP (ge, scalar, complex, >=)
+DEFCMPLXCMPOP_OP (gt, scalar, complex, >)
+DEFCMPLXCMPOP_OP (ne, scalar, complex, !=)
 
 DEFBINOP_OP (el_mul, scalar, complex, *)
 
@@ -183,9 +147,3 @@ install_s_cs_ops (void)
   INSTALL_ASSIGNCONV (octave_scalar, octave_complex, octave_complex_matrix);
   INSTALL_ASSIGNCONV (octave_float_scalar, octave_complex, octave_float_complex_matrix);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

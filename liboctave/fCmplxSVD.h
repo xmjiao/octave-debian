@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2000, 2002, 2003, 2004, 2005,
-              2006, 2007, 2008 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -36,32 +35,40 @@ FloatComplexSVD
 {
 public:
 
-  FloatComplexSVD (void) { }
+  FloatComplexSVD (void)
+    : type_computed (), sigma (), left_sm (), right_sm ()
+    { }
 
-  FloatComplexSVD (const FloatComplexMatrix& a, SVD::type svd_type = SVD::std)
+  FloatComplexSVD (const FloatComplexMatrix& a,
+                   SVD::type svd_type = SVD::std,
+                   SVD::driver svd_driver = SVD::GESVD)
+    : type_computed (), sigma (), left_sm (), right_sm ()
     {
-      init (a, svd_type);
+      init (a, svd_type, svd_driver);
     }
 
   FloatComplexSVD (const FloatComplexMatrix& a, octave_idx_type& info,
-	      SVD::type svd_type = SVD::std)
+                   SVD::type svd_type = SVD::std,
+                   SVD::driver svd_driver = SVD::GESVD)
+    : type_computed (), sigma (), left_sm (), right_sm ()
     {
-      info = init (a, svd_type);
+      info = init (a, svd_type, svd_driver);
     }
 
   FloatComplexSVD (const FloatComplexSVD& a)
-    : type_computed (a.type_computed),
-      sigma (a.sigma), left_sm (a.left_sm), right_sm (a.right_sm) { }
+    : type_computed (a.type_computed), sigma (a.sigma),
+      left_sm (a.left_sm), right_sm (a.right_sm)
+    { }
 
   FloatComplexSVD& operator = (const FloatComplexSVD& a)
     {
       if (this != &a)
-	{
-	  type_computed = a.type_computed;
-	  sigma = a.sigma;
-	  left_sm = a.left_sm;
-	  right_sm = a.right_sm;
-	}
+        {
+          type_computed = a.type_computed;
+          sigma = a.sigma;
+          left_sm = a.left_sm;
+          right_sm = a.right_sm;
+        }
       return *this;
     }
 
@@ -83,13 +90,9 @@ private:
   FloatComplexMatrix left_sm;
   FloatComplexMatrix right_sm;
 
-  octave_idx_type init (const FloatComplexMatrix& a, SVD::type svd_type = SVD::std);
+  octave_idx_type init (const FloatComplexMatrix& a,
+                        SVD::type svd_type = SVD::std,
+                        SVD::driver svd_driver = SVD::GESVD);
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

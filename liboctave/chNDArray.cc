@@ -1,7 +1,7 @@
 // N-D Array  manipulations.
 /*
 
-Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 2003-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -32,18 +32,20 @@ along with Octave; see the file COPYING.  If not, see
 #include "lo-mappers.h"
 #include "mx-op-defs.h"
 
+#include "bsxfun-defs.cc"
+
 // FIXME -- this is not quite the right thing.
 
 boolNDArray
 charNDArray::all (int dim) const
 {
-  return do_mx_red_op<boolMatrix, char> (*this, dim, mx_inline_all);
+  return do_mx_red_op<bool, char> (*this, dim, mx_inline_all);
 }
 
 boolNDArray
 charNDArray::any (int dim) const
 {
-  return do_mx_red_op<boolMatrix, char> (*this, dim, mx_inline_any);
+  return do_mx_red_op<bool, char> (*this, dim, mx_inline_any);
 }
 
 charNDArray
@@ -68,22 +70,22 @@ charNDArray::concat (const NDArray& rb, const Array<octave_idx_type>& ra_idx)
       double d = rb.elem (i);
 
       if (xisnan (d))
-	{
-	  (*current_liboctave_error_handler)
-	    ("invalid conversion from NaN to character");
-	  return *this;
-	}
+        {
+          (*current_liboctave_error_handler)
+            ("invalid conversion from NaN to character");
+          return *this;
+        }
       else
-	{
-	  octave_idx_type ival = NINTbig (d);
+        {
+          octave_idx_type ival = NINTbig (d);
 
-	  if (ival < 0 || ival > UCHAR_MAX)
-	    // FIXME -- is there something
-	    // better we could do? Should we warn the user?
-	    ival = 0;
+          if (ival < 0 || ival > UCHAR_MAX)
+            // FIXME -- is there something
+            // better we could do? Should we warn the user?
+            ival = 0;
 
-	  tmp.elem (i) = static_cast<char>(ival);
-	}
+          tmp.elem (i) = static_cast<char>(ival);
+        }
     }
 
   insert (tmp, ra_idx);
@@ -107,41 +109,20 @@ charNDArray::insert (const charNDArray& a, const Array<octave_idx_type>& ra_idx)
 charMatrix
 charNDArray::matrix_value (void) const
 {
-  charMatrix retval;
-
-  int nd = ndims ();
-
-  switch (nd)
-    {
-    case 1:
-      retval = charMatrix (Array2<char> (*this, dimensions(0), 1));
-      break;
-
-    case 2:
-      retval = charMatrix (Array2<char> (*this, dimensions(0),
-					       dimensions(1)));
-      break;
-
-    default:
-      (*current_liboctave_error_handler)
-	("invalid conversion of charNDArray to charMatrix");
-      break;
-    }
-
-  return retval;
+  return *this;
 }
 
 void
 charNDArray::increment_index (Array<octave_idx_type>& ra_idx,
-			      const dim_vector& dimensions,
-			      int start_dimension)
+                              const dim_vector& dimensions,
+                              int start_dimension)
 {
   ::increment_index (ra_idx, dimensions, start_dimension);
 }
 
-octave_idx_type 
+octave_idx_type
 charNDArray::compute_index (Array<octave_idx_type>& ra_idx,
-			    const dim_vector& dimensions)
+                            const dim_vector& dimensions)
 {
   return ::compute_index (ra_idx, dimensions);
 }
@@ -149,74 +130,16 @@ charNDArray::compute_index (Array<octave_idx_type>& ra_idx,
 charNDArray
 charNDArray::diag (octave_idx_type k) const
 {
-  return MArrayN<char>::diag (k);
+  return Array<char>::diag (k);
 }
 
-boolNDArray
-charNDArray::bmap (mapper fcn) const
-{
-  octave_idx_type len = length ();
-  const char *m = fortran_vec();
-  boolNDArray result (dims ());
-  bool *p = result.fortran_vec ();
+NDS_CMP_OPS (charNDArray, char)
+NDS_BOOL_OPS (charNDArray, char)
 
-  for (octave_idx_type i = 0; i < len; i++)
-    {
-      OCTAVE_QUIT;
+SND_CMP_OPS (char, charNDArray)
+SND_BOOL_OPS (char, charNDArray)
 
-      p[i] = bool (fcn (m[i]));
-    }
+NDND_CMP_OPS (charNDArray, charNDArray)
+NDND_BOOL_OPS (charNDArray, charNDArray)
 
-  return result;
-}
-
-NDArray
-charNDArray::dmap (mapper fcn) const
-{
-  octave_idx_type len = length ();
-  const char *m = fortran_vec();
-  NDArray result (dims ());
-  double *p = result.fortran_vec ();
-
-  for (octave_idx_type i = 0; i < len; i++)
-    {
-      OCTAVE_QUIT;
-
-      p[i] = fcn (m[i]);
-    }
-
-  return result;
-}
-
-charNDArray
-charNDArray::smap (mapper fcn) const
-{
-  octave_idx_type len = length ();
-  const char *m = fortran_vec();
-  charNDArray result (dims ());
-  char *p = result.fortran_vec ();
-
-  for (octave_idx_type i = 0; i < len; i++)
-    {
-      OCTAVE_QUIT;
-
-      p[i] = fcn (m[i]);
-    }
-
-  return result;
-}
-
-NDS_CMP_OPS(charNDArray, , char, )
-NDS_BOOL_OPS(charNDArray, char, 0)
-
-SND_CMP_OPS(char, , charNDArray, )
-SND_BOOL_OPS(char, charNDArray, 0)
-
-NDND_CMP_OPS(charNDArray, , charNDArray, )
-NDND_BOOL_OPS(charNDArray, charNDArray, 0)
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+BSXFUN_STDREL_DEFS_MXLOOP (charNDArray)

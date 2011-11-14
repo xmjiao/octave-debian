@@ -1,4 +1,4 @@
-## Copyright (C) 2005, 2006, 2007, 2008 John W. Eaton
+## Copyright (C) 2005-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} axes ()
+## @deftypefn  {Function File} {} axes ()
 ## @deftypefnx {Function File} {} axes (@var{property}, @var{value}, @dots{})
 ## @deftypefnx {Function File} {} axes (@var{h})
 ## Create an axes object and return a handle to it.
@@ -44,7 +44,7 @@ function h = axes (varargin)
     ## figure.
     tmp = varargin{1};
     if (length(tmp) == 1 && ishandle (tmp)
-	&& strcmp (get (tmp, "type"), "axes"))
+        && strcmp (get (tmp, "type"), "axes"))
       parent = ancestor (tmp, "figure");
       set (0, "currentfigure", parent);
       set (parent, "currentaxes", tmp);

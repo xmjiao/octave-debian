@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2002,
-              2003, 2004, 2005, 2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
+Copyright (C) 2009-2010 VZLU Prague
 
 This file is part of Octave.
 
@@ -96,7 +96,7 @@ clear_symbol (const std::string& nm)
 
 octave_function *
 is_valid_function (const std::string& fcn_name,
-		   const std::string& warn_for, bool warn)
+                   const std::string& warn_for, bool warn)
 {
   octave_function *ans = 0;
 
@@ -105,19 +105,19 @@ is_valid_function (const std::string& fcn_name,
       octave_value val = symbol_table::find_function (fcn_name);
 
       if (val.is_defined ())
-	ans = val.function_value (true);
+        ans = val.function_value (true);
     }
 
   if (! ans && warn)
     error ("%s: the symbol `%s' is not valid as a function",
-	   warn_for.c_str (), fcn_name.c_str ());
+           warn_for.c_str (), fcn_name.c_str ());
 
   return ans;
 }
 
 octave_function *
 is_valid_function (const octave_value& arg,
-		   const std::string& warn_for, bool warn)
+                   const std::string& warn_for, bool warn)
 {
   octave_function *ans = 0;
 
@@ -128,9 +128,9 @@ is_valid_function (const octave_value& arg,
       fcn_name = arg.string_value ();
 
       if (! error_state)
-	ans = is_valid_function (fcn_name, warn_for, warn);
+        ans = is_valid_function (fcn_name, warn_for, warn);
       else if (warn)
-	error ("%s: expecting function name as argument", warn_for.c_str ());
+        error ("%s: expecting function name as argument", warn_for.c_str ());
     }
   else if (warn)
     error ("%s: expecting function name as argument", warn_for.c_str ());
@@ -140,8 +140,8 @@ is_valid_function (const octave_value& arg,
 
 octave_function *
 extract_function (const octave_value& arg, const std::string& warn_for,
-		  const std::string& fname, const std::string& header,
-		  const std::string& trailer)
+                  const std::string& fname, const std::string& header,
+                  const std::string& trailer)
 {
   octave_function *retval = 0;
 
@@ -156,32 +156,32 @@ extract_function (const octave_value& arg, const std::string& warn_for,
       cmd.append (trailer);
 
       if (! error_state)
-	{
-	  int parse_status;
+        {
+          int parse_status;
 
-	  eval_string (cmd, true, parse_status, 0);
+          eval_string (cmd, true, parse_status, 0);
 
-	  if (parse_status == 0)
-	    {
-	      retval = is_valid_function (fname, warn_for, 0);
-      
-	      if (! retval)
-		{
-		  error ("%s: `%s' is not valid as a function",
-			 warn_for.c_str (), fname.c_str ());
-		  return retval;
-		}
+          if (parse_status == 0)
+            {
+              retval = is_valid_function (fname, warn_for, 0);
 
-              warning ("%s: passing function body as a string is obsolete."
-                       " Please use anonymous functions.", warn_for.c_str ());
-	    }
-	  else
-	    error ("%s: `%s' is not valid as a function",
-		   warn_for.c_str (), fname.c_str ());
-	}
+              if (! retval)
+                {
+                  error ("%s: `%s' is not valid as a function",
+                         warn_for.c_str (), fname.c_str ());
+                  return retval;
+                }
+
+              warning ("%s: passing function body as a string is obsolete; please use anonymous functions",
+                       warn_for.c_str ());
+            }
+          else
+            error ("%s: `%s' is not valid as a function",
+                   warn_for.c_str (), fname.c_str ());
+        }
       else
-	error ("%s: expecting first argument to be a string",
-	       warn_for.c_str ());
+        error ("%s: expecting first argument to be a string",
+               warn_for.c_str ());
     }
 
   return retval;
@@ -199,7 +199,7 @@ get_struct_elts (const std::string& text)
   while ((pos = text.find ('.', pos)) != std::string::npos)
     {
       if (++pos == len)
-	break;
+        break;
 
       n++;
     }
@@ -213,12 +213,12 @@ get_struct_elts (const std::string& text)
       len = text.find ('.', pos);
 
       if (len != std::string::npos)
-	len -= pos;
+        len -= pos;
 
       retval[i] = text.substr (pos, len);
 
       if (len != std::string::npos)
-	pos += len + 1;
+        pos += len + 1;
     }
 
   return retval;
@@ -241,7 +241,7 @@ is_variable (const std::string& name)
 
 string_vector
 generate_struct_completions (const std::string& text,
-			     std::string& prefix, std::string& hint)
+                             std::string& prefix, std::string& hint)
 {
   string_vector names;
 
@@ -250,9 +250,9 @@ generate_struct_completions (const std::string& text,
   if (pos != std::string::npos)
     {
       if (pos == text.length ())
-	hint = "";
+        hint = "";
       else
-	hint = text.substr (pos+1);
+        hint = text.substr (pos+1);
 
       prefix = text.substr (0, pos);
 
@@ -261,30 +261,30 @@ generate_struct_completions (const std::string& text,
       pos = base_name.find_first_of ("{(.");
 
       if (pos != std::string::npos)
-	base_name = base_name.substr (0, pos);
+        base_name = base_name.substr (0, pos);
 
       if (is_variable (base_name))
-	{
-	  int parse_status;
+        {
+          int parse_status;
 
-	  unwind_protect::begin_frame ("generate_struct_completions");
+          unwind_protect frame;
 
-	  unwind_protect_int (error_state);
-	  unwind_protect_int (warning_state);
+          frame.protect_var (error_state);
+          frame.protect_var (warning_state);
 
-	  unwind_protect_bool (discard_error_messages);
-	  unwind_protect_bool (discard_warning_messages);
+          frame.protect_var (discard_error_messages);
+          frame.protect_var (discard_warning_messages);
 
-	  discard_error_messages = true;
-	  discard_warning_messages = true;
+          discard_error_messages = true;
+          discard_warning_messages = true;
 
-	  octave_value tmp = eval_string (prefix, true, parse_status);
+          octave_value tmp = eval_string (prefix, true, parse_status);
 
-	  unwind_protect::run_frame ("generate_struct_completions");
+          frame.run ();
 
-	  if (tmp.is_defined () && tmp.is_map ())
-	    names = tmp.map_keys ();
-	}
+          if (tmp.is_defined () && tmp.is_map ())
+            names = tmp.map_keys ();
+        }
     }
 
   return names;
@@ -297,10 +297,10 @@ bool
 looks_like_struct (const std::string& text)
 {
   bool retval = (! text.empty ()
-		 && text != "."
-		 && text.find_first_of (file_ops::dir_sep_chars ()) == std::string::npos
-		 && text.find ("..") == std::string::npos
-		 && text.rfind ('.') != std::string::npos);
+                 && text != "."
+                 && text.find_first_of (file_ops::dir_sep_chars ()) == std::string::npos
+                 && text.find ("..") == std::string::npos
+                 && text.rfind ('.') != std::string::npos);
 
 #if 0
   symbol_record *sr = curr_sym_tab->lookup (text);
@@ -309,16 +309,16 @@ looks_like_struct (const std::string& text)
     {
       int parse_status;
 
-      unwind_protect::begin_frame ("looks_like_struct");
+      unwind_protect frame;
 
-      unwind_protect_bool (discard_error_messages);
-      unwind_protect_int (error_state);
+      frame.protect_var (discard_error_messages);
+      frame.protect_var (error_state);
 
       discard_error_messages = true;
 
       octave_value tmp = eval_string (text, true, parse_status);
 
-      unwind_protect::run_frame ("looks_like_struct");
+      frame.run ();
 
       retval = (tmp.is_defined () && tmp.is_map ());
     }
@@ -344,7 +344,7 @@ do_isglobal (const octave_value_list& args)
 
   if (error_state)
     {
-      error ("isglobal: expecting std::string argument");
+      error ("isglobal: NAME must be a string");
       return retval;
     }
 
@@ -354,8 +354,8 @@ do_isglobal (const octave_value_list& args)
 DEFUN (isglobal, args, ,
   "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {} isglobal (@var{name})\n\
-Return 1 if @var{name} is globally visible.  Otherwise, return 0.  For\n\
-example,\n\
+Return true if @var{name} is a globally visible variable.\n\
+For example:\n\
 \n\
 @example\n\
 @group\n\
@@ -364,18 +364,25 @@ isglobal (\"x\")\n\
      @result{} 1\n\
 @end group\n\
 @end example\n\
+@seealso{isvarname, exist}\n\
 @end deftypefn")
 {
   return do_isglobal (args);
 }
 
-DEFUN (is_global, args, ,
-  "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {} isglobal (@var{name})\n\
-This function has been deprecated.  Use isglobal instead.\n\
-@end deftypefn")
+static octave_value
+safe_symbol_lookup (const std::string& symbol_name)
 {
-  return do_isglobal (args);
+  octave_value retval;
+
+  unwind_protect frame;
+  interpreter_try (frame);
+
+  retval = symbol_table::find (symbol_name);
+
+  error_state = 0;
+
+  return retval;
 }
 
 int
@@ -398,11 +405,7 @@ symbol_exist (const std::string& name, const std::string& type)
   // name that is visible in the current scope will be in the local
   // symbol table.
 
-  octave_value_list evaluated_args;
-  bool args_evaluated = false;
-
-  octave_value val = symbol_table::find (symbol_name, 0, string_vector (),
-					 evaluated_args, args_evaluated);
+  octave_value val = safe_symbol_lookup (symbol_name);
 
   if (val.is_defined ())
     {
@@ -410,82 +413,76 @@ symbol_exist (const std::string& name, const std::string& type)
       bool var_ok = not_a_struct /* || val.is_map_element (struct_elts) */;
 
       if (! retval
-	  && var_ok
-	  && (type == "any" || type == "var")
-	  && (val.is_constant () || val.is_object ()
-	      || val.is_inline_function () || val.is_function_handle ()))
-	{
-	  retval = 1;
-	}
+          && var_ok
+          && (type == "any" || type == "var")
+          && (val.is_constant () || val.is_object ()
+              || val.is_inline_function () || val.is_function_handle ()))
+        {
+          retval = 1;
+        }
 
       if (! retval
-	  && (type == "any" || type == "builtin"))
-	{
-	  if (not_a_struct && val.is_builtin_function ())
-	    {
-	      retval = 5;
-	    }
-	}
+          && (type == "any" || type == "builtin"))
+        {
+          if (not_a_struct && val.is_builtin_function ())
+            {
+              retval = 5;
+            }
+        }
 
       if (! retval
-	  && not_a_struct
-	  && (type == "any" || type == "file")
-	  && (val.is_user_function () || val.is_dld_function ()))
-	{
-	  octave_function *f = val.function_value (true);
-	  std::string s = f ? f->fcn_file_name () : std::string ();
+          && not_a_struct
+          && (type == "any" || type == "file")
+          && (val.is_user_function () || val.is_dld_function ()))
+        {
+          octave_function *f = val.function_value (true);
+          std::string s = f ? f->fcn_file_name () : std::string ();
 
-	  retval = s.empty () ? 103 : (val.is_user_function () ? 2 : 3);
-	}
+          retval = s.empty () ? 103 : (val.is_user_function () ? 2 : 3);
+        }
     }
 
   if (! (type == "var" || type == "builtin"))
     {
       if (! retval)
-	{
-	  std::string file_name = lookup_autoload (name);
+        {
+          std::string file_name = lookup_autoload (name);
 
-	  if (file_name.empty ())
-	    file_name = load_path::find_fcn (name);
+          if (file_name.empty ())
+            file_name = load_path::find_fcn (name);
 
-	  size_t len = file_name.length ();
+          size_t len = file_name.length ();
 
-	  if (len > 0)
-	    {
-	      if (type == "any" || type == "file")
-		{
-		  if (len > 4 && (file_name.substr (len-4) == ".oct"
-				  || file_name.substr (len-4) == ".mex"))
-		    retval = 3;
-		  else
-		    retval = 2;
-		}
-	    }
-	}
+          if (len > 0)
+            {
+              if (type == "any" || type == "file")
+                {
+                  if (len > 4 && (file_name.substr (len-4) == ".oct"
+                                  || file_name.substr (len-4) == ".mex"))
+                    retval = 3;
+                  else
+                    retval = 2;
+                }
+            }
+        }
 
       if (! retval)
-	{
-	  std::string file_name = file_in_path (name, "");
+        {
+          std::string file_name = file_in_path (name, "");
 
-	  if (file_name.empty ())
-	    file_name = name;
+          if (file_name.empty ())
+            file_name = name;
 
-	  file_stat fs (file_name);
+          file_stat fs (file_name);
 
-	  if (fs)
-	    {
-	      if ((type == "any" || type == "file")
-		  && fs.is_reg ())
-		{
-		  retval = 2;
-		}
-	      else if ((type == "any" || type == "dir")
-		       && fs.is_dir ())
-		{
-		  retval = 7;
-		}
-	    }
-	}
+          if (fs)
+            {
+              if (type == "any" || type == "file")
+                retval = fs.is_dir () ? 7 : 2;
+              else if (type == "dir" && fs.is_dir ())
+                retval = 7;
+            }
+        }
     }
 
   return retval;
@@ -536,16 +533,20 @@ other types of files, you should use some combination of the functions\n\
 If the optional argument @var{type} is supplied, check only for\n\
 symbols of the specified type.  Valid types are\n\
 \n\
-@table @samp\n\
+@table @asis\n\
 @item \"var\"\n\
 Check only for variables.\n\
+\n\
 @item \"builtin\"\n\
 Check only for built-in functions.\n\
+\n\
 @item \"file\"\n\
 Check only for files.\n\
+\n\
 @item \"dir\"\n\
 Check only for directories.\n\
 @end table\n\
+@seealso{file_in_loadpath}\n\
 @end deftypefn")
 {
   octave_value retval = false;
@@ -557,23 +558,38 @@ Check only for directories.\n\
       std::string name = args(0).string_value ();
 
       if (! error_state)
-	{
-	  std::string type
-	    = (nargin == 2) ? args(1).string_value () : std::string ("any");
+        {
+          std::string type
+            = (nargin == 2) ? args(1).string_value () : std::string ("any");
 
-	  if (! error_state)
-	    retval = symbol_exist (name, type);
-	  else
-	    error ("exist: expecting second argument to be a string");
-	}
+          if (! error_state)
+            retval = symbol_exist (name, type);
+          else
+            error ("exist: TYPE must be a string");
+        }
       else
-	error ("exist: expecting first argument to be a string");
+        error ("exist: NAME must be a string");
     }
   else
     print_usage ();
 
   return retval;
 }
+
+/*
+%!test
+%!  if (isunix ())
+%!    assert (exist ("/tmp") == 7);
+%!    assert (exist ("/tmp", "file") == 7);
+%!    assert (exist ("/tmp", "dir") == 7);
+%!    assert (exist ("/bin/sh") == 2);
+%!    assert (exist ("/bin/sh", "file") == 2);
+%!    assert (exist ("/bin/sh", "dir") == 0);
+%!    assert (exist ("/dev/null") == 2);
+%!    assert (exist ("/dev/null", "file") == 2);
+%!    assert (exist ("/dev/null", "dir") == 0);
+%!  endif
+*/
 
 octave_value
 lookup_function_handle (const std::string& nm)
@@ -589,7 +605,7 @@ get_global_value (const std::string& nm, bool silent)
   octave_value val = symbol_table::global_varval (nm);
 
   if (val.is_undefined () && ! silent)
-    error ("get_global_by_name: undefined symbol `%s'", nm.c_str ());
+    error ("get_global_value: undefined symbol `%s'", nm.c_str ());
 
   return val;
 }
@@ -600,11 +616,64 @@ set_global_value (const std::string& nm, const octave_value& val)
   symbol_table::global_varref (nm) = val;
 }
 
+octave_value
+get_top_level_value (const std::string& nm, bool silent)
+{
+  octave_value val = symbol_table::top_level_varval (nm);
+
+  if (val.is_undefined () && ! silent)
+    error ("get_top_level_value: undefined symbol `%s'", nm.c_str ());
+
+  return val;
+}
+
+void
+set_top_level_value (const std::string& nm, const octave_value& val)
+{
+  symbol_table::top_level_varref (nm) = val;
+}
+
 // Variable values.
+
+static bool
+wants_local_change (const octave_value_list& args, int& nargin)
+{
+  bool retval = false;
+
+  if (nargin == 2)
+    {
+      if (args(1).is_string () && args(1).string_value () == "local")
+        {
+          nargin = 1;
+          retval = true;
+        }
+      else
+        {
+          error_with_cfn ("expecting second argument to be \"local\"");
+          nargin = 0;
+        }
+    }
+
+  return retval;
+}
+
+template <class T>
+bool try_local_protect (T& var)
+{
+  octave_user_code *curr_usr_code = octave_call_stack::caller_user_code ();
+  octave_user_function *curr_usr_fcn = 0;
+  if (curr_usr_code && curr_usr_code->is_user_function ())
+    curr_usr_fcn = dynamic_cast<octave_user_function *> (curr_usr_code);
+
+  if (curr_usr_fcn && curr_usr_fcn->local_protect (var))
+    return true;
+  else
+    return false;
+}
 
 octave_value
 set_internal_variable (bool& var, const octave_value_list& args,
-		       int nargout, const char *nm)
+                       int nargout, const char *nm)
 {
   octave_value retval;
 
@@ -613,14 +682,20 @@ set_internal_variable (bool& var, const octave_value_list& args,
   if (nargout > 0 || nargin == 0)
     retval = var;
 
+  if (wants_local_change (args, nargin))
+    {
+      if (! try_local_protect (var))
+        warning ("\"local\" has no effect outside a function");
+    }
+
   if (nargin == 1)
     {
       bool bval = args(0).bool_value ();
 
       if (! error_state)
-	var = bval;
+        var = bval;
       else
-	error ("%s: expecting arg to be a logical value", nm);
+        error ("%s: expecting arg to be a logical value", nm);
     }
   else if (nargin > 1)
     print_usage ();
@@ -630,7 +705,7 @@ set_internal_variable (bool& var, const octave_value_list& args,
 
 octave_value
 set_internal_variable (char& var, const octave_value_list& args,
-		       int nargout, const char *nm)
+                       int nargout, const char *nm)
 {
   octave_value retval;
 
@@ -639,29 +714,35 @@ set_internal_variable (char& var, const octave_value_list& args,
   if (nargout > 0 || nargin == 0)
     retval = var;
 
+  if (wants_local_change (args, nargin))
+    {
+      if (! try_local_protect (var))
+        warning ("\"local\" has no effect outside a function");
+    }
+
   if (nargin == 1)
     {
       std::string sval = args(0).string_value ();
 
       if (! error_state)
-	{
-	  switch (sval.length ())
-	    {
-	    case 1:
-	      var = sval[0];
-	      break;
+        {
+          switch (sval.length ())
+            {
+            case 1:
+              var = sval[0];
+              break;
 
-	    case 0:
-	      var = '\0';
-	      break;
+            case 0:
+              var = '\0';
+              break;
 
-	    default:
-	      error ("%s: argument must be a single character", nm);
-	      break;
-	    }
-	}
+            default:
+              error ("%s: argument must be a single character", nm);
+              break;
+            }
+        }
       else
-	error ("%s: argument must be a single character", nm);
+        error ("%s: argument must be a single character", nm);
     }
   else if (nargin > 1)
     print_usage ();
@@ -671,8 +752,8 @@ set_internal_variable (char& var, const octave_value_list& args,
 
 octave_value
 set_internal_variable (int& var, const octave_value_list& args,
-		       int nargout, const char *nm,
-		       int minval, int maxval)
+                       int nargout, const char *nm,
+                       int minval, int maxval)
 {
   octave_value retval;
 
@@ -681,22 +762,28 @@ set_internal_variable (int& var, const octave_value_list& args,
   if (nargout > 0 || nargin == 0)
     retval = var;
 
+  if (wants_local_change (args, nargin))
+    {
+      if (! try_local_protect (var))
+        warning ("\"local\" has no effect outside a function");
+    }
+
   if (nargin == 1)
     {
       int ival = args(0).int_value ();
 
       if (! error_state)
-	{
-	  if (ival < minval)
-	    error ("%s: expecting arg to be greater than %d", nm, minval);
-	  else if (ival > maxval)
-	    error ("%s: expecting arg to be less than or equal to %d",
-		   nm, maxval);
-	  else
-	    var = ival;
-	}
+        {
+          if (ival < minval)
+            error ("%s: expecting arg to be greater than %d", nm, minval);
+          else if (ival > maxval)
+            error ("%s: expecting arg to be less than or equal to %d",
+                   nm, maxval);
+          else
+            var = ival;
+        }
       else
-	error ("%s: expecting arg to be an integer value", nm);
+        error ("%s: expecting arg to be an integer value", nm);
     }
   else if (nargin > 1)
     print_usage ();
@@ -706,8 +793,8 @@ set_internal_variable (int& var, const octave_value_list& args,
 
 octave_value
 set_internal_variable (double& var, const octave_value_list& args,
-		       int nargout, const char *nm,
-		       double minval, double maxval)
+                       int nargout, const char *nm,
+                       double minval, double maxval)
 {
   octave_value retval;
 
@@ -716,21 +803,27 @@ set_internal_variable (double& var, const octave_value_list& args,
   if (nargout > 0 || nargin == 0)
     retval = var;
 
+  if (wants_local_change (args, nargin))
+    {
+      if (! try_local_protect (var))
+        warning ("\"local\" has no effect outside a function");
+    }
+
   if (nargin == 1)
     {
       double dval = args(0).scalar_value ();
 
       if (! error_state)
-	{
-	  if (dval < minval)
-	    error ("%s: expecting arg to be greater than %g", minval);
-	  else if (dval > maxval)
-	    error ("%s: expecting arg to be less than or equal to %g", maxval);
-	  else
-	    var = dval;
-	}
+        {
+          if (dval < minval)
+            error ("%s: expecting arg to be greater than %g", minval);
+          else if (dval > maxval)
+            error ("%s: expecting arg to be less than or equal to %g", maxval);
+          else
+            var = dval;
+        }
       else
-	error ("%s: expecting arg to be a scalar value", nm);
+        error ("%s: expecting arg to be a scalar value", nm);
     }
   else if (nargin > 1)
     print_usage ();
@@ -740,7 +833,7 @@ set_internal_variable (double& var, const octave_value_list& args,
 
 octave_value
 set_internal_variable (std::string& var, const octave_value_list& args,
-		       int nargout, const char *nm, bool empty_ok)
+                       int nargout, const char *nm, bool empty_ok)
 {
   octave_value retval;
 
@@ -749,19 +842,73 @@ set_internal_variable (std::string& var, const octave_value_list& args,
   if (nargout > 0 || nargin == 0)
     retval = var;
 
+  if (wants_local_change (args, nargin))
+    {
+      if (! try_local_protect (var))
+        warning ("\"local\" has no effect outside a function");
+    }
+
   if (nargin == 1)
     {
       std::string sval = args(0).string_value ();
 
       if (! error_state)
-	{
-	  if (empty_ok || ! sval.empty ())
-	    var = sval;
-	  else
-	    error ("%s: value must not be empty", nm);
-	}
+        {
+          if (empty_ok || ! sval.empty ())
+            var = sval;
+          else
+            error ("%s: value must not be empty", nm);
+        }
       else
-	error ("%s: expecting arg to be a character string", nm);
+        error ("%s: expecting arg to be a character string", nm);
+    }
+  else if (nargin > 1)
+    print_usage ();
+
+  return retval;
+}
+
+octave_value
+set_internal_variable (int& var, const octave_value_list& args,
+                       int nargout, const char *nm, const char **choices)
+{
+  octave_value retval;
+  int nchoices = 0;
+  while (choices[nchoices] != 0)
+    nchoices++;
+
+  int nargin = args.length ();
+  assert (var < nchoices);
+
+  if (nargout > 0 || nargin == 0)
+    retval = choices[var];
+
+  if (wants_local_change (args, nargin))
+    {
+      if (! try_local_protect (var))
+        warning ("\"local\" has no effect outside a function");
+    }
+
+  if (nargin == 1)
+    {
+      std::string sval = args(0).string_value ();
+
+      if (! error_state)
+        {
+          int i = 0;
+          for (; i < nchoices; i++)
+            {
+              if (sval == choices[i])
+                {
+                  var = i;
+                  break;
+                }
+            }
+          if (i == nchoices)
+            error ("%s: value not allowed (\"%s\")", nm, sval.c_str ());
+        }
+      else
+        error ("%s: expecting arg to be a character string", nm);
     }
   else if (nargin > 1)
     print_usage ();
@@ -794,76 +941,96 @@ print_descriptor (std::ostream& os, std::list<whos_parameter> params)
 
       if (param.command != '\0')
         {
-	  // Do the actual printing
-	  switch (param.modifier)
-	    {
-	    case 'l':
-	      os << std::setiosflags (std::ios::left) << std::setw (param.parameter_length);
-	      param_buf << std::setiosflags (std::ios::left) << std::setw (param.parameter_length);
-	      break;
+          // Do the actual printing
+          switch (param.modifier)
+            {
+            case 'l':
+              os << std::setiosflags (std::ios::left) << std::setw (param.parameter_length);
+              param_buf << std::setiosflags (std::ios::left) << std::setw (param.parameter_length);
+              break;
 
-	    case 'r':
-	      os << std::setiosflags (std::ios::right) << std::setw (param.parameter_length);
-	      param_buf << std::setiosflags (std::ios::right) << std::setw (param.parameter_length);
-	      break;
+            case 'r':
+              os << std::setiosflags (std::ios::right) << std::setw (param.parameter_length);
+              param_buf << std::setiosflags (std::ios::right) << std::setw (param.parameter_length);
+              break;
 
-	    case 'c':
-	      if (param.command != 's')
-	        {
-		  os << std::setiosflags (std::ios::left)
-		     << std::setw (param.parameter_length);
-		  param_buf << std::setiosflags (std::ios::left)
-			    << std::setw (param.parameter_length);
-		}
-	      break;
+            case 'c':
+              if (param.command != 's')
+                {
+                  os << std::setiosflags (std::ios::left)
+                     << std::setw (param.parameter_length);
+                  param_buf << std::setiosflags (std::ios::left)
+                            << std::setw (param.parameter_length);
+                }
+              break;
 
-	    default:
-	      os << std::setiosflags (std::ios::left) << std::setw (param.parameter_length);
-	      param_buf << std::setiosflags (std::ios::left) << std::setw (param.parameter_length);
-	    }
+            default:
+              os << std::setiosflags (std::ios::left) << std::setw (param.parameter_length);
+              param_buf << std::setiosflags (std::ios::left) << std::setw (param.parameter_length);
+            }
 
-	  if (param.command == 's' && param.modifier == 'c')
-	    {
-	      int a, b;
-	     
-	      if (param.modifier == 'c')
-	        {
-		  a = param.first_parameter_length - param.balance;
-		  a = (a < 0 ? 0 : a);
-		  b = param.parameter_length - a - param.text . length ();
-		  b = (b < 0 ? 0 : b);
-		  os << std::setiosflags (std::ios::left) << std::setw (a)
-		     << "" << std::resetiosflags (std::ios::left) << param.text
-		     << std::setiosflags (std::ios::left)
-		     << std::setw (b) << ""
-		     << std::resetiosflags (std::ios::left);
-		  param_buf << std::setiosflags (std::ios::left) << std::setw (a)
-		     << "" << std::resetiosflags (std::ios::left) << param.line
-		     << std::setiosflags (std::ios::left)
-		     << std::setw (b) << ""
-		     << std::resetiosflags (std::ios::left);
-		}
-	    }
-	  else
-	    {
-	      os << param.text;
-	      param_buf << param.line;
-	    }
-	  os << std::resetiosflags (std::ios::left)
-	     << std::resetiosflags (std::ios::right);
-	  param_buf << std::resetiosflags (std::ios::left)
-		    << std::resetiosflags (std::ios::right);
-	  i++;
-	}
+          if (param.command == 's' && param.modifier == 'c')
+            {
+              int a, b;
+
+              if (param.modifier == 'c')
+                {
+                  a = param.first_parameter_length - param.balance;
+                  a = (a < 0 ? 0 : a);
+                  b = param.parameter_length - a - param.text . length ();
+                  b = (b < 0 ? 0 : b);
+                  os << std::setiosflags (std::ios::left) << std::setw (a)
+                     << "" << std::resetiosflags (std::ios::left) << param.text
+                     << std::setiosflags (std::ios::left)
+                     << std::setw (b) << ""
+                     << std::resetiosflags (std::ios::left);
+                  param_buf << std::setiosflags (std::ios::left) << std::setw (a)
+                     << "" << std::resetiosflags (std::ios::left) << param.line
+                     << std::setiosflags (std::ios::left)
+                     << std::setw (b) << ""
+                     << std::resetiosflags (std::ios::left);
+                }
+            }
+          else
+            {
+              os << param.text;
+              param_buf << param.line;
+            }
+          os << std::resetiosflags (std::ios::left)
+             << std::resetiosflags (std::ios::right);
+          param_buf << std::resetiosflags (std::ios::left)
+                    << std::resetiosflags (std::ios::right);
+          i++;
+        }
       else
-	{
-	  os << param.text;
-	  param_buf << param.line;
-	  i++;
-	}
+        {
+          os << param.text;
+          param_buf << param.line;
+          i++;
+        }
     }
 
   os << param_buf.str ();
+}
+
+// FIXME -- This is a bit of a kluge.  We'd like to just use val.dims()
+// and if val is an object, expect that dims will call size if it is
+// overloaded by a user-defined method.  But there are currently some
+// unresolved const issues that prevent that solution from working.
+
+std::string
+get_dims_str (const octave_value& val)
+{
+  octave_value tmp = val;
+
+  Matrix sz = tmp.size ();
+
+  dim_vector dv = dim_vector::alloc (sz.numel ());
+
+  for (octave_idx_type i = 0; i < dv.length (); i++)
+    dv(i) = sz(i);
+
+  return dv.str ();
 }
 
 class
@@ -873,136 +1040,135 @@ private:
   struct symbol_info
   {
     symbol_info (const symbol_table::symbol_record& sr,
-		 const std::string& expr_str = std::string (),
-		 const octave_value& expr_val = octave_value ())
+                 const std::string& expr_str = std::string (),
+                 const octave_value& expr_val = octave_value ())
       : name (expr_str.empty () ? sr.name () : expr_str),
-	is_automatic (sr.is_automatic ()),
-	is_formal (sr.is_formal ()),
-	is_global (sr.is_global ()),
-	is_persistent (sr.is_persistent ()),
-	varval (expr_val.is_undefined () ? sr.varval () : expr_val)
+        is_automatic (sr.is_automatic ()),
+        is_formal (sr.is_formal ()),
+        is_global (sr.is_global ()),
+        is_persistent (sr.is_persistent ()),
+        varval (expr_val.is_undefined () ? sr.varval () : expr_val)
     { }
 
     void display_line (std::ostream& os,
-		       const std::list<whos_parameter>& params) const
+                       const std::list<whos_parameter>& params) const
     {
-      dim_vector dims = varval.dims ();
-      std::string dims_str = dims.str ();
+      std::string dims_str = get_dims_str (varval);
 
       std::list<whos_parameter>::const_iterator i = params.begin ();
 
       while (i != params.end ())
-	{
-	  whos_parameter param = *i;
+        {
+          whos_parameter param = *i;
 
-	  if (param.command != '\0')
-	    {
-	      // Do the actual printing.
+          if (param.command != '\0')
+            {
+              // Do the actual printing.
 
-	      switch (param.modifier)
-		{
-		case 'l':
-		  os << std::setiosflags (std::ios::left)
-		     << std::setw (param.parameter_length);
-		  break;
+              switch (param.modifier)
+                {
+                case 'l':
+                  os << std::setiosflags (std::ios::left)
+                     << std::setw (param.parameter_length);
+                  break;
 
-		case 'r':
-		  os << std::setiosflags (std::ios::right)
-		     << std::setw (param.parameter_length);
-		  break;
+                case 'r':
+                  os << std::setiosflags (std::ios::right)
+                     << std::setw (param.parameter_length);
+                  break;
 
-		case 'c':
-		  if (param.command == 's')
-		    {
-		      int front = param.first_parameter_length
-			- dims_str.find ('x');
-		      int back = param.parameter_length
-			- dims_str.length ()
-			- front;
-		      front = (front > 0) ? front : 0;
-		      back = (back > 0) ? back : 0;
+                case 'c':
+                  if (param.command == 's')
+                    {
+                      int front = param.first_parameter_length
+                        - dims_str.find ('x');
+                      int back = param.parameter_length
+                        - dims_str.length ()
+                        - front;
+                      front = (front > 0) ? front : 0;
+                      back = (back > 0) ? back : 0;
 
-		      os << std::setiosflags (std::ios::left)
-			 << std::setw (front)
-			 << ""
-			 << std::resetiosflags (std::ios::left)
-			 << dims_str
-			 << std::setiosflags (std::ios::left)
-			 << std::setw (back)
-			 << ""
-			 << std::resetiosflags (std::ios::left);
-		    }
-		  else
-		    {
-		      os << std::setiosflags (std::ios::left)
-			 << std::setw (param.parameter_length);
-		    }
-		  break;
+                      os << std::setiosflags (std::ios::left)
+                         << std::setw (front)
+                         << ""
+                         << std::resetiosflags (std::ios::left)
+                         << dims_str
+                         << std::setiosflags (std::ios::left)
+                         << std::setw (back)
+                         << ""
+                         << std::resetiosflags (std::ios::left);
+                    }
+                  else
+                    {
+                      os << std::setiosflags (std::ios::left)
+                         << std::setw (param.parameter_length);
+                    }
+                  break;
 
-		default:
-		  error ("whos_line_format: modifier `%c' unknown",
-			 param.modifier);
+                default:
+                  error ("whos_line_format: modifier `%c' unknown",
+                         param.modifier);
 
-		  os << std::setiosflags (std::ios::right)
-		     << std::setw (param.parameter_length);
-		}
+                  os << std::setiosflags (std::ios::right)
+                     << std::setw (param.parameter_length);
+                }
 
-	      switch (param.command)
-		{
-		case 'a':
-		  {
-		    char tmp[5];
+              switch (param.command)
+                {
+                case 'a':
+                  {
+                    char tmp[5];
 
-		    tmp[0] = (is_automatic ? 'a' : ' ');
-		    tmp[1] = (is_formal ? 'f' : ' ');
-		    tmp[2] = (is_global ? 'g' : ' ');
-		    tmp[3] = (is_persistent ? 'p' : ' ');
-		    tmp[4] = 0;
+                    tmp[0] = (is_automatic ? 'a' : ' ');
+                    tmp[1] = (is_formal ? 'f' : ' ');
+                    tmp[2] = (is_global ? 'g' : ' ');
+                    tmp[3] = (is_persistent ? 'p' : ' ');
+                    tmp[4] = 0;
 
-		    os << tmp;
-		  }
-		  break;
+                    os << tmp;
+                  }
+                  break;
 
-		case 'b':
-		  os << varval.byte_size ();
-		  break;
+                case 'b':
+                  os << varval.byte_size ();
+                  break;
 
-		case 'c':
-		  os << varval.class_name ();
-		  break;
+                case 'c':
+                  os << varval.class_name ();
+                  break;
 
-		case 'e':
-		  os << varval.capacity ();
-		  break;
+                case 'e':
+                  os << varval.capacity ();
+                  break;
 
-		case 'n':
-		  os << name;
-		  break;
+                case 'n':
+                  os << name;
+                  break;
 
-		case 's':
-		  if (param.modifier != 'c')
-		    os << dims_str;
-		  break;
+                case 's':
+                  if (param.modifier != 'c')
+                    os << dims_str;
+                  break;
 
-		case 't':
-		  os << varval.type_name ();
-		  break;
-	    
-		default:
-		  error ("whos_line_format: command `%c' unknown",
-			 param.command);
-		}
+                case 't':
+                  os << varval.type_name ();
+                  break;
 
-	      os << std::resetiosflags (std::ios::left)
-		 << std::resetiosflags (std::ios::right);
-	      i++;
-	    }
-	  else
-	    {
-	      os << param.text;
-	      i++;
-	    }
-	}
+                default:
+                  error ("whos_line_format: command `%c' unknown",
+                         param.command);
+                }
+
+              os << std::resetiosflags (std::ios::left)
+                 << std::resetiosflags (std::ios::right);
+              i++;
+            }
+          else
+            {
+              os << param.text;
+              i++;
+            }
+        }
     }
 
     std::string name;
@@ -1034,8 +1200,8 @@ public:
   }
 
   void append (const symbol_table::symbol_record& sr,
-	       const std::string& expr_str,
-	       const octave_value& expr_val)
+               const std::string& expr_str,
+               const octave_value& expr_val)
   {
     lst.push_back (symbol_info (sr, expr_str, expr_val));
   }
@@ -1044,47 +1210,47 @@ public:
 
   bool empty (void) const { return lst.empty (); }
 
-  Octave_map
+  octave_map
   map_value (const std::string& caller_function_name, int nesting_level) const
   {
     size_t len = lst.size ();
 
-    Array<octave_value> name_info (len, 1);
-    Array<octave_value> size_info (len, 1);
-    Array<octave_value> bytes_info (len, 1);
-    Array<octave_value> class_info (len, 1);
-    Array<octave_value> global_info (len, 1);
-    Array<octave_value> sparse_info (len, 1);
-    Array<octave_value> complex_info (len, 1);
-    Array<octave_value> nesting_info (len, 1);
-    Array<octave_value> persistent_info (len, 1);
+    Cell name_info (len, 1);
+    Cell size_info (len, 1);
+    Cell bytes_info (len, 1);
+    Cell class_info (len, 1);
+    Cell global_info (len, 1);
+    Cell sparse_info (len, 1);
+    Cell complex_info (len, 1);
+    Cell nesting_info (len, 1);
+    Cell persistent_info (len, 1);
 
     std::list<symbol_info>::const_iterator p = lst.begin ();
 
     for (size_t j = 0; j < len; j++)
       {
-	const symbol_info& si = *p++;
+        const symbol_info& si = *p++;
 
-	Octave_map ni;
+        octave_scalar_map ni;
 
-	ni.assign ("function", caller_function_name);
-	ni.assign ("level", nesting_level);
+        ni.assign ("function", caller_function_name);
+        ni.assign ("level", nesting_level);
 
-	name_info(j) = si.name;
-	global_info(j) = si.is_global;
-	persistent_info(j) = si.is_persistent;
+        name_info(j) = si.name;
+        global_info(j) = si.is_global;
+        persistent_info(j) = si.is_persistent;
 
-	octave_value val = si.varval;
+        octave_value val = si.varval;
 
-	size_info(j) = val.size ();
-	bytes_info(j) = val.byte_size ();
-	class_info(j) = val.class_name ();
-	sparse_info(j) = val.is_sparse_type ();
-	complex_info(j) = val.is_complex_type ();
-	nesting_info(j) = ni;
+        size_info(j) = val.size ();
+        bytes_info(j) = val.byte_size ();
+        class_info(j) = val.class_name ();
+        sparse_info(j) = val.is_sparse_type ();
+        complex_info(j) = val.is_complex_type ();
+        nesting_info(j) = ni;
       }
 
-    Octave_map info;
+    octave_map info;
 
     info.assign ("name", name_info);
     info.assign ("size", size_info);
@@ -1103,30 +1269,30 @@ public:
   {
     if (! lst.empty ())
       {
-	size_t bytes = 0;
-	size_t elements = 0;
+        size_t bytes = 0;
+        size_t elements = 0;
 
-	std::list<whos_parameter> params = parse_whos_line_format ();
+        std::list<whos_parameter> params = parse_whos_line_format ();
 
-	print_descriptor (os, params);
+        print_descriptor (os, params);
 
-	octave_stdout << "\n";
+        octave_stdout << "\n";
 
-	for (std::list<symbol_info>::const_iterator p = lst.begin ();
-	     p != lst.end (); p++)
-	  {
-	    p->display_line (os, params);
+        for (std::list<symbol_info>::const_iterator p = lst.begin ();
+             p != lst.end (); p++)
+          {
+            p->display_line (os, params);
 
-	    octave_value val = p->varval;
+            octave_value val = p->varval;
 
-	    elements += val.capacity ();
-	    bytes += val.byte_size ();
-	  }
+            elements += val.capacity ();
+            bytes += val.byte_size ();
+          }
 
-	os << "\nTotal is " << elements
-	   << (elements == 1 ? " element" : " elements")
-	   << " using " << bytes << (bytes == 1 ? " byte" : " bytes")
-	   << "\n";
+        os << "\nTotal is " << elements
+           << (elements == 1 ? " element" : " elements")
+           << " using " << bytes << (bytes == 1 ? " byte" : " bytes")
+           << "\n";
       }
   }
 
@@ -1171,184 +1337,183 @@ public:
     // bytes column, elements column and class column
 
     for (std::list<symbol_info>::const_iterator p = lst.begin ();
-	 p != lst.end (); p++)
+         p != lst.end (); p++)
       {
-	std::stringstream ss1, ss2;
-	std::string str;
+        std::stringstream ss1, ss2;
+        std::string str;
 
-	str = p->name;
-	param_length(pos_n) = ((str.length ()
-				> static_cast<size_t> (param_length(pos_n)))
-			       ? str.length () : param_length(pos_n));
+        str = p->name;
+        param_length(pos_n) = ((str.length ()
+                                > static_cast<size_t> (param_length(pos_n)))
+                               ? str.length () : param_length(pos_n));
 
-	octave_value val = p->varval;
+        octave_value val = p->varval;
 
-	str = val.type_name ();
-	param_length(pos_t) = ((str.length ()
-				> static_cast<size_t> (param_length(pos_t)))
-			       ? str.length () : param_length(pos_t));
+        str = val.type_name ();
+        param_length(pos_t) = ((str.length ()
+                                > static_cast<size_t> (param_length(pos_t)))
+                               ? str.length () : param_length(pos_t));
 
-	elements1 = val.capacity ();
-	ss1 << elements1;
-	str = ss1.str ();
-	param_length(pos_e) = ((str.length ()
-				> static_cast<size_t> (param_length(pos_e)))
-			       ? str.length () : param_length(pos_e));
+        elements1 = val.capacity ();
+        ss1 << elements1;
+        str = ss1.str ();
+        param_length(pos_e) = ((str.length ()
+                                > static_cast<size_t> (param_length(pos_e)))
+                               ? str.length () : param_length(pos_e));
 
-	bytes1 = val.byte_size ();
-	ss2 << bytes1;
-	str = ss2.str ();
-	param_length(pos_b) = ((str.length ()
-				> static_cast<size_t> (param_length(pos_b)))
-			       ? str.length () : param_length (pos_b));
+        bytes1 = val.byte_size ();
+        ss2 << bytes1;
+        str = ss2.str ();
+        param_length(pos_b) = ((str.length ()
+                                > static_cast<size_t> (param_length(pos_b)))
+                               ? str.length () : param_length (pos_b));
       }
 
     idx = 0;
     while (static_cast<size_t> (idx) < format_len)
       {
-	whos_parameter param;
-	param.command = '\0';
+        whos_parameter param;
+        param.command = '\0';
 
-	if (Vwhos_line_format[idx] == '%')
-	  {
-	    bool error_encountered = false;
-	    param.modifier = 'r';
-	    param.parameter_length = 0;
+        if (Vwhos_line_format[idx] == '%')
+          {
+            bool error_encountered = false;
+            param.modifier = 'r';
+            param.parameter_length = 0;
 
-	    int a = 0, b = -1, balance = 1;
-	    unsigned int items;
-	    size_t pos;
-	    std::string cmd;
+            int a = 0, b = -1, balance = 1;
+            unsigned int items;
+            size_t pos;
+            std::string cmd;
 
-	    // Parse one command from whos_line_format
-	    cmd = Vwhos_line_format.substr (idx, Vwhos_line_format.length ());
-	    pos = cmd.find (';');
-	    if (pos != std::string::npos)
-	      cmd = cmd.substr (0, pos+1);
-	    else
-	      error ("parameter without ; in whos_line_format");
+            // Parse one command from whos_line_format
+            cmd = Vwhos_line_format.substr (idx, Vwhos_line_format.length ());
+            pos = cmd.find (';');
+            if (pos != std::string::npos)
+              cmd = cmd.substr (0, pos+1);
+            else
+              error ("parameter without ; in whos_line_format");
 
-	    idx += cmd.length ();
+            idx += cmd.length ();
 
-	    // FIXME -- use iostream functions instead of sscanf!
+            // FIXME -- use iostream functions instead of sscanf!
 
-	    if (cmd.find_first_of ("crl") != 1)
-	      items = sscanf (cmd.c_str (), "%c%c:%d:%d:%d;",
-			      &garbage, &param.command, &a, &b, &balance);
-	    else
-	      items = sscanf (cmd.c_str (), "%c%c%c:%d:%d:%d;",
-			      &garbage, &param.modifier, &param.command,
-			      &a, &b, &balance) - 1;
+            if (cmd.find_first_of ("crl") != 1)
+              items = sscanf (cmd.c_str (), "%c%c:%d:%d:%d;",
+                              &garbage, &param.command, &a, &b, &balance);
+            else
+              items = sscanf (cmd.c_str (), "%c%c%c:%d:%d:%d;",
+                              &garbage, &param.modifier, &param.command,
+                              &a, &b, &balance) - 1;
 
-	    if (items < 2)
-	      {
-		error ("whos_line_format: parameter structure without command in whos_line_format");
-		error_encountered = true;
-	      }
+            if (items < 2)
+              {
+                error ("whos_line_format: parameter structure without command in whos_line_format");
+                error_encountered = true;
+              }
 
-	    // Insert data into parameter
-	    param.first_parameter_length = 0;
-	    pos = param_string.find (param.command);
-	    if (pos != std::string::npos)
-	      {
-		param.parameter_length = param_length(pos);
-		param.text = param_names(pos);
-		param.line.assign (param_names(pos).length (), '=');
+            // Insert data into parameter
+            param.first_parameter_length = 0;
+            pos = param_string.find (param.command);
+            if (pos != std::string::npos)
+              {
+                param.parameter_length = param_length(pos);
+                param.text = param_names(pos);
+                param.line.assign (param_names(pos).length (), '=');
 
-		param.parameter_length = (a > param.parameter_length
-					  ? a : param.parameter_length);
-		if (param.command == 's' && param.modifier == 'c' && b > 0)
-		  param.first_parameter_length = b;
-	      }
-	    else
-	      {
-		error ("whos_line_format: '%c' is not a command",
-		       param.command);
-		error_encountered = true;
-	      }
+                param.parameter_length = (a > param.parameter_length
+                                          ? a : param.parameter_length);
+                if (param.command == 's' && param.modifier == 'c' && b > 0)
+                  param.first_parameter_length = b;
+              }
+            else
+              {
+                error ("whos_line_format: '%c' is not a command",
+                       param.command);
+                error_encountered = true;
+              }
 
-	    if (param.command == 's')
-	      {
-		// Have to calculate space needed for printing
-		// matrix dimensions Space needed for Size column is
-		// hard to determine in prior, because it depends on
-		// dimensions to be shown. That is why it is
-		// recalculated for each Size-command int first,
-		// rest = 0, total;
-		int rest = 0;
-		int first = param.first_parameter_length;
-		int total = param.parameter_length;
+            if (param.command == 's')
+              {
+                // Have to calculate space needed for printing
+                // matrix dimensions Space needed for Size column is
+                // hard to determine in prior, because it depends on
+                // dimensions to be shown. That is why it is
+                // recalculated for each Size-command int first,
+                // rest = 0, total;
+                int rest = 0;
+                int first = param.first_parameter_length;
+                int total = param.parameter_length;
 
-		for (std::list<symbol_info>::const_iterator p = lst.begin ();
-		     p != lst.end (); p++)
-		  {
-		    octave_value val = p->varval;
-		    dim_vector dims = val.dims ();
-		    std::string dims_str = dims.str ();
-		    int first1 = dims_str.find ('x');
-		    int total1 = dims_str.length ();
-		    int rest1 = total1 - first1;
-		    rest = (rest1 > rest ? rest1 : rest);
-		    first = (first1 > first ? first1 : first);
-		    total = (total1 > total ? total1 : total);
-		  }
+                for (std::list<symbol_info>::const_iterator p = lst.begin ();
+                     p != lst.end (); p++)
+                  {
+                    octave_value val = p->varval;
+                    std::string dims_str = get_dims_str (val);
+                    int first1 = dims_str.find ('x');
+                    int total1 = dims_str.length ();
+                    int rest1 = total1 - first1;
+                    rest = (rest1 > rest ? rest1 : rest);
+                    first = (first1 > first ? first1 : first);
+                    total = (total1 > total ? total1 : total);
+                  }
 
-		if (param.modifier == 'c')
-		  {
-		    if (first < balance)
-		      first += balance - first;
-		    if (rest + balance < param.parameter_length)
-		      rest += param.parameter_length - rest - balance;
+                if (param.modifier == 'c')
+                  {
+                    if (first < balance)
+                      first += balance - first;
+                    if (rest + balance < param.parameter_length)
+                      rest += param.parameter_length - rest - balance;
 
-		    param.parameter_length = first + rest;
-		    param.first_parameter_length = first;
-		    param.balance = balance;
-		  }
-		else
-		  {
-		    param.parameter_length = total;
-		    param.first_parameter_length = 0;
-		  }
-	      }
-	    else if (param.modifier == 'c')
-	      {
-		error ("whos_line_format: modifier 'c' not available for command '%c'",
-		       param.command);
-		error_encountered = true;
-	      }
+                    param.parameter_length = first + rest;
+                    param.first_parameter_length = first;
+                    param.balance = balance;
+                  }
+                else
+                  {
+                    param.parameter_length = total;
+                    param.first_parameter_length = 0;
+                  }
+              }
+            else if (param.modifier == 'c')
+              {
+                error ("whos_line_format: modifier 'c' not available for command '%c'",
+                       param.command);
+                error_encountered = true;
+              }
 
-	    // What happens if whos_line_format contains negative numbers
-	    // at param_length positions?
-	    param.balance = (b < 0 ? 0 : param.balance);
-	    param.first_parameter_length = (b < 0 ? 0 :
-					    param.first_parameter_length);
-	    param.parameter_length = (a < 0
-				      ? 0
-				      : (param.parameter_length
-					 < param_length(pos_s)
-					 ? param_length(pos_s)
-					 : param.parameter_length));
+            // What happens if whos_line_format contains negative numbers
+            // at param_length positions?
+            param.balance = (b < 0 ? 0 : param.balance);
+            param.first_parameter_length = (b < 0 ? 0 :
+                                            param.first_parameter_length);
+            param.parameter_length = (a < 0
+                                      ? 0
+                                      : (param.parameter_length
+                                         < param_length(pos_s)
+                                         ? param_length(pos_s)
+                                         : param.parameter_length));
 
-	    // Parameter will not be pushed into parameter list if ...
-	    if (! error_encountered)
-	      params.push_back (param);
-	  }
-	else
-	  {
-	    // Text string, to be printed as it is ...
-	    std::string text;
-	    size_t pos;
-	    text = Vwhos_line_format.substr (idx, Vwhos_line_format.length ());
-	    pos = text.find ('%');
-	    if (pos != std::string::npos)
-	      text = text.substr (0, pos);
+            // Parameter will not be pushed into parameter list if ...
+            if (! error_encountered)
+              params.push_back (param);
+          }
+        else
+          {
+            // Text string, to be printed as it is ...
+            std::string text;
+            size_t pos;
+            text = Vwhos_line_format.substr (idx, Vwhos_line_format.length ());
+            pos = text.find ('%');
+            if (pos != std::string::npos)
+              text = text.substr (0, pos);
 
-	    // Push parameter into list ...
-	    idx += text.length ();
-	    param.text=text;
-	    param.line.assign (text.length(), ' ');
-	    params.push_back (param);
-	  }
+            // Push parameter into list ...
+            idx += text.length ();
+            param.text=text;
+            param.line.assign (text.length(), ' ');
+            params.push_back (param);
+          }
       }
 
     return params;
@@ -1361,7 +1526,7 @@ private:
 
 static octave_value
 do_who (int argc, const string_vector& argv, bool return_list,
-	bool verbose = false, std::string msg = std::string ())
+        bool verbose = false, std::string msg = std::string ())
 {
   octave_value retval;
 
@@ -1374,57 +1539,55 @@ do_who (int argc, const string_vector& argv, bool return_list,
   for (i = 1; i < argc; i++)
     {
       if (argv[i] == "-file")
-	{
-	  // FIXME. This is an inefficient manner to implement this as the 
-	  // variables are loaded in to a temporary context and then treated.
-	  // It would be better to refecat symbol_info_list to not store the
-	  // symbol records and then use it in load-save.cc (do_load) to
-	  // implement this option there so that the variables are never 
-	  // stored at all.
-	  if (i == argc - 1)
-	    error ("whos: -file argument must be followed by a file name");
-	  else
-	    {
-	      std::string nm = argv [i + 1];
+        {
+          // FIXME. This is an inefficient manner to implement this as the
+          // variables are loaded in to a temporary context and then treated.
+          // It would be better to refecat symbol_info_list to not store the
+          // symbol records and then use it in load-save.cc (do_load) to
+          // implement this option there so that the variables are never
+          // stored at all.
+          if (i == argc - 1)
+            error ("whos: -file argument must be followed by a file name");
+          else
+            {
+              std::string nm = argv [i + 1];
 
-	      unwind_protect::begin_frame ("do_who_file");
+              unwind_protect frame;
 
-	      // Set up temporary scope.
+              // Set up temporary scope.
 
-	      symbol_table::scope_id tmp_scope = symbol_table::alloc_scope ();
-	      unwind_protect::add (symbol_table::erase_scope, &tmp_scope);
+              symbol_table::scope_id tmp_scope = symbol_table::alloc_scope ();
+              frame.add_fcn (symbol_table::erase_scope, tmp_scope);
 
-	      symbol_table::set_scope (tmp_scope);
+              symbol_table::set_scope (tmp_scope);
 
-	      octave_call_stack::push (tmp_scope, 0);
-	      unwind_protect::add (octave_call_stack::unwind_pop, 0);
+              octave_call_stack::push (tmp_scope, 0);
+              frame.add_fcn (octave_call_stack::pop);
 
-	      unwind_protect::add (symbol_table::clear_variables);
+              frame.add_fcn (symbol_table::clear_variables);
 
-	      feval ("load", octave_value (nm), 0);
+              feval ("load", octave_value (nm), 0);
 
-	      if (! error_state)
-		{
-		  std::string newmsg = std::string ("Variables in the file ") + 
-		    nm + ":\n\n";
+              if (! error_state)
+                {
+                  std::string newmsg = std::string ("Variables in the file ") +
+                    nm + ":\n\n";
 
-		  retval =  do_who (i, argv, return_list, verbose, newmsg);
-		}
+                  retval =  do_who (i, argv, return_list, verbose, newmsg);
+                }
+            }
 
-	      unwind_protect::run_frame ("do_who_file");
-	    }
-
-	  return retval;
-	}
+          return retval;
+        }
       else if (argv[i] == "-regexp")
-	have_regexp = true;
+        have_regexp = true;
       else if (argv[i] == "global")
-	global_only = true;
+        global_only = true;
       else if (argv[i][0] == '-')
-	warning ("%s: unrecognized option `%s'", my_name.c_str (),
-		 argv[i].c_str ());
+        warning ("%s: unrecognized option `%s'", my_name.c_str (),
+                 argv[i].c_str ());
       else
-	break;
+        break;
     }
 
   int npats = argc - i;
@@ -1433,14 +1596,14 @@ do_who (int argc, const string_vector& argv, bool return_list,
     {
       pats.resize (npats);
       for (int j = 0; j < npats; j++)
-	pats[j] = argv[i+j];
+        pats[j] = argv[i+j];
     }
   else
     {
       pats.resize (++npats);
       pats[0] = "*";
     }
-    
+
   symbol_info_list symbol_stats;
   std::list<std::string> symbol_names;
 
@@ -1449,69 +1612,69 @@ do_who (int argc, const string_vector& argv, bool return_list,
       std::string pat = pats[j];
 
       if (have_regexp)
-	{
-	  std::list<symbol_table::symbol_record> tmp = global_only
-	    ? symbol_table::regexp_global_variables (pat)
-	    : symbol_table::regexp_variables (pat);
+        {
+          std::list<symbol_table::symbol_record> tmp = global_only
+            ? symbol_table::regexp_global_variables (pat)
+            : symbol_table::regexp_variables (pat);
 
-	  for (std::list<symbol_table::symbol_record>::const_iterator p = tmp.begin ();
-	       p != tmp.end (); p++)
-	    {
-	      if (p->is_variable ())
-		{
-		  if (verbose)
-		    symbol_stats.append (*p);
-		  else
-		    symbol_names.push_back (p->name ());
-		}
-	    }
-	}
+          for (std::list<symbol_table::symbol_record>::const_iterator p = tmp.begin ();
+               p != tmp.end (); p++)
+            {
+              if (p->is_variable ())
+                {
+                  if (verbose)
+                    symbol_stats.append (*p);
+                  else
+                    symbol_names.push_back (p->name ());
+                }
+            }
+        }
       else
-	{
-	  size_t pos = pat.find_first_of (".({");
+        {
+          size_t pos = pat.find_first_of (".({");
 
-	  if (pos != std::string::npos && pos > 0)
-	    {
-	      if (verbose)
-		{
-		  // NOTE: we can only display information for
-		  // expressions based on global values if the variable is
-		  // global in the current scope because we currently have
-		  // no way of looking up the base value in the global
-		  // scope and then evaluating the arguments in the
-		  // current scope.
+          if (pos != std::string::npos && pos > 0)
+            {
+              if (verbose)
+                {
+                  // NOTE: we can only display information for
+                  // expressions based on global values if the variable is
+                  // global in the current scope because we currently have
+                  // no way of looking up the base value in the global
+                  // scope and then evaluating the arguments in the
+                  // current scope.
 
-		  std::string base_name = pat.substr (0, pos);
+                  std::string base_name = pat.substr (0, pos);
 
-		  if (symbol_table::is_variable (base_name))
-		    {
-		      symbol_table::symbol_record sr
-			= symbol_table::find_symbol (base_name);
+                  if (symbol_table::is_variable (base_name))
+                    {
+                      symbol_table::symbol_record sr
+                        = symbol_table::find_symbol (base_name);
 
-		      if (! global_only || sr.is_global ())
-			{
-			  int parse_status;
+                      if (! global_only || sr.is_global ())
+                        {
+                          int parse_status;
 
-			  octave_value expr_val
-			    = eval_string (pat, true, parse_status);
+                          octave_value expr_val
+                            = eval_string (pat, true, parse_status);
 
-			  if (! error_state)
-			    symbol_stats.append (sr, pat, expr_val);
-			  else
-			    return retval;
-			}
-		    }
-		}
-	    }
-	  else
-	    {
-	      std::list<symbol_table::symbol_record> tmp = global_only
-		? symbol_table::glob_global_variables (pat)
-		: symbol_table::glob_variables (pat);
+                          if (! error_state)
+                            symbol_stats.append (sr, pat, expr_val);
+                          else
+                            return retval;
+                        }
+                    }
+                }
+            }
+          else
+            {
+              std::list<symbol_table::symbol_record> tmp = global_only
+                ? symbol_table::glob_global_variables (pat)
+                : symbol_table::glob_variables (pat);
 
-	      for (std::list<symbol_table::symbol_record>::const_iterator p = tmp.begin ();
-		   p != tmp.end (); p++)
-		{
+              for (std::list<symbol_table::symbol_record>::const_iterator p = tmp.begin ();
+                   p != tmp.end (); p++)
+                {
                   if (p->is_variable ())
                     {
                       if (verbose)
@@ -1519,43 +1682,43 @@ do_who (int argc, const string_vector& argv, bool return_list,
                       else
                         symbol_names.push_back (p->name ());
                     }
-		}
-	    }
-	}
+                }
+            }
+        }
     }
 
   if (return_list)
     {
       if (verbose)
-	{
-	  std::string caller_function_name;
-	  octave_function *caller = octave_call_stack::caller ();
-	  if (caller)
-	    caller_function_name = caller->name ();
+        {
+          std::string caller_function_name;
+          octave_function *caller = octave_call_stack::caller ();
+          if (caller)
+            caller_function_name = caller->name ();
 
-	  retval = symbol_stats.map_value (caller_function_name, 1);
-	}
+          retval = symbol_stats.map_value (caller_function_name, 1);
+        }
       else
-	retval = Cell (string_vector (symbol_names));
+        retval = Cell (string_vector (symbol_names));
     }
   else if (! (symbol_stats.empty () && symbol_names.empty ()))
     {
       if (msg.length () == 0)
-	if (global_only)
-	  octave_stdout << "Global variables:\n\n";
-	else
-	  octave_stdout << "Variables in the current scope:\n\n";
+        if (global_only)
+          octave_stdout << "Global variables:\n\n";
+        else
+          octave_stdout << "Variables in the current scope:\n\n";
       else
-	octave_stdout << msg;
+        octave_stdout << msg;
 
       if (verbose)
-	symbol_stats.display (octave_stdout);
+        symbol_stats.display (octave_stdout);
       else
-	{
-	  string_vector names (symbol_names);
+        {
+          string_vector names (symbol_names);
 
-	  names.list_in_columns (octave_stdout);
-	}
+          names.list_in_columns (octave_stdout);
+        }
 
       octave_stdout << "\n";
     }
@@ -1565,10 +1728,10 @@ do_who (int argc, const string_vector& argv, bool return_list,
 
 DEFUN (who, args, nargout,
   "-*- texinfo -*-\n\
-@deffn  {Command} who\n\
-@deffnx {Command} who pattern @dots{}\n\
-@deffnx {Command} who option pattern @dots{}\n\
-@deffnx {Command} C = who(\"pattern\", @dots{})\n\
+@deftypefn  {Command} {} who\n\
+@deftypefnx {Command} {} who pattern @dots{}\n\
+@deftypefnx {Command} {} who option pattern @dots{}\n\
+@deftypefnx {Command} {C =} who (\"pattern\", @dots{})\n\
 List currently defined variables matching the given patterns.  Valid\n\
 pattern syntax is the same as described for the @code{clear} command.\n\
 If no patterns are supplied, all variables are listed.\n\
@@ -1579,10 +1742,12 @@ The following are valid options but may not be combined.\n\
 @table @code\n\
 @item global\n\
 List variables in the global scope rather than the current scope.\n\
+\n\
 @item -regexp\n\
 The patterns are considered to be regular expressions when matching the\n\
 variables to display.  The same pattern syntax accepted by\n\
 the @code{regexp} function is used.\n\
+\n\
 @item -file\n\
 The next argument is treated as a filename.  All variables found within the\n\
 specified file are listed.  No patterns are accepted when reading variables\n\
@@ -1591,8 +1756,8 @@ from a file.\n\
 \n\
 If called as a function, return a cell array of defined variable names\n\
 matching the given patterns.\n\
-@seealso{whos, regexp}\n\
-@end deffn")
+@seealso{whos, isglobal, isvarname, exist, regexp}\n\
+@end deftypefn")
 {
   octave_value retval;
 
@@ -1603,7 +1768,7 @@ matching the given patterns.\n\
       string_vector argv = args.make_argv ("who");
 
       if (! error_state)
-	retval = do_who (argc, argv, nargout == 1);
+        retval = do_who (argc, argv, nargout == 1);
     }
   else
     print_usage ();
@@ -1613,10 +1778,10 @@ matching the given patterns.\n\
 
 DEFUN (whos, args, nargout,
   "-*- texinfo -*-\n\
-@deffn  {Command} whos\n\
-@deffnx {Command} whos pattern @dots{}\n\
-@deffnx {Command} whos option pattern @dots{}\n\
-@deffnx {Command} S = whos(\"pattern\", @dots{})\n\
+@deftypefn  {Command} {} whos\n\
+@deftypefnx {Command} {} whos pattern @dots{}\n\
+@deftypefnx {Command} {} whos option pattern @dots{}\n\
+@deftypefnx {Command} {S =} whos (\"pattern\", @dots{})\n\
 Provide detailed information on currently defined variables matching the\n\
 given patterns.  Options and pattern syntax are the same as for the\n\
 @code{who} command.  Extended information about each variable is\n\
@@ -1628,18 +1793,31 @@ Attributes of the listed variable.  Possible attributes are:\n\
 @table @asis\n\
 @item blank\n\
 Variable in local scope\n\
+\n\
+@item @code{a}\n\
+Automatic variable.  An automatic variable is one created by the\n\
+interpreter, for example @code{argn}.\n\
+\n\
+@item @code{f}\n\
+Formal parameter (function argument).\n\
+\n\
 @item @code{g}\n\
-Variable with global scope\n\
+Variable with global scope.\n\
+\n\
 @item @code{p}\n\
-Persistent variable\n\
+Persistent variable.\n\
 @end table\n\
+\n\
 @item Name\n\
 The name of the variable.\n\
+\n\
 @item Size\n\
-The logical size of the variable.  A scalar is 1x1, a vector is 1xN or Nx1,\n\
-a 2-D matrix is MxN.\n\
+The logical size of the variable.  A scalar is 1x1, a vector is\n\
+@nospell{1xN} or @nospell{Nx1}, a 2-D matrix is @nospell{MxN}.\n\
+\n\
 @item Bytes\n\
 The amount of memory currently used to store the variable.\n\
+\n\
 @item Class\n\
 The class of the variable.  Examples include double, single, char, uint16,\n\
 cell, and struct.\n\
@@ -1650,10 +1828,10 @@ the function @code{whos_line_format}.\n\
 \n\
 If @code{whos} is called as a function, return a struct array of defined\n\
 variable names matching the given patterns.  Fields in the structure\n\
-describing each variable are: name, size, bytes, class, global, sparse, \n\
+describing each variable are: name, size, bytes, class, global, sparse,\n\
 complex, nesting, persistent.\n\
 @seealso{who, whos_line_format}\n\
-@end deffn")
+@end deftypefn")
 {
   octave_value retval;
 
@@ -1664,7 +1842,7 @@ complex, nesting, persistent.\n\
       string_vector argv = args.make_argv ("whos");
 
       if (! error_state)
-	retval = do_who (argc, argv, nargout == 1, true);
+        retval = do_who (argc, argv, nargout == 1, true);
     }
   else
     print_usage ();
@@ -1682,19 +1860,19 @@ bind_ans (const octave_value& val, bool print)
   if (val.is_defined ())
     {
       if (val.is_cs_list ())
-	{
-	  octave_value_list lst = val.list_value ();
+        {
+          octave_value_list lst = val.list_value ();
 
-	  for (octave_idx_type i = 0; i < lst.length (); i++)
-	    bind_ans (lst(i), print);
-	}
+          for (octave_idx_type i = 0; i < lst.length (); i++)
+            bind_ans (lst(i), print);
+        }
       else
-	{
-	  symbol_table::varref (ans) = val;
+        {
+          symbol_table::varref (ans) = val;
 
-	  if (print)
-	    val.print_with_name (octave_stdout, ans);
-	}
+          if (print)
+            val.print_with_name (octave_stdout, ans);
+        }
     }
 }
 
@@ -1708,7 +1886,7 @@ bind_internal_variable (const std::string& fname, const octave_value& val)
   feval (fname, args, 0);
 }
 
-void 
+void
 mlock (void)
 {
   octave_function *fcn = octave_call_stack::current ();
@@ -1719,7 +1897,7 @@ mlock (void)
     error ("mlock: invalid use outside a function");
 }
 
-void 
+void
 munlock (const std::string& nm)
 {
   octave_value val = symbol_table::find_function (nm);
@@ -1729,7 +1907,7 @@ munlock (const std::string& nm)
       octave_function *fcn = val.function_value ();
 
       if (fcn)
-	fcn->unlock ();
+        fcn->unlock ();
     }
 }
 
@@ -1745,7 +1923,7 @@ mislocked (const std::string& nm)
       octave_function *fcn = val.function_value ();
 
       if (fcn)
-	retval = fcn->islocked ();
+        retval = fcn->islocked ();
     }
 
   return retval;
@@ -1765,9 +1943,9 @@ Lock the current function into memory so that it can't be cleared.\n\
       octave_function *fcn = octave_call_stack::caller ();
 
       if (fcn)
-	fcn->lock ();
+        fcn->lock ();
       else
-	error ("mlock: invalid use outside a function");
+        error ("mlock: invalid use outside a function");
     }
   else
     print_usage ();
@@ -1777,8 +1955,9 @@ Lock the current function into memory so that it can't be cleared.\n\
 
 DEFUN (munlock, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {} munlock (@var{fcn})\n\
-Unlock the named function.  If no function is named\n\
+@deftypefn  {Built-in Function} {} munlock ()\n\
+@deftypefnx {Built-in Function} {} munlock (@var{fcn})\n\
+Unlock the named function @var{fcn}.  If no function is named\n\
 then unlock the current function.\n\
 @seealso{mlock, mislocked, persistent}\n\
 @end deftypefn")
@@ -1792,7 +1971,7 @@ then unlock the current function.\n\
       if (! error_state)
         munlock (name);
       else
-	error ("munlock: expecting argument to be a function name");
+        error ("munlock: FCN must be a string");
     }
   else if (args.length () == 0)
     {
@@ -1812,9 +1991,10 @@ then unlock the current function.\n\
 
 DEFUN (mislocked, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {} mislocked (@var{fcn})\n\
-Return true if the named function is locked.  If no function is named\n\
-then return true if the current function is locked.\n\
+@deftypefn  {Built-in Function} {} mislocked ()\n\
+@deftypefnx {Built-in Function} {} mislocked (@var{fcn})\n\
+Return true if the named function @var{fcn} is locked.  If no function is\n\
+named then return true if the current function is locked.\n\
 @seealso{mlock, munlock, persistent}\n\
 @end deftypefn")
 {
@@ -1827,7 +2007,7 @@ then return true if the current function is locked.\n\
       if (! error_state)
         retval = mislocked (name);
       else
-	error ("mislocked: expecting argument to be a function name");
+        error ("mislocked: FCN must be a string");
     }
   else if (args.length () == 0)
     {
@@ -1847,8 +2027,8 @@ then return true if the current function is locked.\n\
 // Deleting names from the symbol tables.
 
 static inline bool
-name_matches_any_pattern (const std::string& nm, const string_vector& argv, 
-			  int argc, int idx, bool have_regexp = false)
+name_matches_any_pattern (const std::string& nm, const string_vector& argv,
+                          int argc, int idx, bool have_regexp = false)
 {
   bool retval = false;
 
@@ -1856,28 +2036,28 @@ name_matches_any_pattern (const std::string& nm, const string_vector& argv,
     {
       std::string patstr = argv[k];
       if (! patstr.empty ())
-	{
-	  if (have_regexp)
-	    {
-	      regex_match pattern (patstr);
+        {
+          if (have_regexp)
+            {
+              regex_match pattern (patstr);
 
-	      if (pattern.match (nm))
-		{
-		  retval = true;
-		  break;
-		}
-	    }
-	  else
-	    {
-	      glob_match pattern (patstr);
+              if (pattern.match (nm))
+                {
+                  retval = true;
+                  break;
+                }
+            }
+          else
+            {
+              glob_match pattern (patstr);
 
-	      if (pattern.match (nm))
-		{
-		  retval = true;
-		  break;
-		}
-	    }
-	}
+              if (pattern.match (nm))
+                {
+                  retval = true;
+                  break;
+                }
+            }
+        }
     }
 
   return retval;
@@ -1892,37 +2072,37 @@ maybe_warn_exclusive (bool exclusive)
 
 static void
 do_clear_functions (const string_vector& argv, int argc, int idx,
-		    bool exclusive = false)
+                    bool exclusive = false)
 {
   if (idx == argc)
     symbol_table::clear_functions ();
   else
     {
       if (exclusive)
-	{
-	  string_vector fcns = symbol_table::user_function_names ();
+        {
+          string_vector fcns = symbol_table::user_function_names ();
 
-	  int fcount = fcns.length ();
+          int fcount = fcns.length ();
 
-	  for (int i = 0; i < fcount; i++)
-	    {
-	      std::string nm = fcns[i];
+          for (int i = 0; i < fcount; i++)
+            {
+              std::string nm = fcns[i];
 
-	      if (! name_matches_any_pattern (nm, argv, argc, idx))
-		symbol_table::clear_function (nm);
-	    }
-	}
+              if (! name_matches_any_pattern (nm, argv, argc, idx))
+                symbol_table::clear_function (nm);
+            }
+        }
       else
-	{
-	  while (idx < argc)
-	    symbol_table::clear_function_pattern (argv[idx++]);
-	}
+        {
+          while (idx < argc)
+            symbol_table::clear_function_pattern (argv[idx++]);
+        }
     }
 }
 
 static void
 do_clear_globals (const string_vector& argv, int argc, int idx,
-		  bool exclusive = false)
+                  bool exclusive = false)
 {
   if (idx == argc)
     {
@@ -1931,89 +2111,89 @@ do_clear_globals (const string_vector& argv, int argc, int idx,
       int gcount = gvars.length ();
 
       for (int i = 0; i < gcount; i++)
-	symbol_table::clear_global (gvars[i]);
+        symbol_table::clear_global (gvars[i]);
     }
   else
     {
       if (exclusive)
-	{
-	  string_vector gvars = symbol_table::global_variable_names ();
+        {
+          string_vector gvars = symbol_table::global_variable_names ();
 
-	  int gcount = gvars.length ();
+          int gcount = gvars.length ();
 
-	  for (int i = 0; i < gcount; i++)
-	    {
-	      std::string nm = gvars[i];
+          for (int i = 0; i < gcount; i++)
+            {
+              std::string nm = gvars[i];
 
-	      if (! name_matches_any_pattern (nm, argv, argc, idx))
-		symbol_table::clear_global (nm);
-	    }
-	}
+              if (! name_matches_any_pattern (nm, argv, argc, idx))
+                symbol_table::clear_global (nm);
+            }
+        }
       else
-	{
-	  while (idx < argc)
-	    symbol_table::clear_global_pattern (argv[idx++]);
-	}
+        {
+          while (idx < argc)
+            symbol_table::clear_global_pattern (argv[idx++]);
+        }
     }
 }
 
 static void
 do_clear_variables (const string_vector& argv, int argc, int idx,
-		    bool exclusive = false, bool have_regexp = false)
+                    bool exclusive = false, bool have_regexp = false)
 {
   if (idx == argc)
     symbol_table::clear_variables ();
   else
     {
       if (exclusive)
-	{
-	  string_vector lvars = symbol_table::variable_names ();
+        {
+          string_vector lvars = symbol_table::variable_names ();
 
-	  int lcount = lvars.length ();
+          int lcount = lvars.length ();
 
-	  for (int i = 0; i < lcount; i++)
-	    {
-	      std::string nm = lvars[i];
+          for (int i = 0; i < lcount; i++)
+            {
+              std::string nm = lvars[i];
 
-	      if (! name_matches_any_pattern (nm, argv, argc, idx, have_regexp))
-		symbol_table::clear_variable (nm);
-	    }
-	}
+              if (! name_matches_any_pattern (nm, argv, argc, idx, have_regexp))
+                symbol_table::clear_variable (nm);
+            }
+        }
       else
-	{
-	  if (have_regexp)
-	    while (idx < argc)
-	      symbol_table::clear_variable_regexp (argv[idx++]);
-	  else
-	    while (idx < argc)
-	      symbol_table::clear_variable_pattern (argv[idx++]);
-	}
+        {
+          if (have_regexp)
+            while (idx < argc)
+              symbol_table::clear_variable_regexp (argv[idx++]);
+          else
+            while (idx < argc)
+              symbol_table::clear_variable_pattern (argv[idx++]);
+        }
     }
 }
 
 static void
 do_clear_symbols (const string_vector& argv, int argc, int idx,
-		  bool exclusive = false)
+                  bool exclusive = false)
 {
   if (idx == argc)
     symbol_table::clear_variables ();
   else
     {
       if (exclusive)
-	{
-	  // FIXME -- is this really what we want, or do we
-	  // somehow want to only clear the functions that are not
-	  // shadowed by local variables?  It seems that would be a
-	  // bit harder to do.
+        {
+          // FIXME -- is this really what we want, or do we
+          // somehow want to only clear the functions that are not
+          // shadowed by local variables?  It seems that would be a
+          // bit harder to do.
 
-	  do_clear_variables (argv, argc, idx, exclusive);
-	  do_clear_functions (argv, argc, idx, exclusive);
-	}
+          do_clear_variables (argv, argc, idx, exclusive);
+          do_clear_functions (argv, argc, idx, exclusive);
+        }
       else
-	{
-	  while (idx < argc)
-	    symbol_table::clear_symbol_pattern (argv[idx++]);
-	}
+        {
+          while (idx < argc)
+            symbol_table::clear_symbol_pattern (argv[idx++]);
+        }
     }
 }
 
@@ -2025,35 +2205,35 @@ do_matlab_compatible_clear (const string_vector& argv, int argc, int idx)
   for (; idx < argc; idx++)
     {
       if (argv[idx] == "all"
-	  && ! symbol_table::is_local_variable ("all"))
-	{
-	  symbol_table::clear_all ();
-	}
+          && ! symbol_table::is_local_variable ("all"))
+        {
+          symbol_table::clear_all ();
+        }
       else if (argv[idx] == "functions"
-	       && ! symbol_table::is_local_variable ("functions"))
-	{
-	  do_clear_functions (argv, argc, ++idx);
-	}
+               && ! symbol_table::is_local_variable ("functions"))
+        {
+          do_clear_functions (argv, argc, ++idx);
+        }
       else if (argv[idx] == "global"
-	       && ! symbol_table::is_local_variable ("global"))
-	{
-	  do_clear_globals (argv, argc, ++idx);
-	}
+               && ! symbol_table::is_local_variable ("global"))
+        {
+          do_clear_globals (argv, argc, ++idx);
+        }
       else if (argv[idx] == "variables"
-	       && ! symbol_table::is_local_variable ("variables"))
-	{
-	  symbol_table::clear_variables ();
-	}
+               && ! symbol_table::is_local_variable ("variables"))
+        {
+          symbol_table::clear_variables ();
+        }
       else if (argv[idx] == "classes"
-	       && ! symbol_table::is_local_variable ("classes"))
-	{
-	  symbol_table::clear_objects ();
-	  octave_class::clear_exemplar_map ();
-	}
+               && ! symbol_table::is_local_variable ("classes"))
+        {
+          symbol_table::clear_objects ();
+          octave_class::clear_exemplar_map ();
+        }
       else
-	{
-	  symbol_table::clear_symbol_pattern (argv[idx]);
-	}
+        {
+          symbol_table::clear_symbol_pattern (argv[idx]);
+        }
     }
 }
 
@@ -2070,7 +2250,7 @@ do_matlab_compatible_clear (const string_vector& argv, int argc, int idx)
 
 DEFUN (clear, args, ,
   "-*- texinfo -*-\n\
-@deffn {Command} clear [options] pattern @dots{}\n\
+@deftypefn {Command} {} clear [options] pattern @dots{}\n\
 Delete the names matching the given patterns from the symbol table.  The\n\
 pattern may contain the following special characters:\n\
 \n\
@@ -2085,7 +2265,7 @@ Match zero or more characters.\n\
 Match the list of characters specified by @var{list}.  If the first\n\
 character is @code{!} or @code{^}, match all characters except those\n\
 specified by @var{list}.  For example, the pattern @samp{[a-zA-Z]} will\n\
-match all lower and upper case alphabetic characters.\n\
+match all lowercase and uppercase alphabetic characters.\n\
 @end table\n\
 \n\
 For example, the command\n\
@@ -2119,19 +2299,23 @@ Clears the variables that don't match the following pattern.\n\
 \n\
 @item -functions, -f\n\
 Clears the function names and the built-in symbols names.\n\
+\n\
 @item -global, -g\n\
 Clears the global symbol names.\n\
+\n\
 @item -variables, -v\n\
 Clears the local variable names.\n\
+\n\
 @item -classes, -c\n\
 Clears the class structure table and clears all objects.\n\
+\n\
 @item -regexp, -r\n\
 The arguments are treated as regular expressions as any variables that\n\
 match will be cleared.\n\
 @end table\n\
-With the exception of @code{exclusive}, all long options can be used \n\
+With the exception of @code{exclusive}, all long options can be used\n\
 without the dash as well.\n\
-@end deffn")
+@end deftypefn")
 {
   octave_value_list retval;
 
@@ -2142,122 +2326,122 @@ without the dash as well.\n\
   if (! error_state)
     {
       if (argc == 1)
-	{
+        {
           do_clear_globals (argv, argc, 1);
-          do_clear_variables (argv, argc, 1); 
-	}
+          do_clear_variables (argv, argc, 1);
+        }
       else
-	{
-	  int idx = 0;
+        {
+          int idx = 0;
 
-	  bool clear_all = false;
-	  bool clear_functions = false;
-	  bool clear_globals = false;
-	  bool clear_variables = false;
+          bool clear_all = false;
+          bool clear_functions = false;
+          bool clear_globals = false;
+          bool clear_variables = false;
           bool clear_objects = false;
-	  bool exclusive = false;
-	  bool have_regexp = false;
-	  bool have_dash_option = false;
+          bool exclusive = false;
+          bool have_regexp = false;
+          bool have_dash_option = false;
 
-	  while (++idx < argc)
-	    {
-	      if (argv[idx] == "-all" || argv[idx] == "-a")
-		{
-		  CLEAR_OPTION_ERROR (have_dash_option && ! exclusive);
+          while (++idx < argc)
+            {
+              if (argv[idx] == "-all" || argv[idx] == "-a")
+                {
+                  CLEAR_OPTION_ERROR (have_dash_option && ! exclusive);
 
-		  have_dash_option = true;
-		  clear_all = true;
-		}
-	      else if (argv[idx] == "-exclusive" || argv[idx] == "-x")
-		{
-		  have_dash_option = true;
-		  exclusive = true;
-		}
-	      else if (argv[idx] == "-functions" || argv[idx] == "-f")
-		{
-		  CLEAR_OPTION_ERROR (have_dash_option && ! exclusive);
+                  have_dash_option = true;
+                  clear_all = true;
+                }
+              else if (argv[idx] == "-exclusive" || argv[idx] == "-x")
+                {
+                  have_dash_option = true;
+                  exclusive = true;
+                }
+              else if (argv[idx] == "-functions" || argv[idx] == "-f")
+                {
+                  CLEAR_OPTION_ERROR (have_dash_option && ! exclusive);
 
-		  have_dash_option = true;
-		  clear_functions = true;
-		}
-	      else if (argv[idx] == "-global" || argv[idx] == "-g")
-		{
-		  CLEAR_OPTION_ERROR (have_dash_option && ! exclusive);
+                  have_dash_option = true;
+                  clear_functions = true;
+                }
+              else if (argv[idx] == "-global" || argv[idx] == "-g")
+                {
+                  CLEAR_OPTION_ERROR (have_dash_option && ! exclusive);
 
-		  have_dash_option = true;
-		  clear_globals = true;
-		}
-	      else if (argv[idx] == "-variables" || argv[idx] == "-v")
-		{
-		  CLEAR_OPTION_ERROR (have_dash_option && ! exclusive);
+                  have_dash_option = true;
+                  clear_globals = true;
+                }
+              else if (argv[idx] == "-variables" || argv[idx] == "-v")
+                {
+                  CLEAR_OPTION_ERROR (have_dash_option && ! exclusive);
 
-		  have_dash_option = true;
-		  clear_variables = true;
-		}
-	      else if (argv[idx] == "-classes" || argv[idx] == "-c")
-		{
-		  CLEAR_OPTION_ERROR (have_dash_option && ! exclusive);
+                  have_dash_option = true;
+                  clear_variables = true;
+                }
+              else if (argv[idx] == "-classes" || argv[idx] == "-c")
+                {
+                  CLEAR_OPTION_ERROR (have_dash_option && ! exclusive);
 
-		  have_dash_option = true;
-		  clear_objects = true;
-		}
-	      else if (argv[idx] == "-regexp" || argv[idx] == "-r")
-		{
-		  CLEAR_OPTION_ERROR (have_dash_option && ! exclusive);
+                  have_dash_option = true;
+                  clear_objects = true;
+                }
+              else if (argv[idx] == "-regexp" || argv[idx] == "-r")
+                {
+                  CLEAR_OPTION_ERROR (have_dash_option && ! exclusive);
 
-		  have_dash_option = true;
-		  have_regexp = true;
-		}
-	      else
-		break;
-	    }
+                  have_dash_option = true;
+                  have_regexp = true;
+                }
+              else
+                break;
+            }
 
-	  if (idx <= argc)
-	    {
-	      if (! have_dash_option)
-		{
-		  do_matlab_compatible_clear (argv, argc, idx);
-		}
-	      else
-		{
-		  if (clear_all)
-		    {
-		      maybe_warn_exclusive (exclusive);
+          if (idx <= argc)
+            {
+              if (! have_dash_option)
+                {
+                  do_matlab_compatible_clear (argv, argc, idx);
+                }
+              else
+                {
+                  if (clear_all)
+                    {
+                      maybe_warn_exclusive (exclusive);
 
-		      if (++idx < argc)
-			warning
-			  ("clear: ignoring extra arguments after -all");
+                      if (++idx < argc)
+                        warning
+                          ("clear: ignoring extra arguments after -all");
 
-		      symbol_table::clear_all ();
-		    }
-		  else if (have_regexp)
-		    {
-		      do_clear_variables (argv, argc, idx, exclusive, true);
-		    }
-		  else if (clear_functions)
-		    {
-		      do_clear_functions (argv, argc, idx, exclusive);
-		    }
-		  else if (clear_globals)
-		    {
-		      do_clear_globals (argv, argc, idx, exclusive);
-		    }
-		  else if (clear_variables)
-		    {
-		      do_clear_variables (argv, argc, idx, exclusive);
-		    }
-		  else if (clear_objects)
-		    {
-		      symbol_table::clear_objects ();
-		      octave_class::clear_exemplar_map ();
-		    }
-		  else
-		    {
-		      do_clear_symbols (argv, argc, idx, exclusive);
-		    }
-		}
-	    }
-	}
+                      symbol_table::clear_all ();
+                    }
+                  else if (have_regexp)
+                    {
+                      do_clear_variables (argv, argc, idx, exclusive, true);
+                    }
+                  else if (clear_functions)
+                    {
+                      do_clear_functions (argv, argc, idx, exclusive);
+                    }
+                  else if (clear_globals)
+                    {
+                      do_clear_globals (argv, argc, idx, exclusive);
+                    }
+                  else if (clear_variables)
+                    {
+                      do_clear_variables (argv, argc, idx, exclusive);
+                    }
+                  else if (clear_objects)
+                    {
+                      symbol_table::clear_objects ();
+                      octave_class::clear_exemplar_map ();
+                    }
+                  else
+                    {
+                      do_clear_symbols (argv, argc, idx, exclusive);
+                    }
+                }
+            }
+        }
     }
 
   return retval;
@@ -2270,8 +2454,8 @@ DEFUN (whos_line_format, args, nargout,
 Query or set the format string used by the command @code{whos}.\n\
 \n\
 A full format string is:\n\
-\n\
 @c Set example in small font to prevent overfull line\n\
+\n\
 @smallexample\n\
 %[modifier]<command>[:width[:left-min[:balance]]];\n\
 @end smallexample\n\
@@ -2282,16 +2466,22 @@ The following command sequences are available:\n\
 @item %a\n\
 Prints attributes of variables (g=global, p=persistent,\n\
 f=formal parameter, a=automatic variable).\n\
+\n\
 @item %b\n\
 Prints number of bytes occupied by variables.\n\
+\n\
 @item %c\n\
 Prints class names of variables.\n\
+\n\
 @item %e\n\
 Prints elements held by variables.\n\
+\n\
 @item %n\n\
 Prints variable names.\n\
+\n\
 @item %s\n\
 Prints dimensions of variables.\n\
+\n\
 @item %t\n\
 Prints type names of variables.\n\
 @end table\n\
@@ -2301,8 +2491,10 @@ Every command may also have an alignment modifier:\n\
 @table @code\n\
 @item l\n\
 Left alignment.\n\
+\n\
 @item r\n\
 Right alignment (default).\n\
+\n\
 @item c\n\
 Column-aligned (only applicable to command %s).\n\
 @end table\n\
@@ -2326,8 +2518,56 @@ The default format is\n\
   return SET_INTERNAL_VARIABLE (whos_line_format);
 }
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+static std::string Vmissing_function_hook = "unimplemented";
+
+DEFUN (missing_function_hook, args, nargout,
+    "-*- texinfo -*-\n\
+@deftypefn  {Built-in Function} {@var{val} =} missing_function_hook ()\n\
+@deftypefnx {Built-in Function} {@var{old_val} =} missing_function_hook (@var{new_val})\n\
+Query or set the internal variable that specifies the function to call when\n\
+an unknown identifier is requested.\n\
+@end deftypefn")
+{
+  return SET_INTERNAL_VARIABLE (missing_function_hook);
+}
+
+void maybe_missing_function_hook (const std::string& name)
+{
+  // Don't do this if we're handling errors.
+  if (buffer_error_messages == 0 && ! Vmissing_function_hook.empty ())
+    {
+      // Ensure auto-restoration.
+      unwind_protect frame;
+      frame.protect_var (Vmissing_function_hook);
+
+      // Clear the variable prior to calling the function.
+      const std::string func_name = Vmissing_function_hook;
+      Vmissing_function_hook.clear ();
+
+      // Call.
+      feval (func_name, octave_value (name));
+    }
+}
+
+DEFUN (__varval__, args, ,
+  "-*- texinfo -*-\n\
+@deftypefn {Built-in Function} {} __varval__ (@var{name})\n\
+Undocumented internal function.\n\
+@end deftypefn")
+{
+  octave_value retval;
+
+  if (args.length () == 1)
+    {
+      std::string name = args(0).string_value ();
+
+      if (! error_state)
+        retval = symbol_table::varval (args(0).string_value ());
+      else
+        error ("__varval__: expecting argument to be variable name");
+    }
+  else
+    print_usage ();
+
+  return retval;
+}

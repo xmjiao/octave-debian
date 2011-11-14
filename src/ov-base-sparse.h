@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 David Bateman
-Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004 Andy Adler
+Copyright (C) 2004-2011 David Bateman
+Copyright (C) 1998-2004 Andy Adler
 
 This file is part of Octave.
 
@@ -39,8 +39,6 @@ along with Octave; see the file COPYING.  If not, see
 #include "boolSparse.h"
 #include "MatrixType.h"
 
-class Octave_map;
-
 class tree_walker;
 
 class octave_sparse_bool_matrix;
@@ -50,31 +48,29 @@ class
 octave_base_sparse : public octave_base_value
 {
  public:
- 
-  octave_base_sparse (void) : octave_base_value (), typ (MatrixType ()) { }
+
+  octave_base_sparse (void)
+    : octave_base_value (), matrix (), typ (MatrixType ())
+  { }
 
   octave_base_sparse (const T& a) : octave_base_value (), matrix (a),
-				    typ (MatrixType ())
+                                    typ (MatrixType ())
   {
     if (matrix.ndims () == 0)
       matrix.resize (dim_vector (0, 0));
   }
 
-  octave_base_sparse (const T& a, const MatrixType& t) : octave_base_value (), 
-				matrix (a), typ (t)
+  octave_base_sparse (const T& a, const MatrixType& t) : octave_base_value (),
+                                matrix (a), typ (t)
   {
     if (matrix.ndims () == 0)
       matrix.resize (dim_vector (0, 0));
   }
 
-  octave_base_sparse (const octave_base_sparse& a) : 
+  octave_base_sparse (const octave_base_sparse& a) :
     octave_base_value (), matrix (a.matrix), typ (a.typ) { }
 
   ~octave_base_sparse (void) { }
-
-  octave_base_value *clone (void) const { return new octave_base_sparse (*this); }
-  octave_base_value *empty_clone (void) const 
-    { return new octave_base_sparse (); }
 
   octave_idx_type nnz (void) const { return matrix.nnz (); }
 
@@ -87,15 +83,15 @@ octave_base_sparse : public octave_base_value
   octave_value full_value (void) const { return matrix.matrix_value (); }
 
   octave_value subsref (const std::string& type,
-			const std::list<octave_value_list>& idx);
+                        const std::list<octave_value_list>& idx);
 
   octave_value_list subsref (const std::string& type,
-			     const std::list<octave_value_list>& idx, int)
+                             const std::list<octave_value_list>& idx, int)
     { return subsref (type, idx); }
 
   octave_value subsasgn (const std::string& type,
-			 const std::list<octave_value_list>& idx,
-			 const octave_value& rhs);
+                         const std::list<octave_value_list>& idx,
+                         const octave_value& rhs);
 
   void assign (const octave_value_list& idx, const T& rhs);
 
@@ -104,7 +100,7 @@ octave_base_sparse : public octave_base_value
   dim_vector dims (void) const { return matrix.dims (); }
 
   octave_value do_index_op (const octave_value_list& idx,
-			    bool resize_ok = false);
+                            bool resize_ok = false);
 
   octave_value reshape (const dim_vector& new_dims) const
     { return T (matrix.reshape (new_dims)); }
@@ -123,7 +119,7 @@ octave_base_sparse : public octave_base_value
   octave_value sort (octave_idx_type dim = 0, sortmode mode = ASCENDING) const
     { return octave_value (matrix.sort (dim, mode)); }
   octave_value sort (Array<octave_idx_type> &sidx, octave_idx_type dim = 0,
-		     sortmode mode = ASCENDING) const
+                     sortmode mode = ASCENDING) const
     { return octave_value (matrix.sort (sidx, dim, mode)); }
 
   sortmode is_sorted (sortmode mode = UNSORTED) const
@@ -169,15 +165,11 @@ octave_base_sparse : public octave_base_value
 
 protected:
 
+  octave_value map (octave_base_value::unary_mapper_t umap) const;
+
   T matrix;
 
   mutable MatrixType typ;
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2000, 2002, 2004, 2005, 2007,
-              2008, 2009 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -47,17 +46,14 @@ public:
   FloatComplexDiagMatrix (octave_idx_type r, octave_idx_type c, const FloatComplex& val)
     : MDiagArray2<FloatComplex> (r, c, val) { }
 
-  explicit FloatComplexDiagMatrix (const FloatRowVector& a)
-    : MDiagArray2<FloatComplex> (FloatComplexRowVector (a)) { }
-
-  explicit FloatComplexDiagMatrix (const FloatComplexRowVector& a)
+  explicit FloatComplexDiagMatrix (const Array<FloatComplex>& a)
     : MDiagArray2<FloatComplex> (a) { }
 
-  explicit FloatComplexDiagMatrix (const FloatColumnVector& a)
-    : MDiagArray2<FloatComplex> (FloatComplexColumnVector (a)) { }
+  FloatComplexDiagMatrix (const Array<FloatComplex>& a, octave_idx_type r, octave_idx_type c)
+    : MDiagArray2<FloatComplex> (a, r, c) { }
 
-  explicit FloatComplexDiagMatrix (const FloatComplexColumnVector& a)
-    : MDiagArray2<FloatComplex> (a) { }
+  explicit FloatComplexDiagMatrix (const Array<float>& a)
+    : MDiagArray2<FloatComplex> (Array<FloatComplex> (a)) { }
 
   explicit FloatComplexDiagMatrix (const FloatDiagMatrix& a);
 
@@ -68,7 +64,7 @@ public:
     : MDiagArray2<FloatComplex> (a) { }
 
   template <class U>
-  FloatComplexDiagMatrix (const DiagArray2<U>& a) 
+  FloatComplexDiagMatrix (const DiagArray2<U>& a)
     : MDiagArray2<FloatComplex> (a) { }
 
   FloatComplexDiagMatrix& operator = (const FloatComplexDiagMatrix& a)
@@ -95,7 +91,7 @@ public:
 
   FloatComplexDiagMatrix hermitian (void) const { return MDiagArray2<FloatComplex>::hermitian (std::conj); }
   FloatComplexDiagMatrix transpose (void) const { return MDiagArray2<FloatComplex>::transpose(); }
-  FloatDiagMatrix abs (void) const; 
+  FloatDiagMatrix abs (void) const;
 
   friend OCTAVE_API FloatComplexDiagMatrix conj (const FloatComplexDiagMatrix& a);
 
@@ -134,10 +130,6 @@ public:
 
   friend std::ostream& operator << (std::ostream& os, const FloatComplexDiagMatrix& a);
 
-private:
-
-  FloatComplexDiagMatrix (FloatComplex *d, octave_idx_type nr, octave_idx_type nc)
-    : MDiagArray2<FloatComplex> (d, nr, nc) { }
 };
 
 OCTAVE_API FloatComplexDiagMatrix conj (const FloatComplexDiagMatrix& a);
@@ -156,9 +148,3 @@ operator * (const FloatDiagMatrix& a, const FloatComplexDiagMatrix& b);
 MDIAGARRAY2_FORWARD_DEFS (MDiagArray2, FloatComplexDiagMatrix, FloatComplex)
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

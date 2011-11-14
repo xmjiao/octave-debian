@@ -1,5 +1,4 @@
-## Copyright (C) 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2004,
-##               2005, 2006, 2007, 2008, 2009 John W. Eaton
+## Copyright (C) 1993-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -18,8 +17,9 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} hankel (@var{c}, @var{r})
-## Return the Hankel matrix constructed given the first column @var{c}, and
+## @deftypefn  {Function File} {} hankel (@var{c})
+## @deftypefnx {Function File} {} hankel (@var{c}, @var{r})
+## Return the Hankel matrix constructed from the first column @var{c}, and
 ## (optionally) the last row @var{r}.  If the last element of @var{c} is
 ## not the same as the first element of @var{r}, the last element of
 ## @var{c} is used.  If the second argument is omitted, it is assumed to
@@ -40,8 +40,9 @@
 ## H(i,j) = r(i+j-m),  otherwise
 ## @end group
 ## @end example
+##
 ## @end ifnottex
-## @seealso{vander, sylvester_matrix, hilb, invhilb, toeplitz}
+## @seealso{hadamard, toeplitz}
 ## @end deftypefn
 
 ## Author: jwe

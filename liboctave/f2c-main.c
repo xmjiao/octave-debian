@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2002, 2005, 2007 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -24,7 +24,7 @@ along with Octave; see the file COPYING.  If not, see
 
 
 /* Dummy Fortran main declaration, needed in order to link to some
-   Fortran libraries.  See the AC_F77_DUMMY_MAIN macro documentation. 
+   Fortran libraries.  See the AC_F77_DUMMY_MAIN macro documentation.
    This function should never be called. */
 
 #ifdef F77_DUMMY_MAIN
@@ -33,10 +33,3 @@ extern "C"
 #  endif
 int F77_DUMMY_MAIN() { assert(0); return 1; }
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
-

@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 2000, 2002, 2004, 2005, 2006,
-##               2007, 2008, 2009 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -24,6 +23,7 @@
 ## $$ Q(x) = \sum_{k=-\infty}^\infty (-1)^k \exp(-2 k^2 x^2) $$
 ## @end tex
 ## @ifnottex
+##
 ## @example
 ## @group
 ##          Inf
@@ -31,13 +31,13 @@
 ##        k = -Inf
 ## @end group
 ## @end example
-## @end ifnottex
 ##
+## @end ifnottex
 ## @noindent
 ## for @var{x} > 0.
 ##
 ## The optional parameter @var{tol} specifies the precision up to which
-## the series should be evaluated;  the default is @var{tol} = @code{eps}.
+## the series should be evaluated; the default is @var{tol} = @code{eps}.
 ## @end deftypefn
 
 ## Author: KH <Kurt.Hornik@wu-wien.ac.at>
@@ -56,14 +56,14 @@ function cdf = kolmogorov_smirnov_cdf (x, tol)
       tol = eps;
     endif
   else
-    if (! isscalar (tol) || ! (tol > 0))
-      error ("kolmogorov_smirnov_cdf: tol has to be a positive scalar");
+    if (! (isscalar (tol) && (tol > 0)))
+      error ("kolmogorov_smirnov_cdf: TOL must be a positive scalar");
     endif
   endif
 
   n = numel (x);
   if (n == 0)
-    error ("kolmogorov_smirnov_cdf: x must not be empty");
+    error ("kolmogorov_smirnov_cdf: X must not be empty");
   endif
 
   cdf = zeros (size (x));

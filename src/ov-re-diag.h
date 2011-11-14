@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008, 2009 Jaroslav Hajek
+Copyright (C) 2008-2011 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -32,7 +32,7 @@ along with Octave; see the file COPYING.  If not, see
 
 class
 OCTINTERP_API
-octave_diag_matrix 
+octave_diag_matrix
   : public octave_base_diag<DiagMatrix, Matrix>
 {
 public:
@@ -58,7 +58,9 @@ public:
   octave_base_value *try_narrowing_conversion (void);
 
   octave_value do_index_op (const octave_value_list& idx,
-			    bool resize_ok = false);
+                            bool resize_ok = false);
+
+  builtin_type_t builtin_type (void) const { return btyp_double; }
 
   bool is_real_matrix (void) const { return true; }
 
@@ -78,18 +80,14 @@ public:
 
   bool save_binary (std::ostream& os, bool& save_as_floats);
 
-  bool load_binary (std::istream& is, bool swap, 
-		    oct_mach_info::float_format fmt);
+  bool load_binary (std::istream& is, bool swap,
+                    oct_mach_info::float_format fmt);
 
-  octave_value abs (void) const;
-  octave_value conj (void) const;
-  octave_value imag (void) const;
-  octave_value real (void) const;
-  octave_value sqrt (void) const;
+  octave_value map (unary_mapper_t umap) const;
 
 private:
 
-  bool chk_valid_scalar (const octave_value&, 
+  bool chk_valid_scalar (const octave_value&,
                          double&) const;
 
   DECLARE_OCTAVE_ALLOCATOR

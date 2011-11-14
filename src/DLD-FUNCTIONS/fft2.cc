@@ -1,8 +1,7 @@
 /*
 
-Copyright (C) 1997, 1999, 2002, 2004, 2005, 2006, 2007, 2008,
-              2009 David Bateman
-Copyright (C) 1996, 1997 John W. Eaton
+Copyright (C) 1997-2011 David Bateman
+Copyright (C) 1996-1997 John W. Eaton
 
 This file is part of Octave.
 
@@ -36,7 +35,7 @@ along with Octave; see the file COPYING.  If not, see
 
 // This function should be merged with Fifft.
 
-#if defined (HAVE_FFTW3)
+#if defined (HAVE_FFTW)
 #define FFTSRC "@sc{fftw}"
 #else
 #define FFTSRC "@sc{fftpack}"
@@ -58,18 +57,18 @@ do_fft2 (const octave_value_list &args, const char *fcn, int type)
   octave_value arg = args(0);
   dim_vector dims = arg.dims ();
   octave_idx_type n_rows = -1;
-  
+
   if (nargin > 1)
     {
       double dval = args(1).double_value ();
       if (xisnan (dval))
-	error ("%s: NaN is invalid as the N_ROWS", fcn);
+        error ("%s: number of rows (N) cannot be NaN", fcn);
       else
-	{
-	  n_rows = NINTbig (dval);
-	  if (n_rows < 0)
-	    error ("%s: number of rows must be greater than zero", fcn);
-	}
+        {
+          n_rows = NINTbig (dval);
+          if (n_rows < 0)
+            error ("%s: number of rows (N) must be greater than zero", fcn);
+        }
     }
 
   if (error_state)
@@ -80,13 +79,13 @@ do_fft2 (const octave_value_list &args, const char *fcn, int type)
     {
       double dval = args(2).double_value ();
       if (xisnan (dval))
-	error ("%s: NaN is invalid as the N_COLS", fcn);
+        error ("%s: number of columns (M) cannot be NaN", fcn);
       else
-	{
-	  n_cols = NINTbig (dval);
-	  if (n_cols < 0)
-	    error ("%s: number of columns must be greater than zero", fcn);
-	}
+        {
+          n_cols = NINTbig (dval);
+          if (n_cols < 0)
+            error ("%s: number of columns (M) must be greater than zero", fcn);
+        }
     }
 
   if (error_state)
@@ -109,60 +108,60 @@ do_fft2 (const octave_value_list &args, const char *fcn, int type)
   if (dims.all_zero () || n_rows == 0 || n_cols == 0)
     {
       if (arg.is_single_type ())
-	return octave_value (FloatMatrix ());
+        return octave_value (FloatMatrix ());
       else
-	return octave_value (Matrix ());
+        return octave_value (Matrix ());
     }
 
   if (arg.is_single_type ())
     {
       if (arg.is_real_type ())
-	{
-	  FloatNDArray nda = arg.float_array_value ();
+        {
+          FloatNDArray nda = arg.float_array_value ();
 
-	  if (! error_state)
-	    {
-	      nda.resize (dims, 0.0);
-	      retval = (type != 0 ? nda.ifourier2d () : nda.fourier2d ());
-	    }
-	}
+          if (! error_state)
+            {
+              nda.resize (dims, 0.0);
+              retval = (type != 0 ? nda.ifourier2d () : nda.fourier2d ());
+            }
+        }
       else
-	{
-	  FloatComplexNDArray cnda = arg.float_complex_array_value ();
+        {
+          FloatComplexNDArray cnda = arg.float_complex_array_value ();
 
-	  if (! error_state)
-	    {
-	      cnda.resize (dims, 0.0);
-	      retval = (type != 0 ? cnda.ifourier2d () : cnda.fourier2d ());
-	    }
-	}
+          if (! error_state)
+            {
+              cnda.resize (dims, 0.0);
+              retval = (type != 0 ? cnda.ifourier2d () : cnda.fourier2d ());
+            }
+        }
     }
   else
     {
       if (arg.is_real_type ())
-	{
-	  NDArray nda = arg.array_value ();
+        {
+          NDArray nda = arg.array_value ();
 
-	  if (! error_state)
-	    {
-	      nda.resize (dims, 0.0);
-	      retval = (type != 0 ? nda.ifourier2d () : nda.fourier2d ());
-	    }
-	}
+          if (! error_state)
+            {
+              nda.resize (dims, 0.0);
+              retval = (type != 0 ? nda.ifourier2d () : nda.fourier2d ());
+            }
+        }
       else if (arg.is_complex_type ())
-	{
-	  ComplexNDArray cnda = arg.complex_array_value ();
+        {
+          ComplexNDArray cnda = arg.complex_array_value ();
 
-	  if (! error_state)
-	    {
-	      cnda.resize (dims, 0.0);
-	      retval = (type != 0 ? cnda.ifourier2d () : cnda.fourier2d ());
-	    }
-	}
+          if (! error_state)
+            {
+              cnda.resize (dims, 0.0);
+              retval = (type != 0 ? cnda.ifourier2d () : cnda.fourier2d ());
+            }
+        }
       else
-	{
-	  gripe_wrong_type_arg (fcn, arg);
-	}
+        {
+          gripe_wrong_type_arg (fcn, arg);
+        }
     }
 
   return retval;
@@ -170,16 +169,18 @@ do_fft2 (const octave_value_list &args, const char *fcn, int type)
 
 DEFUN_DLD (fft2, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Loadable Function} {} fft2 (@var{a}, @var{n}, @var{m})\n\
-Compute the two-dimensional FFT of @var{a} using subroutines from\n"
-FFTSRC
-".  The optional arguments @var{n} and @var{m} may be used specify the\n\
-number of rows and columns of @var{a} to use.  If either of these is\n\
-larger than the size of @var{a}, @var{a} is resized and padded with\n\
+@deftypefn  {Loadable Function} {} fft2 (@var{A})\n\
+@deftypefnx {Loadable Function} {} fft2 (@var{A}, @var{m}, @var{n})\n\
+Compute the two-dimensional discrete Fourier transform of @var{A} using\n\
+a Fast Fourier Transform (FFT) algorithm.\n\
+\n\
+The optional arguments @var{m} and @var{n} may be used specify the\n\
+number of rows and columns of @var{A} to use.  If either of these is\n\
+larger than the size of @var{A}, @var{A} is resized and padded with\n\
 zeros.\n\
 \n\
-If @var{a} is a multi-dimensional matrix, each two-dimensional sub-matrix\n\
-of @var{a} is treated separately\n\
+If @var{A} is a multi-dimensional matrix, each two-dimensional sub-matrix\n\
+of @var{A} is treated separately.\n\
 @seealso {ifft2, fft, fftn, fftw}\n\
 @end deftypefn")
 {
@@ -189,16 +190,18 @@ of @var{a} is treated separately\n\
 
 DEFUN_DLD (ifft2, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Loadable Function} {} fft2 (@var{a}, @var{n}, @var{m})\n\
-Compute the inverse two-dimensional FFT of @var{a} using subroutines from\n"
-FFTSRC
-".  The optional arguments @var{n} and @var{m} may be used specify the\n\
-number of rows and columns of @var{a} to use.  If either of these is\n\
-larger than the size of @var{a}, @var{a} is resized and padded with\n\
+@deftypefn  {Loadable Function} {} ifft2 (@var{A})\n\
+@deftypefnx {Loadable Function} {} ifft2 (@var{A}, @var{m}, @var{n})\n\
+Compute the inverse two-dimensional discrete Fourier transform of @var{A}\n\
+using a Fast Fourier Transform (FFT) algorithm.\n\
+\n\
+The optional arguments @var{m} and @var{n} may be used specify the\n\
+number of rows and columns of @var{A} to use.  If either of these is\n\
+larger than the size of @var{A}, @var{A} is resized and padded with\n\
 zeros.\n\
 \n\
-If @var{a} is a multi-dimensional matrix, each two-dimensional sub-matrix\n\
-of @var{a} is treated separately\n\
+If @var{A} is a multi-dimensional matrix, each two-dimensional sub-matrix\n\
+of @var{A} is treated separately\n\
 @seealso {fft2, ifft, ifftn, fftw}\n\
 @end deftypefn")
 {
@@ -213,10 +216,10 @@ of @var{a} is treated separately\n\
 %!test
 %! M=16;
 %! N=8;
-%! 
+%!
 %! m=5;
 %! n=3;
-%! 
+%!
 %! x = 2*pi*(0:1:M-1)/M;
 %! y = 2*pi*(0:1:N-1)/N;
 %! sx = cos(m*x);
@@ -232,20 +235,20 @@ of @var{a} is treated separately\n\
 %!test
 %! M=12;
 %! N=7;
-%! 
+%!
 %! m=3;
 %! n=2;
-%! 
+%!
 %! x = 2*pi*(0:1:M-1)/M;
 %! y = 2*pi*(0:1:N-1)/N;
-%! 
+%!
 %! sx = cos(m*x);
 %! sy = cos(n*y);
-%! 
+%!
 %! S = kron(fft(sx)',fft(sy));
 %! answer=kron(sx',sy);
 %! s = ifft2(S);
-%! 
+%!
 %! assert(s, answer, 30*eps);
 
 
@@ -255,10 +258,10 @@ of @var{a} is treated separately\n\
 %!test
 %! M=16;
 %! N=8;
-%! 
+%!
 %! m=5;
 %! n=3;
-%! 
+%!
 %! x = 2*pi*(0:1:M-1)/M;
 %! y = 2*pi*(0:1:N-1)/N;
 %! sx = single(cos(m*x));
@@ -274,26 +277,20 @@ of @var{a} is treated separately\n\
 %!test
 %! M=12;
 %! N=7;
-%! 
+%!
 %! m=3;
 %! n=2;
-%! 
+%!
 %! x = single(2*pi*(0:1:M-1)/M);
 %! y = single(2*pi*(0:1:N-1)/N);
-%! 
+%!
 %! sx = cos(m*x);
 %! sy = cos(n*y);
-%! 
+%!
 %! S = kron(fft(sx)',fft(sy));
 %! answer=kron(sx',sy);
 %! s = ifft2(S);
-%! 
+%!
 %! assert(s, answer, 30*eps('single'));
 
-*/
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
 */

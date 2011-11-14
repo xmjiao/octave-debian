@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2000, 2001, 2002, 2003, 2004, 2005, 2006,
-              2007, 2008 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -71,25 +70,25 @@ DEFBINOP (ldiv, float_complex, float_complex_matrix)
   return octave_value (v2.float_complex_array_value () / d);
 }
 
-DEFNDBINOP_FN (lt, float_complex, float_complex_matrix, float_complex, 
-	       float_complex_array, mx_el_lt)
-DEFNDBINOP_FN (le, float_complex, float_complex_matrix, float_complex, 
-	       float_complex_array, mx_el_le)
-DEFNDBINOP_FN (eq, float_complex, float_complex_matrix, float_complex, 
-	       float_complex_array, mx_el_eq)
-DEFNDBINOP_FN (ge, float_complex, float_complex_matrix, float_complex, 
-	       float_complex_array, mx_el_ge)
-DEFNDBINOP_FN (gt, float_complex, float_complex_matrix, float_complex, 
-	       float_complex_array, mx_el_gt)
-DEFNDBINOP_FN (ne, float_complex, float_complex_matrix, float_complex, 
-	       float_complex_array, mx_el_ne)
+DEFNDCMPLXCMPOP_FN (lt, float_complex, float_complex_matrix, float_complex,
+               float_complex_array, mx_el_lt)
+DEFNDCMPLXCMPOP_FN (le, float_complex, float_complex_matrix, float_complex,
+               float_complex_array, mx_el_le)
+DEFNDCMPLXCMPOP_FN (eq, float_complex, float_complex_matrix, float_complex,
+               float_complex_array, mx_el_eq)
+DEFNDCMPLXCMPOP_FN (ge, float_complex, float_complex_matrix, float_complex,
+               float_complex_array, mx_el_ge)
+DEFNDCMPLXCMPOP_FN (gt, float_complex, float_complex_matrix, float_complex,
+               float_complex_array, mx_el_gt)
+DEFNDCMPLXCMPOP_FN (ne, float_complex, float_complex_matrix, float_complex,
+               float_complex_array, mx_el_ne)
 
-DEFNDBINOP_OP (el_mul, float_complex, float_complex_matrix, float_complex, 
-	       float_complex_array, *)
-DEFNDBINOP_FN (el_div, float_complex, float_complex_matrix, float_complex, 
-	       float_complex_array, x_el_div)
-DEFNDBINOP_FN (el_pow, float_complex, float_complex_matrix, float_complex, 
-	       float_complex_array, elem_xpow)
+DEFNDBINOP_OP (el_mul, float_complex, float_complex_matrix, float_complex,
+               float_complex_array, *)
+DEFNDBINOP_FN (el_div, float_complex, float_complex_matrix, float_complex,
+               float_complex_array, x_el_div)
+DEFNDBINOP_FN (el_pow, float_complex, float_complex_matrix, float_complex,
+               float_complex_array, elem_xpow)
 
 DEFBINOP (el_ldiv, float_complex, float_complex_matrix)
 {
@@ -151,9 +150,3 @@ install_fcs_fcm_ops (void)
 
   INSTALL_WIDENOP (octave_float_complex, octave_float_complex_matrix, float_complex_matrix_conv);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

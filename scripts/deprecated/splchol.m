@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 David Bateman
+## Copyright (C) 2008-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Loadable Function} {@var{l} =} splchol (@var{a})
+## @deftypefn  {Loadable Function} {@var{l} =} splchol (@var{a})
 ## @deftypefnx {Loadable Function} {[@var{l}, @var{p}] =} splchol (@var{a})
 ## @deftypefnx {Loadable Function} {[@var{l}, @var{p}, @var{q}] =} splchol (@var{a})
 ## This function has been deprecated.  Use @code{chol (@dots{},'lower')}
@@ -31,7 +31,7 @@ function varargout = splchol (varargin)
   if (! warned)
     warned = true;
     warning ("Octave:deprecated-function",
-	     "splchol is obsolete and will be removed from a future version of Octave; please use chol instead");
+             "splchol is obsolete and will be removed from a future version of Octave; please use chol instead");
   endif
 
   varargout = cell (nargout, 1);

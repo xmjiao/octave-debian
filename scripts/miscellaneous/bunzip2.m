@@ -1,5 +1,5 @@
-## Copyright (C) 2006, 2007, 2008, 2009 Bill Denney
-## 
+## Copyright (C) 2006-2011 Bill Denney
+##
 ## This file is part of Octave.
 ##
 ## Octave is free software; you can redistribute it and/or modify it
@@ -17,29 +17,26 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} bunzip2 (@var{bzfile}, @var{dir})
+## @deftypefn  {Function File} {} bunzip2 (@var{bzfile})
+## @deftypefnx {Function File} {} bunzip2 (@var{bzfile}, @var{dir})
 ## Unpack the bzip2 archive @var{bzfile} to the directory @var{dir}.  If
 ## @var{dir} is not specified, it defaults to the current directory.
-## @seealso{unpack, bzip2, tar, untar, gzip, gunzip, zip, unzip}
+## @seealso{bzip2, unpack, gunzip, unzip, untar}
 ## @end deftypefn
 
 ## Author: Bill Denney <denney@seas.upenn.edu>
 
-function varargout = bunzip2 (files, outputdir)
+function varargout = bunzip2 (bzfile, dir = ".")
 
-  if (! (nargin == 1 || nargin == 2))
+  if (nargin != 1 && nargin != 2)
     print_usage ();
-  endif
-
-  if (nargin == 1)
-    outputdir = ".";
   endif
 
   if (nargout > 0)
     varargout = cell (1, nargout);
-    [varargout{:}] = unpack (files, outputdir, mfilename ());
+    [varargout{:}] = unpack (bzfile, dir, mfilename ());
   else
-    unpack (files, outputdir, mfilename ());
+    unpack (bzfile, dir, mfilename ());
   endif
 
 endfunction

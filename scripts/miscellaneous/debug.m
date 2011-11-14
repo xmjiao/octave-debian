@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 David Bateman
+## Copyright (C) 2008-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -64,7 +64,7 @@
 ##
 ## @item debug_on_interrupt
 ## Flag whether to enter debug mode in case Octave encounters an interupt.
-## 
+##
 ## @end table
 ##
 ## @noindent

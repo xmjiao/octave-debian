@@ -1,4 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 2005, 2006, 2007, 2009 Friedrich Leisch
+## Copyright (C) 1995-2011 Friedrich Leisch
 ##
 ## This file is part of Octave.
 ##
@@ -43,7 +43,7 @@ function retval = wienrnd (t, d, n)
   endif
 
   if (!isscalar (t) || !isscalar (d) || !isscalar (n))
-    error ("wienrnd: t, d and n must all be positive integers");
+    error ("wienrnd: T, D and N must all be positive integers");
   endif
 
   retval = randn (n * t, d);

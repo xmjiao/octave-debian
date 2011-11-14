@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 1999, 2000, 2002, 2003, 2004, 2005,
-              2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -76,11 +75,13 @@ public:
   virtual octave_time time_checked (void) const
     { return octave_time (static_cast<time_t> (0)); }
 
-  virtual bool is_nested_function (void) const { return false; }
+  virtual bool is_subfunction (void) const { return false; }
 
-  virtual bool is_class_constructor (void) const { return false; }
+  virtual bool is_class_constructor (const std::string& = std::string ()) const
+    { return false; }
 
-  virtual bool is_class_method (void) const { return false; }
+  virtual bool is_class_method (const std::string& = std::string ()) const
+    { return false; }
 
   virtual bool takes_varargs (void) const { return false; }
 
@@ -90,7 +91,8 @@ public:
 
   std::string dispatch_class (void) const { return xdispatch_class; }
 
-  void mark_as_private_function (const std::string& cname = std::string ())
+  virtual void
+  mark_as_private_function (const std::string& cname = std::string ())
   {
     private_function = true;
     xdispatch_class = cname;
@@ -140,8 +142,9 @@ public:
 protected:
 
   octave_function (const std::string& nm,
-		   const std::string& ds = std::string ())
-    : relative (false), my_name (nm), doc (ds) { }
+                   const std::string& ds = std::string ())
+    : relative (false), locked (false), private_function (false),
+      xdispatch_class (), my_name (nm), my_dir_name (), doc (ds) { }
 
   // TRUE if this function was found from a relative path element.
   bool relative;
@@ -154,7 +157,7 @@ protected:
 
   // If this object is a class method or constructor, or a private
   // function inside a class directory, this is the name of the class
-  // to which the method belongs. 
+  // to which the method belongs.
   std::string xdispatch_class;
 
   // The name of this function.
@@ -179,9 +182,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

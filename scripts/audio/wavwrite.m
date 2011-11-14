@@ -1,4 +1,4 @@
-## Copyright (C) 2005, 2006, 2007, 2009 Michael Zeising
+## Copyright (C) 2005-2011 Michael Zeising
 ##
 ## This file is part of Octave.
 ##
@@ -17,11 +17,11 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} wavwrite (@var{y}, @var{filename})
-## @deftypefnx {Function File} {} wavwrite (@var{y}, @var{fs}, @var{filename})
-## @deftypefnx {Function File} {} wavwrite (@var{y}, @var{fs}, @var{bits}, @var{filename})
+## @deftypefn  {Function File} {} wavwrite (@var{y}, @var{filename})
+## @deftypefnx {Function File} {} wavwrite (@var{y}, @var{Fs}, @var{filename})
+## @deftypefnx {Function File} {} wavwrite (@var{y}, @var{Fs}, @var{bps}, @var{filename})
 ## Write @var{y} to the canonical RIFF/WAVE sound file @var{filename}
-## with sample rate @var{fs} and bits per sample @var{bits}.  The
+## with sample rate @var{Fs} and bits per sample @var{bps}.  The
 ## default sample rate is 8000 Hz with 16-bits per sample.  Each column
 ## of the data represents a separate channel.
 ## @seealso{wavread}
@@ -34,13 +34,6 @@ function wavwrite (y, varargin)
 
   BYTEORDER = "ieee-le";
 
-  ## For backward compatibility with previous versions of Octave, also
-  ## accept the inputs
-  ##
-  ##   wavwrite (filename, y)
-  ##   wavwrite (filename, y, fs)
-  ##   wavwrite (filename, y, fs, bits)
-
   if (nargin < 2 || nargin > 4)
     print_usage ();
   endif
@@ -49,22 +42,11 @@ function wavwrite (y, varargin)
   samples_per_sec = 8000;
   bits_per_sample = 16;
 
-  if (ischar (y))
-    filename = y;
-    y = varargin{1};
-    if (nargin > 2)
-      samples_per_sec = varargin{2};
-      if (nargin > 3)
-	bits_per_sample = varargin{3};
-      endif
-    endif
-  else
-    filename = varargin{end};
-    if (nargin > 2)
-      samples_per_sec = varargin{1};
-      if (nargin > 3)
-	bits_per_sample = varargin{2};
-      endif
+  filename = varargin{end};
+  if (nargin > 2)
+    samples_per_sec = varargin{1};
+    if (nargin > 3)
+      bits_per_sample = varargin{2};
     endif
   endif
 
@@ -72,39 +54,38 @@ function wavwrite (y, varargin)
   if (columns (y) < 1)
     error ("wavwrite: Y must have at least one column");
   endif
-  if (columns (y) > 2^15-1)
+  if (columns (y) > 0x7FFF)
     error ("wavwrite: Y has more than 32767 columns (too many for a WAV-file)");
   endif
 
   ## determine sample format
   switch (bits_per_sample)
-    case 8  
+    case 8
       format = "uint8";
-    case 16 
+    case 16
       format = "int16";
-    case 32 
+    case 32
       format = "int32";
     otherwise
       error ("wavwrite: sample resolution not supported");
   endswitch
-  
+
   ## calculate filesize
-  [n, channels] = size(y);
+  [n, channels] = size (y);
 
   ## size of data chunk
   ck_size = n*channels*(bits_per_sample/8);
-  
-  ## open file for writing binary
 
   if (! ischar (filename))
-    error ("wavwrite: expecting filename to be a character string");
+    error ("wavwrite: expecting FILENAME to be a character string");
   endif
-    
+
+  ## open file for writing binary
   [fid, msg] = fopen (filename, "wb");
   if (fid < 0)
     error ("wavwrite: %s", msg);
   endif
-  
+
   ## write RIFF/WAVE header
   c = 0;
   c += fwrite (fid, "RIFF", "uchar");
@@ -126,61 +107,74 @@ function wavwrite (y, varargin)
   c += fwrite (fid, samples_per_sec, "uint32", 0, BYTEORDER);
 
   ## bytes per second
-  bps = samples_per_sec*channels*bits_per_sample/8;
-  c += fwrite (fid, bps, "uint32", 0, BYTEORDER);
+  byteps = samples_per_sec*channels*bits_per_sample/8;
+  c += fwrite (fid, byteps, "uint32", 0, BYTEORDER);
 
   ## block align
   c += fwrite (fid, channels*bits_per_sample/8, "uint16", 0, BYTEORDER);
 
-  c += fwrite (fid, bits_per_sample, "uint16", 0, BYTEORDER);   
+  c += fwrite (fid, bits_per_sample, "uint16", 0, BYTEORDER);
   c += fwrite (fid, "data", "uchar");
   c += fwrite (fid, ck_size, "uint32", 0, BYTEORDER);
-  
+
   if (c < 25)
     fclose (fid);
     error ("wavwrite: writing to file failed");
   endif
-  
+
   ## interleave samples
   yi = reshape (y', n*channels, 1);
-  
+
   ## scale samples
   switch (bits_per_sample)
     case 8
-      yi = round (yi*127 + 128);
+      yi = round (yi*128 + 128);
     case 16
-      yi = round (yi*32767);
+      yi = round (yi*32768);
     case 32
-      yi = round (yi*2147483647);
+      yi = round (yi*2147483648);
   endswitch
-  
+
   ## write to file
   c = fwrite (fid, yi, format, 0, BYTEORDER);
-  
+
   fclose (fid);
-  
+
 endfunction
 
+
 %!test
-%! A = [1:10; 1:10]/10;
-%! wavwrite("a.wav", A);
-%! [B, samples_per_sec, bits_per_sample] = wavread("a.wav");
-%! assert(A,B, 10^(-4));
+%! A = [-1:0.1:1; -1:0.1:1];
+%! wavwrite (A, "a.wav");
+%! [B, samples_per_sec, bits_per_sample] = wavread ("a.wav");
+%! assert(A,B, 1/2^15);
 %! assert(samples_per_sec, 8000);
 %! assert(bits_per_sample, 16);
+%! delete ("a.wav");
 %
 %!test
-%! A=[1:10; 1:10] / 10;
-%! wavwrite("a.wav", A, 4000);
-%! [B, samples_per_sec, bits_per_sample] = wavread("a.wav");
-%! assert(A,B, 10^(-4));
+%! A = [-1:0.1:1; -1:0.1:1];
+%! wavwrite (A, 4000, "a.wav");
+%! [B, samples_per_sec, bits_per_sample] = wavread ("a.wav");
+%! assert(A,B, 1/2^15);
 %! assert(samples_per_sec, 4000);
 %! assert(bits_per_sample, 16);
+%! delete ("a.wav");
 %
 %!test
-%! A=[1:10; 1:10] / 10;
-%! wavwrite("a.wav", A, 4000, 8);
-%! [B, samples_per_sec, bits_per_sample] = wavread("a.wav");
-%! assert(A,B, 10^(-2));
+%! A = [-1:0.1:1; -1:0.1:1];
+%! wavwrite (A, 4000, 8, "a.wav");
+%! [B, samples_per_sec, bits_per_sample] = wavread ("a.wav");
+%! assert(A,B, 1/128);
 %! assert(samples_per_sec, 4000);
 %! assert(bits_per_sample, 8);
+%! delete ("a.wav");
+%
+%!test
+%! A = [-2:2];
+%! wavwrite (A, "a.wav");
+%! B = wavread ("a.wav");
+%! B *= 32768;
+%! assert(B, [-32768 -32768 0 32767 32767]);
+%! delete ("a.wav");
+

@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 David Bateman
+## Copyright (C) 2008-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -28,7 +28,7 @@ function retval = spsum (varargin)
   if (! warned)
     warned = true;
     warning ("Octave:deprecated-function",
-	     "spsum is obsolete and will be removed from a future version of Octave; please use sum instead");
+             "spsum is obsolete and will be removed from a future version of Octave; please use sum instead");
   endif
 
   retval = sum (varargin{:});

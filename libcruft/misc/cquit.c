@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2003, 2005, 2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 2003-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -98,10 +98,10 @@ w32_reset_context (LPVOID v)
   DEBUGs ("enter w32_set_context");
   SuspendThread (w32_main_thread);
   DEBUGs ("main suspended");
-  if (! SetThreadContext (w32_main_thread, context)) 
+  if (! SetThreadContext (w32_main_thread, context))
     {
       fprintf (stderr, "%lx: context failed: ctrl-c won't work\n",
-	       GetCurrentThreadId ()); 
+               GetCurrentThreadId ());
       fflush (stderr);
     }
   DEBUGs ("context captured (or not)");
@@ -112,7 +112,7 @@ w32_reset_context (LPVOID v)
   return 0;
 }
 
-static void 
+static void
 w32_raise_in_main (void)
 {
   DWORD threadid;
@@ -120,23 +120,23 @@ w32_raise_in_main (void)
   DEBUGd ("w32_raise_in_main with signal %d", w32_signal_to_raise);
   raise (w32_signal_to_raise);
   DEBUGd ("w32_raise_in_main signal %d returned a value",
-	  w32_signal_to_raise);
+          w32_signal_to_raise);
 
   DEBUGs ("attempting to restore main to pre-signal configuration");
   if (w32_restore_thread != NULL) /* Catch leaky threads */
     CloseHandle (w32_restore_thread);
   w32_restore_thread = CreateThread (NULL, 10000, w32_reset_context,
-				     &w32_signal_context, 0, &threadid);
-  if (w32_restore_thread == NULL) 
+                                     &w32_signal_context, 0, &threadid);
+  if (w32_restore_thread == NULL)
     {
-      fprintf (stderr, "w32_raise_in_main couldn't create thread\n"); 
+      fprintf (stderr, "w32_raise_in_main couldn't create thread\n");
       fflush (stderr);
-    } 
-  else 
+    }
+  else
     {
       DEBUGs ("waiting to restore raise context");
       WaitForSingleObject (w32_restore_thread, INFINITE);
-      fprintf (stderr, "w32_raise_in_main couldn't restore context\n"); 
+      fprintf (stderr, "w32_raise_in_main couldn't restore context\n");
       fflush (stderr);
     }
 }
@@ -157,14 +157,14 @@ w32_raise (int sig)
 {
   int ret;
 
-  if (w32_in_main_thread ()) 
+  if (w32_in_main_thread ())
     {
       /* Called from main thread -- a simple raise () should work.  */
       DEBUGd ("raising signal %d within main", signal);
       raise (sig);
       DEBUGd ("returning from signal %d within main", signal);
-    } 
-  else 
+    }
+  else
     {
       /* Called from alternate thread -- call w32_raise_in_main in the
          main thread with w32_signal_to_raise set to the signal */
@@ -174,18 +174,18 @@ w32_raise (int sig)
       /* Suspend main and remember the context.  */
       SuspendThread (w32_main_thread);
       /* X86 code */
-      w32_signal_context.ContextFlags 
-	= CONTEXT_FULL|CONTEXT_FLOATING_POINT|CONTEXT_DEBUG_REGISTERS;
+      w32_signal_context.ContextFlags
+        = CONTEXT_FULL|CONTEXT_FLOATING_POINT|CONTEXT_DEBUG_REGISTERS;
       GetThreadContext (w32_main_thread, &w32_signal_context);
 
       /* Change the context to w32_raise_in_main.  The
-	 context.Eip=&fn trick for setting the program counter is
-	 courtesy of
+         context.Eip=&fn trick for setting the program counter is
+         courtesy of
 
-	   http://fit.c2.com/files/LispPlatform/lisp/clisp-2.28/src/win32aux.d
+           http://fit.c2.com/files/LispPlatform/lisp/clisp-2.28/src/win32aux.d
 
          Auxiliary functions for CLISP on Win32, Bruno Haible
-	 1997-1999.  */
+         1997-1999.  */
 
       memcpy (&raise_context, &w32_signal_context, sizeof (CONTEXT));
       raise_context.Eip = (DWORD)&w32_raise_in_main; /* X86 code */
@@ -195,7 +195,7 @@ w32_raise (int sig)
       /* Resume main at w32_raise_in_main */
       ret = ResumeThread (w32_main_thread);
       DEBUGd ("main resumed at w32_raise_in_main with suspend count %d",
-	      ret);
+              ret);
     }
 }
 
@@ -205,8 +205,8 @@ w32_sigint_init (void)
   /* Capture main context */
   w32_main_thread_id = GetCurrentThreadId ();
   DuplicateHandle (GetCurrentProcess (), GetCurrentThread (),
-		   GetCurrentProcess (), &w32_main_thread,
-		   0, FALSE, DUPLICATE_SAME_ACCESS);
+                   GetCurrentProcess (), &w32_main_thread,
+                   0, FALSE, DUPLICATE_SAME_ACCESS);
 
   InitializeCriticalSectionAndSpinCount (&w32_thread_setjmp_mutex, 0);
 }
@@ -231,24 +231,18 @@ octave_jump_to_enclosing_context (void)
    sigsetjmp/siglongjmp, but saving and restoring the signal mask
    ourselves works ok and seems simpler just now.  */
 
-#if defined (HAVE_POSIX_SIGNALS)
 static sigset_t octave_signal_mask;
-#endif
 
 void
 octave_save_signal_mask (void)
 {
-#if defined (HAVE_POSIX_SIGNALS)
   sigprocmask (0, 0, &octave_signal_mask);
-#endif
 }
 
 void
 octave_restore_signal_mask (void)
 {
-#if defined (HAVE_POSIX_SIGNALS)
   sigprocmask (SIG_SETMASK, &octave_signal_mask, 0);
-#endif
 }
 
 sig_atomic_t octave_interrupt_immediately = 0;
@@ -258,9 +252,3 @@ sig_atomic_t octave_interrupt_state = 0;
 sig_atomic_t octave_exception_state = 0;
 
 volatile sig_atomic_t octave_signal_caught = 0;
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

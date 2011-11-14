@@ -1,4 +1,4 @@
-## Copyright (C) 2007, 2008 John W. Eaton
+## Copyright (C) 2007-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -29,14 +29,14 @@ function retval = cast (val, typ)
   if (nargin == 2)
     if (ischar (typ))
       if (any (strcmp (typ, {"int8"; "uint8"; "int16"; "uint16";
-			     "int32"; "uint32"; "int64"; "uint64";
-			     "double"; "single"; "logical"; "char"})))
-	retval = feval (typ, val);
+                             "int32"; "uint32"; "int64"; "uint64";
+                             "double"; "single"; "logical"; "char"})))
+        retval = feval (typ, val);
       else
-	error ("cast: type name `%s' is not a built-in type", typ);
+        error ("cast: type name `%s' is not a built-in type", typ);
       endif
     else
-      error ("cast: expecting type name as second argument");
+      error ("cast: expecting TYPE name as second argument");
     endif
   else
     print_usage ();

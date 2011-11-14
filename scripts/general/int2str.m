@@ -1,5 +1,4 @@
-## Copyright (C) 1993, 1994, 1995, 1996, 1997, 1999, 2000, 2002, 2003,
-##               2004, 2005, 2006, 2007, 2008, 2009 John W. Eaton
+## Copyright (C) 1993-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -29,46 +28,46 @@
 ##      @result{} "123"
 ##
 ## s = int2str ([1, 2, 3; 4, 5, 6])
-##      @result{} s = 
+##      @result{} s =
 ##         1  2  3
 ##         4  5  6
-## 
+##
 ## whos s
-##      @result{} s = 
+##      @result{} s =
 ##       Attr Name        Size                     Bytes  Class
-##       ==== ====        ====                     =====  ===== 
+##       ==== ====        ====                     =====  =====
 ##            s           2x7                         14  char
 ## @end group
 ## @end example
 ##
 ## This function is not very flexible.  For better control over the
-## results, use @code{sprintf} (@pxref{Formatted Output}). 
+## results, use @code{sprintf} (@pxref{Formatted Output}).
 ## @seealso{sprintf, num2str, mat2str}
 ## @end deftypefn
 
 ## Author: jwe
 
-function retval = int2str (x)
+function retval = int2str (n)
 
   if (nargin == 1)
-    x = round (real(x));
-    sz = size(x);
-    nd = ndims (x);
-    nc = columns (x);
+    n = round (real(n));
+    sz = size(n);
+    nd = ndims (n);
+    nc = columns (n);
     if (nc > 1)
       idx = cell ();
       for i = 1:nd
-	idx{i} = 1:sz(i);
+        idx{i} = 1:sz(i);
       endfor
       idx(2) = 1;
-      ifmt = get_fmt (x(idx{:}), 0);
+      ifmt = get_fmt (n(idx{:}), 0);
       idx(2) = 2:sz(2);
-      rfmt = get_fmt (x(idx{:}), 2);
+      rfmt = get_fmt (n(idx{:}), 2);
       fmt = cstrcat (ifmt, repmat (rfmt, 1, nc-1), "\n");
     else
-      fmt = cstrcat (get_fmt (x, 0), "\n");
+      fmt = cstrcat (get_fmt (n, 0), "\n");
     endif
-    tmp = sprintf (fmt, permute (x, [2, 1, 3 : nd]));
+    tmp = sprintf (fmt, permute (n, [2, 1, 3 : nd]));
     tmp(end) = "";
     retval = char (strsplit (tmp, "\n"));
   else
@@ -89,9 +88,9 @@ function fmt = get_fmt (x, sep)
     nan_inf = isinf (t) | isnan (t);
     if (any (nan_inf))
       if (any (t(nan_inf) < 0))
-	min_fw = 4 + sep;
+        min_fw = 4 + sep;
       else
-	min_fw = 3 + sep;
+        min_fw = 3 + sep;
       endif
     else
       min_fw = 1 + sep;
@@ -105,7 +104,7 @@ function fmt = get_fmt (x, sep)
       tfw = floor (log10 (double (abs (t)))) + 1 + sep;
       fw = max (tfw);
       if (any (t(tfw == fw) < 0))
-	fw++;
+        fw++;
       endif
       fmt = sprintf ("%%%dd", max (fw, min_fw));
     endif

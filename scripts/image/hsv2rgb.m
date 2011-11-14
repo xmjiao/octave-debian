@@ -1,5 +1,4 @@
-## Copyright (C) 1999, 2000, 2001, 2002, 2004, 2005, 2006, 2007, 2008, 2009
-##               Kai Habel
+## Copyright (C) 1999-2011 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -19,7 +18,7 @@
 
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {@var{rgb_map} =} hsv2rgb (@var{hsv_map})
-## Transform a colormap or image from the hsv space to the rgb space. 
+## Transform a colormap or image from the HSV space to the RGB space.
 ## @seealso{rgb2hsv}
 ## @end deftypefn
 
@@ -65,7 +64,7 @@ function rgb_map = hsv2rgb (hsv_map)
   rgb_map = kron ([1, 1, 1], hsv_map(:,3) .* (1 - hsv_map(:,2)));
 
   ## red(hue-2/3)=green(hue)=blue(hue-1/3)
-  ## apply modulo 1 for red and blue 
+  ## apply modulo 1 for red and blue
   t = hsv_map(:,1);
   tp = t';
   hue = [(tp - 2/3 - floor (t - 2/3)');
@@ -77,8 +76,8 @@ function rgb_map = hsv2rgb (hsv_map)
 
   ## add s*v* hue-function to rgb map
   rgb_map = rgb_map +  f .* (6 * (hue < 1/6) .* hue
-			     + (hue >= 1/6 & hue < 1/2)
-			     + (hue >= 1/2 & hue < 2/3) .* (4 - 6 * hue));
+                    + (hue >= 1/6 & hue < 1/2)
+                    + (hue >= 1/2 & hue < 2/3) .* (4 - 6 * hue));
 
   ## If input was an image, convert it back into one.
   if (is_image)

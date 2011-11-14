@@ -1,4 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 2005, 2006, 2007 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -35,7 +35,7 @@ function pdf = fpdf (x, m, n)
   if (!isscalar (m) || !isscalar (n))
     [retval, x, m, n] = common_size (x, m, n);
     if (retval > 0)
-      error ("fpdf: x, m and n must be of common size or scalar");
+      error ("fpdf: X, M and N must be of common size or scalar");
     endif
   endif
 
@@ -52,13 +52,13 @@ function pdf = fpdf (x, m, n)
     if (isscalar (m) && isscalar (n))
       tmp = m / n * x(k);
       pdf(k) = (exp ((m / 2 - 1) .* log (tmp)
-		     - ((m + n) / 2) .* log (1 + tmp))
-		.* (m / n) ./ beta (m / 2, n / 2));
+                     - ((m + n) / 2) .* log (1 + tmp))
+                .* (m / n) ./ beta (m / 2, n / 2));
     else
       tmp = m(k) .* x(k) ./ n(k);
       pdf(k) = (exp ((m(k) / 2 - 1) .* log (tmp)
-		     - ((m(k) + n(k)) / 2) .* log (1 + tmp))
-		.* (m(k) ./ n(k)) ./ beta (m(k) / 2, n(k) / 2));
+                     - ((m(k) + n(k)) / 2) .* log (1 + tmp))
+                .* (m(k) ./ n(k)) ./ beta (m(k) / 2, n(k) / 2));
     endif
   endif
 

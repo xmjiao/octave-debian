@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 David Bateman
+## Copyright (C) 2008-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -25,9 +25,10 @@
 ## arguments @var{h} is a scalar or array of figure handles to refresh.  The
 ## optional second argument @var{workspace} can take the following values.
 ##
-## @table @code
+## @table @asis
 ## @item "base"
 ## Evaluate the datasource properties in the base workspace.  (default).
+##
 ## @item "caller"
 ## Evaluate the datasource properties in the workspace of the function
 ## that called @code{refreshdata}.
@@ -49,11 +50,11 @@
 ## @end example
 ## @end deftypefn
 
-function refreshdata (h, ws)
+function refreshdata (h, workspace)
 
   if (nargin == 0)
     h = gcf ();
-    ws = "base";
+    workspace = "base";
   else
     if (iscell (h))
       h = [h{:}];
@@ -62,12 +63,14 @@ function refreshdata (h, ws)
       error ("refreshdata: expecting a list of figure handles");
     endif
     if (nargin < 2)
-      ws = "base";
+      workspace = "base";
     else
-      if (!ischar (ws) || !(strcmpi (ws, "base") || strcmpi (ws, "caller")))
-	error ("refreshdata: expecting workspace to be \"base\" or ""caller\"");
+      if (   !ischar (workspace)
+          || !(strcmpi (workspace, "base")
+          || strcmpi (workspace, "caller")))
+        error ("refreshdata: expecting WORKSPACE to be \"base\" or ""caller\"");
       else
-	ws = tolower (ws);
+        workspace = tolower (workspace);
       endif
     endif
   endif
@@ -79,10 +82,11 @@ function refreshdata (h, ws)
   for i = 1 : numel (h)
     obj = get (h (i));
     fldnames = fieldnames (obj);
-    m = regexpi (fieldnames(obj), "^.+datasource$", "match");
+    m = regexpi (fieldnames(obj), '^.+datasource$', "match");
     idx = cellfun (@(x) !isempty(x), m);
     if (any (idx))
-      props = [props; {cell2mat(m(idx))}];
+      tmp = m(idx);
+      props = [props; {vertcat(tmp{:})}];
       objs  = [objs ; h(i)];
     endif
   endfor
@@ -91,10 +95,10 @@ function refreshdata (h, ws)
     for j = 1 : length (props {i})
       expr = get (objs(i), props{i}{j});
       if (!isempty (expr))
-	val = evalin (ws, expr);
-	prop =  props{i}{j}(1:end-6);
+        val = evalin (workspace, expr);
+        prop =  props{i}{j}(1:end-6);
         if (! isequal (get (objs(i), prop), val))
-	  set (objs(i), props{i}{j}(1:end-6), val);
+          set (objs(i), props{i}{j}(1:end-6), val);
         endif
       endif
     endfor

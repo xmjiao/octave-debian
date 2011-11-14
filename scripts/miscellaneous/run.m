@@ -1,4 +1,4 @@
-## Copyright (C) 2007, 2008, 2009 David Bateman
+## Copyright (C) 2007-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -17,42 +17,45 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} run (@var{f})
-## @deftypefnx {Command} {} run @var{f}
+## @deftypefn  {Command} {} run @var{script}
+## @deftypefnx {Function File} {} run (@var{script})
 ## Run scripts in the current workspace that are not necessarily on the
-## path.  If @var{f} is the script to run, including its path, then @code{run}
-## change the directory to the directory where @var{f} is found.  @code{run}
-## then executes the script, and returns to the original directory.
+## path.  If @var{script} is the script to run, including its path, then
+## @code{run} changes the directory to the directory where @var{script} is
+## found.  @code{run} then executes the script, and returns to the original
+## directory.
 ## @seealso{system}
 ## @end deftypefn
 
-function run (s)
+function run (script)
 
   if (nargin != 1)
     print_usage ();
   endif
 
-  [d, f, ext] = fileparts (s);
+  [d, f, ext] = fileparts (script);
   if (! isempty (d))
     if (exist (d, "dir"))
       wd = pwd ();
       unwind_protect
-	cd (d);
-	if (! exist (f, "file") || ! strcmp (ext, ".m"))
-	  error ("run: file must exist and be a valid Octave script file");
-	endif
-	evalin ("caller", [f, ";"], "rethrow (lasterror ())");
+        cd (d);
+        if (! exist (cstrcat (f, ext), "file"))
+          error ("run: file SCRIPT must exist and be a valid Octave scriptfile");
+        endif
+        evalin ("caller", sprintf ("source (\"%s%s\");", f, ext),
+                "rethrow (lasterror ())");
       unwind_protect_cleanup
-	cd (wd);
+        cd (wd);
       end_unwind_protect
     else
       error ("run: the path %s doesn't exist", d);
     endif
   else
-    if (exist (f, "file"))
-      evalin ("caller", [f, ";"], "rethrow (lasterror ())");
+    if (exist (script, "file"))
+      evalin ("caller", sprintf ("source (\"%s\");", script),
+              "rethrow (lasterror ())");
     else
-      error ("run: %s not found", s);
+      error ("run: %s not found", script);
     endif
   endif
 endfunction

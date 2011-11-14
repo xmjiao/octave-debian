@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 1998, 2000, 2002, 2003, 2004,
-              2005, 2006, 2007, 2008 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 Copyright (C) 2009 VZLU Prague
 
 This file is part of Octave.
@@ -42,19 +41,22 @@ octave_value_list
 public:
 
   octave_value_list (void)
-    : data () { }
+    : data (), names () { }
+
+  explicit octave_value_list (octave_idx_type n)
+    : data (dim_vector (1, n)), names () { }
 
   octave_value_list (octave_idx_type n, const octave_value& val)
-    : data (dim_vector (1, n), val) { }
+    : data (dim_vector (1, n), val), names () { }
 
   octave_value_list (const octave_value& tc)
-    : data (1, tc) { }
+    : data (dim_vector (1, 1), tc), names () { }
 
   octave_value_list (const Array<octave_value>& d)
-    : data (d.reshape (dim_vector (1, d.numel ()))) { }
+    : data (d.as_row ()), names () { }
 
   octave_value_list (const Cell& tc)
-    : data (tc.reshape (dim_vector (1, tc.numel ()))) { }
+    : data (tc.as_row ()), names () { }
 
   octave_value_list (const octave_value_list& obj)
     : data (obj.data), names (obj.names) { }
@@ -87,10 +89,10 @@ public:
   octave_value_list& operator = (const octave_value_list& obj)
     {
       if (this != &obj)
-	{
-	  data = obj.data;
-	  names = obj.names;
-	}
+        {
+          data = obj.data;
+          names = obj.names;
+        }
 
       return *this;
     }
@@ -103,16 +105,17 @@ public:
 
   octave_value& operator () (octave_idx_type n) { return elem (n); }
 
-  octave_value operator () (octave_idx_type n) const { return elem (n); }
+  const octave_value& operator () (octave_idx_type n) const { return elem (n); }
 
   octave_idx_type length (void) const { return data.length (); }
 
   bool empty (void) const { return length () == 0; }
 
-  void resize (octave_idx_type n) { data.resize (n); }
-
-  void resize (octave_idx_type n, const octave_value& val)
-    { data.resize (n, val); }
+  void resize (octave_idx_type n, const octave_value& rfv
+               = Array<octave_value>::resize_fill_value ())
+  {
+    data.resize (dim_vector (1, n), rfv);
+  }
 
   octave_value_list& prepend (const octave_value& val);
 
@@ -123,16 +126,24 @@ public:
   octave_value_list& reverse (void);
 
   octave_value_list
-  slice (octave_idx_type offset, octave_idx_type len) const
-    { return data.index (idx_vector (offset, offset + len)); }
+  slice (octave_idx_type offset, octave_idx_type len, bool tags = false) const
+    {
+      octave_value_list retval (data.linear_slice (offset, offset + len));
+      if (tags && len > 0 && names.length () > 0)
+        retval.names = names.linear_slice (offset, std::min (len, names.length ()));
+
+      return retval;
+    }
 
   octave_value_list
   splice (octave_idx_type offset, octave_idx_type len,
-	  const octave_value_list& lst = octave_value_list ()) const;
+          const octave_value_list& lst = octave_value_list ()) const;
 
   bool all_strings_p (void) const;
 
   bool all_scalars (void) const;
+
+  bool any_cell (void) const;
 
   bool has_magic_colon (void) const;
 
@@ -144,6 +155,16 @@ public:
 
   void make_storable_values (void);
 
+  octave_value& xelem (octave_idx_type i)
+    {
+      return data.xelem (i);
+    }
+
+  void clear (void)
+    {
+      data.clear ();
+    }
+
 private:
 
   static octave_allocator allocator;
@@ -154,38 +175,16 @@ private:
   // a name.  By default, it is empty.
   string_vector names;
 
-  // This constructor is private with no definition to keep statements
-  // like
-  //
-  //   octave_value_list foo = 5;
-  //   octave_value_list foo = 5.0;
-  //
-  // from doing different things.  Instead, you have to use the
-  // constructor
-  //
-  //   octave_value_list (n, val);
-  //
-  // and supply a default value to create a vector-valued
-  // octave_value_list.
-
-  octave_value_list (octave_idx_type n);
-
   octave_value& elem (octave_idx_type n)
     {
       if (n >= length ())
-	resize (n + 1);
+        resize (n + 1);
 
       return data(n);
     }
 
-  octave_value elem (octave_idx_type n) const
+  const octave_value& elem (octave_idx_type n) const
     { return data(n); }
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

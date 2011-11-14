@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 2000, 2002, 2004, 2005,
-              2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -49,7 +48,7 @@ tree_constant::print (std::ostream& os, bool pr_as_read_syntax, bool pr_orig_tex
 
 void
 tree_constant::print_raw (std::ostream& os, bool pr_as_read_syntax,
-			  bool pr_orig_text) 
+                          bool pr_orig_text)
 {
   if (pr_orig_text && ! orig_text.empty ())
     os << orig_text;
@@ -72,7 +71,7 @@ tree_constant::rvalue (int nargout)
 
 tree_expression *
 tree_constant::dup (symbol_table::scope_id,
-		    symbol_table::context_id) const
+                    symbol_table::context_id) const
 {
   tree_constant *new_tc
     = new tree_constant (val, orig_text, line (), column ());
@@ -87,9 +86,3 @@ tree_constant::accept (tree_walker& tw)
 {
   tw.visit_constant (*this);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

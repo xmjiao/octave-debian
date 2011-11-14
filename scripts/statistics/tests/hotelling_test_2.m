@@ -1,5 +1,4 @@
-## Copyright (C) 1996, 1997, 1998, 2000, 2002, 2005, 2006, 2007, 2009
-##               Kurt Hornik
+## Copyright (C) 1996-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -25,18 +24,18 @@
 ## (@var{x}) == mean (@var{y})}.
 ##
 ## Hotelling's two-sample @math{T^2} is returned in @var{tsq}.  Under the null,
-##
 ## @tex
 ## $$
 ## {n_x+n_y-p-1) T^2 \over p(n_x+n_y-2)}
 ## $$
 ## @end tex
 ## @ifnottex
+##
 ## @example
 ## (n_x+n_y-p-1) T^2 / (p(n_x+n_y-2))
 ## @end example
-## @end ifnottex
 ##
+## @end ifnottex
 ## @noindent
 ## has an F distribution with @math{p} and @math{n_x+n_y-p-1} degrees of
 ## freedom, where @math{n_x} and @math{n_y} are the sample sizes and
@@ -59,7 +58,7 @@ function [pval, Tsq] = hotelling_test_2 (x, y)
   if (isvector (x))
     n_x = length (x);
     if (! isvector (y))
-      error ("hotelling_test_2: if x is a vector, y must also be a vector");
+      error ("hotelling_test_2: if X is a vector, Y must also be a vector");
     else
       n_y = length (y);
       p   = 1;
@@ -68,10 +67,10 @@ function [pval, Tsq] = hotelling_test_2 (x, y)
     [n_x, p] = size (x);
     [n_y, q] = size (y);
     if (p != q)
-      error ("hotelling_test_2: x and y must have the same number of columns");
+      error ("hotelling_test_2: X and Y must have the same number of columns");
     endif
   else
-    error ("hotelling_test_2: x and y must be matrices (or vectors)");
+    error ("hotelling_test_2: X and Y must be matrices (or vectors)");
   endif
 
   d    = mean (x) - mean (y);

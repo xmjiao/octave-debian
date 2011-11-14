@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 1999, 2000, 2002, 2003, 2004, 2005,
-              2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
+Copyright (C) 2009-2010 VZLU Prague
 
 This file is part of Octave.
 
@@ -40,7 +40,8 @@ along with Octave; see the file COPYING.  If not, see
 #include "oct-hdf5.h"
 
 class Cell;
-class Octave_map;
+class octave_map;
+class octave_scalar_map;
 class octave_value;
 class octave_value_list;
 class octave_stream;
@@ -54,6 +55,86 @@ class octave_value_list;
 class octave_lvalue;
 
 class tree_walker;
+
+enum builtin_type_t
+{
+  btyp_double,
+  btyp_float,
+  btyp_complex,
+  btyp_float_complex,
+  btyp_int8,
+  btyp_int16,
+  btyp_int32,
+  btyp_int64,
+  btyp_uint8,
+  btyp_uint16,
+  btyp_uint32,
+  btyp_uint64,
+  btyp_bool,
+  btyp_char,
+  btyp_struct,
+  btyp_cell,
+  btyp_func_handle,
+  btyp_unknown,
+  btyp_num_types = btyp_unknown
+};
+
+extern OCTINTERP_API std::string
+btyp_class_name [btyp_num_types];
+
+extern OCTINTERP_API string_vector
+get_builtin_classes (void);
+
+inline bool btyp_isnumeric (builtin_type_t btyp)
+{ return btyp <= btyp_uint64; }
+
+inline bool btyp_isinteger (builtin_type_t btyp)
+{ return btyp >= btyp_int8 && btyp <= btyp_uint64; }
+
+inline bool btyp_isfloat (builtin_type_t btyp)
+{ return btyp <= btyp_float_complex; }
+
+inline bool btyp_isarray (builtin_type_t btyp)
+{ return btyp <= btyp_char; }
+
+// Compute a numeric type for a possibly mixed-type operation, using these rules:
+// bool -> double
+// single + double -> single
+// real + complex -> complex
+// integer + real -> integer
+// uint + uint -> uint (the bigger one)
+// sint + sint -> sint (the bigger one)
+//
+// failing otherwise.
+
+extern OCTINTERP_API
+builtin_type_t btyp_mixed_numeric (builtin_type_t x, builtin_type_t y);
+
+template <class T>
+struct class_to_btyp
+{
+  static const builtin_type_t btyp = btyp_unknown;
+};
+
+#define DEF_CLASS_TO_BTYP(CLASS,BTYP) \
+template <> \
+struct class_to_btyp<CLASS> \
+{ static const builtin_type_t btyp = BTYP; }
+
+DEF_CLASS_TO_BTYP (double, btyp_double);
+DEF_CLASS_TO_BTYP (float, btyp_float);
+DEF_CLASS_TO_BTYP (Complex, btyp_complex);
+DEF_CLASS_TO_BTYP (FloatComplex, btyp_float_complex);
+DEF_CLASS_TO_BTYP (octave_int8, btyp_int8);
+DEF_CLASS_TO_BTYP (octave_int16, btyp_int16);
+DEF_CLASS_TO_BTYP (octave_int32, btyp_int32);
+DEF_CLASS_TO_BTYP (octave_int64, btyp_int64);
+DEF_CLASS_TO_BTYP (octave_uint8, btyp_uint8);
+DEF_CLASS_TO_BTYP (octave_uint16, btyp_uint16);
+DEF_CLASS_TO_BTYP (octave_uint32, btyp_uint32);
+DEF_CLASS_TO_BTYP (octave_uint64, btyp_uint64);
+DEF_CLASS_TO_BTYP (bool, btyp_bool);
+DEF_CLASS_TO_BTYP (char, btyp_char);
 
 // T_ID is the type id of struct objects, set by register_type().
 // T_NAME is the type name of struct objects.
@@ -87,8 +168,8 @@ class tree_walker;
   void t::register_type (void) \
     { \
       t_id = octave_value_typeinfo::register_type (t::t_name, \
-						   t::c_name, \
-						   octave_value (new t ())); \
+                                                   t::c_name, \
+                                                   octave_value (new t ())); \
     }
 
 // A base value type, so that derived types only have to redefine what
@@ -111,7 +192,7 @@ public:
 
     operator type_conv_fcn (void) const { return _fcn; }
 
-    octave_base_value * operator () (const octave_base_value &v) const 
+    octave_base_value * operator () (const octave_base_value &v) const
       { return (*_fcn) (v); }
 
     int type_id (void) const { return _type_id; }
@@ -125,15 +206,23 @@ public:
 
   octave_base_value (void) : count (1) { }
 
-  octave_base_value (const octave_base_value&) { }
+  octave_base_value (const octave_base_value&) : count (1) { }
 
   virtual ~octave_base_value (void) { }
 
+  // Unconditional clone. Always clones.
   virtual octave_base_value *
   clone (void) const { return new octave_base_value (*this); }
 
+  // Empty clone.
   virtual octave_base_value *
-  empty_clone (void) const { return new octave_base_value (); }
+  empty_clone (void) const;
+
+  // Unique clone. Usually clones, but may be overriden to fake the
+  // cloning when sharing copies is to be controlled from within an
+  // instance (see octave_class).
+  virtual octave_base_value *
+  unique_clone (void) { return clone (); }
 
   virtual type_conv_info
   numeric_conversion_function (void) const
@@ -151,19 +240,29 @@ public:
 
   virtual void maybe_economize (void) { }
 
+  virtual Matrix size (void);
+
+  virtual octave_idx_type numel (const octave_value_list&);
+
   virtual octave_value
   subsref (const std::string& type,
-	   const std::list<octave_value_list>& idx);
+           const std::list<octave_value_list>& idx);
 
   virtual octave_value_list
   subsref (const std::string& type,
-	   const std::list<octave_value_list>& idx,
-	   int nargout);
+           const std::list<octave_value_list>& idx,
+           int nargout);
 
   virtual octave_value
   subsref (const std::string& type,
-	   const std::list<octave_value_list>& idx,
+           const std::list<octave_value_list>& idx,
            bool auto_add);
+
+  virtual octave_value_list
+  subsref (const std::string& type,
+           const std::list<octave_value_list>& idx,
+           int nargout,
+           const std::list<octave_lvalue> *lvalue_list);
 
   virtual octave_value
   do_index_op (const octave_value_list& idx, bool resize_ok = false);
@@ -171,32 +270,42 @@ public:
   virtual octave_value_list
   do_multi_index_op (int nargout, const octave_value_list& idx);
 
+  virtual octave_value_list
+  do_multi_index_op (int nargout, const octave_value_list& idx,
+                     const std::list<octave_lvalue> *lvalue_list);
+
   virtual void assign (const std::string&, const octave_value&) { }
 
   virtual octave_value
   subsasgn (const std::string& type,
-	    const std::list<octave_value_list>& idx,
-	    const octave_value& rhs);
+            const std::list<octave_value_list>& idx,
+            const octave_value& rhs);
+
+  virtual octave_value
+  undef_subsasgn (const std::string& type,
+                  const std::list<octave_value_list>& idx,
+                  const octave_value& rhs);
 
   virtual idx_vector index_vector (void) const;
 
-  virtual dim_vector dims (void) const { return dim_vector (-1, -1); }
+  virtual dim_vector dims (void) const { return dim_vector (); }
 
   octave_idx_type rows (void) const
     {
-      dim_vector dv = dims ();
+      const dim_vector dv = dims ();
 
-      return (dv.length () > 0) ? dv(0) : -1;
+      return dv(0);
     }
 
   octave_idx_type columns (void) const
     {
-      dim_vector dv = dims ();
+      const dim_vector dv = dims ();
 
-      return (dv.length () > 1) ? dv(1) : -1;
+      return dv(1);
     }
 
-  virtual int ndims (void) const;
+  virtual int ndims (void) const
+    { return dims ().length (); }
 
   virtual octave_idx_type numel (void) const { return dims ().numel (); }
 
@@ -260,8 +369,6 @@ public:
 
   virtual bool is_cs_list (void) const { return false; }
 
-  virtual bool is_list (void) const { return false; }
-
   virtual bool is_magic_colon (void) const { return false; }
 
   virtual bool is_all_va_args (void) const { return false; }
@@ -269,6 +376,8 @@ public:
   virtual octave_value all (int = 0) const;
 
   virtual octave_value any (int = 0) const;
+
+  virtual builtin_type_t builtin_type (void) const { return btyp_unknown; }
 
   virtual bool is_double_type (void) const { return false; }
 
@@ -401,11 +510,11 @@ public:
   virtual DiagMatrix diag_matrix_value (bool = false) const;
 
   virtual FloatDiagMatrix float_diag_matrix_value (bool = false) const;
-  
+
   virtual ComplexDiagMatrix complex_diag_matrix_value (bool = false) const;
-  
+
   virtual FloatComplexDiagMatrix float_complex_diag_matrix_value (bool = false) const;
-  
+
   virtual PermMatrix perm_matrix_value (void) const;
 
   virtual octave_int8 int8_scalar_value (void) const;
@@ -448,7 +557,9 @@ public:
 
   virtual Range range_value (void) const;
 
-  virtual Octave_map map_value (void) const;
+  virtual octave_map map_value (void) const;
+
+  virtual octave_scalar_map scalar_map_value (void) const;
 
   virtual string_vector map_keys (void) const;
 
@@ -461,9 +572,10 @@ public:
   virtual octave_base_value *find_parent_class (const std::string&)
     { return 0; }
 
-  virtual octave_function *function_value (bool silent = false);
+  virtual octave_base_value *unique_parent_class (const std::string&)
+    { return 0; }
 
-  virtual const octave_function *function_value (bool silent = false) const;
+  virtual octave_function *function_value (bool silent = false);
 
   virtual octave_user_function *user_function_value (bool silent = false);
 
@@ -478,7 +590,7 @@ public:
   virtual octave_value_list list_value (void) const;
 
   virtual octave_value convert_to_str (bool pad = false, bool force = false,
-				       char type = '"') const;
+                                       char type = '\'') const;
   virtual octave_value
   convert_to_str_internal (bool pad, bool force, char type) const;
 
@@ -495,8 +607,8 @@ public:
   print_name_tag (std::ostream& os, const std::string& name) const;
 
   virtual void
-  print_with_name (std::ostream& output_buf, const std::string& name, 
-		   bool print_padding = true) const;
+  print_with_name (std::ostream& output_buf, const std::string& name,
+                   bool print_padding = true);
 
   virtual void print_info (std::ostream& os, const std::string& prefix) const;
 
@@ -506,21 +618,21 @@ public:
 
   virtual bool save_binary (std::ostream& os, bool& save_as_floats);
 
-  virtual bool load_binary (std::istream& is, bool swap, 
-			    oct_mach_info::float_format fmt);
+  virtual bool load_binary (std::istream& is, bool swap,
+                            oct_mach_info::float_format fmt);
 
 #if defined (HAVE_HDF5)
   virtual bool
   save_hdf5 (hid_t loc_id, const char *name, bool save_as_floats);
 
   virtual bool
-  load_hdf5 (hid_t loc_id, const char *name, bool have_h5giterate_bug);
+  load_hdf5 (hid_t loc_id, const char *name);
 #endif
 
   virtual int
   write (octave_stream& os, int block_size,
-	 oct_data_conv::data_type output_type, int skip,
-	 oct_mach_info::float_format flt_fmt) const;
+         oct_data_conv::data_type output_type, int skip,
+         oct_mach_info::float_format flt_fmt) const;
 
   virtual void *mex_get_data (void) const { return 0; }
 
@@ -532,11 +644,11 @@ public:
 
   virtual octave_value diag (octave_idx_type k = 0) const;
 
-  virtual octave_value sort (octave_idx_type dim = 0, 
-			     sortmode mode = ASCENDING) const;
-  virtual octave_value sort (Array<octave_idx_type> &sidx, 
-			     octave_idx_type dim = 0,
-			     sortmode mode = ASCENDING) const;
+  virtual octave_value sort (octave_idx_type dim = 0,
+                             sortmode mode = ASCENDING) const;
+  virtual octave_value sort (Array<octave_idx_type> &sidx,
+                             octave_idx_type dim = 0,
+                             sortmode mode = ASCENDING) const;
 
   virtual sortmode is_sorted (sortmode mode = UNSORTED) const;
 
@@ -553,72 +665,99 @@ public:
 
   virtual void dump (std::ostream& os) const;
 
-  virtual octave_value abs (void) const;
-  virtual octave_value acos (void) const;
-  virtual octave_value acosh (void) const;
-  virtual octave_value angle (void) const;
-  virtual octave_value arg (void) const;
-  virtual octave_value asin (void) const;
-  virtual octave_value asinh (void) const;
-  virtual octave_value atan (void) const;
-  virtual octave_value atanh (void) const;
-  virtual octave_value ceil (void) const;
-  virtual octave_value conj (void) const;
-  virtual octave_value cos (void) const;
-  virtual octave_value cosh (void) const;
-  virtual octave_value erf (void) const;
-  virtual octave_value erfc (void) const;
-  virtual octave_value exp (void) const;
-  virtual octave_value expm1 (void) const;
-  virtual octave_value finite (void) const;
-  virtual octave_value fix (void) const;
-  virtual octave_value floor (void) const;
-  virtual octave_value gamma (void) const;
-  virtual octave_value imag (void) const;
-  virtual octave_value isinf (void) const;
-  virtual octave_value isna (void) const;
-  virtual octave_value isnan (void) const;
-  virtual octave_value lgamma (void) const;
-  virtual octave_value log (void) const;
-  virtual octave_value log2 (void) const;
-  virtual octave_value log10 (void) const;
-  virtual octave_value log1p (void) const;
-  virtual octave_value real (void) const;
-  virtual octave_value round (void) const;
-  virtual octave_value roundb (void) const;
-  virtual octave_value signum (void) const;
-  virtual octave_value sin (void) const;
-  virtual octave_value sinh (void) const;
-  virtual octave_value sqrt (void) const;
-  virtual octave_value tan (void) const;
-  virtual octave_value tanh (void) const;
+  // Standard mappers. Register new ones here.
+  enum unary_mapper_t
+    {
+      umap_abs,
+      umap_acos,
+      umap_acosh,
+      umap_angle,
+      umap_arg,
+      umap_asin,
+      umap_asinh,
+      umap_atan,
+      umap_atanh,
+      umap_cbrt,
+      umap_ceil,
+      umap_conj,
+      umap_cos,
+      umap_cosh,
+      umap_erf,
+      umap_erfinv,
+      umap_erfc,
+      umap_erfcx,
+      umap_exp,
+      umap_expm1,
+      umap_finite,
+      umap_fix,
+      umap_floor,
+      umap_gamma,
+      umap_imag,
+      umap_isinf,
+      umap_isna,
+      umap_isnan,
+      umap_lgamma,
+      umap_log,
+      umap_log2,
+      umap_log10,
+      umap_log1p,
+      umap_real,
+      umap_round,
+      umap_roundb,
+      umap_signum,
+      umap_sin,
+      umap_sinh,
+      umap_sqrt,
+      umap_tan,
+      umap_tanh,
+      umap_xisalnum,
+      umap_xisalpha,
+      umap_xisascii,
+      umap_xiscntrl,
+      umap_xisdigit,
+      umap_xisgraph,
+      umap_xislower,
+      umap_xisprint,
+      umap_xispunct,
+      umap_xisspace,
+      umap_xisupper,
+      umap_xisxdigit,
+      umap_xtoascii,
+      umap_xtolower,
+      umap_xtoupper,
+      umap_unknown,
+      num_unary_mappers = umap_unknown
+    };
 
-  // These functions are prefixed with X to avoid potential macro
-  // conflicts.
+  virtual octave_value map (unary_mapper_t) const;
 
-  virtual octave_value xisalnum (void) const;
-  virtual octave_value xisalpha (void) const;
-  virtual octave_value xisascii (void) const;
-  virtual octave_value xiscntrl (void) const;
-  virtual octave_value xisdigit (void) const;
-  virtual octave_value xisgraph (void) const;
-  virtual octave_value xislower (void) const;
-  virtual octave_value xisprint (void) const;
-  virtual octave_value xispunct (void) const;
-  virtual octave_value xisspace (void) const;
-  virtual octave_value xisupper (void) const;
-  virtual octave_value xisxdigit (void) const;
-  virtual octave_value xtoascii (void) const;
-  virtual octave_value xtolower (void) const;
-  virtual octave_value xtoupper (void) const;
+  // These are fast indexing & assignment shortcuts for extracting
+  // or inserting a single scalar from/to an array.
+
+  // Extract the n-th element, aka val(n). Result is undefined if val is not an
+  // array type or n is out of range. Never error.
+  virtual octave_value
+  fast_elem_extract (octave_idx_type n) const;
+
+  // Assign the n-th element, aka val(n) = x. Returns false if val is not an
+  // array type, x is not a matching scalar type, or n is out of range.
+  // Never error.
+  virtual bool
+  fast_elem_insert (octave_idx_type n, const octave_value& x);
+
+  // This is a helper for the above, to be overriden in scalar types.  The
+  // whole point is to handle the insertion efficiently with just *two* VM
+  // calls, which is basically the theoretical minimum.
+  virtual bool
+  fast_elem_insert_self (void *where, builtin_type_t btyp) const;
 
 protected:
 
   // This should only be called for derived types.
 
   octave_value numeric_assign (const std::string& type,
-			       const std::list<octave_value_list>& idx,
-			       const octave_value& rhs);
+                               const std::list<octave_value_list>& idx,
+                               const octave_value& rhs);
 
   void reset_indent_level (void) const
     { curr_print_indent_level = 0; }
@@ -639,9 +778,14 @@ protected:
   void reset (void) const;
 
   // A reference count.
-  int count;
+  // NOTE: the declaration is octave_idx_type because with 64-bit indexing,
+  // it is well possible to have more than MAX_INT copies of a single value
+  // (think of an empty cell array with >2G elements).
+  octave_refcount<octave_idx_type> count;
 
 private:
+
+  static const char *get_umap_name (unary_mapper_t);
 
   static int curr_print_indent_level;
   static bool beginning_of_line;
@@ -651,12 +795,6 @@ private:
 
 // TRUE means to perform automatic sparse to real mutation if there
 // is memory to be saved
-extern bool Vsparse_auto_mutate;
+extern OCTINTERP_API bool Vsparse_auto_mutate;
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

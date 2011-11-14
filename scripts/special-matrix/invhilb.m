@@ -1,5 +1,4 @@
-## Copyright (C) 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2002,
-##               2004, 2005, 2006, 2007, 2008, 2009 Dirk Laurie
+## Copyright (C) 1993-2011 Dirk Laurie
 ##
 ## This file is part of Octave.
 ##
@@ -19,7 +18,7 @@
 
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} invhilb (@var{n})
-## Return the inverse of a Hilbert matrix of order @var{n}.  This can be 
+## Return the inverse of the Hilbert matrix of order @var{n}.  This can be
 ## computed exactly using
 ## @tex
 ## $$\eqalign{
@@ -33,9 +32,10 @@
 ## $$
 ##   p(k) = -1^k \left( \matrix{ k+n-1 \cr k-1 } \right)
 ##               \left( \matrix{ n \cr k } \right)
-##$$
+## $$
 ## @end tex
 ## @ifnottex
+##
 ## @example
 ## @group
 ##
@@ -47,7 +47,10 @@
 ##
 ## @end group
 ## @end example
+##
+## @noindent
 ## where
+##
 ## @example
 ## @group
 ##              k  /k+n-1\   /n\
@@ -55,17 +58,17 @@
 ##                 \ k-1 /   \k/
 ## @end group
 ## @end example
-## @end ifnottex
 ##
-## The validity of this formula can easily be checked by expanding 
-## the binomial coefficients in both formulas as factorials.  It can 
-## be derived more directly via the theory of Cauchy matrices: 
-## see J. W. Demmel, Applied Numerical Linear Algebra, page 92.
+## @end ifnottex
+## The validity of this formula can easily be checked by expanding
+## the binomial coefficients in both formulas as factorials.  It can
+## be derived more directly via the theory of Cauchy matrices.
+## See J. W. Demmel, @cite{Applied Numerical Linear Algebra}, p. 92.
 ##
 ## Compare this with the numerical calculation of @code{inverse (hilb (n))},
 ## which suffers from the ill-conditioning of the Hilbert matrix, and the
 ## finite precision of your computer's floating point arithmetic.
-## @seealso{hankel, vander, sylvester_matrix, hilb, toeplitz}
+## @seealso{hilb}
 ## @end deftypefn
 
 ## Author: Dirk Laurie <dlaurie@na-net.ornl.gov>
@@ -80,7 +83,7 @@ function retval = invhilb (n)
   if (nmax == 1)
 
     ## The point about the second formula above is that when vectorized,
-    ## p(k) is evaluated for k=1:n which involves O(n) calls to bincoeff 
+    ## p(k) is evaluated for k=1:n which involves O(n) calls to bincoeff
     ## instead of O(n^2).
     ##
     ## We evaluate the expression as (-1)^(i+j)*(p(i)*p(j))/(i+j-1) except
@@ -89,12 +92,12 @@ function retval = invhilb (n)
     ## (-1)^(i+j)*p(i)*(p(j)/(i+j-1)).
     ##
     ## The Octave bincoeff routine uses transcendental functions (gammaln
-    ## and exp) rather than multiplications, for the sake of speed.  
-    ## However, it rounds the answer to the nearest integer, which 
+    ## and exp) rather than multiplications, for the sake of speed.
+    ## However, it rounds the answer to the nearest integer, which
     ## justifies the claim about exactness made above.
 
-    retval = zeros (n); 
-    k = [1:n]; 
+    retval = zeros (n);
+    k = [1:n];
     p = k .* bincoeff (k+n-1, k-1) .* bincoeff (n, k);
     p(2:2:n) = -p(2:2:n);
     if (n < 203)
@@ -117,7 +120,7 @@ endfunction
 %! -120, 1200, -2700, 1680;
 %! 240, -2700, 6480, -4200;
 %! -140, 1680, -4200, 2800];
-%! 
+%!
 %! assert((invhilb (1) == 1 && invhilb (2) == [4, -6; -6, 12]
 %! && invhilb (4) == result4
 %! && abs (invhilb (7) * hilb (7) - eye (7)) < sqrt (eps)));

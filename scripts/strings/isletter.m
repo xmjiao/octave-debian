@@ -1,4 +1,4 @@
-## Copyright (C) 1998, 2000, 2004, 2005, 2006, 2007, 2009 John W. Eaton
+## Copyright (C) 1998-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -18,8 +18,10 @@
 
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} isletter (@var{s})
-## Returns true if @var{s} is a letter, false otherwise.
-## @seealso{isalpha}
+## Return a logical array which is true where the elements of @var{s}
+## are letters and false where they are not.  This is an alias for
+## the @code{isalpha} function.
+## @seealso{isalpha, isdigit, ispunct, isspace, iscntrl, isalnum}
 ## @end deftypefn
 
 ## Author: jwe

@@ -1,4 +1,4 @@
-## Copyright (C) 2005, 2006, 2007, 2008 John W. Eaton
+## Copyright (C) 2005-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -17,16 +17,18 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {[@var{status}, @var{msg}, @var{msgid}] =} movefile (@var{f1}, @var{f2})
+## @deftypefn  {Function File} {[@var{status}, @var{msg}, @var{msgid}] =} movefile (@var{f1}, @var{f2})
+## @deftypefnx {Function File} {[@var{status}, @var{msg}, @var{msgid}] =} movefile (@var{f1}, @var{f2}, 'f')
 ## Move the file @var{f1} to the new name @var{f2}.  The name @var{f1}
 ## may contain globbing patterns.  If @var{f1} expands to multiple file
-## names, @var{f2} must be a directory.
+## names, @var{f2} must be a directory.  If the force flag 'f' is given
+## then any existing files will be overwritten without prompting.
 ##
-## If successful, @var{status} is 1, with @var{msg} and @var{msgid} empty\n\
-## character strings.  Otherwise, @var{status} is 0, @var{msg} contains a\n\
-## system-dependent error message, and @var{msgid} contains a unique\n\
-## message identifier.\n\
-## @seealso{glob}
+## If successful, @var{status} is 1, with @var{msg} and @var{msgid} empty
+## character strings.  Otherwise, @var{status} is 0, @var{msg} contains a
+## system-dependent error message, and @var{msgid} contains a unique
+## message identifier.
+## @seealso{rename, copyfile}
 ## @end deftypefn
 
 function [status, msg, msgid] = movefile (f1, f2, force)
@@ -39,7 +41,8 @@ function [status, msg, msgid] = movefile (f1, f2, force)
   ## FIXME -- maybe use the same method as in ls to allow users control
   ## over the command that is executed.
 
-  if (ispc () && ! isunix () && isempty (file_in_path (EXEC_PATH, "mv.exe")))
+  if (ispc () && ! isunix ()
+      && isempty (file_in_path (getenv ("PATH"), "mv.exe")))
     ## Windows.
     cmd = "cmd /C move";
     cmd_force_flag = "/Y";
@@ -66,13 +69,13 @@ function [status, msg, msgid] = movefile (f1, f2, force)
     if (ischar (f1))
       f1 = cellstr (f1);
     endif
-    
+
     ## If f1 has more than 1 element f2 must be a directory
     isdir = (exist (f2, "dir") != 0);
     if (length(f1) > 1 && ! isdir)
       error ("movefile: when moving multiple files, second argument must be a directory");
     endif
-    
+
     ## Protect the file name(s).
     f1 = glob (f1);
     if (isempty (f1))
@@ -84,37 +87,39 @@ function [status, msg, msgid] = movefile (f1, f2, force)
     if (isdir && length(p1) > max_cmd_line)
       l2 = length(p2) + length (cmd) + 6;
       while (! isempty(f1))
-	p1 = sprintf ("\"%s\" ", f1{1});
-	f1(1) = [];
-	while (!isempty (f1) && (length(p1) + length(f1{1}) + l2 < 
-				 max_cmd_line))
-	  p1 = sprintf ("%s\"%s\" ", p1, f1{1});
-	  f1(1) = [];
-	endwhile 
+        p1 = sprintf ("\"%s\" ", f1{1});
+        f1(1) = [];
+        while (!isempty (f1) && (length(p1) + length(f1{1}) + l2 <
+                                 max_cmd_line))
+          p1 = sprintf ("%s\"%s\" ", p1, f1{1});
+          f1(1) = [];
+        endwhile
 
-	if (ispc () && ! isunix () && ! isempty (file_in_path (EXEC_PATH, "cp.exe")))
-	  p1 = strrep (p1, "\\", "/");
-	  p2 = strrep (p2, "\\", "/");
-	endif
+        if (ispc () && ! isunix ()
+            && ! isempty (file_in_path (getenv ("PATH"), "cp.exe")))
+          p1 = strrep (p1, "\\", "/");
+          p2 = strrep (p2, "\\", "/");
+        endif
 
-	## Move the file(s).
-	[err, msg] = system (sprintf ("%s %s \"%s\"", cmd, p1, p2));
-	if (err < 0)
-	  status = false;
-	  msgid = "movefile";
-	endif
+        ## Move the file(s).
+        [err, msg] = system (sprintf ("%s %s \"%s\"", cmd, p1, p2));
+        if (err < 0)
+          status = false;
+          msgid = "movefile";
+        endif
       endwhile
     else
-      if (ispc () && ! isunix () && ! isempty (file_in_path (EXEC_PATH, "cp.exe")))
-	p1 = strrep (p1, "\\", "/");
-	p2 = strrep (p2, "\\", "/");
+      if (ispc () && ! isunix ()
+          && ! isempty (file_in_path (getenv ("PATH"), "cp.exe")))
+        p1 = strrep (p1, "\\", "/");
+        p2 = strrep (p2, "\\", "/");
       endif
 
       ## Move the file(s).
       [err, msg] = system (sprintf ("%s %s \"%s\"", cmd, p1, p2));
       if (err < 0)
-	status = false;
-	msgid = "movefile";
+        status = false;
+        msgid = "movefile";
       endif
     endif
   else

@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2000, 2001, 2002, 2003, 2004, 2005, 2006,
-              2007 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -47,13 +46,24 @@ DEFNDBINOP_OP (sub, complex_matrix, matrix, complex_array, array, -)
 
 DEFBINOP_OP (mul, complex_matrix, matrix, *)
 
+DEFBINOP (mul_trans, complex_matrix, matrix)
+{
+  CAST_BINOP_ARGS (const octave_complex_matrix&, const octave_matrix&);
+
+  ComplexMatrix m1 = v1.complex_matrix_value ();
+  Matrix m2 = v2.matrix_value ();
+
+  return ComplexMatrix (xgemm (real (m1), m2, blas_no_trans, blas_trans),
+                        xgemm (imag (m1), m2, blas_no_trans, blas_trans));
+}
+
 DEFBINOP (div, complex_matrix, matrix)
 {
   CAST_BINOP_ARGS (const octave_complex_matrix&, const octave_matrix&);
   MatrixType typ = v2.matrix_type ();
-  
-  ComplexMatrix ret = xdiv (v1.complex_matrix_value (), 
-			    v2.matrix_value (), typ);
+
+  ComplexMatrix ret = xdiv (v1.complex_matrix_value (),
+                            v2.matrix_value (), typ);
 
   v2.matrix_type (typ);
   return ret;
@@ -70,20 +80,20 @@ DEFBINOP (ldiv, complex_matrix, matrix)
 {
   CAST_BINOP_ARGS (const octave_complex_matrix&, const octave_matrix&);
   MatrixType typ = v1.matrix_type ();
-  
-  ComplexMatrix ret = xleftdiv (v1.complex_matrix_value (), 
-				v2.matrix_value (), typ);
+
+  ComplexMatrix ret = xleftdiv (v1.complex_matrix_value (),
+                                v2.matrix_value (), typ);
 
   v1.matrix_type (typ);
   return ret;
 }
 
-DEFNDBINOP_FN (lt, complex_matrix, matrix, complex_array, array, mx_el_lt)
-DEFNDBINOP_FN (le, complex_matrix, matrix, complex_array, array, mx_el_le)
-DEFNDBINOP_FN (eq, complex_matrix, matrix, complex_array, array, mx_el_eq)
-DEFNDBINOP_FN (ge, complex_matrix, matrix, complex_array, array, mx_el_ge)
-DEFNDBINOP_FN (gt, complex_matrix, matrix, complex_array, array, mx_el_gt)
-DEFNDBINOP_FN (ne, complex_matrix, matrix, complex_array, array, mx_el_ne)
+DEFNDCMPLXCMPOP_FN (lt, complex_matrix, matrix, complex_array, array, mx_el_lt)
+DEFNDCMPLXCMPOP_FN (le, complex_matrix, matrix, complex_array, array, mx_el_le)
+DEFNDCMPLXCMPOP_FN (eq, complex_matrix, matrix, complex_array, array, mx_el_eq)
+DEFNDCMPLXCMPOP_FN (ge, complex_matrix, matrix, complex_array, array, mx_el_ge)
+DEFNDCMPLXCMPOP_FN (gt, complex_matrix, matrix, complex_array, array, mx_el_gt)
+DEFNDCMPLXCMPOP_FN (ne, complex_matrix, matrix, complex_array, array, mx_el_ne)
 
 DEFNDBINOP_FN (el_mul, complex_matrix, matrix, complex_array, array, product)
 DEFNDBINOP_FN (el_div, complex_matrix, matrix, complex_array, array, quotient)
@@ -124,14 +134,10 @@ install_cm_m_ops (void)
   INSTALL_BINOP (op_el_ldiv, octave_complex_matrix, octave_matrix, el_ldiv);
   INSTALL_BINOP (op_el_and, octave_complex_matrix, octave_matrix, el_and);
   INSTALL_BINOP (op_el_or, octave_complex_matrix, octave_matrix, el_or);
+  INSTALL_BINOP (op_mul_trans, octave_complex_matrix, octave_matrix, mul_trans);
+  INSTALL_BINOP (op_mul_herm, octave_complex_matrix, octave_matrix, mul_trans);
 
   INSTALL_CATOP (octave_complex_matrix, octave_matrix, cm_m);
 
   INSTALL_ASSIGNOP (op_asn_eq, octave_complex_matrix, octave_matrix, assign);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

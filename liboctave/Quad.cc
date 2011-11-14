@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 1998, 2000, 2002, 2003,
-              2004, 2005, 2006, 2007, 2008 John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -42,34 +41,40 @@ int quad_integration_error = 0;
 
 typedef octave_idx_type (*quad_fcn_ptr) (double*, int&, double*);
 typedef octave_idx_type (*quad_float_fcn_ptr) (float*, int&, float*);
-			      
+
 extern "C"
 {
   F77_RET_T
   F77_FUNC (dqagp, DQAGP) (quad_fcn_ptr, const double&, const double&,
-			   const octave_idx_type&, const double*, const double&,
-			   const double&, double&, double&, octave_idx_type&,
-			   octave_idx_type&, const octave_idx_type&, const octave_idx_type&, octave_idx_type&, octave_idx_type*,
-			   double*);
+                           const octave_idx_type&, const double*,
+                           const double&, const double&, double&,
+                           double&, octave_idx_type&, octave_idx_type&,
+                           const octave_idx_type&, const octave_idx_type&,
+                           octave_idx_type&, octave_idx_type*, double*);
 
   F77_RET_T
-  F77_FUNC (dqagi, DQAGI) (quad_fcn_ptr, const double&, const octave_idx_type&,
-			   const double&, const double&, double&,
-			   double&, octave_idx_type&, octave_idx_type&, const octave_idx_type&,
-			   const octave_idx_type&, octave_idx_type&, octave_idx_type*, double*); 
+  F77_FUNC (dqagi, DQAGI) (quad_fcn_ptr, const double&,
+                           const octave_idx_type&, const double&,
+                           const double&, double&, double&,
+                           octave_idx_type&, octave_idx_type&,
+                           const octave_idx_type&, const octave_idx_type&,
+                           octave_idx_type&, octave_idx_type*, double*);
 
   F77_RET_T
   F77_FUNC (qagp, QAGP) (quad_float_fcn_ptr, const float&, const float&,
-			 const octave_idx_type&, const float*, const float&,
-			 const float&, float&, float&, octave_idx_type&,
-			 octave_idx_type&, const octave_idx_type&, const octave_idx_type&, octave_idx_type&, octave_idx_type*,
-			 float*);
+                         const octave_idx_type&, const float*, const float&,
+                         const float&, float&, float&, octave_idx_type&,
+                         octave_idx_type&, const octave_idx_type&,
+                         const octave_idx_type&, octave_idx_type&,
+                         octave_idx_type*, float*);
 
   F77_RET_T
-  F77_FUNC (qagi, QAGI) (quad_float_fcn_ptr, const float&, const octave_idx_type&,
-			 const float&, const float&, float&,
-			 float&, octave_idx_type&, octave_idx_type&, const octave_idx_type&,
-			 const octave_idx_type&, octave_idx_type&, octave_idx_type*, float*); 
+  F77_FUNC (qagi, QAGI) (quad_float_fcn_ptr, const float&,
+                         const octave_idx_type&, const float&,
+                         const float&, float&, float&, octave_idx_type&,
+                         octave_idx_type&, const octave_idx_type&,
+                         const octave_idx_type&, octave_idx_type&,
+                         octave_idx_type*, float*);
 }
 
 static octave_idx_type
@@ -126,11 +131,11 @@ DefQuad::do_integrate (octave_idx_type& ier, octave_idx_type& neval, double& abs
   double result = 0.0;
 
   octave_idx_type leniw = 183*npts - 122;
-  Array<octave_idx_type> iwork (leniw);
+  Array<octave_idx_type> iwork (dim_vector (leniw, 1));
   octave_idx_type *piwork = iwork.fortran_vec ();
 
   octave_idx_type lenw = 2*leniw - npts;
-  Array<double> work (lenw);
+  Array<double> work (dim_vector (lenw, 1));
   double *pwork = work.fortran_vec ();
 
   user_fcn = f;
@@ -140,9 +145,9 @@ DefQuad::do_integrate (octave_idx_type& ier, octave_idx_type& neval, double& abs
   double rel_tol = relative_tolerance ();
 
   F77_XFCN (dqagp, DQAGP, (user_function, lower_limit, upper_limit,
-			   npts, points, abs_tol, rel_tol, result,
-			   abserr, neval, ier, leniw, lenw, last,
-			   piwork, pwork));
+                           npts, points, abs_tol, rel_tol, result,
+                           abserr, neval, ier, leniw, lenw, last,
+                           piwork, pwork));
 
   return result;
 }
@@ -160,11 +165,11 @@ IndefQuad::do_integrate (octave_idx_type& ier, octave_idx_type& neval, double& a
   double result = 0.0;
 
   octave_idx_type leniw = 128;
-  Array<octave_idx_type> iwork (leniw);
+  Array<octave_idx_type> iwork (dim_vector (leniw, 1));
   octave_idx_type *piwork = iwork.fortran_vec ();
 
   octave_idx_type lenw = 8*leniw;
-  Array<double> work (lenw);
+  Array<double> work (dim_vector (lenw, 1));
   double *pwork = work.fortran_vec ();
 
   user_fcn = f;
@@ -194,8 +199,8 @@ IndefQuad::do_integrate (octave_idx_type& ier, octave_idx_type& neval, double& a
   double rel_tol = relative_tolerance ();
 
   F77_XFCN (dqagi, DQAGI, (user_function, bound, inf, abs_tol, rel_tol,
-			   result, abserr, neval, ier, leniw, lenw,
-			   last, piwork, pwork));
+                           result, abserr, neval, ier, leniw, lenw,
+                           last, piwork, pwork));
 
   return result;
 }
@@ -222,11 +227,11 @@ FloatDefQuad::do_integrate (octave_idx_type& ier, octave_idx_type& neval, float&
   float result = 0.0;
 
   octave_idx_type leniw = 183*npts - 122;
-  Array<octave_idx_type> iwork (leniw);
+  Array<octave_idx_type> iwork (dim_vector (leniw, 1));
   octave_idx_type *piwork = iwork.fortran_vec ();
 
   octave_idx_type lenw = 2*leniw - npts;
-  Array<float> work (lenw);
+  Array<float> work (dim_vector (lenw, 1));
   float *pwork = work.fortran_vec ();
 
   float_user_fcn = ff;
@@ -236,9 +241,9 @@ FloatDefQuad::do_integrate (octave_idx_type& ier, octave_idx_type& neval, float&
   float rel_tol = single_precision_relative_tolerance ();
 
   F77_XFCN (qagp, QAGP, (float_user_function, lower_limit, upper_limit,
-			 npts, points, abs_tol, rel_tol, result,
-			 abserr, neval, ier, leniw, lenw, last,
-			 piwork, pwork));
+                         npts, points, abs_tol, rel_tol, result,
+                         abserr, neval, ier, leniw, lenw, last,
+                         piwork, pwork));
 
   return result;
 }
@@ -256,11 +261,11 @@ FloatIndefQuad::do_integrate (octave_idx_type& ier, octave_idx_type& neval, floa
   float result = 0.0;
 
   octave_idx_type leniw = 128;
-  Array<octave_idx_type> iwork (leniw);
+  Array<octave_idx_type> iwork (dim_vector (leniw, 1));
   octave_idx_type *piwork = iwork.fortran_vec ();
 
   octave_idx_type lenw = 8*leniw;
-  Array<float> work (lenw);
+  Array<float> work (dim_vector (lenw, 1));
   float *pwork = work.fortran_vec ();
 
   float_user_fcn = ff;
@@ -290,14 +295,8 @@ FloatIndefQuad::do_integrate (octave_idx_type& ier, octave_idx_type& neval, floa
   float rel_tol = single_precision_relative_tolerance ();
 
   F77_XFCN (qagi, QAGI, (float_user_function, bound, inf, abs_tol, rel_tol,
-			 result, abserr, neval, ier, leniw, lenw,
-			 last, piwork, pwork));
+                         result, abserr, neval, ier, leniw, lenw,
+                         last, piwork, pwork));
 
   return result;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

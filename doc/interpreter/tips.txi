@@ -1,5 +1,4 @@
-@c Copyright (C) 1996, 1997, 1999, 2002, 2004, 2005, 2007, 2008,
-@c               2009 John W. Eaton
+@c Copyright (C) 1996-2011 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -85,58 +84,84 @@ Here are some ways of improving the execution speed of Octave programs.
 
 @itemize @bullet
 @item
-Vectorize loops. For instance, rather than
+Vectorize loops.  For instance, rather than
+
 @example
+@group
 for i = 1:n-1
   a(i) = b(i+1) - b(i);
 endfor
+@end group
 @end example
 
+@noindent
 write
 
 @example
 a = b(2:n) - b(1:n-1);
 @end example
 
-This is especially important for loops with "cheap" bodies. Often it suffices to vectorize
-just the innermost loop to get acceptable performance. A general rule of thumb is that the
-"order" of the vectorized body should be greater or equal to the "order" of the enclosing loop.
+This is especially important for loops with "cheap" bodies.  Often it suffices
+to vectorize just the innermost loop to get acceptable performance.  A general
+rule of thumb is that the "order" of the vectorized body should be greater or
+equal to the "order" of the enclosing loop.
 
 @item
-Use built-in and library functions if possible. Built-in and compiled functions are very fast.
-Even with a m-file library function, chances are good that it is already optimized, or will be
-optimized more in a future release.
+Use built-in and library functions if possible.  Built-in and compiled functions
+are very fast.  Even with a m-file library function, chances are good that it is
+already optimized, or will be optimized more in a future release.
 
-@item
-Avoid computing costly intermediate results multiple times. Octave currently
-does not eliminate common subexpressions.
-
-@item
-Be aware of lazy copies (copy-on-write). When a copy of an object
-is created, the data is not immediately copied, but rather shared. The actual
-copying is postponed until the copied data needs to be modified. For example:
+For instance, even better than
 
 @example
+a = b(2:n) - b(1:n-1);
+@end example
+
+@noindent
+is
+
+@example
+a = diff (b);
+@end example
+
+
+@item
+Avoid computing costly intermediate results multiple times.  Octave currently
+does not eliminate common subexpressions.
+Also, certain internal computation results are cached for variables.
+For instance, if a matrix variable is used multiple times as an index,
+checking the indices (and internal conversion to integers) is only done once.
+
+@item
+Be aware of lazy copies (copy-on-write).  When a copy of an object
+is created, the data is not immediately copied, but rather shared.  The actual
+copying is postponed until the copied data needs to be modified.  For example:
+
+@example
+@group
 a = zeros (1000); # create a 1000x1000 matrix
 b = a; # no copying done here
 b(1) = 1; # copying done here
+@end group
 @end example
 
 Lazy copying applies to whole Octave objects such as matrices, cells, struct,
 and also individual cell or struct elements (not array elements).
 
 Additionally, index expressions also use lazy copying when Octave can determine
-that the indexed portion is contiguous in memory. For example:
+that the indexed portion is contiguous in memory.  For example:
 
 @example
+@group
 a = zeros (1000); # create a 1000x1000 matrix
 b = a(:,10:100); # no copying done here
 b = a(10:100,:); # copying done here
+@end group
 @end example
 
 This applies to arrays (matrices), cell arrays, and structs indexed using ().
 Index expressions generating cs-lists can also benefit of shallow copying
-in some cases. In particular, when @var{a} is a struct array, expressions like
+in some cases.  In particular, when @var{a} is a struct array, expressions like
 @code{@{a.x@}, @{a(:,2).x@}} will use lazy copying, so that data can be shared
 between a struct array and a cell array.
 
@@ -146,22 +171,24 @@ case it becomes orphaned, still occupying unnecessarily more memory than needed.
 To provide a remedy working in most real cases,
 Octave checks for orphaned lazy slices at certain situations, when a value
 is stored into a "permanent" location, such as a named variable or cell or
-struct element, and possibly economizes them. For example
+struct element, and possibly economizes them.  For example:
 
 @example
+@group
 a = zeros (1000); # create a 1000x1000 matrix
-b = a(:,10:100); # lazy slice
+b = a(:,10:100);  # lazy slice
 a = []; # the original a array is still allocated
 c@{1@} = b; # b is reallocated at this point
+@end group
 @end example
 
 @item
-Avoid deep recursion. Function calls to m-file functions carry a relatively significant overhead,
-so rewriting a recursion as a loop often helps. Also, note that the maximum level of recursion is
-limited.
+Avoid deep recursion.  Function calls to m-file functions carry a relatively
+significant overhead, so rewriting a recursion as a loop often helps.  Also,
+note that the maximum level of recursion is limited.
 
 @item
-Avoid resizing matrices unnecessarily. When building a single result
+Avoid resizing matrices unnecessarily.  When building a single result
 matrix from a series of calculations, set the size of the result matrix
 first, then insert values into it.  Write
 
@@ -188,13 +215,14 @@ endfor
 @end group
 @end example
 
-Sometimes the number of items can't be computed in advance, and stack-like operations
-are needed. When elements are being repeatedly inserted at/removed from the end of an
-array, Octave detects it as stack usage and attempts to use a smarter memory management
-strategy preallocating the array in bigger chunks. Likewise works for cell and
-struct arrays.
+Sometimes the number of items can't be computed in advance, and stack-like
+operations are needed.  When elements are being repeatedly inserted at/removed
+from the end of an array, Octave detects it as stack usage and attempts to use a
+smarter memory management strategy pre-allocating the array in bigger chunks. 
+Likewise works for cell and struct arrays.
 
 @example
+@group
 a = [];
 while (condition)
   @dots{}
@@ -203,21 +231,30 @@ while (condition)
   a(end) = []; # "pop" operation
   @dots{}
 endwhile
+@end group
 @end example
 
 @item
-Use @code{cellfun} intelligently. The @code{cellfun} function is a useful tool
-for avoiding loops. @xref{Processing Data in Cell Arrays}.
-@code{cellfun} is often use with anonymous function handles; however, calling
+Use @code{cellfun} intelligently.  The @code{cellfun} function is a useful tool
+for avoiding loops.  @xref{Processing Data in Cell Arrays}.
+@code{cellfun} is often used with anonymous function handles; however, calling
 an anonymous function involves an overhead quite comparable to the overhead
-of an m-file function. Passing a handle to a built-in function is faster,
-because the interpreter is not involved in the internal loop. For example:
+of an m-file function.  Passing a handle to a built-in function is faster,
+because the interpreter is not involved in the internal loop.  For example:
 
 @example
+@group
 a = @{@dots{}@}
 v = cellfun (@@(x) det(x), a); # compute determinants
 v = cellfun (@@det, a); # faster
+@end group
 @end example
+
+@item
+Octave includes a number of other functions that can replace common types of
+loops, including @code{bsxfun}, @code{arrayfun}, @code{structfun},
+@code{accumarray}.  These functions can take an arbitrary function as a handle.
+Be sure to get familiar with them if you want to become an Octave expert.
 
 @item
 Avoid calling @code{eval} or @code{feval} excessively, because
@@ -426,16 +463,21 @@ returned.''
 
 @item
 Avoid using the word ``cause'' (or its equivalents) unnecessarily.
-Instead of, ``Cause Octave to display text in boldface,'' write just
+Instead of, ``Cause Octave to display text in boldface,'' just write
 ``Display text in boldface.''
+
+@item
+Use two spaces between the period marking the end of a sentence and the
+word which opens the next sentence.  This convention has no effect for
+typeset formats like @TeX{}, but improves the readability of the documentation
+in fixed-width environments such as the Info reader.
 
 @item
 Do not start or end a documentation string with whitespace.
 
 @item
-Format the documentation string so that it fits in an Emacs window on an
-80-column screen.  It is a good idea for most lines to be no wider than
-60 characters.
+Format the documentation string so that it fits within an 80-column screen.
+It is a good idea for most lines to be no wider than 60 characters.
 
 However, rather than simply filling the entire documentation string, you
 can make it much more readable by choosing line breaks with care.
@@ -447,6 +489,26 @@ that the text is lined up in the source code with the text of the first
 line.  This looks nice in the source code, but looks bizarre when users
 view the documentation.  Remember that the indentation before the
 starting double-quote is not part of the string!
+
+@item
+When choosing variable names try to adhere to the following guidelines.
+
+@table @asis
+@item 
+vectors : x,y,z,t,w
+
+@item
+matrices : A,B,M
+
+@item
+strings : @nospell{str},s
+
+@item
+filenames : @nospell{fname}
+
+@item
+cells,@nospell{cellstrs} : c,@nospell{cstr}
+@end table
 
 @item
 The documentation string for a variable that is a yes-or-no flag should
@@ -498,24 +560,29 @@ string of the @w{@code{DEFUN_DLD}} macro for dynamically loadable
 functions.  The important aspects of the documentation string are
 
 @table @asis
-@item -*- texinfo -*-
+@item -*- @nospell{texinfo} -*-
 This string signals Octave that the following text is in Texinfo format,
 and should be the first part of any help string in Texinfo format.
+
 @item @@deftypefn@{class@} @dots{} @@end deftypefn
 The entire help string should be enclosed within the block defined by
 deftypefn.
+
 @item @@cindex index term
 This generates an index entry, and can be useful when the function is
 included as part of a larger piece of documentation.  It is ignored
 within Octave's help viewer.  Only one index term may appear per line
 but multiple @@cindex lines are valid if the function should be 
 filed under different terms.
+
 @item @@var@{variable@}
 All variables should be marked with this macro.  The markup of variables
 is then changed appropriately for display.
+
 @item @@code@{sample of code@}
 All samples of code should be marked with this macro for the same
 reasons as the @@var macro.
+
 @item @@seealso@{function2@}
 This is a comma separated list of function names that allows cross
 referencing from one function documentation string to another.
@@ -525,7 +592,7 @@ Texinfo format has been designed to generate output for online viewing
 with text terminals as well as generating high-quality printed output.
 To these ends, Texinfo has commands which control the diversion of parts
 of the document into a particular output processor.  Three formats are
-of importance: info, html and @TeX{}.  These are selected with
+of importance: info, HTML and @TeX{}.  These are selected with
 
 @example
 @group
@@ -551,7 +618,7 @@ Text area for TeX only
 @end group
 @end example
 
-Note that often @TeX{} output can be used in html documents and so often
+Note that often @TeX{} output can be used in HTML documents and so often
 the @code{@@ifhtml} blocks are unnecessary.  If no specific output
 processor is chosen, by default, the text goes into all output
 processors.  It is usual to have the above blocks in pairs to allow the
@@ -585,6 +652,7 @@ strings is the @code{@@example} environment.  An example of its use is
 @end group
 @end example
 
+@noindent
 which produces
 
 @example
@@ -607,7 +675,7 @@ example
 @example
 @group
 -*- texinfo -*-
-@@deftypefn@{Function File@} @{@@var@{a@} =@} fn (@@var@{x@}, @dots{})
+@@deftypefn @{Function File@} @{@@var@{a@} =@} fn (@@var@{x@}, @dots{})
 @@deftypefnx@{Function File@} @{@@var@{a@} =@} fn (@@var@{y@}, @dots{})
 Help text in Texinfo format.
 @@end deftypefn

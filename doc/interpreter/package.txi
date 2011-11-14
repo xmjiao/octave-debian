@@ -1,4 +1,4 @@
-@c Copyright (C) 2007, 2008, 2009 S�ren Hauberg
+@c Copyright (C) 2007-2011 S�ren Hauberg
 @c
 @c This file is part of Octave.
 @c
@@ -95,7 +95,7 @@ possible that one package depends on another one.  If a package
 depends on another, it will check if that package is installed
 during installation.  If it is not, an error will be reported and
 the package will not be installed.  This behavior can be disabled
-by passing the @code{-nodeps} flag to the @code{pkg install}
+by passing the @option{-nodeps} flag to the @code{pkg install}
 command
 
 @example
@@ -198,7 +198,7 @@ This is an optional file describing the functions provided by the
 package.  If this file is not given then one with be created
 automatically from the functions in the package and the
 @code{Categories} keyword in the @code{DESCRIPTION} file.
-@xref{The INDEX file}, for details on this file.
+@xref{The INDEX File}, for details on this file.
 
 @anchor{doc-PKG_ADD}
 @item package/PKG_ADD
@@ -221,7 +221,7 @@ autoload ('bar', which ('foo'));
 @end example
 
 @noindent
-@xref{PKG_ADD and PKG_DEL directives}, for details on @w{@code{PKG_ADD}}
+@xref{PKG_ADD and PKG_DEL Directives}, for details on @w{@code{PKG_ADD}}
 directives.
 
 @item package/PKG_DEL
@@ -229,7 +229,7 @@ An optional file that includes commands that are run when the package
 is removed from the users path.  Note that @w{@code{PKG_DEL}} directives in
 the source code of the package will also be added to this file by the
 Octave package manager. 
-@xref{PKG_ADD and PKG_DEL directives}, for details on @w{@code{PKG_DEL}}
+@xref{PKG_ADD and PKG_DEL Directives}, for details on @w{@code{PKG_DEL}}
 directives.
 
 @item package/pre_install.m
@@ -259,11 +259,15 @@ An optional directory containing code that must be built prior to the
 packages installation.  The Octave package manager will execute
 @file{./configure} in this directory if this script exists, and will
 then call @code{make} if a file @file{Makefile} exists in this
-directory.  @code{make install} will however not be called.  If a file
-called @code{FILES} exists all files listed there will be copied to the
-@code{inst} directory, so they also will be installed.  If the
-@code{FILES} file doesn't exist, @file{src/*.m} and @file{src/*.oct}
-will be copied to the @code{inst} directory.
+directory.  @code{make install} will however not be called.  The
+environment variables @env{MKOCTFILE}, @w{@env{OCTAVE_CONFIG}}, and
+@env{OCTAVE} will be set to the full paths of the programs
+@code{mkoctfile}, @code{octave-config}, and @code{octave}, respectively,
+of the correct version when @code{configure} and @code{make} are
+called.  If a file called @code{FILES} exists all files listed there
+will be copied to the @code{inst} directory, so they also will be
+installed.  If the @code{FILES} file doesn't exist, @file{src/*.m} and
+@file{src/*.oct} will be copied to the @code{inst} directory.
 
 @item package/doc
 An optional directory containing documentation for the package.  The
@@ -272,14 +276,14 @@ of the installed package for future reference.
 
 @item package/bin
 An optional directory containing files that will be added to the
-Octave @w{@code{EXEC_PATH}} when the package is loaded.  This might contain
+Octave @w{@env{EXEC_PATH}} when the package is loaded.  This might contain
 external scripts, etc., called by functions within the package.
 @end table
 
 @menu
 * The DESCRIPTION File::        
-* The INDEX file::              
-* PKG_ADD and PKG_DEL directives::  
+* The INDEX File::              
+* PKG_ADD and PKG_DEL Directives::  
 @end menu
 
 @node The DESCRIPTION File
@@ -418,8 +422,8 @@ where the first package name will be used as a default and if the
 RPMs are built on a Mandriva distribution, then the second package
 name will be used instead. 
 
-@node The INDEX file
-@subsection The INDEX file
+@node The INDEX File
+@subsection The INDEX File
 
 The optional @code{INDEX} file provides a categorical view of the
 functions in the package.  This file has a very simple format
@@ -442,7 +446,7 @@ function names on the line belong to the last mentioned category.
 @end itemize
 
 @noindent
-The format can be summarized with the following example
+The format can be summarized with the following example.
 
 @example
 @group
@@ -467,8 +471,8 @@ fn = workaround description
 @noindent
 This workaround description will not appear when listing functions in the 
 package with @code{pkg describe} but they will be published
-in the html documentation online.
-Workaround descriptions can use any html markup, but
+in the HTML documentation online.
+Workaround descriptions can use any HTML markup, but
 keep in mind that it will be enclosed in a bold-italic environment.  
 For the special case of:
 
@@ -488,7 +492,7 @@ fn = use <a href="someothersite.html"><code>fn</code></a>
 Sometimes functions are only partially compatible, in which
 case you can list the non-compatible cases separately.  To
 refer to another function in the package, use @code{<f>fn</f>}.
-For example,
+For example:
 
 @example
 eig (a, b) = use <f>qz</f>
@@ -504,7 +508,7 @@ $id = expansion
 
 @noindent
 defines the macro id.  You can use @code{$id} anywhere in the
-description and it will be expanded.  For example,
+description and it will be expanded.  For example:
 
 @example
 @group
@@ -516,8 +520,8 @@ arcov = $TSA <code>armcv</code>
 @noindent
 id is any string of letters, numbers and @code{_}.
 
-@node PKG_ADD and PKG_DEL directives
-@subsection PKG_ADD and PKG_DEL directives
+@node PKG_ADD and PKG_DEL Directives
+@subsection PKG_ADD and PKG_DEL Directives
 
 If the package contains files called @w{@code{PKG_ADD}} or @w{@code{PKG_DEL}}
 the commands in these files will be executed when the package is

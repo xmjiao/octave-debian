@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 2000, 2002, 2004, 2005, 2006,
-##               2007 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -18,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} laplace_rnd (@var{r}, @var{c})
+## @deftypefn  {Function File} {} laplace_rnd (@var{r}, @var{c})
 ## @deftypefnx {Function File} {} laplace_rnd (@var{sz});
 ## Return an @var{r} by @var{c} matrix of random numbers from the
 ## Laplace distribution.  Or if @var{sz} is a vector, create a matrix of
@@ -32,10 +31,10 @@ function rnd = laplace_rnd (r, c)
 
   if (nargin == 2)
     if (! (isscalar (r) && (r > 0) && (r == round (r))))
-      error ("laplace_rnd: r must be a positive integer");
+      error ("laplace_rnd: R must be a positive integer");
     endif
     if (! (isscalar (c) && (c > 0) && (c == round (c))))
-      error ("laplace_rnd: c must be a positive integer");
+      error ("laplace_rnd: C must be a positive integer");
     endif
     sz = [r, c];
   elseif (nargin == 1)
@@ -44,7 +43,7 @@ function rnd = laplace_rnd (r, c)
     elseif (isvector(r) && all (r > 0))
       sz = r(:)';
     else
-      error ("laplace_rnd: r must be a positive integer or vector");
+      error ("laplace_rnd: R must be a positive integer or vector");
     endif
   else
     print_usage ();

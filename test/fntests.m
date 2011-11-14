@@ -1,4 +1,4 @@
-## Copyright (C) 2005, 2006, 2007, 2008, 2009 David Bateman
+## Copyright (C) 2005-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -68,16 +68,32 @@ function print_pass_fail (n, p)
   puts ("\n");
 endfunction
 
-## FIXME -- should we only try match the keyword at the start of a line?
-function y = hastests (f)
-  fid = fopen (f);
-  if (fid < 0)
-    error ("fopen failed: %s", f);
+function retval = has_functions (f)
+  n = length (f);
+  if (n > 3 && strcmp (f((end-2):end), ".cc"))
+    fid = fopen (f);
+    if (fid >= 0)
+      str = fread (fid, "*char")';
+      fclose (fid);
+      retval = ! isempty (regexp (str,'^(DEFUN|DEFUN_DLD)\b', 'lineanchors'));
+    else
+      error ("fopen failed: %s", f);
+    endif
+  elseif (n > 2 && strcmp (f((end-1):end), ".m"))
+    retval = true;
   else
+    retval = false;
+  endif
+endfunction
+
+function retval = has_tests (f)
+  fid = fopen (f);
+  if (fid >= 0)
     str = fread (fid, "*char")';
     fclose (fid);
-    y = (findstr (str, "%!test") || findstr (str, "%!assert")
-	 || findstr (str, "%!error") || findstr (str, "%!warning"));
+    retval = ! isempty (regexp (str, '^%!(test|assert|error|warning)', "lineanchors"));
+  else
+    error ("fopen failed: %s", f);
   endif
 endfunction
 
@@ -89,16 +105,16 @@ function [dp, dn, dxf, dsk] = run_test_dir (fid, d);
   for i = 1:length (lst)
     nm = lst(i).name;
     if (length (nm) > 5 && strcmp (nm(1:5), "test_")
-	&& strcmp (nm((end-1):end), ".m"))
-      p = n = 0;
+        && strcmp (nm((end-1):end), ".m"))
+      p = n = xf = sk = 0;
       ffnm = fullfile (d, nm);
-      if (hastests (ffnm))
-	print_test_file_name (nm);
-	[p, n, xf, sk] = test (nm(1:(end-2)), "quiet", fid);
-	print_pass_fail (n, p);
-	files_with_tests(end+1) = ffnm;
+      if (has_tests (ffnm))
+        print_test_file_name (nm);
+        [p, n, xf, sk] = test (nm(1:(end-2)), "quiet", fid);
+        print_pass_fail (n, p);
+        files_with_tests(end+1) = ffnm;
       else
-	files_with_no_tests(end+1) = ffnm;
+        files_with_no_tests(end+1) = ffnm;
       endif
       dp += p;
       dn += n;
@@ -118,7 +134,7 @@ function [dp, dn, dxf, dsk] = run_test_script (fid, d);
   for i = 1:length (lst)
     nm = lst(i).name;
     if (lst(i).isdir && ! strcmp (nm, ".") && ! strcmp (nm, "..")
-	&& ! strcmp (nm, "CVS"))
+        && ! strcmp (nm, "CVS"))
       [p, n, xf, sk] = run_test_script (fid, [d, "/", nm]);
       dp += p;
       dn += n;
@@ -128,24 +144,30 @@ function [dp, dn, dxf, dsk] = run_test_script (fid, d);
   endfor
   for i = 1:length (lst)
     nm = lst(i).name;
-    if ((length (nm) > 3 && strcmp (nm((end-2):end), ".cc"))
-	|| (length (nm) > 2 && strcmp (nm((end-1):end), ".m")))
-      f = fullfile (d, nm);
+    ## Ignore hidden files
+    if (nm(1) == '.')
+      continue
+    endif
+    f = fullfile (d, nm);
+    if ((length (nm) > 2 && strcmp (nm((end-1):end), ".m")) || 
+        (length (nm) > 3 && strcmp (nm((end-2):end), ".cc")))
       p = n = xf = 0;
       ## Only run if it contains %!test, %!assert %!error or %!warning
-      if (hastests (f))
-	tmp = strrep (f, [topsrcdir, "/"], "");
-	tmp = strrep (tmp, [topbuilddir, "/"], "../");
-	print_test_file_name (tmp);
-	[p, n, xf, sk] = test (f, "quiet", fid);
-	print_pass_fail (n, p);
-	dp += p;
-	dn += n;
-	dxf += xf;
-	dsk += sk;
-	files_with_tests(end+1) = f;
-      else
-	files_with_no_tests(end+1) = f;
+      if (has_tests (f))
+        tmp = strrep (f, [topsrcdir, "/"], "");
+        tmp = strrep (tmp, [topbuilddir, "/"], "../");
+        print_test_file_name (tmp);
+        [p, n, xf, sk] = test (f, "quiet", fid);
+        print_pass_fail (n, p);
+        dp += p;
+        dn += n;
+        dxf += xf;
+        dsk += sk;
+        files_with_tests(end+1) = f;
+      elseif (has_functions (f))
+        ## To reduce the list length, only mark .cc files that contain
+        ## DEFUN definitions.
+        files_with_no_tests(end+1) = f;
       endif
     endif
   endfor 
@@ -172,7 +194,7 @@ endfunction
 function n = num_elts_matching_pattern (lst, pat)
   n = 0;
   for i = 1:length (lst)
-    if (! isempty (regexp (lst{i}, pat)))
+    if (! isempty (regexp (lst{i}, pat, "once")))
       n++;
     endif
   endfor
@@ -191,6 +213,7 @@ warn_state = warning ("query", "quiet");
 warning ("on", "quiet");
 try
   page_screen_output (0);
+  warning ("off", "Octave:deprecated-functions");
   fid = fopen ("fntests.log", "wt");
   if (fid < 0)
     error ("could not open fntests.log for writing");
@@ -225,25 +248,24 @@ try
       t2 = "failure";
     endif
     printf ("\nThere %s %d expected %s (see fntests.log for details).\n",
-	    t1, dxf, t2);
-    puts ("\nExpected failures are known bugs.  Please help improve\n");
-    puts ("Octave by contributing fixes for them.\n");
+            t1, dxf, t2);
+    puts ("\nExpected failures are known bugs.  Please help improve Octave\n");
+    puts ("by contributing fixes for them.\n");
   endif
   if (dsk > 0)
-    printf ("\nThere were %d skipped tests (see fntest.log for details).\n", dsk);
-    puts ("Skipped tests are features that are disabled in this version\n");
-    puts ("of Octave as the needed libraries were not present when Octave\n");
-    puts ("was built\n");
+    printf ("\nThere were %d skipped tests (see fntests.log for details).\n", dsk);
+    puts ("Skipped tests are features that are disabled in this version of Octave\n");
+    puts ("because the needed libraries were not present when Octave was built.\n");
   endif
 
   report_files_with_no_tests (files_with_tests, files_with_no_tests, ".m");
   report_files_with_no_tests (files_with_tests, files_with_no_tests, ".cc");
 
-  puts ("\nPlease help improve Octave by  contributing tests for\n");
-  puts ("these files (see the list in the file fntests.log).\n");
+  puts ("\nPlease help improve Octave by contributing tests for\n");
+  puts ("these files (see the list in the file fntests.log).\n\n");
 
   fprintf (fid, "\nFiles with no tests:\n\n%s",
-	  list_in_columns (files_with_no_tests, 80));
+          list_in_columns (files_with_no_tests, 80));
   fclose (fid);
 
   page_screen_output (pso);

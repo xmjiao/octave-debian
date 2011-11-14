@@ -1,5 +1,5 @@
-## Copyright (C) 2006, 2007, 2008, 2009 Bill Denney
-## 
+## Copyright (C) 2006-2011 Bill Denney
+##
 ## This file is part of Octave.
 ##
 ## Octave is free software; you can redistribute it and/or modify it
@@ -17,83 +17,41 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{files} =} unpack (@var{file}, @var{dir})
+## @deftypefn  {Function File} {@var{files} =} unpack (@var{file})
+## @deftypefnx {Function File} {@var{files} =} unpack (@var{file}, @var{dir})
 ## @deftypefnx {Function File} {@var{files} =} unpack (@var{file}, @var{dir}, @var{filetype})
 ## Unpack the archive @var{file} based on its extension to the directory
-## @var{dir}.  If @var{file} is a cellstr, then all files will be
-## handled individually.  If @var{dir} is not specified, it defaults to
-## the current directory.  It returns a list of @var{files}
-## unpacked.  If a directory is in the file list, then the
-## @var{filetype} to unpack must also be specified.
+## @var{dir}.  If @var{file} is a list of strings, then each file is
+## unpacked individually.  If @var{dir} is not specified, it defaults to
+## the current directory.  If a directory is in the file list, then the
+## @var{filetype} must also be specified.
 ##
-## The @var{files} includes the entire path to the output files.
-## @seealso{bunzip2, tar, untar, gzip, gunzip, zip, unzip}
+## The optional return value is a list of @var{files} unpacked.
+## @seealso{bzip2, gzip, zip, tar}
 ## @end deftypefn
 
 ## Author: Bill Denney <denney@seas.upenn.edu>
 
-function filelist = unpack (file, directory, filetype)
+function filelist = unpack (file, dir = ".", filetype = "")
 
   if (nargin < 1 || nargin > 3)
     print_usage ();
   endif
 
-  if (nargin < 2)
-    directory = ".";
-  endif
-  if (nargin < 3)
-    filetype = "";
+  if (! ischar (file) && ! iscellstr (file)) 
+    error ("unpack: invalid input file class, %s", class(file));
   endif
 
-  if (ischar (file))
-    if (isdir (file))
-      if (isempty (filetype))
-	error ("unpack: filetype must be given for a directory");
-      elseif (! any (strcmpi (filetype, "gunzip")))
-	error ("unpack: filetype must be gunzip for a directory");
-      endif
-    else
-      [pathstr, name, ext] = fileparts (file);
+  ## character arrays of more than one string must be treated as cell strings
+  if (ischar (file) && ! isvector (file)) 
+    file = cellstr (file);
+  endif
 
-      ## Check to see if it's .tar.gz, .tar.Z, etc.
-      if (any (strcmpi ({".gz" ".Z" ".bz2" ".bz"}, ext)))
-	[tmppathstr, tmpname, tmpext] = fileparts (name);
-	if (strcmpi (tmpext, ".tar"))
-	  name = tmpname;
-	  ext = cstrcat (tmpext, ext);
-	endif
-      endif
-
-      ## If the file is a url, download it and then work with that
-      ## file.
-      if (! isempty (strfind (file, "://")))
-	## FIXME -- the above is not a perfect test for a url
-	urlfile = file;
-	## FIXME -- should we name the file that we download with the
-	## same file name as the url requests?
-	tmpfile = cstrcat (tmpnam (), ext);
-	[file, success, msg] = urlwrite (urlfile, tmpfile);
-	if (! success)
-	  error ("unpack: could not get \"%s\": %s", urlfile, msg);
-	endif
-      endif
-
-    endif
-
-    ## canonicalize_file_name returns empty if the file isn't found, so
-    ## use that to check for existence
-    cfile = canonicalize_file_name (file);
-
-    if (isempty (cfile))
-      error ("unpack: file \"%s\" not found.", file);
-    else
-      file = cfile;
-    endif
-
-  elseif (iscellstr (file))
+  ## Recursively unpack cellstr arrays one file at a time
+  if (iscellstr (file))
     files = {};
     for i = 1:numel (file)
-      tmpfiles = unpack (file{i}, directory);
+      tmpfiles = unpack (file{i}, dir);
       files = {files{:} tmpfiles{:}};
     endfor
 
@@ -102,9 +60,51 @@ function filelist = unpack (file, directory, filetype)
       filelist = files;
     endif
 
-    return
+    return;
+  endif
+
+  if (isdir (file))
+    if (isempty (filetype))
+      error ("unpack: FILETYPE must be given for a directory");
+    elseif (! any (strcmpi (filetype, "gunzip")))
+      error ("unpack: FILETYPE must be gunzip for a directory");
+    endif
+    ext = ".gz";
   else
-    error ("unpack: invalid input file class, %s", class(file));
+    [pathstr, name, ext] = fileparts (file);
+
+    ## Check to see if it's .tar.gz, .tar.Z, etc.
+    if (any (strcmpi ({".gz" ".Z" ".bz2" ".bz"}, ext)))
+      [tmppathstr, tmpname, tmpext] = fileparts (name);
+      if (strcmpi (tmpext, ".tar"))
+        name = tmpname;
+        ext = cstrcat (tmpext, ext);
+      endif
+    endif
+
+    ## If the file is a URL, download it and then work with that file.
+    if (! isempty (strfind (file, "://")))
+      ## FIXME -- the above is not a perfect test for a URL
+      urlfile = file;
+      ## FIXME -- should we name the file that we download with the
+      ## same file name as the URL requests?
+      tmpfile = cstrcat (tmpnam (), ext);
+      [file, success, msg] = urlwrite (urlfile, tmpfile);
+      if (! success)
+        error ("unpack: could not get \"%s\": %s", urlfile, msg);
+      endif
+    endif
+
+  endif
+
+  ## canonicalize_file_name returns empty if the file isn't found, so
+  ## use that to check for existence.
+  cfile = canonicalize_file_name (file);
+
+  if (isempty (cfile))
+    error ("unpack: file \"%s\" not found", file);
+  else
+    file = cfile;
   endif
 
   ## Instructions on what to do for any extension.
@@ -120,39 +120,39 @@ function filelist = unpack (file, directory, filetype)
   persistent commandlist;
   if (isempty (commandlist))
     commandlist.gz = {"gzip -d -v -r \"%s\"", ...
-		      "gzip -d -r \"%s\"", ...
-		      @__parse_gzip__, true};
+                      "gzip -d -r \"%s\"", ...
+                      @__parse_gzip__, true};
     commandlist.z = commandlist.gz;
     commandlist.bz2 = {"bzip2 -d -v \"%s\"", ...
-		       "bzip2 -d \"%s\"", ...
-		       @__parse_bzip2__, true};
+                       "bzip2 -d \"%s\"", ...
+                       @__parse_bzip2__, true};
     commandlist.bz = commandlist.bz2;
     commandlist.tar = {"tar xvf \"%s\"", ...
-		       "tar xf \"%s\"", ...
-		       @__parse_tar__, false};
+                       "tar xf \"%s\"", ...
+                       @__parse_tar__, false};
     commandlist.targz = {"gzip -d -c \"%s\" | tar xvf -", ...
-			 "gzip -d -c \"%s\" | tar xf -", ...
-			 @__parse_tar__, false};
+                         "gzip -d -c \"%s\" | tar xf -", ...
+                         @__parse_tar__, false};
     commandlist.tgz = commandlist.targz;
     commandlist.tarbz2 = {"bzip2 -d -c \"%s\" | tar xvf -", ...
-			  "bzip2 -d -c \"%s\" | tar xf -", ...
-			  @__parse_tar__, false};
+                          "bzip2 -d -c \"%s\" | tar xf -", ...
+                          @__parse_tar__, false};
     commandlist.tarbz = commandlist.tarbz2;
     commandlist.tbz2 = commandlist.tarbz2;
     commandlist.tbz = commandlist.tarbz2;
     commandlist.zip = {"unzip \"%s\"", ...
-		       "unzip -q \"%s\"", ...
-		       @__parse_zip__, false};
+                       "unzip -q \"%s\"", ...
+                       @__parse_zip__, false};
   endif
 
   nodotext = ext(! ismember (ext, "."));
-  
+
   origdir = pwd ();
 
   if (isfield (commandlist, nodotext))
     [commandv, commandq, parser, move] = deal (commandlist.(nodotext){:});
     cstartdir = canonicalize_file_name (origdir);
-    cenddir = canonicalize_file_name (directory);
+    cenddir = canonicalize_file_name (dir);
     needmove = move && ! strcmp (cstartdir, cenddir);
     if (nargout > 0 || needmove)
       command = commandv;
@@ -160,24 +160,24 @@ function filelist = unpack (file, directory, filetype)
       command = commandq;
     endif
   else
-    warning ("unpack:filetype", "unrecognised file type, %s", ext);
+    warning ("unpack:filetype", "unrecognized file type, %s", ext);
     files = file;
     return;
   endif
 
   ## Create the directory if necessary.
-  s = stat (directory);
+  s = stat (dir);
   if (isempty (s))
-    [status, msg] = mkdir (directory);
+    [status, msg] = mkdir (dir);
     if (! status)
-      error ("unpack: mkdir failed to create %s: %s", directory, msg);
+      error ("unpack: mkdir failed to create %s: %s", dir, msg);
     endif
   elseif (! S_ISDIR (s.mode))
-    error ("unpack: %s: not a directory", directory);
+    error ("unpack: %s: not a directory", dir);
   endif
 
   unwind_protect
-    cd (directory);
+    cd (dir);
     [status, output] = system (sprintf (cstrcat (command, " 2>&1"), file));
   unwind_protect_cleanup
     cd (origdir);
@@ -185,7 +185,7 @@ function filelist = unpack (file, directory, filetype)
 
   if (status)
     error ("unpack: unarchiving program exited with status: %d\n%s",
-	   status, output);
+           status, output);
   endif
 
   if (nargout > 0 || needmove)
@@ -198,15 +198,15 @@ function filelist = unpack (file, directory, filetype)
 
     ## Move files if necessary
     if (needmove)
-      [st, msg, msgid] = movefile (files, directory);
+      [st, msg, msgid] = movefile (files, dir);
       if (! st)
-	error ("unpack: unable to move files to \"%s\": %s",
-	       directory, msg);
+        error ("unpack: unable to move files to \"%s\": %s",
+               dir, msg);
       endif
 
       ## Fix the names for the files since they were moved.
       for i = 1:numel (files)
-	files{i} = strrep (files{i}, cstartdir, cenddir);
+        files{i} = strrep (files{i}, cstartdir, cenddir);
       endfor
     endif
 
@@ -221,6 +221,8 @@ endfunction
 function files = __parse_zip__ (output)
   ## Parse the output from zip and unzip.
 
+  ## Skip first line which is Archive header
+  output(1) = []; 
   for i = 1:length (output)
     files{i} = output{i}(14:length(output{i}));
   endfor
@@ -241,16 +243,16 @@ function files = __parse_gzip__ (output)
     colons = strfind (output{i}, ":");
     if (isempty (colons))
       warning ("unpack:parsing",
-	       "Unable to parse line (gzip missing colon):\n%s", output{i});
+               "Unable to parse line (gzip missing colon):\n%s", output{i});
     else
       midcolon = colons(ceil (length (colons)/2));
       thisstr = output{i}(midcolon+2:length(output{i}));
       idx = index (thisstr, "with") + 5;
       if (isempty (idx))
-	warning ("unpack:parsing",
-		 "Unable to parse line (gzip missing with):\n%s", output{i});
+        warning ("unpack:parsing",
+                 "Unable to parse line (gzip missing with):\n%s", output{i});
       else
-	files{i} = thisstr(idx:length (thisstr));
+        files{i} = thisstr(idx:length (thisstr));
       endif
     endif
   endfor

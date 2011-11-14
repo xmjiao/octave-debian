@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1999, 2000, 2005, 2006, 2007, 2008,
-              2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -33,9 +32,8 @@ along with Octave; see the file COPYING.  If not, see
 
 DEFUN_DLD (givens, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Loadable Function} {@var{g} =} givens (@var{x}, @var{y})\n\
+@deftypefn  {Loadable Function} {@var{g} =} givens (@var{x}, @var{y})\n\
 @deftypefnx {Loadable Function} {[@var{c}, @var{s}] =} givens (@var{x}, @var{y})\n\
-@iftex\n\
 @tex\n\
 Return a $2\\times 2$ orthogonal matrix\n\
 $$\n\
@@ -47,14 +45,13 @@ $$\n\
 $$\n\
 with $x$ and $y$ scalars.\n\
 @end tex\n\
-@end iftex\n\
 @ifnottex\n\
 Return a 2 by 2 orthogonal matrix\n\
 @code{@var{g} = [@var{c} @var{s}; -@var{s}' @var{c}]} such that\n\
 @code{@var{g} [@var{x}; @var{y}] = [*; 0]} with @var{x} and @var{y} scalars.\n\
 @end ifnottex\n\
 \n\
-For example,\n\
+For example:\n\
 \n\
 @example\n\
 @group\n\
@@ -77,138 +74,132 @@ givens (1, 1)\n\
   else
     {
       if (args(0).is_single_type () || args(1).is_single_type ())
-	{
-	  if (args(0).is_complex_type () || args(1).is_complex_type ())
-	    {
-	      FloatComplex cx = args(0).float_complex_value ();
-	      FloatComplex cy = args(1).float_complex_value ();
+        {
+          if (args(0).is_complex_type () || args(1).is_complex_type ())
+            {
+              FloatComplex cx = args(0).float_complex_value ();
+              FloatComplex cy = args(1).float_complex_value ();
 
-	      if (! error_state)
-		{
-		  FloatComplexMatrix result = Givens (cx, cy);
+              if (! error_state)
+                {
+                  FloatComplexMatrix result = Givens (cx, cy);
 
-		  if (! error_state)
-		    {
-		      switch (nargout)
-			{
-			case 0:
-			case 1:
-			  retval(0) = result;
-			  break;
-   
-			case 2:
-			  retval(1) = result (0, 1);
-			  retval(0) = result (0, 0);
-			  break;
+                  if (! error_state)
+                    {
+                      switch (nargout)
+                        {
+                        case 0:
+                        case 1:
+                          retval(0) = result;
+                          break;
 
-			default:
-			  error ("givens: invalid number of output arguments");
-			  break;
-			}
-		    }
-		}
-	    }
-	  else
-	    {
-	      float x = args(0).float_value ();
-	      float y = args(1).float_value ();
+                        case 2:
+                          retval(1) = result (0, 1);
+                          retval(0) = result (0, 0);
+                          break;
 
-	      if (! error_state)
-		{
-		  FloatMatrix result = Givens (x, y);
+                        default:
+                          error ("givens: invalid number of output arguments");
+                          break;
+                        }
+                    }
+                }
+            }
+          else
+            {
+              float x = args(0).float_value ();
+              float y = args(1).float_value ();
 
-		  if (! error_state)
-		    {
-		      switch (nargout)
-			{
-			case 0:
-			case 1:
-			  retval(0) = result;
-			  break;
-   
-			case 2:
-			  retval(1) = result (0, 1);
-			  retval(0) = result (0, 0);
-			  break;
+              if (! error_state)
+                {
+                  FloatMatrix result = Givens (x, y);
 
-			default:
-			  error ("givens: invalid number of output arguments");
-			  break;
-			}
-		    }
-		}
-	    }
-	}
+                  if (! error_state)
+                    {
+                      switch (nargout)
+                        {
+                        case 0:
+                        case 1:
+                          retval(0) = result;
+                          break;
+
+                        case 2:
+                          retval(1) = result (0, 1);
+                          retval(0) = result (0, 0);
+                          break;
+
+                        default:
+                          error ("givens: invalid number of output arguments");
+                          break;
+                        }
+                    }
+                }
+            }
+        }
       else
-	{
-	  if (args(0).is_complex_type () || args(1).is_complex_type ())
-	    {
-	      Complex cx = args(0).complex_value ();
-	      Complex cy = args(1).complex_value ();
+        {
+          if (args(0).is_complex_type () || args(1).is_complex_type ())
+            {
+              Complex cx = args(0).complex_value ();
+              Complex cy = args(1).complex_value ();
 
-	      if (! error_state)
-		{
-		  ComplexMatrix result = Givens (cx, cy);
+              if (! error_state)
+                {
+                  ComplexMatrix result = Givens (cx, cy);
 
-		  if (! error_state)
-		    {
-		      switch (nargout)
-			{
-			case 0:
-			case 1:
-			  retval(0) = result;
-			  break;
-   
-			case 2:
-			  retval(1) = result (0, 1);
-			  retval(0) = result (0, 0);
-			  break;
+                  if (! error_state)
+                    {
+                      switch (nargout)
+                        {
+                        case 0:
+                        case 1:
+                          retval(0) = result;
+                          break;
 
-			default:
-			  error ("givens: invalid number of output arguments");
-			  break;
-			}
-		    }
-		}
-	    }
-	  else
-	    {
-	      double x = args(0).double_value ();
-	      double y = args(1).double_value ();
+                        case 2:
+                          retval(1) = result (0, 1);
+                          retval(0) = result (0, 0);
+                          break;
 
-	      if (! error_state)
-		{
-		  Matrix result = Givens (x, y);
+                        default:
+                          error ("givens: invalid number of output arguments");
+                          break;
+                        }
+                    }
+                }
+            }
+          else
+            {
+              double x = args(0).double_value ();
+              double y = args(1).double_value ();
 
-		  if (! error_state)
-		    {
-		      switch (nargout)
-			{
-			case 0:
-			case 1:
-			  retval(0) = result;
-			  break;
-   
-			case 2:
-			  retval(1) = result (0, 1);
-			  retval(0) = result (0, 0);
-			  break;
+              if (! error_state)
+                {
+                  Matrix result = Givens (x, y);
 
-			default:
-			  error ("givens: invalid number of output arguments");
-			  break;
-			}
-		    }
-		}
-	    }
-	}
+                  if (! error_state)
+                    {
+                      switch (nargout)
+                        {
+                        case 0:
+                        case 1:
+                          retval(0) = result;
+                          break;
+
+                        case 2:
+                          retval(1) = result (0, 1);
+                          retval(0) = result (0, 0);
+                          break;
+
+                        default:
+                          error ("givens: invalid number of output arguments");
+                          break;
+                        }
+                    }
+                }
+            }
+        }
     }
 
   return retval;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

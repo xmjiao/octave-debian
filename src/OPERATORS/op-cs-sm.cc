@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 2004, 2005, 2006, 2007, 2009 David Bateman
-Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004 Andy Adler
+Copyright (C) 2004-2011 David Bateman
+Copyright (C) 1998-2004 Andy Adler
 
 This file is part of Octave.
 
@@ -55,7 +55,7 @@ DEFBINOP (div, complex, sparse_matrix)
       double d = v2.scalar_value ();
 
       if (d == 0.0)
-	gripe_divide_by_zero ();
+        gripe_divide_by_zero ();
 
       return octave_value (SparseComplexMatrix (1, 1, v1.complex_value () / d));
     }
@@ -131,7 +131,7 @@ DEFCONV (sparse_matrix_conv, complex, sparse_matrix)
 {
   CAST_CONV_ARG (const octave_complex&);
 
-  return new octave_sparse_matrix 
+  return new octave_sparse_matrix
     (SparseMatrix (v.matrix_value ()));
 }
 
@@ -159,14 +159,8 @@ install_cs_sm_ops (void)
 
   INSTALL_CATOP (octave_complex, octave_sparse_matrix, cs_sm);
 
-  INSTALL_ASSIGNCONV (octave_complex, octave_sparse_matrix, 
-		      octave_complex_matrix);
+  INSTALL_ASSIGNCONV (octave_complex, octave_sparse_matrix,
+                      octave_complex_matrix);
 
   INSTALL_WIDENOP (octave_complex, octave_sparse_matrix, sparse_matrix_conv);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

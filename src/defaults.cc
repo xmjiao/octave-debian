@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 1999, 2000, 2002, 2003, 2004, 2005,
-              2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -31,12 +30,8 @@ along with Octave; see the file COPYING.  If not, see
 #include <iostream>
 #include <string>
 
-#ifdef HAVE_UNISTD_H
-#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#endif
 #include <unistd.h>
-#endif
 
 #include "dir-ops.h"
 #include "oct-env.h"
@@ -110,12 +105,12 @@ subst_octave_home (const std::string& s)
       octave_idx_type len = prefix.length ();
 
       if (s.substr (0, len) == prefix)
-	retval.replace (0, len, Voctave_home);
+        retval.replace (0, len, Voctave_home);
     }
 
   if (file_ops::dir_sep_char () != '/')
     std::replace (retval.begin (), retval.end (), '/',
-		  file_ops::dir_sep_char ());
+                  file_ops::dir_sep_char ());
 
   return retval;
 }
@@ -231,31 +226,42 @@ set_default_bin_dir (void)
 }
 
 void
-set_exec_path (const std::string& path)
+set_exec_path (const std::string& path_arg)
 {
-  VEXEC_PATH = Vlocal_ver_arch_lib_dir + dir_path::path_sep_str ()
-    + Vlocal_api_arch_lib_dir + dir_path::path_sep_str ()
-    + Vlocal_arch_lib_dir + dir_path::path_sep_str ()
-    + Varch_lib_dir + dir_path::path_sep_str ()
-    + Vbin_dir;
-  
+  std::string tpath = path_arg;
+
+  if (tpath.empty ())
+    tpath = octave_env::getenv ("OCTAVE_EXEC_PATH");
+
+  if (tpath.empty ())
+    tpath = Vlocal_ver_arch_lib_dir + dir_path::path_sep_str ()
+      + Vlocal_api_arch_lib_dir + dir_path::path_sep_str ()
+      + Vlocal_arch_lib_dir + dir_path::path_sep_str ()
+      + Varch_lib_dir + dir_path::path_sep_str ()
+      + Vbin_dir;
+
+  VEXEC_PATH = tpath;
+
+  // FIXME -- should we really be modifying PATH in the environment?
+  // The way things are now, Octave will ignore directories set in the
+  // PATH with calls like
+  //
+  //   setenv ("PATH", "/my/path");
+  //
+  // To fix this, I think Octave should be searching the combination of
+  // PATH and EXEC_PATH for programs that it executes instead of setting
+  // the PATH in the environment and relying on the shell to do the
+  // searching.
+
   // This is static so that even if set_exec_path is called more than
   // once, shell_path is the original PATH from the environment,
   // before we start modifying it.
   static std::string shell_path = octave_env::getenv ("PATH");
 
   if (! shell_path.empty ())
-    VEXEC_PATH += dir_path::path_sep_str () + shell_path;
+    tpath = shell_path + dir_path::path_sep_str () + tpath;
 
-  std::string tpath = path;
-
-  if (tpath.empty ())
-    tpath = octave_env::getenv ("OCTAVE_EXEC_PATH");
-
-  if (! tpath.empty ())
-    VEXEC_PATH = tpath + dir_path::path_sep_str () + VEXEC_PATH;
-
-  octave_env::putenv ("PATH", VEXEC_PATH);
+  octave_env::putenv ("PATH", tpath);
 }
 
 void
@@ -400,12 +406,12 @@ install_defaults (void)
 
 DEFUN (EDITOR, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {@var{val} =} EDITOR ()\n\
+@deftypefn  {Built-in Function} {@var{val} =} EDITOR ()\n\
 @deftypefnx {Built-in Function} {@var{old_val} =} EDITOR (@var{new_val})\n\
 Query or set the internal variable that specifies the editor to\n\
 use with the @code{edit_history} command.  The default value is taken from\n\
-the environment variable @w{@code{EDITOR}} when Octave starts.  If the\n\
-environment variable is not initialized, @w{@code{EDITOR}} will be set to\n\
+the environment variable @w{@env{EDITOR}} when Octave starts.  If the\n\
+environment variable is not initialized, @w{@env{EDITOR}} will be set to\n\
 @code{\"emacs\"}.\n\
 @seealso{edit_history}\n\
 @end deftypefn")
@@ -415,33 +421,26 @@ environment variable is not initialized, @w{@code{EDITOR}} will be set to\n\
 
 DEFUN (EXEC_PATH, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {@var{val} =} EXEC_PATH ()\n\
+@deftypefn  {Built-in Function} {@var{val} =} EXEC_PATH ()\n\
 @deftypefnx {Built-in Function} {@var{old_val} =} EXEC_PATH (@var{new_val})\n\
 Query or set the internal variable that specifies a colon separated\n\
-list of directories to search when executing external programs.\n\
-Its initial value is taken from the environment variable\n\
-@w{@code{OCTAVE_EXEC_PATH}} (if it exists) or @code{PATH}, but that\n\
-value can be overridden by the command line argument\n\
-@code{--exec-path PATH}.  At startup, an additional set of\n\
-directories (including the shell PATH) is appended to the path\n\
-specified in the environment or on the command line.  If you use\n\
-the @w{@code{EXEC_PATH}} function to modify the path, you should take\n\
-care to preserve these additional directories.\n\
+list of directories to append to the shell PATH when executing external\n\
+programs.  The initial value of is taken from the environment variable\n\
+@w{@env{OCTAVE_EXEC_PATH}}, but that value can be overridden by\n\
+the command line argument @option{--exec-path PATH}.\n\
 @end deftypefn")
 {
-  std::string saved_exec_path = VEXEC_PATH;
-
   octave_value retval = SET_NONEMPTY_INTERNAL_STRING_VARIABLE (EXEC_PATH);
 
-  if (VEXEC_PATH != saved_exec_path)
-    octave_env::putenv ("PATH", VEXEC_PATH);
+  if (args.length () > 0)
+    set_exec_path (VEXEC_PATH);
 
   return retval;
 }
 
 DEFUN (IMAGE_PATH, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {@var{val} =} IMAGE_PATH ()\n\
+@deftypefn  {Built-in Function} {@var{val} =} IMAGE_PATH ()\n\
 @deftypefnx {Built-in Function} {@var{old_val} =} IMAGE_PATH (@var{new_val})\n\
 Query or set the internal variable that specifies a colon separated\n\
 list of directories in which to search for image files.\n\
@@ -483,9 +482,3 @@ Return the version number of Octave, as a string.\n\
 
   return retval;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

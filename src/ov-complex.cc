@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2000, 2001, 2002, 2003, 2004, 2005,
-              2006, 2007, 2008 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -53,7 +52,7 @@ template class octave_base_scalar<Complex>;
 DEFINE_OCTAVE_ALLOCATOR (octave_complex);
 
 DEFINE_OV_TYPEID_FUNCTIONS_AND_DATA (octave_complex,
-				     "complex scalar", "double");
+                                     "complex scalar", "double");
 
 static octave_base_value *
 default_numeric_demotion_function (const octave_base_value& a)
@@ -77,7 +76,7 @@ octave_complex::try_narrowing_conversion (void)
 
   double im = std::imag (scalar);
 
-  if (im == 0.0 && ! lo_ieee_signbit (im))
+  if (im == 0.0)
     retval = new octave_scalar (std::real (scalar));
 
   return retval;
@@ -108,7 +107,7 @@ octave_complex::double_value (bool force_conversion) const
 
   if (! force_conversion)
     gripe_implicit_conversion ("Octave:imag-to-real",
-			       "complex scalar", "real scalar");
+                               "complex scalar", "real scalar");
 
   retval = std::real (scalar);
 
@@ -122,7 +121,7 @@ octave_complex::float_value (bool force_conversion) const
 
   if (! force_conversion)
     gripe_implicit_conversion ("Octave:imag-to-real",
-			       "complex scalar", "real scalar");
+                               "complex scalar", "real scalar");
 
   retval = std::real (scalar);
 
@@ -136,7 +135,7 @@ octave_complex::matrix_value (bool force_conversion) const
 
   if (! force_conversion)
     gripe_implicit_conversion ("Octave:imag-to-real",
-			       "complex scalar", "real matrix");
+                               "complex scalar", "real matrix");
 
   retval = Matrix (1, 1, std::real (scalar));
 
@@ -150,7 +149,7 @@ octave_complex::float_matrix_value (bool force_conversion) const
 
   if (! force_conversion)
     gripe_implicit_conversion ("Octave:imag-to-real",
-			       "complex scalar", "real matrix");
+                               "complex scalar", "real matrix");
 
   retval = FloatMatrix (1, 1, std::real (scalar));
 
@@ -164,7 +163,7 @@ octave_complex::array_value (bool force_conversion) const
 
   if (! force_conversion)
     gripe_implicit_conversion ("Octave:imag-to-real",
-			       "complex scalar", "real matrix");
+                               "complex scalar", "real matrix");
 
   retval = NDArray (dim_vector (1, 1), std::real (scalar));
 
@@ -178,7 +177,7 @@ octave_complex::float_array_value (bool force_conversion) const
 
   if (! force_conversion)
     gripe_implicit_conversion ("Octave:imag-to-real",
-			       "complex scalar", "real matrix");
+                               "complex scalar", "real matrix");
 
   retval = FloatNDArray (dim_vector (1, 1), std::real (scalar));
 
@@ -221,7 +220,7 @@ octave_complex::float_complex_array_value (bool /* force_conversion */) const
   return FloatComplexNDArray (dim_vector (1, 1), static_cast<FloatComplex> (scalar));
 }
 
-octave_value 
+octave_value
 octave_complex::resize (const dim_vector& dv, bool fill) const
 {
   if (fill)
@@ -229,7 +228,7 @@ octave_complex::resize (const dim_vector& dv, bool fill) const
       ComplexNDArray retval (dv, ComplexNDArray::resize_fill_value ());
 
       if (dv.numel ())
-	retval(0) = scalar;
+        retval(0) = scalar;
 
       return retval;
     }
@@ -238,13 +237,13 @@ octave_complex::resize (const dim_vector& dv, bool fill) const
       ComplexNDArray retval (dv);
 
       if (dv.numel ())
-	retval(0) = scalar;
+        retval(0) = scalar;
 
       return retval;
     }
 }
 
-bool 
+bool
 octave_complex::save_ascii (std::ostream& os)
 {
   Complex c = complex_value ();
@@ -256,12 +255,12 @@ octave_complex::save_ascii (std::ostream& os)
   return true;
 }
 
-bool 
+bool
 octave_complex::load_ascii (std::istream& is)
 {
-  scalar = octave_read_complex (is);
+  scalar = octave_read_value<Complex> (is);
 
-  if (!is) 
+  if (!is)
     {
       error ("load: failed to load complex scalar constant");
       return false;
@@ -271,7 +270,7 @@ octave_complex::load_ascii (std::istream& is)
 }
 
 
-bool 
+bool
 octave_complex::save_binary (std::ostream& os, bool& /* save_as_floats */)
 {
   char tmp = static_cast<char> (LS_DOUBLE);
@@ -282,9 +281,9 @@ octave_complex::save_binary (std::ostream& os, bool& /* save_as_floats */)
   return true;
 }
 
-bool 
+bool
 octave_complex::load_binary (std::istream& is, bool swap,
-			     oct_mach_info::float_format fmt)
+                             oct_mach_info::float_format fmt)
 {
   char tmp;
   if (! is.read (reinterpret_cast<char *> (&tmp), 1))
@@ -292,7 +291,7 @@ octave_complex::load_binary (std::istream& is, bool swap,
 
   Complex ctmp;
   read_doubles (is, reinterpret_cast<double *> (&ctmp),
-		static_cast<save_type> (tmp), 2, swap, fmt);
+                static_cast<save_type> (tmp), 2, swap, fmt);
   if (error_state || ! is)
     return false;
 
@@ -304,7 +303,7 @@ octave_complex::load_binary (std::istream& is, bool swap,
 
 bool
 octave_complex::save_hdf5 (hid_t loc_id, const char *name,
-			   bool /* save_as_floats */)
+                           bool /* save_as_floats */)
 {
   hsize_t dimens[3];
   hid_t space_hid = -1, type_hid = -1, data_hid = -1;
@@ -315,14 +314,18 @@ octave_complex::save_hdf5 (hid_t loc_id, const char *name,
     return false;
 
   type_hid = hdf5_make_complex_type (H5T_NATIVE_DOUBLE);
-  if (type_hid < 0) 
+  if (type_hid < 0)
     {
       H5Sclose (space_hid);
       return false;
     }
-
+#if HAVE_HDF5_18
+  data_hid = H5Dcreate (loc_id, name, type_hid, space_hid,
+                        H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+#else
   data_hid = H5Dcreate (loc_id, name, type_hid, space_hid, H5P_DEFAULT);
-  if (data_hid < 0) 
+#endif
+  if (data_hid < 0)
     {
       H5Sclose (space_hid);
       H5Tclose (type_hid);
@@ -330,8 +333,8 @@ octave_complex::save_hdf5 (hid_t loc_id, const char *name,
     }
 
   Complex tmp = complex_value ();
-  retval = H5Dwrite (data_hid, type_hid, H5S_ALL, H5S_ALL, H5P_DEFAULT, 
-		     &tmp) >= 0;
+  retval = H5Dwrite (data_hid, type_hid, H5S_ALL, H5S_ALL, H5P_DEFAULT,
+                     &tmp) >= 0;
 
   H5Dclose (data_hid);
   H5Tclose (type_hid);
@@ -341,11 +344,14 @@ octave_complex::save_hdf5 (hid_t loc_id, const char *name,
 }
 
 bool
-octave_complex::load_hdf5 (hid_t loc_id, const char *name,
-			   bool /* have_h5giterate_bug */)
+octave_complex::load_hdf5 (hid_t loc_id, const char *name)
 {
   bool retval = false;
+#if HAVE_HDF5_18
+  hid_t data_hid = H5Dopen (loc_id, name, H5P_DEFAULT);
+#else
   hid_t data_hid = H5Dopen (loc_id, name);
+#endif
   hid_t type_hid = H5Dget_type (data_hid);
 
   hid_t complex_type = hdf5_make_complex_type (H5T_NATIVE_DOUBLE);
@@ -360,7 +366,7 @@ octave_complex::load_hdf5 (hid_t loc_id, const char *name,
   hid_t space_id = H5Dget_space (data_hid);
   hsize_t rank = H5Sget_simple_extent_ndims (space_id);
 
-  if (rank != 0) 
+  if (rank != 0)
     {
       H5Tclose (complex_type);
       H5Sclose (space_id);
@@ -371,7 +377,7 @@ octave_complex::load_hdf5 (hid_t loc_id, const char *name,
   // complex scalar:
   Complex ctmp;
   if (H5Dread (data_hid, complex_type, H5S_ALL, H5S_ALL, H5P_DEFAULT,
-	       &ctmp) >= 0)
+               &ctmp) >= 0)
     {
       retval = true;
       scalar = ctmp;
@@ -400,105 +406,52 @@ octave_complex::as_mxArray (void) const
   return retval;
 }
 
-static double
-xabs (const Complex& x)
+octave_value
+octave_complex::map (unary_mapper_t umap) const
 {
-  return (xisinf (x.real ()) || xisinf (x.imag ())) ? octave_Inf : abs (x);
+  switch (umap)
+    {
+#define SCALAR_MAPPER(UMAP, FCN) \
+    case umap_ ## UMAP: \
+      return octave_value (FCN (scalar))
+
+      SCALAR_MAPPER (abs, std::abs);
+      SCALAR_MAPPER (acos, ::acos);
+      SCALAR_MAPPER (acosh, ::acosh);
+      SCALAR_MAPPER (angle, std::arg);
+      SCALAR_MAPPER (arg, std::arg);
+      SCALAR_MAPPER (asin, ::asin);
+      SCALAR_MAPPER (asinh, ::asinh);
+      SCALAR_MAPPER (atan, ::atan);
+      SCALAR_MAPPER (atanh, ::atanh);
+      SCALAR_MAPPER (ceil, ::ceil);
+      SCALAR_MAPPER (conj, std::conj);
+      SCALAR_MAPPER (cos, std::cos);
+      SCALAR_MAPPER (cosh, std::cosh);
+      SCALAR_MAPPER (exp, std::exp);
+      SCALAR_MAPPER (expm1, ::expm1);
+      SCALAR_MAPPER (fix, ::fix);
+      SCALAR_MAPPER (floor, ::floor);
+      SCALAR_MAPPER (imag, std::imag);
+      SCALAR_MAPPER (log, std::log);
+      SCALAR_MAPPER (log2, xlog2);
+      SCALAR_MAPPER (log10, std::log10);
+      SCALAR_MAPPER (log1p, ::log1p);
+      SCALAR_MAPPER (real, std::real);
+      SCALAR_MAPPER (round, xround);
+      SCALAR_MAPPER (roundb, xroundb);
+      SCALAR_MAPPER (signum, ::signum);
+      SCALAR_MAPPER (sin, std::sin);
+      SCALAR_MAPPER (sinh, std::sinh);
+      SCALAR_MAPPER (sqrt, std::sqrt);
+      SCALAR_MAPPER (tan, std::tan);
+      SCALAR_MAPPER (tanh, std::tanh);
+      SCALAR_MAPPER (finite, xfinite);
+      SCALAR_MAPPER (isinf, xisinf);
+      SCALAR_MAPPER (isna, octave_is_NA);
+      SCALAR_MAPPER (isnan, xisnan);
+
+    default:
+      return octave_base_value::map (umap);
+    }
 }
-
-static double
-ximag (const Complex& x)
-{
-  return x.imag ();
-}
-
-static double
-xreal (const Complex& x)
-{
-  return x.real ();
-}
-
-#define COMPLEX_MAPPER(MAP, FCN)	\
-  octave_value \
-  octave_complex::MAP (void) const \
-  { \
-    return octave_value (FCN (scalar)); \
-  }
-
-#define SCALAR_MAPPER(MAP, FCN)	\
-  octave_value \
-  octave_complex::MAP (void) const \
-  { \
-    if (scalar.imag () == 0) \
-      return octave_value (FCN (scalar.real ())); \
-    else \
-      { \
-        error ("%s: not defined for complex arguments", #MAP); \
-        return octave_value (); \
-      } \
-  }
-
-#define CD_SCALAR_MAPPER(MAP, RFCN, CFCN, L1, L2) \
-  octave_value \
-  octave_complex::MAP (void) const \
-  { \
-    if (scalar.imag () == 0) \
-      { \
-	double re = scalar.real (); \
-	return (re < L1 || re > L2 \
-            ? octave_value (CFCN (scalar)) \
-	    : octave_value (RFCN (re))); \
-      } \
-    else \
-      { \
-        error ("%s: not defined for complex arguments", #MAP); \
-        return octave_value (); \
-      } \
-  }
-
-SCALAR_MAPPER (erf, ::erf)
-SCALAR_MAPPER (erfc, ::erfc)
-SCALAR_MAPPER (gamma, xgamma)
-CD_SCALAR_MAPPER (lgamma, xlgamma, xlgamma, 0.0, octave_Inf)
-
-COMPLEX_MAPPER (abs, xabs)
-COMPLEX_MAPPER (acos, ::acos)
-COMPLEX_MAPPER (acosh, ::acosh)
-COMPLEX_MAPPER (angle, std::arg)
-COMPLEX_MAPPER (arg, std::arg)
-COMPLEX_MAPPER (asin, ::asin)
-COMPLEX_MAPPER (asinh, ::asinh)
-COMPLEX_MAPPER (atan, ::atan)
-COMPLEX_MAPPER (atanh, ::atanh)
-COMPLEX_MAPPER (ceil, ::ceil)
-COMPLEX_MAPPER (conj, std::conj)
-COMPLEX_MAPPER (cos, std::cos)
-COMPLEX_MAPPER (cosh, std::cosh)
-COMPLEX_MAPPER (exp, std::exp)
-COMPLEX_MAPPER (expm1, ::expm1)
-COMPLEX_MAPPER (fix, ::fix)
-COMPLEX_MAPPER (floor, ::floor)
-COMPLEX_MAPPER (imag, ximag)
-COMPLEX_MAPPER (log, std::log)
-COMPLEX_MAPPER (log2, xlog2)
-COMPLEX_MAPPER (log10, std::log10)
-COMPLEX_MAPPER (log1p, ::log1p)
-COMPLEX_MAPPER (real, xreal)
-COMPLEX_MAPPER (round, xround)
-COMPLEX_MAPPER (roundb, xroundb)
-COMPLEX_MAPPER (signum, ::signum)
-COMPLEX_MAPPER (sin, std::sin)
-COMPLEX_MAPPER (sinh, std::sinh)
-COMPLEX_MAPPER (sqrt, std::sqrt)
-COMPLEX_MAPPER (tan, std::tan)
-COMPLEX_MAPPER (tanh, std::tanh)
-COMPLEX_MAPPER (finite, xfinite)
-COMPLEX_MAPPER (isinf, xisinf)
-COMPLEX_MAPPER (isna, octave_is_NA)
-COMPLEX_MAPPER (isnan, xisnan)
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

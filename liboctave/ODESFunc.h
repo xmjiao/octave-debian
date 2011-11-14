@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2002, 2005, 2007 John W. Eaton
+Copyright (C) 2002-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -37,13 +37,13 @@ public:
     };
 
   typedef ColumnVector (*ODES_fsub) (const ColumnVector& x, double,
-				     const ColumnVector& theta); 
+                                     const ColumnVector& theta);
 
   typedef ColumnVector (*ODES_bsub) (const ColumnVector& x, double,
-				     const ColumnVector& theta, int column);
+                                     const ColumnVector& theta, int column);
 
   typedef Matrix (*ODES_jsub) (const ColumnVector& x, double,
-			       const ColumnVector& theta);
+                               const ColumnVector& theta);
 
   ODESFunc (void)
     : fsub (0), bsub (0), jsub (0) { }
@@ -63,15 +63,15 @@ public:
   ODESFunc& operator = (const ODESFunc& a)
     {
       if (this != &a)
-	{
-	  fsub = a.fsub;
-	  bsub = a.bsub;
-	  jsub = a.jsub;
-	}
+        {
+          fsub = a.fsub;
+          bsub = a.bsub;
+          jsub = a.jsub;
+        }
       return *this;
     }
 
-  ~ODESFunc (void) { }
+  virtual ~ODESFunc (void) { }
 
   ODES_fsub fsub_function (void) const { return fsub; }
 
@@ -105,13 +105,3 @@ protected:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
-
-
-
-

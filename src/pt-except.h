@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2000, 2002, 2004, 2005, 2006, 2007, 2008, 2009
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -44,10 +43,10 @@ public:
       mid_comm (0), trail_comm (0) { }
 
   tree_try_catch_command (tree_statement_list *tc, tree_statement_list *cc,
-			  octave_comment_list *cl = 0,
-			  octave_comment_list *cm = 0,
-			  octave_comment_list *ct = 0,
-			  int l = -1, int c = -1)
+                          octave_comment_list *cl = 0,
+                          octave_comment_list *cm = 0,
+                          octave_comment_list *ct = 0,
+                          int l = -1, int c = -1)
     : tree_command (l, c), try_code (tc), catch_code (cc),
       lead_comm (cl), mid_comm (cm), trail_comm (ct) { }
 
@@ -64,7 +63,7 @@ public:
   octave_comment_list *trailing_comment (void) { return trail_comm; }
 
   tree_command *dup (symbol_table::scope_id scope,
-		     symbol_table::context_id context) const;
+                     symbol_table::context_id context) const;
 
   void accept (tree_walker& tw);
 
@@ -104,11 +103,11 @@ public:
       lead_comm (0), mid_comm (0), trail_comm (0) { }
 
   tree_unwind_protect_command (tree_statement_list *tc,
-			       tree_statement_list *cc,
-			       octave_comment_list *cl = 0,
-			       octave_comment_list *cm = 0,
-			       octave_comment_list *ct = 0,
-			       int l = -1, int c = -1)
+                               tree_statement_list *cc,
+                               octave_comment_list *cl = 0,
+                               octave_comment_list *cm = 0,
+                               octave_comment_list *ct = 0,
+                               int l = -1, int c = -1)
     : tree_command (l, c), unwind_protect_code (tc), cleanup_code (cc),
       lead_comm (cl), mid_comm (cm), trail_comm (ct) { }
 
@@ -125,7 +124,7 @@ public:
   octave_comment_list *trailing_comment (void) { return trail_comm; }
 
   tree_command *dup (symbol_table::scope_id scope,
-		     symbol_table::context_id context) const;
+                     symbol_table::context_id context) const;
 
   void accept (tree_walker& tw);
 
@@ -155,9 +154,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

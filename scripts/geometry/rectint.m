@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 Bill Denney
+## Copyright (C) 2008-2011 Bill Denney
 ##
 ## This file is part of Octave.
 ##
@@ -34,15 +34,15 @@
 ## Author: Bill Denney <bill@denney.ws>
 
 function area = rectint (a, b)
-	
+
   if (nargin != 2)
     print_usage ();
   elseif (ndims (a) != 2 || ndims (b) != 2)
     error ("rectint: expecting arguments to be 2-d arrays");
   elseif (columns (a) != 4)
-    error ("rectint: a must have 4 columns");
+    error ("rectint: A must have 4 columns");
   elseif (columns (b) != 4)
-    error ("rectint: b must have 4 columns");
+    error ("rectint: B must have 4 columns");
   elseif any ([a(:,3:4);b(:,3:4)](:) < 0)
     error ("rectint: all widths and heights must be > 0");
   endif

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008, 2009 Jaroslav Hajek
+Copyright (C) 2008-2011 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -37,7 +37,7 @@ template class octave_base_diag<FloatComplexDiagMatrix, FloatComplexMatrix>;
 
 DEFINE_OCTAVE_ALLOCATOR (octave_float_complex_diag_matrix);
 
-DEFINE_OV_TYPEID_FUNCTIONS_AND_DATA (octave_float_complex_diag_matrix, 
+DEFINE_OV_TYPEID_FUNCTIONS_AND_DATA (octave_float_complex_diag_matrix,
                                      "float complex diagonal matrix", "single");
 
 static octave_base_value *
@@ -62,8 +62,7 @@ octave_float_complex_diag_matrix::try_narrowing_conversion (void)
 
   if (matrix.nelem () == 1)
     {
-      // FIXME: the proxy mechanism of DiagArray2 causes problems here.
-      retval = new octave_float_complex (FloatComplex (matrix (0, 0)));
+      retval = new octave_float_complex (matrix (0, 0));
       octave_base_value *rv2 = retval->try_narrowing_conversion ();
       if (rv2)
         {
@@ -86,7 +85,7 @@ octave_float_complex_diag_matrix::diag_matrix_value (bool force_conversion) cons
 
   if (! force_conversion)
     gripe_implicit_conversion ("Octave:imag-to-real",
-			       type_name (), "real matrix");
+                               type_name (), "real matrix");
 
   retval = ::real (matrix);
 
@@ -100,7 +99,7 @@ octave_float_complex_diag_matrix::float_diag_matrix_value (bool force_conversion
 
   if (! force_conversion)
     gripe_implicit_conversion ("Octave:imag-to-real",
-			       type_name (), "real matrix");
+                               type_name (), "real matrix");
 
   retval = ::real (matrix);
 
@@ -120,46 +119,33 @@ octave_float_complex_diag_matrix::float_complex_diag_matrix_value (bool) const
 }
 
 octave_value
-octave_float_complex_diag_matrix::abs (void) const
+octave_float_complex_diag_matrix::map (unary_mapper_t umap) const
 {
-  return matrix.abs ();
+  switch (umap)
+    {
+    case umap_abs:
+      return matrix.abs ();
+    case umap_real:
+      return ::real (matrix);
+    case umap_conj:
+      return ::conj (matrix);
+    case umap_imag:
+      return ::imag (matrix);
+    case umap_sqrt:
+      {
+        FloatComplexColumnVector tmp = matrix.diag ().map<FloatComplex> (std::sqrt);
+        FloatComplexDiagMatrix retval (tmp);
+        retval.resize (matrix.rows (), matrix.columns ());
+        return retval;
+      }
+    default:
+      return to_dense ().map (umap);
+    }
 }
 
-octave_value
-octave_float_complex_diag_matrix::real (void) const
-{
-  return ::real (matrix);
-}
 
-octave_value
-octave_float_complex_diag_matrix::conj (void) const
-{
-  return ::conj (matrix);
-}
-
-octave_value
-octave_float_complex_diag_matrix::imag (void) const
-{
-  return ::imag (matrix);
-}
-
-octave_value
-octave_float_complex_diag_matrix::sqrt (void) const
-{    
-  octave_value retval;
-
-  static FloatComplexNDArray::cmapper csqrt = std::sqrt;
-
-  FloatComplexColumnVector dvec = matrix.diag ();
-  retval = FloatComplexDiagMatrix (dvec.map (csqrt));
-
-  retval.resize (dims ());
-
-  return retval;
-}
-
-bool 
-octave_float_complex_diag_matrix::save_binary (std::ostream& os, 
+bool
+octave_float_complex_diag_matrix::save_binary (std::ostream& os,
                                                bool& /* save_as_floats */)
 {
 
@@ -173,7 +159,7 @@ octave_float_complex_diag_matrix::save_binary (std::ostream& os,
     {
       float max_val, min_val;
       if (m.all_integers (max_val, min_val))
-	st = get_save_type (max_val, min_val);
+        st = get_save_type (max_val, min_val);
     }
 
   const FloatComplex *mtmp = m.data ();
@@ -182,9 +168,9 @@ octave_float_complex_diag_matrix::save_binary (std::ostream& os,
   return true;
 }
 
-bool 
+bool
 octave_float_complex_diag_matrix::load_binary (std::istream& is, bool swap,
-				 oct_mach_info::float_format fmt)
+                                 oct_mach_info::float_format fmt)
 {
   int32_t r, c;
   char tmp;
@@ -201,7 +187,7 @@ octave_float_complex_diag_matrix::load_binary (std::istream& is, bool swap,
   FloatComplexDiagMatrix m (r, c);
   FloatComplex *re = m.fortran_vec ();
   octave_idx_type len = m.length ();
-  read_floats (is, reinterpret_cast<float *> (re), 
+  read_floats (is, reinterpret_cast<float *> (re),
                static_cast<save_type> (tmp), 2 * len, swap, fmt);
   if (error_state || ! is)
     return false;
@@ -210,8 +196,8 @@ octave_float_complex_diag_matrix::load_binary (std::istream& is, bool swap,
   return true;
 }
 
-bool 
-octave_float_complex_diag_matrix::chk_valid_scalar (const octave_value& val, 
+bool
+octave_float_complex_diag_matrix::chk_valid_scalar (const octave_value& val,
                                                     FloatComplex& x) const
 {
   bool retval = val.is_complex_scalar () || val.is_real_scalar ();

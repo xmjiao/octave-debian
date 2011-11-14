@@ -1,5 +1,4 @@
-## Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2002, 2004,
-##               2005, 2006, 2007, 2008 John W. Eaton
+## Copyright (C) 1994-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -18,15 +17,16 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} polyderiv (@var{c})
-## @deftypefnx {Function File} {[@var{q}] =} polyderiv (@var{b}, @var{a})
-## @deftypefnx {Function File} {[@var{q}, @var{r}] =} polyderiv (@var{b}, @var{a})
+## @deftypefn  {Function File} {} polyderiv (@var{p})
+## @deftypefnx {Function File} {[@var{k}] =} polyderiv (@var{a}, @var{b})
+## @deftypefnx {Function File} {[@var{q}, @var{d}] =} polyderiv (@var{b}, @var{a})
 ## Return the coefficients of the derivative of the polynomial whose
-## coefficients are given by vector @var{c}.  If a pair of polynomials
-## is given @var{b} and @var{a}, the derivative of the product is
-## returned in @var{q}, or the quotient numerator in @var{q} and the
-## quotient denominator in @var{r}.
-## @seealso{poly, polyinteg, polyreduce, roots, conv, deconv, residue,
+## coefficients are given by the vector @var{p}.  If a pair of polynomials
+## is given, return the derivative of the product @math{@var{a}*@var{b}}.
+## If two inputs and two outputs are given, return the derivative of the
+## polynomial quotient @math{@var{b}/@var{a}}.  The quotient numerator is
+## in @var{q} and the denominator in @var{d}.
+## @seealso{poly, polyint, polyreduce, roots, conv, deconv, residue,
 ## filter, polygcd, polyval, polyvalm}
 ## @end deftypefn
 
@@ -34,7 +34,7 @@
 ## Created: June 1994
 ## Adapted-By: jwe
 
-function [q, r] = polyderiv (p, a)
+function [q, d] = polyderiv (p, a)
 
   if (nargin == 1 || nargin == 2)
     if (! isvector (p))
@@ -42,42 +42,42 @@ function [q, r] = polyderiv (p, a)
     endif
     if (nargin == 2)
       if (! isvector (a))
-	error ("polyderiv: argument must be a vector");
+        error ("polyderiv: argument must be a vector");
       endif
-      if (nargout == 1) 
-	## derivative of p*a returns a single polynomial
-	q = polyderiv (conv (p, a));
+      if (nargout == 1)
+        ## derivative of p*a returns a single polynomial
+        q = polyderiv (conv (p, a));
       else
-	## derivative of p/a returns numerator and denominator
-	r = conv (a, a);
-	if (numel (p) == 1)
-	  q = -p * polyderiv (a);
-	elseif (numel (a) == 1)
-	  q = a * polyderiv (p);
-	else
-	  q = conv (polyderiv (p), a) - conv (p, polyderiv (a));
-	  q = polyreduce (q);
-	endif
+        ## derivative of p/a returns numerator and denominator
+        d = conv (a, a);
+        if (numel (p) == 1)
+          q = -p * polyderiv (a);
+        elseif (numel (a) == 1)
+          q = a * polyderiv (p);
+        else
+          q = conv (polyderiv (p), a) - conv (p, polyderiv (a));
+          q = polyreduce (q);
+        endif
 
-	## remove common factors from numerator and denominator
-	x = polygcd (q, r);
-	if (length(x) != 1)
-	  q = deconv (q, x);
-	  r = deconv (r, x);
-	endif
+        ## remove common factors from numerator and denominator
+        x = polygcd (q, d);
+        if (length(x) != 1)
+          q = deconv (q, x);
+          d = deconv (d, x);
+        endif
 
-	## move all the gain into the numerator
-	q = q/r(1);
-	r = r/r(1);
+        ## move all the gain into the numerator
+        q = q/d(1);
+        d = d/d(1);
       endif
     else
       lp = numel (p);
       if (lp == 1)
-	q = 0;
-	return;
+        q = 0;
+        return;
       elseif (lp == 0)
-	q = [];
-	return;
+        q = [];
+        return;
       endif
 
       ## Force P to be a row vector.

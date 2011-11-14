@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2000, 2002, 2003, 2004, 2005, 2006,
-              2007, 2008 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -34,13 +33,13 @@ along with Octave; see the file COPYING.  If not, see
 #include "oct-alloc.h"
 #include "str-vec.h"
 
+#include "gripes.h"
 #include "error.h"
 #include "ov-base.h"
 #include "ov-cx-mat.h"
 #include "ov-base-scalar.h"
 #include "ov-typeinfo.h"
 
-class Octave_map;
 class octave_value_list;
 
 class tree_walker;
@@ -78,14 +77,16 @@ public:
   octave_base_value *try_narrowing_conversion (void);
 
   octave_value do_index_op (const octave_value_list& idx,
-			    bool resize_ok = false);
+                            bool resize_ok = false);
 
   octave_value any (int = 0) const
     {
       return (scalar != Complex (0, 0)
-	      && ! (lo_ieee_isnan (std::real (scalar))
-		    || lo_ieee_isnan (std::imag (scalar))));
+              && ! (lo_ieee_isnan (std::real (scalar))
+                    || lo_ieee_isnan (std::imag (scalar))));
     }
+
+  builtin_type_t builtin_type (void) const { return btyp_complex; }
 
   bool is_complex_scalar (void) const { return true; }
 
@@ -133,6 +134,26 @@ public:
 
   FloatComplexNDArray float_complex_array_value (bool = false) const;
 
+  bool bool_value (bool warn = false) const
+  {
+    if (xisnan (scalar))
+      gripe_nan_to_logical_conversion ();
+    else if (warn && scalar != 0.0 && scalar != 1.0)
+      gripe_logical_conversion ();
+
+    return scalar != 0.0;
+  }
+
+  boolNDArray bool_array_value (bool warn = false) const
+  {
+    if (xisnan (scalar))
+      gripe_nan_to_logical_conversion ();
+    else if (warn && scalar != 0.0 && scalar != 1.0)
+      gripe_logical_conversion ();
+
+    return boolNDArray (dim_vector (1, 1), scalar != 0.0);
+  }
+
   void increment (void) { scalar += 1.0; }
 
   void decrement (void) { scalar -= 1.0; }
@@ -143,65 +164,27 @@ public:
 
   bool save_binary (std::ostream& os, bool& save_as_floats);
 
-  bool load_binary (std::istream& is, bool swap, 
-		    oct_mach_info::float_format fmt);
+  bool load_binary (std::istream& is, bool swap,
+                    oct_mach_info::float_format fmt);
 
 #if defined (HAVE_HDF5)
   bool save_hdf5 (hid_t loc_id, const char *name, bool save_as_floats);
 
-  bool load_hdf5 (hid_t loc_id, const char *name, bool have_h5giterate_bug);
+  bool load_hdf5 (hid_t loc_id, const char *name);
 #endif
 
   int write (octave_stream& os, int block_size,
-	     oct_data_conv::data_type output_type, int skip,
-	     oct_mach_info::float_format flt_fmt) const
+             oct_data_conv::data_type output_type, int skip,
+             oct_mach_info::float_format flt_fmt) const
     {
       // Yes, for compatibility, we drop the imaginary part here.
       return os.write (array_value (true), block_size, output_type,
-		       skip, flt_fmt);
+                       skip, flt_fmt);
     }
 
   mxArray *as_mxArray (void) const;
 
-  octave_value erf (void) const;
-  octave_value erfc (void) const;
-  octave_value gamma (void) const;
-  octave_value lgamma (void) const;
-  octave_value abs (void) const;
-  octave_value acos (void) const;
-  octave_value acosh (void) const;
-  octave_value angle (void) const;
-  octave_value arg (void) const;
-  octave_value asin (void) const;
-  octave_value asinh (void) const;
-  octave_value atan (void) const;
-  octave_value atanh (void) const;
-  octave_value ceil (void) const;
-  octave_value conj (void) const;
-  octave_value cos (void) const;
-  octave_value cosh (void) const;
-  octave_value exp (void) const;
-  octave_value expm1 (void) const;
-  octave_value fix (void) const;
-  octave_value floor (void) const;
-  octave_value imag (void) const;
-  octave_value log (void) const;
-  octave_value log2 (void) const;
-  octave_value log10 (void) const;
-  octave_value log1p (void) const;
-  octave_value real (void) const;
-  octave_value round (void) const;
-  octave_value roundb (void) const;
-  octave_value signum (void) const;
-  octave_value sin (void) const;
-  octave_value sinh (void) const;
-  octave_value sqrt (void) const;
-  octave_value tan (void) const;
-  octave_value tanh (void) const;
-  octave_value finite (void) const;
-  octave_value isinf (void) const;
-  octave_value isna (void) const;
-  octave_value isnan (void) const;
+  octave_value map (unary_mapper_t umap) const;
 
 private:
 
@@ -213,9 +196,3 @@ private:
 typedef octave_complex octave_complex_scalar;
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

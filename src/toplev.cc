@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003,
-              2004, 2005, 2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1995-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -36,12 +35,8 @@ along with Octave; see the file COPYING.  If not, see
 #include <sstream>
 #include <string>
 
-#ifdef HAVE_UNISTD_H
-#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#endif
 #include <unistd.h>
-#endif
 
 #include "cmd-edit.h"
 #include "file-ops.h"
@@ -104,7 +99,7 @@ octave_call_stack *octave_call_stack::instance = 0;
 int
 octave_call_stack::do_current_line (void) const
 {
-  tree_statement *stmt = do_top_statement ();
+  tree_statement *stmt = do_current_statement ();
 
   return stmt ? stmt->line () : -1;
 }
@@ -112,7 +107,7 @@ octave_call_stack::do_current_line (void) const
 int
 octave_call_stack::do_current_column (void) const
 {
-  tree_statement *stmt = do_top_statement ();
+  tree_statement *stmt = do_current_statement ();
 
   return stmt ? stmt->column () : -1;
 }
@@ -131,15 +126,15 @@ octave_call_stack::do_caller_user_code_line (void) const
       octave_function *f = elt.fcn;
 
       if (f && f->is_user_code ())
-	{
-	  tree_statement *stmt = elt.stmt;
+        {
+          tree_statement *stmt = elt.stmt;
 
-	  if (stmt)
-	    {
-	      retval = stmt->line ();
-	      break;
-	    }
-	}
+          if (stmt)
+            {
+              retval = stmt->line ();
+              break;
+            }
+        }
     }
 
   return retval;
@@ -159,15 +154,15 @@ octave_call_stack::do_caller_user_code_column (void) const
       octave_function *f = elt.fcn;
 
       if (f && f->is_user_code ())
-	{
-	  tree_statement *stmt = elt.stmt;
+        {
+          tree_statement *stmt = elt.stmt;
 
-	  if (stmt)
-	    {
-	      retval = stmt->column ();
-	      break;
-	    }
-	}
+          if (stmt)
+            {
+              retval = stmt->column ();
+              break;
+            }
+        }
     }
 
   return retval;
@@ -192,15 +187,15 @@ octave_call_stack::do_num_user_code_frames (octave_idx_type& curr_user_frame) co
       octave_function *f = (*p).fcn;
 
       if (--k == frame)
-	found = true;
+        found = true;
 
       if (f && f->is_user_code ())
-	{
-	  if (! found)
-	    curr_user_frame++;
+        {
+          if (! found)
+            curr_user_frame++;
 
-	  retval++;
-	}
+          retval++;
+        }
     }
 
   // We counted how many user frames were not the one, in reverse.
@@ -224,26 +219,36 @@ octave_call_stack::do_caller_user_code (size_t nskip) const
       octave_function *f = elt.fcn;
 
       if (f && f->is_user_code ())
-	{
-	  if (nskip > 0)
-	    nskip--;
-	  else
-	    {
-	      retval = dynamic_cast<octave_user_code *> (f);
-	      break;
-	    }
-	}
+        {
+          if (nskip > 0)
+            nskip--;
+          else
+            {
+              retval = dynamic_cast<octave_user_code *> (f);
+              break;
+            }
+        }
     }
 
   return retval;
 }
 
-Octave_map
-octave_call_stack::do_backtrace (size_t nskip,
-				 octave_idx_type& curr_user_frame) const
-{
-  Octave_map retval;
+// Use static fields for the best efficiency.
+// NOTE: C++0x will allow these two to be merged into one.
+static const char *bt_fieldnames[] = { "file", "name", "line",
+    "column", "scope", "context", 0 };
+static const octave_fields bt_fields (bt_fieldnames);
 
+octave_map
+octave_call_stack::empty_backtrace (void)
+{
+  return octave_map (dim_vector (0, 1), bt_fields);
+}
+
+octave_map
+octave_call_stack::do_backtrace (size_t nskip,
+                                 octave_idx_type& curr_user_frame) const
+{
   size_t user_code_frames = do_num_user_code_frames (curr_user_frame);
 
   size_t nframes = nskip <= user_code_frames ? user_code_frames - nskip : 0;
@@ -251,72 +256,58 @@ octave_call_stack::do_backtrace (size_t nskip,
   // Our list is reversed.
   curr_user_frame = nframes - curr_user_frame - 1;
 
-  Cell keys (6, 1);
+  octave_map retval (dim_vector (nframes, 1), bt_fields);
 
-  keys(0) = "file";
-  keys(1) = "name";
-  keys(2) = "line";
-  keys(3) = "column";
-  keys(4) = "scope";
-  keys(5) = "context";
-
-  Cell file (nframes, 1);
-  Cell name (nframes, 1);
-  Cell line (nframes, 1);
-  Cell column (nframes, 1);
-  Cell scope (nframes, 1);
-  Cell context (nframes, 1);
+  Cell& file = retval.contents (0);
+  Cell& name = retval.contents (1);
+  Cell& line = retval.contents (2);
+  Cell& column = retval.contents (3);
+  Cell& scope = retval.contents (4);
+  Cell& context = retval.contents (5);
 
   if (nframes > 0)
     {
       int k = 0;
 
       for (const_reverse_iterator p = cs.rbegin (); p != cs.rend (); p++)
-	{
-	  const call_stack_elt& elt = *p;
+        {
+          const call_stack_elt& elt = *p;
 
-	  octave_function *f = elt.fcn;
+          octave_function *f = elt.fcn;
 
-	  if (f && f->is_user_code ())
-	    {
-	      if (nskip > 0)
-		nskip--;
-	      else
-		{
-		  scope(k) = elt.scope;
-		  context(k) = elt.context;
+          if (f && f->is_user_code ())
+            {
+              if (nskip > 0)
+                nskip--;
+              else
+                {
+                  scope(k) = elt.scope;
+                  context(k) = elt.context;
 
-		  file(k) = f->fcn_file_name ();
-		  std::string parent_fcn_name = f->parent_fcn_name ();
-		  if (parent_fcn_name == std::string ())
-		    name(k) = f->name ();
-		  else
-		    name(k) = f->parent_fcn_name () + Vfilemarker + f->name ();
+                  file(k) = f->fcn_file_name ();
+                  std::string parent_fcn_name = f->parent_fcn_name ();
+                  if (parent_fcn_name == std::string ())
+                    name(k) = f->name ();
+                  else
+                    name(k) = f->parent_fcn_name () + Vfilemarker + f->name ();
 
-		  tree_statement *stmt = elt.stmt;
+                  tree_statement *stmt = elt.stmt;
 
-		  if (stmt)
-		    {
-		      line(k) = stmt->line ();
-		      column(k) = stmt->column ();
-		    }
-		  else
-		    {
-		      line(k) = -1;
-		      column(k) = -1;
-		    }
+                  if (stmt)
+                    {
+                      line(k) = stmt->line ();
+                      column(k) = stmt->column ();
+                    }
+                  else
+                    {
+                      line(k) = -1;
+                      column(k) = -1;
+                    }
 
-		  k++;
-		}
-	    }
-	}
-
-      retval.assign ("file", file);
-      retval.assign ("name", name);
-      retval.assign ("line", line);
-      retval.assign ("column", column);
-      retval.assign ("scope", scope);
-      retval.assign ("context", context);
+                  k++;
+                }
+            }
+        }
     }
 
   return retval;
@@ -338,24 +329,24 @@ octave_call_stack::do_goto_frame (size_t n, bool verbose)
       symbol_table::set_scope_and_context (elt.scope, elt.context);
 
       if (verbose)
-	{
-	  octave_function *f = elt.fcn;
-	  std::string nm = f ? f->name () : std::string ("<unknown>");
+        {
+          octave_function *f = elt.fcn;
+          std::string nm = f ? f->name () : std::string ("<unknown>");
 
-	  tree_statement *s = elt.stmt;
-	  int l = -1;
-	  int c = -1;
-	  if (s)
-	    {
-	      l = s->line ();
-	      c = s->column ();
-	    }
+          tree_statement *s = elt.stmt;
+          int l = -1;
+          int c = -1;
+          if (s)
+            {
+              l = s->line ();
+              c = s->column ();
+            }
 
-	  octave_stdout << "stopped in " << nm
-			<< " at line " << l << " column " << c
-			<< " (" << elt.scope << "[" << elt.context << "])"
-			<< std::endl;
-	}
+          octave_stdout << "stopped in " << nm
+                        << " at line " << l << " column " << c
+                        << " (" << elt.scope << "[" << elt.context << "])"
+                        << std::endl;
+        }
     }
 
   return retval;
@@ -379,7 +370,7 @@ octave_call_stack::do_goto_frame_relative (int nskip, bool verbose)
   while (true)
     {
       if ((incr < 0 && frame == 0) || (incr > 0 && frame == cs.size () - 1))
-	break;
+        break;
 
       frame += incr;
 
@@ -387,42 +378,43 @@ octave_call_stack::do_goto_frame_relative (int nskip, bool verbose)
 
       octave_function *f = elt.fcn;
 
-      if (f && f->is_user_code ())
-	{
-	  if (nskip > 0)
-	    nskip--;
-	  else if (nskip < 0)
-	    nskip++;
+      if (frame == 0 || (f && f->is_user_code ()))
+        {
+          if (nskip > 0)
+            nskip--;
+          else if (nskip < 0)
+            nskip++;
 
-	  if (nskip == 0)
-	    {
-	      curr_frame = frame;
-	      cs[cs.size () - 1].prev = curr_frame;
+          if (nskip == 0)
+            {
+              curr_frame = frame;
+              cs[cs.size () - 1].prev = curr_frame;
 
-	      symbol_table::set_scope_and_context (elt.scope, elt.context);
+              symbol_table::set_scope_and_context (elt.scope, elt.context);
 
-	      if (verbose)
-		{
-		  tree_statement *s = elt.stmt;
-		  int l = -1;
-		  int c = -1;
-		  if (s)
-		    {
-		      l = s->line ();
-		      c = s->column ();
-		    }
+              if (verbose)
+                {
+                  std::ostringstream buf;
 
-		  std::ostringstream buf;
-		  buf << f->name () << ": " << " line " << l
-		      << ", column " << c << std::endl;
+                  if (f)
+                    {
+                      tree_statement *s = elt.stmt;
 
-		  octave_stdout << buf.str ();
-		}
+                      int l = s ? s->line () : -1;
 
-	      retval = true;
-	      break;
-	    }
-	}
+                      buf << "stopped in " << f->name ()
+                          << " at line " << l << std::endl;
+                    }
+                  else
+                    buf << "at top level" << std::endl;
+
+                  octave_stdout << buf.str ();
+                }
+
+              retval = true;
+              break;
+            }
+        }
 
       // There is no need to set scope and context here.  That will
       // happen when the dbup/dbdown/keyboard frame is popped and we
@@ -448,25 +440,25 @@ octave_call_stack::do_goto_caller_frame (void)
       octave_function *f = elt.fcn;
 
       if (frame == 0 || (f && f->is_user_code ()))
-	{
-	  if (! skipped)
-	    // We found the current user code frame, so skip it.
-	    skipped = true;
-	  else
-	    {
-	      // We found the caller user code frame.
-	      call_stack_elt tmp (elt);
-	      tmp.prev = curr_frame;
+        {
+          if (! skipped)
+            // We found the current user code frame, so skip it.
+            skipped = true;
+          else
+            {
+              // We found the caller user code frame.
+              call_stack_elt tmp (elt);
+              tmp.prev = curr_frame;
 
-	      curr_frame = cs.size ();
+              curr_frame = cs.size ();
 
-	      cs.push_back (tmp);
+              cs.push_back (tmp);
 
-	      symbol_table::set_scope_and_context (tmp.scope, tmp.context);
+              symbol_table::set_scope_and_context (tmp.scope, tmp.context);
 
-	      break;
-	    }
-	}
+              break;
+            }
+        }
     }
 }
 
@@ -503,18 +495,18 @@ octave_call_stack::do_backtrace_error_message (void) const
       std::string fcn_name = "?unknown?";
 
       if (fcn)
-	{
-	  fcn_name = fcn->fcn_file_name ();
+        {
+          fcn_name = fcn->fcn_file_name ();
 
-	  if (fcn_name.empty ())
-	    fcn_name = fcn->name ();
-	}
+          if (fcn_name.empty ())
+            fcn_name = fcn->name ();
+        }
 
       int line = stmt ? stmt->line () : -1;
       int column = stmt ? stmt->column () : -1;
 
       error ("  %s at line %d, column %d",
-	     fcn_name.c_str (), line, column);
+             fcn_name.c_str (), line, column);
     }
 }
 
@@ -538,8 +530,8 @@ main_loop (void)
   can_interrupt = true;
 
   octave_signal_hook = octave_signal_handler;
-  octave_interrupt_hook = unwind_protect::run_all;
-  octave_bad_alloc_hook = unwind_protect::run_all;
+  octave_interrupt_hook = 0;
+  octave_bad_alloc_hook = 0;
 
   octave_catch_interrupts ();
 
@@ -551,96 +543,101 @@ main_loop (void)
   do
     {
       try
-	{
-	  unwind_protect::begin_frame ("main_loop");
+        {
+          unwind_protect frame;
 
-	  reset_error_handler ();
+          reset_error_handler ();
 
-	  reset_parser ();
+          reset_parser ();
 
-	  // Do this with an unwind-protect cleanup function so that
-	  // the forced variables will be unmarked in the event of an
-	  // interrupt.
-	  symbol_table::scope_id scope = symbol_table::top_scope ();
-	  unwind_protect::add (symbol_table::unmark_forced_variables, &scope);
+          if (symbol_table::at_top_level ())
+            tree_evaluator::reset_debug_state ();
 
-	  // This is the same as yyparse in parse.y.
-	  retval = octave_parse ();
+          // Do this with an unwind-protect cleanup function so that
+          // the forced variables will be unmarked in the event of an
+          // interrupt.
+          symbol_table::scope_id scope = symbol_table::top_scope ();
+          frame.add_fcn (symbol_table::unmark_forced_variables, scope);
 
-	  if (retval == 0)
-	    {
-	      if (global_command)
-		{
-		  global_command->accept (*current_evaluator);
+          frame.protect_var (global_command);
 
-		  delete global_command;
+          global_command = 0;
 
-		  global_command = 0;
+          // This is the same as yyparse in parse.y.
+          retval = octave_parse ();
 
-		  OCTAVE_QUIT;
+          if (retval == 0)
+            {
+              if (global_command)
+                {
+                  global_command->accept (*current_evaluator);
 
-		  if (! (interactive || forced_interactive))
-		    {
-		      bool quit = (tree_return_command::returning
-				   || tree_break_command::breaking);
+                  delete global_command;
 
-		      if (tree_return_command::returning)
-			tree_return_command::returning = 0;
+                  global_command = 0;
 
-		      if (tree_break_command::breaking)
-			tree_break_command::breaking--;
+                  octave_quit ();
 
-		      if (quit)
-			break;
-		    }
+                  if (! (interactive || forced_interactive))
+                    {
+                      bool quit = (tree_return_command::returning
+                                   || tree_break_command::breaking);
 
-		  if (error_state)
-		    {
-		      if (! (interactive || forced_interactive))
-			{
-			  // We should exit with a non-zero status.
-			  retval = 1;
-			  break;
-			}
-		    }
-		  else
-		    {
-		      if (octave_completion_matches_called)
-			octave_completion_matches_called = false;	    
-		      else
-			command_editor::increment_current_command_number ();
-		    }
-		}
-	      else if (parser_end_of_input)
-		break;
-	    }
+                      if (tree_return_command::returning)
+                        tree_return_command::returning = 0;
 
-	  unwind_protect::run_frame ("main_loop");
-	}
+                      if (tree_break_command::breaking)
+                        tree_break_command::breaking--;
+
+                      if (quit)
+                        break;
+                    }
+
+                  if (error_state)
+                    {
+                      if (! (interactive || forced_interactive))
+                        {
+                          // We should exit with a non-zero status.
+                          retval = 1;
+                          break;
+                        }
+                    }
+                  else
+                    {
+                      if (octave_completion_matches_called)
+                        octave_completion_matches_called = false;
+                      else
+                        command_editor::increment_current_command_number ();
+                    }
+                }
+              else if (parser_end_of_input)
+                break;
+            }
+        }
       catch (octave_interrupt_exception)
-	{
-	  recover_from_exception ();
+        {
+          recover_from_exception ();
           octave_stdout << "\n";
           if (quitting_gracefully)
             {
               clean_up_and_exit (exit_status);
               break; // If user has overriden the exit func.
             }
-	}
+        }
       catch (octave_execution_exception)
-	{
-	  recover_from_exception ();
-	  std::cerr
-	    << "error: unhandled execution exception -- trying to return to prompt"
-	    << std::endl;
-	}
+        {
+          recover_from_exception ();
+          std::cerr
+            << "error: unhandled execution exception -- trying to return to prompt"
+            << std::endl;
+        }
       catch (std::bad_alloc)
-	{
-	  recover_from_exception ();
-	  std::cerr
-	    << "error: memory exhausted or requested size too large for range of Octave's index type -- trying to return to prompt"
-	    << std::endl;
-	}
+        {
+          recover_from_exception ();
+          std::cerr
+            << "error: memory exhausted or requested size too large for range of Octave's index type -- trying to return to prompt"
+            << std::endl;
+        }
     }
   while (retval == 0);
 
@@ -673,15 +670,18 @@ clean_up_and_exit (int retval)
 {
   do_octave_atexit ();
 
+  // Clean up symbol table.
+  SAFE_CALL (symbol_table::cleanup, ());
+
   SAFE_CALL (sysdep_cleanup, ())
 
   if (octave_exit)
     (*octave_exit) (retval == EOF ? 0 : retval);
 }
 
-DEFUN (quit, args, nargout,
+DEFUN (quit, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {} exit (@var{status})\n\
+@deftypefn  {Built-in Function} {} exit (@var{status})\n\
 @deftypefnx {Built-in Function} {} quit (@var{status})\n\
 Exit the current Octave session.  If the optional integer value\n\
 @var{status} is supplied, pass that value to the operating system as the\n\
@@ -691,16 +691,16 @@ Octave's exit status.  The default value is zero.\n\
   octave_value_list retval;
 
   if (! quit_allowed)
-    error ("quit: not supported in embedded mode.");
-  else if (nargout == 0)
+    error ("quit: not supported in embedded mode");
+  else
     {
       if (args.length () > 0)
-	{
-	  int tmp = args(0).nint_value ();
+        {
+          int tmp = args(0).nint_value ();
 
-	  if (! error_state)
-	    exit_status = tmp;
-	}
+          if (! error_state)
+            exit_status = tmp;
+        }
 
       if (! error_state)
         {
@@ -713,8 +713,6 @@ Octave's exit status.  The default value is zero.\n\
           octave_throw_interrupt_exception ();
         }
     }
-  else
-    error ("quit: invalid number of output arguments");
 
   return retval;
 }
@@ -732,12 +730,12 @@ Describe the conditions for copying and distributing Octave.\n\
   octave_stdout << "\n" \
     OCTAVE_NAME_VERSION_AND_COPYRIGHT "\n\
 \n\
-This program is free software; you can redistribute it and/or modify\n\
+GNU Octave free software; you can redistribute it and/or modify\n\
 it under the terms of the GNU General Public License as published by\n\
 the Free Software Foundation; either version 3 of the License, or\n\
 (at your option) any later version.\n\
 \n\
-This program is distributed in the hope that it will be useful,\n\
+GNU Octave is distributed in the hope that it will be useful,\n\
 but WITHOUT ANY WARRANTY; without even the implied warranty of\n\
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n\
 GNU General Public License for more details.\n\
@@ -750,16 +748,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.\n\
 }
 
 // Execute a shell command.
-
-static void
-cleanup_iprocstream (void *p)
-{
-  iprocstream *cmd = static_cast<iprocstream *> (p);
-
-  octave_child_list::remove (cmd->pid ());
-
-  delete cmd;
-}
 
 static int
 wait_for_input (int fid)
@@ -774,7 +762,7 @@ wait_for_input (int fid)
       FD_ZERO (&set);
       FD_SET (fid, &set);
 
-      retval = select (FD_SETSIZE, &set, 0, 0, 0);
+      retval = gnulib::select (FD_SETSIZE, &set, 0, 0, 0);
     }
 #else
   retval = 1;
@@ -787,51 +775,48 @@ static octave_value_list
 run_command_and_return_output (const std::string& cmd_str)
 {
   octave_value_list retval;
+  unwind_protect frame;
 
   iprocstream *cmd = new iprocstream (cmd_str.c_str ());
 
-  if (cmd)
+  frame.add_delete (cmd);
+  frame.add_fcn (octave_child_list::remove, cmd->pid ());
+
+  if (*cmd)
     {
-      unwind_protect::add (cleanup_iprocstream, cmd);
+      int fid = cmd->file_number ();
 
-      if (*cmd)
-	{
-	  int fid = cmd->file_number ();
+      std::ostringstream output_buf;
 
-	  std::ostringstream output_buf;
+      char ch;
 
-	  char ch;
+      for (;;)
+        {
+          if (cmd->get (ch))
+            output_buf.put (ch);
+          else
+            {
+              if (! cmd->eof () && errno == EAGAIN)
+                {
+                  cmd->clear ();
 
-	  for (;;)
-	    {
-	      if (cmd->get (ch))
-		output_buf.put (ch);
-	      else
-		{
-		  if (! cmd->eof () && errno == EAGAIN)
-		    {
-		      cmd->clear ();
+                  if (wait_for_input (fid) != 1)
+                    break;
+                }
+              else
+                break;
+            }
+        }
 
-		      if (wait_for_input (fid) != 1)
-			break;			
-		    }
-		  else
-		    break;
-		}
-	    }
+      int cmd_status = cmd->close ();
 
-	  int cmd_status = cmd->close ();
+      if (WIFEXITED (cmd_status))
+        cmd_status = WEXITSTATUS (cmd_status);
+      else
+        cmd_status = 127;
 
-	  if (WIFEXITED (cmd_status))
-	    cmd_status = WEXITSTATUS (cmd_status);
-	  else
-	    cmd_status = 127;
-
-	  retval(0) = cmd_status;
-	  retval(1) = output_buf.str ();
-	}
-
-      unwind_protect::run ();
+      retval(0) = cmd_status;
+      retval(1) = output_buf.str ();
     }
   else
     error ("unable to start subprocess for `%s'", cmd_str.c_str ());
@@ -843,21 +828,21 @@ enum system_exec_type { et_sync, et_async };
 
 DEFUN (system, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {} system (@var{string}, @var{return_output}, @var{type})\n\
-Execute a shell command specified by @var{string}.  The second\n\
-argument is optional.  If @var{type} is @code{\"async\"}, the process\n\
+@deftypefn  {Built-in Function} {[@var{status}, @var{output}]} system (@var{string}, @var{return_output}, @var{type})\n\
+@deftypefnx {Built-in Function} {[@var{status}, @var{output}]} shell_cmd (@var{string}, @var{return_output}, @var{type})\n\
+Execute a shell command specified by @var{string}.\n\
+If the optional argument @var{type} is @code{\"async\"}, the process\n\
 is started in the background and the process id of the child process\n\
 is returned immediately.  Otherwise, the process is started, and\n\
 Octave waits until it exits.  If the @var{type} argument is omitted, a\n\
 value of @code{\"sync\"} is assumed.\n\
 \n\
-If two input arguments are given (the actual value of\n\
-@var{return_output} is irrelevant) and the subprocess is started\n\
-synchronously, or if @var{system} is called with one input argument and\n\
-one or more output arguments, the output from the command is returned.\n\
-Otherwise, if the subprocess is executed synchronously, its output is\n\
-sent to the standard output.  To send the output of a command executed\n\
-with @var{system} through the pager, use a command like\n\
+If the optional argument @var{return_output} is true and the subprocess\n\
+is started synchronously, or if @var{system} is called with one input\n\
+argument and one or more output arguments, the output from the command\n\
+is returned.  Otherwise, if the subprocess is executed synchronously, its\n\
+output is sent to the standard output.  To send the output of a command\n\
+executed with @code{system} through the pager, use a command like\n\
 \n\
 @example\n\
 disp (system (cmd, 1));\n\
@@ -881,79 +866,100 @@ command that was written to the standard output stream.  For example,\n\
 @noindent\n\
 will set the variable @code{output} to the string @samp{foo}, and the\n\
 variable @code{status} to the integer @samp{2}.\n\
+\n\
+For commands run asynchronously, @var{status} is the process id of the\n\
+command shell that is started to run the command.\n\
 @end deftypefn")
 {
   octave_value_list retval;
 
-  unwind_protect::begin_frame ("Fsystem");
+  unwind_protect frame;
 
   int nargin = args.length ();
 
   if (nargin > 0 && nargin < 4)
     {
-      bool return_output = (nargout > 1 || nargin > 1);
-
-      std::string cmd_str = args(0).string_value ();
+      bool return_output = (nargin == 1 && nargout > 1);
 
       system_exec_type type = et_sync;
 
-      if (! error_state)
-	{
-	  if (nargin > 2)
-	    {
-	      std::string type_str = args(2).string_value ();
+      if (nargin == 3)
+        {
+          std::string type_str = args(2).string_value ();
 
-	      if (! error_state)
-		{
-		  if (type_str == "sync")
-		    type = et_sync;
-		  else if (type_str == "async")
-		    type = et_async;
-		  else
-		    error ("system: third arg must be \"sync\" or \"async\"");
-		}
-	      else
-		error ("system: third argument must be a string");
-	    }
-	}
-      else
-	error ("system: expecting std::string as first argument");
+          if (! error_state)
+            {
+              if (type_str == "sync")
+                type = et_sync;
+              else if (type_str == "async")
+                type = et_async;
+              else
+                {
+                  error ("system: TYPE must be \"sync\" or \"async\"");
+                  return retval;
+                }
+            }
+          else
+            {
+              error ("system: TYPE must be a character string");
+              return retval;
+            }
+        }
+
+      if (nargin > 1)
+        {
+          return_output = args(1).is_true ();
+
+          if (error_state)
+            {
+              error ("system: RETURN_OUTPUT must be boolean value true or false");
+              return retval;
+            }
+        }
+
+      if (return_output && type == et_async)
+        {
+          error ("system: can't return output from commands run asynchronously");
+          return retval;
+        }
+
+      std::string cmd_str = args(0).string_value ();
 
       if (! error_state)
-	{
+        {
 #if defined (__WIN32__) && ! defined (__CYGWIN__)
-	  // Work around weird double-quote handling on Windows systems.
+          // Work around weird double-quote handling on Windows systems.
           if (type == et_sync)
             cmd_str = "\"" + cmd_str + "\"";
 #endif
 
-	  if (type == et_async)
-	    {
-	      // FIXME -- maybe this should go in sysdep.cc?
+          if (type == et_async)
+            {
+              // FIXME -- maybe this should go in sysdep.cc?
 #ifdef HAVE_FORK
-	      pid_t pid = fork ();
+              pid_t pid = fork ();
 
-	      if (pid < 0) 
-		error ("system: fork failed -- can't create child process");
-	      else if (pid == 0)
-		{
-		  // FIXME -- should probably replace this
-		  // call with something portable.
+              if (pid < 0)
+                error ("system: fork failed -- can't create child process");
+              else if (pid == 0)
+                {
+                  // FIXME -- should probably replace this
+                  // call with something portable.
 
-		  execl ("/bin/sh", "sh", "-c", cmd_str.c_str (),
-			 static_cast<void *> (0));
+                  execl ("/bin/sh", "sh", "-c", cmd_str.c_str (),
+                         static_cast<void *> (0));
 
-		  panic_impossible ();
-		}
-	      else
-		retval(0) = pid;
+                  panic_impossible ();
+                }
+              else
+                retval(0) = pid;
 #elif defined (__WIN32__)
               STARTUPINFO si;
               PROCESS_INFORMATION pi;
               ZeroMemory (&si, sizeof (si));
               ZeroMemory (&pi, sizeof (pi));
-	      OCTAVE_LOCAL_BUFFER (char, xcmd_str, cmd_str.length()+1);
-	      strcpy (xcmd_str, cmd_str.c_str ());
+              OCTAVE_LOCAL_BUFFER (char, xcmd_str, cmd_str.length()+1);
+              strcpy (xcmd_str, cmd_str.c_str ());
 
               if (! CreateProcess (0, xcmd_str, 0, 0, FALSE, 0, 0, 0, &si, &pi))
                 error ("system: CreateProcess failed -- can't create child process");
@@ -964,31 +970,31 @@ variable @code{status} to the integer @samp{2}.\n\
                   CloseHandle (pi.hThread);
                 }
 #else
- 	      error ("asynchronous system calls are not supported");
+              error ("asynchronous system calls are not supported");
 #endif
-	    }
-	  else if (return_output)
-	    retval = run_command_and_return_output (cmd_str);
-	  else
-	    {
-	      int status = system (cmd_str.c_str ());
+            }
+          else if (return_output)
+            retval = run_command_and_return_output (cmd_str);
+          else
+            {
+              int status = system (cmd_str.c_str ());
 
-	      // The value in status is as returned by waitpid.  If
-	      // the process exited normally, extract the actual exit
-	      // status of the command.  Otherwise, return 127 as a
-	      // failure code.
+              // The value in status is as returned by waitpid.  If
+              // the process exited normally, extract the actual exit
+              // status of the command.  Otherwise, return 127 as a
+              // failure code.
 
-	      if (WIFEXITED (status))
-		status = WEXITSTATUS (status);
+              if (WIFEXITED (status))
+                status = WEXITSTATUS (status);
 
-	      retval(0) = status;
-	    }
-	}
+              retval(0) = status;
+            }
+        }
+      else
+        error ("system: expecting string as first argument");
     }
   else
     print_usage ();
-
-  unwind_protect::run_frame ("Fsystem");
 
   return retval;
 }
@@ -1026,7 +1032,7 @@ do_octave_atexit (void)
       // called.
       SAFE_CALL (clear_mex_functions, ())
 
-	SAFE_CALL (command_editor::restore_terminal_state, ())
+        SAFE_CALL (command_editor::restore_terminal_state, ())
 
       // FIXME -- is this needed?  Can it cause any trouble?
       SAFE_CALL (raw_mode, (0))
@@ -1034,7 +1040,7 @@ do_octave_atexit (void)
       SAFE_CALL (octave_history_write_timestamp, ())
 
       if (Vsaving_history)
-	SAFE_CALL (command_history::clean_up_and_save, ())
+        SAFE_CALL (command_history::clean_up_and_save, ())
 
       SAFE_CALL (close_files, ())
 
@@ -1043,14 +1049,14 @@ do_octave_atexit (void)
       SAFE_CALL (flush_octave_stdout, ())
 
       if (! quitting_gracefully && (interactive || forced_interactive))
-	{
-	  octave_stdout << "\n";
+        {
+          octave_stdout << "\n";
 
-	  // Yes, we want this to be separate from the call to
-	  // flush_octave_stdout above.
+          // Yes, we want this to be separate from the call to
+          // flush_octave_stdout above.
 
-	  SAFE_CALL (flush_octave_stdout, ())
-	}
+          SAFE_CALL (flush_octave_stdout, ())
+        }
     }
 }
 
@@ -1069,11 +1075,11 @@ octave_remove_atexit_function (const std::string& fname)
        p != octave_atexit_functions.end (); p++)
     {
       if (*p == fname)
-	{
-	  octave_atexit_functions.erase (p);
-	  found = true;
-	  break;
-	}
+        {
+          octave_atexit_functions.erase (p);
+          found = true;
+          break;
+        }
     }
 
   return found;
@@ -1082,7 +1088,7 @@ octave_remove_atexit_function (const std::string& fname)
 
 DEFUN (atexit, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {} atexit (@var{fcn})\n\
+@deftypefn  {Built-in Function} {} atexit (@var{fcn})\n\
 @deftypefnx {Built-in Function} {} atexit (@var{fcn}, @var{flag})\n\
 Register a function to be called when Octave exits.  For example,\n\
 \n\
@@ -1135,24 +1141,24 @@ multiple times.\n\
               add_mode = args(1).bool_value ();
 
               if (error_state)
-                error ("atexit: second argument must be a logical value");
+                error ("atexit: FLAG argument must be a logical value");
             }
 
           if (! error_state)
-	    {
-	      if (add_mode)
-		octave_add_atexit_function (arg);
-	      else
-		{
-		  bool found = octave_remove_atexit_function (arg);
+            {
+              if (add_mode)
+                octave_add_atexit_function (arg);
+              else
+                {
+                  bool found = octave_remove_atexit_function (arg);
 
-		  if (nargout > 0)
-		    retval(0) = found;
-		}
-	    }
-	}
+                  if (nargout > 0)
+                    retval(0) = found;
+                }
+            }
+        }
       else
-        error ("atexit: argument must be a string");
+        error ("atexit: FCN argument must be a string");
     }
   else
     print_usage ();
@@ -1162,11 +1168,12 @@ multiple times.\n\
 
 DEFUN (octave_config_info, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {} octave_config_info (@var{option})\n\
+@deftypefn  {Built-in Function} {} octave_config_info ()\n\
+@deftypefnx {Built-in Function} {} octave_config_info (@var{option})\n\
 Return a structure containing configuration and installation\n\
 information for Octave.\n\
 \n\
-if @var{option} is a string, return the configuration information for the\n\
+If @var{option} is a string, return the configuration information for the\n\
 specified option.\n\
 \n\
 @end deftypefn")
@@ -1180,7 +1187,7 @@ specified option.\n\
 #endif
 
   static bool initialized = false;
-  static Octave_map m;
+  static octave_scalar_map m;
 
   struct conf_info_struct
   {
@@ -1195,16 +1202,36 @@ specified option.\n\
       { false, "ALL_CXXFLAGS", OCTAVE_CONF_ALL_CXXFLAGS },
       { false, "ALL_FFLAGS", OCTAVE_CONF_ALL_FFLAGS },
       { false, "ALL_LDFLAGS", OCTAVE_CONF_ALL_LDFLAGS },
+      { false, "AMD_CPPFLAGS", OCTAVE_CONF_AMD_CPPFLAGS },
+      { false, "AMD_LDFLAGS", OCTAVE_CONF_AMD_LDFLAGS },
+      { false, "AMD_LIBS", OCTAVE_CONF_AMD_LIBS },
       { false, "AR", OCTAVE_CONF_AR },
       { false, "ARFLAGS", OCTAVE_CONF_ARFLAGS },
       { false, "BLAS_LIBS", OCTAVE_CONF_BLAS_LIBS },
       { false, "CARBON_LIBS", OCTAVE_CONF_CARBON_LIBS },
+      { false, "CAMD_CPPFLAGS", OCTAVE_CONF_CAMD_CPPFLAGS },
+      { false, "CAMD_LDFLAGS", OCTAVE_CONF_CAMD_LDFLAGS },
+      { false, "CAMD_LIBS", OCTAVE_CONF_CAMD_LIBS },
       { false, "CC", OCTAVE_CONF_CC },
       { false, "CC_VERSION", OCTAVE_CONF_CC_VERSION },
+      { false, "CCOLAMD_CPPFLAGS", OCTAVE_CONF_CCOLAMD_CPPFLAGS },
+      { false, "CCOLAMD_LDFLAGS", OCTAVE_CONF_CCOLAMD_LDFLAGS },
+      { false, "CCOLAMD_LIBS", OCTAVE_CONF_CCOLAMD_LIBS },
       { false, "CFLAGS", OCTAVE_CONF_CFLAGS },
+      { false, "CHOLMOD_CPPFLAGS", OCTAVE_CONF_CHOLMOD_CPPFLAGS },
+      { false, "CHOLMOD_LDFLAGS", OCTAVE_CONF_CHOLMOD_LDFLAGS },
+      { false, "CHOLMOD_LIBS", OCTAVE_CONF_CHOLMOD_LIBS },
+      { false, "COLAMD_CPPFLAGS", OCTAVE_CONF_COLAMD_CPPFLAGS },
+      { false, "COLAMD_LDFLAGS", OCTAVE_CONF_COLAMD_LDFLAGS },
+      { false, "COLAMD_LIBS", OCTAVE_CONF_COLAMD_LIBS },
       { false, "CPICFLAG", OCTAVE_CONF_CPICFLAG },
       { false, "CPPFLAGS", OCTAVE_CONF_CPPFLAGS },
+      { false, "CURL_CPPFLAGS", OCTAVE_CONF_CURL_CPPFLAGS },
+      { false, "CURL_LDFLAGS", OCTAVE_CONF_CURL_LDFLAGS },
       { false, "CURL_LIBS", OCTAVE_CONF_CURL_LIBS },
+      { false, "CXSPARSE_CPPFLAGS", OCTAVE_CONF_CXSPARSE_CPPFLAGS },
+      { false, "CXSPARSE_LDFLAGS", OCTAVE_CONF_CXSPARSE_LDFLAGS },
+      { false, "CXSPARSE_LIBS", OCTAVE_CONF_CXSPARSE_LIBS },
       { false, "CXX", OCTAVE_CONF_CXX },
       { false, "CXXCPP", OCTAVE_CONF_CXXCPP },
       { false, "CXXFLAGS", OCTAVE_CONF_CXXFLAGS },
@@ -1214,18 +1241,33 @@ specified option.\n\
       { false, "DEFS", OCTAVE_CONF_DEFS },
       { false, "DL_LD", OCTAVE_CONF_DL_LD },
       { false, "DL_LDFLAGS", OCTAVE_CONF_DL_LDFLAGS },
+      { false, "DL_LIBS", OCTAVE_CONF_DL_LIBS },
       { false, "ENABLE_DYNAMIC_LINKING", OCTAVE_CONF_ENABLE_DYNAMIC_LINKING },
       { false, "EXEEXT", OCTAVE_CONF_EXEEXT },
       { false, "F77", OCTAVE_CONF_F77 },
       { false, "F77_FLOAT_STORE_FLAG", OCTAVE_CONF_F77_FLOAT_STORE_FLAG },
+      { false, "F77_INTEGER_8_FLAG", OCTAVE_CONF_F77_INTEGER_8_FLAG },
       { false, "FC", OCTAVE_CONF_FC },
       { false, "FFLAGS", OCTAVE_CONF_FFLAGS },
-      { false, "FFTW_LIBS", OCTAVE_CONF_FFTW_LIBS },
+      { false, "FFTW3_CPPFLAGS", OCTAVE_CONF_FFTW3_CPPFLAGS },
+      { false, "FFTW3_LDFLAGS", OCTAVE_CONF_FFTW3_LDFLAGS },
+      { false, "FFTW3_LIBS", OCTAVE_CONF_FFTW3_LIBS },
+      { false, "FFTW3F_CPPFLAGS", OCTAVE_CONF_FFTW3F_CPPFLAGS },
+      { false, "FFTW3F_LDFLAGS", OCTAVE_CONF_FFTW3F_LDFLAGS },
+      { false, "FFTW3F_LIBS", OCTAVE_CONF_FFTW3F_LIBS },
       { false, "FLIBS", OCTAVE_CONF_FLIBS },
       { false, "FPICFLAG", OCTAVE_CONF_FPICFLAG },
+      { false, "FT2_LIBS", OCTAVE_CONF_FT2_LIBS },
+      { false, "GLPK_CPPFLAGS", OCTAVE_CONF_GLPK_CPPFLAGS },
+      { false, "GLPK_LDFLAGS", OCTAVE_CONF_GLPK_LDFLAGS },
       { false, "GLPK_LIBS", OCTAVE_CONF_GLPK_LIBS },
       { false, "GNUPLOT", OCTAVE_CONF_GNUPLOT },
+      { false, "GRAPHICS_LIBS", OCTAVE_CONF_GRAPHICS_LIBS },
+      { false, "HDF5_CPPFLAGS", OCTAVE_CONF_HDF5_CPPFLAGS },
+      { false, "HDF5_LDFLAGS", OCTAVE_CONF_HDF5_LDFLAGS },
+      { false, "HDF5_LIBS", OCTAVE_CONF_HDF5_LIBS },
       { false, "INCFLAGS", OCTAVE_CONF_INCFLAGS },
+      { false, "LAPACK_LIBS", OCTAVE_CONF_LAPACK_LIBS },
       { false, "LDFLAGS", OCTAVE_CONF_LDFLAGS },
       { false, "LD_CXX", OCTAVE_CONF_LD_CXX },
       { false, "LD_STATIC_FLAG", OCTAVE_CONF_LD_STATIC_FLAG },
@@ -1237,14 +1279,25 @@ specified option.\n\
       { false, "LIBFLAGS", OCTAVE_CONF_LIBFLAGS },
       { false, "LIBOCTAVE", OCTAVE_CONF_LIBOCTAVE },
       { false, "LIBOCTINTERP", OCTAVE_CONF_LIBOCTINTERP },
-      { false, "LIBREADLINE", OCTAVE_CONF_LIBREADLINE },
       { false, "LIBS", OCTAVE_CONF_LIBS },
       { false, "LN_S", OCTAVE_CONF_LN_S },
-      { false, "MAGICK_INCFLAGS", OCTAVE_CONF_MAGICK_INCFLAGS },
+      { false, "MAGICK_CPPFLAGS", OCTAVE_CONF_MAGICK_CPPFLAGS },
+      { false, "MAGICK_LDFLAGS", OCTAVE_CONF_MAGICK_LDFLAGS },
       { false, "MAGICK_LIBS", OCTAVE_CONF_MAGICK_LIBS },
       { false, "MKOCTFILE_DL_LDFLAGS", OCTAVE_CONF_MKOCTFILE_DL_LDFLAGS },
+      { false, "OPENGL_LIBS", OCTAVE_CONF_OPENGL_LIBS },
+      { false, "PTHREAD_CFLAGS", OCTAVE_CONF_PTHREAD_CFLAGS },
+      { false, "PTHREAD_LIBS", OCTAVE_CONF_PTHREAD_LIBS },
+      { false, "QHULL_CPPFLAGS", OCTAVE_CONF_QHULL_CPPFLAGS },
+      { false, "QHULL_LDFLAGS", OCTAVE_CONF_QHULL_LDFLAGS },
+      { false, "QHULL_LIBS", OCTAVE_CONF_QHULL_LIBS },
+      { false, "QRUPDATE_CPPFLAGS", OCTAVE_CONF_QRUPDATE_CPPFLAGS },
+      { false, "QRUPDATE_LDFLAGS", OCTAVE_CONF_QRUPDATE_LDFLAGS },
+      { false, "QRUPDATE_LIBS", OCTAVE_CONF_QRUPDATE_LIBS },
       { false, "RANLIB", OCTAVE_CONF_RANLIB },
       { false, "RDYNAMIC_FLAG", OCTAVE_CONF_RDYNAMIC_FLAG },
+      { false, "READLINE_LIBS", OCTAVE_CONF_READLINE_LIBS },
+      { false, "REGEX_LIBS", OCTAVE_CONF_REGEX_LIBS },
       { false, "RLD_FLAG", OCTAVE_CONF_RLD_FLAG },
       { false, "SED", OCTAVE_CONF_SED },
       { false, "SHARED_LIBS", OCTAVE_CONF_SHARED_LIBS },
@@ -1254,7 +1307,11 @@ specified option.\n\
       { false, "SH_LDFLAGS", OCTAVE_CONF_SH_LDFLAGS },
       { false, "SONAME_FLAGS", OCTAVE_CONF_SONAME_FLAGS },
       { false, "STATIC_LIBS", OCTAVE_CONF_STATIC_LIBS },
+      { false, "TERM_LIBS", OCTAVE_CONF_TERM_LIBS },
       { false, "UGLY_DEFS", OCTAVE_CONF_UGLY_DEFS },
+      { false, "UMFPACK_CPPFLAGS", OCTAVE_CONF_UMFPACK_CPPFLAGS },
+      { false, "UMFPACK_LDFLAGS", OCTAVE_CONF_UMFPACK_LDFLAGS },
+      { false, "UMFPACK_LIBS", OCTAVE_CONF_UMFPACK_LIBS },
       { false, "USE_64_BIT_IDX_T", OCTAVE_CONF_USE_64_BIT_IDX_T },
       { false, "X11_INCFLAGS", OCTAVE_CONF_X11_INCFLAGS },
       { false, "X11_LIBS", OCTAVE_CONF_X11_LIBS },
@@ -1262,6 +1319,9 @@ specified option.\n\
       { false, "XTRA_CXXFLAGS", OCTAVE_CONF_XTRA_CXXFLAGS },
       { false, "YACC", OCTAVE_CONF_YACC },
       { false, "YFLAGS", OCTAVE_CONF_YFLAGS },
+      { false, "Z_CPPFLAGS", OCTAVE_CONF_Z_CPPFLAGS },
+      { false, "Z_LDFLAGS", OCTAVE_CONF_Z_LDFLAGS },
+      { false, "Z_LIBS", OCTAVE_CONF_Z_LIBS },
       { false, "api_version", OCTAVE_API_VERSION },
       { true, "archlibdir", OCTAVE_ARCHLIBDIR },
       { true, "bindir", OCTAVE_BINDIR },
@@ -1306,32 +1366,32 @@ specified option.\n\
 
       oct_mach_info::float_format ff = oct_mach_info::native_float_format ();
       m.assign ("float_format",
-		octave_value (oct_mach_info::float_format_as_string (ff)));
+                octave_value (oct_mach_info::float_format_as_string (ff)));
 
       m.assign ("words_big_endian",
-		octave_value (oct_mach_info::words_big_endian ()));
+                octave_value (oct_mach_info::words_big_endian ()));
 
       m.assign ("words_little_endian",
-		octave_value (oct_mach_info::words_little_endian ()));
+                octave_value (oct_mach_info::words_little_endian ()));
 
       int i = 0;
 
       while (true)
-	{
-	  const conf_info_struct& elt = conf_info[i++];
+        {
+          const conf_info_struct& elt = conf_info[i++];
 
-	  const char *key = elt.key;
+          const char *key = elt.key;
 
-	  if (key)
-	    {
-	      if (elt.subst_home)
-		m.assign (key, octave_value (subst_octave_home (elt.val)));
-	      else
-		m.assign (key, octave_value (elt.val));
-	    }
-	  else
-	    break;
-	}
+          if (key)
+            {
+              if (elt.subst_home)
+                m.assign (key, subst_octave_home (elt.val));
+              else
+                m.assign (key, elt.val);
+            }
+          else
+            break;
+        }
 
       bool unix_system = true;
       bool mac_system = false;
@@ -1362,14 +1422,14 @@ specified option.\n\
       std::string arg = args(0).string_value ();
 
       if (! error_state)
-	{
-	  Cell c = m.contents (arg.c_str ());
+        {
+          Cell c = m.contents (arg.c_str ());
 
-	  if (c.is_empty ())
-	    error ("octave_config_info: no info for `%s'", arg.c_str ());
-	  else
-	    retval = c(0);
-	}
+          if (c.is_empty ())
+            error ("octave_config_info: no info for `%s'", arg.c_str ());
+          else
+            retval = c(0);
+        }
     }
   else if (nargin == 0)
     retval = m;
@@ -1418,9 +1478,3 @@ __builtin_delete (void *ptr)
 }
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2002, 2003,
-              2004, 2005, 2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -34,12 +33,8 @@ along with Octave; see the file COPYING.  If not, see
 #include <sstream>
 #include <string>
 
-#ifdef HAVE_UNISTD_H
-#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#endif
 #include <unistd.h>
-#endif
 
 #include "file-ops.h"
 #include "file-stat.h"
@@ -87,19 +82,15 @@ octave_change_to_directory (const std::string& newdir)
       load_path::update ();
     }
   else
-    {
-      using namespace std;
-
-      error ("%s: %s", newdir.c_str (), strerror (errno));
-    }
+    error ("%s: %s", newdir.c_str (), gnulib::strerror (errno));
 
   return cd_ok;
 }
 
 DEFUN (cd, args, ,
   "-*- texinfo -*-\n\
-@deffn {Command} cd dir\n\
-@deffnx {Command} chdir dir\n\
+@deftypefn  {Command} {} cd dir\n\
+@deftypefnx {Command} {} chdir dir\n\
 Change the current working directory to @var{dir}.  If @var{dir} is\n\
 omitted, the current directory is changed to the user's home\n\
 directory.  For example,\n\
@@ -109,11 +100,11 @@ cd ~/octave\n\
 @end example\n\
 \n\
 @noindent\n\
-Changes the current working directory to @file{~/octave}.  If the\n\
+changes the current working directory to @file{~/octave}.  If the\n\
 directory does not exist, an error message is printed and the working\n\
 directory is not changed.\n\
 @seealso{mkdir, rmdir, dir}\n\
-@end deffn")
+@end deftypefn")
 {
   octave_value_list retval;
 
@@ -129,17 +120,17 @@ directory is not changed.\n\
       std::string dirname = argv[1];
 
       if (dirname.length () > 0
-	  && ! octave_change_to_directory (dirname))
-	{
-	  return retval;
-	}
+          && ! octave_change_to_directory (dirname))
+        {
+          return retval;
+        }
     }
   else
     {
       std::string home_dir = octave_env::get_home_directory ();
 
       if (home_dir.empty () || ! octave_change_to_directory (home_dir))
-	return retval;
+        return retval;
     }
 
   return retval;
@@ -154,7 +145,7 @@ Return the current working directory.\n\
 @seealso{dir, ls}\n\
 @end deftypefn")
 {
-  return octave_value (octave_env::getcwd ());
+  return octave_value (octave_env::get_current_directory ());
 }
 
 DEFUN (readdir, args, ,
@@ -166,7 +157,7 @@ strings.  If an error occurs, return an empty cell array in @var{files}.\n\
 If successful, @var{err} is 0 and @var{msg} is an empty string.\n\
 Otherwise, @var{err} is nonzero and @var{msg} contains a\n\
 system-dependent error message.\n\
-@seealso{dir, glob}\n\
+@seealso{ls, dir, glob}\n\
 @end deftypefn")
 {
   octave_value_list retval;
@@ -180,22 +171,22 @@ system-dependent error message.\n\
       std::string dirname = args(0).string_value ();
 
       if (error_state)
-	gripe_wrong_type_arg ("readdir", args(0));
+        gripe_wrong_type_arg ("readdir", args(0));
       else
-	{
-	  dir_entry dir (dirname);
+        {
+          dir_entry dir (dirname);
 
-	  if (dir)
-	    {
-	      string_vector dirlist = dir.read ();
-	      retval(0) = Cell (dirlist.sort ());
-	      retval(1) = 0.0;
-	    }
-	  else
-	    {
-	      retval(2) = dir.error ();
-	    }
-	}
+          if (dir)
+            {
+              string_vector dirlist = dir.read ();
+              retval(0) = Cell (dirlist.sort ());
+              retval(1) = 0.0;
+            }
+          else
+            {
+              retval(2) = dir.error ();
+            }
+        }
     }
   else
     print_usage ();
@@ -206,9 +197,9 @@ system-dependent error message.\n\
 // FIXME -- should maybe also allow second arg to specify
 // mode?  OTOH, that might cause trouble with compatibility later...
 
-DEFUN (mkdir, args, ,
+DEFUNX ("mkdir", Fmkdir, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {[@var{status}, @var{msg}, @var{msgid}] =} mkdir (@var{dir})\n\
+@deftypefn  {Built-in Function} {[@var{status}, @var{msg}, @var{msgid}] =} mkdir (@var{dir})\n\
 @deftypefnx {Built-in Function} {[@var{status}, @var{msg}, @var{msgid}] =} mkdir (@var{parent}, @var{dir})\n\
 Create a directory named @var{dir} in the directory @var{parent}.\n\
 \n\
@@ -235,22 +226,22 @@ message identifier.\n\
       std::string dir = args(1).string_value ();
 
       if (error_state)
-	{
-	  gripe_wrong_type_arg ("mkdir", args(0));
-	  return retval;
-	}
+        {
+          gripe_wrong_type_arg ("mkdir", args(0));
+          return retval;
+        }
       else
-	dirname = file_ops::concat (parent, dir);
+        dirname = file_ops::concat (parent, dir);
     }
   else if (nargin == 1)
     {
       dirname = args(0).string_value ();
 
       if (error_state)
-	{
-	  gripe_wrong_type_arg ("mkdir", args(0));
-	  return retval;
-	}
+        {
+          gripe_wrong_type_arg ("mkdir", args(0));
+          return retval;
+        }
     }
 
   if (nargin == 1 || nargin == 2)
@@ -262,26 +253,26 @@ message identifier.\n\
       file_stat fs (dirname);
 
       if (fs && fs.is_dir ())
-	{
-	  // For compatibility with Matlab, we return true when the
-	  // directory already exists.
+        {
+          // For compatibility with Matlab, we return true when the
+          // directory already exists.
 
-	  retval(2) = "mkdir";
-	  retval(1) = "directory exists";
-	  retval(0) = true;
-	}
+          retval(2) = "mkdir";
+          retval(1) = "directory exists";
+          retval(0) = true;
+        }
       else
-	{
-	  int status = file_ops::mkdir (dirname, 0777, msg);
+        {
+          int status = octave_mkdir (dirname, 0777, msg);
 
-	  if (status < 0)
-	    {
-	      retval(2) = "mkdir";
-	      retval(1) = msg;
-	    }
-	  else
-	    retval(0) = true;
-	}
+          if (status < 0)
+            {
+              retval(2) = "mkdir";
+              retval(1) = msg;
+            }
+          else
+            retval(0) = true;
+        }
     }
   else
     print_usage ();
@@ -289,10 +280,10 @@ message identifier.\n\
   return retval;
 }
 
-DEFUN (rmdir, args, ,
+DEFUNX ("rmdir", Frmdir, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {[@var{status}, @var{msg}, @var{msgid}] =} rmdir (@var{dir})\n\
-@deftypefnx {Built-in Function} {[@var{status}, @var{msg}, @var{msgid}] =} rmdir (@var{dir}, @code{\"s\"})\n\
+@deftypefn  {Built-in Function} {[@var{status}, @var{msg}, @var{msgid}] =} rmdir (@var{dir})\n\
+@deftypefnx {Built-in Function} {[@var{status}, @var{msg}, @var{msgid}] =} rmdir (@var{dir}, \"s\")\n\
 Remove the directory named @var{dir}.\n\
 \n\
 If successful, @var{status} is 1, with @var{msg} and @var{msgid} empty\n\
@@ -318,44 +309,44 @@ recursively remove all subdirectories as well.\n\
       std::string dirname = args(0).string_value ();
 
       if (error_state)
-	gripe_wrong_type_arg ("rmdir", args(0));
+        gripe_wrong_type_arg ("rmdir", args(0));
       else
-	{
-	  std::string fulldir = file_ops::tilde_expand (dirname);
-	  int status = -1;
-	  std::string msg;
+        {
+          std::string fulldir = file_ops::tilde_expand (dirname);
+          int status = -1;
+          std::string msg;
 
-	  if (nargin == 2)
-	    {
-	      if (args(1).string_value () == "s")
-		{
-		  bool doit = true;
+          if (nargin == 2)
+            {
+              if (args(1).string_value () == "s")
+                {
+                  bool doit = true;
 
-		  if (interactive && Vconfirm_recursive_rmdir)
-		    {
-		      std::string prompt
-			= "remove entire contents of " + fulldir + "? ";
+                  if (interactive && Vconfirm_recursive_rmdir)
+                    {
+                      std::string prompt
+                        = "remove entire contents of " + fulldir + "? ";
 
-		      doit = octave_yes_or_no (prompt);
-		    }
+                      doit = octave_yes_or_no (prompt);
+                    }
 
-		  if (doit)
-		    status = file_ops::recursive_rmdir (fulldir, msg);
-		}
-	      else
-		error ("rmdir: expecting second argument to be \"s\"");
-	    }
-	  else
-	    status = file_ops::rmdir (fulldir, msg);
+                  if (doit)
+                    status = octave_recursive_rmdir (fulldir, msg);
+                }
+              else
+                error ("rmdir: expecting second argument to be \"s\"");
+            }
+          else
+            status = octave_rmdir (fulldir, msg);
 
-	  if (status < 0)
-	    {
-	      retval(2) = "rmdir";
-	      retval(1) = msg;
-	    }
-	  else
-	    retval(0) = true;
-	}
+          if (status < 0)
+            {
+              retval(2) = "rmdir";
+              retval(1) = msg;
+            }
+          else
+            retval(0) = true;
+        }
     }
   else
     print_usage ();
@@ -363,7 +354,7 @@ recursively remove all subdirectories as well.\n\
   return retval;
 }
 
-DEFUN (link, args, ,
+DEFUNX ("link", Flink, args, ,
   "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {[@var{err}, @var{msg}] =} link (@var{old}, @var{new})\n\
 Create a new link (also known as a hard link) to an existing file.\n\
@@ -384,25 +375,25 @@ system-dependent error message.\n\
       std::string from = args(0).string_value ();
 
       if (error_state)
-	gripe_wrong_type_arg ("link", args(0));
+        gripe_wrong_type_arg ("link", args(0));
       else
-	{
-	  std::string to = args(1).string_value ();
+        {
+          std::string to = args(1).string_value ();
 
-	  if (error_state)
-	    gripe_wrong_type_arg ("link", args(1));
-	  else
-	    {
-	      std::string msg;
+          if (error_state)
+            gripe_wrong_type_arg ("link", args(1));
+          else
+            {
+              std::string msg;
 
-	      int status = file_ops::link (from, to, msg);
+              int status = octave_link (from, to, msg);
 
-	      retval(0) = status;
+              retval(0) = status;
 
-	      if (status < 0)
-		retval(1) = msg;
-	    }
-	}
+              if (status < 0)
+                retval(1) = msg;
+            }
+        }
     }
   else
     print_usage ();
@@ -410,7 +401,7 @@ system-dependent error message.\n\
   return retval;
 }
 
-DEFUN (symlink, args, ,
+DEFUNX ("symlink", Fsymlink, args, ,
   "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {[@var{err}, @var{msg}] =} symlink (@var{old}, @var{new})\n\
 Create a symbolic link @var{new} which contains the string @var{old}.\n\
@@ -431,25 +422,25 @@ system-dependent error message.\n\
       std::string from = args(0).string_value ();
 
       if (error_state)
-	gripe_wrong_type_arg ("symlink", args(0));
+        gripe_wrong_type_arg ("symlink", args(0));
       else
-	{
-	  std::string to = args(1).string_value ();
+        {
+          std::string to = args(1).string_value ();
 
-	  if (error_state)
-	    gripe_wrong_type_arg ("symlink", args(1));
-	  else
-	    {
-	      std::string msg;
+          if (error_state)
+            gripe_wrong_type_arg ("symlink", args(1));
+          else
+            {
+              std::string msg;
 
-	      int status = file_ops::symlink (from, to, msg);
+              int status = octave_symlink (from, to, msg);
 
-	      retval(0) = status;
+              retval(0) = status;
 
-	      if (status < 0)
-		retval(1) = msg;
-	    }
-	}
+              if (status < 0)
+                retval(1) = msg;
+            }
+        }
     }
   else
     print_usage ();
@@ -457,7 +448,7 @@ system-dependent error message.\n\
   return retval;
 }
 
-DEFUN (readlink, args, ,
+DEFUNX ("readlink", Freadlink, args, ,
   "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {[@var{result}, @var{err}, @var{msg}] =} readlink (@var{symlink})\n\
 Read the value of the symbolic link @var{symlink}.\n\
@@ -480,21 +471,21 @@ system-dependent error message.\n\
       std::string symlink = args(0).string_value ();
 
       if (error_state)
-	gripe_wrong_type_arg ("readlink", args(0));
+        gripe_wrong_type_arg ("readlink", args(0));
       else
-	{
-	  std::string result;
-	  std::string msg;
+        {
+          std::string result;
+          std::string msg;
 
-	  int status = file_ops::readlink (symlink, result, msg);
+          int status = octave_readlink (symlink, result, msg);
 
-	  retval(0) = result;
+          retval(0) = result;
 
-	  retval(1) = status;
+          retval(1) = status;
 
-	  if (status < 0)
-	    retval(2) = msg;
-	}
+          if (status < 0)
+            retval(2) = msg;
+        }
     }
   else
     print_usage ();
@@ -502,7 +493,7 @@ system-dependent error message.\n\
   return retval;
 }
 
-DEFUN (rename, args, ,
+DEFUNX ("rename", Frename, args, ,
   "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {[@var{err}, @var{msg}] =} rename (@var{old}, @var{new})\n\
 Change the name of file @var{old} to @var{new}.\n\
@@ -523,25 +514,25 @@ system-dependent error message.\n\
       std::string from = args(0).string_value ();
 
       if (error_state)
-	gripe_wrong_type_arg ("rename", args(0));
+        gripe_wrong_type_arg ("rename", args(0));
       else
-	{
-	  std::string to = args(1).string_value ();
+        {
+          std::string to = args(1).string_value ();
 
-	  if (error_state)
-	    gripe_wrong_type_arg ("rename", args(1));
-	  else
-	    {
-	      std::string msg;
+          if (error_state)
+            gripe_wrong_type_arg ("rename", args(1));
+          else
+            {
+              std::string msg;
 
-	      int status = file_ops::rename (from, to, msg);
+              int status = octave_rename (from, to, msg);
 
-	      retval(0) = status;
+              retval(0) = status;
 
-	      if (status < 0)
-		retval(1) = msg;
-	    }
-	}
+              if (status < 0)
+                retval(1) = msg;
+            }
+        }
     }
   else
     print_usage ();
@@ -552,19 +543,48 @@ system-dependent error message.\n\
 DEFUN (glob, args, ,
   "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {} glob (@var{pattern})\n\
-Given an array of strings (as a char array or a cell array) in\n\
+Given an array of pattern strings (as a char array or a cell array) in\n\
 @var{pattern}, return a cell array of file names that match any of\n\
-them, or an empty cell array if no patterns match.  Tilde expansion\n\
+them, or an empty cell array if no patterns match.  The pattern strings are\n\
+interpreted as filename globbing patterns (as they are used by Unix shells).\n\
+Within a pattern\n\
+@table @code\n\
+@itemx *\n\
+matches any string, including the null string,\n\
+@itemx ?\n\
+matches any single character, and\n\
+\n\
+@item [@dots{}]\n\
+matches any of the enclosed characters.\n\
+@end table\n\
+\n\
+Tilde expansion\n\
 is performed on each of the patterns before looking for matching file\n\
-names.  For example,\n\
+names.  For example:\n\
 \n\
 @example\n\
-@group\n\
-glob (\"/vm*\")\n\
-     @result{} \"/vmlinuz\"\n\
-@end group\n\
+ls\n\
+     @result{}\n\
+        file1  file2  file3  myfile1 myfile1b\n\
+glob (\"*file1\")\n\
+     @result{}\n\
+        @{\n\
+          [1,1] = file1\n\
+          [2,1] = myfile1\n\
+        @}\n\
+glob (\"myfile?\")\n\
+     @result{}\n\
+        @{\n\
+          [1,1] = myfile1\n\
+        @}\n\
+glob (\"file[12]\")\n\
+     @result{}\n\
+        @{\n\
+          [1,1] = file1\n\
+          [2,1] = file2\n\
+        @}\n\
 @end example\n\
-@seealso{dir, ls, stat, readdir}\n\
+@seealso{ls, dir, readdir}\n\
 @end deftypefn")
 {
   octave_value retval;
@@ -574,13 +594,13 @@ glob (\"/vm*\")\n\
       string_vector pat = args(0).all_strings ();
 
       if (error_state)
-	gripe_wrong_type_arg ("glob", args(0));
+        gripe_wrong_type_arg ("glob", args(0));
       else
-	{
-	  glob_match pattern (file_ops::tilde_expand (pat));
+        {
+          glob_match pattern (file_ops::tilde_expand (pat));
 
-	  retval = Cell (pattern.glob ());
-	}
+          retval = Cell (pattern.glob ());
+        }
     }
   else
     print_usage ();
@@ -588,12 +608,45 @@ glob (\"/vm*\")\n\
   return retval;
 }
 
-DEFUN (fnmatch, args, ,
+/*
+%!test
+%!  tmpdir = tmpnam;
+%!  filename = {"file1", "file2", "file3", "myfile1", "myfile1b"};
+%!  if (mkdir (tmpdir))
+%!    cwd = pwd;
+%!    cd (tmpdir);
+%!    if strcmp (canonicalize_file_name (pwd), ...
+%!               canonicalize_file_name (tmpdir))
+%!      a = 0;
+%!      for n = 1:5
+%!        save (filename{n}, "a");
+%!      endfor
+%!    else
+%!      rmdir (tmpdir);
+%!      error ("Couldn't change to temporary dir");
+%!    endif
+%!  else
+%!    error ("Couldn't create temporary directory");
+%!  endif
+%!  result1 = glob ("*file1");
+%!  result2 = glob ("myfile?");
+%!  result3 = glob ("file[12]");
+%!  for n = 1:5
+%!    delete (filename{n});
+%!  endfor
+%!  cd (cwd);
+%!  rmdir (tmpdir);
+%!  assert (result1, {"file1"; "myfile1"});
+%!  assert (result2, {"myfile1"});
+%!  assert (result3, {"file1"; "file2"});
+*/
+
+DEFUNX ("fnmatch", Ffnmatch, args, ,
   "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {} fnmatch (@var{pattern}, @var{string})\n\
 Return 1 or zero for each element of @var{string} that matches any of\n\
 the elements of the string array @var{pattern}, using the rules of\n\
-filename pattern matching.  For example,\n\
+filename pattern matching.  For example:\n\
 \n\
 @example\n\
 @group\n\
@@ -611,22 +664,13 @@ fnmatch (\"a*b\", @{\"ab\"; \"axyzb\"; \"xyzab\"@})\n\
       string_vector str = args(1).all_strings ();
 
       if (error_state)
-	gripe_wrong_type_arg ("fnmatch", args(0));
+        gripe_wrong_type_arg ("fnmatch", args(0));
       else
-	{
-	  glob_match pattern (file_ops::tilde_expand (pat));
+        {
+          glob_match pattern (file_ops::tilde_expand (pat));
 
-	  Array<bool> tmp = pattern.match (str);
-
-	  octave_idx_type n = tmp.length ();
-
-	  ColumnVector result (n);
-
-	  for (octave_idx_type i = 0; i < n; i++)
-	    result(i) = tmp(i);
-
-	  retval = result;
-	}
+          retval = pattern.match (str);
+        }
     }
   else
     print_usage ();
@@ -636,15 +680,15 @@ fnmatch (\"a*b\", @{\"ab\"; \"axyzb\"; \"xyzab\"@})\n\
 
 DEFUN (filesep, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {} filesep ()\n\
+@deftypefn  {Built-in Function} {} filesep ()\n\
 @deftypefnx {Built-in Function} {} filesep ('all')\n\
 Return the system-dependent character used to separate directory names.\n\
 \n\
-If 'all' is given, the function return all valid file separators in\n\
+If 'all' is given, the function returns all valid file separators in\n\
 the form of a string.  The list of file separators is system-dependent.\n\
-It is / (forward slash) under UNIX or Mac OS X, / and \\ (forward and\n\
-backward slashes) under Windows.\n\
-@seealso{pathsep, dir, ls}\n\
+It is @samp{/} (forward slash) under UNIX or @w{Mac OS X}, @samp{/} and\n\
+@samp{\\} (forward and backward slashes) under Windows.\n\
+@seealso{pathsep}\n\
 @end deftypefn")
 {
   octave_value retval;
@@ -656,14 +700,14 @@ backward slashes) under Windows.\n\
       std::string s = args(0).string_value ();
 
       if (! error_state)
-	{
-	  if (s == "all")
-	    retval = file_ops::dir_sep_chars ();
-	  else
-	    gripe_wrong_type_arg ("filesep", args(0));
-	}
+        {
+          if (s == "all")
+            retval = file_ops::dir_sep_chars ();
+          else
+            gripe_wrong_type_arg ("filesep", args(0));
+        }
       else
-	gripe_wrong_type_arg ("filesep", args(0));
+        gripe_wrong_type_arg ("filesep", args(0));
     }
   else
     print_usage ();
@@ -673,11 +717,10 @@ backward slashes) under Windows.\n\
 
 DEFUN (pathsep, args, nargout,
     "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {@var{val} =} pathsep ()\n\
+@deftypefn  {Built-in Function} {@var{val} =} pathsep ()\n\
 @deftypefnx {Built-in Function} {@var{old_val} =} pathsep (@var{new_val})\n\
-Query or set the character used to separate directories in\n\
-a path.\n\
-@seealso{filesep, dir, ls}\n\
+Query or set the character used to separate directories in a path.\n\
+@seealso{filesep}\n\
 @end deftypefn")
 {
   octave_value retval;
@@ -692,24 +735,24 @@ a path.\n\
       std::string sval = args(0).string_value ();
 
       if (! error_state)
-	{
-	  switch (sval.length ())
-	    {
-	    case 1:
-	      dir_path::path_sep_char (sval[0]);
-	      break;
+        {
+          switch (sval.length ())
+            {
+            case 1:
+              dir_path::path_sep_char (sval[0]);
+              break;
 
-	    case 0:
-	      dir_path::path_sep_char ('\0');
-	      break;
+            case 0:
+              dir_path::path_sep_char ('\0');
+              break;
 
-	    default:
-	      error ("pathsep: argument must be a single character");
-	      break;
-	    }
-	}
+            default:
+              error ("pathsep: argument must be a single character");
+              break;
+            }
+        }
       else
-	error ("pathsep: argument must be a single character");
+        error ("pathsep: argument must be a single character");
     }
   else if (nargin > 1)
     print_usage ();
@@ -719,7 +762,7 @@ a path.\n\
 
 DEFUN (confirm_recursive_rmdir, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {@var{val} =} confirm_recursive_rmdir ()\n\
+@deftypefn  {Built-in Function} {@var{val} =} confirm_recursive_rmdir ()\n\
 @deftypefnx {Built-in Function} {@var{old_val} =} confirm_recursive_rmdir (@var{new_val})\n\
 Query or set the internal variable that controls whether Octave\n\
 will ask for confirmation before recursively removing a directory tree.\n\
@@ -727,9 +770,3 @@ will ask for confirmation before recursively removing a directory tree.\n\
 {
   return SET_INTERNAL_VARIABLE (confirm_recursive_rmdir);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

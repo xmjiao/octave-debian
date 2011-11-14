@@ -1,8 +1,8 @@
 // DiagMatrix manipulations.
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2000, 2001, 2002, 2003, 2004,
-              2005, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
+Copyright (C) 2009 VZLU Prague
 
 This file is part of Octave.
 
@@ -50,7 +50,7 @@ FloatComplexDiagMatrix::operator == (const FloatComplexDiagMatrix& a) const
   if (rows () != a.rows () || cols () != a.cols ())
     return 0;
 
-  return mx_inline_equal (data (), a.data (), length ());
+  return mx_inline_equal (length (), data (), a.data ());
 }
 
 bool
@@ -236,21 +236,13 @@ FloatComplexDiagMatrix::fill (const FloatComplexRowVector& a, octave_idx_type be
 FloatDiagMatrix
 FloatComplexDiagMatrix::abs (void) const
 {
-  FloatDiagMatrix retval (rows (), cols ());
-  for (octave_idx_type i = 0; i < rows (); i++)
-    retval(i, i) = std::abs (elem (i, i));
-  return retval;
+  return FloatDiagMatrix (diag ().abs (), rows (), columns ());
 }
 
 FloatComplexDiagMatrix
 conj (const FloatComplexDiagMatrix& a)
 {
-  FloatComplexDiagMatrix retval;
-  octave_idx_type a_len = a.length ();
-  if (a_len > 0)
-    retval = FloatComplexDiagMatrix (mx_inline_conj_dup (a.data (), a_len),
-				a.rows (), a.cols ());
-  return retval;
+  return FloatComplexDiagMatrix (conj (a.diag ()), a.rows (), a.columns ());
 }
 
 // resize is the destructive analog for this one
@@ -283,7 +275,7 @@ FloatComplexDiagMatrix::row (octave_idx_type i) const
   if (i < 0 || i >= r)
     {
       (*current_liboctave_error_handler) ("invalid row selection");
-      return FloatComplexRowVector (); 
+      return FloatComplexRowVector ();
     }
 
   FloatComplexRowVector retval (c, 0.0);
@@ -299,7 +291,7 @@ FloatComplexDiagMatrix::row (char *s) const
   if (! s)
     {
       (*current_liboctave_error_handler) ("invalid row selection");
-      return FloatComplexRowVector (); 
+      return FloatComplexRowVector ();
     }
 
   char c = *s;
@@ -322,7 +314,7 @@ FloatComplexDiagMatrix::column (octave_idx_type i) const
   if (i < 0 || i >= c)
     {
       (*current_liboctave_error_handler) ("invalid column selection");
-      return FloatComplexColumnVector (); 
+      return FloatComplexColumnVector ();
     }
 
   FloatComplexColumnVector retval (r, 0.0);
@@ -338,7 +330,7 @@ FloatComplexDiagMatrix::column (char *s) const
   if (! s)
     {
       (*current_liboctave_error_handler) ("invalid column selection");
-      return FloatComplexColumnVector (); 
+      return FloatComplexColumnVector ();
     }
 
   char c = *s;
@@ -349,7 +341,7 @@ FloatComplexDiagMatrix::column (char *s) const
   else
     {
       (*current_liboctave_error_handler) ("invalid column selection");
-      return FloatComplexColumnVector (); 
+      return FloatComplexColumnVector ();
     }
 }
 
@@ -377,12 +369,12 @@ FloatComplexDiagMatrix::inverse (octave_idx_type& info) const
   for (octave_idx_type i = 0; i < length (); i++)
     {
       if (elem (i, i) == static_cast<float> (0.0))
-	{
-	  info = -1;
-	  return *this;
-	}
+        {
+          info = -1;
+          return *this;
+        }
       else
-	retval.elem (i, i) = static_cast<float> (1.0) / elem (i, i);
+        retval.elem (i, i) = static_cast<float> (1.0) / elem (i, i);
     }
 
   return retval;
@@ -411,16 +403,7 @@ FloatComplexDiagMatrix::pseudo_inverse (void) const
 bool
 FloatComplexDiagMatrix::all_elements_are_real (void) const
 {
-  octave_idx_type len = length ();
-  for (octave_idx_type i = 0; i < len; i++)
-    {
-      float ip = std::imag (elem (i, i));
-
-      if (ip != 0.0 || lo_ieee_signbit (ip))
-        return false;
-    }
-
-  return true;
+  return mx_inline_all_real (length (), data ());
 }
 
 // diagonal matrix by diagonal matrix -> diagonal matrix operations
@@ -445,7 +428,7 @@ FloatComplexDiagMatrix::operator += (const FloatDiagMatrix& a)
 
   FloatComplex *d = fortran_vec (); // Ensures only one reference to my privates!
 
-  mx_inline_add2 (d, a.data (), length ());
+  mx_inline_add2 (length (), d, a.data ());
   return *this;
 }
 
@@ -459,25 +442,16 @@ operator * (const FloatComplexDiagMatrix& a, const FloatDiagMatrix& b)
   octave_idx_type b_nc = b.cols ();
 
   if (a_nc != b_nr)
-    {
-      gripe_nonconformant ("operator *", a_nr, a_nc, b_nr, b_nc);
-      return FloatComplexDiagMatrix ();
-    }
-
-  if (a_nr == 0 || a_nc == 0 || b_nc == 0)
-    return FloatComplexDiagMatrix (a_nr, a_nc, 0.0);
+    gripe_nonconformant ("operator *", a_nr, a_nc, b_nr, b_nc);
 
   FloatComplexDiagMatrix c (a_nr, b_nc);
 
-  octave_idx_type len = a_nr < b_nc ? a_nr : b_nc;
+  octave_idx_type len = c.length (), lenm = len < a_nc ? len : a_nc;
 
-  for (octave_idx_type i = 0; i < len; i++)
-    {
-      FloatComplex a_element = a.elem (i, i);
-      float b_element = b.elem (i, i);
-
-      c.elem (i, i) = a_element * b_element;
-    }
+  for (octave_idx_type i = 0; i < lenm; i++)
+    c.dgxelem (i) = a.dgelem (i) * b.dgelem (i);
+  for (octave_idx_type i = lenm; i < len; i++)
+    c.dgxelem (i) = 0.0f;
 
   return c;
 }
@@ -572,7 +546,7 @@ FloatComplexDiagMatrix::determinant (void) const
 float
 FloatComplexDiagMatrix::rcond (void) const
 {
-  FloatColumnVector av = diag (0).map (std::abs);
+  FloatColumnVector av = diag (0).map<float> (std::abs);
   float amx = av.max (), amn = av.min ();
   return amx == 0 ? 0.0f : amn / amx;
 }
@@ -587,19 +561,13 @@ operator << (std::ostream& os, const FloatComplexDiagMatrix& a)
   for (octave_idx_type i = 0; i < a.rows (); i++)
     {
       for (octave_idx_type j = 0; j < a.cols (); j++)
-	{
-	  if (i == j)
-	    os << " " /* setw (field_width) */ << a.elem (i, i);
-	  else
-	    os << " " /* setw (field_width) */ << ZERO;
-	}
+        {
+          if (i == j)
+            os << " " /* setw (field_width) */ << a.elem (i, i);
+          else
+            os << " " /* setw (field_width) */ << ZERO;
+        }
       os << "\n";
     }
   return os;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1999, 2000, 2002, 2003, 2004, 2005, 2007, 2008
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -45,11 +44,13 @@ octave_dld_function : public octave_builtin
 {
 public:
 
-  octave_dld_function (void) { }
+  octave_dld_function (void)
+    : sh_lib (), t_checked (), system_fcn_file ()
+  { }
 
   octave_dld_function (octave_builtin::fcn ff, const octave_shlib& shl,
-		       const std::string& nm = std::string (),
-		       const std::string& ds = std::string ());
+                       const std::string& nm = std::string (),
+                       const std::string& ds = std::string ());
 
   ~octave_dld_function (void);
 
@@ -66,11 +67,14 @@ public:
   bool is_builtin_function (void) const { return false; }
 
   bool is_dld_function (void) const { return true; }
-  
+
   static octave_dld_function* create (octave_builtin::fcn ff,
       const octave_shlib& shl,
       const std::string& nm = std::string (),
       const std::string& ds = std::string ());
+
+  octave_shlib get_shlib (void) const
+    { return sh_lib; }
 
 private:
 
@@ -97,9 +101,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

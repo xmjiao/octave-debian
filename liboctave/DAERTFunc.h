@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2002, 2005, 2007 John W. Eaton
+Copyright (C) 2002-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -53,15 +53,15 @@ public:
   DAERTFunc& operator = (const DAERTFunc& a)
     {
       if (this != &a)
-	{
-	  DAEFunc::operator = (a);
-	  constr = a.constr;
-	  reset = a.reset;
-	}
+        {
+          DAEFunc::operator = (a);
+          constr = a.constr;
+          reset = a.reset;
+        }
       return *this;
     }
 
-  ~DAERTFunc (void) { }
+  virtual ~DAERTFunc (void) { }
 
   DAERTConstrFunc constraint_function (void) const { return constr; }
 
@@ -85,9 +85,3 @@ protected:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

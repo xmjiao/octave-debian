@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2004, 2005,
-              2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -30,6 +29,7 @@ along with Octave; see the file COPYING.  If not, see
 
 #include "defun.h"
 #include "error.h"
+#include "gripes.h"
 #include "input.h"
 #include "oct-obj.h"
 #include "oct-lvalue.h"
@@ -147,7 +147,7 @@ maybe_warn_former_built_in_variable (const std::string& nm)
       const char **p = former_built_in_variables;
 
       while (*p)
-	vars.insert (*p++);
+        vars.insert (*p++);
 
       initialized = true;
     }
@@ -157,8 +157,8 @@ maybe_warn_former_built_in_variable (const std::string& nm)
       const char *nm_c_str = nm.c_str ();
 
       warning_with_id ("Octave:built-in-variable-assignment",
-		       "%s is now a function instead of a built-in variable.  By assigning to %s, you have created a variable that hides the function %s.  To remove the variable and restore the function, type \"clear %s\"",
-		       nm_c_str, nm_c_str, nm_c_str, nm_c_str);
+                       "%s is now a function instead of a built-in variable.  By assigning to %s, you have created a variable that hides the function %s.  To remove the variable and restore the function, type \"clear %s\"",
+                       nm_c_str, nm_c_str, nm_c_str, nm_c_str);
     }
 }
 
@@ -205,60 +205,63 @@ tree_simple_assignment::rvalue1 (int)
       octave_value rhs_val = rhs->rvalue1 ();
 
       if (! error_state)
-	{
-	  if (rhs_val.is_undefined ())
-	    {
-	      error ("value on right hand side of assignment is undefined");
-	      return retval;
-	    }
-	  else
-	    {
-	      if (rhs_val.is_cs_list ())
-		{
-		  const octave_value_list lst = rhs_val.list_value ();
+        {
+          if (rhs_val.is_undefined ())
+            {
+              error ("value on right hand side of assignment is undefined");
+              return retval;
+            }
+          else
+            {
+              if (rhs_val.is_cs_list ())
+                {
+                  const octave_value_list lst = rhs_val.list_value ();
 
-		  if (! lst.empty ())
-		    rhs_val = lst(0);
-		  else
-		    {
-		      error ("invalid number of elements on RHS of assignment");
-		      return retval;
-		    }
-		}
+                  if (! lst.empty ())
+                    rhs_val = lst(0);
+                  else
+                    {
+                      error ("invalid number of elements on RHS of assignment");
+                      return retval;
+                    }
+                }
 
-	      octave_lvalue ult = lhs->lvalue ();
+              octave_lvalue ult = lhs->lvalue ();
 
-	      if (! error_state)
-		{
-		  ult.assign (etype, rhs_val);
+              if (ult.numel () != 1)
+                gripe_nonbraced_cs_list_assignment ();
 
-		  if (! error_state)
-		    {
-		      if (etype == octave_value::op_asn_eq)
-			retval = rhs_val;
-		      else
-			retval = ult.value ();
+              if (! error_state)
+                {
+                  ult.assign (etype, rhs_val);
 
-		      if (print_result ())
-			{
-			  // We clear any index here so that we can
-			  // get the new value of the referenced
-			  // object below, instead of the indexed
-			  // value (which should be the same as the
-			  // right hand side value).
+                  if (! error_state)
+                    {
+                      if (etype == octave_value::op_asn_eq)
+                        retval = rhs_val;
+                      else
+                        retval = ult.value ();
 
-			  ult.clear_index ();
+                      if (print_result ())
+                        {
+                          // We clear any index here so that we can
+                          // get the new value of the referenced
+                          // object below, instead of the indexed
+                          // value (which should be the same as the
+                          // right hand side value).
 
-			  octave_value lhs_val = ult.value ();
+                          ult.clear_index ();
 
-			  if (! error_state)
-			    lhs_val.print_with_name (octave_stdout,
-						     lhs->name ());
-			}
-		    }
-		}
-	    }
-	}
+                          octave_value lhs_val = ult.value ();
+
+                          if (! error_state)
+                            lhs_val.print_with_name (octave_stdout,
+                                                     lhs->name ());
+                        }
+                    }
+                }
+            }
+        }
     }
 
   first_execution = false;
@@ -274,12 +277,12 @@ tree_simple_assignment::oper (void) const
 
 tree_expression *
 tree_simple_assignment::dup (symbol_table::scope_id scope,
-			     symbol_table::context_id context) const
+                             symbol_table::context_id context) const
 {
   tree_simple_assignment *new_sa
     = new tree_simple_assignment (lhs ? lhs->dup (scope, context) : 0,
-				  rhs ? rhs->dup (scope, context) : 0,
-				  preserve, etype);
+                                  rhs ? rhs->dup (scope, context) : 0,
+                                  preserve, etype);
 
   new_sa->copy_base (*this);
 
@@ -296,8 +299,8 @@ tree_simple_assignment::accept (tree_walker& tw)
 
 tree_multi_assignment::tree_multi_assignment
   (tree_argument_list *lst, tree_expression *r,
-   bool plhs, int l, int c, octave_value::assign_op t)
-    : tree_expression (l, c), lhs (lst), rhs (r), preserve (plhs), etype (t),
+   bool plhs, int l, int c)
+    : tree_expression (l, c), lhs (lst), rhs (r), preserve (plhs),
       first_execution (true) { }
 
 tree_multi_assignment::~tree_multi_assignment (void)
@@ -348,127 +351,110 @@ tree_multi_assignment::rvalue (int)
       std::list<octave_lvalue> lvalue_list = lhs->lvalue_list ();
 
       if (error_state)
-	return retval;
+        return retval;
 
-      int n_out = 0;
+      octave_idx_type n_out = 0;
 
       for (std::list<octave_lvalue>::const_iterator p = lvalue_list.begin ();
-	   p != lvalue_list.end ();
-	   p++)
-	n_out += p->numel ();
+           p != lvalue_list.end ();
+           p++)
+        n_out += p->numel ();
 
       // The following trick is used to keep rhs_val constant.
-      const octave_value_list rhs_val1 = rhs->rvalue (n_out);
+      const octave_value_list rhs_val1 = rhs->rvalue (n_out, &lvalue_list);
       const octave_value_list rhs_val = (rhs_val1.length () == 1 && rhs_val1(0).is_cs_list ()
                                          ? rhs_val1(0).list_value () : rhs_val1);
 
       if (error_state)
-	return retval;
+        return retval;
 
-      if (rhs_val.empty ())
-	{
-	  if (n_out > 0)
-	    {
-	      error ("value on right hand side of assignment is undefined");
-	      return retval;
-	    }
-	}
-      else
-	{
-	  octave_idx_type k = 0;
+      octave_idx_type k = 0;
 
-	  octave_idx_type n = rhs_val.length ();
+      octave_idx_type n = rhs_val.length ();
 
-          // To avoid copying per elements and possible optimizations, we
-          // postpone joining the final values.
-          std::list<octave_value_list> retval_list;
+      // To avoid copying per elements and possible optimizations, we
+      // postpone joining the final values.
+      std::list<octave_value_list> retval_list;
 
-	  tree_argument_list::iterator q = lhs->begin ();
+      tree_argument_list::iterator q = lhs->begin ();
 
-	  for (std::list<octave_lvalue>::iterator p = lvalue_list.begin ();
-	       p != lvalue_list.end ();
-	       p++)
-	    {
-	      tree_expression *lhs_elt = *q++;
+      for (std::list<octave_lvalue>::iterator p = lvalue_list.begin ();
+           p != lvalue_list.end ();
+           p++)
+        {
+          tree_expression *lhs_elt = *q++;
 
-	      octave_lvalue ult = *p;
+          octave_lvalue ult = *p;
 
-	      octave_idx_type nel = ult.numel ();
+          octave_idx_type nel = ult.numel ();
 
-	      if (nel > 1)
-		{
-		  if (k + nel <= n)
-		    {
-		      if (etype == octave_value::op_asn_eq)
-			{
-                          // This won't do a copy.
-			  octave_value_list ovl  = rhs_val.slice (k, nel);
+          if (nel != 1)
+            {
+              if (k + nel <= n)
+                {
+                  // This won't do a copy.
+                  octave_value_list ovl  = rhs_val.slice (k, nel);
 
-			  ult.assign (etype, octave_value (ovl, true));
+                  ult.assign (octave_value::op_asn_eq, octave_value (ovl, true));
 
-			  if (! error_state)
-			    {
-                              retval_list.push_back (ovl);
+                  if (! error_state)
+                    {
+                      retval_list.push_back (ovl);
 
-			      k += nel;
-			    }
-			}
-		      else
-			{
-			  std::string op = octave_value::assign_op_as_string (etype);
-			  error ("operator %s unsupported for comma-separated list assignment",
-				 op.c_str ());
-			}
-		    }
-		  else
-		    error ("some elements undefined in return list");
-		}
-	      else if (nel == 1)
-		{
-		  if (k < n)
-		    {
-		      ult.assign (etype, rhs_val(k));
+                      k += nel;
+                    }
+                }
+              else
+                error ("some elements undefined in return list");
+            }
+          else
+            {
+              if (k < n)
+                {
+                  ult.assign (octave_value::op_asn_eq, rhs_val(k));
 
-		      if (! error_state)
-			{
-			  if (etype == octave_value::op_asn_eq)
-                            retval_list.push_back (rhs_val(k));
-			  else
-                            retval_list.push_back (ult.value ());
+                  if (ult.is_black_hole ())
+                    {
+                      k++;
+                      continue;
+                    }
+                  else if (! error_state)
+                    {
+                      retval_list.push_back (rhs_val(k));
 
-			  k++;
-			}
-		    }
-		  else
-		    error ("element number %d undefined in return list", k+1);
-		}
+                      k++;
+                    }
+                }
+              else
+                error ("element number %d undefined in return list", k+1);
+            }
 
-	      if (error_state)
-		break;
-	      else if (print_result ())
-		{
-		  // We clear any index here so that we can get
-		  // the new value of the referenced object below,
-		  // instead of the indexed value (which should be
-		  // the same as the right hand side value).
+          if (error_state)
+            break;
+          else if (print_result ())
+            {
+              // We clear any index here so that we can get
+              // the new value of the referenced object below,
+              // instead of the indexed value (which should be
+              // the same as the right hand side value).
 
-		  ult.clear_index ();
+              ult.clear_index ();
 
-		  octave_value lhs_val = ult.value ();
+              octave_value lhs_val = ult.value ();
 
-		  if (! error_state)
-		    lhs_val.print_with_name (octave_stdout,
-					     lhs_elt->name ());
-		}
+              if (! error_state)
+                lhs_val.print_with_name (octave_stdout,
+                                         lhs_elt->name ());
+            }
 
-	      if (error_state)
-		break;
+          if (error_state)
+            break;
 
-	    }
-          
-          // Concatenate return values.
-          retval = retval_list;
-	}
+        }
+
+      // Concatenate return values.
+      retval = retval_list;
+
     }
 
   first_execution = false;
@@ -479,17 +465,17 @@ tree_multi_assignment::rvalue (int)
 std::string
 tree_multi_assignment::oper (void) const
 {
-  return octave_value::assign_op_as_string (etype);
+  return octave_value::assign_op_as_string (op_type ());
 }
 
 tree_expression *
 tree_multi_assignment::dup (symbol_table::scope_id scope,
-			    symbol_table::context_id context) const
+                            symbol_table::context_id context) const
 {
   tree_multi_assignment *new_ma
     = new tree_multi_assignment (lhs ? lhs->dup (scope, context) : 0,
-				 rhs ? rhs->dup (scope, context) : 0,
-				 preserve, etype);
+                                 rhs ? rhs->dup (scope, context) : 0,
+                                 preserve);
 
   new_ma->copy_base (*this);
 
@@ -501,9 +487,3 @@ tree_multi_assignment::accept (tree_walker& tw)
 {
   tw.visit_multi_assignment (*this);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

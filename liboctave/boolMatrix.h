@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2000, 2002, 2004, 2005, 2006, 2007,
-              2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
+Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
 
@@ -24,35 +24,43 @@ along with Octave; see the file COPYING.  If not, see
 #if !defined (octave_boolMatrix_int_h)
 #define octave_boolMatrix_int_h 1
 
-#include "Array2.h"
+#include "Array.h"
 
 #include "mx-defs.h"
 #include "mx-op-decl.h"
 
 class
 OCTAVE_API
-boolMatrix : public Array2<bool>
+boolMatrix : public Array<bool>
 {
 public:
 
-  boolMatrix (void) : Array2<bool> () { }
-  boolMatrix (octave_idx_type r, octave_idx_type c) : Array2<bool> (r, c) { }
-  boolMatrix (octave_idx_type r, octave_idx_type c, bool val) : Array2<bool> (r, c, val) { }
-  boolMatrix (const dim_vector& dv) : Array2<bool> (dv) { }
-  boolMatrix (const dim_vector& dv, bool val) : Array2<bool> (dv, val) { }
-  boolMatrix (const Array2<bool>& a) : Array2<bool> (a) { }
-  boolMatrix (const boolMatrix& a) : Array2<bool> (a) { }
+  boolMatrix (void) : Array<bool> () { }
+
+  boolMatrix (octave_idx_type r, octave_idx_type c)
+    : Array<bool> (dim_vector (r, c)) { }
+
+  boolMatrix (octave_idx_type r, octave_idx_type c, bool val)
+    : Array<bool> (dim_vector (r, c), val) { }
+
+  boolMatrix (const dim_vector& dv) : Array<bool> (dv) { }
+
+  boolMatrix (const dim_vector& dv, bool val) : Array<bool> (dv, val) { }
+
+  boolMatrix (const Array<bool>& a) : Array<bool> (a.as_matrix ()) { }
+
+  boolMatrix (const boolMatrix& a) : Array<bool> (a) { }
 
   boolMatrix& operator = (const boolMatrix& a)
     {
-      Array2<bool>::operator = (a);
+      Array<bool>::operator = (a);
       return *this;
     }
 
   bool operator == (const boolMatrix& a) const;
   bool operator != (const boolMatrix& a) const;
 
-  boolMatrix transpose (void) const { return Array2<bool>::transpose (); }
+  boolMatrix transpose (void) const { return Array<bool>::transpose (); }
 
   // destructive insert/delete/reorder operations
 
@@ -76,19 +84,19 @@ public:
   friend std::istream& operator >> (std::istream& is, Matrix& a);
 #endif
 
+  void resize (octave_idx_type nr, octave_idx_type nc,
+               bool rfv = resize_fill_value ())
+  {
+    Array<bool>::resize (dim_vector (nr, nc), rfv);
+  }
+
   static bool resize_fill_value (void) { return false; }
 
-private:
-
-  boolMatrix (bool *b, octave_idx_type r, octave_idx_type c) : Array2<bool> (b, r, c) { }
 };
 
+MM_BOOL_OP_DECLS (boolMatrix, boolMatrix, OCTAVE_API)
+MS_BOOL_OP_DECLS (boolMatrix, bool, OCTAVE_API)
+SM_BOOL_OP_DECLS (bool, boolMatrix, OCTAVE_API)
 MM_CMP_OP_DECLS (boolMatrix, boolMatrix, OCTAVE_API)
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

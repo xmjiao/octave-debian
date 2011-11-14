@@ -1,4 +1,4 @@
-## Copyright (C) 1996, 1997, 2007 John W. Eaton
+## Copyright (C) 1996-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -18,11 +18,11 @@
 
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} meshc (@var{x}, @var{y}, @var{z})
-## Plot a mesh and contour given matrices @var{x}, and @var{y} from 
-## @code{meshgrid} and a matrix @var{z} corresponding to the @var{x} and 
-## @var{y} coordinates of the mesh.  If @var{x} and @var{y} are vectors, 
-## then a typical vertex is (@var{x}(j), @var{y}(i), @var{z}(i,j)).  Thus, 
-## columns of @var{z} correspond to different @var{x} values and rows of 
+## Plot a mesh and contour given matrices @var{x}, and @var{y} from
+## @code{meshgrid} and a matrix @var{z} corresponding to the @var{x} and
+## @var{y} coordinates of the mesh.  If @var{x} and @var{y} are vectors,
+## then a typical vertex is (@var{x}(j), @var{y}(i), @var{z}(i,j)).  Thus,
+## columns of @var{z} correspond to different @var{x} values and rows of
 ## @var{z} correspond to different @var{y} values.
 ## @seealso{meshgrid, mesh, contour}
 ## @end deftypefn
@@ -37,13 +37,18 @@ function h = meshc (varargin)
 
   set (tmp, "facecolor", "w");
   set (tmp, "edgecolor", "flat");
+  ## FIXME - gnuplot does not support a filled surface and a
+  ## non-filled contour. 3D filled patches are also not supported.
+  ## Thus, the facecolor will be transparent for the gnuplot
+  ## backend.
 
   if (! ishold ())
-    set (ax, "view", [-37.5, 30]);
+    set (ax, "view", [-37.5, 30],
+         "xgrid", "on", "ygrid", "on", "zgrid", "on");
   endif
 
-  z = get (tmp, "zdata");
-  zmin = 2 * (min(z(:)) - max(z(:)));
+  drawnow ();
+  zmin = get (ax, "zlim")(1);
 
   [c, tmp2] = __contour__ (ax, zmin, varargin{:});
 

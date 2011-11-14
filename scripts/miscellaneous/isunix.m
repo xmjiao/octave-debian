@@ -1,4 +1,4 @@
-## Copyright (C) 2004, 2005, 2006, 2007 John W. Eaton
+## Copyright (C) 2004-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -18,7 +18,7 @@
 
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} isunix ()
-## Return 1 if Octave is running on a Unix-like system and 0 otherwise.
+## Return true if Octave is running on a Unix-like system and false otherwise.
 ## @seealso{ismac, ispc}
 ## @end deftypefn
 

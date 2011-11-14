@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1999, 2000, 2002, 2005, 2006, 2007, 2009
-##               Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -70,7 +69,7 @@ function d = duplication_matrix (n)
   endif
 
   if (! (isscalar (n) && n == round (n) && n > 0))
-    error ("duplication_matrix: n must be a positive integer");
+    error ("duplication_matrix: N must be a positive integer");
   endif
 
   d = zeros (n * n, n * (n + 1) / 2);

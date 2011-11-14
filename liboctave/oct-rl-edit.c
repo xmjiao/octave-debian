@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008
-              John W. Eaton
+Copyright (C) 2000-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -346,7 +345,9 @@ octave_rl_add_defun (const char *name, rl_fcn_ptr f, char key)
 void
 octave_rl_set_terminal_name (const char *term)
 {
-  rl_terminal_name = term;
+  OCTAVE_RL_SAVE_STRING (saved_term, term);
+
+  rl_terminal_name = saved_term;
 }
 
 void
@@ -380,9 +381,3 @@ octave_rl_meta (char c)
 }
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

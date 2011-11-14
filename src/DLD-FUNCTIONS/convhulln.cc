@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2000, 2007, 2008, 2009 Kai Habel
+Copyright (C) 2000-2011 Kai Habel
 
 This file is part of Octave.
 
@@ -29,31 +29,31 @@ along with Octave; see the file COPYING.  If not, see
 * guaranteed to be simplicial.
 */
 
-#include <sstream>
-
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
-#include "oct.h"
+
+#include <sstream>
+
 #include "Cell.h"
+#include "defun-dld.h"
+#include "error.h"
+#include "oct-obj.h"
+#include "parse.h"
 
 #ifdef HAVE_QHULL
-#if defined(HAVE__SNPRINTF) && !defined(HAVE_SNPRINTF)
-#define snprintf _snprintf
-#endif
-
 extern "C" {
 #include <qhull/qhull_a.h>
 }
 
-#ifdef NEED_QHULL_VERSION
+# ifdef NEED_QHULL_VERSION
 char qh_version[] = "convhulln.oct 2007-07-24";
-#endif
-#endif
+# endif
+#endif /* HAVE_QHULL */
 
 DEFUN_DLD (convhulln, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Loadable Function} {@var{h} =} convhulln (@var{p})\n\
+@deftypefn  {Loadable Function} {@var{h} =} convhulln (@var{p})\n\
 @deftypefnx {Loadable Function} {@var{h} =} convhulln (@var{p}, @var{opt})\n\
 @deftypefnx {Loadable Function} {[@var{h}, @var{v}] =} convhulln (@dots{})\n\
 Return an index vector to the points of the enclosing convex hull.\n\
@@ -62,7 +62,7 @@ If a second optional argument is given, it must be a string or cell array\n\
 of strings containing options for the underlying qhull command.  (See\n\
 the Qhull documentation for the available options.)  The default options\n\
 are \"s Qci Tcv\".\n\
-If the second output @var{V} is requested the volume of the convex hull is\n\
+If the second output @var{v} is requested the volume of the convex hull is\n\
 calculated.\n\n\
 @seealso{convhull, delaunayn}\n\
 @end deftypefn")
@@ -73,36 +73,36 @@ calculated.\n\n\
   std::string options;
 
   int nargin = args.length ();
-  if (nargin < 1 || nargin > 2) 
+  if (nargin < 1 || nargin > 2)
     {
       print_usage ();
       return retval;
     }
 
-  if (nargin == 2) 
+  if (nargin == 2)
     {
-      if (args (1).is_string ()) 
-	options = args(1).string_value ();
+      if (args (1).is_string ())
+        options = args(1).string_value ();
       else if (args(1).is_cell ())
-	{
-	  Cell c = args(1).cell_value ();
-	  options = "";
-	  for (octave_idx_type i = 0; i < c.numel (); i++)
-	    {
-	      if (! c.elem(i).is_string ())
-		{
-		  error ("convhulln: second argument must be a string or cell array of strings");
-		  return retval;
-		}
+        {
+          Cell c = args(1).cell_value ();
+          options = "";
+          for (octave_idx_type i = 0; i < c.numel (); i++)
+            {
+              if (! c.elem(i).is_string ())
+                {
+                  error ("convhulln: OPT must be a string or cell array of strings");
+                  return retval;
+                }
 
-	      options = options + c.elem(i).string_value() + " ";
-	    }
-	}
+              options = options + c.elem(i).string_value() + " ";
+            }
+        }
       else
-	{
-	  error ("convhulln: second argument must be a string or cell array of strings");
-	  return retval;
-	}
+        {
+          error ("convhulln: OPT must be a string or cell array of strings");
+          return retval;
+        }
     }
   else
     // turn on some consistency checks
@@ -118,13 +118,22 @@ calculated.\n\n\
 
   boolT ismalloc = False;
 
-  OCTAVE_LOCAL_BUFFER (char, flags, 250);
+  std::ostringstream buf;
 
-  // hmm, lots of options for qhull here
-  // QJ guarantees that the output will be triangles
-  snprintf (flags, 250, "qhull QJ %s", options.c_str ());
+  buf << "qhull QJ " << options;
 
-  if (! qh_new_qhull (dim, n, pt_array, ismalloc, flags, 0, stderr)) 
+  std::string buf_string = buf.str ();
+
+  // FIXME -- we can't just pass buf_string.c_str () to qh_new_qhull
+  // because the argument is not declared const.  Ugh.  Unless
+  // qh_new_qhull really needs to modify this argument, someone should
+  // fix QHULL.
+
+  OCTAVE_LOCAL_BUFFER (char, flags, buf_string.length () + 1);
+
+  strcpy (flags, buf_string.c_str ());
+
+  if (! qh_new_qhull (dim, n, pt_array, ismalloc, flags, 0, stderr))
     {
       // If you want some debugging information replace the NULL
       // pointer with stdout
@@ -137,38 +146,38 @@ calculated.\n\n\
       Matrix idx (nf, dim);
 
       octave_idx_type j, i = 0;
-      FORALLfacets 
-	{
-	  j = 0;
-	  if (! facet->simplicial)
-	    // should never happen with QJ
-	    error ("convhulln: non-simplicial facet");
+      FORALLfacets
+        {
+          j = 0;
+          if (! facet->simplicial)
+            // should never happen with QJ
+            error ("convhulln: non-simplicial facet");
 
-	  if (dim == 3) 
-	    {
-	      vertices = qh_facet3vertex (facet);
-	      FOREACHvertex_ (vertices)
-		idx(i, j++) = 1 + qh_pointid(vertex->point);
-	      qh_settempfree (&vertices);
-	    } 
-	  else 
-	    {
-	      if (facet->toporient ^ qh_ORIENTclock) 
-		{
-		  FOREACHvertex_ (facet->vertices)
-		    idx(i, j++) = 1 + qh_pointid(vertex->point);
-		} 
-	      else 
-		{
-		  FOREACHvertexreverse12_ (facet->vertices)
-		    idx(i, j++) = 1 + qh_pointid(vertex->point);
-		}
-	    }
-	  if (j < dim)
-	    // likewise but less fatal
-	    warning ("facet %d only has %d vertices", i, j);
-	  i++;
-	}
+          if (dim == 3)
+            {
+              vertices = qh_facet3vertex (facet);
+              FOREACHvertex_ (vertices)
+                idx(i, j++) = 1 + qh_pointid(vertex->point);
+              qh_settempfree (&vertices);
+            }
+          else
+            {
+              if (facet->toporient ^ qh_ORIENTclock)
+                {
+                  FOREACHvertex_ (facet->vertices)
+                    idx(i, j++) = 1 + qh_pointid(vertex->point);
+                }
+              else
+                {
+                  FOREACHvertexreverse12_ (facet->vertices)
+                    idx(i, j++) = 1 + qh_pointid(vertex->point);
+                }
+            }
+          if (j < dim)
+            // likewise but less fatal
+            warning ("facet %d only has %d vertices", i, j);
+          i++;
+        }
 
       if (nargout == 2)
         // calculate volume of convex hull
@@ -178,28 +187,28 @@ calculated.\n\n\
           realT dist;
 
           FORALLfacets
-	    {
-	      if (! facet->normal)
-		continue;
+            {
+              if (! facet->normal)
+                continue;
 
-	      if (facet->upperdelaunay && qh ATinfinity)
-		continue;
+              if (facet->upperdelaunay && qh ATinfinity)
+                continue;
 
-	      facet->f.area = area = qh_facetarea (facet);
-	      facet->isarea = True;
+              facet->f.area = area = qh_facetarea (facet);
+              facet->isarea = True;
 
-	      if (qh DELAUNAY)
-		{
-		  if (facet->upperdelaunay == qh UPPERdelaunay)
-		    qh totarea += area;
-		}
-	      else
-		{
-		  qh totarea += area;
-		  qh_distplane (qh interior_point, facet, &dist);
-		  qh totvol += -dist * area/ qh hull_dim;
-		}
-	    }
+              if (qh DELAUNAY)
+                {
+                  if (facet->upperdelaunay == qh UPPERdelaunay)
+                    qh totarea += area;
+                }
+              else
+                {
+                  qh totarea += area;
+                  qh_distplane (qh interior_point, facet, &dist);
+                  qh totvol += -dist * area/ qh hull_dim;
+                }
+            }
 
           retval(1) = octave_value (qh totvol);
         }
@@ -214,9 +223,9 @@ calculated.\n\n\
   int curlong, totlong;
   qh_memfreeshort (&curlong, &totlong);
 
-  if (curlong || totlong) 
+  if (curlong || totlong)
     warning ("convhulln: did not free %d bytes of long memory (%d pieces)",
-	    totlong, curlong);
+            totlong, curlong);
 #else
   error ("convhulln: not available in this version of Octave");
 #endif
@@ -225,11 +234,11 @@ calculated.\n\n\
 }
 
 /*
-%!test
+%!testif HAVE_QHULL
 %! cube = [0 0 0;1 0 0;1 1 0;0 1 0;0 0 1;1 0 1;1 1 1;0 1 1];
 %! [h, v] = convhulln(cube,'Pp');
 %! assert (v, 1.0, 1e6*eps);
-%!test
+%!testif HAVE_QHULL
 %! tetrahedron = [1 1 1;-1 -1 1;-1 1 -1;1 -1 -1];
 %! [h, v] = convhulln(tetrahedron,'Pp');
 %! assert (v, 8/3, 1e6*eps);

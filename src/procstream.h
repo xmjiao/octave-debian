@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 1998, 2000, 2001, 2002,
-              2004, 2005, 2006, 2007, 2009 John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -27,9 +26,7 @@ along with Octave; see the file COPYING.  If not, see
 #include <iosfwd>
 #include <string>
 
-#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#endif
 
 #include "oct-procbuf.h"
 
@@ -39,7 +36,7 @@ procstreambase : virtual public std::ios
 {
 public:
 
-  procstreambase (void) { pb_init (); }
+  procstreambase (void) : pb () { pb_init (); }
 
   procstreambase (const std::string& name, int mode);
 
@@ -107,7 +104,7 @@ oprocstream : public std::ostream, public procstreambase
 // oprocstream : public procstreambase, public std::ostream
 {
 public:
- 
+
   oprocstream (void) : std::ostream (0), procstreambase () { }
 
   oprocstream (const std::string& name, int mode = std::ios::out)
@@ -162,9 +159,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,4 +1,4 @@
-@c Copyright (C) 1996, 1997, 2007, 2008, 2009 John W. Eaton
+@c Copyright (C) 1996-2011 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -133,6 +133,7 @@ $$ a = \left[ \matrix{ 1 & 2 \cr 3 & 4 } \right] $$
 
 @end group
 @end example
+
 @end ifnottex
 
 Elements of a matrix may be arbitrary expressions, provided that the
@@ -267,6 +268,13 @@ because not doing so would cause trouble when parsing the valid expression
 For clarity, it is probably best to always use commas and semicolons to
 separate matrix elements and rows.
 
+The maximum number of elements in a matrix is fixed when Octave is compiled.
+The allowable number can be queried with the function @code{sizemax}.  Note
+that other factors, such as the amount of memory available on your machine,
+may limit the maximum size of matrices to something smaller.
+
+@DOCSTRING(sizemax)
+
 When you type a matrix or the name of a variable whose value is a
 matrix, Octave responds by printing the matrix in with neatly aligned
 rows and columns.  If the rows of the matrix are too large to fit on the
@@ -303,7 +311,7 @@ easily be misinterpreted.
 @subsection Empty Matrices
 
 A matrix may have one or both dimensions zero, and operations on empty
-matrices are handled as described by Carl de Boor in @cite{An Empty
+matrices are handled as described by Carl @nospell{de} Boor in @cite{An Empty
 Exercise}, SIGNUM, Volume 25, pages 2-6, 1990 and C. N. Nett and W. M.
 Haddad, in @cite{A System-Theoretic Appropriate Realization of the Empty
 Matrix Concept}, IEEE Transactions on Automatic Control, Volume 38,
@@ -340,6 +348,7 @@ s * [](mxn) = [](mxn) * s = [](mxn)
     [](mx0) * [](0xn) =  0(mxn)
 @end group
 @end example
+
 @end ifnottex
 
 By default, dimensions of the empty matrix are printed along with the
@@ -361,7 +370,7 @@ replaces the list with a single matrix constant.
 @cindex range expressions
 @cindex expression, range
 
-@opindex colon
+@opindex :
 
 A @dfn{range} is a convenient way to write a row vector with evenly
 spaced elements.  A range expression is defined by the value of the first
@@ -391,6 +400,26 @@ convert range constants to vectors unless it is necessary to do so.
 This allows you to write a constant like @samp{1 : 10000} without using
 80,000 bytes of storage on a typical 32-bit workstation.
 
+A common example of when it does become necessary to convert ranges into
+vectors occurs when they appear within a vector (i.e., inside square
+brackets).  For instance, whereas
+
+@example
+x = 0 : 0.1 : 1;
+@end example
+
+@noindent
+defines @var{x} to be a variable of type @code{range} and occupies 24
+bytes of memory, the expression
+
+@example
+y = [ 0 : 0.1 : 1];
+@end example
+
+@noindent
+defines @var{y} to be of type @code{matrix} and occupies 88 bytes of
+memory.
+
 Note that the upper (or lower, if the increment is negative) bound on
 the range is not always included in the set of values, and that ranges
 defined by floating point values can produce surprising results because
@@ -408,6 +437,7 @@ that it is safe to do so.  For instance, doing
 a = 2*(1:1e7) - 1;
 @end example
 
+@noindent
 will produce the same result as @samp{1:2:2e7-1}, but without ever forming a
 vector with ten million elements.
 
@@ -416,7 +446,8 @@ allowed, because a division by zero would occur in determining the number of
 range elements.  However, ranges with zero increment (i.e., all elements equal)
 are useful, especially in indexing, and Octave allows them to be constructed
 using the built-in function @dfn{ones}.  Note that because a range must be a row
-vector, @samp{ones (1, 10)} produces a range, while @samp{ones (10, 1)} does not.
+vector, @samp{ones (1, 10)} produces a range, while @samp{ones (10, 1)} does
+not.
 
 When Octave parses a range expression, it examines the elements of the
 expression to determine whether they are all constants.  If they are, it
@@ -432,7 +463,7 @@ precision answers.  A single precision variable is created with the
 
 @DOCSTRING(single)
 
-for example
+for example:
 
 @example
 @group
@@ -515,8 +546,6 @@ when converted.
 
 @DOCSTRING(intmin)
 
-@DOCSTRING(intwarning)
-
 @menu
 * Integer Arithmetic::
 @end menu
@@ -530,13 +559,6 @@ on integers.  The operators @code{+}, @code{-}, @code{.*}, and @code{./}
 work on integers of the same type.  So, it is possible to add two 32 bit
 integers, but not to add a 32 bit integer and a 16 bit integer.
 
-The arithmetic operations on integers are performed by casting the
-integer values to double precision values, performing the operation, and
-then re-casting the values back to the original integer type.  As the
-double precision type of Octave is only capable of representing integers
-with up to 53 bits of precision, it is not possible to perform
-arithmetic with 64 bit integer types.
-
 When doing integer arithmetic one should consider the possibility of
 underflow and overflow.  This happens when the result of the computation
 can't be represented using the chosen integer type.  As an example it is
@@ -548,7 +570,7 @@ result of @math{10 - 20} when using unsigned integers is zero.
 When doing integer division Octave will round the result to the nearest
 integer.  This is different from most programming languages, where the
 result is often floored to the nearest integer.  So, the result of
-@code{int32(5)./int32(8)} is @code{1}.
+@code{int32(5) ./ int32(8)} is @code{1}.
 
 @DOCSTRING(idivide)
 
@@ -575,6 +597,7 @@ duplicated.  Therefore
 bitget (100, 8:-1:1)
 @end example
 
+@noindent
 is the same as
 
 @example
@@ -618,7 +641,7 @@ Octave also includes the ability to left-shift and right-shift values bitwise.
 
 Bits that are shifted out of either end of the value are lost.  Octave
 also uses arithmetic shifts, where the sign bit of the value is kept
-during a right shift.  For example
+during a right shift.  For example:
 
 @example
 @group
@@ -666,7 +689,7 @@ data(idx)
 
 @noindent
 Instead of creating the @code{idx} array it is possible to replace
-@code{data(idx)} with @code{data( data <= 2 )} in the above code.
+@code{data(idx)} with @w{@code{data( data <= 2 )}} in the above code.
 
 Logical values can also be constructed by
 casting numeric objects to logical values, or by using the @code{true}
@@ -681,7 +704,7 @@ or @code{false} functions.
 @node Promotion and Demotion of Data Types
 @section Promotion and Demotion of Data Types
 
-Many operators and functions can work with mixed data types.  For example
+Many operators and functions can work with mixed data types.  For example,
 
 @example
 @group
@@ -722,7 +745,7 @@ returns a single precision value.  The mixed operations that are valid
 and their returned data types are
 
 @multitable @columnfractions .2 .3 .3 .2
-@item @tab Mixed Operation @tab Result @tab 
+@headitem @tab Mixed Operation @tab Result @tab 
 @item @tab double OP single @tab single @tab
 @item @tab double OP integer @tab integer @tab
 @item @tab double OP char @tab double @tab
@@ -745,7 +768,7 @@ min (single (1), 0)
 where the returned value is single precision.
 
 In the case of mixed type indexed assignments, the type is not
-changed.  For example
+changed.  For example,
 
 @example
 @group
@@ -786,9 +809,9 @@ variable.
 
 @DOCSTRING(isnumeric)
 
-@DOCSTRING(isreal)
-
 @DOCSTRING(isfloat)
+
+@DOCSTRING(isreal)
 
 @DOCSTRING(iscomplex)
 
@@ -796,14 +819,24 @@ variable.
 
 @DOCSTRING(isvector)
 
+@DOCSTRING(isrow)
+
+@DOCSTRING(iscolumn)
+
 @DOCSTRING(isscalar)
 
 @DOCSTRING(issquare)
 
 @DOCSTRING(issymmetric)
 
+@DOCSTRING(ishermitian)
+
 @DOCSTRING(isdefinite)
 
 @DOCSTRING(islogical)
 
 @DOCSTRING(isprime)
+
+If instead of knowing properties of variables, you wish to know which
+variables are defined and to gather other information about the
+workspace itself, see @ref{Status of Variables}.

@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 1999, 2000, 2002, 2005, 2006,
-##               2007 Friedrich Leisch
+## Copyright (C) 1995-2011 Friedrich Leisch
 ##
 ## This file is part of Octave.
 ##
@@ -33,24 +32,24 @@
 ## described above is returned in @var{dd}.  The value of @var{d} is
 ## simply the mean of @var{dd}.
 ##
-## Reference: Brockwell, Peter J. & Davis, Richard A. Time Series:
-## Theory and Methods Springer 1987.
+## Reference: P.J. Brockwell & R.A. Davis. @cite{Time Series:
+## Theory and Methods}. Springer 1987.
 ## @end deftypefn
 
 ## Author: FL <Friedrich.Leisch@ci.tuwien.ac.at>
 ## Description: Estimate the fractional differencing parameter
 
-function [d, D] = diffpara (X, a, b)
+function [d, dd] = diffpara (x, a, b)
 
   if ((nargin < 1) || (nargin > 3))
     print_usage ();
   else
-    if (isvector (X))
-      n = length (X);
+    if (isvector (x))
+      n = length (x);
       k = 1;
-      X = reshape (X, n, 1);
+      x = reshape (x, n, 1);
     else
-      [n, k] = size(X);
+      [n, k] = size(x);
     endif
     if (nargin == 1)
       a = 0.5 * sqrt (n);
@@ -62,28 +61,28 @@ function [d, D] = diffpara (X, a, b)
   endif
 
   if (! (isscalar (a) && isscalar (b)))
-    error ("diffpara: a and b must be scalars");
+    error ("diffpara: A and B must be scalars");
   endif
 
-  D = zeros (b - a + 1, k);
+  dd = zeros (b - a + 1, k);
 
   for l = 1:k
 
     w = 2 * pi * (1 : n-1) / n;
 
     x = 2 * log (abs (1 - exp (-i*w)));
-    y = log (periodogram (X(2:n,l)));
+    y = log (periodogram (x(2:n,l)));
 
     x = center (x);
     y = center (y);
 
     for m = a:b
-      D(m-a+1) = - x(1:m) * y(1:m) / sumsq (x(1:m));
+      dd(m-a+1) = - x(1:m) * y(1:m) / sumsq (x(1:m));
     endfor
 
   endfor
 
-  d = mean (D);
+  d = mean (dd);
 
 endfunction
 

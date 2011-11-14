@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2000, 2001, 2002, 2004, 2005, 2006,
-              2007, 2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -50,7 +49,7 @@ tree_prefix_expression::rvalue (int nargout)
 
   if (nargout > 1)
     error ("prefix operator `%s': invalid number of output arguments",
-	   oper () . c_str ());
+           oper () . c_str ());
   else
     retval = rvalue1 (nargout);
 
@@ -68,33 +67,34 @@ tree_prefix_expression::rvalue1 (int)
   if (op)
     {
       if (etype == octave_value::op_incr || etype == octave_value::op_decr)
-	{
-	  op->rvalue1 ();
+        {
+          octave_lvalue ref = op->lvalue ();
 
-	  if (! error_state)
-	    {
-	      octave_lvalue ref = op->lvalue ();
+          if (! error_state)
+            {
+              ref.do_unary_op (etype);
 
-	      if (! error_state && ref.is_defined ())
-		{
-		  ref.do_unary_op (etype);
-
-		  retval = ref.value ();
-		}
-	    }
-	}
+              if (! error_state)
+                retval = ref.value ();
+            }
+        }
       else
-	{
-	  octave_value val = op->rvalue1 ();
+        {
+          octave_value val = op->rvalue1 ();
 
-	  if (! error_state && val.is_defined ())
-	    {
-	      retval = ::do_unary_op (etype, val);
+          if (! error_state && val.is_defined ())
+            {
+              // Attempt to do the operation in-place if it is unshared
+              // (a temporary expression).
+              if (val.get_count () == 1)
+                retval = val.do_non_const_unary_op (etype);
+              else
+                retval = ::do_unary_op (etype, val);
 
-	      if (error_state)
-		retval = octave_value ();
-	    }
-	}
+              if (error_state)
+                retval = octave_value ();
+            }
+        }
     }
 
   return retval;
@@ -102,11 +102,11 @@ tree_prefix_expression::rvalue1 (int)
 
 tree_expression *
 tree_prefix_expression::dup (symbol_table::scope_id scope,
-			     symbol_table::context_id context) const
+                             symbol_table::context_id context) const
 {
   tree_prefix_expression *new_pe
     = new tree_prefix_expression (op ? op->dup (scope, context) : 0,
-				  line (), column (), etype);
+                                  line (), column (), etype);
 
   new_pe->copy_base (*this);
 
@@ -128,7 +128,7 @@ tree_postfix_expression::rvalue (int nargout)
 
   if (nargout > 1)
     error ("postfix operator `%s': invalid number of output arguments",
-	   oper () . c_str ());
+           oper () . c_str ());
   else
     retval = rvalue1 (nargout);
 
@@ -146,33 +146,28 @@ tree_postfix_expression::rvalue1 (int)
   if (op)
     {
       if (etype == octave_value::op_incr || etype == octave_value::op_decr)
-	{
-	  op->rvalue1 ();
+        {
+          octave_lvalue ref = op->lvalue ();
 
-	  if (! error_state)
-	    {
-	      octave_lvalue ref = op->lvalue ();
+          if (! error_state)
+            {
+              retval = ref.value ();
 
-	      if (! error_state && ref.is_defined ())
-		{
-		  retval = ref.value ();
-
-		  ref.do_unary_op (etype);
-		}
-	    }
-	}
+              ref.do_unary_op (etype);
+            }
+        }
       else
-	{
-	  octave_value val = op->rvalue1 ();
+        {
+          octave_value val = op->rvalue1 ();
 
-	  if (! error_state && val.is_defined ())
-	    {
-	      retval = ::do_unary_op (etype, val);
+          if (! error_state && val.is_defined ())
+            {
+              retval = ::do_unary_op (etype, val);
 
-	      if (error_state)
-		retval = octave_value ();
-	    }
-	}
+              if (error_state)
+                retval = octave_value ();
+            }
+        }
     }
 
   return retval;
@@ -180,11 +175,11 @@ tree_postfix_expression::rvalue1 (int)
 
 tree_expression *
 tree_postfix_expression::dup (symbol_table::scope_id scope,
-			      symbol_table::context_id context) const
+                              symbol_table::context_id context) const
 {
   tree_postfix_expression *new_pe
     = new tree_postfix_expression (op ? op->dup (scope, context) : 0,
-				   line (), column (), etype);
+                                   line (), column (), etype);
 
   new_pe->copy_base (*this);
 
@@ -196,9 +191,3 @@ tree_postfix_expression::accept (tree_walker& tw)
 {
   tw.visit_postfix_expression (*this);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 David Bateman
+## Copyright (C) 2008-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -17,27 +17,35 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} colorbar (@var{s})
+## @deftypefn  {Function File} {} colorbar (@var{s})
 ## @deftypefnx {Function File} {} colorbar ("peer", @var{h}, @dots{})
-## Adds a colorbar to the current axes.  Valid values for @var{s} are
+## Add a colorbar to the current axes.  Valid values for @var{s} are
 ##
 ## @table @asis
 ## @item "EastOutside"
 ## Place the colorbar outside the plot to the right.  This is the default.
+##
 ## @item "East"
 ## Place the colorbar inside the plot to the right.
+##
 ## @item "WestOutside"
 ## Place the colorbar outside the plot to the left.
+##
 ## @item "West"
 ## Place the colorbar inside the plot to the left.
+##
 ## @item "NorthOutside"
 ## Place the colorbar above the plot.
+##
 ## @item "North"
 ## Place the colorbar at the top of the plot.
+##
 ## @item "SouthOutside"
 ## Place the colorbar under the plot.
+##
 ## @item "South"
 ## Place the colorbar at the bottom of the plot.
+##
 ## @item "Off", "None"
 ## Remove any existing colorbar from the plot.
 ## @end table
@@ -55,27 +63,28 @@ function h = colorbar (varargin)
   i = 1;
   while (i <= nargin)
     arg = varargin {i++};
-
     if (ischar(arg))
       if (strcmpi (arg, "peer"))
-	if (i > nargin)
-	  error ("colorbar: missing axes handle after \"peer\"");
-	else
-	  ax = vargin{i++}
-	  if (!isscalar (ax) || ! ishandle (ax)
-	      || strcmp (get (ax, "type"), "axes"))
-	    error ("colorbar: expecting an axes handle following \"peer\"");
-	  endif
-	endif
+        if (i > nargin)
+          error ("colorbar: missing axes handle after \"peer\"");
+        else
+          ax = varargin{i++};
+          if (!isscalar (ax) || ! ishandle (ax)
+              || ! strcmp (get (ax, "type"), "axes"))
+            error ("colorbar: expecting an axes handle following \"peer\"");
+          endif
+        endif
       elseif (strcmpi (arg, "north") || strcmpi (arg, "south")
-	      || strcmpi (arg, "east") || strcmpi (arg, "west")
-	      || strcmpi (arg, "northoutside") || strcmpi (arg, "southoutside")
-	      || strcmpi (arg, "eastoutside") || strcmpi (arg, "westoutside"))
-	loc = tolower (arg);
+              || strcmpi (arg, "east") || strcmpi (arg, "west")
+              || strcmpi (arg, "northoutside") || strcmpi (arg, "southoutside")
+              || strcmpi (arg, "eastoutside") || strcmpi (arg, "westoutside"))
+        loc = tolower (arg);
+      elseif (strcmpi (arg, "location") && i <= nargin)
+        loc = tolower (varargin{i++});
       elseif (strcmpi (arg, "off") || strcmpi (arg, "none"))
-	deleting = true;
+        deleting = true;
       else
-	args{end+1} = arg;
+        args{end+1} = arg;
       endif
     else
       args{end+1} = arg;
@@ -88,17 +97,22 @@ function h = colorbar (varargin)
 
   showhiddenhandles = get (0, "showhiddenhandles");
   unwind_protect
-    set (0, "showhiddenhandles", "on")
+    set (0, "showhiddenhandles", "on");
     cax = findobj (get (ax, "parent"), "tag", "colorbar", "type", "axes", "axes", ax);
     if (! isempty (cax))
       delete (cax);
     endif
   unwind_protect_cleanup
-    set (0, "showhiddenhandles", showhiddenhandles)
+    set (0, "showhiddenhandles", showhiddenhandles);
   end_unwind_protect
 
   if (! deleting)
+    ## FIXME - Matlab does not require the "position" property to be active.
+    ##         Is there a way to determine the plotbox position for the
+    ##         gnuplot graphics toolkit with the outerposition is active?
+    set (ax, "activepositionproperty", "position");
     obj = get (ax);
+    obj.__my_handle__ = ax;
     position = obj.position;
     clen = rows (get (get (ax, "parent"), "colormap"));
     cext = get (ax, "clim");
@@ -106,59 +120,56 @@ function h = colorbar (varargin)
     cmin = cext(1) + cdiff;
     cmax = cext(2) - cdiff;
 
-    orig_pos = obj.position;
-    orig_opos = obj.outerposition;
-    [pos, cpos, vertical, mirror, aspect] =  ...
-	__position_colorbox__ (loc, obj, ancestor (ax, "figure"));
-    set (ax, "activepositionproperty", "position", "position", pos);
+    [pos, cpos, vertical, mirror] =  ...
+        __position_colorbox__ (loc, obj, ancestor (ax, "figure"));
+    set (ax, "position", pos);
 
-    cax = __go_axes__ (get (ax, "parent"), "tag", "colorbar", 
-    		       "handlevisibility", "on", 
-		       "activepositionproperty", "position", 
-		       "position", cpos);
+    cax = __go_axes__ (get (ax, "parent"), "tag", "colorbar",
+                       "handlevisibility", "on",
+                       "activepositionproperty", "position",
+                       "position", cpos);
     addproperty ("location", cax, "radio",
-		 "eastoutside|east|westoutside|west|northoutside|north|southoutside|south",
-		 loc);
+                 "eastoutside|east|westoutside|west|northoutside|north|southoutside|south",
+                 loc);
     addproperty ("axes", cax, "handle", ax);
 
     if (vertical)
       hi = image (cax, [0,1], [cmin, cmax], [1 : clen]');
       if (mirror)
-	set (cax, "xtick", [], "xdir", "normal", "ydir", "normal",
-	     "ylim", cext, "ylimmode", "manual",
-	     "yaxislocation", "right", args{:});
+        set (cax, "xtick", [], "xdir", "normal", "ydir", "normal",
+             "ylim", cext, "ylimmode", "manual",
+             "yaxislocation", "right", args{:});
       else
-	set (cax, "xtick", [], "xdir", "normal", "ydir", "normal",
-	     "ylim", cext, "ylimmode", "manual",
-	     "yaxislocation", "left", args{:});
+        set (cax, "xtick", [], "xdir", "normal", "ydir", "normal",
+             "ylim", cext, "ylimmode", "manual",
+             "yaxislocation", "left", args{:});
       endif
     else
       hi = image (cax, [cmin, cmax], [0,1], [1 : clen]);
       if (mirror)
-	set (cax, "ytick", [], "xdir", "normal", "ydir", "normal",
-	     "xlim", cext, "xlimmode", "manual",
-	     "xaxislocation", "top", args{:});
+        set (cax, "ytick", [], "xdir", "normal", "ydir", "normal",
+             "xlim", cext, "xlimmode", "manual",
+             "xaxislocation", "top", args{:});
       else
-	set (cax, "ytick", [], "xdir", "normal", "ydir", "normal",
-	     "xlim", cext, "xlimmode", "manual",
-	     "xaxislocation", "bottom", args{:});
+        set (cax, "ytick", [], "xdir", "normal", "ydir", "normal",
+             "xlim", cext, "xlimmode", "manual",
+             "xaxislocation", "bottom", args{:});
       endif
     endif
 
-    if (! isnan (aspect))
-      set (cax, "dataaspectratio", aspect);
-    endif
+    ctext = text (0, 0, "", "tag", "colorbar","visible", "off",
+                  "handlevisibility", "off", "xliminclude", "off",
+                  "yliminclude", "off", "zliminclude", "off",
+                  "deletefcn", {@deletecolorbar, cax, obj});
 
-    ctext = text (0, 0, "", "tag", "colorbar","visible", "off", 
-		  "handlevisibility", "off", "xliminclude", "off",  
-		  "yliminclude", "off", "zliminclude", "off",
-		  "deletefcn", {@deletecolorbar, cax, orig_pos, orig_opos});
+    set (cax, "deletefcn", {@resetaxis, obj});
 
-    set (cax, "deletefcn", {@resetaxis, orig_pos, orig_opos});
-
-    addlistener (ax, "clim", {@update_colorbar_clim, hi, vertical})
-    addlistener (ax, "dataaspectratio", {@update_colorbar_axis, cax})
-    addlistener (ax, "position", {@update_colorbar_axis, cax})
+    addlistener (ax, "clim", {@update_colorbar_clim, hi, vertical});
+    addlistener (ax, "plotboxaspectratio", {@update_colorbar_axis, cax, obj});
+    addlistener (ax, "plotboxaspectratiomode", {@update_colorbar_axis, cax, obj});
+    addlistener (ax, "dataaspectratio", {@update_colorbar_axis, cax, obj});
+    addlistener (ax, "dataaspectratiomode", {@update_colorbar_axis, cax, obj});
+    addlistener (ax, "position", {@update_colorbar_axis, cax, obj});
 
   endif
 
@@ -167,32 +178,36 @@ function h = colorbar (varargin)
   endif
 endfunction
 
-function deletecolorbar (h, d, hc, pos, opos)
+function deletecolorbar (h, d, hc, orig_props)
   ## Don't delete the colorbar and reset the axis size if the
   ## parent figure is being deleted.
-  if (ishandle (hc) && strcmp (get (hc, "type"), "axes") && 
-      (isempty (gcbf()) || strcmp (get (gcbf(), "beingdeleted"),"off")))
+  if (ishandle (hc) && strcmp (get (hc, "type"), "axes")
+      && (isempty (gcbf()) || strcmp (get (gcbf(), "beingdeleted"),"off")))
     if (strcmp (get (hc, "beingdeleted"), "off"))
       delete (hc);
     endif
-    if (!isempty (ancestor (h, "axes")) &&
-	strcmp (get (ancestor (h, "axes"), "beingdeleted"), "off"))
-      set (ancestor (h, "axes"), "position", pos, "outerposition", opos);
+    if (!isempty (ancestor (h, "axes"))
+        && strcmp (get (ancestor (h, "axes"), "beingdeleted"), "off"))
+      set (ancestor (h, "axes"), "position", orig_props.position, ...
+                            "outerposition", orig_props.outerposition, ...
+                    "activepositionproperty", orig_props.activepositionproperty);
     endif
   endif
 endfunction
 
-function resetaxis (h, d, pos, opos)
-  if (ishandle (h) && strcmp (get (h, "type"), "axes") && 
-      (isempty (gcbf()) || strcmp (get (gcbf(), "beingdeleted"),"off")) &&
-      ishandle (get (h, "axes")))
-     set (get (h, "axes"), "position", pos, "outerposition", opos);
+function resetaxis (h, d, orig_props)
+  if (ishandle (h) && strcmp (get (h, "type"), "axes")
+      && (isempty (gcbf()) || strcmp (get (gcbf(), "beingdeleted"),"off"))
+      && ishandle (get (h, "axes")))
+     set (get (h, "axes"), "position", orig_props.position, ...
+                           "outerposition", orig_props.outerposition, ...
+                   "activepositionproperty", orig_props.activepositionproperty);
   endif
 endfunction
 
 function update_colorbar_clim (h, d, hi, vert)
-  if (ishandle (h) && strcmp (get (h, "type"), "image") && 
-      (isempty (gcbf()) || strcmp (get (gcbf(), "beingdeleted"),"off")))
+  if (ishandle (h) && strcmp (get (h, "type"), "image")
+      && (isempty (gcbf()) || strcmp (get (gcbf(), "beingdeleted"),"off")))
     clen = rows (get (get (h, "parent"), "colormap"));
     cext = get (h, "clim");
     cdiff = (cext(2) - cext(1)) / clen / 2;
@@ -209,68 +224,67 @@ function update_colorbar_clim (h, d, hi, vert)
   endif
 endfunction
 
-function update_colorbar_axis (h, d, cax)
-  if (ishandle (cax) && strcmp (get (cax, "type"), "axes") && 
-      (isempty (gcbf()) || strcmp (get (gcbf(), "beingdeleted"),"off")))
+function update_colorbar_axis (h, d, cax, orig_props)
+
+  if (ishandle (cax) && strcmp (get (cax, "type"), "axes")
+      && (isempty (gcbf()) || strcmp (get (gcbf(), "beingdeleted"),"off")))
     loc = get (cax, "location");
     obj = get (h);
-    [pos, cpos, vertical, mirror, aspect] =  ...
-	__position_colorbox__ (loc, obj, ancestor (h, "figure"));
+    obj.__my_handle__ = h;
+    obj.position = orig_props.position;
+    obj.outerposition = orig_props.outerposition;
+    [pos, cpos, vertical, mirror] =  ...
+        __position_colorbox__ (loc, obj, ancestor (h, "figure"));
 
     if (vertical)
       if (mirror)
-	set (cax, "xtick", [], "xdir", "normal", "ydir", "normal",
-	     "yaxislocation", "right", "position", cpos);
+        set (cax, "xtick", [], "xdir", "normal", "ydir", "normal",
+             "yaxislocation", "right", "position", cpos);
       else
-	set (cax, "xtick", [], "xdir", "normal", "ydir", "normal",
-	     "yaxislocation", "left", "position", cpos);
+        set (cax, "xtick", [], "xdir", "normal", "ydir", "normal",
+             "yaxislocation", "left", "position", cpos);
       endif
     else
       if (mirror)
-	set (cax, "ytick", [], "xdir", "normal", "ydir", "normal",
-	     "xaxislocation", "top", "position", cpos);
+        set (cax, "ytick", [], "xdir", "normal", "ydir", "normal",
+             "xaxislocation", "top", "position", cpos);
       else
-	set (cax, "ytick", [], "xdir", "normal", "ydir", "normal",
-	     "xaxislocation", "bottom", "position", cpos);
+        set (cax, "ytick", [], "xdir", "normal", "ydir", "normal",
+             "xaxislocation", "bottom", "position", cpos);
       endif
     endif
 
-    if (! isnan (aspect))
-      set (cax, "dataaspectratio", aspect);
-    endif
   endif
 endfunction
 
-function [pos, cpos, vertical, mirr, aspect] = __position_colorbox__ (cbox, obj, cf)
+function [pos, cpos, vertical, mirr] = __position_colorbox__ (cbox, obj, cf)
 
+  ## This will always represent the position prior to adding the colorbar.
   pos = obj.position;
   sz = pos(3:4);
 
-  off = 0;
-  if (strcmpi (obj.dataaspectratiomode, "manual"))
-    r = obj.dataaspectratio;
-    if (pos(3) > pos(4))
-      switch (cbox)
-	case {"east", "eastoutside", "west", "westoutside"}
-	  off = [(pos(3) - pos(4)) ./ (r(2) / r(1)), 0];	  
-      endswitch
+  if (strcmpi (obj.plotboxaspectratiomode, "manual")
+      || strcmpi (obj.dataaspectratiomode, "manual"))
+    if (isempty (strfind (cbox, "outside")))
+      scale = 1.0;
     else
-      switch (cbox)
-	case {"north", "northoutside", "south", "southoutside"}
-	  off = [0, (pos(4) - pos(3)) ./ (r(1) / r(2))];
-	  ## This shouldn't be here except that gnuplot doesn't have a
-	  ## square window and so a square aspect ratio is not square.
-	  ## The corrections are empirical.
-	  if (strcmp (get (cf, "__backend__"), "gnuplot"))
-	    if (length (cbox) > 7 && strcmp (cbox(end-6:end),"outside"))
-	      off = off / 2;
-	    else
-	      off = off / 1.7;
-	    endif
-	  endif
-      endswitch
+      scale = 0.8;
     endif
-    off = off / 2;
+    if (isempty (strfind (cbox, "east")) && isempty (strfind (cbox, "west")))
+      scale = [1, scale];
+    else
+      scale = [scale, 1];
+    endif
+    if (strcmp (get (cf, "__graphics_toolkit__"), "gnuplot")
+        && strcmp (obj.activepositionproperty, "outerposition"))
+      obj.outerposition = obj.outerposition .* [1, 1, scale];
+      off = 0.5 * (obj.outerposition (3:4) - __actual_axis_position__ (obj)(3:4));
+    else
+      obj.position = obj.position .* [1, 1, scale];
+      off = 0.5 * (obj.position (3:4) - __actual_axis_position__ (obj)(3:4));
+    endif
+  else
+    off = 0.0;
   endif
 
   switch (cbox)
@@ -324,59 +338,51 @@ function [pos, cpos, vertical, mirr, aspect] = __position_colorbox__ (cbox, obj,
 
   cpos = [origin, sz];
 
-  if (strcmpi (obj.dataaspectratiomode, "manual"))
-    if (__gnuplot_has_feature__ ("screen_coordinates_for_{lrtb}margin"))
-      obj.position = pos;
-      actual_pos = __actual_axis_position__ (obj);
-      if (strfind (cbox, "outside"))
-	scale = 1.0;
-      else
-	scale = 0.9;
-      endif
-      if (sz(1) > sz(2))
-	dx = (1-scale)*actual_pos(3);
-	cpos(1) = actual_pos(1) + dx/2;
-	cpos(3) = actual_pos(3) - dx;
-      else
-	dy = (1-scale)*actual_pos(4);
-	cpos(2) = actual_pos(2) + dy/2;
-	cpos(4) = actual_pos(4) - dy;
-      endif
-      aspect = NaN;
+  if (strcmpi (obj.plotboxaspectratiomode, "manual")
+      || strcmpi (obj.dataaspectratiomode, "manual"))
+    obj.position = pos;
+    actual_pos = __actual_axis_position__ (obj);
+    if (strfind (cbox, "outside"))
+      scale = 1.0;
     else
-      if (vertical)
-	aspect = [1, 0.21, 1];
-      else
-	aspect = [0.21, 1, 1];
-      endif
+      scale = 0.9;
     endif
-  else
-    aspect = NaN;
+    if (sz(1) > sz(2))
+      ## Ensure north or south colorbars are the proper length
+      dx = (1-scale)*actual_pos(3);
+      cpos(1) = actual_pos(1) + dx/2;
+      cpos(3) = actual_pos(3) - dx;
+    else
+      ## Ensure east or west colorbars are the proper height
+      dy = (1-scale)*actual_pos(4);
+      cpos(2) = actual_pos(2) + dy/2;
+      cpos(4) = actual_pos(4) - dy;
+    endif
   endif
 
 endfunction
 
 %!demo
 %! clf
-%! n = 64; x = kron (1:n,ones(n,1)); x = abs(x - x.'); 
+%! n = 64; x = kron (1:n,ones(n,1)); x = abs(x - x.');
 %! imagesc(x)
 %! colorbar();
 
 %!demo
 %! clf
-%! n = 64; x = kron (1:n,ones(n,1)); x = abs(x - x.'); 
+%! n = 64; x = kron (1:n,ones(n,1)); x = abs(x - x.');
 %! imagesc(x)
 %! colorbar("westoutside");
 
 %!demo
 %! clf
-%! n = 64; x = kron (1:n,ones(n,1)); x = abs(x - x.'); 
+%! n = 64; x = kron (1:n,ones(n,1)); x = abs(x - x.');
 %! imagesc(x)
-%! colorbar("northoutside");
+%! colorbar("peer", gca (), "northoutside");
 
 %!demo
 %! clf
-%! n = 64; x = kron (1:n,ones(n,1)); x = abs(x - x.'); 
+%! n = 64; x = kron (1:n,ones(n,1)); x = abs(x - x.');
 %! imagesc(x)
 %! colorbar("southoutside");
 
@@ -402,7 +408,7 @@ endfunction
 
 %!demo
 %! clf
-%! n = 64; x = kron (1:n,ones(n,1)); x = abs(x - x.'); 
+%! n = 64; x = kron (1:n,ones(n,1)); x = abs(x - x.');
 %! subplot(2,2,1)
 %! imagesc(x)
 %! colorbar();
@@ -418,7 +424,7 @@ endfunction
 
 %!demo
 %! clf
-%! n = 64; x = kron (1:n,ones(n,1)); x = abs(x - x.'); 
+%! n = 64; x = kron (1:n,ones(n,1)); x = abs(x - x.');
 %! subplot(1,2,1)
 %! imagesc(x)
 %! axis square;
@@ -430,7 +436,7 @@ endfunction
 
 %!demo
 %! clf
-%! n = 64; x = kron (1:n,ones(n,1)); x = abs(x - x.'); 
+%! n = 64; x = kron (1:n,ones(n,1)); x = abs(x - x.');
 %! subplot(1,2,1)
 %! imagesc(x)
 %! axis square;
@@ -442,7 +448,7 @@ endfunction
 
 %!demo
 %! clf
-%! n = 64; x = kron (1:n,ones(n,1)); x = abs(x - x.'); 
+%! n = 64; x = kron (1:n,ones(n,1)); x = abs(x - x.');
 %! subplot(2,1,1)
 %! imagesc(x)
 %! axis square;
@@ -454,7 +460,7 @@ endfunction
 
 %!demo
 %! clf
-%! n = 64; x = kron (1:n,ones(n,1)); x = abs(x - x.'); 
+%! n = 64; x = kron (1:n,ones(n,1)); x = abs(x - x.');
 %! subplot(2,1,1)
 %! imagesc(x)
 %! axis square;
@@ -466,7 +472,7 @@ endfunction
 
 %!demo
 %! clf
-%! n = 64; x = kron (1:n,ones(n,1)); x = abs(x - x.'); 
+%! n = 64; x = kron (1:n,ones(n,1)); x = abs(x - x.');
 %! subplot(1,2,1)
 %! imagesc(x)
 %! colorbar();
@@ -476,7 +482,7 @@ endfunction
 
 %!demo
 %! clf
-%! n = 64; x = kron (1:n,ones(n,1)); x = abs(x - x.'); 
+%! n = 64; x = kron (1:n,ones(n,1)); x = abs(x - x.');
 %! subplot(1,2,1)
 %! imagesc(x)
 %! colorbar("northoutside");
@@ -486,7 +492,7 @@ endfunction
 
 %!demo
 %! clf
-%! n = 64; x = kron (1:n,ones(n,1)); x = abs(x - x.'); 
+%! n = 64; x = kron (1:n,ones(n,1)); x = abs(x - x.');
 %! subplot(2,1,1)
 %! imagesc(x)
 %! colorbar();
@@ -496,7 +502,7 @@ endfunction
 
 %!demo
 %! clf
-%! n = 64; x = kron (1:n,ones(n,1)); x = abs(x - x.'); 
+%! n = 64; x = kron (1:n,ones(n,1)); x = abs(x - x.');
 %! subplot(2,1,1)
 %! imagesc(x)
 %! colorbar("northoutside");
@@ -506,7 +512,7 @@ endfunction
 
 %!demo
 %! clf
-%! n = 64; x = kron (1:n,ones(n,1)); x = abs(x - x.'); 
+%! n = 64; x = kron (1:n,ones(n,1)); x = abs(x - x.');
 %! subplot(1,2,1)
 %! contour(x)
 %! axis square;
@@ -521,7 +527,7 @@ endfunction
 
 %!demo
 %! clf
-%! n = 64; x = kron (1:n,ones(n,1)); x = abs(x - x.'); 
+%! n = 64; x = kron (1:n,ones(n,1)); x = abs(x - x.');
 %! contour (x)
 %! xlim ([1, 64])
 %! ylim ([1, 64])
@@ -530,7 +536,7 @@ endfunction
 
 %!demo
 %! clf
-%! n = 64; x = kron (1:n,ones(n,1)); x = abs(x - x.'); 
+%! n = 64; x = kron (1:n,ones(n,1)); x = abs(x - x.');
 %! contour (x)
 %! xlim ([1, 64])
 %! ylim ([1, 64])
@@ -552,17 +558,17 @@ endfunction
 
 %!demo
 %! clf
-%! n=5;x=linspace(0,5,n);y=linspace(0,1,n); 
-%! imagesc(1./hilb(n)); axis equal; colorbar 
+%! n=5;x=linspace(0,5,n);y=linspace(0,1,n);
+%! imagesc(1./hilb(n)); axis equal; colorbar
 
 %!demo
 %! clf
-%! n=5;x=linspace(0,5,n);y=linspace(0,1,n); 
-%! imagesc(x,y,1./hilb(n)); axis equal; colorbar 
+%! n=5;x=linspace(0,5,n);y=linspace(0,1,n);
+%! imagesc(x,y,1./hilb(n)); axis equal; colorbar
 
 %!demo
 %! clf
-%! n=5;x=linspace(0,5,n);y=linspace(0,1,n); 
+%! n=5;x=linspace(0,5,n);y=linspace(0,1,n);
 %! imagesc(y,x,1./hilb(n)); axis equal; colorbar
 ## This requires that the axes position be properly determined for "axes equal"
 
@@ -585,6 +591,14 @@ endfunction
 %! plot([0, 2])
 %! colorbar ("eastoutside")
 %! axis square
+
+%!demo
+%! clf
+%! pcolor (peaks (20))
+%! shading ("interp")
+%! axis ("tight", "square")
+%! colorbar ()
+#%! axes('color','none','box','on','activepositionproperty','position')
 
 %!demo
 %! clf

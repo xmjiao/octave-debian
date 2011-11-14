@@ -1,5 +1,4 @@
-## Copyright (C) 1993, 1994, 1995, 1996, 1997, 1999, 2000, 2002, 2003,
-##               2005, 2006, 2007, 2008, 2009 John W. Eaton
+## Copyright (C) 1993-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -18,9 +17,10 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} ylabel (@var{string})
+## @deftypefn  {Function File} {} ylabel (@var{string})
 ## @deftypefnx {Function File} {} ylabel (@var{h}, @var{string})
-## @seealso{xlabel}.
+## @deftypefnx {Function File} {@var{h} =} ylabel (@dots{})
+## @seealso{xlabel}
 ## @end deftypefn
 
 ## Author: jwe
@@ -36,7 +36,8 @@ function retval = ylabel (varargin)
   oldh = gca ();
   unwind_protect
     axes (h);
-    tmp = __axis_label__ ("ylabel", varargin{:});
+    tmp = __axis_label__ ("ylabel", varargin{:},
+                          "color", get (h, "ycolor"));
   unwind_protect_cleanup
     axes (oldh);
   end_unwind_protect

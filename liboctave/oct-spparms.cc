@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 2004, 2005, 2006, 2007, 2008 David Bateman
-Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004 Andy Adler
+Copyright (C) 2004-2011 David Bateman
+Copyright (C) 1998-2004 Andy Adler
 
 This file is part of Octave.
 
@@ -43,7 +43,7 @@ octave_sparse_params::instance_ok (void)
   if (! instance)
     {
       (*current_liboctave_error_handler)
-	("unable to create octave_sparse_params object!");
+        ("unable to create octave_sparse_params object!");
 
       retval = false;
     }
@@ -143,7 +143,7 @@ octave_sparse_params::do_tight (void)
   params(11) = 1;     // umfpack
   params(12) = 0.001; // sym_tol
 }
-  
+
 void
 octave_sparse_params::init_keys (void)
 {
@@ -176,14 +176,14 @@ octave_sparse_params::do_set_vals (const NDArray& vals)
   if (len > OCTAVE_SPARSE_CONTROLS_SIZE)
     {
       (*current_liboctave_error_handler)
-	("octave_sparse_params::do_set_vals: too many values");
+        ("octave_sparse_params::do_set_vals: too many values");
 
       return false;
     }
   else
     {
       for (int i = 0; i < len; i++)
-	params(i) = vals(i);
+        params(i) = vals(i);
 
       return true;
     }
@@ -195,10 +195,10 @@ octave_sparse_params::do_set_key (const std::string& key, const double& val)
   for (int i = 0; i < OCTAVE_SPARSE_CONTROLS_SIZE; i++)
     {
       if (keys (i) == key)
-	{
-	  params(i) = val;
-	  return true;
-	}
+        {
+          params(i) = val;
+          return true;
+        }
     }
 
   return false;
@@ -210,7 +210,7 @@ octave_sparse_params::do_get_key (const std::string& key)
   for (int i = 0; i < OCTAVE_SPARSE_CONTROLS_SIZE; i++)
     {
       if (keys (i) == key)
-	return params(i);
+        return params(i);
     }
 
   return octave_NaN;
@@ -218,14 +218,8 @@ octave_sparse_params::do_get_key (const std::string& key)
 
 void
 octave_sparse_params::do_print_info (std::ostream& os,
-				     const std::string& prefix) const
+                                     const std::string& prefix) const
 {
   for (int i = 0; i < OCTAVE_SPARSE_CONTROLS_SIZE; i++)
     os << prefix << keys(i) << ": " << params(i) << "\n";
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

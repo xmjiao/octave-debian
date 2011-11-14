@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 2004, 2005, 2006, 2007 David Bateman
-Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004 Andy Adler
+Copyright (C) 2004-2011 David Bateman
+Copyright (C) 1998-2004 Andy Adler
 
 This file is part of Octave.
 
@@ -32,11 +32,11 @@ octave_sparse_sort_idxl
 public:
   octave_idx_type r;
   octave_idx_type c;
-  octave_idx_type idx; 
+  octave_idx_type idx;
 };
 
 bool octave_sparse_sidxl_comp (octave_sparse_sort_idxl* i,
-			       octave_sparse_sort_idxl* j);
+                               octave_sparse_sort_idxl* j);
 
 class
 octave_idx_vector_sort
@@ -47,12 +47,6 @@ public:
 };
 
 bool octave_idx_vector_comp (octave_idx_vector_sort* i,
-			     octave_idx_vector_sort* j);
+                             octave_idx_vector_sort* j);
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

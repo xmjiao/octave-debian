@@ -1,4 +1,4 @@
-## Copyright (C) 2007, 2009 Michael Goffioul and Kai Habel
+## Copyright (C) 2007-2011 Michael Goffioul and Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -17,14 +17,14 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} cylinder
+## @deftypefn  {Function File} {} cylinder
 ## @deftypefnx {Function File} {} cylinder (@var{r})
 ## @deftypefnx {Function File} {} cylinder (@var{r}, @var{n})
 ## @deftypefnx {Function File} {[@var{x}, @var{y}, @var{z}] =} cylinder (@dots{})
 ## @deftypefnx {Function File} {} cylinder (@var{ax}, @dots{})
-## Generates three matrices in @code{meshgrid} format, such that
+## Generate three matrices in @code{meshgrid} format, such that
 ## @code{surf (@var{x}, @var{y}, @var{z})} generates a unit cylinder.
-## The matrices are of size @code{@var{n}+1}-by-@code{@var{n}+1}. 
+## The matrices are of size @code{@var{n}+1}-by-@code{@var{n}+1}.
 ## @var{r} is a vector containing the radius along the z-axis.
 ## If @var{n} or @var{r} are omitted then default values of 20 or [1 1]
 ## are assumed.
@@ -35,11 +35,12 @@
 ## of axes.
 ##
 ## Examples:
+##
 ## @example
 ## @group
-## disp ("plotting a cone")
 ## [x, y, z] = cylinder (10:-1:0,50);
 ## surf (x, y, z);
+## title ("a cone")
 ## @end group
 ## @end example
 ## @seealso{sphere}
@@ -47,8 +48,8 @@
 
 function [xx, yy, zz] = cylinder (varargin)
 
-  [ax, args, nargs] = __plt_get_axis_arg__ ((nargout > 0), "cylinder", 
-					    varargin{:});
+  [ax, args, nargs] = __plt_get_axis_arg__ ((nargout > 0), "cylinder",
+                                            varargin{:});
 
   if (nargs == 0)
     n = 20;
@@ -64,7 +65,7 @@ function [xx, yy, zz] = cylinder (varargin)
   endif
 
   if (length (r) < 2)
-    error ("cylinder: length(r) must be larger than 2")
+    error ("cylinder: length(R) must be larger than 2");
   endif
 
   phi = linspace (0, 2*pi, n+1);
@@ -85,6 +86,6 @@ function [xx, yy, zz] = cylinder (varargin)
 endfunction
 
 %!demo
-%! disp ("plotting a cone")
 %! [x, y, z] = cylinder (10:-1:0,50);
 %! surf (x, y, z);
+%! title ("a cone")

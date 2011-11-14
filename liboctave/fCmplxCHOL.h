@@ -1,8 +1,7 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2000, 2002, 2004, 2005, 2006,
-              2007 John W. Eaton
-Copyright (C) 2008, 2009 Jaroslav Hajek
+Copyright (C) 1994-2011 John W. Eaton
+Copyright (C) 2008-2009 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -36,11 +35,17 @@ FloatComplexCHOL
 {
 public:
 
-  FloatComplexCHOL (void) : chol_mat () { }
+  FloatComplexCHOL (void) : chol_mat (), xrcond (0) { }
 
-  FloatComplexCHOL (const FloatComplexMatrix& a, bool calc_cond = false) { init (a, calc_cond); }
+  FloatComplexCHOL (const FloatComplexMatrix& a, bool calc_cond = false)
+    : chol_mat (), xrcond (0)
+    {
+      init (a, calc_cond);
+    }
 
-  FloatComplexCHOL (const FloatComplexMatrix& a, octave_idx_type& info, bool calc_cond = false)
+  FloatComplexCHOL (const FloatComplexMatrix& a, octave_idx_type& info,
+                    bool calc_cond = false)
+    : chol_mat (), xrcond (0)
     {
       info = init (a, calc_cond);
     }
@@ -51,10 +56,10 @@ public:
   FloatComplexCHOL& operator = (const FloatComplexCHOL& a)
     {
       if (this != &a)
-	{
-	  chol_mat = a.chol_mat;
-	  xrcond = a.xrcond;
-	}
+        {
+          chol_mat = a.chol_mat;
+          xrcond = a.xrcond;
+        }
 
       return *this;
     }
@@ -71,13 +76,15 @@ public:
 
   octave_idx_type downdate (const FloatComplexColumnVector& u);
 
-  octave_idx_type insert_sym (const FloatComplexColumnVector& u, octave_idx_type j);
+  octave_idx_type insert_sym (const FloatComplexColumnVector& u,
+                              octave_idx_type j);
 
   void delete_sym (octave_idx_type j);
 
   void shift_sym (octave_idx_type i, octave_idx_type j);
 
-  friend OCTAVE_API std::ostream& operator << (std::ostream& os, const FloatComplexCHOL& a);
+  friend OCTAVE_API std::ostream& operator << (std::ostream& os,
+                                               const FloatComplexCHOL& a);
 
 private:
 
@@ -91,9 +98,3 @@ private:
 FloatComplexMatrix OCTAVE_API chol2inv (const FloatComplexMatrix& r);
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

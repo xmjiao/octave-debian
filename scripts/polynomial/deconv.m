@@ -1,5 +1,4 @@
-## Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2002, 2004,
-##               2005, 2006, 2007, 2008 John W. Eaton
+## Copyright (C) 1994-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -27,7 +26,7 @@
 ## If @var{y} and @var{a} are polynomial coefficient vectors, @var{b} will
 ## contain the coefficients of the polynomial quotient and @var{r} will be
 ## a remainder polynomial of lowest order.
-## @seealso{conv, poly, roots, residue, polyval, polyderiv, polyinteg}
+## @seealso{conv, poly, roots, residue, polyval, polyderiv, polyint}
 ## @end deftypefn
 
 ## Author: Tony Richardson <arichard@stark.cc.oh.us>
@@ -41,7 +40,7 @@ function [b, r] = deconv (y, a)
   endif
 
   if (! (isvector (y) && isvector (a)))
-    error("conv: both arguments must be vectors");
+    error("deconv: both arguments must be vectors");
   endif
 
   la = length (a);
@@ -55,7 +54,9 @@ function [b, r] = deconv (y, a)
   endif
 
   if (ly > la)
-    b = filter (y, a, [1, (zeros (1, ly - la))]);
+    x = zeros (size (y) - size (a) + 1);
+    x (1) = 1;
+    b = filter (y, a, x);
   elseif (ly == la)
     b = filter (y, a, 1);
   else
@@ -99,6 +100,9 @@ endfunction
 %!test
 %! [b, r] = deconv ([3; 6], [1, 2, 3]);
 %! assert (b == 0 && all (all (r == [3; 6])))
+
+%!test
+%! assert (deconv ((1:3)',[1, 1]), [1; 1])
 
 %!error [b, r] = deconv ([3, 6], [1, 2; 3, 4]);
 

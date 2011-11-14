@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2000, 2002, 2003, 2004, 2005,
-              2006, 2007, 2008 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
+Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
 
@@ -34,15 +34,21 @@ ColumnVector : public MArray<double>
 {
 public:
 
-  ColumnVector (void) : MArray<double> () { }
+  ColumnVector (void) : MArray<double> (dim_vector (0, 1)) { }
 
-  explicit ColumnVector (octave_idx_type n) : MArray<double> (n) { }
+  explicit ColumnVector (octave_idx_type n)
+    : MArray<double> (dim_vector (n, 1)) { }
 
-  ColumnVector (octave_idx_type n, double val) : MArray<double> (n, val) { }
+  explicit ColumnVector (const dim_vector& dv)
+    : MArray<double> (dv.as_column ()) { }
+
+  ColumnVector (octave_idx_type n, double val)
+    : MArray<double> (dim_vector (n, 1), val) { }
 
   ColumnVector (const ColumnVector& a) : MArray<double> (a) { }
 
-  ColumnVector (const MArray<double>& a) : MArray<double> (a) { }
+  ColumnVector (const MArray<double>& a) : MArray<double> (a.as_column ()) { }
+  ColumnVector (const Array<double>& a) : MArray<double> (a.as_column ()) { }
 
   ColumnVector& operator = (const ColumnVector& a)
     {
@@ -83,23 +89,25 @@ public:
 
   // other operations
 
-  typedef double (*dmapper) (double);
-  typedef Complex (*cmapper) (const Complex&);
-
-  ColumnVector map (dmapper fcn) const;
-  ComplexColumnVector map (cmapper fcn) const;
-
   double min (void) const;
   double max (void) const;
+
+  ColumnVector abs (void) const;
 
   // i/o
 
   friend OCTAVE_API std::ostream& operator << (std::ostream& os, const ColumnVector& a);
   friend OCTAVE_API std::istream& operator >> (std::istream& is, ColumnVector& a);
 
-private:
+  void resize (octave_idx_type n,
+               const double& rfv = Array<double>::resize_fill_value ())
+  {
+    Array<double>::resize (dim_vector (n, 1), rfv);
+  }
 
-  ColumnVector (double *d, octave_idx_type l) : MArray<double> (d, l) { }
+  void clear (octave_idx_type n)
+    { Array<double>::clear (n, 1); }
+
 };
 
 // Publish externally used friend functions.
@@ -110,9 +118,3 @@ extern OCTAVE_API ColumnVector imag (const ComplexColumnVector& a);
 MARRAY_FORWARD_DEFS (MArray, ColumnVector, double)
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

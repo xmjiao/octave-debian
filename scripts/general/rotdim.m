@@ -1,4 +1,4 @@
-## Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 David Bateman
+## Copyright (C) 2004-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -17,14 +17,17 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} rotdim (@var{x}, @var{n}, @var{plane})
+## @deftypefn  {Function File} {} rotdim (@var{x})
+## @deftypefnx {Function File} {} rotdim (@var{x}, @var{n})
+## @deftypefnx {Function File} {} rotdim (@var{x}, @var{n}, @var{plane})
 ## Return a copy of @var{x} with the elements rotated counterclockwise in
-## 90-degree increments.  The second argument is optional, and specifies
-## how many 90-degree rotations are to be applied (the default value is 1).
+## 90-degree increments.
+## The second argument @var{n} is optional, and specifies how many 90-degree
+## rotations are to be applied (the default value is 1).
 ## The third argument is also optional and defines the plane of the
-## rotation.  As such @var{plane} is a two element vector containing two
-## different valid dimensions of the matrix.  If @var{plane} is not given
-## Then the first two non-singleton dimensions are used.
+## rotation.  If present, @var{plane} is a two element vector containing two
+## different valid dimensions of the matrix.  When @var{plane} is not given
+## the first two non-singleton dimensions are used.
 ##
 ## Negative values of @var{n} rotate the matrix in a clockwise direction.
 ## For example,
@@ -51,18 +54,18 @@
 ## @seealso{rot90, flipud, fliplr, flipdim}
 ## @end deftypefn
 
-function y = rotdim (x, k, plane)
-  
+function y = rotdim (x, n, plane)
+
   if (nargin < 1 || nargin > 3)
     print_usage ();
   endif
 
-  if (nargin > 1 && ! isempty(k))
-    if (!isscalar (k) || imag (k) != 0 || fix (k) != k)
-      error ("rotdim: k must be an scalar integer");
+  if (nargin > 1 && ! isempty(n))
+    if (!isscalar (n) || !isreal(n) || fix (n) != n)
+      error ("rotdim: N must be a scalar integer");
     endif
   else
-    k = 1;
+    n = 1;
   endif
 
   nd = ndims (x);
@@ -74,10 +77,10 @@ function y = rotdim (x, k, plane)
     while (dim < nd)
       dim = dim + 1;
       if (sz (dim) != 1)
-	plane = [plane, dim];
-	if (length (plane) == 2)
-	  break;
-	endif
+        plane = [plane, dim];
+        if (length (plane) == 2)
+          break;
+        endif
       endif
     endwhile
     if (length (plane) < 1)
@@ -87,26 +90,26 @@ function y = rotdim (x, k, plane)
     endif
   else
     if (! (isvector (plane) && length (plane) == 2
-	   && all (plane == round (plane)) && all (plane > 0)
-	   && all (plane < (nd + 1)) && plane(1) != plane(2)))
-      error ("rotdim: plane must be a 2 element integer vector defining a valid plane");
+           && all (plane == round (plane)) && all (plane > 0)
+           && all (plane < (nd + 1)) && plane(1) != plane(2)))
+      error ("rotdim: PLANE must be a 2 element integer vector defining a valid PLANE");
     endif
   endif
 
-  k = rem (k, 4);
-  if (k < 0)
-    k = k + 4;
+  n = rem (n, 4);
+  if (n < 0)
+    n = n + 4;
   endif
-  if (k == 0)
+  if (n == 0)
     y = x;
-  elseif (k == 2)
+  elseif (n == 2)
     y = flipdim (flipdim (x, plane(1)), plane(2));
-  elseif (k == 1 || k == 3)
+  elseif (n == 1 || n == 3)
     perm = 1:nd;
     perm(plane(1)) = plane(2);
     perm(plane(2)) = plane(1);
     y = permute (x, perm);
-    if (k == 1)
+    if (n == 1)
       y = flipdim (y, min (plane));
     else
       y = flipdim (y, max (plane));

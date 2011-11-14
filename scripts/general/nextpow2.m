@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1999, 2000, 2002, 2004, 2005, 2006,
-##               2007, 2009 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -24,7 +23,7 @@
 ## $2^n \ge |x|$.
 ## @end tex
 ## @ifnottex
-## 2^n >= abs (x).
+## 2^n @geq{} abs (x).
 ## @end ifnottex
 ##
 ## If @var{x} is a vector, return @code{nextpow2 (length (@var{x}))}.
@@ -42,7 +41,7 @@ function n = nextpow2 (x)
   endif
 
   if (! (isscalar (x) || isvector (x)))
-    error ("nextpow2: x must be a scalar or a vector");
+    error ("nextpow2: X must be a scalar or a vector");
   endif
 
   t = length (x);

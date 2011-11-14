@@ -1,4 +1,4 @@
-## Copyright (C) 2009 VZLU Prague
+## Copyright (C) 2009-2011 VZLU Prague
 ##
 ## This file is part of Octave.
 ##
@@ -25,7 +25,7 @@
 ## list of possible values.
 
 function names = __all_opts__ (varargin)
-  
+
   persistent saved_names = {};
 
   ## do not clear this function
@@ -54,10 +54,12 @@ function names = __all_opts__ (varargin)
       end_try_catch
     endfor
     names = unique (names);
-    lnames = unique (tolower (names));
+    [lnames, idx] = unique (tolower (names));
     if (length (lnames) < length (names))
       ## This is bad.
       error ("__all_opts__: duplicate options with inconsistent case");
+    else
+      names = names(idx);
     endif
     saved_names = names;
     recursive = false;

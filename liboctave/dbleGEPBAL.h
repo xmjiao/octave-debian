@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2000, 2002, 2004, 2005, 2006,
-              2007, 2008 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -35,26 +34,30 @@ GEPBALANCE
 {
 public:
 
-  GEPBALANCE (void) : balanced_mat (), balancing_mat () { }
+  GEPBALANCE (void)
+    : balanced_mat (), balanced_mat2 (), balancing_mat (), balancing_mat2 ()
+    { }
 
   GEPBALANCE (const Matrix& a, const Matrix& b, const std::string& balance_job)
+    : balanced_mat (), balanced_mat2 (), balancing_mat (), balancing_mat2 ()
     {
-      init (a, b, balance_job); 
+      init (a, b, balance_job);
     }
 
   GEPBALANCE (const GEPBALANCE& a)
     : balanced_mat (a.balanced_mat), balanced_mat2 (a.balanced_mat2),
-    balancing_mat (a.balancing_mat), balancing_mat2 (a.balancing_mat2) { }
+      balancing_mat (a.balancing_mat), balancing_mat2 (a.balancing_mat2)
+    { }
 
   GEPBALANCE& operator = (const GEPBALANCE& a)
     {
       if (this != &a)
-	{
-	  balanced_mat = a.balanced_mat;
-	  balanced_mat2 = a.balanced_mat2;
-	  balancing_mat = a.balancing_mat;
-	  balancing_mat2 = a.balancing_mat2;
-	}
+        {
+          balanced_mat = a.balanced_mat;
+          balanced_mat2 = a.balanced_mat2;
+          balancing_mat = a.balancing_mat;
+          balancing_mat2 = a.balancing_mat2;
+        }
       return *this;
     }
 
@@ -77,14 +80,8 @@ private:
   Matrix balancing_mat;
   Matrix balancing_mat2;
 
-  octave_idx_type init (const Matrix& a, const Matrix& b, 
-			const std::string& balance_job);
+  octave_idx_type init (const Matrix& a, const Matrix& b,
+                        const std::string& balance_job);
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

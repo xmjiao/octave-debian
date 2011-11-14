@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2002, 2004, 2005, 2006, 2007, 2008
-              John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -40,21 +39,27 @@ public:
 
   FloatLU (const FloatLU& a) : base_lu <FloatMatrix> (a) { }
 
+  FloatLU (const FloatMatrix& l, const FloatMatrix& u,
+           const PermMatrix& p)
+    : base_lu <FloatMatrix> (l, u, p) { }
+
   FloatLU& operator = (const FloatLU& a)
     {
       if (this != &a)
-	base_lu <FloatMatrix> :: operator = (a);
+        base_lu <FloatMatrix> :: operator = (a);
 
       return *this;
     }
 
   ~FloatLU (void) { }
+
+  void update (const FloatColumnVector& u, const FloatColumnVector& v);
+
+  void update (const FloatMatrix& u, const FloatMatrix& v);
+
+  void update_piv (const FloatColumnVector& u, const FloatColumnVector& v);
+
+  void update_piv (const FloatMatrix& u, const FloatMatrix& v);
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

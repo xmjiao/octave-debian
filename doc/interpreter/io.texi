@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.
 
-@c Copyright (C) 1996, 1997, 2007, 2008, 2009 John W. Eaton
+@c Copyright (C) 1996-2011 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -23,13 +23,14 @@
 
 Octave supports several ways of reading and writing data to or from the
 prompt or a file.  The simplest functions for data Input and Output
-(I/O) are easy to use, but only provides limited control of how
+(I/O) are easy to use, but only provide limited control of how
 data is processed.  For more control, a set of functions modelled
 after the C standard library are also provided by Octave.
 
 @menu
 * Basic Input and Output::      
 * C-Style I/O Functions::       
+* GUI Dialogs for I/O::       
 @end menu
 
 @node Basic Input and Output
@@ -41,7 +42,6 @@ after the C standard library are also provided by Octave.
 * Terminal Output::             
 * Terminal Input::              
 * Simple File I/O::             
-* Rational Approximations::
 @end menu
 
 @node Terminal Output
@@ -67,10 +67,10 @@ value of a variable without printing its name, use the function
 The @code{format} command offers some control over the way Octave prints
 values with @code{disp} and through the normal echoing mechanism.
 
-@c pr-output.cc
+@c disp src/pr-output.cc
 @anchor{doc-disp}
 @deftypefn {Built-in Function} {} disp (@var{x})
-Display the value of @var{x}.  For example,
+Display the value of @var{x}.  For example:
 
 @example
 @group
@@ -90,10 +90,52 @@ returns the formatted output in a string.
 @end deftypefn
 
 
-@c pr-output.cc
+@c list_in_columns src/strfns.cc
+@anchor{doc-list_in_columns}
+@deftypefn {Built-in Function} {} list_in_columns (@var{arg}, @var{width})
+Return a string containing the elements of @var{arg} listed in
+columns with an overall maximum width of @var{width}.  The argument
+@var{arg} must be a cell array of character strings or a character array.
+If @var{width} is not specified, the width of the terminal screen is used.
+Newline characters are used to break the lines in the output string.
+For example:
+
+@example
+@group
+list_in_columns (@{"abc", "def", "ghijkl", "mnop", "qrs", "tuv"@}, 20)
+     @result{} ans = abc     mnop
+            def     qrs
+            ghijkl  tuv
+
+whos ans
+     @result{}
+     Variables in the current scope:
+
+       Attr Name        Size                     Bytes  Class
+       ==== ====        ====                     =====  =====
+            ans         1x37                        37  char
+
+     Total is 37 elements using 37 bytes
+@end group
+@end example
+
+@seealso{@ref{doc-terminal_size,,terminal_size}}
+@end deftypefn
+
+
+@c terminal_size src/pager.cc
+@anchor{doc-terminal_size}
+@deftypefn {Built-in Function} {} terminal_size ()
+Return a two-element row vector containing the current size of the
+terminal window in characters (rows and columns).
+@seealso{@ref{doc-list_in_columns,,list_in_columns}}
+@end deftypefn
+
+
+@c format src/pr-output.cc
 @anchor{doc-format}
-@deffn  {Command} format
-@deffnx {Command} format options
+@deftypefn  {Command} {} format
+@deftypefnx {Command} {} format options
 Reset or specify the format of the output produced by @code{disp} and
 Octave's normal echoing mechanism.  This command only affects the display
 of numbers but not how they are stored or computed.  To change the internal
@@ -125,7 +167,7 @@ As with the @samp{short} format, Octave will switch to an exponential
 @samp{e} format if it is unable to format a matrix properly using the
 current format.
 
-@item  short e
+@item short e
 @itemx long e
 Exponential format.  The number to be represented is split between a mantissa
 and an exponent (power of 10).  The mantissa has 5 significant digits in the
@@ -133,14 +175,14 @@ short format and 15 digits in the long format.
 For example, with the @samp{short e} format, @code{pi} is displayed as
 @code{3.1416e+00}.
 
-@item  short E
+@item short E
 @itemx long E
 Identical to @samp{short e} or @samp{long e} but displays an uppercase
 @samp{E} to indicate the exponent.
 For example, with the @samp{long E} format, @code{pi} is displayed as
 @code{3.14159265358979E+00}.
 
-@item  short g
+@item short g
 @itemx long g
 Optimally choose between fixed point and exponential format based on
 the magnitude of the number.
@@ -158,6 +200,13 @@ ans =
   8.1058e+15
 @end group
 @end example
+
+@item short eng
+@itemx long eng
+Identical to @samp{short e} or @samp{long e} but displays the value
+using an engineering format, where the exponent is divisible by 3. For
+example, with the @samp{short eng} format, @code{10 * pi} is displayed as
+@code{31.4159e+00}.
 
 @item long G
 @itemx short G
@@ -206,11 +255,13 @@ point.
 Print the hexadecimal representation of numbers as they are stored in
 memory.  For example, on a workstation which stores 8 byte real values
 in IEEE format with the least significant byte first, the value of
-@code{pi} when printed in @code{native-hex} format is @code{400921fb54442d18}.
+@code{pi} when printed in @code{native-hex} format is
+@code{400921fb54442d18}.
 
 @item hex
 The same as @code{native-hex}, but always print the most significant
 byte first.
+
 @item native-bit
 Print the bit representation of numbers as stored in memory.
 For example, the value of @code{pi} is
@@ -225,6 +276,7 @@ For example, the value of @code{pi} is
 (shown here in two 32 bit sections for typesetting purposes) when
 printed in native-bit format on a workstation which stores 8 byte real values
 in IEEE format with the least significant byte first.
+
 @item bit
 The same as @code{native-bit}, but always print the most significant
 bits first.
@@ -242,11 +294,13 @@ The following two options affect the display of all matrices.
 @item compact
 Remove extra blank space around column number labels producing more compact
 output with more data per page.
+
 @item loose
 Insert blank lines above and below column number labels to produce a more
 readable output with less data per page.  (default).
 @end table
-@end deffn
+@seealso{@ref{doc-fixed_point_format,,fixed_point_format}, @ref{doc-output_max_field_width,,output_max_field_width}, @ref{doc-output_precision,,output_precision}, @ref{doc-split_long_rows,,split_long_rows}, @ref{doc-rats,,rats}}
+@end deftypefn
 
 
 @menu
@@ -272,24 +326,24 @@ work with a single command statement.  The function @code{fflush} may be
 used to force output to be sent to the pager (or any other stream)
 immediately.
 
-You can select the program to run as the pager using the @code{PAGER}
+You can select the program to run as the pager using the @env{PAGER}
 function, and you can turn paging off by using the function
 @code{more}.
 
-@c pager.cc
+@c more src/pager.cc
 @anchor{doc-more}
-@deffn {Command} more
-@deffnx {Command} more on
-@deffnx {Command} more off
+@deftypefn  {Command} {} more
+@deftypefnx {Command} {} more on
+@deftypefnx {Command} {} more off
 Turn output pagination on or off.  Without an argument, @code{more}
 toggles the current state.
 The current state can be determined via @code{page_screen_output}.
-@end deffn
+@end deftypefn
 
 
-@c pager.cc
+@c PAGER src/pager.cc
 @anchor{doc-PAGER}
-@deftypefn {Built-in Function} {@var{val} =} PAGER ()
+@deftypefn  {Built-in Function} {@var{val} =} PAGER ()
 @deftypefnx {Built-in Function} {@var{old_val} =} PAGER (@var{new_val})
 Query or set the internal variable that specifies the program to use
 to display terminal output on your system.  The default value is
@@ -300,9 +354,9 @@ normally @code{"less"}, @code{"more"}, or
 @end deftypefn
 
 
-@c pager.cc
+@c PAGER_FLAGS src/pager.cc
 @anchor{doc-PAGER_FLAGS}
-@deftypefn {Built-in Function} {@var{val} =} PAGER_FLAGS ()
+@deftypefn  {Built-in Function} {@var{val} =} PAGER_FLAGS ()
 @deftypefnx {Built-in Function} {@var{old_val} =} PAGER_FLAGS (@var{new_val})
 Query or set the internal variable that specifies the options to pass
 to the pager.
@@ -310,9 +364,9 @@ to the pager.
 @end deftypefn
 
 
-@c pager.cc
+@c page_screen_output src/pager.cc
 @anchor{doc-page_screen_output}
-@deftypefn {Built-in Function} {@var{val} =} page_screen_output ()
+@deftypefn  {Built-in Function} {@var{val} =} page_screen_output ()
 @deftypefnx {Built-in Function} {@var{old_val} =} page_screen_output (@var{new_val})
 Query or set the internal variable that controls whether output intended
 for the terminal window that is longer than one page is sent through a
@@ -322,9 +376,9 @@ backward on the output.
 @end deftypefn
 
 
-@c pager.cc
+@c page_output_immediately src/pager.cc
 @anchor{doc-page_output_immediately}
-@deftypefn {Built-in Function} {@var{val} =} page_output_immediately ()
+@deftypefn  {Built-in Function} {@var{val} =} page_output_immediately ()
 @deftypefnx {Built-in Function} {@var{val} =} page_output_immediately (@var{new_val})
 Query or set the internal variable that controls whether Octave sends
 output to the pager as soon as it is available.  Otherwise, Octave
@@ -333,7 +387,7 @@ flush it to the pager.
 @end deftypefn
 
 
-@c file-io.cc
+@c fflush src/file-io.cc
 @anchor{doc-fflush}
 @deftypefn {Built-in Function} {} fflush (@var{fid})
 Flush output to @var{fid}.  This is useful for ensuring that all
@@ -342,7 +396,7 @@ For example, it is always a good idea to flush the standard output
 stream before calling @code{input}.
 
 @code{fflush} returns 0 on success and an OS dependent error value
-(@minus{}1 on unix) on error.
+(@minus{}1 on Unix) on error.
 @seealso{@ref{doc-fopen,,fopen}, @ref{doc-fclose,,fclose}}
 @end deftypefn
 
@@ -362,9 +416,9 @@ input.  The @code{input} and @code{menu} functions are normally
 used for managing an interactive dialog with a user, and the
 @code{keyboard} function is normally used for doing simple debugging.
 
-@c input.cc
+@c input src/input.cc
 @anchor{doc-input}
-@deftypefn {Built-in Function} {} input (@var{prompt})
+@deftypefn  {Built-in Function} {} input (@var{prompt})
 @deftypefnx {Built-in Function} {} input (@var{prompt}, "s")
 Print a prompt and wait for user input.  For example,
 
@@ -399,7 +453,7 @@ the screen before your prompt.  @xref{Input and Output}.
 @end deftypefn
 
 
-@c ./miscellaneous/menu.m
+@c menu scripts/miscellaneous/menu.m
 @anchor{doc-menu}
 @deftypefn {Function File} {} menu (@var{title}, @var{opt1}, @dots{})
 Print a title string followed by a series of options.  Each option will
@@ -412,7 +466,7 @@ screen.
 @end deftypefn
 
 
-@c input.cc
+@c yes_or_no src/input.cc
 @anchor{doc-yes_or_no}
 @deftypefn {Built-in Function} {} yes_or_no (@var{prompt})
 Ask the user a yes-or-no question.  Return 1 if the answer is yes.
@@ -430,7 +484,7 @@ Octave also has a function that makes it possible to get a single
 character from the keyboard without requiring the user to type a
 carriage return.
 
-@c sysdep.cc
+@c kbhit src/sysdep.cc
 @anchor{doc-kbhit}
 @deftypefn {Built-in Function} {} kbhit ()
 Read a single keystroke from the keyboard.  If called with one
@@ -489,22 +543,22 @@ A
 @end group
 @end example
 
-@c load-save.cc
+@c save src/load-save.cc
 @anchor{doc-save}
-@deffn  {Command} save file
-@deffnx {Command} save options file
-@deffnx {Command} save options file @var{v1} @var{v2} @dots{}
-@deffnx {Command} save options file -struct @var{STRUCT} @var{f1} @var{f2} @dots{}
+@deftypefn  {Command} {} save file
+@deftypefnx {Command} {} save options file
+@deftypefnx {Command} {} save options file @var{v1} @var{v2} @dots{}
+@deftypefnx {Command} {} save options file -struct @var{STRUCT} @var{f1} @var{f2} @dots{}
 Save the named variables @var{v1}, @var{v2}, @dots{}, in the file
 @var{file}.  The special filename @samp{-} may be used to write
 output to the terminal.  If no variable names are listed, Octave saves
 all the variables in the current scope.  Otherwise, full variable names or
 pattern syntax can be used to specify the variables to save.
-If the @code{-struct} modifier is used, fields @var{f1} @var{f2} @dots{}
+If the @option{-struct} modifier is used, fields @var{f1} @var{f2} @dots{}
 of the scalar structure @var{STRUCT} are saved as if they were variables
 with corresponding names.
 Valid options for the @code{save} command are listed in the following table.
-Options that modify the output format override the format specified by 
+Options that modify the output format override the format specified by
 @code{default_save_options}.
 
 If save is invoked using the functional form
@@ -518,6 +572,8 @@ then the @var{options}, @var{file}, and variable name arguments
 (@var{v1}, @dots{}) must be specified as character strings.
 
 @table @code
+@item -append
+Append to the destination instead of overwriting.
 @item -ascii
 Save a single matrix in a text file without header or any other information.
 
@@ -530,12 +586,14 @@ precision.  Only use this format if you know that all the
 values to be saved can be represented in single precision.
 
 @item -hdf5
-Save the data in HDF5 format.
+Save the data in @sc{hdf5} format.
 (HDF5 is a free, portable binary format developed by the National
 Center for Supercomputing Applications at the University of Illinois.)
+This format is only available if Octave was built with a link to the
+@sc{hdf5} libraries.
 
 @item -float-hdf5
-Save the data in HDF5 format but only using single precision.
+Save the data in @sc{hdf5} format but only using single precision.
 Only use this format if you know that all the
 values to be saved can be represented in single precision.
 
@@ -563,9 +621,11 @@ Save the data in Octave's text data format.  (default).
 
 @item -zip
 @itemx -z
-Use the gzip algorithm to compress the file.  This works equally on files that
-are compressed with gzip outside of octave, and gzip can equally be used to
-convert the files for backward compatibility.
+Use the gzip algorithm to compress the file.  This works equally on files
+that are compressed with gzip outside of octave, and gzip can equally be
+used to convert the files for backward compatibility.
+This option is only available if Octave was built with a link to the zlib
+libraries.
 @end table
 
 The list of variables to save may use wildcard patterns containing
@@ -581,10 +641,10 @@ Match zero or more characters.
 Match the list of characters specified by @var{list}.  If the first
 character is @code{!} or @code{^}, match all characters except those
 specified by @var{list}.  For example, the pattern @code{[a-zA-Z]} will
-match all lower and upper case alphabetic characters.  
+match all lower and uppercase alphabetic characters.
 
 Wildcards may also be used in the field name specifications when using
-the @code{-struct} modifier (but not in the struct name itself).
+the @option{-struct} modifier (but not in the struct name itself).
 
 @end table
 
@@ -604,15 +664,15 @@ save -binary data a b*
 saves the variable @samp{a} and all variables beginning with @samp{b} to
 the file @file{data} in Octave's binary format.
 @seealso{@ref{doc-load,,load}, @ref{doc-default_save_options,,default_save_options}, @ref{doc-dlmread,,dlmread}, @ref{doc-csvread,,csvread}, @ref{doc-fread,,fread}}
-@end deffn
+@end deftypefn
 
 
-@c load-save.cc
+@c load src/load-save.cc
 @anchor{doc-load}
-@deffn  {Command} load file
-@deffnx {Command} load options file
-@deffnx {Command} load options file v1 v2 @dots{}
-@deffnx {Command} S = load("options", "file", "v1", "v2", @dots{})
+@deftypefn  {Command} {} load file
+@deftypefnx {Command} {} load options file
+@deftypefnx {Command} {} load options file v1 v2 @dots{}
+@deftypefnx {Command} {S =} load ("options", "file", "v1", "v2", @dots{})
 Load the named variables @var{v1}, @var{v2}, @dots{}, from the file
 @var{file}.  If no variables are specified then all variables found in the
 file will be loaded.  As with @code{save}, the list of variables to extract
@@ -667,11 +727,12 @@ name of the file.
 Force Octave to assume the file is in Octave's binary format.
 
 @item -hdf5
-Force Octave to assume the file is in HDF5 format.
-(HDF5 is a free, portable binary format developed by the National
+Force Octave to assume the file is in @sc{hdf5} format.
+(@sc{hdf5} is a free, portable binary format developed by the National
 Center for Supercomputing Applications at the University of Illinois.)
-Note that Octave can read HDF5 files not created by itself, but may
-skip some datasets in formats that it cannot support.
+Note that Octave can read @sc{hdf5} files not created by itself, but may
+skip some datasets in formats that it cannot support.  This format is
+only available if Octave was built with a link to the @sc{hdf5} libraries.
 
 @item -import
 This option is accepted for backward compatibility but is ignored.
@@ -698,33 +759,41 @@ Force Octave to assume the file is in the binary format written by
 Force Octave to assume the file is in Octave's text format.
 @end table
 @seealso{@ref{doc-save,,save}, @ref{doc-dlmwrite,,dlmwrite}, @ref{doc-csvwrite,,csvwrite}, @ref{doc-fwrite,,fwrite}}
-@end deffn
+@end deftypefn
+
+
+@c fileread scripts/io/fileread.m
+@anchor{doc-fileread}
+@deftypefn {Function File} {@var{str} =} fileread (@var{filename})
+Read the contents of @var{filename} and return it as a string.
+@seealso{@ref{doc-fread,,fread}, @ref{doc-textread,,textread}, @ref{doc-sscanf,,sscanf}}
+@end deftypefn
 
 
 There are three functions that modify the behavior of @code{save}.
 
-@c load-save.cc
+@c default_save_options src/load-save.cc
 @anchor{doc-default_save_options}
 @deftypefn  {Built-in Function} {@var{val} =} default_save_options ()
 @deftypefnx {Built-in Function} {@var{old_val} =} default_save_options (@var{new_val})
 Query or set the internal variable that specifies the default options
 for the @code{save} command, and defines the default format.
 Typical values include @code{"-ascii"}, @code{"-text -zip"}.
-The default value is @code{-text}.
+The default value is @option{-text}.
 @seealso{@ref{doc-save,,save}}
 @end deftypefn
 
 
-@c ls-oct-ascii.cc
+@c save_precision src/ls-oct-ascii.cc
 @anchor{doc-save_precision}
-@deftypefn {Built-in Function} {@var{val} =} save_precision ()
+@deftypefn  {Built-in Function} {@var{val} =} save_precision ()
 @deftypefnx {Built-in Function} {@var{old_val} =} save_precision (@var{new_val})
 Query or set the internal variable that specifies the number of
 digits to keep when saving data in text format.
 @end deftypefn
 
 
-@c load-save.cc
+@c save_header_format_string src/load-save.cc
 @anchor{doc-save_header_format_string}
 @deftypefn  {Built-in Function} {@var{val} =} save_header_format_string ()
 @deftypefnx {Built-in Function} {@var{old_val} =} save_header_format_string (@var{new_val})
@@ -736,8 +805,8 @@ passed to @code{strftime} and should begin with the character
 @code{save_header_format_string} is the empty string,
 the header comment is omitted from text-format data files.  The
 default value is
-
 @c Set example in small font to prevent overfull line
+
 @smallexample
 "# Created by Octave VERSION, %a %b %d %H:%M:%S %Y %Z <USER@@HOST>"
 @end smallexample
@@ -745,7 +814,7 @@ default value is
 @end deftypefn
 
 
-@c sysdep.cc
+@c native_float_format src/sysdep.cc
 @anchor{doc-native_float_format}
 @deftypefn {Built-in Function} {} native_float_format ()
 Return the native floating point format as a string
@@ -771,10 +840,10 @@ fclose (fid);
 @xref{Opening and Closing Files}, for details on how to use @code{fopen}
 and @code{fclose}.
 
-@c pr-output.cc
+@c fdisp src/pr-output.cc
 @anchor{doc-fdisp}
 @deftypefn {Built-in Function} {} fdisp (@var{fid}, @var{x})
-Display the value of @var{x} on the stream @var{fid}.  For example,
+Display the value of @var{x} on the stream @var{fid}.  For example:
 
 @example
 @group
@@ -794,13 +863,15 @@ Note that the output from @code{fdisp} always ends with a newline.
 Octave can also read and write matrices text files such as comma
 separated lists.
 
-@c ./io/dlmwrite.m
+@c dlmwrite scripts/io/dlmwrite.m
 @anchor{doc-dlmwrite}
-@deftypefn {Function File} {} dlmwrite (@var{file}, @var{a})
-@deftypefnx {Function File} {} dlmwrite (@var{file}, @var{a}, @var{delim}, @var{r}, @var{c})
-@deftypefnx {Function File} {} dlmwrite (@var{file}, @var{a}, @var{key}, @var{val} @dots{})
-@deftypefnx {Function File} {} dlmwrite (@var{file}, @var{a}, "-append", @dots{})
-Write the matrix @var{a} to the named file using delimiters.
+@deftypefn  {Function File} {} dlmwrite (@var{file}, @var{M})
+@deftypefnx {Function File} {} dlmwrite (@var{file}, @var{M}, @var{delim}, @var{r}, @var{c})
+@deftypefnx {Function File} {} dlmwrite (@var{file}, @var{M}, @var{key}, @var{val} @dots{})
+@deftypefnx {Function File} {} dlmwrite (@var{file}, @var{M}, "-append", @dots{})
+Write the matrix @var{M} to the named file using delimiters.
+
+@var{file} should be a file name or writable file ID given by @code{fopen}.
 
 The parameter @var{delim} specifies the delimiter to use to separate
 values on a row.
@@ -816,7 +887,7 @@ If the argument @code{"-append"} is given, append to the end of the
 
 In addition, the following keyword value pairs may appear at the end
 of the argument list:
-@table @code
+@table @asis
 @item "append"
 Either @samp{"on"} or @samp{"off"}.  See @samp{"-append"} above.
 
@@ -852,12 +923,13 @@ dlmwrite ("file.tex", a, "delimiter", "&", "newline", "\\n")
 @end deftypefn
 
 
-@c ./DLD-FUNCTIONS/dlmread.cc
+@c dlmread src/DLD-FUNCTIONS/dlmread.cc
 @anchor{doc-dlmread}
-@deftypefn {Loadable Function} {@var{data} =} dlmread (@var{file})
+@deftypefn  {Loadable Function} {@var{data} =} dlmread (@var{file})
 @deftypefnx {Loadable Function} {@var{data} =} dlmread (@var{file}, @var{sep})
 @deftypefnx {Loadable Function} {@var{data} =} dlmread (@var{file}, @var{sep}, @var{r0}, @var{c0})
 @deftypefnx {Loadable Function} {@var{data} =} dlmread (@var{file}, @var{sep}, @var{range})
+@deftypefnx {Loadable Function} {@var{data} =} dlmread (@dots{}, "emptyvalue", @var{EMPTYVAL})
 Read the matrix @var{data} from a text file.  If not defined the separator
 between fields is determined from the file itself.  Otherwise the
 separation character is defined by @var{sep}.
@@ -866,37 +938,107 @@ Given two scalar arguments @var{r0} and @var{c0}, these define the starting
 row and column of the data to be read.  These values are indexed from zero,
 such that the first row corresponds to an index of zero.
 
-The @var{range} parameter must be a 4 element vector containing the upper
-left and lower right corner @code{[@var{R0},@var{C0},@var{R1},@var{C1}]} or
-a spreadsheet style range such as 'A2..Q15'.  The lowest index value is zero.
+The @var{range} parameter may be a 4-element vector containing the upper
+left and lower right corner @code{[@var{R0},@var{C0},@var{R1},@var{C1}]}
+where the lowest index value is zero.  Alternatively, a spreadsheet style
+range such as 'A2..Q15' or 'T1:AA5' can be used.  The lowest alphabetical
+index 'A' refers to the first column.  The lowest row index is 1.
+
+@var{file} should be a file name or file id given by @code{fopen}.  In the
+latter case, the file is read until end of file is reached.
+
+The "emptyvalue" option may be used to specify the value used to fill empty
+fields.  The default is zero.
+@seealso{@ref{doc-csvread,,csvread}, @ref{doc-textscan,,textscan}, @ref{doc-textread,,textread}, @ref{doc-dlmwrite,,dlmwrite}}
 @end deftypefn
 
 
-@c ./io/csvwrite.m
+@c csvwrite scripts/io/csvwrite.m
 @anchor{doc-csvwrite}
-@deftypefn {Function File} {@var{x} =} csvwrite (@var{filename}, @var{x})
-Write the matrix @var{x} to a file.
+@deftypefn  {Function File} {} csvwrite (@var{filename}, @var{x})
+@deftypefnx {Function File} {} csvwrite (@var{filename}, @var{x}, @var{dlm_opts})
+Write the matrix @var{x} to the file @var{filename} in
+@w{comma-separated-value} format.
 
 This function is equivalent to
+
 @example
 dlmwrite (@var{filename}, @var{x}, ",", @dots{})
 @end example
 
-@seealso{@ref{doc-dlmread,,dlmread}, @ref{doc-dlmwrite,,dlmwrite}, @ref{doc-csvread,,csvread}}
+@seealso{@ref{doc-csvread,,csvread}, @ref{doc-dlmwrite,,dlmwrite}, @ref{doc-dlmread,,dlmread}}
 @end deftypefn
 
 
-@c ./io/csvread.m
+@c csvread scripts/io/csvread.m
 @anchor{doc-csvread}
-@deftypefn {Function File} {@var{x} =} csvread (@var{filename})
-Read the matrix @var{x} from a file.
+@deftypefn  {Function File} {@var{x} =} csvread (@var{filename})
+@deftypefnx {Function File} {@var{x} =} csvread (@var{filename}, @var{dlm_opts})
+Read the comma-separated-value file @var{filename} into the matrix @var{x}.
 
 This function is equivalent to
+
 @example
-dlmread (@var{filename}, "," , @dots{})
+@var{x} = dlmread (@var{filename}, "," , @dots{})
 @end example
 
-@seealso{@ref{doc-dlmread,,dlmread}, @ref{doc-dlmwrite,,dlmwrite}, @ref{doc-csvwrite,,csvwrite}}
+@seealso{@ref{doc-csvwrite,,csvwrite}, @ref{doc-dlmread,,dlmread}, @ref{doc-dlmwrite,,dlmwrite}}
+@end deftypefn
+
+
+Formatted data from can be read from, or written to, text files as well.
+
+@c textread scripts/io/textread.m
+@anchor{doc-textread}
+@deftypefn  {Function File} {[@var{a}, @dots{}] =} textread (@var{filename})
+@deftypefnx {Function File} {[@var{a}, @dots{}] =} textread (@var{filename}, @var{format})
+@deftypefnx {Function File} {[@var{a}, @dots{}] =} textread (@var{filename}, @var{format}, @var{prop1}, @var{value1}, @dots{})
+Read data from a text file.
+
+The file @var{filename} is read and parsed according to @var{format}.  The
+function behaves like @code{strread} except it works by parsing a file
+instead
+of a string.  See the documentation of @code{strread} for details.
+In addition to the options supported by @code{strread}, this function
+supports one more:
+@itemize
+@item "headerlines":
+@end itemize
+The first @var{value} number of lines of @var{str} are skipped.
+@seealso{@ref{doc-strread,,strread}, @ref{doc-load,,load}, @ref{doc-dlmread,,dlmread}, @ref{doc-fscanf,,fscanf}}
+@end deftypefn
+
+
+@c textscan scripts/io/textscan.m
+@anchor{doc-textscan}
+@deftypefn  {Function File} {@var{C} =} textscan (@var{fid}, @var{format})
+@deftypefnx {Function File} {@var{C} =} textscan (@var{fid}, @var{format}, @var{n})
+@deftypefnx {Function File} {@var{C} =} textscan (@var{fid}, @var{format}, @var{param}, @var{value}, @dots{})
+@deftypefnx {Function File} {@var{C} =} textscan (@var{fid}, @var{format}, @var{n}, @var{param}, @var{value}, @dots{})
+@deftypefnx {Function File} {@var{C} =} textscan (@var{str}, @dots{})
+@deftypefnx {Function File} {[@var{C}, @var{position}] =} textscan (@dots{})
+Read data from a text file.
+
+The file associated with @var{fid} is read and parsed according to
+@var{format}.  The function behaves like @code{strread} except it works by
+parsing a file instead of a string.  See the documentation of
+@code{strread} for details.  In addition to the options supported by
+@code{strread}, this function supports one more:
+@itemize
+@item "headerlines":
+@end itemize
+The first @var{value} number of lines of @var{str} are skipped.
+
+The optional input, @var{n}, specifes the number of lines to be read from
+the file, associated with @var{fid}.
+
+The output, @var{C}, is a cell array whose length is given by the number
+of format specifiers.
+
+The second output, @var{position}, provides the position, in characters,
+from the beginning of the file.
+
+@seealso{@ref{doc-dlmread,,dlmread}, @ref{doc-fscanf,,fscanf}, @ref{doc-load,,load}, @ref{doc-strread,,strread}, @ref{doc-textread,,textread}}
 @end deftypefn
 
 
@@ -914,9 +1056,9 @@ into memory with the @code{load} command.  While the default behavior
 most often is reasonable it can be changed through the following
 functions.
 
-@c load-save.cc
+@c crash_dumps_octave_core src/load-save.cc
 @anchor{doc-crash_dumps_octave_core}
-@deftypefn {Built-in Function} {@var{val} =} crash_dumps_octave_core ()
+@deftypefn  {Built-in Function} {@var{val} =} crash_dumps_octave_core ()
 @deftypefnx {Built-in Function} {@var{old_val} =} crash_dumps_octave_core (@var{new_val})
 Query or set the internal variable that controls whether Octave tries
 to save all current variables to the file "octave-core" if it
@@ -925,9 +1067,9 @@ crashes or receives a hangup, terminate or similar signal.
 @end deftypefn
 
 
-@c sighandlers.cc
+@c sighup_dumps_octave_core src/sighandlers.cc
 @anchor{doc-sighup_dumps_octave_core}
-@deftypefn {Built-in Function} {@var{val} =} sighup_dumps_octave_core ()
+@deftypefn  {Built-in Function} {@var{val} =} sighup_dumps_octave_core ()
 @deftypefnx {Built-in Function} {@var{old_val} =} sighup_dumps_octave_core (@var{new_val})
 Query or set the internal variable that controls whether Octave tries
 to save all current variables to the file "octave-core" if it receives
@@ -935,9 +1077,9 @@ a hangup signal.
 @end deftypefn
 
 
-@c sighandlers.cc
+@c sigterm_dumps_octave_core src/sighandlers.cc
 @anchor{doc-sigterm_dumps_octave_core}
-@deftypefn {Built-in Function} {@var{val} =} sigterm_dumps_octave_core ()
+@deftypefn  {Built-in Function} {@var{val} =} sigterm_dumps_octave_core ()
 @deftypefnx {Built-in Function} {@var{old_val} =} sigterm_dumps_octave_core (@var{new_val})
 Query or set the internal variable that controls whether Octave tries
 to save all current variables to the file "octave-core" if it receives
@@ -945,9 +1087,9 @@ a terminate signal.
 @end deftypefn
 
 
-@c load-save.cc
+@c octave_core_file_options src/load-save.cc
 @anchor{doc-octave_core_file_options}
-@deftypefn {Built-in Function} {@var{val} =} octave_core_file_options ()
+@deftypefn  {Built-in Function} {@var{val} =} octave_core_file_options ()
 @deftypefnx {Built-in Function} {@var{old_val} =} octave_core_file_options (@var{new_val})
 Query or set the internal variable that specifies the options used for
 saving the workspace data if Octave aborts.  The value of
@@ -958,9 +1100,9 @@ format.
 @end deftypefn
 
 
-@c load-save.cc
+@c octave_core_file_limit src/load-save.cc
 @anchor{doc-octave_core_file_limit}
-@deftypefn {Built-in Function} {@var{val} =} octave_core_file_limit ()
+@deftypefn  {Built-in Function} {@var{val} =} octave_core_file_limit ()
 @deftypefnx {Built-in Function} {@var{old_val} =} octave_core_file_limit (@var{new_val})
 Query or set the internal variable that specifies the maximum amount
 of memory (in kilobytes) of the top-level workspace that Octave will
@@ -974,58 +1116,14 @@ be much larger than the limit.  The default value is -1 (unlimited)
 @end deftypefn
 
 
-@c load-save.cc
+@c octave_core_file_name src/load-save.cc
 @anchor{doc-octave_core_file_name}
-@deftypefn {Built-in Function} {@var{val} =} octave_core_file_name ()
+@deftypefn  {Built-in Function} {@var{val} =} octave_core_file_name ()
 @deftypefnx {Built-in Function} {@var{old_val} =} octave_core_file_name (@var{new_val})
 Query or set the internal variable that specifies the name of the file
 used for saving data from the top-level workspace if Octave aborts.
 The default value is @code{"octave-core"}
 @seealso{@ref{doc-crash_dumps_octave_core,,crash_dumps_octave_core}, @ref{doc-octave_core_file_name,,octave_core_file_name}, @ref{doc-octave_core_file_options,,octave_core_file_options}}
-@end deftypefn
-
-
-@node Rational Approximations
-@subsection Rational Approximations
-
-@c ./general/rat.m
-@anchor{doc-rat}
-@deftypefn {Function File} {@var{s} =} rat (@var{x}, @var{tol})
-@deftypefnx {Function File} {[@var{n}, @var{d}] =} rat (@var{x}, @var{tol})
-
-Find a rational approximation to @var{x} within the tolerance defined
-by @var{tol} using a continued fraction expansion.  For example,
-
-@example
-@group
-rat(pi) = 3 + 1/(7 + 1/16) = 355/113
-rat(e) = 3 + 1/(-4 + 1/(2 + 1/(5 + 1/(-2 + 1/(-7))))) 
-       = 1457/536
-@end group
-@end example
-
-Called with two arguments returns the numerator and denominator separately
-as two matrices.
-@end deftypefn
-@seealso{@ref{doc-rats,,rats}}
-
-
-@c pr-output.cc
-@anchor{doc-rats}
-@deftypefn {Built-in Function} {} rats (@var{x}, @var{len})
-Convert @var{x} into a rational approximation represented as a string.
-You can convert the string back into a matrix as follows:
-
-@example
-@group
-   r = rats(hilb(4));
-   x = str2num(r)
-@end group
-@end example
-
-The optional second argument defines the maximum length of the string
-representing the elements of @var{x}.  By default @var{len} is 9.
-@seealso{@ref{doc-format,,format}, @ref{doc-rat,,rat}}
 @end deftypefn
 
 
@@ -1045,7 +1143,7 @@ can be accessed using their corresponding numeric file ids, you should
 always use the symbolic names given in the table below, since it will
 make your programs easier to understand.
 
-@c file-io.cc
+@c stdin src/file-io.cc
 @anchor{doc-stdin}
 @deftypefn {Built-in Function} {} stdin ()
 Return the numeric value corresponding to the standard input stream.
@@ -1055,7 +1153,7 @@ line editing functions.
 @end deftypefn
 
 
-@c file-io.cc
+@c stdout src/file-io.cc
 @anchor{doc-stdout}
 @deftypefn {Built-in Function} {} stdout ()
 Return the numeric value corresponding to the standard output stream.
@@ -1064,7 +1162,7 @@ Data written to the standard output is normally filtered through the pager.
 @end deftypefn
 
 
-@c file-io.cc
+@c stderr src/file-io.cc
 @anchor{doc-stderr}
 @deftypefn {Built-in Function} {} stderr ()
 Return the numeric value corresponding to the standard error stream.
@@ -1116,9 +1214,9 @@ fclose (fid);
 @end group
 @end example
 
-@c file-io.cc
+@c fopen src/file-io.cc
 @anchor{doc-fopen}
-@deftypefn {Built-in Function} {[@var{fid}, @var{msg}] =} fopen (@var{name}, @var{mode}, @var{arch})
+@deftypefn  {Built-in Function} {[@var{fid}, @var{msg}] =} fopen (@var{name}, @var{mode}, @var{arch})
 @deftypefnx {Built-in Function} {@var{fid_list} =} fopen ("all")
 @deftypefnx {Built-in Function} {[@var{file}, @var{mode}, @var{arch}] =} fopen (@var{fid})
 The first form of the @code{fopen} function opens the named file with
@@ -1219,12 +1317,22 @@ however, conversions are currently only supported for @samp{native}
 @end deftypefn
 
 
-@c file-io.cc
+@c fclose src/file-io.cc
 @anchor{doc-fclose}
-@deftypefn {Built-in Function} {} fclose (@var{fid})
-Closes the specified file.  If successful, @code{fclose} returns 0,
-otherwise, it returns -1.
+@deftypefn  {Built-in Function} {} fclose (@var{fid})
+@deftypefnx {Built-in Function} {} fclose ("all")
+Close the specified file.  If successful, @code{fclose} returns 0,
+otherwise, it returns -1.  The second form of the @code{fclose} call closes
+all open files except @code{stdout}, @code{stderr}, and @code{stdin}.
 @seealso{@ref{doc-fopen,,fopen}, @ref{doc-fseek,,fseek}, @ref{doc-ftell,,ftell}}
+@end deftypefn
+
+
+@c is_valid_file_id scripts/io/is_valid_file_id.m
+@anchor{doc-is_valid_file_id}
+@deftypefn {Function File} {} is_valid_file_id (@var{fid})
+Return true if @var{fid} refers to an open file.
+@seealso{@ref{doc-fopen,,fopen}}
 @end deftypefn
 
 
@@ -1245,7 +1353,7 @@ fclose (fid);
 @end group
 @end example
 
-@c file-io.cc
+@c fputs src/file-io.cc
 @anchor{doc-fputs}
 @deftypefn {Built-in Function} {} fputs (@var{fid}, @var{string})
 Write a string to a file with no formatting.
@@ -1259,7 +1367,7 @@ A function much similar to @code{fputs} is available for writing data
 to the screen.  The @code{puts} function works just like @code{fputs}
 except it doesn't take a file pointer as its input.
 
-@c file-io.cc
+@c puts src/file-io.cc
 @anchor{doc-puts}
 @deftypefn {Built-in Function} {} puts (@var{string})
 Write a string to the standard output with no formatting.
@@ -1288,7 +1396,7 @@ fclose (fid);
 This of course assumes that the file @samp{free.txt} exists and contains
 the line @samp{Free Software is needed for Free Science}.
 
-@c file-io.cc
+@c fgetl src/file-io.cc
 @anchor{doc-fgetl}
 @deftypefn {Built-in Function} {} fgetl (@var{fid}, @var{len})
 Read characters from a file, stopping after a newline, or EOF,
@@ -1303,9 +1411,10 @@ If there are no more characters to read, @code{fgetl} returns @minus{}1.
 @end deftypefn
 
 
-@c file-io.cc
+@c fgets src/file-io.cc
 @anchor{doc-fgets}
-@deftypefn {Built-in Function} {} fgets (@var{fid}, @var{len})
+@deftypefn  {Built-in Function} {} fgets (@var{fid})
+@deftypefnx {Built-in Function} {} fgets (@var{fid}, @var{len})
 Read characters from a file, stopping after a newline, or EOF,
 or @var{len} characters have been read.  The characters read, including
 the possible trailing newline, are returned as a string.
@@ -1315,6 +1424,19 @@ character.
 
 If there are no more characters to read, @code{fgets} returns @minus{}1.
 @seealso{@ref{doc-fputs,,fputs}, @ref{doc-fopen,,fopen}, @ref{doc-fread,,fread}, @ref{doc-fscanf,,fscanf}}
+@end deftypefn
+
+
+@c fskipl src/file-io.cc
+@anchor{doc-fskipl}
+@deftypefn {Built-in Function} {} fskipl (@var{fid}, @var{count})
+Skip a given number of lines, i.e., discards characters until an end-of-line
+is met exactly @var{count}-times, or end-of-file occurs.
+Returns the number of lines skipped (end-of-line sequences encountered).
+If @var{count} is omitted, it defaults to 1. @var{count} may also be
+@code{Inf}, in which case lines are skipped to the end of file.
+This form is suitable for counting lines in a file.
+@seealso{@ref{doc-fgetl,,fgetl}, @ref{doc-fgets,,fgets}}
 @end deftypefn
 
 
@@ -1328,7 +1450,7 @@ modelled after the C language functions of the same name, but they
 interpret the format template differently in order to improve the
 performance of printing vector and matrix values.
 
-@c file-io.cc
+@c printf src/file-io.cc
 @anchor{doc-printf}
 @deftypefn {Built-in Function} {} printf (@var{template}, @dots{})
 Print optional arguments under the control of the template string
@@ -1343,7 +1465,7 @@ complete description of the syntax of the template string.
 @end deftypefn
 
 
-@c file-io.cc
+@c fprintf src/file-io.cc
 @anchor{doc-fprintf}
 @deftypefn {Built-in Function} {} fprintf (@var{fid}, @var{template}, @dots{})
 This function is just like @code{printf}, except that the output is
@@ -1353,7 +1475,7 @@ If @var{fid} is omitted, the output is written to @code{stdout}.
 @end deftypefn
 
 
-@c file-io.cc
+@c sprintf src/file-io.cc
 @anchor{doc-sprintf}
 @deftypefn {Built-in Function} {} sprintf (@var{template}, @dots{})
 This is like @code{printf}, except that the output is returned as a
@@ -1427,7 +1549,7 @@ described in more detail in the following sections.
 
 When given a matrix value, Octave's formatted output functions cycle
 through the format template until all the values in the matrix have been
-printed.  For example,
+printed.  For example:
 
 @example
 @group
@@ -1443,7 +1565,7 @@ If more than one value is to be printed in a single call, the output
 functions do not return to the beginning of the format template when
 moving on from one value to the next.  This can lead to confusing output
 if the number of elements in the matrices are not exact multiples of the
-number of conversions in the format template.  For example,
+number of conversions in the format template.  For example:
 
 @example
 @group
@@ -1748,9 +1870,9 @@ functions to read formatted input.  There are two forms of each of these
 functions.  One can be used to extract vectors of data from a file, and
 the other is more `C-like'.
 
-@c file-io.cc
+@c fscanf src/file-io.cc
 @anchor{doc-fscanf}
-@deftypefn {Built-in Function} {[@var{val}, @var{count}] =} fscanf (@var{fid}, @var{template}, @var{size})
+@deftypefn  {Built-in Function} {[@var{val}, @var{count}] =} fscanf (@var{fid}, @var{template}, @var{size})
 @deftypefnx {Built-in Function} {[@var{v1}, @var{v2}, @dots{}, @var{count}] =} fscanf (@var{fid}, @var{template}, "C")
 In the first form, read from @var{fid} according to @var{template},
 returning the result in the matrix @var{val}.
@@ -1798,9 +1920,9 @@ complete description of the syntax of the template string.
 @end deftypefn
 
 
-@c file-io.cc
+@c scanf src/file-io.cc
 @anchor{doc-scanf}
-@deftypefn {Built-in Function} {[@var{val}, @var{count}] =} scanf (@var{template}, @var{size})
+@deftypefn  {Built-in Function} {[@var{val}, @var{count}] =} scanf (@var{template}, @var{size})
 @deftypefnx {Built-in Function} {[@var{v1}, @var{v2}, @dots{}, @var{count}]] =} scanf (@var{template}, "C")
 This is equivalent to calling @code{fscanf} with @var{fid} = @code{stdin}.
 
@@ -1810,13 +1932,15 @@ programs.
 @end deftypefn
 
 
-@c file-io.cc
+@c sscanf src/file-io.cc
 @anchor{doc-sscanf}
-@deftypefn {Built-in Function} {[@var{val}, @var{count}] =} sscanf (@var{string}, @var{template}, @var{size})
+@deftypefn  {Built-in Function} {[@var{val}, @var{count}, @var{pos}] =} sscanf (@var{string}, @var{template}, @var{size})
 @deftypefnx {Built-in Function} {[@var{v1}, @var{v2}, @dots{}, @var{count}] =} sscanf (@var{string}, @var{template}, "C")
 This is like @code{fscanf}, except that the characters are taken from the
 string @var{string} instead of from a stream.  Reaching the end of the
-string is treated as an end-of-file condition.
+string is treated as an end-of-file condition.  In addition to the values
+returned by @code{fscanf}, the index of the next character to be read
+is returned in in @var{pos}.
 @seealso{@ref{doc-fscanf,,fscanf}, @ref{doc-scanf,,scanf}, @ref{doc-sprintf,,sprintf}}
 @end deftypefn
 
@@ -2024,7 +2148,7 @@ with the same names.  They are able to automatically swap the byte order
 of integer data and convert among the supported floating point formats
 as the data are read.
 
-@c file-io.cc
+@c fread src/file-io.cc
 @anchor{doc-fread}
 @deftypefn {Built-in Function} {[@var{val}, @var{count}] =} fread (@var{fid}, @var{size}, @var{precision}, @var{skip}, @var{arch})
 Read binary data of type @var{precision} from the specified file ID
@@ -2057,7 +2181,7 @@ If @var{size} is omitted, a value of @code{Inf} is assumed.
 The optional argument @var{precision} is a string specifying the type of
 data to read and may be one of
 
-@table @code
+@table @asis
 @item "schar"
 @itemx "signed char"
 Signed character.
@@ -2200,7 +2324,7 @@ values read is returned in @code{count}
 @end deftypefn
 
 
-@c file-io.cc
+@c fwrite src/file-io.cc
 @anchor{doc-fwrite}
 @deftypefn {Built-in Function} {@var{count} =} fwrite (@var{fid}, @var{data}, @var{precision}, @var{skip}, @var{arch})
 Write data in binary form of type @var{precision} to the specified file
@@ -2227,7 +2351,7 @@ This is most commonly used when an external program launched from
 within Octave needs to access data.  When Octave exits all temporary
 files will be deleted, so this step need not be executed manually.
 
-@c file-io.cc
+@c mkstemp src/file-io.cc
 @anchor{doc-mkstemp}
 @deftypefn {Built-in Function} {[@var{fid}, @var{name}, @var{msg}] =} mkstemp (@var{template}, @var{delete})
 Return the file ID corresponding to a new temporary file with a unique
@@ -2250,7 +2374,7 @@ error message.
 @end deftypefn
 
 
-@c file-io.cc
+@c tmpfile src/file-io.cc
 @anchor{doc-tmpfile}
 @deftypefn {Built-in Function} {[@var{fid}, @var{msg}] =} tmpfile ()
 Return the file ID corresponding to a new temporary file with a unique
@@ -2265,9 +2389,11 @@ system-dependent error message.
 @end deftypefn
 
 
-@c file-io.cc
+@c tmpnam src/file-io.cc
 @anchor{doc-tmpnam}
-@deftypefn {Built-in Function} {} tmpnam (@var{dir}, @var{prefix})
+@deftypefn  {Built-in Function} {} tmpnam ()
+@deftypefnx {Built-in Function} {} tmpnam (@var{dir})
+@deftypefnx {Built-in Function} {} tmpnam (@var{dir}, @var{prefix})
 Return a unique temporary file name as a string.
 
 If @var{prefix} is omitted, a value of @code{"oct-"} is used.
@@ -2278,8 +2404,6 @@ opened, by @code{tmpnam}, it is possible (though relatively unlikely)
 that it will not be available by the time your program attempts to open it.
 @seealso{@ref{doc-tmpfile,,tmpfile}, @ref{doc-mkstemp,,mkstemp}, @ref{doc-P_tmpdir,,P_tmpdir}}
 @end deftypefn
-
-
 
 
 @node EOF and Errors, File Positioning, Temporary Files, C-Style I/O Functions
@@ -2308,7 +2432,7 @@ contents of a file and then process it, than it is to read it line by
 line.  This has the potential advantage of removing the loop in the
 above code.
 
-@c file-io.cc
+@c feof src/file-io.cc
 @anchor{doc-feof}
 @deftypefn {Built-in Function} {} feof (@var{fid})
 Return 1 if an end-of-file condition has been encountered for a given
@@ -2319,35 +2443,38 @@ result in an end-of-file condition.
 @end deftypefn
 
 
-@c file-io.cc
+@c ferror src/file-io.cc
 @anchor{doc-ferror}
-@deftypefn {Built-in Function} {} ferror (@var{fid})
-Return 1 if an error condition has been encountered for a given file
-and 0 otherwise.  Note that it will only return 1 if an error has
-already been encountered, not if the next operation will result in an
+@deftypefn {Built-in Function} {[@var{err}, @var{msg}] =} ferror (@var{fid}, "clear")
+Return 1 if an error condition has been encountered for the file ID
+@var{fid} and 0 otherwise.  Note that it will only return 1 if an error
+has already been encountered, not if the next operation will result in
+an error condition.
+
+The second argument is optional.  If it is supplied, also clear the
 error condition.
 @end deftypefn
 
 
-@c file-io.cc
+@c fclear src/file-io.cc
 @anchor{doc-fclear}
 @deftypefn {Built-in Function} {} fclear (@var{fid})
 Clear the stream state for the specified file.
 @end deftypefn
 
 
-@c file-io.cc
+@c freport src/file-io.cc
 @anchor{doc-freport}
 @deftypefn {Built-in Function} {} freport ()
 Print a list of which files have been opened, and whether they are open
-for reading, writing, or both.  For example,
+for reading, writing, or both.  For example:
 
 @example
 @group
 freport ()
 
      @print{}  number  mode  name
-     @print{} 
+     @print{}
      @print{}       0     r  stdin
      @print{}       1     w  stdout
      @print{}       2     w  stderr
@@ -2363,7 +2490,7 @@ freport ()
 Three functions are available for setting and determining the position of
 the file pointer for a given file.
 
-@c file-io.cc
+@c ftell src/file-io.cc
 @anchor{doc-ftell}
 @deftypefn {Built-in Function} {} ftell (@var{fid})
 Return the position of the file pointer as the number of characters
@@ -2372,7 +2499,7 @@ from the beginning of the file @var{fid}.
 @end deftypefn
 
 
-@c file-io.cc
+@c fseek src/file-io.cc
 @anchor{doc-fseek}
 @deftypefn {Built-in Function} {} fseek (@var{fid}, @var{offset}, @var{origin})
 Set the file pointer to any location within the file @var{fid}.
@@ -2389,9 +2516,9 @@ Return 0 on success and -1 on error.
 @end deftypefn
 
 
-@c file-io.cc
+@c SEEK_SET src/file-io.cc
 @anchor{doc-SEEK_SET}
-@deftypefn {Built-in Function} {} SEEK_SET ()
+@deftypefn  {Built-in Function} {} SEEK_SET ()
 @deftypefnx {Built-in Function} {} SEEK_CUR ()
 @deftypefnx {Built-in Function} {} SEEK_END ()
 Return the value required to request that @code{fseek} perform
@@ -2409,7 +2536,7 @@ Position file relative to the end.
 @end deftypefn
 
 
-@c file-io.cc
+@c frewind src/file-io.cc
 @anchor{doc-frewind}
 @deftypefn {Built-in Function} {} frewind (@var{fid})
 Move the file pointer to the beginning of the file @var{fid}, returning
@@ -2430,4 +2557,106 @@ fourch = fgets (myfile, 4);
 fseek (myfile, marker, SEEK_SET);
 @end group
 @end example
+
+@node GUI Dialogs for I/O
+@section GUI Dialogs for I/O
+
+Simple dialog menus are available for choosing directories or files.  They
+return a string variable which can then be used when calling any command
+requiring a file name.
+
+@c uigetdir scripts/plot/uigetdir.m
+@anchor{doc-uigetdir}
+@deftypefn  {Function File} {@var{dirname} =} uigetdir ()
+@deftypefnx {Function File} {@var{dirname} =} uigetdir (@var{init_path})
+@deftypefnx {Function File} {@var{dirname} =} uigetdir (@var{init_path}, @var{dialog_name})
+Open a GUI dialog for selecting a directory.  If @var{init_path} is not
+given the current working directory is used.  @var{dialog_name} may be
+used to customize the dialog title.
+@seealso{@ref{doc-uigetfile,,uigetfile}}
+@end deftypefn
+
+
+@c uigetfile scripts/plot/uigetfile.m
+@anchor{doc-uigetfile}
+@deftypefn  {Function File} {[@var{fname}, @var{fpath}, @var{fltidx}] =} uigetfile ()
+@deftypefnx {Function File} {[@dots{}] =} uigetfile (@var{flt})
+@deftypefnx {Function File} {[@dots{}] =} uigetfile (@var{flt}, @var{dialog_name})
+@deftypefnx {Function File} {[@dots{}] =} uigetfile (@var{flt}, @var{dialog_name}, @var{default_file})
+@deftypefnx {Function File} {[@dots{}] =} uigetfile (@dots{}, "Position", [@var{px} @var{py}])
+@deftypefnx {Function File} {[@dots{}] =} uigetfile (@dots{}, "MultiSelect", @var{mode})
+
+Open a GUI dialog for selecting a file.  It returns the filename @var{fname},
+the path to this file @var{fpath}, and the filter index @var{fltidx}.
+@var{flt} contains a (list of) file filter string(s) in one of the following
+formats:
+
+@table @asis
+@item "/path/to/filename.ext"
+If a filename is given then the file extension is extracted and used as
+filter.  In addition, the path is selected as current path and the filename
+is selected as default file.  Example: @code{uigetfile ("myfun.m")}
+
+@item A single file extension "*.ext"
+Example: @code{uigetfile ("*.ext")}
+
+@item A 2-column cell array
+containing a file extension in the first column and a brief description
+in the second column.
+Example: @code{uigetfile (@{"*.ext", "My Description";"*.xyz",
+"XYZ-Format"@})}
+
+The filter string can also contain a semicolon separated list of filter
+extensions.
+Example: @code{uigetfile (@{"*.gif;*.png;*.jpg", "Supported Picture
+Formats"@})}
+@end table
+
+@var{dialog_name} can be used to customize the dialog title.
+If @var{default_file} is given then it will be selected in the GUI dialog.
+If, in addition, a path is given it is also used as current path.
+
+The screen position of the GUI dialog can be set using the "Position" key
+and a 2-element vector containing the pixel coordinates.
+Two or more files can be selected when setting the "MultiSelect" key to "on".
+In that case @var{fname} is a cell array containing the files.
+@end deftypefn
+
+
+@c uiputfile scripts/plot/uiputfile.m
+@anchor{doc-uiputfile}
+@deftypefn  {Function File} {[@var{fname}, @var{fpath}, @var{fltidx}] =} uiputfile ()
+@deftypefnx {Function File} {[@var{fname}, @var{fpath}, @var{fltidx}] =} uiputfile (@var{flt})
+@deftypefnx {Function File} {[@var{fname}, @var{fpath}, @var{fltidx}] =} uiputfile (@var{flt}, @var{dialog_name})
+@deftypefnx {Function File} {[@var{fname}, @var{fpath}, @var{fltidx}] =} uiputfile (@var{flt}, @var{dialog_name}, @var{default_file})
+Open a GUI dialog for selecting a file.  @var{flt} contains a (list of) file
+filter string(s) in one of the following formats:
+
+@table @code
+@item "/path/to/filename.ext"
+If a filename is given the file extension is
+extracted and used as filter.
+In addition the path is selected as current path and the filename is selected
+as default file.
+Example: uiputfile("myfun.m");
+
+@item "*.ext"
+A single file extension.
+Example: uiputfile("*.ext");
+
+@item @{"*.ext","My Description"@}
+A 2-column cell array containing the file extension in the 1st column and
+a brief description in the 2nd column.
+Example: uiputfile(@{"*.ext","My Description";"*.xyz","XYZ-Format"@});
+@end table
+
+The filter string can also contain a semicolon separated list of filter
+extensions.
+Example: uiputfile(@{"*.gif;*.png;*.jpg", "Supported Picture Formats"@});
+
+@var{dialog_name} can be used to customize the dialog title.
+If @var{default_file} is given it is preselected in the GUI dialog.
+If, in addition, a path is given it is also used as current path.
+@end deftypefn
+
 

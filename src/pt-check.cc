@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2000, 2002, 2003, 2004, 2005, 2006, 2007,
-              2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -40,10 +39,10 @@ tree_checker::visit_argument_list (tree_argument_list& lst)
       tree_expression *elt = *p++;
 
       if (elt)
-	{
-	  if (do_lvalue_check && ! elt->lvalue_ok ())
-	    gripe ("invalid lvalue in multiple assignment", elt->line ());
-	}
+        {
+          if (do_lvalue_check && ! elt->lvalue_ok ())
+            gripe ("invalid lvalue in multiple assignment", elt->line ());
+        }
     }
 }
 
@@ -135,7 +134,7 @@ tree_checker::visit_decl_init_list (tree_decl_init_list& lst)
       tree_decl_elt *elt = *p++;
 
       if (elt)
-	elt->accept (*this);
+        elt->accept (*this);
     }
 }
 
@@ -147,7 +146,7 @@ tree_checker::visit_simple_for_command (tree_simple_for_command& cmd)
   if (lhs)
     {
       if (! lhs->lvalue_ok ())
-	gripe ("invalid lvalue in for command", cmd.line ());
+        gripe ("invalid lvalue in for command", cmd.line ());
     }
 
   tree_expression *expr = cmd.control_expr ();
@@ -171,8 +170,8 @@ tree_checker::visit_complex_for_command (tree_complex_for_command& cmd)
       int len = lhs->length ();
 
       if (len == 0 || len > 2)
-	gripe ("invalid number of output arguments in for command",
-	       cmd.line ());
+        gripe ("invalid number of output arguments in for command",
+               cmd.line ());
 
       do_lvalue_check = true;
 
@@ -259,7 +258,7 @@ tree_checker::visit_if_command_list (tree_if_command_list& lst)
       tree_if_clause *elt = *p++;
 
       if (elt)
-	elt->accept (*this);
+        elt->accept (*this);
     }
 }
 
@@ -280,7 +279,7 @@ tree_checker::visit_index_expression (tree_index_expression& expr)
       tree_argument_list *elt = *p++;
 
       if (elt)
-	elt->accept (*this);
+        elt->accept (*this);
     }
 }
 
@@ -294,7 +293,7 @@ tree_checker::visit_matrix (tree_matrix& lst)
       tree_argument_list *elt = *p++;
 
       if (elt)
-	elt->accept (*this);
+        elt->accept (*this);
     }
 }
 
@@ -308,7 +307,7 @@ tree_checker::visit_cell (tree_cell& lst)
       tree_argument_list *elt = *p++;
 
       if (elt)
-	elt->accept (*this);
+        elt->accept (*this);
     }
 }
 
@@ -362,7 +361,7 @@ tree_checker::visit_parameter_list (tree_parameter_list& lst)
       tree_decl_elt *elt = *p++;
 
       if (elt)
-	elt->accept (*this);
+        elt->accept (*this);
     }
 }
 
@@ -399,7 +398,7 @@ tree_checker::visit_return_list (tree_return_list& lst)
       tree_index_expression *elt = *p++;
 
       if (elt)
-	elt->accept (*this);
+        elt->accept (*this);
     }
 }
 
@@ -411,7 +410,7 @@ tree_checker::visit_simple_assignment (tree_simple_assignment& expr)
   if (lhs)
     {
       if (! lhs->lvalue_ok ())
-	gripe ("invalid lvalue in assignment", expr.line ());
+        gripe ("invalid lvalue in assignment", expr.line ());
     }
 
   tree_expression *rhs = expr.right_hand_side ();
@@ -432,7 +431,7 @@ tree_checker::visit_statement (tree_statement& stmt)
       tree_expression *expr = stmt.expression ();
 
       if (expr)
-	expr->accept (*this);
+        expr->accept (*this);
     }
 }
 
@@ -444,7 +443,7 @@ tree_checker::visit_statement_list (tree_statement_list& lst)
       tree_statement *elt = *p;
 
       if (elt)
-	elt->accept (*this);
+        elt->accept (*this);
     }
 }
 
@@ -472,7 +471,7 @@ tree_checker::visit_switch_case_list (tree_switch_case_list& lst)
       tree_switch_case *elt = *p++;
 
       if (elt)
-	elt->accept (*this);
+        elt->accept (*this);
     }
 }
 
@@ -555,9 +554,3 @@ tree_checker::gripe (const std::string& msg, int line)
   else
     error ("%s: %d: %s", curr_fcn_file_name.c_str (), line, msg.c_str ());
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,5 +1,4 @@
-## Copyright (C) 1994, 1995, 1996, 1997, 1998, 2000, 2002, 2004, 2005,
-##               2006, 2007, 2008, 2009 John W. Eaton
+## Copyright (C) 1994-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -18,20 +17,20 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} prepad (@var{x}, @var{l}, @var{c})
+## @deftypefn  {Function File} {} prepad (@var{x}, @var{l})
+## @deftypefnx {Function File} {} prepad (@var{x}, @var{l}, @var{c})
 ## @deftypefnx {Function File} {} prepad (@var{x}, @var{l}, @var{c}, @var{dim})
-## Prepend (append) the scalar value @var{c} to the vector @var{x}
-## until it is of length @var{l}.  If the third argument is not
-## supplied, a value of 0 is used.
+## Prepend the scalar value @var{c} to the vector @var{x} until it is of length
+## @var{l}.  If @var{c} is not given, a value of 0 is used.
 ##
-## If @code{length (@var{x}) > @var{l}}, elements from the beginning (end) of
+## If @code{length (@var{x}) > @var{l}}, elements from the beginning of
 ## @var{x} are removed until a vector of length @var{l} is obtained.
 ##
 ## If @var{x} is a matrix, elements are prepended or removed from each row.
 ##
-## If the optional @var{dim} argument is given, then operate along this
+## If the optional argument @var{dim} is given, operate along this
 ## dimension.
-## @seealso{postpad}
+## @seealso{postpad, cat, resize}
 ## @end deftypefn
 
 ## Author: Tony Richardson <arichard@stark.cc.oh.us>
@@ -54,23 +53,20 @@ function y = prepad (x, l, c, dim)
   nd = ndims (x);
   sz = size (x);
   if (nargin < 4)
-    %% Find the first non-singleton dimension
-    dim  = 1;
-    while (dim < nd + 1 && sz (dim) == 1)
-      dim = dim + 1;
-    endwhile
-    if (dim > nd)
+    ## Find the first non-singleton dimension
+    dim = find (sz > 1, 1);
+    if (isempty (dim))
       dim = 1;
     endif
   else
-    if (! (isscalar (dim) && dim == round (dim)) && dim > 0 && 
-	dim < (nd + 1))
-      error ("prepad: dim must be an integer and valid dimension");
+    if (!(isscalar (dim) && dim == fix (dim))
+        || !(1 <= dim && dim <= nd))
+      error ("prepad: DIM must be an integer and a valid dimension");
     endif
   endif
 
   if (! isscalar (l) || l < 0)
-    error ("second argument must be a positive scaler");
+    error ("prepad: second argument must be a positive scaler");
   endif
 
   if (dim > nd)

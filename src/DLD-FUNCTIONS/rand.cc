@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 1999, 2000, 2002, 2003, 2005, 2006,
-              2007, 2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
+Copyright (C) 2009 VZLU Prague
 
 This file is part of Octave.
 
@@ -40,6 +40,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "oct-obj.h"
 #include "unwind-prot.h"
 #include "utils.h"
+#include "ov-re-mat.h"
 
 /*
 %!shared __random_statistical_tests__
@@ -49,229 +50,245 @@ along with Octave; see the file COPYING.  If not, see
 
 static octave_value
 do_rand (const octave_value_list& args, int nargin, const char *fcn,
-	 bool additional_arg = false)
+         const std::string& distribution, bool additional_arg = false)
 {
   octave_value retval;
   NDArray a;
   int idx = 0;
   dim_vector dims;
 
+  unwind_protect frame;
+  // Restore current distribution on any exit.
+  frame.add_fcn (octave_rand::distribution,
+                 octave_rand::distribution ());
+
+  octave_rand::distribution (distribution);
+
   if (additional_arg)
     {
       if (nargin == 0)
-	{
-	  error ("%s: expecting at least one argument", fcn);
-	  goto done;
-	}
+        {
+          error ("%s: expecting at least one argument", fcn);
+          goto done;
+        }
       else if (args(0).is_string())
-	additional_arg = false;
+        additional_arg = false;
       else
-	{
-	  a = args(0).array_value ();
-	  if (error_state)
-	    {
-	      error ("%s: expecting scalar or matrix arguments", fcn);
-	      goto done;
-	    }
-	  idx++;
-	  nargin--;
-	}
+        {
+          a = args(0).array_value ();
+          if (error_state)
+            {
+              error ("%s: expecting scalar or matrix arguments", fcn);
+              goto done;
+            }
+          idx++;
+          nargin--;
+        }
     }
 
   switch (nargin)
     {
     case 0:
       {
-	if (additional_arg)
-	  dims = a.dims ();
-	else
-	  {
-	    dims.resize (2);
+        if (additional_arg)
+          dims = a.dims ();
+        else
+          {
+            dims.resize (2);
 
-	    dims(0) = 1;
-	    dims(1) = 1;
-	  }
-	goto gen_matrix;
+            dims(0) = 1;
+            dims(1) = 1;
+          }
+        goto gen_matrix;
       }
       break;
 
     case 1:
       {
-	octave_value tmp = args(idx);
+        octave_value tmp = args(idx);
 
-	if (tmp.is_string ())
-	  {
-	    std::string s_arg = tmp.string_value ();
+        if (tmp.is_string ())
+          {
+            std::string s_arg = tmp.string_value ();
 
-	    if (s_arg == "dist")
-	      {
-		retval = octave_rand::distribution ();
-	      }
-	    else if (s_arg == "seed")
-	      {
-		retval = octave_rand::seed ();
-	      }
-	    else if (s_arg == "state" || s_arg == "twister")
-	      {
-		retval = octave_rand::state (fcn);
-	      }
-	    else if (s_arg == "uniform")
-	      {
-		octave_rand::uniform_distribution ();
-	      }
-	    else if (s_arg == "normal")
-	      {
-		octave_rand::normal_distribution ();
-	      }
-	    else if (s_arg == "exponential")
-	      {
-		octave_rand::exponential_distribution ();
-	      }
-	    else if (s_arg == "poisson")
-	      {
-		octave_rand::poisson_distribution ();
-	      }
-	    else if (s_arg == "gamma")
-	      {
-		octave_rand::gamma_distribution ();
-	      }
-	    else
-	      error ("%s: unrecognized string argument", fcn);
-	  }
-	else if (tmp.is_scalar_type ())
-	  {
-	    double dval = tmp.double_value ();
+            if (s_arg == "dist")
+              {
+                retval = octave_rand::distribution ();
+              }
+            else if (s_arg == "seed")
+              {
+                retval = octave_rand::seed ();
+              }
+            else if (s_arg == "state" || s_arg == "twister")
+              {
+                retval = octave_rand::state (fcn);
+              }
+            else if (s_arg == "uniform")
+              {
+                octave_rand::uniform_distribution ();
+              }
+            else if (s_arg == "normal")
+              {
+                octave_rand::normal_distribution ();
+              }
+            else if (s_arg == "exponential")
+              {
+                octave_rand::exponential_distribution ();
+              }
+            else if (s_arg == "poisson")
+              {
+                octave_rand::poisson_distribution ();
+              }
+            else if (s_arg == "gamma")
+              {
+                octave_rand::gamma_distribution ();
+              }
+            else
+              error ("%s: unrecognized string argument", fcn);
+          }
+        else if (tmp.is_scalar_type ())
+          {
+            double dval = tmp.double_value ();
 
-	    if (xisnan (dval))
-	      {
-		error ("%s: NaN is invalid a matrix dimension", fcn);
-	      }
-	    else
-	      {
-		dims.resize (2);
+            if (xisnan (dval))
+              {
+                error ("%s: NaN is invalid matrix dimension", fcn);
+              }
+            else
+              {
+                dims.resize (2);
 
-		dims(0) = NINTbig (tmp.double_value ());
-		dims(1) = NINTbig (tmp.double_value ());
+                dims(0) = NINTbig (tmp.double_value ());
+                dims(1) = NINTbig (tmp.double_value ());
 
-		if (! error_state)
-		  goto gen_matrix;
-	      }
-	  }
-	else if (tmp.is_range ())
-	  {
-	    Range r = tmp.range_value ();
+                if (! error_state)
+                  goto gen_matrix;
+              }
+          }
+        else if (tmp.is_range ())
+          {
+            Range r = tmp.range_value ();
 
-	    if (r.all_elements_are_ints ())
-	      {
-		octave_idx_type n = r.nelem ();
+            if (r.all_elements_are_ints ())
+              {
+                octave_idx_type n = r.nelem ();
 
-		dims.resize (n);
+                dims.resize (n);
 
-		octave_idx_type base = NINTbig (r.base ());
-		octave_idx_type incr = NINTbig (r.inc ());
-		octave_idx_type lim = NINTbig (r.limit ());
+                octave_idx_type base = NINTbig (r.base ());
+                octave_idx_type incr = NINTbig (r.inc ());
+                octave_idx_type lim = NINTbig (r.limit ());
 
-		if (base < 0 || lim < 0)
-		  error ("%s: all dimensions must be nonnegative", fcn);
-		else
-		  {
-		    for (octave_idx_type i = 0; i < n; i++)
-		      {
-			dims(i) = base;
-			base += incr;
-		      }
+                if (base < 0 || lim < 0)
+                  error ("%s: all dimensions must be positive", fcn);
+                else
+                  {
+                    for (octave_idx_type i = 0; i < n; i++)
+                      {
+                        dims(i) = base;
+                        base += incr;
+                      }
 
-		    goto gen_matrix;
-		  }
-	      }
-	    else
-	      error ("%s: expecting all elements of range to be integers",
-		     fcn);
-	  }
-	else if (tmp.is_matrix_type ())
-	  {
-	    Array<int> iv = tmp.int_vector_value (true);
+                    goto gen_matrix;
+                  }
+              }
+            else
+              error ("%s: all elements of range must be integers",
+                     fcn);
+          }
+        else if (tmp.is_matrix_type ())
+          {
+            Array<int> iv = tmp.int_vector_value (true);
 
-	    if (! error_state)
-	      {
-		octave_idx_type len = iv.length ();
+            if (! error_state)
+              {
+                octave_idx_type len = iv.length ();
 
-		dims.resize (len);
+                dims.resize (len);
 
-		for (octave_idx_type i = 0; i < len; i++)
-		  {
-		    octave_idx_type elt = iv(i);
+                for (octave_idx_type i = 0; i < len; i++)
+                  {
+                    octave_idx_type elt = iv(i);
 
-		    if (elt < 0)
-		      {
-			error ("%s: all dimensions must be nonnegative", fcn);
-			goto done;
-		      }
+                    if (elt < 0)
+                      {
+                        error ("%s: all dimensions must be positive", fcn);
+                        goto done;
+                      }
 
-		    dims(i) = iv(i);
-		  }
+                    dims(i) = iv(i);
+                  }
 
-		goto gen_matrix;
-	      }
-	    else
-	      error ("%s: expecting integer vector", fcn);
-	  }
-	else
-	  {
-	    gripe_wrong_type_arg ("rand", tmp);
-	    return retval;
-	  }
+                goto gen_matrix;
+              }
+            else
+              error ("%s: expecting integer vector", fcn);
+          }
+        else
+          {
+            gripe_wrong_type_arg ("rand", tmp);
+            return retval;
+          }
       }
       break;
 
     default:
       {
-	octave_value tmp = args(idx);
+        octave_value tmp = args(idx);
 
-	if (nargin == 2 && tmp.is_string ())
-	  {
-	    std::string ts = tmp.string_value ();
+        if (nargin == 2 && tmp.is_string ())
+          {
+            std::string ts = tmp.string_value ();
 
-	    if (ts == "seed")
-	      {
-		if (args(idx+1).is_real_scalar ())
-		  {
-		    double d = args(idx+1).double_value ();
+            if (ts == "seed")
+              {
+                if (args(idx+1).is_real_scalar ())
+                  {
+                    double d = args(idx+1).double_value ();
 
-		    if (! error_state)
-		      octave_rand::seed (d);
-		  }
-		else
-		  error ("%s: seed must be a real scalar", fcn);
-	      }
-	    else if (ts == "state" || ts == "twister")
-	      {
-		ColumnVector s = 
-		  ColumnVector (args(idx+1).vector_value(false, true));
+                    if (! error_state)
+                      octave_rand::seed (d);
+                  }
+                else if (args(idx+1).is_string ()
+                         && args(idx+1).string_value() == "reset")
+                  octave_rand::reset ();
+                else
+                  error ("%s: seed must be a real scalar", fcn);
+              }
+            else if (ts == "state" || ts == "twister")
+              {
+                if (args(idx+1).is_string ()
+                    && args(idx+1).string_value() == "reset")
+                  octave_rand::reset (fcn);
+                else
+                  {
+                    ColumnVector s =
+                      ColumnVector (args(idx+1).vector_value(false, true));
 
-		if (! error_state)
-		  octave_rand::state (s, fcn);
-	      }
-	    else
-	      error ("%s: unrecognized string argument", fcn);
-	  }
-	else
-	  {
-	    dims.resize (nargin);
+                    if (! error_state)
+                      octave_rand::state (s, fcn);
+                  }
+              }
+            else
+              error ("%s: unrecognized string argument", fcn);
+          }
+        else
+          {
+            dims.resize (nargin);
 
-	    for (int i = 0; i < nargin; i++)
-	      {
-		dims(i) = args(idx+i).int_value ();
+            for (int i = 0; i < nargin; i++)
+              {
+                dims(i) = args(idx+i).int_value ();
 
-		if (error_state)
-		  {
-		    error ("%s: expecting integer arguments", fcn);
-		    goto done;
-		  }
-	      }
+                if (error_state)
+                  {
+                    error ("%s: expecting integer arguments", fcn);
+                    goto done;
+                  }
+              }
 
-	    goto gen_matrix;
-	  }
+            goto gen_matrix;
+          }
       }
       break;
     }
@@ -287,21 +304,21 @@ do_rand (const octave_value_list& args, int nargin, const char *fcn,
   if (additional_arg)
     {
       if (a.length() == 1)
-	return octave_rand::nd_array (dims, a(0));
+        return octave_rand::nd_array (dims, a(0));
       else
-	{
-	  if (a.dims() != dims)
-	    {
-	      error ("%s: mismatch in argument size", fcn);
-	      return retval;
-	    }
-	  octave_idx_type len = a.length ();
-	  NDArray m (dims);
-	  double *v = m.fortran_vec ();
-	  for (octave_idx_type i = 0; i < len; i++)
-	    v[i] = octave_rand::scalar (a(i));
-	  return m;
-	}
+        {
+          if (a.dims() != dims)
+            {
+              error ("%s: mismatch in argument size", fcn);
+              return retval;
+            }
+          octave_idx_type len = a.length ();
+          NDArray m (dims);
+          double *v = m.fortran_vec ();
+          for (octave_idx_type i = 0; i < len; i++)
+            v[i] = octave_rand::scalar (a(i));
+          return m;
+        }
     }
   else
     return octave_rand::nd_array (dims);
@@ -309,10 +326,15 @@ do_rand (const octave_value_list& args, int nargin, const char *fcn,
 
 DEFUN_DLD (rand, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Loadable Function} {} rand (@var{x})\n\
-@deftypefnx {Loadable Function} {} rand (@var{n}, @var{m})\n\
-@deftypefnx {Loadable Function} {} rand (\"state\", @var{x})\n\
-@deftypefnx {Loadable Function} {} rand (\"seed\", @var{x})\n\
+@deftypefn  {Loadable Function} {} rand (@var{n})\n\
+@deftypefnx {Loadable Function} {} rand (@var{n}, @var{m}, @dots{})\n\
+@deftypefnx {Loadable Function} {} rand ([@var{n} @var{m} @dots{}])\n\
+@deftypefnx {Loadable Function} {@var{v} =} rand (\"state\")\n\
+@deftypefnx {Loadable Function} {} rand (\"state\", @var{v})\n\
+@deftypefnx {Loadable Function} {} rand (\"state\", \"reset\")\n\
+@deftypefnx {Loadable Function} {@var{v} =} rand (\"seed\")\n\
+@deftypefnx {Loadable Function} {} rand (\"seed\", @var{v})\n\
+@deftypefnx {Loadable Function} {} rand (\"seed\", \"reset\")\n\
 Return a matrix with random elements uniformly distributed on the\n\
 interval (0, 1).  The arguments are handled the same as the arguments\n\
 for @code{eye}.\n\
@@ -334,17 +356,19 @@ rand (\"state\", v)\n\
 \n\
 @noindent\n\
 You may also initialize the state vector from an arbitrary vector of\n\
-length <= 625 for @var{v}.  This new state will be a hash based on the\n\
+length @leq{} 625 for @var{v}.  This new state will be a hash based on the\n\
 value of @var{v}, not @var{v} itself.\n\
 \n\
 By default, the generator is initialized from @code{/dev/urandom} if it is\n\
-available, otherwise from cpu time, wall clock time and the current\n\
+available, otherwise from CPU time, wall clock time, and the current\n\
 fraction of a second.\n\
 \n\
 To compute the pseudo-random sequence, @code{rand} uses the Mersenne\n\
-Twister with a period of @math{2^{19937}-1} (See M. Matsumoto and T. Nishimura,\n\
-@cite{Mersenne Twister: A 623-dimensionally equidistributed uniform pseudorandom number generator}, ACM Trans. on\n\
-Modeling and Computer Simulation Vol. 8, No. 1, January pp.3-30 1998,\n\
+Twister with a period of @math{2^{19937}-1} (See M. Matsumoto and\n\
+T. Nishimura,\n\
+@cite{Mersenne Twister: A 623-dimensionally equidistributed uniform\n\
+pseudorandom number generator}, ACM Trans. on\n\
+Modeling and Computer Simulation Vol. 8, No. 1, pp. 3-30, January 1998,\n\
 @url{http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/emt.html}).\n\
 Do @strong{not} use for cryptography without securely hashing\n\
 several returned values together, otherwise the generator state\n\
@@ -363,6 +387,7 @@ as in\n\
 rand (\"seed\", val)\n\
 @end example\n\
 \n\
+@noindent\n\
 which sets the seed of the generator to @var{val}.  The seed of the\n\
 generator can be queried with\n\
 \n\
@@ -374,6 +399,9 @@ However, it should be noted that querying the seed will not cause\n\
 @code{rand} to use the old generators, only setting the seed will.\n\
 To cause @code{rand} to once again use the new generators, the\n\
 keyword \"state\" should be used to reset the state of the @code{rand}.\n\
+\n\
+The state or seed of the generator can be reset to a new random value\n\
+using the \"reset\" keyword.\n\
 @seealso{randn, rande, randg, randp}\n\
 @end deftypefn")
 {
@@ -381,7 +409,7 @@ keyword \"state\" should be used to reset the state of the @code{rand}.\n\
 
   int nargin = args.length ();
 
-  retval = do_rand (args, nargin, "rand");
+  retval = do_rand (args, nargin, "rand", "uniform");
 
   return retval;
 }
@@ -441,7 +469,7 @@ keyword \"state\" should be used to reset the state of the @code{rand}.\n\
 %!   assert(min(x)>0.); %*** Please report this!!! ***
 %!   assert(mean(x),0.5,0.0024);
 %!   assert(var(x),1/48,0.0632);
-%!   assert(skewness(x),0,0.012); 
+%!   assert(skewness(x),0,0.012);
 %!   assert(kurtosis(x),-6/5,0.0094);
 %! endif
 %!test
@@ -453,7 +481,7 @@ keyword \"state\" should be used to reset the state of the @code{rand}.\n\
 %!   assert(min(x)>0.); %*** Please report this!!! ***
 %!   assert(mean(x),0.5,0.0024);
 %!   assert(var(x),1/48,0.0632);
-%!   assert(skewness(x),0,0.012); 
+%!   assert(skewness(x),0,0.012);
 %!   assert(kurtosis(x),-6/5,0.0094);
 %! endif
 */
@@ -461,25 +489,26 @@ keyword \"state\" should be used to reset the state of the @code{rand}.\n\
 
 static std::string current_distribution = octave_rand::distribution ();
 
-static void
-reset_rand_generator (void *)
-{
-  octave_rand::distribution (current_distribution);
-}
-
 DEFUN_DLD (randn, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Loadable Function} {} randn (@var{x})\n\
-@deftypefnx {Loadable Function} {} randn (@var{n}, @var{m})\n\
-@deftypefnx {Loadable Function} {} randn (\"state\", @var{x})\n\
-@deftypefnx {Loadable Function} {} randn (\"seed\", @var{x})\n\
-Return a matrix with normally distributed pseudo-random\n\
+@deftypefn  {Loadable Function} {} randn (@var{n})\n\
+@deftypefnx {Loadable Function} {} randn (@var{n}, @var{m}, @dots{})\n\
+@deftypefnx {Loadable Function} {} randn ([@var{n} @var{m} @dots{}])\n\
+@deftypefnx {Loadable Function} {@var{v} =} randn (\"state\")\n\
+@deftypefnx {Loadable Function} {} randn (\"state\", @var{v})\n\
+@deftypefnx {Loadable Function} {} randn (\"state\", \"reset\")\n\
+@deftypefnx {Loadable Function} {@var{v} =} randn (\"seed\")\n\
+@deftypefnx {Loadable Function} {} randn (\"seed\", @var{v})\n\
+@deftypefnx {Loadable Function} {} randn (\"seed\", \"reset\")\n\
+Return a matrix with normally distributed random\n\
 elements having zero mean and variance one.  The arguments are\n\
 handled the same as the arguments for @code{rand}.\n\
 \n\
-By default, @code{randn} uses the Marsaglia and Tsang ``Ziggurat technique'' to\n\
-transform from a uniform to a normal distribution.  (G. Marsaglia and\n\
-W.W. Tsang, @cite{Ziggurat method for generating random variables},\n\
+By default, @code{randn} uses the Marsaglia and Tsang ``Ziggurat technique''\n\
+to transform from a uniform to a normal distribution.\n\
+\n\
+Reference: G. Marsaglia and W.W. Tsang,\n\
+@cite{Ziggurat Method for Generating Random Variables},\n\
 J. Statistical Software, vol 5, 2000,\n\
 @url{http://www.jstatsoft.org/v05/i08/})\n\
 \n\
@@ -490,23 +519,7 @@ J. Statistical Software, vol 5, 2000,\n\
 
   int nargin = args.length ();
 
-  unwind_protect::begin_frame ("randn");
-
-  // This relies on the fact that elements are popped from the unwind
-  // stack in the reverse of the order they are pushed
-  // (i.e. current_distribution will be reset before calling
-  // reset_rand_generator()).
-
-  unwind_protect::add (reset_rand_generator, 0);
-  unwind_protect_str (current_distribution);
-
-  current_distribution = "normal";
-
-  octave_rand::distribution (current_distribution);
-
-  retval = do_rand (args, nargin, "randn");
-
-  unwind_protect::run_frame ("randn");
+  retval = do_rand (args, nargin, "randn", "normal");
 
   return retval;
 }
@@ -544,18 +557,26 @@ J. Statistical Software, vol 5, 2000,\n\
 
 DEFUN_DLD (rande, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Loadable Function} {} rande (@var{x})\n\
-@deftypefnx {Loadable Function} {} rande (@var{n}, @var{m})\n\
-@deftypefnx {Loadable Function} {} rande (\"state\", @var{x})\n\
-@deftypefnx {Loadable Function} {} rande (\"seed\", @var{x})\n\
+@deftypefn  {Loadable Function} {} rande (@var{n})\n\
+@deftypefnx {Loadable Function} {} rande (@var{n}, @var{m}, @dots{})\n\
+@deftypefnx {Loadable Function} {} rande ([@var{n} @var{m} @dots{}])\n\
+@deftypefnx {Loadable Function} {@var{v} =} rande (\"state\")\n\
+@deftypefnx {Loadable Function} {} rande (\"state\", @var{v})\n\
+@deftypefnx {Loadable Function} {} rande (\"state\", \"reset\")\n\
+@deftypefnx {Loadable Function} {@var{v} =} rande (\"seed\")\n\
+@deftypefnx {Loadable Function} {} rande (\"seed\", @var{v})\n\
+@deftypefnx {Loadable Function} {} rande (\"seed\", \"reset\")\n\
 Return a matrix with exponentially distributed random elements.  The\n\
 arguments are handled the same as the arguments for @code{rand}.\n\
 \n\
-By default, @code{randn} uses the Marsaglia and Tsang ``Ziggurat technique'' to\n\
-transform from a uniform to a exponential distribution.  (G. Marsaglia and\n\
-W.W. Tsang, @cite{Ziggurat method for generating random variables},\n\
+By default, @code{randn} uses the Marsaglia and Tsang ``Ziggurat technique''\n\
+to transform from a uniform to an exponential distribution.\n\
+\n\
+Reference: G. Marsaglia and W.W. Tsang,\n\
+@cite{Ziggurat Method for Generating Random Variables},\n\
 J. Statistical Software, vol 5, 2000,\n\
 @url{http://www.jstatsoft.org/v05/i08/})\n\
+\n\
 @seealso{rand, randn, randg, randp}\n\
 @end deftypefn")
 {
@@ -563,23 +584,7 @@ J. Statistical Software, vol 5, 2000,\n\
 
   int nargin = args.length ();
 
-  unwind_protect::begin_frame ("rande");
-
-  // This relies on the fact that elements are popped from the unwind
-  // stack in the reverse of the order they are pushed
-  // (i.e. current_distribution will be reset before calling
-  // reset_rand_generator()).
-
-  unwind_protect::add (reset_rand_generator, 0);
-  unwind_protect_str (current_distribution);
-
-  current_distribution = "exponential";
-
-  octave_rand::distribution (current_distribution);
-
-  retval = do_rand (args, nargin, "rande");
-
-  unwind_protect::run_frame ("rande");
+  retval = do_rand (args, nargin, "rande", "exponential");
 
   return retval;
 }
@@ -619,10 +624,15 @@ J. Statistical Software, vol 5, 2000,\n\
 
 DEFUN_DLD (randg, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Loadable Function} {} randg (@var{a}, @var{x})\n\
-@deftypefnx {Loadable Function} {} randg (@var{a}, @var{n}, @var{m})\n\
-@deftypefnx {Loadable Function} {} randg (\"state\", @var{x})\n\
-@deftypefnx {Loadable Function} {} randg (\"seed\", @var{x})\n\
+@deftypefn  {Loadable Function} {} randg (@var{n})\n\
+@deftypefnx {Loadable Function} {} randg (@var{n}, @var{m}, @dots{})\n\
+@deftypefnx {Loadable Function} {} randg ([@var{n} @var{m} @dots{}])\n\
+@deftypefnx {Loadable Function} {@var{v} =} randg (\"state\")\n\
+@deftypefnx {Loadable Function} {} randg (\"state\", @var{v})\n\
+@deftypefnx {Loadable Function} {} randg (\"state\", \"reset\")\n\
+@deftypefnx {Loadable Function} {@var{v} =} randg (\"seed\")\n\
+@deftypefnx {Loadable Function} {} randg (\"seed\", @var{v})\n\
+@deftypefnx {Loadable Function} {} randg (\"seed\", \"reset\")\n\
 Return a matrix with @code{gamma(@var{a},1)} distributed random elements.\n\
 The arguments are handled the same as the arguments for @code{rand},\n\
 except for the argument @var{a}.\n\
@@ -631,29 +641,40 @@ This can be used to generate many distributions:\n\
 \n\
 @table @asis\n\
 @item @code{gamma (a, b)} for @code{a > -1}, @code{b > 0}\n\
+\n\
 @example\n\
 r = b * randg (a)\n\
 @end example\n\
+\n\
 @item @code{beta (a, b)} for @code{a > -1}, @code{b > -1}\n\
+\n\
 @example\n\
 @group\n\
 r1 = randg (a, 1)\n\
 r = r1 / (r1 + randg (b, 1))\n\
 @end group\n\
 @end example\n\
+\n\
 @item @code{Erlang (a, n)}\n\
+\n\
 @example\n\
 r = a * randg (n)\n\
 @end example\n\
+\n\
 @item @code{chisq (df)} for @code{df > 0}\n\
+\n\
 @example\n\
 r = 2 * randg (df / 2)\n\
 @end example\n\
-@item @code{t(df)} for @code{0 < df < inf} (use randn if df is infinite)\n\
+\n\
+@item @code{t (df)} for @code{0 < df < inf} (use randn if df is infinite)\n\
+\n\
 @example\n\
 r = randn () / sqrt (2 * randg (df / 2) / df)\n\
 @end example\n\
+\n\
 @item @code{F (n1, n2)} for @code{0 < n1}, @code{0 < n2}\n\
+\n\
 @example\n\
 @group\n\
 ## r1 equals 1 if n1 is infinite\n\
@@ -663,12 +684,16 @@ r2 = 2 * randg (n2 / 2) / n2\n\
 r = r1 / r2\n\n\
 @end group\n\
 @end example\n\
+\n\
 @item negative @code{binomial (n, p)} for @code{n > 0}, @code{0 < p <= 1}\n\
+\n\
 @example\n\
 r = randp ((1 - p) / p * randg (n))\n\
 @end example\n\
+\n\
 @item non-central @code{chisq (df, L)}, for @code{df >= 0} and @code{L > 0}\n\
 (use chisq if @code{L = 0})\n\
+\n\
 @example\n\
 @group\n\
 r = randp (L / 2)\n\
@@ -676,13 +701,16 @@ r(r > 0) = 2 * randg (r(r > 0))\n\
 r(df > 0) += 2 * randg (df(df > 0)/2)\n\
 @end group\n\
 @end example\n\
+\n\
 @item @code{Dirichlet (a1, @dots{} ak)}\n\
+\n\
 @example\n\
 @group\n\
 r = (randg (a1), @dots{}, randg (ak))\n\
 r = r / sum (r)\n\
 @end group\n\
 @end example\n\
+\n\
 @end table\n\
 @seealso{rand, randn, rande, randp}\n\
 @end deftypefn")
@@ -694,25 +722,7 @@ r = r / sum (r)\n\
   if (nargin < 1)
     error ("randg: insufficient arguments");
   else
-    {
-      unwind_protect::begin_frame ("randg");
-
-      // This relies on the fact that elements are popped from the unwind
-      // stack in the reverse of the order they are pushed
-      // (i.e. current_distribution will be reset before calling
-      // reset_rand_generator()).
-
-      unwind_protect::add (reset_rand_generator, 0);
-      unwind_protect_str (current_distribution);
-
-      current_distribution = "gamma";
-
-      octave_rand::distribution (current_distribution);
-
-      retval = do_rand (args, nargin, "randg", true);
-
-      unwind_protect::run_frame ("randg");
-    }
+    retval = do_rand (args, nargin, "randg", "gamma", true);
 
   return retval;
 }
@@ -871,11 +881,17 @@ r = r / sum (r)\n\
 
 DEFUN_DLD (randp, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Loadable Function} {} randp (@var{l}, @var{x})\n\
-@deftypefnx {Loadable Function} {} randp (@var{l}, @var{n}, @var{m})\n\
-@deftypefnx {Loadable Function} {} randp (\"state\", @var{x})\n\
-@deftypefnx {Loadable Function} {} randp (\"seed\", @var{x})\n\
-Return a matrix with Poisson distributed random elements with mean value parameter given by the first argument, @var{l}.  The arguments\n\
+@deftypefn  {Loadable Function} {} randp (@var{l}, @var{n})\n\
+@deftypefnx {Loadable Function} {} randp (@var{l}, @var{n}, @var{m}, @dots{})\n\
+@deftypefnx {Loadable Function} {} randp (@var{l}, [@var{n} @var{m} @dots{}])\n\
+@deftypefnx {Loadable Function} {@var{v} =} randp (\"state\")\n\
+@deftypefnx {Loadable Function} {} randp (\"state\", @var{v})\n\
+@deftypefnx {Loadable Function} {} randp (\"state\", \"reset\")\n\
+@deftypefnx {Loadable Function} {@var{v} =} randp (\"seed\")\n\
+@deftypefnx {Loadable Function} {} randp (\"seed\", @var{v})\n\
+@deftypefnx {Loadable Function} {} randp (\"seed\", \"reset\")\n\
+Return a matrix with Poisson distributed random elements with mean value\n\
+parameter given by the first argument, @var{l}.  The arguments\n\
 are handled the same as the arguments for @code{rand}, except for the\n\
 argument @var{l}.\n\
 \n\
@@ -883,20 +899,26 @@ Five different algorithms are used depending on the range of @var{l}\n\
 and whether or not @var{l} is a scalar or a matrix.\n\
 \n\
 @table @asis\n\
-@item For scalar @var{l} <= 12, use direct method.\n\
-Press, et al., 'Numerical Recipes in C', Cambridge University Press, 1992.\n\
+@item For scalar @var{l} @leq{} 12, use direct method.\n\
+W.H. Press, et al., @cite{Numerical Recipes in C},\n\
+Cambridge University Press, 1992.\n\
+\n\
 @item For scalar @var{l} > 12, use rejection method.[1]\n\
-Press, et al., 'Numerical Recipes in C', Cambridge University Press, 1992.\n\
-@item For matrix @var{l} <= 10, use inversion method.[2]\n\
-Stadlober E., et al., WinRand source code, available via FTP.\n\
+W.H. Press, et al., @cite{Numerical Recipes in C},\n\
+Cambridge University Press, 1992.\n\
+\n\
+@item For matrix @var{l} @leq{} 10, use inversion method.[2]\n\
+E. Stadlober, et al., WinRand source code, available via FTP.\n\
+\n\
 @item For matrix @var{l} > 10, use patchwork rejection method.\n\
-Stadlober E., et al., WinRand source code, available via FTP, or\n\
-H. Zechner, 'Efficient sampling from continuous and discrete\n\
-unimodal distributions', Doctoral Dissertation, 156pp., Technical\n\
+E. Stadlober, et al., WinRand source code, available via FTP, or\n\
+H. Zechner, @cite{Efficient sampling from continuous and discrete\n\
+unimodal distributions}, Doctoral Dissertation, 156pp., Technical\n\
 University Graz, Austria, 1994.\n\
+\n\
 @item For @var{l} > 1e8, use normal approximation.\n\
-L. Montanet, et al., 'Review of Particle Properties', Physical Review\n\
-D 50 p1284, 1994\n\
+L. Montanet, et al., @cite{Review of Particle Properties}, Physical Review\n\
+D 50 p1284, 1994.\n\
 @end table\n\
 @seealso{rand, randn, rande, randg}\n\
 @end deftypefn")
@@ -908,25 +930,7 @@ D 50 p1284, 1994\n\
   if (nargin < 1)
     error ("randp: insufficient arguments");
   else
-    {
-      unwind_protect::begin_frame ("randp");
-
-      // This relies on the fact that elements are popped from the unwind
-      // stack in the reverse of the order they are pushed
-      // (i.e. current_distribution will be reset before calling
-      // reset_rand_generator()).
-
-      unwind_protect::add (reset_rand_generator, 0);
-      unwind_protect_str (current_distribution);
-
-      current_distribution = "poisson";
-
-      octave_rand::distribution (current_distribution);
-
-      retval = do_rand (args, nargin, "randp", true);
-
-      unwind_protect::run_frame ("randp");
-    }
+    retval = do_rand (args, nargin, "randp", "poisson", true);
 
   return retval;
 }
@@ -1017,8 +1021,85 @@ D 50 p1284, 1994\n\
 %! endif
 */
 
+DEFUN_DLD (randperm, args, ,
+  "-*- texinfo -*-\n\
+@deftypefn  {Loadable Function} {} randperm (@var{n})\n\
+@deftypefnx {Loadable Function} {} randperm (@var{n}, @var{m})\n\
+Return a row vector containing a random permutation of @code{1:@var{n}}.\n\
+If @var{m} is supplied, return @var{m} permutations,\n\
+one in each row of an @nospell{MxN} matrix.  The complexity is O(M*N) in both\n\
+time and memory.  The randomization is performed using rand().\n\
+All permutations are equally likely.\n\
+@seealso{perms}\n\
+@end deftypefn")
+{
+  int nargin = args.length ();
+  octave_value retval;
+
+  if (nargin == 1 || nargin == 2)
+    {
+      octave_idx_type n, m;
+
+      if (nargin == 2)
+        m = args(1).idx_type_value (true);
+      else
+        m = 1;
+
+      n = args(0).idx_type_value (true);
+
+      if (m < 0 || n < 0)
+        error ("randperm: M and N must be non-negative");
+
+      if (! error_state)
+        {
+          // Generate random numbers.
+          NDArray r = octave_rand::nd_array (dim_vector (m, n));
+
+          // Create transposed to allow faster access.
+          Array<octave_idx_type> idx (dim_vector (n, m));
+
+          double *rvec = r.fortran_vec ();
+
+          octave_idx_type *ivec = idx.fortran_vec ();
+
+          // Perform the Knuth shuffle.
+          for (octave_idx_type j = 0; j < m; j++)
+            {
+              for (octave_idx_type i = 0; i < n; i++)
+                ivec[i] = i;
+
+              for (octave_idx_type i = 0; i < n; i++)
+                {
+                  octave_idx_type k = i + gnulib::floor (rvec[i] * (n - i));
+                  std::swap (ivec[i], ivec[k]);
+                }
+
+              ivec += n;
+              rvec += n;
+            }
+
+          // Transpose.
+          idx = idx.transpose ();
+
+          // Re-fetch the pointers.
+          ivec = idx.fortran_vec ();
+          rvec = r.fortran_vec ();
+
+          // Convert to doubles, reusing r.
+          for (octave_idx_type i = 0, l = m*n; i < l; i++)
+            rvec[i] = ivec[i] + 1;
+
+          // Now create an array object with a cached idx_vector.
+          retval = new octave_matrix (r, idx_vector (idx));
+        }
+    }
+  else
+    print_usage ();
+
+  return retval;
+}
+
 /*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
+%!assert(sort(randperm(20)),1:20)
+%!assert(sort(randperm(20,50),2),repmat(1:20,50,1))
 */

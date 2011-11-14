@@ -1,5 +1,4 @@
-## Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2002, 2004,
-##               2005, 2006, 2007, 2008, 2009 John W. Eaton
+## Copyright (C) 1994-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -34,24 +33,26 @@
 ## $$
 ## @end tex
 ## @ifnottex
-##
 ## @c Set example in small font to prevent overfull line
+##
 ## @smallexample
+## @group
 ##      _                                                        _
 ##     |  -c(2)/c(1)   -c(3)/c(1)  @dots{}  -c(N)/c(1)  -c(N+1)/c(1)  |
 ##     |       1            0      @dots{}       0             0      |
 ##     |       0            1      @dots{}       0             0      |
-## A = |       .            .   .            .             .      |
+## A = |       .            .      .         .             .      |
 ##     |       .            .       .        .             .      |
-##     |       .            .           .    .             .      |
+##     |       .            .        .       .             .      |
 ##     |_      0            0      @dots{}       1             0     _|
+## @end group
 ## @end smallexample
-## @end ifnottex
 ##
+## @end ifnottex
 ## The eigenvalues of the companion matrix are equal to the roots of the
 ## polynomial.
 ## @seealso{poly, roots, residue, conv, deconv, polyval, polyderiv,
-## polyinteg}
+## polyint}
 ## @end deftypefn
 
 ## Author: Tony Richardson <arichard@stark.cc.oh.us>

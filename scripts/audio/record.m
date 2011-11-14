@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 1999, 2000, 2003, 2004, 2005,
-##               2006, 2007 John W. Eaton
+## Copyright (C) 1995-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -19,7 +18,7 @@
 
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} record (@var{sec}, @var{sampling_rate})
-## Records @var{sec} seconds of audio input into the vector @var{x}.  The
+## Record @var{sec} seconds of audio input into the vector @var{x}.  The
 ## default value for @var{sampling_rate} is 8000 samples per second, or
 ## 8kHz.  The program waits until the user types @key{RET} and then
 ## immediately starts to record.
@@ -45,7 +44,7 @@ function X = record (sec, sampling_rate)
     input ("Please hit ENTER and speak afterwards!\n", 1);
 
     cmd = sprintf ("dd if=/dev/dsp of=\"%s\" bs=%d count=%d",
-                   file, sampling_rate, sec)
+                   file, sampling_rate, sec);
 
     system (cmd);
 

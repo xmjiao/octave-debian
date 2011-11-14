@@ -1,6 +1,7 @@
 /*
 
-Copyright (C) 2007, 2008, 2009 John W. Eaton
+Copyright (C) 2007-2011 John W. Eaton
+Copyright (C) 2009 VZLU Prague
 
 This file is part of Octave.
 
@@ -29,6 +30,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "Array-util.h"
 #include "byte-swap.h"
 #include "oct-locbuf.h"
+#include "lo-mappers.h"
 
 #include "Cell.h"
 #include "defun.h"
@@ -43,6 +45,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "oct-lvalue.h"
 #include "ov-class.h"
 #include "ov-fcn.h"
+#include "ov-usr-fcn.h"
 #include "pager.h"
 #include "parse.h"
 #include "pr-output.h"
@@ -63,9 +66,9 @@ octave_class::register_type (void)
     (octave_class::t_name, "<unknown>", octave_value (new octave_class ()));
 }
 
-octave_class::octave_class (const Octave_map& m, const std::string& id, 
-			    const octave_value_list& parents)
-  : octave_base_value (), map (m), c_name (id)
+octave_class::octave_class (const octave_map& m, const std::string& id,
+                            const octave_value_list& parents)
+  : octave_base_value (), map (m), c_name (id), obsolete_copies (0)
 {
   octave_idx_type n = parents.length ();
 
@@ -74,45 +77,65 @@ octave_class::octave_class (const Octave_map& m, const std::string& id,
       octave_value parent = parents(idx);
 
       if (! parent.is_object ())
-	error ("parents must be objects");
+        error ("parents must be objects");
       else
-	{
-	  std::string cnm = parent.class_name ();
+        {
+          std::string cnm = parent.class_name ();
 
-	  if (find_parent_class (cnm))
-	    error ("duplicate class in parent tree");
-	  else
-	    {
-	      parent_list.push_back (cnm);
+          if (find_parent_class (cnm))
+            error ("duplicate class in parent tree");
+          else
+            {
+              parent_list.push_back (cnm);
 
-	      map.assign (cnm, parent);
-	    }
-	}
+              map.assign (cnm, parent);
+            }
+        }
     }
 
   if (! error_state)
-    load_path::add_to_parent_map (id, parent_list);
+    symbol_table::add_to_parent_map (id, parent_list);
 }
 
-static std::string
-get_current_method_class (void)
+octave_base_value *
+octave_class::unique_clone (void)
 {
-  std::string retval;
+  if (count == obsolete_copies)
+    {
+      // All remaining copies are obsolete. We don't actually need to clone.
+      count++;
+      return this;
+    }
+  else
+    {
+      // In theory, this shouldn't be happening, but it's here just in case.
+      if (count < obsolete_copies)
+        obsolete_copies = 0;
 
-  octave_function *fcn = octave_call_stack::current ();
+      return clone ();
+    }
+}
 
-  std::string my_dir = fcn->dir_name ();
+std::string
+octave_class::get_current_method_class (void)
+{
+  std::string retval = class_name ();
 
-  std::string method_class = file_ops::tail (my_dir);
+  if (nparents () > 0)
+    {
+      octave_function *fcn = octave_call_stack::current ();
 
-  if (method_class.size () > 0)
-    retval = method_class.substr (1);
+      // Here we are just looking to see if FCN is a method or constructor
+      // for any class, not specifically this one.
+      if (fcn && (fcn->is_class_method () || fcn->is_class_constructor ()))
+        retval = fcn->dispatch_class ();
+    }
 
   return retval;
 }
 
 static void
-gripe_invalid_index (void)
+gripe_invalid_index1 (void)
 {
   error ("invalid index for class");
 }
@@ -143,7 +166,7 @@ sanitize (const octave_value_list& ovl)
   for (octave_idx_type i = 0; i < ovl.length (); i++)
     {
       if (retval(i).is_magic_colon ())
-	retval(i) = ":";
+        retval(i) = ":";
     }
 
   return retval;
@@ -151,8 +174,8 @@ sanitize (const octave_value_list& ovl)
 
 static inline octave_value
 make_idx_args (const std::string& type,
-	       const std::list<octave_value_list>& idx,
-	       const std::string& who)
+               const std::list<octave_value_list>& idx,
+               const std::string& who)
 {
   octave_value retval;
 
@@ -166,54 +189,54 @@ make_idx_args (const std::string& type,
       std::list<octave_value_list>::const_iterator p = idx.begin ();
 
       for (size_t i = 0; i < len; i++)
-	{
-	  char t = type[i];
+        {
+          char t = type[i];
 
-	  switch (t)
-	    {
-	    case '(':
-	      type_field(i) = "()";
-	      subs_field(i) = Cell (sanitize (*p++));
-	      break;
+          switch (t)
+            {
+            case '(':
+              type_field(i) = "()";
+              subs_field(i) = Cell (sanitize (*p++));
+              break;
 
-	    case '{':
-	      type_field(i) = "{}";
-	      subs_field(i) = Cell (sanitize (*p++));
-	      break;
+            case '{':
+              type_field(i) = "{}";
+              subs_field(i) = Cell (sanitize (*p++));
+              break;
 
-	    case '.':
-	      {
-		type_field(i) = ".";
+            case '.':
+              {
+                type_field(i) = ".";
 
-		octave_value_list vlist = *p++;
+                octave_value_list vlist = *p++;
 
-		if (vlist.length () == 1)
-		  {
-		    octave_value val = vlist(0);
+                if (vlist.length () == 1)
+                  {
+                    octave_value val = vlist(0);
 
-		    if (val.is_string ())
-		      subs_field(i) = val;
-		    else
-		      {
-			error ("expecting character string argument for `.' index");
-			return retval;
-		      }
-		  }
-		else
-		  {
-		    error ("expecting single argument for `.' index");
-		    return retval;
-		  }
-	      }
-	      break;
+                    if (val.is_string ())
+                      subs_field(i) = val;
+                    else
+                      {
+                        error ("expecting character string argument for `.' index");
+                        return retval;
+                      }
+                  }
+                else
+                  {
+                    error ("expecting single argument for `.' index");
+                    return retval;
+                  }
+              }
+              break;
 
-	    default:
-	      panic_impossible ();
-	      break;
-	    }
-	}
+            default:
+              panic_impossible ();
+              break;
+            }
+        }
 
-      Octave_map m;
+      octave_map m;
 
       m.assign ("type", type_field);
       m.assign ("subs", subs_field);
@@ -238,26 +261,29 @@ octave_class::dotref (const octave_value_list& idx)
   // Find the class in which this method resides before attempting to access
   // the requested field.
 
-  octave_base_value *obvp
-    = method_class.empty () ? 0 : find_parent_class (method_class);
+  octave_base_value *obvp = find_parent_class (method_class);
 
-  Octave_map my_map;
+  if (obvp == 0)
+    {
+      error ("malformed class");
+      return retval;
+    }
 
-  my_map = obvp ? obvp->map_value () : map;
+  octave_map my_map = (obvp != this) ? obvp->map_value () : map;
 
   std::string nm = idx(0).string_value ();
 
   if (! error_state)
     {
-      Octave_map::const_iterator p = my_map.seek (nm);
+      octave_map::const_iterator p = my_map.seek (nm);
 
       if (p != my_map.end ())
-	retval = my_map.contents (p);
+        retval = my_map.contents (p);
       else
-	error ("class has no member `%s'", nm.c_str ());
+        error ("class has no member `%s'", nm.c_str ());
     }
   else
-    gripe_invalid_index ();
+    gripe_invalid_index1 ();
 
   return retval;
 }
@@ -276,10 +302,67 @@ called_from_builtin (void)
   return (fcn && fcn->name () == "builtin");
 }
 
+Matrix
+octave_class::size (void)
+{
+  if (in_class_method () || called_from_builtin ())
+    return octave_base_value::size ();
+
+  Matrix retval (1, 2, 1.0);
+  octave_value meth = symbol_table::find_method ("size", class_name ());
+
+  if (meth.is_defined ())
+    {
+      count++;
+      octave_value_list args (1, octave_value (this));
+
+      octave_value_list lv = feval (meth.function_value (), args, 1);
+      if (lv.length () > 0 && lv(0).is_matrix_type () && lv(0).dims ().is_vector ())
+        retval = lv(0).matrix_value ();
+      else
+        error ("@%s/size: invalid return value", class_name ().c_str ());
+    }
+
+  return retval;
+}
+
+octave_idx_type
+octave_class::numel (const octave_value_list& idx)
+{
+  if (in_class_method () || called_from_builtin ())
+    return octave_base_value::numel (idx);
+
+  octave_idx_type retval = -1;
+  const std::string cn = class_name ();
+
+  octave_value meth = symbol_table::find_method ("numel", cn);
+
+  if (meth.is_defined ())
+    {
+      octave_value_list args (idx.length () + 1, octave_value ());
+
+      count++;
+      args(0) = octave_value (this);
+
+      for (octave_idx_type i = 0; i < idx.length (); i++)
+        args(i+1) = idx(i);
+
+      octave_value_list lv = feval (meth.function_value (), args, 1);
+      if (lv.length () == 1 && lv(0).is_scalar_type ())
+        retval = lv(0).idx_type_value (true);
+      else
+        error ("@%s/numel: invalid return value", cn.c_str ());
+    }
+  else
+    retval = octave_base_value::numel (idx);
+
+  return retval;
+}
+
 octave_value_list
 octave_class::subsref (const std::string& type,
-		       const std::list<octave_value_list>& idx,
-		       int nargout)
+                       const std::list<octave_value_list>& idx,
+                       int nargout)
 {
   octave_value_list retval;
 
@@ -292,85 +375,110 @@ octave_class::subsref (const std::string& type,
       int skip = 1;
 
       switch (type[0])
-	{
-	case '(':
-	  {
-	    if (type.length () > 1 && type[1] == '.')
-	      {
-		std::list<octave_value_list>::const_iterator p = idx.begin ();
-		octave_value_list key_idx = *++p;
+        {
+        case '(':
+          {
+            if (type.length () > 1 && type[1] == '.')
+              {
+                std::list<octave_value_list>::const_iterator p = idx.begin ();
+                octave_value_list key_idx = *++p;
 
-		Cell tmp = dotref (key_idx);
+                Cell tmp = dotref (key_idx);
 
-		if (! error_state)
-		  {
-		    Cell t = tmp.index (idx.front ());
+                if (! error_state)
+                  {
+                    Cell t = tmp.index (idx.front ());
 
-		    retval(0) = (t.length () == 1) ? t(0) : octave_value (t, true);
+                    retval(0) = (t.length () == 1) ? t(0) : octave_value (t, true);
 
-		    // We handled two index elements, so tell
-		    // next_subsref to skip both of them.
+                    // We handled two index elements, so tell
+                    // next_subsref to skip both of them.
 
-		    skip++;
-		  }
-	      }
-	    else
-	      retval(0) = octave_value (map.index (idx.front ()),
-					class_name ());
-	  }
-	  break;
+                    skip++;
+                  }
+              }
+            else
+              retval(0) = octave_value (map.index (idx.front ()),
+                                        class_name ());
+          }
+          break;
 
-	case '.':
-	  {
-	    if (map.numel() > 0)
-	      {
-		Cell t = dotref (idx.front ());
+        case '.':
+          {
+            if (map.numel() > 0)
+              {
+                Cell t = dotref (idx.front ());
 
-		retval(0) = (t.length () == 1) ? t(0) : octave_value (t, true);
-	      }
-	  }
-	  break;
+                retval(0) = (t.length () == 1) ? t(0) : octave_value (t, true);
+              }
+          }
+          break;
 
-	case '{':
-	  gripe_invalid_index_type (type_name (), type[0]);
-	  break;
+        case '{':
+          gripe_invalid_index_type (type_name (), type[0]);
+          break;
 
-	default:
-	  panic_impossible ();
-	}
+        default:
+          panic_impossible ();
+        }
 
       // FIXME -- perhaps there should be an
       // octave_value_list::next_subsref member function?  See also
       // octave_user_function::subsref.
 
       if (idx.size () > 1)
-	retval = retval(0).next_subsref (nargout, type, idx, skip);
+        retval = retval(0).next_subsref (nargout, type, idx, skip);
     }
   else
     {
       octave_value meth = symbol_table::find_method ("subsref", class_name ());
 
       if (meth.is_defined ())
-	{
-	  octave_value_list args;
+        {
+          octave_value_list args;
 
-	  args(1) = make_idx_args (type, idx, "subsref");
+          args(1) = make_idx_args (type, idx, "subsref");
 
-	  if (error_state)
-	    return octave_value_list ();
+          if (error_state)
+            return octave_value_list ();
 
-	  count++;
-	  args(0) = octave_value (this);
+          count++;
+          args(0) = octave_value (this);
 
-	  return feval (meth.function_value (), args, nargout);
-	}
+          // FIXME: for Matlab compatibility, let us attempt to set up a proper
+          // value for nargout at least in the simple case where the
+          // cs-list-type expression - i.e., {} or ().x, is the leading one.
+          // Note that Octave does not actually need this, since it will
+          // be able to properly react to varargout a posteriori.
+          bool maybe_cs_list_query = (type[0] == '.' || type[0] == '{'
+                                      || (type.length () > 1 && type[0] == '('
+                                          && type[1] == '.'));
+
+          int true_nargout = nargout;
+
+          if (maybe_cs_list_query)
+            {
+              // Set up a proper nargout for the subsref call by calling numel.
+              octave_value_list tmp;
+              if (type[0] != '.') tmp = idx.front ();
+              true_nargout = numel (tmp);
+            }
+
+          retval = feval (meth.function_value (), args, true_nargout);
+
+          // Since we're handling subsref, return the list in the first value
+          // if it has more than one element, to be able to pass through
+          // rvalue1 calls.
+          if (retval.length () > 1)
+            retval = octave_value (retval, true);
+        }
       else
-	{
-	  if (type.length () == 1 && type[0] == '(')
-	    retval(0) = octave_value (map.index (idx.front ()), class_name ());
-	  else
-	    gripe_invalid_index ();
-	}
+        {
+          if (type.length () == 1 && type[0] == '(')
+            retval(0) = octave_value (map.index (idx.front ()), class_name ());
+          else
+            gripe_invalid_index1 ();
+        }
     }
 
   return retval;
@@ -386,7 +494,7 @@ octave_class::numeric_conv (const Cell& val, const std::string& type)
       retval = val(0);
 
       if (type.length () > 0 && type[0] == '.' && ! retval.is_map ())
-	retval = Octave_map ();
+        retval = octave_map ();
     }
   else
     gripe_invalid_index_for_assignment ();
@@ -396,8 +504,30 @@ octave_class::numeric_conv (const Cell& val, const std::string& type)
 
 octave_value
 octave_class::subsasgn (const std::string& type,
-			const std::list<octave_value_list>& idx,
-			const octave_value& rhs)
+                        const std::list<octave_value_list>& idx,
+                        const octave_value& rhs)
+{
+  count++;
+  return subsasgn_common (octave_value (this), type, idx, rhs);
+}
+
+octave_value
+octave_class::undef_subsasgn (const std::string& type,
+                              const std::list<octave_value_list>& idx,
+                              const octave_value& rhs)
+{
+  // For compatibility with Matlab, pass [] as the first argument to the
+  // the subsasgn function when the LHS of an indexed assignment is
+  // undefined.
+
+  return subsasgn_common (Matrix (), type, idx, rhs);
+}
+
+octave_value
+octave_class::subsasgn_common (const octave_value& obj,
+                               const std::string& type,
+                               const std::list<octave_value_list>& idx,
+                               const octave_value& rhs)
 {
   octave_value retval;
 
@@ -406,33 +536,91 @@ octave_class::subsasgn (const std::string& type,
       octave_value meth = symbol_table::find_method ("subsasgn", class_name ());
 
       if (meth.is_defined ())
-	{
-	  octave_value_list args;
+        {
+          octave_value_list args;
 
-	  args(2) = rhs;
+          if (rhs.is_cs_list ())
+            {
+              octave_value_list lrhs = rhs.list_value ();
+              args.resize (2 + lrhs.length ());
+              for (octave_idx_type i = 0; i < lrhs.length (); i++)
+                args(2+i) = lrhs(i);
+            }
+          else
+            args(2) = rhs;
 
-	  args(1) = make_idx_args (type, idx, "subsasgn");
+          args(1) = make_idx_args (type, idx, "subsasgn");
 
-	  if (error_state)
-	    return octave_value_list ();
+          if (error_state)
+            return octave_value_list ();
 
-	  count++;
-	  args(0) = octave_value (this);
+          args(0) = obj;
 
-	  octave_value_list tmp = feval (meth.function_value (), args);
+          // Now comes the magic. Count copies with me:
+          // 1. myself (obsolete)
+          // 2. the copy inside args (obsolete)
+          // 3. the copy in method's symbol table (working)
+          // ... possibly more (not obsolete).
+          //
+          // So we mark 2 copies as obsolete and hold our fingers crossed.
+          // But prior to doing that, check whether the routine is amenable
+          // to the optimization.
+          // It is essential that the handling function doesn't store extra
+          // copies anywhere. If it does, things will not break but the
+          // optimization won't work.
 
-	  // FIXME -- should the subsasgn method be able to return
-	  // more than one value?
+          octave_value_list tmp;
 
-	  if (tmp.length () > 1)
-	    error ("expecting single return value from @%s/subsasgn",
-		   class_name().c_str ());
+          if (obsolete_copies == 0 && meth.is_user_function ()
+              && meth.user_function_value ()->subsasgn_optimization_ok ())
+            {
+              unwind_protect frame;
+              frame.protect_var (obsolete_copies);
+              obsolete_copies = 2;
 
-	  else
-	    retval = tmp(0);
+              tmp = feval (meth.function_value (), args);
+            }
+          else
+            tmp = feval (meth.function_value (), args);
 
-	  return retval;
-	}
+          // FIXME -- should the subsasgn method be able to return
+          // more than one value?
+
+          if (tmp.length () > 1)
+            error ("expecting single return value from @%s/subsasgn",
+                   class_name().c_str ());
+
+          else
+            retval = tmp(0);
+
+          return retval;
+        }
+    }
+
+  // Find the class in which this method resides before
+  // attempting to do the indexed assignment.
+
+  std::string method_class = get_current_method_class ();
+
+  octave_base_value *obvp = unique_parent_class (method_class);
+  if (obvp != this)
+    {
+
+      if (obvp)
+        {
+          obvp->subsasgn (type, idx, rhs);
+          if (! error_state)
+            {
+              count++;
+              retval = octave_value (this);
+            }
+          else
+            gripe_failed_assignment ();
+        }
+      else
+        error ("malformed class");
+
+      return retval;
     }
 
   // FIXME -- this block of code is the same as the body of
@@ -446,220 +634,231 @@ octave_class::subsasgn (const std::string& type,
   if (n > 1 && ! (type.length () == 2 && type[0] == '(' && type[1] == '.'))
     {
       switch (type[0])
-	{
-	case '(':
-	  {
-	    if (type.length () > 1 && type[1] == '.')
-	      {
-		std::list<octave_value_list>::const_iterator p = idx.begin ();
-		octave_value_list t_idx = *p;
+        {
+        case '(':
+          {
+            if (type.length () > 1 && type[1] == '.')
+              {
+                std::list<octave_value_list>::const_iterator p = idx.begin ();
+                octave_value_list t_idx = *p;
 
-		octave_value_list key_idx = *++p;
+                octave_value_list key_idx = *++p;
 
-		assert (key_idx.length () == 1);
+                assert (key_idx.length () == 1);
 
-		std::string key = key_idx(0).string_value ();
+                std::string key = key_idx(0).string_value ();
 
-		if (! error_state)
-		  {
-		    octave_value u;
+                if (! error_state)
+                  {
+                    octave_value u;
 
-		    if (! map.contains (key))
-		      u = octave_value::empty_conv (type.substr (2), rhs);
-		    else
-		      {
-			Cell map_val = map.contents (key);
+                    if (! map.contains (key))
+                      u = octave_value::empty_conv (type.substr (2), rhs);
+                    else
+                      {
+                        Cell map_val = map.contents (key);
 
-			Cell map_elt = map_val.index (idx.front (), true);
+                        Cell map_elt = map_val.index (idx.front (), true);
 
-			u = numeric_conv (map_elt, type.substr (2));
-		      }
+                        u = numeric_conv (map_elt, type.substr (2));
+                      }
 
-		    if (! error_state)
-		      {
-			std::list<octave_value_list> next_idx (idx);
+                    if (! error_state)
+                      {
+                        std::list<octave_value_list> next_idx (idx);
 
-			// We handled two index elements, so subsasgn to
-			// needs to skip both of them.
+                        // We handled two index elements, so subsasgn to
+                        // needs to skip both of them.
 
-			next_idx.erase (next_idx.begin ());
-			next_idx.erase (next_idx.begin ());
+                        next_idx.erase (next_idx.begin ());
+                        next_idx.erase (next_idx.begin ());
 
-			u.make_unique ();
+                        u.make_unique ();
 
-			t_rhs = u.subsasgn (type.substr (2), next_idx, rhs);
-		      }
-		  }
-		else
-		  gripe_invalid_index_for_assignment ();
-	      }
-	    else
-	      gripe_invalid_index_for_assignment ();
-	  }
-	  break;
+                        t_rhs = u.subsasgn (type.substr (2), next_idx, rhs);
+                      }
+                  }
+                else
+                  gripe_invalid_index_for_assignment ();
+              }
+            else
+              gripe_invalid_index_for_assignment ();
+          }
+          break;
 
-	case '.':
-	  {
-	    octave_value_list key_idx = idx.front ();
+        case '.':
+          {
+            octave_value_list key_idx = idx.front ();
 
-	    assert (key_idx.length () == 1);
+            assert (key_idx.length () == 1);
 
-	    std::string key = key_idx(0).string_value ();
+            std::string key = key_idx(0).string_value ();
 
-	    if (! error_state)
-	      {
-		octave_value u;
+            std::list<octave_value_list> next_idx (idx);
 
-		if (! map.contains (key))
-		  u = octave_value::empty_conv (type.substr (1), rhs);
-		else
-		  {
-		    Cell map_val = map.contents (key);
+            next_idx.erase (next_idx.begin ());
 
-		    u = numeric_conv (map_val, type.substr (1));
-		  }
+            std::string next_type = type.substr (1);
 
-		if (! error_state)
-		  {
-		    std::list<octave_value_list> next_idx (idx);
+            Cell tmpc (1, 1);
+            octave_map::iterator pkey = map.seek (key);
+            if (pkey != map.end ())
+              {
+                map.contents (pkey).make_unique ();
+                tmpc = map.contents (pkey);
+              }
 
-		    next_idx.erase (next_idx.begin ());
+            // FIXME: better code reuse?
+            if (! error_state)
+              {
+                if (tmpc.numel () == 1)
+                  {
+                    octave_value& tmp = tmpc(0);
 
-		    u.make_unique ();
+                    if (! tmp.is_defined () || tmp.is_zero_by_zero ())
+                      {
+                        tmp = octave_value::empty_conv (next_type, rhs);
+                        tmp.make_unique (); // probably a no-op.
+                      }
+                    else
+                      // optimization: ignore the copy still stored inside our map.
+                      tmp.make_unique (1);
 
-		    t_rhs = u.subsasgn (type.substr (1), next_idx, rhs);
-		  }
-	      }
-	    else
-	      gripe_invalid_index_for_assignment ();
-	  }
-	  break;
+                    if (! error_state)
+                      t_rhs = tmp.subsasgn (next_type, next_idx, rhs);
+                  }
+                else
+                  gripe_indexed_cs_list ();
+              }
+          }
+          break;
 
-	case '{':
-	  gripe_invalid_index_type (type_name (), type[0]);
-	  break;
+        case '{':
+          gripe_invalid_index_type (type_name (), type[0]);
+          break;
 
-	default:
-	  panic_impossible ();
-	}
+        default:
+          panic_impossible ();
+        }
     }
 
   if (! error_state)
     {
       switch (type[0])
-	{
-	case '(':
-	  {
-	    if (n > 1 && type[1] == '.')
-	      {
-		std::list<octave_value_list>::const_iterator p = idx.begin ();
-		octave_value_list key_idx = *++p;
+        {
+        case '(':
+          {
+            if (n > 1 && type[1] == '.')
+              {
+                std::list<octave_value_list>::const_iterator p = idx.begin ();
+                octave_value_list key_idx = *++p;
 
-		assert (key_idx.length () == 1);
+                assert (key_idx.length () == 1);
 
-		std::string key = key_idx(0).string_value ();
+                std::string key = key_idx(0).string_value ();
 
-		if (! error_state)
-		  {
-		    map.assign (idx.front (), key, t_rhs);
+                if (! error_state)
+                  {
+                    map.assign (idx.front (), key, t_rhs);
 
-		    if (! error_state)
-		      {
-			count++;
-			retval = octave_value (this);
-		      }
-		    else
-		      gripe_failed_assignment ();
-		  }
-		else
-		  gripe_failed_assignment ();
-	      }
-	    else
-	      {
-		if (t_rhs.is_object () || t_rhs.is_map ())
-		  {
-		    Octave_map rhs_map = t_rhs.map_value ();
+                    if (! error_state)
+                      {
+                        count++;
+                        retval = octave_value (this);
+                      }
+                    else
+                      gripe_failed_assignment ();
+                  }
+                else
+                  gripe_failed_assignment ();
+              }
+            else
+              {
+                if (t_rhs.is_object () || t_rhs.is_map ())
+                  {
+                    octave_map rhs_map = t_rhs.map_value ();
 
-		    if (! error_state)
-		      {
-			map.assign (idx.front (), rhs_map);
+                    if (! error_state)
+                      {
+                        map.assign (idx.front (), rhs_map);
 
-			if (! error_state)
-			  {
-			    count++;
-			    retval = octave_value (this);
-			  }
-			else
-			  gripe_failed_assignment ();
-		      }
-		    else
-		      error ("invalid class assignment");
-		  }
-		else
-		  {
-		    if (t_rhs.is_empty ())
-		      {
-			map.maybe_delete_elements (idx.front());
+                        if (! error_state)
+                          {
+                            count++;
+                            retval = octave_value (this);
+                          }
+                        else
+                          gripe_failed_assignment ();
+                      }
+                    else
+                      error ("invalid class assignment");
+                  }
+                else
+                  {
+                    if (t_rhs.is_empty ())
+                      {
+                        map.delete_elements (idx.front());
 
-			if (! error_state)
-			  {
-			    count++;
-			    retval = octave_value (this);
-			  }
-			else
-			  gripe_failed_assignment ();
-		      }
-		    else
-		      error ("invalid class assignment");
-		  }
-	      }
-	  }
-	  break;
+                        if (! error_state)
+                          {
+                            count++;
+                            retval = octave_value (this);
+                          }
+                        else
+                          gripe_failed_assignment ();
+                      }
+                    else
+                      error ("invalid class assignment");
+                  }
+              }
+          }
+          break;
 
-	case '.':
-	  {
-	    // Find the class in which this method resides before 
-	    // attempting to access the requested field.
+        case '.':
+          {
+            octave_value_list key_idx = idx.front ();
 
-	    std::string method_class = get_current_method_class ();
+            assert (key_idx.length () == 1);
 
-	    octave_base_value *obvp = find_parent_class (method_class);
+            std::string key = key_idx(0).string_value ();
 
-	    if (obvp)
-	      {
-		octave_value_list key_idx = idx.front ();
+            if (t_rhs.is_cs_list ())
+              {
+                Cell tmp_cell = Cell (t_rhs.list_value ());
 
-		assert (key_idx.length () == 1);
+                // The shape of the RHS is irrelevant, we just want
+                // the number of elements to agree and to preserve the
+                // shape of the left hand side of the assignment.
 
-		std::string key = key_idx(0).string_value ();
+                if (numel () == tmp_cell.numel ())
+                  tmp_cell = tmp_cell.reshape (dims ());
 
-		if (! error_state)
-		  {
-		    obvp->assign (key, t_rhs);
+                map.setfield (key, tmp_cell);
+              }
+            else
+              {
+                Cell tmp_cell(1, 1);
+                tmp_cell(0) = t_rhs.storable_value ();
+                map.setfield (key, tmp_cell);
+              }
 
-		    if (! error_state)
-		      {
-			count++;
-			retval = octave_value (this);
-		      }
-		    else
-		      gripe_failed_assignment ();
-		  }
-		else
-		  gripe_failed_assignment ();
-	      }
-	    else
-	      error ("malformed class");
-	  }
-	  break;
+            if (! error_state)
+              {
+                count++;
+                retval = octave_value (this);
+              }
+            else
+              gripe_failed_assignment ();
+          }
+          break;
 
-	case '{':
-	  gripe_invalid_index_type (type_name (), type[0]);
-	  break;
+        case '{':
+          gripe_invalid_index_type (type_name (), type[0]);
+          break;
 
-	default:
-	  panic_impossible ();
-	}
+        default:
+          panic_impossible ();
+        }
     }
   else
     gripe_failed_assignment ();
@@ -682,21 +881,21 @@ octave_class::index_vector (void) const
       octave_value_list tmp = feval (meth.function_value (), args, 1);
 
       if (!error_state && tmp.length () >= 1)
-	{
-	  if (tmp(0).is_object())
-	    error ("subsindex function must return a valid index vector");
-	  else
-	    // Index vector returned by subsindex is zero based 
-	    // (why this inconsistency Mathworks?), and so we must
-	    // add one to the value returned as the index_vector method
-	    // expects it to be one based.
-	    retval = do_binary_op (octave_value::op_add, tmp (0), 
-				   octave_value (1.0)).index_vector ();
-	}
+        {
+          if (tmp(0).is_object())
+            error ("subsindex function must return a valid index vector");
+          else
+            // Index vector returned by subsindex is zero based
+            // (why this inconsistency Mathworks?), and so we must
+            // add one to the value returned as the index_vector method
+            // expects it to be one based.
+            retval = do_binary_op (octave_value::op_add, tmp (0),
+                                   octave_value (1.0)).index_vector ();
+        }
     }
   else
     error ("no subsindex method defined for class %s",
-	   class_name().c_str ());
+           class_name().c_str ());
 
   return retval;
 }
@@ -708,7 +907,7 @@ octave_class::byte_size (void) const
 
   size_t retval = 0;
 
-  for (Octave_map::const_iterator p = map.begin (); p != map.end (); p++)
+  for (octave_map::const_iterator p = map.begin (); p != map.end (); p++)
     {
       std::string key = map.key (p);
 
@@ -738,22 +937,60 @@ octave_class::find_parent_class (const std::string& parent_class_name)
   else
     {
       for (std::list<std::string>::iterator pit = parent_list.begin ();
-	   pit != parent_list.end ();
-	   pit++)
-	{
-	  Octave_map::const_iterator smap = map.seek (*pit);
+           pit != parent_list.end ();
+           pit++)
+        {
+          octave_map::const_iterator smap = map.seek (*pit);
 
-	  const Cell& tmp = smap->second;
+          const Cell& tmp = map.contents (smap);
 
-	  octave_value vtmp = tmp(0);
+          octave_value vtmp = tmp(0);
 
-	  octave_base_value *obvp = vtmp.internal_rep ();
+          octave_base_value *obvp = vtmp.internal_rep ();
 
-	  retval = obvp->find_parent_class (parent_class_name);
+          retval = obvp->find_parent_class (parent_class_name);
 
-	  if (retval)
-	    break;
-	}
+          if (retval)
+            break;
+        }
+    }
+
+  return retval;
+}
+
+octave_base_value *
+octave_class::unique_parent_class (const std::string& parent_class_name)
+{
+  octave_base_value* retval = 0;
+
+  if (parent_class_name == class_name ())
+    retval = this;
+  else
+    {
+      for (std::list<std::string>::iterator pit = parent_list.begin ();
+           pit != parent_list.end ();
+           pit++)
+        {
+          octave_map::iterator smap = map.seek (*pit);
+
+          Cell& tmp = map.contents (smap);
+
+          octave_value& vtmp = tmp(0);
+
+          octave_base_value *obvp = vtmp.internal_rep ();
+
+          // Use find_parent_class first to avoid uniquifying if not necessary.
+          retval = obvp->find_parent_class (parent_class_name);
+
+          if (retval)
+            {
+              vtmp.make_unique ();
+              obvp = vtmp.internal_rep ();
+              retval = obvp->unique_parent_class (parent_class_name);
+
+              break;
+            }
+        }
     }
 
   return retval;
@@ -768,15 +1005,11 @@ octave_class::print (std::ostream& os, bool) const
 void
 octave_class::print_raw (std::ostream& os, bool) const
 {
-  unwind_protect::begin_frame ("octave_class_print");
-
-  unwind_protect_int (Vstruct_levels_to_print);
+  unwind_protect frame;
 
   indent (os);
   os << "  <class " << class_name () << ">";
   newline (os);
-
-  unwind_protect::run_frame ("octave_class_print");
 }
 
 bool
@@ -793,8 +1026,8 @@ octave_class::print_name_tag (std::ostream& os, const std::string& name) const
 }
 
 void
-octave_class::print_with_name (std::ostream&, const std::string& name, 
-			       bool) const
+octave_class::print_with_name (std::ostream& os, const std::string& name,
+                               bool)
 {
   octave_value fcn = symbol_table::find_method ("display", class_name ());
 
@@ -802,8 +1035,9 @@ octave_class::print_with_name (std::ostream&, const std::string& name,
     {
       octave_value_list args;
 
-      args(0) = octave_value (clone (), 1);
-      
+      count++;
+      args(0) = octave_value (this);
+
       string_vector arg_names (1);
 
       arg_names[0] = name;
@@ -812,10 +1046,16 @@ octave_class::print_with_name (std::ostream&, const std::string& name,
 
       feval (fcn.function_value (), args);
     }
+  else
+    {
+      indent (os);
+      os << name << " = <class " << class_name () << ">";
+      newline (os);
+    }
 }
 
 // Loading a class properly requires an exemplar map entry for success.
-// If we don't have one, we attempt to create one by calling the constructor 
+// If we don't have one, we attempt to create one by calling the constructor
 // with no arguments.
 bool
 octave_class::reconstruct_exemplar (void)
@@ -831,17 +1071,33 @@ octave_class::reconstruct_exemplar (void)
     {
       octave_value ctor = symbol_table::find_method (c_name, c_name);
 
-      if (ctor.is_defined ())
-	{
-	  octave_value_list result = feval (ctor, 1);
+      bool have_ctor = false;
 
-	  if (result.length () == 1)
-	    retval = true;
-	  else
-	    warning ("call to constructor for class %s failed", c_name.c_str ());
-	}
+      if (ctor.is_defined () && ctor.is_function ())
+        {
+          octave_function *fcn = ctor.function_value ();
+
+          if (fcn && fcn->is_class_constructor (c_name))
+            have_ctor = true;
+
+          // Something has gone terribly wrong if
+          // symbol_table::find_method (c_name, c_name) does not return
+          // a class constructor for the class c_name...
+          assert (have_ctor);
+        }
+
+      if (have_ctor)
+        {
+          octave_value_list result
+            = ctor.do_multi_index_op (1, octave_value_list ());
+
+          if (result.length () == 1)
+            retval = true;
+          else
+            warning ("call to constructor for class %s failed", c_name.c_str ());
+        }
       else
-	warning ("no constructor for class %s", c_name.c_str ());
+        warning ("no constructor for class %s", c_name.c_str ());
     }
 
   return retval;
@@ -867,46 +1123,46 @@ octave_class::reconstruct_parents (void)
   std::string dbgstr = "dork";
 
   // First, check to see if there might be an issue with inheritance.
-  for (Octave_map::const_iterator p = map.begin (); p != map.end (); p++)
+  for (octave_map::const_iterator p = map.begin (); p != map.end (); p++)
     {
       std::string  key = map.key (p);
       Cell         val = map.contents (p);
       if ( val(0).is_object() )
-	{
-	  dbgstr = "blork";
-	  if( key == val(0).class_name() )
-	    {
-	      might_have_inheritance = true;
-	      dbgstr = "cork";
-	      break;
-	    }
-	}
+        {
+          dbgstr = "blork";
+          if( key == val(0).class_name() )
+            {
+              might_have_inheritance = true;
+              dbgstr = "cork";
+              break;
+            }
+        }
     }
-  
+
   if (might_have_inheritance)
     {
       octave_class::exemplar_const_iterator it
-	= octave_class::exemplar_map.find (c_name);
+        = octave_class::exemplar_map.find (c_name);
 
       if (it == octave_class::exemplar_map.end ())
-	retval = false;
+        retval = false;
       else
-	{
-	  octave_class::exemplar_info exmplr = it->second;
-	  parent_list = exmplr.parents ();
-	  for (std::list<std::string>::iterator pit = parent_list.begin ();
-	       pit != parent_list.end ();
-	       pit++)
-	    {
-	      dbgstr = *pit;
-	      bool dbgbool = map.contains (*pit);
-	      if (!dbgbool)
-		{
-		  retval = false;
-		  break;
-		}
-	    }
-	}
+        {
+          octave_class::exemplar_info exmplr = it->second;
+          parent_list = exmplr.parents ();
+          for (std::list<std::string>::iterator pit = parent_list.begin ();
+               pit != parent_list.end ();
+               pit++)
+            {
+              dbgstr = *pit;
+              bool dbgbool = map.contains (*pit);
+              if (!dbgbool)
+                {
+                  retval = false;
+                  break;
+                }
+            }
+        }
     }
 
   return retval;
@@ -916,30 +1172,30 @@ bool
 octave_class::save_ascii (std::ostream& os)
 {
   os << "# classname: " << class_name () << "\n";
-  Octave_map m;
+  octave_map m;
   if (load_path::find_method (class_name (), "saveobj") != std::string ())
     {
       octave_value in = new octave_class (*this);
       octave_value_list tmp = feval ("saveobj", in, 1);
       if (! error_state)
-	m = tmp(0).map_value ();
+        m = tmp(0).map_value ();
       else
-	return false;
+        return false;
     }
   else
     m = map_value ();
 
   os << "# length: " << m.nfields () << "\n";
 
-  Octave_map::iterator i = m.begin ();
+  octave_map::iterator i = m.begin ();
   while (i != m.end ())
     {
       octave_value val = map.contents (i);
 
       bool b = save_ascii_data (os, val, m.key (i), false, 0);
-      
+
       if (! b)
-	return os;
+        return os;
 
       i++;
     }
@@ -947,7 +1203,7 @@ octave_class::save_ascii (std::ostream& os)
   return true;
 }
 
-bool 
+bool
 octave_class::load_ascii (std::istream& is)
 {
   octave_idx_type len = 0;
@@ -957,77 +1213,77 @@ octave_class::load_ascii (std::istream& is)
   if (extract_keyword (is, "classname", classname) && classname != "")
     {
       if (extract_keyword (is, "length", len) && len >= 0)
-	{
-	  if (len > 0)
-	    {
-	      Octave_map m (map);
+        {
+          if (len > 0)
+            {
+              octave_map m (map);
 
-	      for (octave_idx_type j = 0; j < len; j++)
-		{
-		  octave_value t2;
-		  bool dummy;
+              for (octave_idx_type j = 0; j < len; j++)
+                {
+                  octave_value t2;
+                  bool dummy;
 
-		  // recurse to read cell elements
-		  std::string nm
-		    = read_ascii_data (is, std::string (), dummy, t2, j);
+                  // recurse to read cell elements
+                  std::string nm
+                    = read_ascii_data (is, std::string (), dummy, t2, j);
 
-		  if (! is)
-		    break;
+                  if (! is)
+                    break;
 
-		  Cell tcell = t2.is_cell () ? t2.cell_value () : Cell (t2);
+                  Cell tcell = t2.is_cell () ? t2.cell_value () : Cell (t2);
 
-		  if (error_state)
-		    {
-		      error ("load: internal error loading class elements");
-		      return false;
-		    }
+                  if (error_state)
+                    {
+                      error ("load: internal error loading class elements");
+                      return false;
+                    }
 
-		  m.assign (nm, tcell);
-		}
+                  m.assign (nm, tcell);
+                }
 
-	      if (is) 
-		{
-		  c_name = classname;
-		  reconstruct_exemplar ();
+              if (is)
+                {
+                  c_name = classname;
+                  reconstruct_exemplar ();
 
-		  map = m;
-		  
-		  if (! reconstruct_parents ())
-		    warning ("load: unable to reconstruct object inheritance");
-		  else
-		    {
-		      if (load_path::find_method (classname, "loadobj")
-			  != std::string ())
-			{
-			  octave_value in = new octave_class (*this);
-			  octave_value_list tmp = feval ("loadobj", in, 1);
+                  map = m;
 
-			  if (! error_state)
-			    map = tmp(0).map_value ();
-			  else
-			    success = false;
-			}
-		    }
-		}
-	      else
-		{
-		  error ("load: failed to load class");
-		  success = false;
-		}
-	    }
-	  else if (len == 0 )
-	    {
-	      map = Octave_map (dim_vector (1, 1));
-	      c_name = classname;
-	    }
-	  else
-	    panic_impossible ();
-	}
-      else 
-	{
-	  error ("load: failed to extract number of elements in class");
-	  success = false;
-	}
+                  if (! reconstruct_parents ())
+                    warning ("load: unable to reconstruct object inheritance");
+                  else
+                    {
+                      if (load_path::find_method (classname, "loadobj")
+                          != std::string ())
+                        {
+                          octave_value in = new octave_class (*this);
+                          octave_value_list tmp = feval ("loadobj", in, 1);
+
+                          if (! error_state)
+                            map = tmp(0).map_value ();
+                          else
+                            success = false;
+                        }
+                    }
+                }
+              else
+                {
+                  error ("load: failed to load class");
+                  success = false;
+                }
+            }
+          else if (len == 0 )
+            {
+              map = octave_map (dim_vector (1, 1));
+              c_name = classname;
+            }
+          else
+            panic_impossible ();
+        }
+      else
+        {
+          error ("load: failed to extract number of elements in class");
+          success = false;
+        }
     }
   else
     {
@@ -1038,7 +1294,7 @@ octave_class::load_ascii (std::istream& is)
   return success;
 }
 
-bool 
+bool
 octave_class::save_binary (std::ostream& os, bool& save_as_floats)
 {
   int32_t classname_len = class_name().length ();
@@ -1046,31 +1302,31 @@ octave_class::save_binary (std::ostream& os, bool& save_as_floats)
   os.write (reinterpret_cast<char *> (&classname_len), 4);
   os << class_name ();
 
-  Octave_map m;
+  octave_map m;
   if (load_path::find_method (class_name (), "saveobj") != std::string ())
     {
       octave_value in = new octave_class (*this);
       octave_value_list tmp = feval ("saveobj", in, 1);
       if (! error_state)
-	m = tmp(0).map_value ();
+        m = tmp(0).map_value ();
       else
-	return false;
+        return false;
     }
   else
     m = map_value ();
 
   int32_t len = m.nfields();
   os.write (reinterpret_cast<char *> (&len), 4);
-  
-  Octave_map::iterator i = m.begin ();
+
+  octave_map::iterator i = m.begin ();
   while (i != m.end ())
     {
       octave_value val = map.contents (i);
 
       bool b = save_binary_data (os, val, m.key (i), "", 0, save_as_floats);
-      
+
       if (! b)
-	return os;
+        return os;
 
       i++;
     }
@@ -1078,9 +1334,9 @@ octave_class::save_binary (std::ostream& os, bool& save_as_floats)
   return true;
 }
 
-bool 
+bool
 octave_class::load_binary (std::istream& is, bool swap,
-			    oct_mach_info::float_format fmt)
+                            oct_mach_info::float_format fmt)
 {
   bool success = true;
 
@@ -1109,60 +1365,60 @@ octave_class::load_binary (std::istream& is, bool swap,
 
   if (len > 0)
     {
-      Octave_map m (map);
+      octave_map m (map);
 
       for (octave_idx_type j = 0; j < len; j++)
-	{
-	  octave_value t2;
-	  bool dummy;
-	  std::string doc;
+        {
+          octave_value t2;
+          bool dummy;
+          std::string doc;
 
-	  // recurse to read cell elements
-	  std::string nm = read_binary_data (is, swap, fmt, std::string (), 
-					     dummy, t2, doc);
+          // recurse to read cell elements
+          std::string nm = read_binary_data (is, swap, fmt, std::string (),
+                                             dummy, t2, doc);
 
-	  if (! is)
-	    break;
+          if (! is)
+            break;
 
-	  Cell tcell = t2.is_cell () ? t2.cell_value () : Cell (t2);
- 
-	  if (error_state)
-	    {
-	      error ("load: internal error loading class elements");
-	      return false;
-	    }
+          Cell tcell = t2.is_cell () ? t2.cell_value () : Cell (t2);
 
-	  m.assign (nm, tcell);
-	}
+          if (error_state)
+            {
+              error ("load: internal error loading class elements");
+              return false;
+            }
 
-      if (is) 
-	{
-	  map = m;
+          m.assign (nm, tcell);
+        }
 
-	  if (! reconstruct_parents ())
-	    warning ("load: unable to reconstruct object inheritance");
-	  else
-	    {
-	      if (load_path::find_method (c_name, "loadobj") != std::string ())
-		{
-		  octave_value in = new octave_class (*this);
-		  octave_value_list tmp = feval ("loadobj", in, 1);
+      if (is)
+        {
+          map = m;
 
-		  if (! error_state)
-		    map = tmp(0).map_value ();
-		  else
-		    success = false;
-		}
-	    }
-	}
+          if (! reconstruct_parents ())
+            warning ("load: unable to reconstruct object inheritance");
+          else
+            {
+              if (load_path::find_method (c_name, "loadobj") != std::string ())
+                {
+                  octave_value in = new octave_class (*this);
+                  octave_value_list tmp = feval ("loadobj", in, 1);
+
+                  if (! error_state)
+                    map = tmp(0).map_value ();
+                  else
+                    success = false;
+                }
+            }
+        }
       else
-	{
-	  warning ("load: failed to load class");
-	  success = false;
-	}
+        {
+          warning ("load: failed to load class");
+          success = false;
+        }
     }
   else if (len == 0 )
-    map = Octave_map (dim_vector (1, 1));
+    map = octave_map (dim_vector (1, 1));
   else
     panic_impossible ();
 
@@ -1180,10 +1436,14 @@ octave_class::save_hdf5 (hid_t loc_id, const char *name, bool save_as_floats)
   hid_t space_hid = -1;
   hid_t class_hid = -1;
   hid_t data_hid = -1;
-  Octave_map m;
-  Octave_map::iterator i;
+  octave_map m;
+  octave_map::iterator i;
 
+#if HAVE_HDF5_18
+  group_hid = H5Gcreate (loc_id, name, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+#else
   group_hid = H5Gcreate (loc_id, name, 0);
+#endif
   if (group_hid < 0)
     goto error_cleanup;
 
@@ -1196,14 +1456,22 @@ octave_class::save_hdf5 (hid_t loc_id, const char *name, bool save_as_floats)
   space_hid = H5Screate_simple (0 , hdims, 0);
   if (space_hid < 0)
     goto error_cleanup;
-
+#if HAVE_HDF5_18
   class_hid = H5Dcreate (group_hid, "classname",  type_hid, space_hid,
-			 H5P_DEFAULT);
-  if (class_hid < 0 || H5Dwrite (class_hid, type_hid, H5S_ALL, H5S_ALL, 
-				    H5P_DEFAULT, c_name.c_str ()) < 0)
+                         H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+#else
+  class_hid = H5Dcreate (group_hid, "classname",  type_hid, space_hid,
+                         H5P_DEFAULT);
+#endif
+  if (class_hid < 0 || H5Dwrite (class_hid, type_hid, H5S_ALL, H5S_ALL,
+                                    H5P_DEFAULT, c_name.c_str ()) < 0)
     goto error_cleanup;
 
+#if HAVE_HDF5_18
+  data_hid = H5Gcreate (group_hid, "value", H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+#else
   data_hid = H5Gcreate (group_hid, "value", 0);
+#endif
   if (data_hid < 0)
     goto error_cleanup;
 
@@ -1212,9 +1480,9 @@ octave_class::save_hdf5 (hid_t loc_id, const char *name, bool save_as_floats)
       octave_value in = new octave_class (*this);
       octave_value_list tmp = feval ("saveobj", in, 1);
       if (! error_state)
-	m = tmp(0).map_value ();
+        m = tmp(0).map_value ();
       else
-	goto error_cleanup;
+        goto error_cleanup;
     }
   else
     m = map_value ();
@@ -1225,11 +1493,11 @@ octave_class::save_hdf5 (hid_t loc_id, const char *name, bool save_as_floats)
     {
       octave_value val = map.contents (i);
 
-      bool retval2 = add_hdf5_data (data_hid, val, m.key (i), "", false, 
-				    save_as_floats);
+      bool retval2 = add_hdf5_data (data_hid, val, m.key (i), "", false,
+                                    save_as_floats);
 
       if (! retval2)
-	break;
+        break;
 
       i++;
     }
@@ -1254,9 +1522,8 @@ octave_class::save_hdf5 (hid_t loc_id, const char *name, bool save_as_floats)
   return true;
 }
 
-bool 
-octave_class::load_hdf5 (hid_t loc_id, const char *name,
-			  bool have_h5giterate_bug)
+bool
+octave_class::load_hdf5 (hid_t loc_id, const char *name)
 {
   bool retval = false;
 
@@ -1265,24 +1532,31 @@ octave_class::load_hdf5 (hid_t loc_id, const char *name,
   hid_t type_hid = -1;
   hid_t type_class_hid = -1;
   hid_t space_hid = -1;
-  hid_t subgroup_hid = -1; 
+  hid_t subgroup_hid = -1;
   hid_t st_id = -1;
 
   hdf5_callback_data dsub;
 
   herr_t retval2 = 0;
-  Octave_map m (dim_vector (1, 1));
+  octave_map m (dim_vector (1, 1));
   int current_item = 0;
   hsize_t num_obj = 0;
   int slen = 0;
   hsize_t rank = 0;
 
+#if HAVE_HDF5_18
+  group_hid = H5Gopen (loc_id, name, H5P_DEFAULT);
+#else
   group_hid = H5Gopen (loc_id, name);
+#endif
   if (group_hid < 0)
     goto error_cleanup;
 
-  
+#if HAVE_HDF5_18
+  data_hid = H5Dopen (group_hid, "classname", H5P_DEFAULT);
+#else
   data_hid = H5Dopen (group_hid, "classname");
+#endif
 
   if (data_hid < 0)
     goto error_cleanup;
@@ -1293,7 +1567,7 @@ octave_class::load_hdf5 (hid_t loc_id, const char *name,
 
   if (type_class_hid != H5T_STRING)
     goto error_cleanup;
-	  
+
   space_hid = H5Dget_space (data_hid);
   rank = H5Sget_simple_extent_ndims (space_hid);
 
@@ -1313,15 +1587,15 @@ octave_class::load_hdf5 (hid_t loc_id, const char *name,
       st_id = H5Tcopy (H5T_C_S1);
       H5Tset_size (st_id, slen);
 
-      if (H5Dread (data_hid, st_id, H5S_ALL, H5S_ALL, H5P_DEFAULT, 
-		   classname) < 0)
-	{
-	  H5Tclose (st_id);
-	  H5Dclose (data_hid);
-	  H5Gclose (group_hid);
-	  return false;
-	}
-     
+      if (H5Dread (data_hid, st_id, H5S_ALL, H5S_ALL, H5P_DEFAULT,
+                   classname) < 0)
+        {
+          H5Tclose (st_id);
+          H5Dclose (data_hid);
+          H5Gclose (group_hid);
+          return false;
+        }
+
       H5Tclose (st_id);
       H5Dclose (data_hid);
       data_hid = -1;
@@ -1331,34 +1605,30 @@ octave_class::load_hdf5 (hid_t loc_id, const char *name,
   while (0);
   reconstruct_exemplar ();
 
-
-#ifdef HAVE_H5GGET_NUM_OBJS
-  subgroup_hid = H5Gopen (group_hid, name); 
+#if HAVE_HDF5_18
+  subgroup_hid = H5Gopen (group_hid, name, H5P_DEFAULT);
+#else
+  subgroup_hid = H5Gopen (group_hid, name);
+#endif
   H5Gget_num_objs (subgroup_hid, &num_obj);
   H5Gclose (subgroup_hid);
 
   while (current_item < static_cast<int> (num_obj)
-	 && (retval2 = H5Giterate (group_hid, name, &current_item,
-				   hdf5_read_next_data, &dsub)) > 0)
-#else
-  while ((retval2 = H5Giterate (group_hid, name, &current_item,
-				hdf5_read_next_data, &dsub)) > 0)
-#endif
+         && (retval2 = H5Giterate (group_hid, name, &current_item,
+                                   hdf5_read_next_data, &dsub)) > 0)
     {
       octave_value t2 = dsub.tc;
 
       Cell tcell = t2.is_cell () ? t2.cell_value () : Cell (t2);
- 
+
       if (error_state)
-	{
-	  error ("load: internal error loading class elements");
-	  return false;
-	}
+        {
+          error ("load: internal error loading class elements");
+          return false;
+        }
 
       m.assign (dsub.name, tcell);
 
-      if (have_h5giterate_bug)
-	current_item++;  // H5Giterate returned the last index processed
     }
 
   if (retval2 >= 0)
@@ -1366,27 +1636,27 @@ octave_class::load_hdf5 (hid_t loc_id, const char *name,
       map = m;
 
       if (!reconstruct_parents ())
-	warning ("load: unable to reconstruct object inheritance");
+        warning ("load: unable to reconstruct object inheritance");
       else
-	{
-	  if (load_path::find_method (c_name, "loadobj") != std::string ())
-	    {
-	      octave_value in = new octave_class (*this);
-	      octave_value_list tmp = feval ("loadobj", in, 1);
+        {
+          if (load_path::find_method (c_name, "loadobj") != std::string ())
+            {
+              octave_value in = new octave_class (*this);
+              octave_value_list tmp = feval ("loadobj", in, 1);
 
-	      if (! error_state)
-		{
-		  map = tmp(0).map_value ();
-		  retval = true;
-		}
-	      else
-		retval = false;
-	    }
-	  else
-	    retval = true;
-	}
+              if (! error_state)
+                {
+                  map = tmp(0).map_value ();
+                  retval = true;
+                }
+              else
+                retval = false;
+            }
+          else
+            retval = true;
+        }
     }
-  
+
  error_cleanup:
   if (data_hid > 0)
     H5Dclose (data_hid);
@@ -1408,15 +1678,15 @@ octave_class::as_mxArray (void) const
 }
 
 bool
-octave_class::in_class_method (void) const
+octave_class::in_class_method (void)
 {
   octave_function *fcn = octave_call_stack::current ();
 
   return (fcn
-	  && (fcn->is_class_method ()
-	      || fcn->is_class_constructor ()
-	      || fcn->is_private_function_of_class (class_name ()))
-	  && fcn->dispatch_class () == class_name ());
+          && (fcn->is_class_method ()
+              || fcn->is_class_constructor ()
+              || fcn->is_private_function_of_class (class_name ()))
+          && find_parent_class (fcn->dispatch_class ()));
 }
 
 octave_class::exemplar_info::exemplar_info (const octave_value& obj)
@@ -1424,13 +1694,13 @@ octave_class::exemplar_info::exemplar_info (const octave_value& obj)
 {
   if (obj.is_object ())
     {
-      Octave_map m = obj.map_value ();
+      octave_map m = obj.map_value ();
       field_names = m.keys ();
 
       parent_class_names = obj.parent_class_name_list ();
     }
   else
-    error ("invalid call to exmplar_info constructor");
+    error ("invalid call to exemplar_info constructor");
 }
 
 
@@ -1445,51 +1715,51 @@ octave_class::exemplar_info::compare (const octave_value& obj) const
   if (obj.is_object ())
     {
       if (nfields () == obj.nfields ())
-	{
-	  Octave_map obj_map = obj.map_value ();
-	  string_vector obj_fnames = obj_map.keys ();
-	  string_vector fnames = fields ();
+        {
+          octave_map obj_map = obj.map_value ();
+          string_vector obj_fnames = obj_map.keys ();
+          string_vector fnames = fields ();
 
-	  for (octave_idx_type i = 0; i < nfields (); i++)
-	    {
-	      if (obj_fnames[i] != fnames[i])
-		{
-		  retval = false;
-		  error ("mismatch in field names");
-		  break;
-		}
-	    }
+          for (octave_idx_type i = 0; i < nfields (); i++)
+            {
+              if (obj_fnames[i] != fnames[i])
+                {
+                  retval = false;
+                  error ("mismatch in field names");
+                  break;
+                }
+            }
 
-	  if (nparents () == obj.nparents ())
-	    {
-	      std::list<std::string> obj_parents
-		= obj.parent_class_name_list ();
-	      std::list<std::string> pnames = parents ();
+          if (nparents () == obj.nparents ())
+            {
+              std::list<std::string> obj_parents
+                = obj.parent_class_name_list ();
+              std::list<std::string> pnames = parents ();
 
-	      std::list<std::string>::const_iterator p = obj_parents.begin ();
-	      std::list<std::string>::const_iterator q = pnames.begin ();
+              std::list<std::string>::const_iterator p = obj_parents.begin ();
+              std::list<std::string>::const_iterator q = pnames.begin ();
 
-	      while (p != obj_parents.end ())
-		{
-		  if (*p++ != *q++)
-		    {
-		      retval = false;
-		      error ("mismatch in parent classes");
-		      break;
-		    }
-		}
-	    }
-	  else
-	    {
-	      retval = false;
-	      error ("mismatch in number of parent classes");
-	    }
-	}
+              while (p != obj_parents.end ())
+                {
+                  if (*p++ != *q++)
+                    {
+                      retval = false;
+                      error ("mismatch in parent classes");
+                      break;
+                    }
+                }
+            }
+          else
+            {
+              retval = false;
+              error ("mismatch in number of parent classes");
+            }
+        }
       else
-	{
-	  retval = false;
-	  error ("mismatch in number of fields");
-	}
+        {
+          retval = false;
+          error ("mismatch in number of fields");
+        }
     }
   else
     {
@@ -1502,7 +1772,7 @@ octave_class::exemplar_info::compare (const octave_value& obj) const
 
 DEFUN (class, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {} class (@var{expr})\n\
+@deftypefn  {Built-in Function} {} class (@var{expr})\n\
 @deftypefnx {Built-in Function} {} class (@var{s}, @var{id})\n\
 @deftypefnx {Built-in Function} {} class (@var{s}, @var{id}, @var{p}, @dots{})\n\
 Return the class of the expression @var{expr} or create a class with\n\
@@ -1521,47 +1791,55 @@ derived.\n\
     retval = args(0).class_name ();
   else
     {
-      Octave_map m = args(0).map_value ();
+      octave_function *fcn = octave_call_stack::caller ();
+
+      std::string id = args(1).string_value ();
 
       if (! error_state)
-	{
-	  std::string id = args(1).string_value ();
+        {
+          if (fcn)
+            {
+              if (fcn->is_class_constructor (id) || fcn->is_class_method (id))
+                {
+                  octave_map m = args(0).map_value ();
 
-	  if (! error_state)
-	    {
-	      octave_function *fcn = octave_call_stack::caller ();
+                  if (! error_state)
+                    {
+                      if (nargin == 2)
+                        retval = octave_value (new octave_class (m, id));
+                      else
+                        {
+                          octave_value_list parents = args.slice (2, nargin-2);
 
-	      if (fcn && fcn->is_class_constructor ())
-		{
-		  if (nargin == 2)
-		    retval = octave_value (new octave_class (m, id));
-		  else
-		    {
-		      octave_value_list parents = args.slice (2, nargin-2);
+                          retval
+                            = octave_value (new octave_class (m, id, parents));
+                        }
 
-		      retval = octave_value (new octave_class (m, id, parents));
-		    }
+                      if (! error_state)
+                        {
+                          octave_class::exemplar_const_iterator it
+                            = octave_class::exemplar_map.find (id);
 
-		  if (! error_state)
-		    {
-		      octave_class::exemplar_const_iterator it
-			= octave_class::exemplar_map.find (id);
-
-		      if (it == octave_class::exemplar_map.end ())
-			octave_class::exemplar_map[id]
-			  = octave_class::exemplar_info (retval);
-		      else if (! it->second.compare (retval))
-			error ("class: object of class `%s' does not match previously constructed objects", id.c_str ());
-		    }
-		}
-	      else
-		error ("class: invalid call from outside class constructor");
-	    }
-	  else
-	    error ("class: expecting character string as second argument");
-	}
+                          if (it == octave_class::exemplar_map.end ())
+                            octave_class::exemplar_map[id]
+                              = octave_class::exemplar_info (retval);
+                          else if (! it->second.compare (retval))
+                            error ("class: object of class `%s' does not match previously constructed objects",
+                                   id.c_str ());
+                        }
+                    }
+                  else
+                    error ("class: expecting structure S as first argument");
+                }
+              else
+                error ("class: `%s' is invalid as a class name in this context",
+                       id.c_str ());
+            }
+          else
+            error ("class: invalid call from outside class constructor or method");
+        }
       else
-	error ("class: expecting structure as first argument");
+        error ("class: ID (class name) must be a character string");
     }
 
   return retval;
@@ -1581,12 +1859,12 @@ Undocumented internal function.\n\
       octave_value nm = args(1);
 
       if (! error_state)
-	{
-	  if (cls.find_parent_class (nm.string_value ()))
-	    retval = true;
-	}
+        {
+          if (cls.find_parent_class (nm.string_value ()))
+            retval = true;
+        }
       else
-	error ("__isa_parent__: expecting arguments to be character strings");
+        error ("__isa_parent__: expecting arguments to be character strings");
     }
   else
     print_usage ();
@@ -1607,7 +1885,7 @@ Undocumented internal function.\n\
       octave_value arg = args(0);
 
       if (arg.is_object ())
-	retval = Cell (arg.parent_class_names ());
+        retval = Cell (arg.parent_class_names ());
     }
   else
     print_usage ();
@@ -1619,6 +1897,7 @@ DEFUN (isobject, args, ,
   "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {} isobject (@var{x})\n\
 Return true if @var{x} is a class object.\n\
+@seealso{class, typeinfo, isa, ismethod}\n\
 @end deftypefn")
 {
   octave_value retval;
@@ -1636,6 +1915,7 @@ DEFUN (ismethod, args, ,
 @deftypefn {Built-in Function} {} ismethod (@var{x}, @var{method})\n\
 Return true if @var{x} is a class object and the string @var{method}\n\
 is a method of this class.\n\
+@seealso{isobject}\n\
 @end deftypefn")
 {
   octave_value retval;
@@ -1647,24 +1927,24 @@ is a method of this class.\n\
       std::string class_name;
 
       if (arg.is_object ())
-	class_name = arg.class_name ();
+        class_name = arg.class_name ();
       else if (arg.is_string ())
-	class_name = arg.string_value ();
+        class_name = arg.string_value ();
       else
-	error ("ismethod: expecting object or class name as first argument");
+        error ("ismethod: expecting object or class name as first argument");
 
       if (! error_state)
-	{
-	  std::string method = args(1).string_value ();
+        {
+          std::string method = args(1).string_value ();
 
-	  if (! error_state)
-	    {
-	      if (load_path::find_method (class_name, method) != std::string ())
-		retval = true;
-	      else
-		retval = false;
-	    }
-	}
+          if (! error_state)
+            {
+              if (load_path::find_method (class_name, method) != std::string ())
+                retval = true;
+              else
+                retval = false;
+            }
+        }
     }
   else
     print_usage ();
@@ -1674,7 +1954,7 @@ is a method of this class.\n\
 
 DEFUN (methods, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {} methods (@var{x})\n\
+@deftypefn  {Built-in Function} {} methods (@var{x})\n\
 @deftypefnx {Built-in Function} {} methods (\"classname\")\n\
 Return a cell array containing the names of the methods for the\n\
 object @var{x} or the named class.\n\
@@ -1689,27 +1969,27 @@ object @var{x} or the named class.\n\
       std::string class_name;
 
       if (arg.is_object ())
-	class_name = arg.class_name ();
+        class_name = arg.class_name ();
       else if (arg.is_string ())
-	class_name = arg.string_value ();
+        class_name = arg.string_value ();
       else
-	error ("methods: expecting object or class name as argument");
+        error ("methods: expecting object or class name as argument");
 
       if (! error_state)
-	{
-	  string_vector sv = load_path::methods (class_name);
+        {
+          string_vector sv = load_path::methods (class_name);
 
-	  if (nargout == 0)
-	    {
-	      octave_stdout << "Methods for class " << class_name << ":\n\n";
+          if (nargout == 0)
+            {
+              octave_stdout << "Methods for class " << class_name << ":\n\n";
 
-	      sv.list_in_columns (octave_stdout);
+              sv.list_in_columns (octave_stdout);
 
-	      octave_stdout << std::endl;
-	    }
-	  else
-	    retval = Cell (sv);
-	}	  
+              octave_stdout << std::endl;
+            }
+          else
+            retval = Cell (sv);
+        }
     }
   else
     print_usage ();
@@ -1760,35 +2040,35 @@ This function may only be called from a class constructor.\n\
   if (fcn && fcn->is_class_constructor ())
     {
       for (int i = 0; i < args.length(); i++)
-	{
-	  std::string class_name = args(i).string_value ();
+        {
+          std::string class_name = args(i).string_value ();
 
-	  if (! error_state)
-	    {
-	      if (! is_built_in_class (class_name))
-		{
-		  std::string this_class_name = fcn->name ();
+          if (! error_state)
+            {
+              if (! is_built_in_class (class_name))
+                {
+                  std::string this_class_name = fcn->name ();
 
-		  if (! symbol_table::set_class_relationship (this_class_name,
-							      class_name))
-		    {
-		      error ("superiorto: precedence already set for %s and %s",
-			     this_class_name.c_str (), class_name.c_str ());
-		      break;
-		    }
-		}
-	      else
-		{
-		  // User defined classes always have higher precedence
-		  // than built-in classes.
-		}
-	    }
-	  else
-	    {
-	      error ("superiorto: expecting argument to be class name");
-	      break;
-	    }
-	}
+                  if (! symbol_table::set_class_relationship (this_class_name,
+                                                              class_name))
+                    {
+                      error ("superiorto: precedence already set for %s and %s",
+                             this_class_name.c_str (), class_name.c_str ());
+                      break;
+                    }
+                }
+              else
+                {
+                  // User defined classes always have higher precedence
+                  // than built-in classes.
+                }
+            }
+          else
+            {
+              error ("superiorto: expecting argument to be class name");
+              break;
+            }
+        }
     }
   else
     error ("superiorto: invalid call from outside class constructor");
@@ -1812,47 +2092,41 @@ This function may only be called from a class constructor.\n\
   if (fcn && fcn->is_class_constructor ())
     {
       for (int i = 0; i < args.length(); i++)
-	{
-	  std::string class_name = args(i).string_value ();
+        {
+          std::string class_name = args(i).string_value ();
 
-	  if (! error_state)
-	    {
-	      if (! is_built_in_class (class_name))
-		{
-		  std::string this_class_name = fcn->name ();
+          if (! error_state)
+            {
+              if (! is_built_in_class (class_name))
+                {
+                  std::string this_class_name = fcn->name ();
 
-		  symbol_table::set_class_relationship (class_name,
-							this_class_name);
+                  symbol_table::set_class_relationship (class_name,
+                                                        this_class_name);
 
-		  if (! symbol_table::set_class_relationship (this_class_name,
-							      class_name))
-		    {
-		      error ("inferiorto: precedence already set for %s and %s",
-			     this_class_name.c_str (), class_name.c_str ());
-		      break;
-		    }
-		}
-	      else
-		{
-		  error ("inferiorto: cannot give user-defined class lower precedence than built-in class");
-		  break;
-		}
-	    }
-	  else
-	    {
-	      error ("inferiorto: expecting argument to be class name");
-	      break;
-	    }
-	}
+                  if (! symbol_table::set_class_relationship (this_class_name,
+                                                              class_name))
+                    {
+                      error ("inferiorto: precedence already set for %s and %s",
+                             this_class_name.c_str (), class_name.c_str ());
+                      break;
+                    }
+                }
+              else
+                {
+                  error ("inferiorto: cannot give user-defined class lower precedence than built-in class");
+                  break;
+                }
+            }
+          else
+            {
+              error ("inferiorto: expecting argument to be class name");
+              break;
+            }
+        }
     }
   else
     error ("inferiorto: invalid call from outside class constructor");
 
   return retval;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

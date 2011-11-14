@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2000, 2005, 2006, 2007 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -35,31 +35,32 @@ glob_match
 public:
 
   enum opts
-    {
-      pathname = 1,  // No wildcard can ever match `/'.
-      noescape = 2,  // Backslashes don't quote special chars.
-      period = 4     // Leading `.' is matched only explicitly.
-   };
+  {
+    pathname = 1,  // No wildcard can ever match `/'.
+    noescape = 2,  // Backslashes don't quote special chars.
+    period = 4     // Leading `.' is matched only explicitly.
+  };
 
   glob_match (const std::string& p,
-	      unsigned int f = pathname|noescape|period)
-    : pat (p), flags (f) { }
+              unsigned int xopts = pathname|noescape|period)
+    : pat (p), fnmatch_flags (opts_to_fnmatch_flags (xopts)) { }
 
   glob_match (const string_vector& p = string_vector (),
-	      unsigned int f = pathname|noescape|period)
-    : pat (p), flags (f) { }
+              unsigned int xopts = pathname|noescape|period)
+    : pat (p), fnmatch_flags (opts_to_fnmatch_flags (xopts)) { }
 
-  glob_match (const glob_match& gm) : pat (gm.pat), flags (gm.flags) { }
+  glob_match (const glob_match& gm)
+    : pat (gm.pat), fnmatch_flags (gm.fnmatch_flags) { }
 
   glob_match& operator = (const glob_match& gm)
-    {
-      if (this != &gm)
-	{
-	  pat = gm.pat;
-	  flags = gm.flags;
-	}
-      return *this;
-    }
+  {
+    if (this != &gm)
+      {
+        pat = gm.pat;
+        fnmatch_flags = gm.fnmatch_flags;
+      }
+    return *this;
+  }
 
   ~glob_match (void) { }
 
@@ -67,11 +68,24 @@ public:
 
   void set_pattern (const string_vector& p) { pat = p; }
 
-  bool match (const std::string&);
+  bool match (const std::string& str) const;
 
-  Array<bool> match (const string_vector&);
+  Array<bool> match (const string_vector& str) const
+  {
+    int n = str.length ();
 
-  string_vector glob (void);
+    Array<bool> retval (dim_vector (n, 1));
+
+    for (int i = 0; i < n; i++)
+      retval(i) = match (str[i]);
+
+    return retval;
+  }
+
+  // We forward to glob_internal here to avoid problems with gnulib's
+  // glob.h defining glob to be rpl_glob.
+
+  string_vector glob (void) const;
 
 private:
 
@@ -79,13 +93,9 @@ private:
   string_vector pat;
 
   // Option flags.
-  unsigned int flags;
+  int fnmatch_flags;
+
+  int opts_to_fnmatch_flags (unsigned int xopts) const;
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

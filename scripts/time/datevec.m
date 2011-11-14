@@ -1,4 +1,4 @@
-## Copyright (C) 2000, 2001, 2004, 2005, 2006, 2007, 2008, 2009 Paul Kienzle
+## Copyright (C) 2000-2011 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{v} =} datevec (@var{date})
+## @deftypefn  {Function File} {@var{v} =} datevec (@var{date})
 ## @deftypefnx {Function File} {@var{v} =} datevec (@var{date}, @var{f})
 ## @deftypefnx {Function File} {@var{v} =} datevec (@var{date}, @var{p})
 ## @deftypefnx {Function File} {@var{v} =} datevec (@var{date}, @var{f}, @var{p})
@@ -62,7 +62,7 @@ function [y, m, d, h, mi, s] = datevec (date, varargin)
     std_formats{++nfmt} = "HH:MM";                  # 15
     std_formats{++nfmt} = "HH:MM PM";               # 16
     std_formats{++nfmt} = "mm/dd/yyyy";             # 23
-    std_formats{++nfmt} = "mmm-dd-yyyy HH:MM:SS"; 
+    std_formats{++nfmt} = "mmm-dd-yyyy HH:MM:SS";
     std_formats{++nfmt} = "mmm-dd-yyyy";
     std_formats{++nfmt} = "dd mmm yyyy HH:MM:SS";
     std_formats{++nfmt} = "dd mmm yyyy";
@@ -104,7 +104,7 @@ function [y, m, d, h, mi, s] = datevec (date, varargin)
   endif
 
   if (isempty (p))
-    p = (localtime (time)).year + 1900 - 50;
+    p = (localtime (time ())).year + 1900 - 50;
   endif
 
   if (ischar (date))
@@ -128,16 +128,16 @@ function [y, m, d, h, mi, s] = datevec (date, varargin)
           endif
         endfor
         if (! found)
-          error ("datevec: none of the standard formats match the date string");
+          error ("datevec: none of the standard formats match the DATE string");
         endif
       endfor
     else
-      % Decipher the format string just once for sake of speed.
+      ## Decipher the format string just once for sake of speed.
       [f, rY, ry, fy, fm, fd, fh, fmi, fs] = __date_vfmt2sfmt__ (f);
       for k = 1:nd
         [found y(k) m(k) d(k) h(k) mi(k) s(k)] = __date_str2vec__ (date{k}, p, f, rY, ry, fy, fm, fd, fh, fmi, fs);
         if (! found)
-          error ("datevec: date not parsed correctly with given format");
+          error ("datevec: DATE not parsed correctly with given format");
         endif
       endfor
     endif
@@ -182,7 +182,7 @@ function [y, m, d, h, mi, s] = datevec (date, varargin)
     y = [y, m, d, h, mi, s];
   endif
 
-### endfunction
+endfunction
 
 function [f, rY, ry, fy, fm, fd, fh, fmi, fs] = __date_vfmt2sfmt__ (f)
 
@@ -259,7 +259,7 @@ function [f, rY, ry, fy, fm, fd, fh, fmi, fs] = __date_vfmt2sfmt__ (f)
   fmi = index (f, "%M");
   fs = index (f, "%S");
 
-### endfunction
+endfunction
 
 function [found, y, m, d, h, mi, s] = __date_str2vec__ (ds, p, f, rY, ry, fy, fm, fd, fh, fmi, fs)
 
@@ -302,7 +302,7 @@ function [found, y, m, d, h, mi, s] = __date_str2vec__ (ds, p, f, rY, ry, fy, fm
     found = false;
   endif
 
-### endfunction
+endfunction
 
 %!shared nowvec
 %! nowvec = datevec (now); # Some tests could fail around midnight!

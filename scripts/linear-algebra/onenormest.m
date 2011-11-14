@@ -1,4 +1,4 @@
-## Copyright (C) 2007, 2008, 2009 Regents of the University of California
+## Copyright (C) 2007-2011 Regents of the University of California
 ##
 ## This file is part of Octave.
 ##
@@ -17,18 +17,18 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {[@var{est}, @var{v}, @var{w}, @var{iter}] =} onenormest (@var{a}, @var{t}) 
+## @deftypefn  {Function File} {[@var{est}, @var{v}, @var{w}, @var{iter}] =} onenormest (@var{A}, @var{t})
 ## @deftypefnx {Function File} {[@var{est}, @var{v}, @var{w}, @var{iter}] =} onenormest (@var{apply}, @var{apply_t}, @var{n}, @var{t})
 ##
 ## Apply Higham and Tisseur's randomized block 1-norm estimator to
-## matrix @var{a} using @var{t} test vectors.  If @var{t} exceeds 5, then
+## matrix @var{A} using @var{t} test vectors.  If @var{t} exceeds 5, then
 ## only 5 test vectors are used.
 ##
-## If the matrix is not explicit, e.g., when estimating the norm of 
-## @code{inv (@var{A})} given an LU factorization, @code{onenormest} applies 
-## @var{A} and its conjugate transpose through a pair of functions 
-## @var{apply} and @var{apply_t}, respectively, to a dense matrix of size 
-## @var{n} by @var{t}.  The implicit version requires an explicit dimension 
+## If the matrix is not explicit, e.g., when estimating the norm of
+## @code{inv (@var{A})} given an LU@tie{}factorization, @code{onenormest}
+## applies @var{A} and its conjugate transpose through a pair of functions
+## @var{apply} and @var{apply_t}, respectively, to a dense matrix of size
+## @var{n} by @var{t}.  The implicit version requires an explicit dimension
 ## @var{n}.
 ##
 ## Returns the norm estimate @var{est}, two vectors @var{v} and
@@ -37,15 +37,18 @@
 ## and the number of iterations @var{iter}.  The number of
 ## iterations is limited to 10 and is at least 2.
 ##
-## References: 
+## References:
 ## @itemize
-## @item Nicholas J. Higham and Françoise Tisseur, "A Block Algorithm
+## @item
+## N.J. Higham and F. Tisseur, @cite{A Block Algorithm
 ## for Matrix 1-Norm Estimation, with an Application to 1-Norm
-## Pseudospectra." SIMAX vol 21, no 4, pp 1185-1201.
+## Pseudospectra}. SIMAX vol 21, no 4, pp 1185-1201.
 ## @url{http://dx.doi.org/10.1137/S0895479899356080}
-## @item Nicholas J. Higham and Françoise Tisseur, "A Block Algorithm
+##
+## @item
+## N.J. Higham and F. Tisseur, @cite{A Block Algorithm
 ## for Matrix 1-Norm Estimation, with an Application to 1-Norm
-## Pseudospectra." @url{http://citeseer.ist.psu.edu/223007.html}
+## Pseudospectra}. @url{http://citeseer.ist.psu.edu/223007.html}
 ## @end itemize
 ##
 ## @seealso{condest, norm, cond}
@@ -195,7 +198,7 @@ function [est, v, w, iter] = onenormest (varargin)
       replacements = 2*(rand (n,numpar) < 0.5) - 1;
       S(:,partest) = replacements;
     endif
-    
+
     Z = feval (apply_t, S);
 
     ## Now find the largest non-previously-visted index per
@@ -210,14 +213,14 @@ function [est, v, w, iter] = onenormest (varargin)
     if (t > 1)
       firstind = ind(1:t);
       if (all (been_there(firstind)))
-	## Visited all these before, so stop.
-	break;
+        ## Visited all these before, so stop.
+        break;
       endif
       ind = ind (!been_there (ind));
       if (length (ind) < t)
-	## There aren't enough new vectors, so we're practically
-	## in a cycle. Stop.
-	break;
+        ## There aren't enough new vectors, so we're practically
+        ## in a cycle. Stop.
+        break;
       endif
     endif
 

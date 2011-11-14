@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2003, 2005, 2006, 2007, 2008 John W. Eaton
+Copyright (C) 2003-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -25,17 +25,10 @@ along with Octave; see the file COPYING.  If not, see
 
 extern std::string
 read_mat_ascii_data (std::istream& is, const std::string& filename,
-		     octave_value& tc);
+                     octave_value& tc);
 
 extern bool
 save_mat_ascii_data (std::ostream& os, const octave_value& val_arg,
-		     int precision, bool tabs = false);
+                     int precision, bool tabs = false);
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
-

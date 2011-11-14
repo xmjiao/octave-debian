@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1999, 2000, 2005, 2006, 2007 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -55,7 +55,7 @@ Polynomial Approximation}.\n\
 
   if (! args(0).is_scalar_type ())
     {
-      error ("colloc: first argument must be a scalar");
+      error ("colloc: N must be a scalar");
       return retval;
     }
 
@@ -66,14 +66,14 @@ Polynomial Approximation}.\n\
 
   if (xisnan (tmp))
     {
-      error ("colloc: NaN is invalid as NCOL");
+      error ("colloc: N cannot be NaN");
       return retval;
     }
 
   octave_idx_type ncol = NINTbig (tmp);
   if (ncol < 0)
     {
-      error ("colloc: first argument must be non-negative");
+      error ("colloc: N must be positive");
       return retval;
     }
 
@@ -84,36 +84,36 @@ Polynomial Approximation}.\n\
   for (int i = 1; i < nargin; i++)
     {
       if (args(i).is_defined ())
-	{
-	  if (! args(i).is_string ())
-	    {
-	      error ("colloc: expecting string argument");
-	      return retval;
-	    }
+        {
+          if (! args(i).is_string ())
+            {
+              error ("colloc: expecting string argument \"left\" or \"right\"");
+              return retval;
+            }
 
-	  std::string s = args(i).string_value ();
+          std::string s = args(i).string_value ();
 
-	  if ((s.length () == 1 && (s[0] == 'R' || s[0] == 'r'))
-	      || s == "right")
-	    {
-	      right = 1;
-	    }
-	  else if ((s.length () == 1 && (s[0] == 'L' || s[0] == 'l'))
-		   || s == "left")
-	    {
-	      left = 1;
-	    }
-	  else
-	    {
-	      error ("colloc: unrecognized argument");
-	      return retval;
-	    }
-	}
+          if ((s.length () == 1 && (s[0] == 'R' || s[0] == 'r'))
+              || s == "right")
+            {
+              right = 1;
+            }
+          else if ((s.length () == 1 && (s[0] == 'L' || s[0] == 'l'))
+                   || s == "left")
+            {
+              left = 1;
+            }
+          else
+            {
+              error ("colloc: unrecognized argument");
+              return retval;
+            }
+        }
       else
-	{
-	  error ("colloc: unexpected empty argument");
-	  return retval;
-	}
+        {
+          error ("colloc: unexpected empty argument");
+          return retval;
+        }
     }
 
   ntot += left + right;
@@ -122,7 +122,7 @@ Polynomial Approximation}.\n\
       error ("colloc: the total number of roots must be positive");
       return retval;
     }
-  
+
   CollocWt wts (ncol, left, right);
 
   ColumnVector r = wts.roots ();
@@ -137,10 +137,3 @@ Polynomial Approximation}.\n\
 
   return retval;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
-

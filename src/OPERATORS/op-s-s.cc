@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2000, 2001, 2002, 2003, 2004, 2005,
-              2007, 2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -25,6 +24,8 @@ along with Octave; see the file COPYING.  If not, see
 #include <config.h>
 #endif
 
+#include "Array-util.h"
+
 #include "gripes.h"
 #include "oct-obj.h"
 #include "ov.h"
@@ -40,7 +41,15 @@ along with Octave; see the file COPYING.  If not, see
 
 // scalar unary ops.
 
-DEFUNOP_OP (not, scalar, !)
+DEFUNOP (not, scalar)
+{
+  CAST_UNOP_ARG (const octave_scalar&);
+  double x = v.scalar_value ();
+  if (xisnan (x))
+    gripe_nan_to_logical_conversion ();
+  return octave_value (x == 0.0);
+}
+
 DEFUNOP_OP (uplus, scalar, /* no-op */)
 DEFUNOP_OP (uminus, scalar, -)
 DEFUNOP_OP (transpose, scalar, /* no-op */)
@@ -161,9 +170,3 @@ install_s_s_ops (void)
   INSTALL_ASSIGNCONV (octave_scalar, octave_null_str, octave_matrix);
   INSTALL_ASSIGNCONV (octave_scalar, octave_null_sq_str, octave_matrix);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

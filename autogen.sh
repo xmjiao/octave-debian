@@ -2,40 +2,38 @@
 # autogen.sh
 # Run this to generate all the initial makefiles, etc.
 
-# copied from the accelerated glx project
+set -e
 
-echo "calling autoconf and autoheader..."
+## Use --foreign since we auto-generate the AUTHORS file and the default
+## --gnu strictness level doesn't like it if the AUTHORS file is missing.
 
-(autoconf --version) < /dev/null > /dev/null 2>&1 || {
-	echo
-        echo "You must have autoconf installed to build Octave."
-        echo "Download the appropriate package for your distribution,"
-        echo "or get the source tarball at ftp://ftp.gnu.org/pub/gnu/"
-        exit 1
-}
+AUTOMAKE="automake --foreign --warnings=no-portability"
+export AUTOMAKE
 
-(autoheader --version) < /dev/null > /dev/null 2>&1 || {
-	echo
-        echo "You must have autoheader installed to build Octave."
-        echo "Download the appropriate package for your distribution,"
-        echo "or get the source tarball at ftp://ftp.gnu.org/pub/gnu/"
-        exit 1
-}
+## Check for files that automake --gnu would normally look for, except
+## AUTHORS, which we autogenerate from the documentation files along with
+## building the rest of Octave, and INSTALL, which is linked from
+## gnulib/doc/INSTALL by the bootstrap script.
 
-for i in `find . -name configure.in -print`; do (
-    dir=`dirname $i`
-    cd $dir
-    pwd
-    if [ -f skip-autoconf ]; then
-      echo "skipping autoconf in $dir"
-    else
-      autoconf --force
-    fi
-    if [ -f skip-autoheader ]; then
-      echo "skipping autoheader in $dir"
-    else
-      autoheader --force
-    fi
-); done
+for f in NEWS README COPYING; do
+  if ! test -f $f; then
+    echo "required file $f is missing" 2>&1
+    exit 1
+  fi
+done
 
-echo done
+echo "generating source lists for liboctave/Makefile..."
+
+(cd liboctave; ./config-ops.sh)
+
+echo "generating doc/interpreter/images.mk..."
+
+(cd doc/interpreter; ./config-images.sh)
+
+echo "generating src/DLD-FUNCTIONS/module.mk..."
+
+(cd src/DLD-FUNCTIONS; ./config-module.sh)
+
+echo "bootstrapping..."
+
+build-aux/bootstrap "$@"

@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 1999, 2000, 2002, 2003, 2004, 2005,
-              2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
+Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
 
@@ -33,19 +33,14 @@ along with Octave; see the file COPYING.  If not, see
 #include <cstdio>
 #include <cstring>
 
-#ifdef HAVE_UNISTD_H
-#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#endif
 #include <unistd.h>
-#endif
 
-#ifdef HAVE_FCNTL_H
 #include <fcntl.h>
-#endif
 
 #include "file-ops.h"
 #include "file-stat.h"
+#include "oct-env.h"
 #include "oct-syscalls.h"
 #include "oct-uname.h"
 
@@ -62,10 +57,10 @@ along with Octave; see the file COPYING.  If not, see
 #include "variables.h"
 #include "input.h"
 
-static Octave_map
+static octave_scalar_map
 mk_stat_map (const base_file_stat& fs)
 {
-  Octave_map m;
+  octave_scalar_map m;
 
   m.assign ("dev", static_cast<double> (fs.dev ()));
   m.assign ("ino", fs.ino ());
@@ -91,13 +86,34 @@ mk_stat_map (const base_file_stat& fs)
   return m;
 }
 
-DEFUN (dup2, args, ,
+static octave_value_list
+mk_stat_result (const base_file_stat& fs)
+{
+  octave_value_list retval;
+
+  if (fs)
+    {
+      retval(2) = std::string ();
+      retval(1) = 0;
+      retval(0) = octave_value (mk_stat_map (fs));
+    }
+  else
+    {
+      retval(2) = fs.error ();
+      retval(1) = -1;
+      retval(0) = Matrix ();
+    }
+
+  return retval;
+}
+
+DEFUNX ("dup2", Fdup2, args, ,
  "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {[@var{fid}, @var{msg}] =} dup2 (@var{old}, @var{new})\n\
 Duplicate a file descriptor.\n\
 \n\
 If successful, @var{fid} is greater than zero and contains the new file\n\
-ID.  Otherwise, @var{fid} is negative and @var{msg} contains a\n\
+ID@.  Otherwise, @var{fid} is negative and @var{msg} contains a\n\
 system-dependent error message.\n\
 @end deftypefn")
 {
@@ -111,31 +127,31 @@ system-dependent error message.\n\
   if (nargin == 2)
     {
       octave_stream old_stream
-	= octave_stream_list::lookup (args(0), "dup2");
+        = octave_stream_list::lookup (args(0), "dup2");
 
       if (! error_state)
-	{
-	  octave_stream new_stream
-	    = octave_stream_list::lookup (args(1), "dup2");
+        {
+          octave_stream new_stream
+            = octave_stream_list::lookup (args(1), "dup2");
 
-	  if (! error_state)
-	    {
-	      int i_old = old_stream.file_number ();
-	      int i_new = new_stream.file_number ();
+          if (! error_state)
+            {
+              int i_old = old_stream.file_number ();
+              int i_new = new_stream.file_number ();
 
-	      if (i_old >= 0 && i_new >= 0)
-		{
-		  std::string msg;
+              if (i_old >= 0 && i_new >= 0)
+                {
+                  std::string msg;
 
-		  int status = octave_syscalls::dup2 (i_old, i_new, msg);
+                  int status = octave_syscalls::dup2 (i_old, i_new, msg);
 
-		  retval(0) = status;
-		  retval(1) = msg;
-		}
-	    }
-	}
+                  retval(0) = status;
+                  retval(1) = msg;
+                }
+            }
+        }
       else
-	error ("dup2: invalid stream");
+        error ("dup2: invalid stream");
     }
   else
     print_usage ();
@@ -143,7 +159,7 @@ system-dependent error message.\n\
   return retval;
 }
 
-DEFUN (exec, args, ,
+DEFUNX ("exec", Fexec, args, ,
  "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {[@var{err}, @var{msg}] =} exec (@var{file}, @var{args})\n\
 Replace current process with a new process.  Calling @code{exec} without\n\
@@ -174,46 +190,46 @@ error message.\n\
       std::string exec_file = args(0).string_value ();
 
       if (! error_state)
-	{
-	  string_vector exec_args;
+        {
+          string_vector exec_args;
 
-	  if (nargin == 2)
-	    {
-	      string_vector tmp = args(1).all_strings ();
+          if (nargin == 2)
+            {
+              string_vector tmp = args(1).all_strings ();
 
-	      if (! error_state)
-		{
-		  int len = tmp.length ();
+              if (! error_state)
+                {
+                  int len = tmp.length ();
 
-		  exec_args.resize (len + 1);
+                  exec_args.resize (len + 1);
 
-		  exec_args[0] = exec_file;
+                  exec_args[0] = exec_file;
 
-		  for (int i = 0; i < len; i++)
-		    exec_args[i+1] = tmp[i];
-		}
-	      else
-		error ("exec: arguments must be character strings");
-	    }
-	  else
-	    {
-	      exec_args.resize (1);
+                  for (int i = 0; i < len; i++)
+                    exec_args[i+1] = tmp[i];
+                }
+              else
+                error ("exec: arguments must be character strings");
+            }
+          else
+            {
+              exec_args.resize (1);
 
-	      exec_args[0] = exec_file;
-	    }
+              exec_args[0] = exec_file;
+            }
 
-	  if (! error_state)
-	    {
-	      std::string msg;
+          if (! error_state)
+            {
+              std::string msg;
 
-	      int status = octave_syscalls::execvp (exec_file, exec_args, msg);
+              int status = octave_syscalls::execvp (exec_file, exec_args, msg);
 
-	      retval(0) = status;
-	      retval(1) = msg;
-	    }
-	}
+              retval(0) = status;
+              retval(1) = msg;
+            }
+        }
       else
-	error ("exec: first argument must be a string");
+        error ("exec: FILE must be a string");
     }
   else
     print_usage ();
@@ -221,7 +237,7 @@ error message.\n\
   return retval;
 }
 
-DEFUN (popen2, args, ,
+DEFUNX ("popen2", Fpopen2, args, ,
  "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {[@var{in}, @var{out}, @var{pid}] =} popen2 (@var{command}, @var{args})\n\
 Start a subprocess with two-way communication.  The name of the process\n\
@@ -232,7 +248,7 @@ and output streams of the subprocess are returned in @var{in} and\n\
 contains the process ID of the subprocess.  Otherwise, @var{pid} is\n\
 @minus{}1.\n\
 \n\
-For example,\n\
+For example:\n\
 \n\
 @example\n\
 [in, out, pid] = popen2 (\"sort\", \"-r\");\n\
@@ -278,32 +294,32 @@ exit status, it will linger until Octave exits.\n\
 
       if (! error_state)
         {
-	  string_vector arg_list;
+          string_vector arg_list;
 
-	  if (nargin >= 2)
-	    {
-	      string_vector tmp = args(1).all_strings ();
+          if (nargin >= 2)
+            {
+              string_vector tmp = args(1).all_strings ();
 
-	      if (! error_state)
-		{
-		  int len = tmp.length ();
+              if (! error_state)
+                {
+                  int len = tmp.length ();
 
-		  arg_list.resize (len + 1);
+                  arg_list.resize (len + 1);
 
-		  arg_list[0] = exec_file;
+                  arg_list[0] = exec_file;
 
-		  for (int i = 0; i < len; i++)
-		    arg_list[i+1] = tmp[i];
-		}
-	      else
-		error ("popen2: arguments must be character strings");
-	    }
-	  else
-	    {
-	      arg_list.resize (1);
+                  for (int i = 0; i < len; i++)
+                    arg_list[i+1] = tmp[i];
+                }
+              else
+                error ("popen2: arguments must be character strings");
+            }
+          else
+            {
+              arg_list.resize (1);
 
-	      arg_list[0] = exec_file;
-	    }
+              arg_list[0] = exec_file;
+            }
 
           if (! error_state)
             {
@@ -333,9 +349,9 @@ exit status, it will linger until Octave exits.\n\
 
                       retval(0) = octave_stream_list::insert (os);
                       retval(1) = octave_stream_list::insert (is);
-					  retval(2) = pid;
+                                          retval(2) = pid;
                     }
-				  else
+                                  else
                     error (msg.c_str ());
                 }
             }
@@ -343,7 +359,7 @@ exit status, it will linger until Octave exits.\n\
             error ("popen2: arguments must be character strings");
         }
       else
-        error ("popen2: first argument must be a string");
+        error ("popen2: COMMAND argument must be a string");
     }
   else
     print_usage ();
@@ -394,7 +410,7 @@ exit status, it will linger until Octave exits.\n\
 
 */
 
-DEFUN (fcntl, args, ,
+DEFUNX ("fcntl", Ffcntl, args, ,
  "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {[@var{err}, @var{msg}] =} fcntl (@var{fid}, @var{request}, @var{arg})\n\
 Change the properties of the open file @var{fid}.  The following values\n\
@@ -431,7 +447,7 @@ Append on each write.\n\
 Create the file if it does not exist.\n\
 \n\
 @item O_NONBLOCK\n\
-Nonblocking mode.\n\
+Non-blocking mode.\n\
 \n\
 @item O_SYNC\n\
 Wait for writes to complete.\n\
@@ -463,30 +479,30 @@ system-dependent error message.\n\
       octave_stream strm = octave_stream_list::lookup (args (0), "fcntl");
 
       if (! error_state)
-	{
-	  int fid = strm.file_number ();
+        {
+          int fid = strm.file_number ();
 
-	  int req = args(1).int_value (true);
-	  int arg = args(2).int_value (true);
+          int req = args(1).int_value (true);
+          int arg = args(2).int_value (true);
 
-	  if (! error_state)
-	    {
-	      // FIXME -- Need better checking here?
-	      if (fid < 0)
-		error ("fcntl: invalid file id");
-	      else
-		{
-		  std::string msg;
+          if (! error_state)
+            {
+              // FIXME -- Need better checking here?
+              if (fid < 0)
+                error ("fcntl: invalid file id");
+              else
+                {
+                  std::string msg;
 
-		  int status = octave_syscalls::fcntl (fid, req, arg, msg);
+                  int status = octave_fcntl (fid, req, arg, msg);
 
-		  retval(0) = status;
-		  retval(1) = msg;
-		}
-	    }
-	}
+                  retval(0) = status;
+                  retval(1) = msg;
+                }
+            }
+        }
       else
-	error ("fcntl: file id, request, and argument must be integers");
+        error ("fcntl: FID, REQUEST, and ARG must be integers");
     }
   else
     print_usage ();
@@ -494,7 +510,7 @@ system-dependent error message.\n\
   return retval;
 }
 
-DEFUN (fork, args, ,
+DEFUNX ("fork", Ffork, args, ,
  "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {[@var{pid}, @var{msg}] =} fork ()\n\
 Create a copy of the current process.\n\
@@ -539,7 +555,7 @@ action.  A system dependent error message will be waiting in @var{msg}.\n\
   return retval;
 }
 
-DEFUN (getpgrp, args, ,
+DEFUNX ("getpgrp", Fgetpgrp, args, ,
   "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {pgid =} getpgrp ()\n\
 Return the process group id of the current process.\n\
@@ -565,7 +581,7 @@ Return the process group id of the current process.\n\
   return retval;
 }
 
-DEFUN (getpid, args, ,
+DEFUNX ("getpid", Fgetpid, args, ,
   "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {pid =} getpid ()\n\
 Return the process id of the current process.\n\
@@ -583,7 +599,7 @@ Return the process id of the current process.\n\
   return retval;
 }
 
-DEFUN (getppid, args, ,
+DEFUNX ("getppid", Fgetppid, args, ,
   "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {pid =} getppid ()\n\
 Return the process id of the parent process.\n\
@@ -601,7 +617,7 @@ Return the process id of the parent process.\n\
   return retval;
 }
 
-DEFUN (getegid, args, ,
+DEFUNX ("getegid", Fgetegid, args, ,
   "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {egid =} getegid ()\n\
 Return the effective group id of the current process.\n\
@@ -619,7 +635,7 @@ Return the effective group id of the current process.\n\
   return retval;
 }
 
-DEFUN (getgid, args, ,
+DEFUNX ("getgid", Fgetgid, args, ,
   "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {gid =} getgid ()\n\
 Return the real group id of the current process.\n\
@@ -637,7 +653,7 @@ Return the real group id of the current process.\n\
   return retval;
 }
 
-DEFUN (geteuid, args, ,
+DEFUNX ("geteuid", Fgeteuid, args, ,
   "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {euid =} geteuid ()\n\
 Return the effective user id of the current process.\n\
@@ -655,7 +671,7 @@ Return the effective user id of the current process.\n\
   return retval;
 }
 
-DEFUN (getuid, args, ,
+DEFUNX ("getuid", Fgetuid, args, ,
   "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {uid =} getuid ()\n\
 Return the real user id of the current process.\n\
@@ -673,7 +689,7 @@ Return the real user id of the current process.\n\
   return retval;
 }
 
-DEFUN (kill, args, ,
+DEFUNX ("kill", Fkill, args, ,
   "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {[@var{err}, @var{msg}] =} kill (@var{pid}, @var{sig})\n\
 Send signal @var{sig} to process @var{pid}.\n\
@@ -705,19 +721,19 @@ Return 0 if successful, otherwise return -1.\n\
       pid_t pid = args(0).int_value (true);
 
       if (! error_state)
-	{
-	  int sig = args(1).int_value (true);
+        {
+          int sig = args(1).int_value (true);
 
-	  if (! error_state)
-	    {
-	      std::string msg;
+          if (! error_state)
+            {
+              std::string msg;
 
-	      int status = octave_syscalls::kill (pid, sig, msg);
+              int status = octave_syscalls::kill (pid, sig, msg);
 
-	      retval(1) = msg;
-	      retval(0) = status;
-	    }
-	}
+              retval(1) = msg;
+              retval(0) = status;
+            }
+        }
     }
   else
     print_usage ();
@@ -725,47 +741,13 @@ Return 0 if successful, otherwise return -1.\n\
   return retval;
 }
 
-DEFUN (fstat, args, ,
+DEFUNX ("lstat", Flstat, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {[@var{info}, @var{err}, @var{msg}] =} fstat (@var{fid})\n\
-Return information about the open file @var{fid}.  See @code{stat}\n\
-for a description of the contents of @var{info}.\n\
-@end deftypefn")
-{
-  octave_value_list retval;
-
-  if (args.length () == 1)
-    {
-      int fid = octave_stream_list::get_file_number (args(0));
-
-      if (! error_state)
-	{
-	  file_fstat fs (fid);
-
-	  if (fs)
-	    {
-	      retval(2) = std::string ();
-	      retval(1) = 0;
-	      retval(0) = octave_value (mk_stat_map (fs));
-	    }
-	  else
-	    {
-	      retval(2) = fs.error ();
-	      retval(1) = -1;
-	      retval(0) = Matrix ();
-	    }
-	}
-    }
-  else
-    print_usage ();
-
-  return retval;
-}
-
-DEFUN (lstat, args, ,
-  "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {[@var{info}, @var{err}, @var{msg}] =} lstat (@var{file})\n\
-See stat.\n\
+@deftypefn {Built-in Function} {[@var{info}, @var{err}, @var{msg}] =} lstat (@var{symlink})\n\
+Return a structure @var{info} containing information about the symbolic link\n\
+@var{symlink}.  The function outputs are described in the documentation for\n\
+@code{stat}.\n\
+@seealso{stat}\n\
 @end deftypefn")
 {
   octave_value_list retval;
@@ -775,22 +757,11 @@ See stat.\n\
       std::string fname = args(0).string_value ();
 
       if (! error_state)
-	{
-	  file_stat fs (fname, false);
+        {
+          file_stat fs (fname, false);
 
-	  if (fs)
-	    {
-	      retval(2) = std::string ();
-	      retval(1) = 0;
-	      retval(0) = mk_stat_map (fs);
-	    }
-	  else
-	    {
-	      retval(2) = fs.error ();
-	      retval(1) = -1;
-	      retval(0) = Matrix ();
-	    }
-	}
+          retval = mk_stat_result (fs);
+        }
     }
   else
     print_usage ();
@@ -798,9 +769,7 @@ See stat.\n\
   return retval;
 }
 
-
-
-DEFUN (mkfifo, args, ,
+DEFUNX ("mkfifo", Fmkfifo, args, ,
   "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {[@var{err}, @var{msg}] =} mkfifo (@var{name}, @var{mode})\n\
 Create a @var{fifo} special file named @var{name} with file mode @var{mode}\n\
@@ -820,32 +789,32 @@ system-dependent error message.\n\
   if (nargin == 2)
     {
       if (args(0).is_string ())
-	{
-	  std::string name = args(0).string_value ();
+        {
+          std::string name = args(0).string_value ();
 
-	  if (args(1).is_scalar_type ())
-	    {
-	      long mode = args(1).long_value ();
+          if (args(1).is_scalar_type ())
+            {
+              long mode = args(1).long_value ();
 
-	      if (! error_state)
-		{
-		  std::string msg;
+              if (! error_state)
+                {
+                  std::string msg;
 
-		  int status = file_ops::mkfifo (name, mode, msg);
+                  int status = octave_mkfifo (name, mode, msg);
 
-		  retval(0) = status;
+                  retval(0) = status;
 
-		  if (status < 0)
-		    retval(1) = msg;
-		}
-	      else
-		error ("mkfifo: invalid MODE");
-	    }
-	  else
-	    error ("mkfifo: MODE must be an integer");
-	}
+                  if (status < 0)
+                    retval(1) = msg;
+                }
+              else
+                error ("mkfifo: invalid MODE");
+            }
+          else
+            error ("mkfifo: MODE must be an integer");
+        }
       else
-	error ("mkfifo: file name must be a string");
+        error ("mkfifo: FILE must be a string");
     }
   else
     print_usage ();
@@ -853,7 +822,7 @@ system-dependent error message.\n\
   return retval;
 }
 
-DEFUN (pipe, args, ,
+DEFUNX ("pipe", Fpipe, args, ,
   "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {[@var{read_fd}, @var{write_fd}, @var{err}, @var{msg}] =} pipe ()\n\
 Create a pipe and return the reading and writing ends of the pipe\n\
@@ -882,25 +851,25 @@ system-dependent error message.\n\
       int status = octave_syscalls::pipe (fid, msg);
 
       if (status < 0)
-	retval(3) = msg;
+        retval(3) = msg;
       else
-	{
-	  FILE *ifile = fdopen (fid[0], "r");
-	  FILE *ofile = fdopen (fid[1], "w");
+        {
+          FILE *ifile = fdopen (fid[0], "r");
+          FILE *ofile = fdopen (fid[1], "w");
 
-	  std::string nm;
+          std::string nm;
 
-	  octave_stream is = octave_stdiostream::create (nm, ifile,
-							 std::ios::in);
+          octave_stream is = octave_stdiostream::create (nm, ifile,
+                                                         std::ios::in);
 
-	  octave_stream os = octave_stdiostream::create (nm, ofile,
-							 std::ios::out);
+          octave_stream os = octave_stdiostream::create (nm, ofile,
+                                                         std::ios::out);
 
-	  retval(1) = octave_stream_list::insert (os);
-	  retval(0) = octave_stream_list::insert (is);
+          retval(1) = octave_stream_list::insert (os);
+          retval(0) = octave_stream_list::insert (is);
 
-	  retval(2) = status;
-	}
+          retval(2) = status;
+        }
     }
   else
     print_usage ();
@@ -908,12 +877,14 @@ system-dependent error message.\n\
   return retval;
 }
 
-DEFUN (stat, args, ,
+DEFUNX ("stat", Fstat, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {[@var{info}, @var{err}, @var{msg}] =} stat (@var{file})\n\
+@deftypefn  {Built-in Function} {[@var{info}, @var{err}, @var{msg}] =} stat (@var{file})\n\
+@deftypefnx {Built-in Function} {[@var{info}, @var{err}, @var{msg}] =} stat (@var{fid})\n\
 @deftypefnx {Built-in Function} {[@var{info}, @var{err}, @var{msg}] =} lstat (@var{file})\n\
-Return a structure @var{s} containing the following information about\n\
-@var{file}.\n\
+@deftypefnx {Built-in Function} {[@var{info}, @var{err}, @var{msg}] =} lstat (@var{fid})\n\
+Return a structure @var{info} containing the following information about\n\
+@var{file} or file identifier @var{fid}.\n\
 \n\
 @table @code\n\
 @item dev\n\
@@ -975,7 +946,7 @@ If @var{file} is a symbolic link, @code{stat} will return information\n\
 about the actual file that is referenced by the link.  Use @code{lstat}\n\
 if you want information about the symbolic link itself.\n\
 \n\
-For example,\n\
+For example:\n\
 \n\
 @example\n\
 [s, err, msg] = stat (\"/vmlinuz\")\n\
@@ -997,7 +968,7 @@ For example,\n\
           dev = 2049\n\
         @}\n\
      @result{} err = 0\n\
-     @result{} msg = \n\
+     @result{} msg =\n\
 @end example\n\
 @end deftypefn")
 {
@@ -1005,25 +976,28 @@ For example,\n\
 
   if (args.length () == 1)
     {
-      std::string fname = args(0).string_value ();
+      if (args(0).is_scalar_type ())
+        {
+          int fid = octave_stream_list::get_file_number (args(0));
 
-      if (! error_state)
-	{
-	  file_stat fs (fname);
+          if (! error_state)
+            {
+              file_fstat fs (fid);
 
-	  if (fs)
-	    {
-	      retval(2) = std::string ();
-	      retval(1) = 0;
-	      retval(0) = octave_value (mk_stat_map (fs));
-	    }
-	  else
-	    {
-	      retval(2) = fs.error ();
-	      retval(1) = -1;
-	      retval(0) = Matrix ();
-	    }
-	}
+              retval = mk_stat_result (fs);
+            }
+        }
+      else
+        {
+          std::string fname = args(0).string_value ();
+
+          if (! error_state)
+            {
+              file_stat fs (fname);
+
+              retval = mk_stat_result (fs);
+            }
+        }
     }
   else
     print_usage ();
@@ -1046,9 +1020,9 @@ of @var{mode} is assumed to be returned from a call to @code{stat}.\n\
       double mode = args(0).double_value ();
 
       if (! error_state)
-	retval = file_stat::is_reg (static_cast<mode_t> (mode));
+        retval = file_stat::is_reg (static_cast<mode_t> (mode));
       else
-	error ("S_ISREG: invalid mode value");
+        error ("S_ISREG: invalid MODE value");
     }
   else
     print_usage ();
@@ -1071,9 +1045,9 @@ of @var{mode} is assumed to be returned from a call to @code{stat}.\n\
       double mode = args(0).double_value ();
 
       if (! error_state)
-	retval = file_stat::is_dir (static_cast<mode_t> (mode));
+        retval = file_stat::is_dir (static_cast<mode_t> (mode));
       else
-	error ("S_ISDIR: invalid mode value");
+        error ("S_ISDIR: invalid MODE value");
     }
   else
     print_usage ();
@@ -1084,7 +1058,7 @@ of @var{mode} is assumed to be returned from a call to @code{stat}.\n\
 DEFUNX ("S_ISCHR", FS_ISCHR, args, ,
   "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {} S_ISCHR (@var{mode})\n\
-Return true if @var{mode} corresponds to a character devicey.  The value\n\
+Return true if @var{mode} corresponds to a character device.  The value\n\
 of @var{mode} is assumed to be returned from a call to @code{stat}.\n\
 @seealso{stat, lstat}\n\
 @end deftypefn")
@@ -1096,9 +1070,9 @@ of @var{mode} is assumed to be returned from a call to @code{stat}.\n\
       double mode = args(0).double_value ();
 
       if (! error_state)
-	retval = file_stat::is_chr (static_cast<mode_t> (mode));
+        retval = file_stat::is_chr (static_cast<mode_t> (mode));
       else
-	error ("S_ISCHR: invalid mode value");
+        error ("S_ISCHR: invalid MODE value");
     }
   else
     print_usage ();
@@ -1121,9 +1095,9 @@ of @var{mode} is assumed to be returned from a call to @code{stat}.\n\
       double mode = args(0).double_value ();
 
       if (! error_state)
-	retval = file_stat::is_blk (static_cast<mode_t> (mode));
+        retval = file_stat::is_blk (static_cast<mode_t> (mode));
       else
-	error ("S_ISBLK: invalid mode value");
+        error ("S_ISBLK: invalid MODE value");
     }
   else
     print_usage ();
@@ -1146,9 +1120,9 @@ of @var{mode} is assumed to be returned from a call to @code{stat}.\n\
       double mode = args(0).double_value ();
 
       if (! error_state)
-	retval = file_stat::is_fifo (static_cast<mode_t> (mode));
+        retval = file_stat::is_fifo (static_cast<mode_t> (mode));
       else
-	error ("S_ISFIFO: invalid mode value");
+        error ("S_ISFIFO: invalid MODE value");
     }
   else
     print_usage ();
@@ -1171,9 +1145,9 @@ of @var{mode} is assumed to be returned from a call to @code{stat}.\n\
       double mode = args(0).double_value ();
 
       if (! error_state)
-	retval = file_stat::is_lnk (static_cast<mode_t> (mode));
+        retval = file_stat::is_lnk (static_cast<mode_t> (mode));
       else
-	error ("S_ISLNK: invalid mode value");
+        error ("S_ISLNK: invalid MODE value");
     }
   else
     print_usage ();
@@ -1184,6 +1158,8 @@ of @var{mode} is assumed to be returned from a call to @code{stat}.\n\
 DEFUNX ("S_ISSOCK", FS_ISSOCK, args, ,
   "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {} S_ISSOCK (@var{mode})\n\
+Return true if @var{mode} corresponds to a socket.  The value\n\
+of @var{mode} is assumed to be returned from a call to @code{stat}.\n\
 @seealso{stat, lstat}\n\
 @end deftypefn")
 {
@@ -1194,10 +1170,26 @@ DEFUNX ("S_ISSOCK", FS_ISSOCK, args, ,
       double mode = args(0).double_value ();
 
       if (! error_state)
-	retval = file_stat::is_sock (static_cast<mode_t> (mode));
+        retval = file_stat::is_sock (static_cast<mode_t> (mode));
       else
-	error ("S_ISSOCK: invalid mode value");
+        error ("S_ISSOCK: invalid MODE value");
     }
+  else
+    print_usage ();
+
+  return retval;
+}
+
+DEFUN (gethostname, args, ,
+  "-*- texinfo -*-\n\
+@deftypefn {Built-in Function} {} gethostname ()\n\
+Return the hostname of the system where Octave is running.\n\
+@end deftypefn")
+{
+  octave_value retval;
+
+  if (args.length () == 0)
+    retval = octave_env::get_host_name ();
   else
     print_usage ();
 
@@ -1207,7 +1199,7 @@ DEFUNX ("S_ISSOCK", FS_ISSOCK, args, ,
 DEFUN (uname, args, ,
   "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {[@var{uts}, @var{err}, @var{msg}] =} uname ()\n\
-Return system information in the structure.  For example,\n\
+Return system information in the structure.  For example:\n\
 \n\
 @example\n\
 @group\n\
@@ -1233,7 +1225,7 @@ system-dependent error message.\n\
     {
       octave_uname sysinfo;
 
-      Octave_map m;
+      octave_scalar_map m;
 
       m.assign ("sysname", sysinfo.sysname ());
       m.assign ("nodename", sysinfo.nodename ());
@@ -1251,7 +1243,7 @@ system-dependent error message.\n\
   return retval;
 }
 
-DEFUN (unlink, args, ,
+DEFUNX ("unlink", Funlink, args, ,
   "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {[@var{err}, @var{msg}] =} unlink (@var{file})\n\
 Delete the file named @var{file}.\n\
@@ -1271,18 +1263,18 @@ system-dependent error message.\n\
   if (nargin == 1)
     {
       if (args(0).is_string ())
-	{
-	  std::string name = args(0).string_value ();
+        {
+          std::string name = args(0).string_value ();
 
-	  std::string msg;
+          std::string msg;
 
-	  int status = file_ops::unlink (name, msg);
+          int status = octave_unlink (name, msg);
 
-	  retval(0) = status;
-	  retval(1) = msg;	    
-	}
+          retval(0) = status;
+          retval(1) = msg;
+        }
       else
-	error ("unlink: file name must be a string");
+        error ("unlink: FILE must be a string");
     }
   else
     print_usage ();
@@ -1290,7 +1282,7 @@ system-dependent error message.\n\
   return retval;
 }
 
-DEFUN (waitpid, args, ,
+DEFUNX ("waitpid", Fwaitpid, args, ,
   "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {[@var{pid}, @var{status}, @var{msg}] =} waitpid (@var{pid}, @var{options})\n\
 Wait for process @var{pid} to terminate.  The @var{pid} argument can be:\n\
@@ -1346,31 +1338,31 @@ information about the subprocess that exited.\n\
   if (nargin == 1 || nargin == 2)
     {
       pid_t pid = args(0).int_value (true);
-  
+
       if (! error_state)
-	{
-	  int options = 0;
+        {
+          int options = 0;
 
-	  if (args.length () == 2)
-	    options = args(1).int_value (true);
+          if (args.length () == 2)
+            options = args(1).int_value (true);
 
-	  if (! error_state)
-	    {
-	      std::string msg;
+          if (! error_state)
+            {
+              std::string msg;
 
-	      int status = 0;
+              int status = 0;
 
-	      pid_t result = octave_syscalls::waitpid (pid, &status, options, msg);
+              pid_t result = octave_syscalls::waitpid (pid, &status, options, msg);
 
-	      retval(0) = result;
-	      retval(1) = status;
-	      retval(2) = msg;
-	    }
-	  else
-	    error ("waitpid: OPTIONS must be an integer");
-	}
+              retval(0) = result;
+              retval(1) = status;
+              retval(2) = msg;
+            }
+          else
+            error ("waitpid: OPTIONS must be an integer");
+        }
       else
-	error ("waitpid: PID must be an integer value");
+        error ("waitpid: PID must be an integer value");
     }
   else
     print_usage ();
@@ -1394,12 +1386,12 @@ child terminated normally.\n\
       int status = args(0).int_value ();
 
       if (! error_state)
-	retval = WIFEXITED (status);
+        retval = WIFEXITED (status);
       else
-	error ("WIFEXITED: expecting integer argument");
+        error ("WIFEXITED: STATUS must be an integer");
     }
 #else
-  warning ("WIFEXITED always returns false in this version of Octave")
+  warning ("WIFEXITED always returns false in this version of Octave");
 #endif
 
   return retval;
@@ -1422,12 +1414,12 @@ status of the child.  This function should only be employed if\n\
       int status = args(0).int_value ();
 
       if (! error_state)
-	retval = WEXITSTATUS (status);
+        retval = WEXITSTATUS (status);
       else
-	error ("WEXITSTATUS: expecting integer argument");
+        error ("WEXITSTATUS: STATUS must be an integer");
     }
 #else
-  warning ("WEXITSTATUS always returns false in this version of Octave")
+  warning ("WEXITSTATUS always returns false in this version of Octave");
 #endif
 
   return retval;
@@ -1449,9 +1441,9 @@ child process was terminated by a signal.\n\
       int status = args(0).int_value ();
 
       if (! error_state)
-	retval = WIFSIGNALED (status);
+        retval = WIFSIGNALED (status);
       else
-	error ("WIFSIGNALED: expecting integer argument");
+        error ("WIFSIGNALED: STATUS must be an integer");
     }
 #else
   warning ("WIFSIGNALED always returns false in this version of Octave");
@@ -1477,9 +1469,9 @@ should only be employed if @code{WIFSIGNALED} returned true.\n\
       int status = args(0).int_value ();
 
       if (! error_state)
-	retval = WTERMSIG (status);
+        retval = WTERMSIG (status);
       else
-	error ("WTERMSIG: expecting integer argument");
+        error ("WTERMSIG: STATUS must be an integer");
     }
 #else
   warning ("WTERMSIG always returns false in this version of Octave");
@@ -1507,9 +1499,9 @@ Unix implementations (e.g., AIX, SunOS).\n\
       int status = args(0).int_value ();
 
       if (! error_state)
-	retval = WCOREDUMP (status);
+        retval = WCOREDUMP (status);
       else
-	error ("WCOREDUMP: expecting integer argument");
+        error ("WCOREDUMP: STATUS must be an integer");
     }
 #else
   warning ("WCOREDUMP always returns false in this version of Octave");
@@ -1536,9 +1528,9 @@ is being traced (see ptrace(2)).\n\
       int status = args(0).int_value ();
 
       if (! error_state)
-	retval = WIFSTOPPED (status);
+        retval = WIFSTOPPED (status);
       else
-	error ("WIFSTOPPED: expecting integer argument");
+        error ("WIFSTOPPED: STATUS must be an integer");
     }
 #else
   warning ("WIFSTOPPED always returns false in this version of Octave");
@@ -1564,9 +1556,9 @@ be employed if @code{WIFSTOPPED} returned true.\n\
       int status = args(0).int_value ();
 
       if (! error_state)
-	retval = WSTOPSIG (status);
+        retval = WSTOPSIG (status);
       else
-	error ("WSTOPSIG: expecting integer argument");
+        error ("WSTOPSIG: STATUS must be an integer");
     }
 #else
   warning ("WSTOPSIG always returns false in this version of Octave");
@@ -1591,9 +1583,9 @@ child process was resumed by delivery of @code{SIGCONT}.\n\
       int status = args(0).int_value ();
 
       if (! error_state)
-	retval = WIFCONTINUED (status);
+        retval = WIFCONTINUED (status);
       else
-	error ("WIFCONTINUED: expecting integer argument");
+        error ("WIFCONTINUED: STATUS must be an integer");
     }
 #else
   warning ("WIFCONTINUED always returns false in this version of Octave");
@@ -1602,7 +1594,7 @@ child process was resumed by delivery of @code{SIGCONT}.\n\
   return retval;
 }
 
-DEFUN (canonicalize_file_name, args, ,
+DEFUNX ("canonicalize_file_name", Fcanonicalize_file_name, args, ,
   "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {[@var{cname}, @var{status}, @var{msg}]} canonicalize_file_name (@var{name})\n\
 Return the canonical name of file @var{name}.\n\
@@ -1615,17 +1607,17 @@ Return the canonical name of file @var{name}.\n\
       std::string name = args(0).string_value ();
 
       if (! error_state)
-	{
-	  std::string msg;
+        {
+          std::string msg;
 
-	  std::string result = file_ops::canonicalize_file_name (name, msg);
+          std::string result = octave_canonicalize_file_name (name, msg);
 
-	  retval(2) = msg;
-	  retval(1) = msg.empty () ? 0 : -1;
-	  retval(0) = result;
-	}
+          retval(2) = msg;
+          retval(1) = msg.empty () ? 0 : -1;
+          retval(0) = result;
+        }
       else
-	error ("canonicalize_file_name: argument must be a character string");
+        error ("canonicalize_file_name: NAME must be a character string");
     }
   else
     print_usage ();
@@ -1723,7 +1715,7 @@ DEFUNX ("O_APPEND", FO_APPEND, args, ,
 @deftypefn {Built-in Function} {} O_APPEND ()\n\
 Return the numerical value of the file status flag that may be\n\
 returned by @code{fcntl} to indicate each write operation appends,\n\
-or that may be passed to @code{fcntl} to set the write mode to append.\\n\
+or that may be passed to @code{fcntl} to set the write mode to append.\n\
 @seealso{fcntl, O_ASYNC, O_CREAT, O_EXCL, O_NONBLOCK, O_RDONLY, O_RDWR, O_SYNC, O_TRUNC, O_WRONLY}\n\
 @end deftypefn")
 {
@@ -1830,7 +1822,7 @@ synchronous I/O.\n\
 #if defined (O_TRUNC)
 DEFUNX ("O_TRUNC", FO_TRUNC, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Variable} O_TRUNC ()\n\
+@deftypefn {Built-in Function} O_TRUNC ()\n\
 Return the numerical value of the file status flag that may be\n\
 returned by @code{fcntl} to indicate that if file exists, it should\n\
 be truncated when writing.\n\
@@ -1894,7 +1886,7 @@ if the child process has stopped but is not traced via the\n\
 
 DEFUNX ("WCONTINUE", FWCONTINUE, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} WCONINTUE ()\n\
+@deftypefn {Built-in Function} {} WCONTINUE ()\n\
 Return the numerical value of the option argument that may be\n\
 passed to @code{waitpid} to indicate that it should also return\n\
 if a stopped child has been resumed by delivery of a @code{SIGCONT}\n\
@@ -1904,9 +1896,3 @@ signal.\n\
 {
   return const_value (args, WCONTINUE);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

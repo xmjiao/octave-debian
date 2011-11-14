@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 1999, 2000, 2002, 2003, 2004, 2005,
-              2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -41,12 +40,12 @@ tree_print_code : public tree_walker
 public:
 
   tree_print_code (std::ostream& os_arg,
-		   const std::string& pfx = std::string (),
-		   bool pr_orig_txt = true)
+                   const std::string& pfx = std::string (),
+                   bool pr_orig_txt = true)
     : os (os_arg), prefix (pfx), nesting (),
       print_original_text (pr_orig_txt),
       curr_print_indent_level (0), beginning_of_line (true),
-      printing_newlines (true)
+      suppress_newlines (0)
   {
     // For "none".
     nesting.push ('n');
@@ -140,9 +139,7 @@ public:
 
   void visit_do_until_command (tree_do_until_command&);
 
-  void suspend_newline (void) { printing_newlines = false; }
-
-  void resume_newline (void) { printing_newlines = true; }
+  void print_fcn_handle_body (tree_statement_list *);
 
 private:
 
@@ -160,8 +157,8 @@ private:
   // TRUE means we are at the beginning of a line.
   bool beginning_of_line;
 
-  // TRUE means we are printing newlines and indenting.
-  bool printing_newlines;
+  // Nonzero means we are not printing newlines and indenting.
+  int suppress_newlines;
 
   void do_decl_command (tree_decl_command& cmd);
 
@@ -197,9 +194,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

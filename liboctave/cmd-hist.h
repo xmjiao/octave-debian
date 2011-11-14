@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2000, 2004, 2005, 2006, 2007 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -34,16 +34,24 @@ command_history
 protected:
 
   command_history (void)
-    : ignoring_additions (false), lines_in_file (0),
-      lines_this_session (0), xfile (), xsize (-1) { }
+    : initialized (false), ignoring_additions (false), history_control (0),
+      lines_in_file (0), lines_this_session (0), xfile (), xsize (-1) { }
 
 public:
 
   virtual ~command_history (void) { }
 
+  static void initialize (bool, const std::string&, int, const std::string&);
+
+  static bool is_initialized (void);
+
   static void set_file (const std::string&);
 
   static std::string file (void);
+
+  static void process_histcontrol (const std::string&);
+
+  static std::string histcontrol (void);
 
   static void set_size (int);
 
@@ -87,7 +95,7 @@ public:
   static void read_range (int = -1, int = -1, bool = true);
 
   static void read_range (const std::string&, int = -1, int = -1,
-			  bool = true);
+                          bool = true);
 
   static void write (const std::string& = std::string ());
 
@@ -128,33 +136,41 @@ protected:
 
   virtual std::string do_file (void);
 
+  virtual void do_process_histcontrol (const std::string&);
+
+  virtual std::string do_histcontrol (void) const { return std::string (); }
+
+  virtual void do_initialize (bool, const std::string&, int, const std::string&);
+
+  virtual bool do_is_initialized (void) const;
+
   virtual void do_set_size (int);
 
-  virtual int do_size (void);
+  virtual int do_size (void) const;
 
   virtual void do_ignore_entries (bool);
 
-  virtual bool do_ignoring_entries (void);
+  virtual bool do_ignoring_entries (void) const;
 
   virtual void do_add (const std::string&);
 
   virtual void do_remove (int);
 
-  virtual int do_where (void);
+  virtual int do_where (void) const;
 
-  virtual int do_length (void);
+  virtual int do_length (void) const;
 
-  virtual int do_max_input_history (void);
+  virtual int do_max_input_history (void) const;
 
-  virtual int do_base (void);
+  virtual int do_base (void) const;
 
-  virtual int do_current_number (void);
+  virtual int do_current_number (void) const;
 
   virtual void do_stifle (int);
 
   virtual int do_unstifle (void);
 
-  virtual int do_is_stifled (void);
+  virtual int do_is_stifled (void) const;
 
   virtual void do_set_mark (int);
 
@@ -164,28 +180,35 @@ protected:
 
   virtual void do_read_range (const std::string&, int, int, bool);
 
-  virtual void do_write (const std::string&);
+  virtual void do_write (const std::string&) const;
 
   virtual void do_append (const std::string&);
 
-  virtual void do_truncate_file (const std::string&, int);
+  virtual void do_truncate_file (const std::string&, int) const;
 
-  virtual string_vector do_list (int, bool);
+  virtual string_vector do_list (int, bool) const;
 
-  virtual std::string do_get_entry (int);
+  virtual std::string do_get_entry (int) const;
 
   virtual void do_replace_entry (int, const std::string&);
 
   virtual void do_clean_up_and_save (const std::string&, int);
 
-  void error (int);
+  void error (int) const;
 
-  void error (const std::string&);
+  void error (const std::string&) const;
+
+  // TRUE means we have initialized the history file name and number of
+  // lines to save.
+  bool initialized;
 
   // TRUE means we are ignoring new additions.
   bool ignoring_additions;
 
-  // The number of hisory lines we read from the history file.
+  // Bitmask for history control options.  See oct-rl-hist.h.
+  int history_control;
+
+  // The number of history lines we read from the history file.
   int lines_in_file;
 
   // The number of history lines we've saved so far.
@@ -199,9 +222,3 @@ protected:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

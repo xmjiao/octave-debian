@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007,
-              2008, 2009 John W. Eaton
+Copyright (C) 1999-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -54,7 +53,7 @@ public:
   octave_value_list rvalue (int);
 
   tree_expression *dup (symbol_table::scope_id scope,
-			symbol_table::context_id context) const;
+                        symbol_table::context_id context) const;
 
   void accept (tree_walker& tw);
 
@@ -68,9 +67,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

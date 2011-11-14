@@ -1,4 +1,4 @@
-## Copyright (C) 2004, 2005, 2006, 2007, 2009 John Eaton and David Bateman
+## Copyright (C) 2004-2011 John Eaton and David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -17,9 +17,9 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{y} =} shiftdim (@var{x}, @var{n})
+## @deftypefn  {Function File} {@var{y} =} shiftdim (@var{x}, @var{n})
 ## @deftypefnx {Function File} {[@var{y}, @var{ns}] =} shiftdim (@var{x})
-## Shifts the dimension of @var{x} by @var{n}, where @var{n} must be
+## Shift the dimensions of @var{x} by @var{n}, where @var{n} must be
 ## an integer scalar.  When @var{n} is positive, the dimensions of
 ## @var{x} are shifted to the left, with the leading dimensions
 ## circulated to the end.  If @var{n} is negative, then the dimensions
@@ -30,7 +30,7 @@
 ## singleton dimensions, returning the number of dimensions removed
 ## in the second output argument @var{ns}.
 ##
-## For example 
+## For example:
 ##
 ## @example
 ## @group
@@ -65,7 +65,7 @@ function [y, ns]  = shiftdim (x, n)
   endif
 
   if (! isscalar (n) || floor (n) != n)
-    error ("shiftdim: n must be a scalar integer");
+    error ("shiftdim: N must be a scalar integer");
   endif
 
   if (n >= nd)

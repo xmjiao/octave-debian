@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1999, 2000, 2002, 2005, 2006, 2007, 2008 John W. Eaton
+Copyright (C) 1999-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -27,34 +27,22 @@ along with Octave; see the file COPYING.  If not, see
 #include <climits>
 #include <ctime>
 
-#ifdef HAVE_UNISTD_H
-#ifdef HAVE_SYS_TYPES_H
+#include <sys/time.h>
 #include <sys/types.h>
-#endif
 #include <unistd.h>
-#endif
 
-#if defined (OCTAVE_USE_WINDOWS_API)
-#include <windows.h>
-#undef min
-#undef max
-#endif
+#include "strftime.h"
 
 #include "lo-error.h"
 #include "lo-math.h"
 #include "lo-utils.h"
 #include "oct-time.h"
 
-#ifndef HAVE_STRFTIME
-// Override any previous definition and use local version.
-extern "C" size_t
-strftime (char *s, size_t maxsize, const char *format, const struct tm *tp);
-#endif
-
 octave_time::octave_time (const octave_base_tm& tm)
+  : ot_unix_time (), ot_usec ()
 {
   struct tm t;
-  
+
   t.tm_sec = tm.sec ();
   t.tm_min = tm.min ();
   t.tm_hour = tm.hour ();
@@ -71,7 +59,7 @@ octave_time::octave_time (const octave_base_tm& tm)
   t.tm_zone = ps;
 #endif
 
-  ot_unix_time = mktime (&t);
+  ot_unix_time = gnulib::mktime (&t);
 
 #if defined (HAVE_STRUCT_TM_TM_ZONE)
   delete [] ps;
@@ -89,91 +77,12 @@ octave_time::ctime (void) const
 void
 octave_time::stamp (void)
 {
-#if defined (HAVE_GETTIMEOFDAY)
-
   struct timeval tp;
 
-#if defined  (GETTIMEOFDAY_NO_TZ)
-  gettimeofday (&tp);
-#else
-  gettimeofday (&tp, 0);
-#endif
+  gnulib::gettimeofday (&tp, 0);
 
   ot_unix_time = tp.tv_sec;
   ot_usec = tp.tv_usec;
-
-#elif defined (OCTAVE_USE_WINDOWS_API)
-
-  // Loosely based on the code from Cygwin
-  // Copyright 1996, 1997, 1998, 1999, 2000, 2001, 2002 Red Hat, Inc.
-  // Licenced under the GPL.
-
-  const LONGLONG TIME_OFFSET = 0x19db1ded53e8000LL;
-
-  static int init = 1;
-  static LARGE_INTEGER base;
-  static LARGE_INTEGER t0;
-  static double dt;
-
-  if (init)
-    {
-      LARGE_INTEGER ifreq;
-
-      if (QueryPerformanceFrequency (&ifreq))
-        {
-	  // Get clock frequency
-	  dt = (double) 1000000.0 / (double) ifreq.QuadPart;
-
-	  // Get base time as microseconds from Jan 1. 1970
-	  int priority = GetThreadPriority (GetCurrentThread ());
-	  SetThreadPriority (GetCurrentThread(), THREAD_PRIORITY_TIME_CRITICAL);
-	  if (QueryPerformanceCounter (&base))
-	    {
-	      FILETIME f;
-
-	      GetSystemTimeAsFileTime (&f);
-
-	      t0.HighPart = f.dwHighDateTime;
-	      t0.LowPart = f.dwLowDateTime;
-	      t0.QuadPart -= TIME_OFFSET;
-	      t0.QuadPart /= 10;
-
-	      init = 0;
-	    }
-
-	  SetThreadPriority (GetCurrentThread (), priority);
-	}
-
-      if (! init)
-	{
-	  ot_unix_time = time (0);
-	  ot_usec = 0;
-
-	  return;
-	}
-    }
-
-  LARGE_INTEGER now;
-
-  if (QueryPerformanceCounter (&now))
-    {
-      now.QuadPart = (LONGLONG) (dt * (double)(now.QuadPart - base.QuadPart));
-      now.QuadPart += t0.QuadPart;
-
-      ot_unix_time = now.QuadPart / 1000000LL;
-      ot_usec = now.QuadPart % 1000000LL;
-    }
-  else
-    {
-      ot_unix_time = time (0);
-      ot_usec = 0;
-    }
-
-#else
-
-  ot_unix_time = time (0);
-
-#endif
 }
 
 // From the mktime() manual page:
@@ -183,7 +92,7 @@ octave_time::stamp (void)
 //
 //     <snip>
 //
-//     If structure members are outside  their	legal interval, they
+//     If structure members are outside  their  legal interval, they
 //     will be normalized (so that, e.g., 40 October is changed into
 //     9 November).
 //
@@ -196,7 +105,7 @@ octave_time::stamp (void)
   { \
     if (v < lo || v > hi) \
       (*current_liboctave_error_handler) \
-	("invalid value specified for " #f); \
+        ("invalid value specified for " #f); \
  \
     tm_ ## f = v; \
  \
@@ -243,7 +152,7 @@ octave_base_tm::strftime (const std::string& fmt) const
   if (! fmt.empty ())
     {
       struct tm t;
-  
+
       t.tm_sec = tm_sec;
       t.tm_min = tm_min;
       t.tm_hour = tm_hour;
@@ -266,15 +175,15 @@ octave_base_tm::strftime (const std::string& fmt) const
       size_t chars_written = 0;
 
       while (chars_written == 0)
-	{
-	  delete [] buf;
-	  buf = new char[bufsize];
-	  buf[0] = '\0';
+        {
+          delete [] buf;
+          buf = new char[bufsize];
+          buf[0] = '\0';
 
-	  chars_written = ::strftime (buf, bufsize, fmt_str, &t);
+          chars_written = nstrftime (buf, bufsize, fmt_str, &t, 0, 0);
 
-	  bufsize *= 2;
-	}
+          bufsize *= 2;
+        }
 
 #if defined (HAVE_STRUCT_TM_TM_ZONE)
       delete [] ps;
@@ -295,7 +204,7 @@ octave_base_tm::init (void *p)
     return;
 
   struct tm *t = static_cast<struct tm*> (p);
-  
+
   tm_sec = t->tm_sec;
   tm_min = t->tm_min;
   tm_hour = t->tm_hour;
@@ -357,14 +266,14 @@ octave_strptime::init (const std::string& str, const std::string& fmt)
 
   char *p = strsave (str.c_str ());
 
-  char *q = oct_strptime (p, fmt.c_str (), &t);
+  char *q = gnulib::strptime (p, fmt.c_str (), &t);
 
   // Fill in wday and yday, but only if mday is valid and the mon and year
   // are filled in, avoiding issues with mktime and invalid dates.
   if (t.tm_mday != 0 && t.tm_mon >= 0 && t.tm_year != INT_MIN)
     {
       t.tm_isdst = -1;
-      mktime (&t);
+      gnulib::mktime (&t);
     }
 
   if (t.tm_mon < 0)
@@ -386,9 +295,3 @@ octave_strptime::init (const std::string& str, const std::string& fmt)
   delete [] ps;
 #endif
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

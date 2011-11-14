@@ -1,4 +1,4 @@
-## Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 John W. Eaton
+## Copyright (C) 2004-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -47,7 +47,7 @@ function delete (arg)
       ## Delete a graphics object.
       __go_delete__ (arg);
     else
-      error ("delete: expecting argument to be a filename or graphics handle");
+      error ("delete: first argument must be a filename or graphics handle");
     endif
   else
     print_usage ();

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2000, 2005, 2007 John W. Eaton
+Copyright (C) 2000-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -28,7 +28,13 @@ extern "C"
 {
 #endif
 
-extern void octave_add_history (const char *);
+enum {
+  HC_IGNSPACE = 0x01,
+  HC_IGNDUPS = 0x02,
+  HC_ERASEDUPS = 0x04
+};
+
+extern int octave_add_history (const char *, int);
 
 extern int octave_where_history (void);
 
@@ -73,9 +79,3 @@ extern void octave_replace_history_entry (int, const char *);
 #endif
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

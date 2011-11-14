@@ -1,4 +1,4 @@
-## Copyright (C) 2007, 2008, 2009 David Bateman
+## Copyright (C) 2007-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -17,15 +17,15 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} triplot (@var{tri}, @var{x}, @var{y})
+## @deftypefn  {Function File} {} triplot (@var{tri}, @var{x}, @var{y})
 ## @deftypefnx {Function File} {} triplot (@var{tri}, @var{x}, @var{y}, @var{linespec})
 ## @deftypefnx {Function File} {@var{h} =} triplot (@dots{})
-## Plot a triangular mesh in 2D.  The variable @var{tri} is the triangular
+## Plot a triangular mesh in 2D@.  The variable @var{tri} is the triangular
 ## meshing of the points @code{(@var{x}, @var{y})} which is returned from
 ## @code{delaunay}.  If given, the @var{linespec} determines the properties
 ## to use for the lines.  The output argument @var{h} is the graphic handle
-## to the plot.
-## @seealso{plot, trimesh, delaunay}
+## of the plot.
+## @seealso{plot, trimesh, trisurf, delaunay}
 ## @end deftypefn
 
 function h = triplot (tri, x, y, varargin)
@@ -37,11 +37,11 @@ function h = triplot (tri, x, y, varargin)
   idx = tri(:, [1, 2, 3, 1]).';
   nt = size (tri, 1);
   if (nargout > 0)
-    h = plot ([x(idx); NaN*ones(1, nt)](:),
-	      [y(idx); NaN*ones(1, nt)](:), varargin{:});
+    h = plot ([x(idx); NaN(1, nt)](:),
+              [y(idx); NaN(1, nt)](:), varargin{:});
   else
-    plot ([x(idx); NaN*ones(1, nt)](:),
-	  [y(idx); NaN*ones(1, nt)](:), varargin{:});
+    plot ([x(idx); NaN(1, nt)](:),
+          [y(idx); NaN(1, nt)](:), varargin{:});
   endif
 endfunction
 

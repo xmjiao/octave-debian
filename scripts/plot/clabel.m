@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 David Bateman
+## Copyright (C) 2008-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -17,19 +17,19 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} clabel (@var{c}, @var{h})
+## @deftypefn  {Function File} {} clabel (@var{c}, @var{h})
 ## @deftypefnx {Function File} {} clabel (@var{c}, @var{h}, @var{v})
 ## @deftypefnx {Function File} {} clabel (@var{c}, @var{h}, "manual")
 ## @deftypefnx {Function File} {} clabel (@var{c})
 ## @deftypefnx {Function File} {} clabel (@var{c}, @var{h})
 ## @deftypefnx {Function File} {} clabel (@dots{}, @var{prop}, @var{val}, @dots{})
 ## @deftypefnx {Function File} {@var{h} =} clabel (@dots{})
-## Adds labels to the contours of a contour plot.  The contour plot is specified
+## Add labels to the contours of a contour plot.  The contour plot is specified
 ## by the contour matrix @var{c} and optionally the contourgroup object @var{h}
 ## that are returned by @code{contour}, @code{contourf} and @code{contour3}.
 ## The contour labels are rotated and placed in the contour itself.
 ##
-## By default, all contours are labelled.  However, the contours to label can be
+## By default, all contours are labeled.  However, the contours to label can be
 ## specified by the vector @var{v}.  If the "manual" argument is given then
 ## the contours to label can be selected with the mouse.
 ##
@@ -61,16 +61,16 @@ function retval = clabel (c, varargin)
   have_labelspacing = false;
 
   if (nargin < 1)
-    print_usage()
+    print_usage ();
   elseif (nargin == 1)
     hparent = gca ();
   else
     arg = varargin{1};
-    if (isscalar (arg) && ishandle(arg) && 
-	strcmp (get (arg, "type"), "hggroup"))
+    if (isscalar (arg) && ishandle(arg)
+        && strcmp (get (arg, "type"), "hggroup"))
       obj = get (arg);
       if (! isfield (obj, "contourmatrix"))
-	error ("clabel: expecting the handle to be a contour group");
+        error ("clabel: expecting the handle to be a contour group");
       endif
       hg = arg;
       have_hg = true;
@@ -107,16 +107,16 @@ function retval = clabel (c, varargin)
   if (have_hg)
     if (! isempty (v))
       if (have_labelspacing)
-	set (hg, "textlistmode", "manual", "textlist", v, 
-	     "labelspacing", label_spacing, "showtext", "on");
+        set (hg, "textlistmode", "manual", "textlist", v,
+             "labelspacing", label_spacing, "showtext", "on");
       else
-	set (hg, "textlistmode", "manual", "textlist", v, "showtext", "on");
+        set (hg, "textlistmode", "manual", "textlist", v, "showtext", "on");
       endif
     else
       if (have_labelspacing)
-	set (hg,"showtext", "on", "labelspacing", label_spacing);
+        set (hg,"showtext", "on", "labelspacing", label_spacing);
       else
-	set (hg,"showtext", "on");
+        set (hg,"showtext", "on");
       endif
     endif
     retval = findobj (hg, "type", "text");

@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2000, 2002, 2004, 2005, 2006,
-              2007, 2008 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -36,9 +35,17 @@ public:
 
   FloatHESS (void) : hess_mat (), unitary_hess_mat () { }
 
-  FloatHESS (const FloatMatrix& a) { init (a); }
+  FloatHESS (const FloatMatrix& a)
+     : hess_mat (), unitary_hess_mat ()
+    {
+      init (a);
+    }
 
-  FloatHESS (const FloatMatrix& a, octave_idx_type& info) { info = init (a); }
+  FloatHESS (const FloatMatrix& a, octave_idx_type& info)
+    : hess_mat (), unitary_hess_mat ()
+    {
+      info = init (a);
+    }
 
   FloatHESS (const FloatHESS& a)
     : hess_mat (a.hess_mat), unitary_hess_mat (a.unitary_hess_mat) { }
@@ -46,10 +53,10 @@ public:
   FloatHESS& operator = (const FloatHESS& a)
     {
       if (this != &a)
-	{
-	  hess_mat = a.hess_mat;
-	  unitary_hess_mat = a.unitary_hess_mat;
-	}
+        {
+          hess_mat = a.hess_mat;
+          unitary_hess_mat = a.unitary_hess_mat;
+        }
       return *this;
     }
 
@@ -70,9 +77,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

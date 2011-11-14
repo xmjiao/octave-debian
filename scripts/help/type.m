@@ -1,28 +1,32 @@
-## Copyright (C) 2009 Søren Hauberg
+## Copyright (C) 2009-2011 Sï¿½ren Hauberg
 ##
-## This program is free software; you can redistribute it and/or modify it
+## This file is part of Octave.
+##
+## Octave is free software; you can redistribute it and/or modify it
 ## under the terms of the GNU General Public License as published by
 ## the Free Software Foundation; either version 3 of the License, or (at
 ## your option) any later version.
 ##
-## This program is distributed in the hope that it will be useful, but
+## Octave is distributed in the hope that it will be useful, but
 ## WITHOUT ANY WARRANTY; without even the implied warranty of
 ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 ## General Public License for more details.
 ##
 ## You should have received a copy of the GNU General Public License
-## along with this program; see the file COPYING.  If not, see
+## along with Octave; see the file COPYING.  If not, see
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Command} type options name @dots{}
+## @deftypefn  {Command} {} type @var{name} @dots{}
+## @deftypefnx {Command} {} type -q @var{name} @dots{}
+## @deftypefnx {Function File} {dfns =} type ("@var{name}", @dots{})
 ## Display the definition of each @var{name} that refers to a function.
-## 
-## Normally also displays whether each @var{name} is user-defined or built-in;
-## the @code{-q} option suppresses this behavior.
 ##
-## If an output argument is requested nothing is displayed.  Instead, a cell 
-## array of strings is returned, where each element corresponds to the 
+## Normally also displays whether each @var{name} is user-defined or built-in;
+## the @option{-q} option suppresses this behavior.
+##
+## If an output argument is requested nothing is displayed.  Instead, a cell
+## array of strings is returned, where each element corresponds to the
 ## definition of each requested function.
 ## @end deftypefn
 
@@ -35,7 +39,7 @@ function retval = type (varargin)
   if (!iscellstr (varargin))
     error ("type: input arguments must be strings");
   endif
-    
+
   quiet = false;
   idx = strcmpi (varargin, "-q") | strcmpi (varargin, "-quiet");
   if (any (idx))
@@ -46,10 +50,10 @@ function retval = type (varargin)
   if (nargout > 0)
     retval = cell (size (varargin));
   endif
-  
+
   for n = 1:length (varargin)
     name = varargin {n};
-    
+
     ## Find function and get its code
     text = "";
     cmd = sprintf ("exist ('%s')", name);
@@ -71,7 +75,7 @@ function retval = type (varargin)
         ## FIXME: Should we just print it anyway?
         error ("type: `%s' undefined\n", name);
       endif
-    
+
       ## Read the file
       fid = fopen (file, "r");
       if (fid < 0)
@@ -79,13 +83,13 @@ function retval = type (varargin)
       endif
       contents = char (fread (fid).');
       fclose (fid);
-    
+
       if (quiet)
         text = contents;
       else
         text = sprintf ("%s is the user-defined function defined from: %s\n\n%s",
                         name, file, contents);
-      endif    
+      endif
     elseif (e == 3)
       text = sprintf ("%s is a dynamically-linked function", name);
     elseif (e == 5)

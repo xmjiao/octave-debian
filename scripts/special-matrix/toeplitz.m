@@ -1,5 +1,4 @@
-## Copyright (C) 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2004,
-##               2005, 2006, 2007, 2008, 2009 John W. Eaton
+## Copyright (C) 1993-2011 John W. Eaton
 ## Copyright (C) 2009 VZLU Prague
 ##
 ## This file is part of Octave.
@@ -19,10 +18,11 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} toeplitz (@var{c}, @var{r})
-## Return the Toeplitz matrix constructed given the first column @var{c},
-## and (optionally) the first row @var{r}.  If the first element of @var{c}
-## is not the same as the first element of @var{r}, the first element of
+## @deftypefn  {Function File} {} toeplitz (@var{c})
+## @deftypefnx {Function File} {} toeplitz (@var{c}, @var{r})
+## Return the Toeplitz matrix constructed from the first column @var{c},
+## and (optionally) the first row @var{r}.  If the first element of @var{r}
+## is not the same as the first element of @var{c}, the first element of
 ## @var{c} is used.  If the second argument is omitted, the first row is
 ## taken to be the same as the first column.
 ##
@@ -43,14 +43,15 @@
 ## c(0)  r(1)   r(2)  @dots{}  r(n)
 ## c(1)  c(0)   r(1)  @dots{} r(n-1)
 ## c(2)  c(1)   c(0)  @dots{} r(n-2)
-##  .     ,      ,   .      .
-##  .     ,      ,     .    .
-##  .     ,      ,       .  .
+##  .     .      .   .      .
+##  .     .      .     .    .
+##  .     .      .       .  .
 ## c(n) c(n-1) c(n-2) @dots{}  c(0)
 ## @end group
 ## @end example
+##
 ## @end ifnottex
-## @seealso{hankel, vander, sylvester_matrix, hilb, invhilb}
+## @seealso{hankel}
 ## @end deftypefn
 
 ## Author: jwe && jh
@@ -100,8 +101,8 @@ function retval = toeplitz (c, r)
 
     ## Form matrix.
     retval = spdiags(repmat(c(cidx),nr,1),1-cidx,nr,nc)+...
-	spdiags(repmat(r(ridx),nr,1),ridx-1,nr,nc);
-  else  
+        spdiags(repmat(r(ridx),nr,1),ridx-1,nr,nc);
+  else
     ## Concatenate data into a single column vector.
     data = [r(end:-1:2)(:); c(:)];
 

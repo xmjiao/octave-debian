@@ -1,4 +1,4 @@
-## Copyright (C) 2007, 2008, 2009 Ben Abbott
+## Copyright (C) 2007-2011 Ben Abbott
 ##
 ## This file is part of Octave.
 ##
@@ -17,12 +17,12 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {[@var{multp}, @var{indx}] =} mpoles (@var{p})
+## @deftypefn  {Function File} {[@var{multp}, @var{indx}] =} mpoles (@var{p})
 ## @deftypefnx {Function File} {[@var{multp}, @var{indx}] =} mpoles (@var{p}, @var{tol})
 ## @deftypefnx {Function File} {[@var{multp}, @var{indx}] =} mpoles (@var{p}, @var{tol}, @var{reorder})
 ## Identify unique poles in @var{p} and associates their multiplicity,
 ## ordering them from largest to smallest.
-## 
+##
 ## If the relative difference of the poles is less than @var{tol}, then
 ## they are considered to be multiples.  The default value for @var{tol}
 ## is 0.001.
@@ -32,7 +32,7 @@
 ## The value @var{multp} is a vector specifying the multiplicity of the
 ## poles.  @var{multp}(:) refers to multiplicity of @var{p}(@var{indx}(:)).
 ##
-## For example,
+## For example:
 ##
 ## @example
 ## @group
@@ -44,7 +44,7 @@
 ## @end group
 ## @end example
 ##
-## @seealso{poly, roots, conv, deconv, polyval, polyderiv, polyinteg, residue}
+## @seealso{poly, roots, conv, deconv, polyval, polyderiv, polyint, residue}
 ## @end deftypefn
 
 ## Author: Ben Abbott <bpabbott@mac.com>

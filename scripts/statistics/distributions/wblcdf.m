@@ -1,4 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 2006, 2007, 2009 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -19,18 +19,20 @@
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} wblcdf (@var{x}, @var{scale}, @var{shape})
 ## Compute the cumulative distribution function (CDF) at @var{x} of the
-## Weibull distribution with shape parameter @var{scale} and scale
+## Weibull distribution with scale parameter @var{scale} and shape
 ## parameter @var{shape}, which is
-##
 ## @tex
-## $$ 1 - \exp(-(x/shape)^{scale}) $$
-## for $x\geq 0$.
+## $$ 1 - e^{-({x \over scale})^{shape}} $$
+## for $x \geq 0$.
 ## @end tex
 ## @ifnottex
+##
 ## @example
-## 1 - exp(-(x/shape)^scale)
+## 1 - exp(-(x/scale)^shape)
 ## @end example
-## for @var{x} >= 0.
+##
+## @noindent
+## for @var{x} @geq{} 0.
 ## @end ifnottex
 ## @end deftypefn
 
@@ -54,11 +56,11 @@ function cdf = wblcdf (x, scale, shape)
   if (!isscalar (shape) || !isscalar (scale))
     [retval, x, shape, scale] = common_size (x, shape, scale);
     if (retval > 0)
-      error ("wblcdf: x, scale and shape must be of common size or scalar");
+      error ("wblcdf: X, SCALE and SHAPE must be of common size or scalar");
     endif
   endif
 
-  cdf = NaN * ones (size (x));
+  cdf = NaN (size (x));
 
   ok = ((shape > 0) & (shape < Inf) & (scale > 0) & (scale < Inf));
 

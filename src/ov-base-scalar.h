@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1999, 2000, 2001, 2002, 2003, 2004, 2005,
-              2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -47,33 +46,30 @@ octave_base_scalar : public octave_base_value
 public:
 
   octave_base_scalar (void)
-    : octave_base_value (), typ (MatrixType ()) { }
+    : octave_base_value (), scalar () { }
 
-  octave_base_scalar (const ST& s, const MatrixType& t = MatrixType ())
-    : octave_base_value (), scalar (s), typ (t) { }
+  octave_base_scalar (const ST& s)
+    : octave_base_value (), scalar (s) { }
 
   octave_base_scalar (const octave_base_scalar& s)
-    : octave_base_value (), scalar (s.scalar), typ (s.typ) { }
+    : octave_base_value (), scalar (s.scalar) { }
 
   ~octave_base_scalar (void) { }
-
-  octave_base_value *clone (void) const { return new octave_base_scalar (*this); }
-  octave_base_value *empty_clone (void) const { return new octave_base_scalar (); }
 
   octave_value squeeze (void) const { return scalar; }
 
   octave_value full_value (void) const { return scalar; }
 
   octave_value subsref (const std::string& type,
-			const std::list<octave_value_list>& idx);
+                        const std::list<octave_value_list>& idx);
 
   octave_value_list subsref (const std::string& type,
-			     const std::list<octave_value_list>& idx, int)
+                             const std::list<octave_value_list>& idx, int)
     { return subsref (type, idx); }
 
   octave_value subsasgn (const std::string& type,
-			 const std::list<octave_value_list>& idx,
-			 const octave_value& rhs);
+                         const std::list<octave_value_list>& idx,
+                         const octave_value& rhs);
 
   bool is_constant (void) const { return true; }
 
@@ -81,13 +77,15 @@ public:
 
   dim_vector dims (void) const { static dim_vector dv (1, 1); return dv; }
 
+  octave_idx_type numel (void) const { return 1; }
+
+  int ndims (void) const { return 2; }
+
   octave_idx_type nnz (void) const { return (scalar != ST ()) ? 1 : 0; }
 
-  octave_value permute (const Array<int>&, bool = false) const
-    { return scalar; }
+  octave_value permute (const Array<int>&, bool = false) const;
 
-  octave_value reshape (const dim_vector& new_dims) const
-    { return array_value ().reshape (new_dims); }
+  octave_value reshape (const dim_vector& new_dims) const;
 
   size_t byte_size (void) const { return sizeof (ST); }
 
@@ -95,31 +93,33 @@ public:
 
   octave_value any (int = 0) const { return (scalar != ST ()); }
 
-  octave_value diag (octave_idx_type k = 0) const 
-    { return octave_value (matrix_value (). diag (k)); }
+  octave_value diag (octave_idx_type k = 0) const;
 
   octave_value sort (octave_idx_type, sortmode) const
     { return octave_value (scalar); }
   octave_value sort (Array<octave_idx_type> &sidx, octave_idx_type,
-		     sortmode) const
-    { 
-      sidx.resize (dim_vector (1, 1)); 
-      sidx(0) = 0; 
-      return octave_value (scalar); 
+                     sortmode) const
+    {
+      sidx.resize (dim_vector (1, 1));
+      sidx(0) = 0;
+      return octave_value (scalar);
     }
 
   sortmode is_sorted (sortmode mode = UNSORTED) const
     { return mode ? mode : ASCENDING; }
 
   Array<octave_idx_type> sort_rows_idx (sortmode) const
-    { return Array<octave_idx_type> (1, 0); }
+    {
+      return Array<octave_idx_type> (dim_vector (1, 1),
+                                     static_cast<octave_idx_type> (0));
+    }
 
   sortmode is_sorted_rows (sortmode mode = UNSORTED) const
     { return mode ? mode : ASCENDING; }
 
-  MatrixType matrix_type (void) const { return typ; }
-  MatrixType matrix_type (const MatrixType& _typ) const
-    { MatrixType ret = typ; typ = _typ; return ret; }
+  MatrixType matrix_type (void) const { return MatrixType::Diagonal; }
+  MatrixType matrix_type (const MatrixType&) const
+    { return matrix_type (); }
 
   bool is_scalar_type (void) const { return true; }
 
@@ -137,18 +137,16 @@ public:
   // You should not use it anywhere else.
   void *mex_get_data (void) const { return const_cast<ST *> (&scalar); }
 
+  const ST& scalar_ref (void) const { return scalar; }
+
+  ST& scalar_ref (void) { return scalar; }
+
+  bool fast_elem_insert_self (void *where, builtin_type_t btyp) const;
+
 protected:
 
   // The value of this scalar.
   ST scalar;
-
-  mutable MatrixType typ;
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

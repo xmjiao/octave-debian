@@ -1,4 +1,4 @@
-## Copyright (C) 2008 Julian Schnidder
+## Copyright (C) 2008-2011 Julian Schnidder
 ##
 ## This file is part of Octave.
 ##
@@ -37,8 +37,9 @@ function info ()
   the Octave Forge project, which may be found at\n\
   http://octave.sourceforge.net\n\
 \n\
-  Report bugs to <bug@octave.org> (but first, please read\n\
-  http://www.octave.org/bugs.html to learn how to write a helpful report)\n\
-\n");
+  Report bugs to the bug tracker at\n\
+  http://bugs.octave.org\n\
+  But first, please read the guidelines to writing a helpful report at\n\
+  http://www.octave.org/bugs.html\n");
 
 endfunction

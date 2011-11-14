@@ -1,5 +1,4 @@
-## Copyright (C) 1993, 1995, 1996, 1997, 2000, 2002, 2005, 2007, 2009
-##               John W. Eaton
+## Copyright (C) 1993-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -18,7 +17,8 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} list_primes (@var{n})
+## @deftypefn  {Function File} {} list_primes ()
+## @deftypefnx {Function File} {} list_primes (@var{n})
 ## List the first @var{n} primes.  If @var{n} is unspecified, the first
 ## 25 primes are listed.
 ##

@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2000, 2002, 2004, 2005, 2007, 2008,
-              2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -46,10 +45,10 @@ tree_expression::is_logically_true (const char *warn_for)
   if (! error_state)
     {
       if (t1.is_defined ())
-	return t1.is_true ();
+        return t1.is_true ();
       else
-	::error ("%s: undefined value used in conditional expression",
-		 warn_for);
+        ::error ("%s: undefined value used in conditional expression",
+                 warn_for);
     }
 
   return expr_value;
@@ -69,6 +68,12 @@ tree_expression::rvalue (int)
   return octave_value_list ();
 }
 
+octave_value_list
+tree_expression::rvalue (int nargout, const std::list<octave_lvalue> *)
+{
+  return rvalue (nargout);
+}
+
 octave_lvalue
 tree_expression::lvalue (void)
 {
@@ -81,9 +86,3 @@ tree_expression::original_text (void) const
 {
   return std::string ();
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

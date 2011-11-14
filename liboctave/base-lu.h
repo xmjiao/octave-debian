@@ -1,6 +1,7 @@
 /*
 
-Copyright (C) 1996, 1997, 2000, 2002, 2004, 2005, 2007, 2008 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
+Copyright (C) 2009 VZLU Prague
 
 This file is part of Octave.
 
@@ -35,43 +36,52 @@ public:
 
   typedef typename lu_type::element_type lu_elt_type;
 
-  base_lu (void) { }
+  base_lu (void)
+    : a_fact (), l_fact (), ipvt () { }
 
-  base_lu (const base_lu& a) : a_fact (a.a_fact), ipvt (a.ipvt) { }
+  base_lu (const base_lu& a)
+    : a_fact (a.a_fact), l_fact (a.l_fact), ipvt (a.ipvt) { }
+
+  base_lu (const lu_type& l, const lu_type& u,
+           const PermMatrix& p);
 
   base_lu& operator = (const base_lu& a)
     {
       if (this != &a)
-	{
-	  a_fact = a.a_fact;
-	  ipvt = a.ipvt;
-	}
+        {
+          a_fact = a.a_fact;
+          l_fact = a.l_fact;
+          ipvt = a.ipvt;
+        }
       return *this;
     }
 
-  ~base_lu (void) { }
+  virtual ~base_lu (void) { }
+
+  bool packed (void) const;
+
+  void unpack (void);
 
   lu_type L (void) const;
 
   lu_type U (void) const;
 
-  lu_type Y (void) const { return a_fact; }
+  lu_type Y (void) const;
 
   PermMatrix P (void) const;
 
   ColumnVector P_vec (void) const;
 
+  bool regular (void) const;
+
 protected:
 
   Array<octave_idx_type> getp (void) const;
+
   lu_type a_fact;
-  MArray<octave_idx_type> ipvt;
+  lu_type l_fact;
+
+  Array<octave_idx_type> ipvt;
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,5 +1,4 @@
-## Copyright (C) 1996, 1997, 1998, 1999, 2000, 2002, 2003, 2005, 2006,
-##               2007, 2008, 2009 John W. Eaton
+## Copyright (C) 1996-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -18,7 +17,9 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {[@var{p}, @var{s}, @var{mu}] =} polyfit (@var{x}, @var{y}, @var{n})
+## @deftypefn  {Function File} {@var{p} =} polyfit (@var{x}, @var{y}, @var{n})
+## @deftypefnx {Function File} {[@var{p}, @var{s}] =} polyfit (@var{x}, @var{y}, @var{n})
+## @deftypefnx {Function File} {[@var{p}, @var{s}, @var{mu}] =} polyfit (@var{x}, @var{y}, @var{n})
 ## Return the coefficients of a polynomial @var{p}(@var{x}) of degree
 ## @var{n} that minimizes the least-squares-error of the fit.
 ##
@@ -28,21 +29,25 @@
 ##
 ## @table @samp
 ## @item R
-## Triangular factor R from the QR decomposition.
+## Triangular factor R from the QR@tie{}decomposition.
+##
 ## @item X
 ## The Vandermonde matrix used to compute the polynomial coefficients.
+##
 ## @item df
 ## The degrees of freedom.
+##
 ## @item normr
 ## The norm of the residuals.
+##
 ## @item yf
 ## The values of the polynomial for each value of @var{x}.
 ## @end table
 ##
-## The second output may be used by @code{polyval} to calculate the 
+## The second output may be used by @code{polyval} to calculate the
 ## statistical error limits of the predicted values.
 ##
-## When the third output, @var{mu}, is present the 
+## When the third output, @var{mu}, is present the
 ## coefficients, @var{p}, are associated with a polynomial in
 ## @var{xhat} = (@var{x}-@var{mu}(1))/@var{mu}(2).
 ## Where @var{mu}(1) = mean (@var{x}), and @var{mu}(2) = std (@var{x}).
@@ -68,11 +73,11 @@ function [p, s, mu] = polyfit (x, y, n)
   endif
 
   if (! size_equal (x, y))
-    error ("polyfit: x and y must be vectors of the same size");
+    error ("polyfit: X and Y must be vectors of the same size");
   endif
 
   if (! (isscalar (n) && n >= 0 && ! isinf (n) && n == round (n)))
-    error ("polyfit: n must be a nonnegative integer");
+    error ("polyfit: N must be a nonnegative integer");
   endif
 
   y_is_row_vector = (rows (y) == 1);

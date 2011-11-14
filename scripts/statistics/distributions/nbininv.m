@@ -1,4 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 2007 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -36,55 +36,55 @@ function inv = nbininv (x, n, p)
     print_usage ();
   endif
 
-  if (!isscalar(n) || !isscalar(p)) 
+  if (!isscalar(n) || !isscalar(p))
     [retval, x, n, p] = common_size (x, n, p);
     if (retval > 0)
-      error ("nbininv: x, n and p must be of common size or scalar");
+      error ("nbininv: X, N and P must be of common size or scalar");
     endif
   endif
 
   inv = zeros (size (x));
 
   k = find (isnan (x) | (x < 0) | (x > 1) | (n < 1) | (n == Inf)
-	    | (n != round (n)) | (p < 0) | (p > 1));
+            | (n != round (n)) | (p < 0) | (p > 1));
   if (any (k))
     inv(k) = NaN;
   endif
 
   k = find ((x == 1) & (n > 0) & (n < Inf) & (n == round (n))
-	    & (p >= 0) & (p <= 1));
+            & (p >= 0) & (p <= 1));
   if (any (k))
     inv(k) = Inf;
   endif
 
   k = find ((x >= 0) & (x < 1) & (n > 0) & (n < Inf)
-	    & (n == round (n)) & (p > 0) & (p <= 1));
+            & (n == round (n)) & (p > 0) & (p <= 1));
   if (any (k))
     m = zeros (size (k));
     x = x(k);
     if (isscalar (n) && isscalar (p))
       s = p ^ n * ones (size(k));
       while (1)
-	l = find (s < x);
-	if (any (l))
+        l = find (s < x);
+        if (any (l))
           m(l) = m(l) + 1;
           s(l) = s(l) + nbinpdf (m(l), n, p);
-	else
+        else
           break;
-	endif
+        endif
       endwhile
     else
       n = n(k);
       p = p(k);
       s = p .^ n;
       while (1)
-	l = find (s < x);
-	if (any (l))
+        l = find (s < x);
+        if (any (l))
           m(l) = m(l) + 1;
           s(l) = s(l) + nbinpdf (m(l), n(l), p(l));
-	else
+        else
           break;
-	endif
+        endif
       endwhile
     endif
     inv(k) = m;

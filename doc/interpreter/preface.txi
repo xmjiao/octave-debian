@@ -1,5 +1,4 @@
-@c Copyright (C) 1996, 1997, 1999, 2000, 2001, 2002, 2003, 2004,
-@c               2005, 2006, 2007, 2009 John W. Eaton
+@c Copyright (C) 1996-2011 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -17,6 +16,7 @@
 @c along with Octave; see the file COPYING.  If not, see
 @c <http://www.gnu.org/licenses/>.
 
+@ifclear AUTHORSONLY
 @node Preface
 @unnumbered Preface
 @cindex contributors
@@ -71,13 +71,15 @@ you may have.
 @node Acknowledgements
 @unnumberedsec Acknowledgements
 @cindex acknowledgements
+@end ifclear
 
-Many people have already contributed to Octave's development.  The
+Many people have contributed to Octave's development.  The
 following people have helped code parts of Octave or aided in
 various other ways (listed alphabetically).
 
 @include contributors.texi
 
+@ifclear AUTHORSONLY
 Special thanks to the following people and organizations for
 supporting the development of Octave:
 
@@ -192,3 +194,4 @@ USA
 
 Octave can also be downloaded from @url{http://www.octave.org}, where
 additional information is available.
+@end ifclear

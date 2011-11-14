@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008, 2009 Jaroslav Hajek
+Copyright (C) 2008-2011 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -44,7 +44,7 @@ default_null_matrix_numeric_conversion_function (const octave_base_value& a)
 octave_base_value::type_conv_info
 octave_null_matrix::numeric_conversion_function (void) const
 {
-  return octave_base_value::type_conv_info (default_null_matrix_numeric_conversion_function, 
+  return octave_base_value::type_conv_info (default_null_matrix_numeric_conversion_function,
                                             octave_matrix::static_type_id ());
 }
 
@@ -64,7 +64,7 @@ default_null_str_numeric_conversion_function (const octave_base_value& a)
 octave_base_value::type_conv_info
 octave_null_str::numeric_conversion_function (void) const
 {
-  return octave_base_value::type_conv_info (default_null_str_numeric_conversion_function, 
+  return octave_base_value::type_conv_info (default_null_str_numeric_conversion_function,
                                             octave_char_matrix_str::static_type_id ());
 }
 
@@ -84,23 +84,26 @@ default_null_sq_str_numeric_conversion_function (const octave_base_value& a)
 octave_base_value::type_conv_info
 octave_null_sq_str::numeric_conversion_function (void) const
 {
-  return octave_base_value::type_conv_info (default_null_sq_str_numeric_conversion_function, 
+  return octave_base_value::type_conv_info (default_null_sq_str_numeric_conversion_function,
                                             octave_char_matrix_sq_str::static_type_id ());
 }
 
 DEFUN (isnull, args, ,
   "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {} isnull (@var{x})\n\
-Return 1 if @var{x} is a special null matrix, string or single quoted string.\n\
-Indexed assignment with such a value as right-hand side should delete array elements.\n\
-This function should be used when overloading indexed assignment for user-defined \n\
-classes instead of @code{isempty}, to distinguish the cases:\n\
+Return true if @var{x} is a special null matrix, string, or single quoted\n\
+string.  Indexed assignment with such a value on the right-hand side should\n\
+delete array elements.  This function should be used when overloading\n\
+indexed assignment for user-defined classes instead of @code{isempty}, to\n\
+distinguish the cases:\n\
 @table @asis\n\
 @item @code{A(I) = []}\n\
 This should delete elements if @code{I} is nonempty.\n\
+\n\
 @item @code{X = []; A(I) = X}\n\
 This should give an error if @code{I} is nonempty.\n\
 @end table\n\
+@seealso{isempty, isindex}\n\
 @end deftypefn")
 {
   octave_value retval;

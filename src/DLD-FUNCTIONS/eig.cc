@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1999, 2000, 2003, 2004, 2005, 2006, 2007, 2008
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -36,18 +35,19 @@ along with Octave; see the file COPYING.  If not, see
 
 DEFUN_DLD (eig, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn  {Loadable Function} {@var{lambda} =} eig (@var{a})\n\
-@deftypefnx {Loadable Function} {@var{lambda} =} eig (@var{a}, @var{b})\n\
-@deftypefnx {Loadable Function} {[@var{v}, @var{lambda}] =} eig (@var{a})\n\
-@deftypefnx {Loadable Function} {[@var{v}, @var{lambda}] =} eig (@var{a}, @var{b})\n\
-The eigenvalues (and eigenvectors) of a matrix are computed in a several\n\
-step process which begins with a Hessenberg decomposition, followed by a\n\
-Schur decomposition, from which the eigenvalues are apparent.  The\n\
-eigenvectors, when desired, are computed by further manipulations of the\n\
-Schur decomposition.\n\
+@deftypefn  {Loadable Function} {@var{lambda} =} eig (@var{A})\n\
+@deftypefnx {Loadable Function} {@var{lambda} =} eig (@var{A}, @var{B})\n\
+@deftypefnx {Loadable Function} {[@var{V}, @var{lambda}] =} eig (@var{A})\n\
+@deftypefnx {Loadable Function} {[@var{V}, @var{lambda}] =} eig (@var{A}, @var{B})\n\
+Compute the eigenvalues and eigenvectors of a matrix.\n\
+\n\
+Eigenvalues are computed in a several step process which begins with a\n\
+Hessenberg decomposition, followed by a Schur@tie{}decomposition, from which\n\
+the eigenvalues are apparent.  The eigenvectors, when desired, are computed\n\
+by further manipulations of the Schur@tie{}decomposition.\n\
 \n\
 The eigenvalues returned by @code{eig} are not ordered.\n\
-@seealso{eigs}\n\
+@seealso{eigs, svd}\n\
 @end deftypefn")
 {
   octave_value_list retval;
@@ -94,10 +94,10 @@ The eigenvalues returned by @code{eig} are not ordered.\n\
         return octave_value_list (2, Matrix ());
 
       if (!(arg_b.is_single_type() || arg_b.is_double_type ()))
-	{
-	  gripe_wrong_type_arg ("eig", arg_b);
-	  return retval;
-	}
+        {
+          gripe_wrong_type_arg ("eig", arg_b);
+          return retval;
+        }
     }
 
   if (nr_a != nc_a)
@@ -122,132 +122,132 @@ The eigenvalues returned by @code{eig} are not ordered.\n\
       FloatEIG result;
 
       if (nargin == 1)
-	{
-	  if (arg_a.is_real_type ())
-	    {
-	      ftmp_a = arg_a.float_matrix_value ();
+        {
+          if (arg_a.is_real_type ())
+            {
+              ftmp_a = arg_a.float_matrix_value ();
 
-	      if (error_state)
-	        return retval;
-	      else
-	        result = FloatEIG (ftmp_a, nargout > 1);
-	    }
-	  else
-	    {
-	      fctmp_a = arg_a.float_complex_matrix_value ();
+              if (error_state)
+                return retval;
+              else
+                result = FloatEIG (ftmp_a, nargout > 1);
+            }
+          else
+            {
+              fctmp_a = arg_a.float_complex_matrix_value ();
 
-	      if (error_state)
-	        return retval;
-	      else
-	        result = FloatEIG (fctmp_a, nargout > 1);
-	    }
-	}
+              if (error_state)
+                return retval;
+              else
+                result = FloatEIG (fctmp_a, nargout > 1);
+            }
+        }
       else if (nargin == 2)
-	{
-	  if (arg_a.is_real_type () && arg_b.is_real_type ())
-	    {
-	      ftmp_a = arg_a.float_matrix_value ();
-	      ftmp_b = arg_b.float_matrix_value ();
+        {
+          if (arg_a.is_real_type () && arg_b.is_real_type ())
+            {
+              ftmp_a = arg_a.float_matrix_value ();
+              ftmp_b = arg_b.float_matrix_value ();
 
-	      if (error_state)
-	        return retval;
-	      else
-	        result = FloatEIG (ftmp_a, ftmp_b, nargout > 1);
-	    }
-	  else
-	    {
-	      fctmp_a = arg_a.float_complex_matrix_value ();
-	      fctmp_b = arg_b.float_complex_matrix_value ();
+              if (error_state)
+                return retval;
+              else
+                result = FloatEIG (ftmp_a, ftmp_b, nargout > 1);
+            }
+          else
+            {
+              fctmp_a = arg_a.float_complex_matrix_value ();
+              fctmp_b = arg_b.float_complex_matrix_value ();
 
-	      if (error_state)
-	        return retval;
-	      else
-	        result = FloatEIG (fctmp_a, fctmp_b, nargout > 1);
-	    }
-	}
+              if (error_state)
+                return retval;
+              else
+                result = FloatEIG (fctmp_a, fctmp_b, nargout > 1);
+            }
+        }
 
       if (! error_state)
-	{
-	  if (nargout == 0 || nargout == 1)
-	    {
-	      retval(0) = result.eigenvalues ();
-	    }
-	  else
-	    {
-	      // Blame it on Matlab.
+        {
+          if (nargout == 0 || nargout == 1)
+            {
+              retval(0) = result.eigenvalues ();
+            }
+          else
+            {
+              // Blame it on Matlab.
 
-	      FloatComplexDiagMatrix d (result.eigenvalues ());
+              FloatComplexDiagMatrix d (result.eigenvalues ());
 
-	      retval(1) = d;
-	      retval(0) = result.eigenvectors ();
-	    }
-	}
+              retval(1) = d;
+              retval(0) = result.eigenvectors ();
+            }
+        }
     }
   else
     {
       EIG result;
 
       if (nargin == 1)
-	{
-	  if (arg_a.is_real_type ())
-	    {
-	      tmp_a = arg_a.matrix_value ();
+        {
+          if (arg_a.is_real_type ())
+            {
+              tmp_a = arg_a.matrix_value ();
 
-	      if (error_state)
-	        return retval;
-	      else
-	        result = EIG (tmp_a, nargout > 1);
-	    }
-	  else
-	    {
-	      ctmp_a = arg_a.complex_matrix_value ();
+              if (error_state)
+                return retval;
+              else
+                result = EIG (tmp_a, nargout > 1);
+            }
+          else
+            {
+              ctmp_a = arg_a.complex_matrix_value ();
 
-	      if (error_state)
-	        return retval;
-	      else
-	        result = EIG (ctmp_a, nargout > 1);
-	    }
-	}
+              if (error_state)
+                return retval;
+              else
+                result = EIG (ctmp_a, nargout > 1);
+            }
+        }
       else if (nargin == 2)
-	{
-	  if (arg_a.is_real_type () && arg_b.is_real_type ())
-	    {
-	      tmp_a = arg_a.matrix_value ();
-	      tmp_b = arg_b.matrix_value ();
+        {
+          if (arg_a.is_real_type () && arg_b.is_real_type ())
+            {
+              tmp_a = arg_a.matrix_value ();
+              tmp_b = arg_b.matrix_value ();
 
-	      if (error_state)
-	        return retval;
-	      else
-	        result = EIG (tmp_a, tmp_b, nargout > 1);
-	    }
-	  else 
-	    {
-	      ctmp_a = arg_a.complex_matrix_value ();
-	      ctmp_b = arg_b.complex_matrix_value ();
+              if (error_state)
+                return retval;
+              else
+                result = EIG (tmp_a, tmp_b, nargout > 1);
+            }
+          else
+            {
+              ctmp_a = arg_a.complex_matrix_value ();
+              ctmp_b = arg_b.complex_matrix_value ();
 
-	      if (error_state)
-	        return retval;
-	      else
-	        result = EIG (ctmp_a, ctmp_b, nargout > 1);
-	    }
-	}
+              if (error_state)
+                return retval;
+              else
+                result = EIG (ctmp_a, ctmp_b, nargout > 1);
+            }
+        }
 
       if (! error_state)
-	{
-	  if (nargout == 0 || nargout == 1)
-	    {
-	      retval(0) = result.eigenvalues ();
-	    }
-	  else
-	    {
-	      // Blame it on Matlab.
+        {
+          if (nargout == 0 || nargout == 1)
+            {
+              retval(0) = result.eigenvalues ();
+            }
+          else
+            {
+              // Blame it on Matlab.
 
-	      ComplexDiagMatrix d (result.eigenvalues ());
+              ComplexDiagMatrix d (result.eigenvalues ());
 
-	      retval(1) = d;
-	      retval(0) = result.eigenvectors ();
-	    }
-	}
+              retval(1) = d;
+              retval(0) = result.eigenvectors ();
+            }
+        }
     }
 
   return retval;
@@ -333,10 +333,4 @@ The eigenvalues returned by @code{eig} are not ordered.\n\
 %!error eig ([1 2 ; 2 3], "abcd");
 %!error eig (false, [1 2 ; 2 3]);
 
- */
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
 */

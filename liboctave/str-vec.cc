@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2000, 2002, 2003, 2005, 2006, 2007, 2009
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -40,6 +39,9 @@ function distributed in the GNU file utilities, copyright (C) 85, 88,
 #include "lo-utils.h"
 #include "str-vec.h"
 
+// FIXME -- isn't there some STL trick that could be used to make this
+// work for all STL containers of std::string objects?
+
 string_vector::string_vector (const std::list<std::string>& lst)
   : Array<std::string> ()
 {
@@ -55,6 +57,21 @@ string_vector::string_vector (const std::list<std::string>& lst)
     elem(i++) = *p;
 }
 
+string_vector::string_vector (const std::set<std::string>& lst)
+  : Array<std::string> ()
+{
+  size_t n = lst.size ();
+
+  resize (n);
+
+  octave_idx_type i = 0;
+
+  for (std::set<std::string>::const_iterator p = lst.begin ();
+       p != lst.end ();
+       p++)
+    elem(i++) = *p;
+}
+
 // Create a string vector from a NULL terminated list of C strings.
 
 string_vector::string_vector (const char * const *s)
@@ -62,10 +79,13 @@ string_vector::string_vector (const char * const *s)
 {
   octave_idx_type n = 0;
 
-  const char * const *t = s;
+  if (s)
+    {
+      const char * const *t = s;
 
-  while (*t++)
-    n++;
+      while (*t++)
+        n++;
+    }
 
   resize (n);
 
@@ -77,7 +97,7 @@ string_vector::string_vector (const char * const *s)
 // nonnegative.
 
 string_vector::string_vector (const char * const *s, octave_idx_type n)
-  : Array<std::string> (n)
+  : Array<std::string> (dim_vector (n, 1))
 {
   for (octave_idx_type i = 0; i < n; i++)
     elem (i) = s[i];
@@ -105,12 +125,12 @@ string_vector::uniq (void)
       octave_idx_type k = 0;
 
       for (octave_idx_type i = 1; i < len; i++)
-	if (elem(i) != elem(k))
-	  if (++k != i)
-	    elem(k) = elem(i);
+        if (elem(i) != elem(k))
+          if (++k != i)
+            elem(k) = elem(i);
 
       if (len != ++k)
-	resize (k);
+        resize (k);
     }
 
   return *this;
@@ -191,7 +211,7 @@ string_vector::list_in_columns (std::ostream& os, int width) const
     {
       octave_idx_type name_length = elem (i).length ();
       if (name_length > max_name_length)
-	max_name_length = name_length;
+        max_name_length = name_length;
     }
 
   // Allow at least two spaces between names.
@@ -225,29 +245,23 @@ string_vector::list_in_columns (std::ostream& os, int width) const
       // Print the next row.
 
       while (1)
-	{
-	  std::string nm = elem (count);
+        {
+          std::string nm = elem (count);
 
-	  os << nm;
-	  octave_idx_type name_length = nm.length ();
+          os << nm;
+          octave_idx_type name_length = nm.length ();
 
-	  count += nr;
-	  if (count >= total_names)
-	    break;
+          count += nr;
+          if (count >= total_names)
+            break;
 
-	  octave_idx_type spaces_to_pad = max_name_length - name_length;
-	  for (octave_idx_type i = 0; i < spaces_to_pad; i++)
-	    os << " ";
-	  pos += max_name_length;
-	}
+          octave_idx_type spaces_to_pad = max_name_length - name_length;
+          for (octave_idx_type i = 0; i < spaces_to_pad; i++)
+            os << " ";
+          pos += max_name_length;
+        }
       os << "\n";
     }
 
   return os;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

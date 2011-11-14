@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1995, 1996, 1997, 2005, 2007 John W. Eaton
+Copyright (C) 1995-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -27,12 +27,8 @@ along with Octave; see the file COPYING.  If not, see
 
 // unistd.h defines _POSIX_VERSION on POSIX.1 systems.
 
-#ifdef HAVE_UNISTD_H
-#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#endif
 #include <unistd.h>
-#endif
 
 #if defined (HAVE_DIRENT_H) || defined (_POSIX_VERSION)
 #include <dirent.h>
@@ -52,9 +48,3 @@ along with Octave; see the file COPYING.  If not, see
 #endif
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 2005, 2006, 2007, 2008 David Bateman
-Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005 Andy Adler
+Copyright (C) 2005-2011 David Bateman
+Copyright (C) 1998-2005 Andy Adler
 
 This file is part of Octave.
 
@@ -36,8 +36,8 @@ along with Octave; see the file COPYING.  If not, see
 #ifdef HAVE_CHOLMOD
 // Can't use CHOLMOD_NAME(drop)(0.0, S, cm). It doesn't treat complex matrices
 template <class chol_type, class chol_elt, class p_type>
-void 
-sparse_base_chol<chol_type, chol_elt, p_type>::sparse_base_chol_rep::drop_zeros 
+void
+sparse_base_chol<chol_type, chol_elt, p_type>::sparse_base_chol_rep::drop_zeros
   (const cholmod_sparse* S)
 {
   chol_elt sik;
@@ -60,18 +60,18 @@ sparse_base_chol<chol_type, chol_elt, p_type>::sparse_base_chol_rep::drop_zeros
       pend = Sp [k+1];
       Sp [k] = pdest;
       for (; p < pend; p++)
-	{
-	  sik = Sx [p];
-	  if (CHOLMOD_IS_NONZERO (sik))
-	    {
-	      if (p != pdest)
-		{
-		  Si [pdest] = Si [p];
-		  Sx [pdest] = sik;
-		}
-	      pdest++;
-	    }
-	}
+        {
+          sik = Sx [p];
+          if (CHOLMOD_IS_NONZERO (sik))
+            {
+              if (p != pdest)
+                {
+                  Si [pdest] = Si [p];
+                  Sx [pdest] = sik;
+                }
+              pdest++;
+            }
+        }
     }
   Sp [ncol] = pdest;
 }
@@ -79,7 +79,7 @@ sparse_base_chol<chol_type, chol_elt, p_type>::sparse_base_chol_rep::drop_zeros
 
 template <class chol_type, class chol_elt, class p_type>
 octave_idx_type
-sparse_base_chol<chol_type, chol_elt, p_type>::sparse_base_chol_rep::init 
+sparse_base_chol<chol_type, chol_elt, p_type>::sparse_base_chol_rep::init
   (const chol_type& a, bool natural)
 {
   volatile octave_idx_type info = 0;
@@ -89,8 +89,8 @@ sparse_base_chol<chol_type, chol_elt, p_type>::sparse_base_chol_rep::init
 
   if (a_nr != a_nc)
     {
-      (*current_liboctave_error_handler) 
-	("SparseCHOL requires square matrix");
+      (*current_liboctave_error_handler)
+        ("SparseCHOL requires square matrix");
       return -1;
     }
 
@@ -183,26 +183,26 @@ sparse_base_chol<chol_type, chol_elt, p_type>::sparse_base_chol_rep::init
       END_INTERRUPT_IMMEDIATELY_IN_FOREIGN_CODE;
 
       if (minor_p > 0 && minor_p < a_nr)
-	{
-	  size_t n1 = a_nr + 1;
-	  Lsparse->p = CHOLMOD_NAME(realloc) (minor_p+1,
-					      sizeof(octave_idx_type),
-					      Lsparse->p, &n1, cm);
-	  BEGIN_INTERRUPT_IMMEDIATELY_IN_FOREIGN_CODE;
-	  CHOLMOD_NAME(reallocate_sparse) 
-	    (static_cast<octave_idx_type *>(Lsparse->p)[minor_p], Lsparse, cm);
-	  END_INTERRUPT_IMMEDIATELY_IN_FOREIGN_CODE;
-	  Lsparse->ncol = minor_p;
-	}
+        {
+          size_t n1 = a_nr + 1;
+          Lsparse->p = CHOLMOD_NAME(realloc) (minor_p+1,
+                                              sizeof(octave_idx_type),
+                                              Lsparse->p, &n1, cm);
+          BEGIN_INTERRUPT_IMMEDIATELY_IN_FOREIGN_CODE;
+          CHOLMOD_NAME(reallocate_sparse)
+            (static_cast<octave_idx_type *>(Lsparse->p)[minor_p], Lsparse, cm);
+          END_INTERRUPT_IMMEDIATELY_IN_FOREIGN_CODE;
+          Lsparse->ncol = minor_p;
+        }
 
       drop_zeros (Lsparse);
 
       if (! natural)
-	{
-	  perms.resize (a_nr);
-	  for (octave_idx_type i = 0; i < a_nr; i++)
-	    perms(i) = static_cast<octave_idx_type *>(Lfactor->Perm)[i];
-	}
+        {
+          perms.resize (a_nr);
+          for (octave_idx_type i = 0; i < a_nr; i++)
+            perms(i) = static_cast<octave_idx_type *>(Lfactor->Perm)[i];
+        }
 
       static char tmp[] = " ";
 
@@ -213,14 +213,14 @@ sparse_base_chol<chol_type, chol_elt, p_type>::sparse_base_chol_rep::init
       END_INTERRUPT_IMMEDIATELY_IN_FOREIGN_CODE;
     }
 #else
-  (*current_liboctave_error_handler) 
+  (*current_liboctave_error_handler)
     ("Missing CHOLMOD. Sparse cholesky factorization disabled");
 #endif
   return info;
 }
 
 template <class chol_type, class chol_elt, class p_type>
-chol_type 
+chol_type
 sparse_base_chol<chol_type, chol_elt, p_type>::L (void) const
 {
 #ifdef HAVE_CHOLMOD
@@ -242,7 +242,7 @@ sparse_base_chol<chol_type, chol_elt, p_type>::L (void) const
 }
 
 template <class chol_type, class chol_elt, class p_type>
-p_type 
+p_type
 sparse_base_chol<chol_type, chol_elt, p_type>::
 sparse_base_chol_rep::Q (void) const
 {
@@ -265,7 +265,7 @@ sparse_base_chol_rep::Q (void) const
 }
 
 template <class chol_type, class chol_elt, class p_type>
-chol_type 
+chol_type
 sparse_base_chol<chol_type, chol_elt, p_type>::inverse (void) const
 {
   chol_type retval;
@@ -289,9 +289,3 @@ sparse_base_chol<chol_type, chol_elt, p_type>::inverse (void) const
 #endif
   return retval;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

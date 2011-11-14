@@ -1,5 +1,4 @@
-## Copyright (C) 1993, 1994, 1995, 1996, 1997, 1999, 2000, 2002, 2003,
-##               2004, 2005, 2006, 2007, 2008, 2009 John W. Eaton
+## Copyright (C) 1993-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -18,12 +17,14 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} xlabel (@var{string})
-## @deftypefnx {Function File} {} ylabel (@var{string})
-## @deftypefnx {Function File} {} zlabel (@var{string})
+## @deftypefn  {Function File} {} xlabel (@var{string})
 ## @deftypefnx {Function File} {} xlabel (@var{h}, @var{string})
-## Specify x, y, and z axis labels for the current figure.  If @var{h} is
-## specified then label the axis defined by @var{h}.
+## @deftypefnx {Function File} {@var{h} =} xlabel (@dots{})
+## @deftypefnx {Function File} {} ylabel (@dots{})
+## @deftypefnx {Function File} {} zlabel (@dots{})
+## Specify x-, y-, or z-axis labels for the current axis.  If @var{h} is
+## specified then label the axis defined by @var{h}.  The optional return
+## value @var{h} provides a handle to the created label.
 ## @seealso{plot, semilogx, semilogy, loglog, polar, mesh, contour,
 ## bar, stairs, title}
 ## @end deftypefn
@@ -41,7 +42,8 @@ function retval = xlabel (varargin)
   oldh = gca ();
   unwind_protect
     axes (h);
-    tmp = __axis_label__ ("xlabel", varargin{:});
+    tmp = __axis_label__ ("xlabel", varargin{:},
+                          "color", get (h, "xcolor"));
   unwind_protect_cleanup
     axes (oldh);
   end_unwind_protect

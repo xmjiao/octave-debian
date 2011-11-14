@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 1999, 2000, 2002, 2003, 2004,
-              2005, 2007, 2008 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -28,21 +27,28 @@ along with Octave; see the file COPYING.  If not, see
 #include "CmplxSCHUR.h"
 #include "f77-fcn.h"
 #include "lo-error.h"
+#include "oct-locbuf.h"
 
 extern "C"
 {
   F77_RET_T
   F77_FUNC (zgeesx, ZGEESX) (F77_CONST_CHAR_ARG_DECL,
-			     F77_CONST_CHAR_ARG_DECL,
-			     ComplexSCHUR::select_function,
-			     F77_CONST_CHAR_ARG_DECL,
-			     const octave_idx_type&, Complex*, const octave_idx_type&, octave_idx_type&,
-			     Complex*, Complex*, const octave_idx_type&, double&,
-			     double&, Complex*, const octave_idx_type&, double*, octave_idx_type*,
-			     octave_idx_type&
-			     F77_CHAR_ARG_LEN_DECL
-			     F77_CHAR_ARG_LEN_DECL
-			     F77_CHAR_ARG_LEN_DECL);
+                             F77_CONST_CHAR_ARG_DECL,
+                             ComplexSCHUR::select_function,
+                             F77_CONST_CHAR_ARG_DECL,
+                             const octave_idx_type&, Complex*,
+                             const octave_idx_type&, octave_idx_type&,
+                             Complex*, Complex*, const octave_idx_type&,
+                             double&, double&, Complex*,
+                             const octave_idx_type&, double*,
+                             octave_idx_type*, octave_idx_type&
+                             F77_CHAR_ARG_LEN_DECL
+                             F77_CHAR_ARG_LEN_DECL
+                             F77_CHAR_ARG_LEN_DECL);
+
+  F77_RET_T
+  F77_FUNC (zrsf2csf, ZRSF2CSF) (const octave_idx_type&, Complex *,
+                                 Complex *, double *, double *);
 }
 
 static octave_idx_type
@@ -58,8 +64,8 @@ select_dig (const Complex& a)
 }
 
 octave_idx_type
-ComplexSCHUR::init (const ComplexMatrix& a, const std::string& ord, 
-		    bool calc_unitary)
+ComplexSCHUR::init (const ComplexMatrix& a, const std::string& ord,
+                    bool calc_unitary)
 {
   octave_idx_type a_nr = a.rows ();
   octave_idx_type a_nc = a.cols ();
@@ -67,8 +73,14 @@ ComplexSCHUR::init (const ComplexMatrix& a, const std::string& ord,
   if (a_nr != a_nc)
     {
       (*current_liboctave_error_handler)
-	("ComplexSCHUR requires square matrix");
+        ("ComplexSCHUR requires square matrix");
       return -1;
+    }
+  else if (a_nr == 0)
+    {
+      schur_mat.clear ();
+      unitary_mat.clear ();
+      return 0;
     }
 
   // Workspace requirements may need to be fixed if any of the
@@ -104,39 +116,58 @@ ComplexSCHUR::init (const ComplexMatrix& a, const std::string& ord,
 
   schur_mat = a;
   if (calc_unitary)
-    unitary_mat.resize (n, n);
+    unitary_mat.clear (n, n);
 
   Complex *s = schur_mat.fortran_vec ();
   Complex *q = unitary_mat.fortran_vec ();
 
-  Array<double> rwork (n);
+  Array<double> rwork (dim_vector (n, 1));
   double *prwork = rwork.fortran_vec ();
 
-  Array<Complex> w (n);
+  Array<Complex> w (dim_vector (n, 1));
   Complex *pw = w.fortran_vec ();
 
-  Array<Complex> work (lwork);
+  Array<Complex> work (dim_vector (lwork, 1));
   Complex *pwork = work.fortran_vec ();
 
   // BWORK is not referenced for non-ordered Schur.
-  Array<octave_idx_type> bwork ((ord_char == 'N' || ord_char == 'n') ? 0 : n);
+  octave_idx_type ntmp = (ord_char == 'N' || ord_char == 'n') ? 0 : n;
+  Array<octave_idx_type> bwork (dim_vector (ntmp, 1));
   octave_idx_type *pbwork = bwork.fortran_vec ();
 
   F77_XFCN (zgeesx, ZGEESX, (F77_CONST_CHAR_ARG2 (&jobvs, 1),
-			     F77_CONST_CHAR_ARG2 (&sort, 1),
-			     selector,
-			     F77_CONST_CHAR_ARG2 (&sense, 1),
-			     n, s, n, sdim, pw, q, n, rconde, rcondv,
-			     pwork, lwork, prwork, pbwork, info
-			     F77_CHAR_ARG_LEN (1)
-			     F77_CHAR_ARG_LEN (1)
-			     F77_CHAR_ARG_LEN (1)));
+                             F77_CONST_CHAR_ARG2 (&sort, 1),
+                             selector,
+                             F77_CONST_CHAR_ARG2 (&sense, 1),
+                             n, s, n, sdim, pw, q, n, rconde, rcondv,
+                             pwork, lwork, prwork, pbwork, info
+                             F77_CHAR_ARG_LEN (1)
+                             F77_CHAR_ARG_LEN (1)
+                             F77_CHAR_ARG_LEN (1)));
 
   return info;
 }
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+ComplexSCHUR::ComplexSCHUR (const ComplexMatrix& s, const ComplexMatrix& u)
+  : schur_mat (s), unitary_mat (u), selector (0)
+{
+  octave_idx_type n = s.rows ();
+  if (s.columns () != n || u.rows () != n || u.columns () != n)
+    (*current_liboctave_error_handler)
+      ("schur: inconsistent matrix dimensions");
+}
+
+ComplexSCHUR::ComplexSCHUR (const SCHUR& s)
+  : schur_mat (s.schur_matrix ()), unitary_mat (s.unitary_matrix ()),
+    selector (0)
+{
+  octave_idx_type n = schur_mat.rows ();
+  if (n > 0)
+    {
+      OCTAVE_LOCAL_BUFFER (double, c, n-1);
+      OCTAVE_LOCAL_BUFFER (double, sx, n-1);
+
+      F77_XFCN (zrsf2csf, ZRSF2CSF, (n, schur_mat.fortran_vec (),
+                                     unitary_mat.fortran_vec (), c, sx));
+    }
+}

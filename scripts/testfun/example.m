@@ -1,4 +1,4 @@
-## Copyright (C) 2000, 2006, 2007, 2009 Paul Kienzle
+## Copyright (C) 2000-2011 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -17,15 +17,16 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} example ('@var{name}',@var{n})
-## @deftypefnx {Function File} {[@var{x}, @var{idx}] =} example ('@var{name}',@var{n})
+## @deftypefn  {Command} {} example @var{name} @var{n}
+## @deftypefnx {Function File} {} example ('@var{name}', @var{n})
+## @deftypefnx {Function File} {[@var{x}, @var{idx}] =} example ('@var{name}', @var{n})
 ##
-##  Display the code for example @var{n} associated with the function 
-## '@var{name}', but do not run it.  If @var{n} is not given, all examples 
+##  Display the code for example @var{n} associated with the function
+## '@var{name}', but do not run it.  If @var{n} is not given, all examples
 ## are displayed.
 ##
 ## Called with output arguments, the examples are returned in the form of
-## a string @var{x}, with @var{idx} indicating the ending position of the 
+## a string @var{x}, with @var{idx} indicating the ending position of the
 ## various examples.
 ##
 ## See @code{demo} for a complete explanation.
@@ -37,19 +38,22 @@ function [code_r, idx_r] = example (name, n)
   if (nargin < 1 || nargin > 2)
     print_usage ();
   endif
+
   if (nargin < 2)
     n = 0;
-  endif
+  elseif (strcmp ("char", class (n)))
+    n = str2double (n);
+  endif 
 
   [code, idx] = test (name, "grabdemo");
   if (nargout > 0)
     if (n > 0)
       if (n <= length (idx))
-      	code_r = code(idx(n):idx(n+1)-1);
-      	idx_r = [1, length(code_r)+1];
+        code_r = code(idx(n):idx(n+1)-1);
+        idx_r = [1, length(code_r)+1];
       else
-	code_r = "";
-	idx_r = [];
+        code_r = "";
+        idx_r = [];
       endif
     else
       code_r = code;
@@ -86,8 +90,8 @@ endfunction
 %!assert (example('example',1), "\n example('example');");
 %!test
 %! [code, idx] = example('example');
-%! assert (code, ... 
-%!	   "\n example('example');\n t=0:0.01:2*pi; x=sin(t);\n plot(t,x)")
+%! assert (code, ...
+%!         "\n example('example');\n t=0:0.01:2*pi; x=sin(t);\n plot(t,x)")
 %! assert (idx, [1, 22, 59]);
 
 %!error example;

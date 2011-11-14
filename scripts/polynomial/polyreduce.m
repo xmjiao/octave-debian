@@ -1,5 +1,4 @@
-## Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2002, 2004,
-##               2005, 2006, 2007, 2008, 2009 John W. Eaton
+## Copyright (C) 1994-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -19,37 +18,37 @@
 
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} polyreduce (@var{c})
-## Reduces a polynomial coefficient vector to a minimum number of terms by
+## Reduce a polynomial coefficient vector to a minimum number of terms by
 ## stripping off any leading zeros.
 ## @seealso{poly, roots, conv, deconv, residue, filter, polyval,
-## polyvalm, polyderiv, polyinteg}
+## polyvalm, polyderiv, polyint}
 ## @end deftypefn
 
 ## Author: Tony Richardson <arichard@stark.cc.oh.us>
 ## Created: June 1994
 ## Adapted-By: jwe
 
-function p = polyreduce (p)
+function p = polyreduce (c)
 
   if (nargin != 1)
     print_usage ();
   endif
 
-  if (! (isvector (p) || isempty (p)))
-    error ("polyreduce: argument must be a vector");
+  if (!isvector (c) || isempty (c))
+    error ("polyreduce: C must be a non-empty vector");
   endif
 
-  if (! isempty (p))
+  if (! isempty (c))
 
-    index = find (p != 0);
+    index = find (c != 0);
 
     if (isempty (index))
-      
+
       p = 0;
-    
+
     else
 
-      p = p (index (1):length (p));
+      p = c(index (1):length (c));
 
     endif
 
@@ -62,8 +61,6 @@ endfunction
 %!assert(all (all (polyreduce ([1, 2, 3, 0, 0]) == [1, 2, 3, 0, 0])));
 
 %!assert(all (all (polyreduce ([1, 0, 3]) == [1, 0, 3])));
-
-%!assert(isempty (polyreduce ([])));
 
 %!error polyreduce ([1, 2; 3, 4]);
 

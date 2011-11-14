@@ -1,5 +1,5 @@
-## Copyright (C) 2005, 2006, 2007, 2009 Søren Hauberg
-## 
+## Copyright (C) 2005-2011 Søren Hauberg
+##
 ## This file is part of Octave.
 ##
 ## Octave is free software; you can redistribute it and/or modify it
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Command} doc @var{function_name}
+## @deftypefn {Command} {} doc @var{function_name}
 ## Display documentation for the function @var{function_name}
 ## directly from an on-line version of
 ## the printed manual, using the GNU Info browser.  If invoked without
@@ -45,9 +45,9 @@ function retval = doc (fname)
       ## FIXME -- maybe we should have a better way of doing this.
 
       if (ischar (fname))
-	ftype = exist (fname);
+        ftype = exist (fname);
       else
-	error ("doc: expecting argument to be a character string");
+        error ("doc: expecting argument to be a character string");
       endif
     else
       fname = "";
@@ -65,7 +65,7 @@ function retval = doc (fname)
       info_dir = fileparts (ffile);
     endif
 
-    ## Determine if a file called doc.info exist in the same 
+    ## Determine if a file called doc.info exist in the same
     ## directory as the function.
 
     info_file_name = fullfile (info_dir, "doc.info");
@@ -81,7 +81,7 @@ function retval = doc (fname)
     ## the third and fourth arguments.  Someone should fix that.
 
     cmd = sprintf ("\"%s\" --file \"%s\" --directory \"%s\"",
-		   info_program (), info_file_name, info_dir);
+                   info_program (), info_file_name, info_dir);
 
     have_fname = ! isempty (fname);
 
@@ -92,7 +92,7 @@ function retval = doc (fname)
     if (! (have_fname && status == 0))
       status = system (cmd);
       if (status == 127)
-	warning ("unable to find info program `%s'", info_program ());
+        warning ("unable to find info program `%s'", info_program ());
       endif
     endif
 

@@ -1,4 +1,4 @@
-## Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 David Bateman
+## Copyright (C) 2004-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -18,12 +18,12 @@
 
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {@var{y} =} circshift (@var{x}, @var{n})
-## Circularly shifts the values of the array @var{x}.  @var{n} must be
-## a vector of integers no longer than the number of dimensions in 
+## Circularly shift the values of the array @var{x}.  @var{n} must be
+## a vector of integers no longer than the number of dimensions in
 ## @var{x}.  The values of @var{n} can be either positive or negative,
 ## which determines the direction in which the values or @var{x} are
 ## shifted.  If an element of @var{n} is zero, then the corresponding
-## dimension of @var{x} will not be shifted.  For example
+## dimension of @var{x} will not be shifted.  For example:
 ##
 ## @example
 ## @group
@@ -55,30 +55,30 @@ function y = circshift (x, n)
       sz = size (x);
 
       if (! isvector (n) && length (n) > nd)
-	error ("circshift: n must be a vector, no longer than the number of dimension in x");
+        error ("circshift: N must be a vector, no longer than the number of dimension in X");
       endif
-    
+
       if (any (n != floor (n)))
-	error ("circshift: all values of n must be integers");
+        error ("circshift: all values of N must be integers");
       endif
 
       idx = cell ();
       for i = 1:length (n);
-	nn = n(i);
-	if (nn < 0)
-	  while (sz(i) <= -nn)
-	    nn = nn + sz(i);
-	  endwhile
-	  idx{i} = [(1-nn):sz(i), 1:-nn];
-	else
-	  while (sz(i) <= nn)
-	    nn = nn - sz(i);
-	  endwhile
-	  idx{i} = [(sz(i)-nn+1):sz(i), 1:(sz(i)-nn)];
-	endif
+        nn = n(i);
+        if (nn < 0)
+          while (sz(i) <= -nn)
+            nn = nn + sz(i);
+          endwhile
+          idx{i} = [(1-nn):sz(i), 1:-nn];
+        else
+          while (sz(i) <= nn)
+            nn = nn - sz(i);
+          endwhile
+          idx{i} = [(sz(i)-nn+1):sz(i), 1:(sz(i)-nn)];
+        endif
       endfor
       for i = (length(n) + 1) : nd
-	idx{i} = 1:sz(i);
+        idx{i} = 1:sz(i);
       endfor
       y = x(idx{:});
     endif
@@ -94,3 +94,6 @@ endfunction
 %!assert (circshift (x, -2), [7, 8, 9; 1, 2, 3; 4, 5, 6])
 %!assert (circshift (x, [0, 1]), [3, 1, 2; 6, 4, 5; 9, 7, 8]);
 %!assert (circshift ([],1), [])
+
+%!assert (full (circshift (eye (3), 1)), circshift (full (eye (3)), 1))
+%!assert (full (circshift (eye (3), 1)), [0,0,1;1,0,0;0,1,0])

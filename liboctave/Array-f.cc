@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 1998, 2000, 2001, 2003, 2004,
-              2005, 2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
+Copyright (C) 2009 VZLU Prague
 
 This file is part of Octave.
 
@@ -56,7 +56,7 @@ nan_descending_compare (float x, float y)
 }
 
 Array<float>::compare_fcn_type
-sortrows_comparator (sortmode mode, const Array<float>& a , bool allow_chk)
+safe_comparator (sortmode mode, const Array<float>& a , bool allow_chk)
 {
   Array<float>::compare_fcn_type result = 0;
 
@@ -84,31 +84,84 @@ sortrows_comparator (sortmode mode, const Array<float>& a , bool allow_chk)
   return result;
 }
 
+// The default solution using NaN-safe comparator is OK, but almost twice as
+// slow than this code.
+template <>
+OCTAVE_API
+sortmode
+Array<float>::is_sorted (sortmode mode) const
+{
+  octave_idx_type n = numel ();
+
+  const float *el = data ();
+
+  if (n <= 1)
+    return mode ? mode : ASCENDING;
+
+  if (! mode)
+    {
+      // Auto-detect mode.
+      if (el[n-1] < el[0] || xisnan (el[0]))
+        mode = DESCENDING;
+      else
+        mode = ASCENDING;
+    }
+
+  if (mode == DESCENDING)
+    {
+      octave_idx_type j = 0;
+      float r;
+      // Sort out NaNs.
+      do
+        r = el[j++];
+      while (xisnan (r) && j < n);
+
+      // Orient the test so that NaN will not pass through.
+      for (; j < n; j++)
+        {
+          if (r >= el[j])
+            r = el[j];
+          else
+            {
+              mode = UNSORTED;
+              break;
+            }
+        }
+
+    }
+  else if (mode == ASCENDING)
+    {
+      // Sort out NaNs.
+      while (n > 0 && xisnan (el[n-1]))
+        n--;
+
+      if (n > 0)
+        {
+          // Orient the test so that NaN will not pass through.
+          float r = el[0];
+          for (octave_idx_type j = 1; j < n; j++)
+            {
+              if (r <= el[j])
+                r = el[j];
+              else
+                {
+                  mode = UNSORTED;
+                  break;
+                }
+            }
+        }
+    }
+
+  return mode;
+}
+
 INSTANTIATE_ARRAY_SORT (float);
 
 INSTANTIATE_ARRAY (float, OCTAVE_API);
 
-#include "Array2.h"
-
-template class OCTAVE_API Array2<float>;
-
-#include "ArrayN.h"
-#include "ArrayN.cc"
-
-template class OCTAVE_API ArrayN<float>;
-
-template OCTAVE_API std::ostream& operator << (std::ostream&, const ArrayN<float>&);
+template OCTAVE_API std::ostream& operator << (std::ostream&, const Array<float>&);
 
 #include "DiagArray2.h"
 #include "DiagArray2.cc"
 
-#ifdef _MSC_VER
-template class OCTAVE_API DiagArray2<float>::Proxy;
-#endif
 template class OCTAVE_API DiagArray2<float>;
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

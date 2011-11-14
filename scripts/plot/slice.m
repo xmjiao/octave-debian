@@ -1,4 +1,4 @@
-## Copyright (C) 2007, 2009 Kai Habel, David Bateman
+## Copyright (C) 2007-2011 Kai Habel, David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -17,13 +17,13 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} slice (@var{x}, @var{y}, @var{z}, @var{v}, @var{sx}, @var{sy}, @var{sz})
+## @deftypefn  {Function File} {} slice (@var{x}, @var{y}, @var{z}, @var{v}, @var{sx}, @var{sy}, @var{sz})
 ## @deftypefnx {Function File} {} slice (@var{x}, @var{y}, @var{z}, @var{v}, @var{xi}, @var{yi}, @var{zi})
 ## @deftypefnx {Function File} {} slice (@var{v}, @var{sx}, @var{sy}, @var{sz})
 ## @deftypefnx {Function File} {} slice (@var{v}, @var{xi}, @var{yi}, @var{zi})
 ## @deftypefnx {Function File} {@var{h} =} slice (@dots{})
 ## @deftypefnx {Function File} {@var{h} =} slice (@dots{}, @var{method})
-## Plot slices of 3D data/scalar fields.  Each element of the 3-dimensional 
+## Plot slices of 3-D data/scalar fields.  Each element of the 3-dimensional
 ## array @var{v} represents a scalar value at a location given by the
 ## parameters @var{x}, @var{y}, and @var{z}.  The parameters @var{x},
 ## @var{x}, and @var{z} are either 3-dimensional arrays of the same size
@@ -33,19 +33,22 @@
 ## interpolated using interp3.  The vectors @var{sx}, @var{sy}, and
 ## @var{sz} contain points of orthogonal slices of the respective axes.
 ##
-## If @var{x}, @var{y}, @var{z} are omitted, they are assumed to be 
+## If @var{x}, @var{y}, @var{z} are omitted, they are assumed to be
 ## @code{x = 1:size (@var{v}, 2)}, @code{y = 1:size (@var{v}, 1)} and
-## @code{z = 1:size (@var{v}, 3)}. 
+## @code{z = 1:size (@var{v}, 3)}.
 ##
 ## @var{Method} is one of:
 ##
-## @table @code
+## @table @asis
 ## @item "nearest"
 ## Return the nearest neighbor.
+##
 ## @item "linear"
 ## Linear interpolation from nearest neighbors.
+##
 ## @item "cubic"
 ## Cubic interpolation from four nearest neighbors (not implemented yet).
+##
 ## @item "spline"
 ## Cubic spline interpolation---smooth first and second derivatives
 ## throughout the curve.
@@ -56,6 +59,7 @@
 ## surface graphic objects.
 ##
 ## Examples:
+##
 ## @example
 ## @group
 ## [x, y, z] = meshgrid (linspace (-8, 8, 32));
@@ -135,7 +139,7 @@ function h = slice (varargin)
     if (length(sz) > 0)
       for i = 1:length(sz)
         [xi, yi, zi] = meshgrid (squeeze (x(1,:,1)),
-				 squeeze (y(:,1,1)), sz(i));
+                                 squeeze (y(:,1,1)), sz(i));
         vz = squeeze (interp3 (x, y, z, v, xi, yi, zi, method));
         tmp(sidx++) = surface (xi, yi, sz(i) * ones (size (yi)), vz);
       endfor
@@ -143,11 +147,11 @@ function h = slice (varargin)
 
     if (length (sy) > 0)
       for i = length(sy):-1:1
-	[xi, yi, zi] = meshgrid (squeeze (x(1,:,1)), sy(i), squeeze (z(1,1,:)));
+        [xi, yi, zi] = meshgrid (squeeze (x(1,:,1)), sy(i), squeeze (z(1,1,:)));
         vy = squeeze (interp3 (x, y, z, v, xi, yi, zi, method));
         tmp(sidx++) = surface (squeeze (xi),
-			       squeeze (sy(i) * ones (size (zi))),
-			       squeeze (zi), vy);
+                               squeeze (sy(i) * ones (size (zi))),
+                               squeeze (zi), vy);
       endfor
     endif
 
@@ -156,7 +160,7 @@ function h = slice (varargin)
         [xi, yi, zi] = meshgrid (sx(i), squeeze (y(:,1,1)), squeeze (z(1,1,:)));
         vx = squeeze (interp3 (x, y, z, v, xi, yi, zi, method));
         tmp(sidx++) = surface (squeeze (sx(i) * ones (size (zi))),
-			       squeeze (yi), squeeze(zi), vx);
+                               squeeze (yi), squeeze(zi), vx);
       endfor
     endif
   else
@@ -166,7 +170,7 @@ function h = slice (varargin)
 
   if (! ishold ())
     set (ax, "view", [-37.5, 30.0], "box", "off", "xgrid", "on",
-	 "ygrid", "on", "zgrid", "on");
+         "ygrid", "on", "zgrid", "on");
   endif
 
   if (nargout > 0)

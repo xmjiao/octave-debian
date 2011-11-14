@@ -1,4 +1,4 @@
-## Copyright (C) 2008 Radek Salac
+## Copyright (C) 2008-2011 Radek Salac
 ##
 ## This file is part of Octave.
 ##
@@ -17,15 +17,18 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} cgs (@var{A}, @var{b})
+## @deftypefn  {Function File} {} cgs (@var{A}, @var{b})
 ## @deftypefnx {Function File} {} cgs (@var{A}, @var{b}, @var{tol}, @var{maxit}, @var{M1}, @var{M2}, @var{x0})
 ## This procedure attempts to solve a system of linear equations A*x = b for x.
 ## The @var{A} must be square, symmetric and positive definite real matrix N*N.
 ## The @var{b} must be a one column vector with a length of N.
 ## The @var{tol} specifies the tolerance of the method, default value is 1e-6.
-## The @var{maxit} specifies the maximum number of iteration, default value is MIN(20,N).
-## The @var{M1} specifies a preconditioner, can also be a function handler which returns M\X.
-## The @var{M2} combined with @var{M1} defines preconditioner as preconditioner=M1*M2.
+## The @var{maxit} specifies the maximum number of iteration, default value is
+## MIN(20,N).
+## The @var{M1} specifies a preconditioner, can also be a function handler which
+## returns M\X.
+## The @var{M2} combined with @var{M1} defines preconditioner as
+## preconditioner=M1*M2.
 ## The @var{x0} is initial guess, default value is zeros(N,1).
 ##
 ## @end deftypefn
@@ -34,24 +37,24 @@ function [x, flag, relres, iter, resvec] = cgs (A, b, tol, maxit, M1, M2, x0)
 
   if (nargin < 2 || nargin > 7 || nargout > 5)
     print_usage ();
-  elseif (!isnumeric (A) || rows (A) != columns (A))
-    error ("cgs: first argument must be a n-by-n matrix");
+  elseif (!(isnumeric (A) && issquare (A)))
+    error ("cgs: A must be a square numeric matrix");
   elseif (!isvector (b))
-    error ("cgs: b must be a vector");
+    error ("cgs: B must be a vector");
   elseif (rows (A) != rows (b))
-    error ("cgs: first and second argument must have the same number of rows");
+    error ("cgs: A and B must have the same number of rows");
   elseif (nargin > 2 && !isscalar (tol))
-    error ("cgs: tol must be a scalar");
+    error ("cgs: TOL must be a scalar");
   elseif (nargin > 3 && !isscalar (maxit))
-    error ("cgs: maxit must be a scalar");
+    error ("cgs: MAXIT must be a scalar");
   elseif (nargin > 4 && ismatrix (M1) && (rows (M1) != rows (A) || columns (M1) != columns (A)))
     error ("cgs: M1 must have the same number of rows and columns as A");
   elseif (nargin > 5 && (!ismatrix (M2) || rows (M2) != rows (A) || columns (M2) != columns (A)))
     error ("cgs: M2 must have the same number of rows and columns as A");
   elseif (nargin > 6 && !isvector (x0))
-    error ("cgs: x0 must be a vector");
+    error ("cgs: X0 must be a vector");
   elseif (nargin > 6 && rows (x0) != rows (b))
-    error ("cgs: x0 must have the same number of rows as b");
+    error ("cgs: X0 must have the same number of rows as B");
   endif
 
   ## Default tolerance.
@@ -128,7 +131,7 @@ function [x, flag, relres, iter, resvec] = cgs (A, b, tol, maxit, M1, M2, x0)
   endfor;
 
   if (nargout < 1)
-    if ( flag == 0 ) 
+    if ( flag == 0 )
       printf (["cgs converged at iteration %i ",
       "to a solution with relative residual %e\n"],iter,relres);
     elseif (flag == 3)

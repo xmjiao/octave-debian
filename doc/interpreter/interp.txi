@@ -1,4 +1,4 @@
-@c Copyright (C) 2007, 2008, 2009 John W. Eaton
+@c Copyright (C) 2007-2011 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -115,10 +115,12 @@ legend ('sin(4t+0.3)cos(3t-0.1','spline','interpft','data');
 
 @noindent
 @ifinfo
-which demonstrates the poor behavior of Fourier interpolation for non-periodic functions.
+which demonstrates the poor behavior of Fourier interpolation for non-periodic
+functions.
 @end ifinfo
 @ifnotinfo
-which demonstrates the poor behavior of Fourier interpolation for non-periodic functions, as can be seen in @ref{fig:interpft}.
+which demonstrates the poor behavior of Fourier interpolation for non-periodic
+functions, as can be seen in @ref{fig:interpft}.
 
 @float Figure,fig:interpft
 @center @image{interpft,4in}
@@ -128,14 +130,9 @@ which demonstrates the poor behavior of Fourier interpolation for non-periodic f
 
 In additional the support function @code{spline} and @code{lookup} that
 underlie the @code{interp1} function can be called directly.
+@ref{Finding Elements and Checking Conditions}
 
 @DOCSTRING(spline)
-
-The @code{lookup} function is used by other interpolation functions to identify
-the points of the original data that are closest to the current point
-of interest.
-
-@DOCSTRING(lookup)
 
 @node Multi-dimensional Interpolation
 @section Multi-dimensional Interpolation
@@ -151,13 +148,13 @@ in @ref{Interpolation on Scattered Data}.
 @DOCSTRING(interpn)
 
 A significant difference between @code{interpn} and the other two
-multidimensional interpolation functions is the fashion in which the
+multi-dimensional interpolation functions is the fashion in which the
 dimensions are treated.  For @code{interp2} and @code{interp3}, the 'y'
 axis is considered to be the columns of the matrix, whereas the 'x'
 axis corresponds to the rows of the array.  As Octave indexes arrays in
 column major order, the first dimension of any array is the columns, and
 so @code{interpn} effectively reverses the 'x' and 'y' dimensions. 
-Consider the example
+Consider the example,
 
 @example
 @group

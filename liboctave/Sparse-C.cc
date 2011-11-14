@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 2004, 2005, 2007, 2008, 2009 David Bateman
-Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004 Andy Adler
+Copyright (C) 2004-2011 David Bateman
+Copyright (C) 1998-2004 Andy Adler
 
 This file is part of Octave.
 
@@ -46,7 +46,7 @@ bool
 sparse_ascending_compare<Complex> (const Complex& a, const Complex& b)
 {
   return (xisnan (b) || (xabs (a) < xabs (b))
-	  || ((xabs (a) == xabs (b)) && (arg (a) < arg (b))));
+          || ((xabs (a) == xabs (b)) && (arg (a) < arg (b))));
 }
 
 template <>
@@ -54,19 +54,11 @@ bool
 sparse_descending_compare<Complex> (const Complex& a, const Complex& b)
 {
   return (xisnan (a) || (xabs (a) > xabs (b))
-	  || ((xabs (a) == xabs (b)) && (arg (a) > arg (b))));
+          || ((xabs (a) == xabs (b)) && (arg (a) > arg (b))));
 }
 
-INSTANTIATE_SPARSE_AND_ASSIGN (Complex, OCTAVE_API);
-
-INSTANTIATE_SPARSE_ASSIGN (Complex, double, OCTAVE_API);
+INSTANTIATE_SPARSE (Complex, OCTAVE_API);
 
 #if 0
 template std::ostream& operator << (std::ostream&, const Sparse<Complex>&);
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

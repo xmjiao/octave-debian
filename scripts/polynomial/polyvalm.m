@@ -1,5 +1,4 @@
-## Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2002, 2004,
-##               2005, 2006, 2007, 2008 John W. Eaton
+## Copyright (C) 1994-2011 John W. Eaton
 ## Copyright (C) 2009 Jaroslav Hajek
 ##
 ## This file is part of Octave.
@@ -28,7 +27,7 @@
 ##
 ## The argument @var{x} must be a square matrix.
 ## @seealso{polyval, poly, roots, conv, deconv, residue, filter,
-## polyderiv, polyinteg}
+## polyderiv, polyint}
 ## @end deftypefn
 
 ## Author: Tony Richardson <arichard@stark.cc.oh.us>

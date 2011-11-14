@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.
 
-@c Copyright (C) 1996, 1997, 2007, 2009 John W. Eaton
+@c Copyright (C) 1996-2011 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -34,9 +34,10 @@ Functions}, for more information about Octave's dynamic linking
 capabilities.  @ref{User-defined Data Types} describes what you must do
 to define a new data type for Octave.
 
-@c ov-typeinfo.cc
+@c typeinfo src/ov-typeinfo.cc
 @anchor{doc-typeinfo}
-@deftypefn {Built-in Function} {} typeinfo (@var{expr})
+@deftypefn  {Built-in Function} {} typeinfo ()
+@deftypefnx {Built-in Function} {} typeinfo (@var{expr})
 
 Return the type of the expression @var{expr}, as a string.  If
 @var{expr} is omitted, return an array of strings containing all the
@@ -65,9 +66,9 @@ type and contribute it for distribution in a future release of Octave.
 The data type of a variable can be determined and changed through the
 use of the following functions.
 
-@c ov-class.cc
+@c class src/ov-class.cc
 @anchor{doc-class}
-@deftypefn {Built-in Function} {} class (@var{expr})
+@deftypefn  {Built-in Function} {} class (@var{expr})
 @deftypefnx {Built-in Function} {} class (@var{s}, @var{id})
 @deftypefnx {Built-in Function} {} class (@var{s}, @var{id}, @var{p}, @dots{})
 Return the class of the expression @var{expr} or create a class with
@@ -77,14 +78,15 @@ derived.
 @end deftypefn
 
 
-@c ./general/isa.m
+@c isa scripts/general/isa.m
 @anchor{doc-isa}
-@deftypefn {Function File} {} isa (@var{x}, @var{class})
-Return true if @var{x} is a value from the class @var{class}.
+@deftypefn {Function File} {} isa (@var{obj}, @var{class})
+Return true if @var{obj} is an object from the class @var{class}.
+@seealso{@ref{doc-class,,class}, @ref{doc-typeinfo,,typeinfo}}
 @end deftypefn
 
 
-@c ./miscellaneous/cast.m
+@c cast scripts/miscellaneous/cast.m
 @anchor{doc-cast}
 @deftypefn {Function File} {} cast (@var{val}, @var{type})
 Convert @var{val} to data type @var{type}.
@@ -92,13 +94,43 @@ Convert @var{val} to data type @var{type}.
 @end deftypefn
 
 
-@c ./DLD-FUNCTIONS/typecast.cc
+@c typecast src/DLD-FUNCTIONS/typecast.cc
 @anchor{doc-typecast}
-@deftypefn {Loadable Function} {} typecast (@var{x}, @var{type})
-Convert from one datatype to another without changing the underlying
-data.  The argument @var{type} defines the type of the return argument
-and must be one of 'uint8', 'uint16', 'uint32', 'uint64', 'int8', 'int16',
-'int32', 'int64', 'single' or 'double'.
+@deftypefn {Loadable Function} {} typecast (@var{x}, @var{class})
+Return a new array @var{y} resulting from interpreting the data of
+@var{x} in memory as data of the numeric class @var{class}.  Both the class
+of @var{x} and @var{class} must be one of the built-in numeric classes:
+
+@example
+@group
+  "logical"
+  "char"
+  "int8"
+  "int16"
+  "int32"
+  "int64"
+  "uint8"
+  "uint16"
+  "uint32"
+  "uint64"
+  "double"
+  "single"
+  "double complex"
+  "single complex"
+@end group
+@end example
+
+@noindent
+the last two are reserved for @var{class}; they indicate that a
+complex-valued result is requested.  Complex arrays are stored in memory as
+consecutive pairs of real numbers.  The sizes of integer types are given by
+their bit counts.  Both logical and char are typically one byte wide;
+however, this is not guaranteed by C++.  If your system is IEEE conformant,
+single and double should be 4 bytes and 8 bytes wide, respectively.
+"logical" is not allowed for @var{class}.  If the input is a row vector,
+the return value is a row vector, otherwise it is a column vector.  If the
+bit length of @var{x} is not divisible by that of @var{class}, an error
+occurs.
 
 An example of the use of typecast on a little-endian machine is
 
@@ -109,15 +141,15 @@ typecast (@var{x}, 'uint8')
 @result{} [   0,   1, 255, 255]
 @end group
 @end example
-@seealso{@ref{doc-cast,,cast}, @ref{doc-swapbytes,,swapbytes}}
+@seealso{@ref{doc-cast,,cast}, @ref{doc-bitunpack,,bitunpack}, @ref{doc-bitpack,,bitpack}, @ref{doc-swapbytes,,swapbytes}}
 @end deftypefn
 
 
-@c ./miscellaneous/swapbytes.m
+@c swapbytes scripts/miscellaneous/swapbytes.m
 @anchor{doc-swapbytes}
 @deftypefn {Function File} {} swapbytes (@var{x})
-Swaps the byte order on values, converting from little endian to big 
-endian and vice versa.  For example
+Swap the byte order on values, converting from little endian to big
+endian and vice versa.  For example:
 
 @example
 @group
@@ -127,6 +159,66 @@ swapbytes (uint16 (1:4))
 @end example
 
 @seealso{@ref{doc-typecast,,typecast}, @ref{doc-cast,,cast}}
+@end deftypefn
+
+
+@c bitpack src/DLD-FUNCTIONS/typecast.cc
+@anchor{doc-bitpack}
+@deftypefn {Loadable Function} {@var{y} =} bitpack (@var{x}, @var{class})
+Return a new array @var{y} resulting from interpreting an array
+@var{x} as raw bit patterns for data of the numeric class @var{class}.
+@var{class} must be one of the built-in numeric classes:
+
+@example
+@group
+  "char"
+  "int8"
+  "int16"
+  "int32"
+  "int64"
+  "uint8"
+  "uint16"
+  "uint32"
+  "uint64"
+  "double"
+  "single"
+@end group
+@end example
+
+The number of elements of @var{x} should be divisible by the bit length of
+@var{class}.  If it is not, excess bits are discarded.  Bits come in
+increasing order of significance, i.e., @code{x(1)} is bit 0, @code{x(2)} is
+bit 1, etc.  The result is a row vector if @var{x} is a row vector, otherwise
+it is a column vector.
+@seealso{@ref{doc-bitunpack,,bitunpack}, @ref{doc-typecast,,typecast}}
+@end deftypefn
+
+
+@c bitunpack src/DLD-FUNCTIONS/typecast.cc
+@anchor{doc-bitunpack}
+@deftypefn {Loadable Function} {@var{y} =} bitpack (@var{x})
+Return an array @var{y} corresponding to the raw bit patterns of
+@var{x}.  @var{x} must belong to one of the built-in numeric classes:
+
+@example
+@group
+  "char"
+  "int8"
+  "int16"
+  "int32"
+  "int64"
+  "uint8"
+  "uint16"
+  "uint32"
+  "uint64"
+  "double"
+  "single"
+@end group
+@end example
+
+The result is a row vector if @var{x} is a row vector; otherwise, it is a
+column vector.
+@seealso{@ref{doc-bitpack,,bitpack}, @ref{doc-typecast,,typecast}}
 @end deftypefn
 
 
@@ -179,7 +271,7 @@ represented when data is represented as floating point numbers.  In this
 case missing data is represented as a special case of the representation
 of @code{NaN}.
 
-@c data.cc
+@c NA src/data.cc
 @anchor{doc-NA}
 @deftypefn  {Built-in Function} {} NA
 @deftypefnx {Built-in Function} {} NA (@var{n})
@@ -203,11 +295,12 @@ either "double" or "single".
 @end deftypefn
 
 
-@c mappers.cc
+@c isna src/mappers.cc
 @anchor{doc-isna}
 @deftypefn {Mapping Function} {} isna (@var{x})
-Return 1 for elements of @var{x} that are NA (missing) values and zero
-otherwise.  For example,
+Return a logical array which is true where the elements of @var{x} are
+NA (missing) values and false where they are not.
+For example:
 
 @example
 @group
@@ -215,7 +308,7 @@ isna ([13, Inf, NA, NaN])
      @result{} [ 0, 0, 1, 0 ]
 @end group
 @end example
-@seealso{@ref{doc-isnan,,isnan}}
+@seealso{@ref{doc-isnan,,isnan}, @ref{doc-isinf,,isinf}, @ref{doc-isfinite,,isfinite}}
 @end deftypefn
 
 
@@ -243,7 +336,7 @@ different types.  The current implementation uses an associative array
 with indices limited to strings, but the syntax is more like C-style
 structures.
 
-@xref{Data Structures}, for more information.
+@xref{Structures}, for more information.
 
 @node Cell Array Objects
 @subsection Cell Array Objects
@@ -274,57 +367,85 @@ expression.  These functions are defined for all objects.  They return
 data structure type doesn't have rows or columns, so the @code{rows} and
 @code{columns} functions return @minus{}1 for structure arguments.
 
-@c data.cc
+@c ndims src/data.cc
 @anchor{doc-ndims}
 @deftypefn {Built-in Function} {} ndims (@var{a})
-Returns the number of dimensions of array @var{a}.
+Return the number of dimensions of @var{a}.
 For any array, the result will always be larger than or equal to 2.
 Trailing singleton dimensions are not counted.
+
+@example
+@group
+  ndims (ones (4, 1, 2, 1))
+     @result{} 3
+@end group
+@end example
 @end deftypefn
 
 
-@c data.cc
+@c columns src/data.cc
 @anchor{doc-columns}
 @deftypefn {Built-in Function} {} columns (@var{a})
 Return the number of columns of @var{a}.
-@seealso{@ref{doc-size,,size}, @ref{doc-numel,,numel}, @ref{doc-rows,,rows}, @ref{doc-length,,length}, @ref{doc-isscalar,,isscalar}, @ref{doc-isvector,,isvector}, @ref{doc-ismatrix,,ismatrix}}
+@seealso{@ref{doc-rows,,rows}, @ref{doc-size,,size}, @ref{doc-length,,length}, @ref{doc-numel,,numel}, @ref{doc-isscalar,,isscalar}, @ref{doc-isvector,,isvector}, @ref{doc-ismatrix,,ismatrix}}
 @end deftypefn
 
 
-@c data.cc
+@c rows src/data.cc
 @anchor{doc-rows}
 @deftypefn {Built-in Function} {} rows (@var{a})
 Return the number of rows of @var{a}.
-@seealso{@ref{doc-size,,size}, @ref{doc-numel,,numel}, @ref{doc-columns,,columns}, @ref{doc-length,,length}, @ref{doc-isscalar,,isscalar}, @ref{doc-isvector,,isvector}, @ref{doc-ismatrix,,ismatrix}}
+@seealso{@ref{doc-columns,,columns}, @ref{doc-size,,size}, @ref{doc-length,,length}, @ref{doc-numel,,numel}, @ref{doc-isscalar,,isscalar}, @ref{doc-isvector,,isvector}, @ref{doc-ismatrix,,ismatrix}}
 @end deftypefn
 
 
-@c data.cc
+@c numel src/data.cc
 @anchor{doc-numel}
-@deftypefn {Built-in Function} {} numel (@var{a})
-Returns the number of elements in the object @var{a}.
+@deftypefn  {Built-in Function} {} numel (@var{a})
+@deftypefnx {Built-in Function} {} numel (@var{a}, @var{idx1}, @var{idx2}, @dots{})
+Return the number of elements in the object @var{a}.
+Optionally, if indices @var{idx1}, @var{idx2}, @dots{} are supplied,
+return the number of elements that would result from the indexing
+
+@example
+  @var{a}(@var{idx1}, @var{idx2}, @dots{})
+@end example
+
+Note that the indices do not have to be numerical. For example
+
+@example
+  @var{a} = 1;
+  @var{b} = ones (2, 3);
+  numel (@var{a}, @var{b});
+@end example
+
+will return 6, as this is the number of ways to index with @var{b}.
+
+This method is also called when an object appears as lvalue with cs-list
+indexing, i.e., @code{object@{@dots{}@}} or @code{object(@dots{}).field}.
 @seealso{@ref{doc-size,,size}}
 @end deftypefn
 
 
-@c data.cc
+@c length src/data.cc
 @anchor{doc-length}
 @deftypefn {Built-in Function} {} length (@var{a})
-Return the `length' of the object @var{a}.  For matrix objects, the
+Return the "length" of the object @var{a}.  For matrix objects, the
 length is the number of rows or columns, whichever is greater (this
 odd definition is used for compatibility with @sc{matlab}).
 @end deftypefn
 
 
-@c data.cc
+@c size src/data.cc
 @anchor{doc-size}
-@deftypefn {Built-in Function} {} size (@var{a}, @var{n})
-Return the number rows and columns of @var{a}.
+@deftypefn  {Built-in Function} {} size (@var{a})
+@deftypefnx {Built-in Function} {} size (@var{a}, @var{dim})
+Return the number of rows and columns of @var{a}.
 
 With one input argument and one output argument, the result is returned
 in a row vector.  If there are multiple output arguments, the number of
 rows is assigned to the first, and the number of columns to the second,
-etc.  For example,
+etc.  For example:
 
 @example
 @group
@@ -338,7 +459,7 @@ size ([1, 2; 3, 4; 5, 6])
 @end example
 
 If given a second argument, @code{size} will return the size of the
-corresponding dimension.  For example
+corresponding dimension.  For example,
 
 @example
 @group
@@ -353,48 +474,53 @@ returns the number of columns in the given matrix.
 @end deftypefn
 
 
-@c data.cc
+@c isempty src/data.cc
 @anchor{doc-isempty}
 @deftypefn {Built-in Function} {} isempty (@var{a})
-Return 1 if @var{a} is an empty matrix (either the number of rows, or
-the number of columns, or both are zero).  Otherwise, return 0.
+Return true if @var{a} is an empty matrix (any one of its dimensions is
+zero).  Otherwise, return false.
+@seealso{@ref{doc-isnull,,isnull}}
 @end deftypefn
 
 
-@c ov-null-mat.cc
+@c isnull src/ov-null-mat.cc
 @anchor{doc-isnull}
 @deftypefn {Built-in Function} {} isnull (@var{x})
-Return 1 if @var{x} is a special null matrix, string or single quoted string.
-Indexed assignment with such a value as right-hand side should delete array elements.
-This function should be used when overloading indexed assignment for user-defined 
-classes instead of @code{isempty}, to distinguish the cases:
+Return true if @var{x} is a special null matrix, string, or single quoted
+string.  Indexed assignment with such a value on the right-hand side should
+delete array elements.  This function should be used when overloading
+indexed assignment for user-defined classes instead of @code{isempty}, to
+distinguish the cases:
 @table @asis
 @item @code{A(I) = []}
 This should delete elements if @code{I} is nonempty.
+
 @item @code{X = []; A(I) = X}
 This should give an error if @code{I} is nonempty.
 @end table
+@seealso{@ref{doc-isempty,,isempty}, @ref{doc-isindex,,isindex}}
 @end deftypefn
 
 
-@c ov.cc
+@c sizeof src/ov.cc
 @anchor{doc-sizeof}
 @deftypefn {Built-in Function} {} sizeof (@var{val})
-Return the size of @var{val} in bytes
+Return the size of @var{val} in bytes.
+@seealso{@ref{doc-whos,,whos}}
 @end deftypefn
 
 
-@c data.cc
+@c size_equal src/data.cc
 @anchor{doc-size_equal}
 @deftypefn {Built-in Function} {} size_equal (@var{a}, @var{b}, @dots{})
 Return true if the dimensions of all arguments agree.
 Trailing singleton dimensions are ignored.
-Called with a single argument, size_equal returns true.
+Called with a single or no argument, size_equal returns true.
 @seealso{@ref{doc-size,,size}, @ref{doc-numel,,numel}}
 @end deftypefn
 
 
-@c data.cc
+@c squeeze src/data.cc
 @anchor{doc-squeeze}
 @deftypefn {Built-in Function} {} squeeze (@var{x})
 Remove singleton dimensions from @var{x} and return the result.

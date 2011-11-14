@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2002, 2004, 2005, 2006, 2007, 2008
-              John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -39,21 +38,26 @@ public:
 
   LU (const LU& a) : base_lu <Matrix> (a) { }
 
+  LU (const Matrix& l, const Matrix& u, const PermMatrix& p)
+    : base_lu <Matrix> (l, u, p) { }
+
   LU& operator = (const LU& a)
     {
       if (this != &a)
-	base_lu <Matrix> :: operator = (a);
+        base_lu <Matrix> :: operator = (a);
 
       return *this;
     }
 
   ~LU (void) { }
+
+  void update (const ColumnVector& u, const ColumnVector& v);
+
+  void update (const Matrix& u, const Matrix& v);
+
+  void update_piv (const ColumnVector& u, const ColumnVector& v);
+
+  void update_piv (const Matrix& u, const Matrix& v);
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

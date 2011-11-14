@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2000, 2002, 2004, 2005, 2007,
-              2008, 2009 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -47,17 +46,14 @@ public:
   ComplexDiagMatrix (octave_idx_type r, octave_idx_type c, const Complex& val)
     : MDiagArray2<Complex> (r, c, val) { }
 
-  explicit ComplexDiagMatrix (const RowVector& a)
-    : MDiagArray2<Complex> (ComplexRowVector (a)) { }
-
-  explicit ComplexDiagMatrix (const ComplexRowVector& a)
+  explicit ComplexDiagMatrix (const Array<Complex>& a)
     : MDiagArray2<Complex> (a) { }
 
-  explicit ComplexDiagMatrix (const ColumnVector& a)
-    : MDiagArray2<Complex> (ComplexColumnVector (a)) { }
+  explicit ComplexDiagMatrix (const Array<double>& a)
+    : MDiagArray2<Complex> (Array<Complex> (a)) { }
 
-  explicit ComplexDiagMatrix (const ComplexColumnVector& a)
-    : MDiagArray2<Complex> (a) { }
+  ComplexDiagMatrix (const Array<Complex>& a, octave_idx_type r, octave_idx_type c)
+    : MDiagArray2<Complex> (a, r, c) { }
 
   explicit ComplexDiagMatrix (const DiagMatrix& a);
 
@@ -68,7 +64,7 @@ public:
     : MDiagArray2<Complex> (a) { }
 
   template <class U>
-  ComplexDiagMatrix (const DiagArray2<U>& a) 
+  ComplexDiagMatrix (const DiagArray2<U>& a)
     : MDiagArray2<Complex> (a) { }
 
   ComplexDiagMatrix& operator = (const ComplexDiagMatrix& a)
@@ -95,7 +91,7 @@ public:
 
   ComplexDiagMatrix hermitian (void) const { return MDiagArray2<Complex>::hermitian (std::conj); }
   ComplexDiagMatrix transpose (void) const { return MDiagArray2<Complex>::transpose(); }
-  DiagMatrix abs (void) const; 
+  DiagMatrix abs (void) const;
 
   friend OCTAVE_API ComplexDiagMatrix conj (const ComplexDiagMatrix& a);
 
@@ -134,10 +130,6 @@ public:
 
   friend std::ostream& operator << (std::ostream& os, const ComplexDiagMatrix& a);
 
-private:
-
-  ComplexDiagMatrix (Complex *d, octave_idx_type nr, octave_idx_type nc)
-    : MDiagArray2<Complex> (d, nr, nc) { }
 };
 
 OCTAVE_API ComplexDiagMatrix conj (const ComplexDiagMatrix& a);
@@ -156,9 +148,3 @@ operator * (const DiagMatrix& a, const ComplexDiagMatrix& b);
 MDIAGARRAY2_FORWARD_DEFS (MDiagArray2, ComplexDiagMatrix, Complex)
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

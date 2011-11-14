@@ -1,6 +1,7 @@
 /*
 
-Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 2003-2011 John W. Eaton
+Copyirght (C) 2009, 2010 VZLU Prague
 
 This file is part of Octave.
 
@@ -24,194 +25,221 @@ along with Octave; see the file COPYING.  If not, see
 #define octave_dim_vector_h 1
 
 #include <cassert>
+#include <limits>
 
 #include <sstream>
 #include <string>
 
 #include "lo-error.h"
-#include "oct-types.h"
+#include "lo-macros.h"
+
+// Rationale: This implementation is more tricky than Array, but the
+// big plus is that dim_vector requires only one allocation instead of
+// two.  It is (slightly) patterned after GCC's basic_string
+// implementation.  rep is a pointer to an array of memory, comprising
+// count, length, and the data:
+//
+//          <count>
+//          <ndims>
+//  rep --> <dims[0]>
+//          <dims[1]>
+//          ...
+//
+// The inlines count(), ndims() recover this data from the rep.  Note
+// that rep points to the beginning of dims to grant faster access
+// (reinterpret_cast is assumed to be an inexpensive operation).
 
 class
+OCTAVE_API
 dim_vector
 {
-protected:
+private:
 
-  class dim_vector_rep
+  octave_idx_type *rep;
+
+  octave_idx_type& ndims (void) const { return rep[-1]; }
+
+  octave_idx_type& count (void) const { return rep[-2]; }
+
+  // Construct a new rep with count = 1 and ndims given.
+
+  static octave_idx_type *newrep (int ndims)
   {
-  public:
+    octave_idx_type *r = new octave_idx_type[ndims + 2];
 
-    octave_idx_type *dims;
-    int ndims;
-    int count;
+    *r++ = 1;
+    *r++ = ndims;
 
-    dim_vector_rep (void)
-      : dims (new octave_idx_type [2]), ndims (2), count (1)
-    {
-      dims[0] = 0;
-      dims[1] = 0;
-    }
+    return r;
+  }
 
+  // Clone this->rep.
 
-    dim_vector_rep (octave_idx_type n)
-      : dims (new octave_idx_type [2]), ndims (2), count (1)
-    {
-      dims[0] = n;
-      dims[1] = 1;
-    }
+  octave_idx_type *clonerep (void)
+  {
+    int l = ndims ();
 
-    dim_vector_rep (octave_idx_type r, octave_idx_type c)
-      : dims (new octave_idx_type [2]), ndims (2), count (1)
-    {
-      dims[0] = r;
-      dims[1] = c;
-    }
+    octave_idx_type *r = new octave_idx_type[l + 2];
 
-    dim_vector_rep (octave_idx_type r, octave_idx_type c, octave_idx_type p)
-      : dims (new octave_idx_type [3]), ndims (3), count (1)
-    {
-      dims[0] = r;
-      dims[1] = c;
-      dims[2] = p;
-    }
+    *r++ = 1;
+    *r++ = l;
 
-    dim_vector_rep (const dim_vector_rep& dv)
-      : dims (new octave_idx_type [dv.ndims]),
-	ndims (dv.ndims), count (1)
-    {
-      if (dims)
-	{
-	  for (int i = 0; i < ndims; i++)
-	    dims[i] = dv.dims[i];
-	}
-    }
+    for (int i = 0; i < l; i++)
+      r[i] = rep[i];
 
-    dim_vector_rep (octave_idx_type n, const dim_vector_rep *dv,
-		    int fill_value = 0)
-      : dims (new octave_idx_type [n < 2 ? 2 : n]),
-	ndims (n < 2 ? 2 : n), count (1)
-    {
-      if (n == 0)
-	{
-	  // Result is 0x0.
-	  dims[0] = 0;
-	  dims[1] = 0;
-	}
-      else if (n == 1)
-	{
-	  // Result is a column vector.
-	  dims[0] = dv->dims[0];
-	  dims[1] = 1;
-	}
-      else
-	{
-	  int dv_ndims = dv ? dv->ndims : 0;
+    return r;
+  }
 
-	  int min_len = n < dv_ndims ? n : dv_ndims;
+  // Clone and resize this->rep to length n, filling by given value.
 
-	  for (int i = 0; i < min_len; i++)
-	    dims[i] = dv->dims[i];
+  octave_idx_type *resizerep (int n, octave_idx_type fill_value)
+  {
+    int l = ndims ();
 
-	  for (int i = dv_ndims; i < n; i++)
-	    dims[i] = fill_value;
-	}
-    }
+    if (n < 2)
+      n = 2;
 
-    ~dim_vector_rep (void) { delete [] dims; }
+    octave_idx_type *r = new octave_idx_type[n + 2];
 
-    int length (void) const { return ndims; }
+    *r++ = 1;
+    *r++ = n;
 
-    octave_idx_type& elem (int i)
-    {
-      assert (i >= 0 && i < ndims);
-      return dims[i];
-    }
+    if (l > n)
+      l = n;
 
-    octave_idx_type elem (int i) const
-    {
-      assert (i >= 0 && i < ndims);
-      return dims[i];
-    }
+    int j;
+    for (j = 0; j < l; j++)
+      r[j] = rep[j];
+    for (; j < n; j++)
+      r[j] = fill_value;
 
-    void chop_trailing_singletons (void)
-    {
-      for (int i = ndims - 1; i > 1; i--)
-	{
-	  if (dims[i] == 1)
-	    ndims--;
-	  else
-	    break;
-	}
-    }
+    return r;
+  }
 
-    void chop_all_singletons (void)
-    {
-      int j = 0;
+  // Free the rep.
 
-      for (int i = 0; i < ndims; i++)
-	{
-	  if (dims[i] != 1)
-            dims[j++] = dims[i];
-	}
-
-      if (j == 1)
-	dims[1] = 1;
-
-      ndims = j > 2 ? j : 2;
-    }
-
-  private:
-
-    // No assignment!
-
-    dim_vector_rep& operator = (const dim_vector_rep& dv);
-  };
-
-  dim_vector_rep *rep;
+  void freerep (void)
+  {
+    assert (count () == 0);
+    delete [] (rep - 2);
+  }
 
   void make_unique (void)
   {
-    if (rep->count > 1)
+    if (count () > 1)
       {
-	--rep->count;
-	rep = new dim_vector_rep (*rep);
+        --count();
+        rep = clonerep ();
       }
-  }
-
-private:
-
-  dim_vector_rep *nil_rep (void) const
-  {
-    static dim_vector_rep *nr = new dim_vector_rep ();
-
-    return nr;
   }
 
 public:
 
-  explicit dim_vector (void)
-    : rep (nil_rep ()) { rep->count++; }
+  // The constructor
+  //
+  //   dim_vector (n)
+  //
+  // creates an dimension vector with N rows and 1 column.  It is
+  // deprecated because of the potentiol for confusion that it causes.
+  // Additional constructors of the form
+  //
+  //   dim_vector (r, c)
+  //   dim_vector (r, c, p)
+  //   dim_vector (d1, d2, d3, d4, ...)
+  //
+  // are available for up to 7 dimensions.
 
-  explicit dim_vector (octave_idx_type n)
-    : rep (new dim_vector_rep (n)) { }
+  explicit dim_vector (octave_idx_type n) GCC_ATTR_DEPRECATED
+    : rep (newrep (2))
+  {
+    rep[0] = n;
+    rep[1] = 1;
+  }
 
-  explicit dim_vector (octave_idx_type r, octave_idx_type c)
-    : rep (new dim_vector_rep (r, c)) { }
+#define ASSIGN_REP(i) rep[i] = d ## i;
+#define DIM_VECTOR_CTOR(N) \
+  dim_vector (OCT_MAKE_DECL_LIST (octave_idx_type, d, N)) \
+    : rep (newrep (N)) \
+  { \
+    OCT_ITERATE_MACRO (ASSIGN_REP, N) \
+  }
 
-  explicit dim_vector (octave_idx_type r, octave_idx_type c, octave_idx_type p)
-    : rep (new dim_vector_rep (r, c, p)) { }
+  // Add more if needed.
+  DIM_VECTOR_CTOR (2)
+  DIM_VECTOR_CTOR (3)
+  DIM_VECTOR_CTOR (4)
+  DIM_VECTOR_CTOR (5)
+  DIM_VECTOR_CTOR (6)
+  DIM_VECTOR_CTOR (7)
 
-  dim_vector (const dim_vector& dv)
-    : rep (dv.rep) { rep->count++; }
+#undef ASSIGN_REP
+#undef DIM_VECTOR_CTOR
+
+  octave_idx_type& elem (int i)
+  {
+#ifdef BOUNDS_CHECKING
+    assert (i >= 0 && i < ndims ());
+#endif
+    make_unique ();
+    return rep[i];
+  }
+
+  octave_idx_type elem (int i) const
+  {
+#ifdef BOUNDS_CHECKING
+    assert (i >= 0 && i < ndims ());
+#endif
+    return rep[i];
+  }
+
+  void chop_trailing_singletons (void)
+  {
+    int l = ndims ();
+    if (l > 2 && rep[l-1] == 1)
+      {
+        make_unique ();
+        do
+          l--;
+        while (l > 2 && rep[l-1] == 1);
+        ndims () = l;
+      }
+  }
+
+  void chop_all_singletons (void);
+
+private:
+
+  static octave_idx_type *nil_rep (void)
+    {
+      static dim_vector zv (0, 0);
+      return zv.rep;
+    }
+
+  explicit dim_vector (octave_idx_type *r)
+    : rep (r) { }
+
+public:
+
+  static octave_idx_type dim_max (void);
+
+  explicit dim_vector (void) : rep (nil_rep ()) { count()++; }
+
+  dim_vector (const dim_vector& dv) : rep (dv.rep) { count()++; }
+
+  static dim_vector alloc (int n)
+  {
+    return dim_vector (newrep (n < 2 ? 2 : n));
+  }
 
   dim_vector& operator = (const dim_vector& dv)
   {
     if (&dv != this)
       {
-	if (--rep->count <= 0)
-	  delete rep;
+        if (--count() <= 0)
+          freerep ();
 
-	rep = dv.rep;
-	rep->count++;
+        rep = dv.rep;
+        count()++;
       }
 
     return *this;
@@ -219,15 +247,11 @@ public:
 
   ~dim_vector (void)
   {
-    if (--rep->count <= 0)
-      delete rep;
+    if (--count() <= 0)
+      freerep ();
   }
 
-  int length (void) const { return rep->length (); }
-
-  octave_idx_type& elem (int i) { make_unique (); return rep->elem (i); }
-
-  octave_idx_type elem (int i) const { return rep->elem (i); }
+  int length (void) const { return ndims (); }
 
   octave_idx_type& operator () (int i) { return elem (i); }
 
@@ -239,31 +263,16 @@ public:
 
     if (n != len)
       {
-	dim_vector_rep *old_rep = rep;
+        octave_idx_type *r = resizerep (n, fill_value);
 
-	rep = new dim_vector_rep (n, old_rep, fill_value);
+        if (--count() <= 0)
+          freerep ();
 
-	if (--old_rep->count <= 0)
-	  delete old_rep;
+        rep = r;
       }
   }
 
-  std::string str (char sep = 'x') const
-  {
-    std::ostringstream buf;
-
-    for (int i = 0; i < length (); i++)
-      {
-	buf << elem (i);
-
-	if (i < length () - 1)
-	  buf << sep;
-      }
-
-    std::string retval = buf.str ();
-
-    return retval;
-  }
+  std::string str (char sep = 'x') const;
 
   bool all_zero (void) const
   {
@@ -271,14 +280,25 @@ public:
 
     for (int i = 0; i < length (); i++)
       {
-	if (elem (i) != 0)
-	  {
-	    retval = false;
-	    break;
-	  }
+        if (elem (i) != 0)
+          {
+            retval = false;
+            break;
+          }
       }
 
     return retval;
+  }
+
+  bool empty_2d (void) const
+  {
+    return length () == 2 && (elem (0) == 0 || elem (1) == 0);
+  }
+
+
+  bool zero_by_zero (void) const
+  {
+    return length () == 2 && elem (0) == 0 && elem (1) == 0;
   }
 
   bool any_zero (void) const
@@ -287,35 +307,24 @@ public:
 
     for (int i = 0; i < length (); i++)
       {
-	if (elem (i) == 0)
-	  {
-	    retval = true;
-	    break;
-	  }
+        if (elem (i) == 0)
+          {
+            retval = true;
+            break;
+          }
       }
 
     return retval;
   }
 
-  int
-  num_ones (void) const
-  {
-    int retval = 0;
+  int num_ones (void) const;
 
-    for (int i = 0; i < length (); i++)
-      if (elem (i) == 1)
-	retval++;
-
-    return retval;
-  }
-
-  bool
-  all_ones (void) const
+  bool all_ones (void) const
   {
     return (num_ones () == length ());
   }
 
-  // This is the number of elements that a matrix with this dimension
+  // Return the number of elements that a matrix with this dimension
   // vector would have, NOT the number of dimensions (elements in the
   // dimension vector).
 
@@ -331,187 +340,59 @@ public:
     return retval;
   }
 
+  // The following function will throw a std::bad_alloc ()
+  // exception if the requested size is larger than can be indexed by
+  // octave_idx_type. This may be smaller than the actual amount of
+  // memory that can be safely allocated on a system.  However, if we
+  // don't fail here, we can end up with a mysterious crash inside a
+  // function that is iterating over an array using octave_idx_type
+  // indices.
+
+  octave_idx_type safe_numel (void) const;
+
   bool any_neg (void) const
   {
-    int n_dims = length (), i;
+    int n_dims = length ();
+    int i;
+
     for (i = 0; i < n_dims; i++)
-      if (elem (i) < 0) break;
+      if (elem (i) < 0)
+        break;
+
     return i < n_dims;
   }
 
-  void chop_trailing_singletons (void)
-  {
-    make_unique ();
-    rep->chop_trailing_singletons ();
-  }
+  dim_vector squeeze (void) const;
 
-  void chop_all_singletons (void)
-  {
-    make_unique ();
-    rep->chop_all_singletons ();
-  }
+  // This corresponds to cat().
+  bool concat (const dim_vector& dvb, int dim);
 
-  dim_vector squeeze (void) const
-  {
-    dim_vector new_dims = *this;
+  // This corresponds to [,] (horzcat, dim = 0) and [;] (vertcat, dim = 1).
+  // The rules are more relaxed here.
+  bool hvcat (const dim_vector& dvb, int dim);
 
-    bool dims_changed = 1;
+  // Force certain dimensionality, preserving numel ().  Missing
+  // dimensions are set to 1, redundant are folded into the trailing
+  // one.  If n = 1, the result is 2d and the second dim is 1
+  // (dim_vectors are always at least 2D).  If the original dimensions
+  // were all zero, the padding value is zero.
 
-    int k = 0;
+  dim_vector redim (int n) const;
 
-    for (int i = 0; i < length (); i++)
-      {
-	if (elem (i) == 1)
-	  dims_changed = true;
-	else
-	  new_dims(k++) = elem (i);
-      }
-
-    if (dims_changed)
-      {
-	if (k == 0)
-	  new_dims = dim_vector (1, 1);
-	else if (k == 1)
-	  {
-	    // There is one non-singleton dimension, so we need
-	    // to decide the correct orientation.
-
-	    if (elem (0) == 1)
-	      {
-		// The original dimension vector had a leading
-		// singleton dimension.
-
-		octave_idx_type tmp = new_dims(0);
-	
-		new_dims.resize (2);
-
- 		new_dims(0) = 1;
-		new_dims(1) = tmp;
-	      }
-	    else
-	      {
-		// The first element of the original dimension vector
-		// was not a singleton dimension.
-
-		new_dims.resize (2);
-
-		new_dims(1) = 1;
-	      }
-	  }
-	else
-	  new_dims.resize(k);
-      }
- 
-    return new_dims;
-  }
-
-  bool concat (const dim_vector& dvb, int dim = 0)
-  {
-    if (all_zero ())
-      {
-	*this = dvb;
-	return true;
-      }
-
-    if (dvb.all_zero ())
-      return true;
-
-    int na = length ();
-    int nb = dvb.length ();
-  
-    // Find the max and min value of na and nb
-    int n_max = na > nb ? na : nb;
-    int n_min = na < nb ? na : nb;
-  
-    // The elements of the dimension vectors can only differ
-    // if the dim variable differs from the actual dimension
-    // they differ.
-
-    for (int i = 0; i < n_min; i++)
-      {
-	if (elem(i) != dvb(i) && dim != i)
-	    return false;
-      }
-  
-    // Ditto.
-    for (int i = n_min; i < n_max; i++)
-      {
-	if (na > n_min)
-	  {
-	    if (elem(i) != 1 && dim != i)
-	      return false;
-	  }
-	else 
-	  {
-	    if (dvb(i) != 1 && dim != i)
-	      return false;
-	  }
-      }
-    
-    // If we want to add the dimension vectors at a dimension
-    // larger than both, then we need to set n_max to this number
-    // so that we resize *this to the right dimension.
-    
-    n_max = n_max > (dim + 1) ? n_max : (dim + 1);
-    
-    // Resize *this to the appropriate dimensions.
-    
-    if (n_max > na)
-      {
-	dim_vector_rep *old_rep = rep;
-
-	rep = new dim_vector_rep (n_max, old_rep, 1);
-
-	if (--old_rep->count <= 0)
-	  delete old_rep;
-      }
-  
-    // Larger or equal since dim has been decremented by one.
-
-    if (dim >= nb)
-      elem (dim)++;
-    else
-      elem (dim) += dvb(dim);
-
-    return true;
-  }
-
-  // Forces certain dimensionality, preserving numel (). Missing dimensions are
-  // set to 1, redundant are folded into the trailing one. If n = 1, the result
-  // is 2d and the second dim is 1 (dim_vectors are always at least 2D).
-  // If the original dimensions were all zero, the padding value is zero.
-  dim_vector redim (int n) const
+  dim_vector as_column (void) const
     {
-      int n_dims = length ();
-      if (n_dims == n)
+      if (length () == 2 && elem (1) == 1)
         return *this;
       else
-        {
-          dim_vector retval;
-          retval.resize (n == 1 ? 2 : n, 1);
-          
-          bool zeros = true;
-          for (int i = 0; i < n && i < n_dims; i++)
-            {
-              retval(i) = elem (i);
-              zeros = zeros && elem (i) == 0;
-            }
+        return dim_vector (numel (), 1);
+    }
 
-          if (n < n_dims)
-            {
-              octave_idx_type k = 1;
-              for (int i = n; i < n_dims; i++)
-                k *= elem (i);
-              retval(n - 1) *= k;
-            }
-          else if (zeros)
-            {
-              for (int i = n_dims; i < n; i++)
-                retval.elem (i) = 0;
-            }
-
-          return retval;
-        }
+  dim_vector as_row (void) const
+    {
+      if (length () == 2 && elem (0) == 1)
+        return *this;
+      else
+        return dim_vector (1, numel ());
     }
 
   bool is_vector (void) const
@@ -519,11 +400,94 @@ public:
       return (length () == 2 && (elem (0) == 1 || elem (1) == 1));
     }
 
+  int first_non_singleton (int def = 0) const
+    {
+      for (int i = 0; i < length (); i++)
+        {
+          if (elem (i) != 1)
+            return i;
+        }
+
+      return def;
+    }
+
+  // Compute a linear index from an index tuple.
+
+  octave_idx_type compute_index (const octave_idx_type *idx) const
+    {
+      octave_idx_type k = 0;
+      for (int i = length () - 1; i >= 0; i--)
+        k = k * rep[i] + idx[i];
+
+      return k;
+    }
+
+  // Ditto, but the tuple may be incomplete (nidx < length ()).
+
+  octave_idx_type compute_index (const octave_idx_type *idx, int nidx) const
+    {
+      octave_idx_type k = 0;
+      for (int i = nidx - 1; i >= 0; i--)
+        k = k * rep[i] + idx[i];
+
+      return k;
+    }
+
+  // Increment a multi-dimensional index tuple, optionally starting
+  // from an offset position and return the index of the last index
+  // position that was changed, or length () if just cycled over.
+
+  int increment_index (octave_idx_type *idx, int start = 0) const
+    {
+      int i;
+      for (i = start; i < length (); i++)
+        {
+          if (++(*idx) == rep[i])
+            *idx++ = 0;
+          else
+            break;
+        }
+      return i;
+    }
+
+  // Return cumulative dimensions.
+
+  dim_vector cumulative (void) const
+    {
+      int nd = length ();
+      dim_vector retval = alloc (nd);
+
+      octave_idx_type k = 1;
+      for (int i = 0; i < nd; i++)
+        retval.rep[i] = k *= rep[i];
+
+      return retval;
+    }
+
+  // Compute a linear index from an index tuple.  Dimensions are
+  // required to be cumulative.
+
+  octave_idx_type cum_compute_index (const octave_idx_type *idx) const
+    {
+      octave_idx_type k = idx[0];
+
+      for (int i = 1; i < length (); i++)
+        k += rep[i-1] * idx[i];
+
+      return k;
+    }
+
+
+  friend bool operator == (const dim_vector& a, const dim_vector& b);
 };
 
-static inline bool
+inline bool
 operator == (const dim_vector& a, const dim_vector& b)
 {
+  // Fast case.
+  if (a.rep == b.rep)
+    return true;
+
   bool retval = true;
 
   int a_len = a.length ();
@@ -534,28 +498,22 @@ operator == (const dim_vector& a, const dim_vector& b)
   else
     {
       for (int i = 0; i < a_len; i++)
-	{
-	  if (a(i) != b(i))
-	    {
-	      retval = false;
-	      break;
-	    }
-	}
+        {
+          if (a(i) != b(i))
+            {
+              retval = false;
+              break;
+            }
+        }
     }
 
   return retval;
 }
 
-static inline bool
+inline bool
 operator != (const dim_vector& a, const dim_vector& b)
 {
   return ! operator == (a, b);
 }
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

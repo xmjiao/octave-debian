@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2000, 2002, 2003, 2004, 2005, 2006,
-              2007, 2008 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
+Copyright (C) 2009-2010 VZLU Prague
 
 This file is part of Octave.
 
@@ -25,6 +25,7 @@ along with Octave; see the file COPYING.  If not, see
 #include <config.h>
 #endif
 
+#include <cctype>
 #include <iostream>
 
 #include "lo-ieee.h"
@@ -39,19 +40,14 @@ along with Octave; see the file COPYING.  If not, see
 
 template class octave_base_matrix<charNDArray>;
 
-DEFINE_OCTAVE_ALLOCATOR (octave_char_matrix);
-
-DEFINE_OV_TYPEID_FUNCTIONS_AND_DATA (octave_char_matrix,
-				     "char matrix", "int8");
-
-idx_vector 
+idx_vector
 octave_char_matrix::index_vector (void) const
-{ 
+{
   const char *p = matrix.data ();
   if (numel () == 1 && *p == ':')
     return idx_vector (':');
   else
-    return idx_vector (array_value (true)); 
+    return idx_vector (array_value (true));
 }
 
 double
@@ -62,7 +58,7 @@ octave_char_matrix::double_value (bool) const
   if (rows () > 0 && columns () > 0)
     {
       gripe_implicit_conversion ("Octave:array-as-scalar",
-				 "character matrix", "real scalar");
+                                 "character matrix", "real scalar");
 
       retval = static_cast<unsigned char> (matrix (0, 0));
     }
@@ -80,7 +76,7 @@ octave_char_matrix::float_value (bool) const
   if (rows () > 0 && columns () > 0)
     {
       gripe_implicit_conversion ("Octave:array-as-scalar",
-				 "character matrix", "real scalar");
+                                 "character matrix", "real scalar");
 
       retval = static_cast<unsigned char> (matrix (0, 0));
     }
@@ -100,7 +96,7 @@ octave_char_matrix::complex_value (bool) const
   if (rows () > 0 && columns () > 0)
     {
       gripe_implicit_conversion ("Octave:array-as-scalar",
-				 "character matrix", "complex scalar");
+                                 "character matrix", "complex scalar");
 
       retval = static_cast<unsigned char> (matrix (0, 0));
     }
@@ -120,7 +116,7 @@ octave_char_matrix::float_complex_value (bool) const
   if (rows () > 0 && columns () > 0)
     {
       gripe_implicit_conversion ("Octave:array-as-scalar",
-				 "character matrix", "complex scalar");
+                                 "character matrix", "complex scalar");
 
       retval = static_cast<unsigned char> (matrix (0, 0));
     }
@@ -132,10 +128,10 @@ octave_char_matrix::float_complex_value (bool) const
 
 void
 octave_char_matrix::print_raw (std::ostream& os,
-			       bool pr_as_read_syntax) const
+                               bool pr_as_read_syntax) const
 {
   octave_print_internal (os, matrix, pr_as_read_syntax,
-			 current_print_indent_level ());
+                         current_print_indent_level ());
 }
 
 mxArray *
@@ -155,8 +151,47 @@ octave_char_matrix::as_mxArray (void) const
   return retval;
 }
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+// The C++ standard guarantees cctype defines functions, not macros (and hence macros *CAN'T*
+// be defined if only cctype is included)
+// so there's no need to f*ck around. The exceptions are isascii and toascii,
+// which are not C++.
+// Oddly enough, all those character functions are int (*) (int), even
+// in C++. Wicked!
+static inline int xisascii (int c)
+{ return isascii (c); }
+
+static inline int xtoascii (int c)
+{ return toascii (c); }
+
+octave_value
+octave_char_matrix::map (unary_mapper_t umap) const
+{
+  switch (umap)
+    {
+#define STRING_MAPPER(UMAP,FCN,TYPE) \
+    case umap_ ## UMAP: \
+      return octave_value (matrix.map<TYPE, int (&) (int)> (FCN))
+
+    STRING_MAPPER (xisalnum, std::isalnum, bool);
+    STRING_MAPPER (xisalpha, std::isalpha, bool);
+    STRING_MAPPER (xisascii, xisascii, bool);
+    STRING_MAPPER (xiscntrl, std::iscntrl, bool);
+    STRING_MAPPER (xisdigit, std::isdigit, bool);
+    STRING_MAPPER (xisgraph, std::isgraph, bool);
+    STRING_MAPPER (xislower, std::islower, bool);
+    STRING_MAPPER (xisprint, std::isprint, bool);
+    STRING_MAPPER (xispunct, std::ispunct, bool);
+    STRING_MAPPER (xisspace, std::isspace, bool);
+    STRING_MAPPER (xisupper, std::isupper, bool);
+    STRING_MAPPER (xisxdigit, std::isxdigit, bool);
+    STRING_MAPPER (xtoascii, xtoascii, double);
+    STRING_MAPPER (xtolower, std::tolower, char);
+    STRING_MAPPER (xtoupper, std::toupper, char);
+
+    default:
+      {
+        octave_matrix m (array_value (true));
+        return m.map (umap);
+      }
+    }
+}

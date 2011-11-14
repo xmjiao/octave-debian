@@ -1,4 +1,4 @@
-## Copyright (C) 1996, 1997, 2002, 2004, 2005, 2006, 2007, 2008 John W. Eaton
+## Copyright (C) 1996-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -17,9 +17,9 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} isscalar (@var{a})
-## Return 1 if @var{a} is a scalar.  Otherwise, return 0.
-## @seealso{size, rows, columns, length, isscalar, ismatrix}
+## @deftypefn {Function File} {} isscalar (@var{x})
+## Return true if @var{x} is a scalar.
+## @seealso{isvector, ismatrix}
 ## @end deftypefn
 
 ## Author: jwe
@@ -35,26 +35,22 @@ function retval = isscalar (x)
 endfunction
 
 %!assert(isscalar (1));
-
 %!assert(!(isscalar ([1, 2])));
-
 %!assert(!(isscalar ([])));
-
 %!assert(!(isscalar ([1, 2; 3, 4])));
 
 %!test
-%! warn_str_to_num = 0;
+%! warning ("off", "Octave:str-to-num");
 %! assert((isscalar ("t")));
 
 %!assert(!(isscalar ("test")));
-
 %!assert(!(isscalar (["test"; "ing"])));
 
 %!test
 %! s.a = 1;
 %! assert((isscalar (s)));
 
+%% Test input validation
 %!error isscalar ();
-
 %!error isscalar (1, 2);
 

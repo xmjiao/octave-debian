@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 1998, 2000, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009
-              John W. Eaton
+Copyright (C) 1998-2011 John W. Eaton
+Copyright (C) 2009-2010 VZLU Prague
 
 This file is part of Octave.
 
@@ -38,8 +38,6 @@ along with Octave; see the file COPYING.  If not, see
 #include "ov-base.h"
 #include "ov-typeinfo.h"
 
-class Octave_map;
-
 class tree_walker;
 
 // Real matrix values.
@@ -51,22 +49,23 @@ octave_base_matrix : public octave_base_value
 public:
 
   octave_base_matrix (void)
-    : octave_base_value (), typ (MatrixType ()) { }
+    : octave_base_value (), matrix (), typ (), idx_cache () { }
 
   octave_base_matrix (const MT& m, const MatrixType& t = MatrixType ())
-    : octave_base_value (), matrix (m), typ (t)
+    : octave_base_value (), matrix (m),
+      typ (t.is_known () ? new MatrixType(t) : 0), idx_cache ()
   {
     if (matrix.ndims () == 0)
       matrix.resize (dim_vector (0, 0));
   }
 
   octave_base_matrix (const octave_base_matrix& m)
-    : octave_base_value (), matrix (m.matrix), typ (m.typ) { }
+    : octave_base_value (), matrix (m.matrix),
+      typ (m.typ ? new MatrixType (*m.typ) : 0),
+      idx_cache (m.idx_cache ? new idx_vector (*m.idx_cache) : 0)
+    { }
 
-  ~octave_base_matrix (void) { }
-
-  octave_base_value *clone (void) const { return new octave_base_matrix (*this); }
-  octave_base_value *empty_clone (void) const { return new octave_base_matrix (); }
+  ~octave_base_matrix (void) { clear_cached_info (); }
 
   size_t byte_size (void) const { return matrix.byte_size (); }
 
@@ -77,18 +76,18 @@ public:
   void maybe_economize (void) { matrix.maybe_economize (); }
 
   octave_value subsref (const std::string& type,
-			const std::list<octave_value_list>& idx);
+                        const std::list<octave_value_list>& idx);
 
   octave_value_list subsref (const std::string& type,
-			     const std::list<octave_value_list>& idx, int)
+                             const std::list<octave_value_list>& idx, int)
     { return subsref (type, idx); }
 
   octave_value subsasgn (const std::string& type,
-			 const std::list<octave_value_list>& idx,
-			 const octave_value& rhs);
+                         const std::list<octave_value_list>& idx,
+                         const octave_value& rhs);
 
   octave_value do_index_op (const octave_value_list& idx,
-			    bool resize_ok = false);
+                            bool resize_ok = false);
 
   void assign (const octave_value_list& idx, const MT& rhs);
 
@@ -99,6 +98,8 @@ public:
   dim_vector dims (void) const { return matrix.dims (); }
 
   octave_idx_type numel (void) const { return matrix.numel (); }
+
+  int ndims (void) const { return matrix.ndims (); }
 
   octave_idx_type nnz (void) const { return matrix.nnz (); }
 
@@ -113,9 +114,8 @@ public:
   octave_value all (int dim = 0) const { return matrix.all (dim); }
   octave_value any (int dim = 0) const { return matrix.any (dim); }
 
-  MatrixType matrix_type (void) const { return typ; }
-  MatrixType matrix_type (const MatrixType& _typ) const
-    { MatrixType ret = typ; typ = _typ; return ret; }
+  MatrixType matrix_type (void) const { return typ ? *typ : MatrixType (); }
+  MatrixType matrix_type (const MatrixType& _typ) const;
 
   octave_value diag (octave_idx_type k = 0) const
     { return octave_value (matrix.diag (k)); }
@@ -123,7 +123,7 @@ public:
   octave_value sort (octave_idx_type dim = 0, sortmode mode = ASCENDING) const
     { return octave_value (matrix.sort (dim, mode)); }
   octave_value sort (Array<octave_idx_type> &sidx, octave_idx_type dim = 0,
-		     sortmode mode = ASCENDING) const
+                     sortmode mode = ASCENDING) const
     { return octave_value (matrix.sort (sidx, dim, mode)); }
 
   sortmode is_sorted (sortmode mode = UNSORTED) const
@@ -151,17 +151,48 @@ public:
 
   void print_info (std::ostream& os, const std::string& prefix) const;
 
+  MT& matrix_ref (void)
+    {
+      clear_cached_info ();
+      return matrix;
+    }
+
+  const MT& matrix_ref (void) const
+    {
+      return matrix;
+    }
+
+  octave_value
+  fast_elem_extract (octave_idx_type n) const;
+
+  bool
+  fast_elem_insert (octave_idx_type n, const octave_value& x);
+
 protected:
 
   MT matrix;
 
-  mutable MatrixType typ;
+  idx_vector set_idx_cache (const idx_vector& idx) const
+    {
+      delete idx_cache;
+      idx_cache = idx ? new idx_vector (idx) : 0;
+      return idx;
+    }
+
+  void clear_cached_info (void) const
+    {
+      delete typ; typ = 0;
+      delete idx_cache; idx_cache = 0;
+    }
+
+  mutable MatrixType *typ;
+  mutable idx_vector *idx_cache;
+
+private:
+
+  // No assignment.
+
+  octave_base_matrix& operator = (const octave_base_matrix&);
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

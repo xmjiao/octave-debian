@@ -1,4 +1,4 @@
-## Copyright (C) 2004, 2005, 2006, 2007, 2009 David Bateman
+## Copyright (C) 2004-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -17,14 +17,14 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{X} =} bitget (@var{a},@var{n})
-## Return the status of bit(s) @var{n} of unsigned integers in @var{a}
+## @deftypefn {Function File} {@var{c} =} bitget (@var{A}, @var{n})
+## Return the status of bit(s) @var{n} of unsigned integers in @var{A}
 ## the lowest significant bit is @var{n} = 1.
 ##
 ## @example
 ## @group
 ## bitget (100, 8:-1:1)
-## @result{} 0  1  1  0  0  1  0  0 
+## @result{} 0  1  1  0  0  1  0  0
 ## @end group
 ## @end example
 ## @seealso{bitand, bitor, bitxor, bitset, bitcmp, bitshift, bitmax}
@@ -32,7 +32,7 @@
 
 ## Liberally based of the version by Kai Habel from octave-forge
 
-function X = bitget (A, n)
+function C = bitget (A, n)
 
   if (nargin != 2)
     print_usage ();
@@ -67,14 +67,15 @@ function X = bitget (A, n)
       Amax = 64;
       _conv = @int64;
     else
-      error ("invalid class %s", class (A));
+      error ("bitget: invalid class %s", class (A));
     endif
   endif
 
   m = double (n(:));
   if (any (m < 1) || any (m > Amax))
-    error ("n must be in the range [1,%d]", Amax);
+    error ("bitget: N must be in the range [1,%d]", Amax);
   endif
 
-  X = bitand (A, bitshift (_conv (1), uint8 (n) - uint8 (1))) != _conv (0);
+  C = bitand (A, bitshift (_conv (1), uint8 (n) - uint8 (1))) != _conv (0);
+
 endfunction

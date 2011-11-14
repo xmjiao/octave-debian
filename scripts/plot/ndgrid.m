@@ -1,4 +1,4 @@
-## Copyright (C) 2006, 2007, 2009 Alexander Barth
+## Copyright (C) 2006-2011 Alexander Barth
 ##
 ## This file is part of Octave.
 ##
@@ -17,8 +17,8 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {[@var{y1}, @var{y2}, @dots{},  @var{y}n] =} ndgrid (@var{x1}, @var{x2}, @dots{}, @var{x}n)
-## @deftypefnx {Function File} {[@var{y1}, @var{y2}, @dots{},  @var{y}n] =} ndgrid (@var{x})
+## @deftypefn  {Function File} {[@var{y1}, @var{y2}, @dots{}, @var{y}n] =} ndgrid (@var{x1}, @var{x2}, @dots{}, @var{x}n)
+## @deftypefnx {Function File} {[@var{y1}, @var{y2}, @dots{}, @var{y}n] =} ndgrid (@var{x})
 ## Given n vectors @var{x1}, @dots{} @var{x}n, @code{ndgrid} returns
 ## n arrays of dimension n. The elements of the i-th output argument
 ## contains the elements of the vector @var{x}i repeated over all
@@ -35,17 +35,17 @@
 function varargout = ndgrid (varargin)
 
   if (nargin == 1)
-    n = max ([nargout, 2]);  
+    n = max ([nargout, 2]);
     ## If only one input argument is given, repeat it n-times
     varargin(1:n) = varargin(1);
   elseif (nargin >= nargout)
-    n = max ([nargin, 2]);  
+    n = max ([nargin, 2]);
   else
     error ("ndgrid: wrong number of input arguments");
   endif
 
   ## Determine the size of the output arguments
-  
+
   shape = zeros (1, n);
 
   for i = 1:n

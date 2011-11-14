@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1999, 2000, 2003, 2005, 2006, 2007, 2008, 2009
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -36,36 +35,37 @@ along with Octave; see the file COPYING.  If not, see
 #include "oct-obj.h"
 #include "pr-output.h"
 #include "utils.h"
+#include "variables.h"
+
+static int Vsvd_driver = SVD::GESVD;
 
 DEFUN_DLD (svd, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Loadable Function} {@var{s} =} svd (@var{a})\n\
-@deftypefnx {Loadable Function} {[@var{u}, @var{s}, @var{v}] =} svd (@var{a})\n\
+@deftypefn  {Loadable Function} {@var{s} =} svd (@var{A})\n\
+@deftypefnx {Loadable Function} {[@var{U}, @var{S}, @var{V}] =} svd (@var{A})\n\
+@deftypefnx {Loadable Function} {[@var{U}, @var{S}, @var{V}] =} svd (@var{A}, @var{econ})\n\
 @cindex singular value decomposition\n\
-Compute the singular value decomposition of @var{a}\n\
-@iftex\n\
+Compute the singular value decomposition of @var{A}\n\
 @tex\n\
 $$\n\
- A = U S V^H\n\
+ A = U S V^{\\dagger}\n\
 $$\n\
 @end tex\n\
-@end iftex\n\
 @ifnottex\n\
 \n\
 @example\n\
 A = U*S*V'\n\
 @end example\n\
+\n\
 @end ifnottex\n\
 \n\
-The function @code{svd} normally returns the vector of singular values.\n\
-If asked for three return values, it computes\n\
-@iftex\n\
+The function @code{svd} normally returns only the vector of singular values.\n\
+When called with three return values, it computes\n\
 @tex\n\
 $U$, $S$, and $V$.\n\
 @end tex\n\
-@end iftex\n\
 @ifnottex\n\
-U, S, and V.\n\
+@var{U}, @var{S}, and @var{V}.\n\
 @end ifnottex\n\
 For example,\n\
 \n\
@@ -119,8 +119,9 @@ v =\n\
 @end example\n\
 \n\
 If given a second argument, @code{svd} returns an economy-sized\n\
-decomposition, eliminating the unnecessary rows or columns of @var{u} or\n\
-@var{v}.\n\
+decomposition, eliminating the unnecessary rows or columns of @var{U} or\n\
+@var{V}.\n\
+@seealso{svd_driver, svds, eig}\n\
 @end deftypefn")
 {
   octave_value_list retval;
@@ -138,162 +139,186 @@ decomposition, eliminating the unnecessary rows or columns of @var{u} or\n\
   octave_idx_type nr = arg.rows ();
   octave_idx_type nc = arg.columns ();
 
+  if (arg.ndims () != 2)
+    {
+      error ("svd: A must be a 2-D matrix");
+      return retval;
+    }
+
   bool isfloat = arg.is_single_type ();
+
+  SVD::type type = ((nargout == 0 || nargout == 1)
+                    ? SVD::sigma_only
+                    : (nargin == 2) ? SVD::economy : SVD::std);
+
+  SVD::driver driver = static_cast<SVD::driver> (Vsvd_driver);
 
   if (nr == 0 || nc == 0)
     {
       if (isfloat)
-	{
-	  if (nargout == 3)
-	    {
-	      retval(3) = float_identity_matrix (nr, nr);
-	      retval(2) = FloatMatrix (nr, nc);
-	      retval(1) = float_identity_matrix (nc, nc);
-	    }
-	  else
-	    retval(0) = FloatMatrix (0, 1);
-	}
+        {
+          switch (type)
+            {
+            case SVD::std:
+              retval(2) = FloatDiagMatrix (nc, nc, 1.0f);
+              retval(1) = FloatMatrix (nr, nc);
+              retval(0) = FloatDiagMatrix (nr, nr, 1.0f);
+              break;
+            case SVD::economy:
+              retval(2) = FloatDiagMatrix (0, nc, 1.0f);
+              retval(1) = FloatMatrix (0, 0);
+              retval(0) = FloatDiagMatrix (nr, 0, 1.0f);
+              break;
+            case SVD::sigma_only: default:
+              retval(0) = FloatMatrix (0, 1);
+              break;
+            }
+        }
       else
-	{
-	  if (nargout == 3)
-	    {
-	      retval(3) = identity_matrix (nr, nr);
-	      retval(2) = Matrix (nr, nc);
-	      retval(1) = identity_matrix (nc, nc);
-	    }
-	  else
-	    retval(0) = Matrix (0, 1);
-	}
+        {
+          switch (type)
+            {
+            case SVD::std:
+              retval(2) = DiagMatrix (nc, nc, 1.0);
+              retval(1) = Matrix (nr, nc);
+              retval(0) = DiagMatrix (nr, nr, 1.0);
+              break;
+            case SVD::economy:
+              retval(2) = DiagMatrix (0, nc, 1.0);
+              retval(1) = Matrix (0, 0);
+              retval(0) = DiagMatrix (nr, 0, 1.0);
+              break;
+            case SVD::sigma_only: default:
+              retval(0) = Matrix (0, 1);
+              break;
+            }
+        }
     }
   else
     {
-      SVD::type type = ((nargout == 0 || nargout == 1)
-			? SVD::sigma_only
-			: (nargin == 2) ? SVD::economy : SVD::std);
-
       if (isfloat)
-	{
-	  if (arg.is_real_type ())
-	    {
-	      FloatMatrix tmp = arg.float_matrix_value ();
+        {
+          if (arg.is_real_type ())
+            {
+              FloatMatrix tmp = arg.float_matrix_value ();
 
-	      if (! error_state)
-		{
-		  if (tmp.any_element_is_inf_or_nan ())
-		    {
-		      error ("svd: cannot take SVD of matrix containing Inf or NaN values"); 
-		      return retval;
-		    }
+              if (! error_state)
+                {
+                  if (tmp.any_element_is_inf_or_nan ())
+                    {
+                      error ("svd: cannot take SVD of matrix containing Inf or NaN values");
+                      return retval;
+                    }
 
-		  FloatSVD result (tmp, type);
+                  FloatSVD result (tmp, type, driver);
 
-		  FloatDiagMatrix sigma = result.singular_values ();
+                  FloatDiagMatrix sigma = result.singular_values ();
 
-		  if (nargout == 0 || nargout == 1)
-		    {
-		      retval(0) = sigma.diag ();
-		    }
-		  else
-		    {
-		      retval(2) = result.right_singular_matrix ();
-		      retval(1) = sigma;
-		      retval(0) = result.left_singular_matrix ();
-		    }
-		}
-	    }
-	  else if (arg.is_complex_type ())
-	    {
-	      FloatComplexMatrix ctmp = arg.float_complex_matrix_value ();
+                  if (nargout == 0 || nargout == 1)
+                    {
+                      retval(0) = sigma.diag ();
+                    }
+                  else
+                    {
+                      retval(2) = result.right_singular_matrix ();
+                      retval(1) = sigma;
+                      retval(0) = result.left_singular_matrix ();
+                    }
+                }
+            }
+          else if (arg.is_complex_type ())
+            {
+              FloatComplexMatrix ctmp = arg.float_complex_matrix_value ();
 
-	      if (! error_state)
-		{
-		  if (ctmp.any_element_is_inf_or_nan ())
-		    {
-		      error ("svd: cannot take SVD of matrix containing Inf or NaN values"); 
-		      return retval;
-		    }
+              if (! error_state)
+                {
+                  if (ctmp.any_element_is_inf_or_nan ())
+                    {
+                      error ("svd: cannot take SVD of matrix containing Inf or NaN values");
+                      return retval;
+                    }
 
-		  FloatComplexSVD result (ctmp, type);
+                  FloatComplexSVD result (ctmp, type, driver);
 
-		  FloatDiagMatrix sigma = result.singular_values ();
+                  FloatDiagMatrix sigma = result.singular_values ();
 
-		  if (nargout == 0 || nargout == 1)
-		    {
-		      retval(0) = sigma.diag ();
-		    }
-		  else
-		    {
-		      retval(2) = result.right_singular_matrix ();
-		      retval(1) = sigma;
-		      retval(0) = result.left_singular_matrix ();
-		    }
-		}
-	    }
-	}
+                  if (nargout == 0 || nargout == 1)
+                    {
+                      retval(0) = sigma.diag ();
+                    }
+                  else
+                    {
+                      retval(2) = result.right_singular_matrix ();
+                      retval(1) = sigma;
+                      retval(0) = result.left_singular_matrix ();
+                    }
+                }
+            }
+        }
       else
-	{
-	  if (arg.is_real_type ())
-	    {
-	      Matrix tmp = arg.matrix_value ();
+        {
+          if (arg.is_real_type ())
+            {
+              Matrix tmp = arg.matrix_value ();
 
-	      if (! error_state)
-		{
-		  if (tmp.any_element_is_inf_or_nan ())
-		    {
-		      error ("svd: cannot take SVD of matrix containing Inf or NaN values"); 
-		      return retval;
-		    }
+              if (! error_state)
+                {
+                  if (tmp.any_element_is_inf_or_nan ())
+                    {
+                      error ("svd: cannot take SVD of matrix containing Inf or NaN values");
+                      return retval;
+                    }
 
-		  SVD result (tmp, type);
+                  SVD result (tmp, type, driver);
 
-		  DiagMatrix sigma = result.singular_values ();
+                  DiagMatrix sigma = result.singular_values ();
 
-		  if (nargout == 0 || nargout == 1)
-		    {
-		      retval(0) = sigma.diag ();
-		    }
-		  else
-		    {
-		      retval(2) = result.right_singular_matrix ();
-		      retval(1) = sigma;
-		      retval(0) = result.left_singular_matrix ();
-		    }
-		}
-	    }
-	  else if (arg.is_complex_type ())
-	    {
-	      ComplexMatrix ctmp = arg.complex_matrix_value ();
+                  if (nargout == 0 || nargout == 1)
+                    {
+                      retval(0) = sigma.diag ();
+                    }
+                  else
+                    {
+                      retval(2) = result.right_singular_matrix ();
+                      retval(1) = sigma;
+                      retval(0) = result.left_singular_matrix ();
+                    }
+                }
+            }
+          else if (arg.is_complex_type ())
+            {
+              ComplexMatrix ctmp = arg.complex_matrix_value ();
 
-	      if (! error_state)
-		{
-		  if (ctmp.any_element_is_inf_or_nan ())
-		    {
-		      error ("svd: cannot take SVD of matrix containing Inf or NaN values"); 
-		      return retval;
-		    }
+              if (! error_state)
+                {
+                  if (ctmp.any_element_is_inf_or_nan ())
+                    {
+                      error ("svd: cannot take SVD of matrix containing Inf or NaN values");
+                      return retval;
+                    }
 
-		  ComplexSVD result (ctmp, type);
+                  ComplexSVD result (ctmp, type, driver);
 
-		  DiagMatrix sigma = result.singular_values ();
+                  DiagMatrix sigma = result.singular_values ();
 
-		  if (nargout == 0 || nargout == 1)
-		    {
-		      retval(0) = sigma.diag ();
-		    }
-		  else
-		    {
-		      retval(2) = result.right_singular_matrix ();
-		      retval(1) = sigma;
-		      retval(0) = result.left_singular_matrix ();
-		    }
-		}
-	    }
-	  else
-	    {
-	      gripe_wrong_type_arg ("svd", arg);
-	      return retval;
-	    }
-	}
+                  if (nargout == 0 || nargout == 1)
+                    {
+                      retval(0) = sigma.diag ();
+                    }
+                  else
+                    {
+                      retval(2) = result.right_singular_matrix ();
+                      retval(1) = sigma;
+                      retval(0) = result.left_singular_matrix ();
+                    }
+                }
+            }
+          else
+            {
+              gripe_wrong_type_arg ("svd", arg);
+              return retval;
+            }
+        }
     }
 
   return retval;
@@ -359,14 +384,37 @@ decomposition, eliminating the unnecessary rows or columns of @var{u} or\n\
 %! [u, s, v] = svd (a, 1);
 %! assert (u * s * v', a, sqrt (eps('single')));
 
+%!test
+%! a = zeros (0, 5);
+%! [u, s, v] = svd (a);
+%! assert (size (u), [0, 0]);
+%! assert (size (s), [0, 5]);
+%! assert (size (v), [5, 5]);
+
+%!test
+%! a = zeros (5, 0);
+%! [u, s, v] = svd (a, 1);
+%! assert (size (u), [5, 0]);
+%! assert (size (s), [0, 0]);
+%! assert (size (v), [0, 0]);
+
 %!error <Invalid call to svd.*> svd ();
 %!error <Invalid call to svd.*> svd ([1, 2; 4, 5], 2, 3);
 %!error <Invalid call to svd.*> [u, v] = svd ([1, 2; 3, 4]);
 
- */
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
 */
+
+DEFUN_DLD (svd_driver, args, nargout,
+  "-*- texinfo -*-\n\
+@deftypefn  {Loadable Function} {@var{val} =} svd_driver ()\n\
+@deftypefnx {Loadable Function} {@var{old_val} =} svd_driver (@var{new_val})\n\
+Query or set the underlying @sc{lapack} driver used by @code{svd}.\n\
+Currently recognized values are \"gesvd\" and \"gesdd\".  The default\n\
+is \"gesvd\".\n\
+@seealso{svd}\n\
+@end deftypefn")
+{
+  static const char *driver_names[] = { "gesvd", "gesdd", 0 };
+
+  return SET_INTERNAL_VARIABLE_CHOICES (svd_driver, driver_names);
+}

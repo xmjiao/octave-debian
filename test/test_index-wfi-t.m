@@ -1,4 +1,4 @@
-## Copyright (C) 2006, 2007, 2008 John W. Eaton
+## Copyright (C) 2006-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -19,7 +19,7 @@
 %% test/octave.test/index-wfi-t/s-1.m
 %!test
 %! wfi = warning ("query", "Octave:fortran-indexing");
-%! warn_fortran_indexing = 1;
+%! warning ("on", "Octave:fortran-indexing");
 %! a = [];
 %! assert(isempty (a));
 %! warning (wfi.state, "Octave:fortran-indexing");

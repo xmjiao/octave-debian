@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2006, 2007, 2008 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -43,23 +43,25 @@ octave_mex_function : public octave_function
 {
 public:
 
-  octave_mex_function (void) { }
+  octave_mex_function (void)
+    : mex_fcn_ptr (), exit_fcn_ptr (), have_fmex (), sh_lib (),
+      t_checked (), system_fcn_file () { }
 
   octave_mex_function (void *fptr, bool fmex, const octave_shlib& shl,
-		       const std::string& nm = std::string ());
+                       const std::string& nm = std::string ());
 
   ~octave_mex_function (void);
 
   octave_value subsref (const std::string& type,
-			const std::list<octave_value_list>& idx)
+                        const std::list<octave_value_list>& idx)
     {
       octave_value_list tmp = subsref (type, idx, 1);
       return tmp.length () > 0 ? tmp(0) : octave_value ();
     }
 
   octave_value_list subsref (const std::string& type,
-			     const std::list<octave_value_list>& idx,
-			     int nargout);
+                             const std::list<octave_value_list>& idx,
+                             int nargout);
 
   octave_function *function_value (bool = false) { return this; }
 
@@ -83,6 +85,9 @@ public:
   do_multi_index_op (int nargout, const octave_value_list& args);
 
   void atexit (void (*fcn) (void)) { exit_fcn_ptr = fcn; }
+
+  octave_shlib get_shlib (void) const
+    { return sh_lib; }
 
 private:
 
@@ -115,9 +120,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

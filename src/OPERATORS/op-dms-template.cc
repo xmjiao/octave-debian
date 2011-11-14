@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008, 2009 Jaroslav Hajek
+Copyright (C) 2008-2011 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -40,11 +40,7 @@ along with Octave; see the file COPYING.  If not, see
 #define MATRIXV MATRIX
 #endif
 
-DEFNDBINOP_OP (sdmadd, SCALAR, MATRIX, SCALARV, MATRIXV, +)
-DEFNDBINOP_OP (sdmsub, SCALAR, MATRIX, SCALARV, MATRIXV, -)
 DEFNDBINOP_OP (sdmmul, SCALAR, MATRIX, SCALARV, MATRIXV, *)
-DEFNDBINOP_OP (dmsadd, MATRIX, SCALAR, MATRIXV, SCALARV, +)
-DEFNDBINOP_OP (dmssub, MATRIX, SCALAR, MATRIXV, SCALARV, -)
 DEFNDBINOP_OP (dmsmul, MATRIX, SCALAR, MATRIXV, SCALARV, *)
 
 #define OCTAVE_MATRIX CONCAT2(octave_, MATRIX)
@@ -53,7 +49,7 @@ DEFNDBINOP_OP (dmsmul, MATRIX, SCALAR, MATRIXV, SCALARV, *)
 #define SCALAR_VALUE CONCAT2(SCALARV, _value)
 
 template <class T>
-static T 
+static T
 gripe_if_zero (T x)
 {
   if (x == T ())
@@ -88,12 +84,8 @@ DEFBINOP (dmspow, MATRIX, SCALAR)
 void
 INST_NAME (void)
 {
-  INSTALL_BINOP (op_add, OCTAVE_MATRIX, OCTAVE_SCALAR, dmsadd);
-  INSTALL_BINOP (op_sub, OCTAVE_MATRIX, OCTAVE_SCALAR, dmssub);
   INSTALL_BINOP (op_mul, OCTAVE_MATRIX, OCTAVE_SCALAR, dmsmul);
   INSTALL_BINOP (op_div, OCTAVE_MATRIX, OCTAVE_SCALAR, dmsdiv);
-  INSTALL_BINOP (op_add, OCTAVE_SCALAR, OCTAVE_MATRIX, sdmadd);
-  INSTALL_BINOP (op_sub, OCTAVE_SCALAR, OCTAVE_MATRIX, sdmsub);
   INSTALL_BINOP (op_mul, OCTAVE_SCALAR, OCTAVE_MATRIX, sdmmul);
   INSTALL_BINOP (op_ldiv, OCTAVE_SCALAR, OCTAVE_MATRIX, sdmldiv);
   INSTALL_BINOP (op_pow, OCTAVE_MATRIX, OCTAVE_SCALAR, dmspow);

@@ -1,4 +1,4 @@
-## Copyright (C) 2005, 2006, 2007, 2009 William Poetra Yoga Hadisoeseno
+## Copyright (C) 2005-2011 William Poetra Yoga Hadisoeseno
 ##
 ## This file is part of Octave.
 ##
@@ -35,10 +35,11 @@
 ## Enable or disable license testing for @var{feature}, depending on
 ## @var{toggle}, which may be one of:
 ##
-## @table @samp
+## @table @asis
 ## @item "enable"
 ## Future tests for the specified license of @var{feature} are conducted
 ## as usual.
+##
 ## @item "disable"
 ## Future tests for the specified license of @var{feature} return 0.
 ## @end table
@@ -119,9 +120,9 @@ function retval = license (varargin)
 
       pw = getpwuid (getuid ());
       if (isstruct (pw))
-	username = pw.name;
+        username = pw.name;
       else
-	username = "octave_user";
+        username = "octave_user";
       endif
 
       retval(1:nr_licenses) = struct ("feature", "", "user", "");
@@ -155,10 +156,10 @@ function retval = license (varargin)
           elseif (strcmp (varargin{3}, "disable"))
             __octave_licenses__{p,3} = false;
           else
-            error ("toggle must be either `enable' of `disable'");
+            error ("TOGGLE must be either `enable' of `disable'");
           endif
         else
-          error ("feature `%s' not found", feature);
+          error ("FEATURE `%s' not found", feature);
         endif
       endif
 

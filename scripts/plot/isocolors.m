@@ -1,17 +1,20 @@
-## Copyright (C) 2009 Martin Helm
+## Copyright (C) 2009-2011 Martin Helm
 ##
-## This program is free software; you can redistribute it and/or modify
-## it under the terms of the GNU General Public License as published by
-## the Free Software Foundation; either version 3 of the License, or
-## (at your option) any later version.
+## This file is part of Octave.
 ##
-## This program is distributed in the hope that it will be useful,
-## but WITHOUT ANY WARRANTY; without even the implied warranty of
-## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-## GNU General Public License for more details.
+## Octave is free software; you can redistribute it and/or modify it
+## under the terms of the GNU General Public License as published by
+## the Free Software Foundation; either version 3 of the License, or (at
+## your option) any later version.
+##
+## Octave is distributed in the hope that it will be useful, but
+## WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+## General Public License for more details.
 ##
 ## You should have received a copy of the GNU General Public License
-## along with this program; if not, see http://www.gnu.org/licenses/gpl.html.
+## along with Octave; see the file COPYING.  If not, see
+## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
 ## @deftypefn  {Function File} {[@var{cd}] =} isocolors (@var{c}, @var{v})
@@ -19,13 +22,13 @@
 ## @deftypefnx {Function File} {[@var{cd}] =} isocolors (@var{x}, @var{y}, @var{z}, @var{r}, @var{g}, @var{b}, @var{v})
 ## @deftypefnx {Function File} {[@var{cd}] =} isocolors (@var{r}, @var{g}, @var{b}, @var{v})
 ## @deftypefnx {Function File} {[@var{cd}] =} isocolors (@dots{}, @var{p})
-## @deftypefnx {Function File} isocolors (@dots{})
+## @deftypefnx {Function File} {} isocolors (@dots{})
 ##
 ## If called with one output argument and the first input argument
-## @var{c} is a three--dimensional array that contains color values and
+## @var{c} is a three-dimensional array that contains color values and
 ## the second input argument @var{v} keeps the vertices of a geometry
 ## then return a matrix @var{cd} with color data information for the
-## geometry at computed points 
+## geometry at computed points
 ## @command{[x, y, z] = meshgrid (1:l, 1:m, 1:n)}.  The output argument
 ## @var{cd} can be taken to manually set FaceVertexCData of a patch.
 ##
@@ -43,44 +46,45 @@
 ## change the colors of a patch that is given by the patch handle
 ## @var{p}.
 ##
-## For example,
+## For example:
+##
 ## @example
 ## function [] = isofinish (p)
-##   set (gca, "DataAspectRatioMode", "manual", \
-##        "DataAspectRatio", [1 1 1]);
+##   set (gca, "PlotBoxAspectRatioMode", "manual", \
+##        "PlotBoxAspectRatio", [1 1 1]);
 ##   set (p, "FaceColor", "interp");
 ##   ## set (p, "FaceLighting", "flat");
 ##   ## light ("Position", [1 1 5]); ## Available with JHandles
 ## endfunction
-## 
+##
 ## N = 15;    ## Increase number of vertices in each direction
 ## iso = .4;  ## Change isovalue to .1 to display a sphere
 ## lin = linspace (0, 2, N);
 ## [x, y, z] = meshgrid (lin, lin, lin);
-## c = abs ((x-.5).^2 + (y-.5).^2 + (z-.5).^2); 
+## c = abs ((x-.5).^2 + (y-.5).^2 + (z-.5).^2);
 ## figure (); ## Open another figure window
 ##
-## subplot (2, 2, 1); view (-38, 20); 
+## subplot (2, 2, 1); view (-38, 20);
 ## [f, v] = isosurface (x, y, z, c, iso);
 ## p = patch ("Faces", f, "Vertices", v, "EdgeColor", "none");
 ## cdat = rand (size (c));       ## Compute random patch color data
 ## isocolors (x, y, z, cdat, p); ## Directly set colors of patch
 ## isofinish (p);                ## Call user function isofinish
 ##
-## subplot (2, 2, 2); view (-38, 20); 
+## subplot (2, 2, 2); view (-38, 20);
 ## p = patch ("Faces", f, "Vertices", v, "EdgeColor", "none");
 ## [r, g, b] = meshgrid (lin, 2-lin, 2-lin);
 ## cdat = isocolors (x, y, z, c, v); ## Compute color data vertices
 ## set (p, "FaceVertexCData", cdat); ## Set color data manually
 ## isofinish (p);
 ##
-## subplot (2, 2, 3); view (-38, 20); 
+## subplot (2, 2, 3); view (-38, 20);
 ## p = patch ("Faces", f, "Vertices", v, "EdgeColor", "none");
 ## cdat = isocolors (r, g, b, c, p); ## Compute color data patch
 ## set (p, "FaceVertexCData", cdat); ## Set color data manually
 ## isofinish (p);
 ##
-## subplot (2, 2, 4); view (-38, 20); 
+## subplot (2, 2, 4); view (-38, 20);
 ## p = patch ("Faces", f, "Vertices", v, "EdgeColor", "none");
 ## r = g = b = repmat ([1:N] / N, [N, 1, N]); ## Black to white
 ## cdat = isocolors (x, y, z, r, g, b, v);
@@ -88,7 +92,7 @@
 ## isofinish (p);
 ## @end example
 ##
-## @seealso{isosurface, isonormals, isocaps}
+## @seealso{isosurface, isonormals}
 ##
 ## @end deftypefn
 
@@ -96,7 +100,7 @@
 
 function varargout = isocolors(varargin)
   calc_rgb = false;
-  switch nargin
+  switch (nargin)
     case 2
       c = varargin{1};
       vp = varargin{2};
@@ -127,7 +131,7 @@ function varargout = isocolors(varargin)
       G = varargin{5};
       B = varargin{6};
       vp = varargin{7};
-    otherwise 
+    otherwise
       print_usage ();
   endswitch
   if (ismatrix (vp) && size (vp,2) == 3)
@@ -137,17 +141,17 @@ function varargout = isocolors(varargin)
     pa = vp;
     v = get (pa, "Vertices");
   else
-    error("Last argument is no vertex list and no patch handle");
+    error ("isocolors: last argument is not a vertex list or patch handle");
   endif
-  if ( calc_rgb )
+  if (calc_rgb)
     new_col = zeros (size (v, 1), 3);
-    new_col(:, 1) = __interp_cube__ (x, y, z, R, v, "values" );
-    new_col(:, 2) = __interp_cube__ (x, y, z, G, v, "values" );
-    new_col(:, 3) = __interp_cube__ (x, y, z, B, v, "values" );
+    new_col(:,1) = __interp_cube__ (x, y, z, R, v, "values" );
+    new_col(:,2) = __interp_cube__ (x, y, z, G, v, "values" );
+    new_col(:,3) = __interp_cube__ (x, y, z, B, v, "values" );
   else
     new_col = __interp_cube__ (x, y, z, c, v, "values" );
   endif
-  switch nargout
+  switch (nargout)
     case 0
       if (!isempty (pa))
         set (pa, "FaceVertexCData", new_col);
@@ -161,7 +165,7 @@ endfunction
 
 %!test
 %!  [x, y, z] = meshgrid (0:.5:2, 0:.5:2, 0:.5:2);
-%!  c = (x-.5).^2 + (y-.5).^2 + (z-.5).^2; 
+%!  c = (x-.5).^2 + (y-.5).^2 + (z-.5).^2;
 %!  [f, v] = isosurface (x, y, z, c, .4);
 %!  cdat = isocolors (x, y, z, c, v);
 %!  assert (size (cdat, 1) == size (v, 1));

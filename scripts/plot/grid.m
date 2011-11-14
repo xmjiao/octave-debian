@@ -1,5 +1,4 @@
-## Copyright (C) 1993, 1994, 1995, 1996, 1997, 1999, 2000, 2003, 2004,
-##               2005, 2006, 2007, 2008, 2009 John W. Eaton
+## Copyright (C) 1993-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -18,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} grid (@var{arg})
+## @deftypefn  {Function File} {} grid (@var{arg})
 ## @deftypefnx {Function File} {} grid ("minor", @var{arg2})
 ## @deftypefnx {Function File} {} grid (@var{hax}, @dots{})
 ## Force the display of a grid on the plot.
@@ -57,28 +56,28 @@ function grid (varargin)
     x = varargin{1};
     if (ischar (x))
       if (strcmpi (x, "off"))
-	grid_on = false;
+        grid_on = false;
       elseif (strcmpi (x, "on"))
-	grid_on = true;
+        grid_on = true;
       elseif (strcmpi (x, "minor"))
         if (nargs == 2)
-	  x2 = varargin{2};
-	  if (strcmpi (x2, "on"))
-	    minor_on = true;
-	    grid_on = true;
-	  elseif (strcmpi (x2, "off"))
-	    minor_on = false;
-	  else
-	    print_usage ();
-	  endif
-	else
-	   minor_on = ! minor_on;
-	   if (minor_on)
-	     grid_on = true;
-	   endif
-	endif
+          x2 = varargin{2};
+          if (strcmpi (x2, "on"))
+            minor_on = true;
+            grid_on = true;
+          elseif (strcmpi (x2, "off"))
+            minor_on = false;
+          else
+            print_usage ();
+          endif
+        else
+           minor_on = ! minor_on;
+           if (minor_on)
+             grid_on = true;
+           endif
+        endif
       else
-	print_usage ();
+        print_usage ();
       endif
     else
       error ("grid: argument must be a string");

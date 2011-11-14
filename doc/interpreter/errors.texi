@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.
 
-@c Copyright (C) 1996, 1997, 2007, 2008, 2009 John W. Eaton
+@c Copyright (C) 1996-2011 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -51,6 +51,7 @@ described in @ref{The @code{try} Statement}.
 @menu
 * Raising Errors::
 * Catching Errors::
+* Recovering From Errors::
 @end menu
 
 @node Raising Errors
@@ -74,9 +75,9 @@ When the @code{error} function is called, it prints the given message
 and returns to the Octave prompt.  This means that no code following
 a call to @code{error} will be executed.
 
-@c error.cc
+@c error src/error.cc
 @anchor{doc-error}
-@deftypefn {Built-in Function} {} error (@var{template}, @dots{})
+@deftypefn  {Built-in Function} {} error (@var{template}, @dots{})
 @deftypefnx {Built-in Function} {} error (@var{id}, @var{template}, @dots{})
 Format the optional arguments under the control of the template string
 @var{template} using the same rules as the @code{printf} family of
@@ -143,6 +144,7 @@ isn't written in Texinfo, the error message contains the entire help
 message.
 
 Consider the following function.
+
 @example
 @group
 ## -*- texinfo -*-
@@ -180,10 +182,10 @@ f ()
 @end group
 @end example
 
-@c ./help/print_usage.m
+@c print_usage scripts/help/print_usage.m
 @anchor{doc-print_usage}
-@deftypefn {Function File} {} print_usage ()
-@deftypefnx{Function File} {} print_usage (@var{name})
+@deftypefn  {Function File} {} print_usage ()
+@deftypefnx {Function File} {} print_usage (@var{name})
 Print the usage message for a function.  When called with no input arguments
 the @code{print_usage} function displays the usage message of the currently
 executing function.
@@ -191,7 +193,7 @@ executing function.
 @end deftypefn
 
 
-@c error.cc
+@c usage src/error.cc
 @anchor{doc-usage}
 @deftypefn {Built-in Function} {} usage (@var{msg})
 Print the message @var{msg}, prefixed by the string @samp{usage: }, and
@@ -221,7 +223,7 @@ to check for the proper number of arguments.
 @end deftypefn
 
 
-@c ./io/beep.m
+@c beep scripts/io/beep.m
 @anchor{doc-beep}
 @deftypefn {Function File} {} beep ()
 Produce a beep from the speaker (or visual bell).
@@ -229,9 +231,9 @@ Produce a beep from the speaker (or visual bell).
 @end deftypefn
 
 
-@c error.cc
+@c beep_on_error src/error.cc
 @anchor{doc-beep_on_error}
-@deftypefn {Built-in Function} {@var{val} =} beep_on_error ()
+@deftypefn  {Built-in Function} {@var{val} =} beep_on_error ()
 @deftypefnx {Built-in Function} {@var{old_val} =} beep_on_error (@var{new_val})
 Query or set the internal variable that controls whether Octave will try
 to ring the terminal bell before printing an error message.
@@ -282,53 +284,62 @@ endfor
 @end group
 @end example
 
-@c error.cc
+@c lasterror src/error.cc
 @anchor{doc-lasterror}
-@deftypefn {Built-in Function} {@var{err} =} lasterror (@var{err})
+@deftypefn  {Built-in Function} {@var{lasterr} =} lasterror ()
+@deftypefnx {Built-in Function} {} lasterror (@var{err})
 @deftypefnx {Built-in Function} {} lasterror ('reset')
-Returns or sets the last error message.  Called without any arguments
-returns a structure containing the last error message, as well as other
-information related to this error.  The elements of this structure are:
+Query or set the last error message structure.  When called without arguments
+, return a structure containing the last error message and other
+information related to this error.  The elements of the structure are:
 
 @table @asis
 @item 'message'
 The text of the last error message
+
 @item 'identifier'
 The message identifier of this error message
+
 @item 'stack'
-A structure containing information on where the message occurred.  This might
-be an empty structure if this in the case where this information cannot
-be obtained.  The fields of this structure are:
+A structure containing information on where the message occurred.  This may
+be an empty structure if the information cannot
+be obtained.  The fields of the structure are:
 
 @table @asis
 @item 'file'
 The name of the file where the error occurred
+
 @item 'name'
 The name of function in which the error occurred
+
 @item 'line'
 The line number at which the error occurred
+
 @item 'column'
 An optional field with the column number at which the error occurred
 @end table
 @end table
 
-The @var{err} structure may also be passed to @code{lasterror} to set the
-information about the last error.  The only constraint on @var{err} in that
-case is that it is a scalar structure.  Any fields of @var{err} that match
-the above are set to the value passed in @var{err}, while other fields are
-set to their default values.
+The last error structure may be set by passing a scalar structure, @var{err},
+as input.  Any fields of @var{err} that match those above are set while any
+unspecified fields are initialized with default values.
 
-If @code{lasterror} is called with the argument 'reset', all values take
-their default values.
+If @code{lasterror} is called with the argument 'reset', all fields are
+set to their default values.
+@seealso{@ref{doc-lasterr,,lasterr}}
 @end deftypefn
 
 
-@c error.cc
+@c lasterr src/error.cc
 @anchor{doc-lasterr}
-@deftypefn {Built-in Function} {[@var{msg}, @var{msgid}] =} lasterr (@var{msg}, @var{msgid})
-Without any arguments, return the last error message.  With one
+@deftypefn  {Built-in Function} {[@var{msg}, @var{msgid}] =} lasterr ()
+@deftypefnx {Built-in Function} {} lasterr (@var{msg})
+@deftypefnx {Built-in Function} {} lasterr (@var{msg}, @var{msgid})
+Query or set the last error message.  When called without input arguments,
+return the last error message and message identifier.  With one
 argument, set the last error message to @var{msg}.  With two arguments,
 also set the last message identifier.
+@seealso{@ref{doc-lasterror,,lasterror}}
 @end deftypefn
 
 
@@ -357,10 +368,10 @@ endfor
 @end group
 @end example
 
-@c error.cc
+@c rethrow src/error.cc
 @anchor{doc-rethrow}
 @deftypefn {Built-in Function} {} rethrow (@var{err})
-Reissues a previous error as defined by @var{err}.  @var{err} is a structure
+Reissue a previous error as defined by @var{err}.  @var{err} is a structure
 that must contain at least the 'message' and 'identifier' fields.  @var{err}
 can also contain a field 'stack' that gives information on the assumed
 location of the error.  Typically @var{err} is returned from
@@ -371,9 +382,9 @@ location of the error.  Typically @var{err} is returned from
 
 @c FIXME: I have no idea what the rest of the functions are used for...
 
-@c utils.cc
+@c errno src/utils.cc
 @anchor{doc-errno}
-@deftypefn {Built-in Function} {@var{err} =} errno ()
+@deftypefn  {Built-in Function} {@var{err} =} errno ()
 @deftypefnx {Built-in Function} {@var{err} =} errno (@var{val})
 @deftypefnx {Built-in Function} {@var{err} =} errno (@var{name})
 Return the current value of the system-dependent variable errno,
@@ -383,10 +394,52 @@ if @var{name} is not found.
 @end deftypefn
 
 
-@c utils.cc
+@c errno_list src/utils.cc
 @anchor{doc-errno_list}
 @deftypefn {Built-in Function} {} errno_list ()
 Return a structure containing the system-dependent errno values.
+@end deftypefn
+
+
+@node Recovering From Errors
+@subsection Recovering From Errors
+
+Octave provides several ways of recovering from errors.  There are
+@code{try}/@code{catch} blocks, 
+@code{unwind_protect}/@code{unwind_protect_cleanup} blocks, 
+and finally the @code{onCleanup} command.
+
+The @code{onCleanup} command associates an ordinary Octave variable (the
+trigger) with an arbitrary function (the action).  Whenever the Octave variable
+ceases to exist---whether due to a function return, an error, or simply because
+the variable has been removed with @code{clear}---then the assigned function
+is executed.
+
+The function can do anything necessary for cleanup such as closing open file
+handles, printing an error message, or restoring global variables to their
+initial values.  The last example is a very convenient idiom for Octave code.
+For example:
+
+@example
+@group
+function rand42
+  old_state = rand ('state');
+  restore_state = onCleanup (@@() rand ('state', old_state);
+  rand ('state', 42);
+  @dots{}
+endfunction  # rand generator state restored by onCleanup
+@end group
+@end example
+
+@c onCleanup src/DLD-FUNCTIONS/onCleanup.cc
+@anchor{doc-onCleanup}
+@deftypefn {Loadable Function} {@var{c} =} onCleanup (@var{action})
+Create a special object that executes a given function upon destruction.
+If the object is copied to multiple variables (or cell or struct array
+elements) or returned from a function, @var{action} will be executed after
+clearing the last copy of the object.  Note that if multiple local onCleanup
+variables are created, the order in which they are called is unspecified.
+For similar functionality @xref{The @code{unwind_protect} Statement}.
 @end deftypefn
 
 
@@ -443,9 +496,9 @@ as will be described in the next section.  To assign an ID to a warning,
 simply call @code{warning} with two string arguments, where the first
 is the identification string, and the second is the actual warning.
 
-@c error.cc
+@c warning src/error.cc
 @anchor{doc-warning}
-@deftypefn {Built-in Function} {} warning (@var{template}, @dots{})
+@deftypefn  {Built-in Function} {} warning (@var{template}, @dots{})
 @deftypefnx {Built-in Function} {} warning (@var{id}, @var{template}, @dots{})
 Format the optional arguments under the control of the template string
 @var{template} using the same rules as the @code{printf} family of
@@ -472,7 +525,7 @@ warning named by @var{id} is handled as if it were an error instead.
 @end deftypefn
 
 
-@c error.cc
+@c lastwarn src/error.cc
 @anchor{doc-lastwarn}
 @deftypefn {Built-in Function} {[@var{msg}, @var{msgid}] =} lastwarn (@var{msg}, @var{msgid})
 Without any arguments, return the last warning message.  With one
@@ -513,7 +566,7 @@ warning ("non-negative-variable",
 The functions distributed with Octave can issue one of the following
 warnings.
 
-@c ./miscellaneous/warning_ids.m
+@c warning_ids scripts/miscellaneous/warning_ids.m
 @anchor{doc-warning_ids}
 @table @code
 @item Octave:array-to-scalar
@@ -607,6 +660,15 @@ Associativity changes have typically been made for @sc{matlab}
 compatibility.  By default, the @code{Octave:associativity-change}
 warning is enabled.
 
+@item Octave:autoload-relative-file-name
+If the @code{Octave:autoload-relative-file-name} is enabled,
+Octave will warn when parsing autoload() function calls with relative
+paths to function files.  This usually happens when using autoload()
+calls in PKG_ADD files, when the PKG_ADD file is not in the same
+directory as the .oct file referred to by the autoload() command.
+By default, the @code{Octave:autoload-relative-file-name}
+warning is enabled.
+
 @item Octave:divide-by-zero
 If the @code{Octave:divide-by-zero} warning is enabled, a
 warning is issued when Octave encounters a division by zero.  By
@@ -615,7 +677,7 @@ default, the @code{Octave:divide-by-zero} warning is enabled.
 @item Octave:empty-list-elements
 If the @code{Octave:empty-list-elements} warning is enabled, a
 warning is issued when an empty matrix is found in a matrix list.
-For example,
+For example:
 
 @example
 a = [1, [], 3, [], 5]
@@ -681,8 +743,31 @@ numbers in matrix notation.  For example,
      @result{} "foo"
 @end group
 @end example
+
+@noindent
 elicits a warning if the @code{Octave:num-to-str} warning is
 enabled.  By default, the @code{Octave:num-to-str} warning is enabled.
+
+@item Octave:possible-matlab-short-circuit-operator
+If the @code{Octave:possible-matlab-short-circuit-operator} warning
+is enabled, Octave will warn about using the not short circuiting
+operators @code{&} and @code{|} inside @code{if} or @code{while}
+conditions.  They normally never short circuit, but @sc{matlab} always
+short circuits if any logical operators are used in a condition.  You
+can turn on the option
+
+@example
+@group
+do_braindead_shortcircuit_evaluation(1)
+@end group
+@end example
+
+@noindent
+if you would like to enable this short-circuit evaluation in
+Octave.  Note that the @code{&&} and @code{||} operators always short
+circuit in both Octave and @sc{matlab}, so it's only necessary to
+enable @sc{matlab}-style short-circuiting it's too arduous to modify
+existing code that relies on this behavior.
 
 @item Octave:precedence-change
 If the @code{Octave:precedence-change} warning is enabled, Octave
@@ -717,12 +802,15 @@ string constant.
 If the @code{Octave:str-to-num} warning is enabled, a warning is printed
 for implicit conversions of strings to their numeric ASCII equivalents.
 For example,
+
 @example
 @group
 "abc" + 0
      @result{} 97 98 99
 @end group
 @end example
+
+@noindent
 elicits a warning if the @code{Octave:str-to-num} warning is enabled.
 By default, the @code{Octave:str-to-num} warning is disabled.
 

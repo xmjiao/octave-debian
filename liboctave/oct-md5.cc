@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2007, 2008, 2009 David Bateman
+Copyright (C) 2007-2011 David Bateman
 
 This file is part of Octave.
 
@@ -32,64 +32,54 @@ along with Octave; see the file COPYING.  If not, see
 #include "lo-error.h"
 #include "oct-md5.h"
 #include "md5.h"
-#include "oct-locbuf.h"
- 
+
+static std::string
+oct_md5_result_to_str (const unsigned char *buf)
+{
+  char tmp [33];
+
+  sprintf (tmp,
+           "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
+           buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7],
+           buf[8],  buf[9], buf[10], buf[11], buf[12], buf[13], buf[14],
+           buf[15]);
+
+  return std::string (tmp, 32);
+}
+
 std::string
 oct_md5 (const std::string str)
 {
-  md5_state_t state;
+  unsigned char buf[16];
 
-  OCTAVE_LOCAL_BUFFER (md5_byte_t, digest, 16);
-  md5_init (&state);
-  md5_append (&state, reinterpret_cast<const md5_byte_t *>(str.c_str()),
-	      str.length());
-  md5_finish (&state, digest);
+  md5_buffer (str.data (), str.length (), buf);
 
-  OCTAVE_LOCAL_BUFFER (char, tmp, 33);
-  for (octave_idx_type i = 0; i < 16; i++)
-    sprintf (&tmp[2*i], "%02x", digest[i]);
-  tmp[32] = 0;
-  return std::string (tmp);
+  return oct_md5_result_to_str (buf);
 }
-	  
+
 std::string
 oct_md5_file (const std::string file)
 {
+  std::string retval;
+
   FILE *ifile = fopen (file.c_str (), "rb");
 
-  if (! ifile)
+  if (ifile)
     {
-      (*current_liboctave_error_handler) ("unable to open file `%s' for writing",
-					  file.c_str());
-      return std::string();
+      unsigned char buf[16];
+
+      int errflag = md5_stream (ifile, buf);
+
+      gnulib::fclose (ifile);
+
+      if (! errflag)
+        retval = oct_md5_result_to_str (buf);
+      else
+        (*current_liboctave_error_handler) ("internal error in md5_stream");
     }
   else
-    {
-      md5_state_t state;
-      size_t nel;
+    (*current_liboctave_error_handler) ("unable to open file `%s' for reading",
+                                        file.c_str());
 
-      OCTAVE_LOCAL_BUFFER (md5_byte_t, digest, 16);
-      OCTAVE_LOCAL_BUFFER (md5_byte_t, buf, 1024);
-
-      md5_init (&state);
-
-      while ((nel = fread (buf, 1, 1024, ifile)))
-	md5_append (&state, buf, nel);
-
-      fclose (ifile);
-
-      md5_finish (&state, digest);
-
-      OCTAVE_LOCAL_BUFFER (char, tmp, 33);
-      for (octave_idx_type i = 0; i < 16; i++)
-	sprintf (&tmp[2*i], "%02x", digest[i]);
-      tmp[32] = 0;
-      return std::string (tmp);
-    }
+  return retval;
 }
-	  
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

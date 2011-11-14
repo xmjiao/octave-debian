@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2000, 2002, 2003, 2004, 2005, 2007, 2008
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -71,47 +70,12 @@ DEFBINOP (ldiv, float_scalar, float_complex)
   return octave_value (v2.float_complex_value () / d);
 }
 
-DEFBINOP (lt, float_scalar, float_complex)
-{
-  CAST_BINOP_ARGS (const octave_float_scalar&, const octave_float_complex&);
-
-  return v1.float_value () < real (v2.float_complex_value ());
-}
-
-DEFBINOP (le, float_scalar, float_complex)
-{
-  CAST_BINOP_ARGS (const octave_float_scalar&, const octave_float_complex&);
-
-  return v1.float_value () <= real (v2.float_complex_value ());
-}
-
-DEFBINOP (eq, float_scalar, float_complex)
-{
-  CAST_BINOP_ARGS (const octave_float_scalar&, const octave_float_complex&);
-
-  return v1.float_value () == v2.float_complex_value ();
-}
-
-DEFBINOP (ge, float_scalar, float_complex)
-{
-  CAST_BINOP_ARGS (const octave_float_scalar&, const octave_float_complex&);
-
-  return v1.float_value () >= real (v2.float_complex_value ());
-}
-
-DEFBINOP (gt, float_scalar, float_complex)
-{
-  CAST_BINOP_ARGS (const octave_float_scalar&, const octave_float_complex&);
-
-  return v1.float_value () > real (v2.float_complex_value ());
-}
-
-DEFBINOP (ne, float_scalar, float_complex)
-{
-  CAST_BINOP_ARGS (const octave_float_scalar&, const octave_float_complex&);
-
-  return v1.float_value () != v2.float_complex_value ();
-}
+DEFCMPLXCMPOP_OP (lt, float_scalar, float_complex, <)
+DEFCMPLXCMPOP_OP (le, float_scalar, float_complex, <=)
+DEFCMPLXCMPOP_OP (eq, float_scalar, float_complex, ==)
+DEFCMPLXCMPOP_OP (ge, float_scalar, float_complex, >=)
+DEFCMPLXCMPOP_OP (gt, float_scalar, float_complex, >)
+DEFCMPLXCMPOP_OP (ne, float_scalar, float_complex, !=)
 
 DEFBINOP_OP (el_mul, float_scalar, float_complex, *)
 
@@ -155,14 +119,14 @@ DEFBINOP (el_or, float_scalar, float_complex)
   return octave_value (v1.float_scalar_value () || (v2.float_complex_value () != static_cast<float>(0.0)));
 }
 
-DEFNDCATOP_FN (fs_fcs, float_scalar, float_complex, float_array, 
-	       float_complex_array, concat)
+DEFNDCATOP_FN (fs_fcs, float_scalar, float_complex, float_array,
+               float_complex_array, concat)
 
-DEFNDCATOP_FN (s_fcs, scalar, float_complex, float_array, 
-	       float_complex_array, concat)
+DEFNDCATOP_FN (s_fcs, scalar, float_complex, float_array,
+               float_complex_array, concat)
 
-DEFNDCATOP_FN (fs_cs, float_scalar, complex, float_array, 
-	       float_complex_array, concat)
+DEFNDCATOP_FN (fs_cs, float_scalar, complex, float_array,
+               float_complex_array, concat)
 
 void
 install_fs_fcs_ops (void)
@@ -190,14 +154,8 @@ install_fs_fcs_ops (void)
   INSTALL_CATOP (octave_scalar, octave_float_complex, s_fcs);
   INSTALL_CATOP (octave_float_scalar, octave_complex, fs_cs);
 
-  INSTALL_ASSIGNCONV (octave_float_scalar, octave_float_complex, 
-		      octave_float_complex_matrix);
-  INSTALL_ASSIGNCONV (octave_scalar, octave_float_complex, 
-		      octave_complex_matrix);
+  INSTALL_ASSIGNCONV (octave_float_scalar, octave_float_complex,
+                      octave_float_complex_matrix);
+  INSTALL_ASSIGNCONV (octave_scalar, octave_float_complex,
+                      octave_complex_matrix);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004, 2005, 2007 John W. Eaton
+Copyright (C) 2004-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -63,7 +63,7 @@ template class octave_base_int_matrix<int8NDArray>;
 DEFINE_OCTAVE_ALLOCATOR (octave_int8_matrix);
 
 DEFINE_OV_TYPEID_FUNCTIONS_AND_DATA (octave_int8_matrix,
-				     "int8 matrix", "int8");
+                                     "int8 matrix", "int8");
 
 template class octave_base_scalar<octave_int8>;
 
@@ -72,7 +72,7 @@ template class octave_base_int_scalar<octave_int8>;
 DEFINE_OCTAVE_ALLOCATOR (octave_int8_scalar);
 
 DEFINE_OV_TYPEID_FUNCTIONS_AND_DATA (octave_int8_scalar,
-				     "int8 scalar", "int8");
+                                     "int8 scalar", "int8");
 
 DEFUN (int8, args, ,
   "-*- texinfo -*-\n\
@@ -82,9 +82,3 @@ Convert @var{x} to 8-bit integer type.\n\
 {
   OCTAVE_TYPE_CONV_BODY (int8);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

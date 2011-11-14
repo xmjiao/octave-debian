@@ -1,4 +1,4 @@
-## Copyright (C) 1996, 1997, 2000, 2005, 2007 John W. Eaton
+## Copyright (C) 1996-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deffn {Operator} (
-## @deffnx {Operator} )
+## @deftypefn  {Operator} {} (
+## @deftypefnx {Operator} {} )
 ## Array index or function argument delimeter.
-## @end deffn
+## @end deftypefn

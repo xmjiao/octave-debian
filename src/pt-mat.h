@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2000, 2001, 2002, 2003, 2004, 2005, 2006,
-              2007, 2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -41,7 +40,7 @@ class tree_walker;
 
 class
 tree_matrix : public tree_expression,
-	      public octave_base_list<tree_argument_list *>
+              public octave_base_list<tree_argument_list *>
 {
 public:
 
@@ -65,7 +64,7 @@ public:
   octave_value_list rvalue (int nargout);
 
   tree_expression *dup (symbol_table::scope_id scope,
-			symbol_table::context_id context) const;
+                        symbol_table::context_id context) const;
 
   void accept (tree_walker& tw);
 
@@ -81,22 +80,16 @@ private:
 // The character to fill with when creating string arrays.
 extern char Vstring_fill_char;
 
-extern std::string 
+extern std::string
 get_concat_class (const std::string& c1, const std::string& c2);
 
 extern void
 maybe_warn_string_concat (bool all_dq_strings_p, bool all_sq_strings_p);
 
-extern std::string 
+extern std::string
 get_concat_class (const std::string& c1, const std::string& c2);
 
 extern void
 maybe_warn_string_concat (bool all_dq_strings_p, bool all_sq_strings_p);
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 2000, 2002, 2005, 2006, 2007
-##               Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -25,7 +24,7 @@
 ## approximately follows a standard normal distribution when @var{n} > 25.
 ##
 ## @strong{Warning}: This function assumes a normal distribution for @var{z}
-## and thus is invalid for @var{n} <= 25.
+## and thus is invalid for @var{n} @leq{} 25.
 ##
 ## With the optional argument string @var{alt}, the alternative of
 ## interest can be selected.  If @var{alt} is @code{"!="} or
@@ -50,7 +49,7 @@ function [pval, z] = wilcoxon_test (x, y, alt)
   endif
 
   if (! (isvector (x) && isvector (y) && (length (x) == length (y))))
-    error ("wilcoxon_test: x and y must be vectors of the same length");
+    error ("wilcoxon_test: X and Y must be vectors of the same length");
   endif
 
   n = length (x);
@@ -74,7 +73,7 @@ function [pval, z] = wilcoxon_test (x, y, alt)
   endif
 
   if (! ischar (alt))
-    error("wilcoxon_test: alt must be a string");
+    error("wilcoxon_test: ALT must be a string");
   elseif (strcmp (alt, "!=") || strcmp (alt, "<>"))
     pval = 2 * min (cdf, 1 - cdf);
   elseif (strcmp (alt, ">"))

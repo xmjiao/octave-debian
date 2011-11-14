@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 2000, 2002, 2004, 2005, 2006,
-##               2007 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -32,7 +31,7 @@ function inv = laplace_inv (x)
     print_usage ();
   endif
 
-  inv = (-Inf) * ones (size (x));
+  inv = -Inf (size (x));
 
   k = find (isnan (x) | (x < 0) | (x > 1));
   if (any (k))
@@ -47,7 +46,7 @@ function inv = laplace_inv (x)
   k = find ((x > 0) & (x < 1));
   if (any (k))
     inv(k) = ((x(k) < 1/2) .* log (2 * x(k))
-	      - (x(k) > 1/2) .* log (2 * (1 - x(k))));
+              - (x(k) > 1/2) .* log (2 * (1 - x(k))));
   endif
 
 endfunction

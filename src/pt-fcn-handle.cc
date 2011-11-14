@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 2003-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -37,14 +37,14 @@ along with Octave; see the file COPYING.  If not, see
 
 void
 tree_fcn_handle::print (std::ostream& os, bool pr_as_read_syntax,
-			bool pr_orig_text)
+                        bool pr_orig_text)
 {
   print_raw (os, pr_as_read_syntax, pr_orig_text);
 }
 
 void
 tree_fcn_handle::print_raw (std::ostream& os, bool pr_as_read_syntax,
-			    bool pr_orig_text) 
+                            bool pr_orig_text)
 {
   os << ((pr_as_read_syntax || pr_orig_text) ? "@" : "") << nm;
 }
@@ -70,7 +70,7 @@ tree_fcn_handle::rvalue (int nargout)
 
 tree_expression *
 tree_fcn_handle::dup (symbol_table::scope_id,
-		      symbol_table::context_id) const
+                      symbol_table::context_id) const
 {
   tree_fcn_handle *new_fh = new tree_fcn_handle (nm, line (), column ());
 
@@ -100,25 +100,29 @@ tree_anon_fcn_handle::rvalue1 (int)
 
   if (new_scope > 0)
     symbol_table::inherit (new_scope, symbol_table::current_scope (),
-			   symbol_table::current_context ());
+                           symbol_table::current_context ());
 
   octave_user_function *uf
     = new octave_user_function (new_scope,
-				param_list ? param_list->dup (new_scope, 0) : 0,
-				ret_list ? ret_list->dup (new_scope, 0) : 0,
-				cmd_list ? cmd_list->dup (new_scope, 0) : 0);
+                                param_list ? param_list->dup (new_scope, 0) : 0,
+                                ret_list ? ret_list->dup (new_scope, 0) : 0,
+                                cmd_list ? cmd_list->dup (new_scope, 0) : 0);
 
   octave_function *curr_fcn = octave_call_stack::current ();
 
   if (curr_fcn)
     {
+      // FIXME -- maybe it would be better to just stash curr_fcn
+      // instead of individual bits of info about it?
+
       uf->stash_parent_fcn_name (curr_fcn->name ());
+      uf->stash_dir_name (curr_fcn->dir_name ());
 
       symbol_table::scope_id parent_scope = curr_fcn->parent_fcn_scope ();
 
       if (parent_scope < 0)
-	parent_scope = curr_fcn->scope ();
-	
+        parent_scope = curr_fcn->scope ();
+
       uf->stash_parent_fcn_scope (parent_scope);
     }
 
@@ -126,7 +130,7 @@ tree_anon_fcn_handle::rvalue1 (int)
 
   octave_value ov_fcn (uf);
 
-  octave_value fh (new octave_fcn_handle (ov_fcn, "@<anonymous>"));
+  octave_value fh (octave_fcn_binder::maybe_binder (ov_fcn));
 
   return fh;
 }
@@ -165,7 +169,7 @@ tree_anon_fcn_handle::rvalue (int nargout)
 
 tree_expression *
 tree_anon_fcn_handle::dup (symbol_table::scope_id,
-			   symbol_table::context_id) const
+                           symbol_table::context_id) const
 {
   tree_parameter_list *param_list = parameter_list ();
   tree_parameter_list *ret_list = return_list ();
@@ -176,13 +180,13 @@ tree_anon_fcn_handle::dup (symbol_table::scope_id,
 
   if (new_scope > 0)
     symbol_table::inherit (new_scope, symbol_table::current_scope (),
-			   symbol_table::current_context ());
+                           symbol_table::current_context ());
 
   tree_anon_fcn_handle *new_afh = new
     tree_anon_fcn_handle (param_list ? param_list->dup (new_scope, 0) : 0,
-			  ret_list ? ret_list->dup (new_scope, 0) : 0,
-			  cmd_list ? cmd_list->dup (new_scope, 0) : 0,
-			  new_scope, line (), column ());
+                          ret_list ? ret_list->dup (new_scope, 0) : 0,
+                          cmd_list ? cmd_list->dup (new_scope, 0) : 0,
+                          new_scope, line (), column ());
 
   new_afh->copy_base (*this);
 
@@ -194,11 +198,3 @@ tree_anon_fcn_handle::accept (tree_walker& tw)
 {
   tw.visit_anon_fcn_handle (*this);
 }
-
-
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,5 +1,4 @@
-@c Copyright (C) 1996, 1997, 1999, 2000, 2002, 2003, 2004, 2005,
-@c               2006, 2007, 2008, 2009 John W. Eaton
+@c Copyright (C) 1996-2011 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -55,7 +54,7 @@ produces the string whose contents are @samp{foobarbaz}.  @xref{Numeric Data
 Types}, for more information about creating matrices.
 
 @menu
-* Escape Sequences in string constants::
+* Escape Sequences in String Constants::
 * Character Arrays::
 * Creating Strings:: 
 * Comparing Strings::           
@@ -64,8 +63,8 @@ Types}, for more information about creating matrices.
 * Character Class Functions::   
 @end menu
 
-@node Escape Sequences in string constants
-@section Escape Sequences in string constants
+@node Escape Sequences in String Constants
+@section Escape Sequences in String Constants
 @cindex escape sequence notation
 In double-quoted strings, the backslash character is used to introduce
 @dfn{escape sequences} that represent other characters.  For example,
@@ -436,6 +435,8 @@ general regular expressions, the following functions come with Octave.
 
 @DOCSTRING(strsplit)
 
+@DOCSTRING(strread)
+
 @DOCSTRING(strrep)
 
 @DOCSTRING(substr)
@@ -447,6 +448,8 @@ general regular expressions, the following functions come with Octave.
 @DOCSTRING(regexprep)
 
 @DOCSTRING(regexptranslate)
+
+@DOCSTRING(untabify)
 
 @node String Conversions
 @section String Conversions
@@ -501,7 +504,7 @@ Octave also provides the following character class test functions
 patterned after the functions in the standard C library.  They all
 operate on string arrays and return matrices of zeros and ones.
 Elements that are nonzero indicate that the condition was true for the
-corresponding character in the string array.  For example,
+corresponding character in the string array.  For example:
 
 @example
 @group
@@ -514,26 +517,26 @@ isalpha ("!Q@@WERT^Y&")
 
 @DOCSTRING(isalpha)
 
-@DOCSTRING(isascii)
-
-@DOCSTRING(iscntrl)
-
-@DOCSTRING(isdigit)
-
-@DOCSTRING(isgraph)
-
 @DOCSTRING(isletter)
 
 @DOCSTRING(islower)
 
-@DOCSTRING(isprint)
+@DOCSTRING(isupper)
+
+@DOCSTRING(isdigit)
+
+@DOCSTRING(isxdigit)
 
 @DOCSTRING(ispunct)
 
 @DOCSTRING(isspace)
 
-@DOCSTRING(isupper)
+@DOCSTRING(iscntrl)
 
-@DOCSTRING(isxdigit)
+@DOCSTRING(isgraph)
+
+@DOCSTRING(isprint)
+
+@DOCSTRING(isascii)
 
 @DOCSTRING(isstrprop)

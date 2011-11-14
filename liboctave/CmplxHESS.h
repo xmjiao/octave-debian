@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2000, 2002, 2004, 2005, 2006,
-              2007, 2009 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -36,9 +35,17 @@ public:
 
   ComplexHESS (void) : hess_mat (), unitary_hess_mat () { }
 
-  ComplexHESS (const ComplexMatrix& a) { init (a); }
+  ComplexHESS (const ComplexMatrix& a)
+    : hess_mat (), unitary_hess_mat ()
+    {
+      init (a);
+    }
 
-  ComplexHESS (const ComplexMatrix& a, octave_idx_type& info) { info = init (a); }
+  ComplexHESS (const ComplexMatrix& a, octave_idx_type& info)
+    : hess_mat (), unitary_hess_mat ()
+    {
+      info = init (a);
+    }
 
   ComplexHESS (const ComplexHESS& a)
     : hess_mat (a.hess_mat), unitary_hess_mat (a.unitary_hess_mat) { }
@@ -46,10 +53,10 @@ public:
   ComplexHESS& operator = (const ComplexHESS& a)
     {
       if (this != &a)
-	{
-	  hess_mat = a.hess_mat;
-	  unitary_hess_mat = a.unitary_hess_mat;
-	}
+        {
+          hess_mat = a.hess_mat;
+          unitary_hess_mat = a.unitary_hess_mat;
+        }
       return *this;
     }
 
@@ -73,9 +80,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 Jaroslav Hajek
+## Copyright (C) 2008-2011 Jaroslav Hajek
 ##
 ## This file is part of Octave.
 ##
@@ -17,12 +17,12 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{idx} =} strchr (@var{str}, @var{chars})
+## @deftypefn  {Function File} {@var{idx} =} strchr (@var{str}, @var{chars})
 ## @deftypefnx {Function File} {@var{idx} =} strchr (@var{str}, @var{chars}, @var{n})
 ## @deftypefnx {Function File} {@var{idx} =} strchr (@var{str}, @var{chars}, @var{n}, @var{direction})
-## Search for the string @var{str} for occurrences of characters from the set @var{chars}.
-## The return value, as well as the @var{n} and @var{direction} arguments behave
-## identically as in @code{find}.
+## Search for the string @var{str} for occurrences of characters from
+## the set @var{chars}.  The return value, as well as the @var{n} and
+## @var{direction} arguments behave identically as in @code{find}.
 ##
 ## This will be faster than using regexp in most cases.
 ##
@@ -33,11 +33,32 @@ function varargout = strchr (str, chars, varargin)
   if (nargin < 2 || ! ischar (str) || ! ischar (chars))
     print_usage ();
   endif
-  f = false (1, 256);
-  f(chars + 1) = true;
+  if (isempty (chars))
+    mask = false (size (str));
+  elseif (length (chars) <= 6)
+    ## With a few characters, it pays off to build the mask incrementally.
+    ## We do it via a for loop to save memory.
+    mask = str == chars(1);
+    for i = 2:length (chars)
+      mask |= str == chars(i);
+    endfor
+  else
+    ## Index the str into a mask of valid values.  This is slower than
+    ## it could be because of the +1 issue.
+    f = false (1, 256);
+    f(uint8(chars)+1) = true;
+    ## Default goes via double -- unnecessarily long.
+    si = uint32 (str);
+    ## in-place
+    ++si;
+    mask = reshape (f(si), size (str));
+  endif
   varargout = cell (1, nargout);
   varargout{1} = [];
-  [varargout{:}] = find (reshape (f(str + 1), size (str)), varargin{:});
-endfunction 
+  [varargout{:}] = find (mask, varargin{:});
+endfunction
 
+%!assert(strchr("Octave is the best software",""),zeros(1,0))
 %!assert(strchr("Octave is the best software","best"),[3, 6, 9, 11, 13, 15, 16, 17, 18, 20, 23, 27])
+%!assert(strchr("Octave is the best software","software"),[3, 4, 6, 9, 11, 13, 16, 17, 18, 20, 21, 22, 23, 24, 25, 26, 27])
+

@@ -6,7 +6,7 @@ base_properties::base_properties (const std::string& ty, const graphics_handle& 
   :     beingdeleted ("beingdeleted", mh, "off"),
     busyaction ("busyaction", mh, "{queue}|cancel"),
     buttondownfcn ("buttondownfcn", mh, Matrix ()),
-    children (Matrix ()),
+    children ("children", mh, Matrix ()),
     clipping ("clipping", mh, "on"),
     createfcn ("createfcn", mh, Matrix ()),
     deletefcn ("deletefcn", mh, Matrix ()),
@@ -24,29 +24,30 @@ base_properties::base_properties (const std::string& ty, const graphics_handle& 
     __myhandle__ (mh),
     uicontextmenu ("uicontextmenu", mh, graphics_handle ())
 {
-  beingdeleted.set_id (BEINGDELETED);
-  busyaction.set_id (BUSYACTION);
-  buttondownfcn.set_id (BUTTONDOWNFCN);
-  clipping.set_id (CLIPPING);
-  createfcn.set_id (CREATEFCN);
-  deletefcn.set_id (DELETEFCN);
-  handlevisibility.set_id (HANDLEVISIBILITY);
-  hittest.set_id (HITTEST);
-  interruptible.set_id (INTERRUPTIBLE);
-  parent.set_id (PARENT);
-  selected.set_id (SELECTED);
-  selectionhighlight.set_id (SELECTIONHIGHLIGHT);
-  tag.set_id (TAG);
-  type.set_id (TYPE);
-  userdata.set_id (USERDATA);
-  visible.set_id (VISIBLE);
-  __modified__.set_id (__MODIFIED__);
-  uicontextmenu.set_id (UICONTEXTMENU);
+  beingdeleted.set_id (ID_BEINGDELETED);
+  busyaction.set_id (ID_BUSYACTION);
+  buttondownfcn.set_id (ID_BUTTONDOWNFCN);
+  children.set_id (ID_CHILDREN);
+  clipping.set_id (ID_CLIPPING);
+  createfcn.set_id (ID_CREATEFCN);
+  deletefcn.set_id (ID_DELETEFCN);
+  handlevisibility.set_id (ID_HANDLEVISIBILITY);
+  hittest.set_id (ID_HITTEST);
+  interruptible.set_id (ID_INTERRUPTIBLE);
+  parent.set_id (ID_PARENT);
+  selected.set_id (ID_SELECTED);
+  selectionhighlight.set_id (ID_SELECTIONHIGHLIGHT);
+  tag.set_id (ID_TAG);
+  type.set_id (ID_TYPE);
+  userdata.set_id (ID_USERDATA);
+  visible.set_id (ID_VISIBLE);
+  __modified__.set_id (ID___MODIFIED__);
+  uicontextmenu.set_id (ID_UICONTEXTMENU);
   init ();
 }
 
 void
-base_properties::set (const caseless_str& pname, const std::string& cname, const octave_value& val)
+base_properties::set (const caseless_str& pname, const octave_value& val)
 {
   if (pname.compare ("beingdeleted"))
     set_beingdeleted (val);
@@ -85,35 +86,35 @@ base_properties::set (const caseless_str& pname, const std::string& cname, const
   else if (pname.compare ("uicontextmenu"))
     set_uicontextmenu (val);
   else
-    set_dynamic (pname, cname, val);
+    set_dynamic (pname, val);
 }
 
 octave_value
 base_properties::get (bool all) const
 {
-  Octave_map m = get_dynamic (all).map_value ();
+  octave_map m = get_dynamic (all).map_value ();
 
-  m.assign ("beingdeleted", get_beingdeleted ());
-  m.assign ("busyaction", get_busyaction ());
-  m.assign ("buttondownfcn", get_buttondownfcn ());
-  m.assign ("children", get_children ());
-  m.assign ("clipping", get_clipping ());
-  m.assign ("createfcn", get_createfcn ());
-  m.assign ("deletefcn", get_deletefcn ());
-  m.assign ("handlevisibility", get_handlevisibility ());
-  m.assign ("hittest", get_hittest ());
-  m.assign ("interruptible", get_interruptible ());
-  m.assign ("parent", get_parent ().as_octave_value ());
-  m.assign ("selected", get_selected ());
-  m.assign ("selectionhighlight", get_selectionhighlight ());
-  m.assign ("tag", get_tag ());
-  m.assign ("type", get_type ());
-  m.assign ("userdata", get_userdata ());
-  m.assign ("visible", get_visible ());
-  m.assign ("__modified__", get___modified__ ());
+  m.assign ("beingdeleted", octave_value (get_beingdeleted ()));
+  m.assign ("busyaction", octave_value (get_busyaction ()));
+  m.assign ("buttondownfcn", octave_value (get_buttondownfcn ()));
+  m.assign ("children", octave_value (get_children ()));
+  m.assign ("clipping", octave_value (get_clipping ()));
+  m.assign ("createfcn", octave_value (get_createfcn ()));
+  m.assign ("deletefcn", octave_value (get_deletefcn ()));
+  m.assign ("handlevisibility", octave_value (get_handlevisibility ()));
+  m.assign ("hittest", octave_value (get_hittest ()));
+  m.assign ("interruptible", octave_value (get_interruptible ()));
+  m.assign ("parent", octave_value (get_parent ().as_octave_value ()));
+  m.assign ("selected", octave_value (get_selected ()));
+  m.assign ("selectionhighlight", octave_value (get_selectionhighlight ()));
+  m.assign ("tag", octave_value (get_tag ()));
+  m.assign ("type", octave_value (get_type ()));
+  m.assign ("userdata", octave_value (get_userdata ()));
+  m.assign ("visible", octave_value (get_visible ()));
+  m.assign ("__modified__", octave_value (get___modified__ ()));
   if (all)
-    m.assign ("__myhandle__", get___myhandle__ ().as_octave_value ());
-  m.assign ("uicontextmenu", get_uicontextmenu ().as_octave_value ());
+    m.assign ("__myhandle__", octave_value (get___myhandle__ ().as_octave_value ()));
+  m.assign ("uicontextmenu", octave_value (get_uicontextmenu ().as_octave_value ()));
 
   return m;
 }
@@ -178,6 +179,8 @@ base_properties::get_property (const caseless_str& pname)
     return property (&busyaction, true);
   else if (pname.compare ("buttondownfcn"))
     return property (&buttondownfcn, true);
+  else if (pname.compare ("children"))
+    return property (&children, true);
   else if (pname.compare ("clipping"))
     return property (&clipping, true);
   else if (pname.compare ("createfcn"))
@@ -237,111 +240,224 @@ base_properties::factory_defaults (void)
   return m;
 }
 
-bool base_properties::has_property (const std::string& pname, const std::string& cname)
+std::set<std::string>
+base_properties::core_property_names (void)
 {
-  static std::set<std::string> all_properties;
+  static std::set<std::string> all_pnames;
 
   static bool initialized = false;
 
   if (! initialized)
     {
-      all_properties.insert ("beingdeleted");
-      all_properties.insert ("busyaction");
-      all_properties.insert ("buttondownfcn");
-      all_properties.insert ("children");
-      all_properties.insert ("clipping");
-      all_properties.insert ("createfcn");
-      all_properties.insert ("deletefcn");
-      all_properties.insert ("handlevisibility");
-      all_properties.insert ("hittest");
-      all_properties.insert ("interruptible");
-      all_properties.insert ("parent");
-      all_properties.insert ("selected");
-      all_properties.insert ("selectionhighlight");
-      all_properties.insert ("tag");
-      all_properties.insert ("type");
-      all_properties.insert ("userdata");
-      all_properties.insert ("visible");
-      all_properties.insert ("__modified__");
-      all_properties.insert ("__myhandle__");
-      all_properties.insert ("uicontextmenu");
+      all_pnames.insert ("beingdeleted");
+      all_pnames.insert ("busyaction");
+      all_pnames.insert ("buttondownfcn");
+      all_pnames.insert ("children");
+      all_pnames.insert ("clipping");
+      all_pnames.insert ("createfcn");
+      all_pnames.insert ("deletefcn");
+      all_pnames.insert ("handlevisibility");
+      all_pnames.insert ("hittest");
+      all_pnames.insert ("interruptible");
+      all_pnames.insert ("parent");
+      all_pnames.insert ("selected");
+      all_pnames.insert ("selectionhighlight");
+      all_pnames.insert ("tag");
+      all_pnames.insert ("type");
+      all_pnames.insert ("userdata");
+      all_pnames.insert ("visible");
+      all_pnames.insert ("__modified__");
+      all_pnames.insert ("__myhandle__");
+      all_pnames.insert ("uicontextmenu");
 
       initialized = true;
     }
 
-  return all_properties.find (pname) != all_properties.end () || has_dynamic_property (pname, cname);
+  return all_pnames;
+}
+
+bool
+base_properties::has_core_property (const caseless_str& pname)
+{
+  std::set<std::string> pnames = core_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+std::set<std::string>
+base_properties::all_property_names (void) const
+{
+  static std::set<std::string> all_pnames = core_property_names ();
+
+  std::set<std::string> retval = all_pnames;
+  std::set<std::string> dyn_props = dynamic_property_names ();
+  retval.insert (dyn_props.begin (), dyn_props.end ());
+  for (std::map<caseless_str, property, cmp_caseless_str>::const_iterator p = all_props.begin ();
+       p != all_props.end (); p++)
+    retval.insert (p->first);
+
+  return retval;
 }
 
 // ******** root_figure ********
 
 root_figure::properties::properties (const graphics_handle& mh, const graphics_handle& p)
   : base_properties (go_name, mh, p),
-    currentfigure ("currentfigure", mh, graphics_handle ()),
     callbackobject ("callbackobject", mh, graphics_handle ()),
+    commandwindowsize ("commandwindowsize", mh, Matrix (1, 2, 0)),
+    currentfigure ("currentfigure", mh, graphics_handle ()),
+    diary ("diary", mh, "off"),
+    diaryfile ("diaryfile", mh, "diary"),
+    echo ("echo", mh, "off"),
+    format ("format", mh, "+|bank|bit|debug|hex|long|longe|longeng|longg|native-bit|native-hex|rational|{short}|shorte|shorteng|shortg"),
+    formatspacing ("formatspacing", mh, "{loose}|compact"),
+    language ("language", mh, "ascii"),
+    monitorpositions ("monitorpositions", mh, Matrix (1, 4, 0)),
+    pointerlocation ("pointerlocation", mh, Matrix (1, 2, 0)),
+    pointerwindow ("pointerwindow", mh, 0.0),
+    recursionlimit ("recursionlimit", mh, 256.0),
     screendepth ("screendepth", mh, default_screendepth ()),
-    screensize ("screensize", mh, default_screensize ()),
     screenpixelsperinch ("screenpixelsperinch", mh, default_screenpixelsperinch ()),
-    units ("units", mh, "inches|centimeters|normalized|points|{pixels}"),
-    showhiddenhandles ("showhiddenhandles", mh, "off")
+    screensize ("screensize", mh, default_screensize ()),
+    showhiddenhandles ("showhiddenhandles", mh, "off"),
+    units ("units", mh, "inches|centimeters|normalized|points|{pixels}")
 {
-  currentfigure.set_id (CURRENTFIGURE);
-  callbackobject.set_id (CALLBACKOBJECT);
-  screendepth.set_id (SCREENDEPTH);
-  screensize.set_id (SCREENSIZE);
-  screenpixelsperinch.set_id (SCREENPIXELSPERINCH);
-  units.set_id (UNITS);
-  showhiddenhandles.set_id (SHOWHIDDENHANDLES);
+  callbackobject.set_id (ID_CALLBACKOBJECT);
+  commandwindowsize.set_id (ID_COMMANDWINDOWSIZE);
+  currentfigure.set_id (ID_CURRENTFIGURE);
+  diary.set_id (ID_DIARY);
+  diaryfile.set_id (ID_DIARYFILE);
+  echo.set_id (ID_ECHO);
+  format.set_id (ID_FORMAT);
+  formatspacing.set_id (ID_FORMATSPACING);
+  language.set_id (ID_LANGUAGE);
+  monitorpositions.set_id (ID_MONITORPOSITIONS);
+  pointerlocation.set_id (ID_POINTERLOCATION);
+  pointerwindow.set_id (ID_POINTERWINDOW);
+  recursionlimit.set_id (ID_RECURSIONLIMIT);
+  screendepth.set_id (ID_SCREENDEPTH);
+  screenpixelsperinch.set_id (ID_SCREENPIXELSPERINCH);
+  screensize.set_id (ID_SCREENSIZE);
+  showhiddenhandles.set_id (ID_SHOWHIDDENHANDLES);
+  units.set_id (ID_UNITS);
   init ();
 }
 
 void
-root_figure::properties::set (const caseless_str& pname, const octave_value& val)
+root_figure::properties::set (const caseless_str& pname_arg, const octave_value& val)
 {
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return;
+
   if (pname.compare ("currentfigure"))
     set_currentfigure (val);
-  else if (pname.compare ("units"))
-    set_units (val);
+  else if (pname.compare ("diary"))
+    set_diary (val);
+  else if (pname.compare ("diaryfile"))
+    set_diaryfile (val);
+  else if (pname.compare ("echo"))
+    set_echo (val);
+  else if (pname.compare ("format"))
+    set_format (val);
+  else if (pname.compare ("formatspacing"))
+    set_formatspacing (val);
+  else if (pname.compare ("language"))
+    set_language (val);
+  else if (pname.compare ("monitorpositions"))
+    set_monitorpositions (val);
+  else if (pname.compare ("pointerlocation"))
+    set_pointerlocation (val);
+  else if (pname.compare ("pointerwindow"))
+    set_pointerwindow (val);
+  else if (pname.compare ("recursionlimit"))
+    set_recursionlimit (val);
   else if (pname.compare ("showhiddenhandles"))
     set_showhiddenhandles (val);
+  else if (pname.compare ("units"))
+    set_units (val);
   else
-    base_properties::set (pname, "root_figure", val);
+    base_properties::set (pname, val);
 }
 
 octave_value
 root_figure::properties::get (bool all) const
 {
-  Octave_map m = base_properties::get (all).map_value ();
+  octave_map m = base_properties::get (all).map_value ();
 
-  m.assign ("currentfigure", get_currentfigure ().as_octave_value ());
-  m.assign ("callbackobject", get_callbackobject ().as_octave_value ());
-  m.assign ("screendepth", get_screendepth ());
-  m.assign ("screensize", get_screensize ());
-  m.assign ("screenpixelsperinch", get_screenpixelsperinch ());
-  m.assign ("units", get_units ());
-  m.assign ("showhiddenhandles", get_showhiddenhandles ());
+  m.assign ("callbackobject", octave_value (get_callbackobject ().as_octave_value ()));
+  m.assign ("commandwindowsize", octave_value (get_commandwindowsize ()));
+  m.assign ("currentfigure", octave_value (get_currentfigure ().as_octave_value ()));
+  m.assign ("diary", octave_value (get_diary ()));
+  m.assign ("diaryfile", octave_value (get_diaryfile ()));
+  m.assign ("echo", octave_value (get_echo ()));
+  m.assign ("format", octave_value (get_format ()));
+  m.assign ("formatspacing", octave_value (get_formatspacing ()));
+  m.assign ("language", octave_value (get_language ()));
+  m.assign ("monitorpositions", octave_value (get_monitorpositions ()));
+  m.assign ("pointerlocation", octave_value (get_pointerlocation ()));
+  m.assign ("pointerwindow", octave_value (get_pointerwindow ()));
+  m.assign ("recursionlimit", octave_value (get_recursionlimit ()));
+  m.assign ("screendepth", octave_value (get_screendepth ()));
+  m.assign ("screenpixelsperinch", octave_value (get_screenpixelsperinch ()));
+  m.assign ("screensize", octave_value (get_screensize ()));
+  m.assign ("showhiddenhandles", octave_value (get_showhiddenhandles ()));
+  m.assign ("units", octave_value (get_units ()));
 
   return m;
 }
 
 octave_value
-root_figure::properties::get (const caseless_str& pname) const
+root_figure::properties::get (const caseless_str& pname_arg) const
 {
   octave_value retval;
 
-  if (pname.compare ("currentfigure"))
-    retval = get_currentfigure ().as_octave_value ();
-  else if (pname.compare ("callbackobject"))
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return retval;
+
+  if (pname.compare ("callbackobject"))
     retval = get_callbackobject ().as_octave_value ();
+  else if (pname.compare ("commandwindowsize"))
+    retval = get_commandwindowsize ();
+  else if (pname.compare ("currentfigure"))
+    retval = get_currentfigure ().as_octave_value ();
+  else if (pname.compare ("diary"))
+    retval = get_diary ();
+  else if (pname.compare ("diaryfile"))
+    retval = get_diaryfile ();
+  else if (pname.compare ("echo"))
+    retval = get_echo ();
+  else if (pname.compare ("format"))
+    retval = get_format ();
+  else if (pname.compare ("formatspacing"))
+    retval = get_formatspacing ();
+  else if (pname.compare ("language"))
+    retval = get_language ();
+  else if (pname.compare ("monitorpositions"))
+    retval = get_monitorpositions ();
+  else if (pname.compare ("pointerlocation"))
+    retval = get_pointerlocation ();
+  else if (pname.compare ("pointerwindow"))
+    retval = get_pointerwindow ();
+  else if (pname.compare ("recursionlimit"))
+    retval = get_recursionlimit ();
   else if (pname.compare ("screendepth"))
     retval = get_screendepth ();
-  else if (pname.compare ("screensize"))
-    retval = get_screensize ();
   else if (pname.compare ("screenpixelsperinch"))
     retval = get_screenpixelsperinch ();
-  else if (pname.compare ("units"))
-    retval = get_units ();
+  else if (pname.compare ("screensize"))
+    retval = get_screensize ();
   else if (pname.compare ("showhiddenhandles"))
     retval = get_showhiddenhandles ();
+  else if (pname.compare ("units"))
+    retval = get_units ();
   else
     retval = base_properties::get (pname);
 
@@ -349,22 +465,51 @@ root_figure::properties::get (const caseless_str& pname) const
 }
 
 property
-root_figure::properties::get_property (const caseless_str& pname)
+root_figure::properties::get_property (const caseless_str& pname_arg)
 {
-  if (pname.compare ("currentfigure"))
-    return property (&currentfigure, true);
-  else if (pname.compare ("callbackobject"))
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return property ();
+
+  if (pname.compare ("callbackobject"))
     return property (&callbackobject, true);
+  else if (pname.compare ("commandwindowsize"))
+    return property (&commandwindowsize, true);
+  else if (pname.compare ("currentfigure"))
+    return property (&currentfigure, true);
+  else if (pname.compare ("diary"))
+    return property (&diary, true);
+  else if (pname.compare ("diaryfile"))
+    return property (&diaryfile, true);
+  else if (pname.compare ("echo"))
+    return property (&echo, true);
+  else if (pname.compare ("format"))
+    return property (&format, true);
+  else if (pname.compare ("formatspacing"))
+    return property (&formatspacing, true);
+  else if (pname.compare ("language"))
+    return property (&language, true);
+  else if (pname.compare ("monitorpositions"))
+    return property (&monitorpositions, true);
+  else if (pname.compare ("pointerlocation"))
+    return property (&pointerlocation, true);
+  else if (pname.compare ("pointerwindow"))
+    return property (&pointerwindow, true);
+  else if (pname.compare ("recursionlimit"))
+    return property (&recursionlimit, true);
   else if (pname.compare ("screendepth"))
     return property (&screendepth, true);
-  else if (pname.compare ("screensize"))
-    return property (&screensize, true);
   else if (pname.compare ("screenpixelsperinch"))
     return property (&screenpixelsperinch, true);
-  else if (pname.compare ("units"))
-    return property (&units, true);
+  else if (pname.compare ("screensize"))
+    return property (&screensize, true);
   else if (pname.compare ("showhiddenhandles"))
     return property (&showhiddenhandles, true);
+  else if (pname.compare ("units"))
+    return property (&units, true);
   else
     return base_properties::get_property (pname);
 }
@@ -374,39 +519,93 @@ root_figure::properties::factory_defaults (void)
 {
   property_list::pval_map_type m = base_properties::factory_defaults ();
 
-  m["currentfigure"] = graphics_handle ().as_octave_value ();
   m["callbackobject"] = graphics_handle ().as_octave_value ();
+  m["commandwindowsize"] = Matrix (1, 2, 0);
+  m["currentfigure"] = graphics_handle ().as_octave_value ();
+  m["diary"] = "off";
+  m["diaryfile"] = "diary";
+  m["echo"] = "off";
+  m["format"] = "short";
+  m["formatspacing"] = "loose";
+  m["language"] = "ascii";
+  m["monitorpositions"] = Matrix (1, 4, 0);
+  m["pointerlocation"] = Matrix (1, 2, 0);
+  m["pointerwindow"] = 0.0;
+  m["recursionlimit"] = 256.0;
   m["screendepth"] = default_screendepth ();
-  m["screensize"] = default_screensize ();
   m["screenpixelsperinch"] = default_screenpixelsperinch ();
-  m["units"] = "pixels";
+  m["screensize"] = default_screensize ();
   m["showhiddenhandles"] = "off";
+  m["units"] = "pixels";
 
   return m;
 }
 
 std::string root_figure::properties::go_name ("root");
 
-bool root_figure::properties::has_property (const std::string& pname)
+std::set<std::string>
+root_figure::properties::core_property_names (void)
 {
-  static std::set<std::string> all_properties;
+  static std::set<std::string> all_pnames;
 
   static bool initialized = false;
 
   if (! initialized)
     {
-      all_properties.insert ("currentfigure");
-      all_properties.insert ("callbackobject");
-      all_properties.insert ("screendepth");
-      all_properties.insert ("screensize");
-      all_properties.insert ("screenpixelsperinch");
-      all_properties.insert ("units");
-      all_properties.insert ("showhiddenhandles");
+      all_pnames.insert ("callbackobject");
+      all_pnames.insert ("commandwindowsize");
+      all_pnames.insert ("currentfigure");
+      all_pnames.insert ("diary");
+      all_pnames.insert ("diaryfile");
+      all_pnames.insert ("echo");
+      all_pnames.insert ("format");
+      all_pnames.insert ("formatspacing");
+      all_pnames.insert ("language");
+      all_pnames.insert ("monitorpositions");
+      all_pnames.insert ("pointerlocation");
+      all_pnames.insert ("pointerwindow");
+      all_pnames.insert ("recursionlimit");
+      all_pnames.insert ("screendepth");
+      all_pnames.insert ("screenpixelsperinch");
+      all_pnames.insert ("screensize");
+      all_pnames.insert ("showhiddenhandles");
+      all_pnames.insert ("units");
+
+      std::set<std::string> base_pnames = base_properties::core_property_names ();
+      all_pnames.insert (base_pnames.begin (), base_pnames.end ());
 
       initialized = true;
     }
 
-  return all_properties.find (pname) != all_properties.end () || base_properties::has_property (pname, "root_figure");
+  return all_pnames;
+}
+
+bool
+root_figure::properties::has_core_property (const caseless_str& pname)
+{
+  std::set<std::string> pnames = core_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+std::set<std::string>
+root_figure::properties::all_property_names (void) const
+{
+  static std::set<std::string> all_pnames = core_property_names ();
+
+  std::set<std::string> retval = all_pnames;
+  std::set<std::string> base_props = base_properties::all_property_names ();
+  retval.insert (base_props.begin (), base_props.end ());
+
+  return retval;
+}
+
+bool
+root_figure::properties::has_property (const caseless_str& pname) const
+{
+  std::set<std::string> pnames = all_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
 }
 
 // ******** figure ********
@@ -415,16 +614,16 @@ figure::properties::properties (const graphics_handle& mh, const graphics_handle
   : base_properties (go_name, mh, p),
     __plot_stream__ ("__plot_stream__", mh, Matrix ()),
     __enhanced__ ("__enhanced__", mh, "on"),
-    nextplot ("nextplot", mh, "new|{add}|replace_children|replace"),
+    nextplot ("nextplot", mh, "new|{add}|replacechildren|replace"),
     closerequestfcn ("closerequestfcn", mh, "closereq"),
     currentaxes ("currentaxes", mh, graphics_handle ()),
     colormap ("colormap", mh, jet_colormap ()),
     paperorientation ("paperorientation", mh, "{portrait}|landscape|rotated"),
-    color ("color", mh, color_values (1, 1, 1)),
+    color ("color", mh, color_property (color_values (1, 1, 1), radio_values ("none"))),
     alphamap ("alphamap", mh, Matrix (64, 1, 1)),
     currentcharacter ("currentcharacter", mh, ""),
     currentobject ("currentobject", mh, graphics_handle ()),
-    current_point ("current_point", mh, Matrix (2, 1, 0)),
+    currentpoint ("currentpoint", mh, Matrix (2, 1, 0)),
     dockcontrols ("dockcontrols", mh, "off"),
     doublebuffer ("doublebuffer", mh, "on"),
     filename ("filename", mh, ""),
@@ -463,67 +662,74 @@ figure::properties::properties (const graphics_handle& mh, const graphics_handle
     xvisual ("xvisual", mh, ""),
     xvisualmode ("xvisualmode", mh, "{auto}|manual"),
     buttondownfcn ("buttondownfcn", mh, Matrix ()),
-    __backend__ ("__backend__", mh, "gnuplot")
+    __graphics_toolkit__ ("__graphics_toolkit__", mh, "gnuplot")
 {
-  __plot_stream__.set_id (__PLOT_STREAM__);
+  __plot_stream__.set_id (ID___PLOT_STREAM__);
   __plot_stream__.set_hidden (true);
-  __enhanced__.set_id (__ENHANCED__);
+  __enhanced__.set_id (ID___ENHANCED__);
   __enhanced__.set_hidden (true);
-  nextplot.set_id (NEXTPLOT);
-  closerequestfcn.set_id (CLOSEREQUESTFCN);
-  currentaxes.set_id (CURRENTAXES);
-  colormap.set_id (COLORMAP);
-  paperorientation.set_id (PAPERORIENTATION);
-  color.set_id (COLOR);
-  alphamap.set_id (ALPHAMAP);
-  currentcharacter.set_id (CURRENTCHARACTER);
-  currentobject.set_id (CURRENTOBJECT);
-  current_point.set_id (CURRENT_POINT);
-  dockcontrols.set_id (DOCKCONTROLS);
-  doublebuffer.set_id (DOUBLEBUFFER);
-  filename.set_id (FILENAME);
-  integerhandle.set_id (INTEGERHANDLE);
-  inverthardcopy.set_id (INVERTHARDCOPY);
-  keypressfcn.set_id (KEYPRESSFCN);
-  keyreleasefcn.set_id (KEYRELEASEFCN);
-  menubar.set_id (MENUBAR);
-  mincolormap.set_id (MINCOLORMAP);
-  name.set_id (NAME);
-  numbertitle.set_id (NUMBERTITLE);
-  paperunits.set_id (PAPERUNITS);
-  paperposition.set_id (PAPERPOSITION);
-  paperpositionmode.set_id (PAPERPOSITIONMODE);
-  papersize.set_id (PAPERSIZE);
-  papertype.set_id (PAPERTYPE);
-  pointer.set_id (POINTER);
-  pointershapecdata.set_id (POINTERSHAPECDATA);
-  pointershapehotspot.set_id (POINTERSHAPEHOTSPOT);
-  position.set_id (POSITION);
-  renderer.set_id (RENDERER);
-  renderermode.set_id (RENDERERMODE);
-  resize.set_id (RESIZE);
-  resizefcn.set_id (RESIZEFCN);
-  selectiontype.set_id (SELECTIONTYPE);
-  toolbar.set_id (TOOLBAR);
-  units.set_id (UNITS);
-  windowbuttondownfcn.set_id (WINDOWBUTTONDOWNFCN);
-  windowbuttonmotionfcn.set_id (WINDOWBUTTONMOTIONFCN);
-  windowbuttonupfcn.set_id (WINDOWBUTTONUPFCN);
-  windowbuttonwheelfcn.set_id (WINDOWBUTTONWHEELFCN);
-  windowstyle.set_id (WINDOWSTYLE);
-  wvisual.set_id (WVISUAL);
-  wvisualmode.set_id (WVISUALMODE);
-  xdisplay.set_id (XDISPLAY);
-  xvisual.set_id (XVISUAL);
-  xvisualmode.set_id (XVISUALMODE);
-  buttondownfcn.set_id (BUTTONDOWNFCN);
-  __backend__.set_id (__BACKEND__);
+  nextplot.set_id (ID_NEXTPLOT);
+  closerequestfcn.set_id (ID_CLOSEREQUESTFCN);
+  currentaxes.set_id (ID_CURRENTAXES);
+  colormap.set_id (ID_COLORMAP);
+  paperorientation.set_id (ID_PAPERORIENTATION);
+  color.set_id (ID_COLOR);
+  alphamap.set_id (ID_ALPHAMAP);
+  currentcharacter.set_id (ID_CURRENTCHARACTER);
+  currentobject.set_id (ID_CURRENTOBJECT);
+  currentpoint.set_id (ID_CURRENTPOINT);
+  dockcontrols.set_id (ID_DOCKCONTROLS);
+  doublebuffer.set_id (ID_DOUBLEBUFFER);
+  filename.set_id (ID_FILENAME);
+  integerhandle.set_id (ID_INTEGERHANDLE);
+  inverthardcopy.set_id (ID_INVERTHARDCOPY);
+  keypressfcn.set_id (ID_KEYPRESSFCN);
+  keyreleasefcn.set_id (ID_KEYRELEASEFCN);
+  menubar.set_id (ID_MENUBAR);
+  mincolormap.set_id (ID_MINCOLORMAP);
+  name.set_id (ID_NAME);
+  numbertitle.set_id (ID_NUMBERTITLE);
+  paperunits.set_id (ID_PAPERUNITS);
+  paperposition.set_id (ID_PAPERPOSITION);
+  paperpositionmode.set_id (ID_PAPERPOSITIONMODE);
+  papersize.set_id (ID_PAPERSIZE);
+  papertype.set_id (ID_PAPERTYPE);
+  pointer.set_id (ID_POINTER);
+  pointershapecdata.set_id (ID_POINTERSHAPECDATA);
+  pointershapehotspot.set_id (ID_POINTERSHAPEHOTSPOT);
+  position.set_id (ID_POSITION);
+  renderer.set_id (ID_RENDERER);
+  renderermode.set_id (ID_RENDERERMODE);
+  resize.set_id (ID_RESIZE);
+  resizefcn.set_id (ID_RESIZEFCN);
+  selectiontype.set_id (ID_SELECTIONTYPE);
+  toolbar.set_id (ID_TOOLBAR);
+  units.set_id (ID_UNITS);
+  windowbuttondownfcn.set_id (ID_WINDOWBUTTONDOWNFCN);
+  windowbuttonmotionfcn.set_id (ID_WINDOWBUTTONMOTIONFCN);
+  windowbuttonupfcn.set_id (ID_WINDOWBUTTONUPFCN);
+  windowbuttonwheelfcn.set_id (ID_WINDOWBUTTONWHEELFCN);
+  windowstyle.set_id (ID_WINDOWSTYLE);
+  wvisual.set_id (ID_WVISUAL);
+  wvisualmode.set_id (ID_WVISUALMODE);
+  xdisplay.set_id (ID_XDISPLAY);
+  xvisual.set_id (ID_XVISUAL);
+  xvisualmode.set_id (ID_XVISUALMODE);
+  buttondownfcn.set_id (ID_BUTTONDOWNFCN);
+  __graphics_toolkit__.set_id (ID___GRAPHICS_TOOLKIT__);
   init ();
 }
 
 void
-figure::properties::set (const caseless_str& pname, const octave_value& val)
+figure::properties::set (const caseless_str& pname_arg, const octave_value& val)
 {
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return;
+
   if (pname.compare ("__plot_stream__"))
     set___plot_stream__ (val);
   else if (pname.compare ("__enhanced__"))
@@ -546,6 +752,8 @@ figure::properties::set (const caseless_str& pname, const octave_value& val)
     set_dockcontrols (val);
   else if (pname.compare ("doublebuffer"))
     set_doublebuffer (val);
+  else if (pname.compare ("filename"))
+    set_filename (val);
   else if (pname.compare ("integerhandle"))
     set_integerhandle (val);
   else if (pname.compare ("inverthardcopy"))
@@ -616,78 +824,85 @@ figure::properties::set (const caseless_str& pname, const octave_value& val)
     set_xvisualmode (val);
   else if (pname.compare ("buttondownfcn"))
     set_buttondownfcn (val);
-  else if (pname.compare ("__backend__"))
-    set___backend__ (val);
+  else if (pname.compare ("__graphics_toolkit__"))
+    set___graphics_toolkit__ (val);
   else
-    base_properties::set (pname, "figure", val);
+    base_properties::set (pname, val);
 }
 
 octave_value
 figure::properties::get (bool all) const
 {
-  Octave_map m = base_properties::get (all).map_value ();
+  octave_map m = base_properties::get (all).map_value ();
 
   if (all)
-    m.assign ("__plot_stream__", get___plot_stream__ ());
+    m.assign ("__plot_stream__", octave_value (get___plot_stream__ ()));
   if (all)
-    m.assign ("__enhanced__", get___enhanced__ ());
-  m.assign ("nextplot", get_nextplot ());
-  m.assign ("closerequestfcn", get_closerequestfcn ());
-  m.assign ("currentaxes", get_currentaxes ().as_octave_value ());
-  m.assign ("colormap", get_colormap ());
-  m.assign ("paperorientation", get_paperorientation ());
-  m.assign ("color", get_color ());
-  m.assign ("alphamap", get_alphamap ());
-  m.assign ("currentcharacter", get_currentcharacter ());
-  m.assign ("currentobject", get_currentobject ().as_octave_value ());
-  m.assign ("current_point", get_current_point ());
-  m.assign ("dockcontrols", get_dockcontrols ());
-  m.assign ("doublebuffer", get_doublebuffer ());
-  m.assign ("filename", get_filename ());
-  m.assign ("integerhandle", get_integerhandle ());
-  m.assign ("inverthardcopy", get_inverthardcopy ());
-  m.assign ("keypressfcn", get_keypressfcn ());
-  m.assign ("keyreleasefcn", get_keyreleasefcn ());
-  m.assign ("menubar", get_menubar ());
-  m.assign ("mincolormap", get_mincolormap ());
-  m.assign ("name", get_name ());
-  m.assign ("numbertitle", get_numbertitle ());
-  m.assign ("paperunits", get_paperunits ());
-  m.assign ("paperposition", get_paperposition ());
-  m.assign ("paperpositionmode", get_paperpositionmode ());
-  m.assign ("papersize", get_papersize ());
-  m.assign ("papertype", get_papertype ());
-  m.assign ("pointer", get_pointer ());
-  m.assign ("pointershapecdata", get_pointershapecdata ());
-  m.assign ("pointershapehotspot", get_pointershapehotspot ());
-  m.assign ("position", get_position ());
-  m.assign ("renderer", get_renderer ());
-  m.assign ("renderermode", get_renderermode ());
-  m.assign ("resize", get_resize ());
-  m.assign ("resizefcn", get_resizefcn ());
-  m.assign ("selectiontype", get_selectiontype ());
-  m.assign ("toolbar", get_toolbar ());
-  m.assign ("units", get_units ());
-  m.assign ("windowbuttondownfcn", get_windowbuttondownfcn ());
-  m.assign ("windowbuttonmotionfcn", get_windowbuttonmotionfcn ());
-  m.assign ("windowbuttonupfcn", get_windowbuttonupfcn ());
-  m.assign ("windowbuttonwheelfcn", get_windowbuttonwheelfcn ());
-  m.assign ("windowstyle", get_windowstyle ());
-  m.assign ("wvisual", get_wvisual ());
-  m.assign ("wvisualmode", get_wvisualmode ());
-  m.assign ("xdisplay", get_xdisplay ());
-  m.assign ("xvisual", get_xvisual ());
-  m.assign ("xvisualmode", get_xvisualmode ());
-  m.assign ("buttondownfcn", get_buttondownfcn ());
-  m.assign ("__backend__", get___backend__ ());
+    m.assign ("__enhanced__", octave_value (get___enhanced__ ()));
+  m.assign ("nextplot", octave_value (get_nextplot ()));
+  m.assign ("closerequestfcn", octave_value (get_closerequestfcn ()));
+  m.assign ("currentaxes", octave_value (get_currentaxes ().as_octave_value ()));
+  m.assign ("colormap", octave_value (get_colormap ()));
+  m.assign ("paperorientation", octave_value (get_paperorientation ()));
+  m.assign ("color", octave_value (get_color ()));
+  m.assign ("alphamap", octave_value (get_alphamap ()));
+  m.assign ("currentcharacter", octave_value (get_currentcharacter ()));
+  m.assign ("currentobject", octave_value (get_currentobject ().as_octave_value ()));
+  m.assign ("currentpoint", octave_value (get_currentpoint ()));
+  m.assign ("dockcontrols", octave_value (get_dockcontrols ()));
+  m.assign ("doublebuffer", octave_value (get_doublebuffer ()));
+  m.assign ("filename", octave_value (get_filename ()));
+  m.assign ("integerhandle", octave_value (get_integerhandle ()));
+  m.assign ("inverthardcopy", octave_value (get_inverthardcopy ()));
+  m.assign ("keypressfcn", octave_value (get_keypressfcn ()));
+  m.assign ("keyreleasefcn", octave_value (get_keyreleasefcn ()));
+  m.assign ("menubar", octave_value (get_menubar ()));
+  m.assign ("mincolormap", octave_value (get_mincolormap ()));
+  m.assign ("name", octave_value (get_name ()));
+  m.assign ("numbertitle", octave_value (get_numbertitle ()));
+  m.assign ("paperunits", octave_value (get_paperunits ()));
+  m.assign ("paperposition", octave_value (get_paperposition ()));
+  m.assign ("paperpositionmode", octave_value (get_paperpositionmode ()));
+  m.assign ("papersize", octave_value (get_papersize ()));
+  m.assign ("papertype", octave_value (get_papertype ()));
+  m.assign ("pointer", octave_value (get_pointer ()));
+  m.assign ("pointershapecdata", octave_value (get_pointershapecdata ()));
+  m.assign ("pointershapehotspot", octave_value (get_pointershapehotspot ()));
+  m.assign ("position", octave_value (get_position ()));
+  m.assign ("renderer", octave_value (get_renderer ()));
+  m.assign ("renderermode", octave_value (get_renderermode ()));
+  m.assign ("resize", octave_value (get_resize ()));
+  m.assign ("resizefcn", octave_value (get_resizefcn ()));
+  m.assign ("selectiontype", octave_value (get_selectiontype ()));
+  m.assign ("toolbar", octave_value (get_toolbar ()));
+  m.assign ("units", octave_value (get_units ()));
+  m.assign ("windowbuttondownfcn", octave_value (get_windowbuttondownfcn ()));
+  m.assign ("windowbuttonmotionfcn", octave_value (get_windowbuttonmotionfcn ()));
+  m.assign ("windowbuttonupfcn", octave_value (get_windowbuttonupfcn ()));
+  m.assign ("windowbuttonwheelfcn", octave_value (get_windowbuttonwheelfcn ()));
+  m.assign ("windowstyle", octave_value (get_windowstyle ()));
+  m.assign ("wvisual", octave_value (get_wvisual ()));
+  m.assign ("wvisualmode", octave_value (get_wvisualmode ()));
+  m.assign ("xdisplay", octave_value (get_xdisplay ()));
+  m.assign ("xvisual", octave_value (get_xvisual ()));
+  m.assign ("xvisualmode", octave_value (get_xvisualmode ()));
+  m.assign ("buttondownfcn", octave_value (get_buttondownfcn ()));
+  m.assign ("__graphics_toolkit__", octave_value (get___graphics_toolkit__ ()));
 
   return m;
 }
 
 octave_value
-figure::properties::get (const caseless_str& pname) const
+figure::properties::get (const caseless_str& pname_arg) const
 {
   octave_value retval;
+
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return retval;
 
   if (pname.compare ("__plot_stream__"))
     retval = get___plot_stream__ ();
@@ -711,8 +926,8 @@ figure::properties::get (const caseless_str& pname) const
     retval = get_currentcharacter ();
   else if (pname.compare ("currentobject"))
     retval = get_currentobject ().as_octave_value ();
-  else if (pname.compare ("current_point"))
-    retval = get_current_point ();
+  else if (pname.compare ("currentpoint"))
+    retval = get_currentpoint ();
   else if (pname.compare ("dockcontrols"))
     retval = get_dockcontrols ();
   else if (pname.compare ("doublebuffer"))
@@ -789,8 +1004,8 @@ figure::properties::get (const caseless_str& pname) const
     retval = get_xvisualmode ();
   else if (pname.compare ("buttondownfcn"))
     retval = get_buttondownfcn ();
-  else if (pname.compare ("__backend__"))
-    retval = get___backend__ ();
+  else if (pname.compare ("__graphics_toolkit__"))
+    retval = get___graphics_toolkit__ ();
   else
     retval = base_properties::get (pname);
 
@@ -798,8 +1013,15 @@ figure::properties::get (const caseless_str& pname) const
 }
 
 property
-figure::properties::get_property (const caseless_str& pname)
+figure::properties::get_property (const caseless_str& pname_arg)
 {
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return property ();
+
   if (pname.compare ("__plot_stream__"))
     return property (&__plot_stream__, true);
   else if (pname.compare ("__enhanced__"))
@@ -822,8 +1044,8 @@ figure::properties::get_property (const caseless_str& pname)
     return property (&currentcharacter, true);
   else if (pname.compare ("currentobject"))
     return property (&currentobject, true);
-  else if (pname.compare ("current_point"))
-    return property (&current_point, true);
+  else if (pname.compare ("currentpoint"))
+    return property (&currentpoint, true);
   else if (pname.compare ("dockcontrols"))
     return property (&dockcontrols, true);
   else if (pname.compare ("doublebuffer"))
@@ -900,8 +1122,8 @@ figure::properties::get_property (const caseless_str& pname)
     return property (&xvisualmode, true);
   else if (pname.compare ("buttondownfcn"))
     return property (&buttondownfcn, true);
-  else if (pname.compare ("__backend__"))
-    return property (&__backend__, true);
+  else if (pname.compare ("__graphics_toolkit__"))
+    return property (&__graphics_toolkit__, true);
   else
     return base_properties::get_property (pname);
 }
@@ -918,11 +1140,11 @@ figure::properties::factory_defaults (void)
   m["currentaxes"] = graphics_handle ().as_octave_value ();
   m["colormap"] = jet_colormap ();
   m["paperorientation"] = "portrait";
-  m["color"] = octave_value ();
+  m["color"] = color_property (color_values (1, 1, 1), radio_values ("none"));
   m["alphamap"] = Matrix (64, 1, 1);
   m["currentcharacter"] = "";
   m["currentobject"] = graphics_handle ().as_octave_value ();
-  m["current_point"] = Matrix (2, 1, 0);
+  m["currentpoint"] = Matrix (2, 1, 0);
   m["dockcontrols"] = "off";
   m["doublebuffer"] = "on";
   m["filename"] = "";
@@ -961,77 +1183,109 @@ figure::properties::factory_defaults (void)
   m["xvisual"] = "";
   m["xvisualmode"] = "auto";
   m["buttondownfcn"] = Matrix ();
-  m["__backend__"] = "gnuplot";
+  m["__graphics_toolkit__"] = "gnuplot";
 
   return m;
 }
 
 std::string figure::properties::go_name ("figure");
 
-bool figure::properties::has_property (const std::string& pname)
+std::set<std::string>
+figure::properties::core_property_names (void)
 {
-  static std::set<std::string> all_properties;
+  static std::set<std::string> all_pnames;
 
   static bool initialized = false;
 
   if (! initialized)
     {
-      all_properties.insert ("__plot_stream__");
-      all_properties.insert ("__enhanced__");
-      all_properties.insert ("nextplot");
-      all_properties.insert ("closerequestfcn");
-      all_properties.insert ("currentaxes");
-      all_properties.insert ("colormap");
-      all_properties.insert ("paperorientation");
-      all_properties.insert ("color");
-      all_properties.insert ("alphamap");
-      all_properties.insert ("currentcharacter");
-      all_properties.insert ("currentobject");
-      all_properties.insert ("current_point");
-      all_properties.insert ("dockcontrols");
-      all_properties.insert ("doublebuffer");
-      all_properties.insert ("filename");
-      all_properties.insert ("integerhandle");
-      all_properties.insert ("inverthardcopy");
-      all_properties.insert ("keypressfcn");
-      all_properties.insert ("keyreleasefcn");
-      all_properties.insert ("menubar");
-      all_properties.insert ("mincolormap");
-      all_properties.insert ("name");
-      all_properties.insert ("numbertitle");
-      all_properties.insert ("paperunits");
-      all_properties.insert ("paperposition");
-      all_properties.insert ("paperpositionmode");
-      all_properties.insert ("papersize");
-      all_properties.insert ("papertype");
-      all_properties.insert ("pointer");
-      all_properties.insert ("pointershapecdata");
-      all_properties.insert ("pointershapehotspot");
-      all_properties.insert ("position");
-      all_properties.insert ("renderer");
-      all_properties.insert ("renderermode");
-      all_properties.insert ("resize");
-      all_properties.insert ("resizefcn");
-      all_properties.insert ("selectiontype");
-      all_properties.insert ("toolbar");
-      all_properties.insert ("units");
-      all_properties.insert ("windowbuttondownfcn");
-      all_properties.insert ("windowbuttonmotionfcn");
-      all_properties.insert ("windowbuttonupfcn");
-      all_properties.insert ("windowbuttonwheelfcn");
-      all_properties.insert ("windowstyle");
-      all_properties.insert ("wvisual");
-      all_properties.insert ("wvisualmode");
-      all_properties.insert ("xdisplay");
-      all_properties.insert ("xvisual");
-      all_properties.insert ("xvisualmode");
-      all_properties.insert ("buttondownfcn");
-      all_properties.insert ("__backend__");
+      all_pnames.insert ("__plot_stream__");
+      all_pnames.insert ("__enhanced__");
+      all_pnames.insert ("nextplot");
+      all_pnames.insert ("closerequestfcn");
+      all_pnames.insert ("currentaxes");
+      all_pnames.insert ("colormap");
+      all_pnames.insert ("paperorientation");
+      all_pnames.insert ("color");
+      all_pnames.insert ("alphamap");
+      all_pnames.insert ("currentcharacter");
+      all_pnames.insert ("currentobject");
+      all_pnames.insert ("currentpoint");
+      all_pnames.insert ("dockcontrols");
+      all_pnames.insert ("doublebuffer");
+      all_pnames.insert ("filename");
+      all_pnames.insert ("integerhandle");
+      all_pnames.insert ("inverthardcopy");
+      all_pnames.insert ("keypressfcn");
+      all_pnames.insert ("keyreleasefcn");
+      all_pnames.insert ("menubar");
+      all_pnames.insert ("mincolormap");
+      all_pnames.insert ("name");
+      all_pnames.insert ("numbertitle");
+      all_pnames.insert ("paperunits");
+      all_pnames.insert ("paperposition");
+      all_pnames.insert ("paperpositionmode");
+      all_pnames.insert ("papersize");
+      all_pnames.insert ("papertype");
+      all_pnames.insert ("pointer");
+      all_pnames.insert ("pointershapecdata");
+      all_pnames.insert ("pointershapehotspot");
+      all_pnames.insert ("position");
+      all_pnames.insert ("renderer");
+      all_pnames.insert ("renderermode");
+      all_pnames.insert ("resize");
+      all_pnames.insert ("resizefcn");
+      all_pnames.insert ("selectiontype");
+      all_pnames.insert ("toolbar");
+      all_pnames.insert ("units");
+      all_pnames.insert ("windowbuttondownfcn");
+      all_pnames.insert ("windowbuttonmotionfcn");
+      all_pnames.insert ("windowbuttonupfcn");
+      all_pnames.insert ("windowbuttonwheelfcn");
+      all_pnames.insert ("windowstyle");
+      all_pnames.insert ("wvisual");
+      all_pnames.insert ("wvisualmode");
+      all_pnames.insert ("xdisplay");
+      all_pnames.insert ("xvisual");
+      all_pnames.insert ("xvisualmode");
+      all_pnames.insert ("buttondownfcn");
+      all_pnames.insert ("__graphics_toolkit__");
+
+      std::set<std::string> base_pnames = base_properties::core_property_names ();
+      all_pnames.insert (base_pnames.begin (), base_pnames.end ());
 
       initialized = true;
     }
 
-  return all_properties.find (pname) != all_properties.end () || base_properties::has_property (pname, "figure");
+  return all_pnames;
+}
+
+bool
+figure::properties::has_core_property (const caseless_str& pname)
+{
+  std::set<std::string> pnames = core_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+std::set<std::string>
+figure::properties::all_property_names (void) const
+{
+  static std::set<std::string> all_pnames = core_property_names ();
+
+  std::set<std::string> retval = all_pnames;
+  std::set<std::string> base_props = base_properties::all_property_names ();
+  retval.insert (base_props.begin (), base_props.end ());
+
+  return retval;
+}
+
+bool
+figure::properties::has_property (const caseless_str& pname) const
+{
+  std::set<std::string> pnames = all_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
 }
 
 // ******** axes ********
@@ -1040,10 +1294,6 @@ axes::properties::properties (const graphics_handle& mh, const graphics_handle& 
   : base_properties (go_name, mh, p),
     position ("position", mh, default_axes_position ()),
     box ("box", mh, "on"),
-    key ("key", mh, "off"),
-    keybox ("keybox", mh, "off"),
-    keyreverse ("keyreverse", mh, "off"),
-    keypos ("keypos", mh, 1),
     colororder ("colororder", mh, default_colororder ()),
     dataaspectratio ("dataaspectratio", mh, Matrix (1, 3, 1.0)),
     dataaspectratiomode ("dataaspectratiomode", mh, "{auto}|manual"),
@@ -1097,7 +1347,8 @@ axes::properties::properties (const graphics_handle& mh, const graphics_handle& 
     yaxislocation ("yaxislocation", mh, "{left}|right|zero"),
     xaxislocation ("xaxislocation", mh, "{bottom}|top|zero"),
     view ("view", mh, Matrix ()),
-    nextplot ("nextplot", mh, "add|replace_children|{replace}"),
+    __hold_all__ ("__hold_all__", mh, "off"),
+    nextplot ("nextplot", mh, "new|add|replacechildren|{replace}"),
     outerposition ("outerposition", mh, default_axes_outerposition ()),
     activepositionproperty ("activepositionproperty", mh, "{outerposition}|position"),
     ambientlightcolor ("ambientlightcolor", mh, color_values (1, 1, 1)),
@@ -1113,7 +1364,7 @@ axes::properties::properties (const graphics_handle& mh, const graphics_handle& 
     drawmode ("drawmode", mh, "{normal}|fast"),
     fontangle ("fontangle", mh, "{normal}|italic|oblique"),
     fontname ("fontname", mh, OCTAVE_DEFAULT_FONTNAME),
-    fontsize ("fontsize", mh, 12),
+    fontsize ("fontsize", mh, 10),
     fontunits ("fontunits", mh, "{points}|normalized|inches|centimeters|pixels"),
     fontweight ("fontweight", mh, "{normal}|light|demi|bold"),
     gridlinestyle ("gridlinestyle", mh, "-|--|{:}|-.|none"),
@@ -1132,126 +1383,135 @@ axes::properties::properties (const graphics_handle& mh, const graphics_handle& 
     x_projectiontransform ("x_projectiontransform", mh, Matrix (4, 4, 0.0)),
     x_viewporttransform ("x_viewporttransform", mh, Matrix (4, 4, 0.0)),
     x_normrendertransform ("x_normrendertransform", mh, Matrix (4, 4, 0.0)),
-    x_rendertransform ("x_rendertransform", mh, Matrix (4, 4, 0.0))
+    x_rendertransform ("x_rendertransform", mh, Matrix (4, 4, 0.0)),
+    xmtick ("xmtick", mh, Matrix ()),
+    ymtick ("ymtick", mh, Matrix ()),
+    zmtick ("zmtick", mh, Matrix ()),
+    looseinset ("looseinset", mh, Matrix (1, 4, 0.0))
 {
-  position.set_id (POSITION);
-  box.set_id (BOX);
-  key.set_id (KEY);
-  keybox.set_id (KEYBOX);
-  keyreverse.set_id (KEYREVERSE);
-  keypos.set_id (KEYPOS);
-  colororder.set_id (COLORORDER);
-  dataaspectratio.set_id (DATAASPECTRATIO);
-  dataaspectratiomode.set_id (DATAASPECTRATIOMODE);
-  layer.set_id (LAYER);
-  xlim.set_id (XLIM);
-  ylim.set_id (YLIM);
-  zlim.set_id (ZLIM);
-  clim.set_id (CLIM);
-  alim.set_id (ALIM);
-  xlimmode.set_id (XLIMMODE);
-  ylimmode.set_id (YLIMMODE);
-  zlimmode.set_id (ZLIMMODE);
-  climmode.set_id (CLIMMODE);
-  alimmode.set_id (ALIMMODE);
-  xlabel.set_id (XLABEL);
-  ylabel.set_id (YLABEL);
-  zlabel.set_id (ZLABEL);
-  title.set_id (TITLE);
-  xgrid.set_id (XGRID);
-  ygrid.set_id (YGRID);
-  zgrid.set_id (ZGRID);
-  xminorgrid.set_id (XMINORGRID);
-  yminorgrid.set_id (YMINORGRID);
-  zminorgrid.set_id (ZMINORGRID);
-  xtick.set_id (XTICK);
-  ytick.set_id (YTICK);
-  ztick.set_id (ZTICK);
-  xtickmode.set_id (XTICKMODE);
-  ytickmode.set_id (YTICKMODE);
-  ztickmode.set_id (ZTICKMODE);
-  xminortick.set_id (XMINORTICK);
-  yminortick.set_id (YMINORTICK);
-  zminortick.set_id (ZMINORTICK);
-  xticklabel.set_id (XTICKLABEL);
-  yticklabel.set_id (YTICKLABEL);
-  zticklabel.set_id (ZTICKLABEL);
-  xticklabelmode.set_id (XTICKLABELMODE);
-  yticklabelmode.set_id (YTICKLABELMODE);
-  zticklabelmode.set_id (ZTICKLABELMODE);
-  interpreter.set_id (INTERPRETER);
-  color.set_id (COLOR);
-  xcolor.set_id (XCOLOR);
-  ycolor.set_id (YCOLOR);
-  zcolor.set_id (ZCOLOR);
-  xscale.set_id (XSCALE);
-  yscale.set_id (YSCALE);
-  zscale.set_id (ZSCALE);
-  xdir.set_id (XDIR);
-  ydir.set_id (YDIR);
-  zdir.set_id (ZDIR);
-  yaxislocation.set_id (YAXISLOCATION);
-  xaxislocation.set_id (XAXISLOCATION);
-  view.set_id (VIEW);
-  nextplot.set_id (NEXTPLOT);
-  outerposition.set_id (OUTERPOSITION);
-  activepositionproperty.set_id (ACTIVEPOSITIONPROPERTY);
-  ambientlightcolor.set_id (AMBIENTLIGHTCOLOR);
-  cameraposition.set_id (CAMERAPOSITION);
-  cameratarget.set_id (CAMERATARGET);
-  cameraupvector.set_id (CAMERAUPVECTOR);
-  cameraviewangle.set_id (CAMERAVIEWANGLE);
-  camerapositionmode.set_id (CAMERAPOSITIONMODE);
-  cameratargetmode.set_id (CAMERATARGETMODE);
-  cameraupvectormode.set_id (CAMERAUPVECTORMODE);
-  cameraviewanglemode.set_id (CAMERAVIEWANGLEMODE);
-  currentpoint.set_id (CURRENTPOINT);
-  drawmode.set_id (DRAWMODE);
-  fontangle.set_id (FONTANGLE);
-  fontname.set_id (FONTNAME);
-  fontsize.set_id (FONTSIZE);
-  fontunits.set_id (FONTUNITS);
-  fontweight.set_id (FONTWEIGHT);
-  gridlinestyle.set_id (GRIDLINESTYLE);
-  linestyleorder.set_id (LINESTYLEORDER);
-  linewidth.set_id (LINEWIDTH);
-  minorgridlinestyle.set_id (MINORGRIDLINESTYLE);
-  plotboxaspectratio.set_id (PLOTBOXASPECTRATIO);
-  plotboxaspectratiomode.set_id (PLOTBOXASPECTRATIOMODE);
-  projection.set_id (PROJECTION);
-  tickdir.set_id (TICKDIR);
-  tickdirmode.set_id (TICKDIRMODE);
-  ticklength.set_id (TICKLENGTH);
-  tightinset.set_id (TIGHTINSET);
-  units.set_id (UNITS);
-  x_viewtransform.set_id (X_VIEWTRANSFORM);
+  position.set_id (ID_POSITION);
+  box.set_id (ID_BOX);
+  colororder.set_id (ID_COLORORDER);
+  dataaspectratio.set_id (ID_DATAASPECTRATIO);
+  dataaspectratiomode.set_id (ID_DATAASPECTRATIOMODE);
+  layer.set_id (ID_LAYER);
+  xlim.set_id (ID_XLIM);
+  ylim.set_id (ID_YLIM);
+  zlim.set_id (ID_ZLIM);
+  clim.set_id (ID_CLIM);
+  alim.set_id (ID_ALIM);
+  xlimmode.set_id (ID_XLIMMODE);
+  ylimmode.set_id (ID_YLIMMODE);
+  zlimmode.set_id (ID_ZLIMMODE);
+  climmode.set_id (ID_CLIMMODE);
+  alimmode.set_id (ID_ALIMMODE);
+  xlabel.set_id (ID_XLABEL);
+  ylabel.set_id (ID_YLABEL);
+  zlabel.set_id (ID_ZLABEL);
+  title.set_id (ID_TITLE);
+  xgrid.set_id (ID_XGRID);
+  ygrid.set_id (ID_YGRID);
+  zgrid.set_id (ID_ZGRID);
+  xminorgrid.set_id (ID_XMINORGRID);
+  yminorgrid.set_id (ID_YMINORGRID);
+  zminorgrid.set_id (ID_ZMINORGRID);
+  xtick.set_id (ID_XTICK);
+  ytick.set_id (ID_YTICK);
+  ztick.set_id (ID_ZTICK);
+  xtickmode.set_id (ID_XTICKMODE);
+  ytickmode.set_id (ID_YTICKMODE);
+  ztickmode.set_id (ID_ZTICKMODE);
+  xminortick.set_id (ID_XMINORTICK);
+  yminortick.set_id (ID_YMINORTICK);
+  zminortick.set_id (ID_ZMINORTICK);
+  xticklabel.set_id (ID_XTICKLABEL);
+  yticklabel.set_id (ID_YTICKLABEL);
+  zticklabel.set_id (ID_ZTICKLABEL);
+  xticklabelmode.set_id (ID_XTICKLABELMODE);
+  yticklabelmode.set_id (ID_YTICKLABELMODE);
+  zticklabelmode.set_id (ID_ZTICKLABELMODE);
+  interpreter.set_id (ID_INTERPRETER);
+  color.set_id (ID_COLOR);
+  xcolor.set_id (ID_XCOLOR);
+  ycolor.set_id (ID_YCOLOR);
+  zcolor.set_id (ID_ZCOLOR);
+  xscale.set_id (ID_XSCALE);
+  yscale.set_id (ID_YSCALE);
+  zscale.set_id (ID_ZSCALE);
+  xdir.set_id (ID_XDIR);
+  ydir.set_id (ID_YDIR);
+  zdir.set_id (ID_ZDIR);
+  yaxislocation.set_id (ID_YAXISLOCATION);
+  xaxislocation.set_id (ID_XAXISLOCATION);
+  view.set_id (ID_VIEW);
+  __hold_all__.set_id (ID___HOLD_ALL__);
+  __hold_all__.set_hidden (true);
+  nextplot.set_id (ID_NEXTPLOT);
+  outerposition.set_id (ID_OUTERPOSITION);
+  activepositionproperty.set_id (ID_ACTIVEPOSITIONPROPERTY);
+  ambientlightcolor.set_id (ID_AMBIENTLIGHTCOLOR);
+  cameraposition.set_id (ID_CAMERAPOSITION);
+  cameratarget.set_id (ID_CAMERATARGET);
+  cameraupvector.set_id (ID_CAMERAUPVECTOR);
+  cameraviewangle.set_id (ID_CAMERAVIEWANGLE);
+  camerapositionmode.set_id (ID_CAMERAPOSITIONMODE);
+  cameratargetmode.set_id (ID_CAMERATARGETMODE);
+  cameraupvectormode.set_id (ID_CAMERAUPVECTORMODE);
+  cameraviewanglemode.set_id (ID_CAMERAVIEWANGLEMODE);
+  currentpoint.set_id (ID_CURRENTPOINT);
+  drawmode.set_id (ID_DRAWMODE);
+  fontangle.set_id (ID_FONTANGLE);
+  fontname.set_id (ID_FONTNAME);
+  fontsize.set_id (ID_FONTSIZE);
+  fontunits.set_id (ID_FONTUNITS);
+  fontweight.set_id (ID_FONTWEIGHT);
+  gridlinestyle.set_id (ID_GRIDLINESTYLE);
+  linestyleorder.set_id (ID_LINESTYLEORDER);
+  linewidth.set_id (ID_LINEWIDTH);
+  minorgridlinestyle.set_id (ID_MINORGRIDLINESTYLE);
+  plotboxaspectratio.set_id (ID_PLOTBOXASPECTRATIO);
+  plotboxaspectratiomode.set_id (ID_PLOTBOXASPECTRATIOMODE);
+  projection.set_id (ID_PROJECTION);
+  tickdir.set_id (ID_TICKDIR);
+  tickdirmode.set_id (ID_TICKDIRMODE);
+  ticklength.set_id (ID_TICKLENGTH);
+  tightinset.set_id (ID_TIGHTINSET);
+  units.set_id (ID_UNITS);
+  x_viewtransform.set_id (ID_X_VIEWTRANSFORM);
   x_viewtransform.set_hidden (true);
-  x_projectiontransform.set_id (X_PROJECTIONTRANSFORM);
+  x_projectiontransform.set_id (ID_X_PROJECTIONTRANSFORM);
   x_projectiontransform.set_hidden (true);
-  x_viewporttransform.set_id (X_VIEWPORTTRANSFORM);
+  x_viewporttransform.set_id (ID_X_VIEWPORTTRANSFORM);
   x_viewporttransform.set_hidden (true);
-  x_normrendertransform.set_id (X_NORMRENDERTRANSFORM);
+  x_normrendertransform.set_id (ID_X_NORMRENDERTRANSFORM);
   x_normrendertransform.set_hidden (true);
-  x_rendertransform.set_id (X_RENDERTRANSFORM);
+  x_rendertransform.set_id (ID_X_RENDERTRANSFORM);
   x_rendertransform.set_hidden (true);
+  xmtick.set_id (ID_XMTICK);
+  xmtick.set_hidden (true);
+  ymtick.set_id (ID_YMTICK);
+  ymtick.set_hidden (true);
+  zmtick.set_id (ID_ZMTICK);
+  zmtick.set_hidden (true);
+  looseinset.set_id (ID_LOOSEINSET);
+  looseinset.set_hidden (true);
   init ();
 }
 
 void
-axes::properties::set (const caseless_str& pname, const octave_value& val)
+axes::properties::set (const caseless_str& pname_arg, const octave_value& val)
 {
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return;
+
   if (pname.compare ("position"))
     set_position (val);
   else if (pname.compare ("box"))
     set_box (val);
-  else if (pname.compare ("key"))
-    set_key (val);
-  else if (pname.compare ("keybox"))
-    set_keybox (val);
-  else if (pname.compare ("keyreverse"))
-    set_keyreverse (val);
-  else if (pname.compare ("keypos"))
-    set_keypos (val);
   else if (pname.compare ("colororder"))
     set_colororder (val);
   else if (pname.compare ("dataaspectratio"))
@@ -1358,6 +1618,8 @@ axes::properties::set (const caseless_str& pname, const octave_value& val)
     set_xaxislocation (val);
   else if (pname.compare ("view"))
     set_view (val);
+  else if (pname.compare ("__hold_all__"))
+    set___hold_all__ (val);
   else if (pname.compare ("nextplot"))
     set_nextplot (val);
   else if (pname.compare ("outerposition"))
@@ -1428,136 +1690,149 @@ axes::properties::set (const caseless_str& pname, const octave_value& val)
     set_x_normrendertransform (val);
   else if (pname.compare ("x_rendertransform"))
     set_x_rendertransform (val);
+  else if (pname.compare ("xmtick"))
+    set_xmtick (val);
+  else if (pname.compare ("ymtick"))
+    set_ymtick (val);
+  else if (pname.compare ("zmtick"))
+    set_zmtick (val);
+  else if (pname.compare ("looseinset"))
+    set_looseinset (val);
   else
-    base_properties::set (pname, "axes", val);
+    base_properties::set (pname, val);
 }
 
 octave_value
 axes::properties::get (bool all) const
 {
-  Octave_map m = base_properties::get (all).map_value ();
+  octave_map m = base_properties::get (all).map_value ();
 
-  m.assign ("position", get_position ());
-  m.assign ("box", get_box ());
-  m.assign ("key", get_key ());
-  m.assign ("keybox", get_keybox ());
-  m.assign ("keyreverse", get_keyreverse ());
-  m.assign ("keypos", get_keypos ());
-  m.assign ("colororder", get_colororder ());
-  m.assign ("dataaspectratio", get_dataaspectratio ());
-  m.assign ("dataaspectratiomode", get_dataaspectratiomode ());
-  m.assign ("layer", get_layer ());
-  m.assign ("xlim", get_xlim ());
-  m.assign ("ylim", get_ylim ());
-  m.assign ("zlim", get_zlim ());
-  m.assign ("clim", get_clim ());
-  m.assign ("alim", get_alim ());
-  m.assign ("xlimmode", get_xlimmode ());
-  m.assign ("ylimmode", get_ylimmode ());
-  m.assign ("zlimmode", get_zlimmode ());
-  m.assign ("climmode", get_climmode ());
-  m.assign ("alimmode", get_alimmode ());
-  m.assign ("xlabel", get_xlabel ().as_octave_value ());
-  m.assign ("ylabel", get_ylabel ().as_octave_value ());
-  m.assign ("zlabel", get_zlabel ().as_octave_value ());
-  m.assign ("title", get_title ().as_octave_value ());
-  m.assign ("xgrid", get_xgrid ());
-  m.assign ("ygrid", get_ygrid ());
-  m.assign ("zgrid", get_zgrid ());
-  m.assign ("xminorgrid", get_xminorgrid ());
-  m.assign ("yminorgrid", get_yminorgrid ());
-  m.assign ("zminorgrid", get_zminorgrid ());
-  m.assign ("xtick", get_xtick ());
-  m.assign ("ytick", get_ytick ());
-  m.assign ("ztick", get_ztick ());
-  m.assign ("xtickmode", get_xtickmode ());
-  m.assign ("ytickmode", get_ytickmode ());
-  m.assign ("ztickmode", get_ztickmode ());
-  m.assign ("xminortick", get_xminortick ());
-  m.assign ("yminortick", get_yminortick ());
-  m.assign ("zminortick", get_zminortick ());
-  m.assign ("xticklabel", get_xticklabel ());
-  m.assign ("yticklabel", get_yticklabel ());
-  m.assign ("zticklabel", get_zticklabel ());
-  m.assign ("xticklabelmode", get_xticklabelmode ());
-  m.assign ("yticklabelmode", get_yticklabelmode ());
-  m.assign ("zticklabelmode", get_zticklabelmode ());
-  m.assign ("interpreter", get_interpreter ());
-  m.assign ("color", get_color ());
-  m.assign ("xcolor", get_xcolor ());
-  m.assign ("ycolor", get_ycolor ());
-  m.assign ("zcolor", get_zcolor ());
-  m.assign ("xscale", get_xscale ());
-  m.assign ("yscale", get_yscale ());
-  m.assign ("zscale", get_zscale ());
-  m.assign ("xdir", get_xdir ());
-  m.assign ("ydir", get_ydir ());
-  m.assign ("zdir", get_zdir ());
-  m.assign ("yaxislocation", get_yaxislocation ());
-  m.assign ("xaxislocation", get_xaxislocation ());
-  m.assign ("view", get_view ());
-  m.assign ("nextplot", get_nextplot ());
-  m.assign ("outerposition", get_outerposition ());
-  m.assign ("activepositionproperty", get_activepositionproperty ());
-  m.assign ("ambientlightcolor", get_ambientlightcolor ());
-  m.assign ("cameraposition", get_cameraposition ());
-  m.assign ("cameratarget", get_cameratarget ());
-  m.assign ("cameraupvector", get_cameraupvector ());
-  m.assign ("cameraviewangle", get_cameraviewangle ());
-  m.assign ("camerapositionmode", get_camerapositionmode ());
-  m.assign ("cameratargetmode", get_cameratargetmode ());
-  m.assign ("cameraupvectormode", get_cameraupvectormode ());
-  m.assign ("cameraviewanglemode", get_cameraviewanglemode ());
-  m.assign ("currentpoint", get_currentpoint ());
-  m.assign ("drawmode", get_drawmode ());
-  m.assign ("fontangle", get_fontangle ());
-  m.assign ("fontname", get_fontname ());
-  m.assign ("fontsize", get_fontsize ());
-  m.assign ("fontunits", get_fontunits ());
-  m.assign ("fontweight", get_fontweight ());
-  m.assign ("gridlinestyle", get_gridlinestyle ());
-  m.assign ("linestyleorder", get_linestyleorder ());
-  m.assign ("linewidth", get_linewidth ());
-  m.assign ("minorgridlinestyle", get_minorgridlinestyle ());
-  m.assign ("plotboxaspectratio", get_plotboxaspectratio ());
-  m.assign ("plotboxaspectratiomode", get_plotboxaspectratiomode ());
-  m.assign ("projection", get_projection ());
-  m.assign ("tickdir", get_tickdir ());
-  m.assign ("tickdirmode", get_tickdirmode ());
-  m.assign ("ticklength", get_ticklength ());
-  m.assign ("tightinset", get_tightinset ());
-  m.assign ("units", get_units ());
+  m.assign ("position", octave_value (get_position ()));
+  m.assign ("box", octave_value (get_box ()));
+  m.assign ("colororder", octave_value (get_colororder ()));
+  m.assign ("dataaspectratio", octave_value (get_dataaspectratio ()));
+  m.assign ("dataaspectratiomode", octave_value (get_dataaspectratiomode ()));
+  m.assign ("layer", octave_value (get_layer ()));
+  m.assign ("xlim", octave_value (get_xlim ()));
+  m.assign ("ylim", octave_value (get_ylim ()));
+  m.assign ("zlim", octave_value (get_zlim ()));
+  m.assign ("clim", octave_value (get_clim ()));
+  m.assign ("alim", octave_value (get_alim ()));
+  m.assign ("xlimmode", octave_value (get_xlimmode ()));
+  m.assign ("ylimmode", octave_value (get_ylimmode ()));
+  m.assign ("zlimmode", octave_value (get_zlimmode ()));
+  m.assign ("climmode", octave_value (get_climmode ()));
+  m.assign ("alimmode", octave_value (get_alimmode ()));
+  m.assign ("xlabel", octave_value (get_xlabel ().as_octave_value ()));
+  m.assign ("ylabel", octave_value (get_ylabel ().as_octave_value ()));
+  m.assign ("zlabel", octave_value (get_zlabel ().as_octave_value ()));
+  m.assign ("title", octave_value (get_title ().as_octave_value ()));
+  m.assign ("xgrid", octave_value (get_xgrid ()));
+  m.assign ("ygrid", octave_value (get_ygrid ()));
+  m.assign ("zgrid", octave_value (get_zgrid ()));
+  m.assign ("xminorgrid", octave_value (get_xminorgrid ()));
+  m.assign ("yminorgrid", octave_value (get_yminorgrid ()));
+  m.assign ("zminorgrid", octave_value (get_zminorgrid ()));
+  m.assign ("xtick", octave_value (get_xtick ()));
+  m.assign ("ytick", octave_value (get_ytick ()));
+  m.assign ("ztick", octave_value (get_ztick ()));
+  m.assign ("xtickmode", octave_value (get_xtickmode ()));
+  m.assign ("ytickmode", octave_value (get_ytickmode ()));
+  m.assign ("ztickmode", octave_value (get_ztickmode ()));
+  m.assign ("xminortick", octave_value (get_xminortick ()));
+  m.assign ("yminortick", octave_value (get_yminortick ()));
+  m.assign ("zminortick", octave_value (get_zminortick ()));
+  m.assign ("xticklabel", octave_value (get_xticklabel ()));
+  m.assign ("yticklabel", octave_value (get_yticklabel ()));
+  m.assign ("zticklabel", octave_value (get_zticklabel ()));
+  m.assign ("xticklabelmode", octave_value (get_xticklabelmode ()));
+  m.assign ("yticklabelmode", octave_value (get_yticklabelmode ()));
+  m.assign ("zticklabelmode", octave_value (get_zticklabelmode ()));
+  m.assign ("interpreter", octave_value (get_interpreter ()));
+  m.assign ("color", octave_value (get_color ()));
+  m.assign ("xcolor", octave_value (get_xcolor ()));
+  m.assign ("ycolor", octave_value (get_ycolor ()));
+  m.assign ("zcolor", octave_value (get_zcolor ()));
+  m.assign ("xscale", octave_value (get_xscale ()));
+  m.assign ("yscale", octave_value (get_yscale ()));
+  m.assign ("zscale", octave_value (get_zscale ()));
+  m.assign ("xdir", octave_value (get_xdir ()));
+  m.assign ("ydir", octave_value (get_ydir ()));
+  m.assign ("zdir", octave_value (get_zdir ()));
+  m.assign ("yaxislocation", octave_value (get_yaxislocation ()));
+  m.assign ("xaxislocation", octave_value (get_xaxislocation ()));
+  m.assign ("view", octave_value (get_view ()));
   if (all)
-    m.assign ("x_viewtransform", get_x_viewtransform ());
+    m.assign ("__hold_all__", octave_value (get___hold_all__ ()));
+  m.assign ("nextplot", octave_value (get_nextplot ()));
+  m.assign ("outerposition", octave_value (get_outerposition ()));
+  m.assign ("activepositionproperty", octave_value (get_activepositionproperty ()));
+  m.assign ("ambientlightcolor", octave_value (get_ambientlightcolor ()));
+  m.assign ("cameraposition", octave_value (get_cameraposition ()));
+  m.assign ("cameratarget", octave_value (get_cameratarget ()));
+  m.assign ("cameraupvector", octave_value (get_cameraupvector ()));
+  m.assign ("cameraviewangle", octave_value (get_cameraviewangle ()));
+  m.assign ("camerapositionmode", octave_value (get_camerapositionmode ()));
+  m.assign ("cameratargetmode", octave_value (get_cameratargetmode ()));
+  m.assign ("cameraupvectormode", octave_value (get_cameraupvectormode ()));
+  m.assign ("cameraviewanglemode", octave_value (get_cameraviewanglemode ()));
+  m.assign ("currentpoint", octave_value (get_currentpoint ()));
+  m.assign ("drawmode", octave_value (get_drawmode ()));
+  m.assign ("fontangle", octave_value (get_fontangle ()));
+  m.assign ("fontname", octave_value (get_fontname ()));
+  m.assign ("fontsize", octave_value (get_fontsize ()));
+  m.assign ("fontunits", octave_value (get_fontunits ()));
+  m.assign ("fontweight", octave_value (get_fontweight ()));
+  m.assign ("gridlinestyle", octave_value (get_gridlinestyle ()));
+  m.assign ("linestyleorder", octave_value (get_linestyleorder ()));
+  m.assign ("linewidth", octave_value (get_linewidth ()));
+  m.assign ("minorgridlinestyle", octave_value (get_minorgridlinestyle ()));
+  m.assign ("plotboxaspectratio", octave_value (get_plotboxaspectratio ()));
+  m.assign ("plotboxaspectratiomode", octave_value (get_plotboxaspectratiomode ()));
+  m.assign ("projection", octave_value (get_projection ()));
+  m.assign ("tickdir", octave_value (get_tickdir ()));
+  m.assign ("tickdirmode", octave_value (get_tickdirmode ()));
+  m.assign ("ticklength", octave_value (get_ticklength ()));
+  m.assign ("tightinset", octave_value (get_tightinset ()));
+  m.assign ("units", octave_value (get_units ()));
   if (all)
-    m.assign ("x_projectiontransform", get_x_projectiontransform ());
+    m.assign ("x_viewtransform", octave_value (get_x_viewtransform ()));
   if (all)
-    m.assign ("x_viewporttransform", get_x_viewporttransform ());
+    m.assign ("x_projectiontransform", octave_value (get_x_projectiontransform ()));
   if (all)
-    m.assign ("x_normrendertransform", get_x_normrendertransform ());
+    m.assign ("x_viewporttransform", octave_value (get_x_viewporttransform ()));
   if (all)
-    m.assign ("x_rendertransform", get_x_rendertransform ());
+    m.assign ("x_normrendertransform", octave_value (get_x_normrendertransform ()));
+  if (all)
+    m.assign ("x_rendertransform", octave_value (get_x_rendertransform ()));
+  if (all)
+    m.assign ("xmtick", octave_value (get_xmtick ()));
+  if (all)
+    m.assign ("ymtick", octave_value (get_ymtick ()));
+  if (all)
+    m.assign ("zmtick", octave_value (get_zmtick ()));
+  if (all)
+    m.assign ("looseinset", octave_value (get_looseinset ()));
 
   return m;
 }
 
 octave_value
-axes::properties::get (const caseless_str& pname) const
+axes::properties::get (const caseless_str& pname_arg) const
 {
   octave_value retval;
+
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return retval;
 
   if (pname.compare ("position"))
     retval = get_position ();
   else if (pname.compare ("box"))
     retval = get_box ();
-  else if (pname.compare ("key"))
-    retval = get_key ();
-  else if (pname.compare ("keybox"))
-    retval = get_keybox ();
-  else if (pname.compare ("keyreverse"))
-    retval = get_keyreverse ();
-  else if (pname.compare ("keypos"))
-    retval = get_keypos ();
   else if (pname.compare ("colororder"))
     retval = get_colororder ();
   else if (pname.compare ("dataaspectratio"))
@@ -1664,6 +1939,8 @@ axes::properties::get (const caseless_str& pname) const
     retval = get_xaxislocation ();
   else if (pname.compare ("view"))
     retval = get_view ();
+  else if (pname.compare ("__hold_all__"))
+    retval = get___hold_all__ ();
   else if (pname.compare ("nextplot"))
     retval = get_nextplot ();
   else if (pname.compare ("outerposition"))
@@ -1736,6 +2013,14 @@ axes::properties::get (const caseless_str& pname) const
     retval = get_x_normrendertransform ();
   else if (pname.compare ("x_rendertransform"))
     retval = get_x_rendertransform ();
+  else if (pname.compare ("xmtick"))
+    retval = get_xmtick ();
+  else if (pname.compare ("ymtick"))
+    retval = get_ymtick ();
+  else if (pname.compare ("zmtick"))
+    retval = get_zmtick ();
+  else if (pname.compare ("looseinset"))
+    retval = get_looseinset ();
   else
     retval = base_properties::get (pname);
 
@@ -1743,20 +2028,19 @@ axes::properties::get (const caseless_str& pname) const
 }
 
 property
-axes::properties::get_property (const caseless_str& pname)
+axes::properties::get_property (const caseless_str& pname_arg)
 {
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return property ();
+
   if (pname.compare ("position"))
     return property (&position, true);
   else if (pname.compare ("box"))
     return property (&box, true);
-  else if (pname.compare ("key"))
-    return property (&key, true);
-  else if (pname.compare ("keybox"))
-    return property (&keybox, true);
-  else if (pname.compare ("keyreverse"))
-    return property (&keyreverse, true);
-  else if (pname.compare ("keypos"))
-    return property (&keypos, true);
   else if (pname.compare ("colororder"))
     return property (&colororder, true);
   else if (pname.compare ("dataaspectratio"))
@@ -1863,6 +2147,8 @@ axes::properties::get_property (const caseless_str& pname)
     return property (&xaxislocation, true);
   else if (pname.compare ("view"))
     return property (&view, true);
+  else if (pname.compare ("__hold_all__"))
+    return property (&__hold_all__, true);
   else if (pname.compare ("nextplot"))
     return property (&nextplot, true);
   else if (pname.compare ("outerposition"))
@@ -1935,6 +2221,14 @@ axes::properties::get_property (const caseless_str& pname)
     return property (&x_normrendertransform, true);
   else if (pname.compare ("x_rendertransform"))
     return property (&x_rendertransform, true);
+  else if (pname.compare ("xmtick"))
+    return property (&xmtick, true);
+  else if (pname.compare ("ymtick"))
+    return property (&ymtick, true);
+  else if (pname.compare ("zmtick"))
+    return property (&zmtick, true);
+  else if (pname.compare ("looseinset"))
+    return property (&looseinset, true);
   else
     return base_properties::get_property (pname);
 }
@@ -1946,10 +2240,6 @@ axes::properties::factory_defaults (void)
 
   m["position"] = default_axes_position ();
   m["box"] = "on";
-  m["key"] = "off";
-  m["keybox"] = "off";
-  m["keyreverse"] = "off";
-  m["keypos"] = 1;
   m["colororder"] = default_colororder ();
   m["dataaspectratio"] = Matrix (1, 3, 1.0);
   m["dataaspectratiomode"] = "auto";
@@ -1986,10 +2276,10 @@ axes::properties::factory_defaults (void)
   m["yticklabelmode"] = "auto";
   m["zticklabelmode"] = "auto";
   m["interpreter"] = "none";
-  m["color"] = octave_value ();
-  m["xcolor"] = octave_value ();
-  m["ycolor"] = octave_value ();
-  m["zcolor"] = octave_value ();
+  m["color"] = color_property (color_values (1, 1, 1), radio_values ("none"));
+  m["xcolor"] = color_values (0, 0, 0);
+  m["ycolor"] = color_values (0, 0, 0);
+  m["zcolor"] = color_values (0, 0, 0);
   m["xscale"] = "linear";
   m["yscale"] = "linear";
   m["zscale"] = "linear";
@@ -1999,10 +2289,11 @@ axes::properties::factory_defaults (void)
   m["yaxislocation"] = "left";
   m["xaxislocation"] = "bottom";
   m["view"] = Matrix ();
+  m["__hold_all__"] = "off";
   m["nextplot"] = "replace";
   m["outerposition"] = default_axes_outerposition ();
   m["activepositionproperty"] = "outerposition";
-  m["ambientlightcolor"] = octave_value ();
+  m["ambientlightcolor"] = color_values (1, 1, 1);
   m["cameraposition"] = Matrix (1, 3, 0.0);
   m["cameratarget"] = Matrix (1, 3, 0.0);
   m["cameraupvector"] = Matrix ();
@@ -2015,7 +2306,7 @@ axes::properties::factory_defaults (void)
   m["drawmode"] = "normal";
   m["fontangle"] = "normal";
   m["fontname"] = OCTAVE_DEFAULT_FONTNAME;
-  m["fontsize"] = 12;
+  m["fontsize"] = 10;
   m["fontunits"] = "points";
   m["fontweight"] = "normal";
   m["gridlinestyle"] = ":";
@@ -2035,120 +2326,157 @@ axes::properties::factory_defaults (void)
   m["x_viewporttransform"] = Matrix (4, 4, 0.0);
   m["x_normrendertransform"] = Matrix (4, 4, 0.0);
   m["x_rendertransform"] = Matrix (4, 4, 0.0);
+  m["xmtick"] = Matrix ();
+  m["ymtick"] = Matrix ();
+  m["zmtick"] = Matrix ();
+  m["looseinset"] = Matrix (1, 4, 0.0);
 
   return m;
 }
 
 std::string axes::properties::go_name ("axes");
 
-bool axes::properties::has_property (const std::string& pname)
+std::set<std::string>
+axes::properties::core_property_names (void)
 {
-  static std::set<std::string> all_properties;
+  static std::set<std::string> all_pnames;
 
   static bool initialized = false;
 
   if (! initialized)
     {
-      all_properties.insert ("position");
-      all_properties.insert ("box");
-      all_properties.insert ("key");
-      all_properties.insert ("keybox");
-      all_properties.insert ("keyreverse");
-      all_properties.insert ("keypos");
-      all_properties.insert ("colororder");
-      all_properties.insert ("dataaspectratio");
-      all_properties.insert ("dataaspectratiomode");
-      all_properties.insert ("layer");
-      all_properties.insert ("xlim");
-      all_properties.insert ("ylim");
-      all_properties.insert ("zlim");
-      all_properties.insert ("clim");
-      all_properties.insert ("alim");
-      all_properties.insert ("xlimmode");
-      all_properties.insert ("ylimmode");
-      all_properties.insert ("zlimmode");
-      all_properties.insert ("climmode");
-      all_properties.insert ("alimmode");
-      all_properties.insert ("xlabel");
-      all_properties.insert ("ylabel");
-      all_properties.insert ("zlabel");
-      all_properties.insert ("title");
-      all_properties.insert ("xgrid");
-      all_properties.insert ("ygrid");
-      all_properties.insert ("zgrid");
-      all_properties.insert ("xminorgrid");
-      all_properties.insert ("yminorgrid");
-      all_properties.insert ("zminorgrid");
-      all_properties.insert ("xtick");
-      all_properties.insert ("ytick");
-      all_properties.insert ("ztick");
-      all_properties.insert ("xtickmode");
-      all_properties.insert ("ytickmode");
-      all_properties.insert ("ztickmode");
-      all_properties.insert ("xminortick");
-      all_properties.insert ("yminortick");
-      all_properties.insert ("zminortick");
-      all_properties.insert ("xticklabel");
-      all_properties.insert ("yticklabel");
-      all_properties.insert ("zticklabel");
-      all_properties.insert ("xticklabelmode");
-      all_properties.insert ("yticklabelmode");
-      all_properties.insert ("zticklabelmode");
-      all_properties.insert ("interpreter");
-      all_properties.insert ("color");
-      all_properties.insert ("xcolor");
-      all_properties.insert ("ycolor");
-      all_properties.insert ("zcolor");
-      all_properties.insert ("xscale");
-      all_properties.insert ("yscale");
-      all_properties.insert ("zscale");
-      all_properties.insert ("xdir");
-      all_properties.insert ("ydir");
-      all_properties.insert ("zdir");
-      all_properties.insert ("yaxislocation");
-      all_properties.insert ("xaxislocation");
-      all_properties.insert ("view");
-      all_properties.insert ("nextplot");
-      all_properties.insert ("outerposition");
-      all_properties.insert ("activepositionproperty");
-      all_properties.insert ("ambientlightcolor");
-      all_properties.insert ("cameraposition");
-      all_properties.insert ("cameratarget");
-      all_properties.insert ("cameraupvector");
-      all_properties.insert ("cameraviewangle");
-      all_properties.insert ("camerapositionmode");
-      all_properties.insert ("cameratargetmode");
-      all_properties.insert ("cameraupvectormode");
-      all_properties.insert ("cameraviewanglemode");
-      all_properties.insert ("currentpoint");
-      all_properties.insert ("drawmode");
-      all_properties.insert ("fontangle");
-      all_properties.insert ("fontname");
-      all_properties.insert ("fontsize");
-      all_properties.insert ("fontunits");
-      all_properties.insert ("fontweight");
-      all_properties.insert ("gridlinestyle");
-      all_properties.insert ("linestyleorder");
-      all_properties.insert ("linewidth");
-      all_properties.insert ("minorgridlinestyle");
-      all_properties.insert ("plotboxaspectratio");
-      all_properties.insert ("plotboxaspectratiomode");
-      all_properties.insert ("projection");
-      all_properties.insert ("tickdir");
-      all_properties.insert ("tickdirmode");
-      all_properties.insert ("ticklength");
-      all_properties.insert ("tightinset");
-      all_properties.insert ("units");
-      all_properties.insert ("x_viewtransform");
-      all_properties.insert ("x_projectiontransform");
-      all_properties.insert ("x_viewporttransform");
-      all_properties.insert ("x_normrendertransform");
-      all_properties.insert ("x_rendertransform");
+      all_pnames.insert ("position");
+      all_pnames.insert ("box");
+      all_pnames.insert ("colororder");
+      all_pnames.insert ("dataaspectratio");
+      all_pnames.insert ("dataaspectratiomode");
+      all_pnames.insert ("layer");
+      all_pnames.insert ("xlim");
+      all_pnames.insert ("ylim");
+      all_pnames.insert ("zlim");
+      all_pnames.insert ("clim");
+      all_pnames.insert ("alim");
+      all_pnames.insert ("xlimmode");
+      all_pnames.insert ("ylimmode");
+      all_pnames.insert ("zlimmode");
+      all_pnames.insert ("climmode");
+      all_pnames.insert ("alimmode");
+      all_pnames.insert ("xlabel");
+      all_pnames.insert ("ylabel");
+      all_pnames.insert ("zlabel");
+      all_pnames.insert ("title");
+      all_pnames.insert ("xgrid");
+      all_pnames.insert ("ygrid");
+      all_pnames.insert ("zgrid");
+      all_pnames.insert ("xminorgrid");
+      all_pnames.insert ("yminorgrid");
+      all_pnames.insert ("zminorgrid");
+      all_pnames.insert ("xtick");
+      all_pnames.insert ("ytick");
+      all_pnames.insert ("ztick");
+      all_pnames.insert ("xtickmode");
+      all_pnames.insert ("ytickmode");
+      all_pnames.insert ("ztickmode");
+      all_pnames.insert ("xminortick");
+      all_pnames.insert ("yminortick");
+      all_pnames.insert ("zminortick");
+      all_pnames.insert ("xticklabel");
+      all_pnames.insert ("yticklabel");
+      all_pnames.insert ("zticklabel");
+      all_pnames.insert ("xticklabelmode");
+      all_pnames.insert ("yticklabelmode");
+      all_pnames.insert ("zticklabelmode");
+      all_pnames.insert ("interpreter");
+      all_pnames.insert ("color");
+      all_pnames.insert ("xcolor");
+      all_pnames.insert ("ycolor");
+      all_pnames.insert ("zcolor");
+      all_pnames.insert ("xscale");
+      all_pnames.insert ("yscale");
+      all_pnames.insert ("zscale");
+      all_pnames.insert ("xdir");
+      all_pnames.insert ("ydir");
+      all_pnames.insert ("zdir");
+      all_pnames.insert ("yaxislocation");
+      all_pnames.insert ("xaxislocation");
+      all_pnames.insert ("view");
+      all_pnames.insert ("__hold_all__");
+      all_pnames.insert ("nextplot");
+      all_pnames.insert ("outerposition");
+      all_pnames.insert ("activepositionproperty");
+      all_pnames.insert ("ambientlightcolor");
+      all_pnames.insert ("cameraposition");
+      all_pnames.insert ("cameratarget");
+      all_pnames.insert ("cameraupvector");
+      all_pnames.insert ("cameraviewangle");
+      all_pnames.insert ("camerapositionmode");
+      all_pnames.insert ("cameratargetmode");
+      all_pnames.insert ("cameraupvectormode");
+      all_pnames.insert ("cameraviewanglemode");
+      all_pnames.insert ("currentpoint");
+      all_pnames.insert ("drawmode");
+      all_pnames.insert ("fontangle");
+      all_pnames.insert ("fontname");
+      all_pnames.insert ("fontsize");
+      all_pnames.insert ("fontunits");
+      all_pnames.insert ("fontweight");
+      all_pnames.insert ("gridlinestyle");
+      all_pnames.insert ("linestyleorder");
+      all_pnames.insert ("linewidth");
+      all_pnames.insert ("minorgridlinestyle");
+      all_pnames.insert ("plotboxaspectratio");
+      all_pnames.insert ("plotboxaspectratiomode");
+      all_pnames.insert ("projection");
+      all_pnames.insert ("tickdir");
+      all_pnames.insert ("tickdirmode");
+      all_pnames.insert ("ticklength");
+      all_pnames.insert ("tightinset");
+      all_pnames.insert ("units");
+      all_pnames.insert ("x_viewtransform");
+      all_pnames.insert ("x_projectiontransform");
+      all_pnames.insert ("x_viewporttransform");
+      all_pnames.insert ("x_normrendertransform");
+      all_pnames.insert ("x_rendertransform");
+      all_pnames.insert ("xmtick");
+      all_pnames.insert ("ymtick");
+      all_pnames.insert ("zmtick");
+      all_pnames.insert ("looseinset");
+
+      std::set<std::string> base_pnames = base_properties::core_property_names ();
+      all_pnames.insert (base_pnames.begin (), base_pnames.end ());
 
       initialized = true;
     }
 
-  return all_properties.find (pname) != all_properties.end () || base_properties::has_property (pname, "axes");
+  return all_pnames;
+}
+
+bool
+axes::properties::has_core_property (const caseless_str& pname)
+{
+  std::set<std::string> pnames = core_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+std::set<std::string>
+axes::properties::all_property_names (void) const
+{
+  static std::set<std::string> all_pnames = core_property_names ();
+
+  std::set<std::string> retval = all_pnames;
+  std::set<std::string> base_props = base_properties::all_property_names ();
+  retval.insert (base_props.begin (), base_props.end ());
+
+  return retval;
+}
+
+bool
+axes::properties::has_property (const caseless_str& pname) const
+{
+  std::set<std::string> pnames = all_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
 }
 
 // ******** line ********
@@ -2158,21 +2486,16 @@ line::properties::properties (const graphics_handle& mh, const graphics_handle& 
     xdata ("xdata", mh, default_data ()),
     ydata ("ydata", mh, default_data ()),
     zdata ("zdata", mh, Matrix ()),
-    ldata ("ldata", mh, Matrix ()),
-    udata ("udata", mh, Matrix ()),
-    xldata ("xldata", mh, Matrix ()),
-    xudata ("xudata", mh, Matrix ()),
     xdatasource ("xdatasource", mh, ""),
     ydatasource ("ydatasource", mh, ""),
     zdatasource ("zdatasource", mh, ""),
     color ("color", mh, color_values (0, 0, 0)),
     linestyle ("linestyle", mh, "{-}|--|:|-.|none"),
     linewidth ("linewidth", mh, 0.5),
-    marker ("marker", mh, "{none}|s|o|x|+|.|*|<|>|v|^|d|p|h"),
+    marker ("marker", mh, "{none}|s|o|x|+|.|*|<|>|v|^|d|p|h|@"),
     markeredgecolor ("markeredgecolor", mh, "{auto}|none"),
     markerfacecolor ("markerfacecolor", mh, "auto|{none}"),
     markersize ("markersize", mh, 6),
-    keylabel ("keylabel", mh, ""),
     interpreter ("interpreter", mh, "{tex}|none|latex"),
     displayname ("displayname", mh, ""),
     erasemode ("erasemode", mh, "{normal}|none|xor|background"),
@@ -2183,59 +2506,53 @@ line::properties::properties (const graphics_handle& mh, const graphics_handle& 
     yliminclude ("yliminclude", mh, "on"),
     zliminclude ("zliminclude", mh, "off")
 {
-  xdata.set_id (XDATA);
-  ydata.set_id (YDATA);
-  zdata.set_id (ZDATA);
-  ldata.set_id (LDATA);
-  udata.set_id (UDATA);
-  xldata.set_id (XLDATA);
-  xudata.set_id (XUDATA);
-  xdatasource.set_id (XDATASOURCE);
-  ydatasource.set_id (YDATASOURCE);
-  zdatasource.set_id (ZDATASOURCE);
-  color.set_id (COLOR);
-  linestyle.set_id (LINESTYLE);
-  linewidth.set_id (LINEWIDTH);
-  marker.set_id (MARKER);
-  markeredgecolor.set_id (MARKEREDGECOLOR);
-  markerfacecolor.set_id (MARKERFACECOLOR);
-  markersize.set_id (MARKERSIZE);
-  keylabel.set_id (KEYLABEL);
-  interpreter.set_id (INTERPRETER);
-  displayname.set_id (DISPLAYNAME);
-  erasemode.set_id (ERASEMODE);
-  xlim.set_id (XLIM);
+  xdata.set_id (ID_XDATA);
+  ydata.set_id (ID_YDATA);
+  zdata.set_id (ID_ZDATA);
+  xdatasource.set_id (ID_XDATASOURCE);
+  ydatasource.set_id (ID_YDATASOURCE);
+  zdatasource.set_id (ID_ZDATASOURCE);
+  color.set_id (ID_COLOR);
+  linestyle.set_id (ID_LINESTYLE);
+  linewidth.set_id (ID_LINEWIDTH);
+  marker.set_id (ID_MARKER);
+  markeredgecolor.set_id (ID_MARKEREDGECOLOR);
+  markerfacecolor.set_id (ID_MARKERFACECOLOR);
+  markersize.set_id (ID_MARKERSIZE);
+  interpreter.set_id (ID_INTERPRETER);
+  displayname.set_id (ID_DISPLAYNAME);
+  erasemode.set_id (ID_ERASEMODE);
+  xlim.set_id (ID_XLIM);
   xlim.set_hidden (true);
-  ylim.set_id (YLIM);
+  ylim.set_id (ID_YLIM);
   ylim.set_hidden (true);
-  zlim.set_id (ZLIM);
+  zlim.set_id (ID_ZLIM);
   zlim.set_hidden (true);
-  xliminclude.set_id (XLIMINCLUDE);
+  xliminclude.set_id (ID_XLIMINCLUDE);
   xliminclude.set_hidden (true);
-  yliminclude.set_id (YLIMINCLUDE);
+  yliminclude.set_id (ID_YLIMINCLUDE);
   yliminclude.set_hidden (true);
-  zliminclude.set_id (ZLIMINCLUDE);
+  zliminclude.set_id (ID_ZLIMINCLUDE);
   zliminclude.set_hidden (true);
   init ();
 }
 
 void
-line::properties::set (const caseless_str& pname, const octave_value& val)
+line::properties::set (const caseless_str& pname_arg, const octave_value& val)
 {
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return;
+
   if (pname.compare ("xdata"))
     set_xdata (val);
   else if (pname.compare ("ydata"))
     set_ydata (val);
   else if (pname.compare ("zdata"))
     set_zdata (val);
-  else if (pname.compare ("ldata"))
-    set_ldata (val);
-  else if (pname.compare ("udata"))
-    set_udata (val);
-  else if (pname.compare ("xldata"))
-    set_xldata (val);
-  else if (pname.compare ("xudata"))
-    set_xudata (val);
   else if (pname.compare ("xdatasource"))
     set_xdatasource (val);
   else if (pname.compare ("ydatasource"))
@@ -2256,8 +2573,6 @@ line::properties::set (const caseless_str& pname, const octave_value& val)
     set_markerfacecolor (val);
   else if (pname.compare ("markersize"))
     set_markersize (val);
-  else if (pname.compare ("keylabel"))
-    set_keylabel (val);
   else if (pname.compare ("interpreter"))
     set_interpreter (val);
   else if (pname.compare ("displayname"))
@@ -2271,55 +2586,57 @@ line::properties::set (const caseless_str& pname, const octave_value& val)
   else if (pname.compare ("zliminclude"))
     set_zliminclude (val);
   else
-    base_properties::set (pname, "line", val);
+    base_properties::set (pname, val);
 }
 
 octave_value
 line::properties::get (bool all) const
 {
-  Octave_map m = base_properties::get (all).map_value ();
+  octave_map m = base_properties::get (all).map_value ();
 
-  m.assign ("xdata", get_xdata ());
-  m.assign ("ydata", get_ydata ());
-  m.assign ("zdata", get_zdata ());
-  m.assign ("ldata", get_ldata ());
-  m.assign ("udata", get_udata ());
-  m.assign ("xldata", get_xldata ());
-  m.assign ("xudata", get_xudata ());
-  m.assign ("xdatasource", get_xdatasource ());
-  m.assign ("ydatasource", get_ydatasource ());
-  m.assign ("zdatasource", get_zdatasource ());
-  m.assign ("color", get_color ());
-  m.assign ("linestyle", get_linestyle ());
-  m.assign ("linewidth", get_linewidth ());
-  m.assign ("marker", get_marker ());
-  m.assign ("markeredgecolor", get_markeredgecolor ());
-  m.assign ("markerfacecolor", get_markerfacecolor ());
-  m.assign ("markersize", get_markersize ());
-  m.assign ("keylabel", get_keylabel ());
-  m.assign ("interpreter", get_interpreter ());
-  m.assign ("displayname", get_displayname ());
-  m.assign ("erasemode", get_erasemode ());
+  m.assign ("xdata", octave_value (get_xdata ()));
+  m.assign ("ydata", octave_value (get_ydata ()));
+  m.assign ("zdata", octave_value (get_zdata ()));
+  m.assign ("xdatasource", octave_value (get_xdatasource ()));
+  m.assign ("ydatasource", octave_value (get_ydatasource ()));
+  m.assign ("zdatasource", octave_value (get_zdatasource ()));
+  m.assign ("color", octave_value (get_color ()));
+  m.assign ("linestyle", octave_value (get_linestyle ()));
+  m.assign ("linewidth", octave_value (get_linewidth ()));
+  m.assign ("marker", octave_value (get_marker ()));
+  m.assign ("markeredgecolor", octave_value (get_markeredgecolor ()));
+  m.assign ("markerfacecolor", octave_value (get_markerfacecolor ()));
+  m.assign ("markersize", octave_value (get_markersize ()));
+  m.assign ("interpreter", octave_value (get_interpreter ()));
+  m.assign ("displayname", octave_value (get_displayname ()));
+  m.assign ("erasemode", octave_value (get_erasemode ()));
   if (all)
-    m.assign ("xlim", get_xlim ());
+    m.assign ("xlim", octave_value (get_xlim ()));
   if (all)
-    m.assign ("ylim", get_ylim ());
+    m.assign ("ylim", octave_value (get_ylim ()));
   if (all)
-    m.assign ("zlim", get_zlim ());
+    m.assign ("zlim", octave_value (get_zlim ()));
   if (all)
-    m.assign ("xliminclude", get_xliminclude ());
+    m.assign ("xliminclude", octave_value (get_xliminclude ()));
   if (all)
-    m.assign ("yliminclude", get_yliminclude ());
+    m.assign ("yliminclude", octave_value (get_yliminclude ()));
   if (all)
-    m.assign ("zliminclude", get_zliminclude ());
+    m.assign ("zliminclude", octave_value (get_zliminclude ()));
 
   return m;
 }
 
 octave_value
-line::properties::get (const caseless_str& pname) const
+line::properties::get (const caseless_str& pname_arg) const
 {
   octave_value retval;
+
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return retval;
 
   if (pname.compare ("xdata"))
     retval = get_xdata ();
@@ -2327,14 +2644,6 @@ line::properties::get (const caseless_str& pname) const
     retval = get_ydata ();
   else if (pname.compare ("zdata"))
     retval = get_zdata ();
-  else if (pname.compare ("ldata"))
-    retval = get_ldata ();
-  else if (pname.compare ("udata"))
-    retval = get_udata ();
-  else if (pname.compare ("xldata"))
-    retval = get_xldata ();
-  else if (pname.compare ("xudata"))
-    retval = get_xudata ();
   else if (pname.compare ("xdatasource"))
     retval = get_xdatasource ();
   else if (pname.compare ("ydatasource"))
@@ -2355,8 +2664,6 @@ line::properties::get (const caseless_str& pname) const
     retval = get_markerfacecolor ();
   else if (pname.compare ("markersize"))
     retval = get_markersize ();
-  else if (pname.compare ("keylabel"))
-    retval = get_keylabel ();
   else if (pname.compare ("interpreter"))
     retval = get_interpreter ();
   else if (pname.compare ("displayname"))
@@ -2382,22 +2689,21 @@ line::properties::get (const caseless_str& pname) const
 }
 
 property
-line::properties::get_property (const caseless_str& pname)
+line::properties::get_property (const caseless_str& pname_arg)
 {
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return property ();
+
   if (pname.compare ("xdata"))
     return property (&xdata, true);
   else if (pname.compare ("ydata"))
     return property (&ydata, true);
   else if (pname.compare ("zdata"))
     return property (&zdata, true);
-  else if (pname.compare ("ldata"))
-    return property (&ldata, true);
-  else if (pname.compare ("udata"))
-    return property (&udata, true);
-  else if (pname.compare ("xldata"))
-    return property (&xldata, true);
-  else if (pname.compare ("xudata"))
-    return property (&xudata, true);
   else if (pname.compare ("xdatasource"))
     return property (&xdatasource, true);
   else if (pname.compare ("ydatasource"))
@@ -2418,8 +2724,6 @@ line::properties::get_property (const caseless_str& pname)
     return property (&markerfacecolor, true);
   else if (pname.compare ("markersize"))
     return property (&markersize, true);
-  else if (pname.compare ("keylabel"))
-    return property (&keylabel, true);
   else if (pname.compare ("interpreter"))
     return property (&interpreter, true);
   else if (pname.compare ("displayname"))
@@ -2450,21 +2754,16 @@ line::properties::factory_defaults (void)
   m["xdata"] = default_data ();
   m["ydata"] = default_data ();
   m["zdata"] = Matrix ();
-  m["ldata"] = Matrix ();
-  m["udata"] = Matrix ();
-  m["xldata"] = Matrix ();
-  m["xudata"] = Matrix ();
   m["xdatasource"] = "";
   m["ydatasource"] = "";
   m["zdatasource"] = "";
-  m["color"] = octave_value ();
+  m["color"] = color_values (0, 0, 0);
   m["linestyle"] = "-";
   m["linewidth"] = 0.5;
   m["marker"] = "none";
-  m["markeredgecolor"] = "auto";
-  m["markerfacecolor"] = "none";
+  m["markeredgecolor"] = "{auto}|none";
+  m["markerfacecolor"] = "auto|{none}";
   m["markersize"] = 6;
-  m["keylabel"] = "";
   m["interpreter"] = "tex";
   m["displayname"] = "";
   m["erasemode"] = "normal";
@@ -2480,46 +2779,73 @@ line::properties::factory_defaults (void)
 
 std::string line::properties::go_name ("line");
 
-bool line::properties::has_property (const std::string& pname)
+std::set<std::string>
+line::properties::core_property_names (void)
 {
-  static std::set<std::string> all_properties;
+  static std::set<std::string> all_pnames;
 
   static bool initialized = false;
 
   if (! initialized)
     {
-      all_properties.insert ("xdata");
-      all_properties.insert ("ydata");
-      all_properties.insert ("zdata");
-      all_properties.insert ("ldata");
-      all_properties.insert ("udata");
-      all_properties.insert ("xldata");
-      all_properties.insert ("xudata");
-      all_properties.insert ("xdatasource");
-      all_properties.insert ("ydatasource");
-      all_properties.insert ("zdatasource");
-      all_properties.insert ("color");
-      all_properties.insert ("linestyle");
-      all_properties.insert ("linewidth");
-      all_properties.insert ("marker");
-      all_properties.insert ("markeredgecolor");
-      all_properties.insert ("markerfacecolor");
-      all_properties.insert ("markersize");
-      all_properties.insert ("keylabel");
-      all_properties.insert ("interpreter");
-      all_properties.insert ("displayname");
-      all_properties.insert ("erasemode");
-      all_properties.insert ("xlim");
-      all_properties.insert ("ylim");
-      all_properties.insert ("zlim");
-      all_properties.insert ("xliminclude");
-      all_properties.insert ("yliminclude");
-      all_properties.insert ("zliminclude");
+      all_pnames.insert ("xdata");
+      all_pnames.insert ("ydata");
+      all_pnames.insert ("zdata");
+      all_pnames.insert ("xdatasource");
+      all_pnames.insert ("ydatasource");
+      all_pnames.insert ("zdatasource");
+      all_pnames.insert ("color");
+      all_pnames.insert ("linestyle");
+      all_pnames.insert ("linewidth");
+      all_pnames.insert ("marker");
+      all_pnames.insert ("markeredgecolor");
+      all_pnames.insert ("markerfacecolor");
+      all_pnames.insert ("markersize");
+      all_pnames.insert ("interpreter");
+      all_pnames.insert ("displayname");
+      all_pnames.insert ("erasemode");
+      all_pnames.insert ("xlim");
+      all_pnames.insert ("ylim");
+      all_pnames.insert ("zlim");
+      all_pnames.insert ("xliminclude");
+      all_pnames.insert ("yliminclude");
+      all_pnames.insert ("zliminclude");
+
+      std::set<std::string> base_pnames = base_properties::core_property_names ();
+      all_pnames.insert (base_pnames.begin (), base_pnames.end ());
 
       initialized = true;
     }
 
-  return all_properties.find (pname) != all_properties.end () || base_properties::has_property (pname, "line");
+  return all_pnames;
+}
+
+bool
+line::properties::has_core_property (const caseless_str& pname)
+{
+  std::set<std::string> pnames = core_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+std::set<std::string>
+line::properties::all_property_names (void) const
+{
+  static std::set<std::string> all_pnames = core_property_names ();
+
+  std::set<std::string> retval = all_pnames;
+  std::set<std::string> base_props = base_properties::all_property_names ();
+  retval.insert (base_props.begin (), base_props.end ());
+
+  return retval;
+}
+
+bool
+line::properties::has_property (const caseless_str& pname) const
+{
+  std::set<std::string> pnames = all_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
 }
 
 // ******** text ********
@@ -2547,52 +2873,76 @@ text::properties::properties (const graphics_handle& mh, const graphics_handle& 
     linewidth ("linewidth", mh, 0.5),
     margin ("margin", mh, 1),
     verticalalignment ("verticalalignment", mh, "top|cap|{middle}|baseline|bottom"),
+    extent ("extent", mh, Matrix (1, 4, 0.0)),
     xlim ("xlim", mh, Matrix ()),
     ylim ("ylim", mh, Matrix ()),
     zlim ("zlim", mh, Matrix ()),
-    xliminclude ("xliminclude", mh, "on"),
-    yliminclude ("yliminclude", mh, "on"),
-    zliminclude ("zliminclude", mh, "off")
+    xliminclude ("xliminclude", mh, "off"),
+    yliminclude ("yliminclude", mh, "off"),
+    zliminclude ("zliminclude", mh, "off"),
+    positionmode ("positionmode", mh, "{auto}|manual"),
+    rotationmode ("rotationmode", mh, "{auto}|manual"),
+    horizontalalignmentmode ("horizontalalignmentmode", mh, "{auto}|manual"),
+    verticalalignmentmode ("verticalalignmentmode", mh, "{auto}|manual"),
+    autopos_tag ("autopos_tag", mh, "{none}|xlabel|ylabel|zlabel|title")
 {
-  string.set_id (STRING);
-  units.set_id (UNITS);
-  position.set_id (POSITION);
-  rotation.set_id (ROTATION);
-  horizontalalignment.set_id (HORIZONTALALIGNMENT);
-  color.set_id (COLOR);
-  fontname.set_id (FONTNAME);
-  fontsize.set_id (FONTSIZE);
-  fontangle.set_id (FONTANGLE);
-  fontweight.set_id (FONTWEIGHT);
-  interpreter.set_id (INTERPRETER);
-  backgroundcolor.set_id (BACKGROUNDCOLOR);
-  displayname.set_id (DISPLAYNAME);
-  edgecolor.set_id (EDGECOLOR);
-  erasemode.set_id (ERASEMODE);
-  editing.set_id (EDITING);
-  fontunits.set_id (FONTUNITS);
-  linestyle.set_id (LINESTYLE);
-  linewidth.set_id (LINEWIDTH);
-  margin.set_id (MARGIN);
-  verticalalignment.set_id (VERTICALALIGNMENT);
-  xlim.set_id (XLIM);
+  string.set_id (ID_STRING);
+  units.set_id (ID_UNITS);
+  position.set_id (ID_POSITION);
+  rotation.set_id (ID_ROTATION);
+  horizontalalignment.set_id (ID_HORIZONTALALIGNMENT);
+  color.set_id (ID_COLOR);
+  fontname.set_id (ID_FONTNAME);
+  fontsize.set_id (ID_FONTSIZE);
+  fontangle.set_id (ID_FONTANGLE);
+  fontweight.set_id (ID_FONTWEIGHT);
+  interpreter.set_id (ID_INTERPRETER);
+  backgroundcolor.set_id (ID_BACKGROUNDCOLOR);
+  displayname.set_id (ID_DISPLAYNAME);
+  edgecolor.set_id (ID_EDGECOLOR);
+  erasemode.set_id (ID_ERASEMODE);
+  editing.set_id (ID_EDITING);
+  fontunits.set_id (ID_FONTUNITS);
+  linestyle.set_id (ID_LINESTYLE);
+  linewidth.set_id (ID_LINEWIDTH);
+  margin.set_id (ID_MARGIN);
+  verticalalignment.set_id (ID_VERTICALALIGNMENT);
+  extent.set_id (ID_EXTENT);
+  xlim.set_id (ID_XLIM);
   xlim.set_hidden (true);
-  ylim.set_id (YLIM);
+  ylim.set_id (ID_YLIM);
   ylim.set_hidden (true);
-  zlim.set_id (ZLIM);
+  zlim.set_id (ID_ZLIM);
   zlim.set_hidden (true);
-  xliminclude.set_id (XLIMINCLUDE);
+  xliminclude.set_id (ID_XLIMINCLUDE);
   xliminclude.set_hidden (true);
-  yliminclude.set_id (YLIMINCLUDE);
+  yliminclude.set_id (ID_YLIMINCLUDE);
   yliminclude.set_hidden (true);
-  zliminclude.set_id (ZLIMINCLUDE);
+  zliminclude.set_id (ID_ZLIMINCLUDE);
   zliminclude.set_hidden (true);
+  positionmode.set_id (ID_POSITIONMODE);
+  positionmode.set_hidden (true);
+  rotationmode.set_id (ID_ROTATIONMODE);
+  rotationmode.set_hidden (true);
+  horizontalalignmentmode.set_id (ID_HORIZONTALALIGNMENTMODE);
+  horizontalalignmentmode.set_hidden (true);
+  verticalalignmentmode.set_id (ID_VERTICALALIGNMENTMODE);
+  verticalalignmentmode.set_hidden (true);
+  autopos_tag.set_id (ID_AUTOPOS_TAG);
+  autopos_tag.set_hidden (true);
   init ();
 }
 
 void
-text::properties::set (const caseless_str& pname, const octave_value& val)
+text::properties::set (const caseless_str& pname_arg, const octave_value& val)
 {
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return;
+
   if (pname.compare ("string"))
     set_string (val);
   else if (pname.compare ("units"))
@@ -2641,56 +2991,84 @@ text::properties::set (const caseless_str& pname, const octave_value& val)
     set_yliminclude (val);
   else if (pname.compare ("zliminclude"))
     set_zliminclude (val);
+  else if (pname.compare ("positionmode"))
+    set_positionmode (val);
+  else if (pname.compare ("rotationmode"))
+    set_rotationmode (val);
+  else if (pname.compare ("horizontalalignmentmode"))
+    set_horizontalalignmentmode (val);
+  else if (pname.compare ("verticalalignmentmode"))
+    set_verticalalignmentmode (val);
+  else if (pname.compare ("autopos_tag"))
+    set_autopos_tag (val);
   else
-    base_properties::set (pname, "text", val);
+    base_properties::set (pname, val);
 }
 
 octave_value
 text::properties::get (bool all) const
 {
-  Octave_map m = base_properties::get (all).map_value ();
+  octave_map m = base_properties::get (all).map_value ();
 
-  m.assign ("string", get_string ());
-  m.assign ("units", get_units ());
-  m.assign ("position", get_position ());
-  m.assign ("rotation", get_rotation ());
-  m.assign ("horizontalalignment", get_horizontalalignment ());
-  m.assign ("color", get_color ());
-  m.assign ("fontname", get_fontname ());
-  m.assign ("fontsize", get_fontsize ());
-  m.assign ("fontangle", get_fontangle ());
-  m.assign ("fontweight", get_fontweight ());
-  m.assign ("interpreter", get_interpreter ());
-  m.assign ("backgroundcolor", get_backgroundcolor ());
-  m.assign ("displayname", get_displayname ());
-  m.assign ("edgecolor", get_edgecolor ());
-  m.assign ("erasemode", get_erasemode ());
-  m.assign ("editing", get_editing ());
-  m.assign ("fontunits", get_fontunits ());
-  m.assign ("linestyle", get_linestyle ());
-  m.assign ("linewidth", get_linewidth ());
-  m.assign ("margin", get_margin ());
-  m.assign ("verticalalignment", get_verticalalignment ());
+  m.assign ("string", octave_value (get_string ()));
+  m.assign ("units", octave_value (get_units ()));
+  m.assign ("position", octave_value (get_position ()));
+  m.assign ("rotation", octave_value (get_rotation ()));
+  m.assign ("horizontalalignment", octave_value (get_horizontalalignment ()));
+  m.assign ("color", octave_value (get_color ()));
+  m.assign ("fontname", octave_value (get_fontname ()));
+  m.assign ("fontsize", octave_value (get_fontsize ()));
+  m.assign ("fontangle", octave_value (get_fontangle ()));
+  m.assign ("fontweight", octave_value (get_fontweight ()));
+  m.assign ("interpreter", octave_value (get_interpreter ()));
+  m.assign ("backgroundcolor", octave_value (get_backgroundcolor ()));
+  m.assign ("displayname", octave_value (get_displayname ()));
+  m.assign ("edgecolor", octave_value (get_edgecolor ()));
+  m.assign ("erasemode", octave_value (get_erasemode ()));
+  m.assign ("editing", octave_value (get_editing ()));
+  m.assign ("fontunits", octave_value (get_fontunits ()));
+  m.assign ("linestyle", octave_value (get_linestyle ()));
+  m.assign ("linewidth", octave_value (get_linewidth ()));
+  m.assign ("margin", octave_value (get_margin ()));
+  m.assign ("verticalalignment", octave_value (get_verticalalignment ()));
+  m.assign ("extent", octave_value (get_extent ()));
   if (all)
-    m.assign ("xlim", get_xlim ());
+    m.assign ("xlim", octave_value (get_xlim ()));
   if (all)
-    m.assign ("ylim", get_ylim ());
+    m.assign ("ylim", octave_value (get_ylim ()));
   if (all)
-    m.assign ("zlim", get_zlim ());
+    m.assign ("zlim", octave_value (get_zlim ()));
   if (all)
-    m.assign ("xliminclude", get_xliminclude ());
+    m.assign ("xliminclude", octave_value (get_xliminclude ()));
   if (all)
-    m.assign ("yliminclude", get_yliminclude ());
+    m.assign ("yliminclude", octave_value (get_yliminclude ()));
   if (all)
-    m.assign ("zliminclude", get_zliminclude ());
+    m.assign ("zliminclude", octave_value (get_zliminclude ()));
+  if (all)
+    m.assign ("positionmode", octave_value (get_positionmode ()));
+  if (all)
+    m.assign ("rotationmode", octave_value (get_rotationmode ()));
+  if (all)
+    m.assign ("horizontalalignmentmode", octave_value (get_horizontalalignmentmode ()));
+  if (all)
+    m.assign ("verticalalignmentmode", octave_value (get_verticalalignmentmode ()));
+  if (all)
+    m.assign ("autopos_tag", octave_value (get_autopos_tag ()));
 
   return m;
 }
 
 octave_value
-text::properties::get (const caseless_str& pname) const
+text::properties::get (const caseless_str& pname_arg) const
 {
   octave_value retval;
+
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return retval;
 
   if (pname.compare ("string"))
     retval = get_string ();
@@ -2734,6 +3112,8 @@ text::properties::get (const caseless_str& pname) const
     retval = get_margin ();
   else if (pname.compare ("verticalalignment"))
     retval = get_verticalalignment ();
+  else if (pname.compare ("extent"))
+    retval = get_extent ();
   else if (pname.compare ("xlim"))
     retval = get_xlim ();
   else if (pname.compare ("ylim"))
@@ -2746,6 +3126,16 @@ text::properties::get (const caseless_str& pname) const
     retval = get_yliminclude ();
   else if (pname.compare ("zliminclude"))
     retval = get_zliminclude ();
+  else if (pname.compare ("positionmode"))
+    retval = get_positionmode ();
+  else if (pname.compare ("rotationmode"))
+    retval = get_rotationmode ();
+  else if (pname.compare ("horizontalalignmentmode"))
+    retval = get_horizontalalignmentmode ();
+  else if (pname.compare ("verticalalignmentmode"))
+    retval = get_verticalalignmentmode ();
+  else if (pname.compare ("autopos_tag"))
+    retval = get_autopos_tag ();
   else
     retval = base_properties::get (pname);
 
@@ -2753,8 +3143,15 @@ text::properties::get (const caseless_str& pname) const
 }
 
 property
-text::properties::get_property (const caseless_str& pname)
+text::properties::get_property (const caseless_str& pname_arg)
 {
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return property ();
+
   if (pname.compare ("string"))
     return property (&string, true);
   else if (pname.compare ("units"))
@@ -2797,6 +3194,8 @@ text::properties::get_property (const caseless_str& pname)
     return property (&margin, true);
   else if (pname.compare ("verticalalignment"))
     return property (&verticalalignment, true);
+  else if (pname.compare ("extent"))
+    return property (&extent, true);
   else if (pname.compare ("xlim"))
     return property (&xlim, true);
   else if (pname.compare ("ylim"))
@@ -2809,6 +3208,16 @@ text::properties::get_property (const caseless_str& pname)
     return property (&yliminclude, true);
   else if (pname.compare ("zliminclude"))
     return property (&zliminclude, true);
+  else if (pname.compare ("positionmode"))
+    return property (&positionmode, true);
+  else if (pname.compare ("rotationmode"))
+    return property (&rotationmode, true);
+  else if (pname.compare ("horizontalalignmentmode"))
+    return property (&horizontalalignmentmode, true);
+  else if (pname.compare ("verticalalignmentmode"))
+    return property (&verticalalignmentmode, true);
+  else if (pname.compare ("autopos_tag"))
+    return property (&autopos_tag, true);
   else
     return base_properties::get_property (pname);
 }
@@ -2823,15 +3232,15 @@ text::properties::factory_defaults (void)
   m["position"] = Matrix (1, 3, 0.0);
   m["rotation"] = 0;
   m["horizontalalignment"] = "left";
-  m["color"] = octave_value ();
+  m["color"] = color_values (0, 0, 0);
   m["fontname"] = OCTAVE_DEFAULT_FONTNAME;
   m["fontsize"] = 10;
   m["fontangle"] = "normal";
   m["fontweight"] = "normal";
   m["interpreter"] = "tex";
-  m["backgroundcolor"] = "none";
+  m["backgroundcolor"] = "{none}";
   m["displayname"] = "";
-  m["edgecolor"] = "none";
+  m["edgecolor"] = "{none}";
   m["erasemode"] = "normal";
   m["editing"] = "off";
   m["fontunits"] = "points";
@@ -2839,58 +3248,102 @@ text::properties::factory_defaults (void)
   m["linewidth"] = 0.5;
   m["margin"] = 1;
   m["verticalalignment"] = "middle";
+  m["extent"] = Matrix (1, 4, 0.0);
   m["xlim"] = Matrix ();
   m["ylim"] = Matrix ();
   m["zlim"] = Matrix ();
-  m["xliminclude"] = "on";
-  m["yliminclude"] = "on";
+  m["xliminclude"] = "off";
+  m["yliminclude"] = "off";
   m["zliminclude"] = "off";
+  m["positionmode"] = "auto";
+  m["rotationmode"] = "auto";
+  m["horizontalalignmentmode"] = "auto";
+  m["verticalalignmentmode"] = "auto";
+  m["autopos_tag"] = "none";
 
   return m;
 }
 
 std::string text::properties::go_name ("text");
 
-bool text::properties::has_property (const std::string& pname)
+std::set<std::string>
+text::properties::core_property_names (void)
 {
-  static std::set<std::string> all_properties;
+  static std::set<std::string> all_pnames;
 
   static bool initialized = false;
 
   if (! initialized)
     {
-      all_properties.insert ("string");
-      all_properties.insert ("units");
-      all_properties.insert ("position");
-      all_properties.insert ("rotation");
-      all_properties.insert ("horizontalalignment");
-      all_properties.insert ("color");
-      all_properties.insert ("fontname");
-      all_properties.insert ("fontsize");
-      all_properties.insert ("fontangle");
-      all_properties.insert ("fontweight");
-      all_properties.insert ("interpreter");
-      all_properties.insert ("backgroundcolor");
-      all_properties.insert ("displayname");
-      all_properties.insert ("edgecolor");
-      all_properties.insert ("erasemode");
-      all_properties.insert ("editing");
-      all_properties.insert ("fontunits");
-      all_properties.insert ("linestyle");
-      all_properties.insert ("linewidth");
-      all_properties.insert ("margin");
-      all_properties.insert ("verticalalignment");
-      all_properties.insert ("xlim");
-      all_properties.insert ("ylim");
-      all_properties.insert ("zlim");
-      all_properties.insert ("xliminclude");
-      all_properties.insert ("yliminclude");
-      all_properties.insert ("zliminclude");
+      all_pnames.insert ("string");
+      all_pnames.insert ("units");
+      all_pnames.insert ("position");
+      all_pnames.insert ("rotation");
+      all_pnames.insert ("horizontalalignment");
+      all_pnames.insert ("color");
+      all_pnames.insert ("fontname");
+      all_pnames.insert ("fontsize");
+      all_pnames.insert ("fontangle");
+      all_pnames.insert ("fontweight");
+      all_pnames.insert ("interpreter");
+      all_pnames.insert ("backgroundcolor");
+      all_pnames.insert ("displayname");
+      all_pnames.insert ("edgecolor");
+      all_pnames.insert ("erasemode");
+      all_pnames.insert ("editing");
+      all_pnames.insert ("fontunits");
+      all_pnames.insert ("linestyle");
+      all_pnames.insert ("linewidth");
+      all_pnames.insert ("margin");
+      all_pnames.insert ("verticalalignment");
+      all_pnames.insert ("extent");
+      all_pnames.insert ("xlim");
+      all_pnames.insert ("ylim");
+      all_pnames.insert ("zlim");
+      all_pnames.insert ("xliminclude");
+      all_pnames.insert ("yliminclude");
+      all_pnames.insert ("zliminclude");
+      all_pnames.insert ("positionmode");
+      all_pnames.insert ("rotationmode");
+      all_pnames.insert ("horizontalalignmentmode");
+      all_pnames.insert ("verticalalignmentmode");
+      all_pnames.insert ("autopos_tag");
+
+      std::set<std::string> base_pnames = base_properties::core_property_names ();
+      all_pnames.insert (base_pnames.begin (), base_pnames.end ());
 
       initialized = true;
     }
 
-  return all_properties.find (pname) != all_properties.end () || base_properties::has_property (pname, "text");
+  return all_pnames;
+}
+
+bool
+text::properties::has_core_property (const caseless_str& pname)
+{
+  std::set<std::string> pnames = core_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+std::set<std::string>
+text::properties::all_property_names (void) const
+{
+  static std::set<std::string> all_pnames = core_property_names ();
+
+  std::set<std::string> retval = all_pnames;
+  std::set<std::string> base_props = base_properties::all_property_names ();
+  retval.insert (base_props.begin (), base_props.end ());
+
+  return retval;
+}
+
+bool
+text::properties::has_property (const caseless_str& pname) const
+{
+  std::set<std::string> pnames = all_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
 }
 
 // ******** image ********
@@ -2908,28 +3361,35 @@ image::properties::properties (const graphics_handle& mh, const graphics_handle&
     yliminclude ("yliminclude", mh, "on"),
     climinclude ("climinclude", mh, "on")
 {
-  xdata.set_id (XDATA);
-  ydata.set_id (YDATA);
-  cdata.set_id (CDATA);
-  cdatamapping.set_id (CDATAMAPPING);
-  xlim.set_id (XLIM);
+  xdata.set_id (ID_XDATA);
+  ydata.set_id (ID_YDATA);
+  cdata.set_id (ID_CDATA);
+  cdatamapping.set_id (ID_CDATAMAPPING);
+  xlim.set_id (ID_XLIM);
   xlim.set_hidden (true);
-  ylim.set_id (YLIM);
+  ylim.set_id (ID_YLIM);
   ylim.set_hidden (true);
-  clim.set_id (CLIM);
+  clim.set_id (ID_CLIM);
   clim.set_hidden (true);
-  xliminclude.set_id (XLIMINCLUDE);
+  xliminclude.set_id (ID_XLIMINCLUDE);
   xliminclude.set_hidden (true);
-  yliminclude.set_id (YLIMINCLUDE);
+  yliminclude.set_id (ID_YLIMINCLUDE);
   yliminclude.set_hidden (true);
-  climinclude.set_id (CLIMINCLUDE);
+  climinclude.set_id (ID_CLIMINCLUDE);
   climinclude.set_hidden (true);
   init ();
 }
 
 void
-image::properties::set (const caseless_str& pname, const octave_value& val)
+image::properties::set (const caseless_str& pname_arg, const octave_value& val)
 {
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return;
+
   if (pname.compare ("xdata"))
     set_xdata (val);
   else if (pname.compare ("ydata"))
@@ -2945,38 +3405,45 @@ image::properties::set (const caseless_str& pname, const octave_value& val)
   else if (pname.compare ("climinclude"))
     set_climinclude (val);
   else
-    base_properties::set (pname, "image", val);
+    base_properties::set (pname, val);
 }
 
 octave_value
 image::properties::get (bool all) const
 {
-  Octave_map m = base_properties::get (all).map_value ();
+  octave_map m = base_properties::get (all).map_value ();
 
-  m.assign ("xdata", get_xdata ());
-  m.assign ("ydata", get_ydata ());
-  m.assign ("cdata", get_cdata ());
-  m.assign ("cdatamapping", get_cdatamapping ());
+  m.assign ("xdata", octave_value (get_xdata ()));
+  m.assign ("ydata", octave_value (get_ydata ()));
+  m.assign ("cdata", octave_value (get_cdata ()));
+  m.assign ("cdatamapping", octave_value (get_cdatamapping ()));
   if (all)
-    m.assign ("xlim", get_xlim ());
+    m.assign ("xlim", octave_value (get_xlim ()));
   if (all)
-    m.assign ("ylim", get_ylim ());
+    m.assign ("ylim", octave_value (get_ylim ()));
   if (all)
-    m.assign ("clim", get_clim ());
+    m.assign ("clim", octave_value (get_clim ()));
   if (all)
-    m.assign ("xliminclude", get_xliminclude ());
+    m.assign ("xliminclude", octave_value (get_xliminclude ()));
   if (all)
-    m.assign ("yliminclude", get_yliminclude ());
+    m.assign ("yliminclude", octave_value (get_yliminclude ()));
   if (all)
-    m.assign ("climinclude", get_climinclude ());
+    m.assign ("climinclude", octave_value (get_climinclude ()));
 
   return m;
 }
 
 octave_value
-image::properties::get (const caseless_str& pname) const
+image::properties::get (const caseless_str& pname_arg) const
 {
   octave_value retval;
+
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return retval;
 
   if (pname.compare ("xdata"))
     retval = get_xdata ();
@@ -3005,8 +3472,15 @@ image::properties::get (const caseless_str& pname) const
 }
 
 property
-image::properties::get_property (const caseless_str& pname)
+image::properties::get_property (const caseless_str& pname_arg)
 {
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return property ();
+
   if (pname.compare ("xdata"))
     return property (&xdata, true);
   else if (pname.compare ("ydata"))
@@ -3052,29 +3526,61 @@ image::properties::factory_defaults (void)
 
 std::string image::properties::go_name ("image");
 
-bool image::properties::has_property (const std::string& pname)
+std::set<std::string>
+image::properties::core_property_names (void)
 {
-  static std::set<std::string> all_properties;
+  static std::set<std::string> all_pnames;
 
   static bool initialized = false;
 
   if (! initialized)
     {
-      all_properties.insert ("xdata");
-      all_properties.insert ("ydata");
-      all_properties.insert ("cdata");
-      all_properties.insert ("cdatamapping");
-      all_properties.insert ("xlim");
-      all_properties.insert ("ylim");
-      all_properties.insert ("clim");
-      all_properties.insert ("xliminclude");
-      all_properties.insert ("yliminclude");
-      all_properties.insert ("climinclude");
+      all_pnames.insert ("xdata");
+      all_pnames.insert ("ydata");
+      all_pnames.insert ("cdata");
+      all_pnames.insert ("cdatamapping");
+      all_pnames.insert ("xlim");
+      all_pnames.insert ("ylim");
+      all_pnames.insert ("clim");
+      all_pnames.insert ("xliminclude");
+      all_pnames.insert ("yliminclude");
+      all_pnames.insert ("climinclude");
+
+      std::set<std::string> base_pnames = base_properties::core_property_names ();
+      all_pnames.insert (base_pnames.begin (), base_pnames.end ());
 
       initialized = true;
     }
 
-  return all_properties.find (pname) != all_properties.end () || base_properties::has_property (pname, "image");
+  return all_pnames;
+}
+
+bool
+image::properties::has_core_property (const caseless_str& pname)
+{
+  std::set<std::string> pnames = core_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+std::set<std::string>
+image::properties::all_property_names (void) const
+{
+  static std::set<std::string> all_pnames = core_property_names ();
+
+  std::set<std::string> retval = all_pnames;
+  std::set<std::string> base_props = base_properties::all_property_names ();
+  retval.insert (base_props.begin (), base_props.end ());
+
+  return retval;
+}
+
+bool
+image::properties::has_property (const caseless_str& pname) const
+{
+  std::set<std::string> pnames = all_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
 }
 
 // ******** patch ********
@@ -3107,12 +3613,12 @@ patch::properties::properties (const graphics_handle& mh, const graphics_handle&
     erasemode ("erasemode", mh, "{normal}|background|xor|none"),
     linestyle ("linestyle", mh, "{-}|--|:|-.|none"),
     linewidth ("linewidth", mh, 0.5),
-    marker ("marker", mh, "{none}|s|o|x|+|.|*|<|>|v|^|d|p|h"),
-    markeredgecolor ("markeredgecolor", mh, "{auto}|none"),
-    markerfacecolor ("markerfacecolor", mh, "auto|{none}"),
+    marker ("marker", mh, "{none}|s|o|x|+|.|*|<|>|v|^|d|p|h|@"),
+    markeredgecolor ("markeredgecolor", mh, "{auto}|none|flat"),
+    markerfacecolor ("markerfacecolor", mh, "auto|{none}|flat"),
     markersize ("markersize", mh, 6),
-    keylabel ("keylabel", mh, ""),
     interpreter ("interpreter", mh, "{tex}|none|latex"),
+    displayname ("displayname", mh, ""),
     alphadatamapping ("alphadatamapping", mh, "none|{scaled}|direct"),
     xlim ("xlim", mh, Matrix ()),
     ylim ("ylim", mh, Matrix ()),
@@ -3125,65 +3631,72 @@ patch::properties::properties (const graphics_handle& mh, const graphics_handle&
     climinclude ("climinclude", mh, "on"),
     aliminclude ("aliminclude", mh, "on")
 {
-  xdata.set_id (XDATA);
-  ydata.set_id (YDATA);
-  zdata.set_id (ZDATA);
-  cdata.set_id (CDATA);
-  cdatamapping.set_id (CDATAMAPPING);
-  faces.set_id (FACES);
-  facevertexalphadata.set_id (FACEVERTEXALPHADATA);
-  facevertexcdata.set_id (FACEVERTEXCDATA);
-  vertices.set_id (VERTICES);
-  vertexnormals.set_id (VERTEXNORMALS);
-  normalmode.set_id (NORMALMODE);
-  facecolor.set_id (FACECOLOR);
-  facealpha.set_id (FACEALPHA);
-  facelighting.set_id (FACELIGHTING);
-  edgecolor.set_id (EDGECOLOR);
-  edgealpha.set_id (EDGEALPHA);
-  edgelighting.set_id (EDGELIGHTING);
-  backfacelighting.set_id (BACKFACELIGHTING);
-  ambientstrength.set_id (AMBIENTSTRENGTH);
-  diffusestrength.set_id (DIFFUSESTRENGTH);
-  specularstrength.set_id (SPECULARSTRENGTH);
-  specularexponent.set_id (SPECULAREXPONENT);
-  specularcolorreflectance.set_id (SPECULARCOLORREFLECTANCE);
-  erasemode.set_id (ERASEMODE);
-  linestyle.set_id (LINESTYLE);
-  linewidth.set_id (LINEWIDTH);
-  marker.set_id (MARKER);
-  markeredgecolor.set_id (MARKEREDGECOLOR);
-  markerfacecolor.set_id (MARKERFACECOLOR);
-  markersize.set_id (MARKERSIZE);
-  keylabel.set_id (KEYLABEL);
-  interpreter.set_id (INTERPRETER);
-  alphadatamapping.set_id (ALPHADATAMAPPING);
-  xlim.set_id (XLIM);
+  xdata.set_id (ID_XDATA);
+  ydata.set_id (ID_YDATA);
+  zdata.set_id (ID_ZDATA);
+  cdata.set_id (ID_CDATA);
+  cdatamapping.set_id (ID_CDATAMAPPING);
+  faces.set_id (ID_FACES);
+  facevertexalphadata.set_id (ID_FACEVERTEXALPHADATA);
+  facevertexcdata.set_id (ID_FACEVERTEXCDATA);
+  vertices.set_id (ID_VERTICES);
+  vertexnormals.set_id (ID_VERTEXNORMALS);
+  normalmode.set_id (ID_NORMALMODE);
+  facecolor.set_id (ID_FACECOLOR);
+  facealpha.set_id (ID_FACEALPHA);
+  facelighting.set_id (ID_FACELIGHTING);
+  edgecolor.set_id (ID_EDGECOLOR);
+  edgealpha.set_id (ID_EDGEALPHA);
+  edgelighting.set_id (ID_EDGELIGHTING);
+  backfacelighting.set_id (ID_BACKFACELIGHTING);
+  ambientstrength.set_id (ID_AMBIENTSTRENGTH);
+  diffusestrength.set_id (ID_DIFFUSESTRENGTH);
+  specularstrength.set_id (ID_SPECULARSTRENGTH);
+  specularexponent.set_id (ID_SPECULAREXPONENT);
+  specularcolorreflectance.set_id (ID_SPECULARCOLORREFLECTANCE);
+  erasemode.set_id (ID_ERASEMODE);
+  linestyle.set_id (ID_LINESTYLE);
+  linewidth.set_id (ID_LINEWIDTH);
+  marker.set_id (ID_MARKER);
+  markeredgecolor.set_id (ID_MARKEREDGECOLOR);
+  markerfacecolor.set_id (ID_MARKERFACECOLOR);
+  markersize.set_id (ID_MARKERSIZE);
+  interpreter.set_id (ID_INTERPRETER);
+  displayname.set_id (ID_DISPLAYNAME);
+  alphadatamapping.set_id (ID_ALPHADATAMAPPING);
+  xlim.set_id (ID_XLIM);
   xlim.set_hidden (true);
-  ylim.set_id (YLIM);
+  ylim.set_id (ID_YLIM);
   ylim.set_hidden (true);
-  zlim.set_id (ZLIM);
+  zlim.set_id (ID_ZLIM);
   zlim.set_hidden (true);
-  clim.set_id (CLIM);
+  clim.set_id (ID_CLIM);
   clim.set_hidden (true);
-  alim.set_id (ALIM);
+  alim.set_id (ID_ALIM);
   alim.set_hidden (true);
-  xliminclude.set_id (XLIMINCLUDE);
+  xliminclude.set_id (ID_XLIMINCLUDE);
   xliminclude.set_hidden (true);
-  yliminclude.set_id (YLIMINCLUDE);
+  yliminclude.set_id (ID_YLIMINCLUDE);
   yliminclude.set_hidden (true);
-  zliminclude.set_id (ZLIMINCLUDE);
+  zliminclude.set_id (ID_ZLIMINCLUDE);
   zliminclude.set_hidden (true);
-  climinclude.set_id (CLIMINCLUDE);
+  climinclude.set_id (ID_CLIMINCLUDE);
   climinclude.set_hidden (true);
-  aliminclude.set_id (ALIMINCLUDE);
+  aliminclude.set_id (ID_ALIMINCLUDE);
   aliminclude.set_hidden (true);
   init ();
 }
 
 void
-patch::properties::set (const caseless_str& pname, const octave_value& val)
+patch::properties::set (const caseless_str& pname_arg, const octave_value& val)
 {
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return;
+
   if (pname.compare ("xdata"))
     set_xdata (val);
   else if (pname.compare ("ydata"))
@@ -3244,10 +3757,10 @@ patch::properties::set (const caseless_str& pname, const octave_value& val)
     set_markerfacecolor (val);
   else if (pname.compare ("markersize"))
     set_markersize (val);
-  else if (pname.compare ("keylabel"))
-    set_keylabel (val);
   else if (pname.compare ("interpreter"))
     set_interpreter (val);
+  else if (pname.compare ("displayname"))
+    set_displayname (val);
   else if (pname.compare ("alphadatamapping"))
     set_alphadatamapping (val);
   else if (pname.compare ("xliminclude"))
@@ -3261,75 +3774,82 @@ patch::properties::set (const caseless_str& pname, const octave_value& val)
   else if (pname.compare ("aliminclude"))
     set_aliminclude (val);
   else
-    base_properties::set (pname, "patch", val);
+    base_properties::set (pname, val);
 }
 
 octave_value
 patch::properties::get (bool all) const
 {
-  Octave_map m = base_properties::get (all).map_value ();
+  octave_map m = base_properties::get (all).map_value ();
 
-  m.assign ("xdata", get_xdata ());
-  m.assign ("ydata", get_ydata ());
-  m.assign ("zdata", get_zdata ());
-  m.assign ("cdata", get_cdata ());
-  m.assign ("cdatamapping", get_cdatamapping ());
-  m.assign ("faces", get_faces ());
-  m.assign ("facevertexalphadata", get_facevertexalphadata ());
-  m.assign ("facevertexcdata", get_facevertexcdata ());
-  m.assign ("vertices", get_vertices ());
-  m.assign ("vertexnormals", get_vertexnormals ());
-  m.assign ("normalmode", get_normalmode ());
-  m.assign ("facecolor", get_facecolor ());
-  m.assign ("facealpha", get_facealpha ());
-  m.assign ("facelighting", get_facelighting ());
-  m.assign ("edgecolor", get_edgecolor ());
-  m.assign ("edgealpha", get_edgealpha ());
-  m.assign ("edgelighting", get_edgelighting ());
-  m.assign ("backfacelighting", get_backfacelighting ());
-  m.assign ("ambientstrength", get_ambientstrength ());
-  m.assign ("diffusestrength", get_diffusestrength ());
-  m.assign ("specularstrength", get_specularstrength ());
-  m.assign ("specularexponent", get_specularexponent ());
-  m.assign ("specularcolorreflectance", get_specularcolorreflectance ());
-  m.assign ("erasemode", get_erasemode ());
-  m.assign ("linestyle", get_linestyle ());
-  m.assign ("linewidth", get_linewidth ());
-  m.assign ("marker", get_marker ());
-  m.assign ("markeredgecolor", get_markeredgecolor ());
-  m.assign ("markerfacecolor", get_markerfacecolor ());
-  m.assign ("markersize", get_markersize ());
-  m.assign ("keylabel", get_keylabel ());
-  m.assign ("interpreter", get_interpreter ());
-  m.assign ("alphadatamapping", get_alphadatamapping ());
+  m.assign ("xdata", octave_value (get_xdata ()));
+  m.assign ("ydata", octave_value (get_ydata ()));
+  m.assign ("zdata", octave_value (get_zdata ()));
+  m.assign ("cdata", octave_value (get_cdata ()));
+  m.assign ("cdatamapping", octave_value (get_cdatamapping ()));
+  m.assign ("faces", octave_value (get_faces ()));
+  m.assign ("facevertexalphadata", octave_value (get_facevertexalphadata ()));
+  m.assign ("facevertexcdata", octave_value (get_facevertexcdata ()));
+  m.assign ("vertices", octave_value (get_vertices ()));
+  m.assign ("vertexnormals", octave_value (get_vertexnormals ()));
+  m.assign ("normalmode", octave_value (get_normalmode ()));
+  m.assign ("facecolor", octave_value (get_facecolor ()));
+  m.assign ("facealpha", octave_value (get_facealpha ()));
+  m.assign ("facelighting", octave_value (get_facelighting ()));
+  m.assign ("edgecolor", octave_value (get_edgecolor ()));
+  m.assign ("edgealpha", octave_value (get_edgealpha ()));
+  m.assign ("edgelighting", octave_value (get_edgelighting ()));
+  m.assign ("backfacelighting", octave_value (get_backfacelighting ()));
+  m.assign ("ambientstrength", octave_value (get_ambientstrength ()));
+  m.assign ("diffusestrength", octave_value (get_diffusestrength ()));
+  m.assign ("specularstrength", octave_value (get_specularstrength ()));
+  m.assign ("specularexponent", octave_value (get_specularexponent ()));
+  m.assign ("specularcolorreflectance", octave_value (get_specularcolorreflectance ()));
+  m.assign ("erasemode", octave_value (get_erasemode ()));
+  m.assign ("linestyle", octave_value (get_linestyle ()));
+  m.assign ("linewidth", octave_value (get_linewidth ()));
+  m.assign ("marker", octave_value (get_marker ()));
+  m.assign ("markeredgecolor", octave_value (get_markeredgecolor ()));
+  m.assign ("markerfacecolor", octave_value (get_markerfacecolor ()));
+  m.assign ("markersize", octave_value (get_markersize ()));
+  m.assign ("interpreter", octave_value (get_interpreter ()));
+  m.assign ("displayname", octave_value (get_displayname ()));
+  m.assign ("alphadatamapping", octave_value (get_alphadatamapping ()));
   if (all)
-    m.assign ("xlim", get_xlim ());
+    m.assign ("xlim", octave_value (get_xlim ()));
   if (all)
-    m.assign ("ylim", get_ylim ());
+    m.assign ("ylim", octave_value (get_ylim ()));
   if (all)
-    m.assign ("zlim", get_zlim ());
+    m.assign ("zlim", octave_value (get_zlim ()));
   if (all)
-    m.assign ("clim", get_clim ());
+    m.assign ("clim", octave_value (get_clim ()));
   if (all)
-    m.assign ("alim", get_alim ());
+    m.assign ("alim", octave_value (get_alim ()));
   if (all)
-    m.assign ("xliminclude", get_xliminclude ());
+    m.assign ("xliminclude", octave_value (get_xliminclude ()));
   if (all)
-    m.assign ("yliminclude", get_yliminclude ());
+    m.assign ("yliminclude", octave_value (get_yliminclude ()));
   if (all)
-    m.assign ("zliminclude", get_zliminclude ());
+    m.assign ("zliminclude", octave_value (get_zliminclude ()));
   if (all)
-    m.assign ("climinclude", get_climinclude ());
+    m.assign ("climinclude", octave_value (get_climinclude ()));
   if (all)
-    m.assign ("aliminclude", get_aliminclude ());
+    m.assign ("aliminclude", octave_value (get_aliminclude ()));
 
   return m;
 }
 
 octave_value
-patch::properties::get (const caseless_str& pname) const
+patch::properties::get (const caseless_str& pname_arg) const
 {
   octave_value retval;
+
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return retval;
 
   if (pname.compare ("xdata"))
     retval = get_xdata ();
@@ -3391,10 +3911,10 @@ patch::properties::get (const caseless_str& pname) const
     retval = get_markerfacecolor ();
   else if (pname.compare ("markersize"))
     retval = get_markersize ();
-  else if (pname.compare ("keylabel"))
-    retval = get_keylabel ();
   else if (pname.compare ("interpreter"))
     retval = get_interpreter ();
+  else if (pname.compare ("displayname"))
+    retval = get_displayname ();
   else if (pname.compare ("alphadatamapping"))
     retval = get_alphadatamapping ();
   else if (pname.compare ("xlim"))
@@ -3424,8 +3944,15 @@ patch::properties::get (const caseless_str& pname) const
 }
 
 property
-patch::properties::get_property (const caseless_str& pname)
+patch::properties::get_property (const caseless_str& pname_arg)
 {
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return property ();
+
   if (pname.compare ("xdata"))
     return property (&xdata, true);
   else if (pname.compare ("ydata"))
@@ -3486,10 +4013,10 @@ patch::properties::get_property (const caseless_str& pname)
     return property (&markerfacecolor, true);
   else if (pname.compare ("markersize"))
     return property (&markersize, true);
-  else if (pname.compare ("keylabel"))
-    return property (&keylabel, true);
   else if (pname.compare ("interpreter"))
     return property (&interpreter, true);
+  else if (pname.compare ("displayname"))
+    return property (&displayname, true);
   else if (pname.compare ("alphadatamapping"))
     return property (&alphadatamapping, true);
   else if (pname.compare ("xlim"))
@@ -3532,10 +4059,10 @@ patch::properties::factory_defaults (void)
   m["vertices"] = Matrix ();
   m["vertexnormals"] = Matrix ();
   m["normalmode"] = "auto";
-  m["facecolor"] = "flat";
+  m["facecolor"] = "{flat}|none|interp";
   m["facealpha"] = double_radio_property (1.0, radio_values ("flat|interp"));
   m["facelighting"] = "none";
-  m["edgecolor"] = octave_value ();
+  m["edgecolor"] = color_property (color_values (0, 0, 0), radio_values ("flat|none|interp"));
   m["edgealpha"] = double_radio_property (1.0, radio_values ("flat|interp"));
   m["edgelighting"] = "none";
   m["backfacelighting"] = "reverselit";
@@ -3548,11 +4075,11 @@ patch::properties::factory_defaults (void)
   m["linestyle"] = "-";
   m["linewidth"] = 0.5;
   m["marker"] = "none";
-  m["markeredgecolor"] = "auto";
-  m["markerfacecolor"] = "none";
+  m["markeredgecolor"] = "{auto}|none|flat";
+  m["markerfacecolor"] = "auto|{none}|flat";
   m["markersize"] = 6;
-  m["keylabel"] = "";
   m["interpreter"] = "tex";
+  m["displayname"] = "";
   m["alphadatamapping"] = "scaled";
   m["xlim"] = Matrix ();
   m["ylim"] = Matrix ();
@@ -3570,62 +4097,94 @@ patch::properties::factory_defaults (void)
 
 std::string patch::properties::go_name ("patch");
 
-bool patch::properties::has_property (const std::string& pname)
+std::set<std::string>
+patch::properties::core_property_names (void)
 {
-  static std::set<std::string> all_properties;
+  static std::set<std::string> all_pnames;
 
   static bool initialized = false;
 
   if (! initialized)
     {
-      all_properties.insert ("xdata");
-      all_properties.insert ("ydata");
-      all_properties.insert ("zdata");
-      all_properties.insert ("cdata");
-      all_properties.insert ("cdatamapping");
-      all_properties.insert ("faces");
-      all_properties.insert ("facevertexalphadata");
-      all_properties.insert ("facevertexcdata");
-      all_properties.insert ("vertices");
-      all_properties.insert ("vertexnormals");
-      all_properties.insert ("normalmode");
-      all_properties.insert ("facecolor");
-      all_properties.insert ("facealpha");
-      all_properties.insert ("facelighting");
-      all_properties.insert ("edgecolor");
-      all_properties.insert ("edgealpha");
-      all_properties.insert ("edgelighting");
-      all_properties.insert ("backfacelighting");
-      all_properties.insert ("ambientstrength");
-      all_properties.insert ("diffusestrength");
-      all_properties.insert ("specularstrength");
-      all_properties.insert ("specularexponent");
-      all_properties.insert ("specularcolorreflectance");
-      all_properties.insert ("erasemode");
-      all_properties.insert ("linestyle");
-      all_properties.insert ("linewidth");
-      all_properties.insert ("marker");
-      all_properties.insert ("markeredgecolor");
-      all_properties.insert ("markerfacecolor");
-      all_properties.insert ("markersize");
-      all_properties.insert ("keylabel");
-      all_properties.insert ("interpreter");
-      all_properties.insert ("alphadatamapping");
-      all_properties.insert ("xlim");
-      all_properties.insert ("ylim");
-      all_properties.insert ("zlim");
-      all_properties.insert ("clim");
-      all_properties.insert ("alim");
-      all_properties.insert ("xliminclude");
-      all_properties.insert ("yliminclude");
-      all_properties.insert ("zliminclude");
-      all_properties.insert ("climinclude");
-      all_properties.insert ("aliminclude");
+      all_pnames.insert ("xdata");
+      all_pnames.insert ("ydata");
+      all_pnames.insert ("zdata");
+      all_pnames.insert ("cdata");
+      all_pnames.insert ("cdatamapping");
+      all_pnames.insert ("faces");
+      all_pnames.insert ("facevertexalphadata");
+      all_pnames.insert ("facevertexcdata");
+      all_pnames.insert ("vertices");
+      all_pnames.insert ("vertexnormals");
+      all_pnames.insert ("normalmode");
+      all_pnames.insert ("facecolor");
+      all_pnames.insert ("facealpha");
+      all_pnames.insert ("facelighting");
+      all_pnames.insert ("edgecolor");
+      all_pnames.insert ("edgealpha");
+      all_pnames.insert ("edgelighting");
+      all_pnames.insert ("backfacelighting");
+      all_pnames.insert ("ambientstrength");
+      all_pnames.insert ("diffusestrength");
+      all_pnames.insert ("specularstrength");
+      all_pnames.insert ("specularexponent");
+      all_pnames.insert ("specularcolorreflectance");
+      all_pnames.insert ("erasemode");
+      all_pnames.insert ("linestyle");
+      all_pnames.insert ("linewidth");
+      all_pnames.insert ("marker");
+      all_pnames.insert ("markeredgecolor");
+      all_pnames.insert ("markerfacecolor");
+      all_pnames.insert ("markersize");
+      all_pnames.insert ("interpreter");
+      all_pnames.insert ("displayname");
+      all_pnames.insert ("alphadatamapping");
+      all_pnames.insert ("xlim");
+      all_pnames.insert ("ylim");
+      all_pnames.insert ("zlim");
+      all_pnames.insert ("clim");
+      all_pnames.insert ("alim");
+      all_pnames.insert ("xliminclude");
+      all_pnames.insert ("yliminclude");
+      all_pnames.insert ("zliminclude");
+      all_pnames.insert ("climinclude");
+      all_pnames.insert ("aliminclude");
+
+      std::set<std::string> base_pnames = base_properties::core_property_names ();
+      all_pnames.insert (base_pnames.begin (), base_pnames.end ());
 
       initialized = true;
     }
 
-  return all_properties.find (pname) != all_properties.end () || base_properties::has_property (pname, "patch");
+  return all_pnames;
+}
+
+bool
+patch::properties::has_core_property (const caseless_str& pname)
+{
+  std::set<std::string> pnames = core_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+std::set<std::string>
+patch::properties::all_property_names (void) const
+{
+  static std::set<std::string> all_pnames = core_property_names ();
+
+  std::set<std::string> retval = all_pnames;
+  std::set<std::string> base_props = base_properties::all_property_names ();
+  retval.insert (base_props.begin (), base_props.end ());
+
+  return retval;
+}
+
+bool
+patch::properties::has_property (const caseless_str& pname) const
+{
+  std::set<std::string> pnames = all_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
 }
 
 // ******** surface ********
@@ -3646,12 +4205,12 @@ surface::properties::properties (const graphics_handle& mh, const graphics_handl
     edgecolor ("edgecolor", mh, color_property (color_values (0, 0, 0), radio_values ("flat|none|interp"))),
     linestyle ("linestyle", mh, "{-}|--|:|-.|none"),
     linewidth ("linewidth", mh, 0.5),
-    marker ("marker", mh, "{none}|s|o|x|+|.|*|<|>|v|^|d|p|h"),
+    marker ("marker", mh, "{none}|s|o|x|+|.|*|<|>|v|^|d|p|h|@"),
     markeredgecolor ("markeredgecolor", mh, "{auto}|none"),
     markerfacecolor ("markerfacecolor", mh, "auto|{none}"),
     markersize ("markersize", mh, 6),
-    keylabel ("keylabel", mh, ""),
     interpreter ("interpreter", mh, "{tex}|none|latex"),
+    displayname ("displayname", mh, ""),
     alphadata ("alphadata", mh, Matrix ()),
     alphadatamapping ("alphadatamapping", mh, "none|direct|{scaled}"),
     ambientstrength ("ambientstrength", mh, 0.3),
@@ -3678,67 +4237,74 @@ surface::properties::properties (const graphics_handle& mh, const graphics_handl
     climinclude ("climinclude", mh, "on"),
     aliminclude ("aliminclude", mh, "on")
 {
-  xdata.set_id (XDATA);
-  ydata.set_id (YDATA);
-  zdata.set_id (ZDATA);
-  cdata.set_id (CDATA);
-  cdatamapping.set_id (CDATAMAPPING);
-  xdatasource.set_id (XDATASOURCE);
-  ydatasource.set_id (YDATASOURCE);
-  zdatasource.set_id (ZDATASOURCE);
-  cdatasource.set_id (CDATASOURCE);
-  facecolor.set_id (FACECOLOR);
-  facealpha.set_id (FACEALPHA);
-  edgecolor.set_id (EDGECOLOR);
-  linestyle.set_id (LINESTYLE);
-  linewidth.set_id (LINEWIDTH);
-  marker.set_id (MARKER);
-  markeredgecolor.set_id (MARKEREDGECOLOR);
-  markerfacecolor.set_id (MARKERFACECOLOR);
-  markersize.set_id (MARKERSIZE);
-  keylabel.set_id (KEYLABEL);
-  interpreter.set_id (INTERPRETER);
-  alphadata.set_id (ALPHADATA);
-  alphadatamapping.set_id (ALPHADATAMAPPING);
-  ambientstrength.set_id (AMBIENTSTRENGTH);
-  backfacelighting.set_id (BACKFACELIGHTING);
-  diffusestrength.set_id (DIFFUSESTRENGTH);
-  edgealpha.set_id (EDGEALPHA);
-  edgelighting.set_id (EDGELIGHTING);
-  erasemode.set_id (ERASEMODE);
-  facelighting.set_id (FACELIGHTING);
-  meshstyle.set_id (MESHSTYLE);
-  normalmode.set_id (NORMALMODE);
-  specularcolorreflectance.set_id (SPECULARCOLORREFLECTANCE);
-  specularexponent.set_id (SPECULAREXPONENT);
-  specularstrength.set_id (SPECULARSTRENGTH);
-  vertexnormals.set_id (VERTEXNORMALS);
-  xlim.set_id (XLIM);
+  xdata.set_id (ID_XDATA);
+  ydata.set_id (ID_YDATA);
+  zdata.set_id (ID_ZDATA);
+  cdata.set_id (ID_CDATA);
+  cdatamapping.set_id (ID_CDATAMAPPING);
+  xdatasource.set_id (ID_XDATASOURCE);
+  ydatasource.set_id (ID_YDATASOURCE);
+  zdatasource.set_id (ID_ZDATASOURCE);
+  cdatasource.set_id (ID_CDATASOURCE);
+  facecolor.set_id (ID_FACECOLOR);
+  facealpha.set_id (ID_FACEALPHA);
+  edgecolor.set_id (ID_EDGECOLOR);
+  linestyle.set_id (ID_LINESTYLE);
+  linewidth.set_id (ID_LINEWIDTH);
+  marker.set_id (ID_MARKER);
+  markeredgecolor.set_id (ID_MARKEREDGECOLOR);
+  markerfacecolor.set_id (ID_MARKERFACECOLOR);
+  markersize.set_id (ID_MARKERSIZE);
+  interpreter.set_id (ID_INTERPRETER);
+  displayname.set_id (ID_DISPLAYNAME);
+  alphadata.set_id (ID_ALPHADATA);
+  alphadatamapping.set_id (ID_ALPHADATAMAPPING);
+  ambientstrength.set_id (ID_AMBIENTSTRENGTH);
+  backfacelighting.set_id (ID_BACKFACELIGHTING);
+  diffusestrength.set_id (ID_DIFFUSESTRENGTH);
+  edgealpha.set_id (ID_EDGEALPHA);
+  edgelighting.set_id (ID_EDGELIGHTING);
+  erasemode.set_id (ID_ERASEMODE);
+  facelighting.set_id (ID_FACELIGHTING);
+  meshstyle.set_id (ID_MESHSTYLE);
+  normalmode.set_id (ID_NORMALMODE);
+  specularcolorreflectance.set_id (ID_SPECULARCOLORREFLECTANCE);
+  specularexponent.set_id (ID_SPECULAREXPONENT);
+  specularstrength.set_id (ID_SPECULARSTRENGTH);
+  vertexnormals.set_id (ID_VERTEXNORMALS);
+  xlim.set_id (ID_XLIM);
   xlim.set_hidden (true);
-  ylim.set_id (YLIM);
+  ylim.set_id (ID_YLIM);
   ylim.set_hidden (true);
-  zlim.set_id (ZLIM);
+  zlim.set_id (ID_ZLIM);
   zlim.set_hidden (true);
-  clim.set_id (CLIM);
+  clim.set_id (ID_CLIM);
   clim.set_hidden (true);
-  alim.set_id (ALIM);
+  alim.set_id (ID_ALIM);
   alim.set_hidden (true);
-  xliminclude.set_id (XLIMINCLUDE);
+  xliminclude.set_id (ID_XLIMINCLUDE);
   xliminclude.set_hidden (true);
-  yliminclude.set_id (YLIMINCLUDE);
+  yliminclude.set_id (ID_YLIMINCLUDE);
   yliminclude.set_hidden (true);
-  zliminclude.set_id (ZLIMINCLUDE);
+  zliminclude.set_id (ID_ZLIMINCLUDE);
   zliminclude.set_hidden (true);
-  climinclude.set_id (CLIMINCLUDE);
+  climinclude.set_id (ID_CLIMINCLUDE);
   climinclude.set_hidden (true);
-  aliminclude.set_id (ALIMINCLUDE);
+  aliminclude.set_id (ID_ALIMINCLUDE);
   aliminclude.set_hidden (true);
   init ();
 }
 
 void
-surface::properties::set (const caseless_str& pname, const octave_value& val)
+surface::properties::set (const caseless_str& pname_arg, const octave_value& val)
 {
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return;
+
   if (pname.compare ("xdata"))
     set_xdata (val);
   else if (pname.compare ("ydata"))
@@ -3775,10 +4341,10 @@ surface::properties::set (const caseless_str& pname, const octave_value& val)
     set_markerfacecolor (val);
   else if (pname.compare ("markersize"))
     set_markersize (val);
-  else if (pname.compare ("keylabel"))
-    set_keylabel (val);
   else if (pname.compare ("interpreter"))
     set_interpreter (val);
+  else if (pname.compare ("displayname"))
+    set_displayname (val);
   else if (pname.compare ("alphadata"))
     set_alphadata (val);
   else if (pname.compare ("alphadatamapping"))
@@ -3820,77 +4386,84 @@ surface::properties::set (const caseless_str& pname, const octave_value& val)
   else if (pname.compare ("aliminclude"))
     set_aliminclude (val);
   else
-    base_properties::set (pname, "surface", val);
+    base_properties::set (pname, val);
 }
 
 octave_value
 surface::properties::get (bool all) const
 {
-  Octave_map m = base_properties::get (all).map_value ();
+  octave_map m = base_properties::get (all).map_value ();
 
-  m.assign ("xdata", get_xdata ());
-  m.assign ("ydata", get_ydata ());
-  m.assign ("zdata", get_zdata ());
-  m.assign ("cdata", get_cdata ());
-  m.assign ("cdatamapping", get_cdatamapping ());
-  m.assign ("xdatasource", get_xdatasource ());
-  m.assign ("ydatasource", get_ydatasource ());
-  m.assign ("zdatasource", get_zdatasource ());
-  m.assign ("cdatasource", get_cdatasource ());
-  m.assign ("facecolor", get_facecolor ());
-  m.assign ("facealpha", get_facealpha ());
-  m.assign ("edgecolor", get_edgecolor ());
-  m.assign ("linestyle", get_linestyle ());
-  m.assign ("linewidth", get_linewidth ());
-  m.assign ("marker", get_marker ());
-  m.assign ("markeredgecolor", get_markeredgecolor ());
-  m.assign ("markerfacecolor", get_markerfacecolor ());
-  m.assign ("markersize", get_markersize ());
-  m.assign ("keylabel", get_keylabel ());
-  m.assign ("interpreter", get_interpreter ());
-  m.assign ("alphadata", get_alphadata ());
-  m.assign ("alphadatamapping", get_alphadatamapping ());
-  m.assign ("ambientstrength", get_ambientstrength ());
-  m.assign ("backfacelighting", get_backfacelighting ());
-  m.assign ("diffusestrength", get_diffusestrength ());
-  m.assign ("edgealpha", get_edgealpha ());
-  m.assign ("edgelighting", get_edgelighting ());
-  m.assign ("erasemode", get_erasemode ());
-  m.assign ("facelighting", get_facelighting ());
-  m.assign ("meshstyle", get_meshstyle ());
-  m.assign ("normalmode", get_normalmode ());
-  m.assign ("specularcolorreflectance", get_specularcolorreflectance ());
-  m.assign ("specularexponent", get_specularexponent ());
-  m.assign ("specularstrength", get_specularstrength ());
-  m.assign ("vertexnormals", get_vertexnormals ());
+  m.assign ("xdata", octave_value (get_xdata ()));
+  m.assign ("ydata", octave_value (get_ydata ()));
+  m.assign ("zdata", octave_value (get_zdata ()));
+  m.assign ("cdata", octave_value (get_cdata ()));
+  m.assign ("cdatamapping", octave_value (get_cdatamapping ()));
+  m.assign ("xdatasource", octave_value (get_xdatasource ()));
+  m.assign ("ydatasource", octave_value (get_ydatasource ()));
+  m.assign ("zdatasource", octave_value (get_zdatasource ()));
+  m.assign ("cdatasource", octave_value (get_cdatasource ()));
+  m.assign ("facecolor", octave_value (get_facecolor ()));
+  m.assign ("facealpha", octave_value (get_facealpha ()));
+  m.assign ("edgecolor", octave_value (get_edgecolor ()));
+  m.assign ("linestyle", octave_value (get_linestyle ()));
+  m.assign ("linewidth", octave_value (get_linewidth ()));
+  m.assign ("marker", octave_value (get_marker ()));
+  m.assign ("markeredgecolor", octave_value (get_markeredgecolor ()));
+  m.assign ("markerfacecolor", octave_value (get_markerfacecolor ()));
+  m.assign ("markersize", octave_value (get_markersize ()));
+  m.assign ("interpreter", octave_value (get_interpreter ()));
+  m.assign ("displayname", octave_value (get_displayname ()));
+  m.assign ("alphadata", octave_value (get_alphadata ()));
+  m.assign ("alphadatamapping", octave_value (get_alphadatamapping ()));
+  m.assign ("ambientstrength", octave_value (get_ambientstrength ()));
+  m.assign ("backfacelighting", octave_value (get_backfacelighting ()));
+  m.assign ("diffusestrength", octave_value (get_diffusestrength ()));
+  m.assign ("edgealpha", octave_value (get_edgealpha ()));
+  m.assign ("edgelighting", octave_value (get_edgelighting ()));
+  m.assign ("erasemode", octave_value (get_erasemode ()));
+  m.assign ("facelighting", octave_value (get_facelighting ()));
+  m.assign ("meshstyle", octave_value (get_meshstyle ()));
+  m.assign ("normalmode", octave_value (get_normalmode ()));
+  m.assign ("specularcolorreflectance", octave_value (get_specularcolorreflectance ()));
+  m.assign ("specularexponent", octave_value (get_specularexponent ()));
+  m.assign ("specularstrength", octave_value (get_specularstrength ()));
+  m.assign ("vertexnormals", octave_value (get_vertexnormals ()));
   if (all)
-    m.assign ("xlim", get_xlim ());
+    m.assign ("xlim", octave_value (get_xlim ()));
   if (all)
-    m.assign ("ylim", get_ylim ());
+    m.assign ("ylim", octave_value (get_ylim ()));
   if (all)
-    m.assign ("zlim", get_zlim ());
+    m.assign ("zlim", octave_value (get_zlim ()));
   if (all)
-    m.assign ("clim", get_clim ());
+    m.assign ("clim", octave_value (get_clim ()));
   if (all)
-    m.assign ("alim", get_alim ());
+    m.assign ("alim", octave_value (get_alim ()));
   if (all)
-    m.assign ("xliminclude", get_xliminclude ());
+    m.assign ("xliminclude", octave_value (get_xliminclude ()));
   if (all)
-    m.assign ("yliminclude", get_yliminclude ());
+    m.assign ("yliminclude", octave_value (get_yliminclude ()));
   if (all)
-    m.assign ("zliminclude", get_zliminclude ());
+    m.assign ("zliminclude", octave_value (get_zliminclude ()));
   if (all)
-    m.assign ("climinclude", get_climinclude ());
+    m.assign ("climinclude", octave_value (get_climinclude ()));
   if (all)
-    m.assign ("aliminclude", get_aliminclude ());
+    m.assign ("aliminclude", octave_value (get_aliminclude ()));
 
   return m;
 }
 
 octave_value
-surface::properties::get (const caseless_str& pname) const
+surface::properties::get (const caseless_str& pname_arg) const
 {
   octave_value retval;
+
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return retval;
 
   if (pname.compare ("xdata"))
     retval = get_xdata ();
@@ -3928,10 +4501,10 @@ surface::properties::get (const caseless_str& pname) const
     retval = get_markerfacecolor ();
   else if (pname.compare ("markersize"))
     retval = get_markersize ();
-  else if (pname.compare ("keylabel"))
-    retval = get_keylabel ();
   else if (pname.compare ("interpreter"))
     retval = get_interpreter ();
+  else if (pname.compare ("displayname"))
+    retval = get_displayname ();
   else if (pname.compare ("alphadata"))
     retval = get_alphadata ();
   else if (pname.compare ("alphadatamapping"))
@@ -3989,8 +4562,15 @@ surface::properties::get (const caseless_str& pname) const
 }
 
 property
-surface::properties::get_property (const caseless_str& pname)
+surface::properties::get_property (const caseless_str& pname_arg)
 {
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return property ();
+
   if (pname.compare ("xdata"))
     return property (&xdata, true);
   else if (pname.compare ("ydata"))
@@ -4027,10 +4607,10 @@ surface::properties::get_property (const caseless_str& pname)
     return property (&markerfacecolor, true);
   else if (pname.compare ("markersize"))
     return property (&markersize, true);
-  else if (pname.compare ("keylabel"))
-    return property (&keylabel, true);
   else if (pname.compare ("interpreter"))
     return property (&interpreter, true);
+  else if (pname.compare ("displayname"))
+    return property (&displayname, true);
   else if (pname.compare ("alphadata"))
     return property (&alphadata, true);
   else if (pname.compare ("alphadatamapping"))
@@ -4099,17 +4679,17 @@ surface::properties::factory_defaults (void)
   m["ydatasource"] = "";
   m["zdatasource"] = "";
   m["cdatasource"] = "";
-  m["facecolor"] = "flat";
+  m["facecolor"] = "{flat}|none|interp|texturemap";
   m["facealpha"] = double_radio_property (1.0, radio_values ("flat|interp"));
-  m["edgecolor"] = octave_value ();
+  m["edgecolor"] = color_property (color_values (0, 0, 0), radio_values ("flat|none|interp"));
   m["linestyle"] = "-";
   m["linewidth"] = 0.5;
   m["marker"] = "none";
-  m["markeredgecolor"] = "auto";
-  m["markerfacecolor"] = "none";
+  m["markeredgecolor"] = "{auto}|none";
+  m["markerfacecolor"] = "auto|{none}";
   m["markersize"] = 6;
-  m["keylabel"] = "";
   m["interpreter"] = "tex";
+  m["displayname"] = "";
   m["alphadata"] = Matrix ();
   m["alphadatamapping"] = "scaled";
   m["ambientstrength"] = 0.3;
@@ -4141,64 +4721,96 @@ surface::properties::factory_defaults (void)
 
 std::string surface::properties::go_name ("surface");
 
-bool surface::properties::has_property (const std::string& pname)
+std::set<std::string>
+surface::properties::core_property_names (void)
 {
-  static std::set<std::string> all_properties;
+  static std::set<std::string> all_pnames;
 
   static bool initialized = false;
 
   if (! initialized)
     {
-      all_properties.insert ("xdata");
-      all_properties.insert ("ydata");
-      all_properties.insert ("zdata");
-      all_properties.insert ("cdata");
-      all_properties.insert ("cdatamapping");
-      all_properties.insert ("xdatasource");
-      all_properties.insert ("ydatasource");
-      all_properties.insert ("zdatasource");
-      all_properties.insert ("cdatasource");
-      all_properties.insert ("facecolor");
-      all_properties.insert ("facealpha");
-      all_properties.insert ("edgecolor");
-      all_properties.insert ("linestyle");
-      all_properties.insert ("linewidth");
-      all_properties.insert ("marker");
-      all_properties.insert ("markeredgecolor");
-      all_properties.insert ("markerfacecolor");
-      all_properties.insert ("markersize");
-      all_properties.insert ("keylabel");
-      all_properties.insert ("interpreter");
-      all_properties.insert ("alphadata");
-      all_properties.insert ("alphadatamapping");
-      all_properties.insert ("ambientstrength");
-      all_properties.insert ("backfacelighting");
-      all_properties.insert ("diffusestrength");
-      all_properties.insert ("edgealpha");
-      all_properties.insert ("edgelighting");
-      all_properties.insert ("erasemode");
-      all_properties.insert ("facelighting");
-      all_properties.insert ("meshstyle");
-      all_properties.insert ("normalmode");
-      all_properties.insert ("specularcolorreflectance");
-      all_properties.insert ("specularexponent");
-      all_properties.insert ("specularstrength");
-      all_properties.insert ("vertexnormals");
-      all_properties.insert ("xlim");
-      all_properties.insert ("ylim");
-      all_properties.insert ("zlim");
-      all_properties.insert ("clim");
-      all_properties.insert ("alim");
-      all_properties.insert ("xliminclude");
-      all_properties.insert ("yliminclude");
-      all_properties.insert ("zliminclude");
-      all_properties.insert ("climinclude");
-      all_properties.insert ("aliminclude");
+      all_pnames.insert ("xdata");
+      all_pnames.insert ("ydata");
+      all_pnames.insert ("zdata");
+      all_pnames.insert ("cdata");
+      all_pnames.insert ("cdatamapping");
+      all_pnames.insert ("xdatasource");
+      all_pnames.insert ("ydatasource");
+      all_pnames.insert ("zdatasource");
+      all_pnames.insert ("cdatasource");
+      all_pnames.insert ("facecolor");
+      all_pnames.insert ("facealpha");
+      all_pnames.insert ("edgecolor");
+      all_pnames.insert ("linestyle");
+      all_pnames.insert ("linewidth");
+      all_pnames.insert ("marker");
+      all_pnames.insert ("markeredgecolor");
+      all_pnames.insert ("markerfacecolor");
+      all_pnames.insert ("markersize");
+      all_pnames.insert ("interpreter");
+      all_pnames.insert ("displayname");
+      all_pnames.insert ("alphadata");
+      all_pnames.insert ("alphadatamapping");
+      all_pnames.insert ("ambientstrength");
+      all_pnames.insert ("backfacelighting");
+      all_pnames.insert ("diffusestrength");
+      all_pnames.insert ("edgealpha");
+      all_pnames.insert ("edgelighting");
+      all_pnames.insert ("erasemode");
+      all_pnames.insert ("facelighting");
+      all_pnames.insert ("meshstyle");
+      all_pnames.insert ("normalmode");
+      all_pnames.insert ("specularcolorreflectance");
+      all_pnames.insert ("specularexponent");
+      all_pnames.insert ("specularstrength");
+      all_pnames.insert ("vertexnormals");
+      all_pnames.insert ("xlim");
+      all_pnames.insert ("ylim");
+      all_pnames.insert ("zlim");
+      all_pnames.insert ("clim");
+      all_pnames.insert ("alim");
+      all_pnames.insert ("xliminclude");
+      all_pnames.insert ("yliminclude");
+      all_pnames.insert ("zliminclude");
+      all_pnames.insert ("climinclude");
+      all_pnames.insert ("aliminclude");
+
+      std::set<std::string> base_pnames = base_properties::core_property_names ();
+      all_pnames.insert (base_pnames.begin (), base_pnames.end ());
 
       initialized = true;
     }
 
-  return all_properties.find (pname) != all_properties.end () || base_properties::has_property (pname, "surface");
+  return all_pnames;
+}
+
+bool
+surface::properties::has_core_property (const caseless_str& pname)
+{
+  std::set<std::string> pnames = core_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+std::set<std::string>
+surface::properties::all_property_names (void) const
+{
+  static std::set<std::string> all_pnames = core_property_names ();
+
+  std::set<std::string> retval = all_pnames;
+  std::set<std::string> base_props = base_properties::all_property_names ();
+  retval.insert (base_props.begin (), base_props.end ());
+
+  return retval;
+}
+
+bool
+surface::properties::has_property (const caseless_str& pname) const
+{
+  std::set<std::string> pnames = all_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
 }
 
 // ******** hggroup ********
@@ -4216,32 +4828,39 @@ hggroup::properties::properties (const graphics_handle& mh, const graphics_handl
     climinclude ("climinclude", mh, "on"),
     aliminclude ("aliminclude", mh, "on")
 {
-  xlim.set_id (XLIM);
+  xlim.set_id (ID_XLIM);
   xlim.set_hidden (true);
-  ylim.set_id (YLIM);
+  ylim.set_id (ID_YLIM);
   ylim.set_hidden (true);
-  zlim.set_id (ZLIM);
+  zlim.set_id (ID_ZLIM);
   zlim.set_hidden (true);
-  clim.set_id (CLIM);
+  clim.set_id (ID_CLIM);
   clim.set_hidden (true);
-  alim.set_id (ALIM);
+  alim.set_id (ID_ALIM);
   alim.set_hidden (true);
-  xliminclude.set_id (XLIMINCLUDE);
+  xliminclude.set_id (ID_XLIMINCLUDE);
   xliminclude.set_hidden (true);
-  yliminclude.set_id (YLIMINCLUDE);
+  yliminclude.set_id (ID_YLIMINCLUDE);
   yliminclude.set_hidden (true);
-  zliminclude.set_id (ZLIMINCLUDE);
+  zliminclude.set_id (ID_ZLIMINCLUDE);
   zliminclude.set_hidden (true);
-  climinclude.set_id (CLIMINCLUDE);
+  climinclude.set_id (ID_CLIMINCLUDE);
   climinclude.set_hidden (true);
-  aliminclude.set_id (ALIMINCLUDE);
+  aliminclude.set_id (ID_ALIMINCLUDE);
   aliminclude.set_hidden (true);
   init ();
 }
 
 void
-hggroup::properties::set (const caseless_str& pname, const octave_value& val)
+hggroup::properties::set (const caseless_str& pname_arg, const octave_value& val)
 {
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return;
+
   if (pname.compare ("xliminclude"))
     set_xliminclude (val);
   else if (pname.compare ("yliminclude"))
@@ -4253,42 +4872,49 @@ hggroup::properties::set (const caseless_str& pname, const octave_value& val)
   else if (pname.compare ("aliminclude"))
     set_aliminclude (val);
   else
-    base_properties::set (pname, "hggroup", val);
+    base_properties::set (pname, val);
 }
 
 octave_value
 hggroup::properties::get (bool all) const
 {
-  Octave_map m = base_properties::get (all).map_value ();
+  octave_map m = base_properties::get (all).map_value ();
 
   if (all)
-    m.assign ("xlim", get_xlim ());
+    m.assign ("xlim", octave_value (get_xlim ()));
   if (all)
-    m.assign ("ylim", get_ylim ());
+    m.assign ("ylim", octave_value (get_ylim ()));
   if (all)
-    m.assign ("zlim", get_zlim ());
+    m.assign ("zlim", octave_value (get_zlim ()));
   if (all)
-    m.assign ("clim", get_clim ());
+    m.assign ("clim", octave_value (get_clim ()));
   if (all)
-    m.assign ("alim", get_alim ());
+    m.assign ("alim", octave_value (get_alim ()));
   if (all)
-    m.assign ("xliminclude", get_xliminclude ());
+    m.assign ("xliminclude", octave_value (get_xliminclude ()));
   if (all)
-    m.assign ("yliminclude", get_yliminclude ());
+    m.assign ("yliminclude", octave_value (get_yliminclude ()));
   if (all)
-    m.assign ("zliminclude", get_zliminclude ());
+    m.assign ("zliminclude", octave_value (get_zliminclude ()));
   if (all)
-    m.assign ("climinclude", get_climinclude ());
+    m.assign ("climinclude", octave_value (get_climinclude ()));
   if (all)
-    m.assign ("aliminclude", get_aliminclude ());
+    m.assign ("aliminclude", octave_value (get_aliminclude ()));
 
   return m;
 }
 
 octave_value
-hggroup::properties::get (const caseless_str& pname) const
+hggroup::properties::get (const caseless_str& pname_arg) const
 {
   octave_value retval;
+
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return retval;
 
   if (pname.compare ("xlim"))
     retval = get_xlim ();
@@ -4317,8 +4943,15 @@ hggroup::properties::get (const caseless_str& pname) const
 }
 
 property
-hggroup::properties::get_property (const caseless_str& pname)
+hggroup::properties::get_property (const caseless_str& pname_arg)
 {
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return property ();
+
   if (pname.compare ("xlim"))
     return property (&xlim, true);
   else if (pname.compare ("ylim"))
@@ -4364,28 +4997,282 @@ hggroup::properties::factory_defaults (void)
 
 std::string hggroup::properties::go_name ("hggroup");
 
-bool hggroup::properties::has_property (const std::string& pname)
+std::set<std::string>
+hggroup::properties::core_property_names (void)
 {
-  static std::set<std::string> all_properties;
+  static std::set<std::string> all_pnames;
 
   static bool initialized = false;
 
   if (! initialized)
     {
-      all_properties.insert ("xlim");
-      all_properties.insert ("ylim");
-      all_properties.insert ("zlim");
-      all_properties.insert ("clim");
-      all_properties.insert ("alim");
-      all_properties.insert ("xliminclude");
-      all_properties.insert ("yliminclude");
-      all_properties.insert ("zliminclude");
-      all_properties.insert ("climinclude");
-      all_properties.insert ("aliminclude");
+      all_pnames.insert ("xlim");
+      all_pnames.insert ("ylim");
+      all_pnames.insert ("zlim");
+      all_pnames.insert ("clim");
+      all_pnames.insert ("alim");
+      all_pnames.insert ("xliminclude");
+      all_pnames.insert ("yliminclude");
+      all_pnames.insert ("zliminclude");
+      all_pnames.insert ("climinclude");
+      all_pnames.insert ("aliminclude");
+
+      std::set<std::string> base_pnames = base_properties::core_property_names ();
+      all_pnames.insert (base_pnames.begin (), base_pnames.end ());
 
       initialized = true;
     }
 
-  return all_properties.find (pname) != all_properties.end () || base_properties::has_property (pname, "hggroup");
+  return all_pnames;
+}
+
+bool
+hggroup::properties::has_core_property (const caseless_str& pname)
+{
+  std::set<std::string> pnames = core_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+std::set<std::string>
+hggroup::properties::all_property_names (void) const
+{
+  static std::set<std::string> all_pnames = core_property_names ();
+
+  std::set<std::string> retval = all_pnames;
+  std::set<std::string> base_props = base_properties::all_property_names ();
+  retval.insert (base_props.begin (), base_props.end ());
+
+  return retval;
+}
+
+bool
+hggroup::properties::has_property (const caseless_str& pname) const
+{
+  std::set<std::string> pnames = all_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+// ******** uimenu ********
+
+uimenu::properties::properties (const graphics_handle& mh, const graphics_handle& p)
+  : base_properties (go_name, mh, p),
+    accelerator ("accelerator", mh, ""),
+    callback ("callback", mh, Matrix()),
+    checked ("checked", mh, "off"),
+    enable ("enable", mh, "on"),
+    foregroundcolor ("foregroundcolor", mh, color_values (0, 0, 0)),
+    label ("label", mh, ""),
+    position ("position", mh, 9),
+    separator ("separator", mh, "off"),
+    fltk_label ("fltk_label", mh, "")
+{
+  accelerator.set_id (ID_ACCELERATOR);
+  callback.set_id (ID_CALLBACK);
+  checked.set_id (ID_CHECKED);
+  enable.set_id (ID_ENABLE);
+  foregroundcolor.set_id (ID_FOREGROUNDCOLOR);
+  label.set_id (ID_LABEL);
+  position.set_id (ID_POSITION);
+  separator.set_id (ID_SEPARATOR);
+  fltk_label.set_id (ID_FLTK_LABEL);
+  fltk_label.set_hidden (true);
+  init ();
+}
+
+void
+uimenu::properties::set (const caseless_str& pname_arg, const octave_value& val)
+{
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return;
+
+  if (pname.compare ("accelerator"))
+    set_accelerator (val);
+  else if (pname.compare ("callback"))
+    set_callback (val);
+  else if (pname.compare ("checked"))
+    set_checked (val);
+  else if (pname.compare ("enable"))
+    set_enable (val);
+  else if (pname.compare ("foregroundcolor"))
+    set_foregroundcolor (val);
+  else if (pname.compare ("label"))
+    set_label (val);
+  else if (pname.compare ("position"))
+    set_position (val);
+  else if (pname.compare ("separator"))
+    set_separator (val);
+  else if (pname.compare ("fltk_label"))
+    set_fltk_label (val);
+  else
+    base_properties::set (pname, val);
+}
+
+octave_value
+uimenu::properties::get (bool all) const
+{
+  octave_map m = base_properties::get (all).map_value ();
+
+  m.assign ("accelerator", octave_value (get_accelerator ()));
+  m.assign ("callback", octave_value (get_callback ()));
+  m.assign ("checked", octave_value (get_checked ()));
+  m.assign ("enable", octave_value (get_enable ()));
+  m.assign ("foregroundcolor", octave_value (get_foregroundcolor ()));
+  m.assign ("label", octave_value (get_label ()));
+  m.assign ("position", octave_value (get_position ()));
+  m.assign ("separator", octave_value (get_separator ()));
+  if (all)
+    m.assign ("fltk_label", octave_value (get_fltk_label ()));
+
+  return m;
+}
+
+octave_value
+uimenu::properties::get (const caseless_str& pname_arg) const
+{
+  octave_value retval;
+
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return retval;
+
+  if (pname.compare ("accelerator"))
+    retval = get_accelerator ();
+  else if (pname.compare ("callback"))
+    retval = get_callback ();
+  else if (pname.compare ("checked"))
+    retval = get_checked ();
+  else if (pname.compare ("enable"))
+    retval = get_enable ();
+  else if (pname.compare ("foregroundcolor"))
+    retval = get_foregroundcolor ();
+  else if (pname.compare ("label"))
+    retval = get_label ();
+  else if (pname.compare ("position"))
+    retval = get_position ();
+  else if (pname.compare ("separator"))
+    retval = get_separator ();
+  else if (pname.compare ("fltk_label"))
+    retval = get_fltk_label ();
+  else
+    retval = base_properties::get (pname);
+
+  return retval;
+}
+
+property
+uimenu::properties::get_property (const caseless_str& pname_arg)
+{
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return property ();
+
+  if (pname.compare ("accelerator"))
+    return property (&accelerator, true);
+  else if (pname.compare ("callback"))
+    return property (&callback, true);
+  else if (pname.compare ("checked"))
+    return property (&checked, true);
+  else if (pname.compare ("enable"))
+    return property (&enable, true);
+  else if (pname.compare ("foregroundcolor"))
+    return property (&foregroundcolor, true);
+  else if (pname.compare ("label"))
+    return property (&label, true);
+  else if (pname.compare ("position"))
+    return property (&position, true);
+  else if (pname.compare ("separator"))
+    return property (&separator, true);
+  else if (pname.compare ("fltk_label"))
+    return property (&fltk_label, true);
+  else
+    return base_properties::get_property (pname);
+}
+
+property_list::pval_map_type
+uimenu::properties::factory_defaults (void)
+{
+  property_list::pval_map_type m = base_properties::factory_defaults ();
+
+  m["accelerator"] = "";
+  m["callback"] = Matrix();
+  m["checked"] = "off";
+  m["enable"] = "on";
+  m["foregroundcolor"] = color_values (0, 0, 0);
+  m["label"] = "";
+  m["position"] = 9;
+  m["separator"] = "off";
+  m["fltk_label"] = "";
+
+  return m;
+}
+
+std::string uimenu::properties::go_name ("uimenu");
+
+std::set<std::string>
+uimenu::properties::core_property_names (void)
+{
+  static std::set<std::string> all_pnames;
+
+  static bool initialized = false;
+
+  if (! initialized)
+    {
+      all_pnames.insert ("accelerator");
+      all_pnames.insert ("callback");
+      all_pnames.insert ("checked");
+      all_pnames.insert ("enable");
+      all_pnames.insert ("foregroundcolor");
+      all_pnames.insert ("label");
+      all_pnames.insert ("position");
+      all_pnames.insert ("separator");
+      all_pnames.insert ("fltk_label");
+
+      std::set<std::string> base_pnames = base_properties::core_property_names ();
+      all_pnames.insert (base_pnames.begin (), base_pnames.end ());
+
+      initialized = true;
+    }
+
+  return all_pnames;
+}
+
+bool
+uimenu::properties::has_core_property (const caseless_str& pname)
+{
+  std::set<std::string> pnames = core_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+std::set<std::string>
+uimenu::properties::all_property_names (void) const
+{
+  static std::set<std::string> all_pnames = core_property_names ();
+
+  std::set<std::string> retval = all_pnames;
+  std::set<std::string> base_props = base_properties::all_property_names ();
+  retval.insert (base_props.begin (), base_props.end ());
+
+  return retval;
+}
+
+bool
+uimenu::properties::has_property (const caseless_str& pname) const
+{
+  std::set<std::string> pnames = all_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
 }
 

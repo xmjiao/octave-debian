@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 1998, 2000, 2001, 2002,
-              2003, 2004, 2005, 2006, 2007, 2008 John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -87,12 +86,12 @@ private:
   struct call_stack_elt
   {
     call_stack_elt (octave_function *f, symbol_table::scope_id s,
-		    symbol_table::context_id c, size_t p = 0)
+                    symbol_table::context_id c, size_t p = 0)
       : fcn (f), stmt (0), scope (s), context (c), prev (p) { }
 
     call_stack_elt (const call_stack_elt& elt)
       : fcn (elt.fcn), stmt (elt.stmt), scope (elt.scope),
-	context (elt.context), prev (elt.prev) { }
+        context (elt.context), prev (elt.prev) { }
 
     octave_function *fcn;
     tree_statement *stmt;
@@ -119,26 +118,32 @@ public:
 
     if (! instance)
       {
-	instance = new octave_call_stack ();
+        instance = new octave_call_stack ();
 
-	if (instance)
-	  instance->do_push (0, symbol_table::top_scope (), 0);
-	else
-	  {
-	    ::error ("unable to create call stack object!");
+        if (instance)
+          instance->do_push (0, symbol_table::top_scope (), 0);
+        else
+          {
+            ::error ("unable to create call stack object!");
 
-	    retval = false;
-	  }
+            retval = false;
+          }
       }
 
     return retval;
   }
 
   // Current function (top of stack).
-  static octave_function *current (void) { return top (); }
+  static octave_function *current (void)
+  {
+    return instance_ok () ? instance->do_current () : 0;
+  }
 
   // Current statement (top of stack).
-  static tree_statement *current_statement (void) { return top_statement (); }
+  static tree_statement *current_statement (void)
+  {
+    return instance_ok () ? instance->do_current_statement () : 0;
+  }
 
   // Current line in current function.
   static int current_line (void)
@@ -202,7 +207,7 @@ public:
   {
     return instance_ok () ? instance->do_element (n) : 0;
   }
-  
+
   // First user-defined function on the stack.
   static octave_user_code *caller_user_code (size_t nskip = 0)
   {
@@ -211,8 +216,8 @@ public:
 
   static void
   push (octave_function *f,
-	symbol_table::scope_id scope = symbol_table::current_scope (),
-	symbol_table::context_id context = symbol_table::current_context ())
+        symbol_table::scope_id scope = symbol_table::current_scope (),
+        symbol_table::context_id context = symbol_table::current_context ())
   {
     if (instance_ok ())
       instance->do_push (f, scope, context);
@@ -220,20 +225,10 @@ public:
 
   static void
   push (symbol_table::scope_id scope = symbol_table::current_scope (),
-	symbol_table::context_id context = symbol_table::current_context ())
+        symbol_table::context_id context = symbol_table::current_context ())
   {
     if (instance_ok ())
       instance->do_push (0, scope, context);
-  }
-
-  static octave_function *top (void)
-  {
-    return instance_ok () ? instance->do_top (): 0;
-  }
-
-  static tree_statement *top_statement (void)
-  {
-    return instance_ok () ? instance->do_top_statement (): 0;
   }
 
   static void set_statement (tree_statement *s)
@@ -245,6 +240,11 @@ public:
   static bool goto_frame (size_t n = 0, bool verbose = false)
   {
     return instance_ok () ? instance->do_goto_frame (n, verbose) : false;
+  }
+
+  static void restore_frame (size_t n)
+  {
+    goto_frame (n);
   }
 
   static bool goto_frame_relative (int n, bool verbose = false)
@@ -265,21 +265,19 @@ public:
       instance->do_goto_base_frame ();
   }
 
-  static Octave_map backtrace (size_t nskip, octave_idx_type& curr_user_frame)
+  static octave_map backtrace (size_t nskip, octave_idx_type& curr_user_frame)
   {
     return instance_ok ()
-      ? instance->do_backtrace (nskip, curr_user_frame) : Octave_map ();
+      ? instance->do_backtrace (nskip, curr_user_frame) : octave_map ();
   }
+
+  static octave_map empty_backtrace (void);
 
   static void pop (void)
   {
     if (instance_ok ())
       instance->do_pop ();
   }
-  
-  // A function for popping the top of the call stack that is suitable
-  // for use as an unwind_protect handler.
-  static void unwind_pop (void *) { pop (); }
 
   static void clear (void)
   {
@@ -339,17 +337,17 @@ private:
 
     if (cs.size () > n)
       {
-	call_stack_elt& elt = cs[n];
-	retval = elt.fcn;
+        call_stack_elt& elt = cs[n];
+        retval = elt.fcn;
       }
 
     return retval;
   }
 
-  octave_user_code *do_caller_user_code (size_t nskip) const; 
+  octave_user_code *do_caller_user_code (size_t nskip) const;
 
   void do_push (octave_function *f, symbol_table::scope_id scope,
-		symbol_table::context_id context)
+                symbol_table::context_id context)
   {
     size_t prev_frame = curr_frame;
     curr_frame = cs.size ();
@@ -357,27 +355,27 @@ private:
     symbol_table::set_scope_and_context (scope, context);
   }
 
-  octave_function *do_top (void) const
+  octave_function *do_current (void) const
   {
     octave_function *retval = 0;
 
     if (! cs.empty ())
       {
-	const call_stack_elt& elt = cs.back ();
-	retval = elt.fcn;
+        const call_stack_elt& elt = cs[curr_frame];
+        retval = elt.fcn;
       }
 
     return retval;
   }
 
-  tree_statement *do_top_statement (void) const
+  tree_statement *do_current_statement (void) const
   {
     tree_statement *retval = 0;
 
     if (! cs.empty ())
       {
-	const call_stack_elt& elt = cs.back ();
-	retval = elt.stmt;
+        const call_stack_elt& elt = cs[curr_frame];
+        retval = elt.stmt;
       }
 
     return retval;
@@ -387,13 +385,13 @@ private:
   {
     if (! cs.empty ())
       {
-	call_stack_elt& elt = cs.back ();
-	elt.stmt = s;
+        call_stack_elt& elt = cs.back ();
+        elt.stmt = s;
       }
   }
 
-  Octave_map do_backtrace (size_t nskip,
-			   octave_idx_type& curr_user_frame) const;
+  octave_map do_backtrace (size_t nskip,
+                           octave_idx_type& curr_user_frame) const;
 
   bool do_goto_frame (size_t n, bool verbose);
 
@@ -407,11 +405,11 @@ private:
   {
     if (cs.size () > 1)
       {
-	const call_stack_elt& elt = cs.back ();
-	curr_frame = elt.prev;
-	cs.pop_back ();
-	const call_stack_elt& new_elt = cs[curr_frame];
-	symbol_table::set_scope_and_context (new_elt.scope, new_elt.context);
+        const call_stack_elt& elt = cs.back ();
+        curr_frame = elt.prev;
+        cs.pop_back ();
+        const call_stack_elt& new_elt = cs[curr_frame];
+        symbol_table::set_scope_and_context (new_elt.scope, new_elt.context);
       }
   }
 
@@ -421,9 +419,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

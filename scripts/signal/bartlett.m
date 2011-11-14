@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 2000, 2002, 2005, 2006, 2007, 2009
-##               Andreas Weingessel
+## Copyright (C) 1995-2011 Andreas Weingessel
 ##
 ## This file is part of Octave.
 ##
@@ -36,7 +35,7 @@ function c = bartlett (m)
   endif
 
   if (! (isscalar (m) && (m == round (m)) && (m > 0)))
-    error ("bartlett: m has to be an integer > 0");
+    error ("bartlett: M has to be an integer > 0");
   endif
 
   if (m == 1)

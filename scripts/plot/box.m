@@ -1,4 +1,4 @@
-## Copyright (C) 2006, 2007, 2008, 2009 John W. Eaton
+## Copyright (C) 2006-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} box (@var{arg})
+## @deftypefn  {Function File} {} box (@var{arg})
 ## @deftypefnx {Function File} {} box (@var{h}, @dots{})
 ## Control the display of a border around the plot.
 ## The argument may be either @code{"on"} or @code{"off"}.  If it is
@@ -45,11 +45,11 @@ function box (varargin)
     state = varargin{1};
     if (ischar (state))
       if (strcmpi (state, "off"))
-	box_state = "off";
+        box_state = "off";
       elseif (strcmpi (state, "on"))
-	box_state = "on";
+        box_state = "on";
       else
-	print_usage ();
+        print_usage ();
       endif
     endif
   else

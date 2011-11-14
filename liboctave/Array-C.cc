@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 1998, 2001, 2003, 2004, 2005,
-              2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
+Copyright (C) 2009 VZLU Prague
 
 This file is part of Octave.
 
@@ -45,22 +45,22 @@ static bool
 nan_ascending_compare (const Complex& x, const Complex& y)
 {
   return (xisnan (y)
-	  ? ! xisnan (x)
-	  : ((std::abs (x) < std::abs (x))
-	     || ((std::abs (x) == std::abs (x)) && (arg (x) < arg (x)))));
+          ? ! xisnan (x)
+          : ((std::abs (x) < std::abs (x))
+             || ((std::abs (x) == std::abs (x)) && (arg (x) < arg (x)))));
 }
 
 static bool
 nan_descending_compare (const Complex& x, const Complex& y)
 {
   return (xisnan (x)
-	  ? ! xisnan (y)
-	  : ((std::abs (x) > std::abs (x))
-	     || ((std::abs (x) == std::abs (x)) && (arg (x) > arg (x)))));
+          ? ! xisnan (y)
+          : ((std::abs (x) > std::abs (x))
+             || ((std::abs (x) == std::abs (x)) && (arg (x) > arg (x)))));
 }
 
 Array<Complex>::compare_fcn_type
-sortrows_comparator (sortmode mode, const Array<Complex>& a , bool allow_chk)
+safe_comparator (sortmode mode, const Array<Complex>& a , bool allow_chk)
 {
   Array<Complex>::compare_fcn_type result = 0;
 
@@ -92,27 +92,9 @@ INSTANTIATE_ARRAY_SORT (Complex);
 
 INSTANTIATE_ARRAY (Complex, OCTAVE_API);
 
-#include "Array2.h"
-
-template class OCTAVE_API Array2<Complex>;
-
-#include "ArrayN.h"
-#include "ArrayN.cc"
-
-template class OCTAVE_API ArrayN<Complex>;
-
-template OCTAVE_API std::ostream& operator << (std::ostream&, const ArrayN<Complex>&);
+template OCTAVE_API std::ostream& operator << (std::ostream&, const Array<Complex>&);
 
 #include "DiagArray2.h"
 #include "DiagArray2.cc"
 
-#ifdef _MSC_VER
-template class OCTAVE_API DiagArray2<Complex>::Proxy;
-#endif
 template class OCTAVE_API DiagArray2<Complex>;
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

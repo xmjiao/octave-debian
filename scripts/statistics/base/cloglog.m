@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 2000, 2002, 2005, 2006, 2007, 2009
-##               Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -20,16 +19,17 @@
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} cloglog (@var{x})
 ## Return the complementary log-log function of @var{x}, defined as
-##
 ## @tex
 ## $$
 ## {\rm cloglog}(x) = - \log (- \log (x))
 ## $$
 ## @end tex
 ## @ifnottex
+##
 ## @example
 ## cloglog(x) = - log (- log (@var{x}))
 ## @end example
+##
 ## @end ifnottex
 ## @end deftypefn
 
@@ -45,3 +45,11 @@ function y = cloglog (x)
   y = - log (- log (x));
 
 endfunction
+
+%!assert(cloglog(0), -Inf)
+%!assert(cloglog(1), Inf)
+%!assert(cloglog(1/e), 0)
+
+%% Test input validation
+%!error cloglog ()
+%!error cloglog (1, 2)

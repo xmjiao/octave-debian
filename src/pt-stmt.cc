@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1999, 2000, 2001, 2002, 2003, 2004, 2005,
-              2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -122,10 +121,10 @@ tree_statement::is_end_of_fcn_or_script (void) const
   if (cmd)
     {
       tree_no_op_command *no_op_cmd
-	= dynamic_cast<tree_no_op_command *> (cmd);
+        = dynamic_cast<tree_no_op_command *> (cmd);
 
       if (no_op_cmd)
-	retval = no_op_cmd->is_end_of_fcn_or_script ();
+        retval = no_op_cmd->is_end_of_fcn_or_script ();
     }
 
   return retval;
@@ -133,7 +132,7 @@ tree_statement::is_end_of_fcn_or_script (void) const
 
 tree_statement *
 tree_statement::dup (symbol_table::scope_id scope,
-		     symbol_table::context_id context) const
+                     symbol_table::context_id context) const
 {
   tree_statement *new_stmt = new tree_statement ();
 
@@ -157,7 +156,7 @@ tree_statement_list::set_breakpoint (int line)
 {
   tree_breakpoint tbp (line, tree_breakpoint::set);
   accept (tbp);
-  
+
   return tbp.get_line ();
 }
 
@@ -171,14 +170,14 @@ tree_statement_list::delete_breakpoint (int line)
       int len = bp_lst.length ();
 
       for (int i = 0; i < len; i++)
-	{
-	  tree_breakpoint tbp (i, tree_breakpoint::clear);
-	  accept (tbp);
-	}
+        {
+          tree_breakpoint tbp (i, tree_breakpoint::clear);
+          accept (tbp);
+        }
     }
   else
     {
-      tree_breakpoint tbp (line, tree_breakpoint::clear); 
+      tree_breakpoint tbp (line, tree_breakpoint::clear);
       accept (tbp);
     }
 }
@@ -194,7 +193,7 @@ tree_statement_list::list_breakpoints (void)
 
 tree_statement_list *
 tree_statement_list::dup (symbol_table::scope_id scope,
-			  symbol_table::context_id context) const
+                          symbol_table::context_id context) const
 {
   tree_statement_list *new_list = new tree_statement_list ();
 
@@ -215,9 +214,3 @@ tree_statement_list::accept (tree_walker& tw)
 {
   tw.visit_statement_list (*this);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

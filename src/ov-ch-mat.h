@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2000, 2002, 2003, 2004, 2005, 2006,
-              2007, 2008 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
+Copyright (C) 2009-2010 VZLU Prague
 
 This file is part of Octave.
 
@@ -34,12 +34,12 @@ along with Octave; see the file COPYING.  If not, see
 #include "str-vec.h"
 
 #include "error.h"
+#include "ov.h"
 #include "ov-base.h"
-
 #include "ov-base-mat.h"
+#include "ov-re-mat.h"
 #include "ov-typeinfo.h"
 
-class Octave_map;
 class octave_value_list;
 
 class tree_walker;
@@ -49,15 +49,18 @@ class tree_walker;
 class
 octave_char_matrix : public octave_base_matrix<charNDArray>
 {
-public:
+protected:
 
   octave_char_matrix (void)
     : octave_base_matrix<charNDArray> () { }
 
-  octave_char_matrix (const charMatrix& chm, bool = false)
+  octave_char_matrix (const charMatrix& chm)
     : octave_base_matrix<charNDArray> (chm) { }
 
-  octave_char_matrix (const charNDArray& chm, bool = false)
+  octave_char_matrix (const charNDArray& chm)
+    : octave_base_matrix<charNDArray> (chm) { }
+
+  octave_char_matrix (const Array<char>& chm)
     : octave_base_matrix<charNDArray> (chm) { }
 
   octave_char_matrix (char c)
@@ -75,12 +78,16 @@ public:
   octave_char_matrix (const octave_char_matrix& chm)
     : octave_base_matrix<charNDArray> (chm) { }
 
+public:
+
   ~octave_char_matrix (void) { }
 
   octave_base_value *clone (void) const { return new octave_char_matrix (*this); }
   octave_base_value *empty_clone (void) const { return new octave_char_matrix (); }
 
   idx_vector index_vector (void) const;
+
+  builtin_type_t builtin_type (void) const { return btyp_char; }
 
   bool is_char_matrix (void) const { return true; }
   bool is_real_matrix (void) const { return true; }
@@ -132,23 +139,17 @@ public:
     { return matrix; }
 
   octave_value convert_to_str_internal (bool, bool, char type) const
-    { return octave_value (matrix, true, type); }
+    { return octave_value (matrix, type); }
 
   void print_raw (std::ostream& os, bool pr_as_read_syntax = false) const;
 
+  // Unsafe.  This function exists to support the MEX interface.
+  // You should not use it anywhere else.
+  void *mex_get_data (void) const { return matrix.mex_get_data (); }
+
   mxArray *as_mxArray (void) const;
 
-protected:
-
-  DECLARE_OCTAVE_ALLOCATOR
-
-  DECLARE_OV_TYPEID_FUNCTIONS_AND_DATA
+  octave_value map (unary_mapper_t umap) const;
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

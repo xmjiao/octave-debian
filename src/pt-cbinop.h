@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008, 2009 Jaroslav Hajek
+Copyright (C) 2008-2011 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -59,6 +59,13 @@ private:
   tree_expression *op_lhs;
   tree_expression *op_rhs;
   octave_value::compound_binary_op etype;
+
+  // No copying!
+
+  tree_compound_binary_expression (const tree_compound_binary_expression&);
+
+  tree_compound_binary_expression& operator =
+    (const tree_compound_binary_expression&);
 };
 
 // a "virtual constructor"
@@ -70,9 +77,3 @@ maybe_compound_binary_expression (tree_expression *a, tree_expression *b,
                                   = octave_value::unknown_binary_op);
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

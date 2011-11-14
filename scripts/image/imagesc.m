@@ -1,5 +1,4 @@
-## Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2002, 2003,
-##               2004, 2005, 2006, 2007, 2008 John W. Eaton
+## Copyright (C) 1994-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -18,12 +17,12 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} imagesc (@var{a})
-## @deftypefnx {Function File} {} imagesc (@var{x}, @var{y}, @var{a})
+## @deftypefn  {Function File} {} imagesc (@var{A})
+## @deftypefnx {Function File} {} imagesc (@var{x}, @var{y}, @var{A})
 ## @deftypefnx {Function File} {} imagesc (@dots{}, @var{limits})
 ## @deftypefnx {Function File} {} imagesc (@var{h}, @dots{})
 ## @deftypefnx {Function File} {@var{h} =} imagesc (@dots{})
-## Display a scaled version of the matrix @var{a} as a color image.  The
+## Display a scaled version of the matrix @var{A} as a color image.  The
 ## colormap is scaled so that the entries of the matrix occupy the entire
 ## colormap.  If @var{limits} = [@var{lo}, @var{hi}] are given, then that
 ## range is set to the 'clim' of the current axes.
@@ -31,7 +30,7 @@
 ## The axis values corresponding to the matrix elements are specified in
 ## @var{x} and @var{y}, either as pairs giving the minimum and maximum
 ## values for the respective axes, or as values for each row and column
-## of the matrix @var{a}.
+## of the matrix @var{A}.
 ##
 ## @seealso{image, imshow, caxis}
 ## @end deftypefn
@@ -109,13 +108,13 @@ function ret = __imagesc__ (ax, x, y, A, limits, DEPRECATEDZOOM)
   endif
 
   ret = image (ax, x, y, A);
-  set (ret, "cdatamapping", "scaled")
+  set (ret, "cdatamapping", "scaled");
 
   ## use given limits or guess them from the matrix
   if (length (limits) == 2 && limits(2) >= limits(1))
     set (ax, "clim", limits);
   elseif (! isempty (limits))
-    error ("expected data limits to be [lo, hi]");
+    error ("imagesc: expected data LIMITS to be [lo, hi]");
   endif
 
 endfunction

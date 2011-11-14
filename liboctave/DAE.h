@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 2000, 2002, 2005, 2006,
-              2007 John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -49,20 +48,14 @@ public:
   DAE& operator = (const DAE& a)
     {
       if (this != &a)
-	{
-	  base_diff_alg_eqn::operator = (a);
-	  DAEFunc::operator = (a);
-	}
+        {
+          base_diff_alg_eqn::operator = (a);
+          DAEFunc::operator = (a);
+        }
       return *this;
     }
 
-  ~DAE (void) { }
+  virtual ~DAE (void) { }
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

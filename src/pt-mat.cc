@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004,
-              2005, 2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -67,22 +66,22 @@ private:
 
     tm_row_const_rep (void)
       : count (1), dv (0, 0), all_str (false),
-	all_sq_str (false), all_dq_str (false),
-	some_str (false), all_real (false), all_cmplx (false),
-	all_mt (true), any_sparse (false), any_class (false),
-	class_nm (), ok (false)
+        all_sq_str (false), all_dq_str (false),
+        some_str (false), all_real (false), all_cmplx (false),
+        all_mt (true), any_sparse (false), any_class (false),
+        all_1x1 (false), class_nm (), ok (false)
     { }
 
     tm_row_const_rep (const tree_argument_list& row)
       : count (1), dv (0, 0), all_str (false), all_sq_str (false),
-	some_str (false), all_real (false), all_cmplx (false),
-	all_mt (true), any_sparse (false), any_class (false),
-	class_nm (), ok (false)
+        some_str (false), all_real (false), all_cmplx (false),
+        all_mt (true), any_sparse (false), any_class (false),
+        all_1x1 (! row.empty ()), class_nm (), ok (false)
     { init (row); }
 
     ~tm_row_const_rep (void) { }
 
-    int count;
+    octave_refcount<int> count;
 
     dim_vector dv;
 
@@ -95,6 +94,7 @@ private:
     bool all_mt;
     bool any_sparse;
     bool any_class;
+    bool all_1x1;
 
     std::string class_nm;
 
@@ -109,9 +109,6 @@ private:
     tm_row_const_rep (const tm_row_const_rep&);
 
     tm_row_const_rep& operator = (const tm_row_const_rep&);
-
-    void eval_error (const char *msg, int l, int c,
-		     int x = -1, int y = -1) const;
 
     void eval_warning (const char *msg, int l, int c) const;
   };
@@ -138,13 +135,13 @@ public:
   {
     if (this != &x && rep != x.rep)
       {
-	if (rep && --rep->count == 0)
-	  delete rep;
+        if (rep && --rep->count == 0)
+          delete rep;
 
-	rep = x.rep;
+        rep = x.rep;
 
-	if (rep)
-	  rep->count++;
+        if (rep)
+          rep->count++;
       }
 
     return *this;
@@ -174,6 +171,7 @@ public:
   bool all_empty_p (void) const { return rep->all_mt; }
   bool any_sparse_p (void) const { return rep->any_sparse; }
   bool any_class_p (void) const { return rep->any_class; }
+  bool all_1x1_p (void) const { return rep->all_1x1; }
 
   std::string class_name (void) const { return rep->class_nm; }
 
@@ -204,13 +202,13 @@ get_concat_class (const std::string& c1, const std::string& c2)
   else
     {
       bool c1_is_int = (c1 == "int8" || c1 == "uint8"
-			|| c1 == "int16" || c1 == "uint16"
-			|| c1 == "int32" || c1 == "uint32"
-			|| c1 == "int64" || c1 == "uint64");
+                        || c1 == "int16" || c1 == "uint16"
+                        || c1 == "int32" || c1 == "uint32"
+                        || c1 == "int64" || c1 == "uint64");
       bool c2_is_int = (c2 == "int8" || c2 == "uint8"
-			|| c2 == "int16" || c2 == "uint16"
-			|| c2 == "int32" || c2 == "uint32"
-			|| c2 == "int64" || c2 == "uint64");
+                        || c2 == "int16" || c2 == "uint16"
+                        || c2 == "int32" || c2 == "uint32"
+                        || c2 == "int64" || c2 == "uint64");
 
       bool c1_is_char = (c1 == "char");
       bool c2_is_char = (c2 == "char");
@@ -225,111 +223,83 @@ get_concat_class (const std::string& c1, const std::string& c2)
       bool c2_is_logical = (c2 == "logical");
 
       bool c1_is_built_in_type
-	= (c1_is_int || c1_is_char || c1_is_double || c1_is_single
-	   || c1_is_logical);
+        = (c1_is_int || c1_is_char || c1_is_double || c1_is_single
+           || c1_is_logical);
 
       bool c2_is_built_in_type
-	= (c2_is_int || c2_is_char ||  c2_is_double || c2_is_single
-	   || c2_is_logical);
+        = (c2_is_int || c2_is_char ||  c2_is_double || c2_is_single
+           || c2_is_logical);
 
       // Order is important here...
 
       if (c1_is_char && c2_is_built_in_type)
-	retval = c1;
+        retval = c1;
       else if (c2_is_char && c1_is_built_in_type)
-	retval = c2;
+        retval = c2;
       else if (c1_is_int && c2_is_built_in_type)
-	retval = c1;
+        retval = c1;
       else if (c2_is_int && c1_is_built_in_type)
-	retval = c2;
+        retval = c2;
       else if (c1_is_single && c2_is_built_in_type)
-	retval = c1;
+        retval = c1;
       else if (c2_is_single && c1_is_built_in_type)
-	retval = c2;
+        retval = c2;
       else if (c1_is_double && c2_is_built_in_type)
-	retval = c1;
+        retval = c1;
       else if (c2_is_double && c1_is_built_in_type)
-	retval = c2;
+        retval = c2;
       else if (c1_is_logical && c2_is_logical)
-	retval = c1;
+        retval = c1;
+      else if (c1 == "struct" && c2 == c1)
+        retval = c1;
+      else if (c1 == "cell" && c2 == c1)
+        retval = c1;
     }
 
-  return retval;    
+  return retval;
+}
+
+static void
+eval_error (const char *msg, int l, int c,
+            const dim_vector& x, const dim_vector& y)
+{
+  if (l == -1 && c == -1)
+    {
+      ::error ("%s (%s vs %s)", msg, x.str ().c_str (), y.str ().c_str ());
+    }
+  else
+    {
+      ::error ("%s (%s vs %s) near line %d, column %d", msg,
+               x.str ().c_str (), y.str ().c_str (), l, c);
+    }
 }
 
 bool
 tm_row_const::tm_row_const_rep::do_init_element (tree_expression *elt,
-						 const octave_value& val,
-						 bool& first_elem)
+                                                 const octave_value& val,
+                                                 bool& first_elem)
 {
-  octave_idx_type this_elt_nr = val.rows ();
-  octave_idx_type this_elt_nc = val.columns ();
-
   std::string this_elt_class_nm = val.class_name ();
 
   dim_vector this_elt_dv = val.dims ();
 
   class_nm = get_concat_class (class_nm, this_elt_class_nm);
 
-
-  if (! this_elt_dv.all_zero ())
+  if (! this_elt_dv.zero_by_zero ())
     {
       all_mt = false;
 
       if (first_elem)
-	{
-	  first_elem = false;
-
-	  dv.resize (this_elt_dv.length ());
-	  for (int i = 2; i < dv.length (); i++)
-	    dv.elem (i) = this_elt_dv.elem (i);
-
-	  dv.elem (0) = this_elt_nr;
-
-	  dv.elem (1) = 0;
-	}
-      else
-	{
-	  int len = (this_elt_dv.length () < dv.length ()
-		     ? this_elt_dv.length () : dv.length ());
-
-	  if (this_elt_nr != dv (0))
-	    {
-	      eval_error ("number of rows must match",
-			  elt->line (), elt->column (), this_elt_nr, dv (0));
-	      return false;
-	    }
-	  for (int i = 2; i < len; i++)
-	    {
-	      if (this_elt_dv (i) != dv (i))
-		{
-		  eval_error ("dimensions mismatch", elt->line (), elt->column (), this_elt_dv (i), dv (i));
-		  return false;
-		}
-	    }
-
-	  if (this_elt_dv.length () > len)
-	    for (int i = len; i < this_elt_dv.length (); i++)
-	      if (this_elt_dv (i) != 1)
-		{
-		  eval_error ("dimensions mismatch", elt->line (), elt->column (), this_elt_dv (i), 1);
-		  return false;
-		}
-
-	  if (dv.length () > len)
-	    for (int i = len; i < dv.length (); i++)
-	      if (dv (i) != 1)
-		{
-		  eval_error ("dimensions mismatch", elt->line (), elt->column (), 1, dv (i));
-		  return false;
-		}
-	}
-      dv.elem (1) = dv.elem (1) + this_elt_nc;
-
+        {
+          first_elem = false;
+          dv = this_elt_dv;
+        }
+      else if (! dv.hvcat (this_elt_dv, 1))
+        {
+          eval_error ("horizontal dimensions mismatch", elt->line (), elt->column (), dv, this_elt_dv);
+          return false;
+        }
     }
-  else
-    eval_warning ("empty matrix found in matrix list",
-		  elt->line (), elt->column ());
 
   append (val);
 
@@ -357,6 +327,8 @@ tm_row_const::tm_row_const_rep::do_init_element (tree_expression *elt,
   if (!any_class && val.is_object ())
     any_class = true;
 
+  all_1x1 = all_1x1 && val.numel () == 1;
+
   return true;
 }
 
@@ -377,34 +349,34 @@ tm_row_const::tm_row_const_rep::init (const tree_argument_list& row)
        p != row.end ();
        p++)
     {
-      OCTAVE_QUIT;
+      octave_quit ();
 
       tree_expression *elt = *p;
 
       octave_value tmp = elt->rvalue1 ();
 
       if (error_state || tmp.is_undefined ())
-	break;
+        break;
       else
-	{
-	  if (tmp.is_cs_list ())
-	    {
-	      octave_value_list tlst = tmp.list_value ();
+        {
+          if (tmp.is_cs_list ())
+            {
+              octave_value_list tlst = tmp.list_value ();
 
-	      for (octave_idx_type i = 0; i < tlst.length (); i++)
-		{
-		  OCTAVE_QUIT;
+              for (octave_idx_type i = 0; i < tlst.length (); i++)
+                {
+                  octave_quit ();
 
-		  if (! do_init_element (elt, tlst(i), first_elem))
-		    goto done;
-		}
-	    }
-	  else
-	    {
-	      if (! do_init_element (elt, tmp, first_elem))
-		goto done;
-	    }
-	}
+                  if (! do_init_element (elt, tlst(i), first_elem))
+                    goto done;
+                }
+            }
+          else
+            {
+              if (! do_init_element (elt, tmp, first_elem))
+                goto done;
+            }
+        }
     }
 
  done:
@@ -413,34 +385,14 @@ tm_row_const::tm_row_const_rep::init (const tree_argument_list& row)
 }
 
 void
-tm_row_const::tm_row_const_rep::eval_error (const char *msg, int l,
-					    int c, int x, int y) const
-{
-  if (l == -1 && c == -1)
-    {
-      if (x == -1 || y == -1)
-	::error ("%s", msg);
-      else
-	::error ("%s (%d != %d)", msg, x, y);
-    }
-  else
-    {
-      if (x == -1 || y == -1)
-	::error ("%s near line %d, column %d", msg, l, c);
-      else
-	::error ("%s (%d != %d) near line %d, column %d", msg, x, y, l, c);
-    }
-}
-
-void
 tm_row_const::tm_row_const_rep::eval_warning (const char *msg, int l,
-					      int c) const
+                                              int c) const
 {
   if (l == -1 && c == -1)
     warning_with_id ("Octave:empty-list-elements", "%s", msg);
   else
     warning_with_id ("Octave:empty-list-elements",
-		     "%s near line %d, column %d", msg, l, c);
+                     "%s near line %d, column %d", msg, l, c);
 }
 
 class
@@ -471,6 +423,7 @@ public:
   bool all_empty_p (void) const { return all_mt; }
   bool any_sparse_p (void) const { return any_sparse; }
   bool any_class_p (void) const { return any_class; }
+  bool all_1x1_p (void) const { return all_1x1; }
 
   std::string class_name (void) const { return class_nm; }
 
@@ -489,6 +442,7 @@ private:
   bool all_mt;
   bool any_sparse;
   bool any_class;
+  bool all_1x1;
 
   std::string class_nm;
 
@@ -513,6 +467,7 @@ tm_const::init (const tree_matrix& tm)
   all_cmplx = true;
   any_sparse = false;
   any_class = false;
+  all_1x1 = ! empty ();
 
   bool first_elem = true;
 
@@ -523,139 +478,89 @@ tm_const::init (const tree_matrix& tm)
 
   for (tree_matrix::const_iterator p = tm.begin (); p != tm.end (); p++)
     {
-      OCTAVE_QUIT;
+      octave_quit ();
 
       tree_argument_list *elt = *p;
 
       tm_row_const tmp (*elt);
 
       if (tmp && ! tmp.empty ())
-	{
-	  if (all_str && ! tmp.all_strings_p ())
-	    all_str = false;
+        {
+          if (all_str && ! tmp.all_strings_p ())
+            all_str = false;
 
-	  if (all_sq_str && ! tmp.all_sq_strings_p ())
-	    all_sq_str = false;
+          if (all_sq_str && ! tmp.all_sq_strings_p ())
+            all_sq_str = false;
 
-	  if (all_dq_str && ! tmp.all_dq_strings_p ())
-	    all_dq_str = false;
+          if (all_dq_str && ! tmp.all_dq_strings_p ())
+            all_dq_str = false;
 
-	  if (! some_str && tmp.some_strings_p ())
-	    some_str = true;
+          if (! some_str && tmp.some_strings_p ())
+            some_str = true;
 
-	  if (all_real && ! tmp.all_real_p ())
-	    all_real = false;
+          if (all_real && ! tmp.all_real_p ())
+            all_real = false;
 
-	  if (all_cmplx && ! tmp.all_complex_p ())
-	    all_cmplx = false;
+          if (all_cmplx && ! tmp.all_complex_p ())
+            all_cmplx = false;
 
-	  if (all_mt && ! tmp.all_empty_p ())
-	    all_mt = false;
+          if (all_mt && ! tmp.all_empty_p ())
+            all_mt = false;
 
-	  if (!any_sparse && tmp.any_sparse_p ())
-	    any_sparse = true;
+          if (!any_sparse && tmp.any_sparse_p ())
+            any_sparse = true;
 
-	  if (!any_class && tmp.any_class_p ())
-	    any_class = true;
+          if (!any_class && tmp.any_class_p ())
+            any_class = true;
 
-	  append (tmp);
-	}
+          all_1x1 = all_1x1 && tmp.all_1x1_p ();
+
+          append (tmp);
+        }
       else
-	break;
+        break;
     }
 
   if (! error_state)
     {
       for (iterator p = begin (); p != end (); p++)
-	{
-	  OCTAVE_QUIT;
+        {
+          octave_quit ();
 
-	  tm_row_const elt = *p;
+          tm_row_const elt = *p;
 
-	  octave_idx_type this_elt_nr = elt.rows ();
-	  octave_idx_type this_elt_nc = elt.cols ();
+          octave_idx_type this_elt_nr = elt.rows ();
+          octave_idx_type this_elt_nc = elt.cols ();
 
-	  std::string this_elt_class_nm = elt.class_name ();
+          std::string this_elt_class_nm = elt.class_name ();
+          class_nm = get_concat_class (class_nm, this_elt_class_nm);
 
-	  dim_vector this_elt_dv = elt.dims ();
+          dim_vector this_elt_dv = elt.dims ();
 
-	  if (!this_elt_dv.all_zero ())
-	    {
-	      all_mt = false;
+          all_mt = false;
 
-	      if (first_elem)
-		{
-		  first_elem = false;
+          if (first_elem)
+            {
+              first_elem = false;
 
-		  class_nm = this_elt_class_nm;
-
-		  dv.resize (this_elt_dv.length ());
-		  for (int i = 2; i < dv.length (); i++)
-		    dv.elem (i) = this_elt_dv.elem (i);
-
-		  dv.elem (0) = 0;
-
-		  dv.elem (1) = this_elt_nc;
-		}
-	      else if (all_str)
-		{
-		  class_nm = get_concat_class (class_nm, this_elt_class_nm);
-
-		  if (this_elt_nc > cols ())
-		    dv.elem (1) = this_elt_nc;
-		}
-	      else
-		{
-		  class_nm = get_concat_class (class_nm, this_elt_class_nm);
-
-		  bool get_out = false;
-		  int len = (this_elt_dv.length () < dv.length ()
-			     ? this_elt_dv.length () : dv.length ());
-
-		  for (int i = 1; i < len; i++)
-		    {
-		      if (i == 1 && this_elt_nc != dv (1))
-			{
-			  ::error ("number of columns must match (%d != %d)",
-				   this_elt_nc, dv (1));
-			  get_out = true;
-			  break;
-			}
-		      else if (this_elt_dv (i) != dv (i))
-			{
-			  ::error ("dimensions mismatch (dim = %i, %d != %d)", i+1, this_elt_dv (i), dv (i));
-			  get_out = true;
-			  break;
-			}
-		    }
-
-		  if (this_elt_dv.length () > len)
-		    for (int i = len; i < this_elt_dv.length (); i++)
-		      if (this_elt_dv (i) != 1)
-			{
-			  ::error ("dimensions mismatch (dim = %i, %d != %d)", i+1, this_elt_dv (i), 1);
-			  get_out = true;
-			  break;
-			}
-
-		  if (dv.length () > len)
-		    for (int i = len; i < dv.length (); i++)
-		      if (dv (i) != 1)
-			{
-			  ::error ("dimensions mismatch (dim = %i, %d != %d)", i+1, 1, dv(i));
-			  get_out = true;
-			  break;
-			}
-
-		  if (get_out)
-		    break;
-		}
-	      dv.elem (0) = dv.elem (0) + this_elt_nr;
-	    }
-	  else
-	    warning_with_id ("Octave:empty-list-elements",
-			     "empty matrix found in matrix list");
-	}
+              dv = this_elt_dv;
+            }
+          else if (all_str && dv.length () == 2
+                   && this_elt_dv.length () == 2)
+            {
+              // FIXME: this is Octave's specialty. Character matrices allow
+              // rows of unequal length.
+              if (this_elt_nc > cols ())
+                dv(1) = this_elt_nc;
+              dv(0) += this_elt_nr;
+            }
+          else if (! dv.hvcat (this_elt_dv, 0))
+            {
+              eval_error ("vertical dimensions mismatch", -1, -1,
+                          dv, this_elt_dv);
+              return;
+            }
+        }
     }
 
   ok = ! error_state;
@@ -676,12 +581,12 @@ tree_matrix::has_magic_end (void) const
 {
   for (const_iterator p = begin (); p != end (); p++)
     {
-      OCTAVE_QUIT;
+      octave_quit ();
 
       tree_argument_list *elt = *p;
 
       if (elt && elt->has_magic_end ())
-	return true;
+        return true;
     }
 
   return false;
@@ -692,12 +597,12 @@ tree_matrix::all_elements_are_constant (void) const
 {
   for (const_iterator p = begin (); p != end (); p++)
     {
-      OCTAVE_QUIT;
+      octave_quit ();
 
       tree_argument_list *elt = *p;
 
       if (! elt->all_elements_are_constant ())
-	return false;
+        return false;
     }
 
   return true;
@@ -721,69 +626,212 @@ maybe_warn_string_concat (bool all_dq_strings_p, bool all_sq_strings_p)
 {
   if (! (all_dq_strings_p || all_sq_strings_p))
     warning_with_id ("Octave:string-concat",
-		     "concatenation of different character string types may have unintended consequences");
+                     "concatenation of different character string types may have unintended consequences");
 }
 
-#define SINGLE_TYPE_CONCAT(TYPE, EXTRACTOR) \
-  do \
-    { \
-      int dv_len = dv.length (); \
-      Array<octave_idx_type> ra_idx (dv_len > 1 ? dv_len : 2, 0); \
- \
-      for (tm_const::iterator p = tmp.begin (); p != tmp.end (); p++) \
-	{ \
-          OCTAVE_QUIT; \
- \
-	  tm_row_const row = *p; \
- \
-	  for (tm_row_const::iterator q = row.begin (); \
-	       q != row.end (); \
-	       q++) \
-	    { \
-	      OCTAVE_QUIT; \
- \
-	      TYPE ra = q->EXTRACTOR (); \
- \
-	      if (! error_state) \
-		{ \
-		  result.insert (ra, ra_idx); \
- \
-		  if (! error_state) \
-		    ra_idx(1) += ra.columns (); \
-		  else \
-		    goto done; \
-		} \
-	      else \
-		goto done; \
-	    } \
- \
-	  ra_idx(0) += row.rows (); \
-	  ra_idx(1) = 0; \
-	} \
-    } \
- while (0)
+template<class TYPE, class T>
+static void
+single_type_concat (Array<T>& result,
+                    tm_const& tmp)
+{
+  octave_idx_type r = 0, c = 0;
 
-#define DO_SINGLE_TYPE_CONCAT(TYPE, EXTRACTOR) \
-  do \
-    { \
-      TYPE result (dv); \
- \
-      SINGLE_TYPE_CONCAT (TYPE, EXTRACTOR); \
- \
-      retval = result; \
-    } \
-  while (0)
+  for (tm_const::iterator p = tmp.begin (); p != tmp.end (); p++)
+    {
+      tm_row_const row = *p;
+      // Skip empty arrays to allow looser rules.
+      if (row.dims ().any_zero ())
+        continue;
 
-#define DO_SINGLE_TYPE_CONCAT_NO_MUTATE(TYPE, EXTRACTOR, OV_TYPE) \
-  do \
-    { \
-      TYPE result (dv); \
- \
-      SINGLE_TYPE_CONCAT (TYPE, EXTRACTOR); \
- \
-      retval = octave_value (new OV_TYPE (result)); \
-    } \
-  while (0)
+      for (tm_row_const::iterator q = row.begin ();
+           q != row.end ();
+           q++)
+        {
+          octave_quit ();
+
+          TYPE ra = octave_value_extract<TYPE> (*q);
+
+          // Skip empty arrays to allow looser rules.
+          if (! error_state)
+            {
+              if (! ra.is_empty ())
+                {
+                  result.insert (ra, r, c);
+
+                  if (! error_state)
+                    c += ra.columns ();
+                  else
+                    return;
+                }
+            }
+          else
+            return;
+        }
+
+      r += row.rows ();
+      c = 0;
+    }
+}
+
+template<class TYPE, class T>
+static void
+single_type_concat (Array<T>& result,
+                    const dim_vector& dv,
+                    tm_const& tmp)
+{
+  if (dv.any_zero ())
+    {
+      result = Array<T> (dv);
+      return;
+    }
+
+  if (tmp.length () == 1)
+    {
+      // If possible, forward the operation to liboctave.
+      // Single row.
+      tm_row_const& row = tmp.front ();
+      if (! (equal_types<T, char>::value || equal_types<T, octave_value>::value)
+          && row.all_1x1_p ())
+        {
+          // Optimize all scalars case.
+          result.clear (dv);
+          assert (result.numel () == row.length ());
+          octave_idx_type i = 0;
+          for (tm_row_const::iterator q = row.begin ();
+               q != row.end () && ! error_state; q++)
+             result(i++) = octave_value_extract<T> (*q);
+
+          return;
+        }
+
+      octave_idx_type ncols = row.length (), i = 0;
+      OCTAVE_LOCAL_BUFFER (Array<T>, array_list, ncols);
+
+      for (tm_row_const::iterator q = row.begin ();
+           q != row.end () && ! error_state;
+           q++)
+        {
+          octave_quit ();
+
+          array_list[i] = octave_value_extract<TYPE> (*q);
+          i++;
+        }
+
+      if (! error_state)
+        result = Array<T>::cat (-2, ncols, array_list);
+    }
+  else
+    {
+      result = Array<T> (dv);
+      single_type_concat<TYPE> (result, tmp);
+    }
+}
+
+template<class TYPE, class T>
+static void
+single_type_concat (Sparse<T>& result,
+                    const dim_vector& dv,
+                    tm_const& tmp)
+{
+  if (dv.any_zero ())
+    {
+      result = Sparse<T> (dv);
+      return;
+    }
+
+  // Sparse matrices require preallocation for efficient indexing; besides,
+  // only horizontal concatenation can be efficiently handled by indexing.
+  // So we just cat all rows through liboctave, then cat the final column.
+  octave_idx_type nrows = tmp.length (), j = 0;
+  OCTAVE_LOCAL_BUFFER (Sparse<T>, sparse_row_list, nrows);
+  for (tm_const::iterator p = tmp.begin (); p != tmp.end (); p++)
+    {
+      tm_row_const row = *p;
+      octave_idx_type ncols = row.length (), i = 0;
+      OCTAVE_LOCAL_BUFFER (Sparse<T>, sparse_list, ncols);
+
+      for (tm_row_const::iterator q = row.begin ();
+           q != row.end () && ! error_state;
+           q++)
+        {
+          octave_quit ();
+
+          sparse_list[i] = octave_value_extract<TYPE> (*q);
+          i++;
+        }
+
+      Sparse<T> stmp = Sparse<T>::cat (-2, ncols, sparse_list);
+      sparse_row_list[j] = stmp;
+      j++;
+    }
+
+  result = Sparse<T>::cat (-1, nrows, sparse_row_list);
+}
+
+template<class MAP>
+static void
+single_type_concat (octave_map& result,
+                    const dim_vector& dv,
+                    tm_const& tmp)
+{
+  if (dv.any_zero ())
+    {
+      result = octave_map (dv);
+      return;
+    }
+
+  octave_idx_type nrows = tmp.length (), j = 0;
+  OCTAVE_LOCAL_BUFFER (octave_map, map_row_list, nrows);
+  for (tm_const::iterator p = tmp.begin (); p != tmp.end (); p++)
+    {
+      tm_row_const row = *p;
+      octave_idx_type ncols = row.length (), i = 0;
+      OCTAVE_LOCAL_BUFFER (MAP, map_list, ncols);
+
+      for (tm_row_const::iterator q = row.begin ();
+           q != row.end () && ! error_state;
+           q++)
+        {
+          octave_quit ();
+
+          map_list[i] = octave_value_extract<MAP> (*q);
+          i++;
+        }
+
+      octave_map mtmp = octave_map::cat (-2, ncols, map_list);
+      map_row_list[j] = mtmp;
+      j++;
+    }
+
+  result = octave_map::cat (-1, nrows, map_row_list);
+}
+
+template<class TYPE>
+static octave_value
+do_single_type_concat (const dim_vector& dv,
+                       tm_const& tmp)
+{
+  TYPE result;
+
+  single_type_concat<TYPE> (result, dv, tmp);
+
+  return result;
+}
+
+template<>
+octave_value
+do_single_type_concat<octave_map> (const dim_vector& dv,
+                                   tm_const& tmp)
+{
+  octave_map result;
+
+  if (tmp.all_1x1_p ())
+    single_type_concat<octave_scalar_map> (result, dv, tmp);
+  else
+    single_type_concat<octave_map> (result, dv, tmp);
+
+  return result;
+}
 
 octave_value
 tree_matrix::rvalue1 (int)
@@ -820,231 +868,233 @@ tree_matrix::rvalue1 (int)
       std::string result_type = tmp.class_name ();
 
       if (any_class_p)
-	{
-	  octave_value_list tmp3 (tmp.length (), octave_value ());
+        {
+          octave_value_list tmp3 (tmp.length (), octave_value ());
 
-	  int j = 0;
-	  for (tm_const::iterator p = tmp.begin (); p != tmp.end (); p++)
-	    {
-	      OCTAVE_QUIT;
+          int j = 0;
+          for (tm_const::iterator p = tmp.begin (); p != tmp.end (); p++)
+            {
+              octave_quit ();
 
-	      tm_row_const row = *p;
+              tm_row_const row = *p;
 
-	      if (row.length () == 1)
-		tmp3 (j++) = *(row.begin ());
-	      else
-		{
-		  octave_value_list tmp1 (row.length (), octave_value ());
+              if (row.length () == 1)
+                tmp3 (j++) = *(row.begin ());
+              else
+                {
+                  octave_value_list tmp1 (row.length (), octave_value ());
 
-		  int i = 0;
-		  for (tm_row_const::iterator q = row.begin (); 
-		       q != row.end (); q++)
-		    tmp1 (i++) = *q;
+                  int i = 0;
+                  for (tm_row_const::iterator q = row.begin ();
+                       q != row.end (); q++)
+                    tmp1 (i++) = *q;
 
-		  octave_value_list tmp2;
-		  octave_value fcn = 
-		    symbol_table::find_function ("horzcat", tmp1);
+                  octave_value_list tmp2;
+                  octave_value fcn =
+                    symbol_table::find_function ("horzcat", tmp1);
 
-		  if (fcn.is_defined ())
-		    {
-		      tmp2 = fcn.do_multi_index_op (1, tmp1);
-		      
-		      if (error_state)
-			goto done;
+                  if (fcn.is_defined ())
+                    {
+                      tmp2 = fcn.do_multi_index_op (1, tmp1);
 
-		      tmp3 (j++) = tmp2 (0);
-		    }
-		  else
-		    {
-		      ::error ("cat not find overloaded horzcat function");
-		      goto done;
-		    }
-		}
-	    }
+                      if (error_state)
+                        goto done;
 
-	  if (tmp.length () == 1)
-	    retval = tmp3 (0);
-	  else
-	    {
-	      octave_value_list tmp2;
-	      octave_value fcn = symbol_table::find_function ("vertcat", tmp3);
+                      tmp3 (j++) = tmp2 (0);
+                    }
+                  else
+                    {
+                      ::error ("cannot find overloaded horzcat function");
+                      goto done;
+                    }
+                }
+            }
 
-	      if (fcn.is_defined ())
-		{
-		  tmp2 = fcn.do_multi_index_op (1, tmp3);
-		      
-		  if (! error_state)
-		    retval = tmp2 (0);
-		}
-	      else
-		::error ("cat not find overloaded vertcat function");
-	    }
-	}
+          if (tmp.length () == 1)
+            retval = tmp3 (0);
+          else
+            {
+              octave_value_list tmp2;
+              octave_value fcn = symbol_table::find_function ("vertcat", tmp3);
+
+              if (fcn.is_defined ())
+                {
+                  tmp2 = fcn.do_multi_index_op (1, tmp3);
+
+                  if (! error_state)
+                    retval = tmp2 (0);
+                }
+              else
+                ::error ("cannot find overloaded vertcat function");
+            }
+        }
       else if (result_type == "double")
-	{
-	  if (any_sparse_p)
-	    {	    
-	      if (all_real_p)
-		DO_SINGLE_TYPE_CONCAT (SparseMatrix, sparse_matrix_value);
-	      else
-		DO_SINGLE_TYPE_CONCAT_NO_MUTATE (SparseComplexMatrix,
-						 sparse_complex_matrix_value,
-						 octave_sparse_complex_matrix);
-	    }
-	  else
-	    {
-	      if (all_real_p)
-		DO_SINGLE_TYPE_CONCAT (NDArray, array_value);
-	      else
-		DO_SINGLE_TYPE_CONCAT_NO_MUTATE (ComplexNDArray,
-						 complex_array_value,
-						 octave_complex_matrix);
-	    }
-	}
+        {
+          if (any_sparse_p)
+            {
+              if (all_real_p)
+                retval = do_single_type_concat<SparseMatrix> (dv, tmp);
+              else
+                retval = do_single_type_concat<SparseComplexMatrix> (dv, tmp);
+            }
+          else
+            {
+              if (all_real_p)
+                retval = do_single_type_concat<NDArray> (dv, tmp);
+              else
+                retval = do_single_type_concat<ComplexNDArray> (dv, tmp);
+            }
+        }
       else if (result_type == "single")
-	{
-	  if (all_real_p)
-	    DO_SINGLE_TYPE_CONCAT (FloatNDArray, float_array_value);
-	  else
-	    DO_SINGLE_TYPE_CONCAT_NO_MUTATE (FloatComplexNDArray,
-					     float_complex_array_value,
-					     octave_float_complex_matrix);
-	}
+        {
+          if (all_real_p)
+            retval = do_single_type_concat<FloatNDArray> (dv, tmp);
+          else
+            retval = do_single_type_concat<FloatComplexNDArray> (dv, tmp);
+        }
       else if (result_type == "char")
-	{
-	  char type = all_dq_strings_p ? '"' : '\'';
+        {
+          char type = all_dq_strings_p ? '"' : '\'';
 
-	  maybe_warn_string_concat (all_dq_strings_p, all_sq_strings_p);
+          maybe_warn_string_concat (all_dq_strings_p, all_sq_strings_p);
 
-	  charNDArray result (dv, Vstring_fill_char);
+          charNDArray result (dv, Vstring_fill_char);
 
-	  SINGLE_TYPE_CONCAT (charNDArray, char_array_value);
+          single_type_concat<charNDArray> (result, tmp);
 
-	  retval = octave_value (result, true, type);
-	}
+          retval = octave_value (result, type);
+        }
       else if (result_type == "logical")
-	{
-	  if (any_sparse_p)
-	    DO_SINGLE_TYPE_CONCAT (SparseBoolMatrix, sparse_bool_matrix_value);
-	  else
-	    DO_SINGLE_TYPE_CONCAT (boolNDArray, bool_array_value);
-	}
+        {
+          if (any_sparse_p)
+            retval = do_single_type_concat<SparseBoolMatrix> (dv, tmp);
+          else
+            retval = do_single_type_concat<boolNDArray> (dv, tmp);
+        }
       else if (result_type == "int8")
-	DO_SINGLE_TYPE_CONCAT (int8NDArray, int8_array_value);
+        retval = do_single_type_concat<int8NDArray> (dv, tmp);
       else if (result_type == "int16")
-	DO_SINGLE_TYPE_CONCAT (int16NDArray, int16_array_value);
+        retval = do_single_type_concat<int16NDArray> (dv, tmp);
       else if (result_type == "int32")
-	DO_SINGLE_TYPE_CONCAT (int32NDArray, int32_array_value);
+        retval = do_single_type_concat<int32NDArray> (dv, tmp);
       else if (result_type == "int64")
-	DO_SINGLE_TYPE_CONCAT (int64NDArray, int64_array_value);
+        retval = do_single_type_concat<int64NDArray> (dv, tmp);
       else if (result_type == "uint8")
-	DO_SINGLE_TYPE_CONCAT (uint8NDArray, uint8_array_value);
+        retval = do_single_type_concat<uint8NDArray> (dv, tmp);
       else if (result_type == "uint16")
-	DO_SINGLE_TYPE_CONCAT (uint16NDArray, uint16_array_value);
+        retval = do_single_type_concat<uint16NDArray> (dv, tmp);
       else if (result_type == "uint32")
-	DO_SINGLE_TYPE_CONCAT (uint32NDArray, uint32_array_value);
+        retval = do_single_type_concat<uint32NDArray> (dv, tmp);
       else if (result_type == "uint64")
-	DO_SINGLE_TYPE_CONCAT (uint64NDArray, uint64_array_value);
+        retval = do_single_type_concat<uint64NDArray> (dv, tmp);
+      else if (result_type == "cell")
+        retval = do_single_type_concat<Cell> (dv, tmp);
+      else if (result_type == "struct")
+        retval = do_single_type_concat<octave_map> (dv, tmp);
       else
-	{
-	  // The line below might seem crazy, since we take a copy of
-	  // the first argument, resize it to be empty and then resize
-	  // it to be full. This is done since it means that there is
-	  // no recopying of data, as would happen if we used a single
-	  // resize.  It should be noted that resize operation is also
-	  // significantly slower than the do_cat_op function, so it
-	  // makes sense to have an empty matrix and copy all data.
-	  //
-	  // We might also start with a empty octave_value using
-	  //
-	  //    ctmp = octave_value_typeinfo::lookup_type
-	  //          (tmp.begin() -> begin() -> type_name());
-	  //
-	  // and then directly resize. However, for some types there
-	  // might be some additional setup needed, and so this should
-	  // be avoided.
+        {
+          // The line below might seem crazy, since we take a copy of
+          // the first argument, resize it to be empty and then resize
+          // it to be full. This is done since it means that there is
+          // no recopying of data, as would happen if we used a single
+          // resize.  It should be noted that resize operation is also
+          // significantly slower than the do_cat_op function, so it
+          // makes sense to have an empty matrix and copy all data.
+          //
+          // We might also start with a empty octave_value using
+          //
+          //    ctmp = octave_value_typeinfo::lookup_type
+          //          (tmp.begin() -> begin() -> type_name());
+          //
+          // and then directly resize. However, for some types there
+          // might be some additional setup needed, and so this should
+          // be avoided.
 
-	  octave_value ctmp;
+          octave_value ctmp;
 
-	  // Find the first non-empty object
+          // Find the first non-empty object
 
-	  if (any_sparse_p)
-	    {
-	      // Start with sparse matrix to avoid issues memory issues
-	      // with things like [ones(1,4),sprandn(1e8,4,1e-4)]
-	      if (all_real_p)
-		ctmp = octave_sparse_matrix ().resize (dv); 
-	      else
-		ctmp = octave_sparse_complex_matrix ().resize (dv); 
-	    }
-	  else
-	    {
-	      for (tm_const::iterator p = tmp.begin (); p != tmp.end (); p++)
-		{
-		  OCTAVE_QUIT;
+          if (any_sparse_p)
+            {
+              // Start with sparse matrix to avoid issues memory issues
+              // with things like [ones(1,4),sprandn(1e8,4,1e-4)]
+              if (all_real_p)
+                ctmp = octave_sparse_matrix ().resize (dv);
+              else
+                ctmp = octave_sparse_complex_matrix ().resize (dv);
+            }
+          else
+            {
+              for (tm_const::iterator p = tmp.begin (); p != tmp.end (); p++)
+                {
+                  octave_quit ();
 
-		  tm_row_const row = *p;
+                  tm_row_const row = *p;
 
-		  for (tm_row_const::iterator q = row.begin (); 
-		       q != row.end (); q++)
-		    {
-		      OCTAVE_QUIT;
+                  for (tm_row_const::iterator q = row.begin ();
+                       q != row.end (); q++)
+                    {
+                      octave_quit ();
 
-		      ctmp = *q;
+                      ctmp = *q;
 
-		      if (! ctmp.all_zero_dims ())
-			goto found_non_empty;
-		    }
-		}
+                      if (! ctmp.all_zero_dims ())
+                        goto found_non_empty;
+                    }
+                }
 
-	      ctmp = (*(tmp.begin() -> begin()));
+              ctmp = (*(tmp.begin() -> begin()));
 
-	    found_non_empty:
+            found_non_empty:
 
-	      if (! all_empty_p)
-		ctmp = ctmp.resize (dim_vector (0,0)).resize (dv);
-	    }
+              if (! all_empty_p)
+                ctmp = ctmp.resize (dim_vector (0,0)).resize (dv);
+            }
 
-	  if (! error_state)
-	    {
-	      // Now, extract the values from the individual elements and
-	      // insert them in the result matrix.
+          if (! error_state)
+            {
+              // Now, extract the values from the individual elements and
+              // insert them in the result matrix.
 
-	      int dv_len = dv.length ();
-	      Array<octave_idx_type> ra_idx (dv_len > 1 ? dv_len : 2, 0);
+              int dv_len = dv.length ();
+              octave_idx_type ntmp = dv_len > 1 ? dv_len : 2;
+              Array<octave_idx_type> ra_idx (dim_vector (ntmp, 1), 0);
 
-	      for (tm_const::iterator p = tmp.begin (); p != tmp.end (); p++)
-		{
-		  OCTAVE_QUIT;
+              for (tm_const::iterator p = tmp.begin (); p != tmp.end (); p++)
+                {
+                  octave_quit ();
 
-		  tm_row_const row = *p;
+                  tm_row_const row = *p;
 
-		  for (tm_row_const::iterator q = row.begin ();
-		       q != row.end ();
-		       q++)
-		    {
-		      OCTAVE_QUIT;
+                  for (tm_row_const::iterator q = row.begin ();
+                       q != row.end ();
+                       q++)
+                    {
+                      octave_quit ();
 
-		      octave_value elt = *q;
+                      octave_value elt = *q;
 
-		      ctmp = do_cat_op (ctmp, elt, ra_idx);
+                      if (elt.is_empty ())
+                        continue;
 
-		      if (error_state)
-			goto done;
+                      ctmp = do_cat_op (ctmp, elt, ra_idx);
 
-		      ra_idx (1) += elt.columns ();
-		    }
+                      if (error_state)
+                        goto done;
 
-		  ra_idx (0) += row.rows ();
-		  ra_idx (1) = 0;
-		}
+                      ra_idx (1) += elt.columns ();
+                    }
 
-	      retval = ctmp;
+                  ra_idx (0) += row.rows ();
+                  ra_idx (1) = 0;
+                }
 
-	      if (frc_str_conv && ! retval.is_string ())
-		retval = retval.convert_to_str ();
-	    }
-	}
+              retval = ctmp;
+
+              if (frc_str_conv && ! retval.is_string ())
+                retval = retval.convert_to_str ();
+            }
+        }
     }
 
 done:
@@ -1053,7 +1103,7 @@ done:
 
 tree_expression *
 tree_matrix::dup (symbol_table::scope_id scope,
-		  symbol_table::context_id context) const
+                  symbol_table::context_id context) const
 {
   tree_matrix *new_matrix = new tree_matrix (0, line (), column ());
 
@@ -1077,11 +1127,11 @@ tree_matrix::accept (tree_walker& tw)
 
 DEFUN (string_fill_char, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {@var{val} =} string_fill_char ()\n\
+@deftypefn  {Built-in Function} {@var{val} =} string_fill_char ()\n\
 @deftypefnx {Built-in Function} {@var{old_val} =} string_fill_char (@var{new_val})\n\
 Query or set the internal variable used to pad all rows of a character\n\
 matrix to the same length.  It must be a single character.  The default\n\
-value is @code{\" \"} (a single space).  For example,\n\
+value is @code{\" \"} (a single space).  For example:\n\
 \n\
 @example\n\
 @group\n\
@@ -1096,9 +1146,3 @@ string_fill_char (\"X\");\n\
 {
   return SET_INTERNAL_VARIABLE (string_fill_char);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

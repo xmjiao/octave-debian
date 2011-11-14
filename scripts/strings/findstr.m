@@ -1,5 +1,4 @@
-## Copyright (C) 1996, 1999, 2000, 2002, 2003, 2005, 2006, 2007, 2008, 2009
-##               Kurt Hornik
+## Copyright (C) 1996-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -22,7 +21,7 @@
 ## Return the vector of all positions in the longer of the two strings
 ## @var{s} and @var{t} where an occurrence of the shorter of the two starts.
 ## If the optional argument @var{overlap} is nonzero, the returned vector
-## can include overlapping positions (this is the default).  For example,
+## can include overlapping positions (this is the default).  For example:
 ##
 ## @example
 ## @group
@@ -61,29 +60,29 @@ function v = findstr (s, t, overlap)
     s = t;
     t = tmp;
   endif
-  
+
   l_s = length (s);
   l_t = length (t);
-  
+
   if (l_t == 0)
     ## zero length target: return empty set
     v = [];
-    
+
   elseif (l_t == 1)
     ## length one target: simple find
     v = find (s == t);
-    
+
   elseif (l_t == 2)
     ## length two target: find first at i and second at i+1
     v = find (s(1:l_s-1) == t(1) & s(2:l_s) == t(2));
-    
+
   else
     ## length three or more: match the first three by find then go through
     ## the much smaller list to determine which of them are real matches
     limit = l_s - l_t + 1;
     v = find (s(1:limit) == t(1)
-	      & s(2:limit+1) == t(2)
-	      & s (3:limit+2) == t(3));
+              & s(2:limit+1) == t(2)
+              & s (3:limit+2) == t(3));
   endif
 
   ## Need to search the index vector if our find was too short
@@ -97,25 +96,25 @@ function v = findstr (s, t, overlap)
     if (all (size (s) != size (t)))
       t = t.';
     endif
-    
+
     ## determine which ones to keep
     keep = zeros (size (v));
     ind = 0:l_t-1;
     if (overlap)
       for idx = 1:length (v)
-	keep(idx) = all (s(v(idx) + ind) == t);
+        keep(idx) = all (s(v(idx) + ind) == t);
       endfor
     else
       ## First possible position for next non-overlapping match.
       next = 1;
       for idx = 1:length (v)
-	if (v(idx) >= next && s(v(idx) + ind) == t)
-	  keep(idx) = 1;
-	  ## Skip to the next possible match position.
-	  next = v(idx) + l_t;
-	else
-	  keep(idx) = 0;
-	endif
+        if (v(idx) >= next && s(v(idx) + ind) == t)
+          keep(idx) = 1;
+          ## Skip to the next possible match position.
+          next = v(idx) + l_t;
+        else
+          keep(idx) = 0;
+        endif
       endfor
     endif
     if (! isempty (v))
@@ -128,7 +127,7 @@ function v = findstr (s, t, overlap)
   endif
 
   ## Always return a column vector, because that's what the old one did.
-  if (rows (v) > 1) 
+  if (rows (v) > 1)
     v = v.';
   endif
 

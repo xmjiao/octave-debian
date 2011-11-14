@@ -1,4 +1,4 @@
-## Copyright (C) 2000, 2006, 2007, 2008, 2009 Paul Kienzle
+## Copyright (C) 2000-2011 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -17,11 +17,11 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} assert (@var{cond})
+## @deftypefn  {Function File} {} assert (@var{cond})
 ## @deftypefnx {Function File} {} assert (@var{cond}, @var{errmsg}, @dots{})
 ## @deftypefnx {Function File} {} assert (@var{cond}, @var{msg_id}, @var{errmsg}, @dots{})
-## @deftypefnx {Function File} {} assert (@var{observed},@var{expected})
-## @deftypefnx {Function File} {} assert (@var{observed},@var{expected},@var{tol})
+## @deftypefnx {Function File} {} assert (@var{observed}, @var{expected})
+## @deftypefnx {Function File} {} assert (@var{observed}, @var{expected}, @var{tol})
 ##
 ## Produces an error if the condition is not met.  @code{assert} can be
 ## called in three different ways.
@@ -36,19 +36,22 @@
 ## arguments are passed to the @code{error} function.
 ##
 ## @item assert (@var{observed}, @var{expected})
-## Produce an error if observed is not the same as expected.  Note that 
-## observed and expected can be strings, scalars, vectors, matrices, 
+## Produce an error if observed is not the same as expected.  Note that
+## observed and expected can be strings, scalars, vectors, matrices,
 ## lists or structures.
 ##
 ## @item assert(@var{observed}, @var{expected}, @var{tol})
-## Accept a tolerance when comparing numbers. 
-## If @var{tol} is positive use it as an absolute tolerance, will produce an error if
+## Accept a tolerance when comparing numbers.
+## If @var{tol} is positive use it as an absolute tolerance, will produce an
+## error if
 ## @code{abs(@var{observed} - @var{expected}) > abs(@var{tol})}.
-## If @var{tol} is negative use it as a relative tolerance, will produce an error if
-## @code{abs(@var{observed} - @var{expected}) > abs(@var{tol} * @var{expected})}.
-## If @var{expected} is zero @var{tol} will always be used as an absolute tolerance.
+## If @var{tol} is negative use it as a relative tolerance, will produce an
+## error if
+## @code{abs(@var{observed} - @var{expected}) > abs(@var{tol} *
+## @var{expected})}.  If @var{expected} is zero @var{tol} will always be used as
+## an absolute tolerance.
 ## @end table
-## @seealso{test}
+## @seealso{test, fail}
 ## @end deftypefn
 
 ## FIXME: Output throttling: don't print out the entire 100x100 matrix,
@@ -65,14 +68,14 @@ function assert (cond, varargin)
   in = cstrcat ("(", in, ")");
 
   if (nargin == 1 || (nargin > 1 && islogical (cond) && ischar (varargin{1})))
-    if (! isnumeric (cond) || ! all (cond(:)))
+    if ((! isnumeric (cond) && ! islogical (cond)) || ! all (cond(:)))
       if (nargin == 1)
-	## Say which elements failed?
-	error ("assert %s failed", in);
+        ## Say which elements failed?
+        error ("assert %s failed", in);
       else
-	error (varargin{:});
+        error (varargin{:});
       endif
-    endif  
+    endif
   else
     if (nargin < 2 || nargin > 3)
       print_usage ();
@@ -98,92 +101,116 @@ function assert (cond, varargin)
 
     elseif (iscell (expected))
       if (! iscell (cond) || any (size (cond) != size (expected)))
-	iserror = 1;
+        iserror = 1;
       else
-	try
-	  for i = 1:length (expected(:))
-	    assert (cond{i}, expected{i}, tol);
-	  endfor
-	catch
-	  iserror = 1;
-	end_try_catch
+        try
+          for i = 1:length (expected(:))
+            assert (cond{i}, expected{i}, tol);
+          endfor
+        catch
+          iserror = 1;
+        end_try_catch
       endif
 
     elseif (isstruct (expected))
       if (! isstruct (cond) || any (size (cond) != size (expected))
-	  || rows (fieldnames (cond)) != rows (fieldnames (expected)))
-	iserror = 1;
+          || rows (fieldnames (cond)) != rows (fieldnames (expected)))
+        iserror = 1;
       else
-	try
-	  empty = numel (cond) == 0;
-	  normal = numel (cond) == 1;
-	  for [v, k] = cond
-	    if (! isfield (expected, k))
-	      error ();
-	    endif
-	    if (empty)
-	      v = cell (1, 0);
-	    endif
-	    if (normal)
-	      v = {v};
-	    else
-	      v = v(:)';
-	    endif
-	    assert (v, {expected.(k)}, tol);
-	  endfor
-	catch
-	  iserror = 1;
-	end_try_catch
+        try
+          empty = numel (cond) == 0;
+          normal = numel (cond) == 1;
+          for [v, k] = cond
+            if (! isfield (expected, k))
+              error ();
+            endif
+            if (empty)
+              v = {};
+            elseif (normal)
+              v = {v};
+            else
+              v = v(:)';
+            endif
+            assert (v, {expected.(k)}, tol);
+          endfor
+        catch
+          iserror = 1;
+        end_try_catch
       endif
 
     elseif (ndims (cond) != ndims (expected)
-	    || any (size (cond) != size (expected)))
+            || any (size (cond) != size (expected)))
       iserror = 1;
       coda = "Dimensions don't match";
 
-    elseif (nargin < 3 && ! strcmp (typeinfo (cond), typeinfo (expected)))
-      iserror = 1;
-      coda = cstrcat ("Type ", typeinfo (cond), " != ", typeinfo (expected));
-
     else
-      ## Numeric.
-      A = cond(:);
-      B = expected(:);
-      ## Check exceptional values.
-      if (any (isna (A) != isna (B)))
-	iserror = 1;
-	coda = "NAs don't match";
-      elseif (any (isnan (A) != isnan (B)))
-	iserror = 1;
-	coda = "NaNs don't match";
-### Try to avoid problems comparing strange values like Inf+NaNi.
-      elseif (any (isinf (A) != isinf (B))
-	      || any (A(isinf (A) & ! isnan (A)) != B(isinf (B) & ! isnan (B))))
-	iserror = 1;
-	coda = "Infs don't match";
-      else
-	## Check normal values.
-	A = A(finite (A));
-	B = B(finite (B));
-	if (tol == 0)
-          err = any (A != B);
-	  errtype = "values do not match";
-	elseif (tol >= 0)
-	  err = max (abs (A - B));
-	  errtype = "maximum absolute error %g exceeds tolerance %g";
-	else 
-	  abserr = max (abs (A(B == 0)));
-	  A = A(B != 0);
-	  B = B(B != 0);
-	  relerr = max (abs (A - B) ./ abs (B));
-	  err = max ([abserr; relerr]);
-	  errtype = "maximum relative error %g exceeds tolerance %g";
-	endif
-	if (err > abs (tol))
-	  iserror = 1;
-	  coda = sprintf (errtype, err, abs (tol));
-	endif
+      if (nargin < 3)
+        ## Without explicit tolerance, be more strict.
+        if (! strcmp(class (cond), class (expected)))
+          iserror = 1;
+          coda = cstrcat ("Class ", class (cond), " != ", class (expected));
+        elseif (isnumeric (cond))
+          if (issparse (cond) != issparse (expected))
+            if (issparse (cond))
+              iserror = 1;
+              coda = "sparse != non-sparse";
+            else
+              iserror = 1;
+              coda = "non-sparse != sparse";
+            endif
+          elseif (iscomplex (cond) != iscomplex (expected))
+            if (iscomplex (cond))
+              iserror = 1;
+              coda = "complex != real";
+            else
+              iserror = 1;
+              coda = "real != complex";
+            endif
+          endif
+        endif
       endif
+
+      if (! iserror)
+        ## Numeric.
+        A = cond(:);
+        B = expected(:);
+        ## Check exceptional values.
+        if (any (isna (A) != isna (B)))
+          iserror = 1;
+          coda = "NAs don't match";
+        elseif (any (isnan (A) != isnan (B)))
+          iserror = 1;
+          coda = "NaNs don't match";
+          ## Try to avoid problems comparing strange values like Inf+NaNi.
+        elseif (any (isinf (A) != isinf (B))
+                || any (A(isinf (A) & ! isnan (A)) != B(isinf (B) & ! isnan (B))))
+          iserror = 1;
+          coda = "Infs don't match";
+        else
+          ## Check normal values.
+          A = A(finite (A));
+          B = B(finite (B));
+          if (tol == 0)
+            err = any (A != B);
+            errtype = "values do not match";
+          elseif (tol >= 0)
+            err = max (abs (A - B));
+            errtype = "maximum absolute error %g exceeds tolerance %g";
+          else
+            abserr = max (abs (A(B == 0)));
+            A = A(B != 0);
+            B = B(B != 0);
+            relerr = max (abs (A - B) ./ abs (B));
+            err = max ([abserr; relerr]);
+            errtype = "maximum relative error %g exceeds tolerance %g";
+          endif
+          if (err > abs (tol))
+            iserror = 1;
+            coda = sprintf (errtype, err, abs (tol));
+          endif
+        endif
+      endif
+
     endif
 
     if (! iserror)
@@ -257,9 +284,9 @@ endfunction
 %!error assert(3, 3+2*eps, eps);
 
 ## must give a little space for floating point errors on relative
-%!assert(100+100*eps, 100, -2*eps); 
+%!assert(100+100*eps, 100, -2*eps);
 %!assert(100, 100+100*eps, -2*eps);
-%!error assert(100+300*eps, 100, -2*eps); 
+%!error assert(100+300*eps, 100, -2*eps);
 %!error assert(100, 100+300*eps, -2*eps);
 %!error assert(3, [3,3]);
 %!error assert(3,4);
@@ -279,13 +306,19 @@ endfunction
 %!error assert (x,y)
 %!error assert (3, x);
 %!error assert (x, 3);
-
-## check usage statements
-%!error assert
-%!error assert(1,2,3,4,5)
+%!test
+%! # Empty structures
+%! x = resize (x, 0, 1);
+%! y = resize (y, 0, 1);
+%! assert (x, y);
 
 ## strings
 %!assert("dog","dog")
 %!error assert("dog","cat")
 %!error assert("dog",3);
 %!error assert(3,"dog");
+
+## check input validation
+%!error assert
+%!error assert (1,2,3,4,5)
+

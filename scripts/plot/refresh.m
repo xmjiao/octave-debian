@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 David Bateman
+## Copyright (C) 2008-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} refresh ()
+## @deftypefn  {Function File} {} refresh ()
 ## @deftypefnx {Function File} {} refresh (@var{h})
 ## Refresh a figure, forcing it to be redrawn.  Called without an
 ## argument the current figure is redrawn, otherwise the figure pointed
@@ -37,6 +37,6 @@ function refresh (h)
     h = gcf ();
   endif
 
-  set(h,"__modified__", "on")
+  set(h,"__modified__", "on");
   drawnow ();
 endfunction

@@ -1,4 +1,4 @@
-## Copyright (C) 2000, 2006, 2007, 2008, 2009 Paul Kienzle
+## Copyright (C) 2000-2011 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -17,21 +17,22 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {[@var{r}, @var{k}] =} rref (@var{a}, @var{tol})
-##
-## Returns the reduced row echelon form of @var{a}.  @var{tol} defaults
-## to @code{eps * max (size (@var{a})) * norm (@var{a}, inf)}.
+## @deftypefn  {Function File} {} rref (@var{A})
+## @deftypefnx {Function File} {} rref (@var{A}, @var{tol})
+## @deftypefnx {Function File} {[@var{r}, @var{k}] =} rref (@dots{})
+## Return the reduced row echelon form of @var{A}.  @var{tol} defaults
+## to @code{eps * max (size (@var{A})) * norm (@var{A}, inf)}.
 ##
 ## Called with two return arguments, @var{k} returns the vector of
-## "bound variables", which are those columns on which elimination 
+## "bound variables", which are those columns on which elimination
 ## has been performed.
 ##
 ## @end deftypefn
 
 ## Author: Paul Kienzle <pkienzle@users.sf.net>
-##         (based on a anonymous source from the public domain)
+##         (based on an anonymous source from the public domain)
 
-function [A, k] = rref (A, tolerance)
+function [A, k] = rref (A, tol)
 
   if (nargin < 1 || nargin > 2)
     print_usage ();
@@ -45,9 +46,9 @@ function [A, k] = rref (A, tolerance)
 
   if (nargin < 2)
     if (isa (A, "single"))
-      tolerance = eps ("single") * max (rows, cols) * norm (A, inf ("single"));
+      tol = eps ("single") * max (rows, cols) * norm (A, inf ("single"));
     else
-      tolerance = eps * max (rows, cols) * norm (A, inf);
+      tol = eps * max (rows, cols) * norm (A, inf);
     endif
   endif
 
@@ -58,7 +59,7 @@ function [A, k] = rref (A, tolerance)
     [m, pivot] = max (abs (A(r:rows,c)));
     pivot = r + pivot - 1;
 
-    if (m <= tolerance)
+    if (m <= tol)
       ## Skip column c, making sure the approximately zero terms are
       ## actually zero.
       A (r:rows, c) = zeros (rows-r+1, 1);
@@ -78,7 +79,7 @@ function [A, k] = rref (A, tolerance)
 
       ## Check if done
       if (r++ == rows)
-	break;
+        break;
       endif
     endif
   endfor

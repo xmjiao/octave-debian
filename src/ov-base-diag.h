@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008, 2009 Jaroslav Hajek
+Copyright (C) 2008-2011 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -47,14 +47,14 @@ octave_base_diag : public octave_base_value
 public:
 
   octave_base_diag (void)
-    : octave_base_value () { }
+    : octave_base_value (), matrix (), dense_cache () { }
 
   octave_base_diag (const DMT& m)
-    : octave_base_value (), matrix (m)
+    : octave_base_value (), matrix (m), dense_cache ()
   { }
 
   octave_base_diag (const octave_base_diag& m)
-    : octave_base_value (), matrix (m.matrix) { }
+    : octave_base_value (), matrix (m.matrix), dense_cache () { }
 
   ~octave_base_diag (void) { }
 
@@ -65,18 +65,18 @@ public:
   octave_value full_value (void) const { return to_dense (); }
 
   octave_value subsref (const std::string& type,
-			const std::list<octave_value_list>& idx);
+                        const std::list<octave_value_list>& idx);
 
   octave_value_list subsref (const std::string& type,
-			     const std::list<octave_value_list>& idx, int)
+                             const std::list<octave_value_list>& idx, int)
     { return subsref (type, idx); }
 
   octave_value do_index_op (const octave_value_list& idx,
-			    bool resize_ok = false);
+                            bool resize_ok = false);
 
   octave_value subsasgn (const std::string& type,
-			 const std::list<octave_value_list>& idx,
-			 const octave_value& rhs);
+                         const std::list<octave_value_list>& idx,
+                         const octave_value& rhs);
 
   dim_vector dims (void) const { return matrix.dims (); }
 
@@ -103,7 +103,7 @@ public:
   octave_value sort (octave_idx_type dim = 0, sortmode mode = ASCENDING) const
     { return to_dense ().sort (dim, mode); }
   octave_value sort (Array<octave_idx_type> &sidx, octave_idx_type dim = 0,
-		     sortmode mode = ASCENDING) const
+                     sortmode mode = ASCENDING) const
     { return to_dense ().sort (sidx, dim, mode); }
 
   sortmode is_sorted (sortmode mode = UNSORTED) const
@@ -149,14 +149,14 @@ public:
   FloatComplexMatrix float_complex_matrix_value (bool = false) const;
 
   ComplexNDArray complex_array_value (bool = false) const;
-   
+
   FloatComplexNDArray float_complex_array_value (bool = false) const;
-   
+
   boolNDArray bool_array_value (bool warn = false) const;
 
   charNDArray char_array_value (bool = false) const;
-  
-  NDArray array_value (bool = false) const; 
+
+  NDArray array_value (bool = false) const;
 
   FloatNDArray float_array_value (bool = false) const;
 
@@ -197,8 +197,8 @@ public:
   bool load_ascii (std::istream& is);
 
   int write (octave_stream& os, int block_size,
-	     oct_data_conv::data_type output_type, int skip,
-	     oct_mach_info::float_format flt_fmt) const;
+             oct_data_conv::data_type output_type, int skip,
+             oct_mach_info::float_format flt_fmt) const;
 
   mxArray *as_mxArray (void) const;
 
@@ -208,49 +208,13 @@ public:
 
   void print_info (std::ostream& os, const std::string& prefix) const;
 
-  // We forward everything except abs, real, imag, conj, sqrt.
-  octave_value erf (void) const;
-  octave_value erfc (void) const;
-  octave_value gamma (void) const;
-  octave_value lgamma (void) const;
-  octave_value acos (void) const;
-  octave_value acosh (void) const;
-  octave_value angle (void) const;
-  octave_value arg (void) const;
-  octave_value asin (void) const;
-  octave_value asinh (void) const;
-  octave_value atan (void) const;
-  octave_value atanh (void) const;
-  octave_value ceil (void) const;
-  octave_value cos (void) const;
-  octave_value cosh (void) const;
-  octave_value exp (void) const;
-  octave_value expm1 (void) const;
-  octave_value fix (void) const;
-  octave_value floor (void) const;
-  octave_value log (void) const;
-  octave_value log2 (void) const;
-  octave_value log10 (void) const;
-  octave_value log1p (void) const;
-  octave_value round (void) const;
-  octave_value roundb (void) const;
-  octave_value signum (void) const;
-  octave_value sin (void) const;
-  octave_value sinh (void) const;
-  octave_value tan (void) const;
-  octave_value tanh (void) const;
-  octave_value finite (void) const;
-  octave_value isinf (void) const;
-  octave_value isna (void) const;
-  octave_value isnan (void) const;
-
 protected:
 
   DMT matrix;
 
   octave_value to_dense (void) const;
 
-  virtual bool chk_valid_scalar (const octave_value&, 
+  virtual bool chk_valid_scalar (const octave_value&,
                                  typename DMT::element_type&) const = 0;
 
 private:

@@ -1,4 +1,4 @@
-## Copyright (C) 2007, 2008, 2009 David Bateman
+## Copyright (C) 2007-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -17,32 +17,33 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{entries} =} gzip (@var{files})
+## @deftypefn  {Function File} {@var{entries} =} gzip (@var{files})
 ## @deftypefnx {Function File} {@var{entries} =} gzip (@var{files}, @var{outdir})
 ## Compress the list of files and/or directories specified in @var{files}.
 ## Each file is compressed separately and a new file with a '.gz' extension
-## is created.  The original files are not touched.  Existing compressed
-## files are silently overwritten.  If @var{outdir} is defined the compressed 
-## versions of the files are placed in this directory.
+## is created.  The original files are not modified.  Existing compressed
+## files are silently overwritten.  If @var{outdir} is defined the compressed
+## files are placed in this directory.
 ## @seealso{gunzip, bzip2, zip, tar}
 ## @end deftypefn
 
 function entries = gzip (varargin)
-  if (nargin == 1 || nargin == 2) && (nargout <= 1)
-    if nargout == 0
-      __xzip__ ("gzip", "gz", "gzip -r %s", varargin{:});
-    else
-      entries = __xzip__ ("gzip", "gz", "gzip -r %s", varargin{:});
-    endif
-  else
+  if (nargin != 1 && nargin != 2) || (nargout > 1)
     print_usage ();
   endif
+     
+  if (nargout == 0)
+    __xzip__ ("gzip", "gz", "gzip -r %s", varargin{:});
+  else
+    entries = __xzip__ ("gzip", "gz", "gzip -r %s", varargin{:});
+  endif
+
 endfunction
 
 %!error <Invalid call to gzip.  Correct usage is> gzip("1", "2", "3");
 %!error <Invalid call to gzip.  Correct usage is> gzip();
 %!error <output directory does not exist> gzip("1", tmpnam);
-%!error <expecting FILES to be a character array> gzip(1);
+%!error <FILES must be a character array or cellstr> gzip(1);
 %!xtest
 %!  # test gzip together with gunzip
 %!  unwind_protect
@@ -58,7 +59,7 @@ endfunction
 %!    endif
 %!    if ! exist(entry, "file")
 %!      error("gzipped file cannot be found!");
-%!    endif 
+%!    endif
 %!    gunzip(entry);
 %!    if (system(sprintf("diff %s %s%c%s%s", filename, dirname, filesep,
 %!                                          basename, extension)))

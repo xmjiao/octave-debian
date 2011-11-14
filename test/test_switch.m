@@ -1,4 +1,4 @@
-## Copyright (C) 2006, 2007, 2009 John W. Eaton
+## Copyright (C) 2006-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -72,6 +72,17 @@
 %! endfor
 %! 
 %! assert(all (x == [0, 1, 0, 0]));
+
+%!test
+%! a = 1;
+%!
+%! switch 1
+%! otherwise
+%!   a = 2;
+%! endswitch
+%! 
+%! assert(a == 2);
+
 
 %% test/octave.test/switch/switch-4.m
 %!error <syntax error> eval("switch endswitch");

@@ -1,4 +1,4 @@
-@c Copyright (C) 1996, 1997, 2007, 2008, 2009 John W. Eaton
+@c Copyright (C) 1996-2011 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -48,7 +48,7 @@ a matrix meet a specified condition.
 
 Since the comparison operators (@pxref{Comparison Ops}) return matrices
 of ones and zeros, it is easy to test a matrix for many things, not just
-whether the elements are nonzero.  For example, 
+whether the elements are nonzero.  For example,
 
 @example
 @group
@@ -67,19 +67,22 @@ Note that in conditional contexts (like the test clause of @code{if} and
 
 @DOCSTRING(xor)
 
-@DOCSTRING(is_duplicate_entry)
-
 @DOCSTRING(diff)
 
 @DOCSTRING(isinf)
 
 @DOCSTRING(isnan)
 
-@DOCSTRING(finite)
+@DOCSTRING(isfinite)
+
+@DOCSTRING(common_size)
 
 @DOCSTRING(find)
         
-@DOCSTRING(common_size)
+@DOCSTRING(lookup)
+
+If you wish to check if a variable exists at all, instead of properties
+its elements may have, consult @ref{Status of Variables}.
 
 @node Rearranging Matrices
 @section Rearranging Matrices
@@ -110,9 +113,9 @@ Note that in conditional contexts (like the test clause of @code{if} and
 
 @DOCSTRING(circshift)
 
-@DOCSTRING(shiftdim)
-
 @DOCSTRING(shift)
+
+@DOCSTRING(shiftdim)
 
 @DOCSTRING(sort)
 
@@ -120,26 +123,7 @@ Note that in conditional contexts (like the test clause of @code{if} and
 
 @DOCSTRING(issorted)
 
-Since the @code{sort} function does not allow sort keys to be specified,
-it can't be used to order the rows of a matrix according to the values
-of the elements in various columns@footnote{For example, to first sort
-based on the values in column 1, and then, for any values that are
-repeated in column 1, sort based on the values found in column 2, etc.}
-in a single call.  Using the second output, however, it is possible to
-sort all rows based on the values in a given column.  Here's an example
-that sorts the rows of a matrix based on the values in the second
-column.
-
-@example
-@group
-a = [1, 2; 2, 3; 3, 1];
-[s, i] = sort (a (:, 2));
-a (i, :)
-     @result{}  3  1
-         1  2
-         2  3
-@end group
-@end example
+@DOCSTRING(nth_element)
 
 @anchor{doc-triu}
 @DOCSTRING(tril)
@@ -148,8 +132,9 @@ a (i, :)
 
 @DOCSTRING(vech)
 
-@anchor{doc-postpad}
 @DOCSTRING(prepad)
+
+@DOCSTRING(postpad)
 
 @DOCSTRING(diag)
 
@@ -173,7 +158,19 @@ a (i, :)
 
 @DOCSTRING(repmat)
 
+@DOCSTRING(repelems)
+
+The functions @code{linspace} and @code{logspace} make it very easy to
+create vectors with evenly or logarithmically spaced elements.
+@xref{Ranges}.
+
+@DOCSTRING(linspace)
+
+@DOCSTRING(logspace)
+
 @DOCSTRING(rand)
+
+@DOCSTRING(randi)
 
 @DOCSTRING(randn)
 
@@ -234,20 +231,12 @@ If invoked without arguments, @code{rand} and @code{randn} return a
 single element of a random sequence.
 
 The original @code{rand} and @code{randn} functions use Fortran code from
-@sc{Ranlib}, a library of fortran routines for random number generation,
+@sc{ranlib}, a library of Fortran routines for random number generation,
 compiled by Barry W. Brown and James Lovato of the Department of
 Biomathematics at The University of Texas, M.D. Anderson Cancer Center,
 Houston, TX 77030.
 
 @DOCSTRING(randperm)
-
-The functions @code{linspace} and @code{logspace} make it very easy to
-create vectors with evenly or logarithmically spaced elements.
-@xref{Ranges}.
-
-@DOCSTRING(linspace)
-
-@DOCSTRING(logspace)
 
 @node Famous Matrices
 @section Famous Matrices

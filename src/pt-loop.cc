@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2000, 2001, 2002, 2003, 2004, 2005,
-              2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -54,13 +53,13 @@ tree_while_command::~tree_while_command (void)
 
 tree_command *
 tree_while_command::dup (symbol_table::scope_id scope,
-			 symbol_table::context_id context) const
+                         symbol_table::context_id context) const
 {
   return new tree_while_command (expr ? expr->dup (scope, context) : 0,
-				 list ? list->dup (scope, context) : 0,
-				 lead_comm ? lead_comm->dup () : 0,
-				 trail_comm ? trail_comm->dup (): 0,
-				 line (), column ());
+                                 list ? list->dup (scope, context) : 0,
+                                 lead_comm ? lead_comm->dup () : 0,
+                                 trail_comm ? trail_comm->dup (): 0,
+                                 line (), column ());
 }
 
 void
@@ -73,13 +72,13 @@ tree_while_command::accept (tree_walker& tw)
 
 tree_command *
 tree_do_until_command::dup (symbol_table::scope_id scope,
-			    symbol_table::context_id context) const
+                            symbol_table::context_id context) const
 {
   return new tree_do_until_command (expr ? expr->dup (scope, context) : 0,
-				    list ? list->dup (scope, context) : 0,
-				    lead_comm ? lead_comm->dup () : 0,
-				    trail_comm ? trail_comm->dup (): 0,
-				    line (), column ());
+                                    list ? list->dup (scope, context) : 0,
+                                    lead_comm ? lead_comm->dup () : 0,
+                                    trail_comm ? trail_comm->dup (): 0,
+                                    line (), column ());
 }
 
 void
@@ -100,14 +99,14 @@ tree_simple_for_command::~tree_simple_for_command (void)
 
 tree_command *
 tree_simple_for_command::dup (symbol_table::scope_id scope,
-			      symbol_table::context_id context) const
+                              symbol_table::context_id context) const
 {
   return new tree_simple_for_command (lhs ? lhs->dup (scope, context) : 0,
-				      expr ? expr->dup (scope, context) : 0,
-				      list ? list->dup (scope, context) : 0,
-				      lead_comm ? lead_comm->dup () : 0,
-				      trail_comm ? trail_comm->dup () : 0,
-				      line (), column ());
+                                      expr ? expr->dup (scope, context) : 0,
+                                      list ? list->dup (scope, context) : 0,
+                                      lead_comm ? lead_comm->dup () : 0,
+                                      trail_comm ? trail_comm->dup () : 0,
+                                      line (), column ());
 }
 
 void
@@ -126,14 +125,14 @@ tree_complex_for_command::~tree_complex_for_command (void)
 
 tree_command *
 tree_complex_for_command::dup (symbol_table::scope_id scope,
-			       symbol_table::context_id context) const
+                               symbol_table::context_id context) const
 {
   return new tree_complex_for_command (lhs ? lhs->dup (scope, context) : 0,
-				       expr ? expr->dup (scope, context) : 0,
-				       list ? list->dup (scope, context) : 0,
-				       lead_comm ? lead_comm->dup () : 0,
-				       trail_comm ? trail_comm->dup () : 0,
-				       line (), column ());
+                                       expr ? expr->dup (scope, context) : 0,
+                                       list ? list->dup (scope, context) : 0,
+                                       lead_comm ? lead_comm->dup () : 0,
+                                       trail_comm ? trail_comm->dup () : 0,
+                                       line (), column ());
 }
 
 void
@@ -141,9 +140,3 @@ tree_complex_for_command::accept (tree_walker& tw)
 {
   tw.visit_complex_for_command (*this);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

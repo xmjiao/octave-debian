@@ -1,5 +1,4 @@
-## Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2004, 2005,
-##               2006, 2007, 2008 John W. Eaton
+## Copyright (C) 1994-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -19,7 +18,7 @@
 
 ## -*- texinfo -*-
 ## @deftypefn  {Function File} {[@var{x}, @var{map}] =} rgb2ind (@var{rgb})
-## @deftypefnx {Function File} {[@var{x}, @var{map}] =} rgb2ind (@var{r}, @var{g}, @var{b})
+## @deftypefnx {Function File} {[@var{x}, @var{map}] =} rgb2ind (@var{R}, @var{G}, @var{B})
 ## Convert an RGB image to an Octave indexed image.
 ## @seealso{ind2rgb, rgb2ntsc}
 ## @end deftypefn
@@ -30,12 +29,12 @@
 ## Created: July 1994
 ## Adapted-By: jwe
 
-function [X, map] = rgb2ind (R, G, B)
+function [x, map] = rgb2ind (R, G, B)
 
   if (nargin != 1 && nargin != 3)
     print_usage ();
   endif
-  
+
   if (nargin == 1)
     rgb = R;
     if (length (size (rgb)) == 3 && size (rgb, 3) == 3)
@@ -53,7 +52,7 @@ function [X, map] = rgb2ind (R, G, B)
 
   [hi, wi] = size (R);
 
-  X = zeros (hi, wi);
+  x = zeros (hi, wi);
 
   map = zeros (hi*wi, 3);
 
@@ -61,6 +60,6 @@ function [X, map] = rgb2ind (R, G, B)
   map(:,2) = G(:);
   map(:,3) = B(:);
 
-  X(:) = 1:(hi*wi);
+  x(:) = 1:(hi*wi);
 
 endfunction

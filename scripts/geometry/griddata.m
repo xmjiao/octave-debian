@@ -1,4 +1,4 @@
-## Copyright (C) 1999, 2000, 2007, 2008, 2009 Kai Habel
+## Copyright (C) 1999-2011 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -17,58 +17,69 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{zi} =} griddata (@var{x}, @var{y}, @var{z}, @var{xi}, @var{yi}, @var{method})
+## @deftypefn  {Function File} {@var{zi} =} griddata (@var{x}, @var{y}, @var{z}, @var{xi}, @var{yi}, @var{method})
 ## @deftypefnx {Function File} {[@var{xi}, @var{yi}, @var{zi}] =} griddata (@var{x}, @var{y}, @var{z}, @var{xi}, @var{yi}, @var{method})
-## 
+##
 ## Generate a regular mesh from irregular data using interpolation.
 ## The function is defined by @code{@var{z} = f (@var{x}, @var{y})}.
+## Inputs @code{@var{x}, @var{y}, @var{z}} are vectors of the same length
+## or @code{@var{x}, @var{y}} are vectors and @code{@var{z}} is matrix.
+##
 ## The interpolation points are all @code{(@var{xi}, @var{yi})}.  If
-## @var{xi}, @var{yi} are vectors then they are made into a 2D mesh.
+## @var{xi}, @var{yi} are vectors then they are made into a 2-D mesh.
 ##
 ## The interpolation method can be @code{"nearest"}, @code{"cubic"} or
 ## @code{"linear"}.  If method is omitted it defaults to @code{"linear"}.
 ## @seealso{delaunay}
 ## @end deftypefn
 
-## Author:	Kai Habel <kai.habel@gmx.de>
+## Author:      Kai Habel <kai.habel@gmx.de>
 ## Adapted-by:  Alexander Barth <barth.alexander@gmail.com>
-##              xi and yi are not "meshgridded" if both are vectors 
+##              xi and yi are not "meshgridded" if both are vectors
 ##              of the same size (for compatibility)
 
 function [rx, ry, rz] = griddata (x, y, z, xi, yi, method)
-	
+
   if (nargin == 5)
     method = "linear";
   endif
-  if (nargin < 5 || nargin > 7) 
+  if (nargin < 5 || nargin > 7)
     print_usage ();
   endif
 
   if (ischar (method))
     method = tolower (method);
   endif
-  if (! all (size (x) == size (y) & size (x) == size (z)))
-    error ("griddata: x, y, and z must be vectors of same length");
+
+  if (isvector (x) && isvector (y) && all ([numel(y), numel(x)] == size (z)))
+    [x, y] = meshgrid (x, y);
+  elseif (! all (size (x) == size (y) & size (x) == size (z)))
+    if (isvector (z))
+      error ("griddata: X, Y, and Z, be vectors of same length");
+    else
+      error ("griddata: lengths of X, Y must match the columns and rows of Z");
+    endif
   endif
-  
-  ## Meshgrid xi and yi if they are vectors unless they
-  ## are vectors of the same length.
-  if (isvector (xi) && isvector (yi) && numel (xi) != numel (yi))
+
+  ## Meshgrid xi and yi if they are a row and column vector.
+  if (rows (xi) == 1 && columns (yi) == 1)
     [xi, yi] = meshgrid (xi, yi);
   endif
 
-  if (any (size (xi) != size (yi)))
-    error ("griddata: xi and yi must be vectors or matrices of same size");
+  if (! size_equal (xi, yi))
+    error ("griddata: XI and YI must be vectors or matrices of same size");
   endif
 
   [nr, nc] = size (xi);
-  
-  x = x(:); y = y(:); z = z(:);
+
+  x = x(:);
+  y = y(:);
+  z = z(:);
 
   ## Triangulate data.
   tri = delaunay (x, y);
-  zi = nan (size (xi));
-  
+  zi = NaN (size (xi));
+
   if (strcmp (method, "cubic"))
     error ("griddata: cubic interpolation not yet implemented");
 
@@ -83,37 +94,39 @@ function [rx, ry, rz] = griddata (x, y, z, xi, yi, method)
     tri_list = tsearch (x, y, tri, xi(:), yi(:));
 
     ## Only keep the points within triangles.
-    valid = !isnan (reshape (tri_list, size (xi)));
-    tri_list = tri_list(!isnan (tri_list));
+    valid = !isnan (tri_list);
+    tri_list = tri_list(valid);
     nr_t = rows (tri_list);
 
+    tri = tri(tri_list,:);
+
     ## Assign x,y,z for each point of triangle.
-    x1 = x(tri(tri_list,1));
-    x2 = x(tri(tri_list,2));
-    x3 = x(tri(tri_list,3));
+    x1 = x(tri(:,1));
+    x2 = x(tri(:,2));
+    x3 = x(tri(:,3));
 
-    y1 = y(tri(tri_list,1));
-    y2 = y(tri(tri_list,2));
-    y3 = y(tri(tri_list,3));
+    y1 = y(tri(:,1));
+    y2 = y(tri(:,2));
+    y3 = y(tri(:,3));
 
-    z1 = z(tri(tri_list,1));
-    z2 = z(tri(tri_list,2));
-    z3 = z(tri(tri_list,3));
+    z1 = z(tri(:,1));
+    z2 = z(tri(:,2));
+    z3 = z(tri(:,3));
 
     ## Calculate norm vector.
     N = cross ([x2-x1, y2-y1, z2-z1], [x3-x1, y3-y1, z3-z1]);
-    N_norm = sqrt (sumsq (N, 2));
-    N = N ./ N_norm(:,[1,1,1]);
-    
+    ## Normalize.
+    N = diag (norm (N, "rows")) \ N;
+
     ## Calculate D of plane equation
     ## Ax+By+Cz+D = 0;
     D = -(N(:,1) .* x1 + N(:,2) .* y1 + N(:,3) .* z1);
-    
+
     ## Calculate zi by solving plane equation for xi, yi.
-    zi(valid) = -(N(:,1).*xi(valid) + N(:,2).*yi(valid) + D) ./ N(:,3);
-    
+    zi(valid) = -(N(:,1).*xi(:)(valid) + N(:,2).*yi(:)(valid) + D) ./ N(:,3);
+
   else
-    error ("griddata: unknown interpolation method");
+    error ("griddata: unknown interpolation METHOD");
   endif
 
   if (nargout == 3)

@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2003, 2004, 2005, 2006, 2007, 2008, 2009
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
+Copyright (C) 2009 VZLU Prague, a.s.
 
 This file is part of Octave.
 
@@ -73,81 +73,11 @@ extern void install_ops (void);
   octave_value_typeinfo::register_widening_op \
     (t1::static_type_id (), t2::static_type_id (), CONCAT2(oct_conv_, f));
 
-#define BOOL_OP1(xt, xn, get_x, yt, yn, get_y) \
-  xt xn = get_x; \
-  yt yn = get_y;
-
-#define BOOL_OP2(x) \
-  octave_idx_type nr = x.rows (); \
-  octave_idx_type nc = x.columns ();
-
-#define BOOL_OP3(test) \
-  boolMatrix retval (nr, nc); \
-  for (octave_idx_type j = 0; j < nc; j++) \
-    for (octave_idx_type i = 0; i < nr; i++) \
-      retval (i, j) = test; \
-  return retval;
-
-#define SC_MX_BOOL_OP(st, sn, get_s, mt, mn, get_m, test, empty_result) \
-  do \
-    { \
-      BOOL_OP1 (st, sn, get_s, mt, mn, get_m) \
-      BOOL_OP2 (mn) \
-      if (nr == 0 || nc == 0) \
-        return empty_result; \
-      BOOL_OP3 (test) \
-    } \
-  while (0)
-
-#define MX_SC_BOOL_OP(mt, mn, get_m, st, sn, get_s, test, empty_result) \
-  do \
-    { \
-      BOOL_OP1 (mt, mn, get_m, st, sn, get_s) \
-      BOOL_OP2 (mn) \
-      if (nr == 0 || nc == 0) \
-        return empty_result; \
-      BOOL_OP3 (test) \
-    } \
-  while (0)
-
-#define MX_MX_BOOL_OP(m1t, m1n, get_m1, m2t, m2n, get_m2, test, op, \
-		      one_empty_result, two_empty_result) \
-  do \
-    { \
-      BOOL_OP1 (m1t, m1n, get_m1, m2t, m2n, get_m2) \
-      octave_idx_type m1_nr = m1n.rows (); \
-      octave_idx_type m1_nc = m1n.cols (); \
-      octave_idx_type m2_nr = m2n.rows (); \
-      octave_idx_type m2_nc = m2n.cols (); \
-      if (m1_nr == m2_nr && m1_nc == m2_nc) \
-	{ \
-	  if (m1_nr == 0 && m1_nc == 0) \
-	    return two_empty_result; \
-	  else \
-	    { \
-	      BOOL_OP2 (m1n) \
-	      BOOL_OP3 (test) \
-	    } \
-	} \
-      else \
-	{ \
-	  if ((m1_nr == 0 && m1_nc == 0) || (m2_nr == 0 && m2_nc == 0)) \
-	    return one_empty_result; \
-	  else \
-	    { \
-	      gripe_nonconformant ("operator " op, m1_nr, m1_nc, \
-				   m2_nr, m2_nc); \
-	      return boolMatrix (); \
-	    } \
-	} \
-    } \
-  while (0)
-
 #define CAST_UNOP_ARG(t) \
   t v = dynamic_cast<t> (a)
 
 #define CAST_BINOP_ARGS(t1, t2) \
-  t1 v1 = dynamic_cast<t1> (a1);		\
+  t1 v1 = dynamic_cast<t1> (a1);                \
   t2 v2 = dynamic_cast<t2> (a2)
 
 #define CAST_CONV_ARG(t) \
@@ -156,20 +86,20 @@ extern void install_ops (void);
 #define ASSIGNOPDECL(name) \
   static octave_value \
   CONCAT2(oct_assignop_, name) (octave_base_value& a1, \
-			 const octave_value_list& idx, \
-			 const octave_base_value& a2)
+                         const octave_value_list& idx, \
+                         const octave_base_value& a2)
 
 #define NULLASSIGNOPDECL(name) \
   static octave_value \
   CONCAT2(oct_assignop_, name) (octave_base_value& a, \
-			 const octave_value_list& idx, \
-			 const octave_base_value&)
+                         const octave_value_list& idx, \
+                         const octave_base_value&)
 
 #define ASSIGNANYOPDECL(name) \
   static octave_value \
   CONCAT2(oct_assignop_, name) (octave_base_value& a1, \
-			 const octave_value_list& idx, \
-			 const octave_value& a2)
+                         const octave_value_list& idx, \
+                         const octave_value& a2)
 
 #define DEFASSIGNOP(name, t1, t2) \
   ASSIGNOPDECL (name)
@@ -198,6 +128,29 @@ extern void install_ops (void);
     CAST_BINOP_ARGS (CONCAT2(octave_, t1)&, const CONCAT2(octave_, t2)&); \
  \
     v1.f (idx, v2.CONCAT2(e, _value) ()); \
+    return octave_value (); \
+  }
+
+// FIXME: the following currently don't handle index.
+#define DEFNDASSIGNOP_OP(name, t1, t2, f, op) \
+  ASSIGNOPDECL (name) \
+  { \
+    CAST_BINOP_ARGS (CONCAT2(octave_, t1)&, const CONCAT2(octave_, t2)&); \
+ \
+    assert (idx.empty ()); \
+    v1.matrix_ref () op v2.CONCAT2(f, _value) (); \
+ \
+    return octave_value (); \
+  }
+
+#define DEFNDASSIGNOP_FNOP(name, t1, t2, f, fnop) \
+  ASSIGNOPDECL (name) \
+  { \
+    CAST_BINOP_ARGS (CONCAT2(octave_, t1)&, const CONCAT2(octave_, t2)&); \
+ \
+    assert (idx.empty ()); \
+    fnop (v1.matrix_ref (), v2.CONCAT2(f, _value) ()); \
+ \
     return octave_value (); \
   }
 
@@ -334,13 +287,22 @@ extern void install_ops (void);
       (v1.CONCAT2(t1, _value) () op v2.CONCAT2(t2, _value) ()); \
   }
 
+#define DEFCMPLXCMPOP_OP(name, t1, t2, op) \
+  BINOPDECL (name, a1, a2) \
+  { \
+    CAST_BINOP_ARGS (const CONCAT2(octave_, t1)&, const CONCAT2(octave_, t2)&); \
+    gripe_warn_complex_cmp (); \
+    return octave_value \
+      (v1.CONCAT2(t1, _value) () op v2.CONCAT2(t2, _value) ()); \
+  }
+
 #define DEFSCALARBOOLOP_OP(name, t1, t2, op) \
   BINOPDECL (name, a1, a2) \
   { \
     CAST_BINOP_ARGS (const CONCAT2(octave_, t1)&, const CONCAT2(octave_, t2)&); \
     if (xisnan (v1.CONCAT2(t1, _value) ()) || xisnan (v2.CONCAT2(t2, _value) ())) \
       { \
-        error ("invalid conversion from NaN to logical"); \
+        gripe_nan_to_logical_conversion (); \
         return octave_value (); \
       } \
     else \
@@ -372,21 +334,28 @@ extern void install_ops (void);
     return octave_value (f (v1.CONCAT2(e1, _value) (), v2.CONCAT2(e2, _value) ())); \
   }
 
+#define DEFNDCMPLXCMPOP_FN(name, t1, t2, e1, e2, f) \
+  BINOPDECL (name, a1, a2) \
+  { \
+    CAST_BINOP_ARGS (const CONCAT2(octave_, t1)&, const CONCAT2(octave_, t2)&); \
+    return octave_value (f (v1.CONCAT2(e1, _value) (), v2.CONCAT2(e2, _value) ())); \
+  }
+
 #define BINOP_NONCONFORMANT(msg) \
   gripe_nonconformant (msg, \
-		       a1.rows (), a1.columns (), \
-		       a2.rows (), a2.columns ()); \
+                       a1.rows (), a1.columns (), \
+                       a2.rows (), a2.columns ()); \
   return octave_value ()
 
-#define CATOPDECL(name, a1, a2)	\
+#define CATOPDECL(name, a1, a2) \
   static octave_value \
   CONCAT2(oct_catop_, name) (octave_base_value& a1, const octave_base_value& a2, \
-		      const Array<octave_idx_type>& ra_idx)
+                      const Array<octave_idx_type>& ra_idx)
 
-#define DEFCATOPX(name, t1, t2)	\
+#define DEFCATOPX(name, t1, t2) \
   CATOPDECL (name, , )
 
-#define DEFCATOP(name, t1, t2)	\
+#define DEFCATOP(name, t1, t2)  \
   CATOPDECL (name, a1, a2)
 
 // FIXME -- in some cases, the constructor isn't necessary.
@@ -411,8 +380,8 @@ extern void install_ops (void);
     CAST_BINOP_ARGS (CONCAT2(octave_, t1)&, const CONCAT2(octave_, t2)&); \
  \
     return octave_value (v1.char_array_value () . f (v2.char_array_value (), ra_idx), \
-			 true, ((a1.is_sq_string () || a2.is_sq_string ()) \
-				? '\'' : '"')); \
+                         ((a1.is_sq_string () || a2.is_sq_string ()) \
+                          ? '\'' : '"')); \
   }
 
 // For compatibility, the second arg is always converted to the type
@@ -427,14 +396,8 @@ extern void install_ops (void);
 
 #define CATOP_NONCONFORMANT(msg) \
   gripe_nonconformant (msg, \
-		       a1.rows (), a1.columns (), \
-		       a2.rows (), a2.columns ()); \
+                       a1.rows (), a1.columns (), \
+                       a2.rows (), a2.columns ()); \
   return octave_value ()
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2002, 2003, 2005, 2006, 2007
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -23,6 +22,8 @@ along with Octave; see the file COPYING.  If not, see
 
 #if !defined (octave_oct_alloc_h)
 #define octave_oct_alloc_h 1
+
+#include <cstddef>
 
 class
 OCTAVE_API
@@ -88,9 +89,3 @@ private:
   octave_allocator t::allocator (sizeof (t), s)
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

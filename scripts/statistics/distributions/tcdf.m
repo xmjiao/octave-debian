@@ -1,4 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 2005, 2006, 2007, 2008 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -20,7 +20,7 @@
 ## @deftypefn {Function File} {} tcdf (@var{x}, @var{n})
 ## For each element of @var{x}, compute the cumulative distribution
 ## function (CDF) at @var{x} of the t (Student) distribution with
-## @var{n} degrees of freedom, i.e., PROB (t(@var{n}) <= @var{x}).
+## @var{n} degrees of freedom, i.e., PROB (t(@var{n}) @leq{} @var{x}).
 ## @end deftypefn
 
 ## Author: KH <Kurt.Hornik@wu-wien.ac.at>
@@ -35,7 +35,7 @@ function cdf = tcdf (x, n)
   if (!isscalar (n))
     [retval, x, n] = common_size (x, n);
     if (retval > 0)
-      error ("tcdf: x and n must be of common size or scalar");
+      error ("tcdf: X and N must be of common size or scalar");
     endif
   endif
 

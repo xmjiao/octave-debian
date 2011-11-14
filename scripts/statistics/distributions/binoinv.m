@@ -1,4 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 2005, 2006, 2007 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -34,43 +34,43 @@ function inv = binoinv (x, n, p)
   if (!isscalar (n) || !isscalar (p))
     [retval, x, n, p] = common_size (x, n, p);
     if (retval > 0)
-      error ("binoinv: x, n and p must be of common size or scalars");
+      error ("binoinv: X, N and P must be of common size or scalars");
     endif
   endif
-  
+
   sz = size (x);
   inv = zeros (sz);
 
   k = find (!(x >= 0) | !(x <= 1) | !(n >= 0) | (n != round (n))
-	    | !(p >= 0) | !(p <= 1));
+            | !(p >= 0) | !(p <= 1));
   if (any (k))
     inv(k) = NaN;
   endif
 
   k = find ((x >= 0) & (x <= 1) & (n >= 0) & (n == round (n))
-	    & (p >= 0) & (p <= 1));
+            & (p >= 0) & (p <= 1));
   if (any (k))
     if (isscalar (n) && isscalar (p))
       cdf = binopdf (0, n, p) * ones (size(k));
       while (any (inv(k) < n))
-	m = find (cdf < x(k));
-	if (any (m))
+        m = find (cdf < x(k));
+        if (any (m))
           inv(k(m)) = inv(k(m)) + 1;
           cdf(m) = cdf(m) + binopdf (inv(k(m)), n, p);
-	else
+        else
           break;
-	endif
+        endif
       endwhile
-    else 
+    else
       cdf = binopdf (0, n(k), p(k));
       while (any (inv(k) < n(k)))
-	m = find (cdf < x(k));
-	if (any (m))
+        m = find (cdf < x(k));
+        if (any (m))
           inv(k(m)) = inv(k(m)) + 1;
           cdf(m) = cdf(m) + binopdf (inv(k(m)), n(k(m)), p(k(m)));
-	else
+        else
           break;
-	endif
+        endif
       endwhile
     endif
   endif

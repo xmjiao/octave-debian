@@ -1,4 +1,4 @@
-## Copyright (C) 2006, 2007, 2008, 2009 Kai Habel
+## Copyright (C) 2006-2011 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -17,12 +17,12 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} shading (@var{type})
+## @deftypefn  {Function File} {} shading (@var{type})
 ## @deftypefnx {Function File} {} shading (@var{ax}, @dots{})
 ## Set the shading of surface or patch graphic objects.  Valid arguments
 ## for @var{type} are
 ##
-## @table @code
+## @table @asis
 ## @item "flat"
 ## Single colored patches with invisible edges.
 ##
@@ -56,7 +56,7 @@ function shading (varargin)
   obj = [h1(:); h2(:)];
 
   for n = 1:numel(obj)
-    h = obj(n); 
+    h = obj(n);
     if (strcmpi (mode, "flat"))
       set (h, "facecolor", "flat");
       set (h, "edgecolor", "none");
@@ -67,7 +67,7 @@ function shading (varargin)
       set (h, "facecolor", "flat");
       set (h, "edgecolor", [0 0 0]);
     else
-      error ("unknown argument");
+      error ("shading: unknown argument");
     endif
   endfor
 
@@ -78,19 +78,19 @@ endfunction
 %! colormap (jet)
 %! sombrero
 %! shading faceted
-%! title('shading "faceted"')
+%! title("shading ""faceted""")
 
 %!demo
 %! sombrero
 %! shading interp
-%! title('shading "interp"')
+%! title("shading ""interp""")
 
 %!demo
 %! pcolor (peaks ())
 %! shading faceted
-%! title('shading "faceted"')
+%! title("shading ""faceted""")
 
 %!demo
 %! pcolor (peaks ())
 %! shading interp
-%! title('shading "interp"')
+%! title("shading ""interp""")

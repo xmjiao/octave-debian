@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2000, 2002, 2003, 2004, 2005,
-              2006, 2007, 2008 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
+Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
 
@@ -34,15 +34,24 @@ FloatColumnVector : public MArray<float>
 {
 public:
 
-  FloatColumnVector (void) : MArray<float> () { }
+  FloatColumnVector (void) : MArray<float> (dim_vector (0, 1)) { }
 
-  explicit FloatColumnVector (octave_idx_type n) : MArray<float> (n) { }
+  explicit FloatColumnVector (octave_idx_type n)
+    : MArray<float> (dim_vector (n, 1)) { }
 
-  FloatColumnVector (octave_idx_type n, float val) : MArray<float> (n, val) { }
+  explicit FloatColumnVector (const dim_vector& dv)
+    : MArray<float> (dv.as_column ()) { }
+
+  FloatColumnVector (octave_idx_type n, float val)
+    : MArray<float> (dim_vector (n, 1), val) { }
 
   FloatColumnVector (const FloatColumnVector& a) : MArray<float> (a) { }
 
-  FloatColumnVector (const MArray<float>& a) : MArray<float> (a) { }
+  FloatColumnVector (const MArray<float>& a)
+    : MArray<float> (a.as_column ()) { }
+
+  FloatColumnVector (const Array<float>& a)
+    : MArray<float> (a.as_column ()) { }
 
   FloatColumnVector& operator = (const FloatColumnVector& a)
     {
@@ -83,23 +92,25 @@ public:
 
   // other operations
 
-  typedef float (*dmapper) (float);
-  typedef FloatComplex (*cmapper) (const FloatComplex&);
-
-  FloatColumnVector map (dmapper fcn) const;
-  FloatComplexColumnVector map (cmapper fcn) const;
-
   float min (void) const;
   float max (void) const;
+
+  FloatColumnVector abs (void) const;
 
   // i/o
 
   friend OCTAVE_API std::ostream& operator << (std::ostream& os, const FloatColumnVector& a);
   friend OCTAVE_API std::istream& operator >> (std::istream& is, FloatColumnVector& a);
 
-private:
+  void resize (octave_idx_type n,
+               const float& rfv = Array<float>::resize_fill_value ())
+  {
+    Array<float>::resize (dim_vector (n, 1), rfv);
+  }
 
-  FloatColumnVector (float *d, octave_idx_type l) : MArray<float> (d, l) { }
+  void clear (octave_idx_type n)
+    { Array<float>::clear (n, 1); }
+
 };
 
 // Publish externally used friend functions.
@@ -110,9 +121,3 @@ extern OCTAVE_API FloatColumnVector imag (const FloatComplexColumnVector& a);
 MARRAY_FORWARD_DEFS (MArray, FloatColumnVector, float)
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

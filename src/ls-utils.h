@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2003, 2005, 2007 John W. Eaton
+Copyright (C) 2003-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -26,10 +26,7 @@ along with Octave; see the file COPYING.  If not, see
 extern save_type
 get_save_type (double max_val, double min_val);
 
-#endif
+extern save_type
+get_save_type (float max_val, float min_val);
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+#endif

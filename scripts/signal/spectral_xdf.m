@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 1999, 2000, 2002, 2003, 2005,
-##               2007, 2008 Friedrich Leisch
+## Copyright (C) 1995-2011 Friedrich Leisch
 ##
 ## This file is part of Octave.
 ##
@@ -32,12 +31,12 @@
 ## Author: FL <Friedrich.Leisch@ci.tuwien.ac.at>
 ## Description: Spectral density estimation
 
-function retval = spectral_xdf (X, win, b)
+function retval = spectral_xdf (x, win, b)
 
-  xr = length (X);
+  xr = length (x);
 
-  if (columns (X) > 1)
-    X = X';
+  if (columns (x) > 1)
+    x = x';
   endif
 
   if (nargin < 3)
@@ -51,20 +50,13 @@ function retval = spectral_xdf (X, win, b)
     w = feval (win, xr, b);
   endif
 
-  X = X - sum (X) / xr;
+  x = x - sum (x) / xr;
 
-  retval = (abs (fft (X)) / xr).^2;
+  retval = (abs (fft (x)) / xr).^2;
   retval = real (ifft (fft(retval) .* fft(w)));
 
   retval = [(zeros (xr, 1)), retval];
   retval(:, 1) = (0 : xr-1)' / xr;
 
 endfunction
-
-
-
-
-
-
-
 

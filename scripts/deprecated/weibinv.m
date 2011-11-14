@@ -1,4 +1,4 @@
-## Copyright (C) 2006, 2007, 2008 John W. Eaton
+## Copyright (C) 2006-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -24,6 +24,7 @@
 ## @end deftypefn
 
 ## Deprecated in version 3.0
+## Matlab still has this function, so don't remove just yet.
 
 function inv = weibinv (varargin)
 

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 2002-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -35,9 +35,8 @@ extern "C" {
 
 #if defined (__WIN32__) && ! defined (_POSIX_VERSION)
 
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
-#undef min
-#undef max
 
 CRUFT_API extern void w32_sigint_init (void);   /* setup */
 CRUFT_API extern void w32_raise_final (void);   /* tear down */
@@ -114,6 +113,20 @@ CRUFT_API extern void octave_throw_bad_alloc (void) GCC_ATTR_NORETURN;
 
 CRUFT_API extern void octave_rethrow_exception (void);
 
+#ifdef __cplusplus
+inline void octave_quit (void)
+{
+  if (octave_signal_caught)
+    {
+      octave_signal_caught = 0;
+      octave_handle_signal ();
+    }
+};
+
+#define OCTAVE_QUIT octave_quit ()
+
+#else
+
 #define OCTAVE_QUIT \
   do \
     { \
@@ -124,6 +137,7 @@ CRUFT_API extern void octave_rethrow_exception (void);
         } \
     } \
   while (0)
+#endif
 
 /* Normally, you just want to use
 
@@ -154,17 +168,17 @@ CRUFT_API extern void octave_rethrow_exception (void);
       octave_save_current_context (saved_context); \
  \
       if (octave_set_current_context) \
-	{ \
-	  octave_restore_current_context (saved_context)
+        { \
+          octave_restore_current_context (saved_context)
 
 #define BEGIN_INTERRUPT_IMMEDIATELY_IN_FOREIGN_CODE_2 \
-	} \
+        } \
       else \
-	{ \
-	  octave_interrupt_immediately++
+        { \
+          octave_interrupt_immediately++
 
 #define END_INTERRUPT_IMMEDIATELY_IN_FOREIGN_CODE \
-	  octave_interrupt_immediately--; \
+          octave_interrupt_immediately--; \
           octave_restore_current_context (saved_context); \
         } \
     } \
@@ -215,9 +229,3 @@ extern CRUFT_API void (*octave_bad_alloc_hook) (void);
 #endif
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

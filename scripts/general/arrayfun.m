@@ -1,4 +1,5 @@
-## Copyright (C) 2006, 2007, 2008, 2009 Bill Denney
+## Copyright (C) 2006-2011 Bill Denney
+## Copyright (C) 2009 Jaroslav Hajek
 ##
 ## This file is part of Octave.
 ##
@@ -17,10 +18,10 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {} arrayfun (@var{func}, @var{a})
-## @deftypefnx {Function File} {@var{x} =} arrayfun (@var{func}, @var{a})
-## @deftypefnx {Function File} {@var{x} =} arrayfun (@var{func}, @var{a}, @var{b}, @dots{})
-## @deftypefnx {Function File} {[@var{x}, @var{y}, @dots{}] =} arrayfun (@var{func}, @var{a}, @dots{})
+## @deftypefn  {Function File} {} arrayfun (@var{func}, @var{A})
+## @deftypefnx {Function File} {@var{x} =} arrayfun (@var{func}, @var{A})
+## @deftypefnx {Function File} {@var{x} =} arrayfun (@var{func}, @var{A}, @var{b}, @dots{})
+## @deftypefnx {Function File} {[@var{x}, @var{y}, @dots{}] =} arrayfun (@var{func}, @var{A}, @dots{})
 ## @deftypefnx {Function File} {} arrayfun (@dots{}, "UniformOutput", @var{val})
 ## @deftypefnx {Function File} {} arrayfun (@dots{}, "ErrorHandler", @var{errfunc})
 ##
@@ -29,17 +30,17 @@
 ## accept array arguments it is better to call the function directly.
 ##
 ## The first input argument @var{func} can be a string, a function
-## handle, an inline function or an anonymous function.  The input
-## argument @var{a} can be a logic array, a numeric array, a string
-## array, a structure array or a cell array.  By a call of the function
-## @command{arrayfun} all elements of @var{a} are passed on to the named
+## handle, an inline function, or an anonymous function.  The input
+## argument @var{A} can be a logic array, a numeric array, a string
+## array, a structure array, or a cell array.  By a call of the function
+## @command{arrayfun} all elements of @var{A} are passed on to the named
 ## function @var{func} individually.
-## 
+##
 ## The named function can also take more than two input arguments, with
 ## the input arguments given as third input argument @var{b}, fourth
 ## input argument @var{c}, @dots{}  If given more than one array input
 ## argument then all input arguments must have the same sizes, for
-## example
+## example:
 ##
 ## @example
 ## @group
@@ -53,7 +54,7 @@
 ## function @var{func} must return a single element which then will be
 ## concatenated into the return value and is of type matrix.  Otherwise,
 ## if that parameter is set to @code{false}, then the outputs are
-## concatenated in a cell array.  For example
+## concatenated in a cell array.  For example:
 ##
 ## @example
 ## @group
@@ -69,7 +70,7 @@
 ##
 ## If more than one output arguments are given then the named function
 ## must return the number of return values that also are expected, for
-## example
+## example:
 ##
 ## @example
 ## @group
@@ -95,7 +96,7 @@
 ##
 ## If the parameter @var{errfunc} after a further string input argument
 ## "ErrorHandler" is another string, a function handle, an inline
-## function or an anonymous function, then @var{errfunc} defines a
+## function, or an anonymous function, then @var{errfunc} defines a
 ## function to call in the case that @var{func} generates an error.
 ## The definition of the function must be of the form
 ##
@@ -103,14 +104,15 @@
 ## function [@dots{}] = errfunc (@var{s}, @dots{})
 ## @end example
 ##
+## @noindent
 ## where there is an additional input argument to @var{errfunc}
 ## relative to @var{func}, given by @var{s}.  This is a structure with
-## the elements "identifier", "message" and "index", giving
-## respectively the error identifier, the error message and the index of
+## the elements "identifier", "message", and "index" giving,
+## respectively, the error identifier, the error message, and the index of
 ## the array elements that caused the error.  The size of the output
 ## argument of @var{errfunc} must have the same size as the output
 ## argument of @var{func}, otherwise a real error is thrown.  For
-## example
+## example:
 ##
 ## @example
 ## @group
@@ -124,10 +126,11 @@
 ## @end group
 ## @end example
 ##
-## @seealso{cellfun, spfun, structfun}
+## @seealso{spfun, cellfun, structfun}
 ## @end deftypefn
 
 ## Author: Bill Denney <denney@seas.upenn.edu>
+## Rewritten: Jaroslav Hajek <highegg@gmail.com>
 
 function varargout = arrayfun (func, varargin)
 
@@ -135,40 +138,31 @@ function varargout = arrayfun (func, varargin)
     print_usage ();
   endif
 
-  ## Convert everything to cells and call cellfun (let cellfun error
-  ## check the options in case more options come available).
-  sizetomatch = size (varargin{1});
-  m2cargs{1} = ones (size (varargin{1}, 1), 1);
-  m2cargs{2} = ones (size (varargin{1}, 2), 1);
-  cfarg{1} = mat2cell (varargin{1}, m2cargs{:});
-  stillmatches = true;
-  idx = 1;
-  len = length (varargin);
-  while (stillmatches && idx < len)
-    idx++;
-    thissize = size (varargin{idx});
-    if (numel (thissize) == numel (sizetomatch)
-        && all (thissize == sizetomatch))
-      if (ischar (varargin{idx})
-          && (strcmpi (varargin{idx}, "UniformOutput")
-              || strcmpi (varargin{idx}, "ErrorHandler")))
-        ## Catch these strings just in case they happen to be the same
-        ## size as the other input.
-        stillmatches = false;
-      else
-        cfarg{idx} = mat2cell (varargin{idx}, m2cargs{:});
-      endif
+  nargs = length (varargin);
+
+  recognized_opts = {"UniformOutput", "ErrorHandler"};
+
+  while (nargs >= 2)
+    maybeopt = varargin{nargs-1};
+    if (ischar (maybeopt) && any (strcmpi (maybeopt, recognized_opts)))
+      nargs -= 2;
     else
-      stillmatches = false;
+      break;
     endif
   endwhile
 
-  varargout = cell (max ([nargout, 1]), 1);
-  if (idx >= len)
-    [varargout{:}] = cellfun (func, cfarg{:});
-  else
-    [varargout{:}] = cellfun (func, cfarg{:}, varargin{idx:len});
-  endif
+  args = varargin(1:nargs);
+  opts = varargin(nargs+1:end);
+
+  args = cellfun (@num2cell, args, "UniformOutput", false,
+  "ErrorHandler",  @arg_class_error);
+
+  [varargout{1:max(1, nargout)}] = cellfun (func, args{:}, opts{:});
+
+endfunction
+
+function arg_class_error (S, X)
+  error ("arrayfun: invalid argument of class %s", class (X));
 endfunction
 
 %% Test function to check the "Errorhandler" option
@@ -246,7 +240,7 @@ endfunction
 
 %% Input arguments can be of type numeric
 %!test
-%!  A = arrayfun (@(x,y) x>y, [1.1, 4.2], [3.1, 2+6*i]);
+%!  A = arrayfun (@(x,y) x>y, [1.1, 4.2], [3.1, 2+3*i]);
 %!  assert (A, [false, true]);
 %!test
 %!  A = arrayfun (@(x,y) x>y, [1.1, 4.2; 2, 4], [3.1, 2; 2, 4+2*i], "UniformOutput", true);

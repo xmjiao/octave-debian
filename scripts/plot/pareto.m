@@ -1,4 +1,4 @@
-## Copyright (C) 2007, 2008, 2009 David Bateman
+## Copyright (C) 2007-2011 David Bateman
 ## Copyright (C) 2003 Alberto Terruzzi
 ##
 ## This file is part of Octave.
@@ -18,22 +18,22 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} pareto (@var{x})
+## @deftypefn  {Function File} {} pareto (@var{x})
 ## @deftypefnx {Function File} {} pareto (@var{x}, @var{y})
 ## @deftypefnx {Function File} {} pareto (@var{h}, @dots{})
 ## @deftypefnx {Function File} {@var{h} =} pareto (@dots{})
-## Draw a Pareto chart, also called ABC chart.  A Pareto chart is a bar graph 
-## used to arrange information in such a way that priorities for process 
-## improvement can be established.  It organizes and displays information 
-## to show the relative importance of data.  The chart is similar to the 
-## histogram or bar chart, except that the bars are arranged in decreasing 
+## Draw a Pareto chart, also called ABC chart.  A Pareto chart is a bar graph
+## used to arrange information in such a way that priorities for process
+## improvement can be established.  It organizes and displays information
+## to show the relative importance of data.  The chart is similar to the
+## histogram or bar chart, except that the bars are arranged in decreasing
 ## order from left to right along the abscissa.
-## 
-## The fundamental idea (Pareto principle) behind the use of Pareto 
+##
+## The fundamental idea (Pareto principle) behind the use of Pareto
 ## diagrams is that the majority of an effect is due to a small subset of the
-## causes, so for quality improvement the first few (as presented on the 
-## diagram) contributing causes to a problem usually account for the majority 
-## of the result.  Thus, targeting these "major causes" for elimination 
+## causes, so for quality improvement the first few (as presented on the
+## diagram) contributing causes to a problem usually account for the majority
+## of the result.  Thus, targeting these "major causes" for elimination
 ## results in the most cost-effective improvement scheme.
 ##
 ## The data are passed as @var{x} and the abscissa as @var{y}.  If @var{y} is
@@ -64,14 +64,14 @@ function h = pareto (varargin)
     y = varargin {2}(:).';
     if (! iscell (y))
       if (ischar (y))
-	y = cellstr (y);
+        y = cellstr (y);
       else
-	y = cellfun (@(x) num2str (x), num2cell (y), "UniformOutput", false);
+        y = cellfun (@num2str, num2cell (y), "uniformoutput", false);
       endif
     endif
   else
-    y = cellfun (@(x) int2str (x), num2cell (1 : numel(x)), 
-		 "UniformOutput", false);
+    y = cellfun (@int2str, num2cell (1 : numel(x)),
+                 "uniformoutput", false);
   endif
 
   [x, idx] = sort (x, "descend");
@@ -82,13 +82,13 @@ function h = pareto (varargin)
   cdf95 = cdf - 0.95;
   idx95 = find(sign(cdf95(1:end-1)) != sign(cdf95(2:end)))(1);
 
-  [ax, hbar, hline] = plotyy (1 : idx95, x (1 : idx95), 
-			      1 : length(cdf), 100 .* cdf, 
-			      @bar, @plot);
+  [ax, hbar, hline] = plotyy (1 : idx95, x (1 : idx95),
+                              1 : length(cdf), 100 .* cdf,
+                              @bar, @plot);
 
   axis (ax(1), [1 - 0.6, idx95 + 0.6, 0, maxcdf]);
   axis (ax(2), [1 - 0.6, idx95 + 0.6, 0, 100]);
-  set (ax(2), "ytick", [0, 20, 40, 60, 80, 100], 
+  set (ax(2), "ytick", [0, 20, 40, 60, 80, 100],
        "yticklabel", {"0%", "20%", "40%", "60%", "80%", "100%"});
   set (ax(1), "xtick", 1 : idx95, "xticklabel", y (1: idx95));
   set (ax(2), "xtick", 1 : idx95, "xticklabel", y (1: idx95));
@@ -96,7 +96,7 @@ function h = pareto (varargin)
   if (nargout > 0)
     h = [hbar; hline];
   endif
-  
+
 endfunction
 
 %!demo

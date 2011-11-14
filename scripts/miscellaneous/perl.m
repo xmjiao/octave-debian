@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 Julian Schnidder
+## Copyright (C) 2008-2011 Julian Schnidder
 ##
 ## This file is part of Octave.
 ##
@@ -17,26 +17,26 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {[@var{output}, @var{status}] =} perl (@var{scriptfile})
+## @deftypefn  {Function File} {[@var{output}, @var{status}] =} perl (@var{scriptfile})
 ## @deftypefnx {Function File} {[@var{output}, @var{status}] =} perl (@var{scriptfile}, @var{argument1}, @var{argument2}, @dots{})
-## Invoke perl script @var{scriptfile} with possibly a list of
+## Invoke Perl script @var{scriptfile} with possibly a list of
 ## command line arguments.
 ## Returns output in @var{output} and status
 ## in @var{status}.
 ## @seealso{system}
 ## @end deftypefn
 
-function [output, status] = perl (script = "-e ''", varargin)
+function [output, status] = perl (scriptfile = "-e ''", varargin)
 
   ## VARARGIN is intialized to {}(1x0) if no additional arguments are
   ## supplied, so there is no need to check for it, or provide an
   ## initial value in the argument list of the function definition.
 
-  if (ischar (script)
+  if (ischar (scriptfile)
       && ((nargin != 1 && iscellstr (varargin))
-	  || (nargin == 1 && ! isempty (script))))
-    [status, output] = system (cstrcat ("perl ", script,
-					sprintf (" %s", varargin{:})));
+          || (nargin == 1 && ! isempty (scriptfile))))
+    [status, output] = system (cstrcat ("perl ", scriptfile,
+                                        sprintf (" %s", varargin{:})));
   else
     error ("perl: invalid arguments");
   endif

@@ -1,4 +1,4 @@
-## Copyright (C) 2008 Bill Denney
+## Copyright (C) 2008-2011 Bill Denney
 ## Copyright (C) 2008 Jaroslav Hajek
 ## Copyright (C) 2009 VZLU Prague
 ##
@@ -19,43 +19,48 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{x} =} lsqnonneg (@var{c}, @var{d})
+## @deftypefn  {Function File} {@var{x} =} lsqnonneg (@var{c}, @var{d})
 ## @deftypefnx {Function File} {@var{x} =} lsqnonneg (@var{c}, @var{d}, @var{x0})
 ## @deftypefnx {Function File} {[@var{x}, @var{resnorm}] =} lsqnonneg (@dots{})
 ## @deftypefnx {Function File} {[@var{x}, @var{resnorm}, @var{residual}] =} lsqnonneg (@dots{})
 ## @deftypefnx {Function File} {[@var{x}, @var{resnorm}, @var{residual}, @var{exitflag}] =} lsqnonneg (@dots{})
 ## @deftypefnx {Function File} {[@var{x}, @var{resnorm}, @var{residual}, @var{exitflag}, @var{output}] =} lsqnonneg (@dots{})
 ## @deftypefnx {Function File} {[@var{x}, @var{resnorm}, @var{residual}, @var{exitflag}, @var{output}, @var{lambda}] =} lsqnonneg (@dots{})
-## Minimize @code{norm (@var{c}*@var{x}-d)} subject to @code{@var{x} >=
-## 0}.  @var{c} and @var{d} must be real.  @var{x0} is an optional
-## initial guess for @var{x}.
+## Minimize @code{norm (@var{c}*@var{x} - d)} subject to
+## @code{@var{x} >= 0}.  @var{c} and @var{d} must be real.  @var{x0} is an
+## optional initial guess for @var{x}.
 ##
 ## Outputs:
 ## @itemize @bullet
 ## @item resnorm
 ##
 ## The squared 2-norm of the residual: norm(@var{c}*@var{x}-@var{d})^2
+##
 ## @item residual
 ##
 ## The residual: @var{d}-@var{c}*@var{x}
+##
 ## @item exitflag
 ##
 ## An indicator of convergence.  0 indicates that the iteration count
 ## was exceeded, and therefore convergence was not reached; >0 indicates
 ## that the algorithm converged.  (The algorithm is stable and will
 ## converge given enough iterations.)
+##
 ## @item output
 ##
 ## A structure with two fields:
 ## @itemize @bullet
 ## @item "algorithm": The algorithm used ("nnls")
+##
 ## @item "iterations": The number of iterations taken.
 ## @end itemize
+##
 ## @item lambda
 ##
 ## Not implemented.
 ## @end itemize
-## @seealso{optimset}
+## @seealso{optimset, pqpnonneg}
 ## @end deftypefn
 
 ## PKG_ADD: __all_opts__ ("lsqnonneg");
@@ -111,7 +116,7 @@ function [x, resnorm, residual, exitflag, output, lambda] = lsqnonneg (c, d, x =
       endif
       idx = find (xtmp < 0);
 
-      if (isempty (idx)) 
+      if (isempty (idx))
         ## LH7: tmp solution found, iterate.
         x(:) = 0;
         x(p) = xtmp;
@@ -135,7 +140,7 @@ function [x, resnorm, residual, exitflag, output, lambda] = lsqnonneg (c, d, x =
         endif
       endif
     endwhile
-      
+
     ## compute the gradient.
     w = c'*(d - c*x);
     w(p) = [];
@@ -155,7 +160,7 @@ function [x, resnorm, residual, exitflag, output, lambda] = lsqnonneg (c, d, x =
     idx = find (w == max (w));
     if (numel (idx) > 1)
       warning ("lsqnonneg:nonunique",
-               "A non-unique solution may be returned due to equal gradients.");
+               "a non-unique solution may be returned due to equal gradients");
       idx = idx(1);
     endif
     ## move the index from Z to P. Keep P sorted.

@@ -1,6 +1,7 @@
 /*
 
-Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 2003-2011 John W. Eaton
+Copyright (C) 2009 VZLU Prague
 
 This file is part of Octave.
 
@@ -27,10 +28,11 @@ along with Octave; see the file COPYING.  If not, see
 #include "Array-util.h"
 #include "dim-vector.h"
 #include "lo-error.h"
+#include "oct-locbuf.h"
 
 bool
 index_in_bounds (const Array<octave_idx_type>& ra_idx,
-		 const dim_vector& dimensions)
+                 const dim_vector& dimensions)
 {
   bool retval = true;
 
@@ -39,13 +41,13 @@ index_in_bounds (const Array<octave_idx_type>& ra_idx,
   if (n == dimensions.length ())
     {
       for (int i = 0; i < n; i++)
-	{
-	  if (ra_idx(i) < 0 || ra_idx(i) >= dimensions(i))
-	    {
-	      retval = false;
-	      break;
-	    }
-	}
+        {
+          if (ra_idx(i) < 0 || ra_idx(i) >= dimensions(i))
+            {
+              retval = false;
+              break;
+            }
+        }
     }
   else
     retval = false;
@@ -55,7 +57,7 @@ index_in_bounds (const Array<octave_idx_type>& ra_idx,
 
 void
 increment_index (Array<octave_idx_type>& ra_idx, const dim_vector& dimensions,
-		 int start_dimension)
+                 int start_dimension)
 {
   ra_idx(start_dimension)++;
 
@@ -65,12 +67,12 @@ increment_index (Array<octave_idx_type>& ra_idx, const dim_vector& dimensions,
   for (int i = start_dimension; i < n; i++)
     {
       if (ra_idx(i) < (i < nda ? dimensions(i) : 1))
- 	break;
+        break;
       else
- 	{
- 	  ra_idx(i) = 0;
- 	  ra_idx(i+1)++;
- 	}
+        {
+          ra_idx(i) = 0;
+          ra_idx(i+1)++;
+        }
     }
 }
 
@@ -86,11 +88,11 @@ get_scalar_idx (Array<octave_idx_type>& idx, dim_vector& dims)
       retval = idx(--n);
 
       while (--n >= 0)
-	{      		
-	  retval *= dims (n);
-	
-	  retval += idx(n);
-	}
+        {
+          retval *= dims (n);
+
+          retval += idx(n);
+        }
     }
   return retval;
 }
@@ -103,7 +105,7 @@ num_ones (const Array<octave_idx_type>& ra_idx)
   for (octave_idx_type i = 0; i < ra_idx.length (); i++)
     {
       if (ra_idx (i) == 1)
-	retval++;
+        retval++;
     }
 
   return retval;
@@ -123,14 +125,14 @@ is_scalar (const dim_vector& dim)
   else
     {
       for (int i = 0; i < n; i ++)
-	{
-	  if (dim (i) != 1)
-	    {
-	      retval = false;
-	
-	      break;
-	    }
-	}
+        {
+          if (dim (i) != 1)
+            {
+              retval = false;
+
+              break;
+            }
+        }
     }
   return retval;
 }
@@ -146,10 +148,10 @@ is_vector (const dim_vector& dim)
   else
     {
       for (int i = 0; i < n; i ++)
-	if (dim (i) > 1)
-	  m++;
-	else if (dim(i) < 1)
-	  m += 2;
+        if (dim (i) > 1)
+          m++;
+        else if (dim(i) < 1)
+          m += 2;
     }
 
   return (m < 2);
@@ -163,44 +165,75 @@ any_ones (const Array<octave_idx_type>& arr)
   for (octave_idx_type i = 0; i < arr.length (); i++)
     {
       if (arr (i) == 1)
-	{
-	  retval = true;
-	
-	  break;
-	}
+        {
+          retval = true;
+
+          break;
+        }
     }
   return retval;
 }
 
 octave_idx_type
+compute_index (octave_idx_type n, const dim_vector& dims)
+{
+  if (n < 0)
+    gripe_invalid_index ();
+  if (n >= dims.numel ())
+    gripe_index_out_of_range (1, 1, n+1, dims.numel ());
+
+  return n;
+}
+
+octave_idx_type
+compute_index (octave_idx_type i, octave_idx_type j, const dim_vector& dims)
+{
+  if (i < 0 || j < 0)
+    gripe_invalid_index ();
+  if (i >= dims(0))
+    gripe_index_out_of_range (2, 1, i+1, dims(0));
+  if (j >= dims.numel (1))
+    gripe_index_out_of_range (2, 2, j+1, dims.numel (1));
+
+  return j*dims(0) + i;
+}
+
+octave_idx_type
+compute_index (octave_idx_type i, octave_idx_type j, octave_idx_type k,
+               const dim_vector& dims)
+{
+  if (i < 0 || j < 0 || k < 0)
+    gripe_invalid_index ();
+  if (i >= dims(0))
+    gripe_index_out_of_range (3, 1, i+1, dims(0));
+  if (j >= dims(1))
+    gripe_index_out_of_range (3, 2, j+1, dims(1));
+  if (k >= dims.numel (2))
+    gripe_index_out_of_range (3, 3, k+1, dims.numel (2));
+
+  return (k*dims(1) + j)*dims(0) + i;
+}
+
+octave_idx_type
 compute_index (const Array<octave_idx_type>& ra_idx, const dim_vector& dims)
 {
-  octave_idx_type retval = -1;
-
-  int n = dims.length ();
-
-  if (n > 0 && n == ra_idx.length ())
+  int nd = ra_idx.length ();
+  const dim_vector dv = dims.redim (nd);
+  for (int d = 0; d < nd; d++)
     {
-      retval = ra_idx(--n);
-
-      while (--n >= 0)
-	{
-	  retval *= dims(n);
-	
-	  retval += ra_idx(n);
-	}
+      if (ra_idx(d) < 0)
+        gripe_invalid_index ();
+      if (ra_idx(d) >= dv(d))
+        gripe_index_out_of_range (nd, d+1, ra_idx(d)+1, dv(d));
     }
-  else
-    (*current_liboctave_error_handler)
-      ("ArrayN<T>::compute_index: invalid ra_idxing operation");
 
-  return retval;
+  return dv.compute_index (ra_idx.data ());
 }
 
 Array<octave_idx_type>
 conv_to_int_array (const Array<idx_vector>& a)
 {
-  Array<octave_idx_type> retval (a.length ());
+  Array<octave_idx_type> retval (a.dims ());
 
   for (octave_idx_type i = 0; i < a.length (); i++)
     retval (i) = a(i).elem (0);
@@ -211,7 +244,7 @@ conv_to_int_array (const Array<idx_vector>& a)
 Array<idx_vector>
 conv_to_array (const idx_vector *tmp, const octave_idx_type len)
 {
-  Array<idx_vector> retval (len);
+  Array<idx_vector> retval (dim_vector (len, 1));
 
   for (octave_idx_type i = 0; i < len; i++)
       retval (i) = tmp[i];
@@ -234,7 +267,7 @@ freeze (Array<idx_vector>& ra_idx, const dim_vector& dimensions, int resize_ok)
 
   for (int i = 0; i < n; i++)
     retval(i) = ra_idx(i).freeze (dimensions(i), tag[i < 2 ? i : 3],
-				  resize_ok);
+                                  resize_ok);
 
   return retval;
 }
@@ -250,11 +283,11 @@ vector_equivalent (const dim_vector& dv)
     {
       if (dv(i) != 1)
         {
-	  if (! found_first)
-	    found_first = true;
-	  else
-	    return false;
-	}
+          if (! found_first)
+            found_first = true;
+          else
+            return false;
+        }
     }
 
   return true;
@@ -270,10 +303,10 @@ all_ok (const Array<idx_vector>& ra_idx)
   for (octave_idx_type i = 0; i < n; i++)
     {
       if (! ra_idx(i))
-	{
-	  retval = false;
-	  break;
-	}
+        {
+          retval = false;
+          break;
+        }
     }
 
   return retval;
@@ -289,10 +322,10 @@ any_orig_empty (const Array<idx_vector>& ra_idx)
   for (octave_idx_type i = 0; i < n; i++)
     {
       if (ra_idx(i).orig_empty ())
-	{
-	  retval = true;
-	  break;
-	}
+        {
+          retval = true;
+          break;
+        }
     }
 
   return retval;
@@ -300,7 +333,7 @@ any_orig_empty (const Array<idx_vector>& ra_idx)
 
 bool
 all_colon_equiv (const Array<idx_vector>& ra_idx,
-		 const dim_vector& frozen_lengths)
+                 const dim_vector& frozen_lengths)
 {
   bool retval = true;
 
@@ -313,10 +346,10 @@ all_colon_equiv (const Array<idx_vector>& ra_idx,
   for (octave_idx_type i = 0; i < n; i++)
     {
       if (! ra_idx(i).is_colon_equiv (frozen_lengths(i)))
-	{
-	  retval = false;
-	  break;
-	}
+        {
+          retval = false;
+          break;
+        }
     }
 
   return retval;
@@ -330,10 +363,10 @@ all_ones (const Array<octave_idx_type>& arr)
   for (octave_idx_type i = 0; i < arr.length (); i++)
     {
       if (arr(i) != 1)
-	{
-	  retval = false;
-	  break;
-	}
+        {
+          retval = false;
+          break;
+        }
     }
 
   return retval;
@@ -341,11 +374,11 @@ all_ones (const Array<octave_idx_type>& arr)
 
 Array<octave_idx_type>
 get_elt_idx (const Array<idx_vector>& ra_idx,
-	     const Array<octave_idx_type>& result_idx)
+             const Array<octave_idx_type>& result_idx)
 {
   octave_idx_type n = ra_idx.length ();
 
-  Array<octave_idx_type> retval (n);
+  Array<octave_idx_type> retval (dim_vector (n, 1));
 
   for (octave_idx_type i = 0; i < n; i++)
     retval(i) = ra_idx(i).elem (result_idx(i));
@@ -360,7 +393,7 @@ get_ra_idx (octave_idx_type idx, const dim_vector& dims)
 
   int n_dims = dims.length ();
 
-  retval.resize (n_dims);
+  retval.resize (dim_vector (n_dims, 1));
 
   for (int i = 0; i < n_dims; i++)
     retval(i) = 0;
@@ -378,7 +411,7 @@ get_ra_idx (octave_idx_type idx, const dim_vector& dims)
   for (int i = 0; i < n_dims; i++)
     {
       std::cout << "idx: " << idx << ", var: " << var
-		<< ", dims(" << i << "): " << dims(i) <<"\n";
+                << ", dims(" << i << "): " << dims(i) <<"\n";
       retval(i) = ((int)floor(((idx) / (double)var))) % dims(i);
       idx -= var * retval(i);
       var = dims(i);
@@ -392,11 +425,10 @@ dim_vector
 zero_dims_inquire (const Array<idx_vector>& ia, const dim_vector& rhdv)
 {
   int ial = ia.length (), rhdvl = rhdv.length ();
-  dim_vector rdv;
-  rdv.resize (ial);
+  dim_vector rdv = dim_vector::alloc (ial);
   bool *scalar = new bool[ial], *colon = new bool[ial];
   // Mark scalars and colons, count non-scalar indices.
-  int nonsc = 0; 
+  int nonsc = 0;
   bool all_colons = true;
   for (int i = 0; i < ial; i++)
     {
@@ -446,7 +478,7 @@ zero_dims_inquire (const Array<idx_vector>& ia, const dim_vector& rhdv)
 
 dim_vector
 zero_dims_inquire (const idx_vector& i, const idx_vector& j,
-		   const dim_vector& rhdv)
+                   const dim_vector& rhdv)
 {
   bool icol = i.is_colon (), jcol = j.is_colon ();
   dim_vector rdv;
@@ -481,6 +513,136 @@ zero_dims_inquire (const idx_vector& i, const idx_vector& j,
   return rdv;
 }
 
+// A helper class.
+struct sub2ind_helper
+{
+  octave_idx_type *ind, n;
+
+  sub2ind_helper (octave_idx_type *_ind, octave_idx_type _n)
+    : ind(_ind), n(_n) { }
+
+  void operator ()(octave_idx_type k) { (*ind++ *= n) += k; }
+};
+
+idx_vector
+sub2ind (const dim_vector& dv, const Array<idx_vector>& idxa)
+{
+  idx_vector retval;
+  octave_idx_type len = idxa.length ();
+
+  if (len >= 1)
+    {
+      const dim_vector dvx = dv.redim (len);
+      bool all_ranges = true;
+      octave_idx_type clen = -1;
+
+      for (octave_idx_type i = 0; i < len; i++)
+        {
+          idx_vector idx = idxa(i);
+          octave_idx_type n = dvx(i);
+
+          all_ranges = all_ranges && idx.is_range ();
+          if (clen < 0)
+            clen = idx.length (n);
+          else if (clen != idx.length (n))
+            current_liboctave_error_handler ("sub2ind: lengths of indices must match");
+
+          if (idx.extent (n) > n)
+            current_liboctave_error_handler ("sub2ind: index out of range");
+        }
+
+      if (len == 1)
+        retval = idxa(0);
+      else if (clen == 1)
+        {
+          // All scalars case - the result is a scalar.
+          octave_idx_type idx = idxa(len-1)(0);
+          for (octave_idx_type i = len - 2; i >= 0; i--)
+            idx = idx * dvx(i) + idxa(i)(0);
+          retval = idx_vector (idx);
+        }
+      else if (all_ranges && clen != 0)
+        {
+          // All ranges case - the result is a range.
+          octave_idx_type start = 0, step = 0;
+          for (octave_idx_type i = len - 1; i >= 0; i--)
+            {
+              octave_idx_type xstart = idxa(i)(0), xstep = idxa(i)(1) - xstart;
+              start = start * dvx(i) + xstart;
+              step = step * dvx(i) + xstep;
+            }
+          retval = idx_vector::make_range (start, step, clen);
+        }
+      else
+        {
+          Array<octave_idx_type> idx (idxa(0).orig_dimensions ());
+          octave_idx_type *idx_vec = idx.fortran_vec ();
+
+          for (octave_idx_type i = len - 1; i >= 0; i--)
+            {
+              if (i < len - 1)
+                idxa(i).loop (clen, sub2ind_helper (idx_vec, dvx(i)));
+              else
+                idxa(i).copy_data (idx_vec);
+            }
+
+          retval = idx_vector (idx);
+        }
+    }
+  else
+    current_liboctave_error_handler ("sub2ind: needs at least 2 indices");
+
+  return retval;
+}
+
+Array<idx_vector>
+ind2sub (const dim_vector& dv, const idx_vector& idx)
+{
+  octave_idx_type len = idx.length (0), n = dv.length ();
+  Array<idx_vector> retval (dim_vector (n, 1));
+  octave_idx_type numel = dv.numel ();
+
+  if (idx.extent (numel) > numel)
+    current_liboctave_error_handler ("ind2sub: index out of range");
+  else
+    {
+      if (idx.is_scalar ())
+        {
+          octave_idx_type k = idx(0);
+          for (octave_idx_type j = 0; j < n; j++)
+            {
+              retval(j) = k % dv(j);
+              k /= dv(j);
+            }
+        }
+      else
+        {
+          OCTAVE_LOCAL_BUFFER (Array<octave_idx_type>, rdata, n);
+
+          dim_vector odv = idx.orig_dimensions ();
+          for (octave_idx_type j = 0; j < n; j++)
+            rdata[j] = Array<octave_idx_type> (odv);
+
+          for (octave_idx_type i = 0; i < len; i++)
+            {
+              octave_idx_type k = idx(i);
+              for (octave_idx_type j = 0; j < n; j++)
+                {
+                  rdata[j](i) = k % dv(j);
+                  k /= dv(j);
+                }
+            }
+
+          for (octave_idx_type j = 0; j < n; j++)
+            retval(j) = rdata[j];
+        }
+
+
+    }
+
+  return retval;
+}
+
 int
 permute_vector_compare (const void *a, const void *b)
 {
@@ -489,44 +651,3 @@ permute_vector_compare (const void *a, const void *b)
 
   return pva->pidx > pvb->pidx;
 }
-
-void
-gripe_nan_to_logical_conversion (void)
-{
-  (*current_liboctave_error_handler) ("invalid conversion of NaN to logical");
-}
-
-void
-gripe_nonconformant (const char *op, int op1_len, int op2_len)
-{
-  (*current_liboctave_error_handler)
-    ("%s: nonconformant arguments (op1 len: %d, op2 len: %d)",
-     op, op1_len, op2_len);
-}
-
-void
-gripe_nonconformant (const char *op, int op1_nr, int op1_nc,
-		     int op2_nr, int op2_nc)
-{
-  (*current_liboctave_error_handler)
-    ("%s: nonconformant arguments (op1 is %dx%d, op2 is %dx%d)",
-     op, op1_nr, op1_nc, op2_nr, op2_nc);
-}
-
-void
-gripe_nonconformant (const char *op, dim_vector& op1_dims,
-		     dim_vector& op2_dims)
-{
-  std::string op1_dims_str = op1_dims.str ();
-  std::string op2_dims_str = op2_dims.str ();
-
-  (*current_liboctave_error_handler)
-    ("%s: nonconformant arguments (op1 is %s, op2 is %s)",
-     op, op1_dims_str.c_str (), op2_dims_str.c_str ());
-}
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

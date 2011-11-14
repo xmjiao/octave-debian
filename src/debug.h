@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009 Ben Sapp
+Copyright (C) 2001-2011 Ben Sapp
 
 This file is part of Octave.
 
@@ -39,7 +39,7 @@ bp_table
 {
 private:
 
-  bp_table (void) { }
+  bp_table (void) : bp_set () { }
 
   ~bp_table (void) { }
 
@@ -67,21 +67,21 @@ public:
         ::error ("unable to create breakpoint table!");
         retval = false;
       }
-    
+
     return retval;
   }
 
   // Add a breakpoint at the nearest executable line.
-  static intmap add_breakpoint (const std::string& fname = "", 
-				const intmap& lines = intmap ())
+  static intmap add_breakpoint (const std::string& fname = "",
+                                const intmap& lines = intmap ())
   {
     return instance_ok ()
       ? instance->do_add_breakpoint (fname, lines) : intmap ();
   }
 
   // Remove a breakpoint from a line in file.
-  static int remove_breakpoint (const std::string& fname = "", 
-				const intmap& lines = intmap ())
+  static int remove_breakpoint (const std::string& fname = "",
+                                const intmap& lines = intmap ())
   {
     return instance_ok ()
       ? instance->do_remove_breakpoint (fname, lines) : 0;
@@ -89,19 +89,19 @@ public:
 
   // Remove all the breakpoints in a specified file.
   static intmap remove_all_breakpoints_in_file (const std::string& fname,
-						bool silent = false)
+                                                bool silent = false)
   {
     return instance_ok ()
       ? instance->do_remove_all_breakpoints_in_file (fname, silent) : intmap ();
   }
-  
+
   // Remove all the breakpoints registered with octave.
   static void remove_all_breakpoints (void)
   {
     if (instance_ok ())
       instance->do_remove_all_breakpoints ();
   }
-  
+
   // Return all breakpoints.  Each element of the map is a vector
   // containing the breakpoints corresponding to a given function name.
   static fname_line_map
@@ -131,8 +131,8 @@ private:
 
   int do_remove_breakpoint (const std::string&, const intmap& lines);
 
-  intmap do_remove_all_breakpoints_in_file (const std::string& fname, 
-					    bool silent);
+  intmap do_remove_all_breakpoints_in_file (const std::string& fname,
+                                            bool silent);
 
   void do_remove_all_breakpoints (void);
 
@@ -144,9 +144,3 @@ private:
 std::string get_file_line (const std::string& fname, size_t line);
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

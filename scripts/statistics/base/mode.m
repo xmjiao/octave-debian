@@ -1,4 +1,4 @@
-## Copyright (C) 2007, 2008, 2009 David Bateman
+## Copyright (C) 2007-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -17,16 +17,20 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {[@var{m}, @var{f}, @var{c}] =} mode (@var{x}, @var{dim})
-## Count the most frequently appearing value.  @code{mode} counts the 
-## frequency along the first non-singleton dimension and if two or more
-## values have the same frequency returns the smallest of the two in
-## @var{m}.  The dimension along which to count can be specified by the
-## @var{dim} parameter.
+## @deftypefn  {Function File} {} mode (@var{x})
+## @deftypefnx {Function File} {} mode (@var{x}, @var{dim})
+## @deftypefnx {Function File} {[@var{m}, @var{f}, @var{c}] =} mode (@dots{})
+## Compute the most frequently occurring value in a dataset (mode).
+## @code{mode} determines the frequency of values along the first non-singleton
+## dimension and returns the value with the highest frequency.  If two, or
+## more, values have the same frequency @code{mode} returns the smallest.
 ##
-## The variable @var{f} counts the frequency of each of the most frequently 
-## occurring elements.  The cell array @var{c} contains all of the elements
-## with the maximum frequency .
+## If the optional argument @var{dim} is given, operate along this dimension.
+##
+## The return variable @var{f} is the number of occurrences of the mode in
+## in the dataset.  The cell array @var{c} contains all of the elements
+## with the maximum frequency.
+## @seealso{mean, median}
 ## @end deftypefn
 
 function [m, f, c] = mode (x, dim)
@@ -35,30 +39,29 @@ function [m, f, c] = mode (x, dim)
     print_usage ();
   endif
 
+  if (!isnumeric(x))
+    error ("mode: X must be a numeric vector or matrix");
+  endif
+
   nd = ndims (x);
   sz = size (x);
-
   if (nargin != 2)
     ## Find the first non-singleton dimension.
-    dim  = 1;
-    while (dim < nd + 1 && sz(dim) == 1)
-      dim = dim + 1;
-    endwhile
-    if (dim > nd)
+    dim = find (sz > 1, 1);
+    if (isempty (dim))
       dim = 1;
     endif
   else
-    if (! (isscalar (dim) && dim == round (dim))
-        && dim > 0
-        && dim < (nd + 1))
-      error ("mode: dim must be an integer and valid dimension");
+    if (!(isscalar (dim) && dim == round (dim))
+        || !(1 <= dim && dim <= nd))
+      error ("mode: DIM must be an integer and a valid dimension");
     endif
   endif
 
   sz2 = sz;
-  sz2 (dim) = 1;
+  sz2(dim) = 1;
   sz3 = ones (1, nd);
-  sz3 (dim) = sz (dim);
+  sz3(dim) = sz(dim);
 
   if (issparse (x))
     t2 = sparse (sz(1), sz(2));
@@ -111,7 +114,7 @@ endfunction
 %! [m2, f2, c2] = mode (full (a));
 %! assert (m, sparse (m2));
 %! assert (f, sparse (f2));
-%! assert (c, cellfun (@(x) sparse (0), c2, 'UniformOutput', false));
+%! assert (c, cellfun (@(x) sparse (0), c2, 'uniformoutput', false));
 
 %!assert(mode([2,3,1,2,3,4],1),[2,3,1,2,3,4])
 %!assert(mode([2,3,1,2,3,4],2),2)
@@ -127,25 +130,36 @@ endfunction
 %! x(:,:,3) = circshift (toeplitz (1:3), 2);
 %!test
 %! [m, f, c] = mode (x, 1);
-%! assert (reshape (m, [3, 3]), [1 1 1; 2 2 2; 1 1 1])
-%! assert (reshape (f, [3, 3]), [1 1 1; 2 2 2; 1 1 1])
+%! assert (reshape (m, [3, 3]), [1 1 1; 2 2 2; 1 1 1]);
+%! assert (reshape (f, [3, 3]), [1 1 1; 2 2 2; 1 1 1]);
 %! c = reshape (c, [3, 3]);
-%! assert (c{1}, [1; 2; 3])
-%! assert (c{2}, 2)
-%! assert (c{3}, [1; 2; 3])
+%! assert (c{1}, [1; 2; 3]);
+%! assert (c{2}, 2);
+%! assert (c{3}, [1; 2; 3]);
 %!test
 %! [m, f, c] = mode (x, 2);
-%! assert (reshape (m, [3, 3]), [1 1 2; 2 1 1; 1 2 1])
-%! assert (reshape (f, [3, 3]), [1 1 2; 2 1 1; 1 2 1])
+%! assert (reshape (m, [3, 3]), [1 1 2; 2 1 1; 1 2 1]);
+%! assert (reshape (f, [3, 3]), [1 1 2; 2 1 1; 1 2 1]);
 %! c = reshape (c, [3, 3]);
-%! assert (c{1}, [1; 2; 3])
-%! assert (c{2}, 2)
-%! assert (c{3}, [1; 2; 3])
+%! assert (c{1}, [1; 2; 3]);
+%! assert (c{2}, 2);
+%! assert (c{3}, [1; 2; 3]);
 %!test
 %! [m, f, c] = mode (x, 3);
-%! assert (reshape (m, [3, 3]), [1 2 1; 1 2 1; 1 2 1])
-%! assert (reshape (f, [3, 3]), [1 2 1; 1 2 1; 1 2 1])
+%! assert (reshape (m, [3, 3]), [1 2 1; 1 2 1; 1 2 1]);
+%! assert (reshape (f, [3, 3]), [1 2 1; 1 2 1; 1 2 1]);
 %! c = reshape (c, [3, 3]);
-%! assert (c{1}, [1; 2; 3])
-%! assert (c{2}, [1; 2; 3])
-%! assert (c{3}, [1; 2; 3])
+%! assert (c{1}, [1; 2; 3]);
+%! assert (c{2}, [1; 2; 3]);
+%! assert (c{3}, [1; 2; 3]);
+
+%% Test input validation
+%!error mode ()
+%!error mode (1, 2, 3)
+%!error mode ({1 2 3})
+%!error mode (true(1,3))
+%!error mode (1, ones(2,2))
+%!error mode (1, 1.5)
+%!error mode (1, 0)
+%!error mode (1, 3)
+

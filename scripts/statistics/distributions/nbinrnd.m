@@ -1,4 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 2007, 2009 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -17,14 +17,14 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} nbinrnd (@var{n}, @var{p}, @var{r}, @var{c})
+## @deftypefn  {Function File} {} nbinrnd (@var{n}, @var{p}, @var{r}, @var{c})
 ## @deftypefnx {Function File} {} nbinrnd (@var{n}, @var{p}, @var{sz})
 ## Return an @var{r} by @var{c} matrix of random samples from the Pascal
 ## (negative binomial) distribution with parameters @var{n} and @var{p}.
 ## Both @var{n} and @var{p} must be scalar or of size @var{r} by @var{c}.
 ##
 ## If @var{r} and @var{c} are omitted, the size of the result matrix is
-## the common size of @var{n} and @var{p}.  Or if @var{sz} is a vector, 
+## the common size of @var{n} and @var{p}.  Or if @var{sz} is a vector,
 ## create a matrix of size @var{sz}.
 ## @end deftypefn
 
@@ -34,26 +34,26 @@
 function rnd = nbinrnd (n, p, r, c)
 
   if (nargin > 1)
-    if (!isscalar(n) || !isscalar(p)) 
+    if (!isscalar(n) || !isscalar(p))
       [retval, n, p] = common_size (n, p);
       if (retval > 0)
-	error ("nbinrnd: n and p must be of common size or scalar");
+        error ("nbinrnd: N and P must be of common size or scalar");
       endif
     endif
   endif
 
   if (nargin == 4)
     if (! (isscalar (r) && (r > 0) && (r == round (r))))
-      error ("nbinrnd: r must be a positive integer");
+      error ("nbinrnd: R must be a positive integer");
     endif
     if (! (isscalar (c) && (c > 0) && (c == round (c))))
-      error ("nbinrnd: c must be a positive integer");
+      error ("nbinrnd: C must be a positive integer");
     endif
     sz = [r, c];
 
-    if (any (size (n) != 1) && 
-	((length (size (n)) != length (sz)) || any (size (n) != sz)))
-      error ("nbinrnd: n and p must be scalar or of size [r, c]");
+    if (any (size (n) != 1)
+        && ((length (size (n)) != length (sz)) || any (size (n) != sz)))
+      error ("nbinrnd: N and P must be scalar or of size [R, C]");
     endif
 
   elseif (nargin == 3)
@@ -62,12 +62,12 @@ function rnd = nbinrnd (n, p, r, c)
     elseif (isvector(r) && all (r > 0))
       sz = r(:)';
     else
-      error ("nbinrnd: r must be a positive integer or vector");
+      error ("nbinrnd: R must be a positive integer or vector");
     endif
 
-    if (any (size (n) != 1) && 
-	((length (size (n)) != length (sz)) || any (size (n) != sz)))
-      error ("nbinrnd: n and p must be scalar or of size sz");
+    if (any (size (n) != 1)
+        && ((length (size (n)) != length (sz)) || any (size (n) != sz)))
+      error ("nbinrnd: N and P must be scalar or of size SZ");
     endif
   elseif (nargin == 2)
     sz = size(n);
@@ -77,9 +77,9 @@ function rnd = nbinrnd (n, p, r, c)
 
   if (isscalar (n) && isscalar (p))
     if ((n < 1) || (n == Inf) || (n != round (n)) || (p <= 0) || (p > 1));
-      rnd = NaN * ones (sz);
-    elseif ((n > 0) && (n < Inf) && (n == round (n)) && 
-	    (p > 0) && (p <= 1))
+      rnd = NaN (sz);
+    elseif ((n > 0) && (n < Inf) && (n == round (n))
+            && (p > 0) && (p <= 1))
       rnd = randp ((1 - p) ./ p .* randg (n, sz));
     else
       rnd = zeros (sz);
@@ -87,8 +87,7 @@ function rnd = nbinrnd (n, p, r, c)
   else
     rnd = zeros (sz);
 
-    k = find ((n < 1) || (n == Inf) || (n != round (n)) || 
-	      (p <= 0) || (p > 1));
+    k = find ((n < 1) | (n == Inf) | (n != round (n)) | (p <= 0) | (p > 1));
     if (any (k))
       rnd(k) = NaN;
     endif

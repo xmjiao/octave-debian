@@ -1,4 +1,4 @@
-## Copyright (C) 2006, 2007, 2008 Paul Kienzle
+## Copyright (C) 2006-2011 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -17,14 +17,14 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} datenum (@var{year}, @var{month}, @var{day})
+## @deftypefn  {Function File} {} datenum (@var{year}, @var{month}, @var{day})
 ## @deftypefnx {Function File} {} datenum (@var{year}, @var{month}, @var{day}, @var{hour})
 ## @deftypefnx {Function File} {} datenum (@var{year}, @var{month}, @var{day}, @var{hour}, @var{minute})
 ## @deftypefnx {Function File} {} datenum (@var{year}, @var{month}, @var{day}, @var{hour}, @var{minute}, @var{second})
-## @deftypefnx {Function File} {} datenum (@code{"date"})
-## @deftypefnx {Function File} {} datenum (@code{"date"}, @var{p})
-## Returns the specified local time as a day number, with Jan 1, 0000
-## being day 1.  By this reckoning, Jan 1, 1970 is day number 719529.  
+## @deftypefnx {Function File} {} datenum ("date")
+## @deftypefnx {Function File} {} datenum ("date", @var{p})
+## Return the specified local time as a day number, with Jan 1, 0000
+## being day 1.  By this reckoning, Jan 1, 1970 is day number 719529.
 ## The fractional portion, @var{p}, corresponds to the portion of the
 ## specified day.
 ##
@@ -33,14 +33,19 @@
 ## @itemize
 ## @item
 ## Years can be negative and/or fractional.
+##
 ## @item
 ## Months below 1 are considered to be January.
+##
 ## @item
 ## Days of the month start at 1.
+##
 ## @item
 ## Days beyond the end of the month go into subsequent months.
+##
 ## @item
 ## Days before the beginning of the month go to the previous month.
+##
 ## @item
 ## Days can be fractional.
 ## @end itemize
@@ -48,8 +53,8 @@
 ## @strong{Warning:} this function does not attempt to handle Julian
 ## calendars so dates before Octave 15, 1582 are wrong by as much
 ## as eleven days.  Also be aware that only Roman Catholic countries
-## adopted the calendar in 1582.  It took until 1924 for it to be 
-## adopted everywhere.  See the Wikipedia entry on the Gregorian 
+## adopted the calendar in 1582.  It took until 1924 for it to be
+## adopted everywhere.  See the Wikipedia entry on the Gregorian
 ## calendar for more details.
 ##
 ## @strong{Warning:} leap seconds are ignored.  A table of leap seconds
@@ -60,65 +65,65 @@
 ## Algorithm: Peter Baum (http://vsg.cape.com/~pbaum/date/date0.htm)
 ## Author: pkienzle <pkienzle@users.sf.net>
 
-function [days, secs] = datenum (Y, M, D, h, m, s)
+function [days, secs] = datenum (year, month, day, hour, minute, second)
 
   ## Days until start of month assuming year starts March 1.
   persistent monthstart = [306; 337; 0; 31; 61; 92; 122; 153; 184; 214; 245; 275];
 
-  if (nargin == 0 || (nargin > 2  && ischar (Y)) || nargin > 6)
+  if (nargin == 0 || (nargin > 2  && ischar (year)) || nargin > 6)
     print_usage ();
   endif
-  if (ischar (Y))
+  if (ischar (year))
     if (nargin < 2)
-      M = [];
+      month = [];
     endif
-    [Y, M, D, h, m, s] = datevec (Y, M);
+    [year, month, day, hour, minute, second] = datevec (year, month);
   else
-    if (nargin < 6) s = 0; endif
-    if (nargin < 5) m = 0; endif
-    if (nargin < 4) h = 0; endif
+    if (nargin < 6) second = 0; endif
+    if (nargin < 5) minute = 0; endif
+    if (nargin < 4) hour = 0; endif
     if (nargin == 1)
-      nc = columns (Y);
+      nc = columns (year);
       if (nc > 6 || nc < 3)
-        error ("expected date vector containing [Y, M, D, h, m, s]");
+        error ("datenum: expected date vector containing [YEAR, MONTH, DAY, HOUR, MINUTE, SECOND]");
       endif
-      s = m = h = 0;
-      if (nc >= 6) s = Y(:,6); endif
-      if (nc >= 5) m = Y(:,5); endif
-      if (nc >= 4) h = Y(:,4); endif
-      D = Y(:,3);
-      M = Y(:,2);
-      Y = Y(:,1);
-    endif 
+      second = minute = hour = 0;
+      if (nc >= 6) second = year(:,6); endif
+      if (nc >= 5) minute = year(:,5); endif
+      if (nc >= 4) hour = year(:,4); endif
+      day = year(:,3);
+      month = year(:,2);
+      year = year(:,1);
+    endif
   endif
 
-  M(M<1) = 1; ## For compatibility.  Otherwise allow negative months.
+  month(month<1) = 1; ## For compatibility.  Otherwise allow negative months.
 
   ## Set start of year to March by moving Jan. and Feb. to previous year.
   ## Correct for months > 12 by moving to subsequent years.
-  Y += fix ((M-14)/12);
+  year += fix ((month-14)/12);
 
   ## Lookup number of days since start of the current year.
-  if (numel (M) == 1 || numel (D) == 1)
-    ## Allow M or D to be scalar while other values may be vectors or
+  if (numel (month) == 1 || numel (day) == 1)
+    ## Allow month or day to be scalar while other values may be vectors or
     ## matrices.
-    D += monthstart (mod (M-1,12) + 1) + 60;
-    if (numel (M) > 1)
-      D = reshape (D, size (M));
+    day += monthstart (mod (month-1,12) + 1) + 60;
+    if (numel (month) > 1)
+      day = reshape (day, size (month));
     endif
   else
-    D += reshape (monthstart (mod (M-1,12) + 1), size (D)) + 60;
+    day += reshape (monthstart (mod (month-1,12) + 1), size (day)) + 60;
   endif
 
   ## Add number of days to the start of the current year. Correct
   ## for leap year every 4 years except centuries not divisible by 400.
-  D += 365*Y + floor (Y/4) - floor (Y/100) + floor (Y/400);
+  day += 365*year + floor (year/4) - floor (year/100) + floor (year/400);
 
   ## Add fraction representing current second of the day.
-  days = D + (h+(m+s/60)/60)/24;
+  days = day + (hour+(minute+second/60)/60)/24;
 
   ## Output seconds if asked so that etime can be more accurate
-  secs = 86400*D + h*3600 + m*60 + s;
+  secs = 86400*day + hour*3600 + minute*60 + second;
 
 endfunction
 

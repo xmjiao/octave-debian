@@ -1,4 +1,5 @@
-## Copyright (C) 2000, 2001, 2003, 2005, 2006, 2007, 2009 Paul Kienzle
+## Copyright (C) 2000-2011 Paul Kienzle
+## Copyright (C) 2009 Jaroslav Hajek
 ##
 ## This file is part of Octave.
 ##
@@ -17,11 +18,15 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} strjust (@var{s}, ["left"|"right"|"center"])
-## Shift the non-blank text of @var{s} to the left, right or center of
-## the string.  If @var{s} is a string array, justify each string in the
-## array.  Null characters are replaced by blanks.  If no justification
-## is specified, then all rows are right-justified.  For example:
+## @deftypefn {Function File} {} strjust (@var{s}, @var{pos})
+## Return the text, @var{s}, justified according to @var{pos}, which may
+## be @samp{"left"}, @samp{"center"}, or @samp{"right"}.  If @var{pos}
+## is omitted, @samp{"right"} is assumed.
+##
+## Null characters are replaced by spaces.  All other character
+## data are treated as non-white space.
+##
+## Example:
 ##
 ## @example
 ## @group
@@ -33,45 +38,66 @@
 ##         abcd
 ## @end group
 ## @end example
+## @seealso{deblank, strrep, strtrim, untabify}
 ## @end deftypefn
 
-function x = strjust (x, just)
+function y = strjust (s, pos)
 
   if (nargin < 1 || nargin > 2)
     print_usage ();
   endif
 
   if (nargin == 1)
-    just = "right";
-  endif
-
-  just = tolower (just);
-
-  ## convert nulls to blanks
-  idx = find (toascii (x) == 0);
-  if (! isempty (idx))
-    x(idx) = " ";
-  endif
-
-  ## For all cases, left, right and center, the algorithm is the same.
-  ## Find the number of blanks at the left/right end to determine the
-  ## shift, rotate the row index by using mod with that shift, then
-  ## translate the shifted row index into an array index.
-  [nr, nc] = size (x);
-  idx = (x' != " ");
-  if (strcmp (just, "right"))
-    [N, hi] = max (cumsum (idx));
-    shift = hi;
-  elseif (strcmp (just, "left"))
-    [N, lo] = max (cumsum (flipud (idx)));
-    shift = (nc - lo);
+    pos = "right";
   else
-    [N, hi] = max (cumsum (idx));
-    [N, lo] = max (cumsum (flipud (idx)));
-    shift = ceil (nc - (lo-hi)/2);
+    pos = tolower (pos);
   endif
-  idx = rem (ones(nr,1)*[0:nc-1] + shift'*ones(1,nc), nc);
-  x = x (idx*nr + [1:nr]'*ones(1,nc));
+
+  if (ndims (s) != 2)
+    error ("strjust: input must be a string or character matrix");
+  endif
+
+  if (isempty (s))
+    y = s;
+  else
+    ## Apparently, Matlab considers nulls to be blanks as well; however, does
+    ## not preserve the nulls, but rather converts them to blanks.  That's a
+    ## bit unexpected, but it allows simpler processing, because we can move
+    ## just the nonblank characters. So we'll do the same here.
+
+    [nr, nc] = size (s);
+    ## Find the indices of all nonblanks.
+    nonbl = s != " " & s != "\0";
+    [idx, jdx] = find (nonbl);
+
+    if (strcmp (pos, "right"))
+      ## We wish to find the maximum column index for each row. Because jdx is
+      ## sorted, we can take advantage of the fact that assignment is processed
+      ## sequentially and for duplicate indices the last value will remain.
+      maxs = nc * ones (nr, 1);
+      maxs(idx) = jdx;
+      shift = nc - maxs;
+    elseif (strcmp (pos, "left"))
+      ## See above for explanation.
+      mins = ones (nr, 1);
+      mins(flipud (idx(:))) = flipud (jdx(:));
+      shift = 1 - mins;
+    else
+      ## Use both of the above.
+      mins = ones (nr, 1);
+      mins(flipud (idx(:))) = flipud (jdx(:));
+      maxs = nc * ones (nr, 1);
+      maxs(idx) = jdx;
+      shift = floor ((nc + 1 - maxs - mins) / 2);
+    endif
+
+    ## Adjust the column indices.
+    jdx += shift (idx);
+
+    ## Create a blank matrix and position the nonblank characters.
+    y = " "(ones (1, nr), ones (1, nc));
+    y(sub2ind ([nr, nc], idx, jdx)) = s(nonbl);
+  endif
 
 endfunction
 

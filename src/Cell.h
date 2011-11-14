@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 1999, 2002, 2003, 2004, 2005, 2006, 2007, 2008,
-              2009 John W. Eaton
+Copyright (C) 1999-2011 John W. Eaton
+Copyright (C) 2009-2010 VZLU Prague
 
 This file is part of Octave.
 
@@ -26,7 +26,7 @@ along with Octave; see the file COPYING.  If not, see
 
 #include <string>
 
-#include "ArrayN.h"
+#include "Array.h"
 #include "oct-alloc.h"
 #include "str-vec.h"
 #include "ov.h"
@@ -35,54 +35,61 @@ class octave_value_list;
 
 class
 OCTINTERP_API
-Cell : public ArrayN<octave_value>
+Cell : public Array<octave_value>
 {
 public:
 
   Cell (void)
-    : ArrayN<octave_value> (dim_vector (0, 0)) { }
+    : Array<octave_value> (dim_vector (0, 0)) { }
 
   Cell (const octave_value& val)
-    : ArrayN<octave_value> (dim_vector (1, 1), val) { }
+    : Array<octave_value> (dim_vector (1, 1), val) { }
 
   Cell (const octave_value_list& ovl);
 
   Cell (octave_idx_type n, octave_idx_type m,
-	const octave_value& val = resize_fill_value ())
-    : ArrayN<octave_value> (dim_vector (n, m), val) { }
+        const octave_value& val = resize_fill_value ())
+    : Array<octave_value> (dim_vector (n, m), val) { }
 
   Cell (const dim_vector& dv, const octave_value& val = resize_fill_value ())
-    : ArrayN<octave_value> (dv, val) { }
-
-  Cell (const ArrayN<octave_value>& c)
-    : ArrayN<octave_value> (c) { }
+    : Array<octave_value> (dv, val) { }
 
   Cell (const Array<octave_value>& c)
-    : ArrayN<octave_value> (c) { }
+    : Array<octave_value> (c) { }
 
   Cell (const Array<octave_value>& c, octave_idx_type nr, octave_idx_type nc)
-    : ArrayN<octave_value> (c, dim_vector (nr, nc)) { }
+    : Array<octave_value> (c, dim_vector (nr, nc)) { }
 
   Cell (const string_vector& sv, bool trim = false);
+
+  Cell (const std::list<std::string>& lst);
 
   Cell (const Array<std::string>& sa);
 
   Cell (const dim_vector& dv, const string_vector& sv, bool trim = false);
 
   Cell (const Cell& c)
-    : ArrayN<octave_value> (c) { }
+    : Array<octave_value> (c) { }
 
   bool is_cellstr (void) const;
 
+  Array<std::string> cellstr_value (void) const;
+
+  using Array<octave_value>::index;
+
   Cell index (const octave_value_list& idx, bool resize_ok = false) const;
 
-  Cell& delete_elements (const octave_value_list& idx);
+  using Array<octave_value>::delete_elements;
 
-  Cell& assign (const octave_value_list& idx, const Cell& rhs,
-		const octave_value& fill_val = resize_fill_value ());
+  void delete_elements (const octave_value_list& idx);
+
+  using Array<octave_value>::assign;
+
+  void assign (const octave_value_list& idx, const Cell& rhs,
+               const octave_value& fill_val = resize_fill_value ());
 
   Cell reshape (const dim_vector& new_dims) const
-    { return ArrayN<octave_value>::reshape (new_dims); }
+    { return Array<octave_value>::reshape (new_dims); }
 
   octave_idx_type nnz (void) const;
 
@@ -130,10 +137,8 @@ private:
   Cell map (ctype_mapper) const;
 };
 
-#endif
+template<>
+inline Cell octave_value_extract<Cell> (const octave_value& v)
+  { return v.cell_value (); }
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+#endif

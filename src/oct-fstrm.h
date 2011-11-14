@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1999, 2000, 2001, 2003, 2004, 2005, 2007
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -35,15 +34,15 @@ octave_fstream : public octave_base_stream
 public:
 
   octave_fstream (const std::string& nm_arg,
-		  std::ios::openmode arg_md = std::ios::in|std::ios::out,
-		  oct_mach_info::float_format flt_fmt
-		    = oct_mach_info::native_float_format ());
+                  std::ios::openmode arg_md = std::ios::in|std::ios::out,
+                  oct_mach_info::float_format flt_fmt
+                    = oct_mach_info::native_float_format ());
 
   static octave_stream
   create (const std::string& nm_arg,
-	  std::ios::openmode arg_md = std::ios::in|std::ios::out,
-	  oct_mach_info::float_format flt_fmt
-	    = oct_mach_info::native_float_format ());
+          std::ios::openmode arg_md = std::ios::in|std::ios::out,
+          oct_mach_info::float_format flt_fmt
+            = oct_mach_info::native_float_format ());
 
   // Position a stream at OFFSET relative to ORIGIN.
 
@@ -85,9 +84,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

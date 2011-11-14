@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1998, 1999, 2000, 2002, 2005, 2007, 2009
-##               A. Scottedward Hodel
+## Copyright (C) 1995-2011 A. Scottedward Hodel
 ##
 ## This file is part of Octave.
 ##
@@ -35,8 +34,10 @@
 ## @table @var
 ## @item x
 ## vector
+##
 ## @item j
 ## index into vector
+##
 ## @item z
 ## threshold for zero  (usually should be the number 0)
 ## @end table
@@ -47,6 +48,7 @@
 ## @table @var
 ## @item beta
 ## If beta = 0, then no reflection need be applied (zer set to 0)
+##
 ## @item housv
 ## householder vector
 ## @end table

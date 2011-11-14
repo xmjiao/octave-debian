@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009 Ben Sapp
+Copyright (C) 2001-2011 Ben Sapp
 
 This file is part of Octave.
 
@@ -25,7 +25,6 @@ along with Octave; see the file COPYING.  If not, see
 #endif
 
 #include "ov-usr-fcn.h"
-#include "ov-list.h"
 #include "pager.h"
 #include "pt-all.h"
 
@@ -44,7 +43,7 @@ tree_breakpoint::visit_while_command (tree_while_command& cmd)
       tree_statement_list *lst = cmd.body ();
 
       if (lst)
-	lst->accept (*this);
+        lst->accept (*this);
     }
 }
 
@@ -56,13 +55,13 @@ tree_breakpoint::visit_do_until_command (tree_do_until_command& cmd)
       tree_statement_list *lst = cmd.body ();
 
       if (lst)
-	lst->accept (*this);
+        lst->accept (*this);
 
       if (! found)
-	{
-	  if (cmd.line () >= line)
-	    take_action (cmd);
-	}
+        {
+          if (cmd.line () >= line)
+            take_action (cmd);
+        }
     }
 }
 
@@ -140,7 +139,7 @@ tree_breakpoint::visit_simple_for_command (tree_simple_for_command& cmd)
       tree_statement_list *lst = cmd.body ();
 
       if (lst)
-	lst->accept (*this);
+        lst->accept (*this);
     }
 }
 
@@ -155,7 +154,7 @@ tree_breakpoint::visit_complex_for_command (tree_complex_for_command& cmd)
       tree_statement_list *lst = cmd.body ();
 
       if (lst)
-	lst->accept (*this);
+        lst->accept (*this);
     }
 }
 
@@ -215,10 +214,16 @@ tree_breakpoint::visit_if_clause (tree_if_clause&)
 void
 tree_breakpoint::visit_if_command (tree_if_command& cmd)
 {
-  tree_if_command_list *lst = cmd.cmd_list ();
+  if (cmd.line () >= line)
+    take_action (cmd);
 
-  if (lst)
-    lst->accept (*this);
+  if (! found)
+    {
+      tree_if_command_list *lst = cmd.cmd_list ();
+
+      if (lst)
+        lst->accept (*this);
+    }
 }
 
 void
@@ -229,18 +234,18 @@ tree_breakpoint::visit_if_command_list (tree_if_command_list& lst)
       tree_if_clause *t = *p;
 
       if (t->line () >= line)
-	take_action (*t);
+        take_action (*t);
 
       if (! found)
-	{      
-	  tree_statement_list *stmt_lst = t->commands ();
+        {
+          tree_statement_list *stmt_lst = t->commands ();
 
-	  if (stmt_lst)
-	    stmt_lst->accept (*this);
-	}
+          if (stmt_lst)
+            stmt_lst->accept (*this);
+        }
 
       if (found)
-	break;
+        break;
     }
 }
 
@@ -269,8 +274,10 @@ tree_breakpoint::visit_multi_assignment (tree_multi_assignment&)
 }
 
 void
-tree_breakpoint::visit_no_op_command (tree_no_op_command&)
+tree_breakpoint::visit_no_op_command (tree_no_op_command& cmd)
 {
+  if (cmd.is_end_of_fcn_or_script () && cmd.line () >= line)
+    take_action (cmd);
 }
 
 void
@@ -331,19 +338,17 @@ tree_breakpoint::visit_simple_assignment (tree_simple_assignment&)
 void
 tree_breakpoint::visit_statement (tree_statement& stmt)
 {
-  if (stmt.line () >= line)
-    {
-      take_action (stmt);
-    }
-  else if (stmt.is_command ())
+  if (stmt.is_command ())
     {
       tree_command *cmd = stmt.command ();
 
       cmd->accept (*this);
     }
-
-  // There is no need to do anything for expressions because they
-  // can't contain additional lists of statements.
+  else
+    {
+      if (stmt.line () >= line)
+        take_action (stmt);
+    }
 }
 
 void
@@ -354,12 +359,12 @@ tree_breakpoint::visit_statement_list (tree_statement_list& lst)
       tree_statement *elt = *p;
 
       if (elt)
-	{
-	  elt->accept (*this);
+        {
+          elt->accept (*this);
 
-	  if (found)
-	    break;
-	}
+          if (found)
+            break;
+        }
     }
 }
 
@@ -377,18 +382,18 @@ tree_breakpoint::visit_switch_case_list (tree_switch_case_list& lst)
       tree_switch_case *t = *p;
 
       if (t->line () >= line)
-	take_action (*t);
+        take_action (*t);
 
       if (! found)
-	{
-	  tree_statement_list *stmt_lst = t->commands ();
+        {
+          tree_statement_list *stmt_lst = t->commands ();
 
-	  if (stmt_lst)
-	    stmt_lst->accept (*this);
-	}
+          if (stmt_lst)
+            stmt_lst->accept (*this);
+        }
 
       if (found)
-	break;
+        break;
     }
 }
 
@@ -403,7 +408,7 @@ tree_breakpoint::visit_switch_command (tree_switch_command& cmd)
       tree_switch_case_list *lst = cmd.case_list ();
 
       if (lst)
-	lst->accept (*this);
+        lst->accept (*this);
     }
 }
 
@@ -420,7 +425,7 @@ tree_breakpoint::visit_try_catch_command (tree_try_catch_command& cmd)
       tree_statement_list *catch_code = cmd.cleanup ();
 
       if (catch_code)
-	catch_code->accept (*this);
+        catch_code->accept (*this);
     }
 }
 
@@ -437,7 +442,7 @@ tree_breakpoint::visit_unwind_protect_command (tree_unwind_protect_command& cmd)
       tree_statement_list *cleanup = cmd.cleanup ();
 
       if (cleanup)
-	cleanup->accept (*this);
+        cleanup->accept (*this);
     }
 }
 
@@ -452,16 +457,16 @@ tree_breakpoint::take_action (tree& tr)
     }
   else if (act == clear)
     {
-      tr.delete_breakpoint ();
-      found = true;
+      if (tr.is_breakpoint ())
+        {
+          tr.delete_breakpoint ();
+          found = true;
+        }
     }
   else if (act == list)
     {
       if (tr.is_breakpoint ())
-	{
-	  bp_list.append (octave_value (tr.line ()));
-	  line = tr.line () + 1;
-	}
+        bp_list.append (octave_value (tr.line ()));
     }
   else
     panic_impossible ();
@@ -480,23 +485,17 @@ tree_breakpoint::take_action (tree_statement& stmt)
     }
   else if (act == clear)
     {
-      stmt.delete_breakpoint ();
-      found = true;
+      if (stmt.is_breakpoint ())
+        {
+          stmt.delete_breakpoint ();
+          found = true;
+        }
     }
   else if (act == list)
     {
       if (stmt.is_breakpoint ())
-	{
-	  bp_list.append (octave_value (lineno));
-	  line = lineno + 1;
-	}
+        bp_list.append (octave_value (lineno));
     }
   else
     panic_impossible ();
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

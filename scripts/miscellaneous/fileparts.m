@@ -1,4 +1,4 @@
-## Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009 John W. Eaton
+## Copyright (C) 2003-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -29,29 +29,29 @@ function [directory, name, extension, version] = fileparts (filename)
     if (ischar (filename))
       ds = strchr (filename, filesep ("all"), 1, "last");
       if (isempty (ds))
-	ds = 0;
+        ds = 0;
       endif
       es = rindex (filename, ".");
       ## These can be the same if they are both 0 (no dir or ext).
       if (es <= ds)
-	es = length(filename)+1;
+        es = length(filename)+1;
       endif
       if (ds == 0)
-	directory = "";
+        directory = "";
       elseif (ds == 1)
-	directory = filename(1);
+        directory = filename(1);
       else
-	directory = filename(1:ds-1);
+        directory = filename(1:ds-1);
       endif
       name = filename(ds+1:es-1);
       if (es > 0 && es <= length (filename))
-	extension = filename(es:end);
+        extension = filename(es:end);
       else
-	extension = "";
+        extension = "";
       endif
       version = "";
     else
-      error ("fileparts: expecting filename argument to be a string");
+      error ("fileparts: expecting FILENAME argument to be a string");
     endif
   else
     print_usage ();

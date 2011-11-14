@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2000, 2002, 2004, 2005, 2006,
-              2007, 2008 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -43,39 +42,68 @@ public:
     : lambda (), v () { }
 
   FloatEIG (const FloatMatrix& a, bool calc_eigenvectors = true)
-    { init (a, calc_eigenvectors); }
+    : lambda (), v ()
+  {
+    init (a, calc_eigenvectors);
+  }
 
-  FloatEIG (const FloatMatrix& a, octave_idx_type& info, bool calc_eigenvectors = true)
-    { info = init (a, calc_eigenvectors); }
+  FloatEIG (const FloatMatrix& a, octave_idx_type& info,
+            bool calc_eigenvectors = true)
+    : lambda (), v ()
+  {
+    info = init (a, calc_eigenvectors);
+  }
 
-  FloatEIG (const FloatMatrix& a, const FloatMatrix& b, bool calc_eigenvectors = true)
-    { init (a, b, calc_eigenvectors); }
+  FloatEIG (const FloatMatrix& a, const FloatMatrix& b,
+            bool calc_eigenvectors = true)
+    : lambda (), v ()
+  {
+    init (a, b, calc_eigenvectors);
+  }
 
-  FloatEIG (const FloatMatrix& a, const FloatMatrix& b, octave_idx_type& info, bool calc_eigenvectors = true)
-    { info = init (a, b, calc_eigenvectors); }
+  FloatEIG (const FloatMatrix& a, const FloatMatrix& b, octave_idx_type& info,
+            bool calc_eigenvectors = true)
+    : lambda (), v ()
+  {
+    info = init (a, b, calc_eigenvectors);
+  }
 
   FloatEIG (const FloatComplexMatrix& a, bool calc_eigenvectors = true)
-    { init (a, calc_eigenvectors); }
+    : lambda (), v ()
+  {
+    init (a, calc_eigenvectors);
+  }
 
-  FloatEIG (const FloatComplexMatrix& a, octave_idx_type& info, bool calc_eigenvectors = true)
-    { info = init (a, calc_eigenvectors); }
+  FloatEIG (const FloatComplexMatrix& a, octave_idx_type& info,
+            bool calc_eigenvectors = true)
+    : lambda (), v ()
+  {
+    info = init (a, calc_eigenvectors);
+  }
 
-  FloatEIG (const FloatComplexMatrix& a, const FloatComplexMatrix& b, bool calc_eigenvectors = true)
-    { init (a, b, calc_eigenvectors); }
+  FloatEIG (const FloatComplexMatrix& a, const FloatComplexMatrix& b,
+            bool calc_eigenvectors = true)
+    : lambda (), v ()
+  {
+    init (a, b, calc_eigenvectors);
+  }
 
-  FloatEIG (const FloatComplexMatrix& a, const FloatComplexMatrix& b, octave_idx_type& info, bool calc_eigenvectors = true)
-    { info = init (a, b, calc_eigenvectors); }
+  FloatEIG (const FloatComplexMatrix& a, const FloatComplexMatrix& b,
+            octave_idx_type& info, bool calc_eigenvectors = true)
+    : lambda (), v ()
+  {
+    info = init (a, b, calc_eigenvectors);
+  }
 
-  FloatEIG (const FloatEIG& a)
-    : lambda (a.lambda), v (a.v) { }
+  FloatEIG (const FloatEIG& a) : lambda (a.lambda), v (a.v) { }
 
   FloatEIG& operator = (const FloatEIG& a)
     {
       if (this != &a)
-	{
-	  lambda = a.lambda;
-	  v = a.v;
-	}
+        {
+          lambda = a.lambda;
+          v = a.v;
+        }
       return *this;
     }
 
@@ -104,9 +132,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

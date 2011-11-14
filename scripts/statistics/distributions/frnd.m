@@ -1,4 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 2005, 2006, 2007 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -17,12 +17,12 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} frnd (@var{m}, @var{n}, @var{r}, @var{c})
+## @deftypefn  {Function File} {} frnd (@var{m}, @var{n}, @var{r}, @var{c})
 ## @deftypefnx {Function File} {} frnd (@var{m}, @var{n}, @var{sz})
 ## Return an @var{r} by @var{c} matrix of random samples from the F
 ## distribution with @var{m} and @var{n} degrees of freedom.  Both
 ## @var{m} and @var{n} must be scalar or of size @var{r} by @var{c}.
-## If @var{sz} is a vector the random samples are in a matrix of 
+## If @var{sz} is a vector the random samples are in a matrix of
 ## size @var{sz}.
 ##
 ## If @var{r} and @var{c} are omitted, the size of the result matrix is
@@ -35,10 +35,10 @@
 function rnd = frnd (m, n, r, c)
 
   if (nargin > 1)
-    if (!isscalar(m) || !isscalar(n)) 
+    if (!isscalar(m) || !isscalar(n))
       [retval, m, n] = common_size (m, n);
       if (retval > 0)
-	error ("frnd: m and n must be of common size or scalar");
+        error ("frnd: M and N must be of common size or scalar");
       endif
     endif
   endif
@@ -46,16 +46,16 @@ function rnd = frnd (m, n, r, c)
 
   if (nargin == 4)
     if (! (isscalar (r) && (r > 0) && (r == round (r))))
-      error ("frnd: r must be a positive integer");
+      error ("frnd: R must be a positive integer");
     endif
     if (! (isscalar (c) && (c > 0) && (c == round (c))))
-      error ("frnd: c must be a positive integer");
+      error ("frnd: C must be a positive integer");
     endif
     sz = [r, c];
 
-    if (any (size (m) != 1) && 
-	((length (size (m)) != length (sz)) || any (size (m) != sz)))
-      error ("frnd: m and n must be scalar or of size [r,c]");
+    if (any (size (m) != 1)
+        && ((length (size (m)) != length (sz)) || any (size (m) != sz)))
+      error ("frnd: M and N must be scalar or of size [R,C]");
     endif
   elseif (nargin == 3)
     if (isscalar (r) && (r > 0))
@@ -63,15 +63,15 @@ function rnd = frnd (m, n, r, c)
     elseif (isvector(r) && all (r > 0))
       sz = r(:)';
     else
-      error ("frnd: r must be a positive integer or vector");
+      error ("frnd: R must be a positive integer or vector");
     endif
 
-    if (any (size (m) != 1) && 
-	((length (size (m)) != length (sz)) || any (size (m) != sz)))
-      error ("frnd: m and n must be scalar or of size sz");
+    if (any (size (m) != 1)
+        && ((length (size (m)) != length (sz)) || any (size (m) != sz)))
+      error ("frnd: M and N must be scalar or of size SZ");
     endif
   elseif (nargin == 2)
-    sz = size(a);
+    sz = size(m);
   else
     print_usage ();
   endif
@@ -80,17 +80,17 @@ function rnd = frnd (m, n, r, c)
   if (isscalar (m) && isscalar (n))
     if (isinf (m) || isinf (n))
       if (isinf (m))
-	rnd = ones (sz);
+        rnd = ones (sz);
       else
-	rnd = 2 ./ m .* randg(m / 2, sz);
+        rnd = 2 ./ m .* randg(m / 2, sz);
       endif
       if (! isinf (n))
-	rnd = 0.5 .* n .* rnd ./ randg (n / 2, sz); 
+        rnd = 0.5 .* n .* rnd ./ randg (n / 2, sz);
       endif
     elseif ((m > 0) && (m < Inf) && (n > 0) && (n < Inf))
       rnd = n ./ m .* randg (m / 2, sz) ./ randg (n / 2, sz);
     else
-      rnd = NaN * ones (sz);
+      rnd = NaN (sz);
     endif
   else
     rnd = zeros (sz);

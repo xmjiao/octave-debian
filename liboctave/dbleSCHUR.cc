@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 1999, 2000, 2002, 2003, 2004,
-              2005, 2007, 2008 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -35,16 +34,18 @@ extern "C"
 {
   F77_RET_T
   F77_FUNC (dgeesx, DGEESX) (F77_CONST_CHAR_ARG_DECL,
-			     F77_CONST_CHAR_ARG_DECL,
-			     SCHUR::select_function,
-			     F77_CONST_CHAR_ARG_DECL,
-			     const octave_idx_type&, double*, const octave_idx_type&, octave_idx_type&,
-			     double*, double*, double*, const octave_idx_type&,
-			     double&, double&, double*, const octave_idx_type&,
-			     octave_idx_type*, const octave_idx_type&, octave_idx_type*, octave_idx_type&
-			     F77_CHAR_ARG_LEN_DECL
-			     F77_CHAR_ARG_LEN_DECL
-			     F77_CHAR_ARG_LEN_DECL);
+                             F77_CONST_CHAR_ARG_DECL,
+                             SCHUR::select_function,
+                             F77_CONST_CHAR_ARG_DECL,
+                             const octave_idx_type&, double*,
+                             const octave_idx_type&, octave_idx_type&,
+                             double*, double*, double*, const octave_idx_type&,
+                             double&, double&, double*, const octave_idx_type&,
+                             octave_idx_type*, const octave_idx_type&,
+                             octave_idx_type*, octave_idx_type&
+                             F77_CHAR_ARG_LEN_DECL
+                             F77_CHAR_ARG_LEN_DECL
+                             F77_CHAR_ARG_LEN_DECL);
 }
 
 static octave_idx_type
@@ -69,6 +70,12 @@ SCHUR::init (const Matrix& a, const std::string& ord, bool calc_unitary)
     {
       (*current_liboctave_error_handler) ("SCHUR requires square matrix");
       return -1;
+    }
+  else if (a_nr == 0)
+    {
+      schur_mat.clear ();
+      unitary_mat.clear ();
+      return 0;
     }
 
   // Workspace requirements may need to be fixed if any of the
@@ -106,36 +113,37 @@ SCHUR::init (const Matrix& a, const std::string& ord, bool calc_unitary)
   schur_mat = a;
 
   if (calc_unitary)
-    unitary_mat.resize (n, n);
+    unitary_mat.clear (n, n);
 
   double *s = schur_mat.fortran_vec ();
   double *q = unitary_mat.fortran_vec ();
 
-  Array<double> wr (n);
+  Array<double> wr (dim_vector (n, 1));
   double *pwr = wr.fortran_vec ();
 
-  Array<double> wi (n);
+  Array<double> wi (dim_vector (n, 1));
   double *pwi = wi.fortran_vec ();
 
-  Array<double> work (lwork);
+  Array<double> work (dim_vector (lwork, 1));
   double *pwork = work.fortran_vec ();
 
   // BWORK is not referenced for the non-ordered Schur routine.
-  Array<octave_idx_type> bwork ((ord_char == 'N' || ord_char == 'n') ? 0 : n);
+  octave_idx_type ntmp = (ord_char == 'N' || ord_char == 'n') ? 0 : n;
+  Array<octave_idx_type> bwork (dim_vector (ntmp, 1));
   octave_idx_type *pbwork = bwork.fortran_vec ();
 
-  Array<octave_idx_type> iwork (liwork);
+  Array<octave_idx_type> iwork (dim_vector (liwork, 1));
   octave_idx_type *piwork = iwork.fortran_vec ();
 
   F77_XFCN (dgeesx, DGEESX, (F77_CONST_CHAR_ARG2 (&jobvs, 1),
-			     F77_CONST_CHAR_ARG2 (&sort, 1),
-			     selector,
-			     F77_CONST_CHAR_ARG2 (&sense, 1),
-			     n, s, n, sdim, pwr, pwi, q, n, rconde, rcondv,
-			     pwork, lwork, piwork, liwork, pbwork, info
-			     F77_CHAR_ARG_LEN (1)
-			     F77_CHAR_ARG_LEN (1)
-			     F77_CHAR_ARG_LEN (1)));
+                             F77_CONST_CHAR_ARG2 (&sort, 1),
+                             selector,
+                             F77_CONST_CHAR_ARG2 (&sense, 1),
+                             n, s, n, sdim, pwr, pwi, q, n, rconde, rcondv,
+                             pwork, lwork, piwork, liwork, pbwork, info
+                             F77_CHAR_ARG_LEN (1)
+                             F77_CHAR_ARG_LEN (1)
+                             F77_CHAR_ARG_LEN (1)));
 
   return info;
 }
@@ -149,8 +157,12 @@ operator << (std::ostream& os, const SCHUR& a)
   return os;
 }
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+SCHUR::SCHUR (const Matrix& s, const Matrix& u)
+  : schur_mat (s), unitary_mat (u), selector (0)
+{
+  octave_idx_type n = s.rows ();
+  if (s.columns () != n || u.rows () != n || u.columns () != n)
+    (*current_liboctave_error_handler)
+      ("schur: inconsistent matrix dimensions");
+}
+

@@ -1,5 +1,4 @@
-## Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009
-##               David Bateman and Andy Adler
+## Copyright (C) 2004-2011 David Bateman and Andy Adler
 ##
 ## This file is part of Octave.
 ##
@@ -18,26 +17,27 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{y} =} spfun (@var{f},@var{x})
-## Compute @code{f(@var{x})} for the non-zero values of @var{x}.
-## This results in a sparse matrix with the same structure as 
-## @var{x}.  The function @var{f} can be passed as a string, a
-## function handle or an inline function.
+## @deftypefn {Function File} {@var{y} =} spfun (@var{f}, @var{S})
+## Compute @code{f(@var{S})} for the non-zero values of @var{S}.
+## This results in a sparse matrix with the same structure as
+## @var{S}.  The function @var{f} can be passed as a string, a
+## function handle, or an inline function.
+## @seealso{arrayfun, cellfun, structfun}
 ## @end deftypefn
 
-function t = spfun (f, s)
+function y = spfun (f, S)
 
   if (nargin != 2)
     print_usage ();
   endif
 
-  [i, j, v] = find (s);
-  [m, n] = size (s);
+  [i, j, v] = find (S);
+  [m, n] = size (S);
 
   if (isa (f, "function_handle") || isa (f, "inline function"))
-    t = sparse (i, j, f(v), m, n);
+    y = sparse (i, j, f(v), m, n);
   else
-    t = sparse(i, j, feval (f, v), m, n);
+    y = sparse(i, j, feval (f, v), m, n);
   endif
 
 endfunction

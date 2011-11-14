@@ -1,4 +1,4 @@
-@c Copyright (C) 1996, 1997, 2007, 2008, 2009 John W. Eaton
+@c Copyright (C) 1996-2011 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -55,7 +55,7 @@ the functions @code{debug_on_interrupt}, @code{debug_on_warning} and
 @DOCSTRING(debug_on_error)
 
 @node Leaving Debug Mode
-@section Leavinging Debug Mode
+@section Leaving Debug Mode
 
 To leave the debug mode, use either @code{dbcont} 
 or @code{return}.
@@ -84,12 +84,12 @@ Note that breakpoints cannot be set in built-in functions
 set a breakpoint immediately on entering a function, the breakpoint
 should be set to line 1. The leading comment block will be ignored and
 the breakpoint will be set to the first executable statement in the
-function.  For example
+function.  For example:
 
 @example
 @group
 dbstop ("asind", 1)
-@result{} 27
+@result{} 28
 @end group
 @end example
 
@@ -102,12 +102,13 @@ be queried with the @code{dbstatus} function.
 
 @noindent
 Taking the above as an example, @code{dbstatus ("asind")} should return
-27.  The breakpoints can then be cleared with the @code{dbclear} function
+28.  The breakpoints can then be cleared with the @code{dbclear} function
 
 @DOCSTRING(dbclear)
 
 @noindent
-These functions can be used to clear all the breakpoints in a function.  For example,
+These functions can be used to clear all the breakpoints in a function.  For
+example:
 
 @example
 dbclear ("asind", dbstatus ("asind"));

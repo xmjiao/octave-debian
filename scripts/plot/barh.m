@@ -1,4 +1,4 @@
-## Copyright (C) 1996, 1997, 2007, 2008, 2009 John W. Eaton
+## Copyright (C) 1996-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} barh (@var{x}, @var{y})
+## @deftypefn  {Function File} {} barh (@var{x}, @var{y})
 ## @deftypefnx {Function File} {} barh (@var{y})
 ## @deftypefnx {Function File} {} barh (@var{x}, @var{y}, @var{w})
 ## @deftypefnx {Function File} {} barh (@var{x}, @var{y}, @var{w}, @var{style})
@@ -28,7 +28,7 @@
 ## If only one argument is given, it is taken as a vector of y-values
 ## and the x coordinates are taken to be the indices of the elements.
 ##
-## The default width of 0.8 for the bars can be changed using @var{w}. 
+## The default width of 0.8 for the bars can be changed using @var{w}.
 ##
 ## If @var{y} is a matrix, then each column of @var{y} is taken to be a
 ## separate bar graph plotted on the same graph.  By default the columns

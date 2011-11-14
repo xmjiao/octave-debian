@@ -1,5 +1,4 @@
-## Copyright (C) 1993, 1995, 1996, 1997, 1999, 2000, 2005, 2006, 2007
-##               John W. Eaton
+## Copyright (C) 1993-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -18,12 +17,12 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {[@var{aa}, @var{bb}, @var{q}, @var{z}] =} qzhess (@var{a}, @var{b})
+## @deftypefn {Function File} {[@var{aa}, @var{bb}, @var{q}, @var{z}] =} qzhess (@var{A}, @var{B})
 ## Compute the Hessenberg-triangular decomposition of the matrix pencil
-## @code{(@var{a}, @var{b})}, returning
-## @code{@var{aa} = @var{q} * @var{a} * @var{z}},
-## @code{@var{bb} = @var{q} * @var{b} * @var{z}}, with @var{q} and @var{z}
-## orthogonal.  For example,
+## @code{(@var{A}, @var{B})}, returning
+## @code{@var{aa} = @var{q} * @var{A} * @var{z}},
+## @code{@var{bb} = @var{q} * @var{B} * @var{z}}, with @var{q} and @var{z}
+## orthogonal.  For example:
 ##
 ## @example
 ## @group
@@ -36,7 +35,7 @@
 ## @end example
 ##
 ## The Hessenberg-triangular decomposition is the first step in
-## Moler and Stewart's QZ decomposition algorithm.
+## Moler and Stewart's QZ@tie{}decomposition algorithm.
 ##
 ## Algorithm taken from Golub and Van Loan, @cite{Matrix Computations, 2nd
 ## edition}.
@@ -46,22 +45,22 @@
 ## Created: August 1993
 ## Adapted-By: jwe
 
-function [aa, bb, q, z] = qzhess (a, b)
+function [aa, bb, q, z] = qzhess (A, B)
 
   if (nargin != 2)
     print_usage ();
   endif
 
-  [na, ma] = size (a);
-  [nb, mb] = size (b);
+  [na, ma] = size (A);
+  [nb, mb] = size (B);
   if (na != ma || na != nb || nb != mb)
     error ("qzhess: incompatible dimensions");
   endif
 
   ## Reduce to hessenberg-triangular form.
 
-  [q, bb] = qr (b);
-  aa = q' * a;
+  [q, bb] = qr (B);
+  aa = q' * A;
   q = q';
   z = eye (na);
   for j = 1:(na-2)

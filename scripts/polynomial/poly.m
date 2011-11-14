@@ -1,5 +1,4 @@
-## Copyright (C) 1994, 1995, 1996, 1997, 1999, 2000, 2005, 2006, 2007,
-##               2008, 2009 John W. Eaton
+## Copyright (C) 1994-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -18,27 +17,32 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} poly (@var{a})
-## If @var{a} is a square @math{N}-by-@math{N} matrix, @code{poly (@var{a})}
-## is the row vector of the coefficients of @code{det (z * eye (N) - a)},
-## the characteristic polynomial of @var{a}.  As an example we can use
-## this to find the eigenvalues of @var{a} as the roots of @code{poly (@var{a})}.
+## @deftypefn  {Function File} {} poly (@var{A})
+## @deftypefnx {Function File} {} poly (@var{x})
+## If @var{A} is a square @math{N}-by-@math{N} matrix, @code{poly (@var{A})}
+## is the row vector of the coefficients of @code{det (z * eye (N) - A)},
+## the characteristic polynomial of @var{A}.  For example,
+## the following code finds the eigenvalues of @var{A} which are the roots of
+## @code{poly (@var{A})}.
+##
 ## @example
 ## @group
 ## roots(poly(eye(3)))
-## @result{} 1.00000 + 0.00000i
-## @result{} 1.00000 - 0.00000i
-## @result{} 1.00000 + 0.00000i
+## @result{} 1.00001 + 0.00001i
+## @result{} 1.00001 - 0.00001i
+## @result{} 0.99999 + 0.00000i
 ## @end group
 ## @end example
-## In real-life examples you should, however, use the @code{eig} function
-## for computing eigenvalues.
 ##
-## If @var{x} is a vector, @code{poly (@var{x})} is a vector of coefficients
+## In fact, all three eigenvalues are exactly 1 which emphasizes that for
+## numerical performance the @code{eig} function should be used to compute
+## eigenvalues.
+##
+## If @var{x} is a vector, @code{poly (@var{x})} is a vector of the coefficients
 ## of the polynomial whose roots are the elements of @var{x}.  That is,
-## of @var{c} is a polynomial, then the elements of 
+## if @var{c} is a polynomial, then the elements of
 ## @code{@var{d} = roots (poly (@var{c}))} are contained in @var{c}.
-## The vectors @var{c} and @var{d} are, however, not equal due to sorting
+## The vectors @var{c} and @var{d} are not identical, however, due to sorting
 ## and numerical errors.
 ## @seealso{eig, roots}
 ## @end deftypefn

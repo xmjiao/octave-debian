@@ -1,5 +1,4 @@
-## Copyright (C) 1996, 1997, 1998, 1999, 2000, 2002, 2004, 2005, 2006,
-##               2007, 2008, 2009 John W. Eaton
+## Copyright (C) 1996-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -24,9 +23,10 @@
 ## $n = 2^k$.
 ## @end tex
 ## @ifnottex
-## n = 2^k.
+## n = 2^@var{k}.
 ## @end ifnottex
-## @seealso{hankel, vander, hilb, invhilb, toeplitz}
+##
+## @seealso{toeplitz, hankel}
 ## @end deftypefn
 
 ## Author: jwe

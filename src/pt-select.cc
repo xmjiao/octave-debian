@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2000, 2002, 2004, 2005, 2006, 2007, 2008, 2009
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -47,11 +46,11 @@ tree_if_clause::~tree_if_clause (void)
 
 tree_if_clause *
 tree_if_clause::dup (symbol_table::scope_id scope,
-		     symbol_table::context_id context) const
+                     symbol_table::context_id context) const
 {
   return new tree_if_clause (expr ? expr->dup (scope, context) : 0,
-			     list ? list->dup (scope, context) : 0,
-			     lead_comm ? lead_comm->dup () : 0);
+                             list ? list->dup (scope, context) : 0,
+                             lead_comm ? lead_comm->dup () : 0);
 }
 
 void
@@ -64,7 +63,7 @@ tree_if_clause::accept (tree_walker& tw)
 
 tree_if_command_list *
 tree_if_command_list::dup (symbol_table::scope_id scope,
-			   symbol_table::context_id context) const
+                           symbol_table::context_id context) const
 {
   tree_if_command_list *new_icl = new tree_if_command_list ();
 
@@ -93,38 +92,14 @@ tree_if_command::~tree_if_command (void)
   delete trail_comm;
 }
 
-void
-tree_if_command::set_breakpoint (void)
-{
-  if (list)
-    {
-      tree_if_clause *elt = list->front ();
-
-      if (elt)
-	elt->set_breakpoint ();
-    }
-}
-
-void
-tree_if_command::delete_breakpoint (void)
-{
-  if (list)
-    {
-      tree_if_clause *elt = list->front ();
-
-      if (elt)
-	elt->set_breakpoint ();
-    }
-}
-
 tree_command *
 tree_if_command::dup (symbol_table::scope_id scope,
-		      symbol_table::context_id context) const
+                      symbol_table::context_id context) const
 {
   return new tree_if_command (list ? list->dup (scope, context) : 0,
-			      lead_comm ? lead_comm->dup () : 0,
-			      trail_comm ? trail_comm->dup () : 0,
-			      line (), column ());
+                              lead_comm ? lead_comm->dup () : 0,
+                              trail_comm ? trail_comm->dup () : 0,
+                              line (), column ());
 }
 
 void
@@ -151,31 +126,31 @@ tree_switch_case::label_matches (const octave_value& val)
   if (! error_state && label_value.is_defined() )
     {
       if (label_value.is_cell ())
-	{
-	  Cell cell (label_value.cell_value ());
+        {
+          Cell cell (label_value.cell_value ());
 
-	  for (octave_idx_type i = 0; i < cell.rows (); i++)
-	    {
-	      for (octave_idx_type j = 0; j < cell.columns (); j++)
-		{
-		  bool match = val.is_equal (cell(i,j));
+          for (octave_idx_type i = 0; i < cell.rows (); i++)
+            {
+              for (octave_idx_type j = 0; j < cell.columns (); j++)
+                {
+                  bool match = val.is_equal (cell(i,j));
 
-		  if (error_state)
-		    return false;
-		  else if (match)
-		    return true;
-		}
-	    }
-	}
+                  if (error_state)
+                    return false;
+                  else if (match)
+                    return true;
+                }
+            }
+        }
       else
-	{
-	  bool match = val.is_equal (label_value);
+        {
+          bool match = val.is_equal (label_value);
 
-	  if (error_state)
-	    return false;
-	  else
-	    return match;
-	}
+          if (error_state)
+            return false;
+          else
+            return match;
+        }
     }
 
   return false;
@@ -183,11 +158,11 @@ tree_switch_case::label_matches (const octave_value& val)
 
 tree_switch_case *
 tree_switch_case::dup (symbol_table::scope_id scope,
-		       symbol_table::context_id context) const
+                       symbol_table::context_id context) const
 {
   return new tree_switch_case (label ? label->dup (scope, context) : 0,
-			       list ? list->dup (scope, context) : 0,
-			       lead_comm ? lead_comm->dup () : 0);
+                               list ? list->dup (scope, context) : 0,
+                               lead_comm ? lead_comm->dup () : 0);
 }
 
 void
@@ -200,7 +175,7 @@ tree_switch_case::accept (tree_walker& tw)
 
 tree_switch_case_list *
 tree_switch_case_list::dup (symbol_table::scope_id scope,
-			    symbol_table::context_id context) const
+                            symbol_table::context_id context) const
 {
   tree_switch_case_list *new_scl = new tree_switch_case_list ();
 
@@ -210,7 +185,7 @@ tree_switch_case_list::dup (symbol_table::scope_id scope,
 
       new_scl->append (elt ? elt->dup (scope, context) : 0);
     }
-  
+
   return new_scl;
 }
 
@@ -230,39 +205,15 @@ tree_switch_command::~tree_switch_command (void)
   delete trail_comm;
 }
 
-void
-tree_switch_command::set_breakpoint (void)
-{
-  if (list)
-    {
-      tree_switch_case *elt = list->front ();
-
-      if (elt)
-	elt->set_breakpoint ();
-    }
-}
-
-void
-tree_switch_command::delete_breakpoint (void)
-{
-  if (list)
-    {
-      tree_switch_case *elt = list->front ();
-
-      if (elt)
-	elt->set_breakpoint ();
-    }
-}
-
 tree_command *
 tree_switch_command::dup (symbol_table::scope_id scope,
-			  symbol_table::context_id context) const
+                          symbol_table::context_id context) const
 {
   return new tree_switch_command (expr ? expr->dup (scope, context) : 0,
-				  list ? list->dup (scope, context) : 0,
-				  lead_comm ? lead_comm->dup () : 0,
-				  trail_comm ? trail_comm->dup () : 0,
-				  line (), column ());
+                                  list ? list->dup (scope, context) : 0,
+                                  lead_comm ? lead_comm->dup () : 0,
+                                  trail_comm ? trail_comm->dup () : 0,
+                                  line (), column ());
 }
 
 void
@@ -270,9 +221,3 @@ tree_switch_command::accept (tree_walker& tw)
 {
   tw.visit_switch_command (*this);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

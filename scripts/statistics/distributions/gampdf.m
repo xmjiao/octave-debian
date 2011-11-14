@@ -1,4 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 2005, 2006, 2007 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -36,7 +36,7 @@ function pdf = gampdf (x, a, b)
   if (!isscalar (a) || !isscalar(b))
     [retval, x, a, b] = common_size (x, a, b);
     if (retval > 0)
-      error ("gampdf: x, a and b must be of common size or scalars");
+      error ("gampdf: X, A and B must be of common size or scalars");
     endif
   endif
 
@@ -48,25 +48,25 @@ function pdf = gampdf (x, a, b)
     pdf (k) = NaN;
   endif
 
-  k = find ((x > 0) & (a > 0) & (a <= 1) & (b > 0));
+  k = find ((x >= 0) & (a > 0) & (a <= 1) & (b > 0));
   if (any (k))
     if (isscalar(a) && isscalar(b))
       pdf(k) = (x(k) .^ (a - 1)) ...
-		.* exp(- x(k) ./ b) ./ gamma (a) ./ (b .^ a);
+                .* exp(- x(k) ./ b) ./ gamma (a) ./ (b .^ a);
     else
       pdf(k) = (x(k) .^ (a(k) - 1)) ...
-		.* exp(- x(k) ./ b(k)) ./ gamma (a(k)) ./ (b(k) .^ a(k));
+                .* exp(- x(k) ./ b(k)) ./ gamma (a(k)) ./ (b(k) .^ a(k));
     endif
   endif
 
-  k = find ((x > 0) & (a > 1) & (b > 0));
+  k = find ((x >= 0) & (a > 1) & (b > 0));
   if (any (k))
     if (isscalar(a) && isscalar(b))
       pdf(k) = exp (- a .* log (b) + (a-1) .* log (x(k))
-		    - x(k) ./ b - gammaln (a));
+                    - x(k) ./ b - gammaln (a));
     else
       pdf(k) = exp (- a(k) .* log (b(k)) + (a(k)-1) .* log (x(k))
-		    - x(k) ./ b(k) - gammaln (a(k)));
+                    - x(k) ./ b(k) - gammaln (a(k)));
     endif
   endif
 

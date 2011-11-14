@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 David Bateman
+## Copyright (C) 2008-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} ezplot (@var{f})
+## @deftypefn  {Function File} {} ezplot (@var{f})
 ## @deftypefnx {Function File} {} ezplot (@var{fx}, @var{fy})
 ## @deftypefnx {Function File} {} ezplot (@dots{}, @var{dom})
 ## @deftypefnx {Function File} {} ezplot (@dots{}, @var{n})
@@ -26,13 +26,13 @@
 ##
 ## Plots in two-dimensions the curve defined by @var{f}.  The function
 ## @var{f} may be a string, inline function or function handle and can
-## have either one or two variables.  If @var{f} has one variable, then 
-## the function is plotted over the domain @code{-2*pi < @var{x} < 2*pi}  
-## with 500 points. 
+## have either one or two variables.  If @var{f} has one variable, then
+## the function is plotted over the domain @code{-2*pi < @var{x} < 2*pi}
+## with 500 points.
 ##
 ## If @var{f} has two variables then @code{@var{f}(@var{x},@var{y}) = 0}
 ## is calculated over the meshed domain @code{-2*pi < @var{x} | @var{y}
-## < 2*pi} with 60 by 60 in the mesh.  For example
+## < 2*pi} with 60 by 60 in the mesh.  For example:
 ##
 ## @example
 ## ezplot (@@(@var{x}, @var{y}) @var{x} .^ 2 - @var{y} .^ 2 - 1)
@@ -48,8 +48,9 @@
 ## @end group
 ## @end example
 ##
+## @noindent
 ## is plotted over the domain @code{-2*pi < @var{t} < 2*pi} with 500
-## points. 
+## points.
 ##
 ## If @var{dom} is a two element vector, it represents the minimum and maximum
 ## value of @var{x}, @var{y} and @var{t}.  If it is a four element
@@ -60,7 +61,7 @@
 ## @var{n} is a scalar defining the number of points to use in plotting
 ## the function.
 ##
-## The optional return value @var{h} provides a list of handles to the 
+## The optional return value @var{h} provides a list of handles to the
 ## the line objects plotted.
 ##
 ## @seealso{plot, ezplot3}

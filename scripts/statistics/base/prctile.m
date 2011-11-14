@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 Ben Abbott
+## Copyright (C) 2008-2011 Ben Abbott
 ##
 ## This file is part of Octave.
 ##
@@ -17,22 +17,24 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{y} =} prctile (@var{x}, @var{p})
+## @deftypefn  {Function File} {@var{q} =} prctile (@var{x})
+## @deftypefnx {Function File} {@var{q} =} prctile (@var{x}, @var{p})
 ## @deftypefnx {Function File} {@var{q} =} prctile (@var{x}, @var{p}, @var{dim})
-## For a sample @var{x}, compute the quantiles, @var{y}, corresponding
-## to the cumulative probability values, P, in percent.  All non-numeric
-## values (NaNs) of X are ignored.
-## 
+## For a sample @var{x}, compute the quantiles, @var{q}, corresponding
+## to the cumulative probability values, @var{p}, in percent.  All non-numeric
+## values (NaNs) of @var{x} are ignored.
+##
 ## If @var{x} is a matrix, compute the percentiles for each column and
-## return them in a matrix, such that the i-th row of @var{y} contains the 
+## return them in a matrix, such that the i-th row of @var{y} contains the
 ## @var{p}(i)th percentiles of each column of @var{x}.
-## 
+##
+## If @var{p} is unspecified, return the quantiles for @code{[0 25 50 75 100]}.
 ## The optional argument @var{dim} determines the dimension along which
 ## the percentiles are calculated.  If @var{dim} is omitted, and @var{x} is
-## a vector or matrix, it defaults to 1 (column wise quantiles).  In the 
-## instance that @var{x} is a N-d array, @var{dim} defaults to the first 
-## dimension whose size greater than unity.
-## 
+## a vector or matrix, it defaults to 1 (column-wise quantiles).  When
+## @var{x} is an N-D array, @var{dim} defaults to the first non-singleton
+## dimension.
+## @seealso{quantile}
 ## @end deftypefn
 
 ## Author: Ben Abbott <bpabbott@mac.com>
@@ -44,30 +46,42 @@ function q = prctile (x, p, dim)
     print_usage ();
   endif
 
-  if (nargin < 2)
-    p = 100*[0.00 0.25, 0.50, 0.75, 1.00];
+  if (!isnumeric(x))
+    error ("prctile: X must be a numeric vector or matrix");
+  endif
+  if (!isnumeric(p))
+    error ("prctile: P must be a numeric vector");
   endif
 
-  if (nargin < 3)
-    if (ndims (x) == 2)
+  if (nargin == 1)
+    p = [0, 25, 50, 75, 100];
+  endif
+
+  nd = ndims (x);
+  if (nargin == 2)
+    if (nd == 2)
       ## If a matrix or vector, use the 1st dimension.
       dim = 1;
-    else 
-      ## If an N-d array, use the firt dimension with a length > 1.
-      dim = find (size(v) != 1);
+    else
+      ## If an N-d array, find the first non-singleton dimension.
+      dim = find (size(v) > 1, 1);
       if (isempty (dim))
         dim = 1;
       endif
     endif
+  else
+    if (!(isscalar (dim) && dim == fix (dim)) ||
+        !(1 <= dim && dim <= nd))
+      error ("prctile: DIM must be an integer and a valid dimension");
+    endif
   endif
 
-  ## Convert from percent.
-  p = 0.01 * p;
+  ## Convert from percent to decimal.
+  p = p / 100;
 
   ## The 5th method is compatible with Matlab.
   method = 5;
 
-  ## Call the quantile function
   q = quantile (x, p, dim, method);
 
 endfunction
@@ -154,3 +168,11 @@ endfunction
 %! qa = [0.1270; 0.2041; 0.6437; 0.6477; 0.9322];
 %! assert (q, qa, tol);
 
+%% Test input validation
+%!error prctile ()
+%!error prctile (1, 2, 3, 4)
+%!error prctile ([true, false], 10)
+%!error prctile (1:10, [true, false])
+%!error prctile (1, 1, 1.5)
+%!error prctile (1, 1, 0)
+%!error prctile (1, 1, 3)

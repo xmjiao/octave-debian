@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1999, 2002, 2005, 2006, 2007, 2008,
-              2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -39,11 +38,12 @@ along with Octave; see the file COPYING.  If not, see
 
 DEFUN_DLD (pinv, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Loadable Function} {} pinv (@var{x}, @var{tol})\n\
+@deftypefn  {Loadable Function} {} pinv (@var{x})\n\
+@deftypefnx {Loadable Function} {} pinv (@var{x}, @var{tol})\n\
 Return the pseudoinverse of @var{x}.  Singular values less than\n\
-@var{tol} are ignored.  \n\
+@var{tol} are ignored.\n\
 \n\
-If the second argument is omitted, it is assumed that\n\
+If the second argument is omitted, it is taken to be\n\
 \n\
 @example\n\
 tol = max (size (@var{x})) * sigma_max (@var{x}) * eps,\n\
@@ -102,76 +102,70 @@ where @code{sigma_max (@var{x})} is the maximal singular value of @var{x}.\n\
     {
       float tol = 0.0;
       if (nargin == 2)
-	tol = args(1).float_value ();
+        tol = args(1).float_value ();
 
       if (error_state)
-	return retval;
+        return retval;
 
       if (tol < 0.0)
-	{
-	  error ("pinv: tol must be greater than zero");
-	  return retval;
-	}
+        {
+          error ("pinv: TOL must be greater than zero");
+          return retval;
+        }
 
       if (arg.is_real_type ())
-	{
-	  FloatMatrix m = arg.float_matrix_value ();
+        {
+          FloatMatrix m = arg.float_matrix_value ();
 
-	  if (! error_state)
-	    retval = m.pseudo_inverse (tol);
-	}
+          if (! error_state)
+            retval = m.pseudo_inverse (tol);
+        }
       else if (arg.is_complex_type ())
-	{
-	  FloatComplexMatrix m = arg.float_complex_matrix_value ();
+        {
+          FloatComplexMatrix m = arg.float_complex_matrix_value ();
 
-	  if (! error_state)
-	    retval = m.pseudo_inverse (tol);
-	}
+          if (! error_state)
+            retval = m.pseudo_inverse (tol);
+        }
       else
-	{
-	  gripe_wrong_type_arg ("pinv", arg);
-	}
+        {
+          gripe_wrong_type_arg ("pinv", arg);
+        }
     }
   else
     {
       double tol = 0.0;
       if (nargin == 2)
-	tol = args(1).double_value ();
+        tol = args(1).double_value ();
 
       if (error_state)
-	return retval;
+        return retval;
 
       if (tol < 0.0)
-	{
-	  error ("pinv: tol must be greater than zero");
-	  return retval;
-	}
+        {
+          error ("pinv: TOL must be greater than zero");
+          return retval;
+        }
 
       if (arg.is_real_type ())
-	{
-	  Matrix m = arg.matrix_value ();
+        {
+          Matrix m = arg.matrix_value ();
 
-	  if (! error_state)
-	    retval = m.pseudo_inverse (tol);
-	}
+          if (! error_state)
+            retval = m.pseudo_inverse (tol);
+        }
       else if (arg.is_complex_type ())
-	{
-	  ComplexMatrix m = arg.complex_matrix_value ();
+        {
+          ComplexMatrix m = arg.complex_matrix_value ();
 
-	  if (! error_state)
-	    retval = m.pseudo_inverse (tol);
-	}
+          if (! error_state)
+            retval = m.pseudo_inverse (tol);
+        }
       else
-	{
-	  gripe_wrong_type_arg ("pinv", arg);
-	}
+        {
+          gripe_wrong_type_arg ("pinv", arg);
+        }
     }
 
   return retval;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

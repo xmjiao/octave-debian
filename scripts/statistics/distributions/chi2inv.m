@@ -1,4 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 2005, 2006, 2007 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -35,7 +35,7 @@ function inv = chi2inv (x, n)
   if (!isscalar (n))
     [retval, x, n] = common_size (x, n);
     if (retval > 0)
-      error ("chi2inv: x and n must be of common size or scalar");
+      error ("chi2inv: X and N must be of common size or scalar");
     endif
   endif
 

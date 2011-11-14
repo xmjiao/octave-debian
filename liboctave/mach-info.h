@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2000, 2003, 2004, 2005, 2006, 2007
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -62,10 +61,6 @@ private:
 
   static oct_mach_info *instance;
 
-  void init_float_format (void) const;
-
-  void ten_little_endians (void) const;
-
   // The floating point format for the current machine.
   mutable float_format native_float_fmt;
 
@@ -80,9 +75,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

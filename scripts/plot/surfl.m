@@ -1,4 +1,4 @@
-## Copyright (C) 2009 Kai Habel
+## Copyright (C) 2009-2011 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -17,12 +17,13 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} surfl (@var{x}, @var{y}, @var{z})
+## @deftypefn  {Function File} {} surfl (@var{x}, @var{y}, @var{z})
 ## @deftypefnx {Function File} {} surfl (@var{z})
 ## @deftypefnx {Function File} {} surfl (@var{x}, @var{y}, @var{z}, @var{L})
 ## @deftypefnx {Function File} {} surfl (@var{x}, @var{y}, @var{z}, @var{L}, @var{P})
-## @deftypefnx {Function File} {} surfl (@dots{},"light")
-## Plot a lighted surface given matrices @var{x}, and @var{y} from @code{meshgrid} and
+## @deftypefnx {Function File} {} surfl (@dots{}, "light")
+## Plot a lighted surface given matrices @var{x}, and @var{y} from
+## @code{meshgrid} and
 ## a matrix @var{z} corresponding to the @var{x} and @var{y} coordinates of
 ## the mesh.  If @var{x} and @var{y} are vectors, then a typical vertex
 ## is (@var{x}(j), @var{y}(i), @var{z}(i,j)).  Thus, columns of @var{z}
@@ -30,21 +31,27 @@
 ## to different @var{y} values.
 ##
 ## The light direction can be specified using @var{L}.  It can be
-## given as 2-element vector [azimuth, elevation] in degrees or as 3-element vector [lx, ly, lz].
+## given as 2-element vector [azimuth, elevation] in degrees or as 3-element
+## vector [lx, ly, lz].
 ## The default value is rotated 45° counter-clockwise from the current view.
 ##
 ## The material properties of the surface can specified using a 4-element vector
 ## @var{P} = [@var{AM} @var{D} @var{SP} @var{exp}] which defaults to
-## @var{p} = [0.55 0.6 0.4 10]. 
-## @table @code
+## @var{p} = [0.55 0.6 0.4 10].
+## @table @asis
 ## @item "AM" strength of ambient light
+##
 ## @item "D" strength of diffuse reflection
+##
 ## @item "SP" strength of specular reflection
+##
 ## @item "EXP" specular exponent
 ## @end table
-## 
-## The default lighting mode "cdata", changes the cdata property to give the impression
-## of a lighted surface.  Please note: the alternative "light" mode, which creates a light
+##
+## The default lighting mode "cdata", changes the cdata property to give the
+## impression
+## of a lighted surface.  Please note: the alternative "light" mode, which
+## creates a light
 ## object to illuminate the surface is not implemented (yet).
 ##
 ## Example:
@@ -76,7 +83,7 @@ function retval = surfl (varargin)
       lstr = varargin{end};
       if (strncmp (tolower (lstr), "light", 5))
         warning ("light method not supported (yet), using cdata method instead");
-	## This can be implemented when light objects are supported.
+        ## This can be implemented when light objects are supported.
         use_cdata = false;
       elseif (strncmp (tolower (lstr), "cdata", 5))
         use_cdata = true;
@@ -91,7 +98,7 @@ function retval = surfl (varargin)
     ## r = [ambient light strength,
     ##      diffuse reflection strength,
     ##      specular reflection strength,
-    ##      specular shine] 
+    ##      specular shine]
     if (length (varargin{end}) == 4 && isnumeric (varargin{end}))
       r = varargin{end};
       varargin(end) = [];
@@ -115,11 +122,11 @@ function retval = surfl (varargin)
         have_lv = true;
       endif
     endif
-    
+
     tmp = surface (varargin{:});
     if (! ishold ())
       set (h, "view", [-37.5, 30],
-	   "xgrid", "on", "ygrid", "on", "zgrid", "on", "clim", [0 1]);
+           "xgrid", "on", "ygrid", "on", "zgrid", "on", "clim", [0 1]);
     endif
 
     ## Get view vector (vv).
@@ -138,7 +145,7 @@ function retval = surfl (varargin)
     endif
 
     vn = get (tmp, "vertexnormals");
-    dar = get (h, "dataaspectratio");
+    dar = get (h, "plotboxaspectratio");
     vn(:,:,1) *= dar(1);
     vn(:,:,2) *= dar(2);
     vn(:,:,3) *= dar(3);
@@ -153,7 +160,7 @@ function retval = surfl (varargin)
              + r(3) * specular (vn(:,:,1), vn(:,:,2), vn(:,:,3), lv, vv, r(4)));
 
     set (tmp, "cdata", cdata ./ sum (r(1:3)));
-    
+
   unwind_protect_cleanup
     axes (oldh);
   end_unwind_protect

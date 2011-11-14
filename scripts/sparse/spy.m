@@ -1,5 +1,4 @@
-## Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006,
-##               2007, 2008, 2009 Andy Adler
+## Copyright (C) 1998-2011 Andy Adler
 ##
 ## This file is part of Octave.
 ##
@@ -18,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} spy (@var{x})
+## @deftypefn  {Function File} {} spy (@var{x})
 ## @deftypefnx {Function File} {} spy (@dots{}, @var{markersize})
 ## @deftypefnx {Function File} {} spy (@dots{}, @var{line_spec})
 ## Plot the sparsity pattern of the sparse matrix @var{x}.  If the argument
@@ -28,14 +27,14 @@
 ## @seealso{plot}
 ## @end deftypefn
 
-function spy (x, varargin) 
+function spy (x, varargin)
 
   if (nargin < 1)
     print_usage ();
   endif
 
   markersize = NaN;
-  if (numel (i) < 1000)
+  if (numel (x) < 1000)
     line_spec = "*";
   else
     line_spec = ".";

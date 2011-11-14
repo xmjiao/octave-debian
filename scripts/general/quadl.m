@@ -1,4 +1,4 @@
-## Copyright (C) 1998, 2006, 2007, 2008, 2009 Walter Gautschi
+## Copyright (C) 1998-2011 Walter Gautschi
 ##
 ## This file is part of Octave.
 ##
@@ -17,31 +17,38 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{q} =} quadl (@var{f}, @var{a}, @var{b})
+## @deftypefn  {Function File} {@var{q} =} quadl (@var{f}, @var{a}, @var{b})
 ## @deftypefnx {Function File} {@var{q} =} quadl (@var{f}, @var{a}, @var{b}, @var{tol})
 ## @deftypefnx {Function File} {@var{q} =} quadl (@var{f}, @var{a}, @var{b}, @var{tol}, @var{trace})
 ## @deftypefnx {Function File} {@var{q} =} quadl (@var{f}, @var{a}, @var{b}, @var{tol}, @var{trace}, @var{p1}, @var{p2}, @dots{})
 ##
-## Numerically evaluate integral using adaptive Lobatto rule.
-## @code{quadl (@var{f}, @var{a}, @var{b})} approximates the integral of
-## @code{@var{f}(@var{x})} to machine precision.  @var{f} is either a
-## function handle, inline function or string containing the name of
-## the function to evaluate.  The function @var{f} must return a vector
-## of output values if given a vector of input values.
+## Numerically evaluate the integral of @var{f} from @var{a} to @var{b}
+## using an adaptive Lobatto rule.
+## @var{f} is a function handle, inline function, or string
+## containing the name of the function to evaluate.
+## The function @var{f} must be vectorized and return a vector of output values
+## if given a vector of input values.
 ##
-## If defined, @var{tol} defines the relative tolerance to which to
-## which to integrate @code{@var{f}(@var{x})}.  While if @var{trace} is
-## defined, displays the left end point of the current interval, the 
-## interval length, and the partial integral.
+## @var{a} and @var{b} are the lower and upper limits of integration.  Both
+## limits must be finite.
 ##
-## Additional arguments @var{p1}, etc., are passed directly to @var{f}.
-## To use default values for @var{tol} and @var{trace}, one may pass
-## empty matrices.
+## The optional argument @var{tol} defines the relative tolerance with which
+## to perform the integration.  The default value is @code{eps}.
 ##
-## Reference: W. Gander and W. Gautschi, 'Adaptive Quadrature - 
-## Revisited', BIT Vol. 40, No. 1, March 2000, pp. 84--101.
+## The algorithm used by @code{quadl} involves recursively subdividing the
+## integration interval.
+## If @var{trace} is defined then for each subinterval display: (1) the left
+## end of the subinterval, (2) the length of the subinterval, (3) the
+## approximation of the integral over the subinterval.
+##
+## Additional arguments @var{p1}, etc., are passed directly to the function
+## @var{f}.  To use default values for @var{tol} and @var{trace}, one may pass
+## empty matrices ([]).
+##
+## Reference: W. Gander and W. Gautschi, @cite{Adaptive Quadrature -
+## Revisited}, BIT Vol. 40, No. 1, March 2000, pp. 84--101.
 ## @url{http://www.inf.ethz.ch/personal/gander/}
-##
+## @seealso{quad, quadv, quadgk, quadcc, trapz, dblquad, triplequad}
 ## @end deftypefn
 
 ##   Author: Walter Gautschi
@@ -55,13 +62,13 @@
 ##   * replace global variable terminate2 with local function need_warning
 ##   * add paper ref to docs
 
-function Q = quadl (f, a, b, tol, trace, varargin)
+function q = quadl (f, a, b, tol, trace, varargin)
   need_warning (1);
   if (nargin < 4)
-    tol = []; 
+    tol = [];
   endif
   if (nargin < 5)
-    trace = []; 
+    trace = [];
   endif
   if (isa (a, "single") || isa (b, "single"))
     myeps = eps ("single");
@@ -69,21 +76,21 @@ function Q = quadl (f, a, b, tol, trace, varargin)
     myeps = eps;
   endif
   if (isempty (tol))
-    tol = myeps; 
+    tol = myeps;
   endif
   if (isempty (trace))
-    trace = 0; 
+    trace = 0;
   endif
   if (tol < myeps)
     tol = myeps;
   endif
 
-  m = (a+b)/2; 
+  m = (a+b)/2;
   h = (b-a)/2;
-  alpha = sqrt(2/3); 
+  alpha = sqrt(2/3);
   beta = 1/sqrt(5);
 
-  x1 = .942882415695480; 
+  x1 = .942882415695480;
   x2 = .641853342345781;
   x3 = .236383199662150;
 
@@ -92,43 +99,43 @@ function Q = quadl (f, a, b, tol, trace, varargin)
 
   y = feval (f, x, varargin{:});
 
-  fa = y(1); 
+  fa = y(1);
   fb = y(13);
 
   i2 = (h/6)*(y(1) + y(13) + 5*(y(5)+y(9)));
 
   i1 = (h/1470)*(77*(y(1)+y(13))
-		 + 432*(y(3)+y(11))
-		 + 625*(y(5)+y(9))
-		 + 672*y(7));
+                 + 432*(y(3)+y(11))
+                 + 625*(y(5)+y(9))
+                 + 672*y(7));
 
   is = h*(.0158271919734802*(y(1)+y(13))
-	  +.0942738402188500*(y(2)+y(12))
-	  + .155071987336585*(y(3)+y(11))
-	  + .188821573960182*(y(4)+y(10))
-	  + .199773405226859*(y(5)+y(9))
-	  + .224926465333340*(y(6)+y(8))
-	  + .242611071901408*y(7));
+          +.0942738402188500*(y(2)+y(12))
+          + .155071987336585*(y(3)+y(11))
+          + .188821573960182*(y(4)+y(10))
+          + .199773405226859*(y(5)+y(9))
+          + .224926465333340*(y(6)+y(8))
+          + .242611071901408*y(7));
 
-  s = sign(is); 
+  s = sign(is);
 
   if (s == 0)
     s = 1;
   endif
   erri1 = abs(i1-is);
   erri2 = abs(i2-is);
-  R = 1; 
+  R = 1;
   if (erri2 != 0)
-    R = erri1/erri2; 
+    R = erri1/erri2;
   endif
   if (R > 0 && R < 1)
-    tol = tol/R; 
+    tol = tol/R;
   endif
   is = s*abs(is)*tol/myeps;
   if (is == 0)
     is = b-a;
   endif
-  Q = adaptlobstp (f, a, b, fa, fb, is, trace, varargin{:});
+  q = adaptlobstp (f, a, b, fa, fb, is, trace, varargin{:});
 endfunction
 
 ## ADAPTLOBSTP  Recursive function used by QUADL.
@@ -141,21 +148,21 @@ endfunction
 ##
 ##   Walter Gautschi, 08/03/98
 
-function Q = adaptlobstp (f, a, b, fa, fb, is, trace, varargin)
-  h = (b-a)/2; 
+function q = adaptlobstp (f, a, b, fa, fb, is, trace, varargin)
+  h = (b-a)/2;
   m = (a+b)/2;
-  alpha = sqrt(2/3); 
+  alpha = sqrt(2/3);
   beta = 1/sqrt(5);
-  mll = m-alpha*h; 
-  ml = m-beta*h; 
-  mr = m+beta*h; 
+  mll = m-alpha*h;
+  ml = m-beta*h;
+  mr = m+beta*h;
   mrr = m+alpha*h;
   x = [mll, ml, m, mr, mrr];
   y = feval(f, x, varargin{:});
-  fmll = y(1); 
-  fml = y(2); 
-  fm = y(3); 
-  fmr = y(4); 
+  fmll = y(1);
+  fml = y(2);
+  fm = y(3);
+  fmr = y(4);
   fmrr = y(5);
   i2 = (h/6)*(fa + fb + 5*(fml+fmr));
   i1 = (h/1470)*(77*(fa+fb) + 432*(fmll+fmrr) + 625*(fml+fmr) + 672*fm);
@@ -165,17 +172,17 @@ function Q = adaptlobstp (f, a, b, fa, fb, is, trace, varargin)
       warning ("quadl: required tolerance may not be met");
       need_warning (0);
     endif
-    Q = i1;
+    q = i1;
     if (trace)
-      disp ([a, b-a, Q]);
+      disp ([a, b-a, q]);
     endif
   else
-    Q = (adaptlobstp (f, a, mll, fa, fmll, is, trace, varargin{:})
-	 + adaptlobstp (f, mll, ml, fmll, fml, is, trace, varargin{:})
-	 + adaptlobstp (f, ml, m, fml, fm, is, trace, varargin{:})
-	 + adaptlobstp (f, m, mr, fm, fmr, is, trace, varargin{:})
-	 + adaptlobstp (f, mr, mrr, fmr, fmrr, is, trace, varargin{:})
-	 + adaptlobstp (f, mrr, b, fmrr, fb, is, trace, varargin{:}));
+    q = (adaptlobstp (f, a, mll, fa, fmll, is, trace, varargin{:})
+         + adaptlobstp (f, mll, ml, fmll, fml, is, trace, varargin{:})
+         + adaptlobstp (f, ml, m, fml, fm, is, trace, varargin{:})
+         + adaptlobstp (f, m, mr, fm, fmr, is, trace, varargin{:})
+         + adaptlobstp (f, mr, mrr, fmr, fmrr, is, trace, varargin{:})
+         + adaptlobstp (f, mrr, b, fmrr, fb, is, trace, varargin{:}));
   endif
 endfunction
 
@@ -183,7 +190,7 @@ function r = need_warning (v)
   persistent w = [];
   if (nargin == 0)
     r = w;
-  else 
-    w = v; 
+  else
+    w = v;
   endif
 endfunction

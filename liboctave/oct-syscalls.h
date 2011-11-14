@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2000, 2003, 2005, 2006, 2007
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -28,9 +27,7 @@ along with Octave; see the file COPYING.  If not, see
 
 class string_vector;
 
-#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#endif
 
 struct
 OCTAVE_API
@@ -41,9 +38,6 @@ octave_syscalls
 
   static int execvp (const std::string&, const string_vector&);
   static int execvp (const std::string&, const string_vector&, std::string&);
-
-  static int fcntl (int, int, long);
-  static int fcntl (int, int, long, std::string&);
 
   static pid_t fork (std::string&);
   static pid_t vfork (std::string&);
@@ -75,8 +69,5 @@ octave_syscalls
 
 #endif
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+extern OCTAVE_API int octave_fcntl (int, int, long);
+extern OCTAVE_API int octave_fcntl (int, int, long, std::string&);

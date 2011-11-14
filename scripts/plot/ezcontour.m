@@ -1,4 +1,4 @@
-## Copyright (C) 2007, 2009 David Bateman
+## Copyright (C) 2007-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} ezcontour (@var{f})
+## @deftypefn  {Function File} {} ezcontour (@var{f})
 ## @deftypefnx {Function File} {} ezcontour (@dots{}, @var{dom})
 ## @deftypefnx {Function File} {} ezcontour (@dots{}, @var{n})
 ## @deftypefnx {Function File} {} ezcontour (@var{h}, @dots{})
@@ -25,8 +25,8 @@
 ##
 ## Plots the contour lines of a function.  @var{f} is a string, inline function
 ## or function handle with two arguments defining the function.  By default the
-## plot is over the domain @code{-2*pi < @var{x} < 2*pi} and @code{-2*pi < 
-## @var{y} < 2*pi} with 60 points in each dimension. 
+## plot is over the domain @code{-2*pi < @var{x} < 2*pi} and @code{-2*pi <
+## @var{y} < 2*pi} with 60 points in each dimension.
 ##
 ## If @var{dom} is a two element vector, it represents the minimum and maximum
 ## value of both @var{x} and @var{y}.  If @var{dom} is a four element vector,
@@ -35,7 +35,7 @@
 ##
 ## @var{n} is a scalar defining the number of points to use in each dimension.
 ##
-## The optional return value @var{h} provides a list of handles to the 
+## The optional return value @var{h} provides a list of handles to the
 ## the parts of the vector field (body, arrow and marker).
 ##
 ## @example

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2005, 2006, 2007, 2008 Nicolo' Giorgetti
+Copyright (C) 2005-2011 Nicolo' Giorgetti
 
 This file is part of Octave.
 
@@ -203,31 +203,31 @@ glpk (int sense, int n, int m, double *c, int nz, int *rn, int *cn,
     {
       //-- Define type of the structural variables
       if (! freeLB[i] && ! freeUB[i])
-	{
-	  if (lb[i] != ub[i])
-	    lpx_set_col_bnds (lp, i+1, LPX_DB, lb[i], ub[i]);
-	  else
-	    lpx_set_col_bnds (lp, i+1, LPX_FX, lb[i], ub[i]);
-	}
+        {
+          if (lb[i] != ub[i])
+            lpx_set_col_bnds (lp, i+1, LPX_DB, lb[i], ub[i]);
+          else
+            lpx_set_col_bnds (lp, i+1, LPX_FX, lb[i], ub[i]);
+        }
       else
-	{
-	  if (! freeLB[i] && freeUB[i])
+        {
+          if (! freeLB[i] && freeUB[i])
             lpx_set_col_bnds (lp, i+1, LPX_LO, lb[i], ub[i]);
-	  else
-	    {
-	      if (freeLB[i] && ! freeUB[i])
-		lpx_set_col_bnds (lp, i+1, LPX_UP, lb[i], ub[i]);
-	      else
-		lpx_set_col_bnds (lp, i+1, LPX_FR, lb[i], ub[i]);
-	    }
-	}
+          else
+            {
+              if (freeLB[i] && ! freeUB[i])
+                lpx_set_col_bnds (lp, i+1, LPX_UP, lb[i], ub[i]);
+              else
+                lpx_set_col_bnds (lp, i+1, LPX_FR, lb[i], ub[i]);
+            }
+        }
 
       // -- Set the objective coefficient of the corresponding
       // -- structural variable. No constant term is assumed.
       lpx_set_obj_coef(lp,i+1,c[i]);
 
       if (isMIP)
-	lpx_set_col_kind (lp, i+1, vartype[i]);
+        lpx_set_col_kind (lp, i+1, vartype[i]);
     }
 
   lpx_add_rows (lp, m);
@@ -243,28 +243,28 @@ glpk (int sense, int n, int m, double *c, int nz, int *rn, int *cn,
       */
 
       switch (ctype[i])
-	{
-	case 'F':
-	  typx = LPX_FR;
-	  break;
+        {
+        case 'F':
+          typx = LPX_FR;
+          break;
 
-	case 'U':
-	  typx = LPX_UP;
-	  break;
+        case 'U':
+          typx = LPX_UP;
+          break;
 
-	case 'L':
-	  typx = LPX_LO;
-	  break;
+        case 'L':
+          typx = LPX_LO;
+          break;
 
-	case 'S':
-	  typx = LPX_FX;
-	  break;
+        case 'S':
+          typx = LPX_FX;
+          break;
 
-	case 'D':
-	  typx = LPX_DB;
-	  break;
-	}
-      
+        case 'D':
+          typx = LPX_DB;
+          break;
+        }
+
       lpx_set_row_bnds (lp, i+1, typx, b[i], b[i]);
 
     }
@@ -275,10 +275,10 @@ glpk (int sense, int n, int m, double *c, int nz, int *rn, int *cn,
     {
       static char tmp[] = "outpb.lp";
       if (lpx_write_cpxlp (lp, tmp) != 0)
-	{
-	  error ("__glpk__: unable to write problem");
-	  longjmp (mark, -1);
-	}
+        {
+          error ("__glpk__: unable to write problem");
+          longjmp (mark, -1);
+        }
     }
 
   //-- scale the problem data (if required)
@@ -306,14 +306,14 @@ glpk (int sense, int n, int m, double *c, int nz, int *rn, int *cn,
     {
     case 'S':
       {
-	if (isMIP)
-	  {
-	    method = 'I';
-	    errnum = lpx_simplex (lp);
-	    errnum = lpx_integer (lp);
-	  }
-	else
-	  errnum = lpx_simplex(lp);
+        if (isMIP)
+          {
+            method = 'I';
+            errnum = lpx_simplex (lp);
+            errnum = lpx_integer (lp);
+          }
+        else
+          errnum = lpx_simplex(lp);
       }
      break;
 
@@ -341,58 +341,58 @@ glpk (int sense, int n, int m, double *c, int nz, int *rn, int *cn,
   if (errnum == LPX_E_OK)
     {
       if (isMIP)
-	{
-	  *status = lpx_mip_status (lp);
-	  *fmin = lpx_mip_obj_val (lp);
-	}
+        {
+          *status = lpx_mip_status (lp);
+          *fmin = lpx_mip_obj_val (lp);
+        }
       else
-	{
-	  if (lpsolver == 1)
-	    {
-	      *status = lpx_get_status (lp);
-	      *fmin = lpx_get_obj_val (lp);
-	    }
-	  else
-	    {
-	      *status = lpx_ipt_status (lp);
-	      *fmin = lpx_ipt_obj_val (lp);
-	    }
-	}
+        {
+          if (lpsolver == 1)
+            {
+              *status = lpx_get_status (lp);
+              *fmin = lpx_get_obj_val (lp);
+            }
+          else
+            {
+              *status = lpx_ipt_status (lp);
+              *fmin = lpx_ipt_obj_val (lp);
+            }
+        }
 
       if (isMIP)
-	{
-	  for (int i = 0; i < n; i++)
-	    xmin[i] = lpx_mip_col_val (lp, i+1);
-	}
+        {
+          for (int i = 0; i < n; i++)
+            xmin[i] = lpx_mip_col_val (lp, i+1);
+        }
       else
-	{
-	  /* Primal values */
-	  for (int i = 0; i < n; i++)
-	    {
-	      if (lpsolver == 1)
-		xmin[i] = lpx_get_col_prim (lp, i+1);
-	      else
-		xmin[i] = lpx_ipt_col_prim (lp, i+1);
-	    }
+        {
+          /* Primal values */
+          for (int i = 0; i < n; i++)
+            {
+              if (lpsolver == 1)
+                xmin[i] = lpx_get_col_prim (lp, i+1);
+              else
+                xmin[i] = lpx_ipt_col_prim (lp, i+1);
+            }
 
-	  /* Dual values */
-	  for (int i = 0; i < m; i++)
-	    {
-	      if (lpsolver == 1)
-		lambda[i] = lpx_get_row_dual (lp, i+1);
-	      else
-		lambda[i] = lpx_ipt_row_dual (lp, i+1);
-	    }
+          /* Dual values */
+          for (int i = 0; i < m; i++)
+            {
+              if (lpsolver == 1)
+                lambda[i] = lpx_get_row_dual (lp, i+1);
+              else
+                lambda[i] = lpx_ipt_row_dual (lp, i+1);
+            }
 
-	  /* Reduced costs */
-	  for (int i = 0; i < lpx_get_num_cols (lp); i++)
-	    {
-	      if (lpsolver == 1)
-		redcosts[i] = lpx_get_col_dual (lp, i+1);
-	      else
-		redcosts[i] = lpx_ipt_col_dual (lp, i+1);
-	    }
-	}
+          /* Reduced costs */
+          for (int i = 0; i < lpx_get_num_cols (lp); i++)
+            {
+              if (lpsolver == 1)
+                redcosts[i] = lpx_get_col_dual (lp, i+1);
+              else
+                redcosts[i] = lpx_ipt_col_dual (lp, i+1);
+            }
+        }
 
       *time = (clock () - t_start) / CLOCKS_PER_SEC;
 
@@ -418,52 +418,52 @@ glpk (int sense, int n, int m, double *c, int nz, int *rn, int *cn,
 #define OCTAVE_GLPK_GET_REAL_PARAM(NAME, IDX) \
   do \
     { \
-      if (PARAM.contains (NAME)) \
-	{ \
-	  Cell tmp = PARAM.contents (NAME); \
+      octave_value tmp = PARAM.getfield (NAME); \
  \
+      if (tmp.is_defined ()) \
+        { \
           if (! tmp.is_empty ()) \
-	    { \
-	      lpxRealParam[IDX] = tmp(0).scalar_value (); \
+            { \
+              lpxRealParam[IDX] = tmp.scalar_value (); \
  \
               if (error_state) \
-		{ \
-		  error ("glpk: invalid value in param." NAME); \
-		  return retval; \
-		} \
-	    } \
-	  else \
-	    { \
-	      error ("glpk: invalid value in param." NAME); \
-	      return retval; \
-	    } \
-	} \
+                { \
+                  error ("glpk: invalid value in PARAM." NAME); \
+                  return retval; \
+                } \
+            } \
+          else \
+            { \
+              error ("glpk: invalid value in PARAM." NAME); \
+              return retval; \
+            } \
+        } \
     } \
   while (0)
 
 #define OCTAVE_GLPK_GET_INT_PARAM(NAME, VAL) \
   do \
     { \
-      if (PARAM.contains (NAME)) \
-	{ \
-	  Cell tmp = PARAM.contents (NAME); \
+      octave_value tmp = PARAM.getfield (NAME); \
  \
+      if (tmp.is_defined ()) \
+        { \
           if (! tmp.is_empty ()) \
-	    { \
-	      VAL = tmp(0).int_value (); \
+            { \
+              VAL = tmp.int_value (); \
  \
               if (error_state) \
-		{ \
-		  error ("glpk: invalid value in param." NAME); \
-		  return retval; \
-		} \
-	    } \
-	  else \
-	    { \
-	      error ("glpk: invalid value in param." NAME); \
-	      return retval; \
-	    } \
-	} \
+                { \
+                  error ("glpk: invalid value in PARAM." NAME); \
+                  return retval; \
+                } \
+            } \
+          else \
+            { \
+              error ("glpk: invalid value in PARAM." NAME); \
+              return retval; \
+            } \
+        } \
     } \
   while (0)
 
@@ -512,71 +512,71 @@ Undocumented internal function.\n\
       SparseMatrix A = args(1).sparse_matrix_value (); // get the sparse matrix
 
       if (error_state)
-	{
-	  error ("__glpk__: invalid value of A");
-	  return retval;
-	}
+        {
+          error ("__glpk__: invalid value of A");
+          return retval;
+        }
 
       mrowsA = A.rows ();
       octave_idx_type Anc = A.cols ();
-      octave_idx_type Anz = A.nzmax ();
-      rn.resize (Anz+1);
-      cn.resize (Anz+1);
+      octave_idx_type Anz = A.nnz ();
+      rn.resize (dim_vector (Anz+1, 1));
+      cn.resize (dim_vector (Anz+1, 1));
       a.resize (Anz+1, 0.0);
 
       if (Anc != mrowsc)
-	{
-	  error ("__glpk__: invalid value of A");
-	  return retval;
-	}
+        {
+          error ("__glpk__: invalid value of A");
+          return retval;
+        }
 
       for (octave_idx_type j = 0; j < Anc; j++)
-	for (octave_idx_type i = A.cidx(j); i < A.cidx(j+1); i++)
-	  {
-	    nz++;
-	    rn(nz) = A.ridx(i) + 1;
-	    cn(nz) = j + 1;
-	    a(nz) = A.data(i);
-	  }
+        for (octave_idx_type i = A.cidx(j); i < A.cidx(j+1); i++)
+          {
+            nz++;
+            rn(nz) = A.ridx(i) + 1;
+            cn(nz) = j + 1;
+            a(nz) = A.data(i);
+          }
     }
   else
     {
       Matrix A (args(1).matrix_value ()); // get the matrix
 
       if (error_state)
-	{
-	  error ("__glpk__: invalid value of A");
-	  return retval;
-	}
+        {
+          error ("__glpk__: invalid value of A");
+          return retval;
+        }
 
       mrowsA = A.rows ();
-      rn.resize (mrowsA*mrowsc+1);
-      cn.resize (mrowsA*mrowsc+1);
+      rn.resize (dim_vector (mrowsA*mrowsc+1, 1));
+      cn.resize (dim_vector (mrowsA*mrowsc+1, 1));
       a.resize (mrowsA*mrowsc+1, 0.0);
 
       for (int i = 0; i < mrowsA; i++)
-	{
-	  for (int j = 0; j < mrowsc; j++)
-	    {
-	      if (A(i,j) != 0)
-		{
-		  nz++;
-		  rn(nz) = i + 1;
-		  cn(nz) = j + 1;
-		  a(nz) = A(i,j);
-		}
-	    }
-	}
+        {
+          for (int j = 0; j < mrowsc; j++)
+            {
+              if (A(i,j) != 0)
+                {
+                  nz++;
+                  rn(nz) = i + 1;
+                  cn(nz) = j + 1;
+                  a(nz) = A(i,j);
+                }
+            }
+        }
 
     }
 
   //-- 3rd Input. A column array containing the right-hand side value
-  //	           for each constraint in the constraint matrix.
+  //               for each constraint in the constraint matrix.
   Matrix B (args(2).matrix_value ());
 
   if (error_state)
     {
-      error ("__glpk__: invalid value of b");
+      error ("__glpk__: invalid value of B");
       return retval;
     }
 
@@ -588,23 +588,23 @@ Undocumented internal function.\n\
 
   if (error_state || LB.length () < mrowsc)
     {
-      error ("__glpk__: invalid value of lb");
+      error ("__glpk__: invalid value of LB");
       return retval;
     }
 
   double *lb = LB.fortran_vec ();
 
   //-- LB argument, default: Free
-  Array<int> freeLB (mrowsc);
+  Array<int> freeLB (dim_vector (mrowsc, 1));
   for (int i = 0; i < mrowsc; i++)
      {
        if (xisinf (lb[i]))
-	 {
-	   freeLB(i) = 1;
-	   lb[i] = -octave_Inf;
-	 }
+         {
+           freeLB(i) = 1;
+           lb[i] = -octave_Inf;
+         }
        else
-	 freeLB(i) = 0;
+         freeLB(i) = 0;
      }
 
   //-- 5th Input. An array of at least length numcols containing the upper
@@ -613,22 +613,22 @@ Undocumented internal function.\n\
 
   if (error_state || UB.length () < mrowsc)
     {
-      error ("__glpk__: invalid value of ub");
+      error ("__glpk__: invalid value of UB");
       return retval;
     }
 
   double *ub = UB.fortran_vec ();
 
-  Array<int> freeUB (mrowsc);
+  Array<int> freeUB (dim_vector (mrowsc, 1));
   for (int i = 0; i < mrowsc; i++)
     {
       if (xisinf (ub[i]))
-	{
-	  freeUB(i) = 1;
-	  ub[i] = octave_Inf;
-	}
+        {
+          freeUB(i) = 1;
+          ub[i] = octave_Inf;
+        }
       else
-	freeUB(i) = 0;
+        freeUB(i) = 0;
     }
 
   //-- 6th Input. A column array containing the sense of each constraint
@@ -637,7 +637,7 @@ Undocumented internal function.\n\
 
   if (error_state)
     {
-      error ("__glpk__: invalid value of ctype");
+      error ("__glpk__: invalid value of CTYPE");
       return retval;
     }
 
@@ -648,21 +648,21 @@ Undocumented internal function.\n\
 
   if (error_state)
     {
-      error ("__glpk__: invalid value of vtype");
+      error ("__glpk__: invalid value of VARTYPE");
       return retval;
     }
 
-  Array<int> vartype (mrowsc);
+  Array<int> vartype (dim_vector (mrowsc, 1));
   volatile int isMIP = 0;
   for (int i = 0; i < mrowsc ; i++)
     {
       if (VTYPE(i,0) == 'I')
-	{
-	  isMIP = 1;
-	  vartype(i) = LPX_IV;
-	}
+        {
+          isMIP = 1;
+          vartype(i) = LPX_IV;
+        }
       else
-	vartype(i) = LPX_CV;
+        vartype(i) = LPX_CV;
     }
 
   //-- 8th Input. Sense of optimization.
@@ -671,7 +671,7 @@ Undocumented internal function.\n\
 
   if (error_state)
     {
-      error ("__glpk__: invalid value of sense");
+      error ("__glpk__: invalid value of SENSE");
       return retval;
     }
 
@@ -681,11 +681,11 @@ Undocumented internal function.\n\
     sense = -1;
 
   //-- 9th Input. A structure containing the control parameters.
-  Octave_map PARAM = args(8).map_value ();
+  octave_scalar_map PARAM = args(8).scalar_map_value ();
 
   if (error_state)
     {
-      error ("__glpk__: invalid value of param");
+      error ("__glpk__: invalid value of PARAM");
       return retval;
     }
 
@@ -697,7 +697,7 @@ Undocumented internal function.\n\
   OCTAVE_GLPK_GET_INT_PARAM ("msglev", lpxIntParam[0]);
   if (lpxIntParam[0] < 0 || lpxIntParam[0] > 3)
     {
-      error ("__glpk__: param.msglev must be 0 (no output [default]) or 1 (error messages only) or 2 (normal output) or 3 (full output)");
+      error ("__glpk__: PARAM.msglev must be 0 (no output [default]) or 1 (error messages only) or 2 (normal output) or 3 (full output)");
       return retval;
     }
 
@@ -705,7 +705,7 @@ Undocumented internal function.\n\
   OCTAVE_GLPK_GET_INT_PARAM ("scale", lpxIntParam[1]);
   if (lpxIntParam[1] < 0 || lpxIntParam[1] > 2)
     {
-      error ("__glpk__: param.scale must be 0 (no scaling) or 1 (equilibration scaling [default]) or 2 (geometric mean scaling)");
+      error ("__glpk__: PARAM.scale must be 0 (no scaling) or 1 (equilibration scaling [default]) or 2 (geometric mean scaling)");
       return retval;
     }
 
@@ -713,7 +713,7 @@ Undocumented internal function.\n\
   OCTAVE_GLPK_GET_INT_PARAM ("dual", lpxIntParam[2]);
   if (lpxIntParam[2] < 0 || lpxIntParam[2] > 1)
     {
-      error ("__glpk__: param.dual must be 0 (do NOT use dual simplex [default]) or 1 (use dual simplex)");
+      error ("__glpk__: PARAM.dual must be 0 (do NOT use dual simplex [default]) or 1 (use dual simplex)");
       return retval;
     }
 
@@ -721,7 +721,7 @@ Undocumented internal function.\n\
   OCTAVE_GLPK_GET_INT_PARAM ("price", lpxIntParam[3]);
   if (lpxIntParam[3] < 0 || lpxIntParam[3] > 1)
     {
-      error ("__glpk__: param.price must be 0 (textbook pricing) or 1 (steepest edge pricing [default])");
+      error ("__glpk__: PARAM.price must be 0 (textbook pricing) or 1 (steepest edge pricing [default])");
       return retval;
     }
 
@@ -729,7 +729,7 @@ Undocumented internal function.\n\
   OCTAVE_GLPK_GET_INT_PARAM ("round", lpxIntParam[4]);
   if (lpxIntParam[4] < 0 || lpxIntParam[4] > 1)
     {
-      error ("__glpk__: param.round must be 0 (report all primal and dual values [default]) or 1 (replace tiny primal and dual values by exact zero)");
+      error ("__glpk__: PARAM.round must be 0 (report all primal and dual values [default]) or 1 (replace tiny primal and dual values by exact zero)");
       return retval;
     }
 
@@ -746,7 +746,7 @@ Undocumented internal function.\n\
   OCTAVE_GLPK_GET_INT_PARAM ("branch", lpxIntParam[14]);
   if (lpxIntParam[14] < 0 || lpxIntParam[14] > 2)
     {
-      error ("__glpk__: param.branch must be (MIP only) 0 (branch on first variable) or 1 (branch on last variable) or 2 (branch using a heuristic by Driebeck and Tomlin [default]");
+      error ("__glpk__: PARAM.branch must be (MIP only) 0 (branch on first variable) or 1 (branch on last variable) or 2 (branch using a heuristic by Driebeck and Tomlin [default]");
       return retval;
     }
 
@@ -754,7 +754,7 @@ Undocumented internal function.\n\
   OCTAVE_GLPK_GET_INT_PARAM ("btrack", lpxIntParam[15]);
   if (lpxIntParam[15] < 0 || lpxIntParam[15] > 2)
     {
-      error ("__glpk__: param.btrack must be (MIP only) 0 (depth first search) or 1 (breadth first search) or 2 (backtrack using the best projection heuristic [default]");
+      error ("__glpk__: PARAM.btrack must be (MIP only) 0 (depth first search) or 1 (breadth first search) or 2 (backtrack using the best projection heuristic [default]");
       return retval;
     }
 
@@ -762,7 +762,7 @@ Undocumented internal function.\n\
   OCTAVE_GLPK_GET_INT_PARAM ("presol", lpxIntParam[16]);
   if (lpxIntParam[16] < 0 || lpxIntParam[16] > 1)
     {
-      error ("__glpk__: param.presol must be 0 (do NOT use LP presolver) or 1 (use LP presolver [default])");
+      error ("__glpk__: PARAM.presol must be 0 (do NOT use LP presolver) or 1 (use LP presolver [default])");
       return retval;
     }
 
@@ -771,7 +771,7 @@ Undocumented internal function.\n\
   OCTAVE_GLPK_GET_INT_PARAM ("lpsolver", lpsolver);
   if (lpsolver < 1 || lpsolver > 2)
     {
-      error ("__glpk__: param.lpsolver must be 1 (simplex method) or 2 (interior point method)");
+      error ("__glpk__: PARAM.lpsolver must be 1 (simplex method) or 2 (interior point method)");
       return retval;
     }
 
@@ -796,7 +796,7 @@ Undocumented internal function.\n\
   OCTAVE_GLPK_GET_REAL_PARAM ("toldj", 2);
 
   //-- Relative tolerance used to choose eligible pivotal elements of
-  //--	the simplex table in the ratio test
+  //--  the simplex table in the ratio test
   OCTAVE_GLPK_GET_REAL_PARAM ("tolpiv", 3);
 
   OCTAVE_GLPK_GET_REAL_PARAM ("objll", 4);
@@ -813,40 +813,38 @@ Undocumented internal function.\n\
 
   //-- Assign pointers to the output parameters
   ColumnVector xmin (mrowsc, octave_NA);
-  ColumnVector fmin (1, octave_NA);
-  ColumnVector status (1);
+  double fmin = octave_NA;
+  double status;
   ColumnVector lambda (mrowsA, octave_NA);
   ColumnVector redcosts (mrowsc, octave_NA);
-  ColumnVector time (1);
-  ColumnVector mem (1);
+  double time;
+  double mem;
 
   int jmpret = setjmp (mark);
 
   if (jmpret == 0)
     glpk (sense, mrowsc, mrowsA, c, nz, rn.fortran_vec (),
-	  cn.fortran_vec (), a.fortran_vec (), b, ctype,
-	  freeLB.fortran_vec (), lb, freeUB.fortran_vec (),
-	  ub, vartype.fortran_vec (), isMIP, lpsolver,
-	  save_pb, xmin.fortran_vec (), fmin.fortran_vec (),
-	  status.fortran_vec (), lambda.fortran_vec (),
-	  redcosts.fortran_vec (), time.fortran_vec (),
-	  mem.fortran_vec ());
+          cn.fortran_vec (), a.fortran_vec (), b, ctype,
+          freeLB.fortran_vec (), lb, freeUB.fortran_vec (), ub,
+          vartype.fortran_vec (), isMIP, lpsolver, save_pb,
+          xmin.fortran_vec (), &fmin, &status, lambda.fortran_vec (),
+          redcosts.fortran_vec (), &time, &mem);
 
-  Octave_map extra;
+  octave_scalar_map extra;
 
   if (! isMIP)
     {
-      extra.assign ("lambda", octave_value (lambda));
-      extra.assign ("redcosts", octave_value (redcosts));
+      extra.assign ("lambda", lambda);
+      extra.assign ("redcosts", redcosts);
     }
 
-  extra.assign ("time", octave_value (time));
-  extra.assign ("mem", octave_value (mem));
+  extra.assign ("time", time);
+  extra.assign ("mem", mem);
 
   retval(3) = extra;
-  retval(2) = octave_value(status);
-  retval(1) = octave_value(fmin);
-  retval(0) = octave_value(xmin);
+  retval(2) = status;
+  retval(1) = fmin;
+  retval(0) = xmin;
 
 #else
 

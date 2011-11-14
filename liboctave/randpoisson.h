@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2006, 2007 John W. Eaton
+Copyright (C) 2006-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -25,23 +25,14 @@ along with Octave; see the file COPYING.  If not, see
 
 #ifndef _RANDPOISSON_H
 
-#include "oct-types.h"
-
 #ifdef  __cplusplus
 extern "C" {
 #endif
 
-extern double oct_randp (double L);
-extern void oct_fill_randp (double L, octave_idx_type n, double *p);
+extern OCTAVE_API double oct_randp (double L);
+extern OCTAVE_API void oct_fill_randp (double L, octave_idx_type n, double *p);
 
 #ifdef  __cplusplus
 }
 #endif
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C ***
-;;; End: ***
-*/
-

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2005, 2007 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -32,9 +32,3 @@ along with Octave; see the file COPYING.  If not, see
 #endif
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

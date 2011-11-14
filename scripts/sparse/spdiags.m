@@ -1,4 +1,4 @@
-## Copyright (C) 2000, 2001, 2004, 2005, 2007, 2008, 2009 Paul Kienzle
+## Copyright (C) 2000-2011 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -17,19 +17,19 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {[@var{b}, @var{c}] =} spdiags (@var{a})
-## @deftypefnx {Function File} {@var{b} =} spdiags (@var{a}, @var{c})
-## @deftypefnx {Function File} {@var{b} =} spdiags (@var{v}, @var{c}, @var{a})
+## @deftypefn  {Function File} {[@var{b}, @var{c}] =} spdiags (@var{A})
+## @deftypefnx {Function File} {@var{b} =} spdiags (@var{A}, @var{c})
+## @deftypefnx {Function File} {@var{b} =} spdiags (@var{v}, @var{c}, @var{A})
 ## @deftypefnx {Function File} {@var{b} =} spdiags (@var{v}, @var{c}, @var{m}, @var{n})
 ## A generalization of the function @code{diag}.  Called with a single
 ## input argument, the non-zero diagonals @var{c} of @var{A} are extracted.
-## With two arguments the diagonals to extract are given by the vector 
+## With two arguments the diagonals to extract are given by the vector
 ## @var{c}.
 ##
 ## The other two forms of @code{spdiags} modify the input matrix by
 ## replacing the diagonals.  They use the columns of @var{v} to replace
 ## the columns represented by the vector @var{c}.  If the sparse matrix
-## @var{a} is defined then the diagonals of this matrix are replaced.
+## @var{A} is defined then the diagonals of this matrix are replaced.
 ## Otherwise a matrix of @var{m} by @var{n} is created with the
 ## diagonals given by @var{v}.
 ##
@@ -37,7 +37,7 @@
 ## diagonal, and positive values of @var{c} diagonals above the main
 ## diagonal.
 ##
-## For example
+## For example:
 ##
 ## @example
 ## @group
@@ -79,10 +79,16 @@ function [A, c] = spdiags (v, c, m, n)
     ## Create new matrix of size mxn using v,c
     [j, i, v] = find (v);
     offset = max (min (c(:), n-m), 0);
-    j = j(:) + offset(i);
+    j = j + offset(i);
     i = j-c(:)(i);
     idx = i > 0 & i <= m & j > 0 & j <= n;
     A = sparse (i(idx), j(idx), v(idx), m, n);
   endif
 
 endfunction
+
+%!test
+%assert(spdiags(zeros(1,0),1,1,1),0)
+
+%!test
+%assert(spdiags(zeros(0,1),1,1,1),0)

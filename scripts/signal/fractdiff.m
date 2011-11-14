@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 2000, 2002, 2005, 2007, 2009
-##               Friedrich Leisch
+## Copyright (C) 1995-2011 Friedrich Leisch
 ##
 ## This file is part of Octave.
 ##
@@ -35,11 +34,11 @@ function retval = fractdiff (x, d)
   N = 100;
 
   if (! isvector (x))
-    error ("fractdiff: x must be a vector");
+    error ("fractdiff: X must be a vector");
   endif
 
   if (! isscalar (d))
-    error ("fractdiff: d must be a scalar");
+    error ("fractdiff: D must be a scalar");
   endif
 
 
@@ -63,7 +62,7 @@ function retval = fractdiff (x, d)
     endif
 
   else
-    error ("fractdiff: d must be > -1");
+    error ("fractdiff: D must be > -1");
 
   endif
 

@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1999, 2000, 2002, 2003, 2005, 2006, 2007, 2009
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -27,9 +26,7 @@ along with Octave; see the file COPYING.  If not, see
 
 #include <string>
 
-#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#endif
 
 #include "oct-group.h"
 
@@ -50,7 +47,7 @@ mk_gr_map (const octave_group& gr)
 
   if (gr)
     {
-      Octave_map m;
+      octave_scalar_map m;
 
       m.assign ("name", gr.name ());
       m.assign ("passwd", gr.passwd ());
@@ -69,7 +66,7 @@ DEFUN_DLD (getgrent, args, ,
  "-*- texinfo -*-\n\
 @deftypefn {Loadable Function} {@var{grp_struct} =} getgrent ()\n\
 Return an entry from the group database, opening it if necessary.\n\
-Once the end of the data has been reached, @code{getgrent} returns 0.\n\
+Once the end of data has been reached, @code{getgrent} returns 0.\n\
 @end deftypefn")
 {
   octave_value_list retval;
@@ -112,19 +109,19 @@ Return the first entry from the group database with the group ID\n\
       double dval = args(0).double_value ();
 
       if (! error_state)
-	{
-	  if (D_NINT (dval) == dval)
-	    {
-	      gid_t gid = static_cast<gid_t> (dval);
+        {
+          if (D_NINT (dval) == dval)
+            {
+              gid_t gid = static_cast<gid_t> (dval);
 
-	      std::string msg;
+              std::string msg;
 
-	      retval(0) = mk_gr_map (octave_group::getgrgid (gid, msg));
-	      retval(1) = msg;
-	    }
-	  else
-	    error ("getgrgid: argument must be an integer");
-	}
+              retval(0) = mk_gr_map (octave_group::getgrgid (gid, msg));
+              retval(1) = msg;
+            }
+          else
+            error ("getgrgid: GID must be an integer");
+        }
     }
   else
     print_usage ();
@@ -152,12 +149,12 @@ Return the first entry from the group database with the group name\n\
       std::string s = args(0).string_value ();
 
       if (! error_state)
-	{
-	  std::string msg;
+        {
+          std::string msg;
 
-	  retval(0) = mk_gr_map (octave_group::getgrnam (s.c_str (), msg));
-	  retval(1) = msg;
-	}
+          retval(0) = mk_gr_map (octave_group::getgrnam (s.c_str (), msg));
+          retval(1) = msg;
+        }
     }
   else
     print_usage ();
@@ -216,9 +213,3 @@ Close the group database.\n\
 
   return retval;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,8 +1,8 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2000, 2001, 2003, 2004, 2005, 2006,
-              2007 John W. Eaton
-Copyright (C) 2008, 2009 Jaroslav Hajek
+Copyright (C) 1996-2011 John W. Eaton
+Copyright (C) 2008-2009 Jaroslav Hajek
+Copyright (C) 2009 VZLU Prague, a.s.
 
 This file is part of Octave.
 
@@ -24,8 +24,6 @@ along with Octave; see the file COPYING.  If not, see
 
 #if !defined (octave_mx_op_decl_h)
 #define octave_mx_op_decl_h 1
-
-#include "oct-types.h"
 
 #define BIN_OP_DECL(R, OP, X, Y, API) \
   extern API R OP (const X&, const Y&)
@@ -239,8 +237,7 @@ class boolNDArray;
 // scalar by diagonal matrix operations.
 
 #define SDM_BIN_OP_DECLS(R, S, DM, API) \
-  BIN_OP_DECL (R, operator +, S, DM, API); \
-  BIN_OP_DECL (R, operator -, S, DM, API);
+  BIN_OP_DECL (R, operator *, S, DM, API); \
 
 #define SDM_OP_DECLS(R, S, DM, API) \
   SDM_BIN_OP_DECLS(R, S, DM, API)
@@ -248,8 +245,8 @@ class boolNDArray;
 // diagonal matrix by scalar operations.
 
 #define DMS_BIN_OP_DECLS(R, DM, S, API) \
-  BIN_OP_DECL (R, operator +, DM, S, API); \
-  BIN_OP_DECL (R, operator -, DM, S, API);
+  BIN_OP_DECL (R, operator *, DM, S, API); \
+  BIN_OP_DECL (R, operator /, DM, S, API);
 
 #define DMS_OP_DECLS(R, DM, S, API) \
   DMS_BIN_OP_DECLS(R, DM, S, API)
@@ -286,15 +283,13 @@ class boolNDArray;
 
 // scalar by N-d array min/max ops
 
-#define MINMAX_DECLS(T) \
-  extern OCTAVE_API T ## NDArray min (octave_ ## T d, const T ## NDArray& m); \
-  extern OCTAVE_API T ## NDArray min (const T ## NDArray& m, octave_ ## T d); \
-  extern OCTAVE_API T ## NDArray min (const T ## NDArray& a,  \
-				       const T ## NDArray& b); \
-  extern OCTAVE_API T ## NDArray max (octave_ ## T d, const T ## NDArray& m); \
-  extern OCTAVE_API T ## NDArray max (const T ## NDArray& m, octave_ ## T d); \
-  extern OCTAVE_API T ## NDArray max (const T ## NDArray& a, \
-				       const T ## NDArray& b);
+#define MINMAX_DECLS(T, S, API) \
+  extern API T min (S d, const T& m); \
+  extern API T min (const T& m, S d); \
+  extern API T min (const T& a, const T& b); \
+  extern API T max (S d, const T& m); \
+  extern API T max (const T& m, S d); \
+  extern API T max (const T& a, const T& b);
 
 // permutation matrix by matrix ops and vice versa
 

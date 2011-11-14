@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1997, 2005, 2007 John W. Eaton
+Copyright (C) 1997-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -51,9 +51,3 @@ matherr (struct exception *x)
   return 1;
 }
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C ***
-;;; End: ***
-*/

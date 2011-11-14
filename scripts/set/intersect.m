@@ -1,5 +1,5 @@
-## Copyright (C) 2008, 2009 Jaroslav Hajek
-## Copyright (C) 2000, 2006, 2007 Paul Kienzle
+## Copyright (C) 2000-2011 Paul Kienzle
+## Copyright (C) 2008-2009 Jaroslav Hajek
 ##
 ## This file is part of Octave.
 ##
@@ -18,12 +18,13 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} intersect (@var{a}, @var{b})
+## @deftypefn  {Function File} {} intersect (@var{a}, @var{b})
 ## @deftypefnx {Function File} {[@var{c}, @var{ia}, @var{ib}] =} intersect (@var{a}, @var{b})
 ##
 ## Return the elements in both @var{a} and @var{b}, sorted in ascending
 ## order.  If @var{a} and @var{b} are both column vectors return a column
 ## vector, otherwise return a row vector.
+## @var{a}, @var{b} may be cell arrays of string(s).
 ##
 ## Return index vectors @var{ia} and @var{ib} such that @code{a(ia)==c} and
 ## @code{b(ib)==c}.
@@ -37,10 +38,7 @@ function [c, ia, ib] = intersect (a, b, varargin)
     print_usage ();
   endif
 
-  if (nargin == 3 && ! strcmpi (varargin{1}, "rows"))
-    error ("intersect: if a third input argument is present, it must be the string 'rows'");
-  endif
-
+  [a, b] = validargs ("intersect", a, b, varargin{:});
 
   if (isempty (a) || isempty (b))
     c = ia = ib = [];
@@ -63,19 +61,17 @@ function [c, ia, ib] = intersect (a, b, varargin)
       c = [a(:); b(:)];
       [c, ic] = sort (c);               ## [a(:);b(:)](ic) == c
       if (iscellstr (c))
-	ii = find (strcmp (c(1:end-1), c(2:end)));
+        ii = find (strcmp (c(1:end-1), c(2:end)));
       else
-	ii = find (c(1:end-1) == c(2:end));
+        ii = find (c(1:end-1) == c(2:end));
       endif
       c = c(ii);
     endif
-
 
     if (nargout > 1)
       ia = ja(ic(ii));                  ## a(ia) == c
       ib = jb(ic(ii+1) - length (a));   ## b(ib) == c
     endif
-
 
     if (nargin == 2 && (size (b, 1) == 1 || size (a, 1) == 1))
       c = c.';

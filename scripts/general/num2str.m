@@ -1,5 +1,4 @@
-## Copyright (C) 1993, 1994, 1995, 1996, 1997, 1999, 2000, 2002, 2003,
-##               2004, 2005, 2006, 2007, 2008, 2009 John W. Eaton
+## Copyright (C) 1993-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -18,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} num2str (@var{x})
+## @deftypefn  {Function File} {} num2str (@var{x})
 ## @deftypefnx {Function File} {} num2str (@var{x}, @var{precision})
 ## @deftypefnx {Function File} {} num2str (@var{x}, @var{format})
 ## Convert a number (or array) to a string (or a character array).  The
@@ -26,7 +25,7 @@
 ## digits (@var{precision}) to be used in the output or a format
 ## template string (@var{format}) as in @code{sprintf} (@pxref{Formatted
 ## Output}).  @code{num2str} can also handle complex numbers.  For
-## example: 
+## example:
 ##
 ## @example
 ## @group
@@ -43,7 +42,7 @@
 ## whos s
 ##      @result{}
 ##       Attr Name        Size                     Bytes  Class
-##       ==== ====        ====                     =====  ===== 
+##       ==== ====        ====                     =====  =====
 ##            s           2x8                         16  char
 ##
 ## num2str (1.234 + 27.3i)
@@ -52,10 +51,10 @@
 ## @end example
 ##
 ## The @code{num2str} function is not very flexible.  For better control
-## over the results, use @code{sprintf} (@pxref{Formatted Output}). 
+## over the results, use @code{sprintf} (@pxref{Formatted Output}).
 ## Note that for complex @var{x}, the format string may only contain one
 ## output conversion specification and nothing else.  Otherwise, you
-## will get unpredictable results.  
+## will get unpredictable results.
 ## @seealso{sprintf, int2str, mat2str}
 ## @end deftypefn
 
@@ -74,34 +73,34 @@ function retval = num2str (x, arg)
   elseif (iscomplex (x))
     if (nargin == 2)
       if (ischar (arg))
-	fmt = cstrcat (arg, "%-+", arg(2:end), "i");
+        fmt = cstrcat (arg, "%-+", arg(2:end), "i");
       else
-	if (isnumeric (x) && round (x) == x && abs (x) < (10 .^ arg))
-	  fmt = sprintf ("%%%dd%%-+%ddi  ", arg, arg);
-	else
-	  fmt = sprintf ("%%%d.%dg%%-+%d.%dgi", arg+7, arg, arg+7, arg);
-	endif
+        if (isnumeric (x) && round (x) == x && abs (x) < (10 .^ arg))
+          fmt = sprintf ("%%%dd%%-+%ddi  ", arg, arg);
+        else
+          fmt = sprintf ("%%%d.%dg%%-+%d.%dgi", arg+7, arg, arg+7, arg);
+        endif
       endif
     else
       ## Setup a suitable format string
       if (isnumeric (x) && round (x) == x && abs (x) < 1e10)
-	if (max (abs (real (x(:)))) == 0)
-	  dgt1 = 2;
-	else
-	  dgt1 = ceil (log10 (max (max (abs (real (x(:)))),
-				   max (abs (imag (x(:))))))) + 2;
-	endif
-	dgt2 = dgt1 - (min (real (x(:))) >= 0);
-	
-	if (length (abs (x) == x) > 0)
-	  fmt = sprintf("%%%dg%%+-%dgi  ", dgt2, dgt1);
-	else
-	  fmt = sprintf("%%%dd%%+-%ddi  ", dgt2, dgt1);
-	endif
+        if (max (abs (real (x(:)))) == 0)
+          dgt1 = 2;
+        else
+          dgt1 = ceil (log10 (max (max (abs (real (x(:)))),
+                                   max (abs (imag (x(:))))))) + 2;
+        endif
+        dgt2 = dgt1 - (min (real (x(:))) >= 0);
+
+        if (length (abs (x) == x) > 0)
+          fmt = sprintf("%%%dg%%+-%dgi  ", dgt2, dgt1);
+        else
+          fmt = sprintf("%%%dd%%+-%ddi  ", dgt2, dgt1);
+        endif
       elseif (isscalar (x))
-	fmt = "%.6g%-+.6gi";
+        fmt = "%.6g%-+.6gi";
       else
-	fmt = "%11.6g%-+11.6gi";
+        fmt = "%11.6g%-+11.6gi";
       endif
     endif
 
@@ -127,17 +126,17 @@ function retval = num2str (x, arg)
     while (true)
       tmp2 = strrep (tmp, " i\n", "i\n");
       if (length (tmp) == length (tmp2))
-	break;
+        break;
       else
-	tmp = tmp2;
+        tmp = tmp2;
       endif
     endwhile
     while (true)
       tmp2 = strrep (tmp, " i", "i ");
       if (tmp == tmp2)
-	break;
+        break;
       else
-	tmp = tmp2;
+        tmp = tmp2;
       endif
     endwhile
 
@@ -146,30 +145,30 @@ function retval = num2str (x, arg)
   else
     if (nargin == 2)
       if (ischar (arg))
-	fmt = arg;
+        fmt = arg;
       else
-	if (isnumeric (x) && round (x) == x && abs (x) < (10 .^ arg))
-	  fmt = sprintf ("%%%dd  ", arg);
-	else
-	  fmt = sprintf ("%%%d.%dg", arg+7, arg);
-	endif
+        if (isnumeric (x) && round (x) == x && abs (x) < (10 .^ arg))
+          fmt = sprintf ("%%%dd  ", arg);
+        else
+          fmt = sprintf ("%%%d.%dg", arg+7, arg);
+        endif
       endif
     else
       if (isnumeric (x) && round (x) == x && abs (x) < 1e10)
-	if (max (abs (x(:))) == 0)
-	  dgt = 2;
-	else
-	  dgt = floor (log10 (max (abs(x(:))))) + (min (real (x(:))) < 0) + 2;
-	endif
-	if (length (abs (x) == x) > 0)
-	  fmt = sprintf ("%%%dg  ", dgt);
-	else
-	  fmt = sprintf ("%%%dd  ", dgt);
-	endif
+        if (max (abs (x(:))) == 0)
+          dgt = 2;
+        else
+          dgt = floor (log10 (max (abs(x(:))))) + (min (real (x(:))) < 0) + 2;
+        endif
+        if (length (abs (x) == x) > 0)
+          fmt = sprintf ("%%%dg  ", dgt);
+        else
+          fmt = sprintf ("%%%dd  ", dgt);
+        endif
       elseif (isscalar (x))
-	fmt = "%11.5g";
+        fmt = "%11.5g";
       else
-	fmt = "%11.5g";
+        fmt = "%11.5g";
       endif
     endif
     fmt = cstrcat (deblank (repmat (fmt, 1, columns (x))), "\n");

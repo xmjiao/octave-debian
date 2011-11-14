@@ -1,4 +1,4 @@
-## Copyright (C) 2000, 2001, 2002, 2004, 2005, 2006, 2007, 2009 Daniel Calvelo
+## Copyright (C) 2000-2011 Daniel Calvelo
 ##
 ## This file is part of Octave.
 ##
@@ -17,9 +17,9 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} base2dec (@var{s}, @var{b})
-## Convert @var{s} from a string of digits of base @var{b} into an
-## integer.
+## @deftypefn {Function File} {} base2dec (@var{s}, @var{base})
+## Convert @var{s} from a string of digits in base @var{base} to a decimal
+## integer (base 10).
 ##
 ## @example
 ## @group
@@ -30,10 +30,10 @@
 ##
 ## If @var{s} is a matrix, returns a column vector with one value per
 ## row of @var{s}.  If a row contains invalid symbols then the
-## corresponding value will be NaN.  Rows are right-justified before
+## corresponding value will be NaN@.  Rows are right-justified before
 ## converting so that trailing spaces are ignored.
 ##
-## If @var{b} is a string, the characters of @var{b} are used as the
+## If @var{base} is a string, the characters of @var{base} are used as the
 ## symbols for the digits of @var{s}.  Space (' ') may not be used as a
 ## symbol.
 ##
@@ -43,13 +43,13 @@
 ##      @result{} 123
 ## @end group
 ## @end example
-## @seealso{dec2base, dec2bin, bin2dec, hex2dec, dec2hex}
+## @seealso{dec2base, bin2dec, hex2dec}
 ## @end deftypefn
 
 ## Author: Daniel Calvelo <dcalvelo@yahoo.com>
 ## Adapted-by: Paul Kienzle <pkienzle@kienzle.powernet.co.uk>
 
-function out = base2dec (d, base)
+function out = base2dec (s, base)
 
   if (nargin != 2)
     print_usage ();
@@ -59,35 +59,46 @@ function out = base2dec (d, base)
   if (ischar (base))
     symbols = base;
     base = length (symbols);
-    if (any (diff (sort (toascii (symbols))) == 0))
+    if (length (unique (symbols)) != base)
       error ("base2dec: symbols representing digits must be unique");
+    endif
+    if (any (isspace (symbols)))
+      error ("base2dec: whitespace characters are not valid symbols");
     endif
   elseif (! isscalar (base))
     error ("base2dec: cannot convert from several bases at once");
   elseif (base < 2 || base > length (symbols))
-    error ("base2dec: base must be between 2 and 36 or a string of symbols");
+    error ("base2dec: BASE must be between 2 and 36, or a string of symbols");
   else
-    d = toupper (d);
+    s = toupper (s);
   endif
 
   ## Right justify the values before anything else.
-  d = strjust (d, "right");
+  s = strjust (s, "right");
 
   ## Lookup value of symbols in symbol table, with invalid symbols
   ## evaluating to NaN and space evaluating to 0.
-  table = NaN * ones (256, 1);
-  table (toascii (symbols (1 : base))) = 0 : base-1;
-  table (toascii (" ")) = 0;
-  d = reshape (table (toascii (d)), size (d));
+  table = NaN (1, 256);
+  table(toascii (symbols(1:base))) = 0 : base-1;
+  table(toascii (" ")) = 0;
+  s = table(toascii (s));
 
-  ## Multiply the resulting digits by the appropriate power and
-  ## sum the rows.
-  out = d * (base .^ (columns(d)-1 : -1 : 0)');
+  ## Multiply the resulting digits by the appropriate power
+  ## and sum the rows.
+  out = s * (base .^ (columns(s)-1 : -1 : 0)');
 
 endfunction
 
-%!error <Invalid call to base2dec.*> base2dec();
-%!error <Invalid call to base2dec.*> base2dec("11120");
-%!error <Invalid call to base2dec.*> base2dec("11120", 3, 4);
 %!assert(base2dec ("11120", 3), 123);
 %!assert(base2dec ("yyyzx", "xyz"), 123);
+%!assert(base2dec ("-1", 2), NaN);
+
+%%Test input validation
+%!error base2dec ();
+%!error base2dec ("11120");
+%!error base2dec ("11120", 3, 4);
+%!error base2dec ("11120", "1231");
+%!error base2dec ("11120", "12 3");
+%!error base2dec ("11120", ones(2));
+%!error base2dec ("11120", 37);
+

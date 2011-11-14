@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1999, 2000, 2002, 2004, 2005, 2006, 2007,
-##               2008, 2009 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -36,9 +35,9 @@
 ##  \   /
 ## @end group
 ## @end example
-## @end ifnottex
 ##
-## For example,
+## @end ifnottex
+## For example:
 ##
 ## @example
 ## @group
@@ -66,7 +65,7 @@ function b = bincoeff (n, k)
 
   [retval, n, k] = common_size (n, k);
   if (retval > 0)
-    error ("bincoeff: n and k must be of common size or scalars");
+    error ("bincoeff: N and K must be of common size or scalars");
   endif
 
   sz = size (n);
@@ -74,25 +73,25 @@ function b = bincoeff (n, k)
 
   ind = (! (k >= 0) | (k != real (round (k))) | isnan (n));
   b(ind) = NaN;
-  
+
   ind = (k == 0);
   b(ind) = 1;
 
   ind = ((k > 0) & ((n == real (round (n))) & (n < 0)));
   b(ind) = (-1) .^ k(ind) .* exp (gammaln (abs (n(ind)) + k(ind))
-				  - gammaln (k(ind) + 1)
-				  - gammaln (abs (n(ind))));
+                                  - gammaln (k(ind) + 1)
+                                  - gammaln (abs (n(ind))));
 
   ind = ((k > 0) & (n >= k));
   b(ind) = exp (gammaln (n(ind) + 1)
-		- gammaln (k(ind) + 1)
-		- gammaln (n(ind) - k(ind) + 1));
+                - gammaln (k(ind) + 1)
+                - gammaln (n(ind) - k(ind) + 1));
 
   ind = ((k > 0) & ((n != real (round (n))) & (n < k)));
   b(ind) = (1/pi) * exp (gammaln (n(ind) + 1)
-			 - gammaln (k(ind) + 1)
-			 + gammaln (k(ind) - n(ind))
-			 + log (sin (pi * (n(ind) - k(ind) + 1))));
+                         - gammaln (k(ind) + 1)
+                         + gammaln (k(ind) - n(ind))
+                         + log (sin (pi * (n(ind) - k(ind) + 1))));
 
   ## Clean up rounding errors.
   ind = (n == round (n));

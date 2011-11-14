@@ -1,4 +1,4 @@
-## Copyright (C) 2006, 2007, 2009 David Bateman
+## Copyright (C) 2006-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -18,7 +18,7 @@
 
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} sind (@var{x})
-## Compute the sine for each element of @var{x} in degrees.  Returns zero 
+## Compute the sine for each element of @var{x} in degrees.  Returns zero
 ## for elements where @code{@var{x}/180} is an integer.
 ## @seealso{asind, sin}
 ## @end deftypefn

@@ -1,4 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 2005, 2006, 2007 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -20,7 +20,7 @@
 ## @deftypefn {Function File} {} betacdf (@var{x}, @var{a}, @var{b})
 ## For each element of @var{x}, returns the CDF at @var{x} of the beta
 ## distribution with parameters @var{a} and @var{b}, i.e.,
-## PROB (beta (@var{a}, @var{b}) <= @var{x}).
+## PROB (beta (@var{a}, @var{b}) @leq{} @var{x}).
 ## @end deftypefn
 
 ## Author: KH <Kurt.Hornik@wu-wien.ac.at>
@@ -35,7 +35,7 @@ function cdf = betacdf (x, a, b)
   if (!isscalar (a) || !isscalar(b))
     [retval, x, a, b] = common_size (x, a, b);
     if (retval > 0)
-      error ("betacdf: x, a and b must be of common size or scalar");
+      error ("betacdf: X, A and B must be of common size or scalar");
     endif
   endif
 

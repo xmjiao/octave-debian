@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 1999, 2000, 2002, 2005, 2006,
-##               2007 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -33,19 +32,19 @@
 ## Author: KH <Kurt.Hornik@wu-wien.ac.at>
 ## Description: Chi-square test for independence
 
-function [pval, chisq, df] = chisquare_test_independence (X)
+function [pval, chisq, df] = chisquare_test_independence (x)
 
   if (nargin != 1)
     print_usage ();
   endif
 
-  [r, s] = size (X);
+  [r, s] = size (x);
   df = (r - 1) * (s - 1);
-  n = sum (sum (X));
-  Y = sum (X')' * sum (X) / n;
-  X = (X - Y) .^2 ./ Y;
-  chisq = sum (sum (X));
-  pval  = 1 - chisquare_cdf (chisq, df);
+  n = sum (sum (x));
+  y = sum (x')' * sum (x) / n;
+  x = (x - y) .^2 ./ y;
+  chisq = sum (sum (x));
+  pval  = 1 - chi2cdf (chisq, df);
 
   if (nargout == 0)
     printf("  pval: %g\n", pval);

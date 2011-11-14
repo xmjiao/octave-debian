@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2002,
-              2003, 2004, 2005, 2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -25,6 +24,7 @@ along with Octave; see the file COPYING.  If not, see
 #define octave_lex_h 1
 
 #include <list>
+#include <stack>
 
 // FIXME -- these input buffer things should be members of a
 // parser input stream class.
@@ -43,16 +43,11 @@ extern OCTINTERP_API void switch_to_buffer (YY_BUFFER_STATE buf);
 // Delete a buffer.
 extern OCTINTERP_API void delete_buffer (YY_BUFFER_STATE buf);
 
-// Restore a buffer (for unwind-prot).
-extern OCTINTERP_API void restore_input_buffer (void *buf);
-
-// Delete a buffer (for unwind-prot).
-extern OCTINTERP_API void delete_input_buffer (void *buf);
-
 // Is the given string a keyword?
 extern bool is_keyword (const std::string& s);
 
-extern void prep_lexer_for_script (void);
+extern void prep_lexer_for_script_file (void);
+extern void prep_lexer_for_function_file (void);
 
 // For communication between the lexer and parser.
 
@@ -61,7 +56,23 @@ lexical_feedback
 {
 public:
 
-  lexical_feedback (void) { init (); }
+  lexical_feedback (void)
+
+    : bracketflag (0), braceflag (0), looping (0),
+      convert_spaces_to_comma (true), at_beginning_of_statement (true),
+      defining_func (0), looking_at_function_handle (false),
+      looking_at_return_list (false), looking_at_parameter_list (false),
+      looking_at_decl_list (false), looking_at_initializer_expression (false),
+      looking_at_matrix_or_assign_lhs (false), looking_at_object_index (),
+      looking_for_object_index (false), do_comma_insert (false),
+      looking_at_indirect_ref (false), parsed_function_name (),
+      parsing_class_method (false), maybe_classdef_get_set_method (false),
+      parsing_classdef (false), quote_is_transpose (false),
+      pending_local_variables ()
+
+    {
+      init ();
+    }
 
   ~lexical_feedback (void) { }
 
@@ -84,8 +95,8 @@ public:
   // command name is possible.
   bool at_beginning_of_statement;
 
-  // TRUE means we're in the middle of defining a function.
-  bool defining_func;
+  // Nonzero means we're in the middle of defining a function.
+  int defining_func;
 
   // Nonzero means we are parsing a function handle.
   int looking_at_function_handle;
@@ -122,18 +133,21 @@ public:
   // structure element.
   bool looking_at_indirect_ref;
 
-  // TRUE means that we've already seen the name of this function.
-  // Should only matter if defining_func is also TRUE.
-  bool parsed_function_name;
+  // If the top of the stack is TRUE, then we've already seen the name
+  // of the current function.  Should only matter if
+  // current_function_level > 0
+  std::stack<bool> parsed_function_name;
 
-  // Are we parsing a nested function?
-  //   1 ==> Yes.
-  //   0 ==> No.
-  //  -1 ==> Yes, but it is the last one because we have seen EOF.
-  int parsing_nested_function;
-
-  // TRUE means we are parsing a class method.
+  // TRUE means we are parsing a class method in function or classdef file.
   bool parsing_class_method;
+
+  // TRUE means we are parsing a class method declaration line in a
+  // classdef file and can accept a property get or set method name.
+  // For example, "get.PropertyName" is recognized as a function name.
+  bool maybe_classdef_get_set_method;
+
+  // TRUE means we are parsing a classdef file
+  bool parsing_classdef;
 
   // Return transpose or start a string?
   bool quote_is_transpose;
@@ -176,9 +190,3 @@ extern bool parser_end_of_input;
 extern lexical_feedback lexer_flags;
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

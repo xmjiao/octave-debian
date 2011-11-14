@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2000, 2002, 2003, 2005, 2006, 2007, 2008
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -35,11 +34,11 @@ dir_path
 public:
 
   dir_path (const std::string& s = std::string (),
-	    const std::string& d = std::string ())
-    : p_orig (s), p_default (d), initialized (false)
+            const std::string& d = std::string ())
+    : p_orig (s), p_default (d), initialized (false), p (), pv ()
     {
       if (! p_orig.empty ())
-	init ();
+        init ();
     }
 
   dir_path (const dir_path& dp)
@@ -139,10 +138,10 @@ private:
     static void path_sep_char (char c)
     {
       if (instance_ok ())
-	{
-	  instance->xpath_sep_char = c;
-	  instance->xpath_sep_str = std::string (1, c);
-	}
+        {
+          instance->xpath_sep_char = c;
+          instance->xpath_sep_str = std::string (1, c);
+        }
     }
 
     static std::string path_sep_str (void)
@@ -169,9 +168,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

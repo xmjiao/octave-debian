@@ -1,7 +1,7 @@
 // oct-errno.h.in
 /*
 
-Copyright (C) 2005, 2007, 2008 John W. Eaton
+Copyright (C) 2005-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -45,7 +45,7 @@ public:
 
   static int lookup (const std::string& name);
 
-  static Octave_map list (void);
+  static octave_scalar_map list (void);
 
   static int get (void) { return errno; }
 
@@ -64,14 +64,7 @@ private:
 
   int do_lookup (const std::string& name);
 
-  Octave_map do_list (void);
+  octave_scalar_map do_list (void);
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; page-delimiter: "^/\\*" ***
-;;; End: ***
-*/

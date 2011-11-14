@@ -1,4 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 2005, 2006, 2007 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -19,7 +19,7 @@
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} poissrnd (@var{lambda}, @var{r}, @var{c})
 ## Return an @var{r} by @var{c} matrix of random samples from the
-## Poisson distribution with parameter @var{lambda}, which must be a 
+## Poisson distribution with parameter @var{lambda}, which must be a
 ## scalar or of size @var{r} by @var{c}.
 ##
 ## If @var{r} and @var{c} are omitted, the size of the result matrix is
@@ -29,20 +29,20 @@
 ## Author: KH <Kurt.Hornik@wu-wien.ac.at>
 ## Description: Random deviates from the Poisson distribution
 
-function rnd = poissrnd (l, r, c)
+function rnd = poissrnd (lambda, r, c)
 
   if (nargin == 3)
     if (! (isscalar (r) && (r > 0) && (r == round (r))))
-      error ("poissrnd: r must be a positive integer");
+      error ("poissrnd: R must be a positive integer");
     endif
     if (! (isscalar (c) && (c > 0) && (c == round (c))))
-      error ("poissrnd: c must be a positive integer");
+      error ("poissrnd: C must be a positive integer");
     endif
     sz = [r, c];
 
-    if (any (size (l) != 1) && 
-	((length (size (l)) != length (sz)) || any (size (l) != sz)))
-      error ("poissrnd: lambda must be scalar or of size [r, c]");
+    if (any (size (lambda) != 1)
+        && ((length (size (lambda)) != length (sz)) || any (size (lambda) != sz)))
+      error ("poissrnd: LAMBDA must be scalar or of size [R, C]");
     endif
   elseif (nargin == 2)
     if (isscalar (r) && (r > 0))
@@ -50,39 +50,39 @@ function rnd = poissrnd (l, r, c)
     elseif (isvector(r) && all (r > 0))
       sz = r(:)';
     else
-      error ("poissrnd: r must be a positive integer or vector");
+      error ("poissrnd: R must be a positive integer or vector");
     endif
 
-    if (any (size (l) != 1) && 
-	((length (size (l)) != length (sz)) || any (size (l) != sz)))
-      error ("poissrnd: lambda must be scalar or of size sz");
+    if (any (size (lambda) != 1)
+        && ((length (size (lambda)) != length (sz)) || any (size (lambda) != sz)))
+      error ("poissrnd: LAMBDA must be scalar or of size sz");
     endif
   elseif (nargin == 1)
-    sz = size (l);
+    sz = size (lambda);
   else
     print_usage ();
   endif
 
-  if (isscalar (l))
+  if (isscalar (lambda))
 
-    if (!(l >= 0) | !(l < Inf))
-      rnd = NaN * ones (sz);
-    elseif ((l > 0) & (l < Inf))
-      rnd = randp(l, sz);
+    if (!(lambda >= 0) || !(lambda < Inf))
+      rnd = NaN (sz);
+    elseif (lambda > 0 && lambda < Inf)
+      rnd = randp(lambda, sz);
     else
       rnd = zeros (sz);
     endif
   else
     rnd = zeros (sz);
 
-    k = find (!(l >= 0) | !(l < Inf));
+    k = find (!(lambda >= 0) | !(lambda < Inf));
     if (any (k))
       rnd(k) = NaN;
     endif
 
-    k = find ((l > 0) & (l < Inf));
+    k = find ((lambda > 0) & (lambda < Inf));
     if (any (k))
-      rnd(k) = randp(l(k), size(k));
+      rnd(k) = randp(lambda(k), size(k));
     endif
   endif
 

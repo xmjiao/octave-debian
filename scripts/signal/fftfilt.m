@@ -1,5 +1,4 @@
-## Copyright (C) 1994, 1995, 1996, 1997, 1999, 2000, 2002, 2005, 2006,
-##               2007 John W. Eaton
+## Copyright (C) 1994-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -27,13 +26,14 @@
 ## overlap-add method to filter @var{x} with @var{b} using an N-point FFT.
 ##
 ## If @var{x} is a matrix, filter each column of the matrix.
+## @seealso{filter, filter2}
 ## @end deftypefn
 
 ## Author: Kurt Hornik <Kurt.Hornik@wu-wien.ac.at>
 ## Created: 3 September 1994
 ## Adapted-By: jwe
 
-function y = fftfilt (b, x, N)
+function y = fftfilt (b, x, n)
 
   ## If N is not specified explicitly, we do not use the overlap-add
   ## method at all because loops are really slow.  Otherwise, we only
@@ -55,7 +55,7 @@ function y = fftfilt (b, x, N)
   [r_b, c_b] = size (b);
 
   if min ([r_b, c_b]) != 1
-    error ("fftfilt: b should be a vector");
+    error ("fftfilt: B should be a vector");
   endif
 
   l_b = r_b * c_b;
@@ -64,27 +64,27 @@ function y = fftfilt (b, x, N)
   if (nargin == 2)
     ## Use FFT with the smallest power of 2 which is >= length (x) +
     ## length (b) - 1 as number of points ...
-    N = 2 ^ (ceil (log (r_x + l_b - 1) / log (2)));
-    B = fft (b, N);
-    y = ifft (fft (x, N) .* B(:,ones (1, c_x)));
+    n = 2 ^ (ceil (log (r_x + l_b - 1) / log (2)));
+    B = fft (b, n);
+    y = ifft (fft (x, n) .* B(:,ones (1, c_x)));
   else
     ## Use overlap-add method ...
-    if (! (isscalar (N)))
+    if (! (isscalar (n)))
       error ("fftfilt: N has to be a scalar");
     endif
-    N = 2 ^ (ceil (log (max ([N, l_b])) / log (2)));
-    L = N - l_b + 1;
-    B = fft (b, N);
+    n = 2 ^ (ceil (log (max ([n, l_b])) / log (2)));
+    L = n - l_b + 1;
+    B = fft (b, n);
     B = B(:,ones (c_x,1));
     R = ceil (r_x / L);
     y = zeros (r_x, c_x);
     for r = 1:R;
       lo = (r - 1) * L + 1;
       hi = min (r * L, r_x);
-      tmp = zeros (N, c_x);
+      tmp = zeros (n, c_x);
       tmp(1:(hi-lo+1),:) = x(lo:hi,:);
       tmp = ifft (fft (tmp) .* B);
-      hi  = min (lo+N-1, r_x);
+      hi  = min (lo+n-1, r_x);
       y(lo:hi,:) = y(lo:hi,:) + tmp(1:(hi-lo+1),:);
     endfor
   endif

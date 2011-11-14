@@ -1,4 +1,4 @@
-## Copyright (C) 1999, 2000, 2007, 2009 Kai Habel
+## Copyright (C) 1999-2011 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -17,12 +17,12 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{map_out} =} brighten (@var{map}, @var{beta})
+## @deftypefn  {Function File} {@var{map_out} =} brighten (@var{map}, @var{beta})
 ## @deftypefnx {Function File} {@var{map_out} =} brighten (@var{h}, @var{beta})
 ## @deftypefnx {Function File} {@var{map_out} =} brighten (@var{beta})
-## Darkens or brightens the given colormap.  If the @var{map} argument 
+## Darken or brighten the given colormap.  If the @var{map} argument
 ## is omitted, the function is applied to the current colormap.  The first
-## argument can also be a valid graphics handle @var{h}, in which case 
+## argument can also be a valid graphics handle @var{h}, in which case
 ## @code{brighten} is applied to the colormap associated with this handle.
 ##
 ## Should the resulting colormap @var{map_out} not be assigned, it will be
@@ -34,17 +34,19 @@
 ## @seealso{colormap}
 ## @end deftypefn
 
-function Rmap = brighten (m, beta)
+function rmap = brighten (arg1, beta)
   h = -1;
   if (nargin == 1)
-    beta = m;
+    beta = arg1;
     m = colormap;
     h = gcf ();
   elseif (nargin == 2)
-    if (ishandle (m))
-      h = m;
+    if (ishandle (arg1))
+      h = arg1;
       m = get (h, "colormap");
-    elseif (! is_matrix (m) || size (m, 2) != 3)
+    elseif (ismatrix (arg1) && columns (arg1) == 3)
+      m = arg1;
+    else
       error ("brighten: first argument must be an Nx3 matrix or a handle");
     endif
   else
@@ -52,7 +54,7 @@ function Rmap = brighten (m, beta)
   endif
 
   if (! isscalar (beta) || beta <= -1 || beta >= 1)
-    error ("brighten: beta must be a scalar in the range (-1,1)");
+    error ("brighten: BETA must be a scalar in the range (-1,1)");
   endif
 
   if (beta > 0)
@@ -68,7 +70,7 @@ function Rmap = brighten (m, beta)
       colormap (m .^ gamma);
     endif
   else
-    Rmap = m .^ gamma;
+    rmap = m .^ gamma;
   endif
 
 endfunction

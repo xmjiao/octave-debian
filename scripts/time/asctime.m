@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1999, 2000, 2005, 2006, 2007, 2008
-##               John W. Eaton
+## Copyright (C) 1995-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -20,7 +19,7 @@
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} asctime (@var{tm_struct})
 ## Convert a time structure to a string using the following five-field
-## format: Thu Mar 28 08:40:14 1996.  For example,
+## format: Thu Mar 28 08:40:14 1996.  For example:
 ##
 ## @example
 ## @group
@@ -34,10 +33,10 @@
 
 ## Author: jwe
 
-function retval = asctime (t)
+function retval = asctime (tm_struct)
 
   if (nargin == 1)
-    retval = strftime ("%a %b %d %H:%M:%S %Y\n", t);
+    retval = strftime ("%a %b %d %H:%M:%S %Y\n", tm_struct);
   else
     print_usage ();
   endif

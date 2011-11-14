@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2003, 2004, 2005, 2006, 2007, 2008,
-              2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -24,47 +23,50 @@ along with Octave; see the file COPYING.  If not, see
 #if !defined (octave_NDArray_h)
 #define octave_NDArray_h 1
 
-#include "MArrayN.h"
+#include "MArray.h"
 #include "dMatrix.h"
 #include "intNDArray.h"
 
 #include "mx-defs.h"
 #include "mx-op-decl.h"
+#include "bsxfun-decl.h"
 
 class
 OCTAVE_API
-NDArray : public MArrayN<double>
+NDArray : public MArray<double>
 {
 public:
 
-  NDArray (void) : MArrayN<double> () { }
+  typedef Matrix matrix_type;
 
-  NDArray (const dim_vector& dv) : MArrayN<double> (dv) { }
+  NDArray (void) : MArray<double> () { }
+
+  NDArray (const dim_vector& dv) : MArray<double> (dv) { }
 
   NDArray (const dim_vector& dv, double val)
-    : MArrayN<double> (dv, val) { }
-  
-  NDArray (const NDArray& a) : MArrayN<double> (a) { }
+    : MArray<double> (dv, val) { }
 
-  NDArray (const Matrix& a) : MArrayN<double> (a) { }
+  NDArray (const NDArray& a) : MArray<double> (a) { }
 
-  NDArray (const Array<octave_idx_type>& a, bool zero_based = false, 
-	   bool negative_to_nan = false);
+  NDArray (const Matrix& a) : MArray<double> (a) { }
 
-  template <class U>
-  NDArray (const MArrayN<U>& a) : MArrayN<double> (a) { }
+  NDArray (const Array<octave_idx_type>& a, bool zero_based = false,
+           bool negative_to_nan = false);
 
   template <class U>
-  NDArray (const ArrayN<U>& a) : MArrayN<double> (a) { }
+  NDArray (const MArray<U>& a) : MArray<double> (a) { }
 
   template <class U>
-  explicit NDArray (const intNDArray<U>& a) : MArrayN<double> (a) { }
+  NDArray (const Array<U>& a) : MArray<double> (a) { }
 
-  NDArray (const charNDArray&); 
+  template <class U>
+  explicit NDArray (const intNDArray<U>& a) : MArray<double> (a) { }
+
+  NDArray (const charNDArray&);
 
   NDArray& operator = (const NDArray& a)
     {
-      MArrayN<double>::operator = (a);
+      MArray<double>::operator = (a);
       return *this;
     }
 
@@ -79,6 +81,7 @@ public:
   bool all_elements_are_zero (void) const;
   bool all_elements_are_int_or_inf_or_nan (void) const;
   bool all_integers (double& max_val, double& min_val) const;
+  bool all_integers (void) const;
   bool too_large_for_float (void) const;
 
   // FIXME -- this is not quite the right thing.
@@ -89,21 +92,24 @@ public:
   NDArray cumprod (int dim = -1) const;
   NDArray cumsum (int dim = -1) const;
   NDArray prod (int dim = -1) const;
-  NDArray sum (int dim = -1) const;  
+  NDArray sum (int dim = -1) const;
+  NDArray xsum (int dim = -1) const;
   NDArray sumsq (int dim = -1) const;
   NDArray concat (const NDArray& rb, const Array<octave_idx_type>& ra_idx);
   ComplexNDArray concat (const ComplexNDArray& rb, const Array<octave_idx_type>& ra_idx);
   charNDArray concat (const charNDArray& rb, const Array<octave_idx_type>& ra_idx);
 
-  NDArray max (int dim = 0) const;
-  NDArray max (ArrayN<octave_idx_type>& index, int dim = 0) const;
-  NDArray min (int dim = 0) const;
-  NDArray min (ArrayN<octave_idx_type>& index, int dim = 0) const;
-  
-  NDArray cummax (int dim = 0) const;
-  NDArray cummax (ArrayN<octave_idx_type>& index, int dim = 0) const;
-  NDArray cummin (int dim = 0) const;
-  NDArray cummin (ArrayN<octave_idx_type>& index, int dim = 0) const;
+  NDArray max (int dim = -1) const;
+  NDArray max (Array<octave_idx_type>& index, int dim = -1) const;
+  NDArray min (int dim = -1) const;
+  NDArray min (Array<octave_idx_type>& index, int dim = -1) const;
+
+  NDArray cummax (int dim = -1) const;
+  NDArray cummax (Array<octave_idx_type>& index, int dim = -1) const;
+  NDArray cummin (int dim = -1) const;
+  NDArray cummin (Array<octave_idx_type>& index, int dim = -1) const;
+
+  NDArray diff (octave_idx_type order = 1, int dim = -1) const;
 
   NDArray& insert (const NDArray& a, octave_idx_type r, octave_idx_type c);
   NDArray& insert (const NDArray& a, const Array<octave_idx_type>& ra_idx);
@@ -129,14 +135,14 @@ public:
 
   Matrix matrix_value (void) const;
 
-  NDArray squeeze (void) const { return MArrayN<double>::squeeze (); }
+  NDArray squeeze (void) const { return MArray<double>::squeeze (); }
 
   static void increment_index (Array<octave_idx_type>& ra_idx,
-			       const dim_vector& dimensions,
-			       int start_dimension = 0);
+                               const dim_vector& dimensions,
+                               int start_dimension = 0);
 
   static octave_idx_type compute_index (Array<octave_idx_type>& ra_idx,
-			    const dim_vector& dimensions);
+                            const dim_vector& dimensions);
 
   // i/o
 
@@ -147,17 +153,12 @@ public:
 
   NDArray diag (octave_idx_type k = 0) const;
 
-  typedef double (*dmapper) (double);
-  typedef Complex (*cmapper) (const Complex&);
-  typedef bool (*bmapper) (double);
+  NDArray& changesign (void)
+    {
+      MArray<double>::changesign ();
+      return *this;
+    }
 
-  NDArray map (dmapper fcn) const;
-  ComplexNDArray map (cmapper fcn) const;
-  boolNDArray map (bmapper fcn) const;
-
-private:
-
-  NDArray (double *d, const dim_vector& dv) : MArrayN<double> (d, dv) { }
 };
 
 // Publish externally used friend functions.
@@ -165,13 +166,7 @@ private:
 extern OCTAVE_API NDArray real (const ComplexNDArray& a);
 extern OCTAVE_API NDArray imag (const ComplexNDArray& a);
 
-extern OCTAVE_API NDArray min (double d, const NDArray& m);
-extern OCTAVE_API NDArray min (const NDArray& m, double d);
-extern OCTAVE_API NDArray min (const NDArray& a, const NDArray& b);
-
-extern OCTAVE_API NDArray max (double d, const NDArray& m);
-extern OCTAVE_API NDArray max (const NDArray& m, double d);
-extern OCTAVE_API NDArray max (const NDArray& a, const NDArray& b);
+MINMAX_DECLS (NDArray, double, OCTAVE_API)
 
 NDS_CMP_OP_DECLS (NDArray, double, OCTAVE_API)
 NDS_BOOL_OP_DECLS (NDArray, double, OCTAVE_API)
@@ -182,12 +177,13 @@ SND_BOOL_OP_DECLS (double, NDArray, OCTAVE_API)
 NDND_CMP_OP_DECLS (NDArray, NDArray, OCTAVE_API)
 NDND_BOOL_OP_DECLS (NDArray, NDArray, OCTAVE_API)
 
-MARRAY_FORWARD_DEFS (MArrayN, NDArray, double)
+MARRAY_FORWARD_DEFS (MArray, NDArray, double)
+
+BSXFUN_STDOP_DECLS (NDArray, OCTAVE_API)
+BSXFUN_STDREL_DECLS (NDArray, OCTAVE_API)
+
+BSXFUN_OP_DECL (pow, NDArray, OCTAVE_API)
+BSXFUN_OP2_DECL (pow, ComplexNDArray, ComplexNDArray,
+                 NDArray, OCTAVE_API)
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

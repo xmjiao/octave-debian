@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008 VZLU Prague, a.s.
+Copyright (C) 2008-2011 VZLU Prague, a.s.
 
 This file is part of Octave.
 
@@ -22,8 +22,8 @@ along with Octave; see the file COPYING.  If not, see
 
 // author: Jaroslav Hajek <highegg@gmail.com>
 
-#if !defined (octave_xnorm_h)
-#define octave_xnorm_h 1
+#if !defined (octave_norm_h)
+#define octave_norm_h 1
 
 #include "oct-cmplx.h"
 
@@ -35,7 +35,7 @@ along with Octave; see the file COPYING.  If not, see
   extern OCTAVE_API RTYPE xnorm (const PREFIX##ColumnVector&, RTYPE p = 2); \
   extern OCTAVE_API RTYPE xnorm (const PREFIX##RowVector&, RTYPE p = 2); \
   extern OCTAVE_API RTYPE xnorm (const PREFIX##Matrix&, RTYPE p = 2); \
-  extern OCTAVE_API RTYPE xfrobnorm (const PREFIX##Matrix&); 
+  extern OCTAVE_API RTYPE xfrobnorm (const PREFIX##Matrix&);
 
 DECLARE_XNORM_FUNCS(, double)
 DECLARE_XNORM_FUNCS(Complex, double)

@@ -1,5 +1,4 @@
-## Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2004, 2005,
-##               2006, 2007 John W. Eaton
+## Copyright (C) 1994-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -18,8 +17,8 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{rgb} =} ind2rgb (@var{x}, @var{map})
-## @deftypefnx {Function File} {[@var{r}, @var{g}, @var{b}] =} ind2rgb (@var{x}, @var{map})
+## @deftypefn  {Function File} {@var{rgb} =} ind2rgb (@var{x}, @var{map})
+## @deftypefnx {Function File} {[@var{R}, @var{R}, @var{R}] =} ind2rgb (@var{x}, @var{map})
 ## Convert an indexed image to red, green, and blue color components.
 ## If the colormap doesn't contain enough colors, pad it with the
 ## last color in the map.
@@ -31,7 +30,7 @@
 ## Created: July 1994
 ## Adapted-By: jwe
 
-function [R, G, B] = ind2rgb (X, map)
+function [R, G, B] = ind2rgb (x, map)
 
   ## Do we have the right number of inputs?
   if (nargin < 1 || nargin > 2)
@@ -41,29 +40,29 @@ function [R, G, B] = ind2rgb (X, map)
   endif
 
   ## Check if X is an indexed image.
-  if (ndims (X) != 2 || any (X(:) != round (X(:))) || min (X(:)) < 1)
-    error ("ind2rgb: first input argument must be an indexed image");
+  if (ndims (x) != 2 || any (x(:) != round (x(:))) || min (x(:)) < 1)
+    error ("ind2rgb: X must be an indexed image");
   endif
-  
+
   ## Check the color map.
   if (ndims (map) != 2 || columns (map) != 3)
-    error ("ind2rgb: second input argument must be a color map");
+    error ("ind2rgb: MAP must be a valid colormap");
   endif
 
   ## Do we have enough colors in the color map?
-  maxidx = max (X(:));
+  maxidx = max (x(:));
   rm = rows (map);
   if (rm < maxidx)
     ## Pad with the last color in the map.
     pad = repmat (map(end,:), maxidx-rm, 1);
     map(end+1:maxidx, :) = pad;
   endif
-  
+
   ## Compute result
-  [hi, wi] = size (X);
-  R = reshape (map (X(:), 1), hi, wi);
-  G = reshape (map (X(:), 2), hi, wi);
-  B = reshape (map (X(:), 3), hi, wi);
+  [hi, wi] = size (x);
+  R = reshape (map (x(:), 1), hi, wi);
+  G = reshape (map (x(:), 2), hi, wi);
+  B = reshape (map (x(:), 3), hi, wi);
 
   ## Use 3D array if only one output is requested.
   if (nargout <= 1)

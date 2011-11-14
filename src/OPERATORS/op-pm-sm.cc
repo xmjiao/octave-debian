@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2009 Jason Riedy
+Copyright (C) 2009-2011 Jason Riedy
 
 This file is part of Octave.
 
@@ -55,7 +55,7 @@ DEFBINOP (ldiv_pm_sm, perm_matrix, sparse_matrix)
 {
   CAST_BINOP_ARGS (const octave_perm_matrix&, const octave_sparse_matrix&);
 
-  return v1.perm_matrix_value ().inverse () * v2.sparse_matrix_value (); 
+  return v1.perm_matrix_value ().inverse () * v2.sparse_matrix_value ();
 }
 
 // sparse matrix by diagonal matrix ops
@@ -87,11 +87,11 @@ void
 install_pm_sm_ops (void)
 {
   INSTALL_BINOP (op_mul, octave_perm_matrix, octave_sparse_matrix,
-		 mul_pm_sm);
+                 mul_pm_sm);
   INSTALL_BINOP (op_ldiv, octave_perm_matrix, octave_sparse_matrix,
-		 ldiv_pm_sm);
+                 ldiv_pm_sm);
   INSTALL_BINOP (op_mul, octave_sparse_matrix, octave_perm_matrix,
-		 mul_sm_pm);
+                 mul_sm_pm);
   INSTALL_BINOP (op_div, octave_sparse_matrix, octave_perm_matrix,
-		 div_sm_pm);
+                 div_sm_pm);
 }

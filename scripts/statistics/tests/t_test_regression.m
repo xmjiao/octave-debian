@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 1999, 2000, 2002, 2005, 2006,
-##               2007 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -32,7 +31,7 @@
 ## @code{@var{rr} * @var{b} != @var{r}}.  If @var{alt} is @code{">"}, the
 ## one-sided alternative @code{@var{rr} * @var{b} > @var{r}} is used.
 ## Similarly for @var{"<"}, the one-sided alternative @code{@var{rr} *
-## @var{b} < @var{r}} is used.  The default is the two-sided case. 
+## @var{b} < @var{r}} is used.  The default is the two-sided case.
 ##
 ## The p-value of the test is returned in @var{pval}.
 ##
@@ -42,7 +41,7 @@
 ## Author: KH <Kurt.Hornik@wu-wien.ac.at>
 ## Description: Test one linear hypothesis in linear regression model
 
-function [pval, t, df] = t_test_regression (y, X, R, r, alt)
+function [pval, t, df] = t_test_regression (y, x, rr, r, alt)
 
   if (nargin == 3)
     r   = 0;
@@ -59,26 +58,26 @@ function [pval, t, df] = t_test_regression (y, X, R, r, alt)
   endif
 
   if (! isscalar (r))
-    error ("t_test_regression: r must be a scalar");
+    error ("t_test_regression: R must be a scalar");
   elseif (! ischar (alt))
-    error ("t_test_regression: alt must be a string");
+    error ("t_test_regression: ALT must be a string");
   endif
 
-  [T, k] = size (X);
+  [T, k] = size (x);
   if (! (isvector (y) && (length (y) == T)))
-    error ("t_test_regression: y must be a vector of length rows (X)");
+    error ("t_test_regression: Y must be a vector of length rows (X)");
   endif
-  s      = size (R);
+  s      = size (rr);
   if (! ((max (s) == k) && (min (s) == 1)))
-    error ("t_test_regression: R must be a vector of length columns (X)");
+    error ("t_test_regression: RR must be a vector of length columns (X)");
   endif
 
-  R      = reshape (R, 1, k);
+  rr     = reshape (rr, 1, k);
   y      = reshape (y, T, 1);
-  [b, v] = ols (y, X);
+  [b, v] = ols (y, x);
   df     = T - k;
-  t      = (R * b - r) / sqrt (v * R * inv (X' * X) * R');
-  cdf    = t_cdf (t, df);
+  t      = (rr * b - r) / sqrt (v * rr * inv (x' * x) * rr');
+  cdf    = tcdf (t, df);
 
   if (strcmp (alt, "!=") || strcmp (alt, "<>"))
     pval = 2 * min (cdf, 1 - cdf);

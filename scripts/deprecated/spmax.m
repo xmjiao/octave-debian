@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 David Bateman
+## Copyright (C) 2008-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Mapping Function} {} spmax (@var{x}, @var{y}, @var{dim})
+## @deftypefn  {Mapping Function} {} spmax (@var{x}, @var{y}, @var{dim})
 ## @deftypefnx {Mapping Function} {[@var{w}, @var{iw}] =} spmax (@var{x})
 ## This function has been deprecated.  Use @code{max} instead.
 ## @end deftypefn
@@ -29,7 +29,7 @@ function varargout = spmax (varargin)
   if (! warned)
     warned = true;
     warning ("Octave:deprecated-function",
-	     "spmax is obsolete and will be removed from a future version of Octave; please use max instead");
+             "spmax is obsolete and will be removed from a future version of Octave; please use max instead");
   endif
 
   varargout = cell (nargout, 1);

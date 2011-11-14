@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2002, 2003, 2005, 2007 John W. Eaton
+Copyright (C) 2002-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -34,9 +34,3 @@ main (int argc, char **argv)
 {
   return octave_main (argc, argv, 0);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

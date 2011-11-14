@@ -1,4 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 2000, 2005, 2006, 2007 John W. Eaton
+## Copyright (C) 1995-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -17,8 +17,11 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} setaudio ([@var{w_type} [, @var{value}]])
-## Execute the shell command @samp{mixer [@var{w_type} [, @var{value}]]}
+## @deftypefn  {Function File} {} setaudio ()
+## @deftypefnx {Function File} {} setaudio (@var{w_type})
+## @deftypefnx {Function File} {} setaudio (@var{w_type}, @var{value})
+## Execute the shell command @samp{mixer}, possibly with optional
+## arguments @var{w_type} and @var{value}.
 ## @end deftypefn
 
 ## Author: AW <Andreas.Weingessel@ci.tuwien.ac.at>

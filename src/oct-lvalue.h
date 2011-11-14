@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 1999, 2000, 2002, 2004, 2005, 2006,
-              2007 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -32,46 +31,48 @@ class octave_value_list;
 #include "oct-obj.h"
 #include "pt-idx.h"
 
-// FIXME -- eliminate the following kluge?
-
-// This variable is used when creating dummy octave_lvalue objects.
-static octave_value dummy_val;
-
 class
 octave_lvalue
 {
 public:
 
-  octave_lvalue (octave_value *v = &dummy_val)
-    : val (v), type (), idx (), nel (1), index_set (false) { }
+  octave_lvalue (octave_value *v = 0)
+    : val (v), type (), idx (), nel (1)
+    { }
 
   octave_lvalue (const octave_lvalue& vr)
-    : val (vr.val), type (vr.type), idx (vr.idx), nel (vr.nel),
-      index_set (vr.index_set) { }
+    : val (vr.val), type (vr.type), idx (vr.idx), nel (vr.nel)
+    {
+    }
 
   octave_lvalue& operator = (const octave_lvalue& vr)
     {
       if (this != &vr)
-	{
-	  val = vr.val;
-	  type = vr.type;
-	  idx = vr.idx;
-	  nel = vr.nel;
-	  index_set = vr.index_set;
-	}
+        {
+          val = vr.val;
+          type = vr.type;
+          idx = vr.idx;
+          nel = vr.nel;
+        }
 
       return *this;
     }
 
   ~octave_lvalue (void) { }
 
-  bool is_defined (void) { return val->is_defined (); }
+  bool is_black_hole (void) const { return val == 0; }
 
-  bool is_undefined (void) { return val->is_undefined (); }
+  bool is_defined (void) const { return val && val->is_defined (); }
 
-  bool is_map (void) { return val->is_map (); }
+  bool is_undefined (void) const { return ! val || val->is_undefined (); }
 
-  void define (const octave_value& v) { *val = v; }
+  bool is_map (void) const { return val && val->is_map (); }
+
+  void define (const octave_value& v)
+    {
+      if (val)
+        *val = v;
+    }
 
   void assign (octave_value::assign_op, const octave_value&);
 
@@ -98,14 +99,6 @@ private:
   std::list<octave_value_list> idx;
 
   octave_idx_type nel;
-
-  bool index_set;
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

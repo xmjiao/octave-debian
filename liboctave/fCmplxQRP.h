@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2000, 2002, 2004, 2005, 2006,
-              2007, 2008 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -38,27 +37,27 @@ public:
 
   FloatComplexQRP (void) : FloatComplexQR (), p () { }
 
-  FloatComplexQRP (const FloatComplexMatrix&, QR::type = QR::std);
+  FloatComplexQRP (const FloatComplexMatrix&, qr_type_t = qr_type_std);
 
   FloatComplexQRP (const FloatComplexQRP& a) : FloatComplexQR (a), p (a.p) { }
 
   FloatComplexQRP& operator = (const FloatComplexQRP& a)
     {
       if (this != &a)
-	{
-	  FloatComplexQR::operator = (a);
-	  p = a.p;
-	}
+        {
+          FloatComplexQR::operator = (a);
+          p = a.p;
+        }
       return *this;
     }
 
   ~FloatComplexQRP (void) { }
 
-  void init (const FloatComplexMatrix&, QR::type = QR::std);
+  void init (const FloatComplexMatrix&, qr_type_t = qr_type_std);
 
   PermMatrix P (void) const { return p; }
 
-  FloatColumnVector Pvec (void) const;
+  FloatRowVector Pvec (void) const;
 
   friend std::ostream&  operator << (std::ostream&, const FloatComplexQRP&);
 
@@ -68,9 +67,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

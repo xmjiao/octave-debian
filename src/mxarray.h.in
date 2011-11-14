@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2001, 2006, 2007, 2008 Paul Kienzle
+Copyright (C) 2001-2011 Paul Kienzle
 
 This file is part of Octave.
 
@@ -80,13 +80,13 @@ typedef unsigned char mxLogical;
 /* typedef Uint16 mxChar; */
 typedef char mxChar;
 
-/* 
+/*
  * FIXME? Mathworks says these should be size_t on 64-bit system and when
  * mex is used with the -largearraydims flag, but why do that? Its better
  * to conform to the same indexing as the rest of Octave
  */
-typedef @OCTAVE_IDX_TYPE@ mwSize;
-typedef @OCTAVE_IDX_TYPE@ mwIndex;
+typedef %OCTAVE_IDX_TYPE% mwSize;
+typedef %OCTAVE_IDX_TYPE% mwIndex;
 
 #if ! defined (MXARRAY_TYPEDEFS_ONLY)
 
@@ -134,7 +134,7 @@ public:
   mxArray (const octave_value& ov);
 
   mxArray (mxClassID id, mwSize ndims, const mwSize *dims,
-	   mxComplexity flag = mxREAL);
+           mxComplexity flag = mxREAL);
 
   mxArray (mxClassID id, const dim_vector& dv, mxComplexity flag = mxREAL);
 
@@ -149,7 +149,7 @@ public:
   mxArray (mwSize m, const char **str);
 
   mxArray (mxClassID id, mwSize m, mwSize n, mwSize nzmax,
-	   mxComplexity flag = mxREAL);
+           mxComplexity flag = mxREAL);
 
   mxArray (mwSize ndims, const mwSize *dims, int num_keys, const char **keys);
 
@@ -163,9 +163,9 @@ public:
 
   mxArray (mwSize m, mwSize n);
 
-  virtual mxArray *clone (void) const
+  virtual mxArray *dup (void) const
   {
-    mxArray *new_rep = rep->clone ();
+    mxArray *new_rep = rep->dup ();
 
     return new mxArray (new_rep, name);
   }
@@ -183,6 +183,8 @@ public:
   virtual int is_complex (void) const { return rep->is_complex (); }
 
   virtual int is_double (void) const { return rep->is_double (); }
+
+  virtual int is_function_handle (void) const { return rep->is_function_handle (); }
 
   virtual int is_int16 (void) const { return rep->is_int16 (); }
 
@@ -304,9 +306,9 @@ public:
 
     if (str)
       {
-	mwSize sz =  sizeof (mxChar) * (strlen (str) + 1);
-	retval = static_cast<char *> (mxArray::malloc (sz));
-	strcpy (retval, str);
+        mwSize sz =  sizeof (mxChar) * (strlen (str) + 1);
+        retval = static_cast<char *> (mxArray::malloc (sz));
+        strcpy (retval, str);
       }
 
     return retval;

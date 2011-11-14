@@ -1,4 +1,5 @@
-## Copyright (C) 2000, 2006, 2007, 2009 Etienne Grossmann
+## Copyright (C) 2000-2011 Etienne Grossmann
+## Copyright (C) 2009 VZLU Prague
 ##
 ## This file is part of Octave.
 ##
@@ -17,14 +18,14 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {[@var{v1}, @dots{}] =} getfield (@var{s}, @var{key}, @dots{}) 
-## Extract fields from a structure.  For example
+## @deftypefn {Function File} {[@var{v1}, @dots{}] =} getfield (@var{s}, @var{key}, @dots{})
+## Extract a field from a structure (or a nested structure).  For example:
 ##
 ## @example
 ## @group
 ## ss(1,2).fd(3).b = 5;
 ## getfield (ss, @{1,2@}, "fd", @{3@}, "b")
-## @result{} ans = 5
+##      @result{} ans = 5
 ## @end group
 ## @end example
 ##
@@ -35,6 +36,8 @@
 ## @group
 ## i1 = @{1,2@}; i2 = "fd"; i3 = @{3@}; i4= "b";
 ## ss(i1@{:@}).(i2)(i3@{:@}).(i4)
+##      @result{} ans = 5
+##
 ## @end group
 ## @end example
 ## @seealso{setfield, rmfield, isfield, isstruct, fieldnames, struct}
@@ -42,17 +45,19 @@
 
 ## Author: Etienne Grossmann <etienne@cs.uky.edu>
 
-function s = getfield (s, varargin)
-
-  for idx = 1:nargin-1
-    i = varargin{idx};
-    if (iscell (i))
-      s = s(i{:});
-    else
-      s = s.(i);
-    endif
-  endfor
-
+function obj = getfield (s, varargin)
+  if (nargin < 2)
+    print_usage ();
+  endif
+  subs = varargin;
+  flds = cellfun (@ischar, subs);
+  idxs = cellfun (@iscell, subs);
+  if (all (flds | idxs))
+    typs = merge (flds, {"."}, {"()"});
+    obj = subsref (s, struct ("type", typs, "subs", subs));
+  else
+    error ("getfield: invalid index");
+  endif
 endfunction
 
 %!test

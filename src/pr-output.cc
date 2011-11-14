@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001,
-              2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -79,9 +78,6 @@ bool Vprint_empty_dimensions = true;
 // smaller slices that fit on the screen.
 static bool Vsplit_long_rows = true;
 
-// How many levels of structure elements should we print?
-int Vstruct_levels_to_print = 2;
-
 // TRUE means don't do any fancy formatting.
 static bool free_format = false;
 
@@ -118,6 +114,10 @@ static bool print_g = false;
 // TRUE means print E instead of e for exponent field.
 static bool print_big_e = false;
 
+// TRUE means use an engineering format.
+static bool print_eng = false;
+
+class pr_engineering_float;
 class pr_formatted_float;
 class pr_rational_float;
 
@@ -139,22 +139,26 @@ float_format
 public:
 
   float_format (int w = current_output_max_field_width (),
-		int p = current_output_precision (), int f = 0)
-    : fw (w), prec (p), fmt (f), up (0), sp (0) { }
+                int p = current_output_precision (), int f = 0)
+    : fw (w), ex (0), prec (p), fmt (f), up (0), sp (0) { }
+
+  float_format (int w, int e, int p, int f)
+    : fw (w), ex (e), prec (p), fmt (f), up (0), sp (0) { }
 
   float_format (const float_format& ff)
-    : fw (ff.fw), prec (ff.prec), fmt (ff.fmt), up (ff.up), sp (ff.sp) { }
+    : fw (ff.fw), ex (ff.ex), prec (ff.prec), fmt (ff.fmt), up (ff.up), sp (ff.sp) { }
 
   float_format& operator = (const float_format& ff)
     {
       if (&ff != this)
-	{
-	  fw = ff.fw;
-	  prec = ff.prec;
-	  fmt = ff.fmt;
-	  up = ff.up;
-	  sp = ff.sp;
-	}
+        {
+          fw = ff.fw;
+          ex = ff.ex;
+          prec = ff.prec;
+          fmt = ff.fmt;
+          up = ff.up;
+          sp = ff.sp;
+        }
 
       return *this;
     }
@@ -176,15 +180,21 @@ public:
     { sp = tz ? std::ios::showpoint : 0; return *this; }
 
   friend std::ostream& operator << (std::ostream& os,
-				    const pr_formatted_float& pff);
+                                    const pr_engineering_float& pef);
 
   friend std::ostream& operator << (std::ostream& os,
-				    const pr_rational_float& pff);
+                                    const pr_formatted_float& pff);
+
+  friend std::ostream& operator << (std::ostream& os,
+                                    const pr_rational_float& prf);
 
 private:
 
   // Field width.  Zero means as wide as necessary.
   int fw;
+
+  // Exponent Field width.  Zero means as wide as necessary.
+  int ex;
 
   // Precision.
   int prec;
@@ -198,6 +208,108 @@ private:
   // Show trailing zeros.
   int sp;
 };
+
+static int
+calc_scale_exp (const int& x)
+{
+  if (! print_eng)
+    return x;
+  else
+    return x - 3*static_cast<int> (x/3);
+  /* The expression above is equivalent to x - (x % 3).
+   * According to the ISO specification for C++ the modulo operator is
+   * compiler dependent if any of the arguments are negative.  Since this
+   * function will need to work on negative arguments, and we want to avoid
+   * portability issues, we re-implement the modulo function to the desired
+   * behavior (truncation).  There may be a gnulib replacement.
+   *
+   * ISO/IEC 14882:2003 : Programming languages -- C++. 5.6.4: ISO, IEC. 2003 .
+   * "the binary % operator yields the remainder from the division of the first
+   * expression by the second. .... If both operands are nonnegative then the
+   * remainder is nonnegative; if not, the sign of the remainder is
+   * implementation-defined".  */
+}
+
+static int
+engineering_exponent (const double& x)
+{
+  int ex = 0;
+  if (x != 0)
+    {
+      double absval = (x < 0.0 ? -x : x);
+      int logabsval = static_cast<int> (gnulib::floor (log10 (absval)));
+      /* Avoid using modulo function with negative arguments for portability.
+       * See extended comment at calc_scale_exp */
+      if (logabsval < 0.0)
+        ex = logabsval - 2 + ((-logabsval + 2) % 3);
+      else
+        ex = logabsval - (logabsval % 3);
+    }
+  return ex;
+}
+
+static int
+num_digits (const double& x)
+{
+  return 1 + (print_eng
+              ? engineering_exponent (x)
+              : static_cast<int> (gnulib::floor (log10 (x))));
+}
+
+class
+pr_engineering_float
+{
+public:
+
+  const float_format& f;
+
+  double val;
+
+  int exponent (void) const
+  {
+    return engineering_exponent (val);
+  }
+
+  double mantissa (void) const
+  {
+    return val / std::pow (10.0, exponent ());
+  }
+
+  pr_engineering_float (const float_format& f_arg, double val_arg)
+    : f (f_arg), val (val_arg) { }
+};
+
+std::ostream&
+operator << (std::ostream& os, const pr_engineering_float& pef)
+{
+  if (pef.f.fw >= 0)
+    os << std::setw (pef.f.fw - pef.f.ex);
+
+  if (pef.f.prec >= 0)
+    os << std::setprecision (pef.f.prec);
+
+  std::ios::fmtflags oflags =
+    os.flags (static_cast<std::ios::fmtflags>
+              (pef.f.fmt | pef.f.up | pef.f.sp));
+
+  os << pef.mantissa ();
+
+  int ex = pef.exponent ();
+  if (ex < 0)
+    {
+      os << std::setw (0) << "e-";
+      ex = -ex;
+    }
+  else
+    os << std::setw (0) << "e+";
+
+  os << std::setw (pef.f.ex - 2) << std::setfill('0') << ex
+     << std::setfill(' ');
+
+  os.flags (oflags);
+
+  return os;
+}
 
 class
 pr_formatted_float
@@ -221,8 +333,8 @@ operator << (std::ostream& os, const pr_formatted_float& pff)
   if (pff.f.prec >= 0)
     os << std::setprecision (pff.f.prec);
 
-  std::ios::fmtflags oflags = 
-    os.flags (static_cast<std::ios::fmtflags> 
+  std::ios::fmtflags oflags =
+    os.flags (static_cast<std::ios::fmtflags>
               (pff.f.fmt | pff.f.up | pff.f.sp));
 
   os << pff.val;
@@ -262,61 +374,61 @@ rational_approx (double val, int len)
 
       std::ostringstream buf2;
       buf2.flags (std::ios::fixed);
-      buf2 << std::setprecision (0) << static_cast<int>(n); 
+      buf2 << std::setprecision (0) << static_cast<int>(n);
       s = buf2.str();
 
       while (1)
-	{
-	  double flip = 1. / frac;
-	  double step = xround (flip);
-	  double nextn = n;
-	  double nextd = d;
+        {
+          double flip = 1. / frac;
+          double step = xround (flip);
+          double nextn = n;
+          double nextd = d;
 
-	  // Have we converged to 1/intmax ?
-	  if (m > 100 || fabs (frac) < 1 / static_cast<double>(INT_MAX))
-	    {
-	      lastn = n;
-	      lastd = d;
-	      break;
-	    }
+          // Have we converged to 1/intmax ?
+          if (m > 100 || fabs (frac) < 1 / static_cast<double>(INT_MAX))
+            {
+              lastn = n;
+              lastd = d;
+              break;
+            }
 
-	  frac = flip - step;
-	  n = n * step + lastn;
-	  d = d * step + lastd;
-	  lastn = nextn;
-	  lastd = nextd;
+          frac = flip - step;
+          n = n * step + lastn;
+          d = d * step + lastd;
+          lastn = nextn;
+          lastd = nextd;
 
-	  std::ostringstream buf;
-	  buf.flags (std::ios::fixed);
-	  buf << std::setprecision (0) << static_cast<int>(n) 
-	      << "/" << static_cast<int>(d);
-	  m++;
+          std::ostringstream buf;
+          buf.flags (std::ios::fixed);
+          buf << std::setprecision (0) << static_cast<int>(n)
+              << "/" << static_cast<int>(d);
+          m++;
 
-	  if (n < 0 && d < 0)
-	    {
-	      // Double negative, string can be two characters longer..
-	      if (buf.str().length() > static_cast<unsigned int>(len + 2) && 
-		  m > 1) 
-		break;
-	    }
-	  else if (buf.str().length() > static_cast<unsigned int>(len) && 
-		   m > 1) 
-	    break;
+          if (n < 0 && d < 0)
+            {
+              // Double negative, string can be two characters longer..
+              if (buf.str().length() > static_cast<unsigned int>(len + 2) &&
+                  m > 1)
+                break;
+            }
+          else if (buf.str().length() > static_cast<unsigned int>(len) &&
+                   m > 1)
+            break;
 
-	  s = buf.str();
-	}
+          s = buf.str();
+        }
 
       if (lastd < 0.)
-	{
-	  // Move sign to the top
-	  lastd = - lastd;
-	  lastn = - lastn;
-	  std::ostringstream buf;
-	  buf.flags (std::ios::fixed);
-	  buf << std::setprecision (0) << static_cast<int>(lastn) 
-	       << "/" << static_cast<int>(lastd);
-	  s = buf.str();
-	}
+        {
+          // Move sign to the top
+          lastd = - lastd;
+          lastn = - lastn;
+          std::ostringstream buf;
+          buf.flags (std::ios::fixed);
+          buf << std::setprecision (0) << static_cast<int>(lastn)
+               << "/" << static_cast<int>(lastd);
+          s = buf.str();
+        }
     }
 
   return s;
@@ -344,8 +456,8 @@ operator << (std::ostream& os, const pr_rational_float& prf)
   if (fw >= 0)
     os << std::setw (fw);
 
-  std::ios::fmtflags oflags = 
-    os.flags (static_cast<std::ios::fmtflags> 
+  std::ios::fmtflags oflags =
+    os.flags (static_cast<std::ios::fmtflags>
               (prf.f.fmt | prf.f.up | prf.f.sp));
 
   if (fw > 0 && s.length() > static_cast<unsigned int>(fw))
@@ -378,14 +490,14 @@ pr_max_internal (const Matrix& m)
   for (octave_idx_type j = 0; j < nc; j++)
     for (octave_idx_type i = 0; i < nr; i++)
       {
-	double val = m(i,j);
-	if (xisinf (val) || xisnan (val))
-	  continue;
+        double val = m(i,j);
+        if (xisinf (val) || xisnan (val))
+          continue;
 
-	all_inf_or_nan = false;
+        all_inf_or_nan = false;
 
-	if (val > result)
-	  result = val;
+        if (val > result)
+          result = val;
       }
 
   if (all_inf_or_nan)
@@ -407,14 +519,14 @@ pr_min_internal (const Matrix& m)
   for (octave_idx_type j = 0; j < nc; j++)
     for (octave_idx_type i = 0; i < nr; i++)
       {
-	double val = m(i,j);
-	if (xisinf (val) || xisnan (val))
-	  continue;
+        double val = m(i,j);
+        if (xisinf (val) || xisnan (val))
+          continue;
 
-	all_inf_or_nan = false;
+        all_inf_or_nan = false;
 
-	if (val < result)
-	  result = val;
+        if (val < result)
+          result = val;
       }
 
   if (all_inf_or_nan)
@@ -444,7 +556,7 @@ set_real_format (int digits, bool inf_or_nan, bool int_only, int &fw)
     {
       fw = digits < 0 ? 4 : digits + 3;
       if (inf_or_nan && fw < 4)
-	fw = 4;
+        fw = 4;
       rd = 2;
     }
   else if (hex_format)
@@ -461,49 +573,58 @@ set_real_format (int digits, bool inf_or_nan, bool int_only, int &fw)
     {
       fw = 1 + digits;
       if (inf_or_nan && fw < 4)
-	fw = 4;
+        fw = 4;
       rd = fw;
     }
   else
     {
       if (digits > 0)
-	{
-	  ld = digits;
-	  rd = prec > digits ? prec - digits : prec;
-	  digits++;
-	}
+        {
+          ld = digits;
+          rd = prec > digits ? prec - digits : prec;
+          digits++;
+        }
       else
-	{
-	  ld = 1;
-	  rd = prec > digits ? prec - digits : prec;
-	  digits = -digits + 1;
-	}
+        {
+          ld = 1;
+          rd = prec > digits ? prec - digits : prec;
+          digits = -digits + 1;
+        }
 
       fw = 1 + ld + 1 + rd;
       if (inf_or_nan && fw < 4)
-	fw = 4;
+        fw = 4;
     }
 
   if (! (rat_format || bank_format || hex_format || bit_format)
-      && (fw > Voutput_max_field_width || print_e || print_g))
+      && (fw > Voutput_max_field_width || print_e || print_g || print_eng))
     {
       if (print_g)
-	fmt = float_format ();
+        fmt = float_format ();
       else
-	{
-	  int exp_field = 4;
-	  if (digits > 100)
-	    exp_field++;
+        {
+          int ex = 4;
+          if (digits > 100)
+            ex++;
 
-	  fw = 2 + prec + exp_field;
-	  if (inf_or_nan && fw < 4)
-	    fw = 4;
-
-	  fmt = float_format (fw, prec - 1, std::ios::scientific);
-	}
+          if (print_eng)
+            {
+              fw = 4 + prec + ex;
+              if (inf_or_nan && fw < 6)
+                fw = 6;
+              fmt = float_format (fw, ex, prec - 1, std::ios::fixed);
+            }
+          else
+            {
+              fw = 2 + prec + ex;
+              if (inf_or_nan && fw < 4)
+                fw = 4;
+              fmt = float_format (fw, prec - 1, std::ios::scientific);
+            }
+        }
 
       if (print_big_e)
-	fmt.uppercase ();
+        fmt.uppercase ();
     }
   else if (! bank_format && (inf_or_nan || int_only))
     fmt = float_format (fw, rd);
@@ -529,7 +650,7 @@ set_format (double d, int& fw)
   double d_abs = d < 0.0 ? -d : d;
 
   int digits = (inf_or_nan || d_abs == 0.0)
-    ? 0 : static_cast<int> (floor (log10 (d_abs) + 1.0));
+    ? 0 : num_digits (d_abs);
 
   set_real_format (digits, inf_or_nan, int_only, fw);
 }
@@ -543,7 +664,7 @@ set_format (double d)
 
 static void
 set_real_matrix_format (int x_max, int x_min, bool inf_or_nan,
-			int int_or_inf_or_nan, int& fw)
+                        int int_or_inf_or_nan, int& fw)
 {
   static float_format fmt;
 
@@ -561,7 +682,7 @@ set_real_matrix_format (int x_max, int x_min, bool inf_or_nan,
       int digits = x_max > x_min ? x_max : x_min;
       fw = digits <= 0 ? 4 : digits + 3;
       if (inf_or_nan && fw < 4)
-	fw = 4;
+        fw = 4;
       rd = 2;
     }
   else if (hex_format)
@@ -579,76 +700,85 @@ set_real_matrix_format (int x_max, int x_min, bool inf_or_nan,
       rd = prec;
       fw = rd + 2;
       if (inf_or_nan && fw < 4)
-	fw = 4;
+        fw = 4;
     }
   else if (int_or_inf_or_nan)
     {
       int digits = x_max > x_min ? x_max : x_min;
       fw = digits <= 0 ? 2 : digits + 1;
       if (inf_or_nan && fw < 4)
-	fw = 4;
+        fw = 4;
       rd = fw;
     }
   else
     {
       int ld_max, rd_max;
       if (x_max > 0)
-	{
-	  ld_max = x_max;
-	  rd_max = prec > x_max ? prec - x_max : prec;
-	  x_max++;
-	}
+        {
+          ld_max = x_max;
+          rd_max = prec > x_max ? prec - x_max : prec;
+          x_max++;
+        }
       else
-	{
-	  ld_max = 1;
-	  rd_max = prec > x_max ? prec - x_max : prec;
-	  x_max = -x_max + 1;
-	}
+        {
+          ld_max = 1;
+          rd_max = prec > x_max ? prec - x_max : prec;
+          x_max = -x_max + 1;
+        }
 
       int ld_min, rd_min;
       if (x_min > 0)
-	{
-	  ld_min = x_min;
-	  rd_min = prec > x_min ? prec - x_min : prec;
-	  x_min++;
-	}
+        {
+          ld_min = x_min;
+          rd_min = prec > x_min ? prec - x_min : prec;
+          x_min++;
+        }
       else
-	{
-	  ld_min = 1;
-	  rd_min = prec > x_min ? prec - x_min : prec;
-	  x_min = -x_min + 1;
-	}
+        {
+          ld_min = 1;
+          rd_min = prec > x_min ? prec - x_min : prec;
+          x_min = -x_min + 1;
+        }
 
       ld = ld_max > ld_min ? ld_max : ld_min;
       rd = rd_max > rd_min ? rd_max : rd_min;
 
       fw = 1 + ld + 1 + rd;
       if (inf_or_nan && fw < 4)
-	fw = 4;
+        fw = 4;
     }
 
   if (! (rat_format || bank_format || hex_format || bit_format)
       && (print_e
-	  || print_g
-	  || (! Vfixed_point_format && fw > Voutput_max_field_width)))
+          || print_eng || print_g
+          || (! Vfixed_point_format && fw > Voutput_max_field_width)))
     {
       if (print_g)
-	fmt = float_format ();
+        fmt = float_format ();
       else
-	{
-	  int exp_field = 4;
-	  if (x_max > 100 || x_min > 100)
-	    exp_field++;
+        {
+          int ex = 4;
+          if (x_max > 100 || x_min > 100)
+            ex++;
 
-	  fw = 2 + prec + exp_field;
-	  if (inf_or_nan && fw < 4)
-	    fw = 4;
-
-	  fmt = float_format (fw, prec - 1, std::ios::scientific);
-	}
+          if (print_eng)
+            {
+              fw = 4 + prec + ex;
+              if (inf_or_nan && fw < 6)
+                fw = 6;
+              fmt = float_format (fw, ex, prec - 1, std::ios::fixed);
+            }
+          else
+            {
+              fw = 2 + prec + ex;
+              if (inf_or_nan && fw < 4)
+                fw = 4;
+              fmt = float_format (fw, prec - 1, std::ios::scientific);
+            }
+        }
 
       if (print_big_e)
-	fmt.uppercase ();
+        fmt.uppercase ();
     }
   else if (! bank_format && int_or_inf_or_nan)
     fmt = float_format (fw, rd);
@@ -675,13 +805,12 @@ set_format (const Matrix& m, int& fw, double& scale)
   double max_abs = pr_max_internal (m_abs);
   double min_abs = pr_min_internal (m_abs);
 
-  int x_max = max_abs == 0.0
-    ? 0 : static_cast<int> (floor (log10 (max_abs) + 1.0));
+  int x_max = max_abs == 0.0 ? 0 : num_digits (max_abs);
 
-  int x_min = min_abs == 0.0
-    ? 0 : static_cast<int> (floor (log10 (min_abs) + 1.0));
+  int x_min = min_abs == 0.0 ? 0 : num_digits (min_abs);
 
-  scale = (x_max == 0 || int_or_inf_or_nan) ? 1.0 : std::pow (10.0, x_max - 1);
+  scale = (x_max == 0 || int_or_inf_or_nan) ? 1.0
+    : std::pow (10.0, calc_scale_exp (x_max - 1));
 
   set_real_matrix_format (x_max, x_min, inf_or_nan, int_or_inf_or_nan, fw);
 }
@@ -696,7 +825,7 @@ set_format (const Matrix& m)
 
 static void
 set_complex_format (int x_max, int x_min, int r_x, bool inf_or_nan,
-		    int int_only, int& r_fw, int& i_fw)
+                    int int_only, int& r_fw, int& i_fw)
 {
   static float_format r_fmt;
   static float_format i_fmt;
@@ -717,7 +846,7 @@ set_complex_format (int x_max, int x_min, int r_x, bool inf_or_nan,
       i_fw = 0;
       r_fw = digits <= 0 ? 4 : digits + 3;
       if (inf_or_nan && r_fw < 4)
-	r_fw = 4;
+        r_fw = 4;
       rd = 2;
     }
   else if (hex_format)
@@ -738,41 +867,41 @@ set_complex_format (int x_max, int x_min, int r_x, bool inf_or_nan,
       i_fw = digits <= 0 ? 1 : digits;
       r_fw = i_fw + 1;
       if (inf_or_nan && i_fw < 3)
-	{
-	  i_fw = 3;
-	  r_fw = 4;
-	}
+        {
+          i_fw = 3;
+          r_fw = 4;
+        }
       rd = r_fw;
     }
   else
     {
       int ld_max, rd_max;
       if (x_max > 0)
-	{
-	  ld_max = x_max;
-	  rd_max = prec > x_max ? prec - x_max : prec;
-	  x_max++;
-	}
+        {
+          ld_max = x_max;
+          rd_max = prec > x_max ? prec - x_max : prec;
+          x_max++;
+        }
       else
-	{
-	  ld_max = 1;
-	  rd_max = prec > x_max ? prec - x_max : prec;
-	  x_max = -x_max + 1;
-	}
+        {
+          ld_max = 1;
+          rd_max = prec > x_max ? prec - x_max : prec;
+          x_max = -x_max + 1;
+        }
 
       int ld_min, rd_min;
       if (x_min > 0)
-	{
-	  ld_min = x_min;
-	  rd_min = prec > x_min ? prec - x_min : prec;
-	  x_min++;
-	}
+        {
+          ld_min = x_min;
+          rd_min = prec > x_min ? prec - x_min : prec;
+          x_min++;
+        }
       else
-	{
-	  ld_min = 1;
-	  rd_min = prec > x_min ? prec - x_min : prec;
-	  x_min = -x_min + 1;
-	}
+        {
+          ld_min = 1;
+          rd_min = prec > x_min ? prec - x_min : prec;
+          x_min = -x_min + 1;
+        }
 
       ld = ld_max > ld_min ? ld_max : ld_min;
       rd = rd_max > rd_min ? rd_max : rd_min;
@@ -780,43 +909,57 @@ set_complex_format (int x_max, int x_min, int r_x, bool inf_or_nan,
       i_fw = ld + 1 + rd;
       r_fw = i_fw + 1;
       if (inf_or_nan && i_fw < 3)
-	{
-	  i_fw = 3;
-	  r_fw = 4;
-	}
+        {
+          i_fw = 3;
+          r_fw = 4;
+        }
     }
 
   if (! (rat_format || bank_format || hex_format || bit_format)
-      && (r_fw > Voutput_max_field_width || print_e || print_g))
+      && (r_fw > Voutput_max_field_width || print_e || print_eng || print_g))
     {
       if (print_g)
-	{
-	  r_fmt = float_format ();
-	  i_fmt = float_format ();
-	}
+        {
+          r_fmt = float_format ();
+          i_fmt = float_format ();
+        }
       else
-	{
-	  int exp_field = 4;
-	  if (x_max > 100 || x_min > 100)
-	    exp_field++;
+        {
+          int ex = 4;
+          if (x_max > 100 || x_min > 100)
+            ex++;
 
-	  i_fw = prec + exp_field;
-	  r_fw = i_fw + 1;
-	  if (inf_or_nan && i_fw < 3)
-	    {
-	      i_fw = 3;
-	      r_fw = 4;
-	    }
-
-	  r_fmt = float_format (r_fw, prec - 1, std::ios::scientific);
-	  i_fmt = float_format (i_fw, prec - 1, std::ios::scientific);
-	}
+          if (print_eng)
+            {
+              i_fw =  3 + prec + ex;
+              r_fw = i_fw + 1;
+              if (inf_or_nan && i_fw < 5)
+                {
+                  i_fw = 5;
+                  r_fw = 6;
+                }
+              r_fmt = float_format (r_fw, ex, prec - 1, std::ios::fixed);
+              i_fmt = float_format (i_fw, ex, prec - 1, std::ios::fixed);
+            }
+          else
+            {
+              i_fw = 1 + prec + ex;
+              r_fw = i_fw + 1;
+              if (inf_or_nan && i_fw < 3)
+                {
+                  i_fw = 3;
+                  r_fw = 4;
+                }
+              r_fmt = float_format (r_fw, prec - 1, std::ios::scientific);
+              i_fmt = float_format (i_fw, prec - 1, std::ios::scientific);
+            }
+        }
 
       if (print_big_e)
-	{
-	  r_fmt.uppercase ();
-	  i_fmt.uppercase ();
-	}
+        {
+          r_fmt.uppercase ();
+          i_fmt.uppercase ();
+        }
     }
   else if (! bank_format && (inf_or_nan || int_only))
     {
@@ -853,10 +996,10 @@ set_format (const Complex& c, int& r_fw, int& i_fw)
   double i_abs = ip < 0.0 ? -ip : ip;
 
   int r_x = (xisinf (rp) || xisnan (rp) || r_abs == 0.0)
-    ? 0 : static_cast<int> (floor (log10 (r_abs) + 1.0));
+    ? 0 : num_digits (r_abs);
 
   int i_x = (xisinf (ip) || xisnan (ip) || i_abs == 0.0)
-    ? 0 : static_cast<int> (floor (log10 (i_abs) + 1.0));
+    ? 0 : num_digits (i_abs);
 
   int x_max, x_min;
 
@@ -883,8 +1026,8 @@ set_format (const Complex& c)
 
 static void
 set_complex_matrix_format (int x_max, int x_min, int r_x_max,
-			   int r_x_min, bool inf_or_nan,
-			   int int_or_inf_or_nan, int& r_fw, int& i_fw)
+                           int r_x_min, bool inf_or_nan,
+                           int int_or_inf_or_nan, int& r_fw, int& i_fw)
 {
   static float_format r_fmt;
   static float_format i_fmt;
@@ -905,7 +1048,7 @@ set_complex_matrix_format (int x_max, int x_min, int r_x_max,
       i_fw = 0;
       r_fw = digits <= 0 ? 4 : digits + 3;
       if (inf_or_nan && r_fw < 4)
-	r_fw = 4;
+        r_fw = 4;
       rd = 2;
     }
   else if (hex_format)
@@ -926,10 +1069,10 @@ set_complex_matrix_format (int x_max, int x_min, int r_x_max,
       i_fw = rd + 1;
       r_fw = i_fw + 1;
       if (inf_or_nan && i_fw < 3)
-	{
-	  i_fw = 3;
-	  r_fw = 4;
-	}
+        {
+          i_fw = 3;
+          r_fw = 4;
+        }
     }
   else if (int_or_inf_or_nan)
     {
@@ -937,41 +1080,41 @@ set_complex_matrix_format (int x_max, int x_min, int r_x_max,
       i_fw = digits <= 0 ? 1 : digits;
       r_fw = i_fw + 1;
       if (inf_or_nan && i_fw < 3)
-	{
-	  i_fw = 3;
-	  r_fw = 4;
-	}
+        {
+          i_fw = 3;
+          r_fw = 4;
+        }
       rd = r_fw;
     }
   else
     {
       int ld_max, rd_max;
       if (x_max > 0)
-	{
-	  ld_max = x_max;
-	  rd_max = prec > x_max ? prec - x_max : prec;
-	  x_max++;
-	}
+        {
+          ld_max = x_max;
+          rd_max = prec > x_max ? prec - x_max : prec;
+          x_max++;
+        }
       else
-	{
-	  ld_max = 1;
-	  rd_max = prec > x_max ? prec - x_max : prec;
-	  x_max = -x_max + 1;
-	}
+        {
+          ld_max = 1;
+          rd_max = prec > x_max ? prec - x_max : prec;
+          x_max = -x_max + 1;
+        }
 
       int ld_min, rd_min;
       if (x_min > 0)
-	{
-	  ld_min = x_min;
-	  rd_min = prec > x_min ? prec - x_min : prec;
-	  x_min++;
-	}
+        {
+          ld_min = x_min;
+          rd_min = prec > x_min ? prec - x_min : prec;
+          x_min++;
+        }
       else
-	{
-	  ld_min = 1;
-	  rd_min = prec > x_min ? prec - x_min : prec;
-	  x_min = -x_min + 1;
-	}
+        {
+          ld_min = 1;
+          rd_min = prec > x_min ? prec - x_min : prec;
+          x_min = -x_min + 1;
+        }
 
       ld = ld_max > ld_min ? ld_max : ld_min;
       rd = rd_max > rd_min ? rd_max : rd_min;
@@ -979,45 +1122,59 @@ set_complex_matrix_format (int x_max, int x_min, int r_x_max,
       i_fw = ld + 1 + rd;
       r_fw = i_fw + 1;
       if (inf_or_nan && i_fw < 3)
-	{
-	  i_fw = 3;
-	  r_fw = 4;
-	}
+        {
+          i_fw = 3;
+          r_fw = 4;
+        }
     }
 
   if (! (rat_format || bank_format || hex_format || bit_format)
       && (print_e
-	  || print_g
-	  || (! Vfixed_point_format && r_fw > Voutput_max_field_width)))
+          || print_eng || print_g
+          || (! Vfixed_point_format && r_fw > Voutput_max_field_width)))
     {
       if (print_g)
-	{
-	  r_fmt = float_format ();
-	  i_fmt = float_format ();
-	}
+        {
+          r_fmt = float_format ();
+          i_fmt = float_format ();
+        }
       else
-	{
-	  int exp_field = 4;
-	  if (x_max > 100 || x_min > 100)
-	    exp_field++;
+        {
+          int ex = 4;
+          if (x_max > 100 || x_min > 100)
+            ex++;
 
-	  i_fw = prec + exp_field;
-	  r_fw = i_fw + 1;
-	  if (inf_or_nan && i_fw < 3)
-	    {
-	      i_fw = 3;
-	      r_fw = 4;
-	    }
-
-	  r_fmt = float_format (r_fw, prec - 1, std::ios::scientific);
-	  i_fmt = float_format (i_fw, prec - 1, std::ios::scientific);
-	}
+          if (print_eng)
+            {
+              i_fw = 3 + prec + ex;
+              r_fw = i_fw + 1;
+              if (inf_or_nan && i_fw < 5)
+                {
+                  i_fw = 5;
+                  r_fw = 6;
+                }
+              r_fmt = float_format (r_fw, ex, prec - 1, std::ios::fixed);
+              i_fmt = float_format (i_fw, ex, prec - 1, std::ios::fixed);
+            }
+          else
+            {
+              i_fw = 1 + prec + ex;
+              r_fw = i_fw + 1;
+              if (inf_or_nan && i_fw < 3)
+                {
+                  i_fw = 3;
+                  r_fw = 4;
+                }
+              r_fmt = float_format (r_fw, prec - 1, std::ios::scientific);
+              i_fmt = float_format (i_fw, prec - 1, std::ios::scientific);
+            }
+        }
 
       if (print_big_e)
-	{
-	  r_fmt.uppercase ();
-	  i_fmt.uppercase ();
-	}
+        {
+          r_fmt.uppercase ();
+          i_fmt.uppercase ();
+        }
     }
   else if (! bank_format && int_or_inf_or_nan)
     {
@@ -1049,7 +1206,7 @@ set_format (const ComplexMatrix& cm, int& r_fw, int& i_fw, double& scale)
   bool inf_or_nan = cm.any_element_is_inf_or_nan ();
 
   bool int_or_inf_or_nan = (rp.all_elements_are_int_or_inf_or_nan ()
-			    && ip.all_elements_are_int_or_inf_or_nan ());
+                            && ip.all_elements_are_int_or_inf_or_nan ());
 
   Matrix r_m_abs = rp.abs ();
   double r_max_abs = pr_max_internal (r_m_abs);
@@ -1059,25 +1216,22 @@ set_format (const ComplexMatrix& cm, int& r_fw, int& i_fw, double& scale)
   double i_max_abs = pr_max_internal (i_m_abs);
   double i_min_abs = pr_min_internal (i_m_abs);
 
-  int r_x_max = r_max_abs == 0.0
-    ? 0 : static_cast<int> (floor (log10 (r_max_abs) + 1.0));
+  int r_x_max = r_max_abs == 0.0 ? 0 : num_digits (r_max_abs);
 
-  int r_x_min = r_min_abs == 0.0
-    ? 0 : static_cast<int> (floor (log10 (r_min_abs) + 1.0));
+  int r_x_min = r_min_abs == 0.0 ? 0 : num_digits (r_min_abs);
 
-  int i_x_max = i_max_abs == 0.0
-    ? 0 : static_cast<int> (floor (log10 (i_max_abs) + 1.0));
+  int i_x_max = i_max_abs == 0.0 ? 0 : num_digits (i_max_abs);
 
-  int i_x_min = i_min_abs == 0.0
-    ? 0 : static_cast<int> (floor (log10 (i_min_abs) + 1.0));
+  int i_x_min = i_min_abs == 0.0 ? 0 : num_digits (i_min_abs);
 
   int x_max = r_x_max > i_x_max ? r_x_max : i_x_max;
   int x_min = r_x_min > i_x_min ? r_x_min : i_x_min;
 
-  scale = (x_max == 0 || int_or_inf_or_nan) ? 1.0 : std::pow (10.0, x_max - 1);
+  scale = (x_max == 0 || int_or_inf_or_nan) ? 1.0
+    : std::pow (10.0, calc_scale_exp (x_max - 1));
 
   set_complex_matrix_format (x_max, x_min, r_x_max, r_x_min, inf_or_nan,
-			     int_or_inf_or_nan, r_fw, i_fw);
+                             int_or_inf_or_nan, r_fw, i_fw);
 }
 
 static inline void
@@ -1133,31 +1287,31 @@ set_range_format (int x_max, int x_min, int all_ints, int& fw)
     {
       int ld_max, rd_max;
       if (x_max > 0)
-	{
-	  ld_max = x_max;
-	  rd_max = prec > x_max ? prec - x_max : prec;
-	  x_max++;
-	}
+        {
+          ld_max = x_max;
+          rd_max = prec > x_max ? prec - x_max : prec;
+          x_max++;
+        }
       else
-	{
-	  ld_max = 1;
-	  rd_max = prec > x_max ? prec - x_max : prec;
-	  x_max = -x_max + 1;
-	}
+        {
+          ld_max = 1;
+          rd_max = prec > x_max ? prec - x_max : prec;
+          x_max = -x_max + 1;
+        }
 
       int ld_min, rd_min;
       if (x_min > 0)
-	{
-	  ld_min = x_min;
-	  rd_min = prec > x_min ? prec - x_min : prec;
-	  x_min++;
-	}
+        {
+          ld_min = x_min;
+          rd_min = prec > x_min ? prec - x_min : prec;
+          x_min++;
+        }
       else
-	{
-	  ld_min = 1;
-	  rd_min = prec > x_min ? prec - x_min : prec;
-	  x_min = -x_min + 1;
-	}
+        {
+          ld_min = 1;
+          rd_min = prec > x_min ? prec - x_min : prec;
+          x_min = -x_min + 1;
+        }
 
       ld = ld_max > ld_min ? ld_max : ld_min;
       rd = rd_max > rd_min ? rd_max : rd_min;
@@ -1167,24 +1321,31 @@ set_range_format (int x_max, int x_min, int all_ints, int& fw)
 
   if (! (rat_format || bank_format || hex_format || bit_format)
       && (print_e
-	  || print_g
-	  || (! Vfixed_point_format && fw > Voutput_max_field_width)))
+          || print_eng || print_g
+          || (! Vfixed_point_format && fw > Voutput_max_field_width)))
     {
       if (print_g)
-	fmt = float_format ();
+        fmt = float_format ();
       else
-	{
-	  int exp_field = 4;
-	  if (x_max > 100 || x_min > 100)
-	    exp_field++;
+        {
+          int ex = 4;
+          if (x_max > 100 || x_min > 100)
+            ex++;
 
-	  fw = 3 + prec + exp_field;
-
-	  fmt = float_format (fw, prec - 1, std::ios::scientific);
-	}
+          if (print_eng)
+            {
+              fw = 5 + prec + ex;
+              fmt = float_format (fw, ex, prec - 1, std::ios::fixed);
+            }
+          else
+            {
+              fw = 3 + prec + ex;
+              fmt = float_format (fw, prec - 1, std::ios::scientific);
+            }
+        }
 
       if (print_big_e)
-	fmt.uppercase ();
+        fmt.uppercase ();
     }
   else if (! bank_format && all_ints)
     fmt = float_format (fw, rd);
@@ -1218,13 +1379,12 @@ set_format (const Range& r, int& fw, double& scale)
   double max_abs = r_max < 0.0 ? -r_max : r_max;
   double min_abs = r_min < 0.0 ? -r_min : r_min;
 
-  int x_max = max_abs == 0.0
-    ? 0 : static_cast<int> (floor (log10 (max_abs) + 1.0));
+  int x_max = max_abs == 0.0 ? 0 : num_digits (max_abs);
 
-  int x_min = min_abs == 0.0
-    ? 0 : static_cast<int> (floor (log10 (min_abs) + 1.0));
+  int x_min = min_abs == 0.0 ? 0 : num_digits (min_abs);
 
-  scale = (x_max == 0 || all_ints) ? 1.0 : std::pow (10.0, x_max - 1);
+  scale = (x_max == 0 || all_ints) ? 1.0
+    : std::pow (10.0, calc_scale_exp (x_max - 1));
 
   set_range_format (x_max, x_min, all_ints, fw);
 }
@@ -1291,108 +1451,110 @@ pr_any_float (const float_format *fmt, std::ostream& os, double d, int fw = 0)
       //   {bit,hex}_format == 2: print native
 
       if (hex_format)
-	{
-	  equiv tmp;
-	  tmp.d = d;
+        {
+          equiv tmp;
+          tmp.d = d;
 
-	  // Unless explicitly asked for, always print in big-endian
-	  // format.
+          // Unless explicitly asked for, always print in big-endian
+          // format.
 
-	  // FIXME -- is it correct to swap bytes for VAX
-	  // formats and not for Cray?
+          // FIXME -- is it correct to swap bytes for VAX
+          // formats and not for Cray?
 
-	  // FIXME -- will bad things happen if we are
-	  // interrupted before resetting the format flags and fill
-	  // character?
+          // FIXME -- will bad things happen if we are
+          // interrupted before resetting the format flags and fill
+          // character?
 
-	  oct_mach_info::float_format flt_fmt =
-	    oct_mach_info::native_float_format ();
+          oct_mach_info::float_format flt_fmt =
+            oct_mach_info::native_float_format ();
 
-	  char ofill = os.fill ('0');
+          char ofill = os.fill ('0');
 
-	  std::ios::fmtflags oflags
-	    = os.flags (std::ios::right | std::ios::hex);
+          std::ios::fmtflags oflags
+            = os.flags (std::ios::right | std::ios::hex);
 
-	  if (hex_format > 1
-	      || flt_fmt == oct_mach_info::flt_fmt_ieee_big_endian
-	      || flt_fmt == oct_mach_info::flt_fmt_cray
-	      || flt_fmt == oct_mach_info::flt_fmt_unknown)
-	    {
-	      for (size_t i = 0; i < sizeof (double); i++)
-		os << std::setw (2) << static_cast<int> (tmp.i[i]);
-	    }
-	  else
-	    {
-	      for (int i = sizeof (double) - 1; i >= 0; i--)
-		os << std::setw (2) << static_cast<int> (tmp.i[i]);
-	    }
+          if (hex_format > 1
+              || flt_fmt == oct_mach_info::flt_fmt_ieee_big_endian
+              || flt_fmt == oct_mach_info::flt_fmt_cray
+              || flt_fmt == oct_mach_info::flt_fmt_unknown)
+            {
+              for (size_t i = 0; i < sizeof (double); i++)
+                os << std::setw (2) << static_cast<int> (tmp.i[i]);
+            }
+          else
+            {
+              for (int i = sizeof (double) - 1; i >= 0; i--)
+                os << std::setw (2) << static_cast<int> (tmp.i[i]);
+            }
 
-	  os.fill (ofill);
-	  os.setf (oflags);	  
-	}
+          os.fill (ofill);
+          os.setf (oflags);
+        }
       else if (bit_format)
-	{
-	  equiv tmp;
-	  tmp.d = d;
+        {
+          equiv tmp;
+          tmp.d = d;
 
-	  // FIXME -- is it correct to swap bytes for VAX
-	  // formats and not for Cray?
+          // FIXME -- is it correct to swap bytes for VAX
+          // formats and not for Cray?
 
-	  oct_mach_info::float_format flt_fmt =
-	    oct_mach_info::native_float_format ();
+          oct_mach_info::float_format flt_fmt =
+            oct_mach_info::native_float_format ();
 
-	  if (flt_fmt == oct_mach_info::flt_fmt_ieee_big_endian
-	      || flt_fmt == oct_mach_info::flt_fmt_cray
-	      || flt_fmt == oct_mach_info::flt_fmt_unknown)
-	    {
-	      for (size_t i = 0; i < sizeof (double); i++)
-		PRINT_CHAR_BITS (os, tmp.i[i]);
-	    }
-	  else
-	    {
-	      if (bit_format > 1)
-		{
-		  for (size_t i = 0; i < sizeof (double); i++)
-		    PRINT_CHAR_BITS_SWAPPED (os, tmp.i[i]);
-		}
-	      else
-		{
-		  for (int i = sizeof (double) - 1; i >= 0; i--)
-		    PRINT_CHAR_BITS (os, tmp.i[i]);
-		}
-	    }
-	}
+          if (flt_fmt == oct_mach_info::flt_fmt_ieee_big_endian
+              || flt_fmt == oct_mach_info::flt_fmt_cray
+              || flt_fmt == oct_mach_info::flt_fmt_unknown)
+            {
+              for (size_t i = 0; i < sizeof (double); i++)
+                PRINT_CHAR_BITS (os, tmp.i[i]);
+            }
+          else
+            {
+              if (bit_format > 1)
+                {
+                  for (size_t i = 0; i < sizeof (double); i++)
+                    PRINT_CHAR_BITS_SWAPPED (os, tmp.i[i]);
+                }
+              else
+                {
+                  for (int i = sizeof (double) - 1; i >= 0; i--)
+                    PRINT_CHAR_BITS (os, tmp.i[i]);
+                }
+            }
+        }
       else if (octave_is_NA (d))
-	{
-	  if (fw > 0)
-	    os << std::setw (fw) << "NA";
-	  else
-	    os << "NA";
-	}
+        {
+          if (fw > 0)
+            os << std::setw (fw) << "NA";
+          else
+            os << "NA";
+        }
       else if (rat_format)
-	os << pr_rational_float (*fmt, d);
+        os << pr_rational_float (*fmt, d);
       else if (xisinf (d))
-	{
-	  const char *s;
-	  if (d < 0.0)
-	    s = "-Inf";
-	  else
-	    s = "Inf";
+        {
+          const char *s;
+          if (d < 0.0)
+            s = "-Inf";
+          else
+            s = "Inf";
 
-	  if (fw > 0)
-	    os << std::setw (fw) << s;
-	  else
-	    os << s;
-	}
+          if (fw > 0)
+            os << std::setw (fw) << s;
+          else
+            os << s;
+        }
       else if (xisnan (d))
-	{
-	  if (fw > 0)
-	    os << std::setw (fw) << "NaN";
-	  else
-	    os << "NaN";
-	}
+        {
+          if (fw > 0)
+            os << std::setw (fw) << "NaN";
+          else
+            os << "NaN";
+        }
+      else if (print_eng)
+        os << pr_engineering_float (*fmt, d);
       else
-	os << pr_formatted_float (*fmt, d);
+        os << pr_formatted_float (*fmt, d);
     }
   else
     os << d;
@@ -1415,7 +1577,7 @@ pr_imag_float (std::ostream& os, double d, int fw = 0)
 
 static void
 pr_complex (std::ostream& os, const Complex& c, int r_fw = 0,
-	    int i_fw = 0, double scale = 1.0)
+            int i_fw = 0, double scale = 1.0)
 {
   Complex tmp
     = (Vfixed_point_format && ! print_g && scale != 1.0) ? c / scale : c;
@@ -1428,20 +1590,20 @@ pr_complex (std::ostream& os, const Complex& c, int r_fw = 0,
     {
       double i = tmp.imag ();
       if (! (hex_format || bit_format) && lo_ieee_signbit (i))
-	{
-	  os << " - ";
-	  i = -i;
-	  pr_imag_float (os, i, i_fw);
-	}
+        {
+          os << " - ";
+          i = -i;
+          pr_imag_float (os, i, i_fw);
+        }
       else
-	{
-	  if (hex_format || bit_format)
-	    os << "  ";
-	  else
-	    os << " + ";
+        {
+          if (hex_format || bit_format)
+            os << "  ";
+          else
+            os << " + ";
 
-	  pr_imag_float (os, i, i_fw);
-	}
+          pr_imag_float (os, i, i_fw);
+        }
       os << "i";
     }
 }
@@ -1454,22 +1616,22 @@ print_empty_matrix (std::ostream& os, octave_idx_type nr, octave_idx_type nc, bo
   if (pr_as_read_syntax)
     {
       if (nr == 0 && nc == 0)
-	os << "[]";
+        os << "[]";
       else
-	os << "zeros (" << nr << ", " << nc << ")";
+        os << "zeros (" << nr << ", " << nc << ")";
     }
   else
     {
       os << "[]";
 
       if (Vprint_empty_dimensions)
-	os << "(" << nr << "x" << nc << ")";
+        os << "(" << nr << "x" << nc << ")";
     }
 }
 
 static void
 print_empty_nd_array (std::ostream& os, const dim_vector& dims,
-		      bool pr_as_read_syntax)
+                      bool pr_as_read_syntax)
 {
   assert (dims.any_zero ());
 
@@ -1480,7 +1642,7 @@ print_empty_nd_array (std::ostream& os, const dim_vector& dims,
       os << "[]";
 
       if (Vprint_empty_dimensions)
-	os << "(" << dims.str () << ")";
+        os << "(" << dims.str () << ")";
     }
 }
 
@@ -1490,44 +1652,44 @@ pr_scale_header (std::ostream& os, double scale)
   if (Vfixed_point_format && ! print_g && scale != 1.0)
     {
       os << "  "
-	 << std::setw (8) << std::setprecision (1)
-	 << std::setiosflags (std::ios::scientific|std::ios::left)
-	 << scale
-	 << std::resetiosflags (std::ios::scientific|std::ios::left)
-	 << " *\n";
+         << std::setw (8) << std::setprecision (1)
+         << std::setiosflags (std::ios::scientific|std::ios::left)
+         << scale
+         << std::resetiosflags (std::ios::scientific|std::ios::left)
+         << " *\n";
 
       if (! compact_format)
-	os << "\n";
+        os << "\n";
     }
 }
 
 static void
 pr_col_num_header (std::ostream& os, octave_idx_type total_width, int max_width,
-		   octave_idx_type lim, octave_idx_type col, int extra_indent)
+                   octave_idx_type lim, octave_idx_type col, int extra_indent)
 {
   if (total_width > max_width && Vsplit_long_rows)
     {
       if (col != 0)
-	{
-	  if (compact_format)
-	    os << "\n";
-	  else
-	    os << "\n\n";
-	}
+        {
+          if (compact_format)
+            os << "\n";
+          else
+            os << "\n\n";
+        }
 
       octave_idx_type num_cols = lim - col;
 
       os << std::setw (extra_indent) << "";
 
       if (num_cols == 1)
-	os << " Column " << col + 1 << ":\n";
+        os << " Column " << col + 1 << ":\n";
       else if (num_cols == 2)
-	os << " Columns " << col + 1 << " and " << lim << ":\n";
+        os << " Columns " << col + 1 << " and " << lim << ":\n";
       else
-	os << " Columns " << col + 1 << " through " << lim << ":\n";
+        os << " Columns " << col + 1 << " through " << lim << ":\n";
 
       if (! compact_format)
-	os << "\n";
+        os << "\n";
     }
 }
 
@@ -1545,7 +1707,7 @@ pr_plus_format (std::ostream& os, const T& val)
 
 void
 octave_print_internal (std::ostream& os, double d,
-		       bool /* pr_as_read_syntax */)
+                       bool /* pr_as_read_syntax */)
 {
   if (plus_format)
     {
@@ -1555,15 +1717,15 @@ octave_print_internal (std::ostream& os, double d,
     {
       set_format (d);
       if (free_format)
-	os << d;
+        os << d;
       else
-	pr_float (os, d);
+        pr_float (os, d);
     }
 }
 
 void
 octave_print_internal (std::ostream& os, const Matrix& m,
-		       bool pr_as_read_syntax, int extra_indent)
+                       bool pr_as_read_syntax, int extra_indent)
 {
   octave_idx_type nr = m.rows ();
   octave_idx_type nc = m.columns ();
@@ -1573,17 +1735,17 @@ octave_print_internal (std::ostream& os, const Matrix& m,
   else if (plus_format && ! pr_as_read_syntax)
     {
       for (octave_idx_type i = 0; i < nr; i++)
-	{
-	  for (octave_idx_type j = 0; j < nc; j++)
-	    {
-	      OCTAVE_QUIT;
+        {
+          for (octave_idx_type j = 0; j < nc; j++)
+            {
+              octave_quit ();
 
-	      pr_plus_format (os, m(i,j));
-	    }
+              pr_plus_format (os, m(i,j));
+            }
 
-	  if (i < nr - 1)
-	    os << "\n";
-	}
+          if (i < nr - 1)
+            os << "\n";
+        }
     }
   else
     {
@@ -1595,109 +1757,109 @@ octave_print_internal (std::ostream& os, const Matrix& m,
       octave_idx_type max_width = command_editor::terminal_cols ();
 
       if (pr_as_read_syntax)
-	max_width -= 4;
+        max_width -= 4;
       else
-	max_width -= extra_indent;
+        max_width -= extra_indent;
 
       if (max_width < 0)
-	max_width = 0;
+        max_width = 0;
 
       if (free_format)
-	{
-	  if (pr_as_read_syntax)
-	    os << "[\n";
+        {
+          if (pr_as_read_syntax)
+            os << "[\n";
 
-	  os << m;
+          os << m;
 
-	  if (pr_as_read_syntax)
-	    os << "]";
+          if (pr_as_read_syntax)
+            os << "]";
 
-	  return;
-	}
+          return;
+        }
 
       octave_idx_type inc = nc;
       if (total_width > max_width && Vsplit_long_rows)
-	{
-	  inc = max_width / column_width;
-	  if (inc == 0)
-	    inc++;
-	}
+        {
+          inc = max_width / column_width;
+          if (inc == 0)
+            inc++;
+        }
 
       if (pr_as_read_syntax)
-	{
-	  for (octave_idx_type i = 0; i < nr; i++)
-	    {
-	      octave_idx_type col = 0;
-	      while (col < nc)
-		{
-		  octave_idx_type lim = col + inc < nc ? col + inc : nc;
+        {
+          for (octave_idx_type i = 0; i < nr; i++)
+            {
+              octave_idx_type col = 0;
+              while (col < nc)
+                {
+                  octave_idx_type lim = col + inc < nc ? col + inc : nc;
 
-		  for (octave_idx_type j = col; j < lim; j++)
-		    {
-		      OCTAVE_QUIT;
+                  for (octave_idx_type j = col; j < lim; j++)
+                    {
+                      octave_quit ();
 
-		      if (i == 0 && j == 0)
-			os << "[ ";
-		      else
-			{
-			  if (j > col && j < lim)
-			    os << ", ";
-			  else
-			    os << "  ";
-			}
+                      if (i == 0 && j == 0)
+                        os << "[ ";
+                      else
+                        {
+                          if (j > col && j < lim)
+                            os << ", ";
+                          else
+                            os << "  ";
+                        }
 
-		      pr_float (os, m(i,j));
-		    }
+                      pr_float (os, m(i,j));
+                    }
 
-		  col += inc;
+                  col += inc;
 
-		  if (col >= nc)
-		    {
-		      if (i == nr - 1)
-			os << " ]";
-		      else
-			os << ";\n";
-		    }
-		  else
-		    os << " ...\n";
-		}
-	    }
-	}
+                  if (col >= nc)
+                    {
+                      if (i == nr - 1)
+                        os << " ]";
+                      else
+                        os << ";\n";
+                    }
+                  else
+                    os << " ...\n";
+                }
+            }
+        }
       else
-	{
-	  pr_scale_header (os, scale);
+        {
+          pr_scale_header (os, scale);
 
-	  for (octave_idx_type col = 0; col < nc; col += inc)
-	    {
-	      octave_idx_type lim = col + inc < nc ? col + inc : nc;
+          for (octave_idx_type col = 0; col < nc; col += inc)
+            {
+              octave_idx_type lim = col + inc < nc ? col + inc : nc;
 
-	      pr_col_num_header (os, total_width, max_width, lim, col,
-				 extra_indent);
+              pr_col_num_header (os, total_width, max_width, lim, col,
+                                 extra_indent);
 
-	      for (octave_idx_type i = 0; i < nr; i++)
-		{
-		  os << std::setw (extra_indent) << "";
+              for (octave_idx_type i = 0; i < nr; i++)
+                {
+                  os << std::setw (extra_indent) << "";
 
-		  for (octave_idx_type j = col; j < lim; j++)
-		    {
-		      OCTAVE_QUIT;
+                  for (octave_idx_type j = col; j < lim; j++)
+                    {
+                      octave_quit ();
 
-		      os << "  ";
+                      os << "  ";
 
-		      pr_float (os, m(i,j), fw, scale);
-		    }
+                      pr_float (os, m(i,j), fw, scale);
+                    }
 
-		  if (i < nr - 1)
-		    os << "\n";
-		}
-	    }
-	}
+                  if (i < nr - 1)
+                    os << "\n";
+                }
+            }
+        }
     }
 }
 
 void
 octave_print_internal (std::ostream& os, const DiagMatrix& m,
-		       bool pr_as_read_syntax, int extra_indent)
+                       bool pr_as_read_syntax, int extra_indent)
 {
   octave_idx_type nr = m.rows ();
   octave_idx_type nc = m.columns ();
@@ -1707,17 +1869,17 @@ octave_print_internal (std::ostream& os, const DiagMatrix& m,
   else if (plus_format && ! pr_as_read_syntax)
     {
       for (octave_idx_type i = 0; i < nr; i++)
-	{
-	  for (octave_idx_type j = 0; j < nc; j++)
-	    {
-	      OCTAVE_QUIT;
+        {
+          for (octave_idx_type j = 0; j < nc; j++)
+            {
+              octave_quit ();
 
-	      pr_plus_format (os, m(i,j));
-	    }
+              pr_plus_format (os, m(i,j));
+            }
 
-	  if (i < nr - 1)
-	    os << "\n";
-	}
+          if (i < nr - 1)
+            os << "\n";
+        }
     }
   else
     {
@@ -1729,36 +1891,36 @@ octave_print_internal (std::ostream& os, const DiagMatrix& m,
       octave_idx_type max_width = command_editor::terminal_cols ();
 
       if (pr_as_read_syntax)
-	max_width -= 4;
+        max_width -= 4;
       else
-	max_width -= extra_indent;
+        max_width -= extra_indent;
 
       if (max_width < 0)
-	max_width = 0;
+        max_width = 0;
 
       if (free_format)
-	{
-	  if (pr_as_read_syntax)
-	    os << "[\n";
+        {
+          if (pr_as_read_syntax)
+            os << "[\n";
 
-	  os << Matrix (m);
+          os << Matrix (m);
 
-	  if (pr_as_read_syntax)
-	    os << "]";
+          if (pr_as_read_syntax)
+            os << "]";
 
-	  return;
-	}
+          return;
+        }
 
       octave_idx_type inc = nc;
       if (total_width > max_width && Vsplit_long_rows)
-	{
-	  inc = max_width / column_width;
-	  if (inc == 0)
-	    inc++;
-	}
+        {
+          inc = max_width / column_width;
+          if (inc == 0)
+            inc++;
+        }
 
       if (pr_as_read_syntax)
-	{
+        {
           os << "diag (";
 
           octave_idx_type col = 0;
@@ -1768,7 +1930,7 @@ octave_print_internal (std::ostream& os, const DiagMatrix& m,
 
               for (octave_idx_type j = col; j < lim; j++)
                 {
-                  OCTAVE_QUIT;
+                  octave_quit ();
 
                   if (j == 0)
                     os << "[ ";
@@ -1791,50 +1953,50 @@ octave_print_internal (std::ostream& os, const DiagMatrix& m,
                 os << " ...\n";
             }
           os << ")";
-	}
+        }
       else
-	{
+        {
           os << "Diagonal Matrix\n\n";
-	  pr_scale_header (os, scale);
+          pr_scale_header (os, scale);
 
           // kluge. Get the true width of a number.
           int zero_fw;
 
-            { 
+            {
               std::ostringstream tmp_oss;
               pr_float (tmp_oss, 0.0, fw, scale);
               zero_fw = tmp_oss.str ().length ();
             }
 
-	  for (octave_idx_type col = 0; col < nc; col += inc)
-	    {
-	      octave_idx_type lim = col + inc < nc ? col + inc : nc;
+          for (octave_idx_type col = 0; col < nc; col += inc)
+            {
+              octave_idx_type lim = col + inc < nc ? col + inc : nc;
 
-	      pr_col_num_header (os, total_width, max_width, lim, col,
-				 extra_indent);
+              pr_col_num_header (os, total_width, max_width, lim, col,
+                                 extra_indent);
 
-	      for (octave_idx_type i = 0; i < nr; i++)
-		{
-		  os << std::setw (extra_indent) << "";
+              for (octave_idx_type i = 0; i < nr; i++)
+                {
+                  os << std::setw (extra_indent) << "";
 
-		  for (octave_idx_type j = col; j < lim; j++)
-		    {
-		      OCTAVE_QUIT;
+                  for (octave_idx_type j = col; j < lim; j++)
+                    {
+                      octave_quit ();
 
-		      os << "  ";
+                      os << "  ";
 
                       if (i == j)
                         pr_float (os, m(i,j), fw, scale);
                       else
                         os << std::setw (zero_fw) << '0';
 
-		    }
+                    }
 
-		  if (i < nr - 1)
-		    os << "\n";
-		}
-	    }
-	}
+                  if (i < nr - 1)
+                    os << "\n";
+                }
+            }
+        }
     }
 }
 #define PRINT_ND_ARRAY(os, nda, NDA_T, ELT_T, MAT_T) \
@@ -1849,7 +2011,7 @@ octave_print_internal (std::ostream& os, const DiagMatrix& m,
  \
           dim_vector dims = nda.dims (); \
  \
-          Array<octave_idx_type> ra_idx (ndims, 0); \
+          Array<octave_idx_type> ra_idx (dim_vector (ndims, 1), 0);\
  \
           octave_idx_type m = 1; \
  \
@@ -1861,7 +2023,7 @@ octave_print_internal (std::ostream& os, const DiagMatrix& m,
  \
           for (octave_idx_type i = 0; i < m; i++) \
             { \
-	      OCTAVE_QUIT; \
+              octave_quit (); \
  \
               std::string nm = "ans"; \
  \
@@ -1869,7 +2031,7 @@ octave_print_internal (std::ostream& os, const DiagMatrix& m,
                 { \
                   nm += "(:,:,"; \
  \
-		  std::ostringstream buf; \
+                  std::ostringstream buf; \
  \
                   for (int k = 2; k < ndims; k++) \
                     { \
@@ -1884,7 +2046,7 @@ octave_print_internal (std::ostream& os, const DiagMatrix& m,
                   nm += buf.str (); \
                 } \
  \
-              Array<idx_vector> idx (ndims); \
+              Array<idx_vector> idx (dim_vector (ndims, 1)); \
  \
               idx(0) = idx_vector (':'); \
               idx(1) = idx_vector (':'); \
@@ -1893,10 +2055,18 @@ octave_print_internal (std::ostream& os, const DiagMatrix& m,
                 idx(k) = idx_vector (ra_idx(k)); \
  \
               octave_value page \
-                = MAT_T (Array2<ELT_T> (nda.index (idx), nr, nc)); \
+                = MAT_T (Array<ELT_T> (nda.index (idx), dim_vector (nr, nc))); \
  \
-              page.print_with_name (os, nm); \
- \
+              if (i != m - 1) \
+                { \
+                  page.print_with_name (os, nm); \
+                } \
+              else \
+                { \
+                  page.print_name_tag (os, nm); \
+                  page.print_raw (os); \
+                } \
+              \
               if (i < m) \
                 NDA_T::increment_index (ra_idx, dims, 2); \
             } \
@@ -1906,14 +2076,14 @@ octave_print_internal (std::ostream& os, const DiagMatrix& m,
 
 void
 octave_print_internal (std::ostream& os, const NDArray& nda,
-		       bool pr_as_read_syntax, int extra_indent)
+                       bool pr_as_read_syntax, int extra_indent)
 {
   switch (nda.ndims ())
     {
     case 1:
     case 2:
       octave_print_internal (os, nda.matrix_value (),
-			     pr_as_read_syntax, extra_indent);
+                             pr_as_read_syntax, extra_indent);
       break;
 
     default:
@@ -1932,9 +2102,9 @@ pr_plus_format<> (std::ostream& os, const Complex& c)
   if (rp == 0.0)
     {
       if (ip == 0.0)
-	os << " ";
+        os << " ";
       else
-	os << "i";
+        os << "i";
     }
   else if (ip == 0.0)
     pr_plus_format (os, rp);
@@ -1944,7 +2114,7 @@ pr_plus_format<> (std::ostream& os, const Complex& c)
 
 void
 octave_print_internal (std::ostream& os, const Complex& c,
-		       bool /* pr_as_read_syntax */)
+                       bool /* pr_as_read_syntax */)
 {
   if (plus_format)
     {
@@ -1954,15 +2124,15 @@ octave_print_internal (std::ostream& os, const Complex& c,
     {
       set_format (c);
       if (free_format)
-	os << c;
+        os << c;
       else
-	pr_complex (os, c);
+        pr_complex (os, c);
     }
 }
 
 void
 octave_print_internal (std::ostream& os, const ComplexMatrix& cm,
-		       bool pr_as_read_syntax, int extra_indent)
+                       bool pr_as_read_syntax, int extra_indent)
 {
   octave_idx_type nr = cm.rows ();
   octave_idx_type nc = cm.columns ();
@@ -1972,17 +2142,17 @@ octave_print_internal (std::ostream& os, const ComplexMatrix& cm,
   else if (plus_format && ! pr_as_read_syntax)
     {
       for (octave_idx_type i = 0; i < nr; i++)
-	{
-	  for (octave_idx_type j = 0; j < nc; j++)
-	    {
-	      OCTAVE_QUIT;
+        {
+          for (octave_idx_type j = 0; j < nc; j++)
+            {
+              octave_quit ();
 
-	      pr_plus_format (os, cm(i,j));
-	    }
+              pr_plus_format (os, cm(i,j));
+            }
 
-	  if (i < nr - 1)
-	    os << "\n";
-	}
+          if (i < nr - 1)
+            os << "\n";
+        }
     }
   else
     {
@@ -1990,115 +2160,115 @@ octave_print_internal (std::ostream& os, const ComplexMatrix& cm,
       double scale = 1.0;
       set_format (cm, r_fw, i_fw, scale);
       int column_width = i_fw + r_fw;
-      column_width += (rat_format || bank_format || hex_format 
-		       || bit_format) ? 2 : 7;
+      column_width += (rat_format || bank_format || hex_format
+                       || bit_format) ? 2 : 7;
       octave_idx_type total_width = nc * column_width;
       octave_idx_type max_width = command_editor::terminal_cols ();
 
       if (pr_as_read_syntax)
-	max_width -= 4;
+        max_width -= 4;
       else
-	max_width -= extra_indent;
+        max_width -= extra_indent;
 
       if (max_width < 0)
-	max_width = 0;
+        max_width = 0;
 
       if (free_format)
-	{
-	  if (pr_as_read_syntax)
-	    os << "[\n";
+        {
+          if (pr_as_read_syntax)
+            os << "[\n";
 
-	  os << cm;
+          os << cm;
 
-	  if (pr_as_read_syntax)
-	    os << "]";
+          if (pr_as_read_syntax)
+            os << "]";
 
-	  return;
-	}
+          return;
+        }
 
       octave_idx_type inc = nc;
       if (total_width > max_width && Vsplit_long_rows)
-	{
-	  inc = max_width / column_width;
-	  if (inc == 0)
-	    inc++;
-	}
+        {
+          inc = max_width / column_width;
+          if (inc == 0)
+            inc++;
+        }
 
       if (pr_as_read_syntax)
-	{
-	  for (octave_idx_type i = 0; i < nr; i++)
-	    {
-	      octave_idx_type col = 0;
-	      while (col < nc)
-		{
-		  octave_idx_type lim = col + inc < nc ? col + inc : nc;
+        {
+          for (octave_idx_type i = 0; i < nr; i++)
+            {
+              octave_idx_type col = 0;
+              while (col < nc)
+                {
+                  octave_idx_type lim = col + inc < nc ? col + inc : nc;
 
-		  for (octave_idx_type j = col; j < lim; j++)
-		    {
-		      OCTAVE_QUIT;
+                  for (octave_idx_type j = col; j < lim; j++)
+                    {
+                      octave_quit ();
 
-		      if (i == 0 && j == 0)
-			os << "[ ";
-		      else
-			{
-			  if (j > col && j < lim)
-			    os << ", ";
-			  else
-			    os << "  ";
-			}
+                      if (i == 0 && j == 0)
+                        os << "[ ";
+                      else
+                        {
+                          if (j > col && j < lim)
+                            os << ", ";
+                          else
+                            os << "  ";
+                        }
 
-		      pr_complex (os, cm(i,j));
-		    }
+                      pr_complex (os, cm(i,j));
+                    }
 
-		  col += inc;
+                  col += inc;
 
-		  if (col >= nc)
-		    {
-		      if (i == nr - 1)
-			os << " ]";
-		      else
-			os << ";\n";
-		    }
-		  else
-		    os << " ...\n";
-		}
-	    }
-	}
+                  if (col >= nc)
+                    {
+                      if (i == nr - 1)
+                        os << " ]";
+                      else
+                        os << ";\n";
+                    }
+                  else
+                    os << " ...\n";
+                }
+            }
+        }
       else
-	{
-	  pr_scale_header (os, scale);
+        {
+          pr_scale_header (os, scale);
 
-	  for (octave_idx_type col = 0; col < nc; col += inc)
-	    {
-	      octave_idx_type lim = col + inc < nc ? col + inc : nc;
+          for (octave_idx_type col = 0; col < nc; col += inc)
+            {
+              octave_idx_type lim = col + inc < nc ? col + inc : nc;
 
-	      pr_col_num_header (os, total_width, max_width, lim, col,
-				 extra_indent);
+              pr_col_num_header (os, total_width, max_width, lim, col,
+                                 extra_indent);
 
-	      for (octave_idx_type i = 0; i < nr; i++)
-		{
-		  os << std::setw (extra_indent) << "";
+              for (octave_idx_type i = 0; i < nr; i++)
+                {
+                  os << std::setw (extra_indent) << "";
 
-		  for (octave_idx_type j = col; j < lim; j++)
-		    {
-		      OCTAVE_QUIT;
+                  for (octave_idx_type j = col; j < lim; j++)
+                    {
+                      octave_quit ();
 
-		      os << "  ";
+                      os << "  ";
 
-		      pr_complex (os, cm(i,j), r_fw, i_fw, scale);
-		    }
+                      pr_complex (os, cm(i,j), r_fw, i_fw, scale);
+                    }
 
-		  if (i < nr - 1) 
-		    os << "\n";
-		}
-	    }
-	}
+                  if (i < nr - 1)
+                    os << "\n";
+                }
+            }
+        }
     }
 }
 
 void
 octave_print_internal (std::ostream& os, const ComplexDiagMatrix& cm,
-		       bool pr_as_read_syntax, int extra_indent)
+                       bool pr_as_read_syntax, int extra_indent)
 {
   octave_idx_type nr = cm.rows ();
   octave_idx_type nc = cm.columns ();
@@ -2108,17 +2278,17 @@ octave_print_internal (std::ostream& os, const ComplexDiagMatrix& cm,
   else if (plus_format && ! pr_as_read_syntax)
     {
       for (octave_idx_type i = 0; i < nr; i++)
-	{
-	  for (octave_idx_type j = 0; j < nc; j++)
-	    {
-	      OCTAVE_QUIT;
+        {
+          for (octave_idx_type j = 0; j < nc; j++)
+            {
+              octave_quit ();
 
-	      pr_plus_format (os, cm(i,j));
-	    }
+              pr_plus_format (os, cm(i,j));
+            }
 
-	  if (i < nr - 1)
-	    os << "\n";
-	}
+          if (i < nr - 1)
+            os << "\n";
+        }
     }
   else
     {
@@ -2126,42 +2296,42 @@ octave_print_internal (std::ostream& os, const ComplexDiagMatrix& cm,
       double scale = 1.0;
       set_format (ComplexMatrix (cm.diag ()), r_fw, i_fw, scale);
       int column_width = i_fw + r_fw;
-      column_width += (rat_format || bank_format || hex_format 
-		       || bit_format) ? 2 : 7;
+      column_width += (rat_format || bank_format || hex_format
+                       || bit_format) ? 2 : 7;
       octave_idx_type total_width = nc * column_width;
       octave_idx_type max_width = command_editor::terminal_cols ();
 
       if (pr_as_read_syntax)
-	max_width -= 4;
+        max_width -= 4;
       else
-	max_width -= extra_indent;
+        max_width -= extra_indent;
 
       if (max_width < 0)
-	max_width = 0;
+        max_width = 0;
 
       if (free_format)
-	{
-	  if (pr_as_read_syntax)
-	    os << "[\n";
+        {
+          if (pr_as_read_syntax)
+            os << "[\n";
 
-	  os << ComplexMatrix (cm);
+          os << ComplexMatrix (cm);
 
-	  if (pr_as_read_syntax)
-	    os << "]";
+          if (pr_as_read_syntax)
+            os << "]";
 
-	  return;
-	}
+          return;
+        }
 
       octave_idx_type inc = nc;
       if (total_width > max_width && Vsplit_long_rows)
-	{
-	  inc = max_width / column_width;
-	  if (inc == 0)
-	    inc++;
-	}
+        {
+          inc = max_width / column_width;
+          if (inc == 0)
+            inc++;
+        }
 
       if (pr_as_read_syntax)
-	{
+        {
           os << "diag (";
 
           octave_idx_type col = 0;
@@ -2171,7 +2341,7 @@ octave_print_internal (std::ostream& os, const ComplexDiagMatrix& cm,
 
               for (octave_idx_type j = col; j < lim; j++)
                 {
-                  OCTAVE_QUIT;
+                  octave_quit ();
 
                   if (j == 0)
                     os << "[ ";
@@ -2194,55 +2364,55 @@ octave_print_internal (std::ostream& os, const ComplexDiagMatrix& cm,
                 os << " ...\n";
             }
           os << ")";
-	}
+        }
       else
-	{
+        {
           os << "Diagonal Matrix\n\n";
-	  pr_scale_header (os, scale);
+          pr_scale_header (os, scale);
 
           // kluge. Get the true width of a number.
           int zero_fw;
 
-            { 
+            {
               std::ostringstream tmp_oss;
               pr_complex (tmp_oss, Complex (0.0), r_fw, i_fw, scale);
               zero_fw = tmp_oss.str ().length ();
             }
 
-	  for (octave_idx_type col = 0; col < nc; col += inc)
-	    {
-	      octave_idx_type lim = col + inc < nc ? col + inc : nc;
+          for (octave_idx_type col = 0; col < nc; col += inc)
+            {
+              octave_idx_type lim = col + inc < nc ? col + inc : nc;
 
-	      pr_col_num_header (os, total_width, max_width, lim, col,
-				 extra_indent);
+              pr_col_num_header (os, total_width, max_width, lim, col,
+                                 extra_indent);
 
-	      for (octave_idx_type i = 0; i < nr; i++)
-		{
-		  os << std::setw (extra_indent) << "";
+              for (octave_idx_type i = 0; i < nr; i++)
+                {
+                  os << std::setw (extra_indent) << "";
 
-		  for (octave_idx_type j = col; j < lim; j++)
-		    {
-		      OCTAVE_QUIT;
+                  for (octave_idx_type j = col; j < lim; j++)
+                    {
+                      octave_quit ();
 
-		      os << "  ";
+                      os << "  ";
 
                       if (i == j)
                         pr_complex (os, cm(i,j), r_fw, i_fw, scale);
                       else
                         os << std::setw (zero_fw) << '0';
-		    }
+                    }
 
-		  if (i < nr - 1) 
-		    os << "\n";
-		}
-	    }
-	}
+                  if (i < nr - 1)
+                    os << "\n";
+                }
+            }
+        }
     }
 }
 
 void
 octave_print_internal (std::ostream& os, const PermMatrix& m,
-		       bool pr_as_read_syntax, int extra_indent)
+                       bool pr_as_read_syntax, int extra_indent)
 {
   octave_idx_type nr = m.rows ();
   octave_idx_type nc = m.columns ();
@@ -2252,17 +2422,17 @@ octave_print_internal (std::ostream& os, const PermMatrix& m,
   else if (plus_format && ! pr_as_read_syntax)
     {
       for (octave_idx_type i = 0; i < nr; i++)
-	{
-	  for (octave_idx_type j = 0; j < nc; j++)
-	    {
-	      OCTAVE_QUIT;
+        {
+          for (octave_idx_type j = 0; j < nc; j++)
+            {
+              octave_quit ();
 
-	      pr_plus_format (os, m(i,j));
-	    }
+              pr_plus_format (os, m(i,j));
+            }
 
-	  if (i < nr - 1)
-	    os << "\n";
-	}
+          if (i < nr - 1)
+            os << "\n";
+        }
     }
   else
     {
@@ -2272,33 +2442,33 @@ octave_print_internal (std::ostream& os, const PermMatrix& m,
       octave_idx_type max_width = command_editor::terminal_cols ();
 
       if (pr_as_read_syntax)
-	max_width -= 4;
+        max_width -= 4;
       else
-	max_width -= extra_indent;
+        max_width -= extra_indent;
 
       if (max_width < 0)
-	max_width = 0;
+        max_width = 0;
 
       if (free_format)
-	{
-	  if (pr_as_read_syntax)
-	    os << "[\n";
+        {
+          if (pr_as_read_syntax)
+            os << "[\n";
 
-	  os << Matrix (m);
+          os << Matrix (m);
 
-	  if (pr_as_read_syntax)
-	    os << "]";
+          if (pr_as_read_syntax)
+            os << "]";
 
-	  return;
-	}
+          return;
+        }
 
       octave_idx_type inc = nc;
       if (total_width > max_width && Vsplit_long_rows)
-	{
-	  inc = max_width / column_width;
-	  if (inc == 0)
-	    inc++;
-	}
+        {
+          inc = max_width / column_width;
+          if (inc == 0)
+            inc++;
+        }
 
       if (pr_as_read_syntax)
         {
@@ -2315,7 +2485,7 @@ octave_print_internal (std::ostream& os, const PermMatrix& m,
 
               for (octave_idx_type j = col; j < lim; j++)
                 {
-                  OCTAVE_QUIT;
+                  octave_quit ();
 
                   if (j == 0)
                     os << "[ ";
@@ -2339,49 +2509,49 @@ octave_print_internal (std::ostream& os, const PermMatrix& m,
             }
           if (! colp) os << ", :";
           os << ")";
-	}
+        }
       else
-	{
+        {
           os << "Permutation Matrix\n\n";
 
-	  for (octave_idx_type col = 0; col < nc; col += inc)
-	    {
-	      octave_idx_type lim = col + inc < nc ? col + inc : nc;
+          for (octave_idx_type col = 0; col < nc; col += inc)
+            {
+              octave_idx_type lim = col + inc < nc ? col + inc : nc;
 
-	      pr_col_num_header (os, total_width, max_width, lim, col,
-				 extra_indent);
+              pr_col_num_header (os, total_width, max_width, lim, col,
+                                 extra_indent);
 
-	      for (octave_idx_type i = 0; i < nr; i++)
-		{
-		  os << std::setw (extra_indent) << "";
+              for (octave_idx_type i = 0; i < nr; i++)
+                {
+                  os << std::setw (extra_indent) << "";
 
-		  for (octave_idx_type j = col; j < lim; j++)
-		    {
-		      OCTAVE_QUIT;
+                  for (octave_idx_type j = col; j < lim; j++)
+                    {
+                      octave_quit ();
 
-		      os << "  ";
+                      os << "  ";
 
                       os << std::setw (fw) << m(i,j);
-		    }
+                    }
 
-		  if (i < nr - 1)
-		    os << "\n";
-		}
-	    }
-	}
+                  if (i < nr - 1)
+                    os << "\n";
+                }
+            }
+        }
     }
 }
 
 void
 octave_print_internal (std::ostream& os, const ComplexNDArray& nda,
-		       bool pr_as_read_syntax, int extra_indent)
+                       bool pr_as_read_syntax, int extra_indent)
 {
   switch (nda.ndims ())
     {
     case 1:
     case 2:
       octave_print_internal (os, nda.matrix_value (),
-			     pr_as_read_syntax, extra_indent);
+                             pr_as_read_syntax, extra_indent);
       break;
 
     default:
@@ -2392,70 +2562,70 @@ octave_print_internal (std::ostream& os, const ComplexNDArray& nda,
 
 void
 octave_print_internal (std::ostream& os, bool d, bool pr_as_read_syntax)
-{ 
-  octave_print_internal (os, double (d), pr_as_read_syntax); 
+{
+  octave_print_internal (os, double (d), pr_as_read_syntax);
 }
 
 // FIXME -- write single precision versions of the printing functions.
 
 void
 octave_print_internal (std::ostream& os, float d, bool pr_as_read_syntax)
-{ 
-  octave_print_internal (os, double (d), pr_as_read_syntax); 
+{
+  octave_print_internal (os, double (d), pr_as_read_syntax);
 }
 
 void
 octave_print_internal (std::ostream& os, const FloatMatrix& m,
-		       bool pr_as_read_syntax, int extra_indent)
-{ 
-  octave_print_internal (os, Matrix (m), pr_as_read_syntax, extra_indent); 
+                       bool pr_as_read_syntax, int extra_indent)
+{
+  octave_print_internal (os, Matrix (m), pr_as_read_syntax, extra_indent);
 }
 
 void
 octave_print_internal (std::ostream& os, const FloatDiagMatrix& m,
-		       bool pr_as_read_syntax, int extra_indent)
-{ 
-  octave_print_internal (os, DiagMatrix (m), pr_as_read_syntax, extra_indent); 
+                       bool pr_as_read_syntax, int extra_indent)
+{
+  octave_print_internal (os, DiagMatrix (m), pr_as_read_syntax, extra_indent);
 }
 
 void
 octave_print_internal (std::ostream& os, const FloatNDArray& nda,
-		       bool pr_as_read_syntax, int extra_indent)
+                       bool pr_as_read_syntax, int extra_indent)
 {
-  octave_print_internal (os, NDArray (nda), pr_as_read_syntax, extra_indent); 
+  octave_print_internal (os, NDArray (nda), pr_as_read_syntax, extra_indent);
 }
 
 void
 octave_print_internal (std::ostream& os, const FloatComplex& c,
-		       bool pr_as_read_syntax)
+                       bool pr_as_read_syntax)
 {
-  octave_print_internal (os, Complex (c), pr_as_read_syntax); 
+  octave_print_internal (os, Complex (c), pr_as_read_syntax);
 }
 
 void
 octave_print_internal (std::ostream& os, const FloatComplexMatrix& cm,
-		       bool pr_as_read_syntax, int extra_indent)
+                       bool pr_as_read_syntax, int extra_indent)
 {
   octave_print_internal (os, ComplexMatrix (cm), pr_as_read_syntax, extra_indent);
 }
 
 void
 octave_print_internal (std::ostream& os, const FloatComplexDiagMatrix& cm,
-		       bool pr_as_read_syntax, int extra_indent)
+                       bool pr_as_read_syntax, int extra_indent)
 {
   octave_print_internal (os, ComplexDiagMatrix (cm), pr_as_read_syntax, extra_indent);
 }
 
 void
 octave_print_internal (std::ostream& os, const FloatComplexNDArray& nda,
-		       bool pr_as_read_syntax, int extra_indent)
+                       bool pr_as_read_syntax, int extra_indent)
 {
   octave_print_internal (os, ComplexNDArray (nda), pr_as_read_syntax, extra_indent);
 }
 
 void
 octave_print_internal (std::ostream& os, const Range& r,
-		       bool pr_as_read_syntax, int extra_indent)
+                       bool pr_as_read_syntax, int extra_indent)
 {
   double base = r.base ();
   double increment = r.inc ();
@@ -2465,108 +2635,108 @@ octave_print_internal (std::ostream& os, const Range& r,
   if (plus_format && ! pr_as_read_syntax)
     {
       for (octave_idx_type i = 0; i < num_elem; i++)
-	{
-	  OCTAVE_QUIT;
+        {
+          octave_quit ();
 
-	  double val = base + i * increment;
+          double val = base + i * increment;
 
-	  pr_plus_format (os, val);
-	}
+          pr_plus_format (os, val);
+        }
     }
   else
     {
-      int fw;
+      int fw = 0;
       double scale = 1.0;
       set_format (r, fw, scale);
 
       if (pr_as_read_syntax)
-	{
-	  if (free_format)
-	    {
-	      os << base << " : ";
-	      if (increment != 1.0)
-		os << increment << " : ";
-	      os << limit;
-	    }
-	  else
-	    {
-	      pr_float (os, base, fw);
-	      os << " : ";
-	      if (increment != 1.0)
-		{
-		  pr_float (os, increment, fw);
-		  os << " : ";
-		}
-	      pr_float (os, limit, fw);
-	    }
-	}
+        {
+          if (free_format)
+            {
+              os << base << " : ";
+              if (increment != 1.0)
+                os << increment << " : ";
+              os << limit;
+            }
+          else
+            {
+              pr_float (os, base, fw);
+              os << " : ";
+              if (increment != 1.0)
+                {
+                  pr_float (os, increment, fw);
+                  os << " : ";
+                }
+              pr_float (os, limit, fw);
+            }
+        }
       else
-	{
-	  int column_width = fw + 2;
-	  octave_idx_type total_width = num_elem * column_width;
-	  octave_idx_type max_width = command_editor::terminal_cols ();
+        {
+          int column_width = fw + 2;
+          octave_idx_type total_width = num_elem * column_width;
+          octave_idx_type max_width = command_editor::terminal_cols ();
 
-	  if (free_format)
-	    {
-	      os << r;
-	      return;
-	    }
+          if (free_format)
+            {
+              os << r;
+              return;
+            }
 
-	  octave_idx_type inc = num_elem;
-	  if (total_width > max_width && Vsplit_long_rows)
-	    {
-	      inc = max_width / column_width;
-	      if (inc == 0)
-		inc++;
-	    }
+          octave_idx_type inc = num_elem;
+          if (total_width > max_width && Vsplit_long_rows)
+            {
+              inc = max_width / column_width;
+              if (inc == 0)
+                inc++;
+            }
 
-	  max_width -= extra_indent;
+          max_width -= extra_indent;
 
-	  if (max_width < 0)
-	    max_width = 0;
+          if (max_width < 0)
+            max_width = 0;
 
-	  pr_scale_header (os, scale);
+          pr_scale_header (os, scale);
 
-	  octave_idx_type col = 0;
-	  while (col < num_elem)
-	    {
-	      octave_idx_type lim = col + inc < num_elem ? col + inc : num_elem;
+          octave_idx_type col = 0;
+          while (col < num_elem)
+            {
+              octave_idx_type lim = col + inc < num_elem ? col + inc : num_elem;
 
-	      pr_col_num_header (os, total_width, max_width, lim, col,
-				 extra_indent);
+              pr_col_num_header (os, total_width, max_width, lim, col,
+                                 extra_indent);
 
-	      os << std::setw (extra_indent) << "";
+              os << std::setw (extra_indent) << "";
 
-	      for (octave_idx_type i = col; i < lim; i++)
-		{
-		  OCTAVE_QUIT;
+              for (octave_idx_type i = col; i < lim; i++)
+                {
+                  octave_quit ();
 
-		  double val = base + i * increment;
+                  double val = base + i * increment;
 
-		  if (i == num_elem - 1)
-		    {
-		      // See the comments in Range::matrix_value.
+                  if (i == num_elem - 1)
+                    {
+                      // See the comments in Range::matrix_value.
 
-		      if ((increment > 0 && val > limit)
-			  || (increment < 0 && val < limit))
-			val = limit;
-		    }
+                      if ((increment > 0 && val > limit)
+                          || (increment < 0 && val < limit))
+                        val = limit;
+                    }
 
-		  os << "  ";
+                  os << "  ";
 
-		  pr_float (os, val, fw, scale);
-		}
+                  pr_float (os, val, fw, scale);
+                }
 
-	      col += inc;
-	    }
-	}
+              col += inc;
+            }
+        }
     }
 }
 
 void
 octave_print_internal (std::ostream& os, const boolMatrix& bm,
-		       bool pr_as_read_syntax,
-		       int extra_indent)
+                       bool pr_as_read_syntax,
+                       int extra_indent)
 {
   Matrix tmp (bm);
   octave_print_internal (os, tmp, pr_as_read_syntax, extra_indent);
@@ -2574,15 +2744,15 @@ octave_print_internal (std::ostream& os, const boolMatrix& bm,
 
 void
 octave_print_internal (std::ostream& os, const boolNDArray& nda,
-		       bool pr_as_read_syntax,
-		       int extra_indent)
+                       bool pr_as_read_syntax,
+                       int extra_indent)
 {
   switch (nda.ndims ())
     {
     case 1:
     case 2:
       octave_print_internal (os, nda.matrix_value (),
-			     pr_as_read_syntax, extra_indent);
+                             pr_as_read_syntax, extra_indent);
       break;
 
     default:
@@ -2593,44 +2763,44 @@ octave_print_internal (std::ostream& os, const boolNDArray& nda,
 
 void
 octave_print_internal (std::ostream& os, const charMatrix& chm,
-		       bool pr_as_read_syntax,
-		       int /* extra_indent FIXME */,
-		       bool pr_as_string)
+                       bool pr_as_read_syntax,
+                       int /* extra_indent FIXME */,
+                       bool pr_as_string)
 {
   if (pr_as_string)
     {
       octave_idx_type nstr = chm.rows ();
 
       if (pr_as_read_syntax && nstr > 1)
-	os << "[ ";
+        os << "[ ";
 
       if (nstr != 0)
-	{
-	  for (octave_idx_type i = 0; i < nstr; i++)
-	    {
-	      OCTAVE_QUIT;
+        {
+          for (octave_idx_type i = 0; i < nstr; i++)
+            {
+              octave_quit ();
 
-	      std::string row = chm.row_as_string (i);
+              std::string row = chm.row_as_string (i);
 
-	      if (pr_as_read_syntax)
-		{
-		  os << "\"" << undo_string_escapes (row) << "\"";
+              if (pr_as_read_syntax)
+                {
+                  os << "\"" << undo_string_escapes (row) << "\"";
 
-		  if (i < nstr - 1)
-		    os << "; ";
-		}
-	      else
-		{
-		  os << row;
+                  if (i < nstr - 1)
+                    os << "; ";
+                }
+              else
+                {
+                  os << row;
 
-		  if (i < nstr - 1)
-		    os << "\n";
-		}
-	    }
-	}
+                  if (i < nstr - 1)
+                    os << "\n";
+                }
+            }
+        }
 
       if (pr_as_read_syntax && nstr > 1)
-	os << " ]";
+        os << " ]";
     }
   else
     {
@@ -2640,15 +2810,15 @@ octave_print_internal (std::ostream& os, const charMatrix& chm,
 
 void
 octave_print_internal (std::ostream& os, const charNDArray& nda,
-		       bool pr_as_read_syntax, int extra_indent,
-		       bool pr_as_string)
+                       bool pr_as_read_syntax, int extra_indent,
+                       bool pr_as_string)
 {
   switch (nda.ndims ())
     {
     case 1:
     case 2:
       octave_print_internal (os, nda.matrix_value (),
-			     pr_as_read_syntax, extra_indent, pr_as_string);
+                             pr_as_read_syntax, extra_indent, pr_as_string);
       break;
 
     default:
@@ -2659,16 +2829,16 @@ octave_print_internal (std::ostream& os, const charNDArray& nda,
 
 void
 octave_print_internal (std::ostream& os, const std::string& s,
-		       bool pr_as_read_syntax, int extra_indent)
+                       bool pr_as_read_syntax, int extra_indent)
 {
-  ArrayN<std::string> nda (dim_vector (1, 1), s);
+  Array<std::string> nda (dim_vector (1, 1), s);
 
   octave_print_internal (os, nda, pr_as_read_syntax, extra_indent);
 }
 
 void
-octave_print_internal (std::ostream& os, const ArrayN<std::string>& nda,
-		       bool pr_as_read_syntax, int /* extra_indent */)
+octave_print_internal (std::ostream& os, const Array<std::string>& nda,
+                       bool pr_as_read_syntax, int /* extra_indent */)
 {
   // FIXME -- this mostly duplicates the code in the
   // PRINT_ND_ARRAY macro.
@@ -2685,71 +2855,71 @@ octave_print_internal (std::ostream& os, const ArrayN<std::string>& nda,
 
       dim_vector dims = nda.dims ();
 
-      Array<octave_idx_type> ra_idx (ndims, 0);
+      Array<octave_idx_type> ra_idx (dim_vector (ndims, 1), 0);
 
       octave_idx_type m = 1;
 
       for (int i = 2; i < ndims; i++)
-	m *= dims(i);
+        m *= dims(i);
 
       octave_idx_type nr = dims(0);
       octave_idx_type nc = dims(1);
 
       for (octave_idx_type i = 0; i < m; i++)
-	{
-	  std::string nm = "ans";
+        {
+          std::string nm = "ans";
 
-	  if (m > 1)
-	    {
-	      nm += "(:,:,";
+          if (m > 1)
+            {
+              nm += "(:,:,";
 
-	      std::ostringstream buf;
+              std::ostringstream buf;
 
-	      for (int k = 2; k < ndims; k++)
-		{
-		  buf << ra_idx(k) + 1;
+              for (int k = 2; k < ndims; k++)
+                {
+                  buf << ra_idx(k) + 1;
 
-		  if (k < ndims - 1)
-		    buf << ",";
-		  else
-		    buf << ")";
-		}
+                  if (k < ndims - 1)
+                    buf << ",";
+                  else
+                    buf << ")";
+                }
 
-	      nm += buf.str ();
-	    }
+              nm += buf.str ();
+            }
 
-	  Array<idx_vector> idx (ndims);
+          Array<idx_vector> idx (dim_vector (ndims, 1));
 
-	  idx(0) = idx_vector (':');
-	  idx(1) = idx_vector (':');
+          idx(0) = idx_vector (':');
+          idx(1) = idx_vector (':');
 
-	  for (int k = 2; k < ndims; k++)
-	    idx(k) = idx_vector (ra_idx(k));
+          for (int k = 2; k < ndims; k++)
+            idx(k) = idx_vector (ra_idx(k));
 
-	  Array2<std::string> page (nda.index (idx), nr, nc);
+          Array<std::string> page (nda.index (idx), dim_vector (nr, nc));
 
-	  // FIXME -- need to do some more work to put these
-	  // in neatly aligned columns...
+          // FIXME -- need to do some more work to put these
+          // in neatly aligned columns...
 
-	  octave_idx_type n_rows = page.rows ();
-	  octave_idx_type n_cols = page.cols ();
+          octave_idx_type n_rows = page.rows ();
+          octave_idx_type n_cols = page.cols ();
 
-	  os << nm << " =\n\n";
+          os << nm << " =\n\n";
 
-	  for (octave_idx_type ii = 0; ii < n_rows; ii++)
-	    {
-	      for (octave_idx_type jj = 0; jj < n_cols; jj++)
-		os << "  " << page(ii,jj);
+          for (octave_idx_type ii = 0; ii < n_rows; ii++)
+            {
+              for (octave_idx_type jj = 0; jj < n_cols; jj++)
+                os << "  " << page(ii,jj);
 
-	      os << "\n";
-	    }
+              os << "\n";
+            }
 
-	  if (i < m - 1)
-	    os << "\n";
+          if (i < m - 1)
+            os << "\n";
 
-	  if (i < m)
-	    increment_index (ra_idx, dims, 2);
-	}
+          if (i < m)
+            increment_index (ra_idx, dims, 2);
+        }
     }
 }
 
@@ -2793,50 +2963,50 @@ pr_int (std::ostream& os, const T& d, int fw = 0)
       char ofill = os.fill ('0');
 
       std::ios::fmtflags oflags
-	= os.flags (std::ios::right | std::ios::hex);
+        = os.flags (std::ios::right | std::ios::hex);
 
       if (hex_format > 1 || oct_mach_info::words_big_endian ())
-	{
-	  for (size_t i = 0; i < sz; i++)
-	    os << std::setw (2) << static_cast<int> (tmpi[i]);
-	}
+        {
+          for (size_t i = 0; i < sz; i++)
+            os << std::setw (2) << static_cast<int> (tmpi[i]);
+        }
       else
-	{
-	  for (int i = sz - 1; i >= 0; i--)
-	    os << std::setw (2) << static_cast<int> (tmpi[i]);
-	}
+        {
+          for (int i = sz - 1; i >= 0; i--)
+            os << std::setw (2) << static_cast<int> (tmpi[i]);
+        }
 
       os.fill (ofill);
-      os.setf (oflags);	  
+      os.setf (oflags);
     }
   else if (bit_format)
     {
       if (oct_mach_info::words_big_endian ())
-	{
-	  for (size_t i = 0; i < sz; i++)
-	    PRINT_CHAR_BITS (os, tmpi[i]);
-	}
+        {
+          for (size_t i = 0; i < sz; i++)
+            PRINT_CHAR_BITS (os, tmpi[i]);
+        }
       else
-	{
-	  if (bit_format > 1)
-	    {
-	      for (size_t i = 0; i < sz; i++)
-		PRINT_CHAR_BITS_SWAPPED (os, tmpi[i]);
-	    }
-	  else
-	    {
-	      for (int i = sz - 1; i >= 0; i--)
-		PRINT_CHAR_BITS (os, tmpi[i]);
-	    }
-	}
+        {
+          if (bit_format > 1)
+            {
+              for (size_t i = 0; i < sz; i++)
+                PRINT_CHAR_BITS_SWAPPED (os, tmpi[i]);
+            }
+          else
+            {
+              for (int i = sz - 1; i >= 0; i--)
+                PRINT_CHAR_BITS (os, tmpi[i]);
+            }
+        }
     }
   else
     {
       os << std::setw (fw)
-	 << typename octave_print_conv<T>::print_conv_type (d);
+         << typename octave_print_conv<T>::print_conv_type (d);
 
       if (bank_format)
-	os << ".00";
+        os << ".00";
     }
 }
 
@@ -2854,7 +3024,7 @@ abs (T x)
 }
 
 #define INSTANTIATE_ABS(T) \
-  template /* static */ inline T abs (T)
+  template /* static */ T abs (T)
 
 INSTANTIATE_ABS(signed char);
 INSTANTIATE_ABS(short);
@@ -2903,7 +3073,7 @@ pr_int (std::ostream&, const octave_uint64&, int);
 template <class T>
 void
 octave_print_internal_template (std::ostream& os, const octave_int<T>& val,
-				bool)
+                                bool)
 {
   if (plus_format)
     {
@@ -2912,9 +3082,9 @@ octave_print_internal_template (std::ostream& os, const octave_int<T>& val,
   else
     {
       if (free_format)
-	os << typename octave_print_conv<octave_int<T> >::print_conv_type (val);
+        os << typename octave_print_conv<octave_int<T> >::print_conv_type (val);
       else
-	pr_int (os, val);
+        pr_int (os, val);
     }
 }
 
@@ -2937,7 +3107,7 @@ PRINT_INT_SCALAR_INTERNAL (uint64_t)
 template <class T>
 /* static */ inline void
 octave_print_internal_template (std::ostream& os, const intNDArray<T>& nda,
-				bool pr_as_read_syntax, int extra_indent)
+                                bool pr_as_read_syntax, int extra_indent)
 {
   // FIXME -- this mostly duplicates the code in the
   // PRINT_ND_ARRAY macro.
@@ -2950,70 +3120,70 @@ octave_print_internal_template (std::ostream& os, const intNDArray<T>& nda,
     {
       int ndims = nda.ndims ();
 
-      Array<octave_idx_type> ra_idx (ndims, 0);
+      Array<octave_idx_type> ra_idx (dim_vector (ndims, 1), 0);
 
       dim_vector dims = nda.dims ();
 
       octave_idx_type m = 1;
 
       for (int i = 2; i < ndims; i++)
-	m *= dims(i);
+        m *= dims(i);
 
       octave_idx_type nr = dims(0);
       octave_idx_type nc = dims(1);
 
       for (octave_idx_type i = 0; i < m; i++)
-	{
-	  if (m > 1)
-	    {
-	      std::string nm = "ans(:,:,";
+        {
+          if (m > 1)
+            {
+              std::string nm = "ans(:,:,";
 
-	      std::ostringstream buf;
+              std::ostringstream buf;
 
-	      for (int k = 2; k < ndims; k++)
-		{
-		  buf << ra_idx(k) + 1;
+              for (int k = 2; k < ndims; k++)
+                {
+                  buf << ra_idx(k) + 1;
 
-		  if (k < ndims - 1)
-		    buf << ",";
-		  else
-		    buf << ")";
-		}
+                  if (k < ndims - 1)
+                    buf << ",";
+                  else
+                    buf << ")";
+                }
 
-	      nm += buf.str ();
+              nm += buf.str ();
 
-	      os << nm << " =\n\n";
-	    }
+              os << nm << " =\n\n";
+            }
 
-	  Array<idx_vector> idx (ndims);
+          Array<idx_vector> idx (dim_vector (ndims, 1));
 
-	  idx(0) = idx_vector (':');
-	  idx(1) = idx_vector (':');
+          idx(0) = idx_vector (':');
+          idx(1) = idx_vector (':');
 
-	  for (int k = 2; k < ndims; k++)
-	    idx(k) = idx_vector (ra_idx(k));
+          for (int k = 2; k < ndims; k++)
+            idx(k) = idx_vector (ra_idx(k));
 
-	  Array2<T> page (nda.index (idx), nr, nc);
+          Array<T> page (nda.index (idx), dim_vector (nr, nc));
 
-	  for (octave_idx_type ii = 0; ii < nr; ii++)
-	    {
-	      for (octave_idx_type jj = 0; jj < nc; jj++)
-		{
-		  OCTAVE_QUIT;
+          for (octave_idx_type ii = 0; ii < nr; ii++)
+            {
+              for (octave_idx_type jj = 0; jj < nc; jj++)
+                {
+                  octave_quit ();
 
-		  pr_plus_format (os, page(ii,jj));
-		}
+                  pr_plus_format (os, page(ii,jj));
+                }
 
-	      if ((ii < nr - 1) || (i < m -1))
-		os << "\n";
-	    }
+              if ((ii < nr - 1) || (i < m -1))
+                os << "\n";
+            }
 
-	  if (i < m - 1)
-	    {
-	      os << "\n";
-	      increment_index (ra_idx, dims, 2);
-	    }
-	}
+          if (i < m - 1)
+            {
+              os << "\n";
+              increment_index (ra_idx, dims, 2);
+            }
+        }
     }
   else
     {
@@ -3021,145 +3191,145 @@ octave_print_internal_template (std::ostream& os, const intNDArray<T>& nda,
 
       dim_vector dims = nda.dims ();
 
-      Array<octave_idx_type> ra_idx (ndims, 0);
+      Array<octave_idx_type> ra_idx (dim_vector (ndims, 1), 0);
 
       octave_idx_type m = 1;
 
       for (int i = 2; i < ndims; i++)
-	m *= dims(i);
+        m *= dims(i);
 
       octave_idx_type nr = dims(0);
       octave_idx_type nc = dims(1);
 
       int fw = 0;
       if (hex_format)
-	fw = 2 * nda(0).byte_size ();
+        fw = 2 * nda(0).byte_size ();
       else if (bit_format)
-	fw = nda(0).nbits ();
+        fw = nda(0).nbits ();
       else
-	{
-	  bool isneg = false;
-	  int digits = 0;
+        {
+          bool isneg = false;
+          int digits = 0;
 
-	  for (octave_idx_type i = 0; i < dims.numel (); i++)
-	    {
-	      int new_digits = static_cast<int> 
-		(floor (log10 (double (abs (nda(i).value ()))) + 1.0));
+          for (octave_idx_type i = 0; i < dims.numel (); i++)
+            {
+              int new_digits = static_cast<int>
+                (gnulib::floor (log10 (double (abs (nda(i).value ()))) + 1.0));
 
-	      if (new_digits > digits)
-		digits = new_digits;
+              if (new_digits > digits)
+                digits = new_digits;
 
-	      if (! isneg)
-	      isneg = (abs (nda(i).value ()) != nda(i).value ());
-	    }
+              if (! isneg)
+              isneg = (abs (nda(i).value ()) != nda(i).value ());
+            }
 
-	  fw = digits + isneg;
-	}
+          fw = digits + isneg;
+        }
 
       int column_width = fw + (rat_format ?  0 : (bank_format ? 5 : 2));
       octave_idx_type total_width = nc * column_width;
       int max_width = command_editor::terminal_cols () - extra_indent;
       octave_idx_type inc = nc;
       if (total_width > max_width && Vsplit_long_rows)
-	{
-	  inc = max_width / column_width;
-	  if (inc == 0)
-	    inc++;
-	}
+        {
+          inc = max_width / column_width;
+          if (inc == 0)
+            inc++;
+        }
 
       for (octave_idx_type i = 0; i < m; i++)
-	{
-	  if (m > 1)
-	    {
-	      std::string nm = "ans(:,:,";
+        {
+          if (m > 1)
+            {
+              std::string nm = "ans(:,:,";
 
-	      std::ostringstream buf;
+              std::ostringstream buf;
 
-	      for (int k = 2; k < ndims; k++)
-		{
-		  buf << ra_idx(k) + 1;
+              for (int k = 2; k < ndims; k++)
+                {
+                  buf << ra_idx(k) + 1;
 
-		  if (k < ndims - 1)
-		    buf << ",";
-		  else
-		    buf << ")";
-		}
+                  if (k < ndims - 1)
+                    buf << ",";
+                  else
+                    buf << ")";
+                }
 
-	      nm += buf.str ();
+              nm += buf.str ();
 
-	      os << nm << " =\n\n";
-	    }
+              os << nm << " =\n\n";
+            }
 
-	  Array<idx_vector> idx (ndims);
+          Array<idx_vector> idx (dim_vector (ndims, 1));
 
-	  idx(0) = idx_vector (':');
-	  idx(1) = idx_vector (':');
+          idx(0) = idx_vector (':');
+          idx(1) = idx_vector (':');
 
-	  for (int k = 2; k < ndims; k++)
-	    idx(k) = idx_vector (ra_idx(k));
+          for (int k = 2; k < ndims; k++)
+            idx(k) = idx_vector (ra_idx(k));
 
-	  Array2<T> page (nda.index (idx), nr, nc);
+          Array<T> page (nda.index (idx), dim_vector (nr, nc));
 
-	  if (free_format)
-	    {
-	      if (pr_as_read_syntax)
-		os << "[\n";
+          if (free_format)
+            {
+              if (pr_as_read_syntax)
+                os << "[\n";
 
-	      for (octave_idx_type ii = 0; ii < nr; ii++)
-		{
-		  for (octave_idx_type jj = 0; jj < nc; jj++)
-		    {
-		      OCTAVE_QUIT;
-		      os << "  ";
-		      os << typename octave_print_conv<T>::print_conv_type (page(ii,jj));
-		    }
-		  os << "\n";
-		}
+              for (octave_idx_type ii = 0; ii < nr; ii++)
+                {
+                  for (octave_idx_type jj = 0; jj < nc; jj++)
+                    {
+                      octave_quit ();
+                      os << "  ";
+                      os << typename octave_print_conv<T>::print_conv_type (page(ii,jj));
+                    }
+                  os << "\n";
+                }
 
-	      if (pr_as_read_syntax)
-		os << "]";
-	    }
-	  else
-	    {
-	      octave_idx_type n_rows = page.rows ();
-	      octave_idx_type n_cols = page.cols ();
+              if (pr_as_read_syntax)
+                os << "]";
+            }
+          else
+            {
+              octave_idx_type n_rows = page.rows ();
+              octave_idx_type n_cols = page.cols ();
 
-	      for (octave_idx_type col = 0; col < n_cols; col += inc)
-		{
-		  octave_idx_type lim = col + inc < n_cols ? col + inc : n_cols;
+              for (octave_idx_type col = 0; col < n_cols; col += inc)
+                {
+                  octave_idx_type lim = col + inc < n_cols ? col + inc : n_cols;
 
-		  pr_col_num_header (os, total_width, max_width, lim, col,
-				     extra_indent);
+                  pr_col_num_header (os, total_width, max_width, lim, col,
+                                     extra_indent);
 
-		  for (octave_idx_type ii = 0; ii < n_rows; ii++)
-		    {
-		      os << std::setw (extra_indent) << "";
-		      
-		      for (octave_idx_type jj = col; jj < lim; jj++)
-			{
-			  OCTAVE_QUIT;
-			  os << "  ";
-			  pr_int (os, page(ii,jj), fw);
-			}
-		      if ((ii < n_rows - 1) || (i < m -1))
-			os << "\n";
-		    }
-		}
-	    }
+                  for (octave_idx_type ii = 0; ii < n_rows; ii++)
+                    {
+                      os << std::setw (extra_indent) << "";
 
-	  if (i < m - 1)
-	    {
-	      os << "\n";
-	      increment_index (ra_idx, dims, 2);
-	    }
-	}
+                      for (octave_idx_type jj = col; jj < lim; jj++)
+                        {
+                          octave_quit ();
+                          os << "  ";
+                          pr_int (os, page(ii,jj), fw);
+                        }
+                      if ((ii < n_rows - 1) || (i < m -1))
+                        os << "\n";
+                    }
+                }
+            }
+
+          if (i < m - 1)
+            {
+              os << "\n";
+              increment_index (ra_idx, dims, 2);
+            }
+        }
     }
 }
 
 #define PRINT_INT_ARRAY_INTERNAL(TYPE) \
   OCTINTERP_API void \
   octave_print_internal (std::ostream& os, const intNDArray<TYPE>& nda, \
-			 bool pr_as_read_syntax, int extra_indent) \
+                         bool pr_as_read_syntax, int extra_indent) \
   { \
     octave_print_internal_template (os, nda, pr_as_read_syntax, extra_indent); \
   }
@@ -3205,57 +3375,55 @@ representing the elements of @var{x}.  By default @var{len} is 9.\n\
     print_usage ();
   else
     {
-      unwind_protect::begin_frame ("Frats");
+      unwind_protect frame;
 
-      unwind_protect_int (rat_string_len);
+      frame.protect_var (rat_string_len);
 
       rat_string_len = 9;
 
       if (nargin == 2)
-	rat_string_len = args(1).nint_value ();
+        rat_string_len = args(1).nint_value ();
 
       if (! error_state)
-	{
-	  octave_value arg = args(0);
+        {
+          octave_value arg = args(0);
 
-	  if (arg.is_numeric_type ())
-	    {
-	      unwind_protect_bool (rat_format);
+          if (arg.is_numeric_type ())
+            {
+              frame.protect_var (rat_format);
 
-	      rat_format = true;
+              rat_format = true;
 
-	      std::ostringstream buf;
-	      args(0).print (buf);
-	      std::string s = buf.str ();
+              std::ostringstream buf;
+              args(0).print (buf);
+              std::string s = buf.str ();
 
-	      std::list<std::string> lst;
+              std::list<std::string> lst;
 
-	      size_t n = 0;
-	      size_t s_len = s.length ();
+              size_t n = 0;
+              size_t s_len = s.length ();
 
-	      while (n < s_len)
-		{
-		  size_t m = s.find ('\n',  n);
+              while (n < s_len)
+                {
+                  size_t m = s.find ('\n',  n);
 
-		  if (m == std::string::npos)
-		    {
-		      lst.push_back (s.substr (n));
-		      break;
-		    }
-		  else
-		    {
-		      lst.push_back (s.substr (n, m - n));
-		      n = m + 1;
-		    }
-		}
+                  if (m == std::string::npos)
+                    {
+                      lst.push_back (s.substr (n));
+                      break;
+                    }
+                  else
+                    {
+                      lst.push_back (s.substr (n, m - n));
+                      n = m + 1;
+                    }
+                }
 
-	      retval = string_vector (lst);
-	    }
-	  else
-	    error ("rats: expecting numeric input");
-	}
-
-      unwind_protect::run_frame ("Frats");
+              retval = string_vector (lst);
+            }
+          else
+            error ("rats: X must be numeric");
+        }
     }
 
   return retval;
@@ -3264,7 +3432,7 @@ representing the elements of @var{x}.  By default @var{len} is 9.\n\
 DEFUN (disp, args, nargout,
   "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {} disp (@var{x})\n\
-Display the value of @var{x}.  For example,\n\
+Display the value of @var{x}.  For example:\n\
 \n\
 @example\n\
 @group\n\
@@ -3283,21 +3451,21 @@ returns the formatted output in a string.\n\
 @seealso{fdisp}\n\
 @end deftypefn")
 {
-  octave_value retval;
+  octave_value_list retval;
 
   int nargin = args.length ();
 
   if (nargin == 1 && nargout < 2)
     {
       if (nargout == 0)
-	args(0).print (octave_stdout);
+        args(0).print (octave_stdout);
       else
-	{
-	  octave_value arg = args(0);
-	  std::ostringstream buf;
-	  arg.print (buf);
-	  retval = octave_value (buf.str (), arg.is_dq_string () ? '"' : '\'');
-	}
+        {
+          octave_value arg = args(0);
+          std::ostringstream buf;
+          arg.print (buf);
+          retval = octave_value (buf.str (), arg.is_dq_string () ? '"' : '\'');
+        }
     }
   else
     print_usage ();
@@ -3308,7 +3476,7 @@ returns the formatted output in a string.\n\
 DEFUN (fdisp, args, ,
   "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {} fdisp (@var{fid}, @var{x})\n\
-Display the value of @var{x} on the stream @var{fid}.  For example,\n\
+Display the value of @var{x} on the stream @var{fid}.  For example:\n\
 \n\
 @example\n\
 @group\n\
@@ -3324,7 +3492,7 @@ Note that the output from @code{fdisp} always ends with a newline.\n\
 @seealso{disp}\n\
 @end deftypefn")
 {
-  octave_value retval;
+  octave_value_list retval;
 
   int nargin = args.length ();
 
@@ -3335,14 +3503,14 @@ Note that the output from @code{fdisp} always ends with a newline.\n\
       octave_stream os = octave_stream_list::lookup (fid, "fdisp");
 
       if (! error_state)
-	{
-	  std::ostream *osp = os.output_stream ();
+        {
+          std::ostream *osp = os.output_stream ();
 
-	  if (osp)
-	    args(1).print (*osp);
-	  else
-	    error ("fdisp: stream not open for writing");
-	}
+          if (osp)
+            args(1).print (*osp);
+          else
+            error ("fdisp: stream FID not open for writing");
+        }
     }
   else
     print_usage ();
@@ -3350,7 +3518,7 @@ Note that the output from @code{fdisp} always ends with a newline.\n\
   return retval;
 }
 
-/* 
+/*
 %!test
 %! format short
 %! fd = tmpfile ();
@@ -3360,7 +3528,7 @@ Note that the output from @code{fdisp} always ends with a newline.\n\
 %!   endfor
 %! endfor
 %! fclose (fd);
-*/                                 
+*/
 
 static void
 init_format_state (void)
@@ -3375,6 +3543,7 @@ init_format_state (void)
   print_e = false;
   print_big_e = false;
   print_g = false;
+  print_eng = false;
 }
 
 static void
@@ -3394,155 +3563,165 @@ set_format_style (int argc, const string_vector& argv)
       std::string arg = argv[idx++];
 
       if (arg == "short")
-	{
-	  if (--argc > 0)
-	    {
-	      arg = argv[idx++];
+        {
+          if (--argc > 0)
+            {
+              arg = argv[idx++];
 
-	      if (arg == "e")
-		{
-		  init_format_state ();
-		  print_e = true;
-		}
-	      else if (arg == "E")
-		{
-		  init_format_state ();
-		  print_e = true;
-		  print_big_e = true;
-		}
-	      else if (arg == "g")
-		{
-		  init_format_state ();
-		  print_g = true;
-		}
-	      else if (arg == "G")
-		{
-		  init_format_state ();
-		  print_g = true;
-		  print_big_e = true;
-		}
-	      else
-		{
-		  error ("format: unrecognized option `short %s'",
-			 arg.c_str ());
-		  return;
-		}
-	    }
-	  else
-	    init_format_state ();
+              if (arg == "e")
+                {
+                  init_format_state ();
+                  print_e = true;
+                }
+              else if (arg == "E")
+                {
+                  init_format_state ();
+                  print_e = true;
+                  print_big_e = true;
+                }
+              else if (arg == "g")
+                {
+                  init_format_state ();
+                  print_g = true;
+                }
+              else if (arg == "G")
+                {
+                  init_format_state ();
+                  print_g = true;
+                  print_big_e = true;
+                }
+              else if (arg == "eng")
+                {
+                  init_format_state ();
+                  print_eng = true;
+                }
+              else
+                {
+                  error ("format: unrecognized option `short %s'",
+                         arg.c_str ());
+                  return;
+                }
+            }
+          else
+            init_format_state ();
 
-	  set_output_prec_and_fw (5, 10);
-	}
+          set_output_prec_and_fw (5, 10);
+        }
       else if (arg == "long")
-	{
-	  if (--argc > 0)
-	    {
-	      arg = argv[idx++];
+        {
+          if (--argc > 0)
+            {
+              arg = argv[idx++];
 
-	      if (arg == "e")
-		{
-		  init_format_state ();
-		  print_e = true;
-		}
-	      else if (arg == "E")
-		{
-		  init_format_state ();
-		  print_e = true;
-		  print_big_e = true;
-		}
-	      else if (arg == "g")
-		{
-		  init_format_state ();
-		  print_g = true;
-		}
-	      else if (arg == "G")
-		{
-		  init_format_state ();
-		  print_g = true;
-		  print_big_e = true;
-		}
-	      else
-		{
-		  error ("format: unrecognized option `long %s'",
-			 arg.c_str ());
-		  return;
-		}
-	    }
-	  else
-	    init_format_state ();
+              if (arg == "e")
+                {
+                  init_format_state ();
+                  print_e = true;
+                }
+              else if (arg == "E")
+                {
+                  init_format_state ();
+                  print_e = true;
+                  print_big_e = true;
+                }
+              else if (arg == "g")
+                {
+                  init_format_state ();
+                  print_g = true;
+                }
+              else if (arg == "G")
+                {
+                  init_format_state ();
+                  print_g = true;
+                  print_big_e = true;
+                }
+              else if (arg == "eng")
+                {
+                  init_format_state ();
+                  print_eng = true;
+                }
+              else
+                {
+                  error ("format: unrecognized option `long %s'",
+                         arg.c_str ());
+                  return;
+                }
+            }
+          else
+            init_format_state ();
 
-	  set_output_prec_and_fw (15, 20);
-	}
+          set_output_prec_and_fw (15, 20);
+        }
       else if (arg == "hex")
-	{
-	  init_format_state ();
-	  hex_format = 1;
-	}
+        {
+          init_format_state ();
+          hex_format = 1;
+        }
       else if (arg == "native-hex")
-	{
-	  init_format_state ();
-	  hex_format = 2;
-	}
+        {
+          init_format_state ();
+          hex_format = 2;
+        }
       else if (arg == "bit")
-	{
-	  init_format_state ();
-	  bit_format = 1;
-	}
+        {
+          init_format_state ();
+          bit_format = 1;
+        }
       else if (arg == "native-bit")
-	{
-	  init_format_state ();
-	  bit_format = 2;
-	}
+        {
+          init_format_state ();
+          bit_format = 2;
+        }
       else if (arg == "+" || arg == "plus")
-	{
-	  if (--argc > 0)
-	    {
-	      arg = argv[idx++];
+        {
+          if (--argc > 0)
+            {
+              arg = argv[idx++];
 
-	      if (arg.length () == 3)
-		plus_format_chars = arg;
-	      else
-		{
-		  error ("format: invalid option for plus format");
-		  return;
-		}
-	    }
-	  else
-	    plus_format_chars = "+  ";
+              if (arg.length () == 3)
+                plus_format_chars = arg;
+              else
+                {
+                  error ("format: invalid option for plus format");
+                  return;
+                }
+            }
+          else
+            plus_format_chars = "+  ";
 
-	  init_format_state ();
-	  plus_format = true;
-	}
+          init_format_state ();
+          plus_format = true;
+        }
       else if (arg == "rat")
-	{
-	  init_format_state ();
-	  rat_format = true;
-	}
+        {
+          init_format_state ();
+          rat_format = true;
+        }
       else if (arg == "bank")
-	{
-	  init_format_state ();
-	  bank_format = true;
-	}
+        {
+          init_format_state ();
+          bank_format = true;
+        }
       else if (arg == "free")
-	{
-	  init_format_state ();
-	  free_format = true;
-	}
+        {
+          init_format_state ();
+          free_format = true;
+        }
       else if (arg == "none")
-	{
-	  init_format_state ();
-	  free_format = true;
-	}
+        {
+          init_format_state ();
+          free_format = true;
+        }
       else if (arg == "compact")
-	{
-	  compact_format = true;
-	}
+        {
+          compact_format = true;
+        }
       else if (arg == "loose")
-	{
-	  compact_format = false;
-	}
+        {
+          compact_format = false;
+        }
       else
-	error ("format: unrecognized format state `%s'", arg.c_str ());
+        error ("format: unrecognized format state `%s'", arg.c_str ());
     }
   else
     {
@@ -3553,8 +3732,8 @@ set_format_style (int argc, const string_vector& argv)
 
 DEFUN (format, args, ,
   "-*- texinfo -*-\n\
-@deffn  {Command} format\n\
-@deffnx {Command} format options\n\
+@deftypefn  {Command} {} format\n\
+@deftypefnx {Command} {} format options\n\
 Reset or specify the format of the output produced by @code{disp} and\n\
 Octave's normal echoing mechanism.  This command only affects the display\n\
 of numbers but not how they are stored or computed.  To change the internal\n\
@@ -3586,7 +3765,7 @@ As with the @samp{short} format, Octave will switch to an exponential\n\
 @samp{e} format if it is unable to format a matrix properly using the\n\
 current format.\n\
 \n\
-@item  short e\n\
+@item short e\n\
 @itemx long e\n\
 Exponential format.  The number to be represented is split between a mantissa\n\
 and an exponent (power of 10).  The mantissa has 5 significant digits in the\n\
@@ -3594,14 +3773,14 @@ short format and 15 digits in the long format.\n\
 For example, with the @samp{short e} format, @code{pi} is displayed as\n\
 @code{3.1416e+00}.\n\
 \n\
-@item  short E\n\
+@item short E\n\
 @itemx long E\n\
 Identical to @samp{short e} or @samp{long e} but displays an uppercase\n\
 @samp{E} to indicate the exponent.\n\
 For example, with the @samp{long E} format, @code{pi} is displayed as\n\
 @code{3.14159265358979E+00}.\n\
 \n\
-@item  short g\n\
+@item short g\n\
 @itemx long g\n\
 Optimally choose between fixed point and exponential format based on\n\
 the magnitude of the number.\n\
@@ -3619,6 +3798,13 @@ ans =\n\
   8.1058e+15\n\
 @end group\n\
 @end example\n\
+\n\
+@item short eng\n\
+@itemx long eng\n\
+Identical to @samp{short e} or @samp{long e} but displays the value\n\
+using an engineering format, where the exponent is divisible by 3. For\n\
+example, with the @samp{short eng} format, @code{10 * pi} is displayed as\n\
+@code{31.4159e+00}.\n\
 \n\
 @item long G\n\
 @itemx short G\n\
@@ -3667,11 +3853,13 @@ point.\n\
 Print the hexadecimal representation of numbers as they are stored in\n\
 memory.  For example, on a workstation which stores 8 byte real values\n\
 in IEEE format with the least significant byte first, the value of\n\
-@code{pi} when printed in @code{native-hex} format is @code{400921fb54442d18}.\n\
+@code{pi} when printed in @code{native-hex} format is\n\
+@code{400921fb54442d18}.\n\
 \n\
 @item hex\n\
 The same as @code{native-hex}, but always print the most significant\n\
 byte first.\n\
+\n\
 @item native-bit\n\
 Print the bit representation of numbers as stored in memory.\n\
 For example, the value of @code{pi} is\n\
@@ -3686,6 +3874,7 @@ For example, the value of @code{pi} is\n\
 (shown here in two 32 bit sections for typesetting purposes) when\n\
 printed in native-bit format on a workstation which stores 8 byte real values\n\
 in IEEE format with the least significant byte first.\n\
+\n\
 @item bit\n\
 The same as @code{native-bit}, but always print the most significant\n\
 bits first.\n\
@@ -3703,11 +3892,13 @@ The following two options affect the display of all matrices.\n\
 @item compact\n\
 Remove extra blank space around column number labels producing more compact\n\
 output with more data per page.\n\
+\n\
 @item loose\n\
 Insert blank lines above and below column number labels to produce a more\n\
 readable output with less data per page.  (default).\n\
 @end table\n\
-@end deffn")
+@seealso{fixed_point_format, output_max_field_width, output_precision, split_long_rows, rats}\n\
+@end deftypefn")
 {
   octave_value_list retval;
 
@@ -3725,12 +3916,12 @@ readable output with less data per page.  (default).\n\
 
 DEFUN (fixed_point_format, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {@var{val} =} fixed_point_format ()\n\
+@deftypefn  {Built-in Function} {@var{val} =} fixed_point_format ()\n\
 @deftypefnx {Built-in Function} {@var{old_val} =} fixed_point_format (@var{new_val})\n\
 Query or set the internal variable that controls whether Octave will\n\
 use a scaled format to print matrix values such that the largest\n\
 element may be written with a single leading digit with the scaling\n\
-factor is printed on the first line of output.  For example,\n\
+factor is printed on the first line of output.  For example:\n\
 \n\
 @example\n\
 @group\n\
@@ -3751,6 +3942,7 @@ ans =\n\
 Notice that first value appears to be zero when it is actually 1.  For\n\
 this reason, you should be careful when setting\n\
 @code{fixed_point_format} to a nonzero value.\n\
+@seealso{format, output_max_field_width, output_precision}\n\
 @end deftypefn")
 {
   return SET_INTERNAL_VARIABLE (fixed_point_format);
@@ -3758,7 +3950,7 @@ this reason, you should be careful when setting\n\
 
 DEFUN (print_empty_dimensions, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {@var{val} =} print_empty_dimensions ()\n\
+@deftypefn  {Built-in Function} {@var{val} =} print_empty_dimensions ()\n\
 @deftypefnx {Built-in Function} {@var{old_val} =} print_empty_dimensions (@var{new_val})\n\
 Query or set the internal variable that controls whether the\n\
 dimensions of empty matrices are printed along with the empty matrix\n\
@@ -3774,6 +3966,7 @@ will print\n\
 @example\n\
 ans = [](3x0)\n\
 @end example\n\
+@seealso{format}\n\
 @end deftypefn")
 {
   return SET_INTERNAL_VARIABLE (print_empty_dimensions);
@@ -3781,7 +3974,7 @@ ans = [](3x0)\n\
 
 DEFUN (split_long_rows, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {@var{val} =} split_long_rows ()\n\
+@deftypefn  {Built-in Function} {@var{val} =} split_long_rows ()\n\
 @deftypefnx {Built-in Function} {@var{old_val} =} split_long_rows (@var{new_val})\n\
 Query or set the internal variable that controls whether rows of a matrix\n\
 may be split when displayed to a terminal window.  If the rows are split,\n\
@@ -3806,6 +3999,7 @@ ans =\n\
   0.44672  0.94303  0.56564  0.82150\n\
 @end group\n\
 @end example\n\
+@seealso{format}\n\
 @end deftypefn")
 {
   return SET_INTERNAL_VARIABLE (split_long_rows);
@@ -3813,42 +4007,24 @@ ans =\n\
 
 DEFUN (output_max_field_width, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {@var{val} =} output_max_field_width ()\n\
+@deftypefn  {Built-in Function} {@var{val} =} output_max_field_width ()\n\
 @deftypefnx {Built-in Function} {@var{old_val} =} output_max_field_width (@var{new_val})\n\
 Query or set the internal variable that specifies the maximum width\n\
 of a numeric output field.\n\
-@seealso{format, output_precision}\n\
+@seealso{format, fixed_point_format, output_precision}\n\
 @end deftypefn")
 {
-  return SET_INTERNAL_VARIABLE_WITH_LIMITS (output_precision, 0, INT_MAX);
+  return SET_INTERNAL_VARIABLE_WITH_LIMITS (output_max_field_width, 0, INT_MAX);
 }
 
 DEFUN (output_precision, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {@var{val} =} output_precision ()\n\
+@deftypefn  {Built-in Function} {@var{val} =} output_precision ()\n\
 @deftypefnx {Built-in Function} {@var{old_val} =} output_precision (@var{new_val})\n\
 Query or set the internal variable that specifies the minimum number of\n\
 significant figures to display for numeric output.\n\
-@seealso{format, output_max_field_width}\n\
+@seealso{format, fixed_point_format, output_max_field_width}\n\
 @end deftypefn")
 {
   return SET_INTERNAL_VARIABLE_WITH_LIMITS (output_precision, -1, INT_MAX);
 }
-
-DEFUN (struct_levels_to_print, args, nargout,
-  "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {@var{val} =} struct_levels_to_print ()\n\
-@deftypefnx {Built-in Function} {@var{old_val} =} struct_levels_to_print (@var{new_val})\n\
-Query or set the internal variable that specifies the number of\n\
-structure levels to display.\n\
-@end deftypefn")
-{
-  return SET_INTERNAL_VARIABLE_WITH_LIMITS (struct_levels_to_print,
-					    -1, INT_MAX);
-}
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

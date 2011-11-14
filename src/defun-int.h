@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002,
-              2003, 2004, 2005, 2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -40,20 +39,43 @@ extern OCTINTERP_API void check_version (const std::string& version, const std::
 
 extern OCTINTERP_API void
 install_builtin_function (octave_builtin::fcn f, const std::string& name,
-			  const std::string& doc,
-			  bool can_hide_function = true);
+                          const std::string& doc,
+                          bool can_hide_function = true);
 
 extern OCTINTERP_API void
 install_dld_function (octave_dld_function::fcn f, const std::string& name,
-		      const octave_shlib& shl, const std::string& doc, 
-		      bool relative = false);
+                      const octave_shlib& shl, const std::string& doc,
+                      bool relative = false);
 
 extern OCTINTERP_API void
 install_mex_function (void *fptr, bool fmex, const std::string& name,
-		      const octave_shlib& shl, bool relative = false);
+                      const octave_shlib& shl, bool relative = false);
 
 extern OCTINTERP_API void
 alias_builtin (const std::string& alias, const std::string& name);
+
+// Gets the shlib of the currently executing DLD function, if any.
+extern OCTINTERP_API octave_shlib
+get_current_shlib (void);
+
+// This is a convenience class that calls the above function automatically at
+// construction time. When deriving new classes, you can either use it as a field
+// or as a parent (with multiple inheritance).
+
+class octave_auto_shlib : public octave_shlib
+{
+public:
+  octave_auto_shlib (void)
+    : octave_shlib (get_current_shlib ()) { }
+  octave_auto_shlib (const octave_shlib& shl)
+    : octave_shlib (shl) { }
+};
+
+extern OCTINTERP_API bool
+defun_isargout (int, int);
+
+extern OCTINTERP_API void
+defun_isargout (int, int, bool *);
 
 #define DECLARE_FUNX(name, args_name, nargout_name) \
   OCTAVE_EXPORT octave_value_list \
@@ -85,7 +107,7 @@ typedef octave_function * (*octave_dld_fcn_getter) (const octave_shlib&, bool re
  \
     if (! error_state) \
       { \
-	octave_dld_function *fcn = octave_dld_function::create (fname, shl, name, doc); \
+        octave_dld_function *fcn = octave_dld_function::create (fname, shl, name, doc); \
  \
         if (relative) \
           fcn->mark_relative (); \
@@ -163,9 +185,3 @@ typedef octave_function * (*octave_dld_fcn_getter) (const octave_shlib&, bool re
 #endif /* ! MAKE_BUILTINS */
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

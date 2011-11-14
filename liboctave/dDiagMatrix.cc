@@ -1,8 +1,8 @@
 // DiagMatrix manipulations.
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2000, 2001, 2002, 2003, 2004,
-              2005, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
+Copyright (C) 2009 VZLU Prague
 
 This file is part of Octave.
 
@@ -42,7 +42,7 @@ DiagMatrix::operator == (const DiagMatrix& a) const
   if (rows () != a.rows () || cols () != a.cols ())
     return 0;
 
-  return mx_inline_equal (data (), a.data (), length ());
+  return mx_inline_equal (length (), data (), a.data ());
 }
 
 bool
@@ -141,32 +141,19 @@ DiagMatrix::fill (const RowVector& a, octave_idx_type beg)
 DiagMatrix
 DiagMatrix::abs (void) const
 {
-  DiagMatrix retval (rows (), cols ());
-  for (octave_idx_type i = 0; i < rows (); i++)
-    retval(i, i) = std::abs (elem (i, i));
-  return retval;
+  return DiagMatrix (diag ().abs (), rows (), columns ());
 }
 
 DiagMatrix
 real (const ComplexDiagMatrix& a)
 {
-  DiagMatrix retval;
-  octave_idx_type a_len = a.length ();
-  if (a_len > 0)
-    retval = DiagMatrix (mx_inline_real_dup (a.data (), a_len), a.rows (),
-			 a.cols ());
-  return retval;
+  return DiagMatrix (real (a.diag ()), a.rows (), a.cols ());
 }
 
 DiagMatrix
 imag (const ComplexDiagMatrix& a)
 {
-  DiagMatrix retval;
-  octave_idx_type a_len = a.length ();
-  if (a_len > 0)
-    retval = DiagMatrix (mx_inline_imag_dup (a.data (), a_len), a.rows (),
-			 a.cols ());
-  return retval;
+  return DiagMatrix (imag (a.diag ()), a.rows (), a.cols ());
 }
 
 Matrix
@@ -197,7 +184,7 @@ DiagMatrix::row (octave_idx_type i) const
   if (i < 0 || i >= r)
     {
       (*current_liboctave_error_handler) ("invalid row selection");
-      return RowVector (); 
+      return RowVector ();
     }
 
   RowVector retval (c, 0.0);
@@ -213,7 +200,7 @@ DiagMatrix::row (char *s) const
   if (! s)
     {
       (*current_liboctave_error_handler) ("invalid row selection");
-      return RowVector (); 
+      return RowVector ();
     }
 
   char c = *s;
@@ -224,7 +211,7 @@ DiagMatrix::row (char *s) const
   else
     {
       (*current_liboctave_error_handler) ("invalid row selection");
-      return RowVector (); 
+      return RowVector ();
     }
 }
 
@@ -236,7 +223,7 @@ DiagMatrix::column (octave_idx_type i) const
   if (i < 0 || i >= c)
     {
       (*current_liboctave_error_handler) ("invalid column selection");
-      return ColumnVector (); 
+      return ColumnVector ();
     }
 
   ColumnVector retval (r, 0.0);
@@ -252,7 +239,7 @@ DiagMatrix::column (char *s) const
   if (! s)
     {
       (*current_liboctave_error_handler) ("invalid column selection");
-      return ColumnVector (); 
+      return ColumnVector ();
     }
 
   char c = *s;
@@ -263,7 +250,7 @@ DiagMatrix::column (char *s) const
   else
     {
       (*current_liboctave_error_handler) ("invalid column selection");
-      return ColumnVector (); 
+      return ColumnVector ();
     }
 }
 
@@ -292,12 +279,12 @@ DiagMatrix::inverse (octave_idx_type &info) const
   for (octave_idx_type i = 0; i < len; i++)
     {
       if (elem (i, i) == 0.0)
-	{
-	  info = -1;
-	  return *this;
-	}
+        {
+          info = -1;
+          return *this;
+        }
       else
-	retval.elem (i, i) = 1.0 / elem (i, i);
+        retval.elem (i, i) = 1.0 / elem (i, i);
     }
 
   return retval;
@@ -337,25 +324,16 @@ operator * (const DiagMatrix& a, const DiagMatrix& b)
   octave_idx_type b_nc = b.cols ();
 
   if (a_nc != b_nr)
-    {
-      gripe_nonconformant ("operator *", a_nr, a_nc, b_nr, b_nc);
-      return DiagMatrix ();
-    }
-
-  if (a_nr == 0 || a_nc == 0 || b_nc == 0)
-    return DiagMatrix (a_nr, a_nc, 0.0);
+    gripe_nonconformant ("operator *", a_nr, a_nc, b_nr, b_nc);
 
   DiagMatrix c (a_nr, b_nc);
 
-  octave_idx_type len = a_nr < b_nc ? a_nr : b_nc;
+  octave_idx_type len = c.length (), lenm = len < a_nc ? len : a_nc;
 
-  for (octave_idx_type i = 0; i < len; i++)
-    {
-      double a_element = a.elem (i, i);
-      double b_element = b.elem (i, i);
-
-      c.elem (i, i) = a_element * b_element;
-    }
+  for (octave_idx_type i = 0; i < lenm; i++)
+    c.dgxelem (i) = a.dgelem (i) * b.dgelem (i);
+  for (octave_idx_type i = lenm; i < len; i++)
+    c.dgxelem (i) = 0.0;
 
   return c;
 }
@@ -384,7 +362,7 @@ DiagMatrix::determinant (void) const
 double
 DiagMatrix::rcond (void) const
 {
-  ColumnVector av  = diag (0).map (fabs);
+  ColumnVector av  = diag (0).map<double> (fabs);
   double amx = av.max (), amn = av.min ();
   return amx == 0 ? 0.0 : amn / amx;
 }
@@ -397,19 +375,13 @@ operator << (std::ostream& os, const DiagMatrix& a)
   for (octave_idx_type i = 0; i < a.rows (); i++)
     {
       for (octave_idx_type j = 0; j < a.cols (); j++)
-	{
-	  if (i == j)
-	    os << " " /* setw (field_width) */ << a.elem (i, i);
-	  else
-	    os << " " /* setw (field_width) */ << 0.0;
-	}
+        {
+          if (i == j)
+            os << " " /* setw (field_width) */ << a.elem (i, i);
+          else
+            os << " " /* setw (field_width) */ << 0.0;
+        }
       os << "\n";
     }
   return os;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

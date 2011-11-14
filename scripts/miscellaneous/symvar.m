@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 David Bateman
+## Copyright (C) 2008-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -18,7 +18,7 @@
 
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} symvar (@var{s})
-## Identifies the argument names in the function defined by a string.
+## Identify the argument names in the function defined by a string.
 ## Common constant names such as @code{pi}, @code{NaN}, @code{Inf},
 ## @code{eps}, @code{i} or @code{j} are ignored.  The arguments that are
 ## found are returned in a cell array of strings.  If no variables are

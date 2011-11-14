@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1998, 1999, 2000, 2002, 2003, 2004, 2005, 2006, 2007,
-              2008, 2009 A. S. Hodel
+Copyright (C) 1998-2011 A. S. Hodel
 
 This file is part of Octave.
 
@@ -29,7 +28,9 @@ along with Octave; see the file COPYING.  If not, see
 #undef DEBUG_SORT
 #undef DEBUG_EIG
 
-#include "config.h"
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include <cfloat>
 
@@ -37,6 +38,7 @@ along with Octave; see the file COPYING.  If not, see
 #include <iomanip>
 
 #include "CmplxQRP.h"
+#include "CmplxQR.h"
 #include "dbleQR.h"
 #include "f77-fcn.h"
 #include "lo-math.h"
@@ -57,95 +59,176 @@ along with Octave; see the file COPYING.  If not, see
 #include "variables.h"
 
 typedef octave_idx_type (*sort_function) (const octave_idx_type& LSIZE, const double& ALPHA,
-			      const double& BETA, const double& S,
-			      const double& P);
+                              const double& BETA, const double& S,
+                              const double& P);
 
 extern "C"
 {
   F77_RET_T
   F77_FUNC (dggbal, DGGBAL) (F77_CONST_CHAR_ARG_DECL,
-			     const octave_idx_type& N, double* A, const octave_idx_type& LDA,
-			     double* B, const octave_idx_type& LDB, octave_idx_type& ILO,
-			     octave_idx_type& IHI, double* LSCALE, double* RSCALE,
-			     double* WORK, octave_idx_type& INFO
-			     F77_CHAR_ARG_LEN_DECL);
+                             const octave_idx_type& N, double* A,
+                             const octave_idx_type& LDA, double* B,
+                             const octave_idx_type& LDB, octave_idx_type& ILO,
+                             octave_idx_type& IHI, double* LSCALE,
+                             double* RSCALE, double* WORK,
+                             octave_idx_type& INFO
+                             F77_CHAR_ARG_LEN_DECL);
+
+F77_RET_T
+  F77_FUNC (zggbal, ZGGBAL) (F77_CONST_CHAR_ARG_DECL,
+                             const octave_idx_type& N, Complex* A,
+                             const octave_idx_type& LDA, Complex* B,
+                             const octave_idx_type& LDB, octave_idx_type& ILO,
+                             octave_idx_type& IHI, double* LSCALE,
+                             double* RSCALE, double* WORK,
+                             octave_idx_type& INFO
+                             F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
   F77_FUNC (dggbak, DGGBAK) (F77_CONST_CHAR_ARG_DECL,
-			     F77_CONST_CHAR_ARG_DECL,
-			     const octave_idx_type& N, const octave_idx_type& ILO,
-			     const octave_idx_type& IHI, const double* LSCALE,
-			     const double* RSCALE, octave_idx_type& M, double* V,
-			     const octave_idx_type& LDV, octave_idx_type& INFO
-			     F77_CHAR_ARG_LEN_DECL
-			     F77_CHAR_ARG_LEN_DECL);
+                             F77_CONST_CHAR_ARG_DECL,
+                             const octave_idx_type& N,
+                             const octave_idx_type& ILO,
+                             const octave_idx_type& IHI,
+                             const double* LSCALE, const double* RSCALE,
+                             octave_idx_type& M, double* V,
+                             const octave_idx_type& LDV, octave_idx_type& INFO
+                             F77_CHAR_ARG_LEN_DECL
+                             F77_CHAR_ARG_LEN_DECL);
+
+F77_RET_T
+  F77_FUNC (zggbak, ZGGBAK) (F77_CONST_CHAR_ARG_DECL,
+                             F77_CONST_CHAR_ARG_DECL,
+                             const octave_idx_type& N,
+                             const octave_idx_type& ILO,
+                             const octave_idx_type& IHI,
+                             const double* LSCALE, const double* RSCALE,
+                             octave_idx_type& M, Complex* V,
+                             const octave_idx_type& LDV, octave_idx_type& INFO
+                             F77_CHAR_ARG_LEN_DECL
+                             F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
   F77_FUNC (dgghrd, DGGHRD) (F77_CONST_CHAR_ARG_DECL,
-			     F77_CONST_CHAR_ARG_DECL,
-			     const octave_idx_type& N, const octave_idx_type& ILO,
-			     const octave_idx_type& IHI, double* A,
-			     const octave_idx_type& LDA, double* B,
-			     const octave_idx_type& LDB, double* Q,
-			     const octave_idx_type& LDQ, double* Z,
-			     const octave_idx_type& LDZ, octave_idx_type& INFO
-			     F77_CHAR_ARG_LEN_DECL
-			     F77_CHAR_ARG_LEN_DECL);
+                             F77_CONST_CHAR_ARG_DECL,
+                             const octave_idx_type& N,
+                             const octave_idx_type& ILO,
+                             const octave_idx_type& IHI, double* A,
+                             const octave_idx_type& LDA, double* B,
+                             const octave_idx_type& LDB, double* Q,
+                             const octave_idx_type& LDQ, double* Z,
+                             const octave_idx_type& LDZ, octave_idx_type& INFO
+                             F77_CHAR_ARG_LEN_DECL
+                             F77_CHAR_ARG_LEN_DECL);
+
+ F77_RET_T
+  F77_FUNC (zgghrd, ZGGHRD) (F77_CONST_CHAR_ARG_DECL,
+                             F77_CONST_CHAR_ARG_DECL,
+                             const octave_idx_type& N,
+                             const octave_idx_type& ILO,
+                             const octave_idx_type& IHI, Complex* A,
+                             const octave_idx_type& LDA, Complex* B,
+                             const octave_idx_type& LDB, Complex* Q,
+                             const octave_idx_type& LDQ, Complex* Z,
+                             const octave_idx_type& LDZ, octave_idx_type& INFO
+                             F77_CHAR_ARG_LEN_DECL
+                             F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
   F77_FUNC (dhgeqz, DHGEQZ) (F77_CONST_CHAR_ARG_DECL,
-			     F77_CONST_CHAR_ARG_DECL,
-			     F77_CONST_CHAR_ARG_DECL,
-			     const octave_idx_type& N, const octave_idx_type& ILO, const octave_idx_type& IHI,
-			     double* A, const octave_idx_type& LDA, double* B,
-			     const octave_idx_type& LDB, double* ALPHAR,
-			     double* ALPHAI, double* BETA, double* Q,
-			     const octave_idx_type& LDQ, double* Z,
-			     const octave_idx_type& LDZ, double* WORK,
-			     const octave_idx_type& LWORK, octave_idx_type& INFO
-			     F77_CHAR_ARG_LEN_DECL
-			     F77_CHAR_ARG_LEN_DECL
-			     F77_CHAR_ARG_LEN_DECL);
+                             F77_CONST_CHAR_ARG_DECL,
+                             F77_CONST_CHAR_ARG_DECL,
+                             const octave_idx_type& N,
+                             const octave_idx_type& ILO,
+                             const octave_idx_type& IHI,
+                             double* A, const octave_idx_type& LDA, double* B,
+                             const octave_idx_type& LDB, double* ALPHAR,
+                             double* ALPHAI, double* BETA, double* Q,
+                             const octave_idx_type& LDQ, double* Z,
+                             const octave_idx_type& LDZ, double* WORK,
+                             const octave_idx_type& LWORK,
+                             octave_idx_type& INFO
+                             F77_CHAR_ARG_LEN_DECL
+                             F77_CHAR_ARG_LEN_DECL
+                             F77_CHAR_ARG_LEN_DECL);
+
+F77_RET_T
+  F77_FUNC (zhgeqz, ZHGEQZ) (F77_CONST_CHAR_ARG_DECL,
+                             F77_CONST_CHAR_ARG_DECL,
+                             F77_CONST_CHAR_ARG_DECL,
+                             const octave_idx_type& N,
+                             const octave_idx_type& ILO,
+                             const octave_idx_type& IHI,
+                             Complex* A, const octave_idx_type& LDA,
+                             Complex* B, const octave_idx_type& LDB,
+                             Complex* ALPHA, Complex* BETA, Complex* CQ,
+                             const octave_idx_type& LDQ,
+                             Complex* CZ, const octave_idx_type& LDZ,
+                             Complex* WORK, const octave_idx_type& LWORK,
+                             double* RWORK, octave_idx_type& INFO
+                             F77_CHAR_ARG_LEN_DECL
+                             F77_CHAR_ARG_LEN_DECL
+                             F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
-  F77_FUNC (dlag2, DLAG2) (const double* A, const octave_idx_type& LDA, const double* B,
-			   const octave_idx_type& LDB, const double& SAFMIN,
-			   double& SCALE1, double& SCALE2,
-			   double& WR1, double& WR2, double& WI);
+  F77_FUNC (dlag2, DLAG2) (const double* A, const octave_idx_type& LDA,
+                           const double* B, const octave_idx_type& LDB,
+                           const double& SAFMIN, double& SCALE1,
+                           double& SCALE2, double& WR1, double& WR2,
+                           double& WI);
 
   // Van Dooren's code (netlib.org: toms/590) for reordering
   // GEP.  Only processes Z, not Q.
   F77_RET_T
-  F77_FUNC (dsubsp, DSUBSP) (const octave_idx_type& NMAX, const octave_idx_type& N, double* A,
-			     double* B, double* Z, sort_function,
-			     const double& EPS, octave_idx_type& NDIM, octave_idx_type& FAIL,
-			     octave_idx_type* IND);
+  F77_FUNC (dsubsp, DSUBSP) (const octave_idx_type& NMAX,
+                             const octave_idx_type& N, double* A,
+                             double* B, double* Z, sort_function,
+                             const double& EPS, octave_idx_type& NDIM,
+                             octave_idx_type& FAIL, octave_idx_type* IND);
 
-  // documentation for DTGEVC incorrectly states that VR, VL are
+  // Documentation for DTGEVC incorrectly states that VR, VL are
   // complex*16; they are declared in DTGEVC as double precision
-  // (probably a cut and paste problem fro ZTGEVC)
+  // (probably a cut and paste problem fro ZTGEVC).
   F77_RET_T
   F77_FUNC (dtgevc, DTGEVC) (F77_CONST_CHAR_ARG_DECL,
-			     F77_CONST_CHAR_ARG_DECL,
-			     octave_idx_type* SELECT, const octave_idx_type& N, double* A,
-			     const octave_idx_type& LDA, double* B,
-			     const octave_idx_type& LDB, double* VL,
-			     const octave_idx_type& LDVL, double* VR,
-			     const octave_idx_type& LDVR, const octave_idx_type& MM,
-			     octave_idx_type& M, double* WORK, octave_idx_type& INFO
-			     F77_CHAR_ARG_LEN_DECL
-			     F77_CHAR_ARG_LEN_DECL);
+                             F77_CONST_CHAR_ARG_DECL,
+                             octave_idx_type* SELECT,
+                             const octave_idx_type& N, double* A,
+                             const octave_idx_type& LDA, double* B,
+                             const octave_idx_type& LDB, double* VL,
+                             const octave_idx_type& LDVL, double* VR,
+                             const octave_idx_type& LDVR,
+                             const octave_idx_type& MM, octave_idx_type& M,
+                             double* WORK, octave_idx_type& INFO
+                             F77_CHAR_ARG_LEN_DECL
+                             F77_CHAR_ARG_LEN_DECL);
+
+F77_RET_T
+  F77_FUNC (ztgevc, ZTGEVC) (F77_CONST_CHAR_ARG_DECL,
+                             F77_CONST_CHAR_ARG_DECL,
+                             octave_idx_type* SELECT,
+                             const octave_idx_type& N, const Complex* A,
+                             const octave_idx_type& LDA,const Complex* B,
+                             const octave_idx_type& LDB, Complex* xVL,
+                             const octave_idx_type& LDVL, Complex* xVR,
+                             const octave_idx_type& LDVR,
+                             const octave_idx_type& MM, octave_idx_type& M,
+                             Complex* CWORK, double* RWORK,
+                             octave_idx_type& INFO
+                             F77_CHAR_ARG_LEN_DECL
+                             F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
   F77_FUNC (xdlamch, XDLAMCH) (F77_CONST_CHAR_ARG_DECL,
-			       double& retval
-			       F77_CHAR_ARG_LEN_DECL);
+                               double& retval
+                               F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
   F77_FUNC (xdlange, XDLANGE) (F77_CONST_CHAR_ARG_DECL,
-			       const octave_idx_type&, const octave_idx_type&, const double*,
-			       const octave_idx_type&, double*, double&
-			       F77_CHAR_ARG_LEN_DECL);
+                               const octave_idx_type&,
+                               const octave_idx_type&, const double*,
+                               const octave_idx_type&, double*, double&
+                               F77_CHAR_ARG_LEN_DECL);
 }
 
 // fcrhp, fin, fout, folhp:
@@ -161,7 +244,7 @@ fcrhp (const octave_idx_type& lsize, const double& alpha,
        const double& beta, const double& s, const double&)
 {
   if (lsize == 1)
-    return (alpha*beta >= 0 ? 1 : -1);
+    return (alpha * beta >= 0 ? 1 : -1);
   else
     return (s >= 0 ? 1 : -1);
 }
@@ -189,7 +272,7 @@ folhp (const octave_idx_type& lsize, const double& alpha,
        const double& beta, const double& s, const double&)
 {
   if (lsize == 1)
-    return (alpha*beta < 0 ? 1 : -1);
+    return (alpha * beta < 0 ? 1 : -1);
   else
     return (s < 0 ? 1 : -1);
 }
@@ -206,65 +289,67 @@ fout (const octave_idx_type& lsize, const double& alpha,
 
 DEFUN_DLD (qz, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Loadable Function} {@var{lambda} =} qz (@var{a}, @var{b})\n\
-Generalized eigenvalue problem @math{A x = s B x},\n\
-@var{QZ} decomposition.  There are three ways to call this function:\n\
+@deftypefn  {Loadable Function} {@var{lambda} =} qz (@var{A}, @var{B})\n\
+@deftypefnx {Loadable Function} {@var{lambda} =} qz (@var{A}, @var{B}, @var{opt})\n\
+QZ@tie{}decomposition of the generalized eigenvalue problem\n\
+(@math{A x = s B x}).  There are three ways to call this function:\n\
 @enumerate\n\
-@item @code{lambda = qz(A,B)}\n\
+@item @code{@var{lambda} = qz (@var{A}, @var{B})}\n\
 \n\
 Computes the generalized eigenvalues\n\
-@iftex\n\
 @tex\n\
 $\\lambda$\n\
 @end tex\n\
-@end iftex\n\
 @ifnottex\n\
 @var{lambda}\n\
 @end ifnottex\n\
 of @math{(A - s B)}.\n\
-@item @code{[AA, BB, Q, Z, V, W, lambda] = qz (A, B)}\n\
 \n\
-Computes qz decomposition, generalized eigenvectors, and \n\
-generalized eigenvalues of @math{(A - sB)}\n\
-@iftex\n\
+@item @code{[AA, BB, Q, Z, V, W, @var{lambda}] = qz (@var{A}, @var{B})}\n\
+\n\
+Computes QZ@tie{}decomposition, generalized eigenvectors, and\n\
+generalized eigenvalues of @math{(A - s B)}\n\
 @tex\n\
 $$ AV = BV{ \\rm diag }(\\lambda) $$\n\
 $$ W^T A = { \\rm diag }(\\lambda)W^T B $$\n\
 $$ AA = Q^T AZ, BB = Q^T BZ $$\n\
 @end tex\n\
-@end iftex\n\
 @ifnottex\n\
+\n\
 @example\n\
 @group\n\
 \n\
-    A*V = B*V*diag(lambda)\n\
-    W'*A = diag(lambda)*W'*B\n\
-    AA = Q'*A*Z, BB = Q'*B*Z\n\
+    A * V = B * V * diag (@var{lambda})\n\
+    W' * A = diag (@var{lambda}) * W' * B\n\
+    AA = Q * A * Z, BB = Q * B * Z\n\
 \n\
 @end group\n\
 @end example\n\
+\n\
 @end ifnottex\n\
 with @var{Q} and @var{Z} orthogonal (unitary)= @var{I}\n\
 \n\
-@item @code{[AA,BB,Z@{, lambda@}] = qz(A,B,opt)}\n\
+@item @code{[AA,BB,Z@{, @var{lambda}@}] = qz (@var{A}, @var{B}, @var{opt})}\n\
 \n\
 As in form [2], but allows ordering of generalized eigenpairs\n\
 for (e.g.) solution of discrete time algebraic Riccati equations.\n\
 Form 3 is not available for complex matrices, and does not compute\n\
-the generalized eigenvectors @var{V}, @var{W}, nor the orthogonal matrix @var{Q}.\n\
+the generalized eigenvectors @var{V}, @var{W}, nor the orthogonal matrix\n\
+@var{Q}.\n\
+\n\
 @table @var\n\
 @item opt\n\
 for ordering eigenvalues of the GEP pencil.  The leading block\n\
 of the revised pencil contains all eigenvalues that satisfy:\n\
-@table @code\n\
+@table @asis\n\
 @item \"N\"\n\
-= unordered (default) \n\
+= unordered (default)\n\
 \n\
 @item \"S\"\n\
-= small: leading block has all |lambda| <=1 \n\
+= small: leading block has all |lambda| @leq{} 1\n\
 \n\
 @item \"B\"\n\
-= big: leading block has all |lambda| >= 1 \n\
+= big: leading block has all |lambda| @geq{} 1\n\
 \n\
 @item \"-\"\n\
 = negative real part: leading block has all eigenvalues\n\
@@ -277,9 +362,9 @@ in the closed right half-plane\n\
 @end table\n\
 @end enumerate\n\
 \n\
-Note: qz performs permutation balancing, but not scaling (see balance).\n\
-Order of output arguments was selected for compatibility with @sc{matlab}\n\
-\n\
+Note: @code{qz} performs permutation balancing, but not scaling\n\
+(@pxref{doc-balance}).  The order of output arguments was selected for\n\
+compatibility with @sc{matlab}.\n\
 @seealso{balance, eig, schur}\n\
 @end deftypefn")
 {
@@ -305,7 +390,7 @@ Order of output arguments was selected for compatibility with @sc{matlab}\n\
   std::cout << "qz: determine ordering option" << std::endl;
 #endif
 
-  // Determine ordering option
+  // Determine ordering option.
   volatile char ord_job = 0;
   static double safmin;
 
@@ -313,7 +398,7 @@ Order of output arguments was selected for compatibility with @sc{matlab}\n\
     ord_job = 'N';
   else if (!args(2).is_string ())
     {
-      error ("qz: argument 3 must be a string");
+      error ("qz: OPT must be a string");
       return retval;
     }
   else
@@ -321,51 +406,51 @@ Order of output arguments was selected for compatibility with @sc{matlab}\n\
       std::string tmp = args(2).string_value ();
 
       if (! tmp.empty ())
-	ord_job = tmp[0];
+        ord_job = tmp[0];
 
       if (! (ord_job == 'N' || ord_job == 'n'
-	     || ord_job == 'S' || ord_job == 's'
-	     || ord_job == 'B' || ord_job == 'b'
-	     || ord_job == '+' || ord_job == '-'))
-	{
-	  error ("qz: invalid order option");
-	  return retval;
-	}
+             || ord_job == 'S' || ord_job == 's'
+             || ord_job == 'B' || ord_job == 'b'
+             || ord_job == '+' || ord_job == '-'))
+        {
+          error ("qz: invalid order option");
+          return retval;
+        }
 
       // overflow constant required by dlag2
       F77_FUNC (xdlamch, XDLAMCH) (F77_CONST_CHAR_ARG2 ("S", 1),
-				   safmin
-				   F77_CHAR_ARG_LEN (1));
+                                   safmin
+                                   F77_CHAR_ARG_LEN (1));
 
 #ifdef DEBUG_EIG
       std::cout << "qz: initial value of safmin=" << setiosflags (std::ios::scientific)
-	   << safmin << std::endl;
+           << safmin << std::endl;
 #endif
 
-      // some machines (e.g., DEC alpha) get safmin = 0;
-      // for these, use eps instead to avoid problems in dlag2
+      // Some machines (e.g., DEC alpha) get safmin = 0;
+      // for these, use eps instead to avoid problems in dlag2.
       if (safmin == 0)
-	{
+        {
 #ifdef DEBUG_EIG
-	  std::cout << "qz: DANGER WILL ROBINSON: safmin is 0!" << std::endl;
+          std::cout << "qz: DANGER WILL ROBINSON: safmin is 0!" << std::endl;
 #endif
 
-	  F77_FUNC (xdlamch, XDLAMCH) (F77_CONST_CHAR_ARG2 ("E", 1),
-				       safmin
-				       F77_CHAR_ARG_LEN (1));
+          F77_FUNC (xdlamch, XDLAMCH) (F77_CONST_CHAR_ARG2 ("E", 1),
+                                       safmin
+                                       F77_CHAR_ARG_LEN (1));
 
 #ifdef DEBUG_EIG
-	  std::cout << "qz: safmin set to " << setiosflags (std::ios::scientific)
-	       << safmin << std::endl;
+          std::cout << "qz: safmin set to " << setiosflags (std::ios::scientific)
+               << safmin << std::endl;
 #endif
-	}
+        }
     }
 
 #ifdef DEBUG
   std::cout << "qz: check argument 1" << std::endl;
 #endif
 
-  // Argument 1: check if it's o.k. dimensioned
+  // Argument 1: check if it's o.k. dimensioned.
   octave_idx_type nn = args(0).rows ();
 
 #ifdef DEBUG
@@ -391,7 +476,7 @@ Order of output arguments was selected for compatibility with @sc{matlab}\n\
       return retval;
     }
 
-  // Argument 1: dimensions look good; get the value
+  // Argument 1: dimensions look good; get the value.
   Matrix aa;
   ComplexMatrix caa;
 
@@ -407,7 +492,7 @@ Order of output arguments was selected for compatibility with @sc{matlab}\n\
   std::cout << "qz: check argument 2" << std::endl;
 #endif
 
-  // Extract argument 2 (bb, or cbb if complex)
+  // Extract argument 2 (bb, or cbb if complex).
   if ((nn != args(1).columns ()) || (nn != args(1).rows ()))
     {
       gripe_nonconformant ();
@@ -426,76 +511,97 @@ Order of output arguments was selected for compatibility with @sc{matlab}\n\
     return retval;
 
   // Both matrices loaded, now let's check what kind of arithmetic:
-  //declared static to avoid compiler warnings about long jumps, vforks.
+  // declared volatile to avoid compiler warnings about long jumps,
+  // vforks.
 
-  static int complex_case
+  volatile int complex_case
     = (args(0).is_complex_type () || args(1).is_complex_type ());
 
   if (nargin == 3 && complex_case)
     {
-      error ("qz: cannot re-order complex qz decomposition.");
+      error ("qz: cannot re-order complex qz decomposition");
       return retval;
     }
 
-  // first, declare variables used in both the real and complex case
+  // First, declare variables used in both the real and complex case.
   Matrix QQ(nn,nn), ZZ(nn,nn), VR(nn,nn), VL(nn,nn);
   RowVector alphar(nn), alphai(nn), betar(nn);
-
+  ComplexRowVector xalpha(nn), xbeta(nn);
   ComplexMatrix CQ(nn,nn), CZ(nn,nn), CVR(nn,nn), CVL(nn,nn);
   octave_idx_type ilo, ihi, info;
   char compq = (nargout >= 3 ? 'V' : 'N');
   char compz = (nargout >= 4 ? 'V' : 'N');
 
-  // initialize Q, Z to identity if we need either of them
+  // Initialize Q, Z to identity if we need either of them.
   if (compq == 'V' || compz == 'V')
     for (octave_idx_type ii = 0; ii < nn; ii++)
       for (octave_idx_type jj = 0; jj < nn; jj++)
-	{
-	  OCTAVE_QUIT;
-	  QQ(ii,jj) = ZZ(ii,jj) = (ii == jj ? 1.0 : 0.0);
-	}
+        {
+          OCTAVE_QUIT;
+          QQ(ii,jj) = ZZ(ii,jj) = (ii == jj ? 1.0 : 0.0);
+        }
 
-  // always perform permutation balancing
+  // Always perform permutation balancing.
   const char bal_job = 'P';
-  RowVector lscale(nn), rscale(nn), work(6*nn);
+  RowVector lscale (nn), rscale (nn), work (6 * nn), rwork (nn);
 
   if (complex_case)
     {
-      error ("Complex case not implemented yet");
-      return retval;
+#ifdef DEBUG
+      if (compq == 'V')
+        std::cout << "qz: performing balancing; CQ=" << std::endl << CQ << std::endl;
+#endif
+      if (args(0).is_real_type ())
+        caa = ComplexMatrix (aa);
+
+      if (args(1).is_real_type ())
+        cbb = ComplexMatrix (bb);
+
+      if (compq == 'V')
+        CQ = ComplexMatrix (QQ);
+
+      if (compz == 'V')
+        CZ = ComplexMatrix (ZZ);
+
+      F77_XFCN (zggbal, ZGGBAL,
+                (F77_CONST_CHAR_ARG2 (&bal_job, 1),
+                 nn, caa.fortran_vec (), nn, cbb.fortran_vec (),
+                 nn, ilo, ihi, lscale.fortran_vec (),
+                 rscale.fortran_vec (), work.fortran_vec (), info
+                 F77_CHAR_ARG_LEN (1)));
     }
   else
     {
 #ifdef DEBUG
       if (compq == 'V')
-	std::cout << "qz: performing balancing; QQ=" << std::endl << QQ << std::endl;
+        std::cout << "qz: performing balancing; QQ=" << std::endl << QQ << std::endl;
 #endif
 
       F77_XFCN (dggbal, DGGBAL,
-		(F77_CONST_CHAR_ARG2 (&bal_job, 1),
-		 nn, aa.fortran_vec (), nn, bb.fortran_vec (),
-		 nn, ilo, ihi, lscale.fortran_vec (),
-		 rscale.fortran_vec (), work.fortran_vec (), info
-		 F77_CHAR_ARG_LEN (1)));
+                (F77_CONST_CHAR_ARG2 (&bal_job, 1),
+                 nn, aa.fortran_vec (), nn, bb.fortran_vec (),
+                 nn, ilo, ihi, lscale.fortran_vec (),
+                 rscale.fortran_vec (), work.fortran_vec (), info
+                 F77_CHAR_ARG_LEN (1)));
     }
 
   // Since we just want the balancing matrices, we can use dggbal
-  // for both the real and complex cases;
-  // left first
+  // for both the real and complex cases; left first
 
+#if 0
   if (compq == 'V')
     {
       F77_XFCN (dggbak, DGGBAK,
-		(F77_CONST_CHAR_ARG2 (&bal_job, 1),
-		 F77_CONST_CHAR_ARG2 ("L", 1),
-		 nn, ilo, ihi, lscale.data (), rscale.data (),
-		 nn, QQ.fortran_vec (), nn, info
-		 F77_CHAR_ARG_LEN (1)
-		 F77_CHAR_ARG_LEN (1)));
+                (F77_CONST_CHAR_ARG2 (&bal_job, 1),
+                 F77_CONST_CHAR_ARG2 ("L", 1),
+                 nn, ilo, ihi, lscale.data (), rscale.data (),
+                 nn, QQ.fortran_vec (), nn, info
+                 F77_CHAR_ARG_LEN (1)
+                 F77_CHAR_ARG_LEN (1)));
 
 #ifdef DEBUG
       if (compq == 'V')
-	std::cout << "qz: balancing done; QQ=" << std::endl << QQ << std::endl;
+        std::cout << "qz: balancing done; QQ=" << std::endl << QQ << std::endl;
 #endif
   }
 
@@ -503,47 +609,93 @@ Order of output arguments was selected for compatibility with @sc{matlab}\n\
   if (compz == 'V')
     {
       F77_XFCN (dggbak, DGGBAK,
-		(F77_CONST_CHAR_ARG2 (&bal_job, 1),
-		 F77_CONST_CHAR_ARG2 ("R", 1),
-		 nn, ilo, ihi, lscale.data (), rscale.data (),
-		 nn, ZZ.fortran_vec (), nn, info
-		 F77_CHAR_ARG_LEN (1)
-		 F77_CHAR_ARG_LEN (1)));
+                (F77_CONST_CHAR_ARG2 (&bal_job, 1),
+                 F77_CONST_CHAR_ARG2 ("R", 1),
+                 nn, ilo, ihi, lscale.data (), rscale.data (),
+                 nn, ZZ.fortran_vec (), nn, info
+                 F77_CHAR_ARG_LEN (1)
+                 F77_CHAR_ARG_LEN (1)));
 
 #ifdef DEBUG
       if (compz == 'V')
-	std::cout << "qz: balancing done; ZZ=" << std::endl << ZZ << std::endl;
+        std::cout << "qz: balancing done; ZZ=" << std::endl << ZZ << std::endl;
 #endif
     }
+#endif
 
   static char qz_job;
-  qz_job = (nargout < 2 ? 'E' : 'S');	
+  qz_job = (nargout < 2 ? 'E' : 'S');
 
   if (complex_case)
     {
-      // complex case
-      if (args(0).is_real_type ())
-	caa = ComplexMatrix (aa);
+      // Complex case.
 
-      if (args(1).is_real_type ())
-	cbb = ComplexMatrix (bb);
+      // The QR decomposition of cbb.
+      ComplexQR cbqr (cbb);
+      // The R matrix of QR decomposition for cbb.
+      cbb = cbqr.R ();
+      // (Q*)caa for following work.
+      caa = (cbqr.Q ().hermitian ()) * caa;
+      CQ = CQ * cbqr.Q ();
+
+      F77_XFCN (zgghrd, ZGGHRD,
+                (F77_CONST_CHAR_ARG2 (&compq, 1),
+                 F77_CONST_CHAR_ARG2 (&compz, 1),
+                 nn, ilo, ihi, caa.fortran_vec (),
+                 nn, cbb.fortran_vec (), nn, CQ.fortran_vec (), nn,
+                 CZ.fortran_vec (), nn, info
+                 F77_CHAR_ARG_LEN (1)
+                 F77_CHAR_ARG_LEN (1)));
+
+      ComplexRowVector cwork (1 * nn);
+
+      F77_XFCN (zhgeqz, ZHGEQZ,
+                (F77_CONST_CHAR_ARG2 (&qz_job, 1),
+                 F77_CONST_CHAR_ARG2 (&compq, 1),
+                 F77_CONST_CHAR_ARG2 (&compz, 1),
+                 nn, ilo, ihi,
+                 caa.fortran_vec (), nn,
+                 cbb.fortran_vec (),nn,
+                 xalpha.fortran_vec (), xbeta.fortran_vec (),
+                 CQ.fortran_vec (), nn,
+                 CZ.fortran_vec (), nn,
+                 cwork.fortran_vec (), nn, rwork.fortran_vec (), info
+                 F77_CHAR_ARG_LEN (1)
+                 F77_CHAR_ARG_LEN (1)
+                 F77_CHAR_ARG_LEN (1)));
 
       if (compq == 'V')
-	CQ = ComplexMatrix (QQ);
+        {
+          // Left eigenvector.
+          F77_XFCN (zggbak, ZGGBAK,
+                    (F77_CONST_CHAR_ARG2 (&bal_job, 1),
+                     F77_CONST_CHAR_ARG2 ("L", 1),
+                     nn, ilo, ihi, lscale.data (), rscale.data (),
+                     nn, CQ.fortran_vec (), nn, info
+                     F77_CHAR_ARG_LEN (1)
+                     F77_CHAR_ARG_LEN (1)));
+        }
 
+      // Right eigenvector.
       if (compz == 'V')
-	CZ = ComplexMatrix (ZZ);
+        {
+          F77_XFCN (zggbak, ZGGBAK,
+                    (F77_CONST_CHAR_ARG2 (&bal_job, 1),
+                     F77_CONST_CHAR_ARG2 ("R", 1),
+                     nn, ilo, ihi, lscale.data (), rscale.data (),
+                     nn, CZ.fortran_vec (), nn, info
+                     F77_CHAR_ARG_LEN (1)
+                     F77_CHAR_ARG_LEN (1)));
+        }
 
-      error ("complex case not done yet");
-      return retval;
     }
-  else  	// real matrices case
+  else
     {
 #ifdef DEBUG
       std::cout << "qz: peforming qr decomposition of bb" << std::endl;
 #endif
 
-      // compute the QR factorization of bb
+      // Compute the QR factorization of bb.
       QR bqr (bb);
 
 #ifdef DEBUG
@@ -556,18 +708,18 @@ Order of output arguments was selected for compatibility with @sc{matlab}\n\
       std::cout << "qz: extracted bb" << std::endl;
 #endif
 
-      aa = (bqr.Q ()).transpose ()*aa;
+      aa = (bqr.Q ()).transpose () * aa;
 
 #ifdef DEBUG
       std::cout << "qz: updated aa " << std::endl;
       std::cout << "bqr.Q () = " << std::endl << bqr.Q () << std::endl;
 
       if (compq == 'V')
-	std::cout << "QQ =" << QQ << std::endl;
+        std::cout << "QQ =" << QQ << std::endl;
 #endif
 
       if (compq == 'V')
-	QQ = QQ*bqr.Q ();
+        QQ = QQ * bqr.Q ();
 
 #ifdef DEBUG
       std::cout << "qz: precursors done..." << std::endl;
@@ -577,355 +729,420 @@ Order of output arguments was selected for compatibility with @sc{matlab}\n\
       std::cout << "qz: compq = " << compq << ", compz = " << compz << std::endl;
 #endif
 
-      // reduce  to generalized hessenberg form
+      // Reduce  to generalized hessenberg form.
       F77_XFCN (dgghrd, DGGHRD,
-		(F77_CONST_CHAR_ARG2 (&compq, 1),
-		 F77_CONST_CHAR_ARG2 (&compz, 1),
-		 nn, ilo, ihi, aa.fortran_vec (),
-		 nn, bb.fortran_vec (), nn, QQ.fortran_vec (), nn,
-		 ZZ.fortran_vec (), nn, info
-		 F77_CHAR_ARG_LEN (1)
-		 F77_CHAR_ARG_LEN (1)));
+                (F77_CONST_CHAR_ARG2 (&compq, 1),
+                 F77_CONST_CHAR_ARG2 (&compz, 1),
+                 nn, ilo, ihi, aa.fortran_vec (),
+                 nn, bb.fortran_vec (), nn, QQ.fortran_vec (), nn,
+                 ZZ.fortran_vec (), nn, info
+                 F77_CHAR_ARG_LEN (1)
+                 F77_CHAR_ARG_LEN (1)));
 
-      // check if just computing generalized eigenvalues or if we're
-      // actually computing the decomposition
+      // Check if just computing generalized eigenvalues or if we're
+      // actually computing the decomposition.
 
-      // reduce to generalized Schur form
+      // Reduce to generalized Schur form.
       F77_XFCN (dhgeqz, DHGEQZ,
-		(F77_CONST_CHAR_ARG2 (&qz_job, 1),
-		 F77_CONST_CHAR_ARG2 (&compq, 1),
-		 F77_CONST_CHAR_ARG2 (&compz, 1),
-		 nn, ilo, ihi, aa.fortran_vec (), nn, bb.fortran_vec (),
-		 nn, alphar.fortran_vec (), alphai.fortran_vec (),
-		 betar.fortran_vec (), QQ.fortran_vec (), nn,
-		 ZZ.fortran_vec (), nn, work.fortran_vec (), nn, info
-		 F77_CHAR_ARG_LEN (1)
-		 F77_CHAR_ARG_LEN (1)
-		 F77_CHAR_ARG_LEN (1)));
+                (F77_CONST_CHAR_ARG2 (&qz_job, 1),
+                 F77_CONST_CHAR_ARG2 (&compq, 1),
+                 F77_CONST_CHAR_ARG2 (&compz, 1),
+                 nn, ilo, ihi, aa.fortran_vec (), nn, bb.fortran_vec (),
+                 nn, alphar.fortran_vec (), alphai.fortran_vec (),
+                 betar.fortran_vec (), QQ.fortran_vec (), nn,
+                 ZZ.fortran_vec (), nn, work.fortran_vec (), nn, info
+                 F77_CHAR_ARG_LEN (1)
+                 F77_CHAR_ARG_LEN (1)
+                 F77_CHAR_ARG_LEN (1)));
+
+      if (compq == 'V')
+        {
+          F77_XFCN (dggbak, DGGBAK,
+                    (F77_CONST_CHAR_ARG2 (&bal_job, 1),
+                     F77_CONST_CHAR_ARG2 ("L", 1),
+                     nn, ilo, ihi, lscale.data (), rscale.data (),
+                     nn, QQ.fortran_vec (), nn, info
+                     F77_CHAR_ARG_LEN (1)
+                     F77_CHAR_ARG_LEN (1)));
+
+#ifdef DEBUG
+          if (compq == 'V')
+            std::cout << "qz: balancing done; QQ=" << std::endl << QQ << std::endl;
+#endif
+        }
+
+  // then right
+      if (compz == 'V')
+        {
+           F77_XFCN (dggbak, DGGBAK,
+                     (F77_CONST_CHAR_ARG2 (&bal_job, 1),
+                      F77_CONST_CHAR_ARG2 ("R", 1),
+                      nn, ilo, ihi, lscale.data (), rscale.data (),
+                      nn, ZZ.fortran_vec (), nn, info
+                      F77_CHAR_ARG_LEN (1)
+                      F77_CHAR_ARG_LEN (1)));
+
+#ifdef DEBUG
+           if (compz == 'V')
+             std::cout << "qz: balancing done; ZZ=" << std::endl << ZZ << std::endl;
+#endif
+        }
+
     }
 
-  // order the QZ decomposition?
+  // Order the QZ decomposition?
   if (! (ord_job == 'N' || ord_job == 'n'))
     {
       if (complex_case)
-	{
-	  // probably not needed, but better be safe
-	  error ("qz: cannot re-order complex qz decomposition.");
-	  return retval;
-	}
+        {
+          // Probably not needed, but better be safe.
+          error ("qz: cannot re-order complex qz decomposition");
+          return retval;
+        }
       else
-	{
+        {
 #ifdef DEBUG_SORT
-	  std::cout << "qz: ordering eigenvalues: ord_job = "
-		    << ord_job << std::endl;
+          std::cout << "qz: ordering eigenvalues: ord_job = "
+                    << ord_job << std::endl;
 #endif
 
-	  // declared static to avoid vfork/long jump compiler complaints
-	  static sort_function sort_test;
-	  sort_test = 0;
+          // Declared static to avoid vfork/long jump compiler complaints.
+          static sort_function sort_test;
+          sort_test = 0;
 
-	  switch (ord_job)
-	    {
-	    case 'S':
-	    case 's':
-	      sort_test = &fin;
-	      break;
+          switch (ord_job)
+            {
+            case 'S':
+            case 's':
+              sort_test = &fin;
+              break;
 
-	    case 'B':
-	    case 'b':
-	      sort_test = &fout;
-	      break;
+            case 'B':
+            case 'b':
+              sort_test = &fout;
+              break;
 
-	    case '+':
-	      sort_test = &fcrhp;
-	      break;
+            case '+':
+              sort_test = &fcrhp;
+              break;
 
-	    case '-':
-	      sort_test = &folhp;
-	      break;
+            case '-':
+              sort_test = &folhp;
+              break;
 
-	    default:
-	      // invalid order option (should never happen, since we
-	      // checked the options at the top).
-	      panic_impossible ();
-	      break;
-	    }
+            default:
+              // Invalid order option (should never happen, since we
+              // checked the options at the top).
+              panic_impossible ();
+              break;
+            }
 
-	  octave_idx_type ndim, fail;
-	  double inf_norm;
+          octave_idx_type ndim, fail;
+          double inf_norm;
 
-	  F77_XFCN (xdlange, XDLANGE,
-		    (F77_CONST_CHAR_ARG2 ("I", 1),
-		     nn, nn, aa.data (), nn, work.fortran_vec (), inf_norm
-		     F77_CHAR_ARG_LEN (1)));
+          F77_XFCN (xdlange, XDLANGE,
+                    (F77_CONST_CHAR_ARG2 ("I", 1),
+                     nn, nn, aa.data (), nn, work.fortran_vec (), inf_norm
+                     F77_CHAR_ARG_LEN (1)));
 
-	  double eps = DBL_EPSILON*inf_norm*nn;
+          double eps = DBL_EPSILON * inf_norm * nn;
 
 #ifdef DEBUG_SORT
-	  std::cout << "qz: calling dsubsp: aa=" << std::endl;
-	  octave_print_internal (std::cout, aa, 0);
-	  std::cout << std::endl << "bb="  << std::endl;
-	  octave_print_internal (std::cout, bb, 0);
-	  if (compz == 'V')
-	    {
-	      std::cout << std::endl << "ZZ="  << std::endl;
-	      octave_print_internal (std::cout, ZZ, 0);
-	    }
-	  std::cout << std::endl;
-	  std::cout << "alphar = " << std::endl;
-	  octave_print_internal (std::cout, (Matrix) alphar, 0);
-	  std::cout << std::endl << "alphai = " << std::endl;
-	  octave_print_internal (std::cout, (Matrix) alphai, 0);
-	  std::cout << std::endl << "beta = " << std::endl;
-	  octave_print_internal (std::cout, (Matrix) betar, 0);
-	  std::cout << std::endl;
+          std::cout << "qz: calling dsubsp: aa=" << std::endl;
+          octave_print_internal (std::cout, aa, 0);
+          std::cout << std::endl << "bb="  << std::endl;
+          octave_print_internal (std::cout, bb, 0);
+          if (compz == 'V')
+            {
+              std::cout << std::endl << "ZZ="  << std::endl;
+              octave_print_internal (std::cout, ZZ, 0);
+            }
+          std::cout << std::endl;
+          std::cout << "alphar = " << std::endl;
+          octave_print_internal (std::cout, (Matrix) alphar, 0);
+          std::cout << std::endl << "alphai = " << std::endl;
+          octave_print_internal (std::cout, (Matrix) alphai, 0);
+          std::cout << std::endl << "beta = " << std::endl;
+          octave_print_internal (std::cout, (Matrix) betar, 0);
+          std::cout << std::endl;
 #endif
 
-	  Array<octave_idx_type> ind (nn);
+          Array<octave_idx_type> ind (dim_vector (nn, 1));
 
-	  F77_XFCN (dsubsp, DSUBSP,
-		    (nn, nn, aa.fortran_vec (), bb.fortran_vec (),
-		     ZZ.fortran_vec (), sort_test, eps, ndim, fail,
-		     ind.fortran_vec ()));
+          F77_XFCN (dsubsp, DSUBSP,
+                    (nn, nn, aa.fortran_vec (), bb.fortran_vec (),
+                     ZZ.fortran_vec (), sort_test, eps, ndim, fail,
+                     ind.fortran_vec ()));
 
 #ifdef DEBUG
-	  std::cout << "qz: back from dsubsp: aa=" << std::endl;
-	  octave_print_internal (std::cout, aa, 0);
-	  std::cout << std::endl << "bb="  << std::endl;
-	  octave_print_internal (std::cout, bb, 0);
-	  if (compz == 'V')
-	    {
-	      std::cout << std::endl << "ZZ="  << std::endl;
-	      octave_print_internal (std::cout, ZZ, 0);
-	    }
-	  std::cout << std::endl;
+          std::cout << "qz: back from dsubsp: aa=" << std::endl;
+          octave_print_internal (std::cout, aa, 0);
+          std::cout << std::endl << "bb="  << std::endl;
+          octave_print_internal (std::cout, bb, 0);
+          if (compz == 'V')
+            {
+              std::cout << std::endl << "ZZ="  << std::endl;
+              octave_print_internal (std::cout, ZZ, 0);
+            }
+          std::cout << std::endl;
 #endif
 
-	  // manually update alphar, alphai, betar
-	  static int jj;
+          // Manually update alphar, alphai, betar.
+          static int jj;
 
-	  jj=0;
-	  while (jj < nn)
-	    {
+          jj = 0;
+          while (jj < nn)
+            {
 #ifdef DEBUG_EIG
-	      std::cout << "computing gen eig #" << jj << std::endl;
+              std::cout << "computing gen eig #" << jj << std::endl;
 #endif
 
-	      static int zcnt;	// number of zeros in this block
+              // Number of zeros in this block.
+              static int zcnt;
 
-	      if (jj == (nn-1))
-		zcnt = 1;
-	      else if (aa(jj+1,jj) == 0)
-		zcnt = 1;
-	      else zcnt = 2;
+              if (jj == (nn-1))
+                zcnt = 1;
+              else if (aa(jj+1,jj) == 0)
+                zcnt = 1;
+              else zcnt = 2;
 
-	      if (zcnt == 1)  // real zero
-		{
+              if (zcnt == 1)
+                {
+                  // Real zero.
 #ifdef DEBUG_EIG
-		  std::cout << "  single gen eig:" << std::endl;
-		  std::cout << "  alphar(" << jj << ") = " << aa(jj,jj) << std::endl;
-		  std::cout << "  betar( " << jj << ") = " << bb(jj,jj) << std::endl;
-		  std::cout << "  alphai(" << jj << ") = 0" << std::endl;
+                  std::cout << "  single gen eig:" << std::endl;
+                  std::cout << "  alphar(" << jj << ") = " << aa(jj,jj) << std::endl;
+                  std::cout << "  betar( " << jj << ") = " << bb(jj,jj) << std::endl;
+                  std::cout << "  alphai(" << jj << ") = 0" << std::endl;
 #endif
 
-		  alphar(jj) = aa(jj,jj);
-		  alphai(jj) = 0;
-		  betar(jj) = bb(jj,jj);
-		}
-	      else
-		{
-		  // complex conjugate pair
+                  alphar(jj) = aa(jj,jj);
+                  alphai(jj) = 0;
+                  betar(jj) = bb(jj,jj);
+                }
+              else
+                {
+                  // Complex conjugate pair.
 #ifdef DEBUG_EIG
-		  std::cout << "qz: calling dlag2:" << std::endl;
-		  std::cout << "safmin="
-		       << setiosflags (std::ios::scientific) << safmin << std::endl;
+                  std::cout << "qz: calling dlag2:" << std::endl;
+                  std::cout << "safmin="
+                       << setiosflags (std::ios::scientific) << safmin << std::endl;
 
-		  for (int idr = jj; idr <= jj+1; idr++)
-		    {
-		      for (int idc = jj; idc <= jj+1; idc++)
-			{
-			  std::cout << "aa(" << idr << "," << idc << ")="
-			       << aa(idr,idc) << std::endl;
-			  std::cout << "bb(" << idr << "," << idc << ")="
-			       << bb(idr,idc) << std::endl;
-			}
-		    }
+                  for (int idr = jj; idr <= jj+1; idr++)
+                    {
+                      for (int idc = jj; idc <= jj+1; idc++)
+                        {
+                          std::cout << "aa(" << idr << "," << idc << ")="
+                               << aa(idr,idc) << std::endl;
+                          std::cout << "bb(" << idr << "," << idc << ")="
+                               << bb(idr,idc) << std::endl;
+                        }
+                    }
 #endif
 
-		  // FIXME -- probably should be using
-		  // fortran_vec instead of &aa(jj,jj) here.
+                  // FIXME -- probably should be using
+                  // fortran_vec instead of &aa(jj,jj) here.
 
-		  double scale1, scale2, wr1, wr2, wi;
-		  const double *aa_ptr = aa.data () + jj*nn+jj;
-		  const double *bb_ptr = bb.data () + jj*nn+jj;
-		  F77_XFCN (dlag2, DLAG2,
-			    (aa_ptr, nn, bb_ptr, nn, safmin,
-			     scale1, scale2, wr1, wr2, wi));
+                  double scale1, scale2, wr1, wr2, wi;
+                  const double *aa_ptr = aa.data () + jj * nn + jj;
+                  const double *bb_ptr = bb.data () + jj * nn + jj;
+                  F77_XFCN (dlag2, DLAG2,
+                            (aa_ptr, nn, bb_ptr, nn, safmin,
+                             scale1, scale2, wr1, wr2, wi));
 
 #ifdef DEBUG_EIG
-		  std::cout << "dlag2 returns: scale1=" << scale1
-		       << "\tscale2=" << scale2 << std::endl
-		       << "\twr1=" << wr1 << "\twr2=" << wr2
-		       << "\twi=" << wi << std::endl;
+                  std::cout << "dlag2 returns: scale1=" << scale1
+                       << "\tscale2=" << scale2 << std::endl
+                       << "\twr1=" << wr1 << "\twr2=" << wr2
+                       << "\twi=" << wi << std::endl;
 #endif
 
-		  // just to be safe, check if it's a real pair
-		  if (wi == 0)
-		    {
-		      alphar(jj) = wr1;
-		      alphai(jj) = 0;
-		      betar(jj) = scale1;
-		      alphar(jj+1) = wr2;
-		      alphai(jj+1) = 0;
-		      betar(jj+1) = scale2;
-		    }
-		  else
-		    {
-		      alphar(jj) = alphar(jj+1)=wr1;
-		      alphai(jj) = -(alphai(jj+1) = wi);
-		      betar(jj)  = betar(jj+1) = scale1;
-		    }
-		}
+                  // Just to be safe, check if it's a real pair.
+                  if (wi == 0)
+                    {
+                      alphar(jj) = wr1;
+                      alphai(jj) = 0;
+                      betar(jj) = scale1;
+                      alphar(jj+1) = wr2;
+                      alphai(jj+1) = 0;
+                      betar(jj+1) = scale2;
+                    }
+                  else
+                    {
+                      alphar(jj) = alphar(jj+1) = wr1;
+                      alphai(jj) = -(alphai(jj+1) = wi);
+                      betar(jj)  = betar(jj+1) = scale1;
+                    }
+                }
 
-	      // advance past this block
-	      jj += zcnt;
-	    }
+              // Advance past this block.
+              jj += zcnt;
+            }
 
 #ifdef DEBUG_SORT
-	  std::cout << "qz: back from dsubsp: aa=" << std::endl;
-	  octave_print_internal (std::cout, aa, 0);
-	  std::cout << std::endl << "bb="  << std::endl;
-	  octave_print_internal (std::cout, bb, 0);
+          std::cout << "qz: back from dsubsp: aa=" << std::endl;
+          octave_print_internal (std::cout, aa, 0);
+          std::cout << std::endl << "bb="  << std::endl;
+          octave_print_internal (std::cout, bb, 0);
 
-	  if (compz == 'V')
-	    {
-	      std::cout << std::endl << "ZZ="  << std::endl;
-	      octave_print_internal (std::cout, ZZ, 0);
-	    }
-	  std::cout << std::endl << "qz: ndim=" << ndim << std::endl
-	       << "fail=" << fail << std::endl;
-	  std::cout << "alphar = " << std::endl;
-	  octave_print_internal (std::cout, (Matrix) alphar, 0);
-	  std::cout << std::endl << "alphai = " << std::endl;
-	  octave_print_internal (std::cout, (Matrix) alphai, 0);
-	  std::cout << std::endl << "beta = " << std::endl;
-	  octave_print_internal (std::cout, (Matrix) betar, 0);
-	  std::cout << std::endl;
+          if (compz == 'V')
+            {
+              std::cout << std::endl << "ZZ="  << std::endl;
+              octave_print_internal (std::cout, ZZ, 0);
+            }
+          std::cout << std::endl << "qz: ndim=" << ndim << std::endl
+               << "fail=" << fail << std::endl;
+          std::cout << "alphar = " << std::endl;
+          octave_print_internal (std::cout, (Matrix) alphar, 0);
+          std::cout << std::endl << "alphai = " << std::endl;
+          octave_print_internal (std::cout, (Matrix) alphai, 0);
+          std::cout << std::endl << "beta = " << std::endl;
+          octave_print_internal (std::cout, (Matrix) betar, 0);
+          std::cout << std::endl;
 #endif
-	}
+        }
     }
 
-  // compute  generalized eigenvalues?
+  // Compute generalized eigenvalues?
   ComplexColumnVector gev;
 
   if (nargout < 2 || nargout == 7 || (nargin == 3 && nargout == 4))
     {
       if (complex_case)
-	{
-	  error ("complex case not yet implemented");
-	  return retval;
-	}
+        {
+          int cnt = 0;
+
+          for (int ii = 0; ii < nn; ii++)
+            cnt++;
+
+          ComplexColumnVector tmp (cnt);
+
+          cnt = 0;
+          for (int ii = 0; ii < nn; ii++)
+            tmp(cnt++) = xalpha(ii) / xbeta(ii);
+
+          gev = tmp;
+        }
       else
-	{
+        {
 #ifdef DEBUG
-	  std::cout << "qz: computing generalized eigenvalues" << std::endl;
+          std::cout << "qz: computing generalized eigenvalues" << std::endl;
 #endif
 
-	  // return finite generalized eigenvalues
-	  int cnt = 0;
+          // Return finite generalized eigenvalues.
+          int cnt = 0;
 
-	  for (int ii = 0; ii < nn; ii++)
-	    if (betar(ii) != 0)
-	      cnt++;
+          for (int ii = 0; ii < nn; ii++)
+            if (betar(ii) != 0)
+              cnt++;
 
-	  ComplexColumnVector tmp(cnt);
+          ComplexColumnVector tmp (cnt);
 
-	  cnt = 0;
-	  for (int ii = 0; ii < nn; ii++)
-	    if (betar(ii) != 0)
-	      tmp(cnt++) = Complex(alphar(ii), alphai(ii))/betar(ii);
-	  gev = tmp;
-	}
+          cnt = 0;
+          for (int ii = 0; ii < nn; ii++)
+            if (betar(ii) != 0)
+              tmp(cnt++) = Complex(alphar(ii), alphai(ii))/betar(ii);
+
+          gev = tmp;
+        }
     }
 
-  // right, left eigenvector matrices
+  // Right, left eigenvector matrices.
   if (nargout >= 5)
     {
-      char side = (nargout == 5 ? 'R' : 'B');	// which side to compute?
-      char howmny = 'B';  // compute all of them and backtransform
-      octave_idx_type *select = 0; // dummy pointer; select is not used.
-      octave_idx_type m;
+      // Which side to compute?
+      char side = (nargout == 5 ? 'R' : 'B');
+      // Compute all of them and backtransform
+      char howmny = 'B';
+      // Dummy pointer; select is not used.
+      octave_idx_type *select = 0;
 
       if (complex_case)
-	{
-	  error ("complex type not yet implemented");
-	  return retval;
-	}
+        {
+          CVL = CQ;
+          CVR = CZ;
+          ComplexRowVector cwork2 (2 * nn);
+          RowVector rwork2 (8 * nn);
+          octave_idx_type m;
+
+          F77_XFCN (ztgevc, ZTGEVC,
+                    (F77_CONST_CHAR_ARG2 (&side, 1),
+                     F77_CONST_CHAR_ARG2 (&howmny, 1),
+                     select, nn, caa.fortran_vec (), nn, cbb.fortran_vec (),
+                     nn, CVL.fortran_vec (), nn, CVR.fortran_vec (), nn, nn,
+                     m, cwork2.fortran_vec (), rwork2.fortran_vec (), info
+                     F77_CHAR_ARG_LEN (1)
+                     F77_CHAR_ARG_LEN (1)));
+        }
       else
-	{
+        {
 #ifdef DEBUG
-	  std::cout << "qz: computing  generalized eigenvectors" << std::endl;
+          std::cout << "qz: computing  generalized eigenvectors" << std::endl;
 #endif
 
-	  VL = QQ;
-	  VR = ZZ;
+          VL = QQ;
+          VR = ZZ;
+          octave_idx_type m;
 
-	  F77_XFCN (dtgevc, DTGEVC,
-		    (F77_CONST_CHAR_ARG2 (&side, 1),
-		     F77_CONST_CHAR_ARG2 (&howmny, 1),
-		     select, nn, aa.fortran_vec (), nn, bb.fortran_vec (),
-		     nn, VL.fortran_vec (), nn, VR.fortran_vec (), nn, nn,
-		     m, work.fortran_vec (), info
-		     F77_CHAR_ARG_LEN (1)
-		     F77_CHAR_ARG_LEN (1)));
+          F77_XFCN (dtgevc, DTGEVC,
+                    (F77_CONST_CHAR_ARG2 (&side, 1),
+                     F77_CONST_CHAR_ARG2 (&howmny, 1),
+                     select, nn, aa.fortran_vec (), nn, bb.fortran_vec (),
+                     nn, VL.fortran_vec (), nn, VR.fortran_vec (), nn, nn,
+                     m, work.fortran_vec (), info
+                     F77_CHAR_ARG_LEN (1)
+                     F77_CHAR_ARG_LEN (1)));
 
-	  // now construct the complex form of VV, WW
-	  int jj = 0;
+          // Now construct the complex form of VV, WW.
+          int jj = 0;
 
-	  while (jj < nn)
-	    {
-	      OCTAVE_QUIT;
+          while (jj < nn)
+            {
+              OCTAVE_QUIT;
 
-	      // see if real or complex eigenvalue
-	      int cinc = 2;	// column increment; assume complex eigenvalue
+              // See if real or complex eigenvalue.
 
-	      if (jj == (nn-1))
-		cinc = 1;	// single column
-	      else if (aa(jj+1,jj) == 0)
-		cinc = 1;
+              // Column increment; assume complex eigenvalue.
+              int cinc = 2;
 
-	      // now copy the eigenvector (s) to CVR, CVL
-	      if (cinc == 1)
-		{
-		  for (int ii = 0; ii < nn; ii++)
-		    CVR(ii,jj) = VR(ii,jj);
+              if (jj == (nn-1))
+                // Single column.
+                cinc = 1;
+              else if (aa(jj+1,jj) == 0)
+                cinc = 1;
 
-		  if (side == 'B')
-		    for (int ii = 0; ii < nn; ii++)
-		      CVL(ii,jj) = VL(ii,jj);
-		}
-	      else
-		{
-		  // double column; complex vector
+              // Now copy the eigenvector (s) to CVR, CVL.
+              if (cinc == 1)
+                {
+                  for (int ii = 0; ii < nn; ii++)
+                    CVR(ii,jj) = VR(ii,jj);
 
-		  for (int ii = 0; ii < nn; ii++)
-		    {
-		      CVR(ii,jj) = Complex (VR(ii,jj), VR(ii,jj+1));
-		      CVR(ii,jj+1) = Complex (VR(ii,jj), -VR(ii,jj+1));
-		    }
+                  if (side == 'B')
+                    for (int ii = 0; ii < nn; ii++)
+                      CVL(ii,jj) = VL(ii,jj);
+                }
+              else
+                {
+                  // Double column; complex vector.
 
-		  if (side == 'B')
-		    for (int ii = 0; ii < nn; ii++)
-		      {
-			CVL(ii,jj) = Complex (VL(ii,jj), VL(ii,jj+1));
-			CVL(ii,jj+1) = Complex (VL(ii,jj), -VL(ii,jj+1));
-		      }
-		}
+                  for (int ii = 0; ii < nn; ii++)
+                    {
+                      CVR(ii,jj) = Complex (VR(ii,jj), VR(ii,jj+1));
+                      CVR(ii,jj+1) = Complex (VR(ii,jj), -VR(ii,jj+1));
+                    }
 
-	      // advance to next eigenvectors (if any)
-	      jj += cinc;
-	    }
-	}
+                  if (side == 'B')
+                    for (int ii = 0; ii < nn; ii++)
+                      {
+                        CVL(ii,jj) = Complex (VL(ii,jj), VL(ii,jj+1));
+                        CVL(ii,jj+1) = Complex (VL(ii,jj), -VL(ii,jj+1));
+                      }
+                }
+
+              // Advance to next eigenvectors (if any).
+              jj += cinc;
+            }
+        }
     }
 
   switch (nargout)
@@ -933,42 +1150,72 @@ Order of output arguments was selected for compatibility with @sc{matlab}\n\
     case 7:
       retval(6) = gev;
 
-    case 6:	// return eigenvectors
+    case 6:
+      // Return eigenvectors.
       retval(5) = CVL;
 
-    case 5:	// return eigenvectors
+    case 5:
+      // Return eigenvectors.
       retval(4) = CVR;
 
     case 4:
       if (nargin == 3)
-	{
+        {
 #ifdef DEBUG
-	  std::cout << "qz: sort: retval(3) = gev = " << std::endl;
-	  octave_print_internal (std::cout, gev);
-	  std::cout << std::endl;
+          std::cout << "qz: sort: retval(3) = gev = " << std::endl;
+          octave_print_internal (std::cout, gev);
+          std::cout << std::endl;
 #endif
-	  retval(3) = gev;
-	}
+          retval(3) = gev;
+        }
       else
-	retval(3) = ZZ;
+        {
+          if (complex_case)
+            retval(3) = CZ;
+          else
+            retval(3) = ZZ;
+        }
 
     case 3:
       if (nargin == 3)
-	retval(2) = ZZ;
+        retval(2) = CZ;
       else
-	retval(2) = QQ;
+        {
+          if (complex_case)
+            retval(2) = CQ.hermitian ();
+          else
+            retval(2) = QQ.transpose ();
+        }
 
     case 2:
+      {
+        if (complex_case)
+          {
 #ifdef DEBUG
-      std::cout << "qz: retval (1) = bb = " << std::endl;
-      octave_print_internal (std::cout, bb, 0);
-      std::cout << std::endl << "qz: retval(0) = aa = " <<std::endl;
-      octave_print_internal (std::cout, aa, 0);
-      std::cout << std::endl;
+            std::cout << "qz: retval (1) = cbb = " << std::endl;
+            octave_print_internal (std::cout, cbb, 0);
+            std::cout << std::endl << "qz: retval(0) = caa = " <<std::endl;
+            octave_print_internal (std::cout, caa, 0);
+            std::cout << std::endl;
 #endif
-      retval(1) = bb;
-      retval(0) = aa;
+            retval(1) = cbb;
+            retval(0) = caa;
+          }
+      else
+        {
+#ifdef DEBUG
+          std::cout << "qz: retval (1) = bb = " << std::endl;
+          octave_print_internal (std::cout, bb, 0);
+          std::cout << std::endl << "qz: retval(0) = aa = " <<std::endl;
+          octave_print_internal (std::cout, aa, 0);
+          std::cout << std::endl;
+#endif
+          retval(1) = bb;
+          retval(0) = aa;
+        }
+      }
       break;
+
 
     case 1:
     case 0:
@@ -979,7 +1226,7 @@ Order of output arguments was selected for compatibility with @sc{matlab}\n\
       break;
 
     default:
-      error ("qz: too many return arguments.");
+      error ("qz: too many return arguments");
       break;
   }
 
@@ -989,9 +1236,3 @@ Order of output arguments was selected for compatibility with @sc{matlab}\n\
 
   return retval;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

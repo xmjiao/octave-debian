@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 1999, 2000, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009
-              John W. Eaton
+Copyright (C) 1999-2011 John W. Eaton
+Copyright (C) 2009-2010 VZLU Prague
 
 This file is part of Octave.
 
@@ -28,6 +28,7 @@ along with Octave; see the file COPYING.  If not, see
 
 #include <iosfwd>
 #include <string>
+#include <memory>
 
 #include "mx-base.h"
 #include "oct-alloc.h"
@@ -38,7 +39,6 @@ along with Octave; see the file COPYING.  If not, see
 #include "ov-base-mat.h"
 #include "ov-typeinfo.h"
 
-class Octave_map;
 class octave_value_list;
 
 class tree_walker;
@@ -51,16 +51,16 @@ octave_cell : public octave_base_matrix<Cell>
 public:
 
   octave_cell (void)
-    : octave_base_matrix<Cell> () { }
+    : octave_base_matrix<Cell> (), cellstr_cache () { }
 
   octave_cell (const Cell& c)
-    : octave_base_matrix<Cell> (c) { }
+    : octave_base_matrix<Cell> (c), cellstr_cache () { }
 
   octave_cell (const Array<std::string>& str)
-    : octave_base_matrix<Cell> (Cell (str)), cellstr_cache (str) { }
+    : octave_base_matrix<Cell> (Cell (str)), cellstr_cache (new Array<std::string> (str)) { }
 
   octave_cell (const octave_cell& c)
-    : octave_base_matrix<Cell> (c) { }
+    : octave_base_matrix<Cell> (c), cellstr_cache () { }
 
   ~octave_cell (void) { }
 
@@ -72,22 +72,22 @@ public:
 #endif
 
   octave_value subsref (const std::string& type,
-			const std::list<octave_value_list>& idx)
+                        const std::list<octave_value_list>& idx)
     {
       octave_value_list tmp = subsref (type, idx, 1);
       return tmp.length () > 0 ? tmp(0) : octave_value ();
     }
 
   octave_value_list subsref (const std::string& type,
-			     const std::list<octave_value_list>& idx, int);
+                             const std::list<octave_value_list>& idx, int);
 
   octave_value subsref (const std::string& type,
-			const std::list<octave_value_list>& idx,
+                        const std::list<octave_value_list>& idx,
                         bool auto_add);
 
   octave_value subsasgn (const std::string& type,
-			 const std::list<octave_value_list>& idx,
-			 const octave_value& rhs);
+                         const std::list<octave_value_list>& idx,
+                         const octave_value& rhs);
 
   void assign (const octave_value_list& idx, const Cell& rhs);
 
@@ -100,7 +100,7 @@ public:
   octave_value sort (octave_idx_type dim = 0, sortmode mode = ASCENDING) const;
 
   octave_value sort (Array<octave_idx_type> &sidx, octave_idx_type dim = 0,
-		     sortmode mode = ASCENDING) const;
+                     sortmode mode = ASCENDING) const;
 
   sortmode is_sorted (sortmode mode = UNSORTED) const;
 
@@ -117,6 +117,8 @@ public:
   bool is_constant (void) const { return true; }
 
   bool is_cell (void) const { return true; }
+
+  builtin_type_t builtin_type (void) const { return btyp_cell; }
 
   bool is_cellstr (void) const;
 
@@ -146,44 +148,29 @@ public:
 
   bool save_binary (std::ostream& os, bool& save_as_floats);
 
-  bool load_binary (std::istream& is, bool swap, 
-		    oct_mach_info::float_format fmt);
+  bool load_binary (std::istream& is, bool swap,
+                    oct_mach_info::float_format fmt);
 
 #if defined (HAVE_HDF5)
   bool save_hdf5 (hid_t loc_id, const char *name, bool save_as_floats);
 
-  bool load_hdf5 (hid_t loc_id, const char *name, bool have_h5giterate_bug);
+  bool load_hdf5 (hid_t loc_id, const char *name);
 #endif
 
-  octave_value xisalnum (void) const { return matrix.xisalnum (); }
-  octave_value xisalpha (void) const { return matrix.xisalpha (); }
-  octave_value xisascii (void) const { return matrix.xisascii (); }
-  octave_value xiscntrl (void) const { return matrix.xiscntrl (); }
-  octave_value xisdigit (void) const { return matrix.xisdigit (); }
-  octave_value xisgraph (void) const { return matrix.xisgraph (); }
-  octave_value xislower (void) const { return matrix.xislower (); }
-  octave_value xisprint (void) const { return matrix.xisprint (); }
-  octave_value xispunct (void) const { return matrix.xispunct (); }
-  octave_value xisspace (void) const { return matrix.xisspace (); }
-  octave_value xisupper (void) const { return matrix.xisupper (); }
-  octave_value xisxdigit (void) const { return matrix.xisxdigit (); }
-  octave_value xtoascii (void) const { return matrix.xtoascii (); }
-  octave_value xtolower (void) const { return matrix.xtolower (); }
-  octave_value xtoupper (void) const { return matrix.xtoupper (); }
+  octave_value map (unary_mapper_t umap) const;
 
   mxArray *as_mxArray (void) const;
 
   // Unsafe.  This function exists to support the MEX interface.
   // You should not use it anywhere else.
-  void *mex_get_data (void) const; 
+  void *mex_get_data (void) const;
 
 private:
 
-  void clear_cellstr_cache (void) const;
+  void clear_cellstr_cache (void) const
+    { cellstr_cache.reset (); }
 
-  mutable Array<std::string> cellstr_cache;
-
-  void make_cellstr_cache (void) const;
+  mutable std::auto_ptr<Array<std::string> > cellstr_cache;
 
   DECLARE_OCTAVE_ALLOCATOR
 
@@ -191,9 +178,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,4 +1,4 @@
-## Copyright (C) 1997, 2006, 2007, 2009 by Vincent Cautaerts
+## Copyright (C) 1997-2011 Vincent Cautaerts
 ##
 ## This file is part of Octave.
 ##
@@ -17,10 +17,10 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} ifftshift (@var{v})
-## @deftypefnx {Function File} {} ifftshift (@var{v}, @var{dim})
-## Undo the action of the @code{fftshift} function.  For even length 
-## @var{v}, @code{fftshift} is its own inverse, but odd lengths differ 
+## @deftypefn  {Function File} {} ifftshift (@var{x})
+## @deftypefnx {Function File} {} ifftshift (@var{x}, @var{dim})
+## Undo the action of the @code{fftshift} function.  For even length
+## @var{x}, @code{fftshift} is its own inverse, but odd lengths differ
 ## slightly.
 ## @end deftypefn
 
@@ -30,7 +30,7 @@
 ## Modified-By: Paul Kienzle, converted from fftshift
 ## Modified-By: David Bateman, add NDArray capability and option dim arg
 
-function retval = ifftshift (V, dim)
+function retval = ifftshift (x, dim)
 
   retval = 0;
 
@@ -42,32 +42,78 @@ function retval = ifftshift (V, dim)
     if (! isscalar (dim))
       error ("ifftshift: dimension must be an integer scalar");
     endif
-    nd = ndims (V);
-    sz = size (V);
+    nd = ndims (x);
+    sz = size (x);
     sz2 = floor (sz(dim) / 2);
     idx = cell ();
     for i = 1:nd
       idx{i} = 1:sz(i);
     endfor
     idx{dim} = [sz2+1:sz(dim), 1:sz2];
-    retval = V (idx{:});
+    retval = x(idx{:});
   else
-    if (isvector (V))
-      x = length (V);
-      xx = floor (x/2);
-      retval = V([xx+1:x, 1:xx]);
-    elseif (ismatrix (V))
-      nd = ndims (V);
-      sz = size (V);
+    if (isvector (x))
+      xl = length (x);
+      xx = floor (xl/2);
+      retval = x([xx+1:xl, 1:xx]);
+    elseif (ismatrix (x))
+      nd = ndims (x);
+      sz = size (x);
       sz2 = floor (sz ./ 2);
       idx = cell ();
       for i = 1:nd
         idx{i} = [sz2(i)+1:sz(i), 1:sz2(i)];
       endfor
-      retval = V (idx{:});
+      retval = x(idx{:});
     else
       error ("ifftshift: expecting vector or matrix argument");
     endif
   endif
 
 endfunction
+
+%!test
+%!  x = [0:7];
+%!  y = ifftshift (x);
+%!  assert(y, [4 5 6 7 0 1 2 3]);
+%!  assert(ifftshift (y), x);
+
+%!test
+%!  x = [0:6];
+%!  y = ifftshift (x);
+%!  assert(y, [3 4 5 6 0 1 2]);
+%!  assert(ifftshift (y), [6 0 1 2 3 4 5]);
+
+%!test
+%!  x = [0:7]';
+%!  y = ifftshift (x);
+%!  assert(y, [4;5;6;7;0;1;2;3]);
+%!  assert(ifftshift (y), x);
+
+%!test
+%!  x = [0:6]';
+%!  y = ifftshift (x);
+%!  assert(y, [3;4;5;6;0;1;2]);
+%!  assert(ifftshift (y), [6;0;1;2;3;4;5]);
+
+%!test
+%!  x = [0:3];
+%!  x = [x;2*x;3*x+1;4*x+1];
+%!  y = ifftshift (x);
+%!  assert(y, [[7 10 1 4];[9 13 1 5];[2 3 0 1];[4 6 0 2]]);
+%!  assert(ifftshift (y), x);
+
+%!test
+%!  x = [0:3];
+%!  x = [x;2*x;3*x+1;4*x+1];
+%!  y = ifftshift (x,1);
+%!  assert(y, [[1 4 7 10];[1 5 9 13];[0 1 2 3];[0 2 4 6]]);
+%!  assert(ifftshift (y,1), x);
+
+%!test
+%!  x = [0:3];
+%!  x = [x;2*x;3*x+1;4*x+1];
+%!  y = ifftshift (x,2);
+%!  assert(y, [[2 3 0 1];[4 6 0 2];[7 10 1 4];[9 13 1 5]]);
+%!  assert(ifftshift (y,2), x);
+

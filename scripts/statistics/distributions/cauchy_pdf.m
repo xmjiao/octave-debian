@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 2000, 2002, 2004, 2005, 2006,
-##               2007 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -18,11 +17,11 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} cauchy_pdf (@var{x}, @var{lambda}, @var{sigma})
+## @deftypefn {Function File} {} cauchy_pdf (@var{x}, @var{location}, @var{scale})
 ## For each element of @var{x}, compute the probability density function
 ## (PDF) at @var{x} of the Cauchy distribution with location parameter
-## @var{lambda} and scale parameter @var{sigma} > 0.  Default values are
-## @var{lambda} = 0, @var{sigma} = 1. 
+## @var{location} and scale parameter @var{scale} > 0.  Default values are
+## @var{location} = 0, @var{scale} = 1.
 ## @end deftypefn
 
 ## Author: KH <Kurt.Hornik@wu-wien.ac.at>
@@ -39,25 +38,25 @@ function pdf = cauchy_pdf (x, location, scale)
     scale = 1;
   endif
 
-  if (!isscalar (location) || !isscalar (scale)) 
+  if (!isscalar (location) || !isscalar (scale))
     [retval, x, location, scale] = common_size (x, location, scale);
     if (retval > 0)
-      error ("cauchy_pdf: x, lambda and sigma must be of common size or scalar");
+      error ("cauchy_pdf: X, LOCATION and SCALE must be of common size or scalar");
     endif
   endif
 
   sz = size (x);
-  pdf = NaN * ones (sz);
+  pdf = NaN (sz);
 
   k = find ((x > -Inf) & (x < Inf) & (location > -Inf) &
             (location < Inf) & (scale > 0) & (scale < Inf));
   if (any (k))
-    if (isscalar (location) && isscalar (scale)) 
+    if (isscalar (location) && isscalar (scale))
       pdf(k) = ((1 ./ (1 + ((x(k) - location) ./ scale) .^ 2))
-		/ pi ./ scale);
+                / pi ./ scale);
     else
       pdf(k) = ((1 ./ (1 + ((x(k) - location(k)) ./ scale(k)) .^ 2))
-		/ pi ./ scale(k));
+                / pi ./ scale(k));
     endif
   endif
 

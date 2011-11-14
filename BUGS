@@ -55,20 +55,8 @@ better.  Bug reports are your contribution to the maintenance of Octave.
    In order for a bug report to serve its purpose, you must include the
 information that makes it possible to fix the bug.
 
-   If you have Octave working at all, the easiest way to prepare a
-complete bug report is to use the Octave function `bug_report'.  When
-you execute this function, Octave will prompt you for a subject and then
-invoke the editor on a file that already contains all the configuration
-information.  When you exit the editor, Octave will mail the bug report
-for you.
-
- -- Function File:  bug_report ()
-     Have Octave create a bug report template file, invoke your favorite
-     editor, and submit the report to the bug-octave mailing list when
-     you are finished editing.
-
-1.3 Have You Found a Bug?
-=========================
+1.2.1 Have You Found a Bug?
+---------------------------
 
 If you are not sure whether you have found a bug, here are some
 guidelines:
@@ -96,28 +84,20 @@ guidelines:
    * If you are an experienced user of programs like Octave, your
      suggestions for improvement are welcome in any case.
 
-1.4 Where to Report Bugs
-========================
+1.2.2 Where to Report Bugs
+--------------------------
 
-If you have Octave working at all, the easiest way to prepare a complete
-bug report is to use the Octave function `bug_report'.  When you
-execute this function, Octave will prompt you for a subject and then
-invoke the editor on a file that already contains all the configuration
-information.  When you exit the editor, Octave will mail the bug report
-for you.
-
-   If for some reason you cannot use Octave's `bug_report' function,
-send bug reports for Octave to <bug@octave.org>.
+To report a bug in Octave, submit a bug report to the Octave bug tracker
+`http://bugs.octave.org'.
 
    *Do not send bug reports to `help-octave'*.  Most users of Octave do
-not want to receive bug reports.  Those that do have asked to be on the
-mailing list.
+not want to receive bug reports.
 
-1.5 How to Report Bugs
-======================
+1.2.3 How to Report Bugs
+------------------------
 
-Send bug reports for Octave to one of the addresses listed in *note Bug
-Lists::.
+Submit bug reports for Octave to the Octave bug tracker
+`http://bugs.octave.org'.
 
    The fundamental principle of reporting bugs usefully is this:
 *report all the facts*.  If you are not sure whether to state a fact or
@@ -190,7 +170,7 @@ these things:
 
      Even if the problem you experience is a fatal signal, you should
      still say so explicitly.  Suppose something strange is going on,
-     such as, your copy of the interpreter is out of synch, or you have
+     such as, your copy of the interpreter is out of sync, or you have
      encountered a bug in the C library on your system.  Your copy
      might crash and the copy here would not.  If you said to expect a
      crash, then when the interpreter here fails to crash, we would
@@ -232,8 +212,8 @@ these things:
      bug, you should report it, even if you cannot send a fix for the
      problem.
 
-1.6 Sending Patches for Octave
-==============================
+1.2.4 Sending Patches for Octave
+--------------------------------
 
 If you would like to write bug fixes or improvements for Octave, that is
 very helpful.  When you send your changes, please follow these
@@ -266,8 +246,8 @@ your best to help.
    * Use `diff -c' to make your diffs.  Diffs without context are hard
      for us to install reliably.  More than that, they make it hard for
      us to study the diffs to decide whether we want to install them.
-     Unidiff format is better than contextless diffs, but not as easy
-     to read as `-c' format.
+     Unified diff format is better than contextless diffs, but not as
+     easy to read as `-c' format.
 
      If you have GNU diff, use `diff -cp', which shows the name of the
      function that each change occurs in.
@@ -291,18 +271,19 @@ your best to help.
      If you would like your name to appear in the header line for who
      made the change, send us the header line.
 
-1.7 How To Get Help with Octave
+1.3 How To Get Help with Octave
 ===============================
 
 The mailing list <help@octave.org> exists for the discussion of matters
 related to using and installing Octave.  If would like to join the
-discussion, please send a short note to <help*-request*@octave.org>.
+discussion, please send a short note to <help-request@octave.org>.
 
    *Please do not* send requests to be added or removed from the
 mailing list, or other administrative trivia to the list itself.
 
-   If you think you have found a bug in the installation procedure,
-however, you should send a complete bug report for the problem to
-<bug@octave.org>.  *Note Bug Reporting::, for information that will
-help you to submit a useful report.
+   If you think you have found a bug in Octave or in the installation
+procedure, however, you should submit a complete bug report to the
+Octave bug tracker at `http://bugs.octave.org'.  But before you submit
+a bug report, please read `http://www.octave.org/bugs.html' to learn
+how to submit a useful bug report.
 

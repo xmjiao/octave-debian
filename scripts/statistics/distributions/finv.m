@@ -1,4 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 2005, 2006, 2007 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -35,7 +35,7 @@ function inv = finv (x, m, n)
   if (!isscalar (m) || !isscalar (n))
     [retval, x, m, n] = common_size (x, m, n);
     if (retval > 0)
-      error ("finv: x, m and n must be of common size or scalar");
+      error ("finv: X, M and N must be of common size or scalar");
     endif
   endif
 
@@ -58,7 +58,7 @@ function inv = finv (x, m, n)
       inv(k) = ((1 ./ betainv (1 - x(k), n / 2, m / 2) - 1) .* n ./ m);
     else
       inv(k) = ((1 ./ betainv (1 - x(k), n(k) / 2, m(k) / 2) - 1)
-		.* n(k) ./ m(k));
+                .* n(k) ./ m(k));
     endif
   endif
 

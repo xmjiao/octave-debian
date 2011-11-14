@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004, 2005, 2006, 2007, 2008 John W. Eaton
+Copyright (C) 2004-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -73,13 +73,13 @@ public:
 
   bool save_binary (std::ostream& os, bool& );
 
-  bool load_binary (std::istream& is, bool swap, 
-		    oct_mach_info::float_format );
+  bool load_binary (std::istream& is, bool swap,
+                    oct_mach_info::float_format );
 
 #if defined (HAVE_HDF5)
   bool save_hdf5 (hid_t loc_id, const char *name, bool);
 
-  bool load_hdf5 (hid_t loc_id, const char *name, bool have_h5giterate_bug);
+  bool load_hdf5 (hid_t loc_id, const char *name);
 #endif
 };
 
@@ -116,20 +116,14 @@ public:
 
   bool save_binary (std::ostream& os, bool& );
 
-  bool load_binary (std::istream& is, bool swap, 
-		    oct_mach_info::float_format );
+  bool load_binary (std::istream& is, bool swap,
+                    oct_mach_info::float_format );
 
 #if defined (HAVE_HDF5)
   bool save_hdf5 (hid_t loc_id, const char *name, bool );
 
-  bool load_hdf5 (hid_t loc_id, const char *name, bool have_h5giterate_bug);
+  bool load_hdf5 (hid_t loc_id, const char *name);
 #endif
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

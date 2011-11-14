@@ -1,4 +1,5 @@
-## Copyright (C) 2005, 2006, 2007, 2008 Laurent Mazet
+## Copyright (C) 2005-2011 Laurent Mazet
+## Copyright (C) 2010 Jaroslav Hajek
 ##
 ## This file is part of Octave.
 ##
@@ -20,8 +21,8 @@
 ## @deftypefn {Function File} {@var{m} =} cell2mat (@var{c})
 ## Convert the cell array @var{c} into a matrix by concatenating all
 ## elements of @var{c} into a hyperrectangle.  Elements of @var{c} must
-## be numeric, logical or char, and @code{cat} must be able to
-## concatenate them together.
+## be numeric, logical or char matrices, or cell arrays, and @code{cat}
+## must be able to concatenate them together.
 ## @seealso{mat2cell, num2cell}
 ## @end deftypefn
 
@@ -32,50 +33,47 @@ function m = cell2mat (c)
   endif
 
   if (! iscell (c))
-    error ("cell2mat: c is not a cell array");
+    error ("cell2mat: C is not a cell array");
   endif
-  
+
   nb = numel (c);
 
   if (nb == 0)
     m = [];
-  elseif (nb == 1)
-    elt = c{1};
-    if (isnumeric (elt) || ischar (elt) || islogical (elt))
-      m = elt;
-    elseif (iscell (elt))
-      m = cell2mat (elt);
-    else
-      error ("cell2mat: all elements of cell array must be numeric, logical or char");
-    endif
-  elseif (ndims (c) == 2)
-    nr = rows (c);
-    nc = columns (c);
-    if (nc > nr)
-      c1 = cell (nr, 1);
-      for i = 1 : nr
-	c1{i} = [c{i : nr : end}];
-      endfor
-      m = cat (1, c1 {:});
-    else
-      c1 = cell (nc, 1);
-      for i = 1 : nc
-	c1{i} = cat (1, c{(i - 1) * nr  + [1 : nr]});
-      endfor
-      m = [c1{:}];
-    endif
   else
-    ## n dimensions case
-    for k = ndims (c):-1:2,
-      sz = size (c);
-      sz(end) = 1;
-      c1 = cell (sz);
-      for i = 1:(prod (sz))
-        c1{i} = cat (k, c{i:(prod (sz)):end});
-      endfor
-      c = c1;
+
+    ## We only want numeric, logical, and char matrices.
+    valid = cellfun (@isnumeric, c);
+    valid |= cellfun (@islogical, c);
+    valid |= cellfun (@ischar, c);
+    validc = cellfun (@iscell, c);
+    valids = cellfun (@isstruct, c);
+
+    if (! all (valid(:)) && ! all (validc(:)) && ! all (valids(:)))
+      error ("cell2mat: wrong type elements or mixed cells, structs and matrices");
+    endif
+
+    ## The goal is to minimize the total number of cat() calls.
+    ## The dimensions can be concatenated along in arbitrary order.
+    ## The numbers of concatenations are:
+    ## n / d1
+    ## n / (d1 * d2)
+    ## n / (d1 * d2 * d3)
+    ## etc.
+    ## This is minimized if d1 >= d2 >= d3...
+
+    sc = size (c);
+    nd = ndims (c);
+    [~, isc] = sort (sc);
+    for idim = isc
+      if (sc(idim) == 1)
+        continue;
+      endif
+      xdim = [1:idim-1, idim+1:nd];
+      cc = num2cell (c, xdim);
+      c = cellfun (@cat, {idim}, cc{:}, "uniformoutput", false);
     endfor
-    m = cat (1, c1{:});
+    m = c{1};
   endif
 
 endfunction
@@ -88,6 +86,18 @@ endfunction
 %! F = E; F(:,:,2) = E;
 %!assert (cell2mat (C), E);
 %!assert (cell2mat (D), F);
+%!test
+%! m = rand (10) + i * rand (10);
+%! c = mat2cell (m, [1 2 3 4], [4 3 2 1]);
+%! assert (cell2mat (c), m)
+%!test
+%! m = int8 (256*rand (4, 5, 6, 7, 8));
+%! c = mat2cell (m, [1 2 1], [1 2 2], [3 1 1 1], [4 1 2], [3 1 4]);
+%! assert (cell2mat (c), m)
+%!test
+%! m = {1, 2, 3};
+%! assert (cell2mat (mat2cell (m, 1, [1 1 1])), m);
+%!assert (cell2mat ({}), []);
 ## Demos
 %!demo
 %! C = {[1], [2 3 4]; [5; 9], [6 7 8; 10 11 12]};

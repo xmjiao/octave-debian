@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 2002, 2005, 2007
-              John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -50,15 +49,15 @@ public:
   ODEFunc& operator = (const ODEFunc& a)
     {
       if (this != &a)
-	{
-	  fun = a.fun;
-	  jac = a.jac;
-	  reset = a.reset;
-	}
+        {
+          fun = a.fun;
+          jac = a.jac;
+          reset = a.reset;
+        }
       return *this;
     }
 
-  ~ODEFunc (void) { }
+  virtual ~ODEFunc (void) { }
 
   ODERHSFunc function (void) const { return fun; }
 
@@ -92,9 +91,3 @@ protected:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

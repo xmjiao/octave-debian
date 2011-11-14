@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 1999, 2002, 2004, 2005, 2007
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -33,23 +32,23 @@ along with Octave; see the file COPYING.  If not, see
 void
 octave_lvalue::assign (octave_value::assign_op op, const octave_value& rhs)
 {
-  octave_value tmp (idx.empty ()
-		    ? val->assign (op, rhs)
-		    : val->assign (op, type, idx, rhs));
-
-  if (! error_state)
-    *val = tmp;
+  if (val)
+    {
+      if (idx.empty ())
+        val->assign (op, rhs);
+      else
+        val->assign (op, type, idx, rhs);
+    }
 }
 
 void
 octave_lvalue::set_index (const std::string& t,
-			  const std::list<octave_value_list>& i)
+                          const std::list<octave_value_list>& i)
 {
-  if (! index_set)
+  if (idx.empty ())
     {
       type = t;
       idx = i;
-      index_set = true;
     }
   else
     error ("invalid index expression in assignment");
@@ -58,12 +57,15 @@ octave_lvalue::set_index (const std::string& t,
 void
 octave_lvalue::do_unary_op (octave_value::unary_op op)
 {
-  octave_value tmp (idx.empty ()
-		    ? val->do_non_const_unary_op (op)
-		    : val->do_non_const_unary_op (op, type, idx));
-
-  if (! error_state)
-    *val = tmp;
+  if (val)
+    {
+      if (idx.empty ())
+        val->do_non_const_unary_op (op);
+      else
+        val->do_non_const_unary_op (op, type, idx);
+    }
+  else
+    error ("internal: invalid operation on ~");
 }
 
 octave_value
@@ -71,25 +73,22 @@ octave_lvalue::value (void)
 {
   octave_value retval;
 
-  if (idx.empty ())
-    retval = *val;
-  else
+  if (val)
     {
-      if (val->is_constant ())
-	retval = val->subsref (type, idx);
+      if (idx.empty ())
+        retval = *val;
       else
-	{
-	  octave_value_list t = val->subsref (type, idx, 1);
-	  if (t.length () > 0)
-	    retval = t(0);	      
-	}
+        {
+          if (val->is_constant ())
+            retval = val->subsref (type, idx);
+          else
+            {
+              octave_value_list t = val->subsref (type, idx, 1);
+              if (t.length () > 0)
+                retval = t(0);
+            }
+        }
     }
 
   return retval;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

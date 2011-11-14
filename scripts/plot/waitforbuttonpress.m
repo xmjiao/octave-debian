@@ -1,4 +1,4 @@
-## Copyright (C) 2004, 2006, 2008, 2009 Petr Mikulik
+## Copyright (C) 2004-2011 Petr Mikulik
 ##
 ## This file is part of Octave.
 ##
@@ -37,9 +37,9 @@ function a = waitforbuttonpress ()
   [x, y, k] = ginput (1);
 
   if (nargout == 1)
-    if (k <= 5) 
+    if (k <= 5)
       a = 0;
-    else 
+    else
       a = 1;
     endif
   endif

@@ -1,4 +1,4 @@
-## Copyright (C) 2001, 2006, 2007, 2009 Paul Kienzle
+## Copyright (C) 2001-2011 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -17,17 +17,19 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{y} =} filter2 (@var{b}, @var{x})
+## @deftypefn  {Function File} {@var{y} =} filter2 (@var{b}, @var{x})
 ## @deftypefnx {Function File} {@var{y} =} filter2 (@var{b}, @var{x}, @var{shape})
 ## Apply the 2-D FIR filter @var{b} to @var{x}.  If the argument
 ## @var{shape} is specified, return an array of the desired shape.
-## Possible values are: 
+## Possible values are:
 ##
 ## @table @asis
 ## @item 'full'
 ## pad @var{x} with zeros on all sides before filtering.
+##
 ## @item 'same'
 ## unpadded @var{x} (default)
+##
 ## @item 'valid'
 ## trim @var{x} after filtering so edge effects are no included.
 ## @end table
@@ -38,10 +40,10 @@
 ## @end deftypefn
 
 ## Author: Paul Kienzle <pkienzle@users.sf.net>
-## 2001-02-08 
+## 2001-02-08
 ##    * initial release
 
-function Y = filter2 (B, X, shape)
+function y = filter2 (b, x, shape)
 
   if (nargin < 2 || nargin > 3)
     print_usage ();
@@ -50,6 +52,7 @@ function Y = filter2 (B, X, shape)
     shape = "same";
   endif
 
-  [nr, nc] = size(B);
-  Y = conv2 (X, B(nr:-1:1, nc:-1:1), shape);
+  [nr, nc] = size(b);
+  y = conv2 (x, b(nr:-1:1, nc:-1:1), shape);
 endfunction
+

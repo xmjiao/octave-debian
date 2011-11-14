@@ -1,17 +1,20 @@
-## Copyright (C) 2009 Martin Helm
+## Copyright (C) 2009-2011 Martin Helm
 ##
-## This program is free software; you can redistribute it and/or modify
-## it under the terms of the GNU General Public License as published by
-## the Free Software Foundation; either version 3 of the License, or
-## (at your option) any later version.
+## This file is part of Octave.
 ##
-## This program is distributed in the hope that it will be useful,
-## but WITHOUT ANY WARRANTY; without even the implied warranty of
-## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-## GNU General Public License for more details.
+## Octave is free software; you can redistribute it and/or modify it
+## under the terms of the GNU General Public License as published by
+## the Free Software Foundation; either version 3 of the License, or (at
+## your option) any later version.
+##
+## Octave is distributed in the hope that it will be useful, but
+## WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+## General Public License for more details.
 ##
 ## You should have received a copy of the GNU General Public License
-## along with this program; if not, see http://www.gnu.org/licenses/gpl.html.
+## along with Octave; see the file COPYING.  If not, see
+## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
 ## @deftypefn  {Function File} {[@var{fv}] =} isosurface (@var{val}, @var{iso})
@@ -23,12 +26,12 @@
 ## @deftypefnx {Function File} {} isosurface (@var{x}, @var{y}, @var{z}, @var{val}, @var{iso}, @var{col}, @var{opt})
 ##
 ## If called with one output argument and the first input argument
-## @var{val} is a three--dimensional array that contains the data of an
+## @var{val} is a three-dimensional array that contains the data of an
 ## isosurface geometry and the second input argument @var{iso} keeps the
 ## isovalue as a scalar value then return a structure array @var{fv}
 ## that contains the fields @var{Faces} and @var{Vertices} at computed
 ## points @command{[x, y, z] = meshgrid (1:l, 1:m, 1:n)}.  The output
-## argument @var{fv} can directly be taken as an input argument for the 
+## argument @var{fv} can directly be taken as an input argument for the
 ## @command{patch} function.
 ##
 ## If called with further input arguments @var{x}, @var{y} and @var{z}
@@ -36,7 +39,7 @@
 ## then the volume data is taken at those given points.
 ##
 ## The string input argument "noshare" is only for compatibility and
-## has no effect. If given the string input argument
+## has no effect.  If given the string input argument
 ## "verbose" then print messages to the command line interface about the
 ## current progress.
 ##
@@ -53,14 +56,17 @@
 ## If called with no output argument then directly process the
 ## isosurface geometry with the @command{patch} command.
 ##
-## For example
+## For example,
 ##
 ## @example
+## @group
 ## [x, y, z] = meshgrid (1:5, 1:5, 1:5);
 ## val = rand (5, 5, 5);
 ## isosurface (x, y, z, val, .5);
+## @end group
 ## @end example
 ##
+## @noindent
 ## will directly draw a random isosurface geometry in a graphics window.
 ## Another example for an isosurface geometry with different additional
 ## coloring
@@ -70,19 +76,19 @@
 ## iso = .4;  ## Change isovalue to .1 to display a sphere
 ## lin = linspace (0, 2, N);
 ## [x, y, z] = meshgrid (lin, lin, lin);
-## c = abs ((x-.5).^2 + (y-.5).^2 + (z-.5).^2); 
+## c = abs ((x-.5).^2 + (y-.5).^2 + (z-.5).^2);
 ## figure (); ## Open another figure window
 ##
-## subplot (2, 2, 1); view (-38, 20); 
+## subplot (2, 2, 1); view (-38, 20);
 ## [f, v] = isosurface (x, y, z, c, iso);
 ## p = patch ("Faces", f, "Vertices", v, "EdgeColor", "none");
-## set (gca, "DataAspectRatioMode","manual", "DataAspectRatio", [1 1 1]);
+## set (gca, "PlotBoxAspectRatioMode","manual", "PlotBoxAspectRatio", [1 1 1]);
 ## # set (p, "FaceColor", "green", "FaceLighting", "phong");
 ## # light ("Position", [1 1 5]); ## Available with the JHandles package
 ##
 ## subplot (2, 2, 2); view (-38, 20);
 ## p = patch ("Faces", f, "Vertices", v, "EdgeColor", "blue");
-## set (gca, "DataAspectRatioMode","manual", "DataAspectRatio", [1 1 1]);
+## set (gca, "PlotBoxAspectRatioMode","manual", "PlotBoxAspectRatio", [1 1 1]);
 ## # set (p, "FaceColor", "none", "FaceLighting", "phong");
 ## # light ("Position", [1 1 5]);
 ##
@@ -90,20 +96,19 @@
 ## [f, v, c] = isosurface (x, y, z, c, iso, y);
 ## p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", c, \
 ##            "FaceColor", "interp", "EdgeColor", "none");
-## set (gca, "DataAspectRatioMode","manual", "DataAspectRatio", [1 1 1]);
+## set (gca, "PlotBoxAspectRatioMode","manual", "PlotBoxAspectRatio", [1 1 1]);
 ## # set (p, "FaceLighting", "phong");
 ## # light ("Position", [1 1 5]);
 ##
 ## subplot (2, 2, 4); view (-38, 20);
 ## p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", c, \
 ##            "FaceColor", "interp", "EdgeColor", "blue");
-## set (gca, "DataAspectRatioMode","manual", "DataAspectRatio", [1 1 1]);
+## set (gca, "PlotBoxAspectRatioMode","manual", "PlotBoxAspectRatio", [1 1 1]);
 ## # set (p, "FaceLighting", "phong");
 ## # light ("Position", [1 1 5]);
 ## @end example
 ##
-## @seealso{isocolors, isonormals, isocaps}
-##
+## @seealso{isonormals, isocolors}
 ## @end deftypefn
 
 ## Author: Martin Helm <martin@mhelm.de>
@@ -130,7 +135,7 @@ function varargout = isosurface(varargin)
     endif
   else
     val = varargin{1};
-    [n1, n2, n3] = size (val);
+    [n2, n1, n3] = size (val);
     [x, y, z] = meshgrid (1:n1, 1:n2, 1:n3);
     iso = varargin{2};
     if (nargin >= 3 && ismatrix (varargin{3}))
@@ -146,7 +151,7 @@ function varargout = isosurface(varargin)
   else
     [fvc.faces, fvc.vertices] = __marching_cube__ (x, y, z, val, iso);
   endif
-  
+
   if (isempty (fvc.vertices) || isempty (fvc.faces))
     warning ( "The resulting triangulation is empty" );
   endif
@@ -157,15 +162,15 @@ function varargout = isosurface(varargin)
       newplot ();
       if (calc_colors)
         pa = patch ("Faces", fvc.faces, "Vertices", fvc.vertices,
-		    "FaceVertexCData", fvc.facevertexcdata, 
-		    "FaceColor", "flat", "EdgeColor", "none");
+                    "FaceVertexCData", fvc.facevertexcdata,
+                    "FaceColor", "flat", "EdgeColor", "none");
       else
-        pa = patch ("Faces", fvc.faces, "Vertices", fvc.vertices, 
-		    "FaceColor", "g", "EdgeColor", "k");
+        pa = patch ("Faces", fvc.faces, "Vertices", fvc.vertices,
+                    "FaceColor", "g", "EdgeColor", "k");
       endif
       if (! ishold ())
-	set (gca(), "view", [-37.5, 30],
-	     "xgrid", "on", "ygrid", "on", "zgrid", "on");
+        set (gca(), "view", [-37.5, 30],
+             "xgrid", "on", "ygrid", "on", "zgrid", "on");
       endif
     case 1
       varargout = {fvc};
@@ -212,4 +217,4 @@ endfunction
 %! clf
 %! [x,y,z] = meshgrid(-2:0.5:2, -2:0.5:2, -2:0.5:2);
 %! v = x.^2 + y.^2 + z.^2;
-%! isosurface (x, y, z, v, 1) 
+%! isosurface (x, y, z, v, 1)

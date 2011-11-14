@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2000, 2002, 2003, 2004, 2005, 2006, 2007,
-              2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -50,8 +49,8 @@ public:
     : tree_expression (l, c), sym (), scope (-1) { }
 
   tree_identifier (const symbol_table::symbol_record& s,
-		   int l = -1, int c = -1,
-		   symbol_table::scope_id sc = symbol_table::current_scope ())
+                   int l = -1, int c = -1,
+                   symbol_table::scope_id sc = symbol_table::current_scope ())
     : tree_expression (l, c), sym (s), scope (sc) { }
 
   ~tree_identifier (void) { }
@@ -66,12 +65,14 @@ public:
 
   bool is_defined (void) { return xsym().is_defined (); }
 
-  bool is_variable (void) { return xsym().is_variable (); }
+  virtual bool is_variable (void) { return xsym().is_variable (); }
+
+  virtual bool is_black_hole (void) { return false; }
 
   // Try to find a definition for an identifier.  Here's how:
   //
   //   * If the identifier is already defined and is a function defined
-  //     in an function file that has been modified since the last time 
+  //     in an function file that has been modified since the last time
   //     we parsed it, parse it again.
   //
   //   * If the identifier is not defined, try to find a builtin
@@ -84,10 +85,9 @@ public:
   //     then .mex files, then .m files.
 
   octave_value
-  do_lookup (tree_argument_list *args, const string_vector& arg_names,
-	     octave_value_list& evaluated_args, bool& args_evaluated)
+  do_lookup (const octave_value_list& args = octave_value_list ())
   {
-    return xsym().find (args, arg_names, evaluated_args, args_evaluated);
+    return xsym().find (args);
   }
 
   void mark_global (void) { xsym().mark_global (); }
@@ -110,7 +110,7 @@ public:
   void eval_undefined_error (void);
 
   tree_identifier *dup (symbol_table::scope_id scope,
-			symbol_table::context_id context) const;
+                        symbol_table::context_id context) const;
 
   void accept (tree_walker& tw);
 
@@ -130,8 +130,8 @@ private:
 
     if (scope != curr_scope)
       {
-	scope = curr_scope;
-	sym = symbol_table::insert (sym.name ());
+        scope = curr_scope;
+        sym = symbol_table::insert (sym.name ());
       }
 
     return sym;
@@ -144,10 +144,26 @@ private:
   tree_identifier& operator = (const tree_identifier&);
 };
 
-#endif
+class tree_black_hole : public tree_identifier
+{
+public:
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+  tree_black_hole (int l = -1, int c = -1)
+    : tree_identifier (l, c) { }
+
+  std::string name (void) const { return "~"; }
+
+  bool is_variable (void) { return false; }
+
+  bool is_black_hole (void) { return true; }
+
+  tree_black_hole *dup (void) const
+    { return new tree_black_hole; }
+
+  octave_lvalue lvalue (void)
+    {
+      return octave_lvalue (0); // black hole lvalue
+    }
+};
+
+#endif

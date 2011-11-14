@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2000, 2001, 2002, 2003, 2004, 2005, 2007, 2008 John W. Eaton
+Copyright (C) 2000-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -149,9 +149,3 @@ extern char octave_rl_meta (char);
 #endif
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

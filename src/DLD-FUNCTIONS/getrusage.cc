@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 1999, 2002, 2003, 2005, 2006, 2007, 2008
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -25,30 +24,24 @@ along with Octave; see the file COPYING.  If not, see
 #include <config.h>
 #endif
 
-#include "systime.h"
-
-#ifdef HAVE_SYS_TYPES_H
+#include <sys/time.h>
+#include <sys/times.h>
 #include <sys/types.h>
-#endif
 
 #ifdef HAVE_SYS_RESOURCE_H
 #include <sys/resource.h>
 #endif
 
-#if defined (__WIN32__)
-#include <windows.h>
-#ifdef min
-#undef min
-#undef max
-#endif
-#endif
-
-#if defined (HAVE_TIMES) && defined (HAVE_SYS_TIMES_H)
-
 #if defined (HAVE_SYS_PARAM_H)
 #include <sys/param.h>
 #endif
-#include <sys/times.h>
+
+#include "defun-dld.h"
+#include "oct-map.h"
+#include "sysdep.h"
+#include "ov.h"
+#include "oct-obj.h"
+#include "utils.h"
 
 #if !defined (HZ)
 #if defined (CLK_TCK)
@@ -59,15 +52,6 @@ along with Octave; see the file COPYING.  If not, see
 #define HZ 60
 #endif
 #endif
-
-#endif
-
-#include "defun-dld.h"
-#include "oct-map.h"
-#include "sysdep.h"
-#include "ov.h"
-#include "oct-obj.h"
-#include "utils.h"
 
 #ifndef RUSAGE_SELF
 #define RUSAGE_SELF 0
@@ -81,9 +65,8 @@ DEFUN_DLD (getrusage, , ,
 Return a structure containing a number of statistics about the current\n\
 Octave process.  Not all fields are available on all systems.  If it is\n\
 not possible to get CPU time statistics, the CPU time slots are set to\n\
-zero.  Other missing data are replaced by NaN.  Here is a list of all\n\
-the possible fields that can be present in the structure returned by\n\
-@code{getrusage}:\n\
+zero.  Other missing data are replaced by NaN@.  The list of possible\n\
+fields is:\n\
 \n\
 @table @code\n\
 @item idrss\n\
@@ -138,8 +121,8 @@ elements @code{sec} (seconds) @code{usec} (microseconds).\n\
 @end table\n\
 @end deftypefn")
 {
-  Octave_map m;
-  Octave_map tv_tmp;
+  octave_scalar_map m;
+  octave_scalar_map tv_tmp;
 
   // FIXME -- maybe encapsulate all of this in a liboctave class
 #if defined (HAVE_GETRUSAGE)
@@ -174,7 +157,6 @@ elements @code{sec} (seconds) @code{usec} (microseconds).\n\
 #endif
 
 #else
-#if defined (HAVE_TIMES) && defined (HAVE_SYS_TIMES_H)
 
   struct tms t;
 
@@ -200,32 +182,6 @@ elements @code{sec} (seconds) @code{usec} (microseconds).\n\
   tv_tmp.assign ("usec", static_cast<double> (fraction * 1e6 / HZ));
   m.assign ("stime", octave_value (tv_tmp));
 
-#elif defined (__WIN32__)
-  HANDLE hProcess = GetCurrentProcess ();
-  FILETIME ftCreation, ftExit, ftUser, ftKernel;
-  GetProcessTimes (hProcess, &ftCreation, &ftExit, &ftKernel, &ftUser);
-
-  int64_t itmp = *(reinterpret_cast<int64_t *> (&ftUser));
-  tv_tmp.assign ("sec", static_cast<double> (itmp / 10000000U));
-  tv_tmp.assign ("usec", static_cast<double> (itmp % 10000000U) / 10.);
-  m.assign ("utime", octave_value (tv_tmp));
-
-  itmp = *(reinterpret_cast<int64_t *> (&ftKernel));
-  tv_tmp.assign ("sec", static_cast<double> (itmp / 10000000U));
-  tv_tmp.assign ("usec", static_cast<double> (itmp % 10000000U) / 10.);
-  m.assign ("stime", octave_value (tv_tmp));
-#else
-
-  tv_tmp.assign ("sec", 0);
-  tv_tmp.assign ("usec", 0);
-  m.assign ("utime", octave_value (tv_tmp));
-
-  tv_tmp.assign ("sec", 0);
-  tv_tmp.assign ("usec", 0);
-  m.assign ("stime", octave_value (tv_tmp));
-
-#endif
-
   double tmp = lo_ieee_nan_value ();
 
   m.assign ("maxrss", tmp);
@@ -247,9 +203,3 @@ elements @code{sec} (seconds) @code{usec} (microseconds).\n\
 
   return octave_value (m);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2000, 2002, 2003, 2004, 2005,
-              2007 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 Copyright (C) 2008 Jaroslav Hajek
 
 This file is part of Octave.
@@ -35,21 +34,24 @@ along with Octave; see the file COPYING.  If not, see
 extern "C"
 {
   F77_RET_T
-  F77_FUNC (zgebal, ZGEBAL) (F77_CONST_CHAR_ARG_DECL, const octave_idx_type&,
-			     Complex*, const octave_idx_type&,
-			     octave_idx_type&, octave_idx_type&, double*,
-			     octave_idx_type& F77_CHAR_ARG_LEN_DECL);
- 
+  F77_FUNC (zgebal, ZGEBAL) (F77_CONST_CHAR_ARG_DECL,
+                             const octave_idx_type&, Complex*,
+                             const octave_idx_type&, octave_idx_type&,
+                             octave_idx_type&, double*, octave_idx_type&
+                             F77_CHAR_ARG_LEN_DECL);
+
   F77_RET_T
-  F77_FUNC (zgebak, ZGEBAK) (F77_CONST_CHAR_ARG_DECL, F77_CONST_CHAR_ARG_DECL,
-			     const octave_idx_type&, const octave_idx_type&,
-			     const octave_idx_type&, const double*,
-			     const octave_idx_type&, Complex*,
-			     const octave_idx_type&, octave_idx_type&
-			     F77_CHAR_ARG_LEN_DECL  F77_CHAR_ARG_LEN_DECL);
+  F77_FUNC (zgebak, ZGEBAK) (F77_CONST_CHAR_ARG_DECL,
+                             F77_CONST_CHAR_ARG_DECL,
+                             const octave_idx_type&, const octave_idx_type&,
+                             const octave_idx_type&, const double*,
+                             const octave_idx_type&, Complex*,
+                             const octave_idx_type&, octave_idx_type&
+                             F77_CHAR_ARG_LEN_DECL
+                             F77_CHAR_ARG_LEN_DECL);
 }
 
-ComplexAEPBALANCE::ComplexAEPBALANCE (const ComplexMatrix& a, 
+ComplexAEPBALANCE::ComplexAEPBALANCE (const ComplexMatrix& a,
                                       bool noperm, bool noscal)
   : base_aepbal<ComplexMatrix, ColumnVector> ()
 {
@@ -72,9 +74,9 @@ ComplexAEPBALANCE::ComplexAEPBALANCE (const ComplexMatrix& a,
   job = noperm ? (noscal ? 'N' : 'S') : (noscal ? 'P' : 'B');
 
   F77_XFCN (zgebal, ZGEBAL, (F77_CONST_CHAR_ARG2 (&job, 1),
-			     n, p_balanced_mat, n, ilo, ihi,
-			     pscale, info
-			     F77_CHAR_ARG_LEN (1)));
+                             n, p_balanced_mat, n, ilo, ihi,
+                             pscale, info
+                             F77_CHAR_ARG_LEN (1)));
 }
 
 ComplexMatrix
@@ -93,17 +95,11 @@ ComplexAEPBALANCE::balancing_matrix (void) const
   char side = 'R';
 
   F77_XFCN (zgebak, ZGEBAK, (F77_CONST_CHAR_ARG2 (&job, 1),
-			     F77_CONST_CHAR_ARG2 (&side, 1),
-			     n, ilo, ihi, pscale, n,
-			     p_balancing_mat, n, info
-			     F77_CHAR_ARG_LEN (1)
-			     F77_CHAR_ARG_LEN (1)));
+                             F77_CONST_CHAR_ARG2 (&side, 1),
+                             n, ilo, ihi, pscale, n,
+                             p_balancing_mat, n, info
+                             F77_CHAR_ARG_LEN (1)
+                             F77_CHAR_ARG_LEN (1)));
 
   return balancing_mat;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

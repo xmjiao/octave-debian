@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 2000, 2001, 2002, 2003, 2005,
-##               2006, 2007 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -18,7 +17,10 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {[@var{q}, @var{s}] =} qqplot (@var{x}, @var{dist}, @var{params})
+## @deftypefn  {Function File} {[@var{q}, @var{s}] =} qqplot (@var{x})
+## @deftypefnx {Function File} {[@var{q}, @var{s}] =} qqplot (@var{x}, @var{dist})
+## @deftypefnx {Function File} {[@var{q}, @var{s}] =} qqplot (@var{x}, @var{dist}, @var{params})
+## @deftypefnx {Function File} {} qqplot (@dots{})
 ## Perform a QQ-plot (quantile plot).
 ##
 ## If F is the CDF of the distribution @var{dist} with parameters
@@ -27,7 +29,7 @@
 ## largest element of x versus abscissa @var{q}(@var{i}f) = G((@var{i} -
 ## 0.5)/@var{n}).
 ##
-## If the sample comes from F except for a transformation of location
+## If the sample comes from F, except for a transformation of location
 ## and scale, the pairs will approximately follow a straight line.
 ##
 ## The default for @var{dist} is the standard normal distribution.  The
@@ -36,12 +38,13 @@
 ## distribution on [2,4] and @var{x}, use
 ##
 ## @example
-## qqplot (x, "uniform", 2, 4)
+## qqplot (x, "unif", 2, 4)
 ## @end example
 ##
 ## @noindent
-## @var{dist} can be any string for which a function @var{dist_inv}
-## that calculates the inverse CDF of distribution @var{dist} exists.
+## @var{dist} can be any string for which a function @var{distinv} or
+## @var{dist_inv} exists that calculates the inverse CDF of distribution
+## @var{dist}.
 ##
 ## If no output arguments are given, the data are plotted directly.
 ## @end deftypefn
@@ -55,18 +58,24 @@ function [q, s] = qqplot (x, dist, varargin)
     print_usage ();
   endif
 
-  if (! (isvector(x)))
-    error ("qqplot: x must be a vector");
+  if (!(isnumeric (x) && isvector(x)))
+    error ("qqplot: X must be a numeric vector");
   endif
+
+  if (nargin == 1)
+    f = @stdnormal_inv;
+  else
+    if (   exist (invname = sprintf ("%sinv", dist))
+        || exist (invname = sprintf ("%s_inv", dist)))
+      f = str2func (invname);
+    else
+      error ("qqplot: no inverse CDF found for distribution DIST");
+    endif
+  endif;
 
   s = sort (x);
   n = length (x);
   t = ((1 : n)' - .5) / n;
-  if (nargin == 1)
-    f = @stdnormal_inv;
-  else
-    f = str2func (sprintf ("%s_inv", dist));
-  endif;
   if (nargin <= 2)
     q = feval (f, t);
     q_label = func2str (f);
@@ -74,11 +83,11 @@ function [q, s] = qqplot (x, dist, varargin)
     q = feval (f, t, varargin{:});
     if (nargin > 3)
       tmp = sprintf (", %g", varargin{2:end});
-    else 
+    else
       tmp = "";
     endif
-    q_label = sprintf ("%s with parameter(s) %g%s", func2str (f),
-		       varargin{1}, tmp);
+    q_label = sprintf ("%s with parameter(s) %g%s",
+                        func2str (f),        varargin{1}, tmp);
   endif
 
   if (nargout == 0)

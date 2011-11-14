@@ -1,4 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 2005, 2006, 2007 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -17,11 +17,11 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} gamrnd (@var{a}, @var{b}, @var{r}, @var{c})
+## @deftypefn  {Function File} {} gamrnd (@var{a}, @var{b}, @var{r}, @var{c})
 ## @deftypefnx {Function File} {} gamrnd (@var{a}, @var{b}, @var{sz})
-## Return an @var{r} by @var{c} or a @code{size (@var{sz})} matrix of 
+## Return an @var{r} by @var{c} or a @code{size (@var{sz})} matrix of
 ## random samples from the Gamma distribution with parameters @var{a}
-## and @var{b}.  Both @var{a} and @var{b} must be scalar or of size 
+## and @var{b}.  Both @var{a} and @var{b} must be scalar or of size
 ## @var{r} by @var{c}.
 ##
 ## If @var{r} and @var{c} are omitted, the size of the result matrix is
@@ -35,26 +35,26 @@
 function rnd = gamrnd (a, b, r, c)
 
   if (nargin > 1)
-    if (!isscalar(a) || !isscalar(b)) 
+    if (!isscalar(a) || !isscalar(b))
       [retval, a, b] = common_size (a, b);
       if (retval > 0)
-	error ("gamrnd: a and b must be of common size or scalar");
+        error ("gamrnd: A and B must be of common size or scalar");
       endif
     endif
   endif
 
   if (nargin == 4)
     if (! (isscalar (r) && (r > 0) && (r == round (r))))
-      error ("gamrnd: r must be a positive integer");
+      error ("gamrnd: R must be a positive integer");
     endif
     if (! (isscalar (c) && (c > 0) && (c == round (c))))
-      error ("gamrnd: c must be a positive integer");
+      error ("gamrnd: C must be a positive integer");
     endif
     sz = [r, c];
 
     if (any (size (a) != 1)
-	&& (length (size (a)) != length (sz) || any (size (a) != sz)))
-      error ("gamrnd: a and b must be scalar or of size [r, c]");
+        && (length (size (a)) != length (sz) || any (size (a) != sz)))
+      error ("gamrnd: A and B must be scalar or of size [R, C]");
     endif
   elseif (nargin == 3)
     if (isscalar (r) && (r > 0))
@@ -62,12 +62,12 @@ function rnd = gamrnd (a, b, r, c)
     elseif (isvector(r) && all (r > 0))
       sz = r(:)';
     else
-      error ("gamrnd: r must be a positive integer or vector");
+      error ("gamrnd: R must be a positive integer or vector");
     endif
 
     if (any (size (a) != 1)
-	&& (length (size (a)) != length (sz) || any (size (a) != sz)))
-      error ("gamrnd: a and b must be scalar or of size sz");
+        && (length (size (a)) != length (sz) || any (size (a) != sz)))
+      error ("gamrnd: A and B must be scalar or of size SZ");
     endif
   elseif (nargin == 2)
     sz = size(a);
@@ -79,11 +79,11 @@ function rnd = gamrnd (a, b, r, c)
 
   if (isscalar (a) && isscalar(b))
     if (find (!(a > 0) | !(a < Inf) | !(b > 0) | !(b < Inf)))
-      rnd = NaN * ones (sz);
+      rnd = NaN (sz);
     else
       rnd = b .* randg(a, sz);
     endif
-  else 
+  else
     k = find (!(a > 0) | !(a < Inf) | !(b > 0) | !(b < Inf));
     if (any (k))
       rnd(k) = NaN;

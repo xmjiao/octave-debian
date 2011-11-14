@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004,
-              2005, 2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -60,7 +59,7 @@ static int call_depth = 0;
 
 ColumnVector
 dassl_user_function (const ColumnVector& x, const ColumnVector& xdot,
-		     double t, octave_idx_type& ires)
+                     double t, octave_idx_type& ires)
 {
   ColumnVector retval;
 
@@ -77,30 +76,30 @@ dassl_user_function (const ColumnVector& x, const ColumnVector& xdot,
       octave_value_list tmp = dassl_fcn->do_multi_index_op (1, args);
 
       if (error_state)
-	{
-	  gripe_user_supplied_eval ("dassl");
-	  return retval;
-	}
+        {
+          gripe_user_supplied_eval ("dassl");
+          return retval;
+        }
 
       int tlen = tmp.length ();
       if (tlen > 0 && tmp(0).is_defined ())
-	{
-	  if (! warned_fcn_imaginary && tmp(0).is_complex_type ())
-	    {
-	      warning ("dassl: ignoring imaginary part returned from user-supplied function");
-	      warned_fcn_imaginary = true;
-	    }
+        {
+          if (! warned_fcn_imaginary && tmp(0).is_complex_type ())
+            {
+              warning ("dassl: ignoring imaginary part returned from user-supplied function");
+              warned_fcn_imaginary = true;
+            }
 
-	  retval = ColumnVector (tmp(0).vector_value ());
+          retval = ColumnVector (tmp(0).vector_value ());
 
-	  if (tlen > 1)
-	    ires = tmp(1).int_value ();
+          if (tlen > 1)
+            ires = tmp(1).int_value ();
 
-	  if (error_state || retval.length () == 0)
-	    gripe_user_supplied_eval ("dassl");
-	}
+          if (error_state || retval.length () == 0)
+            gripe_user_supplied_eval ("dassl");
+        }
       else
-	gripe_user_supplied_eval ("dassl");
+        gripe_user_supplied_eval ("dassl");
     }
 
   return retval;
@@ -108,7 +107,7 @@ dassl_user_function (const ColumnVector& x, const ColumnVector& xdot,
 
 Matrix
 dassl_user_jacobian (const ColumnVector& x, const ColumnVector& xdot,
-		     double t, double cj)
+                     double t, double cj)
 {
   Matrix retval;
 
@@ -126,39 +125,34 @@ dassl_user_jacobian (const ColumnVector& x, const ColumnVector& xdot,
       octave_value_list tmp = dassl_jac->do_multi_index_op (1, args);
 
       if (error_state)
-	{
-	  gripe_user_supplied_eval ("dassl");
-	  return retval;
-	}
+        {
+          gripe_user_supplied_eval ("dassl");
+          return retval;
+        }
 
       int tlen = tmp.length ();
       if (tlen > 0 && tmp(0).is_defined ())
-	{
-	  if (! warned_jac_imaginary && tmp(0).is_complex_type ())
-	    {
-	      warning ("dassl: ignoring imaginary part returned from user-supplied jacobian function");
-	      warned_jac_imaginary = true;
-	    }
+        {
+          if (! warned_jac_imaginary && tmp(0).is_complex_type ())
+            {
+              warning ("dassl: ignoring imaginary part returned from user-supplied jacobian function");
+              warned_jac_imaginary = true;
+            }
 
-	  retval = tmp(0).matrix_value ();
+          retval = tmp(0).matrix_value ();
 
-	  if (error_state || retval.length () == 0)
-	    gripe_user_supplied_eval ("dassl");
-	}
+          if (error_state || retval.length () == 0)
+            gripe_user_supplied_eval ("dassl");
+        }
       else
-	gripe_user_supplied_eval ("dassl");
+        gripe_user_supplied_eval ("dassl");
     }
 
   return retval;
 }
 
 #define DASSL_ABORT() \
-  do \
-    { \
-      unwind_protect::run_frame ("Fdassl"); \
-      return retval; \
-    } \
-  while (0)
+  return retval
 
 #define DASSL_ABORT1(msg) \
   do \
@@ -180,13 +174,11 @@ DEFUN_DLD (dassl, args, nargout,
   "-*- texinfo -*-\n\
 @deftypefn {Loadable Function} {[@var{x}, @var{xdot}, @var{istate}, @var{msg}] =} dassl (@var{fcn}, @var{x_0}, @var{xdot_0}, @var{t}, @var{t_crit})\n\
 Solve the set of differential-algebraic equations\n\
-@iftex\n\
 @tex\n\
 $$ 0 = f (x, \\dot{x}, t) $$\n\
 with\n\
 $$ x(t_0) = x_0, \\dot{x}(t_0) = \\dot{x}_0 $$\n\
 @end tex\n\
-@end iftex\n\
 @ifnottex\n\
 \n\
 @example\n\
@@ -226,15 +218,14 @@ of strings, inline functions, or function handles, the first element names\n\
 the function @math{f} described above, and the second element names a\n\
 function to compute the modified Jacobian\n\
 \n\
-@iftex\n\
 @tex\n\
 $$\n\
 J = {\\partial f \\over \\partial x}\n\
   + c {\\partial f \\over \\partial \\dot{x}}\n\
 $$\n\
 @end tex\n\
-@end iftex\n\
 @ifnottex\n\
+\n\
 @example\n\
 @group\n\
       df       df\n\
@@ -242,6 +233,7 @@ jac = -- + c ------\n\
       dx     d xdot\n\
 @end group\n\
 @end example\n\
+\n\
 @end ifnottex\n\
 \n\
 The modified Jacobian function must have the form\n\
@@ -260,7 +252,7 @@ specifies a vector of output times at which the solution is desired,\n\
 including the time corresponding to the initial condition.\n\
 \n\
 The set of initial states and derivatives are not strictly required to\n\
-be consistent.  In practice, however, @sc{Dassl} is not very good at\n\
+be consistent.  In practice, however, @sc{dassl} is not very good at\n\
 determining a consistent set for you, so it is best if you ensure that\n\
 the initial values result in the function evaluating to zero.\n\
 \n\
@@ -270,7 +262,7 @@ avoiding difficulties with singularities and points where there is a\n\
 discontinuity in the derivative.\n\
 \n\
 After a successful computation, the value of @var{istate} will be\n\
-greater than zero (consistent with the Fortran version of @sc{Dassl}).\n\
+greater than zero (consistent with the Fortran version of @sc{dassl}).\n\
 \n\
 If the computation is not successful, the value of @var{istate} will be\n\
 less than zero and @var{msg} will contain additional information.\n\
@@ -285,9 +277,9 @@ parameters for @code{dassl}.\n\
   warned_fcn_imaginary = false;
   warned_jac_imaginary = false;
 
-  unwind_protect::begin_frame ("Fdassl");
+  unwind_protect frame;
 
-  unwind_protect_int (call_depth);
+  frame.protect_var (call_depth);
   call_depth++;
 
   if (call_depth > 1)
@@ -304,145 +296,145 @@ parameters for @code{dassl}.\n\
       octave_value f_arg = args(0);
 
       if (f_arg.is_cell ())
-  	{
-	  Cell c = f_arg.cell_value ();
-	  if (c.length() == 1)
-	    f_arg = c(0);
-	  else if (c.length() == 2)
-	    {
-	      if (c(0).is_function_handle () || c(0).is_inline_function ())
-		dassl_fcn = c(0).function_value ();
-	      else
-		{
-		  fcn_name = unique_symbol_name ("__dassl_fcn__");
-		  fname = "function y = ";
-		  fname.append (fcn_name);
-		  fname.append (" (x, xdot, t) y = ");
-		  dassl_fcn = extract_function
-		    (c(0), "dassl", fcn_name, fname, "; endfunction");
-		}
-	      
-	      if (dassl_fcn)
-		{
-		  if (c(1).is_function_handle () || c(1).is_inline_function ())
-		    dassl_jac = c(1).function_value ();
-		  else
-		    {
-			jac_name = unique_symbol_name ("__dassl_jac__");
-			jname = "function jac = ";
-			jname.append(jac_name);
-			jname.append (" (x, xdot, t, cj) jac = ");
-			dassl_jac = extract_function
-			  (c(1), "dassl", jac_name, jname, "; endfunction");
+        {
+          Cell c = f_arg.cell_value ();
+          if (c.length() == 1)
+            f_arg = c(0);
+          else if (c.length() == 2)
+            {
+              if (c(0).is_function_handle () || c(0).is_inline_function ())
+                dassl_fcn = c(0).function_value ();
+              else
+                {
+                  fcn_name = unique_symbol_name ("__dassl_fcn__");
+                  fname = "function y = ";
+                  fname.append (fcn_name);
+                  fname.append (" (x, xdot, t) y = ");
+                  dassl_fcn = extract_function
+                    (c(0), "dassl", fcn_name, fname, "; endfunction");
+                }
 
-			if (!dassl_jac)
-			  {
-			    if (fcn_name.length())
-			      clear_function (fcn_name);
-			    dassl_fcn = 0;
-			  }
-		    }
-		}
-	    }
-	  else
-	    DASSL_ABORT1 ("incorrect number of elements in cell array");
-	}
+              if (dassl_fcn)
+                {
+                  if (c(1).is_function_handle () || c(1).is_inline_function ())
+                    dassl_jac = c(1).function_value ();
+                  else
+                    {
+                        jac_name = unique_symbol_name ("__dassl_jac__");
+                        jname = "function jac = ";
+                        jname.append(jac_name);
+                        jname.append (" (x, xdot, t, cj) jac = ");
+                        dassl_jac = extract_function
+                          (c(1), "dassl", jac_name, jname, "; endfunction");
+
+                        if (!dassl_jac)
+                          {
+                            if (fcn_name.length())
+                              clear_function (fcn_name);
+                            dassl_fcn = 0;
+                          }
+                    }
+                }
+            }
+          else
+            DASSL_ABORT1 ("incorrect number of elements in cell array");
+        }
 
       if (!dassl_fcn && ! f_arg.is_cell())
-	{
-	  if (f_arg.is_function_handle () || f_arg.is_inline_function ())
-	    dassl_fcn = f_arg.function_value ();
-	  else
-	    {
-	      switch (f_arg.rows ())
-		{
-		case 1:
-		  do
-		    {
-		      fcn_name = unique_symbol_name ("__dassl_fcn__");
-		      fname = "function y = ";
-		      fname.append (fcn_name);
-		      fname.append (" (x, xdot, t) y = ");
-		      dassl_fcn = extract_function
-			(f_arg, "dassl", fcn_name, fname, "; endfunction");
-		    }
-		  while (0);
-		  break;
+        {
+          if (f_arg.is_function_handle () || f_arg.is_inline_function ())
+            dassl_fcn = f_arg.function_value ();
+          else
+            {
+              switch (f_arg.rows ())
+                {
+                case 1:
+                  do
+                    {
+                      fcn_name = unique_symbol_name ("__dassl_fcn__");
+                      fname = "function y = ";
+                      fname.append (fcn_name);
+                      fname.append (" (x, xdot, t) y = ");
+                      dassl_fcn = extract_function
+                        (f_arg, "dassl", fcn_name, fname, "; endfunction");
+                    }
+                  while (0);
+                  break;
 
-		case 2:
-		  {
-		    string_vector tmp = f_arg.all_strings ();
+                case 2:
+                  {
+                    string_vector tmp = f_arg.all_strings ();
 
-		    if (! error_state)
-		      {
-			fcn_name = unique_symbol_name ("__dassl_fcn__");
-			fname = "function y = ";
-			fname.append (fcn_name);
-			fname.append (" (x, xdot, t) y = ");
-			dassl_fcn = extract_function
-			  (tmp(0), "dassl", fcn_name, fname, "; endfunction");
+                    if (! error_state)
+                      {
+                        fcn_name = unique_symbol_name ("__dassl_fcn__");
+                        fname = "function y = ";
+                        fname.append (fcn_name);
+                        fname.append (" (x, xdot, t) y = ");
+                        dassl_fcn = extract_function
+                          (tmp(0), "dassl", fcn_name, fname, "; endfunction");
 
-			if (dassl_fcn)
-			  {
-			    jac_name = unique_symbol_name ("__dassl_jac__");
-			    jname = "function jac = ";
-			    jname.append(jac_name);
-			    jname.append (" (x, xdot, t, cj) jac = ");
-			    dassl_jac = extract_function
-			      (tmp(1), "dassl", jac_name, jname, 
-			       "; endfunction");
+                        if (dassl_fcn)
+                          {
+                            jac_name = unique_symbol_name ("__dassl_jac__");
+                            jname = "function jac = ";
+                            jname.append(jac_name);
+                            jname.append (" (x, xdot, t, cj) jac = ");
+                            dassl_jac = extract_function
+                              (tmp(1), "dassl", jac_name, jname,
+                               "; endfunction");
 
-			    if (!dassl_jac)
-			      {
-				if (fcn_name.length())
-				  clear_function (fcn_name);
-				dassl_fcn = 0;
-			      }
-			  }
-		      }
-		  }
-		}
-	    }
-	}
+                            if (!dassl_jac)
+                              {
+                                if (fcn_name.length())
+                                  clear_function (fcn_name);
+                                dassl_fcn = 0;
+                              }
+                          }
+                      }
+                  }
+                }
+            }
+        }
 
       if (error_state || ! dassl_fcn)
-	DASSL_ABORT ();
+        DASSL_ABORT ();
 
       ColumnVector state = ColumnVector (args(1).vector_value ());
 
       if (error_state)
-	DASSL_ABORT1 ("expecting state vector as second argument");
+        DASSL_ABORT1 ("expecting state vector as second argument");
 
       ColumnVector deriv (args(2).vector_value ());
 
       if (error_state)
-	DASSL_ABORT1 ("expecting derivative vector as third argument");
+        DASSL_ABORT1 ("expecting derivative vector as third argument");
 
       ColumnVector out_times (args(3).vector_value ());
 
       if (error_state)
-	DASSL_ABORT1 ("expecting output time vector as fourth argument");
+        DASSL_ABORT1 ("expecting output time vector as fourth argument");
 
       ColumnVector crit_times;
       int crit_times_set = 0;
       if (nargin > 4)
-	{
-	  crit_times = ColumnVector (args(4).vector_value ());
+        {
+          crit_times = ColumnVector (args(4).vector_value ());
 
-	  if (error_state)
-	    DASSL_ABORT1 ("expecting critical time vector as fifth argument");
+          if (error_state)
+            DASSL_ABORT1 ("expecting critical time vector as fifth argument");
 
-	  crit_times_set = 1;
-	}
+          crit_times_set = 1;
+        }
 
       if (state.capacity () != deriv.capacity ())
-	DASSL_ABORT1 ("x and xdot must have the same size");
+        DASSL_ABORT1 ("x and xdot must have the same size");
 
       double tzero = out_times (0);
 
       DAEFunc func (dassl_user_function);
       if (dassl_jac)
-	func.set_jacobian_function (dassl_user_jacobian);
+        func.set_jacobian_function (dassl_user_jacobian);
 
       DASSL dae (state, deriv, tzero, func);
 
@@ -452,41 +444,39 @@ parameters for @code{dassl}.\n\
       Matrix deriv_output;
 
       if (crit_times_set)
-	output = dae.integrate (out_times, deriv_output, crit_times);
+        output = dae.integrate (out_times, deriv_output, crit_times);
       else
-	output = dae.integrate (out_times, deriv_output);
+        output = dae.integrate (out_times, deriv_output);
 
       if (fcn_name.length())
-	clear_function (fcn_name);
+        clear_function (fcn_name);
       if (jac_name.length())
-	clear_function (jac_name);
+        clear_function (jac_name);
 
       if (! error_state)
-	{
-	  std::string msg = dae.error_message ();
+        {
+          std::string msg = dae.error_message ();
 
-	  retval(3) = msg;
-	  retval(2) = static_cast<double> (dae.integration_state ());
+          retval(3) = msg;
+          retval(2) = static_cast<double> (dae.integration_state ());
 
-	  if (dae.integration_ok ())
-	    {
-	      retval(1) = deriv_output;
-	      retval(0) = output;
-	    }
-	  else
-	    {
-	      retval(1) = Matrix ();
-	      retval(0) = Matrix ();
+          if (dae.integration_ok ())
+            {
+              retval(1) = deriv_output;
+              retval(0) = output;
+            }
+          else
+            {
+              retval(1) = Matrix ();
+              retval(0) = Matrix ();
 
-	      if (nargout < 3)
-		error ("dassl: %s", msg.c_str ());
-	    }
-	}
+              if (nargout < 3)
+                error ("dassl: %s", msg.c_str ());
+            }
+        }
     }
   else
     print_usage ();
-
-  unwind_protect::run_frame ("Fdassl");
 
   return retval;
 }
@@ -513,18 +503,18 @@ parameters for @code{dassl}.\n\
 %!function res = f (x, xdot, t)
 %!  res = [xdot(1)+x(2); xdot(2)-x(1)];
 %!test
-%! 
+%!
 %! x0 = [1; 0];
 %! xdot0 = [0; 1];
 %! t = (0:1:10)';
-%! 
+%!
 %! tol = 100 * dassl_options ("relative tolerance");
-%! 
-%! 
+%!
+%!
 %! [x, xdot] = dassl ("f", x0, xdot0, t);
-%! 
+%!
 %! y = [cos(t), sin(t)];
-%! 
+%!
 %! assert(all (all (abs (x - y) < tol)));
 
 %% dassl-2.m
@@ -541,7 +531,7 @@ parameters for @code{dassl}.\n\
 %%
 %%   x1' + 10*x1 = 0,   x1(0) = 1
 %%   x1  + x2    = 1,   x2(0) = 0
-%% 
+%%
 %%
 %% Solution
 %%
@@ -550,18 +540,18 @@ parameters for @code{dassl}.\n\
 %!function res = f (x, xdot, t)
 %!  res = [xdot(1)+10*x(1); x(1)+x(2)-1];
 %!test
-%! 
+%!
 %! x0 = [1; 0];
 %! xdot0 = [-10; 10];
 %! t = (0:0.2:1)';
-%! 
+%!
 %! tol = 500 * dassl_options ("relative tolerance");
-%! 
-%! 
+%!
+%!
 %! [x, xdot] = dassl ("f", x0, xdot0, t);
-%! 
+%!
 %! y = [exp(-10*t), 1-exp(-10*t)];
-%! 
+%!
 %! assert(all (all (abs (x - y) < tol)));
 
 %!test
@@ -570,10 +560,4 @@ parameters for @code{dassl}.\n\
 
 %!error <Invalid call to dassl_options.*> dassl_options ("foo", 1, 2);
 
-*/
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
 */

@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 2000, 2002, 2005, 2006, 2007, 2008
-##               Friedrich Leisch
+## Copyright (C) 1995-2011 Friedrich Leisch
 ##
 ## This file is part of Octave.
 ##
@@ -29,39 +28,40 @@
 ## Author: FL <Friedrich.Leisch@ci.tuwien.ac.at>
 ## Description: Compute a sine tone
 
-function retval = sinetone (f, r, s, a)
+function retval = sinetone (freq, rate, sec, ampl)
 
   if (nargin == 1)
-    r = 8000;
-    s = 1;
-    a = 64;
+    rate = 8000;
+    sec = 1;
+    ampl = 64;
   elseif (nargin == 2)
-    s = 1;
-    a = 64;
+    sec = 1;
+    ampl = 64;
   elseif (nargin == 3)
-    a = 64;
+    ampl = 64;
   elseif ((nargin < 1) || (nargin > 4))
     print_usage ();
   endif
 
-  [err, f, a] = common_size (f, a);
-  if (err || ! isvector (f))
-    error ("sinetone: freq and ampl must be vectors of common size");
+  [err, freq, ampl] = common_size (freq, ampl);
+  if (err || ! isvector (freq))
+    error ("sinetone: FREQ and AMPL must be vectors of common size");
   endif
 
-  if (! (isscalar (r) && isscalar (s)))
-    error ("sinetone: rate and sec must be scalars");
+  if (! (isscalar (rate) && isscalar (sec)))
+    error ("sinetone: RATE and SEC must be scalars");
   endif
 
-  n = length (f);
-  ns = round (r * s);
+  n = length (freq);
+  ns = round (rate * sec);
 
   retval = zeros (ns, n);
 
   for k = 1:n
-    retval (:, k) = a(k) * sin (2 * pi * (1:ns) / r * f(k))';
+    retval (:, k) = ampl(k) * sin (2 * pi * (1:ns) / rate * freq(k))';
   endfor
 
 endfunction
+
 
 %!assert (size (sinetone (18e6, 150e6, 19550/150e6, 1)), [19550, 1]);

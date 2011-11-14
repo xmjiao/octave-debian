@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2002, 2003, 2004, 2005, 2006, 2007, 2008
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -24,7 +23,7 @@ along with Octave; see the file COPYING.  If not, see
 #if !defined (octave_liboctave_ieee_h)
 #define octave_liboctave_ieee_h 1
 
-#ifdef	__cplusplus
+#ifdef  __cplusplus
 extern "C" {
 #endif
 
@@ -69,19 +68,8 @@ typedef union
 #define LO_IEEE_NA_HW 0x7FF840F4
 #define LO_IEEE_NA_LW 0x40000000
 #define LO_IEEE_NA_FLOAT   0x7FC207A2
- 
 
 extern OCTAVE_API void octave_ieee_init (void);
-
-#if defined (SCO)
-extern int __isnan (double);
-extern int __isinf (double);
-extern int __isnanf (float);
-extern int __isinff (float);
-
-#define isnan(x) (sizeof (x) == sizeof (float) ? __isnanf (x) : __isnan (x))
-#define isinf(x) (sizeof (x) == sizeof (float) ? __isinff (x) : __isinf (x))
-#endif
 
 extern OCTAVE_API int __lo_ieee_isnan (double x);
 extern OCTAVE_API int __lo_ieee_finite (double x);
@@ -111,29 +99,23 @@ extern OCTAVE_API float lo_ieee_float_nan_value (void);
 
 extern OCTAVE_API int __lo_ieee_float_signbit (float);
 
-#ifdef	__cplusplus
+#ifdef  __cplusplus
 }
 #endif
 
 #define lo_ieee_isnan(x) (sizeof (x) == sizeof (float) ? \
-			 __lo_ieee_float_isnan (x) : __lo_ieee_isnan (x))
+                         __lo_ieee_float_isnan (x) : __lo_ieee_isnan (x))
 #define lo_ieee_finite(x) (sizeof (x) == sizeof (float) ? \
-			   __lo_ieee_float_finite (x) : __lo_ieee_finite (x))
+                           __lo_ieee_float_finite (x) : __lo_ieee_finite (x))
 #define lo_ieee_isinf(x) (sizeof (x) == sizeof (float) ? \
-			  __lo_ieee_float_isinf (x) : __lo_ieee_isinf (x))
+                          __lo_ieee_float_isinf (x) : __lo_ieee_isinf (x))
 
 
 #define lo_ieee_is_NA(x) (sizeof (x) == sizeof (float) ? \
-			  __lo_ieee_float_is_NA (x) : __lo_ieee_is_NA (x))
+                          __lo_ieee_float_is_NA (x) : __lo_ieee_is_NA (x))
 #define lo_ieee_is_NaN_or_NA(x) (sizeof (x) == sizeof (float) ? \
-			  __lo_ieee_float_is_NaN_or_NA (x) : __lo_ieee_is_NaN_or_NA (x))
+                          __lo_ieee_float_is_NaN_or_NA (x) : __lo_ieee_is_NaN_or_NA (x))
 #define lo_ieee_signbit(x) (sizeof (x) == sizeof (float) ? \
-			  __lo_ieee_float_signbit (x) : __lo_ieee_signbit (x))
+                          __lo_ieee_float_signbit (x) : __lo_ieee_signbit (x))
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

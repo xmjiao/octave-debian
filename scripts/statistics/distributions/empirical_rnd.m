@@ -1,5 +1,4 @@
-## Copyright (C) 1996, 1997, 1998, 2000, 2002, 2004, 2005, 2006, 2007, 2009
-##               Kurt Hornik
+## Copyright (C) 1996-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -18,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} empirical_rnd (@var{n}, @var{data})
+## @deftypefn  {Function File} {} empirical_rnd (@var{n}, @var{data})
 ## @deftypefnx {Function File} {} empirical_rnd (@var{data}, @var{r}, @var{c})
 ## @deftypefnx {Function File} {} empirical_rnd (@var{data}, @var{sz})
 ## Generate a bootstrap sample of size @var{n} from the empirical
@@ -45,7 +44,7 @@ function rnd = empirical_rnd (data, r, c)
   endif
 
   if (! isvector (data))
-    error ("empirical_rnd: data must be a vector");
+    error ("empirical_rnd: DATA must be a vector");
   endif
 
   rnd = discrete_rnd (data, ones (size (data)) / length (data), r, c);

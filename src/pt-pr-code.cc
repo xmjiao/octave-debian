@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004,
-              2005, 2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -51,10 +50,7 @@ tree_print_code::visit_anon_fcn_handle (tree_anon_fcn_handle& afh)
 
   os << ") ";
 
-  tree_statement_list *body = afh.body ();
-
-  if (body)
-    body->accept (*this);
+  print_fcn_handle_body (afh.body ());
 
   print_parens (afh, ")");
 }
@@ -69,12 +65,12 @@ tree_print_code::visit_argument_list (tree_argument_list& lst)
       tree_expression *elt = *p++;
 
       if (elt)
-	{
-	  elt->accept (*this);
+        {
+          elt->accept (*this);
 
-	  if (p != lst.end ())
-	    os << ", ";
-	}
+          if (p != lst.end ())
+            os << ", ";
+        }
     }
 }
 
@@ -202,12 +198,12 @@ tree_print_code::visit_decl_init_list (tree_decl_init_list& lst)
       tree_decl_elt *elt = *p++;
 
       if (elt)
-	{
-	  elt->accept (*this);
+        {
+          elt->accept (*this);
 
-	  if (p != lst.end ())
-	    os << ", ";
-	}
+          if (p != lst.end ())
+            os << ", ";
+        }
     }
 }
 
@@ -351,26 +347,26 @@ tree_print_code::visit_octave_user_function_header (octave_user_function& fcn)
       int len = ret_list->length ();
 
       if (len > 1 || takes_var_return)
-	{
-	  os << "[";
-	  nesting.push ('[');
-	}
+        {
+          os << "[";
+          nesting.push ('[');
+        }
 
       ret_list->accept (*this);
 
       if (takes_var_return)
-	{
-	  if (len > 0)
-	    os << ", ";
+        {
+          if (len > 0)
+            os << ", ";
 
-	  os << "varargout";
-	}
+          os << "varargout";
+        }
 
       if (len > 1 || takes_var_return)
-	{
-	  nesting.pop ();
-	  os << "]";
-	}
+        {
+          nesting.pop ();
+          os << "]";
+        }
 
       os << " = ";
     }
@@ -388,27 +384,27 @@ tree_print_code::visit_octave_user_function_header (octave_user_function& fcn)
       int len = param_list->length ();
 
       if (len > 0 || takes_varargs)
-	{
-	  os << "(";
-	  nesting.push ('(');
-	}
+        {
+          os << "(";
+          nesting.push ('(');
+        }
 
       param_list->accept (*this);
 
       if (takes_varargs)
-	{
-	  if (len > 0)
-	    os << ", ";
+        {
+          if (len > 0)
+            os << ", ";
 
-	  os << "varargin";
-	}
+          os << "varargin";
+        }
 
       if (len > 0 || takes_varargs)
-	{
-	  nesting.pop ();
-	  os << ")";
-	  newline ();
-	}
+        {
+          nesting.pop ();
+          os << ")";
+          newline ();
+        }
     }
   else
     {
@@ -421,10 +417,6 @@ void
 tree_print_code::visit_octave_user_function_trailer (octave_user_function& fcn)
 {
   print_indented_comment (fcn.trailing_comment ());
-
-  indent ();
-
-  os << "endfunction";
 
   newline ();
 }
@@ -510,21 +502,21 @@ tree_print_code::visit_if_command_list (tree_if_command_list& lst)
       tree_if_clause *elt = *p++;
 
       if (elt)
-	{
-	  if (! first_elt)
-	    {
-	      print_indented_comment (elt->leading_comment ());
+        {
+          if (! first_elt)
+            {
+              print_indented_comment (elt->leading_comment ());
 
-	      indent ();
+              indent ();
 
-	      if (elt->is_else_clause ())
-		os << "else";
-	      else
-		os << "elseif ";
-	    }
+              if (elt->is_else_clause ())
+                os << "else";
+              else
+                os << "elseif ";
+            }
 
-	  elt->accept (*this);
-	}
+          elt->accept (*this);
+        }
 
       first_elt = false;
     }
@@ -560,56 +552,56 @@ tree_print_code::visit_index_expression (tree_index_expression& expr)
   for (int i = 0; i < n; i++)
     {
       switch (type_tags[i])
-	{
-	case '(':
-	  {
-	    char nc = nesting.top ();
-	    if ((nc == '[' || nc == '{') && expr.paren_count () == 0)
-	      os << "(";
-	    else
-	      os << " (";
-	    nesting.push ('(');
+        {
+        case '(':
+          {
+            char nc = nesting.top ();
+            if ((nc == '[' || nc == '{') && expr.paren_count () == 0)
+              os << "(";
+            else
+              os << " (";
+            nesting.push ('(');
 
-	    tree_argument_list *l = *p_arg_lists;
-	    if (l)
-	      l->accept (*this);
+            tree_argument_list *l = *p_arg_lists;
+            if (l)
+              l->accept (*this);
 
-	    nesting.pop ();
-	    os << ")";
-	  }
-	  break;
-	    
-	case '{':
-	  {
-	    char nc = nesting.top ();
-	    if ((nc == '[' || nc == '{') && expr.paren_count () == 0)
-	      os << "{";
-	    else
-	      os << " {";
-	    // We only care about whitespace inside [] and {} when we
-	    // are defining matrix and cell objects, not when indexing.
-	    nesting.push ('(');
+            nesting.pop ();
+            os << ")";
+          }
+          break;
 
-	    tree_argument_list *l = *p_arg_lists;
-	    if (l)
-	      l->accept (*this);
+        case '{':
+          {
+            char nc = nesting.top ();
+            if ((nc == '[' || nc == '{') && expr.paren_count () == 0)
+              os << "{";
+            else
+              os << " {";
+            // We only care about whitespace inside [] and {} when we
+            // are defining matrix and cell objects, not when indexing.
+            nesting.push ('(');
 
-	    nesting.pop ();
-	    os << "}";
-	  }
-	  break;
-	    
-	case '.':
-	  {
-	    string_vector nm = *p_arg_names;
-	    assert (nm.length () == 1);
-	    os << "." << nm(0);
-	  }
-	  break;
+            tree_argument_list *l = *p_arg_lists;
+            if (l)
+              l->accept (*this);
 
-	default:
-	  panic_impossible ();
-	}
+            nesting.pop ();
+            os << "}";
+          }
+          break;
+
+        case '.':
+          {
+            string_vector nm = *p_arg_names;
+            assert (nm.length () == 1);
+            os << "." << nm(0);
+          }
+          break;
+
+        default:
+          panic_impossible ();
+        }
 
       p_arg_lists++;
       p_arg_names++;
@@ -635,12 +627,12 @@ tree_print_code::visit_matrix (tree_matrix& lst)
       tree_argument_list *elt = *p++;
 
       if (elt)
-	{
-	  elt->accept (*this);
+        {
+          elt->accept (*this);
 
-	  if (p != lst.end ())
-	    os << "; ";
-	}
+          if (p != lst.end ())
+            os << "; ";
+        }
     }
 
   nesting.pop ();
@@ -666,12 +658,12 @@ tree_print_code::visit_cell (tree_cell& lst)
       tree_argument_list *elt = *p++;
 
       if (elt)
-	{
-	  elt->accept (*this);
+        {
+          elt->accept (*this);
 
-	  if (p != lst.end ())
-	    os << "; ";
-	}
+          if (p != lst.end ())
+            os << "; ";
+        }
     }
 
   nesting.pop ();
@@ -694,18 +686,18 @@ tree_print_code::visit_multi_assignment (tree_multi_assignment& expr)
       int len = lhs->length ();
 
       if (len > 1)
-	{
-	  os << "[";
-	  nesting.push ('[');
-	}
+        {
+          os << "[";
+          nesting.push ('[');
+        }
 
       lhs->accept (*this);
 
       if (len > 1)
-	{
-	  nesting.pop ();
-	  os << "]";
-	}
+        {
+          nesting.pop ();
+          os << "]";
+        }
     }
 
   os << " " << expr.oper () << " ";
@@ -760,12 +752,12 @@ tree_print_code::visit_parameter_list (tree_parameter_list& lst)
       tree_decl_elt *elt = *p++;
 
       if (elt)
-	{
-	  elt->accept (*this);
+        {
+          elt->accept (*this);
 
-	  if (p != lst.end ())
-	    os << ", ";
-	}
+          if (p != lst.end ())
+            os << ", ";
+        }
     }
 }
 
@@ -821,12 +813,12 @@ tree_print_code::visit_return_list (tree_return_list& lst)
       tree_index_expression *elt = *p++;
 
       if (elt)
-	{
-	  elt->accept (*this);
+        {
+          elt->accept (*this);
 
-	  if (p != lst.end ())
-	    os << ", ";
-	}
+          if (p != lst.end ())
+            os << ", ";
+        }
     }
 }
 
@@ -864,29 +856,29 @@ tree_print_code::visit_statement (tree_statement& stmt)
       cmd->accept (*this);
 
       if (! stmt.print_result ())
-	{
-	  os << ";";
-	  newline (" ");
-	}
+        {
+          os << ";";
+          newline (" ");
+        }
       else
-	newline ();
+        newline ();
     }
   else
     {
       tree_expression *expr = stmt.expression ();
 
       if (expr)
-	{
-	  expr->accept (*this);
+        {
+          expr->accept (*this);
 
-	  if (! stmt.print_result ())
-	    {
-	      os << ";";
-	      newline (" ");
-	    }
-	  else
-	    newline ();
-	}
+          if (! stmt.print_result ())
+            {
+              os << ";";
+              newline (" ");
+            }
+          else
+            newline ();
+        }
     }
 }
 
@@ -898,7 +890,7 @@ tree_print_code::visit_statement_list (tree_statement_list& lst)
       tree_statement *elt = *p;
 
       if (elt)
-	elt->accept (*this);
+        elt->accept (*this);
     }
 }
 
@@ -945,7 +937,7 @@ tree_print_code::visit_switch_case_list (tree_switch_case_list& lst)
       tree_switch_case *elt = *p++;
 
       if (elt)
-	elt->accept (*this);
+        elt->accept (*this);
     }
 }
 
@@ -1150,6 +1142,40 @@ tree_print_code::visit_do_until_command (tree_do_until_command& cmd)
   newline ();
 }
 
+void
+tree_print_code::print_fcn_handle_body (tree_statement_list *b)
+{
+  if (b)
+    {
+      assert (b->length () == 1);
+
+      tree_statement *s = b->front ();
+
+      if (s)
+        {
+          if (s->is_expression ())
+            {
+              tree_expression *e = s->expression ();
+
+              if (e)
+                {
+                  suppress_newlines++;
+                  e->accept (*this);
+                  suppress_newlines--;
+                }
+            }
+          else
+            {
+              tree_command *c = s->command ();
+
+              suppress_newlines++;
+              c->accept (*this);
+              suppress_newlines--;
+            }
+        }
+    }
+}
+
 // Each print_code() function should call this before printing
 // anything.
 //
@@ -1160,17 +1186,14 @@ tree_print_code::indent (void)
 {
   assert (curr_print_indent_level >= 0);
 
-  if (printing_newlines)
+  if (beginning_of_line)
     {
-      if (beginning_of_line)
-	{
-	  os << prefix;
+      os << prefix;
 
-	  for (int i = 0; i < curr_print_indent_level; i++)
-	    os << " ";
+      for (int i = 0; i < curr_print_indent_level; i++)
+        os << " ";
 
-	  beginning_of_line = false;
-	}
+      beginning_of_line = false;
     }
 }
 
@@ -1179,9 +1202,14 @@ tree_print_code::indent (void)
 void
 tree_print_code::newline (const char *alt_txt)
 {
-  os << (printing_newlines ? "\n" : alt_txt);
+  if (suppress_newlines)
+    os << alt_txt;
+  else
+    {
+      os << "\n";
 
-  beginning_of_line = true;
+      beginning_of_line = true;
+    }
 }
 
 // For ressetting print_code state.
@@ -1226,32 +1254,32 @@ tree_print_code::print_comment_elt (const octave_comment_elt& elt)
       char c = comment[i++];
 
       if (c == '\n')
-	{
-	  if (prev_char_was_newline)
-	    os << "##";
+        {
+          if (prev_char_was_newline)
+            os << "##";
 
-	  newline ();
+          newline ();
 
-	  prev_char_was_newline = true;
-	}
+          prev_char_was_newline = true;
+        }
       else
-	{
-	  if (beginning_of_line)
-	    {
-	      printed_something = true;
+        {
+          if (beginning_of_line)
+            {
+              printed_something = true;
 
-	      indent ();
+              indent ();
 
-	      os << "##";
+              os << "##";
 
-	      if (! (isspace (c) || c == '!'))
-		os << " ";
-	    }
+              if (! (isspace (c) || c == '!'))
+                os << " ";
+            }
 
-	  os << static_cast<char> (c);
+          os << static_cast<char> (c);
 
-	  prev_char_was_newline = false;
-	}
+          prev_char_was_newline = false;
+        }
     }
 
   if (printed_something && ! beginning_of_line)
@@ -1266,14 +1294,14 @@ tree_print_code::print_comment_list (octave_comment_list *comment_list)
       octave_comment_list::iterator p = comment_list->begin ();
 
       while (p != comment_list->end ())
-	{
-	  octave_comment_elt elt = *p++;
+        {
+          octave_comment_elt elt = *p++;
 
-	  print_comment_elt (elt);
+          print_comment_elt (elt);
 
-	  if (p != comment_list->end ())
-	    newline ();
-	}
+          if (p != comment_list->end ())
+            newline ();
+        }
     }
 }
 
@@ -1286,9 +1314,3 @@ tree_print_code::print_indented_comment (octave_comment_list *comment_list)
 
   decrement_indent_level ();
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

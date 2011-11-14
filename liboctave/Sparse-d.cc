@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 2004, 2005, 2007, 2008, 2009 David Bateman
-Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004 Andy Adler
+Copyright (C) 2004-2011 David Bateman
+Copyright (C) 1998-2004 Andy Adler
 
 This file is part of Octave.
 
@@ -45,14 +45,8 @@ sparse_descending_compare<double> (double a, double b)
   return (xisnan (a) || (a > b));
 }
 
-INSTANTIATE_SPARSE_AND_ASSIGN (double, OCTAVE_API);
+INSTANTIATE_SPARSE (double, OCTAVE_API);
 
 #if 0
 template std::ostream& operator << (std::ostream&, const Sparse<double>&);
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

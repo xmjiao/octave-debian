@@ -1,4 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 2005, 2006, 2007, 2009 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} lognrnd (@var{mu}, @var{sigma}, @var{r}, @var{c})
+## @deftypefn  {Function File} {} lognrnd (@var{mu}, @var{sigma}, @var{r}, @var{c})
 ## @deftypefnx {Function File} {} lognrnd (@var{mu}, @var{sigma}, @var{sz})
 ## Return an @var{r} by @var{c} matrix of random samples from the
 ## lognormal distribution with parameters @var{mu} and @var{sigma}.  Both
@@ -34,26 +34,26 @@
 function rnd = lognrnd (mu, sigma, r, c)
 
   if (nargin > 1)
-    if (!isscalar(mu) || !isscalar(sigma)) 
+    if (!isscalar(mu) || !isscalar(sigma))
       [retval, mu, sigma] = common_size (mu, sigma);
       if (retval > 0)
-	error ("lognrnd: mu and sigma must be of common size or scalar");
+        error ("lognrnd: MU and SIGMA must be of common size or scalar");
       endif
     endif
   endif
 
   if (nargin == 4)
     if (! (isscalar (r) && (r > 0) && (r == round (r))))
-      error ("lognrnd: r must be a positive integer");
+      error ("lognrnd: R must be a positive integer");
     endif
     if (! (isscalar (c) && (c > 0) && (c == round (c))))
-      error ("lognrnd: c must be a positive integer");
+      error ("lognrnd: C must be a positive integer");
     endif
     sz = [r, c];
 
-    if (any (size (mu) != 1) && 
-	((length (size (mu)) != length (sz)) || any (size (mu) != sz)))
-      error ("lognrnd: mu and sigma must be scalar or of size [r, c]");
+    if (any (size (mu) != 1)
+        && ((length (size (mu)) != length (sz)) || any (size (mu) != sz)))
+      error ("lognrnd: MU and SIGMA must be scalar or of size [R, C]");
     endif
 
   elseif (nargin == 3)
@@ -62,12 +62,12 @@ function rnd = lognrnd (mu, sigma, r, c)
     elseif (isvector(r) && all (r > 0))
       sz = r(:)';
     else
-      error ("lognrnd: r must be a positive integer or vector");
+      error ("lognrnd: R must be a positive integer or vector");
     endif
 
-    if (any (size (mu) != 1) && 
-	((length (size (mu)) != length (sz)) || any (size (mu) != sz)))
-      error ("lognrnd: mu and sigma must be scalar or of size sz");
+    if (any (size (mu) != 1)
+        && ((length (size (mu)) != length (sz)) || any (size (mu) != sz)))
+      error ("lognrnd: MU and SIGMA must be scalar or of size SZ");
     endif
   elseif (nargin == 2)
     sz = size(mu);
@@ -77,9 +77,9 @@ function rnd = lognrnd (mu, sigma, r, c)
 
   if (isscalar (mu) && isscalar (sigma))
     if  (!(sigma > 0) || !(sigma < Inf))
-      rnd = NaN * ones (sz);
+      rnd = NaN (sz);
     else
-      rnd = exp(mu + sigma .* randn (sz)); 
+      rnd = exp(mu + sigma .* randn (sz));
     endif
   else
     rnd = exp (mu + sigma .* randn (sz));

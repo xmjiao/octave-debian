@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2000, 2002, 2003, 2004, 2005,
-              2007, 2008 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -36,28 +35,32 @@ along with Octave; see the file COPYING.  If not, see
 extern "C"
 {
   F77_RET_T
-  F77_FUNC (sggbal, SGGBAL) (F77_CONST_CHAR_ARG_DECL, const octave_idx_type& N,
-			     float* A, const octave_idx_type& LDA, float* B,
-			     const octave_idx_type& LDB, octave_idx_type& ILO, octave_idx_type& IHI,
-			     float* LSCALE, float* RSCALE,
-			     float* WORK, octave_idx_type& INFO
-			     F77_CHAR_ARG_LEN_DECL);
+  F77_FUNC (sggbal, SGGBAL) (F77_CONST_CHAR_ARG_DECL,
+                             const octave_idx_type& N, float* A,
+                             const octave_idx_type& LDA, float* B,
+                             const octave_idx_type& LDB,
+                             octave_idx_type& ILO, octave_idx_type& IHI,
+                             float* LSCALE, float* RSCALE,
+                             float* WORK, octave_idx_type& INFO
+                             F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
   F77_FUNC (sggbak, SGGBAK) (F77_CONST_CHAR_ARG_DECL,
-			     F77_CONST_CHAR_ARG_DECL,
-			     const octave_idx_type& N, const octave_idx_type& ILO,
-			     const octave_idx_type& IHI, const float* LSCALE,
-			     const float* RSCALE, octave_idx_type& M, float* V,
-			     const octave_idx_type& LDV, octave_idx_type& INFO
-			     F77_CHAR_ARG_LEN_DECL
-			     F77_CHAR_ARG_LEN_DECL);
+                             F77_CONST_CHAR_ARG_DECL,
+                             const octave_idx_type& N,
+                             const octave_idx_type& ILO,
+                             const octave_idx_type& IHI,
+                             const float* LSCALE, const float* RSCALE,
+                             octave_idx_type& M, float* V,
+                             const octave_idx_type& LDV, octave_idx_type& INFO
+                             F77_CHAR_ARG_LEN_DECL
+                             F77_CHAR_ARG_LEN_DECL);
 
 }
 
 octave_idx_type
-FloatGEPBALANCE::init (const FloatMatrix& a, const FloatMatrix& b, 
-		  const std::string& balance_job)
+FloatGEPBALANCE::init (const FloatMatrix& a, const FloatMatrix& b,
+                  const std::string& balance_job)
 {
   octave_idx_type n = a.cols ();
 
@@ -71,7 +74,7 @@ FloatGEPBALANCE::init (const FloatMatrix& a, const FloatMatrix& b,
     {
       gripe_nonconformant ("FloatGEPBALANCE", n, n, b.rows(), b.cols());
       return -1;
-    } 
+    }
 
   octave_idx_type info;
   octave_idx_type ilo;
@@ -89,15 +92,15 @@ FloatGEPBALANCE::init (const FloatMatrix& a, const FloatMatrix& b,
   char job = balance_job[0];
 
   F77_XFCN (sggbal, SGGBAL, (F77_CONST_CHAR_ARG2 (&job, 1),
-			     n, p_balanced_mat, n, p_balanced_mat2,
-			     n, ilo, ihi, plscale, prscale, pwork, info
-			     F77_CHAR_ARG_LEN  (1)));
+                             n, p_balanced_mat, n, p_balanced_mat2,
+                             n, ilo, ihi, plscale, prscale, pwork, info
+                             F77_CHAR_ARG_LEN  (1)));
 
   balancing_mat = FloatMatrix (n, n, 0.0);
   balancing_mat2 = FloatMatrix (n, n, 0.0);
   for (octave_idx_type i = 0; i < n; i++)
     {
-      OCTAVE_QUIT;
+      octave_quit ();
       balancing_mat.elem (i ,i) = 1.0;
       balancing_mat2.elem (i ,i) = 1.0;
     }
@@ -107,25 +110,19 @@ FloatGEPBALANCE::init (const FloatMatrix& a, const FloatMatrix& b,
 
   // first left
   F77_XFCN (sggbak, SGGBAK, (F77_CONST_CHAR_ARG2 (&job, 1),
-			     F77_CONST_CHAR_ARG2 ("L", 1),
-			     n, ilo, ihi, plscale, prscale,
-			     n, p_balancing_mat, n, info
-			     F77_CHAR_ARG_LEN (1)
-			     F77_CHAR_ARG_LEN (1)));
-      
+                             F77_CONST_CHAR_ARG2 ("L", 1),
+                             n, ilo, ihi, plscale, prscale,
+                             n, p_balancing_mat, n, info
+                             F77_CHAR_ARG_LEN (1)
+                             F77_CHAR_ARG_LEN (1)));
+
   // then right
   F77_XFCN (sggbak, SGGBAK, (F77_CONST_CHAR_ARG2 (&job, 1),
-			     F77_CONST_CHAR_ARG2 ("R", 1),
-			     n, ilo, ihi, plscale, prscale,
-			     n, p_balancing_mat2, n, info
-			     F77_CHAR_ARG_LEN (1)
-			     F77_CHAR_ARG_LEN (1)));
+                             F77_CONST_CHAR_ARG2 ("R", 1),
+                             n, ilo, ihi, plscale, prscale,
+                             n, p_balancing_mat2, n, info
+                             F77_CHAR_ARG_LEN (1)
+                             F77_CHAR_ARG_LEN (1)));
 
   return info;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

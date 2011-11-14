@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 2007, 2008, 2009 John Swensen
-Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ben Sapp
+Copyright (C) 2001-2011 Ben Sapp
+Copyright (C) 2007-2009 John Swensen
 
 This file is part of Octave.
 
@@ -26,6 +26,7 @@ along with Octave; see the file COPYING.  If not, see
 
 #include <deque>
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <set>
 #include <string>
@@ -45,7 +46,6 @@ along with Octave; see the file COPYING.  If not, see
 #include "ov.h"
 #include "ov-usr-fcn.h"
 #include "ov-fcn.h"
-#include "ov-list.h"
 #include "ov-struct.h"
 #include "pt-pr-code.h"
 #include "pt-bp.h"
@@ -74,20 +74,20 @@ snarf_file (const std::string& fname)
       std::ifstream file (fname.c_str (), std::ios::in|std::ios::binary);
 
       if (file)
-	{
-	  std::string buf (sz+1, 0);
+        {
+          std::string buf (sz+1, 0);
 
-	  file.read (&buf[0], sz+1);
+          file.read (&buf[0], sz+1);
 
-	  if (file.eof ())
-	    {
-	      // Expected to read the entire file.
+          if (file.eof ())
+            {
+              // Expected to read the entire file.
 
-	      retval = buf;
-	    }
-	  else
-	    error ("error reading file %s", fname.c_str ());
-	}
+              retval = buf;
+            }
+          else
+            error ("error reading file %s", fname.c_str ());
+        }
     }
 
   return retval;
@@ -110,16 +110,16 @@ get_line_offsets (const std::string& buf)
       char c = buf[i];
 
       if (c == '\r' && ++i < len)
-	{
-	  c = buf[i];
+        {
+          c = buf[i];
 
-	  if (c == '\n')
-	    offsets.push_back (i+1);
-	  else
-	    offsets.push_back (i);
-	}
+          if (c == '\n')
+            offsets.push_back (i+1);
+          else
+            offsets.push_back (i);
+        }
       else if (c == '\n')
-	offsets.push_back (i+1);
+        offsets.push_back (i+1);
     }
 
   offsets.push_back (len);
@@ -153,8 +153,8 @@ get_file_line (const std::string& fname, size_t line)
       size_t bol = offsets[line];
       size_t eol = offsets[line+1];
 
-      while (eol > 0 && (buf[eol-1] == '\n' || buf[eol-1] == '\r'))
-	eol--;
+      while (eol > 0 && eol > bol && (buf[eol-1] == '\n' || buf[eol-1] == '\r'))
+        eol--;
 
       retval = buf.substr (bol, eol - bol);
     }
@@ -178,15 +178,15 @@ get_user_code (const std::string& fname = std::string ())
       octave_value fcn = symbol_table::find_function (fname);
 
       if (fcn.is_defined () && fcn.is_user_code ())
-	dbg_fcn = fcn.user_code_value ();
+        dbg_fcn = fcn.user_code_value ();
     }
 
   return dbg_fcn;
 }
 
 static void
-parse_dbfunction_params (const char *who, const octave_value_list& args, 
-			 std::string& symbol_name, bp_table::intmap& lines)
+parse_dbfunction_params (const char *who, const octave_value_list& args,
+                         std::string& symbol_name, bp_table::intmap& lines)
 {
   int nargin = args.length ();
   int idx = 0;
@@ -212,7 +212,7 @@ parse_dbfunction_params (const char *who, const octave_value_list& args,
     {
       symbol_name = args(0).string_value ();
       if (error_state)
-	return;
+        return;
       idx = 1;
     }
   else
@@ -221,38 +221,38 @@ parse_dbfunction_params (const char *who, const octave_value_list& args,
   for (int i = idx; i < nargin; i++ )
     {
       if (args(i).is_string ())
-	{
-	  int line = atoi (args(i).string_value().c_str ());
-	  if (error_state)
-	    break;
-	  lines[list_idx++] = line;
-	}
+        {
+          int line = atoi (args(i).string_value().c_str ());
+          if (error_state)
+            break;
+          lines[list_idx++] = line;
+        }
       else if (args(i).is_map ())
-	octave_stdout << who << ": accepting a struct" << std::endl;
+        octave_stdout << who << ": accepting a struct" << std::endl;
       else
-	{
-	  const NDArray arg = args(i).array_value ();
-	  
-	  if (error_state)
-	    break;
-	  
-	  for (octave_idx_type j = 0; j < arg.nelem (); j++)
-	    {
-	      int line = static_cast<int> (arg.elem (j));
-	      if (error_state)
-		break;
-	      lines[list_idx++] = line;
-	    }
-	  
-	  if (error_state)
-	    break;
-	}
-    } 
+        {
+          const NDArray arg = args(i).array_value ();
+
+          if (error_state)
+            break;
+
+          for (octave_idx_type j = 0; j < arg.nelem (); j++)
+            {
+              int line = static_cast<int> (arg.elem (j));
+              if (error_state)
+                break;
+              lines[list_idx++] = line;
+            }
+
+          if (error_state)
+            break;
+        }
+    }
 }
 
 bp_table::intmap
-bp_table::do_add_breakpoint (const std::string& fname, 
-			     const bp_table::intmap& line)
+bp_table::do_add_breakpoint (const std::string& fname,
+                             const bp_table::intmap& line)
 {
   intmap retval;
 
@@ -265,37 +265,37 @@ bp_table::do_add_breakpoint (const std::string& fname,
       tree_statement_list *cmds = dbg_fcn->body ();
 
       if (cmds)
-	{
-	  for (int i = 0; i < len; i++)
-	    {
-	      const_intmap_iterator p = line.find (i);
+        {
+          for (int i = 0; i < len; i++)
+            {
+              const_intmap_iterator p = line.find (i);
 
-	      if (p != line.end ())
-		{
-		  int lineno = p->second;
+              if (p != line.end ())
+                {
+                  int lineno = p->second;
 
-		  retval[i] = cmds->set_breakpoint (lineno);
+                  retval[i] = cmds->set_breakpoint (lineno);
 
-		  if (retval[i] != 0)
-		    {
-		      bp_set.insert (fname);
-		    }
-		}
-	    }
-	}
+                  if (retval[i] != 0)
+                    {
+                      bp_set.insert (fname);
+                    }
+                }
+            }
+        }
     }
   else
     error ("add_breakpoint: unable to find the function requested\n");
 
-  tree_evaluator::debug_mode = bp_table::have_breakpoints ();
+  tree_evaluator::debug_mode = bp_table::have_breakpoints () || Vdebugging;
 
   return retval;
 }
 
 
-int 
-bp_table::do_remove_breakpoint (const std::string& fname, 
-				const bp_table::intmap& line)
+int
+bp_table::do_remove_breakpoint (const std::string& fname,
+                                const bp_table::intmap& line)
 {
   int retval = 0;
 
@@ -311,105 +311,105 @@ bp_table::do_remove_breakpoint (const std::string& fname,
       octave_user_code *dbg_fcn = get_user_code (fname);
 
       if (dbg_fcn)
-	{
-	  tree_statement_list *cmds = dbg_fcn->body ();
+        {
+          tree_statement_list *cmds = dbg_fcn->body ();
 
-	  if (cmds)
-	    {
-	      octave_value_list results = cmds->list_breakpoints ();
+          if (cmds)
+            {
+              octave_value_list results = cmds->list_breakpoints ();
 
-	      if (results.length () > 0)
-		{
-		  for (int i = 0; i < len; i++)
-		    {
-		      const_intmap_iterator p = line.find (i);
+              if (results.length () > 0)
+                {
+                  for (int i = 0; i < len; i++)
+                    {
+                      const_intmap_iterator p = line.find (i);
 
-		      if (p != line.end ())
-			cmds->delete_breakpoint (p->second);
-		    }
+                      if (p != line.end ())
+                        cmds->delete_breakpoint (p->second);
+                    }
 
-		  results = cmds->list_breakpoints ();
+                  results = cmds->list_breakpoints ();
 
-		  bp_set_iterator it = bp_set.find (fname);
-		  if (results.length () == 0 && it != bp_set.end ())
-		    bp_set.erase (it);
+                  bp_set_iterator it = bp_set.find (fname);
+                  if (results.length () == 0 && it != bp_set.end ())
+                    bp_set.erase (it);
 
-		}
+                }
 
-	      retval = results.length ();
-	    }
-	}
+              retval = results.length ();
+            }
+        }
       else
-	error ("remove_breakpoint: unable to find the function requested\n");
+        error ("remove_breakpoint: unable to find the function requested\n");
     }
 
-  tree_evaluator::debug_mode = bp_table::have_breakpoints ();
+  tree_evaluator::debug_mode = bp_table::have_breakpoints () || Vdebugging;
 
   return retval;
 }
 
 
 bp_table::intmap
-bp_table::do_remove_all_breakpoints_in_file (const std::string& fname, 
-					     bool silent)
+bp_table::do_remove_all_breakpoints_in_file (const std::string& fname,
+                                             bool silent)
 {
   intmap retval;
 
   octave_user_code *dbg_fcn = get_user_code (fname);
-  
+
   if (dbg_fcn)
     {
       tree_statement_list *cmds = dbg_fcn->body ();
 
       if (cmds)
-	{
-	  octave_value_list bkpts = cmds->list_breakpoints ();
+        {
+          octave_value_list bkpts = cmds->list_breakpoints ();
 
-	  for (int i = 0; i < bkpts.length (); i++)
-	    {
-	      int lineno = static_cast<int> (bkpts(i).int_value ());
-	      cmds->delete_breakpoint (lineno);
-	      retval[i] = lineno;
-	    }
+          for (int i = 0; i < bkpts.length (); i++)
+            {
+              int lineno = static_cast<int> (bkpts(i).int_value ());
+              cmds->delete_breakpoint (lineno);
+              retval[i] = lineno;
+            }
 
-	  bp_set_iterator it = bp_set.find (fname);
-	  if (it != bp_set.end ())
-	    bp_set.erase (it);
+          bp_set_iterator it = bp_set.find (fname);
+          if (it != bp_set.end ())
+            bp_set.erase (it);
 
-	}
+        }
     }
   else if (! silent)
     error ("remove_all_breakpoint_in_file: "
-	   "unable to find the function requested\n");
+           "unable to find the function requested\n");
 
-  tree_evaluator::debug_mode = bp_table::have_breakpoints ();
+  tree_evaluator::debug_mode = bp_table::have_breakpoints () || Vdebugging;
 
   return retval;
 }
 
-void 
+void
 bp_table::do_remove_all_breakpoints (void)
 {
   for (const_bp_set_iterator it = bp_set.begin (); it != bp_set.end (); it++)
     remove_all_breakpoints_in_file (*it);
 
 
-  tree_evaluator::debug_mode = bp_table::have_breakpoints ();
+  tree_evaluator::debug_mode = bp_table::have_breakpoints () || Vdebugging;
 }
 
-std::string 
-do_find_bkpt_list (octave_value_list slist, 
-		   std::string match)
+std::string
+do_find_bkpt_list (octave_value_list slist,
+                   std::string match)
 {
   std::string retval;
 
   for (int i = 0; i < slist.length (); i++)
     {
       if (slist (i).string_value () == match)
-	{
-	  retval = slist(i).string_value ();
-	  break;
-	}
+        {
+          retval = slist(i).string_value ();
+          break;
+        }
     }
 
   return retval;
@@ -424,40 +424,40 @@ bp_table::do_get_breakpoint_list (const octave_value_list& fname_list)
   for (bp_set_iterator it = bp_set.begin (); it != bp_set.end (); it++)
     {
       if (fname_list.length () == 0
-	  || do_find_bkpt_list (fname_list, *it) != "")
-	{
-	  octave_user_code *f = get_user_code (*it);
+          || do_find_bkpt_list (fname_list, *it) != "")
+        {
+          octave_user_code *f = get_user_code (*it);
 
-	  if (f)
-	    {
-	      tree_statement_list *cmds = f->body ();
+          if (f)
+            {
+              tree_statement_list *cmds = f->body ();
 
-	      if (cmds)
-		{
-		  octave_value_list bkpts = cmds->list_breakpoints ();
-		  octave_idx_type len = bkpts.length (); 
+              if (cmds)
+                {
+                  octave_value_list bkpts = cmds->list_breakpoints ();
+                  octave_idx_type len = bkpts.length ();
 
-		  if (len > 0)
-		    {
-		      bp_table::intmap bkpts_vec;
-		      
-		      for (int i = 0; i < len; i++)
-			bkpts_vec[i] = bkpts (i).double_value ();
-		      
-		      std::string symbol_name = f->name ();
+                  if (len > 0)
+                    {
+                      bp_table::intmap bkpts_vec;
 
-		      retval[symbol_name] = bkpts_vec;
-		    }
-		}
-	    }
-	}
+                      for (int i = 0; i < len; i++)
+                        bkpts_vec[i] = bkpts (i).double_value ();
+
+                      std::string symbol_name = f->name ();
+
+                      retval[symbol_name] = bkpts_vec;
+                    }
+                }
+            }
+        }
     }
 
   return retval;
 }
 
 static octave_value
-intmap_to_ov (const bp_table::intmap& line) 
+intmap_to_ov (const bp_table::intmap& line)
 {
   int idx = 0;
 
@@ -468,10 +468,10 @@ intmap_to_ov (const bp_table::intmap& line)
       bp_table::const_intmap_iterator p = line.find (i);
 
       if (p != line.end ())
-	{
-	  int lineno = p->second;
-	  retval(idx++) = lineno;
-	}
+        {
+          int lineno = p->second;
+          retval(idx++) = lineno;
+        }
     }
 
   retval.resize (dim_vector (1, idx));
@@ -487,6 +487,7 @@ Set a breakpoint in a function\n\
 @item func\n\
 String representing the function name.  When already in debug\n\
 mode this should be left out and only the line should be given.\n\
+\n\
 @item line\n\
 Line number you would like the breakpoint to be set on.  Multiple\n\
 lines might be given as separate arguments or as a vector.\n\
@@ -519,6 +520,7 @@ Delete a breakpoint in a function\n\
 @item func\n\
 String representing the function name.  When already in debug\n\
 mode this should be left out and only the line should be given.\n\
+\n\
 @item line\n\
 Line number where you would like to remove the breakpoint.  Multiple\n\
 lines might be given as separate arguments or as a vector.\n\
@@ -533,7 +535,7 @@ a breakpoint.  If you get the wrong line nothing will happen.\n\
   bp_table::intmap lines;
 
   parse_dbfunction_params ("dbclear", args, symbol_name, lines);
-      
+
   if (! error_state)
     bp_table::remove_breakpoint (symbol_name, lines);
 
@@ -543,7 +545,7 @@ a breakpoint.  If you get the wrong line nothing will happen.\n\
 DEFUN (dbstatus, args, nargout,
   "-*- texinfo -*-\n\
 @deftypefn {Loadable Function} {lst =} dbstatus (@var{func})\n\
-Return a vector containing the lines on which a function has \n\
+Return a vector containing the lines on which a function has\n\
 breakpoints set.\n\
 @table @code\n\
 @item func\n\
@@ -553,7 +555,7 @@ mode this should be left out.\n\
 @seealso{dbclear, dbwhere}\n\
 @end deftypefn")
 {
-  Octave_map retval;
+  octave_map retval;
   int nargin = args.length ();
   octave_value_list fcn_list;
   bp_table::fname_line_map bp_list;
@@ -568,22 +570,22 @@ mode this should be left out.\n\
   if (nargin == 1)
     {
       if (args(0).is_string ())
-	{
-	  symbol_name = args(0).string_value ();
-	  fcn_list(0) = symbol_name;
-	  bp_list = bp_table::get_breakpoint_list (fcn_list);
-	}
+        {
+          symbol_name = args(0).string_value ();
+          fcn_list(0) = symbol_name;
+          bp_list = bp_table::get_breakpoint_list (fcn_list);
+        }
       else
-	gripe_wrong_type_arg ("dbstatus", args(0));
+        gripe_wrong_type_arg ("dbstatus", args(0));
     }
   else
     {
        octave_user_code *dbg_fcn = get_user_code ();
        if (dbg_fcn)
-	 {
-	   symbol_name = dbg_fcn->name ();
-	   fcn_list(0) = symbol_name;
-	 }
+         {
+           symbol_name = dbg_fcn->name ();
+           fcn_list(0) = symbol_name;
+         }
 
        bp_list = bp_table::get_breakpoint_list (fcn_list);
     }
@@ -593,20 +595,20 @@ mode this should be left out.\n\
       // Print out the breakpoint information.
 
       for (bp_table::fname_line_map_iterator it = bp_list.begin ();
-	   it != bp_list.end (); it++)
-	{	  
-	  octave_stdout << "Breakpoint in " << it->first << " at line(s) ";
+           it != bp_list.end (); it++)
+        {
+          octave_stdout << "breakpoint in " << it->first << " at line(s) ";
 
-	  bp_table::intmap m = it->second;
+          bp_table::intmap m = it->second;
 
-	  size_t nel = m.size ();
+          size_t nel = m.size ();
 
-	  for (size_t j = 0; j < nel; j++)
-	    octave_stdout << m[j] << ((j < nel - 1) ? ", " : ".");
+          for (size_t j = 0; j < nel; j++)
+            octave_stdout << m[j] << ((j < nel - 1) ? ", " : ".");
 
-	  if (nel > 0)
-	    octave_stdout << std::endl;
-	}
+          if (nel > 0)
+            octave_stdout << std::endl;
+        }
       return octave_value ();
     }
   else
@@ -619,13 +621,13 @@ mode this should be left out.\n\
       Cell line (dim_vector (bp_list.size (), 1));
 
       for (bp_table::const_fname_line_map_iterator it = bp_list.begin ();
-	   it != bp_list.end (); it++)
-	{
-	  names(i) = it->first;
-	  line(i) = intmap_to_ov (it->second);
-	  file(i) = do_which (it->first);
-	  i++;
-	}
+           it != bp_list.end (); it++)
+        {
+          names(i) = it->first;
+          line(i) = intmap_to_ov (it->second);
+          file(i) = do_which (it->first);
+          i++;
+        }
 
       retval.assign ("name", names);
       retval.assign ("file", file);
@@ -653,37 +655,30 @@ Show where we are in the code\n\
       std::string name = dbg_fcn->fcn_file_name ();
 
       if (name.empty ())
-	{
-	  have_file = false;
+        {
+          have_file = false;
 
-	  name = dbg_fcn->name ();
-	}
+          name = dbg_fcn->name ();
+        }
 
-      octave_stdout << name << ":";
+      octave_stdout << "stopped in " << name << " at ";
 
-      int l = tree_evaluator::debug_line ();
+      int l = octave_call_stack::caller_user_code_line ();
 
       if (l > 0)
-	{
-	  octave_stdout << " line " << l;
+        {
+          octave_stdout << " line " << l << std::endl;
 
-	  int c = tree_evaluator::debug_column ();
+          if (have_file)
+            {
+              std::string line = get_file_line (name, l);
 
-	  if (c > 0)
-	    octave_stdout << ", column " << c;
-
-	  octave_stdout << std::endl;
-
-	  if (have_file)
-	    {
-	      std::string line = get_file_line (name, l);
-
-	      if (! line.empty ())
-		octave_stdout << l << ": " << line << std::endl;
-	    }
-	}
+              if (! line.empty ())
+                octave_stdout << l << ": " << line << std::endl;
+            }
+        }
       else
-	octave_stdout << " (unknown line)\n";
+        octave_stdout << " <unknown line>" << std::endl;
     }
   else
     error ("dbwhere: must be inside of a user function to use dbwhere\n");
@@ -703,30 +698,30 @@ do_dbtype (std::ostream& os, const std::string& name, int start, int end)
       std::ifstream fs (ff.c_str (), std::ios::in);
 
       if (fs)
-	{
-	  char ch;
-	  int line = 1;
-	
-	  if (line >= start && line <= end)
-	    os << line << "\t";
- 	
-	  while (fs.get (ch))
-	    {
-	      if (line >= start && line <= end)
-		{
-		  os << ch;
-		}
+        {
+          char ch;
+          int line = 1;
 
-	      if (ch == '\n')
-		{
-		  line++;
-		  if (line >= start && line <= end)
-		    os << line << "\t";
-		}
-	    }
-	}
+          if (line >= start && line <= end)
+            os << line << "\t";
+
+          while (fs.get (ch))
+            {
+              if (line >= start && line <= end)
+                {
+                  os << ch;
+                }
+
+              if (ch == '\n')
+                {
+                  line++;
+                  if (line >= start && line <= end)
+                    os << line << "\t";
+                }
+            }
+        }
       else
-	os << "dbtype: unable to open `" << ff << "' for reading!\n";
+        os << "dbtype: unable to open `" << ff << "' for reading!\n";
     }
   else
     os << "dbtype: unknown function " << name << "\n";
@@ -750,91 +745,91 @@ List script file with line numbers.\n\
   if (! error_state)
     {
       switch (nargin)
-	{
-	case 0: // dbtype
-	  dbg_fcn = get_user_code ();
+        {
+        case 0: // dbtype
+          dbg_fcn = get_user_code ();
 
-	  if (dbg_fcn)
-	    do_dbtype (octave_stdout, dbg_fcn->name (), 0, INT_MAX);
-	  else
-	    error ("dbtype: must be in a user function to give no arguments to dbtype\n");
-	  break;
+          if (dbg_fcn)
+            do_dbtype (octave_stdout, dbg_fcn->name (), 0, INT_MAX);
+          else
+            error ("dbtype: must be in a user function to give no arguments to dbtype\n");
+          break;
 
-	case 1: // (dbtype func) || (dbtype start:end)
-	  dbg_fcn = get_user_code (argv[1]);
+        case 1: // (dbtype func) || (dbtype start:end)
+          dbg_fcn = get_user_code (argv[1]);
 
-	  if (dbg_fcn)
-	    do_dbtype (octave_stdout, dbg_fcn->name (), 0, INT_MAX);
-	  else
-	    {
-	      dbg_fcn = get_user_code ();
+          if (dbg_fcn)
+            do_dbtype (octave_stdout, dbg_fcn->name (), 0, INT_MAX);
+          else
+            {
+              dbg_fcn = get_user_code ();
 
-	      if (dbg_fcn)
-		{
-		  std::string arg = argv[1];
+              if (dbg_fcn)
+                {
+                  std::string arg = argv[1];
 
-		  size_t ind = arg.find (':');
+                  size_t ind = arg.find (':');
 
-		  if (ind != std::string::npos)
-		    {
-		      std::string start_str = arg.substr (0, ind);
-		      std::string end_str = arg.substr (ind + 1);
+                  if (ind != std::string::npos)
+                    {
+                      std::string start_str = arg.substr (0, ind);
+                      std::string end_str = arg.substr (ind + 1);
 
-		      int start = atoi (start_str.c_str ());
-		      int end = atoi (end_str.c_str ());
-		
-		      if (std::min (start, end) <= 0)
- 			error ("dbtype: start and end lines must be >= 1\n");
+                      int start = atoi (start_str.c_str ());
+                      int end = atoi (end_str.c_str ());
 
-		      if (start <= end)
-			do_dbtype (octave_stdout, dbg_fcn->name (), start, end);
-		      else
-			error ("dbtype: start line must be less than end line\n");
-		    }
-		  else
-		    error ("dbtype: line specification must be `start:end'");
-		}
-	    }
-	  break;
+                      if (std::min (start, end) <= 0)
+                        error ("dbtype: start and end lines must be >= 1\n");
 
-	case 2: // (dbtype func start:end) , (dbtype func start)
-	  dbg_fcn = get_user_code (argv[1]);
+                      if (start <= end)
+                        do_dbtype (octave_stdout, dbg_fcn->name (), start, end);
+                      else
+                        error ("dbtype: start line must be less than end line\n");
+                    }
+                  else
+                    error ("dbtype: line specification must be `start:end'");
+                }
+            }
+          break;
 
-	  if (dbg_fcn)
-	    {
-	      std::string arg = argv[2];
-	      int start = 0;
-	      int end = 0;
-	      size_t ind = arg.find (':');
+        case 2: // (dbtype func start:end) , (dbtype func start)
+          dbg_fcn = get_user_code (argv[1]);
 
-	      if (ind != std::string::npos)
-		{
-		  std::string start_str = arg.substr (0, ind);
-		  std::string end_str = arg.substr (ind + 1);
+          if (dbg_fcn)
+            {
+              std::string arg = argv[2];
+              int start = 0;
+              int end = 0;
+              size_t ind = arg.find (':');
 
-		  start = atoi (start_str.c_str ());
-		  end = atoi (end_str.c_str ());
-		  
-		}
-	      else
-		{
-		  start = atoi (arg.c_str ());
-		  end = start;
-		}
+              if (ind != std::string::npos)
+                {
+                  std::string start_str = arg.substr (0, ind);
+                  std::string end_str = arg.substr (ind + 1);
 
-	      if (std::min (start, end) <= 0)
-		error ("dbtype: start and end lines must be >= 1\n");
-	      
-	      if (start <= end)
-		do_dbtype (octave_stdout, dbg_fcn->name (), start, end);
-	      else
-		error ("dbtype: start line must be less than end line\n");
-	    }
-	  break;
+                  start = atoi (start_str.c_str ());
+                  end = atoi (end_str.c_str ());
 
-	default:
-	  error ("dbtype: expecting zero, one, or two arguments\n");
-	}
+                }
+              else
+                {
+                  start = atoi (arg.c_str ());
+                  end = start;
+                }
+
+              if (std::min (start, end) <= 0)
+                error ("dbtype: start and end lines must be >= 1\n");
+
+              if (start <= end)
+                do_dbtype (octave_stdout, dbg_fcn->name (), start, end);
+              else
+                error ("dbtype: start line must be less than end line\n");
+            }
+          break;
+
+        default:
+          error ("dbtype: expecting zero, one, or two arguments\n");
+        }
     }
 
   return retval;
@@ -850,7 +845,7 @@ Print or return current stack information.  With optional argument\n\
 {
   octave_value_list retval;
 
-  unwind_protect::begin_frame ("Fdbstack");
+  unwind_protect frame;
 
   octave_idx_type curr_frame = -1;
 
@@ -863,58 +858,73 @@ Print or return current stack information.  With optional argument\n\
       octave_value arg = args(0);
 
       if (arg.is_string ())
-	{
-	  std::string s_arg = arg.string_value ();
+        {
+          std::string s_arg = arg.string_value ();
 
-	  n = atoi (s_arg.c_str ());
-	}
+          n = atoi (s_arg.c_str ());
+        }
       else
-	n = args(0).int_value ();
+        n = args(0).int_value ();
 
       if (n > 0)
-	nskip = n;
+        nskip = n;
       else
-	error ("dbstack: expecting N to be a nonnegative integer");
+        error ("dbstack: expecting N to be a nonnegative integer");
     }
 
   if (! error_state)
     {
-      Octave_map stk = octave_call_stack::backtrace (nskip, curr_frame);
+      octave_map stk = octave_call_stack::backtrace (nskip, curr_frame);
 
       if (nargout == 0)
-	{
-	  octave_idx_type nframes_to_display = stk.numel ();
+        {
+          octave_idx_type nframes_to_display = stk.numel ();
 
-	  if (nframes_to_display > 0)
-	    {
-	      octave_stdout << "Stopped in:\n\n";
+          if (nframes_to_display > 0)
+            {
+              octave_stdout << "stopped in:\n\n";
 
-	      Cell names = stk.contents ("name");
-	      Cell lines = stk.contents ("line");
-	      Cell columns = stk.contents ("column");
+              Cell names = stk.contents ("name");
+              Cell files = stk.contents ("file");
+              Cell lines = stk.contents ("line");
 
-	      for (octave_idx_type i = 0; i < nframes_to_display; i++)
-		{
-		  octave_value name = names(i);
-		  octave_value line = lines(i);
-		  octave_value column = columns(i);
+              bool show_top_level = true;
 
-		  octave_stdout << (i == curr_frame ? "--> " : "    ")
-				<< name.string_value ()
-				<< " at line " << line.int_value ()
-				<< " column " << column.int_value ()
-				<< std::endl;
-		}
-	    }
-	}
+              size_t max_name_len = 0;
+
+              for (octave_idx_type i = 0; i < nframes_to_display; i++)
+                {
+                  std::string name = names(i).string_value ();
+
+                  max_name_len = std::max (name.length (), max_name_len);
+                }
+
+              for (octave_idx_type i = 0; i < nframes_to_display; i++)
+                {
+                  std::string name = names(i).string_value ();
+                  std::string file = files(i).string_value ();
+                  int line = lines(i).int_value ();
+
+                  if (show_top_level && i == curr_frame)
+                    show_top_level = false;
+
+                  octave_stdout << (i == curr_frame ? "  --> " : "      ")
+                                << std::setw (max_name_len) << name
+                                << " at line " << line
+                                << " [" << file << "]"
+                                << std::endl;
+                }
+
+              if (show_top_level)
+                octave_stdout << "  --> top level" << std::endl;
+            }
+        }
       else
-	{
-	  retval(1) = curr_frame < 0 ? 1 : curr_frame + 1;
-	  retval(0) = stk;
-	}
+        {
+          retval(1) = curr_frame < 0 ? 1 : curr_frame + 1;
+          retval(0) = stk;
+        }
     }
-
-  unwind_protect::run_frame ("Fdbstack");
 
   return retval;
 }
@@ -929,28 +939,29 @@ do_dbupdown (const octave_value_list& args, const std::string& who)
       octave_value arg = args(0);
 
       if (arg.is_string ())
-	{
-	  std::string s_arg = arg.string_value ();
+        {
+          std::string s_arg = arg.string_value ();
 
-	  n = atoi (s_arg.c_str ());
-	}
+          n = atoi (s_arg.c_str ());
+        }
       else
-	n = args(0).int_value ();
+        n = args(0).int_value ();
     }
 
   if (! error_state)
     {
       if (who == "dbup")
-	n = -n;
+        n = -n;
 
       if (! octave_call_stack::goto_frame_relative (n, true))
-	error ("%s: invalid stack frame", who.c_str ());
+        error ("%s: invalid stack frame", who.c_str ());
     }
 }
 
 DEFUN (dbup, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Loadable Function} {} dbup (@var{n})\n\
+@deftypefn  {Loadable Function} {} dbup\n\
+@deftypefnx {Loadable Function} {} dbup (@var{n})\n\
 In debugging mode, move up the execution stack @var{n} frames.\n\
 If @var{n} is omitted, move up one frame.\n\
 @seealso{dbstack}\n\
@@ -965,7 +976,8 @@ If @var{n} is omitted, move up one frame.\n\
 
 DEFUN (dbdown, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Loadable Function} {} dbdown (@var{n})\n\
+@deftypefn  {Loadable Function} {} dbdown\n\
+@deftypefnx {Loadable Function} {} dbdown (@var{n})\n\
 In debugging mode, move down the execution stack @var{n} frames.\n\
 If @var{n} is omitted, move down one frame.\n\
 @seealso{dbstack}\n\
@@ -980,15 +992,17 @@ If @var{n} is omitted, move down one frame.\n\
 
 DEFUN (dbstep, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Command} {} dbstep @var{n}\n\
+@deftypefn  {Command} {} dbstep\n\
+@deftypefnx {Command} {} dbstep @var{n}\n\
 @deftypefnx {Command} {} dbstep in\n\
 @deftypefnx {Command} {} dbstep out\n\
-In debugging mode, execute the next @var{n} lines of code.  If @var{n} is\n\
-omitted execute the next line of code.  If the next line of code is itself\n\
+In debugging mode, execute the next @var{n} lines of code.\n\
+If @var{n} is omitted , execute the next single line of code.\n\
+If the next line of code is itself\n\
 defined in terms of an m-file remain in the existing function.\n\
 \n\
 Using @code{dbstep in} will cause execution of the next line to step into\n\
-any m-files defined on the next line.  Using @code{dbstep out} with cause\n\
+any m-files defined on the next line.  Using @code{dbstep out} will cause\n\
 execution to continue until the current function returns.\n\
 @seealso{dbcont, dbquit}\n\
 @end deftypefn")
@@ -996,53 +1010,53 @@ execution to continue until the current function returns.\n\
   if (Vdebugging)
     {
       int nargin = args.length ();
-      
+
       if (nargin > 1)
-	print_usage ();
+        print_usage ();
       else if (nargin == 1)
-	{
-	  if (args(0).is_string ())
-	    {
-	      std::string arg = args(0).string_value ();
+        {
+          if (args(0).is_string ())
+            {
+              std::string arg = args(0).string_value ();
 
-	      if (! error_state)
-		{
-		  if (arg == "in")
-		    {
-		      Vdebugging = false;
+              if (! error_state)
+                {
+                  if (arg == "in")
+                    {
+                      Vdebugging = false;
 
-		      tree_evaluator::dbstep_flag = -1;
-		    }
-		  else if (arg == "out")
-		    {
-		      Vdebugging = false;
+                      tree_evaluator::dbstep_flag = -1;
+                    }
+                  else if (arg == "out")
+                    {
+                      Vdebugging = false;
 
-		      tree_evaluator::dbstep_flag = -2;
-		    }
-		  else
-		    {
-		      int n = atoi (arg.c_str ());
+                      tree_evaluator::dbstep_flag = -2;
+                    }
+                  else
+                    {
+                      int n = atoi (arg.c_str ());
 
-		      if (n > 0)
-			{
-			  Vdebugging = false;
+                      if (n > 0)
+                        {
+                          Vdebugging = false;
 
-			  tree_evaluator::dbstep_flag = n;
-			}
-		      else
-			error ("dbstep: invalid argument");
-		    }
-		}
-	    }
-	  else
-	    error ("dbstep: expecting character string as argument");
-	}
+                          tree_evaluator::dbstep_flag = n;
+                        }
+                      else
+                        error ("dbstep: invalid argument");
+                    }
+                }
+            }
+          else
+            error ("dbstep: expecting character string as argument");
+        }
       else
-	{
-	  Vdebugging = false;
+        {
+          Vdebugging = false;
 
-	  tree_evaluator::dbstep_flag = 1;
-	}
+          tree_evaluator::dbstep_flag = 1;
+        }
     }
   else
     error ("dbstep: can only be called in debug mode");
@@ -1054,21 +1068,21 @@ DEFALIAS (dbnext, dbstep);
 
 DEFUN (dbcont, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Command} {} dbcont ()\n\
+@deftypefn {Command} {} dbcont\n\
 In debugging mode, quit debugging mode and continue execution.\n\
-@seealso{dbstep, dbstep}\n\
+@seealso{dbstep, dbquit}\n\
 @end deftypefn")
 {
   if (Vdebugging)
     {
       if (args.length () == 0)
-	{
-	  Vdebugging = false;
+        {
+          Vdebugging = false;
 
-	  tree_evaluator::dbstep_flag = 0;
-	}
+          tree_evaluator::reset_debug_state ();
+        }
       else
-	print_usage ();
+        print_usage ();
     }
   else
     error ("dbcont: can only be called in debug mode");
@@ -1078,7 +1092,7 @@ In debugging mode, quit debugging mode and continue execution.\n\
 
 DEFUN (dbquit, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Command} {} dbquit ()\n\
+@deftypefn {Command} {} dbquit\n\
 In debugging mode, quit debugging mode and return to the top level.\n\
 @seealso{dbstep, dbcont}\n\
 @end deftypefn")
@@ -1086,13 +1100,15 @@ In debugging mode, quit debugging mode and return to the top level.\n\
   if (Vdebugging)
     {
       if (args.length () == 0)
-	{
-	  tree_evaluator::dbstep_flag = 0;
+        {
+          Vdebugging = false;
 
-	  octave_throw_interrupt_exception ();
-	}
+          tree_evaluator::reset_debug_state ();
+
+          octave_throw_interrupt_exception ();
+        }
       else
-	print_usage ();
+        print_usage ();
     }
   else
     error ("dbquit: can only be called in debug mode");
@@ -1102,7 +1118,7 @@ In debugging mode, quit debugging mode and return to the top level.\n\
 
 DEFUN (isdebugmode, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Command} {} isdebugmode ()\n\
+@deftypefn {Loadable Function} {} isdebugmode ()\n\
 Return true if debug mode is on, otherwise false.\n\
 @seealso{dbstack, dbclear, dbstop, dbstatus}\n\
 @end deftypefn")
@@ -1116,9 +1132,3 @@ Return true if debug mode is on, otherwise false.\n\
 
   return retval;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

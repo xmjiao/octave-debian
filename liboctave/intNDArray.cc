@@ -1,7 +1,8 @@
 // N-D Array  manipulations.
 /*
 
-Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 2004-2011 John W. Eaton
+Copyright (C) 2009 VZLU Prague, a.s.
 
 This file is part of Octave.
 
@@ -55,7 +56,7 @@ intNDArray<T>::any_element_not_one_or_zero (void) const
       T val = this->elem (i);
 
       if (val != 0.0 && val != 1.0)
-	return true;
+        return true;
     }
 
   return false;
@@ -65,7 +66,7 @@ template <class T>
 intNDArray<T>
 intNDArray<T>::diag (octave_idx_type k) const
 {
-  return MArrayN<T>::diag (k);
+  return MArray<T>::diag (k);
 }
 
 // FIXME -- this is not quite the right thing.
@@ -74,29 +75,29 @@ template <class T>
 boolNDArray
 intNDArray<T>::all (int dim) const
 {
-  return do_mx_red_op<boolNDArray, T > (*this, dim, mx_inline_all);
+  return do_mx_red_op<bool, T > (*this, dim, mx_inline_all);
 }
 
 template <class T>
 boolNDArray
 intNDArray<T>::any (int dim) const
 {
-  return do_mx_red_op<boolNDArray, T > (*this, dim, mx_inline_any);
+  return do_mx_red_op<bool, T > (*this, dim, mx_inline_any);
 }
 
 template <class T>
 void
 intNDArray<T>::increment_index (Array<octave_idx_type>& ra_idx,
-			       const dim_vector& dimensions,
-			       int start_dimension)
+                               const dim_vector& dimensions,
+                               int start_dimension)
 {
   ::increment_index (ra_idx, dimensions, start_dimension);
 }
 
 template <class T>
-octave_idx_type 
+octave_idx_type
 intNDArray<T>::compute_index (Array<octave_idx_type>& ra_idx,
-			      const dim_vector& dimensions)
+                              const dim_vector& dimensions)
 {
   return ::compute_index (ra_idx, dimensions);
 }
@@ -151,14 +152,14 @@ operator >> (std::istream& is, intNDArray<T>& a)
       T tmp;
 
       for (octave_idx_type i = 0; i < nel; i++)
-	{
-	  is >> tmp;
+        {
+          is >> tmp;
 
-	  if (is)
-	    a.elem (i) = tmp;
-	  else
-	    goto done;
-	}
+          if (is)
+            a.elem (i) = tmp;
+          else
+            goto done;
+        }
     }
 
  done:
@@ -173,7 +174,7 @@ intNDArray<T>
 intNDArray<T>::abs (void) const
 {
   octave_idx_type nel = this->nelem ();
-  intNDArray<T> ret (*this);
+  intNDArray<T> ret (this->dims ());
 
   for (octave_idx_type i = 0; i < nel; i++)
     {
@@ -189,7 +190,7 @@ intNDArray<T>
 intNDArray<T>::signum (void) const
 {
   octave_idx_type nel = this->nelem ();
-  intNDArray<T> ret (*this);
+  intNDArray<T> ret (this->dims ());
 
   for (octave_idx_type i = 0; i < nel; i++)
     {
@@ -204,74 +205,82 @@ template <class T>
 intNDArray<T>
 intNDArray<T>::sum (int dim) const
 {
-  return do_mx_red_op<intNDArray<T> , T > (*this, dim, mx_inline_sum);
+  return do_mx_red_op<T, T> (*this, dim, mx_inline_sum);
+}
+
+template <class T>
+NDArray
+intNDArray<T>::dsum (int dim) const
+{
+  return do_mx_red_op<double, T> (*this, dim, mx_inline_dsum);
 }
 
 template <class T>
 intNDArray<T>
 intNDArray<T>::cumsum (int dim) const
 {
-  return do_mx_cum_op<intNDArray<T> , T > (*this, dim, mx_inline_cumsum);
+  return do_mx_cum_op<T, T> (*this, dim, mx_inline_cumsum);
 }
 
 template <class T>
 intNDArray<T>
 intNDArray<T>::max (int dim) const
 {
-  return do_mx_minmax_op<intNDArray<T> > (*this, dim, mx_inline_max);
+  return do_mx_minmax_op<T> (*this, dim, mx_inline_max);
 }
 
 template <class T>
 intNDArray<T>
-intNDArray<T>::max (ArrayN<octave_idx_type>& idx_arg, int dim) const
+intNDArray<T>::max (Array<octave_idx_type>& idx_arg, int dim) const
 {
-  return do_mx_minmax_op<intNDArray<T> > (*this, idx_arg, dim, mx_inline_max);
+  return do_mx_minmax_op<T> (*this, idx_arg, dim, mx_inline_max);
 }
 
 template <class T>
 intNDArray<T>
 intNDArray<T>::min (int dim) const
 {
-  return do_mx_minmax_op<intNDArray<T> > (*this, dim, mx_inline_min);
+  return do_mx_minmax_op<T> (*this, dim, mx_inline_min);
 }
 
 template <class T>
 intNDArray<T>
-intNDArray<T>::min (ArrayN<octave_idx_type>& idx_arg, int dim) const
+intNDArray<T>::min (Array<octave_idx_type>& idx_arg, int dim) const
 {
-  return do_mx_minmax_op<intNDArray<T> > (*this, idx_arg, dim, mx_inline_min);
+  return do_mx_minmax_op<T> (*this, idx_arg, dim, mx_inline_min);
 }
 
 template <class T>
 intNDArray<T>
 intNDArray<T>::cummax (int dim) const
 {
-  return do_mx_cumminmax_op<intNDArray<T> > (*this, dim, mx_inline_cummax);
+  return do_mx_cumminmax_op<T> (*this, dim, mx_inline_cummax);
 }
 
 template <class T>
 intNDArray<T>
-intNDArray<T>::cummax (ArrayN<octave_idx_type>& idx_arg, int dim) const
+intNDArray<T>::cummax (Array<octave_idx_type>& idx_arg, int dim) const
 {
-  return do_mx_cumminmax_op<intNDArray<T> > (*this, idx_arg, dim, mx_inline_cummax);
+  return do_mx_cumminmax_op<T> (*this, idx_arg, dim, mx_inline_cummax);
 }
 
 template <class T>
 intNDArray<T>
 intNDArray<T>::cummin (int dim) const
 {
-  return do_mx_cumminmax_op<intNDArray<T> > (*this, dim, mx_inline_cummin);
+  return do_mx_cumminmax_op<T> (*this, dim, mx_inline_cummin);
 }
 
 template <class T>
 intNDArray<T>
-intNDArray<T>::cummin (ArrayN<octave_idx_type>& idx_arg, int dim) const
+intNDArray<T>::cummin (Array<octave_idx_type>& idx_arg, int dim) const
 {
-  return do_mx_cumminmax_op<intNDArray<T> > (*this, idx_arg, dim, mx_inline_cummin);
+  return do_mx_cumminmax_op<T> (*this, idx_arg, dim, mx_inline_cummin);
 }
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+template <class T>
+intNDArray<T>
+intNDArray<T>::diff (octave_idx_type order, int dim) const
+{
+  return do_mx_diff_op<T> (*this, dim, order, mx_inline_diff);
+}

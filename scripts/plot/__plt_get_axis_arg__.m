@@ -1,4 +1,4 @@
-## Copyright (C) 1996, 1997, 2006, 2007, 2008, 2009 John W. Eaton
+## Copyright (C) 1996-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -35,16 +35,17 @@ function [h, varargin, narg] = __plt_get_axis_arg__ (caller, varargin)
 
   ## Figure handles are integers, but object handles are non integer,
   ## therefore ignore integer scalars.
-  if (nargin > 1 && length (varargin) > 0 && isnumeric (varargin{1}) 
-      && numel (varargin{1}) == 1 && ishandle (varargin{1}(1)) 
+  if (nargin > 1 && length (varargin) > 0 && isnumeric (varargin{1})
+      && numel (varargin{1}) == 1 && ishandle (varargin{1}(1))
       && varargin{1}(1) != 0 && ! isfigure (varargin{1}(1)))
     tmp = varargin{1};
     obj = get (tmp);
-    if (strcmp (obj.type, "axes") || strcmp (obj.type, "hggroup"))
+    if ((strcmp (obj.type, "axes") && ! strcmp (obj.tag, "legend"))
+        || strcmp (obj.type, "hggroup"))
       h = ancestor (tmp, "axes");
       varargin(1) = [];
       if (isempty (varargin))
-	varargin = {};
+        varargin = {};
       endif
     else
       error ("%s: expecting first argument to be axes handle", caller);
@@ -58,14 +59,18 @@ function [h, varargin, narg] = __plt_get_axis_arg__ (caller, varargin)
     endif
     if (isempty (h))
       if (nogca)
-	h = NaN;
+        h = NaN;
       else
-	h = gca ();
+        h = gca ();
       endif
     endif
     if (nargin < 2)
       varargin = {};
     endif
+  endif
+
+  if (ishandle (h) && strcmp (get (h, "nextplot"), "new"))
+    h = axes ();
   endif
 
   narg = length (varargin);

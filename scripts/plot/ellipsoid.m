@@ -1,4 +1,4 @@
-## Copyright (C) 2007, 2008, 2009 Sylvain Pelissier
+## Copyright (C) 2007-2011 Sylvain Pelissier
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {[@var{x}, @var{y}, @var{z}] =} ellipsoid (@var{xc},@var{yc}, @var{zc}, @var{xr}, @var{yr}, @var{zr}, @var{n})
+## @deftypefn  {Function File} {[@var{x}, @var{y}, @var{z}] =} ellipsoid (@var{xc}, @var{yc}, @var{zc}, @var{xr}, @var{yr}, @var{zr}, @var{n})
 ## @deftypefnx {Function File} {} ellipsoid (@var{h}, @dots{})
 ## Generate three matrices in @code{meshgrid} format that define an
 ## ellipsoid.  Called with no return arguments, @code{ellipsoid} calls
@@ -31,8 +31,8 @@
 
 function [xx, yy, zz] = ellipsoid (varargin)
 
-  [h, varargin, nargin] = __plt_get_axis_arg__ ((nargout > 0), "ellipsoid", 
-						varargin{:});
+  [h, varargin, nargin] = __plt_get_axis_arg__ ((nargout > 0), "ellipsoid",
+                                                varargin{:});
 
   if (nargin != 6 && nargin != 7)
     print_usage ();

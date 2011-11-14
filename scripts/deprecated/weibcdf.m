@@ -1,4 +1,4 @@
-## Copyright (C) 2006, 2007, 2008 John W. Eaton
+## Copyright (C) 2006-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -27,10 +27,11 @@
 ## @end example
 ##
 ## @noindent
-## for @var{x} >= 0.
+## for @var{x} @geq{} 0.
 ## @end deftypefn
 
 ## Deprecated in version 3.0
+## Matlab still has this function, so don't remove just yet.
 
 function cdf = weibcdf (varargin)
 

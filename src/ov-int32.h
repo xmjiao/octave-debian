@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004, 2005, 2006, 2007, 2008 John W. Eaton
+Copyright (C) 2004-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -35,6 +35,8 @@ along with Octave; see the file COPYING.  If not, see
 
 #define OCTAVE_INT_MX_CLASS mxINT32_CLASS
 
+#define OCTAVE_INT_BTYP btyp_int32
+
 #include "ov-intx.h"
 
 #undef OCTAVE_INT_T
@@ -49,10 +51,6 @@ along with Octave; see the file COPYING.  If not, see
 
 #undef OCTAVE_INT_MX_CLASS
 
-#endif
+#undef OCTAVE_INT_BTYP
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+#endif

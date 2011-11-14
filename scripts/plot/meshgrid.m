@@ -1,5 +1,4 @@
-## Copyright (C) 1996, 1997, 2000, 2001, 2002, 2004, 2005, 2006, 2007, 2009
-##               John W. Eaton
+## Copyright (C) 1996-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -18,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {[@var{xx}, @var{yy}, @var{zz}] =} meshgrid (@var{x}, @var{y}, @var{z})
+## @deftypefn  {Function File} {[@var{xx}, @var{yy}, @var{zz}] =} meshgrid (@var{x}, @var{y}, @var{z})
 ## @deftypefnx {Function File} {[@var{xx}, @var{yy}] =} meshgrid (@var{x}, @var{y})
 ## @deftypefnx {Function File} {[@var{xx}, @var{yy}] =} meshgrid (@var{x})
 ## Given vectors of @var{x} and @var{y} and @var{z} coordinates, and

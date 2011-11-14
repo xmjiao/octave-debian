@@ -25,7 +25,6 @@
 #include <octave/symtab.h>
 #include <octave/variables.h>
 
-class Octave_map;
 class octave_value_list;
 
 class tree_walker;
@@ -241,10 +240,10 @@ Creates an integer variable from VAL.")
   if (! type_loaded)
     {
       octave_integer::register_type ();
-      mlock ("make_int");
+      mlock ();
 
       octave_stdout << "installing integer type at type-id = "
-	   << octave_integer::static_type_id () << "\n";
+           << octave_integer::static_type_id () << "\n";
 
       INSTALL_UNOP (op_not, octave_integer, gnot);
       INSTALL_UNOP (op_uminus, octave_integer, uminus);
@@ -281,7 +280,7 @@ Creates an integer variable from VAL.")
       double d = args(0).double_value ();
 
       if (! error_state)
-	retval = octave_value (new octave_integer (NINT (d)));
+        retval = octave_value (new octave_integer (NINT (d)));
     }
   else
     usage ("make_int");
@@ -315,9 +314,3 @@ DEFUN_DLD (doit, args, ,
 DEFINE_OCTAVE_ALLOCATOR (octave_integer);
 
 DEFINE_OV_TYPEID_FUNCTIONS_AND_DATA (octave_integer, "integer", "integer");
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

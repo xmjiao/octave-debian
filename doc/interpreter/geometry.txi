@@ -1,4 +1,4 @@
-@c Copyright (C) 2007, 2008, 2009 John W. Eaton and David Bateman
+@c Copyright (C) 2007-2011 John W. Eaton and David Bateman
 @c
 @c This file is part of Octave.
 @c
@@ -21,7 +21,7 @@
 
 Much of the geometry code in Octave is based on the Qhull 
 library@footnote{Barber, C.B., Dobkin, D.P., and Huhdanpaa, H.T., 
-"The Quickhull algorithm for convex hulls," ACM Trans. on Mathematical 
+@cite{The Quickhull Algorithm for Convex Hulls}, ACM Trans. on Mathematical 
 Software, 22(4):469--483, Dec 1996, @url{http://www.qhull.org}}.  
 Some of the documentation for Qhull, particularly for the options that 
 can be passed to @code{delaunay}, @code{voronoi} and @code{convhull}, 
@@ -76,7 +76,6 @@ plot(X, Y, "b", x, y, "r*");
 @end group
 @end example
 
-@ifset HAVE_QHULL
 @ifnotinfo
 @noindent
 The result of which can be seen in @ref{fig:delaunay}.
@@ -86,27 +85,28 @@ The result of which can be seen in @ref{fig:delaunay}.
 @caption{Delaunay triangulation of a random set of points}
 @end float
 @end ifnotinfo
-@end ifset
 
 @menu
 * Plotting the Triangulation::
-* Identifying points in Triangulation::
+* Identifying Points in Triangulation::
 @end menu
 
 @node Plotting the Triangulation
 @subsection Plotting the Triangulation
 
-Octave has the functions @code{triplot} and @code{trimesh} to plot the
-Delaunay triangulation of a 2-dimensional set of points.
+Octave has the functions @code{triplot}, @code{trimesh}, and @code{trisurf}
+to plot the Delaunay triangulation of a 2-dimensional set of points.
 
 @DOCSTRING(triplot)
 
 @DOCSTRING(trimesh)
 
-The difference between @code{triplot} and @code{trimesh} is that the
-former only plots the 2-dimensional triangulation itself, whereas the
-second plots the value of some function @code{f (@var{x}, @var{y})}.
-An example of the use of the @code{triplot} function is
+@DOCSTRING(trisurf)
+
+The difference between @code{triplot}, and @code{trimesh} or @code{triplot},
+is that the former only plots the 2-dimensional triangulation itself, whereas
+the second two plot the value of a function @code{f (@var{x}, @var{y})}.  An
+example of the use of the @code{triplot} function is
 
 @example
 @group
@@ -118,7 +118,8 @@ triplot (tri, x, y);
 @end group
 @end example
 
-that plot the Delaunay triangulation of a set of random points in
+@noindent
+which plots the Delaunay triangulation of a set of random points in
 2-dimensions.
 @ifnotinfo
 The output of the above can be seen in @ref{fig:triplot}.
@@ -129,8 +130,8 @@ The output of the above can be seen in @ref{fig:triplot}.
 @end float
 @end ifnotinfo
 
-@node Identifying points in Triangulation
-@subsection Identifying points in Triangulation
+@node Identifying Points in Triangulation
+@subsection Identifying Points in Triangulation
 
 It is often necessary to identify whether a particular point in the
 N-dimensional space is within the Delaunay tessellation of a set of
@@ -284,7 +285,7 @@ tessellation where @var{p} is a member of @var{s}, are closer to @var{p}
 than any other point in @var{s}.  The Voronoi diagram is related to the
 Delaunay triangulation of a set of points, in that the vertexes of the
 Voronoi tessellation are the centers of the circum-circles of the
-simplicies of the Delaunay tessellation. 
+simplices of the Delaunay tessellation. 
 
 @DOCSTRING(voronoi)
 
@@ -305,7 +306,6 @@ plot (vx, vy, "r");
 @end group
 @end example
 
-@ifset HAVE_QHULL
 @ifnotinfo
 @noindent
 The result of which can be seen in @ref{fig:voronoi}.  Note that the
@@ -318,7 +318,6 @@ diagram clearer.
 @caption{Delaunay triangulation and Voronoi diagram of a random set of points}
 @end float
 @end ifnotinfo
-@end ifset
 
 Additional information about the size of the facets of a Voronoi
 diagram, and which points of a set of points is in a polygon can be had
@@ -399,7 +398,6 @@ axis ([-3.05, 3.05, -0.05, 1.05]);
 @end group
 @end example
 
-@ifset HAVE_QHULL
 @ifnotinfo
 @noindent
 The output of the above can be seen in @ref{fig:convhull}.
@@ -409,7 +407,6 @@ The output of the above can be seen in @ref{fig:convhull}.
 @caption{The convex hull of a simple set of points}
 @end float
 @end ifnotinfo
-@end ifset
 
 @node Interpolation on Scattered Data
 @section Interpolation on Scattered Data
@@ -418,8 +415,8 @@ An important use of the Delaunay tessellation is that it can be used to
 interpolate from scattered data to an arbitrary set of points.  To do
 this the N-simplex of the known set of points is calculated with
 @code{delaunay}, @code{delaunay3} or @code{delaunayn}.  Then the
-simplicies in to which the desired points are found are
-identified.  Finally the vertices of the simplicies are used to
+simplices in to which the desired points are found are
+identified.  Finally the vertices of the simplices are used to
 interpolate to the desired points.  The functions that perform this
 interpolation are @code{griddata}, @code{griddata3} and
 @code{griddatan}.
@@ -443,7 +440,6 @@ griddata(x,y,z,xx,yy);
 @end group
 @end example
 
-@ifset HAVE_QHULL
 @noindent
 that interpolates from a random scattering of points, to a uniform
 grid. 
@@ -455,4 +451,3 @@ The output of the above can be seen in @ref{fig:griddata}.
 @caption{Interpolation from a scattered data to a regular grid}
 @end float
 @end ifnotinfo
-@end ifset

@@ -1,5 +1,4 @@
-## Copyright (C) 1996, 1997, 1998, 2000, 2002, 2004, 2005, 2006, 2007, 2009
-##               Kurt Hornik
+## Copyright (C) 1996-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -18,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} discrete_rnd (@var{n}, @var{v}, @var{p})
+## @deftypefn  {Function File} {} discrete_rnd (@var{n}, @var{v}, @var{p})
 ## @deftypefnx {Function File} {} discrete_rnd (@var{v}, @var{p}, @var{r}, @var{c})
 ## @deftypefnx {Function File} {} discrete_rnd (@var{v}, @var{p}, @var{sz})
 ## Generate a row vector containing a random sample of size @var{n} from
@@ -37,10 +36,10 @@ function rnd = discrete_rnd (v, p, r, c)
 
   if (nargin == 4)
     if (! (isscalar (r) && (r > 0) && (r == round (r))))
-      error ("discrete_rnd: r must be a positive integer");
+      error ("discrete_rnd: R must be a positive integer");
     endif
     if (! (isscalar (c) && (c > 0) && (c == round (c))))
-      error ("discrete_rnd: c must be a positive integer");
+      error ("discrete_rnd: C must be a positive integer");
     endif
     sz = [r, c];
   elseif (nargin == 3)
@@ -55,11 +54,11 @@ function rnd = discrete_rnd (v, p, r, c)
       p = r;
     else
       if (isscalar (r) && (r > 0))
-	sz = [r, r];
+        sz = [r, r];
       elseif (isvector(r) && all (r > 0))
-	sz = r(:)';
+        sz = r(:)';
       else
-	error ("discrete_rnd: r must be a positive integer or vector");
+        error ("discrete_rnd: R must be a positive integer or vector");
       endif
     endif
   else
@@ -67,12 +66,12 @@ function rnd = discrete_rnd (v, p, r, c)
   endif
 
   if (! isvector (v))
-    error ("discrete_rnd: v must be a vector");
+    error ("discrete_rnd: V must be a vector");
   elseif (! isvector (p) || (length (p) != length (v)))
-    error ("discrete_rnd: p must be a vector with length (v) elements");
+    error ("discrete_rnd: P must be a vector with length (V) elements");
   elseif (! (all (p >= 0) && any (p)))
-    error ("discrete_rnd: p must be a nonzero, nonnegative vector");
+    error ("discrete_rnd: P must be a nonzero, nonnegative vector");
   endif
 
-  rnd = v (lookup (cumsum (p (1 : end-1)) / sum(p), rand (sz)) + 1); 
+  rnd = v (lookup (cumsum (p (1 : end-1)) / sum(p), rand (sz)) + 1);
 endfunction

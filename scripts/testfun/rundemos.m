@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 John W. Eaton
+## Copyright (C) 2008-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,12 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} rundemos (@var{directory})
+## @deftypefn  {Function File} {} rundemos ()
+## @deftypefnx {Function File} {} rundemos (@var{directory})
+## Execute built-in demos for all function files in the specified directory.
+## If no directory is specified, operate on all directories in Octave's
+## search path for functions.
+## @seealso{runtests, path}
 ## @end deftypefn
 
 ## Author: jwe
@@ -32,9 +37,9 @@ function rundemos (directory)
     else
       fullname = find_dir_in_path (directory);
       if (! isempty (fullname))
-	dirs = {fullname};
+        dirs = {fullname};
       else
-	error ("rundemos: expecting argument to be a directory name");
+        error ("rundemos: DIRECTORY argument must be a valid pathname");
       endif
     endif
   else
@@ -56,10 +61,10 @@ function run_all_demos (directory)
     if (length (f) > 2 && strcmp (f((end-1):end), ".m"))
       f = fullfile (directory, f);
       if (has_demos (f))
-	demo (f);
-	if (i != numel (flist))
-	  input ("Press <enter> to continue: ", "s");
-	endif
+        demo (f);
+        if (i != numel (flist))
+          input ("Press <enter> to continue: ", "s");
+        endif
       endif
     endif
   endfor
@@ -68,7 +73,7 @@ endfunction
 function retval = has_demos (f)
   fid = fopen (f);
   if (f < 0)
-    error ("fopen failed: %s", f);
+    error ("rundemos: fopen failed: %s", f);
   else
     str = fscanf (fid, "%s");
     fclose (fid);

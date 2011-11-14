@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2002, 2003, 2004, 2005, 2007,
-              2008, 2009 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
+Copyright (C) 2009 VZLU Prague
 
 This file is part of Octave.
 
@@ -35,23 +35,24 @@ along with Octave; see the file COPYING.  If not, see
 extern "C"
 {
   F77_RET_T
-  F77_FUNC (sgeqp3, SGEQP3) (const octave_idx_type&, const octave_idx_type&, float*,
-			     const octave_idx_type&, octave_idx_type*, float*, float*,
-                             const octave_idx_type&, octave_idx_type&);
+  F77_FUNC (sgeqp3, SGEQP3) (const octave_idx_type&, const octave_idx_type&,
+                             float*, const octave_idx_type&, octave_idx_type*,
+                             float*, float*, const octave_idx_type&,
+                             octave_idx_type&);
 }
 
 // It would be best to share some of this code with QR class...
 
-FloatQRP::FloatQRP (const FloatMatrix& a, QR::type qr_type)
+FloatQRP::FloatQRP (const FloatMatrix& a, qr_type_t qr_type)
   : FloatQR (), p ()
 {
   init (a, qr_type);
 }
 
 void
-FloatQRP::init (const FloatMatrix& a, QR::type qr_type)
+FloatQRP::init (const FloatMatrix& a, qr_type_t qr_type)
 {
-  assert (qr_type != QR::raw);
+  assert (qr_type != qr_type_raw);
 
   octave_idx_type m = a.rows ();
   octave_idx_type n = a.cols ();
@@ -62,10 +63,10 @@ FloatQRP::init (const FloatMatrix& a, QR::type qr_type)
   octave_idx_type info = 0;
 
   FloatMatrix afact = a;
-  if (m > n && qr_type == QR::std)
+  if (m > n && qr_type == qr_type_std)
     afact.resize (m, m);
 
-  MArray<octave_idx_type> jpvt (n, 0);
+  MArray<octave_idx_type> jpvt (dim_vector (n, 1), 0);
 
   if (m > 0)
     {
@@ -94,15 +95,10 @@ FloatQRP::init (const FloatMatrix& a, QR::type qr_type)
   form (n, afact, tau, qr_type);
 }
 
-FloatColumnVector
+FloatRowVector
 FloatQRP::Pvec (void) const
 {
   Array<float> pa (p.pvec ());
-  FloatColumnVector pv (MArray<float> (pa) + 1.0f);
+  FloatRowVector pv (MArray<float> (pa) + 1.0f);
   return pv;
 }
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

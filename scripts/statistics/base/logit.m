@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 2000, 2002, 2005, 2006, 2007, 2009
-##               Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -26,10 +25,13 @@
 ## $$
 ## @end tex
 ## @ifnottex
+##
 ## @example
 ## logit(@var{p}) = log (@var{p} / (1-@var{p}))
 ## @end example
+##
 ## @end ifnottex
+## @seealso{logistic_cdf}
 ## @end deftypefn
 
 ## Author: KH <Kurt.Hornik@wu-wien.ac.at>
@@ -37,10 +39,20 @@
 
 function y = logit (p)
 
-  if (nargin == 1)
-    y = logistic_inv (p);
-  else
+  if (nargin != 1)
     print_usage ();
   endif
 
+  y = logistic_inv (p);
+
 endfunction
+
+%!test
+%! p = [0.01:0.01:0.99];
+%! assert(logit (p), log (p ./ (1-p)), 25*eps)
+
+%!assert(logit ([-1, 0, 0.5, 1, 2]), [NaN, -Inf, 0, +Inf, NaN])
+
+%% Test input validation
+%!error logit ()
+%!error logit (1, 2)

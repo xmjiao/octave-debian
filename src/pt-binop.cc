@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2000, 2001, 2002, 2004, 2005, 2006, 2007,
-              2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -26,14 +25,20 @@ along with Octave; see the file COPYING.  If not, see
 #endif
 
 #include "error.h"
+#include "defun.h"
 #include "oct-obj.h"
 #include "ov.h"
 #include "pt-binop.h"
 #include "pt-bp.h"
 #include "pt-walk.h"
+#include "variables.h"
+
+// TRUE means we mark | and & expressions for braindead short-circuit
+// behavior.
+static bool Vdo_braindead_shortcircuit_evaluation;
 
 // Binary expressions.
- 
+
 octave_value_list
 tree_binary_expression::rvalue (int nargout)
 {
@@ -41,7 +46,7 @@ tree_binary_expression::rvalue (int nargout)
 
   if (nargout > 1)
     error ("binary operator `%s': invalid number of output arguments",
-	   oper () . c_str ());
+           oper () . c_str ());
   else
     retval = rvalue1 (nargout);
 
@@ -56,22 +61,71 @@ tree_binary_expression::rvalue1 (int)
   if (error_state)
     return retval;
 
+  if (Vdo_braindead_shortcircuit_evaluation
+      && eligible_for_braindead_shortcircuit)
+    {
+      if (op_lhs)
+        {
+          octave_value a = op_lhs->rvalue1 ();
+
+          if (! error_state)
+            {
+              if (a.ndims () == 2 && a.rows () == 1 && a.columns () == 1)
+                {
+                  bool result = false;
+
+                  bool a_true = a.is_true ();
+
+                  if (! error_state)
+                    {
+                      if (a_true)
+                        {
+                          if (etype == octave_value::op_el_or)
+                            {
+                              result = true;
+                              goto done;
+                            }
+                        }
+                      else
+                        {
+                          if (etype == octave_value::op_el_and)
+                            goto done;
+                        }
+
+                      if (op_rhs)
+                        {
+                          octave_value b = op_rhs->rvalue1 ();
+
+                          if (! error_state)
+                            result = b.is_true ();
+                        }
+
+                    done:
+
+                      if (! error_state)
+                        return octave_value (result);
+                    }
+                }
+            }
+        }
+    }
+
   if (op_lhs)
     {
       octave_value a = op_lhs->rvalue1 ();
 
       if (! error_state && a.is_defined () && op_rhs)
-	{
-	  octave_value b = op_rhs->rvalue1 ();
+        {
+          octave_value b = op_rhs->rvalue1 ();
 
-	  if (! error_state && b.is_defined ())
-	    {
-	      retval = ::do_binary_op (etype, a, b);
+          if (! error_state && b.is_defined ())
+            {
+              retval = ::do_binary_op (etype, a, b);
 
-	      if (error_state)
-		retval = octave_value ();
-	    }
-	}
+              if (error_state)
+                retval = octave_value ();
+            }
+        }
     }
 
   return retval;
@@ -85,12 +139,12 @@ tree_binary_expression::oper (void) const
 
 tree_expression *
 tree_binary_expression::dup (symbol_table::scope_id scope,
-			     symbol_table::context_id context) const
+                             symbol_table::context_id context) const
 {
   tree_binary_expression *new_be
     = new tree_binary_expression (op_lhs ? op_lhs->dup (scope, context) : 0,
-				  op_rhs ? op_rhs->dup (scope, context) : 0,
-				  line (), column (), etype);
+                                  op_rhs ? op_rhs->dup (scope, context) : 0,
+                                  line (), column (), etype);
 
   new_be->copy_base (*this);
 
@@ -104,7 +158,7 @@ tree_binary_expression::accept (tree_walker& tw)
 }
 
 // Boolean expressions.
- 
+
 octave_value_list
 tree_boolean_expression::rvalue (int nargout)
 {
@@ -112,7 +166,7 @@ tree_boolean_expression::rvalue (int nargout)
 
   if (nargout > 1)
     error ("binary operator `%s': invalid number of output arguments",
-	   oper () . c_str ());
+           oper () . c_str ());
   else
     retval = rvalue1 (nargout);
 
@@ -134,39 +188,39 @@ tree_boolean_expression::rvalue1 (int)
       octave_value a = op_lhs->rvalue1 ();
 
       if (! error_state)
-	{
-	  bool a_true = a.is_true ();
+        {
+          bool a_true = a.is_true ();
 
-	  if (! error_state)
-	    {
-	      if (a_true)
-		{
-		  if (etype == bool_or)
-		    {
-		      result = true;
-		      goto done;
-		    }
-		}
-	      else
-		{
-		  if (etype == bool_and)
-		    goto done;
-		}
+          if (! error_state)
+            {
+              if (a_true)
+                {
+                  if (etype == bool_or)
+                    {
+                      result = true;
+                      goto done;
+                    }
+                }
+              else
+                {
+                  if (etype == bool_and)
+                    goto done;
+                }
 
-	      if (op_rhs)
-		{
-		  octave_value b = op_rhs->rvalue1 ();
+              if (op_rhs)
+                {
+                  octave_value b = op_rhs->rvalue1 ();
 
-		  if (! error_state)
-		    result = b.is_true ();
-		}
+                  if (! error_state)
+                    result = b.is_true ();
+                }
 
-	    done:
+            done:
 
-	      if (! error_state)
-		retval = octave_value (result);
-	    }
-	}
+              if (! error_state)
+                retval = octave_value (result);
+            }
+        }
     }
 
   return retval;
@@ -196,20 +250,32 @@ tree_boolean_expression::oper (void) const
 
 tree_expression *
 tree_boolean_expression::dup (symbol_table::scope_id scope,
-			      symbol_table::context_id context) const
+                              symbol_table::context_id context) const
 {
   tree_boolean_expression *new_be
     = new tree_boolean_expression (op_lhs ? op_lhs->dup (scope, context) : 0,
-				   op_rhs ? op_rhs->dup (scope, context) : 0,
-				   line (), column (), etype);
+                                   op_rhs ? op_rhs->dup (scope, context) : 0,
+                                   line (), column (), etype);
 
   new_be->copy_base (*this);
 
   return new_be;
 }
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+DEFUN (do_braindead_shortcircuit_evaluation, args, nargout,
+  "-*- texinfo -*-\n\
+@deftypefn  {Built-in Function} {@var{val} =} do_braindead_shortcircuit_evaluation ()\n\
+@deftypefnx {Built-in Function} {@var{old_val} =} do_braindead_shortcircuit_evaluation (@var{new_val})\n\
+Query or set the internal variable that controls whether Octave will\n\
+do short-circuit evaluation of @samp{|} and @samp{&} operators inside the\n\
+conditions of if or while statements.\n\
+\n\
+This feature is only provided for compatibility with @sc{matlab} and should\n\
+not be used unless you are porting old code that relies on this feature.\n\
+\n\
+To obtain short-circuit behavior for logical expressions in new programs,\n\
+you should always use the @samp{&&} and @samp{||} operators.\n\
+@end deftypefn")
+{
+  return SET_INTERNAL_VARIABLE (do_braindead_shortcircuit_evaluation);
+}

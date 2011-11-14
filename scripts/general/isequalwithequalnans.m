@@ -1,4 +1,4 @@
-## Copyright (C) 2005, 2006, 2007 William Poetra Yoga Hadisoeseno
+## Copyright (C) 2005-2011 William Poetra Yoga Hadisoeseno
 ##
 ## This file is part of Octave.
 ##
@@ -23,13 +23,22 @@
 ## @seealso{isequal}
 ## @end deftypefn
 
-function retval = isequalwithequalnans (x, varargin)
+function retval = isequalwithequalnans (x1, varargin)
 
   if (nargin > 1)
-    retval = __isequal__ (1, x, varargin{:});
+    retval = __isequal__ (true, x1, varargin{:});
   else
     print_usage ();
   endif
 
 endfunction
 
+## test for equality
+%!assert(isequalwithequalnans({1,2,NaN,4},{1,2,NaN,4}), true)
+%!assert(isequalwithequalnans([1,2,NaN,4],[1,2,NaN,4]), true)
+## test for inequality
+%!assert(isequalwithequalnans([1,2,NaN,4],[1,NaN,3,4]),false)
+%!assert(isequalwithequalnans([1,2,NaN,4],[1,2,3,4]),false)
+## test for equality (struct)
+%!assert(isequalwithequalnans(struct('a',NaN,'b',2),struct('a',NaN,'b',2),struct('a',NaN,'b',2)),true)
+%!assert(isequalwithequalnans(1,2,1), false)

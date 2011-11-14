@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2000, 2002, 2003, 2004, 2005, 2007, 2008
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -25,6 +24,8 @@ along with Octave; see the file COPYING.  If not, see
 #include <config.h>
 #endif
 
+#include "Array-util.h"
+
 #include "gripes.h"
 #include "oct-obj.h"
 #include "ov.h"
@@ -42,8 +43,10 @@ along with Octave; see the file COPYING.  If not, see
 DEFUNOP (not, complex)
 {
   CAST_UNOP_ARG (const octave_complex&);
-
-  return octave_value (v.complex_value () == 0.0);
+  Complex x = v.complex_value ();
+  if (xisnan (x))
+    gripe_nan_to_logical_conversion ();
+  return octave_value (x == 0.0);
 }
 
 DEFUNOP_OP (uplus, complex, /* no-op */)
@@ -92,47 +95,12 @@ DEFBINOP (ldiv, complex, complex)
   return octave_value (v2.complex_value () / d);
 }
 
-DEFBINOP (lt, complex, complex)
-{
-  CAST_BINOP_ARGS (const octave_complex&, const octave_complex&);
-
-  return real (v1.complex_value ()) < real (v2.complex_value ());
-}
-
-DEFBINOP (le, complex, complex)
-{
-  CAST_BINOP_ARGS (const octave_complex&, const octave_complex&);
-
-  return real (v1.complex_value ()) <= real (v2.complex_value ());
-}
-
-DEFBINOP (eq, complex, complex)
-{
-  CAST_BINOP_ARGS (const octave_complex&, const octave_complex&);
-
-  return v1.complex_value () == v2.complex_value ();
-}
-
-DEFBINOP (ge, complex, complex)
-{
-  CAST_BINOP_ARGS (const octave_complex&, const octave_complex&);
-
-  return real (v1.complex_value ()) >= real (v2.complex_value ());
-}
-
-DEFBINOP (gt, complex, complex)
-{
-  CAST_BINOP_ARGS (const octave_complex&, const octave_complex&);
-
-  return real (v1.complex_value ()) > real (v2.complex_value ());
-}
-
-DEFBINOP (ne, complex, complex)
-{
-  CAST_BINOP_ARGS (const octave_complex&, const octave_complex&);
-
-  return v1.complex_value () != v2.complex_value ();
-}
+DEFCMPLXCMPOP_OP (lt, complex, complex, <)
+DEFCMPLXCMPOP_OP (le, complex, complex, <=)
+DEFCMPLXCMPOP_OP (eq, complex, complex, ==)
+DEFCMPLXCMPOP_OP (ge, complex, complex, >=)
+DEFCMPLXCMPOP_OP (gt, complex, complex, >)
+DEFCMPLXCMPOP_OP (ne, complex, complex, !=)
 
 DEFBINOP_OP (el_mul, complex, complex, *)
 
@@ -224,12 +192,6 @@ install_cs_cs_ops (void)
   INSTALL_ASSIGNCONV (octave_complex, octave_null_str, octave_complex_matrix);
   INSTALL_ASSIGNCONV (octave_complex, octave_null_sq_str, octave_complex_matrix);
 
-  INSTALL_CONVOP (octave_complex, octave_float_complex_matrix, 
-		  complex_to_float_complex);
+  INSTALL_CONVOP (octave_complex, octave_float_complex_matrix,
+                  complex_to_float_complex);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

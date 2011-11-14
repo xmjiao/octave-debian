@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 1998, 2000, 2002, 2004,
-              2005, 2006, 2007, 2008 John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
+Copyright (C) 2009-2010 VZLU Prague
 
 This file is part of Octave.
 
@@ -27,123 +27,318 @@ along with Octave; see the file COPYING.  If not, see
 #include <cstddef>
 
 #include <string>
-#include <stack>
+#include <memory>
 
-class
-OCTINTERP_API
-unwind_elem
-{
-public:
-
-  typedef void (*cleanup_func) (void *ptr);
-
-  unwind_elem (void)
-    : ue_tag (), ue_fptr (0), ue_ptr (0) { }
-
-  unwind_elem (const std::string &t)
-    : ue_tag (t), ue_fptr (0), ue_ptr (0) { }
-
-  unwind_elem (cleanup_func f, void *p)
-    : ue_tag (), ue_fptr (f), ue_ptr (p) { }
-
-  unwind_elem (const unwind_elem& el)
-    : ue_tag (el.ue_tag), ue_fptr (el.ue_fptr), ue_ptr (el.ue_ptr) { }
-
-  ~unwind_elem (void) { }
-
-  unwind_elem& operator = (const unwind_elem& el)
-    {
-      ue_tag = el.ue_tag;
-      ue_fptr = el.ue_fptr;
-      ue_ptr = el.ue_ptr;
-
-      return *this;
-    }
-
-  std::string tag (void) { return ue_tag; }
-
-  cleanup_func fptr (void) { return ue_fptr; }
-
-  void *ptr (void) { return ue_ptr; }
-
-private:
-
-  std::string ue_tag;
-
-  cleanup_func ue_fptr;
-
-  void *ue_ptr;
-};
-
+// This class allows registering cleanup actions.
 class
 OCTINTERP_API
 unwind_protect
 {
 public:
 
-  static void add (unwind_elem::cleanup_func fptr, void *ptr = 0);
+  // A generic unwind_protect element. Knows how to run itself and discard itself.
+  // Also, contains a pointer to the next element.
+  class elem
+  {
+    elem *next;
 
-  static void run (void);
+  public:
+    elem (void) : next (0) { }
 
-  static void discard (void);
+    virtual void run (void) { }
 
-  static void begin_frame (const std::string& tag);
+    virtual ~elem (void) { }
 
-  static void run_frame (const std::string& tag);
+    friend class unwind_protect;
 
-  static void discard_frame (const std::string& tag);
+  private:
 
-  static void run_all (void);
+    // No copying!
 
-  static void discard_all (void);
+    elem (const elem&);
 
-  // Ways to save variables.
+    elem& operator = (const elem&);
+  };
 
-  static void save_bool (bool *ptr, bool value);
+  // An element that merely runs a void (*)(void) function.
 
-  static void save_int (int *ptr, int value);
+  class fcn_elem : public elem
+  {
+  public:
+    fcn_elem (void (*fptr) (void))
+      : e_fptr (fptr) { }
 
-  static void save_size_t (size_t *ptr, size_t value);
+    void run (void) { e_fptr (); }
 
-  static void save_str (std::string *ptr, const std::string& value);
+  private:
+    void (*e_fptr) (void);
+  };
 
-  static void save_ptr (void **ptr, void *value);
+  // An element that stores a variable of type T along with a void (*) (T)
+  // function pointer, and calls the function with the parameter.
 
-  static void save_var (void *ptr, void *value, size_t size);
+  template <class T>
+  class fcn_arg_elem : public elem
+  {
+  public:
+    fcn_arg_elem (void (*fcn) (T), T arg)
+      : e_fcn (fcn), e_arg (arg) { }
 
-  static std::stack<unwind_elem> elt_list;
+    void run (void) { e_fcn (e_arg); }
+
+  private:
+
+    // No copying!
+
+    fcn_arg_elem (const fcn_arg_elem&);
+
+    fcn_arg_elem& operator = (const fcn_arg_elem&);
+
+    void (*e_fcn) (T);
+    T e_arg;
+  };
+
+  // An element that stores a variable of type T along with a void (*) (const T&)
+  // function pointer, and calls the function with the parameter.
+
+  template <class T>
+  class fcn_crefarg_elem : public elem
+  {
+  public:
+    fcn_crefarg_elem (void (*fcn) (const T&), T arg)
+      : e_fcn (fcn), e_arg (arg) { }
+
+    void run (void) { e_fcn (e_arg); }
+
+  private:
+    void (*e_fcn) (const T&);
+    T e_arg;
+  };
+
+  // An element for calling a member function.
+
+  template <class T>
+  class method_elem : public elem
+  {
+  public:
+    method_elem (T *obj, void (T::*method) (void))
+      : e_obj (obj), e_method (method) { }
+
+    void run (void) { (e_obj->*e_method) (); }
+
+  private:
+
+    T *e_obj;
+    void (T::*e_method) (void);
+
+    // No copying!
+
+    method_elem (const method_elem&);
+
+    method_elem operator = (const method_elem&);
+  };
+
+  // An element that stores arbitrary variable, and restores it.
+
+  template <class T>
+  class restore_var_elem : public elem
+  {
+  public:
+    restore_var_elem (T& ref, const T& val)
+      : e_ptr (&ref), e_val (val) { }
+
+    void run (void) { *e_ptr = e_val; }
+
+  private:
+
+    // No copying!
+
+    restore_var_elem (const restore_var_elem&);
+
+    restore_var_elem& operator = (const restore_var_elem&);
+
+    T *e_ptr, e_val;
+  };
+
+  // Deletes a class allocated using new.
+
+  template <class T>
+  class delete_ptr_elem : public elem
+  {
+  public:
+    delete_ptr_elem (T *ptr)
+      : e_ptr (ptr) { }
+
+    void run (void) { delete e_ptr; }
+
+  private:
+
+    T *e_ptr;
+
+    // No copying!
+
+    delete_ptr_elem (const delete_ptr_elem&);
+
+    delete_ptr_elem operator = (const delete_ptr_elem&);
+  };
+
+  unwind_protect (void) : head () { }
+
+  void add (elem *new_elem)
+    {
+      new_elem->next = head;
+      head = new_elem;
+    }
+
+  // For backward compatibility.
+  void add (void (*fcn) (void *), void *ptr = 0)
+    {
+      add (new fcn_arg_elem<void *> (fcn, ptr));
+    }
+
+  // Call to void func (void).
+  void add_fcn (void (*fcn) (void))
+    {
+      add (new fcn_elem (fcn));
+    }
+
+  // Call to void func (T).
+  template <class T>
+  void add_fcn (void (*action) (T), T val)
+    {
+      add (new fcn_arg_elem<T> (action, val));
+    }
+
+  // Call to void func (const T&).
+  template <class T>
+  void add_fcn (void (*action) (const T&), T val)
+    {
+      add (new fcn_crefarg_elem<T> (action, val));
+    }
+
+  // Call to T::method (void).
+  template <class T>
+  void add_method (T *obj, void (T::*method) (void))
+    {
+      add (new method_elem<T> (obj, method));
+    }
+
+  // Call to delete (T*).
+
+  template <class T>
+  void add_delete (T *obj)
+    {
+      add (new delete_ptr_elem<T> (obj));
+    }
+
+  // Protect any variable.
+  template <class T>
+  void protect_var (T& var)
+    {
+      add (new restore_var_elem<T> (var, var));
+    }
+
+  // Protect any variable, value given.
+  template <class T>
+  void protect_var (T& var, const T& val)
+    {
+      add (new restore_var_elem<T> (var, val));
+    }
+
+  operator bool (void) const
+    {
+      return head != 0;
+    }
+
+  void run_top (void)
+    {
+      if (head)
+        {
+          // No leak on exception!
+          std::auto_ptr<elem> ptr (head);
+          head = ptr->next;
+          ptr->run ();
+        }
+    }
+
+  void run_top (int num)
+    {
+      while (num-- > 0)
+        run_top ();
+    }
+
+  void discard_top (void)
+    {
+      if (head)
+        {
+          elem *ptr = head;
+          head = ptr->next;
+          delete ptr;
+        }
+    }
+
+  void discard_top (int num)
+    {
+      while (num-- > 0)
+        discard_top ();
+    }
+
+  void run (void)
+    {
+      while (head)
+        run_top ();
+    }
+
+  void discard (void)
+    {
+      while (head)
+        discard_top ();
+    }
+
+  // Destructor should not raise an exception, so all actions registered should
+  // be exception-safe (but setting error_state is allowed). If you're not sure,
+  // see unwind_protect_safe.
+  ~unwind_protect (void)
+    {
+      run ();
+    }
+
+private:
+
+  elem *head;
+
+  // No copying!
+
+  unwind_protect (const unwind_protect&);
+
+  unwind_protect& operator = (const unwind_protect&);
 };
 
-// We could get by without these macros, but they are nice to have...
+// Like unwind_protect, but this one will guard against the possibility of seeing
+// an exception (or interrupt) in the cleanup actions. Not that we can do much about
+// it, but at least we won't crash.
 
-#define unwind_protect_bool(b) \
-  unwind_protect::save_bool (&(b), (b))
+class
+OCTINTERP_API
+unwind_protect_safe : public unwind_protect
+{
+  static void gripe_exception (void);
 
-#define unwind_protect_int(i) \
-  unwind_protect::save_int (&(i), (i))
-
-#define unwind_protect_size_t(i) \
-  unwind_protect::save_size_t (&(i), (i))
-
-#define unwind_protect_str(s) \
-  unwind_protect::save_str (&(s), (s))
-
-#define unwind_protect_ptr(p) \
-  unwind_protect::save_ptr (reinterpret_cast<void **> (&(p)), \
-                            reinterpret_cast<void *> (p))
-
-#define unwind_protect_fptr(p) \
-  unwind_protect::save_ptr (reinterpret_cast<void **> (&(p)), \
-                            FCN_PTR_CAST (void *, p))
-
-#define unwind_protect_const_ptr(p) \
-  unwind_protect::save_ptr (const_cast<void **> (reinterpret_cast<const void **> (&(p))), \
-                            const_cast<void *> (reinterpret_cast<const void *> (p)))
+public:
+  ~unwind_protect_safe (void)
+    {
+      while (*this)
+        {
+          try
+            {
+              run_top ();
+            }
+          catch (...) // Yes, the black hole. Remember we're in a dtor.
+            {
+              gripe_exception ();
+            }
+        }
+    }
+};
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

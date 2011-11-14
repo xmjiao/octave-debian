@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008, 2009 Jaroslav Hajek
+Copyright (C) 2008-2011 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -38,7 +38,7 @@ template class octave_base_diag<ComplexDiagMatrix, ComplexMatrix>;
 
 DEFINE_OCTAVE_ALLOCATOR (octave_complex_diag_matrix);
 
-DEFINE_OV_TYPEID_FUNCTIONS_AND_DATA (octave_complex_diag_matrix, 
+DEFINE_OV_TYPEID_FUNCTIONS_AND_DATA (octave_complex_diag_matrix,
                                      "complex diagonal matrix", "double");
 
 static octave_base_value *
@@ -78,8 +78,7 @@ octave_complex_diag_matrix::try_narrowing_conversion (void)
 
   if (matrix.nelem () == 1)
     {
-      // FIXME: the proxy mechanism of DiagArray2 causes problems here.
-      retval = new octave_complex (Complex (matrix (0, 0)));
+      retval = new octave_complex (matrix (0, 0));
       octave_base_value *rv2 = retval->try_narrowing_conversion ();
       if (rv2)
         {
@@ -102,7 +101,7 @@ octave_complex_diag_matrix::diag_matrix_value (bool force_conversion) const
 
   if (! force_conversion)
     gripe_implicit_conversion ("Octave:imag-to-real",
-			       type_name (), "real matrix");
+                               type_name (), "real matrix");
 
   retval = ::real (matrix);
 
@@ -116,7 +115,7 @@ octave_complex_diag_matrix::float_diag_matrix_value (bool force_conversion) cons
 
   if (! force_conversion)
     gripe_implicit_conversion ("Octave:imag-to-real",
-			       type_name (), "real matrix");
+                               type_name (), "real matrix");
 
   retval = ::real (matrix);
 
@@ -136,45 +135,31 @@ octave_complex_diag_matrix::float_complex_diag_matrix_value (bool) const
 }
 
 octave_value
-octave_complex_diag_matrix::abs (void) const
+octave_complex_diag_matrix::map (unary_mapper_t umap) const
 {
-  return matrix.abs ();
+  switch (umap)
+    {
+    case umap_abs:
+      return matrix.abs ();
+    case umap_real:
+      return ::real (matrix);
+    case umap_conj:
+      return ::conj (matrix);
+    case umap_imag:
+      return ::imag (matrix);
+    case umap_sqrt:
+      {
+        ComplexColumnVector tmp = matrix.diag ().map<Complex> (std::sqrt);
+        ComplexDiagMatrix retval (tmp);
+        retval.resize (matrix.rows (), matrix.columns ());
+        return retval;
+      }
+    default:
+      return to_dense ().map (umap);
+    }
 }
 
-octave_value
-octave_complex_diag_matrix::real (void) const
-{
-  return ::real (matrix);
-}
-
-octave_value
-octave_complex_diag_matrix::conj (void) const
-{
-  return ::conj (matrix);
-}
-
-octave_value
-octave_complex_diag_matrix::imag (void) const
-{
-  return ::imag (matrix);
-}
-
-octave_value
-octave_complex_diag_matrix::sqrt (void) const
-{    
-  octave_value retval;
-
-  static ComplexNDArray::cmapper csqrt = std::sqrt;
-
-  ComplexColumnVector dvec = matrix.diag ();
-  retval = ComplexDiagMatrix (dvec.map (csqrt));
-
-  retval.resize (dims ());
-
-  return retval;
-}
-
-bool 
+bool
 octave_complex_diag_matrix::save_binary (std::ostream& os, bool& save_as_floats)
 {
 
@@ -187,18 +172,18 @@ octave_complex_diag_matrix::save_binary (std::ostream& os, bool& save_as_floats)
   if (save_as_floats)
     {
       if (m.too_large_for_float ())
-	{
-	  warning ("save: some values too large to save as floats --");
-	  warning ("save: saving as doubles instead");
-	}
+        {
+          warning ("save: some values too large to save as floats --");
+          warning ("save: saving as doubles instead");
+        }
       else
-	st = LS_FLOAT;
+        st = LS_FLOAT;
     }
   else if (matrix.length () > 4096) // FIXME -- make this configurable.
     {
       double max_val, min_val;
       if (m.all_integers (max_val, min_val))
-	st = get_save_type (max_val, min_val);
+        st = get_save_type (max_val, min_val);
     }
 
   const Complex *mtmp = m.data ();
@@ -207,9 +192,9 @@ octave_complex_diag_matrix::save_binary (std::ostream& os, bool& save_as_floats)
   return true;
 }
 
-bool 
+bool
 octave_complex_diag_matrix::load_binary (std::istream& is, bool swap,
-				 oct_mach_info::float_format fmt)
+                                 oct_mach_info::float_format fmt)
 {
   int32_t r, c;
   char tmp;
@@ -235,8 +220,8 @@ octave_complex_diag_matrix::load_binary (std::istream& is, bool swap,
   return true;
 }
 
-bool 
-octave_complex_diag_matrix::chk_valid_scalar (const octave_value& val, 
+bool
+octave_complex_diag_matrix::chk_valid_scalar (const octave_value& val,
                                               Complex& x) const
 {
   bool retval = val.is_complex_scalar () || val.is_real_scalar ();

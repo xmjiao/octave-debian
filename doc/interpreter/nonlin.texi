@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.
 
-@c Copyright (C) 1996, 1997, 2007, 2008, 2009 John W. Eaton
+@c Copyright (C) 1996-2011 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -23,6 +23,14 @@
 @cindex nonlinear equations
 @cindex equations, nonlinear
 
+@menu
+* Solvers::
+* Minimizers::          
+@end menu
+
+@node Solvers
+@section Solvers
+
 Octave can solve sets of nonlinear equations of the form
 @tex
 $$
@@ -34,40 +42,48 @@ $$
 @example
 F (x) = 0
 @end example
+
 @end ifnottex
 
 @noindent
-using the function @code{fsolve}, which is based on the @sc{Minpack}
+using the function @code{fsolve}, which is based on the @sc{minpack}
 subroutine @code{hybrd}.  This is an iterative technique so a starting
-point will have to be provided.  This also has the consequence that
+point must be provided.  This also has the consequence that
 convergence is not guaranteed even if a solution exists.
 
-@c ./optimization/fsolve.m
+@c fsolve scripts/optimization/fsolve.m
 @anchor{doc-fsolve}
 @deftypefn  {Function File} {} fsolve (@var{fcn}, @var{x0}, @var{options})
-@deftypefnx {Function File} {[@var{x}, @var{fvec}, @var{info}, @var{output}, @var{fjac}]} = fsolve (@var{fcn}, @dots{})
+@deftypefnx {Function File} {[@var{x}, @var{fvec}, @var{info}, @var{output}, @var{fjac}] =} fsolve (@var{fcn}, @dots{})
 Solve a system of nonlinear equations defined by the function @var{fcn}.
-@var{fcn} should accepts a vector (array) defining the unknown variables,
+@var{fcn} should accept a vector (array) defining the unknown variables,
 and return a vector of left-hand sides of the equations.  Right-hand sides
 are defined to be zeros.
-In other words, this function attempts to determine a vector @var{x} such 
+In other words, this function attempts to determine a vector @var{x} such
 that @code{@var{fcn} (@var{x})} gives (approximately) all zeros.
 @var{x0} determines a starting guess.  The shape of @var{x0} is preserved
 in all calls to @var{fcn}, but otherwise it is treated as a column vector.
 @var{options} is a structure specifying additional options.
 Currently, @code{fsolve} recognizes these options:
 @code{"FunValCheck"}, @code{"OutputFcn"}, @code{"TolX"},
-@code{"TolFun"}, @code{"MaxIter"}, @code{"MaxFunEvals"}, 
-@code{"Jacobian"}, @code{"Updating"} and @code{"ComplexEqn"}.
+@code{"TolFun"}, @code{"MaxIter"}, @code{"MaxFunEvals"},
+@code{"Jacobian"}, @code{"Updating"}, @code{"ComplexEqn"}
+@code{"TypicalX"}, @code{"AutoScaling"} and @code{"FinDiffType"}.
 
 If @code{"Jacobian"} is @code{"on"}, it specifies that @var{fcn},
 called with 2 output arguments, also returns the Jacobian matrix
 of right-hand sides at the requested point.  @code{"TolX"} specifies
-the termination tolerance in the unknown variables, while 
+the termination tolerance in the unknown variables, while
 @code{"TolFun"} is a tolerance for equations.  Default is @code{1e-7}
 for both @code{"TolX"} and @code{"TolFun"}.
+
+If @code{"AutoScaling"} is on, the variables will be automatically scaled
+according to the column norms of the (estimated) Jacobian.  As a result,
+TolF becomes scaling-independent.  By default, this option is off, because
+it may sometimes deliver unexpected (though mathematically correct) results.
+
 If @code{"Updating"} is "on", the function will attempt to use Broyden
-updates to update the Jacobian, in order to reduce the amount of jacobian
+updates to update the Jacobian, in order to reduce the amount of Jacobian
 calculations.
 If your user function always calculates the Jacobian (regardless of number
 of output arguments), this option provides no advantage and should be set to
@@ -75,7 +91,7 @@ false.
 
 @code{"ComplexEqn"} is @code{"on"}, @code{fsolve} will attempt to solve
 complex equations in complex variables, assuming that the equations possess a
-complex derivative (i.e., are holomorphic).  If this is not what you want, 
+complex derivative (i.e., are holomorphic).  If this is not what you want,
 should unpack the real and imaginary parts of the system to get a real
 system.
 
@@ -86,31 +102,35 @@ evaluated at @var{x}, and @var{info} may be one of the following values:
 
 @table @asis
 @item 1
-Converged to a solution point.  Relative residual error is less than specified
-by TolFun.
+Converged to a solution point.  Relative residual error is less than
+specified by TolFun.
+
 @item 2
 Last relative step size was less that TolX.
+
 @item 3
-Last relative decrease in residual was less than TolF. 
+Last relative decrease in residual was less than TolF.
+
 @item 0
 Iteration limit exceeded.
+
 @item -3
-The trust region radius became excessively small. 
+The trust region radius became excessively small.
 @end table
 
-Note: If you only have a single nonlinear equation of one variable, using 
+Note: If you only have a single nonlinear equation of one variable, using
 @code{fzero} is usually a much better idea.
 @seealso{@ref{doc-fzero,,fzero}, @ref{doc-optimset,,optimset}}
 
-Note about user-supplied jacobians:
-As an inherent property of the algorithm, jacobian is always requested for a
+Note about user-supplied Jacobians:
+As an inherent property of the algorithm, Jacobian is always requested for a
 solution vector whose residual vector is already known, and it is the last
 accepted successful step.  Often this will be one of the last two calls, but
 not always.  If the savings by reusing intermediate results from residual
-calculation in jacobian calculation are significant, the best strategy is to
+calculation in Jacobian calculation are significant, the best strategy is to
 employ OutputFcn: After a vector is evaluated for residuals, if OutputFcn is
 called with that vector, then the intermediate results should be saved for
-future jacobian evaluation, and should be kept until a jacobian evaluation
+future Jacobian evaluation, and should be kept until a Jacobian evaluation
 is requested or until outputfcn is called with a different vector, in which
 case they should be dropped in favor of this most recent vector.  A short
 example how this can be achieved follows:
@@ -139,18 +159,17 @@ endfunction
 
 fsolve (@@user_func, x0, optimset ("OutputFcn", @@user_func, @dots{}))
 @end example
-
 @end deftypefn
 
 
-Here is a complete example.  To solve the set of equations
+The following is a complete example.  To solve the set of equations
 @tex
 $$
  \eqalign{-2x^2 + 3xy + 4\sin(y) - 6 &= 0\cr
            3x^2 - 2xy^2 + 3\cos(x) + 4 &= 0}
 $$
 @end tex
-@ifinfo
+@ifnottex
 
 @example
 @group
@@ -158,7 +177,8 @@ $$
  3x^2 - 2xy^2 + 3 cos(x) = -4
 @end group
 @end example
-@end ifinfo
+
+@end ifnottex
 
 @noindent
 you first need to write a function to compute the value of the given
@@ -167,6 +187,7 @@ function.  For example:
 @example
 @group
 function y = f (x)
+  y = zeros (2, 1);
   y(1) = -2*x(1)^2 + 3*x(1)*x(2)   + 4*sin(x(2)) - 6;
   y(2) =  3*x(1)^2 - 2*x(1)*x(2)^2 + 3*cos(x(1)) + 4;
 endfunction
@@ -203,16 +224,6 @@ info = 1
 @noindent
 A value of @code{info = 1} indicates that the solution has converged.
 
-The function @code{perror} may be used to print English messages
-corresponding to the numeric error codes.  For example,
-
-@example
-@group
-perror ("fsolve", 1)
-     @print{} solution converged to requested tolerance
-@end group
-@end example
-
 When no Jacobian is supplied (as in the example above) it is approximated
 numerically.  This requires more function evaluations, and hence is
 less efficient.  In the example above we could compute the Jacobian 
@@ -236,11 +247,17 @@ and compute it with the following Octave function
 
 @example
 @group
-function J = jacobian(x)
-  J(1,1) =  3*x(2) - 4*x(1);
-  J(1,2) =  4*cos(x(2)) + 3*x(1);
-  J(2,1) = -2*x(2)^2 - 3*sin(x(1)) + 6*x(1);
-  J(2,2) = -4*x(1)*x(2);
+function [y, jac] = f (x)
+  y = zeros (2, 1);
+  y(1) = -2*x(1)^2 + 3*x(1)*x(2)   + 4*sin(x(2)) - 6;
+  y(2) =  3*x(1)^2 - 2*x(1)*x(2)^2 + 3*cos(x(1)) + 4;
+  if (nargout == 2)
+    jac = zeros (2, 2);
+    jac(1,1) =  3*x(2) - 4*x(1);
+    jac(1,2) =  4*cos(x(2)) + 3*x(1);
+    jac(2,1) = -2*x(2)^2 - 3*sin(x(1)) + 6*x(1);
+    jac(2,2) = -4*x(1)*x(2);
+  endif
 endfunction
 @end group
 @end example
@@ -249,39 +266,184 @@ endfunction
 The Jacobian can then be used with the following call to @code{fsolve}:
 
 @example
-[x, fval, info] = fsolve (@{@@f, @@jacobian@}, [1; 2]);
+[x, fval, info] = fsolve (@@f, [1; 2], optimset ("jacobian", "on"));
 @end example
 
 @noindent
 which gives the same solution as before.
 
-@c ./optimization/fzero.m
+@c fzero scripts/optimization/fzero.m
 @anchor{doc-fzero}
-@deftypefn {Function File} {[@var{x}, @var{fval}, @var{info}, @var{output}] =} fzero (@var{fun}, @var{x0}, @var{options})
-Find a zero point of a univariate function.  @var{fun} should be a function
-handle or name.  @var{x0} specifies a starting point.  @var{options} is a
-structure specifying additional options.  Currently, @code{fzero}
+@deftypefn  {Function File} {} fzero (@var{fun}, @var{x0})
+@deftypefnx {Function File} {} fzero (@var{fun}, @var{x0}, @var{options})
+@deftypefnx {Function File} {[@var{x}, @var{fval}, @var{info}, @var{output}] =} fzero (@dots{})
+Find a zero of a univariate function.
+
+@var{fun} is a function handle, inline function, or string
+containing the name of the function to evaluate.
+@var{x0} should be a two-element vector specifying two points which
+bracket a zero.  In other words, there must be a change in sign of the
+function between @var{x0}(1) and @var{x0}(2).  More mathematically, the
+following must hold
+
+@example
+sign (@var{fun}(@var{x0}(1))) * sign (@var{fun}(@var{x0}(2))) <= 0
+@end example
+
+If @var{x0} is a single scalar then several nearby and distant
+values are probed in an attempt to obtain a valid bracketing.  If this
+is not successful, the function fails.
+@var{options} is a structure specifying additional options.
+Currently, @code{fzero}
 recognizes these options: @code{"FunValCheck"}, @code{"OutputFcn"},
-@code{"TolX"}, @code{"MaxIter"}, @code{"MaxFunEvals"}. 
-For description of these options, see @ref{doc-optimset,,optimset}.
+@code{"TolX"}, @code{"MaxIter"}, @code{"MaxFunEvals"}.
+For a description of these options, see @ref{doc-optimset,,optimset}.
 
 On exit, the function returns @var{x}, the approximate zero point
 and @var{fval}, the function value thereof.
 @var{info} is an exit flag that can have these values:
+
+@itemize
+@item 1
+ The algorithm converged to a solution.
+
+@item 0
+ Maximum number of iterations or function evaluations has been reached.
+
+@item -1
+The algorithm has been terminated from user output function.
+
+@item -5
+The algorithm may have converged to a singular point.
+@end itemize
+
+@var{output} is a structure containing runtime information about the
+@code{fzero} algorithm.  Fields in the structure are:
+
+@itemize
+@item iterations
+ Number of iterations through loop.
+
+@item nfev
+ Number of function evaluations.
+
+@item bracketx
+ A two-element vector with the final bracketing of the zero along the x-axis.
+
+@item brackety
+ A two-element vector with the final bracketing of the zero along the y-axis.
+@end itemize
+@seealso{@ref{doc-optimset,,optimset}, @ref{doc-fsolve,,fsolve}}
+@end deftypefn
+
+
+@node Minimizers
+@section Minimizers
+@cindex local minimum
+@cindex finding minimums
+
+Often it is useful to find the minimum value of a function rather than just
+the zeroes where it crosses the x-axis.  @code{fminbnd} is designed for the
+simpler, but very common, case of a univariate function where the interval
+to search is bounded.  For unbounded minimization of a function with
+potentially many variables use @code{fminunc}.  @xref{Optimization}, for
+minimization with the presence of constraint functions.  Note that searches
+can be made for maxima by simply inverting the objective function
+@tex
+($F_{max} = -F_{min}$).
+@end tex
+@ifnottex
+(@code{Fto_max = -Fto_min}).
+@end ifnottex
+
+@c fminbnd scripts/optimization/fminbnd.m
+@anchor{doc-fminbnd}
+@deftypefn {Function File} {[@var{x}, @var{fval}, @var{info}, @var{output}] =} fminbnd (@var{fun}, @var{a}, @var{b}, @var{options})
+Find a minimum point of a univariate function.  @var{fun} should be a
+function
+handle or name.  @var{a}, @var{b} specify a starting interval.  @var{options}
+is a
+structure specifying additional options.  Currently, @code{fminbnd}
+recognizes these options: @code{"FunValCheck"}, @code{"OutputFcn"},
+@code{"TolX"}, @code{"MaxIter"}, @code{"MaxFunEvals"}.
+For description of these options, see @ref{doc-optimset,,optimset}.
+
+On exit, the function returns @var{x}, the approximate minimum point
+and @var{fval}, the function value thereof.
+@var{info} is an exit flag that can have these values:
+
 @itemize
 @item 1
 The algorithm converged to a solution.
+
 @item 0
 Maximum number of iterations or function evaluations has been exhausted.
+
 @item -1
 The algorithm has been terminated from user output function.
-@item -2 
-A general unexpected error.
-@item -3
-A non-real value encountered.
-@item -4
-A NaN value encountered.
 @end itemize
-@seealso{@ref{doc-optimset,,optimset}, @ref{doc-fsolve,,fsolve}} 
+@seealso{@ref{doc-optimset,,optimset}, @ref{doc-fzero,,fzero}, @ref{doc-fminunc,,fminunc}}
 @end deftypefn
+
+
+@c fminunc scripts/optimization/fminunc.m
+@anchor{doc-fminunc}
+@deftypefn  {Function File} {} fminunc (@var{fcn}, @var{x0})
+@deftypefnx {Function File} {} fminunc (@var{fcn}, @var{x0}, @var{options})
+@deftypefnx {Function File} {[@var{x}, @var{fvec}, @var{info}, @var{output}, @var{grad}, @var{hess}] =} fminunc (@var{fcn}, @dots{})
+Solve an unconstrained optimization problem defined by the function
+@var{fcn}.
+@var{fcn} should accepts a vector (array) defining the unknown variables,
+and return the objective function value, optionally with gradient.
+In other words, this function attempts to determine a vector @var{x} such
+that @code{@var{fcn} (@var{x})} is a local minimum.
+@var{x0} determines a starting guess.  The shape of @var{x0} is preserved
+in all calls to @var{fcn}, but otherwise is treated as a column vector.
+@var{options} is a structure specifying additional options.
+Currently, @code{fminunc} recognizes these options:
+@code{"FunValCheck"}, @code{"OutputFcn"}, @code{"TolX"},
+@code{"TolFun"}, @code{"MaxIter"}, @code{"MaxFunEvals"},
+@code{"GradObj"}, @code{"FinDiffType"},
+@code{"TypicalX"}, @code{"AutoScaling"}.
+
+If @code{"GradObj"} is @code{"on"}, it specifies that @var{fcn},
+called with 2 output arguments, also returns the Jacobian matrix
+of right-hand sides at the requested point.  @code{"TolX"} specifies
+the termination tolerance in the unknown variables, while
+@code{"TolFun"} is a tolerance for equations.  Default is @code{1e-7}
+for both @code{"TolX"} and @code{"TolFun"}.
+
+For description of the other options, see @code{optimset}.
+
+On return, @var{fval} contains the value of the function @var{fcn}
+evaluated at @var{x}, and @var{info} may be one of the following values:
+
+@table @asis
+@item 1
+Converged to a solution point.  Relative gradient error is less than
+specified
+by TolFun.
+
+@item 2
+Last relative step size was less that TolX.
+
+@item 3
+Last relative decrease in function value was less than TolF.
+
+@item 0
+Iteration limit exceeded.
+
+@item -3
+The trust region radius became excessively small.
+@end table
+
+Optionally, fminunc can also yield a structure with convergence statistics
+(@var{output}), the output gradient (@var{grad}) and approximate Hessian
+(@var{hess}).
+
+Note: If you only have a single nonlinear equation of one variable, using
+@code{fminbnd} is usually a much better idea.
+@seealso{@ref{doc-fminbnd,,fminbnd}, @ref{doc-optimset,,optimset}}
+@end deftypefn
+
 

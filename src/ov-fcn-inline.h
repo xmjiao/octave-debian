@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004, 2005, 2006, 2007, 2008 David Bateman
+Copyright (C) 2004-2011 David Bateman
 
 This file is part of Octave.
 
@@ -46,8 +46,8 @@ public:
   octave_fcn_inline (void)
     : octave_fcn_handle (), iftext (), ifargs () { }
 
-  octave_fcn_inline (const std::string& f, const string_vector& a, 
-		     const std::string& n = std::string ());
+  octave_fcn_inline (const std::string& f, const string_vector& a,
+                     const std::string& n = std::string ());
 
   octave_fcn_inline (const octave_fcn_inline& fi)
     : octave_fcn_handle (fi), iftext (fi.iftext), ifargs (fi.ifargs) { }
@@ -67,7 +67,7 @@ public:
 
   octave_value convert_to_str_internal (bool, bool, char) const;
 
-  Octave_map map_value (void) const;
+  octave_map map_value (void) const;
 
   bool save_ascii (std::ostream& os);
 
@@ -75,13 +75,13 @@ public:
 
   bool save_binary (std::ostream& os, bool& save_as_floats);
 
-  bool load_binary (std::istream& is, bool swap, 
-		    oct_mach_info::float_format fmt);
+  bool load_binary (std::istream& is, bool swap,
+                    oct_mach_info::float_format fmt);
 
 #if defined (HAVE_HDF5)
   bool save_hdf5 (hid_t loc_id, const char *name, bool save_as_floats);
 
-  bool load_hdf5 (hid_t loc_id, const char *name, bool have_h5giterate_bug);
+  bool load_hdf5 (hid_t loc_id, const char *name);
 #endif
 
   void print (std::ostream& os, bool pr_as_read_syntax = false) const;
@@ -102,10 +102,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
-

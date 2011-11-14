@@ -1,8 +1,7 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2002, 2003, 2004, 2005, 2007
-              John W. Eaton
-Copyright (C) 2008, 2009 Jaroslav Hajek
+Copyright (C) 1994-2011 John W. Eaton
+Copyright (C) 2008-2009 Jaroslav Hajek
 Copyright (C) 2009 VZLU Prague
 
 This file is part of Octave.
@@ -34,60 +33,77 @@ along with Octave; see the file COPYING.  If not, see
 #include "idx-vector.h"
 #include "oct-locbuf.h"
 
+#include "base-qr.cc"
+
+template class base_qr<Matrix>;
+
 extern "C"
 {
   F77_RET_T
-  F77_FUNC (dgeqrf, DGEQRF) (const octave_idx_type&, const octave_idx_type&, double*, const octave_idx_type&,
-			     double*, double*, const octave_idx_type&, octave_idx_type&); 
+  F77_FUNC (dgeqrf, DGEQRF) (const octave_idx_type&, const octave_idx_type&,
+                             double*, const octave_idx_type&, double*,
+                             double*, const octave_idx_type&,
+                             octave_idx_type&);
 
   F77_RET_T
-  F77_FUNC (dorgqr, DORGQR) (const octave_idx_type&, const octave_idx_type&, const octave_idx_type&, double*,
-			     const octave_idx_type&, double*, double*, const octave_idx_type&, octave_idx_type&);
+  F77_FUNC (dorgqr, DORGQR) (const octave_idx_type&, const octave_idx_type&,
+                             const octave_idx_type&, double*,
+                             const octave_idx_type&, double*, double*,
+                             const octave_idx_type&, octave_idx_type&);
 
 #ifdef HAVE_QRUPDATE
 
   F77_RET_T
-  F77_FUNC (dqr1up, DQR1UP) (const octave_idx_type&, const octave_idx_type&, const octave_idx_type&, 
-                             double*, const octave_idx_type&, double*, const octave_idx_type&,
-                             double*, double*, double*);
+  F77_FUNC (dqr1up, DQR1UP) (const octave_idx_type&, const octave_idx_type&,
+                             const octave_idx_type&, double*,
+                             const octave_idx_type&, double*,
+                             const octave_idx_type&, double*, double*, double*);
 
   F77_RET_T
-  F77_FUNC (dqrinc, DQRINC) (const octave_idx_type&, const octave_idx_type&, const octave_idx_type&, 
-                             double*, const octave_idx_type&, double*, const octave_idx_type&,
-                             const octave_idx_type&, const double*, double*);
+  F77_FUNC (dqrinc, DQRINC) (const octave_idx_type&, const octave_idx_type&,
+                             const octave_idx_type&, double*,
+                             const octave_idx_type&, double*,
+                             const octave_idx_type&, const octave_idx_type&,
+                             const double*, double*);
 
   F77_RET_T
-  F77_FUNC (dqrdec, DQRDEC) (const octave_idx_type&, const octave_idx_type&, const octave_idx_type&, 
-                             double*, const octave_idx_type&, double*, const octave_idx_type&,
-                             const octave_idx_type&, double*);
-
-  F77_RET_T
-  F77_FUNC (dqrinr, DQRINR) (const octave_idx_type&, const octave_idx_type&, 
-                             double*, const octave_idx_type&, double*, const octave_idx_type&,
-                             const octave_idx_type&, const double*, double*);
-
-  F77_RET_T
-  F77_FUNC (dqrder, DQRDER) (const octave_idx_type&, const octave_idx_type&, 
-                             double*, const octave_idx_type&, double*, const octave_idx_type&,
-                             const octave_idx_type&, double*);
-
-  F77_RET_T
-  F77_FUNC (dqrshc, DQRSHC) (const octave_idx_type&, const octave_idx_type&, const octave_idx_type&,
-                             double*, const octave_idx_type&, double*, const octave_idx_type&,
+  F77_FUNC (dqrdec, DQRDEC) (const octave_idx_type&, const octave_idx_type&,
+                             const octave_idx_type&, double*,
+                             const octave_idx_type&, double*,
                              const octave_idx_type&, const octave_idx_type&,
                              double*);
+
+  F77_RET_T
+  F77_FUNC (dqrinr, DQRINR) (const octave_idx_type&, const octave_idx_type&,
+                             double*, const octave_idx_type&, double*,
+                             const octave_idx_type&, const octave_idx_type&,
+                             const double*, double*);
+
+  F77_RET_T
+  F77_FUNC (dqrder, DQRDER) (const octave_idx_type&, const octave_idx_type&,
+                             double*, const octave_idx_type&, double*,
+                             const octave_idx_type&, const octave_idx_type&,
+                             double*);
+
+  F77_RET_T
+  F77_FUNC (dqrshc, DQRSHC) (const octave_idx_type&, const octave_idx_type&,
+                             const octave_idx_type&, double*,
+                             const octave_idx_type&, double*,
+                             const octave_idx_type&, const octave_idx_type&,
+                             const octave_idx_type&, double*);
 
 #endif
 }
 
-QR::QR (const Matrix& a, QR::type qr_type)
-  : q (), r ()
+const QR::type QR::raw, QR::std, QR::economy;
+
+QR::QR (const Matrix& a, qr_type_t qr_type)
 {
   init (a, qr_type);
 }
 
 void
-QR::init (const Matrix& a, QR::type qr_type)
+QR::init (const Matrix& a, qr_type_t qr_type)
 {
   octave_idx_type m = a.rows ();
   octave_idx_type n = a.cols ();
@@ -98,7 +114,7 @@ QR::init (const Matrix& a, QR::type qr_type)
   octave_idx_type info = 0;
 
   Matrix afact = a;
-  if (m > n && qr_type == QR::std)
+  if (m > n && qr_type == qr_type_std)
     afact.resize (m, m);
 
   if (m > 0)
@@ -117,20 +133,20 @@ QR::init (const Matrix& a, QR::type qr_type)
   form (n, afact, tau, qr_type);
 }
 
-void QR::form (octave_idx_type n, Matrix& afact, 
-               double *tau, QR::type qr_type)
+void QR::form (octave_idx_type n, Matrix& afact,
+               double *tau, qr_type_t qr_type)
 {
   octave_idx_type m = afact.rows (), min_mn = std::min (m, n);
   octave_idx_type info;
 
-  if (qr_type == QR::raw)
+  if (qr_type == qr_type_raw)
     {
       for (octave_idx_type j = 0; j < min_mn; j++)
-	{
-	  octave_idx_type limit = j < min_mn - 1 ? j : min_mn - 1;
-	  for (octave_idx_type i = limit + 1; i < m; i++)
-	    afact.elem (i, j) *= tau[j];
-	}
+        {
+          octave_idx_type limit = j < min_mn - 1 ? j : min_mn - 1;
+          for (octave_idx_type i = limit + 1; i < m; i++)
+            afact.elem (i, j) *= tau[j];
+        }
 
       r = afact;
     }
@@ -141,7 +157,7 @@ void QR::form (octave_idx_type n, Matrix& afact,
         {
           // afact will become q.
           q = afact;
-          octave_idx_type k = qr_type == QR::economy ? n : m;
+          octave_idx_type k = qr_type == qr_type_economy ? n : m;
           r = Matrix (k, n);
           for (octave_idx_type j = 0; j < n; j++)
             {
@@ -177,38 +193,12 @@ void QR::form (octave_idx_type n, Matrix& afact,
 
           // allocate buffer and do the job.
           octave_idx_type lwork = rlwork;
-	  lwork = std::max (lwork, static_cast<octave_idx_type> (1));
+          lwork = std::max (lwork, static_cast<octave_idx_type> (1));
           OCTAVE_LOCAL_BUFFER (double, work, lwork);
           F77_XFCN (dorgqr, DORGQR, (m, k, min_mn, q.fortran_vec (), m, tau,
                                      work, lwork, info));
         }
     }
-}
-
-QR::QR (const Matrix& q_arg, const Matrix& r_arg)
-{
-  octave_idx_type qr = q_arg.rows (), qc = q_arg.columns ();
-  octave_idx_type rr = r_arg.rows (), rc = r_arg.columns ();
-  if (qc == rr && (qr == qc || (qr > qc && rr == rc)))
-    {
-      q = q_arg;
-      r = r_arg;
-    }
-  else
-    (*current_liboctave_error_handler) ("QR dimensions mismatch");
-}
-
-QR::type
-QR::get_type (void) const
-{
-  QR::type retval;
-  if (!q.is_empty () && q.is_square ())
-    retval = QR::std;
-  else if (q.rows () > q.columns () && r.is_square ())
-    retval = QR::economy;
-  else
-    retval = QR::raw;
-  return retval;
 }
 
 #ifdef HAVE_QRUPDATE
@@ -261,7 +251,7 @@ QR::insert_col (const ColumnVector& u, octave_idx_type j)
 
   if (u.length () != m)
     (*current_liboctave_error_handler) ("qrinsert: dimensions mismatch");
-  else if (j < 0 || j > n) 
+  else if (j < 0 || j > n)
     (*current_liboctave_error_handler) ("qrinsert: index out of range");
   else
     {
@@ -278,7 +268,7 @@ QR::insert_col (const ColumnVector& u, octave_idx_type j)
       ColumnVector utmp = u;
       OCTAVE_LOCAL_BUFFER (double, w, k);
       F77_XFCN (dqrinc, DQRINC, (m, n, k, q.fortran_vec (), q.rows (),
-                                 r.fortran_vec (), r.rows (), j + 1, 
+                                 r.fortran_vec (), r.rows (), j + 1,
                                  utmp.data (), w));
     }
 }
@@ -319,11 +309,11 @@ QR::insert_col (const Matrix& u, const Array<octave_idx_type>& j)
       OCTAVE_LOCAL_BUFFER (double, w, kmax);
       for (volatile octave_idx_type i = 0; i < js.length (); i++)
         {
-	  octave_idx_type ii = i;
+          octave_idx_type ii = i;
           ColumnVector utmp = u.column (jsi(i));
-          F77_XFCN (dqrinc, DQRINC, (m, n + ii, std::min (kmax, k + ii), 
+          F77_XFCN (dqrinc, DQRINC, (m, n + ii, std::min (kmax, k + ii),
                                      q.fortran_vec (), q.rows (),
-                                     r.fortran_vec (), r.rows (), js(ii) + 1, 
+                                     r.fortran_vec (), r.rows (), js(ii) + 1,
                                      utmp.data (), w));
         }
     }
@@ -336,13 +326,13 @@ QR::delete_col (octave_idx_type j)
   octave_idx_type k = r.rows ();
   octave_idx_type n = r.columns ();
 
-  if (j < 0 || j > n-1) 
+  if (j < 0 || j > n-1)
     (*current_liboctave_error_handler) ("qrdelete: index out of range");
   else
     {
       OCTAVE_LOCAL_BUFFER (double, w, k);
       F77_XFCN (dqrdec, DQRDEC, (m, n, k, q.fortran_vec (), q.rows (),
-				 r.fortran_vec (), r.rows (), j + 1, w));
+                                 r.fortran_vec (), r.rows (), j + 1, w));
 
       if (k < m)
         {
@@ -379,8 +369,8 @@ QR::delete_col (const Array<octave_idx_type>& j)
       OCTAVE_LOCAL_BUFFER (double, w, k);
       for (volatile octave_idx_type i = 0; i < js.length (); i++)
         {
-	  octave_idx_type ii = i;
-          F77_XFCN (dqrdec, DQRDEC, (m, n - ii, k == m ? k : k - ii, 
+          octave_idx_type ii = i;
+          F77_XFCN (dqrdec, DQRDEC, (m, n - ii, k == m ? k : k - ii,
                                      q.fortran_vec (), q.rows (),
                                      r.fortran_vec (), r.rows (), js(ii) + 1, w));
         }
@@ -406,7 +396,7 @@ QR::insert_row (const RowVector& u, octave_idx_type j)
 
   if (! q.is_square () || u.length () != n)
     (*current_liboctave_error_handler) ("qrinsert: dimensions mismatch");
-  else if (j < 0 || j > m) 
+  else if (j < 0 || j > m)
     (*current_liboctave_error_handler) ("qrinsert: index out of range");
   else
     {
@@ -415,7 +405,7 @@ QR::insert_row (const RowVector& u, octave_idx_type j)
       RowVector utmp = u;
       OCTAVE_LOCAL_BUFFER (double, w, k);
       F77_XFCN (dqrinr, DQRINR, (m, n, q.fortran_vec (), q.rows (),
-				 r.fortran_vec (), r.rows (), 
+                                 r.fortran_vec (), r.rows (),
                                  j + 1, utmp.fortran_vec (), w));
 
     }
@@ -429,13 +419,13 @@ QR::delete_row (octave_idx_type j)
 
   if (! q.is_square ())
     (*current_liboctave_error_handler) ("qrdelete: dimensions mismatch");
-  else if (j < 0 || j > m-1) 
+  else if (j < 0 || j > m-1)
     (*current_liboctave_error_handler) ("qrdelete: index out of range");
   else
     {
       OCTAVE_LOCAL_BUFFER (double, w, 2*m);
       F77_XFCN (dqrder, DQRDER, (m, n, q.fortran_vec (), q.rows (),
-				 r.fortran_vec (), r.rows (), j + 1,
+                                 r.fortran_vec (), r.rows (), j + 1,
                                  w));
 
       q.resize (m - 1, m - 1);
@@ -450,12 +440,12 @@ QR::shift_cols (octave_idx_type i, octave_idx_type j)
   octave_idx_type k = r.rows ();
   octave_idx_type n = r.columns ();
 
-  if (i < 0 || i > n-1 || j < 0 || j > n-1) 
+  if (i < 0 || i > n-1 || j < 0 || j > n-1)
     (*current_liboctave_error_handler) ("qrshift: index out of range");
   else
     {
       OCTAVE_LOCAL_BUFFER (double, w, 2*k);
-      F77_XFCN (dqrshc, DQRSHC, (m, n, k, 
+      F77_XFCN (dqrshc, DQRSHC, (m, n, k,
                                  q.fortran_vec (), q.rows (),
                                  r.fortran_vec (), r.rows (),
                                  i + 1, j + 1, w));
@@ -541,7 +531,7 @@ Matrix delete_row (const Matrix& a, octave_idx_type i)
 }
 
 static
-Matrix shift_cols (const Matrix& a, 
+Matrix shift_cols (const Matrix& a,
                         octave_idx_type i, octave_idx_type j)
 {
   octave_idx_type n = a.columns ();
@@ -571,7 +561,7 @@ QR::insert_col (const ColumnVector& u, octave_idx_type j)
 
   if (u.length () != m)
     (*current_liboctave_error_handler) ("qrinsert: dimensions mismatch");
-  else if (j < 0 || j > n) 
+  else if (j < 0 || j > n)
     (*current_liboctave_error_handler) ("qrinsert: index out of range");
   else
     {
@@ -617,7 +607,7 @@ QR::delete_col (octave_idx_type j)
   octave_idx_type m = q.rows ();
   octave_idx_type n = r.columns ();
 
-  if (j < 0 || j > n-1) 
+  if (j < 0 || j > n-1)
     (*current_liboctave_error_handler) ("qrdelete: index out of range");
   else
     {
@@ -663,7 +653,7 @@ QR::insert_row (const RowVector& u, octave_idx_type j)
 
   if (! q.is_square () || u.length () != n)
     (*current_liboctave_error_handler) ("qrinsert: dimensions mismatch");
-  else if (j < 0 || j > m) 
+  else if (j < 0 || j > m)
     (*current_liboctave_error_handler) ("qrinsert: index out of range");
   else
     {
@@ -679,7 +669,7 @@ QR::delete_row (octave_idx_type j)
 
   if (! q.is_square ())
     (*current_liboctave_error_handler) ("qrdelete: dimensions mismatch");
-  else if (j < 0 || j > m-1) 
+  else if (j < 0 || j > m-1)
     (*current_liboctave_error_handler) ("qrdelete: index out of range");
   else
     {
@@ -695,7 +685,7 @@ QR::shift_cols (octave_idx_type i, octave_idx_type j)
   octave_idx_type m = q.rows ();
   octave_idx_type n = r.columns ();
 
-  if (i < 0 || i > n-1 || j < 0 || j > n-1) 
+  if (i < 0 || i > n-1 || j < 0 || j > n-1)
     (*current_liboctave_error_handler) ("qrshift: index out of range");
   else
     {
@@ -718,9 +708,3 @@ void warn_qrupdate_once (void)
 }
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

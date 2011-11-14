@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001,
-              2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -32,15 +31,11 @@ along with Octave; see the file COPYING.  If not, see
 #include <cstring>
 #include <ctime>
 
-#include <fstream>
 #include <iostream>
 
-#ifdef HAVE_UNISTD_H
-#ifdef HAVE_SYS_TYPES_H
+#include <getopt.h>
 #include <sys/types.h>
-#endif
 #include <unistd.h>
-#endif
 
 #include "cmd-edit.h"
 #include "f77-fcn.h"
@@ -65,13 +60,13 @@ along with Octave; see the file COPYING.  If not, see
 #include "oct-map.h"
 #include "oct-obj.h"
 #include "ops.h"
+#include "ov.h"
+#include "ov-range.h"
 #include "toplev.h"
 #include "parse.h"
 #include "procstream.h"
-#include "prog-args.h"
 #include "sighandlers.h"
 #include "sysdep.h"
-#include "ov.h"
 #include "unwind-prot.h"
 #include "utils.h"
 #include "variables.h"
@@ -79,15 +74,11 @@ along with Octave; see the file COPYING.  If not, see
 
 // Kluge.
 extern "C" F77_RET_T
-F77_FUNC (xerbla, XERBLA) (F77_CONST_CHAR_ARG_DECL, const octave_idx_type&
-			   F77_CHAR_ARG_LEN_DECL);
+F77_FUNC (xerbla, XERBLA) (F77_CONST_CHAR_ARG_DECL,
+                           const octave_idx_type&
+                           F77_CHAR_ARG_LEN_DECL);
 
 extern void install_builtins (void);
-
-#if !defined (HAVE_ATEXIT) && defined (HAVE_ON_EXIT)
-extern "C" int on_exit ();
-#define atexit on_exit
-#endif
 
 // The command-line options.
 static string_vector octave_argv;
@@ -124,17 +115,18 @@ static bool traditional = false;
 static bool verbose_flag = false;
 
 // Usage message
-static const char *usage_string = 
-  "octave [-?HVdfhiqvx] [--debug] [--echo-commands] [--eval CODE]\n\
+static const char *usage_string =
+  "octave [-HVdfhiqvx] [--debug] [--echo-commands] [--eval CODE]\n\
        [--exec-path path] [--help] [--image-path path] [--info-file file]\n\
-       [--info-program prog] [--interactive] [--line-editing] [--no-history] [--no-init-file]\n\
-       [--no-line-editing] [--no-site-file] [--no-init-path] [--no-window-system] [-p path]\n\
-       [--path path] [--silent] [--traditional] [--verbose] [--version] [file]";
+       [--info-program prog] [--interactive] [--line-editing]\n\
+       [--no-history] [--no-init-file] [--no-init-path] [--no-line-editing]\n\
+       [--no-site-file] [--no-window-system] [-p path] [--path path]\n\
+       [--silent] [--traditional] [--verbose] [--version] [file]";
 
 // This is here so that it's more likely that the usage message and
 // the real set of options will agree.  Note: the `+' must come first
 // to prevent getopt from permuting arguments!
-static const char *short_opts = "+?HVdfhip:qvx";
+static const char *short_opts = "+HVdfhip:qvx";
 
 // The code to evaluate at startup (--eval CODE)
 static std::string code_to_eval;
@@ -150,43 +142,43 @@ static bool persist = false;
 #define IMAGE_PATH_OPTION 4
 #define INFO_FILE_OPTION 5
 #define INFO_PROG_OPTION 6
-#define NO_INIT_FILE_OPTION 7
-#define NO_LINE_EDITING_OPTION 8
-#define NO_SITE_FILE_OPTION 9
-#define NO_INIT_PATH_OPTION 10
-#define PERSIST_OPTION 11
-#define TRADITIONAL_OPTION 12
-#define LINE_EDITING_OPTION 13
-#define NO_WINDOW_SYSTEM_OPTION 14
-long_options long_opts[] =
+#define LINE_EDITING_OPTION 7
+#define NO_INIT_FILE_OPTION 8
+#define NO_INIT_PATH_OPTION 9
+#define NO_LINE_EDITING_OPTION 10
+#define NO_SITE_FILE_OPTION 11
+#define NO_WINDOW_SYSTEM_OPTION 12
+#define PERSIST_OPTION 13
+#define TRADITIONAL_OPTION 14
+struct option long_opts[] =
   {
-    { "debug",            prog_args::no_arg,       0, 'd' },
-    { "braindead",        prog_args::no_arg,       0, TRADITIONAL_OPTION },
-    { "doc-cache-file",   prog_args::required_arg, 0, DOC_CACHE_FILE_OPTION },
-    { "echo-commands",    prog_args::no_arg,       0, 'x' },
-    { "eval",             prog_args::required_arg, 0, EVAL_OPTION },
-    { "exec-path",        prog_args::required_arg, 0, EXEC_PATH_OPTION },
-    { "help",             prog_args::no_arg,       0, 'h' },
-    { "image-path",       prog_args::required_arg, 0, IMAGE_PATH_OPTION },
-    { "info-file",        prog_args::required_arg, 0, INFO_FILE_OPTION },
-    { "info-program",     prog_args::required_arg, 0, INFO_PROG_OPTION },
-    { "interactive",      prog_args::no_arg,       0, 'i' },
-    { "line-editing",     prog_args::no_arg,       0, LINE_EDITING_OPTION },
-    { "no-history",       prog_args::no_arg,       0, 'H' },
-    { "no-init-file",     prog_args::no_arg,       0, NO_INIT_FILE_OPTION },
-    { "no-line-editing",  prog_args::no_arg,       0, NO_LINE_EDITING_OPTION },
-    { "no-site-file",     prog_args::no_arg,       0, NO_SITE_FILE_OPTION },
-    { "no-init-path",     prog_args::no_arg,       0, NO_INIT_PATH_OPTION },
-    { "no-window-system", prog_args::no_arg,       0, NO_WINDOW_SYSTEM_OPTION },
-    { "norc",             prog_args::no_arg,       0, 'f' },
-    { "path",             prog_args::required_arg, 0, 'p' },
-    { "persist",          prog_args::no_arg,       0, PERSIST_OPTION },
-    { "quiet",            prog_args::no_arg,       0, 'q' },
-    { "silent",           prog_args::no_arg,       0, 'q' },
-    { "traditional",      prog_args::no_arg,       0, TRADITIONAL_OPTION },
-    { "verbose",          prog_args::no_arg,       0, 'V' },
-    { "version",          prog_args::no_arg,       0, 'v' },
-    { 0,                  0,                       0, 0 }
+    { "braindead",        no_argument,       0, TRADITIONAL_OPTION },
+    { "debug",            no_argument,       0, 'd' },
+    { "doc-cache-file",   required_argument, 0, DOC_CACHE_FILE_OPTION },
+    { "echo-commands",    no_argument,       0, 'x' },
+    { "eval",             required_argument, 0, EVAL_OPTION },
+    { "exec-path",        required_argument, 0, EXEC_PATH_OPTION },
+    { "help",             no_argument,       0, 'h' },
+    { "image-path",       required_argument, 0, IMAGE_PATH_OPTION },
+    { "info-file",        required_argument, 0, INFO_FILE_OPTION },
+    { "info-program",     required_argument, 0, INFO_PROG_OPTION },
+    { "interactive",      no_argument,       0, 'i' },
+    { "line-editing",     no_argument,       0, LINE_EDITING_OPTION },
+    { "no-history",       no_argument,       0, 'H' },
+    { "no-init-file",     no_argument,       0, NO_INIT_FILE_OPTION },
+    { "no-init-path",     no_argument,       0, NO_INIT_PATH_OPTION },
+    { "no-line-editing",  no_argument,       0, NO_LINE_EDITING_OPTION },
+    { "no-site-file",     no_argument,       0, NO_SITE_FILE_OPTION },
+    { "no-window-system", no_argument,       0, NO_WINDOW_SYSTEM_OPTION },
+    { "norc",             no_argument,       0, 'f' },
+    { "path",             required_argument, 0, 'p' },
+    { "persist",          no_argument,       0, PERSIST_OPTION },
+    { "quiet",            no_argument,       0, 'q' },
+    { "silent",           no_argument,       0, 'q' },
+    { "traditional",      no_argument,       0, TRADITIONAL_OPTION },
+    { "verbose",          no_argument,       0, 'V' },
+    { "version",          no_argument,       0, 'v' },
+    { 0,                  0,                 0, 0 }
   };
 
 // Store the command-line options for later use.
@@ -200,14 +192,14 @@ intern_argv (int argc, char **argv)
 
   symbol_table::mark_hidden (".nargin.");
 
-  if (argc > 1)
+  if (argc > 0)
     {
       octave_argv.resize (argc - 1);
 
       // Skip program name in argv.
       int i = argc;
       while (--i > 0)
-	octave_argv[i-1] = *(argv+i);
+        octave_argv[i-1] = *(argv+i);
     }
 }
 
@@ -237,32 +229,32 @@ Undocumented internal function.\n\
 {
   octave_value retval;
 
-  static Octave_map vinfo;
+  static octave_map vinfo;
 
   int nargin = args.length ();
 
   if (nargin == 4)
     {
       if (vinfo.nfields () == 0)
-	{
-	  vinfo.assign ("Name", args (0));
-	  vinfo.assign ("Version", args (1));
-	  vinfo.assign ("Release", args (2));
-	  vinfo.assign ("Date", args (3));
-	}
+        {
+          vinfo.assign ("Name", args (0));
+          vinfo.assign ("Version", args (1));
+          vinfo.assign ("Release", args (2));
+          vinfo.assign ("Date", args (3));
+        }
       else
-	{
-	  octave_idx_type n = vinfo.numel () + 1;
+        {
+          octave_idx_type n = vinfo.numel () + 1;
 
-	  vinfo.resize (dim_vector (n, 1));
+          vinfo.resize (dim_vector (n, 1));
 
-	  octave_value idx (n);
+          octave_value idx (n);
 
-	  vinfo.assign (idx, "Name", Cell (octave_value (args (0))));
-	  vinfo.assign (idx, "Version", Cell (octave_value (args (1))));
-	  vinfo.assign (idx, "Release", Cell (octave_value (args (2))));
-	  vinfo.assign (idx, "Date", Cell (octave_value (args (3))));
-	}
+          vinfo.assign (idx, "Name", Cell (octave_value (args (0))));
+          vinfo.assign (idx, "Version", Cell (octave_value (args (1))));
+          vinfo.assign (idx, "Release", Cell (octave_value (args (2))));
+          vinfo.assign (idx, "Date", Cell (octave_value (args (3))));
+        }
     }
   else if (nargin == 0)
     retval = vinfo;
@@ -285,14 +277,59 @@ initialize_version_info (void)
   F__version_info__ (args, 0);
 }
 
+static void
+gripe_safe_source_exception (const std::string& file, const std::string& msg)
+{
+  std::cerr << "error: " << msg << "\n"
+            << "error: execution of " << file << " failed\n"
+            << "error: trying to make my way to a command prompt"
+            << std::endl;
+}
+
+// Execute commands from a file and catch potential exceptions in a
+// consistent way.  This function should be called anywhere we might
+// parse and execute commands from a file before before we have entered
+// the main loop in toplev.cc.
+
+static void
+safe_source_file (const std::string& file_name,
+                  const std::string& context = std::string (),
+                  bool verbose = false, bool require_file = true,
+                  const std::string& warn_for = std::string ())
+{
+  try
+    {
+      source_file (file_name, context, verbose, require_file, warn_for);
+    }
+  catch (octave_interrupt_exception)
+    {
+      recover_from_exception ();
+      octave_stdout << "\n";
+      if (quitting_gracefully)
+        clean_up_and_exit (exit_status);
+    }
+  catch (octave_execution_exception)
+    {
+      recover_from_exception ();
+      gripe_safe_source_exception (file_name, "unhandled execution exception");
+    }
+  catch (std::bad_alloc)
+    {
+      recover_from_exception ();
+      gripe_safe_source_exception
+        (file_name,
+         "memory exhausted or requested size too large for range of Octave's index type");
+    }
+}
+
 // Initialize by reading startup files.
 
 static void
 execute_startup_files (void)
 {
-  unwind_protect::begin_frame ("execute_startup_files");
+  unwind_protect frame;
 
-  unwind_protect_bool (input_from_startup_file);
+  frame.protect_var (input_from_startup_file);
 
   input_from_startup_file = true;
 
@@ -309,9 +346,10 @@ execute_startup_files (void)
       // (if it exists), then from the file
       // $(prefix)/share/octave/$(version)/m/octaverc (if it exists).
 
-      source_file (Vlocal_site_defaults_file, context, verbose, require_file);
+      safe_source_file (Vlocal_site_defaults_file, context, verbose,
+                        require_file);
 
-      source_file (Vsite_defaults_file, context, verbose, require_file);
+      safe_source_file (Vsite_defaults_file, context, verbose, require_file);
     }
 
   if (read_init_files)
@@ -325,7 +363,7 @@ execute_startup_files (void)
       std::string initfile = octave_env::getenv ("OCTAVE_INITFILE");
 
       if (initfile.empty ())
-	initfile = ".octaverc";
+        initfile = ".octaverc";
 
       std::string home_dir = octave_env::get_home_directory ();
 
@@ -334,60 +372,52 @@ execute_startup_files (void)
       std::string local_rc;
 
       if (! home_rc.empty ())
-	{
-	  source_file (home_rc, context, verbose, require_file);
+        {
+          safe_source_file (home_rc, context, verbose, require_file);
 
-	  // Names alone are not enough.
+          // Names alone are not enough.
 
-	  file_stat fs_home_rc (home_rc);
+          file_stat fs_home_rc (home_rc);
 
-	  if (fs_home_rc)
-	    {
-	      // We want to check for curr_dir after executing home_rc
-	      // because doing that may change the working directory.
+          if (fs_home_rc)
+            {
+              // We want to check for curr_dir after executing home_rc
+              // because doing that may change the working directory.
 
-	      std::string curr_dir = octave_env::getcwd ();
+              local_rc = octave_env::make_absolute (initfile);
 
-	      local_rc = octave_env::make_absolute (initfile, curr_dir);
-
-	      home_rc_already_executed = same_file (home_rc, local_rc);
-	    }
-	}
+              home_rc_already_executed = same_file (home_rc, local_rc);
+            }
+        }
 
       if (! home_rc_already_executed)
-	{
-	  if (local_rc.empty ())
-	    {
-	      std::string curr_dir = octave_env::getcwd ();
+        {
+          if (local_rc.empty ())
+            local_rc = octave_env::make_absolute (initfile);
 
-	      local_rc = octave_env::make_absolute (initfile, curr_dir);
-	    }
-
-	  source_file (local_rc, context, verbose, require_file);
-	}
+          safe_source_file (local_rc, context, verbose, require_file);
+        }
     }
-
-  unwind_protect::run_frame ("execute_startup_files");
 }
 
 static int
 execute_eval_option_code (const std::string& code)
 {
-  unwind_protect::begin_frame ("execute_eval_option_code");
+  unwind_protect frame;
 
   octave_save_signal_mask ();
 
   can_interrupt = true;
 
   octave_signal_hook = octave_signal_handler;
-  octave_interrupt_hook = unwind_protect::run_all;
-  octave_bad_alloc_hook = unwind_protect::run_all;
+  octave_interrupt_hook = 0;
+  octave_bad_alloc_hook = 0;
 
   octave_catch_interrupts ();
 
   octave_initialized = true;
 
-  unwind_protect_bool (interactive);
+  frame.protect_var (interactive);
 
   interactive = false;
 
@@ -404,13 +434,17 @@ execute_eval_option_code (const std::string& code)
       if (quitting_gracefully)
         clean_up_and_exit (exit_status);
     }
+  catch (octave_execution_exception)
+    {
+      recover_from_exception ();
+      std::cerr << "error: unhandled execution exception -- eval failed"
+                << std::endl;
+    }
   catch (std::bad_alloc)
     {
       std::cerr << "error: memory exhausted or requested size too large for range of Octave's index type -- eval failed"
-		<< std::endl;
+                << std::endl;
     }
-
-  unwind_protect::run_frame ("execute_eval_option_code");
 
   return parse_status;
 }
@@ -418,29 +452,29 @@ execute_eval_option_code (const std::string& code)
 static void
 execute_command_line_file (const std::string& fname)
 {
-  unwind_protect::begin_frame ("execute_command_line_file");
+  unwind_protect frame;
 
   octave_save_signal_mask ();
 
   can_interrupt = true;
 
   octave_signal_hook = octave_signal_handler;
-  octave_interrupt_hook = unwind_protect::run_all;
-  octave_bad_alloc_hook = unwind_protect::run_all;
+  octave_interrupt_hook = 0;
+  octave_bad_alloc_hook = 0;
 
   octave_catch_interrupts ();
 
   octave_initialized = true;
 
-  unwind_protect_bool (interactive);
-  unwind_protect_bool (reading_script_file);
-  unwind_protect_bool (input_from_command_line_file);
+  frame.protect_var (interactive);
+  frame.protect_var (reading_script_file);
+  frame.protect_var (input_from_command_line_file);
 
-  unwind_protect_str (curr_fcn_file_name);
-  unwind_protect_str (curr_fcn_file_full_name);
+  frame.protect_var (curr_fcn_file_name);
+  frame.protect_var (curr_fcn_file_full_name);
 
-  unwind_protect_str (octave_program_invocation_name);
-  unwind_protect_str (octave_program_name);
+  frame.protect_var (octave_program_invocation_name);
+  frame.protect_var (octave_program_name);
 
   interactive = false;
   reading_script_file = true;
@@ -452,34 +486,17 @@ execute_command_line_file (const std::string& fname)
   octave_program_invocation_name = curr_fcn_file_name;
 
   size_t pos = curr_fcn_file_name.find_last_of (file_ops::dir_sep_chars ());
-  
+
   std::string tmp = (pos != std::string::npos)
     ? curr_fcn_file_name.substr (pos+1) : curr_fcn_file_name;
 
   octave_program_name = tmp;
 
-  try
-    {
-      std::string context;
-      bool verbose = false;
-      bool require_file = true;
+  std::string context;
+  bool verbose = false;
+  bool require_file = true;
 
-      source_file (fname, context, verbose, require_file, "octave");
-    }
-  catch (octave_interrupt_exception)
-    {
-      recover_from_exception ();
-      octave_stdout << "\n";
-      if (quitting_gracefully)
-        clean_up_and_exit (exit_status);
-    }
-  catch (std::bad_alloc)
-    {
-      std::cerr << "error: memory exhausted or requested size too large for range of Octave's index type -- execution of "
-		<< fname << " failed" << std::endl;
-    }
- 
-  unwind_protect::run_frame ("execute_command_line_file");
+  safe_source_file (fname, context, verbose, require_file, "octave");
 }
 
 // Usage message with extra help.
@@ -489,7 +506,7 @@ verbose_usage (void)
 {
   std::cout << OCTAVE_NAME_VERSION_COPYRIGHT_COPYING_AND_WARRANTY "\n\
 \n\
-Usage: octave [options]\n\
+Usage: octave [options] [FILE]\n\
 \n\
 Options:\n\
 \n\
@@ -498,7 +515,7 @@ Options:\n\
   --echo-commands, -x     Echo commands as they are executed.\n\
   --eval CODE             Evaluate CODE.  Exit when done unless --persist.\n\
   --exec-path PATH        Set path for executing subprograms.\n\
-  --help, -h, -?          Print short help message and exit.\n\
+  --help, -h,             Print short help message and exit.\n\
   --image-path PATH       Add PATH to head of image search path.\n\
   --info-file FILE        Use top-level info file FILE.\n\
   --info-program PROGRAM  Use PROGRAM for reading info files.\n\
@@ -535,7 +552,7 @@ OCTAVE_BUGS_STATEMENT "\n";
 static void
 usage (void)
 {
-  std::cerr << "usage: " << usage_string << "\n";
+  std::cerr << "\nusage: " << usage_string << "\n\n";
   exit (1);
 }
 
@@ -551,7 +568,18 @@ lo_error_handler (const char *fmt, ...)
 {
   va_list args;
   va_start (args, fmt);
-  verror (fmt, args);
+  verror_with_cfn (fmt, args);
+  va_end (args);
+
+  octave_throw_execution_exception ();
+}
+
+static void
+lo_error_with_id_handler (const char *id, const char *fmt, ...)
+{
+  va_list args;
+  va_start (args, fmt);
+  verror_with_id_cfn (id, fmt, args);
   va_end (args);
 
   octave_throw_execution_exception ();
@@ -561,6 +589,7 @@ static void
 initialize_error_handlers ()
 {
   set_liboctave_error_handler (lo_error_handler);
+  set_liboctave_error_with_id_handler (lo_error_with_id_handler);
   set_liboctave_warning_handler (warning);
   set_liboctave_warning_with_id_handler (warning_with_id);
 }
@@ -574,19 +603,23 @@ maximum_braindamage (void)
 
   bind_internal_variable ("PS1", ">> ");
   bind_internal_variable ("PS2", "");
+  bind_internal_variable ("allow_noninteger_range_as_index", true);
   bind_internal_variable ("beep_on_error", true);
   bind_internal_variable ("confirm_recursive_rmdir", false);
   bind_internal_variable ("crash_dumps_octave_core", false);
   bind_internal_variable ("default_save_options", "-mat-binary");
+  bind_internal_variable ("do_braindead_shortcircuit_evaluation", true);
   bind_internal_variable ("fixed_point_format", true);
   bind_internal_variable ("history_timestamp_format_string",
-			 "%%-- %D %I:%M %p --%%");
+                         "%%-- %D %I:%M %p --%%");
   bind_internal_variable ("page_screen_output", false);
   bind_internal_variable ("print_empty_dimensions", false);
 
+  disable_warning ("Octave:abbreviated-property-match");
   disable_warning ("Octave:fopen-file-in-path");
   disable_warning ("Octave:function-name-clash");
   disable_warning ("Octave:load-file-in-path");
+  disable_warning ("Octave:possible-matlab-short-circuit-operator");
 }
 
 // You guessed it.
@@ -610,13 +643,15 @@ octave_main (int argc, char **argv, int embedded)
 
   sysdep_init ();
 
+  octave_ieee_init ();
+
   // The idea here is to force xerbla to be referenced so that we will
   // link to our own version instead of the one provided by the BLAS
   // library.  But octave_NaN should never be -1, so we should never
   // actually call xerbla.
 
   if (octave_NaN == -1)
-    F77_FUNC (xerbla, XERBLA) ("octave", 13, 6L);
+    F77_FUNC (xerbla, XERBLA) ("octave", 13 F77_CHAR_ARG_LEN (6));
 
   initialize_error_handlers ();
 
@@ -639,151 +674,166 @@ octave_main (int argc, char **argv, int embedded)
 
   install_builtins ();
 
-  prog_args args (argc, argv, short_opts, long_opts);
-
   bool forced_line_editing = false;
 
   bool read_history_file = true;
 
-  int optc;
-  while ((optc = args.getopt ()) != EOF)
+  while (true)
     {
+      int long_idx;
+
+      int optc = getopt_long (argc, argv, short_opts, long_opts, &long_idx);
+
+      if (optc < 0)
+        break;
+
       switch (optc)
-	{
-	case 'H':
-	  read_history_file = false;
-	  bind_internal_variable ("saving_history", false);
-	  break;
+        {
+        case '?':
+          // Unrecognized option.  getopt_long already printed a
+          // message about that, so we will just print the usage string
+          // and exit.
+          usage ();
+          break;
 
-	case 'V':
-	  verbose_flag = true;
-	  break;
+        case 'H':
+          read_history_file = false;
+          bind_internal_variable ("saving_history", false);
+          break;
 
-	case 'd':
-	  // This is the same as yydebug in parse.y.
-	  octave_debug++;
-	  break;
+        case 'V':
+          verbose_flag = true;
+          break;
 
-	case 'f':
-	  read_init_files = false;
-	  read_site_files = false;
-	  break;
+        case 'd':
+          // This is the same as yydebug in parse.y.
+          octave_debug++;
+          break;
 
-	case 'h':
-	case '?':
-	  verbose_usage ();
-	  break;
+        case 'f':
+          read_init_files = false;
+          read_site_files = false;
+          break;
 
-	case 'i':
-	  forced_interactive = true;
-	  break;
+        case 'h':
+          verbose_usage ();
+          break;
 
-	case 'p':
-	  if (args.optarg ())
-	    load_path::set_command_line_path (args.optarg ());
-	  break;
+        case 'i':
+          forced_interactive = true;
+          break;
 
-	case 'q':
-	  inhibit_startup_message = true;
-	  break;
+        case 'p':
+          if (optarg)
+            load_path::set_command_line_path (optarg);
+          break;
 
-	case 'x':
-	  {
-	    double tmp = (ECHO_SCRIPTS | ECHO_FUNCTIONS | ECHO_CMD_LINE);
-	    bind_internal_variable ("echo_executing_commands", tmp);
-	  }
-	  break;
+        case 'q':
+          inhibit_startup_message = true;
+          break;
 
-	case 'v':
-	  print_version_and_exit ();
-	  break;
+        case 'x':
+          {
+            double tmp = (ECHO_SCRIPTS | ECHO_FUNCTIONS | ECHO_CMD_LINE);
+            bind_internal_variable ("echo_executing_commands", tmp);
+          }
+          break;
 
-	case DOC_CACHE_FILE_OPTION:
-	  if (args.optarg ())
-	    bind_internal_variable ("doc_cache_file", args.optarg ());
-	  break;
+        case 'v':
+          print_version_and_exit ();
+          break;
 
-	case EVAL_OPTION:
-	  if (args.optarg ())
-	    {
-	      if (code_to_eval.empty ())
-		code_to_eval = args.optarg ();
-	      else
-		code_to_eval += std::string (" ") + args.optarg ();
-	    }
-	  break;
+        case DOC_CACHE_FILE_OPTION:
+          if (optarg)
+            bind_internal_variable ("doc_cache_file", optarg);
+          break;
 
-	case EXEC_PATH_OPTION:
-	  if (args.optarg ())
-	    set_exec_path (args.optarg ());
-	  break;
+        case EVAL_OPTION:
+          if (optarg)
+            {
+              if (code_to_eval.empty ())
+                code_to_eval = optarg;
+              else
+                code_to_eval += std::string (" ") + optarg;
+            }
+          break;
 
-	case IMAGE_PATH_OPTION:
-	  if (args.optarg ())
-	    set_image_path (args.optarg ());
-	  break;
+        case EXEC_PATH_OPTION:
+          if (optarg)
+            set_exec_path (optarg);
+          break;
 
-	case INFO_FILE_OPTION:
-	  if (args.optarg ())
-	    bind_internal_variable ("info_file", args.optarg ());
-	  break;
+        case IMAGE_PATH_OPTION:
+          if (optarg)
+            set_image_path (optarg);
+          break;
 
-	case INFO_PROG_OPTION:
-	  if (args.optarg ())
-	    bind_internal_variable ("info_program", args.optarg ());
-	  break;
+        case INFO_FILE_OPTION:
+          if (optarg)
+            bind_internal_variable ("info_file", optarg);
+          break;
 
-	case LINE_EDITING_OPTION:
-	  forced_line_editing = true;
-	  break;
+        case INFO_PROG_OPTION:
+          if (optarg)
+            bind_internal_variable ("info_program", optarg);
+          break;
 
-	case NO_INIT_FILE_OPTION:
-	  read_init_files = false;
-	  break;
+        case LINE_EDITING_OPTION:
+          forced_line_editing = true;
+          break;
 
-	case NO_LINE_EDITING_OPTION:
-	  line_editing = false;
-	  break;
+        case NO_INIT_FILE_OPTION:
+          read_init_files = false;
+          break;
 
-	case NO_SITE_FILE_OPTION:
-	  read_site_files = 0;
-	  break;
+        case NO_INIT_PATH_OPTION:
+          set_initial_path = false;
+          break;
 
-	case NO_INIT_PATH_OPTION:
-	  set_initial_path = false;
-	  break;
+        case NO_LINE_EDITING_OPTION:
+          line_editing = false;
+          break;
 
-	case NO_WINDOW_SYSTEM_OPTION:
-	  display_info::no_window_system ();
-	  break;
+        case NO_SITE_FILE_OPTION:
+          read_site_files = 0;
+          break;
 
-	case TRADITIONAL_OPTION:
-	  traditional = true;
-	  break;
+        case NO_WINDOW_SYSTEM_OPTION:
+          display_info::no_window_system ();
+          break;
 
-	case PERSIST_OPTION:
-	  persist = true;
-	  break;
+        case PERSIST_OPTION:
+          persist = true;
+          break;
 
-	default:
-	  usage ();
-	  break;
-	}
+        case TRADITIONAL_OPTION:
+          traditional = true;
+          break;
+
+        default:
+          // getopt_long should print a message about unrecognized
+          // options and return '?', which is handled above.  So if we
+          // end up here, it is because there was an option but we
+          // forgot to handle it.  That should be fatal.
+          panic_impossible ();
+          break;
+        }
     }
 
-#if defined (HAVE_ATEXIT) || defined (HAVE_ON_EXIT)
   // Make sure we clean up when we exit.  Also allow users to register
   // functions.  If we don't have atexit or on_exit, we're going to
   // leave some junk files around if we exit abnormally.
 
   atexit (do_octave_atexit);
-#endif
 
   // Is input coming from a terminal?  If so, we are probably
   // interactive.
 
-  interactive = (! embedded
-		 && isatty (fileno (stdin)) && isatty (fileno (stdout)));
+  // If stdin is not a tty, then we are reading commands from a pipe or
+  // a redirected file.
+  stdin_is_tty = isatty (fileno (stdin));
+
+  interactive = (! embedded && stdin_is_tty && isatty (fileno (stdout)));
 
   if (! interactive && ! forced_line_editing)
     line_editing = false;
@@ -826,7 +876,7 @@ octave_main (int argc, char **argv, int embedded)
   // Additional arguments are taken as command line options for the
   // script.
 
-  int last_arg_idx = args.optind ();
+  int last_arg_idx = optind;
 
   int remaining_args = argc - last_arg_idx;
 
@@ -835,7 +885,7 @@ octave_main (int argc, char **argv, int embedded)
       int parse_status = execute_eval_option_code (code_to_eval);
 
       if (! (persist || remaining_args > 0))
-	clean_up_and_exit (parse_status || error_state ? 1 : 0);
+        clean_up_and_exit (parse_status || error_state ? 1 : 0);
     }
 
   if (remaining_args > 0)
@@ -848,7 +898,7 @@ octave_main (int argc, char **argv, int embedded)
       execute_command_line_file (argv[last_arg_idx]);
 
       if (! persist)
-	clean_up_and_exit (error_state ? 1 : 0);
+        clean_up_and_exit (error_state ? 1 : 0);
     }
 
   // Avoid counting commands executed from startup files.
@@ -904,7 +954,7 @@ octave --no-line-editing --silent\n\
 \n\
 @noindent\n\
 @code{argv} would return a cell array of strings with the elements\n\
-@code{--no-line-editing} and @code{--silent}.\n\
+@option{--no-line-editing} and @option{--silent}.\n\
 \n\
 If you write an executable Octave script, @code{argv} will return the\n\
 list of arguments passed to the script.  @xref{Executable Octave Programs},\n\
@@ -923,7 +973,7 @@ for an example of how to create an executable Octave script.\n\
 
 DEFUN (program_invocation_name, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} program_invocation_name ()\n\
+@deftypefn {Built-in Function} {} program_invocation_name ()\n\
 Return the name that was typed at the shell prompt to run Octave.\n\
 \n\
 If executing a script from the command line (e.g., @code{octave foo.m})\n\
@@ -960,9 +1010,3 @@ Return the last component of the value returned by\n\
 
   return retval;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

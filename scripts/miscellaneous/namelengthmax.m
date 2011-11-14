@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 David Bateman
+## Copyright (C) 2008-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -18,8 +18,8 @@
 
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} namelengthmax ()
-## Returns the @sc{matlab} compatible maximum variable name length.  Octave is
-## capable of storing strings up to 
+## Return the @sc{matlab} compatible maximum variable name length.  Octave is
+## capable of storing strings up to
 ## @tex
 ## $2^{31} - 1$
 ## @end tex

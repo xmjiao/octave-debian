@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 1999, 2000, 2002, 2003, 2004,
-              2005, 2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -73,19 +72,24 @@ tree_parameter_list::validate (in_or_out type)
       tree_identifier *id = elt->ident ();
 
       if (id)
-	{
-	  std::string name = id->name ();
+        {
+          std::string name = id->name ();
 
-	  if (dict.find (name) != dict.end ())
-	    {
-	      retval = false;
-	      error ("`%s' appears more than once in parameter list",
-		     name.c_str ());
-	      break;
-	    }
-	  else
-	    dict.insert (name);
-	}
+          if (id->is_black_hole ())
+            {
+              if (type != in)
+                error ("invalid use of ~ in output list");
+            }
+          else if (dict.find (name) != dict.end ())
+            {
+              retval = false;
+              error ("`%s' appears more than once in parameter list",
+                     name.c_str ());
+              break;
+            }
+          else
+            dict.insert (name);
+        }
     }
 
   if (! error_state)
@@ -95,24 +99,24 @@ tree_parameter_list::validate (in_or_out type)
       size_t len = length ();
 
       if (len > 0)
-	{
-	  tree_decl_elt *elt = back ();
+        {
+          tree_decl_elt *elt = back ();
 
-	  tree_identifier *id = elt->ident ();
+          tree_identifier *id = elt->ident ();
 
-	  if (id && id->name () == va_type)
-	    {
-	      if (len == 1)
-		mark_varargs_only ();
-	      else
-		mark_varargs ();
+          if (id && id->name () == va_type)
+            {
+              if (len == 1)
+                mark_varargs_only ();
+              else
+                mark_varargs ();
 
-	      iterator p = end ();
-	      --p;
-	      delete *p;
-	      erase (p);
-	    }
-	}
+              iterator p = end ();
+              --p;
+              delete *p;
+              erase (p);
+            }
+        }
     }
 
   return retval;
@@ -120,36 +124,57 @@ tree_parameter_list::validate (in_or_out type)
 
 void
 tree_parameter_list::initialize_undefined_elements (const std::string& warnfor,
-						    int nargout,
-						    const octave_value& val)
+                                                    int nargout, const octave_value& val)
 {
   bool warned = false;
 
   int count = 0;
 
+  octave_value tmp = symbol_table::varval (".ignored.");
+  const Matrix ignored = tmp.is_defined () ? tmp.matrix_value () : Matrix ();
+
+  octave_idx_type k = 0;
+
   for (iterator p = begin (); p != end (); p++)
     {
       if (++count > nargout)
-	break;
+        break;
 
       tree_decl_elt *elt = *p;
 
       if (! elt->is_variable ())
-	{
-	  if (! warned)
-	    {
-	      warned = true;
+        {
+          if (! warned)
+            {
+              warned = true;
 
-	      warning_with_id
-		("Octave:undefined-return-values",
-		 "%s: some elements in list of return values are undefined",
-		 warnfor.c_str ());
-	    }
+              while (k < ignored.numel ())
+                {
+                  octave_idx_type l = ignored (k);
+                  if (l == count)
+                    {
+                      warned = false;
+                      break;
+                    }
+                  else if (l > count)
+                    break;
+                  else
+                    k++;
+                }
 
-	  octave_lvalue tmp = elt->lvalue ();
+              if (warned)
+                {
+                  warning_with_id
+                    ("Octave:undefined-return-values",
+                     "%s: some elements in list of return values are undefined",
+                     warnfor.c_str ());
+                }
+            }
 
-	  tmp.assign (octave_value::op_asn_eq, val);
-	}
+          octave_lvalue lval = elt->lvalue ();
+
+          lval.assign (octave_value::op_asn_eq, val);
+        }
     }
 }
 
@@ -169,20 +194,20 @@ tree_parameter_list::define_from_arg_vector (const octave_value_list& args)
       octave_lvalue ref = elt->lvalue ();
 
       if (i < nargin)
-	{
-	  if (args(i).is_defined () && args(i).is_magic_colon ())
-	    {
-	      if (! elt->eval ())
-		{
-		  ::error ("no default value for argument %d\n", i+1);
-		  return;
-		}
-	    }
-	  else
-	    ref.define (args(i));
-	}
+        {
+          if (args(i).is_defined () && args(i).is_magic_colon ())
+            {
+              if (! elt->eval ())
+                {
+                  ::error ("no default value for argument %d\n", i+1);
+                  return;
+                }
+            }
+          else
+            ref.define (args(i));
+        }
       else
-	elt->eval ();
+        elt->eval ();
     }
 }
 
@@ -204,27 +229,49 @@ tree_parameter_list::undefine (void)
 }
 
 octave_value_list
-tree_parameter_list::convert_to_const_vector (const Cell& varargout)
+tree_parameter_list::convert_to_const_vector (int nargout,
+                                              const Cell& varargout)
 {
   octave_idx_type vlen = varargout.numel ();
+  int len = length ();
 
-  int nout = length () + vlen;
-
-  octave_value_list retval (nout, octave_value ());
-
-  int i = 0;
-
-  for (iterator p = begin (); p != end (); p++)
+  // Special case. Will do a shallow copy.
+  if (len == 0)
+    return varargout;
+  else if (nargout <= len)
     {
-      tree_decl_elt *elt = *p;
+      octave_value_list retval (nargout);
 
-      retval(i++) = elt->is_defined () ? elt->rvalue1 () : octave_value ();
+      int i = 0;
+
+      for (iterator p = begin (); p != end (); p++)
+        {
+          tree_decl_elt *elt = *p;
+          if (elt->is_defined ())
+            retval(i++) = elt->rvalue1 ();
+          else
+            break;
+        }
+
+      return retval;
     }
+  else
+    {
+      octave_value_list retval (len + vlen);
 
-  for (octave_idx_type j = 0; j < vlen; j++)
-    retval(i++) = varargout(j);
+      int i = 0;
 
-  return retval;
+      for (iterator p = begin (); p != end (); p++)
+        {
+          tree_decl_elt *elt = *p;
+          retval(i++) = elt->rvalue1 ();
+        }
+
+      for (octave_idx_type j = 0; j < vlen; j++)
+        retval(i++) = varargout(j);
+
+      return retval;
+    }
 }
 
 bool
@@ -237,10 +284,10 @@ tree_parameter_list::is_defined (void)
       tree_decl_elt *elt = *p;
 
       if (! elt->is_variable ())
-	{
-	  status = false;
-	  break;
-	}
+        {
+          status = false;
+          break;
+        }
     }
 
   return status;
@@ -248,7 +295,7 @@ tree_parameter_list::is_defined (void)
 
 tree_parameter_list *
 tree_parameter_list::dup (symbol_table::scope_id scope,
-			  symbol_table::context_id context) const
+                          symbol_table::context_id context) const
 {
   tree_parameter_list *new_list = new tree_parameter_list ();
 
@@ -285,7 +332,7 @@ tree_return_list::~tree_return_list (void)
 
 tree_return_list *
 tree_return_list::dup (symbol_table::scope_id scope,
-		       symbol_table::context_id context) const
+                       symbol_table::context_id context) const
 {
   tree_return_list *new_list = new tree_return_list ();
 
@@ -304,9 +351,3 @@ tree_return_list::accept (tree_walker& tw)
 {
   tw.visit_return_list (*this);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

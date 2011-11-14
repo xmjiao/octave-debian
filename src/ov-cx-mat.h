@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2000, 2002, 2003, 2004, 2005, 2006,
-              2007, 2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
+Copyright (C) 2009-2010 VZLU Prague
 
 This file is part of Octave.
 
@@ -41,7 +41,6 @@ along with Octave; see the file COPYING.  If not, see
 
 #include "MatrixType.h"
 
-class Octave_map;
 class octave_value_list;
 
 class tree_walker;
@@ -66,7 +65,7 @@ public:
   octave_complex_matrix (const ComplexMatrix& m, const MatrixType& t)
     : octave_base_matrix<ComplexNDArray> (m, t) { }
 
-  octave_complex_matrix (const ArrayN<Complex>& m)
+  octave_complex_matrix (const Array<Complex>& m)
     : octave_base_matrix<ComplexNDArray> (ComplexNDArray (m)) { }
 
   octave_complex_matrix (const ComplexDiagMatrix& d)
@@ -89,6 +88,8 @@ public:
   type_conv_info numeric_demotion_function (void) const;
 
   octave_base_value *try_narrowing_conversion (void);
+
+  builtin_type_t builtin_type (void) const { return btyp_complex; }
 
   bool is_complex_matrix (void) const { return true; }
 
@@ -124,8 +125,10 @@ public:
 
   FloatComplexNDArray float_complex_array_value (bool = false) const;
 
+  boolNDArray bool_array_value (bool warn = false) const;
+
   charNDArray char_array_value (bool frc_str_conv = false) const;
-  
+
   SparseMatrix sparse_matrix_value (bool = false) const;
 
   SparseComplexMatrix sparse_complex_matrix_value (bool = false) const;
@@ -136,73 +139,37 @@ public:
 
   void decrement (void) { matrix -= Complex (1.0); }
 
+  void changesign (void) { matrix.changesign (); }
+
   bool save_ascii (std::ostream& os);
 
   bool load_ascii (std::istream& is);
 
   bool save_binary (std::ostream& os, bool& save_as_floats);
 
-  bool load_binary (std::istream& is, bool swap, 
-		    oct_mach_info::float_format fmt);
+  bool load_binary (std::istream& is, bool swap,
+                    oct_mach_info::float_format fmt);
 
 #if defined (HAVE_HDF5)
   bool save_hdf5 (hid_t loc_id, const char *name, bool save_as_floats);
 
-  bool load_hdf5 (hid_t loc_id, const char *name, bool have_h5giterate_bug);
+  bool load_hdf5 (hid_t loc_id, const char *name);
 #endif
 
   int write (octave_stream& os, int block_size,
-	     oct_data_conv::data_type output_type, int skip,
-	     oct_mach_info::float_format flt_fmt) const
+             oct_data_conv::data_type output_type, int skip,
+             oct_mach_info::float_format flt_fmt) const
     {
       // Yes, for compatibility, we drop the imaginary part here.
       return os.write (matrix_value (true), block_size, output_type,
-		       skip, flt_fmt);
+                       skip, flt_fmt);
     }
 
   void print_raw (std::ostream& os, bool pr_as_read_syntax = false) const;
 
   mxArray *as_mxArray (void) const;
 
-  octave_value erf (void) const;
-  octave_value erfc (void) const;
-  octave_value gamma (void) const;
-  octave_value lgamma (void) const;
-  octave_value abs (void) const;
-  octave_value acos (void) const;
-  octave_value acosh (void) const;
-  octave_value angle (void) const;
-  octave_value arg (void) const;
-  octave_value asin (void) const;
-  octave_value asinh (void) const;
-  octave_value atan (void) const;
-  octave_value atanh (void) const;
-  octave_value ceil (void) const;
-  octave_value conj (void) const;
-  octave_value cos (void) const;
-  octave_value cosh (void) const;
-  octave_value exp (void) const;
-  octave_value expm1 (void) const;
-  octave_value fix (void) const;
-  octave_value floor (void) const;
-  octave_value imag (void) const;
-  octave_value log (void) const;
-  octave_value log2 (void) const;
-  octave_value log10 (void) const;
-  octave_value log1p (void) const;
-  octave_value real (void) const;
-  octave_value round (void) const;
-  octave_value roundb (void) const;
-  octave_value signum (void) const;
-  octave_value sin (void) const;
-  octave_value sinh (void) const;
-  octave_value sqrt (void) const;
-  octave_value tan (void) const;
-  octave_value tanh (void) const;
-  octave_value finite (void) const;
-  octave_value isinf (void) const;
-  octave_value isna (void) const;
-  octave_value isnan (void) const;
+  octave_value map (unary_mapper_t umap) const;
 
 private:
 
@@ -212,9 +179,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

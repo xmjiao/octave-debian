@@ -1,4 +1,4 @@
-## Copyright (C) 2001, 2007, 2008, 2009 Paul Kienzle
+## Copyright (C) 2001-2011 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -17,24 +17,24 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{s} =} rat (@var{x}, @var{tol})
+## @deftypefn  {Function File} {@var{s} =} rat (@var{x}, @var{tol})
 ## @deftypefnx {Function File} {[@var{n}, @var{d}] =} rat (@var{x}, @var{tol})
 ##
 ## Find a rational approximation to @var{x} within the tolerance defined
-## by @var{tol} using a continued fraction expansion.  For example,
+## by @var{tol} using a continued fraction expansion.  For example:
 ##
 ## @example
 ## @group
 ## rat(pi) = 3 + 1/(7 + 1/16) = 355/113
-## rat(e) = 3 + 1/(-4 + 1/(2 + 1/(5 + 1/(-2 + 1/(-7))))) 
+## rat(e) = 3 + 1/(-4 + 1/(2 + 1/(5 + 1/(-2 + 1/(-7)))))
 ##        = 1457/536
 ## @end group
 ## @end example
 ##
 ## Called with two arguments returns the numerator and denominator separately
 ## as two matrices.
-## @end deftypefn
 ## @seealso{rats}
+## @end deftypefn
 
 function [n,d] = rat(x,tol)
 
@@ -71,7 +71,7 @@ function [n,d] = rat(x,tol)
     idx = find(abs (y-n./d) >= tol);
     if (isempty(idx))
       if (isempty (steps))
-	steps = NaN .* ones (nsz, 1);
+        steps = NaN (nsz, 1);
       endif
       break;
     endif
@@ -82,7 +82,7 @@ function [n,d] = rat(x,tol)
     step = round(flip);
 
     if (nargout < 2)
-      tsteps = NaN .* ones (nsz, 1);
+      tsteps = NaN (nsz, 1);
       tsteps (idx) = step;
       steps = [steps, tsteps];
     endif
@@ -122,28 +122,28 @@ function [n,d] = rat(x,tol)
       j = 1;
 
       while (true)
-	step = steps(i, j++);
-	if (isnan (step))
-	  break;
-	endif
-	if (j > nsteps || isnan (steps(i, j)))
-	  if (step < 0)
-	    s = [s(1:end-1), " + 1/(", int2str(step), ")"];
-	  else
-	    s = [s(1:end-1), " + 1/", int2str(step)];
-	  endif
-	  break;
-	else
-	  s = [s(1:end-1), " + 1/(", int2str(step), ")"];
+        step = steps(i, j++);
+        if (isnan (step))
+          break;
+        endif
+        if (j > nsteps || isnan (steps(i, j)))
+          if (step < 0)
+            s = [s(1:end-1), " + 1/(", int2str(step), ")"];
+          else
+            s = [s(1:end-1), " + 1/", int2str(step)];
+          endif
+          break;
+        else
+          s = [s(1:end-1), " + 1/(", int2str(step), ")"];
         endif
       endwhile
       s = [s, repmat(")", 1, j-2)];
       n_nc = columns (n);
       s_nc = columns (s);
       if (n_nc > s_nc)
-	s(:,s_nc+1:n_nc) = " "
+        s(:,s_nc+1:n_nc) = " ";
       elseif (s_nc > n_nc)
-	n(:,n_nc+1:s_nc) = " ";
+        n(:,n_nc+1:s_nc) = " ";
       endif
       n = cat (1, n, s);
     endfor

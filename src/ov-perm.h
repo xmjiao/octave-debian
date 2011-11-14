@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008, 2009 Jaroslav Hajek
+Copyright (C) 2008-2011 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -30,14 +30,14 @@ along with Octave; see the file COPYING.  If not, see
 #include "ov-typeinfo.h"
 #include "oct-obj.h"
 
-class 
+class
 OCTINTERP_API
 octave_perm_matrix : public octave_base_value
 {
 public:
-  octave_perm_matrix (void) : matrix () { }
+  octave_perm_matrix (void) : matrix (), dense_cache () { }
 
-  octave_perm_matrix (const PermMatrix& p) : matrix (p) { }
+  octave_perm_matrix (const PermMatrix& p) : matrix (p), dense_cache () { }
 
   octave_base_value *clone (void) const { return new octave_perm_matrix (*this); }
   octave_base_value *empty_clone (void) const { return new octave_perm_matrix (); }
@@ -53,14 +53,14 @@ public:
   octave_value full_value (void) const { return to_dense (); }
 
   octave_value subsref (const std::string& type,
-			const std::list<octave_value_list>& idx);
+                        const std::list<octave_value_list>& idx);
 
   octave_value_list subsref (const std::string& type,
-			     const std::list<octave_value_list>& idx, int)
+                             const std::list<octave_value_list>& idx, int)
     { return subsref (type, idx); }
 
   octave_value do_index_op (const octave_value_list& idx,
-			    bool resize_ok = false);
+                            bool resize_ok = false);
 
   dim_vector dims (void) const { return matrix.dims (); }
 
@@ -88,7 +88,7 @@ public:
   octave_value sort (octave_idx_type dim = 0, sortmode mode = ASCENDING) const
     { return to_dense ().sort (dim, mode); }
   octave_value sort (Array<octave_idx_type> &sidx, octave_idx_type dim = 0,
-		     sortmode mode = ASCENDING) const
+                     sortmode mode = ASCENDING) const
     { return to_dense ().sort (sidx, dim, mode); }
 
   sortmode is_sorted (sortmode mode = UNSORTED) const
@@ -99,6 +99,8 @@ public:
 
   sortmode is_sorted_rows (sortmode mode = UNSORTED) const
     { return to_dense ().is_sorted_rows (mode); }
+
+  builtin_type_t builtin_type (void) const { return btyp_double; }
 
   bool is_perm_matrix (void) const { return true; }
 
@@ -145,14 +147,14 @@ public:
   FloatComplexMatrix float_complex_matrix_value (bool = false) const;
 
   ComplexNDArray complex_array_value (bool = false) const;
-   
+
   FloatComplexNDArray float_complex_array_value (bool = false) const;
-   
+
   boolNDArray bool_array_value (bool warn = false) const;
 
   charNDArray char_array_value (bool = false) const;
-  
-  NDArray array_value (bool = false) const; 
+
+  NDArray array_value (bool = false) const;
 
   FloatNDArray float_array_value (bool = false) const;
 
@@ -194,12 +196,12 @@ public:
 
   bool save_binary (std::ostream& os, bool& save_as_floats);
 
-  bool load_binary (std::istream& is, bool swap, 
-		    oct_mach_info::float_format fmt);
+  bool load_binary (std::istream& is, bool swap,
+                    oct_mach_info::float_format fmt);
 
   int write (octave_stream& os, int block_size,
-	     oct_data_conv::data_type output_type, int skip,
-	     oct_mach_info::float_format flt_fmt) const;
+             oct_data_conv::data_type output_type, int skip,
+             oct_mach_info::float_format flt_fmt) const;
 
   mxArray *as_mxArray (void) const;
 
@@ -209,49 +211,12 @@ public:
 
   void print_info (std::ostream& os, const std::string& prefix) const;
 
-  octave_value erf (void) const;
-  octave_value erfc (void) const;
-  octave_value gamma (void) const;
-  octave_value lgamma (void) const;
-  octave_value abs (void) const;
-  octave_value acos (void) const;
-  octave_value acosh (void) const;
-  octave_value angle (void) const;
-  octave_value arg (void) const;
-  octave_value asin (void) const;
-  octave_value asinh (void) const;
-  octave_value atan (void) const;
-  octave_value atanh (void) const;
-  octave_value ceil (void) const;
-  octave_value conj (void) const;
-  octave_value cos (void) const;
-  octave_value cosh (void) const;
-  octave_value exp (void) const;
-  octave_value expm1 (void) const;
-  octave_value fix (void) const;
-  octave_value floor (void) const;
-  octave_value imag (void) const;
-  octave_value log (void) const;
-  octave_value log2 (void) const;
-  octave_value log10 (void) const;
-  octave_value log1p (void) const;
-  octave_value real (void) const;
-  octave_value round (void) const;
-  octave_value roundb (void) const;
-  octave_value signum (void) const;
-  octave_value sin (void) const;
-  octave_value sinh (void) const;
-  octave_value sqrt (void) const;
-  octave_value tan (void) const;
-  octave_value tanh (void) const;
-  octave_value finite (void) const;
-  octave_value isinf (void) const;
-  octave_value isna (void) const;
-  octave_value isnan (void) const;
+  octave_value map (unary_mapper_t umap) const
+    { return to_dense ().map (umap); }
 
 protected:
 
-  PermMatrix matrix;  
+  PermMatrix matrix;
 
   virtual octave_value to_dense (void) const;
 

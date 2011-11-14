@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008, 2009 Jaroslav Hajek
+Copyright (C) 2008-2011 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -38,46 +38,48 @@ public:
 
   PermMatrix (octave_idx_type n);
 
-  PermMatrix (const Array<octave_idx_type>& p, bool colp = false, 
+  PermMatrix (const Array<octave_idx_type>& p, bool colp = false,
               bool check = true);
 
   PermMatrix (const PermMatrix& m)
     : Array<octave_idx_type> (m), _colp(m._colp) { }
-  
-  PermMatrix (const idx_vector& idx, bool colp = false, octave_idx_type n = 0); 
 
-  octave_idx_type dim1 (void) const 
+  PermMatrix (const idx_vector& idx, bool colp = false, octave_idx_type n = 0);
+
+  octave_idx_type dim1 (void) const
     { return Array<octave_idx_type>::length (); }
-  octave_idx_type dim2 (void) const 
+  octave_idx_type dim2 (void) const
     { return Array<octave_idx_type>::length (); }
 
   octave_idx_type rows (void) const { return dim1 (); }
   octave_idx_type cols (void) const { return dim2 (); }
   octave_idx_type columns (void) const { return dim2 (); }
 
-  octave_idx_type perm_length (void) const 
+  octave_idx_type perm_length (void) const
     { return Array<octave_idx_type>::length (); }
-  octave_idx_type length (void) const 
-    { return dim1 () * dim2 (); }
+  // FIXME: a dangerous ambiguity?
+  octave_idx_type length (void) const
+    { return perm_length (); }
   octave_idx_type nelem (void) const { return dim1 () * dim2 (); }
   octave_idx_type numel (void) const { return nelem (); }
 
-  size_t byte_size (void) const { return perm_length () * sizeof (octave_idx_type); }
+  size_t byte_size (void) const
+    { return Array<octave_idx_type>::byte_size (); }
 
   dim_vector dims (void) const { return dim_vector (dim1 (), dim2 ()); }
 
   Array<octave_idx_type> pvec (void) const
     { return *this; }
 
-  octave_idx_type 
+  octave_idx_type
   elem (octave_idx_type i, octave_idx_type j) const
     {
-      return (_colp 
+      return (_colp
               ? ((Array<octave_idx_type>::elem (j) == i) ? 1 : 0)
               : ((Array<octave_idx_type>::elem (i) == j) ? 1 : 0));
     }
 
-  octave_idx_type 
+  octave_idx_type
   checkelem (octave_idx_type i, octave_idx_type j) const;
 
   octave_idx_type
@@ -89,7 +91,7 @@ public:
       return elem (i, j);
 #endif
     }
-  
+
   // These are, in fact, super-fast.
   PermMatrix transpose (void) const;
   PermMatrix inverse (void) const;
@@ -105,24 +107,26 @@ public:
 
   friend OCTAVE_API PermMatrix operator *(const PermMatrix& a, const PermMatrix& b);
 
-  const octave_idx_type *data (void) const 
+  const octave_idx_type *data (void) const
     { return Array<octave_idx_type>::data (); }
 
-  const octave_idx_type *fortran_vec (void) const 
+  const octave_idx_type *fortran_vec (void) const
     { return Array<octave_idx_type>::fortran_vec (); }
 
-  octave_idx_type *fortran_vec (void) 
+  octave_idx_type *fortran_vec (void)
     { return Array<octave_idx_type>::fortran_vec (); }
 
   void print_info (std::ostream& os, const std::string& prefix) const
     { Array<octave_idx_type>::print_info (os, prefix); }
+
+  static PermMatrix eye (octave_idx_type n);
 
 private:
   bool _colp;
 };
 
 // Multiplying permutations together.
-PermMatrix 
+PermMatrix
 OCTAVE_API
 operator *(const PermMatrix& a, const PermMatrix& b);
 

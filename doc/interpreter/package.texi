@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.
 
-@c Copyright (C) 2007, 2008, 2009 S�ren Hauberg
+@c Copyright (C) 2007-2011 S�ren Hauberg
 @c
 @c This file is part of Octave.
 @c
@@ -97,7 +97,7 @@ possible that one package depends on another one.  If a package
 depends on another, it will check if that package is installed
 during installation.  If it is not, an error will be reported and
 the package will not be installed.  This behavior can be disabled
-by passing the @code{-nodeps} flag to the @code{pkg install}
+by passing the @option{-nodeps} flag to the @code{pkg install}
 command
 
 @example
@@ -109,19 +109,22 @@ Since the installed package expects its dependencies to be installed
 it may not function correctly.  Because of this it is not recommended
 to disable dependency checking.
 
-@c ./pkg/pkg.m
+@c pkg scripts/pkg/pkg.m
 @anchor{doc-pkg}
-@deftypefn  {Command} pkg @var{command} @var{pkg_name}
-@deftypefnx {Command} pkg @var{command} @var{option} @var{pkg_name}
+@deftypefn  {Command} {} pkg @var{command} @var{pkg_name}
+@deftypefnx {Command} {} pkg @var{command} @var{option} @var{pkg_name}
 This command interacts with the package manager.  Different actions will
 be taken depending on the value of @var{command}.
 
 @table @samp
+
 @item install
 Install named packages.  For example,
+
 @example
 pkg install image-1.0.0.tar.gz
 @end example
+
 @noindent
 installs the package found in the file @file{image-1.0.0.tar.gz}.
 
@@ -130,16 +133,16 @@ in which a package is installed.  These options can be one or more of
 
 @table @code
 @item -nodeps
-The package manager will disable the dependency checking.  That way it 
-is possible to install a package even if it depends on another package 
+The package manager will disable the dependency checking.  That way it
+is possible to install a package even if it depends on another package
 that's not installed on the system.  @strong{Use this option with care.}
 
 @item -noauto
-The package manager will not automatically load the installed package 
+The package manager will not automatically load the installed package
 when starting Octave, even if the package requests that it is.
 
 @item -auto
-The package manager will automatically load the installed package when 
+The package manager will automatically load the installed package when
 starting Octave, even if the package requests that it isn't.
 
 @item -local
@@ -149,129 +152,170 @@ A local installation is forced, even if the user has system privileges.
 A global installation is forced, even if the user doesn't normally have
 system privileges
 
+@item -forge
+Install a package directly from the Octave-Forge repository.  This
+requires an internet connection and the cURL library.
+
 @item -verbose
-The package manager will print the output of all of the commands that are 
+The package manager will print the output of all of the commands that are
 performed.
 @end table
 
 @item uninstall
 Uninstall named packages.  For example,
+
 @example
 pkg uninstall image
 @end example
+
 @noindent
 removes the @code{image} package from the system.  If another installed
 package depends on the @code{image} package an error will be issued.
-The package can be uninstalled anyway by using the @code{-nodeps} option.
+The package can be uninstalled anyway by using the @option{-nodeps} option.
+
 @item load
 Add named packages to the path.  After loading a package it is
 possible to use the functions provided by the package.  For example,
+
 @example
 pkg load image
 @end example
+
 @noindent
 adds the @code{image} package to the path.  It is possible to load all
 installed packages at once with the command
+
 @example
 pkg load all
 @end example
+
 @item unload
 Removes named packages from the path.  After unloading a package it is
 no longer possible to use the functions provided by the package.
 This command behaves like the @code{load} command.
+
 @item list
 Show a list of the currently installed packages.  By requesting one or two
 output argument it is possible to get a list of the currently installed
 packages.  For example,
+
 @example
 installed_packages = pkg list;
 @end example
+
 @noindent
 returns a cell array containing a structure for each installed package.
 The command
+
 @example
 [@var{user_packages}, @var{system_packages}] = pkg list
 @end example
+
 @noindent
 splits the list of installed packages into those who are installed by
 the current user, and those installed by the system administrator.
+
+The option '-forge' lists packages available at the Octave-Forge repository.
+This requires an internet connection and the cURL library.
+
 @item describe
 Show a short description of the named installed packages, with the option
 '-verbose' also list functions provided by the package, e.g.:
+
 @example
  pkg describe -verbose all
 @end example
+
 @noindent
 will describe all installed packages and the functions they provide.
 If one output is requested a cell of structure containing the
 description and list of functions of each package is returned as
 output rather than printed on screen:
+
 @example
  desc = pkg ("describe", "secs1d", "image")
 @end example
+
 @noindent
 If any of the requested packages is not installed, pkg returns an
 error, unless a second output is requested:
+
 @example
  [ desc, flag] = pkg ("describe", "secs1d", "image")
 @end example
+
 @noindent
 @var{flag} will take one of the values "Not installed", "Loaded" or
 "Not loaded" for each of the named packages.
+
 @item prefix
 Set the installation prefix directory.  For example,
+
 @example
 pkg prefix ~/my_octave_packages
 @end example
+
 @noindent
 sets the installation prefix to @file{~/my_octave_packages}.
 Packages will be installed in this directory.
 
 It is possible to get the current installation prefix by requesting an
-output argument.  For example,
+output argument.  For example:
+
 @example
 p = pkg prefix
 @end example
 
 The location in which to install the architecture dependent files can be
-independent specified with an addition argument.  For example
+independent specified with an addition argument.  For example:
 
 @example
 pkg prefix ~/my_octave_packages ~/my_arch_dep_pkgs
 @end example
+
 @item local_list
 Set the file in which to look for information on the locally
 installed packages.  Locally installed packages are those that are
-typically available only to the current user.  For example
+typically available only to the current user.  For example:
+
 @example
 pkg local_list ~/.octave_packages
 @end example
+
 It is possible to get the current value of local_list with the following
+
 @example
 pkg local_list
 @end example
+
 @item global_list
 Set the file in which to look for, for information on the globally
 installed packages.  Globally installed packages are those that are
-typically available to all users.  For example
+typically available to all users.  For example:
+
 @example
 pkg global_list /usr/share/octave/octave_packages
 @end example
+
 It is possible to get the current value of global_list with the following
+
 @example
 pkg global_list
 @end example
+
 @item rebuild
-Rebuilds the package database from the installed directories.  This can 
+Rebuilds the package database from the installed directories.  This can
 be used in cases where for some reason the package database is corrupted.
-It can also take the @code{-auto} and @code{-noauto} options to allow the
-autoloading state of a package to be changed.  For example
+It can also take the @option{-auto} and @option{-noauto} options to allow the
+autoloading state of a package to be changed.  For example,
 
 @example
 pkg rebuild -noauto image
 @end example
 
+@noindent
 will remove the autoloading status of the image package.
+
 @item build
 Builds a binary form of a package or packages.  The binary file produced
 will itself be an Octave package that can be installed normally with
@@ -284,7 +328,7 @@ pkg build builddir image-1.0.0.tar.gz @dots{}
 @noindent
 where @code{builddir} is the name of a directory where the temporary
 installation will be produced and the binary packages will be found.
-The options @code{-verbose} and @code{-nodeps} are respected, while 
+The options @option{-verbose} and @option{-nodeps} are respected, while
 the other options are ignored.
 @end table
 @end deftypefn
@@ -379,7 +423,7 @@ This is an optional file describing the functions provided by the
 package.  If this file is not given then one with be created
 automatically from the functions in the package and the
 @code{Categories} keyword in the @code{DESCRIPTION} file.
-@xref{The INDEX file}, for details on this file.
+@xref{The INDEX File}, for details on this file.
 
 @anchor{doc-PKG_ADD}
 @item package/PKG_ADD
@@ -402,7 +446,7 @@ autoload ('bar', which ('foo'));
 @end example
 
 @noindent
-@xref{PKG_ADD and PKG_DEL directives}, for details on @w{@code{PKG_ADD}}
+@xref{PKG_ADD and PKG_DEL Directives}, for details on @w{@code{PKG_ADD}}
 directives.
 
 @item package/PKG_DEL
@@ -410,7 +454,7 @@ An optional file that includes commands that are run when the package
 is removed from the users path.  Note that @w{@code{PKG_DEL}} directives in
 the source code of the package will also be added to this file by the
 Octave package manager. 
-@xref{PKG_ADD and PKG_DEL directives}, for details on @w{@code{PKG_DEL}}
+@xref{PKG_ADD and PKG_DEL Directives}, for details on @w{@code{PKG_DEL}}
 directives.
 
 @item package/pre_install.m
@@ -440,11 +484,15 @@ An optional directory containing code that must be built prior to the
 packages installation.  The Octave package manager will execute
 @file{./configure} in this directory if this script exists, and will
 then call @code{make} if a file @file{Makefile} exists in this
-directory.  @code{make install} will however not be called.  If a file
-called @code{FILES} exists all files listed there will be copied to the
-@code{inst} directory, so they also will be installed.  If the
-@code{FILES} file doesn't exist, @file{src/*.m} and @file{src/*.oct}
-will be copied to the @code{inst} directory.
+directory.  @code{make install} will however not be called.  The
+environment variables @env{MKOCTFILE}, @w{@env{OCTAVE_CONFIG}}, and
+@env{OCTAVE} will be set to the full paths of the programs
+@code{mkoctfile}, @code{octave-config}, and @code{octave}, respectively,
+of the correct version when @code{configure} and @code{make} are
+called.  If a file called @code{FILES} exists all files listed there
+will be copied to the @code{inst} directory, so they also will be
+installed.  If the @code{FILES} file doesn't exist, @file{src/*.m} and
+@file{src/*.oct} will be copied to the @code{inst} directory.
 
 @item package/doc
 An optional directory containing documentation for the package.  The
@@ -453,14 +501,14 @@ of the installed package for future reference.
 
 @item package/bin
 An optional directory containing files that will be added to the
-Octave @w{@code{EXEC_PATH}} when the package is loaded.  This might contain
+Octave @w{@env{EXEC_PATH}} when the package is loaded.  This might contain
 external scripts, etc., called by functions within the package.
 @end table
 
 @menu
 * The DESCRIPTION File::        
-* The INDEX file::              
-* PKG_ADD and PKG_DEL directives::  
+* The INDEX File::              
+* PKG_ADD and PKG_DEL Directives::  
 @end menu
 
 @node The DESCRIPTION File
@@ -599,8 +647,8 @@ where the first package name will be used as a default and if the
 RPMs are built on a Mandriva distribution, then the second package
 name will be used instead. 
 
-@node The INDEX file
-@subsection The INDEX file
+@node The INDEX File
+@subsection The INDEX File
 
 The optional @code{INDEX} file provides a categorical view of the
 functions in the package.  This file has a very simple format
@@ -623,7 +671,7 @@ function names on the line belong to the last mentioned category.
 @end itemize
 
 @noindent
-The format can be summarized with the following example
+The format can be summarized with the following example.
 
 @example
 @group
@@ -648,8 +696,8 @@ fn = workaround description
 @noindent
 This workaround description will not appear when listing functions in the 
 package with @code{pkg describe} but they will be published
-in the html documentation online.
-Workaround descriptions can use any html markup, but
+in the HTML documentation online.
+Workaround descriptions can use any HTML markup, but
 keep in mind that it will be enclosed in a bold-italic environment.  
 For the special case of:
 
@@ -669,7 +717,7 @@ fn = use <a href="someothersite.html"><code>fn</code></a>
 Sometimes functions are only partially compatible, in which
 case you can list the non-compatible cases separately.  To
 refer to another function in the package, use @code{<f>fn</f>}.
-For example,
+For example:
 
 @example
 eig (a, b) = use <f>qz</f>
@@ -685,7 +733,7 @@ $id = expansion
 
 @noindent
 defines the macro id.  You can use @code{$id} anywhere in the
-description and it will be expanded.  For example,
+description and it will be expanded.  For example:
 
 @example
 @group
@@ -697,8 +745,8 @@ arcov = $TSA <code>armcv</code>
 @noindent
 id is any string of letters, numbers and @code{_}.
 
-@node PKG_ADD and PKG_DEL directives
-@subsection PKG_ADD and PKG_DEL directives
+@node PKG_ADD and PKG_DEL Directives
+@subsection PKG_ADD and PKG_DEL Directives
 
 If the package contains files called @w{@code{PKG_ADD}} or @w{@code{PKG_DEL}}
 the commands in these files will be executed when the package is

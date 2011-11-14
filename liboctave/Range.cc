@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 2000, 2001, 2002, 2004,
-              2005, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -35,10 +34,11 @@ along with Octave; see the file COPYING.  If not, see
 #include "lo-mappers.h"
 #include "lo-math.h"
 #include "lo-utils.h"
+#include "Array-util.h"
 
 Range::Range (double b, double i, octave_idx_type n)
-  : rng_base (b), rng_limit (b + n * i), rng_inc (i), 
-  rng_nelem (n), cache ()
+  : rng_base (b), rng_limit (b + (n-1) * i), rng_inc (i),
+    rng_nelem (n), cache ()
 {
   if (! xfinite (b) || ! xfinite (i))
     rng_nelem = -2;
@@ -52,8 +52,8 @@ Range::all_elements_are_ints (void) const
   // or fewer elements only the base needs to be an integer
 
   return (! (xisnan (rng_base) || xisnan (rng_inc))
-	  && (NINTbig (rng_base) == rng_base || rng_nelem < 1)
-	  && (NINTbig (rng_inc) == rng_inc || rng_nelem <= 1));
+          && (NINTbig (rng_base) == rng_base || rng_nelem < 1)
+          && (NINTbig (rng_inc) == rng_inc || rng_nelem <= 1));
 }
 
 Matrix
@@ -65,7 +65,7 @@ Range::matrix_value (void) const
       double b = rng_base;
       double increment = rng_inc;
       for (octave_idx_type i = 0; i < rng_nelem; i++)
-	cache(i) = b + i * increment;
+        cache(i) = b + i * increment;
 
       // On some machines (x86 with extended precision floating point
       // arithmetic, for example) it is possible that we can overshoot
@@ -74,13 +74,62 @@ Range::matrix_value (void) const
       // elements.
 
       if ((rng_inc > 0 && cache(rng_nelem-1) > rng_limit)
-	  || (rng_inc < 0 && cache(rng_nelem-1) < rng_limit))
-	cache(rng_nelem-1) = rng_limit;
+          || (rng_inc < 0 && cache(rng_nelem-1) < rng_limit))
+        cache(rng_nelem-1) = rng_limit;
     }
 
   return cache;
 }
 
+double
+Range::checkelem (octave_idx_type i) const
+{
+  if (i < 0 || i >= rng_nelem)
+    gripe_index_out_of_range (1, 1, i+1, rng_nelem);
+
+  return rng_base + rng_inc * i;
+}
+
+struct _rangeidx_helper
+{
+  double *array, base, inc;
+  _rangeidx_helper (double *a, double b, double i)
+    : array (a), base (b), inc (i) { }
+  void operator () (octave_idx_type i)
+    { *array++ = base + i * inc; }
+};
+
+Array<double>
+Range::index (const idx_vector& i) const
+{
+  Array<double> retval;
+
+  octave_idx_type n = rng_nelem;
+
+  if (i.is_colon ())
+    {
+      retval = matrix_value ().reshape (dim_vector (rng_nelem, 1));
+    }
+  else
+    {
+      if (i.extent (n) != n)
+        gripe_index_out_of_range (1, 1, i.extent (n), n); // throws
+
+      dim_vector rd = i.orig_dimensions ();
+      octave_idx_type il = i.length (n);
+
+      // taken from Array.cc.
+
+      if (n != 1 && rd.is_vector ())
+        rd = dim_vector (1, il);
+
+      retval.clear (rd);
+
+      i.loop (n, _rangeidx_helper (retval.fortran_vec (), rng_base, rng_inc));
+    }
+
+  return retval;
+}
 
 // NOTE: max and min only return useful values if nelem > 0.
 
@@ -91,16 +140,16 @@ Range::min (void) const
   if (rng_nelem > 0)
     {
       if (rng_inc > 0)
-	retval = rng_base;
+        retval = rng_base;
       else
-	{
-	  retval = rng_base + (rng_nelem - 1) * rng_inc;
+        {
+          retval = rng_base + (rng_nelem - 1) * rng_inc;
 
-	  // See the note in the matrix_value method above.
+          // See the note in the matrix_value method above.
 
-	  if (retval < rng_limit)
-	    retval = rng_limit;
-	}
+          if (retval < rng_limit)
+            retval = rng_limit;
+        }
 
     }
   return retval;
@@ -113,16 +162,16 @@ Range::max (void) const
   if (rng_nelem > 0)
     {
       if (rng_inc > 0)
-	{
-	  retval = rng_base + (rng_nelem - 1) * rng_inc;
+        {
+          retval = rng_base + (rng_nelem - 1) * rng_inc;
 
-	  // See the note in the matrix_value method above.
+          // See the note in the matrix_value method above.
 
-	  if (retval > rng_limit)
-	    retval = rng_limit;
-	}
+          if (retval > rng_limit)
+            retval = rng_limit;
+        }
       else
-	retval = rng_base;
+        retval = rng_base;
     }
   return retval;
 }
@@ -186,7 +235,7 @@ Range::sort_internal (Array<octave_idx_type>& sidx, bool ascending)
 
 }
 
-Matrix 
+Matrix
 Range::diag (octave_idx_type k) const
 {
   return matrix_value ().diag (k);
@@ -200,9 +249,9 @@ Range::sort (octave_idx_type dim, sortmode mode) const
   if (dim == 1)
     {
       if (mode == ASCENDING)
-	retval.sort_internal (true);
+        retval.sort_internal (true);
       else if (mode == DESCENDING)
-	retval.sort_internal (false);
+        retval.sort_internal (false);
     }
   else if (dim != 0)
     (*current_liboctave_error_handler) ("Range::sort: invalid dimension");
@@ -212,16 +261,16 @@ Range::sort (octave_idx_type dim, sortmode mode) const
 
 Range
 Range::sort (Array<octave_idx_type>& sidx, octave_idx_type dim,
-	     sortmode mode) const
+             sortmode mode) const
 {
   Range retval = *this;
 
   if (dim == 1)
     {
       if (mode == ASCENDING)
-	  retval.sort_internal (sidx, true);
+          retval.sort_internal (sidx, true);
       else if (mode == DESCENDING)
-	retval.sort_internal (sidx, false);
+        retval.sort_internal (sidx, false);
     }
   else if (dim != 0)
     (*current_liboctave_error_handler) ("Range::sort: invalid dimension");
@@ -268,10 +317,10 @@ operator >> (std::istream& is, Range& a)
     {
       is >> a.rng_limit;
       if (is)
-	{
-	  is >> a.rng_inc;
-	  a.rng_nelem = a.nelem_internal ();
-	}
+        {
+          is >> a.rng_inc;
+          a.rng_nelem = a.nelem_internal ();
+        }
     }
 
   return is;
@@ -388,11 +437,11 @@ tfloor (double x, double ct)
 
   double rmax = q / (2.0 - ct);
 
-  double t1 = 1.0 + floor (x);
+  double t1 = 1.0 + gnulib::floor (x);
   t1 = (ct / q) * (t1 < 0.0 ? -t1 : t1);
   t1 = rmax < t1 ? rmax : t1;
   t1 = ct > t1 ? ct : t1;
-  t1 = floor (x + t1);
+  t1 = gnulib::floor (x + t1);
 
   if (x <= 0.0 || (t1 - x) < rmax)
     return t1;
@@ -446,21 +495,15 @@ Range::nelem_internal (void) const
       // [1.8, 1.85, 1.9].
 
       if (! teq (rng_base + (n_elt - 1) * rng_inc, rng_limit))
-	{
-	  if (teq (rng_base + (n_elt - 2) * rng_inc, rng_limit))
-	    n_elt--;
-	  else if (teq (rng_base + n_elt * rng_inc, rng_limit))
-	    n_elt++;
-	}
+        {
+          if (teq (rng_base + (n_elt - 2) * rng_inc, rng_limit))
+            n_elt--;
+          else if (teq (rng_base + n_elt * rng_inc, rng_limit))
+            n_elt++;
+        }
 
       retval = (n_elt >= std::numeric_limits<octave_idx_type>::max () - 1) ? -1 : n_elt;
     }
 
   return retval;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

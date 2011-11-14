@@ -1,4 +1,4 @@
-## Copyright (C) 2005, 2006, 2007, 2008 John W. Eaton
+## Copyright (C) 2005-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -18,14 +18,14 @@
 
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} newplot ()
-## Prepare graphics engine to produce a new plot.  This function should
-## be called at the beginning of all high-level plotting functions.
+## Prepare graphics engine to produce a new plot.  This function is
+## called at the beginning of all high-level plotting functions.
+## It is not normally required in user programs.
 ## @end deftypefn
 
 function newplot ()
 
   if (nargin == 0)
-    __next_line_color__ (true);
     cf = gcf ();
     fnp = get (cf, "nextplot");
     switch (fnp)
@@ -34,20 +34,30 @@ function newplot ()
       case "new"
       case "add"
       case "replacechildren"
+        delete (get (cf, "children"));
       case "replace"
       otherwise
-	error ("newplot: unrecognized nextplot property for current figure");
+        error ("newplot: unrecognized nextplot property for current figure");
     endswitch
     ca = gca ();
     anp = get (ca, "nextplot");
+    if (strcmp (get (ca, "__hold_all__"), "off"))
+      __next_line_color__ (true);
+      __next_line_style__ (true);
+    else
+      __next_line_color__ (false);
+      __next_line_style__ (false);
+    endif
     switch (anp)
+      case "new"
       case "add"
       case "replacechildren"
+        delete (get (ca, "children"));
       case "replace"
-	__go_axes_init__ (ca, "replace");
-	__request_drawnow__ ();
+        __go_axes_init__ (ca, "replace");
+        __request_drawnow__ ();
       otherwise
-	error ("newplot: unrecognized nextplot property for current axes");
+        error ("newplot: unrecognized nextplot property for current axes");
     endswitch
   else
     print_usage ();

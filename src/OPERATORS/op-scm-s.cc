@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 2004, 2005, 2006, 2007, 2009 David Bateman
-Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004 Andy Adler
+Copyright (C) 2004-2011 David Bateman
+Copyright (C) 1998-2004 Andy Adler
 
 This file is part of Octave.
 
@@ -49,8 +49,8 @@ DEFBINOP_OP (mul, sparse_complex_matrix, scalar, *)
 
 DEFBINOP (div, sparse_complex_matrix, scalar)
 {
-  CAST_BINOP_ARGS (const octave_sparse_complex_matrix&, 
-		   const octave_scalar&);
+  CAST_BINOP_ARGS (const octave_sparse_complex_matrix&,
+                   const octave_scalar&);
 
   double d = v2.double_value ();
   octave_value retval;
@@ -65,8 +65,8 @@ DEFBINOP (div, sparse_complex_matrix, scalar)
 
 DEFBINOP (pow, sparse_complex_matrix, scalar)
 {
-  CAST_BINOP_ARGS (const octave_sparse_complex_matrix&, 
-		   const octave_scalar&);
+  CAST_BINOP_ARGS (const octave_sparse_complex_matrix&,
+                   const octave_scalar&);
 
   double tmp = v2.scalar_value ();
   if (static_cast<int> (tmp) == tmp)
@@ -84,7 +84,7 @@ DEFBINOP (ldiv, sparse_complex_matrix, scalar)
       Complex d = v1.complex_value ();
 
       if (d == 0.0)
-	gripe_divide_by_zero ();
+        gripe_divide_by_zero ();
 
       return octave_value (SparseComplexMatrix (1, 1, v2.scalar_value () / d));
     }
@@ -110,8 +110,8 @@ DEFBINOP_OP (el_mul, sparse_complex_matrix, scalar, *)
 
 DEFBINOP (el_div, sparse_complex_matrix, scalar)
 {
-  CAST_BINOP_ARGS (const octave_sparse_complex_matrix&, 
-		   const octave_scalar&);
+  CAST_BINOP_ARGS (const octave_sparse_complex_matrix&,
+                   const octave_scalar&);
 
   double d = v2.double_value ();
   octave_value retval;
@@ -169,27 +169,21 @@ install_scm_s_ops (void)
   INSTALL_BINOP (op_ge, octave_sparse_complex_matrix, octave_scalar, ge);
   INSTALL_BINOP (op_gt, octave_sparse_complex_matrix, octave_scalar, gt);
   INSTALL_BINOP (op_ne, octave_sparse_complex_matrix, octave_scalar, ne);
-  INSTALL_BINOP (op_el_mul, octave_sparse_complex_matrix, octave_scalar, 
-		 el_mul);
-  INSTALL_BINOP (op_el_div, octave_sparse_complex_matrix, octave_scalar, 
-		 el_div);
-  INSTALL_BINOP (op_el_pow, octave_sparse_complex_matrix, octave_scalar, 
-		 el_pow);
-  INSTALL_BINOP (op_el_ldiv, octave_sparse_complex_matrix, octave_scalar, 
-		 el_ldiv);
-  INSTALL_BINOP (op_el_and, octave_sparse_complex_matrix, octave_scalar, 
-		 el_and);
-  INSTALL_BINOP (op_el_or, octave_sparse_complex_matrix, octave_scalar, 
-		 el_or);
+  INSTALL_BINOP (op_el_mul, octave_sparse_complex_matrix, octave_scalar,
+                 el_mul);
+  INSTALL_BINOP (op_el_div, octave_sparse_complex_matrix, octave_scalar,
+                 el_div);
+  INSTALL_BINOP (op_el_pow, octave_sparse_complex_matrix, octave_scalar,
+                 el_pow);
+  INSTALL_BINOP (op_el_ldiv, octave_sparse_complex_matrix, octave_scalar,
+                 el_ldiv);
+  INSTALL_BINOP (op_el_and, octave_sparse_complex_matrix, octave_scalar,
+                 el_and);
+  INSTALL_BINOP (op_el_or, octave_sparse_complex_matrix, octave_scalar,
+                 el_or);
 
   INSTALL_CATOP (octave_sparse_complex_matrix, octave_scalar, scm_s);
 
-  INSTALL_ASSIGNOP (op_asn_eq, octave_sparse_complex_matrix, octave_scalar, 
-		    assign);
+  INSTALL_ASSIGNOP (op_asn_eq, octave_sparse_complex_matrix, octave_scalar,
+                    assign);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

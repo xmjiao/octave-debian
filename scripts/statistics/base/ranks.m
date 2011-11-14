@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 2000, 2002, 2004, 2005, 2006,
-##               2007, 2008, 2009 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -20,8 +19,9 @@
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} ranks (@var{x}, @var{dim})
 ## Return the ranks of @var{x} along the first non-singleton dimension
-## adjust for ties.  If the optional argument @var{dim} is
+## adjusted for ties.  If the optional argument @var{dim} is
 ## given, operate along this dimension.
+## @seealso{spearman, kendall}
 ## @end deftypefn
 
 ## Author: KH <Kurt.Hornik@wu-wien.ac.at>
@@ -37,22 +37,22 @@ function y = ranks (x, dim)
     print_usage ();
   endif
 
+  if (!isnumeric(x))
+    error ("ranks: X must be a numeric vector or matrix");
+  endif
+
   nd = ndims (x);
   sz = size (x);
   if (nargin != 2)
     ## Find the first non-singleton dimension.
-    dim  = 1;
-    while (dim < nd + 1 && sz(dim) == 1)
-      dim = dim + 1;
-    endwhile
-    if (dim > nd)
+    dim = find (sz > 1, 1);
+    if (isempty (dim))
       dim = 1;
     endif
   else
-    if (! (isscalar (dim) && dim == round (dim))
-	&& dim > 0
-	&& dim < (nd + 1))
-      error ("ranks: dim must be an integer and valid dimension");
+    if (!(isscalar (dim) && dim == fix (dim))
+        || !(1 <= dim && dim <= nd))
+      error ("ranks: DIM must be an integer and a valid dimension");
     endif
   endif
 
@@ -67,23 +67,41 @@ function y = ranks (x, dim)
       x = permute (x, perm);
     endif
     sz = size (x);
-    infvec = -Inf * ones ([1, sz(2 : end)]);
+    infvec = -Inf ([1, sz(2 : end)]);
     [xs, xi] = sort (x);
     eq_el = find (diff ([xs; infvec]) == 0);
     if (isempty (eq_el))
       [eq_el, y] = sort (xi);
     else
-      runs = complement (eq_el+1, eq_el);
+      runs = setdiff (eq_el, eq_el+1);
       len = diff (find (diff ([Inf; eq_el; -Inf]) != 1)) + 1;
       [eq_el, y] = sort (xi);
       for i = 1 : length(runs)
-	y (xi (runs (i) + [0:(len(i)-1)]) + floor (runs (i) ./ sz(1)) 
-	   * sz(1)) = eq_el(runs(i)) + (len(i) - 1) / 2;
+        y (xi (runs (i) + [0:(len(i)-1)]) + floor (runs (i) ./ sz(1))
+           * sz(1)) = eq_el(runs(i)) + (len(i) - 1) / 2;
       endfor
-    endif  
+    endif
     if (dim != 1)
       y = permute (y, perm);
     endif
   endif
 
 endfunction
+
+
+%!assert(ranks (1:2:10), 1:5)
+%!assert(ranks (10:-2:1), 5:-1:1)
+%!assert(ranks ([2, 1, 2, 4]), [2.5, 1, 2.5, 4])
+%!assert(ranks (ones(1, 5)), 3*ones(1, 5))
+%!assert(ranks (1e6*ones(1, 5)), 3*ones(1, 5))
+%!assert(ranks (rand (1, 5), 1), ones(1, 5))
+
+%% Test input validation
+%!error ranks ()
+%!error ranks (1, 2, 3)
+%!error ranks ({1, 2})
+%!error ranks (true(2,1))
+%!error ranks (1, 1.5)
+%!error ranks (1, 0)
+%!error ranks (1, 3)
+

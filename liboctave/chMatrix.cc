@@ -1,8 +1,8 @@
 // Matrix manipulations.
 /*
 
-Copyright (C) 1995, 1996, 1997, 1998, 2000, 2001, 2002, 2004, 2005,
-              2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1995-2011 John W. Eaton
+Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
 
@@ -40,7 +40,7 @@ along with Octave; see the file COPYING.  If not, see
 // charMatrix class.
 
 charMatrix::charMatrix (char c)
-  : MArray2<char> ()
+  : Array<char> ()
 {
   octave_idx_type nc = 1;
   octave_idx_type nr = 1;
@@ -51,7 +51,7 @@ charMatrix::charMatrix (char c)
 }
 
 charMatrix::charMatrix (const char *s)
-  : MArray2<char> ()
+  : Array<char> ()
 {
   octave_idx_type nc = s ? strlen (s) : 0;
   octave_idx_type nr = s && nc > 0 ? 1 : 0;
@@ -63,7 +63,7 @@ charMatrix::charMatrix (const char *s)
 }
 
 charMatrix::charMatrix (const std::string& s)
-  : MArray2<char> ()
+  : Array<char> ()
 {
   octave_idx_type nc = s.length ();
   octave_idx_type nr = nc > 0 ? 1 : 0;
@@ -75,7 +75,7 @@ charMatrix::charMatrix (const std::string& s)
 }
 
 charMatrix::charMatrix (const string_vector& s)
-  : MArray2<char> (s.length (), s.max_length (), 0)
+  : Array<char> (dim_vector (s.length (), s.max_length ()), 0)
 {
   octave_idx_type nr = rows ();
 
@@ -84,7 +84,7 @@ charMatrix::charMatrix (const string_vector& s)
       const std::string si = s(i);
       octave_idx_type nc = si.length ();
       for (octave_idx_type j = 0; j < nc; j++)
-	elem (i, j) = si[j];
+        elem (i, j) = si[j];
     }
 }
 
@@ -94,7 +94,7 @@ charMatrix::operator == (const charMatrix& a) const
   if (rows () != a.rows () || cols () != a.cols ())
     return 0;
 
-  return mx_inline_equal (data (), a.data (), length ());
+  return mx_inline_equal (length (), data (), a.data ());
 }
 
 bool
@@ -111,13 +111,13 @@ charMatrix::insert (const char *s, octave_idx_type r, octave_idx_type c)
       octave_idx_type s_len = strlen (s);
 
       if (r < 0 || r >= rows () || c < 0 || c + s_len - 1 > cols ())
-	{
-	  (*current_liboctave_error_handler) ("range error for insert");
-	  return *this;
-	}
+        {
+          (*current_liboctave_error_handler) ("range error for insert");
+          return *this;
+        }
 
       for (octave_idx_type i = 0; i < s_len; i++)
-	elem (r, c+i) = s[i];
+        elem (r, c+i) = s[i];
     }
   return *this;
 }
@@ -125,12 +125,12 @@ charMatrix::insert (const char *s, octave_idx_type r, octave_idx_type c)
 charMatrix&
 charMatrix::insert (const charMatrix& a, octave_idx_type r, octave_idx_type c)
 {
-  Array2<char>::insert (a, r, c);
+  Array<char>::insert (a, r, c);
   return *this;
 }
 
 std::string
-charMatrix::row_as_string (octave_idx_type r, bool strip_ws, bool raw) const 
+charMatrix::row_as_string (octave_idx_type r, bool strip_ws) const
 {
   std::string retval;
 
@@ -151,23 +151,14 @@ charMatrix::row_as_string (octave_idx_type r, bool strip_ws, bool raw) const
   for (octave_idx_type i = 0; i < nc; i++)
     retval[i] = elem (r, i);
 
-  if (! raw)
+  if (strip_ws)
     {
-      if (strip_ws)
-	{
-	  while (--nc >= 0)
-	    {
-	      char c = retval[nc];
-	      if (c && c != ' ')
-		break;
-	    }
-	}
-      else
-	{
-	  while (--nc >= 0)
-	    if (retval[nc])
-	      break;
-	}
+      while (--nc >= 0)
+        {
+          char c = retval[nc];
+          if (c && c != ' ')
+            break;
+        }
 
       retval.resize (nc+1);
     }
@@ -196,7 +187,7 @@ charMatrix::extract (octave_idx_type r1, octave_idx_type c1, octave_idx_type r2,
 charMatrix
 charMatrix::diag (octave_idx_type k) const
 {
-  return MArray2<char>::diag (k);
+  return Array<char>::diag (k);
 }
 
 // FIXME Do these really belong here?  Maybe they should be
@@ -205,26 +196,20 @@ charMatrix::diag (octave_idx_type k) const
 boolMatrix
 charMatrix::all (int dim) const
 {
-  return do_mx_red_op<boolMatrix, char> (*this, dim, mx_inline_all);
+  return do_mx_red_op<bool, char> (*this, dim, mx_inline_all);
 }
 
 boolMatrix
 charMatrix::any (int dim) const
 {
-  return do_mx_red_op<boolMatrix, char> (*this, dim, mx_inline_any);
+  return do_mx_red_op<bool, char> (*this, dim, mx_inline_any);
 }
 
-MS_CMP_OPS(charMatrix, , char, )
-MS_BOOL_OPS(charMatrix, char, 0)
+MS_CMP_OPS (charMatrix, char)
+MS_BOOL_OPS (charMatrix, char)
 
-SM_CMP_OPS(char, , charMatrix, )
-SM_BOOL_OPS(char, charMatrix, 0)
+SM_CMP_OPS (char, charMatrix)
+SM_BOOL_OPS (char, charMatrix)
 
-MM_CMP_OPS(charMatrix, , charMatrix, )
-MM_BOOL_OPS(charMatrix, charMatrix, 0)
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+MM_CMP_OPS (charMatrix, charMatrix)
+MM_BOOL_OPS (charMatrix, charMatrix)

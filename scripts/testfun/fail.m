@@ -1,4 +1,4 @@
-## Copyright (C) 2005, 2006, 2007, 2009 Paul Kienzle
+## Copyright (C) 2005-2011 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -20,15 +20,16 @@
 ## public domain.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} fail (@var{code},@var{pattern})
-## @deftypefnx {Function File} {} fail (@var{code},'warning',@var{pattern})
+## @deftypefn  {Function File} {} fail (@var{code})
+## @deftypefnx {Function File} {} fail (@var{code}, @var{pattern})
+## @deftypefnx {Function File} {} fail (@var{code}, 'warning', @var{pattern})
 ##
 ## Return true if @var{code} fails with an error message matching
 ## @var{pattern}, otherwise produce an error.  Note that @var{code}
 ## is a string and if @var{code} runs successfully, the error produced is:
 ##
 ## @example
-##           expected error but got none  
+##           expected error but got none
 ## @end example
 ##
 ## If the code fails with a different error, the message produced is:
@@ -42,10 +43,10 @@
 ##
 ## The angle brackets are not part of the output.
 ##
-## Called with three arguments, the behavior is similar to 
-## @code{fail(@var{code}, @var{pattern})}, but produces an error if no 
+## Called with three arguments, the behavior is similar to
+## @code{fail(@var{code}, @var{pattern})}, but produces an error if no
 ## warning is given during code execution or if the code fails.
-##
+## @seealso{assert}
 ## @end deftypefn
 
 ## Author: Paul Kienzle <pkienzle@users.sf.net>
@@ -72,7 +73,7 @@ function ret = fail (code, pattern, warning_pattern)
   ## allow assert(fail())
   if (nargout)
     ret = 1;
-  endif  
+  endif
 
   if (test_warning)
     ## Perform the warning test.
@@ -89,13 +90,13 @@ function ret = fail (code, pattern, warning_pattern)
       err = lastwarn ();
       warning (state.state, "quiet");
       if (isempty (err))
-        msg = sprintf ("expected warning <%s> but got none", pattern); 
+        msg = sprintf ("expected warning <%s> but got none", pattern);
       else
-	## Transform "warning: ...\n" to "...".
+        ## Transform "warning: ...\n" to "...".
         err([1:9, end]) = [];
         if (! isempty (regexp (err, pattern, "once")))
-	  return;
-	endif
+          return;
+        endif
         msg = sprintf ("expected warning <%s>\nbut got <%s>", pattern, err);
       endif
     catch
@@ -105,7 +106,7 @@ function ret = fail (code, pattern, warning_pattern)
       err([1:7, end]) = [];
       msg = sprintf ("expected warning <%s> but got error <%s>", pattern, err);
     end_try_catch
-      
+
   else
     ## Perform the error test.
     try
@@ -117,7 +118,7 @@ function ret = fail (code, pattern, warning_pattern)
          err([1:6, end]) = []; # transform "error: ...\n", to "..."
       endif
       if (! isempty (regexp (err, pattern, "once")))
-	return;
+        return;
       endif
       msg = sprintf ("expected error <%s>\nbut got <%s>", pattern, err);
     end_try_catch

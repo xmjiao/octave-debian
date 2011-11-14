@@ -1,4 +1,4 @@
-## Copyright (C) 2007, 2008, 2009 David Bateman
+## Copyright (C) 2007-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} fill (@var{x}, @var{y}, @var{c})
+## @deftypefn  {Function File} {} fill (@var{x}, @var{y}, @var{c})
 ## @deftypefnx {Function File} {} fill (@var{x1}, @var{y1}, @var{c1}, @var{x2}, @var{y2}, @var{c2})
 ## @deftypefnx {Function File} {} fill (@dots{}, @var{prop}, @var{val})
 ## @deftypefnx {Function File} {} fill (@var{h}, @dots{})
@@ -36,19 +36,26 @@ function retval = fill (varargin)
   unwind_protect
     axes (h);
 
+    nextplot = get (h, "nextplot");
     for i = 1 : length (iargs)
+      if (i > 1 && strncmp (nextplot, "replace", 7))
+        set (h, "nextplot", "add");
+      endif
       if (i == length (iargs))
-	args = varargin (iargs(i):end);
+        args = varargin (iargs(i):end);
       else
         args = varargin (iargs(i):iargs(i+1)-1);
       endif
       newplot ();
       [tmp, fail] = __patch__ (h, args{:});
       if (fail)
-	print_usage();
+        print_usage();
       endif
       htmp (end + 1) = tmp;
     endfor
+    if (strncmp (nextplot, "replace", 7))
+      set (h, "nextplot", nextplot);
+    endif
   unwind_protect_cleanup
     axes (oldh);
   end_unwind_protect
@@ -65,8 +72,8 @@ function iargs = __find_patches__ (varargin)
   while (i < nargin)
     iargs (end + 1) = i;
     if (ischar (varargin{i})
-	&& (strcmpi (varargin{i}, "faces")
-	    || strcmpi (varargin{i}, "vertices")))
+        && (strcmpi (varargin{i}, "faces")
+            || strcmpi (varargin{i}, "vertices")))
       i += 4;
     elseif (isnumeric (varargin{i}))
       i += 2;
@@ -74,34 +81,34 @@ function iargs = __find_patches__ (varargin)
 
     if (i <= nargin)
       while (true);
-	if (ischar (varargin{i}) && 
-	    (strcmpi (varargin{i}, "faces")
-	     || strcmpi (varargin{i}, "vertices")))
-	  break;
-	elseif (isnumeric (varargin{i}))
-	  ## Assume its the colorspec
-	  i++;
-	  break;
-	elseif (ischar (varargin{i}))
-	  colspec = tolower (varargin{i});
-	  collen = length (colspec);
+        if (ischar (varargin{i})
+            && (strcmpi (varargin{i}, "faces")
+                || strcmpi (varargin{i}, "vertices")))
+          break;
+        elseif (isnumeric (varargin{i}))
+          ## Assume its the colorspec
+          i++;
+          break;
+        elseif (ischar (varargin{i}))
+          colspec = tolower (varargin{i});
+          collen = length (colspec);
 
-	  if (strncmp (colspec, "blue", collen)
-	      || strncmp (colspec, "black", collen)
-	      || strncmp (colspec, "k", collen)
-	      || strncmp (colspec, "black", collen)
-	      || strncmp (colspec, "red", collen)
-	      || strncmp (colspec, "green", collen)
-	      || strncmp (colspec, "yellow", collen)
-	      || strncmp (colspec, "magenta", collen)
-	      || strncmp (colspec, "cyan", collen)
-	      || strncmp (colspec, "white", collen))
-	    i++;
-	    break;
-	  endif
-	else
-	  i += 2;
-	endif
+          if (strncmp (colspec, "blue", collen)
+              || strncmp (colspec, "black", collen)
+              || strncmp (colspec, "k", collen)
+              || strncmp (colspec, "black", collen)
+              || strncmp (colspec, "red", collen)
+              || strncmp (colspec, "green", collen)
+              || strncmp (colspec, "yellow", collen)
+              || strncmp (colspec, "magenta", collen)
+              || strncmp (colspec, "cyan", collen)
+              || strncmp (colspec, "white", collen))
+            i++;
+            break;
+          endif
+        else
+          i += 2;
+        endif
       endwhile
     endif
   endwhile

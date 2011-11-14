@@ -1,4 +1,4 @@
-## Copyright (C) 2007, 2008, 2009 Kai Habel
+## Copyright (C) 2007-2011 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -76,7 +76,7 @@ function h = ribbon (x, y, width)
 
   if (! ishold ())
     set (ax, "view", [-37.5, 30], "box", "off", "xgrid", "on",
-	 "ygrid", "on", "zgrid", "on");
+         "ygrid", "on", "zgrid", "on");
   endif
 
   if (nargout > 0)

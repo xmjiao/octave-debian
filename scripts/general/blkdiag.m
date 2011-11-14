@@ -1,4 +1,4 @@
-## Copyright (C) 2000, 2005, 2006, 2007, 2008 Daniel Calvelo
+## Copyright (C) 2000-2011 Daniel Calvelo
 ##
 ## This file is part of Octave.
 ##
@@ -17,8 +17,8 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} blkdiag (@var{a}, @var{b}, @var{c}, @dots{})
-## Build a block diagonal matrix from @var{a}, @var{b}, @var{c}, @dots{}.
+## @deftypefn {Function File} {} blkdiag (@var{A}, @var{B}, @var{C}, @dots{})
+## Build a block diagonal matrix from @var{A}, @var{B}, @var{C}, @dots{}
 ## All the arguments must be numeric and are two-dimensional matrices or
 ## scalars.
 ## @seealso{diag, horzcat, vertcat}
@@ -44,7 +44,7 @@ function retval = blkdiag (varargin)
 
   ## size is an option for cellfun, but it's a bit different from
   ## calling size directly.
-  tmp = cell2mat (cellfun (@size, varargin', "UniformOutput", false));
+  tmp = cell2mat (cellfun (@size, varargin', "uniformoutput", false));
   csz = cumsum ([0 0; tmp], 1);
   retval = zeros (csz(end,:));
 

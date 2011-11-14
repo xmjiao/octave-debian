@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2002,
-              2003, 2004, 2005, 2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -30,12 +29,8 @@ along with Octave; see the file COPYING.  If not, see
 #include <iostream>
 #include <new>
 
-#ifdef HAVE_UNISTD_H
-#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#endif
 #include <unistd.h>
-#endif
 
 #include "cmd-edit.h"
 #include "oct-syscalls.h"
@@ -44,6 +39,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "debug.h"
 #include "defun.h"
 #include "error.h"
+#include "input.h"
 #include "load-save.h"
 #include "oct-map.h"
 #include "pager.h"
@@ -74,34 +70,32 @@ static bool Vsighup_dumps_octave_core = true;
 // Similar to Vsighup_dumps_octave_core, but for SIGTERM signal.
 static bool Vsigterm_dumps_octave_core = true;
 
-#if defined (RETSIGTYPE_IS_VOID)
-#define SIGHANDLER_RETURN(status) return
-#else
-#define SIGHANDLER_RETURN(status) return status
-#endif
-
-#if defined (MUST_REINSTALL_SIGHANDLERS)
-#define MAYBE_REINSTALL_SIGHANDLER(sig, handler) \
-  octave_set_signal_handler (sig, handler)
-#define REINSTALL_USES_SIG 1
-#else
-#define MAYBE_REINSTALL_SIGHANDLER(sig, handler) \
-  do { } while (0)
-#endif
-
-#if defined (__EMX__)
-#define MAYBE_ACK_SIGNAL(sig) \
-  octave_set_signal_handler (sig, SIG_ACK)
-#define ACK_USES_SIG 1
-#else
-#define MAYBE_ACK_SIGNAL(sig) \
-  do { } while (0)
-#endif
-
 // List of signals we have caught since last call to octave_signal_handler.
 static bool octave_signals_caught[NSIG];
 
-// Called from OCTAVE_QUIT to actually do something about the signals
+// Signal handler return type.
+#ifndef BADSIG
+#define BADSIG (void (*)(int))-1
+#endif
+
+#define BLOCK_SIGNAL(sig, nvar, ovar) \
+  do \
+    { \
+      gnulib::sigemptyset (&nvar); \
+      gnulib::sigaddset (&nvar, sig); \
+      gnulib::sigemptyset (&ovar); \
+      gnulib::sigprocmask (SIG_BLOCK, &nvar, &ovar); \
+    } \
+  while (0)
+
+#if !defined (SIGCHLD) && defined (SIGCLD)
+#define SIGCHLD SIGCLD
+#endif
+
+#define BLOCK_CHILD(nvar, ovar) BLOCK_SIGNAL (SIGCHLD, nvar, ovar)
+#define UNBLOCK_CHILD(ovar) gnulib::sigprocmask (SIG_SETMASK, &ovar, 0)
+
+// Called from octave_quit () to actually do something about the signals
 // we have caught.
 
 void
@@ -113,34 +107,49 @@ octave_signal_handler (void)
   for (int i = 0; i < NSIG; i++)
     {
       if (octave_signals_caught[i])
-	{
-	  octave_signals_caught[i] = false;
+        {
+          octave_signals_caught[i] = false;
 
-	  switch (i)
-	    {
+          switch (i)
+            {
 #ifdef SIGCHLD
-	    case SIGCHLD:
-	      octave_child_list::reap ();
-	      break;
+            case SIGCHLD:
+              {
+                volatile octave_interrupt_handler saved_interrupt_handler
+                  = octave_ignore_interrupts ();
+
+                sigset_t set, oset;
+
+                BLOCK_CHILD (set, oset);
+
+                octave_child_list::wait ();
+
+                octave_set_interrupt_handler (saved_interrupt_handler);
+
+                UNBLOCK_CHILD (oset);
+
+                octave_child_list::reap ();
+              }
+              break;
 #endif
 
-	    case SIGFPE:
-	      std::cerr << "warning: floating point exception -- trying to return to prompt" << std::endl;
-	      break;
+            case SIGFPE:
+              std::cerr << "warning: floating point exception -- trying to return to prompt" << std::endl;
+              break;
 
 #ifdef SIGPIPE
-	    case SIGPIPE:
-	      std::cerr << "warning: broken pipe -- some output may be lost" << std::endl;
-	      break;
+            case SIGPIPE:
+              std::cerr << "warning: broken pipe -- some output may be lost" << std::endl;
+              break;
 #endif
-	    }
-	}
+            }
+        }
     }
 }
 
 static void
 my_friendly_exit (const char *sig_name, int sig_number,
-		  bool save_vars = true)
+                  bool save_vars = true)
 {
   static bool been_there_done_that = false;
 
@@ -163,127 +172,87 @@ my_friendly_exit (const char *sig_name, int sig_number,
       std::cerr << "panic: " << sig_name << " -- stopping myself...\n";
 
       if (save_vars)
-	dump_octave_core ();
+        dump_octave_core ();
 
       if (sig_number < 0)
-	{
-	  MINGW_SIGNAL_CLEANUP ();
+        {
+          MINGW_SIGNAL_CLEANUP ();
 
-	  exit (1);
-	}
+          exit (1);
+        }
       else
-	{
-	  octave_set_signal_handler (sig_number, SIG_DFL);
+        {
+          octave_set_signal_handler (sig_number, SIG_DFL);
 
 #if defined (HAVE_RAISE)
-	  raise (sig_number);
+          raise (sig_number);
 #elif defined (HAVE_KILL)
-	  kill (getpid (), sig_number);
+          kill (getpid (), sig_number);
 #else
-	  exit (1);
+          exit (1);
 #endif
-	}
+        }
 
     }
 }
 
 sig_handler *
 octave_set_signal_handler (int sig, sig_handler *handler,
-			   bool restart_syscalls)
+                           bool restart_syscalls)
 {
-#if defined (HAVE_POSIX_SIGNALS)
   struct sigaction act, oact;
 
   act.sa_handler = handler;
   act.sa_flags = 0;
 
+#if defined (SIGALRM)
   if (sig == SIGALRM)
     {
 #if defined (SA_INTERRUPT)
       act.sa_flags |= SA_INTERRUPT;
 #endif
     }
+#endif
 #if defined (SA_RESTART)
+#if defined (SIGALRM)
+  else
+#endif
   // FIXME -- Do we also need to explicitly disable SA_RESTART?
-  else if (restart_syscalls)
+  if (restart_syscalls)
     act.sa_flags |= SA_RESTART;
 #endif
 
-  sigemptyset (&act.sa_mask);
-  sigemptyset (&oact.sa_mask);
+  gnulib::sigemptyset (&act.sa_mask);
+  gnulib::sigemptyset (&oact.sa_mask);
 
-  sigaction (sig, &act, &oact);
+  gnulib::sigaction (sig, &act, &oact);
 
   return oact.sa_handler;
-#else
-  return signal (sig, handler);
-#endif
 }
 
-static RETSIGTYPE
+static void
 generic_sig_handler (int sig)
 {
   my_friendly_exit (strsignal (sig), sig);
-
-  SIGHANDLER_RETURN (0);
 }
 
 // Handle SIGCHLD.
 
 #ifdef SIGCHLD
-static RETSIGTYPE
+static void
 sigchld_handler (int /* sig */)
 {
-  volatile octave_interrupt_handler saved_interrupt_handler
-     = octave_ignore_interrupts ();
+  octave_signal_caught = 1;
 
-  // I wonder if this is really right, or if SIGCHLD should just be
-  // blocked on OS/2 systems the same as for systems with POSIX signal
-  // functions.
-
-#if defined (__EMX__)
-  volatile sig_handler *saved_sigchld_handler
-    = octave_set_signal_handler (SIGCHLD, SIG_IGN);
-#endif
-
-  sigset_t set, oset;
-
-  BLOCK_CHILD (set, oset);
-
-  if (octave_child_list::wait ())
-    {
-      // The status of some child changed.
-
-      octave_signal_caught = 1;
-
-      octave_signals_caught[SIGCHLD] = true;
-    }
-
-  octave_set_interrupt_handler (saved_interrupt_handler);
-
-  UNBLOCK_CHILD (oset);
-
-#ifdef __EMX__
-  octave_set_signal_handler (SIGCHLD, saved_sigchld_handler);
-#endif
-
-  MAYBE_ACK_SIGNAL (SIGCHLD);
-
-  MAYBE_REINSTALL_SIGHANDLER (SIGCHLD, sigchld_handler);
-
-  SIGHANDLER_RETURN (0);
+  octave_signals_caught[SIGCHLD] = true;
 }
 #endif /* defined(SIGCHLD) */
 
 #ifdef SIGFPE
 #if defined (__alpha__)
-static RETSIGTYPE
+static void
 sigfpe_handler (int /* sig */)
 {
-  MAYBE_ACK_SIGNAL (SIGFPE);
-
-  MAYBE_REINSTALL_SIGHANDLER (SIGFPE, sigfpe_handler);
-
   if (can_interrupt && octave_interrupt_state >= 0)
     {
       octave_signal_caught = 1;
@@ -292,27 +261,21 @@ sigfpe_handler (int /* sig */)
 
       octave_interrupt_state++;
     }
-
-  SIGHANDLER_RETURN (0);
 }
 #endif /* defined(__alpha__) */
 #endif /* defined(SIGFPE) */
 
 #if defined (SIGHUP) || defined (SIGTERM)
-static RETSIGTYPE
+static void
 sig_hup_or_term_handler (int sig)
 {
-  MAYBE_ACK_SIGNAL (sig);
-
-  MAYBE_REINSTALL_SIGHANDLER (sig, sig_hup_or_term_handler);
-
   switch (sig)
     {
 #if defined (SIGHUP)
     case SIGHUP:
       {
-	if (Vsighup_dumps_octave_core)
-	  dump_octave_core ();
+        if (Vsighup_dumps_octave_core)
+          dump_octave_core ();
       }
       break;
 #endif
@@ -320,8 +283,8 @@ sig_hup_or_term_handler (int sig)
 #if defined (SIGTERM)
     case SIGTERM:
       {
-	if (Vsigterm_dumps_octave_core)
-	  dump_octave_core ();
+        if (Vsigterm_dumps_octave_core)
+          dump_octave_core ();
       }
       break;
 #endif
@@ -331,23 +294,15 @@ sig_hup_or_term_handler (int sig)
     }
 
   clean_up_and_exit (0);
-
-  SIGHANDLER_RETURN (0);
 }
 #endif
 
 #if 0
 #if defined (SIGWINCH)
-static RETSIGTYPE
+static void
 sigwinch_handler (int /* sig */)
 {
-  MAYBE_ACK_SIGNAL (SIGWINCH);
-
-  MAYBE_REINSTALL_SIGHANDLER (SIGWINCH, sigwinch_handler);
-
   command_editor::resize_terminal ();
-
-  SIGHANDLER_RETURN (0);
 }
 #endif
 #endif
@@ -367,59 +322,56 @@ user_abort (const char *sig_name, int sig_number)
   if (can_interrupt)
     {
       if (Vdebug_on_interrupt)
-	{
-	  if (! octave_debug_on_interrupt_state)
-	    {
-	      tree_evaluator::debug_mode = true;
-	      octave_debug_on_interrupt_state = true;
+        {
+          if (! octave_debug_on_interrupt_state)
+            {
+              tree_evaluator::debug_mode = true;
+              octave_debug_on_interrupt_state = true;
 
-	      return;
-	    }
-	  else
-	    {
-	      // Clear the flag and do normal interrupt stuff.
+              return;
+            }
+          else
+            {
+              // Clear the flag and do normal interrupt stuff.
 
-	      tree_evaluator::debug_mode = bp_table::have_breakpoints ();
-	      octave_debug_on_interrupt_state = false;
-	    }
-	}
+              tree_evaluator::debug_mode
+                = bp_table::have_breakpoints () || Vdebugging;
+              octave_debug_on_interrupt_state = false;
+            }
+        }
 
       if (octave_interrupt_immediately)
-	{
-	  if (octave_interrupt_state == 0)
-	    octave_interrupt_state = 1;
+        {
+          if (octave_interrupt_state == 0)
+            octave_interrupt_state = 1;
 
-	  octave_jump_to_enclosing_context ();
-	}
+          octave_jump_to_enclosing_context ();
+        }
       else
-	{
-	  // If we are already cleaning up from a previous interrupt,
-	  // take note of the fact that another interrupt signal has
-	  // arrived.
+        {
+          // If we are already cleaning up from a previous interrupt,
+          // take note of the fact that another interrupt signal has
+          // arrived.
 
-	  if (octave_interrupt_state < 0)
-	    octave_interrupt_state = 0;
+          if (octave_interrupt_state < 0)
+            octave_interrupt_state = 0;
 
-	  octave_signal_caught = 1;
-	  octave_interrupt_state++;
+          octave_signal_caught = 1;
+          octave_interrupt_state++;
 
-	  if (interactive && octave_interrupt_state == 2)
-	    std::cerr << "Press Control-C again to abort." << std::endl;
+          if (interactive && octave_interrupt_state == 2)
+            std::cerr << "Press Control-C again to abort." << std::endl;
 
-	  if (octave_interrupt_state >= 3)
-	    my_friendly_exit (sig_name, sig_number, true);
-	}
+          if (octave_interrupt_state >= 3)
+            my_friendly_exit (sig_name, sig_number, true);
+        }
     }
 
 }
 
-static RETSIGTYPE
+static void
 sigint_handler (int sig)
 {
-  MAYBE_ACK_SIGNAL (sig);
-
-  MAYBE_REINSTALL_SIGHANDLER (sig, sigint_handler);
-
 #ifdef USE_W32_SIGINT
   if (w32_in_main_thread ())
     user_abort (strsignal (sig), sig);
@@ -428,18 +380,12 @@ sigint_handler (int sig)
 #else
   user_abort (strsignal (sig), sig);
 #endif
-
-  SIGHANDLER_RETURN (0);
 }
 
 #ifdef SIGPIPE
-static RETSIGTYPE
+static void
 sigpipe_handler (int /* sig */)
 {
-  MAYBE_ACK_SIGNAL (SIGPIPE);
-
-  MAYBE_REINSTALL_SIGHANDLER (SIGPIPE, sigpipe_handler);
-
   octave_signal_caught = 1;
 
   octave_signals_caught[SIGPIPE] = true;
@@ -448,8 +394,6 @@ sigpipe_handler (int /* sig */)
 
   if (pipe_handler_error_count++ > 100 && octave_interrupt_state >= 0)
     octave_interrupt_state++;
-
-  SIGHANDLER_RETURN (0);
 }
 #endif /* defined(SIGPIPE) */
 
@@ -461,31 +405,31 @@ w32_sigint_handler (DWORD sig)
 
   switch(sig)
     {
-      case CTRL_BREAK_EVENT:   
-	sig_name = "Ctrl-Break"; 
-	break;
+      case CTRL_BREAK_EVENT:
+        sig_name = "Ctrl-Break";
+        break;
       case CTRL_C_EVENT:
-	sig_name = "Ctrl-C";
-	break;
+        sig_name = "Ctrl-C";
+        break;
       case CTRL_CLOSE_EVENT:
-	sig_name = "close console";
-	break;
+        sig_name = "close console";
+        break;
       case CTRL_LOGOFF_EVENT:
-	sig_name = "logoff";
-	break;
+        sig_name = "logoff";
+        break;
       case CTRL_SHUTDOWN_EVENT:
-	sig_name = "shutdown";
-	break;
+        sig_name = "shutdown";
+        break;
       default:
-	sig_name = "unknown console event";
-	break;
+        sig_name = "unknown console event";
+        break;
     }
 
   switch(sig)
     {
       case CTRL_BREAK_EVENT:
       case CTRL_C_EVENT:
-	w32_raise (SIGINT);
+        w32_raise (SIGINT);
         break;
 
       case CTRL_CLOSE_EVENT:
@@ -495,11 +439,11 @@ w32_sigint_handler (DWORD sig)
         // We should do the following:
         //    clean_up_and_exit (0);
         // We can't because we aren't running in the normal Octave thread.
-	user_abort(sig_name, sig);
+        user_abort(sig_name, sig);
         break;
     }
 
-  // Return TRUE if the event was handled, or FALSE if another handler 
+  // Return TRUE if the event was handled, or FALSE if another handler
   // should be called.
   // FIXME check that windows terminates the thread.
   return TRUE;
@@ -523,7 +467,7 @@ octave_catch_interrupts (void)
 #ifdef USE_W32_SIGINT
 
   // Intercept windows console control events.
-  // Note that the windows console signal handlers chain, so if 
+  // Note that the windows console signal handlers chain, so if
   // install_signal_handlers is called more than once in the same program,
   // then first call the following to avoid duplicates:
   //
@@ -557,18 +501,18 @@ octave_ignore_interrupts (void)
 
 octave_interrupt_handler
 octave_set_interrupt_handler (const volatile octave_interrupt_handler& h,
-			      bool restart_syscalls)
+                              bool restart_syscalls)
 {
   octave_interrupt_handler retval;
 
 #ifdef SIGINT
   retval.int_handler = octave_set_signal_handler (SIGINT, h.int_handler,
-						  restart_syscalls);
+                                                  restart_syscalls);
 #endif
 
 #ifdef SIGBREAK
   retval.brk_handler = octave_set_signal_handler (SIGBREAK, h.brk_handler,
-						  restart_syscalls);
+                                                  restart_syscalls);
 #endif
 
   return retval;
@@ -704,10 +648,10 @@ install_signal_handlers (void)
 
 }
 
-static Octave_map
+static octave_scalar_map
 make_sig_struct (void)
 {
-  Octave_map m;
+  octave_scalar_map m;
 
 #ifdef SIGABRT
   m.assign ("ABRT", SIGABRT);
@@ -935,14 +879,14 @@ OCL_REP::reap (void)
       octave_child& oc = *p;
 
       if (oc.have_status)
-	{
-	  oc.have_status = 0;
+        {
+          oc.have_status = 0;
 
-	  octave_child::child_event_handler f = oc.handler;
+          octave_child::child_event_handler f = oc.handler;
 
-	  if (f && f (oc.pid, oc.status))
-	    oc.pid = -1;
-	}
+          if (f && f (oc.pid, oc.status))
+            oc.pid = -1;
+        }
     }
 
   remove_if (pid_equal (-1));
@@ -962,20 +906,20 @@ OCL_REP::wait (void)
       pid_t pid = oc.pid;
 
       if (pid > 0)
-	{
-	  int status;
+        {
+          int status;
 
-	  if (octave_syscalls::waitpid (pid, &status, WNOHANG) > 0)
-	    {
-	      oc.have_status = 1;
+          if (octave_syscalls::waitpid (pid, &status, WNOHANG) > 0)
+            {
+              oc.have_status = 1;
 
-	      oc.status = status;
+              oc.status = status;
 
-	      retval = true;
+              retval = true;
 
-	      break;
-	    }
-	}
+              break;
+            }
+        }
     }
 
   return retval;
@@ -991,7 +935,7 @@ Return a structure containing Unix signal names and their defined values.\n\
 
   if (args.length () == 0)
     {
-      static Octave_map m = make_sig_struct ();
+      static octave_scalar_map m = make_sig_struct ();
 
       retval = m;
     }
@@ -1003,7 +947,7 @@ Return a structure containing Unix signal names and their defined values.\n\
 
 DEFUN (debug_on_interrupt, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {@var{val} =} debug_on_interrupt ()\n\
+@deftypefn  {Built-in Function} {@var{val} =} debug_on_interrupt ()\n\
 @deftypefnx {Built-in Function} {@var{old_val} =} debug_on_interrupt (@var{new_val})\n\
 Query or set the internal variable that controls whether Octave will try\n\
 to enter debugging mode when it receives an interrupt signal (typically\n\
@@ -1016,7 +960,7 @@ before reaching the debugging mode, a normal interrupt will occur.\n\
 
 DEFUN (sighup_dumps_octave_core, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {@var{val} =} sighup_dumps_octave_core ()\n\
+@deftypefn  {Built-in Function} {@var{val} =} sighup_dumps_octave_core ()\n\
 @deftypefnx {Built-in Function} {@var{old_val} =} sighup_dumps_octave_core (@var{new_val})\n\
 Query or set the internal variable that controls whether Octave tries\n\
 to save all current variables to the file \"octave-core\" if it receives\n\
@@ -1028,7 +972,7 @@ a hangup signal.\n\
 
 DEFUN (sigterm_dumps_octave_core, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {@var{val} =} sigterm_dumps_octave_core ()\n\
+@deftypefn  {Built-in Function} {@var{val} =} sigterm_dumps_octave_core ()\n\
 @deftypefnx {Built-in Function} {@var{old_val} =} sigterm_dumps_octave_core (@var{new_val})\n\
 Query or set the internal variable that controls whether Octave tries\n\
 to save all current variables to the file \"octave-core\" if it receives\n\
@@ -1037,9 +981,3 @@ a terminate signal.\n\
 {
   return SET_INTERNAL_VARIABLE (sigterm_dumps_octave_core);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

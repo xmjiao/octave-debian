@@ -1,5 +1,4 @@
-## Copyright (C) 1993, 1994, 1995, 1996, 1997, 1999, 2000, 2002, 2004,
-##               2005, 2006, 2007, 2008, 2009 John W. Eaton
+## Copyright (C) 1993-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -18,18 +17,18 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} surface (@var{x}, @var{y}, @var{z}, @var{c})
+## @deftypefn  {Function File} {} surface (@var{x}, @var{y}, @var{z}, @var{c})
 ## @deftypefnx {Function File} {} surface (@var{x}, @var{y}, @var{z})
 ## @deftypefnx {Function File} {} surface (@var{z}, @var{c})
 ## @deftypefnx {Function File} {} surface (@var{z})
 ## @deftypefnx {Function File} {} surface (@dots{}, @var{prop}, @var{val})
 ## @deftypefnx {Function File} {} surface (@var{h}, @dots{})
 ## @deftypefnx {Function File} {@var{h} =} surface (@dots{})
-## Plot a surface graphic object given matrices @var{x}, and @var{y} from 
-## @code{meshgrid} and a matrix @var{z} corresponding to the @var{x} and 
+## Plot a surface graphic object given matrices @var{x}, and @var{y} from
+## @code{meshgrid} and a matrix @var{z} corresponding to the @var{x} and
 ## @var{y} coordinates of the surface.  If @var{x} and @var{y} are vectors,
-## then a typical vertex is (@var{x}(j), @var{y}(i), @var{z}(i,j)).  Thus, 
-## columns of @var{z} correspond to different @var{x} values and rows of 
+## then a typical vertex is (@var{x}(j), @var{y}(i), @var{z}(i,j)).  Thus,
+## columns of @var{z} correspond to different @var{x} values and rows of
 ## @var{z} correspond to different @var{y} values.  If @var{x} and @var{y}
 ## are missing, they are constructed from size of the matrix @var{z}.
 ##
@@ -82,21 +81,21 @@ function [h, bad_usage] = __surface__ (ax, varargin)
     c = varargin{4};
 
     if (! size_equal (z, c))
-      error ("surface: z and c must have same size");
+      error ("surface: Z and C must have the same size");
     endif
     if (isvector (x) && isvector (y) && ismatrix (z))
       if (rows (z) == length (y) && columns (z) == length (x))
         x = x(:)';
         y = y(:);
       else
-        error ("surface: rows (z) must be the same as length (y) and columns (z) must be the same as length (x)");
+        error ("surface: rows (Z) must be the same as length (Y) and columns (Z) must be the same as length (X)");
       endif
     elseif (ismatrix (x) && ismatrix (y) && ismatrix (z))
       if (! size_equal (x, y, z))
-        error ("surface: x, y, and z must have same dimensions");
+        error ("surface: X, Y, and Z must have the same dimensions");
       endif
     else
-      error ("surface: x and y must be vectors and z must be a matrix");
+      error ("surface: X and Y must be vectors and Z must be a matrix");
     endif
   elseif (firststring == 4)
     x = varargin{1};
@@ -108,34 +107,34 @@ function [h, bad_usage] = __surface__ (ax, varargin)
         x = x(:)';
         y = y(:);
       else
-        error ("surface: rows (z) must be the same as length (y) and columns (z) must be the same as length (x)");
+        error ("surface: rows (Z) must be the same as length (Y) and columns (Z) must be the same as length (X)");
       endif
     elseif (ismatrix (x) && ismatrix (y) && ismatrix (z))
       if (! size_equal (x, y, z))
-        error ("surface: x, y, and z must have same dimensions");
+        error ("surface: X, Y, and Z must have the same dimensions");
       endif
     else
-      error ("surface: x and y must be vectors and z must be a matrix");
+      error ("surface: X and Y must be vectors and Z must be a matrix");
     endif
-  elseif (firststring == 3)    
+  elseif (firststring == 3)
     z = varargin{1};
     c = varargin{2};
-    if (ismatrix (z))
+    if (ismatrix (z) && !isvector (z) && !isscalar (z))
       [nr, nc] = size (z);
       x = 1:nc;
       y = (1:nr)';
     else
-      error ("surface: argument must be a matrix");
+      error ("surface: Z argument must be a matrix");
     endif
-  elseif (firststring == 2)    
+  elseif (firststring == 2)
     z = varargin{1};
     c = z;
-    if (ismatrix (z))
+    if (ismatrix (z) && !isvector (z) && !isscalar (z))
       [nr, nc] = size (z);
       x = 1:nc;
       y = (1:nr)';
     else
-      error ("surface: argument must be a matrix");
+      error ("surface: Z argument must be a matrix");
     endif
   else
     bad_usage = true;
@@ -148,7 +147,7 @@ function [h, bad_usage] = __surface__ (ax, varargin)
       other_args = varargin(firststring:end);
     endif
     h = __go_surface__ (ax, "xdata", x, "ydata", y, "zdata", z, "cdata", c,
-			other_args{:});
+                        other_args{:});
 
     if (! ishold ())
       set (ax, "view", [0, 90], "box", "off");

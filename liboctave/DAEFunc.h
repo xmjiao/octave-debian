@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 1999, 2001, 2002, 2005,
-              2007 John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -24,8 +23,6 @@ along with Octave; see the file COPYING.  If not, see
 #if !defined (octave_DAEFunc_h)
 #define octave_DAEFunc_h 1
 
-#include "oct-types.h"
-
 class Matrix;
 class ColumnVector;
 
@@ -35,16 +32,16 @@ DAEFunc
 public:
 
   typedef ColumnVector (*DAERHSFunc) (const ColumnVector& x,
-				      const ColumnVector& xdot,
-				      double t, octave_idx_type& ires);
+                                      const ColumnVector& xdot,
+                                      double t, octave_idx_type& ires);
 
   // This is really the form used by DASSL:
   //
   //   PD = DG/DY + CJ * DG/DYPRIME
 
   typedef Matrix (*DAEJacFunc) (const ColumnVector& x,
-				const ColumnVector& xdot,
-				double t, double cj);
+                                const ColumnVector& xdot,
+                                double t, double cj);
 
   DAEFunc (void)
     : fun (0), jac (0), reset (true) { }
@@ -61,15 +58,15 @@ public:
   DAEFunc& operator = (const DAEFunc& a)
     {
       if (this != &a)
-	{
-	  fun = a.fun;
-	  jac = a.jac;
-	  reset = a.reset;
-	}
+        {
+          fun = a.fun;
+          jac = a.jac;
+          reset = a.reset;
+        }
       return *this;
     }
 
-  ~DAEFunc (void) { }
+  virtual ~DAEFunc (void) { }
 
   DAERHSFunc function (void) const { return fun; }
 
@@ -103,9 +100,3 @@ protected:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

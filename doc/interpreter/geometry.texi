@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.
 
-@c Copyright (C) 2007, 2008, 2009 John W. Eaton and David Bateman
+@c Copyright (C) 2007-2011 John W. Eaton and David Bateman
 @c
 @c This file is part of Octave.
 @c
@@ -23,7 +23,7 @@
 
 Much of the geometry code in Octave is based on the Qhull 
 library@footnote{Barber, C.B., Dobkin, D.P., and Huhdanpaa, H.T., 
-"The Quickhull algorithm for convex hulls," ACM Trans. on Mathematical 
+@cite{The Quickhull Algorithm for Convex Hulls}, ACM Trans. on Mathematical 
 Software, 22(4):469--483, Dec 1996, @url{http://www.qhull.org}}.  
 Some of the documentation for Qhull, particularly for the options that 
 can be passed to @code{delaunay}, @code{voronoi} and @code{convhull}, 
@@ -50,9 +50,9 @@ circum-circle.  However, in some cases, and in particular for the
 case of a regular grid, 4 or more points can be on a single
 circum-circle.  In this case the Delaunay triangulation is not unique. 
 
-@c ./geometry/delaunay.m
+@c delaunay scripts/geometry/delaunay.m
 @anchor{doc-delaunay}
-@deftypefn {Function File} {@var{tri} =} delaunay (@var{x}, @var{y})
+@deftypefn  {Function File} {@var{tri} =} delaunay (@var{x}, @var{y})
 @deftypefnx {Function File} {@var{tri} =} delaunay (@var{x}, @var{y}, @var{opt})
 The return matrix of size [n, 3] contains a set triangles which are
 described by the indices to the data point x and y vector.
@@ -60,7 +60,7 @@ The triangulation satisfies the Delaunay circum-circle criterion.
 No other data point is in the circum-circle of the defining triangle.
 
 A third optional argument, which must be a string, contains extra options
-passed to the underlying qhull command.  See the documentation for the 
+passed to the underlying qhull command.  See the documentation for the
 Qhull library for details.
 
 @example
@@ -85,47 +85,48 @@ Delaunay circum-circle criteria.  Similarly, @code{delaunayn} returns the
 N-dimensional simplex satisfying the Delaunay circum-circle criteria.  
 The N-dimensional extension of a triangulation is called a tessellation.
 
-@c ./geometry/delaunay3.m
+@c delaunay3 scripts/geometry/delaunay3.m
 @anchor{doc-delaunay3}
-@deftypefn {Function File} {@var{T} =} delaunay3 (@var{x}, @var{y}, @var{z})
+@deftypefn  {Function File} {@var{T} =} delaunay3 (@var{x}, @var{y}, @var{z})
 @deftypefnx {Function File} {@var{T} =} delaunay3 (@var{x}, @var{y}, @var{z}, @var{opt})
-A matrix of size [n, 4] is returned.  Each row contains a 
+A matrix of size [n, 4] is returned.  Each row contains a
 set of tetrahedron which are
 described by the indices to the data point vectors (x,y,z).
 
 A fourth optional argument, which must be a string or cell array of strings,
-contains extra options passed to the underlying qhull command.  See the 
+contains extra options passed to the underlying qhull command.  See the
 documentation for the Qhull library for details.
 @seealso{@ref{doc-delaunay,,delaunay}, @ref{doc-delaunayn,,delaunayn}}
 @end deftypefn
 
 
-@c ./geometry/delaunayn.m
+@c delaunayn scripts/geometry/delaunayn.m
 @anchor{doc-delaunayn}
-@deftypefn {Function File} {@var{T} =} delaunayn (@var{P})
-@deftypefnx {Function File} {@var{T} =} delaunayn (@var{P}, @var{opt})
+@deftypefn  {Function File} {@var{t} =} delaunayn (@var{p})
+@deftypefnx {Function File} {@var{t} =} delaunayn (@var{p}, @var{opt})
 Form the Delaunay triangulation for a set of points.
 The Delaunay triangulation is a tessellation of the convex hull of the
 points such that no n-sphere defined by the n-triangles contains
 any other points from the set.
-The input matrix @var{P} of size @code{[n, dim]} contains @var{n}
-points in a space of dimension dim.  The return matrix @var{T} has the
+The input matrix @var{p} of size @code{[n, dim]} contains @math{n}
+points in a space of dimension dim.  The return matrix @var{t} has the
 size @code{[m, dim+1]}.  It contains for each row a set of indices to
 the points, which describes a simplex of dimension dim.  For example,
-a 2d simplex is a triangle and 3d simplex is a tetrahedron.
+a 2-D simplex is a triangle and 3-D simplex is a tetrahedron.
 
 Extra options for the underlying Qhull command can be specified by the
 second argument.  This argument is a cell array of strings.  The default
-options depend on the dimension of the input: 
+options depend on the dimension of the input:
 
-@itemize 
+@itemize
 @item 2D and 3D: @var{opt} = @code{@{"Qt", "Qbb", "Qc"@}}
-@item 4D and higher: @var{opt} = @code{@{"Qt", "Qbb", "Qc", "Qz"@}} 
+
+@item 4D and higher: @var{opt} = @code{@{"Qt", "Qbb", "Qc", "Qz"@}}
 @end itemize
 
 If @var{opt} is [], then the default arguments are used.  If @var{opt}
-is @code{@{"@w{}"@}}, then none of the default arguments are used by Qhull. 
-See the Qhull documentation for the available options. 
+is @code{@{"@w{}"@}}, then none of the default arguments are used by Qhull.
+See the Qhull documentation for the available options.
 
 All options can also be specified as single string, for example
 @code{"Qt Qbb Qc Qz"}.
@@ -148,7 +149,6 @@ plot(X, Y, "b", x, y, "r*");
 @end group
 @end example
 
-@ifset HAVE_QHULL
 @ifnotinfo
 @noindent
 The result of which can be seen in @ref{fig:delaunay}.
@@ -158,50 +158,62 @@ The result of which can be seen in @ref{fig:delaunay}.
 @caption{Delaunay triangulation of a random set of points}
 @end float
 @end ifnotinfo
-@end ifset
 
 @menu
 * Plotting the Triangulation::
-* Identifying points in Triangulation::
+* Identifying Points in Triangulation::
 @end menu
 
 @node Plotting the Triangulation
 @subsection Plotting the Triangulation
 
-Octave has the functions @code{triplot} and @code{trimesh} to plot the
-Delaunay triangulation of a 2-dimensional set of points.
+Octave has the functions @code{triplot}, @code{trimesh}, and @code{trisurf}
+to plot the Delaunay triangulation of a 2-dimensional set of points.
 
-@c ./geometry/triplot.m
+@c triplot scripts/geometry/triplot.m
 @anchor{doc-triplot}
-@deftypefn {Function File} {} triplot (@var{tri}, @var{x}, @var{y})
+@deftypefn  {Function File} {} triplot (@var{tri}, @var{x}, @var{y})
 @deftypefnx {Function File} {} triplot (@var{tri}, @var{x}, @var{y}, @var{linespec})
 @deftypefnx {Function File} {@var{h} =} triplot (@dots{})
-Plot a triangular mesh in 2D.  The variable @var{tri} is the triangular
+Plot a triangular mesh in 2D@.  The variable @var{tri} is the triangular
 meshing of the points @code{(@var{x}, @var{y})} which is returned from
 @code{delaunay}.  If given, the @var{linespec} determines the properties
 to use for the lines.  The output argument @var{h} is the graphic handle
-to the plot.
-@seealso{@ref{doc-plot,,plot}, @ref{doc-trimesh,,trimesh}, @ref{doc-delaunay,,delaunay}}
+of the plot.
+@seealso{@ref{doc-plot,,plot}, @ref{doc-trimesh,,trimesh}, @ref{doc-trisurf,,trisurf}, @ref{doc-delaunay,,delaunay}}
 @end deftypefn
 
 
-@c ./geometry/trimesh.m
+@c trimesh scripts/geometry/trimesh.m
 @anchor{doc-trimesh}
-@deftypefn {Function File} {} trimesh (@var{tri}, @var{x}, @var{y}, @var{z})
+@deftypefn  {Function File} {} trimesh (@var{tri}, @var{x}, @var{y}, @var{z})
 @deftypefnx {Function File} {@var{h} =} trimesh (@dots{})
-Plot a triangular mesh in 3D.  The variable @var{tri} is the triangular
-meshing of the points @code{(@var{x}, @var{y})} which is returned 
-from @code{delaunay}.  The variable @var{z} is value at the point 
-@code{(@var{x}, @var{y})}.  The output argument @var{h} is the graphic 
-handle to the plot.
-@seealso{@ref{doc-triplot,,triplot}, @ref{doc-delaunay3,,delaunay3}}
+Plot a triangular mesh in 3D@.  The variable @var{tri} is the triangular
+meshing of the points @code{(@var{x}, @var{y})} which is returned
+from @code{delaunay}.  The variable @var{z} is value at the point
+@code{(@var{x}, @var{y})}.  The output argument @var{h} is the graphic
+handle of the plot.
+@seealso{@ref{doc-triplot,,triplot}, @ref{doc-trisurf,,trisurf}, @ref{doc-delaunay3,,delaunay3}}
 @end deftypefn
 
 
-The difference between @code{triplot} and @code{trimesh} is that the
-former only plots the 2-dimensional triangulation itself, whereas the
-second plots the value of some function @code{f (@var{x}, @var{y})}.
-An example of the use of the @code{triplot} function is
+@c trisurf scripts/geometry/trisurf.m
+@anchor{doc-trisurf}
+@deftypefn  {Function File} {} trisurf (@var{tri}, @var{x}, @var{y}, @var{z})
+@deftypefnx {Function File} {@var{h} =} trisurf (@dots{})
+Plot a triangular surface in 3D@.  The variable @var{tri} is the triangular
+meshing of the points @code{(@var{x}, @var{y})} which is returned
+from @code{delaunay}.  The variable @var{z} is value at the point
+@code{(@var{x}, @var{y})}.  The output argument @var{h} is the graphic
+handle of the plot.
+@seealso{@ref{doc-triplot,,triplot}, @ref{doc-trimesh,,trimesh}, @ref{doc-delaunay3,,delaunay3}}
+@end deftypefn
+
+
+The difference between @code{triplot}, and @code{trimesh} or @code{triplot},
+is that the former only plots the 2-dimensional triangulation itself, whereas
+the second two plot the value of a function @code{f (@var{x}, @var{y})}.  An
+example of the use of the @code{triplot} function is
 
 @example
 @group
@@ -213,7 +225,8 @@ triplot (tri, x, y);
 @end group
 @end example
 
-that plot the Delaunay triangulation of a set of random points in
+@noindent
+which plots the Delaunay triangulation of a set of random points in
 2-dimensions.
 @ifnotinfo
 The output of the above can be seen in @ref{fig:triplot}.
@@ -224,8 +237,8 @@ The output of the above can be seen in @ref{fig:triplot}.
 @end float
 @end ifnotinfo
 
-@node Identifying points in Triangulation
-@subsection Identifying points in Triangulation
+@node Identifying Points in Triangulation
+@subsection Identifying Points in Triangulation
 
 It is often necessary to identify whether a particular point in the
 N-dimensional space is within the Delaunay tessellation of a set of
@@ -296,10 +309,10 @@ of each of the simplices of the N-simplex and test the values of
 @code{tsearchn}.  @code{tsearch} is optimized for 2-dimensions and the
 Barycentric coordinates are not explicitly formed.
 
-@c ./DLD-FUNCTIONS/tsearch.cc
+@c tsearch src/DLD-FUNCTIONS/tsearch.cc
 @anchor{doc-tsearch}
 @deftypefn {Loadable Function} {@var{idx} =} tsearch (@var{x}, @var{y}, @var{t}, @var{xi}, @var{yi})
-Searches for the enclosing Delaunay convex hull.  For @code{@var{t} =
+Search for the enclosing Delaunay convex hull.  For @code{@var{t} =
 delaunay (@var{x}, @var{y})}, finds the index in @var{t} containing the
 points @code{(@var{xi}, @var{yi})}.  For points outside the convex hull,
 @var{idx} is NaN.
@@ -307,10 +320,10 @@ points @code{(@var{xi}, @var{yi})}.  For points outside the convex hull,
 @end deftypefn
 
 
-@c ./geometry/tsearchn.m
+@c tsearchn scripts/geometry/tsearchn.m
 @anchor{doc-tsearchn}
 @deftypefn {Function File} {[@var{idx}, @var{p}] =} tsearchn (@var{x}, @var{t}, @var{xi})
-Searches for the enclosing Delaunay convex hull.  For @code{@var{t} =
+Search for the enclosing Delaunay convex hull.  For @code{@var{t} =
 delaunayn (@var{x})}, finds the index in @var{t} containing the
 points @var{xi}.  For points outside the convex hull, @var{idx} is NaN.
 If requested @code{tsearchn} also returns the Barycentric coordinates @var{p}
@@ -359,27 +372,27 @@ necessarily have to be in the tessellation, and even if it the returned
 point of the tessellation does not have to be one of the vertexes of the
 N-simplex within which the desired point is found.
 
-@c ./geometry/dsearch.m
+@c dsearch scripts/geometry/dsearch.m
 @anchor{doc-dsearch}
-@deftypefn {Function File} {@var{idx} =} dsearch (@var{x}, @var{y}, @var{tri}, @var{xi}, @var{yi})
+@deftypefn  {Function File} {@var{idx} =} dsearch (@var{x}, @var{y}, @var{tri}, @var{xi}, @var{yi})
 @deftypefnx {Function File} {@var{idx} =} dsearch (@var{x}, @var{y}, @var{tri}, @var{xi}, @var{yi}, @var{s})
-Returns the index @var{idx} or the closest point in @code{@var{x}, @var{y}}
+Return the index @var{idx} or the closest point in @code{@var{x}, @var{y}}
 to the elements @code{[@var{xi}(:), @var{yi}(:)]}.  The variable @var{s} is
-accepted but ignored for compatibility.
+accepted for compatibility but is ignored.
 @seealso{@ref{doc-dsearchn,,dsearchn}, @ref{doc-tsearch,,tsearch}}
 @end deftypefn
 
 
-@c ./geometry/dsearchn.m
+@c dsearchn scripts/geometry/dsearchn.m
 @anchor{doc-dsearchn}
-@deftypefn {Function File} {@var{idx} =} dsearchn (@var{x}, @var{tri}, @var{xi})
+@deftypefn  {Function File} {@var{idx} =} dsearchn (@var{x}, @var{tri}, @var{xi})
 @deftypefnx {Function File} {@var{idx} =} dsearchn (@var{x}, @var{tri}, @var{xi}, @var{outval})
 @deftypefnx {Function File} {@var{idx} =} dsearchn (@var{x}, @var{xi})
 @deftypefnx {Function File} {[@var{idx}, @var{d}] =} dsearchn (@dots{})
-Returns the index @var{idx} or the closest point in @var{x} to the elements
+Return the index @var{idx} or the closest point in @var{x} to the elements
 @var{xi}.  If @var{outval} is supplied, then the values of @var{xi} that are
-not contained within one of the simplicies @var{tri} are set to 
-@var{outval}.  Generally, @var{tri} is returned from @code{delaunayn 
+not contained within one of the simplices @var{tri} are set to
+@var{outval}.  Generally, @var{tri} is returned from @code{delaunayn
 (@var{x})}.
 @seealso{@ref{doc-dsearch,,dsearch}, @ref{doc-tsearch,,tsearch}}
 @end deftypefn
@@ -420,18 +433,19 @@ tessellation where @var{p} is a member of @var{s}, are closer to @var{p}
 than any other point in @var{s}.  The Voronoi diagram is related to the
 Delaunay triangulation of a set of points, in that the vertexes of the
 Voronoi tessellation are the centers of the circum-circles of the
-simplicies of the Delaunay tessellation. 
+simplices of the Delaunay tessellation. 
 
-@c ./geometry/voronoi.m
+@c voronoi scripts/geometry/voronoi.m
 @anchor{doc-voronoi}
-@deftypefn {Function File} {} voronoi (@var{x}, @var{y})
+@deftypefn  {Function File} {} voronoi (@var{x}, @var{y})
 @deftypefnx {Function File} {} voronoi (@var{x}, @var{y}, "plotstyle")
 @deftypefnx {Function File} {} voronoi (@var{x}, @var{y}, "plotstyle", @var{options})
 @deftypefnx {Function File} {[@var{vx}, @var{vy}] =} voronoi (@dots{})
-plots voronoi diagram of points @code{(@var{x}, @var{y})}.
-The voronoi facets with points at infinity are not drawn.
-[@var{vx}, @var{vy}] = voronoi(@dots{}) returns the vertices instead of plotting the
-diagram. plot (@var{vx}, @var{vy}) shows the voronoi diagram.
+Plot Voronoi diagram of points @code{(@var{x}, @var{y})}.
+The Voronoi facets with points at infinity are not drawn.
+[@var{vx}, @var{vy}] = voronoi(@dots{}) returns the vertices instead of
+plotting the
+diagram. plot (@var{vx}, @var{vy}) shows the Voronoi diagram.
 
 A fourth optional argument, which must be a string, contains extra options
 passed to the underlying qhull command.  See the documentation for the
@@ -452,14 +466,14 @@ Qhull library for details.
 @end deftypefn
 
 
-@c ./geometry/voronoin.m
+@c voronoin scripts/geometry/voronoin.m
 @anchor{doc-voronoin}
-@deftypefn {Function File} {[@var{C}, @var{F}] =} voronoin (@var{pts})
+@deftypefn  {Function File} {[@var{C}, @var{F}] =} voronoin (@var{pts})
 @deftypefnx {Function File} {[@var{C}, @var{F}] =} voronoin (@var{pts}, @var{options})
-computes n- dimensional voronoi facets.  The input matrix @var{pts}
+Compute N-dimensional Voronoi facets.  The input matrix @var{pts}
 of size [n, dim] contains n points of dimension dim.
-@var{C} contains the points of the voronoi facets.  The list @var{F}
-contains for each facet the indices of the voronoi points.
+@var{C} contains the points of the Voronoi facets.  The list @var{F}
+contains for each facet the indices of the Voronoi points.
 
 A second optional argument, which must be a string, contains extra options
 passed to the underlying qhull command.  See the documentation for the
@@ -483,7 +497,6 @@ plot (vx, vy, "r");
 @end group
 @end example
 
-@ifset HAVE_QHULL
 @ifnotinfo
 @noindent
 The result of which can be seen in @ref{fig:voronoi}.  Note that the
@@ -496,15 +509,14 @@ diagram clearer.
 @caption{Delaunay triangulation and Voronoi diagram of a random set of points}
 @end float
 @end ifnotinfo
-@end ifset
 
 Additional information about the size of the facets of a Voronoi
 diagram, and which points of a set of points is in a polygon can be had
 with the @code{polyarea} and @code{inpolygon} functions respectively.
 
-@c ./general/polyarea.m
+@c polyarea scripts/general/polyarea.m
 @anchor{doc-polyarea}
-@deftypefn {Function File} {} polyarea (@var{x}, @var{y})
+@deftypefn  {Function File} {} polyarea (@var{x}, @var{y})
 @deftypefnx {Function File} {} polyarea (@var{x}, @var{y}, @var{dim})
 
 Determines area of a polygon by triangle method.  The variables
@@ -538,7 +550,7 @@ Facets of the Voronoi diagram with a vertex at infinity have infinity
 area.  A simplified version of @code{polyarea} for rectangles is
 available with @code{rectint}
 
-@c ./geometry/rectint.m
+@c rectint scripts/geometry/rectint.m
 @anchor{doc-rectint}
 @deftypefn {Function File} {@var{area} =} rectint (@var{a}, @var{b})
 
@@ -555,11 +567,11 @@ column corresponds to the j-th row of b.
 @end deftypefn
 
 
-@c ./geometry/inpolygon.m
+@c inpolygon scripts/geometry/inpolygon.m
 @anchor{doc-inpolygon}
-@deftypefn {Function File} {[@var{in}, @var{on}] =} inpolygon (@var{x}, @var{y}, @var{xv}, @var{xy})
+@deftypefn {Function File} {[@var{in}, @var{on}] =} inpolygon (@var{x}, @var{y}, @var{xv}, @var{yv})
 
-For a polygon defined by @code{(@var{xv}, @var{yv})} points, determine
+For a polygon defined by vertex points @code{(@var{xv}, @var{yv})}, determine
 if the points @code{(@var{x}, @var{y})} are inside or outside the polygon.
 The variables @var{x}, @var{y}, must have the same dimension.  The optional
 output @var{on} gives the points that are on the polygon.
@@ -601,24 +613,24 @@ containing all of the points.  Octave has the functions @code{convhull}
 and @code{convhulln} to calculate the convex hull of 2-dimensional and
 N-dimensional sets of points.
 
-@c ./geometry/convhull.m
+@c convhull scripts/geometry/convhull.m
 @anchor{doc-convhull}
-@deftypefn {Function File} {@var{H} =} convhull (@var{x}, @var{y})
+@deftypefn  {Function File} {@var{H} =} convhull (@var{x}, @var{y})
 @deftypefnx {Function File} {@var{H} =} convhull (@var{x}, @var{y}, @var{opt})
-Returns the index vector to the points of the enclosing convex hull.  The
+Return the index vector to the points of the enclosing convex hull.  The
 data points are defined by the x and y vectors.
 
 A third optional argument, which must be a string, contains extra options
-passed to the underlying qhull command.  See the documentation for the 
+passed to the underlying qhull command.  See the documentation for the
 Qhull library for details.
 
 @seealso{@ref{doc-delaunay,,delaunay}, @ref{doc-convhulln,,convhulln}}
 @end deftypefn
 
 
-@c ./DLD-FUNCTIONS/convhulln.cc
+@c convhulln src/DLD-FUNCTIONS/convhulln.cc
 @anchor{doc-convhulln}
-@deftypefn {Loadable Function} {@var{h} =} convhulln (@var{p})
+@deftypefn  {Loadable Function} {@var{h} =} convhulln (@var{p})
 @deftypefnx {Loadable Function} {@var{h} =} convhulln (@var{p}, @var{opt})
 @deftypefnx {Loadable Function} {[@var{h}, @var{v}] =} convhulln (@dots{})
 Return an index vector to the points of the enclosing convex hull.
@@ -628,7 +640,7 @@ If a second optional argument is given, it must be a string or cell array
 of strings containing options for the underlying qhull command.  (See
 the Qhull documentation for the available options.)  The default options
 are "s Qci Tcv".
-If the second output @var{V} is requested the volume of the convex hull is
+If the second output @var{v} is requested the volume of the convex hull is
 calculated.
 
 @seealso{@ref{doc-convhull,,convhull}, @ref{doc-delaunayn,,delaunayn}}
@@ -647,7 +659,6 @@ axis ([-3.05, 3.05, -0.05, 1.05]);
 @end group
 @end example
 
-@ifset HAVE_QHULL
 @ifnotinfo
 @noindent
 The output of the above can be seen in @ref{fig:convhull}.
@@ -657,7 +668,6 @@ The output of the above can be seen in @ref{fig:convhull}.
 @caption{The convex hull of a simple set of points}
 @end float
 @end ifnotinfo
-@end ifset
 
 @node Interpolation on Scattered Data
 @section Interpolation on Scattered Data
@@ -666,21 +676,24 @@ An important use of the Delaunay tessellation is that it can be used to
 interpolate from scattered data to an arbitrary set of points.  To do
 this the N-simplex of the known set of points is calculated with
 @code{delaunay}, @code{delaunay3} or @code{delaunayn}.  Then the
-simplicies in to which the desired points are found are
-identified.  Finally the vertices of the simplicies are used to
+simplices in to which the desired points are found are
+identified.  Finally the vertices of the simplices are used to
 interpolate to the desired points.  The functions that perform this
 interpolation are @code{griddata}, @code{griddata3} and
 @code{griddatan}.
 
-@c ./geometry/griddata.m
+@c griddata scripts/geometry/griddata.m
 @anchor{doc-griddata}
-@deftypefn {Function File} {@var{zi} =} griddata (@var{x}, @var{y}, @var{z}, @var{xi}, @var{yi}, @var{method})
+@deftypefn  {Function File} {@var{zi} =} griddata (@var{x}, @var{y}, @var{z}, @var{xi}, @var{yi}, @var{method})
 @deftypefnx {Function File} {[@var{xi}, @var{yi}, @var{zi}] =} griddata (@var{x}, @var{y}, @var{z}, @var{xi}, @var{yi}, @var{method})
 
 Generate a regular mesh from irregular data using interpolation.
 The function is defined by @code{@var{z} = f (@var{x}, @var{y})}.
+Inputs @code{@var{x}, @var{y}, @var{z}} are vectors of the same length
+or @code{@var{x}, @var{y}} are vectors and @code{@var{z}} is matrix.
+
 The interpolation points are all @code{(@var{xi}, @var{yi})}.  If
-@var{xi}, @var{yi} are vectors then they are made into a 2D mesh.
+@var{xi}, @var{yi} are vectors then they are made into a 2-D mesh.
 
 The interpolation method can be @code{"nearest"}, @code{"cubic"} or
 @code{"linear"}.  If method is omitted it defaults to @code{"linear"}.
@@ -688,13 +701,13 @@ The interpolation method can be @code{"nearest"}, @code{"cubic"} or
 @end deftypefn
 
 
-@c ./geometry/griddata3.m
+@c griddata3 scripts/geometry/griddata3.m
 @anchor{doc-griddata3}
 @deftypefn {Function File} {@var{vi} =} griddata3 (@var{x}, @var{y}, @var{z}, @var{v} @var{xi}, @var{yi}, @var{zi}, @var{method}, @var{options})
 
 Generate a regular mesh from irregular data using interpolation.
 The function is defined by @code{@var{y} = f (@var{x},@var{y},@var{z})}.
-The interpolation points are all @var{xi}.  
+The interpolation points are all @var{xi}.
 
 The interpolation method can be @code{"nearest"} or @code{"linear"}.
 If method is omitted it defaults to @code{"linear"}.
@@ -702,13 +715,13 @@ If method is omitted it defaults to @code{"linear"}.
 @end deftypefn
 
 
-@c ./geometry/griddatan.m
+@c griddatan scripts/geometry/griddatan.m
 @anchor{doc-griddatan}
 @deftypefn {Function File} {@var{yi} =} griddatan (@var{x}, @var{y}, @var{xi}, @var{method}, @var{options})
 
 Generate a regular mesh from irregular data using interpolation.
 The function is defined by @code{@var{y} = f (@var{x})}.
-The interpolation points are all @var{xi}.  
+The interpolation points are all @var{xi}.
 
 The interpolation method can be @code{"nearest"} or @code{"linear"}.
 If method is omitted it defaults to @code{"linear"}.
@@ -729,7 +742,6 @@ griddata(x,y,z,xx,yy);
 @end group
 @end example
 
-@ifset HAVE_QHULL
 @noindent
 that interpolates from a random scattering of points, to a uniform
 grid. 
@@ -741,4 +753,3 @@ The output of the above can be seen in @ref{fig:griddata}.
 @caption{Interpolation from a scattered data to a regular grid}
 @end float
 @end ifnotinfo
-@end ifset

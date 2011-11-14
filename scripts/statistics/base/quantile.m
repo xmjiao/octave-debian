@@ -1,5 +1,5 @@
-## Copyright (C) 2008, 2009 Ben Abbott
-## 
+## Copyright (C) 2008-2011 Ben Abbott and Jaroslav Hajek
+##
 ## This file is part of Octave.
 ##
 ## Octave is free software; you can redistribute it and/or modify it
@@ -17,56 +17,66 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{q} =} quantile (@var{x}, @var{p})
+## @deftypefn  {Function File} {@var{q} =} quantile (@var{x}, @var{p})
 ## @deftypefnx {Function File} {@var{q} =} quantile (@var{x}, @var{p}, @var{dim})
 ## @deftypefnx {Function File} {@var{q} =} quantile (@var{x}, @var{p}, @var{dim}, @var{method})
 ## For a sample, @var{x}, calculate the quantiles, @var{q}, corresponding to
-## the cumulative probability values in @var{p}.  All non-numeric values (NaNs) of
-## @var{x} are ignored.
+## the cumulative probability values in @var{p}.  All non-numeric values (NaNs)
+## of @var{x} are ignored.
 ##
 ## If @var{x} is a matrix, compute the quantiles for each column and
 ## return them in a matrix, such that the i-th row of @var{q} contains
 ## the @var{p}(i)th quantiles of each column of @var{x}.
-## 
-## The optional argument @var{dim} determines the dimension along which 
-## the percentiles are calculated.  If @var{dim} is omitted, and @var{x} is
-## a vector or matrix, it defaults to 1 (column wise quantiles).  In the 
-## instance that @var{x} is a N-d array, @var{dim} defaults to the first 
-## dimension whose size greater than unity.
-## 
+##
+## The optional argument @var{dim} determines the dimension along which
+## the quantiles are calculated.  If @var{dim} is omitted, and @var{x} is
+## a vector or matrix, it defaults to 1 (column-wise quantiles).  If
+## @var{x} is an N-D array, @var{dim} defaults to the first non-singleton
+## dimension.
+##
 ## The methods available to calculate sample quantiles are the nine methods
 ## used by R (http://www.r-project.org/).  The default value is METHOD = 5.
-## 
+##
 ## Discontinuous sample quantile methods 1, 2, and 3
-## 
+##
 ## @enumerate 1
 ## @item Method 1: Inverse of empirical distribution function.
+##
 ## @item Method 2: Similar to method 1 but with averaging at discontinuities.
+##
 ## @item Method 3: SAS definition: nearest even order statistic.
 ## @end enumerate
-## 
+##
 ## Continuous sample quantile methods 4 through 9, where p(k) is the linear
 ## interpolation function respecting each methods' representative cdf.
-## 
+##
 ## @enumerate 4
-## @item Method 4: p(k) = k / n. That is, linear interpolation of the empirical cdf.
-## @item Method 5: p(k) = (k - 0.5) / n. That is a piecewise linear function where 
-## the knots are the values midway through the steps of the empirical cdf. 
+## @item Method 4: p(k) = k / n. That is, linear interpolation of the
+## empirical cdf.
+##
+## @item Method 5: p(k) = (k - 0.5) / n. That is a piecewise linear function
+## where the knots are the values midway through the steps of the empirical
+## cdf.
+##
 ## @item Method 6: p(k) = k / (n + 1).
+##
 ## @item Method 7: p(k) = (k - 1) / (n - 1).
-## @item Method 8: p(k) = (k - 1/3) / (n + 1/3).  The resulting quantile estimates 
-## are approximately median-unbiased regardless of the distribution of @var{x}.
-## @item Method 9: p(k) = (k - 3/8) / (n + 1/4).  The resulting quantile estimates 
-## are approximately unbiased for the expected order statistics if @var{x} is 
-## normally distributed.
+##
+## @item Method 8: p(k) = (k - 1/3) / (n + 1/3).  The resulting quantile
+## estimates are approximately median-unbiased regardless of the distribution
+## of @var{x}.
+##
+## @item Method 9: p(k) = (k - 3/8) / (n + 1/4).  The resulting quantile
+## estimates are approximately unbiased for the expected order statistics if
+## @var{x} is normally distributed.
 ## @end enumerate
-## 
+##
 ## Hyndman and Fan (1996) recommend method 8.  Maxima, S, and R
 ## (versions prior to 2.0.0) use 7 as their default.  Minitab and SPSS
 ## use method 6.  @sc{matlab} uses method 5.
-## 
+##
 ## References:
-## 
+##
 ## @itemize @bullet
 ## @item Becker, R. A., Chambers, J. M. and Wilks, A. R. (1988) The New
 ## S Language.  Wadsworth & Brooks/Cole.
@@ -77,12 +87,23 @@
 ## @item R: A Language and Environment for Statistical Computing;
 ## @url{http://cran.r-project.org/doc/manuals/fullrefman.pdf}.
 ## @end itemize
+##
+## Examples:
+##
+## @example
+## @group
+## x = randi (1000, [10, 1]);  # Create random empirical data in range 1-1000
+## q = quantile (x, [0, 1]);   # Return minimum, maximum of empirical distribution
+## q = quantile (x, [0.25 0.5 0.75]); # Return quartiles of empirical distribution
+## @end group
+## @end example
+## @seealso{prctile}
 ## @end deftypefn
 
 ## Author: Ben Abbott <bpabbott@mac.com>
 ## Description: Matlab style quantile function of a discrete/continuous distribution
 
-function q = quantile (x, p, dim, method)
+function q = quantile (x, p, dim = 1, method = 5)
 
   if (nargin < 1 || nargin > 4)
     print_usage ();
@@ -92,16 +113,9 @@ function q = quantile (x, p, dim, method)
     p = [0.00 0.25, 0.50, 0.75, 1.00];
   endif
 
-  if (nargin < 3)
-    dim = 1;
-  endif
-
-  if (nargin < 4)
-    method = 5;
-  endif
-
-  if (dim > ndims(x))
-    error ("quantile: invalid dimension");
+  if (!(isscalar (dim) && dim == fix (dim)) ||
+      !(1 <= dim && dim <= ndims (x)))
+    error ("quantile: DIM must be an integer and a valid dimension");
   endif
 
   ## Set the permutation vector.
@@ -264,4 +278,125 @@ endfunction
 %! yobs = quantile (x, p, dim);
 %! yexp = median (x, dim);
 %! assert (yobs, yexp);
+
+%% Test input validation
+%!error quantile ()
+%!error quantile (1, 2, 3, 4, 5)
+%!error quantile (1, 1, 1.5)
+%!error quantile (1, 1, 0)
+%!error quantile (1, 1, 3)
+
+## For the cumulative probability values in @var{p}, compute the
+## quantiles, @var{q} (the inverse of the cdf), for the sample, @var{x}.
+##
+## The optional input, @var{method}, refers to nine methods available in R
+## (http://www.r-project.org/). The default is @var{method} = 7. For more
+## detail, see `help quantile'.
+## @seealso{prctile, quantile, statistics}
+
+## Author: Ben Abbott <bpabbott@mac.com>
+## Vectorized version: Jaroslav Hajek <highegg@gmail.com>
+## Description: Quantile function of empirical samples
+
+function inv = __quantile__ (x, p, method = 5)
+
+  if (nargin < 2 || nargin > 3)
+    print_usage ();
+  endif
+
+  if (!isnumeric (x))
+    error ("quantile: X must be a numeric vector or matrix");
+  endif
+
+  ## Save length and set shape of quantiles.
+  n = numel (p);
+  p = p(:);
+
+  ## Save length and set shape of samples.
+  ## FIXME: does sort guarantee that NaN's come at the end?
+  x = sort (x);
+  m = sum (! isnan (x));
+  mx = size (x, 1);
+  nx = size (x, 2);
+
+  ## Initialize output values.
+  inv = Inf*(-(p < 0) + (p > 1));
+  inv = repmat (inv, 1, nx);
+
+  ## Do the work.
+  if (any(k = find((p >= 0) & (p <= 1))))
+    n = length (k);
+    p = p (k);
+    ## Special case.
+    if (mx == 1)
+      inv(k,:) = repmat (x, n, 1);
+      return
+    endif
+
+    ## The column-distribution indices.
+    pcd = kron (ones (n, 1), mx*(0:nx-1));
+    mm = kron (ones (n, 1), m);
+    switch (method)
+      case {1, 2, 3}
+        switch (method)
+          case 1
+            p = max (ceil (kron (p, m)), 1);
+            inv(k,:) = x(p + pcd);
+
+          case 2
+            p = kron (p, m);
+            p_lr = max (ceil (p), 1);
+            p_rl = min (floor (p + 1), mm);
+            inv(k,:) = (x(p_lr + pcd) + x(p_rl + pcd))/2;
+
+          case 3
+           ## Used by SAS, method PCTLDEF=2.
+           ## http://support.sas.com/onlinedoc/913/getDoc/en/statug.hlp/stdize_sect14.htm
+            t = max (kron (p, m), 1);
+            t = roundb (t);
+            inv(k,:) = x(t + pcd);
+        endswitch
+
+      otherwise
+        switch (method)
+          case 4
+            p = kron (p, m);
+
+          case 5
+            ## Used by Matlab.
+            p = kron (p, m) + 0.5;
+
+          case 6
+            ## Used by Minitab and SPSS.
+            p = kron (p, m+1);
+
+          case 7
+            ## Used by S and R.
+            p = kron (p, m-1) + 1;
+
+          case 8
+            ## Median unbiased .
+            p = kron (p, m+1/3) + 1/3;
+
+          case 9
+            ## Approximately unbiased respecting order statistics.
+            p = kron (p, m+0.25) + 0.375;
+
+          otherwise
+            error ("quantile: Unknown METHOD, '%d'", method);
+        endswitch
+
+        ## Duplicate single values.
+        imm1 = mm == 1;
+        x(2,imm1) = x(1,imm1);
+
+        ## Interval indices.
+        pi = max (min (floor (p), mm-1), 1);
+        pr = max (min (p - pi, 1), 0);
+        pi += pcd;
+        inv(k,:) = (1-pr) .* x(pi) + pr .* x(pi+1);
+    endswitch
+  endif
+
+endfunction
 

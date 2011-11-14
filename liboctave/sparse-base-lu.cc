@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 2004, 2005, 2007, 2008 David Bateman
-Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004 Andy Adler
+Copyright (C) 2004-2011 David Bateman
+Copyright (C) 1998-2004 Andy Adler
 
 This file is part of Octave.
 
@@ -42,20 +42,20 @@ sparse_base_lu <lu_type, lu_elt_type, p_type, p_elt_type> :: Y (void) const
   for (octave_idx_type j = 0; j < nc; j++)
     {
       for (octave_idx_type i = Ufact.cidx (j); i < Ufact.cidx(j + 1); i++)
-	{
-	  Yout.xridx (ii) = Ufact.ridx(i);
-	  Yout.xdata (ii++) = Ufact.data(i);
-	}
+        {
+          Yout.xridx (ii) = Ufact.ridx(i);
+          Yout.xdata (ii++) = Ufact.data(i);
+        }
       if (j < rcmin)
-	{
-	  // Note the +1 skips the 1.0 on the diagonal 
-	  for (octave_idx_type i = Lfact.cidx (j) + 1; 
-	       i < Lfact.cidx(j +1); i++)
-	    {
-	      Yout.xridx (ii) = Lfact.ridx(i);
-	      Yout.xdata (ii++) = Lfact.data(i);
-	    }
-	}
+        {
+          // Note the +1 skips the 1.0 on the diagonal
+          for (octave_idx_type i = Lfact.cidx (j) + 1;
+               i < Lfact.cidx(j +1); i++)
+            {
+              Yout.xridx (ii) = Lfact.ridx(i);
+              Yout.xdata (ii++) = Lfact.data(i);
+            }
+        }
       Yout.xcidx(j + 1) = ii;
     }
 
@@ -144,9 +144,3 @@ sparse_base_lu <lu_type, lu_elt_type, p_type, p_elt_type> :: Pc_mat (void) const
 {
   return PermMatrix (Q, true);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

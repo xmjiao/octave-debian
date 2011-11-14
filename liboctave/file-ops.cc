@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2000, 2001, 2002, 2003, 2004, 2005, 2006,
-              2007, 2008 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -33,13 +32,11 @@ along with Octave; see the file COPYING.  If not, see
 #include <iostream>
 #include <vector>
 
-#ifdef HAVE_SYS_TYPES_H
+#include <sys/stat.h>
 #include <sys/types.h>
-#endif
-
-#ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#endif
+
+#include "pathmax.h"
 
 #include "dir-ops.h"
 #include "file-ops.h"
@@ -48,521 +45,41 @@ along with Octave; see the file COPYING.  If not, see
 #include "oct-passwd.h"
 #include "pathlen.h"
 #include "quit.h"
-#include "statdefs.h"
 #include "str-vec.h"
 #include "oct-locbuf.h"
 
-file_ops::static_members *file_ops::static_members::instance = 0;
-
-file_ops::static_members::static_members (void)
-  :
-#if (defined (OCTAVE_HAVE_WINDOWS_FILESYSTEM) && ! defined (OCTAVE_HAVE_POSIX_FILESYSTEM))
-  xdir_sep_char ('\\'),
-  xdir_sep_str ("\\"),
-#else
-  xdir_sep_char ('/'),
-  xdir_sep_str ("/"), 
-#endif
-#if defined (OCTAVE_HAVE_WINDOWS_FILESYSTEM)
-  xdir_sep_chars ("/\\")
-#else
-  xdir_sep_chars (xdir_sep_str)
-#endif
-{ }
+file_ops *file_ops::instance = 0;
 
 bool
-file_ops::static_members::instance_ok (void)
+file_ops::instance_ok (void)
 {
   bool retval = true;
 
   if (! instance)
-    instance = new static_members ();
-
-  if (! instance)
     {
-      (*current_liboctave_error_handler)
-	("unable to create file_ops::static_members object!");
-
-      retval = false;
-    }
-
-  return retval;
-}
-
-#define NOT_SUPPORTED(nm) \
-  nm ": not supported on this system"
-
-// We provide a replacement for mkdir().
-
-int
-file_ops::mkdir (const std::string& name, mode_t mode)
-{
-  std::string msg;
-  return mkdir (name, mode, msg);
-}
-
-int
-file_ops::mkdir (const std::string& name, mode_t mode, std::string& msg)
-{
-  msg = std::string ();
-
-  int status = -1;
-
-#if defined (HAVE_MKDIR)
-
-#if defined (MKDIR_TAKES_ONE_ARG)
-  status = ::mkdir (name.c_str ());
+#if (defined (OCTAVE_HAVE_WINDOWS_FILESYSTEM) && ! defined (OCTAVE_HAVE_POSIX_FILESYSTEM))
+      char system_dir_sep_char = '\\';
+      std::string system_dir_sep_str = "\\";
 #else
-  status = ::mkdir (name.c_str (), mode);
+      char system_dir_sep_char = '/';
+      std::string system_dir_sep_str = "/";
 #endif
-
-  if (status < 0)
-    {
-      using namespace std;
-      msg = ::strerror (errno);
-    }
+#if defined (OCTAVE_HAVE_WINDOWS_FILESYSTEM)
+      std::string system_dir_sep_chars = "/\\";
 #else
-  msg = NOT_SUPPORTED ("mkdir");
+      std::string system_dir_sep_chars = system_dir_sep_str;
 #endif
 
-  return status;
-}
+      instance = new file_ops (system_dir_sep_char, system_dir_sep_str,
+                               system_dir_sep_chars);
 
-// I don't know how to emulate this on systems that don't provide it.
-
-int
-file_ops::mkfifo (const std::string& name, mode_t mode)
-{
-  std::string msg;
-  return mkfifo (name, mode, msg);
-}
-
-int
-file_ops::mkfifo (const std::string& name, mode_t mode, std::string& msg)
-{
-  msg = std::string ();
-
-  int status = -1;
-
-#if defined (HAVE_MKFIFO)
-  status = ::mkfifo (name.c_str (), mode);
-
-  if (status < 0)
-    {
-      using namespace std;
-      msg = ::strerror (errno);
-    }
-#else
-  msg = NOT_SUPPORTED ("mkfifo");
-#endif
-
-  return status;
-}
-
-// I don't know how to emulate this on systems that don't provide it.
-
-int
-file_ops::link (const std::string& old_name, const std::string& new_name)
-{
-  std::string msg;
-  return link (old_name, new_name, msg);
-}
-
-int
-file_ops::link (const std::string& old_name,
-		const std::string& new_name, std::string& msg)
-{
-  msg = std::string ();
-
-  int status = -1;
-
-#if defined (HAVE_LINK)
-  status = ::link (old_name.c_str (), new_name.c_str ());
-
-  if (status < 0)
-    {
-      using namespace std;
-      msg = ::strerror (errno);
-    }
-#else
-  msg = NOT_SUPPORTED ("link");
-#endif
-
-  return status;
-}
-
-// I don't know how to emulate this on systems that don't provide it.
-
-int
-file_ops::symlink (const std::string& old_name, const std::string& new_name)
-{
-  std::string msg;
-  return symlink (old_name, new_name, msg);
-}
-
-int
-file_ops::symlink (const std::string& old_name,
-		   const std::string& new_name, std::string& msg)
-{
-  msg = std::string ();
-
-  int status = -1;
-
-#if defined (HAVE_SYMLINK)
-
-  status = ::symlink (old_name.c_str (), new_name.c_str ());
-
-  if (status < 0)
-    {
-      using namespace std;
-      msg = ::strerror (errno);
-    }
-#else
-  msg = NOT_SUPPORTED ("symlink");
-#endif
-
-  return status;
-}
-
-// We provide a replacement for rename().
-
-int
-file_ops::readlink (const std::string& path, std::string& result)
-{
-  std::string msg;
-  return readlink (path, result, msg);
-}
-
-int
-file_ops::readlink (const std::string& path, std::string& result,
-		    std::string& msg)
-{
-  int status = -1;
-
-  msg = std::string ();
-
-#if defined (HAVE_READLINK)
-  char buf[MAXPATHLEN+1];
-
-  status = ::readlink (path.c_str (), buf, MAXPATHLEN);
-
-  if (status < 0)
-    {
-      using namespace std;
-      msg = ::strerror (errno);
-    }
-  else
-    {
-      buf[status] = '\0';
-      result = std::string (buf);
-      status = 0;
-    }
-#else
-  msg = NOT_SUPPORTED ("rename");
-#endif
-
-  return status;
-}
-
-// We provide a replacement for rename().
-
-int
-file_ops::rename (const std::string& from, const std::string& to)
-{
-  std::string msg;
-  return rename (from, to, msg);
-}
-
-int
-file_ops::rename (const std::string& from, const std::string& to,
-		  std::string& msg)
-{
-  int status = -1;
-
-  msg = std::string ();
-
-#if defined (HAVE_RENAME)
-  status = ::rename (from.c_str (), to.c_str ());
-
-  if (status < 0)
-    {
-      using namespace std;
-      msg = ::strerror (errno);
-    }
-#else
-  msg = NOT_SUPPORTED ("rename");
-#endif
-
-  return status;
-}
-
-// We provide a replacement for rmdir().
-
-int
-file_ops::rmdir (const std::string& name)
-{
-  std::string msg;
-  return rmdir (name, msg);
-}
-
-int
-file_ops::rmdir (const std::string& name, std::string& msg)
-{
-  msg = std::string ();
-
-  int status = -1;
-
-#if defined (HAVE_RMDIR)
-  status = ::rmdir (name.c_str ());
-
-  if (status < 0)
-    {
-      using namespace std;
-      msg = ::strerror (errno);
-    }
-#else
-  msg = NOT_SUPPORTED ("rmdir");
-#endif
-
-  return status;
-}
-
-// And a version that works recursively.
-
-int
-file_ops::recursive_rmdir (const std::string& name)
-{
-  std::string msg;
-  return recursive_rmdir (name, msg);
-}
-
-int
-file_ops::recursive_rmdir (const std::string& name, std::string& msg)
-{
-  msg = std::string ();
-
-  int status = 0;
-
-  dir_entry dir (name);
-
-  if (dir)
-    {
-      string_vector dirlist = dir.read ();
-
-      for (octave_idx_type i = 0; i < dirlist.length (); i++)
-	{
-	  OCTAVE_QUIT;
-
-	  std::string nm = dirlist[i];
-
-	  // Skip current directory and parent.
-	  if (nm == "." || nm == "..")
-	    continue;
-
-	  std::string fullnm = name + file_ops::dir_sep_str () + nm;
-
-	  // Get info about the file.  Don't follow links.
-	  file_stat fs (fullnm, false);
-
-	  if (fs)
-	    {
-	      if (fs.is_dir ())
-		{
-		  status = recursive_rmdir (fullnm, msg);
-
-		  if (status < 0)
-		    break;
-		}
-	      else
-		{
-		  status = unlink (fullnm, msg);
-
-		  if (status < 0)
-		    break;
-		}
-	    }
-	  else
-	    {
-	      msg = fs.error ();
-	      break;
-	    }
-	}
-
-      if (status >= 0)
-	{
-	  dir.close ();
-	  status = file_ops::rmdir (name, msg);
-	}
-    }
-  else
-    {
-      status = -1;
-
-      msg = dir.error ();
-    }
-
-  return status;
-}
-
-std::string
-file_ops::canonicalize_file_name (const std::string& name)
-{
-  std::string msg;
-  return canonicalize_file_name (name, msg);
-}
-
-std::string
-file_ops::canonicalize_file_name (const std::string& name, std::string& msg)
-{
-  msg = std::string ();
-
-  std::string retval;
-
-#if defined (HAVE_CANONICALIZE_FILE_NAME)
-
-  char *tmp = ::canonicalize_file_name (name.c_str ());
-
-  if (tmp)
-    {
-      retval = tmp;
-      ::free (tmp);
-    }
-
-#elif defined (HAVE_RESOLVEPATH)
-
-#if !defined (errno)
-extern int errno;
-#endif
-
-#if !defined (__set_errno)
-# define __set_errno(Val) errno = (Val)
-#endif
-
-  if (name.empty ())
-    {
-      __set_errno (ENOENT);
-      return retval;
-    }
-
-  // All known hosts with resolvepath (e.g. Solaris 7) don't turn
-  // relative names into absolute ones, so prepend the working
-  // directory if the path is not absolute.
-
-  std::string absolute_name
-    = octave_env::make_absolute (name, octave_env::getcwd ());
-
-  size_t resolved_size = absolute_name.length ();
-
-  while (true)
-    {
-      resolved_size = 2 * resolved_size + 1;
-
-      OCTAVE_LOCAL_BUFFER (char, resolved, resolved_size);
-
-      int resolved_len
-	= ::resolvepath (absolute_name.c_str (), resolved, resolved_size);
-
-      if (resolved_len < 0)
-	break;
-
-      if (resolved_len < resolved_size)
-	{
-	  retval = resolved;
-	  break;
-	}
-    }
-
-#elif defined (__WIN32__)
-
-  int n = 1024;
-
-  std::string win_path (n, '\0');
-
-  while (true)
-    {
-      int status = GetFullPathName (name.c_str (), n, &win_path[0], 0);
-
-      if (status == 0)
-        break;
-      else if (status < n)
+      if (! instance)
         {
-          win_path.resize (status);
-	  retval = win_path;
-	  break;
+          (*current_liboctave_error_handler)
+            ("unable to create file_ops object!");
+
+          retval = false;
         }
-      else
-        {
-          n *= 2;
-	  win_path.resize (n);
-        }
-    }
-
-#elif defined (HAVE_REALPATH)
-
-#if !defined (__set_errno)
-# define __set_errno(Val) errno = (Val)
-#endif
-
-  if (name.empty ())
-    {
-      __set_errno (ENOENT);
-      return retval;
-    }
-
-  OCTAVE_LOCAL_BUFFER (char, buf, PATH_MAX);
-
-  if (::realpath (name.c_str (), buf))
-    retval = buf;
-
-#else
-
-  // FIXME -- provide replacement here...
-  retval = name;
-
-#endif
-
-  if (retval.empty ())
-    {
-      using namespace std;
-      msg = ::strerror (errno);
-    }
-
-  return retval;
-}
-
-// We provide a replacement for tempnam().
-
-std::string
-file_ops::tempnam (const std::string& dir, const std::string& pfx)
-{
-  std::string msg;
-  return tempnam (dir, pfx, msg);
-}
-
-std::string
-file_ops::tempnam (const std::string& dir, const std::string& pfx,
-		   std::string& msg)
-{
-  msg = std::string ();
-
-  std::string retval;
-  
-  const char *pdir = dir.empty () ? 0 : dir.c_str ();
-
-  const char *ppfx = pfx.empty () ? 0 : pfx.c_str ();
-
-  char *tmp = ::tempnam (pdir, ppfx);
-
-  if (tmp)
-    {
-      retval = tmp;
-
-      ::free (tmp);
-    }
-  else
-    {
-      using namespace std;
-      msg = ::strerror (errno);
     }
 
   return retval;
@@ -625,18 +142,18 @@ tilde_find_prefix (const std::string& s, size_t& len)
   if (! prefixes.empty ())
     {
       for (size_t i = 0; i < s_len; i++)
-	{
-	  for (int j = 0; j < prefixes.length (); j++)
-	    {
-	      size_t pfx_len = prefixes[j].length ();
+        {
+          for (int j = 0; j < prefixes.length (); j++)
+            {
+              size_t pfx_len = prefixes[j].length ();
 
-	      if (prefixes[j].compare (s.substr (i, pfx_len)) == 0)
-		{
-		  len = pfx_len - 1;
-		  return i + len;
-		}
-	    }
-	}
+              if (prefixes[j].compare (s.substr (i, pfx_len)) == 0)
+                {
+                  len = pfx_len - 1;
+                  return i + len;
+                }
+            }
+        }
     }
 
   return s_len;
@@ -657,18 +174,18 @@ tilde_find_suffix (const std::string& s)
   for ( ; i < s_len; i++)
     {
       if (file_ops::is_dir_sep (s[i]))
-	break;
+        break;
 
       if (! suffixes.empty ())
-	{
-	  for (int j = 0; j < suffixes.length (); j++)
-	    {
-	      size_t sfx_len = suffixes[j].length ();
+        {
+          for (int j = 0; j < suffixes.length (); j++)
+            {
+              size_t sfx_len = suffixes[j].length ();
 
-	      if (suffixes[j].compare (s.substr (i, sfx_len)) == 0)
-		return i;
-	    }
-	}
+              if (suffixes[j].compare (s.substr (i, sfx_len)) == 0)
+                return i;
+            }
+        }
     }
 
   return i;
@@ -716,10 +233,10 @@ tilde_expand_word (const std::string& filename)
   if (file_ops::tilde_expansion_preexpansion_hook)
     {
       std::string expansion
-	= file_ops::tilde_expansion_preexpansion_hook (username);
+        = file_ops::tilde_expansion_preexpansion_hook (username);
 
       if (! expansion.empty ())
-	return expansion + filename.substr (user_len+1);
+        return expansion + filename.substr (user_len+1);
     }
 
   // No preexpansion hook, or the preexpansion hook failed.  Look in the
@@ -733,19 +250,19 @@ tilde_expand_word (const std::string& filename)
       // and we couldn't find a standard expansion, then let them try.
 
       if (file_ops::tilde_expansion_failure_hook)
-	{
-	  std::string expansion
-	    = file_ops::tilde_expansion_failure_hook (username);
+        {
+          std::string expansion
+            = file_ops::tilde_expansion_failure_hook (username);
 
-	  if (! expansion.empty ())
-	    dirname = expansion + filename.substr (user_len+1);
-	}
+          if (! expansion.empty ())
+            dirname = expansion + filename.substr (user_len+1);
+        }
 
       // If we don't have a failure hook, or if the failure hook did not
       // expand the tilde, return a copy of what we were passed.
 
       if (dirname.length () == 0)
-	dirname = filename;
+        dirname = filename;
     }
   else
     dirname = pw.dir () + filename.substr (user_len+1);
@@ -772,42 +289,42 @@ file_ops::tilde_expand (const std::string& name)
       size_t pos = 0;
 
       while (1)
-	{
-	  if (pos > name_len)
-	    break;
+        {
+          if (pos > name_len)
+            break;
 
-	  size_t len;
+          size_t len;
 
-	  // Make START point to the tilde which starts the expansion.
+          // Make START point to the tilde which starts the expansion.
 
-	  size_t start = tilde_find_prefix (name.substr (pos), len);
+          size_t start = tilde_find_prefix (name.substr (pos), len);
 
-	  result.append (name.substr (pos, start));
+          result.append (name.substr (pos, start));
 
-	  // Advance STRING to the starting tilde.
+          // Advance STRING to the starting tilde.
 
-	  pos += start;
+          pos += start;
 
-	  // Make FINI be the index of one after the last character of the
-	  // username.
+          // Make FINI be the index of one after the last character of the
+          // username.
 
-	  size_t fini = tilde_find_suffix (name.substr (pos));
+          size_t fini = tilde_find_suffix (name.substr (pos));
 
-	  // If both START and FINI are zero, we are all done.
+          // If both START and FINI are zero, we are all done.
 
-	  if (! (start || fini))
-	    break;
+          if (! (start || fini))
+            break;
 
-	  // Expand the entire tilde word, and copy it into RESULT.
+          // Expand the entire tilde word, and copy it into RESULT.
 
-	  std::string tilde_word = name.substr (pos, fini);
+          std::string tilde_word = name.substr (pos, fini);
 
-	  pos += fini;
+          pos += fini;
 
-	  std::string expansion = tilde_expand_word (tilde_word);
+          std::string expansion = tilde_expand_word (tilde_word);
 
-	  result.append (expansion);
-	}
+          result.append (expansion);
+        }
 
       return result;
     }
@@ -825,48 +342,9 @@ file_ops::tilde_expand (const string_vector& names)
   retval.resize (n);
 
   for (int i = 0; i < n; i++)
-    retval[i] = file_ops::tilde_expand (names[i]);
+    retval[i] = tilde_expand (names[i]);
 
   return retval;
-}
-
-int
-file_ops::umask (mode_t mode)
-{
-#if defined (HAVE_UMASK)
-  return ::umask (mode);
-#else
-  return 0;
-#endif
-}
-
-int
-file_ops::unlink (const std::string& name)
-{
-  std::string msg;
-  return unlink (name, msg);
-}
-
-int
-file_ops::unlink (const std::string& name, std::string& msg)
-{
-  msg = std::string ();
-
-  int status = -1;
-
-#if defined (HAVE_UNLINK)
-  status = ::unlink (name.c_str ());
-
-  if (status < 0)
-    {
-      using namespace std;
-      msg = ::strerror (errno);
-    }
-#else
-  msg = NOT_SUPPORTED ("unlink");
-#endif
-
-  return status;
 }
 
 std::string
@@ -876,11 +354,441 @@ file_ops::concat (const std::string& dir, const std::string& file)
     ? file
     : (is_dir_sep (dir[dir.length()-1])
        ? dir + file
-       : dir + file_ops::dir_sep_char () + file);
+       : dir + dir_sep_char () + file);
 }
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+
+int
+octave_mkdir (const std::string& nm, mode_t md)
+{
+  std::string msg;
+  return octave_mkdir (nm, md, msg);
+}
+
+int
+octave_mkdir (const std::string& name, mode_t mode, std::string& msg)
+{
+  msg = std::string ();
+
+  int status = -1;
+
+  status = gnulib::mkdir (name.c_str (), mode);
+
+  if (status < 0)
+    msg = gnulib::strerror (errno);
+
+  return status;
+}
+
+int
+octave_mkfifo (const std::string& nm, mode_t md)
+{
+  std::string msg;
+  return octave_mkfifo (nm, md, msg);
+}
+
+int
+octave_mkfifo (const std::string& name, mode_t mode, std::string& msg)
+{
+  msg = std::string ();
+
+  int status = -1;
+
+  // With gnulib we will always have mkfifo, but some systems like MinGW
+  // don't have working mkfifo functions.  On those systems, mkfifo will
+  // always return -1 and set errno.
+
+  status = gnulib::mkfifo (name.c_str (), mode);
+
+  if (status < 0)
+    msg = gnulib::strerror (errno);
+
+  return status;
+}
+
+int
+octave_link (const std::string& old_name, const std::string& new_name)
+{
+  std::string msg;
+  return octave_link (old_name, new_name, msg);
+}
+
+int
+octave_link (const std::string& old_name,
+                const std::string& new_name, std::string& msg)
+{
+  msg = std::string ();
+
+  int status = -1;
+
+  status = gnulib::link (old_name.c_str (), new_name.c_str ());
+
+  if (status < 0)
+    msg = gnulib::strerror (errno);
+
+  return status;
+}
+
+int
+octave_symlink (const std::string& old_name, const std::string& new_name)
+{
+  std::string msg;
+  return octave_symlink (old_name, new_name, msg);
+}
+
+int
+octave_symlink (const std::string& old_name,
+                   const std::string& new_name, std::string& msg)
+{
+  msg = std::string ();
+
+  int status = -1;
+
+  status = gnulib::symlink (old_name.c_str (), new_name.c_str ());
+
+  if (status < 0)
+    msg = gnulib::strerror (errno);
+
+  return status;
+}
+
+int
+octave_readlink (const std::string& path, std::string& result)
+{
+  std::string msg;
+  return octave_readlink (path, result, msg);
+}
+
+int
+octave_readlink (const std::string& path, std::string& result,
+                    std::string& msg)
+{
+  int status = -1;
+
+  msg = std::string ();
+
+  char buf[MAXPATHLEN+1];
+
+  status = gnulib::readlink (path.c_str (), buf, MAXPATHLEN);
+
+  if (status < 0)
+    msg = gnulib::strerror (errno);
+  else
+    {
+      buf[status] = '\0';
+      result = std::string (buf);
+      status = 0;
+    }
+
+  return status;
+}
+
+int
+octave_rename (const std::string& from, const std::string& to)
+{
+  std::string msg;
+  return octave_rename (from, to, msg);
+}
+
+int
+octave_rename (const std::string& from, const std::string& to,
+                  std::string& msg)
+{
+  int status = -1;
+
+  msg = std::string ();
+
+  status = gnulib::rename (from.c_str (), to.c_str ());
+
+  if (status < 0)
+    msg = gnulib::strerror (errno);
+
+  return status;
+}
+
+int
+octave_rmdir (const std::string& name)
+{
+  std::string msg;
+  return octave_rmdir (name, msg);
+}
+
+int
+octave_rmdir (const std::string& name, std::string& msg)
+{
+  msg = std::string ();
+
+  int status = -1;
+
+  status = gnulib::rmdir (name.c_str ());
+
+  if (status < 0)
+    msg = gnulib::strerror (errno);
+
+  return status;
+}
+
+// And a version that works recursively.
+
+int
+octave_recursive_rmdir (const std::string& name)
+{
+  std::string msg;
+  return octave_recursive_rmdir (name, msg);
+}
+
+int
+octave_recursive_rmdir (const std::string& name, std::string& msg)
+{
+  msg = std::string ();
+
+  int status = 0;
+
+  dir_entry dir (name);
+
+  if (dir)
+    {
+      string_vector dirlist = dir.read ();
+
+      for (octave_idx_type i = 0; i < dirlist.length (); i++)
+        {
+          octave_quit ();
+
+          std::string nm = dirlist[i];
+
+          // Skip current directory and parent.
+          if (nm == "." || nm == "..")
+            continue;
+
+          std::string fullnm = name + file_ops::dir_sep_str () + nm;
+
+          // Get info about the file.  Don't follow links.
+          file_stat fs (fullnm, false);
+
+          if (fs)
+            {
+              if (fs.is_dir ())
+                {
+                  status = octave_recursive_rmdir (fullnm, msg);
+
+                  if (status < 0)
+                    break;
+                }
+              else
+                {
+                  status = octave_unlink (fullnm, msg);
+
+                  if (status < 0)
+                    break;
+                }
+            }
+          else
+            {
+              msg = fs.error ();
+              break;
+            }
+        }
+
+      if (status >= 0)
+        {
+          dir.close ();
+          status = octave_rmdir (name, msg);
+        }
+    }
+  else
+    {
+      status = -1;
+
+      msg = dir.error ();
+    }
+
+  return status;
+}
+
+int
+octave_umask (mode_t mode)
+{
+#if defined (HAVE_UMASK)
+  return umask (mode);
+#else
+  return 0;
+#endif
+}
+
+int
+octave_unlink (const std::string& name)
+{
+  std::string msg;
+  return octave_unlink (name, msg);
+}
+
+int
+octave_unlink (const std::string& name, std::string& msg)
+{
+  msg = std::string ();
+
+  int status = -1;
+
+  status = gnulib::unlink (name.c_str ());
+
+  if (status < 0)
+    msg = gnulib::strerror (errno);
+
+  return status;
+}
+
+std::string
+octave_tempnam (const std::string& dir, const std::string& pfx)
+{
+  std::string msg;
+  return octave_tempnam (dir, pfx, msg);
+}
+
+std::string
+octave_tempnam (const std::string& dir, const std::string& pfx,
+                std::string& msg)
+{
+  msg = std::string ();
+
+  std::string retval;
+
+  const char *pdir = dir.empty () ? 0 : dir.c_str ();
+
+  const char *ppfx = pfx.empty () ? 0 : pfx.c_str ();
+
+  char *tmp = tempnam (pdir, ppfx);
+
+  if (tmp)
+    {
+      retval = tmp;
+
+      free (tmp);
+    }
+  else
+    msg = gnulib::strerror (errno);
+
+  return retval;
+}
+
+std::string
+octave_canonicalize_file_name (const std::string& name)
+{
+  std::string msg;
+  return octave_canonicalize_file_name (name, msg);
+}
+
+std::string
+octave_canonicalize_file_name (const std::string& name, std::string& msg)
+{
+  msg = std::string ();
+
+  std::string retval;
+
+#if defined (HAVE_CANONICALIZE_FILE_NAME)
+
+  char *tmp = gnulib::canonicalize_file_name (name.c_str ());
+
+  if (tmp)
+    {
+      retval = tmp;
+      free (tmp);
+    }
+
+#elif defined (HAVE_RESOLVEPATH)
+
+#if !defined (errno)
+extern int errno;
+#endif
+
+#if !defined (__set_errno)
+# define __set_errno(Val) errno = (Val)
+#endif
+
+  if (name.empty ())
+    {
+      __set_errno (ENOENT);
+      return retval;
+    }
+
+  // All known hosts with resolvepath (e.g. Solaris 7) don't turn
+  // relative names into absolute ones, so prepend the working
+  // directory if the path is not absolute.
+
+  std::string absolute_name = octave_env::make_absolute (name);
+
+  size_t resolved_size = absolute_name.length ();
+
+  while (true)
+    {
+      resolved_size = 2 * resolved_size + 1;
+
+      OCTAVE_LOCAL_BUFFER (char, resolved, resolved_size);
+
+      int resolved_len
+        = resolvepath (absolute_name.c_str (), resolved, resolved_size);
+
+      if (resolved_len < 0)
+        break;
+
+      if (resolved_len < resolved_size)
+        {
+          retval = resolved;
+          break;
+        }
+    }
+
+#elif defined (__WIN32__)
+
+  int n = 1024;
+
+  std::string win_path (n, '\0');
+
+  while (true)
+    {
+      int status = GetFullPathName (name.c_str (), n, &win_path[0], 0);
+
+      if (status == 0)
+        break;
+      else if (status < n)
+        {
+          win_path.resize (status);
+          retval = win_path;
+          break;
+        }
+      else
+        {
+          n *= 2;
+          win_path.resize (n);
+        }
+    }
+
+#elif defined (HAVE_REALPATH)
+
+#if !defined (__set_errno)
+# define __set_errno(Val) errno = (Val)
+#endif
+
+  if (name.empty ())
+    {
+      __set_errno (ENOENT);
+      return retval;
+    }
+
+  OCTAVE_LOCAL_BUFFER (char, buf, PATH_MAX);
+
+  if (::realpath (name.c_str (), buf))
+    retval = buf;
+
+#else
+
+  // FIXME -- provide replacement here...
+  retval = name;
+
+#endif
+
+  if (retval.empty ())
+    msg = gnulib::strerror (errno);
+
+  return retval;
+}
+

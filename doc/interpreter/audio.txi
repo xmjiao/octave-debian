@@ -1,4 +1,4 @@
-@c Copyright (C) 1996, 1997, 1999, 2000, 2002, 2005, 2007, 2009 Kurt Hornik
+@c Copyright (C) 1996-2011 Kurt Hornik
 @c
 @c This file is part of Octave.
 @c
@@ -24,7 +24,7 @@
 Octave provides a few functions for dealing with audio data.  An audio
 `sample' is a single output value from an A/D converter, i.e., a small
 integer number (usually 8 or 16 bits), and audio data is just a series
-of such samples.  It can be characterized by three parameters:  the
+of such samples.  It can be characterized by three parameters: the
 sampling rate (measured in samples per second or Hz, e.g., 8000 or
 44100), the number of bits per sample (e.g., 8 or 16), and the number of
 channels (1 for mono, 2 for stereo, etc.).
@@ -32,7 +32,7 @@ channels (1 for mono, 2 for stereo, etc.).
 There are many different formats for representing such data.  Currently,
 only the two most popular, @emph{linear encoding} and @emph{mu-law
 encoding}, are supported by Octave.  There is an excellent FAQ on audio
-formats by Guido van Rossum <guido@@cwi.nl> which can be found at any
+formats by Guido van Rossum @email{guido@@cwi.nl} which can be found at any
 FAQ ftp site, in particular in the directory
 @file{/pub/usenet/news.answers/audio-fmts} of the archive site
 @code{rtfm.mit.edu}.

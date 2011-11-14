@@ -1,5 +1,5 @@
-## Copyright (C) 2008, 2009 Jaroslav Hajek
-## Copyright (C) 2000, 2001, 2005, 2006, 2007 Paul Kienzle
+## Copyright (C) 2000-2011 Paul Kienzle
+## Copyright (C) 2008-2009 Jaroslav Hajek
 ##
 ## This file is part of Octave.
 ##
@@ -18,14 +18,16 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} unique (@var{x})
+## @deftypefn  {Function File} {} unique (@var{x})
 ## @deftypefnx {Function File} {} unique (@var{x}, "rows")
 ## @deftypefnx {Function File} {} unique (@dots{}, "first")
 ## @deftypefnx {Function File} {} unique (@dots{}, "last")
 ## @deftypefnx {Function File} {[@var{y}, @var{i}, @var{j}] =} unique (@dots{})
 ## Return the unique elements of @var{x}, sorted in ascending order.
-## If @var{x} is a row vector, return a row vector, but if @var{x}
-## is a column vector or a matrix return a column vector.
+## If the input @var{x} is a vector then the output is also a vector with the
+## same orientation (row or column) as the input.  For a matrix input the
+## output is always a column vector.  @var{x} may also be a cell array of
+## strings.
 ##
 ## If the optional argument @code{"rows"} is supplied, return the unique
 ## rows of @var{x}, sorted in ascending order.
@@ -33,10 +35,10 @@
 ## If requested, return index vectors @var{i} and @var{j} such that
 ## @code{x(i)==y} and @code{y(j)==x}.
 ##
-## Additionally, one of @code{"first"} or @code{"last"} may be given as
-## an argument.  If @code{"last"} is specified, return the highest
-## possible indices in @var{i}, otherwise, if @code{"first"} is
-## specified, return the lowest.  The default is @code{"last"}.
+## Additionally, if @var{i} is a requested output then one of @code{"first"} or
+## @code{"last"} may be given as an input.  If @code{"last"} is specified,
+## return the highest possible indices in @var{i}, otherwise, if @code{"first"}
+## is specified, return the lowest.  The default is @code{"last"}.
 ## @seealso{union, intersect, setdiff, setxor, ismember}
 ## @end deftypefn
 
@@ -47,15 +49,14 @@ function [y, i, j] = unique (x, varargin)
   endif
 
   if (nargin > 1)
-
     ## parse options
     if (iscellstr (varargin))
       varargin = unique (varargin);
-      optfirst = strmatch ("first", varargin) > 0;
-      optlast = strmatch ("last", varargin) > 0;
-      optrows = strmatch ("rows", varargin) > 0 && size (x, 2) > 1;
+      optfirst = strmatch ("first", varargin, "exact") > 0;
+      optlast = strmatch ("last", varargin, "exact") > 0;
+      optrows = strmatch ("rows", varargin, "exact") > 0;
       if (optfirst && optlast)
-        error ("unique: cannot specify both \"last\" and \"first\"");
+        error ('unique: cannot specify both "last" and "first"');
       elseif (optfirst + optlast + optrows != nargin-1)
         error ("unique: invalid option");
       endif
@@ -64,42 +65,76 @@ function [y, i, j] = unique (x, varargin)
     endif
 
     if (optrows && iscell (x))
-      warning ("unique: 'rows' is ignored for cell arrays");
+      warning ('unique: "rows" is ignored for cell arrays');
       optrows = false;
     endif
-
   else
-    optfirst = 0;
-    optrows = 0;
+    optfirst = false;
+    optrows = false;
+  endif
+
+  ## FIXME -- the operations
+  ##
+  ##   match = (y(1:n-1) == y(2:n));
+  ##   y(idx) = [];
+  ##
+  ## are very slow on sparse matrices.  Until they are fixed to be as
+  ## fast as for full matrices, operate on the nonzero elements of the
+  ## sparse array as long as we are not operating on rows.
+
+  if (issparse (x) && ! optrows && nargout <= 1)
+    if (nnz (x) < numel (x))
+      y = unique ([0; (full (nonzeros (x)))], varargin{:});
+    else
+      ## Corner case where sparse matrix is actually full
+      y = unique (full (x), varargin{:});
+    endif
+    return;
   endif
 
   if (optrows)
-    n = size (x, 1);
+    n = rows (x);
     dim = 1;
   else
     n = numel (x);
-    dim = (size (x, 1) == 1) + 1;
+    dim = (rows (x) == 1) + 1;
   endif
 
   y = x;
-  if (n < 1)
+  ## Special cases 0 and 1
+  if (n == 0)
+    if (! optrows && isempty (x) && any (size (x)))
+      if (iscell (y))
+        y = cell (0, 1);
+      else
+        y = zeros (0, 1, class (y));
+      endif
+    endif
     i = j = [];
     return;
-  elseif (n < 2)
+  elseif (n == 1)
     i = j = 1;
     return;
   endif
 
   if (optrows)
-    [y, i] = sortrows (y);
+    if (nargout > 1)
+      [y, i] = sortrows (y);
+    else
+      y = sortrows (y);
+    endif
     match = all (y(1:n-1,:) == y(2:n,:), 2);
     idx = find (match);
     y(idx,:) = [];
   else
-    if (size (y, 1) != 1)
+    if (! isvector (y))
       y = y(:);
     endif
-    [y, i] = sort (y);
+    if (nargout > 1)
+      [y, i] = sort (y);
+    else
+      y = sort (y);
+    endif
     if (iscell (y))
       match = strcmp (y(1:n-1), y(2:n));
     else
@@ -109,7 +144,7 @@ function [y, i, j] = unique (x, varargin)
     y(idx) = [];
   endif
 
-  if (nargout >= 3)
+  if (isargout (3))
     j = i;
     if (dim == 1)
       j(i) = cumsum ([1; !match]);
@@ -118,12 +153,13 @@ function [y, i, j] = unique (x, varargin)
     endif
   endif
 
-  if (optfirst)
-    i(idx+1) = [];
-  else
-    i(idx) = [];
+  if (isargout (2))
+    if (optfirst)
+      i(idx+1) = [];
+    else
+      i(idx) = [];
+    endif
   endif
-
 
 endfunction
 
@@ -136,7 +172,22 @@ endfunction
 %!assert(unique([1,NaN,Inf,NaN,Inf]),[1,Inf,NaN,NaN])
 %!assert(unique({'Foo','Bar','Foo'}),{'Bar','Foo'})
 %!assert(unique({'Foo','Bar','FooBar'}'),{'Bar','Foo','FooBar'}')
-
+%!assert(unique(zeros(1,0)), zeros(0,1))
+%!assert(unique(zeros(1,0), 'rows'), zeros(1,0))
+%!assert(unique(cell(1,0)), cell(0,1))
+%!assert(unique({}), {})
+%!assert(unique([1,2,2,3,2,4], 'rows'), [1,2,2,3,2,4])
+%!assert(unique([1,2,2,3,2,4]), [1,2,3,4])
+%!assert(unique([1,2,2,3,2,4]', 'rows'), [1,2,3,4]')
+%!assert(unique(sparse([2,0;2,0])), [0,2]')
+%!assert(unique(sparse([1,2;2,3])), [1,2,3]')
+%!assert(unique([1,2,2,3,2,4]', 'rows'), [1,2,3,4]')
+%!assert(unique(single([1,2,2,3,2,4]), 'rows'), single([1,2,2,3,2,4]))
+%!assert(unique(single([1,2,2,3,2,4])), single([1,2,3,4]))
+%!assert(unique(single([1,2,2,3,2,4]'), 'rows'), single([1,2,3,4]'))
+%!assert(unique(uint8([1,2,2,3,2,4]), 'rows'), uint8([1,2,2,3,2,4]))
+%!assert(unique(uint8([1,2,2,3,2,4])), uint8([1,2,3,4]))
+%!assert(unique(uint8([1,2,2,3,2,4]'), 'rows'), uint8([1,2,3,4]'))
 %!test
 %! [a,i,j] = unique([1,1,2,3,3,3,4]);
 %! assert(a,[1,2,3,4])

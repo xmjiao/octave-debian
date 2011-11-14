@@ -1,5 +1,4 @@
-## Copyright (C) 1994, 1995, 1996, 1997, 1999, 2000, 2003, 2005, 2006,
-##               2007, 2008 John W. Eaton
+## Copyright (C) 1994-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -18,16 +17,18 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} null (@var{a}, @var{tol})
-## Return an orthonormal basis of the null space of @var{a}.
+## @deftypefn  {Function File} {} null (@var{A})
+## @deftypefnx {Function File} {} null (@var{A}, @var{tol})
+## Return an orthonormal basis of the null space of @var{A}.
 ##
 ## The dimension of the null space is taken as the number of singular
-## values of @var{a} not greater than @var{tol}.  If the argument @var{tol}
+## values of @var{A} not greater than @var{tol}.  If the argument @var{tol}
 ## is missing, it is computed as
 ##
 ## @example
-## max (size (@var{a})) * max (svd (@var{a})) * eps
+## max (size (@var{A})) * max (svd (@var{A})) * eps
 ## @end example
+## @seealso{orth}
 ## @end deftypefn
 
 ## Author: KH <Kurt.Hornik@wu-wien.ac.at>
@@ -53,9 +54,9 @@ function retval = null (A, tol)
 
     if (nargin == 1)
       if (isa (A, "single"))
-	tol = max (size (A)) * s (1) * eps ("single");
+        tol = max (size (A)) * s (1) * eps ("single");
       else
-	tol = max (size (A)) * s (1) * eps;
+        tol = max (size (A)) * s (1) * eps;
       endif
     elseif (nargin != 2)
       print_usage ();
@@ -66,9 +67,9 @@ function retval = null (A, tol)
     if (rank < cols)
       retval = V (:, rank+1:cols);
       if (isa (A, "single"))
-	retval(abs (retval) < eps ("single")) = 0;
+        retval(abs (retval) < eps ("single")) = 0;
       else
-	retval(abs (retval) < eps) = 0;
+        retval(abs (retval) < eps) = 0;
       endif
     else
       retval = zeros (cols, 0);

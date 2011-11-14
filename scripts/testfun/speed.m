@@ -1,5 +1,4 @@
-## Copyright (C) 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008,
-##               2009 Paul Kienzle
+## Copyright (C) 2000-2011 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -18,15 +17,15 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} speed (@var{f}, @var{init}, @var{max_n}, @var{f2}, @var{tol})
+## @deftypefn  {Function File} {} speed (@var{f}, @var{init}, @var{max_n}, @var{f2}, @var{tol})
 ## @deftypefnx {Function File} {[@var{order}, @var{n}, @var{T_f}, @var{T_f2}] =} speed (@dots{})
 ##
-## Determine the execution time of an expression for various @var{n}.
-## The @var{n} are log-spaced from 1 to @var{max_n}.  For each @var{n},
-## an initialization expression is computed to create whatever data
-## are needed for the test.  If a second expression is given, the
-## execution times of the two expressions will be compared.  Called 
-## without output arguments the results are presented graphically.
+## Determine the execution time of an expression (@var{f}) for various input
+## values (@var{n}).  The @var{n} are log-spaced from 1 to @var{max_n}.  For
+## each @var{n}, an initialization expression (@var{init}) is computed to
+## create any data needed for the test.  If a second expression (@var{f2}) is
+## given then the execution times of the two expressions are compared.  When
+## called without output arguments the results are displayed graphically.
 ##
 ## @table @code
 ## @item @var{f}
@@ -34,35 +33,33 @@
 ##
 ## @item @var{max_n}
 ## The maximum test length to run.  Default value is 100.  Alternatively,
-## use @code{[min_n,max_n]} or for complete control, @code{[n1,n2,@dots{},nk]}.
+## use @code{[min_n, max_n]} or specify the @var{n} exactly with
+## @code{[n1, n2, @dots{}, nk]}.
 ##
 ## @item @var{init}
-## Initialization expression for function argument values.  Use @var{k} 
+## Initialization expression for function argument values.  Use @var{k}
 ## for the test number and @var{n} for the size of the test.  This should
-## compute values for all variables listed in args.  Note that init will
+## compute values for all variables used by @var{f}.  Note that @var{init} will
 ## be evaluated first for @math{k = 0}, so things which are constant throughout
-## the test can be computed then.  The default value is @code{@var{x} =
-## randn (@var{n}, 1);}.
+## the test series can be computed once.  The default value is
+## @code{@var{x} = randn (@var{n}, 1)}.
 ##
 ## @item @var{f2}
-## An alternative expression to evaluate, so the speed of the two
-## can be compared.  Default is @code{[]}.
+## An alternative expression to evaluate, so that the speed of two
+## expressions can be directly compared.  The default is @code{[]}.
 ##
 ## @item @var{tol}
-## If @var{tol} is @code{Inf}, then no comparison will be made between the
-## results of expression @var{f} and expression @var{f2}.  Otherwise,
-## expression @var{f} should produce a value @var{v} and expression @var{f2} 
-## should produce a value @var{v2}, and these shall be compared using 
-## @code{assert(@var{v},@var{v2},@var{tol})}.  If @var{tol} is positive,
-## the tolerance is assumed to be absolute.  If @var{tol} is negative,
-## the tolerance is assumed to be relative.  The default is @code{eps}.
+## Tolerance used to compare the results of expression @var{f} and expression
+## @var{f2}.  If @var{tol} is positive, the tolerance is an absolute one.
+## If @var{tol} is negative, the tolerance is a relative one.  The default is
+## @code{eps}.  If @var{tol} is @code{Inf}, then no comparison will be made.
 ##
 ## @item @var{order}
-## The time complexity of the expression @code{O(a n^p)}.  This
+## The time complexity of the expression @math{O(a*n^p)}.  This
 ## is a structure with fields @code{a} and @code{p}.
 ##
 ## @item @var{n}
-## The values @var{n} for which the expression was calculated and
+## The values @var{n} for which the expression was calculated AND
 ## the execution time was greater than zero.
 ##
 ## @item @var{T_f}
@@ -70,36 +67,37 @@
 ##
 ## @item @var{T_f2}
 ## The nonzero execution times recorded for the expression @var{f2} in seconds.
-## If it is needed, the mean time ratio is just @code{mean(T_f./T_f2)}.
+## If required, the mean time ratio is simply @code{mean (T_f./T_f2)}.
 ##
 ## @end table
 ##
 ## The slope of the execution time graph shows the approximate
-## power of the asymptotic running time @code{O(n^p)}.  This
+## power of the asymptotic running time @math{O(n^p)}.  This
 ## power is plotted for the region over which it is approximated
 ## (the latter half of the graph).  The estimated power is not
 ## very accurate, but should be sufficient to determine the
-## general order of your algorithm.  It should indicate if for 
-## example your implementation is unexpectedly @code{O(n^2)} 
-## rather than @code{O(n)} because it extends a vector each 
-## time through the loop rather than preallocating one which is 
-## big enough.  For example, in the current version of Octave,
-## the following is not the expected @code{O(n)}:
+## general order of an algorithm.  It should indicate if, for
+## example, the implementation is unexpectedly @math{O(n^2)}
+## rather than @math{O(n)} because it extends a vector each
+## time through the loop rather than pre-allocating storage.
+## In the current version of Octave, the following is not the
+## expected @math{O(n)}.
 ##
 ## @example
-## speed ("for i = 1:n, y@{i@} = x(i); end", "", [1000,10000])
+## speed ("for i = 1:n, y@{i@} = x(i); endfor", "", [1000, 10000])
 ## @end example
 ##
-## but it is if you preallocate the cell array @code{y}:
+## @noindent
+## But it is if you preallocate the cell array @code{y}:
 ##
 ## @example
 ## @group
-## speed ("for i = 1:n, y@{i@} = x(i); end", ...
+## speed ("for i = 1:n, y@{i@} = x(i); endfor", ...
 ##        "x = rand (n, 1); y = cell (size (x));", [1000, 10000])
 ## @end group
 ## @end example
 ##
-## An attempt is made to approximate the cost of the individual 
+## An attempt is made to approximate the cost of individual
 ## operations, but it is wildly inaccurate.  You can improve the
 ## stability somewhat by doing more work for each @code{n}.  For
 ## example:
@@ -108,11 +106,11 @@
 ## speed ("airy(x)", "x = rand (n, 10)", [10000, 100000])
 ## @end example
 ##
-## When comparing a new and original expression, the line on the
-## speedup ratio graph should be larger than 1 if the new expression
-## is faster.  Better algorithms have a shallow slope.  Generally, 
-## vectorizing an algorithm will not change the slope of the execution 
-## time graph, but it will shift it relative to the original.  For
+## When comparing two different expressions (@var{f}, @var{f2}), the slope
+## of the line on the speedup ratio graph should be larger than 1 if the new
+## expression is faster.  Better algorithms have a shallow slope.  Generally,
+## vectorizing an algorithm will not change the slope of the execution
+## time graph, but will shift it relative to the original.  For
 ## example:
 ##
 ## @example
@@ -121,11 +119,11 @@
 ##        "v = 0; for i = 1:length (x), v += x(i); end")
 ## @end group
 ## @end example
-## 
-## A more complex example, if you had an original version of @code{xcorr}
-## using for loops and another version using an FFT, you could compare the
-## run speed for various lags as follows, or for a fixed lag with varying
-## vector lengths as follows:
+##
+## The following is a more complex example.  If there was an original version
+## of @code{xcorr} using for loops and a second version using an FFT, then
+## one could compare the run speed for various lags as follows, or for a fixed
+## lag with varying vector lengths as follows:
 ##
 ## @example
 ## @group
@@ -136,22 +134,21 @@
 ## @end group
 ## @end example
 ##
-## Assuming one of the two versions is in @var{xcorr_orig}, this
+## Assuming one of the two versions is in xcorr_orig, this
 ## would compare their speed and their output values.  Note that the
 ## FFT version is not exact, so we specify an acceptable tolerance on
-## the comparison @code{100*eps}, and the errors should be computed
-## relatively, as @code{abs((@var{x} - @var{y})./@var{y})} rather than 
-## absolutely as @code{abs(@var{x} - @var{y})}.
+## the comparison @code{100*eps}, and that the errors should be computed
+## relatively, as @code{abs ((@var{x} - @var{y}) ./ @var{y})} rather than
+## absolutely as @code{abs (@var{x} - @var{y})}.
 ##
-## Type @code{example('speed')} to see some real examples.  Note for 
-## obscure reasons, you can't run examples 1 and 2 directly using 
-## @code{demo('speed')}.  Instead use, @code{eval(example('speed',1))}
-## and @code{eval(example('speed',2))}.
+## Type @code{example('speed')} to see some real examples.  Note that for
+## obscure reasons, examples 1 and 2 can not be run directly using
+## @code{demo('speed')}.  Instead use, @code{eval ( example('speed', 1) )}
+## or @code{eval ( example('speed', 2) )}.
 ## @end deftypefn
 
 ## FIXME: consider two dimensional speedup surfaces for functions like kron.
-function [__order, __test_n, __tnew, __torig] ...
-      = speed (__f1, __init, __max_n, __f2, __tol)
+function [__order, __test_n, __tnew, __torig] = speed (__f1, __init, __max_n, __f2, __tol)
 
   if (nargin < 1 || nargin > 6)
     print_usage ();
@@ -210,7 +207,7 @@ function [__order, __test_n, __tnew, __torig] ...
   for k = 1:length (__test_n)
     n = __test_n(k);
     eval (cstrcat (__init, ";"));
-    
+
     printf ("n%i = %i  ",k, n);
     fflush (stdout);
     eval (cstrcat ("__t = time();", __f1, "; __v1=ans; __t = time()-__t;"));
@@ -224,16 +221,16 @@ function [__order, __test_n, __tnew, __torig] ...
     if (! isempty (__f2))
       eval (cstrcat ("__t = time();", __f2, "; __v2=ans; __t = time()-__t;"));
       if (__t < 0.25)
-      	eval (cstrcat ("__t2 = time();", __f2, "; __t2 = time()-__t2;"));
-      	eval (cstrcat ("__t3 = time();", __f2, "; __t3 = time()-__t3;"));
+        eval (cstrcat ("__t2 = time();", __f2, "; __t2 = time()-__t2;"));
+        eval (cstrcat ("__t3 = time();", __f2, "; __t3 = time()-__t3;"));
       endif
       __torig(k) = __t;
       if (! isinf(__tol))
-      	assert (__v1, __v2, __tol);
+        assert (__v1, __v2, __tol);
       endif
     endif
   endfor
-  
+
   ## Drop times of zero.
   if (! isempty (__f2))
     zidx = (__tnew < 100*eps |  __torig < 100*eps);
@@ -249,36 +246,36 @@ function [__order, __test_n, __tnew, __torig] ...
   ## Approximate time complexity and return it if requested.
   tailidx = ceil(length(__test_n)/2):length(__test_n);
   p = polyfit (log (__test_n(tailidx)), log (__tnew(tailidx)), 1);
-  if (nargout > 0) 
+  if (nargout > 0)
     __order.p = p(1);
     __order.a = exp (p(2));
   endif
 
   ## Plot the data if no output is requested.
   doplot = (nargout == 0);
-  
+
   if (doplot)
     figure;
   endif
 
   if (doplot && ! isempty (__f2))
     subplot (1, 2, 1);
-    semilogx (__test_n, __torig./__tnew, 
-	      cstrcat ("-*r;", strrep (__f1, ";", "."), "/",
-		      strrep (__f2, ";", "."), ";"),
-	       __test_n, __tnew./__torig,
-	      cstrcat ("-*g;", strrep (__f2, ";", "."), "/",
-		      strrep (__f1, ";", "."), ";"));
+    semilogx (__test_n, __torig./__tnew,
+              cstrcat ("-*r;", strrep (__f1, ";", "."), "/",
+                      strrep (__f2, ";", "."), ";"),
+               __test_n, __tnew./__torig,
+              cstrcat ("-*g;", strrep (__f2, ";", "."), "/",
+                      strrep (__f1, ";", "."), ";"));
     xlabel ("test length");
     title (__f1);
     ylabel ("speedup ratio");
 
     subplot (1, 2, 2);
     loglog (__test_n, __tnew*1000,
-	    cstrcat ("*-g;", strrep (__f1, ";", "."), ";"), 
-	    __test_n, __torig*1000,
-	    cstrcat ("*-r;", strrep (__f2,";","."), ";"));
-  
+            cstrcat ("*-g;", strrep (__f1, ";", "."), ";"),
+            __test_n, __torig*1000,
+            cstrcat ("*-r;", strrep (__f2,";","."), ";"));
+
     xlabel ("test length");
     ylabel ("best execution time (ms)");
     title (cstrcat ("init: ", __init));
@@ -302,7 +299,7 @@ function [__order, __test_n, __tnew, __torig] ...
     order = sprintf ("O(n^%g)", round (10*p(1))/10);
     v = polyval (p, log (__test_n(tailidx)));
 
-    loglog (__test_n(tailidx), exp(v)*1000, sprintf ("b;%s;", order)); 
+    loglog (__test_n(tailidx), exp(v)*1000, sprintf ("b;%s;", order));
 
     ## Get base time to 1 digit of accuracy.
     dt = exp (p(2));
@@ -320,7 +317,7 @@ function [__order, __test_n, __tnew, __torig] ...
     ## Display nicely formatted complexity.
     printf ("\nFor %s:\n", __f1);
     printf ("  asymptotic power: %s\n", order);
-    printf ("  approximate time per operation: %s\n", time); 
+    printf ("  approximate time per operation: %s\n", time);
 
   endif
 
@@ -374,10 +371,10 @@ endfunction
 %!  type build;
 %!  disp("-----------------------");
 %!
-%!  disp("Vectorized test. This takes a little while...");
+%!  disp("Vectorized test.\nThis takes a little while...");
 %!  speed('build(n)', '', 1000, 'build_orig(n)');
 %!  clear build build_orig
 %!  disp("-----------------------");
 %!  disp("This time, the for loop is done away with entirely.");
-%!  disp("Notice how much bigger the speedup is then in example 1.");
+%!  disp("Notice how much bigger the speedup is than in example 1.");
 %! endif

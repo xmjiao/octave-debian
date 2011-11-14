@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 2000, 2002, 2005, 2006, 2007
-##               Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -18,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {[@var{pval}, @var{chisq}, @var{df}] =} bartlett_test (@var{x1}, @dots{}) 
+## @deftypefn {Function File} {[@var{pval}, @var{chisq}, @var{df}] =} bartlett_test (@var{x1}, @dots{})
 ## Perform a Bartlett test for the homogeneity of variances in the data
 ## vectors @var{x1}, @var{x2}, @dots{}, @var{xk}, where @var{k} > 1.
 ##
@@ -59,7 +58,7 @@ function [pval, chisq, df] = bartlett_test (varargin)
   c     = 1 + (sum (1 ./ f) - 1 / f_tot) / (3 * (k - 1));
   chisq = (f_tot * log (v_tot) - sum (f .* log (v))) / c;
   df    = k;
-  pval  = 1 - chisquare_cdf (chisq, df);
+  pval  = 1 - chi2cdf (chisq, df);
 
   if (nargout == 0)
     printf("  pval: %g\n", pval);

@@ -1,5 +1,6 @@
-## Copyright (C) 1995, 1996, 1999, 2000, 2002, 2004, 2005, 2007
-##               Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
+## Copyright (C) 2009 VZLU Prague
+## Copyright (C) 2009 Jaroslav Hajek
 ##
 ## This file is part of Octave.
 ##
@@ -23,7 +24,7 @@
 ## size.  If so, @var{err} is zero, and @var{yi} is a matrix of the
 ## common size with all entries equal to @var{xi} if this is a scalar or
 ## @var{xi} otherwise.  If the inputs cannot be brought to a common size,
-## errorcode is 1, and @var{yi} is @var{xi}.  For example,
+## @var{err} is 1, and @var{yi} is @var{xi}.  For example:
 ##
 ## @example
 ## @group
@@ -42,6 +43,7 @@
 ## Author: KH <Kurt.Hornik@wu-wien.ac.at>
 ## Created: 15 October 1994
 ## Adapted-By: jwe
+## Optimized-By: Jaroslav Hajek
 
 function [errorcode, varargout] = common_size (varargin)
 
@@ -49,34 +51,30 @@ function [errorcode, varargout] = common_size (varargin)
     error ("common_size: only makes sense if nargin >= 2");
   endif
 
-  len = 2;
-  for i = 1 : nargin
-    sz =  size (varargin{i});
-    if (length (sz) < len)
-      s(i,:) = [sz, ones(1,len - length(sz))];
-    else
-      if (length (sz) > len)
-	if (i > 1)
-	  s = [s, ones(size(s,1), length(sz) - len)];
-	endif
-	len = length (sz);
-      endif
-      s(i,:) = sz;
-    endif
-  endfor
+  ## Find scalar args.
+  nscal = cellfun (@numel, varargin) != 1;
 
-  m = max (s);
-  if (any (any ((s != 1)') & any ((s != ones (nargin, 1) * m)')))
-    errorcode = 1;
+  i = find (nscal, 1);
+
+  if (isempty (i))
+    errorcode = 0;
     varargout = varargin;
   else
-    errorcode = 0;
-    for i = 1 : nargin
-      varargout{i} = varargin{i};
-      if (prod (s(i,:)) == 1)
-	varargout{i} *= ones (m);
+    match = cellfun (@size_equal, varargin, varargin(i));
+    if (any (nscal &! match))
+      errorcode = 1;
+      varargout = varargin;
+    else
+      errorcode = 0;
+      if (nargout > 1)
+        scal = !nscal;
+        varargout = varargin;
+        if (any (nscal))
+          dims = size (varargin{find (nscal, 1)});
+          subs = arrayfun (@ones, 1, dims, "uniformoutput", false);
+          varargout(scal) = cellindexmat (varargin(scal), subs{:});
+        endif
       endif
-    endfor
+    endif
   endif
-
 endfunction

@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2000, 2002, 2003, 2004, 2005,
-              2006, 2007, 2008 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
+Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
 
@@ -37,16 +37,26 @@ friend class FloatComplexRowVector;
 
 public:
 
-  FloatComplexColumnVector (void) : MArray<FloatComplex> () { }
+ FloatComplexColumnVector (void)
+   : MArray<FloatComplex> (dim_vector (0, 1)) { }
 
-  explicit FloatComplexColumnVector (octave_idx_type n) : MArray<FloatComplex> (n) { }
+  explicit FloatComplexColumnVector (octave_idx_type n)
+    : MArray<FloatComplex> (dim_vector (n, 1)) { }
+
+  explicit FloatComplexColumnVector (const dim_vector& dv)
+    : MArray<FloatComplex> (dv.as_column ()) { }
 
   FloatComplexColumnVector (octave_idx_type n, const FloatComplex& val)
-    : MArray<FloatComplex> (n, val) { }
+    : MArray<FloatComplex> (dim_vector (n, 1), val) { }
 
-  FloatComplexColumnVector (const FloatComplexColumnVector& a) : MArray<FloatComplex> (a) { }
+  FloatComplexColumnVector (const FloatComplexColumnVector& a)
+    : MArray<FloatComplex> (a) { }
 
-  FloatComplexColumnVector (const MArray<FloatComplex>& a) : MArray<FloatComplex> (a) { }
+  FloatComplexColumnVector (const MArray<FloatComplex>& a)
+    : MArray<FloatComplex> (a.as_column ()) { }
+
+  FloatComplexColumnVector (const Array<FloatComplex>& a)
+    : MArray<FloatComplex> (a.as_column ()) { }
 
   explicit FloatComplexColumnVector (const FloatColumnVector& a);
 
@@ -91,54 +101,50 @@ public:
   // matrix by column vector -> column vector operations
 
   friend OCTAVE_API FloatComplexColumnVector operator * (const FloatComplexMatrix& a,
-					 const FloatColumnVector& b);
+                                         const FloatColumnVector& b);
 
   friend OCTAVE_API FloatComplexColumnVector operator * (const FloatComplexMatrix& a,
-					 const FloatComplexColumnVector& b);
+                                         const FloatComplexColumnVector& b);
 
   // matrix by column vector -> column vector operations
 
   friend OCTAVE_API FloatComplexColumnVector operator * (const FloatMatrix& a,
-					 const FloatComplexColumnVector& b);
+                                         const FloatComplexColumnVector& b);
 
   // diagonal matrix by column vector -> column vector operations
 
   friend OCTAVE_API FloatComplexColumnVector operator * (const FloatDiagMatrix& a,
-					 const FloatComplexColumnVector& b);
+                                         const FloatComplexColumnVector& b);
 
   friend OCTAVE_API FloatComplexColumnVector operator * (const FloatComplexDiagMatrix& a,
-					 const ColumnVector& b);
+                                         const ColumnVector& b);
 
   friend OCTAVE_API FloatComplexColumnVector operator * (const FloatComplexDiagMatrix& a,
-					 const FloatComplexColumnVector& b);
+                                         const FloatComplexColumnVector& b);
 
   // other operations
 
-  typedef float (*dmapper) (const FloatComplex&);
-  typedef FloatComplex (*cmapper) (const FloatComplex&);
-
-  FloatColumnVector map (dmapper fcn) const;
-  FloatComplexColumnVector map (cmapper fcn) const;
-
   FloatComplex min (void) const;
   FloatComplex max (void) const;
+
+  FloatColumnVector abs (void) const;
 
   // i/o
 
   friend OCTAVE_API std::ostream& operator << (std::ostream& os, const FloatComplexColumnVector& a);
   friend OCTAVE_API std::istream& operator >> (std::istream& is, FloatComplexColumnVector& a);
 
-private:
+  void resize (octave_idx_type n,
+               const FloatComplex& rfv = Array<FloatComplex>::resize_fill_value ())
+  {
+    Array<FloatComplex>::resize (dim_vector (n, 1), rfv);
+  }
 
-  FloatComplexColumnVector (FloatComplex *d, octave_idx_type l) : MArray<FloatComplex> (d, l) { }
+  void clear (octave_idx_type n)
+    { Array<FloatComplex>::clear (n, 1); }
+
 };
 
 MARRAY_FORWARD_DEFS (MArray, FloatComplexColumnVector, FloatComplex)
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,8 +1,7 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2002, 2003, 2004, 2005, 2007
-              John W. Eaton
-Copyright (C) 2008, 2009 Jaroslav Hajek
+Copyright (C) 1994-2011 John W. Eaton
+Copyright (C) 2008-2009 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -34,6 +33,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "f77-fcn.h"
 #include "lo-error.h"
 #include "oct-locbuf.h"
+#include "oct-norm.h"
 #ifndef HAVE_QRUPDATE
 #include "dbleQR.h"
 #endif
@@ -41,42 +41,47 @@ along with Octave; see the file COPYING.  If not, see
 extern "C"
 {
   F77_RET_T
-  F77_FUNC (zpotrf, ZPOTRF) (F77_CONST_CHAR_ARG_DECL, const octave_idx_type&,
-			     Complex*, const octave_idx_type&, octave_idx_type&
-			     F77_CHAR_ARG_LEN_DECL);
+  F77_FUNC (zpotrf, ZPOTRF) (F77_CONST_CHAR_ARG_DECL,
+                             const octave_idx_type&, Complex*,
+                             const octave_idx_type&, octave_idx_type&
+                             F77_CHAR_ARG_LEN_DECL);
   F77_RET_T
-  F77_FUNC (zpotri, ZPOTRI) (F77_CONST_CHAR_ARG_DECL, const octave_idx_type&,
-			     Complex*, const octave_idx_type&, octave_idx_type&
-			     F77_CHAR_ARG_LEN_DECL);
+  F77_FUNC (zpotri, ZPOTRI) (F77_CONST_CHAR_ARG_DECL,
+                             const octave_idx_type&, Complex*,
+                             const octave_idx_type&, octave_idx_type&
+                             F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
-  F77_FUNC (zpocon, ZPOCON) (F77_CONST_CHAR_ARG_DECL, const octave_idx_type&,
-			     Complex*, const octave_idx_type&, const double&,
-			     double&, Complex*, double*, 
-			     octave_idx_type& F77_CHAR_ARG_LEN_DECL);
+  F77_FUNC (zpocon, ZPOCON) (F77_CONST_CHAR_ARG_DECL,
+                             const octave_idx_type&, Complex*,
+                             const octave_idx_type&, const double&,
+                             double&, Complex*, double*, octave_idx_type&
+                             F77_CHAR_ARG_LEN_DECL);
 #ifdef HAVE_QRUPDATE
 
   F77_RET_T
-  F77_FUNC (zch1up, ZCH1UP) (const octave_idx_type&, Complex*, const octave_idx_type&,
-                             Complex*, double*);
+  F77_FUNC (zch1up, ZCH1UP) (const octave_idx_type&, Complex*,
+                             const octave_idx_type&, Complex*, double*);
 
   F77_RET_T
-  F77_FUNC (zch1dn, ZCH1DN) (const octave_idx_type&, Complex*, const octave_idx_type&,
-                             Complex*, double*, octave_idx_type&);
-
-  F77_RET_T
-  F77_FUNC (zchinx, ZCHINX) (const octave_idx_type&, Complex*, const octave_idx_type&,
-                             const octave_idx_type&, Complex*, double*, 
+  F77_FUNC (zch1dn, ZCH1DN) (const octave_idx_type&, Complex*,
+                             const octave_idx_type&, Complex*, double*,
                              octave_idx_type&);
 
   F77_RET_T
-  F77_FUNC (zchdex, ZCHDEX) (const octave_idx_type&, Complex*, const octave_idx_type&,
-                             const octave_idx_type&, double*);
+  F77_FUNC (zchinx, ZCHINX) (const octave_idx_type&, Complex*,
+                             const octave_idx_type&, const octave_idx_type&,
+                             Complex*, double*, octave_idx_type&);
 
   F77_RET_T
-  F77_FUNC (zchshx, ZCHSHX) (const octave_idx_type&, Complex*, const octave_idx_type&,
-                             const octave_idx_type&, const octave_idx_type&, 
-                             Complex*, double*);
+  F77_FUNC (zchdex, ZCHDEX) (const octave_idx_type&, Complex*,
+                             const octave_idx_type&, const octave_idx_type&,
+                             double*);
+
+  F77_RET_T
+  F77_FUNC (zchshx, ZCHSHX) (const octave_idx_type&, Complex*,
+                             const octave_idx_type&, const octave_idx_type&,
+                             const octave_idx_type&, Complex*, double*);
 #endif
 }
 
@@ -89,52 +94,49 @@ ComplexCHOL::init (const ComplexMatrix& a, bool calc_cond)
   if (a_nr != a_nc)
     {
       (*current_liboctave_error_handler)
-	("ComplexCHOL requires square matrix");
+        ("ComplexCHOL requires square matrix");
       return -1;
     }
 
   octave_idx_type n = a_nc;
   octave_idx_type info;
 
-  chol_mat = a;
+  chol_mat.clear (n, n);
+  for (octave_idx_type j = 0; j < n; j++)
+    {
+      for (octave_idx_type i = 0; i <= j; i++)
+        chol_mat.xelem (i, j) = a(i, j);
+      for (octave_idx_type i = j+1; i < n; i++)
+        chol_mat.xelem (i, j) = 0.0;
+    }
   Complex *h = chol_mat.fortran_vec ();
 
   // Calculate the norm of the matrix, for later use.
   double anorm = 0;
-  if (calc_cond) 
-    anorm = chol_mat.abs().sum().row(static_cast<octave_idx_type>(0)).max();
+  if (calc_cond)
+    anorm = xnorm (a, 1);
 
   F77_XFCN (zpotrf, ZPOTRF, (F77_CONST_CHAR_ARG2 ("U", 1), n, h, n, info
-			     F77_CHAR_ARG_LEN (1)));
+                             F77_CHAR_ARG_LEN (1)));
 
   xrcond = 0.0;
-  if (info != 0)
-    info = -1;
-  else if (calc_cond) 
+  if (info > 0)
+    chol_mat.resize (info - 1, info - 1);
+  else if (calc_cond)
     {
       octave_idx_type zpocon_info = 0;
 
       // Now calculate the condition number for non-singular matrix.
-      Array<Complex> z (2*n);
+      Array<Complex> z (dim_vector (2*n, 1));
       Complex *pz = z.fortran_vec ();
-      Array<double> rz (n);
+      Array<double> rz (dim_vector (n, 1));
       double *prz = rz.fortran_vec ();
       F77_XFCN (zpocon, ZPOCON, (F77_CONST_CHAR_ARG2 ("U", 1), n, h,
-				 n, anorm, xrcond, pz, prz, zpocon_info
-				 F77_CHAR_ARG_LEN (1)));
+                                 n, anorm, xrcond, pz, prz, zpocon_info
+                                 F77_CHAR_ARG_LEN (1)));
 
-      if (zpocon_info != 0) 
-	info = -1;
-    }
-  else
-    {
-      // If someone thinks of a more graceful way of doing this (or
-      // faster for that matter :-)), please let me know!
-
-      if (n > 1)
-	for (octave_idx_type j = 0; j < a_nc; j++)
-	  for (octave_idx_type i = j+1; i < a_nr; i++)
-	    chol_mat.xelem (i, j) = 0.0;
+      if (zpocon_info != 0)
+        info = -1;
     }
 
   return info;
@@ -156,16 +158,16 @@ chol2inv_internal (const ComplexMatrix& r)
       ComplexMatrix tmp = r;
 
       F77_XFCN (zpotri, ZPOTRI, (F77_CONST_CHAR_ARG2 ("U", 1), n,
-				 tmp.fortran_vec (), n, info
-				 F77_CHAR_ARG_LEN (1)));
+                                 tmp.fortran_vec (), n, info
+                                 F77_CHAR_ARG_LEN (1)));
 
       // If someone thinks of a more graceful way of doing this (or
       // faster for that matter :-)), please let me know!
 
       if (n > 1)
-	for (octave_idx_type j = 0; j < r_nc; j++)
-	  for (octave_idx_type i = j+1; i < r_nr; i++)
-	    tmp.xelem (i, j) = std::conj (tmp.xelem (j, i));
+        for (octave_idx_type j = 0; j < r_nc; j++)
+          for (octave_idx_type i = j+1; i < r_nr; i++)
+            tmp.xelem (i, j) = std::conj (tmp.xelem (j, i));
 
       retval = tmp;
     }
@@ -185,7 +187,7 @@ ComplexCHOL::inverse (void) const
 void
 ComplexCHOL::set (const ComplexMatrix& R)
 {
-  if (R.is_square ()) 
+  if (R.is_square ())
     chol_mat = R;
   else
     (*current_liboctave_error_handler) ("CHOL requires square matrix");
@@ -239,7 +241,7 @@ ComplexCHOL::insert_sym (const ComplexColumnVector& u, octave_idx_type j)
   octave_idx_type info = -1;
 
   octave_idx_type n = chol_mat.rows ();
-  
+
   if (u.length () != n + 1)
     (*current_liboctave_error_handler) ("cholinsert: dimension mismatch");
   else if (j < 0 || j > n)
@@ -263,14 +265,14 @@ void
 ComplexCHOL::delete_sym (octave_idx_type j)
 {
   octave_idx_type n = chol_mat.rows ();
-  
+
   if (j < 0 || j > n-1)
     (*current_liboctave_error_handler) ("choldelete: index out of range");
   else
     {
       OCTAVE_LOCAL_BUFFER (double, rw, n);
 
-      F77_XFCN (zchdex, ZCHDEX, (n, chol_mat.fortran_vec (), chol_mat.rows (), 
+      F77_XFCN (zchdex, ZCHDEX, (n, chol_mat.fortran_vec (), chol_mat.rows (),
                                  j + 1, rw));
 
       chol_mat.resize (n-1, n-1);
@@ -281,8 +283,8 @@ void
 ComplexCHOL::shift_sym (octave_idx_type i, octave_idx_type j)
 {
   octave_idx_type n = chol_mat.rows ();
-  
-  if (i < 0 || i > n-1 || j < 0 || j > n-1) 
+
+  if (i < 0 || i > n-1 || j < 0 || j > n-1)
     (*current_liboctave_error_handler) ("cholshift: index out of range");
   else
     {
@@ -305,7 +307,7 @@ ComplexCHOL::update (const ComplexColumnVector& u)
 
   if (u.length () == n)
     {
-      init (chol_mat.hermitian () * chol_mat 
+      init (chol_mat.hermitian () * chol_mat
             + ComplexMatrix (u) * ComplexMatrix (u).hermitian (), false);
     }
   else
@@ -335,7 +337,7 @@ ComplexCHOL::downdate (const ComplexColumnVector& u)
         info = 2;
       else
         {
-          info = init (chol_mat.hermitian () * chol_mat 
+          info = init (chol_mat.hermitian () * chol_mat
                        - ComplexMatrix (u) * ComplexMatrix (u).hermitian (), false);
           if (info) info = 1;
         }
@@ -354,7 +356,7 @@ ComplexCHOL::insert_sym (const ComplexColumnVector& u, octave_idx_type j)
   octave_idx_type info = -1;
 
   octave_idx_type n = chol_mat.rows ();
-  
+
   if (u.length () != n + 1)
     (*current_liboctave_error_handler) ("cholinsert: dimension mismatch");
   else if (j < 0 || j > n)
@@ -393,7 +395,7 @@ ComplexCHOL::delete_sym (octave_idx_type j)
   warn_qrupdate_once ();
 
   octave_idx_type n = chol_mat.rows ();
-  
+
   if (j < 0 || j > n-1)
     (*current_liboctave_error_handler) ("choldelete: index out of range");
   else
@@ -411,13 +413,13 @@ ComplexCHOL::shift_sym (octave_idx_type i, octave_idx_type j)
   warn_qrupdate_once ();
 
   octave_idx_type n = chol_mat.rows ();
-  
-  if (i < 0 || i > n-1 || j < 0 || j > n-1) 
+
+  if (i < 0 || i > n-1 || j < 0 || j > n-1)
     (*current_liboctave_error_handler) ("cholshift: index out of range");
   else
     {
       ComplexMatrix a = chol_mat.hermitian () * chol_mat;
-      Array<octave_idx_type> p (n);
+      Array<octave_idx_type> p (dim_vector (n, 1));
       for (octave_idx_type k = 0; k < n; k++) p(k) = k;
       if (i < j)
         {
@@ -441,9 +443,3 @@ chol2inv (const ComplexMatrix& r)
 {
   return chol2inv_internal (r);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

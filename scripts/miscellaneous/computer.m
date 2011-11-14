@@ -1,4 +1,4 @@
-## Copyright (C) 2004, 2005, 2007, 2008 John W. Eaton
+## Copyright (C) 2004-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -21,7 +21,7 @@
 ## Print or return a string of the form @var{cpu}-@var{vendor}-@var{os}
 ## that identifies the kind of computer Octave is running on.  If invoked
 ## with an output argument, the value is returned instead of printed.  For
-## example,
+## example:
 ##
 ## @example
 ## @group
@@ -68,7 +68,7 @@ function [c, maxsize, endian] = computer ()
       endian = "L";
     else
       endian = "?";
-    endif      
+    endif
   endif
 
 endfunction

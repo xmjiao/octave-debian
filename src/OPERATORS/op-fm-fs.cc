@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2000, 2001, 2002, 2003, 2004, 2005, 2006,
-              2007, 2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -70,18 +69,18 @@ DEFBINOP (ldiv, float_matrix, float)
   return ret;
 }
 
-DEFNDBINOP_FN (lt, float_matrix, float_scalar, float_array, 
-	       float_scalar, mx_el_lt)
-DEFNDBINOP_FN (le, float_matrix, float_scalar, float_array, 
-	       float_scalar, mx_el_le)
-DEFNDBINOP_FN (eq, float_matrix, float_scalar, float_array, 
-	       float_scalar, mx_el_eq)
-DEFNDBINOP_FN (ge, float_matrix, float_scalar, float_array, 
-	       float_scalar, mx_el_ge)
-DEFNDBINOP_FN (gt, float_matrix, float_scalar, float_array, 
-	       float_scalar, mx_el_gt)
-DEFNDBINOP_FN (ne, float_matrix, float_scalar, float_array, 
-	       float_scalar, mx_el_ne)
+DEFNDBINOP_FN (lt, float_matrix, float_scalar, float_array,
+               float_scalar, mx_el_lt)
+DEFNDBINOP_FN (le, float_matrix, float_scalar, float_array,
+               float_scalar, mx_el_le)
+DEFNDBINOP_FN (eq, float_matrix, float_scalar, float_array,
+               float_scalar, mx_el_eq)
+DEFNDBINOP_FN (ge, float_matrix, float_scalar, float_array,
+               float_scalar, mx_el_ge)
+DEFNDBINOP_FN (gt, float_matrix, float_scalar, float_array,
+               float_scalar, mx_el_gt)
+DEFNDBINOP_FN (ne, float_matrix, float_scalar, float_array,
+               float_scalar, mx_el_ne)
 
 DEFNDBINOP_OP (el_mul, float_matrix, float_scalar, float_array, float_scalar, *)
 
@@ -97,8 +96,8 @@ DEFBINOP (el_div, float_matrix, float)
   return octave_value (v1.float_array_value () / d);
 }
 
-DEFNDBINOP_FN (el_pow, float_matrix, float_scalar, float_array, 
-	       float_scalar, elem_xpow)
+DEFNDBINOP_FN (el_pow, float_matrix, float_scalar, float_array,
+               float_scalar, elem_xpow)
 
 DEFBINOP (el_ldiv, float_matrix, float)
 {
@@ -107,13 +106,13 @@ DEFBINOP (el_ldiv, float_matrix, float)
   return x_el_div (v2.float_value (), v1.float_array_value ());
 }
 
-DEFNDBINOP_FN (el_and, float_matrix, float_scalar, float_array, 
-	       float_scalar, mx_el_and)
-DEFNDBINOP_FN (el_or, float_matrix, float_scalar, float_array, 
-	       float_scalar, mx_el_or)
+DEFNDBINOP_FN (el_and, float_matrix, float_scalar, float_array,
+               float_scalar, mx_el_and)
+DEFNDBINOP_FN (el_or, float_matrix, float_scalar, float_array,
+               float_scalar, mx_el_or)
 
-DEFNDCATOP_FN (fm_fs, float_matrix, float_scalar, float_array, 
-	       float_array, concat)
+DEFNDCATOP_FN (fm_fs, float_matrix, float_scalar, float_array,
+               float_array, concat)
 
 DEFNDCATOP_FN (m_fs, matrix, float_scalar, float_array, float_array, concat)
 
@@ -121,6 +120,11 @@ DEFNDCATOP_FN (fm_s, float_matrix, scalar, float_array, float_array, concat)
 
 DEFNDASSIGNOP_FN (assign, float_matrix, float_scalar, float_scalar, assign)
 DEFNDASSIGNOP_FN (dbl_assign, matrix, float_scalar, scalar, assign)
+
+DEFNDASSIGNOP_OP (assign_add, float_matrix, float_scalar, float_scalar, +=)
+DEFNDASSIGNOP_OP (assign_sub, float_matrix, float_scalar, float_scalar, -=)
+DEFNDASSIGNOP_OP (assign_mul, float_matrix, float_scalar, float_scalar, *=)
+DEFNDASSIGNOP_OP (assign_div, float_matrix, float_scalar, float_scalar, /=)
 
 void
 install_fm_fs_ops (void)
@@ -150,10 +154,9 @@ install_fm_fs_ops (void)
 
   INSTALL_ASSIGNOP (op_asn_eq, octave_float_matrix, octave_float_scalar, assign);
   INSTALL_ASSIGNOP (op_asn_eq, octave_matrix, octave_float_scalar, dbl_assign);
-}
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+  INSTALL_ASSIGNOP (op_add_eq, octave_float_matrix, octave_float_scalar, assign_add);
+  INSTALL_ASSIGNOP (op_sub_eq, octave_float_matrix, octave_float_scalar, assign_sub);
+  INSTALL_ASSIGNOP (op_mul_eq, octave_float_matrix, octave_float_scalar, assign_mul);
+  INSTALL_ASSIGNOP (op_div_eq, octave_float_matrix, octave_float_scalar, assign_div);
+}

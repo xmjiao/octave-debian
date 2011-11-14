@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2002,
-              2003, 2005, 2006, 2007, 2008 John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -28,9 +27,12 @@ along with Octave; see the file COPYING.  If not, see
 
 #include <iosfwd>
 #include <string>
+#include <list>
 
 #include "dMatrix.h"
 #include "lo-utils.h"
+
+#include "cutils.h"
 
 class octave_value;
 class octave_value_list;
@@ -43,17 +45,17 @@ extern OCTINTERP_API bool
 same_file (const std::string& f, const std::string& g);
 
 extern OCTINTERP_API int almost_match (const std::string& std,
-				       const std::string& s,
-				       int min_match_len = 1,
-				       int case_sens = 1);
+                                       const std::string& s,
+                                       int min_match_len = 1,
+                                       int case_sens = 1);
 
 extern OCTINTERP_API int
 keyword_almost_match (const char * const *std, int *min_len,
-		      const std::string& s, int min_toks_to_match,
-		      int max_toks);
+                      const std::string& s, int min_toks_to_match,
+                      int max_toks);
 
 extern OCTINTERP_API int empty_arg (const char *name, octave_idx_type nr,
-				    octave_idx_type nc);
+                                    octave_idx_type nc);
 
 extern OCTINTERP_API std::string
 search_path_for_file (const std::string&, const string_vector&);
@@ -85,12 +87,20 @@ get_dimensions (const octave_value& a, const char *warn_for,
 
 extern OCTINTERP_API void
 get_dimensions (const octave_value& a, const octave_value& b,
-		const char *warn_for, octave_idx_type& nr,
-		octave_idx_type& nc);
+                const char *warn_for, octave_idx_type& nr,
+                octave_idx_type& nc);
 
 extern OCTINTERP_API void
 get_dimensions (const octave_value& a,const char *warn_for,
-		octave_idx_type& nr, octave_idx_type& nc);
+                octave_idx_type& nr, octave_idx_type& nc);
+
+extern OCTINTERP_API octave_idx_type
+dims_to_numel (const dim_vector& dims, const octave_value_list& idx);
+
+extern OCTINTERP_API void
+decode_subscripts (const char* name, const octave_value& arg,
+                   std::string& type_string,
+                   std::list<octave_value_list>& idx);
 
 extern OCTINTERP_API Matrix
 identity_matrix (octave_idx_type nr, octave_idx_type nc);
@@ -110,17 +120,15 @@ extern OCTINTERP_API char *octave_snprintf (const char *fmt, ...);
 
 extern OCTINTERP_API void octave_sleep (double seconds);
 
-extern "C" OCTINTERP_API void octave_sleep (unsigned int seconds);
+extern OCTINTERP_API
+octave_value_list
+do_simple_cellfun (octave_value_list (*fun) (const octave_value_list&, int),
+                   const char *fun_name, const octave_value_list& args,
+                   int nargout);
 
-extern "C" OCTINTERP_API void octave_usleep (unsigned int useconds);
-
-extern "C" OCTINTERP_API int
-octave_raw_vsnprintf (char *buf, size_t n, const char *fmt, va_list args);
+extern OCTINTERP_API
+octave_value
+do_simple_cellfun (octave_value_list (*fun) (const octave_value_list&, int),
+                   const char *fun_name, const octave_value_list& args);
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

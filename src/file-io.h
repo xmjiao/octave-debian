@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 2004, 2005, 2006, 2007
-              John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -35,9 +34,3 @@ extern OCTINTERP_API void mark_for_deletion (const std::string&);
 extern OCTINTERP_API void cleanup_tmp_files (void);
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

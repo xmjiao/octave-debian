@@ -1,4 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 2005, 2006, 2007 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -35,7 +35,7 @@ function pdf = binopdf (x, n, p)
   if (! isscalar (n) || ! isscalar (p))
     [retval, x, n, p] = common_size (x, n, p);
     if (retval > 0)
-      error ("binopdf: x, n and p must be of common size or scalar");
+      error ("binopdf: X, N and P must be of common size or scalar");
     endif
   endif
 

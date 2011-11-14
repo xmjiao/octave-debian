@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 1999, 2002, 2003, 2004, 2005, 2006, 2007, 2008,
-              2009 John W. Eaton
+Copyright (C) 1999-2011 John W. Eaton
+Copyright (C) 2009-2010 VZLU Prague
 
 This file is part of Octave.
 
@@ -33,12 +33,12 @@ along with Octave; see the file COPYING.  If not, see
 #include "oct-obj.h"
 
 Cell::Cell (const octave_value_list& ovl)
-  : ArrayN<octave_value> (ovl.cell_value ())
+  : Array<octave_value> (ovl.cell_value ())
 {
 }
 
 Cell::Cell (const string_vector& sv, bool trim)
-  : ArrayN<octave_value> ()
+  : Array<octave_value> ()
 {
   octave_idx_type n = sv.length ();
 
@@ -47,23 +47,42 @@ Cell::Cell (const string_vector& sv, bool trim)
       resize (dim_vector (n, 1));
 
       for (octave_idx_type i = 0; i < n; i++)
-	{
-	  std::string s = sv[i];
+        {
+          std::string s = sv[i];
 
-	  if (trim)
-	    {
-	      size_t pos = s.find_last_not_of (' ');
+          if (trim)
+            {
+              size_t pos = s.find_last_not_of (' ');
 
-	      s = (pos == std::string::npos) ? "" : s.substr (0, pos+1);
-	    }
+              s = (pos == std::string::npos) ? "" : s.substr (0, pos+1);
+            }
 
-	  elem(i,0) = s;
-	}
+          elem(i,0) = s;
+        }
+    }
+}
+
+Cell::Cell (const std::list<std::string>& lst)
+  : Array<octave_value> ()
+{
+  size_t n = lst.size ();
+
+  if (n > 0)
+    {
+      resize (dim_vector (n, 1));
+
+      octave_idx_type i = 0;
+
+      for (std::list<std::string>::const_iterator it = lst.begin ();
+           it != lst.end (); it++)
+        {
+          elem(i++,0) = *it;
+        }
     }
 }
 
 Cell::Cell (const Array<std::string>& sa)
-  : ArrayN<octave_value> (sa.dims ())
+  : Array<octave_value> (sa.dims ())
 {
   octave_idx_type n = sa.numel ();
 
@@ -78,7 +97,7 @@ Cell::Cell (const Array<std::string>& sa)
 // SV as possible.
 
 Cell::Cell (const dim_vector& dv, const string_vector& sv, bool trim)
-  : ArrayN<octave_value> (dv, resize_fill_value ())
+  : Array<octave_value> (dv, resize_fill_value ())
 {
   octave_idx_type n = sv.length ();
 
@@ -89,18 +108,18 @@ Cell::Cell (const dim_vector& dv, const string_vector& sv, bool trim)
       octave_idx_type len = n > m ? m : n;
 
       for (octave_idx_type i = 0; i < len; i++)
-	{
-	  std::string s = sv[i];
+        {
+          std::string s = sv[i];
 
-	  if (trim)
-	    {
-	      size_t pos = s.find_last_not_of (' ');
+          if (trim)
+            {
+              size_t pos = s.find_last_not_of (' ');
 
-	      s = (pos == std::string::npos) ? "" : s.substr (0, pos+1);
-	    }
+              s = (pos == std::string::npos) ? "" : s.substr (0, pos+1);
+            }
 
-	  elem(i) = s;
-	}
+          elem(i) = s;
+        }
     }
 }
 
@@ -109,14 +128,29 @@ Cell::is_cellstr (void) const
 {
   bool retval = true;
 
-  for (int i = 0; i < numel (); i++)
+  octave_idx_type n = numel ();
+
+  for (octave_idx_type i = 0; i < n; i++)
     {
       if (! elem(i).is_string ())
-	{
-	  retval = false;
-	  break;
-	}
+        {
+          retval = false;
+          break;
+        }
     }
+
+  return retval;
+}
+
+Array<std::string>
+Cell::cellstr_value (void) const
+{
+  Array<std::string> retval (dims ());
+
+  octave_idx_type n = numel ();
+
+  for (octave_idx_type i = 0; i < n; i++)
+    retval.xelem (i) = elem (i).string_value ();
 
   return retval;
 }
@@ -136,42 +170,43 @@ Cell::index (const octave_value_list& idx_arg, bool resize_ok) const
 
     case 1:
       {
-	idx_vector i = idx_arg(0).index_vector ();
+        idx_vector i = idx_arg(0).index_vector ();
 
-	if (! error_state)
-	  retval = ArrayN<octave_value>::index (i, resize_ok, resize_fill_value ());
+        if (! error_state)
+          retval = Array<octave_value>::index (i, resize_ok,
+                                               resize_fill_value ());
       }
       break;
 
     case 2:
       {
-	idx_vector i = idx_arg(0).index_vector ();
+        idx_vector i = idx_arg(0).index_vector ();
 
-	if (! error_state)
-	  {
-	    idx_vector j = idx_arg(1).index_vector ();
+        if (! error_state)
+          {
+            idx_vector j = idx_arg(1).index_vector ();
 
-	    if (! error_state)
-	      retval = ArrayN<octave_value>::index (i, j, resize_ok,
+            if (! error_state)
+              retval = Array<octave_value>::index (i, j, resize_ok,
                                                     resize_fill_value ());
-	  }
+          }
       }
       break;
 
     default:
       {
-	Array<idx_vector> iv (n);
+        Array<idx_vector> iv (dim_vector (n, 1));
 
-	for (octave_idx_type i = 0; i < n; i++)
-	  {
-	    iv(i) = idx_arg(i).index_vector ();
+        for (octave_idx_type i = 0; i < n; i++)
+          {
+            iv(i) = idx_arg(i).index_vector ();
 
-	    if (error_state)
-	      break;
-	  }
+            if (error_state)
+              break;
+          }
 
-	if (!error_state)
-	  retval = ArrayN<octave_value>::index (iv, resize_ok,
+        if (!error_state)
+          retval = Array<octave_value>::index (iv, resize_ok,
                                                 resize_fill_value ());
       }
       break;
@@ -180,37 +215,33 @@ Cell::index (const octave_value_list& idx_arg, bool resize_ok) const
   return retval;
 }
 
-Cell&
+void
 Cell::assign (const octave_value_list& idx_arg, const Cell& rhs,
-	      const octave_value& fill_val)
+              const octave_value& fill_val)
 
 {
   octave_idx_type len = idx_arg.length ();
 
-  Array<idx_vector> ra_idx (len);
+  Array<idx_vector> ra_idx (dim_vector (len, 1));
 
   for (octave_idx_type i = 0; i < len; i++)
     ra_idx(i) = idx_arg(i).index_vector ();
 
   Array<octave_value>::assign (ra_idx, rhs, fill_val);
-
-  return *this;
 }
 
-Cell&
+void
 Cell::delete_elements (const octave_value_list& idx_arg)
 
 {
   octave_idx_type len = idx_arg.length ();
 
-  Array<idx_vector> ra_idx (len);
+  Array<idx_vector> ra_idx (dim_vector (len, 1));
 
   for (octave_idx_type i = 0; i < len; i++)
     ra_idx.xelem (i) = idx_arg(i).index_vector ();
 
   Array<octave_value>::delete_elements (ra_idx);
-
-  return *this;
 }
 
 octave_idx_type
@@ -228,16 +259,16 @@ Cell::column (octave_idx_type i) const
   if (ndims () < 3)
     {
       if (i < 0 || i >= cols ())
-	error ("invalid column selection");
+        error ("invalid column selection");
       else
-	{
-	  octave_idx_type nr = rows ();
+        {
+          octave_idx_type nr = rows ();
 
-	  retval.resize (dim_vector (nr, 1));
+          retval.resize (dim_vector (nr, 1));
 
-	  for (octave_idx_type j = 0; j < nr; j++)
-	    retval.xelem (j) = elem (j, i);
-	}
+          for (octave_idx_type j = 0; j < nr; j++)
+            retval.xelem (j) = elem (j, i);
+        }
     }
   else
     error ("Cell::column: requires 2-d cell array");
@@ -282,11 +313,5 @@ Cell::map (ctype_mapper fcn) const
 Cell
 Cell::diag (octave_idx_type k) const
 {
-  return ArrayN<octave_value>::diag (k);
+  return Array<octave_value>::diag (k);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

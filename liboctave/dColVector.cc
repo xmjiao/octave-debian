@@ -1,8 +1,8 @@
 // ColumnVector manipulations.
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2000, 2001, 2002, 2003, 2004,
-              2005, 2007, 2008 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
+Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
 
@@ -42,11 +42,12 @@ extern "C"
 {
   F77_RET_T
   F77_FUNC (dgemv, DGEMV) (F77_CONST_CHAR_ARG_DECL,
-			   const octave_idx_type&, const octave_idx_type&, const double&,
-			   const double*, const octave_idx_type&, const double*,
-			   const octave_idx_type&, const double&, double*,
-			   const octave_idx_type&
-			   F77_CHAR_ARG_LEN_DECL);
+                           const octave_idx_type&, const octave_idx_type&,
+                           const double&, const double*,
+                           const octave_idx_type&, const double*,
+                           const octave_idx_type&, const double&, double*,
+                           const octave_idx_type&
+                           F77_CHAR_ARG_LEN_DECL);
 }
 
 // Column Vector class.
@@ -57,7 +58,7 @@ ColumnVector::operator == (const ColumnVector& a) const
   octave_idx_type len = length ();
   if (len != a.length ())
     return 0;
-  return mx_inline_equal (data (), a.data (), len);
+  return mx_inline_equal (len, data (), a.data ());
 }
 
 bool
@@ -82,7 +83,7 @@ ColumnVector::insert (const ColumnVector& a, octave_idx_type r)
       make_unique ();
 
       for (octave_idx_type i = 0; i < a_len; i++)
-	xelem (r+i) = a.elem (i);
+        xelem (r+i) = a.elem (i);
     }
 
   return *this;
@@ -98,7 +99,7 @@ ColumnVector::fill (double val)
       make_unique ();
 
       for (octave_idx_type i = 0; i < len; i++)
-	xelem (i) = val;
+        xelem (i) = val;
     }
 
   return *this;
@@ -122,7 +123,7 @@ ColumnVector::fill (double val, octave_idx_type r1, octave_idx_type r2)
       make_unique ();
 
       for (octave_idx_type i = r1; i <= r2; i++)
-	xelem (i) = val;
+        xelem (i) = val;
     }
 
   return *this;
@@ -146,23 +147,21 @@ ColumnVector::transpose (void) const
 }
 
 ColumnVector
+ColumnVector::abs (void) const
+{
+  return do_mx_unary_map<double, double, std::abs> (*this);
+}
+
+ColumnVector
 real (const ComplexColumnVector& a)
 {
-  octave_idx_type a_len = a.length ();
-  ColumnVector retval;
-  if (a_len > 0)
-    retval = ColumnVector (mx_inline_real_dup (a.data (), a_len), a_len);
-  return retval;
+  return do_mx_unary_op<double, Complex> (a, mx_inline_real);
 }
 
 ColumnVector
 imag (const ComplexColumnVector& a)
 {
-  octave_idx_type a_len = a.length ();
-  ColumnVector retval;
-  if (a_len > 0)
-    retval = ColumnVector (mx_inline_imag_dup (a.data (), a_len), a_len);
-  return retval;
+  return do_mx_unary_op<double, Complex> (a, mx_inline_imag);
 }
 
 // resize is the destructive equivalent for this one
@@ -209,20 +208,17 @@ operator * (const Matrix& m, const ColumnVector& a)
     gripe_nonconformant ("operator *", nr, nc, a_len, 1);
   else
     {
-      if (nr == 0 || nc == 0)
-	retval.resize (nr, 0.0);
-      else
-	{
-	  octave_idx_type ld = nr;
+      retval.clear (nr);
 
-	  retval.resize (nr);
-	  double *y = retval.fortran_vec ();
+      if (nr != 0)
+        {
+          double *y = retval.fortran_vec ();
 
-	  F77_XFCN (dgemv, DGEMV, (F77_CONST_CHAR_ARG2 ("N", 1),
-				   nr, nc, 1.0, m.data (), ld,
-				   a.data (), 1, 0.0, y, 1
-				   F77_CHAR_ARG_LEN (1)));
-	}
+          F77_XFCN (dgemv, DGEMV, (F77_CONST_CHAR_ARG2 ("N", 1),
+                                   nr, nc, 1.0, m.data (), nr,
+                                   a.data (), 1, 0.0, y, 1
+                                   F77_CHAR_ARG_LEN (1)));
+        }
     }
 
   return retval;
@@ -245,35 +241,23 @@ operator * (const DiagMatrix& m, const ColumnVector& a)
   else
     {
       if (nr == 0 || nc == 0)
-	retval.resize (nr, 0.0);
+        retval.resize (nr, 0.0);
       else
-	{
-	  retval.resize (nr);
+        {
+          retval.resize (nr);
 
-	  for (octave_idx_type i = 0; i < a_len; i++)
-	    retval.elem (i) = a.elem (i) * m.elem (i, i);
+          for (octave_idx_type i = 0; i < a_len; i++)
+            retval.elem (i) = a.elem (i) * m.elem (i, i);
 
-	  for (octave_idx_type i = a_len; i < nr; i++)
-	    retval.elem (i) = 0.0;
-	}
+          for (octave_idx_type i = a_len; i < nr; i++)
+            retval.elem (i) = 0.0;
+        }
     }
 
   return retval;
 }
 
 // other operations
-
-ColumnVector
-ColumnVector::map (dmapper fcn) const
-{
-  return MArray<double>::map<double> (func_ptr (fcn));
-}
-
-ComplexColumnVector
-ColumnVector::map (cmapper fcn) const
-{
-  return MArray<double>::map<Complex> (func_ptr (fcn));
-}
 
 double
 ColumnVector::min (void) const
@@ -335,9 +319,3 @@ operator >> (std::istream& is, ColumnVector& a)
     }
   return is;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

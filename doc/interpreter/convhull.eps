@@ -1,9 +1,9 @@
 %!PS-Adobe-2.0 EPSF-2.0
 %%Title: convhull.eps
-%%Creator: gnuplot 4.3 patchlevel 0
-%%CreationDate: Mon May 25 08:47:02 2009
+%%Creator: gnuplot 4.4 patchlevel 0
+%%CreationDate: Thu Sep 29 14:47:00 2011
 %%DocumentFonts: (atend)
-%%BoundingBox: 50 50 625 481
+%%BoundingBox: 50 50 410 302
 %%EndComments
 %%BeginProlog
 /gnudict 256 dict def
@@ -25,7 +25,7 @@ gnudict begin
 /userlinewidth gnulinewidth def
 /Gamma 1.0 def
 %
-/vshift -46 def
+/vshift -66 def
 /dl1 {
   10.0 Dashlength mul mul
   Rounded { currentlinewidth 0.75 mul sub dup 0 le { pop 0.01 } if } if
@@ -46,22 +46,24 @@ systemdict /pdfmark known not {
 SDict begin [
   /Title (convhull.eps)
   /Subject (gnuplot plot)
-  /Creator (gnuplot 4.3 patchlevel 0)
-  /Author (Jaroslav Hajek)
+  /Creator (gnuplot 4.4 patchlevel 0)
+  /Author (jwe)
 %  /Producer (gnuplot)
 %  /Keywords ()
-  /CreationDate (Mon May 25 08:47:02 2009)
+  /CreationDate (Thu Sep 29 14:47:00 2011)
   /DOCINFO pdfmark
 end
 } ifelse
 /doclip {
   ClipToBoundingBox {
-    newpath 50 50 moveto 625 50 lineto 625 481 lineto 50 481 lineto closepath
+    newpath 50 50 moveto 410 50 lineto 410 302 lineto 50 302 lineto closepath
     clip
   } if
 } def
 %
-% Gnuplot Prolog Version 4.2 (November 2007)
+% Gnuplot Prolog Version 4.4 (January 2010)
+%
+%/SuppressPDFMark true def
 %
 /M {moveto} bind def
 /L {lineto} bind def
@@ -466,7 +468,7 @@ doclip
 0.050 0.050 scale
 0 setgray
 newpath
-(Helvetica) findfont 140 scalefont setfont
+(Helvetica) findfont 200 scalefont setfont
 gsave % colour palette begin
 /maxcolors 64 def
 /HSV2RGB {  exch dup 0.0 eq {pop exch pop dup dup} % achromatic gray
@@ -530,7 +532,7 @@ gsave % colour palette begin
 	{pop 1} {maxcolors mul floor maxcolors 1 sub div} ifelse} if} def
 /pm3dGamma 1.0 1.5 Gamma mul div def
 /ColorSpace (RGB) def
-Color true and { % COLOUR vs. GRAY map
+Color InterpolatedColor or { % COLOUR vs. GRAY map
   InterpolatedColor { %% Interpolation vs. RGB-Formula
     /g {stroke pm3dround /grayv exch def interpolate
         SelectSpace setrgbcolor} bind def
@@ -543,143 +545,143 @@ Color true and { % COLOUR vs. GRAY map
 } ifelse
 0.500 UL
 LTb
-1475 1248 M
+780 600 M
 88 0 V
-8833 0 R
+6031 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 1391 1248 M
-[ [(Helvetica) 120.0 0.0 true true 0 (0)]
-] -40.0 MRshow
+0.00 0.00 0.00 C 660 600 M
+[ [({}) 200.0 0.0 true true 0 (0)]
+] -66.7 MRshow
 0.500 UL
 LTb
-1475 2527 M
+780 1400 M
 88 0 V
-8833 0 R
+6031 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 1391 2527 M
-[ [(Helvetica) 120.0 0.0 true true 0 (0.2)]
-] -40.0 MRshow
+0.00 0.00 0.00 C 660 1400 M
+[ [({}) 200.0 0.0 true true 0 (0.2)]
+] -66.7 MRshow
 0.500 UL
 LTb
-1475 3806 M
+780 2200 M
 88 0 V
-8833 0 R
+6031 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 1391 3806 M
-[ [(Helvetica) 120.0 0.0 true true 0 (0.4)]
-] -40.0 MRshow
+0.00 0.00 0.00 C 660 2200 M
+[ [({}) 200.0 0.0 true true 0 (0.4)]
+] -66.7 MRshow
 0.500 UL
 LTb
-1475 5084 M
+780 2999 M
 88 0 V
-8833 0 R
+6031 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 1391 5084 M
-[ [(Helvetica) 120.0 0.0 true true 0 (0.6)]
-] -40.0 MRshow
+0.00 0.00 0.00 C 660 2999 M
+[ [({}) 200.0 0.0 true true 0 (0.6)]
+] -66.7 MRshow
 0.500 UL
 LTb
-1475 6363 M
+780 3799 M
 88 0 V
-8833 0 R
+6031 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 1391 6363 M
-[ [(Helvetica) 120.0 0.0 true true 0 (0.8)]
-] -40.0 MRshow
+0.00 0.00 0.00 C 660 3799 M
+[ [({}) 200.0 0.0 true true 0 (0.8)]
+] -66.7 MRshow
 0.500 UL
 LTb
-1475 7642 M
+780 4599 M
 88 0 V
-8833 0 R
+6031 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 1391 7642 M
-[ [(Helvetica) 120.0 0.0 true true 0 (1)]
-] -40.0 MRshow
+0.00 0.00 0.00 C 660 4599 M
+[ [({}) 200.0 0.0 true true 0 (1)]
+] -66.7 MRshow
 0.500 UL
 LTb
-1548 928 M
+830 400 M
 0 88 V
-0 6946 R
+0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 1548 788 M
-[ [(Helvetica) 120.0 0.0 true true 0 (-3)]
-] -40.0 MCshow
+0.00 0.00 0.00 C 830 200 M
+[ [({}) 200.0 0.0 true true 0 (-3)]
+] -66.7 MCshow
 0.500 UL
 LTb
-3011 928 M
+1833 400 M
 0 88 V
-0 6946 R
+0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 3011 788 M
-[ [(Helvetica) 120.0 0.0 true true 0 (-2)]
-] -40.0 MCshow
+0.00 0.00 0.00 C 1833 200 M
+[ [({}) 200.0 0.0 true true 0 (-2)]
+] -66.7 MCshow
 0.500 UL
 LTb
-4473 928 M
+2836 400 M
 0 88 V
-0 6946 R
+0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 4473 788 M
-[ [(Helvetica) 120.0 0.0 true true 0 (-1)]
-] -40.0 MCshow
+0.00 0.00 0.00 C 2836 200 M
+[ [({}) 200.0 0.0 true true 0 (-1)]
+] -66.7 MCshow
 0.500 UL
 LTb
-5936 928 M
+3840 400 M
 0 88 V
-0 6946 R
+0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 5936 788 M
-[ [(Helvetica) 120.0 0.0 true true 0 (0)]
-] -40.0 MCshow
+0.00 0.00 0.00 C 3840 200 M
+[ [({}) 200.0 0.0 true true 0 (0)]
+] -66.7 MCshow
 0.500 UL
 LTb
-7398 928 M
+4843 400 M
 0 88 V
-0 6946 R
+0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 7398 788 M
-[ [(Helvetica) 120.0 0.0 true true 0 (1)]
-] -40.0 MCshow
+0.00 0.00 0.00 C 4843 200 M
+[ [({}) 200.0 0.0 true true 0 (1)]
+] -66.7 MCshow
 0.500 UL
 LTb
-8860 928 M
+5846 400 M
 0 88 V
-0 6946 R
+0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 8860 788 M
-[ [(Helvetica) 120.0 0.0 true true 0 (2)]
-] -40.0 MCshow
+0.00 0.00 0.00 C 5846 200 M
+[ [({}) 200.0 0.0 true true 0 (2)]
+] -66.7 MCshow
 0.500 UL
 LTb
-10323 928 M
+6849 400 M
 0 88 V
-0 6946 R
+0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 10323 788 M
-[ [(Helvetica) 120.0 0.0 true true 0 (3)]
-] -40.0 MCshow
+0.00 0.00 0.00 C 6849 200 M
+[ [({}) 200.0 0.0 true true 0 (3)]
+] -66.7 MCshow
 0.500 UL
 LTb
 0.500 UL
 LTb
-1475 7962 N
-0 -7034 V
-8921 0 V
-0 7034 V
--8921 0 V
+780 4799 N
+780 400 L
+6119 0 V
+0 4399 V
+-6119 0 V
 Z stroke
 1.000 UP
 0.500 UL
@@ -687,203 +689,195 @@ LTb
 % Begin plot #1
 0.500 UL
 LT0
-1.00 0.00 0.00 C 1548 2150 M
-5936 1248 L
-4387 902 V
--73 315 V
--73 313 V
--73 308 V
--74 304 V
--73 298 V
--73 293 V
--73 285 V
--73 278 V
--73 270 V
--73 261 V
--73 251 V
--74 241 V
--73 230 V
--73 219 V
--73 207 V
--73 195 V
--73 181 V
--73 169 V
--73 154 V
--74 140 V
--73 126 V
--73 111 V
--73 96 V
--73 80 V
--73 65 V
--73 49 V
--73 33 V
--74 18 V
--73 1 V
--4533 0 V
--73 -1 V
--74 -18 V
--73 -33 V
--73 -49 V
--73 -65 V
--73 -80 V
--73 -96 V
--73 -111 V
--73 -126 V
--74 -140 V
--73 -154 V
--73 -169 V
--73 -181 V
--73 -195 V
--73 -207 V
--73 -219 V
--73 -230 V
--74 -241 V
--73 -251 V
--73 -261 V
--73 -270 V
--73 -278 V
--73 -285 V
--73 -293 V
--73 -298 V
--74 -304 V
--73 -308 V
--73 -313 V
--73 -315 V
+1.00 0.00 0.00 C 830 1164 M
+3840 600 L
+3009 564 V
+-50 197 V
+-50 196 V
+-51 193 V
+-50 190 V
+-50 186 V
+-50 183 V
+-50 179 V
+-50 173 V
+-51 169 V
+-50 163 V
+-50 157 V
+-50 151 V
+-50 144 V
+-50 137 V
+-50 130 V
+-51 121 V
+-50 114 V
+-50 105 V
+-50 97 V
+-50 87 V
+-50 79 V
+-51 69 V
+-50 60 V
+-50 50 V
+-50 41 V
+-50 31 V
+-50 21 V
+-51 10 V
+-50 1 V
+-3109 0 V
+-50 -1 V
+-51 -10 V
+-50 -21 V
+-50 -31 V
+-50 -41 V
+-50 -50 V
+-50 -60 V
+-51 -69 V
+-50 -79 V
+-50 -87 V
+-50 -97 V
+-50 -105 V
+-50 -114 V
+-51 -121 V
+-50 -130 V
+-50 -137 V
+-50 -144 V
+-50 -151 V
+-50 -157 V
+-50 -163 V
+-51 -169 V
+-50 -173 V
+-50 -179 V
+-50 -183 V
+-50 -186 V
+981 1750 L
+930 1557 L
+880 1361 L
+830 1164 L
 % End plot #1
 % Begin plot #2
 2.000 UP
 stroke
 LT1
-0.00 0.00 1.00 C 1548 2150 Pls
-1621 2465 Pls
-1694 2778 Pls
-1767 3086 Pls
-1841 3390 Pls
-1914 3688 Pls
-1987 3981 Pls
-2060 4266 Pls
-2133 4544 Pls
-2206 4814 Pls
-2279 5075 Pls
-2352 5326 Pls
-2426 5567 Pls
-2499 5797 Pls
-2572 6016 Pls
-2645 6223 Pls
-2718 6418 Pls
-2791 6599 Pls
-2864 6768 Pls
-2937 6922 Pls
-3011 7062 Pls
-3084 7188 Pls
-3157 7299 Pls
-3230 7395 Pls
-3303 7475 Pls
-3376 7540 Pls
-3449 7589 Pls
-3522 7622 Pls
-3596 7640 Pls
-3669 7641 Pls
-3742 7626 Pls
-3815 7596 Pls
-3888 7549 Pls
-3961 7487 Pls
-4034 7409 Pls
-4107 7316 Pls
-4181 7208 Pls
-4254 7084 Pls
-4327 6947 Pls
-4400 6795 Pls
-4473 6629 Pls
-4546 6449 Pls
-4619 6257 Pls
-4692 6052 Pls
-4766 5835 Pls
-4839 5606 Pls
-4912 5367 Pls
-4985 5118 Pls
-5058 4858 Pls
-5131 4590 Pls
-5204 4313 Pls
-5277 4029 Pls
-5351 3738 Pls
-5424 3440 Pls
-5497 3137 Pls
-5570 2830 Pls
-5643 2518 Pls
-5716 2203 Pls
-5789 1886 Pls
-5862 1567 Pls
-5936 1248 Pls
-6009 1567 Pls
-6082 1886 Pls
-6155 2203 Pls
-6228 2518 Pls
-6301 2830 Pls
-6374 3137 Pls
-6447 3440 Pls
-6520 3738 Pls
-6594 4029 Pls
-6667 4313 Pls
-6740 4590 Pls
-6813 4858 Pls
-6886 5118 Pls
-6959 5367 Pls
-7032 5606 Pls
-7105 5835 Pls
-7179 6052 Pls
-7252 6257 Pls
-7325 6449 Pls
-7398 6629 Pls
-7471 6795 Pls
-7544 6947 Pls
-7617 7084 Pls
-7690 7208 Pls
-7764 7316 Pls
-7837 7409 Pls
-7910 7487 Pls
-7983 7549 Pls
-8056 7596 Pls
-8129 7626 Pls
-8202 7641 Pls
-8275 7640 Pls
-8349 7622 Pls
-8422 7589 Pls
-8495 7540 Pls
-8568 7475 Pls
-8641 7395 Pls
-8714 7299 Pls
-8787 7188 Pls
-8860 7062 Pls
-8934 6922 Pls
-9007 6768 Pls
-9080 6599 Pls
-9153 6418 Pls
-9226 6223 Pls
-9299 6016 Pls
-9372 5797 Pls
-9445 5567 Pls
-9519 5326 Pls
-9592 5075 Pls
-9665 4814 Pls
-9738 4544 Pls
-9811 4266 Pls
-9884 3981 Pls
-9957 3688 Pls
-10030 3390 Pls
-10104 3086 Pls
-10177 2778 Pls
-10250 2465 Pls
-10323 2150 Pls
+0.00 0.00 1.00 C 830 1164 Pls
+880 1361 Pls
+930 1557 Pls
+981 1750 Pls
+1031 1940 Pls
+1081 2126 Pls
+1131 2309 Pls
+1181 2488 Pls
+1231 2661 Pls
+1282 2830 Pls
+1332 2993 Pls
+1382 3150 Pls
+1432 3301 Pls
+1482 3445 Pls
+1532 3582 Pls
+1582 3712 Pls
+1633 3833 Pls
+1683 3947 Pls
+1733 4052 Pls
+1783 4149 Pls
+1833 4236 Pls
+1883 4315 Pls
+1934 4384 Pls
+1984 4444 Pls
+2034 4494 Pls
+2084 4535 Pls
+2134 4566 Pls
+2184 4587 Pls
+2235 4597 Pls
+2285 4598 Pls
+2335 4589 Pls
+2385 4570 Pls
+2435 4541 Pls
+2485 4502 Pls
+2535 4453 Pls
+2586 4395 Pls
+2636 4327 Pls
+2686 4250 Pls
+2736 4164 Pls
+2786 4069 Pls
+2836 3965 Pls
+2887 3853 Pls
+2937 3733 Pls
+2987 3604 Pls
+3037 3469 Pls
+3087 3326 Pls
+3137 3176 Pls
+3187 3020 Pls
+3238 2858 Pls
+3288 2690 Pls
+3338 2517 Pls
+3388 2339 Pls
+3438 2157 Pls
+3488 1971 Pls
+3539 1782 Pls
+3589 1589 Pls
+3639 1394 Pls
+3689 1198 Pls
+3739 999 Pls
+3789 800 Pls
+3840 600 Pls
+3890 800 Pls
+3940 999 Pls
+3990 1198 Pls
+4040 1394 Pls
+4090 1589 Pls
+4140 1782 Pls
+4191 1971 Pls
+4241 2157 Pls
+4291 2339 Pls
+4341 2517 Pls
+4391 2690 Pls
+4441 2858 Pls
+4492 3020 Pls
+4542 3176 Pls
+4592 3326 Pls
+4642 3469 Pls
+4692 3604 Pls
+4742 3733 Pls
+4792 3853 Pls
+4843 3965 Pls
+4893 4069 Pls
+4943 4164 Pls
+4993 4250 Pls
+5043 4327 Pls
+5093 4395 Pls
+5144 4453 Pls
+5194 4502 Pls
+5244 4541 Pls
+5294 4570 Pls
+5344 4589 Pls
+5394 4598 Pls
+5444 4597 Pls
+5495 4587 Pls
+5545 4566 Pls
+5595 4535 Pls
+5645 4494 Pls
+5695 4444 Pls
+5745 4384 Pls
+5796 4315 Pls
+5846 4236 Pls
+5896 4149 Pls
+5946 4052 Pls
+5996 3947 Pls
+6046 3833 Pls
+6097 3712 Pls
+6147 3582 Pls
+6197 3445 Pls
+6247 3301 Pls
+6297 3150 Pls
+6347 2993 Pls
+6397 2830 Pls
+6448 2661 Pls
+6498 2488 Pls
+6548 2309 Pls
+6598 2126 Pls
+6648 1940 Pls
+6698 1750 Pls
+6749 1557 Pls
+6799 1361 Pls
+6849 1164 Pls
 % End plot #2
-0.500 UL
-LTb
-1475 7962 N
-0 -7034 V
-8921 0 V
-0 7034 V
--8921 0 V
-Z stroke
 1.000 UP
 0.500 UL
 LTb

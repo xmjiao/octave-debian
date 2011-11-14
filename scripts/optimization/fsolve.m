@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 VZLU Prague, a.s.
+## Copyright (C) 2008-2011 VZLU Prague, a.s.
 ##
 ## This file is part of Octave.
 ##
@@ -20,37 +20,44 @@
 
 ## -*- texinfo -*-
 ## @deftypefn  {Function File} {} fsolve (@var{fcn}, @var{x0}, @var{options})
-## @deftypefnx {Function File} {[@var{x}, @var{fvec}, @var{info}, @var{output}, @var{fjac}]} = fsolve (@var{fcn}, @dots{})
+## @deftypefnx {Function File} {[@var{x}, @var{fvec}, @var{info}, @var{output}, @var{fjac}] =} fsolve (@var{fcn}, @dots{})
 ## Solve a system of nonlinear equations defined by the function @var{fcn}.
-## @var{fcn} should accepts a vector (array) defining the unknown variables,
+## @var{fcn} should accept a vector (array) defining the unknown variables,
 ## and return a vector of left-hand sides of the equations.  Right-hand sides
 ## are defined to be zeros.
-## In other words, this function attempts to determine a vector @var{x} such 
+## In other words, this function attempts to determine a vector @var{x} such
 ## that @code{@var{fcn} (@var{x})} gives (approximately) all zeros.
 ## @var{x0} determines a starting guess.  The shape of @var{x0} is preserved
 ## in all calls to @var{fcn}, but otherwise it is treated as a column vector.
 ## @var{options} is a structure specifying additional options.
 ## Currently, @code{fsolve} recognizes these options:
 ## @code{"FunValCheck"}, @code{"OutputFcn"}, @code{"TolX"},
-## @code{"TolFun"}, @code{"MaxIter"}, @code{"MaxFunEvals"}, 
-## @code{"Jacobian"}, @code{"Updating"} and @code{"ComplexEqn"}.
+## @code{"TolFun"}, @code{"MaxIter"}, @code{"MaxFunEvals"},
+## @code{"Jacobian"}, @code{"Updating"}, @code{"ComplexEqn"}
+## @code{"TypicalX"}, @code{"AutoScaling"} and @code{"FinDiffType"}.
 ##
 ## If @code{"Jacobian"} is @code{"on"}, it specifies that @var{fcn},
 ## called with 2 output arguments, also returns the Jacobian matrix
 ## of right-hand sides at the requested point.  @code{"TolX"} specifies
-## the termination tolerance in the unknown variables, while 
+## the termination tolerance in the unknown variables, while
 ## @code{"TolFun"} is a tolerance for equations.  Default is @code{1e-7}
 ## for both @code{"TolX"} and @code{"TolFun"}.
+##
+## If @code{"AutoScaling"} is on, the variables will be automatically scaled
+## according to the column norms of the (estimated) Jacobian.  As a result,
+## TolF becomes scaling-independent.  By default, this option is off, because
+## it may sometimes deliver unexpected (though mathematically correct) results.
+##
 ## If @code{"Updating"} is "on", the function will attempt to use Broyden
-## updates to update the Jacobian, in order to reduce the amount of jacobian
+## updates to update the Jacobian, in order to reduce the amount of Jacobian
 ## calculations.
 ## If your user function always calculates the Jacobian (regardless of number
 ## of output arguments), this option provides no advantage and should be set to
 ## false.
-## 
+##
 ## @code{"ComplexEqn"} is @code{"on"}, @code{fsolve} will attempt to solve
 ## complex equations in complex variables, assuming that the equations possess a
-## complex derivative (i.e., are holomorphic).  If this is not what you want, 
+## complex derivative (i.e., are holomorphic).  If this is not what you want,
 ## should unpack the real and imaginary parts of the system to get a real
 ## system.
 ##
@@ -58,34 +65,38 @@
 ##
 ## On return, @var{fval} contains the value of the function @var{fcn}
 ## evaluated at @var{x}, and @var{info} may be one of the following values:
-## 
+##
 ## @table @asis
 ## @item 1
-## Converged to a solution point.  Relative residual error is less than specified
-## by TolFun.
+## Converged to a solution point.  Relative residual error is less than
+## specified by TolFun.
+##
 ## @item 2
 ## Last relative step size was less that TolX.
+##
 ## @item 3
-## Last relative decrease in residual was less than TolF. 
+## Last relative decrease in residual was less than TolF.
+##
 ## @item 0
 ## Iteration limit exceeded.
+##
 ## @item -3
-## The trust region radius became excessively small. 
+## The trust region radius became excessively small.
 ## @end table
-## 
-## Note: If you only have a single nonlinear equation of one variable, using 
+##
+## Note: If you only have a single nonlinear equation of one variable, using
 ## @code{fzero} is usually a much better idea.
 ## @seealso{fzero, optimset}
 ##
-## Note about user-supplied jacobians:
-## As an inherent property of the algorithm, jacobian is always requested for a
+## Note about user-supplied Jacobians:
+## As an inherent property of the algorithm, Jacobian is always requested for a
 ## solution vector whose residual vector is already known, and it is the last
 ## accepted successful step.  Often this will be one of the last two calls, but
 ## not always.  If the savings by reusing intermediate results from residual
-## calculation in jacobian calculation are significant, the best strategy is to
+## calculation in Jacobian calculation are significant, the best strategy is to
 ## employ OutputFcn: After a vector is evaluated for residuals, if OutputFcn is
 ## called with that vector, then the intermediate results should be saved for
-## future jacobian evaluation, and should be kept until a jacobian evaluation
+## future Jacobian evaluation, and should be kept until a Jacobian evaluation
 ## is requested or until outputfcn is called with a different vector, in which
 ## case they should be dropped in favor of this most recent vector.  A short
 ## example how this can be achieved follows:
@@ -111,10 +122,9 @@
 ## endfunction
 ##
 ## ## @dots{}.
-## 
+##
 ## fsolve (@@user_func, x0, optimset ("OutputFcn", @@user_func, @dots{}))
 ## @end example
-###
 ## @end deftypefn
 
 ## PKG_ADD: __all_opts__ ("fsolve");
@@ -124,18 +134,21 @@ function [x, fvec, info, output, fjac] = fsolve (fcn, x0, options = struct ())
   ## Get default options if requested.
   if (nargin == 1 && ischar (fcn) && strcmp (fcn, 'defaults'))
     x = optimset ("MaxIter", 400, "MaxFunEvals", Inf, \
-    "Jacobian", "off", "TolX", 1.5e-8, "TolFun", 1.5e-8,
+    "Jacobian", "off", "TolX", 1e-7, "TolFun", 1e-7,
     "OutputFcn", [], "Updating", "on", "FunValCheck", "off",
-    "ComplexEqn", "off", "FinDiffType", "central");
+    "ComplexEqn", "off", "FinDiffType", "central",
+    "TypicalX", [], "AutoScaling", "off");
     return;
   endif
 
   if (nargin < 2 || nargin > 3 || ! ismatrix (x0))
     print_usage ();
-  endif    
+  endif
 
   if (ischar (fcn))
-    fcn = str2func (fcn);
+    fcn = str2func (fcn, "global");
+  elseif (iscell (fcn))
+    fcn = @(x) make_fcn_jac (x, fcn{1}, fcn{2});
   endif
 
   xsiz = size (x0);
@@ -149,6 +162,17 @@ function [x, fvec, info, output, fjac] = fsolve (fcn, x0, options = struct ())
   updating = strcmpi (optimget (options, "Updating", "on"), "on");
   complexeqn = strcmpi (optimget (options, "ComplexEqn", "off"), "on");
 
+  ## Get scaling matrix using the TypicalX option. If set to "auto", the
+  ## scaling matrix is estimated using the Jacobian.
+  typicalx = optimget (options, "TypicalX");
+  if (isempty (typicalx))
+    typicalx = ones (n, 1);
+  endif
+  autoscale = strcmpi (optimget (options, "AutoScaling", "off"), "on");
+  if (! autoscale)
+    dg = 1 ./ typicalx;
+  endif
+
   funvalchk = strcmpi (optimget (options, "FunValCheck", "off"), "on");
 
   if (funvalchk)
@@ -161,10 +185,10 @@ function [x, fvec, info, output, fjac] = fsolve (fcn, x0, options = struct ())
 
   macheps = eps (class (x0));
 
-  tolx = optimget (options, "TolX", sqrt (macheps));
-  tolf = optimget (options, "TolFun", sqrt (macheps));
+  tolx = optimget (options, "TolX", 1e-7);
+  tolf = optimget (options, "TolFun", 1e-7);
 
-  factor = 100;
+  factor = 1;
 
   niter = 1;
   nfev = 1;
@@ -202,19 +226,19 @@ function [x, fvec, info, output, fjac] = fsolve (fcn, x0, options = struct ())
     ## Calculate function value and Jacobian (possibly via FD).
     if (has_jac)
       [fvec, fjac] = fcn (reshape (x, xsiz));
-      ## If the jacobian is sparse, disable Broyden updating.
+      ## If the Jacobian is sparse, disable Broyden updating.
       if (issparse (fjac))
         updating = false;
       endif
       fvec = fvec(:);
       nfev ++;
     else
-      fjac = __fdjac__ (fcn, reshape (x, xsiz), fvec, cdif);
+      fjac = __fdjac__ (fcn, reshape (x, xsiz), fvec, typicalx, cdif);
       nfev += (1 + cdif) * length (x);
     endif
 
     ## For square and overdetermined systems, we update a QR
-    ## factorization of the jacobian to avoid solving a full system in each
+    ## factorization of the Jacobian to avoid solving a full system in each
     ## step. In this case, we pass a triangular matrix to __dogleg__.
     useqr = updating && m >= n && n > 10;
 
@@ -227,28 +251,33 @@ function [x, fvec, info, output, fjac] = fsolve (fcn, x0, options = struct ())
       [q, r] = qr (fjac, 0);
     endif
 
-    ## Get column norms, use them as scaling factors.
-    jcn = norm (fjac, 'columns').';
-    if (niter == 1)
-      dg = jcn;
-      dg(dg == 0) = 1;
-      xn = norm (dg .* x);
-      ## FIXME: something better?
-      delta = max (factor * xn, 1);
+    if (autoscale)
+      ## Get column norms, use them as scaling factors.
+      jcn = norm (fjac, 'columns').';
+      if (niter == 1)
+        dg = jcn;
+        dg(dg == 0) = 1;
+      else
+        ## Rescale adaptively.
+        ## FIXME: the original minpack used the following rescaling strategy:
+        ##   dg = max (dg, jcn);
+        ## but it seems not good if we start with a bad guess yielding Jacobian
+        ## columns with large norms that later decrease, because the corresponding
+        ## variable will still be overscaled. So instead, we only give the old
+        ## scaling a small momentum, but do not honor it.
+
+        dg = max (0.1*dg, jcn);
+      endif
     endif
 
-    ## Rescale adaptively.
-    ## FIXME: the original minpack used the following rescaling strategy:
-    ##   dg = max (dg, jcn);
-    ## but it seems not good if we start with a bad guess yielding jacobian
-    ## columns with large norms that later decrease, because the corresponding
-    ## variable will still be overscaled. So instead, we only give the old
-    ## scaling a small momentum, but do not honor it.
-
-    dg = max (0.1*dg, jcn);
+    if (niter == 1)
+      xn = norm (dg .* x);
+      ## FIXME: something better?
+      delta = factor * max (xn, 1);
+    endif
 
     ## It also seems that in the case of fast (and inhomogeneously) changing
-    ## jacobian, the Broyden updates are of little use, so maybe we could
+    ## Jacobian, the Broyden updates are of little use, so maybe we could
     ## skip them if a big disproportional change is expected. The question is,
     ## of course, how to define the above terms :)
 
@@ -346,7 +375,7 @@ function [x, fvec, info, output, fjac] = fsolve (fcn, x0, options = struct ())
 
       ## Tests for termination conditions. A mysterious place, anything
       ## can happen if you change something here...
-      
+
       ## The rule of thumb (which I'm not sure M*b is quite following)
       ## is that for a tolerance that depends on scaling, only 0 makes
       ## sense as a default value. But 0 usually means uselessly long
@@ -358,28 +387,28 @@ function [x, fvec, info, output, fjac] = fsolve (fcn, x0, options = struct ())
       ## tolf ~ eps we demand as much accuracy as we can expect.
       if (fn <= tolf*n*xn)
         info = 1;
-	## The following tests done only after successful step.
+        ## The following tests done only after successful step.
       elseif (ratio >= 1e-4)
         ## This one is classic. Note that we use scaled variables again,
-	## but compare to scaled step, so nothing bad.
+        ## but compare to scaled step, so nothing bad.
         if (sn <= tolx*xn)
           info = 2;
           ## Again a classic one. It seems weird to use the same tolf
-	  ## for two different tests, but that's what M*b manual appears
-	  ## to say.
+          ## for two different tests, but that's what M*b manual appears
+          ## to say.
         elseif (actred < tolf)
           info = 3;
         endif
       endif
 
-      ## Criterion for recalculating jacobian.
+      ## Criterion for recalculating Jacobian.
       if (! updating || nfail == 2 || nsuciter < 2)
         break;
       endif
 
       ## Compute the scaled Broyden update.
       if (useqr)
-        u = (fvec1 - q*w) / sn; 
+        u = (fvec1 - q*w) / sn;
         v = dg .* ((dg .* s) / sn);
 
         ## Update the QR factorization.
@@ -388,7 +417,7 @@ function [x, fvec, info, output, fjac] = fsolve (fcn, x0, options = struct ())
         u = (fvec1 - w);
         v = dg .* ((dg .* s) / sn);
 
-        ## update the jacobian
+        ## update the Jacobian
         fjac += u * v';
       endif
     endwhile
@@ -415,15 +444,22 @@ function [fx, jx] = guarded_eval (fun, x, complexeqn)
   endif
 
   if (! complexeqn && ! (isreal (fx) && isreal (jx)))
-    error ("fsolve:notreal", "fsolve: non-real value encountered"); 
+    error ("fsolve:notreal", "fsolve: non-real value encountered");
   elseif (complexeqn && ! (isnumeric (fx) && isnumeric(jx)))
     error ("fsolve:notnum", "fsolve: non-numeric value encountered");
   elseif (any (isnan (fx(:))))
-    error ("fsolve:isnan", "fsolve: NaN value encountered"); 
+    error ("fsolve:isnan", "fsolve: NaN value encountered");
   endif
 endfunction
 
-%!function retval = f (p) 
+function [fx, jx] = make_fcn_jac (x, fcn, fjac)
+  fx = fcn (x);
+  if (nargout == 2)
+    jx = fjac (x);
+  endif
+endfunction
+
+%!function retval = f (p)
 %!  x = p(1);
 %!  y = p(2);
 %!  z = p(3);
@@ -459,7 +495,7 @@ endfunction
 %! assert (norm (x - x_opt, Inf) < tol);
 %! assert (norm (fval) < tol);
 
-%!function retval = f (p) 
+%!function retval = f (p)
 %!  x = p(1);
 %!  y = p(2);
 %!  z = p(3);
@@ -478,7 +514,7 @@ endfunction
 %! assert (norm (x - x_opt, Inf) < tol);
 %! assert (norm (fval) < tol);
 
-%!function retval = f (p) 
+%!function retval = f (p)
 %!  x = p(1);
 %!  y = p(2);
 %!  z = p(3);
@@ -505,7 +541,7 @@ endfunction
 %! y = exp (-a0*x) + b0 + noise;
 %! c_opt = [a0, b0];
 %! tol = 1e-5;
-%! 
+%!
 %! [c, fval, info, output] =  fsolve (@(c) (exp(-c(1)*x) + c(2) - y), [0, 0]);
 %! assert (info > 0);
 %! assert (norm (c - c_opt, Inf) < tol);
@@ -520,9 +556,49 @@ endfunction
 %!test
 %! x_opt = [-1+i, 1-i, 2+i];
 %! x = [i, 1, 1+i];
-%! 
+%!
 %! [x, f, info] = fsolve (@cfun, x, optimset ("ComplexEqn", "on"));
 %! tol = 1e-5;
 %! assert (norm (f) < tol);
 %! assert (norm (x - x_opt, Inf) < tol);
+
+## Solve the double dogleg trust-region least-squares problem:
+## Minimize norm(r*x-b) subject to the constraint norm(d.*x) <= delta,
+## x being a convex combination of the gauss-newton and scaled gradient.
+
+## TODO: error checks
+## TODO: handle singularity, or leave it up to mldivide?
+
+function x = __dogleg__ (r, b, d, delta)
+  ## Get Gauss-Newton direction.
+  x = r \ b;
+  xn = norm (d .* x);
+  if (xn > delta)
+    ## GN is too big, get scaled gradient.
+    s = (r' * b) ./ d;
+    sn = norm (s);
+    if (sn > 0)
+      ## Normalize and rescale.
+      s = (s / sn) ./ d;
+      ## Get the line minimizer in s direction.
+      tn = norm (r*s);
+      snm = (sn / tn) / tn;
+      if (snm < delta)
+        ## Get the dogleg path minimizer.
+        bn = norm (b);
+        dxn = delta/xn; snmd = snm/delta;
+        t = (bn/sn) * (bn/xn) * snmd;
+        t -= dxn * snmd^2 - sqrt ((t-dxn)^2 + (1-dxn^2)*(1-snmd^2));
+        alpha = dxn*(1-snmd^2) / t;
+      else
+        alpha = 0;
+      endif
+    else
+      alpha = delta / xn;
+      snm = 0;
+    endif
+    ## Form the appropriate convex combination.
+    x = alpha * x + ((1-alpha) * min (snm, delta)) * s;
+  endif
+endfunction
 

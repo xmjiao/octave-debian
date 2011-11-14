@@ -1,5 +1,5 @@
-## Copyright (C) 2000, 2005, 2006, 2007 Paul Kienzle
-## Copyright (C) 2008, 2009 Jaroslav Hajek
+## Copyright (C) 2000-2011 Paul Kienzle
+## Copyright (C) 2008-2009 Jaroslav Hajek
 ##
 ## This file is part of Octave.
 ##
@@ -18,12 +18,13 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} setdiff (@var{a}, @var{b})
+## @deftypefn  {Function File} {} setdiff (@var{a}, @var{b})
 ## @deftypefnx {Function File} {} setdiff (@var{a}, @var{b}, "rows")
 ## @deftypefnx {Function File} {[@var{c}, @var{i}] =} setdiff (@var{a}, @var{b})
 ## Return the elements in @var{a} that are not in @var{b}, sorted in
 ## ascending order.  If @var{a} and @var{b} are both column vectors
 ## return a column vector, otherwise return a row vector.
+## @var{a}, @var{b} may be cell arrays of string(s).
 ##
 ## Given the optional third argument @samp{"rows"}, return the rows in
 ## @var{a} that are not in @var{b}, sorted in ascending order by rows.
@@ -35,25 +36,15 @@
 ## Author: Paul Kienzle
 ## Adapted-by: jwe
 
-function [c, i] = setdiff (a, b, byrows_arg)
+function [c, i] = setdiff (a, b, varargin)
 
   if (nargin < 2 || nargin > 3)
     print_usage ();
   endif
 
-  byrows = false;
+  [a, b] = validargs ("setdiff", a, b, varargin{:});
 
-  if (nargin == 3)
-    if (! strcmpi (byrows_arg, "rows"))
-      error ("expecting third argument to be \"rows\"");
-    elseif (iscell (a) || iscell (b))
-      warning ("setdiff: \"rows\" not valid for cell arrays");
-    else
-      byrows = true;
-    endif
-  endif
-
-  if (byrows)
+  if (nargin > 2)
     if (nargout > 1)
       [c, i] = unique (a, "rows");
     else
@@ -67,7 +58,7 @@ function [c, i] = setdiff (a, b, byrows_arg)
       dups = find (all (dummy(1:end-1,:) == dummy(2:end,:), 2));
       c(idx(dups),:) = [];
       if (nargout > 1)
-	i(idx(dups),:) = [];
+        i(idx(dups),:) = [];
       endif
     endif
   else
@@ -84,21 +75,21 @@ function [c, i] = setdiff (a, b, byrows_arg)
       if (iscellstr (dummy))
         dups = find (strcmp (dummy(1:end-1), dummy(2:end)));
       else
-	dups = find (dummy(1:end-1) == dummy(2:end));
+        dups = find (dummy(1:end-1) == dummy(2:end));
       endif
       c(idx(dups)) = [];
       if (nargout > 1)
-	i(idx(dups)) = [];
+        i(idx(dups)) = [];
       endif
       ## Reshape if necessary.
       if (size (c, 1) != 1 && size (b, 1) == 1)
-	c = c.';
+        c = c.';
       endif
     endif
   endif
-  
+
 endfunction
-  
+
 %!assert(setdiff(["bb";"zz";"bb";"zz"],["bb";"cc";"bb"],"rows"), "zz")
 %!assert(setdiff(["b";"z";"b";"z"],["b";"c";"b"],"rows"), "z")
 %!assert(setdiff(["b";"z";"b";"z"],["b";"c";"b"]), "z")

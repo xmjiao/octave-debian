@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 VZLU Prague, a.s.
+## Copyright (C) 2008-2011 VZLU Prague, a.s.
 ##
 ## This file is part of Octave.
 ##
@@ -19,48 +19,60 @@
 ## Author: Jaroslav Hajek <highegg@gmail.com>
 
 ## -*- texinfo -*-
-## @deftypefn{Function File} {} fminunc (@var{fcn}, @var{x0}, @var{options})
-## @deftypefnx{Function File} {[@var{x}, @var{fvec}, @var{info}, @var{output}, @var{fjac}]} = fminunc (@var{fcn}, @dots{})
-## Solve a unconstrained optimization problem defined by the function @var{fcn}.
+## @deftypefn  {Function File} {} fminunc (@var{fcn}, @var{x0})
+## @deftypefnx {Function File} {} fminunc (@var{fcn}, @var{x0}, @var{options})
+## @deftypefnx {Function File} {[@var{x}, @var{fvec}, @var{info}, @var{output}, @var{grad}, @var{hess}] =} fminunc (@var{fcn}, @dots{})
+## Solve an unconstrained optimization problem defined by the function
+## @var{fcn}.
 ## @var{fcn} should accepts a vector (array) defining the unknown variables,
 ## and return the objective function value, optionally with gradient.
-## In other words, this function attempts to determine a vector @var{x} such 
+## In other words, this function attempts to determine a vector @var{x} such
 ## that @code{@var{fcn} (@var{x})} is a local minimum.
-## @var{x0} determines a starting guess. The shape of @var{x0} is preserved
-## in all calls to @var{fcn}, but otherwise it is treated as a column vector.
+## @var{x0} determines a starting guess.  The shape of @var{x0} is preserved
+## in all calls to @var{fcn}, but otherwise is treated as a column vector.
 ## @var{options} is a structure specifying additional options.
 ## Currently, @code{fminunc} recognizes these options:
 ## @code{"FunValCheck"}, @code{"OutputFcn"}, @code{"TolX"},
-## @code{"TolFun"}, @code{"MaxIter"}, @code{"MaxFunEvals"}, 
-## @code{"GradObj"}, @code{"FinDiffType"}.
+## @code{"TolFun"}, @code{"MaxIter"}, @code{"MaxFunEvals"},
+## @code{"GradObj"}, @code{"FinDiffType"},
+## @code{"TypicalX"}, @code{"AutoScaling"}.
 ##
 ## If @code{"GradObj"} is @code{"on"}, it specifies that @var{fcn},
 ## called with 2 output arguments, also returns the Jacobian matrix
 ## of right-hand sides at the requested point.  @code{"TolX"} specifies
-## the termination tolerance in the unknown variables, while 
-## @code{"TolFun"} is a tolerance for equations. Default is @code{1e-7}
+## the termination tolerance in the unknown variables, while
+## @code{"TolFun"} is a tolerance for equations.  Default is @code{1e-7}
 ## for both @code{"TolX"} and @code{"TolFun"}.
-## 
+##
 ## For description of the other options, see @code{optimset}.
 ##
 ## On return, @var{fval} contains the value of the function @var{fcn}
 ## evaluated at @var{x}, and @var{info} may be one of the following values:
-## 
+##
 ## @table @asis
 ## @item 1
-## Converged to a solution point. Relative gradient error is less than specified
+## Converged to a solution point.  Relative gradient error is less than
+## specified
 ## by TolFun.
+##
 ## @item 2
 ## Last relative step size was less that TolX.
+##
 ## @item 3
-## Last relative decrease in func value was less than TolF. 
+## Last relative decrease in function value was less than TolF.
+##
 ## @item 0
 ## Iteration limit exceeded.
+##
 ## @item -3
-## The trust region radius became excessively small. 
+## The trust region radius became excessively small.
 ## @end table
 ##
-## Note: If you only have a single nonlinear equation of one variable, using 
+## Optionally, fminunc can also yield a structure with convergence statistics
+## (@var{output}), the output gradient (@var{grad}) and approximate Hessian
+## (@var{hess}).
+##
+## Note: If you only have a single nonlinear equation of one variable, using
 ## @code{fminbnd} is usually a much better idea.
 ## @seealso{fminbnd, optimset}
 ## @end deftypefn
@@ -72,18 +84,19 @@ function [x, fval, info, output, grad, hess] = fminunc (fcn, x0, options = struc
   ## Get default options if requested.
   if (nargin == 1 && ischar (fcn) && strcmp (fcn, 'defaults'))
     x = optimset ("MaxIter", 400, "MaxFunEvals", Inf, \
-    "GradObj", "off", "TolX", 1.5e-8, "TolFun", 1.5e-8,
+    "GradObj", "off", "TolX", 1e-7, "TolFun", 1e-7,
     "OutputFcn", [], "FunValCheck", "off",
-    "FinDiffType", "central");
+    "FinDiffType", "central",
+    "TypicalX", [], "AutoScaling", "off");
     return;
   endif
 
   if (nargin < 2 || nargin > 3 || ! ismatrix (x0))
     print_usage ();
-  endif    
+  endif
 
   if (ischar (fcn))
-    fcn = str2func (fcn);
+    fcn = str2func (fcn, "global");
   endif
 
   xsiz = size (x0);
@@ -94,6 +107,17 @@ function [x, fval, info, output, grad, hess] = fminunc (fcn, x0, options = struc
   maxiter = optimget (options, "MaxIter", 400);
   maxfev = optimget (options, "MaxFunEvals", Inf);
   outfcn = optimget (options, "OutputFcn");
+
+  ## Get scaling matrix using the TypicalX option. If set to "auto", the
+  ## scaling matrix is estimated using the jacobian.
+  typicalx = optimget (options, "TypicalX");
+  if (isempty (typicalx))
+    typicalx = ones (n, 1);
+  endif
+  autoscale = strcmpi (optimget (options, "AutoScaling", "off"), "on");
+  if (! autoscale)
+    dg = 1 ./ typicalx;
+  endif
 
   funvalchk = strcmpi (optimget (options, "FunValCheck", "off"), "on");
 
@@ -107,10 +131,10 @@ function [x, fval, info, output, grad, hess] = fminunc (fcn, x0, options = struc
 
   macheps = eps (class (x0));
 
-  tolx = optimget (options, "TolX", sqrt (macheps));
-  tolf = optimget (options, "TolFun", sqrt (macheps));
+  tolx = optimget (options, "TolX", 1e-7);
+  tolf = optimget (options, "TolFun", 1e-7);
 
-  factor = 100;
+  factor = 0.1;
   ## FIXME: TypicalX corresponds to user scaling (???)
   autodg = true;
 
@@ -153,12 +177,12 @@ function [x, fval, info, output, grad, hess] = fminunc (fcn, x0, options = struc
       grad = grad(:);
       nfev ++;
     else
-      grad = __fdjac__ (fcn, reshape (x, xsiz), fval, cdif)(:);
+      grad = __fdjac__ (fcn, reshape (x, xsiz), fval, typicalx, cdif)(:);
       nfev += (1 + cdif) * length (x);
     endif
 
     if (niter == 1)
-      ## Initialize by identity matrix. 
+      ## Initialize by identity matrix.
       hesr = eye (n);
     else
       ## Use the damped BFGS formula.
@@ -166,11 +190,7 @@ function [x, fval, info, output, grad, hess] = fminunc (fcn, x0, options = struc
       sBs = sumsq (w);
       Bs = hesr'*w;
       sy = y'*s;
-      if (sy >= 0.2*sBs)
-        theta = 1;
-      else
-        theta = 0.8*sBs / (sBs - sy);
-      endif
+      theta = 0.8 / max (1 - sy / sBs, 0.8);
       r = theta * y + (1-theta) * Bs;
       hesr = cholupdate (hesr, r / sqrt (s'*r), "+");
       [hesr, info] = cholupdate (hesr, Bs / sqrt (sBs), "-");
@@ -179,17 +199,22 @@ function [x, fval, info, output, grad, hess] = fminunc (fcn, x0, options = struc
       endif
     endif
 
-    ## Second derivatives approximate the hessian.
-    d2f = norm (hesr, 'columns').';
-    if (niter == 1)
-      dg = d2f;
-      xn = norm (dg .* x);
-      ## FIXME: something better?
-      delta = max (factor * xn, 1);
+    if (autoscale)
+      ## Second derivatives approximate the hessian.
+      d2f = norm (hesr, 'columns').';
+      if (niter == 1)
+        dg = d2f;
+      else
+        ## FIXME: maybe fixed lower and upper bounds?
+        dg = max (0.1*dg, d2f);
+      endif
     endif
 
-    ## FIXME: maybe fixed lower and upper bounds?
-    dg = max (0.1*dg, d2f);
+    if (niter == 1)
+      xn = norm (dg .* x);
+      ## FIXME: something better?
+      delta = factor * max (xn, 1);
+    endif
 
     ## FIXME -- why tolf*n*xn? If abs (e) ~ abs(x) * eps is a vector
     ## of perturbations of x, then norm (hesr*e) <= eps*xn, i.e. by
@@ -205,7 +230,7 @@ function [x, fval, info, output, grad, hess] = fminunc (fcn, x0, options = struc
     ## Inner loop.
     while (! suc && niter <= maxiter && nfev < maxfev && ! info)
 
-      s = - __dogleg__ (hesr, grad, dg, delta, true);
+      s = - __doglegm__ (hesr, grad, dg, delta);
 
       sn = norm (dg .* s);
       if (niter == 1)
@@ -279,7 +304,7 @@ function [x, fval, info, output, grad, hess] = fminunc (fcn, x0, options = struc
 
       ## Tests for termination conditions. A mysterious place, anything
       ## can happen if you change something here...
-      
+
       ## The rule of thumb (which I'm not sure M*b is quite following)
       ## is that for a tolerance that depends on scaling, only 0 makes
       ## sense as a default value. But 0 usually means uselessly long
@@ -308,6 +333,10 @@ function [x, fval, info, output, grad, hess] = fminunc (fcn, x0, options = struc
   output.successful = nsuciter;
   output.funcCount = nfev;
 
+  if (nargout > 5)
+    hess = hesr'*hesr;
+  endif
+
 endfunction
 
 ## An assistant function that evaluates a function handle and checks for
@@ -321,11 +350,11 @@ function [fx, gx] = guarded_eval (fun, x)
   endif
 
   if (! (isreal (fx) && isreal (jx)))
-    error ("fminunc:notreal", "fminunc: non-real value encountered"); 
+    error ("fminunc:notreal", "fminunc: non-real value encountered");
   elseif (complexeqn && ! (isnumeric (fx) && isnumeric(jx)))
     error ("fminunc:notnum", "fminunc: non-numeric value encountered");
   elseif (any (isnan (fx(:))))
-    error ("fminunc:isnan", "fminunc: NaN value encountered"); 
+    error ("fminunc:isnan", "fminunc: NaN value encountered");
   endif
 endfunction
 
@@ -345,3 +374,43 @@ endfunction
 %! assert (x, ones (1, 4), tol);
 %! assert (fval, 0, tol);
 
+## Solve the double dogleg trust-region minimization problem:
+## Minimize 1/2*norm(r*x)^2  subject to the constraint norm(d.*x) <= delta,
+## x being a convex combination of the gauss-newton and scaled gradient.
+
+## TODO: error checks
+## TODO: handle singularity, or leave it up to mldivide?
+
+function x = __doglegm__ (r, g, d, delta)
+  ## Get Gauss-Newton direction.
+  b = r' \ g;
+  x = r \ b;
+  xn = norm (d .* x);
+  if (xn > delta)
+    ## GN is too big, get scaled gradient.
+    s = g ./ d;
+    sn = norm (s);
+    if (sn > 0)
+      ## Normalize and rescale.
+      s = (s / sn) ./ d;
+      ## Get the line minimizer in s direction.
+      tn = norm (r*s);
+      snm = (sn / tn) / tn;
+      if (snm < delta)
+        ## Get the dogleg path minimizer.
+        bn = norm (b);
+        dxn = delta/xn; snmd = snm/delta;
+        t = (bn/sn) * (bn/xn) * snmd;
+        t -= dxn * snmd^2 - sqrt ((t-dxn)^2 + (1-dxn^2)*(1-snmd^2));
+        alpha = dxn*(1-snmd^2) / t;
+      else
+        alpha = 0;
+      endif
+    else
+      alpha = delta / xn;
+      snm = 0;
+    endif
+    ## Form the appropriate convex combination.
+    x = alpha * x + ((1-alpha) * min (snm, delta)) * s;
+  endif
+endfunction

@@ -1,5 +1,4 @@
-## Copyright (C) 1999, 2000, 2001, 2002, 2004, 2005, 2006, 2007, 2008
-##               Kai Habel
+## Copyright (C) 1999-2011 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -18,22 +17,22 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{hsv_map} =} rgb2hsv (@var{rgb_map})
-## Transform a colormap or image from the rgb space to the hsv space.
+## @deftypefn {Function File} {@var{hsv_map} =} rgb2hsv (@var{rgb})
+## Transform a colormap or image from the RGB space to the HSV space.
 ##
-## A color n the RGB space consists of the red, green and blue intensities.
+## A color in the RGB space consists of the red, green and blue intensities.
 ##
 ## In the HSV space each color is represented by their hue, saturation
 ## and value (brightness).  Value gives the amount of light in the color.
-## Hue describes the dominant wavelength. 
-## Saturation is the amount of Hue mixed into the color.
+## Hue describes the dominant wavelength.
+## Saturation is the amount of hue mixed into the color.
 ## @seealso{hsv2rgb}
 ## @end deftypefn
 
 ## Author: Kai Habel <kai.habel@gmx.de>
 ## Adapted-by: jwe
 
-function hsval = rgb2hsv (rgb)
+function hsv_map = rgb2hsv (rgb)
 
   if (nargin != 1)
     print_usage ();
@@ -56,7 +55,7 @@ function hsval = rgb2hsv (rgb)
   endif
 
   if (! ismatrix (rgb) || columns (rgb) != 3)
-    error ("rgb2hsv: argument must be a matrix of size n x 3");
+    error ("rgb2hsv: RGB_MAP must be a matrix of size n x 3");
   endif
 
   ## get the max and min
@@ -66,7 +65,7 @@ function hsval = rgb2hsv (rgb)
   ## set hue to zero for undefined values (gray has no hue)
   h = zeros (size (v));
   notgray = (s != v);
-    
+
   ## blue hue
   idx = (v == rgb(:,3) & notgray);
   if (any (idx))
@@ -93,11 +92,11 @@ function hsval = rgb2hsv (rgb)
   s(! notgray) = 0;
   s(notgray) = 1 - s(notgray) ./ v(notgray);
 
-  hsval = [h, s, v];
-  
+  hsv_map = [h, s, v];
+
   ## If input was an image, convert it back into one.
   if (is_image)
-    hsval = reshape (hsval, Sz);
+    hsv_map = reshape (hsv_map, Sz);
   endif
 
 endfunction

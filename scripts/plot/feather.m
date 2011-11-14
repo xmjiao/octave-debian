@@ -1,4 +1,4 @@
-## Copyright (C) 2007, 2008, 2009 David Bateman
+## Copyright (C) 2007-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} feather (@var{u}, @var{v})
+## @deftypefn  {Function File} {} feather (@var{u}, @var{v})
 ## @deftypefnx {Function File} {} feather (@var{z})
 ## @deftypefnx {Function File} {} feather (@dots{}, @var{style})
 ## @deftypefnx {Function File} {} feather (@var{h}, @dots{})
@@ -31,7 +31,7 @@
 ## The style to use for the plot can be defined with a line style @var{style}
 ## in a similar manner to the line styles used with the @code{plot} command.
 ##
-## The optional return value @var{h} provides a list of handles to the 
+## The optional return value @var{h} provides a list of handles to the
 ## the parts of the vector field (body, arrow and marker).
 ##
 ## @example
@@ -49,43 +49,40 @@ function retval = feather (varargin)
   [h, varargin, nargin] = __plt_get_axis_arg__ ("feather", varargin{:});
 
   arrowsize = 0.25;
-  firstnonnumeric = Inf;
-  for i = 1:nargin
-    if (! isnumeric (varargin{i}))
-      firstnonnumeric = i;
-      break;
-    endif
-  endfor
 
-  if (nargin < 2 || firstnonnumeric < 2)
+  if (nargin == 0)
+    print_usage ();
+  elseif (nargin == 1 || (nargin == 2 && ! isnumeric (varargin{2})))
     ioff = 2;
-    z = varargin {1} (:) .';
+    z = varargin{1}(:).';
     u = real (z);
     v = imag (z);
-  else
+  elseif (nargin > 1 && isnumeric (varargin{2}))
     ioff = 3;
-    u = varargin {1} (:) .';
-    v = varargin {2} (:) .';
+    u = varargin{1}(:).';
+    v = varargin{2}(:).';
   endif
 
   line_spec = "b-";
+  have_line_spec = false;
   while (ioff <= nargin)
     arg = varargin{ioff++};
     if ((ischar (arg) || iscell (arg)) && ! have_line_spec)
       [linespec, valid] = __pltopt__ ("feather", arg, false);
       if (valid)
-	line_spec = arg;
-	break;
+        line_spec = arg;
+        have_line_spec = false;
+        break;
       else
-	error ("feather: invalid linespec");
+        error ("feather: invalid linespec");
       endif
     else
       error ("feather: unrecognized argument");
     endif
   endwhile
 
-  ## Matlab draws feather plots, with the arrow head as one continous 
-  ## line, and each arrow separately. This is completely different than 
+  ## Matlab draws feather plots, with the arrow head as one continous
+  ## line, and each arrow separately. This is completely different than
   ## quiver and quite ugly.
   n = length (u);
   xend = [1 : n] + u;

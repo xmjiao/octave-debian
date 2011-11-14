@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 David Bateman
+## Copyright (C) 2008-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -28,7 +28,7 @@ function y = realsqrt (x)
     print_usage ();
   elseif (iscomplex (x) || any (x(:) < 0))
     error ("realsqrt: produced complex result");
-  else    
+  else
     y = sqrt (x);
   endif
 endfunction

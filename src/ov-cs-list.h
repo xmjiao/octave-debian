@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008 John W. Eaton
+Copyright (C) 2002-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -35,7 +35,6 @@ along with Octave; see the file COPYING.  If not, see
 #include "error.h"
 #include "oct-alloc.h"
 #include "oct-obj.h"
-#include "ov-list.h"
 #include "ov-typeinfo.h"
 
 class tree_walker;
@@ -73,6 +72,12 @@ public:
 
   octave_value_list list_value (void) const { return lst; }
 
+  octave_value subsref (const std::string& type,
+                        const std::list<octave_value_list>& idx);
+
+  octave_value_list subsref (const std::string& type,
+                             const std::list<octave_value_list>& idx, int);
+
 private:
 
   // The list of Octave values.
@@ -84,9 +89,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

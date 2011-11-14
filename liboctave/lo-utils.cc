@@ -1,8 +1,7 @@
 // utils.cc
 /*
 
-Copyright (C) 1996, 1997, 2000, 2002, 2003, 2004, 2005, 2006, 2007, 2008
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -30,88 +29,41 @@ along with Octave; see the file COPYING.  If not, see
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
+#include <cfloat>
 
 #include <limits>
 #include <string>
 
-#ifdef HAVE_UNISTD_H
-#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#endif
 #include <unistd.h>
-#endif
+
+#include "quit.h"
 
 #include "lo-error.h"
 #include "lo-ieee.h"
 #include "lo-mappers.h"
 #include "lo-utils.h"
 
-// Convert X to the nearest integer value.  Should not pass NaN to
-// this function.
+bool xis_int_or_inf_or_nan (double x)
+{ return xisnan (x) || D_NINT (x) == x; }
 
-// Sometimes you need a large integer, but not always.
+bool xis_one_or_zero (double x)
+{ return x == 0 || x == 1; }
 
-octave_idx_type
-NINTbig (double x)
-{
-  if (x > std::numeric_limits<octave_idx_type>::max ())
-    return std::numeric_limits<octave_idx_type>::max ();
-  else if (x < std::numeric_limits<octave_idx_type>::min ())
-    return std::numeric_limits<octave_idx_type>::min ();
-  else
-    return static_cast<octave_idx_type> ((x > 0) ? (x + 0.5) : (x - 0.5));
-}
+bool xis_zero (double x)
+{ return x == 0; }
 
-octave_idx_type
-NINTbig (float x)
-{
-  if (x > std::numeric_limits<octave_idx_type>::max ())
-    return std::numeric_limits<octave_idx_type>::max ();
-  else if (x < std::numeric_limits<octave_idx_type>::min ())
-    return std::numeric_limits<octave_idx_type>::min ();
-  else
-    return static_cast<octave_idx_type> ((x > 0) ? (x + 0.5) : (x - 0.5));
-}
+bool xtoo_large_for_float (double x)
+{ return (! (xisnan (x) || xisinf (x)) && fabs (x) > FLT_MAX); }
 
-int
-NINT (double x)
-{
-  if (x > std::numeric_limits<int>::max ())
-    return std::numeric_limits<int>::max ();
-  else if (x < std::numeric_limits<int>::min ())
-    return std::numeric_limits<int>::min ();
-  else
-    return static_cast<int> ((x > 0) ? (x + 0.5) : (x - 0.5));
-}
+bool xis_int_or_inf_or_nan (float x)
+{ return xisnan (x) || D_NINT (x) == x; }
 
-int
-NINT (float x)
-{
-  if (x > std::numeric_limits<int>::max ())
-    return std::numeric_limits<int>::max ();
-  else if (x < std::numeric_limits<int>::min ())
-    return std::numeric_limits<int>::min ();
-  else
-    return static_cast<int> ((x > 0) ? (x + 0.5) : (x - 0.5));
-}
+bool xis_one_or_zero (float x)
+{ return x == 0 || x == 1; }
 
-double
-D_NINT (double x)
-{
-  if (xisinf (x) || xisnan (x))
-    return x;
-  else
-    return floor (x + 0.5);
-}
-
-float
-F_NINT (float x)
-{
-  if (xisinf (x) || xisnan (x))
-    return x;
-  else
-    return floor (x + 0.5);
-}
+bool xis_zero (float x)
+{ return x == 0; }
 
 // Save a string.
 
@@ -138,7 +90,7 @@ octave_putenv (const std::string& name, const std::string& value)
 {
   int new_len = name.length () + value.length () + 2;
 
-  char *new_item = static_cast<char*> (malloc (new_len));
+  char *new_item = static_cast<char*> (gnulib::malloc (new_len));
 
   sprintf (new_item, "%s=%s", name.c_str (), value.c_str ());
 
@@ -166,57 +118,59 @@ octave_fgets (FILE *f, bool& eof)
   int grow_size = 1024;
   int max_size = grow_size;
 
-  char *buf = static_cast<char *> (malloc (max_size));
+  char *buf = static_cast<char *> (gnulib::malloc (max_size));
   char *bufptr = buf;
   int len = 0;
 
   do
     {
-      if (fgets (bufptr, grow_size, f))
-	{
-	  len = strlen (bufptr);
+      if (gnulib::fgets (bufptr, grow_size, f))
+        {
+          len = strlen (bufptr);
 
-	  if (len == grow_size - 1)
-	    {
-	      int tmp = bufptr - buf + grow_size - 1;
-	      grow_size *= 2;
-	      max_size += grow_size;
-	      buf = static_cast<char *> (realloc (buf, max_size));
-	      bufptr = buf + tmp;
+          if (len == grow_size - 1)
+            {
+              int tmp = bufptr - buf + grow_size - 1;
+              grow_size *= 2;
+              max_size += grow_size;
+              buf = static_cast<char *> (gnulib::realloc (buf, max_size));
+              bufptr = buf + tmp;
 
-	      if (*(bufptr-1) == '\n')
-		{
-		  *bufptr = '\0';
-		  retval = buf;
-		}
-	    }
-	  else if (bufptr[len-1] != '\n')
-	    {
-	      bufptr[len++] = '\n';
-	      bufptr[len] = '\0';
-	      retval = buf;
-	    }
-	  else
-	    retval = buf;
-	}
+              if (*(bufptr-1) == '\n')
+                {
+                  *bufptr = '\0';
+                  retval = buf;
+                }
+            }
+          else if (bufptr[len-1] != '\n')
+            {
+              bufptr[len++] = '\n';
+              bufptr[len] = '\0';
+              retval = buf;
+            }
+          else
+            retval = buf;
+        }
       else
-	{
-	  if (len == 0)
-	    {
-	      eof = true;
+        {
+          if (len == 0)
+            {
+              eof = true;
 
-	      free (buf);
+              free (buf);
 
-	      buf = 0;
-	    }
+              buf = 0;
+            }
 
-	  break;
-	}
+          break;
+        }
     }
   while (retval.empty ());
 
   if (buf)
     free (buf);
+
+  octave_quit ();
 
   return retval;
 }
@@ -250,36 +204,36 @@ read_inf_nan_na (std::istream& is, char c, char sign = '+')
     {
     case 'i': case 'I':
       {
-	c = is.get ();
-	if (c == 'n' || c == 'N')
-	  {
-	    c = is.get ();
-	    if (c == 'f' || c == 'F')
-	      d = sign == '-' ? -octave_Inf : octave_Inf;
-	    else
-	      is.putback (c);
-	  }
-	else
-	  is.putback (c);
+        c = is.get ();
+        if (c == 'n' || c == 'N')
+          {
+            c = is.get ();
+            if (c == 'f' || c == 'F')
+              d = sign == '-' ? -octave_Inf : octave_Inf;
+            else
+              is.putback (c);
+          }
+        else
+          is.putback (c);
       }
       break;
 
     case 'n': case 'N':
       {
-	c = is.get ();
-	if (c == 'a' || c == 'A')
-	  {
-	    c = is.get ();
-	    if (c == 'n' || c == 'N')
-	      d = octave_NaN;
-	    else
-	      {
-		is.putback (c);
-		d = octave_NA;
-	      }
-	  }
-	else
-	  is.putback (c);
+        c = is.get ();
+        if (c == 'a' || c == 'A')
+          {
+            c = is.get ();
+            if (c == 'n' || c == 'N')
+              d = octave_NaN;
+            else
+              {
+                is.putback (c);
+                d = octave_NA;
+              }
+          }
+        else
+          is.putback (c);
       }
       break;
 
@@ -290,8 +244,9 @@ read_inf_nan_na (std::istream& is, char c, char sign = '+')
   return d;
 }
 
+template <>
 double
-octave_read_double (std::istream& is)
+octave_read_value (std::istream& is)
 {
   double d = 0.0;
 
@@ -304,31 +259,31 @@ octave_read_double (std::istream& is)
     {
     case '-':
       {
-	char c2 = 0;
-	c2 = is.get ();
-	if (c2 == 'i' || c2 == 'I')
-	  d = read_inf_nan_na (is, c2, c1);
-	else
-	  {
-	    is.putback (c2);
-	    is.putback (c1);
-	    is >> d;
-	  }
+        char c2 = 0;
+        c2 = is.get ();
+        if (c2 == 'i' || c2 == 'I')
+          d = read_inf_nan_na (is, c2, c1);
+        else
+          {
+            is.putback (c2);
+            is.putback (c1);
+            is >> d;
+          }
       }
       break;
 
     case '+':
       {
-	char c2 = 0;
-	c2 = is.get ();
-	if (c2 == 'i' || c2 == 'I')
-	  d = read_inf_nan_na (is, c2, c1);
-	else
-	  {
-	    is.putback (c2);
-	    is.putback (c1);
-	    is >> d;
-	  }
+        char c2 = 0;
+        c2 = is.get ();
+        if (c2 == 'i' || c2 == 'I')
+          d = read_inf_nan_na (is, c2, c1);
+        else
+          {
+            is.putback (c2);
+            is.putback (c1);
+            is >> d;
+          }
       }
       break;
 
@@ -345,8 +300,9 @@ octave_read_double (std::istream& is)
   return d;
 }
 
+template <>
 Complex
-octave_read_complex (std::istream& is)
+octave_read_value (std::istream& is)
 {
   double re = 0.0, im = 0.0;
 
@@ -359,28 +315,176 @@ octave_read_complex (std::istream& is)
 
   if (ch == '(')
     {
-      re = octave_read_double (is);
+      re = octave_read_value<double> (is);
       ch = is.get ();
 
       if (ch == ',')
-	{
-	  im = octave_read_double (is);
-	  ch = is.get ();
+        {
+          im = octave_read_value<double> (is);
+          ch = is.get ();
 
-	  if (ch == ')')
-	    cx = Complex (re, im);
-	  else
-	    is.setstate (std::ios::failbit);
-	}
+          if (ch == ')')
+            cx = Complex (re, im);
+          else
+            is.setstate (std::ios::failbit);
+        }
       else if (ch == ')')
-	cx = re;
+        cx = re;
       else
-	is.setstate (std::ios::failbit);
+        is.setstate (std::ios::failbit);
     }
   else
     {
       is.putback (ch);
-      cx = octave_read_double (is);
+      cx = octave_read_value<double> (is);
+    }
+
+  return cx;
+
+}
+
+static inline float
+read_float_inf_nan_na (std::istream& is, char c, char sign = '+')
+{
+  float d = 0.0;
+
+  switch (c)
+    {
+    case 'i': case 'I':
+      {
+        c = is.get ();
+        if (c == 'n' || c == 'N')
+          {
+            c = is.get ();
+            if (c == 'f' || c == 'F')
+              d = sign == '-' ? -octave_Inf : octave_Inf;
+            else
+              is.putback (c);
+          }
+        else
+          is.putback (c);
+      }
+      break;
+
+    case 'n': case 'N':
+      {
+        c = is.get ();
+        if (c == 'a' || c == 'A')
+          {
+            c = is.get ();
+            if (c == 'n' || c == 'N')
+              d = octave_NaN;
+            else
+              {
+                is.putback (c);
+                d = octave_NA;
+              }
+          }
+        else
+          is.putback (c);
+      }
+      break;
+
+    default:
+      abort ();
+    }
+
+  return d;
+}
+
+template <>
+float
+octave_read_value (std::istream& is)
+{
+  float d = 0.0;
+
+  char c1 = ' ';
+
+  while (isspace (c1))
+    c1 = is.get ();
+
+  switch (c1)
+    {
+    case '-':
+      {
+        char c2 = 0;
+        c2 = is.get ();
+        if (c2 == 'i' || c2 == 'I')
+          d = read_float_inf_nan_na (is, c2, c1);
+        else
+          {
+            is.putback (c2);
+            is.putback (c1);
+            is >> d;
+          }
+      }
+      break;
+
+    case '+':
+      {
+        char c2 = 0;
+        c2 = is.get ();
+        if (c2 == 'i' || c2 == 'I')
+          d = read_float_inf_nan_na (is, c2, c1);
+        else
+          {
+            is.putback (c2);
+            is.putback (c1);
+            is >> d;
+          }
+      }
+      break;
+
+    case 'i': case 'I':
+    case 'n': case 'N':
+      d = read_float_inf_nan_na (is, c1);
+      break;
+
+    default:
+      is.putback (c1);
+      is >> d;
+    }
+
+  return d;
+}
+
+template <>
+FloatComplex
+octave_read_value (std::istream& is)
+{
+  float re = 0.0, im = 0.0;
+
+  FloatComplex cx = 0.0;
+
+  char ch = ' ';
+
+  while (isspace (ch))
+    ch = is.get ();
+
+  if (ch == '(')
+    {
+      re = octave_read_value<float> (is);
+      ch = is.get ();
+
+      if (ch == ',')
+        {
+          im = octave_read_value<float> (is);
+          ch = is.get ();
+
+          if (ch == ')')
+            cx = FloatComplex (re, im);
+          else
+            is.setstate (std::ios::failbit);
+        }
+      else if (ch == ')')
+        cx = re;
+      else
+        is.setstate (std::ios::failbit);
+    }
+  else
+    {
+      is.putback (ch);
+      cx = octave_read_value<float> (is);
     }
 
   return cx;
@@ -410,173 +514,6 @@ octave_write_complex (std::ostream& os, const Complex& c)
   os << ")";
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-static inline float
-read_float_inf_nan_na (std::istream& is, char c, char sign = '+')
-{
-  float d = 0.0;
-
-  switch (c)
-    {
-    case 'i': case 'I':
-      {
-	c = is.get ();
-	if (c == 'n' || c == 'N')
-	  {
-	    c = is.get ();
-	    if (c == 'f' || c == 'F')
-	      d = sign == '-' ? -octave_Inf : octave_Inf;
-	    else
-	      is.putback (c);
-	  }
-	else
-	  is.putback (c);
-      }
-      break;
-
-    case 'n': case 'N':
-      {
-	c = is.get ();
-	if (c == 'a' || c == 'A')
-	  {
-	    c = is.get ();
-	    if (c == 'n' || c == 'N')
-	      d = octave_NaN;
-	    else
-	      {
-		is.putback (c);
-		d = octave_NA;
-	      }
-	  }
-	else
-	  is.putback (c);
-      }
-      break;
-
-    default:
-      abort ();
-    }
-
-  return d;
-}
-
-float
-octave_read_float (std::istream& is)
-{
-  float d = 0.0;
-
-  char c1 = ' ';
-
-  while (isspace (c1))
-    c1 = is.get ();
-
-  switch (c1)
-    {
-    case '-':
-      {
-	char c2 = 0;
-	c2 = is.get ();
-	if (c2 == 'i' || c2 == 'I')
-	  d = read_float_inf_nan_na (is, c2, c1);
-	else
-	  {
-	    is.putback (c2);
-	    is.putback (c1);
-	    is >> d;
-	  }
-      }
-      break;
-
-    case '+':
-      {
-	char c2 = 0;
-	c2 = is.get ();
-	if (c2 == 'i' || c2 == 'I')
-	  d = read_float_inf_nan_na (is, c2, c1);
-	else
-	  {
-	    is.putback (c2);
-	    is.putback (c1);
-	    is >> d;
-	  }
-      }
-      break;
-
-    case 'i': case 'I':
-    case 'n': case 'N':
-      d = read_float_inf_nan_na (is, c1);
-      break;
-
-    default:
-      is.putback (c1);
-      is >> d;
-    }
-
-  return d;
-}
-
-FloatComplex
-octave_read_float_complex (std::istream& is)
-{
-  float re = 0.0, im = 0.0;
-
-  FloatComplex cx = 0.0;
-
-  char ch = ' ';
-
-  while (isspace (ch))
-    ch = is.get ();
-
-  if (ch == '(')
-    {
-      re = octave_read_float (is);
-      ch = is.get ();
-
-      if (ch == ',')
-	{
-	  im = octave_read_float (is);
-	  ch = is.get ();
-
-	  if (ch == ')')
-	    cx = FloatComplex (re, im);
-	  else
-	    is.setstate (std::ios::failbit);
-	}
-      else if (ch == ')')
-	cx = re;
-      else
-	is.setstate (std::ios::failbit);
-    }
-  else
-    {
-      is.putback (ch);
-      cx = octave_read_float (is);
-    }
-
-  return cx;
-
-}
-
 void
 octave_write_float (std::ostream& os, float d)
 {
@@ -599,9 +536,3 @@ octave_write_float_complex (std::ostream& os, const FloatComplex& c)
   octave_write_float (os, imag (c));
   os << ")";
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

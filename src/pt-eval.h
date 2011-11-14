@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2009 John W. Eaton
+Copyright (C) 2009-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -126,15 +126,15 @@ public:
 
   void visit_try_catch_command (tree_try_catch_command&);
 
+  void do_unwind_protect_cleanup_code (tree_statement_list *list);
+
   void visit_unwind_protect_command (tree_unwind_protect_command&);
 
   void visit_while_command (tree_while_command&);
 
   void visit_do_until_command (tree_do_until_command&);
 
-  static int debug_line (void) { return db_line; }
-
-  static int debug_column (void) { return db_column; }
+  static void reset_debug_state (void);
 
   // If > 0, stop executing at the (N-1)th stopping point, counting
   //         from the the current execution point in the current frame.
@@ -147,8 +147,16 @@ public:
 
   static bool debug_mode;
 
-  // TRUE means we are evaluating a function or script body.
-  static bool in_fcn_or_script_body;
+  // Possible types of evaluation contexts.
+  enum stmt_list_type
+  {
+    function,  // function body
+    script,    // script file
+    other      // command-line input or eval string
+  };
+
+  // The context for the current evaluation.
+  static stmt_list_type statement_context;
 
   // TRUE means we are evaluating some kind of looping construct.
   static bool in_loop_command;
@@ -156,15 +164,15 @@ public:
 private:
 
   void do_decl_init_list (decl_elt_init_fcn fcn,
-			  tree_decl_init_list *init_list);
+                          tree_decl_init_list *init_list);
 
   void do_breakpoint (tree_statement& stmt) const;
 
-  void do_breakpoint (bool is_breakpoint, int l, int c,
-		      bool is_end_of_fcn_or_script = false) const;
+  void do_breakpoint (bool is_breakpoint,
+                      bool is_end_of_fcn_or_script = false) const;
 
-  static int db_line;
-  static int db_column;
+  virtual octave_value
+  do_keyboard (const octave_value_list& args = octave_value_list ()) const;
 
   // No copying!
 
@@ -175,10 +183,8 @@ private:
 
 extern tree_evaluator *current_evaluator;
 
-#endif
+// Maximum nesting level for functions, scripts, or sourced files called
+// recursively.
+extern int Vmax_recursion_depth;
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+#endif

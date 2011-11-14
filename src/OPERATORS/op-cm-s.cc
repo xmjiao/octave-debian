@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2000, 2001, 2002, 2003, 2004, 2005, 2006,
-              2007 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -73,12 +72,12 @@ DEFBINOP (ldiv, complex_matrix, scalar)
   return ret;
 }
 
-DEFNDBINOP_FN (lt, complex_matrix, scalar, complex_array, scalar, mx_el_lt)
-DEFNDBINOP_FN (le, complex_matrix, scalar, complex_array, scalar, mx_el_le)
-DEFNDBINOP_FN (eq, complex_matrix, scalar, complex_array, scalar, mx_el_eq)
-DEFNDBINOP_FN (ge, complex_matrix, scalar, complex_array, scalar, mx_el_ge)
-DEFNDBINOP_FN (gt, complex_matrix, scalar, complex_array, scalar, mx_el_gt)
-DEFNDBINOP_FN (ne, complex_matrix, scalar, complex_array, scalar, mx_el_ne)
+DEFNDCMPLXCMPOP_FN (lt, complex_matrix, scalar, complex_array, scalar, mx_el_lt)
+DEFNDCMPLXCMPOP_FN (le, complex_matrix, scalar, complex_array, scalar, mx_el_le)
+DEFNDCMPLXCMPOP_FN (eq, complex_matrix, scalar, complex_array, scalar, mx_el_eq)
+DEFNDCMPLXCMPOP_FN (ge, complex_matrix, scalar, complex_array, scalar, mx_el_ge)
+DEFNDCMPLXCMPOP_FN (gt, complex_matrix, scalar, complex_array, scalar, mx_el_gt)
+DEFNDCMPLXCMPOP_FN (ne, complex_matrix, scalar, complex_array, scalar, mx_el_ne)
 
 DEFNDBINOP_OP (el_mul, complex_matrix, scalar, complex_array, scalar, *)
 
@@ -110,6 +109,9 @@ DEFNDCATOP_FN (cm_s, complex_matrix, scalar, complex_array, array, concat)
 
 DEFNDASSIGNOP_FN (assign, complex_matrix, scalar, complex_array, assign)
 
+DEFNDASSIGNOP_OP (assign_mul, complex_matrix, scalar, scalar, *=)
+DEFNDASSIGNOP_OP (assign_div, complex_matrix, scalar, scalar, /=)
+
 void
 install_cm_s_ops (void)
 {
@@ -135,10 +137,7 @@ install_cm_s_ops (void)
   INSTALL_CATOP (octave_complex_matrix, octave_scalar, cm_s);
 
   INSTALL_ASSIGNOP (op_asn_eq, octave_complex_matrix, octave_scalar, assign);
-}
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+  INSTALL_ASSIGNOP (op_mul_eq, octave_complex_matrix, octave_scalar, assign_mul);
+  INSTALL_ASSIGNOP (op_div_eq, octave_complex_matrix, octave_scalar, assign_div);
+}

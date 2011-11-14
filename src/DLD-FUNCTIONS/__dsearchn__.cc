@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2007 David Bateman
+Copyright (C) 2007-2011 David Bateman
 
 This file is part of Octave.
 
@@ -20,20 +20,22 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-#include <iostream>
-#include <fstream>
-#include <string>
-
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
 
+#include <iostream>
+#include <fstream>
+#include <string>
+
 #include "lo-math.h"
-//FIXME -- Octave sources should use individual include files, not oct.h.
-#include "oct.h"
+
+#include "defun-dld.h"
+#include "error.h"
+#include "oct-obj.h"
 
 DEFUN_DLD (__dsearchn__, args, ,
-	"-*- texinfo -*-\n\
+        "-*- texinfo -*-\n\
 @deftypefn {Loadable Function} {[@var{idx}, @var{d}] =} dsearch (@var{x}, @var{xi})\n\
 Undocumented internal function.\n\
 @end deftypefn")
@@ -53,17 +55,17 @@ Undocumented internal function.\n\
   if (! error_state)
     {
       if (x.rows() != xi.rows() || x.columns() < 1)
-	error ("__dsearch__: dimensional mismatch");
+        error ("__dsearch__: number of rows of X and XI must match");
       else
-	{
-	  octave_idx_type n = x.rows();
-	  octave_idx_type nx = x.columns();
-	  octave_idx_type nxi = xi.columns();
+        {
+          octave_idx_type n = x.rows();
+          octave_idx_type nx = x.columns();
+          octave_idx_type nxi = xi.columns();
 
-	  ColumnVector idx (nxi);
-	  double *pidx = idx.fortran_vec ();
-	  ColumnVector dist (nxi);
-	  double *pdist = dist.fortran_vec ();
+          ColumnVector idx (nxi);
+          double *pidx = idx.fortran_vec ();
+          ColumnVector dist (nxi);
+          double *pdist = dist.fortran_vec ();
 
 #define DIST(dd, y, yi, m) \
   dd = 0.; \
@@ -74,34 +76,34 @@ Undocumented internal function.\n\
    } \
   dd = sqrt (dd);
 
-	  const double *pxi = xi.fortran_vec ();
-	  for (octave_idx_type i = 0; i < nxi; i++)
-	    {
-	      double d0;
-	      const double *px = x.fortran_vec ();
-	      DIST(d0, px, pxi, n);
-	      *pidx = 1.;
-	      for (octave_idx_type j = 1; j < nx; j++)
-		{
-		  px += n;
-		  double d;
-		  DIST (d, px, pxi, n);
-		  if (d < d0)
-		    {
-		      d0 = d;
-		      *pidx = static_cast<double>(j + 1);
-		    }
-		  OCTAVE_QUIT;
- 		}
+          const double *pxi = xi.fortran_vec ();
+          for (octave_idx_type i = 0; i < nxi; i++)
+            {
+              double d0;
+              const double *px = x.fortran_vec ();
+              DIST(d0, px, pxi, n);
+              *pidx = 1.;
+              for (octave_idx_type j = 1; j < nx; j++)
+                {
+                  px += n;
+                  double d;
+                  DIST (d, px, pxi, n);
+                  if (d < d0)
+                    {
+                      d0 = d;
+                      *pidx = static_cast<double>(j + 1);
+                    }
+                  OCTAVE_QUIT;
+                }
 
-	      *pdist++ = d0; 
-	      pidx++;
-	      pxi += n;
-	    }
+              *pdist++ = d0;
+              pidx++;
+              pxi += n;
+            }
 
-	  retval(1) = dist;
-	  retval(0) = idx;
-	}
+          retval(1) = dist;
+          retval(0) = idx;
+        }
     }
 
   return retval;

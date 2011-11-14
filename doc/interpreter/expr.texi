@@ -1,7 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.
 
-@c Copyright (C) 1996, 1997, 1999, 2000, 2002, 2003, 2004, 2006,
-@c               2007, 2008, 2009 John W. Eaton
+@c Copyright (C) 1996-2011 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -50,6 +49,7 @@ combinations of these with various operators.
 
 @opindex (
 @opindex )
+@opindex :
 
 An @dfn{index expression} allows you to reference or extract selected
 elements of a matrix or vector.
@@ -62,19 +62,21 @@ indexed using one or two indices.  When using a single index
 expression, the elements of the matrix are taken in column-first order;
 the dimensions of the output match those of the index expression.  For
 example,
+
 @example
 @group
-a (2)       # a scalar
-a (1:2)     # a row vector
-a ([1; 2])  # a column vector
+a(2)       # a scalar
+a(1:2)     # a row vector
+a([1; 2])  # a column vector
 @end group
 @end example
 
 As a special case, when a colon is used as a single index, the output
 is a column vector containing all the elements of the vector or matrix.
-For example
+For example:
+
 @example
-a (:)       # a column vector
+a(:)       # a column vector
 @end example
 
 Given the matrix
@@ -88,9 +90,9 @@ all of the following expressions are equivalent
 
 @example
 @group
-a (1, [1, 2])
-a (1, 1:2)
-a (1, :)
+a(1, [1, 2])
+a(1, 1:2)
+a(1, :)
 @end group
 @end example
 
@@ -99,11 +101,11 @@ and select the first row of the matrix.
 
 In general, an array with @samp{n} dimensions can be indexed using @samp{m}
 indices.  If @code{n == m}, each index corresponds to its respective dimension.
-The set of index tuples determining the result is formed by the Cartesian product
-of the index vectors (or ranges or scalars).
-If @code{n < m}, then the array is padded by trailing singleton dimensions.
-If @code{n > m}, the last @code{n-m+1} dimensions are folded into a single
-dimension with extent equal to product of extents of the original dimensions.
+The set of index tuples determining the result is formed by the Cartesian
+product of the index vectors (or ranges or scalars).  If @code{n < m}, then the
+array is padded by trailing singleton dimensions.  If @code{n > m}, the last
+@code{n-m+1} dimensions are folded into a single dimension with extent equal to
+product of extents of the original dimensions.
 
 @c FIXED -- sections on variable prefer_zero_one_indexing were removed
 
@@ -114,7 +116,7 @@ the value of the original scalar.  For example, the following statements
 @example
 @group
 a = 13;
-a (ones (1, 4))
+a(ones (1, 4))
 @end group
 @end example
 
@@ -127,7 +129,7 @@ create a matrix.  For example the following statements
 @example
 @group
 a = 13;
-a (ones (1, 2), ones (1, 3))
+a(ones (1, 2), ones (1, 3))
 @end group
 @end example
 
@@ -144,8 +146,8 @@ The last example could also be written as
 
 It should be, noted that @code{ones (1, n)} (a row vector of ones) results in a
 range (with zero increment), and is therefore more efficient when used in index
-expression than other forms of @dfn{ones}.  In particular, when @samp{r} is a row
-vector, the expressions
+expression than other forms of @dfn{ones}.  In particular, when @samp{r} is a
+row vector, the expressions
 
 @example
   r(ones (1, n), :)
@@ -155,6 +157,7 @@ vector, the expressions
   r(ones (n, 1), :)
 @end example
 
+@noindent
 will produce identical results, but the first one will be significantly
 faster, at least for @samp{r} and @samp{n} large enough.  The reason is that
 in the first case the index is kept in a compressed form, which allows Octave
@@ -223,11 +226,11 @@ endfor
 particularly for large matrices because Octave does not have to
 repeatedly resize the result.
 
-@c ./general/sub2ind.m
+@c sub2ind src/DLD-FUNCTIONS/sub2ind.cc
 @anchor{doc-sub2ind}
-@deftypefn {Function File} {@var{ind} =} sub2ind (@var{dims}, @var{i}, @var{j})
+@deftypefn  {Function File} {@var{ind} =} sub2ind (@var{dims}, @var{i}, @var{j})
 @deftypefnx {Function File} {@var{ind} =} sub2ind (@var{dims}, @var{s1}, @var{s2}, @dots{}, @var{sN})
-Convert subscripts into a linear index.
+Convert subscripts to a linear index.
 
 The following example shows how to convert the two-dimensional
 index @code{(2,3)} of a 3-by-3 matrix to a linear index.  The matrix
@@ -244,22 +247,46 @@ linear_index = sub2ind ([3, 3], 2, 3)
 @end deftypefn
 
 
-@c ./general/ind2sub.m
+@c ind2sub src/DLD-FUNCTIONS/sub2ind.cc
 @anchor{doc-ind2sub}
 @deftypefn {Function File} {[@var{s1}, @var{s2}, @dots{}, @var{sN}] =} ind2sub (@var{dims}, @var{ind})
-Convert a linear index into subscripts.
+Convert a linear index to subscripts.
 
 The following example shows how to convert the linear index @code{8}
 in a 3-by-3 matrix into a subscript.  The matrix is linearly indexed
 moving from one column to next, filling up all rows in each column.
+
 @example
 @group
 [r, c] = ind2sub ([3, 3], 8)
 @result{} r =  2
-c =  3
+   c =  3
 @end group
 @end example
 @seealso{@ref{doc-sub2ind,,sub2ind}}
+@end deftypefn
+
+
+@c isindex src/utils.cc
+@anchor{doc-isindex}
+@deftypefn  {Built-in Function} {} isindex (@var{ind})
+@deftypefnx {Built-in Function} {} isindex (@var{ind}, @var{n})
+Return true if @var{ind} is a valid index.  Valid indices are
+either positive integers (although possibly of real data type), or logical
+arrays.  If present, @var{n} specifies the maximum extent of the dimension
+to be indexed.  When possible the internal result is cached so that
+subsequent indexing using @var{ind} will not perform the check again.
+@end deftypefn
+
+
+@c allow_noninteger_range_as_index src/ov-range.cc
+@anchor{doc-allow_noninteger_range_as_index}
+@deftypefn  {Built-in Function} {@var{val} =} allow_noninteger_range_as_index ()
+@deftypefnx {Built-in Function} {@var{old_val} =} allow_noninteger_range_as_index (@var{new_val})
+Query or set the internal variable that controls whether non-integer
+ranges are allowed as indices.  This might be useful for @sc{matlab}
+compatibility; however, it is still not entirely compatible because
+@sc{matlab} treats the range expression differently in different contexts.
 @end deftypefn
 
 
@@ -433,9 +460,9 @@ the recursion ends.
 The built-in variable @code{max_recursion_depth} specifies a limit to
 the recursion depth and prevents Octave from recursing infinitely.
 
-@c ov-usr-fcn.cc
+@c max_recursion_depth src/pt-eval.cc
 @anchor{doc-max_recursion_depth}
-@deftypefn {Built-in Function} {@var{val} =} max_recursion_depth ()
+@deftypefn  {Built-in Function} {@var{val} =} max_recursion_depth ()
 @deftypefnx {Built-in Function} {@var{old_val} =} max_recursion_depth (@var{new_val})
 Query or set the internal limit on the number of times a function may
 be called recursively.  If the limit is exceeded, an error message is
@@ -545,7 +572,7 @@ expansion if @var{y} is not an integer.  An error results if both
 The implementation of this operator needs to be improved.
 
 @item @var{x} .^ @var{y}
-@item @var{x} .** @var{y}
+@itemx @var{x} .** @var{y}
 @opindex .**
 @opindex .^
 Element by element power operator.  If both operands are matrices, the
@@ -603,6 +630,169 @@ lexer, which usually prefers to break the input into tokens by
 preferring the longest possible match at any given point, it is more
 useful in this case.
 
+@opindex '
+@c ctranspose src/data.cc
+@anchor{doc-ctranspose}
+@deftypefn {Built-in Function} {} ctranspose (@var{x})
+Return the complex conjugate transpose of @var{x}.  This function is
+equivalent to @code{x'}.
+@seealso{@ref{doc-transpose,,transpose}}
+@end deftypefn
+
+
+@opindex .\
+@c ldivide src/data.cc
+@anchor{doc-ldivide}
+@deftypefn {Built-in Function} {} ldivide (@var{x}, @var{y})
+Return the element-by-element left division of @var{x} and @var{y}.
+This function is equivalent to @w{@code{x .\ y}}.
+@seealso{@ref{doc-rdivide,,rdivide}, @ref{doc-mldivide,,mldivide}}
+@end deftypefn
+
+
+@opindex -
+@c minus src/data.cc
+@anchor{doc-minus}
+@deftypefn {Built-in Function} {} minus (@var{x}, @var{y})
+This function is equivalent to @w{@code{x - y}}.
+@seealso{@ref{doc-plus,,plus}}
+@end deftypefn
+
+
+@opindex \
+@c mldivide src/data.cc
+@anchor{doc-mldivide}
+@deftypefn {Built-in Function} {} mldivide (@var{x}, @var{y})
+Return the matrix left division of @var{x} and @var{y}.
+This function is equivalent to @w{@code{x \ y}}.
+@seealso{@ref{doc-mrdivide,,mrdivide}, @ref{doc-ldivide,,ldivide}}
+@end deftypefn
+
+
+@opindex **
+@opindex ^
+@c mpower src/data.cc
+@anchor{doc-mpower}
+@deftypefn {Built-in Function} {} mpower (@var{x}, @var{y})
+Return the matrix power operation of @var{x} raised to the @var{y} power.
+This function is equivalent to @w{@code{x ^ y}}.
+@seealso{@ref{doc-power,,power}}
+@end deftypefn
+
+
+@opindex /
+@c mrdivide src/data.cc
+@anchor{doc-mrdivide}
+@deftypefn {Built-in Function} {} mrdivide (@var{x}, @var{y})
+Return the matrix right division of @var{x} and @var{y}.
+This function is equivalent to @w{@code{x / y}}.
+@seealso{@ref{doc-mldivide,,mldivide}, @ref{doc-rdivide,,rdivide}}
+@end deftypefn
+
+
+@opindex *
+@c mtimes src/data.cc
+@anchor{doc-mtimes}
+@deftypefn  {Built-in Function} {} mtimes (@var{x}, @var{y})
+@deftypefnx {Built-in Function} {} mtimes (@var{x1}, @var{x2}, @dots{})
+Return the matrix multiplication product of inputs.
+This function is equivalent to @w{@code{x * y}}.
+If more arguments are given, the multiplication is applied
+cumulatively from left to right:
+
+@example
+  (@dots{}((x1 * x2) * x3) * @dots{})
+@end example
+
+At least one argument is required.
+@seealso{@ref{doc-times,,times}}
+@end deftypefn
+
+
+@opindex +
+@c plus src/data.cc
+@anchor{doc-plus}
+@deftypefn  {Built-in Function} {} plus (@var{x}, @var{y})
+@deftypefnx {Built-in Function} {} plus (@var{x1}, @var{x2}, @dots{})
+This function is equivalent to @w{@code{x + y}}.
+If more arguments are given, the summation is applied
+cumulatively from left to right:
+
+@example
+  (@dots{}((x1 + x2) + x3) + @dots{})
+@end example
+
+At least one argument is required.
+@seealso{@ref{doc-minus,,minus}}
+@end deftypefn
+
+
+@opindex .**
+@opindex .^
+@c power src/data.cc
+@anchor{doc-power}
+@deftypefn {Built-in Function} {} power (@var{x}, @var{y})
+Return the element-by-element operation of @var{x} raised to the
+@var{y} power.
+This function is equivalent to @w{@code{x .^ y}}.
+@seealso{@ref{doc-mpower,,mpower}}
+@end deftypefn
+
+
+@opindex ./
+@c rdivide src/data.cc
+@anchor{doc-rdivide}
+@deftypefn {Built-in Function} {} rdivide (@var{x}, @var{y})
+Return the element-by-element right division of @var{x} and @var{y}.
+This function is equivalent to @w{@code{x ./ y}}.
+@seealso{@ref{doc-ldivide,,ldivide}, @ref{doc-mrdivide,,mrdivide}}
+@end deftypefn
+
+
+@opindex .*
+@c times src/data.cc
+@anchor{doc-times}
+@deftypefn  {Built-in Function} {} times (@var{x}, @var{y})
+@deftypefnx {Built-in Function} {} times (@var{x1}, @var{x2}, @dots{})
+Return the element-by-element multiplication product of inputs.
+This function is equivalent to @w{@code{x .* y}}.
+If more arguments are given, the multiplication is applied
+cumulatively from left to right:
+
+@example
+  (@dots{}((x1 .* x2) .* x3) .* @dots{})
+@end example
+
+At least one argument is required.
+@seealso{@ref{doc-mtimes,,mtimes}}
+@end deftypefn
+
+
+@opindex .'
+@c transpose src/data.cc
+@anchor{doc-transpose}
+@deftypefn {Built-in Function} {} transpose (@var{x})
+Return the transpose of @var{x}.  This function is equivalent to @code{x.'}.
+@seealso{@ref{doc-ctranspose,,ctranspose}}
+@end deftypefn
+
+
+@opindex -
+@c uminus src/data.cc
+@anchor{doc-uminus}
+@deftypefn {Built-in Function} {} uminus (@var{x})
+This function is equivalent to @w{@code{- x}}.
+@end deftypefn
+
+
+@opindex +
+@c uplus src/data.cc
+@anchor{doc-uplus}
+@deftypefn {Built-in Function} {} uplus (@var{x})
+This function is equivalent to @w{@code{+ x}}.
+@end deftypefn
+
+
 @node Comparison Ops
 @section Comparison Operators
 @cindex comparison expressions
@@ -621,7 +811,7 @@ such as equality.  They are written using
 
 All of Octave's comparison operators return a value of 1 if the
 comparison is true, or 0 if it is false.  For matrix values, they all
-work on an element-by-element basis.  For example,
+work on an element-by-element basis.  For example:
 
 @example
 @group
@@ -663,11 +853,52 @@ True if @var{x} is greater than @var{y}.
 True if @var{x} is not equal to @var{y}.
 @end table
 
+For complex numbers, the following ordering is defined:
+@var{z1} < @var{z2}
+iff
+
+@example
+@group
+  abs(@var{z1}) < abs(@var{z2}) 
+  || (abs(@var{z1}) == abs(@var{z2}) && arg(@var{z1}) < arg(@var{z2}))
+@end group
+@end example
+
+This is consistent with the ordering used by @dfn{max}, @dfn{min} and
+@dfn{sort}, but is not consistent with @sc{matlab}, which only compares the real
+parts.
+
 String comparisons may also be performed with the @code{strcmp}
 function, not with the comparison operators listed above.
 @xref{Strings}.
 
-@c ./general/isequal.m
+@opindex ==
+@c eq src/data.cc
+@anchor{doc-eq}
+@deftypefn {Built-in Function} {} eq (@var{x}, @var{y})
+Return true if the two inputs are equal.
+This function is equivalent to @w{@code{x == y}}.
+@seealso{@ref{doc-ne,,ne}, @ref{doc-isequal,,isequal}}
+@end deftypefn
+
+
+@opindex >=
+@c ge src/data.cc
+@anchor{doc-ge}
+@deftypefn {Built-in Function} {} ge (@var{x}, @var{y})
+This function is equivalent to @w{@code{x >= y}}.
+@end deftypefn
+
+
+@opindex >
+@c gt src/data.cc
+@anchor{doc-gt}
+@deftypefn {Built-in Function} {} gt (@var{x}, @var{y})
+This function is equivalent to @w{@code{x > y}}.
+@end deftypefn
+
+
+@c isequal scripts/general/isequal.m
 @anchor{doc-isequal}
 @deftypefn {Function File} {} isequal (@var{x1}, @var{x2}, @dots{})
 Return true if all of @var{x1}, @var{x2}, @dots{} are equal.
@@ -675,12 +906,39 @@ Return true if all of @var{x1}, @var{x2}, @dots{} are equal.
 @end deftypefn
 
 
-@c ./general/isequalwithequalnans.m
+@c isequalwithequalnans scripts/general/isequalwithequalnans.m
 @anchor{doc-isequalwithequalnans}
 @deftypefn {Function File} {} isequalwithequalnans (@var{x1}, @var{x2}, @dots{})
 Assuming NaN == NaN, return true if all of @var{x1}, @var{x2}, @dots{}
 are equal.
 @seealso{@ref{doc-isequal,,isequal}}
+@end deftypefn
+
+
+@opindex <=
+@c le src/data.cc
+@anchor{doc-le}
+@deftypefn {Built-in Function} {} le (@var{x}, @var{y})
+This function is equivalent to @w{@code{x <= y}}.
+@end deftypefn
+
+
+@opindex <
+@c lt src/data.cc
+@anchor{doc-lt}
+@deftypefn {Built-in Function} {} lt (@var{x}, @var{y})
+This function is equivalent to @w{@code{x < y}}.
+@end deftypefn
+
+
+@opindex !=
+@opindex ~=
+@c ne src/data.cc
+@anchor{doc-ne}
+@deftypefn {Built-in Function} {} ne (@var{x}, @var{y})
+Return true if the two inputs are not equal.
+This function is equivalent to @w{@code{x != y}}.
+@seealso{@ref{doc-eq,,eq}, @ref{doc-isequal,,isequal}}
 @end deftypefn
 
 
@@ -778,6 +1036,55 @@ the value of the variable @var{b} is incremented even if the variable
 This behavior is necessary for the boolean operators to work as
 described for matrix-valued operands.
 
+@opindex &
+@c and src/data.cc
+@anchor{doc-and}
+@deftypefn  {Built-in Function} {} and (@var{x}, @var{y})
+@deftypefnx {Built-in Function} {} and (@var{x1}, @var{x2}, @dots{})
+Return the logical AND of @var{x} and @var{y}.
+This function is equivalent to @w{@code{x & y}}.
+If more arguments are given, the logical and is applied
+cumulatively from left to right:
+
+@example
+  (@dots{}((x1 & x2) & x3) & @dots{})
+@end example
+
+At least one argument is required.
+@seealso{@ref{doc-or,,or}, @ref{doc-not,,not}, @ref{doc-xor,,xor}}
+@end deftypefn
+
+
+@opindex ~
+@opindex !
+@c not src/data.cc
+@anchor{doc-not}
+@deftypefn {Built-in Function} {} not (@var{x})
+Return the logical NOT of @var{x}.  This function is equivalent to
+@code{! x}.
+@seealso{@ref{doc-and,,and}, @ref{doc-or,,or}, @ref{doc-xor,,xor}}
+@end deftypefn
+
+
+@opindex |
+@c or src/data.cc
+@anchor{doc-or}
+@deftypefn  {Built-in Function} {} or (@var{x}, @var{y})
+@deftypefnx {Built-in Function} {} or (@var{x1}, @var{x2}, @dots{})
+Return the logical OR of @var{x} and @var{y}.
+This function is equivalent to @w{@code{x | y}}.
+If more arguments are given, the logical or is applied
+cumulatively from left to right:
+
+@example
+  (@dots{}((x1 | x2) | x3) | @dots{})
+@end example
+
+At least one argument is required.
+@seealso{@ref{doc-and,,and}, @ref{doc-not,,not}, @ref{doc-xor,,xor}}
+@end deftypefn
+
+
 @node Short-circuit Boolean Operators
 @subsection Short-circuit Boolean Operators
 @cindex short-circuit evaluation
@@ -872,6 +1179,59 @@ function f (a, b, c)
 would result in an error if @code{f} were called with one or two
 arguments because Octave would be forced to try to evaluate both of the
 operands for the operator @samp{&}.
+
+@sc{matlab} has special behavior that allows the operators @samp{&} and
+@samp{|} to short-circuit when used in the truth expression for @code{if} and 
+@code{while} statements.  The Octave parser may be instructed to behave in the
+same manner, but its use is strongly discouraged.
+
+@c do_braindead_shortcircuit_evaluation src/pt-binop.cc
+@anchor{doc-do_braindead_shortcircuit_evaluation}
+@deftypefn  {Built-in Function} {@var{val} =} do_braindead_shortcircuit_evaluation ()
+@deftypefnx {Built-in Function} {@var{old_val} =} do_braindead_shortcircuit_evaluation (@var{new_val})
+Query or set the internal variable that controls whether Octave will
+do short-circuit evaluation of @samp{|} and @samp{&} operators inside the
+conditions of if or while statements.
+
+This feature is only provided for compatibility with @sc{matlab} and should
+not be used unless you are porting old code that relies on this feature.
+
+To obtain short-circuit behavior for logical expressions in new programs,
+you should always use the @samp{&&} and @samp{||} operators.
+@end deftypefn
+
+
+Finally, the ternary operator (?:) is not supported in Octave.  If
+short-circuiting is not important, it can be replaced by the @code{ifelse}
+function.
+
+@c merge src/data.cc
+@anchor{doc-merge}
+@deftypefn  {Built-in Function} {} merge (@var{mask}, @var{tval}, @var{fval})
+@deftypefnx {Built-in Function} {} ifelse (@var{mask}, @var{tval}, @var{fval})
+Merge elements of @var{true_val} and @var{false_val}, depending on the
+value of @var{mask}.  If @var{mask} is a logical scalar, the other two
+arguments can be arbitrary values.  Otherwise, @var{mask} must be a logical
+array, and @var{tval}, @var{fval} should be arrays of matching class, or
+cell arrays.  In the scalar mask case, @var{tval} is returned if @var{mask}
+is true, otherwise @var{fval} is returned.
+
+In the array mask case, both @var{tval} and @var{fval} must be either
+scalars or arrays with dimensions equal to @var{mask}.  The result is
+constructed as follows:
+
+@example
+@group
+result(mask) = tval(mask);
+result(! mask) = fval(! mask);
+@end group
+@end example
+
+@var{mask} can also be arbitrary numeric type, in which case
+it is first converted to logical.
+@seealso{@ref{doc-logical,,logical}}
+@end deftypefn
+
 
 @node Assignment Ops
 @section Assignment Expressions
@@ -1038,6 +1398,21 @@ following will produce an error.
 @print{} error: element number 4 undefined in return list
 @end group
 @end example
+
+The symbol @code{~} may be used as a placeholder in the list of lvalues,
+indicating that the corresponding return value should be ignored and not stored
+anywhere:
+
+@example
+@group
+[~, s, v] = svd (a);
+@end group
+@end example
+
+This is cleaner and more memory efficient than using a dummy variable.
+The @code{nargout} value for the right-hand side expression is not affected.
+If the assignment is used as an expression, the return value is a
+comma-separated list with the ignored values dropped.
 
 @opindex +=
 A very common programming pattern is to increment an existing variable

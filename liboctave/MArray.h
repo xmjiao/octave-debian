@@ -1,8 +1,8 @@
 // Template array classes with like-type math ops
 /*
 
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 2000, 2002, 2003, 2004,
-              2005, 2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
+Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
 
@@ -27,7 +27,7 @@ along with Octave; see the file COPYING.  If not, see
 
 #include "Array.h"
 
-// One dimensional array with math ops.
+// N-dimensional array with math ops.
 
 // But first, some preprocessor abuse...
 
@@ -39,21 +39,26 @@ template <class T>
 class
 MArray : public Array<T>
 {
-protected:
-
-  MArray (T *d, octave_idx_type l) : Array<T> (d, l) { }
-
 public:
-  
-  MArray (void) : Array<T> () { }
 
-  explicit MArray (octave_idx_type n) : Array<T> (n) { }
+  MArray (void) : Array<T> () {}
 
-  MArray (octave_idx_type n, const T& val) : Array<T> (n, val) { }
+  explicit MArray (octave_idx_type n) GCC_ATTR_DEPRECATED
+    : Array<T> (dim_vector (n, 1)) { }
+
+  MArray (octave_idx_type n, const T& val) GCC_ATTR_DEPRECATED
+    : Array<T> (dim_vector (n, 1), val) { }
+
+  explicit MArray (const dim_vector& dv)
+    : Array<T> (dv) { }
+
+  explicit MArray (const dim_vector& dv, const T& val)
+    : Array<T> (dv, val) { }
 
   MArray (const MArray<T>& a) : Array<T> (a) { }
 
-  MArray (const Array<T>& a) : Array<T> (a) { }
+  template <class U>
+  MArray (const Array<U>& a) : Array<T> (a) { }
 
   ~MArray (void) { }
 
@@ -63,34 +68,23 @@ public:
       return *this;
     }
 
-  MArray<T> transpose (void) const { return Array<T>::transpose (); }
-  MArray<T> hermitian (T (*fcn) (const T&) = 0) const { return Array<T>::hermitian (fcn); }
+  MArray<T> reshape (const dim_vector& new_dims) const
+    { return Array<T>::reshape (new_dims); }
 
-  octave_idx_type nnz (void) const
-    {
-      octave_idx_type retval = 0;
+  MArray<T> permute (const Array<octave_idx_type>& vec,
+                      bool inv = false) const
+    { return Array<T>::permute (vec, inv); }
 
-      const T *d = this->data ();
+  MArray<T> ipermute (const Array<octave_idx_type>& vec) const
+    { return Array<T>::ipermute (vec); }
 
-      octave_idx_type nel = this->numel ();
+  MArray squeeze (void) const { return Array<T>::squeeze (); }
 
-      for (octave_idx_type i = 0; i < nel; i++)
-	{
-	  if (d[i] != T ())
-	    retval++;
-	}
+  MArray<T> transpose (void) const
+    { return Array<T>::transpose (); }
 
-      return retval;
-    }
-
-  double norm (double p) const;
-  float norm (float p) const;
-
-  template <class U, class F>
-  MArray<U> map (F fcn) const
-  {
-    return Array<T>::template map<U> (fcn);
-  }
+  MArray<T> hermitian (T (*fcn) (const T&) = 0) const
+    { return Array<T>::hermitian (fcn); }
 
   // Performs indexed accumulative addition.
 
@@ -98,16 +92,13 @@ public:
 
   void idx_add (const idx_vector& idx, const MArray<T>& vals);
 
-  // Currently, the OPS functions don't need to be friends, but that
-  // may change.
+  void idx_min (const idx_vector& idx, const MArray<T>& vals);
 
-  // MARRAY_OPS_FRIEND_DECLS (MArray)
+  void idx_max (const idx_vector& idx, const MArray<T>& vals);
+
+  void idx_add_nd (const idx_vector& idx, const MArray<T>& vals, int dim = -1);
+
+  void changesign (void);
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

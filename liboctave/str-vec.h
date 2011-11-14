@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2000, 2002, 2003, 2005, 2006, 2007, 2009
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -26,6 +25,7 @@ along with Octave; see the file COPYING.  If not, see
 
 #include <iosfwd>
 #include <list>
+#include <set>
 #include <string>
 
 #include "Array.h"
@@ -38,15 +38,23 @@ public:
 
   string_vector (void) : Array<std::string> () { }
 
-  explicit string_vector (octave_idx_type n) : Array<std::string> (n) { }
+  explicit string_vector (octave_idx_type n)
+    : Array<std::string> (dim_vector (n, 1)) { }
 
-  string_vector (const char *s) : Array<std::string> (1, s) { }
+  string_vector (const char *s)
+    : Array<std::string> (dim_vector (1, 1), s) { }
 
-  string_vector (const std::string& s) : Array<std::string> (1, s) { }
+  string_vector (const std::string& s)
+    : Array<std::string> (dim_vector (1, 1), s) { }
 
   string_vector (const string_vector& s) : Array<std::string> (s) { }
 
   string_vector (const std::list<std::string>& lst);
+
+  string_vector (const std::set<std::string>& lst);
+
+  string_vector (const Array<std::string>& s)
+    : Array<std::string> (s.as_column ()) { }
 
   string_vector (const char * const *s);
 
@@ -71,13 +79,18 @@ public:
 
     for (octave_idx_type i = 0; i < n; i++)
       {
-	octave_idx_type tmp = elem(i).length ();
+        octave_idx_type tmp = elem(i).length ();
 
-	if (tmp > longest)
-	  longest = tmp;
+        if (tmp > longest)
+          longest = tmp;
       }
 
     return longest;
+  }
+
+  void resize (octave_idx_type n, const std::string& rfv = resize_fill_value ())
+  {
+    Array<std::string>::resize (dim_vector (n, 1), rfv);
   }
 
   std::string& operator[] (octave_idx_type i) { return Array<std::string>::elem (i); }
@@ -100,9 +113,3 @@ public:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

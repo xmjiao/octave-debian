@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2000, 2002, 2004, 2005, 2007, 2008, 2009
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -132,18 +131,12 @@ install_range_ops (void)
   // FIXME -- this would be unneccessary if
   // octave_base_value::numeric_assign always tried converting lhs
   // before rhs.
-  
+
   INSTALL_ASSIGNCONV (octave_range, octave_null_matrix, octave_matrix);
   INSTALL_ASSIGNCONV (octave_range, octave_null_str, octave_matrix);
   INSTALL_ASSIGNCONV (octave_range, octave_null_sq_str, octave_matrix);
 
   // However, this should probably be here just in case we need it.
-  
+
   INSTALL_WIDENOP (octave_range, octave_matrix, range_to_matrix);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

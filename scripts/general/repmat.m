@@ -1,4 +1,4 @@
-## Copyright (C) 2000, 2002, 2004, 2005, 2006, 2007, 2009 Paul Kienzle
+## Copyright (C) 2000-2011 Paul Kienzle
 ## Copyright (C) 2008 Jaroslav Hajek
 ##
 ## This file is part of Octave.
@@ -18,18 +18,21 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} repmat (@var{A}, @var{m}, @var{n})
+## @deftypefn  {Function File} {} repmat (@var{A}, @var{m})
+## @deftypefnx {Function File} {} repmat (@var{A}, @var{m}, @var{n})
+## @deftypefnx {Function File} {} repmat (@var{A}, @var{m}, @var{n}, @var{p}, @dots{})
 ## @deftypefnx {Function File} {} repmat (@var{A}, [@var{m} @var{n}])
 ## @deftypefnx {Function File} {} repmat (@var{A}, [@var{m} @var{n} @var{p} @dots{}])
 ## Form a block matrix of size @var{m} by @var{n}, with a copy of matrix
-## @var{A} as each element.  If @var{n} is not specified, form an 
+## @var{A} as each element.  If @var{n} is not specified, form an
 ## @var{m} by @var{m} block matrix.
+## @seealso{repelems}
 ## @end deftypefn
 
 ## Author: Paul Kienzle <pkienzle@kienzle.powernet.co.uk>
 ## Created: July 2000
 
-function x = repmat (a, m, n)
+function x = repmat (A, m, n)
 
   if (nargin < 2 || nargin > 3)
     print_usage ();
@@ -37,10 +40,10 @@ function x = repmat (a, m, n)
 
   if (nargin == 3)
     if (! (isscalar (m) && isscalar (n)))
-      error ("repmat: with 3 arguments m and n must be scalar");
+      error ("repmat: with 3 arguments M and N must be scalar");
     endif
     idx = [m, n];
-  else 
+  else
     if (isscalar (m))
       idx = [m, m];
       n = m;
@@ -51,30 +54,34 @@ function x = repmat (a, m, n)
       error ("repmat: invalid dimensional argument");
     endif
   endif
-  
+
   if (all (idx < 0))
     error ("repmat: invalid dimensions");
   else
     idx = max (idx, 0);
   endif
 
-  if (numel (a) == 1)
+  if (numel (A) == 1)
     ## optimize the scalar fill case.
-    x(1:prod (idx)) = a;
-    x = reshape (x, idx);
-  elseif (ndims (a) == 2 && length (idx) < 3)
-    if (issparse (a))
-      x = kron (ones (idx), a);
+    if (any (idx == 0))
+      x = resize (A, idx);
+    else
+      x(1:prod (idx)) = A;
+      x = reshape (x, idx);
+    endif
+  elseif (ndims (A) == 2 && length (idx) < 3)
+    if (issparse (A))
+      x = kron (ones (idx), A);
     else
       ## indexing is now faster, so we use it rather than kron.
-      m = rows (a); n = columns (a);
+      m = rows (A); n = columns (A);
       p = idx(1); q = idx(2);
-      x = reshape (a, m, 1, n, 1);
+      x = reshape (A, m, 1, n, 1);
       x = x(:, ones (1, p), :, ones (1, q));
       x = reshape (x, m*p, n*q);
     endif
   else
-    aidx = size (a);
+    aidx = size (A);
     ## ensure matching size
     idx(end+1:length (aidx)) = 1;
     aidx(end+1:length (idx)) = 1;
@@ -87,8 +94,8 @@ function x = repmat (a, m, n)
     aaidx = aidx;
     # add singleton dims
     aaidx(2,:) = 1;
-    a = reshape (a, aaidx(:));
-    x = reshape (a (cidx{:}), idx .* aidx);
+    A = reshape (A, aaidx(:));
+    x = reshape (A (cidx{:}), idx .* aidx);
   endif
 
 endfunction
@@ -135,3 +142,21 @@ endfunction
 %!assert (size (repmat (".", -1, 1)), [0, 1]);
 %!assert (size (repmat (".", 1, -1)), [1, 0]);
 %!error (size (repmat (".", -1, -1)));
+
+%!assert (size (repmat (1, [1, 0])), [1, 0]);
+%!assert (size (repmat (1, [5, 0])), [5, 0]);
+%!assert (size (repmat (1, [0, 1])), [0, 1]);
+%!assert (size (repmat (1, [0, 5])), [0, 5]);
+
+%!shared x
+%! x = struct ("a", [], "b", []);
+%!assert (size (repmat (x, [1, 0])), [1, 0]);
+%!assert (size (repmat (x, [5, 0])), [5, 0]);
+%!assert (size (repmat (x, [0, 1])), [0, 1]);
+%!assert (size (repmat (x, [0, 5])), [0, 5]);
+
+%!assert (size (repmat ({1}, [1, 0])), [1, 0]);
+%!assert (size (repmat ({1}, [5, 0])), [5, 0]);
+%!assert (size (repmat ({1}, [0, 1])), [0, 1]);
+%!assert (size (repmat ({1}, [0, 5])), [0, 5]);
+

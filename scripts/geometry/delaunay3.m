@@ -1,4 +1,4 @@
-## Copyright (C) 1999, 2000, 2007, 2008, 2009 Kai Habel
+## Copyright (C) 1999-2011 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -17,16 +17,16 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{T} =} delaunay3 (@var{x}, @var{y}, @var{z})
+## @deftypefn  {Function File} {@var{T} =} delaunay3 (@var{x}, @var{y}, @var{z})
 ## @deftypefnx {Function File} {@var{T} =} delaunay3 (@var{x}, @var{y}, @var{z}, @var{opt})
-## A matrix of size [n, 4] is returned.  Each row contains a 
+## A matrix of size [n, 4] is returned.  Each row contains a
 ## set of tetrahedron which are
 ## described by the indices to the data point vectors (x,y,z).
 ##
 ## A fourth optional argument, which must be a string or cell array of strings,
-## contains extra options passed to the underlying qhull command.  See the 
+## contains extra options passed to the underlying qhull command.  See the
 ## documentation for the Qhull library for details.
-## @seealso{delaunay,delaunayn}
+## @seealso{delaunay, delaunayn}
 ## @end deftypefn
 
 ## Author: Kai Habel <kai.habel@gmx.de>

@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2000, 2002, 2003, 2004, 2005, 2006,
-              2007, 2008 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -55,6 +54,8 @@ DEFNDUNOP_OP (not, bool_matrix, bool_array, !)
 DEFNDUNOP_OP (uplus, bool_matrix, array, +)
 DEFNDUNOP_OP (uminus, bool_matrix, array, -)
 
+DEFNCUNOP_METHOD (invert, bool_matrix, invert)
+
 DEFUNOP (transpose, bool_matrix)
 {
   CAST_UNOP_ARG (const octave_bool_matrix&);
@@ -74,22 +75,22 @@ DEFNDBINOP_FN (eq, bool_matrix, bool_matrix, bool_array, bool_array, mx_el_eq)
 DEFNDBINOP_FN (ne, bool_matrix, bool_matrix, bool_array, bool_array, mx_el_ne)
 
 DEFNDBINOP_FN (el_and, bool_matrix, bool_matrix, bool_array, bool_array,
-	       mx_el_and)
+               mx_el_and)
 
 DEFNDBINOP_FN (el_or,  bool_matrix, bool_matrix, bool_array, bool_array,
-	       mx_el_or)
+               mx_el_or)
 
 DEFNDBINOP_FN (el_not_and, bool_matrix, bool_matrix, bool_array, bool_array,
-	       mx_el_not_and)
+               mx_el_not_and)
 
 DEFNDBINOP_FN (el_not_or,  bool_matrix, bool_matrix, bool_array, bool_array,
-	       mx_el_not_or)
+               mx_el_not_or)
 
 DEFNDBINOP_FN (el_and_not, bool_matrix, bool_matrix, bool_array, bool_array,
-	       mx_el_and_not)
+               mx_el_and_not)
 
 DEFNDBINOP_FN (el_or_not,  bool_matrix, bool_matrix, bool_array, bool_array,
-	       mx_el_or_not)
+               mx_el_or_not)
 
 DEFNDCATOP_FN (bm_bm, bool_matrix, bool_matrix, bool_array, bool_array, concat)
 DEFNDCATOP_FN (bm_m, bool_matrix, matrix, array, array, concat)
@@ -98,13 +99,15 @@ DEFNDCATOP_FN (bm_fm, bool_matrix, float_matrix, float_array, float_array, conca
 DEFNDCATOP_FN (fm_bm, float_matrix, bool_matrix, float_array, float_array, concat)
 
 DEFNDASSIGNOP_FN (assign, bool_matrix, bool_matrix, bool_array, assign)
+DEFNDASSIGNOP_FNOP (assign_and, bool_matrix, bool_matrix, bool_array, mx_el_and_assign)
+DEFNDASSIGNOP_FNOP (assign_or, bool_matrix, bool_matrix, bool_array, mx_el_or_assign)
 
 DEFNULLASSIGNOP_FN (null_assign, bool_matrix, delete_elements)
 
 static octave_value
 oct_assignop_conv_and_assign (octave_base_value& a1,
-			      const octave_value_list& idx,
-			      const octave_base_value& a2)
+                              const octave_value_list& idx,
+                              const octave_base_value& a2)
 {
   octave_bool_matrix& v1 = dynamic_cast<octave_bool_matrix&> (a1);
 
@@ -130,6 +133,8 @@ install_bm_bm_ops (void)
   INSTALL_UNOP (op_uminus, octave_bool_matrix, uminus);
   INSTALL_UNOP (op_transpose, octave_bool_matrix, transpose);
   INSTALL_UNOP (op_hermitian, octave_bool_matrix, transpose);
+
+  INSTALL_NCUNOP (op_not, octave_bool_matrix, invert);
 
   INSTALL_BINOP (op_eq, octave_bool_matrix, octave_bool_matrix, eq);
   INSTALL_BINOP (op_ne, octave_bool_matrix, octave_bool_matrix, ne);
@@ -173,10 +178,7 @@ install_bm_bm_ops (void)
   INSTALL_ASSIGNOP (op_asn_eq, octave_bool_matrix, octave_null_matrix, null_assign);
   INSTALL_ASSIGNOP (op_asn_eq, octave_bool_matrix, octave_null_str, null_assign);
   INSTALL_ASSIGNOP (op_asn_eq, octave_bool_matrix, octave_null_sq_str, null_assign);
-}
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+  INSTALL_ASSIGNOP (op_el_and_eq, octave_bool_matrix, octave_bool_matrix, assign_and);
+  INSTALL_ASSIGNOP (op_el_or_eq, octave_bool_matrix, octave_bool_matrix, assign_or);
+}

@@ -1,6 +1,7 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.
 
-@c Copyright (C) 2008, 2009 David Bateman
+@c Copyright (C) 2008-2011 David Bateman
+@c Copyright (C) 2009 VZLU Prague
 @c
 @c This file is part of Octave.
 @c
@@ -21,18 +22,6 @@
 @c FIXME
 @c For now can't include "@" character in the path name, and so name
 @c the example directory without the "@"!!
-
-@macro classfile{class, file}
-@example
-@group
-@verbatiminclude @value{abs_top_srcdir}/examples/\class\/\file\
-@end group
-@end example
-@end macro
-
-@macro polynomialfile{file}
-@classfile{@@polynomial,\file\}
-@end macro
 
 @node Object Oriented Programming
 @chapter Object Oriented Programming
@@ -106,7 +95,42 @@ and so in our example the constructor with have the name
 called with no arguments to should return a value object.  So for example
 our polynomial might look like
 
-@polynomialfile{polynomial.m}
+@example
+@group
+@verbatim
+## -*- texinfo -*-
+## @deftypefn {Function File} {} polynomial ()
+## @deftypefnx {Function File} {} polynomial (@var{a})
+## Creates a polynomial object representing the polynomial
+##
+## @example
+## a0 + a1 * x + a2 * x^2 + @dots{} + an * x^n
+## @end example
+##
+## from a vector of coefficients [a0 a1 a2 ... an].
+## @end deftypefn
+
+function p = polynomial (a)
+  if (nargin == 0)
+    p.poly = [0];
+    p = class (p, "polynomial");
+  elseif (nargin == 1)
+    if (strcmp (class (a), "polynomial"))
+      p = a;
+    elseif (isvector (a) && isreal (a))
+      p.poly = a(:).';
+      p = class (p, "polynomial");
+    else
+      error ("polynomial: expecting real vector");
+    endif
+  else
+    print_usage ();
+  endif
+endfunction
+@end verbatim
+
+@end group
+@end example
 
 Note that the return value of the constructor must be the output of
 the @code{class} function called with the first argument being a
@@ -133,7 +157,7 @@ at the first executable line of the display method of the polynomial
 class.
 
 To check where a variable is a user class, the @code{isobject} and
-@code{isa} functions can be used. for example
+@code{isa} functions can be used.  For example:
 
 @example
 @group
@@ -145,10 +169,11 @@ isa (p, "polynomial")
 @end group
 @end example
 
-@c ov-class.cc
+@c isobject src/ov-class.cc
 @anchor{doc-isobject}
 @deftypefn {Built-in Function} {} isobject (@var{x})
 Return true if @var{x} is a class object.
+@seealso{@ref{doc-class,,class}, @ref{doc-typeinfo,,typeinfo}, @ref{doc-isa,,isa}, @ref{doc-ismethod,,ismethod}}
 @end deftypefn
 
 
@@ -156,9 +181,9 @@ Return true if @var{x} is a class object.
 The available methods of a class can be displayed with the
 @code{methods} function.
 
-@c ov-class.cc
+@c methods src/ov-class.cc
 @anchor{doc-methods}
-@deftypefn {Built-in Function} {} methods (@var{x})
+@deftypefn  {Built-in Function} {} methods (@var{x})
 @deftypefnx {Built-in Function} {} methods ("classname")
 Return a cell array containing the names of the methods for the
 object @var{x} or the named class.
@@ -169,16 +194,17 @@ object @var{x} or the named class.
 To inquire whether a particular method is available to a user class, the
 @code{ismethod} function can be used.
 
-@c ov-class.cc
+@c ismethod src/ov-class.cc
 @anchor{doc-ismethod}
 @deftypefn {Built-in Function} {} ismethod (@var{x}, @var{method})
 Return true if @var{x} is a class object and the string @var{method}
 is a method of this class.
+@seealso{@ref{doc-isobject,,isobject}}
 @end deftypefn
 
 
 @noindent
-For example
+For example:
 
 @example
 @group
@@ -198,7 +224,7 @@ by Octave when displaying a class on the screen, due to an expression
 that is not terminated with a semicolon.  If this method is not defined,
 then Octave will printed nothing when displaying the contents of a class.
 
-@c ./general/display.m
+@c display scripts/general/display.m
 @anchor{doc-display}
 @deftypefn {Function File} {} display (@var{a})
 Display the contents of an object.  If @var{a} is an object of the
@@ -219,7 +245,45 @@ type "myclass".
 @noindent
 An example of a display method for the polynomial class might be
 
-@polynomialfile{display.m}
+@example
+@group
+@verbatim
+function display (p)
+  a = p.poly;
+  first = true;
+  fprintf("%s =", inputname(1));
+  for i = 1 : length (a);
+    if (a(i) != 0)
+      if (first)
+        first = false;
+      elseif (a(i) > 0)
+        fprintf (" +");
+      endif
+      if (a(i) < 0)
+        fprintf (" -");
+      endif
+      if (i == 1)
+        fprintf (" %g", abs (a(i)));
+      elseif (abs(a(i)) != 1)
+        fprintf (" %g *", abs (a(i)));
+      endif
+      if (i > 1)
+        fprintf (" X");
+      endif
+      if (i > 2)
+        fprintf (" ^ %d", i - 1);
+      endif
+    endif
+  endfor
+  if (first)
+    fprintf(" 0");
+  endif
+  fprintf("\n");
+endfunction
+@end verbatim
+
+@end group
+@end example
 
 @noindent
 Note that in the display method, it makes sense to start the method
@@ -231,15 +295,65 @@ To be consistent with the Octave graphic handle classes, a class
 should also define the @code{get} and @code{set} methods.  The
 @code{get} method should accept one or two arguments, and given one
 argument of the appropriate class it should return a structure with
-all of the properties of the class.  For example
+all of the properties of the class.  For example:
 
-@polynomialfile{get.m}
+@example
+@group
+@verbatim
+function s = get (p, f)
+  if (nargin == 1)
+    s.poly = p.poly;
+  elseif (nargin == 2)
+    if (ischar (f))
+      switch (f)
+        case "poly"
+          s = p.poly;
+        otherwise
+          error ("get: invalid property %s", f);
+      endswitch
+    else
+      error ("get: expecting the property to be a string");
+    endif
+  else
+    print_usage ();
+  endif
+endfunction
+@end verbatim
+
+@end group
+@end example
 
 @noindent
 Similarly, the @code{set} method should taken as its first argument an
 object to modify, and then take property/value pairs to be modified. 
 
-@polynomialfile{set.m}
+@example
+@group
+@verbatim
+function s = set (p, varargin)
+  s = p;
+  if (length (varargin) < 2 || rem (length (varargin), 2) != 0)
+    error ("set: expecting property/value pairs");
+  endif
+  while (length (varargin) > 1)
+    prop = varargin{1};
+    val = varargin{2};
+    varargin(1:2) = [];
+    if (ischar (prop) && strcmp (prop, "poly"))
+      if (isvector (val) && isreal (val))
+        s.poly = val(:).';
+      else
+        error ("set: expecting the value to be a real vector");
+      endif
+    else
+      error ("set: invalid property of polynomial class");
+    endif
+  endwhile
+endfunction
+@end verbatim
+
+@end group
+@end example
 
 @noindent
 Note that as Octave does not implement pass by reference, than the
@@ -257,7 +371,7 @@ is discussed in the next section.
 
 Finally, user classes can be considered as a special type of a
 structure, and so they can be saved to a file in the same manner as a
-structure.  For example
+structure.  For example:
 
 @example
 @group
@@ -275,15 +389,15 @@ a field that it makes no sense to save or a field that needs to be
 initialized before it is saved.  This can be done with the
 @code{saveobj} method of the class
 
-@c ./general/saveobj.m
+@c saveobj scripts/general/saveobj.m
 @anchor{doc-saveobj}
 @deftypefn {Function File} {@var{b} =} saveobj (@var{a})
-Method of a class to manipulate an object prior to saving it to a file. 
-The function @code{saveobj} is called when the object @var{a} is saved 
+Method of a class to manipulate an object prior to saving it to a file.
+The function @code{saveobj} is called when the object @var{a} is saved
 using the @code{save} function.  An example of the use of @code{saveobj}
 might be to remove fields of the object that don't make sense to be saved
 or it might be used to ensure that certain fields of the object are
-initialized before the object is saved.  For example
+initialized before the object is saved.  For example:
 
 @example
 @group
@@ -306,14 +420,14 @@ file.  Likely, the @code{loadobj} method is called just after a class
 is loaded from a file, and can be used to ensure that any removed
 fields are reinserted into the user object.
 
-@c ./general/loadobj.m
+@c loadobj scripts/general/loadobj.m
 @anchor{doc-loadobj}
 @deftypefn {Function File} {@var{b} =} loadobj (@var{a})
-Method of a class to manipulate an object after loading it from a file. 
-The function @code{loadobj} is called when the object @var{a} is loaded 
+Method of a class to manipulate an object after loading it from a file.
+The function @code{loadobj} is called when the object @var{a} is loaded
 using the @code{load} function.  An example of the use of @code{saveobj}
 might be to add fields to an object that don't make sense to be saved.
-For example
+For example:
 
 @example
 @group
@@ -331,6 +445,14 @@ endfunction
 @node Indexing Objects
 @section Indexing Objects
 
+@menu
+* Defining Indexing And Indexed Assignment::
+* Indexed Assignment Optimization::
+@end menu
+
+@node Defining Indexing And Indexed Assignment
+@subsection Defining Indexing And Indexed Assignment
+
 Objects can be indexed with parentheses, either like 
 @code{@var{a} (@var{idx})} or like @code{@var{a} @{@var{idx}@}}, or even
 like @code{@var{a} (@var{idx}).@var{field}}.  However, it is up to the user
@@ -340,7 +462,7 @@ class @code{@var{p} (@var{n})} might mean either the coefficient of the
 polynomial at @var{n}.  The meaning of this subscripted referencing is 
 determined by the @code{subsref} method.
 
-@c ov.cc
+@c subsref src/ov.cc
 @anchor{doc-subsref}
 @deftypefn {Built-in Function} {} subsref (@var{val}, @var{idx})
 Perform the subscripted element selection operation according to
@@ -364,8 +486,8 @@ val = magic(3)
 idx.type = "()";
 idx.subs = @{":", 1:2@};
 subsref(val, idx)
-     @result{} [ 8   1 
-          3   5 
+     @result{} [ 8   1
+          3   5
           4   9 ]
 @end group
 @end example
@@ -377,15 +499,59 @@ Note that this is the same as writing @code{val(:,1:2)}.
 
 
 For example we might decide that indexing with "()" evaluates the
-polynomial and indexing with "@{@}" returns the @var{n}-th coefficient (of @var{n}-th power).
-In this case the @code{subsref} method of our polynomial class might look like
+polynomial and indexing with "@{@}" returns the @var{n}-th coefficient (of
+@var{n}-th power).  In this case the @code{subsref} method of our polynomial
+class might look like
 
-@polynomialfile{subsref.m}
+@example
+@group
+@verbatim
+function b = subsref (a, s)
+  if (isempty (s))
+    error ("polynomial: missing index");
+  endif
+  switch (s(1).type)
+    case "()"
+      ind = s(1).subs;
+      if (numel (ind) != 1)
+        error ("polynomial: need exactly one index");
+      else
+        b = polyval (fliplr (a.poly), ind{1});
+      endif
+    case "{}"
+      ind = s(1).subs;
+      if (numel (ind) != 1)
+        error ("polynomial: need exactly one index");
+      else
+        if (isnumeric (ind{1}))
+          b = a.poly(ind{1}+1);
+        else
+          b = a.poly(ind{1});
+        endif
+      endif
+    case "."
+      fld = s.subs;
+      if (strcmp (fld, "poly"))
+        b = a.poly;
+      else
+        error ("@polynomial/subsref: invalid property \"%s\"", fld);
+      endif
+    otherwise
+      error ("invalid subscript type");
+  endswitch
+  if (numel (s) > 1)
+    b = subsref (b, s(2:end));
+  endif
+endfunction
+@end verbatim
+
+@end group
+@end example
 
 The equivalent functionality for subscripted assignments uses the 
 @code{subsasgn} method.
 
-@c ov.cc
+@c subsasgn src/ov.cc
 @anchor{doc-subsasgn}
 @deftypefn {Built-in Function} {} subsasgn (@var{val}, @var{idx}, @var{rhs})
 Perform the subscripted assignment operation according to
@@ -417,6 +583,16 @@ Note that this is the same as writing @code{val(:,1:2) = 0}.
 @end deftypefn
 
 
+@c optimize_subsasgn_calls src/ov-usr-fcn.cc
+@anchor{doc-optimize_subsasgn_calls}
+@deftypefn  {Built-in Function} {@var{val} =} optimize_subsasgn_calls ()
+@deftypefnx {Built-in Function} {@var{old_val} =} optimize_subsasgn_calls (@var{new_val})
+Query or set the internal flag for subsasgn method call optimizations.
+If true, Octave will attempt to eliminate the redundant copying when calling
+subsasgn method of a user-defined class.
+@end deftypefn
+
+
 Note that the @code{subsref} and @code{subsasgn} methods always receive the
 whole index chain, while they usually handle only the first element.  It is the
 responsibility of these methods to handle the rest of the chain (if needed),
@@ -424,18 +600,30 @@ usually by forwarding it again to @code{subsref} or @code{subsasgn}.
 
 If you wish to use the @code{end} keyword in subscripted expressions
 of an object, then the user needs to define the @code{end} method for 
-the class.
+the class.  For example, the @code{end} method for our polynomial class might
+look like
 
+@example
+@group
+@verbatim
+function r = end (obj, index_pos, num_indices)
 
+  if (num_indices != 1)
+    error ("polynomial object may only have one index")
+  endif
+  
+  r = length (obj.poly) - 1;
 
-For example the @code{end} method for our polynomial class might look like
+endfunction
+@end verbatim
 
-@polynomialfile{end.m}
+@end group
+@end example
 
 @noindent
 which is a fairly generic @code{end} method that has a behavior similar to
-the @code{end} keyword for Octave Array classes.  It can then be used for
-example like
+the @code{end} keyword for Octave Array classes.  It can then be used as 
+follows:
 
 @example
 @group
@@ -448,10 +636,10 @@ p(end-1)
 Objects can also be used as the index in a subscripted expression themselves
 and this is controlled with the @code{subsindex} function.
 
-@c ./general/subsindex.m
+@c subsindex scripts/general/subsindex.m
 @anchor{doc-subsindex}
 @deftypefn {Function File} {@var{idx} =} subsindex (@var{a})
-Convert an object to an index vector.  When @var{a} is a class object 
+Convert an object to an index vector.  When @var{a} is a class object
 defined with a class constructor, then @code{subsindex} is the
 overloading method that allows the conversion of this class object to
 a valid indexing vector.  It is important to note that
@@ -461,7 +649,7 @@ class "double".  For example, if the class constructor
 @example
 @group
 function b = myclass (a)
- b = myclass (struct ("a", a), "myclass");
+ b = class (struct ("a", a), "myclass");
 endfunction
 @end group
 @end example
@@ -496,12 +684,12 @@ b(a)
 Finally, objects can equally be used like ranges, using the @code{colon}
 method
 
-@c ./general/colon.m
+@c colon scripts/general/colon.m
 @anchor{doc-colon}
-@deftypefn {Function File} {@var{r} =} colon (@var{a}, @var{b})
+@deftypefn  {Function File} {@var{r} =} colon (@var{a}, @var{b})
 @deftypefnx {Function File} {@var{r} =} colon (@var{a}, @var{b}, @var{c})
 Method of a class to construct a range with the @code{:} operator.  For
-example.
+example:
 
 @example
 @group
@@ -515,6 +703,81 @@ c = a : b
 @end deftypefn
 
 
+@node Indexed Assignment Optimization
+@subsection Indexed Assignment Optimization
+
+Octave's ubiquitous lazily-copied pass-by-value semantics implies 
+a problem for performance of user-defined subsasgn methods.  Imagine
+a call to subsasgn:
+
+@example
+@group
+  ss = substruct ("()",@{1@});
+  x = subsasgn (x, ss, 1);
+@end group
+@end example
+
+@noindent
+and the corresponding method looking like this:
+
+@example
+@group
+  function x = subsasgn (x, ss, val)
+    @dots{}
+    x.myfield(ss.subs@{1@}) = val;
+  endfunction
+@end group
+@end example
+
+The problem is that on entry to the subsasgn method, @code{x} is still
+referenced from the caller's scope, which means that the method will 
+first need to unshare (copy) @code{x} and @code{x.myfield} before performing
+the assignment.  Upon completing the call, unless an error occurs,
+the result is immediately assigned to @code{x} in the caller's scope,
+so that the previous value of @code{x.myfield} is forgotten.  Hence, the
+Octave language implies a copy of N elements (N being the size of
+@code{x.myfield}), where modifying just a single element would actually
+suffice, i.e., degrades a constant-time operation to linear-time one.
+This may be a real problem for user classes that intrinsically store large
+arrays.
+
+To partially solve the problem, Octave uses a special optimization for
+user-defined subsasgn methods coded as m-files.  When the method
+gets called as a result of the built-in assignment syntax (not direct subsasgn
+call as shown above), i.e.
+
+@example
+  x(1) = 1;
+@end example
+
+@b{AND} if the subsasgn method is declared with identical input and output argument,
+like in the example above, then Octave will ignore the copy of @code{x} inside
+the caller's scope; therefore, any changes made to @code{x} during the method
+execution will directly affect the caller's copy as well.
+This allows, for instance, defining a polynomial class where modifying a single
+element takes constant time.
+
+It is important to understand the implications that this optimization brings.
+Since no extra copy of @code{x} in the caller's scope will exist, it is
+@emph{solely} the callee's responsibility to not leave @code{x} in an invalid
+state if an error occurs throughout the execution.  Also, if the method
+partially changes @code{x} and then errors out, the changes @emph{will} affect
+@code{x} in the caller's scope.  Deleting or completely replacing @code{x}
+inside subsasgn will not do anything, however, only indexed assignments matter.
+
+Since this optimization may change the way code works (especially if badly
+written), a built-in variable @code{optimize_subsasgn_calls} is provided to
+control it.  It is on by default.  Another option to avoid the effect is to
+declare subsasgn methods with different output and input arguments, like this:
+
+@example
+@group
+  function y = subsasgn (x, ss, val)
+    @dots{}
+  endfunction
+@end group
+@end example
+
 @node Overloading Objects
 @section Overloading Objects
 
@@ -527,18 +790,47 @@ c = a : b
 @node Function Overloading
 @subsection Function Overloading
 
-Any Octave function can be overloaded, and allows a object specific
+Any Octave function can be overloaded, and allows an object specific
 version of this function to be called as needed.  A pertinent example
 for our polynomial class might be to overload the @code{polyval} function
 like
 
-@polynomialfile{polyval.m}
+@example
+@group
+@verbatim
+function [y, dy] = polyval (p, varargin)
+  if (nargout == 2)
+    [y, dy] = polyval (fliplr(p.poly), varargin{:});
+  else
+    y = polyval (fliplr(p.poly), varargin{:});
+  endif
+endfunction
+@end verbatim
+
+@end group
+@end example
 
 This function just hands off the work to the normal Octave @code{polyval}
 function.  Another interesting example for an overloaded function for our
 polynomial class is the @code{plot} function.
 
-@polynomialfile{plot.m}
+@example
+@group
+@verbatim
+function h = plot(p, varargin)
+  n = 128;
+  rmax = max (abs (roots (p.poly)));
+  x = [0 : (n - 1)] / (n - 1) * 2.2 * rmax - 1.1 * rmax;
+  if (nargout > 0)
+    h = plot(x, p(x), varargin{:});
+  else
+    plot(x, p(x), varargin{:});
+  endif
+endfunction
+@end verbatim
+
+@end group
+@end example
 
 @noindent
 which allows polynomials to be plotted in the domain near the region
@@ -550,19 +842,80 @@ allows the @code{cast} function to work with the user class and can aid
 in the use of methods of other classes with the user class.  An example
 @code{double} function for our polynomial class might look like.
 
-@polynomialfile{double.m}
+@example
+@group
+@verbatim
+function b = double (a)
+  b = a.poly;
+endfunction
+@end verbatim
+
+@end group
+@end example
 
 @node Operator Overloading
 @subsection Operator Overloading
+@cindex addition
+@cindex and operator
+@cindex arithmetic operators
+@cindex boolean expressions
+@cindex boolean operators
+@cindex comparison expressions
+@cindex complex-conjugate transpose
+@cindex division
+@cindex equality operator
+@cindex equality, tests for
+@cindex exponentiation
+@cindex expressions, boolean
+@cindex expressions, comparison
+@cindex expressions, logical
+@cindex greater than operator
+@cindex Hermitian operator
+@cindex less than operator
+@cindex logical expressions
+@cindex logical operators
+@cindex matrix multiplication
+@cindex multiplication
+@cindex negation
+@cindex not operator
+@cindex operators, arithmetic
+@cindex operators, boolean
+@cindex operators, logical
+@cindex operators, relational
+@cindex or operator
+@cindex quotient
+@cindex relational operators
+@cindex subtraction
+@cindex tests for equality
+@cindex transpose
+@cindex transpose, complex-conjugate
+@cindex unary minus
 
 @float Table,tab:overload_ops
-
-@anchor{doc-rdivide} @anchor{doc-plus} @anchor{doc-minus} @anchor{doc-uminus}
-@anchor{doc-uplus} @anchor{doc-times} @anchor{doc-mtimes} @anchor{doc-mrdivide}
-@anchor{doc-ldivide} @anchor{doc-mldivide} @anchor{doc-power}
-@anchor{doc-mpower} @anchor{doc-lt} @anchor{doc-le} @anchor{doc-gt}
-@anchor{doc-ge} @anchor{doc-eq} @anchor{doc-ne} @anchor{doc-and}
-@anchor{doc-or} @anchor{doc-not} @anchor{doc-ctranspose} @anchor{doc-transpose}
+@opindex +
+@opindex -
+@opindex .*
+@opindex *
+@opindex ./
+@opindex /
+@opindex .\
+@opindex \
+@opindex .^
+@opindex ^
+@opindex <
+@opindex <=
+@opindex >
+@opindex >=
+@opindex ==
+@opindex !=
+@opindex ~=
+@opindex &
+@opindex |
+@opindex !
+@opindex '
+@opindex .'
+@opindex :
+@opindex <
 
 @tex
 \vskip 6pt
@@ -610,37 +963,37 @@ width 0.6pt \tabskip=0pt\cr
 @end tex
 @ifnottex
 @multitable @columnfractions .1 .20 .20 .40 .1
-@item @tab Operation @tab Method @tab Description @tab
+@headitem @tab Operation @tab Method @tab Description @tab
 @item @tab a + b @tab plus (a, b) @tab Binary addition @tab
-@item @tab a - b$ @tab minus (a, b) @tab Binary subtraction operator @tab
-@item @tab + a$ @tab uplus (a) @tab Unary addition operator @tab
-@item @tab - a$ @tab uminus (a) @tab Unary subtraction operator @tab
-@item @tab a .* b$ @tab times (a, b) @tab Element-wise multiplication operator @tab
-@item @tab a * b$ @tab mtimes (a, b) @tab Matrix multiplication operator @tab
-@item @tab a ./ b$ @tab rdivide (a, b) @tab Element-wise right division operator @tab
-@item @tab a / b$ @tab mrdivide (a, b) @tab Matrix right division operator @tab
-@item @tab a .\ b$ @tab ldivide (a, b) @tab Element-wise left division operator @tab
-@item @tab a \ b$ @tab mldivide (a, b) @tab Matrix left division operator @tab
-@item @tab a .^ b$ @tab ldivide (a, b) @tab Element-wise power operator @tab
-@item @tab a ^ b$ @tab mldivide (a, b) @tab Matrix power operator @tab
-@item @tab a < b$ @tab lt (a, b) @tab Less than operator @tab
-@item @tab a <= b$ @tab le (a, b) @tab Less than or equal to operator @tab
-@item @tab a > b$ @tab gt (a, b) @tab Greater than operator @tab
-@item @tab a >= b$ @tab ge (a, b) @tab Greater than or equal to operator @tab
-@item @tab a == b$ @tab eq (a, b) @tab Equal to operator @tab
-@item @tab a != b$ @tab ne (a, b) @tab Not equal to operator @tab
-@item @tab a \& b$ @tab and (a, b) @tab Logical and operator @tab
-@item @tab a | b$ @tab or (a, b) @tab Logical or operator @tab
-@item @tab ! b$ @tab not (a) @tab Logical not operator @tab
-@item @tab a'$ @tab ctranspose (a) @tab Complex conjugate transpose operator @tab
-@item @tab a.'$ @tab transpose (a) @tab Transpose operator @tab
-@item @tab a : b$ @tab colon (a, b) @tab Two element range operator @tab
-@item @tab a : b : c$ @tab colon (a, b, c) @tab Three element range operator @tab
-@item @tab [a, b]$ @tab horzcat (a, b) @tab Horizontal concatenation operator @tab
-@item @tab [a; b]$ @tab vertcat (a, b) @tab Vertical concatenation operator @tab
-@item @tab a(s_1, \ldots, s_n)$ @tab subsref (a, s) @tab Subscripted reference @tab
-@item @tab a(s_1, \ldots, s_n) = b$ @tab subsasgn (a, s, b) @tab Subscripted assignment @tab
-@item @tab b (a)$ @tab subsindex (a) @tab Convert to zero-based index @tab
+@item @tab a - b @tab minus (a, b) @tab Binary subtraction operator @tab
+@item @tab + a @tab uplus (a) @tab Unary addition operator @tab
+@item @tab - a @tab uminus (a) @tab Unary subtraction operator @tab
+@item @tab a .* b @tab times (a, b) @tab Element-wise multiplication operator @tab
+@item @tab a * b @tab mtimes (a, b) @tab Matrix multiplication operator @tab
+@item @tab a ./ b @tab rdivide (a, b) @tab Element-wise right division operator @tab
+@item @tab a / b @tab mrdivide (a, b) @tab Matrix right division operator @tab
+@item @tab a .\ b @tab ldivide (a, b) @tab Element-wise left division operator @tab
+@item @tab a \ b @tab mldivide (a, b) @tab Matrix left division operator @tab
+@item @tab a .^ b @tab power (a, b) @tab Element-wise power operator @tab
+@item @tab a ^ b @tab mpower (a, b) @tab Matrix power operator @tab
+@item @tab a < b @tab lt (a, b) @tab Less than operator @tab
+@item @tab a <= b @tab le (a, b) @tab Less than or equal to operator @tab
+@item @tab a > b @tab gt (a, b) @tab Greater than operator @tab
+@item @tab a >= b @tab ge (a, b) @tab Greater than or equal to operator @tab
+@item @tab a == b @tab eq (a, b) @tab Equal to operator @tab
+@item @tab a != b @tab ne (a, b) @tab Not equal to operator @tab
+@item @tab a \& b @tab and (a, b) @tab Logical and operator @tab
+@item @tab a | b @tab or (a, b) @tab Logical or operator @tab
+@item @tab ! b @tab not (a) @tab Logical not operator @tab
+@item @tab a' @tab ctranspose (a) @tab Complex conjugate transpose operator @tab
+@item @tab a.' @tab transpose (a) @tab Transpose operator @tab
+@item @tab a : b @tab colon (a, b) @tab Two element range operator @tab
+@item @tab a : b : c @tab colon (a, b, c) @tab Three element range operator @tab
+@item @tab [a, b] @tab horzcat (a, b) @tab Horizontal concatenation operator @tab
+@item @tab [a; b] @tab vertcat (a, b) @tab Vertical concatenation operator @tab
+@item @tab a(s_1, @dots{}, s_n) @tab subsref (a, s) @tab Subscripted reference @tab
+@item @tab a(s_1, @dots{}, s_n) = b @tab subsasgn (a, s, b) @tab Subscripted assignment @tab
+@item @tab b (a) @tab subsindex (a) @tab Convert to zero-based index @tab
 @item @tab  @dfn{display} @tab display (a) @tab Commandline display function @tab
 @end multitable
 @end ifnottex
@@ -649,7 +1002,16 @@ width 0.6pt \tabskip=0pt\cr
 
 An example @code{mtimes} method for our polynomial class might look like
 
-@polynomialfile{mtimes.m}
+@example
+@group
+@verbatim
+function y = mtimes (a, b)
+  y = polynomial (conv (double(a),double(b)));
+endfunction
+@end verbatim
+
+@end group
+@end example
 
 @node Precedence of Objects
 @subsection Precedence of Objects
@@ -661,7 +1023,7 @@ of which method of which class to call when there are mixed objects given
 to a function or operator.  To do this the @code{superiorto} and
 @code{inferiorto} functions can be used
 
-@c ov-class.cc
+@c superiorto src/ov-class.cc
 @anchor{doc-superiorto}
 @deftypefn {Built-in Function} {} superiorto (@var{class_name}, @dots{})
 When called from a class constructor, mark the object currently
@@ -671,7 +1033,7 @@ This function may only be called from a class constructor.
 @end deftypefn
 
 
-@c ov-class.cc
+@c inferiorto src/ov-class.cc
 @anchor{doc-inferiorto}
 @deftypefn {Built-in Function} {} inferiorto (@var{class_name}, @dots{})
 When called from a class constructor, mark the object currently
@@ -694,7 +1056,43 @@ the above is of the type "polynomial" and so we use the
 @code{superiorto} function in the class constructor.  In particular our
 polynomial class constructor would be modified to be
 
-@polynomialfile{polynomial_superiorto.m}
+@example
+@group
+@verbatim
+## -*- texinfo -*-
+## @deftypefn {Function File} {} polynomial ()
+## @deftypefnx {Function File} {} polynomial (@var{a})
+## Creates a polynomial object representing the polynomial
+##
+## @example
+## a0 + a1 * x + a2 * x^2 + @dots{} + an * x^n
+## @end example
+##
+## from a vector of coefficients [a0 a1 a2 ... an].
+## @end deftypefn
+
+function p = polynomial (a)
+  if (nargin == 0)
+    p.poly = [0];
+    p = class (p, "polynomial");
+  elseif (nargin == 1)
+    if (strcmp (class (a), "polynomial"))
+      p = a;
+    elseif (isvector (a) && isreal (a))
+      p.poly = a(:).';
+      p = class (p, "polynomial");
+    else
+      error ("polynomial: expecting real vector");
+    endif
+  else
+    print_usage ();
+  endif
+  superiorto ("double");
+endfunction
+@end verbatim
+
+@end group
+@end example
 
 Note that user classes always have higher precedence than built-in
 Octave types.  So in fact marking our polynomial class higher than the 
@@ -717,21 +1115,51 @@ parent class and providing that object as the third argument of the
 class function.
 
 This is easily demonstrated by example.  Suppose the programmer needs
-an FIR filter, i.e. a filter with a numerator polynomial but a unity
+an FIR filter, i.e., a filter with a numerator polynomial but a unity
 denominator polynomial.  In traditional octave programming, this would
 be performed as follows.
 
 @example
+@group
 octave:1> x = [some data vector];
 octave:2> n = [some coefficient vector];
 octave:3> y = filter (n, 1, x);
+@end group
 @end example
 
 The equivalent class could be implemented in a class directory
 @@FIRfilter that is on the octave path.  The constructor is a file
 FIRfilter.m in the class directory.
 
-@classfile{@@FIRfilter,FIRfilter.m}
+@example
+@group
+@verbatim
+## -*- texinfo -*-
+## @deftypefn {Function File} {} FIRfilter ()
+## @deftypefnx {Function File} {} FIRfilter (@var{p})
+## Creates an FIR filter with polynomial @var{p} as
+## coefficient vector.
+##
+## @end deftypefn
+
+function f = FIRfilter (p)
+
+  f.polynomial = [];
+  if (nargin == 0)
+    p = @polynomial ([1]);
+  elseif (nargin == 1)
+    if (!isa (p, "polynomial"))
+      error ("FIRfilter: expecting polynomial as input argument");
+    endif
+  else
+    print_usage ();
+  endif
+  f = class (f, "FIRfilter", p);
+endfunction
+@end verbatim
+
+@end group
+@end example
 
 As before, the leading comments provide command-line documentation for
 the class constructor.  This constructor is very similar to the
@@ -746,7 +1174,7 @@ This dummy element will be overwritten by the class function.
 
 Note further that all our examples provide for the case in which no
 arguments are supplied.  This is important since octave will call the
-constructor with no arguments when loading ojects from save files to
+constructor with no arguments when loading objects from save files to
 determine the inheritance structure.
 
 A class may be a child of more than one class (see the documentation
@@ -756,7 +1184,19 @@ other than memory or other physical issues.
 
 As before, we need a @code{display} method.  A simple example might be
 
-@classfile{@@FIRfilter,display.m}
+@example
+@group
+@verbatim
+function display (f)
+
+  display(f.polynomial);
+
+endfunction
+
+@end verbatim
+
+@end group
+@end example
 
 Note that we have used the polynomial field of the struct to display
 the filter coefficients.
@@ -766,6 +1206,7 @@ an object by calling the class constructor.  We may also check the
 class type and examine the underlying structure.
 
 @example
+@group
 octave:1> f=FIRfilter(polynomial([1 1 1]/3))
 f.polynomial = 0.333333 + 0.333333 * X + 0.333333 * X ^ 2
 octave:2> class(f)
@@ -779,6 +1220,7 @@ ans =
 @{
 polynomial = 0.333333 + 0.333333 * X + 0.333333 * X ^ 2
 @}
+@end group
 @end example
 
 We only need to define a method to actually process data with our
@@ -787,12 +1229,35 @@ of changing the data stored in the class.  Since the fields in the
 underlying struct are private by default, we could provide a mechanism
 to access the fields.  The @code{subsref} method may be used for both.
 
-@classfile{@@FIRfilter,subsref.m}
+@example
+@group
+@verbatim
+function out = subsref (f, x)
+  switch x.type
+    case "()"
+      n = f.polynomial;
+      out = filter(n.poly, 1, x.subs{1});
+    case "."
+      fld = x.subs;
+      if (strcmp (fld, "polynomial"))
+        out = f.polynomial;
+      else
+        error ("@FIRfilter/subsref: invalid property \"%s\"", fld);
+      endif
+    otherwise
+      error ("@FIRfilter/subsref: invalid subscript type for FIR filter");
+  endswitch
+endfunction
+@end verbatim
+
+@end group
+@end example
 
 The "()" case allows us to filter data using the polynomial provided
 to the constructor.
 
 @example
+@group
 octave:2> f=FIRfilter(polynomial([1 1 1]/3));
 octave:3> x=ones(5,1);
 octave:4> y=f(x)
@@ -803,28 +1268,53 @@ y =
    1.00000
    1.00000
    1.00000
+@end group
 @end example
 
 The "." case allows us to view the contents of the polynomial field.
 
 @example
+@group
 octave:1> f=FIRfilter(polynomial([1 1 1]/3));
 octave:2> f.polynomial
 ans = 0.333333 + 0.333333 * X + 0.333333 * X ^ 2
+@end group
 @end example
 
 In order to change the contents of the object, we need to define a
 @code{subsasgn} method.  For example, we may make the polynomial field
-publicly writeable.
+publicly writable.
 
-@classfile{@@FIRfilter,subsasgn.m}
+@example
+@group
+@verbatim
+function out = subsasgn (f, index, val)
+  switch (index.type)
+    case "."
+      fld = index.subs;
+      if (strcmp (fld, "polynomial"))
+        out = f;
+        out.polynomial = val;
+      else
+        error ("@FIRfilter/subsref: invalid property \"%s\"", fld);
+      endif
+    otherwise
+      error ("FIRfilter/subsagn: Invalid index type")
+  endswitch
+endfunction
+@end verbatim
+
+@end group
+@end example
 
 So that
 
 @example
+@group
 octave:6> f=FIRfilter();
 octave:7> f.polynomial = polynomial([1 2 3]);
 f.polynomial = 1 + 2 * X + 3 * X ^ 2
+@end group
 @end example
 
 
@@ -835,6 +1325,35 @@ aggregation may be a more sensible design approach.  In this case, the
 polynomial is simply a field in the class structure.  A class
 constructor for this case might be
 
-@classfile{@@FIRfilter,FIRfilter_aggregation.m}
+@example
+@group
+@verbatim
+## -*- texinfo -*-
+## @deftypefn {Function File} {} FIRfilter ()
+## @deftypefnx {Function File} {} FIRfilter (@var{p})
+## Creates an FIR filter with polynomial @var{p} as
+## coefficient vector.
+##
+## @end deftypefn
+
+function f = FIRfilter (p)
+
+  if (nargin == 0)
+    f.polynomial = @polynomial ([1]);
+  elseif (nargin == 1)
+    if (isa (p, "polynomial"))
+      f.polynomial = p;
+    else
+      error ("FIRfilter: expecting polynomial as input argument");
+    endif
+  else
+    print_usage ();
+  endif
+  f = class (f, "FIRfilter");
+endfunction
+@end verbatim
+
+@end group
+@end example
 
 For our example, the remaining class methods remain unchanged.
