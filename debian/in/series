@@ -1,15 +1,6 @@
 [V_3_2:
-drop_old_curl_header
-scale_image_point_color
-fix-interp2
 no_pdf_in_print.diff
 dont_set_helvetica-3.1.diff
 normal-markersize.diff
-filter_empty_vector
-handle_new_graphicsmagic
-fix_relative_addpath
 include_mpi_headers
-fixes-for-gcc-4.6
-avoid-implicit-conversion
-clear_symbol_table
 :]
