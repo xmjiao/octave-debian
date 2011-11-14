@@ -1,5 +1,4 @@
-## Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2004, 2005
-##                2006, 2007, 2008, 2009 John W. Eaton
+## Copyright (C) 1994-2011 John W. Eaton
 ## Copyright (C) 2007 Ben Abbott
 ##
 ## This file is part of Octave.
@@ -20,9 +19,10 @@
 
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {[@var{r}, @var{p}, @var{k}, @var{e}] =} residue (@var{b}, @var{a})
-## Compute the partial fraction expansion for the quotient of the
-## polynomials, @var{b} and @var{a}.
-##
+## @deftypefnx {Function File} {[@var{b}, @var{a}] =} residue (@var{r}, @var{p}, @var{k})
+## @deftypefnx {Function File} {[@var{b}, @var{a}] =} residue (@var{r}, @var{p}, @var{k}, @var{e})
+## The first calling form computes the partial fraction expansion for the
+## quotient of the polynomials, @var{b} and @var{a}.
 ## @tex
 ## $$
 ## {B(s)\over A(s)} = \sum_{m=1}^M {r_m\over (s-p_m)^e_m}
@@ -38,8 +38,8 @@
 ##  A(s)   m=1 (s-p(m))^e(m)    i=1
 ## @end group
 ## @end example
-## @end ifnottex
 ##
+## @end ifnottex
 ## @noindent
 ## where @math{M} is the number of poles (the length of the @var{r},
 ## @var{p}, and @var{e}), the @var{k} vector is a polynomial of order @math{N-1}
@@ -79,17 +79,16 @@
 ##
 ## @end ifnottex
 ##
-## @deftypefnx {Function File} {[@var{b}, @var{a}] =} residue (@var{r}, @var{p}, @var{k})
-## @deftypefnx {Function File} {[@var{b}, @var{a}] =} residue (@var{r}, @var{p}, @var{k}, @var{e})
-## Compute the reconstituted quotient of polynomials,
-## @var{b}(s)/@var{a}(s), from the partial fraction expansion;
-## represented by the residues, poles, and a direct polynomial specified
-## by @var{r}, @var{p} and @var{k}, and the pole multiplicity @var{e}.
+## The second calling form performs the inverse operation and computes
+## the reconstituted quotient of polynomials, @var{b}(s)/@var{a}(s),
+## from the partial fraction expansion; represented by the residues,
+## poles, and a direct polynomial specified by @var{r}, @var{p} and
+## @var{k}, and the pole multiplicity @var{e}.
 ##
 ## If the multiplicity, @var{e}, is not explicitly specified the multiplicity is
-## determined by the script mpoles.m.
+## determined by the function @code{mpoles}.
 ##
-## For example,
+## For example:
 ##
 ## @example
 ## @group
@@ -100,7 +99,7 @@
 ##      @result{} b = [1, -5, 9, -3, 1]
 ##      @result{} a = [1, -5, 8, -4]
 ##
-## where mpoles.m is used to determine e = [1; 2; 1]
+## where mpoles is used to determine e = [1; 2; 1]
 ##
 ## @end group
 ## @end example
@@ -135,8 +134,9 @@
 ##    (s-2)   (s-2)^2   (s-1)          s^3 - 5s^2 + 8s - 4
 ## @end group
 ## @end example
+##
 ## @end ifnottex
-## @seealso{poly, roots, conv, deconv, mpoles, polyval, polyderiv, polyinteg}
+## @seealso{poly, roots, conv, deconv, mpoles, polyval, polyderiv, polyint}
 ## @end deftypefn
 
 ## Author: Tony Richardson <arichard@stark.cc.oh.us>
@@ -197,7 +197,7 @@ function [r, p, k, e] = residue (b, a, varargin)
   p = p (indx);
 
   ## For each group of pole multiplicity, set the value of each
-  ## pole to the average of the group. This reduces the error in 
+  ## pole to the average of the group. This reduces the error in
   ## the resulting poles.
 
   p_group = cumsum (e == 1);
@@ -285,7 +285,7 @@ function [pnum, pden, e] = rresidue (r, p, k, toler, e)
   if (nargin < 3)
     k = [];
   endif
- 
+
   if numel (e)
     indx = 1:numel(p);
   else
@@ -410,3 +410,22 @@ endfunction
 %! [br, ar] = residue (r, p, k);
 %! assert ((abs (br - b) < 1e-12
 %!   && abs (ar - a) < 1e-12));
+
+## The following test is due to Bernard Grung (bug #34266)
+%!xtest
+%! z1 =  7.0372976777e6;
+%! p1 = -3.1415926536e9;
+%! p2 = -4.9964813512e8;
+%! r1 = -(1 + z1/p1)/(1 - p1/p2)/p2/p1;
+%! r2 = -(1 + z1/p2)/(1 - p2/p1)/p2/p1;
+%! r3 = (1 + (p2 + p1)/p2/p1*z1)/p2/p1;
+%! r4 = z1/p2/p1;
+%! r = [r1; r2; r3; r4];
+%! p = [p1; p2; 0; 0];
+%! k = [];
+%! e = [1; 1; 1; 2];
+%! b = [1, z1];
+%! a = [1, -(p1 + p2), p1*p2, 0, 0];
+%! [br, ar] = residue (r, p, k, e);
+%! assert (br, b, 1e-8);
+%! assert (ar, a, 1e-8);

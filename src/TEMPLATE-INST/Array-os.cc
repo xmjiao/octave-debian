@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1999, 2003, 2005, 2006, 2007, 2008 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -45,9 +45,3 @@ INSTANTIATE_ARRAY (printf_format_elt_ptr, OCTINTERP_API);
 
 NO_INSTANTIATE_ARRAY_SORT (octave_stream);
 INSTANTIATE_ARRAY (octave_stream, OCTINTERP_API);
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

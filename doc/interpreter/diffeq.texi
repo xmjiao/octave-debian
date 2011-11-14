@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.
 
-@c Copyright (C) 1996, 1997, 2007, 2008, 2009 John W. Eaton
+@c Copyright (C) 1996-2011 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -30,7 +30,7 @@ All solvers are based on reliable ODE routines written in Fortran.
 * Differential-Algebraic Equations::  
 @end menu
 
-@cindex Differential Equations
+@cindex differential equations
 @cindex ODE
 @cindex DAE
 
@@ -43,7 +43,7 @@ $$
  {dx\over dt} = f (x, t)
 $$
 @end tex
-@ifinfo
+@ifnottex
 
 @example
 @group
@@ -52,16 +52,18 @@ dx
 dt
 @end group
 @end example
-@end ifinfo
+
+@end ifnottex
 
 @noindent
-using Hindmarsh's ODE solver @sc{Lsode}.
+using Hindmarsh's ODE solver @sc{lsode}.
 
 
 
-@c ./DLD-FUNCTIONS/lsode.cc
+@c lsode src/DLD-FUNCTIONS/lsode.cc
 @anchor{doc-lsode}
-@deftypefn {Loadable Function} {[@var{x}, @var{istate}, @var{msg}] =} lsode (@var{fcn}, @var{x_0}, @var{t}, @var{t_crit})
+@deftypefn  {Loadable Function} {[@var{x}, @var{istate}, @var{msg}] =} lsode (@var{fcn}, @var{x_0}, @var{t})
+@deftypefnx {Loadable Function} {[@var{x}, @var{istate}, @var{msg}] =} lsode (@var{fcn}, @var{x_0}, @var{t}, @var{t_crit})
 Solve the set of differential equations
 @tex
 $$ {dx \over dt} = f (x, t) $$
@@ -78,6 +80,7 @@ dt
 @end group
 @end example
 
+@noindent
 with
 
 @example
@@ -112,6 +115,7 @@ must have the form
 @var{jac} = j (@var{x}, @var{t})
 @end example
 
+@noindent
 in which @var{jac} is the matrix of partial derivatives
 @tex
 $$ J = {\partial f_i \over \partial x_j} = \left[\matrix{
@@ -162,7 +166,7 @@ avoiding difficulties with singularities and points where there is a
 discontinuity in the derivative.
 
 After a successful computation, the value of @var{istate} will be 2
-(consistent with the Fortran version of @sc{Lsode}).
+(consistent with the Fortran version of @sc{lsode}).
 
 If the computation is not successful, @var{istate} will be something
 other than 2 and @var{msg} will contain additional information.
@@ -173,14 +177,17 @@ parameters for @code{lsode}.
 @end deftypefn
 
 
-@c ./DLD-FUNCTIONS/lsode.cc
+@c lsode_options src/DLD-FUNCTIONS/lsode.cc
 @anchor{doc-lsode_options}
-@deftypefn {Loadable Function} {} lsode_options (@var{opt}, @var{val})
-When called with two arguments, this function
-allows you set options parameters for the function @code{lsode}.
-Given one argument, @code{lsode_options} returns the value of the
-corresponding option.  If no arguments are supplied, the names of all
-the available options and their current values are displayed.
+@deftypefn  {Loadable Function} {} lsode_options ()
+@deftypefnx {Loadable Function} {val =} lsode_options (@var{opt})
+@deftypefnx {Loadable Function} {} lsode_options (@var{opt}, @var{val})
+Query or set options for the function @code{lsode}.
+When called with no arguments, the names of all available options and
+their current values are displayed.
+Given one argument, return the value of the corresponding option.
+When called with two arguments, @code{lsode_options} set the option
+@var{opt} to value @var{val}.
 
 Options include
 
@@ -188,6 +195,7 @@ Options include
 @item "absolute tolerance"
 Absolute tolerance.  May be either vector or scalar.  If a vector, it
 must match the dimension of the state vector.
+
 @item "relative tolerance"
 Relative tolerance parameter.  Unlike the absolute tolerance, this
 parameter may only be a scalar.
@@ -200,6 +208,7 @@ The local error test applied at each integration step is
       rtol * abs (y(i)) + atol(i)
 @end group
 @end example
+
 @item "integration method"
 A string specifying the method of integration to use to solve the ODE
 system.  Valid values are
@@ -208,24 +217,30 @@ system.  Valid values are
 @item "adams"
 @itemx "non-stiff"
 No Jacobian used (even if it is available).
+
 @item "bdf"
-@item "stiff"
+@itemx "stiff"
 Use stiff backward differentiation formula (BDF) method.  If a
 function to compute the Jacobian is not supplied, @code{lsode} will
 compute a finite difference approximation of the Jacobian matrix.
 @end table
+
 @item "initial step size"
 The step size to be attempted on the first step (default is determined
 automatically).
+
 @item "maximum order"
 Restrict the maximum order of the solution method.  If using the Adams
 method, this option must be between 1 and 12.  Otherwise, it must be
 between 1 and 5, inclusive.
+
 @item "maximum step size"
 Setting the maximum stepsize will avoid passing over very large
 regions  (default is not specified).
+
 @item "minimum step size"
 The minimum absolute step size allowed (default is 0).
+
 @item "step limit"
 Maximum number of steps allowed (default is 100000).
 @end table
@@ -293,6 +308,7 @@ $$
 @example
 0 = f (x-dot, x, t),    x(t=0) = x_0, x-dot(t=0) = x-dot_0
 @end example
+
 @end ifnottex
 
 @noindent
@@ -304,9 +320,9 @@ $\dot{x} = {dx \over dt}$
 @math{x-dot}
 @end ifnottex
 is the derivative of @math{x}.  The equation is solved using Petzold's
-DAE solver @sc{Daspk}.
+DAE solver @sc{daspk}.
 
-@c ./DLD-FUNCTIONS/daspk.cc
+@c daspk src/DLD-FUNCTIONS/daspk.cc
 @anchor{doc-daspk}
 @deftypefn {Loadable Function} {[@var{x}, @var{xdot}, @var{istate}, @var{msg}] =} daspk (@var{fcn}, @var{x_0}, @var{xdot_0}, @var{t}, @var{t_crit})
 Solve the set of differential-algebraic equations
@@ -321,6 +337,7 @@ $$ x(t_0) = x_0, \dot{x}(t_0) = \dot{x}_0 $$
 0 = f (x, xdot, t)
 @end example
 
+@noindent
 with
 
 @example
@@ -367,6 +384,7 @@ jac = -- + c ------
       dx     d xdot
 @end group
 @end example
+
 @end ifnottex
 
 The modified Jacobian function must have the form
@@ -395,7 +413,7 @@ avoiding difficulties with singularities and points where there is a
 discontinuity in the derivative.
 
 After a successful computation, the value of @var{istate} will be
-greater than zero (consistent with the Fortran version of @sc{Daspk}).
+greater than zero (consistent with the Fortran version of @sc{daspk}).
 
 If the computation is not successful, the value of @var{istate} will be
 less than zero and @var{msg} will contain additional information.
@@ -406,14 +424,17 @@ parameters for @code{daspk}.
 @end deftypefn
 
 
-@c ./DLD-FUNCTIONS/daspk.cc
+@c daspk_options src/DLD-FUNCTIONS/daspk.cc
 @anchor{doc-daspk_options}
-@deftypefn {Loadable Function} {} daspk_options (@var{opt}, @var{val})
-When called with two arguments, this function
-allows you set options parameters for the function @code{daspk}.
-Given one argument, @code{daspk_options} returns the value of the
-corresponding option.  If no arguments are supplied, the names of all
-the available options and their current values are displayed.
+@deftypefn  {Loadable Function} {} daspk_options ()
+@deftypefnx {Loadable Function} {val =} daspk_options (@var{opt})
+@deftypefnx {Loadable Function} {} daspk_options (@var{opt}, @var{val})
+Query or set options for the function @code{daspk}.
+When called with no arguments, the names of all available options and
+their current values are displayed.
+Given one argument, return the value of the corresponding option.
+When called with two arguments, @code{daspk_options} set the option
+@var{opt} to value @var{val}.
 
 Options include
 
@@ -422,6 +443,7 @@ Options include
 Absolute tolerance.  May be either vector or scalar.  If a vector, it
 must match the dimension of the state vector, and the relative
 tolerance must also be a vector of the same length.
+
 @item "relative tolerance"
 Relative tolerance.  May be either vector or scalar.  If a vector, it
 must match the dimension of the state vector, and the absolute
@@ -435,6 +457,7 @@ The local error test applied at each integration step is
        <= rtol(i) * abs (Y(i)) + atol(i)
 @end group
 @end example
+
 @item "compute consistent initial condition"
 Denoting the differential variables in the state vector by @samp{Y_d}
 and the algebraic variables by @samp{Y_a}, @code{ddaspk} can solve
@@ -442,6 +465,7 @@ one of two initialization problems:
 
 @enumerate
 @item Given Y_d, calculate Y_a and Y'_d
+
 @item Given Y', calculate Y.
 @end enumerate
 
@@ -454,9 +478,11 @@ initial conditions that are consistent).
 If this option is set to a nonzero value, you must also set the
 @code{"algebraic variables"} option to declare which variables in the
 problem are algebraic.
+
 @item "use initial condition heuristics"
 Set to a nonzero value to use the initial condition heuristics options
 described below.
+
 @item "initial condition heuristics"
 A vector of the following parameters that can be used to control the
 initial condition calculation.
@@ -464,8 +490,10 @@ initial condition calculation.
 @table @code
 @item MXNIT
 Maximum number of Newton iterations (default is 5).
+
 @item MXNJ
 Maximum number of Jacobian evaluations (default is 6).
+
 @item MXNH
 Maximum number of values of the artificial stepsize parameter to be
 tried if the @code{"compute consistent initial condition"} option has
@@ -475,11 +503,14 @@ Note that the maximum total number of Newton iterations allowed is
 @code{MXNIT*MXNJ*MXNH} if the @code{"compute consistent initial
 condition"} option has been set to 1 and @code{MXNIT*MXNJ} if it is
 set to 2.
+
 @item LSOFF
 Set to a nonzero value to disable the linesearch algorithm (default is
 0).
+
 @item STPTOL
 Minimum scaled step in linesearch algorithm (default is eps^(2/3)).
+
 @item EPINIT
 Swing factor in the Newton iteration convergence test.  The test is
 applied to the residual vector, premultiplied by the approximate
@@ -488,13 +519,16 @@ Jacobian.  For convergence, the weighted RMS norm of this vector
 where @code{EPCON} = 0.33 is the analogous test constant used in the
 time steps.  The default is @code{EPINIT} = 0.01.
 @end table
+
 @item "print initial condition info"
 Set this option to a nonzero value to display detailed information
 about the initial condition calculation (default is 0).
+
 @item "exclude algebraic variables from error test"
 Set to a nonzero value to exclude algebraic variables from the error
 test.  You must also set the @code{"algebraic variables"} option to
 declare which variables in the problem are algebraic (default is 0).
+
 @item "algebraic variables"
 A vector of the same length as the state vector.  A nonzero element
 indicates that the corresponding element of the state vector is an
@@ -504,6 +538,7 @@ in the equation set.
 This option is required by the
 @code{compute consistent initial condition"} and
 @code{"exclude algebraic variables from error test"} options.
+
 @item "enforce inequality constraints"
 Set to one of the following values to enforce the inequality
 constraints specified by the @code{"inequality constraint types"}
@@ -511,9 +546,12 @@ option (default is 0).
 
 @enumerate
 @item To have constraint checking only in the initial condition calculation.
+
 @item To enforce constraint checking during the integration.
+
 @item To enforce both options 1 and 2.
 @end enumerate
+
 @item "inequality constraint types"
 A vector of the same length as the state specifying the type of
 inequality constraint.  Each element of the vector corresponds to an
@@ -523,27 +561,34 @@ codes
 @table @asis
 @item -2
 Less than zero.
+
 @item -1
 Less than or equal to zero.
+
 @item 0
 Not constrained.
+
 @item 1
 Greater than or equal to zero.
+
 @item 2
 Greater than zero.
 @end table
 
 This option only has an effect if the
 @code{"enforce inequality constraints"} option is nonzero.
+
 @item "initial step size"
 Differential-algebraic problems may occasionally suffer from severe
 scaling difficulties on the first step.  If you know a great deal
 about the scaling of your problem, you can help to alleviate this
 problem by specifying an initial stepsize (default is computed
 automatically).
+
 @item "maximum order"
 Restrict the maximum order of the solution method.  This option must
 be between 1 and 5, inclusive (default is 5).
+
 @item "maximum step size"
 Setting the maximum stepsize will avoid passing over very large
 regions (default is not specified).
@@ -551,21 +596,19 @@ regions (default is not specified).
 @end deftypefn
 
 
-Octave also includes @sc{Dassl}, an earlier version of @var{Daspk},
-and @var{dasrt}, which can be used to solve DAEs with constraints
+Octave also includes @sc{dassl}, an earlier version of @sc{daspk},
+and @sc{dasrt}, which can be used to solve DAEs with constraints
 (stopping conditions).
 
-@c ./DLD-FUNCTIONS/dassl.cc
+@c dassl src/DLD-FUNCTIONS/dassl.cc
 @anchor{doc-dassl}
 @deftypefn {Loadable Function} {[@var{x}, @var{xdot}, @var{istate}, @var{msg}] =} dassl (@var{fcn}, @var{x_0}, @var{xdot_0}, @var{t}, @var{t_crit})
 Solve the set of differential-algebraic equations
-@iftex
 @tex
 $$ 0 = f (x, \dot{x}, t) $$
 with
 $$ x(t_0) = x_0, \dot{x}(t_0) = \dot{x}_0 $$
 @end tex
-@end iftex
 @ifnottex
 
 @example
@@ -605,15 +648,14 @@ of strings, inline functions, or function handles, the first element names
 the function @math{f} described above, and the second element names a
 function to compute the modified Jacobian
 
-@iftex
 @tex
 $$
 J = {\partial f \over \partial x}
   + c {\partial f \over \partial \dot{x}}
 $$
 @end tex
-@end iftex
 @ifnottex
+
 @example
 @group
       df       df
@@ -621,6 +663,7 @@ jac = -- + c ------
       dx     d xdot
 @end group
 @end example
+
 @end ifnottex
 
 The modified Jacobian function must have the form
@@ -639,7 +682,7 @@ specifies a vector of output times at which the solution is desired,
 including the time corresponding to the initial condition.
 
 The set of initial states and derivatives are not strictly required to
-be consistent.  In practice, however, @sc{Dassl} is not very good at
+be consistent.  In practice, however, @sc{dassl} is not very good at
 determining a consistent set for you, so it is best if you ensure that
 the initial values result in the function evaluating to zero.
 
@@ -649,7 +692,7 @@ avoiding difficulties with singularities and points where there is a
 discontinuity in the derivative.
 
 After a successful computation, the value of @var{istate} will be
-greater than zero (consistent with the Fortran version of @sc{Dassl}).
+greater than zero (consistent with the Fortran version of @sc{dassl}).
 
 If the computation is not successful, the value of @var{istate} will be
 less than zero and @var{msg} will contain additional information.
@@ -660,14 +703,17 @@ parameters for @code{dassl}.
 @end deftypefn
 
 
-@c ./DLD-FUNCTIONS/dassl.cc
+@c dassl_options src/DLD-FUNCTIONS/dassl.cc
 @anchor{doc-dassl_options}
-@deftypefn {Loadable Function} {} dassl_options (@var{opt}, @var{val})
-When called with two arguments, this function
-allows you set options parameters for the function @code{dassl}.
-Given one argument, @code{dassl_options} returns the value of the
-corresponding option.  If no arguments are supplied, the names of all
-the available options and their current values are displayed.
+@deftypefn  {Loadable Function} {} dassl_options ()
+@deftypefnx {Loadable Function} {val =} dassl_options (@var{opt})
+@deftypefnx {Loadable Function} {} dassl_options (@var{opt}, @var{val})
+Query or set options for the function @code{dassl}.
+When called with no arguments, the names of all available options and
+their current values are displayed.
+Given one argument, return the value of the corresponding option.
+When called with two arguments, @code{dassl_options} set the option
+@var{opt} to value @var{val}.
 
 Options include
 
@@ -676,6 +722,7 @@ Options include
 Absolute tolerance.  May be either vector or scalar.  If a vector, it
 must match the dimension of the state vector, and the relative
 tolerance must also be a vector of the same length.
+
 @item "relative tolerance"
 Relative tolerance.  May be either vector or scalar.  If a vector, it
 must match the dimension of the state vector, and the absolute
@@ -689,27 +736,33 @@ The local error test applied at each integration step is
        <= rtol(i) * abs (Y(i)) + atol(i)
 @end group
 @end example
+
 @item "compute consistent initial condition"
 If nonzero, @code{dassl} will attempt to compute a consistent set of initial
 conditions.  This is generally not reliable, so it is best to provide
 a consistent set and leave this option set to zero.
+
 @item "enforce nonnegativity constraints"
 If you know that the solutions to your equations will always be
-nonnegative, it may help to set this parameter to a nonzero
+non-negative, it may help to set this parameter to a nonzero
 value.  However, it is probably best to try leaving this option set to
 zero first, and only setting it to a nonzero value if that doesn't
 work very well.
+
 @item "initial step size"
 Differential-algebraic problems may occasionally suffer from severe
 scaling difficulties on the first step.  If you know a great deal
 about the scaling of your problem, you can help to alleviate this
 problem by specifying an initial stepsize.
+
 @item "maximum order"
 Restrict the maximum order of the solution method.  This option must
 be between 1 and 5, inclusive.
+
 @item "maximum step size"
 Setting the maximum stepsize will avoid passing over very large
 regions  (default is not specified).
+
 @item "step limit"
 Maximum number of integration steps to attempt on a single call to the
 underlying Fortran code.
@@ -717,9 +770,12 @@ underlying Fortran code.
 @end deftypefn
 
 
-@c ./DLD-FUNCTIONS/dasrt.cc
+@c dasrt src/DLD-FUNCTIONS/dasrt.cc
 @anchor{doc-dasrt}
-@deftypefn {Loadable Function} {[@var{x}, @var{xdot}, @var{t_out}, @var{istat}, @var{msg}] =} dasrt (@var{fcn} [, @var{g}], @var{x_0}, @var{xdot_0}, @var{t} [, @var{t_crit}])
+@deftypefn  {Loadable Function} {[@var{x}, @var{xdot}, @var{t_out}, @var{istat}, @var{msg}] =} dasrt (@var{fcn}, [], @var{x_0}, @var{xdot_0}, @var{t})
+@deftypefnx {Loadable Function} {@dots{} =} dasrt (@var{fcn}, @var{g}, @var{x_0}, @var{xdot_0}, @var{t})
+@deftypefnx {Loadable Function} {@dots{} =} dasrt (@var{fcn}, [], @var{x_0}, @var{xdot_0}, @var{t}, @var{t_crit})
+@deftypefnx {Loadable Function} {@dots{} =} dasrt (@var{fcn}, @var{g}, @var{x_0}, @var{xdot_0}, @var{t}, @var{t_crit})
 Solve the set of differential-algebraic equations
 @tex
 $$ 0 = f (x, \dot{x}, t) $$
@@ -732,6 +788,7 @@ $$ x(t_0) = x_0, \dot{x}(t_0) = \dot{x}_0 $$
 0 = f (x, xdot, t)
 @end example
 
+@noindent
 with
 
 @example
@@ -808,23 +865,24 @@ This function must have the form
 @var{g_out} = g (@var{x}, @var{t})
 @end example
 
+@noindent
 and return a vector of the constraint function values.
-If the value of any of the constraint functions changes sign, @sc{Dasrt}
+If the value of any of the constraint functions changes sign, @sc{dasrt}
 will attempt to stop the integration at the point of the sign change.
 
 If the name of the constraint function is omitted, @code{dasrt} solves
 the same problem as @code{daspk} or @code{dassl}.
 
 Note that because of numerical errors in the constraint functions
-due to roundoff and integration error, @sc{Dasrt} may return false
+due to round-off and integration error, @sc{dasrt} may return false
 roots, or return the same root at two or more nearly equal values of
 @var{T}.  If such false roots are suspected, the user should consider
 smaller error tolerances or higher precision in the evaluation of the
 constraint functions.
 
 If a root of some constraint function defines the end of the problem,
-the input to @sc{Dasrt} should nevertheless allow integration to a
-point slightly past that root, so that @sc{Dasrt} can locate the root
+the input to @sc{dasrt} should nevertheless allow integration to a
+point slightly past that root, so that @sc{dasrt} can locate the root
 by interpolation.
 
 The third and fourth arguments to @code{dasrt} specify the initial
@@ -833,7 +891,7 @@ specifies a vector of output times at which the solution is desired,
 including the time corresponding to the initial condition.
 
 The set of initial states and derivatives are not strictly required to
-be consistent.  In practice, however, @sc{Dassl} is not very good at
+be consistent.  In practice, however, @sc{dassl} is not very good at
 determining a consistent set for you, so it is best if you ensure that
 the initial values result in the function evaluating to zero.
 
@@ -843,25 +901,28 @@ avoiding difficulties with singularities and points where there is a
 discontinuity in the derivative.
 
 After a successful computation, the value of @var{istate} will be
-greater than zero (consistent with the Fortran version of @sc{Dassl}).
+greater than zero (consistent with the Fortran version of @sc{dassl}).
 
 If the computation is not successful, the value of @var{istate} will be
 less than zero and @var{msg} will contain additional information.
 
 You can use the function @code{dasrt_options} to set optional
 parameters for @code{dasrt}.
-@seealso{@ref{doc-daspk,,daspk}, @ref{doc-dasrt,,dasrt}, @ref{doc-lsode,,lsode}}
+@seealso{@ref{doc-dasrt_options,,dasrt_options}, @ref{doc-daspk,,daspk}, @ref{doc-dasrt,,dasrt}, @ref{doc-lsode,,lsode}}
 @end deftypefn
 
 
-@c ./DLD-FUNCTIONS/dasrt.cc
+@c dasrt_options src/DLD-FUNCTIONS/dasrt.cc
 @anchor{doc-dasrt_options}
-@deftypefn {Loadable Function} {} dasrt_options (@var{opt}, @var{val})
-When called with two arguments, this function
-allows you set options parameters for the function @code{dasrt}.
-Given one argument, @code{dasrt_options} returns the value of the
-corresponding option.  If no arguments are supplied, the names of all
-the available options and their current values are displayed.
+@deftypefn  {Loadable Function} {} dasrt_options ()
+@deftypefnx {Loadable Function} {val =} dasrt_options (@var{opt})
+@deftypefnx {Loadable Function} {} dasrt_options (@var{opt}, @var{val})
+Query or set options for the function @code{dasrt}.
+When called with no arguments, the names of all available options and
+their current values are displayed.
+Given one argument, return the value of the corresponding option.
+When called with two arguments, @code{dasrt_options} set the option
+@var{opt} to value @var{val}.
 
 Options include
 
@@ -870,29 +931,35 @@ Options include
 Absolute tolerance.  May be either vector or scalar.  If a vector, it
 must match the dimension of the state vector, and the relative
 tolerance must also be a vector of the same length.
+
 @item "relative tolerance"
 Relative tolerance.  May be either vector or scalar.  If a vector, it
 must match the dimension of the state vector, and the absolute
 tolerance must also be a vector of the same length.
 
 The local error test applied at each integration step is
+
 @example
 @group
   abs (local error in x(i)) <= ...
       rtol(i) * abs (Y(i)) + atol(i)
 @end group
 @end example
+
 @item "initial step size"
 Differential-algebraic problems may occasionally suffer from severe
 scaling difficulties on the first step.  If you know a great deal
 about the scaling of your problem, you can help to alleviate this
 problem by specifying an initial stepsize.
+
 @item "maximum order"
 Restrict the maximum order of the solution method.  This option must
 be between 1 and 5, inclusive.
+
 @item "maximum step size"
 Setting the maximum stepsize will avoid passing over very large
 regions.
+
 @item "step limit"
 Maximum number of integration steps to attempt on a single call to the
 underlying Fortran code.
@@ -902,4 +969,4 @@ underlying Fortran code.
 
 See K. E. Brenan, et al., @cite{Numerical Solution of Initial-Value
 Problems in Differential-Algebraic Equations}, North-Holland (1989) for
-more information about the implementation of @sc{Dassl}.
+more information about the implementation of @sc{dassl}.

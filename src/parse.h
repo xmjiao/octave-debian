@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 1998, 2000, 2001, 2002,
-              2003, 2004, 2005, 2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -65,20 +64,13 @@ extern bool input_from_startup_file;
 // Keep track of symbol table information when parsing functions.
 extern std::stack<symbol_table::scope_id> symtab_context;
 
-// Name of parent function when parsing function files that might
-// contain nested functions.
-extern std::string parent_function_name;
-
 // Name of the current class when we are parsing class methods or
 // constructors.
 extern std::string current_class_name;
 
-// Keep a count of how many END tokens we expect.
-extern int end_tokens_expected;
-
 extern OCTINTERP_API std::string
 get_help_from_file (const std::string& nm, bool& symbol_found,
-		    std::string& file);
+                    std::string& file);
 
 extern OCTINTERP_API std::string
 get_help_from_file (const std::string& nm, bool& symbol_found);
@@ -91,16 +83,16 @@ extern OCTINTERP_API string_vector reverse_lookup_autoload (const std::string& n
 
 extern OCTINTERP_API octave_function *
 load_fcn_from_file (const std::string& file_name,
-		    const std::string& dir_name = std::string (),
-		    const std::string& dispatch_type = std::string (),
-		    const std::string& fcn_name = std::string (),
-		    bool autoload = false);
+                    const std::string& dir_name = std::string (),
+                    const std::string& dispatch_type = std::string (),
+                    const std::string& fcn_name = std::string (),
+                    bool autoload = false);
 
 extern OCTINTERP_API void
 source_file (const std::string& file_name,
-	     const std::string& context = std::string (),
-	     bool verbose = false, bool require_file = true,
-	     const std::string& warn_for = std::string ());
+             const std::string& context = std::string (),
+             bool verbose = false, bool require_file = true,
+             const std::string& warn_for = std::string ());
 
 extern OCTINTERP_API octave_value_list
 feval (const std::string& name,
@@ -122,9 +114,3 @@ extern OCTINTERP_API octave_value
 eval_string (const std::string&, bool silent, int& parse_status);
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

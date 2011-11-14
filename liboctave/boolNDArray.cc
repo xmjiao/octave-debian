@@ -1,8 +1,8 @@
 // N-D Array  manipulations.
 /*
 
-Copyright (C) 1996, 1997, 2003, 2004, 2005, 2006, 2007, 2008,
-              2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
+Copyright (C) 2009 VZLU Prague, a.s.
 
 This file is part of Octave.
 
@@ -31,18 +31,27 @@ along with Octave; see the file COPYING.  If not, see
 #include "mx-base.h"
 #include "lo-ieee.h"
 #include "mx-op-defs.h"
+#include "MArray-defs.h"
+
+#include "bsxfun-defs.cc"
 
 // unary operations
 
 boolNDArray
 boolNDArray::operator ! (void) const
 {
-  boolNDArray b (dims ());
+  return do_mx_unary_op<bool> (*this, mx_inline_not);
+}
 
-  for (octave_idx_type i = 0; i < length (); i++)
-    b.elem (i) = ! elem (i);
+boolNDArray&
+boolNDArray::invert (void)
+{
+  if (is_shared ())
+    *this = ! *this;
+  else
+    do_mx_inplace_op<bool> (*this, mx_inline_not2);
 
-  return b;
+  return *this;
 }
 
 // FIXME -- this is not quite the right thing.
@@ -50,27 +59,28 @@ boolNDArray::operator ! (void) const
 boolNDArray
 boolNDArray::all (int dim) const
 {
-  return do_mx_red_op<boolNDArray, bool> (*this, dim, mx_inline_all);
+  return do_mx_red_op<bool, bool> (*this, dim, mx_inline_all);
 }
 
 boolNDArray
 boolNDArray::any (int dim) const
 {
-  return do_mx_red_op<boolNDArray, bool> (*this, dim, mx_inline_any);
+  return do_mx_red_op<bool, bool> (*this, dim, mx_inline_any);
 }
 
-NDArray 
+NDArray
 boolNDArray::sum (int dim) const
 {
-  // NOTE: going via octave_idx_type is faster even though it requires a conversion.
-  return do_mx_red_op<Array<octave_idx_type> , bool> (*this, dim, mx_inline_count);
+  // NOTE: going via octave_idx_type is typically faster even though it
+  // requires a conversion.
+  return do_mx_red_op<octave_idx_type, bool> (*this, dim, mx_inline_count);
 }
 
-NDArray 
+NDArray
 boolNDArray::cumsum (int dim) const
 {
-  // NOTE: going via octave_idx_type is faster even though it requires a conversion.
-  return do_mx_cum_op<Array<octave_idx_type> , bool> (*this, dim, mx_inline_cumcount);
+  // In this case, it's better to sum directly to doubles.
+  return do_mx_cum_op<double , bool> (*this, dim, mx_inline_cumcount);
 }
 
 boolNDArray
@@ -100,41 +110,20 @@ boolNDArray::insert (const boolNDArray& a, const Array<octave_idx_type>& ra_idx)
 boolMatrix
 boolNDArray::matrix_value (void) const
 {
-  boolMatrix retval;
-
-  int nd = ndims ();
-
-  switch (nd)
-    {
-    case 1:
-      retval = boolMatrix (Array2<bool> (*this, dimensions(0), 1));
-      break;
-
-    case 2:
-      retval = boolMatrix (Array2<bool> (*this, dimensions(0),
-					 dimensions(1)));
-      break;
-
-    default:
-      (*current_liboctave_error_handler)
-	("invalid conversion of boolNDArray to boolMatrix");
-      break;
-    }
-
-  return retval;
+  return *this;
 }
 
 void
 boolNDArray::increment_index (Array<octave_idx_type>& ra_idx,
-			      const dim_vector& dimensions,
-			      int start_dimension)
+                              const dim_vector& dimensions,
+                              int start_dimension)
 {
   ::increment_index (ra_idx, dimensions, start_dimension);
 }
 
 octave_idx_type
 boolNDArray::compute_index (Array<octave_idx_type>& ra_idx,
-			    const dim_vector& dimensions)
+                            const dim_vector& dimensions)
 {
   return ::compute_index (ra_idx, dimensions);
 }
@@ -142,20 +131,39 @@ boolNDArray::compute_index (Array<octave_idx_type>& ra_idx,
 boolNDArray
 boolNDArray::diag (octave_idx_type k) const
 {
-  return ArrayN<bool>::diag (k);
+  return Array<bool>::diag (k);
 }
 
-NDND_BOOL_OPS (boolNDArray, boolNDArray, false)
-NDND_CMP_OPS (boolNDArray, , boolNDArray, )
+NDND_BOOL_OPS (boolNDArray, boolNDArray)
+NDND_CMP_OPS (boolNDArray, boolNDArray)
 
-NDS_BOOL_OPS (boolNDArray, bool, false)
-NDS_CMP_OPS (boolNDArray, , bool, )
+NDS_BOOL_OPS (boolNDArray, bool)
+NDS_CMP_OPS (boolNDArray, bool)
 
-SND_BOOL_OPS (bool, boolNDArray, false)
-SND_CMP_OPS (bool, , boolNDArray, )
+SND_BOOL_OPS (bool, boolNDArray)
+SND_CMP_OPS (bool, boolNDArray)
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+boolNDArray&
+mx_el_and_assign (boolNDArray& a, const boolNDArray& b)
+{
+  if (a.is_shared ())
+    a = mx_el_and (a, b);
+  else
+    do_mm_inplace_op<bool, bool> (a, b, mx_inline_and2, "operator &=");
+
+  return a;
+}
+
+boolNDArray&
+mx_el_or_assign (boolNDArray& a, const boolNDArray& b)
+{
+  if (a.is_shared ())
+    a = mx_el_or (a, b);
+  else
+    do_mm_inplace_op<bool, bool> (a, b, mx_inline_or2, "operator |=");
+
+  return a;
+}
+
+BSXFUN_OP_DEF_MXLOOP (and, boolNDArray, mx_inline_and)
+BSXFUN_OP_DEF_MXLOOP (or, boolNDArray, mx_inline_or)

@@ -1,4 +1,4 @@
-## Copyright (C) 2004, 2005, 2006, 2007, 2008 Paul Kienzle
+## Copyright (C) 2004-2011 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -17,17 +17,17 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {[@var{count}, @var{mean}, @var{var}] =} spstats (@var{s})
-## @deftypefnx {Function File} {[@var{count}, @var{mean}, @var{var}] =} spstats (@var{s}, @var{j})
-## Return the stats for the non-zero elements of the sparse matrix @var{s}.
+## @deftypefn  {Function File} {[@var{count}, @var{mean}, @var{var}] =} spstats (@var{S})
+## @deftypefnx {Function File} {[@var{count}, @var{mean}, @var{var}] =} spstats (@var{S}, @var{j})
+## Return the stats for the non-zero elements of the sparse matrix @var{S}.
 ## @var{count} is the number of non-zeros in each column, @var{mean}
-## is the mean of the non-zeros in each column, and @var{var} is the  
+## is the mean of the non-zeros in each column, and @var{var} is the
 ## variance of the non-zeros in each column.
 ##
-## Called with two input arguments, if @var{s} is the data and @var{j}
-## is the bin number for the data, compute the stats for each bin.  In 
-## this case, bins can contain data values of zero, whereas with 
-## @code{spstats (@var{s})} the zeros may disappear.
+## Called with two input arguments, if @var{S} is the data and @var{j}
+## is the bin number for the data, compute the stats for each bin.  In
+## this case, bins can contain data values of zero, whereas with
+## @code{spstats (@var{S})} the zeros may disappear.
 ## @end deftypefn
 
 function [count, mean, var] = spstats (S, j)
@@ -39,23 +39,24 @@ function [count, mean, var] = spstats (S, j)
   if (nargin == 1)
     [i, j, v] = find (S);
   else
-    v = S;    
+    v = S;
     i = 1:length (v);
     S = sparse (i, j, v);
-  endif 
+  endif
   [n, m] = size (S);
 
   count = sum (sparse (i, j, 1, n, m));
-  if (nargout > 1) 
-    mean = sum (S) ./ count; 
+  if (nargout > 1)
+    mean = sum (S) ./ count;
   endif
-  if (nargout > 2) 
+  if (nargout > 2)
     ## FIXME Variance with count = 0 or 1?
-    diff = S - sparse (i, j, mean(j), n, m); 
+    diff = S - sparse (i, j, mean(j), n, m);
     var = sum (diff .* diff) ./ (count - 1);
   endif
 
 endfunction
+
 
 %!test
 %! [n,m,v] = spstats([1 2 1 2 3 4],[2 2 1 1 1 1]);

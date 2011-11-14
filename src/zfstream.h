@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2005, 2007, 2008 Ludwig Schwardt, Kevin Ruland 
+Copyright (C) 2005-2011 Ludwig Schwardt, Kevin Ruland
 
 This file is part of Octave.
 
@@ -177,8 +177,8 @@ protected:
    */
   virtual pos_type
   seekoff(off_type off, std::ios_base::seekdir way,
-	  std::ios_base::openmode mode = 
-	  std::ios_base::in|std::ios_base::out);
+          std::ios_base::openmode mode =
+          std::ios_base::in|std::ios_base::out);
 
   /**
    *  @brief  Alters the stream positions.
@@ -186,8 +186,8 @@ protected:
    *  Each derived class provides its own appropriate behavior.
    */
   virtual pos_type
-  seekpos(pos_type sp, std::ios_base::openmode mode = 
-	  std::ios_base::in|std::ios_base::out);
+  seekpos(pos_type sp, std::ios_base::openmode mode =
+          std::ios_base::in|std::ios_base::out);
 
   virtual int_type
   pbackfail (int_type c = traits_type::eof());
@@ -199,6 +199,13 @@ protected:
 //  virtual int_type pbackfail(int_type c = traits_type::eof());
 
 private:
+
+  // No copying!
+
+  gzfilebuf (const gzfilebuf&);
+
+  gzfilebuf& operator = (const gzfilebuf&);
+
   /**
    *  @brief  Allocate internal buffer.
    *
@@ -506,10 +513,3 @@ setcompression(int l, int s = Z_DEFAULT_STRATEGY)
 #endif // HAVE_ZLIB
 
 #endif // ZFSTREAM_H
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
-

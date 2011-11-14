@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 1999, 2000, 2002, 2003, 2004,
-              2005, 2007, 2008 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -29,18 +28,30 @@ along with Octave; see the file COPYING.  If not, see
 
 #include "floatSVD.h"
 #include "f77-fcn.h"
+#include "oct-locbuf.h"
 
 extern "C"
 {
   F77_RET_T
   F77_FUNC (sgesvd, SGESVD) (F77_CONST_CHAR_ARG_DECL,
-			     F77_CONST_CHAR_ARG_DECL,
-			     const octave_idx_type&, const octave_idx_type&, float*,
-			     const octave_idx_type&, float*, float*,
-			     const octave_idx_type&, float*, const octave_idx_type&,
-			     float*, const octave_idx_type&, octave_idx_type&
-			     F77_CHAR_ARG_LEN_DECL
-			     F77_CHAR_ARG_LEN_DECL);
+                             F77_CONST_CHAR_ARG_DECL,
+                             const octave_idx_type&, const octave_idx_type&,
+                             float*, const octave_idx_type&, float*,
+                             float*, const octave_idx_type&, float*,
+                             const octave_idx_type&, float*,
+                             const octave_idx_type&, octave_idx_type&
+                             F77_CHAR_ARG_LEN_DECL
+                             F77_CHAR_ARG_LEN_DECL);
+
+  F77_RET_T
+  F77_FUNC (sgesdd, SGESDD) (F77_CONST_CHAR_ARG_DECL,
+                             const octave_idx_type&, const octave_idx_type&,
+                             float*, const octave_idx_type&, float*,
+                             float*, const octave_idx_type&, float*,
+                             const octave_idx_type&, float*,
+                             const octave_idx_type&, octave_idx_type *,
+                             octave_idx_type&
+                             F77_CHAR_ARG_LEN_DECL);
 }
 
 FloatMatrix
@@ -49,7 +60,7 @@ FloatSVD::left_singular_matrix (void) const
   if (type_computed == SVD::sigma_only)
     {
       (*current_liboctave_error_handler)
-	("FloatSVD: U not computed because type == SVD::sigma_only");
+        ("FloatSVD: U not computed because type == SVD::sigma_only");
       return FloatMatrix ();
     }
   else
@@ -62,7 +73,7 @@ FloatSVD::right_singular_matrix (void) const
   if (type_computed == SVD::sigma_only)
     {
       (*current_liboctave_error_handler)
-	("FloatSVD: V not computed because type == SVD::sigma_only");
+        ("FloatSVD: V not computed because type == SVD::sigma_only");
       return FloatMatrix ();
     }
   else
@@ -70,7 +81,7 @@ FloatSVD::right_singular_matrix (void) const
 }
 
 octave_idx_type
-FloatSVD::init (const FloatMatrix& a, SVD::type svd_type)
+FloatSVD::init (const FloatMatrix& a, SVD::type svd_type, SVD::driver svd_driver)
 {
   octave_idx_type info;
 
@@ -135,24 +146,53 @@ FloatSVD::init (const FloatMatrix& a, SVD::type svd_type)
 
   octave_idx_type lwork = -1;
 
-  Array<float> work (1);
+  Array<float> work (dim_vector (1, 1));
 
-  F77_XFCN (sgesvd, SGESVD, (F77_CONST_CHAR_ARG2 (&jobu, 1),
-			     F77_CONST_CHAR_ARG2 (&jobv, 1),
-			     m, n, tmp_data, m, s_vec, u, m, vt,
-			     nrow_vt, work.fortran_vec (), lwork, info
-			     F77_CHAR_ARG_LEN (1)
-			     F77_CHAR_ARG_LEN (1)));
+  octave_idx_type one = 1;
+  octave_idx_type m1 = std::max (m, one), nrow_vt1 = std::max (nrow_vt, one);
 
-  lwork = static_cast<octave_idx_type> (work(0));
-  work.resize (lwork);
+  if (svd_driver == SVD::GESVD)
+    {
+      F77_XFCN (sgesvd, SGESVD, (F77_CONST_CHAR_ARG2 (&jobu, 1),
+                                 F77_CONST_CHAR_ARG2 (&jobv, 1),
+                                 m, n, tmp_data, m1, s_vec, u, m1, vt,
+                                 nrow_vt1, work.fortran_vec (), lwork, info
+                                 F77_CHAR_ARG_LEN (1)
+                                 F77_CHAR_ARG_LEN (1)));
 
-  F77_XFCN (sgesvd, SGESVD, (F77_CONST_CHAR_ARG2 (&jobu, 1),
-			     F77_CONST_CHAR_ARG2 (&jobv, 1),
-			     m, n, tmp_data, m, s_vec, u, m, vt,
-			     nrow_vt, work.fortran_vec (), lwork, info
-			     F77_CHAR_ARG_LEN (1)
-			     F77_CHAR_ARG_LEN (1)));
+      lwork = static_cast<octave_idx_type> (work(0));
+      work.resize (dim_vector (lwork, 1));
+
+      F77_XFCN (sgesvd, SGESVD, (F77_CONST_CHAR_ARG2 (&jobu, 1),
+                                 F77_CONST_CHAR_ARG2 (&jobv, 1),
+                                 m, n, tmp_data, m1, s_vec, u, m1, vt,
+                                 nrow_vt1, work.fortran_vec (), lwork, info
+                                 F77_CHAR_ARG_LEN (1)
+                                 F77_CHAR_ARG_LEN (1)));
+
+    }
+  else if (svd_driver == SVD::GESDD)
+    {
+      assert (jobu == jobv);
+      char jobz = jobu;
+      OCTAVE_LOCAL_BUFFER (octave_idx_type, iwork, 8*min_mn);
+
+      F77_XFCN (sgesdd, SGESDD, (F77_CONST_CHAR_ARG2 (&jobz, 1),
+                                 m, n, tmp_data, m1, s_vec, u, m1, vt,
+                                 nrow_vt1, work.fortran_vec (), lwork, iwork, info
+                                 F77_CHAR_ARG_LEN (1)));
+
+      lwork = static_cast<octave_idx_type> (work(0));
+      work.resize (dim_vector (lwork, 1));
+
+      F77_XFCN (sgesdd, SGESDD, (F77_CONST_CHAR_ARG2 (&jobz, 1),
+                                 m, n, tmp_data, m1, s_vec, u, m1, vt,
+                                 nrow_vt1, work.fortran_vec (), lwork, iwork, info
+                                 F77_CHAR_ARG_LEN (1)));
+
+    }
+  else
+    assert (0); // impossible
 
   if (! (jobv == 'N' || jobv == 'O'))
     right_sm = right_sm.transpose ();
@@ -169,9 +209,3 @@ operator << (std::ostream& os, const FloatSVD& a)
 
   return os;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

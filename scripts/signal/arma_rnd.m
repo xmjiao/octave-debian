@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 2000, 2002, 2003, 2005, 2006,
-##               2007, 2009 Friedrich Leisch
+## Copyright (C) 1995-2011 Friedrich Leisch
 ##
 ## This file is part of Octave.
 ##
@@ -36,7 +35,7 @@
 ## The optional parameter @var{n} gives the number of dummy
 ## @var{x}(@var{i}) used for initialization, i.e., a sequence of length
 ## @var{t}+@var{n} is generated and @var{x}(@var{n}+1:@var{t}+@var{n})
-## is returned.  If @var{n} is omitted, @var{n} = 100 is used. 
+## is returned.  If @var{n} is omitted, @var{n} = 100 is used.
 ## @end deftypefn
 
 ## Author: FL <Friedrich.Leisch@ci.tuwien.ac.at>
@@ -47,19 +46,19 @@ function x = arma_rnd (a, b, v, t, n)
   if (nargin == 4)
     n = 100;
   elseif (nargin == 5)
-    if (!isscalar (t))
-      error ("arma_rnd: n must be a scalar");
+    if (!isscalar (n))
+      error ("arma_rnd: N must be a scalar");
     endif
   else
     print_usage ();
   endif
 
   if ((min (size (a)) > 1) || (min (size (b)) > 1))
-    error ("arma_rnd: a and b must not be matrices");
+    error ("arma_rnd: A and B must not be matrices");
   endif
 
   if (!isscalar (t))
-    error ("arma_rnd: t must be a scalar");
+    error ("arma_rnd: T must be a scalar");
   endif
 
   ar = length (a);

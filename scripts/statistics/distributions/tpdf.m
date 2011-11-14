@@ -1,4 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 2005, 2006, 2007 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -20,7 +20,7 @@
 ## @deftypefn {Function File} {} tpdf (@var{x}, @var{n})
 ## For each element of @var{x}, compute the probability density function
 ## (PDF) at @var{x} of the @var{t} (Student) distribution with @var{n}
-## degrees of freedom. 
+## degrees of freedom.
 ## @end deftypefn
 
 ## Author: KH <Kurt.Hornik@wu-wien.ac.at>
@@ -35,7 +35,7 @@ function pdf = tpdf (x, n)
   if (!isscalar (n))
     [retval, x, n] = common_size (x, n);
     if (retval > 0)
-      error ("tpdf: x and n must be of common size or scalar");
+      error ("tpdf: X and N must be of common size or scalar");
     endif
   endif
 
@@ -50,10 +50,10 @@ function pdf = tpdf (x, n)
   if (any (k))
     if (isscalar (n))
       pdf(k) = (exp (- (n + 1) .* log (1 + x(k) .^ 2 ./ n)/2)
-		/ (sqrt (n) * beta (n/2, 1/2)));
+                / (sqrt (n) * beta (n/2, 1/2)));
     else
       pdf(k) = (exp (- (n(k) + 1) .* log (1 + x(k) .^ 2 ./ n(k))/2)
-		./ (sqrt (n(k)) .* beta (n(k)/2, 1/2)));
+                ./ (sqrt (n(k)) .* beta (n(k)/2, 1/2)));
     endif
   endif
 

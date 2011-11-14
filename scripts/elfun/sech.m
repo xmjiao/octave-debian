@@ -1,5 +1,4 @@
-## Copyright (C) 1994, 1995, 1996, 1997, 1999, 2000, 2005, 2006, 2007,
-##               2008, 2009 John W. Eaton
+## Copyright (C) 1994-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -25,13 +24,13 @@
 
 ## Author: jwe
 
-function w = sech (z)
+function y = sech (x)
 
 if (nargin != 1)
     print_usage ();
   endif
 
-  w = 1 ./ cosh(z);
+  y = 1 ./ cosh(x);
 
 endfunction
 

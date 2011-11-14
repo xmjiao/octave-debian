@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 1999, 2000, 2002, 2003, 2004, 2005,
-              2006, 2007, 2008 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -120,6 +119,8 @@ public:
 
   static string_vector generate_filename_completions (const std::string& text);
 
+  static std::string get_line_buffer (void);
+
   static void insert_text (const std::string& text);
 
   static void newline (void);
@@ -216,7 +217,7 @@ protected:
 
   virtual std::string do_decode_prompt_string (const std::string&);
 
-  virtual std::string newline_chars (void) { return "\n"; } 
+  virtual std::string newline_chars (void) { return "\n"; }
 
   virtual void do_restore_terminal_state (void) { }
 
@@ -256,6 +257,8 @@ protected:
 
   virtual string_vector do_generate_filename_completions (const std::string& text) = 0;
 
+  virtual std::string do_get_line_buffer (void) const = 0;
+
   virtual void do_insert_text (const std::string&) = 0;
 
   virtual void do_newline (void) = 0;
@@ -291,9 +294,3 @@ protected:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

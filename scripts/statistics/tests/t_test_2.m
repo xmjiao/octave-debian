@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 2000, 2002, 2005, 2006, 2007
-##               Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -49,7 +48,7 @@ function [pval, t, df] = t_test_2 (x, y, alt)
   endif
 
   if (! (isvector (x) && isvector (y)))
-    error ("t_test_2: both x and y must be vectors");
+    error ("t_test_2: both X and Y must be vectors");
   endif
 
   n_x  = length (x);
@@ -59,14 +58,14 @@ function [pval, t, df] = t_test_2 (x, y, alt)
   mu_y = sum (y) / n_y;
   v    = sumsq (x - mu_x) + sumsq (y - mu_y);
   t    = (mu_x - mu_y) * sqrt ((n_x * n_y * df) / (v * (n_x + n_y)));
-  cdf  = t_cdf (t, df);
+  cdf  = tcdf (t, df);
 
   if (nargin == 2)
     alt = "!=";
   endif
 
   if (! ischar (alt))
-    error ("t_test_2: alt must be a string");
+    error ("t_test_2: ALT must be a string");
   endif
   if (strcmp (alt, "!=") || strcmp (alt, "<>"))
     pval = 2 * min (cdf, 1 - cdf);

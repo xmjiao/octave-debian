@@ -1,4 +1,4 @@
-@c Copyright (C) 1996, 1997, 2007, 2008, 2009 John W. Eaton
+@c Copyright (C) 1996-2011 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -21,13 +21,14 @@
 
 Octave supports several ways of reading and writing data to or from the
 prompt or a file.  The simplest functions for data Input and Output
-(I/O) are easy to use, but only provides limited control of how
+(I/O) are easy to use, but only provide limited control of how
 data is processed.  For more control, a set of functions modelled
 after the C standard library are also provided by Octave.
 
 @menu
 * Basic Input and Output::      
 * C-Style I/O Functions::       
+* GUI Dialogs for I/O::       
 @end menu
 
 @node Basic Input and Output
@@ -39,7 +40,6 @@ after the C standard library are also provided by Octave.
 * Terminal Output::             
 * Terminal Input::              
 * Simple File I/O::             
-* Rational Approximations::
 @end menu
 
 @node Terminal Output
@@ -67,6 +67,10 @@ values with @code{disp} and through the normal echoing mechanism.
 
 @DOCSTRING(disp)
 
+@DOCSTRING(list_in_columns)
+
+@DOCSTRING(terminal_size)
+
 @DOCSTRING(format)
 
 @menu
@@ -92,7 +96,7 @@ work with a single command statement.  The function @code{fflush} may be
 used to force output to be sent to the pager (or any other stream)
 immediately.
 
-You can select the program to run as the pager using the @code{PAGER}
+You can select the program to run as the pager using the @env{PAGER}
 function, and you can turn paging off by using the function
 @code{more}.
 
@@ -177,6 +181,8 @@ A
 
 @DOCSTRING(load)
 
+@DOCSTRING(fileread)
+
 There are three functions that modify the behavior of @code{save}.
 
 @DOCSTRING(default_save_options)
@@ -219,6 +225,12 @@ separated lists.
 
 @DOCSTRING(csvread)
 
+Formatted data from can be read from, or written to, text files as well.
+
+@DOCSTRING(textread)
+
+@DOCSTRING(textscan)
+
 @menu
 * Saving Data on Unexpected Exits::
 @end menu
@@ -244,13 +256,6 @@ functions.
 @DOCSTRING(octave_core_file_limit)
 
 @DOCSTRING(octave_core_file_name)
-
-@node Rational Approximations
-@subsection Rational Approximations
-
-@DOCSTRING(rat)
-
-@DOCSTRING(rats)
 
 @node C-Style I/O Functions
 @section C-Style I/O Functions
@@ -320,6 +325,8 @@ fclose (fid);
 
 @DOCSTRING(fclose)
 
+@DOCSTRING(is_valid_file_id)
+
 @node Simple Output
 @subsection Simple Output
 
@@ -368,6 +375,8 @@ the line @samp{Free Software is needed for Free Science}.
 @DOCSTRING(fgetl)
 
 @DOCSTRING(fgets)
+
+@DOCSTRING(fskipl)
 
 @node Formatted Output
 @subsection Formatted Output
@@ -447,7 +456,7 @@ described in more detail in the following sections.
 
 When given a matrix value, Octave's formatted output functions cycle
 through the format template until all the values in the matrix have been
-printed.  For example,
+printed.  For example:
 
 @example
 @group
@@ -463,7 +472,7 @@ If more than one value is to be printed in a single call, the output
 functions do not return to the beginning of the format template when
 moving on from one value to the next.  This can lead to confusing output
 if the number of elements in the matrices are not exact multiples of the
-number of conversions in the format template.  For example,
+number of conversions in the format template.  For example:
 
 @example
 @group
@@ -995,8 +1004,6 @@ files will be deleted, so this step need not be executed manually.
 
 @DOCSTRING(tmpnam)
 
-@DOCSTRING(octave_tmp_file_name)
-
 @node EOF and Errors, File Positioning, Temporary Files, C-Style I/O Functions
 @subsection End of File and Errors
 
@@ -1057,4 +1064,17 @@ fourch = fgets (myfile, 4);
 fseek (myfile, marker, SEEK_SET);
 @end group
 @end example
+
+@node GUI Dialogs for I/O
+@section GUI Dialogs for I/O
+
+Simple dialog menus are available for choosing directories or files.  They
+return a string variable which can then be used when calling any command
+requiring a file name.
+
+@DOCSTRING(uigetdir)
+
+@DOCSTRING(uigetfile)
+
+@DOCSTRING(uiputfile)
 

@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2000, 2002, 2003, 2004, 2005, 2006,
-              2007, 2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -48,8 +47,8 @@ tree_index_expression::tree_index_expression (int l, int c)
     arg_nm (), dyn_field () { }
 
 tree_index_expression::tree_index_expression (tree_expression *e,
-					      tree_argument_list *lst,
-					      int l, int c, char t)
+                                              tree_argument_list *lst,
+                                              int l, int c, char t)
   : tree_expression (l, c), expr (e), args (0), type (),
     arg_nm (), dyn_field ()
 {
@@ -57,8 +56,8 @@ tree_index_expression::tree_index_expression (tree_expression *e,
 }
 
 tree_index_expression::tree_index_expression (tree_expression *e,
-					      const std::string& n,
-					      int l, int c)
+                                              const std::string& n,
+                                              int l, int c)
   : tree_expression (l, c), expr (e), args (0), type (),
     arg_nm (), dyn_field ()
 {
@@ -66,8 +65,8 @@ tree_index_expression::tree_index_expression (tree_expression *e,
 }
 
 tree_index_expression::tree_index_expression (tree_expression *e,
-					      tree_expression *df,
-					      int l, int c)
+                                              tree_expression *df,
+                                              int l, int c)
   : tree_expression (l, c), expr (e), args (0), type (),
     arg_nm (), dyn_field ()
 {
@@ -81,6 +80,9 @@ tree_index_expression::append (tree_argument_list *lst, char t)
   type.append (1, t);
   arg_nm.push_back (lst ? lst->get_arg_names () : string_vector ());
   dyn_field.push_back (static_cast<tree_expression *> (0));
+
+  if (lst && lst->has_magic_tilde ())
+    error ("invalid use of empty argument (~) in index expression");
 }
 
 void
@@ -123,9 +125,9 @@ tree_index_expression::has_magic_end (void) const
       tree_argument_list *elt = *p;
 
       if (elt && elt->has_magic_end ())
-	return true;
+        return true;
     }
-  
+
   return false;
 }
 
@@ -153,14 +155,14 @@ make_subs_cell (tree_argument_list *args, const string_vector& arg_nm)
       int n = arg_values.length ();
 
       if (n > 0)
-	{
-	  arg_values.stash_name_tags (arg_nm);
+        {
+          arg_values.stash_name_tags (arg_nm);
 
-	  retval.resize (dim_vector (1, n));
+          retval.resize (dim_vector (1, n));
 
-	  for (int i = 0; i < n; i++)
-	    retval(0,i) = arg_values(i);
-	}
+          for (int i = 0; i < n; i++)
+            retval(0,i) = arg_values(i);
+        }
     }
 
   return retval;
@@ -168,7 +170,7 @@ make_subs_cell (tree_argument_list *args, const string_vector& arg_nm)
 
 static inline octave_value_list
 make_value_list (tree_argument_list *args, const string_vector& arg_nm,
-		 const octave_value *object)
+                 const octave_value *object)
 {
   octave_value_list retval;
 
@@ -182,10 +184,10 @@ make_value_list (tree_argument_list *args, const string_vector& arg_nm,
 
   if (! error_state)
     {
-      int n = retval.length ();
+      octave_idx_type n = retval.length ();
 
       if (n > 0)
-	retval.stash_name_tags (arg_nm);
+        retval.stash_name_tags (arg_nm);
     }
 
   return retval;
@@ -203,25 +205,25 @@ tree_index_expression::get_struct_index
       tree_expression *df = *p_dyn_field;
 
       if (df)
-	{
-	  octave_value t = df->rvalue1 ();
+        {
+          octave_value t = df->rvalue1 ();
 
-	  if (! error_state)
-	    {
-	      fn = t.string_value ();
+          if (! error_state)
+            {
+              fn = t.string_value ();
 
-	      if (! valid_identifier (fn))
-		::error ("invalid structure field name `%s'", fn.c_str ());
-	    }
-	}
+              if (! valid_identifier (fn))
+                ::error ("invalid structure field name `%s'", fn.c_str ());
+            }
+        }
       else
-	panic_impossible ();
+        panic_impossible ();
     }
 
   return fn;
 }
 
-Octave_map
+octave_map
 tree_index_expression::make_arg_struct (void) const
 {
   int n = args.size ();
@@ -233,30 +235,30 @@ tree_index_expression::make_arg_struct (void) const
   std::list<string_vector>::const_iterator p_arg_nm = arg_nm.begin ();
   std::list<tree_expression *>::const_iterator p_dyn_field = dyn_field.begin ();
 
-  Octave_map m;
+  octave_map m;
 
   for (int i = 0; i < n; i++)
     {
       switch (type[i])
-	{
-	case '(':
-	  subs_field(i) = make_subs_cell (*p_args, *p_arg_nm);
-	  break;
+        {
+        case '(':
+          subs_field(i) = make_subs_cell (*p_args, *p_arg_nm);
+          break;
 
-	case '{':
-	  subs_field(i) = make_subs_cell (*p_args, *p_arg_nm);
-	  break;
+        case '{':
+          subs_field(i) = make_subs_cell (*p_args, *p_arg_nm);
+          break;
 
-	case '.':
-	  subs_field(i) = get_struct_index (p_arg_nm, p_dyn_field);
-	  break;
+        case '.':
+          subs_field(i) = get_struct_index (p_arg_nm, p_dyn_field);
+          break;
 
-	default:
-	  panic_impossible ();
-	}
+        default:
+          panic_impossible ();
+        }
 
       if (error_state)
-	return m;
+        return m;
 
       p_args++;
       p_arg_nm++;
@@ -271,6 +273,12 @@ tree_index_expression::make_arg_struct (void) const
 
 octave_value_list
 tree_index_expression::rvalue (int nargout)
+{
+  return tree_index_expression::rvalue (nargout, 0);
+}
+
+octave_value_list
+tree_index_expression::rvalue (int nargout, const std::list<octave_lvalue> *lvalue_list)
 {
   octave_value_list retval;
 
@@ -288,24 +296,28 @@ tree_index_expression::rvalue (int nargout)
       tree_identifier *id = dynamic_cast<tree_identifier *> (expr);
 
       if (! (id->is_variable () || args.empty ()))
-	{
-	  tree_argument_list *al = *(args.begin ());
+        {
+          tree_argument_list *al = *(args.begin ());
 
-	  size_t n = al ? al->length () : 0;
+          size_t n = al ? al->length () : 0;
 
-	  if (n > 0)
-	    {
-	      string_vector anm = *(arg_nm.begin ());
+          if (n > 0)
+            {
+              string_vector anm = *(arg_nm.begin ());
+              have_args = true;
+              first_args = al -> convert_to_const_vector ();
+              first_args.stash_name_tags (anm);
 
-	      first_expr_val = id->do_lookup  (al, anm, first_args, have_args);
-	    }
-	}
+              if (! error_state)
+                first_expr_val = id->do_lookup  (first_args);
+            }
+        }
     }
 
   if (! error_state)
     {
       if (first_expr_val.is_undefined ())
-	first_expr_val = expr->rvalue1 ();
+        first_expr_val = expr->rvalue1 ();
 
       octave_value tmp = first_expr_val;
       octave_idx_type tmpi = 0;
@@ -319,72 +331,80 @@ tree_index_expression::rvalue (int nargout)
       std::list<tree_expression *>::iterator p_dyn_field = dyn_field.begin ();
 
       for (int i = 0; i < n; i++)
-	{
-	  if (i > 0)
-	    {
-	      tree_argument_list *al = *p_args;
+        {
+          if (i > 0)
+            {
+              tree_argument_list *al = *p_args;
 
-	      if (al && al->has_magic_end ())
-		{
-		  // We have an expression like
-		  //
-		  //   x{end}.a(end)
-		  //
-		  // and we are looking at the argument list that
-		  // contains the second (or third, etc.) "end" token,
-		  // so we must evaluate everything up to the point of
-		  // that argument list so we can pass the appropriate
-		  // value to the built-in __end__ function.
+              // In Matlab, () can only be followed by . In Octave, we do not
+              // enforce this for rvalue expressions, but we'll split the
+              // evaluation at this point. This will, hopefully, allow Octave's
+              // looser rules apply smoothly for Matlab overloaded subsref
+              // codes.
+              bool force_split = type[i-1] == '(' && type[i] != '.';
 
-		  const octave_value_list tmp_list
-		    = tmp.subsref (type.substr (tmpi, i - tmpi), idx, nargout);
+              if (force_split || (al && al->has_magic_end ()))
+                {
+                  // We have an expression like
+                  //
+                  //   x{end}.a(end)
+                  //
+                  // and we are looking at the argument list that
+                  // contains the second (or third, etc.) "end" token,
+                  // so we must evaluate everything up to the point of
+                  // that argument list so we can pass the appropriate
+                  // value to the built-in __end__ function.
 
-		  tmp = tmp_list(0);
+                  const octave_value_list tmp_list
+                    = tmp.subsref (type.substr (tmpi, i - tmpi), idx, nargout);
+
+                  tmp = tmp_list.length () ? tmp_list(0) : octave_value ();
                   tmpi = i;
                   idx.clear ();
-                  
+
                   if (tmp.is_cs_list ())
                     gripe_indexed_cs_list ();
 
-		  if (error_state)
-		    break;
-		}
-	    }
+                  if (error_state)
+                    break;
+                }
+            }
 
-	  switch (type[i])
-	    {
-	    case '(':
-	      if (have_args)
-		{
-		  idx.push_back (first_args);
-		  have_args = false;
-		}
-	      else
-		idx.push_back (make_value_list (*p_args, *p_arg_nm, &tmp));
-	      break;
+          switch (type[i])
+            {
+            case '(':
+              if (have_args)
+                {
+                  idx.push_back (first_args);
+                  have_args = false;
+                }
+              else
+                idx.push_back (make_value_list (*p_args, *p_arg_nm, &tmp));
+              break;
 
-	    case '{':
-	      idx.push_back (make_value_list (*p_args, *p_arg_nm, &tmp));
-	      break;
+            case '{':
+              idx.push_back (make_value_list (*p_args, *p_arg_nm, &tmp));
+              break;
 
-	    case '.':
-	      idx.push_back (octave_value (get_struct_index (p_arg_nm, p_dyn_field)));
-	      break;
+            case '.':
+              idx.push_back (octave_value (get_struct_index (p_arg_nm, p_dyn_field)));
+              break;
 
-	    default:
-	      panic_impossible ();
-	    }
+            default:
+              panic_impossible ();
+            }
 
-	  if (error_state)
-	    break;
+          if (error_state)
+            break;
 
-	  p_args++;
-	  p_arg_nm++;
-	  p_dyn_field++;
-	}
+          p_args++;
+          p_arg_nm++;
+          p_dyn_field++;
+        }
 
       if (! error_state)
-	retval = tmp.subsref (type.substr (tmpi, n - tmpi), idx, nargout);
+        retval = tmp.subsref (type.substr (tmpi, n - tmpi), idx, nargout,
+                              lvalue_list);
     }
 
   return retval;
@@ -399,32 +419,6 @@ tree_index_expression::rvalue1 (int nargout)
 
   if (! tmp.empty ())
     retval = tmp(0);
-
-  return retval;
-}
-
-static octave_idx_type
-get_numel (const octave_value& val,
-           const octave_value_list& idx)
-{
-  octave_idx_type retval;
-
-  octave_idx_type len = idx.length ();
-
-  if (len == 0)
-    retval = val.numel ();
-  else
-    {
-      const dim_vector dv = val.dims ().redim (len);
-      retval = 1;
-      for (octave_idx_type i = 0; i < len; i++)
-        {
-          if (idx(i).is_magic_colon ())
-            retval *= dv(i);
-          else
-            retval *= idx(i).numel ();
-        }
-    }
 
   return retval;
 }
@@ -452,13 +446,13 @@ tree_index_expression::lvalue (void)
       octave_value tmp;
 
       if (tro)
-	tmp = *tro;
+        tmp = *tro;
 
       octave_idx_type tmpi = 0;
       std::list<octave_value_list> tmpidx;
 
       for (int i = 0; i < n; i++)
-	{
+        {
           if (retval.numel () != 1)
             gripe_indexed_cs_list ();
           else if (tmpi < i)
@@ -470,9 +464,9 @@ tree_index_expression::lvalue (void)
           if (error_state)
             break;
 
-	  switch (type[i])
-	    {
-	    case '(':
+          switch (type[i])
+            {
+            case '(':
               {
                 octave_value_list tidx
                   = make_value_list (*p_args, *p_arg_nm, &tmp);
@@ -492,10 +486,10 @@ tree_index_expression::lvalue (void)
               }
               break;
 
-	    case '{':
-	      {
-		octave_value_list tidx
-		  = make_value_list (*p_args, *p_arg_nm, &tmp);
+            case '{':
+              {
+                octave_value_list tidx
+                  = make_value_list (*p_args, *p_arg_nm, &tmp);
 
                 if (tmp.is_undefined ())
                   {
@@ -504,30 +498,30 @@ tree_index_expression::lvalue (void)
                     else
                       tmp = Cell ();
                   }
-                else if (tmp.is_zero_by_zero () 
+                else if (tmp.is_zero_by_zero ()
                          && (tmp.is_matrix_type () || tmp.is_string ()))
                   {
                     tmp = Cell ();
                   }
 
-                retval.numel (get_numel (tmp, tidx));
+                retval.numel (tmp.numel (tidx));
 
                 if (error_state)
                   break;
 
-		idx.push_back (tidx);
+                idx.push_back (tidx);
                 tmpidx.push_back (tidx);
                 tmpi = i;
-	      }
-	      break;
+              }
+              break;
 
-	    case '.':
-	      {
-		octave_value tidx = get_struct_index (p_arg_nm, p_dyn_field);
+            case '.':
+              {
+                octave_value tidx = get_struct_index (p_arg_nm, p_dyn_field);
                 if (error_state)
                   break;
 
-                bool autoconv = (tmp.is_zero_by_zero () 
+                bool autoconv = (tmp.is_zero_by_zero ()
                                  && (tmp.is_matrix_type () || tmp.is_string ()
                                      || tmp.is_cell ()));
 
@@ -535,17 +529,19 @@ tree_index_expression::lvalue (void)
                   {
                     octave_value_list pidx = idx.back ();
 
+                    // Use octave_map, not octave_scalar_map so that the
+                    // dimensions are 0x0, not 1x1.
                     if (tmp.is_undefined ())
                       {
                         if (pidx.has_magic_colon ())
                           gripe_invalid_inquiry_subscript ();
                         else
-                          tmp = Octave_map ();
+                          tmp = octave_map ();
                       }
                     else if (autoconv)
-                      tmp = Octave_map ();
+                      tmp = octave_map ();
 
-                    retval.numel (get_numel (tmp, pidx));
+                    retval.numel (tmp.numel (pidx));
 
                     tmpi = i-1;
                     tmpidx.push_back (tidx);
@@ -559,7 +555,7 @@ tree_index_expression::lvalue (void)
                       }
                     else
                       {
-                        retval.numel (get_numel (tmp, octave_value_list ()));
+                        retval.numel (tmp.numel (octave_value_list ()));
 
                         tmpi = i;
                         tmpidx.push_back (tidx);
@@ -570,26 +566,26 @@ tree_index_expression::lvalue (void)
                   break;
 
                 idx.push_back (tidx);
-	      }
-	      break;
+              }
+              break;
 
-	    default:
-	      panic_impossible ();
-	    }
+            default:
+              panic_impossible ();
+            }
 
           if (idx.back ().empty ())
             error ("invalid empty index list");
 
-	  if (error_state)
-	    break;
+          if (error_state)
+            break;
 
-	  p_args++;
-	  p_arg_nm++;
-	  p_dyn_field++;
-	}
+          p_args++;
+          p_arg_nm++;
+          p_dyn_field++;
+        }
 
       if (! error_state)
-	retval.set_index (type, idx);
+        retval.set_index (type, idx);
 
     }
 
@@ -623,7 +619,7 @@ tree_index_expression::lvalue (void)
 
 tree_index_expression *
 tree_index_expression::dup (symbol_table::scope_id scope,
-			    symbol_table::context_id context) const
+                            symbol_table::context_id context) const
 {
   tree_index_expression *new_idx_expr
     = new tree_index_expression (line (), column ());
@@ -642,7 +638,7 @@ tree_index_expression::dup (symbol_table::scope_id scope,
     }
 
   new_idx_expr->args = new_args;
-  
+
   new_idx_expr->type = type;
 
   new_idx_expr->arg_nm = arg_nm;
@@ -661,7 +657,7 @@ tree_index_expression::dup (symbol_table::scope_id scope,
   new_idx_expr->dyn_field = new_dyn_field;
 
   new_idx_expr->copy_base (*this);
-  
+
   return new_idx_expr;
 }
 
@@ -670,9 +666,3 @@ tree_index_expression::accept (tree_walker& tw)
 {
   tw.visit_index_expression (*this);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

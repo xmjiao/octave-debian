@@ -1,4 +1,4 @@
-@c Copyright (C) 1996, 1997, 2007, 2008, 2009 John W. Eaton
+@c Copyright (C) 1996-2011 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -32,8 +32,9 @@ like built-in functions.
 * Defining Functions::          
 * Multiple Return Values::      
 * Variable-length Argument Lists::  
+* Ignoring Arguments::  
 * Variable-length Return Lists::  
-* Returning From a Function::   
+* Returning from a Function::   
 * Default Arguments::   
 * Function Files::              
 * Script Files::                
@@ -337,6 +338,24 @@ along with a warning.
 
 @DOCSTRING(nargout)
 
+It is good practice at the head of a function to verify that it has been called
+correctly.  In Octave the following idiom is seen frequently
+
+@example
+@group
+if (nargin < min_#_inputs || nargin > max_#_inputs)
+  print_usage ();
+endif
+@end group
+@end example
+
+@noindent
+which stops the function execution and prints a message about the correct
+way to call the function whenever the number of inputs is wrong.
+
+For compatibility with @sc{matlab}, @code{nargchk} and @code{nargoutchk} are
+available which provide similar error checking.
+
 @DOCSTRING(nargchk)
 
 @DOCSTRING(nargoutchk)
@@ -349,7 +368,7 @@ along with a warning.
 
 Sometimes the number of input arguments is not known when the function
 is defined.  As an example think of a function that returns the smallest
-of all its input arguments.  For example,
+of all its input arguments.  For example:
 
 @example
 @group
@@ -436,6 +455,43 @@ print_arguments (1, "two", 3);
 
 @DOCSTRING(parseparams)
 
+@node Ignoring Arguments
+@section Ignoring Arguments
+
+In the formal argument list, it is possible to use the dummy placeholder
+@code{~} instead of a name.  This indicates that the corresponding argument
+value should be ignored and not stored to any variable.
+
+@example
+@group
+function val = pick2nd (~, arg2)
+  val = arg2;
+endfunction
+@end group
+@end example
+
+The value of @code{nargin} is not affected by using this declaration.
+
+Return arguments can also be ignored using the same syntax.  Functions may
+take advantage of ignored outputs to reduce the number of calculations
+performed.  To do so, use the @code{isargout} function to query whether the
+output argument is wanted.  For example:
+
+@example
+@group
+function [out1, out2] = long_function (x, y, z)
+  if (isargout (1))
+    ## Long calculation
+    @dots{}
+    out1 = result;
+  endif
+  @dots{}
+endfunction
+@end group
+@end example
+
+@DOCSTRING(isargout)
+
 @node Variable-length Return Lists
 @section Variable-length Return Lists
 @cindex variable-length return lists
@@ -479,8 +535,8 @@ and is handled the same as any other parameter name.
 
 @DOCSTRING(deal)
 
-@node Returning From a Function
-@section Returning From a Function
+@node Returning from a Function
+@section Returning from a Function
 
 The body of a user-defined function can contain a @code{return} statement.
 This statement returns control to the rest of the Octave program.  It
@@ -520,12 +576,12 @@ Note that this function could not have been written using the
 without adding extra logic to avoid printing the message if the vector
 does contain a nonzero element.
 
-@deffn {Keyword} return
+@deftypefn {Keyword} {} return
 When Octave encounters the keyword @code{return} inside a function or
 script, it returns control to the caller immediately.  At the top level,
 the return statement is ignored.  A @code{return} statement is assumed
 at the end of every function definition.
-@end deffn
+@end deftypefn
 
 @node Default Arguments
 @section Default Arguments
@@ -550,6 +606,7 @@ value @var{val1}.
 
 As an example, the following function implements a variant of the classic
 ``Hello, World'' program.
+
 @example
 @group
 function hello (who = "World")
@@ -560,6 +617,7 @@ endfunction
 
 @noindent
 When called without an input argument the function prints the following
+
 @example
 @group
 hello ();
@@ -569,6 +627,7 @@ hello ();
 
 @noindent
 and when it's called with an input argument it prints the following
+
 @example
 @group
 hello ("Beautiful World of Free Software");
@@ -579,6 +638,7 @@ hello ("Beautiful World of Free Software");
 Sometimes it is useful to explicitly tell Octave to use the default value
 of an input argument.  This can be done writing a @samp{:} as the value
 of the input argument when calling the function.
+
 @example
 @group
 hello (:);
@@ -646,7 +706,7 @@ ignore the time stamps for all function files.  Passing
 @DOCSTRING(ignore_function_time_stamp)
 
 @menu
-* Manipulating the load path::
+* Manipulating the Load Path::
 * Subfunctions::
 * Private Functions::
 * Overloading and Autoloading::
@@ -654,8 +714,8 @@ ignore the time stamps for all function files.  Passing
 * Function Precedence::
 @end menu
 
-@node Manipulating the load path
-@subsection Manipulating the load path
+@node Manipulating the Load Path
+@subsection Manipulating the Load Path
 
 When a function is called, Octave searches a list of directories for
 a file that contains the function declaration.  This list of directories
@@ -741,7 +801,7 @@ be placed in a subdirectory, called "private", of the directory in which
 the functions needing access to this helper function are found.
 
 As a simple example, consider a function @code{func1}, that calls a helper
-function @code{func2} to do much of the work.  For example
+function @code{func2} to do much of the work.  For example:
 
 @example
 @group
@@ -760,31 +820,13 @@ then @code{func2} is only available for use of the functions, like
 @node Overloading and Autoloading
 @subsection Overloading and Autoloading
 
-The @code{dispatch} function can be used to alias one function name to
-another.  It can be used to alias all calls to a particular function name
-to another function, or the alias can be limited to only a particular
-variable type.  Consider the example
-
-@example
-@group
-function y = spsin (x)
-  printf ("Calling spsin\n");
-  fflush(stdout);
-  y = spfun ("sin", x);
-endfunction
-
-dispatch ("sin", "spsin", "sparse matrix");
-y0 = sin(eye(3));
-y1 = sin(speye(3));
-@end group
-@end example
-
-@noindent
-which aliases the user-defined function @code{spsin} to @code{sin}, but only for real sparse
-matrices.  Note that the builtin @code{sin} already correctly treats
-sparse matrices and so this example is only illustrative.
-
-@DOCSTRING(dispatch)
+Functions can be overloaded to work with different input arguments.  For
+example, the operator '+' has been overloaded in Octave to work with single,
+double, uint8, int32, and many other arguments.  The preferred way to overload
+functions is through classes and object oriented programming 
+(@pxref{Function Overloading}).  Occasionally, however, one needs to undo
+user overloading and call the default function associated with a specific
+type.  The @code{builtin} function exists for this purpose.
 
 @DOCSTRING(builtin)
 
@@ -908,7 +950,7 @@ An overloaded function of a class as in chapter
 @ref{Object Oriented Programming}.
 
 @item Legacy Dispatch
-An overloaded function as defined by @xref{doc-dispatch}.
+An overloaded function as defined by @code{dispatch}.
 
 @item Command-line Function
 A function that has been defined on the command-line.
@@ -1058,19 +1100,19 @@ the syntax
 @end example
 
 @noindent
-For example
+For example,
 
 @example
 f = @@sin;
 @end example
 
 @noindent
-Creates a function handle called @code{f} that refers to the
+creates a function handle called @code{f} that refers to the
 function @code{sin}.
 
 Function handles are used to call other functions indirectly, or to pass
 a function as an argument to another function like @code{quad} or
-@code{fsolve}.  For example
+@code{fsolve}.  For example:
 
 @example
 @group
@@ -1083,7 +1125,7 @@ quad (f, 0, pi)
 You may use @code{feval} to call a function using function handle, or
 simply write the name of the function handle followed by an argument
 list.  If there are no arguments, you must use an empty argument list
-@samp{()}.  For example
+@samp{()}.  For example:
 
 @example
 @group
@@ -1184,61 +1226,59 @@ writing @code{f(x)}.
 
 Commands are a special class of functions that only accept string
 input arguments.  A command can be called as an ordinary function, but
-it can also be called without the parentheses like the following example
-shows
+it can also be called without the parentheses.  For example,
 
 @example
 my_command hello world
 @end example
 
 @noindent
-which is the same as
+is equivalent to 
 
 @example
 my_command("hello", "world")
 @end example
 
+@noindent
 The general form of a command call is
 
 @example
-@var{name} @var{arg1} @var{arg2} @dots{}
+@var{cmdname} @var{arg1} @var{arg2} @dots{}
 @end example
 
 @noindent
 which translates directly to
 
 @example
-@var{name} ("@var{arg1}", "@var{arg2}", @dots{})
+@var{cmdname} ("@var{arg1}", "@var{arg2}", @dots{})
 @end example
 
-A function can be used as a command if it accepts string input arguments.
-To do this, the function must be marked as a command, which can be done
-with the @code{mark_as_command} command like this
+Any regular function can be used as a command if it accepts string input
+arguments.  For example:
 
 @example
-mark_as_command name
+@group
+toupper lower_case_arg
+   @result{} ans = LOWER_CASE_ARG
+@end group
 @end example
 
-@noindent
-where @code{name} is the function to be marked as a command.
-
 One difficulty of commands occurs when one of the string input arguments
-are stored in a variable.  Since Octave can't tell the difference between
-a variable name, and an ordinary string, it is not possible to pass a
+is stored in a variable.  Because Octave can't tell the difference between
+a variable name and an ordinary string, it is not possible to pass a
 variable as input to a command.  In such a situation a command must be
-called as a function.
+called as a function.  For example:
 
-@DOCSTRING(mark_as_command)
+@example
+@group
+strvar = "hello world";
+toupper strvar
+   @result{} ans = STRVAR
+toupper (strvar)
+   @result{} ans = HELLO WORLD
+@end group
+@end example
 
-@DOCSTRING(unmark_command)
-
-@DOCSTRING(iscommand)
-
-@DOCSTRING(mark_as_rawcommand)
-
-@DOCSTRING(unmark_rawcommand)
-
-@DOCSTRING(israwcommand)
 
 @node Organization of Functions
 @section Organization of Functions Distributed with Octave
@@ -1255,20 +1295,25 @@ types of functions you will find there.
 @item audio
 Functions for playing and recording sounds.
 
-@item control
-Functions for design and simulation of automatic control systems.
+@item deprecated
+Out-of-date functions which will eventually be removed from Octave.
 
 @item elfun
-Elementary functions.
+Elementary functions, principally trigonometric.
 
-@item finance
-Functions for computing interest payments, investment values, and rates
-of return.
+@item @@ftp
+Class functions for the FTP object.
 
 @item general
 Miscellaneous matrix manipulations, like @code{flipud}, @code{rot90},
 and @code{triu}, as well as other basic functions, like
 @code{ismatrix}, @code{nargchk}, etc.
+
+@item geometry
+Functions related to Delaunay triangulation.
+
+@item help
+Functions for Octave's built-in help system.
 
 @item image
 Image processing tools.  These functions require the X Window System.
@@ -1283,13 +1328,13 @@ Functions for linear algebra.
 Functions that don't really belong anywhere else.
 
 @item optimization
-Minimization of functions.
+Functions related to minimization, optimization, and root finding.
 
 @item path
 Functions to manage the directory path Octave uses to find functions.
 
 @item pkg
-Install external packages of functions in Octave.
+Package manager for installing external packages of functions in Octave.
 
 @item plot
 Functions for displaying and printing two- and three-dimensional graphs.
@@ -1307,10 +1352,11 @@ Functions for signal processing applications.
 Functions for handling sparse matrices.
 
 @item specfun
-Special functions.
+Special functions such as @code{bessel} or @code{factor}.
 
 @item special-matrix
-Functions that create special matrix forms.
+Functions that create special matrix forms such as Hilbert or Vandermonde
+matrices.
 
 @item startup
 Octave's system-wide startup file.
@@ -1322,8 +1368,8 @@ Statistical functions.
 Miscellaneous string-handling functions.
 
 @item testfun
-Perform unit tests on other functions.
+Functions for performing unit tests on other functions.
 
 @item time
-Functions related to time keeping.
+Functions related to time and date processing.
 @end table

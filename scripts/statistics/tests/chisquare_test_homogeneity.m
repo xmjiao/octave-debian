@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 1999, 2000, 2002, 2005, 2006,
-##               2007 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -44,12 +43,12 @@ function [pval, chisq, df] = chisquare_test_homogeneity (x, y, c)
   endif
 
   if (! (isvector(x) && isvector(y) && isvector(c)))
-    error ("chisquare_test_homogeneity: x, y and c must be vectors");
+    error ("chisquare_test_homogeneity: X, Y and C must be vectors");
   endif
   ## Now test c for strictly increasing entries
   df = length (c);
   if (any ((c(2 : df) - c(1 : (df - 1))) <= 0))
-    error ("chisquare_test_homogeneity: c must be increasing");
+    error ("chisquare_test_homogeneity: C must be increasing");
   endif
 
   c     = [(reshape (c, 1, df)), Inf];
@@ -60,7 +59,7 @@ function [pval, chisq, df] = chisquare_test_homogeneity (x, y, c)
   y     = reshape (y, l_y, 1);
   n_y   = sum(y * ones (1, df+1) < ones (l_y, 1) * c);
   chisq = l_x * l_y * sum ((n_x/l_x - n_y/l_y).^2 ./ (n_x + n_y));
-  pval  = 1 - chisquare_cdf (chisq, df);
+  pval  = 1 - chi2cdf (chisq, df);
 
   if (nargout == 0)
     printf("  pval: %g\n", pval);

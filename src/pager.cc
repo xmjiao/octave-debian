@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001,
-              2002, 2003, 2005, 2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -110,20 +109,20 @@ pager_event_handler (pid_t pid, int status)
   if (pid > 0)
     {
       if (WIFEXITED (status) || WIFSIGNALLED (status))
-	{
-	  // Avoid warning() since that will put us back in the pager,
-	  // which would be bad news.
+        {
+          // Avoid warning() since that will put us back in the pager,
+          // which would be bad news.
 
-	  std::cerr << "warning: connection to external pager lost (pid = "
-		    << pid << ")" << std::endl;
-	  std::cerr << "warning: flushing pending output (please wait)"
-		    << std::endl;
+          std::cerr << "warning: connection to external pager lost (pid = "
+                    << pid << ")" << std::endl;
+          std::cerr << "warning: flushing pending output (please wait)"
+                    << std::endl;
 
-	  // Request removal of this PID from the list of child
-	  // processes.
+          // Request removal of this PID from the list of child
+          // processes.
 
-	  retval = true;
-	}
+          retval = true;
+        }
     }
 
   return retval;
@@ -146,53 +145,53 @@ do_sync (const char *msg, int len, bool bypass_pager)
   if (msg && len > 0)
     {
       if (bypass_pager)
-	{
-	  std::cout.write (msg, len);
-	  std::cout.flush ();
-	}
+        {
+          std::cout.write (msg, len);
+          std::cout.flush ();
+        }
       else
-	{
-	  if (! external_pager)
-	    {
-	      std::string pgr = pager_command ();
+        {
+          if (! external_pager)
+            {
+              std::string pgr = pager_command ();
 
-	      if (! pgr.empty ())
-		{
-		  external_pager = new oprocstream (pgr.c_str ());
+              if (! pgr.empty ())
+                {
+                  external_pager = new oprocstream (pgr.c_str ());
 
-		  if (external_pager)
-		    octave_child_list::insert (external_pager->pid (),
-					       pager_event_handler);
-		}
-	    }
+                  if (external_pager)
+                    octave_child_list::insert (external_pager->pid (),
+                                               pager_event_handler);
+                }
+            }
 
-	  if (external_pager)
-	    {
-	      if (external_pager->good ())
-		{
-		  external_pager->write (msg, len);
+          if (external_pager)
+            {
+              if (external_pager->good ())
+                {
+                  external_pager->write (msg, len);
 
-		  external_pager->flush ();
+                  external_pager->flush ();
 
 #if defined (EPIPE)
-		  if (errno == EPIPE)
-		    external_pager->setstate (std::ios::failbit);
+                  if (errno == EPIPE)
+                    external_pager->setstate (std::ios::failbit);
 #endif
-		}
-	      else
-		{
-		  // FIXME -- omething is not right with the
-		  // pager.  If it died then we should receive a
-		  // signal for that.  If there is some other problem,
-		  // then what?
-		}
-	    }
-	  else
-	    {
-	      std::cout.write (msg, len);
-	      std::cout.flush ();
-	    }
-	}
+                }
+              else
+                {
+                  // FIXME -- omething is not right with the
+                  // pager.  If it died then we should receive a
+                  // signal for that.  If there is some other problem,
+                  // then what?
+                }
+            }
+          else
+            {
+              std::cout.write (msg, len);
+              std::cout.flush ();
+            }
+        }
     }
 }
 
@@ -212,18 +211,18 @@ more_than_a_screenful (const char *s, int len)
       int chars_this_line = 0;
 
       for (int i = 0; i < len; i++)
-	{
-	  if (*s++ == '\n')
-	    {
-	      count += chars_this_line / cols + 1;
-	      chars_this_line = 0;
-	    }
-	  else
-	    chars_this_line++;
-	}
+        {
+          if (*s++ == '\n')
+            {
+              count += chars_this_line / cols + 1;
+              chars_this_line = 0;
+            }
+          else
+            chars_this_line++;
+        }
 
       if (count > available_rows)
- 	return true;
+        return true;
     }
 
   return false;
@@ -242,20 +241,20 @@ octave_pager_buf::sync (void)
       int len = pptr () - buf;
 
       bool bypass_pager = (! interactive
-			   || ! Vpage_screen_output
-			   || (really_flush_to_pager
-			       && Vpage_screen_output
-			       && ! Vpage_output_immediately
-			       && ! more_than_a_screenful (buf, len)));
+                           || ! Vpage_screen_output
+                           || (really_flush_to_pager
+                               && Vpage_screen_output
+                               && ! Vpage_output_immediately
+                               && ! more_than_a_screenful (buf, len)));
 
       if (len > 0)
-	{
-	  do_sync (buf, len, bypass_pager);
+        {
+          do_sync (buf, len, bypass_pager);
 
-	  flush_current_contents_to_diary ();
+          flush_current_contents_to_diary ();
 
-	  seekoff (0, std::ios::beg);
-	}
+          seekoff (0, std::ios::beg);
+        }
     }
 
   return 0;
@@ -289,7 +288,7 @@ octave_diary_buf::sync (void)
       int len = pptr () - buf;
 
       if (len > 0)
-	external_diary_file.write (buf, len);
+        external_diary_file.write (buf, len);
     }
 
   seekoff (0, std::ios::beg);
@@ -364,10 +363,10 @@ flush_octave_stdout (void)
 {
   if (! flushing_output_to_pager)
     {
-      unwind_protect::begin_frame ("flush_octave_stdout");
+      unwind_protect frame;
 
-      unwind_protect_bool (really_flush_to_pager);
-      unwind_protect_bool (flushing_output_to_pager);
+      frame.protect_var (really_flush_to_pager);
+      frame.protect_var (flushing_output_to_pager);
 
       really_flush_to_pager = true;
       flushing_output_to_pager = true;
@@ -375,8 +374,6 @@ flush_octave_stdout (void)
       octave_stdout.flush ();
 
       clear_external_pager ();
-
-      unwind_protect::run_frame ("flush_octave_stdout");
     }
 }
 
@@ -410,7 +407,7 @@ open_diary_file (void)
 
   // If there is pending output in the pager buf, it should not go
   // into the diary file.
- 
+
   octave_stdout.set_diary_skip ();
 
   external_diary_file.open (diary_file.c_str (), std::ios::app);
@@ -421,7 +418,7 @@ open_diary_file (void)
 
 DEFUN (diary, args, ,
   "-*- texinfo -*-\n\
-@deffn {Command} diary options\n\
+@deftypefn {Command} {} diary options\n\
 Record a list of all commands @emph{and} the output they produce, mixed\n\
 together just as you see them on your terminal.  Valid options are:\n\
 \n\
@@ -438,7 +435,7 @@ Record your session in the file named @var{file}.\n\
 @end table\n\
 \n\
 With no arguments, @code{diary} toggles the current diary state.\n\
-@end deffn")
+@end deftypefn")
 {
   octave_value_list retval;
 
@@ -461,24 +458,24 @@ With no arguments, @code{diary} toggles the current diary state.\n\
 
     case 2:
       {
-	std::string arg = argv[1];
+        std::string arg = argv[1];
 
-	if (arg == "on")
-	  {
-	    write_to_diary_file = true;
-	    open_diary_file ();
-	  }	
-	else if (arg == "off")
-	  {
-	    close_diary_file ();
-	    write_to_diary_file = false;
-	  }
-	else
-	  {
-	    diary_file = arg;
-	    write_to_diary_file = true;
-	    open_diary_file ();
-	  }
+        if (arg == "on")
+          {
+            write_to_diary_file = true;
+            open_diary_file ();
+          }
+        else if (arg == "off")
+          {
+            close_diary_file ();
+            write_to_diary_file = false;
+          }
+        else
+          {
+            diary_file = arg;
+            write_to_diary_file = true;
+            open_diary_file ();
+          }
       }
       break;
 
@@ -492,13 +489,13 @@ With no arguments, @code{diary} toggles the current diary state.\n\
 
 DEFUN (more, args, ,
   "-*- texinfo -*-\n\
-@deffn {Command} more\n\
-@deffnx {Command} more on\n\
-@deffnx {Command} more off\n\
+@deftypefn  {Command} {} more\n\
+@deftypefnx {Command} {} more on\n\
+@deftypefnx {Command} {} more off\n\
 Turn output pagination on or off.  Without an argument, @code{more}\n\
 toggles the current state.\n\
 The current state can be determined via @code{page_screen_output}.\n\
-@end deffn")
+@end deftypefn")
 {
   octave_value_list retval;
 
@@ -514,11 +511,11 @@ The current state can be determined via @code{page_screen_output}.\n\
       std::string arg = argv[1];
 
       if (arg == "on")
-	Vpage_screen_output = true;
+        Vpage_screen_output = true;
       else if (arg == "off")
-	Vpage_screen_output = false;
+        Vpage_screen_output = false;
       else
-	error ("more: unrecognized argument `%s'", arg.c_str ());
+        error ("more: unrecognized argument `%s'", arg.c_str ());
     }
   else if (argc == 1)
     Vpage_screen_output = ! Vpage_screen_output;
@@ -546,7 +543,7 @@ terminal window in characters (rows and columns).\n\
 
 DEFUN (page_output_immediately, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {@var{val} =} page_output_immediately ()\n\
+@deftypefn  {Built-in Function} {@var{val} =} page_output_immediately ()\n\
 @deftypefnx {Built-in Function} {@var{val} =} page_output_immediately (@var{new_val})\n\
 Query or set the internal variable that controls whether Octave sends\n\
 output to the pager as soon as it is available.  Otherwise, Octave\n\
@@ -559,7 +556,7 @@ flush it to the pager.\n\
 
 DEFUN (page_screen_output, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {@var{val} =} page_screen_output ()\n\
+@deftypefn  {Built-in Function} {@var{val} =} page_screen_output ()\n\
 @deftypefnx {Built-in Function} {@var{old_val} =} page_screen_output (@var{new_val})\n\
 Query or set the internal variable that controls whether output intended\n\
 for the terminal window that is longer than one page is sent through a\n\
@@ -573,7 +570,7 @@ backward on the output.\n\
 
 DEFUN (PAGER, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {@var{val} =} PAGER ()\n\
+@deftypefn  {Built-in Function} {@var{val} =} PAGER ()\n\
 @deftypefnx {Built-in Function} {@var{old_val} =} PAGER (@var{new_val})\n\
 Query or set the internal variable that specifies the program to use\n\
 to display terminal output on your system.  The default value is\n\
@@ -588,7 +585,7 @@ normally @code{\"less\"}, @code{\"more\"}, or\n\
 
 DEFUN (PAGER_FLAGS, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {@var{val} =} PAGER_FLAGS ()\n\
+@deftypefn  {Built-in Function} {@var{val} =} PAGER_FLAGS ()\n\
 @deftypefnx {Built-in Function} {@var{old_val} =} PAGER_FLAGS (@var{new_val})\n\
 Query or set the internal variable that specifies the options to pass\n\
 to the pager.\n\
@@ -597,9 +594,3 @@ to the pager.\n\
 {
   return SET_NONEMPTY_INTERNAL_STRING_VARIABLE (PAGER_FLAGS);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,5 +1,4 @@
-## Copyright (C) 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2002,
-##               2004, 2005, 2006, 2007 John W. Eaton
+## Copyright (C) 1993-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -30,7 +29,7 @@
 
 ## Author: jwe
 
-function num = menu (t, varargin)
+function num = menu (title, varargin)
 
   if (nargin < 2)
     print_usage ();
@@ -49,8 +48,8 @@ function num = menu (t, varargin)
 
     page_screen_output (0);
 
-    if (! isempty (t))
-      disp (t);
+    if (! isempty (title))
+      disp (title);
       printf ("\n");
     endif
 
@@ -63,7 +62,7 @@ function num = menu (t, varargin)
       endfor
       printf ("\n");
       s = input ("pick a number, any number: ", "s");
-      eval (sprintf ("num = %s;", s), "num = [];");
+      num = sscanf (s, "%d");
       if (! isscalar (num) || num < 1 || num > nopt)
         printf ("\nerror: input invalid or out of range\n\n");
       else

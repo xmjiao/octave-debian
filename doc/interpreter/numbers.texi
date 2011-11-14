@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.
 
-@c Copyright (C) 1996, 1997, 2007, 2008, 2009 John W. Eaton
+@c Copyright (C) 1996-2011 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -85,7 +85,7 @@ parse error:
 You may also use @samp{j}, @samp{I}, or @samp{J} in place of the
 @samp{i} above.  All four forms are equivalent.
 
-@c ov-re-mat.cc
+@c double src/ov-re-mat.cc
 @anchor{doc-double}
 @deftypefn {Built-in Function} {} double (@var{x})
 Convert @var{x} to double precision type.
@@ -93,7 +93,7 @@ Convert @var{x} to double precision type.
 @end deftypefn
 
 
-@c data.cc
+@c complex src/data.cc
 @anchor{doc-complex}
 @deftypefn  {Built-in Function} {} complex (@var{x})
 @deftypefnx {Built-in Function} {} complex (@var{re}, @var{im})
@@ -104,9 +104,11 @@ often be more convenient than expressions such as @code{a + i*b}.
 For example:
 
 @example
+@group
 complex ([1, 2], [3, 4])
 @result{}
    1 + 3i   2 + 4i
+@end group
 @end example
 @seealso{@ref{doc-real,,real}, @ref{doc-imag,,imag}, @ref{doc-iscomplex,,iscomplex}}
 @end deftypefn
@@ -158,6 +160,7 @@ $$ a = \left[ \matrix{ 1 & 2 \cr 3 & 4 } \right] $$
 
 @end group
 @end example
+
 @end ifnottex
 
 Elements of a matrix may be arbitrary expressions, provided that the
@@ -292,6 +295,23 @@ because not doing so would cause trouble when parsing the valid expression
 For clarity, it is probably best to always use commas and semicolons to
 separate matrix elements and rows.
 
+The maximum number of elements in a matrix is fixed when Octave is compiled.
+The allowable number can be queried with the function @code{sizemax}.  Note
+that other factors, such as the amount of memory available on your machine,
+may limit the maximum size of matrices to something smaller.
+
+@c sizemax src/bitfcns.cc
+@anchor{doc-sizemax}
+@deftypefn {Built-in Function} {} sizemax ()
+Return the largest value allowed for the size of an array.
+If Octave is compiled with 64-bit indexing, the result is of class int64,
+otherwise it is of class int32.  The maximum array size is slightly
+smaller than the maximum value allowable for the relevant class as reported
+by @code{intmax}.
+@seealso{@ref{doc-intmax,,intmax}}
+@end deftypefn
+
+
 When you type a matrix or the name of a variable whose value is a
 matrix, Octave responds by printing the matrix in with neatly aligned
 rows and columns.  If the rows of the matrix are too large to fit on the
@@ -299,23 +319,23 @@ screen, Octave splits the matrix and displays a header before each
 section to indicate which columns are being displayed.  You can use the
 following variables to control the format of the output.
 
-@c pr-output.cc
+@c output_max_field_width src/pr-output.cc
 @anchor{doc-output_max_field_width}
-@deftypefn {Built-in Function} {@var{val} =} output_max_field_width ()
+@deftypefn  {Built-in Function} {@var{val} =} output_max_field_width ()
 @deftypefnx {Built-in Function} {@var{old_val} =} output_max_field_width (@var{new_val})
 Query or set the internal variable that specifies the maximum width
 of a numeric output field.
-@seealso{@ref{doc-format,,format}, @ref{doc-output_precision,,output_precision}}
+@seealso{@ref{doc-format,,format}, @ref{doc-fixed_point_format,,fixed_point_format}, @ref{doc-output_precision,,output_precision}}
 @end deftypefn
 
 
-@c pr-output.cc
+@c output_precision src/pr-output.cc
 @anchor{doc-output_precision}
-@deftypefn {Built-in Function} {@var{val} =} output_precision ()
+@deftypefn  {Built-in Function} {@var{val} =} output_precision ()
 @deftypefnx {Built-in Function} {@var{old_val} =} output_precision (@var{new_val})
 Query or set the internal variable that specifies the minimum number of
 significant figures to display for numeric output.
-@seealso{@ref{doc-format,,format}, @ref{doc-output_max_field_width,,output_max_field_width}}
+@seealso{@ref{doc-format,,format}, @ref{doc-fixed_point_format,,fixed_point_format}, @ref{doc-output_max_field_width,,output_max_field_width}}
 @end deftypefn
 
 
@@ -324,9 +344,9 @@ different values of @code{output_precision} and
 @code{output_max_field_width}.  Reasonable combinations can be set using
 the @code{format} function.  @xref{Basic Input and Output}.
 
-@c pr-output.cc
+@c split_long_rows src/pr-output.cc
 @anchor{doc-split_long_rows}
-@deftypefn {Built-in Function} {@var{val} =} split_long_rows ()
+@deftypefn  {Built-in Function} {@var{val} =} split_long_rows ()
 @deftypefnx {Built-in Function} {@var{old_val} =} split_long_rows (@var{new_val})
 Query or set the internal variable that controls whether rows of a matrix
 may be split when displayed to a terminal window.  If the rows are split,
@@ -351,6 +371,7 @@ ans =
   0.44672  0.94303  0.56564  0.82150
 @end group
 @end example
+@seealso{@ref{doc-format,,format}}
 @end deftypefn
 
 
@@ -362,14 +383,14 @@ the built-in variable @code{fixed_point_format} to a nonzero value.  But
 doing so is not recommended, because it can produce output that can
 easily be misinterpreted.
 
-@c pr-output.cc
+@c fixed_point_format src/pr-output.cc
 @anchor{doc-fixed_point_format}
-@deftypefn {Built-in Function} {@var{val} =} fixed_point_format ()
+@deftypefn  {Built-in Function} {@var{val} =} fixed_point_format ()
 @deftypefnx {Built-in Function} {@var{old_val} =} fixed_point_format (@var{new_val})
 Query or set the internal variable that controls whether Octave will
 use a scaled format to print matrix values such that the largest
 element may be written with a single leading digit with the scaling
-factor is printed on the first line of output.  For example,
+factor is printed on the first line of output.  For example:
 
 @example
 @group
@@ -390,6 +411,7 @@ ans =
 Notice that first value appears to be zero when it is actually 1.  For
 this reason, you should be careful when setting
 @code{fixed_point_format} to a nonzero value.
+@seealso{@ref{doc-format,,format}, @ref{doc-output_max_field_width,,output_max_field_width}, @ref{doc-output_precision,,output_precision}}
 @end deftypefn
 
 
@@ -401,7 +423,7 @@ this reason, you should be careful when setting
 @subsection Empty Matrices
 
 A matrix may have one or both dimensions zero, and operations on empty
-matrices are handled as described by Carl de Boor in @cite{An Empty
+matrices are handled as described by Carl @nospell{de} Boor in @cite{An Empty
 Exercise}, SIGNUM, Volume 25, pages 2-6, 1990 and C. N. Nett and W. M.
 Haddad, in @cite{A System-Theoretic Appropriate Realization of the Empty
 Matrix Concept}, IEEE Transactions on Automatic Control, Volume 38,
@@ -438,15 +460,16 @@ s * [](mxn) = [](mxn) * s = [](mxn)
     [](mx0) * [](0xn) =  0(mxn)
 @end group
 @end example
+
 @end ifnottex
 
 By default, dimensions of the empty matrix are printed along with the
 empty matrix symbol, @samp{[]}.  The built-in variable
 @code{print_empty_dimensions} controls this behavior.
 
-@c pr-output.cc
+@c print_empty_dimensions src/pr-output.cc
 @anchor{doc-print_empty_dimensions}
-@deftypefn {Built-in Function} {@var{val} =} print_empty_dimensions ()
+@deftypefn  {Built-in Function} {@var{val} =} print_empty_dimensions ()
 @deftypefnx {Built-in Function} {@var{old_val} =} print_empty_dimensions (@var{new_val})
 Query or set the internal variable that controls whether the
 dimensions of empty matrices are printed along with the empty matrix
@@ -462,6 +485,7 @@ will print
 @example
 ans = [](3x0)
 @end example
+@seealso{@ref{doc-format,,format}}
 @end deftypefn
 
 
@@ -478,7 +502,7 @@ replaces the list with a single matrix constant.
 @cindex range expressions
 @cindex expression, range
 
-@opindex colon
+@opindex :
 
 A @dfn{range} is a convenient way to write a row vector with evenly
 spaced elements.  A range expression is defined by the value of the first
@@ -508,6 +532,26 @@ convert range constants to vectors unless it is necessary to do so.
 This allows you to write a constant like @samp{1 : 10000} without using
 80,000 bytes of storage on a typical 32-bit workstation.
 
+A common example of when it does become necessary to convert ranges into
+vectors occurs when they appear within a vector (i.e., inside square
+brackets).  For instance, whereas
+
+@example
+x = 0 : 0.1 : 1;
+@end example
+
+@noindent
+defines @var{x} to be a variable of type @code{range} and occupies 24
+bytes of memory, the expression
+
+@example
+y = [ 0 : 0.1 : 1];
+@end example
+
+@noindent
+defines @var{y} to be of type @code{matrix} and occupies 88 bytes of
+memory.
+
 Note that the upper (or lower, if the increment is negative) bound on
 the range is not always included in the set of values, and that ranges
 defined by floating point values can produce surprising results because
@@ -525,6 +569,7 @@ that it is safe to do so.  For instance, doing
 a = 2*(1:1e7) - 1;
 @end example
 
+@noindent
 will produce the same result as @samp{1:2:2e7-1}, but without ever forming a
 vector with ten million elements.
 
@@ -533,7 +578,8 @@ allowed, because a division by zero would occur in determining the number of
 range elements.  However, ranges with zero increment (i.e., all elements equal)
 are useful, especially in indexing, and Octave allows them to be constructed
 using the built-in function @dfn{ones}.  Note that because a range must be a row
-vector, @samp{ones (1, 10)} produces a range, while @samp{ones (10, 1)} does not.
+vector, @samp{ones (1, 10)} produces a range, while @samp{ones (10, 1)} does
+not.
 
 When Octave parses a range expression, it examines the elements of the
 expression to determine whether they are all constants.  If they are, it
@@ -547,7 +593,7 @@ functions in Octave accept single precision values and return single
 precision answers.  A single precision variable is created with the
 @code{single} function.
 
-@c ov-flt-re-mat.cc
+@c single src/ov-flt-re-mat.cc
 @anchor{doc-single}
 @deftypefn {Built-in Function} {} single (@var{x})
 Convert @var{x} to single precision type.
@@ -555,7 +601,7 @@ Convert @var{x} to single precision type.
 @end deftypefn
 
 
-for example
+for example:
 
 @example
 @group
@@ -616,73 +662,73 @@ integer = int32 (float)
 As can be seen, floating point values are rounded to the nearest integer
 when converted.
 
-@c data.cc
+@c isinteger src/data.cc
 @anchor{doc-isinteger}
 @deftypefn {Built-in Function} {} isinteger (@var{x})
 Return true if @var{x} is an integer object (int8, uint8, int16, etc.).
-Note that @code{isinteger (14)} is false because numeric constants in
+Note that @w{@code{isinteger (14)}} is false because numeric constants in
 Octave are double precision floating point values.
-@seealso{@ref{doc-isreal,,isreal}, @ref{doc-isnumeric,,isnumeric}, @ref{doc-class,,class}, @ref{doc-isa,,isa}}
+@seealso{@ref{doc-isfloat,,isfloat}, @ref{doc-ischar,,ischar}, @ref{doc-islogical,,islogical}, @ref{doc-isnumeric,,isnumeric}, @ref{doc-isa,,isa}}
 @end deftypefn
 
 
-@c ov-int8.cc
+@c int8 src/ov-int8.cc
 @anchor{doc-int8}
 @deftypefn {Built-in Function} {} int8 (@var{x})
 Convert @var{x} to 8-bit integer type.
 @end deftypefn
 
 
-@c ov-uint8.cc
+@c uint8 src/ov-uint8.cc
 @anchor{doc-uint8}
 @deftypefn {Built-in Function} {} uint8 (@var{x})
 Convert @var{x} to unsigned 8-bit integer type.
 @end deftypefn
 
 
-@c ov-int16.cc
+@c int16 src/ov-int16.cc
 @anchor{doc-int16}
 @deftypefn {Built-in Function} {} int16 (@var{x})
 Convert @var{x} to 16-bit integer type.
 @end deftypefn
 
 
-@c ov-uint16.cc
+@c uint16 src/ov-uint16.cc
 @anchor{doc-uint16}
 @deftypefn {Built-in Function} {} uint16 (@var{x})
 Convert @var{x} to unsigned 16-bit integer type.
 @end deftypefn
 
 
-@c ov-int32.cc
+@c int32 src/ov-int32.cc
 @anchor{doc-int32}
 @deftypefn {Built-in Function} {} int32 (@var{x})
 Convert @var{x} to 32-bit integer type.
 @end deftypefn
 
 
-@c ov-uint32.cc
+@c uint32 src/ov-uint32.cc
 @anchor{doc-uint32}
 @deftypefn {Built-in Function} {} uint32 (@var{x})
 Convert @var{x} to unsigned 32-bit integer type.
 @end deftypefn
 
 
-@c ov-int64.cc
+@c int64 src/ov-int64.cc
 @anchor{doc-int64}
 @deftypefn {Built-in Function} {} int64 (@var{x})
 Convert @var{x} to 64-bit integer type.
 @end deftypefn
 
 
-@c ov-uint64.cc
+@c uint64 src/ov-uint64.cc
 @anchor{doc-uint64}
 @deftypefn {Built-in Function} {} uint64 (@var{x})
 Convert @var{x} to unsigned 64-bit integer type.
 @end deftypefn
 
 
-@c bitfcns.cc
+@c intmax src/bitfcns.cc
 @anchor{doc-intmax}
 @deftypefn {Built-in Function} {} intmax (@var{type})
 Return the largest integer that can be represented in an integer type.
@@ -691,18 +737,25 @@ The variable @var{type} can be
 @table @code
 @item int8
 signed 8-bit integer.
+
 @item int16
 signed 16-bit integer.
+
 @item int32
 signed 32-bit integer.
+
 @item int64
 signed 64-bit integer.
+
 @item uint8
 unsigned 8-bit integer.
+
 @item uint16
 unsigned 16-bit integer.
+
 @item uint32
 unsigned 32-bit integer.
+
 @item uint64
 unsigned 64-bit integer.
 @end table
@@ -712,7 +765,7 @@ The default for @var{type} is @code{uint32}.
 @end deftypefn
 
 
-@c bitfcns.cc
+@c intmin src/bitfcns.cc
 @anchor{doc-intmin}
 @deftypefn {Built-in Function} {} intmin (@var{type})
 Return the smallest integer that can be represented in an integer type.
@@ -721,78 +774,31 @@ The variable @var{type} can be
 @table @code
 @item int8
 signed 8-bit integer.
+
 @item int16
 signed 16-bit integer.
+
 @item int32
 signed 32-bit integer.
+
 @item int64
 signed 64-bit integer.
+
 @item uint8
 unsigned 8-bit integer.
+
 @item uint16
 unsigned 16-bit integer.
+
 @item uint32
 unsigned 32-bit integer.
+
 @item uint64
 unsigned 64-bit integer.
 @end table
 
 The default for @var{type} is @code{uint32}.
 @seealso{@ref{doc-intmax,,intmax}, @ref{doc-bitmax,,bitmax}}
-@end deftypefn
-
-
-@c ./miscellaneous/intwarning.m
-@anchor{doc-intwarning}
-@deftypefn {Function File} {} intwarning (@var{action})
-@deftypefnx {Function File} {} intwarning (@var{s})
-@deftypefnx {Function File} {@var{s} =} intwarning (@dots{})
-Control the state of the warning for integer conversions and math
-operations.
-
-@table @asis
-@item "query"
-The state of the Octave integer conversion and math warnings is
-queried.  If there is no output argument, then the state is printed.
-Otherwise it is returned in a structure with the fields "identifier"
-and "state".
-
-@c Set example in small font to prevent overfull line
-@smallexample
-@group
-intwarning ("query")
-The state of warning "Octave:int-convert-nan" is "off"
-The state of warning "Octave:int-convert-non-int-val" is "off"
-The state of warning "Octave:int-convert-overflow" is "off"
-The state of warning "Octave:int-math-overflow" is "off"
-@end group
-@end smallexample 
-
-@item "on"
-Turn integer conversion and math warnings "on".  If there is no output
-argument, then nothing is printed.  Otherwise the original state of
-the state of the integer conversion and math warnings is returned in
-a structure array.
-
-@item "off"
-Turn integer conversion and math warnings "on".  If there is no output
-argument, then nothing is printed.  Otherwise the original state of
-the state of the integer conversion and math warnings is returned in
-a structure array.
-@end table
-
-The original state of the integer warnings can be restored by passing
-the structure array returned by @code{intwarning} to a later call to
-@code{intwarning}.  For example
-
-@example
-@group
-s = intwarning ("off");
-@dots{}
-intwarning (s);
-@end group
-@end example
-@seealso{@ref{doc-warning,,warning}}
 @end deftypefn
 
 
@@ -809,13 +815,6 @@ on integers.  The operators @code{+}, @code{-}, @code{.*}, and @code{./}
 work on integers of the same type.  So, it is possible to add two 32 bit
 integers, but not to add a 32 bit integer and a 16 bit integer.
 
-The arithmetic operations on integers are performed by casting the
-integer values to double precision values, performing the operation, and
-then re-casting the values back to the original integer type.  As the
-double precision type of Octave is only capable of representing integers
-with up to 53 bits of precision, it is not possible to perform
-arithmetic with 64 bit integer types.
-
 When doing integer arithmetic one should consider the possibility of
 underflow and overflow.  This happens when the result of the computation
 can't be represented using the chosen integer type.  As an example it is
@@ -827,36 +826,40 @@ result of @math{10 - 20} when using unsigned integers is zero.
 When doing integer division Octave will round the result to the nearest
 integer.  This is different from most programming languages, where the
 result is often floored to the nearest integer.  So, the result of
-@code{int32(5)./int32(8)} is @code{1}.
+@code{int32(5) ./ int32(8)} is @code{1}.
 
-@c ./general/idivide.m
+@c idivide scripts/general/idivide.m
 @anchor{doc-idivide}
 @deftypefn {Function File} {} idivide (@var{x}, @var{y}, @var{op})
-Integer division with different round rules.  The standard behavior of
-the an integer division such as @code{@var{a} ./ @var{b}} is to round
-the result to the nearest integer.  This is not always the desired
-behavior and @code{idivide} permits integer element-by-element
+Integer division with different rounding rules.
+
+The standard behavior of integer division such as @code{@var{a} ./ @var{b}}
+is to round the result to the nearest integer.  This is not always the
+desired behavior and @code{idivide} permits integer element-by-element
 division to be performed with different treatment for the fractional
 part of the division as determined by the @var{op} flag.  @var{op} is
-a string with one of the values: 
+a string with one of the values:
 
 @table @asis
 @item "fix"
 Calculate @code{@var{a} ./ @var{b}} with the fractional part rounded
 towards zero.
+
 @item "round"
 Calculate @code{@var{a} ./ @var{b}} with the fractional part rounded
 towards the nearest integer.
+
 @item "floor"
 Calculate @code{@var{a} ./ @var{b}} with the fractional part rounded
-downwards.
+towards negative infinity.
+
 @item "ceil"
 Calculate @code{@var{a} ./ @var{b}} with the fractional part rounded
-upwards.
+towards positive infinity.
 @end table
 
 @noindent
-If @var{op} is not given it is assumed that it is @code{"fix"}.
+If @var{op} is not given it defaults to @code{"fix"}.
 An example demonstrating these rounding rules is
 
 @example
@@ -865,10 +868,10 @@ idivide (int8 ([-3, 3]), int8 (4), "fix")
 @result{} int8 ([0, 0])
 idivide (int8 ([-3, 3]), int8 (4), "round")
 @result{} int8 ([-1, 1])
-idivide (int8 ([-3, 3]), int8 (4), "ceil")
-@result{} int8 ([0, 1])
 idivide (int8 ([-3, 3]), int8 (4), "floor")
 @result{} int8 ([-1, 0])
+idivide (int8 ([-3, 3]), int8 (4), "ceil")
+@result{} int8 ([0, 1])
 @end group
 @end example
 
@@ -883,12 +886,12 @@ Octave provides a number of functions for the manipulation of numeric
 values on a bit by bit basis.  The basic functions to set and obtain the
 values of individual bits are @code{bitset} and @code{bitget}.
 
-@c ./general/bitset.m
+@c bitset scripts/general/bitset.m
 @anchor{doc-bitset}
-@deftypefn {Function File} {@var{x} =} bitset (@var{a}, @var{n})
-@deftypefnx {Function File} {@var{x} =} bitset (@var{a}, @var{n}, @var{v})
-Set or reset bit(s) @var{n} of unsigned integers in @var{a}.
-@var{v} = 0 resets and @var{v} = 1 sets the bits.
+@deftypefn  {Function File} {@var{C} =} bitset (@var{A}, @var{n})
+@deftypefnx {Function File} {@var{C} =} bitset (@var{A}, @var{n}, @var{val})
+Set or reset bit(s) @var{n} of unsigned integers in @var{A}.
+@var{val} = 0 resets and @var{val} = 1 sets the bits.
 The lowest significant bit is: @var{n} = 1
 
 @example
@@ -901,16 +904,16 @@ dec2bin (bitset (10, 1))
 @end deftypefn
 
 
-@c ./general/bitget.m
+@c bitget scripts/general/bitget.m
 @anchor{doc-bitget}
-@deftypefn {Function File} {@var{X} =} bitget (@var{a},@var{n})
-Return the status of bit(s) @var{n} of unsigned integers in @var{a}
+@deftypefn {Function File} {@var{c} =} bitget (@var{A}, @var{n})
+Return the status of bit(s) @var{n} of unsigned integers in @var{A}
 the lowest significant bit is @var{n} = 1.
 
 @example
 @group
 bitget (100, 8:-1:1)
-@result{} 0  1  1  0  0  1  0  0 
+@result{} 0  1  1  0  0  1  0  0
 @end group
 @end example
 @seealso{@ref{doc-bitand,,bitand}, @ref{doc-bitor,,bitor}, @ref{doc-bitxor,,bitxor}, @ref{doc-bitset,,bitset}, @ref{doc-bitcmp,,bitcmp}, @ref{doc-bitshift,,bitshift}, @ref{doc-bitmax,,bitmax}}
@@ -929,6 +932,7 @@ duplicated.  Therefore
 bitget (100, 8:-1:1)
 @end example
 
+@noindent
 is the same as
 
 @example
@@ -945,11 +949,14 @@ As the maximum value that can be represented by a number is important
 for bit manipulation, particularly when forming masks, Octave supplies
 the function @code{bitmax}.
 
-@c bitfcns.cc
+@c bitmax src/bitfcns.cc
 @anchor{doc-bitmax}
-@deftypefn {Built-in Function} {} bitmax ()
-Return the largest integer that can be represented as a floating point
-value.  On IEEE-754 compatible systems, @code{bitmax} is @code{2^53 - 1}.
+@deftypefn  {Built-in Function} {} bitmax ()
+@deftypefnx {Built-in Function} {} bitmax ("double")
+@deftypefnx {Built-in Function} {} bitmax ("single")
+Return the largest integer that can be represented within a floating point
+value.  The default class is "double", but "single" is a valid option.
+On IEEE-754 compatible systems, @code{bitmax} is @w{@math{2^{53} - 1}}.
 @end deftypefn
 
 
@@ -959,7 +966,7 @@ previously discussed.
 Octave also includes the basic bitwise 'and', 'or' and 'exclusive or'
 operators.
 
-@c bitfcns.cc
+@c bitand src/bitfcns.cc
 @anchor{doc-bitand}
 @deftypefn {Built-in Function} {} bitand (@var{x}, @var{y})
 Return the bitwise AND of non-negative integers.
@@ -968,7 +975,7 @@ Return the bitwise AND of non-negative integers.
 @end deftypefn
 
 
-@c bitfcns.cc
+@c bitor src/bitfcns.cc
 @anchor{doc-bitor}
 @deftypefn {Built-in Function} {} bitor (@var{x}, @var{y})
 Return the bitwise OR of non-negative integers.
@@ -977,7 +984,7 @@ Return the bitwise OR of non-negative integers.
 @end deftypefn
 
 
-@c bitfcns.cc
+@c bitxor src/bitfcns.cc
 @anchor{doc-bitxor}
 @deftypefn {Built-in Function} {} bitxor (@var{x}, @var{y})
 Return the bitwise XOR of non-negative integers.
@@ -991,10 +998,10 @@ negation of each of the bits of the value.  For this to make sense, the
 mask against which the value is negated must be defined.  Octave's
 bitwise 'not' operator is @code{bitcmp}.
 
-@c ./general/bitcmp.m
+@c bitcmp scripts/general/bitcmp.m
 @anchor{doc-bitcmp}
-@deftypefn {Function File} {} bitcmp (@var{a}, @var{k})
-Return the @var{k}-bit complement of integers in @var{a}.  If
+@deftypefn {Function File} {} bitcmp (@var{A}, @var{k})
+Return the @var{k}-bit complement of integers in @var{A}.  If
 @var{k} is omitted @code{k = log2 (bitmax) + 1} is assumed.
 
 @example
@@ -1013,9 +1020,9 @@ dec2bin(bitcmp(11, 6))
 
 Octave also includes the ability to left-shift and right-shift values bitwise.
 
-@c bitfcns.cc
+@c bitshift src/bitfcns.cc
 @anchor{doc-bitshift}
-@deftypefn {Built-in Function} {} bitshift (@var{a}, @var{k})
+@deftypefn  {Built-in Function} {} bitshift (@var{a}, @var{k})
 @deftypefnx {Built-in Function} {} bitshift (@var{a}, @var{k}, @var{n})
 Return a @var{k} bit shift of @var{n}-digit unsigned
 integers in @var{a}.  A positive @var{k} leads to a left shift.
@@ -1036,8 +1043,8 @@ bitshift (eye (3), 1)
 bitshift (10, [-2, -1, 0, 1, 2])
 @result{} 2   5  10  20  40
 @c FIXME -- restore this example when third arg is allowed to be an array.
-@c 
-@c 
+@c
+@c
 @c bitshift ([1, 10], 2, [3,4])
 @c @result{} 4  8
 @end group
@@ -1048,7 +1055,7 @@ bitshift (10, [-2, -1, 0, 1, 2])
 
 Bits that are shifted out of either end of the value are lost.  Octave
 also uses arithmetic shifts, where the sign bit of the value is kept
-during a right shift.  For example
+during a right shift.  For example:
 
 @example
 @group
@@ -1096,54 +1103,52 @@ data(idx)
 
 @noindent
 Instead of creating the @code{idx} array it is possible to replace
-@code{data(idx)} with @code{data( data <= 2 )} in the above code.
+@code{data(idx)} with @w{@code{data( data <= 2 )}} in the above code.
 
 Logical values can also be constructed by
 casting numeric objects to logical values, or by using the @code{true}
 or @code{false} functions.
 
-@c ./general/logical.m
+@c logical src/ov-bool-mat.cc
 @anchor{doc-logical}
-@deftypefn {Function File} {} logical (@var{arg})
-Convert @var{arg} to a logical value.  For example,
-
-@example
-logical ([-1, 0, 1])
-@end example
-
-@noindent
-is equivalent to
-
-@example
-[-1, 0, 1] != 0
-@end example
+@deftypefn {Built-in Function} {} logical (@var{x})
+Convert @var{x} to logical type.
+@seealso{@ref{doc-double,,double}, @ref{doc-single,,single}, @ref{doc-char,,char}}
 @end deftypefn
 
 
-@c data.cc
+@c true src/data.cc
 @anchor{doc-true}
-@deftypefn {Built-in Function} {} true (@var{x})
+@deftypefn  {Built-in Function} {} true (@var{x})
 @deftypefnx {Built-in Function} {} true (@var{n}, @var{m})
 @deftypefnx {Built-in Function} {} true (@var{n}, @var{m}, @var{k}, @dots{})
 Return a matrix or N-dimensional array whose elements are all logical 1.
-The arguments are handled the same as the arguments for @code{eye}.
+If invoked with a single scalar integer argument, return a square
+matrix of the specified size.  If invoked with two or more scalar
+integer arguments, or a vector of integer values, return an array with
+given dimensions.
+@seealso{@ref{doc-false,,false}}
 @end deftypefn
 
 
-@c data.cc
+@c false src/data.cc
 @anchor{doc-false}
-@deftypefn {Built-in Function} {} false (@var{x})
+@deftypefn  {Built-in Function} {} false (@var{x})
 @deftypefnx {Built-in Function} {} false (@var{n}, @var{m})
 @deftypefnx {Built-in Function} {} false (@var{n}, @var{m}, @var{k}, @dots{})
 Return a matrix or N-dimensional array whose elements are all logical 0.
-The arguments are handled the same as the arguments for @code{eye}.
+If invoked with a single scalar integer argument, return a square
+matrix of the specified size.  If invoked with two or more scalar
+integer arguments, or a vector of integer values, return an array with
+given dimensions.
+@seealso{@ref{doc-true,,true}}
 @end deftypefn
 
 
 @node Promotion and Demotion of Data Types
 @section Promotion and Demotion of Data Types
 
-Many operators and functions can work with mixed data types.  For example
+Many operators and functions can work with mixed data types.  For example,
 
 @example
 @group
@@ -1184,7 +1189,7 @@ returns a single precision value.  The mixed operations that are valid
 and their returned data types are
 
 @multitable @columnfractions .2 .3 .3 .2
-@item @tab Mixed Operation @tab Result @tab 
+@headitem @tab Mixed Operation @tab Result @tab 
 @item @tab double OP single @tab single @tab
 @item @tab double OP integer @tab integer @tab
 @item @tab double OP char @tab double @tab
@@ -1207,7 +1212,7 @@ min (single (1), 0)
 where the returned value is single precision.
 
 In the case of mixed type indexed assignments, the type is not
-changed.  For example
+changed.  For example,
 
 @example
 @group
@@ -1246,112 +1251,162 @@ endfunction
 The following functions are available for determining the type of a
 variable.
 
-@c data.cc
+@c isnumeric src/data.cc
 @anchor{doc-isnumeric}
 @deftypefn {Built-in Function} {} isnumeric (@var{x})
-Return nonzero if @var{x} is a numeric object.
+Return true if @var{x} is a numeric object, i.e., an integer, real, or
+complex array.  Logical and character arrays are not considered to be
+numeric.
+@seealso{@ref{doc-isinteger,,isinteger}, @ref{doc-isfloat,,isfloat}, @ref{doc-isreal,,isreal}, @ref{doc-iscomplex,,iscomplex}, @ref{doc-islogical,,islogical}, @ref{doc-ischar,,ischar}, @ref{doc-iscell,,iscell}, @ref{doc-isstruct,,isstruct}}
 @end deftypefn
 
 
-@c data.cc
-@anchor{doc-isreal}
-@deftypefn {Built-in Function} {} isreal (@var{x})
-Return true if @var{x} is a real-valued numeric object.
-@end deftypefn
-
-
-@c data.cc
+@c isfloat src/data.cc
 @anchor{doc-isfloat}
 @deftypefn {Built-in Function} {} isfloat (@var{x})
 Return true if @var{x} is a floating-point numeric object.
+Objects of class double or single are floating-point objects.
+@seealso{@ref{doc-isinteger,,isinteger}, @ref{doc-ischar,,ischar}, @ref{doc-islogical,,islogical}, @ref{doc-isnumeric,,isnumeric}, @ref{doc-isa,,isa}}
 @end deftypefn
 
 
-@c data.cc
+@c isreal src/data.cc
+@anchor{doc-isreal}
+@deftypefn {Built-in Function} {} isreal (@var{x})
+Return true if @var{x} is a non-complex matrix or scalar.
+For compatibility with @sc{matlab}, this includes logical and character
+matrices.
+@seealso{@ref{doc-iscomplex,,iscomplex}, @ref{doc-isnumeric,,isnumeric}}
+@end deftypefn
+
+
+@c iscomplex src/data.cc
 @anchor{doc-iscomplex}
 @deftypefn {Built-in Function} {} iscomplex (@var{x})
 Return true if @var{x} is a complex-valued numeric object.
+@seealso{@ref{doc-isreal,,isreal}, @ref{doc-isnumeric,,isnumeric}}
 @end deftypefn
 
 
-@c data.cc
+@c ismatrix src/data.cc
 @anchor{doc-ismatrix}
 @deftypefn {Built-in Function} {} ismatrix (@var{a})
-Return 1 if @var{a} is a matrix.  Otherwise, return 0.
+Return true if @var{a} is a numeric, logical, or character matrix.
+Scalars (1x1 matrices) and vectors (@nospell{1xN} or @nospell{Nx1} matrices)
+are subsets of the more general N-dimensional matrix and @code{ismatrix}
+will return true for these objects as well.
+@seealso{@ref{doc-isscalar,,isscalar}, @ref{doc-isvector,,isvector}, @ref{doc-iscell,,iscell}, @ref{doc-isstruct,,isstruct}, @ref{doc-issparse,,issparse}}
 @end deftypefn
 
 
-@c ./general/isvector.m
+@c isvector scripts/general/isvector.m
 @anchor{doc-isvector}
-@deftypefn {Function File} {} isvector (@var{a})
-Return 1 if @var{a} is a vector.  Otherwise, return 0.
-@seealso{@ref{doc-size,,size}, @ref{doc-rows,,rows}, @ref{doc-columns,,columns}, @ref{doc-length,,length}, @ref{doc-isscalar,,isscalar}, @ref{doc-ismatrix,,ismatrix}}
+@deftypefn {Function File} {} isvector (@var{x})
+Return true if @var{x} is a vector.  A vector is a 2-D array
+where one of the dimensions is equal to 1.  As a consequence a
+1x1 array, or scalar, is also a vector.
+@seealso{@ref{doc-isscalar,,isscalar}, @ref{doc-ismatrix,,ismatrix}, @ref{doc-size,,size}, @ref{doc-rows,,rows}, @ref{doc-columns,,columns}, @ref{doc-length,,length}}
 @end deftypefn
 
 
-@c ./general/isscalar.m
+@c isrow scripts/general/isrow.m
+@anchor{doc-isrow}
+@deftypefn {Function File} {} isrow (@var{x})
+Return true if @var{x} is a row vector.
+@seealso{@ref{doc-iscolumn,,iscolumn}, @ref{doc-isscalar,,isscalar}, @ref{doc-isvector,,isvector}, @ref{doc-ismatrix,,ismatrix}}
+@end deftypefn
+
+
+@c iscolumn scripts/general/iscolumn.m
+@anchor{doc-iscolumn}
+@deftypefn {Function File} {} iscolumn (@var{x})
+Return true if @var{x} is a column vector.
+@seealso{@ref{doc-isrow,,isrow}, @ref{doc-isscalar,,isscalar}, @ref{doc-isvector,,isvector}, @ref{doc-ismatrix,,ismatrix}}
+@end deftypefn
+
+
+@c isscalar scripts/general/isscalar.m
 @anchor{doc-isscalar}
-@deftypefn {Function File} {} isscalar (@var{a})
-Return 1 if @var{a} is a scalar.  Otherwise, return 0.
-@seealso{@ref{doc-size,,size}, @ref{doc-rows,,rows}, @ref{doc-columns,,columns}, @ref{doc-length,,length}, @ref{doc-isscalar,,isscalar}, @ref{doc-ismatrix,,ismatrix}}
+@deftypefn {Function File} {} isscalar (@var{x})
+Return true if @var{x} is a scalar.
+@seealso{@ref{doc-isvector,,isvector}, @ref{doc-ismatrix,,ismatrix}}
 @end deftypefn
 
 
-@c ./general/issquare.m
+@c issquare scripts/general/issquare.m
 @anchor{doc-issquare}
 @deftypefn {Function File} {} issquare (@var{x})
-If @var{x} is a square matrix, then return the dimension of @var{x}.
-Otherwise, return 0.
-@seealso{@ref{doc-size,,size}, @ref{doc-rows,,rows}, @ref{doc-columns,,columns}, @ref{doc-length,,length}, @ref{doc-ismatrix,,ismatrix}, @ref{doc-isscalar,,isscalar}, @ref{doc-isvector,,isvector}}
+Return true if @var{x} is a square matrix.
+@seealso{@ref{doc-isscalar,,isscalar}, @ref{doc-isvector,,isvector}, @ref{doc-ismatrix,,ismatrix}, @ref{doc-size,,size}}
 @end deftypefn
 
 
-@c ./general/issymmetric.m
+@c issymmetric scripts/linear-algebra/issymmetric.m
 @anchor{doc-issymmetric}
-@deftypefn {Function File} {} issymmetric (@var{x}, @var{tol})
-If @var{x} is symmetric within the tolerance specified by @var{tol},
-then return the dimension of @var{x}.  Otherwise, return 0.  If
-@var{tol} is omitted, use a tolerance equal to the machine precision.
+@deftypefn  {Function File} {} issymmetric (@var{x})
+@deftypefnx {Function File} {} issymmetric (@var{x}, @var{tol})
+Return true if @var{x} is a symmetric matrix within the tolerance specified
+by @var{tol}.  The default tolerance is zero (uses faster code).
 Matrix @var{x} is considered symmetric if
-@code{norm (@var{x} - @var{x}.', inf) / norm (@var{x}, inf) < @var{tol}}.
-@seealso{@ref{doc-size,,size}, @ref{doc-rows,,rows}, @ref{doc-columns,,columns}, @ref{doc-length,,length}, @ref{doc-ismatrix,,ismatrix}, @ref{doc-isscalar,,isscalar}, @ref{doc-issquare,,issquare}, @ref{doc-isvector,,isvector}}
+@code{norm (@var{x} - @var{x}.', Inf) / norm (@var{x}, Inf) < @var{tol}}.
+@seealso{@ref{doc-ishermitian,,ishermitian}, @ref{doc-isdefinite,,isdefinite}}
 @end deftypefn
 
 
-@c ./general/isdefinite.m
+@c ishermitian scripts/linear-algebra/ishermitian.m
+@anchor{doc-ishermitian}
+@deftypefn  {Function File} {} ishermitian (@var{x})
+@deftypefnx {Function File} {} ishermitian (@var{x}, @var{tol})
+Return true if @var{x} is Hermitian within the tolerance specified by
+@var{tol}.
+The default tolerance is zero (uses faster code).
+Matrix @var{x} is considered symmetric if
+@code{norm (@var{x} - @var{x}', Inf) / norm (@var{x}, Inf) < @var{tol}}.
+@seealso{@ref{doc-issymmetric,,issymmetric}, @ref{doc-isdefinite,,isdefinite}}
+@end deftypefn
+
+
+@c isdefinite scripts/linear-algebra/isdefinite.m
 @anchor{doc-isdefinite}
-@deftypefn {Function File} {} isdefinite (@var{x}, @var{tol})
+@deftypefn  {Function File} {} isdefinite (@var{x})
+@deftypefnx {Function File} {} isdefinite (@var{x}, @var{tol})
 Return 1 if @var{x} is symmetric positive definite within the
 tolerance specified by @var{tol} or 0 if @var{x} is symmetric
 positive semidefinite.  Otherwise, return -1.  If @var{tol}
-is omitted, use a tolerance equal to 100 times the machine precision.
-@seealso{@ref{doc-issymmetric,,issymmetric}}
+is omitted, use a tolerance of
+@code{100 * eps * norm (@var{x}, "fro")}
+@seealso{@ref{doc-issymmetric,,issymmetric}, @ref{doc-ishermitian,,ishermitian}}
 @end deftypefn
 
 
-@c data.cc
+@c islogical src/data.cc
 @anchor{doc-islogical}
-@deftypefn {Built-in Function} {} islogical (@var{x})
+@deftypefn  {Built-in Function} {} islogical (@var{x})
+@deftypefnx {Built-in Function} {} isbool (@var{x})
 Return true if @var{x} is a logical object.
+@seealso{@ref{doc-isfloat,,isfloat}, @ref{doc-isinteger,,isinteger}, @ref{doc-ischar,,ischar}, @ref{doc-isnumeric,,isnumeric}, @ref{doc-isa,,isa}}
 @end deftypefn
 
 
-@c ./specfun/isprime.m
+@c isprime scripts/specfun/isprime.m
 @anchor{doc-isprime}
-@deftypefn {Function File} {} isprime (@var{n})
+@deftypefn {Function File} {} isprime (@var{x})
+Return a logical array which is true where the elements of @var{x} are
+prime numbers and false where they are not.
 
-Return true if @var{n} is a prime number, false otherwise.
-
-Something like the following is much faster if you need to test a lot
-of small numbers:
+If the maximum value in @var{x} is very large, then you should be using
+special purpose factorization code.
 
 @example
-   @var{t} = ismember (@var{n}, primes (max (@var{n} (:))));
+@group
+isprime (1:6)
+    @result{} [0, 1, 1, 0, 1, 0]
+@end group
 @end example
-
-If max(n) is very large, then you should be using special purpose 
-factorization code.
-
 @seealso{@ref{doc-primes,,primes}, @ref{doc-factor,,factor}, @ref{doc-gcd,,gcd}, @ref{doc-lcm,,lcm}}
 @end deftypefn
 
+
+If instead of knowing properties of variables, you wish to know which
+variables are defined and to gather other information about the
+workspace itself, see @ref{Status of Variables}.

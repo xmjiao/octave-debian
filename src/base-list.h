@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2002, 2005, 2007, 2009 John W. Eaton
+Copyright (C) 2002-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -55,11 +55,11 @@ public:
     iterator e = lst.end ();
     while (b != e)
       {
-	iterator n = b;
-	n++;
-	if (pred (*b))
-	  lst.erase (b);
-	b = n;
+        iterator n = b;
+        n++;
+        if (pred (*b))
+          lst.erase (b);
+        b = n;
       }
   }
 
@@ -86,15 +86,26 @@ public:
   // For backward compatibility.
   void append (const elt_type& s) { lst.push_back (s); }
 
+protected:
+
+  octave_base_list (void) : lst () { }
+
+  octave_base_list (const octave_base_list& bl) : lst (bl.lst) { }
+
+  octave_base_list& operator = (const octave_base_list& bl)
+    {
+      if (this != &bl)
+        {
+          lst = bl.lst;
+        }
+      return *this;
+    }
+
+  ~octave_base_list (void) { }
+
 private:
 
   std::list<elt_type> lst;
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

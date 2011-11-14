@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008, 2009 Jaroslav Hajek
+Copyright (C) 2008-2011 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -74,9 +74,8 @@ octave_diag_matrix::try_narrowing_conversion (void)
 {
   octave_base_value *retval = 0;
 
-  // FIXME: the proxy mechanism of DiagArray2 causes problems here.
   if (matrix.nelem () == 1)
-    retval = new octave_scalar (double (matrix (0, 0)));
+    retval = new octave_scalar (matrix (0, 0));
 
   return retval;
 }
@@ -89,12 +88,12 @@ octave_diag_matrix::do_index_op (const octave_value_list& idx,
 
   // This hack is to allow constructing permutation matrices using
   // eye(n)(p,:), eye(n)(:,q) && eye(n)(p,q) where p & q are permutation
-  // vectors. 
+  // vectors.
   if (! resize_ok && idx.length () == 2 && matrix.is_multiple_of_identity (1))
     {
       idx_vector idx0 = idx(0).index_vector ();
       idx_vector idx1 = idx(1).index_vector ();
-      
+
       if (! error_state)
         {
           bool left = idx0.is_permutation (matrix.rows ());
@@ -151,49 +150,30 @@ octave_diag_matrix::float_complex_diag_matrix_value (bool) const
 }
 
 octave_value
-octave_diag_matrix::abs (void) const
+octave_diag_matrix::map (unary_mapper_t umap) const
 {
-  return matrix.abs ();
+  switch (umap)
+    {
+    case umap_abs:
+      return matrix.abs ();
+    case umap_real:
+    case umap_conj:
+      return matrix;
+    case umap_imag:
+      return DiagMatrix (matrix.rows (), matrix.cols (), 0.0);
+    case umap_sqrt:
+      {
+        ComplexColumnVector tmp = matrix.diag ().map<Complex> (rc_sqrt);
+        ComplexDiagMatrix retval (tmp);
+        retval.resize (matrix.rows (), matrix.columns ());
+        return retval;
+      }
+    default:
+      return to_dense ().map (umap);
+    }
 }
 
-octave_value
-octave_diag_matrix::real (void) const
-{
-  return matrix;
-}
-
-octave_value
-octave_diag_matrix::conj (void) const
-{
-  return matrix;
-}
-
-octave_value
-octave_diag_matrix::imag (void) const
-{
-  return DiagMatrix (matrix.rows (), matrix.cols (), 0.0);
-}
-
-octave_value
-octave_diag_matrix::sqrt (void) const
-{    
-  octave_value retval;
-
-  static NDArray::dmapper dsqrt = ::sqrt;
-  static NDArray::cmapper csqrt = std::sqrt;
-
-  ColumnVector dvec = matrix.diag ();
-  if (Matrix (dvec).any_element_is_negative ())
-    retval = ComplexDiagMatrix (dvec.map (csqrt));
-  else
-    retval = DiagMatrix (dvec.map (dsqrt));
-
-  retval.resize (dims ());
-
-  return retval;
-}
-
-bool 
+bool
 octave_diag_matrix::save_binary (std::ostream& os, bool& save_as_floats)
 {
 
@@ -206,18 +186,18 @@ octave_diag_matrix::save_binary (std::ostream& os, bool& save_as_floats)
   if (save_as_floats)
     {
       if (m.too_large_for_float ())
-	{
-	  warning ("save: some values too large to save as floats --");
-	  warning ("save: saving as doubles instead");
-	}
+        {
+          warning ("save: some values too large to save as floats --");
+          warning ("save: saving as doubles instead");
+        }
       else
-	st = LS_FLOAT;
+        st = LS_FLOAT;
     }
   else if (matrix.length () > 8192) // FIXME -- make this configurable.
     {
       double max_val, min_val;
       if (m.all_integers (max_val, min_val))
-	st = get_save_type (max_val, min_val);
+        st = get_save_type (max_val, min_val);
     }
 
   const double *mtmp = m.data ();
@@ -226,9 +206,9 @@ octave_diag_matrix::save_binary (std::ostream& os, bool& save_as_floats)
   return true;
 }
 
-bool 
+bool
 octave_diag_matrix::load_binary (std::istream& is, bool swap,
-				 oct_mach_info::float_format fmt)
+                                 oct_mach_info::float_format fmt)
 {
   int32_t r, c;
   char tmp;
@@ -253,8 +233,8 @@ octave_diag_matrix::load_binary (std::istream& is, bool swap,
   return true;
 }
 
-bool 
-octave_diag_matrix::chk_valid_scalar (const octave_value& val, 
+bool
+octave_diag_matrix::chk_valid_scalar (const octave_value& val,
                                       double& x) const
 {
   bool retval = val.is_real_scalar ();

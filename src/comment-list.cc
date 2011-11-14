@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2000, 2001, 2002, 2004, 2005, 2006, 2007, 2009 John W. Eaton
+Copyright (C) 2000-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -66,7 +66,7 @@ octave_comment_buffer::instance_ok (void)
 
 void
 octave_comment_buffer::append (const std::string& s,
-			       octave_comment_elt::comment_type t)
+                               octave_comment_elt::comment_type t)
 {
   if (instance_ok ())
     instance->do_append (s, t);
@@ -80,7 +80,7 @@ octave_comment_buffer::get_comment (void)
 
 void
 octave_comment_buffer::do_append (const std::string& s,
-				  octave_comment_elt::comment_type t)
+                                  octave_comment_elt::comment_type t)
 {
   comment_list->append(s, t);
 }
@@ -98,9 +98,3 @@ octave_comment_buffer::do_get_comment (void)
 
   return retval;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

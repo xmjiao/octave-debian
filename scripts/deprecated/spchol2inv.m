@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 David Bateman
+## Copyright (C) 2008-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -28,7 +28,7 @@ function retval = spchol2inv (varargin)
   if (! warned)
     warned = true;
     warning ("Octave:deprecated-function",
-	     "spchol2inv is obsolete and will be removed from a future version of Octave; please use chol2inv instead");
+             "spchol2inv is obsolete and will be removed from a future version of Octave; please use chol2inv instead");
   endif
 
   retval = chol2inv (varargin{:});

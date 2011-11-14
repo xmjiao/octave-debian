@@ -1,5 +1,5 @@
-## Copyright (C) 2005, 2006, 2007, 2008 Søren Hauberg
-## 
+## Copyright (C) 2005-2011 Søren Hauberg
+##
 ## This file is part of Octave.
 ##
 ## Octave is free software; you can redistribute it and/or modify it
@@ -17,30 +17,27 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} unzip (@var{zipfile}, @var{dir})
+## @deftypefn  {Function File} {} unzip (@var{zipfile})
+## @deftypefnx {Function File} {} unzip (@var{zipfile}, @var{dir})
 ## Unpack the ZIP archive @var{zipfile} to the directory @var{dir}.
 ## If @var{dir} is not specified, it defaults to the current directory.
-## @seealso{unpack, bunzip2, tar, untar, gzip, gunzip, zip}
+## @seealso{zip, unpack, bunzip2, gunzip, untar}
 ## @end deftypefn
 
 ## Author: Søren Hauberg <hauberg@gmail.com>
 ## Adapted-By: jwe, Bill Denney
 
-function varargout = unzip (files, outputdir)
+function varargout = unzip (zipfile, dir = ".")
 
-  if (! (nargin == 1 || nargin == 2))
+  if (nargin != 1 && nargin != 2)
     print_usage ();
-  endif
-
-  if (nargin == 1)
-    outputdir = ".";
   endif
 
   if (nargout > 0)
     varargout = cell (1, nargout);
-    [varargout{:}] = unpack (files, outputdir, mfilename ());
+    [varargout{:}] = unpack (zipfile, dir, mfilename ());
   else
-    unpack (files, outputdir, mfilename ());
+    unpack (zipfile, dir, mfilename ());
   endif
 
 endfunction

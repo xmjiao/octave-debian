@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2000, 2002, 2003, 2005, 2007 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -35,7 +35,7 @@ public:
 
   base_diff_eqn (void)
     : x (), t (0.0), stop_time (0.0), stop_time_set (false),
-      restart (true), integration_error (false), istate (0) { } 
+      restart (true), integration_error (false), istate (0) { }
 
   base_diff_eqn (const ColumnVector& xx, double tt)
     : x (xx), t (tt), stop_time (0.0), stop_time_set (false),
@@ -50,15 +50,15 @@ public:
   base_diff_eqn& operator = (const base_diff_eqn& a)
     {
       if (this != &a)
-	{
-	  x = a.x;
-	  t = a.t;
-	  stop_time = a.stop_time;
-	  stop_time_set = a.stop_time_set;
-	  restart = a.restart;
-	  integration_error = a.integration_error;
-	  istate = a.istate;
-	}
+        {
+          x = a.x;
+          t = a.t;
+          stop_time = a.stop_time;
+          stop_time_set = a.stop_time_set;
+          restart = a.restart;
+          integration_error = a.integration_error;
+          istate = a.istate;
+        }
 
       return *this;
     }
@@ -117,9 +117,3 @@ protected:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008, 2009 David Bateman
+Copyright (C) 2008-2011 David Bateman
 
 This file is part of Octave.
 
@@ -35,7 +35,7 @@ along with Octave; see the file COPYING.  If not, see
 DEFUN_DLD (hex2num, args, ,
   "-*- texinfo -*-\n\
 @deftypefn {Loadable Function} {@var{n} =} hex2num (@var{s})\n\
-Typecast the 16 character hexadecimal character matrix to an IEEE 754\n\
+Typecast the 16 character hexadecimal character string to an IEEE 754\n\
 double precision number.  If fewer than 16 characters are given the\n\
 strings are right padded with '0' characters.\n\
 \n\
@@ -61,56 +61,56 @@ hex2num ([\"4005bf0a8b145769\";\"4024000000000000\"])\n\
       const charMatrix cmat = args(0).char_matrix_value ();
 
       if (cmat.columns () > 16)
-	error ("hex2num: expecting no more than a 16 character string");
+        error ("hex2num: S must be no more than 16 characters");
       else if (! error_state)
-	{
-	  octave_idx_type nr = cmat.rows ();
-	  octave_idx_type nc = cmat.columns ();
-	  ColumnVector m (nr);
+        {
+          octave_idx_type nr = cmat.rows ();
+          octave_idx_type nc = cmat.columns ();
+          ColumnVector m (nr);
 
-	  for (octave_idx_type i = 0; i < nr; i++)
-	    {
-	      union
-	      {
-		uint64_t ival;
-		double dval;
-	      } num;
+          for (octave_idx_type i = 0; i < nr; i++)
+            {
+              union
+              {
+                uint64_t ival;
+                double dval;
+              } num;
 
-	      for (octave_idx_type j = 0; j < nc; j++)
-		{
-		  unsigned char ch = cmat.elem (i, j);
+              for (octave_idx_type j = 0; j < nc; j++)
+                {
+                  unsigned char ch = cmat.elem (i, j);
 
-		  if (isxdigit (ch))
-		    {
-		      num.ival <<= 4;
-		      if (ch >= 'a')
-			num.ival += static_cast<uint64_t> (ch - 'a' + 10);
-		      else if (ch >= 'A')
-			num.ival += static_cast<uint64_t> (ch - 'A' + 10);
-		      else
-			num.ival += static_cast<uint64_t> (ch - '0');
-		    }
-		  else
-		    {
-		      error ("hex2num: illegal character found in string");
-		      break;
-		    }
-		}
+                  if (isxdigit (ch))
+                    {
+                      num.ival <<= 4;
+                      if (ch >= 'a')
+                        num.ival += static_cast<uint64_t> (ch - 'a' + 10);
+                      else if (ch >= 'A')
+                        num.ival += static_cast<uint64_t> (ch - 'A' + 10);
+                      else
+                        num.ival += static_cast<uint64_t> (ch - '0');
+                    }
+                  else
+                    {
+                      error ("hex2num: illegal character found in string S");
+                      break;
+                    }
+                }
 
-	      if (error_state)
-		break;
-	      else
-		{
-		  if (nc < 16)
-		    num.ival <<= (16 - nc) * 4;
+              if (error_state)
+                break;
+              else
+                {
+                  if (nc < 16)
+                    num.ival <<= (16 - nc) * 4;
 
-		  m(i) = num.dval;
-		}
-	    }
+                  m(i) = num.dval;
+                }
+            }
 
-	  if (! error_state)
-	    retval =  m;
-	}
+          if (! error_state)
+            retval =  m;
+        }
     }
 
   return retval;
@@ -124,7 +124,7 @@ DEFUN_DLD (num2hex, args, ,
   "-*- texinfo -*-\n\
 @deftypefn {Loadable Function} {@var{s} =} num2hex (@var{n})\n\
 Typecast a double precision number or vector to a 16 character hexadecimal\n\
-string of the IEEE 754 representation of the number.  For example\n\
+string of the IEEE 754 representation of the number.  For example:\n\
 \n\
 @example\n\
 @group\n\
@@ -150,36 +150,36 @@ num2hex ([-1, 1, e, Inf, NaN, NA]);\n\
       const ColumnVector v (args(0).vector_value ());
 
       if (! error_state)
-	{
-	  octave_idx_type nr = v.length ();
-	  charMatrix m (nr, 16);
-	  const double *pv = v.fortran_vec ();
+        {
+          octave_idx_type nr = v.length ();
+          charMatrix m (nr, 16);
+          const double *pv = v.fortran_vec ();
 
-	  for (octave_idx_type i = 0; i < nr; i++)
-	    {
-	      union
-	      {
-		uint64_t ival;
-		double dval;
-	      } num;
+          for (octave_idx_type i = 0; i < nr; i++)
+            {
+              union
+              {
+                uint64_t ival;
+                double dval;
+              } num;
 
-	      num.dval = *pv++;
+              num.dval = *pv++;
 
-	      for (octave_idx_type j = 0; j < 16; j++)
-		{
-		  unsigned char ch = 
-		    static_cast<char> (num.ival >> ((15 - j) * 4) & 0xF);
-		  if (ch >= 10)
-		    ch += 'a' - 10;
-		  else
-		    ch += '0';
+              for (octave_idx_type j = 0; j < 16; j++)
+                {
+                  unsigned char ch =
+                    static_cast<char> (num.ival >> ((15 - j) * 4) & 0xF);
+                  if (ch >= 10)
+                    ch += 'a' - 10;
+                  else
+                    ch += '0';
 
-		  m.elem (i, j) = ch;
-		}
-	    }
-	  
-	  retval = octave_value (m, true);
-	}
+                  m.elem (i, j) = ch;
+                }
+            }
+
+          retval = m;
+        }
     }
 
   return retval;

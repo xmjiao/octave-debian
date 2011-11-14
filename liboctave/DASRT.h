@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007 John W. Eaton
+Copyright (C) 2002-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -33,7 +33,8 @@ DASRT_result
 {
 public:
 
-  DASRT_result (void) { }
+  DASRT_result (void)
+    : x (), xdot (), t () { }
 
   DASRT_result (const Matrix& xx, const Matrix& xxdot, const ColumnVector& tt)
     : x (xx), xdot (xxdot), t (tt) { }
@@ -44,11 +45,11 @@ public:
   DASRT_result& operator = (const DASRT_result& r)
     {
       if (this != &r)
-	{
-	  x = r.x;
-	  xdot = r.xdot;
+        {
+          x = r.x;
+          xdot = r.xdot;
           t = r.t;
-	}
+        }
       return *this;
     }
 
@@ -71,21 +72,31 @@ DASRT : public DAERT, public DASRT_options
 {
 public:
 
-  DASRT (void) : DAERT (), DASRT_options (), initialized (false) { }
+  DASRT (void)
+    : DAERT (), DASRT_options (), initialized (false),
+      liw (0), lrw (0), ng (0), info (), iwork (), jroot (), rwork (),
+      abs_tol (), rel_tol ()
+    { }
 
   DASRT (const ColumnVector& s, double tm, DAERTFunc& f)
-    : DAERT (s, tm, f), DASRT_options (), initialized (false) { }
+    : DAERT (s, tm, f), DASRT_options (), initialized (false),
+      liw (0), lrw (0), ng (0), info (), iwork (), jroot (), rwork (),
+      abs_tol (), rel_tol ()
+    { }
 
   DASRT (const ColumnVector& s, const ColumnVector& deriv,
-	 double tm, DAERTFunc& f)
-    : DAERT (s, deriv, tm, f), DASRT_options (), initialized (false) { }
+         double tm, DAERTFunc& f)
+    : DAERT (s, deriv, tm, f), DASRT_options (), initialized (false),
+      liw (0), lrw (0), ng (0), info (), iwork (), jroot (), rwork (),
+      abs_tol (), rel_tol ()
+    { }
 
   ~DASRT (void) { }
 
   DASRT_result integrate (const ColumnVector& tout);
 
   DASRT_result integrate (const ColumnVector& tout,
-			  const ColumnVector& tcrit); 
+                          const ColumnVector& tcrit);
 
   std::string error_message (void) const;
 
@@ -93,7 +104,7 @@ private:
 
   bool initialized;
 
-  octave_idx_type liw;  
+  octave_idx_type liw;
   octave_idx_type lrw;
 
   octave_idx_type ng;
@@ -107,22 +118,7 @@ private:
   Array<double> abs_tol;
   Array<double> rel_tol;
 
-  double *px;
-  double *pxdot;
-  double *pabs_tol;
-  double *prel_tol;
-  octave_idx_type *pinfo;
-  octave_idx_type *piwork;
-  double *prwork;
-  octave_idx_type *pjroot;
-
   void integrate (double t);
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

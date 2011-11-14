@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 2000, 2002, 2004, 2005,
-              2007, 2008 John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -37,36 +36,38 @@ public:
       string_token,
       double_token,
       ettype_token,
-      pttype_token,
-      sym_rec_token
+      sym_rec_token,
+      scls_rec_token,
+      meta_rec_token
     };
 
   enum end_tok_type
     {
       simple_end,
+      classdef_end,
+      events_end,
       for_end,
       function_end,
       if_end,
+      methods_end,
+      properties_end,
       switch_end,
       while_end,
       try_catch_end,
       unwind_protect_end
     };
 
-  enum plot_tok_type
-    {
-      replot = 1,
-      two_dee = 2,
-      three_dee = 3
-    };
-
   token (int l = -1, int c = -1);
   token (const std::string& s, int l = -1, int c = -1);
   token (double d, const std::string& s = std::string (),
-	 int l = -1, int c = -1);
+         int l = -1, int c = -1);
   token (end_tok_type t, int l = -1, int c = -1);
-  token (plot_tok_type t, int l = -1, int c = -1);
   token (symbol_table::symbol_record *s, int l = -1, int c = -1);
+  token (symbol_table::symbol_record *cls,
+         symbol_table::symbol_record *pkg, int l = -1, int c = -1);
+  token (symbol_table::symbol_record *mth,
+         symbol_table::symbol_record *cls,
+         symbol_table::symbol_record *pkg, int l = -1, int c = -1);
 
   ~token (void);
 
@@ -76,8 +77,14 @@ public:
   std::string text (void);
   double number (void);
   end_tok_type ettype (void);
-  plot_tok_type pttype (void);
   symbol_table::symbol_record *sym_rec (void);
+
+  symbol_table::symbol_record *method_rec (void);
+  symbol_table::symbol_record *class_rec (void);
+  symbol_table::symbol_record *package_rec (void);
+
+  symbol_table::symbol_record *meta_class_rec (void);
+  symbol_table::symbol_record *meta_package_rec (void);
 
   std::string text_rep (void);
 
@@ -97,16 +104,20 @@ private:
       std::string *str;
       double num;
       end_tok_type et;
-      plot_tok_type pt;
       symbol_table::symbol_record *sr;
+      struct
+        {
+          symbol_table::symbol_record *mr;
+          symbol_table::symbol_record *cr;
+          symbol_table::symbol_record *pr;
+        } sc;
+      struct
+        {
+          symbol_table::symbol_record *cr;
+          symbol_table::symbol_record *pr;
+        } mc;
     };
   std::string orig_text;
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

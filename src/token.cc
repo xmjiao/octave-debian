@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 2000, 2002, 2004, 2005,
-              2007 John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -65,20 +64,34 @@ token::token (end_tok_type t, int l, int c)
   et = t;
 }
 
-token::token (plot_tok_type t, int l, int c)
-{
-  line_num = l;
-  column_num = c;
-  type_tag = pttype_token;
-  pt = t;
-}
-
 token::token (symbol_table::symbol_record *s, int l, int c)
 {
   line_num = l;
   column_num = c;
   type_tag = sym_rec_token;
   sr = s;
+}
+
+token::token (symbol_table::symbol_record *cls,
+              symbol_table::symbol_record *pkg, int l, int c)
+{
+  line_num = l;
+  column_num = c;
+  type_tag = meta_rec_token;
+  mc.cr = cls;
+  mc.pr = pkg;
+}
+
+token::token (symbol_table::symbol_record *mth,
+              symbol_table::symbol_record *cls,
+              symbol_table::symbol_record *pkg, int l, int c)
+{
+  line_num = l;
+  column_num = c;
+  type_tag = scls_rec_token;
+  sc.mr = mth;
+  sc.cr = cls;
+  sc.pr = pkg;
 }
 
 token::~token (void)
@@ -108,13 +121,6 @@ token::ettype (void)
   return et;
 }
 
-token::plot_tok_type
-token::pttype (void)
-{
-  assert (type_tag == pttype_token);
-  return pt;
-}
-
 symbol_table::symbol_record *
 token::sym_rec (void)
 {
@@ -122,14 +128,43 @@ token::sym_rec (void)
   return sr;
 }
 
+symbol_table::symbol_record *
+token::method_rec (void)
+{
+  assert (type_tag == scls_rec_token);
+  return sc.mr;
+}
+
+symbol_table::symbol_record *
+token::class_rec (void)
+{
+  assert (type_tag == scls_rec_token);
+  return sc.cr;
+}
+
+symbol_table::symbol_record *
+token::package_rec (void)
+{
+  assert (type_tag == scls_rec_token);
+  return sc.pr;
+}
+
+symbol_table::symbol_record *
+token::meta_class_rec (void)
+{
+  assert (type_tag == meta_rec_token);
+  return mc.cr;
+}
+
+symbol_table::symbol_record *
+token::meta_package_rec (void)
+{
+  assert (type_tag == meta_rec_token);
+  return mc.pr;
+}
+
 std::string
 token::text_rep (void)
 {
   return orig_text;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

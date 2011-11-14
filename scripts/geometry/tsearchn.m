@@ -1,4 +1,4 @@
-## Copyright (C) 2007, 2009 David Bateman
+## Copyright (C) 2007-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -18,7 +18,7 @@
 
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {[@var{idx}, @var{p}] =} tsearchn (@var{x}, @var{t}, @var{xi})
-## Searches for the enclosing Delaunay convex hull.  For @code{@var{t} =
+## Search for the enclosing Delaunay convex hull.  For @code{@var{t} =
 ## delaunayn (@var{x})}, finds the index in @var{t} containing the
 ## points @var{xi}.  For points outside the convex hull, @var{idx} is NaN.
 ## If requested @code{tsearchn} also returns the Barycentric coordinates @var{p}
@@ -34,8 +34,8 @@ function [idx, p] = tsearchn (x, t, xi)
   nt = size (t, 1);
   [m, n] = size (x);
   mi = size (xi, 1);
-  idx = nan (mi, 1);
-  p = nan (mi, n + 1);
+  idx = NaN (mi, 1);
+  p = NaN (mi, n + 1);
 
   ni = [1:mi].';
   for i = 1 : nt
@@ -44,7 +44,7 @@ function [idx, p] = tsearchn (x, t, xi)
     b = cart2bary (x (t (i, :), :), xi(ni,:));
 
     ## Our points xi are in the current triangle if
-    ## (all(b >= 0) && all (b <= 1)). However as we impose that 
+    ## (all(b >= 0) && all (b <= 1)). However as we impose that
     ## sum(b,2) == 1 we only need to test all(b>=0). Note need to add
     ## a small margin for rounding errors
     intri = all (b >= -1e-12, 2);

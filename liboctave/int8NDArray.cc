@@ -1,7 +1,7 @@
 // N-D Array  manipulations.
 /*
 
-Copyright (C) 2004, 2005, 2006, 2007, 2009 John W. Eaton
+Copyright (C) 2004-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -29,6 +29,8 @@ along with Octave; see the file COPYING.  If not, see
 #include "mx-op-defs.h"
 #include "intNDArray.cc"
 
+#include "bsxfun-defs.cc"
+
 template class OCTAVE_API intNDArray<octave_int8>;
 
 template OCTAVE_API
@@ -39,19 +41,16 @@ template OCTAVE_API
 std::istream&
 operator >> (std::istream& is, intNDArray<octave_int8>& a);
 
-NDS_CMP_OPS (int8NDArray, , octave_int8, )
-NDS_BOOL_OPS (int8NDArray, octave_int8, octave_int8 (0))
+NDS_CMP_OPS (int8NDArray, octave_int8)
+NDS_BOOL_OPS (int8NDArray, octave_int8)
 
-SND_CMP_OPS (octave_int8, , int8NDArray, )
-SND_BOOL_OPS (octave_int8, int8NDArray, octave_int8 (0))
+SND_CMP_OPS (octave_int8, int8NDArray)
+SND_BOOL_OPS (octave_int8, int8NDArray)
 
-NDND_CMP_OPS (int8NDArray, , int8NDArray, )
-NDND_BOOL_OPS (int8NDArray, int8NDArray, octave_int8 (0))
+NDND_CMP_OPS (int8NDArray, int8NDArray)
+NDND_BOOL_OPS (int8NDArray, int8NDArray)
 
-MINMAX_FCNS (int8)
+MINMAX_FCNS (int8NDArray, octave_int8)
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+BSXFUN_STDOP_DEFS_MXLOOP (int8NDArray)
+BSXFUN_STDREL_DEFS_MXLOOP (int8NDArray)

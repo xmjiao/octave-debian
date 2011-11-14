@@ -1,4 +1,4 @@
-## Copyright (C) 2007, 2008 David Bateman
+## Copyright (C) 2007-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -18,10 +18,10 @@
 
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {@var{yi} =} griddatan (@var{x}, @var{y}, @var{xi}, @var{method}, @var{options})
-## 
+##
 ## Generate a regular mesh from irregular data using interpolation.
 ## The function is defined by @code{@var{y} = f (@var{x})}.
-## The interpolation points are all @var{xi}.  
+## The interpolation points are all @var{xi}.
 ##
 ## The interpolation method can be @code{"nearest"} or @code{"linear"}.
 ## If method is omitted it defaults to @code{"linear"}.
@@ -35,7 +35,7 @@ function yi = griddatan (x, y, xi, method, varargin)
   if (nargin == 3)
     method = "linear";
   endif
-  if (nargin < 3) 
+  if (nargin < 3)
     print_usage ();
   endif
 
@@ -45,7 +45,7 @@ function yi = griddatan (x, y, xi, method, varargin)
 
   [m, n] = size (x);
   [mi, ni] = size (xi);
-  
+
   if (n != ni || size (y, 1) != m || size (y, 2) != 1)
     error ("griddatan: dimensional mismatch");
   endif
@@ -54,8 +54,8 @@ function yi = griddatan (x, y, xi, method, varargin)
   ## tri = delaunayn(x, varargin{:});
   tri = delaunayn (x);
 
-  yi = nan (mi, 1);
-  
+  yi = NaN (mi, 1);
+
   if (strcmp (method, "nearest"))
     ## search index of nearest point
     idx = dsearchn (x, tri, xi);
@@ -80,7 +80,7 @@ function yi = griddatan (x, y, xi, method, varargin)
     yi(valid) = sum (y(tri(tri_list,:)) .* bary_list, 2);
 
   else
-    error ("griddatan: unknown interpolation method");
+    error ("griddatan: unknown interpolation METHOD");
   endif
 
 endfunction

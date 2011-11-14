@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2000, 2002, 2003, 2004, 2005, 2006, 2007,
-              2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -25,6 +24,7 @@ along with Octave; see the file COPYING.  If not, see
 #define octave_tree_expr_h 1
 
 #include <string>
+#include <list>
 
 class octave_value;
 class octave_lvalue;
@@ -48,7 +48,7 @@ public:
   virtual bool has_magic_end (void) const = 0;
 
   virtual tree_expression *dup (symbol_table::scope_id,
-				symbol_table::context_id context) const = 0;
+                                symbol_table::context_id context) const = 0;
 
   virtual bool is_constant (void) const { return false; }
 
@@ -78,6 +78,9 @@ public:
 
   virtual octave_value_list rvalue (int nargout);
 
+  virtual octave_value_list rvalue (int nargout,
+                                    const std::list<octave_lvalue> *lvalue_list);
+
   virtual octave_lvalue lvalue (void);
 
   int paren_count (void) const { return num_parens; }
@@ -91,6 +94,8 @@ public:
   virtual std::string name (void) const { return "<unknown>"; }
 
   virtual std::string original_text (void) const;
+
+  virtual void mark_braindead_shortcircuit (const std::string&) { }
 
   tree_expression *mark_in_parens (void)
     {
@@ -144,9 +149,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

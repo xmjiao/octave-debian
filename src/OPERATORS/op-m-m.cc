@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2000, 2001, 2002, 2003, 2004, 2005,
-              2006, 2007, 2008 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -57,6 +56,7 @@ DEFUNOP (transpose, matrix)
 
 DEFNCUNOP_METHOD (incr, matrix, increment)
 DEFNCUNOP_METHOD (decr, matrix, decrement)
+DEFNCUNOP_METHOD (changesign, matrix, changesign)
 
 // matrix by matrix ops.
 
@@ -69,7 +69,7 @@ DEFBINOP (div, matrix, matrix)
 {
   CAST_BINOP_ARGS (const octave_matrix&, const octave_matrix&);
   MatrixType typ = v2.matrix_type ();
-  
+
   Matrix ret = xdiv (v1.matrix_value (), v2.matrix_value (), typ);
 
   v2.matrix_type (typ);
@@ -86,7 +86,7 @@ DEFBINOP (ldiv, matrix, matrix)
 {
   CAST_BINOP_ARGS (const octave_matrix&, const octave_matrix&);
   MatrixType typ = v1.matrix_type ();
-  
+
   Matrix ret = xleftdiv (v1.matrix_value (), v2.matrix_value (), typ);
 
   v1.matrix_type (typ);
@@ -96,13 +96,26 @@ DEFBINOP (ldiv, matrix, matrix)
 DEFBINOP (trans_mul, matrix, matrix)
 {
   CAST_BINOP_ARGS (const octave_matrix&, const octave_matrix&);
-  return octave_value(xgemm (true, v1.matrix_value (), false, v2.matrix_value ()));
+  return octave_value(xgemm (v1.matrix_value (), v2.matrix_value (),
+                             blas_trans, blas_no_trans));
 }
 
 DEFBINOP (mul_trans, matrix, matrix)
 {
   CAST_BINOP_ARGS (const octave_matrix&, const octave_matrix&);
-  return octave_value(xgemm (false, v1.matrix_value (), true, v2.matrix_value ()));
+  return octave_value(xgemm (v1.matrix_value (), v2.matrix_value (),
+                             blas_no_trans, blas_trans));
+}
+
+DEFBINOP (trans_ldiv, matrix, matrix)
+{
+  CAST_BINOP_ARGS (const octave_matrix&, const octave_matrix&);
+  MatrixType typ = v1.matrix_type ();
+
+  Matrix ret = xleftdiv (v1.matrix_value (), v2.matrix_value (), typ, blas_trans);
+
+  v1.matrix_type (typ);
+  return ret;
 }
 
 DEFNDBINOP_FN (lt, matrix, matrix, array, array, mx_el_lt)
@@ -138,6 +151,11 @@ DEFNDASSIGNOP_FN (sgl_assign, float_matrix, matrix, float_array, assign)
 
 DEFNULLASSIGNOP_FN (null_assign, matrix, delete_elements)
 
+DEFNDASSIGNOP_OP (assign_add, matrix, matrix, array, +=)
+DEFNDASSIGNOP_OP (assign_sub, matrix, matrix, array, -=)
+DEFNDASSIGNOP_FNOP (assign_el_mul, matrix, matrix, array, product_eq)
+DEFNDASSIGNOP_FNOP (assign_el_div, matrix, matrix, array, quotient_eq)
+
 CONVDECL (matrix_to_float_matrix)
 {
   CAST_CONV_ARG (const octave_matrix&);
@@ -156,6 +174,7 @@ install_m_m_ops (void)
 
   INSTALL_NCUNOP (op_incr, octave_matrix, incr);
   INSTALL_NCUNOP (op_decr, octave_matrix, decr);
+  INSTALL_NCUNOP (op_uminus, octave_matrix, changesign);
 
   INSTALL_BINOP (op_add, octave_matrix, octave_matrix, add);
   INSTALL_BINOP (op_sub, octave_matrix, octave_matrix, sub);
@@ -183,6 +202,8 @@ install_m_m_ops (void)
   INSTALL_BINOP (op_mul_trans, octave_matrix, octave_matrix, mul_trans);
   INSTALL_BINOP (op_herm_mul, octave_matrix, octave_matrix, trans_mul);
   INSTALL_BINOP (op_mul_herm, octave_matrix, octave_matrix, mul_trans);
+  INSTALL_BINOP (op_trans_ldiv, octave_matrix, octave_matrix, trans_ldiv);
+  INSTALL_BINOP (op_herm_ldiv, octave_matrix, octave_matrix, trans_ldiv);
 
   INSTALL_CATOP (octave_matrix, octave_matrix, m_m);
 
@@ -193,11 +214,10 @@ install_m_m_ops (void)
   INSTALL_ASSIGNOP (op_asn_eq, octave_matrix, octave_null_str, null_assign);
   INSTALL_ASSIGNOP (op_asn_eq, octave_matrix, octave_null_sq_str, null_assign);
 
+  INSTALL_ASSIGNOP (op_add_eq, octave_matrix, octave_matrix, assign_add);
+  INSTALL_ASSIGNOP (op_sub_eq, octave_matrix, octave_matrix, assign_sub);
+  INSTALL_ASSIGNOP (op_el_mul_eq, octave_matrix, octave_matrix, assign_el_mul);
+  INSTALL_ASSIGNOP (op_el_div_eq, octave_matrix, octave_matrix, assign_el_div);
+
   INSTALL_CONVOP (octave_matrix, octave_float_matrix, matrix_to_float_matrix);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1999, 2000, 2002, 2004, 2005, 2007, 2008, 2009
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -37,7 +36,7 @@ along with Octave; see the file COPYING.  If not, see
 template <class ST>
 octave_value
 octave_base_scalar<ST>::subsref (const std::string& type,
-				 const std::list<octave_value_list>& idx)
+                                 const std::list<octave_value_list>& idx)
 {
   octave_value retval;
 
@@ -50,8 +49,8 @@ octave_base_scalar<ST>::subsref (const std::string& type,
     case '{':
     case '.':
       {
-	std::string nm = type_name ();
-	error ("%s cannot be indexed with %c", nm.c_str (), type[0]);
+        std::string nm = type_name ();
+        error ("%s cannot be indexed with %c", nm.c_str (), type[0]);
       }
       break;
 
@@ -65,8 +64,8 @@ octave_base_scalar<ST>::subsref (const std::string& type,
 template <class ST>
 octave_value
 octave_base_scalar<ST>::subsasgn (const std::string& type,
-				  const std::list<octave_value_list>& idx,
-				  const octave_value& rhs)
+                                  const std::list<octave_value_list>& idx,
+                                  const octave_value& rhs)
 {
   octave_value retval;
 
@@ -74,22 +73,22 @@ octave_base_scalar<ST>::subsasgn (const std::string& type,
     {
     case '(':
       {
-	if (type.length () == 1)
+        if (type.length () == 1)
           retval = numeric_assign (type, idx, rhs);
-	else
-	  {
-	    std::string nm = type_name ();
-	    error ("in indexed assignment of %s, last rhs index must be ()",
-		   nm.c_str ());
-	  }
+        else
+          {
+            std::string nm = type_name ();
+            error ("in indexed assignment of %s, last rhs index must be ()",
+                   nm.c_str ());
+          }
       }
       break;
 
     case '{':
     case '.':
       {
-	std::string nm = type_name ();
-	error ("%s cannot be indexed with %c", nm.c_str (), type[0]);
+        std::string nm = type_name ();
+        error ("%s cannot be indexed with %c", nm.c_str (), type[0]);
       }
       break;
 
@@ -101,13 +100,34 @@ octave_base_scalar<ST>::subsasgn (const std::string& type,
 }
 
 template <class ST>
+octave_value
+octave_base_scalar<ST>::permute (const Array<int>& vec, bool inv) const
+{
+  return Array<ST> (dim_vector (1, 1), scalar).permute (vec, inv);
+}
+
+template <class ST>
+octave_value
+octave_base_scalar<ST>::reshape (const dim_vector& new_dims) const
+{
+  return Array<ST> (dim_vector (1, 1), scalar).reshape (new_dims);
+}
+
+template <class ST>
+octave_value
+octave_base_scalar<ST>::diag (octave_idx_type k) const
+{
+  return Array<ST> (dim_vector (1, 1), scalar).diag (k);
+}
+
+template <class ST>
 bool
 octave_base_scalar<ST>::is_true (void) const
 {
   bool retval = false;
 
   if (xisnan (scalar))
-    error ("invalid conversion from NaN to logical");
+    gripe_nan_to_logical_conversion ();
   else
     retval = (scalar != ST ());
 
@@ -125,7 +145,7 @@ octave_base_scalar<ST>::print (std::ostream& os, bool pr_as_read_syntax) const
 template <class ST>
 void
 octave_base_scalar<ST>::print_raw (std::ostream& os,
-				   bool pr_as_read_syntax) const
+                                   bool pr_as_read_syntax) const
 {
   indent (os);
   octave_print_internal (os, scalar, pr_as_read_syntax);
@@ -134,15 +154,24 @@ octave_base_scalar<ST>::print_raw (std::ostream& os,
 template <class ST>
 bool
 octave_base_scalar<ST>::print_name_tag (std::ostream& os,
-					const std::string& name) const
+                                        const std::string& name) const
 {
   indent (os);
   os << name << " = ";
-  return false;    
+  return false;
 }
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+template <class ST>
+bool
+octave_base_scalar<ST>::fast_elem_insert_self (void *where, builtin_type_t btyp) const
+{
+
+  // Don't use builtin_type () here to avoid an extra VM call.
+  if (btyp == class_to_btyp<ST>::btyp)
+    {
+      *(reinterpret_cast<ST *>(where)) = scalar;
+      return true;
+    }
+  else
+    return false;
+}

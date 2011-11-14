@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1999, 2000, 2002, 2003, 2004, 2005, 2006,
-              2007, 2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -36,10 +35,10 @@ along with Octave; see the file COPYING.  If not, see
 
 // Date and time functions.
 
-static Octave_map
+static octave_scalar_map
 mk_tm_map (const octave_base_tm& t)
 {
-  Octave_map m;
+  octave_scalar_map m;
 
   m.assign ("usec", static_cast<double> (t.usec ()));
   m.assign ("sec", static_cast<double> (t.sec ()));
@@ -56,29 +55,55 @@ mk_tm_map (const octave_base_tm& t)
   return m;
 }
 
+static inline int
+intfield (const octave_scalar_map& m, const std::string& k)
+{
+  int retval = 0;
+
+  octave_value v = m.getfield (k);
+
+  if (! v.is_empty ())
+    retval = v.int_value ();
+
+  return retval;
+}
+
+static inline std::string
+stringfield (const octave_scalar_map& m, const std::string& k)
+{
+  std::string retval;
+
+  octave_value v = m.getfield (k);
+
+  if (! v.is_empty ())
+    retval = v.string_value ();
+
+  return retval;
+}
+
 static octave_base_tm
-extract_tm (Octave_map &m)
+extract_tm (const octave_scalar_map& m)
 {
   octave_base_tm tm;
 
-  tm.usec (m.intfield ("usec"));
-  tm.sec (m.intfield ("sec"));
-  tm.min (m.intfield ("min"));
-  tm.hour (m.intfield ("hour"));
-  tm.mday (m.intfield ("mday"));
-  tm.mon (m.intfield ("mon"));
-  tm.year (m.intfield ("year"));
-  tm.wday (m.intfield ("wday"));
-  tm.yday (m.intfield ("yday"));
-  tm.isdst (m.intfield ("isdst"));
-  tm.zone (m.stringfield ("zone"));
+  tm.usec (intfield (m, "usec"));
+  tm.sec (intfield (m, "sec"));
+  tm.min (intfield (m, "min"));
+  tm.hour (intfield (m, "hour"));
+  tm.mday (intfield (m, "mday"));
+  tm.mon (intfield (m, "mon"));
+  tm.year (intfield (m, "year"));
+  tm.wday (intfield (m, "wday"));
+  tm.yday (intfield (m, "yday"));
+  tm.isdst (intfield (m, "isdst"));
+  tm.zone (stringfield (m, "zone"));
 
   return tm;
 }
 
 DEFUN_DLD (time, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Loadable Function} {} time ()\n\
+@deftypefn {Loadable Function} {@var{seconds} =} time ()\n\
 Return the current time as the number of seconds since the epoch.  The\n\
 epoch is referenced to 00:00:00 CUT (Coordinated Universal Time) 1 Jan\n\
 1970.  For example, on Monday February 17, 1997 at 07:15:06 CUT, the\n\
@@ -104,25 +129,26 @@ value returned by @code{time} was 856163706.\n\
 
 DEFUN_DLD (gmtime, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Loadable Function} {} gmtime (@var{t})\n\
-Given a value returned from time (or any non-negative integer),\n\
-return a time structure corresponding to CUT.  For example,\n\
+@deftypefn {Loadable Function} {@var{tm_struct} =} gmtime (@var{t})\n\
+Given a value returned from @code{time}, or any non-negative integer,\n\
+return a time structure corresponding to CUT (Coordinated Universal Time).\n\
+For example:\n\
 \n\
 @example\n\
 @group\n\
 gmtime (time ())\n\
      @result{} @{\n\
            usec = 0\n\
-           year = 97\n\
-           mon = 1\n\
-           mday = 17\n\
            sec = 6\n\
-           zone = CST\n\
            min = 15\n\
-           wday = 1\n\
            hour = 7\n\
-           isdst = 0\n\
+           mday = 17\n\
+           mon = 1\n\
+           year = 97\n\
+           wday = 1\n\
            yday = 47\n\
+           isdst = 0\n\
+           zone = CST\n\
          @}\n\
 @end group\n\
 @end example\n\
@@ -136,7 +162,7 @@ gmtime (time ())\n\
       double tmp = args(0).double_value ();
 
       if (! error_state)
-	retval = octave_value (mk_tm_map (octave_gmtime (tmp)));
+        retval = octave_value (mk_tm_map (octave_gmtime (tmp)));
     }
   else
     print_usage ();
@@ -149,16 +175,16 @@ gmtime (time ())\n\
 %!test
 %! ts = gmtime (time ());
 %! assert((isstruct (ts)
-%! && struct_contains (ts, "usec")
-%! && struct_contains (ts, "year")
-%! && struct_contains (ts, "mon")
-%! && struct_contains (ts, "mday")
-%! && struct_contains (ts, "sec")
-%! && struct_contains (ts, "min")
-%! && struct_contains (ts, "wday")
-%! && struct_contains (ts, "hour")
-%! && struct_contains (ts, "isdst")
-%! && struct_contains (ts, "yday")));
+%! && isfield (ts, "usec")
+%! && isfield (ts, "year")
+%! && isfield (ts, "mon")
+%! && isfield (ts, "mday")
+%! && isfield (ts, "sec")
+%! && isfield (ts, "min")
+%! && isfield (ts, "wday")
+%! && isfield (ts, "hour")
+%! && isfield (ts, "isdst")
+%! && isfield (ts, "yday")));
 
 %!error <Invalid call to gmtime.*> gmtime ();
 
@@ -168,8 +194,8 @@ gmtime (time ())\n\
 
 DEFUN_DLD (localtime, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Loadable Function} {} localtime (@var{t})\n\
-Given a value returned from time (or any non-negative integer),\n\
+@deftypefn {Loadable Function} {@var{tm_struct} =} localtime (@var{t})\n\
+Given a value returned from @code{time}, or any non-negative integer,\n\
 return a time structure corresponding to the local time zone.\n\
 \n\
 @example\n\
@@ -177,16 +203,16 @@ return a time structure corresponding to the local time zone.\n\
 localtime (time ())\n\
      @result{} @{\n\
            usec = 0\n\
-           year = 97\n\
-           mon = 1\n\
-           mday = 17\n\
            sec = 6\n\
-           zone = CST\n\
            min = 15\n\
-           wday = 1\n\
            hour = 1\n\
-           isdst = 0\n\
+           mday = 17\n\
+           mon = 1\n\
+           year = 97\n\
+           wday = 1\n\
            yday = 47\n\
+           isdst = 0\n\
+           zone = CST\n\
          @}\n\
 @end group\n\
 @end example\n\
@@ -200,7 +226,7 @@ localtime (time ())\n\
       double tmp = args(0).double_value ();
 
       if (! error_state)
-	retval = octave_value (mk_tm_map (octave_localtime (tmp)));
+        retval = octave_value (mk_tm_map (octave_localtime (tmp)));
     }
   else
     print_usage ();
@@ -213,16 +239,16 @@ localtime (time ())\n\
 %!test
 %! ts = localtime (time ());
 %! assert((isstruct (ts)
-%! && struct_contains (ts, "usec")
-%! && struct_contains (ts, "year")
-%! && struct_contains (ts, "mon")
-%! && struct_contains (ts, "mday")
-%! && struct_contains (ts, "sec")
-%! && struct_contains (ts, "min")
-%! && struct_contains (ts, "wday")
-%! && struct_contains (ts, "hour")
-%! && struct_contains (ts, "isdst")
-%! && struct_contains (ts, "yday")));
+%! && isfield (ts, "usec")
+%! && isfield (ts, "year")
+%! && isfield (ts, "mon")
+%! && isfield (ts, "mday")
+%! && isfield (ts, "sec")
+%! && isfield (ts, "min")
+%! && isfield (ts, "wday")
+%! && isfield (ts, "hour")
+%! && isfield (ts, "isdst")
+%! && isfield (ts, "yday")));
 
 %!error <Invalid call to localtime.*> localtime ();
 
@@ -232,9 +258,9 @@ localtime (time ())\n\
 
 DEFUN_DLD (mktime, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Loadable Function} {} mktime (@var{tm_struct})\n\
+@deftypefn {Loadable Function} {@var{seconds} =} mktime (@var{tm_struct})\n\
 Convert a time structure corresponding to the local time to the number\n\
-of seconds since the epoch.  For example,\n\
+of seconds since the epoch.  For example:\n\
 \n\
 @example\n\
 @group\n\
@@ -249,19 +275,19 @@ mktime (localtime (time ()))\n\
 
   if (args.length () == 1)
     {
-      Octave_map map = args(0).map_value ();
+      octave_scalar_map map = args(0).scalar_map_value ();
 
       if (! error_state)
-	{
-	  octave_base_tm tm = extract_tm (map);
+        {
+          octave_base_tm tm = extract_tm (map);
 
-	  if (! error_state)
-	    retval = octave_time (tm);
-	  else
-	    error ("mktime: invalid TMSTRUCT argument");
-	}
+          if (! error_state)
+            retval = octave_time (tm);
+          else
+            error ("mktime: invalid TM_STRUCT argument");
+        }
       else
-	error ("mktime: expecting structure argument");
+        error ("mktime: TM_STRUCT argument must be a structure");
     }
   else
     print_usage ();
@@ -279,6 +305,12 @@ mktime (localtime (time ()))\n\
 
 %!error <Invalid call to mktime.*> mktime (1, 2, 3);
 
+%% These tests fail on systems with mktime functions of limited
+%% intelligence:
+%!assert (datestr (datenum (1969, 1, 1), 0), "01-Jan-1969 00:00:00")
+%!assert (datestr (datenum (1901, 1, 1), 0), "01-Jan-1901 00:00:00")
+%!assert (datestr (datenum (1795, 1, 1), 0), "01-Jan-1795 00:00:00")
+
 */
 
 DEFUN_DLD (strftime, args, ,
@@ -292,7 +324,7 @@ Padding is with zeros by default; for fields that display a single\n\
 number, padding can be changed or inhibited by following the @samp{%}\n\
 with one of the modifiers described below.  Unknown field specifiers are\n\
 copied as normal characters.  All other characters are copied to the\n\
-output without change.  For example,\n\
+output without change.  For example:\n\
 \n\
 @example\n\
 @group\n\
@@ -308,13 +340,13 @@ field specifiers.\n\
 Literal character fields:\n\
 \n\
 @table @code\n\
-@item %\n\
+@item %%\n\
 % character.\n\
 \n\
-@item n\n\
+@item %n\n\
 Newline character.\n\
 \n\
-@item t\n\
+@item %t\n\
 Tab character.\n\
 @end table\n\
 \n\
@@ -441,23 +473,23 @@ Year (1970-).\n\
       std::string fmt = args(0).string_value ();
 
       if (! error_state)
-	{
-	  Octave_map map = args(1).map_value ();
+        {
+          octave_scalar_map map = args(1).scalar_map_value ();
 
-	  if (! error_state)
-	    {
-	      octave_base_tm tm = extract_tm (map);
+          if (! error_state)
+            {
+              octave_base_tm tm = extract_tm (map);
 
-	      if (! error_state)
-		retval = tm.strftime (fmt);
-	      else
-		error ("strftime: invalid TMSTRUCT argument");
-	    }
-	  else
-	    error ("strftime: expecting structure as second argument");
-	}
+              if (! error_state)
+                retval = tm.strftime (fmt);
+              else
+                error ("strftime: invalid TM_STRUCT argument");
+            }
+          else
+            error ("strftime: TM_STRUCT must be a structure");
+        }
       else
-	error ("strftime: expecting format string as first argument");
+        error ("strftime: FMT must be a string");
     }
   else
     print_usage ();
@@ -485,7 +517,7 @@ DEFUN_DLD (strptime, args, ,
 Convert the string @var{str} to the time structure @var{tm_struct} under\n\
 the control of the format string @var{fmt}.\n\
 \n\
-If @var{fmt} fails to match, @var{nchars} is 0; otherwise it is set to the\n\
+If @var{fmt} fails to match, @var{nchars} is 0; otherwise, it is set to the\n\
 position of last matched character plus 1. Always check for this unless\n\
 you're absolutely sure the date string will be parsed correctly.\n\
 @seealso{strftime, localtime, gmtime, mktime, time, now, date, clock, datenum, datestr, datevec, calendar, weekday}\n\
@@ -498,30 +530,24 @@ you're absolutely sure the date string will be parsed correctly.\n\
       std::string str = args(0).string_value ();
 
       if (! error_state)
-	{
-	  std::string fmt = args(1).string_value ();
+        {
+          std::string fmt = args(1).string_value ();
 
-	  if (! error_state)
-	    {
-	      octave_strptime t (str, fmt);
+          if (! error_state)
+            {
+              octave_strptime t (str, fmt);
 
-	      retval(1) = t.characters_converted ();
-	      retval(0) = octave_value (mk_tm_map (t));
-	    }
-	  else
-	    error ("strptime: expecting format string as second argument");
-	}
+              retval(1) = t.characters_converted ();
+              retval(0) = octave_value (mk_tm_map (t));
+            }
+          else
+            error ("strptime: FMT must be a string");
+        }
       else
-	error ("strptime: expecting string as first argument");
+        error ("strptime: argument STR must be a string");
     }
   else
     print_usage ();
 
   return retval;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

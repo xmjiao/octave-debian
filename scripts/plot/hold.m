@@ -1,4 +1,4 @@
-## Copyright (C) 2005, 2006, 2007, 2008, 2009 John W. Eaton
+## Copyright (C) 2005-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -17,17 +17,22 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {} hold
-## @deftypefnx {Function File} {} hold @var{state}
+## @deftypefn  {Command} {} hold
+## @deftypefnx {Command} {} hold @var{state}
 ## @deftypefnx {Function File} {} hold (@var{hax}, @dots{})
 ## Toggle or set the 'hold' state of the plotting engine which determines
 ## whether new graphic objects are added to the plot or replace the existing
-## objects.  
-## 
+## objects.
+##
 ## @table @code
 ## @item hold on
 ## Retain plot data and settings so that subsequent plot commands are displayed
 ## on a single graph.
+##
+## @item hold all
+## Retain plot line color, line style, data and settings so that subsequent
+## plot commands are displayed on a single graph with the next line color and
+## style.
 ##
 ## @item hold off
 ## Clear plot and restore default graphics settings before each new plot
@@ -36,7 +41,7 @@
 ## @item hold
 ## Toggle the current 'hold' state.
 ## @end table
-## 
+##
 ## When given the additional argument @var{hax}, the hold state is modified
 ## only for the given axis handle.
 ##
@@ -49,6 +54,7 @@ function hold (varargin)
   if (nargin > 0 && numel (varargin{1}) == 1 && ishandle (varargin{1})
       && strcmp (get (varargin{1}, "type"), "axes"))
     [ax, varargin, nargs] = __plt_get_axis_arg__ ("hold", varargin{:});
+    fig = get (ax, "parent");
   elseif (nargin > 0 && numel (varargin{1}) > 1 && ishandle (varargin{1}))
     print_usage ();
   else
@@ -57,17 +63,21 @@ function hold (varargin)
     nargs = numel (varargin);
   endif
 
+  hold_all = false;
   if (nargs == 0)
     turn_hold_off = ishold (ax);
   elseif (nargs == 1)
     state = varargin{1};
     if (ischar (state))
       if (strcmpi (state, "off"))
-	turn_hold_off = true;
+        turn_hold_off = true;
+      elseif (strcmpi (state, "all"))
+        turn_hold_off = false;
+        hold_all = true;
       elseif (strcmpi (state, "on"))
-	turn_hold_off = false;
+        turn_hold_off = false;
       else
-	error ("hold: invalid hold state");
+        error ("hold: invalid hold STATE");
       endif
     endif
   else
@@ -80,6 +90,7 @@ function hold (varargin)
     set (ax, "nextplot", "add");
     set (fig, "nextplot", "add");
   endif
+  set (ax, "__hold_all__", hold_all);
 
 endfunction
 

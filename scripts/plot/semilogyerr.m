@@ -1,4 +1,4 @@
-## Copyright (C) 2000, 2001, 2002, 2004, 2005, 2006, 2007 Teemu Ikonen
+## Copyright (C) 2000-2011 Teemu Ikonen
 ##
 ## This file is part of Octave.
 ##
@@ -18,20 +18,20 @@
 
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} semilogyerr (@var{args})
-## Produce two-dimensional plots on a semilogarithm axis with errorbars.
-## Many different combinations of arguments are possible.  The most used
-## form is
+## Produce two-dimensional plots using a logarithmic scale for the @var{y}
+## axis and errorbars at each data point.  Many different combinations of
+## arguments are possible.  The most used form is
 ##
 ## @example
 ## semilogyerr (@var{x}, @var{y}, @var{ey}, @var{fmt})
 ## @end example
 ##
 ## @noindent
-## which produces a semi-logarithm plot of @var{y} versus @var{x}
+## which produces a semi-logarithmic plot of @var{y} versus @var{x}
 ## with errors in the @var{y}-scale defined by @var{ey} and the plot
-## format defined by @var{fmt}.  See errorbar for available formats and 
+## format defined by @var{fmt}.  See @code{errorbar} for available formats and
 ## additional information.
-## @seealso{errorbar, loglogerr semilogxerr}
+## @seealso{errorbar, loglogerr, semilogxerr}
 ## @end deftypefn
 
 ## Created: 20.2.2001
@@ -59,3 +59,12 @@ function retval = semilogyerr (varargin)
   end_unwind_protect
 
 endfunction
+
+%!demo
+%! x = 0.25:0.25:10;
+%! y = wblpdf (x, 4, 2);
+%! eyu = rand (size (y));
+%! eyl = 1.0 - 1./(1+eyu);
+%! semilogyerr (x, y, eyl.*y, eyu.*y, "~-d")
+%! xlim ([0 10])
+

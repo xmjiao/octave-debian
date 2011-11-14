@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2000, 2001, 2002, 2003, 2004, 2005,
-              2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
+Copyright (C) 2009-2010 VZLU Prague
 
 This file is part of Octave.
 
@@ -60,7 +60,7 @@ template class octave_base_matrix<ComplexNDArray>;
 DEFINE_OCTAVE_ALLOCATOR (octave_complex_matrix);
 
 DEFINE_OV_TYPEID_FUNCTIONS_AND_DATA (octave_complex_matrix,
-				     "complex matrix", "double");
+                                     "complex matrix", "double");
 
 static octave_base_value *
 default_numeric_demotion_function (const octave_base_value& a)
@@ -82,28 +82,14 @@ octave_complex_matrix::try_narrowing_conversion (void)
 {
   octave_base_value *retval = 0;
 
-  if (matrix.ndims () == 2)
+  if (matrix.numel () == 1)
     {
-      ComplexMatrix cm = matrix.matrix_value ();
+      Complex c = matrix (0);
 
-      octave_idx_type nr = cm.rows ();
-      octave_idx_type nc = cm.cols ();
-
-      if (nr == 1 && nc == 1)
-	{
-	  Complex c = matrix (0, 0);
-
-	  double im = std::imag (c);
-
-	  if (im == 0.0 && ! lo_ieee_signbit (im))
-	    retval = new octave_scalar (std::real (c));
-	  else
-	    retval = new octave_complex (c);
-	}
-      else if (nr == 0 || nc == 0)
-	retval = new octave_matrix (Matrix (nr, nc));
-      else if (cm.all_elements_are_real ())
-	retval = new octave_matrix (::real (cm));
+      if (std::imag (c) == 0.0)
+        retval = new octave_scalar (std::real (c));
+      else
+        retval = new octave_complex (c);
     }
   else if (matrix.all_elements_are_real ())
     retval = new octave_matrix (::real (matrix));
@@ -118,12 +104,12 @@ octave_complex_matrix::double_value (bool force_conversion) const
 
   if (! force_conversion)
     gripe_implicit_conversion ("Octave:imag-to-real",
-			       "complex matrix", "real scalar");
+                               "complex matrix", "real scalar");
 
   if (rows () > 0 && columns () > 0)
     {
       gripe_implicit_conversion ("Octave:array-as-scalar",
-				 "complex matrix", "real scalar");
+                                 "complex matrix", "real scalar");
 
       retval = std::real (matrix (0, 0));
     }
@@ -140,12 +126,12 @@ octave_complex_matrix::float_value (bool force_conversion) const
 
   if (! force_conversion)
     gripe_implicit_conversion ("Octave:imag-to-real",
-			       "complex matrix", "real scalar");
+                               "complex matrix", "real scalar");
 
   if (rows () > 0 && columns () > 0)
     {
       gripe_implicit_conversion ("Octave:array-as-scalar",
-				 "complex matrix", "real scalar");
+                                 "complex matrix", "real scalar");
 
       retval = std::real (matrix (0, 0));
     }
@@ -162,7 +148,7 @@ octave_complex_matrix::matrix_value (bool force_conversion) const
 
   if (! force_conversion)
     gripe_implicit_conversion ("Octave:imag-to-real",
-			       "complex matrix", "real matrix");
+                               "complex matrix", "real matrix");
 
   retval = ::real (matrix.matrix_value ());
 
@@ -176,7 +162,7 @@ octave_complex_matrix::float_matrix_value (bool force_conversion) const
 
   if (! force_conversion)
     gripe_implicit_conversion ("Octave:imag-to-real",
-			       "complex matrix", "real matrix");
+                               "complex matrix", "real matrix");
 
   retval = ::real (matrix.matrix_value ());
 
@@ -193,7 +179,7 @@ octave_complex_matrix::complex_value (bool) const
   if (rows () > 0 && columns () > 0)
     {
       gripe_implicit_conversion ("Octave:array-as-scalar",
-				 "complex matrix", "complex scalar");
+                                 "complex matrix", "complex scalar");
 
       retval = matrix (0, 0);
     }
@@ -213,7 +199,7 @@ octave_complex_matrix::float_complex_value (bool) const
   if (rows () > 0 && columns () > 0)
     {
       gripe_implicit_conversion ("Octave:array-as-scalar",
-				 "complex matrix", "complex scalar");
+                                 "complex matrix", "complex scalar");
 
       retval = matrix (0, 0);
     }
@@ -235,6 +221,18 @@ octave_complex_matrix::float_complex_matrix_value (bool) const
   return FloatComplexMatrix (matrix.matrix_value ());
 }
 
+boolNDArray
+octave_complex_matrix::bool_array_value (bool warn) const
+{
+  if (matrix.any_element_is_nan ())
+    gripe_nan_to_logical_conversion ();
+  else if (warn && (! matrix.all_elements_are_real ()
+                    || real (matrix).any_element_not_one_or_zero ()))
+    gripe_logical_conversion ();
+
+  return mx_el_ne (matrix, Complex (0.0));
+}
+
 charNDArray
 octave_complex_matrix::char_array_value (bool frc_str_conv) const
 {
@@ -242,22 +240,22 @@ octave_complex_matrix::char_array_value (bool frc_str_conv) const
 
   if (! frc_str_conv)
     gripe_implicit_conversion ("Octave:num-to-str",
-			       "complex matrix", "string");
+                               "complex matrix", "string");
   else
     {
       retval = charNDArray (dims ());
       octave_idx_type nel = numel ();
-  
+
       for (octave_idx_type i = 0; i < nel; i++)
-	retval.elem (i) = static_cast<char>(std::real (matrix.elem (i)));
+        retval.elem (i) = static_cast<char>(std::real (matrix.elem (i)));
     }
 
   return retval;
-}  
+}
 
-FloatComplexNDArray 
-octave_complex_matrix::float_complex_array_value (bool) const 
-{ 
+FloatComplexNDArray
+octave_complex_matrix::float_complex_array_value (bool) const
+{
   return FloatComplexNDArray (matrix);
 }
 
@@ -268,7 +266,7 @@ octave_complex_matrix::sparse_matrix_value (bool force_conversion) const
 
   if (! force_conversion)
     gripe_implicit_conversion ("Octave:imag-to-real",
-			       "complex matrix", "real matrix");
+                               "complex matrix", "real matrix");
 
   retval = SparseMatrix (::real (matrix.matrix_value ()));
 
@@ -285,7 +283,7 @@ octave_value
 octave_complex_matrix::diag (octave_idx_type k) const
 {
   octave_value retval;
-  if (k == 0 && matrix.ndims () == 2 
+  if (k == 0 && matrix.ndims () == 2
       && (matrix.rows () == 1 || matrix.columns () == 1))
     retval = ComplexDiagMatrix (DiagArray2<Complex> (matrix));
   else
@@ -294,7 +292,7 @@ octave_complex_matrix::diag (octave_idx_type k) const
   return retval;
 }
 
-bool 
+bool
 octave_complex_matrix::save_ascii (std::ostream& os)
 {
   dim_vector d = dims ();
@@ -305,16 +303,16 @@ octave_complex_matrix::save_ascii (std::ostream& os)
       os << "# ndims: " << d.length () << "\n";
 
       for (int i = 0; i < d.length (); i++)
-	os << " " << d (i);
+        os << " " << d (i);
 
       os << "\n" << tmp;
     }
   else
     {
-      // Keep this case, rather than use generic code above for backward 
+      // Keep this case, rather than use generic code above for backward
       // compatiability. Makes load_ascii much more complex!!
       os << "# rows: " << rows () << "\n"
-	 << "# columns: " << columns () << "\n";
+         << "# columns: " << columns () << "\n";
 
       os << complex_matrix_value ();
     }
@@ -322,7 +320,7 @@ octave_complex_matrix::save_ascii (std::ostream& os)
   return true;
 }
 
-bool 
+bool
 octave_complex_matrix::load_ascii (std::istream& is)
 {
   bool success = true;
@@ -338,20 +336,20 @@ octave_complex_matrix::load_ascii (std::istream& is)
   if (extract_keyword (is, keywords, kw, val, true))
     {
       if (kw == "ndims")
-	{
-	  int mdims = static_cast<int> (val);
+        {
+          int mdims = static_cast<int> (val);
 
-	  if (mdims >= 0)
-	    {
-	      dim_vector dv;
-	      dv.resize (mdims);
+          if (mdims >= 0)
+            {
+              dim_vector dv;
+              dv.resize (mdims);
 
-	      for (int i = 0; i < mdims; i++)
-		is >> dv(i);
+              for (int i = 0; i < mdims; i++)
+                is >> dv(i);
 
-	      if (is)
-		{
-		  ComplexNDArray tmp(dv);
+              if (is)
+                {
+                  ComplexNDArray tmp(dv);
 
                   is >> tmp;
 
@@ -362,51 +360,51 @@ octave_complex_matrix::load_ascii (std::istream& is)
                       error ("load: failed to load matrix constant");
                       success = false;
                     }
-		}
-	      else
-		{
-		  error ("load: failed to read dimensions");
-		  success = false;
-		}
-	    }
-	  else
-	    {
-	      error ("load: failed to extract number of dimensions");
-	      success = false;
-	    }
-	}
+                }
+              else
+                {
+                  error ("load: failed to read dimensions");
+                  success = false;
+                }
+            }
+          else
+            {
+              error ("load: failed to extract number of dimensions");
+              success = false;
+            }
+        }
       else if (kw == "rows")
-	{
-	  octave_idx_type nr = val;
-	  octave_idx_type nc = 0;
+        {
+          octave_idx_type nr = val;
+          octave_idx_type nc = 0;
 
-	  if (nr >= 0 && extract_keyword (is, "columns", nc) && nc >= 0)
-	    {
-	      if (nr > 0 && nc > 0)
-		{
-		  ComplexMatrix tmp (nr, nc);
-		  is >> tmp;
-		  if (is)
-		    matrix = tmp;
-		  else
-		    {
-		      error ("load: failed to load matrix constant");
-		      success = false;
-		    }
-		}
-	      else if (nr == 0 || nc == 0)
-		matrix = ComplexMatrix (nr, nc);
-	      else
-		panic_impossible ();
-	    }
-	  else
-	    {
-	      error ("load: failed to extract number of rows and columns");
-	      success = false;
-	    }
-	}
+          if (nr >= 0 && extract_keyword (is, "columns", nc) && nc >= 0)
+            {
+              if (nr > 0 && nc > 0)
+                {
+                  ComplexMatrix tmp (nr, nc);
+                  is >> tmp;
+                  if (is)
+                    matrix = tmp;
+                  else
+                    {
+                      error ("load: failed to load matrix constant");
+                      success = false;
+                    }
+                }
+              else if (nr == 0 || nc == 0)
+                matrix = ComplexMatrix (nr, nc);
+              else
+                panic_impossible ();
+            }
+          else
+            {
+              error ("load: failed to extract number of rows and columns");
+              success = false;
+            }
+        }
       else
-	panic_impossible ();
+        panic_impossible ();
     }
   else
     {
@@ -417,7 +415,7 @@ octave_complex_matrix::load_ascii (std::istream& is)
   return success;
 }
 
-bool 
+bool
 octave_complex_matrix::save_binary (std::ostream& os, bool& save_as_floats)
 {
   dim_vector d = dims ();
@@ -438,18 +436,18 @@ octave_complex_matrix::save_binary (std::ostream& os, bool& save_as_floats)
   if (save_as_floats)
     {
       if (m.too_large_for_float ())
-	{
-	  warning ("save: some values too large to save as floats --");
-	  warning ("save: saving as doubles instead");
-	}
+        {
+          warning ("save: some values too large to save as floats --");
+          warning ("save: saving as doubles instead");
+        }
       else
-	st = LS_FLOAT;
+        st = LS_FLOAT;
     }
   else if (d.numel () > 4096) // FIXME -- make this configurable.
     {
       double max_val, min_val;
       if (m.all_integers (max_val, min_val))
-	st = get_save_type (max_val, min_val);
+        st = get_save_type (max_val, min_val);
     }
 
 
@@ -459,9 +457,9 @@ octave_complex_matrix::save_binary (std::ostream& os, bool& save_as_floats)
   return true;
 }
 
-bool 
+bool
 octave_complex_matrix::load_binary (std::istream& is, bool swap,
-				 oct_mach_info::float_format fmt)
+                                 oct_mach_info::float_format fmt)
 {
   char tmp;
   int32_t mdims;
@@ -477,35 +475,35 @@ octave_complex_matrix::load_binary (std::istream& is, bool swap,
       dv.resize (mdims);
 
       for (int i = 0; i < mdims; i++)
-	{
-	  if (! is.read (reinterpret_cast<char *> (&di), 4))
-	    return false;
-	  if (swap)
-	    swap_bytes<4> (&di);
-	  dv(i) = di;
-	}
+        {
+          if (! is.read (reinterpret_cast<char *> (&di), 4))
+            return false;
+          if (swap)
+            swap_bytes<4> (&di);
+          dv(i) = di;
+        }
 
       // Convert an array with a single dimension to be a row vector.
       // Octave should never write files like this, other software
       // might.
 
       if (mdims == 1)
-	{
-	  mdims = 2;
-	  dv.resize (mdims);
-	  dv(1) = dv(0);
-	  dv(0) = 1;
-	}
+        {
+          mdims = 2;
+          dv.resize (mdims);
+          dv(1) = dv(0);
+          dv(0) = 1;
+        }
 
       if (! is.read (reinterpret_cast<char *> (&tmp), 1))
-	return false;
+        return false;
 
       ComplexNDArray m(dv);
       Complex *im = m.fortran_vec ();
       read_doubles (is, reinterpret_cast<double *> (im),
-		    static_cast<save_type> (tmp), 2 * dv.numel (), swap, fmt);
+                    static_cast<save_type> (tmp), 2 * dv.numel (), swap, fmt);
       if (error_state || ! is)
-	return false;
+        return false;
       matrix = m;
     }
   else
@@ -513,18 +511,18 @@ octave_complex_matrix::load_binary (std::istream& is, bool swap,
       int32_t nr, nc;
       nr = mdims;
       if (! is.read (reinterpret_cast<char *> (&nc), 4))
-	return false;
+        return false;
       if (swap)
-	swap_bytes<4> (&nc);
+        swap_bytes<4> (&nc);
       if (! is.read (reinterpret_cast<char *> (&tmp), 1))
-	return false;
+        return false;
       ComplexMatrix m (nr, nc);
       Complex *im = m.fortran_vec ();
       octave_idx_type len = nr * nc;
       read_doubles (is, reinterpret_cast<double *> (im),
-		    static_cast<save_type> (tmp), 2*len, swap, fmt);
+                    static_cast<save_type> (tmp), 2*len, swap, fmt);
       if (error_state || ! is)
-	return false;
+        return false;
       matrix = m;
     }
   return true;
@@ -534,7 +532,7 @@ octave_complex_matrix::load_binary (std::istream& is, bool swap,
 
 bool
 octave_complex_matrix::save_hdf5 (hid_t loc_id, const char *name,
-				  bool save_as_floats)
+                                  bool save_as_floats)
 {
   dim_vector dv = dims ();
   int empty = save_hdf5_empty (loc_id, name, dv);
@@ -551,7 +549,7 @@ octave_complex_matrix::save_hdf5 (hid_t loc_id, const char *name,
   // Octave uses column-major, while HDF5 uses row-major ordering
   for (int i = 0; i < rank; i++)
     hdims[i] = dv (rank-i-1);
- 
+
   space_hid = H5Screate_simple (rank, hdims, 0);
   if (space_hid < 0) return false;
 
@@ -560,22 +558,22 @@ octave_complex_matrix::save_hdf5 (hid_t loc_id, const char *name,
   if (save_as_floats)
     {
       if (m.too_large_for_float ())
-	{
-	  warning ("save: some values too large to save as floats --");
-	  warning ("save: saving as doubles instead");
-	}
+        {
+          warning ("save: some values too large to save as floats --");
+          warning ("save: saving as doubles instead");
+        }
       else
-	save_type_hid = H5T_NATIVE_FLOAT;
+        save_type_hid = H5T_NATIVE_FLOAT;
     }
 #if HAVE_HDF5_INT2FLOAT_CONVERSIONS
   // hdf5 currently doesn't support float/integer conversions
   else
     {
       double max_val, min_val;
-      
+
       if (m.all_integers (max_val, min_val))
-	save_type_hid
-	  = save_type_to_hdf5 (get_save_type (max_val, min_val));
+        save_type_hid
+          = save_type_to_hdf5 (get_save_type (max_val, min_val));
     }
 #endif /* HAVE_HDF5_INT2FLOAT_CONVERSIONS */
 
@@ -585,8 +583,12 @@ octave_complex_matrix::save_hdf5 (hid_t loc_id, const char *name,
       H5Sclose (space_hid);
       return false;
     }
-
+#if HAVE_HDF5_18
+  data_hid = H5Dcreate (loc_id, name, type_hid, space_hid,
+                        H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+#else
   data_hid = H5Dcreate (loc_id, name, type_hid, space_hid, H5P_DEFAULT);
+#endif
   if (data_hid < 0)
     {
       H5Sclose (space_hid);
@@ -601,11 +603,11 @@ octave_complex_matrix::save_hdf5 (hid_t loc_id, const char *name,
     {
       Complex *mtmp = m.fortran_vec ();
       if (H5Dwrite (data_hid, complex_type_hid, H5S_ALL, H5S_ALL, H5P_DEFAULT,
-		    mtmp) < 0)
-	{
-	  H5Tclose (complex_type_hid);
-	  retval = false;
-	}
+                    mtmp) < 0)
+        {
+          H5Tclose (complex_type_hid);
+          retval = false;
+        }
     }
 
   H5Tclose (complex_type_hid);
@@ -616,9 +618,8 @@ octave_complex_matrix::save_hdf5 (hid_t loc_id, const char *name,
   return retval;
 }
 
-bool 
-octave_complex_matrix::load_hdf5 (hid_t loc_id, const char *name,
-				  bool /* have_h5giterate_bug */)
+bool
+octave_complex_matrix::load_hdf5 (hid_t loc_id, const char *name)
 {
   bool retval = false;
 
@@ -629,7 +630,11 @@ octave_complex_matrix::load_hdf5 (hid_t loc_id, const char *name,
   if (empty)
       return (empty > 0);
 
+#if HAVE_HDF5_18
+  hid_t data_hid = H5Dopen (loc_id, name, H5P_DEFAULT);
+#else
   hid_t data_hid = H5Dopen (loc_id, name);
+#endif
   hid_t type_hid = H5Dget_type (data_hid);
 
   hid_t complex_type = hdf5_make_complex_type (H5T_NATIVE_DOUBLE);
@@ -644,7 +649,7 @@ octave_complex_matrix::load_hdf5 (hid_t loc_id, const char *name,
   hid_t space_id = H5Dget_space (data_hid);
 
   hsize_t rank = H5Sget_simple_extent_ndims (space_id);
-  
+
   if (rank < 1)
     {
       H5Tclose (complex_type);
@@ -669,13 +674,13 @@ octave_complex_matrix::load_hdf5 (hid_t loc_id, const char *name,
     {
       dv.resize (rank);
       for (hsize_t i = 0, j = rank - 1; i < rank; i++, j--)
-	dv(j) = hdims[i];
+        dv(j) = hdims[i];
     }
 
   ComplexNDArray m (dv);
   Complex *reim = m.fortran_vec ();
   if (H5Dread (data_hid, complex_type, H5S_ALL, H5S_ALL, H5P_DEFAULT,
-	       reim) >= 0) 
+               reim) >= 0)
     {
       retval = true;
       matrix = m;
@@ -692,10 +697,10 @@ octave_complex_matrix::load_hdf5 (hid_t loc_id, const char *name,
 
 void
 octave_complex_matrix::print_raw (std::ostream& os,
-				  bool pr_as_read_syntax) const
+                                  bool pr_as_read_syntax) const
 {
   octave_print_internal (os, matrix, pr_as_read_syntax,
-			 current_print_indent_level ());
+                         current_print_indent_level ());
 }
 
 mxArray *
@@ -719,192 +724,62 @@ octave_complex_matrix::as_mxArray (void) const
   return retval;
 }
 
-#if 0
-static double
-xabs (const Complex& x)
+octave_value
+octave_complex_matrix::map (unary_mapper_t umap) const
 {
-  return (xisinf (x.real ()) || xisinf (x.imag ())) ? octave_Inf : abs (x);
-}
-#endif
-
-static double
-ximag (const Complex& x)
-{
-  return x.imag ();
-}
-
-static double
-xreal (const Complex& x)
-{
-  return x.real ();
-}
-
-static bool
-any_element_less_than (const NDArray& a, double val)
-{
-  octave_idx_type len = a.length ();
-  const double *m = a.fortran_vec ();
-
-  for (octave_idx_type i = 0; i < len; i++)
+  switch (umap)
     {
-      OCTAVE_QUIT;
+    // Mappers handled specially.
+    case umap_real:
+      return ::real (matrix);
+    case umap_imag:
+      return ::imag (matrix);
+    case umap_conj:
+      return ::conj (matrix);
 
-      if (m[i] < val)
-	return true;
+#define ARRAY_METHOD_MAPPER(UMAP, FCN) \
+    case umap_ ## UMAP: \
+      return octave_value (matrix.FCN ())
+
+      ARRAY_METHOD_MAPPER (abs, abs);
+      ARRAY_METHOD_MAPPER (isnan, isnan);
+      ARRAY_METHOD_MAPPER (isinf, isinf);
+      ARRAY_METHOD_MAPPER (finite, isfinite);
+
+#define ARRAY_MAPPER(UMAP, TYPE, FCN) \
+    case umap_ ## UMAP: \
+      return octave_value (matrix.map<TYPE> (FCN))
+
+      ARRAY_MAPPER (acos, Complex, ::acos);
+      ARRAY_MAPPER (acosh, Complex, ::acosh);
+      ARRAY_MAPPER (angle, double, std::arg);
+      ARRAY_MAPPER (arg, double, std::arg);
+      ARRAY_MAPPER (asin, Complex, ::asin);
+      ARRAY_MAPPER (asinh, Complex, ::asinh);
+      ARRAY_MAPPER (atan, Complex, ::atan);
+      ARRAY_MAPPER (atanh, Complex, ::atanh);
+      ARRAY_MAPPER (ceil, Complex, ::ceil);
+      ARRAY_MAPPER (cos, Complex, std::cos);
+      ARRAY_MAPPER (cosh, Complex, std::cosh);
+      ARRAY_MAPPER (exp, Complex, std::exp);
+      ARRAY_MAPPER (expm1, Complex, ::expm1);
+      ARRAY_MAPPER (fix, Complex, ::fix);
+      ARRAY_MAPPER (floor, Complex, ::floor);
+      ARRAY_MAPPER (log, Complex, std::log);
+      ARRAY_MAPPER (log2, Complex, xlog2);
+      ARRAY_MAPPER (log10, Complex, std::log10);
+      ARRAY_MAPPER (log1p, Complex, ::log1p);
+      ARRAY_MAPPER (round, Complex, xround);
+      ARRAY_MAPPER (roundb, Complex, xroundb);
+      ARRAY_MAPPER (signum, Complex, ::signum);
+      ARRAY_MAPPER (sin, Complex, std::sin);
+      ARRAY_MAPPER (sinh, Complex, std::sinh);
+      ARRAY_MAPPER (sqrt, Complex, std::sqrt);
+      ARRAY_MAPPER (tan, Complex, std::tan);
+      ARRAY_MAPPER (tanh, Complex, std::tanh);
+      ARRAY_MAPPER (isna, bool, octave_is_NA);
+
+    default:
+      return octave_base_value::map (umap);
     }
-
-  return false;
 }
-
-static bool
-any_element_greater_than (const NDArray& a, double val)
-{
-  octave_idx_type len = a.length ();
-  const double *m = a.fortran_vec ();
-
-  for (octave_idx_type i = 0; i < len; i++)
-    {
-      OCTAVE_QUIT;
-
-      if (m[i] > val)
-	return true;
-    }
-
-  return false;
-}
-
-#define ARRAY_MAPPER(MAP, AMAP, FCN) \
-  octave_value \
-  octave_complex_matrix::MAP (void) const \
-  { \
-    static AMAP cmap = FCN; \
-    return matrix.map (cmap); \
-  }
-
-#define DARRAY_MAPPER(MAP, AMAP, FCN) \
-  octave_value \
-  octave_complex_matrix::MAP (void) const \
-  { \
-    static ComplexNDArray::dmapper dmap = ximag; \
-    NDArray m = matrix.map (dmap); \
-    if (m.all_elements_are_zero ()) \
-      { \
-	dmap = xreal; \
-	m = matrix.map (dmap); \
-        static AMAP cmap = FCN; \
-        return m.map (cmap); \
-      } \
-    else \
-      { \
-        error ("%s: not defined for complex arguments", #MAP); \
-        return octave_value (); \
-      } \
-  }
-
-#define CD_ARRAY_MAPPER(MAP, RFCN, CFCN, L1, L2) \
-  octave_value \
-  octave_complex_matrix::MAP (void) const \
-  { \
-    static ComplexNDArray::dmapper idmap = ximag; \
-    NDArray m = matrix.map (idmap); \
-    if (m.all_elements_are_zero ()) \
-      { \
-	static ComplexNDArray::dmapper rdmap = xreal; \
-	m = matrix.map (rdmap); \
-        static NDArray::dmapper dmap = RFCN; \
-        static NDArray::cmapper cmap = CFCN; \
-        return (any_element_less_than (m, L1) \
-                ? octave_value (m.map (cmap)) \
-	        : (any_element_greater_than (m, L2) \
-	           ? octave_value (m.map (cmap)) \
-	           : octave_value (m.map (dmap)))); \
-      } \
-    else \
-      { \
-        /*error ("%s: not defined for complex arguments", #MAP); */	\
-        return octave_value (m); \
-      } \
-  }
-
-// The fast mappers.
-octave_value
-octave_complex_matrix::abs (void) const
-{
-  return matrix.abs ();
-}
-
-octave_value
-octave_complex_matrix::real (void) const
-{
-  return ::real (matrix);
-}
-
-octave_value
-octave_complex_matrix::conj (void) const
-{
-  return ::conj (matrix);
-}
-
-octave_value
-octave_complex_matrix::imag (void) const
-{
-  return ::imag (matrix);
-}
-
-octave_value
-octave_complex_matrix::isnan (void) const
-{
-  return matrix.isnan ();
-}
-
-octave_value
-octave_complex_matrix::isinf (void) const
-{
-  return matrix.isinf ();
-}
-
-octave_value
-octave_complex_matrix::finite (void) const
-{
-  return matrix.isfinite ();
-}
-
-DARRAY_MAPPER (erf, NDArray::dmapper, ::erf)
-DARRAY_MAPPER (erfc, NDArray::dmapper, ::erfc)
-DARRAY_MAPPER (gamma, NDArray::dmapper, xgamma)
-CD_ARRAY_MAPPER (lgamma, xlgamma, xlgamma, 0.0, octave_Inf)
-
-ARRAY_MAPPER (acos, ComplexNDArray::cmapper, ::acos)
-ARRAY_MAPPER (acosh, ComplexNDArray::cmapper, ::acosh)
-ARRAY_MAPPER (angle, ComplexNDArray::dmapper, std::arg)
-ARRAY_MAPPER (arg, ComplexNDArray::dmapper, std::arg)
-ARRAY_MAPPER (asin, ComplexNDArray::cmapper, ::asin)
-ARRAY_MAPPER (asinh, ComplexNDArray::cmapper, ::asinh)
-ARRAY_MAPPER (atan, ComplexNDArray::cmapper, ::atan)
-ARRAY_MAPPER (atanh, ComplexNDArray::cmapper, ::atanh)
-ARRAY_MAPPER (ceil, ComplexNDArray::cmapper, ::ceil)
-ARRAY_MAPPER (cos, ComplexNDArray::cmapper, std::cos)
-ARRAY_MAPPER (cosh, ComplexNDArray::cmapper, std::cosh)
-ARRAY_MAPPER (exp, ComplexNDArray::cmapper, std::exp)
-ARRAY_MAPPER (expm1, ComplexNDArray::cmapper, ::expm1)
-ARRAY_MAPPER (fix, ComplexNDArray::cmapper, ::fix)
-ARRAY_MAPPER (floor, ComplexNDArray::cmapper, ::floor)
-ARRAY_MAPPER (log, ComplexNDArray::cmapper, std::log)
-ARRAY_MAPPER (log2, ComplexNDArray::cmapper, xlog2)
-ARRAY_MAPPER (log10, ComplexNDArray::cmapper, std::log10)
-ARRAY_MAPPER (log1p, ComplexNDArray::cmapper, ::log1p)
-ARRAY_MAPPER (round, ComplexNDArray::cmapper, xround)
-ARRAY_MAPPER (roundb, ComplexNDArray::cmapper, xroundb)
-ARRAY_MAPPER (signum, ComplexNDArray::cmapper, ::signum)
-ARRAY_MAPPER (sin, ComplexNDArray::cmapper, std::sin)
-ARRAY_MAPPER (sinh, ComplexNDArray::cmapper, std::sinh)
-ARRAY_MAPPER (sqrt, ComplexNDArray::cmapper, std::sqrt)
-ARRAY_MAPPER (tan, ComplexNDArray::cmapper, std::tan)
-ARRAY_MAPPER (tanh, ComplexNDArray::cmapper, std::tanh)
-ARRAY_MAPPER (isna, ComplexNDArray::bmapper, octave_is_NA)
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

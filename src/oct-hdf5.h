@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2009 John W. Eaton
+Copyright (C) 2009-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -24,19 +24,7 @@ along with Octave; see the file COPYING.  If not, see
 #define octave_hdf5_h 1
 
 #if defined (HAVE_HDF5)
-
-#if !defined (H5_USE_16_API)
-#define H5_USE_16_API 1
-#endif
-
 #include <hdf5.h>
-
 #endif
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

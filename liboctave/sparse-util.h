@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 2005, 2007, 2008 David Bateman
-Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005 Andy Adler
+Copyright (C) 2005-2011 David Bateman
+Copyright (C) 1998-2005 Andy Adler
 
 This file is part of Octave.
 
@@ -25,16 +25,15 @@ along with Octave; see the file COPYING.  If not, see
 #define octave_sparse_util_h 1
 
 // FIXME this overload is here due to API change in SuiteSparse (3.1 -> 3.2)
-extern OCTAVE_API void SparseCholError (int status, char *file, 
+extern OCTAVE_API void SparseCholError (int status, char *file,
                                         int line, char *message);
-extern OCTAVE_API void SparseCholError (int status, const char *file, 
+extern OCTAVE_API void SparseCholError (int status, const char *file,
                                         int line, const char *message);
 extern OCTAVE_API int SparseCholPrint (const char *fmt, ...);
 
-#endif
+extern OCTAVE_API bool
+sparse_indices_ok (octave_idx_type *r, octave_idx_type *c,
+                   octave_idx_type nrows, octave_idx_type ncols,
+                   octave_idx_type nnz);
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+#endif

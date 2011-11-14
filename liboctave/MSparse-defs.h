@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 2004, 2005, 2006, 2007 David Bateman
-Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004 Andy Adler
+Copyright (C) 2004-2011 David Bateman
+Copyright (C) 1998-2004 Andy Adler
 
 This file is part of Octave.
 
@@ -106,7 +106,7 @@ along with Octave; see the file COPYING.  If not, see
 // All the binary operators that we care about.  We have two
 // sets of macros since the MArray OP MArray operations use functions
 // (product and quotient) instead of operators (*, /).
-#define SPARSE_BINOP_DECLS(A_T, F_T, E_T, PFX, API, LTGT, X_T, Y_T)	 \
+#define SPARSE_BINOP_DECLS(A_T, F_T, E_T, PFX, API, LTGT, X_T, Y_T)      \
   SPARSE_BINOP_DECL (F_T, E_T, operator +, PFX, API, LTGT, X_T, Y_T); \
   SPARSE_BINOP_DECL (F_T, E_T, operator -, PFX, API, LTGT, X_T, Y_T); \
   SPARSE_BINOP_DECL (A_T, E_T, operator *, PFX, API, LTGT, X_T, Y_T); \
@@ -120,20 +120,20 @@ along with Octave; see the file COPYING.  If not, see
 
 // Generate forward declarations for binary operators.
 #define SPARSE_BINOP_FWD_DECLS(A_T, F_T, API) \
-  SPARSE_BINOP_DECLS (A_T, F_T, T, template <typename T>, API, , A_T<T>, T)	\
+  SPARSE_BINOP_DECLS (A_T, F_T, T, template <typename T>, API, , A_T<T>, T)     \
   SPARSE_BINOP_DECLS (A_T, F_T, T, template <typename T>, API, , T, A_T<T>) \
   SPARSE_AA_BINOP_DECLS (A_T, T, template <typename T>, API, )
 
 // Generate friend declarations for the binary operators.
-#define SPARSE_BINOP_FRIENDS(A_T, F_T, API)		     \
-  SPARSE_BINOP_DECLS (A_T, F_T, T, friend, API, <>, A_T<T>, T)	\
-  SPARSE_BINOP_DECLS (A_T, F_T, T, friend, API, <>, T, A_T<T>)	\
+#define SPARSE_BINOP_FRIENDS(A_T, F_T, API)                  \
+  SPARSE_BINOP_DECLS (A_T, F_T, T, friend, API, <>, A_T<T>, T)  \
+  SPARSE_BINOP_DECLS (A_T, F_T, T, friend, API, <>, T, A_T<T>)  \
   SPARSE_AA_BINOP_DECLS (A_T, T, friend, API, <>)
 
 // Instantiate the binary operators.
 #define SPARSE_BINOP_DEFS(A_T, F_T, E_T, API) \
-  SPARSE_BINOP_DECLS (A_T, F_T, E_T, template, API, , A_T<E_T>, E_T)	\
-  SPARSE_BINOP_DECLS (A_T, F_T, E_T, template, API, , E_T, A_T<E_T>)	\
+  SPARSE_BINOP_DECLS (A_T, F_T, E_T, template, API, , A_T<E_T>, E_T)    \
+  SPARSE_BINOP_DECLS (A_T, F_T, E_T, template, API, , E_T, A_T<E_T>)    \
   SPARSE_AA_BINOP_DECLS (A_T, E_T, template, API, )
 
 // A function that can be used to forward binary operations from derived
@@ -184,13 +184,13 @@ along with Octave; see the file COPYING.  If not, see
   /* SPARSE_OP_ASSIGN_DEFS (MSparse, T, T) */ \
   SPARSE_OP_ASSIGN_DEFS (MSparse, T, MSparse<T>, API) \
   SPARSE_UNOP_DEFS (MSparse, T, API) \
-  SPARSE_BINOP_DEFS (MSparse, MArray2, T, API)
+  SPARSE_BINOP_DEFS (MSparse, MArray, T, API)
 
 // Define all the MSparse forwarding functions for return type R and
 // MSparse element type T
-#define SPARSE_FORWARD_DEFS(B, R, F, T) 	\
-  /* SPARSE_OP_ASSIGN_FWD_DEFS	*/ \
-  /* (R, T, dynamic_cast<B<T>&>, R, , T) */	\
+#define SPARSE_FORWARD_DEFS(B, R, F, T)         \
+  /* SPARSE_OP_ASSIGN_FWD_DEFS  */ \
+  /* (R, T, dynamic_cast<B<T>&>, R, , T) */     \
  \
   SPARSE_OP_ASSIGN_FWD_DEFS \
     (R, T, \
@@ -203,7 +203,7 @@ along with Octave; see the file COPYING.  If not, see
     (R, F, T, dynamic_cast<const B<T>&>, R, , T) \
  \
   SPARSE_BINOP_FWD_DEFS \
-    (R, F, T, , T, dynamic_cast<const B<T>&>, R)	\
+    (R, F, T, , T, dynamic_cast<const B<T>&>, R)        \
  \
   SPARSE_AA_BINOP_FWD_DEFS \
     (R, T, dynamic_cast<const B<T>&>, R, dynamic_cast<const B<T>&>, R)
@@ -211,9 +211,3 @@ along with Octave; see the file COPYING.  If not, see
 // Now we have all the definitions we need.
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

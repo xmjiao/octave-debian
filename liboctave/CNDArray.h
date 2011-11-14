@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 2003-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -23,40 +23,43 @@ along with Octave; see the file COPYING.  If not, see
 #if !defined (octave_ComplexNDArray_h)
 #define octave_ComplexNDArray_h 1
 
-#include "MArrayN.h"
+#include "MArray.h"
 #include "CMatrix.h"
 
 #include "mx-defs.h"
 #include "mx-op-decl.h"
+#include "bsxfun-decl.h"
 
 class
 OCTAVE_API
-ComplexNDArray : public MArrayN<Complex>
+ComplexNDArray : public MArray<Complex>
 {
 public:
 
-  ComplexNDArray (void) : MArrayN<Complex> () { }
+  typedef ComplexMatrix matrix_type;
 
-  ComplexNDArray (const dim_vector& dv) : MArrayN<Complex> (dv) { }
+  ComplexNDArray (void) : MArray<Complex> () { }
+
+  ComplexNDArray (const dim_vector& dv) : MArray<Complex> (dv) { }
 
   ComplexNDArray (const dim_vector& dv, const Complex& val)
-    : MArrayN<Complex> (dv, val) { }
-  
-  ComplexNDArray (const ComplexNDArray& a) : MArrayN<Complex> (a) { }
+    : MArray<Complex> (dv, val) { }
 
-  ComplexNDArray (const ComplexMatrix& a) : MArrayN<Complex> (a) { }
+  ComplexNDArray (const ComplexNDArray& a) : MArray<Complex> (a) { }
 
-  template <class U>
-  ComplexNDArray (const MArrayN<U>& a) : MArrayN<Complex> (a) { }
+  ComplexNDArray (const ComplexMatrix& a) : MArray<Complex> (a) { }
 
   template <class U>
-  ComplexNDArray (const ArrayN<U>& a) : MArrayN<Complex> (a) { }
+  ComplexNDArray (const MArray<U>& a) : MArray<Complex> (a) { }
 
-  ComplexNDArray (const charNDArray&); 
+  template <class U>
+  ComplexNDArray (const Array<U>& a) : MArray<Complex> (a) { }
+
+  ComplexNDArray (const charNDArray&);
 
   ComplexNDArray& operator = (const ComplexNDArray& a)
     {
-      MArrayN<Complex>::operator = (a);
+      MArray<Complex>::operator = (a);
       return *this;
     }
 
@@ -79,24 +82,27 @@ public:
   ComplexNDArray cumsum (int dim = -1) const;
   ComplexNDArray prod (int dim = -1) const;
   ComplexNDArray sum (int dim = -1) const;
+  ComplexNDArray xsum (int dim = -1) const;
   ComplexNDArray sumsq (int dim = -1) const;
   ComplexNDArray concat (const ComplexNDArray& rb, const Array<octave_idx_type>& ra_idx);
   ComplexNDArray concat (const NDArray& rb, const Array<octave_idx_type>& ra_idx);
 
-  ComplexNDArray max (int dim = 0) const;
-  ComplexNDArray max (ArrayN<octave_idx_type>& index, int dim = 0) const;
-  ComplexNDArray min (int dim = 0) const;
-  ComplexNDArray min (ArrayN<octave_idx_type>& index, int dim = 0) const;
+  ComplexNDArray max (int dim = -1) const;
+  ComplexNDArray max (Array<octave_idx_type>& index, int dim = -1) const;
+  ComplexNDArray min (int dim = -1) const;
+  ComplexNDArray min (Array<octave_idx_type>& index, int dim = -1) const;
 
-  ComplexNDArray cummax (int dim = 0) const;
-  ComplexNDArray cummax (ArrayN<octave_idx_type>& index, int dim = 0) const;
-  ComplexNDArray cummin (int dim = 0) const;
-  ComplexNDArray cummin (ArrayN<octave_idx_type>& index, int dim = 0) const;
+  ComplexNDArray cummax (int dim = -1) const;
+  ComplexNDArray cummax (Array<octave_idx_type>& index, int dim = -1) const;
+  ComplexNDArray cummin (int dim = -1) const;
+  ComplexNDArray cummin (Array<octave_idx_type>& index, int dim = -1) const;
+
+  ComplexNDArray diff (octave_idx_type order = 1, int dim = -1) const;
 
   ComplexNDArray& insert (const NDArray& a, octave_idx_type r, octave_idx_type c);
   ComplexNDArray& insert (const ComplexNDArray& a, octave_idx_type r, octave_idx_type c);
   ComplexNDArray& insert (const ComplexNDArray& a, const Array<octave_idx_type>& ra_idx);
-  
+
   NDArray abs (void) const;
   boolNDArray isnan (void) const;
   boolNDArray isinf (void) const;
@@ -115,14 +121,14 @@ public:
 
   ComplexMatrix matrix_value (void) const;
 
-  ComplexNDArray squeeze (void) const { return MArrayN<Complex>::squeeze (); }
+  ComplexNDArray squeeze (void) const { return MArray<Complex>::squeeze (); }
 
   static void increment_index (Array<octave_idx_type>& ra_idx,
-			       const dim_vector& dimensions,
-			       int start_dimension = 0);
+                               const dim_vector& dimensions,
+                               int start_dimension = 0);
 
   static octave_idx_type compute_index (Array<octave_idx_type>& ra_idx,
-			    const dim_vector& dimensions);
+                            const dim_vector& dimensions);
 
   // i/o
 
@@ -136,29 +142,17 @@ public:
 
   ComplexNDArray diag (octave_idx_type k = 0) const;
 
-  typedef double (*dmapper) (const Complex&);
-  typedef Complex (*cmapper) (const Complex&);
-  typedef bool (*bmapper) (const Complex&);
+  ComplexNDArray& changesign (void)
+    {
+      MArray<Complex>::changesign ();
+      return *this;
+    }
 
-  NDArray map (dmapper fcn) const;
-  ComplexNDArray map (cmapper fcn) const;
-  boolNDArray map (bmapper fcn) const;
-
-private:
-
-  ComplexNDArray (Complex *d, const dim_vector& dv)
-    : MArrayN<Complex> (d, dv) { }
 };
 
 extern OCTAVE_API ComplexNDArray conj (const ComplexNDArray& a);
 
-extern OCTAVE_API ComplexNDArray min (const Complex& c, const ComplexNDArray& m);
-extern OCTAVE_API ComplexNDArray min (const ComplexNDArray& m, const Complex& c);
-extern OCTAVE_API ComplexNDArray min (const ComplexNDArray& a, const ComplexNDArray& b);
-
-extern OCTAVE_API ComplexNDArray max (const Complex& c, const ComplexNDArray& m);
-extern OCTAVE_API ComplexNDArray max (const ComplexNDArray& m, const Complex& c);
-extern OCTAVE_API ComplexNDArray max (const ComplexNDArray& a, const ComplexNDArray& b);
+MINMAX_DECLS (ComplexNDArray, Complex, OCTAVE_API)
 
 NDS_CMP_OP_DECLS (ComplexNDArray, Complex, OCTAVE_API)
 NDS_BOOL_OP_DECLS (ComplexNDArray, Complex, OCTAVE_API)
@@ -169,12 +163,14 @@ SND_BOOL_OP_DECLS (Complex, ComplexNDArray, OCTAVE_API)
 NDND_CMP_OP_DECLS (ComplexNDArray, ComplexNDArray, OCTAVE_API)
 NDND_BOOL_OP_DECLS (ComplexNDArray, ComplexNDArray, OCTAVE_API)
 
-MARRAY_FORWARD_DEFS (MArrayN, ComplexNDArray, Complex)
+MARRAY_FORWARD_DEFS (MArray, ComplexNDArray, Complex)
+
+extern OCTAVE_API ComplexNDArray& operator *= (ComplexNDArray& a, double s);
+extern OCTAVE_API ComplexNDArray& operator /= (ComplexNDArray& a, double s);
+
+BSXFUN_STDOP_DECLS (ComplexNDArray, OCTAVE_API)
+BSXFUN_STDREL_DECLS (ComplexNDArray, OCTAVE_API)
+
+BSXFUN_OP_DECL (pow, ComplexNDArray, OCTAVE_API)
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

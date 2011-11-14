@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 David Bateman
+## Copyright (C) 2008-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -17,10 +17,10 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{r} =} colon (@var{a}, @var{b})
+## @deftypefn  {Function File} {@var{r} =} colon (@var{a}, @var{b})
 ## @deftypefnx {Function File} {@var{r} =} colon (@var{a}, @var{b}, @var{c})
 ## Method of a class to construct a range with the @code{:} operator.  For
-## example.
+## example:
 ##
 ## @example
 ## @group
@@ -34,5 +34,7 @@
 ## @end deftypefn
 
 function r = colon (varargin)
-  error ("colon: not defined for class \"%s\"", class(varargin{1}));
+  if (nargin != 0)
+    error ("colon: not defined for class \"%s\"", class(varargin{1}));
+  endif
 endfunction

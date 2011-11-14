@@ -1,17 +1,19 @@
-## Copyright (C) 2009 Søren Hauberg
+## Copyright (C) 2009-2011 Søren Hauberg
 ##
-## This program is free software; you can redistribute it and/or modify it
+## This file is part of Octave.
+##
+## Octave is free software; you can redistribute it and/or modify it
 ## under the terms of the GNU General Public License as published by
 ## the Free Software Foundation; either version 3 of the License, or (at
 ## your option) any later version.
 ##
-## This program is distributed in the hope that it will be useful, but
+## Octave is distributed in the hope that it will be useful, but
 ## WITHOUT ANY WARRANTY; without even the implied warranty of
 ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 ## General Public License for more details.
 ##
 ## You should have received a copy of the GNU General Public License
-## along with this program; see the file COPYING.  If not, see
+## along with Octave; see the file COPYING.  If not, see
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
@@ -20,7 +22,7 @@
 ## @end deftypefn
 
 ## Remove HTML tags from text.  This is used as a simple HTML-to-text
-## function. 
+## function.
 
 function [text, status] = __strip_html_tags__ (html_text)
   start = find (html_text == "<");
@@ -60,12 +62,12 @@ function text = strip_superfluous_endlines (text)
   if (groups (1, 1) == 1)
     keep (1:groups (1, 2)) = false;
   endif
-  
+
   ## Remove end-lines from the end
   if (sum (groups (end, :)) - 1 == length (text))
     keep (groups (end, 1):end) = false;
   endif
-  
+
   ## Remove groups of end-lines with more than 3 end-lines next to each other
   idx = find (groups (:, 2) >= 3);
   for k = 1:length (idx)
@@ -73,7 +75,7 @@ function text = strip_superfluous_endlines (text)
     stop = start + groups (idx (k), 2) - 1;
     keep (start+2:stop) = false;
   endfor
-  
+
   ## Actually remove the elements
   text = text (keep);
 endfunction

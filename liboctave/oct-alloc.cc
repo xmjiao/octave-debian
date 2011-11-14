@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2000, 2002, 2004, 2005, 2006, 2007
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -38,7 +37,7 @@ octave_allocator::alloc (size_t size)
   if (! head)
     {
       if (! grow ())
-	return 0;
+        return 0;
     }
 
   link *tmp = head;
@@ -77,12 +76,12 @@ octave_allocator::grow (void)
 
       char *p = start;
       while (p < last)
-	{
-	  char *next = p + item_size;
-	  (reinterpret_cast<link *> (p)) -> next
-	    = reinterpret_cast<link *> (next);
-	  p = next;
-	}
+        {
+          char *next = p + item_size;
+          (reinterpret_cast<link *> (p)) -> next
+            = reinterpret_cast<link *> (next);
+          p = next;
+        }
 
       (reinterpret_cast<link *> (last)) -> next = 0;
 
@@ -96,16 +95,10 @@ octave_allocator::grow (void)
       std::set_new_handler (f);
 
       if (f)
-	f ();
+        f ();
 
       retval = false;
     }
 
   return retval;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

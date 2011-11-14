@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 2004, 2005, 2006, 2007, 2008 David Bateman
-Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004 Andy Adler
+Copyright (C) 2004-2011 David Bateman
+Copyright (C) 1998-2004 Andy Adler
 
 This file is part of Octave.
 
@@ -50,7 +50,7 @@ DEFBINOP (div, sparse_matrix, matrix)
 {
   CAST_BINOP_ARGS (const octave_sparse_matrix&, const octave_matrix&);
   MatrixType typ = v2.matrix_type ();
-  
+
   Matrix ret = xdiv (v1.matrix_value (), v2.matrix_value (), typ);
 
   v2.matrix_type (typ);
@@ -72,7 +72,7 @@ DEFBINOP (ldiv, sparse_matrix, matrix)
       double d = v1.scalar_value ();
 
       if (d == 0.0)
-	gripe_divide_by_zero ();
+        gripe_divide_by_zero ();
 
       return octave_value (v2.array_value () / d);
     }
@@ -80,8 +80,8 @@ DEFBINOP (ldiv, sparse_matrix, matrix)
     {
       MatrixType typ = v1.matrix_type ();
 
-      Matrix ret = xleftdiv (v1.sparse_matrix_value (), 
-			     v2.matrix_value (), typ);
+      Matrix ret = xleftdiv (v1.sparse_matrix_value (),
+                             v2.matrix_value (), typ);
 
       v1.matrix_type (typ);
       return ret;
@@ -103,15 +103,15 @@ DEFBINOP_FN (el_div, sparse_matrix, matrix, quotient)
 DEFBINOP (el_pow, sparse_matrix, matrix)
 {
   CAST_BINOP_ARGS (const octave_sparse_matrix&, const octave_matrix&);
-  
-  return octave_value (elem_xpow (v1.sparse_matrix_value (), 
-				  SparseMatrix (v2.matrix_value ())));
+
+  return octave_value (elem_xpow (v1.sparse_matrix_value (),
+                                  SparseMatrix (v2.matrix_value ())));
 }
 
 DEFBINOP (el_ldiv, sparse_matrix, matrix)
 {
   CAST_BINOP_ARGS (const octave_sparse_matrix&, const octave_matrix&);
-  
+
   return octave_value
     (quotient (v2.matrix_value (), v1.sparse_matrix_value ()));
 }
@@ -163,9 +163,3 @@ install_sm_m_ops (void)
 
   INSTALL_ASSIGNOP (op_asn_eq, octave_sparse_matrix, octave_matrix, assign);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

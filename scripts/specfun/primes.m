@@ -1,4 +1,4 @@
-## Copyright (C) 2000, 2006, 2007, 2009 Paul Kienzle
+## Copyright (C) 2000-2011 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -19,12 +19,12 @@
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} primes (@var{n})
 ##
-## Return all primes up to @var{n}.  
+## Return all primes up to @var{n}.
 ##
-## The algorithm used is the Sieve of Erastothenes.
+## The algorithm used is the Sieve of Eratosthenes.
 ##
 ## Note that if you need a specific number of primes you can use the
-## fact the distance from one prime to the next is, on average,
+## fact that the distance from one prime to the next is, on average,
 ## proportional to the logarithm of the prime.  Integrating, one finds
 ## that there are about @math{k} primes less than
 ## @tex
@@ -37,58 +37,58 @@
 ## @end deftypefn
 
 ## Author: Paul Kienzle
-## Author: Francesco Potortì
+## Author: Francesco PotortÃ¬
 ## Author: Dirk Laurie
 
-function x = primes (p)
+function x = primes (n)
 
   if (nargin != 1)
     print_usage ();
   endif
 
-  if (! isscalar (p))
-    error ("primes: n must be a scalar");
+  if (! isscalar (n))
+    error ("primes: N must be a scalar");
   endif
 
-  if (p > 100000)
+  if (n > 100000)
     ## Optimization: 1/6 less memory, and much faster (asymptotically)
     ## 100000 happens to be the cross-over point for Paul's machine;
     ## below this the more direct code below is faster.  At the limit
     ## of memory in Paul's machine, this saves .7 seconds out of 7 for
-    ## p = 3e6.  Hardly worthwhile, but Dirk reports better numbers.
-    lenm = floor ((p+1)/6);       # length of the 6n-1 sieve
-    lenp = floor ((p-1)/6);       # length of the 6n+1 sieve
-    sievem = ones (1, lenm);      # assume every number of form 6n-1 is prime
-    sievep = ones (1, lenp);      # assume every number of form 6n+1 is prime
+    ## n = 3e6.  Hardly worthwhile, but Dirk reports better numbers.
+    lenm = floor ((n+1)/6);       # length of the 6n-1 sieve
+    lenp = floor ((n-1)/6);       # length of the 6n+1 sieve
+    sievem = true (1, lenm);      # assume every number of form 6n-1 is prime
+    sievep = true (1, lenp);      # assume every number of form 6n+1 is prime
 
-    for i = 1:(sqrt(p)+1)/6       # check up to sqrt(p)
+    for i = 1:(sqrt(n)+1)/6       # check up to sqrt(n)
       if (sievem(i))              # if i is prime, eliminate multiples of i
-        sievem(7*i-1:6*i-1:lenm) = 0;
-        sievep(5*i-1:6*i-1:lenp) = 0;
+        sievem(7*i-1:6*i-1:lenm) = false;
+        sievep(5*i-1:6*i-1:lenp) = false;
       endif                       # if i is prime, eliminate multiples of i
       if (sievep(i))
-        sievep(7*i+1:6*i+1:lenp) = 0;
-        sievem(5*i+1:6*i+1:lenm) = 0;
+        sievep(7*i+1:6*i+1:lenp) = false;
+        sievem(5*i+1:6*i+1:lenm) = false;
       endif
     endfor
     x = sort([2, 3, 6*find(sievem)-1, 6*find(sievep)+1]);
-  elseif (p > 352)                # nothing magical about 352; must be >2
-    len = floor ((p-1)/2);        # length of the sieve
-    sieve = ones (1, len);        # assume every odd number is prime
-    for i = 1:(sqrt(p)-1)/2       # check up to sqrt(p)
+  elseif (n > 352)                # nothing magical about 352; must be >2
+    len = floor ((n-1)/2);        # length of the sieve
+    sieve = true (1, len);        # assume every odd number is prime
+    for i = 1:(sqrt(n)-1)/2       # check up to sqrt(n)
       if (sieve(i))               # if i is prime, eliminate multiples of i
-        sieve(3*i+1:2*i+1:len) = 0; # do it
+        sieve(3*i+1:2*i+1:len) = false; # do it
       endif
     endfor
     x = [2, 1+2*find(sieve)];     # primes remaining after sieve
   else
     a = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, ...
-	 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, ...
-	 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, ...
-	 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, ...
-	 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, ...
-	 293, 307, 311, 313, 317, 331, 337, 347, 349];
-    x = a(a <= p);
+         53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, ...
+         109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, ...
+         173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, ...
+         233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, ...
+         293, 307, 311, 313, 317, 331, 337, 347, 349];
+    x = a(a <= n);
   endif
 
 endfunction

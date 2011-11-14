@@ -1,5 +1,4 @@
-## Copyright (C) 1994, 1995, 1996, 1997, 1999, 2000, 2004, 2005, 2006,
-##               2007, 2008, 2009 John W. Eaton
+## Copyright (C) 1994-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -32,6 +31,7 @@
 ## @example
 ## v(1) * z^(N-1) + @dots{} + v(N-1) * z + v(N)
 ## @end example
+##
 ## @end ifnottex
 ##
 ## As an example, the following code finds the roots of the quadratic
@@ -40,10 +40,13 @@
 ## $$ p(x) = x^2 - 5. $$
 ## @end tex
 ## @ifnottex
+##
 ## @example
 ## p(x) = x^2 - 5.
 ## @end example
+##
 ## @end ifnottex
+##
 ## @example
 ## @group
 ## c = [1, 0, -5];
@@ -52,6 +55,7 @@
 ## @result{} -2.2361
 ## @end group
 ## @end example
+##
 ## Note that the true result is
 ## @tex
 ## $\pm \sqrt{5}$
@@ -124,11 +128,11 @@ endfunction
 %!assert(isempty (roots ([])));
 
 %!error roots ([1, 2; 3, 4]);
- 
+
 %!assert(isempty (roots (1)));
 
- %!error roots ([1, 2; 3, 4]);
- 
+%!error roots ([1, 2; 3, 4]);
+
 %!error roots ([1 Inf 1]);
 
 %!error roots ([1 NaN 1]);

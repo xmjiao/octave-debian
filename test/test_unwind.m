@@ -1,4 +1,4 @@
-## Copyright (C) 2006, 2007, 2009 John W. Eaton
+## Copyright (C) 2006-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -52,5 +52,5 @@
 %!  end_unwind_protect
 %!test
 %! global g = -1;
-%! fail("y = f (3);","number of columns must match");
+%! fail("y = f (3);","mismatch");
 

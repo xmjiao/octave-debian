@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1999, 2000, 2001, 2002, 2003, 2004, 2005,
-              2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -50,10 +49,19 @@ along with Octave; see the file COPYING.  If not, see
 
 DEFUN_DLD (det, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Loadable Function} {[@var{d}, @var{rcond}] =} det (@var{a})\n\
-Compute the determinant of @var{a} using @sc{lapack} for full and UMFPACK\n\
-for sparse matrices.  Return an estimate of the reciprocal condition number\n\
-if requested.\n\
+@deftypefn  {Loadable Function} {} det (@var{A})\n\
+@deftypefnx {Loadable Function} {[@var{d}, @var{rcond}] =} det (@var{A})\n\
+Compute the determinant of @var{A}.\n\
+\n\
+Return an estimate of the reciprocal condition number if requested.\n\
+\n\
+Routines from @sc{lapack} are used for full matrices and code from\n\
+@sc{umfpack} is used for sparse matrices.\n\
+\n\
+The determinant should not be used to check a matrix for singularity.\n\
+For that, use any of the condition number functions: @code{cond},\n\
+@code{condest}, @code{rcond}.\n\
+@seealso{cond, condest, rcond}\n\
 @end deftypefn")
 {
   octave_value_list retval;
@@ -67,7 +75,7 @@ if requested.\n\
     }
 
   octave_value arg = args(0);
-    
+
   octave_idx_type nr = arg.rows ();
   octave_idx_type nc = arg.columns ();
 
@@ -134,104 +142,104 @@ if requested.\n\
   else if (arg.is_single_type ())
     {
       if (arg.is_real_type ())
-	{
-	  octave_idx_type info;
-	  float rcond = 0.0;
-	  // Always compute rcond, so we can detect numerically
-	  // singular matrices.
-	  FloatMatrix m = arg.float_matrix_value ();
-	  if (! error_state)
-	    {
+        {
+          octave_idx_type info;
+          float rcond = 0.0;
+          // Always compute rcond, so we can detect numerically
+          // singular matrices.
+          FloatMatrix m = arg.float_matrix_value ();
+          if (! error_state)
+            {
               MAYBE_CAST (rep, octave_float_matrix);
               MatrixType mtype = rep ? rep -> matrix_type () : MatrixType ();
-	      FloatDET det = m.determinant (mtype, info, rcond);
-	      retval(1) = rcond;
-	      retval(0) = info == -1 ? static_cast<float>(0.0) : det.value ();
+              FloatDET det = m.determinant (mtype, info, rcond);
+              retval(1) = rcond;
+              retval(0) = info == -1 ? static_cast<float>(0.0) : det.value ();
               if (rep) rep->matrix_type (mtype);
-	    }
-	}
+            }
+        }
       else if (arg.is_complex_type ())
-	{
-	  octave_idx_type info;
-	  float rcond = 0.0;
-	  // Always compute rcond, so we can detect numerically
-	  // singular matrices.
-	  FloatComplexMatrix m = arg.float_complex_matrix_value ();
-	  if (! error_state)
-	    {
+        {
+          octave_idx_type info;
+          float rcond = 0.0;
+          // Always compute rcond, so we can detect numerically
+          // singular matrices.
+          FloatComplexMatrix m = arg.float_complex_matrix_value ();
+          if (! error_state)
+            {
               MAYBE_CAST (rep, octave_float_complex_matrix);
               MatrixType mtype = rep ? rep -> matrix_type () : MatrixType ();
-	      FloatComplexDET det = m.determinant (mtype, info, rcond);
-	      retval(1) = rcond;
-	      retval(0) = info == -1 ? FloatComplex (0.0) : det.value ();
+              FloatComplexDET det = m.determinant (mtype, info, rcond);
+              retval(1) = rcond;
+              retval(0) = info == -1 ? FloatComplex (0.0) : det.value ();
               if (rep) rep->matrix_type (mtype);
-	    }
-	}
+            }
+        }
     }
   else
     {
       if (arg.is_real_type ())
-	{
-	  octave_idx_type info;
-	  double rcond = 0.0;
-	  // Always compute rcond, so we can detect numerically
-	  // singular matrices.
-	  if (arg.is_sparse_type ())
-	    {
-	      SparseMatrix m = arg.sparse_matrix_value ();
-	      if (! error_state)
-		{
-		  DET det = m.determinant (info, rcond);
-		  retval(1) = rcond;
-		  retval(0) = info == -1 ? 0.0 : det.value ();
-		}
-	    }
-	  else
-	    {
-	      Matrix m = arg.matrix_value ();
-	      if (! error_state)
-		{
+        {
+          octave_idx_type info;
+          double rcond = 0.0;
+          // Always compute rcond, so we can detect numerically
+          // singular matrices.
+          if (arg.is_sparse_type ())
+            {
+              SparseMatrix m = arg.sparse_matrix_value ();
+              if (! error_state)
+                {
+                  DET det = m.determinant (info, rcond);
+                  retval(1) = rcond;
+                  retval(0) = info == -1 ? 0.0 : det.value ();
+                }
+            }
+          else
+            {
+              Matrix m = arg.matrix_value ();
+              if (! error_state)
+                {
                   MAYBE_CAST (rep, octave_matrix);
                   MatrixType mtype = rep ? rep -> matrix_type () : MatrixType ();
-		  DET det = m.determinant (mtype, info, rcond);
-		  retval(1) = rcond;
-		  retval(0) = info == -1 ? 0.0 : det.value ();
+                  DET det = m.determinant (mtype, info, rcond);
+                  retval(1) = rcond;
+                  retval(0) = info == -1 ? 0.0 : det.value ();
                   if (rep) rep->matrix_type (mtype);
-		}
-	    }
-	}
+                }
+            }
+        }
       else if (arg.is_complex_type ())
-	{
-	  octave_idx_type info;
-	  double rcond = 0.0;
-	  // Always compute rcond, so we can detect numerically
-	  // singular matrices.
-	  if (arg.is_sparse_type ())
-	    {
-	      SparseComplexMatrix m = arg.sparse_complex_matrix_value ();
-	      if (! error_state)
-		{
-		  ComplexDET det = m.determinant (info, rcond);
-		  retval(1) = rcond;
-		  retval(0) = info == -1 ? Complex (0.0) : det.value ();
-		}
-	    }
-	  else
-	    {
-	      ComplexMatrix m = arg.complex_matrix_value ();
-	      if (! error_state)
-		{
+        {
+          octave_idx_type info;
+          double rcond = 0.0;
+          // Always compute rcond, so we can detect numerically
+          // singular matrices.
+          if (arg.is_sparse_type ())
+            {
+              SparseComplexMatrix m = arg.sparse_complex_matrix_value ();
+              if (! error_state)
+                {
+                  ComplexDET det = m.determinant (info, rcond);
+                  retval(1) = rcond;
+                  retval(0) = info == -1 ? Complex (0.0) : det.value ();
+                }
+            }
+          else
+            {
+              ComplexMatrix m = arg.complex_matrix_value ();
+              if (! error_state)
+                {
                   MAYBE_CAST (rep, octave_complex_matrix);
                   MatrixType mtype = rep ? rep -> matrix_type () : MatrixType ();
-		  ComplexDET det = m.determinant (mtype, info, rcond);
-		  retval(1) = rcond;
-		  retval(0) = info == -1 ? Complex (0.0) : det.value ();
+                  ComplexDET det = m.determinant (mtype, info, rcond);
+                  retval(1) = rcond;
+                  retval(0) = info == -1 ? Complex (0.0) : det.value ();
                   if (rep) rep->matrix_type (mtype);
-		}
-	    }
-	}
+                }
+            }
+        }
       else
-	gripe_wrong_type_arg ("det", arg);
+        gripe_wrong_type_arg ("det", arg);
     }
   return retval;
 }
@@ -244,10 +252,4 @@ if requested.\n\
 %!error <Invalid call to det.*> det (1, 2);
 %!error det ([1, 2; 3, 4; 5, 6]);
 
-*/
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
 */

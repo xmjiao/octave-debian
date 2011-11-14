@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2002, 2003,
-              2004, 2005, 2006, 2007, 2008 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 Copyright (C) 2009 VZLU Prague
 
 This file is part of Octave.
@@ -47,7 +46,7 @@ octave_value_list::octave_value_list (const std::list<octave_value_list>& lst)
     data = lst.front ().data;
   else if (nel > 0)
     {
-      data.resize (nel);
+      data.resize (dim_vector (1, nel));
       octave_idx_type k = 0;
       for (std::list<octave_value_list>::const_iterator p = lst.begin ();
            p != lst.end (); p++)
@@ -77,7 +76,7 @@ octave_value_list::prepend (const octave_value& val)
     }
 
   elem (0) = val;
-  
+
   return *this;
 }
 
@@ -124,8 +123,8 @@ octave_value_list::reverse (void)
 
 octave_value_list
 octave_value_list::splice (octave_idx_type offset, octave_idx_type rep_length,
-			   const octave_value_list& lst) const
-{ 
+                           const octave_value_list& lst) const
+{
   octave_value_list retval;
 
   octave_idx_type len = length ();
@@ -133,10 +132,10 @@ octave_value_list::splice (octave_idx_type offset, octave_idx_type rep_length,
   if (offset < 0 || offset >= len)
     {
       if (! (rep_length == 0 && offset == len))
-	{
-	  error ("octave_value_list::splice: invalid OFFSET");
-	  return retval;
-	}
+        {
+          error ("octave_value_list::splice: invalid OFFSET");
+          return retval;
+        }
     }
 
   if (rep_length < 0 || rep_length + offset > len)
@@ -180,11 +179,28 @@ octave_value_list::all_strings_p (void) const
 bool
 octave_value_list::all_scalars (void) const
 {
-  octave_idx_type n = length (), i;
+  octave_idx_type n = length ();
 
-  for (i = 0; i < n && elem (i).is_string (); i++) ;
-  
-  return i == n;
+  for (octave_idx_type i = 0; i < n; i++)
+    {
+      dim_vector dv = elem(i).dims ();
+      if (! dv.all_ones ())
+        return false;
+    }
+
+  return true;
+}
+
+bool
+octave_value_list::any_cell (void) const
+{
+  octave_idx_type n = length ();
+
+  for (octave_idx_type i = 0; i < n; i++)
+    if (elem (i).is_cell ())
+      return true;
+
+  return false;
 }
 
 bool
@@ -211,14 +227,14 @@ octave_value_list::make_argv (const std::string& fcn_name) const
       octave_idx_type total_nr = 0;
 
       for (octave_idx_type i = 0; i < len; i++)
-	{
-	  // An empty std::string ("") has zero columns and zero rows (a
-	  // change that was made for Matlab contemptibility.
+        {
+          // An empty std::string ("") has zero columns and zero rows (a
+          // change that was made for Matlab contemptibility.
 
-	  octave_idx_type n = elem(i).rows ();
+          octave_idx_type n = elem(i).rows ();
 
-	  total_nr += n ? n : 1;
-	}
+          total_nr += n ? n : 1;
+        }
 
       octave_idx_type k = 0;
       if (! fcn_name.empty ())
@@ -231,19 +247,19 @@ octave_value_list::make_argv (const std::string& fcn_name) const
         argv.resize (total_nr);
 
       for (octave_idx_type i = 0; i < len; i++)
-	{
-	  octave_idx_type nr = elem(i).rows ();
+        {
+          octave_idx_type nr = elem(i).rows ();
 
-	  if (nr < 2)
-	    argv[k++] = elem(i).string_value ();
-	  else
-	    {
-	      string_vector tmp = elem(i).all_strings ();
+          if (nr < 2)
+            argv[k++] = elem(i).string_value ();
+          else
+            {
+              string_vector tmp = elem(i).all_strings ();
 
-	      for (octave_idx_type j = 0; j < nr; j++)
-		argv[k++] = tmp[j];
-	    }
-	}
+              for (octave_idx_type j = 0; j < nr; j++)
+                argv[k++] = tmp[j];
+            }
+        }
     }
   else
     error ("%s: expecting all arguments to be strings", fcn_name.c_str ());
@@ -265,9 +281,3 @@ octave_value_list::make_storable_values (void)
         data(i) = tmp;
     }
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,4 +1,4 @@
-## Copyright (C) 1999, 2000, 2007, 2008, 2009 Kai Habel
+## Copyright (C) 1999-2011 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{tri} =} delaunay (@var{x}, @var{y})
+## @deftypefn  {Function File} {@var{tri} =} delaunay (@var{x}, @var{y})
 ## @deftypefnx {Function File} {@var{tri} =} delaunay (@var{x}, @var{y}, @var{opt})
 ## The return matrix of size [n, 3] contains a set triangles which are
 ## described by the indices to the data point x and y vector.
@@ -25,7 +25,7 @@
 ## No other data point is in the circum-circle of the defining triangle.
 ##
 ## A third optional argument, which must be a string, contains extra options
-## passed to the underlying qhull command.  See the documentation for the 
+## passed to the underlying qhull command.  See the documentation for the
 ## Qhull library for details.
 ##
 ## @example
@@ -49,8 +49,9 @@ function ret = delaunay (x, y, opt)
   if (nargin != 2 && nargin != 3)
     print_usage ();
   endif
-  
-  if (isvector (x) && isvector (y) && length (x) == length (y))
+
+  if ((isvector (x) && isvector (y) && length (x) == length (y))
+      || size_equal (x, y))
     if (nargin == 2)
       tri = delaunayn ([x(:), y(:)]);
     elseif (ischar (opt) || iscellstr (opt))
@@ -59,7 +60,7 @@ function ret = delaunay (x, y, opt)
       error ("delaunay: third argument must be a string");
     endif
   else
-    error ("delaunay: first two input arguments must be vectors of same size");
+    error ("delaunay: first two input arguments must be matrices of same size");
   endif
 
   if (nargout == 0)

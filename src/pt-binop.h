@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2000, 2002, 2003, 2004, 2005, 2006, 2007,
-              2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -44,15 +43,17 @@ tree_binary_expression : public tree_expression
 public:
 
   tree_binary_expression (int l = -1, int c = -1,
-			  octave_value::binary_op t
-			    = octave_value::unknown_binary_op)
-    : tree_expression (l, c), op_lhs (0), op_rhs (0), etype (t) { }
+                          octave_value::binary_op t
+                            = octave_value::unknown_binary_op)
+    : tree_expression (l, c), op_lhs (0), op_rhs (0), etype (t),
+      eligible_for_braindead_shortcircuit (false) { }
 
   tree_binary_expression (tree_expression *a, tree_expression *b,
-			  int l = -1, int c = -1,
-			  octave_value::binary_op t
-			    = octave_value::unknown_binary_op)
-    : tree_expression (l, c), op_lhs (a), op_rhs (b), etype (t) { }
+                          int l = -1, int c = -1,
+                          octave_value::binary_op t
+                            = octave_value::unknown_binary_op)
+    : tree_expression (l, c), op_lhs (a), op_rhs (b), etype (t),
+      eligible_for_braindead_shortcircuit (false) { }
 
   ~tree_binary_expression (void)
     {
@@ -60,10 +61,31 @@ public:
       delete op_rhs;
     }
 
+  void mark_braindead_shortcircuit (const std::string& file)
+    {
+      if (etype == octave_value::op_el_and
+          || etype == octave_value::op_el_or)
+        {
+          if (file.empty ())
+            warning_with_id ("Octave:possible-matlab-short-circuit-operator",
+                             "possible Matlab-style short-circuit operator at line %d, column %d",
+                             line (), column ());
+          else
+            warning_with_id ("Octave:possible-matlab-short-circuit-operator",
+                             "%s: possible Matlab-style short-circuit operator at line %d, column %d",
+                             file.c_str (), line (), column ());
+
+          eligible_for_braindead_shortcircuit = true;
+
+          op_lhs->mark_braindead_shortcircuit (file);
+          op_rhs->mark_braindead_shortcircuit (file);
+        }
+    }
+
   bool has_magic_end (void) const
     {
       return ((op_lhs && op_lhs->has_magic_end ())
-	      || (op_rhs && op_rhs->has_magic_end ()));
+              || (op_rhs && op_rhs->has_magic_end ()));
     }
 
   bool is_binary_expression (void) const { return true; }
@@ -82,7 +104,7 @@ public:
   tree_expression *rhs (void) { return op_rhs; }
 
   tree_expression *dup (symbol_table::scope_id scope,
-			symbol_table::context_id context) const;
+                        symbol_table::context_id context) const;
 
   void accept (tree_walker& tw);
 
@@ -96,6 +118,10 @@ private:
 
   // The type of the expression.
   octave_value::binary_op etype;
+
+  // TRUE if this is an | or & expression in the condition of an IF
+  // or WHILE statement.
+  bool eligible_for_braindead_shortcircuit;
 
   // No copying!
 
@@ -122,7 +148,7 @@ public:
     : tree_binary_expression (l, c), etype (t) { }
 
   tree_boolean_expression (tree_expression *a, tree_expression *b,
-			   int l = -1, int c = -1, type t = unknown)
+                           int l = -1, int c = -1, type t = unknown)
     : tree_binary_expression (a, b, l, c), etype (t) { }
 
   ~tree_boolean_expression (void) { }
@@ -140,7 +166,7 @@ public:
   type op_type (void) const { return etype; }
 
   tree_expression *dup (symbol_table::scope_id scope,
-			symbol_table::context_id context) const;
+                        symbol_table::context_id context) const;
 
 private:
 
@@ -155,9 +181,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 2004, 2005, 2006, 2007, 2009 David Bateman
-Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004 Andy Adler
+Copyright (C) 2004-2011 David Bateman
+Copyright (C) 1998-2004 Andy Adler
 
 This file is part of Octave.
 
@@ -143,8 +143,8 @@ xdiv (const Matrix& a, const SparseMatrix& b, MatrixType &typ)
 
   octave_idx_type info;
   double rcond = 0.0;
-  Matrix result = btmp.solve (btyp, atmp, info, rcond, 
-			      solve_singularity_warning);
+  Matrix result = btmp.solve (btyp, atmp, info, rcond,
+                              solve_singularity_warning);
 
   typ = btyp.transpose ();
   return result.transpose ();
@@ -223,8 +223,8 @@ xdiv (const SparseMatrix& a, const SparseMatrix& b, MatrixType &typ)
 
   octave_idx_type info;
   double rcond = 0.0;
-  SparseMatrix result = btmp.solve (btyp, atmp, info, rcond, 
-				    solve_singularity_warning);
+  SparseMatrix result = btmp.solve (btyp, atmp, info, rcond,
+                                    solve_singularity_warning);
 
   typ = btyp.transpose ();
   return result.transpose ();
@@ -313,17 +313,17 @@ RT do_rightdiv_sm_dm (const SM& a, const DM& d)
   octave_idx_type k_result = 0;
   for (octave_idx_type j = 0; j < nc; ++j)
     {
-      OCTAVE_QUIT;
+      octave_quit ();
       const DM_elt_type s = d.dgelem (j);
       const octave_idx_type colend = a.cidx (j+1);
       r.xcidx (j) = k_result;
       if (s != zero)
-	for (octave_idx_type k = a.cidx (j); k < colend; ++k)
-	  {
-	    r.xdata (k_result) = a.data (k) / s;
-	    r.xridx (k_result) = a.ridx (k);
-	    ++k_result;
-	  }
+        for (octave_idx_type k = a.cidx (j); k < colend; ++k)
+          {
+            r.xdata (k_result) = a.data (k) / s;
+            r.xridx (k_result) = a.ridx (k);
+            ++k_result;
+          }
     }
   r.xcidx (nc) = k_result;
 
@@ -386,8 +386,8 @@ x_el_div (double a, const SparseMatrix& b)
   for (octave_idx_type j = 0; j < nc; j++)
     for (octave_idx_type i = b.cidx(j); i < b.cidx(j+1); i++)
       {
-	OCTAVE_QUIT;
-	result.elem (b.ridx(i), j) = a / b.data (i);
+        octave_quit ();
+        result.elem (b.ridx(i), j) = a / b.data (i);
       }
 
   return result;
@@ -404,8 +404,8 @@ x_el_div (double a, const SparseComplexMatrix& b)
   for (octave_idx_type j = 0; j < nc; j++)
     for (octave_idx_type i = b.cidx(j); i < b.cidx(j+1); i++)
       {
-	OCTAVE_QUIT;
-	result.elem (b.ridx(i), j) = a / b.data (i);
+        octave_quit ();
+        result.elem (b.ridx(i), j) = a / b.data (i);
       }
 
   return result;
@@ -422,8 +422,8 @@ x_el_div (const Complex a, const SparseMatrix& b)
   for (octave_idx_type j = 0; j < nc; j++)
     for (octave_idx_type i = b.cidx(j); i < b.cidx(j+1); i++)
       {
-	OCTAVE_QUIT;
-	result.elem (b.ridx(i), j) = a / b.data (i);
+        octave_quit ();
+        result.elem (b.ridx(i), j) = a / b.data (i);
       }
 
   return result;
@@ -440,8 +440,8 @@ x_el_div (const Complex a, const SparseComplexMatrix& b)
   for (octave_idx_type j = 0; j < nc; j++)
     for (octave_idx_type i = b.cidx(j); i < b.cidx(j+1); i++)
       {
-	OCTAVE_QUIT;
-	result.elem (b.ridx(i), j) = a / b.data (i);
+        octave_quit ();
+        result.elem (b.ridx(i), j) = a / b.data (i);
       }
 
   return result;
@@ -546,8 +546,8 @@ xleftdiv (const SparseComplexMatrix& a, const SparseMatrix& b, MatrixType &typ)
 
 // -*- 8 -*-
 SparseComplexMatrix
-xleftdiv (const SparseComplexMatrix& a, const SparseComplexMatrix& b, 
-	  MatrixType &typ)
+xleftdiv (const SparseComplexMatrix& a, const SparseComplexMatrix& b,
+          MatrixType &typ)
 {
   if (! mx_leftdiv_conform (a, b))
     return SparseComplexMatrix ();
@@ -580,23 +580,23 @@ RT do_leftdiv_dm_sm (const DM& d, const SM& a)
   octave_idx_type k_result = 0;
   for (octave_idx_type j = 0; j < a_nc; ++j)
     {
-      OCTAVE_QUIT;
+      octave_quit ();
       const octave_idx_type colend = a.cidx (j+1);
       r.xcidx (j) = k_result;
       for (octave_idx_type k = a.cidx (j); k < colend; ++k)
-	{
-	  const octave_idx_type i = a.ridx (k);
-	  if (i < nr)
-	    {
-	      const DM_elt_type s = d.dgelem (i);
-	      if (s != zero)
-		{
-		  r.xdata (k_result) = a.data (k) / s;
-		  r.xridx (k_result) = i;
-		  ++k_result;
-		}
-	    }
-	}
+        {
+          const octave_idx_type i = a.ridx (k);
+          if (i < nr)
+            {
+              const DM_elt_type s = d.dgelem (i);
+              if (s != zero)
+                {
+                  r.xdata (k_result) = a.data (k) / s;
+                  r.xridx (k_result) = i;
+                  ++k_result;
+                }
+            }
+        }
     }
   r.xcidx (a_nc) = k_result;
 
@@ -631,9 +631,3 @@ xleftdiv (const ComplexDiagMatrix& d, const SparseComplexMatrix& a,  MatrixType&
 {
   return do_leftdiv_dm_sm<SparseComplexMatrix> (d, a);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

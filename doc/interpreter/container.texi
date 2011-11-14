@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.
 
-@c Copyright (C) 1996, 1997, 2007, 2008, 2009 John W. Eaton
+@c Copyright (C) 1996-2011 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -25,18 +25,18 @@
 Octave includes support for two different mechanisms to contain
 arbitrary data types in the same variable.  Structures, which are C-like,
 and are indexed with named fields, and cell arrays, where each element
-of the array can have a different data type and or shape. Multiple
+of the array can have a different data type and or shape.  Multiple
 input arguments and return values of functions are organized as
 another data container, the comma separated list.
 
 @menu
-* Data Structures::
+* Structures::
 * Cell Arrays::
 * Comma Separated Lists::
 @end menu
 
-@node Data Structures
-@section Data Structures
+@node Structures
+@section Structures
 @cindex structures
 @cindex data structures
 
@@ -68,9 +68,12 @@ x.c = "string";
 @end group
 @end example
 
+@opindex .
 @noindent
-create a structure with three elements.  To print the value of the
-structure, you can type its name, just as for any other variable:
+create a structure with three elements.  The @samp{.} character separates
+the structure name from the field name and indicates to Octave that this
+variable is a structure.  To print the value of the
+structure you can type its name, just as for any other variable:
 
 @example
 @group
@@ -138,7 +141,7 @@ x
 @end example
 
 Note that when Octave prints the value of a structure that contains
-other structures, only a few levels are displayed.  For example,
+other structures, only a few levels are displayed.  For example:
 
 @example
 @group
@@ -161,15 +164,29 @@ a
 
 @noindent
 This prevents long and confusing output from large deeply nested
-structures. The number of levels to print for nested structures can be
-set with the function @code{struct_levels_to_print}:
+structures.  The number of levels to print for nested structures may be
+set with the function @code{struct_levels_to_print}, and the function
+@code{print_struct_array_contents} may be used to enable printing of the
+contents of structure arrays.
 
-@c pr-output.cc
+@c struct_levels_to_print src/ov-struct.cc
 @anchor{doc-struct_levels_to_print}
-@deftypefn {Built-in Function} {@var{val} =} struct_levels_to_print ()
+@deftypefn  {Built-in Function} {@var{val} =} struct_levels_to_print ()
 @deftypefnx {Built-in Function} {@var{old_val} =} struct_levels_to_print (@var{new_val})
 Query or set the internal variable that specifies the number of
 structure levels to display.
+@end deftypefn
+
+
+@c print_struct_array_contents src/ov-struct.cc
+@anchor{doc-print_struct_array_contents}
+@deftypefn  {Built-in Function} {@var{val} =} print_struct_array_contents ()
+@deftypefnx {Built-in Function} {@var{old_val} =} print_struct_array_contents (@var{new_val})
+Query or set the internal variable that specifies whether to print struct
+array contents.  If true, values of struct array elements are printed.
+This variable does not affect scalar structures.  Their elements
+are always printed.  In both cases, however, printing will be limited to
+the number of levels specified by @var{struct_levels_to_print}.
 @end deftypefn
 
 
@@ -210,10 +227,9 @@ f (rand (2) + rand (2) * I)
 @end example
 
 Function return lists can include structure elements, and they may be
-indexed like any other variable.  For example,
+indexed like any other variable.  For example:
 
 @example
-@group
 [ x.u, x.s(2:3,2:3), x.v ] = svd ([1, 2; 3, 4]);
 x
      @result{} x =
@@ -235,7 +251,6 @@ x
             -0.81742  -0.57605
 
         @}
-@end group
 @end example
 
 It is also possible to cycle through all the elements of a structure in
@@ -247,7 +262,7 @@ a loop, using a special form of the @code{for} statement
 
 A structure array is a particular instance of a structure, where each of
 the fields of the structure is represented by a cell array.  Each of
-these cell arrays has the same dimensions. Conceptually, a structure
+these cell arrays has the same dimensions.  Conceptually, a structure
 array can also be seen as an array of structures with identical
 fields.  An example of the creation of a structure array is
 
@@ -296,7 +311,7 @@ x(1)
 
 Furthermore, the structure array can return a comma separated list of
 field values (@pxref{Comma Separated Lists}), if indexed by one of its
-own field names.  For example
+own field names.  For example:
 
 @example
 @group
@@ -320,7 +335,8 @@ left-hand side of an assignment:
 @end group
 @end example
 
-Just as for numerical arrays, it is possible to use vectors as indices (@pxref{Index Expressions}):
+Just as for numerical arrays, it is possible to use vectors as indices
+(@pxref{Index Expressions}):
 
 @example
 @group
@@ -352,6 +368,7 @@ numerical array, by assigning the elements to an empty matrix.  For
 example
 
 @example
+@group
 in = struct ("call1", @{x, Inf, "last"@}, 
              "call2", @{x, Inf, "first"@})
      @result{} in =
@@ -367,16 +384,55 @@ in.call1
      @result{}
        ans = Inf
        ans = last
+@end group
 @end example
 
 @node Creating Structures
 @subsection Creating Structures
+@cindex dynamic naming
 
-As well as indexing a structure with ".", Octave can create a structure
-with the @code{struct} command.  @code{struct} takes pairs of arguments,
-where the first argument in the pair is the fieldname to include in the
-structure and the second is a scalar or cell array, representing the
-values to include in the structure or structure array.  For example
+Besides the index operator ".", Octave can use dynamic naming "(var)" or the
+@code{struct} function to create structures.  Dynamic naming uses the string
+value of a variable as the field name.  For example,
+@example
+@group
+a = "field2";
+x.a = 1;
+x.(a) = 2;
+x
+     @result{} x =
+        @{
+          a =  1
+          field2 =  2
+        @}
+@end group
+@end example
+
+More realistically, all of the functions that operate on strings can be used
+to build the correct field name before it is entered into the data structure.
+
+@example
+@group
+names = ["Bill"; "Mary"; "John"];
+ages  = [37; 26; 31];
+for i = 1:rows (names)
+  database.(names(i,:)) = ages(i);
+endfor
+database
+     @result{} database =
+        @{
+          Bill =  37
+          Mary =  26
+          John =  31
+        @}
+@end group
+@end example
+
+The third way to create structures is the @code{struct} command.  @code{struct}
+takes pairs of arguments, where the first argument in the pair is the fieldname
+to include in the structure and the second is a scalar or cell array,
+representing the values to include in the structure or structure array.  For
+example:
 
 @example
 @group
@@ -391,9 +447,10 @@ struct ("field1", 1, "field2", 2)
 
 If the values passed to @code{struct} are a mix of scalar and cell
 arrays, then the scalar arguments are expanded to create a 
-structure array with a consistent dimension.  For example
+structure array with a consistent dimension.  For example:
 
 @example
+@group
 s = struct ("field1", @{1, "one"@}, "field2", @{2, "two"@},
         "field3", 3);
 s.field1
@@ -410,13 +467,15 @@ s.field3
      @result{}
         ans =  3
         ans =  3
+@end group
 @end example
 
 If you want to create a struct which contains a cell array as an
-individual field, you have to put it into another cell array like in
+individual field, you must wrap it in another cell array as shown in
 the following example:
 
 @example
+@group
 struct ("field1", @{@{1, "one"@}@}, "field2", 2)
      @result{} ans =
         @{
@@ -429,9 +488,10 @@ struct ("field1", @{@{1, "one"@}@}, "field2", 2)
         
           field2 =  2
         @}
+@end group
  @end example       
 
-@c ov-struct.cc
+@c struct src/ov-struct.cc
 @anchor{doc-struct}
 @deftypefn {Built-in Function} {} struct ("field", @var{value}, "field", @var{value}, @dots{})
 
@@ -450,10 +510,11 @@ If the argument is an object, return the underlying struct.
 The function @code{isstruct} can be used to test if an object is a
 structure or a structure array.
 
-@c ov-struct.cc
+@c isstruct src/ov-struct.cc
 @anchor{doc-isstruct}
-@deftypefn {Built-in Function} {} isstruct (@var{expr})
-Return 1 if the value of the expression @var{expr} is a structure.
+@deftypefn {Built-in Function} {} isstruct (@var{x})
+Return true if @var{x} is a structure or a structure array.
+@seealso{@ref{doc-ismatrix,,ismatrix}, @ref{doc-iscell,,iscell}, @ref{doc-isa,,isa}}
 @end deftypefn
 
 
@@ -462,59 +523,14 @@ Return 1 if the value of the expression @var{expr} is a structure.
 
 Other functions that can manipulate the fields of a structure are given below.
 
-@c ov-struct.cc
-@anchor{doc-rmfield}
-@deftypefn {Built-in Function} {} rmfield (@var{s}, @var{f})
-Remove field @var{f} from the structure @var{s}.  If @var{f} is a
-cell array of character strings or a character array, remove the
-named fields.
-@seealso{@ref{doc-cellstr,,cellstr}, @ref{doc-iscellstr,,iscellstr}, @ref{doc-setfield,,setfield}}
+@c nfields src/ov-struct.cc
+@anchor{doc-nfields}
+@deftypefn {Built-in Function} {} nfields (@var{s})
+Return the number of fields of the structure @var{s}.
 @end deftypefn
 
 
-@c ./miscellaneous/setfield.m
-@anchor{doc-setfield}
-@deftypefn {Function File} {[@var{k1}, @dots{}, @var{v1}] =} setfield (@var{s}, @var{k1}, @var{v1}, @dots{})
-Set field members in a structure.
-
-@example
-@group
-oo(1,1).f0 = 1;
-oo = setfield (oo, @{1,2@}, "fd", @{3@}, "b", 6);
-oo(1,2).fd(3).b == 6
-@result{} ans = 1
-@end group
-@end example
-
-Note that this function could be written
-
-@example
-@group
-i1 = @{1,2@}; i2 = "fd"; i3 = @{3@}; i4 = "b";
-oo(i1@{:@}).(i2)(i3@{:@}).(i4) == 6;
-@end group
-@end example
-@seealso{@ref{doc-getfield,,getfield}, @ref{doc-rmfield,,rmfield}, @ref{doc-isfield,,isfield}, @ref{doc-isstruct,,isstruct}, @ref{doc-fieldnames,,fieldnames}, @ref{doc-struct,,struct}}
-@end deftypefn
-
-
-@c ./miscellaneous/orderfields.m
-@anchor{doc-orderfields}
-@deftypefn {Function File} {[@var{t}, @var{p}] =} orderfields (@var{s1}, @var{s2})
-Return a struct with fields arranged alphabetically or as specified
-by @var{s2} and a corresponding permutation vector.
-
-Given one struct, arrange field names in @var{s1} alphabetically.
-
-Given two structs, arrange field names in @var{s1} as they appear
-in @var{s2}.  The second argument may also specify the order in
-a permutation vector or a cell array of strings.
-
-@seealso{@ref{doc-getfield,,getfield}, @ref{doc-rmfield,,rmfield}, @ref{doc-isfield,,isfield}, @ref{doc-isstruct,,isstruct}, @ref{doc-fieldnames,,fieldnames}, @ref{doc-struct,,struct}}
-@end deftypefn
-
-
-@c ov-struct.cc
+@c fieldnames src/ov-struct.cc
 @anchor{doc-fieldnames}
 @deftypefn {Built-in Function} {} fieldnames (@var{struct})
 Return a cell array of strings naming the elements of the structure
@@ -523,25 +539,25 @@ argument that is not a structure.
 @end deftypefn
 
 
-@c ov-struct.cc
+@c isfield src/ov-struct.cc
 @anchor{doc-isfield}
-@deftypefn {Built-in Function} {} isfield (@var{expr}, @var{name})
-Return true if the expression @var{expr} is a structure and it includes an
-element named @var{name}.  The first argument must be a structure and
-the second must be a string.
+@deftypefn {Built-in Function} {} isfield (@var{x}, @var{name})
+Return true if the @var{x} is a structure and it
+includes an element named @var{name}.  If @var{name} is a cell
+array of strings then a logical array of equal dimension is returned.
 @end deftypefn
 
 
-@c ./miscellaneous/getfield.m
+@c getfield scripts/miscellaneous/getfield.m
 @anchor{doc-getfield}
-@deftypefn {Function File} {[@var{v1}, @dots{}] =} getfield (@var{s}, @var{key}, @dots{}) 
-Extract fields from a structure.  For example
+@deftypefn {Function File} {[@var{v1}, @dots{}] =} getfield (@var{s}, @var{key}, @dots{})
+Extract a field from a structure (or a nested structure).  For example:
 
 @example
 @group
 ss(1,2).fd(3).b = 5;
 getfield (ss, @{1,2@}, "fd", @{3@}, "b")
-@result{} ans = 5
+     @result{} ans = 5
 @end group
 @end example
 
@@ -552,17 +568,149 @@ the expression
 @group
 i1 = @{1,2@}; i2 = "fd"; i3 = @{3@}; i4= "b";
 ss(i1@{:@}).(i2)(i3@{:@}).(i4)
+     @result{} ans = 5
+
 @end group
 @end example
 @seealso{@ref{doc-setfield,,setfield}, @ref{doc-rmfield,,rmfield}, @ref{doc-isfield,,isfield}, @ref{doc-isstruct,,isstruct}, @ref{doc-fieldnames,,fieldnames}, @ref{doc-struct,,struct}}
 @end deftypefn
 
 
-@c ./miscellaneous/substruct.m
+@c setfield scripts/miscellaneous/setfield.m
+@anchor{doc-setfield}
+@deftypefn {Function File} {[@var{k1}, @dots{}, @var{v1}] =} setfield (@var{s}, @var{k1}, @var{v1}, @dots{})
+Set a field member in a (nested) structure array.  For example:
+
+@example
+@group
+oo(1,1).f0 = 1;
+oo = setfield (oo, @{1,2@}, "fd", @{3@}, "b", 6);
+oo(1,2).fd(3).b == 6
+     @result{} ans = 1
+@end group
+@end example
+
+Note that the same result as in the above example could be achieved by:
+
+@example
+@group
+i1 = @{1,2@}; i2 = "fd"; i3 = @{3@}; i4 = "b";
+oo(i1@{:@}).(i2)(i3@{:@}).(i4) == 6
+     @result{} ans = 1
+@end group
+@end example
+@seealso{@ref{doc-getfield,,getfield}, @ref{doc-rmfield,,rmfield}, @ref{doc-isfield,,isfield}, @ref{doc-isstruct,,isstruct}, @ref{doc-fieldnames,,fieldnames}, @ref{doc-struct,,struct}}
+@end deftypefn
+
+
+@c rmfield src/ov-struct.cc
+@anchor{doc-rmfield}
+@deftypefn {Built-in Function} {} rmfield (@var{s}, @var{f})
+Return a copy of the structure (array) @var{s} with the field @var{f}
+removed.  If @var{f} is a cell array of strings or a character array, remove
+the named fields.
+@seealso{@ref{doc-cellstr,,cellstr}, @ref{doc-iscellstr,,iscellstr}, @ref{doc-setfield,,setfield}}
+@end deftypefn
+
+
+@c orderfields scripts/miscellaneous/orderfields.m
+@anchor{doc-orderfields}
+@deftypefn  {Function File} {[@var{t}, @var{p}] =} orderfields (@var{s1})
+@deftypefnx {Function File} {[@var{t}, @var{p}] =} orderfields (@var{s1}, @var{s2})
+Return a copy of @var{s1} with fields arranged alphabetically or
+as specified by @var{s2}.
+
+Given one struct, arrange field names in @var{s1} alphabetically.
+
+If the second argument is a struct, arrange field names in @var{s1}
+as they appear in @var{s2}.  The second argument may also specify the
+order in a permutation vector or a cell array of strings containing
+the fieldnames of @var{s1} in the desired order.
+
+The optional second output argument @var{p} is assigned the permutation
+vector
+which converts the original name order into the new name order.
+
+Examples:
+
+@example
+@group
+s = struct("d", 4, "b", 2, "a", 1, "c", 3);
+t1 = orderfields(s)
+     @result{} t1 =
+        @{
+          a =  1
+          b =  2
+          c =  3
+          d =  4
+        @}
+@end group
+@group
+t = struct("d", @{@}, "c", @{@}, "b", "a", @{@});
+t2 = orderfields(s, t)
+     @result{} t2 =
+        @{
+          d =  4
+          c =  3
+          b =  2
+          a =  1
+        @}
+@end group
+@group
+t3 = orderfields(s, [3, 2, 4, 1]);
+     @result{} t3 =
+        @{
+          a =  1
+          b =  2
+          c =  3
+          d =  4
+        @}
+@end group
+@group
+[t4, p] = orderfields(s, @{"d", "c", "b", "a"@})
+     @result{} t4 = @{
+          d =  4
+          c =  3
+          b =  2
+          a =  1
+        @}
+     p =
+        1
+        4
+        2
+        3
+@end group
+@end example
+
+@seealso{@ref{doc-getfield,,getfield}, @ref{doc-rmfield,,rmfield}, @ref{doc-isfield,,isfield}, @ref{doc-isstruct,,isstruct}, @ref{doc-fieldnames,,fieldnames}, @ref{doc-struct,,struct}}
+@end deftypefn
+
+
+@c substruct scripts/miscellaneous/substruct.m
 @anchor{doc-substruct}
 @deftypefn {Function File} {} substruct (@var{type}, @var{subs}, @dots{})
 Create a subscript structure for use with @code{subsref} or
-@code{subsasgn}.
+@code{subsasgn}.  For example:
+
+@example
+@group
+idx = substruct("()", @{3, ":"@})
+     @result{}
+       idx =
+       @{
+         type = ()
+         subs =
+         @{
+           [1,1] =  3
+           [1,2] = :
+         @}
+       @}
+x = [1, 2, 3; 4, 5, 6; 7, 8, 9];
+subsref(x, idx)
+     @result{} ans =
+        7  8  9
+@end group
+@end example
 @seealso{@ref{doc-subsref,,subsref}, @ref{doc-subsasgn,,subsasgn}}
 @end deftypefn
 
@@ -575,64 +723,98 @@ loop (@pxref{Looping Over Structure Elements}).  A similar effect can be
 achieved with the @code{structfun} function, where a user defined
 function is applied to each field of the structure.
 
-@c ./general/structfun.m
+@c structfun scripts/general/structfun.m
 @anchor{doc-structfun}
-@deftypefn {Function File} {} structfun (@var{func}, @var{s})
-@deftypefnx {Function File} {[@var{a}, @var{b}] =} structfun (@dots{})
+@deftypefn  {Function File} {} structfun (@var{func}, @var{S})
+@deftypefnx {Function File} {[@var{A}, @dots{}] =} structfun (@dots{})
 @deftypefnx {Function File} {} structfun (@dots{}, "ErrorHandler", @var{errfunc})
 @deftypefnx {Function File} {} structfun (@dots{}, "UniformOutput", @var{val})
 
 Evaluate the function named @var{name} on the fields of the structure
-@var{s}.  The fields of @var{s} are passed to the function @var{func}
+@var{S}.  The fields of @var{S} are passed to the function @var{func}
 individually.
 
-@code{structfun} accepts an arbitrary function @var{func} in the form of 
-an inline function, function handle, or the name of a function (in a 
-character string).  In the case of a character string argument, the 
-function must accept a single argument named @var{x}, and it must return 
+@code{structfun} accepts an arbitrary function @var{func} in the form of
+an inline function, function handle, or the name of a function (in a
+character string).  In the case of a character string argument, the
+function must accept a single argument named @var{x}, and it must return
 a string value.  If the function returns more than one argument, they are
 returned as separate output variables.
 
-If the parameter "UniformOutput" is set to true (the default), then the function
+If the parameter "UniformOutput" is set to true (the default), then the
+function
 must return a single element which will be concatenated into the
-return value.  If "UniformOutput" is false, the outputs placed in a structure
+return value.  If "UniformOutput" is false, the outputs are placed into a
+structure
 with the same fieldnames as the input structure.
 
 @example
 @group
-s.name1 = "John Smith"; 
-s.name2 = "Jill Jones"; 
-structfun (@@(x) regexp (x, '(\w+)$', "matches")@{1@}, s, 
+s.name1 = "John Smith";
+s.name2 = "Jill Jones";
+structfun (@@(x) regexp (x, '(\w+)$', "matches")@{1@}, s,
            "UniformOutput", false)
+    @result{}
+   @{
+     name1 = Smith
+     name2 = Jones
+   @}
 @end group
 @end example
 
-Given the parameter "ErrorHandler", then @var{errfunc} defines a function to
+Given the parameter "ErrorHandler", @var{errfunc} defines a function to
 call in case @var{func} generates an error.  The form of the function is
 
 @example
 function [@dots{}] = errfunc (@var{se}, @dots{})
 @end example
 
+@noindent
 where there is an additional input argument to @var{errfunc} relative to
 @var{func}, given by @var{se}.  This is a structure with the elements
 "identifier", "message" and "index", giving respectively the error
 identifier, the error message, and the index into the input arguments
-of the element that caused the error.
-@seealso{@ref{doc-cellfun,,cellfun}, @ref{doc-arrayfun,,arrayfun}}
+of the element that caused the error.  For an example on how to use
+an error handler, @pxref{doc-cellfun, @code{cellfun}}.
+
+@seealso{@ref{doc-cellfun,,cellfun}, @ref{doc-arrayfun,,arrayfun}, @ref{doc-spfun,,spfun}}
 @end deftypefn
 
 
 Alternatively, to process the data in a structure, the structure might
 be converted to another type of container before being treated.
 
-@c ov-cell.cc
+@c struct2cell src/ov-cell.cc
 @anchor{doc-struct2cell}
 @deftypefn {Built-in Function} {} struct2cell (@var{S})
 Create a new cell array from the objects stored in the struct object.
 If @var{f} is the number of fields in the structure, the resulting
 cell array will have a dimension vector corresponding to
-@code{[@var{F} size(@var{S})]}.
+@code{[@var{F} size(@var{S})]}.  For example:
+
+@example
+@group
+  s = struct('name', @{'Peter', 'Hannah', 'Robert'@},
+             'age', @{23, 16, 3@});
+  c = struct2cell(s)
+     @result{} c = @{1x1x3 Cell Array@}
+  c(1,1,:)(:)
+     @result{} ans =
+        @{
+          [1,1] = Peter
+          [2,1] = Hannah
+          [3,1] = Robert
+        @}
+  c(2,1,:)(:)
+     @result{} ans =
+        @{
+          [1,1] = 23
+          [2,1] = 16
+          [3,1] = 3
+        @}
+@end group
+@end example
+
 @seealso{@ref{doc-cell2struct,,cell2struct}, @ref{doc-fieldnames,,fieldnames}}
 @end deftypefn
 
@@ -657,7 +839,8 @@ and @samp{@}} as allocation and indexing operators.
 
 @node Basic Usage of Cell Arrays
 @subsection Basic Usage of Cell Arrays
-
+@opindex @{
+@opindex @}
 As an example, the following code creates a cell array containing a
 string and a 2-by-2 random matrix
 
@@ -725,18 +908,35 @@ previous example.  In some circumstances it makes sense to reference
 them by their index, and this can be performed by the @code{celldisp}
 function.
 
-@c ./general/celldisp.m
+@c celldisp scripts/general/celldisp.m
 @anchor{doc-celldisp}
 @deftypefn {Function File} {} celldisp (@var{c}, @var{name})
 Recursively display the contents of a cell array.  By default the values
 are displayed with the name of the variable @var{c}.  However, this name
-can be replaced with the variable @var{name}.
+can be replaced with the variable @var{name}.  For example:
+
+@example
+@group
+c = @{1, 2, @{31, 32@}@};
+celldisp(c, "b")
+     @result{}
+        b@{1@} =
+         1
+        b@{2@} =
+         2
+        b@{3@}@{1@} =
+         31
+        b@{3@}@{2@} =
+         32
+@end group
+@end example
+
 @seealso{@ref{doc-disp,,disp}}
 @end deftypefn
 
 
 To test if an object is a cell array, use the @code{iscell}
-function. For example:
+function.  For example:
 
 @example
 @group
@@ -749,11 +949,11 @@ iscell(3)
 @end group
 @end example
 
-@c ov-cell.cc
+@c iscell src/ov-cell.cc
 @anchor{doc-iscell}
 @deftypefn {Built-in Function} {} iscell (@var{x})
-Return true if @var{x} is a cell array object.  Otherwise, return
-false.
+Return true if @var{x} is a cell array object.
+@seealso{@ref{doc-ismatrix,,ismatrix}, @ref{doc-isstruct,,isstruct}, @ref{doc-iscellstr,,iscellstr}, @ref{doc-isa,,isa}}
 @end deftypefn
 
 
@@ -784,7 +984,7 @@ c = cell(2,2)
 @end group
 @end example
 
-Just like numerical arrays, cell arrays can be multidimensional.  The
+Just like numerical arrays, cell arrays can be multi-dimensional.  The
 @code{cell} function accepts any number of positive integers to describe
 the size of the returned cell array.  It is also possible to set the size
 of the cell array through a vector of positive integers.  In the
@@ -808,48 +1008,73 @@ object, such as @ref{doc-length, @code{length}}, @ref{doc-numel,
 @code{numel}}, @ref{doc-rows, @code{rows}}, and @ref{doc-columns,
 @code{columns}}.
 
-@c ov-cell.cc
+@c cell src/ov-cell.cc
 @anchor{doc-cell}
-@deftypefn {Built-in Function} {} cell (@var{x})
-@deftypefnx {Built-in Function} {} cell (@var{n}, @var{m})
-Create a new cell array object.  If invoked with a single scalar
-argument, @code{cell} returns a square cell array with the dimension
-specified.  If you supply two scalar arguments, @code{cell} takes
-them to be the number of rows and columns.  If given a vector with two
-elements, @code{cell} uses the values of the elements as the number of
-rows and columns, respectively.
+@deftypefn  {Built-in Function} {} cell (@var{n})
+@deftypefnx {Built-in Function} {} cell (@var{m}, @var{n})
+@deftypefnx {Built-in Function} {} cell (@var{m}, @var{n}, @var{k}, @dots{})
+@deftypefnx {Built-in Function} {} cell ([@var{m} @var{n} @dots{}])
+Create a new cell array object.
+If invoked with a single scalar integer argument, return a square
+@nospell{NxN} cell array.  If invoked with two or more scalar
+integer arguments, or a vector of integer values, return an array with
+the given dimensions.
 @end deftypefn
 
 
 As an alternative to creating empty cell arrays, and then filling them, it
 is possible to convert numerical arrays into cell arrays using the
-@code{num2cell} and @code{mat2cell} functions.
+@code{num2cell}, @code{mat2cell} and @code{cellslices} functions.
 
-@c ./DLD-FUNCTIONS/cellfun.cc
+@c num2cell src/DLD-FUNCTIONS/cellfun.cc
 @anchor{doc-num2cell}
-@deftypefn  {Loadable Function} {@var{c} =} num2cell (@var{m})
-@deftypefnx {Loadable Function} {@var{c} =} num2cell (@var{m}, @var{dim})
-Convert the matrix @var{m} to a cell array.  If @var{dim} is defined, the
-value @var{c} is of dimension 1 in this dimension and the elements of
-@var{m} are placed in slices in @var{c}.
+@deftypefn  {Loadable Function} {@var{C} =} num2cell (@var{A})
+@deftypefnx {Loadable Function} {@var{C} =} num2cell (@var{A}, @var{dim})
+Convert the numeric matrix @var{A} to a cell array.  If @var{dim} is
+defined, the value @var{C} is of dimension 1 in this dimension and the
+elements of @var{A} are placed into @var{C} in slices.  For example:
+
+@example
+@group
+num2cell([1,2;3,4])
+     @result{} ans =
+        @{
+          [1,1] =  1
+          [2,1] =  3
+          [1,2] =  2
+          [2,2] =  4
+        @}
+num2cell([1,2;3,4],1)
+     @result{} ans =
+        @{
+          [1,1] =
+             1
+             3
+          [1,2] =
+             2
+             4
+        @}
+@end group
+@end example
+
 @seealso{@ref{doc-mat2cell,,mat2cell}}
 @end deftypefn
 
 
-@c ./DLD-FUNCTIONS/cellfun.cc
+@c mat2cell src/DLD-FUNCTIONS/cellfun.cc
 @anchor{doc-mat2cell}
-@deftypefn {Loadable Function} {@var{b} =} mat2cell (@var{a}, @var{m}, @var{n})
-@deftypefnx {Loadable Function} {@var{b} =} mat2cell (@var{a}, @var{d1}, @var{d2}, @dots{})
-@deftypefnx {Loadable Function} {@var{b} =} mat2cell (@var{a}, @var{r})
-Convert the matrix @var{a} to a cell array.  If @var{a} is 2-D, then
-it is required that @code{sum (@var{m}) == size (@var{a}, 1)} and
-@code{sum (@var{n}) == size (@var{a}, 2)}.  Similarly, if @var{a} is
-a multi-dimensional and the number of dimensional arguments is equal
-to the dimensions of @var{a}, then it is required that @code{sum (@var{di})
-== size (@var{a}, i)}.
+@deftypefn  {Loadable Function} {@var{C} =} mat2cell (@var{A}, @var{m}, @var{n})
+@deftypefnx {Loadable Function} {@var{C} =} mat2cell (@var{A}, @var{d1}, @var{d2}, @dots{})
+@deftypefnx {Loadable Function} {@var{C} =} mat2cell (@var{A}, @var{r})
+Convert the matrix @var{A} to a cell array.  If @var{A} is 2-D, then
+it is required that @code{sum (@var{m}) == size (@var{A}, 1)} and
+@code{sum (@var{n}) == size (@var{A}, 2)}.  Similarly, if @var{A} is
+multi-dimensional and the number of dimensional arguments is equal
+to the dimensions of @var{A}, then it is required that @code{sum (@var{di})
+== size (@var{A}, i)}.
 
 Given a single dimensional argument @var{r}, the other dimensional
-arguments are assumed to equal @code{size (@var{a},@var{i})}.
+arguments are assumed to equal @code{size (@var{A},@var{i})}.
 
 An example of the use of mat2cell is
 
@@ -879,13 +1104,36 @@ mat2cell (reshape(1:16,4,4),[3,1],[3,1])
 @end deftypefn
 
 
+@c cellslices src/DLD-FUNCTIONS/cellfun.cc
+@anchor{doc-cellslices}
+@deftypefn {Loadable Function} {@var{sl} =} cellslices (@var{x}, @var{lb}, @var{ub}, @var{dim})
+Given an array @var{x}, this function produces a cell array of slices from
+the array determined by the index vectors @var{lb}, @var{ub}, for lower and
+upper bounds, respectively.  In other words, it is equivalent to the
+following code:
+
+@example
+@group
+n = length (lb);
+sl = cell (1, n);
+for i = 1:length (lb)
+  sl@{i@} = x(:,@dots{},lb(i):ub(i),@dots{},:);
+endfor
+@end group
+@end example
+
+The position of the index is determined by @var{dim}.  If not specified,
+slicing is done along the first non-singleton dimension.
+@end deftypefn
+
+
 @node Indexing Cell Arrays
 @subsection Indexing Cell Arrays
 
 As shown in @pxref{Basic Usage of Cell Arrays} elements can be
 extracted from cell arrays using the @samp{@{} and @samp{@}}
 operators.  If you want to extract or access subarrays which are still 
-cell arrays, you need to use the @samp{(} and @samp{)} operators. The
+cell arrays, you need to use the @samp{(} and @samp{)} operators.  The
 following example illustrates the difference:
 
 @example
@@ -907,7 +1155,7 @@ array, while with @samp{()} you access a sub array of a cell
 array.
 
 Using the @samp{(} and @samp{)} operators, indexing works for cell
-arrays like for multidimensional arrays.  As an example, all the rows
+arrays like for multi-dimensional arrays.  As an example, all the rows
 of the first and third column of a cell array can be set to @code{0}
 with the following command:
 
@@ -960,7 +1208,7 @@ c([1, 2], :) = c([2, 1], :)
 
 Accessing multiple elements of a cell array with the @samp{@{} and
 @samp{@}} operators will result in a comma-separated list of all the
-requested elements (@pxref{Comma Separated Lists}). Using the
+requested elements (@pxref{Comma Separated Lists}).  Using the
 @samp{@{} and @samp{@}} operators the first two rows in the above
 example can be swapped back like this:
 
@@ -1011,6 +1259,27 @@ x@{1, :@} = []
 @end group
 @end example
 
+The indexing operations operate on the cell array and not on the objects
+within the cell array.  By contrast, @code{cellindexmat} applies matrix indexing
+to the objects within each cell array entry and returns the requested values.
+
+@c cellindexmat src/DLD-FUNCTIONS/cellfun.cc
+@anchor{doc-cellindexmat}
+@deftypefn {Loadable Function} {@var{y} =} cellindexmat (@var{x}, @var{varargin})
+Given a cell array of matrices @var{x}, this function computes
+
+@example
+@group
+  Y = cell (size (X));
+  for i = 1:numel (X)
+    Y@{i@} = X@{i@}(varargin@{:@});
+  endfor
+@end group
+@end example
+@seealso{@ref{doc-cellfun,,cellfun}, @ref{doc-cellslices,,cellslices}}
+@end deftypefn
+
+
 @node Cell Arrays of Strings
 @subsection Cell Arrays of Strings
 
@@ -1038,7 +1307,7 @@ c = cellstr (a)
 @end group
 @end example
 
-@c ov-cell.cc
+@c cellstr src/ov-cell.cc
 @anchor{doc-cellstr}
 @deftypefn {Built-in Function} {} cellstr (@var{string})
 Create a new cell array object from the elements of the string
@@ -1075,30 +1344,12 @@ Strings}) and @code{str2double} (@pxref{String Conversions}).
 The function @code{iscellstr} can be used to test if an object is a
 cell array of strings.
 
-@c ov-cell.cc
+@c iscellstr src/ov-cell.cc
 @anchor{doc-iscellstr}
 @deftypefn {Built-in Function} {} iscellstr (@var{cell})
 Return true if every element of the cell array @var{cell} is a
-character string
-@end deftypefn
-
-
-@c ./general/cellidx.m
-@anchor{doc-cellidx}
-@deftypefn {Function File} {[@var{idxvec}, @var{errmsg}] =} cellidx (@var{listvar}, @var{strlist})
-Return indices of string entries in @var{listvar} that match strings
-in @var{strlist}.
-
-Both @var{listvar} and @var{strlist} may be passed as strings or
-string matrices.  If they are passed as string matrices, each entry
-is processed by @code{deblank} prior to searching for the entries.
-
-The first output is the vector of indices in @var{listvar}.
-
-If @var{strlist} contains a string not in @var{listvar}, then
-an error message is returned in @var{errmsg}.  If only one output
-argument is requested, then @var{cellidx} prints @var{errmsg} to the
-screen and exits with an error.
+character string.
+@seealso{@ref{doc-ischar,,ischar}}
 @end deftypefn
 
 
@@ -1112,36 +1363,43 @@ idea can be implemented more easily through the use of the @code{cellfun}
 function that calls a user-specified function on all elements of a cell
 array.
 
-@c ./DLD-FUNCTIONS/cellfun.cc
+@c cellfun src/DLD-FUNCTIONS/cellfun.cc
 @anchor{doc-cellfun}
-@deftypefn {Loadable Function} {} cellfun (@var{name}, @var{c})
-@deftypefnx {Loadable Function} {} cellfun ("size", @var{c}, @var{k})
-@deftypefnx {Loadable Function} {} cellfun ("isclass", @var{c}, @var{class})
-@deftypefnx {Loadable Function} {} cellfun (@var{func}, @var{c})
-@deftypefnx {Loadable Function} {} cellfun (@var{func}, @var{c}, @var{d})
-@deftypefnx {Loadable Function} {[@var{a}, @var{b}] =} cellfun (@dots{})
+@deftypefn  {Loadable Function} {} cellfun (@var{name}, @var{C})
+@deftypefnx {Loadable Function} {} cellfun ("size", @var{C}, @var{k})
+@deftypefnx {Loadable Function} {} cellfun ("isclass", @var{C}, @var{class})
+@deftypefnx {Loadable Function} {} cellfun (@var{func}, @var{C})
+@deftypefnx {Loadable Function} {} cellfun (@var{func}, @var{C}, @var{D})
+@deftypefnx {Loadable Function} {[@var{a}, @dots{}] =} cellfun (@dots{})
 @deftypefnx {Loadable Function} {} cellfun (@dots{}, 'ErrorHandler', @var{errfunc})
 @deftypefnx {Loadable Function} {} cellfun (@dots{}, 'UniformOutput', @var{val})
 
 Evaluate the function named @var{name} on the elements of the cell array
-@var{c}.  Elements in @var{c} are passed on to the named function
+@var{C}.  Elements in @var{C} are passed on to the named function
 individually.  The function @var{name} can be one of the functions
 
 @table @code
 @item isempty
 Return 1 for empty elements.
+
 @item islogical
 Return 1 for logical elements.
+
 @item isreal
 Return 1 for real elements.
+
 @item length
 Return a vector of the lengths of cell elements.
+
 @item ndims
 Return the number of dimensions of each element.
+
 @item prodofsize
 Return the product of dimensions of each element.
+
 @item size
 Return the size along the @var{k}-th dimension.
+
 @item isclass
 Return 1 for elements of @var{class}.
 @end table
@@ -1151,23 +1409,43 @@ in the form of an inline function, function handle, or the name of a
 function (in a character string).  In the case of a character string
 argument, the function must accept a single argument named @var{x}, and
 it must return a string value.  The function can take one or more arguments,
-with the inputs args given by @var{c}, @var{d}, etc.  Equally the function
-can return one or more output arguments.  For example
+with the inputs arguments given by @var{C}, @var{D}, etc.  Equally the
+function can return one or more output arguments.  For example:
 
 @example
 @group
 cellfun (@@atan2, @{1, 0@}, @{0, 1@})
-@result{}ans = [1.57080   0.00000]
+     @result{}ans = [1.57080   0.00000]
 @end group
 @end example
 
-Note that the default output argument is an array of the same size as the
-input arguments.
+The number of output arguments of @code{cellfun} matches the number of output
+arguments of the function.  The outputs of the function will be collected
+into the output arguments of @code{cellfun} like this:
 
-If the parameter 'UniformOutput' is set to true (the default), then the function
-must return a single element which will be concatenated into the
-return value.  If 'UniformOutput' is false, the outputs are concatenated in
-a cell array.  For example
+@example
+@group
+function [a, b] = twoouts (x)
+  a = x;
+  b = x*x;
+endfunction
+[aa, bb] = cellfun(@@twoouts, @{1, 2, 3@})
+     @result{}
+        aa =
+           1 2 3
+        bb =
+           1 4 9
+@end group
+@end example
+
+Note that per default the output argument(s) are arrays of the same size as
+the input arguments.  Input arguments that are singleton (1x1) cells will be
+automatically expanded to the size of the other arguments.
+
+If the parameter 'UniformOutput' is set to true (the default), then the
+function must return scalars which will be concatenated into the return
+array(s).  If 'UniformOutput' is false, the outputs are concatenated into a
+cell array (or cell arrays).  For example:
 
 @example
 @group
@@ -1184,11 +1462,12 @@ call in case @var{func} generates an error.  The form of the function is
 function [@dots{}] = errfunc (@var{s}, @dots{})
 @end example
 
+@noindent
 where there is an additional input argument to @var{errfunc} relative to
 @var{func}, given by @var{s}.  This is a structure with the elements
 'identifier', 'message' and 'index', giving respectively the error
 identifier, the error message, and the index into the input arguments
-of the element that caused the error.  For example
+of the element that caused the error.  For example:
 
 @example
 @group
@@ -1198,7 +1477,7 @@ cellfun (@@factorial, @{-1,2@},'ErrorHandler',@@foo)
 @end group
 @end example
 
-@seealso{@ref{doc-isempty,,isempty}, @ref{doc-islogical,,islogical}, @ref{doc-isreal,,isreal}, @ref{doc-length,,length}, @ref{doc-ndims,,ndims}, @ref{doc-numel,,numel}, @ref{doc-size,,size}}
+@seealso{@ref{doc-arrayfun,,arrayfun}, @ref{doc-structfun,,structfun}, @ref{doc-spfun,,spfun}}
 @end deftypefn
 
 
@@ -1206,18 +1485,18 @@ An alternative is to convert the data to a different container, such as
 a matrix or a data structure.  Depending on the data this is possible
 using the @code{cell2mat} and @code{cell2struct} functions.
 
-@c ./general/cell2mat.m
+@c cell2mat scripts/general/cell2mat.m
 @anchor{doc-cell2mat}
 @deftypefn {Function File} {@var{m} =} cell2mat (@var{c})
 Convert the cell array @var{c} into a matrix by concatenating all
 elements of @var{c} into a hyperrectangle.  Elements of @var{c} must
-be numeric, logical or char, and @code{cat} must be able to
-concatenate them together.
+be numeric, logical or char matrices, or cell arrays, and @code{cat}
+must be able to concatenate them together.
 @seealso{@ref{doc-mat2cell,,mat2cell}, @ref{doc-num2cell,,num2cell}}
 @end deftypefn
 
 
-@c ov-struct.cc
+@c cell2struct src/ov-struct.cc
 @anchor{doc-cell2struct}
 @deftypefn {Built-in Function} {} cell2struct (@var{cell}, @var{fields}, @var{dim})
 Convert @var{cell} to a structure.  The number of fields in @var{fields}
@@ -1230,11 +1509,11 @@ A = cell2struct (@{'Peter', 'Hannah', 'Robert';
                    185, 170, 168@},
                  @{'Name','Height'@}, 1);
 A(1)
-@result{} ans =
-      @{
-        Height = 185
-        Name   = Peter
-      @}
+     @result{} ans =
+        @{
+          Name   = Peter
+          Height = 185
+        @}
 
 @end group
 @end example
@@ -1276,11 +1555,13 @@ element to the comma separated list @samp{@var{i}, @var{j}}.
 Another example of where comma separated lists are used is in the
 creation of a new array with @code{[]} (@pxref{Matrices}) or the
 creation of a cell array with @code{@{@}} (@pxref{Basic Usage of Cell
-Arrays}). In the expressions 
+Arrays}).  In the expressions 
 
 @example
+@group
 a = [1, 2, 3, 4];
 c = @{4, 5, 6, 7@};
+@end group
 @end example
 
 @noindent
@@ -1302,15 +1583,15 @@ as will be shown in the following subsections.
 
 As has been mentioned above (@pxref{Indexing Cell Arrays}), elements
 of a cell array can be extracted into a comma separated list with the
-@code{@{} and @code{@}} operators. By surrounding this list with
-@code{[} and @code{]}, it can be concatenated into an array. For example:
+@code{@{} and @code{@}} operators.  By surrounding this list with
+@code{[} and @code{]}, it can be concatenated into an array.  For example:
 
 @example
 @group
 a = @{1, [2, 3], 4, 5, 6@};
 b = [a@{1:4@}]
      @result{} b =
-         1   2   3   4
+         1   2   3   4   5
 @end group
 @end example
 
@@ -1377,7 +1658,7 @@ out = cell (4, 1);
 @subsection Comma Separated Lists Generated from Structure Arrays
 Structure arrays can equally be used to create comma separated
 lists.  This is done by addressing one of the fields of a structure
-array.  For example
+array.  For example:
 
 @example
 @group

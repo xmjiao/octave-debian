@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2000, 2002, 2003, 2004, 2005, 2006,
-              2007, 2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -30,7 +29,7 @@ class tree_argument_list;
 
 class tree_walker;
 
-class Octave_map;
+class octave_map;
 class octave_value;
 class octave_value_list;
 class octave_lvalue;
@@ -48,13 +47,13 @@ tree_index_expression : public tree_expression
 public:
 
   tree_index_expression (tree_expression *e = 0, tree_argument_list *lst = 0,
-			 int l = -1, int c = -1, char t = '(');
+                         int l = -1, int c = -1, char t = '(');
 
   tree_index_expression (tree_expression *e, const std::string& n,
-			 int l = -1, int c = -1);
+                         int l = -1, int c = -1);
 
   tree_index_expression (tree_expression *e, tree_expression* df,
-			 int l = -1, int c = -1);
+                         int l = -1, int c = -1);
 
   ~tree_index_expression (void);
 
@@ -86,10 +85,12 @@ public:
 
   octave_value_list rvalue (int nargout);
 
+  octave_value_list rvalue (int nargout, const std::list<octave_lvalue> *lvalue_list);
+
   octave_lvalue lvalue (void);
 
   tree_index_expression *dup (symbol_table::scope_id scope,
-			      symbol_table::context_id context) const;
+                              symbol_table::context_id context) const;
 
   void accept (tree_walker& tw);
 
@@ -113,12 +114,12 @@ private:
 
   tree_index_expression (int l, int c);
 
-  Octave_map make_arg_struct (void) const;
+  octave_map make_arg_struct (void) const;
 
   std::string
   get_struct_index
     (std::list<string_vector>::const_iterator p_arg_nm,
-     std::list<tree_expression *>::const_iterator p_dyn_field) const; 
+     std::list<tree_expression *>::const_iterator p_dyn_field) const;
 
   // No copying!
 
@@ -128,9 +129,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,4 +1,4 @@
-## Copyright (C) 2007, 2008, 2009 Regents of the University of California
+## Copyright (C) 2007-2011 Regents of the University of California
 ##
 ## This file is part of Octave.
 ##
@@ -17,25 +17,30 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {[@var{est}, @var{v}] =} condest (@var{a}, @var{t}) 
-## @deftypefnx {Function File} {[@var{est}, @var{v}] =} condest (@var{a}, @var{solve}, @var{solve_t}, @var{t})
+## @deftypefn  {Function File} {} condest (@var{A})
+## @deftypefnx {Function File} {} condest (@var{A}, @var{t})
+## @deftypefnx {Function File} {[@var{est}, @var{v}] =} condest (@dots{})
+## @deftypefnx {Function File} {[@var{est}, @var{v}] =} condest (@var{A}, @var{solve}, @var{solve_t}, @var{t})
 ## @deftypefnx {Function File} {[@var{est}, @var{v}] =} condest (@var{apply}, @var{apply_t}, @var{solve}, @var{solve_t}, @var{n}, @var{t})
 ##
 ## Estimate the 1-norm condition number of a matrix @var{A}
 ## using @var{t} test vectors using a randomized 1-norm estimator.
 ## If @var{t} exceeds 5, then only 5 test vectors are used.
 ##
-## If the matrix is not explicit, e.g., when estimating the condition 
-## number of @var{a} given an LU factorization, @code{condest} uses the 
+## If the matrix is not explicit, e.g., when estimating the condition
+## number of @var{A} given an LU@tie{}factorization, @code{condest} uses the
 ## following functions:
 ##
 ## @table @var
 ## @item apply
 ## @code{A*x} for a matrix @code{x} of size @var{n} by @var{t}.
+##
 ## @item apply_t
 ## @code{A'*x} for a matrix @code{x} of size @var{n} by @var{t}.
+##
 ## @item solve
 ## @code{A \ b} for a matrix @code{b} of size @var{n} by @var{t}.
+##
 ## @item solve_t
 ## @code{A' \ b} for a matrix @code{b} of size @var{n} by @var{t}.
 ## @end table
@@ -50,15 +55,18 @@
 ## (@var{v}, 1) / @var{est}}.  When @var{est} is large, @var{v} is an
 ## approximate null vector.
 ##
-## References: 
+## References:
 ## @itemize
-## @item Nicholas J. Higham and Françoise Tisseur, "A Block Algorithm
+## @item
+## N.J. Higham and F. Tisseur, @cite{A Block Algorithm
 ## for Matrix 1-Norm Estimation, with an Application to 1-Norm
-## Pseudospectra." SIMAX vol 21, no 4, pp 1185-1201.
+## Pseudospectra}. SIMAX vol 21, no 4, pp 1185-1201.
 ## @url{http://dx.doi.org/10.1137/S0895479899356080}
-## @item Nicholas J. Higham and Françoise Tisseur, "A Block Algorithm
+##
+## @item
+## N.J. Higham and F. Tisseur, @cite{A Block Algorithm
 ## for Matrix 1-Norm Estimation, with an Application to 1-Norm
-## Pseudospectra." @url{http://citeseer.ist.psu.edu/223007.html}
+## Pseudospectra}. @url{http://citeseer.ist.psu.edu/223007.html}
 ## @end itemize
 ##
 ## @seealso{cond, norm, onenormest}
@@ -117,26 +125,26 @@ function [est, v] = condest (varargin)
 
   if (ismatrix (varargin{1}))
     A = varargin{1};
-    n = issquare (A);
-    if (! n)
+    if (! issquare (A))
       error ("condest: matrix must be square");
     endif
+    n = rows (A);
     have_A = true;
 
     if (nargin > 1)
       if (isscalar (varargin{2}))
-	t = varargin{2};
-	have_t = true;
+        t = varargin{2};
+        have_t = true;
       elseif (nargin > 2)
-	solve = varargin{2};
-	solve_t = varargin{3};
-	have_solve = true;
-	if (nargin > 3)
-	  t = varargin{4};
-	  have_t = true;
-	endif
+        solve = varargin{2};
+        solve_t = varargin{3};
+        have_solve = true;
+        if (nargin > 3)
+          t = varargin{4};
+          have_t = true;
+        endif
       else
-	error ("condest: must supply both solve and solve_t");
+        error ("condest: must supply both SOLVE and SOLVE_T");
       endif
     endif
   elseif (nargin > 4)

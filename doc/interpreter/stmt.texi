@@ -1,7 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.
 
-@c Copyright (C) 1996, 1997, 1999, 2000, 2002, 2003, 2004, 2007, 2008, 2009
-@c               John W. Eaton
+@c Copyright (C) 1996-2011 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -331,11 +330,11 @@ endswitch
 @end example
 
 @menu
-* Notes for the C programmer::  
+* Notes for the C Programmer::  
 @end menu
 
-@node Notes for the C programmer
-@subsection Notes for the C programmer
+@node Notes for the C Programmer
+@subsection Notes for the C Programmer
 
 The @code{switch} statement is also available in the widely used C
 programming language.  There are, however, some differences
@@ -385,6 +384,7 @@ switch (foo)
   @dots{}
 @end group
 @end example
+
 @end itemize
 
 @node The @code{while} Statement
@@ -578,11 +578,11 @@ In this case the variable @code{i} takes on the value of the columns of
 the matrix or cell matrix.  So the first loop iterates twice, producing
 two column vectors @code{[1;2]}, followed by @code{[3;4]}, and likewise
 for the loop over the cell array.  This can be extended to loops over
-multidimensional arrays.  For example
+multi-dimensional arrays.  For example:
 
 @example
 @group
-a = [1,3;2,4]; b = cat(3, a, 2*a);
+a = [1,3;2,4]; c = cat(3, a, 2*a);
 for i = c
   i
 endfor
@@ -590,7 +590,7 @@ endfor
 @end example
 
 @noindent
-In the above case, the multidimensional matrix @var{c} is reshaped to a
+In the above case, the multi-dimensional matrix @var{c} is reshaped to a
 two-dimensional matrix as @code{reshape (c, rows(c),
 prod(size(c)(2:end)))} and then the same behavior as a loop over a two
 dimensional matrix is produced.
@@ -626,7 +626,7 @@ endfor
 In this form of the @code{for} statement, the value of @var{expression}
 must be a structure.  If it is, @var{key} and @var{val} are set to the
 name of the element and the corresponding value in turn, until there are
-no more elements.  For example,
+no more elements.  For example:
 
 @example
 @group

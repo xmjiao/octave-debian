@@ -1,4 +1,4 @@
-@c Copyright (C) 1996, 1997, 2007, 2008, 2009 John W. Eaton
+@c Copyright (C) 1996-2011 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -21,6 +21,14 @@
 @cindex nonlinear equations
 @cindex equations, nonlinear
 
+@menu
+* Solvers::
+* Minimizers::          
+@end menu
+
+@node Solvers
+@section Solvers
+
 Octave can solve sets of nonlinear equations of the form
 @tex
 $$
@@ -32,24 +40,25 @@ $$
 @example
 F (x) = 0
 @end example
+
 @end ifnottex
 
 @noindent
-using the function @code{fsolve}, which is based on the @sc{Minpack}
+using the function @code{fsolve}, which is based on the @sc{minpack}
 subroutine @code{hybrd}.  This is an iterative technique so a starting
-point will have to be provided.  This also has the consequence that
+point must be provided.  This also has the consequence that
 convergence is not guaranteed even if a solution exists.
 
 @DOCSTRING(fsolve)
 
-Here is a complete example.  To solve the set of equations
+The following is a complete example.  To solve the set of equations
 @tex
 $$
  \eqalign{-2x^2 + 3xy + 4\sin(y) - 6 &= 0\cr
            3x^2 - 2xy^2 + 3\cos(x) + 4 &= 0}
 $$
 @end tex
-@ifinfo
+@ifnottex
 
 @example
 @group
@@ -57,7 +66,8 @@ $$
  3x^2 - 2xy^2 + 3 cos(x) = -4
 @end group
 @end example
-@end ifinfo
+
+@end ifnottex
 
 @noindent
 you first need to write a function to compute the value of the given
@@ -66,6 +76,7 @@ function.  For example:
 @example
 @group
 function y = f (x)
+  y = zeros (2, 1);
   y(1) = -2*x(1)^2 + 3*x(1)*x(2)   + 4*sin(x(2)) - 6;
   y(2) =  3*x(1)^2 - 2*x(1)*x(2)^2 + 3*cos(x(1)) + 4;
 endfunction
@@ -102,16 +113,6 @@ info = 1
 @noindent
 A value of @code{info = 1} indicates that the solution has converged.
 
-The function @code{perror} may be used to print English messages
-corresponding to the numeric error codes.  For example,
-
-@example
-@group
-perror ("fsolve", 1)
-     @print{} solution converged to requested tolerance
-@end group
-@end example
-
 When no Jacobian is supplied (as in the example above) it is approximated
 numerically.  This requires more function evaluations, and hence is
 less efficient.  In the example above we could compute the Jacobian 
@@ -135,11 +136,17 @@ and compute it with the following Octave function
 
 @example
 @group
-function J = jacobian(x)
-  J(1,1) =  3*x(2) - 4*x(1);
-  J(1,2) =  4*cos(x(2)) + 3*x(1);
-  J(2,1) = -2*x(2)^2 - 3*sin(x(1)) + 6*x(1);
-  J(2,2) = -4*x(1)*x(2);
+function [y, jac] = f (x)
+  y = zeros (2, 1);
+  y(1) = -2*x(1)^2 + 3*x(1)*x(2)   + 4*sin(x(2)) - 6;
+  y(2) =  3*x(1)^2 - 2*x(1)*x(2)^2 + 3*cos(x(1)) + 4;
+  if (nargout == 2)
+    jac = zeros (2, 2);
+    jac(1,1) =  3*x(2) - 4*x(1);
+    jac(1,2) =  4*cos(x(2)) + 3*x(1);
+    jac(2,1) = -2*x(2)^2 - 3*sin(x(1)) + 6*x(1);
+    jac(2,2) = -4*x(1)*x(2);
+  endif
 endfunction
 @end group
 @end example
@@ -148,10 +155,34 @@ endfunction
 The Jacobian can then be used with the following call to @code{fsolve}:
 
 @example
-[x, fval, info] = fsolve (@{@@f, @@jacobian@}, [1; 2]);
+[x, fval, info] = fsolve (@@f, [1; 2], optimset ("jacobian", "on"));
 @end example
 
 @noindent
 which gives the same solution as before.
 
 @DOCSTRING(fzero)
+
+@node Minimizers
+@section Minimizers
+@cindex local minimum
+@cindex finding minimums
+
+Often it is useful to find the minimum value of a function rather than just
+the zeroes where it crosses the x-axis.  @code{fminbnd} is designed for the
+simpler, but very common, case of a univariate function where the interval
+to search is bounded.  For unbounded minimization of a function with
+potentially many variables use @code{fminunc}.  @xref{Optimization}, for
+minimization with the presence of constraint functions.  Note that searches
+can be made for maxima by simply inverting the objective function
+@tex
+($F_{max} = -F_{min}$).
+@end tex
+@ifnottex
+(@code{Fto_max = -Fto_min}).
+@end ifnottex
+
+@DOCSTRING(fminbnd)
+
+@DOCSTRING(fminunc)
+

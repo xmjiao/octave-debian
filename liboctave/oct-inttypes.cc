@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 2008, 2009 Jaroslav Hajek 
-Copyright (C) 2004, 2005, 2006, 2007 John W. Eaton
+Copyright (C) 2004-2011 John W. Eaton
+Copyright (C) 2008-2009 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -35,7 +35,7 @@ const octave_int<T> octave_int<T>::zero (static_cast<T> (0));
 template<class T>
 const octave_int<T> octave_int<T>::one (static_cast<T> (1));
 
-// define type names. 
+// define type names.
 #define DECLARE_OCTAVE_INT_TYPENAME(TYPE, TYPENAME) \
   template <> \
   OCTAVE_API const char * \
@@ -54,8 +54,8 @@ DECLARE_OCTAVE_INT_TYPENAME (uint64_t, "uint64")
 
 // Define comparison operators
 
-template <class xop> 
-bool 
+template <class xop>
+bool
 octave_int_cmp_op::emulate_mop (uint64_t x, double y)
 {
   static const double xxup = std::numeric_limits<uint64_t>::max ();
@@ -74,8 +74,8 @@ octave_int_cmp_op::emulate_mop (uint64_t x, double y)
     }
 }
 
-template <class xop> 
-bool 
+template <class xop>
+bool
 octave_int_cmp_op::emulate_mop (int64_t x, double y)
 {
   static const double xxup = std::numeric_limits<int64_t>::max ();
@@ -121,16 +121,16 @@ DEFINE_REVERTED_OPERATOR(gt,lt);
 DEFINE_REVERTED_OPERATOR(le,ge);
 DEFINE_REVERTED_OPERATOR(ge,le);
 
-template <class xop> 
-bool 
+template <class xop>
+bool
 octave_int_cmp_op::emulate_mop (double x, uint64_t y)
 {
   typedef typename rev_op<xop>::op rop;
   return mop<rop> (y, x);
 }
 
-template <class xop> 
-bool 
+template <class xop>
+bool
 octave_int_cmp_op::emulate_mop (double x, int64_t y)
 {
   typedef typename rev_op<xop>::op rop;
@@ -141,20 +141,20 @@ octave_int_cmp_op::emulate_mop (double x, int64_t y)
 // Define handlers for int64 multiplication
 
 template <>
-uint64_t 
+uint64_t
 octave_int_arith_base<uint64_t, false>::mul (uint64_t x, uint64_t y)
-{ 
+{
   // Get upper words
   uint64_t ux = x >> 32, uy = y >> 32;
   uint64_t res;
   if (ux)
     {
-      if (uy) 
+      if (uy)
         goto overflow;
       else
         {
           uint64_t ly = static_cast<uint32_t> (y), uxly = ux*ly;
-          if (uxly >> 32) 
+          if (uxly >> 32)
             goto overflow;
           uxly <<= 32; // never overflows
           uint64_t lx = static_cast<uint32_t> (x), lxly = lx*ly;
@@ -164,7 +164,7 @@ octave_int_arith_base<uint64_t, false>::mul (uint64_t x, uint64_t y)
   else if (uy)
     {
       uint64_t lx = static_cast<uint32_t> (x), uylx = uy*lx;
-      if (uylx >> 32) 
+      if (uylx >> 32)
         goto overflow;
       uylx <<= 32; // never overflows
       uint64_t ly = static_cast<uint32_t> (y), lylx = ly*lx;
@@ -180,18 +180,17 @@ octave_int_arith_base<uint64_t, false>::mul (uint64_t x, uint64_t y)
   return res;
 
 overflow:
-  ftrunc = true;
   return max_val ();
 }
 
 template <>
-int64_t 
+int64_t
 octave_int_arith_base<int64_t, true>::mul (int64_t x, int64_t y)
-{ 
+{
   // The signed case is far worse. The problem is that
   // even if neither integer fits into signed 32-bit range, the result may
   // still be OK. Uh oh.
-  
+
   // Essentially, what we do is compute sign, multiply absolute values
   // (as above) and impose the sign.
   // FIXME -- can we do something faster if we HAVE_FAST_INT_OPS?
@@ -204,12 +203,12 @@ octave_int_arith_base<int64_t, true>::mul (int64_t x, int64_t y)
   uint64_t res;
   if (ux)
     {
-      if (uy) 
+      if (uy)
         goto overflow;
       else
         {
           uint64_t ly = static_cast<uint32_t> (usy), uxly = ux*ly;
-          if (uxly >> 32) 
+          if (uxly >> 32)
             goto overflow;
           uxly <<= 32; // never overflows
           uint64_t lx = static_cast<uint32_t> (usx), lxly = lx*ly;
@@ -221,7 +220,7 @@ octave_int_arith_base<int64_t, true>::mul (int64_t x, int64_t y)
   else if (uy)
     {
       uint64_t lx = static_cast<uint32_t> (usx), uylx = uy*lx;
-      if (uylx >> 32) 
+      if (uylx >> 32)
         goto overflow;
       uylx <<= 32; // never overflows
       uint64_t ly = static_cast<uint32_t> (usy), lylx = ly*lx;
@@ -240,7 +239,6 @@ octave_int_arith_base<int64_t, true>::mul (int64_t x, int64_t y)
     {
       if (res > static_cast<uint64_t> (max_val ()))
         {
-          ftrunc = true;
           return max_val ();
         }
       else
@@ -250,7 +248,6 @@ octave_int_arith_base<int64_t, true>::mul (int64_t x, int64_t y)
     {
       if (res > static_cast<uint64_t> (-min_val ()))
         {
-          ftrunc = true;
           return min_val ();
         }
       else
@@ -259,7 +256,6 @@ octave_int_arith_base<int64_t, true>::mul (int64_t x, int64_t y)
 
 
 overflow:
-  ftrunc = true;
   return positive ? max_val () : min_val ();
 
 }
@@ -296,14 +292,14 @@ INT_DOUBLE_BINOP_DECL (+, int64)
       // what we do is to try to convert y/2 and add it twice. Note that if y/2
       // overflows, the result must overflow as well, and that y/2 cannot be a
       // fractional number.
-      octave_int64 y2 (y / 2); 
+      octave_int64 y2 (y / 2);
       return (x + y2) + y2;
     }
 }
 
 DOUBLE_INT_BINOP_DECL (+, int64)
-{ 
-  return y + x; 
+{
+  return y + x;
 }
 
 INT_DOUBLE_BINOP_DECL (-, uint64)
@@ -314,10 +310,10 @@ INT_DOUBLE_BINOP_DECL (-, uint64)
 DOUBLE_INT_BINOP_DECL (-, uint64)
 {
   if (x <= static_cast<double> (octave_uint64::max ()))
-    return octave_uint64(x) - y; 
+    return octave_uint64(x) - y;
   else
     {
-      // Again a trick to get the corner cases right. Things like 
+      // Again a trick to get the corner cases right. Things like
       // 3**2**63 - intmax('uint64') should produce the correct result, i.e.
       // int64(2**63) + 1.
       const double p2_64 = std::pow (2.0, 64);
@@ -338,7 +334,7 @@ INT_DOUBLE_BINOP_DECL (-, int64)
 
 DOUBLE_INT_BINOP_DECL (-, int64)
 {
-  static const bool twosc = (std::numeric_limits<int64_t>::min () 
+  static const bool twosc = (std::numeric_limits<int64_t>::min ()
                              < -std::numeric_limits<int64_t>::max ());
   // In case of symmetric integers (not two's complement), this will probably
   // be eliminated at compile time.
@@ -347,7 +343,7 @@ DOUBLE_INT_BINOP_DECL (-, int64)
       return octave_int64 (x + std::pow(2.0, 63));
     }
   else
-    return x + (-y); 
+    return x + (-y);
 }
 
 // NOTE:
@@ -361,7 +357,7 @@ DOUBLE_INT_BINOP_DECL (-, int64)
 
 // Multiplies two unsigned 64-bit ints to get a 128-bit number represented
 // as four 32-bit words.
-static void 
+static void
 umul128 (uint64_t x, uint64_t y, uint32_t w[4])
 {
   uint64_t lx = static_cast<uint32_t> (x), ux = x >> 32;
@@ -379,7 +375,7 @@ umul128 (uint64_t x, uint64_t y, uint32_t w[4])
 }
 
 // Splits a double into bool sign, unsigned 64-bit mantissa and int exponent
-static void 
+static void
 dblesplit (double x, bool& sign, uint64_t& mtis, int& exp)
 {
   sign = x < 0; x = fabs (x);
@@ -409,7 +405,7 @@ INT_DOUBLE_BINOP_DECL (*, uint64)
     }
   else if (y < 0 || xisnan (y) || xisinf (y))
     {
-      return octave_uint64 (x.value () * y); 
+      return octave_uint64 (x.value () * y);
     }
   else
     {
@@ -424,7 +420,7 @@ INT_DOUBLE_BINOP_DECL (*, uint64)
         {
           res += octave_uint64 (dbleget (sign, w[i], e));
           e += 32;
-        }          
+        }
       return res;
     }
 }
@@ -444,7 +440,7 @@ INT_DOUBLE_BINOP_DECL (*, int64)
     }
   else if (xisnan (y) || xisinf (y))
     {
-      return octave_int64 (x.value () * y); 
+      return octave_int64 (x.value () * y);
     }
   else
     {
@@ -460,7 +456,7 @@ INT_DOUBLE_BINOP_DECL (*, int64)
         {
           res += octave_int64 (dbleget (sign, w[i], e));
           e += 32;
-        }          
+        }
       return res;
     }
 }
@@ -552,15 +548,15 @@ pow (const octave_int<T>& a, const octave_int<T>& b)
       b_val -= 1;
 
       while (b_val != 0)
-	{
-	  if (b_val & 1)
-	    retval = retval * a_val;
+        {
+          if (b_val & 1)
+            retval = retval * a_val;
 
-	  b_val = b_val >> 1;
+          b_val = b_val >> 1;
 
-	  if (b_val)
-	    a_val = a_val * a_val;
-	}
+          if (b_val)
+            a_val = a_val * a_val;
+        }
     }
 
   return retval;
@@ -574,10 +570,10 @@ pow (const double& a, const octave_int<T>& b)
 template <class T>
 octave_int<T>
 pow (const octave_int<T>& a, const double& b)
-{ 
+{
   return ((b >= 0 && b < std::numeric_limits<T>::digits && b == xround (b))
           ? pow (a, octave_int<T> (static_cast<T> (b)))
-          : octave_int<T> (pow (a.double_value (), b))); 
+          : octave_int<T> (pow (a.double_value (), b)));
 }
 
 template <class T>
@@ -591,7 +587,7 @@ powf (const octave_int<T>& a, const float& b)
 {
   return ((b >= 0 && b < std::numeric_limits<T>::digits && b == xround (b))
           ? pow (a, octave_int<T> (static_cast<T> (b)))
-          : octave_int<T> (pow (a.double_value (), static_cast<double> (b)))); 
+          : octave_int<T> (pow (a.double_value (), static_cast<double> (b))));
 }
 
 #define INSTANTIATE_INTTYPE(T) \
@@ -622,11 +618,6 @@ INSTANTIATE_INTTYPE (uint64_t);
 %!assert(intmax("int64")/intmin("int64"),int64(-1))
 %!assert(intmin("int64")/int64(-1),intmax("int64"))
 %!assert(int64(2**63),intmax("int64"))
-%!test
-%! wstate = warning("query", "Octave:int-convert-overflow");
-%! warning("on", "Octave:int-convert-overflow");
-%! fail("int64(2**63)","warning",".*")
-%! warning(wstate.state, "Octave:int-convert-overflow");
 %!assert(uint64(2**64),intmax("uint64"))
 %!test
 %! a = 1.9*2^61; b = uint64(a); b++; assert(b > a)
@@ -637,23 +628,7 @@ INSTANTIATE_INTTYPE (uint64_t);
 %!test
 %! a = uint64(2**61) + 2; assert(1.25*a == (5*a)/4)
 %!assert(int32(2**31+0.5),intmax('int32'))
-%!test
-%! wstate = warning("query", "Octave:int-convert-overflow");
-%! warning("on", "Octave:int-convert-overflow");
-%! fail("int32(2**31+0.5)","warning",".*")
-%! warning(wstate.state, "Octave:int-convert-overflow");
 %!assert(int32(-2**31-0.5),intmin('int32'))
-%!test
-%! wstate = warning("query", "Octave:int-convert-overflow");
-%! warning("on", "Octave:int-convert-overflow");
-%! fail("int32(-2**31-0.5)","warning",".*")
-%! warning(wstate.state, "Octave:int-convert-overflow");
 %!assert((int64(2**62)+1)**1, int64(2**62)+1)
 %!assert((int64(2**30)+1)**2, int64(2**60+2**31) + 1)
-*/
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
 */

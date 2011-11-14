@@ -1,4 +1,4 @@
-## Copyright (C) 2005, 2006, 2007, 2008, 2009 John W. Eaton
+## Copyright (C) 2005-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -22,7 +22,7 @@
 ## @deftypefnx {Function File} {} clf (@var{hfig})
 ## @deftypefnx {Function File} {} clf (@var{hfig}, "reset")
 ## Clear the current figure window.  @code{clf} operates by deleting child
-## graphics objects with visible handles (@code{HandleVisibility} = on).
+## graphics objects with visible handles (@code{handlevisibility} = on).
 ## If @var{hfig} is specified operate on it instead of the current figure.
 ## If the optional argument @code{"reset"} is specified, all objects including
 ## those with hidden handles are deleted.
@@ -37,7 +37,7 @@ function clf (varargin)
     print_usage ();
   elseif (nargin > 1)
     if (isfigure (varargin{1}) && ischar (varargin{2})
-	&& strcmpi (varargin{2}, "reset"))
+        && strcmpi (varargin{2}, "reset"))
       oldfig = gcf;
       hfig = varargin{1};
       do_reset = true;
@@ -65,7 +65,7 @@ function clf (varargin)
   if (do_reset)
     ## Select all the children, including the one with hidden handles.
     hc = allchild (hfig);
-    reset (hfig)
+    reset (hfig);
   else
     ## Select only the chilren with visible handles.
     hc = get (hfig, "children");

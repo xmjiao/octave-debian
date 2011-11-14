@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1999, 2000, 2002, 2004, 2005, 2006,
-##               2007, 2009 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -30,11 +29,11 @@
 ## @end group
 ## @end example
 ##
-## If @var{x} and @var{y} are matrices, the cross product is applied 
-## along the first dimension with 3 elements.  The optional argument 
+## If @var{x} and @var{y} are matrices, the cross product is applied
+## along the first dimension with 3 elements.  The optional argument
 ## @var{dim} forces the cross product to be calculated along
 ## the specified dimension.
-## @seealso{dot}
+## @seealso{dot, curl, divergence}
 ## @end deftypefn
 
 ## Author: Kurt Hornik <Kurt.Hornik@wu-wien.ac.at>
@@ -42,7 +41,7 @@
 ## Adapted-By: jwe
 
 function z = cross (x, y, dim)
-	
+
   if (nargin != 2 && nargin != 3)
     print_usage ();
   endif
@@ -62,33 +61,32 @@ function z = cross (x, y, dim)
 
   if (nargin == 2)
      dim = find (size (x) == 3, 1);
-     if (isempty (dim)) 
+     if (isempty (dim))
        error ("cross: must have at least one dimension with 3 elements");
      endif
    else
-     if (size (x) != 3)
-       error ("cross: dimension dim must have 3 elements");
+     if (size (x, dim) != 3)
+       error ("cross: dimension DIM must have 3 elements");
      endif
   endif
 
   nd = ndims (x);
   sz = size (x);
-  idx1 = cell (1, nd);
-  for i = 1:nd
-    idx1{i} = 1:sz(i);
-  endfor
-  idx2 = idx3 = idx1;
+  idx2 = idx3 = idx1 = {':'}(ones (1, nd));
   idx1(dim) = 1;
   idx2(dim) = 2;
   idx3(dim) = 3;
 
   if (size_equal (x, y))
-    z = cat (dim, 
-	     (x(idx2{:}) .* y(idx3{:}) - x(idx3{:}) .* y(idx2{:})),
-             (x(idx3{:}) .* y(idx1{:}) - x(idx1{:}) .* y(idx3{:})),
-             (x(idx1{:}) .* y(idx2{:}) - x(idx2{:}) .* y(idx1{:})));
+    x1 = x(idx1{:});
+    x2 = x(idx2{:});
+    x3 = x(idx3{:});
+    y1 = y(idx1{:});
+    y2 = y(idx2{:});
+    y3 = y(idx3{:});
+    z = cat (dim, (x2.*y3 - x3.*y2), (x3.*y1 - x1.*y3), (x1.*y2 - x2.*y1));
   else
-    error ("cross: x and y must have the same dimensions");
+    error ("cross: X and Y must have the same dimensions");
   endif
 
 endfunction

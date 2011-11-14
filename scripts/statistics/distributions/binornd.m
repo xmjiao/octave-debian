@@ -1,4 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 2005, 2006, 2007, 2008 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -17,9 +17,9 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} binornd (@var{n}, @var{p}, @var{r}, @var{c})
+## @deftypefn  {Function File} {} binornd (@var{n}, @var{p}, @var{r}, @var{c})
 ## @deftypefnx {Function File} {} binornd (@var{n}, @var{p}, @var{sz})
-## Return an @var{r} by @var{c}  or a @code{size (@var{sz})} matrix of 
+## Return an @var{r} by @var{c}  or a @code{size (@var{sz})} matrix of
 ## random samples from the binomial distribution with parameters @var{n}
 ## and @var{p}.  Both @var{n} and @var{p} must be scalar or of size
 ## @var{r} by @var{c}.
@@ -34,26 +34,26 @@
 function rnd = binornd (n, p, r, c)
 
   if (nargin > 1)
-    if (!isscalar(n) || !isscalar(p)) 
+    if (!isscalar(n) || !isscalar(p))
       [retval, n, p] = common_size (n, p);
       if (retval > 0)
-	error ("binornd: n and p must be of common size or scalar");
+        error ("binornd: N and P must be of common size or scalar");
       endif
     endif
   endif
 
   if (nargin == 4)
     if (! (isscalar (r) && (r > 0) && (r == round (r))))
-      error ("binornd: r must be a positive integer");
+      error ("binornd: R must be a positive integer");
     endif
     if (! (isscalar (c) && (c > 0) && (c == round (c))))
-      error ("binornd: c must be a positive integer");
+      error ("binornd: C must be a positive integer");
     endif
     sz = [r, c];
 
     if (any (size (n) != 1)
-	&& (length (size (n)) != length (sz) ||	any (size (n) != sz)))
-      error ("binornd: n and must be scalar or of size [r, c]");
+        && (length (size (n)) != length (sz) || any (size (n) != sz)))
+      error ("binornd: N and must be scalar or of size [R, C]");
     endif
   elseif (nargin == 3)
     if (isscalar (r) && (r > 0))
@@ -61,12 +61,12 @@ function rnd = binornd (n, p, r, c)
     elseif (isvector(r) && all (r > 0))
       sz = r(:)';
     else
-      error ("binornd: r must be a positive integer or vector");
+      error ("binornd: R must be a positive integer or vector");
     endif
 
     if (any (size (n) != 1)
-	&& (length (size (n)) != length (sz) || any (size (n) != sz)))
-      error ("binornd: n and must be scalar or of size sz");
+        && (length (size (n)) != length (sz) || any (size (n) != sz)))
+      error ("binornd: N and must be scalar or of size SZ");
     endif
   elseif (nargin == 2)
     sz = size(n);
@@ -77,7 +77,7 @@ function rnd = binornd (n, p, r, c)
   if (isscalar (n) && isscalar (p))
     if (find (!(n >= 0) | !(n < Inf) | !(n == round (n)) |
               !(p >= 0) | !(p <= 1)))
-      rnd = NaN * ones (sz);
+      rnd = NaN (sz);
     elseif (n == 0)
       rnd = zeros (sz);
     else

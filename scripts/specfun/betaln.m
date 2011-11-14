@@ -1,4 +1,4 @@
-## Copyright (C) 1998, 2006, 2007, 2008, 2009 by Nicol N. Schraudolph
+## Copyright (C) 1998-2011 Nicol N. Schraudolph
 ##
 ## This file is part of Octave.
 ##
@@ -18,18 +18,20 @@
 
 ## -*- texinfo -*-
 ## @deftypefn {Mapping Function} {} betaln (@var{a}, @var{b})
-## Return the log of the Beta function,
+## Return the natural logarithm of the Beta function,
 ## @tex
 ## $$
-##  B (a, b) = \log {\Gamma (a) \Gamma (b) \over \Gamma (a + b)}.
+##  {\rm betaln} (a, b) = \ln (B (a,b)) \equiv \ln ({\Gamma (a) \Gamma (b) \over \Gamma (a + b)}).
 ## $$
 ## @end tex
 ## @ifnottex
 ##
 ## @example
-## betaln (a, b) = gammaln (a) + gammaln (b) - gammaln (a + b)
+## betaln (a, b) = log (beta (a, b))
 ## @end example
+##
 ## @end ifnottex
+## calculated in a way to reduce the occurrence of underflow.
 ## @seealso{beta, betainc, gammaln}
 ## @end deftypefn
 
@@ -38,14 +40,18 @@
 ## Keywords: log beta special function
 
 function retval = betaln (a, b)
+
   if (nargin != 2)
     print_usage ();
   endif
 
   retval = gammaln (a) + gammaln (b) - gammaln (a + b);
+
 endfunction
 
-%!assert (betaln(3,4),log(beta(3,4)),eps)
 
-%!error (betaln(1.))
-%!error (betaln(1.,1.,1.))
+%!assert (betaln (3,4), log (beta(3,4)),eps);
+
+%% Test input validation
+%!error (betaln (1))
+%!error (betaln (1,2,3))

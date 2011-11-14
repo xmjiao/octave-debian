@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 2005, 2007, 2009 John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -60,10 +60,3 @@ assign_double (double *unaligned_ptr, double value)
 
 #endif
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C ***
-;;; page-delimiter: "^/\\*" ***
-;;; End: ***
-*/

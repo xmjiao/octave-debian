@@ -1,4 +1,4 @@
-## Copyright (C) 2003, 2005, 2006, 2007, 2008 John W. Eaton
+## Copyright (C) 2003-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -31,16 +31,16 @@ function filename = fullfile (varargin)
     if (nargs > 1)
       filename = varargin{1};
       if (strcmp (filename(end), filesep))
-	filename(end) = "";
+        filename(end) = "";
       endif
       for i = 2:nargs
-	tmp = varargin{i};
-	if (i < nargs && strcmp (tmp(end), filesep))
-	  tmp(end) = "";
-	elseif (i == nargs && strcmp (tmp, filesep))
-	  tmp = "";
-	endif
-	filename = cstrcat (filename, filesep, tmp);
+        tmp = varargin{i};
+        if (i < nargs && strcmp (tmp(end), filesep))
+          tmp(end) = "";
+        elseif (i == nargs && strcmp (tmp, filesep))
+          tmp = "";
+        endif
+        filename = cstrcat (filename, filesep, tmp);
       endfor
     elseif (nargs == 1)
       filename = varargin{1};

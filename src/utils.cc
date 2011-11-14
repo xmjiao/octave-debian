@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001,
-              2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
+Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
 
@@ -33,12 +33,8 @@ along with Octave; see the file COPYING.  If not, see
 #include <iostream>
 #include <string>
 
-#ifdef HAVE_UNISTD_H
-#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#endif
 #include <unistd.h>
-#endif
 
 #include "quit.h"
 
@@ -46,6 +42,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "file-ops.h"
 #include "file-stat.h"
 #include "lo-mappers.h"
+#include "lo-utils.h"
 #include "oct-cmplx.h"
 #include "oct-env.h"
 #include "pathsearch.h"
@@ -58,11 +55,14 @@ along with Octave; see the file COPYING.  If not, see
 #include "error.h"
 #include "gripes.h"
 #include "input.h"
+#include "lex.h"
 #include "load-path.h"
 #include "oct-errno.h"
 #include "oct-hist.h"
 #include "oct-obj.h"
+#include "ov-range.h"
 #include "pager.h"
+#include "parse.h"
 #include "sysdep.h"
 #include "toplev.h"
 #include "unwind-prot.h"
@@ -93,7 +93,8 @@ valid_identifier (const std::string& s)
 DEFUN (isvarname, args, ,
   "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {} isvarname (@var{name})\n\
-Return true if @var{name} is a valid variable name\n\
+Return true if @var{name} is a valid variable name.\n\
+@seealso{iskeyword, exist, who}\n\
 @end deftypefn")
 {
   octave_value retval;
@@ -106,7 +107,7 @@ Return true if @var{name} is a valid variable name\n\
     return retval;
 
   if (argc == 2)
-    retval = valid_identifier (argv[1]);
+    retval = valid_identifier (argv[1]) && ! is_keyword (argv[1]);
   else
     print_usage ();
 
@@ -123,23 +124,23 @@ same_file (const std::string& f, const std::string& g)
 
 int
 almost_match (const std::string& std, const std::string& s, int min_match_len,
-	      int case_sens)
+              int case_sens)
 {
   int stdlen = std.length ();
   int slen = s.length ();
 
   return (slen <= stdlen
-	  && slen >= min_match_len
-	  && (case_sens
-	      ? (strncmp (std.c_str (), s.c_str (), slen) == 0)
-	      : (octave_strncasecmp (std.c_str (), s.c_str (), slen) == 0)));
+          && slen >= min_match_len
+          && (case_sens
+              ? (strncmp (std.c_str (), s.c_str (), slen) == 0)
+              : (octave_strncasecmp (std.c_str (), s.c_str (), slen) == 0)));
 }
 
 // Ugh.
 
 int
 keyword_almost_match (const char * const *std, int *min_len, const std::string& s,
-		      int min_toks_to_match, int max_toks)
+                      int min_toks_to_match, int max_toks)
 {
   int status = 0;
   int tok_count = 0;
@@ -154,7 +155,7 @@ keyword_almost_match (const char * const *std, int *min_len, const std::string& 
   while (*t != '\0')
     {
       if (*t == '\t')
-	*t = ' ';
+        *t = ' ';
       t++;
     }
 
@@ -181,14 +182,14 @@ keyword_almost_match (const char * const *std, int *min_len, const std::string& 
       beg = end + 1;
 
       while (*beg == ' ')
-	beg++;
+        beg++;
 
       if (*beg == '\0')
-	break;
+        break;
 
       tok_count++;
       if (tok_count >= max_toks)
-	goto done;
+        goto done;
 
       s2[tok_count] = beg;
     }
@@ -199,7 +200,7 @@ keyword_almost_match (const char * const *std, int *min_len, const std::string& 
   for (;;)
     {
       if (! almost_match (*s1, *s2, min_len[toks_matched], 0))
-	goto done;
+        goto done;
 
       toks_matched++;
 
@@ -207,13 +208,13 @@ keyword_almost_match (const char * const *std, int *min_len, const std::string& 
       s2++;
 
       if (! *s2)
-	{
-	  status = (toks_matched >= min_toks_to_match);
-	  goto done;
-	}
+        {
+          status = (toks_matched >= min_toks_to_match);
+          goto done;
+        }
 
       if (! *s1)
-	goto done;
+        goto done;
     }
 
  done:
@@ -240,8 +241,7 @@ search_path_for_file (const std::string& path, const string_vector& names)
 {
   dir_path p (path);
 
-  return octave_env::make_absolute (p.find_first_of (names),
-				    octave_env::getcwd ());
+  return octave_env::make_absolute (p.find_first_of (names));
 }
 
 // Find all locations of the given file in the path.
@@ -256,7 +256,7 @@ search_path_for_all_files (const std::string& path, const string_vector& names)
   octave_idx_type len = sv.length ();
 
   for (octave_idx_type i = 0; i < len; i++)
-    sv[i] = octave_env::make_absolute (sv[i], octave_env::getcwd ());
+    sv[i] = octave_env::make_absolute (sv[i]);
 
   return sv;
 }
@@ -269,19 +269,19 @@ make_absolute (const string_vector& sv)
   string_vector retval (len);
 
   for (octave_idx_type i = 0; i < len; i++)
-    retval[i] = octave_env::make_absolute (sv[i], octave_env::getcwd ());
- 
+    retval[i] = octave_env::make_absolute (sv[i]);
+
   return retval;
 }
 
 DEFUN (file_in_loadpath, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {} file_in_loadpath (@var{file})\n\
+@deftypefn  {Built-in Function} {} file_in_loadpath (@var{file})\n\
 @deftypefnx {Built-in Function} {} file_in_loadpath (@var{file}, \"all\")\n\
 \n\
 Return the absolute name of @var{file} if it can be found in\n\
 the list of directories specified by @code{path}.\n\
-If no file is found, return an empty matrix.\n\
+If no file is found, return an empty character string.\n\
 \n\
 If the first argument is a cell array of strings, search each\n\
 directory of the loadpath for element of the cell array and return\n\
@@ -302,29 +302,22 @@ name in the path.  If no files are found, return an empty cell array.\n\
       string_vector names = args(0).all_strings ();
 
       if (! error_state && names.length () > 0)
-	{
-	  if (nargin == 1)
-	    {
-	      std::string fname = octave_env::make_absolute
-		(load_path::find_first_of (names), octave_env::getcwd ());
+        {
+          if (nargin == 1)
+            retval = octave_env::make_absolute (load_path::find_first_of (names));
+          else if (nargin == 2)
+            {
+              std::string opt = args(1).string_value ();
 
-	      if (fname.empty ())
-		retval = Matrix ();
-	      else
-		retval = fname;
-	    }
-	  else if (nargin == 2)
-	    {
-	      std::string opt = args(1).string_value ();
-
-	      if (! error_state && opt == "all")
-		retval = Cell (make_absolute (load_path::find_all_first_of (names)));
-	      else
-		error ("file_in_loadpath: invalid option");
-	    }
-	}
+              if (! error_state && opt == "all")
+                retval = Cell (make_absolute
+                               (load_path::find_all_first_of (names)));
+              else
+                error ("file_in_loadpath: invalid option");
+            }
+        }
       else
-	error ("file_in_loadpath: expecting string as first argument");
+        error ("file_in_loadpath: FILE argument must be a string");
     }
   else
     print_usage ();
@@ -334,12 +327,12 @@ name in the path.  If no files are found, return an empty cell array.\n\
 
 DEFUN (file_in_path, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {} file_in_path (@var{path}, @var{file})\n\
+@deftypefn  {Built-in Function} {} file_in_path (@var{path}, @var{file})\n\
 @deftypefnx {Built-in Function} {} file_in_path (@var{path}, @var{file}, \"all\")\n\
 Return the absolute name of @var{file} if it can be found in\n\
 @var{path}.  The value of @var{path} should be a colon-separated list of\n\
 directories in the format described for @code{path}.  If no file\n\
-is found, return an empty matrix.  For example,\n\
+is found, return an empty character string.  For example:\n\
 \n\
 @example\n\
 @group\n\
@@ -367,35 +360,29 @@ name in the path.  If no files are found, return an empty cell array.\n\
       std::string path = args(0).string_value ();
 
       if (! error_state)
-	{
-	  string_vector names = args(1).all_strings ();
+        {
+          string_vector names = args(1).all_strings ();
 
-	  if (! error_state && names.length () > 0)
-	    {
-	      if (nargin == 2)
-		{
-		  std::string fname = search_path_for_file (path, names);
+          if (! error_state && names.length () > 0)
+            {
+              if (nargin == 2)
+                retval = search_path_for_file (path, names);
+              else if (nargin == 3)
+                {
+                  std::string opt = args(2).string_value ();
 
-		  if (fname.empty ())
-		    retval = Matrix ();
-		  else
-		    retval = fname;
-		}
-	      else if (nargin == 3)
-		{
-		  std::string opt = args(2).string_value ();
-
-		  if (! error_state && opt == "all")
-		    retval = Cell (make_absolute (search_path_for_all_files (path, names)));
-		  else
-		    error ("file_in_path: invalid option");
-		}
-	    }
-	  else
-	    error ("file_in_path: expecting string as second argument");
-	}
+                  if (! error_state && opt == "all")
+                    retval = Cell (make_absolute
+                                   (search_path_for_all_files (path, names)));
+                  else
+                    error ("file_in_path: invalid option");
+                }
+            }
+          else
+            error ("file_in_path: all arguments must be strings");
+        }
       else
-	error ("file_in_path: expecting string as first argument");
+        error ("file_in_path: PATH must be a string");
     }
   else
     print_usage ();
@@ -411,8 +398,7 @@ file_in_path (const std::string& name, const std::string& suffix)
   if (! suffix.empty ())
     nm.append (suffix);
 
-  return octave_env::make_absolute
-    (load_path::find_file (nm), octave_env::getcwd ());
+  return octave_env::make_absolute (load_path::find_file (nm));
 }
 
 // See if there is an function file in the path.  If so, return the
@@ -424,27 +410,27 @@ fcn_file_in_path (const std::string& name)
   std::string retval;
 
   int len = name.length ();
-  
+
   if (len > 0)
     {
       if (octave_env::absolute_pathname (name))
-	{
-	  file_stat fs (name);
+        {
+          file_stat fs (name);
 
-	  if (fs.exists ())
-	    retval = name;
-	}
+          if (fs.exists ())
+            retval = name;
+        }
       else if (len > 2 && name [len - 2] == '.' && name [len - 1] == 'm')
-	retval = load_path::find_fcn_file (name.substr (0, len-2));
+        retval = load_path::find_fcn_file (name.substr (0, len-2));
       else
-	{
-	  std::string fname = name;
-	  size_t pos = name.find_first_of (Vfilemarker);
-	  if (pos != std::string::npos)
-	    fname = name.substr (0, pos);
+        {
+          std::string fname = name;
+          size_t pos = name.find_first_of (Vfilemarker);
+          if (pos != std::string::npos)
+            fname = name.substr (0, pos);
 
-	  retval = load_path::find_fcn_file (fname);
-	}
+          retval = load_path::find_fcn_file (fname);
+        }
     }
 
   return retval;
@@ -460,13 +446,13 @@ contents_file_in_path (const std::string& dir)
 
   if (dir.length () > 0)
     {
-      std::string tcontents = file_ops::concat (load_path::find_dir (dir), 
-						std::string ("Contents.m"));
+      std::string tcontents = file_ops::concat (load_path::find_dir (dir),
+                                                std::string ("Contents.m"));
 
       file_stat fs (tcontents);
 
       if (fs.exists ())
-	retval = octave_env::make_absolute (tcontents, octave_env::getcwd ());
+        retval = octave_env::make_absolute (tcontents);
     }
 
   return retval;
@@ -481,21 +467,21 @@ oct_file_in_path (const std::string& name)
   std::string retval;
 
   int len = name.length ();
-  
+
   if (len > 0)
     {
       if (octave_env::absolute_pathname (name))
-	{
-	  file_stat fs (name);
+        {
+          file_stat fs (name);
 
-	  if (fs.exists ())
-	    retval = name;
-	}
+          if (fs.exists ())
+            retval = name;
+        }
       else if (len > 4 && name [len - 4] == '.' && name [len - 3] == 'o'
-	       && name [len - 2] == 'c' && name [len - 1] == 't')
-	retval = load_path::find_oct_file (name.substr (0, len-4));
+               && name [len - 2] == 'c' && name [len - 1] == 't')
+        retval = load_path::find_oct_file (name.substr (0, len-4));
       else
-	retval = load_path::find_oct_file (name);
+        retval = load_path::find_oct_file (name);
     }
 
   return retval;
@@ -510,21 +496,21 @@ mex_file_in_path (const std::string& name)
   std::string retval;
 
   int len = name.length ();
-  
+
   if (len > 0)
     {
       if (octave_env::absolute_pathname (name))
-	{
-	  file_stat fs (name);
+        {
+          file_stat fs (name);
 
-	  if (fs.exists ())
-	    retval = name;
-	}
+          if (fs.exists ())
+            retval = name;
+        }
       else if (len > 4 && name [len - 4] == '.' && name [len - 3] == 'm'
-	       && name [len - 2] == 'e' && name [len - 1] == 'x')
-	retval = load_path::find_mex_file (name.substr (0, len-4));
+               && name [len - 2] == 'e' && name [len - 1] == 'x')
+        retval = load_path::find_mex_file (name.substr (0, len-4));
       else
-	retval = load_path::find_mex_file (name);
+        retval = load_path::find_mex_file (name);
     }
 
   return retval;
@@ -546,64 +532,64 @@ do_string_escapes (const std::string& s)
   while (j < len)
     {
       if (s[j] == '\\' && j+1 < len)
-	{
-	  switch (s[++j])
-	    {
-	    case '0':
-	      retval[i] = '\0';
-	      break;
+        {
+          switch (s[++j])
+            {
+            case '0':
+              retval[i] = '\0';
+              break;
 
-	    case 'a':
-	      retval[i] = '\a';
-	      break;
+            case 'a':
+              retval[i] = '\a';
+              break;
 
-	    case 'b': // backspace
-	      retval[i] = '\b';
-	      break;
+            case 'b': // backspace
+              retval[i] = '\b';
+              break;
 
-	    case 'f': // formfeed
-	      retval[i] = '\f';
-	      break;
+            case 'f': // formfeed
+              retval[i] = '\f';
+              break;
 
-	    case 'n': // newline
-	      retval[i] = '\n';
-	      break;
+            case 'n': // newline
+              retval[i] = '\n';
+              break;
 
-	    case 'r': // carriage return
-	      retval[i] = '\r';
-	      break;
+            case 'r': // carriage return
+              retval[i] = '\r';
+              break;
 
-	    case 't': // horizontal tab
-	      retval[i] = '\t';
-	      break;
+            case 't': // horizontal tab
+              retval[i] = '\t';
+              break;
 
-	    case 'v': // vertical tab
-	      retval[i] = '\v';
-	      break;
+            case 'v': // vertical tab
+              retval[i] = '\v';
+              break;
 
-	    case '\\': // backslash
-	      retval[i] = '\\';
-	      break;
+            case '\\': // backslash
+              retval[i] = '\\';
+              break;
 
-	    case '\'': // quote
-	      retval[i] = '\'';
-	      break;
+            case '\'': // quote
+              retval[i] = '\'';
+              break;
 
-	    case '"': // double quote
-	      retval[i] = '"';
-	      break;
+            case '"': // double quote
+              retval[i] = '"';
+              break;
 
-	    default:
-	      warning ("unrecognized escape sequence `\\%c' --\
+            default:
+              warning ("unrecognized escape sequence `\\%c' --\
  converting to `%c'", s[j], s[j]);
-	      retval[i] = s[j];
-	      break;
-	    }
-	}
+              retval[i] = s[j];
+              break;
+            }
+        }
       else
-	{
-	  retval[i] = s[j];
-	}
+        {
+          retval[i] = s[j];
+        }
 
       i++;
       j++;
@@ -627,9 +613,9 @@ Convert special characters in @var{string} to their escaped forms.\n\
   if (nargin == 1)
     {
       if (args(0).is_string ())
-	retval = do_string_escapes (args(0).string_value ());
+        retval = do_string_escapes (args(0).string_value ());
       else
-	error ("do_string_escapes: argument must be a string");
+        error ("do_string_escapes: STRING argument must be of type string");
     }
   else
     print_usage ();
@@ -677,10 +663,10 @@ undo_string_escape (char c)
 
     default:
       {
-	static char retval[2];
-	retval[0] = c;
-	retval[1] = '\0';
-	return retval;
+        static char retval[2];
+        retval[0] = c;
+        retval[1] = '\0';
+        return retval;
       }
     }
 }
@@ -699,7 +685,7 @@ undo_string_escapes (const std::string& s)
 DEFUN (undo_string_escapes, args, ,
   "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {} undo_string_escapes (@var{s})\n\
-Converts special characters in strings back to their escaped forms.  For\n\
+Convert special characters in strings back to their escaped forms.  For\n\
 example, the expression\n\
 \n\
 @example\n\
@@ -733,9 +719,9 @@ representation.\n\
   if (nargin == 1)
     {
       if (args(0).is_string ())
-	retval = undo_string_escapes (args(0).string_value ());
+        retval = undo_string_escapes (args(0).string_value ());
       else
-	error ("undo_string_escapes: argument must be a string");
+        error ("undo_string_escapes: S argument must be a string");
     }
   else
     print_usage ();
@@ -747,13 +733,14 @@ DEFUN (is_absolute_filename, args, ,
   "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {} is_absolute_filename (@var{file})\n\
 Return true if @var{file} is an absolute filename.\n\
+@seealso{is_rooted_relative_filename, make_absolute_filename, isdir}\n\
 @end deftypefn")
 {
   octave_value retval = false;
 
   if (args.length () == 1)
     retval = (args(0).is_string ()
-	      && octave_env::absolute_pathname (args(0).string_value ()));
+              && octave_env::absolute_pathname (args(0).string_value ()));
   else
     print_usage ();
 
@@ -764,13 +751,14 @@ DEFUN (is_rooted_relative_filename, args, ,
   "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {} is_rooted_relative_filename (@var{file})\n\
 Return true if @var{file} is a rooted-relative filename.\n\
+@seealso{is_absolute_filename, make_absolute_filename, isdir}\n\
 @end deftypefn")
 {
   octave_value retval = false;
 
   if (args.length () == 1)
     retval = (args(0).is_string ()
-	      && octave_env::rooted_relative_pathname (args(0).string_value ()));
+              && octave_env::rooted_relative_pathname (args(0).string_value ()));
   else
     print_usage ();
 
@@ -781,6 +769,7 @@ DEFUN (make_absolute_filename, args, ,
   "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {} make_absolute_filename (@var{file})\n\
 Return the full name of @var{file}, relative to the current directory.\n\
+@seealso{is_absolute_filename, is_rooted_relative_filename, isdir}\n\
 @end deftypefn")
 {
   octave_value retval = std::string ();
@@ -790,10 +779,10 @@ Return the full name of @var{file}, relative to the current directory.\n\
       std::string nm = args(0).string_value ();
 
       if (! error_state)
-	retval = octave_env::make_absolute (nm, octave_env::getcwd ());
+        retval = octave_env::make_absolute (nm);
       else
-	error ("make_absolute_filename: expecting argument to be a file name");
-    }      
+        error ("make_absolute_filename: FILE argument must be a file name");
+    }
   else
     print_usage ();
 
@@ -802,24 +791,37 @@ Return the full name of @var{file}, relative to the current directory.\n\
 
 DEFUN (find_dir_in_path, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {} find_dir_in_path (@var{dir})\n\
+@deftypefn  {Built-in Function} {} find_dir_in_path (@var{dir})\n\
+@deftypefnx {Built-in Function} {} find_dir_in_path (@var{dir}, \"all\")\n\
 Return the full name of the path element matching @var{dir}.  The\n\
 match is performed at the end of each path element.  For example, if\n\
 @var{dir} is @code{\"foo/bar\"}, it matches the path element\n\
 @code{\"/some/dir/foo/bar\"}, but not @code{\"/some/dir/foo/bar/baz\"}\n\
 or @code{\"/some/dir/allfoo/bar\"}.\n\
+\n\
+The second argument is optional.  If it is supplied, return a cell array\n\
+containing all name matches rather than just the first.\n\
 @end deftypefn")
 {
   octave_value retval = std::string ();
 
-  if (args.length () == 1)
+  int nargin = args.length ();
+
+  std::string dir;
+
+  if (nargin == 1 || nargin == 2)
     {
-      std::string dir = args(0).string_value ();
+      dir = args(0).string_value ();
 
       if (! error_state)
-	retval = load_path::find_dir (dir);
+        {
+          if (nargin == 1)
+            retval = load_path::find_dir (dir);
+          else if (nargin == 2)
+            retval = Cell (load_path::find_matching_dirs (dir));
+        }
       else
-	error ("find_dir_in_path: expecting argument to be a directory name");
+        error ("find_dir_in_path: DIR must be a directory name");
     }
   else
     print_usage ();
@@ -829,7 +831,7 @@ or @code{\"/some/dir/allfoo/bar\"}.\n\
 
 DEFUNX ("errno", Ferrno, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {@var{err} =} errno ()\n\
+@deftypefn  {Built-in Function} {@var{err} =} errno ()\n\
 @deftypefnx {Built-in Function} {@var{err} =} errno (@var{val})\n\
 @deftypefnx {Built-in Function} {@var{err} =} errno (@var{name})\n\
 Return the current value of the system-dependent variable errno,\n\
@@ -845,23 +847,23 @@ if @var{name} is not found.\n\
   if (nargin == 1)
     {
       if (args(0).is_string ())
-	{
-	  std::string nm = args(0).string_value ();
+        {
+          std::string nm = args(0).string_value ();
 
-	  if (! error_state)
-	    retval = octave_errno::lookup (nm);
-	  else
-	    error ("errno: expecting character string argument");
-	}
+          if (! error_state)
+            retval = octave_errno::lookup (nm);
+          else
+            error ("errno: expecting character string argument");
+        }
       else
-	{
-	  int val = args(0).int_value ();
+        {
+          int val = args(0).int_value ();
 
-	  if (! error_state)
-	    retval = octave_errno::set (val);
-	  else
-	    error ("errno: expecting integer argument");
-	}
+          if (! error_state)
+            retval = octave_errno::set (val);
+          else
+            error ("errno: expecting integer argument");
+        }
     }
   else if (nargin == 0)
     retval = octave_errno::get ();
@@ -893,7 +895,7 @@ check_dimensions (octave_idx_type& nr, octave_idx_type& nc, const char *warnfor)
   if (nr < 0 || nc < 0)
     {
       warning_with_id ("Octave:neg-dim-as-zero",
-		       "%s: converting negative dimension to zero", warnfor);
+                       "%s: converting negative dimension to zero", warnfor);
 
       nr = (nr < 0) ? 0 : nr;
       nc = (nc < 0) ? 0 : nc;
@@ -916,7 +918,7 @@ check_dimensions (dim_vector& dim, const char *warnfor)
 
   if (neg)
     warning_with_id ("Octave:neg-dim-as-zero",
-		     "%s: converting negative dimension to zero", warnfor);
+                     "%s: converting negative dimension to zero", warnfor);
 }
 
 
@@ -958,7 +960,7 @@ get_dimensions (const octave_value& a, const char *warn_for,
 
 void
 get_dimensions (const octave_value& a, const char *warn_for,
-		octave_idx_type& nr, octave_idx_type& nc)
+                octave_idx_type& nr, octave_idx_type& nc)
 {
   if (a.is_scalar_type ())
     {
@@ -970,17 +972,17 @@ get_dimensions (const octave_value& a, const char *warn_for,
       nc = a.columns ();
 
       if ((nr == 1 && nc == 2) || (nr == 2 && nc == 1))
-	{
-	  Array<double> v = a.vector_value ();
+        {
+          Array<double> v = a.vector_value ();
 
-	  if (error_state)
-	    return;
+          if (error_state)
+            return;
 
-	  nr = static_cast<octave_idx_type> (fix (v (0)));
-	  nc = static_cast<octave_idx_type> (fix (v (1)));
-	}
+          nr = static_cast<octave_idx_type> (fix (v (0)));
+          nc = static_cast<octave_idx_type> (fix (v (1)));
+        }
       else
-	error ("%s (A): use %s (size (A)) instead", warn_for, warn_for);
+        error ("%s (A): use %s (size (A)) instead", warn_for, warn_for);
     }
 
   if (! error_state)
@@ -989,7 +991,7 @@ get_dimensions (const octave_value& a, const char *warn_for,
 
 void
 get_dimensions (const octave_value& a, const octave_value& b,
-		const char *warn_for, octave_idx_type& nr, octave_idx_type& nc)
+                const char *warn_for, octave_idx_type& nr, octave_idx_type& nc)
 {
   nr = a.is_empty () ? 0 : a.int_value ();
   nc = b.is_empty () ? 0 : b.int_value ();
@@ -998,6 +1000,112 @@ get_dimensions (const octave_value& a, const octave_value& b,
     error ("%s: expecting two scalar arguments", warn_for);
   else
     check_dimensions (nr, nc, warn_for); // May set error_state.
+}
+
+octave_idx_type
+dims_to_numel (const dim_vector& dims, const octave_value_list& idx)
+{
+  octave_idx_type retval;
+
+  octave_idx_type len = idx.length ();
+
+  if (len == 0)
+    retval = dims.numel ();
+  else
+    {
+      const dim_vector dv = dims.redim (len);
+      retval = 1;
+      for (octave_idx_type i = 0; i < len; i++)
+        {
+          octave_value idxi = idx(i);
+          if (idxi.is_magic_colon ())
+            retval *= dv(i);
+          else if (idxi.is_numeric_type ())
+            retval *= idxi.numel ();
+          else
+            {
+              idx_vector jdx = idxi.index_vector ();
+              if (error_state)
+                break;
+              retval *= jdx.length (dv(i));
+            }
+        }
+    }
+
+  return retval;
+}
+
+void
+decode_subscripts (const char* name, const octave_value& arg,
+                   std::string& type_string,
+                   std::list<octave_value_list>& idx)
+{
+  const octave_map m = arg.map_value ();
+
+  if (! error_state
+      && m.nfields () == 2 && m.contains ("type") && m.contains ("subs"))
+    {
+      const Cell type = m.contents ("type");
+      const Cell subs = m.contents ("subs");
+
+      octave_idx_type nel = type.numel ();
+
+      type_string = std::string (nel, '\0');
+
+      for (int k = 0; k < nel; k++)
+        {
+          std::string item = type(k).string_value ();
+
+          if (! error_state)
+            {
+              if (item == "{}")
+                type_string[k] = '{';
+              else if (item == "()")
+                type_string[k] = '(';
+              else if (item == ".")
+                type_string[k] = '.';
+              else
+                {
+                  error("%s: invalid indexing type `%s'", name, item.c_str ());
+                  return;
+                }
+            }
+          else
+            {
+              error ("%s: expecting type(%d) to be a character string",
+                     name, k+1);
+              return;
+            }
+
+          octave_value_list idx_item;
+
+          if (subs(k).is_string ())
+            idx_item(0) = subs(k);
+          else if (subs(k).is_cell ())
+            {
+              Cell subs_cell = subs(k).cell_value ();
+
+              for (int n = 0; n < subs_cell.length (); n++)
+                {
+                  if (subs_cell(n).is_string ()
+                      && subs_cell(n).string_value () == ":")
+                    idx_item(n) = octave_value(octave_value::magic_colon_t);
+                  else
+                    idx_item(n) = subs_cell(n);
+                }
+            }
+          else
+            {
+              error ("%s: expecting subs(%d) to be a character string or cell array",
+                     name, k+1);
+              return;
+            }
+
+          idx.push_back (idx_item);
+        }
+    }
+  else
+    error ("%s: second argument must be a structure with fields `type' and `subs'", name);
 }
 
 Matrix
@@ -1010,7 +1118,7 @@ identity_matrix (octave_idx_type nr, octave_idx_type nc)
       octave_idx_type n = std::min (nr, nc);
 
       for (octave_idx_type i = 0; i < n; i++)
-	m (i, i) = 1.0;
+        m (i, i) = 1.0;
     }
 
   return m;
@@ -1026,7 +1134,7 @@ float_identity_matrix (octave_idx_type nr, octave_idx_type nc)
       octave_idx_type n = std::min (nr, nc);
 
       for (octave_idx_type i = 0; i < n; i++)
-	m (i, i) = 1.0;
+        m (i, i) = 1.0;
     }
 
   return m;
@@ -1113,54 +1221,13 @@ octave_vsnprintf (const char *fmt, va_list args)
 
   static char *buf = 0;
 
-#if defined (HAVE_C99_VSNPRINTF)
-  size_t nchars = 0;
-#else
-  int nchars = 0;
-#endif
+  volatile int nchars = 0;
 
   if (! buf)
     buf = new char [size];
 
   if (! buf)
     return 0;
-
-#if defined (HAVE_C99_VSNPRINTF)
-
-  // Note that the caller is responsible for calling va_end on args.
-  // We will do it for saved_args.
-
-  va_list saved_args;
-
-  SAVE_ARGS (saved_args, args);
-
-  BEGIN_INTERRUPT_IMMEDIATELY_IN_FOREIGN_CODE_FOR_VSNPRINTF;
-
-  nchars = octave_raw_vsnprintf (buf, size, fmt, args);
-
-  END_INTERRUPT_IMMEDIATELY_IN_FOREIGN_CODE;
-
-  if (nchars >= size)
-    {
-      size = nchars + 1;
-
-      delete [] buf;
-
-      buf = new char [size];
-
-      if (buf)
-	{
-	  BEGIN_INTERRUPT_IMMEDIATELY_IN_FOREIGN_CODE_FOR_VSNPRINTF;
-
-	  octave_raw_vsnprintf (buf, size, fmt, saved_args);
-
-	  END_INTERRUPT_IMMEDIATELY_IN_FOREIGN_CODE;
-	}
-    }
-
-  va_end (saved_args);
-
-#else
 
   while (1)
     {
@@ -1176,22 +1243,20 @@ octave_vsnprintf (const char *fmt, va_list args)
 
       END_INTERRUPT_IMMEDIATELY_IN_FOREIGN_CODE;
 
-      if (nchars > -1 && nchars < size-1)
-       return buf;
+      if (nchars > -1 && nchars < size)
+        break;
       else
-       {
-	 delete [] buf;
+        {
+          delete [] buf;
 
-         size *= 2;
+          size = nchars + 1;;
 
-	 buf = new char [size];
+          buf = new char [size];
 
-         if (! buf)
-           return 0;
-       }
+          if (! buf)
+            return 0;
+        }
     }
-
-#endif
 
   return buf;
 }
@@ -1219,20 +1284,162 @@ octave_sleep (double seconds)
       double t;
 
       unsigned int usec
-	= static_cast<unsigned int> (modf (seconds, &t) * 1000000);
+        = static_cast<unsigned int> (modf (seconds, &t) * 1000000);
 
       unsigned int sec
-	= (t > UINT_MAX) ? UINT_MAX : static_cast<unsigned int> (t);
+        = (t > UINT_MAX) ? UINT_MAX : static_cast<unsigned int> (t);
 
       // Versions of these functions that accept unsigned int args are
       // defined in cutils.c.
       octave_sleep (sec);
       octave_usleep (usec);
+
+      octave_quit ();
     }
 }
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+DEFUN (isindex, args, ,
+  "-*- texinfo -*-\n\
+@deftypefn  {Built-in Function} {} isindex (@var{ind})\n\
+@deftypefnx {Built-in Function} {} isindex (@var{ind}, @var{n})\n\
+Return true if @var{ind} is a valid index.  Valid indices are\n\
+either positive integers (although possibly of real data type), or logical\n\
+arrays.  If present, @var{n} specifies the maximum extent of the dimension\n\
+to be indexed.  When possible the internal result is cached so that\n\
+subsequent indexing using @var{ind} will not perform the check again.\n\
+@end deftypefn")
+{
+  octave_value retval;
+  int nargin = args.length ();
+  octave_idx_type n = 0;
+
+  if (nargin == 2)
+    n = args(1).idx_type_value ();
+  else if (nargin != 1)
+    print_usage ();
+
+  if (! error_state)
+    {
+      unwind_protect frame;
+
+      frame.protect_var (Vallow_noninteger_range_as_index);
+      Vallow_noninteger_range_as_index = false;
+
+      frame.protect_var (error_state);
+
+      frame.protect_var (discard_error_messages);
+      discard_error_messages = true;
+
+      try
+        {
+          idx_vector idx = args(0).index_vector ();
+          if (! error_state)
+            {
+              if (nargin == 2)
+                retval = idx.extent (n) <= n;
+              else
+                retval = true;
+            }
+          else
+            retval = false;
+        }
+      catch (octave_execution_exception)
+        {
+          retval = false;
+        }
+    }
+
+  return retval;
+}
+
+octave_value_list
+do_simple_cellfun (octave_value_list (*fun) (const octave_value_list&, int),
+                   const char *fun_name, const octave_value_list& args,
+                   int nargout)
+{
+  octave_value_list new_args = args, retval;
+  int nargin = args.length ();
+  OCTAVE_LOCAL_BUFFER (bool, iscell, nargin);
+  OCTAVE_LOCAL_BUFFER (Cell, cells, nargin);
+  OCTAVE_LOCAL_BUFFER (Cell, rcells, nargout);
+
+  const Cell *ccells = cells;
+
+  octave_idx_type numel = 1;
+  dim_vector dims (1, 1);
+
+  for (int i = 0; i < nargin; i++)
+    {
+      octave_value arg = new_args(i);
+      iscell[i] = arg.is_cell ();
+      if (iscell[i])
+        {
+          cells[i] = arg.cell_value ();
+          octave_idx_type n = ccells[i].numel ();
+          if (n == 1)
+            {
+              iscell[i] = false;
+              new_args(i) = ccells[i](0);
+            }
+          else if (numel == 1)
+            {
+              numel = n;
+              dims = ccells[i].dims ();
+            }
+          else if (dims != ccells[i].dims ())
+            {
+              error ("%s: cell arguments must have matching sizes", fun_name);
+              break;
+            }
+        }
+    }
+
+  if (! error_state)
+    {
+      for (int i = 0; i < nargout; i++)
+        rcells[i].clear (dims);
+
+      for (octave_idx_type j = 0; j < numel; j++)
+        {
+          for (int i = 0; i < nargin; i++)
+            if (iscell[i])
+              new_args(i) = ccells[i](j);
+
+          octave_quit ();
+
+          const octave_value_list tmp = fun (new_args, nargout);
+
+          if (tmp.length () < nargout)
+            {
+              error ("%s: do_simple_cellfun: internal error", fun_name);
+              break;
+            }
+          else
+            {
+              for (int i = 0; i < nargout; i++)
+                rcells[i](j) = tmp(i);
+            }
+        }
+    }
+
+  if (! error_state)
+    {
+      retval.resize (nargout);
+      for (int i = 0; i < nargout; i++)
+        retval(i) = rcells[i];
+    }
+
+  return retval;
+}
+
+octave_value
+do_simple_cellfun (octave_value_list (*fun) (const octave_value_list&, int),
+                   const char *fun_name, const octave_value_list& args)
+{
+  octave_value retval;
+  const octave_value_list tmp = do_simple_cellfun (fun, fun_name, args, 1);
+  if (tmp.length () > 0)
+    retval = tmp(0);
+
+  return retval;
+}

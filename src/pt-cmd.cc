@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2002, 2004, 2005, 2006, 2007,
-              2008, 2009 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -32,7 +31,7 @@ along with Octave; see the file COPYING.  If not, see
 
 tree_command *
 tree_no_op_command::dup (symbol_table::scope_id,
-			 symbol_table::context_id) const
+                         symbol_table::context_id) const
 {
   return new tree_no_op_command (orig_cmd, line (), column ());
 }
@@ -47,7 +46,7 @@ tree_no_op_command::accept (tree_walker& tw)
 
 tree_command *
 tree_function_def::dup (symbol_table::scope_id,
-			symbol_table::context_id) const
+                        symbol_table::context_id) const
 {
   return new tree_function_def (fcn, line (), column ());
 }
@@ -57,9 +56,3 @@ tree_function_def::accept (tree_walker& tw)
 {
   tw.visit_function_def (*this);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

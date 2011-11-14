@@ -1,4 +1,4 @@
-## Copyright (C) 2000, 2007, 2008, 2009 Kai Habel
+## Copyright (C) 2000-2011 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -17,14 +17,15 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} voronoi (@var{x}, @var{y})
+## @deftypefn  {Function File} {} voronoi (@var{x}, @var{y})
 ## @deftypefnx {Function File} {} voronoi (@var{x}, @var{y}, "plotstyle")
 ## @deftypefnx {Function File} {} voronoi (@var{x}, @var{y}, "plotstyle", @var{options})
 ## @deftypefnx {Function File} {[@var{vx}, @var{vy}] =} voronoi (@dots{})
-## plots voronoi diagram of points @code{(@var{x}, @var{y})}.
-## The voronoi facets with points at infinity are not drawn.
-## [@var{vx}, @var{vy}] = voronoi(@dots{}) returns the vertices instead of plotting the
-## diagram. plot (@var{vx}, @var{vy}) shows the voronoi diagram.
+## Plot Voronoi diagram of points @code{(@var{x}, @var{y})}.
+## The Voronoi facets with points at infinity are not drawn.
+## [@var{vx}, @var{vy}] = voronoi(@dots{}) returns the vertices instead of
+## plotting the
+## diagram. plot (@var{vx}, @var{vy}) shows the Voronoi diagram.
 ##
 ## A fourth optional argument, which must be a string, contains extra options
 ## passed to the underlying qhull command.  See the documentation for the
@@ -70,7 +71,7 @@ function [vvx, vvy] = voronoi (varargin)
       error ("voronoi: expecting first argument to be an axes object");
     endif
   else
-    if (nargout < 2)    
+    if (nargout < 2)
       handl = gca ();
     endif
   endif
@@ -81,9 +82,9 @@ function [vvx, vvy] = voronoi (varargin)
 
   x = varargin{narg++};
   y = varargin{narg++};
-  
+
   opts = {};
-  if (narg <= nargin) 
+  if (narg <= nargin)
     if (iscell (varargin{narg}))
       opts = varargin(narg++);
     elseif (ismatrix (varargin{narg}))
@@ -93,7 +94,7 @@ function [vvx, vvy] = voronoi (varargin)
   endif
 
   linespec = {"b"};
-  if (narg <= nargin) 
+  if (narg <= nargin)
     if (ischar (varargin{narg}))
       linespec = varargin(narg);
     endif
@@ -119,9 +120,9 @@ function [vvx, vvy] = voronoi (varargin)
   scale = 2;
 
   xbox = [xmin - scale * xdelta; xmin - scale * xdelta; ...
-	  xmax + scale * xdelta; xmax + scale * xdelta];
+          xmax + scale * xdelta; xmax + scale * xdelta];
   ybox = [xmin - scale * xdelta; xmax + scale * xdelta; ...
-	  xmax + scale * xdelta; xmin - scale * xdelta];
+          xmax + scale * xdelta; xmin - scale * xdelta];
 
   [p, c, infi] = __voronoi__ ([[x(:) ; xbox(:)], [y(:); ybox(:)]], opts{:});
 
@@ -129,13 +130,13 @@ function [vvx, vvy] = voronoi (varargin)
   ll = length (idx);
   c = c(idx).';
   k = sum (cellfun ('length', c));
-  edges = cell2mat(cellfun (@(x) [x ; [x(end), x(1:end-1)]], c, 
-			    "UniformOutput", false));
+  edges = cell2mat(cellfun (@(x) [x ; [x(end), x(1:end-1)]], c,
+                            "uniformoutput", false));
 
   ## Identify the unique edges of the Voronoi diagram
   edges = sortrows (sort (edges).').';
   edges = edges (:, [(edges(1, 1: end - 1) != edges(1, 2 : end) | ...
-		      edges(2, 1 :end - 1) != edges(2, 2 : end)), true]);
+                      edges(2, 1 :end - 1) != edges(2, 2 : end)), true]);
 
   ## Eliminate the edges of the diagram representing the box
   poutside = (1 : rows(p)) ...
@@ -149,11 +150,11 @@ function [vvx, vvy] = voronoi (varargin)
   vx = reshape (p (edges, 1), size(edges));
   vy = reshape (p (edges, 2), size(edges));
 
-  if (nargout < 2)    
+  if (nargout < 2)
     lim = [xmin, xmax, ymin, ymax];
     h = plot (handl, vx, vy, linespec{:}, x, y, '+');
     axis (lim + 0.1 * [[-1, 1] * (lim (2) - lim (1)), ...
-		       [-1, 1] * (lim (4) - lim (3))]);
+                       [-1, 1] * (lim (4) - lim (3))]);
     if (nargout == 1)
       vxx = h;
     endif

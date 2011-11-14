@@ -1,4 +1,4 @@
-## Copyright (C) 2002, 2005, 2006, 2007, 2008, 2009 John W. Eaton
+## Copyright (C) 2002-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Command} {} close
+## @deftypefn  {Command} {} close
 ## @deftypefnx {Command} {} close (@var{n})
 ## @deftypefnx {Command} {} close all
 ## @deftypefnx {Command} {} close all hidden
@@ -28,6 +28,7 @@
 ## @end deftypefn
 
 ## Author: jwe
+## 2010-05-02   PBig    allow empty argument
 
 function retval = close (arg1, arg2)
 
@@ -45,12 +46,14 @@ function retval = close (arg1, arg2)
       close_all_figures (false);
     elseif (isfigure (arg1))
       figs = arg1;
+    elseif (isempty(arg1))
+      figs = [];
     else
       error ("close: expecting argument to be \"all\" or a figure handle");
     endif
   elseif (nargin == 2
-	  && ischar (arg1) && strcmpi (arg1, "all")
-	  && ischar (arg2) && strcmpi (arg2, "hidden"))
+          && ischar (arg1) && strcmpi (arg1, "all")
+          && ischar (arg2) && strcmpi (arg2, "hidden"))
     close_all_figures (true);
   else
     print_usage ();

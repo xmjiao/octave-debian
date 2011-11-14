@@ -1,5 +1,4 @@
-## Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2005, 2006,
-##               2007, 2008 John W. Eaton
+## Copyright (C) 1994-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -18,16 +17,18 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} orth (@var{a}, @var{tol})
-## Return an orthonormal basis of the range space of @var{a}.
+## @deftypefn  {Function File} {} orth (@var{A})
+## @deftypefnx {Function File} {} orth (@var{A}, @var{tol})
+## Return an orthonormal basis of the range space of @var{A}.
 ##
 ## The dimension of the range space is taken as the number of singular
-## values of @var{a} greater than @var{tol}.  If the argument @var{tol} is
+## values of @var{A} greater than @var{tol}.  If the argument @var{tol} is
 ## missing, it is computed as
 ##
 ## @example
-## max (size (@var{a})) * max (svd (@var{a})) * eps
+## max (size (@var{A})) * max (svd (@var{A})) * eps
 ## @end example
+## @seealso{null}
 ## @end deftypefn
 
 ## Author: KH <Kurt.Hornik@wu-wien.ac.at>
@@ -52,9 +53,9 @@ function retval = orth (A, tol)
 
     if (nargin == 1)
       if (isa (A, "single"))
-	tol = max (size (A)) * s (1) * eps ("single");
+        tol = max (size (A)) * s (1) * eps ("single");
       else
-	tol = max (size (A)) * s (1) * eps;
+        tol = max (size (A)) * s (1) * eps;
       endif
     endif
 

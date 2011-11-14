@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007,
-              2008, 2009 John W. Eaton
+Copyright (C) 1999-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -57,29 +56,29 @@ tree_cell::rvalue1 (int)
       tree_argument_list *elt = *p;
 
       octave_value_list row = elt->convert_to_const_vector ();
-      
+
       if (nr == 1)
         // Optimize the single row case.
         val = row.cell_value ();
       else if (nc < 0)
-	{
-	  nc = row.length ();
+        {
+          nc = row.length ();
 
-	  val = Cell (nr, nc);
-	}
+          val = Cell (nr, nc);
+        }
       else
-	{
-	  octave_idx_type this_nc = row.length ();
+        {
+          octave_idx_type this_nc = row.length ();
 
-	  if (nc != this_nc)
-	    {
-	      ::error ("number of columns must match");
-	      return retval;
-	    }
-	}
+          if (nc != this_nc)
+            {
+              ::error ("number of columns must match");
+              return retval;
+            }
+        }
 
       for (octave_idx_type j = 0; j < nc; j++)
-	val(i,j) = row(j);
+        val(i,j) = row(j);
 
       i++;
     }
@@ -104,7 +103,7 @@ tree_cell::rvalue (int nargout)
 
 tree_expression *
 tree_cell::dup (symbol_table::scope_id scope,
-		symbol_table::context_id context) const
+                symbol_table::context_id context) const
 {
   tree_cell *new_cell = new tree_cell (0, line (), column ());
 
@@ -125,9 +124,3 @@ tree_cell::accept (tree_walker& tw)
 {
   tw.visit_cell (*this);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

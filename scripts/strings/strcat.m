@@ -1,5 +1,5 @@
-## Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2002, 2003,
-##               2005, 2006, 2007, 2008, 2009 John W. Eaton
+## Copyright (C) 1994-2011 John W. Eaton
+## Copyright (C) 2009 Jaroslav Hajek
 ##
 ## This file is part of Octave.
 ##
@@ -24,7 +24,7 @@
 ## returns a cell string with the individual cells concatenated.
 ## For numerical input, each element is converted to the
 ## corresponding ASCII character.  Trailing white space is eliminated.
-## For example,
+## For example:
 ##
 ## @example
 ## @group
@@ -60,46 +60,28 @@ function st = strcat (varargin)
       st = varargin{1};
     elseif (nargin > 1)
       ## Convert to cells of strings
-      numstrs(nargin) = 0;
-      dims{nargin} = [];
-      allchar = true;
-      for nv = 1:nargin
-        if (ischar (varargin{nv}))
-          varargin{nv} = cellstr (varargin{nv});
-        elseif (isreal (varargin{nv}))
-          varargin{nv} = cellstr (char (varargin{nv}));
-        elseif (isempty (varargin{nv}))
-          varargin{nv} = cellstr ('');
-        elseif (iscell (varargin{nv}))
-          allchar = false;
-        else
-          error ("strcat: inputs must be strings or cells of strings");
-        endif
-        dims{nv} = size (varargin{nv});
-        numstrs(nv) = numel (varargin{nv});
-      endfor
+      uo = "uniformoutput";
+      reals = cellfun (@isreal, varargin);
+      if (any (reals))
+        varargin(reals) = cellfun (@char, varargin(reals), uo, false);
+      endif
+      chars = cellfun (@ischar, varargin);
+      allchar = all (chars);
+      varargin(chars) = cellfun (@cellstr, varargin(chars), uo, false);
+      if (! all (cellfun (@iscell, varargin)))
+        error ("strcat: inputs must be strings or cells of strings");
+      endif
 
-      ## Set all cells to a common size
-      n = find (numstrs == max (numstrs), 1);
-      maxstrs = numstrs (n);
-      dim = dims{n};
-      for nv = find (numstrs == 1)
-        str = varargin{nv}{1};
-        varargin{nv} = cell (dim);
-        varargin{nv}(:) = {str};
-      endfor
+      ## We don't actually need to bring all cells to common size, because
+      ## cellfun can now expand scalar cells.
+      err = common_size (varargin{:});
 
-      ## Concatenate the strings
-      st = varargin{1};
-      for ns = 1:maxstrs
-        for nv = 2:nargin
-          if (size_equal (st, varargin{nv}))
-            st{ns} = [st{ns}, varargin{nv}{ns}];
-          else
-            error ("strcat: arguments must be the same size, or be scalars");
-          endif
-        endfor
-      endfor
+      if (err)
+        error ("strcat: arguments must be the same size, or be scalars");
+      endif
+
+      ## Cellfun handles everything for us.
+      st = cellfun (@horzcat, varargin{:}, uo, false);
 
       if (allchar)
         ## If all inputs were strings, return strings.
@@ -124,8 +106,8 @@ endfunction
 %!assert(strcat(["ab ";"cde"], ["ab ";"cde"]), ["abab  ";"cdecde"])
 
 ## test for deblanking implied trailing spaces of character input
-%!assert((strcmp (strcat ("foo", "bar"), "foobar") &&
-%!        strcmp (strcat (["a"; "bb"], ["foo"; "bar"]), ["afoo "; "bbbar"])));
+%!assert((strcmp (strcat ("foo", "bar"), "foobar")
+%!        && strcmp (strcat (["a"; "bb"], ["foo"; "bar"]), ["afoo "; "bbbar"])));
 
 ## test for mixing character and cell inputs
 %!assert(all (strcmp (strcat ("a", {"bc", "de"}, "f"), {"abcf", "adef"})))

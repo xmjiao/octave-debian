@@ -1,5 +1,4 @@
-## Copyright (C) 1996, 1997, 1998, 2000, 2002, 2004, 2005, 2006, 2007
-##               Kurt Hornik
+## Copyright (C) 1996-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -36,11 +35,11 @@ function pdf = discrete_pdf (x, v, p)
   sz = size (x);
 
   if (! isvector (v))
-    error ("discrete_pdf: v must be a vector");
+    error ("discrete_pdf: V must be a vector");
   elseif (! isvector (p) || (length (p) != length (v)))
-    error ("discrete_pdf: p must be a vector with length (v) elements");
+    error ("discrete_pdf: P must be a vector with length (V) elements");
   elseif (! (all (p >= 0) && any (p)))
-    error ("discrete_pdf: p must be a nonzero, nonnegative vector");
+    error ("discrete_pdf: P must be a nonzero, nonnegative vector");
   endif
 
   n = numel (x);
@@ -49,15 +48,12 @@ function pdf = discrete_pdf (x, v, p)
   v = reshape (v, 1, m);
   p = reshape (p / sum (p), m, 1);
 
-  pdf = zeros (sz);
-  k = find (isnan (x));
-  if (any (k))
-    pdf (k) = NaN;
-  endif
+  pdf = NaN (sz);
   k = find (!isnan (x));
   if (any (k))
     n = length (k);
-    pdf (k) = ((x(k) * ones (1, m)) == (ones (n, 1) * v)) * p;
+    [vs, vi] = sort (v);
+    pdf (k) = p (vi(lookup (vs, x(k), 'm')));
   endif
 
 endfunction

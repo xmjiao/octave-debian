@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2009 John W. Eaton
+Copyright (C) 2009-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -48,6 +48,41 @@ public:
   typedef T2 result;
 };
 
+// Determine whether two types are equal.
+template <class T1, class T2>
+class equal_types
+{
+public:
+
+  static const bool value = false;
+};
+
+template <class T>
+class equal_types <T, T>
+{
+public:
+
+  static const bool value = true;
+};
+
+// Determine whether a type is an instance of a template.
+
+template <template <class> class Template, class T>
+class is_instance
+{
+public:
+
+  static const bool value = false;
+};
+
+template <template <class> class Template, class T>
+class is_instance <Template, Template<T> >
+{
+public:
+
+  static const bool value = true;
+};
+
 // Determine whether a template paramter is a class type.
 
 template<typename T1>
@@ -81,11 +116,38 @@ public:
   typedef typename if_then_else<is_class_type<T>::no, T, T const&>::result type;
 };
 
-#endif
+// Will turn TemplatedClass<T> to T, leave T otherwise.
+// Useful for stripping wrapper classes, like octave_int.
 
-/*
-;;; Local Variables: ***
-;;; mode: C ***
-;;; page-delimiter: "^/\\*" ***
-;;; End: ***
-*/
+template<template<typename> class TemplatedClass, typename T>
+class strip_template_param
+{
+public:
+  typedef T type;
+};
+
+template<template<typename> class TemplatedClass, typename T>
+class strip_template_param<TemplatedClass, TemplatedClass<T> >
+{
+public:
+  typedef T type;
+};
+
+// Will turn TemplatedClass<T> to TemplatedClass<S>, T to S otherwise.
+// Useful for generic promotions.
+
+template<template<typename> class TemplatedClass, typename T, typename S>
+class subst_template_param
+{
+public:
+  typedef S type;
+};
+
+template<template<typename> class TemplatedClass, typename T, typename S>
+class subst_template_param<TemplatedClass, TemplatedClass<T>, S>
+{
+public:
+  typedef TemplatedClass<S> type;
+};
+
+#endif

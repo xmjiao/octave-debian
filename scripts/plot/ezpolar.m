@@ -1,4 +1,4 @@
-## Copyright (C) 2007, 2009 David Bateman
+## Copyright (C) 2007-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -17,22 +17,22 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} ezpolar (@var{f})
+## @deftypefn  {Function File} {} ezpolar (@var{f})
 ## @deftypefnx {Function File} {} ezpolar (@dots{}, @var{dom})
 ## @deftypefnx {Function File} {} ezpolar (@dots{}, @var{n})
 ## @deftypefnx {Function File} {} ezpolar (@var{h}, @dots{})
 ## @deftypefnx {Function File} {@var{h} =} ezpolar (@dots{})
 ##
 ## Plots in polar plot defined by a function.  The function @var{f} is either
-## a string, inline function or function handle with one arguments defining 
-## the function.  By default the plot is over the domain @code{0 < @var{x} < 
-## 2*pi} with 60 points. 
+## a string, inline function or function handle with one arguments defining
+## the function.  By default the plot is over the domain @code{0 < @var{x} <
+## 2*pi} with 60 points.
 ##
 ## If @var{dom} is a two element vector, it represents the minimum and maximum
-## value of both @var{t}.  @var{n} is a scalar defining the number of points to 
+## value of both @var{t}.  @var{n} is a scalar defining the number of points to
 ## use.
 ##
-## The optional return value @var{h} provides a list of handles to the 
+## The optional return value @var{h} provides a list of handles to the
 ## the parts of the vector field (body, arrow and marker).
 ##
 ## @example

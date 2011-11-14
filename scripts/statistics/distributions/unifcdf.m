@@ -1,4 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 2005, 2006, 2007 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -19,7 +19,7 @@
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} unifcdf (@var{x}, @var{a}, @var{b})
 ## Return the CDF at @var{x} of the uniform distribution on [@var{a},
-## @var{b}], i.e., PROB (uniform (@var{a}, @var{b}) <= x).
+## @var{b}], i.e., PROB (uniform (@var{a}, @var{b}) @leq{} x).
 ##
 ## Default values are @var{a} = 0, @var{b} = 1.
 ## @end deftypefn
@@ -41,7 +41,7 @@ function cdf = unifcdf (x, a, b)
   if (!isscalar (a) || !isscalar(b))
     [retval, x, a, b] = common_size (x, a, b);
     if (retval > 0)
-      error ("unifcdf: x, a and b must be of common size or scalar");
+      error ("unifcdf: X, A and B must be of common size or scalar");
     endif
   endif
 
@@ -57,7 +57,7 @@ function cdf = unifcdf (x, a, b)
   if (any (k))
     cdf(k) = 1;
   endif
-  
+
   k = find ((x > a) & (x < b));
   if (any (k))
     if (isscalar (a) && isscalar(b))

@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 2000, 2002, 2005, 2007
-##               Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -66,32 +65,32 @@
 ## Author: KH <Kurt.Hornik@wu-wien.ac.at>
 ## Description: Test for conditional heteroscedascity
 
-function [pval, lm] = arch_test (y, X, p)
+function [pval, lm] = arch_test (y, x, p)
 
   if (nargin != 3)
-    error ("arch_test needs 3 input arguments");
+    error ("arch_test: 3 input arguments required");
   endif
 
   if (! (isvector (y)))
-    error ("arch_test: y must be a vector");
+    error ("arch_test: Y must be a vector");
   endif
   T   = length (y);
   y   = reshape (y, T, 1);
-  [rx, cx] = size (X);
+  [rx, cx] = size (x);
   if ((rx == 1) && (cx == 1))
-    X = autoreg_matrix (y, X);
+    x = autoreg_matrix (y, x);
   elseif (! (rx == T))
-    error ("arch_test: either rows(X) == length(y), or X is a scalar");
+    error ("arch_test: either rows(X) == length(Y), or X is a scalar");
   endif
   if (! (isscalar(p) && (rem(p, 1) == 0) && (p > 0)))
-    error ("arch_test: p must be a positive integer");
+    error ("arch_test: P must be a positive integer");
   endif
 
-  [b, v_b, e] = ols (y, X);
+  [b, v_b, e] = ols (y, x);
   Z    = autoreg_matrix (e.^2, p);
   f    = e.^2 / v_b - ones (T, 1);
   f    = Z' * f;
   lm   = f' * inv (Z'*Z) * f / 2;
-  pval = 1 - chisquare_cdf (lm, p);
+  pval = 1 - chi2cdf (lm, p);
 
 endfunction

@@ -1,6 +1,7 @@
 /*
 
-Copyright (C) 2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 2006-2011 John W. Eaton
+Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
 
@@ -38,7 +39,7 @@ load_path
 protected:
 
   load_path (void)
-    : dir_info_list (), fcn_map (), method_map (), parent_map () { }
+    : dir_info_list (), fcn_map (), private_fcn_map (), method_map () { }
 
 public:
 
@@ -88,15 +89,15 @@ public:
   }
 
   static std::string find_method (const std::string& class_name,
-				  const std::string& meth,
-				  std::string& dir_name)
+                                  const std::string& meth,
+                                  std::string& dir_name)
   {
     return instance_ok ()
       ? instance->do_find_method (class_name, meth, dir_name) : std::string ();
   }
 
   static std::string find_method (const std::string& class_name,
-				  const std::string& meth)
+                                  const std::string& meth)
   {
     std::string dir_name;
     return find_method (class_name, meth, dir_name);
@@ -106,6 +107,12 @@ public:
   {
     return instance_ok ()
       ? instance->do_methods (class_name) : std::list<std::string> ();
+  }
+
+  static std::list<std::string> overloads (const std::string& meth)
+  {
+    return instance_ok ()
+      ? instance->do_overloads (meth) : std::list<std::string> ();
   }
 
   static std::string find_fcn (const std::string& fcn, std::string& dir_name)
@@ -121,7 +128,7 @@ public:
   }
 
   static std::string find_private_fcn (const std::string& dir,
-				       const std::string& fcn)
+                                       const std::string& fcn)
   {
     return instance_ok ()
       ? instance->do_find_private_fcn (dir, fcn) : std::string ();
@@ -161,6 +168,12 @@ public:
   {
     return instance_ok ()
       ? instance->do_find_dir (dir) : std::string ();
+  }
+
+  static string_vector find_matching_dirs (const std::string& dir)
+  {
+    return instance_ok ()
+      ? instance->do_find_matching_dirs (dir) : string_vector ();
   }
 
   static std::string find_first_of (const string_vector& files)
@@ -230,13 +243,6 @@ public:
     return instance_ok () ? instance->do_system_path () : std::string ();
   }
 
-  static void add_to_parent_map (const std::string& classname,
-				 const std::list<std::string>& parent_list)
-  {
-    if (instance_ok ())
-      instance->do_add_to_parent_map (classname, parent_list);
-  }
-
 private:
 
   static const int M_FILE = 1;
@@ -255,6 +261,24 @@ private:
 
     struct class_info
     {
+      class_info (void) : method_file_map (), private_file_map () { }
+
+      class_info (const class_info& ci)
+        : method_file_map (ci.method_file_map),
+          private_file_map (ci.private_file_map) { }
+
+      class_info& operator = (const class_info& ci)
+      {
+        if (this != &ci)
+          {
+            method_file_map = ci.method_file_map;
+            private_file_map = ci.private_file_map;
+          }
+        return *this;
+      }
+
+      ~class_info (void) { }
+
       fcn_file_map_type method_file_map;
       fcn_file_map_type private_file_map;
     };
@@ -268,33 +292,45 @@ private:
     // This default constructor is only provided so we can create a
     // std::map of dir_info objects.  You should not use this
     // constructor for any other purpose.
-    dir_info (void) { }
+    dir_info (void)
+      : dir_name (), abs_dir_name (), is_relative (false),
+        dir_mtime (), dir_time_last_checked (), all_files (),
+        fcn_files (), private_file_map (), method_file_map ()
+      { }
 
-    dir_info (const std::string& d) : dir_name (d) { initialize (); }
+    dir_info (const std::string& d)
+      : dir_name (d), abs_dir_name (), is_relative (false),
+        dir_mtime (), dir_time_last_checked (), all_files (),
+        fcn_files (), private_file_map (), method_file_map ()
+    {
+      initialize ();
+    }
 
     dir_info (const dir_info& di)
       : dir_name (di.dir_name), abs_dir_name (di.abs_dir_name),
-	is_relative (di.is_relative),
-	dir_mtime (di.dir_mtime), all_files (di.all_files),
-	fcn_files (di.fcn_files),
-	private_file_map (di.private_file_map),
-	method_file_map (di.method_file_map) { }
+        is_relative (di.is_relative),
+        dir_mtime (di.dir_mtime),
+        dir_time_last_checked (di.dir_time_last_checked),
+        all_files (di.all_files), fcn_files (di.fcn_files),
+        private_file_map (di.private_file_map),
+        method_file_map (di.method_file_map) { }
 
     ~dir_info (void) { }
 
     dir_info& operator = (const dir_info& di)
     {
       if (&di != this)
-	{
-	  dir_name = di.dir_name;
-	  abs_dir_name = di.abs_dir_name;
-	  is_relative = di.is_relative;
-	  dir_mtime = di.dir_mtime;
-	  all_files = di.all_files;
-	  fcn_files = di.fcn_files;
-	  private_file_map = di.private_file_map;
-	  method_file_map = di.method_file_map;
-	}
+        {
+          dir_name = di.dir_name;
+          abs_dir_name = di.abs_dir_name;
+          is_relative = di.is_relative;
+          dir_mtime = di.dir_mtime;
+          dir_time_last_checked = di.dir_time_last_checked;
+          all_files = di.all_files;
+          fcn_files = di.fcn_files;
+          private_file_map = di.private_file_map;
+          method_file_map = di.method_file_map;
+        }
 
       return *this;
     }
@@ -305,6 +341,7 @@ private:
     std::string abs_dir_name;
     bool is_relative;
     octave_time dir_mtime;
+    octave_time dir_time_last_checked;
     string_vector all_files;
     string_vector fcn_files;
     fcn_file_map_type private_file_map;
@@ -319,7 +356,7 @@ private:
     void get_private_file_map (const std::string& d);
 
     void get_method_file_map (const std::string& d,
-			      const std::string& class_name);
+                              const std::string& class_name);
 
     friend fcn_file_map_type get_fcn_files (const std::string& d);
   };
@@ -338,10 +375,10 @@ private:
     file_info& operator = (const file_info& fi)
     {
       if (&fi != this)
-	{
-	  dir_name = fi.dir_name;
-	  types = fi.types;
-	}
+        {
+          dir_name = fi.dir_name;
+          types = fi.types;
+        }
 
       return *this;
     }
@@ -395,12 +432,6 @@ private:
 
   typedef method_map_type::const_iterator const_method_map_iterator;
   typedef method_map_type::iterator method_map_iterator;
- 
-  // <CLASS_NAME, PARENT_LIST>>
-  typedef std::map<std::string, std::list<std::string> > parent_map_type;
-
-  typedef parent_map_type::const_iterator const_parent_map_iterator;
-  typedef parent_map_type::iterator parent_map_iterator;
 
   mutable dir_info_list_type dir_info_list;
 
@@ -409,8 +440,6 @@ private:
   mutable private_fcn_map_type private_fcn_map;
 
   mutable method_map_type method_map;
-
-  mutable parent_map_type parent_map;
 
   static load_path *instance;
 
@@ -432,7 +461,7 @@ private:
   bool contains (const std::string& dir) const;
 
   void move_fcn_map (const std::string& dir,
-		     const string_vector& fcn_files, bool at_end);
+                     const string_vector& fcn_files, bool at_end);
 
   void move_method_map (const std::string& dir, bool at_end);
 
@@ -462,26 +491,30 @@ private:
 
   static bool
   check_file_type (std::string& fname, int type, int possible_types,
-		   const std::string& fcn, const char *who);
+                   const std::string& fcn, const char *who);
 
   std::string do_find_fcn (const std::string& fcn,
-			   std::string& dir_name,
-			   int type = M_FILE | OCT_FILE | MEX_FILE) const;
+                           std::string& dir_name,
+                           int type = M_FILE | OCT_FILE | MEX_FILE) const;
 
   std::string do_find_private_fcn (const std::string& dir,
-				   const std::string& fcn,
-				   int type = M_FILE | OCT_FILE | MEX_FILE) const;
+                                   const std::string& fcn,
+                                   int type = M_FILE | OCT_FILE | MEX_FILE) const;
 
   std::string do_find_method (const std::string& class_name,
-			      const std::string& meth,
-			      std::string& dir_name,
-			      int type = M_FILE | OCT_FILE | MEX_FILE) const;
+                              const std::string& meth,
+                              std::string& dir_name,
+                              int type = M_FILE | OCT_FILE | MEX_FILE) const;
 
   std::list<std::string> do_methods (const std::string& class_name) const;
+
+  std::list<std::string> do_overloads (const std::string& meth) const;
 
   std::string do_find_file (const std::string& file) const;
 
   std::string do_find_dir (const std::string& dir) const;
+
+  string_vector do_find_matching_dirs (const std::string& dir) const;
 
   std::string do_find_first_of (const string_vector& files) const;
 
@@ -510,9 +543,6 @@ private:
 
   std::string do_get_command_line_path (void) const { return command_line_path; }
 
-  void do_add_to_parent_map (const std::string& classname,
-			     const std::list<std::string>& parent_list) const;
-
   void add_to_fcn_map (const dir_info& di, bool at_end) const;
 
   void add_to_private_fcn_map (const dir_info& di) const;
@@ -529,10 +559,3 @@ extern void execute_pkg_add (const std::string& dir);
 extern void execute_pkg_del (const std::string& dir);
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; page-delimiter: "^/\\*" ***
-;;; End: ***
-*/

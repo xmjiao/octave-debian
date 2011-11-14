@@ -1,4 +1,4 @@
-## Copyright (C) 2007, 2008, 2009 David Bateman
+## Copyright (C) 2007-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -17,15 +17,15 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{idx} =} dsearch (@var{x}, @var{y}, @var{tri}, @var{xi}, @var{yi})
+## @deftypefn  {Function File} {@var{idx} =} dsearch (@var{x}, @var{y}, @var{tri}, @var{xi}, @var{yi})
 ## @deftypefnx {Function File} {@var{idx} =} dsearch (@var{x}, @var{y}, @var{tri}, @var{xi}, @var{yi}, @var{s})
-## Returns the index @var{idx} or the closest point in @code{@var{x}, @var{y}}
+## Return the index @var{idx} or the closest point in @code{@var{x}, @var{y}}
 ## to the elements @code{[@var{xi}(:), @var{yi}(:)]}.  The variable @var{s} is
-## accepted but ignored for compatibility.
+## accepted for compatibility but is ignored.
 ## @seealso{dsearchn, tsearch}
 ## @end deftypefn
 
-function idx = dsearch (x, y, t, xi, yi, s)
+function idx = dsearch (x, y, tri, xi, yi, s)
   if (nargin < 5 || nargin > 6)
     print_usage ();
   endif
@@ -35,6 +35,6 @@ endfunction
 %!shared x, y, tri
 %! x = [-1;-1;1];
 %! y = [-1;1;-1];
-%! tri = [1,2,3]; 
+%! tri = [1,2,3];
 %!assert (dsearch(x,y,tri,1,1/3), 3);
 %!assert (dsearch(x,y,tri,1/3,1), 2);

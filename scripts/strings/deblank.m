@@ -1,5 +1,4 @@
-## Copyright (C) 1996, 1998, 1999, 2000, 2002, 2004, 2005, 2006, 2007, 2008
-##               Kurt Hornik
+## Copyright (C) 1996-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -40,22 +39,22 @@ function s = deblank (s)
 
     if (! isempty (s))
       if (char_arg)
-	k = find (! isspace (s) & s != "\0");
+        k = find (! isspace (s) & s != "\0");
       else
-	warning ("deblank: expecting character string argument")
-	k = find (s != 0);
+        warning ("deblank: expecting character string argument");
+        k = find (s != 0);
       endif
 
       if (isempty (k))
-	s = resize (s, 0, 0);
+        s = resize (s, 0, 0);
       else
-	s = s(:,1:ceil (max (k) / rows (s)));
+        s = s(:,1:ceil (max (k) / rows (s)));
       endif
     endif
 
   elseif (iscell(s))
 
-    s = cellfun (@deblank, s, "UniformOutput", false);
+    s = cellfun (@deblank, s, "uniformoutput", false);
 
   else
     error ("deblank: expecting character string argument");

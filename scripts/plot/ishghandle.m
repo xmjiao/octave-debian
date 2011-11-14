@@ -1,4 +1,4 @@
-## Copyright (C) 2008 David Bateman
+## Copyright (C) 2008-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -22,7 +22,7 @@
 ## @end deftypefn
 
 function retval = ishghandle (h)
-  ## This function is just included for compatibility as Octave has 
+  ## This function is just included for compatibility as Octave has
   ## no simulink equivalent.
   retval = ishandle (h);
 endfunction

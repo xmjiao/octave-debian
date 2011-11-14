@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2002, 2003, 2004, 2005, 2006, 2007
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -35,14 +34,19 @@ DASPK : public DAE, public DASPK_options
 {
 public:
 
-  DASPK (void) : DAE (), DASPK_options (), initialized (false) { }
+  DASPK (void)
+    : DAE (), DASPK_options (), initialized (false), liw (0), lrw (0),
+      info (), iwork (), rwork (), abs_tol (), rel_tol () { }
 
   DASPK (const ColumnVector& s, double tm, DAEFunc& f)
-    : DAE (s, tm, f), DASPK_options (), initialized (false) { }
+    : DAE (s, tm, f), DASPK_options (), initialized (false), liw (0),
+      lrw (0), info (), iwork (), rwork (), abs_tol (), rel_tol () { }
 
   DASPK (const ColumnVector& s, const ColumnVector& deriv,
-	 double tm, DAEFunc& f)
-    : DAE (s, deriv, tm, f), DASPK_options (), initialized (false) { }
+         double tm, DAEFunc& f)
+    : DAE (s, deriv, tm, f), DASPK_options (), initialized (false),
+      liw (0), lrw (0), info (), iwork (), rwork (), abs_tol (),
+      rel_tol () { }
 
   ~DASPK (void) { }
 
@@ -50,12 +54,12 @@ public:
 
   Matrix do_integrate (const ColumnVector& tout);
 
-  Matrix do_integrate (const ColumnVector& tout, const ColumnVector& tcrit); 
+  Matrix do_integrate (const ColumnVector& tout, const ColumnVector& tcrit);
 
   Matrix integrate (const ColumnVector& tout, Matrix& xdot_out);
 
   Matrix integrate (const ColumnVector& tout, Matrix& xdot_out,
-		    const ColumnVector& tcrit); 
+                    const ColumnVector& tcrit);
 
   std::string error_message (void) const;
 
@@ -63,7 +67,7 @@ private:
 
   bool initialized;
 
-  octave_idx_type liw;  
+  octave_idx_type liw;
   octave_idx_type lrw;
 
   Array<octave_idx_type> info;
@@ -73,20 +77,6 @@ private:
 
   Array<double> abs_tol;
   Array<double> rel_tol;
-
-  double *px;
-  double *pxdot;
-  double *pabs_tol;
-  double *prel_tol;
-  octave_idx_type *pinfo;
-  octave_idx_type *piwork;
-  double *prwork;
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,4 +1,4 @@
-## Copyright (C) 1997, 2005, 2006, 2007 Kurt Hornik
+## Copyright (C) 1997-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -39,12 +39,12 @@ function cdf = hygecdf (x, t, m, n)
   endif
 
   if (!isscalar (t) || !isscalar (m) || !isscalar (n))
-    error ("hygecdf: t, m and n must all be positive integers");
+    error ("hygecdf: T, M and N must all be positive integers");
   endif
 
-  if ((t < 0) | (m < 0) | (n <= 0) | (t != round (t)) |
-      (m != round (m)) | (n != round (n)) | (m > t) | (n > t))
-    cdf = NaN * ones (size (x))
+  if (t < 0 || m < 0 || n <= 0 || t != round (t) || m != round (m)
+      || n != round (n) || m > t || n > t)
+    cdf = NaN (size (x));
   else
     cdf = discrete_cdf (x, 0 : n, hygepdf (0 : n, t, m, n));
   endif

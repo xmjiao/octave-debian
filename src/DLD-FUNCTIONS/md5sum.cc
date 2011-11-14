@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2007, 2009 David Bateman
+Copyright (C) 2007-2011 David Bateman
 
 
 This file is part of Octave.
@@ -21,12 +21,12 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include <string>
 #include <vector>
-
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
 
 #include "defun-dld.h"
 #include "file-stat.h"
@@ -38,9 +38,9 @@ along with Octave; see the file COPYING.  If not, see
 
 DEFUN_DLD (md5sum, args, ,
    "-*- texinfo -*-\n\
-@deftypefn {Loadable Function} {} md5sum (@var{file})\n\
+@deftypefn  {Loadable Function} {} md5sum (@var{file})\n\
 @deftypefnx {Loadable Function} {} md5sum (@var{str}, @var{opt})\n\
-Calculates the MD5 sum of the file @var{file}.  If the second parameter\n\
+Calculate the MD5 sum of the file @var{file}.  If the second parameter\n\
 @var{opt} exists and is true, then calculate the MD5 sum of the\n\
 string @var{str}.\n\
 @end deftypefn")
@@ -56,33 +56,46 @@ string @var{str}.\n\
       std::string str = args(0).string_value();
 
       if (nargin == 2)
-	have_str = args(1).bool_value();
-	
+        have_str = args(1).bool_value();
+
       if (!error_state)
-	{
-	  if (have_str)
-	    retval = oct_md5 (str);
-	  else
-	    {
-	      file_stat fs (str);
+        {
+          if (have_str)
+            retval = oct_md5 (str);
+          else
+            {
+              file_stat fs (str);
 
-	      if (! fs.exists ())
-		{
-		  std::string tmp = octave_env::make_absolute
-		    (load_path::find_file (str), octave_env::getcwd ());
+              if (! fs.exists ())
+                {
+                  std::string tmp
+                    = octave_env::make_absolute (load_path::find_file (str));
 
-		  if (! tmp.empty ())
-		    {
-		      warning_with_id ("Octave:md5sum-file-in-path",
-				       "md5sum: file found in load path");
-		      str = tmp;
-		    }
-		}
+                  if (! tmp.empty ())
+                    {
+                      warning_with_id ("Octave:md5sum-file-in-path",
+                                       "md5sum: file found in load path");
+                      str = tmp;
+                    }
+                }
 
-	      retval = oct_md5_file (str);
-	    }
-	}
+              retval = oct_md5_file (str);
+            }
+        }
     }
 
   return retval;
 }
+
+/*
+%!assert (md5sum ("abc\0", true), "147a664a2ca9410911e61986d3f0d52a");
+
+%!test
+%! tfile = tmpnam ();
+%! fid = fopen (tfile, "wb");
+%! fwrite (fid, "abc\0");
+%! fclose (fid);
+%! assert (md5sum (tfile), "147a664a2ca9410911e61986d3f0d52a");
+%! unlink (tfile);
+*/
+

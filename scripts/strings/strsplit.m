@@ -1,17 +1,19 @@
-## Copyright (C) 2009 Jaroslav Hajek
+## Copyright (C) 2009-2011 Jaroslav Hajek
 ##
-## This program is free software; you can redistribute it and/or modify it
+## This file is part of Octave.
+##
+## Octave is free software; you can redistribute it and/or modify it
 ## under the terms of the GNU General Public License as published by
 ## the Free Software Foundation; either version 3 of the License, or (at
 ## your option) any later version.
 ##
-## This program is distributed in the hope that it will be useful, but
+## Octave is distributed in the hope that it will be useful, but
 ## WITHOUT ANY WARRANTY; without even the implied warranty of
 ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 ## General Public License for more details.
 ##
 ## You should have received a copy of the GNU General Public License
-## along with this program; see the file COPYING.  If not, see
+## along with Octave; see the file COPYING.  If not, see
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
@@ -49,10 +51,10 @@ function s = strsplit (p, sep, strip_empty = false)
       sizes = [idx(1)-1, diff(idx)-1, numel(p)-idx(end)];
     endif
     ## Remove separators.
-    p(idx) = []; 
+    p(idx) = [];
     if (strip_empty)
       ## Omit zero lengths.
-      sizes = sizes (sizes != 0); 
+      sizes = sizes (sizes != 0);
     endif
     ## Convert!
     s = mat2cell (p, 1, sizes);

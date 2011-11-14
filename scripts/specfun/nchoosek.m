@@ -1,4 +1,4 @@
-## Copyright (C) 2001, 2006, 2007, 2009 Rolf Fabian and Paul Kienzle
+## Copyright (C) 2001-2011 Rolf Fabian and Paul Kienzle
 ## Copyright (C) 2008 Jaroslav Hajek
 ##
 ## This file is part of Octave.
@@ -23,7 +23,6 @@
 ## Compute the binomial coefficient or all combinations of @var{n}.
 ## If @var{n} is a scalar then, calculate the binomial coefficient
 ## of @var{n} and @var{k}, defined as
-##
 ## @tex
 ## $$
 ##  {n \choose k} = {n (n-1) (n-2) \cdots (n-k+1) \over k!}
@@ -41,11 +40,12 @@
 ##  \   /
 ## @end group
 ## @end example
+##
 ## @end ifnottex
 ##
 ## If @var{n} is a vector generate all combinations of the elements
-## of @var{n}, taken @var{k} at a time, one row per combination.  The 
-## resulting @var{c} has size @code{[nchoosek (length (@var{n}), 
+## of @var{n}, taken @var{k} at a time, one row per combination.  The
+## resulting @var{c} has size @code{[nchoosek (length (@var{n}),
 ## @var{k}), @var{k}]}.
 ##
 ## @code{nchoosek} works only for non-negative integer arguments; use
@@ -88,37 +88,26 @@ function A = nchoosek (v, k)
     A = v(:).';
   elseif (k > n)
     A = zeros (0, k, class (v));
-  else
-    p = cell (1, k);
-    ## Hack: do the op in the smallest integer class possible to avoid
-    ## moving too much data.
-    if (n < intmax ("uint8"))
-      cl = "uint8";
-    elseif (n < intmax ("uint16"))
-      cl = "uint16";
-    elseif (n < intmax ("uint32"))
-      cl = "uint32";
-    else
-      ## This would exhaust memory anyway.
-      cl = "double";
-    endif
-     
-    ## Use a generalized Pascal triangle. Traverse backwards to keep
-    ## alphabetical order.
-    for i = 1:k
-      p{i} = zeros (0, i, cl);
+  elseif (k == 2)
+    ## Can do it without transpose.
+    x = repelems (v(1:n-1), [1:n-1; n-1:-1:1]).';
+    y = cat (1, cellslices (v(:), 2:n, n*ones (1, n-1)){:});
+    A = [x, y];
+  elseif (k < n)
+    v = v(:).';
+    A = v(k:n);
+    l = 1:n-k+1;
+    for j = 2:k
+      c = columns (A);
+      cA = cellslices (A, l, c*ones (1, n-k+1), 2);
+      l = c-l+1;
+      b = repelems (v(k-j+1:n-j+1), [1:n-k+1; l]);
+      A = [b; cA{:}];
+      l = cumsum (l);
+      l = [1, 1 + l(1:n-k)];
     endfor
-    s = ones (1, 1, cl);
-    p{1} = n*s;
-    for j = n-1:-1:1
-      for i = k:-1:2
-	q = p{i-1};
-	p{i} = [[repmat(s*j, rows (p{i-1}), 1), p{i-1}]; p{i}];
-      endfor
-      p{1} = [j;p{1}];
-    endfor
-    v = v(:);
-    A = v(p{k});
+    clear cA b;
+    A = A.';
   endif
 endfunction
 

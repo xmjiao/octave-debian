@@ -1,4 +1,4 @@
-## Copyright (C) 2006, 2007, 2008, 2009 Frederick (Rick) A Niles
+## Copyright (C) 2006-2011 Frederick (Rick) A Niles
 ##               and S�ren Hauberg
 ##
 ## This file is part of Octave.
@@ -18,9 +18,9 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {[@var{in}, @var{on}] =} inpolygon (@var{x}, @var{y}, @var{xv}, @var{xy})
+## @deftypefn {Function File} {[@var{in}, @var{on}] =} inpolygon (@var{x}, @var{y}, @var{xv}, @var{yv})
 ##
-## For a polygon defined by @code{(@var{xv}, @var{yv})} points, determine
+## For a polygon defined by vertex points @code{(@var{xv}, @var{yv})}, determine
 ## if the points @code{(@var{x}, @var{y})} are inside or outside the polygon.
 ## The variables @var{x}, @var{y}, must have the same dimension.  The optional
 ## output @var{on} gives the points that are on the polygon.
@@ -37,47 +37,47 @@
 ## http://local.wasp.uwa.edu.au/~pbourke/geometry/insidepoly/ and is
 ## credited to Randolph Franklin.
 
-function [IN, ON] = inpolygon (X, Y, xv, yv)
+function [in, on] = inpolygon (x, y, xv, yv)
 
   if (nargin != 4)
     print_usage ();
   endif
 
-  if (! (isreal (X) && isreal (Y) && ismatrix (Y) && ismatrix (Y)
-	 && size_equal (X, Y)))
+  if (! (isreal (x) && isreal (y) && ismatrix (y) && ismatrix (y)
+         && size_equal (x, y)))
     error ("inpolygon: first two arguments must be real matrices of same size");
   elseif (! (isreal (xv) && isreal (yv) && isvector (xv) && isvector (yv)
-	     && size_equal (xv, yv)))
+             && size_equal (xv, yv)))
     error ("inpolygon: last two arguments must be real vectors of same size");
   endif
 
   npol = length (xv);
   do_boundary = (nargout >= 2);
-  
-  IN = zeros (size(X), "logical");
-  if (do_boundary) 
-    ON = zeros (size(X), "logical"); 
+
+  in = zeros (size(x), "logical");
+  if (do_boundary)
+    on = zeros (size(x), "logical");
   endif
-  
+
   j = npol;
   for i = 1 : npol
     delta_xv = xv(j) - xv(i);
     delta_yv = yv(j) - yv(i);
-    ## distance = [distance from (X,Y) to edge] * length(edge)
-    distance = delta_xv .* (Y - yv(i)) - (X - xv(i)) .* delta_yv;
+    ## distance = [distance from (x,y) to edge] * length(edge)
+    distance = delta_xv .* (y - yv(i)) - (x - xv(i)) .* delta_yv;
     ##
-    ## is Y between the y-values of edge i,j
-    ##        AND (X,Y) on the left of the edge ?
-    idx1 = (((yv(i) <= Y & Y < yv(j)) | (yv(j) <= Y & Y < yv(i)))
-	    & 0 < distance.*delta_yv);
-    IN (idx1) = !IN (idx1);
+    ## is y between the y-values of edge i,j
+    ##        AND (x,y) on the left of the edge ?
+    idx1 = (((yv(i) <= y & y < yv(j)) | (yv(j) <= y & y < yv(i)))
+            & 0 < distance.*delta_yv);
+    in (idx1) = !in (idx1);
 
-    ## Check if (X,Y) are actually ON the boundary of the polygon.
+    ## Check if (x,y) are actually on the boundary of the polygon.
     if (do_boundary)
-       idx2 = (((yv(i) <= Y & Y <= yv(j)) | (yv(j) <= Y & Y <= yv(i)))
-	       & ((xv(i) <= X & X <= xv(j)) | (xv(j) <= X & X <= xv(i)))
-	       & (0 == distance | !delta_xv));
-       ON (idx2) = true;
+       idx2 = (((yv(i) <= y & y <= yv(j)) | (yv(j) <= y & y <= yv(i)))
+               & ((xv(i) <= x & x <= xv(j)) | (xv(j) <= x & x <= xv(i)))
+               & (0 == distance | !delta_xv));
+       on (idx2) = true;
     endif
     j = i;
   endfor
@@ -94,14 +94,14 @@ endfunction
 %! xa=[0:0.1:2.3];
 %! ya=[0:0.1:1.4];
 %! [x,y]=meshgrid(xa,ya);
-%! [IN,ON]=inpolygon(x,y,xv,yv);
-%! 
-%! inside=IN & !ON;
+%! [in,on]=inpolygon(x,y,xv,yv);
+%!
+%! inside=in & !on;
 %! plot(xv,yv)
 %! hold on
 %! plot(x(inside),y(inside),"@g")
-%! plot(x(~IN),y(~IN),"@m")
-%! plot(x(ON),y(ON),"@b")
+%! plot(x(~in),y(~in),"@m")
+%! plot(x(on),y(on),"@b")
 %! hold off
 %! disp("Green points are inside polygon, magenta are outside,");
 %! disp("and blue are on boundary.");
@@ -118,14 +118,14 @@ endfunction
 %! xa=[0:0.1:2.3];
 %! ya=[0:0.1:1.4];
 %! [x,y]=meshgrid(xa,ya);
-%! [IN,ON]=inpolygon(x,y,xv,yv);
-%! 
-%! inside=IN & ~ ON;
+%! [in,on]=inpolygon(x,y,xv,yv);
+%!
+%! inside=in & ~ on;
 %! plot(xv,yv)
 %! hold on
 %! plot(x(inside),y(inside),"@g")
-%! plot(x(~IN),y(~IN),"@m")
-%! plot(x(ON),y(ON),"@b")
+%! plot(x(~in),y(~in),"@m")
+%! plot(x(on),y(on),"@b")
 %! hold off
 %! disp("Green points are inside polygon, magenta are outside,");
 %! disp("and blue are on boundary.");

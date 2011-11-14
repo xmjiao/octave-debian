@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 1998, 2001, 2003, 2004, 2005,
-              2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
+Copyright (C) 2009 VZLU Prague
 
 This file is part of Octave.
 
@@ -45,23 +45,23 @@ static bool
 nan_ascending_compare (const FloatComplex& x, const FloatComplex& y)
 {
   return (xisnan (y)
-	  ? ! xisnan (x)
-	  : ((std::abs (x) < std::abs (x))
-	     || ((std::abs (x) == std::abs (x)) && (arg (x) < arg (x)))));
+          ? ! xisnan (x)
+          : ((std::abs (x) < std::abs (x))
+             || ((std::abs (x) == std::abs (x)) && (arg (x) < arg (x)))));
 }
 
 static bool
 nan_descending_compare (const FloatComplex& x, const FloatComplex& y)
 {
   return (xisnan (x)
-	  ? ! xisnan (y)
-	  : ((std::abs (x) > std::abs (x))
-	     || ((std::abs (x) == std::abs (x)) && (arg (x) > arg (x)))));
+          ? ! xisnan (y)
+          : ((std::abs (x) > std::abs (x))
+             || ((std::abs (x) == std::abs (x)) && (arg (x) > arg (x)))));
 }
 
 Array<FloatComplex>::compare_fcn_type
-sortrows_comparator (sortmode mode, const Array<FloatComplex>& a,
-		     bool allow_chk)
+safe_comparator (sortmode mode, const Array<FloatComplex>& a,
+                     bool allow_chk)
 {
   Array<FloatComplex>::compare_fcn_type result = 0;
 
@@ -93,27 +93,9 @@ INSTANTIATE_ARRAY_SORT (FloatComplex);
 
 INSTANTIATE_ARRAY (FloatComplex, OCTAVE_API);
 
-#include "Array2.h"
-
-template class OCTAVE_API Array2<FloatComplex>;
-
-#include "ArrayN.h"
-#include "ArrayN.cc"
-
-template class OCTAVE_API ArrayN<FloatComplex>;
-
-template OCTAVE_API std::ostream& operator << (std::ostream&, const ArrayN<FloatComplex>&);
+template OCTAVE_API std::ostream& operator << (std::ostream&, const Array<FloatComplex>&);
 
 #include "DiagArray2.h"
 #include "DiagArray2.cc"
 
-#ifdef _MSC_VER
-template class OCTAVE_API DiagArray2<FloatComplex>::Proxy;
-#endif
 template class OCTAVE_API DiagArray2<FloatComplex>;
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

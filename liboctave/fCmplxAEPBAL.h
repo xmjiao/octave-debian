@@ -1,8 +1,7 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2000, 2002, 2004, 2005, 2006,
-              2007 John W. Eaton
-Copyright (C) 2008, 2009 Jaroslav Hajek
+Copyright (C) 1994-2011 John W. Eaton
+Copyright (C) 2008-2009 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -43,16 +42,10 @@ public:
   FloatComplexAEPBALANCE (const FloatComplexMatrix& a, bool noperm = false,
                           bool noscal = false);
 
-  FloatComplexAEPBALANCE (const FloatComplexAEPBALANCE& a) 
+  FloatComplexAEPBALANCE (const FloatComplexAEPBALANCE& a)
     : base_aepbal<FloatComplexMatrix, FloatColumnVector> (a) { }
 
   FloatComplexMatrix balancing_matrix (void) const;
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

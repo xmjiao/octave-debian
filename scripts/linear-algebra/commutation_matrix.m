@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1999, 2000, 2002, 2005, 2006, 2007, 2009
-##               Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -64,8 +63,8 @@
 ## @end ifnottex
 ##  is returned.
 ##
-## See Magnus and Neudecker (1988), Matrix differential calculus with
-## applications in statistics and econometrics.
+## See Magnus and Neudecker (1988), @cite{Matrix Differential Calculus with
+## Applications in Statistics and Econometrics.}
 ## @end deftypefn
 
 ## Author: KH <Kurt.Hornik@wu-wien.ac.at>
@@ -78,12 +77,12 @@ function k = commutation_matrix (m, n)
     print_usage ();
   else
     if (! (isscalar (m) && m == round (m) && m > 0))
-      error ("commutation_matrix: m must be a positive integer");
+      error ("commutation_matrix: M must be a positive integer");
     endif
     if (nargin == 1)
       n = m;
     elseif (! (isscalar (n) && n == round (n) && n > 0))
-      error ("commutation_matrix: n must be a positive integer");
+      error ("commutation_matrix: N must be a positive integer");
     endif
   endif
 

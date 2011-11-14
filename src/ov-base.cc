@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 1999, 2000, 2002, 2003, 2004, 2005,
-              2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
+Copyright (C) 2009-2010 VZLU Prague
 
 This file is part of Octave.
 
@@ -44,7 +44,6 @@ along with Octave; see the file COPYING.  If not, see
 #include "ov-ch-mat.h"
 #include "ov-complex.h"
 #include "ov-cx-mat.h"
-#include "ov-list.h"
 #include "ov-range.h"
 #include "ov-re-mat.h"
 #include "ov-scalar.h"
@@ -54,12 +53,72 @@ along with Octave; see the file COPYING.  If not, see
 #include "utils.h"
 #include "variables.h"
 
+builtin_type_t btyp_mixed_numeric (builtin_type_t x, builtin_type_t y)
+{
+  builtin_type_t retval = btyp_unknown;
+
+  if (x == btyp_bool)
+    x = btyp_double;
+  if (y == btyp_bool)
+    y = btyp_double;
+
+  if (x <= btyp_float_complex && y <= btyp_float_complex)
+    retval = static_cast<builtin_type_t> (x | y);
+  else if (x <= btyp_uint64 && y <= btyp_float)
+    retval = x;
+  else if (x <= btyp_float && y <= btyp_uint64)
+    retval = y;
+  else if ((x >= btyp_int8 && x <= btyp_int64
+            && y >= btyp_int8 && y <= btyp_int64)
+           || (x >= btyp_uint8 && x <= btyp_uint64
+               && y >= btyp_uint8 && y <= btyp_uint64))
+    retval = (x > y) ? x : y;
+
+  return retval;
+}
+
+std::string btyp_class_name[btyp_num_types] =
+{
+  "double", "single", "double", "single",
+  "int8", "int16", "int32", "int64",
+  "uint8", "uint16", "uint32", "uint64",
+  "logical", "char",
+  "struct", "cell", "function_handle"
+};
+
+string_vector
+get_builtin_classes (void)
+{
+  static string_vector retval;
+
+  if (retval.is_empty ())
+    {
+      int n = btyp_num_types - 2;
+      retval = string_vector (n);
+      int j = 0;
+      for (int i = 0; i < btyp_num_types; i++)
+        {
+          builtin_type_t ityp = static_cast<builtin_type_t> (i);
+          if (ityp != btyp_complex && ityp != btyp_float_complex)
+            retval(j++) = btyp_class_name[i];
+        }
+    }
+
+  return retval;
+}
+
 DEFINE_OV_TYPEID_FUNCTIONS_AND_DATA (octave_base_value,
-				     "<unknown type>", "unknown");
+                                     "<unknown type>", "unknown");
 
 // TRUE means to perform automatic sparse to real mutation if there
 // is memory to be saved
 bool Vsparse_auto_mutate = false;
+
+octave_base_value *
+octave_base_value::empty_clone (void) const
+{
+  return resize (dim_vector ()).clone ();
+}
 
 octave_value
 octave_base_value::squeeze (void) const
@@ -76,9 +135,25 @@ octave_base_value::full_value (void) const
   return octave_value ();
 }
 
+Matrix
+octave_base_value::size (void)
+{
+  const dim_vector dv = dims ();
+  Matrix mdv (1, dv.length ());
+  for (octave_idx_type i = 0; i < dv.length (); i++)
+    mdv(i) = dv(i);
+  return mdv;
+}
+
+octave_idx_type
+octave_base_value::numel (const octave_value_list& idx)
+{
+  return dims_to_numel (dims (), idx);
+}
+
 octave_value
 octave_base_value::subsref (const std::string&,
-			    const std::list<octave_value_list>&)
+                            const std::list<octave_value_list>&)
 {
   std::string nm = type_name ();
   error ("can't perform indexing operations for %s type", nm.c_str ());
@@ -87,7 +162,7 @@ octave_base_value::subsref (const std::string&,
 
 octave_value_list
 octave_base_value::subsref (const std::string&,
-			    const std::list<octave_value_list>&, int)
+                            const std::list<octave_value_list>&, int)
 {
   std::string nm = type_name ();
   error ("can't perform indexing operations for %s type", nm.c_str ());
@@ -96,11 +171,21 @@ octave_base_value::subsref (const std::string&,
 
 octave_value
 octave_base_value::subsref (const std::string& type,
-			    const std::list<octave_value_list>& idx,
+                            const std::list<octave_value_list>& idx,
                             bool /* auto_add */)
 {
   // This way we may get a more meaningful error message.
   return subsref (type, idx);
+}
+
+octave_value_list
+octave_base_value::subsref (const std::string& type,
+                            const std::list<octave_value_list>& idx,
+                            int nargout,
+                            const std::list<octave_lvalue> *)
+{
+  // Fall back to call without passing lvalue list.
+  return subsref (type, idx, nargout);
 }
 
 octave_value
@@ -119,6 +204,14 @@ octave_base_value::do_multi_index_op (int, const octave_value_list&)
   return octave_value ();
 }
 
+octave_value_list
+octave_base_value::do_multi_index_op (int nargout, const octave_value_list& idx,
+                                      const std::list<octave_lvalue> *)
+{
+  // Fall back.
+  return do_multi_index_op (nargout, idx);
+}
+
 idx_vector
 octave_base_value::index_vector (void) const
 {
@@ -127,97 +220,83 @@ octave_base_value::index_vector (void) const
   return idx_vector ();
 }
 
-int
-octave_base_value::ndims (void) const
-{
-  dim_vector dv = dims ();
-
-  int n_dims = dv.length ();
-     
-   // Remove trailing singleton dimensions.
-
-   for (int i = n_dims; i > 2; i--)
-     {
-       if (dv(i-1) == 1)
-	 n_dims--;
-       else
-	 break;
-     }
-   
-   // The result is always >= 2.
-
-   if (n_dims < 2)
-     n_dims = 2;
-
-   return n_dims;
-}
-
 octave_value
 octave_base_value::subsasgn (const std::string& type,
-			     const std::list<octave_value_list>& idx,
-			     const octave_value& rhs)
+                             const std::list<octave_value_list>& idx,
+                             const octave_value& rhs)
 {
   octave_value retval;
 
   if (is_defined ())
     {
       if (is_numeric_type ())
-	{
-	  switch (type[0])
-	    {
-	    case '(':
-	      {
-		if (type.length () == 1)
-		  retval = numeric_assign (type, idx, rhs);
-		else if (is_empty ())
-		  {
-		    // Allow conversion of empty matrix to some other
-		    // type in cases like
-		    //
-		    //  x = []; x(i).f = rhs
+        {
+          switch (type[0])
+            {
+            case '(':
+              {
+                if (type.length () == 1)
+                  retval = numeric_assign (type, idx, rhs);
+                else if (is_empty ())
+                  {
+                    // Allow conversion of empty matrix to some other
+                    // type in cases like
+                    //
+                    //  x = []; x(i).f = rhs
 
-		    octave_value tmp = octave_value::empty_conv (type, rhs);
+                    octave_value tmp = octave_value::empty_conv (type, rhs);
 
-		    retval = tmp.subsasgn (type, idx, rhs);
-		  }
-		else
-		  {
-		    std::string nm = type_name ();
-		    error ("in indexed assignment of %s, last rhs index must be ()",
-			   nm.c_str ());
-		  }
-	      }
-	      break;
+                    retval = tmp.subsasgn (type, idx, rhs);
+                  }
+                else
+                  {
+                    std::string nm = type_name ();
+                    error ("in indexed assignment of %s, last rhs index must be ()",
+                           nm.c_str ());
+                  }
+              }
+              break;
 
-	    case '{':
-	    case '.':
-	      {
-		std::string nm = type_name ();
-		error ("%s cannot be indexed with %c", nm.c_str (), type[0]);
-	      }
-	      break;
+            case '{':
+            case '.':
+              {
+                std::string nm = type_name ();
+                error ("%s cannot be indexed with %c", nm.c_str (), type[0]);
+              }
+              break;
 
-	    default:
-	      panic_impossible ();
-	    }
-	}
+            default:
+              panic_impossible ();
+            }
+        }
       else
-	{
-	  std::string nm = type_name ();
-	  error ("can't perform indexed assignment for %s type", nm.c_str ());
-	}
+        {
+          std::string nm = type_name ();
+          error ("can't perform indexed assignment for %s type", nm.c_str ());
+        }
     }
   else
     {
       // Create new object of appropriate type for given index and rhs
-      // types and then call subsasgn again for that object.
+      // types and then call undef_subsasgn for that object.
 
       octave_value tmp = octave_value::empty_conv (type, rhs);
 
-      retval = tmp.subsasgn (type, idx, rhs);
+      retval = tmp.undef_subsasgn (type, idx, rhs);
     }
 
   return retval;
+}
+
+octave_value
+octave_base_value::undef_subsasgn (const std::string& type,
+                                   const std::list<octave_value_list>& idx,
+                                   const octave_value& rhs)
+{
+  // In most cases, undef_subsasgn is handled the sams as subsasgn.  One
+  // exception is octave_class objects.
+
+  return subsasgn (type, idx, rhs);
 }
 
 octave_idx_type
@@ -230,8 +309,7 @@ octave_base_value::nnz (void) const
 octave_idx_type
 octave_base_value::nzmax (void) const
 {
-  gripe_wrong_type_arg ("octave_base_value::nzmax ()", type_name ());
-  return -1;
+  return numel ();
 }
 
 octave_idx_type
@@ -262,14 +340,14 @@ octave_base_value::resize (const dim_vector&, bool) const
   return octave_value ();
 }
 
-MatrixType 
+MatrixType
 octave_base_value::matrix_type (void) const
 {
   gripe_wrong_type_arg ("octave_base_value::matrix_type ()", type_name ());
   return MatrixType ();
 }
 
-MatrixType 
+MatrixType
 octave_base_value::matrix_type (const MatrixType&) const
 {
   gripe_wrong_type_arg ("octave_base_value::matrix_type ()", type_name ());
@@ -295,7 +373,7 @@ octave_base_value::convert_to_str (bool pad, bool force, char type) const
 
   if (! force && is_numeric_type ())
     gripe_implicit_conversion ("Octave:num-to-str",
-			       type_name (), retval.type_name ());
+                               type_name (), retval.type_name ());
 
   return retval;
 }
@@ -304,7 +382,7 @@ octave_value
 octave_base_value::convert_to_str_internal (bool, bool, char) const
 {
   gripe_wrong_type_arg ("octave_base_value::convert_to_str_internal ()",
-			type_name ());
+                        type_name ());
   return octave_value ();
 }
 
@@ -350,8 +428,8 @@ octave_base_value::print_name_tag (std::ostream& os, const std::string& name) co
 
 void
 octave_base_value::print_with_name (std::ostream& output_buf,
-				    const std::string& name, 
-				    bool print_padding) const
+                                    const std::string& name,
+                                    bool print_padding)
 {
   bool pad_after = print_name_tag (output_buf, name);
 
@@ -363,7 +441,7 @@ octave_base_value::print_with_name (std::ostream& output_buf,
 
 void
 octave_base_value::print_info (std::ostream& os,
-			       const std::string& /* prefix */) const
+                               const std::string& /* prefix */) const
 {
   os << "no info for type: " << type_name () << "\n";
 }
@@ -378,18 +456,18 @@ octave_base_value::print_info (std::ostream& os,
  \
     if (! error_state) \
       { \
-	if (require_int && D_NINT (d) != d) \
-	  error ("conversion of %g to " #T " value failed", d); \
-	else if (d < MIN_LIMIT) \
-	  retval = MIN_LIMIT; \
-	else if (d > MAX_LIMIT) \
-	  retval = MAX_LIMIT; \
-	else \
-	  retval = static_cast<T> (::fix (d));	\
+        if (require_int && D_NINT (d) != d) \
+          error_with_cfn ("conversion of %g to " #T " value failed", d); \
+        else if (d < MIN_LIMIT) \
+          retval = MIN_LIMIT; \
+        else if (d > MAX_LIMIT) \
+          retval = MAX_LIMIT; \
+        else \
+          retval = static_cast<T> (::fix (d));  \
       } \
     else \
       gripe_wrong_type_arg ("octave_base_value::" #F "_value ()", \
-			    type_name ()); \
+                            type_name ()); \
  \
     return retval; \
   }
@@ -413,10 +491,10 @@ octave_base_value::nint_value (bool frc_str_conv) const
   if (! error_state)
     {
       if (xisnan (d))
-	{
-	  error ("conversion of NaN to integer value failed");
-	  return retval;
-	}
+        {
+          error ("conversion of NaN to integer value failed");
+          return retval;
+        }
 
       retval = static_cast<int> (::fix (d));
     }
@@ -505,7 +583,7 @@ octave_base_value::complex_matrix_value (bool) const
 {
   ComplexMatrix retval;
   gripe_wrong_type_arg ("octave_base_value::complex_matrix_value()",
-			type_name ());
+                        type_name ());
   return retval;
 }
 
@@ -514,7 +592,7 @@ octave_base_value::float_complex_matrix_value (bool) const
 {
   FloatComplexMatrix retval;
   gripe_wrong_type_arg ("octave_base_value::float_complex_matrix_value()",
-			type_name ());
+                        type_name ());
   return retval;
 }
 
@@ -523,7 +601,7 @@ octave_base_value::complex_array_value (bool) const
 {
   ComplexNDArray retval;
   gripe_wrong_type_arg ("octave_base_value::complex_array_value()",
-			type_name ());
+                        type_name ());
   return retval;
 }
 
@@ -532,7 +610,7 @@ octave_base_value::float_complex_array_value (bool) const
 {
   FloatComplexNDArray retval;
   gripe_wrong_type_arg ("octave_base_value::float_complex_array_value()",
-			type_name ());
+                        type_name ());
   return retval;
 }
 
@@ -549,7 +627,7 @@ octave_base_value::bool_matrix_value (bool) const
 {
   boolMatrix retval;
   gripe_wrong_type_arg ("octave_base_value::bool_matrix_value()",
-			type_name ());
+                        type_name ());
   return retval;
 }
 
@@ -558,7 +636,7 @@ octave_base_value::bool_array_value (bool) const
 {
   boolNDArray retval;
   gripe_wrong_type_arg ("octave_base_value::bool_array_value()",
-			type_name ());
+                        type_name ());
   return retval;
 }
 
@@ -580,7 +658,7 @@ octave_base_value::char_array_value (bool) const
 {
   charNDArray retval;
   gripe_wrong_type_arg ("octave_base_value::char_array_value()",
-			type_name ());
+                        type_name ());
   return retval;
 }
 
@@ -653,7 +731,7 @@ octave_base_value::int8_scalar_value (void) const
 {
   octave_int8 retval;
   gripe_wrong_type_arg ("octave_base_value::int8_scalar_value()",
-			type_name ());
+                        type_name ());
   return retval;
 }
 
@@ -662,7 +740,7 @@ octave_base_value::int16_scalar_value (void) const
 {
   octave_int16 retval;
   gripe_wrong_type_arg ("octave_base_value::int16_scalar_value()",
-			type_name ());
+                        type_name ());
   return retval;
 }
 
@@ -671,7 +749,7 @@ octave_base_value::int32_scalar_value (void) const
 {
   octave_int32 retval;
   gripe_wrong_type_arg ("octave_base_value::int32_scalar_value()",
-			type_name ());
+                        type_name ());
   return retval;
 }
 
@@ -680,7 +758,7 @@ octave_base_value::int64_scalar_value (void) const
 {
   octave_int64 retval;
   gripe_wrong_type_arg ("octave_base_value::int64_scalar_value()",
-			type_name ());
+                        type_name ());
   return retval;
 }
 
@@ -689,7 +767,7 @@ octave_base_value::uint8_scalar_value (void) const
 {
   octave_uint8 retval;
   gripe_wrong_type_arg ("octave_base_value::uint8_scalar_value()",
-			type_name ());
+                        type_name ());
   return retval;
 }
 
@@ -698,7 +776,7 @@ octave_base_value::uint16_scalar_value (void) const
 {
   octave_uint16 retval;
   gripe_wrong_type_arg ("octave_base_value::uint16_scalar_value()",
-			type_name ());
+                        type_name ());
   return retval;
 }
 
@@ -707,7 +785,7 @@ octave_base_value::uint32_scalar_value (void) const
 {
   octave_uint32 retval;
   gripe_wrong_type_arg ("octave_base_value::uint32_scalar_value()",
-			type_name ());
+                        type_name ());
   return retval;
 }
 
@@ -716,7 +794,7 @@ octave_base_value::uint64_scalar_value (void) const
 {
   octave_uint64 retval;
   gripe_wrong_type_arg ("octave_base_value::uint64_scalar_value()",
-			type_name ());
+                        type_name ());
   return retval;
 }
 
@@ -725,7 +803,7 @@ octave_base_value::int8_array_value (void) const
 {
   int8NDArray retval;
   gripe_wrong_type_arg ("octave_base_value::int8_array_value()",
-			type_name ());
+                        type_name ());
   return retval;
 }
 
@@ -734,7 +812,7 @@ octave_base_value::int16_array_value (void) const
 {
   int16NDArray retval;
   gripe_wrong_type_arg ("octave_base_value::int16_array_value()",
-			type_name ());
+                        type_name ());
   return retval;
 }
 
@@ -743,7 +821,7 @@ octave_base_value::int32_array_value (void) const
 {
   int32NDArray retval;
   gripe_wrong_type_arg ("octave_base_value::int32_array_value()",
-			type_name ());
+                        type_name ());
   return retval;
 }
 
@@ -752,7 +830,7 @@ octave_base_value::int64_array_value (void) const
 {
   int64NDArray retval;
   gripe_wrong_type_arg ("octave_base_value::int64_array_value()",
-			type_name ());
+                        type_name ());
   return retval;
 }
 
@@ -761,7 +839,7 @@ octave_base_value::uint8_array_value (void) const
 {
   uint8NDArray retval;
   gripe_wrong_type_arg ("octave_base_value::uint8_array_value()",
-			type_name ());
+                        type_name ());
   return retval;
 }
 
@@ -770,7 +848,7 @@ octave_base_value::uint16_array_value (void) const
 {
   uint16NDArray retval;
   gripe_wrong_type_arg ("octave_base_value::uint16_array_value()",
-			type_name ());
+                        type_name ());
   return retval;
 }
 
@@ -779,7 +857,7 @@ octave_base_value::uint32_array_value (void) const
 {
   uint32NDArray retval;
   gripe_wrong_type_arg ("octave_base_value::uint32_array_value()",
-			type_name ());
+                        type_name ());
   return retval;
 }
 
@@ -788,7 +866,7 @@ octave_base_value::uint64_array_value (void) const
 {
   uint64NDArray retval;
   gripe_wrong_type_arg ("octave_base_value::uint64_array_value()",
-			type_name ());
+                        type_name ());
   return retval;
 }
 
@@ -823,7 +901,7 @@ octave_base_value::cellstr_value (void) const
 {
   Array<std::string> retval;
   gripe_wrong_type_arg ("octave_base_value::cellstry_value()",
-			type_name ());
+                        type_name ());
   return retval;
 }
 
@@ -835,12 +913,28 @@ octave_base_value::range_value (void) const
   return retval;
 }
 
-Octave_map
+octave_map
 octave_base_value::map_value (void) const
 {
-  Octave_map retval;
+  octave_map retval;
   gripe_wrong_type_arg ("octave_base_value::map_value()", type_name ());
   return retval;
+}
+
+octave_scalar_map
+octave_base_value::scalar_map_value (void) const
+{
+  octave_map tmp = map_value ();
+
+  if (tmp.numel () == 1)
+    return tmp.checkelem (0);
+  else
+    {
+      if (! error_state)
+        error ("invalid conversion of multi-dimensional struct to scalar struct");
+
+      return octave_scalar_map ();
+    }
 }
 
 string_vector
@@ -864,7 +958,7 @@ octave_base_value::parent_class_name_list (void) const
 {
   std::list<std::string> retval;
   gripe_wrong_type_arg ("octave_base_value::parent_class_name_list()",
-			type_name ());
+                        type_name ());
   return retval;
 }
 
@@ -873,7 +967,7 @@ octave_base_value::parent_class_names (void) const
 {
   string_vector retval;
   gripe_wrong_type_arg ("octave_base_value::parent_class_names()",
-			type_name ());
+                        type_name ());
   return retval;
 }
 
@@ -884,18 +978,7 @@ octave_base_value::function_value (bool silent)
 
   if (! silent)
     gripe_wrong_type_arg ("octave_base_value::function_value()",
-			  type_name ());
-  return retval;
-}
-
-const octave_function *
-octave_base_value::function_value (bool silent) const
-{
-  const octave_function *retval = 0;
-
-  if (! silent)
-    gripe_wrong_type_arg ("octave_base_value::function_value()",
-			  type_name ());
+                          type_name ());
   return retval;
 }
 
@@ -906,7 +989,7 @@ octave_base_value::user_function_value (bool silent)
 
   if (! silent)
     gripe_wrong_type_arg ("octave_base_value::user_function_value()",
-			  type_name ());
+                          type_name ());
   return retval;
 }
 
@@ -917,7 +1000,7 @@ octave_base_value::user_script_value (bool silent)
 
   if (! silent)
     gripe_wrong_type_arg ("octave_base_value::user_script_value()",
-			  type_name ());
+                          type_name ());
   return retval;
 }
 
@@ -928,7 +1011,7 @@ octave_base_value::user_code_value (bool silent)
 
   if (! silent)
     gripe_wrong_type_arg ("octave_base_value::user_code_value()",
-			  type_name ());
+                          type_name ());
   return retval;
 }
 
@@ -939,7 +1022,7 @@ octave_base_value::fcn_handle_value (bool silent)
 
   if (! silent)
     gripe_wrong_type_arg ("octave_base_value::fcn_handle_value()",
-			  type_name ());
+                          type_name ());
   return retval;
 }
 
@@ -950,7 +1033,7 @@ octave_base_value::fcn_inline_value (bool silent)
 
   if (! silent)
     gripe_wrong_type_arg ("octave_base_value::fcn_inline_value()",
-			  type_name ());
+                          type_name ());
   return retval;
 }
 
@@ -962,30 +1045,30 @@ octave_base_value::list_value (void) const
   return retval;
 }
 
-bool 
+bool
 octave_base_value::save_ascii (std::ostream&)
 {
   gripe_wrong_type_arg ("octave_base_value::save_ascii()", type_name ());
   return false;
 }
 
-bool 
+bool
 octave_base_value::load_ascii (std::istream&)
 {
   gripe_wrong_type_arg ("octave_base_value::load_ascii()", type_name ());
   return false;
 }
 
-bool 
+bool
 octave_base_value::save_binary (std::ostream&, bool&)
 {
   gripe_wrong_type_arg ("octave_base_value::save_binary()", type_name ());
   return false;
 }
 
-bool 
+bool
 octave_base_value::load_binary (std::istream&, bool,
-				oct_mach_info::float_format)
+                                oct_mach_info::float_format)
 {
   gripe_wrong_type_arg ("octave_base_value::load_binary()", type_name ());
   return false;
@@ -1001,8 +1084,8 @@ octave_base_value::save_hdf5 (hid_t, const char *, bool)
   return false;
 }
 
-bool 
-octave_base_value::load_hdf5 (hid_t, const char *, bool)
+bool
+octave_base_value::load_hdf5 (hid_t, const char *)
 {
   gripe_wrong_type_arg ("octave_base_value::load_binary()", type_name ());
 
@@ -1013,7 +1096,7 @@ octave_base_value::load_hdf5 (hid_t, const char *, bool)
 
 int
 octave_base_value::write (octave_stream&, int, oct_data_conv::data_type,
-			  int, oct_mach_info::float_format) const
+                          int, oct_mach_info::float_format) const
 {
   gripe_wrong_type_arg ("octave_base_value::write()", type_name ());
 
@@ -1023,8 +1106,6 @@ octave_base_value::write (octave_stream&, int, oct_data_conv::data_type,
 mxArray *
 octave_base_value::as_mxArray (void) const
 {
-  gripe_wrong_type_arg ("octave_base_value::as_mxArray ()", type_name ());
-
   return 0;
 }
 
@@ -1045,8 +1126,8 @@ octave_base_value::sort (octave_idx_type, sortmode) const
 }
 
 octave_value
-octave_base_value::sort (Array<octave_idx_type> &, 
-			 octave_idx_type, sortmode) const
+octave_base_value::sort (Array<octave_idx_type> &,
+                         octave_idx_type, sortmode) const
 {
   gripe_wrong_type_arg ("octave_base_value::sort ()", type_name ());
 
@@ -1077,79 +1158,82 @@ octave_base_value::is_sorted_rows (sortmode) const
   return UNSORTED;
 }
 
-#define UNDEFINED_MAPPER(F) \
-  octave_value \
-  octave_base_value::F (void) const \
-  { \
-    gripe_wrong_type_arg ("octave_base_value::" #F " ()", type_name ()); \
-    return octave_value (); \
-  }
 
-UNDEFINED_MAPPER (abs)
-UNDEFINED_MAPPER (acos)
-UNDEFINED_MAPPER (acosh)
-UNDEFINED_MAPPER (angle)
-UNDEFINED_MAPPER (arg)
-UNDEFINED_MAPPER (asin)
-UNDEFINED_MAPPER (asinh)
-UNDEFINED_MAPPER (atan)
-UNDEFINED_MAPPER (atanh)
-UNDEFINED_MAPPER (ceil)
-UNDEFINED_MAPPER (conj)
-UNDEFINED_MAPPER (cos)
-UNDEFINED_MAPPER (cosh)
-UNDEFINED_MAPPER (erf)
-UNDEFINED_MAPPER (erfc)
-UNDEFINED_MAPPER (exp)
-UNDEFINED_MAPPER (expm1)
-UNDEFINED_MAPPER (finite)
-UNDEFINED_MAPPER (fix)
-UNDEFINED_MAPPER (floor)
-UNDEFINED_MAPPER (gamma)
-UNDEFINED_MAPPER (imag)
-UNDEFINED_MAPPER (isinf)
-UNDEFINED_MAPPER (isna)
-UNDEFINED_MAPPER (isnan)
-UNDEFINED_MAPPER (lgamma)
-UNDEFINED_MAPPER (log)
-UNDEFINED_MAPPER (log2)
-UNDEFINED_MAPPER (log10)
-UNDEFINED_MAPPER (log1p)
-UNDEFINED_MAPPER (real)
-UNDEFINED_MAPPER (round)
-UNDEFINED_MAPPER (roundb)
-UNDEFINED_MAPPER (signum)
-UNDEFINED_MAPPER (sin)
-UNDEFINED_MAPPER (sinh)
-UNDEFINED_MAPPER (sqrt)
-UNDEFINED_MAPPER (tan)
-UNDEFINED_MAPPER (tanh)
+const char *
+octave_base_value::get_umap_name (unary_mapper_t umap)
+{
+  static const char *names[num_unary_mappers] =
+    {
+      "abs",
+      "acos",
+      "acosh",
+      "angle",
+      "arg",
+      "asin",
+      "asinh",
+      "atan",
+      "atanh",
+      "cbrt",
+      "ceil",
+      "conj",
+      "cos",
+      "cosh",
+      "erf",
+      "erfinv",
+      "erfc",
+      "exp",
+      "expm1",
+      "finite",
+      "fix",
+      "floor",
+      "gamma",
+      "imag",
+      "isinf",
+      "isna",
+      "isnan",
+      "lgamma",
+      "log",
+      "log2",
+      "log10",
+      "log1p",
+      "real",
+      "round",
+      "roundb",
+      "signum",
+      "sin",
+      "sinh",
+      "sqrt",
+      "tan",
+      "tanh",
+      "isalnum",
+      "isalpha",
+      "isascii",
+      "iscntrl",
+      "isdigit",
+      "isgraph",
+      "islower",
+      "isprint",
+      "ispunct",
+      "isspace",
+      "isupper",
+      "isxdigit",
+      "toascii",
+      "tolower",
+      "toupper"
+    };
 
-// String mapper functions, convert to a string
+  if (umap < 0 || umap >= num_unary_mappers)
+    return "unknown";
+  else
+    return names[umap];
+}
 
-#define STRING_MAPPER(F) \
-  octave_value \
-  octave_base_value::F (void) const \
-  { \
-    octave_value tmp = octave_value (char_array_value (true), true); \
-    return error_state ? octave_value () : octave_value (tmp.F ()); \
-  }
-
-STRING_MAPPER (xisalnum)
-STRING_MAPPER (xisalpha)
-STRING_MAPPER (xisascii)
-STRING_MAPPER (xiscntrl)
-STRING_MAPPER (xisdigit)
-STRING_MAPPER (xisgraph)
-STRING_MAPPER (xislower)
-STRING_MAPPER (xisprint)
-STRING_MAPPER (xispunct)
-STRING_MAPPER (xisspace)
-STRING_MAPPER (xisupper)
-STRING_MAPPER (xisxdigit)
-STRING_MAPPER (xtoascii)
-STRING_MAPPER (xtolower)
-STRING_MAPPER (xtoupper)
+octave_value
+octave_base_value::map (unary_mapper_t umap) const
+{
+  error ("%s: not defined for %s", get_umap_name (umap), type_name ().c_str ());
+  return octave_value ();
+}
 
 void
 octave_base_value::lock (void)
@@ -1177,29 +1261,29 @@ static void
 gripe_indexed_assignment (const std::string& tn1, const std::string& tn2)
 {
   error ("assignment of `%s' to indexed `%s' not implemented",
-	 tn2.c_str (), tn1.c_str ());
+         tn2.c_str (), tn1.c_str ());
 }
 
 static void
 gripe_assign_conversion_failed (const std::string& tn1,
-				const std::string& tn2)
+                                const std::string& tn2)
 {
   error ("type conversion for assignment of `%s' to indexed `%s' failed",
-	 tn2.c_str (), tn1.c_str ());
+         tn2.c_str (), tn1.c_str ());
 }
 
 static void
 gripe_no_conversion (const std::string& on, const std::string& tn1,
-		     const std::string& tn2)
+                     const std::string& tn2)
 {
   error ("operator %s: no conversion for assignment of `%s' to indexed `%s'",
-	 on.c_str (), tn2.c_str (), tn1.c_str ());
+         on.c_str (), tn2.c_str (), tn1.c_str ());
 }
 
 octave_value
 octave_base_value::numeric_assign (const std::string& type,
-				   const std::list<octave_value_list>& idx,
-				   const octave_value& rhs)
+                                   const std::list<octave_value_list>& idx,
+                                   const octave_value& rhs)
 {
   octave_value retval;
 
@@ -1214,7 +1298,7 @@ octave_base_value::numeric_assign (const std::string& type,
 
   octave_value_typeinfo::assign_op_fcn f
     = octave_value_typeinfo::lookup_assign_op (octave_value::op_asn_eq,
-					       t_lhs, t_rhs);
+                                               t_lhs, t_rhs);
 
   bool done = false;
 
@@ -1233,48 +1317,48 @@ octave_base_value::numeric_assign (const std::string& type,
   else
     {
       int t_result
-	= octave_value_typeinfo::lookup_pref_assign_conv (t_lhs, t_rhs);
+        = octave_value_typeinfo::lookup_pref_assign_conv (t_lhs, t_rhs);
 
       if (t_result >= 0)
-	{
-	  octave_base_value::type_conv_fcn cf
-	    = octave_value_typeinfo::lookup_widening_op (t_lhs, t_result);
+        {
+          octave_base_value::type_conv_fcn cf
+            = octave_value_typeinfo::lookup_widening_op (t_lhs, t_result);
 
-	  if (cf)
-	    {
-	      octave_base_value *tmp = cf (*this);
+          if (cf)
+            {
+              octave_base_value *tmp = cf (*this);
 
-	      if (tmp)
-		{
-		  octave_value val (tmp);
+              if (tmp)
+                {
+                  octave_value val (tmp);
 
-		  retval = val.subsasgn (type, idx, rhs);
+                  retval = val.subsasgn (type, idx, rhs);
 
-		  done = (! error_state);
-		}
-	      else
-		gripe_assign_conversion_failed (type_name (),
-						rhs.type_name ());
-	    }
-	  else
-	    gripe_indexed_assignment (type_name (), rhs.type_name ());
-	}
+                  done = (! error_state);
+                }
+              else
+                gripe_assign_conversion_failed (type_name (),
+                                                rhs.type_name ());
+            }
+          else
+            gripe_indexed_assignment (type_name (), rhs.type_name ());
+        }
 
       if (! (done || error_state))
-	{
-	  octave_value tmp_rhs;
+        {
+          octave_value tmp_rhs;
 
-	  octave_base_value::type_conv_info cf_rhs
-	    = rhs.numeric_conversion_function ();
+          octave_base_value::type_conv_info cf_rhs
+            = rhs.numeric_conversion_function ();
 
-	  octave_base_value::type_conv_info cf_this
-	    = numeric_conversion_function ();
+          octave_base_value::type_conv_info cf_this
+            = numeric_conversion_function ();
 
           // Try biased (one-sided) conversions first.
           if (cf_rhs.type_id () >= 0
               && (octave_value_typeinfo::lookup_assign_op (octave_value::op_asn_eq,
                                                            t_lhs, cf_rhs.type_id ())
-                  || octave_value_typeinfo::lookup_pref_assign_conv (t_lhs, 
+                  || octave_value_typeinfo::lookup_pref_assign_conv (t_lhs,
                                                                      cf_rhs.type_id ()) >= 0))
             cf_this = 0;
           else if (cf_this.type_id () >= 0
@@ -1284,49 +1368,49 @@ octave_base_value::numeric_assign (const std::string& type,
                                                                           t_rhs) >= 0))
             cf_rhs = 0;
 
-	  if (cf_rhs)
-	    {
-	      octave_base_value *tmp = cf_rhs (rhs.get_rep ());
+          if (cf_rhs)
+            {
+              octave_base_value *tmp = cf_rhs (rhs.get_rep ());
 
-	      if (tmp)
-		tmp_rhs = octave_value (tmp);
-	      else
-		{
-		  gripe_assign_conversion_failed (type_name (),
-						  rhs.type_name ());
-		  return octave_value ();
-		}
-	    }
-	  else
-	    tmp_rhs = rhs;
+              if (tmp)
+                tmp_rhs = octave_value (tmp);
+              else
+                {
+                  gripe_assign_conversion_failed (type_name (),
+                                                  rhs.type_name ());
+                  return octave_value ();
+                }
+            }
+          else
+            tmp_rhs = rhs;
 
-	  count++;
-	  octave_value tmp_lhs = octave_value (this);
+          count++;
+          octave_value tmp_lhs = octave_value (this);
 
-	  if (cf_this)
-	    {
-	      octave_base_value *tmp = cf_this (*this);
+          if (cf_this)
+            {
+              octave_base_value *tmp = cf_this (*this);
 
-	      if (tmp)
-		tmp_lhs = octave_value (tmp);
-	      else
-		{
-		  gripe_assign_conversion_failed (type_name (),
-						  rhs.type_name ());
-		  return octave_value ();
-		}
-	    }
+              if (tmp)
+                tmp_lhs = octave_value (tmp);
+              else
+                {
+                  gripe_assign_conversion_failed (type_name (),
+                                                  rhs.type_name ());
+                  return octave_value ();
+                }
+            }
 
-	  if (cf_this || cf_rhs)
-	    {
-	      retval = tmp_lhs.subsasgn (type, idx, tmp_rhs);
+          if (cf_this || cf_rhs)
+            {
+              retval = tmp_lhs.subsasgn (type, idx, tmp_rhs);
 
-	      done = (! error_state);
-	    }
-	  else
-	    gripe_no_conversion (octave_value::assign_op_as_string (octave_value::op_asn_eq),
-				 type_name (), rhs.type_name ());
-	}
+              done = (! error_state);
+            }
+          else
+            gripe_no_conversion (octave_value::assign_op_as_string (octave_value::op_asn_eq),
+                                 type_name (), rhs.type_name ());
+        }
     }
 
   // The assignment may have converted to a type that is wider than
@@ -1351,14 +1435,14 @@ void
 octave_base_value::indent (std::ostream& os) const
 {
   assert (curr_print_indent_level >= 0);
- 
+
   if (beginning_of_line)
     {
       // FIXME -- do we need this?
       // os << prefix;
 
       for (int i = 0; i < curr_print_indent_level; i++)
-	os << " ";
+        os << " ";
 
       beginning_of_line = false;
     }
@@ -1381,6 +1465,25 @@ octave_base_value::reset (void) const
 {
   beginning_of_line = true;
   curr_print_indent_level = 0;
+}
+
+
+octave_value
+octave_base_value::fast_elem_extract (octave_idx_type) const
+{
+  return octave_value ();
+}
+
+bool
+octave_base_value::fast_elem_insert (octave_idx_type, const octave_value&)
+{
+  return false;
+}
+
+bool
+octave_base_value::fast_elem_insert_self (void *, builtin_type_t) const
+{
+  return false;
 }
 
 CONVDECLX (matrix_conv)
@@ -1422,11 +1525,11 @@ install_base_type_conversions (void)
 
 DEFUN (sparse_auto_mutate, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {@var{val} =} sparse_auto_mutate ()\n\
+@deftypefn  {Built-in Function} {@var{val} =} sparse_auto_mutate ()\n\
 @deftypefnx {Built-in Function} {@var{old_val} =} sparse_auto_mutate (@var{new_val})\n\
 Query or set the internal variable that controls whether Octave will\n\
 automatically mutate sparse matrices to real matrices to save memory.\n\
-For example,\n\
+For example:\n\
 \n\
 @example\n\
 @group\n\
@@ -1445,9 +1548,3 @@ typeinfo (s)\n\
 {
   return SET_INTERNAL_VARIABLE (sparse_auto_mutate);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

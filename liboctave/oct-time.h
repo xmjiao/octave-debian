@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1999, 2000, 2005, 2006, 2007 John W. Eaton
+Copyright (C) 1999-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -23,10 +23,10 @@ along with Octave; see the file COPYING.  If not, see
 #if !defined (octave_time_h)
 #define octave_time_h 1
 
+#include <ctime>
 #include <string>
 
 #include "lo-math.h"
-#include "systime.h"
 
 class octave_base_tm;
 
@@ -41,6 +41,28 @@ public:
 
   octave_time (time_t t)
     : ot_unix_time (t), ot_usec (0) { }
+
+  octave_time (time_t t, int us)
+    : ot_unix_time (t), ot_usec ()
+  {
+    int rem, extra;
+
+    if (us >= 0)
+      {
+        rem = us % 1000000;
+        extra = (us - rem) / 1000000;
+      }
+    else
+      {
+        us = -us;
+        rem = us % 1000000;
+        extra = - (1 + (us - rem) / 1000000);
+        rem = 1000000 - us % 1000000;
+      }
+
+    ot_usec = rem;
+    ot_unix_time += extra;
+  }
 
   octave_time (double d)
     : ot_unix_time (static_cast<time_t> (d)), ot_usec (0)
@@ -58,8 +80,8 @@ public:
   {
     if (this != &ot)
       {
-	ot_unix_time = ot.ot_unix_time;
-	ot_usec = ot.ot_usec;
+        ot_unix_time = ot.ot_unix_time;
+        ot_usec = ot.ot_usec;
       }
 
     return *this;
@@ -136,6 +158,13 @@ operator >= (const octave_time& t1, const octave_time& t2)
   return (t1 > t2 || t1 == t2);
 }
 
+inline octave_time
+operator + (const octave_time& t1, const octave_time& t2)
+{
+  return octave_time (t1.unix_time () + t2.unix_time (),
+                      t1.usec () + t2.usec ());
+}
+
 class
 OCTAVE_API
 octave_base_tm
@@ -159,17 +188,17 @@ public:
   {
     if (this != &tm)
       {
-	tm_usec = tm.tm_usec;
-	tm_sec = tm.tm_sec;
-	tm_min = tm.tm_min;
-	tm_hour = tm.tm_hour;
-	tm_mday = tm.tm_mday;
-	tm_mon = tm.tm_mon;
-	tm_year = tm.tm_year;
-	tm_wday = tm.tm_wday;
-	tm_yday = tm.tm_yday;
-	tm_isdst = tm.tm_isdst;
-	tm_zone = tm.tm_zone;
+        tm_usec = tm.tm_usec;
+        tm_sec = tm.tm_sec;
+        tm_min = tm.tm_min;
+        tm_hour = tm.tm_hour;
+        tm_mday = tm.tm_mday;
+        tm_mon = tm.tm_mon;
+        tm_year = tm.tm_year;
+        tm_wday = tm.tm_wday;
+        tm_yday = tm.tm_yday;
+        tm_isdst = tm.tm_isdst;
+        tm_zone = tm.tm_zone;
       }
 
     return *this;
@@ -304,10 +333,13 @@ octave_strptime : public octave_base_tm
 public:
 
   octave_strptime (const std::string& str, const std::string& fmt)
-    : octave_base_tm () { init (str, fmt); }
+    : octave_base_tm (), nchars (0)
+  {
+    init (str, fmt);
+  }
 
   octave_strptime (const octave_strptime& s)
-    : octave_base_tm (s) { nchars = s.nchars; }
+    : octave_base_tm (s), nchars (s.nchars) { }
 
   octave_strptime& operator = (const octave_strptime& s)
   {
@@ -328,9 +360,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

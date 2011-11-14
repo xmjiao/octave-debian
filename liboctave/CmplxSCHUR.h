@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2000, 2002, 2004, 2005, 2006,
-              2007, 2009 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -28,6 +27,7 @@ along with Octave; see the file COPYING.  If not, see
 #include <string>
 
 #include "CMatrix.h"
+#include "dbleSCHUR.h"
 
 class
 OCTAVE_API
@@ -35,27 +35,38 @@ ComplexSCHUR
 {
 public:
 
-  ComplexSCHUR (void)
-    : schur_mat (), unitary_mat () { }
+  ComplexSCHUR (void) : schur_mat (), unitary_mat (), selector (0) { }
 
   ComplexSCHUR (const ComplexMatrix& a, const std::string& ord,
-		bool calc_unitary = true)
-    : schur_mat (), unitary_mat () { init (a, ord, calc_unitary); }
+                bool calc_unitary = true)
+    : schur_mat (), unitary_mat (), selector (0)
+    {
+      init (a, ord, calc_unitary);
+    }
 
-  ComplexSCHUR (const ComplexMatrix& a, const std::string& ord, octave_idx_type& info,
-		bool calc_unitary = true)
-    : schur_mat (), unitary_mat () { info = init (a, ord, calc_unitary); }
+  ComplexSCHUR (const ComplexMatrix& a, const std::string& ord,
+                octave_idx_type& info,
+                bool calc_unitary = true)
+    : schur_mat (), unitary_mat (), selector (0)
+    {
+      info = init (a, ord, calc_unitary);
+    }
 
   ComplexSCHUR (const ComplexSCHUR& a)
-    : schur_mat (a.schur_mat), unitary_mat (a.unitary_mat) { }
+    : schur_mat (a.schur_mat), unitary_mat (a.unitary_mat), selector (0)
+    { }
+
+  ComplexSCHUR (const ComplexMatrix& s, const ComplexMatrix& u);
+
+  ComplexSCHUR (const SCHUR& s);
 
   ComplexSCHUR& operator = (const ComplexSCHUR& a)
     {
       if (this != &a)
-	{
-	  schur_mat = a.schur_mat;
-	  unitary_mat = a.unitary_mat;
-	}
+        {
+          schur_mat = a.schur_mat;
+          unitary_mat = a.unitary_mat;
+        }
       return *this;
     }
 
@@ -80,9 +91,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

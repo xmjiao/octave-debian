@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2000, 2002, 2005, 2006, 2007 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -43,10 +43,11 @@ public:
 
   static std::string base_pathname (const std::string& s);
 
-  static std::string make_absolute (const std::string& s,
-				    const std::string& dot_path);
+  static std::string
+  make_absolute (const std::string& s,
+                 const std::string& dot_path = get_current_directory ());
 
-  static std::string getcwd (void);
+  static std::string get_current_directory (void);
 
   static std::string get_home_directory (void);
 
@@ -81,7 +82,7 @@ private:
   std::string do_base_pathname (const std::string& s) const;
 
   std::string do_make_absolute (const std::string& s,
-				const std::string& dot_path) const;
+                                const std::string& dot_path) const;
 
   std::string do_getcwd (void) const;
 
@@ -126,9 +127,9 @@ private:
   mutable std::string current_directory;
 
   // Etc.
-  mutable std::string program_name;
+  mutable std::string prog_name;
 
-  mutable std::string program_invocation_name;
+  mutable std::string prog_invocation_name;
 
   mutable std::string user_name;
 
@@ -136,9 +137,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 1999, 2000, 2002, 2005, 2006,
-##               2007 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -51,7 +50,7 @@ function [pval, z] = u_test (x, y, alt)
   endif
 
   if (! (isvector (x) && isvector (y)))
-    error ("u_test: both x and y must be vectors");
+    error ("u_test: both X and Y must be vectors");
   endif
 
   n_x  = length (x);
@@ -67,7 +66,7 @@ function [pval, z] = u_test (x, y, alt)
   endif
 
   if (! ischar (alt))
-    error("u_test: alt must be a string");
+    error("u_test: ALT must be a string");
   endif
   if (strcmp (alt, "!=") || strcmp (alt, "<>"))
     pval = 2 * min (cdf, 1 - cdf);

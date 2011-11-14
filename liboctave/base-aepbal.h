@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008, 2009 Jaroslav Hajek
+Copyright (C) 2008-2011 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -23,8 +23,6 @@ along with Octave; see the file COPYING.  If not, see
 #if !defined (octave_base_aepbal_h)
 #define octave_base_aepbal_h 1
 
-#include "oct-types.h"
-
 template <class MatrixT, class VectorT>
 class base_aepbal
 {
@@ -33,14 +31,15 @@ protected:
   VectorT scale;
   octave_idx_type ilo, ihi;
   char job;
+
   base_aepbal (void) : balanced_mat (), scale (), ilo (), ihi (), job () { }
 
 public:
 
-  base_aepbal (const base_aepbal& a) 
-    : balanced_mat (a.balanced_mat), scale (a.scale), 
+  base_aepbal (const base_aepbal& a)
+    : balanced_mat (a.balanced_mat), scale (a.scale),
       ilo(a.ilo), ihi(a.ihi), job(a.job)
-  { 
+  {
   }
 
   base_aepbal& operator = (const base_aepbal& a)
@@ -52,6 +51,8 @@ public:
       job = a.job;
       return *this;
     }
+
+  virtual ~base_aepbal (void) { }
 
   MatrixT balanced_matrix (void) const { return balanced_mat; }
 
@@ -71,7 +72,7 @@ public:
           octave_idx_type j = scale(i) - 1;
           std::swap (pv(i), pv(j));
         }
-      
+
       return pv;
     }
 

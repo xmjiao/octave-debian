@@ -1,4 +1,4 @@
-## Copyright (C) 2007, 2008, 2009 David Bateman
+## Copyright (C) 2007-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} rose (@var{th}, @var{r})
+## @deftypefn  {Function File} {} rose (@var{th}, @var{r})
 ## @deftypefnx {Function File} {} rose (@var{h}, @dots{})
 ## @deftypefnx {Function File} {@var{h} =} rose (@dots{})
 ## @deftypefnx {Function File} {[@var{r}, @var{th}] =} rose (@dots{})
@@ -27,14 +27,14 @@
 ## of @var{th} produces a separate histogram.
 ##
 ## If @var{r} is given and is a scalar, then the histogram is produced with
-## @var{r} bins.  If @var{r} is a vector, then the center of each bin are 
+## @var{r} bins.  If @var{r} is a vector, then the center of each bin are
 ## defined by the values of @var{r}.
 ##
-## The optional return value @var{h} provides a list of handles to the 
+## The optional return value @var{h} provides a list of handles to the
 ## the parts of the vector field (body, arrow and marker).
 ##
-## If two output arguments are requested, then rather than plotting the 
-## histogram, the polar vectors necessary to plot the histogram are 
+## If two output arguments are requested, then rather than plotting the
+## histogram, the polar vectors necessary to plot the histogram are
 ## returned.
 ##
 ## @example
@@ -50,8 +50,8 @@
 
 function [thout, rout] = rose (varargin)
 
-  [h, varargin, nargin] = __plt_get_axis_arg__ ((nargout > 1), "rose", 
-						varargin{:});
+  [h, varargin, nargin] = __plt_get_axis_arg__ ((nargout > 1), "rose",
+                                                varargin{:});
 
   if (nargin < 1)
     print_usage ();
@@ -64,7 +64,7 @@ function [thout, rout] = rose (varargin)
   if (nargin > 1)
     x = varargin {2};
     if (isscalar (x))
-      x = [0.5/x : 1/x : 1] * 2 * pi; 
+      x = [0.5/x : 1/x : 1] * 2 * pi;
     else
       ## Force theta to [0,2*pi] range
       x = atan2  (sin (x), cos (x)) + pi;
@@ -105,5 +105,7 @@ function [thout, rout] = rose (varargin)
 
 endfunction
 
+
 %!demo
-%! rose ([2*randn(1e5,1), pi + 2 * randn(1e5,1)])
+%! rose ([2*randn(1e5, 1), pi + 2*randn(1e5, 1)]);
+

@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2000, 2002, 2003, 2004, 2005, 2006,
-              2007, 2008 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -37,10 +36,10 @@ along with Octave; see the file COPYING.  If not, see
 #include "oct-stream.h"
 #include "ov-base.h"
 #include "ov-base-scalar.h"
+#include "ov-bool-mat.h"
 #include "ov-scalar.h"
 #include "ov-typeinfo.h"
 
-class Octave_map;
 class octave_value_list;
 
 class tree_walker;
@@ -48,6 +47,7 @@ class tree_walker;
 // Real scalar values.
 
 class
+OCTINTERP_API
 octave_bool : public octave_base_scalar<bool>
 {
 public:
@@ -64,14 +64,16 @@ public:
   ~octave_bool (void) { }
 
   octave_base_value *clone (void) const { return new octave_bool (*this); }
-  octave_base_value *empty_clone (void) const { return new octave_bool (); }
+  octave_base_value *empty_clone (void) const { return new octave_bool_matrix (); }
 
   type_conv_info numeric_conversion_function (void) const;
 
   octave_value do_index_op (const octave_value_list& idx,
-			    bool resize_ok = false);
+                            bool resize_ok = false);
 
   idx_vector index_vector (void) const { return idx_vector (scalar); }
+
+  builtin_type_t builtin_type (void) const { return btyp_bool; }
 
   bool is_real_scalar (void) const { return true; }
 
@@ -80,6 +82,8 @@ public:
   bool is_bool_type (void) const { return true; }
 
   bool is_real_type (void) const { return true; }
+
+  bool is_numeric_type (void) const { return false; }
 
   bool is_true (void) const { return scalar; }
 
@@ -187,74 +191,31 @@ public:
 
   bool save_binary (std::ostream& os, bool& save_as_floats);
 
-  bool load_binary (std::istream& is, bool swap, 
-		    oct_mach_info::float_format fmt);
+  bool load_binary (std::istream& is, bool swap,
+                    oct_mach_info::float_format fmt);
 
 #if defined (HAVE_HDF5)
   bool save_hdf5 (hid_t loc_id, const char *name, bool save_as_floats);
 
-  bool load_hdf5 (hid_t loc_id, const char *name, bool have_h5giterate_bug);
+  bool load_hdf5 (hid_t loc_id, const char *name);
 #endif
 
   int write (octave_stream& os, int block_size,
-	     oct_data_conv::data_type output_type, int skip,
-	     oct_mach_info::float_format flt_fmt) const
+             oct_data_conv::data_type output_type, int skip,
+             oct_mach_info::float_format flt_fmt) const
     {
       return os.write (bool_array_value (), block_size, output_type,
-		       skip, flt_fmt);
+                       skip, flt_fmt);
     }
 
   mxArray *as_mxArray (void) const;
 
   // Mapper functions are converted to double for treatment
-#define BOOL_MAPPER(MAP) \
-  octave_value MAP (void) const \
-    { \
-      octave_scalar s (static_cast<double> (scalar)); \
-      return s.MAP (); \
+  octave_value map (unary_mapper_t umap) const
+    {
+      octave_scalar m (scalar_value ());
+      return m.map (umap);
     }
-
-  BOOL_MAPPER (abs)
-  BOOL_MAPPER (acos)
-  BOOL_MAPPER (acosh)
-  BOOL_MAPPER (angle)
-  BOOL_MAPPER (arg)
-  BOOL_MAPPER (asin)
-  BOOL_MAPPER (asinh)
-  BOOL_MAPPER (atan)
-  BOOL_MAPPER (atanh)
-  BOOL_MAPPER (ceil)
-  BOOL_MAPPER (conj)
-  BOOL_MAPPER (cos)
-  BOOL_MAPPER (cosh)
-  BOOL_MAPPER (erf)
-  BOOL_MAPPER (erfc)
-  BOOL_MAPPER (exp)
-  BOOL_MAPPER (expm1)
-  BOOL_MAPPER (finite)
-  BOOL_MAPPER (fix)
-  BOOL_MAPPER (floor)
-  BOOL_MAPPER (gamma)
-  BOOL_MAPPER (imag)
-  BOOL_MAPPER (isinf)
-  BOOL_MAPPER (isna)
-  BOOL_MAPPER (isnan)
-  BOOL_MAPPER (lgamma)
-  BOOL_MAPPER (log)
-  BOOL_MAPPER (log2)
-  BOOL_MAPPER (log10)
-  BOOL_MAPPER (log1p)
-  BOOL_MAPPER (real)
-  BOOL_MAPPER (round)
-  BOOL_MAPPER (roundb)
-  BOOL_MAPPER (signum)
-  BOOL_MAPPER (sin)
-  BOOL_MAPPER (sinh)
-  BOOL_MAPPER (sqrt)
-  BOOL_MAPPER (tan)
-  BOOL_MAPPER (tanh)
-
-#undef BOOL_MAPPER
 
 private:
 
@@ -264,9 +225,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 2004, 2005, 2006, 2007, 2008 David Bateman
-Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004 Andy Adler
+Copyright (C) 2004-2011 David Bateman
+Copyright (C) 1998-2004 Andy Adler
 
 This file is part of Octave.
 
@@ -33,25 +33,25 @@ SparseLU : public sparse_base_lu <SparseMatrix, double, SparseMatrix, double>
 {
 public:
 
-  SparseLU (void) 
+  SparseLU (void)
     : sparse_base_lu <SparseMatrix, double, SparseMatrix, double> () { }
 
   SparseLU (const SparseMatrix& a, const Matrix& piv_thres = Matrix(),
-	    bool scale = false);
+            bool scale = false);
 
-  SparseLU (const SparseMatrix& a, const ColumnVector& Qinit, 
-	    const Matrix& piv_thres = Matrix(), bool scale = false, 
-	    bool FixedQ = false, double droptol = -1., 
-	    bool milu = false, bool udiag = false);
+  SparseLU (const SparseMatrix& a, const ColumnVector& Qinit,
+            const Matrix& piv_thres = Matrix(), bool scale = false,
+            bool FixedQ = false, double droptol = -1.,
+            bool milu = false, bool udiag = false);
 
-  SparseLU (const SparseLU& a) 
+  SparseLU (const SparseLU& a)
     : sparse_base_lu <SparseMatrix, double, SparseMatrix, double> (a) { }
 
   SparseLU& operator = (const SparseLU& a)
     {
       if (this != &a)
-	sparse_base_lu <SparseMatrix, double, SparseMatrix, double> 
-	  :: operator = (a);
+        sparse_base_lu <SparseMatrix, double, SparseMatrix, double>
+          :: operator = (a);
 
       return *this;
     }
@@ -60,9 +60,3 @@ public:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,4 +1,4 @@
-## Copyright (C) 2005, 2006, 2007, 2008, 2009 Bill Denney
+## Copyright (C) 2005-2011 Bill Denney
 ##
 ## This file is part of Octave.
 ##
@@ -27,7 +27,7 @@
 
 ## Author: Bill Denney <bill@givebillmoney.com>
 
-function varargout = savepath (savefile)
+function varargout = savepath (file)
 
   retval = 1;
 
@@ -35,7 +35,7 @@ function varargout = savepath (savefile)
   endstring   = "## End savepath auto-created section";
 
   if (nargin == 0)
-    savefile = fullfile ("~", ".octaverc");
+    file = fullfile ("~", ".octaverc");
   endif
 
   ## parse the file if it exists to see if we should replace a section
@@ -43,41 +43,41 @@ function varargout = savepath (savefile)
   startline = 0;
   endline = 0;
   filelines = {};
-  if (exist (savefile) == 2)
+  if (exist (file) == 2)
     ## read in all lines of the file
-    [fid, msg] = fopen (savefile, "rt");
+    [fid, msg] = fopen (file, "rt");
     if (fid < 0)
-      error ("savepath: could not open savefile, %s: %s", savefile, msg);
+      error ("savepath: could not open file, %s: %s", file, msg);
     endif
     unwind_protect
       linenum = 0;
       while (linenum >= 0)
-	result = fgetl (fid);
-	if (isnumeric (result))
-	  ## end at the end of file
-	  linenum = -1;
-	else
-	  linenum = linenum + 1;
-	  filelines{linenum} = result;
-	  ## find the first and last lines if they exist in the file
-	  if (strcmp (result, beginstring))
-	    startline = linenum;
-	  elseif (strcmp (result, endstring))
-	    endline = linenum;
-	  endif
-	endif
+        result = fgetl (fid);
+        if (isnumeric (result))
+          ## end at the end of file
+          linenum = -1;
+        else
+          linenum = linenum + 1;
+          filelines{linenum} = result;
+          ## find the first and last lines if they exist in the file
+          if (strcmp (result, beginstring))
+            startline = linenum;
+          elseif (strcmp (result, endstring))
+            endline = linenum;
+          endif
+        endif
       endwhile
     unwind_protect_cleanup
       closeread = fclose (fid);
       if (closeread < 0)
-	error ("savepath: could not close savefile after reading, %s",
-	       savefile);
+        error ("savepath: could not close file after reading, %s",
+               file);
       endif
     end_unwind_protect
   endif
 
   if (startline > endline || (startline > 0 && endline == 0))
-    error ("savepath: unable to parse file, %s", savefile);
+    error ("savepath: unable to parse file, %s", file);
   endif
 
   ## put the current savepath lines into the file
@@ -102,13 +102,13 @@ function varargout = savepath (savefile)
   endif
 
   ## write the results
-  [fid, msg] = fopen (savefile, "wt");
+  [fid, msg] = fopen (file, "wt");
   if (fid < 0)
-    error ("savepath: unable to open file for writing, %s, %s", savefile, msg);
+    error ("savepath: unable to open file for writing, %s, %s", file, msg);
   endif
   unwind_protect
     for i = 1:length (pre)
-      fprintf (fid, "%s\n", pre{i})
+      fprintf (fid, "%s\n", pre{i});
     endfor
 
     ## Remove the portion of the path defined via the command line
@@ -157,7 +157,7 @@ function varargout = savepath (savefile)
       path_to_save = path_to_preserve (sort (n));
       ## Remove pwd
       path_to_save = path_to_save (! strcmpi (path_to_save,
-					      strcat (".", pathsep)));
+                                              strcat (".", pathsep)));
       n = ones (size (path_to_save));
       for m = 1:numel(path_to_save)
         n(m) = strmatch (path_to_save{m}, path_to_preserve);
@@ -174,18 +174,18 @@ function varargout = savepath (savefile)
     ## Use single quotes for PATH argument to avoid string escape
     ## processing.  Since we are using single quotes around the arg,
     ## double any single quote characters found in the string.
-    fprintf (fid, "%s\n", beginstring)
+    fprintf (fid, "%s\n", beginstring);
     if (! isempty (path_to_save_begin))
       n = find (path_to_save_begin != pathsep, 1, "last");
       fprintf (fid, "  addpath ('%s', '-begin');\n",
-               strrep (path_to_save_begin(1:n), "'", "''"))
+               strrep (path_to_save_begin(1:n), "'", "''"));
     endif
     if (! isempty (path_to_save_end))
       n = find (path_to_save_end != pathsep, 1, "last");
       fprintf (fid, "  addpath ('%s', '-end');\n",
-               strrep (path_to_save_end(1:n), "'", "''"))
+               strrep (path_to_save_end(1:n), "'", "''"));
     endif
-    fprintf (fid, "%s\n", endstring)
+    fprintf (fid, "%s\n", endstring);
 
     for i = 1:length (post)
       fprintf (fid, "%s\n", post{i});
@@ -193,9 +193,9 @@ function varargout = savepath (savefile)
   unwind_protect_cleanup
     closeread = fclose (fid);
     if (closeread < 0)
-      error ("savepath: could not close savefile after writing, %s", savefile);
+      error ("savepath: could not close savefile after writing, %s", file);
     elseif (nargin == 0)
-      warning ("savepath: current path saved to %s", savefile);
+      warning ("savepath: current path saved to %s", file);
     endif
   end_unwind_protect
 
@@ -204,11 +204,11 @@ function varargout = savepath (savefile)
   if (nargout == 1)
     varargout{1} = retval;
   endif
-  
-endfunction  
+
+endfunction
 
 function path_elements = parsepath (p)
-  pat = sprintf ("([^%s]+[%s$])", pathsep, pathsep);
-  [jnk1, jnk2, jnk3, path_elements] = regexpi (strcat (p, pathsep), pat);
+  pat = sprintf ('([^%s]+[%s$])', pathsep, pathsep);
+  [~, ~, ~, path_elements] = regexpi (strcat (p, pathsep), pat);
 endfunction
 

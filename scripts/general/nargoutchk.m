@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 Bill Denney
+## Copyright (C) 2008-2011 Bill Denney
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{msgstr} =} nargoutchk (@var{minargs}, @var{maxargs}, @var{nargs})
+## @deftypefn  {Function File} {@var{msgstr} =} nargoutchk (@var{minargs}, @var{maxargs}, @var{nargs})
 ## @deftypefnx {Function File} {@var{msgstr} =} nargoutchk (@var{minargs}, @var{maxargs}, @var{nargs}, "string")
 ## @deftypefnx {Function File} {@var{msgstruct} =} nargoutchk (@var{minargs}, @var{maxargs}, @var{nargs}, "struct")
 ## Return an appropriate error message string (or structure) if the
@@ -30,25 +30,25 @@
 
 ## Author: Bill Denney <bill@denney.ws>
 
-function msg = nargoutchk (mina, maxa, narg, outtype)
+function msg = nargoutchk (minargs, maxargs, nargs, outtype)
 
   if (nargin < 3 || nargin > 4)
     print_usage ();
-  elseif (mina > maxa)
-    error ("nargoutchk: minargs must be <= maxargs");
+  elseif (minargs > maxargs)
+    error ("nargoutchk: MINARGS must be <= MAXARGS");
   elseif (nargin == 3)
     outtype = "string";
   elseif (! any (strcmpi (outtype, {"string" "struct"})))
     error ("nargoutchk: output type must be either string or struct");
-  elseif (! (isscalar (mina) && isscalar (maxa) && isscalar (narg)))
-    error ("nargoutchk: mina, maxa, and narg must be scalars");
+  elseif (! (isscalar (minargs) && isscalar (maxargs) && isscalar (nargs)))
+    error ("nargoutchk: MINARGS, MAXARGS, and NARGS must be scalars");
   endif
 
   msg = struct ("message", "", "identifier", "");
-  if (narg < mina)
+  if (nargs < minargs)
     msg.message = "not enough output arguments";
     msg.identifier = "Octave:nargoutchk:not-enough-outputs";
-  elseif (narg > maxa)
+  elseif (nargs > maxargs)
     msg.message = "too many output arguments";
     msg.identifier = "Octave:nargoutchk:too-many-outputs";
   endif

@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 1999, 2000, 2002, 2005,
-              2006, 2007, 2008 John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -43,13 +42,13 @@ public:
 
   static octave_function *
   load_oct (const std::string& fcn_name,
-	     const std::string& file_name = std::string (),
-	     bool relative = false);
+             const std::string& file_name = std::string (),
+             bool relative = false);
 
   static octave_function *
   load_mex (const std::string& fcn_name,
-	     const std::string& file_name = std::string (),
-	     bool relative = false);
+             const std::string& file_name = std::string (),
+             bool relative = false);
 
   static bool remove_oct (const std::string& fcn_name, octave_shlib& shl);
 
@@ -69,13 +68,13 @@ private:
 
   octave_function *
   do_load_oct (const std::string& fcn_name,
-		const std::string& file_name = std::string (),
-		bool relative = false);
+                const std::string& file_name = std::string (),
+                bool relative = false);
 
   octave_function *
   do_load_mex (const std::string& fcn_name,
-		const std::string& file_name = std::string (),
-		bool relative = false);
+                const std::string& file_name = std::string (),
+                bool relative = false);
 
   bool do_remove_oct (const std::string& fcn_name, octave_shlib& shl);
 
@@ -97,9 +96,3 @@ protected:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

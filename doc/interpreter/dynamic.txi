@@ -1,4 +1,4 @@
-@c Copyright (C) 2007, 2008, 2009 John W. Eaton and David Bateman
+@c Copyright (C) 2007-2011 John W. Eaton and David Bateman
 @c Copyright (C) 2007 Paul Thomas and Christoph Spiel
 @c
 @c This file is part of Octave.
@@ -16,20 +16,6 @@
 @c You should have received a copy of the GNU General Public License
 @c along with Octave; see the file COPYING.  If not, see
 @c <http://www.gnu.org/licenses/>.
-
-@macro examplefile{file}
-@example
-@group
-@verbatiminclude @value{abs_top_srcdir}/examples/\file\
-@end group
-@end example
-@end macro
-
-@macro longexamplefile{file}
-@example
-@verbatiminclude @value{abs_top_srcdir}/examples/\file\
-@end example
-@end macro
 
 @node Dynamically Linked Functions
 @appendix Dynamically Linked Functions
@@ -53,16 +39,19 @@ address ask yourself
 @itemize @bullet
 @item
 Can I get the same functionality using the Octave scripting language only?
+
 @item
 Is it thoroughly optimized Octave code?  Vectorization of Octave code,
 doesn't just make it concise, it generally significantly improves its
 performance.  Above all, if loops must be used, make sure that the
 allocation of space for variables takes place outside the loops using an
 assignment to a matrix of the right size, or zeros.
+
 @item
 Does it make as much use as possible of existing built-in library
 routines?  These are highly optimized and many do not carry the overhead
 of being interpreted.
+
 @item
 Does writing a dynamically linked function represent useful investment
 of your time, relative to staying in Octave?
@@ -110,24 +99,34 @@ call from within octave or from the command line.
 
 @DOCSTRING(mkoctfile)
 
-Consider the short example
+Consider the short C++ example:
 
-@examplefile{helloworld.cc}
+@example
+@group
+@EXAMPLEFILE(helloworld.cc)
+@end group
+@end example
 
 This example although short introduces the basics of writing a C++
 function that can be dynamically linked to Octave.  The easiest way to
-make available most of the definitions that might be necessary for an
-oct-file in Octave is to use the @code{#include <octave/oct.h>}
-header.
+make available most of the definitions that might be necessary for a C++
+oct-file in Octave is to use the @code{#include <octave/oct.h>} header.
+Note that @file{octave/oct.h} is a C++ header and cannot be directly
+@code{#include}'ed in a C source file, nor any other language.  What
+follows is mostly C++, with a discussion of other languages in section
+@ref{Calling External Code from Oct-Files}.
 
 The macro that defines the entry point into the dynamically loaded
 function is @w{@code{DEFUN_DLD}}.  This macro takes four arguments, these being
 
 @enumerate 1
 @item The function name as it will be seen in Octave,
+
 @item The list of arguments to the function of type @code{octave_value_list},
+
 @item The number of output arguments, which can and often is omitted if
 not used, and
+
 @item The string that will be seen as the help text of the function.
 @end enumerate
 
@@ -138,9 +137,9 @@ There are a couple of important considerations in the choice of function
 name.  Firstly, it must be a valid Octave function name and so must be a
 sequence of letters, digits and underscores, not starting with a
 digit.  Secondly, as Octave uses the function name to define the filename
-it attempts to find the function in, the function name in the @w{@code{DEFUN_DLD}}
-macro must match the filename of the oct-file.  Therefore, the above
-function should be in a file @file{helloworld.cc}, and it should be
+it attempts to find the function in, the function name in the
+@w{@code{DEFUN_DLD}} macro must match the filename of the oct-file.  Therefore,
+the above function should be in a file @file{helloworld.cc}, and it should be
 compiled to an oct-file using the command
 
 @example
@@ -177,8 +176,10 @@ matrix types
 @table @code
 @item Matrix
 A double precision matrix class defined in dMatrix.h,
+
 @item ComplexMatrix
 A complex matrix class defined in CMatrix.h, and
+
 @item BoolMatrix
 A boolean matrix class defined in boolMatrix.h.
 @end table
@@ -190,16 +191,20 @@ being
 @table @code
 @item NDArray
 A double precision array class defined in @file{dNDArray.h}
+
 @item ComplexNDarray
 A complex array class defined in @file{CNDArray.h}
+
 @item boolNDArray
 A boolean array class defined in @file{boolNDArray.h}
+
 @item int8NDArray
 @itemx int16NDArray
 @itemx int32NDArray
 @itemx int64NDArray
 8, 16, 32 and 64-bit signed array classes defined in
 @file{int8NDArray.h}, @file{int16NDArray.h}, etc.
+
 @item uint8NDArray
 @itemx uint16NDArray
 @itemx uint32NDArray
@@ -222,6 +227,7 @@ Matrix a;
 @end example
 
 This can be used on all matrix and array types
+
 @item
 Define the dimensions of the matrix or array with a dim_vector.  For
 example
@@ -235,8 +241,9 @@ Matrix a (dv);
 @end example
 
 This can be used on all matrix and array types
+
 @item
-Define the number of rows and columns in the matrix.  For example
+Define the number of rows and columns in the matrix.  For example:
 
 @example
 Matrix a (2, 2)
@@ -248,7 +255,7 @@ However, this constructor can only be used with the matrix types.
 These types all share a number of basic methods and operators, a
 selection of which include
 
-@deftypefn Method T& {operator ()} (octave_idx_type)
+@deftypefn  Method T& {operator ()} (octave_idx_type)
 @deftypefnx Method T& elem (octave_idx_type)
 The @code{()} operator or @code{elem} method allow the values of the
 matrix or array to be read or set.  These can take a single argument,
@@ -260,7 +267,7 @@ value to obtain or set.
 
 Note that these functions do significant error checking and so in some
 circumstances the user might prefer to access the data of the array or
-matrix directly through the fortran_vec method discussed below.
+matrix directly through the @nospell{fortran_vec} method discussed below.
 
 @deftypefn Method octave_idx_type nelem (void) const
 The total number of elements in the matrix or array.
@@ -294,7 +301,11 @@ that are of interest only for matrices such as @code{transpose},
 The typical way to extract a matrix or array from the input arguments of
 @w{@code{DEFUN_DLD}} function is as follows
 
-@examplefile{addtwomatrices.cc}
+@example
+@group
+@EXAMPLEFILE(addtwomatrices.cc)
+@end group
+@end example
 
 To avoid segmentation faults causing Octave to abort, this function
 explicitly checks that there are sufficient arguments available before
@@ -351,9 +362,11 @@ listed below.
 @subsection Character Strings in Oct-Files
 
 In Octave a character string is just a special @code{Array} class.
-Consider the example 
+Consider the example:
 
-@longexamplefile{stringdemo.cc}
+@example
+@EXAMPLEFILE(stringdemo.cc)
+@end example
 
 An example of the use of this function is
 
@@ -391,7 +404,7 @@ between single quoted and double quoted strings.  To find out if an
 
 Note however, that both types of strings are represented by the
 @code{charNDArray} type, and so when assigning to an
-@code{octave_value}, the type of string should be specified.  For example
+@code{octave_value}, the type of string should be specified.  For example:
 
 @example
 @group
@@ -414,7 +427,11 @@ array is just an array of @code{octave_value}s, and so each element of the cell
 array can then be treated just like any other @code{octave_value}.  A simple
 example is
 
-@examplefile{celldemo.cc}
+@example
+@group
+@EXAMPLEFILE(celldemo.cc)
+@end group
+@end example
 
 Note that cell arrays are used less often in standard oct-files and so
 the @file{Cell.h} header file must be explicitly included.  The rest of this
@@ -444,7 +461,9 @@ with the pair consisting of a @code{std::string} and an octave
 
 A simple example demonstrating the use of structures within oct-files is
 
-@longexamplefile{structdemo.cc}
+@example
+@EXAMPLEFILE(structdemo.cc)
+@end example
 
 An example of its use is
 
@@ -468,6 +487,7 @@ Therefore, to obtain the underlying @code{octave_value} we write
 octave_value tmp = arg0.contents (p1) (0);
 @end example
 
+@noindent
 where the trailing (0) is the () operator on the @code{Cell} object.  We
 can equally iterate of the elements of the Cell array to address the
 elements of the structure array.
@@ -481,8 +501,10 @@ user.
 @table @code
 @item SparseMatrix
 A double precision sparse matrix class
+
 @item SparseComplexMatrix
 A complex sparse matrix class
+
 @item SparseBoolMatrix
 A boolean sparse matrix class
 @end table
@@ -523,6 +545,7 @@ int nel = sm.nelem ();
 @end group
 @end example
 
+@noindent
 returns the number of non-zero elements.  If the user really requires the
 number of elements in the matrix, including the non-zero elements, they
 should use @code{numel} rather than @code{nelem}.  Note that for very
@@ -553,6 +576,7 @@ for (int j = 0; j < nc; j++)
 @end group
 @end example
 
+@noindent
 is a great way of turning the sparse matrix into a dense one, and a
 very slow way at that since it reallocates the sparse object at each
 zero element in the matrix.
@@ -576,7 +600,7 @@ for (int j = 0; j < nc; j++)
 @end example
 
 Finally, as the sparse types aren't just represented as a contiguous
-block of memory, the @code{fortran_vec} method of the @code{Array<T>}
+block of memory, the @nospell{@code{fortran_vec}} method of the @code{Array<T>}
 is not available.  It is however replaced by three separate methods
 @code{ridx}, @code{cidx} and @code{data}, that access the raw compressed
 column format that the Octave sparse matrices are stored in.
@@ -706,7 +730,7 @@ A third means of creating a sparse matrix is to work directly with
 the data in compressed row format.  An example of this technique might
 be
 
-@c Note the @verbatim environment is a relatively new addition to texinfo.
+@c Note the @verbatim environment is a relatively new addition to Texinfo.
 @c Therefore use the @example environment and replace @, with @@,
 @c { with @{, etc
 
@@ -790,7 +814,7 @@ Most of the same operators and functions on sparse matrices that are
 available from the Octave are equally available with oct-files.
 The basic means of extracting a sparse matrix from an @code{octave_value}
 and returning them as an @code{octave_value}, can be seen in the
-following example
+following example.
 
 @example
 @group
@@ -822,7 +846,9 @@ second argument is a boolean argument specifying what to do in the case
 that no global variable of the desired name is found.  An example of the
 use of these two functions is
 
-@longexamplefile{globaldemo.cc}
+@example
+@EXAMPLEFILE(globaldemo.cc)
+@end example
 
 An example of its use is
 
@@ -853,15 +879,20 @@ be passed as one of
 
 @enumerate 1
 @item Function Handle
+
 @item Anonymous Function Handle
+
 @item Inline Function
+
 @item String
 @end enumerate
 
 The example below demonstrates an example that accepts all four means of
 passing a function to an oct-file.
 
-@longexamplefile{funcdemo.cc}
+@example
+@EXAMPLEFILE(funcdemo.cc)
+@end example
 
 The first argument to this demonstration is the user supplied function
 and the following arguments are all passed to the user function.
@@ -936,12 +967,12 @@ consistent behavior across a number of compilers.
 
 The underlying Fortran code should use the @code{XSTOPX} function to
 replace the Fortran @code{STOP} function.  @code{XSTOPX} uses the Octave
-exception handler to treat failing cases in the fortran code
+exception handler to treat failing cases in the Fortran code
 explicitly.  Note that Octave supplies its own replacement @sc{blas}
 @code{XERBLA} function, which uses @code{XSTOPX}.
 
 If the underlying code calls @code{XSTOPX}, then the @w{@code{F77_XFCN}}
-macro should be used to call the underlying fortran function.  The Fortran
+macro should be used to call the underlying Fortran function.  The Fortran
 exception state can then be checked with the global variable
 @code{f77_exception_encountered}.  If @code{XSTOPX} will not be called,
 then the @w{@code{F77_FCN}} macro should be used instead to call the Fortran
@@ -956,12 +987,16 @@ segmentation fault.
 An example of the inclusion of a Fortran function in an oct-file is
 given in the following example, where the C++ wrapper is
 
-@longexamplefile{fortdemo.cc}
+@example
+@EXAMPLEFILE(fortdemo.cc)
+@end example
 
 @noindent
-and the fortran function is
+and the Fortran function is
 
-@longexamplefile{fortsub.f}
+@example
+@EXAMPLEFILE(fortsub.f)
+@end example
 
 This example demonstrates most of the features needed to link to an
 external Fortran function, including passing arrays and strings, as well
@@ -976,7 +1011,7 @@ as exception handling.  An example of the behavior of this function is
 [b, s] = fortdemo(0:3)
 error: fortsub:divide by zero
 error: exception encountered in Fortran subroutine fortsub_
-error: fortdemo: error in fortran
+error: fortdemo: error in Fortran
 @end group
 @end example
 
@@ -993,6 +1028,7 @@ An example of its use is
 OCTAVE_LOCAL_BUFFER (double, tmp, len)
 @end example
 
+@noindent
 that returns a pointer @code{tmp} of type @code{double *} of length
 @code{len}.
 
@@ -1016,12 +1052,14 @@ There are several functions within Octave that might be useful for the
 purposes of parameter checking.  These include the methods of the
 octave_value class like @code{is_real_matrix}, etc., but equally include
 more specialized functions.  Some of the more common ones are
-demonstrated in the following example
+demonstrated in the following example.
 
-@longexamplefile{paramdemo.cc}
+@example
+@EXAMPLEFILE(paramdemo.cc)
+@end example
 
 @noindent
-and an example of its use is
+An example of its use is:
 
 @example
 @group
@@ -1041,7 +1079,7 @@ typing @kbd{Control-C} even during calculations.  This ability is based on the
 C++ exception handler, where memory allocated by the C++ new/delete
 methods are automatically released when the exception is treated.  When
 writing an oct-file, to allow Octave to treat the user typing @kbd{Control-C},
-the @w{@code{OCTAVE_QUIT}} macro is supplied.  For example
+the @w{@code{OCTAVE_QUIT}} macro is supplied.  For example:
 
 @example
 @group
@@ -1053,19 +1091,19 @@ for (octave_idx_type i = 0; i < a.nelem (); i++)
 @end group
 @end example
 
-The presence of the @w{@code{OCTAVE_QUIT}} macro in the inner loop allows Octave to
-treat the user request with the @kbd{Control-C}.  Without this macro, the user
-must either wait for the function to return before the interrupt is
+The presence of the @w{@code{OCTAVE_QUIT}} macro in the inner loop allows
+Octave to treat the user request with the @kbd{Control-C}.  Without this macro,
+the user must either wait for the function to return before the interrupt is
 processed, or press @kbd{Control-C} three times to force Octave to exit.
 
-The @w{@code{OCTAVE_QUIT}} macro does impose a very small speed penalty, and so for
-loops that are known to be small it might not make sense to include
+The @w{@code{OCTAVE_QUIT}} macro does impose a very small speed penalty, and so
+for loops that are known to be small it might not make sense to include
 @w{@code{OCTAVE_QUIT}}.
 
 When creating an oct-file that uses an external libraries, the function
 might spend a significant portion of its time in the external
-library.  It is not generally possible to use the @w{@code{OCTAVE_QUIT}} macro in
-this case.  The alternative in this case is
+library.  It is not generally possible to use the @w{@code{OCTAVE_QUIT}} macro
+in this case.  The alternative in this case is
 
 @example
 @group
@@ -1079,7 +1117,7 @@ The disadvantage of this is that if the foreign code allocates any
 memory internally, then this memory might be lost during an interrupt,
 without being deallocated.  Therefore, ideally Octave itself should
 allocate any memory that is needed by the foreign code, with either the
-fortran_vec method or the @w{@code{OCTAVE_LOCAL_BUFFER}} macro.
+@nospell{fortran_vec} method or the @w{@code{OCTAVE_LOCAL_BUFFER}} macro.
 
 The Octave unwind_protect mechanism (@ref{The @code{unwind_protect} Statement})
 can also be used in oct-files.  In conjunction with the exception
@@ -1087,9 +1125,11 @@ handling of Octave, it is important to enforce that certain code is run
 to allow variables, etc. to be restored even if an exception occurs.  An
 example of the use of this mechanism is
 
-@longexamplefile{unwinddemo.cc}
+@example
+@EXAMPLEFILE(unwinddemo.cc)
+@end example
 
-As can be seen in the example
+As can be seen in the example:
 
 @example
 @group
@@ -1116,7 +1156,7 @@ help strings within oct-files.
 The major issue is that the help string will typically be longer than a
 single line of text, and so the formatting of long help strings need to
 be taken into account.  There are several manners in which to treat this
-issue, but the most common is illustrated in the following example
+issue, but the most common is illustrated in the following example,
 
 @example
 @group
@@ -1175,15 +1215,14 @@ oct-file might be
 
 Octave includes an interface to allow legacy mex-files to be compiled
 and used with Octave.  This interface can also be used to share code
-between Octave and non Octave users.  However, as mex-files expose the
-internal API of an alternative product to Octave, and the internal
-structure of Octave is different to this product, a mex-file can never
-have the same performance in Octave as the equivalent oct-file.  In
-particular to support the manner in which mex-files access the variables
-passed to mex functions, there are a significant number of additional
-copies of memory when calling or returning from a mex function.  For
-this reason, new code should be written using the oct-file interface
-discussed above if possible.
+between Octave and @sc{matlab} users.  However, as mex-files expose the
+@sc{matlab}'s internal API, and the internal structure of Octave is
+different, a mex-file can never have the same performance in Octave as
+the equivalent oct-file.  In particular to support the manner in which
+mex-files access the variables passed to mex functions, there are a
+significant number of additional copies of memory when calling or
+returning from a mex function.  For this reason, new code should be
+written using the oct-file interface discussed above if possible.
 
 @menu
 * Getting Started with Mex-Files::  
@@ -1199,24 +1238,28 @@ discussed above if possible.
 @node Getting Started with Mex-Files
 @subsection Getting Started with Mex-Files
 
-The basic command to build a mex-file is either @code{mkoctfile --mex} or
-@code{mex}.  The first can either be used from within Octave or from the
-command line.  However, to avoid issues with the installation of other
-products, the use of the command @code{mex} is limited to within Octave.
+The basic command to build a mex-file is either @code{mkoctfile --mex}
+or @code{mex}.  The first can either be used from within Octave or from
+the command line.  However, to avoid issues with @sc{matlab}'s own @code{mex}
+command, the use of the command @code{mex} is limited to within Octave.
 
 @DOCSTRING(mex)
 
 @DOCSTRING(mexext)
 
-One important difference between the use of mex with other products and
-with Octave is that the header file "matrix.h" is implicitly included
-through the inclusion of "mex.h".  This is to avoid a conflict with the
-Octave file "Matrix.h" with operating systems and compilers that don't
+One important difference with the use of @code{mex} between @sc{matlab} and
+Octave is that the header file "matrix.h" is implicitly included through
+the inclusion of "mex.h".  This is to avoid a conflict with the Octave
+file "Matrix.h" with operating systems and compilers that don't
 distinguish between filenames in upper and lower case
 
-Consider the short example
+Consider the short example:
 
-@examplefile{firstmexdemo.c}
+@example
+@group
+@EXAMPLEFILE(firstmexdemo.c)
+@end group
+@end example
 
 This simple example demonstrates the basics of writing a mex-file.  The
 entry point into the mex-file is defined by @code{mexFunction}.  Note
@@ -1261,7 +1304,11 @@ we can use the @code{mexFunctionName} function to determine what name
 the mex-file was called with.  This can be used to alter the behavior of
 the mex-file based on the function name.  For example if
 
-@examplefile{myfunc.c}
+@example
+@group
+@EXAMPLEFILE(myfunc.c)
+@end group
+@end example
 
 @noindent
 is in file @file{myfunc.c}, and it is compiled with
@@ -1316,7 +1363,7 @@ parts of a complex array are stored separately, there is an equivalent
 function @code{mxGetPi} that get the imaginary part.  Both of these
 functions are for use only with double precision matrices.  There also
 exists the generic function @code{mxGetData} and @code{mxGetImagData}
-that perform the same operation on all matrix types.  For example
+that perform the same operation on all matrix types.  For example:
 
 @example
 @group
@@ -1347,7 +1394,9 @@ An example that demonstration how to work with arbitrary real or complex
 double precision arrays is given by the file @file{mypow2.c} as given
 below.
 
-@longexamplefile{mypow2.c}
+@example
+@EXAMPLEFILE(mypow2.c)
+@end example
 
 @noindent
 with an example of its use
@@ -1376,7 +1425,9 @@ use of strings and character matrices in mex-files.  An example of their
 use, that parallels the demo in @file{stringdemo.cc}, is given in the
 file @file{mystring.c}, as seen below.
 
-@longexamplefile{mystring.c}
+@example
+@EXAMPLEFILE(mystring.c)
+@end example
 
 @noindent
 An example of its expected output is
@@ -1404,7 +1455,11 @@ as we can in oct-files.  An example that reduplicates the functional of
 the @file{celldemo.cc} oct-file in a mex-file is given by
 @file{mycell.c} as below
 
-@examplefile{mycell.c}
+@example
+@group
+@EXAMPLEFILE(mycell.c)
+@end group
+@end example
 
 @noindent
 which as can be seen below has exactly the same behavior as the oct-file
@@ -1485,7 +1540,9 @@ includes a Cell Array per field of the structure.
 An example that demonstrates the use of structures in mex-file can be
 found in the file @file{mystruct.c}, as seen below
 
-@longexamplefile{mystruct.c}
+@example
+@EXAMPLEFILE(mystruct.c)
+@end example
 
 An example of the behavior of this function within Octave is then
 
@@ -1574,7 +1631,9 @@ to the rows of the non-zero elements, and this is given by
 @code{mxGetIr}.  A complete example of the use of sparse matrices in
 mex-files is given by the file @file{mysparse.c} as seen below
 
-@longexamplefile{mysparse.c}
+@example
+@EXAMPLEFILE(mysparse.c)
+@end example
 
 @node Calling Other Functions in Mex-Files
 @subsection Calling Other Functions in Mex-Files
@@ -1583,7 +1642,9 @@ It is also possible call other Octave functions from within a mex-file
 using @code{mexCallMATLAB}.  An example of the use of
 @code{mexCallMATLAB} can be see in the example below
 
-@longexamplefile{myfeval.c}
+@example
+@EXAMPLEFILE(myfeval.c)
+@end example
 
 If this code is in the file @file{myfeval.c}, and is compiled to
 @file{myfeval.mex}, then an example of its use is
@@ -1613,10 +1674,14 @@ within a mex-file.
 The libraries Octave itself uses, can be utilized in standalone
 applications.  These applications then have access, for example, to the
 array and matrix classes as well as to all the Octave algorithms.  The
-following C++ program, uses class Matrix from liboctave.a or
-liboctave.so.
+following C++ program, uses class Matrix from @file{liboctave.a} or
+@file{liboctave.so}.
 
-@examplefile{standalone.cc}
+@example
+@group
+@EXAMPLEFILE(standalone.cc)
+@end group
+@end example
 
 @noindent
 mkoctfile can then be used to build a standalone application with a
@@ -1641,7 +1706,11 @@ Octave to be used by the application.  To do that the Octave interpreter
 needs to be initialized first.  An example of how to do this can then be
 seen in the code
 
-@examplefile{embedded.cc}
+@example
+@group
+@EXAMPLEFILE(embedded.cc)
+@end group
+@end example
 
 @noindent
 which is compiled and run as before as a standalone application with

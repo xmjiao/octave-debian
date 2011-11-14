@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 2000, 2004, 2005, 2006, 2007
-##               John W. Eaton
+## Copyright (C) 1995-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -18,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deffn {Operator} ;
+## @deftypefn {Operator} {} ;
 ## Array row or command separator.
 ## @seealso{comma}
-## @end deffn
+## @end deftypefn

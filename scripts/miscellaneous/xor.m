@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1999, 2000, 2002, 2005, 2006, 2007, 2008
-##               Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -18,11 +17,24 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Mapping Function} {} xor (@var{x}, @var{y})
+## @deftypefn {Mapping Function} {@var{z} =} xor (@var{x}, @var{y})
 ## Return the `exclusive or' of the entries of @var{x} and @var{y}.
 ## For boolean expressions @var{x} and @var{y},
-## @code{xor (@var{x}, @var{y})} is true if and only if @var{x} or @var{y}
-## is true, but not if both @var{x} and @var{y} are true.
+## @code{xor (@var{x}, @var{y})} is true if and only if one of @var{x} or
+## @var{y} is true.  Otherwise, for @var{x} and @var{y} both true or both
+## false, @code{xor} returns false.
+##
+## The truth table for the xor operation is
+##
+## @multitable @columnfractions 0.44 .03 .05 .03 0.44
+## @item @tab @var{x} @tab @var{y} @tab @var{z} @tab
+## @item @tab 0 @tab 0 @tab 0 @tab
+## @item @tab 1 @tab 0 @tab 1 @tab
+## @item @tab 0 @tab 1 @tab 1 @tab
+## @item @tab 1 @tab 1 @tab 0 @tab
+## @end multitable
+##
+## @seealso{and, or, not}
 ## @end deftypefn
 
 ## Author: KH <Kurt.Hornik@wu-wien.ac.at>
@@ -33,9 +45,10 @@ function z = xor (x, y)
 
   if (nargin == 2)
     if (isscalar (x) || isscalar (y) || size_equal (x, y))
-      z = logical ((x | y) - (x & y));
+      ## Typecast to logicals is necessary for other numeric types.
+      z = logical (x) != logical (y);
     else
-      error ("xor: x and y must be of common size or scalars");
+      error ("xor: X and Y must be of common size or scalars");
     endif
   else
     print_usage ();

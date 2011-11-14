@@ -1,5 +1,4 @@
-## Copyright (C) 1994, 1995, 1996, 1997, 1999, 2000, 2002, 2003, 2004,
-##               2005, 2006, 2007, 2008, 2009 John W. Eaton
+## Copyright (C) 1994-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -18,17 +17,24 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} axis (@var{limits})
+## @deftypefn  {Function File} {} axis ()
+## @deftypefnx {Function File} {} axis ([@var{x}_lo @var{x}_hi])
+## @deftypefnx {Function File} {} axis ([@var{x}_lo @var{x}_hi @var{y}_lo @var{y}_hi])
+## @deftypefnx {Function File} {} axis ([@var{x}_lo @var{x}_hi @var{y}_lo @var{y}_hi @var{z}_lo @var{z}_hi])
+## @deftypefnx {Function File} {} axis (@var{option})
+## @deftypefnx {Function File} {} axis (@dots{}, @var{option})
+## @deftypefnx {Function File} {} axis (@var{h}, @dots{})
+## @deftypefnx {Function File} {@var{limits} =} axis ()
 ## Set axis limits for plots.
 ##
-## The argument @var{limits} should be a 2, 4, or 6 element vector.  The
-## first and second elements specify the lower and upper limits for the x
-## axis.  The third and fourth specify the limits for the y-axis, and the
+## The argument @var{limits} should be a 2-, 4-, or 6-element vector.  The
+## first and second elements specify the lower and upper limits for the
+## x-axis.  The third and fourth specify the limits for the y-axis, and the
 ## fifth and sixth specify the limits for the z-axis.
 ##
-## Without any arguments, @code{axis} turns autoscaling on.  
+## Without any arguments, @code{axis} turns autoscaling on.
 ##
-## With one output argument, @code{x = axis} returns the current axes 
+## With one output argument, @code{x = axis} returns the current axes.
 ##
 ## The vector argument specifying limits is optional, and additional
 ## string arguments may be used to specify various axis properties.  For
@@ -42,7 +48,7 @@
 ## forces a square aspect ratio, and
 ##
 ## @example
-## axis ("labely", "tic");
+## axis ("tic", "labely");
 ## @end example
 ##
 ## @noindent
@@ -52,11 +58,13 @@
 ## @noindent
 ## The following options control the aspect ratio of the axes.
 ##
-## @table @code
+## @table @asis
 ## @item "square"
 ## Force a square aspect ratio.
+##
 ## @item "equal"
 ## Force x distance to equal y-distance.
+##
 ## @item "normal"
 ## Restore the balance.
 ## @end table
@@ -64,12 +72,14 @@
 ## @noindent
 ## The following options control the way axis limits are interpreted.
 ##
-## @table @code
-## @item "auto" 
+## @table @asis
+## @item "auto"
 ## Set the specified axes to have nice limits around the data
 ## or all if no axes are specified.
-## @item "manual" 
+##
+## @item "manual"
 ## Fix the current axes limits.
+##
 ## @item "tight"
 ## Fix axes to the limits of the data.
 ## @end table
@@ -81,17 +91,21 @@
 ## @noindent
 ## The following options affect the appearance of tic marks.
 ##
-## @table @code
-## @item "on" 
+## @table @asis
+## @item "on"
 ## Turn tic marks and labels on for all axes.
+##
 ## @item "off"
 ## Turn tic marks off for all axes.
+##
 ## @item "tic[xyz]"
 ## Turn tic marks on for all axes, or turn them on for the
 ## specified axes and off for the remainder.
+##
 ## @item "label[xyz]"
-## Turn tic labels on for all axes, or turn them on for the 
+## Turn tic labels on for all axes, or turn them on for the
 ## specified axes and off for the remainder.
+##
 ## @item "nolabel"
 ## Turn tic labels off for all axes.
 ## @end table
@@ -101,13 +115,14 @@
 ## The following options affect the direction of increasing values on
 ## the axes.
 ##
-## @table @code
+## @table @asis
 ## @item "ij"
 ## Reverse y-axis, so lower values are nearer the top.
-## @item "xy" 
-## Restore y-axis, so higher values are nearer the top. 
+##
+## @item "xy"
+## Restore y-axis, so higher values are nearer the top.
 ## @end table
-## 
+##
 ## If an axes handle is passed as the first argument, then operate on
 ## this axes rather than the current axes.
 ## @end deftypefn
@@ -141,8 +156,13 @@ function curr_axis = __axis__ (ca, ax, varargin)
     else
       xlim = get (ca, "xlim");
       ylim = get (ca, "ylim");
-      zlim = get (ca, "zlim");
-      curr_axis = [xlim, ylim, zlim];
+      view = get (ca, "view");
+      if (view(2) == 90)
+        curr_axis = [xlim, ylim];
+      else
+        zlim = get (ca, "zlim");
+        curr_axis = [xlim, ylim, zlim];
+      endif
     endif
 
   elseif (ischar (ax))
@@ -156,41 +176,38 @@ function curr_axis = __axis__ (ca, ax, varargin)
 
       ## aspect ratio
     elseif (strcmpi (ax, "image"))
-      __axis__ (ca, "equal")
+      __axis__ (ca, "equal");
       __do_tight_option__ (ca);
     elseif (strcmpi (ax, "square"))
-      if (__gnuplot_has_feature__ ("screen_coordinates_for_{lrtb}margin"))
-        set (ca, "dataaspectratio", [1, 1, 1]);
-      else
-        x = xlim;
-        y = ylim;
-        set (ca, "dataaspectratio", [(y(2)-y(1)), (x(2)-x(1)), 1]);
-      endif
+      set (ca, "plotboxaspectratio", [1, 1, 1]);
     elseif  (strcmp (ax, "equal"))
-      if (__gnuplot_has_feature__ ("screen_coordinates_for_{lrtb}margin"))
-        x = xlim;
-        y = ylim;
-        set (ca, "dataaspectratio", [(x(2)-x(1)), (y(2)-y(1)), 1]);
-      else
-        set (ca, "dataaspectratio", [1, 1, 1]);
+      if (strcmp (get (get (ca, "parent"), "__graphics_toolkit__"), "gnuplot"))
+        ## FIXME - gnuplot applies the aspect ratio activepostionproperty.
+        set (ca, "activepositionproperty", "position");
+        ## The following line is a trick used to trigger the recalculation of
+        ## aspect related magnitudes even if the aspect ratio is the same
+        ## (useful with the x11 gnuplot terminal after a window resize)
+        set (ca, "dataaspectratiomode", "auto");
       endif
+      set (ca, "dataaspectratio", [1, 1, 1]);
     elseif (strcmpi (ax, "normal"))
-      set (ca, "dataaspectratiomode", "auto");
+      set (ca, "plotboxaspectratio", [1, 1, 1]);
+      set (ca, "plotboxaspectratiomode", "auto");
 
       ## axis limits
     elseif (len >= 4 && strcmpi (ax(1:4), "auto"))
       if (len > 4)
-	if (any (ax == "x"))
-	  set (ca, "xlimmode", "auto");
-	endif
-	if (any (ax == "y"))
-	  set (ca, "ylimmode", "auto");
-	endif
-	if (any (ax == "z"))
-	  set (ca, "zlimmode", "auto");
-	endif
+        if (any (ax == "x"))
+          set (ca, "xlimmode", "auto");
+        endif
+        if (any (ax == "y"))
+          set (ca, "ylimmode", "auto");
+        endif
+        if (any (ax == "z"))
+          set (ca, "zlimmode", "auto");
+        endif
       else
-	set (ca, "xlimmode", "auto", "ylimmode", "auto", "zlimmode", "auto");
+        set (ca, "xlimmode", "auto", "ylimmode", "auto", "zlimmode", "auto");
       endif
     elseif (strcmpi (ax, "manual"))
       ## fixes the axis limits, like axis(axis) should;
@@ -203,7 +220,7 @@ function curr_axis = __axis__ (ca, ax, varargin)
       set (ca, "xtickmode", "auto", "ytickmode", "auto", "ztickmode", "auto");
       if (strcmpi (ax, "on"))
         set (ca, "xticklabelmode", "auto", "yticklabelmode", "auto",
-	   "zticklabelmode", "auto");
+           "zticklabelmode", "auto");
       endif
       set (ca, "visible", "on");
     elseif (strcmpi (ax, "off"))
@@ -211,40 +228,40 @@ function curr_axis = __axis__ (ca, ax, varargin)
       set (ca, "visible", "off");
     elseif (len > 3 && strcmpi (ax(1:3), "tic"))
       if (any (ax == "x"))
-	set (ca, "xtickmode", "auto");
+        set (ca, "xtickmode", "auto");
       else
-	set (ca, "xtick", []);
+        set (ca, "xtick", []);
       endif
       if (any (ax == "y"))
-	set (ca, "ytickmode", "auto");
+        set (ca, "ytickmode", "auto");
       else
-	set (ca, "ytick", []);
+        set (ca, "ytick", []);
       endif
       if (any (ax == "z"))
-	set (ca, "ztickmode", "auto");
+        set (ca, "ztickmode", "auto");
       else
-	set (ca, "ztick", []);
+        set (ca, "ztick", []);
       endif
     elseif (strcmpi (ax, "label"))
       set (ca, "xticklabelmode", "auto", "yticklabelmode", "auto",
-	   "zticklabelmode", "auto");
+           "zticklabelmode", "auto");
     elseif (strcmpi (ax, "nolabel"))
       set (ca, "xticklabel", "", "yticklabel", "", "zticklabel", "");
     elseif (len > 5 && strcmpi (ax(1:5), "label"))
       if (any (ax == "x"))
-	set (ca, "xticklabelmode", "auto");
+        set (ca, "xticklabelmode", "auto");
       else
-	set (ca, "xticklabel", "");
+        set (ca, "xticklabel", "");
       endif
       if (any (ax == "y"))
-	set (ca, "yticklabelmode", "auto");
+        set (ca, "yticklabelmode", "auto");
       else
-	set (ca, "yticklabel", "");
+        set (ca, "yticklabel", "");
       endif
       if (any (ax == "z"))
-	set (ca, "zticklabelmode", "auto");
+        set (ca, "zticklabelmode", "auto");
       else
-	set (ca, "zticklabel", "");
+        set (ca, "zticklabel", "");
       endif
 
     else
@@ -260,8 +277,8 @@ function curr_axis = __axis__ (ca, ax, varargin)
     endif
 
     for i = 1:2:len
-      if (ax(i) == ax(i+1))
-	error ("axis: limits(%d) cannot equal limits(%d)", i, i+1);
+      if (ax(i) >= ax(i+1))
+        error ("axis: limits(%d) must be less than limits(%d)", i, i+1);
       endif
     endfor
 
@@ -292,17 +309,31 @@ function lims = __get_tight_lims__ (ca, ax)
   ## Get the limits for axis ("tight").
   ## AX should be one of "x", "y", or "z".
   kids = findobj (ca, "-property", strcat (ax, "data"));
+  ## Since contours set the cdata for the patches to the hggroup zdata property, exclude
+  ## hgroups when determining the tight limits.
+  hg_kids = findobj (ca, "-property", strcat (ax, "data"), "type", "hggroup");
+  kids = setdiff (kids, hg_kids);
   if (isempty (kids))
     ## Return the current limits.
     lims = get (ca, strcat (ax, "lim"));
   else
     data = get (kids, strcat (ax, "data"));
+    scale = get (ca, strcat (ax, "scale"));
+    if (strcmp (scale, "log"))
+      if (iscell (data))
+        for i = 1:length(data)
+          data{i}(data{i}<=0) = NaN;
+        endfor
+      else
+        data(data<=0) = NaN;
+      endif
+    endif
     if (iscell (data))
       data = data (find (! cellfun (@isempty, data)));
       if (! isempty (data))
-        lims_min = min (cellfun (@min, cellfun (@min, data, 'UniformOutput', false)(:))); 
-        lims_max = max (cellfun (@max, cellfun (@max, data, 'UniformOutput', false)(:))); 
-        lims = [lims_min, lims_max]; 
+        lims_min = min (cellfun (@min, cellfun (@min, data, 'uniformoutput', false)(:)));
+        lims_max = max (cellfun (@max, cellfun (@max, data, 'uniformoutput', false)(:)));
+        lims = [lims_min, lims_max];
       else
         lims = [0, 1];
       endif
@@ -311,19 +342,21 @@ function lims = __get_tight_lims__ (ca, ax)
     endif
   endif
 
-
 endfunction
 
 function __do_tight_option__ (ca)
 
   set (ca,
        "xlim", __get_tight_lims__ (ca, "x"),
-       "ylim", __get_tight_lims__ (ca, "y"),
-       "zlim", __get_tight_lims__ (ca, "z"));
+       "ylim", __get_tight_lims__ (ca, "y"));
+  if __calc_dimensions__ (ca) > 2
+    set (ca, "zlim", __get_tight_lims__ (ca, "z"));
+  endif
 
 endfunction
 
 %!demo
+%! clf
 %! t=0:0.01:2*pi; x=sin(t);
 %!
 %! subplot(221);
@@ -339,13 +372,14 @@ endfunction
 %! plot(t, x);
 %! title("equal plot");
 %! axis("equal");
-%! 
+%!
 %! subplot(224);
 %! plot(t, x);
 %! title("normal plot again");
 %! axis("normal");
 
 %!demo
+%! clf
 %! t=0:0.01:2*pi; x=sin(t);
 %!
 %! subplot(121);
@@ -359,6 +393,7 @@ endfunction
 %! axis("xy");
 
 %!demo
+%! clf
 %! t=0:0.01:2*pi; x=sin(t);
 %!
 %! subplot(331);
@@ -407,6 +442,7 @@ endfunction
 %! axis("on");
 
 %!demo
+%! clf
 %! t=0:0.01:2*pi; x=sin(t);
 %!
 %! subplot(321);
@@ -457,5 +493,18 @@ endfunction
 %! [x,y,z] = sombrero;
 %! s = x1/max(x(:));
 %! pcolor(s*x+x1,s*y+x1/2,5*z)
+%! axis tight
+
+%!demo
+%! clf
+%! x = -10:10;
+%! plot (x, x, x, -x)
+%! set (gca, "yscale", "log")
+%! legend ({"x >= 1", "x <= 1"}, "location", "north")
+%! title ("ylim = [1, 10]")
+
+%!demo
+%! clf
+%! loglog (1:20, "-s")
 %! axis tight
 

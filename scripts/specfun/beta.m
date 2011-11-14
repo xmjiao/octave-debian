@@ -1,5 +1,4 @@
-## Copyright (C) 1994, 1995, 1996, 1997, 1999, 2000, 2002, 2005, 2006,
-##               2007, 2008, 2009 John W. Eaton
+## Copyright (C) 1994-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -30,6 +29,7 @@
 ## @example
 ## beta (a, b) = gamma (a) * gamma (b) / gamma (a + b).
 ## @end example
+##
 ## @end ifnottex
 ## @end deftypefn
 
@@ -44,11 +44,11 @@ function retval = beta (a, b)
   endif
 
   if (any (size (a) != size (b)) && numel (a) != 1 && numel (b) != 1)
-    error ("beta: inputs have inconsistent sizes");
+    error ("beta: inputs A and B have inconsistent sizes");
   endif
 
   if (! isreal (a) || ! isreal (b))
-    error ("beta: inputs must be real");
+    error ("beta: inputs A and B must be real");
   endif
 
   retval = real (exp (gammaln (a) + gammaln (b) - gammaln (a+b)));

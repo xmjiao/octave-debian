@@ -1,4 +1,4 @@
-## Copyright (C) 1999, 2006, 2007, 2009 David M. Doolin
+## Copyright (C) 1999-2011 David M. Doolin
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} polyarea (@var{x}, @var{y})
+## @deftypefn  {Function File} {} polyarea (@var{x}, @var{y})
 ## @deftypefnx {Function File} {} polyarea (@var{x}, @var{y}, @var{dim})
 ##
 ## Determines area of a polygon by triangle method.  The variables
@@ -33,14 +33,14 @@
 
 ## todo:  Add moments for centroid, etc.
 ##
-## bugs and limitations:  
+## bugs and limitations:
 ##        Probably ought to be an optional check to make sure that
-##        traversing the vertices doesn't make any sides cross 
-##        (Is simple closed curve the technical definition of this?). 
+##        traversing the vertices doesn't make any sides cross
+##        (Is simple closed curve the technical definition of this?).
 
 ## Author: David M. Doolin <doolin@ce.berkeley.edu>
 ## Date: 1999-04-14
-## Modified-by: 
+## Modified-by:
 ##    2000-01-15 Paul Kienzle <pkienzle@kienzle.powernet.co.uk>
 ##    * use matlab compatible interface
 ##    * return absolute value of area so traversal order doesn't matter
@@ -57,7 +57,7 @@ function a = polyarea (x, y, dim)
       a = abs (sum (x .* (shift (y, -1, dim) - shift (y, 1, dim)), dim)) / 2;
     endif
   else
-    error ("polyarea: x and y must have the same shape");
+    error ("polyarea: X and Y must have the same shape");
   endif
 endfunction
 

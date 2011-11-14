@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2000, 2001, 2002, 2003, 2004, 2005,
-              2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -53,15 +52,15 @@ tree_try_catch_command::~tree_try_catch_command (void)
 
 tree_command *
 tree_try_catch_command::dup (symbol_table::scope_id scope,
-			     symbol_table::context_id context) const
+                             symbol_table::context_id context) const
 {
   return new
     tree_try_catch_command (try_code ? try_code->dup (scope, context) : 0,
-			    catch_code ? catch_code->dup (scope, context) : 0,
-			    lead_comm ? lead_comm->dup () : 0,
-			    mid_comm ? mid_comm->dup () : 0,
-			    trail_comm ? trail_comm->dup () : 0,
-			    line (), column ());
+                            catch_code ? catch_code->dup (scope, context) : 0,
+                            lead_comm ? lead_comm->dup () : 0,
+                            mid_comm ? mid_comm->dup () : 0,
+                            trail_comm ? trail_comm->dup () : 0,
+                            line (), column ());
 }
 
 void
@@ -83,7 +82,7 @@ tree_unwind_protect_command::~tree_unwind_protect_command (void)
 
 tree_command *
 tree_unwind_protect_command::dup (symbol_table::scope_id scope,
-				  symbol_table::context_id context) const
+                                  symbol_table::context_id context) const
 {
   return new tree_unwind_protect_command
     (unwind_protect_code ? unwind_protect_code->dup (scope, context) : 0,
@@ -99,9 +98,3 @@ tree_unwind_protect_command::accept (tree_walker& tw)
 {
   tw.visit_unwind_protect_command (*this);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

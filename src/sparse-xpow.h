@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 2004, 2005, 2007 David Bateman
-Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004 Andy Adler
+Copyright (C) 2004-2011 David Bateman
+Copyright (C) 1998-2004 Andy Adler
 
 This file is part of Octave.
 
@@ -39,25 +39,19 @@ extern octave_value elem_xpow (double a, const SparseComplexMatrix& b);
 extern octave_value elem_xpow (const SparseMatrix& a, double b);
 extern octave_value elem_xpow (const SparseMatrix& a, const SparseMatrix& b);
 extern octave_value elem_xpow (const SparseMatrix& a, const Complex& b);
-extern octave_value elem_xpow (const SparseMatrix& a, 
-			       const SparseComplexMatrix& b);
+extern octave_value elem_xpow (const SparseMatrix& a,
+                               const SparseComplexMatrix& b);
 
 extern octave_value elem_xpow (const Complex& a, const SparseMatrix& b);
-extern octave_value elem_xpow (const Complex& a, 
-			       const SparseComplexMatrix& b);
+extern octave_value elem_xpow (const Complex& a,
+                               const SparseComplexMatrix& b);
 
 extern octave_value elem_xpow (const SparseComplexMatrix& a, double b);
-extern octave_value elem_xpow (const SparseComplexMatrix& a, 
-			       const SparseMatrix& b);
-extern octave_value elem_xpow (const SparseComplexMatrix& a, 
-			       const Complex& b);
-extern octave_value elem_xpow (const SparseComplexMatrix& a, 
-			       const SparseComplexMatrix& b);
+extern octave_value elem_xpow (const SparseComplexMatrix& a,
+                               const SparseMatrix& b);
+extern octave_value elem_xpow (const SparseComplexMatrix& a,
+                               const Complex& b);
+extern octave_value elem_xpow (const SparseComplexMatrix& a,
+                               const SparseComplexMatrix& b);
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

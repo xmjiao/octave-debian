@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004,
-              2005, 2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
+Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
 
@@ -39,74 +39,27 @@ along with Octave; see the file COPYING.  If not, see
 
 // double -> double mappers.
 
-double
-arg (double x)
-{
-  return atan2 (0.0, x);
-}
+// Both xtrunc and xround belong here so we can keep gnulib:: out of
+// lo-mappers.h.
 
 double
-conj (double x)
+xtrunc (double x)
 {
-  return x;
+  return gnulib::trunc (x);
 }
 
-double
-fix (double x)
+double xfloor (double x)
 {
-  return x > 0 ? floor (x) : ceil (x);
-}
-
-double
-imag (double)
-{
-  return 0.0;
-}
-
-double
-real (double x)
-{
-  return x;
+  return gnulib::floor (x);
 }
 
 double
 xround (double x)
 {
-#if defined (HAVE_ROUND)
-  return round (x);
-#else
-  if (x >= 0)
-    {
-      double y = floor (x);
-
-      if ((x - y) >= 0.5)
-	y += 1.0;
-
-      return y;
-    }
-  else
-    {
-      double y = ceil (x);
-
-      if ((y - x) >= 0.5)
-	y -= 1.0;
-
-      return y;
-    }
-#endif
+  return gnulib::round (x);
 }
 
 double
-xtrunc (double x)
-{
-#if defined (HAVE_TRUNC)
-  return trunc (x);
-#else
-  return x > 0 ? floor (x) : ceil (x);
-#endif
-}
-
-double 
 xroundb (double x)
 {
   double t = xround (x);
@@ -228,20 +181,6 @@ octave_is_NaN_or_NA (double x)
 
 // (double, double) -> double mappers.
 
-// According to Matlab, is both args are NaN, the first one is returned.
-
-double
-xmin (double x, double y)
-{
-  return  xisnan (y) ? x : (x <= y ? x : y);
-}
-
-double
-xmax (double x, double y)
-{
-  return  xisnan (y) ? x : (x >= y ? x : y);
-}
-
 // complex -> complex mappers.
 
 Complex
@@ -286,44 +225,6 @@ atanh (const Complex& x)
   return log ((1.0 + x) / (1.0 - x)) / 2.0;
 }
 
-Complex
-ceil (const Complex& x)
-{
-  return Complex (ceil (real (x)), ceil (imag (x)));
-}
-
-Complex
-fix (const Complex& x)
-{
-  return Complex (fix (real (x)), fix (imag (x)));
-}
-
-Complex
-floor (const Complex& x)
-{
-  return Complex (floor (real (x)), floor (imag (x)));
-}
-
-Complex
-xround (const Complex& x)
-{
-  return Complex (xround (real (x)), xround (imag (x)));
-}
-
-Complex
-xroundb (const Complex& x)
-{
-  return Complex (xroundb (real (x)), xroundb (imag (x)));
-}
-
-Complex
-signum (const Complex& x)
-{
-  double tmp = abs (x);
-
-  return tmp == 0 ? 0.0 : x / tmp;
-}
-
 // complex -> bool mappers.
 
 bool
@@ -357,79 +258,27 @@ xmax (const Complex& x, const Complex& y)
 
 // float -> float mappers.
 
-float
-arg (float x)
-{
-  return atan2 (0.0f, x);
-}
+// Both xtrunc and xround belong here so we can keep gnulib:: out of
+// lo-mappers.h.
 
 float
-conj (float x)
+xtrunc (float x)
 {
-  return x;
-}
-
-float
-fix (float x)
-{
-  return x > 0 ? floor (x) : ceil (x);
-}
-
-float
-imag (float)
-{
-  return 0.0;
-}
-
-float
-real (float x)
-{
-  return x;
+  return gnulib::truncf (x);
 }
 
 float
 xround (float x)
 {
-#if defined (HAVE_ROUND)
-  return round (x);
-#else
-  if (x >= 0)
-    {
-      float y = floor (x);
-
-      if ((x - y) >= 0.5)
-	y += 1.0;
-
-      return y;
-    }
-  else
-    {
-      float y = ceil (x);
-
-      if ((y - x) >= 0.5)
-	y -= 1.0;
-
-      return y;
-    }
-#endif
+  return gnulib::round (x);
 }
 
 float
-xtrunc (float x)
-{
-#if defined (HAVE_TRUNC)
-  return trunc (x);
-#else
-  return x > 0 ? floor (x) : ceil (x);
-#endif
-}
-
-float 
 xroundb (float x)
 {
   float t = xround (x);
 
-  if (fabs (x - t) == 0.5)
+  if (fabsf (x - t) == 0.5)
     t = 2 * xtrunc (0.5 * t);
 
   return t;
@@ -546,20 +395,6 @@ octave_is_NaN_or_NA (float x)
 
 // (float, float) -> float mappers.
 
-// FIXME -- need to handle NA too?
-
-float
-xmin (float x, float y)
-{
-  return  xisnan (y) ? x : (x <= y ? x : y);
-}
-
-float
-xmax (float x, float y)
-{
-  return  xisnan (y) ? x : (x >= y ? x : y);
-}
-
 // complex -> complex mappers.
 
 FloatComplex
@@ -604,44 +439,6 @@ atanh (const FloatComplex& x)
   return log ((static_cast<float>(1.0) + x) / (static_cast<float>(1.0) - x)) / static_cast<float>(2.0);
 }
 
-FloatComplex
-ceil (const FloatComplex& x)
-{
-  return FloatComplex (ceil (real (x)), ceil (imag (x)));
-}
-
-FloatComplex
-fix (const FloatComplex& x)
-{
-  return FloatComplex (fix (real (x)), fix (imag (x)));
-}
-
-FloatComplex
-floor (const FloatComplex& x)
-{
-  return FloatComplex (floor (real (x)), floor (imag (x)));
-}
-
-FloatComplex
-xround (const FloatComplex& x)
-{
-  return FloatComplex (xround (real (x)), xround (imag (x)));
-}
-
-FloatComplex
-xroundb (const FloatComplex& x)
-{
-  return FloatComplex (xroundb (real (x)), xroundb (imag (x)));
-}
-
-FloatComplex
-signum (const FloatComplex& x)
-{
-  float tmp = abs (x);
-
-  return tmp == 0 ? 0.0 : x / tmp;
-}
-
 // complex -> bool mappers.
 
 bool
@@ -672,8 +469,165 @@ xmax (const FloatComplex& x, const FloatComplex& y)
   return abs (x) >= abs (y) ? x : (xisnan (x) ? x : y);
 }
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+Complex
+rc_acos (double x)
+{
+  return fabs (x) > 1.0 ? acos (Complex (x)) : Complex (acos (x));
+}
+
+FloatComplex
+rc_acos (float x)
+{
+  return fabsf (x) > 1.0f ? acos (FloatComplex (x)) : FloatComplex (acosf (x));
+}
+
+Complex
+rc_acosh (double x)
+{
+  return x < 1.0 ? acosh (Complex (x)) : Complex (acosh (x));
+}
+
+FloatComplex
+rc_acosh (float x)
+{
+  return x < 1.0f ? acosh (FloatComplex (x)) : FloatComplex (acoshf (x));
+}
+
+Complex
+rc_asin (double x)
+{
+  return fabs (x) > 1.0 ? asin (Complex (x)) : Complex (asin (x));
+}
+
+FloatComplex
+rc_asin (float x)
+{
+  return fabsf (x) > 1.0f ? asin (FloatComplex (x)) : FloatComplex (asinf (x));
+}
+
+Complex
+rc_atanh (double x)
+{
+  return fabs (x) > 1.0 ? atanh (Complex (x)) : Complex (atanh (x));
+}
+
+FloatComplex
+rc_atanh (float x)
+{
+  return fabsf (x) > 1.0f ? atanh (FloatComplex (x)) : FloatComplex (atanhf (x));
+}
+
+Complex
+rc_log (double x)
+{
+  const double pi = 3.14159265358979323846;
+  return x < 0.0 ? Complex (log (-x), pi) : Complex (log (x));
+}
+
+FloatComplex
+rc_log (float x)
+{
+  const float pi = 3.14159265358979323846f;
+  return x < 0.0f ? FloatComplex (logf (-x), pi) : FloatComplex (logf (x));
+}
+
+Complex
+rc_log2 (double x)
+{
+  const double pil2 = 4.53236014182719380962; // = pi / log(2)
+  return x < 0.0 ? Complex (xlog2 (-x), pil2) : Complex (xlog2 (x));
+}
+
+FloatComplex
+rc_log2 (float x)
+{
+  const float pil2 = 4.53236014182719380962f; // = pi / log(2)
+  return x < 0.0f ? FloatComplex (xlog2 (-x), pil2) : FloatComplex (xlog2 (x));
+}
+
+Complex
+rc_log10 (double x)
+{
+  const double pil10 = 1.36437635384184134748; // = pi / log(10)
+  return x < 0.0 ? Complex (log10 (-x), pil10) : Complex (log10 (x));
+}
+
+FloatComplex
+rc_log10 (float x)
+{
+  const float pil10 = 1.36437635384184134748f; // = pi / log(10)
+  return x < 0.0f ? FloatComplex (log10 (-x), pil10) : FloatComplex (log10f (x));
+}
+
+Complex
+rc_sqrt (double x)
+{
+  return x < 0.0 ? Complex (0.0, sqrt (-x)) : Complex (sqrt (x));
+}
+
+FloatComplex
+rc_sqrt (float x)
+{
+  return x < 0.0f ? FloatComplex (0.0f, sqrtf (-x)) : FloatComplex (sqrtf (x));
+}
+
+bool
+xnegative_sign (double x)
+{
+  return __lo_ieee_signbit (x);
+}
+
+bool
+xnegative_sign (float x)
+{
+  return __lo_ieee_float_signbit (x);
+}
+
+// Convert X to the nearest integer value.  Should not pass NaN to
+// this function.
+
+// Sometimes you need a large integer, but not always.
+
+octave_idx_type
+NINTbig (double x)
+{
+  if (x > std::numeric_limits<octave_idx_type>::max ())
+    return std::numeric_limits<octave_idx_type>::max ();
+  else if (x < std::numeric_limits<octave_idx_type>::min ())
+    return std::numeric_limits<octave_idx_type>::min ();
+  else
+    return static_cast<octave_idx_type> ((x > 0) ? (x + 0.5) : (x - 0.5));
+}
+
+octave_idx_type
+NINTbig (float x)
+{
+  if (x > std::numeric_limits<octave_idx_type>::max ())
+    return std::numeric_limits<octave_idx_type>::max ();
+  else if (x < std::numeric_limits<octave_idx_type>::min ())
+    return std::numeric_limits<octave_idx_type>::min ();
+  else
+    return static_cast<octave_idx_type> ((x > 0) ? (x + 0.5) : (x - 0.5));
+}
+
+int
+NINT (double x)
+{
+  if (x > std::numeric_limits<int>::max ())
+    return std::numeric_limits<int>::max ();
+  else if (x < std::numeric_limits<int>::min ())
+    return std::numeric_limits<int>::min ();
+  else
+    return static_cast<int> ((x > 0) ? (x + 0.5) : (x - 0.5));
+}
+
+int
+NINT (float x)
+{
+  if (x > std::numeric_limits<int>::max ())
+    return std::numeric_limits<int>::max ();
+  else if (x < std::numeric_limits<int>::min ())
+    return std::numeric_limits<int>::min ();
+  else
+    return static_cast<int> ((x > 0) ? (x + 0.5) : (x - 0.5));
+}

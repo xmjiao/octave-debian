@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 VZLU Prague, a.s.
+## Copyright (C) 2008-2011 VZLU Prague, a.s.
 ##
 ## This file is part of Octave.
 ##
@@ -19,32 +19,66 @@
 ## Author: Jaroslav Hajek <highegg@gmail.com>
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {[@var{x}, @var{fval}, @var{info}, @var{output}] =} fzero (@var{fun}, @var{x0}, @var{options})
-## Find a zero point of a univariate function.  @var{fun} should be a function
-## handle or name.  @var{x0} specifies a starting point.  @var{options} is a
-## structure specifying additional options.  Currently, @code{fzero}
+## @deftypefn  {Function File} {} fzero (@var{fun}, @var{x0})
+## @deftypefnx {Function File} {} fzero (@var{fun}, @var{x0}, @var{options})
+## @deftypefnx {Function File} {[@var{x}, @var{fval}, @var{info}, @var{output}] =} fzero (@dots{})
+## Find a zero of a univariate function.
+##
+## @var{fun} is a function handle, inline function, or string
+## containing the name of the function to evaluate.
+## @var{x0} should be a two-element vector specifying two points which
+## bracket a zero.  In other words, there must be a change in sign of the
+## function between @var{x0}(1) and @var{x0}(2).  More mathematically, the
+## following must hold
+##
+## @example
+## sign (@var{fun}(@var{x0}(1))) * sign (@var{fun}(@var{x0}(2))) <= 0
+## @end example
+##
+## If @var{x0} is a single scalar then several nearby and distant
+## values are probed in an attempt to obtain a valid bracketing.  If this
+## is not successful, the function fails.
+## @var{options} is a structure specifying additional options.
+## Currently, @code{fzero}
 ## recognizes these options: @code{"FunValCheck"}, @code{"OutputFcn"},
-## @code{"TolX"}, @code{"MaxIter"}, @code{"MaxFunEvals"}. 
-## For description of these options, see @ref{doc-optimset,,optimset}.
-## 
+## @code{"TolX"}, @code{"MaxIter"}, @code{"MaxFunEvals"}.
+## For a description of these options, see @ref{doc-optimset,,optimset}.
+##
 ## On exit, the function returns @var{x}, the approximate zero point
 ## and @var{fval}, the function value thereof.
 ## @var{info} is an exit flag that can have these values:
+##
 ## @itemize
 ## @item 1
-## The algorithm converged to a solution.
+##  The algorithm converged to a solution.
+##
 ## @item 0
-## Maximum number of iterations or function evaluations has been exhausted.
+##  Maximum number of iterations or function evaluations has been reached.
+##
 ## @item -1
 ## The algorithm has been terminated from user output function.
-## @item -2 
-## A general unexpected error.
-## @item -3
-## A non-real value encountered.
-## @item -4
-## A NaN value encountered.
+##
+## @item -5
+## The algorithm may have converged to a singular point.
 ## @end itemize
-## @seealso{optimset, fsolve} 
+##
+## @var{output} is a structure containing runtime information about the
+## @code{fzero} algorithm.  Fields in the structure are:
+##
+## @itemize
+## @item iterations
+##  Number of iterations through loop.
+##
+## @item nfev
+##  Number of function evaluations.
+##
+## @item bracketx
+##  A two-element vector with the final bracketing of the zero along the x-axis.
+##
+## @item brackety
+##  A two-element vector with the final bracketing of the zero along the y-axis.
+## @end itemize
+## @seealso{optimset, fsolve}
 ## @end deftypefn
 
 ## This is essentially the ACM algorithm 748: Enclosing Zeros of
@@ -65,7 +99,7 @@ function [x, fval, info, output] = fzero (fun, x0, options = struct ())
 
   ## Get default options if requested.
   if (nargin == 1 && ischar (fun) && strcmp (fun, 'defaults'))
-    x = optimset ("MaxIter", Inf, "MaxFunEvals", Inf, "TolX", 0, \
+    x = optimset ("MaxIter", Inf, "MaxFunEvals", Inf, "TolX", 1e-8, \
     "OutputFcn", [], "FunValCheck", "off");
     return;
   endif
@@ -75,14 +109,14 @@ function [x, fval, info, output] = fzero (fun, x0, options = struct ())
   endif
 
   if (ischar (fun))
-    fun = str2func (fun);
+    fun = str2func (fun, "global");
   endif
 
   ## TODO
   ## displev = optimget (options, "Display", "notify");
   funvalchk = strcmpi (optimget (options, "FunValCheck", "off"), "on");
   outfcn = optimget (options, "OutputFcn");
-  tolx = optimget (options, "TolX", 0);
+  tolx = optimget (options, "TolX", 1e-8);
   maxiter = optimget (options, "MaxIter", Inf);
   maxfev = optimget (options, "MaxFunEvals", Inf);
 
@@ -99,10 +133,11 @@ function [x, fval, info, output] = fzero (fun, x0, options = struct ())
   nfev = 0;
 
   x = fval = a = fa = b = fb = NaN;
+  eps = eps (class (x0));
 
   ## Prepare...
   a = x0(1);
-  fa = fun (a); 
+  fa = fun (a);
   nfev = 1;
   if (length (x0) > 1)
     b = x0(2);
@@ -127,7 +162,7 @@ function [x, fval, info, output] = fzero (fun, x0, options = struct ())
     u = a;
     a = b;
     b = u;
- 
+
     fu = fa;
     fa = fb;
     fb = fu;
@@ -135,6 +170,16 @@ function [x, fval, info, output] = fzero (fun, x0, options = struct ())
 
   if (! (sign (fa) * sign (fb) <= 0))
     error ("fzero:bracket", "fzero: not a valid initial bracketing");
+  endif
+
+  slope0 = (fb - fa) / (b - a);
+
+  if (fa == 0)
+    b = a;
+    fb = fa;
+  elseif (fb == 0)
+    a = b;
+    fa = fb;
   endif
 
   itype = 1;
@@ -201,7 +246,7 @@ function [x, fval, info, output] = fzero (fun, x0, options = struct ())
           endfor
         endif
       endif
-      itype += 1; 
+      itype += 1;
     case 4
       ## Double secant step.
       c = u - 2*(b - a)/(fb - fa)*fu;
@@ -226,13 +271,13 @@ function [x, fval, info, output] = fzero (fun, x0, options = struct ())
 
     ## Calculate new point.
     x = c;
-    fval = fc = fun (c); 
+    fval = fc = fun (c);
     niter ++; nfev ++;
 
     ## Modification 2: skip inverse cubic interpolation if
     ## nonmonotonicity is detected.
     if (sign (fc - fa) * sign (fc - fb) >= 0)
-      ## The new point broke monotonicity. 
+      ## The new point broke monotonicity.
       ## Disable inverse cubic.
       fe = fc;
     else
@@ -257,7 +302,7 @@ function [x, fval, info, output] = fzero (fun, x0, options = struct ())
 
     ## If there's an output function, use it now.
     if (outfcn)
-      optv.funccount = niter + 2;
+      optv.funccount = nfev;
       optv.fval = fval;
       optv.iteration = niter;
       if (outfcn (x, optv, "iter"))
@@ -285,10 +330,17 @@ function [x, fval, info, output] = fzero (fun, x0, options = struct ())
     endif
   endwhile
 
+  ## Check solution for a singularity by examining slope
+  if (info == 1)
+    if ((b - a) != 0 && abs ((fb - fa)/(b - a) / slope0) > max (1e6, 0.5/(eps+tolx)))
+      info = -5;
+    endif
+  endif
+
   output.iterations = niter;
-  output.funcCount = niter + 2;
-  output.bracket = [a, b];
-  output.bracketf = [fa, fb];
+  output.funcCount = nfev;
+  output.bracketx = [a, b];
+  output.brackety = [fa, fb];
 
 endfunction
 
@@ -298,11 +350,13 @@ function fx = guarded_eval (fun, x)
   fx = fun (x);
   fx = fx(1);
   if (! isreal (fx))
-    error ("fzero:notreal", "fzero: non-real value encountered"); 
+    error ("fzero:notreal", "fzero: non-real value encountered");
   elseif (isnan (fx))
-    error ("fzero:isnan", "fzero: NaN value encountered"); 
+    error ("fzero:isnan", "fzero: NaN value encountered");
   endif
 endfunction
 
-%!assert(fzero(@cos, [0, 3]), pi/2, 10*eps)
-%!assert(fzero(@(x) x^(1/3) - 1e-8, [0,1]), 1e-24, 1e-22*eps)
+%!shared opt0
+%! opt0 = optimset ("tolx", 0);
+%!assert(fzero(@cos, [0, 3], opt0), pi/2, 10*eps)
+%!assert(fzero(@(x) x^(1/3) - 1e-8, [0,1], opt0), 1e-24, 1e-22*eps)

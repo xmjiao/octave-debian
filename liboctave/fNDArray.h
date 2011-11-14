@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2003, 2004, 2005, 2006, 2007, 2008, 2009
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -24,44 +23,47 @@ along with Octave; see the file COPYING.  If not, see
 #if !defined (octave_FloatNDArray_h)
 #define octave_FloatNDArray_h 1
 
-#include "MArrayN.h"
+#include "MArray.h"
 #include "fMatrix.h"
 #include "intNDArray.h"
 
 #include "mx-defs.h"
 #include "mx-op-decl.h"
+#include "bsxfun-decl.h"
 
 class
 OCTAVE_API
-FloatNDArray : public MArrayN<float>
+FloatNDArray : public MArray<float>
 {
 public:
 
-  FloatNDArray (void) : MArrayN<float> () { }
+  typedef FloatMatrix matrix_type;
 
-  FloatNDArray (const dim_vector& dv) : MArrayN<float> (dv) { }
+  FloatNDArray (void) : MArray<float> () { }
+
+  FloatNDArray (const dim_vector& dv) : MArray<float> (dv) { }
 
   FloatNDArray (const dim_vector& dv, float val)
-    : MArrayN<float> (dv, val) { }
-  
-  FloatNDArray (const FloatNDArray& a) : MArrayN<float> (a) { }
+    : MArray<float> (dv, val) { }
 
-  FloatNDArray (const FloatMatrix& a) : MArrayN<float> (a) { }
+  FloatNDArray (const FloatNDArray& a) : MArray<float> (a) { }
 
-  template <class U>
-  FloatNDArray (const MArrayN<U>& a) : MArrayN<float> (a) { }
+  FloatNDArray (const FloatMatrix& a) : MArray<float> (a) { }
 
   template <class U>
-  FloatNDArray (const ArrayN<U>& a) : MArrayN<float> (a) { }
+  FloatNDArray (const MArray<U>& a) : MArray<float> (a) { }
 
   template <class U>
-  explicit FloatNDArray (const intNDArray<U>& a) : MArrayN<float> (a) { }
+  FloatNDArray (const Array<U>& a) : MArray<float> (a) { }
 
-  FloatNDArray (const charNDArray&); 
+  template <class U>
+  explicit FloatNDArray (const intNDArray<U>& a) : MArray<float> (a) { }
+
+  FloatNDArray (const charNDArray&);
 
   FloatNDArray& operator = (const FloatNDArray& a)
     {
-      MArrayN<float>::operator = (a);
+      MArray<float>::operator = (a);
       return *this;
     }
 
@@ -76,6 +78,7 @@ public:
   bool all_elements_are_zero (void) const;
   bool all_elements_are_int_or_inf_or_nan (void) const;
   bool all_integers (float& max_val, float& min_val) const;
+  bool all_integers (void) const;
   bool too_large_for_float (void) const;
 
   // FIXME -- this is not quite the right thing.
@@ -86,21 +89,24 @@ public:
   FloatNDArray cumprod (int dim = -1) const;
   FloatNDArray cumsum (int dim = -1) const;
   FloatNDArray prod (int dim = -1) const;
-  FloatNDArray sum (int dim = -1) const;  
+  FloatNDArray sum (int dim = -1) const;
+       NDArray dsum (int dim = -1) const;
   FloatNDArray sumsq (int dim = -1) const;
   FloatNDArray concat (const FloatNDArray& rb, const Array<octave_idx_type>& ra_idx);
   FloatComplexNDArray concat (const FloatComplexNDArray& rb, const Array<octave_idx_type>& ra_idx);
   charNDArray concat (const charNDArray& rb, const Array<octave_idx_type>& ra_idx);
 
-  FloatNDArray max (int dim = 0) const;
-  FloatNDArray max (ArrayN<octave_idx_type>& index, int dim = 0) const;
-  FloatNDArray min (int dim = 0) const;
-  FloatNDArray min (ArrayN<octave_idx_type>& index, int dim = 0) const;
-  
-  FloatNDArray cummax (int dim = 0) const;
-  FloatNDArray cummax (ArrayN<octave_idx_type>& index, int dim = 0) const;
-  FloatNDArray cummin (int dim = 0) const;
-  FloatNDArray cummin (ArrayN<octave_idx_type>& index, int dim = 0) const;
+  FloatNDArray max (int dim = -1) const;
+  FloatNDArray max (Array<octave_idx_type>& index, int dim = -1) const;
+  FloatNDArray min (int dim = -1) const;
+  FloatNDArray min (Array<octave_idx_type>& index, int dim = -1) const;
+
+  FloatNDArray cummax (int dim = -1) const;
+  FloatNDArray cummax (Array<octave_idx_type>& index, int dim = -1) const;
+  FloatNDArray cummin (int dim = -1) const;
+  FloatNDArray cummin (Array<octave_idx_type>& index, int dim = -1) const;
+
+  FloatNDArray diff (octave_idx_type order = 1, int dim = -1) const;
 
   FloatNDArray& insert (const FloatNDArray& a, octave_idx_type r, octave_idx_type c);
   FloatNDArray& insert (const FloatNDArray& a, const Array<octave_idx_type>& ra_idx);
@@ -126,14 +132,14 @@ public:
 
   FloatMatrix matrix_value (void) const;
 
-  FloatNDArray squeeze (void) const { return MArrayN<float>::squeeze (); }
+  FloatNDArray squeeze (void) const { return MArray<float>::squeeze (); }
 
   static void increment_index (Array<octave_idx_type>& ra_idx,
-			       const dim_vector& dimensions,
-			       int start_dimension = 0);
+                               const dim_vector& dimensions,
+                               int start_dimension = 0);
 
   static octave_idx_type compute_index (Array<octave_idx_type>& ra_idx,
-			    const dim_vector& dimensions);
+                            const dim_vector& dimensions);
 
   // i/o
 
@@ -144,17 +150,12 @@ public:
 
   FloatNDArray diag (octave_idx_type k = 0) const;
 
-  typedef float (*dmapper) (float);
-  typedef FloatComplex (*cmapper) (const FloatComplex&);
-  typedef bool (*bmapper) (float);
+  FloatNDArray& changesign (void)
+    {
+      MArray<float>::changesign ();
+      return *this;
+    }
 
-  FloatNDArray map (dmapper fcn) const;
-  FloatComplexNDArray map (cmapper fcn) const;
-  boolNDArray map (bmapper fcn) const;
-
-private:
-
-  FloatNDArray (float *d, const dim_vector& dv) : MArrayN<float> (d, dv) { }
 };
 
 // Publish externally used friend functions.
@@ -162,13 +163,7 @@ private:
 extern OCTAVE_API FloatNDArray real (const FloatComplexNDArray& a);
 extern OCTAVE_API FloatNDArray imag (const FloatComplexNDArray& a);
 
-extern OCTAVE_API FloatNDArray min (float d, const FloatNDArray& m);
-extern OCTAVE_API FloatNDArray min (const FloatNDArray& m, float d);
-extern OCTAVE_API FloatNDArray min (const FloatNDArray& a, const FloatNDArray& b);
-
-extern OCTAVE_API FloatNDArray max (float d, const FloatNDArray& m);
-extern OCTAVE_API FloatNDArray max (const FloatNDArray& m, float d);
-extern OCTAVE_API FloatNDArray max (const FloatNDArray& a, const FloatNDArray& b);
+MINMAX_DECLS (FloatNDArray, float, OCTAVE_API)
 
 NDS_CMP_OP_DECLS (FloatNDArray, float, OCTAVE_API)
 NDS_BOOL_OP_DECLS (FloatNDArray, float, OCTAVE_API)
@@ -179,12 +174,13 @@ SND_BOOL_OP_DECLS (float, FloatNDArray, OCTAVE_API)
 NDND_CMP_OP_DECLS (FloatNDArray, FloatNDArray, OCTAVE_API)
 NDND_BOOL_OP_DECLS (FloatNDArray, FloatNDArray, OCTAVE_API)
 
-MARRAY_FORWARD_DEFS (MArrayN, FloatNDArray, float)
+MARRAY_FORWARD_DEFS (MArray, FloatNDArray, float)
+
+BSXFUN_STDOP_DECLS (FloatNDArray, OCTAVE_API)
+BSXFUN_STDREL_DECLS (FloatNDArray, OCTAVE_API)
+
+BSXFUN_OP_DECL (pow, FloatNDArray, OCTAVE_API)
+BSXFUN_OP2_DECL (pow, FloatComplexNDArray, FloatComplexNDArray,
+                 FloatNDArray, OCTAVE_API)
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

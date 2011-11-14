@@ -1,8 +1,7 @@
 // Template array classes
 /*
 
-Copyright (C) 1996, 1997, 2000, 2001, 2002, 2003, 2004, 2005, 2007, 2008
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -39,13 +38,6 @@ template <class T>
 class
 Array3 : public Array<T>
 {
-protected:
-
-  static octave_idx_type get_size (octave_idx_type r, octave_idx_type c, octave_idx_type p)
-    { return Array<T>::get_size (r, c, p); }
-
-  Array3 (T *d, octave_idx_type r, octave_idx_type c, octave_idx_type p) : Array<T> (d, dim_vector (r, c, p)) { }
-
 public:
 
   Array3 (void) : Array<T> (dim_vector (0, 0, 0)) { }
@@ -66,16 +58,16 @@ public:
   Array3<T>& operator = (const Array3<T>& a)
     {
       if (this != &a)
-	Array<T>::operator = (a);
+        Array<T>::operator = (a);
 
       return *this;
     }
 
-  void resize (octave_idx_type r, octave_idx_type c, octave_idx_type p) 
+  void resize (octave_idx_type r, octave_idx_type c, octave_idx_type p)
     { Array<T>::resize (dim_vector (r, c, p)); }
 
   void resize (octave_idx_type r, octave_idx_type c, octave_idx_type p, const T& val)
-    { Array<T>::resize_fill (dim_vector (r, c, p), val); }
+    { Array<T>::resize (dim_vector (r, c, p), val); }
 
   Array3<T> sort (octave_idx_type dim = 0, sortmode mode = ASCENDING) const
     {
@@ -84,17 +76,16 @@ public:
     }
 
   Array3<T> sort (Array<octave_idx_type> &sidx, octave_idx_type dim = 0,
-		 sortmode mode = ASCENDING) const
+                 sortmode mode = ASCENDING) const
     {
       Array<T> tmp = Array<T>::sort (sidx, dim, mode);
       return Array3<T> (tmp, tmp.rows (), tmp.columns (), tmp.pages ());
     }
 };
 
+// If we're with GNU C++, issue a warning.
+#ifdef __GNUC__
+#warning Using Array3<T> is deprecated. Use Array<T> directly.
 #endif
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+#endif

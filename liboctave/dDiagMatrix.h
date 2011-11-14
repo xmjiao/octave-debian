@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2000, 2002, 2004, 2005, 2006,
-              2007, 2008, 2009 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -54,9 +53,10 @@ public:
   template <class U>
   DiagMatrix (const DiagArray2<U>& a) : MDiagArray2<double> (a) { }
 
-  explicit DiagMatrix (const RowVector& a) : MDiagArray2<double> (a) { }
+  explicit DiagMatrix (const Array<double>& a) : MDiagArray2<double> (a) { }
 
-  explicit DiagMatrix (const ColumnVector& a) : MDiagArray2<double> (a) { }
+  DiagMatrix (const Array<double>& a, octave_idx_type r, octave_idx_type c)
+    : MDiagArray2<double> (a, r, c) { }
 
   DiagMatrix& operator = (const DiagMatrix& a)
     {
@@ -75,7 +75,7 @@ public:
   DiagMatrix& fill (const RowVector& a, octave_idx_type beg);
 
   DiagMatrix transpose (void) const { return MDiagArray2<double>::transpose(); }
-  DiagMatrix abs (void) const; 
+  DiagMatrix abs (void) const;
 
   friend OCTAVE_API DiagMatrix real (const ComplexDiagMatrix& a);
   friend OCTAVE_API DiagMatrix imag (const ComplexDiagMatrix& a);
@@ -108,9 +108,6 @@ public:
 
   friend OCTAVE_API std::ostream& operator << (std::ostream& os, const DiagMatrix& a);
 
-private:
-
-  DiagMatrix (double *d, octave_idx_type nr, octave_idx_type nc) : MDiagArray2<double> (d, nr, nc) { }
 };
 
 OCTAVE_API DiagMatrix real (const ComplexDiagMatrix& a);
@@ -124,9 +121,3 @@ operator * (const DiagMatrix& a, const DiagMatrix& b);
 MDIAGARRAY2_FORWARD_DEFS (MDiagArray2, DiagMatrix, double)
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

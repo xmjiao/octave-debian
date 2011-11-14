@@ -1,8 +1,8 @@
 // N-D Array  manipulations.
 /*
 
-Copyright (C) 1996, 1997, 2003, 2004, 2005, 2006, 2007, 2008, 2009
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
+Copyright (C) 2009 VZLU Prague, a.s.
 
 This file is part of Octave.
 
@@ -31,26 +31,28 @@ along with Octave; see the file COPYING.  If not, see
 #include <vector>
 
 #include "Array-util.h"
+#include "f77-fcn.h"
 #include "fNDArray.h"
 #include "functor.h"
-#include "mx-base.h"
-#include "f77-fcn.h"
 #include "lo-error.h"
 #include "lo-ieee.h"
 #include "lo-mappers.h"
-#include "oct-locbuf.h"
+#include "mx-base.h"
 #include "mx-op-defs.h"
+#include "oct-fftw.h"
+#include "oct-locbuf.h"
+
+#include "bsxfun-defs.cc"
 
 FloatNDArray::FloatNDArray (const charNDArray& a)
-  : MArrayN<float> (a.dims ())
+  : MArray<float> (a.dims ())
 {
   octave_idx_type n = a.numel ();
   for (octave_idx_type i = 0; i < n; i++)
     xelem (i) = static_cast<unsigned char> (a(i));
 }
 
-#if defined (HAVE_FFTW3)
-#include "oct-fftw.h"
+#if defined (HAVE_FFTW)
 
 FloatComplexNDArray
 FloatNDArray::fourier (int dim) const
@@ -77,8 +79,8 @@ FloatNDArray::fourier (int dim) const
 
   // Need to be careful here about the distance between fft's
   for (octave_idx_type k = 0; k < nloop; k++)
-    octave_fftw::fft (in + k * stride * n, out + k * stride * n, 
-		      n, howmany, stride, dist);
+    octave_fftw::fft (in + k * stride * n, out + k * stride * n,
+                      n, howmany, stride, dist);
 
   return retval;
 }
@@ -107,8 +109,8 @@ FloatNDArray::ifourier (int dim) const
 
   // Need to be careful here about the distance between fft's
   for (octave_idx_type k = 0; k < nloop; k++)
-    octave_fftw::ifft (out + k * stride * n, out + k * stride * n, 
-		      n, howmany, stride, dist);
+    octave_fftw::ifft (out + k * stride * n, out + k * stride * n,
+                      n, howmany, stride, dist);
 
   return retval;
 }
@@ -196,10 +198,12 @@ extern "C"
   F77_FUNC (cffti, CFFTI) (const octave_idx_type&, FloatComplex*);
 
   F77_RET_T
-  F77_FUNC (cfftf, CFFTF) (const octave_idx_type&, FloatComplex*, FloatComplex*);
+  F77_FUNC (cfftf, CFFTF) (const octave_idx_type&, FloatComplex*,
+                           FloatComplex*);
 
   F77_RET_T
-  F77_FUNC (cfftb, CFFTB) (const octave_idx_type&, FloatComplex*, FloatComplex*);
+  F77_FUNC (cfftb, CFFTB) (const octave_idx_type&, FloatComplex*,
+                           FloatComplex*);
 }
 
 FloatComplexNDArray
@@ -233,17 +237,17 @@ FloatNDArray::fourier (int dim) const
   for (octave_idx_type k = 0; k < nloop; k++)
     {
       for (octave_idx_type j = 0; j < howmany; j++)
-	{
-	  OCTAVE_QUIT;
+        {
+          octave_quit ();
 
-	  for (octave_idx_type i = 0; i < npts; i++)
-	    tmp[i] = elem((i + k*npts)*stride + j*dist);
+          for (octave_idx_type i = 0; i < npts; i++)
+            tmp[i] = elem((i + k*npts)*stride + j*dist);
 
-	  F77_FUNC (cfftf, CFFTF) (npts, tmp, pwsave);
+          F77_FUNC (cfftf, CFFTF) (npts, tmp, pwsave);
 
-	  for (octave_idx_type i = 0; i < npts; i++)
-	    retval ((i + k*npts)*stride + j*dist) = tmp[i];
-	}
+          for (octave_idx_type i = 0; i < npts; i++)
+            retval ((i + k*npts)*stride + j*dist) = tmp[i];
+        }
     }
 
   return retval;
@@ -280,18 +284,18 @@ FloatNDArray::ifourier (int dim) const
   for (octave_idx_type k = 0; k < nloop; k++)
     {
       for (octave_idx_type j = 0; j < howmany; j++)
-	{
-	  OCTAVE_QUIT;
+        {
+          octave_quit ();
 
-	  for (octave_idx_type i = 0; i < npts; i++)
-	    tmp[i] = elem((i + k*npts)*stride + j*dist);
+          for (octave_idx_type i = 0; i < npts; i++)
+            tmp[i] = elem((i + k*npts)*stride + j*dist);
 
-	  F77_FUNC (cfftb, CFFTB) (npts, tmp, pwsave);
+          F77_FUNC (cfftb, CFFTB) (npts, tmp, pwsave);
 
-	  for (octave_idx_type i = 0; i < npts; i++)
-	    retval ((i + k*npts)*stride + j*dist) = tmp[i] / 
-	      static_cast<float> (npts);
-	}
+          for (octave_idx_type i = 0; i < npts; i++)
+            retval ((i + k*npts)*stride + j*dist) = tmp[i] /
+              static_cast<float> (npts);
+        }
     }
 
   return retval;
@@ -316,28 +320,28 @@ FloatNDArray::fourier2d (void) const
       FloatComplex *prow = row.fortran_vec ();
 
       octave_idx_type howmany = numel () / npts;
-      howmany = (stride == 1 ? howmany : 
-		 (howmany > stride ? stride : howmany));
+      howmany = (stride == 1 ? howmany :
+                 (howmany > stride ? stride : howmany));
       octave_idx_type nloop = (stride == 1 ? 1 : numel () / npts / stride);
       octave_idx_type dist = (stride == 1 ? npts : 1);
 
       F77_FUNC (cffti, CFFTI) (npts, pwsave);
 
       for (octave_idx_type k = 0; k < nloop; k++)
-	{
-	  for (octave_idx_type j = 0; j < howmany; j++)
-	    {
-	      OCTAVE_QUIT;
+        {
+          for (octave_idx_type j = 0; j < howmany; j++)
+            {
+              octave_quit ();
 
-	      for (octave_idx_type l = 0; l < npts; l++)
-		prow[l] = retval ((l + k*npts)*stride + j*dist);
+              for (octave_idx_type l = 0; l < npts; l++)
+                prow[l] = retval ((l + k*npts)*stride + j*dist);
 
-	      F77_FUNC (cfftf, CFFTF) (npts, prow, pwsave);
+              F77_FUNC (cfftf, CFFTF) (npts, prow, pwsave);
 
-	      for (octave_idx_type l = 0; l < npts; l++)
-		retval ((l + k*npts)*stride + j*dist) = prow[l];
-	    }
-	}
+              for (octave_idx_type l = 0; l < npts; l++)
+                retval ((l + k*npts)*stride + j*dist) = prow[l];
+            }
+        }
 
       stride *= dv2(i);
     }
@@ -364,29 +368,29 @@ FloatNDArray::ifourier2d (void) const
       FloatComplex *prow = row.fortran_vec ();
 
       octave_idx_type howmany = numel () / npts;
-      howmany = (stride == 1 ? howmany : 
-		 (howmany > stride ? stride : howmany));
+      howmany = (stride == 1 ? howmany :
+                 (howmany > stride ? stride : howmany));
       octave_idx_type nloop = (stride == 1 ? 1 : numel () / npts / stride);
       octave_idx_type dist = (stride == 1 ? npts : 1);
 
       F77_FUNC (cffti, CFFTI) (npts, pwsave);
 
       for (octave_idx_type k = 0; k < nloop; k++)
-	{
-	  for (octave_idx_type j = 0; j < howmany; j++)
-	    {
-	      OCTAVE_QUIT;
+        {
+          for (octave_idx_type j = 0; j < howmany; j++)
+            {
+              octave_quit ();
 
-	      for (octave_idx_type l = 0; l < npts; l++)
-		prow[l] = retval ((l + k*npts)*stride + j*dist);
+              for (octave_idx_type l = 0; l < npts; l++)
+                prow[l] = retval ((l + k*npts)*stride + j*dist);
 
-	      F77_FUNC (cfftb, CFFTB) (npts, prow, pwsave);
+              F77_FUNC (cfftb, CFFTB) (npts, prow, pwsave);
 
-	      for (octave_idx_type l = 0; l < npts; l++)
-		retval ((l + k*npts)*stride + j*dist) = prow[l] / 
-		  static_cast<float> (npts);
-	    }
-	}
+              for (octave_idx_type l = 0; l < npts; l++)
+                retval ((l + k*npts)*stride + j*dist) = prow[l] /
+                  static_cast<float> (npts);
+            }
+        }
 
       stride *= dv2(i);
     }
@@ -412,28 +416,28 @@ FloatNDArray::fourierNd (void) const
       FloatComplex *prow = row.fortran_vec ();
 
       octave_idx_type howmany = numel () / npts;
-      howmany = (stride == 1 ? howmany : 
-		 (howmany > stride ? stride : howmany));
+      howmany = (stride == 1 ? howmany :
+                 (howmany > stride ? stride : howmany));
       octave_idx_type nloop = (stride == 1 ? 1 : numel () / npts / stride);
       octave_idx_type dist = (stride == 1 ? npts : 1);
 
       F77_FUNC (cffti, CFFTI) (npts, pwsave);
 
       for (octave_idx_type k = 0; k < nloop; k++)
-	{
-	  for (octave_idx_type j = 0; j < howmany; j++)
-	    {
-	      OCTAVE_QUIT;
+        {
+          for (octave_idx_type j = 0; j < howmany; j++)
+            {
+              octave_quit ();
 
-	      for (octave_idx_type l = 0; l < npts; l++)
-		prow[l] = retval ((l + k*npts)*stride + j*dist);
+              for (octave_idx_type l = 0; l < npts; l++)
+                prow[l] = retval ((l + k*npts)*stride + j*dist);
 
-	      F77_FUNC (cfftf, CFFTF) (npts, prow, pwsave);
+              F77_FUNC (cfftf, CFFTF) (npts, prow, pwsave);
 
-	      for (octave_idx_type l = 0; l < npts; l++)
-		retval ((l + k*npts)*stride + j*dist) = prow[l];
-	    }
-	}
+              for (octave_idx_type l = 0; l < npts; l++)
+                retval ((l + k*npts)*stride + j*dist) = prow[l];
+            }
+        }
 
       stride *= dv(i);
     }
@@ -459,29 +463,29 @@ FloatNDArray::ifourierNd (void) const
       FloatComplex *prow = row.fortran_vec ();
 
       octave_idx_type howmany = numel () / npts;
-      howmany = (stride == 1 ? howmany : 
-		 (howmany > stride ? stride : howmany));
+      howmany = (stride == 1 ? howmany :
+                 (howmany > stride ? stride : howmany));
       octave_idx_type nloop = (stride == 1 ? 1 : numel () / npts / stride);
       octave_idx_type dist = (stride == 1 ? npts : 1);
 
       F77_FUNC (cffti, CFFTI) (npts, pwsave);
 
       for (octave_idx_type k = 0; k < nloop; k++)
-	{
-	  for (octave_idx_type j = 0; j < howmany; j++)
-	    {
-	      OCTAVE_QUIT;
+        {
+          for (octave_idx_type j = 0; j < howmany; j++)
+            {
+              octave_quit ();
 
-	      for (octave_idx_type l = 0; l < npts; l++)
-		prow[l] = retval ((l + k*npts)*stride + j*dist);
+              for (octave_idx_type l = 0; l < npts; l++)
+                prow[l] = retval ((l + k*npts)*stride + j*dist);
 
-	      F77_FUNC (cfftb, CFFTB) (npts, prow, pwsave);
+              F77_FUNC (cfftb, CFFTB) (npts, prow, pwsave);
 
-	      for (octave_idx_type l = 0; l < npts; l++)
-		retval ((l + k*npts)*stride + j*dist) = prow[l] /
-		  static_cast<float> (npts);
-	    }
-	}
+              for (octave_idx_type l = 0; l < npts; l++)
+                retval ((l + k*npts)*stride + j*dist) = prow[l] /
+                  static_cast<float> (npts);
+            }
+        }
 
       stride *= dv(i);
     }
@@ -496,107 +500,47 @@ FloatNDArray::ifourierNd (void) const
 boolNDArray
 FloatNDArray::operator ! (void) const
 {
-  boolNDArray b (dims ());
+  if (any_element_is_nan ())
+    gripe_nan_to_logical_conversion ();
 
-  for (octave_idx_type i = 0; i < length (); i++)
-    b.elem (i) = ! elem (i);
-
-  return b;
+  return do_mx_unary_op<bool, float> (*this, mx_inline_not);
 }
 
 bool
 FloatNDArray::any_element_is_negative (bool neg_zero) const
 {
-  octave_idx_type nel = nelem ();
-
-  if (neg_zero)
-    {
-      for (octave_idx_type i = 0; i < nel; i++)
-	if (lo_ieee_signbit (elem (i)))
-	  return true;
-    }
-  else
-    {
-      for (octave_idx_type i = 0; i < nel; i++)
-	if (elem (i) < 0)
-	  return true;
-    }
-
-  return false;
+  return (neg_zero ? test_all (xnegative_sign)
+          : do_mx_check<float> (*this, mx_inline_any_negative));
 }
 
 bool
 FloatNDArray::any_element_is_nan (void) const
 {
-  octave_idx_type nel = nelem ();
-
-  for (octave_idx_type i = 0; i < nel; i++)
-    {
-      float val = elem (i);
-      if (xisnan (val))
-	return true;
-    }
-
-  return false;
+  return do_mx_check<float> (*this, mx_inline_any_nan);
 }
 
 bool
 FloatNDArray::any_element_is_inf_or_nan (void) const
 {
-  octave_idx_type nel = nelem ();
-
-  for (octave_idx_type i = 0; i < nel; i++)
-    {
-      float val = elem (i);
-      if (xisinf (val) || xisnan (val))
-	return true;
-    }
-
-  return false;
+  return ! do_mx_check<float> (*this, mx_inline_all_finite);
 }
 
 bool
 FloatNDArray::any_element_not_one_or_zero (void) const
 {
-  octave_idx_type nel = nelem ();
-
-  for (octave_idx_type i = 0; i < nel; i++)
-    {
-      float val = elem (i);
-      if (val != 0 && val != 1)
-	return true;
-    }
-
-  return false;
+  return ! test_all (xis_one_or_zero);
 }
 
 bool
 FloatNDArray::all_elements_are_zero (void) const
 {
-  octave_idx_type nel = nelem ();
-
-  for (octave_idx_type i = 0; i < nel; i++)
-    if (elem (i) != 0)
-      return false;
-
-  return true;
+  return test_all (xis_zero);
 }
 
 bool
 FloatNDArray::all_elements_are_int_or_inf_or_nan (void) const
 {
-  octave_idx_type nel = nelem ();
-
-  for (octave_idx_type i = 0; i < nel; i++)
-    {
-      float val = elem (i);
-      if (xisnan (val) || D_NINT (val) == val)
-	continue;
-      else
-	return false;
-    }
-
-  return true;
+  return test_all (xis_int_or_inf_or_nan);
 }
 
 // Return nonzero if any element of M is not an integer.  Also extract
@@ -620,32 +564,27 @@ FloatNDArray::all_integers (float& max_val, float& min_val) const
       float val = elem (i);
 
       if (val > max_val)
-	max_val = val;
+        max_val = val;
 
       if (val < min_val)
-	min_val = val;
+        min_val = val;
 
-      if (D_NINT (val) != val)
-	return false;
+      if (! xisinteger (val))
+        return false;
     }
 
   return true;
 }
 
 bool
+FloatNDArray::all_integers (void) const
+{
+  return test_all (xisinteger);
+}
+
+bool
 FloatNDArray::too_large_for_float (void) const
 {
-  octave_idx_type nel = nelem ();
-
-  for (octave_idx_type i = 0; i < nel; i++)
-    {
-      float val = elem (i);
-
-      if (! (xisnan (val) || xisinf (val))
-	  && fabs (val) > FLT_MAX)
-	return true;
-    }
-
   return false;
 }
 
@@ -654,91 +593,103 @@ FloatNDArray::too_large_for_float (void) const
 boolNDArray
 FloatNDArray::all (int dim) const
 {
-  return do_mx_red_op<boolNDArray, float> (*this, dim, mx_inline_all);
+  return do_mx_red_op<bool, float> (*this, dim, mx_inline_all);
 }
 
 boolNDArray
 FloatNDArray::any (int dim) const
 {
-  return do_mx_red_op<boolNDArray, float> (*this, dim, mx_inline_any);
+  return do_mx_red_op<bool, float> (*this, dim, mx_inline_any);
 }
 
 FloatNDArray
 FloatNDArray::cumprod (int dim) const
 {
-  return do_mx_cum_op<FloatNDArray, float> (*this, dim, mx_inline_cumprod);
+  return do_mx_cum_op<float, float> (*this, dim, mx_inline_cumprod);
 }
 
 FloatNDArray
 FloatNDArray::cumsum (int dim) const
 {
-  return do_mx_cum_op<FloatNDArray, float> (*this, dim, mx_inline_cumsum);
+  return do_mx_cum_op<float, float> (*this, dim, mx_inline_cumsum);
 }
 
 FloatNDArray
 FloatNDArray::prod (int dim) const
 {
-  return do_mx_red_op<FloatNDArray, float> (*this, dim, mx_inline_prod);
+  return do_mx_red_op<float, float> (*this, dim, mx_inline_prod);
 }
 
 FloatNDArray
 FloatNDArray::sum (int dim) const
 {
-  return do_mx_red_op<FloatNDArray, float> (*this, dim, mx_inline_sum);
+  return do_mx_red_op<float, float> (*this, dim, mx_inline_sum);
+}
+
+NDArray
+FloatNDArray::dsum (int dim) const
+{
+  return do_mx_red_op<double, float> (*this, dim, mx_inline_dsum);
 }
 
 FloatNDArray
 FloatNDArray::sumsq (int dim) const
 {
-  return do_mx_red_op<FloatNDArray, float> (*this, dim, mx_inline_sumsq);
+  return do_mx_red_op<float, float> (*this, dim, mx_inline_sumsq);
 }
 
 FloatNDArray
 FloatNDArray::max (int dim) const
 {
-  return do_mx_minmax_op<FloatNDArray> (*this, dim, mx_inline_max);
+  return do_mx_minmax_op<float> (*this, dim, mx_inline_max);
 }
 
 FloatNDArray
-FloatNDArray::max (ArrayN<octave_idx_type>& idx_arg, int dim) const
+FloatNDArray::max (Array<octave_idx_type>& idx_arg, int dim) const
 {
-  return do_mx_minmax_op<FloatNDArray> (*this, idx_arg, dim, mx_inline_max);
+  return do_mx_minmax_op<float> (*this, idx_arg, dim, mx_inline_max);
 }
 
 FloatNDArray
 FloatNDArray::min (int dim) const
 {
-  return do_mx_minmax_op<FloatNDArray> (*this, dim, mx_inline_min);
+  return do_mx_minmax_op<float> (*this, dim, mx_inline_min);
 }
 
 FloatNDArray
-FloatNDArray::min (ArrayN<octave_idx_type>& idx_arg, int dim) const
+FloatNDArray::min (Array<octave_idx_type>& idx_arg, int dim) const
 {
-  return do_mx_minmax_op<FloatNDArray> (*this, idx_arg, dim, mx_inline_min);
+  return do_mx_minmax_op<float> (*this, idx_arg, dim, mx_inline_min);
 }
 
 FloatNDArray
 FloatNDArray::cummax (int dim) const
 {
-  return do_mx_cumminmax_op<FloatNDArray> (*this, dim, mx_inline_cummax);
+  return do_mx_cumminmax_op<float> (*this, dim, mx_inline_cummax);
 }
 
 FloatNDArray
-FloatNDArray::cummax (ArrayN<octave_idx_type>& idx_arg, int dim) const
+FloatNDArray::cummax (Array<octave_idx_type>& idx_arg, int dim) const
 {
-  return do_mx_cumminmax_op<FloatNDArray> (*this, idx_arg, dim, mx_inline_cummax);
+  return do_mx_cumminmax_op<float> (*this, idx_arg, dim, mx_inline_cummax);
 }
 
 FloatNDArray
 FloatNDArray::cummin (int dim) const
 {
-  return do_mx_cumminmax_op<FloatNDArray> (*this, dim, mx_inline_cummin);
+  return do_mx_cumminmax_op<float> (*this, dim, mx_inline_cummin);
 }
 
 FloatNDArray
-FloatNDArray::cummin (ArrayN<octave_idx_type>& idx_arg, int dim) const
+FloatNDArray::cummin (Array<octave_idx_type>& idx_arg, int dim) const
 {
-  return do_mx_cumminmax_op<FloatNDArray> (*this, idx_arg, dim, mx_inline_cummin);
+  return do_mx_cumminmax_op<float> (*this, idx_arg, dim, mx_inline_cummin);
+}
+
+FloatNDArray
+FloatNDArray::diff (octave_idx_type order, int dim) const
+{
+  return do_mx_diff_op<float> (*this, dim, order, mx_inline_diff);
 }
 
 FloatNDArray
@@ -769,22 +720,22 @@ FloatNDArray::concat (const charNDArray& rb, const Array<octave_idx_type>& ra_id
       float d = elem (i);
 
       if (xisnan (d))
-	{
-	  (*current_liboctave_error_handler)
-	    ("invalid conversion from NaN to character");
-	  return retval;
-	}
+        {
+          (*current_liboctave_error_handler)
+            ("invalid conversion from NaN to character");
+          return retval;
+        }
       else
-	{
-	  octave_idx_type ival = NINTbig (d);
+        {
+          octave_idx_type ival = NINTbig (d);
 
-	  if (ival < 0 || ival > UCHAR_MAX)
-	    // FIXME -- is there something
-	    // better we could do? Should we warn the user?
-	    ival = 0;
+          if (ival < 0 || ival > UCHAR_MAX)
+            // FIXME -- is there something
+            // better we could do? Should we warn the user?
+            ival = 0;
 
-	  retval.elem (i) = static_cast<char>(ival);
-	}
+          retval.elem (i) = static_cast<char>(ival);
+        }
     }
 
   if (rb.numel () == 0)
@@ -797,15 +748,13 @@ FloatNDArray::concat (const charNDArray& rb, const Array<octave_idx_type>& ra_id
 FloatNDArray
 real (const FloatComplexNDArray& a)
 {
-  return FloatNDArray (mx_inline_real_dup (a.data (), a.length ()),
-                       a.dims ());
+  return do_mx_unary_op<float, FloatComplex> (a, mx_inline_real);
 }
 
 FloatNDArray
 imag (const FloatComplexNDArray& a)
 {
-  return FloatNDArray (mx_inline_imag_dup (a.data (), a.length ()),
-                       a.dims ());
+  return do_mx_unary_op<float, FloatComplex> (a, mx_inline_imag);
 }
 
 FloatNDArray&
@@ -825,26 +774,25 @@ FloatNDArray::insert (const FloatNDArray& a, const Array<octave_idx_type>& ra_id
 FloatNDArray
 FloatNDArray::abs (void) const
 {
-  return FloatNDArray (mx_inline_fabs_dup (data (), length ()),
-                       dims ());
+  return do_mx_unary_map<float, float, std::abs> (*this);
 }
 
 boolNDArray
 FloatNDArray::isnan (void) const
 {
-  return ArrayN<bool> (fastmap<bool> (xisnan));
+  return do_mx_unary_map<bool, float, xisnan> (*this);
 }
 
 boolNDArray
 FloatNDArray::isinf (void) const
 {
-  return ArrayN<bool> (fastmap<bool> (xisinf));
+  return do_mx_unary_map<bool, float, xisinf> (*this);
 }
 
 boolNDArray
 FloatNDArray::isfinite (void) const
 {
-  return ArrayN<bool> (fastmap<bool> (xfinite));
+  return do_mx_unary_map<bool, float, xfinite> (*this);
 }
 
 FloatMatrix
@@ -853,7 +801,7 @@ FloatNDArray::matrix_value (void) const
   FloatMatrix retval;
 
   if (ndims () == 2)
-      retval = FloatMatrix (Array2<float> (*this));
+      retval = FloatMatrix (Array<float> (*this));
   else
     (*current_liboctave_error_handler)
       ("invalid conversion of FloatNDArray to FloatMatrix");
@@ -863,15 +811,15 @@ FloatNDArray::matrix_value (void) const
 
 void
 FloatNDArray::increment_index (Array<octave_idx_type>& ra_idx,
-			  const dim_vector& dimensions,
-			  int start_dimension)
+                          const dim_vector& dimensions,
+                          int start_dimension)
 {
   ::increment_index (ra_idx, dimensions, start_dimension);
 }
 
 octave_idx_type
 FloatNDArray::compute_index (Array<octave_idx_type>& ra_idx,
-			const dim_vector& dimensions)
+                        const dim_vector& dimensions)
 {
   return ::compute_index (ra_idx, dimensions);
 }
@@ -879,25 +827,7 @@ FloatNDArray::compute_index (Array<octave_idx_type>& ra_idx,
 FloatNDArray
 FloatNDArray::diag (octave_idx_type k) const
 {
-  return MArrayN<float>::diag (k);
-}
-
-FloatNDArray
-FloatNDArray::map (dmapper fcn) const
-{
-  return MArrayN<float>::map<float> (func_ptr (fcn));
-}
-
-FloatComplexNDArray
-FloatNDArray::map (cmapper fcn) const
-{
-  return MArrayN<float>::map<FloatComplex> (func_ptr (fcn));
-}
-
-boolNDArray
-FloatNDArray::map (bmapper fcn) const
-{
-  return MArrayN<float>::map<bool> (func_ptr (fcn));
+  return MArray<float>::diag (k);
 }
 
 // This contains no information on the array structure !!!
@@ -924,13 +854,13 @@ operator >> (std::istream& is, FloatNDArray& a)
     {
       float tmp;
       for (octave_idx_type i = 0; i < nel; i++)
-	  {
-	    tmp = octave_read_float (is);
-	    if (is)
-	      a.elem (i) = tmp;
-	    else
-	      goto done;
-	  }
+          {
+            tmp = octave_read_value<float> (is);
+            if (is)
+              a.elem (i) = tmp;
+            else
+              goto done;
+          }
     }
 
  done:
@@ -938,152 +868,20 @@ operator >> (std::istream& is, FloatNDArray& a)
   return is;
 }
 
-// FIXME -- it would be nice to share code among the min/max
-// functions below.
+MINMAX_FCNS (FloatNDArray, float)
 
-#define EMPTY_RETURN_CHECK(T) \
-  if (nel == 0)	\
-    return T (dv);
+NDS_CMP_OPS (FloatNDArray, float)
+NDS_BOOL_OPS (FloatNDArray, float)
 
-FloatNDArray
-min (float d, const FloatNDArray& m)
-{
-  dim_vector dv = m.dims ();
-  octave_idx_type nel = dv.numel ();
+SND_CMP_OPS (float, FloatNDArray)
+SND_BOOL_OPS (float, FloatNDArray)
 
-  EMPTY_RETURN_CHECK (FloatNDArray);
+NDND_CMP_OPS (FloatNDArray, FloatNDArray)
+NDND_BOOL_OPS (FloatNDArray, FloatNDArray)
 
-  FloatNDArray result (dv);
+BSXFUN_STDOP_DEFS_MXLOOP (FloatNDArray)
+BSXFUN_STDREL_DEFS_MXLOOP (FloatNDArray)
 
-  for (octave_idx_type i = 0; i < nel; i++)
-    {
-      OCTAVE_QUIT;
-      result (i) = xmin (d, m (i));
-    }
-
-  return result;
-}
-
-FloatNDArray
-min (const FloatNDArray& m, float d)
-{
-  dim_vector dv = m.dims ();
-  octave_idx_type nel = dv.numel ();
-
-  EMPTY_RETURN_CHECK (FloatNDArray);
-
-  FloatNDArray result (dv);
-
-  for (octave_idx_type i = 0; i < nel; i++)
-    {
-      OCTAVE_QUIT;
-      result (i) = xmin (d, m (i));
-    }
-
-  return result;
-}
-
-FloatNDArray
-min (const FloatNDArray& a, const FloatNDArray& b)
-{
-  dim_vector dv = a.dims ();
-  octave_idx_type nel = dv.numel ();
-
-  if (dv != b.dims ())
-    {
-      (*current_liboctave_error_handler)
-	("two-arg min expecting args of same size");
-      return FloatNDArray ();
-    }
-
-  EMPTY_RETURN_CHECK (FloatNDArray);
-
-  FloatNDArray result (dv);
-
-  for (octave_idx_type i = 0; i < nel; i++)
-    {
-      OCTAVE_QUIT;
-      result (i) = xmin (a (i), b (i));
-    }
-
-  return result;
-}
-
-FloatNDArray
-max (float d, const FloatNDArray& m)
-{
-  dim_vector dv = m.dims ();
-  octave_idx_type nel = dv.numel ();
-
-  EMPTY_RETURN_CHECK (FloatNDArray);
-
-  FloatNDArray result (dv);
-
-  for (octave_idx_type i = 0; i < nel; i++)
-    {
-      OCTAVE_QUIT;
-      result (i) = xmax (d, m (i));
-    }
-
-  return result;
-}
-
-FloatNDArray
-max (const FloatNDArray& m, float d)
-{
-  dim_vector dv = m.dims ();
-  octave_idx_type nel = dv.numel ();
-
-  EMPTY_RETURN_CHECK (FloatNDArray);
-
-  FloatNDArray result (dv);
-
-  for (octave_idx_type i = 0; i < nel; i++)
-    {
-      OCTAVE_QUIT;
-      result (i) = xmax (d, m (i));
-    }
-
-  return result;
-}
-
-FloatNDArray
-max (const FloatNDArray& a, const FloatNDArray& b)
-{
-  dim_vector dv = a.dims ();
-  octave_idx_type nel = dv.numel ();
-
-  if (dv != b.dims ())
-    {
-      (*current_liboctave_error_handler)
-	("two-arg max expecting args of same size");
-      return FloatNDArray ();
-    }
-
-  EMPTY_RETURN_CHECK (FloatNDArray);
-
-  FloatNDArray result (dv);
-
-  for (octave_idx_type i = 0; i < nel; i++)
-    {
-      OCTAVE_QUIT;
-      result (i) = xmax (a (i), b (i));
-    }
-
-  return result;
-}
-
-NDS_CMP_OPS(FloatNDArray, , float, )
-NDS_BOOL_OPS(FloatNDArray, float, static_cast<float> (0.0))
-
-SND_CMP_OPS(float, , FloatNDArray, )
-SND_BOOL_OPS(float, FloatNDArray, static_cast<float> (0.0))
-
-NDND_CMP_OPS(FloatNDArray, , FloatNDArray, )
-NDND_BOOL_OPS(FloatNDArray, FloatNDArray, static_cast<float> (0.0))
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+BSXFUN_OP_DEF_MXLOOP (pow, FloatNDArray, mx_inline_pow)
+BSXFUN_OP2_DEF_MXLOOP (pow, FloatComplexNDArray, FloatComplexNDArray,
+                       FloatNDArray, mx_inline_pow)

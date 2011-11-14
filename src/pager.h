@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 2000, 2002, 2005, 2006,
-              2007, 2009 John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -28,9 +27,7 @@ along with Octave; see the file COPYING.  If not, see
 #include <sstream>
 #include <string>
 
-#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#endif
 
 class
 OCTINTERP_API
@@ -131,9 +128,3 @@ private:
 extern OCTINTERP_API void flush_octave_stdout (void);
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 2000, 2002, 2005, 2006,
-              2007 John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -44,37 +43,7 @@ Free Software Foundation, Inc.
 
 #include "base-list.h"
 
-// Signal handler return type.
-#ifndef RETSIGTYPE
-#define RETSIGTYPE void
-#endif
-#ifndef BADSIG
-#define BADSIG (RETSIGTYPE (*)(int))-1
-#endif
-
-#define BLOCK_SIGNAL(sig, nvar, ovar) \
-  do \
-    { \
-      sigemptyset (&nvar); \
-      sigaddset (&nvar, sig); \
-      sigemptyset (&ovar); \
-      sigprocmask (SIG_BLOCK, &nvar, &ovar); \
-    } \
-  while (0)
-
-#if !defined (SIGCHLD) && defined (SIGCLD)
-#define SIGCHLD SIGCLD
-#endif
-
-#if defined (HAVE_POSIX_SIGNALS)
-#define BLOCK_CHILD(nvar, ovar) BLOCK_SIGNAL (SIGCHLD, nvar, ovar)
-#define UNBLOCK_CHILD(ovar) sigprocmask (SIG_SETMASK, &ovar, 0)
-#else
-#define BLOCK_CHILD(nvar, ovar) ovar = sigblock (sigmask (SIGCHLD))
-#define UNBLOCK_CHILD(ovar) sigsetmask (ovar)
-#endif
-
-typedef RETSIGTYPE sig_handler (int);
+typedef void sig_handler (int);
 
 // FIXME -- the data should probably be private...
 
@@ -98,7 +67,7 @@ extern int pipe_handler_error_count;
 extern OCTINTERP_API bool can_interrupt;
 
 extern OCTINTERP_API sig_handler *octave_set_signal_handler (int, sig_handler *,
-					       bool restart_syscalls = true);
+                                               bool restart_syscalls = true);
 
 extern OCTINTERP_API void install_signal_handlers (void);
 
@@ -110,7 +79,7 @@ extern OCTINTERP_API octave_interrupt_handler octave_ignore_interrupts (void);
 
 extern OCTINTERP_API octave_interrupt_handler
 octave_set_interrupt_handler (const volatile octave_interrupt_handler&,
-			      bool restart_syscalls = true);
+                              bool restart_syscalls = true);
 
 // extern void ignore_sigchld (void);
 
@@ -121,7 +90,7 @@ OCTINTERP_API
 octave_child
 {
 public:
-  
+
   // Do whatever to handle event for child with PID (might not
   // actually be dead, could just be stopped).  Return true if
   // the list element corresponding to PID should be removed from
@@ -136,16 +105,16 @@ public:
   octave_child (const octave_child& oc)
     : pid (oc.pid), handler (oc.handler),
       have_status (oc.have_status), status (oc.status) { }
- 
+
   octave_child& operator = (const octave_child& oc)
     {
       if (&oc != this)
-	{
-	  pid = oc.pid;
-	  handler = oc.handler;
-	  have_status = oc.have_status;
-	  status = oc.status;
-	}
+        {
+          pid = oc.pid;
+          handler = oc.handler;
+          have_status = oc.have_status;
+          status = oc.status;
+        }
       return *this;
     }
 
@@ -204,9 +173,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

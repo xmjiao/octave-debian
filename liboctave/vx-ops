@@ -1,4 +1,4 @@
-# Copyright (C) 2003, 2004, 2007, 2008 John W. Eaton
+# Copyright (C) 2003-2011 John W. Eaton
 #
 # This file is part of Octave.
 # 
@@ -15,6 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with Octave; see the file COPYING.  If not, see
 # <http://www.gnu.org/licenses/>.
+
+# NOTE: if this file changes, you must run autogen.sh and configure to
+# rebuild the source file lists for Make.
 
 # types
 ccv ComplexColumnVector V CColVector.h YES 0.0

@@ -1,5 +1,4 @@
-## Copyright (C) 2000, 2001, 2002, 2004, 2005, 2006, 2007, 2008,
-##               2009 Teemu Ikonen
+## Copyright (C) 2000-2011 Teemu Ikonen
 ##
 ## This file is part of Octave.
 ##
@@ -52,8 +51,9 @@
 ## If @var{fmt} is missing, yerrorbars ("~") plot style is assumed.
 ##
 ## If the @var{fmt} argument is supplied, it is interpreted as in
-## normal plots.  In addition the following plot styles are supported by
-## errorbar:
+## normal plots.  In addition, @var{fmt} may include an errorbar style
+## which must precede the line and marker format.  The following plot
+## styles are supported by errorbar:
 ##
 ## @table @samp
 ## @item ~
@@ -81,6 +81,7 @@
 ## errorbar (@var{x}, @var{y}, @var{ex}, ">")
 ## @end example
 ##
+## @noindent
 ## produces an xerrorbar plot of @var{y} versus @var{x} with @var{x}
 ## errorbars drawn from @var{x}-@var{ex} to @var{x}+@var{ex}.
 ##
@@ -91,6 +92,7 @@
 ## @end group
 ## @end example
 ##
+## @noindent
 ## produces yerrorbar plots with @var{y1} and @var{y2} versus @var{x}.
 ## Errorbars for @var{y1} are drawn from @var{y1}-@var{ey} to
 ## @var{y1}+@var{ey}, errorbars for @var{y2} from @var{y2}-@var{ly} to
@@ -103,6 +105,7 @@
 ## @end group
 ## @end example
 ##
+## @noindent
 ## produces an xyerrorbar plot of @var{y} versus @var{x} in which
 ## @var{x} errorbars are drawn from @var{x}-@var{lx} to @var{x}+@var{ux}
 ## and @var{y} errorbars from @var{y}-@var{ly} to @var{y}+@var{uy}.
@@ -133,8 +136,36 @@ function retval = errorbar (varargin)
 
 endfunction
 
-%!demo
-%! errorbar(0:10,rand(1,11),0.25*rand(1,11))
 
 %!demo
-%! errorbar(0:10,rand(1,11),rand(1,11), ">")
+%! rand_1x11_data1 = [0.82712, 0.50325, 0.35613, 0.77089, 0.20474, 0.69160, 0.30858, 0.88225, 0.35187, 0.14168, 0.54270];
+%! rand_1x11_data2 = [0.506375, 0.330106, 0.017982, 0.859270, 0.140641, 0.327839, 0.275886, 0.162453, 0.807592, 0.318509, 0.921112];
+%! errorbar (0:10, rand_1x11_data1, 0.25*rand_1x11_data2);
+
+%!demo
+%! rand_1x11_data3 = [0.423650, 0.142331, 0.213195, 0.129301, 0.975891, 0.012872, 0.635327, 0.338829, 0.764997, 0.401798, 0.551850];
+%! rand_1x11_data4 = [0.682566, 0.456342, 0.132390, 0.341292, 0.108633, 0.601553, 0.040455, 0.146665, 0.309187, 0.586291, 0.540149];
+%! errorbar(0:10, rand_1x11_data3, rand_1x11_data4, ">");
+
+%!demo
+%! x = 0:0.5:2*pi;
+%! err = x/100;
+%! y1 = sin (x);
+%! y2 = cos (x);
+%! hg = errorbar (x, y1, err, "~", x, y2, err, ">");
+
+%!demo
+%! x = 0:0.5:2*pi;
+%! err = x/100;
+%! y1 = sin (x);
+%! y2 = cos (x);
+%! hg = errorbar (x, y1, err, err, "#r", x, y2, err, err, "#~");
+
+%!demo
+%! x = 0:0.5:2*pi;
+%! err = x/100;
+%! y1 = sin (x);
+%! y2 = cos (x);
+%! hg = errorbar (x, y1, err, err, err, err, "~>", ...
+%!                x, y2, err, err, err, err, "#~>-*");
+

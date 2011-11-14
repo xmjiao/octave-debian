@@ -1,4 +1,4 @@
-## Copyright (C) 2008 Ben Abbott
+## Copyright (C) 2008-2011 Ben Abbott
 ##
 ## This file is part of Octave.
 ##
@@ -17,8 +17,11 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{val} =} matlabroot ()
-## Return the location of Octave's home.
+## @deftypefn {Function File} {} matlabroot ()
+## Return the name of the top-level Octave installation directory.
+##
+## This is an alias for the function @code{OCTAVE_HOME} provided
+## for compatibility.
 ## @seealso{OCTAVE_HOME}
 ## @end deftypefn
 

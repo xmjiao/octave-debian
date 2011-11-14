@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 1995, 1996, 1997, 1998, 2000, 2001, 2002, 2004, 2005,
-              2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1995-2011 John W. Eaton
+Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
 
@@ -26,7 +26,7 @@ along with Octave; see the file COPYING.  If not, see
 
 #include <string>
 
-#include "MArray2.h"
+#include "Array.h"
 
 #include "mx-defs.h"
 #include "mx-op-decl.h"
@@ -34,45 +34,63 @@ along with Octave; see the file COPYING.  If not, see
 
 class
 OCTAVE_API
-charMatrix : public MArray2<char>
+charMatrix : public Array<char>
 {
 friend class ComplexMatrix;
 
 public:
 
-  charMatrix (void) : MArray2<char> () { }
-  charMatrix (octave_idx_type r, octave_idx_type c) : MArray2<char> (r, c) { }
-  charMatrix (octave_idx_type r, octave_idx_type c, char val) : MArray2<char> (r, c, val) { }
-  charMatrix (const dim_vector& dv) : MArray2<char> (dv) { }
-  charMatrix (const dim_vector& dv, char val) : MArray2<char> (dv, val) { }
-  charMatrix (const MArray2<char>& a) : MArray2<char> (a) { }
-  charMatrix (const charMatrix& a) : MArray2<char> (a) { }
+  charMatrix (void) : Array<char> () { }
+
+  charMatrix (octave_idx_type r, octave_idx_type c)
+    : Array<char> (dim_vector (r, c)) { }
+
+  charMatrix (octave_idx_type r, octave_idx_type c, char val)
+    : Array<char> (dim_vector (r, c), val) { }
+
+  charMatrix (const dim_vector& dv) : Array<char> (dv) { }
+
+  charMatrix (const dim_vector& dv, char val) : Array<char> (dv, val) { }
+
+  charMatrix (const Array<char>& a) : Array<char> (a.as_matrix ()) { }
+
+  charMatrix (const charMatrix& a) : Array<char> (a) { }
+
   charMatrix (char c);
+
   charMatrix (const char *s);
+
   charMatrix (const std::string& s);
+
   charMatrix (const string_vector& s);
 
   charMatrix& operator = (const charMatrix& a)
     {
-      MArray2<char>::operator = (a);
+      Array<char>::operator = (a);
       return *this;
     }
 
   bool operator == (const charMatrix& a) const;
   bool operator != (const charMatrix& a) const;
 
-  charMatrix transpose (void) const { return MArray2<char>::transpose (); }
+  charMatrix transpose (void) const { return Array<char>::transpose (); }
 
   // destructive insert/delete/reorder operations
 
   charMatrix& insert (const char *s, octave_idx_type r, octave_idx_type c);
   charMatrix& insert (const charMatrix& a, octave_idx_type r, octave_idx_type c);
 
-  std::string row_as_string (octave_idx_type, bool strip_ws = false, bool raw = false) const;
+  std::string row_as_string (octave_idx_type, bool strip_ws = false) const;
 
   // resize is the destructive equivalent for this one
 
   charMatrix extract (octave_idx_type r1, octave_idx_type c1, octave_idx_type r2, octave_idx_type c2) const;
+
+  void resize (octave_idx_type nr, octave_idx_type nc,
+               char rfv = resize_fill_value ())
+  {
+    Array<char>::resize (dim_vector (nr, nc), rfv);
+  }
 
   charMatrix diag (octave_idx_type k = 0) const;
 
@@ -88,9 +106,6 @@ public:
 
   static char resize_fill_value (void) { return '\0'; }
 
-private:
-
-  charMatrix (char *ch, octave_idx_type r, octave_idx_type c) : MArray2<char> (ch, r, c) { }
 };
 
 MS_CMP_OP_DECLS (charMatrix, char, OCTAVE_API)
@@ -102,12 +117,4 @@ SM_BOOL_OP_DECLS (char, charMatrix, OCTAVE_API)
 MM_CMP_OP_DECLS (charMatrix, charMatrix, OCTAVE_API)
 MM_BOOL_OP_DECLS (charMatrix, charMatrix, OCTAVE_API)
 
-MARRAY_FORWARD_DEFS (MArray2, charMatrix, char)
-
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

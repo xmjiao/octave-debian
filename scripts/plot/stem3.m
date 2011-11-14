@@ -1,4 +1,4 @@
-## Copyright (C) 2007, 2008, 2009 David Bateman
+## Copyright (C) 2007-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -24,16 +24,17 @@
 ## @code{"-"} and the default marker is @code{"o"}.
 ##
 ## For example,
+##
 ## @example
 ## @group
-## theta = 0:0.2:6; 
-## stem3 (cos (theta), sin (theta), theta) 
+## theta = 0:0.2:6;
+## stem3 (cos (theta), sin (theta), theta)
 ## @end group
 ## @end example
 ##
 ## @noindent
-## plots 31 stems with heights from 0 to 6 lying on a circle.  Color 
-## definitions with rgb-triples are not valid!
+## plots 31 stems with heights from 0 to 6 lying on a circle.  Color
+## definitions with RGB-triples are not valid!
 ## @seealso{bar, barh, stem, plot}
 ## @end deftypefn
 
@@ -52,5 +53,5 @@ function h = stem3 (varargin)
 endfunction
 
 %!demo
-%! theta = 0:0.2:6; 
-%! stem3 (cos (theta), sin (theta), theta) 
+%! theta = 0:0.2:6;
+%! stem3 (cos (theta), sin (theta), theta)

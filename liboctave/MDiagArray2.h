@@ -1,8 +1,8 @@
 // Template array classes with like-type math ops
 /*
 
-Copyright (C) 1996, 1997, 2000, 2002, 2003, 2004, 2005, 2007, 2008, 2009
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
+Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
 
@@ -26,7 +26,6 @@ along with Octave; see the file COPYING.  If not, see
 #define octave_MDiagArray2_h 1
 
 #include "DiagArray2.h"
-#include "MArray2.h"
 #include "MArray.h"
 
 // Two dimensional diagonal array with math ops.
@@ -41,12 +40,8 @@ template <class T>
 class
 MDiagArray2 : public DiagArray2<T>
 {
-protected:
-
-  MDiagArray2 (T *d, octave_idx_type r, octave_idx_type c) : DiagArray2<T> (d, r, c) { }
-
 public:
-  
+
   MDiagArray2 (void) : DiagArray2<T> () { }
 
   MDiagArray2 (octave_idx_type r, octave_idx_type c) : DiagArray2<T> (r, c) { }
@@ -62,6 +57,9 @@ public:
 
   explicit MDiagArray2 (const Array<T>& a) : DiagArray2<T> (a) { }
 
+  MDiagArray2 (const Array<T>& a, octave_idx_type r, octave_idx_type c)
+    : DiagArray2<T> (a, r, c) { }
+
   ~MDiagArray2 (void) { }
 
   MDiagArray2<T>& operator = (const MDiagArray2<T>& a)
@@ -70,9 +68,9 @@ public:
       return *this;
     }
 
-  operator MArray2<T> () const
+  MArray<T> array_value () const
     {
-      return DiagArray2<T>::operator Array2<T> ();
+      return DiagArray2<T>::array_value ();
     }
 
   octave_idx_type nnz (void) const
@@ -84,10 +82,10 @@ public:
       octave_idx_type nel = this->length ();
 
       for (octave_idx_type i = 0; i < nel; i++)
-	{
-	  if (d[i] != T ())
-	    retval++;
-	}
+        {
+          if (d[i] != T ())
+            retval++;
+        }
 
       return retval;
     }
@@ -100,19 +98,11 @@ public:
 
   bool is_multiple_of_identity (T val) const;
 
-  static MDiagArray2<T> nil_array;
-
   // Currently, the OPS functions don't need to be friends, but that
   // may change.
 
-  // MDIAGARRAY2_OPS_FRIEND_DECLS (MDiagArray2)
+  MDIAGARRAY2_OPS_FRIEND_DECLS (MDiagArray2, )
 
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

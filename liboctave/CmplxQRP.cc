@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2002, 2003, 2004, 2005, 2007,
-              2008, 2009 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
+Copyright (C) 2009 VZLU Prague
 
 This file is part of Octave.
 
@@ -35,23 +35,25 @@ along with Octave; see the file COPYING.  If not, see
 extern "C"
 {
   F77_RET_T
-  F77_FUNC (zgeqp3, ZGEQP3) (const octave_idx_type&, const octave_idx_type&, Complex*,
-			     const octave_idx_type&, octave_idx_type*, Complex*, Complex*,
-			     const octave_idx_type&, double*, octave_idx_type&);
+  F77_FUNC (zgeqp3, ZGEQP3) (const octave_idx_type&, const octave_idx_type&,
+                             Complex*, const octave_idx_type&,
+                             octave_idx_type*, Complex*, Complex*,
+                             const octave_idx_type&, double*,
+                             octave_idx_type&);
 }
 
 // It would be best to share some of this code with ComplexQR class...
 
-ComplexQRP::ComplexQRP (const ComplexMatrix& a, QR::type qr_type)
+ComplexQRP::ComplexQRP (const ComplexMatrix& a, qr_type_t qr_type)
   : ComplexQR (), p ()
 {
   init (a, qr_type);
 }
 
 void
-ComplexQRP::init (const ComplexMatrix& a, QR::type qr_type)
+ComplexQRP::init (const ComplexMatrix& a, qr_type_t qr_type)
 {
-  assert (qr_type != QR::raw);
+  assert (qr_type != qr_type_raw);
 
   octave_idx_type m = a.rows ();
   octave_idx_type n = a.cols ();
@@ -62,10 +64,10 @@ ComplexQRP::init (const ComplexMatrix& a, QR::type qr_type)
   octave_idx_type info = 0;
 
   ComplexMatrix afact = a;
-  if (m > n && qr_type == QR::std)
+  if (m > n && qr_type == qr_type_std)
     afact.resize (m, m);
 
-  MArray<octave_idx_type> jpvt (n, 0);
+  MArray<octave_idx_type> jpvt (dim_vector (n, 1), 0);
 
   if (m > 0)
     {
@@ -96,16 +98,10 @@ ComplexQRP::init (const ComplexMatrix& a, QR::type qr_type)
   form (n, afact, tau, qr_type);
 }
 
-ColumnVector
+RowVector
 ComplexQRP::Pvec (void) const
 {
   Array<double> pa (p.pvec ());
-  ColumnVector pv (MArray<double> (pa) + 1.0);
+  RowVector pv (MArray<double> (pa) + 1.0);
   return pv;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

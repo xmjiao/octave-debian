@@ -1,5 +1,4 @@
-## Copyright (C) 1996, 1997, 1998, 2000, 2002, 2004, 2005, 2006, 2007
-##               Kurt Hornik
+## Copyright (C) 1996-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -36,23 +35,20 @@ function inv = discrete_inv (x, v, p)
   sz = size (x);
 
   if (! isvector (v))
-    error ("discrete_inv: v must be a vector");
+    error ("discrete_inv: V must be a vector");
   elseif (! isvector (p) || (length (p) != length (v)))
-    error ("discrete_inv: p must be a vector with length (v) elements");
+    error ("discrete_inv: P must be a vector with length (V) elements");
   elseif (! (all (p >= 0) && any (p)))
-    error ("discrete_inv: p must be a nonzero, nonnegative vector");
+    error ("discrete_inv: P must be a nonzero, nonnegative vector");
   endif
 
   n = numel (x);
   x = reshape (x, 1, n);
   m = length (v);
-  v = sort (v);
-  s = reshape (cumsum (p / sum (p)), m, 1);
+  [v, idx] = sort (v);
+  p = reshape (cumsum (p (idx) / sum (p)), m, 1);
 
-  ## Allow storage allocated for P to be reclaimed.
-  p = [];
-
-  inv = NaN * ones (sz);
+  inv = NaN (sz);
   if (any (k = find (x == 0)))
     inv(k) = -Inf;
   endif
@@ -62,17 +58,7 @@ function inv = discrete_inv (x, v, p)
 
   if (any (k = find ((x > 0) & (x < 1))))
     n = length (k);
-
-    ## The following loop is a space/time tradeoff in favor of space,
-    ## since the dataset may be large.
-    ##
-    ## Vectorized code is:
-    ##
-    ##     inv(k) = v(sum ((ones (m, 1) * x(k)) > (s * ones (1, n))) + 1);
-
-    for q = 1:n
-      inv(k(q)) = v(sum (x(k(q)) > s) + 1);
-    endfor
+    inv (k) = v(length (p) - lookup (sort (p,"descend"), x(k)) + 1);
   endif
 
 endfunction

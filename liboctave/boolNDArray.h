@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 2003-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -23,41 +23,47 @@ along with Octave; see the file COPYING.  If not, see
 #if !defined (octave_boolNDArray_h)
 #define octave_boolNDArray_h 1
 
-#include "ArrayN.h"
+#include "Array.h"
 
 #include "mx-defs.h"
 #include "mx-op-decl.h"
+#include "bsxfun-decl.h"
 
 #include "boolMatrix.h"
 
+
 class
 OCTAVE_API
-boolNDArray : public ArrayN<bool>
+boolNDArray : public Array<bool>
 {
 public:
 
-  boolNDArray (void) : ArrayN<bool> () { }
+  typedef boolMatrix matrix_type;
 
-  boolNDArray (const dim_vector& dv) : ArrayN<bool> (dv) { }
+  boolNDArray (void) : Array<bool> () { }
+
+  boolNDArray (const dim_vector& dv) : Array<bool> (dv) { }
 
   boolNDArray (const dim_vector& dv, const bool& val)
-    : ArrayN<bool> (dv, val) { }
-  
-  boolNDArray (const boolNDArray& a) : ArrayN<bool> (a) { }
+    : Array<bool> (dv, val) { }
 
-  boolNDArray (const boolMatrix& a) : ArrayN<bool> (a) { }
+  boolNDArray (const boolNDArray& a) : Array<bool> (a) { }
 
-  boolNDArray (const ArrayN<bool>& a) : ArrayN<bool> (a) { }
+  boolNDArray (const boolMatrix& a) : Array<bool> (a) { }
+
+  boolNDArray (const Array<bool>& a) : Array<bool> (a) { }
 
   boolNDArray& operator = (const boolNDArray& a)
     {
-      ArrayN<bool>::operator = (a);
+      Array<bool>::operator = (a);
       return *this;
     }
 
   // unary operations
 
   boolNDArray operator ! (void) const;
+
+  boolNDArray& invert (void);
 
   bool any_element_is_nan (void) const { return false; }
 
@@ -76,14 +82,14 @@ public:
 
   boolMatrix matrix_value (void) const;
 
-  boolNDArray squeeze (void) const { return ArrayN<bool>::squeeze (); }
+  boolNDArray squeeze (void) const { return Array<bool>::squeeze (); }
 
   static void increment_index (Array<octave_idx_type>& ra_idx,
-			       const dim_vector& dimensions,
-			       int start_dimension = 0);
+                               const dim_vector& dimensions,
+                               int start_dimension = 0);
 
   static octave_idx_type compute_index (Array<octave_idx_type>& ra_idx,
-			    const dim_vector& dimensions);
+                            const dim_vector& dimensions);
 
   // i/o
 
@@ -95,28 +101,8 @@ public:
   //  bool all_elements_are_real (void) const;
   //  bool all_integers (double& max_val, double& min_val) const;
 
-  octave_idx_type nnz (void) const
-    {
-      octave_idx_type retval = 0;
-
-      const bool *d = this->data ();
-
-      octave_idx_type nel = this->numel ();
-
-      for (octave_idx_type i = 0; i < nel; i++)
-	{
-	  if (d[i])
-	    retval++;
-	}
-
-      return retval;
-    }
-
   boolNDArray diag (octave_idx_type k = 0) const;
 
-private:
-
-  boolNDArray (bool *d, dim_vector& dv) : ArrayN<bool> (d, dv) { }
 };
 
 NDND_BOOL_OP_DECLS (boolNDArray, boolNDArray, OCTAVE_API)
@@ -128,10 +114,12 @@ NDS_CMP_OP_DECLS (boolNDArray, bool, OCTAVE_API)
 SND_BOOL_OP_DECLS (bool, boolNDArray, OCTAVE_API)
 SND_CMP_OP_DECLS (bool, boolNDArray, OCTAVE_API)
 
-#endif
+extern OCTAVE_API boolNDArray&
+mx_el_and_assign (boolNDArray& m, const boolNDArray& a);
+extern OCTAVE_API boolNDArray&
+mx_el_or_assign (boolNDArray& m, const boolNDArray& a);
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+BSXFUN_OP_DECL (and, boolNDArray, OCTAVE_API);
+BSXFUN_OP_DECL (or, boolNDArray, OCTAVE_API);
+
+#endif

@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 2004, 2005, 2006, 2007, 2008 David Bateman
-Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004 Andy Adler
+Copyright (C) 2004-2011 David Bateman
+Copyright (C) 1998-2004 Andy Adler
 
 This file is part of Octave.
 
@@ -67,57 +67,38 @@ octave_sparse_complex_matrix::try_narrowing_conversion (void)
       // Note that for the tests on matrix size, they become approximative
       // since they involves a cast to double to avoid issues of overflow
       if (matrix.rows () == 1 && matrix.cols () == 1)
-	{
-	  // Const copy of the matrix, so the right version of () operator used
-	  const SparseComplexMatrix tmp (matrix);
+        {
+          // Const copy of the matrix, so the right version of () operator used
+          const SparseComplexMatrix tmp (matrix);
 
-	  Complex c = tmp (0, 0);
+          Complex c = tmp (0, 0);
 
-	  if (std::imag (c) == 0.0)
-	    retval = new octave_scalar (std::real (c));
-	  else
-	    retval = new octave_complex (c);
-	}
+          if (std::imag (c) == 0.0)
+            retval = new octave_scalar (std::real (c));
+          else
+            retval = new octave_complex (c);
+        }
       else if (nr == 0 || nc == 0)
-	retval = new octave_matrix (Matrix (nr, nc));
+        retval = new octave_matrix (Matrix (nr, nc));
       else if (matrix.all_elements_are_real ())
-	if (matrix.cols () > 0 && matrix.rows () > 0 && 
-	    double (matrix.byte_size ()) > double (matrix.rows ()) *
-	    double (matrix.cols ()) * sizeof (double))
-	  retval = new octave_matrix (::real (matrix.matrix_value ()));
-	else
-	  retval = new octave_sparse_matrix (::real (matrix));
-      else if (matrix.cols () > 0 && matrix.rows () > 0 && 
-	       double (matrix.byte_size ()) > double (matrix.rows ()) *
-	       double (matrix.cols ()) * sizeof (Complex))
-	retval = new octave_complex_matrix (matrix.matrix_value ());
+        if (matrix.cols () > 0 && matrix.rows () > 0
+            && (double (matrix.byte_size ()) > double (matrix.rows ())
+                * double (matrix.cols ()) * sizeof (double)))
+          retval = new octave_matrix (::real (matrix.matrix_value ()));
+        else
+          retval = new octave_sparse_matrix (::real (matrix));
+      else if (matrix.cols () > 0 && matrix.rows () > 0
+               && (double (matrix.byte_size ()) > double (matrix.rows ())
+                   * double (matrix.cols ()) * sizeof (Complex)))
+        retval = new octave_complex_matrix (matrix.matrix_value ());
     }
   else
     {
       if (matrix.all_elements_are_real ())
-	retval = new octave_sparse_matrix (::real (matrix));
+        retval = new octave_sparse_matrix (::real (matrix));
     }
-    
+
   return retval;
-}
-
-void
-octave_sparse_complex_matrix::assign (const octave_value_list& idx,
-				      const SparseComplexMatrix& rhs)
-{
-  octave_base_sparse<SparseComplexMatrix>::assign (idx, rhs);
-}
-
-void
-octave_sparse_complex_matrix::assign (const octave_value_list& idx,
-				      const SparseMatrix& rhs)
-{
-  int len = idx.length ();
-
-  for (int i = 0; i < len; i++)
-    matrix.set_index (idx(i).index_vector ());
-
-  ::assign (matrix, rhs);
 }
 
 double
@@ -127,14 +108,14 @@ octave_sparse_complex_matrix::double_value (bool force_conversion) const
 
   if (! force_conversion)
     gripe_implicit_conversion ("Octave:imag-to-real",
-			       "complex sparse matrix", "real scalar");
+                               "complex sparse matrix", "real scalar");
 
   // FIXME -- maybe this should be a function, valid_as_scalar()
   if (numel () > 0)
     {
       if (numel () > 1)
-	gripe_implicit_conversion ("Octave:array-as-scalar",
-				   "complex sparse matrix", "real scalar");
+        gripe_implicit_conversion ("Octave:array-as-scalar",
+                                   "complex sparse matrix", "real scalar");
 
       retval = std::real (matrix (0, 0));
     }
@@ -151,7 +132,7 @@ octave_sparse_complex_matrix::matrix_value (bool force_conversion) const
 
   if (! force_conversion)
     gripe_implicit_conversion ("Octave:imag-to-real",
-			       "complex sparse matrix", "real matrix");
+                               "complex sparse matrix", "real matrix");
 
   retval = ::real (matrix.matrix_value ());
 
@@ -169,8 +150,8 @@ octave_sparse_complex_matrix::complex_value (bool) const
   if (numel () > 0)
     {
       if (numel () > 1)
-	gripe_implicit_conversion ("Octave:array-as-scalar",
-				   "complex sparse matrix", "real scalar");
+        gripe_implicit_conversion ("Octave:array-as-scalar",
+                                   "complex sparse matrix", "real scalar");
 
       retval = matrix (0, 0);
     }
@@ -186,7 +167,7 @@ octave_sparse_complex_matrix::complex_matrix_value (bool) const
   return matrix.matrix_value ();
 }
 
-ComplexNDArray 
+ComplexNDArray
 octave_sparse_complex_matrix::complex_array_value (bool) const
 {
   return ComplexNDArray (matrix.matrix_value ());
@@ -199,7 +180,7 @@ octave_sparse_complex_matrix::char_array_value (bool frc_str_conv) const
 
   if (! frc_str_conv)
     gripe_implicit_conversion ("Octave:num-to-str",
-			       "sparse complex matrix", "string");
+                               "sparse complex matrix", "string");
   else
     {
       retval = charNDArray (dims (), 0);
@@ -207,9 +188,9 @@ octave_sparse_complex_matrix::char_array_value (bool frc_str_conv) const
       octave_idx_type nr = matrix.rows ();
 
       for (octave_idx_type j = 0; j < nc; j++)
-	for (octave_idx_type i = matrix.cidx(j); i < matrix.cidx(j+1); i++)
-	  retval(matrix.ridx(i) + nr * j) = 
-	    static_cast<char>(std::real (matrix.data (i)));
+        for (octave_idx_type i = matrix.cidx(j); i < matrix.cidx(j+1); i++)
+          retval(matrix.ridx(i) + nr * j) =
+            static_cast<char>(std::real (matrix.data (i)));
     }
 
   return retval;
@@ -222,17 +203,29 @@ octave_sparse_complex_matrix::sparse_matrix_value (bool force_conversion) const
 
   if (! force_conversion)
     gripe_implicit_conversion ("Octave:imag-to-real",
-			       "complex sparse matrix", 
-			       "real sparse matrix");
+                               "complex sparse matrix",
+                               "real sparse matrix");
 
   retval = ::real (matrix);
 
   return retval;
 }
 
-bool 
-octave_sparse_complex_matrix::save_binary (std::ostream& os, 
-					   bool&save_as_floats)
+SparseBoolMatrix
+octave_sparse_complex_matrix::sparse_bool_matrix_value (bool warn) const
+{
+  if (matrix.any_element_is_nan ())
+    gripe_nan_to_logical_conversion ();
+  else if (warn && (! matrix.all_elements_are_real ()
+                    || real (matrix).any_element_not_one_or_zero ()))
+    gripe_logical_conversion ();
+
+  return mx_el_ne (matrix, Complex (0.0));
+}
+
+bool
+octave_sparse_complex_matrix::save_binary (std::ostream& os,
+                                           bool&save_as_floats)
 {
   dim_vector d = this->dims ();
   if (d.length() < 1)
@@ -243,19 +236,19 @@ octave_sparse_complex_matrix::save_binary (std::ostream& os,
 
   int nr = d(0);
   int nc = d(1);
-  int nz = nzmax ();
+  int nz = nnz ();
 
   int32_t itmp;
   // Use negative value for ndims to be consistent with other formats
-  itmp= -2;        
+  itmp= -2;
   os.write (reinterpret_cast<char *> (&itmp), 4);
-  
-  itmp= nr;    
+
+  itmp= nr;
   os.write (reinterpret_cast<char *> (&itmp), 4);
-  
+
   itmp= nc;
   os.write (reinterpret_cast<char *> (&itmp), 4);
-  
+
   itmp= nz;
   os.write (reinterpret_cast<char *> (&itmp), 4);
 
@@ -263,33 +256,33 @@ octave_sparse_complex_matrix::save_binary (std::ostream& os,
   if (save_as_floats)
     {
       if (matrix.too_large_for_float ())
-	{
-	  warning ("save: some values too large to save as floats --");
-	  warning ("save: saving as doubles instead");
-	}
+        {
+          warning ("save: some values too large to save as floats --");
+          warning ("save: saving as doubles instead");
+        }
       else
-	st = LS_FLOAT;
+        st = LS_FLOAT;
     }
-  else if (matrix.nzmax () > 8192) // FIXME -- make this configurable.
+  else if (matrix.nnz () > 8192) // FIXME -- make this configurable.
     {
       double max_val, min_val;
       if (matrix.all_integers (max_val, min_val))
-	st = get_save_type (max_val, min_val);
+        st = get_save_type (max_val, min_val);
     }
 
   // add one to the printed indices to go from
   // zero-based to one-based arrays
-   for (int i = 0; i < nc+1; i++)  
+   for (int i = 0; i < nc+1; i++)
      {
-       OCTAVE_QUIT;
+       octave_quit ();
        itmp = matrix.cidx(i);
        os.write (reinterpret_cast<char *> (&itmp), 4);
      }
 
-   for (int i = 0; i < nz; i++) 
+   for (int i = 0; i < nz; i++)
      {
-       OCTAVE_QUIT;
-       itmp = matrix.ridx(i); 
+       octave_quit ();
+       itmp = matrix.ridx(i);
        os.write (reinterpret_cast<char *> (&itmp), 4);
      }
 
@@ -300,7 +293,7 @@ octave_sparse_complex_matrix::save_binary (std::ostream& os,
 
 bool
 octave_sparse_complex_matrix::load_binary (std::istream& is, bool swap,
-				   oct_mach_info::float_format fmt)
+                                   oct_mach_info::float_format fmt)
 {
   int32_t nz, nc, nr, tmp;
   char ctmp;
@@ -312,7 +305,7 @@ octave_sparse_complex_matrix::load_binary (std::istream& is, bool swap,
     swap_bytes<4> (&tmp);
 
   if (tmp != -2) {
-    error("load: only 2D sparse matrices are supported");
+    error ("load: only 2D sparse matrices are supported");
     return false;
   }
 
@@ -331,37 +324,41 @@ octave_sparse_complex_matrix::load_binary (std::istream& is, bool swap,
     }
 
   SparseComplexMatrix m (static_cast<octave_idx_type> (nr),
-			 static_cast<octave_idx_type> (nc),
-			 static_cast<octave_idx_type> (nz));
+                         static_cast<octave_idx_type> (nc),
+                         static_cast<octave_idx_type> (nz));
 
-  for (int i = 0; i < nc+1; i++) 
+  for (int i = 0; i < nc+1; i++)
     {
-      OCTAVE_QUIT;
+      octave_quit ();
       if (! is.read (reinterpret_cast<char *> (&tmp), 4))
-	return false;
+        return false;
       if (swap)
-	swap_bytes<4> (&tmp);
+        swap_bytes<4> (&tmp);
       m.cidx(i) = tmp;
     }
 
-  for (int i = 0; i < nz; i++) 
+  for (int i = 0; i < nz; i++)
     {
-      OCTAVE_QUIT;
+      octave_quit ();
       if (! is.read (reinterpret_cast<char *> (&tmp), 4))
-	return false;
+        return false;
       if (swap)
-	swap_bytes<4> (&tmp);
+        swap_bytes<4> (&tmp);
       m.ridx(i) = tmp;
     }
 
   if (! is.read (reinterpret_cast<char *> (&ctmp), 1))
     return false;
-  
+
   read_doubles (is, reinterpret_cast<double *> (m.data ()),
-		static_cast<save_type> (ctmp), 2 * nz, swap, fmt);
+                static_cast<save_type> (ctmp), 2 * nz, swap, fmt);
 
   if (error_state || ! is)
     return false;
+
+  if (! m.indices_ok ())
+    return false;
+
   matrix = m;
 
   return true;
@@ -370,8 +367,8 @@ octave_sparse_complex_matrix::load_binary (std::istream& is, bool swap,
 #if defined (HAVE_HDF5)
 
 bool
-octave_sparse_complex_matrix::save_hdf5 (hid_t loc_id, const char *name, 
-					 bool save_as_floats)
+octave_sparse_complex_matrix::save_hdf5 (hid_t loc_id, const char *name,
+                                         bool save_as_floats)
 {
   dim_vector dv = dims ();
   int empty = save_hdf5_empty (loc_id, name, dv);
@@ -381,7 +378,11 @@ octave_sparse_complex_matrix::save_hdf5 (hid_t loc_id, const char *name,
   // Ensure that additional memory is deallocated
   matrix.maybe_compress ();
 
+#if HAVE_HDF5_18
+  hid_t group_hid = H5Gcreate (loc_id, name, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+#else
   hid_t group_hid = H5Gcreate (loc_id, name, 0);
+#endif
   if (group_hid < 0)
     return false;
 
@@ -392,64 +393,79 @@ octave_sparse_complex_matrix::save_hdf5 (hid_t loc_id, const char *name,
   hsize_t hdims[2];
 
   space_hid = H5Screate_simple (0, hdims, 0);
-  if (space_hid < 0) 
+  if (space_hid < 0)
     {
       H5Gclose (group_hid);
       return false;
     }
 
-  data_hid = H5Dcreate (group_hid, "nr", H5T_NATIVE_IDX, space_hid, 
-			H5P_DEFAULT);
-  if (data_hid < 0) 
+#if HAVE_HDF5_18
+  data_hid = H5Dcreate (group_hid, "nr", H5T_NATIVE_IDX, space_hid,
+                        H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+#else
+  data_hid = H5Dcreate (group_hid, "nr", H5T_NATIVE_IDX, space_hid,
+                        H5P_DEFAULT);
+#endif
+  if (data_hid < 0)
     {
       H5Sclose (space_hid);
       H5Gclose (group_hid);
       return false;
     }
-  
+
   tmp = m.rows ();
   retval = H5Dwrite (data_hid, H5T_NATIVE_IDX, H5S_ALL, H5S_ALL,
-		     H5P_DEFAULT, &tmp) >= 0;
+                     H5P_DEFAULT, &tmp) >= 0;
   H5Dclose (data_hid);
   if (!retval)
     {
       H5Sclose (space_hid);
       H5Gclose (group_hid);
       return false;
-    }    
+    }
 
-  data_hid = H5Dcreate (group_hid, "nc", H5T_NATIVE_IDX, space_hid, 
-			H5P_DEFAULT);
-  if (data_hid < 0) 
+#if HAVE_HDF5_18
+  data_hid = H5Dcreate (group_hid, "nc", H5T_NATIVE_IDX, space_hid,
+                        H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+#else
+  data_hid = H5Dcreate (group_hid, "nc", H5T_NATIVE_IDX, space_hid,
+                        H5P_DEFAULT);
+#endif
+  if (data_hid < 0)
     {
       H5Sclose (space_hid);
       H5Gclose (group_hid);
       return false;
     }
-  
+
   tmp = m.cols ();
   retval = H5Dwrite (data_hid, H5T_NATIVE_IDX, H5S_ALL, H5S_ALL,
-		     H5P_DEFAULT, &tmp) >= 0;
+                     H5P_DEFAULT, &tmp) >= 0;
   H5Dclose (data_hid);
   if (!retval)
     {
       H5Sclose (space_hid);
       H5Gclose (group_hid);
       return false;
-    }    
+    }
 
-  data_hid = H5Dcreate (group_hid, "nz", H5T_NATIVE_IDX, space_hid, 
-			H5P_DEFAULT);
-  if (data_hid < 0) 
+#if HAVE_HDF5_18
+  data_hid = H5Dcreate (group_hid, "nz", H5T_NATIVE_IDX, space_hid,
+                        H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+#else
+  data_hid = H5Dcreate (group_hid, "nz", H5T_NATIVE_IDX, space_hid,
+                        H5P_DEFAULT);
+#endif
+  if (data_hid < 0)
     {
       H5Sclose (space_hid);
       H5Gclose (group_hid);
       return false;
     }
-  
-  tmp = m.nzmax ();
+
+  tmp = m.nnz ();
   retval = H5Dwrite (data_hid, H5T_NATIVE_IDX, H5S_ALL, H5S_ALL,
-		     H5P_DEFAULT, &tmp) >= 0;
+                     H5P_DEFAULT, &tmp) >= 0;
   H5Dclose (data_hid);
   if (!retval)
     {
@@ -465,54 +481,64 @@ octave_sparse_complex_matrix::save_hdf5 (hid_t loc_id, const char *name,
 
   space_hid = H5Screate_simple (2, hdims, 0);
 
-  if (space_hid < 0) 
+  if (space_hid < 0)
     {
       H5Gclose (group_hid);
       return false;
     }
 
-  data_hid = H5Dcreate (group_hid, "cidx", H5T_NATIVE_IDX, space_hid, 
-			H5P_DEFAULT);
-  if (data_hid < 0) 
+#if HAVE_HDF5_18
+  data_hid = H5Dcreate (group_hid, "cidx", H5T_NATIVE_IDX, space_hid,
+                        H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+#else
+  data_hid = H5Dcreate (group_hid, "cidx", H5T_NATIVE_IDX, space_hid,
+                        H5P_DEFAULT);
+#endif
+  if (data_hid < 0)
     {
       H5Sclose (space_hid);
       H5Gclose (group_hid);
       return false;
     }
-  
+
   octave_idx_type * itmp = m.xcidx ();
   retval = H5Dwrite (data_hid, H5T_NATIVE_IDX, H5S_ALL, H5S_ALL,
-		     H5P_DEFAULT, itmp) >= 0;
+                     H5P_DEFAULT, itmp) >= 0;
   H5Dclose (data_hid);
   if (!retval)
     {
       H5Sclose (space_hid);
       H5Gclose (group_hid);
       return false;
-    }    
+    }
 
   H5Sclose (space_hid);
 
-  hdims[0] = m.nzmax ();
+  hdims[0] = m.nnz ();
   hdims[1] = 1;
 
   space_hid = H5Screate_simple (2, hdims, 0);
 
-  if (space_hid < 0) 
+  if (space_hid < 0)
     {
       H5Gclose (group_hid);
       return false;
     }
 
-  data_hid = H5Dcreate (group_hid, "ridx", H5T_NATIVE_IDX, space_hid, 
-			H5P_DEFAULT);
-  if (data_hid < 0) 
+#if HAVE_HDF5_18
+  data_hid = H5Dcreate (group_hid, "ridx", H5T_NATIVE_IDX, space_hid,
+                        H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+#else
+  data_hid = H5Dcreate (group_hid, "ridx", H5T_NATIVE_IDX, space_hid,
+                        H5P_DEFAULT);
+#endif
+  if (data_hid < 0)
     {
       H5Sclose (space_hid);
       H5Gclose (group_hid);
       return false;
     }
-  
+
   itmp = m.xridx ();
   retval = H5Dwrite (data_hid, H5T_NATIVE_IDX, H5S_ALL, H5S_ALL, H5P_DEFAULT, itmp) >= 0;
   H5Dclose (data_hid);
@@ -528,12 +554,12 @@ octave_sparse_complex_matrix::save_hdf5 (hid_t loc_id, const char *name,
   if (save_as_floats)
     {
       if (m.too_large_for_float ())
-	{
-	  warning ("save: some values too large to save as floats --");
-	  warning ("save: saving as doubles instead");
-	}
+        {
+          warning ("save: some values too large to save as floats --");
+          warning ("save: saving as doubles instead");
+        }
       else
-	save_type_hid = H5T_NATIVE_FLOAT;
+        save_type_hid = H5T_NATIVE_FLOAT;
     }
 #if HAVE_HDF5_INT2FLOAT_CONVERSIONS
   // hdf5 currently doesn't support float/integer conversions
@@ -542,8 +568,8 @@ octave_sparse_complex_matrix::save_hdf5 (hid_t loc_id, const char *name,
       double max_val, min_val;
 
       if (m.all_integers (max_val, min_val))
-	save_type_hid
-	  = save_type_to_hdf5 (get_save_type (max_val, min_val));
+        save_type_hid
+          = save_type_to_hdf5 (get_save_type (max_val, min_val));
     }
 #endif /* HAVE_HDF5_INT2FLOAT_CONVERSIONS */
 
@@ -554,8 +580,12 @@ octave_sparse_complex_matrix::save_hdf5 (hid_t loc_id, const char *name,
       H5Gclose (group_hid);
       return false;
     }
-
+#if HAVE_HDF5_18
+  data_hid = H5Dcreate (group_hid, "data", type_hid, space_hid,
+                        H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+#else
   data_hid = H5Dcreate (group_hid, "data", type_hid, space_hid, H5P_DEFAULT);
+#endif
   if (data_hid < 0)
     {
       H5Sclose (space_hid);
@@ -566,12 +596,12 @@ octave_sparse_complex_matrix::save_hdf5 (hid_t loc_id, const char *name,
 
   hid_t complex_type_hid = hdf5_make_complex_type (H5T_NATIVE_DOUBLE);
   retval = false;
-  if (complex_type_hid >= 0) 
+  if (complex_type_hid >= 0)
     {
       Complex * ctmp = m.xdata ();
 
       retval = H5Dwrite (data_hid, complex_type_hid, H5S_ALL, H5S_ALL,
-			 H5P_DEFAULT, ctmp) >= 0;
+                         H5P_DEFAULT, ctmp) >= 0;
     }
 
   H5Dclose (data_hid);
@@ -583,36 +613,43 @@ octave_sparse_complex_matrix::save_hdf5 (hid_t loc_id, const char *name,
 }
 
 bool
-octave_sparse_complex_matrix::load_hdf5 (hid_t loc_id, const char *name,
-					 bool /* have_h5giterate_bug */)
+octave_sparse_complex_matrix::load_hdf5 (hid_t loc_id, const char *name)
 {
   octave_idx_type nr, nc, nz;
   hid_t group_hid, data_hid, space_hid;
   hsize_t rank;
-  
+
   dim_vector dv;
   int empty = load_hdf5_empty (loc_id, name, dv);
   if (empty > 0)
     matrix.resize(dv);
   if (empty)
     return (empty > 0);
-  
+
+#if HAVE_HDF5_18
+  group_hid = H5Gopen (loc_id, name, H5P_DEFAULT);
+#else
   group_hid = H5Gopen (loc_id, name);
+#endif
   if (group_hid < 0 ) return false;
 
+#if HAVE_HDF5_18
+  data_hid = H5Dopen (group_hid, "nr", H5P_DEFAULT);
+#else
   data_hid = H5Dopen (group_hid, "nr");
+#endif
   space_hid = H5Dget_space (data_hid);
   rank = H5Sget_simple_extent_ndims (space_hid);
 
   if (rank != 0)
-    { 
+    {
       H5Dclose (data_hid);
       H5Gclose (group_hid);
       return false;
     }
 
   if (H5Dread (data_hid, H5T_NATIVE_IDX, H5S_ALL, H5S_ALL, H5P_DEFAULT, &nr) < 0)
-    { 
+    {
       H5Dclose (data_hid);
       H5Gclose (group_hid);
       return false;
@@ -620,39 +657,47 @@ octave_sparse_complex_matrix::load_hdf5 (hid_t loc_id, const char *name,
 
   H5Dclose (data_hid);
 
+#if HAVE_HDF5_18
+  data_hid = H5Dopen (group_hid, "nc", H5P_DEFAULT);
+#else
   data_hid = H5Dopen (group_hid, "nc");
+#endif
   space_hid = H5Dget_space (data_hid);
   rank = H5Sget_simple_extent_ndims (space_hid);
 
   if (rank != 0)
-    { 
+    {
       H5Dclose (data_hid);
       H5Gclose (group_hid);
       return false;
     }
 
   if (H5Dread (data_hid, H5T_NATIVE_IDX, H5S_ALL, H5S_ALL, H5P_DEFAULT, &nc) < 0)
-    { 
+    {
       H5Dclose (data_hid);
       H5Gclose (group_hid);
       return false;
     }
 
   H5Dclose (data_hid);
-  
+
+#if HAVE_HDF5_18
+  data_hid = H5Dopen (group_hid, "nz", H5P_DEFAULT);
+#else
   data_hid = H5Dopen (group_hid, "nz");
+#endif
   space_hid = H5Dget_space (data_hid);
   rank = H5Sget_simple_extent_ndims (space_hid);
 
   if (rank != 0)
-    { 
+    {
       H5Dclose (data_hid);
       H5Gclose (group_hid);
       return false;
     }
 
   if (H5Dread (data_hid, H5T_NATIVE_IDX, H5S_ALL, H5S_ALL, H5P_DEFAULT, &nz) < 0)
-    { 
+    {
       H5Dclose (data_hid);
       H5Gclose (group_hid);
       return false;
@@ -661,10 +706,14 @@ octave_sparse_complex_matrix::load_hdf5 (hid_t loc_id, const char *name,
   H5Dclose (data_hid);
 
   SparseComplexMatrix m (static_cast<octave_idx_type> (nr),
-			 static_cast<octave_idx_type> (nc),
-			 static_cast<octave_idx_type> (nz));
+                         static_cast<octave_idx_type> (nc),
+                         static_cast<octave_idx_type> (nz));
 
+#if HAVE_HDF5_18
+  data_hid = H5Dopen (group_hid, "cidx", H5P_DEFAULT);
+#else
   data_hid = H5Dopen (group_hid, "cidx");
+#endif
   space_hid = H5Dget_space (data_hid);
   rank = H5Sget_simple_extent_ndims (space_hid);
 
@@ -681,8 +730,8 @@ octave_sparse_complex_matrix::load_hdf5 (hid_t loc_id, const char *name,
 
   H5Sget_simple_extent_dims (space_hid, hdims, maxdims);
 
-  if (static_cast<int> (hdims[0]) != nc + 1 || 
-      static_cast<int> (hdims[1]) != 1)
+  if (static_cast<int> (hdims[0]) != nc + 1
+      || static_cast<int> (hdims[1]) != 1)
     {
       H5Sclose (space_hid);
       H5Dclose (data_hid);
@@ -691,7 +740,7 @@ octave_sparse_complex_matrix::load_hdf5 (hid_t loc_id, const char *name,
     }
 
   octave_idx_type *itmp = m.xcidx ();
-  if (H5Dread (data_hid, H5T_NATIVE_IDX, H5S_ALL, H5S_ALL, H5P_DEFAULT, itmp) < 0) 
+  if (H5Dread (data_hid, H5T_NATIVE_IDX, H5S_ALL, H5S_ALL, H5P_DEFAULT, itmp) < 0)
     {
       H5Sclose (space_hid);
       H5Dclose (data_hid);
@@ -702,7 +751,11 @@ octave_sparse_complex_matrix::load_hdf5 (hid_t loc_id, const char *name,
   H5Sclose (space_hid);
   H5Dclose (data_hid);
 
+#if HAVE_HDF5_18
+  data_hid = H5Dopen (group_hid, "ridx", H5P_DEFAULT);
+#else
   data_hid = H5Dopen (group_hid, "ridx");
+#endif
   space_hid = H5Dget_space (data_hid);
   rank = H5Sget_simple_extent_ndims (space_hid);
 
@@ -716,8 +769,8 @@ octave_sparse_complex_matrix::load_hdf5 (hid_t loc_id, const char *name,
 
   H5Sget_simple_extent_dims (space_hid, hdims, maxdims);
 
-  if (static_cast<int> (hdims[0]) != nz || 
-      static_cast<int> (hdims[1]) != 1)
+  if (static_cast<int> (hdims[0]) != nz
+      || static_cast<int> (hdims[1]) != 1)
     {
       H5Sclose (space_hid);
       H5Dclose (data_hid);
@@ -726,7 +779,7 @@ octave_sparse_complex_matrix::load_hdf5 (hid_t loc_id, const char *name,
     }
 
   itmp = m.xridx ();
-  if (H5Dread (data_hid, H5T_NATIVE_IDX, H5S_ALL, H5S_ALL, H5P_DEFAULT, itmp) < 0) 
+  if (H5Dread (data_hid, H5T_NATIVE_IDX, H5S_ALL, H5S_ALL, H5P_DEFAULT, itmp) < 0)
     {
       H5Sclose (space_hid);
       H5Dclose (data_hid);
@@ -737,7 +790,11 @@ octave_sparse_complex_matrix::load_hdf5 (hid_t loc_id, const char *name,
   H5Sclose (space_hid);
   H5Dclose (data_hid);
 
+#if HAVE_HDF5_18
+  data_hid = H5Dopen (group_hid, "data", H5P_DEFAULT);
+#else
   data_hid = H5Dopen (group_hid, "data");
+#endif
   hid_t type_hid = H5Dget_type (data_hid);
 
   hid_t complex_type = hdf5_make_complex_type (H5T_NATIVE_DOUBLE);
@@ -763,8 +820,8 @@ octave_sparse_complex_matrix::load_hdf5 (hid_t loc_id, const char *name,
 
   H5Sget_simple_extent_dims (space_hid, hdims, maxdims);
 
-  if (static_cast<int> (hdims[0]) != nz || 
-      static_cast<int> (hdims[1]) != 1)
+  if (static_cast<int> (hdims[0]) != nz
+      || static_cast<int> (hdims[1]) != 1)
     {
       H5Sclose (space_hid);
       H5Dclose (data_hid);
@@ -774,7 +831,9 @@ octave_sparse_complex_matrix::load_hdf5 (hid_t loc_id, const char *name,
 
   Complex *ctmp = m.xdata ();
   bool retval = false;
-  if (H5Dread (data_hid, complex_type, H5S_ALL, H5S_ALL, H5P_DEFAULT, ctmp) >= 0) 
+  if (H5Dread (data_hid, complex_type, H5S_ALL, H5S_ALL,
+               H5P_DEFAULT, ctmp) >= 0
+      && m.indices_ok ())
     {
       retval = true;
       matrix = m;
@@ -795,7 +854,7 @@ octave_sparse_complex_matrix::as_mxArray (void) const
 {
   mwSize nz = nzmax ();
   mxArray *retval = new mxArray (mxDOUBLE_CLASS, rows (), columns (),
-				 nz, mxCOMPLEX);
+                                 nz, mxCOMPLEX);
   double *pr = static_cast<double *> (retval->get_data ());
   double *pi = static_cast<double *> (retval->get_imag_data ());
   mwIndex *ir = retval->get_ir ();
@@ -815,158 +874,61 @@ octave_sparse_complex_matrix::as_mxArray (void) const
   return retval;
 }
 
-static double
-xabs (const Complex& x)
+octave_value
+octave_sparse_complex_matrix::map (unary_mapper_t umap) const
 {
-  return (xisinf (x.real ()) || xisinf (x.imag ())) ? octave_Inf : abs (x);
-}
-
-static double
-ximag (const Complex& x)
-{
-  return x.imag ();
-}
-
-static double
-xreal (const Complex& x)
-{
-  return x.real ();
-}
-
-static bool
-any_element_less_than (const SparseMatrix& a, double val)
-{
-  octave_idx_type len = a.nnz ();
-
-  if (val > 0. && len != a.numel ())
-    return true;
-
-  for (octave_idx_type i = 0; i < len; i++)
+  switch (umap)
     {
-      OCTAVE_QUIT;
+    // Mappers handled specially.
+    case umap_real:
+      return ::real (matrix);
+    case umap_imag:
+      return ::imag (matrix);
 
-      if (a.data(i) < val)
-	return true;
+#define ARRAY_METHOD_MAPPER(UMAP, FCN) \
+    case umap_ ## UMAP: \
+      return octave_value (matrix.FCN ())
+
+      ARRAY_METHOD_MAPPER (abs, abs);
+
+#define ARRAY_MAPPER(UMAP, TYPE, FCN) \
+    case umap_ ## UMAP: \
+      return octave_value (matrix.map<TYPE> (FCN))
+
+      ARRAY_MAPPER (acos, Complex, ::acos);
+      ARRAY_MAPPER (acosh, Complex, ::acosh);
+      ARRAY_MAPPER (angle, double, std::arg);
+      ARRAY_MAPPER (arg, double, std::arg);
+      ARRAY_MAPPER (asin, Complex, ::asin);
+      ARRAY_MAPPER (asinh, Complex, ::asinh);
+      ARRAY_MAPPER (atan, Complex, ::atan);
+      ARRAY_MAPPER (atanh, Complex, ::atanh);
+      ARRAY_MAPPER (ceil, Complex, ::ceil);
+      ARRAY_MAPPER (conj, Complex, std::conj);
+      ARRAY_MAPPER (cos, Complex, std::cos);
+      ARRAY_MAPPER (cosh, Complex, std::cosh);
+      ARRAY_MAPPER (exp, Complex, std::exp);
+      ARRAY_MAPPER (expm1, Complex, ::expm1);
+      ARRAY_MAPPER (fix, Complex, ::fix);
+      ARRAY_MAPPER (floor, Complex, ::floor);
+      ARRAY_MAPPER (log, Complex, std::log);
+      ARRAY_MAPPER (log2, Complex, xlog2);
+      ARRAY_MAPPER (log10, Complex, std::log10);
+      ARRAY_MAPPER (log1p, Complex, ::log1p);
+      ARRAY_MAPPER (round, Complex, xround);
+      ARRAY_MAPPER (roundb, Complex, xroundb);
+      ARRAY_MAPPER (signum, Complex, ::signum);
+      ARRAY_MAPPER (sin, Complex, std::sin);
+      ARRAY_MAPPER (sinh, Complex, std::sinh);
+      ARRAY_MAPPER (sqrt, Complex, std::sqrt);
+      ARRAY_MAPPER (tan, Complex, std::tan);
+      ARRAY_MAPPER (tanh, Complex, std::tanh);
+      ARRAY_MAPPER (isnan, bool, xisnan);
+      ARRAY_MAPPER (isna, bool, octave_is_NA);
+      ARRAY_MAPPER (isinf, bool, xisinf);
+      ARRAY_MAPPER (finite, bool, xfinite);
+
+    default: // Attempt to go via dense matrix.
+      return octave_base_sparse<SparseComplexMatrix>::map (umap);
     }
-
-  return false;
 }
-
-static bool
-any_element_greater_than (const SparseMatrix& a, double val)
-{
-  octave_idx_type len = a.nnz ();
-
-  if (val < 0. && len != a.numel ())
-    return true;
-
-  for (octave_idx_type i = 0; i < len; i++)
-    {
-      OCTAVE_QUIT;
-
-      if (a.data(i) > val)
-	return true;
-    }
-
-  return false;
-}
-
-#define SPARSE_MAPPER(MAP, AMAP, FCN) \
-  octave_value \
-  octave_sparse_complex_matrix::MAP (void) const \
-  { \
-    static AMAP cmap = FCN; \
-    return matrix.map (cmap); \
-  }
-
-#define DSPARSE_MAPPER(MAP, AMAP, FCN) \
-  octave_value \
-  octave_sparse_complex_matrix::MAP (void) const \
-  { \
-    static SparseComplexMatrix::dmapper dmap = ximag; \
-    SparseMatrix m = matrix.map (dmap); \
-    if (m.all_elements_are_zero ()) \
-      { \
-	dmap = xreal; \
-	m = matrix.map (dmap); \
-        static AMAP cmap = FCN; \
-        return m.map (cmap); \
-      } \
-    else \
-      { \
-        error ("%s: not defined for complex arguments", #MAP); \
-        return octave_value (); \
-      } \
-  }
-
-#define CD_SPARSE_MAPPER(MAP, RFCN, CFCN, L1, L2) \
-  octave_value \
-  octave_sparse_complex_matrix::MAP (void) const \
-  { \
-    static SparseComplexMatrix::dmapper idmap = ximag; \
-    SparseMatrix m = matrix.map (idmap); \
-    if (m.all_elements_are_zero ()) \
-      { \
-        static SparseComplexMatrix::dmapper rdmap = xreal; \
-	m = matrix.map (rdmap); \
-        static SparseMatrix::dmapper dmap = RFCN; \
-        static SparseMatrix::cmapper cmap = CFCN; \
-        return (any_element_less_than (m, L1) \
-                ? octave_value (m.map (cmap)) \
-	        : (any_element_greater_than (m, L2) \
-	           ? octave_value (m.map (cmap)) \
-	           : octave_value (m.map (dmap)))); \
-      } \
-    else \
-      { \
-        error ("%s: not defined for complex arguments", #MAP); \
-        return octave_value (); \
-      } \
-  }
-
-DSPARSE_MAPPER (erf, SparseMatrix::dmapper, ::erf)
-DSPARSE_MAPPER (erfc, SparseMatrix::dmapper, ::erfc)
-DSPARSE_MAPPER (gamma, SparseMatrix::dmapper, xgamma)
-CD_SPARSE_MAPPER (lgamma, xlgamma, xlgamma, 0.0, octave_Inf)
-
-SPARSE_MAPPER (abs, SparseComplexMatrix::dmapper, xabs)
-SPARSE_MAPPER (acos, SparseComplexMatrix::cmapper, ::acos)
-SPARSE_MAPPER (acosh, SparseComplexMatrix::cmapper, ::acosh)
-SPARSE_MAPPER (angle, SparseComplexMatrix::dmapper, std::arg)
-SPARSE_MAPPER (arg, SparseComplexMatrix::dmapper, std::arg)
-SPARSE_MAPPER (asin, SparseComplexMatrix::cmapper, ::asin)
-SPARSE_MAPPER (asinh, SparseComplexMatrix::cmapper, ::asinh)
-SPARSE_MAPPER (atan, SparseComplexMatrix::cmapper, ::atan)
-SPARSE_MAPPER (atanh, SparseComplexMatrix::cmapper, ::atanh)
-SPARSE_MAPPER (ceil, SparseComplexMatrix::cmapper, ::ceil)
-SPARSE_MAPPER (conj, SparseComplexMatrix::cmapper, std::conj)
-SPARSE_MAPPER (cos, SparseComplexMatrix::cmapper, std::cos)
-SPARSE_MAPPER (cosh, SparseComplexMatrix::cmapper, std::cosh)
-SPARSE_MAPPER (exp, SparseComplexMatrix::cmapper, std::exp)
-SPARSE_MAPPER (expm1, SparseComplexMatrix::cmapper, ::expm1)
-SPARSE_MAPPER (fix, SparseComplexMatrix::cmapper, ::fix)
-SPARSE_MAPPER (floor, SparseComplexMatrix::cmapper, ::floor)
-SPARSE_MAPPER (imag, SparseComplexMatrix::dmapper, ximag)
-SPARSE_MAPPER (log, SparseComplexMatrix::cmapper, std::log)
-SPARSE_MAPPER (log2, SparseComplexMatrix::cmapper, xlog2)
-SPARSE_MAPPER (log10, SparseComplexMatrix::cmapper, std::log10)
-SPARSE_MAPPER (log1p, SparseComplexMatrix::cmapper, ::log1p)
-SPARSE_MAPPER (real, SparseComplexMatrix::dmapper, xreal)
-SPARSE_MAPPER (round, SparseComplexMatrix::cmapper, xround)
-SPARSE_MAPPER (roundb, SparseComplexMatrix::cmapper, xroundb)
-SPARSE_MAPPER (signum, SparseComplexMatrix::cmapper, ::signum)
-SPARSE_MAPPER (sin, SparseComplexMatrix::cmapper, std::sin)
-SPARSE_MAPPER (sinh, SparseComplexMatrix::cmapper, std::sinh)
-SPARSE_MAPPER (sqrt, SparseComplexMatrix::cmapper, std::sqrt)
-SPARSE_MAPPER (tan, SparseComplexMatrix::cmapper, std::tan)
-SPARSE_MAPPER (tanh, SparseComplexMatrix::cmapper, std::tanh)
-SPARSE_MAPPER (finite, SparseComplexMatrix::bmapper, xfinite)
-SPARSE_MAPPER (isinf, SparseComplexMatrix::bmapper, xisinf)
-SPARSE_MAPPER (isna, SparseComplexMatrix::bmapper, octave_is_NA)
-SPARSE_MAPPER (isnan, SparseComplexMatrix::bmapper, xisnan)
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

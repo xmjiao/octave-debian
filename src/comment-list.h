@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2000, 2002, 2004, 2005, 2006, 2007, 2009 John W. Eaton
+Copyright (C) 2000-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -48,7 +48,7 @@ public:
   };
 
   octave_comment_elt (const std::string& s = std::string (),
-		      comment_type t = unknown)
+                      comment_type t = unknown)
     : txt (s), typ (t) { }
 
   octave_comment_elt (const octave_comment_elt& oc)
@@ -57,10 +57,10 @@ public:
   octave_comment_elt& operator = (const octave_comment_elt& oc)
     {
       if (this != &oc)
-	{
-	  txt = oc.txt;
-	  typ = oc.typ;
-	}
+        {
+          txt = oc.txt;
+          typ = oc.typ;
+        }
 
       return *this;
     }
@@ -91,7 +91,7 @@ public:
     { octave_base_list<octave_comment_elt>::append (elt); }
 
   void append (const std::string& s,
-	       octave_comment_elt::comment_type t = octave_comment_elt::unknown)
+               octave_comment_elt::comment_type t = octave_comment_elt::unknown)
     { append (octave_comment_elt (s, t)); }
 
   octave_comment_list *dup (void) const;
@@ -104,7 +104,7 @@ public:
 
   octave_comment_buffer (void)
     : comment_list (new octave_comment_list ()) { }
-  
+
   static bool instance_ok (void);
 
   static void append
@@ -125,9 +125,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

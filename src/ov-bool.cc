@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2000, 2002, 2003, 2004, 2005, 2006,
-              2007, 2008 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -84,22 +83,22 @@ octave_bool::do_index_op (const octave_value_list& idx, bool resize_ok)
   return tmp.do_index_op (idx, resize_ok);
 }
 
-octave_value 
+octave_value
 octave_bool::resize (const dim_vector& dv, bool fill) const
-{ 
+{
   if (fill)
     {
-      boolNDArray retval (dv, false); 
-      if (dv.numel()) 
-	retval(0) = scalar; 
-      return retval; 
+      boolNDArray retval (dv, false);
+      if (dv.numel())
+        retval(0) = scalar;
+      return retval;
     }
   else
     {
-      boolNDArray retval (dv); 
-      if (dv.numel()) 
-	retval(0) = scalar; 
-      return retval; 
+      boolNDArray retval (dv);
+      if (dv.numel())
+        retval(0) = scalar;
+      return retval;
     }
 }
 
@@ -113,7 +112,7 @@ octave_bool::convert_to_str_internal (bool, bool, char type) const
   return octave_value (s, type);
 }
 
-bool 
+bool
 octave_bool::save_ascii (std::ostream& os)
 {
   double d = double_value ();
@@ -124,10 +123,10 @@ octave_bool::save_ascii (std::ostream& os)
   return true;
 }
 
-bool 
+bool
 octave_bool::load_ascii (std::istream& is)
 {
-  scalar = (octave_read_double (is) != 0.);
+  scalar = (octave_read_value<double> (is) != 0.);
 
   if (!is)
     {
@@ -138,7 +137,7 @@ octave_bool::load_ascii (std::istream& is)
   return true;
 }
 
-bool 
+bool
 octave_bool::save_binary (std::ostream& os, bool& /* save_as_floats */)
 {
   char tmp = (scalar ? 1 : 0);
@@ -147,9 +146,9 @@ octave_bool::save_binary (std::ostream& os, bool& /* save_as_floats */)
   return true;
 }
 
-bool 
+bool
 octave_bool::load_binary (std::istream& is, bool /* swap */,
-			  oct_mach_info::float_format /* fmt */)
+                          oct_mach_info::float_format /* fmt */)
 {
   char tmp;
   if (! is.read (reinterpret_cast<char *> (&tmp), 1))
@@ -162,7 +161,7 @@ octave_bool::load_binary (std::istream& is, bool /* swap */,
 
 bool
 octave_bool::save_hdf5 (hid_t loc_id, const char *name,
-			bool /* save_as_floats */)
+                        bool /* save_as_floats */)
 {
   hsize_t dimens[3];
   hid_t space_hid = -1, data_hid = -1;
@@ -170,10 +169,14 @@ octave_bool::save_hdf5 (hid_t loc_id, const char *name,
 
   space_hid = H5Screate_simple (0, dimens, 0);
   if (space_hid < 0) return false;
-
-  data_hid = H5Dcreate (loc_id, name, H5T_NATIVE_DOUBLE, space_hid, 
-			H5P_DEFAULT);
-  if (data_hid < 0) 
+#if HAVE_HDF5_18
+  data_hid = H5Dcreate (loc_id, name, H5T_NATIVE_DOUBLE, space_hid,
+                        H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+#else
+  data_hid = H5Dcreate (loc_id, name, H5T_NATIVE_DOUBLE, space_hid,
+                        H5P_DEFAULT);
+#endif
+  if (data_hid < 0)
     {
       H5Sclose (space_hid);
       return false;
@@ -181,7 +184,7 @@ octave_bool::save_hdf5 (hid_t loc_id, const char *name,
 
   double tmp = double_value ();
   retval = H5Dwrite (data_hid, H5T_NATIVE_DOUBLE, H5S_ALL, H5S_ALL,
-		     H5P_DEFAULT, &tmp) >= 0;
+                     H5P_DEFAULT, &tmp) >= 0;
 
   H5Dclose (data_hid);
   H5Sclose (space_hid);
@@ -190,24 +193,27 @@ octave_bool::save_hdf5 (hid_t loc_id, const char *name,
 }
 
 bool
-octave_bool::load_hdf5 (hid_t loc_id, const char *name,
-			bool /* have_h5giterate_bug */)
+octave_bool::load_hdf5 (hid_t loc_id, const char *name)
 {
+#if HAVE_HDF5_18
+  hid_t data_hid = H5Dopen (loc_id, name, H5P_DEFAULT);
+#else
   hid_t data_hid = H5Dopen (loc_id, name);
+#endif
   hid_t space_id = H5Dget_space (data_hid);
 
   hsize_t rank = H5Sget_simple_extent_ndims (space_id);
 
   if (rank != 0)
-    { 
+    {
       H5Dclose (data_hid);
       return false;
     }
 
   double dtmp;
-  if (H5Dread (data_hid, H5T_NATIVE_DOUBLE, H5S_ALL, H5S_ALL, 
-	       H5P_DEFAULT, &dtmp) < 0)
-    { 
+  if (H5Dread (data_hid, H5T_NATIVE_DOUBLE, H5S_ALL, H5S_ALL,
+               H5P_DEFAULT, &dtmp) < 0)
+    {
       H5Dclose (data_hid);
       return false;
     }
@@ -232,9 +238,3 @@ octave_bool::as_mxArray (void) const
 
   return retval;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

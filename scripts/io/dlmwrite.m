@@ -1,4 +1,4 @@
-## Copyright (C) 2002, 2008, 2009 Paul Kienzle
+## Copyright (C) 2002-2011 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -17,11 +17,13 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} dlmwrite (@var{file}, @var{a})
-## @deftypefnx {Function File} {} dlmwrite (@var{file}, @var{a}, @var{delim}, @var{r}, @var{c})
-## @deftypefnx {Function File} {} dlmwrite (@var{file}, @var{a}, @var{key}, @var{val} @dots{})
-## @deftypefnx {Function File} {} dlmwrite (@var{file}, @var{a}, "-append", @dots{})
-## Write the matrix @var{a} to the named file using delimiters.
+## @deftypefn  {Function File} {} dlmwrite (@var{file}, @var{M})
+## @deftypefnx {Function File} {} dlmwrite (@var{file}, @var{M}, @var{delim}, @var{r}, @var{c})
+## @deftypefnx {Function File} {} dlmwrite (@var{file}, @var{M}, @var{key}, @var{val} @dots{})
+## @deftypefnx {Function File} {} dlmwrite (@var{file}, @var{M}, "-append", @dots{})
+## Write the matrix @var{M} to the named file using delimiters.
+##
+## @var{file} should be a file name or writable file ID given by @code{fopen}.
 ##
 ## The parameter @var{delim} specifies the delimiter to use to separate
 ## values on a row.
@@ -37,7 +39,7 @@
 ##
 ## In addition, the following keyword value pairs may appear at the end
 ## of the argument list:
-## @table @code
+## @table @asis
 ## @item "append"
 ## Either @samp{"on"} or @samp{"off"}.  See @samp{"-append"} above.
 ##
@@ -73,16 +75,16 @@
 ## @end deftypefn
 
 ## Author: Paul Kienzle <pkienzle@users.sf.net>
-## 
+##
 ## This program was originally granted to the public domain
-## 
+##
 ## 2002-03-08 Paul Kienzle <pkienzle@users.sf.net>
 ## * Initial revision
 ## 2005-11-27 Bill Denney <bill@givebillmoney.com>
 ## * Significant modifications of the input arguements for additional
 ## functionality.
 
-function dlmwrite (file, a, varargin)
+function dlmwrite (file, M, varargin)
 
   if (nargin < 2 || ! ischar (file))
     print_usage ();
@@ -93,7 +95,7 @@ function dlmwrite (file, a, varargin)
   r = 0;
   c = 0;
   newline = "\n";
-  if (ischar (a))
+  if (ischar (M))
     precision = "%c";
   else
     precision = "%.16g";
@@ -111,11 +113,11 @@ function dlmwrite (file, a, varargin)
       i = i + 1;
       newline = varargin{i};
       if (strcmpi (newline, "unix"))
-	newline = "\n";
+        newline = "\n";
       elseif (strcmpi (newline, "pc"))
-	newline = "\r\n";
+        newline = "\r\n";
       elseif (strcmpi (newline, "mac"))
-	newline = "\r";
+        newline = "\r";
       endif
     elseif (strcmpi (varargin{i}, "roffset"))
       i = i + 1;
@@ -127,62 +129,72 @@ function dlmwrite (file, a, varargin)
       i = i + 1;
       precision = varargin{i};
       if (! strcmpi (class (precision), "char"))
-	precision = sprintf ("%.%gg", precision);
+        precision = sprintf ("%%.%gg", precision);
       endif
     elseif (strcmpi (varargin{i}, "-append"))
       opentype = "at";
     elseif (strcmpi (varargin{i}, "append"))
       i = i + 1;
       if (strcmpi (varargin{i}, "on"))
-	opentype = "at";
+        opentype = "at";
       elseif (strcmpi (varargin{i}, "off"))
-	opentype = "wt";
+        opentype = "wt";
       else
-	error ("dlmwrite: append must be \"on\" or \"off\".");
+        error ("dlmwrite: append must be \"on\" or \"off\"");
       endif
     else
       if (i == 1)
-	delim = varargin{i};
+        delim = varargin{i};
       elseif (i == 2)
-	r = varargin{i};
+        r = varargin{i};
       elseif (i == 3)
-	c = varargin{i};
+        c = varargin{i};
       else
-	print_usage();
+        print_usage();
       endif
     endif
   endwhile
 
-  [fid, msg] = fopen (file, opentype);
+  if (ischar (file))
+    [fid, msg] = fopen (file, opentype);
+  elseif (isscalar (file) && isnumeric (file))
+    fid = file;
+    msg = "invalid file number";
+  else
+    error ("dlmwrite: FILE must be a filename string or numeric FID");
+  endif
+
   if (fid < 0)
     error (msg);
   else
     if (r > 0)
       fprintf (fid, "%s",
-	       repmat ([repmat(delim, 1, c + columns(a)-1), newline], 1, r));
+               repmat ([repmat(delim, 1, c + columns(M)-1), newline], 1, r));
     endif
-    if (iscomplex (a))
+    if (iscomplex (M))
       cprecision = regexprep (precision, '^%([-\d.])','%+$1');
       template = [precision, cprecision, "i", ...
-		  repmat([delim, precision, cprecision, "i"], 1, ...
-		  columns(a) - 1), newline ];
+                  repmat([delim, precision, cprecision, "i"], 1, ...
+                  columns(M) - 1), newline ];
     else
-      template = [precision, repmat([delim, precision], 1, columns(a)-1),...
-		  newline];
+      template = [precision, repmat([delim, precision], 1, columns(M)-1),...
+                  newline];
     endif
     if (c > 0)
       template = [repmat(delim, 1, c), template];
     endif
-    if (iscomplex (a))
-      a = a.';
-      b = zeros (2*rows(a), columns (a));
-      b(1: 2 : end, :) = real (a);
-      b(2: 2 : end, :) = imag (a);
+    if (iscomplex (M))
+      M = M.';
+      b = zeros (2*rows(M), columns (M));
+      b(1: 2 : end, :) = real (M);
+      b(2: 2 : end, :) = imag (M);
       fprintf (fid, template, b);
     else
-      fprintf (fid, template, a.');
+      fprintf (fid, template, M.');
     endif
-    fclose (fid);
+    if (! isscalar (file))
+      fclose (fid);
+    endif
   endif
 endfunction
 

@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 David Bateman
+## Copyright (C) 2008-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -18,12 +18,12 @@
 
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {@var{hlink} =} linkprop (@var{h}, @var{prop})
-## Links graphics object properties, such that a change in one is
+## Link graphics object properties, such that a change in one is
 ## propagated to the others.  The properties to link are given as a
 ## string of cell string array by @var{prop} and the objects containing
 ## these properties by the handle array @var{h}.
 ##
-## An example of the use of linkprops is
+## An example of the use of linkprop is
 ##
 ## @example
 ## @group
@@ -69,12 +69,12 @@ function update_prop (h, d, hlist, prop)
       recursion = true;
       val = get (h, prop);
       for hh = hlist(:)'
-	if (hh != h)
-	  oldval = get (hh, prop);
-	  if (! isequal (val, oldval))
-	    set (hh, prop, val);
-	  endif
-	endif
+        if (hh != h)
+          oldval = get (hh, prop);
+          if (! isequal (val, oldval))
+            set (hh, prop, val);
+          endif
+        endif
       endfor
     unwind_protect_cleanup
       recursion = false;

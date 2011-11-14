@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1999, 2000, 2002, 2005, 2006, 2007,
-##               2008, 2009 John W. Eaton
+## Copyright (C) 1995-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -22,7 +21,7 @@
 ## Convert a value returned from @code{time} (or any other non-negative
 ## integer), to the local time and return a string of the same form as
 ## @code{asctime}.  The function @code{ctime (time)} is equivalent to
-## @code{asctime (localtime (time))}.  For example,
+## @code{asctime (localtime (time))}.  For example:
 ##
 ## @example
 ## @group

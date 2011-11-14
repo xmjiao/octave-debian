@@ -1,27 +1,32 @@
-@c Copyright (C) 1996, 1997, 1998, 2000, 2004, 2005, 2006, 2007 John W. Eaton
-@c
-@c This file is part of Octave.
-@c
-@c Octave is free software; you can redistribute it and/or modify it
-@c under the terms of the GNU General Public License as published by the
-@c Free Software Foundation; either version 3 of the License, or (at
-@c your option) any later version.
-@c 
-@c Octave is distributed in the hope that it will be useful, but WITHOUT
-@c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-@c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-@c for more details.
-@c 
-@c You should have received a copy of the GNU General Public License
-@c along with Octave; see the file COPYING.  If not, see
-@c <http://www.gnu.org/licenses/>.
+% Copyright (C) 1996-2011 John W. Eaton
+%
+% This file is part of Octave.
+%
+% Octave is free software; you can redistribute it and/or modify it
+% under the terms of the GNU General Public License as published by the
+% Free Software Foundation; either version 3 of the License, or (at
+% your option) any later version.
+% 
+% Octave is distributed in the hope that it will be useful, but WITHOUT
+% ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+% FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+% for more details.
+% 
+% You should have received a copy of the GNU General Public License
+% along with Octave; see the file COPYING.  If not, see
+% <http://www.gnu.org/licenses/>.
 
 
-\input texinfo  @c -*-texinfo-*-
+\input texinfo
 @setfilename liboctave.info
-@direntry
+
+@ifinfo
+@format
+START-INFO-DIR-ENTRY
 * liboctave: (liboctave). Octave C++ Classes
-@end direntry
+END-INFO-DIR-ENTRY
+@end format
+@end ifinfo
 
 @c @smallbook
 @c @setchapternewpage odd
@@ -42,11 +47,10 @@
 
 @defindex op
 
-@c Things like the Octave version number are defined in conf.texi.
-@c This file doesn't include a chapter, so it must not be included
-@c if you want to run the Emacs function texinfo-multiple-files-update.
-
-@include conf.texi
+@c The version.texi file doesn't include a chapter, so it must not be
+@c included if you want to run the Emacs function
+@c texinfo-multiple-files-update.
+@include version.texi
 
 @settitle Octave C++ Classes
 

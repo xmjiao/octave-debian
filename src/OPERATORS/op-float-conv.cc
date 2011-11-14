@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004, 2005, 2006, 2007, 2009 John W. Eaton
+Copyright (C) 2004-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -109,9 +109,3 @@ install_float_conv_ops (void)
 
   INSTALL_CONVOP (octave_scalar, octave_float_matrix, float_scalar_to_float_matrix);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-p*/

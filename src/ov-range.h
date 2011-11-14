@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2000, 2002, 2003, 2004, 2005, 2006,
-              2007, 2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -43,7 +42,6 @@ along with Octave; see the file COPYING.  If not, see
 #include "ov-re-mat.h"
 #include "ov-typeinfo.h"
 
-class Octave_map;
 class octave_value_list;
 
 class tree_walker;
@@ -56,26 +54,34 @@ octave_range : public octave_base_value
 public:
 
   octave_range (void)
-    : octave_base_value () { }
+    : octave_base_value (), range (), idx_cache () { }
 
   octave_range (double base, double limit, double inc)
-    : octave_base_value (), range (base, limit, inc)
+    : octave_base_value (), range (base, limit, inc), idx_cache ()
       {
-	if (range.nelem () < 0)
-	  ::error ("invalid range");
+        if (range.nelem () < 0)
+          ::error ("invalid range");
       }
 
   octave_range (const Range& r)
-    : octave_base_value (), range (r)
+    : octave_base_value (), range (r), idx_cache ()
       {
-	if (range.nelem () < 0 && range.nelem () != -2)
-	  ::error ("invalid range");
+        if (range.nelem () < 0 && range.nelem () != -2)
+          ::error ("invalid range");
       }
 
   octave_range (const octave_range& r)
-    : octave_base_value (), range (r.range) { }
+    : octave_base_value (), range (r.range),
+      idx_cache (r.idx_cache ? new idx_vector (*r.idx_cache) : 0)
+    { }
 
-  ~octave_range (void) { }
+  octave_range (const Range& r, const idx_vector& cache)
+    : octave_base_value (), range (r), idx_cache ()
+      {
+        set_idx_cache (cache);
+      }
+
+  ~octave_range (void) { clear_cached_info (); }
 
   octave_base_value *clone (void) const { return new octave_range (*this); }
 
@@ -89,19 +95,19 @@ public:
   octave_base_value *try_narrowing_conversion (void);
 
   octave_value subsref (const std::string& type,
-			const std::list<octave_value_list>& idx);
+                        const std::list<octave_value_list>& idx);
 
   octave_value_list subsref (const std::string& type,
-			     const std::list<octave_value_list>& idx, int)
+                             const std::list<octave_value_list>& idx, int)
     { return subsref (type, idx); }
 
   octave_value do_index_op (const octave_value_list& idx,
-			    bool resize_ok = false);
+                            bool resize_ok = false);
 
-  idx_vector index_vector (void) const { return idx_vector (range); }
+  idx_vector index_vector (void) const;
 
   dim_vector dims (void) const
-    { 
+    {
       octave_idx_type n = range.nelem ();
       return dim_vector (n > 0, n);
     }
@@ -137,17 +143,19 @@ public:
     { return range.sort (dim, mode); }
 
   octave_value sort (Array<octave_idx_type>& sidx, octave_idx_type dim = 0,
-		     sortmode mode = ASCENDING) const
+                     sortmode mode = ASCENDING) const
     { return range.sort (sidx, dim, mode); }
 
   sortmode is_sorted (sortmode mode = UNSORTED) const
     { return range.is_sorted (mode); }
 
   Array<octave_idx_type> sort_rows_idx (sortmode) const
-    { return Array<octave_idx_type> (1, 0); }
+    { return Array<octave_idx_type> (dim_vector (1, 0)); }
 
   sortmode is_sorted_rows (sortmode mode = UNSORTED) const
     { return mode ? mode : ASCENDING; }
+
+  builtin_type_t builtin_type (void) const { return btyp_double; }
 
   bool is_real_type (void) const { return true; }
 
@@ -182,7 +190,7 @@ public:
     { return FloatMatrix (range.matrix_value ()); }
 
   charNDArray char_array_value (bool = false) const;
-  
+
   // FIXME -- it would be better to have Range::intXNDArray_value
   // functions to avoid the intermediate conversion to a matrix
   // object.
@@ -221,17 +229,7 @@ public:
 
   FloatComplex float_complex_value (bool = false) const;
 
-  boolNDArray bool_array_value (bool warn = false) const
-  {
-    Matrix m = range.matrix_value ();
-
-    if (m.any_element_is_nan ())
-      error ("invalid conversion from NaN to logical");
-    else if (warn && m.any_element_not_one_or_zero ())
-      gripe_logical_conversion ();
-
-    return boolNDArray (m);
-  }
+  boolNDArray bool_array_value (bool warn = false) const;
 
   ComplexMatrix complex_matrix_value (bool = false) const
     { return ComplexMatrix (range.matrix_value ()); }
@@ -261,89 +259,62 @@ public:
 
   bool save_binary (std::ostream& os, bool& save_as_floats);
 
-  bool load_binary (std::istream& is, bool swap, 
-		    oct_mach_info::float_format fmt);
+  bool load_binary (std::istream& is, bool swap,
+                    oct_mach_info::float_format fmt);
 
 #if defined (HAVE_HDF5)
   bool save_hdf5 (hid_t loc_id, const char *name, bool save_as_floats);
 
-  bool load_hdf5 (hid_t loc_id, const char *name, bool have_h5giterate_bug);
+  bool load_hdf5 (hid_t loc_id, const char *name);
 #endif
 
   int write (octave_stream& os, int block_size,
-	     oct_data_conv::data_type output_type, int skip,
-	     oct_mach_info::float_format flt_fmt) const
+             oct_data_conv::data_type output_type, int skip,
+             oct_mach_info::float_format flt_fmt) const
     {
       // FIXME -- could be more memory efficient by having a
       // special case of the octave_stream::write method for ranges.
 
       return os.write (matrix_value (), block_size, output_type, skip,
-		       flt_fmt);
+                       flt_fmt);
     }
 
   mxArray *as_mxArray (void) const;
 
-  // Mapper functions are converted to double for treatment
-#define RANGE_MAPPER(MAP) \
-  octave_value MAP (void) const \
-    { \
-      octave_matrix m (array_value ()); \
-      return m.MAP (); \
+  octave_value map (unary_mapper_t umap) const
+    {
+      octave_matrix m (matrix_value ());
+      return m.map (umap);
     }
-
-  RANGE_MAPPER (abs)
-  RANGE_MAPPER (acos)
-  RANGE_MAPPER (acosh)
-  RANGE_MAPPER (angle)
-  RANGE_MAPPER (arg)
-  RANGE_MAPPER (asin)
-  RANGE_MAPPER (asinh)
-  RANGE_MAPPER (atan)
-  RANGE_MAPPER (atanh)
-  RANGE_MAPPER (ceil)
-  RANGE_MAPPER (conj)
-  RANGE_MAPPER (cos)
-  RANGE_MAPPER (cosh)
-  RANGE_MAPPER (erf)
-  RANGE_MAPPER (erfc)
-  RANGE_MAPPER (exp)
-  RANGE_MAPPER (expm1)
-  RANGE_MAPPER (finite)
-  RANGE_MAPPER (fix)
-  RANGE_MAPPER (floor)
-  RANGE_MAPPER (gamma)
-  RANGE_MAPPER (imag)
-  RANGE_MAPPER (isinf)
-  RANGE_MAPPER (isna)
-  RANGE_MAPPER (isnan)
-  RANGE_MAPPER (lgamma)
-  RANGE_MAPPER (log)
-  RANGE_MAPPER (log2)
-  RANGE_MAPPER (log10)
-  RANGE_MAPPER (log1p)
-  RANGE_MAPPER (real)
-  RANGE_MAPPER (round)
-  RANGE_MAPPER (roundb)
-  RANGE_MAPPER (signum)
-  RANGE_MAPPER (sin)
-  RANGE_MAPPER (sinh)
-  RANGE_MAPPER (sqrt)
-  RANGE_MAPPER (tan)
-  RANGE_MAPPER (tanh)
 
 private:
 
   Range range;
+
+  idx_vector set_idx_cache (const idx_vector& idx) const
+    {
+      delete idx_cache;
+      idx_cache = idx ? new idx_vector (idx) : 0;
+      return idx;
+    }
+
+  void clear_cached_info (void) const
+    {
+      delete idx_cache; idx_cache = 0;
+    }
+
+  mutable idx_vector *idx_cache;
+
+  // No assignment.
+
+  octave_range& operator = (const octave_range&);
 
   DECLARE_OCTAVE_ALLOCATOR
 
   DECLARE_OV_TYPEID_FUNCTIONS_AND_DATA
 };
 
-#endif
+// If TRUE, allow ranges with non-integer elements as array indices.
+extern bool Vallow_noninteger_range_as_index;
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+#endif

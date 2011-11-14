@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 David Bateman
+## Copyright (C) 2008-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -26,44 +26,47 @@
 ## @table @asis
 ## @item "wildcard"
 ## The wildcard characters @code{.}, @code{*} and @code{?} are replaced
-## with wildcards that are appropriate for a regular expression. 
+## with wildcards that are appropriate for a regular expression.
 ## For example:
+##
 ## @example
 ## @group
 ## regexptranslate ("wildcard", "*.m")
 ##      @result{} ".*\.m"
 ## @end group
 ## @end example
-## 
+##
 ## @item "escape"
 ## The characters @code{$.?[]}, that have special meaning for regular
 ## expressions are escaped so that they are treated literally.  For example:
+##
 ## @example
 ## @group
 ## regexptranslate ("escape", "12.5")
 ##      @result{} "12\.5"
 ## @end group
 ## @end example
+##
 ## @end table
 ## @seealso{regexp, regexpi, regexprep}
 ## @end deftypefn
 
-function y = regexptranslate (op, x)
-  
+function y = regexptranslate (op, s)
+
   if nargin != 2
     print_usage ();
-  endif 
-  
+  endif
+
   if (ischar (op))
     op = tolower (op);
     if (strcmp ("wildcard", op))
-      y = regexprep (regexprep (regexprep (x, "\\.", "\\."), "\\*",
-				".*"), "\\?", ".");
+      y = regexprep (regexprep (regexprep (s, '\.', '\.'), '\*',
+                                '.*'), '\?', '.');
     elseif (strcmp ("escape", op))
       ch = {'\$', '\.', '\?', '\[', '\]'};
-      y = x;
+      y = s;
       for i = 1 : length (ch)
-	y = regexprep (y, ch{i}, ch{i});
+        y = regexprep (y, ch{i}, ch{i});
       endfor
     else
       error ("regexptranslate: unexpected operation");

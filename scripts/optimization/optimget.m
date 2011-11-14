@@ -1,4 +1,4 @@
-## Copyright (C) 2008 Jaroslav Hajek
+## Copyright (C) 2008-2011 Jaroslav Hajek
 ## Copyright (C) 2009 VZLU Prague
 ##
 ## This file is part of Octave.
@@ -18,11 +18,11 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} optimget (@var{options}, @var{parname})
+## @deftypefn  {Function File} {} optimget (@var{options}, @var{parname})
 ## @deftypefnx {Function File} {} optimget (@var{options}, @var{parname}, @var{default})
-## Return a specific option from a structure created by 
+## Return a specific option from a structure created by
 ## @code{optimset}.  If @var{parname} is not a field of the @var{options}
-## structure, return @var{default} if supplied, otherwise return an 
+## structure, return @var{default} if supplied, otherwise return an
 ## empty matrix.
 ## @end deftypefn
 
@@ -33,9 +33,9 @@ function retval = optimget (options, parname, default)
   endif
 
   opts = __all_opts__ ();
-  idx = lookup (opts, parname, "i");
+  idx = lookup (tolower (opts), tolower (parname), "m");
 
-  if (idx > 0 && strcmpi (parname, opts{idx}))
+  if (idx)
     parname = opts{idx};
   else
     warning ("unrecognized option: %s", parname);

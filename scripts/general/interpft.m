@@ -1,4 +1,4 @@
-## Copyright (C) 2001, 2006, 2007, 2008, 2009 Paul Kienzle
+## Copyright (C) 2001-2011 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} interpft (@var{x}, @var{n})
+## @deftypefn  {Function File} {} interpft (@var{x}, @var{n})
 ## @deftypefnx {Function File} {} interpft (@var{x}, @var{n}, @var{dim})
 ##
 ## Fourier interpolation.  If @var{x} is a vector, then @var{x} is
@@ -36,7 +36,7 @@
 ## 2001-02-11
 ##    * initial version
 ## 2002-03-17 aadler
-##    * added code to work on matrices as well 
+##    * added code to work on matrices as well
 ## 2006-05-25 dbateman
 ##    * Make it matlab compatiable, cutting out the 2-D interpolation
 
@@ -55,7 +55,7 @@ function z = interpft (x, n, dim)
   endif
 
   if (! isscalar (n))
-    error ("interpft: n must be an integer scalar");
+    error ("interpft: N must be an integer scalar");
   endif
 
   nd = ndims (x);

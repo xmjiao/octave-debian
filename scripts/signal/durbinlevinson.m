@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1998, 2000, 2002, 2005, 2006, 2007, 2009
-##               Friedrich Leisch
+## Copyright (C) 1995-2011 Friedrich Leisch
 ##
 ## This file is part of Octave.
 ##
@@ -51,11 +50,11 @@ function [newphi, newv] = durbinlevinson (c, oldphi, oldv)
     t = length (oldphi) + 1;
 
     if (length (c) < t+1)
-      error ("durbilevinson: c too small");
+      error ("durbinlevinson: C too small");
     endif
 
     if (oldv == 0)
-      error ("durbinlevinson: oldv = 0");
+      error ("durbinlevinson: OLDV = 0");
     endif
 
     if (rows (oldphi) > 1)

@@ -1,4 +1,4 @@
-## Copyright (C) 2005, 2007 John W. Eaton
+## Copyright (C) 2005-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -17,12 +17,12 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} unidrnd (@var{mx});
+## @deftypefn  {Function File} {} unidrnd (@var{mx});
 ## @deftypefnx {Function File} {} unidrnd (@var{mx}, @var{v});
 ## @deftypefnx {Function File} {} unidrnd (@var{mx}, @var{m}, @var{n}, @dots{});
-## Return random values from discrete uniform distribution, with maximum
-## value(s) given by the integer @var{mx}, which may be a scalar or
-## multidimensional array.
+## Return random values from a discrete uniform distribution with maximum
+## value(s) given by the integer @var{mx} (which may be a scalar or
+## multi-dimensional array).
 ##
 ## If @var{mx} is a scalar, the size of the result is specified by
 ## the vector @var{v}, or by the optional arguments @var{m}, @var{n},
@@ -44,12 +44,12 @@ function retval = unidrnd (n, varargin)
   elseif (nargin > 2)
     for i = 1:nargin-1
       if (! isscalar (varargin{i}))
-	error ("unidrnd: expecting scalar dimensions");
+        error ("unidrnd: expecting scalar dimensions");
       endif
     endfor
     dims = [varargin{:}];
   else
-    error ("unidrnd (n, ...)");
+    print_usage ();
   endif
   if (isscalar (n)
       || (length (size (n)) == length (dims) && all (size (n) == dims)))

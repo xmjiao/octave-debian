@@ -1,7 +1,8 @@
 /*
 
-Copyright (C) 2002, 2009 Andy Adler
+Copyright (C) 2002-2011 Andy Adler
 Copyright (C) 2008 Thomas L. Scofield
+Copyright (C) 2010 David Grundberg
 
 This file is part of Octave.
 
@@ -27,20 +28,18 @@ along with Octave; see the file COPYING.  If not, see
 
 #include <cmath>
 
+#include "file-stat.h"
+#include "oct-env.h"
+#include "oct-time.h"
+
 #include "defun-dld.h"
 #include "error.h"
 #include "ov-struct.h"
 
 #ifdef HAVE_MAGICK
 
-#include <GraphicsMagick/Magick++.h>
-
-unsigned int
-scale_quantum_to_depth (const Magick::Quantum& quantum, unsigned int depth)
-{
-  return (static_cast<unsigned int> (static_cast<double> (quantum)
-                                     / MaxRGB * ((1 << depth) - 1)));
-}
+#include <Magick++.h>
+#include <clocale>
 
 octave_value_list
 read_indexed_images (std::vector<Magick::Image>& imvec,
@@ -59,7 +58,7 @@ read_indexed_images (std::vector<Magick::Image>& imvec,
   idim(2) = 1;
   idim(3) = nframes;
 
-  Array<int> idx (dim_vector (4));
+  Array<int> idx (dim_vector (4, 1));
 
   Magick::ImageType type = imvec[0].type ();
 
@@ -104,7 +103,7 @@ read_indexed_images (std::vector<Magick::Image>& imvec,
                   }
               }
           }
-        im.chop_trailing_singletons ();
+
         output(0) = octave_value (im);
       }
       break;
@@ -134,13 +133,13 @@ read_indexed_images (std::vector<Magick::Image>& imvec,
                   }
               }
           }
-        im.chop_trailing_singletons ();
+
         output(0) = octave_value (im);
       }
       break;
 
     default:
-      error ("__magic_read__: index depths bigger than 16-bit not supported");
+      error ("__magic_read__: index depths greater than 16-bit are not supported");
       return octave_value_list ();
     }
 
@@ -195,6 +194,8 @@ octave_value_list
 read_images (const std::vector<Magick::Image>& imvec,
              const Array<int>& frameidx, unsigned int depth)
 {
+  typedef typename T::element_type P;
+
   octave_value_list retval (3, Matrix ());
 
   T im;
@@ -210,123 +211,151 @@ read_images (const std::vector<Magick::Image>& imvec,
   idim(2) = 1;
   idim(3) = nframes;
 
-  Array<int> idx (dim_vector (4));
-
   Magick::ImageType type = imvec[0].type ();
+  const int divisor = (((1 << QuantumDepth) - 1) / ((1 << depth) - 1));
 
   switch (type)
     {
     case Magick::BilevelType:
     case Magick::GrayscaleType:
-      im = T (idim);
-      for (int frame = 0; frame < nframes; frame++)
-        {
-          const Magick::PixelPacket *pix
-            = imvec[frameidx(frame)].getConstPixels (0, 0, columns, rows);
+      {
+        im = T (idim);
+        P *vec = im.fortran_vec ();
 
-          int i = 0;
-          idx(2) = 0;
-          idx(3) = frame;
+        for (int frame = 0; frame < nframes; frame++)
+          {
+            const Magick::PixelPacket *pix
+              = imvec[frameidx(frame)].getConstPixels (0, 0, columns, rows);
 
-          for (int y = 0; y < rows; y++)
-            {
-              idx(0) = y;
-              for (int x = 0; x < columns; x++)
-                {
-                  idx(1) = x;
-                  im(idx) = scale_quantum_to_depth (pix[i++].red, depth);
-                }
-            }
+            P *rbuf = vec;
+            for (int y = 0; y < rows; y++)
+              {
+                for (int x = 0; x < columns; x++)
+                  {
+                    *rbuf = pix->red / divisor;
+                    pix++;
+                    rbuf += rows;
+                  }
+                rbuf -= rows * columns - 1;
+              }
+
+            // Next frame.
+            vec += rows * columns * idim(2);
+          }
         }
       break;
 
     case Magick::GrayscaleMatteType:
-      idim(2) = 2;
-      im = T (idim);
-      for (int frame = 0; frame < nframes; frame++)
-        {
-          const Magick::PixelPacket *pix
-            = imvec[frameidx(frame)].getConstPixels (0, 0, columns, rows);
+      {
+        idim(2) = 2;
+        im = T (idim);
+        P *vec = im.fortran_vec ();
 
-          int i = 0;
-          idx(3) = frame;
+        for (int frame = 0; frame < nframes; frame++)
+          {
+            const Magick::PixelPacket *pix
+              = imvec[frameidx(frame)].getConstPixels (0, 0, columns, rows);
 
-          for (int y = 0; y < rows; y++)
-            {
-              idx(0) = y;
-              for (int x = 0; x < columns; x++)
-                {
-                  idx(1) = x;
-                  idx(2) = 0;
-                  im(idx) = scale_quantum_to_depth (pix[i].red, depth);
-                  idx(2) = 1;
-                  im(idx) = scale_quantum_to_depth (pix[i].opacity, depth);
-                  i++;
-                }
-            }
+            P *rbuf = vec;
+            P *obuf = vec + rows * columns;
+            for (int y = 0; y < rows; y++)
+              {
+                for (int x = 0; x < columns; x++)
+                  {
+                    *rbuf = pix->red / divisor;
+                    *obuf = pix->opacity / divisor;
+                    pix++;
+                    rbuf += rows;
+                    obuf += rows;
+                  }
+                rbuf -= rows * columns - 1;
+                obuf -= rows * columns - 1;
+              }
+
+            // Next frame.
+            vec += rows * columns * idim(2);
+          }
         }
       break;
 
     case Magick::PaletteType:
     case Magick::TrueColorType:
-      idim(2) = 3;
-      im = T (idim);
-      for (int frame = 0; frame < nframes; frame++)
-        {
-          const Magick::PixelPacket *pix
-            = imvec[frameidx(frame)].getConstPixels (0, 0, columns, rows);
+      {
+        idim(2) = 3;
+        im = T (idim);
+        P *vec = im.fortran_vec ();
 
-          int i = 0;
-          idx(3) = frame;
+        for (int frame = 0; frame < nframes; frame++)
+          {
+            const Magick::PixelPacket *pix
+              = imvec[frameidx(frame)].getConstPixels (0, 0, columns, rows);
 
-          for (int y = 0; y < rows; y++)
-            {
-              idx(0) = y;
-              for (int x = 0; x < columns; x++)
-                {
-                  idx(1) = x;
-                  idx(2) = 0;
-                  im(idx) = scale_quantum_to_depth (pix[i].red, depth);
-                  idx(2) = 1;
-                  im(idx) = scale_quantum_to_depth (pix[i].green, depth);
-                  idx(2) = 2;
-                  im(idx) = scale_quantum_to_depth (pix[i].blue, depth);
-                  i++;
-                }
-            }
+            P *rbuf = vec;
+            P *gbuf = vec + rows * columns;
+            P *bbuf = vec + rows * columns * 2;
+            for (int y = 0; y < rows; y++)
+              {
+                for (int x = 0; x < columns; x++)
+                  {
+                    *rbuf = pix->red / divisor;
+                    *gbuf = pix->green / divisor;
+                    *bbuf = pix->blue / divisor;
+                    pix++;
+                    rbuf += rows;
+                    gbuf += rows;
+                    bbuf += rows;
+                  }
+                rbuf -= rows * columns - 1;
+                gbuf -= rows * columns - 1;
+                bbuf -= rows * columns - 1;
+              }
+
+            // Next frame.
+            vec += rows * columns * idim(2);
+          }
         }
       break;
 
     case Magick::PaletteMatteType:
     case Magick::TrueColorMatteType:
     case Magick::ColorSeparationType:
-      idim(2) = 4;
-      im = T (idim);
-      for (int frame = 0; frame < nframes; frame++)
-        {
-          const Magick::PixelPacket *pix
-            = imvec[frameidx(frame)].getConstPixels (0, 0, columns, rows);
+      {
+        idim(2) = 4;
+        im = T (idim);
+        P *vec = im.fortran_vec ();
 
-          int i = 0;
-          idx(3) = frame;
+        for (int frame = 0; frame < nframes; frame++)
+          {
+            const Magick::PixelPacket *pix
+              = imvec[frameidx(frame)].getConstPixels (0, 0, columns, rows);
 
-          for (int y = 0; y < rows; y++)
-            {
-              idx(0) = y;
-              for (int x = 0; x < columns; x++)
-                {
-                  idx(1) = x;
-                  idx(2) = 0;
-                  im(idx) = scale_quantum_to_depth (pix[i].red, depth);
-                  idx(2) = 1;
-                  im(idx) = scale_quantum_to_depth (pix[i].green, depth);
-                  idx(2) = 2;
-                  im(idx) = scale_quantum_to_depth (pix[i].blue, depth);
-                  idx(2) = 3;
-                  im(idx) = scale_quantum_to_depth (pix[i].opacity, depth);
-                  i++;
-                }
-            }
+            P *rbuf = vec;
+            P *gbuf = vec + rows * columns;
+            P *bbuf = vec + rows * columns * 2;
+            P *obuf = vec + rows * columns * 3;
+            for (int y = 0; y < rows; y++)
+              {
+                for (int x = 0; x < columns; x++)
+                  {
+                    *rbuf = pix->red / divisor;
+                    *gbuf = pix->green / divisor;
+                    *bbuf = pix->blue / divisor;
+                    *obuf = pix->opacity / divisor;
+                    pix++;
+                    rbuf += rows;
+                    gbuf += rows;
+                    bbuf += rows;
+                    obuf += rows;
+                  }
+                rbuf -= rows * columns - 1;
+                gbuf -= rows * columns - 1;
+                bbuf -= rows * columns - 1;
+                obuf -= rows * columns - 1;
+              }
+
+            // Next frame.
+            vec += rows * columns * idim(2);
+          }
         }
       break;
 
@@ -335,8 +364,6 @@ read_images (const std::vector<Magick::Image>& imvec,
       return retval;
     }
 
-  im.chop_trailing_singletons ();
-
   retval(0) = im;
 
   return retval;
@@ -344,13 +371,42 @@ read_images (const std::vector<Magick::Image>& imvec,
 
 #endif
 
+static void
+maybe_initialize_magick (void)
+{
+#ifdef HAVE_MAGICK
+
+  static bool initialized = false;
+
+  if (! initialized)
+    {
+      // Save the locale as GraphicsMagick might change this (depending on version)
+      const char *static_locale = setlocale (LC_ALL, NULL);
+      const std::string locale (static_locale);
+
+      std::string program_name = octave_env::get_program_invocation_name ();
+
+      Magick::InitializeMagick (program_name.c_str ());
+
+      // Restore locale from before GraphicsMagick initialisation
+      setlocale (LC_ALL, locale.c_str ());
+
+      if (QuantumDepth < 32)
+        warning ("your version of %s limits images to %d bits per pixel",
+                 MagickPackageName, QuantumDepth);
+
+      initialized = true;
+    }
+#endif
+}
+
 DEFUN_DLD (__magick_read__, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Function File} {@var{m} =} __magick_read__(@var{fname}, @var{index})\n\
-@deftypefnx{Function File} {[@var{m}, @var{colormap}] =} __magick_read__(@var{fname}, @var{index})\n\
-@deftypefnx{Function File} {[@var{m}, @var{colormap}, @var{alpha}] =} __magick_read__(@var{fname}, @var{index})\n\
-Read images with ImageMagick++.  In general you should not be using this function.\n\
-Instead you should use @code{imread}.\n\
+@deftypefn  {Function File} {@var{m} =} __magick_read__(@var{fname}, @var{index})\n\
+@deftypefnx {Function File} {[@var{m}, @var{colormap}] =} __magick_read__(@var{fname}, @var{index})\n\
+@deftypefnx {Function File} {[@var{m}, @var{colormap}, @var{alpha}] =} __magick_read__(@var{fname}, @var{index})\n\
+Read images with ImageMagick++.  In general you should not be using this\n\
+function.  Instead use @code{imread}.\n\
 @seealso{imread}\n\
 @end deftypefn")
 {
@@ -358,7 +414,9 @@ Instead you should use @code{imread}.\n\
 
 #ifdef HAVE_MAGICK
 
-  if (args.length () > 2 || args.length () < 1 || ! args(0).is_string ()
+  maybe_initialize_magick ();
+
+  if (args.length () > 3 || args.length () < 1 || ! args(0).is_string ()
       || nargout > 3)
     {
       print_usage ();
@@ -366,12 +424,21 @@ Instead you should use @code{imread}.\n\
     }
 
   Array<int> frameidx;
+  bool all_frames = false;
 
   if (args.length () == 2 && args(1).is_real_type ())
     frameidx = args(1).int_vector_value();
+  else if (args.length () == 3 && args(1).is_string ()
+           && args(1).string_value() == "frames")
+    {
+      if (args(2).is_string () && args(2).string_value() == "all")
+        all_frames = true;
+      else if (args(2).is_real_type ())
+        frameidx = args(2).int_vector_value();
+    }
   else
     {
-      frameidx = Array<int> (1);
+      frameidx = Array<int> (dim_vector (1, 1));
       frameidx(0) = 1;
     }
 
@@ -396,16 +463,24 @@ Instead you should use @code{imread}.\n\
       return output;
     }
 
-  for (int i = 0; i < frameidx.length(); i++)
+  int nframes = imvec.size ();
+  if (all_frames)
     {
-      frameidx(i) = frameidx(i) - 1;
-
-      int nframes = imvec.size ();
-
-      if (frameidx(i) >= nframes || frameidx(i) < 0)
+      frameidx = Array<int> (dim_vector (1, nframes));
+      for (int i = 0; i < frameidx.length (); i++)
+        frameidx(i) = i;
+    }
+  else
+    {
+      for (int i = 0; i < frameidx.length (); i++)
         {
-          error ("__magick_read__: invalid index vector");
-          return output;
+          frameidx(i) = frameidx(i) - 1;
+
+          if (frameidx(i) >= nframes || frameidx(i) < 0)
+            {
+              error ("__magick_read__: invalid INDEX vector");
+              return output;
+            }
         }
     }
 
@@ -417,14 +492,14 @@ Instead you should use @code{imread}.\n\
     {
       unsigned int depth = imvec[0].modulusDepth ();
       if (depth > 1)
-	{
-	  --depth;
-	  int i = 1;
-	  while (depth >>= 1)
+        {
+          --depth;
+          int i = 1;
+          while (depth >>= 1)
             i++;
-	  depth = 1 << i;
-	}
-      
+          depth = 1 << i;
+        }
+
       switch (depth)
         {
         case 1:
@@ -444,12 +519,12 @@ Instead you should use @code{imread}.\n\
         case 32:
         case 64:
         default:
-          error ("__magick_read__: image depths bigger than 16-bit not supported");
+          error ("__magick_read__: image depths greater than 16-bit are not supported");
         }
     }
 #else
 
-  error ("__magick_read__: not available in this version of Octave");
+  error ("imread: image reading capabilities were disabled when Octave was compiled");
 
 #endif
 
@@ -463,31 +538,38 @@ jpg_settings (std::vector<Magick::Image>& imvec,
               const Octave_map& options,
               bool)
 {
-  int nframes = static_cast<int>(imvec.size ());
-  bool something_set = 0;
+  bool something_set = false;
 
   // Quality setting
   octave_value result;
   Octave_map::const_iterator p;
-  bool found_it = 0;
+  bool found_it = false;
+
   for (p = options.begin (); p != options.end (); p++)
-    if (options.key (p) == "Quality")
-      {
-        found_it = 1;
-        result = options.contents (p).elem (0);
-        break;
-      }
+    {
+      if (options.key (p) == "Quality")
+        {
+          found_it = true;
+          result = options.contents (p).elem (0);
+          break;
+        }
+    }
+
   if (found_it && (! result.is_empty ()))
     {
-      something_set = 1;
+      something_set = true;
+
       if (result.is_real_type ())
         {
-          int qlev = static_cast<int>(result.int_value ());
+          int qlev = result.int_value ();
+
           if (qlev < 0 || qlev > 100)
             warning ("warning: Quality setting invalid--use default of 75");
           else
-            for (int fnum = 0; fnum < nframes; fnum++)
-              imvec[fnum].quality (static_cast<unsigned int>(qlev));
+            {
+              for (size_t fnum = 0; fnum < imvec.size (); fnum++)
+                imvec[fnum].quality (static_cast<unsigned int>(qlev));
+            }
         }
       else
         warning ("warning: Quality setting invalid--use default of 75");
@@ -496,7 +578,7 @@ jpg_settings (std::vector<Magick::Image>& imvec,
   // Other settings go here
 
   if (! something_set)
-    warning ("__magick_write__ warning: All write parameters ignored.");
+    warning ("__magick_write__ warning: all write parameters ignored");
 }
 
 static void
@@ -509,7 +591,7 @@ encode_bool_image (std::vector<Magick::Image>& imvec, const octave_value& img)
   if (dsizes.length () == 4)
     nframes = dsizes(3);
 
-  Array<octave_idx_type> idx (dsizes.length ());
+  Array<octave_idx_type> idx (dim_vector (dsizes.length (), 1));
 
   octave_idx_type rows = m.rows ();
   octave_idx_type columns = m.columns ();
@@ -520,21 +602,29 @@ encode_bool_image (std::vector<Magick::Image>& imvec, const octave_value& img)
       im.classType (Magick::DirectClass);
       im.depth (1);
 
-      for (int y=0; y < columns; y++)
+      for (int y = 0; y < columns; y++)
         {
           idx(1) = y;
-          for (int x=0; x < rows; x++)
+
+          for (int x = 0; x < rows; x++)
             {
               if (nframes > 1)
                 {
                   idx(2) = 0;
                   idx(3) = ii;
                 }
+
               idx(0) = x;
+
               if (m(idx))
                 im.pixelColor (y, x, "white");
             }
         }
+
+      im.quantizeColorSpace (Magick::GRAYColorspace);
+      im.quantizeColors (2);
+      im.quantize ();
+
       imvec.push_back (im);
     }
 }
@@ -565,20 +655,22 @@ encode_uint_image (std::vector<Magick::Image>& imvec,
   unsigned int nframes = 1;
   if (dsizes.length () == 4)
     nframes = dsizes(3);
+
   bool is_color = ((dsizes.length () > 2) && (dsizes(2) > 2));
   bool has_alpha = (dsizes.length () > 2 && (dsizes(2) == 2 || dsizes(2) == 4));
 
-  Array<octave_idx_type> idx (dsizes.length ());
+  Array<octave_idx_type> idx (dim_vector (dsizes.length (), 1));
   octave_idx_type rows = m.rows ();
   octave_idx_type columns = m.columns ();
 
-  // FIXME -- maybe simply using bit shifting would be better?
-  unsigned int div_factor = pow (2.0, static_cast<int> (bitdepth)) - 1;
+  unsigned int div_factor = (1 << bitdepth) - 1;
 
   for (unsigned int ii = 0; ii < nframes; ii++)
     {
-      Magick::Image im(Magick::Geometry (columns, rows), "black");
+      Magick::Image im (Magick::Geometry (columns, rows), "black");
+
       im.depth (bitdepth);
+
       if (has_map)
         im.classType (Magick::PseudoClass);
       else
@@ -592,19 +684,24 @@ encode_uint_image (std::vector<Magick::Image>& imvec,
             im.type (Magick::TrueColorType);
 
           Magick::ColorRGB c;
-          for (int y=0; y < columns; y++)
+
+          for (int y = 0; y < columns; y++)
             {
               idx(1) = y;
-              for (int x=0; x < rows; x++)
+
+              for (int x = 0; x < rows; x++)
                 {
                   idx(0) = x;
+
                   if (nframes > 1)
                     idx(3) = ii;
 
                   idx(2) = 0;
                   c.red (static_cast<double>(m(idx)) / div_factor);
+
                   idx(2) = 1;
                   c.green (static_cast<double>(m(idx)) / div_factor);
+
                   idx(2) = 2;
                   c.blue (static_cast<double>(m(idx)) / div_factor);
 
@@ -613,6 +710,7 @@ encode_uint_image (std::vector<Magick::Image>& imvec,
                       idx(2) = 3;
                       c.alpha (static_cast<double>(m(idx)) / div_factor);
                     }
+
                   im.pixelColor (y, x, c);
                 }
             }
@@ -626,17 +724,20 @@ encode_uint_image (std::vector<Magick::Image>& imvec,
 
           Magick::ColorGray c;
 
-          for (int y=0; y < columns; y++)
+          for (int y = 0; y < columns; y++)
             {
               idx(1) = y;
+
               for (int x=0; x < rows; x++)
                 {
                   idx(0) = x;
+
                   if (nframes > 1)
                     {
                       idx(2) = 0;
                       idx(3) = ii;
                     }
+
                   if (has_alpha)
                     {
                       idx(2) = 1;
@@ -645,10 +746,16 @@ encode_uint_image (std::vector<Magick::Image>& imvec,
                     }
 
                   c.shade (static_cast<double>(m(idx)) / div_factor);
+
                   im.pixelColor (y, x, c);
                 }
             }
+
+          im.quantizeColorSpace (Magick::GRAYColorspace);
+          im.quantizeColors (1 << bitdepth);
+          im.quantize ();
         }
+
       imvec.push_back (im);
     }
 }
@@ -657,9 +764,8 @@ static void
 encode_map (std::vector<Magick::Image>& imvec, const NDArray& cmap)
 {
   unsigned int mapsize = cmap.dim1 ();
-  int nframes = static_cast<int>(imvec.size ());
 
-  for (int fnum = 0; fnum < nframes; fnum++)
+  for (size_t fnum = 0; fnum < imvec.size (); fnum++)
     {
       imvec[fnum].colorMapSize (mapsize);
       imvec[fnum].type (Magick::PaletteType);
@@ -739,7 +845,7 @@ write_image (const std::string& filename, const std::string& fmt,
 
   try
     {
-      Magick::writeImages (imvec.begin (), imvec.end (), filename);
+      Magick::writeImages (imvec.begin (), imvec.end (), fmt + ":" + filename);
     }
   catch (Magick::Warning& w)
     {
@@ -759,16 +865,18 @@ write_image (const std::string& filename, const std::string& fmt,
 
 DEFUN_DLD (__magick_write__, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Function File} {} __magick_write__(@var{fname}, @var{fmt}, @var{img})\n\
+@deftypefn  {Function File} {} __magick_write__(@var{fname}, @var{fmt}, @var{img})\n\
 @deftypefnx {Function File} {} __magick_write__(@var{fname}, @var{fmt}, @var{img}, @var{map})\n\
-Write images with ImageMagick++.  In general you should not be using this function.\n\
-Instead you should use @code{imwrite}.\n\
+Write images with ImageMagick++.  In general you should not be using this\n\
+function.  Instead use @code{imwrite}.\n\
 @seealso{imread}\n\
 @end deftypefn")
 {
   octave_value_list retval;
 
 #ifdef HAVE_MAGICK
+  maybe_initialize_magick ();
+
   int nargin = args.length ();
 
   if (nargin > 2)
@@ -792,10 +900,10 @@ Instead you should use @code{imwrite}.\n\
                 write_image (filename, fmt, args(2));
             }
           else
-            error ("__magick_write__: expecting format as second argument");
+            error ("__magick_write__: FMT must be string");
         }
       else
-        error ("__magick_write__: expecting filename as first argument");
+        error ("__magick_write__: FNAME must be a string");
     }
   else
     print_usage ();
@@ -878,7 +986,7 @@ magick_to_octave_value (const Magick::ImageType magick)
 #define GET_PARAM(NAME, OUTNAME) \
   try \
     { \
-      st.assign (OUTNAME, magick_to_octave_value (im.NAME ())); \
+      info.contents (OUTNAME)(frame,0) = magick_to_octave_value (im.NAME ()); \
     } \
   catch (Magick::Warning& w) \
     { \
@@ -888,20 +996,22 @@ magick_to_octave_value (const Magick::ImageType magick)
 
 DEFUN_DLD (__magick_finfo__, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Loadable File} {} __magick_finfo__(@var{fname})\n\
+@deftypefn {Loadable Function} {} __magick_finfo__(@var{fname})\n\
 Read image information with GraphicsMagick++.  In general you should\n\
-not be using this function.  Instead you should use @code{imfinfo}.\n\
+not be using this function.  Instead use @code{imfinfo}.\n\
 @seealso{imfinfo, imread}\n\
 @end deftypefn")
 {
-  octave_value_list output;
+  octave_value retval;
 
 #ifdef HAVE_MAGICK
+
+  maybe_initialize_magick ();
 
   if (args.length () < 1 || ! args (0).is_string ())
     {
       print_usage ();
-      return output;
+      return retval;
     }
 
   const std::string filename = args (0).string_value ();
@@ -909,37 +1019,97 @@ not be using this function.  Instead you should use @code{imfinfo}.\n\
   try
     {
       // Read the file.
-      Magick::Image im;
-      im.read (filename);
-      
-      // Read properties.
-      Octave_map st;
-      st.assign ("Filename", filename);
-      
-      // Annoying CamelCase naming is for Matlab compatibility.
-      GET_PARAM (fileSize, "FileSize")
-      GET_PARAM (rows, "Height")
-      GET_PARAM (columns, "Width")
-      GET_PARAM (depth, "BitDepth")
-      GET_PARAM (magick, "Format")
-      GET_PARAM (format, "LongFormat")
-      GET_PARAM (xResolution, "XResolution")
-      GET_PARAM (yResolution, "YResolution")
-      GET_PARAM (totalColors, "TotalColors")
-      GET_PARAM (tileName, "TileName")
-      GET_PARAM (animationDelay, "AnimationDelay")
-      GET_PARAM (animationIterations, "AnimationIterations")
-      GET_PARAM (endian, "ByteOrder")
-      GET_PARAM (gamma, "Gamma")
-      GET_PARAM (matte, "Matte")
-      GET_PARAM (modulusDepth, "ModulusDepth")
-      GET_PARAM (quality, "Quality")
-      GET_PARAM (quantizeColors, "QuantizeColors")
-      GET_PARAM (resolutionUnits, "ResolutionUnits")
-      GET_PARAM (type, "ColorType")
-      GET_PARAM (view, "View")
-        
-      output (0) = st;
+      std::vector<Magick::Image> imvec;
+      Magick::readImages (&imvec, args(0).string_value ());
+      int nframes = imvec.size ();
+
+      // Create the right size for the output.
+
+      static const char *fields[] =
+        {
+          "Filename",
+          "FileModDate",
+          "FileSize",
+          "Height",
+          "Width",
+          "BitDepth",
+          "Format",
+          "LongFormat",
+          "XResolution",
+          "YResolution",
+          "TotalColors",
+          "TileName",
+          "AnimationDelay",
+          "AnimationIterations",
+          "ByteOrder",
+          "Gamma",
+          "Matte",
+          "ModulusDepth",
+          "Quality",
+          "QuantizeColors",
+          "ResolutionUnits",
+          "ColorType",
+          "View",
+          0
+        };
+
+      Octave_map info (string_vector (fields), dim_vector (nframes, 1));
+
+      file_stat fs (filename);
+
+      std::string filetime;
+
+      if (fs)
+        {
+          octave_localtime mtime = fs.mtime ();
+
+          filetime = mtime.strftime ("%e-%b-%Y %H:%M:%S");
+        }
+      else
+        {
+          std::string msg = fs.error ();
+
+          error ("imfinfo: error reading `%s': %s",
+                 filename.c_str (), msg.c_str ());
+
+          return retval;
+        }
+
+      // For each frame in the image (some images contain multiple
+      // layers, each to be treated like a separate image).
+      for (int frame = 0; frame < nframes; frame++)
+        {
+          Magick::Image im = imvec[frame];
+
+          // Add file name and timestamp.
+          info.contents ("Filename")(frame,0) = filename;
+          info.contents ("FileModDate")(frame,0) = filetime;
+
+          // Annoying CamelCase naming is for Matlab compatibility.
+          GET_PARAM (fileSize, "FileSize")
+          GET_PARAM (rows, "Height")
+          GET_PARAM (columns, "Width")
+          GET_PARAM (depth, "BitDepth")
+          GET_PARAM (magick, "Format")
+          GET_PARAM (format, "LongFormat")
+          GET_PARAM (xResolution, "XResolution")
+          GET_PARAM (yResolution, "YResolution")
+          GET_PARAM (totalColors, "TotalColors")
+          GET_PARAM (tileName, "TileName")
+          GET_PARAM (animationDelay, "AnimationDelay")
+          GET_PARAM (animationIterations, "AnimationIterations")
+          GET_PARAM (endian, "ByteOrder")
+          GET_PARAM (gamma, "Gamma")
+          GET_PARAM (matte, "Matte")
+          GET_PARAM (modulusDepth, "ModulusDepth")
+          GET_PARAM (quality, "Quality")
+          GET_PARAM (quantizeColors, "QuantizeColors")
+          GET_PARAM (resolutionUnits, "ResolutionUnits")
+          GET_PARAM (type, "ColorType")
+          GET_PARAM (view, "View")
+        }
+
+      retval = octave_value (info);
     }
   catch (Magick::Warning& w)
     {
@@ -952,7 +1122,7 @@ not be using this function.  Instead you should use @code{imfinfo}.\n\
   catch (Magick::Exception& e)
     {
       error ("Magick++ exception: %s", e.what ());
-      return output;
+      return retval;
     }
 
 #else
@@ -961,15 +1131,65 @@ not be using this function.  Instead you should use @code{imfinfo}.\n\
 
 #endif
 
-  return output;
+  return retval;
 }
 
 #undef GET_PARAM
-      
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; indent-tabs-mode: nil ***
-;;; End: ***
-*/
+// Determine the file formats supported by GraphicsMagick.  This is
+// called once at the beginning of imread or imwrite to determine
+// exactly which file formats are supported, so error messages can be
+// displayed properly.
+
+DEFUN_DLD (__magick_format_list__, args, ,
+  "-*- texinfo -*-\n\
+@deftypefn {Function File} {} __magick_format_list__ (@var{formats})\n\
+Undocumented internal function.\n\
+@end deftypefn")
+{
+  octave_value retval;
+
+#ifdef HAVE_MAGICK
+  maybe_initialize_magick ();
+
+  std::list<std::string> accepted_formats;
+
+  if (args.length () == 1)
+    {
+      Cell c = args (0).cell_value ();
+
+      if (! error_state)
+        {
+          for (octave_idx_type i = 0; i < c.nelem (); i++)
+            {
+              try
+                {
+                  std::string fmt = c.elem (i).string_value ();
+
+                  Magick::CoderInfo info(fmt);
+
+                  if (info.isReadable () && info.isWritable ())
+                    accepted_formats.push_back (fmt);
+                }
+              catch (Magick::Exception& e)
+                {
+                  // Do nothing: exception here are simply missing formats.
+                }
+            }
+        }
+      else
+        error ("__magick_format_list__: expecting a cell array of image format names");
+    }
+  else
+    print_usage ();
+
+  retval = Cell (accepted_formats);
+
+#else
+
+  error ("__magick_format_list__: not available in this version of Octave");
+
+#endif
+
+  return retval;
+}

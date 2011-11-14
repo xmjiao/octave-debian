@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 David Bateman
+## Copyright (C) 2008-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -33,5 +33,9 @@
 ## @end deftypefn
 
 function idx = display (a)
-  error ("display: not defined for class \"%s\"", class(a));
+  if (nargin == 1)
+    error ("display: not defined for class \"%s\"", class(a));
+  else
+    print_usage ();
+  endif
 endfunction

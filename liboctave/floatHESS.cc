@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2002, 2003, 2004, 2005, 2007, 2008
-              John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -33,27 +32,32 @@ extern "C"
 {
   F77_RET_T
   F77_FUNC (sgebal, SGEBAL) (F77_CONST_CHAR_ARG_DECL,
-			     const octave_idx_type&, float*, const octave_idx_type&, octave_idx_type&,
-			     octave_idx_type&, float*, octave_idx_type&
-			     F77_CHAR_ARG_LEN_DECL);
+                             const octave_idx_type&, float*,
+                             const octave_idx_type&, octave_idx_type&,
+                             octave_idx_type&, float*, octave_idx_type&
+                             F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
-  F77_FUNC (sgehrd, SGEHRD) (const octave_idx_type&, const octave_idx_type&, const octave_idx_type&,
-			     float*, const octave_idx_type&, float*, float*,
-			     const octave_idx_type&, octave_idx_type&);
+  F77_FUNC (sgehrd, SGEHRD) (const octave_idx_type&, const octave_idx_type&,
+                             const octave_idx_type&, float*,
+                             const octave_idx_type&, float*, float*,
+                             const octave_idx_type&, octave_idx_type&);
 
   F77_RET_T
-  F77_FUNC (sorghr, SORGHR) (const octave_idx_type&, const octave_idx_type&, const octave_idx_type&,
-			     float*, const octave_idx_type&, float*, float*,
-			     const octave_idx_type&, octave_idx_type&);
+  F77_FUNC (sorghr, SORGHR) (const octave_idx_type&, const octave_idx_type&,
+                             const octave_idx_type&, float*,
+                             const octave_idx_type&, float*, float*,
+                             const octave_idx_type&, octave_idx_type&);
 
   F77_RET_T
   F77_FUNC (sgebak, SGEBAK) (F77_CONST_CHAR_ARG_DECL,
-			     F77_CONST_CHAR_ARG_DECL,
-			     const octave_idx_type&, const octave_idx_type&, const octave_idx_type&, float*,
-			     const octave_idx_type&, float*, const octave_idx_type&, octave_idx_type&
-			     F77_CHAR_ARG_LEN_DECL
-			     F77_CHAR_ARG_LEN_DECL);
+                             F77_CONST_CHAR_ARG_DECL,
+                             const octave_idx_type&, const octave_idx_type&,
+                             const octave_idx_type&, float*,
+                             const octave_idx_type&, float*,
+                             const octave_idx_type&, octave_idx_type&
+                             F77_CHAR_ARG_LEN_DECL
+                             F77_CHAR_ARG_LEN_DECL);
 }
 
 octave_idx_type
@@ -80,34 +84,34 @@ FloatHESS::init (const FloatMatrix& a)
   hess_mat = a;
   float *h = hess_mat.fortran_vec ();
 
-  Array<float> scale (n);
+  Array<float> scale (dim_vector (n, 1));
   float *pscale = scale.fortran_vec ();
 
   F77_XFCN (sgebal, SGEBAL, (F77_CONST_CHAR_ARG2 (&job, 1),
-			     n, h, n, ilo, ihi, pscale, info
-			     F77_CHAR_ARG_LEN (1)));
+                             n, h, n, ilo, ihi, pscale, info
+                             F77_CHAR_ARG_LEN (1)));
 
-  Array<float> tau (n-1);
+  Array<float> tau (dim_vector (n-1, 1));
   float *ptau = tau.fortran_vec ();
 
-  Array<float> work (lwork);
+  Array<float> work (dim_vector (lwork, 1));
   float *pwork = work.fortran_vec ();
 
   F77_XFCN (sgehrd, SGEHRD, (n, ilo, ihi, h, n, ptau, pwork,
-			     lwork, info));
+                             lwork, info));
 
   unitary_hess_mat = hess_mat;
   float *z = unitary_hess_mat.fortran_vec ();
 
   F77_XFCN (sorghr, SORGHR, (n, ilo, ihi, z, n, ptau, pwork,
-			     lwork, info));
+                             lwork, info));
 
   F77_XFCN (sgebak, SGEBAK, (F77_CONST_CHAR_ARG2 (&job, 1),
-			     F77_CONST_CHAR_ARG2 (&side, 1),
-			     n, ilo, ihi, pscale, n, z,
-			     n, info
-			     F77_CHAR_ARG_LEN (1)
-			     F77_CHAR_ARG_LEN (1)));
+                             F77_CONST_CHAR_ARG2 (&side, 1),
+                             n, ilo, ihi, pscale, n, z,
+                             n, info
+                             F77_CHAR_ARG_LEN (1)
+                             F77_CHAR_ARG_LEN (1)));
 
   // If someone thinks of a more graceful way of doing
   // this (or faster for that matter :-)), please let
@@ -116,13 +120,7 @@ FloatHESS::init (const FloatMatrix& a)
   if (n > 2)
     for (octave_idx_type j = 0; j < a_nc; j++)
       for (octave_idx_type i = j+2; i < a_nr; i++)
-	hess_mat.elem (i, j) = 0;
+        hess_mat.elem (i, j) = 0;
 
   return info;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

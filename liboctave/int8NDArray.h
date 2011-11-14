@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004, 2005, 2007, 2009 John W. Eaton
+Copyright (C) 2004-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -26,6 +26,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "intNDArray.h"
 #include "mx-op-decl.h"
 #include "oct-inttypes.h"
+#include "bsxfun-decl.h"
 
 typedef intNDArray<octave_int8> int8NDArray;
 
@@ -38,14 +39,11 @@ SND_BOOL_OP_DECLS (octave_int8, int8NDArray, OCTAVE_API)
 NDND_CMP_OP_DECLS (int8NDArray, int8NDArray, OCTAVE_API)
 NDND_BOOL_OP_DECLS (int8NDArray, int8NDArray, OCTAVE_API)
 
-MARRAY_FORWARD_DEFS (MArrayN, int8NDArray, octave_int8)
+MARRAY_FORWARD_DEFS (MArray, int8NDArray, octave_int8)
 
-MINMAX_DECLS (int8)
+MINMAX_DECLS (int8NDArray, octave_int8, OCTAVE_API)
+
+BSXFUN_STDOP_DECLS (int8NDArray, OCTAVE_API)
+BSXFUN_STDREL_DECLS (int8NDArray, OCTAVE_API)
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

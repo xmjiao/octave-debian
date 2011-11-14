@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 2004-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -143,7 +143,7 @@ octave_base_int_matrix<T>::convert_to_str_internal (bool, bool, char type) const
 
   for (octave_idx_type i = 0; i < nel; i++)
     {
-      OCTAVE_QUIT;
+      octave_quit ();
 
       typename T::element_type tmp = this->matrix(i);
 
@@ -153,26 +153,26 @@ octave_base_int_matrix<T>::convert_to_str_internal (bool, bool, char type) const
 
       static const bool is_signed = std::numeric_limits<val_type>::is_signed;
       static const bool can_be_larger_than_uchar_max
-	= octave_base_int_helper_traits<val_type>::can_be_larger_than_uchar_max;
+        = octave_base_int_helper_traits<val_type>::can_be_larger_than_uchar_max;
 
       if (octave_base_int_helper<val_type, is_signed,
-	  can_be_larger_than_uchar_max>::char_value_out_of_range (ival))
-	{
-	  // FIXME -- is there something better we could do?
+          can_be_larger_than_uchar_max>::char_value_out_of_range (ival))
+        {
+          // FIXME -- is there something better we could do?
 
-	  ival = 0;
+          ival = 0;
 
-	  if (! warned)
-	    {
-	      ::warning ("range error for conversion to character value");
-	      warned = true;
-	    }
-	}
+          if (! warned)
+            {
+              ::warning ("range error for conversion to character value");
+              warned = true;
+            }
+        }
       else
-	chm (i) = static_cast<char> (ival);
+        chm (i) = static_cast<char> (ival);
     }
 
-  retval = octave_value (chm, true, type);
+  retval = octave_value (chm, type);
 
   return retval;
 }
@@ -194,7 +194,7 @@ octave_base_int_matrix<T>::save_ascii (std::ostream& os)
 }
 
 template <class T>
-bool 
+bool
 octave_base_int_matrix<T>::load_ascii (std::istream& is)
 {
   int mdims = 0;
@@ -203,30 +203,30 @@ octave_base_int_matrix<T>::load_ascii (std::istream& is)
   if (extract_keyword (is, "ndims", mdims, true))
     {
       if (mdims >= 0)
-	{
-	  dim_vector dv;
-	  dv.resize (mdims);
+        {
+          dim_vector dv;
+          dv.resize (mdims);
 
-	  for (int i = 0; i < mdims; i++)
-	    is >> dv(i);
+          for (int i = 0; i < mdims; i++)
+            is >> dv(i);
 
-	  T tmp(dv);
+          T tmp(dv);
 
-	  is >> tmp;
+          is >> tmp;
 
-	  if (!is) 
-	    {
-	      error ("load: failed to load matrix constant");
-	      success = false;
-	    }
+          if (!is)
+            {
+              error ("load: failed to load matrix constant");
+              success = false;
+            }
 
-	  this->matrix = tmp;
-	}
+          this->matrix = tmp;
+        }
       else
-	{
-	  error ("load: failed to extract number of rows and columns");
-	  success = false;
-	}
+        {
+          error ("load: failed to extract number of rows and columns");
+          success = false;
+        }
     }
   else
     error ("load: failed to extract number of dimensions");
@@ -235,7 +235,7 @@ octave_base_int_matrix<T>::load_ascii (std::istream& is)
 }
 
 template <class T>
-bool 
+bool
 octave_base_int_matrix<T>::save_binary (std::ostream& os, bool&)
 {
   dim_vector d = this->dims ();
@@ -259,7 +259,7 @@ octave_base_int_matrix<T>::save_binary (std::ostream& os, bool&)
 template <class T>
 bool
 octave_base_int_matrix<T>::load_binary (std::istream& is, bool swap,
-					oct_mach_info::float_format )
+                                        oct_mach_info::float_format )
 {
   int32_t mdims;
   if (! is.read (reinterpret_cast<char *> (&mdims), 4))
@@ -277,9 +277,9 @@ octave_base_int_matrix<T>::load_binary (std::istream& is, bool swap,
   for (int i = 0; i < mdims; i++)
     {
       if (! is.read (reinterpret_cast<char *> (&di), 4))
-	return false;
+        return false;
       if (swap)
-	swap_bytes<4> (&di);
+        swap_bytes<4> (&di);
       dv(i) = di;
     }
 
@@ -304,22 +304,22 @@ octave_base_int_matrix<T>::load_binary (std::istream& is, bool swap,
     {
       int nel = dv.numel ();
       int bytes = nel / m.byte_size();
-      for (int i = 0; i < nel; i++) 
-	switch (bytes)
-	  {
-	  case 8:
-	    swap_bytes<8> (&m(i));
-	    break;
-	  case 4:
-	    swap_bytes<4> (&m(i));
-	    break;
-	  case 2:
-	    swap_bytes<2> (&m(i));
-	    break;
-	  case 1:
-	  default:
-	    break;
-	  }
+      for (int i = 0; i < nel; i++)
+        switch (bytes)
+          {
+          case 8:
+            swap_bytes<8> (&m(i));
+            break;
+          case 4:
+            swap_bytes<4> (&m(i));
+            break;
+          case 2:
+            swap_bytes<2> (&m(i));
+            break;
+          case 1:
+          default:
+            break;
+          }
     }
 
   this->matrix = m;
@@ -346,13 +346,17 @@ octave_base_int_matrix<T>::save_hdf5 (hid_t loc_id, const char *name, bool)
   // Octave uses column-major, while HDF5 uses row-major ordering
   for (int i = 0; i < rank; i++)
     hdims[i] = dv (rank-i-1);
- 
+
   space_hid = H5Screate_simple (rank, hdims, 0);
 
   if (space_hid < 0) return false;
-
-  data_hid = H5Dcreate (loc_id, name, save_type_hid, space_hid, 
-			H5P_DEFAULT);
+#if HAVE_HDF5_18
+  data_hid = H5Dcreate (loc_id, name, save_type_hid, space_hid,
+                        H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+#else
+  data_hid = H5Dcreate (loc_id, name, save_type_hid, space_hid,
+                        H5P_DEFAULT);
+#endif
   if (data_hid < 0)
     {
       H5Sclose (space_hid);
@@ -360,7 +364,7 @@ octave_base_int_matrix<T>::save_hdf5 (hid_t loc_id, const char *name, bool)
     }
 
   retval = H5Dwrite (data_hid, save_type_hid, H5S_ALL, H5S_ALL,
-		     H5P_DEFAULT, this->matrix.data()) >= 0;
+                     H5P_DEFAULT, this->matrix.data()) >= 0;
 
   H5Dclose (data_hid);
   H5Sclose (space_hid);
@@ -370,8 +374,7 @@ octave_base_int_matrix<T>::save_hdf5 (hid_t loc_id, const char *name, bool)
 
 template <class T>
 bool
-octave_base_int_matrix<T>::load_hdf5 (hid_t loc_id, const char *name,
-				      bool /* have_h5giterate_bug */)
+octave_base_int_matrix<T>::load_hdf5 (hid_t loc_id, const char *name)
 {
   hid_t save_type_hid = HDF5_SAVE_TYPE;
   bool retval = false;
@@ -382,11 +385,15 @@ octave_base_int_matrix<T>::load_hdf5 (hid_t loc_id, const char *name,
   if (empty)
       return (empty > 0);
 
+#if HAVE_HDF5_18
+  hid_t data_hid = H5Dopen (loc_id, name, H5P_DEFAULT);
+#else
   hid_t data_hid = H5Dopen (loc_id, name);
+#endif
   hid_t space_id = H5Dget_space (data_hid);
 
   hsize_t rank = H5Sget_simple_extent_ndims (space_id);
-  
+
   if (rank < 1)
     {
       H5Sclose (space_id);
@@ -410,12 +417,12 @@ octave_base_int_matrix<T>::load_hdf5 (hid_t loc_id, const char *name,
     {
       dv.resize (rank);
       for (hsize_t i = 0, j = rank - 1; i < rank; i++, j--)
-	dv(j) = hdims[i];
+        dv(j) = hdims[i];
     }
 
   T m (dv);
-  if (H5Dread (data_hid, save_type_hid, H5S_ALL, H5S_ALL, 
-	       H5P_DEFAULT, m.fortran_vec()) >= 0) 
+  if (H5Dread (data_hid, save_type_hid, H5S_ALL, H5S_ALL,
+               H5P_DEFAULT, m.fortran_vec()) >= 0)
     {
       retval = true;
       this->matrix = m;
@@ -432,10 +439,10 @@ octave_base_int_matrix<T>::load_hdf5 (hid_t loc_id, const char *name,
 template <class T>
 void
 octave_base_int_matrix<T>::print_raw (std::ostream& os,
-				      bool pr_as_read_syntax) const
+                                      bool pr_as_read_syntax) const
 {
   octave_print_internal (os, this->matrix, pr_as_read_syntax,
-   			 this->current_print_indent_level ());
+                         this->current_print_indent_level ());
 }
 
 template <class T>
@@ -478,7 +485,7 @@ octave_base_int_scalar<T>::save_ascii (std::ostream& os)
 }
 
 template <class T>
-bool 
+bool
 octave_base_int_scalar<T>::load_ascii (std::istream& is)
 {
   is >> this->scalar;
@@ -491,7 +498,7 @@ octave_base_int_scalar<T>::load_ascii (std::istream& is)
 }
 
 template <class T>
-bool 
+bool
 octave_base_int_scalar<T>::save_binary (std::ostream& os, bool&)
 {
   os.write (reinterpret_cast<char *> (&(this->scalar)), this->byte_size());
@@ -499,9 +506,9 @@ octave_base_int_scalar<T>::save_binary (std::ostream& os, bool&)
 }
 
 template <class T>
-bool 
+bool
 octave_base_int_scalar<T>::load_binary (std::istream& is, bool swap,
-					oct_mach_info::float_format)
+                                        oct_mach_info::float_format)
 {
   T tmp;
   if (! is.read (reinterpret_cast<char *> (&tmp), this->byte_size()))
@@ -511,17 +518,17 @@ octave_base_int_scalar<T>::load_binary (std::istream& is, bool swap,
     switch (this->byte_size())
       {
       case 8:
-	swap_bytes<8> (&tmp);
-	break;
+        swap_bytes<8> (&tmp);
+        break;
       case 4:
-	swap_bytes<4> (&tmp);
-	break;
+        swap_bytes<4> (&tmp);
+        break;
       case 2:
-	swap_bytes<2> (&tmp);
-	break;
+        swap_bytes<2> (&tmp);
+        break;
       case 1:
       default:
-	break;
+        break;
       }
   this->scalar = tmp;
   return true;
@@ -541,16 +548,21 @@ octave_base_int_scalar<T>::save_hdf5 (hid_t loc_id, const char *name, bool)
   space_hid = H5Screate_simple (0, dimens, 0);
   if (space_hid < 0) return false;
 
-  data_hid = H5Dcreate (loc_id, name, save_type_hid, space_hid, 
-			H5P_DEFAULT);
-  if (data_hid < 0) 
+#if HAVE_HDF5_18
+  data_hid = H5Dcreate (loc_id, name, save_type_hid, space_hid,
+                        H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+#else
+  data_hid = H5Dcreate (loc_id, name, save_type_hid, space_hid,
+                        H5P_DEFAULT);
+#endif
+  if (data_hid < 0)
     {
       H5Sclose (space_hid);
       return false;
     }
 
   retval = H5Dwrite (data_hid, save_type_hid, H5S_ALL, H5S_ALL,
-		     H5P_DEFAULT, &(this->scalar)) >= 0;
+                     H5P_DEFAULT, &(this->scalar)) >= 0;
 
   H5Dclose (data_hid);
   H5Sclose (space_hid);
@@ -560,25 +572,28 @@ octave_base_int_scalar<T>::save_hdf5 (hid_t loc_id, const char *name, bool)
 
 template <class T>
 bool
-octave_base_int_scalar<T>::load_hdf5 (hid_t loc_id, const char *name,
-				      bool /* have_h5giterate_bug */)
+octave_base_int_scalar<T>::load_hdf5 (hid_t loc_id, const char *name)
 {
   hid_t save_type_hid = HDF5_SAVE_TYPE;
+#if HAVE_HDF5_18
+  hid_t data_hid = H5Dopen (loc_id, name, H5P_DEFAULT);
+#else
   hid_t data_hid = H5Dopen (loc_id, name);
+#endif
   hid_t space_id = H5Dget_space (data_hid);
 
   hsize_t rank = H5Sget_simple_extent_ndims (space_id);
 
   if (rank != 0)
-    { 
+    {
       H5Dclose (data_hid);
       return false;
     }
 
   T tmp;
-  if (H5Dread (data_hid, save_type_hid, H5S_ALL, H5S_ALL, 
-	       H5P_DEFAULT, &tmp) < 0)
-    { 
+  if (H5Dread (data_hid, save_type_hid, H5S_ALL, H5S_ALL,
+               H5P_DEFAULT, &tmp) < 0)
+    {
       H5Dclose (data_hid);
       return false;
     }
@@ -591,9 +606,3 @@ octave_base_int_scalar<T>::load_hdf5 (hid_t loc_id, const char *name,
 }
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2002, 2003, 2004, 2005, 2007 John W. Eaton
+Copyright (C) 2002-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -36,15 +36,9 @@ ODES::initialize (const ColumnVector& xx, double tt)
 
 void
 ODES::initialize (const ColumnVector& xx, double tt,
-		  const ColumnVector& xtheta)
+                  const ColumnVector& xtheta)
 {
   base_diff_eqn::initialize (xx, tt);
   xdot = ColumnVector (xx.length (), 0.0);
   theta = xtheta;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

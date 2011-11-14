@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2005, 2006,
-              2007, 2008 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -35,7 +34,7 @@ Free Software Foundation, Inc.
   octave_env::do_polite_directory_format
   octave_env::pathname_backup
 
-*/ 
+*/
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -47,12 +46,10 @@ Free Software Foundation, Inc.
 
 #include <string>
 
-#ifdef HAVE_UNISTD_H
-#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#endif
 #include <unistd.h>
-#endif
+
+#include "progname.h"
 
 #include "file-ops.h"
 #include "lo-error.h"
@@ -64,7 +61,7 @@ Free Software Foundation, Inc.
 
 octave_env::octave_env (void)
   : follow_symbolic_links (true), verbatim_pwd (true),
-    current_directory (), program_name (), program_invocation_name (),
+    current_directory (), prog_name (), prog_invocation_name (),
     user_name (), host_name ()
 {
   // Get a real value for the current directory.
@@ -89,7 +86,7 @@ octave_env::instance_ok (void)
   if (! instance)
     {
       (*current_liboctave_error_handler)
-	("unable to create current working directory object!");
+        ("unable to create current working directory object!");
 
       retval = false;
     }
@@ -133,7 +130,7 @@ octave_env::make_absolute (const std::string& s, const std::string& dot_path)
 }
 
 std::string
-octave_env::getcwd ()
+octave_env::get_current_directory ()
 {
   return (instance_ok ())
     ? instance->do_getcwd () : std::string ();
@@ -150,14 +147,14 @@ std::string
 octave_env::get_program_name (void)
 {
   return (instance_ok ())
-    ? instance->program_name : std::string ();
+    ? instance->prog_name : std::string ();
 }
 
 std::string
 octave_env::get_program_invocation_name (void)
 {
   return (instance_ok ())
-    ? instance->program_invocation_name : std::string ();
+    ? instance->prog_invocation_name : std::string ();
 }
 
 void
@@ -216,13 +213,18 @@ octave_env::chdir (const std::string& newdir)
 void
 octave_env::do_set_program_name (const std::string& s) const
 {
-  program_invocation_name = s;
+  // For gnulib.
+  ::set_program_name (s.c_str ());
+
+  // Let gnulib strip off things like the "lt-" prefix from libtool.
+  prog_invocation_name = program_name;
 
   size_t pos
-    = program_invocation_name.find_last_of (file_ops::dir_sep_chars ());
+    = prog_invocation_name.find_last_of (file_ops::dir_sep_chars ());
 
-  program_name = (pos == std::string::npos)
-    ? program_invocation_name : program_invocation_name.substr (pos+1);
+  // Also keep a shortened version of the program name.
+  prog_name = (pos == std::string::npos)
+    ? prog_invocation_name : prog_invocation_name.substr (pos+1);
 }
 
 // Return a pretty pathname.  If the first part of the pathname is the
@@ -263,7 +265,7 @@ octave_env::do_absolute_pathname (const std::string& s) const
 #if defined (OCTAVE_HAVE_WINDOWS_FILESYSTEM)
   if ((len == 2 && isalpha (s[0]) && s[1] == ':')
       || (len > 2 && isalpha (s[0]) && s[1] == ':'
-	  && file_ops::is_dir_sep (s[2])))
+          && file_ops::is_dir_sep (s[2])))
     return true;
 #endif
 
@@ -316,13 +318,8 @@ octave_env::do_base_pathname (const std::string& s) const
 
 std::string
 octave_env::do_make_absolute (const std::string& s,
-			      const std::string& dot_path) const
+                              const std::string& dot_path) const
 {
-#if defined (__EMX__)
-  if (s.length () > 1 && s[1] == ':')
-    return s;
-#endif
-
   if (dot_path.empty () || s.empty () || do_absolute_pathname (s))
     return s;
 
@@ -344,42 +341,42 @@ octave_env::do_make_absolute (const std::string& s,
   while (i < slen)
     {
       if (s[i] == '.')
-	{
-	  if (i + 1 == slen)
-	    return current_dir;
+        {
+          if (i + 1 == slen)
+            return current_dir;
 
-	  if (file_ops::is_dir_sep (s[i+1]))
-	    {
-	      i += 2;
-	      continue;
-	    }
+          if (file_ops::is_dir_sep (s[i+1]))
+            {
+              i += 2;
+              continue;
+            }
 
-	  if (s[i+1] == '.'
-	      && (i + 2 == slen || file_ops::is_dir_sep (s[i+2])))
-	    {
-	      i += 2;
+          if (s[i+1] == '.'
+              && (i + 2 == slen || file_ops::is_dir_sep (s[i+2])))
+            {
+              i += 2;
 
-	      if (i != slen)
-		i++;
+              if (i != slen)
+                i++;
 
-	      pathname_backup (current_dir, 1);
+              pathname_backup (current_dir, 1);
 
-	      continue;
-	    }
-	}
+              continue;
+            }
+        }
 
       size_t tmp = s.find_first_of (file_ops::dir_sep_chars (), i);
 
       if (tmp == std::string::npos)
-	{
-	  current_dir.append (s, i, tmp-i);
-	  break;
-	}
+        {
+          current_dir.append (s, i, tmp-i);
+          break;
+        }
       else
-	{
-	  current_dir.append (s, i, tmp-i+1);
-	  i = tmp + 1;
-	}
+        {
+          current_dir.append (s, i, tmp-i+1);
+          i = tmp + 1;
+        }
     }
 
   return current_dir;
@@ -413,9 +410,9 @@ octave_env::do_get_home_directory (void) const
     {
       std::string drv = do_getenv ("HOMEDRIVE");
       if (drv.empty ())
-	hd = do_getenv ("HOMEPATH");
+        hd = do_getenv ("HOMEPATH");
       else
-	hd = drv + do_getenv ("HOMEPATH");
+        hd = drv + do_getenv ("HOMEPATH");
     }
 #endif
 
@@ -447,9 +444,9 @@ octave_env::do_get_host_name (void) const
 {
   if (host_name.empty ())
     {
-      char hostname[256];
+      char hostname[1024];
 
-      int status = octave_gethostname (hostname, 255);
+      int status = gnulib::gethostname (hostname, 1023);
 
       host_name = (status < 0) ? "unknown" : hostname;
     }
@@ -478,28 +475,28 @@ octave_env::do_chdir (const std::string& newdir)
   if (follow_symbolic_links)
     {
       if (current_directory.empty ())
-	do_getcwd ();
+        do_getcwd ();
 
       if (current_directory.empty ())
-	tmp = newdir;
+        tmp = newdir;
       else
-	tmp = do_make_absolute (newdir, current_directory);
+        tmp = do_make_absolute (newdir, current_directory);
 
       // Get rid of trailing directory separator.
 
       size_t len = tmp.length ();
 
       if (len > 1)
-	{
-	  if (file_ops::is_dir_sep (tmp[--len]))
-	    tmp.resize (len);
-	}
+        {
+          if (file_ops::is_dir_sep (tmp[--len]))
+            tmp.resize (len);
+        }
 
       if (! ::octave_chdir (tmp))
-	{
-	  current_directory = tmp;
-	  retval = true;
-	}
+        {
+          current_directory = tmp;
+          retval = true;
+        }
     }
   else
     retval = (! ::octave_chdir (newdir));
@@ -520,10 +517,10 @@ octave_env::pathname_backup (std::string& path, int n) const
   while (n--)
     {
       while (file_ops::is_dir_sep (path[i]) && i > 0)
-	i--;
+        i--;
 
       while (! file_ops::is_dir_sep (path[i]) && i > 0)
-	i--;
+        i--;
 
       i++;
     }
@@ -534,7 +531,7 @@ octave_env::pathname_backup (std::string& path, int n) const
 void
 octave_env::error (int err_num) const
 {
-  (*current_liboctave_error_handler) ("%s", strerror (err_num));
+  (*current_liboctave_error_handler) ("%s", gnulib::strerror (err_num));
 }
 
 void
@@ -542,9 +539,3 @@ octave_env::error (const std::string& s) const
 {
   (*current_liboctave_error_handler) ("%s", s.c_str ());
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

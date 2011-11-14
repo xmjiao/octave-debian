@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 1999, 2000, 2002, 2005, 2006,
-##               2007, 2009 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -51,18 +50,18 @@ function [pval, f, df_b, df_w] = anova (y, g)
     print_usage ();
   elseif (nargin == 1)
     if (isvector (y))
-      error ("anova: for `anova (y)', y must not be a vector");
+      error ("anova: for `anova (Y)', Y must not be a vector");
     endif
     [group_count, k] = size (y);
     n = group_count * k;
     group_mean = mean (y);
   else
     if (! isvector (y))
-      error ("anova: for `anova (y, g)', y must be a vector");
+      error ("anova: for `anova (Y, G)', Y must be a vector");
     endif
     n = length (y);
     if (! isvector (g) || (length (g) != n))
-      error ("anova: g must be a vector of the same length as y");
+      error ("anova: G must be a vector of the same length as Y");
     endif
     s = sort (g);
     i = find (s (2 : n) > s(1 : (n-1)));

@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2000, 2002, 2003, 2004, 2005, 2006, 2007
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -28,7 +27,6 @@ along with Octave; see the file COPYING.  If not, see
 #include "f77-fcn.h"
 #include "lo-error.h"
 #include "mach-info.h"
-#include "oct-types.h"
 
 extern "C"
 {
@@ -71,9 +69,11 @@ equiv_compare (const equiv *std, const equiv *v, int len)
   return 1;
 }
 
-void
-oct_mach_info::init_float_format (void) const
+static oct_mach_info::float_format
+get_float_format (void)
 {
+  oct_mach_info::float_format retval = oct_mach_info::flt_fmt_unknown;
+
 #if defined (CRAY)
 
   // FIXME -- this should be determined automatically.
@@ -85,34 +85,34 @@ oct_mach_info::init_float_format (void) const
   float_params fp[5];
 
   INIT_FLT_PAR (fp[0], oct_mach_info::flt_fmt_ieee_big_endian,
-		   1048576,  0,
-		2146435071, -1,
-		1017118720,  0,
-		1018167296,  0);
+                   1048576,  0,
+                2146435071, -1,
+                1017118720,  0,
+                1018167296,  0);
 
   INIT_FLT_PAR (fp[1], oct_mach_info::flt_fmt_ieee_little_endian,
-		 0,    1048576,
-		-1, 2146435071,
-		 0, 1017118720,
-		 0, 1018167296);
+                 0,    1048576,
+                -1, 2146435071,
+                 0, 1017118720,
+                 0, 1018167296);
 
   INIT_FLT_PAR (fp[2], oct_mach_info::flt_fmt_vax_d,
-		   128,  0,
-		-32769, -1,
-		  9344,  0,
-		  9344,  0);
+                   128,  0,
+                -32769, -1,
+                  9344,  0,
+                  9344,  0);
 
   INIT_FLT_PAR (fp[3], oct_mach_info::flt_fmt_vax_g,
-		    16,  0,
-		-32769, -1,
-		 15552,  0,
-		 15552,  0);
+                    16,  0,
+                -32769, -1,
+                 15552,  0,
+                 15552,  0);
 
   INIT_FLT_PAR (fp[4], oct_mach_info::flt_fmt_unknown,
-		0, 0,
-		0, 0,
-		0, 0,
-		0, 0);
+                0, 0,
+                0, 0,
+                0, 0,
+                0, 0);
 
   equiv mach_fp_par[4];
 
@@ -125,18 +125,20 @@ oct_mach_info::init_float_format (void) const
   do
     {
       if (equiv_compare (fp[i].fp_par, mach_fp_par, 4))
-	{
-	  native_float_fmt = fp[i].fp_fmt;
-	  break;
-	}
+        {
+          retval = fp[i].fp_fmt;
+          break;
+        }
     }
   while (fp[++i].fp_fmt != oct_mach_info::flt_fmt_unknown);
 
 #endif
+
+  return retval;
 }
 
-void
-oct_mach_info::ten_little_endians (void) const
+static bool
+ten_little_endians (void)
 {
   // Are we little or big endian?  From Harbison & Steele.
 
@@ -148,14 +150,12 @@ oct_mach_info::ten_little_endians (void) const
 
   u.l = 1;
 
-  big_chief = (u.c[sizeof (long) - 1] == 1);
+  return (u.c[sizeof (long) - 1] == 1);
 }
 
 oct_mach_info::oct_mach_info (void)
-{
-  init_float_format ();
-  ten_little_endians ();
-}
+  : native_float_fmt (get_float_format ()),
+    big_chief (ten_little_endians ()) { }
 
 bool
 oct_mach_info::instance_ok (void)
@@ -168,7 +168,7 @@ oct_mach_info::instance_ok (void)
   if (! instance)
     {
       (*current_liboctave_error_handler)
-	("unable to create command history object!");
+        ("unable to create command history object!");
 
       retval = false;
     }
@@ -256,9 +256,3 @@ oct_mach_info::float_format_as_string (float_format flt_fmt)
 
   return retval;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

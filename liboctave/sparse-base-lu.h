@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 2004, 2005, 2007, 2008 David Bateman
-Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004 Andy Adler
+Copyright (C) 2004-2011 David Bateman
+Copyright (C) 1998-2004 Andy Adler
 
 This file is part of Octave.
 
@@ -34,25 +34,28 @@ sparse_base_lu
 {
 public:
 
-  sparse_base_lu (void) { }
+  sparse_base_lu (void)
+    : Lfact (), Ufact (), Rfact (), cond (0), P (), Q () { }
 
-  sparse_base_lu (const sparse_base_lu& a) 
-    : Lfact (a.Lfact), Ufact (a.Ufact), cond (a.cond), P (a.P), Q (a.Q) { }
+  sparse_base_lu (const sparse_base_lu& a)
+    : Lfact (a.Lfact), Ufact (a.Ufact), Rfact (), cond (a.cond),
+    P (a.P), Q (a.Q)
+    { }
 
   sparse_base_lu& operator = (const sparse_base_lu& a)
     {
       if (this != &a)
-	{
-	  Lfact = a.Lfact;
-	  Ufact = a.Ufact;
-	  cond = a.cond;
-	  P = a.P;
-	  Q = a.Q;
-	}
+        {
+          Lfact = a.Lfact;
+          Ufact = a.Ufact;
+          cond = a.cond;
+          P = a.P;
+          Q = a.Q;
+        }
       return *this;
     }
 
-  ~sparse_base_lu (void) { }
+  virtual ~sparse_base_lu (void) { }
 
   lu_type L (void) const { return Lfact; }
 
@@ -93,9 +96,3 @@ protected:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

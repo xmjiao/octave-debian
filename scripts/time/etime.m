@@ -1,4 +1,4 @@
-## Copyright (C) 1996, 1997, 2006, 2007, 2008, 2009 John W. Eaton
+## Copyright (C) 1996-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -17,9 +17,9 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} etime (@var{t1}, @var{t2})
-## Return the difference (in seconds) between two time values returned from
-## @code{clock}.  For example:
+## @deftypefn {Function File} {} etime (@var{t2}, @var{t1})
+## Return the difference in seconds between two time values returned from
+## @code{clock} (@math{@var{t2} - @var{t1}}).  For example:
 ##
 ## @example
 ## @group
@@ -37,16 +37,16 @@
 
 ## Author: jwe
 
-function secs = etime (t1, t0)
+function secs = etime (t2, t1)
 
   if (nargin != 2)
     print_usage ();
   endif
 
-  [d1, s1] = datenum (t1);
-  [d0, s0] = datenum (t0);
+  [~, s2] = datenum (t2);
+  [~, s1] = datenum (t1);
 
-  secs = s1 - s0;
+  secs = s2 - s1;
 
 endfunction
 
@@ -65,7 +65,7 @@ endfunction
 %! t3 = [1993, 8, 20, 5, 56, 1];
 %! t4 = [1993, 8, 20, 4, 57, 1];
 %! t5 = [1993, 8, 20, 4, 56, 14];
-%! 
+%!
 %! assert((etime (t2, t1) == 86400 && etime (t3, t1) == 3600
 %! && etime (t4, t1) == 60 && etime (t5, t1) == 13));
 

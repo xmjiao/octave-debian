@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 2004, 2005, 2006, 2007, 2009 David Bateman
-Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004 Andy Adler
+Copyright (C) 2004-2011 David Bateman
+Copyright (C) 1998-2004 Andy Adler
 
 This file is part of Octave.
 
@@ -78,7 +78,7 @@ DEFBINOP (ldiv, sparse_matrix, scalar)
       double d = v1.scalar_value ();
 
       if (d == 0.0)
-	gripe_divide_by_zero ();
+        gripe_divide_by_zero ();
 
       return octave_value (SparseMatrix(1, 1, v2.scalar_value () / d));
     }
@@ -123,7 +123,7 @@ DEFBINOP (el_ldiv, sparse_matrix, scalar)
 {
   CAST_BINOP_ARGS (const octave_sparse_matrix&, const octave_scalar&);
 
-  return octave_value 
+  return octave_value
     (x_el_div (v2.complex_value (), v1.sparse_matrix_value ()));
 }
 
@@ -173,9 +173,3 @@ install_sm_s_ops (void)
 
   INSTALL_ASSIGNOP (op_asn_eq, octave_sparse_matrix, octave_scalar, assign);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

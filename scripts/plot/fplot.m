@@ -1,4 +1,4 @@
-## Copyright (C) 2005, 2006, 2007, 2008, 2009 Paul Kienzle
+## Copyright (C) 2005-2011 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -17,16 +17,17 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} fplot (@var{fn}, @var{limits})
+## @deftypefn  {Function File} {} fplot (@var{fn}, @var{limits})
 ## @deftypefnx {Function File} {} fplot (@var{fn}, @var{limits}, @var{tol})
 ## @deftypefnx {Function File} {} fplot (@var{fn}, @var{limits}, @var{n})
 ## @deftypefnx {Function File} {} fplot (@dots{}, @var{fmt})
-## Plot a function @var{fn}, within the defined limits.  @var{fn}
-## an be either a string, a function handle or an inline function.
+## Plot a function @var{fn} within defined limits.
+## @var{fn} is a function handle, inline function, or string
+## containing the name of the function to evaluate.
 ## The limits of the plot are given by @var{limits} of the form
 ## @code{[@var{xlo}, @var{xhi}]} or @code{[@var{xlo}, @var{xhi},
 ## @var{ylo}, @var{yhi}]}.  @var{tol} is the default tolerance to use for the
-## plot, and if @var{tol} is an integer it is assumed that it defines the 
+## plot, and if @var{tol} is an integer it is assumed that it defines the
 ## number points to use in the plot.  The @var{fmt} argument is passed
 ## to the plot command.
 ##
@@ -41,23 +42,27 @@
 
 ## Author: Paul Kienzle <pkienzle@users.sf.net>
 
-function fplot (fn, limits, n, linespec)
+function fplot (fn, limits, n, fmt)
   if (nargin < 2 || nargin > 4)
     print_usage ();
   endif
 
-  if (nargin < 3) 
-    n = 0.002; 
+  if (!isreal (limits) || (numel (limits) != 2 && numel (limits) != 4))
+    error ("fplot: second input argument must be a real vector with 2 or 4 elements");
+  endif
+
+  if (nargin < 3)
+    n = 0.002;
   endif
 
   have_linespec = true;
-  if (nargin < 4) 
+  if (nargin < 4)
     have_linespec = false;
   endif
 
   if (ischar (n))
     have_linespec = true;
-    linespec = n;
+    fmt = n;
     n = 0.002;
   endif
 
@@ -68,9 +73,11 @@ function fplot (fn, limits, n, linespec)
     nam = func2str (fn);
   elseif (all (isalnum (fn)))
     nam = fn;
+  elseif (ischar (fn))
+     fn = vectorize (inline (fn));
+     nam = formula (fn);
   else
-    fn = vectorize (inline (fn));
-    nam = formula (fn);
+    error ("fplot: first input argument must be a function handle, inline function or string");
   endif
 
   if (floor(n) != n)
@@ -86,7 +93,7 @@ function fplot (fn, limits, n, linespec)
       y00 = interp1 (x0, y0, x, "linear");
       err = 0.5 * max (abs ((y00 - y) ./ (y00 + y))(:));
       if (err == err0 || 0.5 * max (abs ((y00 - y) ./ (y00 + y))(:)) < tol)
-	break;
+        break;
       endif
       x0 = x;
       y0 = y;
@@ -94,19 +101,19 @@ function fplot (fn, limits, n, linespec)
       n = 2 * (n - 1) + 1;
       x = linspace (limits(1), limits(2), n)';
       y = feval (fn, x);
-    endwhile 
+    endwhile
   else
     x = linspace (limits(1), limits(2), n)';
     y = feval (fn, x);
   endif
 
   if (have_linespec)
-    plot (x, y, linespec);
+    plot (x, y, fmt);
   else
     plot (x, y);
   endif
 
-  if (length (limits) > 2) 
+  if (length (limits) > 2)
     axis (limits);
   endif
 

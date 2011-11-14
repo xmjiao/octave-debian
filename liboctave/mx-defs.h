@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 1999, 2000, 2003, 2005, 2007, 2008
-              John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -126,12 +125,20 @@ typedef float (*f_f_Mapper)(float);
 typedef float (*f_fc_Mapper)(const FloatComplex&);
 typedef FloatComplex (*fc_fc_Mapper)(const FloatComplex&);
 
-#endif
+enum blas_trans_type
+{
+  blas_no_trans = 'N',
+  blas_trans = 'T',
+  blas_conj_trans = 'C'
+};
+
+inline char
+get_blas_char (blas_trans_type transt)
+{
+  return static_cast<char> (transt);
+}
+
 
 #endif
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+#endif

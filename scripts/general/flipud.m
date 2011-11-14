@@ -1,5 +1,4 @@
-## Copyright (C) 1993, 1994, 1995, 1996, 1997, 1999, 2000, 2004, 2005,
-##               2006, 2007, 2008, 2009 John W. Eaton
+## Copyright (C) 1993-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -19,8 +18,9 @@
 
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} flipud (@var{x})
-## Return a copy of @var{x} with the order of the rows reversed.  For
-## example,
+## Return a copy of @var{x} with the order of the rows reversed.  In
+## other words, @var{x} is flipped upside-down about a horizontal axis.  For
+## example:
 ##
 ## @example
 ## @group
@@ -30,8 +30,7 @@
 ## @end group
 ## @end example
 ##
-## Due to the difficulty of defining which axis about which to flip the 
-## matrix @code{flipud} only work with 2-d arrays.  To flip N-d arrays
+## Note that @code{flipud} only works with 2-D arrays.  To flip N-D arrays
 ## use @code{flipdim} instead.
 ## @seealso{fliplr, flipdim, rot90, rotdim}
 ## @end deftypefn

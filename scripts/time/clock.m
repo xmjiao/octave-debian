@@ -1,4 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1999, 2000, 2005, 2007, 2008 John W. Eaton
+## Copyright (C) 1995-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -19,7 +19,7 @@
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} clock ()
 ## Return a vector containing the current year, month (1-12), day (1-31),
-## hour (0-23), minute (0-59) and second (0-61).  For example,
+## hour (0-23), minute (0-59) and second (0-61).  For example:
 ##
 ## @example
 ## @group

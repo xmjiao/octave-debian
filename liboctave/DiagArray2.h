@@ -1,9 +1,9 @@
 // Template array classes
 /*
 
-Copyright (C) 1996, 1997, 2000, 2002, 2003, 2004, 2005, 2006, 2007
-              John W. Eaton
-Copyright (C) 2008, 2009 Jaroslav Hajek
+Copyright (C) 1996-2011 John W. Eaton
+Copyright (C) 2008-2009 Jaroslav Hajek
+Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
 
@@ -30,20 +30,6 @@ along with Octave; see the file COPYING.  If not, see
 #include <cstdlib>
 
 #include "Array.h"
-#include "Array2.h"
-#include "lo-error.h"
-
-// A two-dimensional array with diagonal elements only.
-// Idea and example code for Proxy class and functions from:
-//
-// From: kanze@us-es.sel.de (James Kanze)
-// Subject: Re: How to overload [] to do READ/WRITE differently ?
-// Message-ID: <KANZE.93Nov29151407@slsvhdt.us-es.sel.de>
-// Sender: news@us-es.sel.de
-// Date: 29 Nov 1993 14:14:07 GMT
-// --
-// James Kanze                             email: kanze@us-es.sel.de
-// GABI Software, Sarl., 8 rue du Faisan, F-67000 Strasbourg, France
 
 // Array<T> is inherited privately so that some methods, like index, don't
 // produce unexpected results.
@@ -52,68 +38,33 @@ template <class T>
 class
 DiagArray2 : protected Array<T>
 {
-private:
-
-  T get (octave_idx_type i) { return Array<T>::xelem (i); }
-
-  void set (const T& val, octave_idx_type i) { Array<T>::xelem (i) = val; }
-
-  class Proxy
-  {
-  public:
-
-    Proxy (DiagArray2<T> *ref, octave_idx_type r, octave_idx_type c)
-      : i (r), j (c), object (ref) { } 
-
-    const Proxy& operator = (const T& val) const;
-
-    operator T () const;
-
-  private:
-
-    // FIXME -- this is declared private to keep the user from
-    // taking the address of a Proxy.  Maybe it should be implemented
-    // by means of a companion function in the DiagArray2 class.
-
-    T *operator& () const { assert (0); return 0; }
-
-    octave_idx_type i;
-    octave_idx_type j;
-
-    DiagArray2<T> *object;
-
-  };
-
-  friend class Proxy;
-
 protected:
   octave_idx_type d1, d2;
-
-  DiagArray2 (T *d, octave_idx_type r, octave_idx_type c) 
-    : Array<T> (d, std::min (r, c)), d1 (r), d2 (c) { }
 
 public:
 
   using Array<T>::element_type;
 
-  DiagArray2 (void) 
+  DiagArray2 (void)
     : Array<T> (), d1 (0), d2 (0) { }
 
-  DiagArray2 (octave_idx_type r, octave_idx_type c) 
-    : Array<T> (std::min (r, c)), d1 (r), d2 (c) { }
+  DiagArray2 (octave_idx_type r, octave_idx_type c)
+    : Array<T> (dim_vector (std::min (r, c), 1)), d1 (r), d2 (c) { }
 
-  DiagArray2 (octave_idx_type r, octave_idx_type c, const T& val) 
-    : Array<T> (std::min (r, c), val), d1 (r), d2 (c) { }
+  DiagArray2 (octave_idx_type r, octave_idx_type c, const T& val)
+    : Array<T> (dim_vector (std::min (r, c), 1), val), d1 (r), d2 (c) { }
 
-  DiagArray2 (const Array<T>& a) 
-    : Array<T> (a), d1 (a.numel ()), d2 (a.numel ()) { }
+  explicit DiagArray2 (const Array<T>& a)
+    : Array<T> (a.as_column ()), d1 (a.numel ()), d2 (a.numel ()) { }
 
-  DiagArray2 (const DiagArray2<T>& a) 
+  DiagArray2 (const Array<T>& a, octave_idx_type r, octave_idx_type c);
+
+  DiagArray2 (const DiagArray2<T>& a)
     : Array<T> (a), d1 (a.d1), d2 (a.d2) { }
 
   template <class U>
-  DiagArray2 (const DiagArray2<U>& a) 
-  : Array<T> (a.diag ()), d1 (a.dim1 ()), d2 (a.dim2 ()) { }
+  DiagArray2 (const DiagArray2<U>& a)
+    : Array<T> (a.diag ()), d1 (a.dim1 ()), d2 (a.dim2 ()) { }
 
   ~DiagArray2 (void) { }
 
@@ -136,19 +87,20 @@ public:
   octave_idx_type cols (void) const { return dim2 (); }
   octave_idx_type columns (void) const { return dim2 (); }
 
+  octave_idx_type diag_length (void) const { return Array<T>::length (); }
   // FIXME: a dangerous ambiguity?
   octave_idx_type length (void) const { return Array<T>::length (); }
   octave_idx_type nelem (void) const { return dim1 () * dim2 (); }
   octave_idx_type numel (void) const { return nelem (); }
 
-  size_t byte_size (void) const { return length () * sizeof (T); }
+  size_t byte_size (void) const { return Array<T>::byte_size (); }
 
   dim_vector dims (void) const { return dim_vector (d1, d2); }
 
   Array<T> diag (octave_idx_type k = 0) const;
 
   // Warning: the non-const two-index versions will silently ignore assignments
-  // to off-diagonal elements. 
+  // to off-diagonal elements.
 
   T elem (octave_idx_type r, octave_idx_type c) const
     {
@@ -164,11 +116,10 @@ public:
   T dgelem (octave_idx_type i) const
     { return Array<T>::elem (i); }
 
-  T& dgelem (octave_idx_type i) 
+  T& dgelem (octave_idx_type i)
     { return Array<T>::elem (i); }
 
   T checkelem (octave_idx_type r, octave_idx_type c) const;
-  Proxy checkelem (octave_idx_type r, octave_idx_type c);
 
   T operator () (octave_idx_type r, octave_idx_type c) const
     {
@@ -178,19 +129,6 @@ public:
       return elem (r, c);
 #endif
     }
-
-  // FIXME: can this cause problems?
-#if defined (BOUNDS_CHECKING)
-  Proxy operator () (octave_idx_type r, octave_idx_type c)
-    {
-      return checkelem (r, c);
-    }
-#else
-  T& operator () (octave_idx_type r, octave_idx_type c) 
-    {
-      return elem (r, c);
-    }
-#endif
 
   // No checking.
 
@@ -205,13 +143,13 @@ public:
   T dgxelem (octave_idx_type i) const
     { return Array<T>::xelem (i); }
 
-  void resize (octave_idx_type n, octave_idx_type m);
-  void resize_fill (octave_idx_type n, octave_idx_type m, const T& val);
+  void resize (octave_idx_type n, octave_idx_type m,
+               const T& rfv = Array<T>::resize_fill_value ());
 
   DiagArray2<T> transpose (void) const;
   DiagArray2<T> hermitian (T (*fcn) (const T&) = 0) const;
 
-  operator Array2<T> (void) const;
+  Array<T> array_value (void) const;
 
   const T *data (void) const { return Array<T>::data (); }
 
@@ -224,9 +162,3 @@ public:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

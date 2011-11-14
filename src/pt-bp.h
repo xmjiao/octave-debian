@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009 Ben Sapp
+Copyright (C) 2001-2011 Ben Sapp
 
 This file is part of Octave.
 
@@ -62,7 +62,7 @@ tree_breakpoint : public tree_walker
 
   void visit_decl_elt (tree_decl_elt&);
 
-  void visit_decl_init_list (tree_decl_init_list&);  
+  void visit_decl_init_list (tree_decl_init_list&);
 
   void visit_while_command (tree_while_command&);
 
@@ -133,7 +133,7 @@ tree_breakpoint : public tree_walker
   void visit_unwind_protect_command (tree_unwind_protect_command&);
 
   octave_value_list get_list (void) { return bp_list; }
-  
+
   int get_line (void) { return line; }
 
  private:
@@ -168,9 +168,3 @@ tree_breakpoint : public tree_walker
 extern bool octave_debug_on_interrupt_state;
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

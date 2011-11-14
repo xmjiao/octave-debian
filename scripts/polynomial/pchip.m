@@ -1,4 +1,4 @@
-## Copyright (C) 2001, 2002, 2006, 2007, 2008, 2009 Kai Habel
+## Copyright (C) 2001-2011 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -17,11 +17,11 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{pp} =} pchip (@var{x}, @var{y})
+## @deftypefn  {Function File} {@var{pp} =} pchip (@var{x}, @var{y})
 ## @deftypefnx {Function File} {@var{yi} =} pchip (@var{x}, @var{y}, @var{xi})
 ##
 ## Piecewise Cubic Hermite interpolating polynomial.  Called with two
-## arguments, the piece-wise polynomial @var{pp} is returned, that may
+## arguments, the piecewise polynomial @var{pp} is returned, that may
 ## later be used with @code{ppval} to evaluate the polynomial at
 ## specific points.
 ##
@@ -37,7 +37,7 @@
 ## @code{[@var{s1}, @var{s2}, @dots{}, @var{sk}, @var{n}]}
 ## @end ifnottex
 ## The array is then reshaped internally to a matrix where the leading
-## dimension is given by 
+## dimension is given by
 ## @tex
 ## $$s_1 s_2 \cdots s_k$$
 ## @end tex
@@ -48,8 +48,8 @@
 ## is exactly the opposite treatment than @code{interp1} and is done
 ## for compatibility.
 ##
-## Called with a third input argument, @code{pchip} evaluates the 
-## piece-wise polynomial at the points @var{xi}.  There is an equivalence
+## Called with a third input argument, @code{pchip} evaluates the
+## piecewise polynomial at the points @var{xi}.  There is an equivalence
 ## between @code{ppval (pchip (@var{x}, @var{y}), @var{xi})} and
 ## @code{pchip (@var{x}, @var{y}, @var{xi})}.
 ##
@@ -73,50 +73,49 @@ function ret = pchip (x, y, xi)
     print_usage ();
   endif
 
-  x = x(:);
+  x = x(:).';
   n = length (x);
 
   ## Check the size and shape of y
-  ndy = ndims (y);
-  szy = size (y);
-  if (ndy == 2 && (szy(1) == 1 || szy(2) == 1))
-    if (szy(1) == 1)
-      y = y';
-    else
-      szy = fliplr (szy);
-    endif
+  if (isvector (y))
+    y = y(:).';
+    szy = size (y);
   else
-    y = reshape (y, [prod(szy(1:end-1)), szy(end)])';
+    szy = size (y);
+    y = reshape (y, [prod(szy(1:end-1)), szy(end)]);
   endif
 
   h = diff (x);
   if (all (h < 0))
-    x = flipud (x);
+    x = fliplr (x);
     h = diff (x);
-    y = flipud (y);
+    y = fliplr (y);
   elseif (any (h <= 0))
-    error("pchip: x must be strictly monotonic");
+    error("pchip: X must be strictly monotonic");
   endif
 
-  if (rows (y) != n)
-    error("pchip: size of x and y must match");
+  if (columns (y) != n)
+    error("pchip: size of X and Y must match");
   endif
 
-  [ry, cy] = size (y);
-  if (cy > 1)
-    h = kron (diff (x), ones (1, cy));
-  endif
-  
-  dy = diff (y) ./ h;
+  f1 = y(:,1:n-1);
 
-  a = y;
-  b = __pchip_deriv__ (x, y);
-  c = - (b(2:n, :) + 2 * b(1:n - 1, :)) ./ h + 3 * diff (a) ./ h .^ 2;
-  d = (b(1:n - 1, :) + b(2:n, :)) ./ h.^2 - 2 * diff (a) ./ h.^3;
+  ## Compute derivatives.
+  d = __pchip_deriv__ (x, y, 2);
+  d1 = d(:,1:n-1);
+  d2 = d(:,2:n);
 
-  d = d(1:n - 1, :); c = c(1:n - 1, :);
-  b = b(1:n - 1, :); a = a(1:n - 1, :);
-  coeffs = [d(:), c(:), b(:), a(:)];
+  ## This is taken from SLATEC.
+  h = diag (h);
+
+  delta = diff (y, 1, 2) / h;
+  del1 = (d1 - delta) / h;
+  del2 = (d2 - delta) / h;
+  c3 = del1 + del2;
+  c2 = -c3 - del1;
+  c3 = c3 / h;
+
+  coeffs = cat (3, c3, c2, d1, f1);
   pp = mkpp (x, coeffs, szy(1:end-1));
 
   if (nargin == 2)
@@ -128,9 +127,9 @@ function ret = pchip (x, y, xi)
 endfunction
 
 %!demo
-%! x = 0:8; 
+%! x = 0:8;
 %! y = [1, 1, 1, 1, 0.5, 0, 0, 0, 0];
-%! xi = 0:0.01:8; 
+%! xi = 0:0.01:8;
 %! yspline = spline(x,y,xi);
 %! ypchip = pchip(x,y,xi);
 %! title("pchip and spline fit to discontinuous function");
@@ -140,7 +139,7 @@ endfunction
 %! % confirm that pchip agreed better to discontinuous data than spline
 
 %!shared x,y
-%! x = 0:8; 
+%! x = 0:8;
 %! y = [1, 1, 1, 1, 0.5, 0, 0, 0, 0];
 %!assert (pchip(x,y,x), y);
 %!assert (pchip(x,y,x'), y');

@@ -1,4 +1,4 @@
-## Copyright (C) 2007, 2008, 2009 David BAteman
+## Copyright (C) 2007-2011 David BAteman
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} contour3 (@var{z})
+## @deftypefn  {Function File} {} contour3 (@var{z})
 ## @deftypefnx {Function File} {} contour3 (@var{z}, @var{vn})
 ## @deftypefnx {Function File} {} contour3 (@var{x}, @var{y}, @var{z})
 ## @deftypefnx {Function File} {} contour3 (@var{x}, @var{y}, @var{z}, @var{vn})
@@ -43,7 +43,7 @@
 ## in a similar manner to the line styles used with the @code{plot} command.
 ## Any markers defined by @var{style} are ignored.
 ##
-## The optional input and output argument @var{h} allows an axis handle to 
+## The optional input and output argument @var{h} allows an axis handle to
 ## be passed to @code{contour} and the handles to the contour objects to be
 ## returned.
 ## @seealso{contourc, patch, plot}
@@ -63,7 +63,8 @@ function [c, h] = contour3 (varargin)
   end_unwind_protect
 
   if (! ishold ())
-    set (xh, "view", [-37.5, 30]);
+    set (xh, "view", [-37.5, 30],
+         "xgrid", "on", "ygrid", "on", "zgrid", "on");
   endif
 
   if (nargout > 0)
@@ -78,4 +79,7 @@ endfunction
 %! hold on
 %! surface (peaks (19), "facecolor", "none", "edgecolor", "black")
 %! colormap hot
+%! axis tight
+%! zlim auto
 %! hold off
+%! box off

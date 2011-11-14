@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008, 2009 Jaroslav Hajek
+Copyright (C) 2008-2011 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -36,7 +36,7 @@ template class octave_base_diag<FloatDiagMatrix, FloatMatrix>;
 
 DEFINE_OCTAVE_ALLOCATOR (octave_float_diag_matrix);
 
-DEFINE_OV_TYPEID_FUNCTIONS_AND_DATA (octave_float_diag_matrix, 
+DEFINE_OV_TYPEID_FUNCTIONS_AND_DATA (octave_float_diag_matrix,
                                      "float diagonal matrix", "single");
 
 static octave_base_value *
@@ -59,9 +59,8 @@ octave_float_diag_matrix::try_narrowing_conversion (void)
 {
   octave_base_value *retval = 0;
 
-  // FIXME: the proxy mechanism of DiagArray2 causes problems here.
   if (matrix.nelem () == 1)
-    retval = new octave_float_scalar (float (matrix (0, 0)));
+    retval = new octave_float_scalar (matrix (0, 0));
 
   return retval;
 }
@@ -91,51 +90,32 @@ octave_float_diag_matrix::float_complex_diag_matrix_value (bool) const
 }
 
 octave_value
-octave_float_diag_matrix::abs (void) const
+octave_float_diag_matrix::map (unary_mapper_t umap) const
 {
-  return matrix.abs ();
+  switch (umap)
+    {
+    case umap_abs:
+      return matrix.abs ();
+    case umap_real:
+    case umap_conj:
+      return matrix;
+    case umap_imag:
+      return DiagMatrix (matrix.rows (), matrix.cols (), 0.0);
+    case umap_sqrt:
+      {
+        FloatComplexColumnVector tmp = matrix.diag ().map<FloatComplex> (rc_sqrt);
+        FloatComplexDiagMatrix retval (tmp);
+        retval.resize (matrix.rows (), matrix.columns ());
+        return retval;
+      }
+    default:
+      return to_dense ().map (umap);
+    }
 }
 
-octave_value
-octave_float_diag_matrix::real (void) const
-{
-  return matrix;
-}
-
-octave_value
-octave_float_diag_matrix::conj (void) const
-{
-  return matrix;
-}
-
-octave_value
-octave_float_diag_matrix::imag (void) const
-{
-  return DiagMatrix (matrix.rows (), matrix.cols (), 0.0f);
-}
-
-octave_value
-octave_float_diag_matrix::sqrt (void) const
-{    
-  octave_value retval;
-
-  static FloatNDArray::dmapper dsqrt = ::sqrtf;
-  static FloatNDArray::cmapper csqrt = std::sqrt;
-
-  FloatColumnVector dvec = matrix.diag ();
-  if (FloatMatrix (dvec).any_element_is_negative ())
-    retval = FloatComplexDiagMatrix (dvec.map (csqrt));
-  else
-    retval = FloatDiagMatrix (dvec.map (dsqrt));
-
-  retval.resize (dims ());
-
-  return retval;
-}
-
-bool 
+bool
 octave_float_diag_matrix::save_binary (std::ostream& os,
-				       bool& /* save_as_floats*/)
+                                       bool& /* save_as_floats*/)
 {
 
   int32_t r = matrix.rows (), c = matrix.cols ();
@@ -148,7 +128,7 @@ octave_float_diag_matrix::save_binary (std::ostream& os,
     {
       float max_val, min_val;
       if (m.all_integers (max_val, min_val))
-	st = get_save_type (max_val, min_val);
+        st = get_save_type (max_val, min_val);
     }
 
   const float *mtmp = m.data ();
@@ -157,9 +137,9 @@ octave_float_diag_matrix::save_binary (std::ostream& os,
   return true;
 }
 
-bool 
+bool
 octave_float_diag_matrix::load_binary (std::istream& is, bool swap,
-				 oct_mach_info::float_format fmt)
+                                 oct_mach_info::float_format fmt)
 {
   int32_t r, c;
   char tmp;
@@ -184,8 +164,8 @@ octave_float_diag_matrix::load_binary (std::istream& is, bool swap,
   return true;
 }
 
-bool 
-octave_float_diag_matrix::chk_valid_scalar (const octave_value& val, 
+bool
+octave_float_diag_matrix::chk_valid_scalar (const octave_value& val,
                                             float& x) const
 {
   bool retval = val.is_real_scalar ();

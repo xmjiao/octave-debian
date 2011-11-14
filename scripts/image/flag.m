@@ -1,4 +1,4 @@
-## Copyright (C) 1999, 2000, 2007, 2009 Kai Habel
+## Copyright (C) 1999-2011 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -17,24 +17,23 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} flag (@var{n})
-## Create color colormap.  This colormap cycles through red, white, blue 
-## and black.  The argument @var{n} should be a scalar.  If it
-## is omitted, the length of the current colormap or 64 is assumed.
+## @deftypefn  {Function File} {@var{map} =} flag ()
+## @deftypefnx {Function File} {@var{map} =} flag (@var{n})
+## Create color colormap.  This colormap cycles through red, white, blue
+## and black with each index change.
+## The argument @var{n} must be a scalar.
+## If unspecified, the length of the current colormap, or 64, is used.
 ## @seealso{colormap}
 ## @end deftypefn
 
 ## Author:  Kai Habel <kai.habel@gmx.de>
 
-## flag(number) gives a colormap consists of red, white, blue and black
-## changing with each index
-
-function map = flag (number)
+function map = flag (n)
 
   if (nargin == 0)
-    number = rows (colormap);
+    n = rows (colormap);
   elseif (nargin == 1)
-    if (! isscalar (number))
+    if (! isscalar (n))
       error ("flag: argument must be a scalar");
     endif
   else
@@ -42,12 +41,19 @@ function map = flag (number)
   endif
 
   p = [1, 0, 0; 1, 1, 1; 0, 0, 1; 0, 0, 0];
-  if (rem(number,4) == 0)
-    map = kron (ones (number / 4, 1), p);
+  if (rem(n,4) == 0)
+    map = kron (ones (n / 4, 1), p);
   else
-    m1 = kron (ones (fix (number / 4), 1), p);
-    m2 = p(1:rem (number, 4), :);
+    m1 = kron (ones (fix (n / 4), 1), p);
+    m2 = p(1:rem (n, 4), :);
     map = [m1; m2];
   endif
 
 endfunction
+
+%!demo
+%! ## Show the 'flag' colormap as an image
+%! image (1:64, linspace (0, 1, 64), repmat (1:64, 64, 1)')
+%! axis ([1, 64, 0, 1], "ticy", "xy")
+%! colormap (flag (64))
+

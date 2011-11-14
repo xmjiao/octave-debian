@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 2000, 2002, 2005, 2006, 2007, 2008
-##               Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -49,13 +48,13 @@ function [pval, z] = z_test (x, m, v, alt)
   endif
 
   if (! isvector (x))
-    error ("z_test: x must be a vector");
+    error ("z_test: X must be a vector");
   endif
   if (! isscalar (m))
-    error ("z_test: m must be a scalar");
+    error ("z_test: M must be a scalar");
   endif
   if (! (isscalar (v) && (v > 0)))
-    error ("z_test: v must be a positive scalar");
+    error ("z_test: V must be a positive scalar");
   endif
 
   n = length (x);
@@ -67,7 +66,7 @@ function [pval, z] = z_test (x, m, v, alt)
   endif
 
   if (! ischar (alt))
-    error ("z_test: alt must be a string");
+    error ("z_test: ALT must be a string");
   elseif (strcmp (alt, "!=") || strcmp (alt, "<>"))
     pval = 2 * min (cdf, 1 - cdf);
   elseif (strcmp (alt, ">"))

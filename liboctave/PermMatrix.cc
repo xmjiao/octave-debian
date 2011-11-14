@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008, 2009 Jaroslav Hajek
+Copyright (C) 2008-2011 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -26,8 +26,8 @@ along with Octave; see the file COPYING.  If not, see
 
 #include "PermMatrix.h"
 #include "idx-vector.h"
-#include "error.h"
 #include "Array-util.h"
+#include "oct-locbuf.h"
 
 static void
 gripe_invalid_permutation (void)
@@ -57,19 +57,19 @@ PermMatrix::PermMatrix (const idx_vector& idx, bool colp, octave_idx_type n)
     gripe_invalid_permutation ();
   else
     {
-      Array<octave_idx_type> idxa (len);
+      Array<octave_idx_type> idxa (dim_vector (len, 1));
       for (octave_idx_type i = 0; i < len; i++) idxa(i) = idx(i);
       Array<octave_idx_type>::operator = (idxa);
     }
 }
 
 PermMatrix::PermMatrix (octave_idx_type n)
-  : Array<octave_idx_type> (n), _colp (false)
+  : Array<octave_idx_type> (dim_vector (n, 1)), _colp (false)
 {
   for (octave_idx_type i = 0; i < n; i++) xelem (i) = i;
 }
 
-octave_idx_type 
+octave_idx_type
 PermMatrix::checkelem (octave_idx_type i, octave_idx_type j) const
 {
   octave_idx_type len = Array<octave_idx_type>::length ();
@@ -83,7 +83,7 @@ PermMatrix::checkelem (octave_idx_type i, octave_idx_type j) const
 }
 
 
-PermMatrix 
+PermMatrix
 PermMatrix::transpose (void) const
 {
   PermMatrix retval (*this);
@@ -91,33 +91,47 @@ PermMatrix::transpose (void) const
   return retval;
 }
 
-PermMatrix 
+PermMatrix
 PermMatrix::inverse (void) const
 {
   return transpose ();
 }
 
-octave_idx_type 
+octave_idx_type
 PermMatrix::determinant (void) const
 {
-  Array<octave_idx_type> pa = *this;
-  octave_idx_type len = pa.length (), *p = pa.fortran_vec ();
-  bool neg = false;
+  // Determine the sign of a permutation in linear time.
+  // Is this widely known?
+
+  octave_idx_type len = perm_length ();
+  const octave_idx_type *pa = data ();
+
+  OCTAVE_LOCAL_BUFFER (octave_idx_type, p, len);
+  OCTAVE_LOCAL_BUFFER (octave_idx_type, q, len);
+
   for (octave_idx_type i = 0; i < len; i++)
     {
-      octave_idx_type j = p[i];
+      p[i] = pa[i];
+      q[p[i]] = i;
+    }
+
+  bool neg = false;
+
+  for (octave_idx_type i = 0; i < len; i++)
+    {
+      octave_idx_type j = p[i], k = q[i];
       if (j != i)
         {
-          p[i] = p[j];
-          p[j] = j;
+          p[k] = p[i];
+          q[j] = q[i];
           neg = ! neg;
         }
     }
-  
+
   return neg ? -1 : 1;
 }
 
-PermMatrix 
+PermMatrix
 PermMatrix::power (octave_idx_type m) const
 {
   octave_idx_type n = rows ();
@@ -131,7 +145,7 @@ PermMatrix::power (octave_idx_type m) const
     return PermMatrix (n);
 
   const octave_idx_type *p = data ();
-  Array<octave_idx_type> res_pvec (n, -1);
+  Array<octave_idx_type> res_pvec (dim_vector (n, 1), -1);
   octave_idx_type *q = res_pvec.fortran_vec ();
 
   for (octave_idx_type ics = 0; ics < n; ics++)
@@ -164,7 +178,17 @@ PermMatrix::power (octave_idx_type m) const
   return PermMatrix (res_pvec, res_colp, false);
 }
 
-PermMatrix 
+PermMatrix
+PermMatrix::eye (octave_idx_type n)
+{
+  Array<octave_idx_type> p (dim_vector (n, 1));
+  for (octave_idx_type i = 0; i < n; i++)
+    p(i) = i;
+
+  return PermMatrix (p, false, false);
+}
+
+PermMatrix
 operator *(const PermMatrix& a, const PermMatrix& b)
 {
   const Array<octave_idx_type> ia = a.pvec (), ib = b.pvec ();
@@ -174,17 +198,17 @@ operator *(const PermMatrix& a, const PermMatrix& b)
     gripe_nonconformant ("operator *", n, n, b.rows (), b.rows ());
   else if (a._colp == b._colp)
     {
-      r = PermMatrix ((a._colp 
-                       ? ia.index (idx_vector (ib)) 
+      r = PermMatrix ((a._colp
+                       ? ia.index (idx_vector (ib))
                        : ib.index (idx_vector (ia))), a._colp, false);
     }
   else
     {
-      Array<octave_idx_type> ra (n);
+      Array<octave_idx_type> ra (dim_vector (n, 1));
       if (a._colp)
-        ra.assign (idx_vector (ib), ia);
-      else
         ra.assign (idx_vector (ia), ib);
+      else
+        ra.assign (idx_vector (ib), ia);
       r = PermMatrix (ra, a._colp, false);
     }
 

@@ -1,4 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 2005, 2006, 2007 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -42,7 +42,7 @@ function cdf = normcdf (x, m, s)
   if (!isscalar (m) || !isscalar (s))
     [retval, x, m, s] = common_size (x, m, s);
     if (retval > 0)
-      error ("normcdf: x, m and s must be of common size or scalar");
+      error ("normcdf: X, M and S must be of common size or scalar");
     endif
   endif
 
@@ -50,18 +50,18 @@ function cdf = normcdf (x, m, s)
   cdf = zeros (sz);
 
   if (isscalar (m) && isscalar(s))
-    if (find (isinf (m) | isnan (m) | !(s >= 0) | !(s < Inf)))
-      cdf = NaN * ones (sz);
+    if (find (isinf (m) | isnan (m) | !(s > 0) | !(s < Inf)))
+      cdf = NaN (sz);
     else
       cdf =  stdnormal_cdf ((x - m) ./ s);
     endif
   else
-    k = find (isinf (m) | isnan (m) | !(s >= 0) | !(s < Inf));
+    k = find (isinf (m) | isnan (m) | !(s > 0) | !(s < Inf));
     if (any (k))
       cdf(k) = NaN;
     endif
 
-    k = find (!isinf (m) & !isnan (m) & (s >= 0) & (s < Inf));
+    k = find (!isinf (m) & !isnan (m) & (s > 0) & (s < Inf));
     if (any (k))
       cdf(k) = stdnormal_cdf ((x(k) - m(k)) ./ s(k));
     endif

@@ -1,4 +1,4 @@
-## Copyright (C) 2005, 2006, 2007, 2008 William Poetra Yoga Hadisoeseno
+## Copyright (C) 2005-2011 William Poetra Yoga Hadisoeseno
 ##
 ## This file is part of Octave.
 ##
@@ -18,38 +18,40 @@
 
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} ver ()
-## Display a header containing the current Octave version
-## number, license string and operating system, followed by 
-## the installed package names, versions, and installation
-## directories.
+## Display a header containing the current Octave version number, license
+## string and operating system, followed by the installed package names,
+## versions, and installation directories.
+##
 ## @deftypefnx {Function File} {v =} ver ()
 ## Return a vector of structures, respecting Octave and each installed package.
 ## The structure includes the following fields.
 ##
 ## @table @code
-##   @item Name
-##   Package name.
-##   @item Version
-##   Version of the package.
-##   @item Revision
-##   Revision of the package.
-##   @item Date
-##   Date respecting the version/revision.
+## @item Name
+## Package name.
+##
+## @item Version
+## Version of the package.
+##
+## @item Revision
+## Revision of the package.
+##
+## @item Date
+## Date respecting the version/revision.
 ## @end table
-## @deftypefnx {Function File} {v =} ver (@code{"Octave"})
-## Return version information for Octave only..
-## @deftypefnx {Function File} {v =} ver (@var{pkg})
-## Return version information for the specified package @var{pkg}.
-## @seealso{license, version}
+##
+## @deftypefnx {Function File} {v =} ver ("Octave")
+## Return version information for Octave only.
+##
+## @deftypefnx {Function File} {v =} ver (@var{package})
+## Return version information for @var{package}.
+##
+## @seealso{version, octave_config_info}
 ## @end deftypefn
 
 ## Author: William Poetra Yoga Hadisoeseno <williampoetra@gmail.com>
 
-function varargout = ver (pack)
-
-  if (nargin == 0)
-    pack = "";
-  endif
+function varargout = ver (package = "")
 
   if (nargin > 1)
     print_usage ();
@@ -90,10 +92,10 @@ function varargout = ver (pack)
 
     pkg ("list");
   else
-    if (! isempty (pack))
+    if (! isempty (package))
       n = [];
       for r = 1:numel(ret)
-        if (strcmpi (ret(r).Name, pack))
+        if (strcmpi (ret(r).Name, package))
           n = r;
           break;
         endif

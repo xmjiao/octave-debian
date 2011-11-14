@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2000, 2002, 2003, 2004, 2005,
-              2006, 2007, 2008 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
+Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
 
@@ -37,16 +37,24 @@ friend class ComplexRowVector;
 
 public:
 
-  ComplexColumnVector (void) : MArray<Complex> () { }
+  ComplexColumnVector (void) : MArray<Complex> (dim_vector (0, 1)) { }
 
-  explicit ComplexColumnVector (octave_idx_type n) : MArray<Complex> (n) { }
+  explicit ComplexColumnVector (octave_idx_type n)
+    : MArray<Complex> (dim_vector (n, 1)) { }
+
+  explicit ComplexColumnVector (const dim_vector& dv)
+    : MArray<Complex> (dv.as_column ()) { }
 
   ComplexColumnVector (octave_idx_type n, const Complex& val)
-    : MArray<Complex> (n, val) { }
+    : MArray<Complex> (dim_vector (n, 1), val) { }
 
   ComplexColumnVector (const ComplexColumnVector& a) : MArray<Complex> (a) { }
 
-  ComplexColumnVector (const MArray<Complex>& a) : MArray<Complex> (a) { }
+  ComplexColumnVector (const MArray<Complex>& a)
+    : MArray<Complex> (a.as_column ()) { }
+
+  ComplexColumnVector (const Array<Complex>& a)
+    : MArray<Complex> (a.as_column ()) { }
 
   explicit ComplexColumnVector (const ColumnVector& a);
 
@@ -91,54 +99,50 @@ public:
   // matrix by column vector -> column vector operations
 
   friend OCTAVE_API ComplexColumnVector operator * (const ComplexMatrix& a,
-					 const ColumnVector& b);
+                                         const ColumnVector& b);
 
   friend OCTAVE_API ComplexColumnVector operator * (const ComplexMatrix& a,
-					 const ComplexColumnVector& b);
+                                         const ComplexColumnVector& b);
 
   // matrix by column vector -> column vector operations
 
   friend OCTAVE_API ComplexColumnVector operator * (const Matrix& a,
-					 const ComplexColumnVector& b);
+                                         const ComplexColumnVector& b);
 
   // diagonal matrix by column vector -> column vector operations
 
   friend OCTAVE_API ComplexColumnVector operator * (const DiagMatrix& a,
-					 const ComplexColumnVector& b);
+                                         const ComplexColumnVector& b);
 
   friend OCTAVE_API ComplexColumnVector operator * (const ComplexDiagMatrix& a,
-					 const ColumnVector& b);
+                                         const ColumnVector& b);
 
   friend OCTAVE_API ComplexColumnVector operator * (const ComplexDiagMatrix& a,
-					 const ComplexColumnVector& b);
+                                         const ComplexColumnVector& b);
 
   // other operations
 
-  typedef double (*dmapper) (const Complex&);
-  typedef Complex (*cmapper) (const Complex&);
-
-  ColumnVector map (dmapper fcn) const;
-  ComplexColumnVector map (cmapper fcn) const;
-
   Complex min (void) const;
   Complex max (void) const;
+
+  ColumnVector abs (void) const;
 
   // i/o
 
   friend OCTAVE_API std::ostream& operator << (std::ostream& os, const ComplexColumnVector& a);
   friend OCTAVE_API std::istream& operator >> (std::istream& is, ComplexColumnVector& a);
 
-private:
+  void resize (octave_idx_type n,
+               const Complex& rfv = Array<Complex>::resize_fill_value ())
+  {
+    Array<Complex>::resize (dim_vector (n, 1), rfv);
+  }
 
-  ComplexColumnVector (Complex *d, octave_idx_type l) : MArray<Complex> (d, l) { }
+  void clear (octave_idx_type n)
+    { Array<Complex>::clear (n, 1); }
+
 };
 
 MARRAY_FORWARD_DEFS (MArray, ComplexColumnVector, Complex)
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1997, 1999, 2000, 2004, 2005, 2006, 2007, 2008,
-              2009 John W. Eaton
+Copyright (C) 1997-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -36,27 +35,29 @@ along with Octave; see the file COPYING.  If not, see
 DEFUN_DLD (betainc, args, ,
   "-*- texinfo -*-\n\
 @deftypefn {Mapping Function} {} betainc (@var{x}, @var{a}, @var{b})\n\
-Return the incomplete Beta function,\n\
-@iftex\n\
+Return the regularized incomplete Beta function,\n\
 @tex\n\
 $$\n\
- \\beta (x, a, b) = B (a, b)^{-1} \\int_0^x t^{(a-z)} (1-t)^{(b-1)} dt.\n\
+ I (x, a, b) = {1 \\over {B (a, b)}} \\int_0^x t^{(a-z)} (1-t)^{(b-1)} dt.\n\
 $$\n\
 @end tex\n\
-@end iftex\n\
 @ifnottex\n\
-\n\
 @c Set example in small font to prevent overfull line\n\
+\n\
 @smallexample\n\
-                                      x\n\
-                                     /\n\
-betainc (x, a, b) = beta (a, b)^(-1) | t^(a-1) (1-t)^(b-1) dt.\n\
-                                     /\n\
-                                  t=0\n\
+@group\n\
+@c spacing appears odd here, but is correct after Makeinfo\n\
+                                     x\n\
+                          1         /\n\
+betainc (x, a, b) = -----------    | t^(a-1) (1-t)^(b-1) dt.\n\
+                     beta (a, b)    /\n\
+                                 t=0\n\
+@end group\n\
 @end smallexample\n\
+\n\
 @end ifnottex\n\
 \n\
-If x has more than one component, both @var{a} and @var{b} must be\n\
+If @var{x} has more than one component, both @var{a} and @var{b} must be\n\
 scalars.  If @var{x} is a scalar, @var{a} and @var{b} must be of\n\
 compatible dimensions.\n\
 @end deftypefn")
@@ -73,208 +74,208 @@ compatible dimensions.\n\
 
       // FIXME Can we make a template version of the duplicated code below
       if (x_arg.is_single_type () || a_arg.is_single_type () ||
-	  b_arg.is_single_type ())
-	{
-	  if (x_arg.is_scalar_type ())
-	    {
-	      float x = x_arg.float_value ();
+          b_arg.is_single_type ())
+        {
+          if (x_arg.is_scalar_type ())
+            {
+              float x = x_arg.float_value ();
 
-	      if (a_arg.is_scalar_type ())
-		{
-		  float a = a_arg.float_value ();
+              if (a_arg.is_scalar_type ())
+                {
+                  float a = a_arg.float_value ();
 
-		  if (! error_state)
-		    {
-		      if (b_arg.is_scalar_type ())
-			{
-			  float b = b_arg.float_value ();
+                  if (! error_state)
+                    {
+                      if (b_arg.is_scalar_type ())
+                        {
+                          float b = b_arg.float_value ();
 
-			  if (! error_state)
-			    retval = betainc (x, a, b);
-			}
-		      else
-			{
-			  FloatNDArray b = b_arg.float_array_value ();
+                          if (! error_state)
+                            retval = betainc (x, a, b);
+                        }
+                      else
+                        {
+                          FloatNDArray b = b_arg.float_array_value ();
 
-			  if (! error_state)
-			    retval = betainc (x, a, b);
-			}
-		    }
-		}
-	      else
-		{
-		  FloatNDArray a = a_arg.float_array_value ();
+                          if (! error_state)
+                            retval = betainc (x, a, b);
+                        }
+                    }
+                }
+              else
+                {
+                  FloatNDArray a = a_arg.float_array_value ();
 
-		  if (! error_state)
-		    {
-		      if (b_arg.is_scalar_type ())
-			{
-			  float b = b_arg.float_value ();
+                  if (! error_state)
+                    {
+                      if (b_arg.is_scalar_type ())
+                        {
+                          float b = b_arg.float_value ();
 
-			  if (! error_state)
-			    retval = betainc (x, a, b);
-			}
-		      else
-			{
-			  FloatNDArray b = b_arg.float_array_value ();
+                          if (! error_state)
+                            retval = betainc (x, a, b);
+                        }
+                      else
+                        {
+                          FloatNDArray b = b_arg.float_array_value ();
 
-			  if (! error_state)
-			    retval = betainc (x, a, b);
-			}
-		    }
-		}
-	    }
-	  else
-	    {
-	      FloatNDArray x = x_arg.float_array_value ();
+                          if (! error_state)
+                            retval = betainc (x, a, b);
+                        }
+                    }
+                }
+            }
+          else
+            {
+              FloatNDArray x = x_arg.float_array_value ();
 
-	      if (a_arg.is_scalar_type ())
-		{
-		  float a = a_arg.float_value ();
+              if (a_arg.is_scalar_type ())
+                {
+                  float a = a_arg.float_value ();
 
-		  if (! error_state)
-		    {
-		      if (b_arg.is_scalar_type ())
-			{
-			  float b = b_arg.float_value ();
+                  if (! error_state)
+                    {
+                      if (b_arg.is_scalar_type ())
+                        {
+                          float b = b_arg.float_value ();
 
-			  if (! error_state)
-			    retval = betainc (x, a, b);
-			}
-		      else
-			{
-			  FloatNDArray b = b_arg.float_array_value ();
+                          if (! error_state)
+                            retval = betainc (x, a, b);
+                        }
+                      else
+                        {
+                          FloatNDArray b = b_arg.float_array_value ();
 
-			  if (! error_state)
-			    retval = betainc (x, a, b);
-			}
-		    }
-		}
-	      else
-		{
-		  FloatNDArray a = a_arg.float_array_value ();
+                          if (! error_state)
+                            retval = betainc (x, a, b);
+                        }
+                    }
+                }
+              else
+                {
+                  FloatNDArray a = a_arg.float_array_value ();
 
-		  if (! error_state)
-		    {
-		      if (b_arg.is_scalar_type ())
-			{
-			  float b = b_arg.float_value ();
+                  if (! error_state)
+                    {
+                      if (b_arg.is_scalar_type ())
+                        {
+                          float b = b_arg.float_value ();
 
-			  if (! error_state)
-			    retval = betainc (x, a, b);
-			}
-		      else
-			{
-			  FloatNDArray b = b_arg.float_array_value ();
+                          if (! error_state)
+                            retval = betainc (x, a, b);
+                        }
+                      else
+                        {
+                          FloatNDArray b = b_arg.float_array_value ();
 
-			  if (! error_state)
-			    retval = betainc (x, a, b);
-			}
-		    }
-		}
-	    }
-	}
+                          if (! error_state)
+                            retval = betainc (x, a, b);
+                        }
+                    }
+                }
+            }
+        }
       else
-	{
-	  if (x_arg.is_scalar_type ())
-	    {
-	      double x = x_arg.double_value ();
+        {
+          if (x_arg.is_scalar_type ())
+            {
+              double x = x_arg.double_value ();
 
-	      if (a_arg.is_scalar_type ())
-		{
-		  double a = a_arg.double_value ();
+              if (a_arg.is_scalar_type ())
+                {
+                  double a = a_arg.double_value ();
 
-		  if (! error_state)
-		    {
-		      if (b_arg.is_scalar_type ())
-			{
-			  double b = b_arg.double_value ();
+                  if (! error_state)
+                    {
+                      if (b_arg.is_scalar_type ())
+                        {
+                          double b = b_arg.double_value ();
 
-			  if (! error_state)
-			    retval = betainc (x, a, b);
-			}
-		      else
-			{
-			  NDArray b = b_arg.array_value ();
+                          if (! error_state)
+                            retval = betainc (x, a, b);
+                        }
+                      else
+                        {
+                          NDArray b = b_arg.array_value ();
 
-			  if (! error_state)
-			    retval = betainc (x, a, b);
-			}
-		    }
-		}
-	      else
-		{
-		  NDArray a = a_arg.array_value ();
+                          if (! error_state)
+                            retval = betainc (x, a, b);
+                        }
+                    }
+                }
+              else
+                {
+                  NDArray a = a_arg.array_value ();
 
-		  if (! error_state)
-		    {
-		      if (b_arg.is_scalar_type ())
-			{
-			  double b = b_arg.double_value ();
+                  if (! error_state)
+                    {
+                      if (b_arg.is_scalar_type ())
+                        {
+                          double b = b_arg.double_value ();
 
-			  if (! error_state)
-			    retval = betainc (x, a, b);
-			}
-		      else
-			{
-			  NDArray b = b_arg.array_value ();
+                          if (! error_state)
+                            retval = betainc (x, a, b);
+                        }
+                      else
+                        {
+                          NDArray b = b_arg.array_value ();
 
-			  if (! error_state)
-			    retval = betainc (x, a, b);
-			}
-		    }
-		}
-	    }
-	  else
-	    {
-	      NDArray x = x_arg.array_value ();
+                          if (! error_state)
+                            retval = betainc (x, a, b);
+                        }
+                    }
+                }
+            }
+          else
+            {
+              NDArray x = x_arg.array_value ();
 
-	      if (a_arg.is_scalar_type ())
-		{
-		  double a = a_arg.double_value ();
+              if (a_arg.is_scalar_type ())
+                {
+                  double a = a_arg.double_value ();
 
-		  if (! error_state)
-		    {
-		      if (b_arg.is_scalar_type ())
-			{
-			  double b = b_arg.double_value ();
+                  if (! error_state)
+                    {
+                      if (b_arg.is_scalar_type ())
+                        {
+                          double b = b_arg.double_value ();
 
-			  if (! error_state)
-			    retval = betainc (x, a, b);
-			}
-		      else
-			{
-			  NDArray b = b_arg.array_value ();
+                          if (! error_state)
+                            retval = betainc (x, a, b);
+                        }
+                      else
+                        {
+                          NDArray b = b_arg.array_value ();
 
-			  if (! error_state)
-			    retval = betainc (x, a, b);
-			}
-		    }
-		}
-	      else
-		{
-		  NDArray a = a_arg.array_value ();
+                          if (! error_state)
+                            retval = betainc (x, a, b);
+                        }
+                    }
+                }
+              else
+                {
+                  NDArray a = a_arg.array_value ();
 
-		  if (! error_state)
-		    {
-		      if (b_arg.is_scalar_type ())
-			{
-			  double b = b_arg.double_value ();
+                  if (! error_state)
+                    {
+                      if (b_arg.is_scalar_type ())
+                        {
+                          double b = b_arg.double_value ();
 
-			  if (! error_state)
-			    retval = betainc (x, a, b);
-			}
-		      else
-			{
-			  NDArray b = b_arg.array_value ();
+                          if (! error_state)
+                            retval = betainc (x, a, b);
+                        }
+                      else
+                        {
+                          NDArray b = b_arg.array_value ();
 
-			  if (! error_state)
-			    retval = betainc (x, a, b);
-			}
-		    }
-		}
-	    }
-	}
+                          if (! error_state)
+                            retval = betainc (x, a, b);
+                        }
+                    }
+                }
+            }
+        }
     }
   else
     print_usage ();
@@ -330,10 +331,3 @@ compatible dimensions.\n\
 %!error <Invalid call to betainc.*> betainc(1,2);
 
 */
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
-

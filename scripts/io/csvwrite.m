@@ -1,4 +1,4 @@
-## Copyright (C) 2001, 2008 Paul Kienzle
+## Copyright (C) 2001-2011 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -17,17 +17,20 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{x} =} csvwrite (@var{filename}, @var{x})
-## Write the matrix @var{x} to a file.
+## @deftypefn  {Function File} {} csvwrite (@var{filename}, @var{x})
+## @deftypefnx {Function File} {} csvwrite (@var{filename}, @var{x}, @var{dlm_opts})
+## Write the matrix @var{x} to the file @var{filename} in
+## @w{comma-separated-value} format.
 ##
 ## This function is equivalent to
+##
 ## @example
 ## dlmwrite (@var{filename}, @var{x}, ",", @dots{})
 ## @end example
 ##
-## @seealso{dlmread, dlmwrite, csvread}
+## @seealso{csvread, dlmwrite, dlmread}
 ## @end deftypefn
 
-function csvwrite (f, m, varargin)
-  dlmwrite (f, m, ",", varargin{:});
+function csvwrite (filename, x, varargin)
+  dlmwrite (filename, x, ",", varargin{:});
 endfunction

@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 1999, 2000, 2002, 2003, 2004, 2005,
-              2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -31,6 +30,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "Cell.h"
 #include "defun.h"
 #include "error.h"
+#include "gripes.h"
 #include "input.h"
 #include "oct-obj.h"
 #include "ov-usr-fcn.h"
@@ -49,16 +49,16 @@ along with Octave; see the file COPYING.  If not, see
 #include "parse.h"
 #include "variables.h"
 
-// Maximum nesting level for functions called recursively.
-static int Vmax_recursion_depth = 256;
+// Whether to optimize subsasgn method calls.
+static bool Voptimize_subsasgn_calls = true;
 
 // User defined scripts.
 
 DEFINE_OCTAVE_ALLOCATOR (octave_user_script);
 
 DEFINE_OV_TYPEID_FUNCTIONS_AND_DATA (octave_user_script,
-				     "user-defined script",
-				     "user-defined script");
+                                     "user-defined script",
+                                     "user-defined script");
 
 octave_user_script::octave_user_script (void)
   : octave_user_code (), cmd_list (0), file_name (),
@@ -68,9 +68,9 @@ octave_user_script::octave_user_script (void)
 { }
 
 octave_user_script::octave_user_script (const std::string& fnm,
-					const std::string& nm,
-					tree_statement_list *cmds,
-					const std::string& ds)
+                                        const std::string& nm,
+                                        tree_statement_list *cmds,
+                                        const std::string& ds)
   : octave_user_code (nm, ds), cmd_list (cmds), file_name (fnm),
     t_parsed (static_cast<time_t> (0)),
     t_checked (static_cast<time_t> (0)),
@@ -81,9 +81,9 @@ octave_user_script::octave_user_script (const std::string& fnm,
 }
 
 octave_user_script::octave_user_script (const std::string& fnm,
-					const std::string& nm,
-					const std::string& ds)
-  : octave_user_code (nm, ds), cmd_list (0), file_name (fnm), 
+                                        const std::string& nm,
+                                        const std::string& ds)
+  : octave_user_code (nm, ds), cmd_list (0), file_name (fnm),
     t_parsed (static_cast<time_t> (0)),
     t_checked (static_cast<time_t> (0)),
     call_depth (-1)
@@ -96,61 +96,59 @@ octave_user_script::~octave_user_script (void)
 
 octave_value_list
 octave_user_script::subsref (const std::string&,
-			     const std::list<octave_value_list>&, int)
+                             const std::list<octave_value_list>&, int)
 {
   octave_value_list retval;
 
-  ::error ("invalid use of script in index expression");
+  ::error ("invalid use of script %s in index expression", file_name.c_str ());
 
   return retval;
 }
 
 octave_value_list
 octave_user_script::do_multi_index_op (int nargout,
-				       const octave_value_list& args)
+                                       const octave_value_list& args)
 {
   octave_value_list retval;
 
-  unwind_protect::begin_frame ("user_script_eval");
+  unwind_protect frame;
 
   if (! error_state)
     {
       if (args.length () == 0 && nargout == 0)
-	{
-	  if (cmd_list)
-	    {
-	      unwind_protect_int (call_depth);
-	      call_depth++;
+        {
+          if (cmd_list)
+            {
+              frame.protect_var (call_depth);
+              call_depth++;
 
-	      if (call_depth < Vmax_recursion_depth)
-		{
-		  octave_call_stack::push (this);
+              if (call_depth < Vmax_recursion_depth)
+                {
+                  octave_call_stack::push (this);
 
-		  unwind_protect::add (octave_call_stack::unwind_pop, 0);
+                  frame.add_fcn (octave_call_stack::pop);
 
-		  unwind_protect_bool (tree_evaluator::in_fcn_or_script_body);
-		  tree_evaluator::in_fcn_or_script_body = true;
+                  frame.protect_var (tree_evaluator::statement_context);
+                  tree_evaluator::statement_context = tree_evaluator::script;
 
-		  cmd_list->accept (*current_evaluator);
+                  cmd_list->accept (*current_evaluator);
 
-		  if (tree_return_command::returning)
-		    tree_return_command::returning = 0;
+                  if (tree_return_command::returning)
+                    tree_return_command::returning = 0;
 
-		  if (tree_break_command::breaking)
-		    tree_break_command::breaking--;
+                  if (tree_break_command::breaking)
+                    tree_break_command::breaking--;
 
-		  if (error_state)
-		    octave_call_stack::backtrace_error_message ();
-		}
-	      else
-		::error ("max_recursion_limit exceeded");
-    	    }
-	}
+                  if (error_state)
+                    octave_call_stack::backtrace_error_message ();
+                }
+              else
+                ::error ("max_recursion_depth exceeded");
+            }
+        }
       else
-	error ("invalid call to script");
+        error ("invalid call to script %s", file_name.c_str ());
     }
-
-  unwind_protect::run_frame ("user_script_eval");
 
   return retval;
 }
@@ -166,8 +164,8 @@ octave_user_script::accept (tree_walker& tw)
 DEFINE_OCTAVE_ALLOCATOR (octave_user_function);
 
 DEFINE_OV_TYPEID_FUNCTIONS_AND_DATA (octave_user_function,
-				     "user-defined function",
-				     "user-defined function");
+                                     "user-defined function",
+                                     "user-defined function");
 
 // Ugh.  This really needs to be simplified (code/data?
 // extrinsic/intrinsic state?).
@@ -182,12 +180,16 @@ octave_user_function::octave_user_function
     t_checked (static_cast<time_t> (0)),
     system_fcn_file (false), call_depth (-1),
     num_named_args (param_list ? param_list->length () : 0),
-    nested_function (false), inline_function (false),
-    class_constructor (false), class_method (false), args_passed (),
-    num_args_passed (0), parent_scope (-1), local_scope (sid)
+    subfunction (false), inline_function (false),
+    class_constructor (false), class_method (false),
+    parent_scope (-1), local_scope (sid),
+    curr_unwind_protect_frame (0)
 {
   if (cmd_list)
     cmd_list->mark_as_function_body ();
+
+  if (local_scope >= 0)
+    symbol_table::set_curr_fcn (this, local_scope);
 }
 
 octave_user_function::~octave_user_function (void)
@@ -232,7 +234,7 @@ octave_user_function::mark_as_system_fcn_file (void)
       std::string ff_name = fcn_file_in_path (file_name);
 
       if (Vfcn_file_dir == ff_name.substr (0, Vfcn_file_dir.length ()))
-	system_fcn_file = 1;
+        system_fcn_file = 1;
     }
   else
     system_fcn_file = 0;
@@ -263,40 +265,30 @@ octave_user_function::unlock_subfunctions (void)
 }
 
 octave_value_list
-octave_user_function::octave_all_va_args (void)
+octave_user_function::all_va_args (const octave_value_list& args)
 {
   octave_value_list retval;
 
-  octave_idx_type n = num_args_passed - num_named_args;
+  octave_idx_type n = args.length () - num_named_args;
 
   if (n > 0)
-    retval = args_passed.slice (num_named_args, n);
+    retval = args.slice (num_named_args, n);
 
   return retval;
 }
 
-static void
-clear_param_list (void *lst)
+octave_value_list
+octave_user_function::subsref (const std::string& type,
+                               const std::list<octave_value_list>& idx,
+                               int nargout)
 {
-  tree_parameter_list *tmp = static_cast<tree_parameter_list *> (lst);
-
-  if (tmp)
-    tmp->undefine ();
-}
-
-static void
-restore_args_passed (void *fcn)
-{
-  octave_user_function *tmp = static_cast<octave_user_function *> (fcn);
-
-  if (tmp)
-    tmp->restore_args_passed ();
+  return octave_user_function::subsref (type, idx, nargout, 0);
 }
 
 octave_value_list
 octave_user_function::subsref (const std::string& type,
-			       const std::list<octave_value_list>& idx,
-			       int nargout)
+                               const std::list<octave_value_list>& idx,
+                               int nargout, const std::list<octave_lvalue>* lvalue_list)
 {
   octave_value_list retval;
 
@@ -304,17 +296,18 @@ octave_user_function::subsref (const std::string& type,
     {
     case '(':
       {
-	int tmp_nargout = (type.length () > 1 && nargout == 0) ? 1 : nargout;
+        int tmp_nargout = (type.length () > 1 && nargout == 0) ? 1 : nargout;
 
-	retval = do_multi_index_op (tmp_nargout, idx.front ());
+        retval = do_multi_index_op (tmp_nargout, idx.front (),
+                                    idx.size () == 1 ? lvalue_list : 0);
       }
       break;
 
     case '{':
     case '.':
       {
-	std::string nm = type_name ();
-	error ("%s cannot be indexed with %c", nm.c_str (), type[0]);
+        std::string nm = type_name ();
+        error ("%s cannot be indexed with %c", nm.c_str (), type[0]);
       }
       break;
 
@@ -334,7 +327,15 @@ octave_user_function::subsref (const std::string& type,
 
 octave_value_list
 octave_user_function::do_multi_index_op (int nargout,
-					 const octave_value_list& args)
+                                         const octave_value_list& args)
+{
+  return do_multi_index_op (nargout, args, 0);
+}
+
+octave_value_list
+octave_user_function::do_multi_index_op (int nargout,
+                                         const octave_value_list& args,
+                                         const std::list<octave_lvalue>* lvalue_list)
 {
   octave_value_list retval;
 
@@ -346,15 +347,14 @@ octave_user_function::do_multi_index_op (int nargout,
 
   int nargin = args.length ();
 
-  unwind_protect::begin_frame ("user_func_eval");
+  unwind_protect frame;
 
-  unwind_protect_int (call_depth);
+  frame.protect_var (call_depth);
   call_depth++;
 
   if (call_depth >= Vmax_recursion_depth)
     {
-      ::error ("max_recursion_limit exceeded");
-      unwind_protect::run_frame ("user_func_eval");
+      ::error ("max_recursion_depth exceeded");
       return retval;
     }
 
@@ -362,44 +362,37 @@ octave_user_function::do_multi_index_op (int nargout,
   // eval_undefined_error().
 
   octave_call_stack::push (this, local_scope, call_depth);
-  unwind_protect::add (octave_call_stack::unwind_pop, 0);
+  frame.add_fcn (octave_call_stack::pop);
 
   if (call_depth > 0)
     {
       symbol_table::push_context ();
 
-      unwind_protect::add (symbol_table::pop_context);
+      frame.add_fcn (symbol_table::pop_context);
     }
 
-  // Save and restore args passed for recursive calls.
-
-  save_args_passed (args);
-
-  unwind_protect::add (::restore_args_passed, this);
-
   string_vector arg_names = args.name_tags ();
-
-  unwind_protect_int (num_args_passed);
-  num_args_passed = nargin;
 
   if (param_list && ! param_list->varargs_only ())
     {
       param_list->define_from_arg_vector (args);
       if (error_state)
-	goto abort;
+        return retval;
     }
 
   // Force parameter list to be undefined when this function exits.
   // Doing so decrements the reference counts on the values of local
   // variables that are also named function parameters.
 
-  unwind_protect::add (clear_param_list, param_list);
+  if (param_list)
+    frame.add_method (param_list, &tree_parameter_list::undefine);
 
   // Force return list to be undefined when this function exits.
   // Doing so decrements the reference counts on the values of local
   // variables that are also named values returned by this function.
 
-  unwind_protect::add (clear_param_list, ret_list);
+  if (ret_list)
+    frame.add_method (ret_list, &tree_parameter_list::undefine);
 
   if (call_depth == 0)
     {
@@ -413,89 +406,87 @@ octave_user_function::do_multi_index_op (int nargout,
       // declared global will be unmarked as global before they are
       // undefined by the clear_param_list cleanup function.
 
-      unwind_protect::add (symbol_table::clear_variables);
+      frame.add_fcn (symbol_table::clear_variables);
     }
 
-  // The following code is in a separate scope to avoid warnings from
-  // G++ about `goto abort' crossing the initialization of some
-  // variables.
+  bind_automatic_vars (arg_names, nargin, nargout, all_va_args (args),
+                       lvalue_list);
 
-  {
-    bind_automatic_vars (arg_names, nargin, nargout, octave_all_va_args ());
+  bool echo_commands = (Vecho_executing_commands & ECHO_FUNCTIONS);
 
-    bool echo_commands = (Vecho_executing_commands & ECHO_FUNCTIONS);
+  if (echo_commands)
+    print_code_function_header ();
 
-    if (echo_commands)
-      print_code_function_header ();
+  // Set pointer to the current unwind_protect frame to allow
+  // certain builtins register simple cleanup in a very optimized manner.
+  // This is *not* intended as a general-purpose on-cleanup mechanism,
+  frame.protect_var (curr_unwind_protect_frame);
+  curr_unwind_protect_frame = &frame;
 
-    // Evaluate the commands that make up the function.
+  // Evaluate the commands that make up the function.
 
-    unwind_protect_bool (tree_evaluator::in_fcn_or_script_body);
-    tree_evaluator::in_fcn_or_script_body = true;
+  frame.protect_var (tree_evaluator::statement_context);
+  tree_evaluator::statement_context = tree_evaluator::function;
 
-    bool special_expr = (is_inline_function ()
-			 || cmd_list->is_anon_function_body ());
+  bool special_expr = (is_inline_function ()
+                       || cmd_list->is_anon_function_body ());
 
-    if (special_expr)
-      {
-	assert (cmd_list->length () == 1);
+  if (special_expr)
+    {
+      assert (cmd_list->length () == 1);
 
-	tree_statement *stmt = 0;
+      tree_statement *stmt = 0;
 
-	if ((stmt = cmd_list->front ())
-	    && stmt->is_expression ())
-	  {
-	    tree_expression *expr = stmt->expression ();
+      if ((stmt = cmd_list->front ())
+          && stmt->is_expression ())
+        {
+          tree_expression *expr = stmt->expression ();
 
-	    retval = expr->rvalue (nargout);
-	  }
-      }
-    else
-      cmd_list->accept (*current_evaluator);
+          retval = expr->rvalue (nargout);
+        }
+    }
+  else
+    cmd_list->accept (*current_evaluator);
 
-    if (echo_commands)
-      print_code_function_trailer ();
+  if (echo_commands)
+    print_code_function_trailer ();
 
-    if (tree_return_command::returning)
-      tree_return_command::returning = 0;
+  if (tree_return_command::returning)
+    tree_return_command::returning = 0;
 
-    if (tree_break_command::breaking)
-      tree_break_command::breaking--;
+  if (tree_break_command::breaking)
+    tree_break_command::breaking--;
 
-    if (error_state)
-      {
-	octave_call_stack::backtrace_error_message ();
-	goto abort;
-      }
-    
-    // Copy return values out.
+  if (error_state)
+    {
+      octave_call_stack::backtrace_error_message ();
+      return retval;
+    }
 
-    if (ret_list && ! special_expr)
-      {
-	ret_list->initialize_undefined_elements (my_name, nargout, Matrix ());
+  // Copy return values out.
 
-	Cell varargout;
+  if (ret_list && ! special_expr)
+    {
+      ret_list->initialize_undefined_elements (my_name, nargout, Matrix ());
 
-	if (ret_list->takes_varargs ())
-	  {
-	    octave_value varargout_varval = symbol_table::varval ("varargout");
+      Cell varargout;
 
-	    if (varargout_varval.is_defined ())
-	      {
-		varargout = varargout_varval.cell_value ();
+      if (ret_list->takes_varargs ())
+        {
+          octave_value varargout_varval = symbol_table::varval ("varargout");
 
-		if (error_state)
-		  error ("expecting varargout to be a cell array object");
-	      }
-	  }
+          if (varargout_varval.is_defined ())
+            {
+              varargout = varargout_varval.cell_value ();
 
-	if (! error_state)
-	  retval = ret_list->convert_to_const_vector (varargout);
-      }
-  }
+              if (error_state)
+                error ("expecting varargout to be a cell array object");
+            }
+        }
 
- abort:
-  unwind_protect::run_frame ("user_func_eval");
+      if (! error_state)
+        retval = ret_list->convert_to_const_vector (nargout, varargout);
+    }
 
   return retval;
 }
@@ -504,6 +495,22 @@ void
 octave_user_function::accept (tree_walker& tw)
 {
   tw.visit_octave_user_function (*this);
+}
+
+bool
+octave_user_function::subsasgn_optimization_ok (void)
+{
+  bool retval = false;
+  if (Voptimize_subsasgn_calls
+      && param_list->length () > 0 && ! param_list->varargs_only ()
+      && ret_list->length () == 1 && ! ret_list->takes_varargs ())
+    {
+      tree_identifier *par1 = param_list->front ()->ident ();
+      tree_identifier *ret1 = ret_list->front ()->ident ();
+      retval = par1->name () == ret1->name ();
+    }
+
+  return retval;
 }
 
 #if 0
@@ -533,10 +540,23 @@ octave_user_function::print_code_function_trailer (void)
 void
 octave_user_function::bind_automatic_vars
   (const string_vector& arg_names, int nargin, int nargout,
-   const octave_value_list& va_args)
+   const octave_value_list& va_args, const std::list<octave_lvalue> *lvalue_list)
 {
   if (! arg_names.empty ())
-    symbol_table::varref ("argn") = arg_names;
+    {
+      // It is better to save this in the hidden variable .argn. and
+      // then use that in the inputname function instead of using argn,
+      // which might be redefined in a function.  Keep the old argn name
+      // for backward compatibility of functions that use it directly.
+
+      symbol_table::varref ("argn") = arg_names;
+      symbol_table::varref (".argn.") = Cell (arg_names);
+
+      symbol_table::mark_hidden (".argn.");
+
+      symbol_table::mark_automatic ("argn");
+      symbol_table::mark_automatic (".argn.");
+    }
 
   symbol_table::varref (".nargin.") = nargin;
   symbol_table::varref (".nargout.") = nargout;
@@ -544,13 +564,43 @@ octave_user_function::bind_automatic_vars
   symbol_table::mark_hidden (".nargin.");
   symbol_table::mark_hidden (".nargout.");
 
+  symbol_table::mark_automatic (".nargin.");
+  symbol_table::mark_automatic (".nargout.");
+
   if (takes_varargs ())
     symbol_table::varref ("varargin") = va_args.cell_value ();
+
+  if (lvalue_list)
+    {
+      octave_idx_type nbh = 0;
+      for (std::list<octave_lvalue>::const_iterator p = lvalue_list->begin ();
+           p != lvalue_list->end (); p++)
+        nbh += p->is_black_hole ();
+
+      if (nbh > 0)
+        {
+          // Only assign the hidden variable if black holes actually present.
+          Matrix bh (1, nbh);
+          octave_idx_type k = 0, l = 0;
+          for (std::list<octave_lvalue>::const_iterator p = lvalue_list->begin ();
+               p != lvalue_list->end (); p++)
+            {
+              if (p->is_black_hole ())
+                bh(l++) = k+1;
+              k += p->numel ();
+            }
+
+          symbol_table::varref (".ignored.") = bh;
+
+          symbol_table::mark_hidden (".ignored.");
+          symbol_table::mark_automatic (".ignored.");
+        }
+    }
 }
 
 DEFUN (nargin, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {} nargin ()\n\
+@deftypefn  {Built-in Function} {} nargin ()\n\
 @deftypefnx {Built-in Function} {} nargin (@var{fcn_name})\n\
 Within a function, return the number of arguments passed to the function.\n\
 At the top level, return the number of command line arguments passed to\n\
@@ -569,34 +619,34 @@ function accepts a variable number of arguments.\n\
       std::string fname = args(0).string_value ();
 
       if (! error_state)
-	{
-	  octave_value fcn_val = symbol_table::find_user_function (fname);
+        {
+          octave_value fcn_val = symbol_table::find_user_function (fname);
 
-	  octave_user_function *fcn = fcn_val.user_function_value (true);
+          octave_user_function *fcn = fcn_val.user_function_value (true);
 
-	  if (fcn)
-	    {
-	      if (fcn->takes_varargs ())
-		retval = -1;
-	      else
-		{
-		  tree_parameter_list *param_list = fcn->parameter_list ();
+          if (fcn)
+            {
+              if (fcn->takes_varargs ())
+                retval = -1;
+              else
+                {
+                  tree_parameter_list *param_list = fcn->parameter_list ();
 
-		  retval = param_list ? param_list->length () : 0;
-		}
-	    }
-	  else
-	    error ("nargin: invalid function");
-	}
+                  retval = param_list ? param_list->length () : 0;
+                }
+            }
+          else
+            error ("nargin: invalid function");
+        }
       else
-	error ("nargin: expecting string as first argument");
+        error ("nargin: FCN_NAME must be a string");
     }
   else if (nargin == 0)
     {
       retval = symbol_table::varval (".nargin.");
 
       if (retval.is_undefined ())
-	retval = 0;
+        retval = 0;
     }
   else
     print_usage ();
@@ -606,7 +656,7 @@ function accepts a variable number of arguments.\n\
 
 DEFUN (nargout, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {} nargout ()\n\
+@deftypefn  {Built-in Function} {} nargout ()\n\
 @deftypefnx {Built-in Function} {} nargout (@var{fcn_name})\n\
 Within a function, return the number of values the caller expects to\n\
 receive.  If called with the optional argument @var{fcn_name}, return the\n\
@@ -631,7 +681,7 @@ will cause @code{nargout} to return 2 inside the function\n\
 @code{f}.\n\
 \n\
 At the top level, @code{nargout} is undefined.\n\
-@seealso{nargin, varargin, varargout}\n\
+@seealso{nargin, isargout, varargin, varargout}\n\
 @end deftypefn")
 {
   octave_value retval;
@@ -643,39 +693,39 @@ At the top level, @code{nargout} is undefined.\n\
       std::string fname = args(0).string_value ();
 
       if (! error_state)
-	{
-	  octave_value fcn_val = symbol_table::find_user_function (fname);
+        {
+          octave_value fcn_val = symbol_table::find_user_function (fname);
 
-	  octave_user_function *fcn = fcn_val.user_function_value (true);
+          octave_user_function *fcn = fcn_val.user_function_value (true);
 
-	  if (fcn)
-	    {
-	      if (fcn->takes_var_return ())
-		retval = -1;
-	      else
-		{
-		  tree_parameter_list *ret_list = fcn->return_list ();
+          if (fcn)
+            {
+              if (fcn->takes_var_return ())
+                retval = -1;
+              else
+                {
+                  tree_parameter_list *ret_list = fcn->return_list ();
 
-		  retval = ret_list ? ret_list->length () : 0;
-		}
-	    }
-	  else
-	    error ("nargout: invalid function");
-	}
+                  retval = ret_list ? ret_list->length () : 0;
+                }
+            }
+          else
+            error ("nargout: invalid function");
+        }
       else
-	error ("nargout: expecting string as first argument");
+        error ("nargout: FCN_NAME must be a string");
     }
   else if (nargin == 0)
     {
       if (! symbol_table::at_top_level ())
-	{
-	  retval = symbol_table::varval (".nargout.");
+        {
+          retval = symbol_table::varval (".nargout.");
 
-	  if (retval.is_undefined ())
-	    retval = 0;
-	}
+          if (retval.is_undefined ())
+            retval = 0;
+        }
       else
-	error ("nargout: invalid call at top level");
+        error ("nargout: invalid call at top level");
     }
   else
     print_usage ();
@@ -683,20 +733,100 @@ At the top level, @code{nargout} is undefined.\n\
   return retval;
 }
 
-DEFUN (max_recursion_depth, args, nargout,
+DEFUN (optimize_subsasgn_calls, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {@var{val} =} max_recursion_depth ()\n\
-@deftypefnx {Built-in Function} {@var{old_val} =} max_recursion_depth (@var{new_val})\n\
-Query or set the internal limit on the number of times a function may\n\
-be called recursively.  If the limit is exceeded, an error message is\n\
-printed and control returns to the top level.\n\
+@deftypefn  {Built-in Function} {@var{val} =} optimize_subsasgn_calls ()\n\
+@deftypefnx {Built-in Function} {@var{old_val} =} optimize_subsasgn_calls (@var{new_val})\n\
+Query or set the internal flag for subsasgn method call optimizations.\n\
+If true, Octave will attempt to eliminate the redundant copying when calling\n\
+subsasgn method of a user-defined class.\n\
 @end deftypefn")
 {
-  return SET_INTERNAL_VARIABLE (max_recursion_depth);
+  return SET_INTERNAL_VARIABLE (optimize_subsasgn_calls);
 }
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+static bool val_in_table (const Matrix& table, double val)
+{
+  if (table.is_empty ())
+    return false;
+
+  octave_idx_type i = table.lookup (val, ASCENDING);
+  return (i > 0 && table(i-1) == val);
+}
+
+static bool isargout1 (int nargout, const Matrix& ignored, double k)
+{
+  if (k != xround (k) || k <= 0)
+    {
+      error ("isargout: K must be a positive integer");
+      return false;
+    }
+  else
+    return (k == 1 || k <= nargout) && ! val_in_table (ignored, k);
+}
+
+DEFUN (isargout, args, ,
+  "-*- texinfo -*-\n\
+@deftypefn {Built-in Function} {} isargout (@var{k})\n\
+Within a function, return a logical value indicating whether the argument\n\
+@var{k} will be assigned on output to a variable.  If the result is false,\n\
+the argument has been ignored during the function call through the use of\n\
+the tilde (~) special output argument.  Functions can use @code{isargout} to\n\
+avoid performing unnecessary calculations for outputs which are unwanted.\n\
+\n\
+If @var{k} is outside the range @code{1:max(nargout)}, the function returns\n\
+false.  @var{k} can also be an array, in which case the function works\n\
+element-by-element and a logical array is returned.  At the top level,\n\
+@code{isargout} returns an error.\n\
+@seealso{nargout, nargin, varargin, varargout}\n\
+@end deftypefn")
+{
+  octave_value retval;
+
+  int nargin = args.length ();
+
+  if (nargin == 1)
+    {
+      if (! symbol_table::at_top_level ())
+        {
+          int nargout1 = symbol_table::varval (".nargout.").int_value ();
+          if (error_state)
+            {
+              error ("isargout: internal error");
+              return retval;
+            }
+
+          Matrix ignored;
+          octave_value tmp = symbol_table::varval (".ignored.");
+          if (tmp.is_defined ())
+            ignored = tmp.matrix_value ();
+
+          if (args(0).is_scalar_type ())
+            {
+              double k = args(0).double_value ();
+              if (! error_state)
+                retval = isargout1 (nargout1, ignored, k);
+            }
+          else if (args(0).is_numeric_type ())
+            {
+              const NDArray ka = args(0).array_value ();
+              if (! error_state)
+                {
+                  boolNDArray r (ka.dims ());
+                  for (octave_idx_type i = 0; i < ka.numel () && ! error_state; i++)
+                    r(i) = isargout1 (nargout1, ignored, ka(i));
+
+                  retval = r;
+                }
+            }
+          else
+            gripe_wrong_type_arg ("isargout", args(0));
+        }
+      else
+        error ("isargout: invalid call at top level");
+    }
+  else
+    print_usage ();
+
+  return retval;
+}

@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 1999, 2002, 2003, 2004, 2005,
-              2007, 2008 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -28,18 +27,30 @@ along with Octave; see the file COPYING.  If not, see
 #include "CmplxSVD.h"
 #include "f77-fcn.h"
 #include "lo-error.h"
+#include "oct-locbuf.h"
 
 extern "C"
 {
   F77_RET_T
   F77_FUNC (zgesvd, ZGESVD) (F77_CONST_CHAR_ARG_DECL,
-			     F77_CONST_CHAR_ARG_DECL,
-			     const octave_idx_type&, const octave_idx_type&, Complex*,
-			     const octave_idx_type&, double*, Complex*, const octave_idx_type&,
-			     Complex*, const octave_idx_type&, Complex*, const octave_idx_type&,
-			     double*, octave_idx_type&
-			     F77_CHAR_ARG_LEN_DECL
-			     F77_CHAR_ARG_LEN_DECL);
+                             F77_CONST_CHAR_ARG_DECL,
+                             const octave_idx_type&, const octave_idx_type&,
+                             Complex*, const octave_idx_type&,
+                             double*, Complex*, const octave_idx_type&,
+                             Complex*, const octave_idx_type&, Complex*,
+                             const octave_idx_type&, double*, octave_idx_type&
+                             F77_CHAR_ARG_LEN_DECL
+                             F77_CHAR_ARG_LEN_DECL);
+
+  F77_RET_T
+  F77_FUNC (zgesdd, ZGESDD) (F77_CONST_CHAR_ARG_DECL,
+                             const octave_idx_type&, const octave_idx_type&,
+                             Complex*, const octave_idx_type&,
+                             double*, Complex*, const octave_idx_type&,
+                             Complex*, const octave_idx_type&, Complex*,
+                             const octave_idx_type&, double*,
+                             octave_idx_type *, octave_idx_type&
+                             F77_CHAR_ARG_LEN_DECL);
 }
 
 ComplexMatrix
@@ -48,7 +59,7 @@ ComplexSVD::left_singular_matrix (void) const
   if (type_computed == SVD::sigma_only)
     {
       (*current_liboctave_error_handler)
-	("ComplexSVD: U not computed because type == SVD::sigma_only");
+        ("ComplexSVD: U not computed because type == SVD::sigma_only");
       return ComplexMatrix ();
     }
   else
@@ -61,7 +72,7 @@ ComplexSVD::right_singular_matrix (void) const
   if (type_computed == SVD::sigma_only)
     {
       (*current_liboctave_error_handler)
-	("ComplexSVD: V not computed because type == SVD::sigma_only");
+        ("ComplexSVD: V not computed because type == SVD::sigma_only");
       return ComplexMatrix ();
     }
   else
@@ -69,7 +80,7 @@ ComplexSVD::right_singular_matrix (void) const
 }
 
 octave_idx_type
-ComplexSVD::init (const ComplexMatrix& a, SVD::type svd_type)
+ComplexSVD::init (const ComplexMatrix& a, SVD::type svd_type, SVD::driver svd_driver)
 {
   octave_idx_type info;
 
@@ -133,41 +144,64 @@ ComplexSVD::init (const ComplexMatrix& a, SVD::type svd_type)
 
   octave_idx_type lrwork = 5*max_mn;
 
-  Array<double> rwork (lrwork);
+  Array<double> rwork (dim_vector (lrwork, 1));
 
   // Ask ZGESVD what the dimension of WORK should be.
 
   octave_idx_type lwork = -1;
 
-  Array<Complex> work (1);
+  Array<Complex> work (dim_vector (1, 1));
 
-  F77_XFCN (zgesvd, ZGESVD, (F77_CONST_CHAR_ARG2 (&jobu, 1),
-			     F77_CONST_CHAR_ARG2 (&jobv, 1),
-			     m, n, tmp_data, m, s_vec, u, m, vt,
-			     nrow_vt, work.fortran_vec (), lwork,
-			     rwork.fortran_vec (), info
-			     F77_CHAR_ARG_LEN (1)
-			     F77_CHAR_ARG_LEN (1)));
+  octave_idx_type one = 1;
+  octave_idx_type m1 = std::max (m, one), nrow_vt1 = std::max (nrow_vt, one);
 
-  lwork = static_cast<octave_idx_type> (work(0).real ());
-  work.resize (lwork);
+  if (svd_driver == SVD::GESVD)
+    {
+      F77_XFCN (zgesvd, ZGESVD, (F77_CONST_CHAR_ARG2 (&jobu, 1),
+                                 F77_CONST_CHAR_ARG2 (&jobv, 1),
+                                 m, n, tmp_data, m1, s_vec, u, m1, vt,
+                                 nrow_vt1, work.fortran_vec (), lwork,
+                                 rwork.fortran_vec (), info
+                                 F77_CHAR_ARG_LEN (1)
+                                 F77_CHAR_ARG_LEN (1)));
 
-  F77_XFCN (zgesvd, ZGESVD, (F77_CONST_CHAR_ARG2 (&jobu, 1),
-			     F77_CONST_CHAR_ARG2 (&jobv, 1),
-			     m, n, tmp_data, m, s_vec, u, m, vt,
-			     nrow_vt, work.fortran_vec (), lwork,
-			     rwork.fortran_vec (), info
-			     F77_CHAR_ARG_LEN (1)
-			     F77_CHAR_ARG_LEN (1)));
+      lwork = static_cast<octave_idx_type> (work(0).real ());
+      work.resize (dim_vector (lwork, 1));
+
+      F77_XFCN (zgesvd, ZGESVD, (F77_CONST_CHAR_ARG2 (&jobu, 1),
+                                 F77_CONST_CHAR_ARG2 (&jobv, 1),
+                                 m, n, tmp_data, m1, s_vec, u, m1, vt,
+                                 nrow_vt1, work.fortran_vec (), lwork,
+                                 rwork.fortran_vec (), info
+                                 F77_CHAR_ARG_LEN (1)
+                                 F77_CHAR_ARG_LEN (1)));
+    }
+  else if (svd_driver == SVD::GESDD)
+    {
+      assert (jobu == jobv);
+      char jobz = jobu;
+      OCTAVE_LOCAL_BUFFER (octave_idx_type, iwork, 8*min_mn);
+
+      F77_XFCN (zgesdd, ZGESDD, (F77_CONST_CHAR_ARG2 (&jobz, 1),
+                                 m, n, tmp_data, m1, s_vec, u, m1, vt,
+                                 nrow_vt1, work.fortran_vec (), lwork,
+                                 rwork.fortran_vec (), iwork, info
+                                 F77_CHAR_ARG_LEN (1)));
+
+      lwork = static_cast<octave_idx_type> (work(0).real ());
+      work.resize (dim_vector (lwork, 1));
+
+      F77_XFCN (zgesdd, ZGESDD, (F77_CONST_CHAR_ARG2 (&jobz, 1),
+                                 m, n, tmp_data, m1, s_vec, u, m1, vt,
+                                 nrow_vt1, work.fortran_vec (), lwork,
+                                 rwork.fortran_vec (), iwork, info
+                                 F77_CHAR_ARG_LEN (1)));
+    }
+  else
+    assert (0); // impossible
 
   if (! (jobv == 'N' || jobv == 'O'))
     right_sm = right_sm.hermitian ();
 
   return info;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

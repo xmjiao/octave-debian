@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2001, 2006, 2007 Paul Kienzle
+Copyright (C) 2001-2011 Paul Kienzle
 
 This file is part of Octave.
 
@@ -73,7 +73,7 @@ void mexFunction (int nlhs, mxArray* plhs[], int nrhs, mxArray *prhs[]);
 #else
 void mexFunction (int nlhs, mxArray* plhs[], int nrhs, const mxArray *prhs[]);
 #endif
-  
+
 #include "mexproto.h"
 
 /* V4 floating point routines renamed in V5.  */
@@ -83,7 +83,7 @@ void mexFunction (int nlhs, mxArray* plhs[], int nrhs, const mxArray *prhs[]);
 #define mexGetEps mxGetEps
 #define mexGetInf mxGetInf
 #define mexGetNaN mxGetNan
-  
+
 #define mexGetGlobal(nm) mexGetArray (nm, "global")
 #define mexGetMatrix(nm) mexGetArray (nm, "caller")
 #define mexGetMatrixPtr(nm) mexGetArrayPtr (nm, "caller")
@@ -93,7 +93,7 @@ void mexFunction (int nlhs, mxArray* plhs[], int nrhs, const mxArray *prhs[]);
 
 #define mexPutMatrix(ptr) mexPutVariable ("caller", "", ptr)
 #define mexPutArray(ptr, space) mexPutVariable (space, "", ptr)
-  
+
 #define mxCreateFull mxCreateDoubleMatrix
 
 #define mxCreateScalarDouble mxCreateDoubleScalar
@@ -173,9 +173,3 @@ void mexFunction (int nlhs, mxArray* plhs[], int nrhs, const mxArray *prhs[]);
 #endif
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C ***
-;;; End: ***
-*/

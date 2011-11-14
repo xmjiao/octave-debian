@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2000, 2003, 2004, 2005, 2006,
-              2007, 2008 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -54,7 +53,7 @@ enum load_save_format_options
   LS_MAT_BINARY_V5 = 1,
   LS_MAT_BINARY_V7,
   // zero means no option.
-  LS_NO_OPTION = 0  
+  LS_NO_OPTION = 0
 };
 
 class load_save_format
@@ -72,26 +71,20 @@ extern void dump_octave_core (void);
 
 extern int
 read_binary_file_header (std::istream& is, bool& swap,
-			 oct_mach_info::float_format& flt_fmt,
-			 bool quiet = false);
+                         oct_mach_info::float_format& flt_fmt,
+                         bool quiet = false);
 
 extern octave_value
 do_load (std::istream& stream, const std::string& orig_fname, bool force,
-	 load_save_format format, oct_mach_info::float_format flt_fmt,
-	 bool list_only, bool swap, bool verbose,
-	 const string_vector& argv, int argv_idx, int argc, int nargout);
+         load_save_format format, oct_mach_info::float_format flt_fmt,
+         bool list_only, bool swap, bool verbose,
+         const string_vector& argv, int argv_idx, int argc, int nargout);
 
 extern void
 do_save (std::ostream& os, const symbol_table::symbol_record& sr,
-	 load_save_format fmt, bool save_as_floats);
+         load_save_format fmt, bool save_as_floats);
 
 extern void
 write_header (std::ostream& os, load_save_format format);
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

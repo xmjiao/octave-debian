@@ -1,21 +1,23 @@
-## Copyright (C) 2008, 2009 Ben Abbott
-## 
-## This program is free software; you can redistribute it and/or modify
-## it under the terms of the GNU General Public License as published by
-## the Free Software Foundation; either version 2 of the License, or
-## (at your option) any later version.
-## 
-## This program is distributed in the hope that it will be useful,
-## but WITHOUT ANY WARRANTY; without even the implied warranty of
-## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-## GNU General Public License for more details.
-## 
+## Copyright (C) 2008-2011 Ben Abbott
+##
+## This file is part of Octave.
+##
+## Octave is free software; you can redistribute it and/or modify it
+## under the terms of the GNU General Public License as published by
+## the Free Software Foundation; either version 3 of the License, or (at
+## your option) any later version.
+##
+## Octave is distributed in the hope that it will be useful, but
+## WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+## General Public License for more details.
+##
 ## You should have received a copy of the GNU General Public License
 ## along with Octave; see the file COPYING.  If not, see
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} cla ()
+## @deftypefn  {Function File} {} cla ()
 ## @deftypefnx {Function File} {} cla ("reset")
 ## @deftypefnx {Function File} {} cla (@var{hax})
 ## @deftypefnx {Function File} {} cla (@var{hax}, "reset")
@@ -35,8 +37,8 @@ function cla (varargin)
     print_usage ();
   elseif (nargin > 1)
     if (ishandle (varargin{1})
-	&& strcmp (get (varargin{1}, "type"), "axes")
-	&& ischar (varargin{2}) && strcmpi (varargin{2}, "reset"))
+        && strcmp (get (varargin{1}, "type"), "axes")
+        && ischar (varargin{2}) && strcmpi (varargin{2}, "reset"))
       oldhax = gca;
       hax = varargin{1};
       do_reset = true;
@@ -45,7 +47,7 @@ function cla (varargin)
     endif
   elseif (nargin == 1)
     if (ishandle (varargin{1})
-	&& strcmp (get (varargin{1}, "type"), "axes"))
+        && strcmp (get (varargin{1}, "type"), "axes"))
       oldhax = gca;
       hax = varargin{1};
       do_reset = false;
@@ -80,7 +82,7 @@ function cla (varargin)
   ## approximation.
 
   axes (hax);
-  axis auto
+  axis ("auto");
 
   ## Set the current axis back to where it was upon entry.
   axes (oldhax);

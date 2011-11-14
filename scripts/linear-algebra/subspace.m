@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 VZLU Prague, a.s., Czech Republic
+## Copyright (C) 2008-2011 VZLU Prague, a.s., Czech Republic
 ##
 ## This file is part of Octave.
 ##
@@ -17,40 +17,40 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{angle} =} subspace (@var{a}, @var{B})
+## @deftypefn {Function File} {@var{angle} =} subspace (@var{A}, @var{B})
 ## Determine the largest principal angle between two subspaces
-## spanned by columns of matrices @var{a} and @var{b}.
+## spanned by the columns of matrices @var{A} and @var{B}.
 ## @end deftypefn
 
 ## Author: Jaroslav Hajek <highegg@gmail.com>
 
 ## reference:
 ## [1]  Andrew V. Knyazev, Merico E. Argentati:
-##   Principal Angles between Subspaces in an A-Based Scalar Product: 
-##  Algorithms and Perturbation Estimates.  
+##   Principal Angles between Subspaces in an A-Based Scalar Product:
+##  Algorithms and Perturbation Estimates.
 ##  SIAM Journal on Scientific Computing, Vol. 23 no. 6, pp. 2008-2040
 ##
 ## other texts are also around...
 
-function ang = subspace (a, b)
+function ang = subspace (A, B)
 
   if (nargin != 2)
     print_usage ();
-  elseif (ndims (a) != 2 || ndims (b) != 2)
+  elseif (ndims (A) != 2 || ndims (B) != 2)
     error ("subspace: expecting A and B to be 2-dimensional arrays");
-  elseif (rows (a) != rows (b))
-    error ("subspace: column dimensions of a and b must match");
+  elseif (rows (A) != rows (B))
+    error ("subspace: column dimensions of A and B must match");
   endif
 
-  a = orth (a);
-  b = orth (b);
-  c = a'*b;
+  A = orth (A);
+  B = orth (B);
+  c = A'*B;
   scos = min (svd (c));
   if (scos^2 > 1/2)
-    if (columns (a) >= columns (b))
-      c = b - a*c;
+    if (columns (A) >= columns (B))
+      c = B - A*c;
     else
-      c = a - b*c';
+      c = A - B*c';
     endif
     ssin = max (svd (c));
     ang = asin (min (ssin, 1));

@@ -1,6 +1,7 @@
 /*
 
-Copyright (C) 2007, 2008, 2009 John W. Eaton
+Copyright (C) 2007-2011 John W. Eaton
+Copyright (C) 2009 VZLU Prague
 
 This file is part of Octave.
 
@@ -49,49 +50,63 @@ octave_class : public octave_base_value
 public:
 
   octave_class (void)
-    : octave_base_value () { }
+    : octave_base_value (), map (), c_name (),
+      parent_list (), obsolete_copies (0)
+    { }
 
-  octave_class (const Octave_map& m, const std::string& id)
-    : octave_base_value (), map (m), c_name (id) { }
+  octave_class (const octave_map& m, const std::string& id)
+    : octave_base_value (), map (m), c_name (id),
+      parent_list (), obsolete_copies (0)
+    { }
 
   octave_class (const octave_class& s)
     : octave_base_value (s), map (s.map), c_name (s.c_name),
-      parent_list (s.parent_list) { }
+      parent_list (s.parent_list), obsolete_copies (0)  { }
 
-  octave_class (const Octave_map& m, const std::string& id, 
+  octave_class (const octave_map& m, const std::string& id,
                 const octave_value_list& parents);
 
   ~octave_class (void) { }
 
   octave_base_value *clone (void) const { return new octave_class (*this); }
 
+  octave_base_value *unique_clone (void);
+
   octave_base_value *empty_clone (void) const
   {
-    return new octave_class (Octave_map (map.keys ()), class_name ());
+    return new octave_class (octave_map (map.keys ()), class_name ());
   }
 
   Cell dotref (const octave_value_list& idx);
 
+  Matrix size (void);
+
+  octave_idx_type numel (const octave_value_list&);
+
   octave_value subsref (const std::string& type,
-			const std::list<octave_value_list>& idx)
+                        const std::list<octave_value_list>& idx)
     {
       octave_value_list tmp = subsref (type, idx, 1);
       return tmp.length () > 0 ? tmp(0) : octave_value ();
     }
 
   octave_value_list subsref (const std::string& type,
-			     const std::list<octave_value_list>& idx,
-			     int nargout);
+                             const std::list<octave_value_list>& idx,
+                             int nargout);
 
   static octave_value numeric_conv (const Cell& val,
-				    const std::string& type);
+                                    const std::string& type);
 
   void assign(const std::string& k, const octave_value& rhs)
   { map.assign (k, rhs); };
 
   octave_value subsasgn (const std::string& type,
-			 const std::list<octave_value_list>& idx,
-			 const octave_value& rhs);
+                         const std::list<octave_value_list>& idx,
+                         const octave_value& rhs);
+
+  octave_value undef_subsasgn (const std::string& type,
+                               const std::list<octave_value_list>& idx,
+                               const octave_value& rhs);
 
   idx_vector index_vector (void) const;
 
@@ -112,10 +127,18 @@ public:
   size_t nparents (void) const { return parent_list.size (); }
 
   octave_value reshape (const dim_vector& new_dims) const
-    { return map.reshape (new_dims); }
+    { 
+      octave_class retval = octave_class (*this);
+      retval.map = retval.map_value().reshape (new_dims);
+      return octave_value (new octave_class (retval));
+    }
 
   octave_value resize (const dim_vector& dv, bool = false) const
-    { Octave_map tmap = map; tmap.resize (dv); return tmap; }
+    { 
+      octave_class retval = octave_class (*this);
+      retval.map.resize (dv);
+      return octave_value (new octave_class (retval));
+    }
 
   bool is_defined (void) const { return true; }
 
@@ -123,7 +146,7 @@ public:
 
   bool is_object (void) const { return true; }
 
-  Octave_map map_value (void) const { return map; }
+  octave_map map_value (void) const { return map; }
 
   string_vector map_keys (void) const;
 
@@ -135,14 +158,16 @@ public:
 
   octave_base_value *find_parent_class (const std::string&);
 
+  octave_base_value *unique_parent_class (const std::string&);
+
   void print (std::ostream& os, bool pr_as_read_syntax = false) const;
 
   void print_raw (std::ostream& os, bool pr_as_read_syntax = false) const;
 
   bool print_name_tag (std::ostream& os, const std::string& name) const;
 
-  void print_with_name (std::ostream& os, const std::string& name, 
-			bool print_padding = true) const;
+  void print_with_name (std::ostream& os, const std::string& name,
+                        bool print_padding = true);
 
   bool reconstruct_exemplar (void);
 
@@ -156,20 +181,20 @@ public:
 
   bool save_binary (std::ostream& os, bool& save_as_floats);
 
-  bool load_binary (std::istream& is, bool swap, 
-		    oct_mach_info::float_format fmt);
+  bool load_binary (std::istream& is, bool swap,
+                    oct_mach_info::float_format fmt);
 
 #if defined (HAVE_HDF5)
   bool save_hdf5 (hid_t loc_id, const char *name, bool save_as_floats);
 
-  bool load_hdf5 (hid_t loc_id, const char *name, bool have_h5giterate_bug);
+  bool load_hdf5 (hid_t loc_id, const char *name);
 #endif
 
   mxArray *as_mxArray (void) const;
 
 private:
 
-  Octave_map map;
+  octave_map map;
 
   DECLARE_OCTAVE_ALLOCATOR
 
@@ -190,7 +215,15 @@ private:
   std::string c_name;
   std::list<std::string> parent_list;
 
-  bool in_class_method (void) const;
+  bool in_class_method (void);
+  std::string get_current_method_class (void);
+
+  octave_value subsasgn_common (const octave_value& obj,
+                                const std::string& type,
+                                const std::list<octave_value_list>& idx,
+                                const octave_value& rhs);
+
+  int obsolete_copies;
 
 public:
   // The list of field names and parent classes defines a class.  We
@@ -205,15 +238,15 @@ public:
 
     exemplar_info (const exemplar_info& x)
       : field_names (x.field_names),
-	parent_class_names (x.parent_class_names) { }
+        parent_class_names (x.parent_class_names) { }
 
     exemplar_info& operator = (const exemplar_info& x)
     {
       if (&x != this)
-	{
-	  field_names = x.field_names;
-	  parent_class_names = x.parent_class_names;
-	}
+        {
+          field_names = x.field_names;
+          parent_class_names = x.parent_class_names;
+        }
       return *this;
     }
 
@@ -241,9 +274,3 @@ public:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,8 +1,8 @@
 // ColumnVector manipulations.
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2000, 2001, 2002, 2003, 2004,
-              2005, 2007, 2008 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
+Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
 
@@ -42,19 +42,19 @@ extern "C"
 {
   F77_RET_T
   F77_FUNC (cgemv, CGEMV) (F77_CONST_CHAR_ARG_DECL,
-			   const octave_idx_type&, const octave_idx_type&, const FloatComplex&,
-			   const FloatComplex*, const octave_idx_type&, const FloatComplex*,
-			   const octave_idx_type&, const FloatComplex&, FloatComplex*, const octave_idx_type&
-			   F77_CHAR_ARG_LEN_DECL);
+                           const octave_idx_type&, const octave_idx_type&,
+                           const FloatComplex&, const FloatComplex*,
+                           const octave_idx_type&, const FloatComplex*,
+                           const octave_idx_type&, const FloatComplex&,
+                           FloatComplex*, const octave_idx_type&
+                           F77_CHAR_ARG_LEN_DECL);
 }
 
 // FloatComplex Column Vector class
 
 FloatComplexColumnVector::FloatComplexColumnVector (const FloatColumnVector& a)
-   : MArray<FloatComplex> (a.length ())
+   : MArray<FloatComplex> (a)
 {
-  for (octave_idx_type i = 0; i < length (); i++)
-    elem (i) = a.elem (i);
 }
 
 bool
@@ -63,7 +63,7 @@ FloatComplexColumnVector::operator == (const FloatComplexColumnVector& a) const
   octave_idx_type len = length ();
   if (len != a.length ())
     return 0;
-  return mx_inline_equal (data (), a.data (), len);
+  return mx_inline_equal (len, data (), a.data ());
 }
 
 bool
@@ -90,7 +90,7 @@ FloatComplexColumnVector::insert (const FloatColumnVector& a, octave_idx_type r)
       make_unique ();
 
       for (octave_idx_type i = 0; i < a_len; i++)
-	xelem (r+i) = a.elem (i);
+        xelem (r+i) = a.elem (i);
     }
 
   return *this;
@@ -112,7 +112,7 @@ FloatComplexColumnVector::insert (const FloatComplexColumnVector& a, octave_idx_
       make_unique ();
 
       for (octave_idx_type i = 0; i < a_len; i++)
-	xelem (r+i) = a.elem (i);
+        xelem (r+i) = a.elem (i);
     }
 
   return *this;
@@ -128,7 +128,7 @@ FloatComplexColumnVector::fill (float val)
       make_unique ();
 
       for (octave_idx_type i = 0; i < len; i++)
-	xelem (i) = val;
+        xelem (i) = val;
     }
 
   return *this;
@@ -144,7 +144,7 @@ FloatComplexColumnVector::fill (const FloatComplex& val)
       make_unique ();
 
       for (octave_idx_type i = 0; i < len; i++)
-	xelem (i) = val;
+        xelem (i) = val;
     }
 
 
@@ -169,7 +169,7 @@ FloatComplexColumnVector::fill (float val, octave_idx_type r1, octave_idx_type r
       make_unique ();
 
       for (octave_idx_type i = r1; i <= r2; i++)
-	xelem (i) = val;
+        xelem (i) = val;
     }
 
   return *this;
@@ -193,7 +193,7 @@ FloatComplexColumnVector::fill (const FloatComplex& val, octave_idx_type r1, oct
       make_unique ();
 
       for (octave_idx_type i = r1; i <= r2; i++)
-	xelem (i) = val;
+        xelem (i) = val;
     }
 
   return *this;
@@ -221,26 +221,28 @@ FloatComplexColumnVector::stack (const FloatComplexColumnVector& a) const
   return retval;
 }
 
-FloatComplexRowVector 
+FloatComplexRowVector
 FloatComplexColumnVector::hermitian (void) const
 {
   return MArray<FloatComplex>::hermitian (std::conj);
 }
 
-FloatComplexRowVector 
+FloatComplexRowVector
 FloatComplexColumnVector::transpose (void) const
 {
   return MArray<FloatComplex>::transpose ();
 }
 
+FloatColumnVector
+FloatComplexColumnVector::abs (void) const
+{
+  return do_mx_unary_map<float, FloatComplex, std::abs> (*this);
+}
+
 FloatComplexColumnVector
 conj (const FloatComplexColumnVector& a)
 {
-  octave_idx_type a_len = a.length ();
-  FloatComplexColumnVector retval;
-  if (a_len > 0)
-    retval = FloatComplexColumnVector (mx_inline_conj_dup (a.data (), a_len), a_len);
-  return retval;
+  return do_mx_unary_map<FloatComplex, FloatComplex, std::conj> (a);
 }
 
 // resize is the destructive equivalent for this one
@@ -291,7 +293,7 @@ FloatComplexColumnVector::operator += (const FloatColumnVector& a)
 
   FloatComplex *d = fortran_vec (); // Ensures only one reference to my privates!
 
-  mx_inline_add2 (d, a.data (), len);
+  mx_inline_add2 (len, d, a.data ());
   return *this;
 }
 
@@ -313,7 +315,7 @@ FloatComplexColumnVector::operator -= (const FloatColumnVector& a)
 
   FloatComplex *d = fortran_vec (); // Ensures only one reference to my privates!
 
-  mx_inline_subtract2 (d, a.data (), len);
+  mx_inline_sub2 (len, d, a.data ());
   return *this;
 }
 
@@ -340,20 +342,17 @@ operator * (const FloatComplexMatrix& m, const FloatComplexColumnVector& a)
     gripe_nonconformant ("operator *", nr, nc, a_len, 1);
   else
     {
-      if (nc == 0 || nr == 0)
-	retval.resize (nr, 0.0);
-      else
-	{
-	  octave_idx_type ld = nr;
+      retval.clear (nr);
 
-	  retval.resize (nr);
-	  FloatComplex *y = retval.fortran_vec ();
+      if (nr != 0)
+        {
+          FloatComplex *y = retval.fortran_vec ();
 
-	  F77_XFCN (cgemv, CGEMV, (F77_CONST_CHAR_ARG2 ("N", 1),
-				   nr, nc, 1.0, m.data (), ld,
-				   a.data (), 1, 0.0, y, 1
-				   F77_CHAR_ARG_LEN (1)));
-	}
+          F77_XFCN (cgemv, CGEMV, (F77_CONST_CHAR_ARG2 ("N", 1),
+                                   nr, nc, 1.0f, m.data (), nr,
+                                   a.data (), 1, 0.0f, y, 1
+                                   F77_CHAR_ARG_LEN (1)));
+        }
     }
 
   return retval;
@@ -456,18 +455,6 @@ operator * (const FloatComplexDiagMatrix& m, const FloatComplexColumnVector& a)
 
 // other operations
 
-FloatColumnVector
-FloatComplexColumnVector::map (dmapper fcn) const
-{
-  return MArray<FloatComplex>::map<float> (func_ptr (fcn));
-}
-
-FloatComplexColumnVector
-FloatComplexColumnVector::map (cmapper fcn) const
-{
-  return MArray<FloatComplex>::map<FloatComplex> (func_ptr (fcn));
-}
-
 FloatComplex
 FloatComplexColumnVector::min (void) const
 {
@@ -481,8 +468,8 @@ FloatComplexColumnVector::min (void) const
   for (octave_idx_type i = 1; i < len; i++)
     if (std::abs (elem (i)) < absres)
       {
-	res = elem (i);
-	absres = std::abs (res);
+        res = elem (i);
+        absres = std::abs (res);
       }
 
   return res;
@@ -501,8 +488,8 @@ FloatComplexColumnVector::max (void) const
   for (octave_idx_type i = 1; i < len; i++)
     if (std::abs (elem (i)) > absres)
       {
-	res = elem (i);
-	absres = std::abs (res);
+        res = elem (i);
+        absres = std::abs (res);
       }
 
   return res;
@@ -538,9 +525,3 @@ operator >> (std::istream& is, FloatComplexColumnVector& a)
     }
   return is;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

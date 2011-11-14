@@ -1,4 +1,4 @@
-## Copyright (C) 1996, 1997, 2005, 2006, 2007, 2009 Kurt Hornik
+## Copyright (C) 1996-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -39,7 +39,7 @@ function pdf = hygepdf (x, t, m, n)
   if (!isscalar (t) || !isscalar (m) || !isscalar (n))
     [retval, x, t, m, n] = common_size (x, t, m, n);
     if (retval > 0)
-      error ("hygepdf: x, t, m, and n must be of common size or scalar");
+      error ("hygepdf: X, T, M, and N must be of common size or scalar");
     endif
   endif
 
@@ -53,7 +53,7 @@ function pdf = hygepdf (x, t, m, n)
   k = find (i1);
   if (any (k))
     if (isscalar (t) && isscalar (m) && isscalar (n))
-      pdf = NaN * ones (size (x));
+      pdf = NaN (size (x));
     else
       pdf (k) = NaN;
     endif
@@ -62,10 +62,10 @@ function pdf = hygepdf (x, t, m, n)
   if (any (k))
     if (isscalar (t) && isscalar (m) && isscalar (n))
       pdf (k) = (bincoeff (m, x(k)) .* bincoeff (t-m, n-x(k))
-		 / bincoeff (t, n));
+                 / bincoeff (t, n));
     else
       pdf (k) = (bincoeff (m(k), x(k)) .* bincoeff (t(k)-m(k), n(k)-x(k))
-		 ./ bincoeff (t(k), n(k)));
+                 ./ bincoeff (t(k), n(k)));
     endif
   endif
 

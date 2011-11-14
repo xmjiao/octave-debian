@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2004, 2005, 2007, 2008 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -114,7 +114,7 @@ void
 install_ui64_ui64_ops (void)
 {
   OCTAVE_INSTALL_INT_OPS (uint64);
-  
+
   OCTAVE_INSTALL_MS_INT_ASSIGN_OPS (mi8, uint64_, int8_);
   OCTAVE_INSTALL_MS_INT_ASSIGN_OPS (mui8, uint64_, uint8_);
   OCTAVE_INSTALL_MS_INT_ASSIGN_OPS (mi16, uint64_, int16_);
@@ -147,9 +147,3 @@ install_ui64_ui64_ops (void)
   OCTAVE_INSTALL_MIXED_INT_CMP_OPS (uint64, uint32);
   OCTAVE_INSTALL_MIXED_INT_CMP_OPS (uint64, int64);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

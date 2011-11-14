@@ -1,4 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 2006, 2007, 2009 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -19,20 +19,20 @@
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} wblpdf (@var{x}, @var{scale}, @var{shape})
 ## Compute the probability density function (PDF) at @var{x} of the
-## Weibull distribution with shape parameter @var{scale} and scale
+## Weibull distribution with scale parameter @var{scale} and shape
 ## parameter @var{shape} which is given by
-##
 ## @tex
-## $$  scale \cdot shape^{-scale} x^{scale-1} \exp(-(x/shape)^{scale}) $$
+## $$  {shape \over scale^{shape}} \cdot x^{shape-1} \cdot e^{-({x \over scale})^{shape}} $$
 ## @end tex
 ## @ifnottex
-## @example
-##    scale * shape^(-scale) * x^(scale-1) * exp(-(x/shape)^scale)
-## @end example
-## @end ifnottex
 ##
+## @example
+##    shape * scale^(-shape) * x^(shape-1) * exp(-(x/scale)^shape)
+## @end example
+##
+## @end ifnottex
 ## @noindent
-## for @var{x} > 0.
+## for @var{x} @geq{} 0.
 ## @end deftypefn
 
 ## Author: KH <Kurt.Hornik@wu-wien.ac.at>
@@ -52,31 +52,31 @@ function pdf = wblpdf (x, scale, shape)
     scale = 1;
   endif
 
-  if (!isscalar (shape) || !isscalar (scale))
-    [retval, x, shape, scale] = common_size (x, shape, scale);
+  if (!isscalar (scale) || !isscalar (shape))
+    [retval, x, scale, shape] = common_size (x, scale, shape);
     if (retval > 0)
-      error ("wblpdf: x, scale and shape must be of common size or scalar");
+      error ("wblpdf: X, SCALE and SHAPE must be of common size or scalar");
     endif
   endif
 
-  pdf = NaN * ones (size (x));
-  ok = ((shape > 0) & (shape < Inf) & (scale > 0) & (scale < Inf));
+  pdf = NaN (size (x));
+  ok = ((scale > 0) & (scale < Inf) & (shape > 0) & (shape < Inf));
 
-  k = find ((x > -Inf) & (x <= 0) & ok);
+  k = find ((x > -Inf) & (x < 0) & ok);
   if (any (k))
     pdf(k) = 0;
   endif
 
-  k = find ((x > 0) & (x < Inf) & ok);
+  k = find ((x >= 0) & (x < Inf) & ok);
   if (any (k))
-    if (isscalar (shape) && isscalar (scale))
+    if (isscalar (scale) && isscalar (shape))
       pdf(k) = (shape .* (scale .^ -shape)
-		.* (x(k) .^ (shape - 1))
-		.* exp(- (x(k) / scale) .^ shape));
+                .* (x(k) .^ (shape - 1))
+                .* exp(- (x(k) / scale) .^ shape));
     else
       pdf(k) = (shape(k) .* (scale(k) .^ -shape(k))
-		.* (x(k) .^ (shape(k) - 1))
-		.* exp(- (x(k) ./ scale(k)) .^ shape(k)));
+                .* (x(k) .^ (shape(k) - 1))
+                .* exp(- (x(k) ./ scale(k)) .^ shape(k)));
     endif
   endif
 

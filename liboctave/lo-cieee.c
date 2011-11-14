@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008 John W. Eaton
+Copyright (C) 2002-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -32,16 +32,6 @@ along with Octave; see the file COPYING.  If not, see
 
 #if defined (HAVE_IEEEFP_H)
 #include <ieeefp.h>
-#endif
-
-#if defined (HAVE_NAN_H)
-#if defined (SCO)
-#define _IEEE 1
-#endif
-#include <nan.h>
-#if defined (SCO)
-#undef _IEEE
-#endif
 #endif
 
 #include "lo-ieee.h"
@@ -81,34 +71,6 @@ float octave_Float_NaN;
 
 int lo_ieee_hw;
 int lo_ieee_lw;
-
-#if defined (SCO)
-
-int
-__isnan (double x)
-{
-  return (IsNANorINF (x) && NaN (x) && ! IsINF (x)) ? 1 : 0;
-}
-
-int
-__isinf (double x)
-{
-  return (IsNANorINF (x) && IsINF (x)) ? 1 : 0;
-}
-
-int
-__isnanf (float x)
-{
-  return (IsNANorINF (x) && NaN (x) && ! IsINF (x)) ? 1 : 0;
-}
-
-int
-__isinff (float x)
-{
-  return (IsNANorINF (x) && IsINF (x)) ? 1 : 0;
-}
-
-#endif
 
 int
 __lo_ieee_isnan (double x)
@@ -150,8 +112,8 @@ __lo_ieee_is_NA (double x)
 #if defined (HAVE_ISNAN)
   lo_ieee_double t;
   t.value = x;
-  return (isnan (x) && t.word[lo_ieee_hw] == LO_IEEE_NA_HW 
-	  && t.word[lo_ieee_lw] == LO_IEEE_NA_LW) ? 1 : 0;
+  return (isnan (x) && t.word[lo_ieee_hw] == LO_IEEE_NA_HW
+          && t.word[lo_ieee_lw] == LO_IEEE_NA_LW) ? 1 : 0;
 #else
   return 0;
 #endif
@@ -163,8 +125,8 @@ __lo_ieee_is_old_NA (double x)
 #if defined (HAVE_ISNAN)
   lo_ieee_double t;
   t.value = x;
-  return (isnan (x) && t.word[lo_ieee_lw] == LO_IEEE_NA_LW_OLD 
-	  && t.word[lo_ieee_hw] == LO_IEEE_NA_HW_OLD) ? 1 : 0;
+  return (isnan (x) && t.word[lo_ieee_lw] == LO_IEEE_NA_LW_OLD
+          && t.word[lo_ieee_hw] == LO_IEEE_NA_HW_OLD) ? 1 : 0;
 #else
   return 0;
 #endif
@@ -320,9 +282,3 @@ __lo_ieee_float_signbit (float x)
   return x < 0;
 #endif
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

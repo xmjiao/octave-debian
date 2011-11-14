@@ -1,4 +1,4 @@
-## Copyright (C) 2004, 2006, 2007 John W. Eaton
+## Copyright (C) 2004-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {[@var{status}, @var{text}] =} dos (@var{command})
+## @deftypefn  {Function File} {[@var{status}, @var{text}] =} dos (@var{command})
 ## @deftypefnx {Function File} {[@var{status}, @var{text}] =} dos (@var{command}, "-echo")
 ## Execute a system command if running under a Windows-like operating
 ## system, otherwise do nothing.  Return the exit status of the program
@@ -30,12 +30,12 @@
 ## Author: octave-forge ???
 ## Adapted by: jwe
 
-function [status, text] = dos (cmd, echo_arg)
+function [status, text] = dos (command, echo_arg)
 
   if (nargin < 1 || nargin > 2)
     print_usage ();
   elseif (! isunix ())
-    [status, text] = system (cmd);
+    [status, text] = system (command);
     if (nargin > 1 || nargout == 0)
       printf ("%s\n", text);
     endif

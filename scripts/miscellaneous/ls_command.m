@@ -1,4 +1,4 @@
-## Copyright (C) 2006, 2007 John W. Eaton
+## Copyright (C) 2006-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -17,10 +17,9 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {[@var{old_cmd} =} ls_command (@var{cmd})
-## Set or return the shell command used by Octave's @code{ls} command.
-## The value of @var{cmd} must be a character string.
-## With no arguments, simply return the previous value.
+## @deftypefn  {Function File} {@var{val} =} ls_command ()
+## @deftypefnx {Function File} {@var{old_val} =} ls_command (@var{new_val})
+## Query or set the shell command used by Octave's @code{ls} command.
 ## @seealso{ls}
 ## @end deftypefn
 
@@ -32,7 +31,8 @@ function old_cmd = ls_command (cmd)
 
   if (isempty (__ls_command__))
     ## FIXME -- ispc and isunix both return true for Cygwin.  Should they?
-    if (ispc () && ! isunix () && isempty (file_in_path (EXEC_PATH, "ls")))
+    if (ispc () && ! isunix ()
+        && isempty (file_in_path (getenv ("PATH"), "ls")))
       __ls_command__ = "cmd /C dir /D";
     else
       __ls_command__ = "ls -C";
@@ -45,9 +45,9 @@ function old_cmd = ls_command (cmd)
 
     if (nargin == 1)
       if (ischar (cmd))
-	__ls_command__ = cmd;
+        __ls_command__ = cmd;
       else
-	error ("ls_command: expecting argument to be a character string");
+        error ("ls_command: expecting argument to be a character string");
       endif
     endif
 

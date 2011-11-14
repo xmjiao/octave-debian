@@ -1,4 +1,4 @@
-## Copyright (C) 2007, 2009 David Bateman
+## Copyright (C) 2007-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -17,13 +17,12 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Command} {} what 
+## @deftypefn  {Command} {} what
 ## @deftypefnx {Command} {} what @var{dir}
 ## @deftypefnx {Function File} {w =} what (@var{dir})
-## List the Octave specific files in a directory.  If the variable @var{dir}
-## is given then check that directory rather than the current directory.  If
-## a return argument is requested, the files found are returned in the 
-## structure @var{w}.
+## List the Octave specific files in directory @var{dir}.  If @var{dir} is
+## not specified then the current directory is used.  If a return argument is
+## requested, the files found are returned in the structure @var{w}.
 ## @seealso{which}
 ## @end deftypefn
 
@@ -38,7 +37,7 @@ function ret = what (d)
   else
     [status, msg, msgid] = fileattrib (d);
     if (status != 1)
-      error ("could not find the file or path %s", d);
+      error ("what: could not find the file or path %s", d);
     else
       d = msg.Name;
     endif
@@ -63,15 +62,15 @@ function ret = what (d)
       ## Ignore mdl and p files
       [dummy, f, e] = fileparts (n);
       if (strcmp (e, ".m"))
-	w.m{end+1} = n; 
+        w.m{end+1} = n;
       elseif (strcmp (e, mexext ()))
-	w.mex{end+1} = n; 
+        w.mex{end+1} = n;
       elseif (strcmp (e, ".oct"))
-	w.oct{end+1} = n;
+        w.oct{end+1} = n;
       elseif (strcmp (e, ".mat"))
-	w.mat{end+1} = n; 
+        w.mat{end+1} = n;
       elseif(strcmp (n(1), "@"))
-	w.classes{end+1} = n;
+        w.classes{end+1} = n;
       endif
     endif
   endfor
@@ -89,9 +88,9 @@ endfunction
 
 function __display_filenames__ (msg, p, f)
   if (length (f) > 0)
-    printf ("%s %s:\n\n", msg, p)
-  
-    maxlen = max (cellfun (@(x) length (x), f));
+    printf ("%s %s:\n\n", msg, p);
+
+    maxlen = max (cellfun (@length, f));
     ncols = max (1, floor (terminal_size()(2) / (maxlen + 3)));
     fmt = "";
     for i = 1: ncols
@@ -99,11 +98,11 @@ function __display_filenames__ (msg, p, f)
     endfor
     fmt = [fmt, "\n"];
 
-    nrows = ceil (length (f) / ncols); 
+    nrows = ceil (length (f) / ncols);
     for i = 1 : nrows
       args  = f(i:nrows:end);
       if (length (args) < ncols)
-        args(end : ncols) = {""};
+        args(end + 1 : ncols) = {""};
       endif
       printf (fmt, args{:});
     endfor

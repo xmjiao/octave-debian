@@ -1,5 +1,4 @@
-## Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2002, 2003,
-##               2005, 2006, 2007, 2008, 2009 John W. Eaton
+## Copyright (C) 1994-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -20,7 +19,7 @@
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} cstrcat (@var{s1}, @var{s2}, @dots{})
 ## Return a string containing all the arguments concatenated
-## horizontally.  Trailing white space is preserved.  For example,
+## horizontally.  Trailing white space is preserved.  For example:
 ##
 ## @example
 ## @group
@@ -50,11 +49,11 @@ function st = cstrcat (varargin)
     if (iscellstr (varargin))
       ## All arguments are character strings.
       unwind_protect
-	tmp = warning ("query", "Octave:empty-list-elements");
-	warning ("off", "Octave:empty-list-elements");
-	st = [varargin{:}];
+        tmp = warning ("query", "Octave:empty-list-elements");
+        warning ("off", "Octave:empty-list-elements");
+        st = [varargin{:}];
       unwind_protect_cleanup
-	warning (tmp.state, "Octave:empty-list-elements");
+        warning (tmp.state, "Octave:empty-list-elements");
       end_unwind_protect
     else
       error ("cstrcat: expecting arguments to character strings");

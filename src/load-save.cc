@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002,
-              2003, 2004, 2005, 2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -38,6 +37,8 @@ along with Octave; see the file COPYING.  If not, see
 #include <iostream>
 #include <sstream>
 #include <string>
+
+#include "strftime.h"
 
 #include "byte-swap.h"
 #include "data-conv.h"
@@ -78,6 +79,14 @@ along with Octave; see the file COPYING.  If not, see
 #include "ls-oct-ascii.h"
 #include "ls-oct-binary.h"
 
+// Remove gnulib definitions, if any.
+#ifdef close
+#undef close
+#endif
+#ifdef open
+#undef open
+#endif
+
 #ifdef HAVE_ZLIB
 #include "zfstream.h"
 #endif
@@ -104,7 +113,7 @@ default_save_header_format (void)
 {
   return
     std::string ("# Created by Octave " OCTAVE_VERSION
-		 ", %a %b %d %H:%M:%S %Y %Z <")
+                 ", %a %b %d %H:%M:%S %Y %Z <")
     + octave_env::get_user_name ()
     + std::string ("@")
     + octave_env::get_host_name ()
@@ -132,14 +141,15 @@ gripe_file_open (const std::string& fcn, const std::string& file)
 
 static void
 install_loaded_variable (const std::string& name,
-			 const octave_value& val,
-			 bool global, const std::string& /*doc*/)
+                         const octave_value& val,
+                         bool global, const std::string& /*doc*/)
 {
   if (global)
     {
-      symbol_table::clear (name);
-      symbol_table::mark_global (name);
-      symbol_table::global_varref (name) = val;
+      symbol_table::symbol_record& sr = symbol_table::insert (name);
+      sr.clear ();
+      sr.mark_global ();
+      sr.varref () = val;
     }
   else
     symbol_table::varref (name) = val;
@@ -149,14 +159,14 @@ install_loaded_variable (const std::string& name,
 
 static bool
 matches_patterns (const string_vector& patterns, int pat_idx,
-		  int num_pat, const std::string& name)
+                  int num_pat, const std::string& name)
 {
   for (int i = pat_idx; i < num_pat; i++)
     {
       glob_match pattern (patterns[i]);
 
       if (pattern.match (name))
-	return true;
+        return true;
     }
 
   return false;
@@ -164,7 +174,7 @@ matches_patterns (const string_vector& patterns, int pat_idx,
 
 int
 read_binary_file_header (std::istream& is, bool& swap,
-			 oct_mach_info::float_format& flt_fmt, bool quiet)
+                         oct_mach_info::float_format& flt_fmt, bool quiet)
 {
   const int magic_len = 10;
   char magic[magic_len+1];
@@ -178,10 +188,10 @@ read_binary_file_header (std::istream& is, bool& swap,
   else
     {
       if (! quiet)
-	error ("load: unable to read read binary file");
+        error ("load: unable to read read binary file");
       return -1;
     }
-	
+
   char tmp = 0;
   is.read (&tmp, 1);
 
@@ -206,13 +216,13 @@ check_gzip_magic (const std::string& fname)
   std::ifstream file (fname.c_str ());
   OCTAVE_LOCAL_BUFFER (unsigned char, magic, 2);
 
-  if (file.read (reinterpret_cast<char *> (magic), 2) && magic[0] == 0x1f && 
+  if (file.read (reinterpret_cast<char *> (magic), 2) && magic[0] == 0x1f &&
       magic[1] == 0x8b)
     retval = true;
 
   file.close ();
   return retval;
-} 
+}
 #endif
 
 static load_save_format
@@ -236,39 +246,39 @@ get_file_format (std::istream& file, const std::string& filename)
       int err = read_mat_file_header (file, swap, mopt, nr, nc, imag, len, 1);
 
       if (! err)
-	retval = LS_MAT_BINARY;
+        retval = LS_MAT_BINARY;
       else
-	{
-	  file.clear ();
-	  file.seekg (0, std::ios::beg);
+        {
+          file.clear ();
+          file.seekg (0, std::ios::beg);
 
-	  err = read_mat5_binary_file_header (file, swap, true, filename);
+          err = read_mat5_binary_file_header (file, swap, true, filename);
 
-	  if (! err)
-  	    {
-	      file.clear ();
-	      file.seekg (0, std::ios::beg);
-	      retval = LS_MAT5_BINARY;
-  	    }
-  	  else
-  	    {
-	      file.clear ();
-	      file.seekg (0, std::ios::beg);
+          if (! err)
+            {
+              file.clear ();
+              file.seekg (0, std::ios::beg);
+              retval = LS_MAT5_BINARY;
+            }
+          else
+            {
+              file.clear ();
+              file.seekg (0, std::ios::beg);
 
-	      std::string tmp = extract_keyword (file, "name");
+              std::string tmp = extract_keyword (file, "name");
 
-	      if (! tmp.empty ())
-		retval = LS_ASCII;
-	    }
-	}
+              if (! tmp.empty ())
+                retval = LS_ASCII;
+            }
+        }
     }
 
   return retval;
 }
 
 static load_save_format
-get_file_format (const std::string& fname, const std::string& orig_fname, 
-		 bool &use_zlib)
+get_file_format (const std::string& fname, const std::string& orig_fname,
+                 bool &use_zlib)
 {
   load_save_format retval = LS_UNKNOWN;
 
@@ -280,37 +290,37 @@ get_file_format (const std::string& fname, const std::string& orig_fname,
 
   std::ifstream file (fname.c_str ());
   use_zlib = false;
-      
+
   if (file)
     {
       retval = get_file_format (file, orig_fname);
       file.close ();
 
 #ifdef HAVE_ZLIB
-      if (retval == LS_UNKNOWN && check_gzip_magic (fname))	
-	{
-	  gzifstream gzfile (fname.c_str ());
-	  use_zlib = true;
+      if (retval == LS_UNKNOWN && check_gzip_magic (fname))
+        {
+          gzifstream gzfile (fname.c_str ());
+          use_zlib = true;
 
-	  if (gzfile)
-	    {
-	      retval = get_file_format (gzfile, orig_fname);
-	      gzfile.close ();
-	    }
-	}
+          if (gzfile)
+            {
+              retval = get_file_format (gzfile, orig_fname);
+              gzfile.close ();
+            }
+        }
 #endif
 
       if (retval == LS_UNKNOWN)
-	{
-	  // Try reading the file as numbers only, determining the
-	  // number of rows and columns from the data.  We don't
-	  // even bother to check to see if the first item in the
-	  // file is a number, so that get_complete_line() can
-	  // skip any comments that might appear at the top of the
-	  // file.
+        {
+          // Try reading the file as numbers only, determining the
+          // number of rows and columns from the data.  We don't
+          // even bother to check to see if the first item in the
+          // file is a number, so that get_complete_line() can
+          // skip any comments that might appear at the top of the
+          // file.
 
-	  retval = LS_MAT_ASCII;
-	}
+          retval = LS_MAT_ASCII;
+        }
     }
   else
     gripe_file_open ("load", orig_fname);
@@ -320,13 +330,13 @@ get_file_format (const std::string& fname, const std::string& orig_fname,
 
 octave_value
 do_load (std::istream& stream, const std::string& orig_fname,
-	 load_save_format format, oct_mach_info::float_format flt_fmt,
-	 bool list_only, bool swap, bool verbose,
-	 const string_vector& argv, int argv_idx, int argc, int nargout)
+         load_save_format format, oct_mach_info::float_format flt_fmt,
+         bool list_only, bool swap, bool verbose,
+         const string_vector& argv, int argv_idx, int argc, int nargout)
 {
   octave_value retval;
 
-  Octave_map retstruct;
+  octave_scalar_map retstruct;
 
   std::ostringstream output_buf;
   std::list<std::string> symbol_names;
@@ -342,132 +352,132 @@ do_load (std::istream& stream, const std::string& orig_fname,
       std::string doc;
 
       switch (format.type)
-	{
-	case LS_ASCII:
-	  name = read_ascii_data (stream, orig_fname, global, tc, count);
-	  break;
+        {
+        case LS_ASCII:
+          name = read_ascii_data (stream, orig_fname, global, tc, count);
+          break;
 
-	case LS_BINARY:
-	  name = read_binary_data (stream, swap, flt_fmt, orig_fname,
-				   global, tc, doc);
-	  break;
+        case LS_BINARY:
+          name = read_binary_data (stream, swap, flt_fmt, orig_fname,
+                                   global, tc, doc);
+          break;
 
-	case LS_MAT_ASCII:
-	  name = read_mat_ascii_data (stream, orig_fname, tc);
-	  break;
+        case LS_MAT_ASCII:
+          name = read_mat_ascii_data (stream, orig_fname, tc);
+          break;
 
-	case LS_MAT_BINARY:
-	  name = read_mat_binary_data (stream, orig_fname, tc);
-	  break;
+        case LS_MAT_BINARY:
+          name = read_mat_binary_data (stream, orig_fname, tc);
+          break;
 
 #ifdef HAVE_HDF5
-	case LS_HDF5:
-	  name = read_hdf5_data (stream, orig_fname, global, tc, doc);
-	  break;
+        case LS_HDF5:
+          name = read_hdf5_data (stream, orig_fname, global, tc, doc);
+          break;
 #endif /* HAVE_HDF5 */
 
-	case LS_MAT5_BINARY:
-	case LS_MAT7_BINARY:
-	  name = read_mat5_binary_element (stream, orig_fname, swap,
-					   global, tc);
-	  break;
+        case LS_MAT5_BINARY:
+        case LS_MAT7_BINARY:
+          name = read_mat5_binary_element (stream, orig_fname, swap,
+                                           global, tc);
+          break;
 
-	default:
-	  gripe_unrecognized_data_fmt ("load");
-	  break;
-	}
+        default:
+          gripe_unrecognized_data_fmt ("load");
+          break;
+        }
 
       if (error_state || stream.eof () || name.empty ())
-	break;
+        break;
       else if (! error_state && ! name.empty ())
-	{
-	  if (tc.is_defined ())
-	    {
-	      if (format == LS_MAT_ASCII && argv_idx < argc)
-		warning ("load: loaded ASCII file `%s' -- ignoring extra args",
-			 orig_fname.c_str ());
+        {
+          if (tc.is_defined ())
+            {
+              if (format == LS_MAT_ASCII && argv_idx < argc)
+                warning ("load: loaded ASCII file `%s' -- ignoring extra args",
+                         orig_fname.c_str ());
 
-	      if (format == LS_MAT_ASCII
-		  || argv_idx == argc
-		  || matches_patterns (argv, argv_idx, argc, name))
-		{
-		  count++;
-		  if (list_only)
-		    {
-		      if (verbose)
-			{
-			  if (count == 1)
-			    output_buf
-			      << "type               rows   cols   name\n"
-			      << "====               ====   ====   ====\n";
+              if (format == LS_MAT_ASCII
+                  || argv_idx == argc
+                  || matches_patterns (argv, argv_idx, argc, name))
+                {
+                  count++;
+                  if (list_only)
+                    {
+                      if (verbose)
+                        {
+                          if (count == 1)
+                            output_buf
+                              << "type               rows   cols   name\n"
+                              << "====               ====   ====   ====\n";
 
-			  output_buf
-			    << std::setiosflags (std::ios::left)
-			    << std::setw (16) << tc.type_name () . c_str ()
-			    << std::setiosflags (std::ios::right)
-			    << std::setw (7) << tc.rows ()
-			    << std::setw (7) << tc.columns ()
-			    << "   " << name << "\n";
-			}
-		      else
-			symbol_names.push_back (name);
-		    }
-		  else
-		    {
-		      if (nargout == 1)
-			{
-			  if (format == LS_MAT_ASCII)
-			    retval = tc;
-			  else
-			    retstruct.assign (name, tc);
-			}
-		      else
-			install_loaded_variable (name, tc, global, doc);
-		    }
-		}
+                          output_buf
+                            << std::setiosflags (std::ios::left)
+                            << std::setw (16) << tc.type_name () . c_str ()
+                            << std::setiosflags (std::ios::right)
+                            << std::setw (7) << tc.rows ()
+                            << std::setw (7) << tc.columns ()
+                            << "   " << name << "\n";
+                        }
+                      else
+                        symbol_names.push_back (name);
+                    }
+                  else
+                    {
+                      if (nargout == 1)
+                        {
+                          if (format == LS_MAT_ASCII)
+                            retval = tc;
+                          else
+                            retstruct.assign (name, tc);
+                        }
+                      else
+                        install_loaded_variable (name, tc, global, doc);
+                    }
+                }
 
-	      // Only attempt to read one item from a headless text file.
+              // Only attempt to read one item from a headless text file.
 
-	      if (format == LS_MAT_ASCII)
-		break;
-	    }
-	  else
-	    error ("load: unable to load variable `%s'", name.c_str ());
-	}
+              if (format == LS_MAT_ASCII)
+                break;
+            }
+          else
+            error ("load: unable to load variable `%s'", name.c_str ());
+        }
       else
-	{
-	  if (count == 0)
-	    error ("load: are you sure `%s' is an Octave data file?",
-		   orig_fname.c_str ());
+        {
+          if (count == 0)
+            error ("load: are you sure `%s' is an Octave data file?",
+                   orig_fname.c_str ());
 
-	  break;
-	}
+          break;
+        }
     }
 
   if (list_only && count)
     {
       if (verbose)
-	{
-	  std::string msg = output_buf.str ();
+        {
+          std::string msg = output_buf.str ();
 
-	  if (nargout > 0)
-	    retval = msg;
-	  else
-	    octave_stdout << msg;
-	}
+          if (nargout > 0)
+            retval = msg;
+          else
+            octave_stdout << msg;
+        }
       else
-	{
-	  if (nargout  > 0)
-	    retval = Cell (string_vector (symbol_names));
-	  else
-	    {
-	      string_vector names (symbol_names);
+        {
+          if (nargout  > 0)
+            retval = Cell (string_vector (symbol_names));
+          else
+            {
+              string_vector names (symbol_names);
 
-	      names.list_in_columns (octave_stdout);
+              names.list_in_columns (octave_stdout);
 
-	      octave_stdout << "\n";
-	    }
-	}
+              octave_stdout << "\n";
+            }
+        }
     }
   else if (retstruct.nfields () != 0)
     retval = retstruct;
@@ -481,27 +491,27 @@ find_file_to_load (const std::string& name, const std::string& orig_name)
   std::string fname = name;
 
   if (! (octave_env::absolute_pathname (fname)
-	 || octave_env::rooted_relative_pathname (fname)))
+         || octave_env::rooted_relative_pathname (fname)))
     {
       file_stat fs (fname);
 
       if (! (fs.exists () && fs.is_reg ()))
-	{
-	  std::string tmp = octave_env::make_absolute
-	    (load_path::find_file (fname), octave_env::getcwd ());
+        {
+          std::string tmp
+            = octave_env::make_absolute (load_path::find_file (fname));
 
-	  if (! tmp.empty ())
-	    {
-	      warning_with_id ("Octave:load-file-in-path",
-			       "load: file found in load path");
-	      fname = tmp;
-	    }
-	}
+          if (! tmp.empty ())
+            {
+              warning_with_id ("Octave:load-file-in-path",
+                               "load: file found in load path");
+              fname = tmp;
+            }
+        }
     }
 
   size_t dot_pos = fname.rfind (".");
   size_t sep_pos = fname.find_last_of (file_ops::dir_sep_chars ());
-    
+
   if (dot_pos == std::string::npos
       || (sep_pos != std::string::npos && dot_pos < sep_pos))
     {
@@ -511,43 +521,30 @@ find_file_to_load (const std::string& name, const std::string& orig_name)
       file_stat fs (fname);
 
       if (! (fs.exists () && fs.is_reg ()))
-	fname = find_file_to_load (fname + ".mat", orig_name);
+        fname = find_file_to_load (fname + ".mat", orig_name);
     }
   else
     {
       file_stat fs (fname);
-  
-      if (! (fs.exists () && fs.is_reg ()))
-	{
-	  fname = "";
 
-	  error ("load: unable to find file %s", orig_name.c_str ());
-	}
+      if (! (fs.exists () && fs.is_reg ()))
+        {
+          fname = "";
+
+          error ("load: unable to find file %s", orig_name.c_str ());
+        }
     }
 
   return fname;
 }
 
 
-// HDF5 load/save documentation is included in the Octave manual
-// regardless, but if HDF5 is not linked in we also include a
-// sentence noting this, so the user understands that the features
-// aren't available.  Define a macro for this sentence:
-
-#ifdef HAVE_HDF5
-#define HAVE_HDF5_HELP_STRING ""
-#else /* ! HAVE_HDF5 */
-#define HAVE_HDF5_HELP_STRING "\n\
-HDF5 load and save are not available, as this Octave executable was\n\
-not linked with the HDF5 library."
-#endif /* ! HAVE HDF5 */
-
 DEFUN (load, args, nargout,
   "-*- texinfo -*-\n\
-@deffn  {Command} load file\n\
-@deffnx {Command} load options file\n\
-@deffnx {Command} load options file v1 v2 @dots{}\n\
-@deffnx {Command} S = load(\"options\", \"file\", \"v1\", \"v2\", @dots{})\n\
+@deftypefn  {Command} {} load file\n\
+@deftypefnx {Command} {} load options file\n\
+@deftypefnx {Command} {} load options file v1 v2 @dots{}\n\
+@deftypefnx {Command} {S =} load (\"options\", \"file\", \"v1\", \"v2\", @dots{})\n\
 Load the named variables @var{v1}, @var{v2}, @dots{}, from the file\n\
 @var{file}.  If no variables are specified then all variables found in the\n\
 file will be loaded.  As with @code{save}, the list of variables to extract\n\
@@ -602,15 +599,13 @@ name of the file.\n\
 Force Octave to assume the file is in Octave's binary format.\n\
 \n\
 @item -hdf5\n\
-Force Octave to assume the file is in HDF5 format.\n\
-(HDF5 is a free, portable binary format developed by the National\n\
+Force Octave to assume the file is in @sc{hdf5} format.\n\
+(@sc{hdf5} is a free, portable binary format developed by the National\n\
 Center for Supercomputing Applications at the University of Illinois.)\n\
-Note that Octave can read HDF5 files not created by itself, but may\n\
-skip some datasets in formats that it cannot support.\n"
-
-HAVE_HDF5_HELP_STRING
-
-"\n\
+Note that Octave can read @sc{hdf5} files not created by itself, but may\n\
+skip some datasets in formats that it cannot support.  This format is\n\
+only available if Octave was built with a link to the @sc{hdf5} libraries.\n\
+\n\
 @item -import\n\
 This option is accepted for backward compatibility but is ignored.\n\
 Octave can now support multi-dimensional HDF data and automatically\n\
@@ -636,7 +631,7 @@ Force Octave to assume the file is in the binary format written by\n\
 Force Octave to assume the file is in Octave's text format.\n\
 @end table\n\
 @seealso{save, dlmwrite, csvwrite, fwrite}\n\
-@end deffn")
+@end deftypefn")
 {
   octave_value_list retval;
 
@@ -660,59 +655,59 @@ Force Octave to assume the file is in Octave's text format.\n\
   for (i = 1; i < argc; i++)
     {
       if (argv[i] == "-force" || argv[i] == "-f")
-	{
-	  // Silently ignore this
-	  // warning ("load: -force ignored");
-	}
+        {
+          // Silently ignore this
+          // warning ("load: -force ignored");
+        }
       else if (argv[i] == "-list" || argv[i] == "-l")
-	{
-	  list_only = true;
-	}
+        {
+          list_only = true;
+        }
       else if (argv[i] == "-verbose" || argv[i] == "-v")
-	{
-	  verbose = true;
-	}
+        {
+          verbose = true;
+        }
       else if (argv[i] == "-ascii" || argv[i] == "-a")
-	{
-	  format = LS_MAT_ASCII;
-	}
+        {
+          format = LS_MAT_ASCII;
+        }
       else if (argv[i] == "-binary" || argv[i] == "-b")
-	{
-	  format = LS_BINARY;
-	}
+        {
+          format = LS_BINARY;
+        }
       else if (argv[i] == "-mat-binary" || argv[i] == "-mat" || argv[i] == "-m"
-	       || argv[i] == "-6" || argv[i] == "-v6")
-	{
-	  format = LS_MAT5_BINARY;
-	}
+               || argv[i] == "-6" || argv[i] == "-v6")
+        {
+          format = LS_MAT5_BINARY;
+        }
       else if (argv[i] == "-7" || argv[i] == "-v7")
-	{
-	  format = LS_MAT7_BINARY;
-	}
+        {
+          format = LS_MAT7_BINARY;
+        }
       else if (argv[i] == "-mat4-binary" || argv[i] == "-V4"
-	       || argv[i] == "-v4" || argv[i] == "-4")
-	{
-	  format = LS_MAT_BINARY;
-	}
+               || argv[i] == "-v4" || argv[i] == "-4")
+        {
+          format = LS_MAT_BINARY;
+        }
       else if (argv[i] == "-hdf5" || argv[i] == "-h")
-	{
+        {
 #ifdef HAVE_HDF5
-	  format = LS_HDF5;
+          format = LS_HDF5;
 #else /* ! HAVE_HDF5 */
-	  error ("load: octave executable was not linked with HDF5 library");
-	  return retval;
+          error ("load: octave executable was not linked with HDF5 library");
+          return retval;
 #endif /* ! HAVE_HDF5 */
-	}
+        }
       else if (argv[i] == "-import" || argv[i] == "-i")
-	{
-	  warning ("load: -import ignored");
-	}
+        {
+          warning ("load: -import ignored");
+        }
       else if (argv[i] == "-text" || argv[i] == "-t")
-	{
-	  format = LS_ASCII;
-	}
+        {
+          format = LS_ASCII;
+        }
       else
-	break;
+        break;
     }
 
   if (i == argc)
@@ -733,22 +728,22 @@ Force Octave to assume the file is in Octave's text format.\n\
 
 #ifdef HAVE_HDF5
       if (format == LS_HDF5)
-	error ("load: cannot read HDF5 format from stdin");
+        error ("load: cannot read HDF5 format from stdin");
       else
 #endif /* HAVE_HDF5 */
       if (format != LS_UNKNOWN)
-	{
-	  // FIXME -- if we have already seen EOF on a
-	  // previous call, how do we fix up the state of std::cin so
-	  // that we can get additional input?  I'm afraid that we
-	  // can't fix this using std::cin only.
+        {
+          // FIXME -- if we have already seen EOF on a
+          // previous call, how do we fix up the state of std::cin so
+          // that we can get additional input?  I'm afraid that we
+          // can't fix this using std::cin only.
 
-	  retval = do_load (std::cin, orig_fname, format, flt_fmt,
-			    list_only, swap, verbose, argv, i, argc,
-			    nargout);
-	}
+          retval = do_load (std::cin, orig_fname, format, flt_fmt,
+                            list_only, swap, verbose, argv, i, argc,
+                            nargout);
+        }
       else
-	error ("load: must specify file format if reading from stdin");
+        error ("load: must specify file format if reading from stdin");
     }
   else
     {
@@ -757,115 +752,115 @@ Force Octave to assume the file is in Octave's text format.\n\
       fname = find_file_to_load (fname, orig_fname);
 
       if (error_state)
-	return retval;
+        return retval;
 
       bool use_zlib = false;
 
       if (format == LS_UNKNOWN)
-	format = get_file_format (fname, orig_fname, use_zlib);
+        format = get_file_format (fname, orig_fname, use_zlib);
 
 #ifdef HAVE_HDF5
       if (format == LS_HDF5)
-	{
-	  i++;
+        {
+          i++;
 
-	  hdf5_ifstream hdf5_file (fname.c_str ());
+          hdf5_ifstream hdf5_file (fname.c_str ());
 
-	  if (hdf5_file.file_id >= 0)
-	    {
-	      retval = do_load (hdf5_file, orig_fname, format,
-				flt_fmt, list_only, swap, verbose,
-				argv, i, argc, nargout);
+          if (hdf5_file.file_id >= 0)
+            {
+              retval = do_load (hdf5_file, orig_fname, format,
+                                flt_fmt, list_only, swap, verbose,
+                                argv, i, argc, nargout);
 
-	      hdf5_file.close ();
-	    }
-	  else
-	    gripe_file_open ("load", orig_fname);
-	}
+              hdf5_file.close ();
+            }
+          else
+            gripe_file_open ("load", orig_fname);
+        }
       else
 #endif /* HAVE_HDF5 */
-	// don't insert any statements here; the "else" above has to
-	// go with the "if" below!!!!!
+        // don't insert any statements here; the "else" above has to
+        // go with the "if" below!!!!!
       if (format != LS_UNKNOWN)
-	{
-	  i++;
+        {
+          i++;
 
-	  // Always open in binary mode and handle various
-	  // line-endings explicitly.
-	  std::ios::openmode mode = std::ios::in | std::ios::binary;
+          // Always open in binary mode and handle various
+          // line-endings explicitly.
+          std::ios::openmode mode = std::ios::in | std::ios::binary;
 
 #ifdef HAVE_ZLIB
-	  if (use_zlib)
-	    {
-	      gzifstream file (fname.c_str (), mode);
+          if (use_zlib)
+            {
+              gzifstream file (fname.c_str (), mode);
 
-	      if (file)
-		{
-		  if (format == LS_BINARY)
-		    {
-		      if (read_binary_file_header (file, swap, flt_fmt) < 0)
-			{
-			  if (file) file.close ();
-			  return retval;
-			}
-		    }
-		  else if (format == LS_MAT5_BINARY 
-			   || format == LS_MAT7_BINARY)
-		    {
-		      if (read_mat5_binary_file_header (file, swap, false, orig_fname) < 0)
-			{
-			  if (file) file.close ();
-			  return retval;
-			}
-		    }
+              if (file)
+                {
+                  if (format == LS_BINARY)
+                    {
+                      if (read_binary_file_header (file, swap, flt_fmt) < 0)
+                        {
+                          if (file) file.close ();
+                          return retval;
+                        }
+                    }
+                  else if (format == LS_MAT5_BINARY
+                           || format == LS_MAT7_BINARY)
+                    {
+                      if (read_mat5_binary_file_header (file, swap, false, orig_fname) < 0)
+                        {
+                          if (file) file.close ();
+                          return retval;
+                        }
+                    }
 
-		  retval = do_load (file, orig_fname, format,
-				    flt_fmt, list_only, swap, verbose,
-				argv, i, argc, nargout);
+                  retval = do_load (file, orig_fname, format,
+                                    flt_fmt, list_only, swap, verbose,
+                                argv, i, argc, nargout);
 
-		  file.close ();
-		}
-	      else
-		gripe_file_open ("load", orig_fname);
-	    }
-	  else
+                  file.close ();
+                }
+              else
+                gripe_file_open ("load", orig_fname);
+            }
+          else
 #endif
-	    {
-	      std::ifstream file (fname.c_str (), mode);
+            {
+              std::ifstream file (fname.c_str (), mode);
 
-	      if (file)
-		{
-		  if (format == LS_BINARY)
-		    {
-		      if (read_binary_file_header (file, swap, flt_fmt) < 0)
-			{
-			  if (file) file.close ();
-			  return retval;
-			}
-		    }
-		  else if (format == LS_MAT5_BINARY 
-			   || format == LS_MAT7_BINARY)
-		    {
-		      if (read_mat5_binary_file_header (file, swap, false, orig_fname) < 0)
-			{
-			  if (file) file.close ();
-			  return retval;
-			}
-		    }
+              if (file)
+                {
+                  if (format == LS_BINARY)
+                    {
+                      if (read_binary_file_header (file, swap, flt_fmt) < 0)
+                        {
+                          if (file) file.close ();
+                          return retval;
+                        }
+                    }
+                  else if (format == LS_MAT5_BINARY
+                           || format == LS_MAT7_BINARY)
+                    {
+                      if (read_mat5_binary_file_header (file, swap, false, orig_fname) < 0)
+                        {
+                          if (file) file.close ();
+                          return retval;
+                        }
+                    }
 
-		  retval = do_load (file, orig_fname, format,
-				    flt_fmt, list_only, swap, verbose,
-				    argv, i, argc, nargout);
+                  retval = do_load (file, orig_fname, format,
+                                    flt_fmt, list_only, swap, verbose,
+                                    argv, i, argc, nargout);
 
-		  file.close ();
-		}
-	      else
-		error ("load: unable open input file `%s'",
-		       orig_fname.c_str ());
-	    }
-	}
+                  file.close ();
+                }
+              else
+                error ("load: unable to open input file `%s'",
+                       orig_fname.c_str ());
+            }
+        }
     }
-    
+
   return retval;
 }
 
@@ -883,27 +878,27 @@ glob_pattern_p (const std::string& pattern)
       char c = pattern[i];
 
       switch (c)
-	{
-	case '?':
-	case '*':
-	  return true;
+        {
+        case '?':
+        case '*':
+          return true;
 
-	case '[':	// Only accept an open brace if there is a close
-	  open++;	// brace to match it.  Bracket expressions must be
-	  continue;	// complete, according to Posix.2
+        case '[':       // Only accept an open brace if there is a close
+          open++;       // brace to match it.  Bracket expressions must be
+          continue;     // complete, according to Posix.2
 
-	case ']':
-	  if (open)
-	    return true;
-	  continue;
+        case ']':
+          if (open)
+            return true;
+          continue;
 
-	case '\\':
-	  if (i == len - 1)
-	    return false;
+        case '\\':
+          if (i == len - 1)
+            return false;
 
-	default:
-	  continue;
-	}
+        default:
+          continue;
+        }
     }
 
   return false;
@@ -911,8 +906,8 @@ glob_pattern_p (const std::string& pattern)
 
 static void
 do_save (std::ostream& os, const octave_value& tc,
-	 const std::string& name, const std::string& help,
-	 bool global, load_save_format fmt, bool save_as_floats)
+         const std::string& name, const std::string& help,
+         bool global, load_save_format fmt, bool save_as_floats)
 {
   switch (fmt.type)
     {
@@ -925,9 +920,9 @@ do_save (std::ostream& os, const octave_value& tc,
       break;
 
     case LS_MAT_ASCII:
-      if (! save_mat_ascii_data (os, tc, fmt.opts & LS_MAT_ASCII_LONG ? 16 : 8, 
+      if (! save_mat_ascii_data (os, tc, fmt.opts & LS_MAT_ASCII_LONG ? 16 : 8,
                                  fmt.opts & LS_MAT_ASCII_TABS))
-	warning ("save: unable to save %s in ASCII format", name.c_str ());
+        warning ("save: unable to save %s in ASCII format", name.c_str ());
       break;
 
     case LS_MAT_BINARY:
@@ -958,7 +953,7 @@ do_save (std::ostream& os, const octave_value& tc,
 
 void
 do_save (std::ostream& os, const symbol_table::symbol_record& sr,
-	 load_save_format fmt, bool save_as_floats)
+         load_save_format fmt, bool save_as_floats)
 {
   octave_value val = sr.varval ();
 
@@ -976,22 +971,22 @@ do_save (std::ostream& os, const symbol_table::symbol_record& sr,
 // in the format specified by FMT.
 
 static size_t
-save_fields (std::ostream& os, const Octave_map& m,
-	     const std::string& pattern,
-	     load_save_format fmt, bool save_as_floats)
+save_fields (std::ostream& os, const octave_scalar_map& m,
+             const std::string& pattern,
+             load_save_format fmt, bool save_as_floats)
 {
   glob_match pat (pattern);
-  
+
   size_t saved = 0;
 
-  for (Octave_map::const_iterator p = m.begin (); p != m.end (); p++)
+  for (octave_scalar_map::const_iterator p = m.begin (); p != m.end (); p++)
     {
       std::string empty_str;
 
-      if (pat.match(p->first))
+      if (pat.match(m.key (p)))
         {
-          do_save (os, p->second(0), p->first, empty_str,
-		   0, fmt, save_as_floats);
+          do_save (os, m.contents (p), m.key (p), empty_str,
+                   0, fmt, save_as_floats);
 
           saved++;
         }
@@ -1005,7 +1000,7 @@ save_fields (std::ostream& os, const Octave_map& m,
 
 static size_t
 save_vars (std::ostream& os, const std::string& pattern,
-	   load_save_format fmt, bool save_as_floats)
+           load_save_format fmt, bool save_as_floats)
 {
   std::list<symbol_table::symbol_record> vars = symbol_table::glob (pattern);
 
@@ -1018,7 +1013,7 @@ save_vars (std::ostream& os, const std::string& pattern,
       do_save (os, *p, fmt, save_as_floats);
 
       if (error_state)
-	break;
+        break;
 
       saved++;
     }
@@ -1028,8 +1023,8 @@ save_vars (std::ostream& os, const std::string& pattern,
 
 static string_vector
 parse_save_options (const string_vector &argv,
-		    load_save_format &format, bool &append,
-		    bool &save_as_floats, bool &use_zlib)
+                    load_save_format &format, bool &append,
+                    bool &save_as_floats, bool &use_zlib)
 {
   string_vector retval;
   int argc = argv.length ();
@@ -1039,74 +1034,74 @@ parse_save_options (const string_vector &argv,
   for (int i = 0; i < argc; i++)
     {
       if (argv[i] == "-append")
-	{
-	  append = true;
-	}
+        {
+          append = true;
+        }
       else if (argv[i] == "-ascii" || argv[i] == "-a")
-	{
-	  format = LS_MAT_ASCII;
-	}
+        {
+          format = LS_MAT_ASCII;
+        }
       else if (argv[i] == "-double")
-	{
-	  do_double = true;
-	}
+        {
+          do_double = true;
+        }
       else if (argv[i] == "-tabs")
-	{
-	  do_tabs = true;
-	}
+        {
+          do_tabs = true;
+        }
       else if (argv[i] == "-text" || argv[i] == "-t")
-	{
-	  format = LS_ASCII;
-	}
+        {
+          format = LS_ASCII;
+        }
       else if (argv[i] == "-binary" || argv[i] == "-b")
-	{
-	  format = LS_BINARY;
-	}
+        {
+          format = LS_BINARY;
+        }
       else if (argv[i] == "-hdf5" || argv[i] == "-h")
-	{
+        {
 #ifdef HAVE_HDF5
-	  format = LS_HDF5;
+          format = LS_HDF5;
 #else /* ! HAVE_HDF5 */
-	  error ("save: octave executable was not linked with HDF5 library");
+          error ("save: octave executable was not linked with HDF5 library");
 #endif /* ! HAVE_HDF5 */
-	}
-      else if (argv[i] == "-mat-binary" || argv[i] == "-mat" 
-	       || argv[i] == "-m" || argv[i] == "-6" || argv[i] == "-v6"
-	       || argv[i] == "-V6")
-	{
-	  format = LS_MAT5_BINARY;
-	}
+        }
+      else if (argv[i] == "-mat-binary" || argv[i] == "-mat"
+               || argv[i] == "-m" || argv[i] == "-6" || argv[i] == "-v6"
+               || argv[i] == "-V6")
+        {
+          format = LS_MAT5_BINARY;
+        }
 #ifdef HAVE_ZLIB
-      else if (argv[i] == "-mat7-binary" || argv[i] == "-7" 
-	       || argv[i] == "-v7" || argv[i] == "-V7")
-	{
-	  format = LS_MAT7_BINARY;
-	}
+      else if (argv[i] == "-mat7-binary" || argv[i] == "-7"
+               || argv[i] == "-v7" || argv[i] == "-V7")
+        {
+          format = LS_MAT7_BINARY;
+        }
 #endif
       else if (argv[i] == "-mat4-binary" || argv[i] == "-V4"
-	       || argv[i] == "-v4" || argv[i] == "-4")
-	{
-	  format = LS_MAT_BINARY;
-	}
+               || argv[i] == "-v4" || argv[i] == "-4")
+        {
+          format = LS_MAT_BINARY;
+        }
       else if (argv[i] == "-float-binary" || argv[i] == "-f")
-	{
-	  format = LS_BINARY;
-	  save_as_floats = true;
-	}
+        {
+          format = LS_BINARY;
+          save_as_floats = true;
+        }
       else if (argv[i] == "-float-hdf5")
-	{
+        {
 #ifdef HAVE_HDF5
-	  format = LS_HDF5;
-	  save_as_floats = true;
+          format = LS_HDF5;
+          save_as_floats = true;
 #else /* ! HAVE_HDF5 */
-	  error ("save: octave executable was not linked with HDF5 library");
+          error ("save: octave executable was not linked with HDF5 library");
 #endif /* ! HAVE_HDF5 */
-	}
+        }
 #ifdef HAVE_ZLIB
       else if (argv[i] == "-zip" || argv[i] == "-z")
-	{
-	  use_zlib  = true;
-	}
+        {
+          use_zlib  = true;
+        }
 #endif
       else
         retval.append (argv[i]);
@@ -1115,39 +1110,39 @@ parse_save_options (const string_vector &argv,
   if (do_double)
     {
       if (format == LS_MAT_ASCII)
-	format.opts |= LS_MAT_ASCII_LONG;
+        format.opts |= LS_MAT_ASCII_LONG;
       else
-	warning ("save: \"-double\" option only has an effect with \"-ascii\"");
+        warning ("save: \"-double\" option only has an effect with \"-ascii\"");
     }
 
   if (do_tabs)
     {
       if (format == LS_MAT_ASCII)
-	format.opts |= LS_MAT_ASCII_TABS;
+        format.opts |= LS_MAT_ASCII_TABS;
       else
-	warning ("save: \"-tabs\" option only has an effect with \"-ascii\"");
+        warning ("save: \"-tabs\" option only has an effect with \"-ascii\"");
     }
 
   return retval;
 }
 
 static string_vector
-parse_save_options (const std::string &arg, load_save_format &format, 
-		    bool &append, bool &save_as_floats, 
-		    bool &use_zlib)
+parse_save_options (const std::string &arg, load_save_format &format,
+                    bool &append, bool &save_as_floats,
+                    bool &use_zlib)
 {
   std::istringstream is (arg);
   std::string str;
   string_vector argv;
-  
+
   while (! is.eof ())
     {
       is >> str;
       argv.append (str);
     }
 
-  return parse_save_options (argv, format, append, save_as_floats, 
-			     use_zlib);
+  return parse_save_options (argv, format, append, save_as_floats,
+                             use_zlib);
 }
 
 void
@@ -1157,48 +1152,48 @@ write_header (std::ostream& os, load_save_format format)
     {
     case LS_BINARY:
       {
-	os << (oct_mach_info::words_big_endian ()
-	       ? "Octave-1-B" : "Octave-1-L");
+        os << (oct_mach_info::words_big_endian ()
+               ? "Octave-1-B" : "Octave-1-L");
 
-	oct_mach_info::float_format flt_fmt =
-	  oct_mach_info::native_float_format ();
+        oct_mach_info::float_format flt_fmt =
+          oct_mach_info::native_float_format ();
 
-	char tmp = static_cast<char> (float_format_to_mopt_digit (flt_fmt));
+        char tmp = static_cast<char> (float_format_to_mopt_digit (flt_fmt));
 
-	os.write (&tmp, 1);
+        os.write (&tmp, 1);
       }
       break;
 
     case LS_MAT5_BINARY:
     case LS_MAT7_BINARY:
       {
-	char const * versionmagic;
-	int16_t number = *(reinterpret_cast<const int16_t *>("\x00\x01"));
-	struct tm bdt;
-	time_t now;
-	char headertext[128];
+        char const * versionmagic;
+        int16_t number = *(reinterpret_cast<const int16_t *>("\x00\x01"));
+        struct tm bdt;
+        time_t now;
+        char headertext[128];
 
-	time (&now);
-	bdt = *gmtime (&now);
-	memset (headertext, ' ', 124);
-	// ISO 8601 format date
-	strftime (headertext, 124, "MATLAB 5.0 MAT-file, written by Octave "
-		  OCTAVE_VERSION ", %Y-%m-%d %T UTC", &bdt);
+        time (&now);
+        bdt = *gmtime (&now);
+        memset (headertext, ' ', 124);
+        // ISO 8601 format date
+        nstrftime (headertext, 124, "MATLAB 5.0 MAT-file, written by Octave "
+                   OCTAVE_VERSION ", %Y-%m-%d %T UTC", &bdt, 1, 0);
 
-	// The first pair of bytes give the version of the MAT file
-	// format.  The second pair of bytes form a magic number which
-	// signals a MAT file.  MAT file data are always written in
-	// native byte order.  The order of the bytes in the second
-	// pair indicates whether the file was written by a big- or
-	// little-endian machine.  However, the version number is
-	// written in the *opposite* byte order from everything else!
-	if (number == 1)
-	  versionmagic = "\x01\x00\x4d\x49"; // this machine is big endian
-	else
-	  versionmagic = "\x00\x01\x49\x4d"; // this machine is little endian
+        // The first pair of bytes give the version of the MAT file
+        // format.  The second pair of bytes form a magic number which
+        // signals a MAT file.  MAT file data are always written in
+        // native byte order.  The order of the bytes in the second
+        // pair indicates whether the file was written by a big- or
+        // little-endian machine.  However, the version number is
+        // written in the *opposite* byte order from everything else!
+        if (number == 1)
+          versionmagic = "\x01\x00\x4d\x49"; // this machine is big endian
+        else
+          versionmagic = "\x00\x01\x49\x4d"; // this machine is little endian
 
-	memcpy (headertext+124, versionmagic, 4);
-	os.write (headertext, 128);
+        memcpy (headertext+124, versionmagic, 4);
+        os.write (headertext, 128);
       }
 
       break;
@@ -1208,22 +1203,22 @@ write_header (std::ostream& os, load_save_format format)
 #endif /* HAVE_HDF5 */
     case LS_ASCII:
       {
-	octave_localtime now;
+        octave_localtime now;
 
-	std::string comment_string = now.strftime (Vsave_header_format_string);
+        std::string comment_string = now.strftime (Vsave_header_format_string);
 
-	if (! comment_string.empty ())
-	  {
+        if (! comment_string.empty ())
+          {
 #ifdef HAVE_HDF5
-	    if (format == LS_HDF5)
-	      {
-		hdf5_ofstream& hs = dynamic_cast<hdf5_ofstream&> (os);
-		H5Gset_comment (hs.file_id, "/", comment_string.c_str ());
-	      }
-	    else
+            if (format == LS_HDF5)
+              {
+                hdf5_ofstream& hs = dynamic_cast<hdf5_ofstream&> (os);
+                H5Gset_comment (hs.file_id, "/", comment_string.c_str ());
+              }
+            else
 #endif /* HAVE_HDF5 */
-	      os << comment_string << "\n";
-	  }
+              os << comment_string << "\n";
+          }
       }
     break;
 
@@ -1234,8 +1229,8 @@ write_header (std::ostream& os, load_save_format format)
 
 static void
 save_vars (const string_vector& argv, int argv_idx, int argc,
-	   std::ostream& os, load_save_format fmt,
-	   bool save_as_floats, bool write_header_info)
+           std::ostream& os, load_save_format fmt,
+           bool save_as_floats, bool write_header_info)
 {
   if (write_header_info)
     write_header (os, fmt);
@@ -1246,7 +1241,7 @@ save_vars (const string_vector& argv, int argv_idx, int argc,
     }
   else if (argv[argv_idx] == "-struct")
     {
-      if (++argv_idx >= argc) 
+      if (++argv_idx >= argc)
         {
           error ("save: missing struct name");
           return;
@@ -1262,44 +1257,44 @@ save_vars (const string_vector& argv, int argv_idx, int argc,
 
       octave_value struct_var = symbol_table::varref (struct_name);
 
-      if (! struct_var.is_map () || struct_var.numel () != 1) 
+      if (! struct_var.is_map () || struct_var.numel () != 1)
         {
           error ("save: `%s' is not a scalar structure",
-		 struct_name.c_str ());
+                 struct_name.c_str ());
           return;
         }
-      Octave_map struct_var_map = struct_var.map_value ();
+      octave_scalar_map struct_var_map = struct_var.scalar_map_value ();
 
       ++argv_idx;
 
-      if (argv_idx < argc) 
+      if (argv_idx < argc)
         {
           for (int i = argv_idx; i < argc; i++)
             {
               if (! save_fields (os, struct_var_map, argv[i], fmt,
-				 save_as_floats))
+                                 save_as_floats))
                 {
-                  warning ("save: no such field `%s.%s'", 
-			   struct_name.c_str (), argv[i].c_str ());
+                  warning ("save: no such field `%s.%s'",
+                           struct_name.c_str (), argv[i].c_str ());
                 }
             }
         }
       else
-	save_fields (os, struct_var_map, "*", fmt, save_as_floats);
+        save_fields (os, struct_var_map, "*", fmt, save_as_floats);
     }
   else
     {
       for (int i = argv_idx; i < argc; i++)
-	{
-	  if (! save_vars (os, argv[i], fmt, save_as_floats))
-	    warning ("save: no such variable `%s'", argv[i].c_str ());
-	}
+        {
+          if (! save_vars (os, argv[i], fmt, save_as_floats))
+            warning ("save: no such variable `%s'", argv[i].c_str ());
+        }
     }
 }
 
 static void
 dump_octave_core (std::ostream& os, const char *fname, load_save_format fmt,
-		  bool save_as_floats)
+                  bool save_as_floats)
 {
   write_header (os, fmt);
 
@@ -1315,26 +1310,26 @@ dump_octave_core (std::ostream& os, const char *fname, load_save_format fmt,
       octave_value val = p->varval ();
 
       if (val.is_defined ())
-	{
-	  std::string name = p->name ();
-	  std::string help;
-	  bool global = p->is_global ();
+        {
+          std::string name = p->name ();
+          std::string help;
+          bool global = p->is_global ();
 
-	  double val_size = val.byte_size () / 1024;
+          double val_size = val.byte_size () / 1024;
 
-	  // FIXME -- maybe we should try to throw out the largest first...
+          // FIXME -- maybe we should try to throw out the largest first...
 
-	  if (Voctave_core_file_limit < 0
-	      || save_mem_size + val_size < Voctave_core_file_limit)
-	    {
-	      save_mem_size += val_size;
+          if (Voctave_core_file_limit < 0
+              || save_mem_size + val_size < Voctave_core_file_limit)
+            {
+              save_mem_size += val_size;
 
-	      do_save (os, val, name, help, global, fmt, save_as_floats);
+              do_save (os, val, name, help, global, fmt, save_as_floats);
 
-	      if (error_state)
-		break;
-	    }
-	}
+              if (error_state)
+                break;
+            }
+        }
     }
 
   message (0, "save to `%s' complete", fname);
@@ -1359,101 +1354,94 @@ dump_octave_core (void)
 
       bool use_zlib = false;
 
-      parse_save_options (Voctave_core_file_options, format, append, 
-			  save_as_floats, use_zlib);
-  
+      parse_save_options (Voctave_core_file_options, format, append,
+                          save_as_floats, use_zlib);
+
       std::ios::openmode mode = std::ios::out;
 
       // Matlab v7 files are always compressed
       if (format == LS_MAT7_BINARY)
-	use_zlib = false;
+        use_zlib = false;
 
       if (format == LS_BINARY
 #ifdef HAVE_HDF5
-	  || format == LS_HDF5
+          || format == LS_HDF5
 #endif
-	  || format == LS_MAT_BINARY
-	  || format == LS_MAT5_BINARY
-	  || format == LS_MAT7_BINARY)
-	mode |= std::ios::binary;
+          || format == LS_MAT_BINARY
+          || format == LS_MAT5_BINARY
+          || format == LS_MAT7_BINARY)
+        mode |= std::ios::binary;
 
       mode |= append ? std::ios::ate : std::ios::trunc;
 
 #ifdef HAVE_HDF5
       if (format == LS_HDF5)
-	{
-	  hdf5_ofstream file (fname, mode);
+        {
+          hdf5_ofstream file (fname, mode);
 
-	  if (file.file_id >= 0)
-	    {
-	      dump_octave_core (file, fname, format, save_as_floats);
+          if (file.file_id >= 0)
+            {
+              dump_octave_core (file, fname, format, save_as_floats);
 
-	      file.close ();
-	    }
-	  else
-	    warning ("unable to open `%s' for writing...", fname);
-	}
+              file.close ();
+            }
+          else
+            warning ("unable to open `%s' for writing...", fname);
+        }
       else
 #endif /* HAVE_HDF5 */
-	// don't insert any commands here!  The open brace below must
-	// go with the else above!
-	{
+        // don't insert any commands here!  The open brace below must
+        // go with the else above!
+        {
 #ifdef HAVE_ZLIB
-	  if (use_zlib)
-	    {
-	      gzofstream file (fname, mode);
+          if (use_zlib)
+            {
+              gzofstream file (fname, mode);
 
-	      if (file)
-		{
-		  dump_octave_core (file, fname, format, save_as_floats);
+              if (file)
+                {
+                  dump_octave_core (file, fname, format, save_as_floats);
 
-		  file.close ();
-		}
-	      else
-		warning ("unable to open `%s' for writing...", fname);
-	    }
-	  else
+                  file.close ();
+                }
+              else
+                warning ("unable to open `%s' for writing...", fname);
+            }
+          else
 #endif
-	    {
-	      std::ofstream file (fname, mode);
-	  
-	      if (file)
-		{
-		  dump_octave_core (file, fname, format, save_as_floats);
+            {
+              std::ofstream file (fname, mode);
 
-		  file.close ();
-		}
-	      else
-		warning ("unable to open `%s' for writing...", fname);
-	    }
-	}
+              if (file)
+                {
+                  dump_octave_core (file, fname, format, save_as_floats);
+
+                  file.close ();
+                }
+              else
+                warning ("unable to open `%s' for writing...", fname);
+            }
+        }
     }
 }
 
-#ifdef HAVE_ZLIB
-#define HAVE_ZLIB_HELP_STRING ""
-#else /* ! HAVE_ZLIB */
-#define HAVE_ZLIB_HELP_STRING "\n\
-This option is not available, as this Octave executable was not linked with\n\
-the zlib library."
-#endif /* ! HAVE ZLIB */
 
 DEFUN (save, args, ,
   "-*- texinfo -*-\n\
-@deffn  {Command} save file\n\
-@deffnx {Command} save options file\n\
-@deffnx {Command} save options file @var{v1} @var{v2} @dots{}\n\
-@deffnx {Command} save options file -struct @var{STRUCT} @var{f1} @var{f2} @dots{}\n\
+@deftypefn  {Command} {} save file\n\
+@deftypefnx {Command} {} save options file\n\
+@deftypefnx {Command} {} save options file @var{v1} @var{v2} @dots{}\n\
+@deftypefnx {Command} {} save options file -struct @var{STRUCT} @var{f1} @var{f2} @dots{}\n\
 Save the named variables @var{v1}, @var{v2}, @dots{}, in the file\n\
 @var{file}.  The special filename @samp{-} may be used to write\n\
 output to the terminal.  If no variable names are listed, Octave saves\n\
 all the variables in the current scope.  Otherwise, full variable names or\n\
 pattern syntax can be used to specify the variables to save.\n\
-If the @code{-struct} modifier is used, fields @var{f1} @var{f2} @dots{}\n\
+If the @option{-struct} modifier is used, fields @var{f1} @var{f2} @dots{}\n\
 of the scalar structure @var{STRUCT} are saved as if they were variables\n\
 with corresponding names.\n\
 Valid options for the @code{save} command are listed in the following table.\n\
-Options that modify the output format override the format specified by \n\
+Options that modify the output format override the format specified by\n\
 @code{default_save_options}.\n\
 \n\
 If save is invoked using the functional form\n\
@@ -1467,6 +1455,8 @@ then the @var{options}, @var{file}, and variable name arguments\n\
 (@var{v1}, @dots{}) must be specified as character strings.\n\
 \n\
 @table @code\n\
+@item -append\n\
+Append to the destination instead of overwriting.\n\
 @item -ascii\n\
 Save a single matrix in a text file without header or any other information.\n\
 \n\
@@ -1479,15 +1469,14 @@ precision.  Only use this format if you know that all the\n\
 values to be saved can be represented in single precision.\n\
 \n\
 @item -hdf5\n\
-Save the data in HDF5 format.\n\
+Save the data in @sc{hdf5} format.\n\
 (HDF5 is a free, portable binary format developed by the National\n\
-Center for Supercomputing Applications at the University of Illinois.)\n"
-
-HAVE_HDF5_HELP_STRING
-
-"\n\
+Center for Supercomputing Applications at the University of Illinois.)\n\
+This format is only available if Octave was built with a link to the\n\
+@sc{hdf5} libraries.\n\
+\n\
 @item -float-hdf5\n\
-Save the data in HDF5 format but only using single precision.\n\
+Save the data in @sc{hdf5} format but only using single precision.\n\
 Only use this format if you know that all the\n\
 values to be saved can be represented in single precision.\n\
 \n\
@@ -1495,11 +1484,8 @@ values to be saved can be represented in single precision.\n\
 @itemx -v7\n\
 @itemx -7\n\
 @itemx -mat7-binary\n\
-Save the data in @sc{matlab}'s v7 binary data format.\n"
-
-HAVE_ZLIB_HELP_STRING
-
-"\n\
+Save the data in @sc{matlab}'s v7 binary data format.\n\
+\n\
 @item -V6\n\
 @itemx -v6\n\
 @itemx -6\n\
@@ -1518,13 +1504,12 @@ Save the data in Octave's text data format.  (default).\n\
 \n\
 @item -zip\n\
 @itemx -z\n\
-Use the gzip algorithm to compress the file.  This works equally on files that\n\
-are compressed with gzip outside of octave, and gzip can equally be used to\n\
-convert the files for backward compatibility.\n"
-
-HAVE_ZLIB_HELP_STRING
-
-"@end table\n\
+Use the gzip algorithm to compress the file.  This works equally on files\n\
+that are compressed with gzip outside of octave, and gzip can equally be\n\
+used to convert the files for backward compatibility.\n\
+This option is only available if Octave was built with a link to the zlib\n\
+libraries.\n\
+@end table\n\
 \n\
 The list of variables to save may use wildcard patterns containing\n\
 the following special characters:\n\
@@ -1539,10 +1524,10 @@ Match zero or more characters.\n\
 Match the list of characters specified by @var{list}.  If the first\n\
 character is @code{!} or @code{^}, match all characters except those\n\
 specified by @var{list}.  For example, the pattern @code{[a-zA-Z]} will\n\
-match all lower and upper case alphabetic characters.  \n\
+match all lower and uppercase alphabetic characters.\n\
 \n\
 Wildcards may also be used in the field name specifications when using\n\
-the @code{-struct} modifier (but not in the struct name itself).\n\
+the @option{-struct} modifier (but not in the struct name itself).\n\
 \n\
 @end table\n\
 \n\
@@ -1562,7 +1547,7 @@ save -binary data a b*\n\
 saves the variable @samp{a} and all variables beginning with @samp{b} to\n\
 the file @file{data} in Octave's binary format.\n\
 @seealso{load, default_save_options, dlmread, csvread, fread}\n\
-@end deffn")
+@end deftypefn")
 {
   octave_value_list retval;
 
@@ -1585,11 +1570,11 @@ the file @file{data} in Octave's binary format.\n\
   bool use_zlib = false;
 
   // get default options
-  parse_save_options (Vdefault_save_options, format, append, save_as_floats, 
+  parse_save_options (Vdefault_save_options, format, append, save_as_floats,
                       use_zlib);
 
   // override from command line
-  argv = parse_save_options (argv, format, append, save_as_floats, 
+  argv = parse_save_options (argv, format, append, save_as_floats,
                              use_zlib);
   argc = argv.length ();
   int i = 0;
@@ -1618,18 +1603,18 @@ the file @file{data} in Octave's binary format.\n\
         error ("save: cannot write HDF5 format to stdout");
       else
 #endif /* HAVE_HDF5 */
-	// don't insert any commands here!  the brace below must go
-	// with the "else" above!
-	{
-	  if (append)
-	    warning ("save: ignoring -append option for output to stdout");
+        // don't insert any commands here!  the brace below must go
+        // with the "else" above!
+        {
+          if (append)
+            warning ("save: ignoring -append option for output to stdout");
 
-	  // FIXME -- should things intended for the screen end up
-	  // in a octave_value (string)?
-	  
-	  save_vars (argv, i, argc, octave_stdout, format,
-		     save_as_floats, true);
-	}
+          // FIXME -- should things intended for the screen end up
+          // in a octave_value (string)?
+
+          save_vars (argv, i, argc, octave_stdout, format,
+                     save_as_floats, true);
+        }
     }
 
   // Guard against things like `save a*', which are probably mistakes...
@@ -1647,94 +1632,94 @@ the file @file{data} in Octave's binary format.\n\
 
       // Matlab v7 files are always compressed
       if (format == LS_MAT7_BINARY)
-	use_zlib = false;
+        use_zlib = false;
 
       std::ios::openmode mode
-	= append ? (std::ios::app | std::ios::ate) : std::ios::out;
+        = append ? (std::ios::app | std::ios::ate) : std::ios::out;
 
       if (format == LS_BINARY
 #ifdef HAVE_HDF5
-	  || format == LS_HDF5
+          || format == LS_HDF5
 #endif
-	  || format == LS_MAT_BINARY
-	  || format == LS_MAT5_BINARY
-	  || format == LS_MAT7_BINARY)
-	mode |= std::ios::binary;
+          || format == LS_MAT_BINARY
+          || format == LS_MAT5_BINARY
+          || format == LS_MAT7_BINARY)
+        mode |= std::ios::binary;
 
 #ifdef HAVE_HDF5
       if (format == LS_HDF5)
-	{
-	  // FIXME. It should be possible to append to HDF5 files.
-	  if (append)
-	    {
-	      error ("save: appending to HDF5 files is not implemented");
-	      return retval;
-	    }
+        {
+          // FIXME. It should be possible to append to HDF5 files.
+          if (append)
+            {
+              error ("save: appending to HDF5 files is not implemented");
+              return retval;
+            }
 
-	  bool write_header_info = ! (append && 
-				      H5Fis_hdf5 (fname.c_str ()) > 0);
+          bool write_header_info = ! (append &&
+                                      H5Fis_hdf5 (fname.c_str ()) > 0);
 
-	  hdf5_ofstream hdf5_file (fname.c_str (), mode);
+          hdf5_ofstream hdf5_file (fname.c_str (), mode);
 
-	  if (hdf5_file.file_id != -1)
-	    {
-	      save_vars (argv, i, argc, hdf5_file, format,
-			 save_as_floats, write_header_info);
+          if (hdf5_file.file_id != -1)
+            {
+              save_vars (argv, i, argc, hdf5_file, format,
+                         save_as_floats, write_header_info);
 
-	      hdf5_file.close ();
-	  }
-	else
-	  {
-	    gripe_file_open ("save", fname);
-	    return retval;
-	  }
-	}
+              hdf5_file.close ();
+          }
+        else
+          {
+            gripe_file_open ("save", fname);
+            return retval;
+          }
+        }
       else
 #endif /* HAVE_HDF5 */
-	// don't insert any statements here!  The brace below must go
-	// with the "else" above!
-	{
+        // don't insert any statements here!  The brace below must go
+        // with the "else" above!
+        {
 #ifdef HAVE_ZLIB
-	  if (use_zlib)
-	    {
-	      gzofstream file (fname.c_str (), mode);
+          if (use_zlib)
+            {
+              gzofstream file (fname.c_str (), mode);
 
-	      if (file)
-		{
-		  bool write_header_info = ! file.tellp ();
+              if (file)
+                {
+                  bool write_header_info = ! file.tellp ();
 
-		  save_vars (argv, i, argc, file, format,
-			     save_as_floats, write_header_info);
+                  save_vars (argv, i, argc, file, format,
+                             save_as_floats, write_header_info);
 
-		  file.close ();
-		}
-	      else
-		{
-		  gripe_file_open ("save", fname);
-		  return retval;
-		}
-	    }
-	  else
+                  file.close ();
+                }
+              else
+                {
+                  gripe_file_open ("save", fname);
+                  return retval;
+                }
+            }
+          else
 #endif
-	    {
-	      std::ofstream file (fname.c_str (), mode);
-	  
-	      if (file)
-		{
-		  bool write_header_info = ! file.tellp ();
+            {
+              std::ofstream file (fname.c_str (), mode);
 
-		  save_vars (argv, i, argc, file, format,
-			     save_as_floats, write_header_info);
+              if (file)
+                {
+                  bool write_header_info = ! file.tellp ();
 
-		  file.close ();
-		}
-	      else
-		{
-		  gripe_file_open ("save", fname);
-		  return retval;
-		}
-	    }
-	}
+                  save_vars (argv, i, argc, file, format,
+                             save_as_floats, write_header_info);
+
+                  file.close ();
+                }
+              else
+                {
+                  gripe_file_open ("save", fname);
+                  return retval;
+                }
+            }
+        }
     }
 
   return retval;
@@ -1742,7 +1727,7 @@ the file @file{data} in Octave's binary format.\n\
 
 DEFUN (crash_dumps_octave_core, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {@var{val} =} crash_dumps_octave_core ()\n\
+@deftypefn  {Built-in Function} {@var{val} =} crash_dumps_octave_core ()\n\
 @deftypefnx {Built-in Function} {@var{old_val} =} crash_dumps_octave_core (@var{new_val})\n\
 Query or set the internal variable that controls whether Octave tries\n\
 to save all current variables to the file \"octave-core\" if it\n\
@@ -1760,7 +1745,7 @@ DEFUN (default_save_options, args, nargout,
 Query or set the internal variable that specifies the default options\n\
 for the @code{save} command, and defines the default format.\n\
 Typical values include @code{\"-ascii\"}, @code{\"-text -zip\"}.\n\
-The default value is @code{-text}.\n\
+The default value is @option{-text}.\n\
 @seealso{save}\n\
 @end deftypefn")
 {
@@ -1769,7 +1754,7 @@ The default value is @code{-text}.\n\
 
 DEFUN (octave_core_file_limit, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {@var{val} =} octave_core_file_limit ()\n\
+@deftypefn  {Built-in Function} {@var{val} =} octave_core_file_limit ()\n\
 @deftypefnx {Built-in Function} {@var{old_val} =} octave_core_file_limit (@var{new_val})\n\
 Query or set the internal variable that specifies the maximum amount\n\
 of memory (in kilobytes) of the top-level workspace that Octave will\n\
@@ -1787,7 +1772,7 @@ be much larger than the limit.  The default value is -1 (unlimited)\n\
 
 DEFUN (octave_core_file_name, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {@var{val} =} octave_core_file_name ()\n\
+@deftypefn  {Built-in Function} {@var{val} =} octave_core_file_name ()\n\
 @deftypefnx {Built-in Function} {@var{old_val} =} octave_core_file_name (@var{new_val})\n\
 Query or set the internal variable that specifies the name of the file\n\
 used for saving data from the top-level workspace if Octave aborts.\n\
@@ -1800,7 +1785,7 @@ The default value is @code{\"octave-core\"}\n\
 
 DEFUN (octave_core_file_options, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {@var{val} =} octave_core_file_options ()\n\
+@deftypefn  {Built-in Function} {@var{val} =} octave_core_file_options ()\n\
 @deftypefnx {Built-in Function} {@var{old_val} =} octave_core_file_options (@var{new_val})\n\
 Query or set the internal variable that specifies the options used for\n\
 saving the workspace data if Octave aborts.  The value of\n\
@@ -1825,8 +1810,8 @@ passed to @code{strftime} and should begin with the character\n\
 @code{save_header_format_string} is the empty string,\n\
 the header comment is omitted from text-format data files.  The\n\
 default value is\n\
-\n\
 @c Set example in small font to prevent overfull line\n\
+\n\
 @smallexample\n\
 \"# Created by Octave VERSION, %a %b %d %H:%M:%S %Y %Z <USER@@HOST>\"\n\
 @end smallexample\n\
@@ -1835,9 +1820,3 @@ default value is\n\
 {
   return SET_INTERNAL_VARIABLE (save_header_format_string);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

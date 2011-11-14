@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2006, 2007, 2008 David Bateman
+Copyright (C) 2006-2011 David Bateman
 Copyright (C) 2006 Andy Adler
 
 This file is part of Octave.
@@ -23,8 +23,6 @@ along with Octave; see the file COPYING.  If not, see
 
 #if !defined (octave_MatrixType_h)
 #define octave_MatrixType_h
-
-#include "oct-types.h"
 
 class Matrix;
 class ComplexMatrix;
@@ -74,10 +72,10 @@ public:
   MatrixType (const matrix_type t, bool _full = false);
 
   MatrixType (const matrix_type t, const octave_idx_type np,
-	      const octave_idx_type *p, bool _full = false);
+              const octave_idx_type *p, bool _full = false);
 
-  MatrixType (const matrix_type t, const octave_idx_type ku, 
-	      const octave_idx_type kl, bool _full = false);
+  MatrixType (const matrix_type t, const octave_idx_type ku,
+              const octave_idx_type kl, bool _full = false);
 
   ~MatrixType (void);
 
@@ -105,24 +103,24 @@ public:
 
   bool is_dense (void) const { return dense; }
 
-  bool is_diagonal (void) const 
+  bool is_diagonal (void) const
     { return (typ == Diagonal || typ == Permuted_Diagonal); }
-  
-  bool is_upper_triangular (void) const 
+
+  bool is_upper_triangular (void) const
     { return (typ == Upper || typ == Permuted_Upper); }
 
-  bool is_lower_triangular (void) const 
+  bool is_lower_triangular (void) const
     { return (typ == Lower || typ == Permuted_Lower); }
 
    bool is_banded (void)
     { return (typ == Banded || typ == Banded_Hermitian); }
-  
+
   bool is_tridiagonal (void) const
     { return (typ == Tridiagonal || typ == Tridiagonal_Hermitian); }
-  
+
   bool is_hermitian (void) const
     { return (typ == Banded_Hermitian || typ == Tridiagonal_Hermitian ||
-	      typ == Hermitian); }
+              typ == Hermitian); }
 
   bool is_rectangular (void) const { return (typ == Rectangular); }
 
@@ -182,9 +180,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

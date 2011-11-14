@@ -1,5 +1,4 @@
-## Copyright (C) 1993, 1994, 1995, 1996, 1997, 1999, 2000, 2002, 2004,
-##               2005, 2006, 2007 John W. Eaton
+## Copyright (C) 1993-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -18,14 +17,22 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} mesh (@var{x}, @var{y}, @var{z})
+## @deftypefn  {Function File} {} mesh (@var{x}, @var{y}, @var{z})
+## @deftypefnx {Function File} {} mesh (@var{z})
+## @deftypefnx {Function File} {} mesh (@dots{}, @var{c})
+## @deftypefnx {Function File} {} mesh (@var{hax}, @dots{})
+## @deftypefnx {Function File} {@var{h} =} mesh (@dots{})
 ## Plot a mesh given matrices @var{x}, and @var{y} from @code{meshgrid} and
 ## a matrix @var{z} corresponding to the @var{x} and @var{y} coordinates of
 ## the mesh.  If @var{x} and @var{y} are vectors, then a typical vertex
 ## is (@var{x}(j), @var{y}(i), @var{z}(i,j)).  Thus, columns of @var{z}
 ## correspond to different @var{x} values and rows of @var{z} correspond
 ## to different @var{y} values.
-## @seealso{meshgrid, contour}
+##
+## The color of the mesh is derived from the @code{colormap}
+## and the value of @var{z}.  Optionally the color of the mesh can be
+## specified independent of @var{z}, by adding a fourth matrix, @var{c}.
+## @seealso{colormap, contour, meshgrid, surf}
 ## @end deftypefn
 
 ## Author: jwe
@@ -42,7 +49,8 @@ function h = mesh (varargin)
   set (tmp, "edgecolor", "flat");
 
   if (! ishold ())
-    set (ax, "view", [-37.5, 30]);
+    set (ax, "view", [-37.5, 30],
+         "xgrid", "on", "ygrid", "on", "zgrid", "on");
   endif
 
   if (nargout > 0)

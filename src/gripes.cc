@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 2000, 2002, 2003, 2005,
-              2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -65,7 +64,7 @@ void
 gripe_nonconformant (octave_idx_type r1, octave_idx_type c1, octave_idx_type r2, octave_idx_type c2)
 {
   error ("nonconformant matrices (op1 is %dx%d, op2 is %dx%d)",
-	 r1, c1, r2, c2);
+         r1, c1, r2, c2);
 }
 
 void
@@ -148,7 +147,7 @@ gripe_wrong_type_arg (const char *name, const std::string& s, bool is_error)
 
 void
 gripe_wrong_type_arg (const char *name, const octave_value& tc,
-		      bool is_error)
+                      bool is_error)
 {
   std::string type = tc.type_name ();
 
@@ -157,7 +156,7 @@ gripe_wrong_type_arg (const char *name, const octave_value& tc,
 
 void
 gripe_wrong_type_arg (const std::string& name, const octave_value& tc,
-		      bool is_error)
+                      bool is_error)
 {
   gripe_wrong_type_arg (name.c_str (), tc, is_error);
 }
@@ -184,11 +183,11 @@ gripe_implicit_conversion (const char *id, const char *from, const char *to)
 
 void
 gripe_implicit_conversion (const std::string& id,
-			   const std::string& from, const std::string& to)
+                           const std::string& from, const std::string& to)
 {
   warning_with_id (id.c_str (),
-		   "implicit conversion from %s to %s",
-		   from.c_str (), to.c_str ());
+                   "implicit conversion from %s to %s",
+                   from.c_str (), to.c_str ());
 }
 
 void
@@ -201,38 +200,7 @@ void
 gripe_logical_conversion (void)
 {
   warning_with_id ("Octave:logical-conversion",
-		   "value not equal to 1 or 0 converted to logical 1");
-}
-
-void
-gripe_truncated_conversion (const char *srctype, const char *desttype)
-{
-  warning_with_id ("Octave:int-convert-overflow", 
-                   "data truncated converting from %s to %s",
-                   srctype, desttype);
-}
-
-void
-gripe_binop_integer_math_truncated (const char *op, const char *type1, const char *type2)
-{
-  warning_with_id ("Octave:int-math-overflow",
-                   "data truncated for %s by %s binary operator %s",
-                   type1, type2, op);
-}
-
-void
-gripe_native_integer_math_truncated (const char *fcn, const char *type)
-{
-  warning_with_id ("Octave:int-math-overflow",
-                   "data truncated for %s native %s operation",
-                   type, fcn);
-}
-
-void
-gripe_unop_integer_math_truncated (const char* op, const char *type)
-{
-  warning_with_id ("Octave:int-math-overflow",
-                   "data truncated for the %s unary operator %s", type, op);
+                   "value not equal to 1 or 0 converted to logical 1");
 }
 
 void
@@ -242,21 +210,6 @@ gripe_library_execution_error (void)
 
   if (! error_state)
     error ("caught execution error in library function");
-}
-
-void
-gripe_non_integer_conversion (const char *srctype, const char *desttype)
-{
-  warning_with_id ("Octave:int-convert-non-int-val", 
-                   "Conversion of non-integer value from %s to %s",
-                   srctype, desttype);
-}
-void
-gripe_nan_conversion (const char *srctype, const char *desttype)
-{
-  warning_with_id ("Octave:int-convert-nan", 
-                   "Conversion of NaN from %s to %s",
-                   srctype, desttype);
 }
 
 void
@@ -271,8 +224,15 @@ gripe_indexed_cs_list (void)
   error ("a cs-list cannot be further indexed");
 }
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+void
+gripe_nonbraced_cs_list_assignment (void)
+{
+  error ("invalid assignment to cs-list outside multiple assignment");
+}
+
+void
+gripe_warn_complex_cmp (void)
+{
+  warning_with_id ("Octave:matlab-incompatible",
+                   "potential Matlab compatibility problem: comparing complex numbers");
+}

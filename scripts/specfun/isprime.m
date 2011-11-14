@@ -1,4 +1,5 @@
-## Copyright (C) 2000, 2006, 2007 Paul Kienzle
+## Copyright (C) 2000-2011 Paul Kienzle
+## Copyright (C) 2010 VZLU Prague
 ##
 ## This file is part of Octave.
 ##
@@ -17,41 +18,70 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} isprime (@var{n})
+## @deftypefn {Function File} {} isprime (@var{x})
+## Return a logical array which is true where the elements of @var{x} are
+## prime numbers and false where they are not.
 ##
-## Return true if @var{n} is a prime number, false otherwise.
-##
-## Something like the following is much faster if you need to test a lot
-## of small numbers:
+## If the maximum value in @var{x} is very large, then you should be using
+## special purpose factorization code.
 ##
 ## @example
-##    @var{t} = ismember (@var{n}, primes (max (@var{n} (:))));
+## @group
+## isprime (1:6)
+##     @result{} [0, 1, 1, 0, 1, 0]
+## @end group
 ## @end example
-##
-## If max(n) is very large, then you should be using special purpose 
-## factorization code.
-##
 ## @seealso{primes, factor, gcd, lcm}
 ## @end deftypefn
 
-function t = isprime (n)
+function t = isprime (x)
 
-  if (nargin < 1)
+  if (nargin == 1)
+    if (any ((x != floor (x) | x < 0)(:)))
+      error ("isprime: needs positive integers");
+    endif
+    maxn = max (x(:));
+    ## generate prime table of suitable length.
+    maxp = min (maxn, max (sqrt (maxn), 1e7)); # FIXME: threshold not optimized.
+    pr = primes (maxp);
+    ## quick search for table matches.
+    t = lookup (pr, x, "b");
+    ## take the rest.
+    m = x(x > maxp);
+    if (! isempty (m))
+      ## there are still possible primes. filter them out by division.
+      if (maxn <= intmax ("uint32"))
+        m = uint32 (m);
+      elseif (maxn <= intmax ("uint64"))
+        m = uint64 (m);
+      else
+        warning ("isprime: too large integers being tested");
+      endif
+      pr = cast (pr(pr <= sqrt (maxn)), class (m));
+      for p = pr
+        m = m(rem (m, p) != 0);
+        if (length (m) < length (pr) / 10)
+          break;
+        endif
+      endfor
+      pr = pr(pr > p);
+      mm = arrayfun (@(x) all (rem (x, pr)), m);
+      m = m(mm);
+      if (! isempty (m))
+        m = cast (sort (m), class (x));
+        t |= lookup (m, x, "b");
+      endif
+    endif
+
+  else
     print_usage ();
   endif
 
-  if (! isscalar (n))
-    nel = numel (n);
-    t = n;
-    for i = 1:nel
-      t(i) = isprime (t(i));
-    endfor
-  elseif (n != fix (n) || n < 2)
-    t = 0;
-  elseif (n < 9)
-    t = all (n != [4, 6, 8]);
-  else
-    q = n./[2, 3:2:sqrt(n)];
-    t = all (q != fix (q));
-  endif
 endfunction
+
+
+%!assert (isprime (4), logical (0));
+%!assert (isprime (3), logical (1));
+%!assert (isprime (magic (3)), logical ([0, 0, 0; 1, 1, 1; 0, 0, 1]));
+%!error isprime ()
+%!error isprime (1, 2)

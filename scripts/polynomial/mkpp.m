@@ -1,4 +1,4 @@
-## Copyright (C) 2000, 2006, 2007, 2008, 2009 Paul Kienzle
+## Copyright (C) 2000-2011 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -17,24 +17,21 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{pp} =} mkpp (@var{x}, @var{p})
+## @deftypefn  {Function File} {@var{pp} =} mkpp (@var{x}, @var{p})
 ## @deftypefnx {Function File} {@var{pp} =} mkpp (@var{x}, @var{p}, @var{d})
-## 
-## Construct a piece-wise polynomial structure from sample points
+##
+## Construct a piecewise polynomial structure from sample points
 ## @var{x} and coefficients @var{p}.  The i-th row of @var{p},
 ## @code{@var{p} (@var{i},:)}, contains the coefficients for the polynomial
-## over the @var{i}-th interval, ordered from highest to 
-## lowest.  There must be one row for each interval in @var{x}, so 
-## @code{rows (@var{p}) == length (@var{x}) - 1}.  
+## over the @var{i}-th interval, ordered from highest to
+## lowest.  There must be one row for each interval in @var{x}, so
+## @code{rows (@var{p}) == length (@var{x}) - 1}.
 ##
-## You can concatenate multiple polynomials of the same order over the 
-## same set of intervals using @code{@var{p} = [ @var{p1}; @var{p2}; 
-## @dots{}; @var{pd} ]}.  In this case, @code{rows (@var{p}) == @var{d} 
-## * (length (@var{x}) - 1)}.
-##
-## @var{d} specifies the shape of the matrix @var{p} for all except the
-## last dimension.  If @var{d} is not specified it will be computed as
-## @code{round (rows (@var{p}) / (length (@var{x}) - 1))} instead.
+## @var{p} may also be a multi-dimensional array, specifying a vector-valued
+## or array-valued polynomial.  The shape is determined by @var{d}.  If @var{d}
+## is
+## not given, the default is @code{size (p)(1:end-2)}.  If @var{d} is given, the
+## leading dimensions of @var{p} are reshaped to conform to @var{d}.
 ##
 ## @seealso{unmkpp, ppval, spline}
 ## @end deftypefn
@@ -44,22 +41,32 @@ function pp = mkpp (x, P, d)
     print_usage ();
   endif
   pp.x = x(:);
-  pp.P = P;
-  pp.n = length (x) - 1;
-  pp.k = columns (P);
+  n = length (x) - 1;
+  if (n < 1)
+    error ("mkpp: at least one interval is needed");
+  endif
+  nd = ndims (P);
+  k = size (P, nd);
   if (nargin < 3)
-    d = round (rows (P) / pp.n); 
+    if (nd == 2)
+      d = 1;
+    else
+      d = prod (size (P)(1:nd-1));
+    endif
   endif
   pp.d = d;
-  if (pp.n * prod (d) != rows (P))
-    error ("mkpp: num intervals in x doesn't match num polynomials in P");
+  pp.P = P = reshape (P, prod (d), [], k);
+  pp.orient = 0;
+
+  if (size (P, 2) != n)
+    error ("mkpp: num intervals in X doesn't match num polynomials in P");
   endif
 endfunction
 
 %!demo # linear interpolation
-%! x=linspace(0,pi,5)'; 
+%! x=linspace(0,pi,5)';
 %! t=[sin(x),cos(x)];
-%! m=diff(t)./(x(2)-x(1)); 
+%! m=diff(t)./(x(2)-x(1));
 %! b=t(1:4,:);
 %! pp = mkpp(x, [m(:),b(:)]);
 %! xi=linspace(0,pi,50);

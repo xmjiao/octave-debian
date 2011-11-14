@@ -1,5 +1,4 @@
-## Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2003, 2005,
-##               2006, 2007, 2009 John W. Eaton
+## Copyright (C) 1994-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -18,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} colormap (@var{map})
+## @deftypefn  {Function File} {} colormap (@var{map})
 ## @deftypefnx {Function File} {} colormap ("default")
 ## Set the current colormap.
 ##
@@ -56,10 +55,10 @@ function cmap = colormap (map)
 
     if (! isempty (map))
       if (columns (map) != 3)
-        error ("colormap: map must have 3 columns: [R,G,B]");
+        error ("colormap: MAP must have 3 columns: [R,G,B]");
       endif
       if (min (min (map)) < 0 || max (max (map)) > 1)
-        error ("colormap: map must have values in [0,1]");
+        error ("colormap: MAP must have values in [0,1]");
       endif
       ## Set the new color map
       set (gcf (), "colormap", map);

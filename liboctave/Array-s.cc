@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1995, 1996, 1997, 1998, 2001, 2003, 2005, 2007, 2008, 2009
-              John W. Eaton
+Copyright (C) 1995-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -38,17 +37,7 @@ INSTANTIATE_ARRAY_SORT (short);
 
 INSTANTIATE_ARRAY (short, OCTAVE_API);
 
-#include "Array2.h"
-
-template class Array2<short>;
-
 #include "DiagArray2.h"
 #include "DiagArray2.cc"
 
 template class DiagArray2<short>;
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

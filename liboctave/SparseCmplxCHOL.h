@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 2005, 2006, 2007 David Bateman
-Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005 Andy Adler
+Copyright (C) 2005-2011 David Bateman
+Copyright (C) 1998-2005 Andy Adler
 
 This file is part of Octave.
 
@@ -30,24 +30,24 @@ along with Octave; see the file COPYING.  If not, see
 
 class
 OCTAVE_API
-SparseComplexCHOL : 
+SparseComplexCHOL :
   public sparse_base_chol <SparseComplexMatrix, Complex, SparseMatrix>
 {
 public:
 
-  SparseComplexCHOL (void) : 
+  SparseComplexCHOL (void) :
     sparse_base_chol<SparseComplexMatrix, Complex, SparseMatrix> () { }
 
-  SparseComplexCHOL (const SparseComplexMatrix& a, bool natural = true) : 
-    sparse_base_chol<SparseComplexMatrix, Complex, SparseMatrix> 
+  SparseComplexCHOL (const SparseComplexMatrix& a, bool natural = true) :
+    sparse_base_chol<SparseComplexMatrix, Complex, SparseMatrix>
   (a, natural) { }
 
-  SparseComplexCHOL (const SparseComplexMatrix& a, octave_idx_type& info, 
-		     bool natural = true) :
-    sparse_base_chol<SparseComplexMatrix, Complex, SparseMatrix> 
+  SparseComplexCHOL (const SparseComplexMatrix& a, octave_idx_type& info,
+                     bool natural = true) :
+    sparse_base_chol<SparseComplexMatrix, Complex, SparseMatrix>
   (a, info, natural) { }
 
-  SparseComplexCHOL (const SparseComplexCHOL& a) : 
+  SparseComplexCHOL (const SparseComplexCHOL& a) :
     sparse_base_chol<SparseComplexMatrix, Complex, SparseMatrix> (a) { }
 
   ~SparseComplexCHOL (void) { }
@@ -55,50 +55,44 @@ public:
   SparseComplexCHOL& operator = (const SparseComplexCHOL& a)
     {
       if (this != &a)
-	sparse_base_chol <SparseComplexMatrix, Complex, SparseMatrix> ::
-	  operator = (a);
+        sparse_base_chol <SparseComplexMatrix, Complex, SparseMatrix> ::
+          operator = (a);
 
       return *this;
     }
 
   SparseComplexMatrix chol_matrix (void) const { return R(); }
 
-  SparseComplexMatrix L (void) const 
-    { return sparse_base_chol<SparseComplexMatrix, Complex, 
-	SparseMatrix>:: L (); }
-
-  SparseComplexMatrix R (void) const 
+  SparseComplexMatrix L (void) const
     { return sparse_base_chol<SparseComplexMatrix, Complex,
-	SparseMatrix>:: R (); }
+        SparseMatrix>:: L (); }
 
-  octave_idx_type P (void) const 
-   { return sparse_base_chol<SparseComplexMatrix, Complex, 
+  SparseComplexMatrix R (void) const
+    { return sparse_base_chol<SparseComplexMatrix, Complex,
+        SparseMatrix>:: R (); }
+
+  octave_idx_type P (void) const
+   { return sparse_base_chol<SparseComplexMatrix, Complex,
         SparseMatrix>:: P (); }
 
-  ColumnVector perm (void) const 
-    { return sparse_base_chol<SparseComplexMatrix, Complex, 
-	SparseMatrix>:: perm (); }
+  ColumnVector perm (void) const
+    { return sparse_base_chol<SparseComplexMatrix, Complex,
+        SparseMatrix>:: perm (); }
 
-  SparseMatrix Q (void) const 
-    { return sparse_base_chol<SparseComplexMatrix, Complex, 
-	SparseMatrix>:: Q (); }
+  SparseMatrix Q (void) const
+    { return sparse_base_chol<SparseComplexMatrix, Complex,
+        SparseMatrix>:: Q (); }
 
   double rcond (void) const
-    { return sparse_base_chol<SparseComplexMatrix, Complex, 
-	SparseMatrix>:: rcond (); }
+    { return sparse_base_chol<SparseComplexMatrix, Complex,
+        SparseMatrix>:: rcond (); }
 
   // Compute the inverse of a matrix using the Cholesky factorization.
   SparseComplexMatrix inverse (void) const
-    { return sparse_base_chol<SparseComplexMatrix, Complex, 
-	SparseMatrix>:: inverse (); }
+    { return sparse_base_chol<SparseComplexMatrix, Complex,
+        SparseMatrix>:: inverse (); }
 };
 
 SparseComplexMatrix OCTAVE_API chol2inv (const SparseComplexMatrix& r);
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

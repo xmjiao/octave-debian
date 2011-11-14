@@ -1,5 +1,4 @@
-## Copyright (C) 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2002,
-##               2004, 2005, 2006, 2007, 2008, 2009 John W. Eaton
+## Copyright (C) 1993-2011 John W. Eaton
 ## Copyright (C) 2009 VZLU Prague
 ##
 ## This file is part of Octave.
@@ -19,7 +18,8 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} vander (@var{c}, @var{n})
+## @deftypefn  {Function File} {} vander (@var{c})
+## @deftypefnx {Function File} {} vander (@var{c}, @var{n})
 ## Return the Vandermonde matrix whose next to last column is @var{c}.
 ## If @var{n} is specified, it determines the number of columns;
 ## otherwise, @var{n} is taken to be equal to the length of @var{c}.
@@ -45,8 +45,9 @@
 ## c(n)^(n-1) @dots{} c(n)^2  c(n)  1
 ## @end group
 ## @end example
+##
 ## @end ifnottex
-## @seealso{hankel, sylvester_matrix, hilb, invhilb, toeplitz}
+## @seealso{polyfit}
 ## @end deftypefn
 
 ## Author: jwe

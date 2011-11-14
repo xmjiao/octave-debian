@@ -1,4 +1,4 @@
-## Copyright (C) 2001, 2005, 2006, 2007, 2008, 2009 Paul Kienzle
+## Copyright (C) 2001-2011 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -19,7 +19,7 @@
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} orient (@var{orientation})
 ## Set the default print orientation.  Valid values for
-## @var{orientation} include @code{"landscape"}, @code{"portrait"}, 
+## @var{orientation} include @code{"landscape"}, @code{"portrait"},
 ## and @code{"tall"}.
 ##
 ## The @code{"tall"} option sets the orientation to portait and fills
@@ -53,16 +53,16 @@ function retval = orient (varargin)
         ##         the papersize and paperpostion here.
         papersize = get (cf, "papersize");
         paperposition = get (cf, "paperposition");
-        set (cf, "paperorientation", orientation)
+        set (cf, "paperorientation", orientation);
         set (cf, "papersize", papersize([2, 1]));
         set (cf, "paperposition", paperposition([2, 1, 4, 3]));
       endif
     elseif (strcmpi (varargin{1}, 'tall'))
-      orient ("portrait")
+      orient ("portrait");
       papersize = get (cf, "papersize");
       set (cf, "paperposition", [0.25, 0.25, (papersize - 0.5)]);
     else
-      error ("orient: unknown orientation");
+      error ("orient: unknown ORIENTATION");
     endif
   else
     print_usage ();
@@ -100,7 +100,7 @@ endfunction
 %!  assert (orient, "portrait")
 %!  assert (get (hfig, "papersize"), papersize)
 %!  assert (get (hfig, "paperposition"), tallpaperposition)
-%!fail ("orient ('nobody')", "unknown orientation")
+%!fail ("orient ('nobody')", "unknown ORIENTATION")
 %!test
 %!  orient portrait # errors don't change the state
 %!  assert (orient, "portrait")

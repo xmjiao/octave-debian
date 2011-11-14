@@ -1,4 +1,4 @@
-## Copyright (C) 2007 Kai Habel
+## Copyright (C) 2007-2011 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -17,14 +17,22 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} surf (@var{x}, @var{y}, @var{z})
+## @deftypefn  {Function File} {} surf (@var{x}, @var{y}, @var{z})
+## @deftypefnx {Function File} {} surf (@var{z})
+## @deftypefnx {Function File} {} surf (@dots{}, @var{c})
+## @deftypefnx {Function File} {} surf (@var{hax}, @dots{})
+## @deftypefnx {Function File} {@var{h} =} surf (@dots{})
 ## Plot a surface given matrices @var{x}, and @var{y} from @code{meshgrid} and
 ## a matrix @var{z} corresponding to the @var{x} and @var{y} coordinates of
 ## the mesh.  If @var{x} and @var{y} are vectors, then a typical vertex
 ## is (@var{x}(j), @var{y}(i), @var{z}(i,j)).  Thus, columns of @var{z}
 ## correspond to different @var{x} values and rows of @var{z} correspond
 ## to different @var{y} values.
-## @seealso{mesh, surface}
+##
+## The color of the surface is derived from the @code{colormap} and
+## the value of @var{z}.  Optionally the color of the surface can be
+## specified independent of @var{z}, by adding a fourth matrix, @var{c}.
+## @seealso{colormap, contour, meshgrid, mesh}
 ## @end deftypefn
 
 ## Author: Kai Habel <kai.habel@gmx.de>
@@ -41,7 +49,7 @@ function retval = surf (varargin)
 
     if (! ishold ())
       set (h, "view", [-37.5, 30],
-	   "xgrid", "on", "ygrid", "on", "zgrid", "on");
+           "xgrid", "on", "ygrid", "on", "zgrid", "on");
     endif
   unwind_protect_cleanup
     axes (oldh);
@@ -52,3 +60,20 @@ function retval = surf (varargin)
   endif
 
 endfunction
+
+%!demo
+%! clf
+%! [~,~,Z]=peaks;
+%! surf(Z);
+
+%!demo
+%! [~,~,Z]=sombrero;
+%! [Fx,Fy] = gradient(Z);
+%! surf(Z,Fx+Fy);
+%! shading interp;
+
+%!demo
+%! [X,Y,Z]=sombrero;
+%! [~,Fy] = gradient(Z);
+%! surf(X,Y,Z,Fy);
+%! shading interp;

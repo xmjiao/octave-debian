@@ -1,4 +1,4 @@
-## Copyright (C) 2007, 2008, 2009 Kai Habel
+## Copyright (C) 2007-2011 Kai Habel
 ## Copyright (C) 2003 Shai Ayal
 ##
 ## This file is part of Octave.
@@ -18,7 +18,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {[@var{c}, @var{h}] =} contourf (@var{x}, @var{y}, @var{z}, @var{lvl})
+## @deftypefn  {Function File} {[@var{c}, @var{h}] =} contourf (@var{x}, @var{y}, @var{z}, @var{lvl})
 ## @deftypefnx {Function File} {[@var{c}, @var{h}] =} contourf (@var{x}, @var{y}, @var{z}, @var{n})
 ## @deftypefnx {Function File} {[@var{c}, @var{h}] =} contourf (@var{x}, @var{y}, @var{z})
 ## @deftypefnx {Function File} {[@var{c}, @var{h}] =} contourf (@var{z}, @var{n})
@@ -47,6 +47,7 @@
 ##
 ## The following example plots filled contours of the @code{peaks}
 ## function.
+##
 ## @example
 ## @group
 ## [x, y, z] = peaks (50);
@@ -68,7 +69,7 @@ function [c, h] = contourf (varargin)
     axes (xh);
     newplot ();
     [ctmp, htmp] = __contour__ (xh, "none", "fill", "on",
-				"linecolor", "black", varargin{:});
+                                "linecolor", "black", varargin{:});
   unwind_protect_cleanup
     axes (oldh);
   end_unwind_protect

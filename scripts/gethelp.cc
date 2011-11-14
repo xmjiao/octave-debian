@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1999, 2000, 2003, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1999-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -19,10 +19,6 @@ along with Octave; see the file COPYING.  If not, see
 <http://www.gnu.org/licenses/>.
 
 */
-
-#if defined (__DECCXX)
-#define __USE_STD_IOSTREAM
-#endif
 
 #include <cstdio>
 
@@ -56,76 +52,76 @@ extract_help_text (void)
   while ((c = std::cin.get ()) != EOF)
     {
       if (begin_comment)
-	{
-	  if (c == '%' || c == '#')
-	    continue;
-	  else if (discard_space && c == ' ')
-	    {
-	      discard_space = false;
-	      continue;
-	    }
-	  else
-	    begin_comment = false;
-	}
+        {
+          if (c == '%' || c == '#')
+            continue;
+          else if (discard_space && c == ' ')
+            {
+              discard_space = false;
+              continue;
+            }
+          else
+            begin_comment = false;
+        }
 
       if (in_comment)
-	{
-	  if (! have_help_text)
-	    {
-	      first_comments_seen = true;
-	      help_txt += (char) c;
-	    }
+        {
+          if (! have_help_text)
+            {
+              first_comments_seen = true;
+              help_txt += static_cast<char> (c);
+            }
 
-	  if (c == '\n')
-	    {
-	      in_comment = false;
-	      discard_space = true;
+          if (c == '\n')
+            {
+              in_comment = false;
+              discard_space = true;
 
-	      if ((c = std::cin.get ()) != EOF)
-		{
-		  if (c == '\n')
-		    break;
-		}
-	      else
-		break;
-	    }
-	}
+              if ((c = std::cin.get ()) != EOF)
+                {
+                  if (c == '\n')
+                    break;
+                }
+              else
+                break;
+            }
+        }
       else
-	{
-	  switch (c)
-	    {
-	    case ' ':
-	    case '\t':
-	      if (first_comments_seen)
-		have_help_text = true;
-	      break;
+        {
+          switch (c)
+            {
+            case ' ':
+            case '\t':
+              if (first_comments_seen)
+                have_help_text = true;
+              break;
 
-	    case '\n':
-	      if (first_comments_seen)
-		have_help_text = true;
-	      continue;
+            case '\n':
+              if (first_comments_seen)
+                have_help_text = true;
+              continue;
 
-	    case '%':
-	    case '#':
-	      begin_comment = true;
-	      in_comment = true;
-	      break;
+            case '%':
+            case '#':
+              begin_comment = true;
+              in_comment = true;
+              break;
 
-	    default:
-	      goto done;
-	    }
-	}
+            default:
+              goto done;
+            }
+        }
     }
 
  done:
 
   if (! help_txt.empty ())
     {
-      if (looks_like_octave_copyright (help_txt)) 
-	help_txt.resize (0);
+      if (looks_like_octave_copyright (help_txt))
+        help_txt.resize (0);
 
       if (help_txt.empty ())
-	help_txt = extract_help_text ();
+        help_txt = extract_help_text ();
     }
 
   return help_txt;
@@ -148,16 +144,16 @@ main (int argc, char **argv)
       file_name = argv[2];
     }
 
-  std::string help_text = extract_help_text ();  
+  std::string help_text = extract_help_text ();
 
   if (! help_text.empty ())
     {
       std::cout << "" << name << "\n"
-		<< "@c " << file_name << "\n"
-		<< help_text;
+                << "@c " << name << " " << file_name << "\n"
+                << help_text;
 
       if (help_text[help_text.length () - 1] != '\n')
-	std::cout << "\n";
+        std::cout << "\n";
     }
 
   return 0;

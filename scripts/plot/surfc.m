@@ -1,4 +1,4 @@
-## Copyright (C) 1996, 1997, 2007 John W. Eaton
+## Copyright (C) 1996-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -18,11 +18,11 @@
 
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} surfc (@var{x}, @var{y}, @var{z})
-## Plot a surface and contour given matrices @var{x}, and @var{y} from 
-## @code{meshgrid} and a matrix @var{z} corresponding to the @var{x} and 
-## @var{y} coordinates of the mesh.  If @var{x} and @var{y} are vectors, 
-## then a typical vertex is (@var{x}(j), @var{y}(i), @var{z}(i,j)).  Thus, 
-## columns of @var{z} correspond to different @var{x} values and rows of 
+## Plot a surface and contour given matrices @var{x}, and @var{y} from
+## @code{meshgrid} and a matrix @var{z} corresponding to the @var{x} and
+## @var{y} coordinates of the mesh.  If @var{x} and @var{y} are vectors,
+## then a typical vertex is (@var{x}(j), @var{y}(i), @var{z}(i,j)).  Thus,
+## columns of @var{z} correspond to different @var{x} values and rows of
 ## @var{z} correspond to different @var{y} values.
 ## @seealso{meshgrid, surf, contour}
 ## @end deftypefn
@@ -38,15 +38,12 @@ function h = surfc (varargin)
   set (tmp, "facecolor", "flat");
 
   if (! ishold ())
-    set (ax, "view", [-37.5, 30]);
+    set (ax, "view", [-37.5, 30],
+         "xgrid", "on", "ygrid", "on", "zgrid", "on");
   endif
 
-  if (nargin == 1)
-    z = varargin{1};
-  else
-    z = varargin{3};
-  endif
-  zmin = 2 * (min(z(:)) - max(z(:)));
+  drawnow ();
+  zmin = get (ax, "zlim")(1);
 
   [c, tmp2] = __contour__ (ax, zmin, varargin{:});
 
@@ -57,3 +54,20 @@ function h = surfc (varargin)
   endif
 
 endfunction
+
+%!demo
+%! clf
+%! [~,~,Z]=peaks;
+%! surfc(Z);
+
+%!demo
+%! [~,~,Z]=sombrero;
+%! [Fx,Fy] = gradient(Z);
+%! surfc(Z,Fx+Fy);
+%! shading interp;
+
+%!demo
+%! [X,Y,Z]=sombrero;
+%! [~,Fy] = gradient(Z);
+%! surfc(X,Y,Z,Fy);
+%! shading interp;

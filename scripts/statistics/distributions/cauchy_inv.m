@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 2000, 2002, 2004, 2005, 2006,
-##               2007 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -18,11 +17,11 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} cauchy_inv (@var{x}, @var{lambda}, @var{sigma})
+## @deftypefn {Function File} {} cauchy_inv (@var{x}, @var{location}, @var{scale})
 ## For each element of @var{x}, compute the quantile (the inverse of the
 ## CDF) at @var{x} of the Cauchy distribution with location parameter
-## @var{lambda} and scale parameter @var{sigma}.  Default values are
-## @var{lambda} = 0, @var{sigma} = 1. 
+## @var{location} and scale parameter @var{scale}.  Default values are
+## @var{location} = 0, @var{scale} = 1.
 ## @end deftypefn
 
 ## Author: KH <Kurt.Hornik@wu-wien.ac.at>
@@ -39,15 +38,15 @@ function inv = cauchy_inv (x, location, scale)
     scale = 1;
   endif
 
-  if (!isscalar (location) || !isscalar (scale)) 
+  if (!isscalar (location) || !isscalar (scale))
     [retval, x, location, scale] = common_size (x, location, scale);
     if (retval > 0)
-      error ("cauchy_inv: x, lambda and sigma must be of common size or scalar");
+      error ("cauchy_inv: X, LOCATION and SCALE must be of common size or scalar");
     endif
   endif
 
   sz = size (x);
-  inv = NaN * ones (sz);
+  inv = NaN (sz);
 
   ok = ((location > -Inf) & (location < Inf) &
        (scale > 0) & (scale < Inf));
@@ -59,7 +58,7 @@ function inv = cauchy_inv (x, location, scale)
 
   k = find ((x > 0) & (x < 1) & ok);
   if (any (k))
-    if (isscalar (location) && isscalar (scale)) 
+    if (isscalar (location) && isscalar (scale))
       inv(k) = location - scale .* cot (pi * x(k));
     else
       inv(k) = location(k) - scale(k) .* cot (pi * x(k));

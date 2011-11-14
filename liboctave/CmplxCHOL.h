@@ -1,8 +1,7 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2000, 2002, 2004, 2005, 2006,
-              2007 John W. Eaton
-Copyright (C) 2008, 2009 Jaroslav Hajek
+Copyright (C) 1994-2011 John W. Eaton
+Copyright (C) 2008-2009 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -36,11 +35,17 @@ ComplexCHOL
 {
 public:
 
-  ComplexCHOL (void) : chol_mat () { }
+  ComplexCHOL (void) : chol_mat (), xrcond (0) { }
 
-  ComplexCHOL (const ComplexMatrix& a, bool calc_cond = false) { init (a, calc_cond); }
+  ComplexCHOL (const ComplexMatrix& a, bool calc_cond = false)
+    : chol_mat (), xrcond (0)
+    {
+      init (a, calc_cond);
+    }
 
-  ComplexCHOL (const ComplexMatrix& a, octave_idx_type& info, bool calc_cond = false)
+  ComplexCHOL (const ComplexMatrix& a, octave_idx_type& info,
+               bool calc_cond = false)
+    : chol_mat (), xrcond (0)
     {
       info = init (a, calc_cond);
     }
@@ -51,10 +56,10 @@ public:
   ComplexCHOL& operator = (const ComplexCHOL& a)
     {
       if (this != &a)
-	{
-	  chol_mat = a.chol_mat;
-	  xrcond = a.xrcond;
-	}
+        {
+          chol_mat = a.chol_mat;
+          xrcond = a.xrcond;
+        }
 
       return *this;
     }
@@ -91,9 +96,3 @@ private:
 ComplexMatrix OCTAVE_API chol2inv (const ComplexMatrix& r);
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

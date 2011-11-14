@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 2004, 2005, 2006, 2007, 2008 David Bateman
-Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004 Andy Adler
+Copyright (C) 2004-2011 David Bateman
+Copyright (C) 1998-2004 Andy Adler
 
 This file is part of Octave.
 
@@ -30,32 +30,32 @@ along with Octave; see the file COPYING.  If not, see
 
 class
 OCTAVE_API
-SparseComplexLU 
+SparseComplexLU
   : public sparse_base_lu <SparseComplexMatrix, Complex, SparseMatrix, double>
 {
 public:
 
-  SparseComplexLU (void) 
+  SparseComplexLU (void)
     : sparse_base_lu <SparseComplexMatrix, Complex, SparseMatrix, double> () { }
 
-  SparseComplexLU (const SparseComplexMatrix& a, 
-		   const Matrix& piv_thres = Matrix (),
-		   bool scale = false);
+  SparseComplexLU (const SparseComplexMatrix& a,
+                   const Matrix& piv_thres = Matrix (),
+                   bool scale = false);
 
   SparseComplexLU (const SparseComplexMatrix& a, const ColumnVector& Qinit,
-		   const Matrix& piv_thres = Matrix (), 
-		   bool scale = false, bool FixedQ = false,
-		   double droptol = -1., bool milu = false,
-		   bool udiag = false);
+                   const Matrix& piv_thres = Matrix (),
+                   bool scale = false, bool FixedQ = false,
+                   double droptol = -1., bool milu = false,
+                   bool udiag = false);
 
-  SparseComplexLU (const SparseComplexLU& a) 
+  SparseComplexLU (const SparseComplexLU& a)
     : sparse_base_lu <SparseComplexMatrix, Complex, SparseMatrix, double> (a) { }
 
   SparseComplexLU& operator = (const SparseComplexLU& a)
     {
       if (this != &a)
-	sparse_base_lu <SparseComplexMatrix, Complex, SparseMatrix, double> 
-	  :: operator = (a);
+        sparse_base_lu <SparseComplexMatrix, Complex, SparseMatrix, double>
+          :: operator = (a);
 
       return *this;
     }
@@ -64,9 +64,3 @@ public:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

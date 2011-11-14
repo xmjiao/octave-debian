@@ -1,4 +1,4 @@
-## Copyright (C) 2007, 2008, 2009 Michael Goffioul
+## Copyright (C) 2007-2011 Michael Goffioul
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} hidden (@var{mode})
+## @deftypefn  {Function File} {} hidden (@var{mode})
 ## @deftypefnx {Function File} {} hidden ()
 ## Manipulation the mesh hidden line removal.  Called with no argument
 ## the hidden line removal is toggled.  The argument @var{mode} can be either
@@ -33,10 +33,10 @@ function retval = hidden (mode)
     if (ischar (mode))
       mode = tolower (mode);
       if (! strcmp (mode, "on") && ! strcmp (mode, "off"))
-	error ("hidden: mode expected to be 'on' or 'off'");
+        error ("hidden: MODE expected to be 'on' or 'off'");
       endif
     else
-      error ("hidden: expecting mode to be a string");
+      error ("hidden: expecting MODE to be a string");
     endif
   else
     print_usage ();
@@ -47,7 +47,7 @@ function retval = hidden (mode)
     if (strcmp (htype, "surface"))
       fc = get (h, "facecolor");
       if ((! ischar (fc) && is_white (fc))
-	  || (ischar (fc) && strcmpi (fc, "none")))
+          || (ischar (fc) && strcmpi (fc, "none")))
         switch (mode)
         case "on"
           set (h, "facecolor", "w");
@@ -56,10 +56,10 @@ function retval = hidden (mode)
         case "swap"
           if (ischar (fc))
             set (h, "facecolor", "w");
-	    mode = "on";
+            mode = "on";
           else
             set (h, "facecolor", "none");
-	    mode = "off";
+            mode = "off";
           endif
         endswitch
       endif

@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2001, 2003, 2005, 2006, 2007, 2008, 2009
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -29,30 +28,88 @@ along with Octave; see the file COPYING.  If not, see
 
 #include "Array.h"
 #include "Array.cc"
+#define INLINE_ASCENDING_SORT
+#define INLINE_DESCENDING_SORT
 #include "oct-sort.cc"
+
+// Specialize bool sorting (aka stable partitioning).
+
+template<bool desc>
+static void do_bool_partition (bool *data, octave_idx_type nel)
+{
+  octave_idx_type k = 0;
+  for (octave_idx_type i = 0; i < nel; i++)
+    if (data[i] == desc)
+      data[k++] = desc;
+  for (octave_idx_type i = k; i < nel; i++)
+    data[i] = ! desc;
+}
+
+template<bool desc>
+static void do_bool_partition (bool *data, octave_idx_type *idx,
+                               octave_idx_type nel)
+{
+  // FIXME: This is essentially a simple bucket sort.
+  // Can it be efficiently done by std::partition?
+  OCTAVE_LOCAL_BUFFER (octave_idx_type, jdx, nel);
+  octave_idx_type k = 0, l = 0;
+  for (octave_idx_type i = 0; i < nel; i++)
+    {
+      if (data[i] == desc)
+        {
+          data[k] = desc;
+          idx[k++] = idx[i];
+        }
+      else
+        jdx[l++] = idx[i];
+    }
+
+  for (octave_idx_type i = k; i < nel; i++)
+    {
+      data[i] = ! desc;
+      idx[i] = jdx[i-k];
+    }
+}
+
+template <> template <>
+void
+octave_sort<bool>::sort (bool *data, octave_idx_type nel,
+                         std::less<bool>)
+{
+  do_bool_partition<false> (data, nel);
+}
+
+template <> template <>
+void
+octave_sort<bool>::sort (bool *data, octave_idx_type nel,
+                         std::greater<bool>)
+{
+  do_bool_partition<true> (data, nel);
+}
+
+template <> template <>
+void
+octave_sort<bool>::sort (bool *data, octave_idx_type *idx, octave_idx_type nel,
+                         std::less<bool>)
+{
+  do_bool_partition<false> (data, idx, nel);
+}
+
+template <> template <>
+void
+octave_sort<bool>::sort (bool *data, octave_idx_type *idx, octave_idx_type nel,
+                         std::greater<bool>)
+{
+  do_bool_partition<true> (data, idx, nel);
+}
 
 INSTANTIATE_ARRAY_SORT (bool);
 
 INSTANTIATE_ARRAY (bool, OCTAVE_API);
 
-#include "Array2.h"
-
-template class OCTAVE_API Array2<bool>;
-
-#include "ArrayN.h"
-#include "ArrayN.cc"
-
-template class OCTAVE_API ArrayN<bool>;
-
-template OCTAVE_API std::ostream& operator << (std::ostream&, const ArrayN<bool>&);
+template OCTAVE_API std::ostream& operator << (std::ostream&, const Array<bool>&);
 
 #include "DiagArray2.h"
 #include "DiagArray2.cc"
 
 template class OCTAVE_API DiagArray2<bool>;
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

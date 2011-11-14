@@ -1,4 +1,4 @@
-## Copyright (C) 2004, 2006, 2007 Paul Kienzle
+## Copyright (C) 2004-2011 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} calendar (@dots{})
+## @deftypefn  {Function File} {} calendar (@dots{})
 ## @deftypefnx {Function File} {@var{c} =} calendar ()
 ## @deftypefnx {Function File} {@var{c} =} calendar (@var{d})
 ## @deftypefnx {Function File} {@var{c} =} calendar (@var{y}, @var{m})

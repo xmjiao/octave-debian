@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2000, 2002, 2003, 2004, 2005, 2006,
-              2007, 2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -39,6 +38,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "parse.h"
 #include "pt-arg-list.h"
 #include "pt-exp.h"
+#include "pt-id.h"
 #include "pt-pr-code.h"
 #include "pt-walk.h"
 #include "toplev.h"
@@ -64,7 +64,7 @@ tree_argument_list::has_magic_end (void) const
       tree_expression *elt = *p;
 
       if (elt && elt->has_magic_end ())
-	return true;
+        return true;
     }
 
   return false;
@@ -77,6 +77,12 @@ tree_argument_list::append (const element_type& s)
 
   if (! list_includes_magic_end && s && s->has_magic_end ())
     list_includes_magic_end = true;
+
+  if (! list_includes_magic_tilde && s && s->is_identifier ())
+    {
+      tree_identifier *id = dynamic_cast<tree_identifier *> (s);
+      list_includes_magic_tilde = id && id->is_black_hole ();
+    }
 }
 
 bool
@@ -87,7 +93,7 @@ tree_argument_list::all_elements_are_constant (void) const
       tree_expression *elt = *p;
 
       if (! elt->is_constant ())
-	return false;
+        return false;
     }
 
   return true;
@@ -105,46 +111,46 @@ DEFCONSTFUN (__end__, , ,
   if (indexed_object)
     {
       if (indexed_object->is_object ())
-	{
-	  octave_value_list args;
+        {
+          octave_value_list args;
 
-	  args(2) = num_indices;
-	  args(1) = index_position + 1;
-	  args(0) = *indexed_object;
+          args(2) = num_indices;
+          args(1) = index_position + 1;
+          args(0) = *indexed_object;
 
-	  std::string class_name = indexed_object->class_name ();
+          std::string class_name = indexed_object->class_name ();
 
-	  octave_value meth = symbol_table::find_method ("end", class_name);
+          octave_value meth = symbol_table::find_method ("end", class_name);
 
-	  if (meth.is_defined ())
-	    return feval (meth.function_value (), args, 1);
-	}
+          if (meth.is_defined ())
+            return feval (meth.function_value (), args, 1);
+        }
 
       dim_vector dv = indexed_object->dims ();
       int ndims = dv.length ();
 
       if (num_indices < ndims)
-	{
-	  for (int i = num_indices; i < ndims; i++)
-	    dv(num_indices-1) *= dv(i);
+        {
+          for (int i = num_indices; i < ndims; i++)
+            dv(num_indices-1) *= dv(i);
 
-	  if (num_indices == 1)
-	    {
-	      ndims = 2;
-	      dv.resize (ndims);
-	      dv(1) = 1;
-	    }
-	  else
-	    {
-	      ndims = num_indices;
-	      dv.resize (ndims);
-	    }
-	}
+          if (num_indices == 1)
+            {
+              ndims = 2;
+              dv.resize (ndims);
+              dv(1) = 1;
+            }
+          else
+            {
+              ndims = num_indices;
+              dv.resize (ndims);
+            }
+        }
 
       if (index_position < ndims)
-	retval = dv(index_position);
+        retval = dv(index_position);
       else
-	retval = 1;
+        retval = 1;
     }
   else
     ::error ("invalid use of end");
@@ -159,15 +165,15 @@ tree_argument_list::convert_to_const_vector (const octave_value *object)
   // way of asking an octave_value object this question?
 
   bool stash_object = (list_includes_magic_end
-		       && object
-		       && ! (object->is_function ()
-			     || object->is_function_handle ()));
+                       && object
+                       && ! (object->is_function ()
+                             || object->is_function_handle ()));
+
+  unwind_protect frame;
 
   if (stash_object)
     {
-      unwind_protect::begin_frame ("convert_to_const_vector");
-
-      unwind_protect_const_ptr (indexed_object);
+      frame.protect_var (indexed_object);
 
       indexed_object = object;
     }
@@ -180,43 +186,40 @@ tree_argument_list::convert_to_const_vector (const octave_value *object)
   for (int k = 0; k < len; k++)
     {
       if (stash_object)
-	{
-	  unwind_protect_int (index_position);
-	  unwind_protect_int (num_indices);
+        {
+          frame.protect_var (index_position);
+          frame.protect_var (num_indices);
 
-	  index_position = k;
-	  num_indices = len;
-	}
+          index_position = k;
+          num_indices = len;
+        }
 
       tree_expression *elt = *p++;
 
       if (elt)
-	{
-	  octave_value tmp = elt->rvalue1 ();
+        {
+          octave_value tmp = elt->rvalue1 ();
 
-	  if (error_state)
-	    {
-	      ::error ("evaluating argument list element number %d", k+1);
-	      args.clear ();
-	      break;
-	    }
-	  else
-	    {
-	      if (tmp.is_cs_list ())
+          if (error_state)
+            {
+              ::error ("evaluating argument list element number %d", k+1);
+              args.clear ();
+              break;
+            }
+          else
+            {
+              if (tmp.is_cs_list ())
                 args.push_back (tmp.list_value ());
-	      else if (tmp.is_defined ())
+              else if (tmp.is_defined ())
                 args.push_back (tmp);
-	    }
-	}
+            }
+        }
       else
-	{
-	  args.push_back (octave_value ());
-	  break;
-	}
+        {
+          args.push_back (octave_value ());
+          break;
+        }
     }
-
-  if (stash_object)
-    unwind_protect::run_frame ("convert_to_const_vector");
 
   return args;
 }
@@ -259,7 +262,7 @@ tree_argument_list::get_arg_names (void) const
 
 tree_argument_list *
 tree_argument_list::dup (symbol_table::scope_id scope,
-			 symbol_table::context_id context) const
+                         symbol_table::context_id context) const
 {
   tree_argument_list *new_list = new tree_argument_list ();
 
@@ -281,9 +284,3 @@ tree_argument_list::accept (tree_walker& tw)
 {
   tw.visit_argument_list (*this);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

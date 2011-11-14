@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 2000, 2002, 2005, 2007
-              John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -42,6 +41,8 @@ extern OCTINTERP_API int octave_pclose (FILE *f);
 
 extern OCTINTERP_API int octave_kbhit (bool wait = true);
 
+extern OCTINTERP_API std::string get_P_tmpdir (void);
+
 extern void w32_set_quiet_shutdown (void);
 
 #if defined (__WIN32__) && ! defined (_POSIX_VERSION)
@@ -55,9 +56,3 @@ extern void MINGW_signal_cleanup (void);
 extern OCTINTERP_API bool same_file_internal (const std::string&, const std::string&);
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

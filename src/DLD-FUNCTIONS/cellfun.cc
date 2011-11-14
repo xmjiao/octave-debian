@@ -1,7 +1,8 @@
 /*
 
-Copyright (C) 2005, 2006, 2007, 2008, 2009 Mohamed Kamoun
+Copyright (C) 2005-2011 Mohamed Kamoun
 Copyright (C) 2009 Jaroslav Hajek
+Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
 
@@ -40,173 +41,93 @@ along with Octave; see the file COPYING.  If not, see
 #include "variables.h"
 #include "ov-colon.h"
 #include "unwind-prot.h"
+#include "gripes.h"
+#include "utils.h"
 
-// Rationale:
-// The octave_base_value::subsasgn method carries too much overhead for
-// per-element assignment strategy.
-// This class will optimize the most optimistic and most likely case
-// when the output really is scalar by defining a hierarchy of virtual
-// collectors specialized for some scalar types.
+#include "ov-scalar.h"
+#include "ov-float.h"
+#include "ov-complex.h"
+#include "ov-flt-complex.h"
+#include "ov-bool.h"
+#include "ov-int8.h"
+#include "ov-int16.h"
+#include "ov-int32.h"
+#include "ov-int64.h"
+#include "ov-uint8.h"
+#include "ov-uint16.h"
+#include "ov-uint32.h"
+#include "ov-uint64.h"
 
-class scalar_col_helper
+static octave_value_list
+get_output_list (octave_idx_type count, octave_idx_type nargout,
+                 const octave_value_list& inputlist,
+                 octave_value& func,
+                 octave_value& error_handler)
 {
-public:
-  virtual bool collect (octave_idx_type i, const octave_value& val) = 0;
-  virtual octave_value result (void) = 0;
-  virtual ~scalar_col_helper (void) { }
-};
+  octave_value_list tmp = func.do_multi_index_op (nargout, inputlist);
 
-// The default collector represents what was previously done in the main loop.
-// This reuses the existing assignment machinery via octave_value::subsasgn,
-// which can perform all sorts of conversions, but is relatively slow.
-
-class scalar_col_helper_def : public scalar_col_helper
-{
-  std::list<octave_value_list> idx_list;
-  octave_value resval;
-public:
-  scalar_col_helper_def (const octave_value& val, const dim_vector& dims)
-    : idx_list (1), resval (val)
+  if (error_state)
     {
-      idx_list.front ().resize (1);
-      if (resval.dims () != dims)
-        resval.resize (dims);
-    }
-  ~scalar_col_helper_def (void) { }
-
-  bool collect (octave_idx_type i, const octave_value& val)
-    {
-      if (val.numel () == 1)
+      if (error_handler.is_defined ())
         {
-          idx_list.front ()(0) = static_cast<double> (i + 1);
-          resval = resval.subsasgn ("(", idx_list, val);
+          octave_scalar_map msg;
+          msg.assign ("identifier", last_error_id ());
+          msg.assign ("message", last_error_message ());
+          msg.assign ("index", static_cast<double> (count + static_cast<octave_idx_type>(1)));
+          octave_value_list errlist = inputlist;
+          errlist.prepend (msg);
+          buffer_error_messages--;
+          error_state = 0;
+          tmp = error_handler.do_multi_index_op (nargout, errlist);
+          buffer_error_messages++;
+
+          if (error_state)
+            tmp.clear ();
         }
       else
-        error ("cellfun: expecting all values to be scalars for UniformOutput = true");
-
-      return true;
+        tmp.clear ();
     }
-  octave_value result (void)
-    {
-      return resval;
-    }
-};
 
-template <class T>
-struct scalar_query_helper { };
-
-#define DEF_QUERY_HELPER(T, TEST, QUERY) \
-template <> \
-struct scalar_query_helper<T> \
-{ \
-  static bool has_value (const octave_value& val) \
-    { return TEST; } \
-  static T get_value (const octave_value& val) \
-    { return QUERY; } \
-}
-
-DEF_QUERY_HELPER (double, val.is_real_scalar (), val.scalar_value ());
-DEF_QUERY_HELPER (Complex, val.is_complex_scalar (), val.complex_value ());
-DEF_QUERY_HELPER (float, val.is_single_type () && val.is_real_scalar (), 
-                  val.float_scalar_value ());
-DEF_QUERY_HELPER (FloatComplex, val.is_single_type () && val.is_complex_scalar (), 
-                  val.float_complex_value ());
-DEF_QUERY_HELPER (bool, val.is_bool_scalar (), val.bool_value ());
-// FIXME: More?
-
-// This specializes for collecting elements of a single type, by accessing
-// an array directly. If the scalar is not valid, it returns false.
-
-template <class NDA>
-class scalar_col_helper_nda : public scalar_col_helper
-{
-  NDA arrayval;
-  typedef typename NDA::element_type T;
-public:
-  scalar_col_helper_nda (const octave_value& val, const dim_vector& dims)
-    : arrayval (dims)
-    {
-      arrayval(0) = scalar_query_helper<T>::get_value (val);
-    }
-  ~scalar_col_helper_nda (void) { }
-
-  bool collect (octave_idx_type i, const octave_value& val)
-    {
-      bool retval = scalar_query_helper<T>::has_value (val);
-      if (retval)
-        arrayval(i) = scalar_query_helper<T>::get_value (val);
-      return retval;
-    }
-  octave_value result (void)
-    {
-      return arrayval;
-    }
-};
-
-template class scalar_col_helper_nda<NDArray>;
-template class scalar_col_helper_nda<FloatNDArray>;
-template class scalar_col_helper_nda<ComplexNDArray>;
-template class scalar_col_helper_nda<FloatComplexNDArray>;
-template class scalar_col_helper_nda<boolNDArray>;
-
-// the virtual constructor.
-scalar_col_helper *
-make_col_helper (const octave_value& val, const dim_vector& dims)
-{
-  scalar_col_helper *retval;
-
-  if (val.is_bool_scalar ())
-    retval = new scalar_col_helper_nda<boolNDArray> (val, dims);
-  else if (val.is_complex_scalar ())
-    {
-      if (val.is_single_type ())
-        retval = new scalar_col_helper_nda<FloatComplexNDArray> (val, dims);
-      else
-        retval = new scalar_col_helper_nda<ComplexNDArray> (val, dims);
-    }
-  else if (val.is_real_scalar ())
-    {
-      if (val.is_single_type ())
-        retval = new scalar_col_helper_nda<FloatNDArray> (val, dims);
-      else
-        retval = new scalar_col_helper_nda<NDArray> (val, dims);
-    }
-  else
-    retval = new scalar_col_helper_def (val, dims);
-
-  return retval;
+  return tmp;
 }
 
 DEFUN_DLD (cellfun, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Loadable Function} {} cellfun (@var{name}, @var{c})\n\
-@deftypefnx {Loadable Function} {} cellfun (\"size\", @var{c}, @var{k})\n\
-@deftypefnx {Loadable Function} {} cellfun (\"isclass\", @var{c}, @var{class})\n\
-@deftypefnx {Loadable Function} {} cellfun (@var{func}, @var{c})\n\
-@deftypefnx {Loadable Function} {} cellfun (@var{func}, @var{c}, @var{d})\n\
-@deftypefnx {Loadable Function} {[@var{a}, @var{b}] =} cellfun (@dots{})\n\
+@deftypefn  {Loadable Function} {} cellfun (@var{name}, @var{C})\n\
+@deftypefnx {Loadable Function} {} cellfun (\"size\", @var{C}, @var{k})\n\
+@deftypefnx {Loadable Function} {} cellfun (\"isclass\", @var{C}, @var{class})\n\
+@deftypefnx {Loadable Function} {} cellfun (@var{func}, @var{C})\n\
+@deftypefnx {Loadable Function} {} cellfun (@var{func}, @var{C}, @var{D})\n\
+@deftypefnx {Loadable Function} {[@var{a}, @dots{}] =} cellfun (@dots{})\n\
 @deftypefnx {Loadable Function} {} cellfun (@dots{}, 'ErrorHandler', @var{errfunc})\n\
 @deftypefnx {Loadable Function} {} cellfun (@dots{}, 'UniformOutput', @var{val})\n\
 \n\
 Evaluate the function named @var{name} on the elements of the cell array\n\
-@var{c}.  Elements in @var{c} are passed on to the named function\n\
+@var{C}.  Elements in @var{C} are passed on to the named function\n\
 individually.  The function @var{name} can be one of the functions\n\
 \n\
 @table @code\n\
 @item isempty\n\
 Return 1 for empty elements.\n\
+\n\
 @item islogical\n\
 Return 1 for logical elements.\n\
+\n\
 @item isreal\n\
 Return 1 for real elements.\n\
+\n\
 @item length\n\
 Return a vector of the lengths of cell elements.\n\
+\n\
 @item ndims\n\
 Return the number of dimensions of each element.\n\
+\n\
 @item prodofsize\n\
 Return the product of dimensions of each element.\n\
+\n\
 @item size\n\
 Return the size along the @var{k}-th dimension.\n\
+\n\
 @item isclass\n\
 Return 1 for elements of @var{class}.\n\
 @end table\n\
@@ -216,23 +137,43 @@ in the form of an inline function, function handle, or the name of a\n\
 function (in a character string).  In the case of a character string\n\
 argument, the function must accept a single argument named @var{x}, and\n\
 it must return a string value.  The function can take one or more arguments,\n\
-with the inputs args given by @var{c}, @var{d}, etc.  Equally the function\n\
-can return one or more output arguments.  For example\n\
+with the inputs arguments given by @var{C}, @var{D}, etc.  Equally the\n\
+function can return one or more output arguments.  For example:\n\
 \n\
 @example\n\
 @group\n\
 cellfun (@@atan2, @{1, 0@}, @{0, 1@})\n\
-@result{}ans = [1.57080   0.00000]\n\
+     @result{}ans = [1.57080   0.00000]\n\
 @end group\n\
 @end example\n\
 \n\
-Note that the default output argument is an array of the same size as the\n\
-input arguments.\n\
+The number of output arguments of @code{cellfun} matches the number of output\n\
+arguments of the function.  The outputs of the function will be collected\n\
+into the output arguments of @code{cellfun} like this:\n\
 \n\
-If the parameter 'UniformOutput' is set to true (the default), then the function\n\
-must return a single element which will be concatenated into the\n\
-return value.  If 'UniformOutput' is false, the outputs are concatenated in\n\
-a cell array.  For example\n\
+@example\n\
+@group\n\
+function [a, b] = twoouts (x)\n\
+  a = x;\n\
+  b = x*x;\n\
+endfunction\n\
+[aa, bb] = cellfun(@@twoouts, @{1, 2, 3@})\n\
+     @result{}\n\
+        aa =\n\
+           1 2 3\n\
+        bb =\n\
+           1 4 9\n\
+@end group\n\
+@end example\n\
+\n\
+Note that per default the output argument(s) are arrays of the same size as\n\
+the input arguments.  Input arguments that are singleton (1x1) cells will be\n\
+automatically expanded to the size of the other arguments.\n\
+\n\
+If the parameter 'UniformOutput' is set to true (the default), then the\n\
+function must return scalars which will be concatenated into the return\n\
+array(s).  If 'UniformOutput' is false, the outputs are concatenated into a\n\
+cell array (or cell arrays).  For example:\n\
 \n\
 @example\n\
 @group\n\
@@ -249,11 +190,12 @@ call in case @var{func} generates an error.  The form of the function is\n\
 function [@dots{}] = errfunc (@var{s}, @dots{})\n\
 @end example\n\
 \n\
+@noindent\n\
 where there is an additional input argument to @var{errfunc} relative to\n\
 @var{func}, given by @var{s}.  This is a structure with the elements\n\
 'identifier', 'message' and 'index', giving respectively the error\n\
 identifier, the error message, and the index into the input arguments\n\
-of the element that caused the error.  For example\n\
+of the element that caused the error.  For example:\n\
 \n\
 @example\n\
 @group\n\
@@ -263,381 +205,393 @@ cellfun (@@factorial, @{-1,2@},'ErrorHandler',@@foo)\n\
 @end group\n\
 @end example\n\
 \n\
-@seealso{isempty, islogical, isreal, length, ndims, numel, size}\n\
+@seealso{arrayfun, structfun, spfun}\n\
 @end deftypefn")
 {
   octave_value_list retval;
-  std::string name = "function";
-  octave_function *func = 0;
   int nargin = args.length ();
-  nargout = (nargout < 1 ? 1 : nargout);
+  int nargout1 = (nargout < 1 ? 1 : nargout);
 
   if (nargin < 2)
     {
-      error ("cellfun: you must supply at least 2 arguments");
+      error ("cellfun: function requires at least 2 arguments");
       print_usage ();
       return retval;
     }
 
-  if (args(0).is_function_handle () || args(0).is_inline_function ())
-    {
-      func = args(0).function_value ();
-
-      if (error_state)
-	return retval;
-    }
-  else if (args(0).is_string ())
-    name = args(0).string_value ();
-  else
-    {
-      error ("cellfun: first argument must be a string or function handle");
-      return retval;
-    }	
+  octave_value func = args(0);
 
   if (! args(1).is_cell ())
     {
-      error ("cellfun: second argument must be a cell array");
+      error ("cellfun: C must be a cell array");
 
       return retval;
     }
-  
-  const Cell f_args = args(1).cell_value ();
-  
-  octave_idx_type k = f_args.numel ();
 
-  if (name == "isempty")
-    {      
-      boolNDArray result (f_args.dims ());
-      for (octave_idx_type count = 0; count < k ; count++)
-        result(count) = f_args.elem(count).is_empty ();
-      retval(0) = result;
-    }
-  else if (name == "islogical")
+  if (func.is_string ())
     {
-      boolNDArray result (f_args.dims ());
-      for (octave_idx_type  count= 0; count < k ; count++)
-        result(count) = f_args.elem(count).is_bool_type ();
-      retval(0) = result;
-    }
-  else if (name == "isreal")
-    {
-      boolNDArray result (f_args.dims ());
-      for (octave_idx_type  count= 0; count < k ; count++)
-        result(count) = f_args.elem(count).is_real_type ();
-      retval(0) = result;
-    }
-  else if (name == "length")
-    {
-      NDArray result (f_args.dims ());
-      for (octave_idx_type  count= 0; count < k ; count++)
-        result(count) = static_cast<double> (f_args.elem(count).length ());
-      retval(0) = result;
-    }
-  else if (name == "ndims")
-    {
-      NDArray result (f_args.dims ());
-      for (octave_idx_type count = 0; count < k ; count++)
-        result(count) = static_cast<double> (f_args.elem(count).ndims ());
-      retval(0) = result;
-    }
-  else if (name == "prodofsize" || name == "numel")
-    {
-      NDArray result (f_args.dims ());
-      for (octave_idx_type count = 0; count < k ; count++)
-        result(count) = static_cast<double> (f_args.elem(count).numel ());
-      retval(0) = result;
-    }
-  else if (name == "size")
-    {
-      if (nargin == 3)
+      const Cell f_args = args(1).cell_value ();
+
+      octave_idx_type k = f_args.numel ();
+
+      std::string name = func.string_value ();
+
+      if (name == "isempty")
         {
-          int d = args(2).nint_value () - 1;
-
-          if (d < 0)
-	    error ("cellfun: third argument must be a positive integer");
-
-	  if (! error_state)
+          boolNDArray result (f_args.dims ());
+          for (octave_idx_type count = 0; count < k ; count++)
+            result(count) = f_args.elem(count).is_empty ();
+          retval(0) = result;
+        }
+      else if (name == "islogical")
+        {
+          boolNDArray result (f_args.dims ());
+          for (octave_idx_type  count= 0; count < k ; count++)
+            result(count) = f_args.elem(count).is_bool_type ();
+          retval(0) = result;
+        }
+      else if (name == "isreal")
+        {
+          boolNDArray result (f_args.dims ());
+          for (octave_idx_type  count= 0; count < k ; count++)
+            result(count) = f_args.elem(count).is_real_type ();
+          retval(0) = result;
+        }
+      else if (name == "length")
+        {
+          NDArray result (f_args.dims ());
+          for (octave_idx_type  count= 0; count < k ; count++)
+            result(count) = static_cast<double> (f_args.elem(count).length ());
+          retval(0) = result;
+        }
+      else if (name == "ndims")
+        {
+          NDArray result (f_args.dims ());
+          for (octave_idx_type count = 0; count < k ; count++)
+            result(count) = static_cast<double> (f_args.elem(count).ndims ());
+          retval(0) = result;
+        }
+      else if (name == "prodofsize" || name == "numel")
+        {
+          NDArray result (f_args.dims ());
+          for (octave_idx_type count = 0; count < k ; count++)
+            result(count) = static_cast<double> (f_args.elem(count).numel ());
+          retval(0) = result;
+        }
+      else if (name == "size")
+        {
+          if (nargin == 3)
             {
-              NDArray result (f_args.dims ());
-              for (octave_idx_type count = 0; count < k ; count++)
+              int d = args(2).nint_value () - 1;
+
+              if (d < 0)
+                error ("cellfun: K must be a positive integer");
+
+              if (! error_state)
                 {
-                  dim_vector dv = f_args.elem(count).dims ();
-                  if (d < dv.length ())
-	            result(count) = static_cast<double> (dv(d));
-                  else
-	            result(count) = 1.0;
+                  NDArray result (f_args.dims ());
+                  for (octave_idx_type count = 0; count < k ; count++)
+                    {
+                      dim_vector dv = f_args.elem(count).dims ();
+                      if (d < dv.length ())
+                        result(count) = static_cast<double> (dv(d));
+                      else
+                        result(count) = 1.0;
+                    }
+                  retval(0) = result;
                 }
+            }
+          else
+            error ("cellfun: not enough arguments for \"size\"");
+        }
+      else if (name == "isclass")
+        {
+          if (nargin == 3)
+            {
+              std::string class_name = args(2).string_value();
+              boolNDArray result (f_args.dims ());
+              for (octave_idx_type count = 0; count < k ; count++)
+                result(count) = (f_args.elem(count).class_name() == class_name);
+
               retval(0) = result;
+            }
+          else
+            error ("cellfun: not enough arguments for \"isclass\"");
+        }
+      else
+        {
+          if (! valid_identifier (name))
+            {
+
+              std::string fcn_name = unique_symbol_name ("__cellfun_fcn_");
+              std::string fname = "function y = ";
+              fname.append (fcn_name);
+              fname.append ("(x) y = ");
+              octave_function *ptr_func = extract_function (args(0), "cellfun",
+                                                            fcn_name, fname, "; endfunction");
+              if (ptr_func && ! error_state)
+                func = octave_value (ptr_func, true);
+            }
+          else
+            {
+              func = symbol_table::find_function (name);
+              if (func.is_undefined ())
+                error ("cellfun: invalid function NAME: %s", name.c_str ());
+            }
+        }
+    }
+
+  if (error_state || ! retval.empty ())
+    return retval;
+
+  if (func.is_function_handle () || func.is_inline_function ()
+      || func.is_function ())
+    {
+      unwind_protect frame;
+      frame.protect_var (buffer_error_messages);
+
+      bool uniform_output = true;
+      octave_value error_handler;
+
+      while (nargin > 3 && args(nargin-2).is_string())
+        {
+          std::string arg = args(nargin-2).string_value();
+
+          std::transform (arg.begin (), arg.end (),
+                          arg.begin (), tolower);
+
+          if (arg == "uniformoutput")
+            uniform_output = args(nargin-1).bool_value();
+          else if (arg == "errorhandler")
+            {
+              if (args(nargin-1).is_function_handle () ||
+                  args(nargin-1).is_inline_function ())
+                {
+                  error_handler = args(nargin-1);
+                }
+              else if (args(nargin-1).is_string ())
+                {
+                  std::string err_name = args(nargin-1).string_value ();
+                  error_handler = symbol_table::find_function (err_name);
+                  if (error_handler.is_undefined ())
+                    {
+                      error ("cellfun: invalid function NAME: %s", err_name.c_str ());
+                      break;
+                    }
+                }
+              else
+                {
+                  error ("cellfun: invalid value for 'ErrorHandler' function");
+                  break;
+                }
+            }
+          else
+            {
+              error ("cellfun: unrecognized parameter %s",
+                     arg.c_str());
+              break;
+            }
+
+          nargin -= 2;
+        }
+
+      nargin -= 1;
+
+      octave_value_list inputlist (nargin, octave_value ());
+
+      OCTAVE_LOCAL_BUFFER (Cell, inputs, nargin);
+      OCTAVE_LOCAL_BUFFER (bool, mask, nargin);
+
+      // This is to prevent copy-on-write.
+      const Cell *cinputs = inputs;
+
+      octave_idx_type k = 1;
+
+      dim_vector fdims (1, 1);
+
+      if (error_state)
+        return octave_value_list ();
+
+      for (int j = 0; j < nargin; j++)
+        {
+          if (! args(j+1).is_cell ())
+            {
+              error ("cellfun: arguments must be cells");
+              return octave_value_list ();
+            }
+
+          inputs[j] = args(j+1).cell_value ();
+          mask[j] = inputs[j].numel () != 1;
+          if (! mask[j])
+            inputlist(j) = cinputs[j](0);
+        }
+
+      for (int j = 0; j < nargin; j++)
+        {
+          if (mask[j])
+            {
+              fdims = inputs[j].dims ();
+              k = inputs[j].numel ();
+              for (int i = j+1; i < nargin; i++)
+                {
+                  if (mask[i] && inputs[i].dims () != fdims)
+                    {
+                      error ("cellfun: dimensions mismatch");
+                      return octave_value_list ();
+                    }
+                }
+              break;
+            }
+        }
+
+      if (error_handler.is_defined ())
+        buffer_error_messages++;
+
+      if (uniform_output)
+        {
+          std::list<octave_value_list> idx_list (1);
+          idx_list.front ().resize (1);
+          std::string idx_type = "(";
+
+          OCTAVE_LOCAL_BUFFER (octave_value, retv, nargout1);
+
+          for (octave_idx_type count = 0; count < k ; count++)
+            {
+              for (int j = 0; j < nargin; j++)
+                {
+                  if (mask[j])
+                    inputlist.xelem (j) = cinputs[j](count);
+                }
+
+              const octave_value_list tmp = get_output_list (count, nargout, inputlist,
+                                                             func, error_handler);
+
+              if (error_state)
+                return retval;
+
+              if (tmp.length () < nargout1)
+                {
+                  if (tmp.length () < nargout)
+                    {
+                      error ("cellfun: too many output arguments");
+                      return octave_value_list ();
+                    }
+                  else
+                    nargout1 = 0;
+                }
+
+              if (count == 0)
+                {
+                  for (int j = 0; j < nargout1; j++)
+                    {
+                      octave_value val = tmp(j);
+
+                      if (val.numel () == 1)
+                        retv[j] = val.resize (fdims);
+                      else
+                        {
+                          error ("cellfun: all values must be scalars when UniformOutput = true");
+                          break;
+                        }
+                    }
+                }
+              else
+                {
+                  for (int j = 0; j < nargout1; j++)
+                    {
+                      octave_value val = tmp(j);
+
+                      if (! retv[j].fast_elem_insert (count, val))
+                        {
+                          if (val.numel () == 1)
+                            {
+                              idx_list.front ()(0) = count + 1.0;
+                              retv[j].assign (octave_value::op_asn_eq,
+                                              idx_type, idx_list, val);
+
+                              if (error_state)
+                                break;
+                            }
+                          else
+                            {
+                              error ("cellfun: all values must be scalars when UniformOutput = true");
+                              break;
+                            }
+                        }
+                    }
+                }
+
+              if (error_state)
+                break;
+            }
+
+          retval.resize (nargout1);
+          for (int j = 0; j < nargout1; j++)
+            {
+              if (nargout > 0 && retv[j].is_undefined ())
+                retval(j) = NDArray (fdims);
+              else
+                retval(j) = retv[j];
             }
         }
       else
-        error ("not enough arguments for `size'");
-    }
-  else if (name == "isclass")
-    {
-      if (nargin == 3)
         {
-          std::string class_name = args(2).string_value();
-          boolNDArray result (f_args.dims ());
+          OCTAVE_LOCAL_BUFFER (Cell, results, nargout1);
+          for (int j = 0; j < nargout1; j++)
+            results[j].resize (fdims);
+
           for (octave_idx_type count = 0; count < k ; count++)
-            result(count) = (f_args.elem(count).class_name() == class_name);
-          
-          retval(0) = result;
-        }
-      else
-        error ("not enough arguments for `isclass'");
-    }
-  else 
-    {
-      unwind_protect::begin_frame ("Fcellfun");
-      unwind_protect_int (buffer_error_messages);
-
-      std::string fcn_name;
-      
-      if (! func)
-	{
-	  fcn_name = unique_symbol_name ("__cellfun_fcn_");
-	  std::string fname = "function y = ";
-	  fname.append (fcn_name);
-	  fname.append ("(x) y = ");
-	  func = extract_function (args(0), "cellfun", fcn_name, fname,
-				       "; endfunction");
-	}
-
-      if (! func)
-	error ("unknown function");
-      else
-	{
-	  octave_value_list inputlist;
-	  bool uniform_output = true;
-	  bool have_error_handler = false;
-	  std::string err_name;
-	  octave_function *error_handler = 0;
-	  int offset = 1;
-	  int i = 1;
-	  OCTAVE_LOCAL_BUFFER (Cell, inputs, nargin);
-          // This is to prevent copy-on-write.
-          const Cell *cinputs = inputs;
-
-	  while (i < nargin)
-	    {
-	      if (args(i).is_string())
-		{
-		  std::string arg = args(i++).string_value();
-		  if (i == nargin)
-		    {
-		      error ("cellfun: parameter value is missing");
-		      goto cellfun_err;
-		    }
-
-		  std::transform (arg.begin (), arg.end (), 
-				  arg.begin (), tolower);
-
-		  if (arg == "uniformoutput")
-		    uniform_output = args(i++).bool_value();
-		  else if (arg == "errorhandler")
-		    {
-		      if (args(i).is_function_handle () || 
-			  args(i).is_inline_function ())
-			{
-			  error_handler = args(i).function_value ();
-
-			  if (error_state)
-			    goto cellfun_err;
-			}
-		      else if (args(i).is_string ())
-			{
-			  err_name = unique_symbol_name ("__cellfun_fcn_");
-			  std::string fname = "function y = ";
-			  fname.append (fcn_name);
-			  fname.append ("(x) y = ");
-			  error_handler = extract_function (args(i), "cellfun", 
-							    err_name, fname,
-							    "; endfunction");
-			}
-
-		      if (! error_handler)
-			goto cellfun_err;
-
-		      have_error_handler = true;
-		      i++;
-		    }
-		  else
-		    {
-		      error ("cellfun: unrecognized parameter %s", 
-			     arg.c_str());
-		      goto cellfun_err;
-		    }
-		  offset += 2;
-		}
-	      else
-		{
-		  inputs[i-offset] = args(i).cell_value ();
-		  if (f_args.dims() != inputs[i-offset].dims())
-		    {
-		      error ("cellfun: Dimension mismatch");
-		      goto cellfun_err;
-
-		    }
-		  i++;
-		}
-	    }
-
-          nargin -= offset;
-	  inputlist.resize(nargin);
-
-	  if (have_error_handler)
-	    buffer_error_messages++;
-
-	  if (uniform_output)
-	    {
-              OCTAVE_LOCAL_BUFFER (std::auto_ptr<scalar_col_helper>, retptr, nargout);
-
-	      for (octave_idx_type count = 0; count < k ; count++)
-		{
-		  for (int j = 0; j < nargin; j++)
-		    inputlist(j) = cinputs[j](count);
-
-		  octave_value_list tmp = feval (func, inputlist, nargout);
-
-		  if (error_state && have_error_handler)
-		    {
-		      Octave_map msg;
-		      msg.assign ("identifier", last_error_id ());
-		      msg.assign ("message", last_error_message ());
-		      msg.assign ("index", octave_value(double (count + static_cast<octave_idx_type>(1))));
-		      octave_value_list errlist = inputlist;
-		      errlist.prepend (msg);
-		      buffer_error_messages--;
-		      error_state = 0;
-		      tmp = feval (error_handler, errlist, nargout);
-		      buffer_error_messages++;
-
-		      if (error_state)
-			goto cellfun_err;
-		    }
-
-		  if (tmp.length() < nargout)
-		    {
-		      error ("cellfun: too many output arguments");
-		      goto cellfun_err;
-		    }
-
-		  if (error_state)
-		    break;
-
-		  if (count == 0)
-		    {
-		      for (int j = 0; j < nargout; j++)
-			{
-			  octave_value val = tmp(j);
-
-                          if (val.numel () == 1)
-                            retptr[j].reset (make_col_helper (val, f_args.dims ()));
-                          else
-                            {
-                              error ("cellfun: expecting all values to be scalars for UniformOutput = true");
-                              break;
-                            }
-			}
-		    }
-		  else
-		    {
-		      for (int j = 0; j < nargout; j++)
-			{
-			  octave_value val = tmp(j);
-
-                          if (! retptr[j]->collect (count, val))
-                            {
-                              // FIXME: A more elaborate structure would allow again a virtual
-                              // constructor here.
-                              retptr[j].reset (new scalar_col_helper_def (retptr[j]->result (), 
-                                                                          f_args.dims ()));
-                              retptr[j]->collect (count, val);
-                            }
-                        }
-		    }
-
-		  if (error_state)
-		    break;
-		}
-
-              retval.resize (nargout);
-              for (int j = 0; j < nargout; j++)
+            {
+              for (int j = 0; j < nargin; j++)
                 {
-                  if (retptr[j].get ())
-                    retval(j) = retptr[j]->result ();
-                  else
-                    retval(j) = Matrix ();
+                  if (mask[j])
+                    inputlist.xelem (j) = cinputs[j](count);
                 }
-	    }
-	  else
-	    {
-	      OCTAVE_LOCAL_BUFFER (Cell, results, nargout);
-	      for (int j = 0; j < nargout; j++)
-		results[j].resize(f_args.dims());
 
-	      for (octave_idx_type count = 0; count < k ; count++)
-		{
-		  for (int j = 0; j < nargin; j++)
-		    inputlist(j) = cinputs[j](count);
+              const octave_value_list tmp = get_output_list (count, nargout, inputlist,
+                                                             func, error_handler);
 
-		  octave_value_list tmp = feval (func, inputlist, nargout);
+              if (error_state)
+                return retval;
 
-		  if (error_state && have_error_handler)
-		    {
-		      Octave_map msg;
-		      msg.assign ("identifier", last_error_id ());
-		      msg.assign ("message", last_error_message ());
-		      msg.assign ("index", octave_value(double (count + static_cast<octave_idx_type>(1))));
-		      octave_value_list errlist = inputlist;
-		      errlist.prepend (msg);
-		      buffer_error_messages--;
-		      error_state = 0;
-		      tmp = feval (error_handler, errlist, nargout);
-		      buffer_error_messages++;
-
-		      if (error_state)
-			goto cellfun_err;
-		    }
-
-		  if (tmp.length() < nargout)
-		    {
-		      error ("cellfun: too many output arguments");
-		      goto cellfun_err;
-		    }
-
-		  if (error_state)
-		    break;
+              if (tmp.length () < nargout1)
+                {
+                  if (tmp.length () < nargout)
+                    {
+                      error ("cellfun: too many output arguments");
+                      return octave_value_list ();
+                    }
+                  else
+                    nargout1 = 0;
+                }
 
 
-		  for (int j = 0; j < nargout; j++)
-		    results[j](count) = tmp(j);
-		}
+              for (int j = 0; j < nargout1; j++)
+                results[j](count) = tmp(j);
+            }
 
-	      retval.resize(nargout);
-	      for (int j = 0; j < nargout; j++)
-		retval(j) = results[j];
-	    }
-
-	cellfun_err:
-	  if (error_state)
-	    retval = octave_value_list();
-
-	  if (! fcn_name.empty ())
-	    clear_function (fcn_name);
-
-	  if (! err_name.empty ())
-	    clear_function (err_name);
-	}
-
-      unwind_protect::run_frame ("Fcellfun");
+          retval.resize(nargout1);
+          for (int j = 0; j < nargout1; j++)
+            retval(j) = results[j];
+        }
     }
+  else
+    error ("cellfun: argument NAME must be a string or function handle");
 
   return retval;
 }
 
 /*
+
+%!test
+%!  [a,b] = cellfun (@(x) x, cell (2, 0));
+%!  assert (a, zeros (2, 0));
+%!  assert (b, zeros (2, 0));
+
+%!test
+%!  [a,b] = cellfun (@(x) x, cell (2, 0), "uniformoutput", false);
+%!  assert (a, cell (2, 0));
+%!  assert (b, cell (2, 0));
 
 %% Test function to check the "Errorhandler" option
 %!function [z] = cellfunerror (S, varargin)
@@ -662,8 +616,8 @@ cellfun (@@factorial, @{-1,2@},'ErrorHandler',@@foo)\n\
 %% First input argument can be the special string "isreal",
 %% "isempty", "islogical", "length", "ndims" or "prodofsize"
 %!test
-%!  A = cellfun ("isreal", {true, 0.1, false, i*2, [], "abc"});
-%!  assert (A, [true, true, true, false, true, false]);
+%!  A = cellfun ("isreal", {true, 0.1, {}, i*2, [], "abc"});
+%!  assert (A, [true, true, false, false, true, true]);
 %!test
 %!  A = cellfun ("isempty", {true, 0.1, false, i*2, [], "abc"});
 %!  assert (A, [false, false, false, false, true, false]);
@@ -736,7 +690,7 @@ cellfun (@@factorial, @{-1,2@},'ErrorHandler',@@foo)\n\
 
 %% Input arguments can be of type cell array of numeric
 %!test
-%!  A = cellfun (@(x,y) x>y, {1.1, 4.2}, {3.1, 2+6*i});
+%!  A = cellfun (@(x,y) x>y, {1.1, 4.2}, {3.1, 2+3*i});
 %!  assert (A, [false, true]);
 %!test
 %!  A = cellfun (@(x,y) x>y, {1.1, 4.2; 2, 4}, {3.1, 2; 2, 4+2*i}, \
@@ -898,15 +852,133 @@ cellfun (@@factorial, @{-1,2@},'ErrorHandler',@@foo)\n\
 
 */
 
+static void
+do_num2cell_helper (const dim_vector& dv,
+                    const Array<int>& dimv,
+                    dim_vector& celldv, dim_vector& arraydv,
+                    Array<int>& perm)
+{
+  int dvl = dimv.length ();
+  int maxd = dv.length ();
+  celldv = dv;
+  for (int i = 0; i < dvl; i++)
+    maxd = std::max (maxd, dimv(i));
+  if (maxd > dv.length ())
+    celldv.resize (maxd, 1);
+  arraydv = celldv;
+
+  OCTAVE_LOCAL_BUFFER_INIT (bool, sing, maxd, false);
+
+  perm.clear (maxd, 1);
+  for (int i = 0; i < dvl; i++)
+    {
+      int k = dimv(i) - 1;
+      if (k < 0)
+        {
+          error ("num2cell: dimension indices must be positive");
+          return;
+        }
+      else if (i > 0 && k < dimv(i-1) - 1)
+        {
+          error ("num2cell: dimension indices must be strictly increasing");
+          return;
+        }
+
+      sing[k] = true;
+      perm(i) = k;
+    }
+
+  for (int k = 0, i = dvl; k < maxd; k++)
+    if (! sing[k])
+      perm(i++) = k;
+
+  for (int i = 0; i < maxd; i++)
+    if (sing[i])
+      celldv(i) = 1;
+    else
+      arraydv(i) = 1;
+}
+
+template<class NDA>
+static inline typename NDA::element_type
+do_num2cell_elem (const NDA& array, octave_idx_type i)
+{ return array(i); }
+
+static inline Cell
+do_num2cell_elem (const Cell& array, octave_idx_type i)
+{ return Cell (array(i)); }
+
+
+template<class NDA>
+static Cell
+do_num2cell (const NDA& array, const Array<int>& dimv)
+{
+  if (dimv.is_empty ())
+    {
+      Cell retval (array.dims ());
+      octave_idx_type nel = array.numel ();
+      for (octave_idx_type i = 0; i < nel; i++)
+        retval.xelem (i) = do_num2cell_elem (array, i);
+
+      return retval;
+    }
+  else
+    {
+      dim_vector celldv, arraydv;
+      Array<int> perm;
+      do_num2cell_helper (array.dims (), dimv, celldv, arraydv, perm);
+      if (error_state)
+        return Cell ();
+
+      NDA parray = array.permute (perm);
+
+      octave_idx_type nela = arraydv.numel (), nelc = celldv.numel ();
+      parray = parray.reshape (dim_vector (nela, nelc));
+
+      Cell retval (celldv);
+      for (octave_idx_type i = 0; i < nelc; i++)
+        {
+          retval.xelem (i) = NDA (parray.column (i).reshape (arraydv));
+        }
+
+      return retval;
+    }
+}
+
+
 DEFUN_DLD (num2cell, args, ,
   "-*- texinfo -*-\n\
-@deftypefn  {Loadable Function} {@var{c} =} num2cell (@var{m})\n\
-@deftypefnx {Loadable Function} {@var{c} =} num2cell (@var{m}, @var{dim})\n\
-Convert the matrix @var{m} to a cell array.  If @var{dim} is defined, the\n\
-value @var{c} is of dimension 1 in this dimension and the elements of\n\
-@var{m} are placed in slices in @var{c}.\n\
+@deftypefn  {Loadable Function} {@var{C} =} num2cell (@var{A})\n\
+@deftypefnx {Loadable Function} {@var{C} =} num2cell (@var{A}, @var{dim})\n\
+Convert the numeric matrix @var{A} to a cell array.  If @var{dim} is\n\
+defined, the value @var{C} is of dimension 1 in this dimension and the\n\
+elements of @var{A} are placed into @var{C} in slices.  For example:\n\
+\n\
+@example\n\
+@group\n\
+num2cell([1,2;3,4])\n\
+     @result{} ans =\n\
+        @{\n\
+          [1,1] =  1\n\
+          [2,1] =  3\n\
+          [1,2] =  2\n\
+          [2,2] =  4\n\
+        @}\n\
+num2cell([1,2;3,4],1)\n\
+     @result{} ans =\n\
+        @{\n\
+          [1,1] =\n\
+             1\n\
+             3\n\
+          [1,2] =\n\
+             2\n\
+             4\n\
+        @}\n\
+@end group\n\
+@end example\n\
+\n\
 @seealso{mat2cell}\n\
-@end deftypefn") 
+@end deftypefn")
 {
   int nargin =  args.length();
   octave_value retval;
@@ -915,72 +987,59 @@ value @var{c} is of dimension 1 in this dimension and the elements of\n\
     print_usage ();
   else
     {
-      dim_vector dv = args(0).dims ();
-      Array<int> sings;
+      octave_value array = args(0);
+      Array<int> dimv;
+      if (nargin > 1)
+        dimv = args (1).int_vector_value (true);
 
-      if (nargin == 2)
-	{
-	  ColumnVector dsings = ColumnVector (args(1).vector_value 
-						  (false, true));
-	  sings.resize (dsings.length());
-
-	  if (!error_state)
-	    for (octave_idx_type i = 0; i < dsings.length(); i++)
-	      if (dsings(i) > dv.length() || dsings(i) < 1 ||
-		  D_NINT(dsings(i)) != dsings(i))
-		{
-		  error ("invalid dimension specified");
-		  break;
-		}
-	      else
-		sings(i) = NINT(dsings(i)) - 1;
-	}
-
-      if (! error_state)
-	{
-	  Array<bool> idx_colon (dv.length());
-	  dim_vector new_dv (dv);
-	  octave_value_list lst (new_dv.length(), octave_value());
-
-	  for (int i = 0; i < dv.length(); i++)
-	    {
-	      idx_colon(i) = false;
-	      for (int j = 0; j < sings.length(); j++)
-		{
-		  if (sings(j) == i)
-		    {
-		      new_dv(i) = 1;
-		      idx_colon(i) = true;
-		      lst(i) = octave_value (octave_value::magic_colon_t); 
-		      break;
-		    }
-		}
-	    }
-
-	  Cell ret (new_dv);
-	  octave_idx_type nel = new_dv.numel();
-	  octave_idx_type ntot = 1;
-
-	  for (int j = 0; j < new_dv.length()-1; j++)
-	    ntot *= new_dv(j);
-
-	  for (octave_idx_type i = 0; i <  nel; i++)
-	    {
-	      octave_idx_type n = ntot;
-	      octave_idx_type ii = i;
-	      for (int j = new_dv.length() - 1; j >= 0 ; j--)
-		{
-		  if (! idx_colon(j))
-		    lst (j) = ii/n + 1;
-		  ii = ii % n;
-		  if (j != 0)
-		    n /= new_dv(j-1);
-		}
-	      ret(i) = args(0).do_index_op(lst, 0);
-	    }
-
-	  retval = ret;
-	}
+      if (error_state)
+        ;
+      else if (array.is_bool_type ())
+        retval = do_num2cell (array.bool_array_value (), dimv);
+      else if (array.is_char_matrix ())
+        retval = do_num2cell (array.char_array_value (), dimv);
+      else if (array.is_numeric_type ())
+        {
+          if (array.is_integer_type ())
+            {
+              if (array.is_int8_type ())
+                retval = do_num2cell (array.int8_array_value (), dimv);
+              else if (array.is_int16_type ())
+                retval = do_num2cell (array.int16_array_value (), dimv);
+              else if (array.is_int32_type ())
+                retval = do_num2cell (array.int32_array_value (), dimv);
+              else if (array.is_int64_type ())
+                retval = do_num2cell (array.int64_array_value (), dimv);
+              else if (array.is_uint8_type ())
+                retval = do_num2cell (array.uint8_array_value (), dimv);
+              else if (array.is_uint16_type ())
+                retval = do_num2cell (array.uint16_array_value (), dimv);
+              else if (array.is_uint32_type ())
+                retval = do_num2cell (array.uint32_array_value (), dimv);
+              else if (array.is_uint64_type ())
+                retval = do_num2cell (array.uint64_array_value (), dimv);
+            }
+          else if (array.is_complex_type ())
+            {
+              if (array.is_single_type ())
+                retval = do_num2cell (array.float_complex_array_value (), dimv);
+              else
+                retval = do_num2cell (array.complex_array_value (), dimv);
+            }
+          else
+            {
+              if (array.is_single_type ())
+                retval = do_num2cell (array.float_array_value (), dimv);
+              else
+                retval = do_num2cell (array.array_value (), dimv);
+            }
+        }
+      else if (array.is_map ())
+        retval = do_num2cell (array.map_value (), dimv);
+      else if (array.is_cell ())
+        retval = do_num2cell (array.cell_value (), dimv);
+      else
+        gripe_wrong_type_arg ("num2cell", array);
     }
 
   return retval;
@@ -994,20 +1053,240 @@ value @var{c} is of dimension 1 in this dimension and the elements of\n\
 
 */
 
+static bool
+mat2cell_mismatch (const dim_vector& dv,
+                   const Array<octave_idx_type> *d, int nd)
+{
+  for (int i = 0; i < nd; i++)
+    {
+      octave_idx_type s = 0;
+      for (octave_idx_type j = 0; j < d[i].length (); j++)
+        s += d[i](j);
+
+      octave_idx_type r = i < dv.length () ? dv(i) : 1;
+
+      if (s != r)
+        {
+          error ("mat2cell: mismatch on %d-th dimension (%d != %d)",
+                 i+1, r, s);
+          return true;
+        }
+    }
+
+  return false;
+}
+
+template<class container>
+static void
+prepare_idx (container *idx, int idim, int nd,
+             const Array<octave_idx_type>* d)
+{
+  octave_idx_type nidx = idim < nd ? d[idim].numel () : 1;
+  if (nidx == 1)
+    idx[0] = idx_vector::colon;
+  else
+    {
+      octave_idx_type l = 0;
+      for (octave_idx_type i = 0; i < nidx; i++)
+        {
+          octave_idx_type u = l + d[idim](i);
+          idx[i] = idx_vector (l, u);
+          l = u;
+        }
+    }
+}
+
+// 2D specialization, works for Array, Sparse and octave_map.
+// Uses 1D or 2D indexing.
+
+template <class Array2D>
+static Cell
+do_mat2cell_2d (const Array2D& a, const Array<octave_idx_type> *d, int nd)
+{
+  NoAlias<Cell> retval;
+  assert (nd == 1 || nd == 2);
+  assert (a.ndims () == 2);
+
+  if (mat2cell_mismatch (a.dims (), d, nd))
+    return retval;
+
+  octave_idx_type nridx = d[0].length ();
+  octave_idx_type ncidx = nd == 1 ? 1 : d[1].length ();
+  retval.clear (nridx, ncidx);
+
+  int ivec = -1;
+  if (a.rows () > 1 && a.cols () == 1 && ncidx == 1)
+    ivec = 0;
+  else if (a.rows () == 1 && nridx == 1 && nd == 2)
+    ivec = 1;
+
+  if (ivec >= 0)
+    {
+      // Vector split. Use 1D indexing.
+      octave_idx_type l = 0, nidx = (ivec == 0 ? nridx : ncidx);
+      for (octave_idx_type i = 0; i < nidx; i++)
+        {
+          octave_idx_type u = l + d[ivec](i);
+          retval(i) = a.index (idx_vector (l, u));
+          l = u;
+        }
+    }
+  else
+    {
+      // General 2D case. Use 2D indexing.
+      OCTAVE_LOCAL_BUFFER (idx_vector, ridx, nridx);
+      prepare_idx (ridx, 0, nd, d);
+
+      OCTAVE_LOCAL_BUFFER (idx_vector, cidx, ncidx);
+      prepare_idx (cidx, 1, nd, d);
+
+      for (octave_idx_type j = 0; j < ncidx; j++)
+        for (octave_idx_type i = 0; i < nridx; i++)
+          {
+            octave_quit ();
+
+            retval(i,j) = a.index (ridx[i], cidx[j]);
+          }
+    }
+
+  return retval;
+}
+
+// Nd case. Works for Arrays and octave_map.
+// Uses Nd indexing.
+
+template <class ArrayND>
+Cell
+do_mat2cell_nd (const ArrayND& a, const Array<octave_idx_type> *d, int nd)
+{
+  NoAlias<Cell> retval;
+  assert (nd >= 1);
+
+  if (mat2cell_mismatch (a.dims (), d, nd))
+    return retval;
+
+  dim_vector rdv = dim_vector::alloc (nd);
+  OCTAVE_LOCAL_BUFFER (octave_idx_type, nidx, nd);
+  octave_idx_type idxtot = 0;
+  for (int i = 0; i < nd; i++)
+    {
+      rdv(i) = nidx[i] = d[i].length ();
+      idxtot += nidx[i];
+    }
+
+  retval.clear (rdv);
+
+  OCTAVE_LOCAL_BUFFER (idx_vector, xidx, idxtot);
+  OCTAVE_LOCAL_BUFFER (idx_vector *, idx, nd);
+
+  idxtot = 0;
+  for (int i = 0; i < nd; i++)
+    {
+      idx[i] = xidx + idxtot;
+      prepare_idx (idx[i], i, nd, d);
+      idxtot += nidx[i];
+    }
+
+  OCTAVE_LOCAL_BUFFER_INIT (octave_idx_type, ridx, nd, 0);
+  NoAlias< Array<idx_vector> > ra_idx
+    (dim_vector (1, std::max (nd, a.ndims ())), idx_vector::colon);
+
+  for (octave_idx_type j = 0; j < retval.numel (); j++)
+    {
+      octave_quit ();
+
+      for (int i = 0; i < nd; i++)
+        ra_idx(i) = idx[i][ridx[i]];
+
+      retval(j) = a.index (ra_idx);
+
+      rdv.increment_index (ridx);
+    }
+
+  return retval;
+}
+
+// Dispatcher.
+template <class ArrayND>
+Cell
+do_mat2cell (const ArrayND& a, const Array<octave_idx_type> *d, int nd)
+{
+  if (a.ndims () == 2 && nd <= 2)
+    return do_mat2cell_2d (a, d, nd);
+  else
+    return do_mat2cell_nd (a, d, nd);
+}
+
+// General case. Works for any class supporting do_index_op.
+// Uses Nd indexing.
+
+Cell
+do_mat2cell (octave_value& a, const Array<octave_idx_type> *d, int nd)
+{
+  NoAlias<Cell> retval;
+  assert (nd >= 1);
+
+  if (mat2cell_mismatch (a.dims (), d, nd))
+    return retval;
+
+  dim_vector rdv = dim_vector::alloc (nd);
+  OCTAVE_LOCAL_BUFFER (octave_idx_type, nidx, nd);
+  octave_idx_type idxtot = 0;
+  for (int i = 0; i < nd; i++)
+    {
+      rdv(i) = nidx[i] = d[i].length ();
+      idxtot += nidx[i];
+    }
+
+  retval.clear (rdv);
+
+  OCTAVE_LOCAL_BUFFER (octave_value, xidx, idxtot);
+  OCTAVE_LOCAL_BUFFER (octave_value *, idx, nd);
+
+  idxtot = 0;
+  for (int i = 0; i < nd; i++)
+    {
+      idx[i] = xidx + idxtot;
+      prepare_idx (idx[i], i, nd, d);
+      idxtot += nidx[i];
+    }
+
+  OCTAVE_LOCAL_BUFFER_INIT (octave_idx_type, ridx, nd, 0);
+  octave_value_list ra_idx (std::max (nd, a.ndims ()),
+                            octave_value::magic_colon_t);
+
+  for (octave_idx_type j = 0; j < retval.numel (); j++)
+    {
+      octave_quit ();
+
+      for (int i = 0; i < nd; i++)
+        ra_idx(i) = idx[i][ridx[i]];
+
+      retval(j) = a.do_index_op (ra_idx);
+
+      if (error_state)
+        break;
+
+      rdv.increment_index (ridx);
+    }
+
+  return retval;
+}
+
 DEFUN_DLD (mat2cell, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Loadable Function} {@var{b} =} mat2cell (@var{a}, @var{m}, @var{n})\n\
-@deftypefnx {Loadable Function} {@var{b} =} mat2cell (@var{a}, @var{d1}, @var{d2}, @dots{})\n\
-@deftypefnx {Loadable Function} {@var{b} =} mat2cell (@var{a}, @var{r})\n\
-Convert the matrix @var{a} to a cell array.  If @var{a} is 2-D, then\n\
-it is required that @code{sum (@var{m}) == size (@var{a}, 1)} and\n\
-@code{sum (@var{n}) == size (@var{a}, 2)}.  Similarly, if @var{a} is\n\
-a multi-dimensional and the number of dimensional arguments is equal\n\
-to the dimensions of @var{a}, then it is required that @code{sum (@var{di})\n\
-== size (@var{a}, i)}.\n\
+@deftypefn  {Loadable Function} {@var{C} =} mat2cell (@var{A}, @var{m}, @var{n})\n\
+@deftypefnx {Loadable Function} {@var{C} =} mat2cell (@var{A}, @var{d1}, @var{d2}, @dots{})\n\
+@deftypefnx {Loadable Function} {@var{C} =} mat2cell (@var{A}, @var{r})\n\
+Convert the matrix @var{A} to a cell array.  If @var{A} is 2-D, then\n\
+it is required that @code{sum (@var{m}) == size (@var{A}, 1)} and\n\
+@code{sum (@var{n}) == size (@var{A}, 2)}.  Similarly, if @var{A} is\n\
+multi-dimensional and the number of dimensional arguments is equal\n\
+to the dimensions of @var{A}, then it is required that @code{sum (@var{di})\n\
+== size (@var{A}, i)}.\n\
 \n\
 Given a single dimensional argument @var{r}, the other dimensional\n\
-arguments are assumed to equal @code{size (@var{a},@var{i})}.\n\
+arguments are assumed to equal @code{size (@var{A},@var{i})}.\n\
 \n\
 An example of the use of mat2cell is\n\
 \n\
@@ -1043,159 +1322,71 @@ mat2cell (reshape(1:16,4,4),[3,1],[3,1])\n\
     print_usage ();
   else
     {
-      dim_vector dv = args(0).dims();
-      dim_vector new_dv;
-      new_dv.resize(dv.length());
-      
-      if (nargin > 2)
-	{
-	  octave_idx_type nmax = -1;
+      // Prepare indices.
+      OCTAVE_LOCAL_BUFFER (Array<octave_idx_type>, d, nargin-1);
 
-	  if (nargin - 1 != dv.length())
-	    error ("mat2cell: Incorrect number of dimensions");
-	  else
-	    {
-	      for (octave_idx_type j = 0; j < dv.length(); j++)
-		{
-		  ColumnVector d = ColumnVector (args(j+1).vector_value 
-						 (false, true));
+      for (int i = 1; i < nargin; i++)
+        {
+          d[i-1] = args(i).octave_idx_type_vector_value (true);
+          if (error_state)
+            return retval;
+        }
 
-		  if (d.length() < 1)
-		    {
-		      error ("mat2cell: dimension can not be empty");
-		      break;
-		    }
-		  else
-		    {
-		      if (nmax < d.length())
-			nmax = d.length();
+      octave_value a = args(0);
+      bool sparse = a.is_sparse_type ();
+      if (sparse && nargin > 3)
+        {
+          error ("mat2cell: sparse arguments only support 2D indexing");
+          return retval;
+        }
 
-		      for (octave_idx_type i = 1; i < d.length(); i++)
-			{
-			  OCTAVE_QUIT;
+      switch (a.builtin_type ())
+        {
+        case btyp_double:
+          {
+            if (sparse)
+              retval = do_mat2cell_2d (a.sparse_matrix_value (), d, nargin-1);
+            else
+              retval = do_mat2cell (a.array_value (), d, nargin - 1);
+            break;
+          }
+        case btyp_complex:
+          {
+            if (sparse)
+              retval = do_mat2cell_2d (a.sparse_complex_matrix_value (), d, nargin-1);
+            else
+              retval = do_mat2cell (a.complex_array_value (), d, nargin - 1);
+            break;
+          }
+#define BTYP_BRANCH(X,Y) \
+        case btyp_ ## X: \
+            retval = do_mat2cell (a.Y ## _value (), d, nargin - 1); \
+          break
 
-			  if (d(i) >= 0)
-			    d(i) += d(i-1);
-			  else
-			    {
-			      error ("mat2cell: invalid dimensional argument");
-			      break;
-			    }
-			}
+        BTYP_BRANCH (float, float_array);
+        BTYP_BRANCH (float_complex, float_complex_array);
+        BTYP_BRANCH (bool, bool_array);
+        BTYP_BRANCH (char, char_array);
 
-		      if (d(0) < 0)
-			error ("mat2cell: invalid dimensional argument");
-		      
-		      if (d(d.length() - 1) != dv(j))
-			error ("mat2cell: inconsistent dimensions");
+        BTYP_BRANCH (int8,  int8_array);
+        BTYP_BRANCH (int16, int16_array);
+        BTYP_BRANCH (int32, int32_array);
+        BTYP_BRANCH (int64, int64_array);
+        BTYP_BRANCH (uint8,  uint8_array);
+        BTYP_BRANCH (uint16, uint16_array);
+        BTYP_BRANCH (uint32, uint32_array);
+        BTYP_BRANCH (uint64, uint64_array);
 
-		      if (error_state)
-			break;
+        BTYP_BRANCH (cell, cell);
+        BTYP_BRANCH (struct, map);
+#undef BTYP_BRANCH
 
-		      new_dv(j) = d.length();
-		    }
-		}
-	    }
-
-	  if (! error_state)
-	    {
-	      // Construct a matrix with the index values
-	      Matrix dimargs(nmax, new_dv.length());
-	      for (octave_idx_type j = 0; j < new_dv.length(); j++)
-		{
-		  OCTAVE_QUIT;
-
-		  ColumnVector d = ColumnVector (args(j+1).vector_value 
-						 (false, true));
-
-		  dimargs(0,j) = d(0);
-		  for (octave_idx_type i = 1; i < d.length(); i++)
-		    dimargs(i,j) = dimargs(i-1,j) + d(i);
-		}
-
-
-	      octave_value_list lst (new_dv.length(), octave_value());
-	      Cell ret (new_dv);
-	      octave_idx_type nel = new_dv.numel();
-	      octave_idx_type ntot = 1;
-
-	      for (int j = 0; j < new_dv.length()-1; j++)
-		ntot *= new_dv(j);
-
-	      for (octave_idx_type i = 0; i <  nel; i++)
-		{
-		  octave_idx_type n = ntot;
-		  octave_idx_type ii = i;
-		  for (octave_idx_type j =  new_dv.length() - 1;  j >= 0; j--)
-		    {
-		      OCTAVE_QUIT;
-		  
-		      octave_idx_type idx = ii / n;
-		      lst (j) = Range((idx == 0 ? 1. : dimargs(idx-1,j)+1.),
-				      dimargs(idx,j));
-		      ii = ii % n;
-		      if (j != 0)
-			n /= new_dv(j-1);
-		    }
-		  ret(i) = args(0).do_index_op(lst, 0);
-		  if (error_state)
-		    break;
-		}
-	  
-	      if (!error_state)
-		retval = ret;
-	    }
-	}
-      else
-	{
-	  ColumnVector d = ColumnVector (args(1).vector_value 
-					 (false, true));
-
-	  double sumd = 0.;
-	  for (octave_idx_type i = 0; i < d.length(); i++)
-	    {
-	      OCTAVE_QUIT;
-
-	      if (d(i) >= 0)
-		sumd += d(i);
-	      else
-		{
-		  error ("mat2cell: invalid dimensional argument");
-		  break;
-		}
-	    }
-
-	  if (sumd != dv(0))
-	    error ("mat2cell: inconsistent dimensions");
-
-	  new_dv(0) = d.length();
-	  for (octave_idx_type i = 1; i < dv.length(); i++)
-	    new_dv(i) = 1;
-
-	  if (! error_state)
-	    {
-	      octave_value_list lst (new_dv.length(), octave_value());
-	      Cell ret (new_dv);
-
-	      for (octave_idx_type i = 1; i < new_dv.length(); i++)
-		lst (i) = Range (1., static_cast<double>(dv(i)));
-	      
-	      double idx = 0.;
-	      for (octave_idx_type i = 0; i <  new_dv(0); i++)
-		{
-		  OCTAVE_QUIT;
-
-		  lst(0) = Range(idx + 1., idx + d(i));
-		  ret(i) = args(0).do_index_op(lst, 0);
-		  idx += d(i);
-		  if (error_state)
-		    break;
-		}
-	  
-	      if (!error_state)
-		retval = ret;
-	    }
-	}
+        case btyp_func_handle:
+          gripe_wrong_type_arg ("mat2cell", a);
+          break;
+        default:
+          retval = do_mat2cell (a, d, nargin-1);
+        }
     }
 
   return retval;
@@ -1216,27 +1407,37 @@ mat2cell (reshape(1:16,4,4),[3,1],[3,1])\n\
 
 */
 
+// FIXME: it would be nice to allow ranges being handled without a conversion.
 template <class NDA>
-Cell 
-do_cellslices_nda (const NDA& array, const idx_vector& lb, const idx_vector& ub)
+static Cell
+do_cellslices_nda (const NDA& array,
+                   const Array<octave_idx_type>& lb,
+                   const Array<octave_idx_type>& ub,
+                   int dim = -1)
 {
-  octave_idx_type n = lb.length (0);
+  octave_idx_type n = lb.length ();
   Cell retval (1, n);
-  if (array.is_vector ())
+  if (array.is_vector () && (dim == -1
+                             || (dim == 0 && array.columns () == 1)
+                             || (dim == 1 && array.rows () == 1)))
     {
       for (octave_idx_type i = 0; i < n && ! error_state; i++)
-        retval(i) = array.index (idx_vector (lb(i), ub(i) + 1));
+        retval(i) = array.index (idx_vector (lb(i) - 1, ub(i)));
     }
   else
     {
-      dim_vector dv = array.dims ();
-      octave_idx_type nl = 1;
-      for (int i = 0; i < dv.length () - 1; i++) nl *= dv(i);
+      const dim_vector dv = array.dims ();
+      int ndims = dv.length ();
+      if (dim < 0)
+        dim = dv.first_non_singleton ();
+      ndims = std::max (ndims, dim + 1);
+
+      Array<idx_vector> idx (dim_vector (ndims, 1), idx_vector::colon);
+
       for (octave_idx_type i = 0; i < n && ! error_state; i++)
         {
-          // Do it with a single index to speed things up.
-          dv(dv.length () - 1) = ub(i) + 1 - lb(i);
-          retval(i) = array.index (idx_vector (nl*lb(i), nl*(ub(i) + 1))).reshape (dv);
+          idx(dim) = idx_vector (lb(i) - 1, ub(i));
+          retval(i) = array.index (idx);
         }
     }
 
@@ -1245,37 +1446,45 @@ do_cellslices_nda (const NDA& array, const idx_vector& lb, const idx_vector& ub)
 
 DEFUN_DLD (cellslices, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Loadable Function} {@var{sl} =} cellslices (@var{x}, @var{lb}, @var{ub})\n\
-Given a vector @var{x}, this function produces a cell array of slices from the vector\n\
-determined by the index vectors @var{lb}, @var{ub}, for lower and upper bounds, respectively.\n\
-In other words, it is equivalent to the following code:\n\
+@deftypefn {Loadable Function} {@var{sl} =} cellslices (@var{x}, @var{lb}, @var{ub}, @var{dim})\n\
+Given an array @var{x}, this function produces a cell array of slices from\n\
+the array determined by the index vectors @var{lb}, @var{ub}, for lower and\n\
+upper bounds, respectively.  In other words, it is equivalent to the\n\
+following code:\n\
 \n\
 @example\n\
 @group\n\
 n = length (lb);\n\
 sl = cell (1, n);\n\
 for i = 1:length (lb)\n\
-  sl@{i@} = x(lb(i):ub(i));\n\
+  sl@{i@} = x(:,@dots{},lb(i):ub(i),@dots{},:);\n\
 endfor\n\
 @end group\n\
 @end example\n\
 \n\
-If @var{X} is a matrix or array, indexing is done along the last dimension.\n\
-@seealso{mat2cell}\n\
+The position of the index is determined by @var{dim}.  If not specified,\n\
+slicing is done along the first non-singleton dimension.\n\
 @end deftypefn")
 {
   octave_value retval;
   int nargin = args.length ();
-  if (nargin == 3)
+  if (nargin == 3 || nargin == 4)
     {
       octave_value x = args(0);
-      idx_vector lb = args(1).index_vector (), ub = args(2).index_vector ();
+      Array<octave_idx_type> lb = args(1).octave_idx_type_vector_value ();
+      Array<octave_idx_type> ub = args(2).octave_idx_type_vector_value ();
+      int dim = -1;
+      if (nargin == 4)
+        {
+          dim = args(3).int_value () - 1;
+          if (dim < 0)
+            error ("cellslices: DIM must be a valid dimension");
+        }
+
       if (! error_state)
         {
-          if (lb.is_colon () || ub.is_colon ())
-            error ("cellslices: invalid use of colon");
-          else if (lb.length (0) != ub.length (0))
-            error ("cellslices: the lengths of lb and ub must match");
+          if (lb.length () != ub.length ())
+            error ("cellslices: the lengths of LB and UB must match");
           else
             {
               Cell retcell;
@@ -1283,35 +1492,57 @@ If @var{X} is a matrix or array, indexing is done along the last dimension.\n\
                 {
                   // specialize for some dense arrays.
                   if (x.is_bool_type ())
-                    retcell = do_cellslices_nda (x.bool_array_value (), lb, ub);
+                    retcell = do_cellslices_nda (x.bool_array_value (), lb, ub, dim);
                   else if (x.is_char_matrix ())
-                    retcell = do_cellslices_nda (x.char_array_value (), lb, ub);
+                    retcell = do_cellslices_nda (x.char_array_value (), lb, ub, dim);
+                  else if (x.is_integer_type ())
+                    {
+                      if (x.is_int8_type ())
+                        retcell = do_cellslices_nda (x.int8_array_value (), lb, ub, dim);
+                      else if (x.is_int16_type ())
+                        retcell = do_cellslices_nda (x.int16_array_value (), lb, ub, dim);
+                      else if (x.is_int32_type ())
+                        retcell = do_cellslices_nda (x.int32_array_value (), lb, ub, dim);
+                      else if (x.is_int64_type ())
+                        retcell = do_cellslices_nda (x.int64_array_value (), lb, ub, dim);
+                      else if (x.is_uint8_type ())
+                        retcell = do_cellslices_nda (x.uint8_array_value (), lb, ub, dim);
+                      else if (x.is_uint16_type ())
+                        retcell = do_cellslices_nda (x.uint16_array_value (), lb, ub, dim);
+                      else if (x.is_uint32_type ())
+                        retcell = do_cellslices_nda (x.uint32_array_value (), lb, ub, dim);
+                      else if (x.is_uint64_type ())
+                        retcell = do_cellslices_nda (x.uint64_array_value (), lb, ub, dim);
+                    }
                   else if (x.is_complex_type ())
                     {
                       if (x.is_single_type ())
-                        retcell = do_cellslices_nda (x.float_complex_array_value (), lb, ub);
+                        retcell = do_cellslices_nda (x.float_complex_array_value (), lb, ub, dim);
                       else
-                        retcell = do_cellslices_nda (x.complex_array_value (), lb, ub);
+                        retcell = do_cellslices_nda (x.complex_array_value (), lb, ub, dim);
                     }
                   else
                     {
                       if (x.is_single_type ())
-                        retcell = do_cellslices_nda (x.float_array_value (), lb, ub);
+                        retcell = do_cellslices_nda (x.float_array_value (), lb, ub, dim);
                       else
-                        retcell = do_cellslices_nda (x.array_value (), lb, ub);
+                        retcell = do_cellslices_nda (x.array_value (), lb, ub, dim);
                     }
                 }
               else
                 {
                   // generic code.
-                  octave_idx_type n = lb.length (0);
+                  octave_idx_type n = lb.length ();
                   retcell = Cell (1, n);
-                  octave_idx_type nind = x.dims ().is_vector () ? 1 : x.ndims ();
-                  octave_value_list idx (nind, octave_value::magic_colon_t);
+                  const dim_vector dv = x.dims ();
+                  int ndims = dv.length ();
+                  if (dim < 0)
+                    dim = dv.first_non_singleton ();
+                  ndims = std::max (ndims, dim + 1);
+                  octave_value_list idx (ndims, octave_value::magic_colon_t);
                   for (octave_idx_type i = 0; i < n && ! error_state; i++)
                     {
-                      idx(nind-1) = Range (static_cast<double> (lb(i)) + 1,
-                                           static_cast<double> (ub(i)) + 1);
+                      idx(dim) = Range (lb(i), ub(i));
                       retcell(i) = x.do_index_op (idx);
                     }
                 }
@@ -1325,9 +1556,56 @@ If @var{X} is a matrix or array, indexing is done along the last dimension.\n\
 
   return retval;
 }
-	  
+
 /*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
+%!test
+%! m = [1, 2, 3, 4; 5, 6, 7, 8; 9, 10, 11, 12];
+%! c = cellslices (m, [1, 2], [2, 3], 2);
+%! assert (c, {[1, 2; 5, 6; 9, 10], [2, 3; 6, 7; 10, 11]});
 */
+
+DEFUN_DLD (cellindexmat, args, ,
+  "-*- texinfo -*-\n\
+@deftypefn {Loadable Function} {@var{y} =} cellindexmat (@var{x}, @var{varargin})\n\
+Given a cell array of matrices @var{x}, this function computes\n\
+\n\
+@example\n\
+@group\n\
+  Y = cell (size (X));\n\
+  for i = 1:numel (X)\n\
+    Y@{i@} = X@{i@}(varargin@{:@});\n\
+  endfor\n\
+@end group\n\
+@end example\n\
+@seealso{cellfun, cellslices}\n\
+@end deftypefn")
+{
+  octave_value retval;
+  if (args.length () >= 1)
+    {
+      if (args(0).is_cell ())
+        {
+          const Cell x = args(0).cell_value ();
+          NoAlias<Cell> y(x.dims ());
+          octave_idx_type nel = x.numel ();
+          octave_value_list idx = args.slice (1, args.length () - 1);
+
+          for (octave_idx_type i = 0; i < nel; i++)
+            {
+              octave_quit ();
+              octave_value tmp = x(i);
+              y(i) = tmp.do_index_op (idx);
+              if (error_state)
+                break;
+            }
+
+          retval = y;
+        }
+      else
+        error ("cellindexmat: X must be a cell");
+    }
+  else
+    print_usage ();
+
+  return retval;
+}

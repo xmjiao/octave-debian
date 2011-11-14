@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2000, 2005, 2006, 2007, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -25,112 +25,35 @@ along with Octave; see the file COPYING.  If not, see
 #endif
 
 #include <fnmatch.h>
-#include <glob.h>
 
-#include <iostream>
-#include <string>
-
-#include "file-stat.h"
 #include "glob-match.h"
-#include "str-vec.h"
+#include "oct-glob.h"
 
 bool
-glob_match::match (const std::string& s)
+glob_match::match (const std::string& str) const
 {
-  int npat = pat.length ();
-
-  const char *str = s.c_str ();
-
-  int fnmatch_flags = 0;
-
-  if (flags & pathname)
-    fnmatch_flags |= FNM_PATHNAME;
-
-  if (flags & noescape)
-    fnmatch_flags |= FNM_NOESCAPE;
-
-  if (flags & period)
-    fnmatch_flags |= FNM_PERIOD;
-
-  for (int i = 0; i < npat; i++)
-    if (fnmatch (pat(i).c_str (), str, fnmatch_flags) != FNM_NOMATCH)
-      return true;
-
-  return false;
-}
-
-Array<bool>
-glob_match::match (const string_vector& s)
-{
-  int n = s.length ();
-
-  Array<bool> retval (n);
-
-  for (int i = 0; i < n; i++)
-    retval(i) = match (s[i]);
-
-  return retval;
-}
-
-static bool
-single_match_exists (const std::string& file)
-{
-  file_stat s (file);
-
-  return s.exists ();
+  return octave_fnmatch (pat, str, fnmatch_flags);
 }
 
 string_vector
-glob_match::glob (void)
+glob_match::glob (void) const
 {
-  string_vector retval;
-
-  int npat = pat.length ();
-
-  int k = 0;
-
-  for (int i = 0; i < npat; i++)
-    {
-      std::string xpat = pat(i);
-
-      if (! xpat.empty ())
-	{
-	  glob_t glob_info;
-
-	  int err = ::glob (xpat.c_str (), GLOB_NOSORT, 0, &glob_info);
-
-	  if (! err)
-	    {
-	      int n = glob_info.gl_pathc;
-
-	      const char * const *matches = glob_info.gl_pathv;
-
-	      // FIXME -- we shouldn't have to check to see if
-	      // a single match exists, but it seems that glob() won't
-	      // check for us unless the pattern contains globbing
-	      // characters.  Hmm.
-
-	      if (n > 1
-		  || (n == 1
-		      && single_match_exists (std::string (matches[0]))))
-		{
-		  retval.resize (k+n);
-
-		  for (int j = 0; j < n; j++)
-		    retval[k++] = matches[j];
-		}
-
-	      globfree (&glob_info);
-	    }
-	}
-    }
-
-  return retval.sort ();
+  return octave_glob (pat);
 }
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+int
+glob_match::opts_to_fnmatch_flags (unsigned int xopts) const
+{
+  int retval = 0;
 
+  if (xopts & pathname)
+    retval |= FNM_PATHNAME;
+
+  if (xopts & noescape)
+    retval |= FNM_NOESCAPE;
+
+  if (xopts & period)
+    retval |= FNM_PERIOD;
+
+  return retval;
+}

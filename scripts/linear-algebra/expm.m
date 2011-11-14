@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 Jaroslav Hajek, Marco Caliari
+## Copyright (C) 2008-2011 Jaroslav Hajek, Marco Caliari
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} expm (@var{a})
+## @deftypefn {Function File} {} expm (@var{A})
 ## Return the exponential of a matrix, defined as the infinite Taylor
 ## series
 ## @tex
@@ -26,45 +26,32 @@
 ## $$
 ## @end tex
 ## @ifnottex
-## 
+##
 ## @example
-## expm(a) = I + a + a^2/2! + a^3/3! + @dots{}
+## expm(A) = I + A + A^2/2! + A^3/3! + @dots{}
 ## @end example
-## 
+##
 ## @end ifnottex
 ## The Taylor series is @emph{not} the way to compute the matrix
 ## exponential; see Moler and Van Loan, @cite{Nineteen Dubious Ways to
 ## Compute the Exponential of a Matrix}, SIAM Review, 1978.  This routine
-## uses Ward's diagonal
+## uses Ward's diagonal Pad@'e approximation method with three step
+## preconditioning (SIAM Journal on Numerical Analysis, 1977).  Diagonal
+## Pad@'e approximations are rational polynomials of matrices
 ## @tex
-## Pad\'e
+## $D_q(A)^{-1}N_q(A)$
 ## @end tex
 ## @ifnottex
-## Pade'
-## @end ifnottex
-## approximation method with three step preconditioning (SIAM Journal on
-## Numerical Analysis, 1977).  Diagonal
-## @tex
-## Pad\'e
-## @end tex
-## @ifnottex
-## Pade'
-## @end ifnottex
-##  approximations are rational polynomials of matrices
-## @tex
-## $D_q(a)^{-1}N_q(a)$
-## @end tex
-## @ifnottex
-## 
+##
 ## @example
 ## @group
 ##      -1
-## D (a)   N (a)
+## D (A)   N (A)
 ## @end group
 ## @end example
-## 
+##
 ## @end ifnottex
-##  whose Taylor series matches the first
+## whose Taylor series matches the first
 ## @tex
 ## $2 q + 1 $
 ## @end tex
@@ -73,41 +60,48 @@
 ## @end ifnottex
 ## terms of the Taylor series above; direct evaluation of the Taylor series
 ## (with the same preconditioning steps) may be desirable in lieu of the
+## Pad@'e approximation when
 ## @tex
-## Pad\'e
+## $D_q(A)$
 ## @end tex
 ## @ifnottex
-## Pade'
-## @end ifnottex
-## approximation when
-## @tex
-## $D_q(a)$
-## @end tex
-## @ifnottex
-## @code{Dq(a)}
+## @code{Dq(A)}
 ## @end ifnottex
 ## is ill-conditioned.
+## @seealso{logm, sqrtm}
 ## @end deftypefn
 
-function r = expm (a)
+function r = expm (A)
 
-  if (! ismatrix (a) || ! issquare (a))
-    error ("expm requires a square matrix");
+  if (nargin != 1)
+    print_usage ();
   endif
 
-  n = rows (a);
+  if (! ismatrix (A) || ! issquare (A))
+    error ("expm: A must be a square matrix");
+  endif
+
+  if (isscalar (A))
+    r = exp (A);
+    return
+  elseif (strfind (typeinfo (A), "diagonal matrix"))
+    r = diag (exp (diag (A)));
+    return
+  endif
+
+  n = rows (A);
   ## Trace reduction.
-  a(a == -Inf) = -realmax;
-  trshift = trace (a) / length (a);
+  A(A == -Inf) = -realmax;
+  trshift = trace (A) / length (A);
   if (trshift > 0)
-    a -= trshift*eye (n);
+    A -= trshift*eye (n);
   endif
   ## Balancing.
-  [d, p, aa] = balance (a);
+  [d, p, aa] = balance (A);
   ## FIXME: can we both permute and scale at once? Or should we rather do
   ## this:
   ##
-  ##   [d, xx, aa] = balance (a, "noperm");
+  ##   [d, xx, aa] = balance (A, "noperm");
   ##   [xx, p, aa] = balance (aa, "noscal");
   [f, e] = log2 (norm (aa, "inf"));
   s = max (0, e);
@@ -146,3 +140,15 @@ function r = expm (a)
   endif
 
 endfunction
+
+%!assert(norm(expm([1 -1;0 1]) - [e -e; 0 e]) < 1e-5);
+%!assert(expm([1 -1 -1;0 1 -1; 0 0 1]), [e -e -e/2; 0 e -e; 0 0 e], 1e-5);
+
+%% Test input validation
+%!error expm ();
+%!error expm (1, 2);
+%!error <expm: A must be a square matrix> expm([1 0;0 1; 2 2]);
+
+%!assert (expm (10), expm (10))
+%!assert (full (expm (eye (3))), expm (full (eye (3))))
+%!assert (full (expm (10*eye (3))), expm (full (10*eye (3))), 8*eps)

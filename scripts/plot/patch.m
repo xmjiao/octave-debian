@@ -1,4 +1,4 @@
-## Copyright (C) 2005, 2007, 2008, 2009 John W. Eaton
+## Copyright (C) 2005-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} patch ()
+## @deftypefn  {Function File} {} patch ()
 ## @deftypefnx {Function File} {} patch (@var{x}, @var{y}, @var{c})
 ## @deftypefnx {Function File} {} patch (@var{x}, @var{y}, @var{z}, @var{c})
 ## @deftypefnx {Function File} {} patch (@var{fv})
@@ -33,7 +33,7 @@
 ## example, "r" or "red").
 ##
 ## If passed a structure @var{fv} contain the fields "vertices", "faces"
-## and optionally "facevertexcdata", create the patch based on these 
+## and optionally "facevertexcdata", create the patch based on these
 ## properties.
 ## @end deftypefn
 
@@ -136,3 +136,19 @@ endfunction
 %! patch('Vertices', vertices, 'Faces', faces, ...
 %!       'FaceVertexCData', jet(4), 'FaceColor', 'flat')
 %! view (-37.5, 30)
+
+%!demo
+%! clf
+%! vertices = [0, 0, 0;
+%!             1, 0, 0;
+%!             1, 1, 0;
+%!             0, 1, 0;
+%!             0.5, 0.5, 1];
+%! faces = [1, 2, 5;
+%!          2, 3, 5;
+%!          3, 4, 5;
+%!          4, 1, 5];
+%! patch('Vertices', vertices, 'Faces', faces, ...
+%!       'FaceVertexCData', jet(5), 'FaceColor', 'interp')
+%! view (-37.5, 30)
+

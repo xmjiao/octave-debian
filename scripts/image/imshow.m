@@ -1,6 +1,5 @@
-## Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2004, 2005,
-##               2006, 2007, 2008, 2009 John W. Eaton
-## 
+## Copyright (C) 1994-2011 John W. Eaton
+##
 ## This file is part of Octave.
 ##
 ## Octave is free software; you can redistribute it and/or modify it
@@ -18,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} imshow (@var{im})
+## @deftypefn  {Function File} {} imshow (@var{im})
 ## @deftypefnx {Function File} {} imshow (@var{im}, @var{limits})
 ## @deftypefnx {Function File} {} imshow (@var{im}, @var{map})
 ## @deftypefnx {Function File} {} imshow (@var{rgb}, @dots{})
@@ -41,7 +40,7 @@
 ##
 ## If given, the parameter @var{string_param1} has value
 ## @var{value1}.  @var{string_param1} can be any of the following:
-## @table @samp
+## @table @asis
 ## @item "displayrange"
 ## @var{value1} is the display range as described above.
 ## @end table
@@ -64,17 +63,18 @@ function h = imshow (im, varargin)
 
   ## Get the image.
   if (ischar (im))
-    ## Eventually, this should be imread.
     [im, map] = imread (im);
     indexed = true;
     colormap (map);
   endif
 
-  if (! (isnumeric (im) && (ndims (im) == 2 || ndims (im) == 3)))
-    error ("imshow: first argument must be an image or the filename of an image");
+  nd = ndims (im);
+
+  if (! ((isnumeric (im) || islogical (im)) && (nd == 2 || nd == 3)))
+    error ("imshow: IM must be an image or the filename of an image");
   endif
 
-  if (ndims (im) == 2)
+  if (nd == 2)
     if (! indexed)
       colormap (gray ());
     endif
@@ -93,22 +93,22 @@ function h = imshow (im, varargin)
     arg = varargin{narg++};
     if (isnumeric (arg))
       if (numel (arg) == 2 || isempty (arg))
-	display_range = arg;
+        display_range = arg;
       elseif (columns (arg) == 3)
-	indexed = true;
-	colormap (arg);
+        indexed = true;
+        colormap (arg);
       elseif (! isempty (arg))
-	error ("imshow: argument number %d is invalid", narg+1);
+        error ("imshow: argument number %d is invalid", narg+1);
       endif
     elseif (ischar (arg))
       switch (arg)
-	case "displayrange";
-	  display_range = varargin{narg++};
-	case {"truesize", "initialmagnification"}
-	  warning ("image: zoom argument ignored -- use GUI features");
-	otherwise
-	  warning ("imshow: unrecognized property %s", arg);
-	  narg++;
+        case "displayrange";
+          display_range = varargin{narg++};
+        case {"truesize", "initialmagnification"}
+          warning ("image: zoom argument ignored -- use GUI features");
+        otherwise
+          warning ("imshow: unrecognized property %s", arg);
+          narg++;
       endswitch
     else
       error ("imshow: argument number %d is invalid", narg+1);
@@ -122,14 +122,11 @@ function h = imshow (im, varargin)
     t = class (im);
     switch (t)
       case {"double", "single", "logical"}
-	display_range = [0, 1];
+        display_range = [0, 1];
       case {"int8", "int16", "int32", "uint8", "uint16", "uint32"}
-	## For compatibility, uint8 data should not be handled as
-	## double.  Doing so is a quick fix to allow the images to be
-	## displayed correctly.
-	display_range = double ([intmin(t), intmax(t)]);
+        display_range = [intmin(t), intmax(t)];
       otherwise
-	error ("imshow: invalid data type for image");
+        error ("imshow: invalid data type for image");
     endswitch
   endif
 
@@ -138,11 +135,11 @@ function h = imshow (im, varargin)
     warning ("imshow: only showing real part of complex image");
     im = real (im);
   endif
-  
+
   nans = isnan (im(:));
   if (any (nans))
     warning ("Octave:imshow-NaN",
-	     "imshow: pixels with NaN or NA values are set to minimum pixel value");
+             "imshow: pixels with NaN or NA values are set to minimum pixel value");
     im(nans) = display_range(1);
   endif
 
@@ -151,21 +148,23 @@ function h = imshow (im, varargin)
     im = double (im);
   endif
 
-  ## Scale the image to the interval [0, 1] according to display_range.
+  ## Clamp the image to the range boundaries
   if (! (true_color || indexed || islogical (im)))
     low = display_range(1);
     high = display_range(2);
-    im = (im-low)/(high-low);
-    im(im < 0) = 0;
-    im(im > 1) = 1;
+    im(im < low) = low;
+    im(im > high) = high;
   endif
 
   if (true_color || indexed)
     tmp = image ([], [], im);
   else
-    tmp = image (round ((rows (colormap ()) - 1) * im));
+    tmp = image (im);
+    set (tmp, "cdatamapping", "scaled");
+    ## The backend is responsible for scaling to clim if necessary.
+    set (gca (), "clim", display_range);
   endif
-  set (gca (), "visible", "off");
+  set (gca (), "visible", "off", "ydir", "reverse");
   axis ("image");
 
   if (nargout > 0)

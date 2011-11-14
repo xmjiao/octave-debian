@@ -1,4 +1,4 @@
-@c Copyright (C) 1996, 1997, 2007, 2008, 2009 John W. Eaton
+@c Copyright (C) 1996-2011 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -82,19 +82,13 @@ file.
 
 A natural part of image processing is visualization of an image.
 The most basic function for this is the @code{imshow} function that
-shows the image given in the first input argument.  This function uses
-an external program to show the image.  If gnuplot 4.2 or later is 
-available it will be used to display the image, otherwise the
-@code{display}, @code{xv}, or @code{xloadimage} program is used.  The
-actual program can be selected with the @code{image_viewer} function.
+shows the image given in the first input argument.
 
 @DOCSTRING(imshow)
 
 @DOCSTRING(image)
 
 @DOCSTRING(imagesc)
-
-@DOCSTRING(image_viewer)
 
 @node Representing Images
 @section Representing Images
@@ -132,8 +126,6 @@ between 0 and 1.
 @DOCSTRING(ind2rgb)
 
 @DOCSTRING(colormap)
-
-@DOCSTRING(brighten)
 
 @DOCSTRING(autumn)
 
@@ -173,17 +165,21 @@ between 0 and 1.
 
 An additional colormap is @code{gmap40}.  This code map contains only
 colors with integer values of the red, green and blue components.  This
-is a workaround for a limitation of gnuplot 4.0, that does not allow the color of
-line or patch objects to be set, and so @code{gmap40} is useful for
-gnuplot 4.0 users, and in particular in conjunction with the @var{bar},
+is a workaround for a limitation of gnuplot 4.0, that does not allow the color
+of line or patch objects to be set, and so @code{gmap40} is useful for gnuplot
+4.0 users, and in particular in conjunction with the @var{bar},
 @var{barh} or @var{contour} functions.
 
 @DOCSTRING(gmap40)
 
-You may use the @code{spinmap} function to cycle through the colors in
-the current colormap, displaying the changes for the current figure.
+The following three functions modify the existing colormap rather than
+replace it.   
+
+@DOCSTRING(brighten)
 
 @DOCSTRING(spinmap)
+
+@DOCSTRING(whitebg)
 
 @node Plotting on top of Images
 @section Plotting on top of Images

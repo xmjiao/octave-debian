@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2002, 2003, 2004, 2005, 2007 John W. Eaton
+Copyright (C) 2002-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -32,29 +32,29 @@ ODES : public base_diff_eqn, public ODESFunc
 public:
 
   ODES (void)
-    : base_diff_eqn (), ODESFunc (), theta () { }
+    : base_diff_eqn (), ODESFunc (), xdot (), theta () { }
 
   ODES (const ColumnVector& s, double tm, ODESFunc& f)
     : base_diff_eqn (s, tm), ODESFunc (f), xdot (s.length (), 0.0), theta () { }
 
   ODES (const ColumnVector& s, const ColumnVector& xtheta, double tm,
-	ODESFunc& f)
+        ODESFunc& f)
     : base_diff_eqn (s, tm), ODESFunc (f), xdot (s.length (), 0.0),
       theta (xtheta) { }
 
   ODES (const ODES& a)
-    : base_diff_eqn (a), ODESFunc (a), theta (a.theta) { }
+    : base_diff_eqn (a), ODESFunc (a), xdot (a.xdot), theta (a.theta) { }
 
   ODES& operator = (const ODES& a)
     {
       if (this != &a)
-	{
-	  base_diff_eqn::operator = (a);
-	  ODESFunc::operator = (a);
+        {
+          base_diff_eqn::operator = (a);
+          ODESFunc::operator = (a);
 
-	  xdot = a.xdot;
-	  theta = a.theta;
-	}
+          xdot = a.xdot;
+          theta = a.theta;
+        }
       return *this;
     }
 
@@ -65,7 +65,7 @@ public:
   void initialize (const ColumnVector& x, double t);
 
   void initialize (const ColumnVector& x, double t,
-		   const ColumnVector& theta);
+                   const ColumnVector& theta);
 
 protected:
 
@@ -77,9 +77,3 @@ protected:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

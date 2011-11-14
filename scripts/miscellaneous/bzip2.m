@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 Thorsten Meyer
+## Copyright (C) 2008-2011 Thorsten Meyer
 ## (based on gzip.m by David Bateman)
 ##
 ## This file is part of Octave.
@@ -18,13 +18,13 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{entries} =} bzip2 (@var{files})
+## @deftypefn  {Function File} {@var{entries} =} bzip2 (@var{files})
 ## @deftypefnx {Function File} {@var{entries} =} bzip2 (@var{files}, @var{outdir})
 ## Compress the list of files specified in @var{files}.
 ## Each file is compressed separately and a new file with a '.bz2' extension
-## is created.  The original files are not touched.  Existing compressed files 
-## are silently overwritten.If @var{outdir} is defined the compressed versions 
-## of the files are placed in this directory.
+## is created.  The original files are not modified.  Existing compressed files
+## are silently overwritten.  If @var{outdir} is defined the compressed
+## files are placed in this directory.
 ## @seealso{bunzip2, gzip, zip, tar}
 ## @end deftypefn
 
@@ -35,7 +35,7 @@ function entries = bzip2 (varargin)
       __xzip__ ("bzip2", "bz2", "bzip2 %s", varargin{:});
     else
       entries = __xzip__ ("bzip2", "bz2", "bzip2 %s", varargin{:});
-    endif      
+    endif
   else
     print_usage ();
   endif

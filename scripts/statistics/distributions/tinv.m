@@ -1,4 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 2005, 2006, 2007, 2008, 2009 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -41,7 +41,7 @@ function inv = tinv (x, n)
   if (!isscalar (n))
     [retval, x, n] = common_size (x, n);
     if (retval > 0)
-      error ("tinv: x and n must be of common size or scalar");
+      error ("tinv: X and N must be of common size or scalar");
     endif
   endif
 
@@ -66,12 +66,12 @@ function inv = tinv (x, n)
   if (any (k))
     if (isscalar (n))
       inv(k) = (sign (x(k) - 1/2)
-		.* sqrt (n .* (1 ./ betainv (2*min (x(k), 1 - x(k)),
-						 n/2, 1/2) - 1)));
+                .* sqrt (n .* (1 ./ betainv (2*min (x(k), 1 - x(k)),
+                                                 n/2, 1/2) - 1)));
     else
       inv(k) = (sign (x(k) - 1/2)
-		.* sqrt (n(k) .* (1 ./ betainv (2*min (x(k), 1 - x(k)),
-						 n(k)/2, 1/2) - 1)));
+                .* sqrt (n(k) .* (1 ./ betainv (2*min (x(k), 1 - x(k)),
+                                                 n(k)/2, 1/2) - 1)));
     endif
   endif
 

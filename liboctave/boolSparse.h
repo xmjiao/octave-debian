@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 2004, 2005, 2006, 2007, 2008 David Bateman
-Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004 Andy Adler
+Copyright (C) 2004-2011 David Bateman
+Copyright (C) 1998-2004 Andy Adler
 
 This file is part of Octave.
 
@@ -28,6 +28,8 @@ along with Octave; see the file COPYING.  If not, see
 #include "MSparse-defs.h"
 #include "Sparse-op-defs.h"
 
+class SparseMatrix;
+
 class
 OCTAVE_API
 SparseBoolMatrix : public Sparse<bool>
@@ -38,32 +40,28 @@ public:
 
   SparseBoolMatrix (octave_idx_type r, octave_idx_type c) : Sparse<bool> (r, c) { }
 
-  explicit SparseBoolMatrix (octave_idx_type r, octave_idx_type c, bool val) 
+  explicit SparseBoolMatrix (octave_idx_type r, octave_idx_type c, bool val)
     : Sparse<bool> (r, c, val) { }
 
-  SparseBoolMatrix (const dim_vector& dv, octave_idx_type nz = 0) : 
+  SparseBoolMatrix (const dim_vector& dv, octave_idx_type nz = 0) :
     Sparse<bool> (dv, nz) { }
 
   SparseBoolMatrix (const Sparse<bool>& a) : Sparse<bool> (a) { }
 
   SparseBoolMatrix (const SparseBoolMatrix& a) : Sparse<bool> (a) { }
 
-  SparseBoolMatrix (const SparseBoolMatrix& a, const dim_vector& dv) 
+  SparseBoolMatrix (const SparseBoolMatrix& a, const dim_vector& dv)
     : Sparse<bool> (a, dv) { }
 
   explicit SparseBoolMatrix (const boolMatrix& a) : Sparse<bool> (a) { }
 
   explicit SparseBoolMatrix (const boolNDArray& a) : Sparse<bool> (a) { }
 
-  explicit SparseBoolMatrix (const Array<bool> a, const Array<octave_idx_type>& r, 
-			     const Array<octave_idx_type>& c, octave_idx_type nr = -1, 
-			     octave_idx_type nc = -1, bool sum_terms = true)
-    : Sparse<bool> (a, r, c, nr, nc, sum_terms) { }
-
-  explicit SparseBoolMatrix (const Array<bool> a, const Array<double>& r, 
-			     const Array<double>& c, octave_idx_type nr = -1, 
-			     octave_idx_type nc = -1, bool sum_terms = true)
-    : Sparse<bool> (a, r, c, nr, nc, sum_terms) { }
+  SparseBoolMatrix (const Array<bool>& a, const idx_vector& r,
+                    const idx_vector& c, octave_idx_type nr = -1,
+                    octave_idx_type nc = -1, bool sum_terms = true,
+                    octave_idx_type nzm = -1)
+    : Sparse<bool> (a, r, c, nr, nc, sum_terms, nzm) { }
 
   SparseBoolMatrix (octave_idx_type r, octave_idx_type c, octave_idx_type num_nz) : Sparse<bool> (r, c, num_nz) { }
 
@@ -76,7 +74,7 @@ public:
   bool operator == (const SparseBoolMatrix& a) const;
   bool operator != (const SparseBoolMatrix& a) const;
 
-  SparseBoolMatrix transpose (void) const 
+  SparseBoolMatrix transpose (void) const
     { return Sparse<bool>::transpose (); }
 
   // destructive insert/delete/reorder operations
@@ -85,8 +83,8 @@ public:
 
   SparseBoolMatrix& insert (const SparseBoolMatrix& a, const Array<octave_idx_type>& indx);
 
-  SparseBoolMatrix concat (const SparseBoolMatrix& rb, 
-			   const Array<octave_idx_type>& ra_idx);
+  SparseBoolMatrix concat (const SparseBoolMatrix& rb,
+                           const Array<octave_idx_type>& ra_idx);
 
   SparseBoolMatrix diag (octave_idx_type k = 0) const;
 
@@ -94,11 +92,9 @@ public:
 
   SparseBoolMatrix squeeze (void) const;
 
-  SparseBoolMatrix index (idx_vector& i, int resize_ok) const;
+  SparseBoolMatrix index (const idx_vector& i, bool resize_ok) const;
 
-  SparseBoolMatrix index (idx_vector& i, idx_vector& j, int resize_ok) const;
-  
-  SparseBoolMatrix index (Array<idx_vector>& ra_idx, int resize_ok) const;
+  SparseBoolMatrix index (const idx_vector& i, const idx_vector& j, bool resize_ok) const;
 
   SparseBoolMatrix reshape (const dim_vector& new_dims) const;
 
@@ -114,6 +110,7 @@ public:
 
   SparseBoolMatrix all (int dim = -1) const;
   SparseBoolMatrix any (int dim = -1) const;
+  SparseMatrix sum (int dim = -1) const;
 
   // i/o
 
@@ -131,9 +128,3 @@ SPARSE_SMSM_EQNE_OP_DECLS (SparseBoolMatrix, SparseBoolMatrix, OCTAVE_API)
 SPARSE_SMSM_BOOL_OP_DECLS (SparseBoolMatrix, SparseBoolMatrix, OCTAVE_API)
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 2000, 2001, 2002, 2003,
-              2004, 2005, 2006, 2007, 2008 John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -27,9 +26,12 @@ along with Octave; see the file COPYING.  If not, see
 #include <cstdarg>
 #include <string>
 
+class octave_value_list;
+class unwind_protect;
+
 #define panic_impossible() \
   panic ("impossible state reached in file `%s' at line %d", \
-	 __FILE__, __LINE__)
+         __FILE__, __LINE__)
 
 extern OCTINTERP_API void reset_error_handler (void);
 
@@ -46,6 +48,9 @@ extern OCTINTERP_API void warning (const char *fmt, ...);
 
 extern OCTINTERP_API void verror (const char *fmt, va_list args);
 extern OCTINTERP_API void error (const char *fmt, ...);
+
+extern OCTINTERP_API void verror_with_cfn (const char *fmt, va_list args);
+extern OCTINTERP_API void error_with_cfn (const char *fmt, ...);
 
 extern OCTINTERP_API void vparse_error (const char *fmt, va_list args);
 extern OCTINTERP_API void parse_error (const char *fmt, ...);
@@ -75,6 +80,12 @@ extern OCTINTERP_API void
 error_with_id (const char *id, const char *fmt, ...);
 
 extern OCTINTERP_API void
+verror_with_id_cfn (const char *id, const char *fmt, va_list args);
+
+extern OCTINTERP_API void
+error_with_id_cfn (const char *id, const char *fmt, ...);
+
+extern OCTINTERP_API void
 vparse_error_with_id (const char *id, const char *fmt, va_list args);
 
 extern OCTINTERP_API void
@@ -84,6 +95,12 @@ extern OCTINTERP_API void panic (const char *fmt, ...) GCC_ATTR_NORETURN;
 
 // Helper function for print_usage defined in defun.cc.
 extern OCTINTERP_API void defun_usage_message (const std::string& msg);
+
+extern OCTINTERP_API octave_value_list
+set_warning_state (const std::string& id, const std::string& state);
+
+extern OCTINTERP_API octave_value_list
+set_warning_state (const octave_value_list& args);
 
 extern OCTINTERP_API void disable_warning (const std::string& id);
 extern OCTINTERP_API void initialize_default_warning_state (void);
@@ -120,10 +137,6 @@ extern OCTINTERP_API std::string last_error_id (void);
 extern OCTINTERP_API std::string last_warning_message (void);
 extern OCTINTERP_API std::string last_warning_id (void);
 
-#endif
+extern OCTINTERP_API void interpreter_try (unwind_protect&);
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+#endif

@@ -1,4 +1,4 @@
-## Copyright (C) 2009 Kai Habel
+## Copyright (C) 2009-2011 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -17,13 +17,16 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} specular (@var{sx}, @var{sy}, @var{sz}, @var{l}, @var{v})
-## @deftypefnx {Function File} {} specular (@var{sx}, @var{sy}, @var{sz}, @var{l}, @var{v}, @var{se})
+## @deftypefn  {Function File} {} specular (@var{sx}, @var{sy}, @var{sz}, @var{lv}, @var{vv})
+## @deftypefnx {Function File} {} specular (@var{sx}, @var{sy}, @var{sz}, @var{lv}, @var{vv}, @var{se})
 ## Calculate specular reflection strength of a surface defined by the normal
-## vector elements @var{sx}, @var{sy}, @var{sz} using Phong's approximation. 
-## The light and view vectors can be specified using parameter @var{L} and @var{V} respectively.
-## Both can be given as 2-element vectors [azimuth, elevation] in degrees or as 3-element
-## vector [x, y, z].  An optional 6th argument describes the specular exponent (spread) @var{se}.
+## vector elements @var{sx}, @var{sy}, @var{sz} using Phong's approximation.
+## The light and view vectors can be specified using parameter @var{lv} and
+## @var{vv} respectively.
+## Both can be given as 2-element vectors [azimuth, elevation] in degrees or as
+## 3-element
+## vector [x, y, z].  An optional 6th argument describes the specular exponent
+## (spread) @var{se}.
 ## @seealso{surfl, diffuse}
 ## @end deftypefn
 
@@ -48,7 +51,7 @@ function retval = specular (sx, sy, sz, lv, vv, se)
   if (!size_equal (sx, sy, sz))
     error ("specular: SX, SY, and SZ must have same size");
   endif
-  
+
   ## Check for light vector (lv) argument.
   if (length (lv) < 2 || length (lv) > 3)
     error ("specular: light vector LV must be a 2- or 3-element vector");
@@ -58,7 +61,7 @@ function retval = specular (sx, sy, sz, lv, vv, se)
 
   ## Check for view vector (vv) argument.
   if (length (vv) < 2 || length (lv) > 3)
-    error ("view vector VV must be a 2- or 3-element vector");
+    error ("specular: view vector VV must be a 2- or 3-element vector");
   elseif (length (vv) == 2)
     [vv(1), vv(2), vv(3)] = sph2cart (vv(1) * pi / 180, vv(2) * pi / 180, 1.0);
   endif
@@ -78,12 +81,12 @@ function retval = specular (sx, sy, sz, lv, vv, se)
 
   ## Calculate specular reflection using Phong's approximation.
   retval = 2 * l_dot_n .* v_dot_n - dot (lv, vv);
-  
+
   ## Set zero if light is on the other side.
   retval(l_dot_n < 0) = 0;
 
   ## Allow postive values only.
   retval(retval < 0) = 0;
   retval = retval .^ se;
-  
+
 endfunction

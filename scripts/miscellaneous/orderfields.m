@@ -1,4 +1,4 @@
-## Copyright (C) 2006, 2007, 2009 Paul Kienzle
+## Copyright (C) 2006-2011 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -17,15 +17,72 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {[@var{t}, @var{p}] =} orderfields (@var{s1}, @var{s2})
-## Return a struct with fields arranged alphabetically or as specified
-## by @var{s2} and a corresponding permutation vector.
+## @deftypefn  {Function File} {[@var{t}, @var{p}] =} orderfields (@var{s1})
+## @deftypefnx {Function File} {[@var{t}, @var{p}] =} orderfields (@var{s1}, @var{s2})
+## Return a copy of @var{s1} with fields arranged alphabetically or
+## as specified by @var{s2}.
 ##
 ## Given one struct, arrange field names in @var{s1} alphabetically.
 ##
-## Given two structs, arrange field names in @var{s1} as they appear
-## in @var{s2}.  The second argument may also specify the order in
-## a permutation vector or a cell array of strings.
+## If the second argument is a struct, arrange field names in @var{s1}
+## as they appear in @var{s2}.  The second argument may also specify the
+## order in a permutation vector or a cell array of strings containing
+## the fieldnames of @var{s1} in the desired order.
+##
+## The optional second output argument @var{p} is assigned the permutation
+## vector
+## which converts the original name order into the new name order.
+##
+## Examples:
+##
+## @example
+## @group
+## s = struct("d", 4, "b", 2, "a", 1, "c", 3);
+## t1 = orderfields(s)
+##      @result{} t1 =
+##         @{
+##           a =  1
+##           b =  2
+##           c =  3
+##           d =  4
+##         @}
+## @end group
+## @group
+## t = struct("d", @{@}, "c", @{@}, "b", "a", @{@});
+## t2 = orderfields(s, t)
+##      @result{} t2 =
+##         @{
+##           d =  4
+##           c =  3
+##           b =  2
+##           a =  1
+##         @}
+## @end group
+## @group
+## t3 = orderfields(s, [3, 2, 4, 1]);
+##      @result{} t3 =
+##         @{
+##           a =  1
+##           b =  2
+##           c =  3
+##           d =  4
+##         @}
+## @end group
+## @group
+## [t4, p] = orderfields(s, @{"d", "c", "b", "a"@})
+##      @result{} t4 = @{
+##           d =  4
+##           c =  3
+##           b =  2
+##           a =  1
+##         @}
+##      p =
+##         1
+##         4
+##         2
+##         3
+## @end group
+## @end example
 ##
 ## @seealso{getfield, rmfield, isfield, isstruct, fieldnames, struct}
 ## @end deftypefn
@@ -53,14 +110,14 @@ function [t, p] = orderfields (s1, s2)
       ## Two structures: return the fields in the order of s2.
       names = fieldnames (s2);
       if (! isequal (sort (fieldnames (s1)), sort (names)))
-	error ("orderfields: structures do not have same fields");
+        error ("orderfields: structures do not have same fields");
       endif
     elseif (iscellstr (s2))
       ## A structure and a list of fields: order by the list of fields.
       t1 = sort (fieldnames (s1));
       t2 = sort (s2(:));
       if (! isequal (t1, t2))
-	error ("orderfields: name list does not match structure fields");
+        error ("orderfields: name list does not match structure fields");
       endif
       names = s2;
     elseif (isvector (s2))
@@ -70,7 +127,7 @@ function [t, p] = orderfields (s1, s2)
       t1 = t1(:)';
       t2 = 1:numel (names);
       if (! isequal (t1, t2))
-	error ("orderfields: invalid permutation vector");
+        error ("orderfields: invalid permutation vector");
       endif
       names = names (s2);
     endif
@@ -113,9 +170,10 @@ endfunction
 %! assert (a(2).foo, 5)
 %! assert (a(2).bar, 6)
 %!test
-%! a(2) = orderfields (b, [2 1]);
+%! [a(2), p] = orderfields (b, [2 1]);
 %! assert (a(2).foo, 5)
 %! assert (a(2).bar, 6)
+%! assert (p, [2; 1]);
 %!test
 %! a(2) = orderfields (b, fieldnames (a));
 %! assert (a(2).foo, 5)

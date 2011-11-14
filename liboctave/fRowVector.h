@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2000, 2002, 2003, 2004, 2005,
-              2006, 2007, 2008 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -34,15 +33,22 @@ FloatRowVector : public MArray<float>
 {
 public:
 
-  FloatRowVector (void) : MArray<float> () { }
+  FloatRowVector (void) : MArray<float> (dim_vector (1, 0)) { }
 
-  explicit FloatRowVector (octave_idx_type n) : MArray<float> (n) { }
+  explicit FloatRowVector (octave_idx_type n)
+    : MArray<float> (dim_vector (1, n)) { }
 
-  FloatRowVector (octave_idx_type n, float val) : MArray<float> (n, val) { }
+  explicit FloatRowVector (const dim_vector& dv)
+    : MArray<float> (dv.as_row ()) { }
+
+  FloatRowVector (octave_idx_type n, float val)
+    : MArray<float> (dim_vector (1, n), val) { }
 
   FloatRowVector (const FloatRowVector& a) : MArray<float> (a) { }
 
-  FloatRowVector (const MArray<float>& a) : MArray<float> (a) { }
+  FloatRowVector (const MArray<float>& a) : MArray<float> (a.as_row ()) { }
+
+  FloatRowVector (const Array<float>& a) : MArray<float> (a.as_row ()) { }
 
   FloatRowVector& operator = (const FloatRowVector& a)
     {
@@ -79,12 +85,6 @@ public:
 
   // other operations
 
-  typedef float (*dmapper) (float);
-  typedef FloatComplex (*cmapper) (const FloatComplex&);
-
-  FloatRowVector map (dmapper fcn) const;
-  FloatComplexRowVector map (cmapper fcn) const;
-
   float min (void) const;
   float max (void) const;
 
@@ -93,9 +93,15 @@ public:
   friend OCTAVE_API std::ostream& operator << (std::ostream& os, const FloatRowVector& a);
   friend OCTAVE_API std::istream& operator >> (std::istream& is, FloatRowVector& a);
 
-private:
+  void resize (octave_idx_type n,
+               const float& rfv = Array<float>::resize_fill_value ())
+  {
+    Array<float>::resize (dim_vector (1, n), rfv);
+  }
 
-  FloatRowVector (float *d, octave_idx_type l) : MArray<float> (d, l) { }
+  void clear (octave_idx_type n)
+    { Array<float>::clear (1, n); }
+
 };
 
 // row vector by column vector -> scalar
@@ -111,9 +117,3 @@ OCTAVE_API FloatRowVector linspace (float x1, float x2, octave_idx_type n);
 MARRAY_FORWARD_DEFS (MArray, FloatRowVector, float)
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,4 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 2005, 2006, 2007, 2008 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -17,10 +17,10 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} chi2rnd (@var{n}, @var{r}, @var{c})
+## @deftypefn  {Function File} {} chi2rnd (@var{n}, @var{r}, @var{c})
 ## @deftypefnx {Function File} {} chi2rnd (@var{n}, @var{sz})
-## Return an @var{r} by @var{c}  or a @code{size (@var{sz})} matrix of 
-## random samples from the chisquare distribution with @var{n} degrees 
+## Return an @var{r} by @var{c}  or a @code{size (@var{sz})} matrix of
+## random samples from the chisquare distribution with @var{n} degrees
 ## of freedom.  @var{n} must be a scalar or of size @var{r} by @var{c}.
 ##
 ## If @var{r} and @var{c} are omitted, the size of the result matrix is
@@ -34,16 +34,16 @@ function rnd = chi2rnd (n, r, c)
 
   if (nargin == 3)
     if (! (isscalar (r) && (r > 0) && (r == round (r))))
-      error ("chi2rnd: r must be a positive integer");
+      error ("chi2rnd: R must be a positive integer");
     endif
     if (! (isscalar (c) && (c > 0) && (c == round (c))))
-      error ("chi2rnd: c must be a positive integer");
+      error ("chi2rnd: C must be a positive integer");
     endif
     sz = [r, c];
 
     if (any (size (n) != 1)
-	&& (length (size (n)) != length (sz) ||	any (size (n) != sz)))
-      error ("chi2rnd: n must be scalar or of size [r, c]");
+        && (length (size (n)) != length (sz) || any (size (n) != sz)))
+      error ("chi2rnd: N must be scalar or of size [R, C]");
     endif
   elseif (nargin == 2)
     if (isscalar (r) && (r > 0))
@@ -51,12 +51,12 @@ function rnd = chi2rnd (n, r, c)
     elseif (isvector(r) && all (r > 0))
       sz = r(:)';
     else
-      error ("chi2rnd: r must be a positive integer or vector");
+      error ("chi2rnd: R must be a positive integer or vector");
     endif
 
     if (any (size (n) != 1)
-	&& (length (size (n)) != length (sz) || any (size (n) != sz)))
-      error ("chi2rnd: n must be scalar or of size sz");
+        && (length (size (n)) != length (sz) || any (size (n) != sz)))
+      error ("chi2rnd: N must be scalar or of size SZ");
     endif
   elseif (nargin == 1)
     sz = size(n);
@@ -66,7 +66,7 @@ function rnd = chi2rnd (n, r, c)
 
   if (isscalar (n))
      if (find (!(n > 0) | !(n < Inf)))
-       rnd = NaN * ones (sz);
+       rnd = NaN (sz);
      else
        rnd = 2 * randg(n/2, sz);
      endif

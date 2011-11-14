@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.
 
-@c Copyright (C) 1996, 1997, 2007, 2008, 2009 John W. Eaton
+@c Copyright (C) 1996-2011 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -29,7 +29,7 @@ Sometimes, you may find it necessary to evaluate an expression that has
 been computed and stored in a string, which is exactly what the
 @code{eval} function lets you do.
 
-@c parse.cc
+@c eval src/oct-parse.cc
 @anchor{doc-eval}
 @deftypefn {Built-in Function} {} eval (@var{try}, @var{catch})
 Parse the string @var{try} and evaluate it as if it were an Octave
@@ -48,10 +48,12 @@ If an error occurs during the evaluation of @var{try} the @var{catch}
 string is evaluated, as the following example shows:
 
 @example
+@group
 eval ('error ("This is a bad example");',
       'printf ("This error occurred:\n%s\n", lasterr ());');
      @print{} This error occurred:
         This is a bad example
+@end group
 @end example
 @end deftypefn
 
@@ -75,8 +77,6 @@ that finds the root of a user-supplied function of one variable using
 Newton's method.
 
 @example
-@cindex Fordyce, A. P.
-@findex newtroot
 function result = newtroot (fname, x)
 
 # usage: newtroot (fname, x)
@@ -112,40 +112,57 @@ function, etc.  @xref{Predicates for Numeric Objects}, for example,
 for a list of predicates for numeric objects, and see @ref{Status of
 Variables}, for a description of the @code{exist} function.
 
-@c parse.cc
+@c feval src/oct-parse.cc
 @anchor{doc-feval}
 @deftypefn {Built-in Function} {} feval (@var{name}, @dots{})
 Evaluate the function named @var{name}.  Any arguments after the first
 are passed on to the named function.  For example,
 
 @example
+@group
 feval ("acos", -1)
      @result{} 3.1416
+@end group
 @end example
 
 @noindent
 calls the function @code{acos} with the argument @samp{-1}.
 
-The function @code{feval} is necessary in order to be able to write
-functions that call user-supplied functions, because Octave does not
-have a way to declare a pointer to a function (like C) or to declare a
-special kind of variable that can be used to hold the name of a function
-(like @code{EXTERNAL} in Fortran).  Instead, you must refer to functions
-by name, and use @code{feval} to call them.
+The function @code{feval} can also be used with function handles of
+any sort (@pxref{Function Handles}).  Historically, @code{feval} was
+the only way to call user-supplied functions in strings, but
+function handles are now preferred due to the cleaner syntax they
+offer.  For example,
+
+@example
+@group
+@var{f} = @@exp;
+feval (@var{f}, 1)
+     @result{} 2.7183
+@var{f} (1)
+     @result{} 2.7183
+@end group
+@end example
+
+@noindent
+are equivalent ways to call the function referred to by @var{f}.  If it
+cannot be predicted beforehand that @var{f} is a function handle or the
+function name in a string, @code{feval} can be used instead.
 @end deftypefn
 
 
 A similar function @code{run} exists for calling user script files, that
 are not necessarily on the user path
 
-@c ./miscellaneous/run.m
+@c run scripts/miscellaneous/run.m
 @anchor{doc-run}
-@deftypefn {Function File} {} run (@var{f})
-@deftypefnx {Command} {} run @var{f}
+@deftypefn  {Command} {} run @var{script}
+@deftypefnx {Function File} {} run (@var{script})
 Run scripts in the current workspace that are not necessarily on the
-path.  If @var{f} is the script to run, including its path, then @code{run}
-change the directory to the directory where @var{f} is found.  @code{run}
-then executes the script, and returns to the original directory.
+path.  If @var{script} is the script to run, including its path, then
+@code{run} changes the directory to the directory where @var{script} is
+found.  @code{run} then executes the script, and returns to the original
+directory.
 @seealso{@ref{doc-system,,system}}
 @end deftypefn
 
@@ -169,7 +186,7 @@ which is similar to using a pointer in programming languages such
 as C.
 
 Consider how you might write @code{save} and @code{load} as
-m-files.  For example,
+m-files.  For example:
 
 @example
 @group
@@ -238,7 +255,7 @@ the given pattern.  Other examples such as @code{save} and @code{load}
 are written in C++ where all Octave variables
 are in the @samp{caller} context and @code{evalin} is not needed.
 
-@c parse.cc
+@c evalin src/oct-parse.cc
 @anchor{doc-evalin}
 @deftypefn {Built-in Function} {} evalin (@var{context}, @var{try}, @var{catch})
 Like @code{eval}, except that the expressions are evaluated in the
@@ -247,7 +264,7 @@ context @var{context}, which may be either @code{"caller"} or
 @end deftypefn
 
 
-@c parse.cc
+@c assignin src/oct-parse.cc
 @anchor{doc-assignin}
 @deftypefn {Built-in Function} {} assignin (@var{context}, @var{varname}, @var{value})
 Assign @var{value} to @var{varname} in context @var{context}, which

@@ -1,4 +1,4 @@
-## Copyright (C) 2000, 2001, 2006, 2007, 2008, 2009 Kai Habel
+## Copyright (C) 2000-2011 Kai Habel
 ## Copyright (C) 2006 David Bateman
 ##
 ## This file is part of Octave.
@@ -18,14 +18,14 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{pp} =} spline (@var{x}, @var{y})
+## @deftypefn  {Function File} {@var{pp} =} spline (@var{x}, @var{y})
 ## @deftypefnx {Function File} {@var{yi} =} spline (@var{x}, @var{y}, @var{xi})
 ##
-## Return the cubic spline interpolant of @var{y} at points @var{x}. 
-## If called with two arguments, @code{spline} returns the piece-wise
+## Return the cubic spline interpolant of @var{y} at points @var{x}.
+## If called with two arguments, @code{spline} returns the piecewise
 ## polynomial @var{pp} that may later be used with @code{ppval} to
 ## evaluate the polynomial at specific points.
-## If called with a third input argument, @code{spline} evaluates the 
+## If called with a third input argument, @code{spline} evaluates the
 ## spline at the points @var{xi}.  There is an equivalence
 ## between @code{ppval (spline (@var{x}, @var{y}), @var{xi})} and
 ## @code{spline (@var{x}, @var{y}, @var{xi})}.
@@ -53,7 +53,7 @@
 ## @code{[@var{s1}, @var{s2}, @dots{}, @var{sk}, @var{n} + 2]}.
 ## @end ifnottex
 ## The array is then reshaped internally to a matrix where the leading
-## dimension is given by 
+## dimension is given by
 ## @tex
 ## $$s_1 s_2 \cdots s_k$$
 ## @end tex
@@ -76,8 +76,8 @@ function ret = spline (x, y, xi)
 
   x = x(:);
   n = length (x);
-  if (n < 3)
-    error ("spline: requires at least 3 points"); 
+  if (n < 2)
+    error ("spline: requires at least 2 points");
   endif
 
   ## Check the size and shape of y
@@ -93,6 +93,12 @@ function ret = spline (x, y, xi)
   else
     a = reshape (y, [prod(szy(1:end-1)), szy(end)]).';
   endif
+
+  for k = (1:columns (a))(any (isnan (a)))
+    ok = ! isnan (a(:,k));
+    a(!ok,k) = spline (x(ok), a(ok,k), x(!ok));
+  endfor
+
   complete = false;
   if (size (a, 1) == n + 2)
     complete = true;
@@ -101,92 +107,136 @@ function ret = spline (x, y, xi)
     a = a(2:end-1,:);
   endif
 
+  if (~issorted (x))
+    [x, idx] = sort(x);
+    a = a(idx,:);
+  endif
+
   b = c = zeros (size (a));
   h = diff (x);
   idx = ones (columns (a), 1);
 
   if (complete)
 
-    if (n == 3)
-      dg = 1.5 * h(1) - 0.5 * h(2);
-      c(2:n-1,:) = 1/dg(1);
+    if (n == 2)
+      d = (dfs + dfe) / (x(2) - x(1)) ^ 2 + ...
+	2 * (a(1,:) - a(2,:)) / (x(2) - x(1)) ^ 3;
+      c = (-2 * dfs - dfe) / (x(2) - x(1)) - ...
+	3 * (a(1,:) - a(2,:)) / (x(2) - x(1)) ^ 2;
+      b = dfs;
+      a = a(1,:);
+
+      d = d(1:n-1,:);
+      c = c(1:n-1,:);
+      b = b(1:n-1,:);
+      a = a(1:n-1,:);
     else
-      dg = 2 * (h(1:n-2) .+ h(2:n-1));
-      dg(1) = dg(1) - 0.5 * h(1);
-      dg(n-2) = dg(n-2) - 0.5 * h(n-1);
+      if (n == 3)
+	dg = 1.5 * h(1) - 0.5 * h(2);
+        c(2:n-1,:) = 1/dg(1);
+      else
+        dg = 2 * (h(1:n-2) .+ h(2:n-1));
+        dg(1) = dg(1) - 0.5 * h(1);
+        dg(n-2) = dg(n-2) - 0.5 * h(n-1);
 
-      e = h(2:n-2);
+        e = h(2:n-2);
 
-      g = 3 * diff (a(2:n,:)) ./ h(2:n-1,idx) ...
+        g = 3 * diff (a(2:n,:)) ./ h(2:n-1,idx) ...
           - 3 * diff (a(1:n-1,:)) ./ h(1:n-2,idx);
-      g(1,:) = 3 * (a(3,:) - a(2,:)) / h(2) ...
+        g(1,:) = 3 * (a(3,:) - a(2,:)) / h(2) ...
           - 3 / 2 * (3 * (a(2,:) - a(1,:)) / h(1) - dfs);
-      g(n-2,:) = 3 / 2 * (3 * (a(n,:) - a(n-1,:)) / h(n-1) - dfe) ...
+        g(n-2,:) = 3 / 2 * (3 * (a(n,:) - a(n-1,:)) / h(n-1) - dfe) ...
           - 3 * (a(n-1,:) - a(n-2,:)) / h(n-2);
 
-      c(2:n-1,:) = spdiags ([[e(:); 0], dg, [0; e(:)]],
-			      [-1, 0, 1], n-2, n-2) \ g;
+        c(2:n-1,:) = spdiags ([[e(:); 0], dg, [0; e(:)]],
+                              [-1, 0, 1], n-2, n-2) \ g;
+      endif
+
+      c(1,:) = (3 / h(1) * (a(2,:) - a(1,:)) - 3 * dfs
+		- c(2,:) * h(1)) / (2 * h(1));
+      c(n,:) = - (3 / h(n-1) * (a(n,:) - a(n-1,:)) - 3 * dfe
+		  + c(n-1,:) * h(n-1)) / (2 * h(n-1));
+      b(1:n-1,:) = diff (a) ./ h(1:n-1, idx) ...
+        - h(1:n-1,idx) / 3 .* (c(2:n,:) + 2 * c(1:n-1,:));
+      d = diff (c) ./ (3 * h(1:n-1, idx));
+
+      d = d(1:n-1,:);
+      c = c(1:n-1,:);
+      b = b(1:n-1,:);
+      a = a(1:n-1,:);
     endif
-
-    c(1,:) = (3 / h(1) * (a(2,:) - a(1,:)) - 3 * dfs
-	      - c(2,:) * h(1)) / (2 * h(1));
-    c(n,:) = - (3 / h(n-1) * (a(n,:) - a(n-1,:)) - 3 * dfe
-		+ c(n-1,:) * h(n-1)) / (2 * h(n-1));
-    b(1:n-1,:) = diff (a) ./ h(1:n-1, idx) ...
-	- h(1:n-1,idx) / 3 .* (c(2:n,:) + 2 * c(1:n-1,:));
-    d = diff (c) ./ (3 * h(1:n-1, idx));
-
   else
 
-    g = zeros (n-2, columns (a));
-    g(1,:) = 3 / (h(1) + h(2)) ...
-	* (a(3,:) - a(2,:) - h(2) / h(1) * (a(2,:) - a(1,:)));
-    g(n-2,:) = 3 / (h(n-1) + h(n-2)) ...
-	* (h(n-2) / h(n-1) * (a(n,:) - a(n-1,:)) - (a(n-1,:) - a(n-2,:)));
+    if (n == 2)
+      b = (a(2,:) - a(1,:)) / (x(2) - x(1));
+      a = a(1,:);
+      d = [];
+      c = [];
+      b = b(1:n-1,:);
+      a = a(1:n-1,:);
+    elseif (n == 3)
 
-    if (n > 4)
+      n = 2;
+      c = (a(1,:) - a(3,:)) / ((x(3) - x(1)) * (x(2) - x(3))) ...
+          + (a(2,:) - a(1,:)) / ((x(2) - x(1)) * (x(2) - x(3)));
+      b = (a(2,:) - a(1,:)) * (x(3) - x(1)) ...
+          / ((x(2) - x(1)) * (x(3) - x(2))) ...
+          + (a(1,:) - a(3,:)) * (x(2) - x(1)) ...
+          / ((x(3) - x(1)) * (x(3) - x(2)));
+      a = a(1,:);
+      d = [];
+      x = [min(x), max(x)];
 
-      g(2:n - 3,:) = 3 * diff (a(3:n-1,:)) ./ h(3:n-2,idx) ...
-          - 3 * diff (a(2:n-2,:)) ./ h(2:n - 3,idx);
+      c = c(1:n-1,:);
+      b = b(1:n-1,:);
+      a = a(1:n-1,:);
+    else
 
-      dg = 2 * (h(1:n-2) .+ h(2:n-1));
-      dg(1) = dg(1) - h(1);
-      dg(n-2) = dg(n-2) - h(n-1);
+      g = zeros (n-2, columns (a));
+      g(1,:) = 3 / (h(1) + h(2)) ...
+          * (a(3,:) - a(2,:) - h(2) / h(1) * (a(2,:) - a(1,:)));
+      g(n-2,:) = 3 / (h(n-1) + h(n-2)) ...
+          * (h(n-2) / h(n-1) * (a(n,:) - a(n-1,:)) - (a(n-1,:) - a(n-2,:)));
 
-      ldg = udg = h(2:n-2);
-      udg(1) = udg(1) - h(1);
-      ldg(n - 3) = ldg(n-3) - h(n-1);
-      c(2:n-1,:) = spdiags ([[ldg(:); 0], dg, [0; udg(:)]],
-			      [-1, 0, 1], n-2, n-2) \ g;
+      if (n > 4)
 
-    elseif (n == 4)
+        g(2:n - 3,:) = 3 * diff (a(3:n-1,:)) ./ h(3:n-2,idx) ...
+            - 3 * diff (a(2:n-2,:)) ./ h(2:n - 3,idx);
 
-      dg = [h(1) + 2 * h(2); 2 * h(2) + h(3)];
-      ldg = h(2) - h(3);
-      udg = h(2) - h(1);
-      c(2:n-1,:) = spdiags ([[ldg(:);0], dg, [0; udg(:)]],
-			      [-1, 0, 1], n-2, n-2) \ g;
-      
-    else # n == 3
-	    
-      dg = h(1) + 2 * h(2);
-      c(2:n-1,:) = g/dg(1);
+        dg = 2 * (h(1:n-2) .+ h(2:n-1));
+        dg(1) = dg(1) - h(1);
+        dg(n-2) = dg(n-2) - h(n-1);
 
+        ldg = udg = h(2:n-2);
+        udg(1) = udg(1) - h(1);
+        ldg(n - 3) = ldg(n-3) - h(n-1);
+        c(2:n-1,:) = spdiags ([[ldg(:); 0], dg, [0; udg(:)]],
+                              [-1, 0, 1], n-2, n-2) \ g;
+
+      elseif (n == 4)
+
+        dg = [h(1) + 2 * h(2); 2 * h(2) + h(3)];
+        ldg = h(2) - h(3);
+        udg = h(2) - h(1);
+        c(2:n-1,:) = spdiags ([[ldg(:);0], dg, [0; udg(:)]],
+                              [-1, 0, 1], n-2, n-2) \ g;
+
+      endif
+
+      c(1,:) = c(2,:) + h(1) / h(2) * (c(2,:) - c(3,:));
+      c(n,:) = c(n-1,:) + h(n-1) / h(n-2) * (c(n-1,:) - c(n-2,:));
+      b = diff (a) ./ h(1:n-1, idx) ...
+          - h(1:n-1, idx) / 3 .* (c(2:n,:) + 2 * c(1:n-1,:));
+      d = diff (c) ./ (3 * h(1:n-1, idx));
+
+      d = d(1:n-1,:);
+      c = c(1:n-1,:);
+      b = b(1:n-1,:);
+      a = a(1:n-1,:);
     endif
 
-    c(1,:) = c(2,:) + h(1) / h(2) * (c(2,:) - c(3,:));
-    c(n,:) = c(n-1,:) + h(n-1) / h(n-2) * (c(n-1,:) - c(n-2,:));
-    b = diff (a) ./ h(1:n-1, idx) ...
-	- h(1:n-1, idx) / 3 .* (c(2:n,:) + 2 * c(1:n-1,:));
-    d = diff (c) ./ (3 * h(1:n-1, idx));
-
   endif
-
-  d = d(1:n-1,:);
-  c = c(1:n-1,:);
-  b = b(1:n-1,:);
-  a = a(1:n-1,:);
-  coeffs = [d(:), c(:), b(:), a(:)];
+  coeffs = cat (3, d.', c.', b.', a.');
   ret = mkpp (x, coeffs, szy(1:end-1));
 
   if (nargin == 3)
@@ -223,3 +273,31 @@ endfunction
 %!assert (imag(spline(x,y,x.')), imag(y).', abserr);
 %!assert (imag(spline(x.',y.',x.')), imag(y).', abserr);
 %!assert (imag(spline(x.',y,x)), imag(y), abserr);
+%!test
+%! xnan = 5;
+%! y(x==xnan) = NaN;
+%! ok = ! isnan (y);
+%! assert (spline (x, y, x(ok)), y(ok), abserr);
+%!test
+%! ok = ! isnan (y);
+%! assert (! isnan (spline (x, y, x(!ok))));
+%!test
+%! x = [1,2];
+%! y = [1,4];
+%! assert (spline (x,y,x), [1,4], abserr);
+%!test
+%! x = [2,1];
+%! y = [1,4];
+%! assert (spline (x,y,x), [1,4], abserr);
+%!test
+%! x = [1,2];
+%! y = [1,2,3,4];
+%! pp = spline (x,y);
+%! [x,P] = unmkpp (pp);
+%! assert (norm (P-[3,-3,1,2]), 0, abserr);
+%!test
+%! x = [2,1];
+%! y = [1,2,3,4];
+%! pp = spline (x,y);
+%! [x,P] = unmkpp (pp);
+%! assert (norm (P-[7,-9,1,3]), 0, abserr);

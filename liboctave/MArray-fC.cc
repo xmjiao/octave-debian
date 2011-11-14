@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1995, 1996, 1997, 2000, 2003, 2005, 2006, 2007, 2008, 2009
-              John W. Eaton
+Copyright (C) 1995-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -31,34 +30,10 @@ along with Octave; see the file COPYING.  If not, see
 
 #include "MArray.h"
 #include "MArray.cc"
-template <> OCTAVE_API float MArray<FloatComplex>::norm (float p) const;
-#include "fCColVector.h"
-#include "oct-norm.h"
-
-template <>
-OCTAVE_API float
-MArray<FloatComplex>::norm (float p) const
-{
-  return xnorm (FloatComplexColumnVector (*this), p);
-}
 
 template class OCTAVE_API MArray<FloatComplex>;
 
 INSTANTIATE_MARRAY_FRIENDS (FloatComplex, OCTAVE_API)
-
-#include "MArray2.h"
-#include "MArray2.cc"
-
-template class OCTAVE_API MArray2<FloatComplex>;
-
-INSTANTIATE_MARRAY2_FRIENDS (FloatComplex, OCTAVE_API)
-
-#include "MArrayN.h"
-#include "MArrayN.cc"
-
-template class OCTAVE_API MArrayN<FloatComplex>;
-
-INSTANTIATE_MARRAYN_FRIENDS (FloatComplex, OCTAVE_API)
 
 #include "MDiagArray2.h"
 #include "MDiagArray2.cc"
@@ -66,9 +41,3 @@ INSTANTIATE_MARRAYN_FRIENDS (FloatComplex, OCTAVE_API)
 template class OCTAVE_API MDiagArray2<FloatComplex>;
 
 INSTANTIATE_MDIAGARRAY2_FRIENDS (FloatComplex, OCTAVE_API)
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

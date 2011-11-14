@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2000, 2001, 2002, 2003, 2005, 2006, 2007 John W. Eaton
+Copyright (C) 2000-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -20,14 +20,6 @@ along with Octave; see the file COPYING.  If not, see
 
 */
 
-/*
-
-The function gethostname was adapted from a similar function from GNU
-Bash, the Bourne Again SHell, copyright (C) 1987, 1989, 1991 Free
-Software Foundation, Inc.
-
-*/
-
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -39,57 +31,22 @@ Software Foundation, Inc.
 #define _XOPEN_SOURCE
 #endif
 
-#ifdef HAVE_UNISTD_H
-#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#endif
 #include <unistd.h>
-#endif
 
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 
+#include "lo-cutils.h"
 #include "syswait.h"
 
 OCTAVE_API void
 octave_qsort (void *base, size_t n, size_t size,
-	      int (*cmp) (const void *, const void *))
+              int (*cmp) (const void *, const void *))
 {
   qsort (base, n, size, cmp);
 }
-
-OCTAVE_API char *
-oct_strptime (const char *buf, const char *format, struct tm *tm)
-{
-  return (char *) strptime (buf, format, tm);
-}
-
-#if defined (__WIN32__) && ! defined (_POSIX_VERSION)
-
-#include <winsock.h>
-
-#elif ! defined (HAVE_GETHOSTNAME) && defined (HAVE_SYS_UTSNAME_H)
-
-#include <sys/utsname.h>
-
-int
-gethostname (char *name, int namelen)
-{
-  int i;
-  struct utsname ut;
-
-  --namelen;
-
-  uname (&ut);
-  i = strlen (ut.nodename) + 1;
-  strncpy (name, ut.nodename, i < namelen ? i : namelen);
-  name[namelen] = '\0';
-
-  return 0;
-}
-
-#endif
 
 OCTAVE_API int
 octave_strcasecmp (const char *s1, const char *s2)
@@ -101,12 +58,6 @@ OCTAVE_API int
 octave_strncasecmp (const char *s1, const char *s2, size_t n)
 {
   return strncasecmp (s1, s2, n);
-}
-
-OCTAVE_API int
-octave_gethostname (char *name, int namelen)
-{
-  return gethostname (name, namelen);
 }
 
 #ifdef HAVE_LOADLIBRARY_API
@@ -125,9 +76,3 @@ octave_waitpid (pid_t pid, int *status, int options)
 {
   return WAITPID (pid, status, options);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

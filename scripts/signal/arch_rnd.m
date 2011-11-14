@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 1999, 2000, 2002, 2005, 2006,
-##               2007, 2008, 2009 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -22,8 +21,8 @@
 ## Simulate an ARCH sequence of length @var{t} with AR
 ## coefficients @var{b} and CH coefficients @var{a}.  I.e., the result
 ## @math{y(t)} follows the model
-##
 ## @c Set example in small font to prevent overfull line
+##
 ## @smallexample
 ## y(t) = b(1) + b(2) * y(t-1) + @dots{} + b(lb) * y(t-lb+1) + e(t),
 ## @end smallexample
@@ -31,8 +30,8 @@
 ## @noindent
 ## where @math{e(t)}, given @var{y} up to time @math{t-1}, is
 ## @math{N(0, h(t))}, with
-##
 ## @c Set example in small font to prevent overfull line
+##
 ## @smallexample
 ## h(t) = a(1) + a(2) * e(t-1)^2 + @dots{} + a(la) * e(t-la+1)^2
 ## @end smallexample
@@ -41,21 +40,21 @@
 ## Author: KH <Kurt.Hornik@wu-wien.ac.at>
 ## Description: Simulate an ARCH process
 
-function y = arch_rnd (a, b, T)
+function y = arch_rnd (a, b, t)
 
   if (nargin != 3)
     print_usage ();
   endif
 
   if (! ((min (size (a)) == 1) && (min (size (b)) == 1)))
-    error ("arch_rnd: a and b must both be scalars or vectors");
+    error ("arch_rnd: A and B must both be scalars or vectors");
   endif
-  if (! (isscalar (T) && (T > 0) && (rem (T, 1) == 0)))
+  if (! (isscalar (t) && (t > 0) && (rem (t, 1) == 0)))
     error ("arch_rnd: T must be a positive integer");
   endif
 
   if (! (a(1) > 0))
-    error ("arch_rnd: a(1) must be positive");
+    error ("arch_rnd: A(1) must be positive");
   endif
   ## perhaps add a test for the roots of a(z) here ...
 
@@ -72,17 +71,17 @@ function y = arch_rnd (a, b, T)
     b  = [b, 0];
     lb = lb + 1;
   endif
-  M  = max([la, lb]);
+  m  = max([la, lb]);
 
-  e  = zeros (T, 1);
-  h  = zeros (T, 1);
-  y  = zeros (T, 1);
+  e  = zeros (t, 1);
+  h  = zeros (t, 1);
+  y  = zeros (t, 1);
 
   h(1) = a(1);
   e(1) = sqrt (h(1)) * randn;
   y(1) = b(1) + e(1);
 
-  for t = 2:M
+  for t = 2:m
     ta   = min ([t, la]);
     h(t) = a(1) + a(2:ta) * e(t-ta+1:t-1).^2;
     e(t) = sqrt (h(t)) * randn;
@@ -90,14 +89,14 @@ function y = arch_rnd (a, b, T)
     y(t) = b(1) + b(2:tb) * y(t-tb+1:t-1) + e(t);
   endfor
 
-  if (T > M)
-    for t = M+1:T
+  if (t > m)
+    for t = m+1:t
       h(t) = a(1) + a(2:la) * e(t-la+1:t-1).^2;
       e(t) = sqrt (h(t)) * randn;
       y(t) = b(1) + b(2:lb) * y(t-tb+1:t-1) + e(t);
     endfor
   endif
 
-  y = y(1:T);
+  y = y(1:t);
 
 endfunction

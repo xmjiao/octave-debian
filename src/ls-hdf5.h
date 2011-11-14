@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2003, 2004, 2005, 2006, 2007, 2009 John W. Eaton
+Copyright (C) 2003-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -43,36 +43,37 @@ public:
   // keep track of current item index in the file
   int current_item;
 
-  hdf5_fstreambase () { file_id = -1; }
+  hdf5_fstreambase () : file_id (-1), current_item () { }
 
   ~hdf5_fstreambase () { close (); }
 
   hdf5_fstreambase (const char *name, int mode, int /* prot */ = 0)
+    : file_id (-1), current_item (-1)
     {
       if (mode & std::ios::in)
-	file_id = H5Fopen (name, H5F_ACC_RDONLY, H5P_DEFAULT);
+        file_id = H5Fopen (name, H5F_ACC_RDONLY, H5P_DEFAULT);
       else if (mode & std::ios::out)
-	{
-	  if (mode & std::ios::app && H5Fis_hdf5 (name) > 0)
-	    file_id = H5Fopen (name, H5F_ACC_RDWR, H5P_DEFAULT);
-	  else
-	    file_id = H5Fcreate (name, H5F_ACC_TRUNC, H5P_DEFAULT, 
-				 H5P_DEFAULT);
-	}
+        {
+          if (mode & std::ios::app && H5Fis_hdf5 (name) > 0)
+            file_id = H5Fopen (name, H5F_ACC_RDWR, H5P_DEFAULT);
+          else
+            file_id = H5Fcreate (name, H5F_ACC_TRUNC, H5P_DEFAULT,
+                                 H5P_DEFAULT);
+        }
       if (file_id < 0)
-	std::ios::setstate (std::ios::badbit);
+        std::ios::setstate (std::ios::badbit);
 
       current_item = 0;
     }
 
   void close ()
-    { 
+    {
       if (file_id >= 0)
-	{
-	  if (H5Fclose (file_id) < 0)
-	    std::ios::setstate (std::ios::badbit);
-	  file_id = -1;
-	}
+        {
+          if (H5Fclose (file_id) < 0)
+            std::ios::setstate (std::ios::badbit);
+          file_id = -1;
+        }
     }
 
   void open (const char *name, int mode, int)
@@ -80,17 +81,17 @@ public:
       clear ();
 
       if (mode & std::ios::in)
-	file_id = H5Fopen (name, H5F_ACC_RDONLY, H5P_DEFAULT);
+        file_id = H5Fopen (name, H5F_ACC_RDONLY, H5P_DEFAULT);
       else if (mode & std::ios::out)
-	{
-	  if (mode & std::ios::app && H5Fis_hdf5 (name) > 0)
-	    file_id = H5Fopen (name, H5F_ACC_RDWR, H5P_DEFAULT);
-	  else
-	    file_id = H5Fcreate (name, H5F_ACC_TRUNC, H5P_DEFAULT, 
-				 H5P_DEFAULT);
-	}
+        {
+          if (mode & std::ios::app && H5Fis_hdf5 (name) > 0)
+            file_id = H5Fopen (name, H5F_ACC_RDWR, H5P_DEFAULT);
+          else
+            file_id = H5Fcreate (name, H5F_ACC_TRUNC, H5P_DEFAULT,
+                                 H5P_DEFAULT);
+        }
       if (file_id < 0)
-	std::ios::setstate (std::ios::badbit);
+        std::ios::setstate (std::ios::badbit);
 
       current_item = 0;
     }
@@ -106,11 +107,11 @@ public:
   hdf5_ifstream () : hdf5_fstreambase (), std::istream (0) { }
 
   hdf5_ifstream (const char *name, int mode = std::ios::in|std::ios::binary,
-		 int prot = 0)
+                 int prot = 0)
     : hdf5_fstreambase (name, mode, prot), std::istream (0) { }
 
   void open (const char *name, int mode = std::ios::in|std::ios::binary,
-	     int prot = 0)
+             int prot = 0)
     { hdf5_fstreambase::open (name, mode, prot); }
 };
 
@@ -121,11 +122,11 @@ public:
   hdf5_ofstream () : hdf5_fstreambase (), std::ostream (0) { }
 
   hdf5_ofstream (const char *name, int mode = std::ios::out|std::ios::binary,
-		 int prot = 0)
+                 int prot = 0)
     : hdf5_fstreambase (name, mode, prot), std::ostream (0) { }
 
   void open (const char *name, int mode = std::ios::out|std::ios::binary,
-	     int prot = 0)
+             int prot = 0)
     { hdf5_fstreambase::open (name, mode, prot); }
 };
 
@@ -168,8 +169,8 @@ hdf5_read_next_data (hid_t group_id, const char *name, void *dv);
 
 extern OCTINTERP_API bool
 add_hdf5_data (hid_t loc_id, const octave_value& tc,
-	       const std::string& name, const std::string& doc,
-	       bool mark_as_global, bool save_as_floats);
+               const std::string& name, const std::string& doc,
+               bool mark_as_global, bool save_as_floats);
 
 extern OCTINTERP_API int
 save_hdf5_empty (hid_t loc_id, const char *name, const dim_vector d);
@@ -179,12 +180,27 @@ load_hdf5_empty (hid_t loc_id, const char *name, dim_vector &d);
 
 extern OCTINTERP_API std::string
 read_hdf5_data (std::istream& is,  const std::string& filename, bool& global,
-		octave_value& tc, std::string& doc);
+                octave_value& tc, std::string& doc);
 
 extern OCTINTERP_API bool
 save_hdf5_data (std::ostream& os, const octave_value& tc,
-		const std::string& name, const std::string& doc,
-		bool mark_as_global, bool save_as_floats);
+                const std::string& name, const std::string& doc,
+                bool mark_as_global, bool save_as_floats);
+
+extern OCTINTERP_API bool
+hdf5_check_attr (hid_t loc_id, const char *attr_name);
+
+extern OCTINTERP_API bool
+hdf5_get_scalar_attr (hid_t loc_id, hid_t type_id, const char *attr_name,
+                      void *buf);
+
+extern OCTINTERP_API herr_t
+hdf5_add_attr (hid_t loc_id, const char *attr_name);
+
+
+extern OCTINTERP_API herr_t
+hdf5_add_scalar_attr (hid_t loc_id, hid_t type_id,
+                      const char *attr_name, void *buf);
 
 #ifdef IDX_TYPE_LONG
 #define H5T_NATIVE_IDX H5T_NATIVE_LONG
@@ -195,9 +211,3 @@ save_hdf5_data (std::ostream& os, const octave_value& tc,
 #endif
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

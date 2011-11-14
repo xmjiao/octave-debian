@@ -1,5 +1,4 @@
-## Copyright (C) 1996, 1998, 1999, 2000, 2002, 2004, 2005, 2006, 2007,
-##               2008, 2009 Kurt Hornik
+## Copyright (C) 1996-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -38,7 +37,7 @@ function retval = str2mat (varargin)
   if (! warned)
     warned = true;
     warning ("Octave:deprecated-function",
-             "str2mat is obsolete and will be removed from a future version of Octave; please use char instead.");
+             "str2mat is obsolete and will be removed from a future version of Octave; please use char instead");
   endif
 
   retval = char (varargin{:});

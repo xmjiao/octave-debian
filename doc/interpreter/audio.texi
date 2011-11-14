@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.
 
-@c Copyright (C) 1996, 1997, 1999, 2000, 2002, 2005, 2007, 2009 Kurt Hornik
+@c Copyright (C) 1996-2011 Kurt Hornik
 @c
 @c This file is part of Octave.
 @c
@@ -26,7 +26,7 @@
 Octave provides a few functions for dealing with audio data.  An audio
 `sample' is a single output value from an A/D converter, i.e., a small
 integer number (usually 8 or 16 bits), and audio data is just a series
-of such samples.  It can be characterized by three parameters:  the
+of such samples.  It can be characterized by three parameters: the
 sampling rate (measured in samples per second or Hz, e.g., 8000 or
 44100), the number of bits per sample (e.g., 8 or 16), and the number of
 channels (1 for mono, 2 for stereo, etc.).
@@ -34,7 +34,7 @@ channels (1 for mono, 2 for stereo, etc.).
 There are many different formats for representing such data.  Currently,
 only the two most popular, @emph{linear encoding} and @emph{mu-law
 encoding}, are supported by Octave.  There is an excellent FAQ on audio
-formats by Guido van Rossum <guido@@cwi.nl> which can be found at any
+formats by Guido van Rossum @email{guido@@cwi.nl} which can be found at any
 FAQ ftp site, in particular in the directory
 @file{/pub/usenet/news.answers/audio-fmts} of the archive site
 @code{rtfm.mit.edu}.
@@ -45,37 +45,41 @@ encoding have one of the extensions @file{lin} or @file{raw}, and that
 files holding data in mu-law encoding end in @file{au}, @file{mu}, or
 @file{snd}.
 
-@c ./audio/lin2mu.m
+@c lin2mu scripts/audio/lin2mu.m
 @anchor{doc-lin2mu}
 @deftypefn {Function File} {} lin2mu (@var{x}, @var{n})
-Converts audio data from linear to mu-law.  Mu-law values use 8-bit
-unsigned integers.  Linear values use @var{n}-bit signed integers or 
-floating point values in the range -1<=@var{x}<=1 if @var{n} is 0.  
-If @var{n} is not specified it defaults to 0, 8 or 16 depending on 
-the range values in @var{x}.
-@seealso{@ref{doc-mu2lin,,mu2lin}, @ref{doc-loadaudio,,loadaudio}, @ref{doc-saveaudio,,saveaudio}, @ref{doc-playaudio,,playaudio}, @ref{doc-setaudio,,setaudio}, @ref{doc-record,,record}}
+Convert audio data from linear to mu-law.  Mu-law values use 8-bit
+unsigned integers.  Linear values use @var{n}-bit signed integers or
+floating point values in the range -1 @leq{} @var{x} @leq{} 1 if
+@var{n} is 0.
+
+If @var{n} is not specified it defaults to 0, 8, or 16 depending on
+the range of values in @var{x}.
+@seealso{@ref{doc-mu2lin,,mu2lin}, @ref{doc-loadaudio,,loadaudio}, @ref{doc-saveaudio,,saveaudio}}
 @end deftypefn
 
 
-@c ./audio/mu2lin.m
+@c mu2lin scripts/audio/mu2lin.m
 @anchor{doc-mu2lin}
-@deftypefn {Function File} {} mu2lin (@var{x}, @var{bps})
-Converts audio data from linear to mu-law.  Mu-law values are 8-bit
+@deftypefn {Function File} {} mu2lin (@var{x}, @var{n})
+Convert audio data from mu-law to linear.  Mu-law values are 8-bit
 unsigned integers.  Linear values use @var{n}-bit signed integers
-or floating point values in the range -1<=y<=1 if @var{n} is 0.  If
-@var{n} is not specified it defaults to 8.
-@seealso{@ref{doc-lin2mu,,lin2mu}, @ref{doc-loadaudio,,loadaudio}, @ref{doc-saveaudio,,saveaudio}, @ref{doc-playaudio,,playaudio}, @ref{doc-setaudio,,setaudio}, @ref{doc-record,,record}}
+or floating point values in the range -1@leq{}y@leq{}1 if @var{n}
+is 0.
+
+If @var{n} is not specified it defaults to 0.
+@seealso{@ref{doc-lin2mu,,lin2mu}, @ref{doc-loadaudio,,loadaudio}, @ref{doc-saveaudio,,saveaudio}}
 @end deftypefn
 
 
-@c ./audio/loadaudio.m
+@c loadaudio scripts/audio/loadaudio.m
 @anchor{doc-loadaudio}
 @deftypefn {Function File} {} loadaudio (@var{name}, @var{ext}, @var{bps})
-Loads audio data from the file @file{@var{name}.@var{ext}} into the
+Load audio data from the file @file{@var{name}.@var{ext}} into the
 vector @var{x}.
 
 The extension @var{ext} determines how the data in the audio file is
-interpreted;  the extensions @file{lin} (default) and @file{raw}
+interpreted; the extensions @file{lin} (default) and @file{raw}
 correspond to linear, the extensions @file{au}, @file{mu}, or @file{snd}
 to mu-law encoding.
 
@@ -85,13 +89,13 @@ the number of bits per sample used in the audio file.
 @end deftypefn
 
 
-@c ./audio/saveaudio.m
+@c saveaudio scripts/audio/saveaudio.m
 @anchor{doc-saveaudio}
 @deftypefn {Function File} {} saveaudio (@var{name}, @var{x}, @var{ext}, @var{bps})
-Saves a vector @var{x} of audio data to the file
+Save a vector @var{x} of audio data to the file
 @file{@var{name}.@var{ext}}.  The optional parameters @var{ext} and
 @var{bps} determine the encoding and the number of bits per sample used
-in the audio file (see @code{loadaudio});  defaults are @file{lin} and
+in the audio file (see @code{loadaudio}); defaults are @file{lin} and
 8, respectively.
 @seealso{@ref{doc-lin2mu,,lin2mu}, @ref{doc-mu2lin,,mu2lin}, @ref{doc-loadaudio,,loadaudio}, @ref{doc-playaudio,,playaudio}, @ref{doc-setaudio,,setaudio}, @ref{doc-record,,record}}
 @end deftypefn
@@ -105,20 +109,20 @@ encoding.  These file names are system-dependent.  Improvements so that
 these functions will work without modification on a wide variety of
 hardware are welcome.
 
-@c ./audio/playaudio.m
+@c playaudio scripts/audio/playaudio.m
 @anchor{doc-playaudio}
-@deftypefn {Function File} {} playaudio (@var{name}, @var{ext})
+@deftypefn  {Function File} {} playaudio (@var{name}, @var{ext})
 @deftypefnx {Function File} {} playaudio (@var{x})
-Plays the audio file @file{@var{name}.@var{ext}} or the audio data
+Play the audio file @file{@var{name}.@var{ext}} or the audio data
 stored in the vector @var{x}.
 @seealso{@ref{doc-lin2mu,,lin2mu}, @ref{doc-mu2lin,,mu2lin}, @ref{doc-loadaudio,,loadaudio}, @ref{doc-saveaudio,,saveaudio}, @ref{doc-setaudio,,setaudio}, @ref{doc-record,,record}}
 @end deftypefn
 
 
-@c ./audio/record.m
+@c record scripts/audio/record.m
 @anchor{doc-record}
 @deftypefn {Function File} {} record (@var{sec}, @var{sampling_rate})
-Records @var{sec} seconds of audio input into the vector @var{x}.  The
+Record @var{sec} seconds of audio input into the vector @var{x}.  The
 default value for @var{sampling_rate} is 8000 samples per second, or
 8kHz.  The program waits until the user types @key{RET} and then
 immediately starts to record.
@@ -126,28 +130,31 @@ immediately starts to record.
 @end deftypefn
 
 
-@c ./audio/setaudio.m
+@c setaudio scripts/audio/setaudio.m
 @anchor{doc-setaudio}
-@deftypefn {Function File} {} setaudio ([@var{w_type} [, @var{value}]])
-Execute the shell command @samp{mixer [@var{w_type} [, @var{value}]]}
+@deftypefn  {Function File} {} setaudio ()
+@deftypefnx {Function File} {} setaudio (@var{w_type})
+@deftypefnx {Function File} {} setaudio (@var{w_type}, @var{value})
+Execute the shell command @samp{mixer}, possibly with optional
+arguments @var{w_type} and @var{value}.
 @end deftypefn
 
 
-@c ./audio/wavread.m
+@c wavread scripts/audio/wavread.m
 @anchor{doc-wavread}
 @deftypefn {Function File} {@var{y} =} wavread (@var{filename})
 Load the RIFF/WAVE sound file @var{filename}, and return the samples
 in vector @var{y}.  If the file contains multichannel data, then
 @var{y} is a matrix with the channels represented as columns.
 
-@deftypefnx {Function File} {[@var{y}, @var{Fs}, @var{bits}] =} wavread (@var{filename})
-Additionally return the sample rate (@var{fs}) in Hz and the number of bits 
-per sample (@var{bits}).
+@deftypefnx {Function File} {[@var{y}, @var{Fs}, @var{bps}] =} wavread (@var{filename})
+Additionally return the sample rate (@var{fs}) in Hz and the number of bits
+per sample (@var{bps}).
 
 @deftypefnx {Function File} {[@dots{}] =} wavread (@var{filename}, @var{n})
 Read only the first @var{n} samples from each channel.
 
-@deftypefnx {Function File} {[@dots{}] =} wavread (@var{filename},[@var{n1} @var{n2}])
+@deftypefnx {Function File} {[@dots{}] =} wavread (@var{filename}, @var{n1} @var{n2})
 Read only samples @var{n1} through @var{n2} from each channel.
 
 @deftypefnx {Function File} {[@var{samples}, @var{channels}] =} wavread (@var{filename}, "size")
@@ -157,13 +164,13 @@ instead of the audio data.
 @end deftypefn
 
 
-@c ./audio/wavwrite.m
+@c wavwrite scripts/audio/wavwrite.m
 @anchor{doc-wavwrite}
-@deftypefn {Function File} {} wavwrite (@var{y}, @var{filename})
-@deftypefnx {Function File} {} wavwrite (@var{y}, @var{fs}, @var{filename})
-@deftypefnx {Function File} {} wavwrite (@var{y}, @var{fs}, @var{bits}, @var{filename})
+@deftypefn  {Function File} {} wavwrite (@var{y}, @var{filename})
+@deftypefnx {Function File} {} wavwrite (@var{y}, @var{Fs}, @var{filename})
+@deftypefnx {Function File} {} wavwrite (@var{y}, @var{Fs}, @var{bps}, @var{filename})
 Write @var{y} to the canonical RIFF/WAVE sound file @var{filename}
-with sample rate @var{fs} and bits per sample @var{bits}.  The
+with sample rate @var{Fs} and bits per sample @var{bps}.  The
 default sample rate is 8000 Hz with 16-bits per sample.  Each column
 of the data represents a separate channel.
 @seealso{@ref{doc-wavread,,wavread}}

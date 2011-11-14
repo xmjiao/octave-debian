@@ -1,4 +1,4 @@
-## Copyright (C) 1999, 2006, 2007 Peter Ekberg
+## Copyright (C) 1999-2011 Peter Ekberg
 ##
 ## This file is part of Octave.
 ##
@@ -18,11 +18,12 @@
 
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} wilkinson (@var{n})
+## Return the Wilkinson matrix of order @var{n}.  Wilkinson matrices are
+## symmetric and tridiagonal with pairs of nearly, but not exactly, equal
+## eigenvalues.  They are useful in testing the behavior and performance
+## of eigenvalue solvers.
 ##
-## Return the Wilkinson matrix of order @var{n}.
-##
-## @seealso{hankel, vander, sylvester_matrix, hilb, invhilb, toeplitz
-##           hadamard, rosser, compan, pascal}
+## @seealso{rosser, eig}
 ## @end deftypefn
 
 ## Author: Peter Ekberg
@@ -34,9 +35,8 @@ function retval = wilkinson (n)
     print_usage ();
   endif
 
-  nmax = length (n);
-  if (! (nmax == 1))
-    error ("wilkinson: expecting scalar argument, found something else");
+  if (! (isscalar (n) && (n == fix (n)) && n >= 0))
+    error ("wilkinson: N must be a non-negative integer");
   endif
 
   side = ones (n-1, 1);
@@ -44,3 +44,11 @@ function retval = wilkinson (n)
   retval = diag (side, -1) + diag (center) + diag (side, 1);
 
 endfunction
+
+%!assert (wilkinson(0), [])
+%!assert (wilkinson(1), 0)
+%!assert (wilkinson(2), [0.5,1;1,0.5])
+%!assert (wilkinson(3), [1,1,0;1,0,1;0,1,1])
+%!assert (wilkinson(4), [1.5,1,0,0;1,0.5,1,0;0,1,0.5,1;0,0,1,1.5])
+%!error (wilkinson())
+%!error (wilkinson(1,2))

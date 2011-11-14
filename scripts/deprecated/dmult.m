@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 2000, 2002, 2004, 2005, 2006,
-##               2007, 2009 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -34,7 +33,7 @@ function M = dmult (a, B)
   if (! warned)
     warned = true;
     warning ("Octave:deprecated-function",
-             "dmult is obsolete and will be removed from a future version of Octave; please use the straightforward (and now efficient) syntax ""diag(A)*B"".");
+             "dmult is obsolete and will be removed from a future version of Octave; please use the straightforward (and now efficient) syntax \"diag(A)*B\"");
   endif
 
   if (nargin != 2)

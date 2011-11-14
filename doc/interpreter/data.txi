@@ -1,4 +1,4 @@
-@c Copyright (C) 1996, 1997, 2007, 2009 John W. Eaton
+@c Copyright (C) 1996-2011 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -64,6 +64,10 @@ use of the following functions.
 @DOCSTRING(typecast)
 
 @DOCSTRING(swapbytes)
+
+@DOCSTRING(bitpack)
+
+@DOCSTRING(bitunpack)
 
 @menu
 * Numeric Objects::             
@@ -142,7 +146,7 @@ different types.  The current implementation uses an associative array
 with indices limited to strings, but the syntax is more like C-style
 structures.
 
-@xref{Data Structures}, for more information.
+@xref{Structures}, for more information.
 
 @node Cell Array Objects
 @subsection Cell Array Objects

@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1997, 1999, 2000, 2004, 2005, 2006, 2007, 2008,
-              2009 John W. Eaton
+Copyright (C) 1997-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -35,24 +34,26 @@ along with Octave; see the file COPYING.  If not, see
 
 DEFUN_DLD (gammainc, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Mapping Function} {} gammainc (@var{x}, @var{a})\n\
+@deftypefn  {Mapping Function} {} gammainc (@var{x}, @var{a})\n\
+@deftypefnx {Mapping Function} {} gammainc (@var{x}, @var{a}, \"lower\")\n\
+@deftypefnx {Mapping Function} {} gammainc (@var{x}, @var{a}, \"upper\")\n\
 Compute the normalized incomplete gamma function,\n\
-@iftex\n\
 @tex\n\
 $$\n\
- \\gamma (x, a) = {\\displaystyle\\int_0^x e^{-t} t^{a-1} dt \\over \\Gamma (a)}\n\
+ \\gamma (x, a) = {1 \\over {\\Gamma (a)}}\\displaystyle{\\int_0^x t^{a-1} e^{-t} dt}\n\
 $$\n\
 @end tex\n\
-@end iftex\n\
 @ifnottex\n\
 \n\
-@smallexample\n\
-                                x\n\
-                      1        /\n\
+@example\n\
+@group\n\
+                                 x\n\
+                       1        /\n\
 gammainc (x, a) = ---------    | exp (-t) t^(a-1) dt\n\
-                  gamma (a)    /\n\
-                            t=0\n\
-@end smallexample\n\
+                   gamma (a)    /\n\
+                             t=0\n\
+@end group\n\
+@end example\n\
 \n\
 @end ifnottex\n\
 with the limiting value of 1 as @var{x} approaches infinity.\n\
@@ -62,114 +63,143 @@ If @var{a} is scalar, then @code{gammainc (@var{x}, @var{a})} is returned\n\
 for each element of @var{x} and vice versa.\n\
 \n\
 If neither @var{x} nor @var{a} is scalar, the sizes of @var{x} and\n\
-@var{a} must agree, and @var{gammainc} is applied element-by-element.\n\
+@var{a} must agree, and @code{gammainc} is applied element-by-element.\n\
+\n\
+By default the incomplete gamma function integrated from 0 to @var{x} is\n\
+computed.  If \"upper\" is given then the complementary function integrated\n\
+from @var{x} to infinity is calculated.  It should be noted that\n\
+\n\
+@example\n\
+gammainc (@var{x}, @var{a}) @equiv{} 1 - gammainc (@var{x}, @var{a}, \"upper\")\n\
+@end example\n\
 @seealso{gamma, lgamma}\n\
 @end deftypefn")
 {
   octave_value retval;
+  bool lower = true;
 
   int nargin = args.length ();
 
-  if (nargin == 2)
+  if (nargin == 3)
+    {
+      if (args(2).is_string ())
+        {
+          std::string s = args(2).string_value ();
+          std::transform (s.begin (), s.end (), s.begin (), tolower);
+          if (s == "upper")
+            lower = false;
+          else if (s != "lower")
+            error ("gammainc: third argument must be \"lower\" or \"upper\"");
+        }
+      else
+        error ("gammainc: third argument must be \"lower\" or \"upper\"");
+
+    }
+
+  if (!error_state && nargin >= 2  && nargin <= 3)
     {
       octave_value x_arg = args(0);
       octave_value a_arg = args(1);
 
       // FIXME Can we make a template version of the duplicated code below
       if (x_arg.is_single_type () || a_arg.is_single_type ())
-	{
-	  if (x_arg.is_scalar_type ())
-	    {
-	      float x = x_arg.float_value ();
+        {
+          if (x_arg.is_scalar_type ())
+            {
+              float x = x_arg.float_value ();
 
-	      if (! error_state)
-		{
-		  if (a_arg.is_scalar_type ())
-		    {
-		      float a = a_arg.float_value ();
+              if (! error_state)
+                {
+                  if (a_arg.is_scalar_type ())
+                    {
+                      float a = a_arg.float_value ();
 
-		      if (! error_state)
-			retval = gammainc (x, a);
-		    }
-		  else
-		    {
-		      FloatNDArray a = a_arg.float_array_value ();
+                      if (! error_state)
+                        retval = lower ? gammainc (x, a)
+                          : static_cast<float>(1) - gammainc (x, a);
+                    }
+                  else
+                    {
+                      FloatNDArray a = a_arg.float_array_value ();
 
-		      if (! error_state)
-			retval = gammainc (x, a);
-		    }
-		}
-	    }
-	  else
-	    {
-	      FloatNDArray x = x_arg.float_array_value ();
+                      if (! error_state)
+                        retval = lower ? gammainc (x, a)
+                          : static_cast<float>(1) - gammainc (x, a);
+                    }
+                }
+            }
+          else
+            {
+              FloatNDArray x = x_arg.float_array_value ();
 
-	      if (! error_state)
-		{
-		  if (a_arg.is_scalar_type ())
-		    {
-		      float a = a_arg.float_value ();
+              if (! error_state)
+                {
+                  if (a_arg.is_scalar_type ())
+                    {
+                      float a = a_arg.float_value ();
 
-		      if (! error_state)
-			retval = gammainc (x, a);
-		    }
-		  else
-		    {
-		      FloatNDArray a = a_arg.float_array_value ();
+                      if (! error_state)
+                        retval = lower ? gammainc (x, a)
+                          : static_cast<float>(1) - gammainc (x, a);
+                    }
+                  else
+                    {
+                      FloatNDArray a = a_arg.float_array_value ();
 
-		      if (! error_state)
-			retval = gammainc (x, a);
-		    }
-		}
-	    }
-	}
+                      if (! error_state)
+                        retval = lower ? gammainc (x, a)
+                          : static_cast<float>(1) - gammainc (x, a);
+                    }
+                }
+            }
+        }
       else
-	{
-	  if (x_arg.is_scalar_type ())
-	    {
-	      double x = x_arg.double_value ();
+        {
+          if (x_arg.is_scalar_type ())
+            {
+              double x = x_arg.double_value ();
 
-	      if (! error_state)
-		{
-		  if (a_arg.is_scalar_type ())
-		    {
-		      double a = a_arg.double_value ();
+              if (! error_state)
+                {
+                  if (a_arg.is_scalar_type ())
+                    {
+                      double a = a_arg.double_value ();
 
-		      if (! error_state)
-			retval = gammainc (x, a);
-		    }
-		  else
-		    {
-		      NDArray a = a_arg.array_value ();
+                      if (! error_state)
+                        retval = lower ? gammainc (x, a) : 1. - gammainc (x, a);
+                    }
+                  else
+                    {
+                      NDArray a = a_arg.array_value ();
 
-		      if (! error_state)
-			retval = gammainc (x, a);
-		    }
-		}
-	    }
-	  else
-	    {
-	      NDArray x = x_arg.array_value ();
+                      if (! error_state)
+                        retval = lower ? gammainc (x, a) : 1. - gammainc (x, a);
+                    }
+                }
+            }
+          else
+            {
+              NDArray x = x_arg.array_value ();
 
-	      if (! error_state)
-		{
-		  if (a_arg.is_scalar_type ())
-		    {
-		      double a = a_arg.double_value ();
+              if (! error_state)
+                {
+                  if (a_arg.is_scalar_type ())
+                    {
+                      double a = a_arg.double_value ();
 
-		      if (! error_state)
-			retval = gammainc (x, a);
-		    }
-		  else
-		    {
-		      NDArray a = a_arg.array_value ();
+                      if (! error_state)
+                        retval = lower ? gammainc (x, a) : 1. - gammainc (x, a);
+                    }
+                  else
+                    {
+                      NDArray a = a_arg.array_value ();
 
-		      if (! error_state)
-			retval = gammainc (x, a);
-		    }
-		}
-	    }
-	}
+                      if (! error_state)
+                        retval = lower ? gammainc (x, a) : 1. - gammainc (x, a);
+                    }
+                }
+            }
+        }
     }
   else
     print_usage ();
@@ -186,6 +216,8 @@ If neither @var{x} nor @var{a} is scalar, the sizes of @var{x} and\n\
 %! v3 = gammainc(x.*x,a);
 %! assert(v1, v3, sqrt(eps));
 
+%!assert (gammainc(0:4,0.5,"upper"), 1-gammainc(0:4,0.5),1e-10)
+
 %!test
 %! a = single ([.5 .5 .5 .5 .5]);
 %! x = single([0 1 2 3 4]);
@@ -193,11 +225,6 @@ If neither @var{x} nor @var{a} is scalar, the sizes of @var{x} and\n\
 %! v3 = gammainc(x.*x,a);
 %! assert(v1, v3, sqrt(eps('single')));
 
-*/
+%!assert (gammainc(single(0:4),single(0.5),"upper"), single(1)-gammainc(single(0:4),single(0.5)),single(1e-7))
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
 */
-

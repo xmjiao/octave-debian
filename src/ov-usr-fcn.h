@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004,
-              2005, 2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -34,6 +33,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "ov-fcn.h"
 #include "ov-typeinfo.h"
 #include "symtab.h"
+#include "unwind-prot.h"
 
 class string_vector;
 
@@ -43,7 +43,7 @@ class tree_statement_list;
 class tree_va_return_list;
 class tree_walker;
 
-class 
+class
 octave_user_code : public octave_function
 {
 public:
@@ -59,7 +59,7 @@ public:
 protected:
 
   octave_user_code (const std::string& nm,
-		    const std::string& ds = std::string ())
+                    const std::string& ds = std::string ())
     : octave_function (nm, ds) { }
 
 private:
@@ -81,17 +81,15 @@ public:
   octave_user_script (void);
 
   octave_user_script (const std::string& fnm, const std::string& nm,
-		      tree_statement_list *cmds,
-		      const std::string& ds = std::string ());
+                      tree_statement_list *cmds,
+                      const std::string& ds = std::string ());
 
   octave_user_script (const std::string& fnm, const std::string& nm,
-		      const std::string& ds = std::string ());
+                      const std::string& ds = std::string ());
 
   ~octave_user_script (void);
 
   octave_function *function_value (bool = false) { return this; }
-
-  const octave_function *function_value (bool = false) const { return this; }
 
   octave_user_script *user_script_value (bool = false) { return this; }
 
@@ -119,15 +117,15 @@ public:
   octave_time time_checked (void) const { return t_checked; }
 
   octave_value subsref (const std::string& type,
-			const std::list<octave_value_list>& idx)
+                        const std::list<octave_value_list>& idx)
     {
       octave_value_list tmp = subsref (type, idx, 1);
       return tmp.length () > 0 ? tmp(0) : octave_value ();
     }
 
   octave_value_list subsref (const std::string& type,
-			     const std::list<octave_value_list>& idx,
-			     int nargout);
+                             const std::list<octave_value_list>& idx,
+                             int nargout);
 
   octave_value_list
   do_multi_index_op (int nargout, const octave_value_list& args);
@@ -173,15 +171,13 @@ octave_user_function : public octave_user_code
 public:
 
   octave_user_function (symbol_table::scope_id sid = -1,
-			tree_parameter_list *pl = 0,
-			tree_parameter_list *rl = 0,
-			tree_statement_list *cl = 0);
+                        tree_parameter_list *pl = 0,
+                        tree_parameter_list *rl = 0,
+                        tree_statement_list *cl = 0);
 
   ~octave_user_function (void);
 
   octave_function *function_value (bool = false) { return this; }
-
-  const octave_function *function_value (bool = false) const { return this; }
 
   octave_user_function *user_function_value (bool = false) { return this; }
 
@@ -236,17 +232,24 @@ public:
 
   bool takes_var_return (void) const;
 
+  void mark_as_private_function (const std::string& cname = std::string ())
+    {
+      symbol_table::mark_subfunctions_in_scope_as_private (local_scope, cname);
+
+      octave_function::mark_as_private_function (cname);
+    }
+
   void lock_subfunctions (void);
 
   void unlock_subfunctions (void);
 
-  octave_value_list octave_all_va_args (void);
+  octave_value_list all_va_args (const octave_value_list& args);
 
   void stash_function_name (const std::string& s) { my_name = s; }
 
-  void mark_as_nested_function (void) { nested_function = true; }
+  void mark_as_subfunction (void) { subfunction = true; }
 
-  bool is_nested_function (void) const { return nested_function; }
+  bool is_subfunction (void) const { return subfunction; }
 
   void mark_as_inline_function (void) { inline_function = true; }
 
@@ -254,44 +257,41 @@ public:
 
   void mark_as_class_constructor (void) { class_constructor = true; }
 
-  bool is_class_constructor (void) const { return class_constructor; }
+  bool is_class_constructor (const std::string& cname = std::string ()) const
+    {
+      return class_constructor
+        ? (cname.empty () ? true : cname == dispatch_class ()) : false;
+    }
 
   void mark_as_class_method (void) { class_method = true; }
 
-  bool is_class_method (void) const { return class_method; }
-
-  void save_args_passed (const octave_value_list& args)
+  bool is_class_method (const std::string& cname = std::string ()) const
     {
-      if (call_depth > 0)
-	saved_args.push (args_passed);
-
-      args_passed = args;
-    }
-
-  void restore_args_passed (void)
-    {
-      if (saved_args.empty ())
-	args_passed = octave_value_list ();
-      else
-	{
-	  args_passed = saved_args.top ();
-	  saved_args.pop ();
-	}
+      return class_method
+        ? (cname.empty () ? true : cname == dispatch_class ()) : false;
     }
 
   octave_value subsref (const std::string& type,
-			const std::list<octave_value_list>& idx)
+                        const std::list<octave_value_list>& idx)
     {
       octave_value_list tmp = subsref (type, idx, 1);
       return tmp.length () > 0 ? tmp(0) : octave_value ();
     }
 
   octave_value_list subsref (const std::string& type,
-			     const std::list<octave_value_list>& idx,
-			     int nargout);
+                             const std::list<octave_value_list>& idx,
+                             int nargout);
+
+  octave_value_list subsref (const std::string& type,
+                             const std::list<octave_value_list>& idx,
+                             int nargout, const std::list<octave_lvalue>* lvalue_list);
 
   octave_value_list
   do_multi_index_op (int nargout, const octave_value_list& args);
+
+  octave_value_list
+  do_multi_index_op (int nargout, const octave_value_list& args,
+                     const std::list<octave_lvalue>* lvalue_list);
 
   tree_parameter_list *parameter_list (void) { return param_list; }
 
@@ -303,7 +303,21 @@ public:
 
   octave_comment_list *trailing_comment (void) { return trail_comm; }
 
+  bool subsasgn_optimization_ok (void);
+
   void accept (tree_walker& tw);
+
+  template <class T>
+  bool local_protect (T& variable)
+    {
+      if (curr_unwind_protect_frame)
+        {
+          curr_unwind_protect_frame->protect_var (variable);
+          return true;
+        }
+      else
+        return false;
+    }
 
 #if 0
   void print_symtab_info (std::ostream& os) const;
@@ -351,8 +365,8 @@ private:
   // The number of arguments that have names.
   int num_named_args;
 
-  // TRUE means this is a nested function.
-  bool nested_function;
+  // TRUE means this subfunction of a primary function.
+  bool subfunction;
 
   // TRUE means this is an inline function.
   bool inline_function;
@@ -363,19 +377,13 @@ private:
   // TRUE means this function is a method for a class.
   bool class_method;
 
-  // The values that were passed as arguments.
-  octave_value_list args_passed;
-
-  // A place to store the passed args for recursive calls.
-  std::stack<octave_value_list> saved_args;
-
-  // The number of arguments passed in.
-  int num_args_passed;
-
   // The scope of the parent function, if any.
   symbol_table::scope_id parent_scope;
 
   symbol_table::scope_id local_scope;
+
+  // pointer to the current unwind_protect frame of this function.
+  unwind_protect *curr_unwind_protect_frame;
 
 #if 0
   // The symbol record for argn in the local symbol table.
@@ -396,7 +404,8 @@ private:
   void print_code_function_trailer (void);
 
   void bind_automatic_vars (const string_vector& arg_names, int nargin,
-			    int nargout, const octave_value_list& va_args);
+                            int nargout, const octave_value_list& va_args,
+                            const std::list<octave_lvalue> *lvalue_list);
 
   // No copying!
 
@@ -410,9 +419,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

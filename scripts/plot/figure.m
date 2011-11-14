@@ -1,5 +1,4 @@
-## Copyright (C) 1996, 1997, 1999, 2000, 2004, 2005, 2006, 2007
-##               John W. Eaton
+## Copyright (C) 1996-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -18,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} figure (@var{n})
+## @deftypefn  {Function File} {} figure (@var{n})
 ## @deftypefnx {Function File} {} figure (@var{n}, @var{property}, @var{value}, @dots{})
 ## Set the current plot window to plot window @var{n}.  If no arguments are
 ## specified, the next available window number is chosen.
@@ -72,6 +71,9 @@ function h = figure (varargin)
   else
     print_usage ();
   endif
+
+  cf = get (0, "currentfigure");
+  __add_default_menu__ (cf);
 
   if (nargout > 0)
     h = f;

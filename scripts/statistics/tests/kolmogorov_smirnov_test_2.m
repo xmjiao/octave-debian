@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 2000, 2002, 2004, 2005, 2006,
-##               2007, 2009 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -28,7 +27,7 @@
 ## With the optional argument string @var{alt}, the alternative of
 ## interest can be selected.  If @var{alt} is @code{"!="} or
 ## @code{"<>"}, the null is tested against the two-sided alternative F
-## != G.  In this case, the test statistic @var{ks} follows a two-sided
+## != G@.  In this case, the test statistic @var{ks} follows a two-sided
 ## Kolmogorov-Smirnov distribution.  If @var{alt} is @code{">"}, the
 ## one-sided alternative F > G is considered.  Similarly for @code{"<"},
 ## the one-sided alternative F < G is considered.  In this case, the
@@ -53,14 +52,14 @@ function [pval, ks, d] = kolmogorov_smirnov_test_2 (x, y, alt)
   endif
 
   if (! (isvector (x) && isvector (y)))
-    error ("kolmogorov_smirnov_test_2: both x and y must be vectors");
+    error ("kolmogorov_smirnov_test_2: both X and Y must be vectors");
   endif
 
   if (nargin == 2)
     alt = "!=";
   else
     if (! ischar (alt))
-      error ("kolmogorov_smirnov_test_2: alt must be a string");
+      error ("kolmogorov_smirnov_test_2: ALT must be a string");
     endif
   endif
 
@@ -81,7 +80,7 @@ function [pval, ks, d] = kolmogorov_smirnov_test_2 (x, y, alt)
     elems = [find(ds); n_x+n_y];
     z = z(elems);
   endif
-  
+
   if (strcmp (alt, "!=") || strcmp (alt, "<>"))
     d    = max (abs (z));
     ks   = sqrt (n) * d;

@@ -1,7 +1,6 @@
 #! /bin/sh
 #
-# Copyright (C) 1999, 2000, 2002, 2003, 2005, 2006, 2007, 2008,
-#               2009 John W. Eaton
+# Copyright (C) 1999-2011 John W. Eaton
 #
 # This file is part of Octave.
 # 
@@ -71,7 +70,7 @@ cat << \EOF
 
 static void
 print_doc_string (const std::string& name, const std::string& file_name,
-		  const std::string& doc)
+                  const std::string& doc)
 {
   std::cout << "";
 
@@ -82,14 +81,13 @@ print_doc_string (const std::string& name, const std::string& file_name,
   else
     std::cout << name << "\n";
 
-  std::cout << "@c " << file_name << "\n"
-	    << doc << "\n";
+  std::cout << "@c " << name << " " << file_name << "\n" << doc << "\n";
 }
 
 EOF
 
 for file in $DOC_FILES; do
-  fcn=`echo $file | $SED 's,^\./,,; s/\.df//; s/-/_/g'`
+  fcn=`echo $file | $SED 's,.*/,,; s/\.df//; s/-/_/g;'`
   echo "static void"
   echo "print_${fcn}_doc_strings (void)"
   echo "{"
@@ -113,7 +111,7 @@ main (void)
 EOF
 
 for file in $DOC_FILES; do
-  fcn=`echo $file | $SED 's,^\./,,; s/\.df//; s/-/_/g'`
+  fcn=`echo $file | $SED 's,.*/,,; s/\.df//; s/-/_/g;'`
   echo "  print_${fcn}_doc_strings ();"
 done
 

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 2002-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -31,6 +31,7 @@ along with Octave; see the file COPYING.  If not, see
 
 #include "defun.h"
 #include "error.h"
+#include "gripes.h"
 #include "ov-cs-list.h"
 #include "unwind-prot.h"
 
@@ -43,8 +44,19 @@ octave_cs_list::octave_cs_list (const Cell& c)
 {
 }
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+octave_value
+octave_cs_list::subsref (const std::string&,
+                         const std::list<octave_value_list>&)
+{
+  gripe_indexed_cs_list ();
+  return octave_value ();
+}
+
+octave_value_list
+octave_cs_list::subsref (const std::string&,
+                         const std::list<octave_value_list>&, int)
+{
+  gripe_indexed_cs_list ();
+  return octave_value_list ();
+}
+

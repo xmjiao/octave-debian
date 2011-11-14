@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1998, 2000, 2002, 2004, 2005, 2006, 2007, 2008, 2009
-##               Auburn University.  All rights reserved.
+## Copyright (C) 1995-2011 Auburn University.  All rights reserved.
 ##
 ## This file is part of Octave.
 ##
@@ -18,21 +17,25 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} polyout (@var{c}, @var{x})
+## @deftypefn  {Function File} {} polyout (@var{c})
+## @deftypefnx {Function File} {} polyout (@var{c}, @var{x})
+## @deftypefnx {Function File} {@var{str} =} polyout (@dots{})
 ## Write formatted polynomial
 ## @tex
 ## $$ c(x) = c_1 x^n + \ldots + c_n x + c_{n+1} $$
 ## @end tex
 ## @ifnottex
+##
 ## @example
 ##    c(x) = c(1) * x^n + @dots{} + c(n) x + c(n+1)
 ## @end example
+##
 ## @end ifnottex
-##  and return it as a string or write it to the screen (if
-##  @var{nargout} is zero).
-##  @var{x} defaults to the string @code{"s"}.
+## and return it as a string or write it to the screen (if
+## @var{nargout} is zero).
+## @var{x} defaults to the string @code{"s"}.
 ## @seealso{polyval, polyvalm, poly, roots, conv, deconv, residue,
-## filter, polyderiv, polyinteg}
+## filter, polyderiv, polyint}
 ## @end deftypefn
 
 ## Author: A. S. Hodel <a.s.hodel@eng.auburn.edu>
@@ -62,8 +65,8 @@ function y = polyout (c, x)
     tmp = coeff (c(1));
     for ii = 2:n
       if (real (c(ii)) < 0)
-	ns = " - ";
-	c(ii) = -c(ii);
+        ns = " - ";
+        c(ii) = -c(ii);
       else
         ns = " + ";
       endif
@@ -76,7 +79,7 @@ function y = polyout (c, x)
   endif
 
   if(nargout == 0)
-    disp (tmp)
+    disp (tmp);
   else
     y = tmp;
   endif

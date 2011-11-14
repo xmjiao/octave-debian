@@ -1,7 +1,7 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.
 
-@c Copyright (C) 2005, 2007, 2009 David Bateman
-@c Copyright (C) 2002, 2003, 2004, 2005 Paul Kienzle
+@c Copyright (C) 2005-2011 David Bateman
+@c Copyright (C) 2002-2005 Paul Kienzle
 @c
 @c This file is part of Octave.
 @c
@@ -34,18 +34,18 @@ and demonstration code in the source code of the functions themselves.
 @node Test Functions
 @section Test Functions
 
-@c ./testfun/test.m
+@c test scripts/testfun/test.m
 @anchor{doc-test}
-@deftypefn {Function File} {} test @var{name}
-@deftypefnx {Function File} {} test @var{name} quiet|normal|verbose
+@deftypefn  {Command} {} test @var{name}
+@deftypefnx {Command} {} test @var{name} quiet|normal|verbose
 @deftypefnx {Function File} {} test ('@var{name}', 'quiet|normal|verbose', @var{fid})
 @deftypefnx {Function File} {} test ([], 'explain', @var{fid})
 @deftypefnx {Function File} {@var{success} =} test (@dots{})
 @deftypefnx {Function File} {[@var{n}, @var{max}] =} test (@dots{})
-@deftypefnx {Function File} {[@var{code}, @var{idx}] =} test ('@var{name}','grabdemo')
+@deftypefnx {Function File} {[@var{code}, @var{idx}] =} test ('@var{name}', 'grabdemo')
 
 Perform tests from the first file in the loadpath matching @var{name}.
-@code{test} can be called as a command or as a function.  Called with 
+@code{test} can be called as a command or as a function.  Called with
 a single argument @var{name}, the tests are run interactively and stop
 after the first error is encountered.
 
@@ -57,7 +57,7 @@ output is selected.
  Don't report all the tests as they happen, just the errors.
 
 @item 'normal'
-Report all tests as they happen, but don't do tests which require 
+Report all tests as they happen, but don't do tests which require
 user interaction.
 
 @item 'verbose'
@@ -65,11 +65,11 @@ Do tests which require user interaction.
 @end table
 
 The argument @var{fid} can be used to allow batch processing.  Errors
-can be written to the already open file defined by @var{fid}, and 
+can be written to the already open file defined by @var{fid}, and
 hopefully when Octave crashes this file will tell you what was happening
 when it did.  You can use @code{stdout} if you want to see the results as
 they happen.  You can also give a file name rather than an @var{fid}, in
-which case the contents of the file will be replaced with the log from 
+which case the contents of the file will be replaced with the log from
 the current test.
 
 Called with a single output argument @var{success}, @code{test} returns
@@ -84,7 +84,7 @@ positions of the ends of the demo blocks.
 
 If the second argument is 'explain', then @var{name} is ignored and an
 explanation of the line markers used is written to the file @var{fid}.
-@seealso{@ref{doc-error,,error}, @ref{doc-assert,,assert}, @ref{doc-fail,,fail}, @ref{doc-demo,,demo}, @ref{doc-example,,example}}
+@seealso{@ref{doc-assert,,assert}, @ref{doc-fail,,fail}, @ref{doc-error,,error}, @ref{doc-demo,,demo}, @ref{doc-example,,example}}
 @end deftypefn
 
 
@@ -96,7 +96,7 @@ generates an error, then the test is said to fail.
 Since @code{eval()} will stop at the first error it encounters, you must
 divide your tests up into blocks, with anything in a separate
 block evaluated separately.  Blocks are introduced by the keyword
-@code{test} immediately following the @code{%!}.  For example,
+@code{test} immediately following the @code{%!}.  For example:
 
 @example
 @group
@@ -171,6 +171,7 @@ is a shorthand form:
    %!assert (@dots{})
 @end example
 
+@noindent
 which is equivalent to:
 
 @example
@@ -238,12 +239,13 @@ For example:
    %!error <passes!> error('this test passes!');
 @end example
 
-If the code doesn't generate an error, the test fails.  For example,
+If the code doesn't generate an error, the test fails.  For example:
 
 @example
    %!error "this is an error because it succeeds.";
 @end example
 
+@noindent
 produces
 
 @example
@@ -268,6 +270,7 @@ it is executed.  For example,
 @end group
 @end example
 
+@noindent
 produces
 
 @example
@@ -300,18 +303,25 @@ Block type summary:
 @table @code
 @item %!test
 check that entire block is correct
+
 @item %!error
 check for correct error message
+
 @item %!warning
 check for correct warning message
+
 @item %!demo
 demo only executes in interactive mode
+
 @item %!#
 comment: ignore everything within the block
+
 @item %!shared x,y,z
 declares variables for use in multiple tests
+
 @item %!function
 defines a function value for a shared variable
+
 @item %!assert (x, y, tol)
 shorthand for %!test assert (x, y, tol)
 @end table
@@ -329,6 +339,7 @@ can even embed tests directly in your C++ code:
 @end group
 @end example
 
+@noindent
 or
 
 @example
@@ -339,6 +350,7 @@ or
 @end group
 @end example
 
+@noindent
 but then the code will have to be on the load path and the user 
 will have to remember to type test('name.cc').  Conversely, you
 can separate the tests from normal Octave script files by putting
@@ -348,13 +360,13 @@ them in plain files with no extension rather than in script files.
 @c is actually octave code, using something like:
 @c   -*-octave-*-
 
-@c ./testfun/assert.m
+@c assert scripts/testfun/assert.m
 @anchor{doc-assert}
-@deftypefn {Function File} {} assert (@var{cond})
+@deftypefn  {Function File} {} assert (@var{cond})
 @deftypefnx {Function File} {} assert (@var{cond}, @var{errmsg}, @dots{})
 @deftypefnx {Function File} {} assert (@var{cond}, @var{msg_id}, @var{errmsg}, @dots{})
-@deftypefnx {Function File} {} assert (@var{observed},@var{expected})
-@deftypefnx {Function File} {} assert (@var{observed},@var{expected},@var{tol})
+@deftypefnx {Function File} {} assert (@var{observed}, @var{expected})
+@deftypefnx {Function File} {} assert (@var{observed}, @var{expected}, @var{tol})
 
 Produces an error if the condition is not met.  @code{assert} can be
 called in three different ways.
@@ -369,33 +381,37 @@ generic error message.  With more than one argument, the additional
 arguments are passed to the @code{error} function.
 
 @item assert (@var{observed}, @var{expected})
-Produce an error if observed is not the same as expected.  Note that 
-observed and expected can be strings, scalars, vectors, matrices, 
+Produce an error if observed is not the same as expected.  Note that
+observed and expected can be strings, scalars, vectors, matrices,
 lists or structures.
 
 @item assert(@var{observed}, @var{expected}, @var{tol})
-Accept a tolerance when comparing numbers. 
-If @var{tol} is positive use it as an absolute tolerance, will produce an error if
+Accept a tolerance when comparing numbers.
+If @var{tol} is positive use it as an absolute tolerance, will produce an
+error if
 @code{abs(@var{observed} - @var{expected}) > abs(@var{tol})}.
-If @var{tol} is negative use it as a relative tolerance, will produce an error if
-@code{abs(@var{observed} - @var{expected}) > abs(@var{tol} * @var{expected})}.
-If @var{expected} is zero @var{tol} will always be used as an absolute tolerance.
+If @var{tol} is negative use it as a relative tolerance, will produce an
+error if
+@code{abs(@var{observed} - @var{expected}) > abs(@var{tol} *
+@var{expected})}.  If @var{expected} is zero @var{tol} will always be used as
+an absolute tolerance.
 @end table
-@seealso{@ref{doc-test,,test}}
+@seealso{@ref{doc-test,,test}, @ref{doc-fail,,fail}}
 @end deftypefn
 
 
-@c ./testfun/fail.m
+@c fail scripts/testfun/fail.m
 @anchor{doc-fail}
-@deftypefn {Function File} {} fail (@var{code},@var{pattern})
-@deftypefnx {Function File} {} fail (@var{code},'warning',@var{pattern})
+@deftypefn  {Function File} {} fail (@var{code})
+@deftypefnx {Function File} {} fail (@var{code}, @var{pattern})
+@deftypefnx {Function File} {} fail (@var{code}, 'warning', @var{pattern})
 
 Return true if @var{code} fails with an error message matching
 @var{pattern}, otherwise produce an error.  Note that @var{code}
 is a string and if @var{code} runs successfully, the error produced is:
 
 @example
-          expected error but got none  
+          expected error but got none
 @end example
 
 If the code fails with a different error, the message produced is:
@@ -409,26 +425,27 @@ If the code fails with a different error, the message produced is:
 
 The angle brackets are not part of the output.
 
-Called with three arguments, the behavior is similar to 
-@code{fail(@var{code}, @var{pattern})}, but produces an error if no 
+Called with three arguments, the behavior is similar to
+@code{fail(@var{code}, @var{pattern})}, but produces an error if no
 warning is given during code execution or if the code fails.
-
+@seealso{@ref{doc-assert,,assert}}
 @end deftypefn
 
 
 @node Demonstration Functions
 @section Demonstration Functions
 
-@c ./testfun/demo.m
+@c demo scripts/testfun/demo.m
 @anchor{doc-demo}
-@deftypefn {Function File} {} demo ('@var{name}',@var{n})
+@deftypefn  {Command} {} demo @var{name} @var{n}
+@deftypefnx {Function File} {} demo ('@var{name}', @var{n})
 
-Runs any examples associated with the function '@var{name}'.  
-Examples are stored in the script file, or in a file with the same 
-name but no extension somewhere on your path.  To keep them separate 
+Runs any examples associated with the function '@var{name}'.
+Examples are stored in the script file, or in a file with the same
+name but no extension somewhere on your path.  To keep them separate
 from the usual script code, all lines are prefixed by @code{%!}.  Each
 example is introduced by the keyword 'demo' flush left to the prefix,
-with no intervening spaces.  The remainder of the example can contain 
+with no intervening spaces.  The remainder of the example can contain
 arbitrary Octave code.  For example:
 
 @example
@@ -454,6 +471,7 @@ demos into one huge demo, with the code:
    %! input("Press <enter> to continue: ","s");
 @end example
 
+@noindent
 between the sections, but this is discouraged.  Other techniques
 include using multiple plots by saying figure between each, or
 using subplot to put multiple plots in the same window.
@@ -463,7 +481,7 @@ define new functions inside a demo.  Instead you will have to
 use @code{eval(example('function',n))} to see them.  Because eval only
 evaluates one line, or one statement if the statement crosses
 multiple lines, you must wrap your demo in "if 1 <demo stuff> endif"
-with the 'if' on the same line as 'demo'.  For example,
+with the 'if' on the same line as 'demo'.  For example:
 
 @example
 @group
@@ -479,23 +497,40 @@ with the 'if' on the same line as 'demo'.  For example,
 @end deftypefn
 
 
-@c ./testfun/rundemos.m
+@c rundemos scripts/testfun/rundemos.m
 @anchor{doc-rundemos}
-@deftypefn {Function File} {} rundemos (@var{directory})
+@deftypefn  {Function File} {} rundemos ()
+@deftypefnx {Function File} {} rundemos (@var{directory})
+Execute built-in demos for all function files in the specified directory.
+If no directory is specified, operate on all directories in Octave's
+search path for functions.
+@seealso{@ref{doc-runtests,,runtests}, @ref{doc-path,,path}}
 @end deftypefn
 
 
-@c ./testfun/example.m
-@anchor{doc-example}
-@deftypefn {Function File} {} example ('@var{name}',@var{n})
-@deftypefnx {Function File} {[@var{x}, @var{idx}] =} example ('@var{name}',@var{n})
+@c runtests scripts/testfun/runtests.m
+@anchor{doc-runtests}
+@deftypefn  {Function File} {} runtests ()
+@deftypefnx {Function File} {} runtests (@var{directory})
+Execute built-in tests for all function files in the specified directory.
+If no directory is specified, operate on all directories in Octave's
+search path for functions.
+@seealso{@ref{doc-rundemos,,rundemos}, @ref{doc-path,,path}}
+@end deftypefn
 
- Display the code for example @var{n} associated with the function 
-'@var{name}', but do not run it.  If @var{n} is not given, all examples 
+
+@c example scripts/testfun/example.m
+@anchor{doc-example}
+@deftypefn  {Command} {} example @var{name} @var{n}
+@deftypefnx {Function File} {} example ('@var{name}', @var{n})
+@deftypefnx {Function File} {[@var{x}, @var{idx}] =} example ('@var{name}', @var{n})
+
+ Display the code for example @var{n} associated with the function
+'@var{name}', but do not run it.  If @var{n} is not given, all examples
 are displayed.
 
 Called with output arguments, the examples are returned in the form of
-a string @var{x}, with @var{idx} indicating the ending position of the 
+a string @var{x}, with @var{idx} indicating the ending position of the
 various examples.
 
 See @code{demo} for a complete explanation.
@@ -503,17 +538,17 @@ See @code{demo} for a complete explanation.
 @end deftypefn
 
 
-@c ./testfun/speed.m
+@c speed scripts/testfun/speed.m
 @anchor{doc-speed}
-@deftypefn {Function File} {} speed (@var{f}, @var{init}, @var{max_n}, @var{f2}, @var{tol})
+@deftypefn  {Function File} {} speed (@var{f}, @var{init}, @var{max_n}, @var{f2}, @var{tol})
 @deftypefnx {Function File} {[@var{order}, @var{n}, @var{T_f}, @var{T_f2}] =} speed (@dots{})
 
-Determine the execution time of an expression for various @var{n}.
-The @var{n} are log-spaced from 1 to @var{max_n}.  For each @var{n},
-an initialization expression is computed to create whatever data
-are needed for the test.  If a second expression is given, the
-execution times of the two expressions will be compared.  Called 
-without output arguments the results are presented graphically.
+Determine the execution time of an expression (@var{f}) for various input
+values (@var{n}).  The @var{n} are log-spaced from 1 to @var{max_n}.  For
+each @var{n}, an initialization expression (@var{init}) is computed to
+create any data needed for the test.  If a second expression (@var{f2}) is
+given then the execution times of the two expressions are compared.  When
+called without output arguments the results are displayed graphically.
 
 @table @code
 @item @var{f}
@@ -521,35 +556,33 @@ The expression to evaluate.
 
 @item @var{max_n}
 The maximum test length to run.  Default value is 100.  Alternatively,
-use @code{[min_n,max_n]} or for complete control, @code{[n1,n2,@dots{},nk]}.
+use @code{[min_n, max_n]} or specify the @var{n} exactly with
+@code{[n1, n2, @dots{}, nk]}.
 
 @item @var{init}
-Initialization expression for function argument values.  Use @var{k} 
+Initialization expression for function argument values.  Use @var{k}
 for the test number and @var{n} for the size of the test.  This should
-compute values for all variables listed in args.  Note that init will
+compute values for all variables used by @var{f}.  Note that @var{init} will
 be evaluated first for @math{k = 0}, so things which are constant throughout
-the test can be computed then.  The default value is @code{@var{x} =
-randn (@var{n}, 1);}.
+the test series can be computed once.  The default value is
+@code{@var{x} = randn (@var{n}, 1)}.
 
 @item @var{f2}
-An alternative expression to evaluate, so the speed of the two
-can be compared.  Default is @code{[]}.
+An alternative expression to evaluate, so that the speed of two
+expressions can be directly compared.  The default is @code{[]}.
 
 @item @var{tol}
-If @var{tol} is @code{Inf}, then no comparison will be made between the
-results of expression @var{f} and expression @var{f2}.  Otherwise,
-expression @var{f} should produce a value @var{v} and expression @var{f2} 
-should produce a value @var{v2}, and these shall be compared using 
-@code{assert(@var{v},@var{v2},@var{tol})}.  If @var{tol} is positive,
-the tolerance is assumed to be absolute.  If @var{tol} is negative,
-the tolerance is assumed to be relative.  The default is @code{eps}.
+Tolerance used to compare the results of expression @var{f} and expression
+@var{f2}.  If @var{tol} is positive, the tolerance is an absolute one.
+If @var{tol} is negative, the tolerance is a relative one.  The default is
+@code{eps}.  If @var{tol} is @code{Inf}, then no comparison will be made.
 
 @item @var{order}
-The time complexity of the expression @code{O(a n^p)}.  This
+The time complexity of the expression @math{O(a*n^p)}.  This
 is a structure with fields @code{a} and @code{p}.
 
 @item @var{n}
-The values @var{n} for which the expression was calculated and
+The values @var{n} for which the expression was calculated AND
 the execution time was greater than zero.
 
 @item @var{T_f}
@@ -557,36 +590,37 @@ The nonzero execution times recorded for the expression @var{f} in seconds.
 
 @item @var{T_f2}
 The nonzero execution times recorded for the expression @var{f2} in seconds.
-If it is needed, the mean time ratio is just @code{mean(T_f./T_f2)}.
+If required, the mean time ratio is simply @code{mean (T_f./T_f2)}.
 
 @end table
 
 The slope of the execution time graph shows the approximate
-power of the asymptotic running time @code{O(n^p)}.  This
+power of the asymptotic running time @math{O(n^p)}.  This
 power is plotted for the region over which it is approximated
 (the latter half of the graph).  The estimated power is not
 very accurate, but should be sufficient to determine the
-general order of your algorithm.  It should indicate if for 
-example your implementation is unexpectedly @code{O(n^2)} 
-rather than @code{O(n)} because it extends a vector each 
-time through the loop rather than preallocating one which is 
-big enough.  For example, in the current version of Octave,
-the following is not the expected @code{O(n)}:
+general order of an algorithm.  It should indicate if, for
+example, the implementation is unexpectedly @math{O(n^2)}
+rather than @math{O(n)} because it extends a vector each
+time through the loop rather than pre-allocating storage.
+In the current version of Octave, the following is not the
+expected @math{O(n)}.
 
 @example
-speed ("for i = 1:n, y@{i@} = x(i); end", "", [1000,10000])
+speed ("for i = 1:n, y@{i@} = x(i); endfor", "", [1000, 10000])
 @end example
 
-but it is if you preallocate the cell array @code{y}:
+@noindent
+But it is if you preallocate the cell array @code{y}:
 
 @example
 @group
-speed ("for i = 1:n, y@{i@} = x(i); end", ...
+speed ("for i = 1:n, y@{i@} = x(i); endfor", ...
        "x = rand (n, 1); y = cell (size (x));", [1000, 10000])
 @end group
 @end example
 
-An attempt is made to approximate the cost of the individual 
+An attempt is made to approximate the cost of individual
 operations, but it is wildly inaccurate.  You can improve the
 stability somewhat by doing more work for each @code{n}.  For
 example:
@@ -595,11 +629,11 @@ example:
 speed ("airy(x)", "x = rand (n, 10)", [10000, 100000])
 @end example
 
-When comparing a new and original expression, the line on the
-speedup ratio graph should be larger than 1 if the new expression
-is faster.  Better algorithms have a shallow slope.  Generally, 
-vectorizing an algorithm will not change the slope of the execution 
-time graph, but it will shift it relative to the original.  For
+When comparing two different expressions (@var{f}, @var{f2}), the slope
+of the line on the speedup ratio graph should be larger than 1 if the new
+expression is faster.  Better algorithms have a shallow slope.  Generally,
+vectorizing an algorithm will not change the slope of the execution
+time graph, but will shift it relative to the original.  For
 example:
 
 @example
@@ -609,10 +643,10 @@ speed ("v = sum (x)", "", [10000, 100000], ...
 @end group
 @end example
 
-A more complex example, if you had an original version of @code{xcorr}
-using for loops and another version using an FFT, you could compare the
-run speed for various lags as follows, or for a fixed lag with varying
-vector lengths as follows:
+The following is a more complex example.  If there was an original version
+of @code{xcorr} using for loops and a second version using an FFT, then
+one could compare the run speed for various lags as follows, or for a fixed
+lag with varying vector lengths as follows:
 
 @example
 @group
@@ -623,16 +657,16 @@ speed ("v = xcorr (x, 15)", "x = rand (20+n, 1);", 100,
 @end group
 @end example
 
-Assuming one of the two versions is in @var{xcorr_orig}, this
+Assuming one of the two versions is in xcorr_orig, this
 would compare their speed and their output values.  Note that the
 FFT version is not exact, so we specify an acceptable tolerance on
-the comparison @code{100*eps}, and the errors should be computed
-relatively, as @code{abs((@var{x} - @var{y})./@var{y})} rather than 
-absolutely as @code{abs(@var{x} - @var{y})}.
+the comparison @code{100*eps}, and that the errors should be computed
+relatively, as @code{abs ((@var{x} - @var{y}) ./ @var{y})} rather than
+absolutely as @code{abs (@var{x} - @var{y})}.
 
-Type @code{example('speed')} to see some real examples.  Note for 
-obscure reasons, you can't run examples 1 and 2 directly using 
-@code{demo('speed')}.  Instead use, @code{eval(example('speed',1))}
-and @code{eval(example('speed',2))}.
+Type @code{example('speed')} to see some real examples.  Note that for
+obscure reasons, examples 1 and 2 can not be run directly using
+@code{demo('speed')}.  Instead use, @code{eval ( example('speed', 1) )}
+or @code{eval ( example('speed', 2) )}.
 @end deftypefn
 

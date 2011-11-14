@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -46,15 +45,20 @@ public:
   typedef tree_expression* element_type;
 
   tree_argument_list (void)
-    : list_includes_magic_end (false), simple_assign_lhs (false) { }
+    : list_includes_magic_end (false), list_includes_magic_tilde (false),
+    simple_assign_lhs (false) { }
 
   tree_argument_list (tree_expression *t)
-    : list_includes_magic_end (false), simple_assign_lhs (false)
+    : list_includes_magic_end (false), list_includes_magic_tilde (false),
+    simple_assign_lhs (false)
   { append (t); }
 
   ~tree_argument_list (void);
 
   bool has_magic_end (void) const;
+
+  bool has_magic_tilde (void) const
+    { return list_includes_magic_tilde; }
 
   tree_expression *remove_front (void)
     {
@@ -79,13 +83,15 @@ public:
   string_vector get_arg_names (void) const;
 
   tree_argument_list *dup (symbol_table::scope_id scope,
-			   symbol_table::context_id context) const;
+                           symbol_table::context_id context) const;
 
   void accept (tree_walker& tw);
 
 private:
 
   bool list_includes_magic_end;
+
+  bool list_includes_magic_tilde;
 
   bool simple_assign_lhs;
 
@@ -97,9 +103,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 John W. Eaton
+## Copyright (C) 2008-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -30,7 +30,7 @@ function retval = spkron (varargin)
   if (! warned)
     warned = true;
     warning ("Octave:deprecated-function",
-	     "spkron is obsolete and will be removed from a future version of Octave; please use kron instead");
+             "spkron is obsolete and will be removed from a future version of Octave; please use kron instead");
   endif
 
   retval = kron (varargin{:});

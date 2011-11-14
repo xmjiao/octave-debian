@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 Bill Denney, Robert Platt
+## Copyright (C) 2008-2011 Bill Denney, Robert Platt
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{varname} =} genvarname (@var{str})
+## @deftypefn  {Function File} {@var{varname} =} genvarname (@var{str})
 ## @deftypefnx {Function File} {@var{varname} =} genvarname (@var{str}, @var{exclusions})
 ## Create unique variable(s) from @var{str}.  If @var{exclusions} is
 ## given, then the variable(s) will be unique to each other and to
@@ -109,15 +109,15 @@ function varname = genvarname (str, exclusions)
     endif
     exclusions = {exclusions};
   elseif (! iscellstr (exclusions))
-    error ("genvarname: exclusions must be a string or a cellstr");
+    error ("genvarname: EXCLUSIONS must be a string or a cellstr");
   endif
   if (ischar (str))
     if (rows (str) != 1)
-      error ("genvarname: if more than one str is given, it must be a cellstr");
+      error ("genvarname: if more than one STR is given, it must be a cellstr");
     endif
     str = {str};
   elseif (! iscellstr (str))
-    error ("genvarname: str must be a string or a cellstr");
+    error ("genvarname: STR must be a string or a cellstr");
   endif
 
   validchars = cstrcat ("A":"Z", "a":"z", "0":"9", "_");

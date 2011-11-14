@@ -1,5 +1,4 @@
-@c Copyright (C) 1996, 1997, 1999, 2000, 2002, 2003, 2004, 2006,
-@c               2007, 2008, 2009 John W. Eaton
+@c Copyright (C) 1996-2011 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -48,6 +47,7 @@ combinations of these with various operators.
 
 @opindex (
 @opindex )
+@opindex :
 
 An @dfn{index expression} allows you to reference or extract selected
 elements of a matrix or vector.
@@ -60,19 +60,21 @@ indexed using one or two indices.  When using a single index
 expression, the elements of the matrix are taken in column-first order;
 the dimensions of the output match those of the index expression.  For
 example,
+
 @example
 @group
-a (2)       # a scalar
-a (1:2)     # a row vector
-a ([1; 2])  # a column vector
+a(2)       # a scalar
+a(1:2)     # a row vector
+a([1; 2])  # a column vector
 @end group
 @end example
 
 As a special case, when a colon is used as a single index, the output
 is a column vector containing all the elements of the vector or matrix.
-For example
+For example:
+
 @example
-a (:)       # a column vector
+a(:)       # a column vector
 @end example
 
 Given the matrix
@@ -86,9 +88,9 @@ all of the following expressions are equivalent
 
 @example
 @group
-a (1, [1, 2])
-a (1, 1:2)
-a (1, :)
+a(1, [1, 2])
+a(1, 1:2)
+a(1, :)
 @end group
 @end example
 
@@ -97,11 +99,11 @@ and select the first row of the matrix.
 
 In general, an array with @samp{n} dimensions can be indexed using @samp{m}
 indices.  If @code{n == m}, each index corresponds to its respective dimension.
-The set of index tuples determining the result is formed by the Cartesian product
-of the index vectors (or ranges or scalars).
-If @code{n < m}, then the array is padded by trailing singleton dimensions.
-If @code{n > m}, the last @code{n-m+1} dimensions are folded into a single
-dimension with extent equal to product of extents of the original dimensions.
+The set of index tuples determining the result is formed by the Cartesian
+product of the index vectors (or ranges or scalars).  If @code{n < m}, then the
+array is padded by trailing singleton dimensions.  If @code{n > m}, the last
+@code{n-m+1} dimensions are folded into a single dimension with extent equal to
+product of extents of the original dimensions.
 
 @c FIXED -- sections on variable prefer_zero_one_indexing were removed
 
@@ -112,7 +114,7 @@ the value of the original scalar.  For example, the following statements
 @example
 @group
 a = 13;
-a (ones (1, 4))
+a(ones (1, 4))
 @end group
 @end example
 
@@ -125,7 +127,7 @@ create a matrix.  For example the following statements
 @example
 @group
 a = 13;
-a (ones (1, 2), ones (1, 3))
+a(ones (1, 2), ones (1, 3))
 @end group
 @end example
 
@@ -142,8 +144,8 @@ The last example could also be written as
 
 It should be, noted that @code{ones (1, n)} (a row vector of ones) results in a
 range (with zero increment), and is therefore more efficient when used in index
-expression than other forms of @dfn{ones}.  In particular, when @samp{r} is a row
-vector, the expressions
+expression than other forms of @dfn{ones}.  In particular, when @samp{r} is a
+row vector, the expressions
 
 @example
   r(ones (1, n), :)
@@ -153,6 +155,7 @@ vector, the expressions
   r(ones (n, 1), :)
 @end example
 
+@noindent
 will produce identical results, but the first one will be significantly
 faster, at least for @samp{r} and @samp{n} large enough.  The reason is that
 in the first case the index is kept in a compressed form, which allows Octave
@@ -224,6 +227,10 @@ repeatedly resize the result.
 @DOCSTRING(sub2ind)
 
 @DOCSTRING(ind2sub)
+
+@DOCSTRING(isindex)
+
+@DOCSTRING(allow_noninteger_range_as_index)
 
 @node Calling Functions
 @section Calling Functions
@@ -499,7 +506,7 @@ expansion if @var{y} is not an integer.  An error results if both
 The implementation of this operator needs to be improved.
 
 @item @var{x} .^ @var{y}
-@item @var{x} .** @var{y}
+@itemx @var{x} .** @var{y}
 @opindex .**
 @opindex .^
 Element by element power operator.  If both operands are matrices, the
@@ -557,6 +564,50 @@ lexer, which usually prefers to break the input into tokens by
 preferring the longest possible match at any given point, it is more
 useful in this case.
 
+@opindex '
+@DOCSTRING(ctranspose)
+
+@opindex .\
+@DOCSTRING(ldivide)
+
+@opindex -
+@DOCSTRING(minus)
+
+@opindex \
+@DOCSTRING(mldivide)
+
+@opindex **
+@opindex ^
+@DOCSTRING(mpower)
+
+@opindex /
+@DOCSTRING(mrdivide)
+
+@opindex *
+@DOCSTRING(mtimes)
+
+@opindex +
+@DOCSTRING(plus)
+
+@opindex .**
+@opindex .^
+@DOCSTRING(power)
+
+@opindex ./
+@DOCSTRING(rdivide)
+
+@opindex .*
+@DOCSTRING(times)
+
+@opindex .'
+@DOCSTRING(transpose)
+
+@opindex -
+@DOCSTRING(uminus)
+
+@opindex +
+@DOCSTRING(uplus)
+
 @node Comparison Ops
 @section Comparison Operators
 @cindex comparison expressions
@@ -575,7 +626,7 @@ such as equality.  They are written using
 
 All of Octave's comparison operators return a value of 1 if the
 comparison is true, or 0 if it is false.  For matrix values, they all
-work on an element-by-element basis.  For example,
+work on an element-by-element basis.  For example:
 
 @example
 @group
@@ -617,13 +668,47 @@ True if @var{x} is greater than @var{y}.
 True if @var{x} is not equal to @var{y}.
 @end table
 
+For complex numbers, the following ordering is defined:
+@var{z1} < @var{z2}
+iff
+
+@example
+@group
+  abs(@var{z1}) < abs(@var{z2}) 
+  || (abs(@var{z1}) == abs(@var{z2}) && arg(@var{z1}) < arg(@var{z2}))
+@end group
+@end example
+
+This is consistent with the ordering used by @dfn{max}, @dfn{min} and
+@dfn{sort}, but is not consistent with @sc{matlab}, which only compares the real
+parts.
+
 String comparisons may also be performed with the @code{strcmp}
 function, not with the comparison operators listed above.
 @xref{Strings}.
 
+@opindex ==
+@DOCSTRING(eq)
+
+@opindex >=
+@DOCSTRING(ge)
+
+@opindex >
+@DOCSTRING(gt)
+
 @DOCSTRING(isequal)
 
 @DOCSTRING(isequalwithequalnans)
+
+@opindex <=
+@DOCSTRING(le)
+
+@opindex <
+@DOCSTRING(lt)
+
+@opindex !=
+@opindex ~=
+@DOCSTRING(ne)
 
 @node Boolean Expressions
 @section Boolean Expressions
@@ -719,6 +804,16 @@ the value of the variable @var{b} is incremented even if the variable
 This behavior is necessary for the boolean operators to work as
 described for matrix-valued operands.
 
+@opindex &
+@DOCSTRING(and)
+
+@opindex ~
+@opindex !
+@DOCSTRING(not)
+
+@opindex |
+@DOCSTRING(or)
+
 @node Short-circuit Boolean Operators
 @subsection Short-circuit Boolean Operators
 @cindex short-circuit evaluation
@@ -813,6 +908,19 @@ function f (a, b, c)
 would result in an error if @code{f} were called with one or two
 arguments because Octave would be forced to try to evaluate both of the
 operands for the operator @samp{&}.
+
+@sc{matlab} has special behavior that allows the operators @samp{&} and
+@samp{|} to short-circuit when used in the truth expression for @code{if} and 
+@code{while} statements.  The Octave parser may be instructed to behave in the
+same manner, but its use is strongly discouraged.
+
+@DOCSTRING(do_braindead_shortcircuit_evaluation)
+
+Finally, the ternary operator (?:) is not supported in Octave.  If
+short-circuiting is not important, it can be replaced by the @code{ifelse}
+function.
+
+@DOCSTRING(merge)
 
 @node Assignment Ops
 @section Assignment Expressions
@@ -979,6 +1087,21 @@ following will produce an error.
 @print{} error: element number 4 undefined in return list
 @end group
 @end example
+
+The symbol @code{~} may be used as a placeholder in the list of lvalues,
+indicating that the corresponding return value should be ignored and not stored
+anywhere:
+
+@example
+@group
+[~, s, v] = svd (a);
+@end group
+@end example
+
+This is cleaner and more memory efficient than using a dummy variable.
+The @code{nargout} value for the right-hand side expression is not affected.
+If the assignment is used as an expression, the return value is a
+comma-separated list with the ignored values dropped.
 
 @opindex +=
 A very common programming pattern is to increment an existing variable

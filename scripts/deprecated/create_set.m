@@ -1,5 +1,4 @@
-## Copyright (C) 1994, 1996, 1997, 1999, 2000, 2004, 2005, 2006, 2007,
-##               2008, 2009 John W. Eaton
+## Copyright (C) 1994-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -18,8 +17,8 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} create_set (@var{x})
-## @deftypefnx{Function File} {} create_set (@var{x}, "rows")
+## @deftypefn  {Function File} {} create_set (@var{x})
+## @deftypefnx {Function File} {} create_set (@var{x}, "rows")
 ## This function has been deprecated.  Use unique instead.
 ## @end deftypefn
 
@@ -61,7 +60,7 @@ function y = create_set (x, rows_opt)
   if (nargin < 1 || nargin > 2)
     print_usage ();
   endif
-  
+
   if (nargin == 1)
     y = unique (x)(:)';
   elseif (strcmpi (rows_opt, "rows"))

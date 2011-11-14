@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1999, 2000, 2001, 2003, 2004, 2005, 2007
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -88,9 +87,3 @@ octave_ostream::create (std::ostream *arg, const std::string& n)
 {
   return octave_stream (new octave_ostream (arg, n));
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

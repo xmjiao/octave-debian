@@ -1,4 +1,4 @@
-## Copyright (C) 1999, 2000, 2007 Kai Habel
+## Copyright (C) 1999-2011 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,8 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} white (@var{n})
+## @deftypefn  {Function File} {@var{map} =} white ()
+## @deftypefnx {Function File} {@var{map} =} white (@var{n})
 ## Create color colormap.  This colormap is completely white.
 ## The argument @var{n} should be a scalar.  If it
 ## is omitted, the length of the current colormap or 64 is assumed.
@@ -26,22 +27,29 @@
 
 ## Author:  Kai Habel <kai.habel@gmx.de>
 
-function map = white (number)
+function map = white (n)
 
   if (nargin == 0)
-    number = rows (colormap);
+    n = rows (colormap);
   elseif (nargin == 1)
-    if (! isscalar (number))
+    if (! isscalar (n))
       error ("white: argument must be a scalar");
     endif
   else
     print_usage ();
   endif
 
-  if (number > 0)
-    map = ones (number, 3);
+  if (n > 0)
+    map = ones (n, 3);
   else
     map = [];
   endif
 
 endfunction
+
+%!demo
+%! ## Show the 'white' colormap as an image
+%! image (1:64, linspace (0, 1, 64), repmat (1:64, 64, 1)')
+%! axis ([1, 64, 0, 1], "ticy", "xy")
+%! colormap (white (64))
+

@@ -1,4 +1,4 @@
-## Copyright (C) 1996, 1998, 1999, 2005, 2006, 2007, 2008, 2009 Kurt Hornik
+## Copyright (C) 1996-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -17,41 +17,48 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} str2num (@var{s})
+## @deftypefn {Function File} {@var{x} =} str2num (@var{s})
+## @deftypefnx {Function File} {[@var{x}, @var{state}] =} str2num (@var{s})
 ## Convert the string (or character array) @var{s} to a number (or an
-## array).  Examples:  
+## array).  Examples:
 ##
 ## @example
 ## @group
-## str2num("3.141596")
-##      @result{} 3.141596
-## 
-## str2num(["1, 2, 3"; "4, 5, 6"]);
-##      @result{} ans =
-##         1  2  3
-##         4  5  6
+## str2num ("3.141596")
+##       @result{} 3.141596
+##
+## str2num (["1, 2, 3"; "4, 5, 6"]);
+##       @result{} ans =
+##          1  2  3
+##          4  5  6
 ## @end group
 ## @end example
-## 
+##
+## The optional second output, @var{state}, is logically true when the
+## coversion is successful. If the conversion fails the numeric output,
+## @var{x}, is empty and @var{state} is false.
+##
 ## @strong{Caution:} As @code{str2num} uses the @code{eval} function
 ## to do the conversion, @code{str2num} will execute any code contained
-## in the string @var{s}.  Use @code{str2double} instead if you want to
-## avoid the use of @code{eval}. 
+## in the string @var{s}.  Use @code{str2double} for a safer and faster
+## conversion.
 ## @seealso{str2double, eval}
 ## @end deftypefn
 
 ## Author: jwe
 
-function m = str2num (s)
+function [m, state] = str2num (s)
 
   if (nargin == 1 && ischar (s))
     [nr, nc] = size (s);
     sep = ";";
     sep = sep (ones (nr, 1), 1);
     s = sprintf ("m = [%s];", reshape ([s, sep]', 1, nr * (nc + 1)));
-    eval (s, "m = [];");
+    state = true;
+    eval (s, "m = []; state = false;");
     if (ischar (m))
       m = [];
+      state = false;
     endif
   else
     print_usage ();
@@ -65,3 +72,8 @@ endfunction
 
 %!error str2num ("string", 1);
 
+%!test
+%! [x, state] = str2num ("pi");
+%! assert (state)
+%! [x, state] = str2num (tmpnam);
+%! assert (! state)

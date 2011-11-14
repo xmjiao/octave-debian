@@ -1,4 +1,4 @@
-## Copyright (C) 2000, 2006, 2007, 2008, 2009 Kai Habel
+## Copyright (C) 2000-2011 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{dx} =} gradient (@var{m})
+## @deftypefn  {Function File} {@var{dx} =} gradient (@var{m})
 ## @deftypefnx {Function File} {[@var{dx}, @var{dy}, @var{dz}, @dots{}] =} gradient (@var{m})
 ## @deftypefnx {Function File} {[@dots{}] =} gradient (@var{m}, @var{s})
 ## @deftypefnx {Function File} {[@dots{}] =} gradient (@var{m}, @var{x}, @var{y}, @var{z}, @dots{})
@@ -36,19 +36,21 @@
 ##
 ## A constant spacing between two points can be provided by the
 ## @var{s} parameter.  If @var{s} is a scalar, it is assumed to be the spacing
-## for all dimensions. 
+## for all dimensions.
 ## Otherwise, separate values of the spacing can be supplied by
-## the @var{x}, @dots{} arguments.  Scalar values specify an equidistant spacing.
-## Vector values for the @var{x}, @dots{} arguments specify the coordinate for that
+## the @var{x}, @dots{} arguments.  Scalar values specify an equidistant
+## spacing.
+## Vector values for the @var{x}, @dots{} arguments specify the coordinate for
+## that
 ## dimension.  The length must match their respective dimension of @var{m}.
-## 
+##
 ## At boundary points a linear extrapolation is applied.  Interior points
 ## are calculated with the first approximation of the numerical gradient
 ##
 ## @example
 ## y'(i) = 1/(x(i+1)-x(i-1)) * (y(i-1)-y(i+1)).
 ## @end example
-## 
+##
 ## If the first argument @var{f} is a function handle, the gradient of the
 ## function at the points in @var{x0} is approximated using central
 ## difference.  For example, @code{gradient (@@cos, 0)} approximates the
@@ -63,9 +65,9 @@
 ## Modified: David Bateman <dbateman@free.fr> Added NDArray support
 
 function varargout = gradient (m, varargin)
-  
+
   if (nargin < 1)
-    print_usage ()
+    print_usage ();
   endif
 
   nargout_with_ans = max(1,nargout);
@@ -96,9 +98,9 @@ function varargout = matrix_gradient (m, varargin)
   endif
 
   if (nargin > 2 && nargin != nd + 1)
-    print_usage ()
+    print_usage ();
   endif
-  
+
   ## cell d stores a spacing vector for each dimension
   d = cell (1, nd);
   if (nargin == 1)
@@ -119,8 +121,8 @@ function varargout = matrix_gradient (m, varargin)
   else
     ## have spacing value for each dimension
     if (length(varargin) != nd)
-      error ("dimensions and number of spacing values do not match.");
-    end
+      error ("gradient: dimensions and number of spacing values do not match");
+    endif
     for i = 1:nd
       if (isscalar (varargin{i}))
         d{i} = varargin{i} * ones (sz(i) - 1, 1);
@@ -135,7 +137,7 @@ function varargout = matrix_gradient (m, varargin)
     mr = rows (m);
     mc = numel (m) / mr;
     Y = zeros (size (m), class (m));
-	
+
     if (mr > 1)
       ## Top and bottom boundary.
       Y(1,:) = diff (m(1:2, :)) / d{i}(1);
@@ -184,7 +186,7 @@ function varargout = handle_gradient (f, p0, varargin)
     num_points = p0_size (1);
     dim = p0_size (2);
   endif
-  
+
   if (length (varargin) == 0)
     delta = 1;
   elseif (length (varargin) == 1 || length (varargin) == dim)
@@ -196,13 +198,13 @@ function varargout = handle_gradient (f, p0, varargin)
   else
     error ("gradient: incorrect number of spacing parameters");
   endif
-  
+
   if (isscalar (delta))
     delta = repmat (delta, 1, dim);
   elseif (!isvector (delta))
     error ("gradient: spacing values must be scalars or a vector");
   endif
-  
+
   ## Calculate the gradient
   p0 = mat2cell (p0, num_points, ones (1, dim));
   varargout = cell (1, dim);

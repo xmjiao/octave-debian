@@ -1,4 +1,4 @@
-## Copyright (C) 2006, 2007, 2009 William Poetra Yoga Hadisoeseno
+## Copyright (C) 2006-2011 William Poetra Yoga Hadisoeseno
 ##
 ## This file is part of Octave.
 ##
@@ -43,7 +43,7 @@ function s = strtrunc (s, n)
       s{i} = s{i}(:,1:(min (n, columns (s{i}))));
     endfor
   else
-    error ("strtrunc: s must be a character string or a cell array of strings");
+    error ("strtrunc: S must be a character string or a cell array of strings");
   endif
 
   if (s_was_char)
@@ -53,7 +53,7 @@ function s = strtrunc (s, n)
 endfunction
 
 %!error <Invalid call to strtrunc> strtrunc ();
-%!error <s must be a character string or a cell array of strings> strtrunc (1, 1)
+%!error <S must be a character string or a cell array of strings> strtrunc (1, 1)
 %!assert (strtrunc("abcdefg", 4), "abcd");
 %!assert (strtrunc("abcdefg", 10), "abcdefg");
 %!assert (strtrunc({"abcdef", "fedcba"}, 3), {"abc", "fed"});

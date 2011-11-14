@@ -1,8 +1,7 @@
 // RowVector manipulations.
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 1999, 2000, 2001, 2002, 2003,
-              2004, 2005, 2006, 2007, 2008 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -42,13 +41,16 @@ extern "C"
 {
   F77_RET_T
   F77_FUNC (dgemv, DGEMV) (F77_CONST_CHAR_ARG_DECL,
-			   const octave_idx_type&, const octave_idx_type&, const double&,
-			   const double*, const octave_idx_type&, const double*,
-			   const octave_idx_type&, const double&, double*, const octave_idx_type&
-			   F77_CHAR_ARG_LEN_DECL);
+                           const octave_idx_type&, const octave_idx_type&,
+                           const double&, const double*,
+                           const octave_idx_type&, const double*,
+                           const octave_idx_type&, const double&,
+                           double*, const octave_idx_type&
+                           F77_CHAR_ARG_LEN_DECL);
   F77_RET_T
-  F77_FUNC (xddot, XDDOT) (const octave_idx_type&, const double*, const octave_idx_type&,
-			   const double*, const octave_idx_type&, double&);
+  F77_FUNC (xddot, XDDOT) (const octave_idx_type&, const double*,
+                           const octave_idx_type&, const double*,
+                           const octave_idx_type&, double&);
 }
 
 // Row Vector class.
@@ -59,7 +61,7 @@ RowVector::operator == (const RowVector& a) const
   octave_idx_type len = length ();
   if (len != a.length ())
     return 0;
-  return mx_inline_equal (data (), a.data (), len);
+  return mx_inline_equal (len, data (), a.data ());
 }
 
 bool
@@ -84,7 +86,7 @@ RowVector::insert (const RowVector& a, octave_idx_type c)
       make_unique ();
 
       for (octave_idx_type i = 0; i < a_len; i++)
-	xelem (c+i) = a.elem (i);
+        xelem (c+i) = a.elem (i);
     }
 
   return *this;
@@ -100,7 +102,7 @@ RowVector::fill (double val)
       make_unique ();
 
       for (octave_idx_type i = 0; i < len; i++)
-	xelem (i) = val;
+        xelem (i) = val;
     }
 
   return *this;
@@ -124,7 +126,7 @@ RowVector::fill (double val, octave_idx_type c1, octave_idx_type c2)
       make_unique ();
 
       for (octave_idx_type i = c1; i <= c2; i++)
-	xelem (i) = val;
+        xelem (i) = val;
     }
 
   return *this;
@@ -150,21 +152,13 @@ RowVector::transpose (void) const
 RowVector
 real (const ComplexRowVector& a)
 {
-  octave_idx_type a_len = a.length ();
-  RowVector retval;
-  if (a_len > 0)
-    retval = RowVector (mx_inline_real_dup (a.data (), a_len), a_len);
-  return retval;
+  return do_mx_unary_op<double, Complex> (a, mx_inline_real);
 }
 
 RowVector
 imag (const ComplexRowVector& a)
 {
-  octave_idx_type a_len = a.length ();
-  RowVector retval;
-  if (a_len > 0)
-    retval = RowVector (mx_inline_imag_dup (a.data (), a_len), a_len);
-  return retval;
+  return do_mx_unary_op<double, Complex> (a, mx_inline_imag);
 }
 
 RowVector
@@ -210,39 +204,27 @@ operator * (const RowVector& v, const Matrix& a)
   else
     {
       if (len == 0)
-	retval.resize (a_nc, 0.0);
+        retval.resize (a_nc, 0.0);
       else
-	{
-	  // Transpose A to form A'*x == (x'*A)'
+        {
+          // Transpose A to form A'*x == (x'*A)'
 
-	  octave_idx_type ld = a_nr;
+          octave_idx_type ld = a_nr;
 
-	  retval.resize (a_nc);
-	  double *y = retval.fortran_vec ();
+          retval.resize (a_nc);
+          double *y = retval.fortran_vec ();
 
-	  F77_XFCN (dgemv, DGEMV, (F77_CONST_CHAR_ARG2 ("T", 1),
-				   a_nr, a_nc, 1.0, a.data (),
-				   ld, v.data (), 1, 0.0, y, 1
-				   F77_CHAR_ARG_LEN (1)));
-	}
+          F77_XFCN (dgemv, DGEMV, (F77_CONST_CHAR_ARG2 ("T", 1),
+                                   a_nr, a_nc, 1.0, a.data (),
+                                   ld, v.data (), 1, 0.0, y, 1
+                                   F77_CHAR_ARG_LEN (1)));
+        }
     }
 
   return retval;
 }
 
 // other operations
-
-RowVector
-RowVector::map (dmapper fcn) const
-{
-  return MArray<double>::map<double> (func_ptr (fcn));
-}
-
-ComplexRowVector
-RowVector::map (cmapper fcn) const
-{
-  return MArray<double>::map<Complex> (func_ptr (fcn));
-}
 
 double
 RowVector::min (void) const
@@ -311,22 +293,15 @@ operator >> (std::istream& is, RowVector& a)
 RowVector
 linspace (double x1, double x2, octave_idx_type n)
 {
-  RowVector retval;
+  if (n < 1) n = 1;
 
-  if (n > 1)
-    {
-      retval.resize (n);
-      double delta = (x2 - x1) / (n - 1);
-      retval.elem (0) = x1;
-      for (octave_idx_type i = 1; i < n-1; i++)
-	retval.elem (i) = x1 + i * delta;
-      retval.elem (n-1) = x2;
-    }
-  else
-    {
-      retval.resize (1);
-      retval.elem (0) = x2;
-    }
+  NoAlias<RowVector> retval (n);
+
+  double delta = (x2 - x1) / (n - 1);
+  retval(0) = x1;
+  for (octave_idx_type i = 1; i < n-1; i++)
+    retval(i) = x1 + i*delta;
+  retval(n-1) = x2;
 
   return retval;
 }
@@ -356,9 +331,3 @@ operator * (const RowVector& v, const ComplexColumnVector& a)
   ComplexRowVector tmp (v);
   return tmp * a;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

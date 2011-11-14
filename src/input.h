@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001,
-              2002, 2005, 2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -54,6 +53,9 @@ extern bool input_from_eval_string_pending;
 // the command line.
 extern bool input_from_command_line_file;
 
+// TRUE means that stdin is a terminal, not a pipe or redirected file.
+extern bool stdin_is_tty;
+
 // TRUE means we're parsing a function file.
 extern bool reading_fcn_file;
 
@@ -65,6 +67,9 @@ extern std::string curr_fcn_file_full_name;
 
 // TRUE means we're parsing a script file.
 extern bool reading_script_file;
+
+// TRUE means we're parsing a classdef file.
+extern bool reading_classdef_file;
 
 // If we are reading from an M-file, this is it.
 extern FILE *ff_instream;
@@ -116,9 +121,3 @@ extern int Vecho_executing_commands;
 extern octave_time Vlast_prompt_time;
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

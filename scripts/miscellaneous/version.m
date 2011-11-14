@@ -1,5 +1,4 @@
-## Copyright (C) 1994, 1995, 1996, 1997, 1999, 2005, 2007, 2008,
-##               2009 John W. Eaton
+## Copyright (C) 1994-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -19,8 +18,11 @@
 
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} version ()
-## Return Octave's version number as a string.  This is also the value of
-## the built-in variable @w{@code{OCTAVE_VERSION}}.
+## Return the version number of Octave, as a string.
+##
+## This is an alias for the function @code{OCTAVE_VERSION} provided for
+## compatibility
+## @seealso{OCTAVE_VERSION}.
 ## @end deftypefn
 
 ## Author: jwe

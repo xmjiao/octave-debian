@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2004, 2005, 2006, 2007, 2008 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -95,9 +95,3 @@ swap_bytes<1> (volatile void *, int)
 }
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

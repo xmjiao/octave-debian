@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 1999, 2000, 2002, 2003, 2005,
-##               2006, 2007, 2008, 2009 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -18,8 +17,11 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} mean (@var{x}, @var{dim}, @var{opt})
-## If @var{x} is a vector, compute the mean of the elements of @var{x}
+## @deftypefn  {Function File} {} mean (@var{x})
+## @deftypefnx {Function File} {} mean (@var{x}, @var{dim})
+## @deftypefnx {Function File} {} mean (@var{x}, @var{opt})
+## @deftypefnx {Function File} {} mean (@var{x}, @var{dim}, @var{opt})
+## Compute the mean of the elements of the vector @var{x}.
 ## @tex
 ## $$ {\rm mean}(x) = \bar{x} = {1\over N} \sum_{i=1}^N x_i $$
 ## @end tex
@@ -28,16 +30,17 @@
 ## @example
 ## mean (x) = SUM_i x(i) / N
 ## @end example
+##
 ## @end ifnottex
 ## If @var{x} is a matrix, compute the mean for each column and return them
 ## in a row vector.
 ##
-## With the optional argument @var{opt}, the kind of mean computed can be
-## selected.  The following options are recognized:
+## The optional argument @var{opt} selects the type of mean to compute.
+## The following options are recognized:
 ##
-## @table @code
+## @table @asis
 ## @item "a"
-## Compute the (ordinary) arithmetic mean.  This is the default.
+## Compute the (ordinary) arithmetic mean.  [default]
 ##
 ## @item "g"
 ## Compute the geometric mean.
@@ -46,17 +49,25 @@
 ## Compute the harmonic mean.
 ## @end table
 ##
-## If the optional argument @var{dim} is supplied, work along dimension
-## @var{dim}.
+## If the optional argument @var{dim} is given, operate along this dimension.
 ##
 ## Both @var{dim} and @var{opt} are optional.  If both are supplied,
 ## either may appear first.
+## @seealso{median, mode}
 ## @end deftypefn
 
 ## Author: KH <Kurt.Hornik@wu-wien.ac.at>
 ## Description: Compute arithmetic, geometric, and harmonic mean
 
 function y = mean (x, opt1, opt2)
+
+  if (nargin < 1 || nargin > 3)
+    print_usage ();
+  endif
+
+  if (! (isnumeric (x) || islogical (x)))
+    error ("mean: X must be a numeric vector or matrix");
+  endif
 
   need_dim = 0;
 
@@ -79,26 +90,31 @@ function y = mean (x, opt1, opt2)
       opt = opt2;
       dim = opt1;
     else
-      error ("mean: expecting opt to be a string");
+      error ("mean: OPT must be a string");
     endif
   else
     print_usage ();
   endif
 
+  nd = ndims (x);
+  sz = size (x);
   if (need_dim)
-    t = find (size (x) != 1);
-    if (isempty (t))
+    ## Find the first non-singleton dimension.
+    dim = find (sz > 1, 1);
+    if (isempty (dim))
       dim = 1;
-    else
-      dim = t(1);
     endif
   endif
 
-  if (dim > ndims (x))
+  if (!(isscalar (dim) && dim == fix (dim))
+      || !(1 <= dim && dim <= nd))
+    error ("mean: DIM must be an integer and a valid dimension");
+  endif
+
+  if (dim > nd)
     n = 1;
   else
-    sz = size (x);
-    n = sz (dim);
+    n = sz(dim);
   endif
 
   if (strcmp (opt, "a"))
@@ -117,9 +133,22 @@ endfunction
 %! x = -10:10;
 %! y = x';
 %! z = [y, y+10];
-%! assert(mean (x) == 0 && mean (y) == 0 && mean (z) == [0, 10]);
+%! assert(mean (x) == 0);
+%! assert(mean (y) == 0);
+%! assert(mean (z) == [0, 10]);
 
+%!assert(mean ([2 8], 'g'), 4);
+%!assert(mean ([4 4 2], 'h'), 3);
+%!assert(mean (logical ([1 0 1 1])), 0.75);
+
+%% Test input validation
 %!error mean ();
-
+%!error mean (1, 2, 3, 4);
+%!error mean ({1:5});
 %!error mean (1, 2, 3);
+%!error mean (1, ones(2,2));
+%!error mean (1, 1.5);
+%!error mean (1, 0);
+%!error mean (1, 3);
+%!error mean (1, 'b');
 

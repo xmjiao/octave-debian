@@ -1,5 +1,4 @@
-@c Copyright (C) 1996, 1997, 1999, 2000, 2001, 2002, 2003, 2005, 2006,
-@c               2007, 2008, 2009 John W. Eaton
+@c Copyright (C) 1996-2011 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -80,7 +79,7 @@ probably only useful if you are actually trying to debug the parser.
 @cindex @code{--doc-cache-file @var{filename}}
 Specify the name of the doc cache file to use.  The value of @var{filename}
 specified on the command line will override any value of
-@w{@code{OCTAVE_DOC_CACHE_FILE}} found in the environment, but not any commands
+@w{@env{OCTAVE_DOC_CACHE_FILE}} found in the environment, but not any commands
 in the system or user startup files that use the @code{doc_cache_file}
 function.
 
@@ -91,16 +90,16 @@ function.
 Echo commands as they are executed.
 
 @item --eval @var{code}
-Evaluate @var{code} and exit when finished unless @code{--persist} is also
+Evaluate @var{code} and exit when finished unless @option{--persist} is also
 specified.
 
 @item --exec-path @var{path}
 @cindex @code{--exec-path @var{path}}
 Specify the path to search for programs to run.  The value of @var{path}
 specified on the command line will override any value of
-@w{@code{OCTAVE_EXEC_PATH}} found in the environment, but not any commands
+@w{@env{OCTAVE_EXEC_PATH}} found in the environment, but not any commands
 in the system or user startup files that set the built-in variable
-@w{@code{EXEC_PATH}}.
+@w{@env{EXEC_PATH}}.
 
 @item  --help
 @itemx -h
@@ -114,15 +113,15 @@ Print short help message and exit.
 @cindex @code{--image-path @var{path}}
 Add path to the head of the search path for images.  The value of 
 @var{path} specified on the command line will override any value of 
-@w{@code{OCTAVE_IMAGE_PATH}} found in the environment, but not any commands 
+@w{@env{OCTAVE_IMAGE_PATH}} found in the environment, but not any commands 
 in the system or user startup files that set the built-in variable 
-@w{@code{IMAGE_PATH}}.
+@w{@env{IMAGE_PATH}}.
 
 @item --info-file @var{filename}
 @cindex @code{--info-file @var{filename}}
 Specify the name of the info file to use.  The value of @var{filename}
 specified on the command line will override any value of
-@w{@code{OCTAVE_INFO_FILE}} found in the environment, but not any commands
+@w{@env{OCTAVE_INFO_FILE}} found in the environment, but not any commands
 in the system or user startup files that use the @code{info_file}
 function.
 
@@ -130,7 +129,7 @@ function.
 @cindex @code{--info-program @var{program}}
 Specify the name of the info program to use.  The value of @var{program}
 specified on the command line will override any value of
-@w{@code{OCTAVE_INFO_PROGRAM}} found in the environment, but not any
+@w{@env{OCTAVE_INFO_PROGRAM}} found in the environment, but not any
 commands in the system or user startup files that use the
 @code{info_program} function.
 
@@ -174,8 +173,8 @@ Don't read the site-wide @file{octaverc} initialization files.
 @cindex @code{--norc}
 @cindex @code{-f}
 Don't read any of the system or user initialization files at startup.
-This is equivalent to using both of the options @code{--no-init-file}
-and @code{--no-site-file}.
+This is equivalent to using both of the options @option{--no-init-file}
+and @option{--no-site-file}.
 
 @item  --path @var{path}
 @itemx -p @var{path}
@@ -183,13 +182,13 @@ and @code{--no-site-file}.
 @cindex @code{-p @var{path}}
 Add path to the head of the search path for function files.  The 
 value of @var{path} specified on the command line will override any value
-of @w{@code{OCTAVE_PATH}} found in the environment, but not any commands in the
+of @w{@env{OCTAVE_PATH}} found in the environment, but not any commands in the
 system or user startup files that set the internal load path through one
 of the path functions.
 
 @item --persist
 @cindex @code{--persist}
-Go to interactive mode after @code{--eval} or reading from a file
+Go to interactive mode after @option{--eval} or reading from a file
 named on the command line.
 
 @item  --silent
@@ -209,24 +208,27 @@ user preferences to the following values
 
 @example
 @group
-PS1                     = ">> "
-PS2                     = ""
-beep_on_error           = true
-confirm_recursive_rmdir = false
-crash_dumps_octave_core = false
-default_save_options    = "-mat-binary"
-fixed_point_format      = true
-history_timestamp_format_string
-                        = "%%-- %D %I:%M %p --%%"
-page_screen_output      = false
-print_empty_dimensions  = false
+PS1                             = ">> "
+PS2                             = ""
+allow_noninteger_range_as_index = true
+beep_on_error                   = true
+confirm_recursive_rmdir         = false
+crash_dumps_octave_core         = false
+default_save_options            = "-mat-binary"
+do_braindead_shortcircuit_evaluation = true
+fixed_point_format              = true
+history_timestamp_format_string = "%%-- %D %I:%M %p --%%"
+page_screen_output              = false
+print_empty_dimensions          = false
 @end group
 @end example
 
 @noindent
 and disable the following warnings
+
 @example
 @group
+Octave:abbreviated-property-match
 Octave:fopen-file-in-path
 Octave:function-name-clash
 Octave:load-file-in-path
@@ -247,7 +249,7 @@ Print the program version number and exit.
 
 @item @var{file}
 Execute commands from @var{file}.  Exit when done unless
-@code{--persist} is also specified.
+@option{--persist} is also specified.
 @end table
 
 Octave also includes several functions which return information 
@@ -294,23 +296,23 @@ including function definitions.
 @item @var{octave-home}/share/octave/site/m/startup/octaverc
 @cindex site startup file
 where @var{octave-home} is the directory in which Octave is installed
-(the default is @file{@value{OCTAVEHOME}}).
+(the default is @file{/usr/local}).
 This file is provided so that changes to the default Octave environment 
 can be made globally for all users at your site for all versions of Octave
 you have installed.  Care should be taken when making changes to this file 
 since all users of Octave at your site will be affected.  The default file 
-may be overridden by the environment variable @w{@code{OCTAVE_SITE_INITFILE}}.
+may be overridden by the environment variable @w{@env{OCTAVE_SITE_INITFILE}}.
 
 @item @var{octave-home}/share/octave/@var{version}/m/startup/octaverc
 @cindex version startup file
 where @var{octave-home} is the directory in which Octave is
-installed (the default is @file{@value{OCTAVEHOME}}), and @var{version}
+installed (the default is @file{/usr/local}), and @var{version}
 is the version number of Octave.  This file is provided so that changes
 to the default Octave environment can be made globally for all users of
 a particular version of Octave.  Care should be taken when making
 changes to this file since all users of Octave at your site will be
 affected.  The default file may be overridden by the environment variable
-@w{@code{OCTAVE_VERSION_INITFILE}}.
+@w{@env{OCTAVE_VERSION_INITFILE}}.
 
 @item ~/.octaverc
 @cindex personal startup file
@@ -332,8 +334,13 @@ If you start Octave in your home directory, commands from the file
 @end table
 
 A message will be displayed as each of the startup files is read if you
-invoke Octave with the @code{--verbose} option but without the
-@code{--silent} option.
+invoke Octave with the @option{--verbose} option but without the
+@option{--silent} option.
+
+The @code{dump_prefs} function is useful for determining what customizations
+to Octave are possible and which are in effect.
+
+@DOCSTRING(dump_prefs)
 
 @node Quitting Octave
 @section Quitting Octave
@@ -385,6 +392,18 @@ found.
 @DOCSTRING(doc_cache_file)
 
 @DOCSTRING(suppress_verbose_help_message)
+
+The following functions are principally used internally by Octave for
+generating the documentation.  They are documented here for completeness
+and because they may occasionally be useful for users.
+
+@DOCSTRING(gen_doc_cache)
+
+@DOCSTRING(get_help_text)
+
+@DOCSTRING(get_help_text_from_file)
+
+@DOCSTRING(get_first_help_sentence)
 
 @node Command Line Editing
 @section Command Line Editing
@@ -443,8 +462,11 @@ Move back one character.
 @item C-f
 Move forward one character.
 
-@item @key{DEL}
+@item @key{BACKSPACE}
 Delete the character to the left of the cursor.
+
+@item @key{DEL}
+Delete the character underneath the cursor.
 
 @item C-d
 Delete the character underneath the cursor.
@@ -658,6 +680,8 @@ is saved.
 
 @DOCSTRING(saving_history)
 
+@DOCSTRING(history_control)
+
 @DOCSTRING(history_file)
 
 @DOCSTRING(history_size)
@@ -668,7 +692,7 @@ is saved.
 
 @node Customizing readline
 @subsection Customizing @code{readline}
-@cindex @file{~/.inputrc}
+@cindex @code{~/.inputrc}
 @cindex customizing @code{readline}
 @cindex @code{readline} customization
 
@@ -992,6 +1016,7 @@ character, @samp{#}, or the percent symbol @samp{%} and continues to the
 end of the line.  Any text following the sharp sign or percent symbol is
 ignored by the Octave interpreter and not executed.  The following example
 shows whole line and partial line comments.
+
 @example
 @group
 function countdown
@@ -1014,6 +1039,7 @@ endfunction
 Entire blocks of code can be commented by enclosing the code between 
 matching @samp{#@{} and @samp{#@}} or @samp{%@{} and @samp{%@}} markers.  
 For example,
+
 @example
 @group
 function quick_countdown
@@ -1032,6 +1058,9 @@ endfunction
 will produce a very quick countdown from '3' to 'Blast Off' as the
 lines "@code{disp(2);}" and "@code{disp(1);}" won't be executed.
 
+The block comment markers must appear alone as the only characters on a line
+(excepting whitespace) in order to to be parsed correctly.
+
 @node Comments and the Help System
 @subsection Comments and the Help System
 @cindex documenting functions
@@ -1043,6 +1072,7 @@ block of comments in a function and return those as a documentation
 string.  This means that the same commands used to get help
 on built-in functions are available for properly formatted user-defined
 functions.  For example, after defining the function @code{f} below,
+
 @example
 @group
 function xdot = f (x, t)
@@ -1059,6 +1089,7 @@ endfunction
 @end group
 @end example
 
+@noindent
 the command @kbd{help f} produces the output
 
 @example

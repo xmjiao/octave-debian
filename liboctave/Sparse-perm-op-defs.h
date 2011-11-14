@@ -1,6 +1,6 @@
 /* -*- C++ -*-
 
-Copyright (C) 2009 Jason Riedy
+Copyright (C) 2009-2011 Jason Riedy
 
 This file is part of Octave.
 
@@ -34,16 +34,26 @@ SM octinternal_do_mul_colpm_sm (const octave_idx_type *pcol, const SM& a)
   const octave_idx_type nent = a.nnz ();
   SM r (nr, nc, nent);
 
-  for (octave_idx_type k = 0; k < nent; ++k)
-    {
-      OCTAVE_QUIT;
-      r.xridx (k) = pcol[a.ridx (k)];
-      r.xdata (k) = a.data (k);
-    }
+  octave_sort<octave_idx_type> sort;
+
   for (octave_idx_type j = 0; j <= nc; ++j)
     r.xcidx (j) = a.cidx (j);
 
-  r.maybe_compress (false);
+  for (octave_idx_type j = 0; j < nc; j++)
+    {
+      octave_quit ();
+      
+      OCTAVE_LOCAL_BUFFER (octave_idx_type, sidx, r.xcidx(j+1) - r.xcidx(j));
+      for (octave_idx_type i = r.xcidx(j), ii = 0; i < r.xcidx(j+1); i++)
+        {
+          sidx[ii++]=i;
+          r.xridx (i) = pcol[a.ridx (i)];
+        }
+      sort.sort (r.xridx() + r.xcidx(j), sidx, r.xcidx(j+1) - r.xcidx(j)); 
+      for (octave_idx_type i = r.xcidx(j), ii = 0; i < r.xcidx(j+1); i++)
+        r.xdata(i) = a.data (sidx[ii++]);
+    }
+
   return r;
 }
 
@@ -63,7 +73,7 @@ SM octinternal_do_mul_pm_sm (const PermMatrix& p, const SM& a)
       const octave_idx_type *prow = p.pvec ().data ();
       OCTAVE_LOCAL_BUFFER(octave_idx_type, pcol, nr);
       for (octave_idx_type i = 0; i < nr; ++i)
-	pcol[prow[i]] = i;
+        pcol[prow[i]] = i;
       return octinternal_do_mul_colpm_sm (pcol, a);
     }
   else
@@ -94,18 +104,17 @@ SM octinternal_do_mul_sm_rowpm (const SM& a, const octave_idx_type *prow)
   octave_idx_type k_src = 0;
   for (octave_idx_type j_src = 0; j_src < nc; ++j_src)
     {
-      OCTAVE_QUIT;
+      octave_quit ();
       const octave_idx_type j = prow[j_src];
       const octave_idx_type kend_src = a.cidx (j_src + 1);
       for (k = r.xcidx (j); k_src < kend_src; ++k, ++k_src)
-	{
-	  r.xridx (k) = a.ridx (k_src);
-	  r.xdata (k) = a.data (k_src);
-	}
+        {
+          r.xridx (k) = a.ridx (k_src);
+          r.xdata (k) = a.data (k_src);
+        }
     }
   assert (k_src == nent);
 
-  r.maybe_compress (false);
   return r;
 }
 
@@ -129,19 +138,18 @@ SM octinternal_do_mul_sm_colpm (const SM& a, const octave_idx_type *pcol)
   octave_idx_type k = 0;
   for (octave_idx_type j = 0; j < nc; ++j)
     {
-      OCTAVE_QUIT;
+      octave_quit ();
       const octave_idx_type j_src = pcol[j];
       octave_idx_type k_src;
       const octave_idx_type kend_src = a.cidx (j_src + 1);
       for (k_src = a.cidx (j_src); k_src < kend_src; ++k_src, ++k)
-	{
-	  r.xridx (k) = a.ridx (k_src);
-	  r.xdata (k) = a.data (k_src);
-	}
+        {
+          r.xridx (k) = a.ridx (k_src);
+          r.xdata (k) = a.data (k_src);
+        }
     }
   assert (k == nent);
 
-  r.maybe_compress (false);
   return r;
 }
 

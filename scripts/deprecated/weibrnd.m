@@ -1,4 +1,4 @@
-## Copyright (C) 2006, 2007, 2008, 2009 John W. Eaton
+## Copyright (C) 2006-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} weibrnd (@var{scale}, @var{shape}, @var{r}, @var{c})
+## @deftypefn  {Function File} {} weibrnd (@var{scale}, @var{shape}, @var{r}, @var{c})
 ## @deftypefnx {Function File} {} weibrnd (@var{scale}, @var{shape}, @var{sz})
 ## Return an @var{r} by @var{c} matrix of random samples from the
 ## Weibull distribution with parameters @var{scale} and @var{shape}
@@ -29,6 +29,7 @@
 ## @end deftypefn
 
 ## Deprecated in version 3.0
+## Matlab still has this function, so don't remove just yet.
 
 function rnd = weibrnd (varargin)
 

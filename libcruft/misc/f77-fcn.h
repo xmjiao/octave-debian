@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2002, 2003, 2004, 2005, 2006, 2007, 2008
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -57,19 +56,19 @@ extern "C" {
       f77_exception_encountered = 0; \
       octave_save_current_context (saved_context); \
       if (octave_set_current_context) \
-	{ \
-	  octave_interrupt_immediately = saved_octave_interrupt_immediately; \
+        { \
+          octave_interrupt_immediately = saved_octave_interrupt_immediately; \
           octave_restore_current_context (saved_context); \
-	  if (f77_exception_encountered) \
-	    F77_XFCN_ERROR (f, F); \
+          if (f77_exception_encountered) \
+            F77_XFCN_ERROR (f, F); \
           else \
-	    octave_rethrow_exception (); \
-	} \
+            octave_rethrow_exception (); \
+        } \
       else \
         { \
-	  octave_interrupt_immediately++; \
-	  F77_FUNC (f, F) args; \
-	  octave_interrupt_immediately--; \
+          octave_interrupt_immediately++; \
+          F77_FUNC (f, F) args; \
+          octave_interrupt_immediately--; \
           octave_restore_current_context (saved_context); \
         } \
     } \
@@ -103,7 +102,7 @@ CRUFT_API extern int f77_exception_encountered;
    Fortran-style character strings.  */
 #define F77_CHAR_ARG_DEF(s, len) octave_cray_ftn_ch_dsc s
 #define F77_CONST_CHAR_ARG_DEF(s, len) octave_cray_ftn_ch_dsc s
-#define F77_CHAR_ARG_LEN_DEF(len) 
+#define F77_CHAR_ARG_LEN_DEF(len)
 #define F77_CHAR_ARG_USE(s) s.ptr
 #define F77_CHAR_ARG_LEN_USE(s, len) (s.mask.len>>3)
 
@@ -172,7 +171,7 @@ octave_make_cray_const_ftn_ch_dsc (const char *ptr_arg, unsigned long len_arg)
    Fortran-style character strings.  */
 #define F77_CHAR_ARG_DEF(s, len) char *s, int len
 #define F77_CONST_CHAR_ARG_DEF(s, len) const char *s, int len
-#define F77_CHAR_ARG_LEN_DEF(len) 
+#define F77_CHAR_ARG_LEN_DEF(len)
 #define F77_CHAR_ARG_USE(s) s
 #define F77_CHAR_ARG_LEN_USE(s, len) len
 
@@ -210,27 +209,21 @@ octave_make_cray_const_ftn_ch_dsc (const char *ptr_arg, unsigned long len_arg)
 
 /* Build a C string local variable CS from the Fortran string parameter S
    declared as F77_CHAR_ARG_DEF(s, len) or F77_CONST_CHAR_ARG_DEF(s, len).
-   The string will be cleaned up at the end of the current block.  
+   The string will be cleaned up at the end of the current block.
    Needs to include <cstring> and <vector>.  */
 
 #define F77_CSTRING(s, len, cs) \
  OCTAVE_LOCAL_BUFFER (char, cs, F77_CHAR_ARG_LEN_USE (s, len) + 1); \
  memcpy (cs, F77_CHAR_ARG_USE (s), F77_CHAR_ARG_LEN_USE (s, len)); \
- cs[F77_CHAR_ARG_LEN_USE(s, len)] = '\0' 
+ cs[F77_CHAR_ARG_LEN_USE(s, len)] = '\0'
 
 
 extern CRUFT_API F77_RET_T
 F77_FUNC (xstopx, XSTOPX) (F77_CONST_CHAR_ARG_DECL
-			   F77_CHAR_ARG_LEN_DECL) GCC_ATTR_NORETURN;
+                           F77_CHAR_ARG_LEN_DECL) GCC_ATTR_NORETURN;
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

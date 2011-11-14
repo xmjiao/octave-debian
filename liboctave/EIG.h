@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2000, 2002, 2004, 2005, 2006,
-              2007, 2008 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -39,32 +38,59 @@ friend class ComplexMatrix;
 
 public:
 
-  EIG (void)
-    : lambda (), v () { }
+  EIG (void) : lambda (), v () { }
 
   EIG (const Matrix& a, bool calc_eigenvectors = true)
-    { init (a, calc_eigenvectors); }
+    : lambda (), v ()
+  {
+    init (a, calc_eigenvectors);
+  }
 
   EIG (const Matrix& a, octave_idx_type& info, bool calc_eigenvectors = true)
-    { info = init (a, calc_eigenvectors); }
+    : lambda (), v ()
+  {
+    info = init (a, calc_eigenvectors);
+  }
 
   EIG (const Matrix& a, const Matrix& b, bool calc_eigenvectors = true)
-    { init (a, b, calc_eigenvectors); }
+    : lambda (), v ()
+  {
+    init (a, b, calc_eigenvectors);
+  }
 
-  EIG (const Matrix& a, const Matrix& b, octave_idx_type& info, bool calc_eigenvectors = true)
-    { info = init (a, b, calc_eigenvectors); }
+  EIG (const Matrix& a, const Matrix& b, octave_idx_type& info,
+       bool calc_eigenvectors = true)
+    : lambda (), v ()
+  {
+    info = init (a, b, calc_eigenvectors);
+  }
 
   EIG (const ComplexMatrix& a, bool calc_eigenvectors = true)
-    { init (a, calc_eigenvectors); }
+    : lambda (), v ()
+  {
+    init (a, calc_eigenvectors);
+  }
 
-  EIG (const ComplexMatrix& a, octave_idx_type& info, bool calc_eigenvectors = true)
-    { info = init (a, calc_eigenvectors); }
+  EIG (const ComplexMatrix& a, octave_idx_type& info,
+       bool calc_eigenvectors = true)
+    : lambda (), v ()
+  {
+    info = init (a, calc_eigenvectors);
+  }
 
-  EIG (const ComplexMatrix& a, const ComplexMatrix& b, bool calc_eigenvectors = true)
-    { init (a, b, calc_eigenvectors); }
+  EIG (const ComplexMatrix& a, const ComplexMatrix& b,
+       bool calc_eigenvectors = true)
+    : lambda (), v ()
+  {
+    init (a, b, calc_eigenvectors);
+  }
 
-  EIG (const ComplexMatrix& a, const ComplexMatrix& b, octave_idx_type& info, bool calc_eigenvectors = true)
-    { info = init (a, b, calc_eigenvectors); }
+  EIG (const ComplexMatrix& a, const ComplexMatrix& b,
+       octave_idx_type& info, bool calc_eigenvectors = true)
+    : lambda (), v ()
+  {
+    info = init (a, b, calc_eigenvectors);
+  }
 
   EIG (const EIG& a)
     : lambda (a.lambda), v (a.v) { }
@@ -72,10 +98,10 @@ public:
   EIG& operator = (const EIG& a)
     {
       if (this != &a)
-	{
-	  lambda = a.lambda;
-	  v = a.v;
-	}
+        {
+          lambda = a.lambda;
+          v = a.v;
+        }
       return *this;
     }
 
@@ -93,20 +119,27 @@ private:
   ComplexMatrix v;
 
   octave_idx_type init (const Matrix& a, bool calc_eigenvectors);
-  octave_idx_type init (const Matrix& a, const Matrix& b, bool calc_eigenvectors);
+
+  octave_idx_type init (const Matrix& a, const Matrix& b,
+                        bool calc_eigenvectors);
+
   octave_idx_type init (const ComplexMatrix& a, bool calc_eigenvectors);
-  octave_idx_type init (const ComplexMatrix& a, const ComplexMatrix& b, bool calc_eigenvectors);
+
+  octave_idx_type init (const ComplexMatrix& a, const ComplexMatrix& b,
+                        bool calc_eigenvectors);
 
   octave_idx_type symmetric_init (const Matrix& a, bool calc_eigenvectors);
-  octave_idx_type symmetric_init (const Matrix& a, const Matrix& b, bool calc_eigenvectors);
-  octave_idx_type hermitian_init (const ComplexMatrix& a, bool calc_eigenvectors);
-  octave_idx_type hermitian_init (const ComplexMatrix& a, const ComplexMatrix& b, bool calc_eigenvectors);
+
+  octave_idx_type symmetric_init (const Matrix& a, const Matrix& b,
+                                  bool calc_eigenvectors);
+
+  octave_idx_type hermitian_init (const ComplexMatrix& a,
+                                  bool calc_eigenvectors);
+
+  octave_idx_type hermitian_init (const ComplexMatrix& a,
+                                  const ComplexMatrix& b,
+                                  bool calc_eigenvectors);
+
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

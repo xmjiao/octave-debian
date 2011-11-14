@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 Ben Abbott
+## Copyright (C) 2008-2011 Ben Abbott
 ##
 ## This file is part of Octave.
 ##
@@ -21,7 +21,7 @@
 ## Undocumented internal function.
 ## @end deftypefn
 
-## Check for the existence of the function/script, @file{finish}, in the 
+## Check for the existence of the function/script, @file{finish}, in the
 ## path or current working directory and execute it.  This function is
 ## intended to be excecuted upon a clean exit form Octave.  This is
 ## accomplished in the system script @file{startup/octaverc} by use of

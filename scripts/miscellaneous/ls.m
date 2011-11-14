@@ -1,4 +1,4 @@
-## Copyright (C) 2006, 2007, 2008, 2009 John W. Eaton
+## Copyright (C) 2006-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -17,9 +17,9 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deffn {Command} ls options
-## List directory contents.  For example,
-## 
+## @deftypefn {Command} {} ls options
+## List directory contents.  For example:
+##
 ## @example
 ## @group
 ## ls -l
@@ -28,12 +28,12 @@
 ##      @print{} -rw-r--r--   1 jwe  users  1315 Aug 17 23:14 bar.m
 ## @end group
 ## @end example
-## 
+##
 ## The @code{dir} and @code{ls} commands are implemented by calling your
 ## system's directory listing command, so the available options may vary
 ## from system to system.
 ## @seealso{dir, stat, readdir, glob, filesep, ls_command}
-## @end deffn
+## @end deftypefn
 
 ## Author: jwe
 
@@ -57,13 +57,13 @@ function retval = ls (varargin)
       [status, output] = system (cmd);
 
       if (status == 0)
-	if (nargout == 0)
-	  puts (output);
-	else
-	  retval = strvcat (regexp (output, '[^\s]+', 'match'){:});
-	endif
+        if (nargout == 0)
+          puts (output);
+        else
+          retval = strvcat (regexp (output, '\S+', 'match'){:});
+        endif
       else
-	error ("ls: command exited abnormally with status %d", status);
+        error ("ls: command exited abnormally with status %d", status);
       endif
 
     else
@@ -72,7 +72,7 @@ function retval = ls (varargin)
       ## we won't have to buffer all the output.
       system (cmd);
     endif
-    
+
   else
     error ("ls: expecting all arguments to be character strings");
   endif

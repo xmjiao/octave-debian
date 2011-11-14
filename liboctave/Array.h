@@ -1,9 +1,9 @@
 // Template array classes
 /*
 
-Copyright (C) 2008, 2009 Jaroslav Hajek
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 2000, 2001, 2002, 2003,
-              2004, 2005, 2006, 2007 John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
+Copyright (C) 2008-2009 Jaroslav Hajek
+Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
 
@@ -38,6 +38,8 @@ along with Octave; see the file COPYING.  If not, see
 #include "lo-utils.h"
 #include "oct-sort.h"
 #include "quit.h"
+#include "oct-mem.h"
+#include "oct-refcount.h"
 
 // One dimensional array class.  Handles the reference counting for
 // all the derived classes.
@@ -58,32 +60,38 @@ protected:
 
     T *data;
     octave_idx_type len;
-    int count;
+    octave_refcount<int> count;
 
-    ArrayRep (T *d, octave_idx_type l, bool copy = false) 
-      : data (copy ? new T [l] : d), len (l), count (1) 
-        { 
-          if (copy)
-            std::copy (d, d + l, data);
+    ArrayRep (T *d, octave_idx_type l)
+      : data (no_ctor_new<T> (l)), len (l), count (1)
+        {
+          copy_or_memcpy (l, d, data);
+        }
+
+    template <class U>
+    ArrayRep (U *d, octave_idx_type l)
+      : data (no_ctor_new<T> (l)), len (l), count (1)
+        {
+          std::copy (d, d+l, data);
         }
 
     ArrayRep (void) : data (0), len (0), count (1) { }
 
-    explicit ArrayRep (octave_idx_type n) : data (new T [n]), len (n), count (1) { }
+    explicit ArrayRep (octave_idx_type n) : data (no_ctor_new<T> (n)), len (n), count (1) { }
 
     explicit ArrayRep (octave_idx_type n, const T& val)
-      : data (new T [n]), len (n), count (1)
+      : data (no_ctor_new<T> (n)), len (n), count (1)
       {
-        std::fill (data, data + n, val);
+        fill_or_memset (n, val, data);
       }
 
     ArrayRep (const ArrayRep& a)
-      : data (new T [a.len]), len (a.len), count (1)
+      : data (no_ctor_new<T> (a.len)), len (a.len), count (1)
       {
-        std::copy (a.data, a.data + a.len, data);
+        copy_or_memcpy (a.len, a.data, data);
       }
- 
-    ~ArrayRep (void) { delete [] data; }
+
+    ~ArrayRep (void) { no_ctor_delete<T> (data); }
 
     octave_idx_type length (void) const { return len; }
 
@@ -98,18 +106,28 @@ protected:
 
 public:
 
-  void make_unique (void);
+  void make_unique (void)
+    {
+      if (rep->count > 1)
+        {
+          --rep->count;
+          rep = new ArrayRep (slice_data, slice_len);
+          slice_data = rep->data;
+        }
+    }
 
   typedef T element_type;
 
+  typedef typename ref_param<T>::type crefT;
+
   typedef bool (*compare_fcn_type) (typename ref_param<T>::type,
-				    typename ref_param<T>::type);
+                                    typename ref_param<T>::type);
 
 protected:
 
-  typename Array<T>::ArrayRep *rep;
-
   dim_vector dimensions;
+
+  typename Array<T>::ArrayRep *rep;
 
   // Rationale:
   // slice_data is a pointer to rep->data, denoting together with slice_len the
@@ -121,29 +139,13 @@ protected:
   T* slice_data;
   octave_idx_type slice_len;
 
-  Array (T *d, octave_idx_type n)
-    : rep (new typename Array<T>::ArrayRep (d, n)), dimensions (n) 
-    { 
-      slice_data = rep->data;
-      slice_len = rep->len;
-    }
-
-  Array (T *d, const dim_vector& dv)
-    : rep (new typename Array<T>::ArrayRep (d, get_size (dv))),
-      dimensions (dv) 
-    { 
-      slice_data = rep->data;
-      slice_len = rep->len;
-    }
-
   // slice constructor
   Array (const Array<T>& a, const dim_vector& dv,
          octave_idx_type l, octave_idx_type u)
-    : rep(a.rep), dimensions (dv)
+    : dimensions (dv), rep(a.rep), slice_data (a.slice_data+l), slice_len (u-l)
     {
       rep->count++;
-      slice_data = a.slice_data + l;
-      slice_len = std::min (u, a.slice_len) - l;
+      dimensions.chop_trailing_singletons ();
     }
 
 private:
@@ -151,93 +153,107 @@ private:
   typename Array<T>::ArrayRep *nil_rep (void) const
     {
       static typename Array<T>::ArrayRep *nr
-	= new typename Array<T>::ArrayRep ();
+        = new typename Array<T>::ArrayRep ();
 
       return nr;
     }
 
-  template <class U>
-  T *
-  coerce (const U *a, octave_idx_type len)
-  {
-    T *retval = new T [len];
-
-    for (octave_idx_type i = 0; i < len; i++)
-      retval[i] = T (a[i]);
-
-    return retval;
-  }
-
 public:
 
+  // Empty ctor (0x0).
+
   Array (void)
-    : rep (nil_rep ()), dimensions () 
-    { 
-      rep->count++; 
-      slice_data = rep->data;
-      slice_len = rep->len;
-    }
-
-  explicit Array (octave_idx_type n)
-    : rep (new typename Array<T>::ArrayRep (n)), dimensions (n) 
-    { 
-      slice_data = rep->data;
-      slice_len = rep->len;
-    }
-
-  explicit Array (octave_idx_type n, const T& val)
-    : rep (new typename Array<T>::ArrayRep (n)), dimensions (n)
+    : dimensions (), rep (nil_rep ()), slice_data (rep->data),
+      slice_len (rep->len)
     {
-      slice_data = rep->data;
-      slice_len = rep->len;
+      rep->count++;
+    }
+
+  // Obsolete 1D ctor (there are no 1D arrays).
+  explicit Array (octave_idx_type n) GCC_ATTR_DEPRECATED
+    : dimensions (n, 1), rep (new typename Array<T>::ArrayRep (n)),
+      slice_data (rep->data), slice_len (rep->len)
+    { }
+
+  // Obsolete initialized 1D ctor (there are no 1D arrays).
+  explicit Array (octave_idx_type n, const T& val) GCC_ATTR_DEPRECATED
+    : dimensions (n, 1), rep (new typename Array<T>::ArrayRep (n)),
+      slice_data (rep->data), slice_len (rep->len)
+    {
       fill (val);
     }
+
+  // nD uninitialized ctor.
+  explicit Array (const dim_vector& dv)
+    : dimensions (dv),
+      rep (new typename Array<T>::ArrayRep (dv.safe_numel ())),
+      slice_data (rep->data), slice_len (rep->len)
+    {
+      dimensions.chop_trailing_singletons ();
+    }
+
+  // nD initialized ctor.
+  explicit Array (const dim_vector& dv, const T& val)
+    : dimensions (dv),
+      rep (new typename Array<T>::ArrayRep (dv.safe_numel ())),
+      slice_data (rep->data), slice_len (rep->len)
+    {
+      fill (val);
+      dimensions.chop_trailing_singletons ();
+    }
+
+  // Reshape constructor.
+  Array (const Array<T>& a, const dim_vector& dv);
 
   // Type conversion case.
   template <class U>
   Array (const Array<U>& a)
-    : rep (new typename Array<T>::ArrayRep (coerce (a.data (), a.length ()), a.length ())),
-      dimensions (a.dims ())
-    {
-      slice_data = rep->data;
-      slice_len = rep->len;
-    }
+    : dimensions (a.dims ()),
+      rep (new typename Array<T>::ArrayRep (a.data (), a.length ())),
+      slice_data (rep->data), slice_len (rep->len)
+    { }
 
   // No type conversion case.
   Array (const Array<T>& a)
-    : rep (a.rep), dimensions (a.dimensions)
+    : dimensions (a.dimensions), rep (a.rep), slice_data (a.slice_data),
+      slice_len (a.slice_len)
     {
       rep->count++;
-      slice_data = a.slice_data;
-      slice_len = a.slice_len;
     }
 
 public:
 
-  Array (const dim_vector& dv)
-    : rep (new typename Array<T>::ArrayRep (get_size (dv))),
-      dimensions (dv) 
-    { 
-      slice_data = rep->data;
-      slice_len = rep->len;
-    }
-
-  Array (const dim_vector& dv, const T& val)
-    : rep (new typename Array<T>::ArrayRep (get_size (dv))),
-      dimensions (dv)
+  ~Array (void)
     {
-      slice_data = rep->data;
-      slice_len = rep->len;
-      fill (val);
+      if (--rep->count <= 0)
+        delete rep;
     }
 
-  Array (const Array<T>& a, const dim_vector& dv);
+  Array<T>& operator = (const Array<T>& a)
+    {
+      if (this != &a)
+        {
+          if (--rep->count <= 0)
+            delete rep;
 
-  virtual ~Array (void);
+          rep = a.rep;
+          rep->count++;
 
-  Array<T>& operator = (const Array<T>& a);
+          dimensions = a.dimensions;
+          slice_data = a.slice_data;
+          slice_len = a.slice_len;
+        }
 
-  void fill (const T& val); 
+      return *this;
+    }
+
+  void fill (const T& val);
+
+  void clear (void);
+  void clear (const dim_vector& dv);
+
+  void clear (octave_idx_type r, octave_idx_type c)
+    { clear (dim_vector (r, c)); }
 
   octave_idx_type capacity (void) const { return slice_len; }
   octave_idx_type length (void) const { return capacity (); }
@@ -248,96 +264,85 @@ public:
   octave_idx_type dim2 (void) const { return dimensions(1); }
   octave_idx_type dim3 (void) const { return dimensions(2); }
 
+  // Return the array as a column vector.
+  Array<T> as_column (void) const
+    {
+      Array<T> retval (*this);
+      if (dimensions.length () != 2 || dimensions(1) != 1)
+        retval.dimensions = dim_vector (numel (), 1);
+
+      return retval;
+    }
+
+  // Return the array as a row vector.
+  Array<T> as_row (void) const
+    {
+      Array<T> retval (*this);
+      if (dimensions.length () != 2 || dimensions(0) != 1)
+        retval.dimensions = dim_vector (1, numel ());
+
+      return retval;
+    }
+
+  // Return the array as a matrix.
+  Array<T> as_matrix (void) const
+    {
+      Array<T> retval (*this);
+      if (dimensions.length () != 2)
+        retval.dimensions = dimensions.redim (2);
+
+      return retval;
+    }
+
   octave_idx_type rows (void) const { return dim1 (); }
   octave_idx_type cols (void) const { return dim2 (); }
   octave_idx_type columns (void) const { return dim2 (); }
   octave_idx_type pages (void) const { return dim3 (); }
 
-  size_t byte_size (void) const { return numel () * sizeof (T); }
+  size_t byte_size (void) const { return static_cast<size_t> (numel ()) * sizeof (T); }
 
   // Return a const-reference so that dims ()(i) works efficiently.
   const dim_vector& dims (void) const { return dimensions; }
 
   Array<T> squeeze (void) const;
-  
-  void chop_trailing_singletons (void) 
-  { dimensions.chop_trailing_singletons (); }
-  
-  static octave_idx_type get_size (octave_idx_type r, octave_idx_type c);
-  static octave_idx_type get_size (octave_idx_type r, octave_idx_type c, octave_idx_type p);
-  static octave_idx_type get_size (const dim_vector& dv);
 
+  void chop_trailing_singletons (void) GCC_ATTR_DEPRECATED
+  { dimensions.chop_trailing_singletons (); }
+
+  octave_idx_type compute_index (octave_idx_type i, octave_idx_type j) const;
+  octave_idx_type compute_index (octave_idx_type i, octave_idx_type j, octave_idx_type k) const;
   octave_idx_type compute_index (const Array<octave_idx_type>& ra_idx) const;
 
-  T range_error (const char *fcn, octave_idx_type n) const;
-  T& range_error (const char *fcn, octave_idx_type n);
-
-  T range_error (const char *fcn, octave_idx_type i, octave_idx_type j) const;
-  T& range_error (const char *fcn, octave_idx_type i, octave_idx_type j);
-
-  T range_error (const char *fcn, octave_idx_type i, octave_idx_type j, octave_idx_type k) const;
-  T& range_error (const char *fcn, octave_idx_type i, octave_idx_type j, octave_idx_type k);
-
-  T range_error (const char *fcn, const Array<octave_idx_type>& ra_idx) const;
-  T& range_error (const char *fcn, const Array<octave_idx_type>& ra_idx);
+  octave_idx_type compute_index_unchecked (const Array<octave_idx_type>& ra_idx) const
+    { return dimensions.compute_index (ra_idx.data (), ra_idx.length ()); }
 
   // No checking, even for multiple references, ever.
 
   T& xelem (octave_idx_type n) { return slice_data [n]; }
-  T xelem (octave_idx_type n) const { return slice_data [n]; }
+  crefT xelem (octave_idx_type n) const { return slice_data [n]; }
 
   T& xelem (octave_idx_type i, octave_idx_type j) { return xelem (dim1()*j+i); }
-  T xelem (octave_idx_type i, octave_idx_type j) const { return xelem (dim1()*j+i); }
+  crefT xelem (octave_idx_type i, octave_idx_type j) const { return xelem (dim1()*j+i); }
 
-  T& xelem (octave_idx_type i, octave_idx_type j, octave_idx_type k) { return xelem (i, dim2()*k+j); }
-  T xelem (octave_idx_type i, octave_idx_type j, octave_idx_type k) const { return xelem (i, dim2()*k+j); }
+  T& xelem (octave_idx_type i, octave_idx_type j, octave_idx_type k)
+    { return xelem (i, dim2()*k+j); }
+  crefT xelem (octave_idx_type i, octave_idx_type j, octave_idx_type k) const
+    { return xelem (i, dim2()*k+j); }
 
   T& xelem (const Array<octave_idx_type>& ra_idx)
-    { return xelem (compute_index (ra_idx)); }
+    { return xelem (compute_index_unchecked (ra_idx)); }
 
-  T xelem (const Array<octave_idx_type>& ra_idx) const
-    { return xelem (compute_index (ra_idx)); }
+  crefT xelem (const Array<octave_idx_type>& ra_idx) const
+    { return xelem (compute_index_unchecked (ra_idx)); }
 
   // FIXME -- would be nice to fix this so that we don't
   // unnecessarily force a copy, but that is not so easy, and I see no
   // clean way to do it.
 
-  T& checkelem (octave_idx_type n)
-    {
-      if (n < 0 || n >= slice_len)
-	return range_error ("T& Array<T>::checkelem", n);
-      else
-	{
-	  make_unique ();
-	  return xelem (n);
-	}
-    }
-
-  T& checkelem (octave_idx_type i, octave_idx_type j)
-    {
-      if (i < 0 || j < 0 || i >= dim1 () || j >= dim2 ())
-	return range_error ("T& Array<T>::checkelem", i, j);
-      else
-	return elem (dim1()*j+i);
-    }
-
-  T& checkelem (octave_idx_type i, octave_idx_type j, octave_idx_type k)
-    {
-      if (i < 0 || j < 0 || k < 0 || i >= dim1 () || j >= dim2 () || k >= dim3 ())
-	return range_error ("T& Array<T>::checkelem", i, j, k);
-      else
-	return elem (i, dim2()*k+j);
-    }
-
-  T& checkelem (const Array<octave_idx_type>& ra_idx)
-    {
-      octave_idx_type i = compute_index (ra_idx);
-
-      if (i < 0)
-	return range_error ("T& Array<T>::checkelem", ra_idx);
-      else
-	return elem (i);
-    }
+  T& checkelem (octave_idx_type n);
+  T& checkelem (octave_idx_type i, octave_idx_type j);
+  T& checkelem (octave_idx_type i, octave_idx_type j, octave_idx_type k);
+  T& checkelem (const Array<octave_idx_type>& ra_idx);
 
   T& elem (octave_idx_type n)
     {
@@ -350,7 +355,7 @@ public:
   T& elem (octave_idx_type i, octave_idx_type j, octave_idx_type k) { return elem (i, dim2()*k+j); }
 
   T& elem (const Array<octave_idx_type>& ra_idx)
-    { return Array<T>::elem (compute_index (ra_idx)); }
+    { return Array<T>::elem (compute_index_unchecked (ra_idx)); }
 
 #if defined (BOUNDS_CHECKING)
   T& operator () (octave_idx_type n) { return checkelem (n); }
@@ -364,62 +369,49 @@ public:
   T& operator () (const Array<octave_idx_type>& ra_idx) { return elem (ra_idx); }
 #endif
 
-  T checkelem (octave_idx_type n) const
-    {
-      if (n < 0 || n >= slice_len)
-	return range_error ("T Array<T>::checkelem", n);
-      else
-	return xelem (n);
-    }
+  crefT checkelem (octave_idx_type n) const;
+  crefT checkelem (octave_idx_type i, octave_idx_type j) const;
+  crefT checkelem (octave_idx_type i, octave_idx_type j, octave_idx_type k) const;
+  crefT checkelem (const Array<octave_idx_type>& ra_idx) const;
 
-  T checkelem (octave_idx_type i, octave_idx_type j) const
-    {
-      if (i < 0 || j < 0 || i >= dim1 () || j >= dim2 ())
-	return range_error ("T Array<T>::checkelem", i, j);
-      else
-	return elem (dim1()*j+i);
-    }
+  crefT elem (octave_idx_type n) const { return xelem (n); }
 
-  T checkelem (octave_idx_type i, octave_idx_type j, octave_idx_type k) const
-    {
-      if (i < 0 || j < 0 || k < 0 || i >= dim1 () || j >= dim2 () || k >= dim3 ())
-	return range_error ("T Array<T>::checkelem", i, j, k);
-      else
-	return Array<T>::elem (i, Array<T>::dim1()*k+j);
-    }
+  crefT elem (octave_idx_type i, octave_idx_type j) const { return xelem (i, j); }
 
-  T checkelem (const Array<octave_idx_type>& ra_idx) const
-    {
-      octave_idx_type i = compute_index (ra_idx);
+  crefT elem (octave_idx_type i, octave_idx_type j, octave_idx_type k) const { return xelem (i, j, k); }
 
-      if (i < 0)
-	return range_error ("T Array<T>::checkelem", ra_idx);
-      else
-	return Array<T>::elem (i);
-    }
-
-  T elem (octave_idx_type n) const { return xelem (n); }
-
-  T elem (octave_idx_type i, octave_idx_type j) const { return elem (dim1()*j+i); }
-
-  T elem (octave_idx_type i, octave_idx_type j, octave_idx_type k) const { return elem (i, dim2()*k+j); }
-
-  T elem (const Array<octave_idx_type>& ra_idx) const
-    { return Array<T>::elem (compute_index (ra_idx)); }
+  crefT elem (const Array<octave_idx_type>& ra_idx) const
+    { return Array<T>::xelem (compute_index_unchecked (ra_idx)); }
 
 #if defined (BOUNDS_CHECKING)
-  T operator () (octave_idx_type n) const { return checkelem (n); }
-  T operator () (octave_idx_type i, octave_idx_type j) const { return checkelem (i, j); }
-  T operator () (octave_idx_type i, octave_idx_type j, octave_idx_type k) const { return checkelem (i, j, k); }
-  T operator () (const Array<octave_idx_type>& ra_idx) const { return checkelem (ra_idx); }
+  crefT operator () (octave_idx_type n) const { return checkelem (n); }
+  crefT operator () (octave_idx_type i, octave_idx_type j) const { return checkelem (i, j); }
+  crefT operator () (octave_idx_type i, octave_idx_type j, octave_idx_type k) const { return checkelem (i, j, k); }
+  crefT operator () (const Array<octave_idx_type>& ra_idx) const { return checkelem (ra_idx); }
 #else
-  T operator () (octave_idx_type n) const { return elem (n); }
-  T operator () (octave_idx_type i, octave_idx_type j) const { return elem (i, j); }
-  T operator () (octave_idx_type i, octave_idx_type j, octave_idx_type k) const { return elem (i, j, k); }
-  T operator () (const Array<octave_idx_type>& ra_idx) const { return elem (ra_idx); }
+  crefT operator () (octave_idx_type n) const { return elem (n); }
+  crefT operator () (octave_idx_type i, octave_idx_type j) const { return elem (i, j); }
+  crefT operator () (octave_idx_type i, octave_idx_type j, octave_idx_type k) const { return elem (i, j, k); }
+  crefT operator () (const Array<octave_idx_type>& ra_idx) const { return elem (ra_idx); }
 #endif
 
-  Array<T> reshape (const dim_vector& new_dims) const;
+  // Fast extractors. All of these produce shallow copies.
+  // Warning: none of these do check bounds, unless BOUNDS_CHECKING is on!
+
+  // Extract column: A(:,k+1).
+  Array<T> column (octave_idx_type k) const;
+  // Extract page: A(:,:,k+1).
+  Array<T> page (octave_idx_type k) const;
+
+  // Extract a slice from this array as a column vector: A(:)(lo+1:up).
+  // Must be 0 <= lo && up <= numel. May be up < lo.
+  Array<T> linear_slice (octave_idx_type lo, octave_idx_type up) const;
+
+  Array<T> reshape (octave_idx_type nr, octave_idx_type nc) const
+    { return Array<T> (*this, dim_vector (nr, nc)); }
+
+  Array<T> reshape (const dim_vector& new_dims) const
+    { return Array<T> (*this, new_dims); }
 
   Array<T> permute (const Array<octave_idx_type>& vec, bool inv = false) const;
   Array<T> ipermute (const Array<octave_idx_type>& vec) const
@@ -440,9 +432,9 @@ public:
 
   T *fortran_vec (void);
 
-  int ndims (void) const { return dimensions.length (); }
+  bool is_shared (void) { return rep->count > 1; }
 
-  void maybe_delete_dims (void);
+  int ndims (void) const { return dimensions.length (); }
 
   // Indexing without resizing.
 
@@ -452,50 +444,22 @@ public:
 
   Array<T> index (const Array<idx_vector>& ia) const;
 
-  static T resize_fill_value (); 
+  static const T& resize_fill_value ();
 
   // Resizing (with fill).
 
-  void resize_fill (octave_idx_type n, const T& rfv);
+  void resize1 (octave_idx_type n, const T& rfv = resize_fill_value ());
 
-  void resize_fill (octave_idx_type nr, octave_idx_type nc, const T& rfv);
+  void resize (octave_idx_type n) GCC_ATTR_DEPRECATED
+    { resize1 (n); }
 
-  void resize_fill (const dim_vector& dv, const T& rfv);
+  void resize (octave_idx_type nr, octave_idx_type nc,
+               const T& rfv = resize_fill_value ()) GCC_ATTR_DEPRECATED
+  {
+    resize2 (nr, nc, rfv);
+  }
 
-  // Resizing with default fill.
-  // Rationale: 
-  // These use the default fill value rather than leaving memory uninitialized.
-  // Resizing without fill leaves the resulting array in a rather weird state,
-  // where part of the data is initialized an part isn't.
-
-  void resize (octave_idx_type n)
-    { resize_fill (n, resize_fill_value ()); }
-
-  // FIXME -- this method cannot be defined here because it would
-  // clash with
-  //
-  //   void resize (octave_idx_type, const T&)
-  //
-  // (these become indistinguishable when T = octave_idx_type).
-  // In the future, I think the resize (.., const T& rfv) overloads
-  // should go away in favor of using resize_fill.
-
-  // void resize (octave_idx_type nr, octave_idx_type nc)
-  //  { resize_fill (nr, nc, resize_fill_value ()); }
-
-  void resize (dim_vector dv)
-    { resize_fill (dv, resize_fill_value ()); }
-
-  // FIXME -- these are here for backward compatibility. They should
-  // go away in favor of using resize_fill directly.
-  void resize (octave_idx_type n, const T& rfv)
-    { resize_fill (n, static_cast<T> (rfv)); }
-
-  void resize (octave_idx_type nr, octave_idx_type nc, const T& rfv)
-    { resize_fill (nr, nc, rfv); }
-
-  void resize (dim_vector dv, const T& rfv)
-    { resize_fill (dv, rfv); }
+  void resize (const dim_vector& dv, const T& rfv = resize_fill_value ());
 
   // Indexing with possible resizing and fill
   // FIXME -- this is really a corner case, that should better be
@@ -504,7 +468,7 @@ public:
   Array<T> index (const idx_vector& i, bool resize_ok,
                   const T& rfv = resize_fill_value ()) const;
 
-  Array<T> index (const idx_vector& i, const idx_vector& j, 
+  Array<T> index (const idx_vector& i, const idx_vector& j,
                   bool resize_ok, const T& rfv = resize_fill_value ()) const;
 
   Array<T> index (const Array<idx_vector>& ia,
@@ -512,7 +476,7 @@ public:
 
   // Indexed assignment (always with resize & fill).
 
-  void assign (const idx_vector& i, const Array<T>& rhs, 
+  void assign (const idx_vector& i, const Array<T>& rhs,
                const T& rfv = resize_fill_value ());
 
   void assign (const idx_vector& i, const idx_vector& j, const Array<T>& rhs,
@@ -532,19 +496,20 @@ public:
   // Dispatcher to the above two.
   void delete_elements (const Array<idx_vector>& ia);
 
-  // FIXME -- are these required? What exactly are they supposed to do?.
-
-  Array<T>& insert (const Array<T>& a, octave_idx_type r, octave_idx_type c);
-  Array<T>& insert2 (const Array<T>& a, octave_idx_type r, octave_idx_type c);
-  Array<T>& insertN (const Array<T>& a, octave_idx_type r, octave_idx_type c);
-
+  // Insert an array into another at a specified position.
+  // If size (a) is [d1 d2 ... dN] and idx is [i1 i2 ... iN],
+  // this method is equivalent to
+  // x(i1:i1+d1-1, i2:i2+d2-1, ... , iN:iN+dN-1) = a.
   Array<T>& insert (const Array<T>& a, const Array<octave_idx_type>& idx);
+
+  // This is just a special case for idx = [r c 0 ...]
+  Array<T>& insert (const Array<T>& a, octave_idx_type r, octave_idx_type c);
 
   void maybe_economize (void)
     {
       if (rep->count == 1 && slice_len != rep->len)
         {
-          ArrayRep *new_rep = new ArrayRep (slice_data, slice_len, true);
+          ArrayRep *new_rep = new ArrayRep (slice_data, slice_len);
           delete rep;
           rep = new_rep;
           slice_data = rep->data;
@@ -557,9 +522,9 @@ public:
   // You should not use it anywhere else.
   void *mex_get_data (void) const { return const_cast<T *> (data ()); }
 
-  Array<T> sort (octave_idx_type dim = 0, sortmode mode = ASCENDING) const;
-  Array<T> sort (Array<octave_idx_type> &sidx, octave_idx_type dim = 0,
-		 sortmode mode = ASCENDING) const;
+  Array<T> sort (int dim = 0, sortmode mode = ASCENDING) const;
+  Array<T> sort (Array<octave_idx_type> &sidx, int dim = 0,
+                 sortmode mode = ASCENDING) const;
 
   // Ordering is auto-detected or can be specified.
   sortmode is_sorted (sortmode mode = UNSORTED) const;
@@ -570,23 +535,32 @@ public:
   // Ordering is auto-detected or can be specified.
   sortmode is_sorted_rows (sortmode mode = UNSORTED) const;
 
-  // Do a binary lookup in a sorted array.
+  // Do a binary lookup in a sorted array. Must not contain NaNs.
   // Mode can be specified or is auto-detected by comparing 1st and last element.
   octave_idx_type lookup (const T& value, sortmode mode = UNSORTED) const;
 
-  // Ditto, but for an array of values, specializing on long runs.
-  // If linf is true, the leftmost interval is extended to infinity 
-  // (indices will be >= 1).
-  // If rinf is true, the rightmost interval is extended to infinity 
-  // (indices will be <= length ()-1).
-  Array<octave_idx_type> lookup (const Array<T>& values, sortmode mode = UNSORTED, 
-                                 bool linf = false, bool rinf = false) const;
+  // Ditto, but for an array of values, specializing on the case when values
+  // are sorted. NaNs get the value N.
+  Array<octave_idx_type> lookup (const Array<T>& values, sortmode mode = UNSORTED) const;
+
+  // Count nonzero elements.
+  octave_idx_type nnz (void) const;
 
   // Find indices of (at most n) nonzero elements. If n is specified, backward
   // specifies search from backward.
   Array<octave_idx_type> find (octave_idx_type n = -1, bool backward = false) const;
 
+  // Returns the n-th element in increasing order, using the same ordering as
+  // used for sort. n can either be a scalar index or a contiguous range.
+  Array<T> nth_element (const idx_vector& n, int dim = 0) const;
+
   Array<T> diag (octave_idx_type k = 0) const;
+
+  // Concatenation along a specified (0-based) dimension, equivalent to cat().
+  // dim = -1 corresponds to dim = 0 and dim = -2 corresponds to dim = 1,
+  // but apply the looser matching rules of vertcat/horzcat.
+  static Array<T>
+  cat (int dim, octave_idx_type n, const Array<T> *array_list);
 
   template <class U, class F>
   Array<U>
@@ -599,45 +573,138 @@ public:
     Array<U> result (dims ());
     U *p = result.fortran_vec ();
 
-    for (octave_idx_type i = 0; i < len; i++)
+    octave_idx_type i;
+    for (i = 0; i < len - 3; i += 4)
       {
-	OCTAVE_QUIT;
+        octave_quit ();
 
-	p[i] = fcn (m[i]);
+        p[i] = fcn (m[i]);
+        p[i+1] = fcn (m[i+1]);
+        p[i+2] = fcn (m[i+2]);
+        p[i+3] = fcn (m[i+3]);
       }
+
+    octave_quit ();
+
+    for (; i < len; i++)
+      p[i] = fcn (m[i]);
 
     return result;
   }
 
-  // This is non-breakable map, suitable for fast functions. Efficiency
-  // relies on compiler's ability to inline a function pointer. This seems
-  // to be OK with recent GCC.
+  // Overloads for function references.
   template <class U>
   Array<U>
-  fastmap (U (*fcn) (typename ref_param<T>::type)) const
+  map (U (&fcn) (T)) const
+  { return map<U, U (&) (T)> (fcn); }
+
+  template <class U>
+  Array<U>
+  map (U (&fcn) (const T&)) const
+  { return map<U, U (&) (const T&)> (fcn); }
+
+  // Generic any/all test functionality with arbitrary predicate.
+  template <class F, bool zero>
+  bool test (F fcn) const
   {
     octave_idx_type len = length ();
 
     const T *m = data ();
 
-    Array<U> result (dims ());
-    U *p = result.fortran_vec ();
+    octave_idx_type i;
+    for (i = 0; i < len - 3; i += 4)
+      {
+        octave_quit ();
 
-    std::transform (m, m + len, p, fcn);
+        if (fcn (m[i]) != zero
+            || fcn (m[i+1]) != zero
+            || fcn (m[i+2]) != zero
+            || fcn (m[i+3]) != zero)
+           return ! zero;
 
-    return result;
+      }
+
+    octave_quit ();
+
+    for (; i < len; i++)
+       if (fcn (m[i]) != zero)
+          return ! zero;
+
+    return zero;
   }
+
+  // Simpler calls.
+  template <class F>
+  bool test_any (F fcn) const
+  { return test<F, false> (fcn); }
+
+  template <class F>
+  bool test_all (F fcn) const
+  { return test<F, true> (fcn); }
+
+  // Overloads for function references.
+  bool test_any (bool (&fcn) (T)) const
+  { return test<bool (&) (T), false> (fcn); }
+
+  bool test_any (bool (&fcn) (const T&)) const
+  { return test<bool (&) (const T&), false> (fcn); }
+
+  bool test_all (bool (&fcn) (T)) const
+  { return test<bool (&) (T), true> (fcn); }
+
+  bool test_all (bool (&fcn) (const T&)) const
+  { return test<bool (&) (const T&), true> (fcn); }
 
   template <class U> friend class Array;
 
+  // Returns true if this->dims () == dv, and if so, replaces this->dimensions
+  // by a shallow copy of dv. This is useful for maintaining several arrays with
+  // supposedly equal dimensions (e.g. structs in the interpreter).
+  bool optimize_dimensions (const dim_vector& dv);
+
 private:
+
+  void resize2 (octave_idx_type nr, octave_idx_type nc,
+                const T& rfv = resize_fill_value ());
+
   static void instantiation_guard ();
 };
 
-#endif
+// This is a simple wrapper template that will subclass an Array<T> type or any
+// later type derived from it and override the default non-const operator() to
+// not check for the array's uniqueness. It is, however, the user's
+// responsibility to ensure the array is actually unaliased whenever elements
+// are accessed.
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+template<class ArrayClass>
+class NoAlias : public ArrayClass
+{
+  typedef typename ArrayClass::element_type T;
+public:
+  NoAlias () : ArrayClass () { }
+
+  // FIXME: this would be simpler once C++0x is available
+  template <class X>
+    explicit NoAlias (X x) : ArrayClass (x) { }
+
+  template <class X, class Y>
+    explicit NoAlias (X x, Y y) : ArrayClass (x, y) { }
+
+  template <class X, class Y, class Z>
+    explicit NoAlias (X x, Y y, Z z) : ArrayClass (x, y, z) { }
+
+  T& operator () (octave_idx_type n)
+    { return ArrayClass::xelem (n); }
+  T& operator () (octave_idx_type i, octave_idx_type j)
+    { return ArrayClass::xelem (i, j); }
+  T& operator () (octave_idx_type i, octave_idx_type j, octave_idx_type k)
+    { return ArrayClass::xelem (i, j, k); }
+  T& operator () (const Array<octave_idx_type>& ra_idx)
+    { return ArrayClass::xelem (ra_idx); }
+};
+
+template <class T>
+std::ostream&
+operator << (std::ostream& os, const Array<T>& a);
+
+#endif

@@ -1,5 +1,4 @@
-## Copyright (C) 1996, 1997, 1998, 2000, 2002, 2005, 2006, 2007
-##               Kurt Hornik
+## Copyright (C) 1996-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -42,9 +41,9 @@ function [pval, chisq, df] = mcnemar_test (x)
   endif
 
   if (! (min (size (x)) > 1) && issquare (x))
-    error ("mcnemar_test: x must be a square matrix of size > 1");
+    error ("mcnemar_test: X must be a square matrix of size > 1");
   elseif (! (all (all (x >= 0)) && all (all (x == round (x)))))
-    error ("mcnemar_test: all entries of x must be nonnegative integers");
+    error ("mcnemar_test: all entries of X must be nonnegative integers");
   endif
 
   r = rows (x);
@@ -56,7 +55,7 @@ function [pval, chisq, df] = mcnemar_test (x)
   endif
 
   chisq = sum (sum (triu (num ./ (x + x'), 1)));
-  pval = 1 - chisquare_cdf (chisq, df);
+  pval = 1 - chi2cdf (chisq, df);
 
   if (nargout == 0)
     printf ("  pval: %g\n", pval);

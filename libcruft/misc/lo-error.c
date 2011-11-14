@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1999, 2005, 2006, 2007 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -37,6 +37,10 @@ along with Octave; see the file COPYING.  If not, see
 liboctave_error_handler current_liboctave_error_handler
   = liboctave_fatal;
 
+/* Pointer to the current error_with_id handling function. */
+liboctave_error_with_id_handler current_liboctave_error_with_id_handler
+  = liboctave_fatal_with_id;
+
 /* Pointer to the current warning handler. */
 liboctave_warning_handler current_liboctave_warning_handler
   = liboctave_warning;
@@ -63,6 +67,15 @@ set_liboctave_error_handler (liboctave_error_handler f)
     current_liboctave_error_handler = f;
   else
     current_liboctave_error_handler = liboctave_fatal;
+}
+
+void
+set_liboctave_error_with_id_handler (liboctave_error_with_id_handler f)
+{
+  if (f)
+    current_liboctave_error_with_id_handler = f;
+  else
+    current_liboctave_error_with_id_handler = liboctave_fatal_with_id;
 }
 
 void
@@ -95,6 +108,17 @@ liboctave_fatal (const char *fmt, ...)
 }
 
 void
+liboctave_fatal_with_id (const char *id, const char *fmt, ...)
+{
+  va_list args;
+  va_start (args, fmt);
+  verror ("fatal", fmt, args);
+  va_end (args);
+
+  exit (1);
+}
+
+void
 liboctave_warning (const char *fmt, ...)
 {
   va_list args;
@@ -111,10 +135,3 @@ liboctave_warning_with_id (const char *id, const char *fmt, ...)
   verror ("warning", fmt, args);
   va_end (args);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C ***
-;;; page-delimiter: "^/\\*" ***
-;;; End: ***
-*/

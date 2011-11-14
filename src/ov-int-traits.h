@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004, 2005, 2007 John W. Eaton
+Copyright (C) 2004-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -61,9 +61,3 @@ OCTAVE_VALUE_INT_TRAITS(uint32NDArray, octave_uint32_scalar);
 OCTAVE_VALUE_INT_TRAITS(uint64NDArray, octave_uint64_scalar);
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

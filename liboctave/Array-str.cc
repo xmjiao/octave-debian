@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2000, 2003, 2005, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -35,9 +35,3 @@ along with Octave; see the file COPYING.  If not, see
 INSTANTIATE_ARRAY_SORT (std::string);
 
 INSTANTIATE_ARRAY (std::string, OCTAVE_API);
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

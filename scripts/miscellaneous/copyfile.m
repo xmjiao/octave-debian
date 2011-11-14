@@ -1,4 +1,4 @@
-## Copyright (C) 2005, 2006, 2007, 2008, 2009 John W. Eaton
+## Copyright (C) 2005-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -17,17 +17,18 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {[@var{status}, @var{msg}, @var{msgid}] =} copyfile (@var{f1}, @var{f2}, @var{force})
+## @deftypefn  {Function File} {[@var{status}, @var{msg}, @var{msgid}] =} copyfile (@var{f1}, @var{f2})
+## @deftypefnx {Function File} {[@var{status}, @var{msg}, @var{msgid}] =} copyfile (@var{f1}, @var{f2}, 'f')
 ## Copy the file @var{f1} to the new name @var{f2}.  The name @var{f1}
 ## may contain globbing patterns.  If @var{f1} expands to multiple file
-## names, @var{f2} must be a directory.  If @var{force} is given and equals
-## the string "f" the copy operation will be forced.
+## names, @var{f2} must be a directory.  If the force flag 'f' is given then
+## existing destination files will be overwritten without prompting.
 ##
-## If successful, @var{status} is 1, with @var{msg} and @var{msgid} empty\n\
-## character strings.  Otherwise, @var{status} is 0, @var{msg} contains a\n\
-## system-dependent error message, and @var{msgid} contains a unique\n\
-## message identifier.\n\
-## @seealso{glob, movefile}
+## If successful, @var{status} is 1, with @var{msg} and @var{msgid} empty
+## character strings.  Otherwise, @var{status} is 0, @var{msg} contains a
+## system-dependent error message, and @var{msgid} contains a unique
+## message identifier.
+## @seealso{movefile}
 ## @end deftypefn
 
 function [status, msg, msgid] = copyfile (f1, f2, force)
@@ -40,7 +41,8 @@ function [status, msg, msgid] = copyfile (f1, f2, force)
   ## FIXME -- maybe use the same method as in ls to allow users control
   ## over the command that is executed.
 
-  if (ispc () && ! isunix () && isempty (file_in_path (EXEC_PATH, "cp.exe")))
+  if (ispc () && ! isunix ()
+      && isempty (file_in_path (getenv ("PATH"), "cp.exe")))
     ## Windows.
     cmd = "cmd /C xcopy /E";
     cmd_force_flag = "/Y";
@@ -73,7 +75,7 @@ function [status, msg, msgid] = copyfile (f1, f2, force)
     if (length(f1) > 1 && ! isdir)
       error ("copyfile: when copying multiple files, second argument must be a directory");
     endif
-    
+
     ## Protect the file name(s).
     f1 = glob (f1);
     if (isempty (f1))
@@ -85,38 +87,40 @@ function [status, msg, msgid] = copyfile (f1, f2, force)
     if (isdir && length(p1) > max_cmd_line)
       l2 = length(p2) + length (cmd) + 6;
       while (! isempty(f1))
-	p1 = sprintf ("\"%s\" ", f1{1});
-	f1(1) = [];
-	while (!isempty (f1) && (length(p1) + length(f1{1}) + l2 < 
-				 max_cmd_line))
-	  p1 = sprintf ("%s\"%s\" ", p1, f1{1});
-	  f1(1) = [];
-	endwhile 
+        p1 = sprintf ("\"%s\" ", f1{1});
+        f1(1) = [];
+        while (!isempty (f1) && (length(p1) + length(f1{1}) + l2 <
+                                 max_cmd_line))
+          p1 = sprintf ("%s\"%s\" ", p1, f1{1});
+          f1(1) = [];
+        endwhile
 
-	if (ispc () && ! isunix () && ! isempty (file_in_path (EXEC_PATH, "cp.exe")))
-	  p1 = strrep (p1, "\\", "/");
-	  p2 = strrep (p2, "\\", "/");
-	endif
+        if (ispc () && ! isunix ()
+            && ! isempty (file_in_path (getenv ("PATH"), "cp.exe")))
+          p1 = strrep (p1, "\\", "/");
+          p2 = strrep (p2, "\\", "/");
+        endif
 
-	## Copy the files.
-	[err, msg] = system (sprintf ("%s %s\"%s\"", cmd, p1, p2));
-	if (err < 0)
-	  status = false;
-	  msgid = "copyfile";
-	  break;
-	endif
+        ## Copy the files.
+        [err, msg] = system (sprintf ("%s %s\"%s\"", cmd, p1, p2));
+        if (err < 0)
+          status = false;
+          msgid = "copyfile";
+          break;
+        endif
       endwhile
     else
-      if (ispc () && ! isunix () && ! isempty (file_in_path (EXEC_PATH, "cp.exe")))
-	p1 = strrep (p1, "\\", "/");
-	p2 = strrep (p2, "\\", "/");
+      if (ispc () && ! isunix ()
+          && ! isempty (file_in_path (getenv ("PATH"), "cp.exe")))
+        p1 = strrep (p1, "\\", "/");
+        p2 = strrep (p2, "\\", "/");
       endif
 
       ## Copy the files.
       [err, msg] = system (sprintf ("%s %s\"%s\"", cmd, p1, p2));
       if (err < 0)
-	status = false;
-	msgid = "copyfile";
+        status = false;
+        msgid = "copyfile";
       endif
     endif
   else

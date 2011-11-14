@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1999, 2000, 2002, 2005, 2006, 2007, 2008
-##               Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ## Copyright (C) 2009 VZLU Prague
 ##
 ## This file is part of Octave.
@@ -22,7 +21,10 @@
 ## @deftypefn {Function File} {} vech (@var{x})
 ## Return the vector obtained by eliminating all supradiagonal elements of
 ## the square matrix @var{x} and stacking the result one column above the
-## other.
+## other.  This has uses in matrix calculus where the underlying matrix
+## is symmetric and it would be pointless to keep values above the main
+## diagonal.
+## @seealso{vec}
 ## @end deftypefn
 
 ## See Magnus and Neudecker (1988), Matrix differential calculus with
@@ -39,7 +41,7 @@ function v = vech (x)
   endif
 
   if (! issquare (x))
-    error ("vech: x must be square");
+    error ("vech: X must be square");
   endif
 
   n = rows (x);

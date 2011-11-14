@@ -1,4 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 2005, 2006, 2007 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -20,7 +20,7 @@
 ## @deftypefn {Function File} {} fcdf (@var{x}, @var{m}, @var{n})
 ## For each element of @var{x}, compute the CDF at @var{x} of the F
 ## distribution with @var{m} and @var{n} degrees of freedom, i.e.,
-## PROB (F (@var{m}, @var{n}) <= @var{x}). 
+## PROB (F (@var{m}, @var{n}) @leq{} @var{x}).
 ## @end deftypefn
 
 ## Author: KH <Kurt.Hornik@wu-wien.ac.at>
@@ -35,7 +35,7 @@ function cdf = fcdf (x, m, n)
   if (!isscalar (m) || !isscalar (n))
     [retval, x, m, n] = common_size (x, m, n);
     if (retval > 0)
-      error ("fcdf: x, m and n must be of common size or scalar");
+      error ("fcdf: X, M and N must be of common size or scalar");
     endif
   endif
 
@@ -57,8 +57,8 @@ function cdf = fcdf (x, m, n)
     if (isscalar (m) && isscalar (n))
       cdf(k) = 1 - betainc (1 ./ (1 + m .* x(k) ./ n), n / 2, m / 2);
     else
-      cdf(k) = 1 - betainc (1 ./ (1 + m(k) .* x(k) ./ n(k)), n(k) / 2, 
-			    m(k) / 2);
+      cdf(k) = 1 - betainc (1 ./ (1 + m(k) .* x(k) ./ n(k)), n(k) / 2,
+                            m(k) / 2);
     endif
   endif
 

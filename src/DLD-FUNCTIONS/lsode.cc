@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2005,
-              2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -74,26 +73,26 @@ lsode_user_function (const ColumnVector& x, double t)
       octave_value_list tmp = lsode_fcn->do_multi_index_op (1, args);
 
       if (error_state)
-	{
-	  gripe_user_supplied_eval ("lsode");
-	  return retval;
-	}
+        {
+          gripe_user_supplied_eval ("lsode");
+          return retval;
+        }
 
       if (tmp.length () > 0 && tmp(0).is_defined ())
-	{
-	  if (! warned_fcn_imaginary && tmp(0).is_complex_type ())
-	    {
-	      warning ("lsode: ignoring imaginary part returned from user-supplied function");
-	      warned_fcn_imaginary = true;
-	    }
+        {
+          if (! warned_fcn_imaginary && tmp(0).is_complex_type ())
+            {
+              warning ("lsode: ignoring imaginary part returned from user-supplied function");
+              warned_fcn_imaginary = true;
+            }
 
-	  retval = ColumnVector (tmp(0).vector_value ());
+          retval = ColumnVector (tmp(0).vector_value ());
 
-	  if (error_state || retval.length () == 0)
-	    gripe_user_supplied_eval ("lsode");
-	}
+          if (error_state || retval.length () == 0)
+            gripe_user_supplied_eval ("lsode");
+        }
       else
-	gripe_user_supplied_eval ("lsode");
+        gripe_user_supplied_eval ("lsode");
     }
 
   return retval;
@@ -113,39 +112,34 @@ lsode_user_jacobian (const ColumnVector& x, double t)
       octave_value_list tmp = lsode_jac->do_multi_index_op (1, args);
 
       if (error_state)
-	{
-	  gripe_user_supplied_eval ("lsode");
-	  return retval;
-	}
+        {
+          gripe_user_supplied_eval ("lsode");
+          return retval;
+        }
 
       if (tmp.length () > 0 && tmp(0).is_defined ())
-	{
-	  if (! warned_jac_imaginary && tmp(0).is_complex_type ())
-	    {
-	      warning ("lsode: ignoring imaginary part returned from user-supplied jacobian function");
-	      warned_jac_imaginary = true;
-	    }
+        {
+          if (! warned_jac_imaginary && tmp(0).is_complex_type ())
+            {
+              warning ("lsode: ignoring imaginary part returned from user-supplied jacobian function");
+              warned_jac_imaginary = true;
+            }
 
-	  retval = tmp(0).matrix_value ();
+          retval = tmp(0).matrix_value ();
 
-	  if (error_state || retval.length () == 0)
-	    gripe_user_supplied_eval ("lsode");
-	}
+          if (error_state || retval.length () == 0)
+            gripe_user_supplied_eval ("lsode");
+        }
       else
-	gripe_user_supplied_eval ("lsode");
+        gripe_user_supplied_eval ("lsode");
     }
 
   return retval;
 }
 
 #define LSODE_ABORT() \
-  do \
-    { \
-      unwind_protect::run_frame ("Flsode"); \
-      return retval; \
-    } \
-  while (0)
- 
+  return retval
+
 #define LSODE_ABORT1(msg) \
   do \
     { \
@@ -164,7 +158,8 @@ lsode_user_jacobian (const ColumnVector& x, double t)
 
 DEFUN_DLD (lsode, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Loadable Function} {[@var{x}, @var{istate}, @var{msg}] =} lsode (@var{fcn}, @var{x_0}, @var{t}, @var{t_crit})\n\
+@deftypefn  {Loadable Function} {[@var{x}, @var{istate}, @var{msg}] =} lsode (@var{fcn}, @var{x_0}, @var{t})\n\
+@deftypefnx {Loadable Function} {[@var{x}, @var{istate}, @var{msg}] =} lsode (@var{fcn}, @var{x_0}, @var{t}, @var{t_crit})\n\
 Solve the set of differential equations\n\
 @tex\n\
 $$ {dx \\over dt} = f (x, t) $$\n\
@@ -181,6 +176,7 @@ dt\n\
 @end group\n\
 @end example\n\
 \n\
+@noindent\n\
 with\n\
 \n\
 @example\n\
@@ -215,6 +211,7 @@ must have the form\n\
 @var{jac} = j (@var{x}, @var{t})\n\
 @end example\n\
 \n\
+@noindent\n\
 in which @var{jac} is the matrix of partial derivatives\n\
 @tex\n\
 $$ J = {\\partial f_i \\over \\partial x_j} = \\left[\\matrix{\n\
@@ -265,7 +262,7 @@ avoiding difficulties with singularities and points where there is a\n\
 discontinuity in the derivative.\n\
 \n\
 After a successful computation, the value of @var{istate} will be 2\n\
-(consistent with the Fortran version of @sc{Lsode}).\n\
+(consistent with the Fortran version of @sc{lsode}).\n\
 \n\
 If the computation is not successful, @var{istate} will be something\n\
 other than 2 and @var{msg} will contain additional information.\n\
@@ -280,9 +277,9 @@ parameters for @code{lsode}.\n\
   warned_fcn_imaginary = false;
   warned_jac_imaginary = false;
 
-  unwind_protect::begin_frame ("Flsode");
+  unwind_protect frame;
 
-  unwind_protect_int (call_depth);
+  frame.protect_var (call_depth);
   call_depth++;
 
   if (call_depth > 1)
@@ -299,143 +296,143 @@ parameters for @code{lsode}.\n\
       octave_value f_arg = args(0);
 
       if (f_arg.is_cell ())
-  	{
-	  Cell c = f_arg.cell_value ();
-	  if (c.length() == 1)
-	    f_arg = c(0);
-	  else if (c.length() == 2)
-	    {
-	      if (c(0).is_function_handle () || c(0).is_inline_function ())
-		lsode_fcn = c(0).function_value ();
-	      else
-		{
-		  fcn_name = unique_symbol_name ("__lsode_fcn__");
-		  fname = "function y = ";
-		  fname.append (fcn_name);
-		  fname.append (" (x, t) y = ");
-		  lsode_fcn = extract_function
-		    (c(0), "lsode", fcn_name, fname, "; endfunction");
-		}
-	      
-	      if (lsode_fcn)
-		{
-		  if (c(1).is_function_handle () || c(1).is_inline_function ())
-		    lsode_jac = c(1).function_value ();
-		  else
-		    {
-			jac_name = unique_symbol_name ("__lsode_jac__");
-			jname = "function jac = ";
-			jname.append(jac_name);
-			jname.append (" (x, t) jac = ");
-			lsode_jac = extract_function
-			  (c(1), "lsode", jac_name, jname, "; endfunction");
+        {
+          Cell c = f_arg.cell_value ();
+          if (c.length() == 1)
+            f_arg = c(0);
+          else if (c.length() == 2)
+            {
+              if (c(0).is_function_handle () || c(0).is_inline_function ())
+                lsode_fcn = c(0).function_value ();
+              else
+                {
+                  fcn_name = unique_symbol_name ("__lsode_fcn__");
+                  fname = "function y = ";
+                  fname.append (fcn_name);
+                  fname.append (" (x, t) y = ");
+                  lsode_fcn = extract_function
+                    (c(0), "lsode", fcn_name, fname, "; endfunction");
+                }
 
-		      if (!lsode_jac)
-			{
-			  if (fcn_name.length())
-			    clear_function (fcn_name);
-			  lsode_fcn = 0;
-			}
-		    }
-		}
-	    }
-	  else
-	    LSODE_ABORT1 ("incorrect number of elements in cell array");
-	}
+              if (lsode_fcn)
+                {
+                  if (c(1).is_function_handle () || c(1).is_inline_function ())
+                    lsode_jac = c(1).function_value ();
+                  else
+                    {
+                        jac_name = unique_symbol_name ("__lsode_jac__");
+                        jname = "function jac = ";
+                        jname.append(jac_name);
+                        jname.append (" (x, t) jac = ");
+                        lsode_jac = extract_function
+                          (c(1), "lsode", jac_name, jname, "; endfunction");
+
+                      if (!lsode_jac)
+                        {
+                          if (fcn_name.length())
+                            clear_function (fcn_name);
+                          lsode_fcn = 0;
+                        }
+                    }
+                }
+            }
+          else
+            LSODE_ABORT1 ("incorrect number of elements in cell array");
+        }
 
       if (!lsode_fcn && ! f_arg.is_cell())
-	{
-	  if (f_arg.is_function_handle () || f_arg.is_inline_function ())
-	    lsode_fcn = f_arg.function_value ();
-	  else
-	    {
-	      switch (f_arg.rows ())
-		{
-		case 1:
-		  do
-		    {
-		      fcn_name = unique_symbol_name ("__lsode_fcn__");
-		      fname = "function y = ";
-		      fname.append (fcn_name);
-		      fname.append (" (x, t) y = ");
-		      lsode_fcn = extract_function
-			(f_arg, "lsode", fcn_name, fname, "; endfunction");
-		    }
-		  while (0);
-		  break;
+        {
+          if (f_arg.is_function_handle () || f_arg.is_inline_function ())
+            lsode_fcn = f_arg.function_value ();
+          else
+            {
+              switch (f_arg.rows ())
+                {
+                case 1:
+                  do
+                    {
+                      fcn_name = unique_symbol_name ("__lsode_fcn__");
+                      fname = "function y = ";
+                      fname.append (fcn_name);
+                      fname.append (" (x, t) y = ");
+                      lsode_fcn = extract_function
+                        (f_arg, "lsode", fcn_name, fname, "; endfunction");
+                    }
+                  while (0);
+                  break;
 
-		case 2:
-		  {
-		    string_vector tmp = f_arg.all_strings ();
+                case 2:
+                  {
+                    string_vector tmp = f_arg.all_strings ();
 
-		    if (! error_state)
-		      {
-			fcn_name = unique_symbol_name ("__lsode_fcn__");
-			fname = "function y = ";
-			fname.append (fcn_name);
-			fname.append (" (x, t) y = ");
-			lsode_fcn = extract_function
-			  (tmp(0), "lsode", fcn_name, fname, "; endfunction");
+                    if (! error_state)
+                      {
+                        fcn_name = unique_symbol_name ("__lsode_fcn__");
+                        fname = "function y = ";
+                        fname.append (fcn_name);
+                        fname.append (" (x, t) y = ");
+                        lsode_fcn = extract_function
+                          (tmp(0), "lsode", fcn_name, fname, "; endfunction");
 
-			if (lsode_fcn)
-			  {
-			    jac_name = unique_symbol_name ("__lsode_jac__");
-			    jname = "function jac = ";
-			    jname.append(jac_name);
-			    jname.append (" (x, t) jac = ");
-			    lsode_jac = extract_function
-			      (tmp(1), "lsode", jac_name, jname,
-			      "; endfunction");
+                        if (lsode_fcn)
+                          {
+                            jac_name = unique_symbol_name ("__lsode_jac__");
+                            jname = "function jac = ";
+                            jname.append(jac_name);
+                            jname.append (" (x, t) jac = ");
+                            lsode_jac = extract_function
+                              (tmp(1), "lsode", jac_name, jname,
+                              "; endfunction");
 
-			    if (!lsode_jac)
-			      {
-				if (fcn_name.length())
-				  clear_function (fcn_name);
-				lsode_fcn = 0;
-			      }
-			  }
-		      }
-		  }
-		  break;
+                            if (!lsode_jac)
+                              {
+                                if (fcn_name.length())
+                                  clear_function (fcn_name);
+                                lsode_fcn = 0;
+                              }
+                          }
+                      }
+                  }
+                  break;
 
-		default:
-		  LSODE_ABORT1
-		    ("first arg should be a string or 2-element string array");
-		}
-	    }
-	}
+                default:
+                  LSODE_ABORT1
+                    ("first arg should be a string or 2-element string array");
+                }
+            }
+        }
 
       if (error_state || ! lsode_fcn)
-	LSODE_ABORT ();
+        LSODE_ABORT ();
 
       ColumnVector state (args(1).vector_value ());
 
       if (error_state)
-	LSODE_ABORT1 ("expecting state vector as second argument");
+        LSODE_ABORT1 ("expecting state vector as second argument");
 
       ColumnVector out_times (args(2).vector_value ());
 
       if (error_state)
-	LSODE_ABORT1 ("expecting output time vector as third argument");
+        LSODE_ABORT1 ("expecting output time vector as third argument");
 
       ColumnVector crit_times;
 
       int crit_times_set = 0;
       if (nargin > 3)
-	{
-	  crit_times = ColumnVector (args(3).vector_value ());
+        {
+          crit_times = ColumnVector (args(3).vector_value ());
 
-	  if (error_state)
-	    LSODE_ABORT1 ("expecting critical time vector as fourth argument");
+          if (error_state)
+            LSODE_ABORT1 ("expecting critical time vector as fourth argument");
 
-	  crit_times_set = 1;
-	}
+          crit_times_set = 1;
+        }
 
       double tzero = out_times (0);
 
       ODEFunc func (lsode_user_function);
       if (lsode_jac)
-	func.set_jacobian_function (lsode_user_jacobian);
+        func.set_jacobian_function (lsode_user_jacobian);
 
       LSODE ode (state, tzero, func);
 
@@ -443,37 +440,35 @@ parameters for @code{lsode}.\n\
 
       Matrix output;
       if (crit_times_set)
-	output = ode.integrate (out_times, crit_times);
+        output = ode.integrate (out_times, crit_times);
       else
-	output = ode.integrate (out_times);
+        output = ode.integrate (out_times);
 
       if (fcn_name.length())
-	clear_function (fcn_name);
+        clear_function (fcn_name);
       if (jac_name.length())
-	clear_function (jac_name);
+        clear_function (jac_name);
 
       if (! error_state)
-	{
-	  std::string msg = ode.error_message ();
+        {
+          std::string msg = ode.error_message ();
 
-	  retval(2) = msg;
-	  retval(1) = static_cast<double> (ode.integration_state ());
+          retval(2) = msg;
+          retval(1) = static_cast<double> (ode.integration_state ());
 
-	  if (ode.integration_ok ())
-	    retval(0) = output;
-	  else
-	    {
-	      retval(0) = Matrix ();
+          if (ode.integration_ok ())
+            retval(0) = output;
+          else
+            {
+              retval(0) = Matrix ();
 
-	      if (nargout < 2)
-		error ("lsode: %s", msg.c_str ());
-	    }
-	}
+              if (nargout < 2)
+                error ("lsode: %s", msg.c_str ());
+            }
+        }
     }
   else
     print_usage ();
-
-  unwind_protect::run_frame ("Flsode");
 
   return retval;
 }
@@ -500,46 +495,46 @@ parameters for @code{lsode}.\n\
 %!function xdot = f (x, t)
 %!  xdot = [-x(2); x(1)];
 %!test
-%! 
+%!
 %! x0 = [1; 0];
 %! xdot0 = [0; 1];
 %! t = (0:1:10)';
-%! 
+%!
 %! tol = 500 * lsode_options ("relative tolerance");
-%! 
-%! 
+%!
+%!
 %! x = lsode ("f", x0, t);
-%! 
+%!
 %! y = [cos(t), sin(t)];
-%! 
+%!
 %! assert(all (all (abs (x - y) < tol)));
 
 %!function xdotdot = f (x, t)
 %!  xdotdot = [x(2); -x(1)];
 %!test
-%! 
+%!
 %! x0 = [1; 0];
 %! t = [0; 2*pi];
 %! tol = 100 * dassl_options ("relative tolerance");
-%! 
+%!
 %! x = lsode ("f", x0, t);
-%! 
+%!
 %! y = [1, 0; 1, 0];
-%! 
+%!
 %! assert(all (all (abs (x - y) < tol)));
 
 %!function xdot = f (x, t)
 %!  xdot = x;
 %!test
-%! 
+%!
 %! x0 = 1;
 %! t = [0; 1];
 %! tol = 100 * dassl_options ("relative tolerance");
-%! 
+%!
 %! x = lsode ("f", x0, t);
-%! 
+%!
 %! y = [1; e];
-%! 
+%!
 %! assert(all (all (abs (x - y) < tol)));
 
 %!test
@@ -548,10 +543,4 @@ parameters for @code{lsode}.\n\
 
 %!error <Invalid call to lsode_options.*> lsode_options ("foo", 1, 2);
 
-*/
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
 */

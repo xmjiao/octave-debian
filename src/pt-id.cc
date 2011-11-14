@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2000, 2001, 2002, 2004, 2005, 2006, 2007,
-              2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -45,11 +44,15 @@ tree_identifier::eval_undefined_error (void)
   int l = line ();
   int c = column ();
 
+  maybe_missing_function_hook (name ());
+  if (error_state)
+    return;
+
   if (l == -1 && c == -1)
     ::error ("`%s' undefined", name ().c_str ());
   else
     ::error ("`%s' undefined near line %d column %d",
-	     name ().c_str (), l, c);
+             name ().c_str (), l, c);
 }
 
 octave_value_list
@@ -60,11 +63,7 @@ tree_identifier::rvalue (int nargout)
   if (error_state)
     return retval;
 
-  octave_value_list evaluated_args;
-  bool args_evaluated = false;
-
-  octave_value val = xsym().find (0, string_vector (), evaluated_args,
-				  args_evaluated);
+  octave_value val = xsym ().find ();
 
   if (val.is_defined ())
     {
@@ -80,18 +79,18 @@ tree_identifier::rvalue (int nargout)
       // a value.
 
       if (val.is_function () && ! is_postfix_indexed ())
-	{
-	  octave_value_list tmp_args;
+        {
+          octave_value_list tmp_args;
 
-	  retval = val.do_multi_index_op (nargout, tmp_args);
-	}
+          retval = val.do_multi_index_op (nargout, tmp_args);
+        }
       else
-	{
-	  if (print_result () && nargout == 0)
-	    val.print_with_name (octave_stdout, name ());
+        {
+          if (print_result () && nargout == 0)
+            val.print_with_name (octave_stdout, name ());
 
-	  retval = val;
-	}
+          retval = val;
+        }
     }
   else
     eval_undefined_error ();
@@ -120,7 +119,7 @@ tree_identifier::lvalue (void)
 
 tree_identifier *
 tree_identifier::dup (symbol_table::scope_id sc,
-		      symbol_table::context_id) const
+                      symbol_table::context_id) const
 {
   // The new tree_identifier object contains a symbol_record
   // entry from the duplicated scope.
@@ -142,9 +141,3 @@ tree_identifier::accept (tree_walker& tw)
 {
   tw.visit_identifier (*this);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

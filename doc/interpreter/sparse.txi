@@ -1,4 +1,4 @@
-@c Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 David Bateman
+@c Copyright (C) 2004-2011 David Bateman
 @c
 @c This file is part of Octave.
 @c
@@ -75,7 +75,7 @@ There are many different means of storing sparse matrix data.  What all
 of the methods have in common is that they attempt to reduce the complexity
 and storage given a-priori knowledge of the particular class of problems
 that will be solved.  A good summary of the available techniques for storing
-sparse matrix is given by Saad @footnote{Youcef Saad "SPARSKIT: A basic toolkit
+sparse matrix is given by Saad @footnote{Y. Saad "SPARSKIT: A basic toolkit
 for sparse matrix computation", 1994,
 @url{http://www-users.cs.umn.edu/~saad/software/SPARSKIT/paper.ps}}.
 With full matrices, knowledge of the point of an element of the matrix
@@ -108,7 +108,7 @@ C is.
   for (j = 0; j < nc; j++)
     for (i = cidx (j); i < cidx(j+1); i++)
        printf ("non-zero element (%i,%i) is %d\n", 
-	   ridx(i), j, data(i));
+           ridx(i), j, data(i));
 @end group
 @end example
 
@@ -177,14 +177,17 @@ There are several means to create sparse matrix.
 @item Returned from a function
 There are many functions that directly return sparse matrices.  These include
 @dfn{speye}, @dfn{sprand}, @dfn{diag}, etc.
+
 @item Constructed from matrices or vectors
 The function @dfn{sparse} allows a sparse matrix to be constructed from 
 three vectors representing the row, column and data.  Alternatively, the
 function @dfn{spconvert} uses a three column matrix format to allow easy
 importation of data from elsewhere.
+
 @item Created and then filled
 The function @dfn{sparse} or @dfn{spalloc} can be used to create an empty
 matrix that is then filled by the user
+
 @item From a user binary program
 The user can directly create the sparse matrix within an oct-file.
 @end table
@@ -206,25 +209,21 @@ elements of @var{d}.
 Other functions of interest that directly create sparse matrices, are
 @dfn{diag} or its generalization @dfn{spdiags}, that can take the
 definition of the diagonals of the matrix and create the sparse matrix 
-that corresponds to this.  For example
+that corresponds to this.  For example,
 
 @example
 s = diag (sparse(randn(1,n)), -1);
 @end example
 
+@noindent
 creates a sparse (@var{n}+1)-by-(@var{n}+1) sparse matrix with a single
 diagonal defined.
-
 
 @DOCSTRING(spdiags)
 
 @DOCSTRING(speye)
 
 @DOCSTRING(spfun)
-
-@DOCSTRING(spmax)
-
-@DOCSTRING(spmin)
 
 @DOCSTRING(spones)
 
@@ -236,7 +235,7 @@ diagonal defined.
 
 The recommended way for the user to create a sparse matrix, is to create 
 two vectors containing the row and column index of the data and a third
-vector of the same size containing the data to be stored.  For example
+vector of the same size containing the data to be stored.  For example,
 
 @example
 @group
@@ -250,6 +249,7 @@ vector of the same size containing the data to be stored.  For example
 @end group
 @end example
 
+@noindent
 creates an @var{r}-by-@var{c} sparse matrix with a random distribution
 of @var{n} (<@var{r}) elements per column.  The elements of the vectors
 do not need to be sorted in any particular order as Octave will sort
@@ -261,7 +261,7 @@ The first two columns represent the row and column index respectively and
 the third and four columns, the real and imaginary parts of the sparse
 matrix.  The matrix can contain zero elements and the elements can be 
 sorted in any order.  Adding zero elements is a convenient way to define
-the size of the sparse matrix.  For example
+the size of the sparse matrix.  For example:
 
 @example
 @group
@@ -292,7 +292,7 @@ It should be noted, that due to the way that the Octave
 assignment functions are written that the assignment will reallocate
 the memory used by the sparse matrix at each iteration of the above loop. 
 Therefore the @dfn{spalloc} function ignores the @var{nz} argument and 
-does not preassign the memory for the matrix.  Therefore, it is vitally
+does not pre-assign the memory for the matrix.  Therefore, it is vitally
 important that code using to above structure should be vectorized
 as much as possible to minimize the number of assignments and reduce the
 number of memory allocations.
@@ -346,7 +346,7 @@ matrix as discussed in @ref{Sparse Linear Algebra}.  Octave probes the
 matrix type when the div (/) or ldiv (\) operator is first used with
 the matrix and then caches the type.  However the @dfn{matrix_type}
 function can be used to determine the type of the sparse matrix prior
-to use of the div or ldiv operators.  For example
+to use of the div or ldiv operators.  For example,
 
 @example
 @group
@@ -357,9 +357,10 @@ ans = Lower
 @end group
 @end example
 
-show that Octave correctly determines the matrix type for lower
+@noindent
+shows that Octave correctly determines the matrix type for lower
 triangular matrices.  @dfn{matrix_type} can also be used to force
-the type of a matrix to be a particular type.  For example
+the type of a matrix to be a particular type.  For example:
 
 @example
 @group
@@ -395,7 +396,7 @@ is then associated with a set of coordinates, then the @dfn{gplot}
 command can be used to graphically display the interconnections
 between nodes.
 
-As a trivial example of the use of @dfn{gplot}, consider the example
+As a trivial example of the use of @dfn{gplot} consider the example,
 
 @example
 @group
@@ -406,6 +407,7 @@ gplot(A,xy)
 @end group
 @end example
 
+@noindent
 which creates an adjacency matrix @code{A} where node 1 is connected
 to nodes 2 and 6, node 2 with nodes 1 and 3, etc.  The coordinates of
 the nodes are given in the n-by-2 matrix @code{xy}.
@@ -418,9 +420,9 @@ the nodes are given in the n-by-2 matrix @code{xy}.
 @end float
 @end ifset
 
-The dependencies between the nodes of a Cholesky factorization can be
+The dependencies between the nodes of a Cholesky@tie{}factorization can be
 calculated in linear time without explicitly needing to calculate the
-Cholesky factorization by the @code{etree} command.  This command
+Cholesky@tie{}factorization by the @code{etree} command.  This command
 returns the elimination tree of the matrix and can be displayed
 graphically by the command @code{treeplot(etree(A))} if @code{A} is
 symmetric or @code{treeplot(etree(A+A'))} otherwise.
@@ -449,21 +451,16 @@ symmetric or @code{treeplot(etree(A+A'))} otherwise.
 @node Sparse Functions
 @subsubsection Sparse Functions
 
-An important consideration in the use of the sparse functions of
-Octave is that many of the internal functions of Octave, such as
-@dfn{diag}, cannot accept sparse matrices as an input.  The sparse
-implementation in Octave therefore uses the @dfn{dispatch}
-function to overload the normal Octave functions with equivalent
-functions that work with sparse matrices.  However, at any time the
-sparse matrix specific version of the function can be used by
-explicitly calling its function name. 
+Many Octave functions have been overloaded to work with either sparse or full
+matrices.  There is no difference in calling convention when using an
+overloaded function with a sparse matrix, however, there is also no access to
+potentially sparse-specific features.  At any time the sparse matrix specific
+version of a function can be used by explicitly calling its function name. 
 
-The table below lists all of the sparse functions of Octave.  Note that
-the names of the 
-specific sparse forms of the functions are typically the same as
-the general versions with a @dfn{sp} prefix.  In the table below, and the
-rest of this article the specific sparse versions of the functions are
-used.
+The table below lists all of the sparse functions of Octave.  Note that the
+names of the specific sparse forms of the functions are typically the same as
+the general versions with a @dfn{sp} prefix.  In the table below, and in the
+rest of this article, the specific sparse versions of functions are used.
 
 @c Table includes in comments the missing sparse functions
 
@@ -520,7 +517,7 @@ where it no longer makes sense to store it as a sparse matrix, but rather
 as a full matrix.  For this reason operators and functions that have a 
 high probability of returning a full matrix will always return one.  For
 example adding a scalar constant to a sparse matrix will almost always
-make it a full matrix, and so the example
+make it a full matrix, and so the example,
 
 @example
 @group
@@ -531,6 +528,7 @@ speye(3) + 0
 @end group
 @end example
 
+@noindent
 returns a full matrix as can be seen. 
 
 
@@ -558,6 +556,7 @@ depending on the type of its input arguments.  So
  a = diag (sparse([1,2,3]), -1);
 @end example
 
+@noindent
 should return a sparse matrix.  To ensure this actually happens, the
 @dfn{sparse} function, and other functions based on it like @dfn{speye}, 
 always returns a sparse matrix, even if the memory used will be larger 
@@ -590,6 +589,7 @@ the examples
 @end group
 @end example
 
+@noindent
 will give.  The first example of @var{s} raised to the power of 2 causes
 no problems.  However @var{s} raised element-wise to itself involves a
 large number of terms @code{0 .^ 0} which is 1. There @code{@var{s} .^
@@ -610,7 +610,7 @@ consistent with sparse implementations in other products.
 
 A particular problem of sparse matrices comes about due to the fact that
 as the zeros are not stored, the sign-bit of these zeros is equally not
-stored.  In certain cases the sign-bit of zero is important.  For example
+stored.  In certain cases the sign-bit of zero is important.  For example:
 
 @example
 @group
@@ -654,15 +654,11 @@ positive definite matrix.
 @caption{Structure of simple sparse matrix.}
 @end float
 
-The standard Cholesky factorization of this matrix can be
+The standard Cholesky@tie{}factorization of this matrix can be
 obtained by the same command that would be used for a full
 matrix.  This can be visualized with the command 
 @code{r = chol(A); spy(r);}.
-@ifset HAVE_CHOLMOD
-@ifset HAVE_COLAMD
 @xref{fig:simplechol}.
-@end ifset
-@end ifset
 The original matrix had 
 @ifinfo
 @ifnothtml
@@ -672,7 +668,7 @@ The original matrix had
 @ifset htmltex
 598
 @end ifset
-non-zero terms, while this Cholesky factorization has
+non-zero terms, while this Cholesky@tie{}factorization has
 @ifinfo
 @ifnothtml
 71,
@@ -700,29 +696,25 @@ r = chol(A(q,q)); spy(r)}.  This gives
 @end ifset
 non-zero terms which is a significant improvement.
 
-The Cholesky factorization itself can be used to determine the
+The Cholesky@tie{}factorization itself can be used to determine the
 appropriate sparsity preserving reordering of the matrix during the
 factorization, In that case this might be obtained with three return
 arguments as r@code{[r, p, q] = chol(A); spy(r)}.
 
-@ifset HAVE_CHOLMOD
-@ifset HAVE_COLAMD
 @float Figure,fig:simplechol
 @center @image{spchol,4in}
-@caption{Structure of the un-permuted Cholesky factorization of the above matrix.}
+@caption{Structure of the un-permuted Cholesky@tie{}factorization of the above matrix.}
 @end float
 
 @float Figure,fig:simplecholperm
 @center @image{spcholperm,4in}
-@caption{Structure of the permuted Cholesky factorization of the above matrix.}
+@caption{Structure of the permuted Cholesky@tie{}factorization of the above matrix.}
 @end float
-@end ifset
-@end ifset
 
 In the case of an asymmetric matrix, the appropriate sparsity
 preserving permutation is @dfn{colamd} and the factorization using
-this reordering can be visualized using the command @code{q =
-colamd(A); [l, u, p] = lu(A(:,q)); spy(l+u)}.
+this reordering can be visualized using the command
+@code{q = colamd(A); [l, u, p] = lu(A(:,q)); spy(l+u)}.
 
 Finally, Octave implicitly reorders the matrix when using the div (/)
 and ldiv (\) operators, and so no the user does not need to explicitly
@@ -770,18 +762,18 @@ than that given by @code{spparms ("bandden")} continue, else goto 4.
 continue, else goto 3b.
 
 @enumerate
-@item If the matrix is hermitian, with a positive real diagonal, attempt
-      Cholesky factorization using @sc{lapack} xPTSV.
+@item If the matrix is Hermitian, with a positive real diagonal, attempt
+      Cholesky@tie{}factorization using @sc{lapack} xPTSV.
 
-@item If the above failed or the matrix is not hermitian with a positive
+@item If the above failed or the matrix is not Hermitian with a positive
       real diagonal use Gaussian elimination with pivoting using 
       @sc{lapack} xGTSV, and goto 8.
 @end enumerate
 
-@item If the matrix is hermitian with a positive real diagonal, attempt
-      Cholesky factorization using @sc{lapack} xPBTRF.
+@item If the matrix is Hermitian with a positive real diagonal, attempt
+      Cholesky@tie{}factorization using @sc{lapack} xPBTRF.
 
-@item if the above failed or the matrix is not hermitian with a positive
+@item if the above failed or the matrix is not Hermitian with a positive
       real diagonal use Gaussian elimination with pivoting using 
       @sc{lapack} xGBTRF, and goto 8.
 @end enumerate
@@ -789,20 +781,20 @@ continue, else goto 3b.
 @item If the matrix is upper or lower triangular perform a sparse forward
 or backward substitution, and goto 8
 
-@item If the matrix is a upper triangular matrix with column permutations
+@item If the matrix is an upper triangular matrix with column permutations
 or lower triangular matrix with row permutations, perform a sparse forward 
 or backward substitution, and goto 8
 
-@item If the matrix is square, hermitian with a real positive diagonal, attempt
-sparse Cholesky factorization using CHOLMOD.
+@item If the matrix is square, Hermitian with a real positive diagonal, attempt
+sparse Cholesky@tie{}factorization using @sc{cholmod}.
 
-@item If the sparse Cholesky factorization failed or the matrix is not
-hermitian with a real positive diagonal, and the matrix is square, factorize 
-using UMFPACK.
+@item If the sparse Cholesky@tie{}factorization failed or the matrix is not
+Hermitian with a real positive diagonal, and the matrix is square, factorize 
+using @sc{umfpack}.
 
 @item If the matrix is not square, or any of the previous solvers flags
 a singular or near singular matrix, find a minimum norm solution using
-CXSPARSE@footnote{The CHOLMOD, UMFPACK and CXSPARSE packages were
+@sc{cxsparse}@footnote{The @sc{cholmod}, @sc{umfpack} and @sc{cxsparse} packages were
 written by Tim Davis and are available at
 http://www.cise.ufl.edu/research/sparse/}.
 @end enumerate
@@ -812,11 +804,11 @@ divided by the number of non-zero values in the matrix.  The banded matrix
 solvers can be entirely disabled by using @dfn{spparms} to set @code{bandden}
 to 1 (i.e., @code{spparms ("bandden", 1)}).
 
-The QR solver factorizes the problem with a Dulmage-Mendelsohn, to
+The QR@tie{}solver factorizes the problem with a Dulmage-Mendelsohn, to
 separate the problem into blocks that can be treated as over-determined,
 multiple well determined blocks, and a final over-determined block.  For
 matrices with blocks of strongly connected nodes this is a big win as
-LU decomposition can be used for many blocks.  It also significantly
+LU@tie{}decomposition can be used for many blocks.  It also significantly
 improves the chance of finding a solution to over-determined problems
 rather than just returning a vector of @dfn{NaN}'s.
 
@@ -895,33 +887,16 @@ In order to motivate this application, we consider the boundary value
 Laplace equation.  This system can model scalar potential fields, such
 as heat or electrical potential.  Given a medium 
 @tex
-$\Omega$ 
-@end tex
-@ifinfo
-Omega
-@end ifinfo
-with boundary
-@tex
-$\partial\Omega$ 
-@end tex
-@ifinfo
-dOmega
-@end ifinfo
-. At all points on the 
-@tex
-$\partial\Omega$ 
-@end tex
-@ifinfo
-dOmega
-@end ifinfo
+$\Omega$ with boundary $\partial\Omega$.  At all points on the $\partial\Omega$
 the boundary conditions are known, and we wish to calculate the potential in
-@tex
-$\Omega$ 
+$\Omega$.
 @end tex
-@ifinfo
-Omega
-@end ifinfo
-. Boundary conditions may specify the potential (Dirichlet
+@ifnottex
+Omega with boundary dOmega.  At all points on the dOmega
+the boundary conditions are known, and we wish to calculate the potential in
+Omega.
+@end ifnottex
+Boundary conditions may specify the potential (Dirichlet
 boundary condition), its normal derivative across the boundary
 (Neumann boundary condition), or a weighted sum of the potential and
 its derivative (Cauchy boundary condition).
@@ -930,9 +905,9 @@ In a thermal model, we want to calculate the temperature in
 @tex
 $\Omega$ 
 @end tex
-@ifinfo
+@ifnottex
 Omega
-@end ifinfo
+@end ifnottex
 and know the boundary temperature (Dirichlet condition)
 or heat flux (from which we can calculate the Neumann condition
 by dividing by the thermal conductivity at the boundary).  Similarly, 
@@ -940,9 +915,9 @@ in an electrical model, we want to calculate the voltage in
 @tex
 $\Omega$ 
 @end tex
-@ifinfo
+@ifnottex
 Omega
-@end ifinfo
+@end ifnottex
 and know the boundary voltage (Dirichlet) or current
 (Neumann condition after diving by the electrical conductivity).
 In an electrical model, it is common for much of the boundary
@@ -953,12 +928,12 @@ The simplest finite element models will divide
 @tex
 $\Omega$ 
 @end tex
-@ifinfo
+@ifnottex
 Omega
-@end ifinfo
+@end ifnottex
 into simplexes (triangles in 2D, pyramids in 3D).
 @ifset htmltex
-We take as an 3D example a cylindrical liquid filled tank with a small 
+We take as a 3-D example a cylindrical liquid filled tank with a small 
 non-conductive ball from the EIDORS project@footnote{EIDORS - Electrical 
 Impedance Tomography and Diffuse optical Tomography Reconstruction Software 
 @url{http://eidors3d.sourceforge.net}}.  This is model is designed to reflect
@@ -968,7 +943,7 @@ distribution.  In order to describe the FEM geometry, we have a matrix of
 vertices @code{nodes} and simplices @code{elems}.
 @end ifset
 
-The following example creates a simple rectangular 2D electrically
+The following example creates a simple rectangular 2-D electrically
 conductive medium with 10 V and 20 V imposed on opposite sides 
 (Dirichlet boundary conditions).  All other edges are electrically
 isolated.
@@ -1016,9 +991,9 @@ distribution in
 @tex
 $\Omega$ 
 @end tex
-@ifinfo
+@ifnottex
 Omega
-@end ifinfo
+@end ifnottex
 as constant on each simplex (represented by the vector @code{conductivity}).
 Based on the finite element geometry, we first calculate a system (or
 stiffness) matrix for each simplex (represented as 3-by-3 elements on the
@@ -1060,16 +1035,16 @@ The system matrix acts like the conductivity
 @tex
 $S$ 
 @end tex
-@ifinfo
+@ifnottex
 @code{S}
-@end ifinfo
+@end ifnottex
 in Ohm's law 
 @tex
 $SV = I$. 
 @end tex
-@ifinfo
+@ifnottex
 @code{S * V = I}.
-@end ifinfo
+@end ifnottex
 Based on the Dirichlet and Neumann boundary conditions, we are able to 
 solve for the voltages at each vertex @code{V}. 
 
@@ -1100,13 +1075,7 @@ solve for the voltages at each vertex @code{V}.
 Finally, in order to display the solution, we show each solved voltage 
 value in the z-axis for each simplex vertex.
 @ifset htmltex
-@ifset HAVE_CHOLMOD
-@ifset HAVE_UMFPACK
-@ifset HAVE_COLAMD
 @xref{fig:femmodel}.
-@end ifset
-@end ifset
-@end ifset
 @end ifset
 
 @example
@@ -1122,15 +1091,9 @@ value in the z-axis for each simplex vertex.
 
 
 @ifset htmltex
-@ifset HAVE_CHOLMOD
-@ifset HAVE_UMFPACK
-@ifset HAVE_COLAMD
 @float Figure,fig:femmodel
 @center @image{grid,4in}
 @caption{Example finite element model the showing triangular elements. 
 The height of each vertex corresponds to the solution value.}
 @end float
-@end ifset
-@end ifset
-@end ifset
 @end ifset

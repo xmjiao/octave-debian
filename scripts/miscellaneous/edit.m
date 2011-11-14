@@ -1,4 +1,4 @@
-## Copyright (C) 2001, 2007, 2008, 2009 Paul Kienzle
+## Copyright (C) 2001-2011 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -17,34 +17,34 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Command} edit @var{name}
-## @deftypefnx {Command} edit @var{field} @var{value}
+## @deftypefn  {Command} {} edit @var{name}
+## @deftypefnx {Command} {} edit @var{field} @var{value}
 ## @deftypefnx {Command} {@var{value} =} edit get @var{field}
 ## Edit the named function, or change editor settings.
 ##
 ## If @code{edit} is called with the name of a file or function as
 ## its argument it will be opened in a text editor.
-## 
+##
 ## @itemize @bullet
 ## @item
 ## If the function @var{name} is available in a file on your path and
-## that file is modifiable, then it will be edited in place.  If it 
+## that file is modifiable, then it will be edited in place.  If it
 ## is a system function, then it will first be copied to the directory
-## @code{HOME} (see further down) and then edited.  
-## If no file is found, then the m-file 
+## @env{HOME} (see further down) and then edited.
+## If no file is found, then the m-file
 ## variant, ending with ".m", will be considered.  If still no file
 ## is found, then variants with a leading "@@" and then with both a
 ## leading "@@" and trailing ".m" will be considered.
 ##
 ## @item
-## If @var{name} is the name of a function defined in the interpreter but 
-## not in an m-file, then an m-file will be created in @code{HOME}
-## to contain that function along with its current definition.  
+## If @var{name} is the name of a function defined in the interpreter but
+## not in an m-file, then an m-file will be created in @env{HOME}
+## to contain that function along with its current definition.
 ##
 ## @item
 ## If @code{name.cc} is specified, then it will search for @code{name.cc}
 ## in the path and try to modify it, otherwise it will create a new
-## @file{.cc} file in @code{HOME}.  If @var{name} happens to be an
+## @file{.cc} file in @env{HOME}.  If @var{name} happens to be an
 ## m-file or interpreter defined function, then the text of that
 ## function will be inserted into the .cc file as a comment.
 ##
@@ -52,7 +52,7 @@
 ## If @var{name.ext} is on your path then it will be edited, otherwise
 ## the editor will be started with @file{HOME/name.ext} as the
 ## filename.  If @file{name.ext} is not modifiable, it will be copied to
-## @code{HOME} before editing.
+## @env{HOME} before editing.
 ##
 ## @strong{WARNING!} You may need to clear name before the new definition
 ## is available.  If you are editing a .cc file, you will need
@@ -63,7 +63,7 @@
 ## the value of the control field @var{field} will be @var{value}.
 ## If an output argument is requested and the first argument is @code{get}
 ## then @code{edit} will return the value of the control field @var{field}.
-## If the control field does not exist, edit will return a structure 
+## If the control field does not exist, edit will return a structure
 ## containing all fields and values.  Thus, @code{edit get all} returns
 ## a complete control structure.
 ## The following control fields are used:
@@ -71,25 +71,28 @@
 ## @table @samp
 ## @item editor
 ## This is the editor to use to modify the functions.  By default it uses
-## Octave's @code{EDITOR} built-in function, which comes from 
+## Octave's @env{EDITOR} built-in function, which comes from
 ## @code{getenv("EDITOR")} and defaults to @code{emacs}.  Use @code{%s}
 ## In place of the function name.  For example,
 ## @table @samp
 ## @item [EDITOR, " %s"]
-## Use the editor which Octave uses for @code{bug_report}.
-## @item "xedit %s &"           
+## Use the editor which Octave uses for @code{edit_history}.
+##
+## @item "xedit %s &"
 ## pop up simple X11 editor in a separate window
-## @item "gnudoit -q \"(find-file \\\"%s\\\")\""   
+##
+## @item "gnudoit -q \"(find-file \\\"%s\\\")\""
 ## Send it to current Emacs; must have @code{(gnuserv-start)} in @file{.emacs}.
 ## @end table
 ##
 ## See also field 'mode', which controls how the editor is run by Octave.
-## 
+##
 ## On Cygwin, you will need to convert the Cygwin path to a Windows
-## path if you are using a native Windows editor.  For example
-## @c Set example in small font to prevent overfull line
+## path if you are using a native Windows editor.  For example:
+## @c Set example in small font to prevent overfull line in TeX
+##
 ## @smallexample
-## '"C:/Program Files/Good Editor/Editor.exe" "$(cygpath -wa %s)"'
+## @exdent '"C:/Program Files/Good Editor/Editor.exe" "$(cygpath -wa %s)"'
 ## @end smallexample
 ##
 ## @item home
@@ -99,7 +102,7 @@
 ## @item author
 ## This is the name to put after the "## Author:" field of new functions.
 ## By default it guesses from the @code{gecos} field of password database.
-## 
+##
 ## @item email
 ## This is the e-mail address to list after the name in the author field.
 ## By default it guesses @code{<$LOGNAME@@$HOSTNAME>}, and if @code{$HOSTNAME}
@@ -110,17 +113,20 @@
 ## @table @samp
 ## @item gpl
 ## GNU General Public License (default).
+##
 ## @item bsd
 ## BSD-style license without advertising clause.
+##
 ## @item pd
 ## Public domain.
+##
 ## @item "text"
 ## Your own default copyright and license.
 ## @end table
-## 
-## Unless you specify @samp{pd}, edit will prepend the copyright statement 
+##
+## Unless you specify @samp{pd}, edit will prepend the copyright statement
 ## with "Copyright (C) yyyy Function Author".
-## 
+##
 ## @item mode
 ## This value determines whether the editor should be started in async mode
 ## (editor is started in the background and Octave continues) or sync mode
@@ -128,7 +134,7 @@
 ## in async mode.  The default is "sync" (see also "system").
 ##
 ## @item editinplace
-## Determines whether files should be edited in place, without regard to 
+## Determines whether files should be edited in place, without regard to
 ## whether they are modifiable or not.  The default is @code{false}.
 ## @end table
 ## @end deftypefn
@@ -143,13 +149,12 @@ function ret = edit (file, state)
   ## Pick up globals or default them.
 
   persistent FUNCTION = struct ("EDITOR", cstrcat (EDITOR (), " %s"),
-  				"HOME", fullfile (default_home, "octave"),
-  				"AUTHOR", default_user(1),
-  				"EMAIL",  [],
-  				"LICENSE",  "GPL",
-  				"MODE", "sync",
-  				"EDITINPLACE", false);
-
+                                "HOME", fullfile (default_home, "octave"),
+                                "AUTHOR", default_user(1),
+                                "EMAIL",  [],
+                                "LICENSE",  "GPL",
+                                "MODE", "async",
+                                "EDITINPLACE", false);
   ## Make sure the state variables survive "clear functions".
   mlock;
 
@@ -159,7 +164,7 @@ function ret = edit (file, state)
       FUNCTION.EDITOR = state;
     case "HOME"
       if (! isempty (state) && state(1) == "~")
-	state = [ default_home, state(2:end) ];
+        state = [ default_home, state(2:end) ];
       endif
       FUNCTION.HOME = state;
     case "AUTHOR"
@@ -172,7 +177,7 @@ function ret = edit (file, state)
       if (strcmp (state, "sync") || strcmp (state, "async"))
         FUNCTION.MODE = state;
       else
-    	error('expected "edit MODE sync|async"');
+        error('edit: expected "edit MODE sync|async"');
       endif
     case "EDITINPLACE"
       if (ischar (state))
@@ -192,7 +197,7 @@ function ret = edit (file, state)
         ret = FUNCTION;
       endif
     otherwise
-      error ("expected \"edit EDITOR|HOME|AUTHOR|EMAIL|LICENSE|MODE val\"");
+      error ('edit: expected "edit EDITOR|HOME|AUTHOR|EMAIL|LICENSE|MODE val"');
     endswitch
     return
   endif
@@ -201,8 +206,8 @@ function ret = edit (file, state)
   if (nargin < 1)
     if (exist (FUNCTION.HOME, "dir") == 7 && (isunix () || ! ispc ()))
       system (cstrcat ("cd \"", FUNCTION.HOME, "\" ; ",
-		      sprintf (FUNCTION.EDITOR, "")),
-	      [], FUNCTION.MODE);
+                      sprintf (FUNCTION.EDITOR, "")),
+              [], FUNCTION.MODE);
     else
       system (sprintf (FUNCTION.EDITOR,""), [], FUNCTION.MODE);
     endif
@@ -212,7 +217,7 @@ function ret = edit (file, state)
   ## Check whether the user is trying to edit a builtin of compiled function.
   switch (exist (file))
     case {3, 5}
-      error ("unable to edit a built-in or compiled function");
+      error ("edit: unable to edit a built-in or compiled function");
   endswitch
 
   ## Checks for whether the file is
@@ -229,7 +234,7 @@ function ret = edit (file, state)
   ## This functionality is needed for other functions as well (at least
   ## help and type; there may be more).  So the place to fix that is in
   ## file_in_loadpath, possibly with some help from the load_path class.
-  
+
   ## The code below includes a portion that serves as a place-holder for
   ## the changes suggested above.
 
@@ -240,11 +245,11 @@ function ret = edit (file, state)
   if (idx == 0)
     ## Create the list of files to look for
     filelist = {file};
-    if (isempty (regexp (file, "\\.m$")))
+    if (isempty (regexp (file, '\.m$')))
       ## No ".m" at the end of the file, add to the list.
       filelist{end+1} = cat (2, file, ".m");
     endif
-    if (isempty (regexp (file, "\\.cc$")))
+    if (isempty (regexp (file, '\.cc$')))
       ## No ".cc" at the end of the file, add to the list.
       filelist{end+1} = cat (2, file, ".cc");
     endif
@@ -308,7 +313,7 @@ function ret = edit (file, state)
       0;
     otherwise
       system (sprintf (FUNCTION.EDITOR, cstrcat ("\"", fileandpath, "\"")),
-	      [], FUNCTION.MODE);
+              [], FUNCTION.MODE);
       return;
   endswitch
 
@@ -325,7 +330,7 @@ function ret = edit (file, state)
       [status, host] = system ("uname -n");
       ## trim newline from end of hostname
       if (! isempty (host))
-	host = host(1:end-1);
+        host = host(1:end-1);
       endif
     endif
     if (isempty (host))
@@ -352,7 +357,7 @@ function ret = edit (file, state)
       head = cstrcat (copyright, "\n\n", "\
 This program is free software; you can redistribute it and/or modify\n\
 it under the terms of the GNU General Public License as published by\n\
-the Free Software Foundation; either version 2 of the License, or\n\
+the Free Software Foundation; either version 3 of the License, or\n\
 (at your option) any later version.\n\
 \n\
 This program is distributed in the hope that it will be useful,\n\
@@ -395,12 +400,12 @@ SUCH DAMAGE.\
     case "PD"
       head = "";
       tail = cstrcat (author, "\n", revs, "\n\n",
-		     "This program is granted to the public domain.");
+                     "This program is granted to the public domain.");
 
     otherwise
       head = "";
       tail = cstrcat (copyright, "\n\n", FUNCTION.LICENSE, "\n",
-		     author, "\n", revs);
+                     author, "\n", revs);
   endswitch
 
   ## Generate the function template.
@@ -408,39 +413,39 @@ SUCH DAMAGE.\
   switch (ext)
     case {"cc", "C", "cpp"}
       if (isempty (head))
-	comment = cstrcat ("/*\n", tail, "\n\n*/\n\n");
+        comment = cstrcat ("/*\n", tail, "\n\n*/\n\n");
       else
-	comment = cstrcat ("/*\n", head, "\n\n", tail, "\n\n*/\n\n");
+        comment = cstrcat ("/*\n", head, "\n\n", tail, "\n\n*/\n\n");
       endif
       ## If we are shadowing an m-file, paste the code for the m-file.
       if (any (exists == [2, 103]))
-	code = cstrcat ("\\ ", strrep (type (name), "\n", "\n// "));
+        code = cstrcat ("\\ ", strrep (type (name), "\n", "\n// "));
       else
-	code = " ";
+        code = " ";
       endif
       body = cstrcat ("#include <octave/oct.h>\n\n",
                      "DEFUN_DLD(", name, ",args,nargout,\"\\\n",
-		     name, "\\n\\\n\")\n{\n",
-		     "  octave_value_list retval;\n",
-		     "  int nargin = args.length();\n\n",
-		     code, "\n  return retval;\n}\n");
+                     name, "\\n\\\n\")\n{\n",
+                     "  octave_value_list retval;\n",
+                     "  int nargin = args.length();\n\n",
+                     code, "\n  return retval;\n}\n");
 
       text = cstrcat (comment, body);
     case "m"
       ## If we are editing a function defined on the fly, paste the
       ## code.
       if (any (exists == [2, 103]))
-	body = type (name);
+        body = type (name);
       else
-	body = cstrcat ("function [ ret ] = ", name, " ()\n\nendfunction\n");
+        body = cstrcat ("function [ ret ] = ", name, " ()\n\nendfunction\n");
       endif
       if (isempty (head))
-	comment = cstrcat ("## ", name, "\n\n",
-			  "## ", strrep (tail, "\n", "\n## "), "\n\n");
+        comment = cstrcat ("## ", name, "\n\n",
+                          "## ", strrep (tail, "\n", "\n## "), "\n\n");
       else
-	comment = cstrcat ("## ", strrep(head,"\n","\n## "), "\n\n", ...
-			  "## ", name, "\n\n", ...
-			  "## ", strrep (tail, "\n", "\n## "), "\n\n");
+        comment = cstrcat ("## ", strrep(head,"\n","\n## "), "\n\n", ...
+                          "## ", name, "\n\n", ...
+                          "## ", strrep (tail, "\n", "\n## "), "\n\n");
       endif
       text = cstrcat (comment, body);
   endswitch
@@ -455,7 +460,7 @@ SUCH DAMAGE.\
 
   ## Finally we are ready to edit it!
   system (sprintf (FUNCTION.EDITOR, cstrcat ("\"", fileandpath, "\"")),
-	  [], FUNCTION.MODE);
+          [], FUNCTION.MODE);
 
 endfunction
 

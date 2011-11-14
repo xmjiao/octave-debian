@@ -1,4 +1,4 @@
-@c Copyright (C) 1996, 1997, 1999, 2000, 2002, 2007, 2008, 2009 John W. Eaton
+@c Copyright (C) 1996-2011 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -28,19 +28,20 @@ $$
  p (x) = c_1 x^N + \ldots + c_N x + c_{N+1}.
 $$
 @end tex
-@ifinfo
+@ifnottex
  @var{N}
 
 @example
 p(x) = @var{c}(1) x^@var{N} + @dots{} + @var{c}(@var{N}) x + @var{c}(@var{N}+1).
 @end example
-@end ifinfo
+
+@end ifnottex
 
 @menu
 * Evaluating Polynomials::
 * Finding Roots::
 * Products of Polynomials::
-* Derivatives and Integrals::
+* Derivatives / Integrals / Transforms::
 * Polynomial Interpolation::
 * Miscellaneous Functions::
 @end menu
@@ -102,8 +103,8 @@ for a definition), and then finding its eigenvalues.
 
 @DOCSTRING(residue)
 
-@node Derivatives and Integrals
-@section Derivatives and Integrals
+@node Derivatives / Integrals / Transforms
+@section Derivatives / Integrals / Transforms
 
 Octave comes with functions for computing the derivative and the integral
 of a polynomial.  The functions @code{polyderiv} and @code{polyint}
@@ -123,9 +124,9 @@ area = polyval(integral, 3) - polyval(integral, 0)
 
 @DOCSTRING(polyder)
 
-@DOCSTRING(polyinteg)
-
 @DOCSTRING(polyint)
+
+@DOCSTRING(polyaffine)
 
 @node Polynomial Interpolation
 @section Polynomial Interpolation
@@ -136,13 +137,13 @@ to the functions described in the aforementioned chapter, is to fit
 a single polynomial to some given data points.  To avoid a highly
 fluctuating polynomial, one most often wants to fit a low-order polynomial
 to data.  This usually means that it is necessary to fit the polynomial
-in a least-squares sense, which is what the @code{polyfit} function does.
+in a least-squares sense, which just is what the @code{polyfit} function does.
 
 @DOCSTRING(polyfit)
 
 In situations where a single polynomial isn't good enough, a solution
 is to use several polynomials pieced together.  The function @code{mkpp}
-creates a piece-wise polynomial, @code{ppval} evaluates the function 
+creates a piecewise polynomial, @code{ppval} evaluates the function 
 created by @code{mkpp}, and @code{unmkpp} returns detailed information
 about the function.
 
@@ -163,11 +164,17 @@ plot(xi, yi);
 @end group
 @end example
 
-@DOCSTRING(ppval)
-
 @DOCSTRING(mkpp)
 
 @DOCSTRING(unmkpp)
+
+@DOCSTRING(ppval)
+
+@DOCSTRING(ppder)
+
+@DOCSTRING(ppint)
+
+@DOCSTRING(ppjumps)
 
 @node Miscellaneous Functions
 @section Miscellaneous Functions

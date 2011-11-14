@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 2000, 2002, 2004, 2005,
-              2006, 2007, 2008 John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -53,10 +52,10 @@ Quad : public Quad_options
  public:
 
   Quad (integrand_fcn fcn)
-    : Quad_options (), f (fcn) { }
+    : Quad_options (), f (fcn), ff () { }
 
   Quad (float_integrand_fcn fcn)
-    : Quad_options (), ff (fcn) { }
+    : Quad_options (), f (), ff (fcn) { }
 
   virtual ~Quad (void) { }
 
@@ -133,7 +132,7 @@ DefQuad : public Quad
     : Quad (fcn), lower_limit (ll), upper_limit (ul), singularities () { }
 
   DefQuad (integrand_fcn fcn, double ll, double ul,
-	   const ColumnVector& sing)
+           const ColumnVector& sing)
     : Quad (fcn), lower_limit (ll), upper_limit (ul),
       singularities (sing) { }
 
@@ -164,10 +163,10 @@ IndefQuad : public Quad
   enum IntegralType { bound_to_inf, neg_inf_to_bound, doubly_infinite };
 
   IndefQuad (integrand_fcn fcn)
-    : Quad (fcn), bound (0.0), type (bound_to_inf) { }
+    : Quad (fcn), bound (0.0), type (bound_to_inf), integration_error (0) { }
 
   IndefQuad (integrand_fcn fcn, double b, IntegralType t)
-    : Quad (fcn), bound (b), type (t) { }
+    : Quad (fcn), bound (b), type (t), integration_error (0) { }
 
   ~IndefQuad (void) { }
 
@@ -195,7 +194,7 @@ FloatDefQuad : public Quad
     : Quad (fcn), lower_limit (ll), upper_limit (ul), singularities () { }
 
   FloatDefQuad (float_integrand_fcn fcn, float ll, float ul,
-	   const FloatColumnVector& sing)
+           const FloatColumnVector& sing)
     : Quad (fcn), lower_limit (ll), upper_limit (ul),
       singularities (sing) { }
 
@@ -226,10 +225,10 @@ FloatIndefQuad : public Quad
   enum IntegralType { bound_to_inf, neg_inf_to_bound, doubly_infinite };
 
   FloatIndefQuad (float_integrand_fcn fcn)
-    : Quad (fcn), bound (0.0), type (bound_to_inf) { }
+    : Quad (fcn), bound (0.0), type (bound_to_inf), integration_error (0) { }
 
   FloatIndefQuad (float_integrand_fcn fcn, double b, IntegralType t)
-    : Quad (fcn), bound (b), type (t) { }
+    : Quad (fcn), bound (b), type (t), integration_error (0) { }
 
   ~FloatIndefQuad (void) { }
 
@@ -245,9 +244,3 @@ FloatIndefQuad : public Quad
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

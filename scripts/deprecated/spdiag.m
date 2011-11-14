@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 David Bateman
+## Copyright (C) 2008-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -18,7 +18,8 @@
 
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} spdiag (@var{v}, @var{k})
-## This function has been deprecated.  Use @code{sparse (diag (@dots{}))} instead.
+## This function has been deprecated.  Use @code{sparse (diag (@dots{}))}
+## instead.
 ## @end deftypefn
 
 ## Deprecated in version 3.2
@@ -28,7 +29,7 @@ function retval = spdiag (varargin)
   if (! warned)
     warned = true;
     warning ("Octave:deprecated-function",
-	     "spdiag is obsolete and will be removed from a future version of Octave; please use sparse (diag (...)) instead");
+             "spdiag is obsolete and will be removed from a future version of Octave; please use sparse (diag (...)) instead");
   endif
 
   retval = sparse (diag (varargin{:}));

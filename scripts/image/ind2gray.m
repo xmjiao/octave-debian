@@ -1,5 +1,4 @@
-## Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2004, 2005,
-##               2006, 2007 John W. Eaton
+## Copyright (C) 1994-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -29,7 +28,7 @@
 ## Created: July 1994
 ## Adapted-By: jwe
 
-function Y = ind2gray (X, map)
+function y = ind2gray (x, map)
 
   if (nargin < 1 || nargin > 2)
     print_usage ();
@@ -37,14 +36,14 @@ function Y = ind2gray (X, map)
     map = colormap ();
   endif
 
-  [rows, cols] = size (X);
+  [rows, cols] = size (x);
 
   ## Convert colormap to intensity values (the first column of the
   ## result of the call to rgb2ntsc) and then replace indices in
   ## the input matrix with indexed values in the output matrix (indexed
   ## values are the result of indexing the intensity values by the
-  ## elements of X(:)).
+  ## elements of x(:)).
 
-  Y = reshape (((rgb2ntsc (map))(:,1))(X(:)), rows, cols);
+  y = reshape (((rgb2ntsc (map))(:,1))(x(:)), rows, cols);
 
 endfunction

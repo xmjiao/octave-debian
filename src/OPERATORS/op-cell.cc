@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2002, 2003, 2004, 2005, 2007, 2008 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -53,7 +53,7 @@ DEFCATOP_FN (c_c, cell, cell, concat)
 
 static octave_value
 oct_catop_cell_matrix (octave_base_value& a1, const octave_base_value& a2,
-			 const Array<octave_idx_type>&)
+                         const Array<octave_idx_type>&)
 {
   octave_value retval;
   CAST_BINOP_ARGS (const octave_cell&, const octave_matrix&);
@@ -68,7 +68,7 @@ oct_catop_cell_matrix (octave_base_value& a1, const octave_base_value& a2,
 
 static octave_value
 oct_catop_matrix_cell (octave_base_value& a1, const octave_base_value& a2,
-			 const Array<octave_idx_type>&)
+                         const Array<octave_idx_type>&)
 {
   octave_value retval;
   CAST_BINOP_ARGS (const octave_matrix&, const octave_cell&);
@@ -102,9 +102,3 @@ install_cell_ops (void)
   INSTALL_ASSIGNOP (op_asn_eq, octave_cell, octave_null_str, null_assign);
   INSTALL_ASSIGNOP (op_asn_eq, octave_cell, octave_null_sq_str, null_assign);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

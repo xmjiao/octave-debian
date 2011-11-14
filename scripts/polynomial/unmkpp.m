@@ -1,4 +1,4 @@
-## Copyright (C) 2000, 2006, 2007, 2008, 2009 Paul Kienzle
+## Copyright (C) 2000-2011 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -19,25 +19,26 @@
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {[@var{x}, @var{p}, @var{n}, @var{k}, @var{d}] =} unmkpp (@var{pp})
 ##
-## Extract the components of a piece-wise polynomial structure @var{pp}.
+## Extract the components of a piecewise polynomial structure @var{pp}.
 ## These are as follows:
 ##
 ## @table @asis
 ## @item @var{x}
 ## Sample points.
+##
 ## @item @var{p}
 ## Polynomial coefficients for points in sample interval.  @code{@var{p}
 ## (@var{i}, :)} contains the coefficients for the polynomial over
 ## interval @var{i} ordered from highest to lowest.  If @code{@var{d} >
-## 1}, @code{@var{p} (@var{r}, @var{i}, :)} contains the coefficients for 
-## the r-th polynomial defined on interval @var{i}.  However, this is 
-## stored as a 2-D array such that @code{@var{c} = reshape (@var{p} (:,
-## @var{j}), @var{n}, @var{d})} gives @code{@var{c} (@var{i},  @var{r})}
-## is the j-th coefficient of the r-th polynomial over the i-th interval.
+## 1}, @code{@var{p} (@var{r}, @var{i}, :)} contains the coefficients for
+## the r-th polynomial defined on interval @var{i}.
+##
 ## @item @var{n}
 ## Number of polynomial pieces.
+##
 ## @item @var{k}
 ## Order of the polynomial plus 1.
+##
 ## @item @var{d}
 ## Number of polynomials defined for each interval.
 ## @end table
@@ -54,7 +55,10 @@ function [x, P, n, k, d] = unmkpp (pp)
   endif
   x = pp.x;
   P = pp.P;
-  n = pp.n;
-  k = pp.k;
+  n = size (P, 2);
+  k = size (P, 3);
   d = pp.d;
+  if (d == 1)
+    P = reshape (P, n, k);
+  endif
 endfunction

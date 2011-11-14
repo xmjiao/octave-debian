@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 2000, 2002, 2004, 2005,
-              2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -73,16 +72,31 @@ Range
   Range sort (octave_idx_type dim = 0, sortmode mode = ASCENDING) const;
 
   Range sort (Array<octave_idx_type>& sidx, octave_idx_type dim = 0,
-	      sortmode mode = ASCENDING) const;
+              sortmode mode = ASCENDING) const;
 
   sortmode is_sorted (sortmode mode = ASCENDING) const;
+
+  // Support for single-index subscripting, without generating matrix cache.
+
+  double checkelem (octave_idx_type i) const;
+
+  double elem (octave_idx_type i) const
+    {
+#if defined (BOUNDS_CHECKING)
+      return checkelem (i);
+#else
+      return rng_base + rng_inc * i;
+#endif
+    }
+
+  Array<double> index (const idx_vector& i) const;
 
   void set_base (double b)
   {
     if (rng_base != b)
       {
-	rng_base = b;
-	clear_cache ();
+        rng_base = b;
+        clear_cache ();
       }
   }
 
@@ -90,8 +104,8 @@ Range
   {
     if (rng_limit != l)
       {
-	rng_limit = l;
-	clear_cache ();
+        rng_limit = l;
+        clear_cache ();
       }
   }
 
@@ -99,8 +113,8 @@ Range
   {
     if (rng_inc != i)
       {
-	rng_inc = i;
-	clear_cache ();
+        rng_inc = i;
+        clear_cache ();
       }
   }
 
@@ -148,9 +162,3 @@ extern OCTAVE_API Range operator * (double x, const Range& r);
 extern OCTAVE_API Range operator * (const Range& r, double x);
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

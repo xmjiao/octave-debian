@@ -1,5 +1,5 @@
-## Copyright (C) 1996, 1997, 1998, 1999, 2000, 2004, 2005, 2006, 2007,
-##               2008, 2009 John W. Eaton
+## Copyright (C) 1996-2011 John W. Eaton
+## Copyright (C) 2009-2010 VZLU Prague
 ##
 ## This file is part of Octave.
 ##
@@ -18,9 +18,10 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} median (@var{x}, @var{dim})
-## If @var{x} is a vector, compute the median value of the elements of
-## @var{x}.  If the elements of @var{x} are sorted, the median is defined
+## @deftypefn  {Function File} {} median (@var{x})
+## @deftypefnx {Function File} {} median (@var{x}, @var{dim})
+## Compute the median value of the elements of the vector @var{x}.
+## If the elements of @var{x} are sorted, the median is defined
 ## as
 ## @tex
 ## $$
@@ -38,55 +39,51 @@
 ##             (x(N/2) + x((N/2)+1))/2,  N even
 ## @end group
 ## @end example
+##
 ## @end ifnottex
 ## If @var{x} is a matrix, compute the median value for each
 ## column and return them in a row vector.  If the optional @var{dim}
 ## argument is given, operate along this dimension.
-## @seealso{std, mean}
+## @seealso{mean, mode}
 ## @end deftypefn
 
 ## Author: jwe
 
-function retval = median (a, dim)
+function retval = median (x, dim)
 
   if (nargin != 1 && nargin != 2)
     print_usage ();
   endif
-  if (nargin < 2)
-    dim = find (size (a) > 1, 1);
+
+  if (!isnumeric (x))
+    error ("median: X must be a numeric vector or matrix");
+  endif
+
+  nd = ndims (x);
+  sz = size (x);
+  if (nargin != 2)
+    ## Find the first non-singleton dimension.
+    dim = find (sz > 1, 1);
     if (isempty (dim))
       dim = 1;
     endif
+  else
+    if (!(isscalar (dim) && dim == fix (dim))
+        || !(1 <= dim && dim <= nd))
+      error ("median: DIM must be an integer and a valid dimension");
+    endif
   endif
 
-  sz = size (a);
-  s = sort (a, dim);
-  if (numel (a) > 0)
-    if (numel (a) == sz(dim))
-      if (rem (sz(dim), 2) == 0)
-	i = sz(dim) / 2;
-	retval = (s(i) + s(i+1)) / 2;
-      else
-	i = ceil (sz(dim) /2);
-	retval = s(i);
-      endif
+  if (numel (x) > 0)
+    n = size (x, dim);
+    k = floor ((n+1) / 2);
+    if (mod (n, 2) == 1)
+      retval = nth_element (x, k, dim);
     else
-      idx = cell ();
-      nd = length (sz);
-      for i = 1:nd
-	idx{i} = 1:sz(i);
-      endfor
-      if (rem (sz(dim), 2) == 0)
-	i = sz(dim) / 2;
-	idx{dim} = i;
-	retval = s(idx{:});
-	idx{dim} = i+1;
-	retval = (retval + s(idx{:})) / 2;
-      else
-	idx{dim} = ceil (sz(dim) / 2);
-	retval = s(idx{:});
-      endif
+      retval = mean (nth_element (x, k:k+1, dim), dim);
     endif
+    ## Inject NaNs where needed, to be consistent with Matlab.
+    retval(any (isnan (x), dim)) = NaN;
   else
     error ("median: invalid matrix argument");
   endif
@@ -98,13 +95,20 @@ endfunction
 %! x2 = x';
 %! y = [1, 2, 3, 4, 5, 6, 7];
 %! y2 = y';
-%! 
-%! assert((median (x) == median (x2) && median (x) == 3.5
-%! && median (y) == median (y2) && median (y) == 4
-%! && median ([x2, 2*x2]) == [3.5, 7]
-%! && median ([y2, 3*y2]) == [4, 12]));
+%!
+%! assert(median (x) == median (x2) && median (x) == 3.5);
+%! assert(median (y) == median (y2) && median (y) == 4);
+%! assert(median ([x2, 2*x2]) == [3.5, 7]);
+%! assert(median ([y2, 3*y2]) == [4, 12]);
 
+%!assert(median ([1,2,NaN;4,5,6;NaN,8,9]), [NaN, 5, NaN]);
+
+%% Test input validation
 %!error median ();
-
 %!error median (1, 2, 3);
+%!error median ({1:5});
+%!error median (true(1,5));
+%!error median (1, ones(2,2));
+%!error median (1, 1.5);
+%!error median (1, 0);
 

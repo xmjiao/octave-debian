@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 David Bateman
+## Copyright (C) 2008-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Loadable Function} {} spfind (@var{x})
+## @deftypefn  {Loadable Function} {} spfind (@var{x})
 ## @deftypefnx {Loadable Function} {} spfind (@var{x}, @var{n})
 ## @deftypefnx {Loadable Function} {} spfind (@var{x}, @var{n}, @var{direction})
 ## @deftypefnx {Loadable Function} {[@var{i}, @var{j}, @var{v}} spfind (@dots{})
@@ -31,7 +31,7 @@ function varargout = spfind (varargin)
   if (! warned)
     warned = true;
     warning ("Octave:deprecated-function",
-	     "spfind is obsolete and will be removed from a future version of Octave; please use find instead");
+             "spfind is obsolete and will be removed from a future version of Octave; please use find instead");
   endif
 
   varargout = cell (nargout, 1);

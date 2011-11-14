@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2000, 2001, 2002, 2003, 2005, 2006,
-              2007, 2008 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -53,7 +52,7 @@ dir_path::static_members::instance_ok (void)
   if (! instance)
     {
       (*current_liboctave_error_handler)
-	("unable to create dir_path::static_members object!");
+        ("unable to create dir_path::static_members object!");
 
       retval = false;
     }
@@ -82,29 +81,29 @@ dir_path::all_directories (void)
       retval.resize (len);
 
       for (int i = 0; i < len; i++)
-	{
-	  str_llist_type *elt_dirs = kpse_element_dirs (pv[i]);
+        {
+          str_llist_type *elt_dirs = kpse_element_dirs (pv[i]);
 
-	  if (elt_dirs)
-	    {
-	      str_llist_elt_type *dir;
+          if (elt_dirs)
+            {
+              str_llist_elt_type *dir;
 
-	      for (dir = *elt_dirs; dir; dir = STR_LLIST_NEXT (*dir))
-		{
-		  const std::string elt_dir = STR_LLIST (*dir);
+              for (dir = *elt_dirs; dir; dir = STR_LLIST_NEXT (*dir))
+                {
+                  const std::string elt_dir = STR_LLIST (*dir);
 
-		  if (! elt_dir.empty ())
-		    {
-		      if (count == nmax)
-			nmax *= 2;
+                  if (! elt_dir.empty ())
+                    {
+                      if (count == nmax)
+                        nmax *= 2;
 
-		      retval.resize (nmax);
+                      retval.resize (nmax);
 
-		      retval[count++] = elt_dir;
-		    }
-		}
-	    }
-	}
+                      retval[count++] = elt_dir;
+                    }
+                }
+            }
+        }
 
       retval.resize (count);
     }
@@ -148,13 +147,13 @@ dir_path::init (void)
       std::string val = octave_env::getenv ("KPATHSEA_DEBUG");
 
       if (! val.empty ())
-	kpathsea_debug |= atoi (val.c_str ());
+        kpathsea_debug |= atoi (val.c_str ());
 
       octave_kpathsea_initialized = true;
     }
 
   p = kpse_path_expand (p_default.empty ()
-			? p_orig : kpse_expand_default (p_orig, p_default));
+                        ? p_orig : kpse_expand_default (p_orig, p_default));
 
   int count = 0;
   for (kpse_path_iterator pi (p); pi != std::string::npos; pi++)
@@ -169,9 +168,3 @@ dir_path::init (void)
 
   initialized = true;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

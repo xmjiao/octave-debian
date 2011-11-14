@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 2000, 2002, 2004, 2005, 2006,
-##               2007, 2009 Friedrich Leisch
+## Copyright (C) 1995-2011 Friedrich Leisch
 ##
 ## This file is part of Octave.
 ##
@@ -18,11 +17,14 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} run_count (@var{x}, @var{n})
+## @deftypefn  {Function File} {} run_count (@var{x}, @var{n})
+## @deftypefnx {Function File} {} run_count (@var{x}, @var{n}, @var{dim})
 ## Count the upward runs along the first non-singleton dimension of
-## @var{x} of length 1, 2, @dots{}, @var{n}-1 and greater than or equal 
-## to @var{n}.  If the optional argument @var{dim} is given operate
-## along this dimension
+## @var{x} of length 1, 2, @dots{}, @var{n}-1 and greater than or equal
+## to @var{n}.
+##
+## If the optional argument @var{dim} is given then operate
+## along this dimension.
 ## @end deftypefn
 
 ## Author: FL <Friedrich.Leisch@ci.tuwien.ac.at>
@@ -34,30 +36,29 @@ function retval = run_count (x, n, dim)
     print_usage ();
   endif
 
+  if (!isnumeric(x))
+    error ("run_count: X must be a numeric vector or matrix");
+  endif
+
+  if (!(isscalar (n) && n == fix (n) && n > 0))
+    error ("run_count: N must be a positive integer");
+  endif
+
   nd = ndims (x);
   sz = size (x);
   if (nargin != 3)
     ## Find the first non-singleton dimension.
-    dim  = 1;
-    while (dim < nd + 1 && sz(dim) == 1)
-      dim = dim + 1;
-    endwhile
-    if (dim > nd)
+    dim = find (sz > 1, 1);
+    if (isempty (dim))
       dim = 1;
     endif
   else
-    if (! (isscalar (dim) && dim == round (dim))
-	&& dim > 0
-	&& dim < (nd + 1))
-      error ("run_count: dim must be an integer and valid dimension");
+    if (!(isscalar (dim) && dim == fix (dim))
+        || !(1 <= dim && dim <= nd))
+      error ("run_count: DIM must be an integer and a valid dimension");
     endif
   endif
 
-  if (! (isscalar (n) && n == round (n)) && n > 0)
-    error ("run_count: n must be a positive integer");
-  endif
-  
-  nd = ndims (x);
   if (dim != 1)
     perm = [1 : nd];
     perm(1) = dim;
@@ -70,9 +71,9 @@ function retval = run_count (x, n, dim)
   for i = 1 : nd
     idx{i} = 1 : sz(i);
   endfor
-  c = sz(1); 
+  c = sz(1);
   tmp = zeros ([c + 1, sz(2 : end)]);
-  infvec = Inf * ones ([1, sz(2 : end)]);
+  infvec = Inf ([1, sz(2 : end)]);
 
   ind = find (diff ([infvec; x; -infvec]) < 0);
   tmp(ind(2:end) - 1) = diff(ind);
@@ -92,3 +93,23 @@ function retval = run_count (x, n, dim)
   endif
 
 endfunction
+
+
+%!assert(run_count (magic(3), 4), [1,0,1;1,0,1;0,1,0;0,0,0])
+%!assert(run_count (magic(3), 4, 2), [1,0,1;1,0,1;0,1,0;0,0,0]')
+%!assert(run_count (5:-1:1, 5), [5, 0, 0, 0, 0])
+%!assert(run_count (ones(3), 4), [0,0,0;0,0,0;1,1,1;0,0,0])
+
+%% Test input validation
+%!error run_count ()
+%!error run_count (1)
+%!error run_count (1, 2, 3, 4)
+%!error run_count ({1, 2}, 3)
+%!error run_count (true(3), 3)
+%!error run_count (1:5, ones(2,2))
+%!error run_count (1:5, 1.5)
+%!error run_count (1:5, -2)
+%!error run_count (1:5, 3, ones(2,2))
+%!error run_count (1:5, 3, 1.5)
+%!error run_count (1:5, 3, 0)
+

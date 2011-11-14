@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 Bill Denney
+## Copyright (C) 2008-2011 Bill Denney
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{h} =} findall ()
+## @deftypefn  {Function File} {@var{h} =} findall ()
 ## @deftypefnx {Function File} {@var{h} =} findall (@var{prop_name}, @var{prop_value})
 ## @deftypefnx {Function File} {@var{h} =} findall (@var{h}, @dots{})
 ## @deftypefnx {Function File} {@var{h} =} findall (@var{h}, "-depth", @var{d}, @dots{})

@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2000, 2002, 2003, 2004, 2005, 2006,
-              2007, 2008 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
+Copyright (C) 2009-2010 VZLU Prague
 
 This file is part of Octave.
 
@@ -41,7 +41,6 @@ along with Octave; see the file COPYING.  If not, see
 
 #include "MatrixType.h"
 
-class Octave_map;
 class octave_value_list;
 
 class tree_walker;
@@ -59,11 +58,20 @@ public:
   octave_bool_matrix (const boolNDArray& bnda)
     : octave_base_matrix<boolNDArray> (bnda) { }
 
+  octave_bool_matrix (const Array<bool>& bnda)
+    : octave_base_matrix<boolNDArray> (bnda) { }
+
   octave_bool_matrix (const boolMatrix& bm)
     : octave_base_matrix<boolNDArray> (bm) { }
 
   octave_bool_matrix (const boolMatrix& bm, const MatrixType& t)
     : octave_base_matrix<boolNDArray> (bm, t) { }
+
+  octave_bool_matrix (const boolNDArray& bm, const idx_vector& cache)
+    : octave_base_matrix<boolNDArray> (bm)
+    {
+      set_idx_cache (cache);
+    }
 
   octave_bool_matrix (const octave_bool_matrix& bm)
     : octave_base_matrix<boolNDArray> (bm) { }
@@ -77,13 +85,18 @@ public:
 
   octave_base_value *try_narrowing_conversion (void);
 
-  idx_vector index_vector (void) const { return idx_vector (matrix); }
+  idx_vector index_vector (void) const
+    { return idx_cache ? *idx_cache : set_idx_cache (idx_vector (matrix)); }
+
+  builtin_type_t builtin_type (void) const { return btyp_bool; }
 
   bool is_bool_matrix (void) const { return true; }
 
   bool is_bool_type (void) const { return true; }
 
   bool is_real_type (void) const { return true; }
+
+  bool is_numeric_type (void) const { return false; }
 
   int8NDArray
   int8_array_value (void) const { return int8NDArray (matrix); }
@@ -150,7 +163,7 @@ public:
     charNDArray retval (dims ());
 
     octave_idx_type nel = numel ();
-  
+
     for (octave_idx_type i = 0; i < nel; i++)
       retval(i) = static_cast<char>(matrix(i));
 
@@ -174,6 +187,9 @@ public:
 
   octave_value convert_to_str_internal (bool pad, bool force, char type) const;
 
+  // Use matrix_ref here to clear index cache.
+  void invert (void) { matrix_ref ().invert (); }
+
   void print_raw (std::ostream& os, bool pr_as_read_syntax = false) const;
 
   bool save_ascii (std::ostream& os);
@@ -182,18 +198,18 @@ public:
 
   bool save_binary (std::ostream& os, bool& save_as_floats);
 
-  bool load_binary (std::istream& is, bool swap, 
-		    oct_mach_info::float_format fmt);
+  bool load_binary (std::istream& is, bool swap,
+                    oct_mach_info::float_format fmt);
 
 #if defined (HAVE_HDF5)
   bool save_hdf5 (hid_t loc_id, const char *name, bool save_as_floats);
 
-  bool load_hdf5 (hid_t loc_id, const char *name, bool have_h5giterate_bug);
+  bool load_hdf5 (hid_t loc_id, const char *name);
 #endif
 
   int write (octave_stream& os, int block_size,
-	     oct_data_conv::data_type output_type, int skip,
-	     oct_mach_info::float_format flt_fmt) const
+             oct_data_conv::data_type output_type, int skip,
+             oct_mach_info::float_format flt_fmt) const
     { return os.write (matrix, block_size, output_type, skip, flt_fmt); }
 
   // Unsafe.  This function exists to support the MEX interface.
@@ -203,54 +219,11 @@ public:
   mxArray *as_mxArray (void) const;
 
   // Mapper functions are converted to double for treatment
-#define BOOL_MAT_MAPPER(MAP) \
-  octave_value MAP (void) const \
-    { \
-      octave_matrix m (array_value ()); \
-      return m.MAP (); \
+  octave_value map (unary_mapper_t umap) const
+    {
+      octave_matrix m (array_value ());
+      return m.map (umap);
     }
-
-  BOOL_MAT_MAPPER (abs)
-  BOOL_MAT_MAPPER (acos)
-  BOOL_MAT_MAPPER (acosh)
-  BOOL_MAT_MAPPER (angle)
-  BOOL_MAT_MAPPER (arg)
-  BOOL_MAT_MAPPER (asin)
-  BOOL_MAT_MAPPER (asinh)
-  BOOL_MAT_MAPPER (atan)
-  BOOL_MAT_MAPPER (atanh)
-  BOOL_MAT_MAPPER (ceil)
-  BOOL_MAT_MAPPER (conj)
-  BOOL_MAT_MAPPER (cos)
-  BOOL_MAT_MAPPER (cosh)
-  BOOL_MAT_MAPPER (erf)
-  BOOL_MAT_MAPPER (erfc)
-  BOOL_MAT_MAPPER (exp)
-  BOOL_MAT_MAPPER (expm1)
-  BOOL_MAT_MAPPER (finite)
-  BOOL_MAT_MAPPER (fix)
-  BOOL_MAT_MAPPER (floor)
-  BOOL_MAT_MAPPER (gamma)
-  BOOL_MAT_MAPPER (imag)
-  BOOL_MAT_MAPPER (isinf)
-  BOOL_MAT_MAPPER (isna)
-  BOOL_MAT_MAPPER (isnan)
-  BOOL_MAT_MAPPER (lgamma)
-  BOOL_MAT_MAPPER (log)
-  BOOL_MAT_MAPPER (log2)
-  BOOL_MAT_MAPPER (log10)
-  BOOL_MAT_MAPPER (log1p)
-  BOOL_MAT_MAPPER (real)
-  BOOL_MAT_MAPPER (round)
-  BOOL_MAT_MAPPER (roundb)
-  BOOL_MAT_MAPPER (signum)
-  BOOL_MAT_MAPPER (sin)
-  BOOL_MAT_MAPPER (sinh)
-  BOOL_MAT_MAPPER (sqrt)
-  BOOL_MAT_MAPPER (tan)
-  BOOL_MAT_MAPPER (tanh)
-
-#undef BOOL_MAT_MAPPER
 
 protected:
 
@@ -260,9 +233,3 @@ protected:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

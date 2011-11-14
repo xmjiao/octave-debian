@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 1999, 2000, 2002, 2005, 2006,
-##               2007 Andreas Weingessel
+## Copyright (C) 1995-2011 Andreas Weingessel
 ##
 ## This file is part of Octave.
 ##
@@ -33,7 +32,7 @@
 ## Author: AW <Andreas.Weingessel@ci.tuwien.ac.at>
 ## Description: Recover a signal from its short-term Fourier transform
 
-function X = synthesis (Y, c)
+function x = synthesis (y, c)
 
   if (nargin != 2)
     print_usage ();
@@ -41,34 +40,33 @@ function X = synthesis (Y, c)
 
   [nr, nc] = size (c);
   if (nr * nc != 3)
-    error ("synthesis: c must contain exactly 3 elements");
+    error ("synthesis: C must contain exactly 3 elements");
   endif
 
-  ## not necessary, enables better reading
-  win = c(1);
-  inc = c(2);
+  w_size = c(1);
+  inc    = c(2);
   w_type = c(3);
 
   if (w_type == 1)
-    H = hanning (win);
+    w_coeff = hanning (w_size);
   elseif (w_type == 2)
-    H = hamming (win);
+    w_coeff = hamming (w_size);
   elseif (w_type == 3)
-    H = ones (win, 1);
+    w_coeff = ones (w_size, 1);
   else
     error ("synthesis: window_type must be 1, 2, or 3");
   endif
 
-  Z = real (ifft (Y));
-  st = fix ((win-inc) / 2);
-  Z = Z(st:st+inc-1, :);
-  H = H(st:st+inc-1);
+  z = real (ifft (y));
+  st = fix ((w_size-inc) / 2);
+  z = z(st:st+inc-1, :);
+  w_coeff = w_coeff(st:st+inc-1);
 
-  nc = columns(Z);
+  nc = columns(z);
   for i = 1:nc
-    Z(:, i) = Z(:, i) ./ H;
+    z(:, i) = z(:, i) ./ w_coeff;
   endfor
 
-  X = reshape(Z, inc * nc, 1);
+  x = reshape(z, inc * nc, 1);
 
 endfunction

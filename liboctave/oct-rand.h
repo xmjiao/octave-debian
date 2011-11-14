@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2003, 2005, 2006, 2007, 2008 John W. Eaton
+Copyright (C) 2003-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -58,6 +58,13 @@ public:
       instance->do_seed (s);
   }
 
+  // Reset the seed.
+  static void reset (void)
+  {
+    if (instance_ok ())
+      instance->do_reset ();
+  }
+
   // Return the current state.
   static ColumnVector state (const std::string& d = std::string ())
   {
@@ -66,12 +73,19 @@ public:
 
   // Set the current state/
   static void state (const ColumnVector &s,
-		     const std::string& d = std::string ())
+                     const std::string& d = std::string ())
   {
     if (instance_ok ())
       instance->do_state (s, d);
   }
-  
+
+  // Reset the current state/
+  static void reset (const std::string& d)
+  {
+    if (instance_ok ())
+      instance->do_reset (d);
+  }
+
   // Return the current distribution.
   static std::string distribution (void)
   {
@@ -172,12 +186,18 @@ private:
   // Set the seed.
   void do_seed (double s);
 
+  // Reset the seed.
+  void do_reset ();
+
   // Return the current state.
   ColumnVector do_state (const std::string& d);
 
   // Set the current state/
   void do_state (const ColumnVector &s, const std::string& d);
-  
+
+  // Reset the current state/
+  void do_reset (const std::string& d);
+
   // Return the current distribution.
   std::string do_distribution (void);
 
@@ -229,9 +249,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

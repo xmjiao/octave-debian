@@ -1,4 +1,4 @@
-## Copyright (C) 1996, 1997, 1998, 2000, 2002, 2005, 2007 Kurt Hornik
+## Copyright (C) 1996-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -33,7 +33,7 @@ function pdf = empirical_pdf (x, data)
   endif
 
   if (! isvector (data))
-    error ("empirical_pdf: data must be a vector");
+    error ("empirical_pdf: DATA must be a vector");
   endif
 
   pdf = discrete_pdf (x, data, ones (size (data)) / length (data));

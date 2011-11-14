@@ -1,6 +1,7 @@
 /*
 
-Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008 John W. Eaton
+Copyright (C) 2003-2011 John W. Eaton
+Copyright (C) 2009 VZLU Prague
 
 This file is part of Octave.
 
@@ -25,6 +26,7 @@ along with Octave; see the file COPYING.  If not, see
 
 #include <iosfwd>
 #include <string>
+#include <memory>
 
 #include "oct-alloc.h"
 
@@ -39,18 +41,31 @@ class
 OCTINTERP_API
 octave_fcn_handle : public octave_base_value
 {
+private:
+
+  typedef std::map<std::string, octave_value> str_ov_map;
+
 public:
+
+  static const std::string anonymous;
+
   octave_fcn_handle (void)
-    : warn_reload (true), fcn (), nm () { }
+    : fcn (), nm (), has_overloads (false), overloads () { }
 
   octave_fcn_handle (const std::string& n)
-    : warn_reload (true), fcn (), nm (n) { }
+    : fcn (), nm (n), has_overloads (false), overloads () { }
 
-  octave_fcn_handle (const octave_value& f,  const std::string& n);
+  octave_fcn_handle (const octave_value& f,  const std::string& n = anonymous);
 
   octave_fcn_handle (const octave_fcn_handle& fh)
-    : octave_base_value (fh), warn_reload (fh.warn_reload),
-      fcn (fh.fcn), nm (fh.nm) { }
+    : octave_base_value (fh), fcn (fh.fcn), nm (fh.nm),
+    has_overloads (fh.has_overloads), overloads ()
+   {
+     for (int i = 0; i < btyp_num_types; i++)
+       builtin_overloads[i] = fh.builtin_overloads[i];
+
+     overloads = fh.overloads;
+   }
 
   ~octave_fcn_handle (void) { }
 
@@ -58,26 +73,38 @@ public:
   octave_base_value *empty_clone (void) const { return new octave_fcn_handle (); }
 
   octave_value subsref (const std::string& type,
-			const std::list<octave_value_list>& idx)
+                        const std::list<octave_value_list>& idx)
     {
       octave_value_list tmp = subsref (type, idx, 1);
       return tmp.length () > 0 ? tmp(0) : octave_value ();
     }
 
   octave_value_list subsref (const std::string& type,
-			     const std::list<octave_value_list>& idx,
-			     int nargout);
+                             const std::list<octave_value_list>& idx,
+                             int nargout);
+
+  octave_value_list subsref (const std::string& type,
+                             const std::list<octave_value_list>& idx,
+                             int nargout, const std::list<octave_lvalue>* lvalue_list);
+
+  octave_value_list
+  do_multi_index_op (int nargout, const octave_value_list& args);
+
+  octave_value_list
+  do_multi_index_op (int nargout, const octave_value_list& args,
+                     const std::list<octave_lvalue>* lvalue_list);
 
   bool is_defined (void) const { return true; }
 
   bool is_function_handle (void) const { return true; }
 
+  builtin_type_t builtin_type (void) const { return btyp_func_handle; }
+
+  bool is_overloaded (void) const { return has_overloads; }
+
   dim_vector dims (void) const { static dim_vector dv (1, 1); return dv; }
 
   octave_function *function_value (bool = false)
-    { return fcn.function_value (); }
-
-  const octave_function *function_value (bool = false) const
     { return fcn.function_value (); }
 
   octave_user_function *user_function_value (bool = false)
@@ -89,24 +116,45 @@ public:
 
   std::string fcn_name (void) const { return nm; }
 
+  void set_overload (builtin_type_t btyp, const octave_value& ov_fcn)
+    {
+      if (btyp != btyp_unknown)
+        {
+          has_overloads = true;
+          builtin_overloads[btyp] = ov_fcn;
+        }
+
+    }
+
+  void set_overload (const std::string& dispatch_type, const octave_value& ov_fcn)
+    {
+      has_overloads = true;
+      overloads[dispatch_type] = ov_fcn;
+    }
+
+  bool is_equal_to (const octave_fcn_handle&) const;
+
   bool save_ascii (std::ostream& os);
 
   bool load_ascii (std::istream& is);
 
   bool save_binary (std::ostream& os, bool& save_as_floats);
 
-  bool load_binary (std::istream& is, bool swap, 
-		    oct_mach_info::float_format fmt);
+  bool load_binary (std::istream& is, bool swap,
+                    oct_mach_info::float_format fmt);
 
 #if defined (HAVE_HDF5)
   bool save_hdf5 (hid_t loc_id, const char *name, bool save_as_floats);
 
-  bool load_hdf5 (hid_t loc_id, const char *name, bool have_h5giterate_bug);
+  bool load_hdf5 (hid_t loc_id, const char *name);
 #endif
 
   void print (std::ostream& os, bool pr_as_read_syntax = false) const;
 
   void print_raw (std::ostream& os, bool pr_as_read_syntax = false) const;
+
+  // Simple function handles are printed without a newline.
+  bool print_as_scalar (void) const { return nm != anonymous; }
 
 private:
 
@@ -116,11 +164,6 @@ private:
 
   DECLARE_OV_TYPEID_FUNCTIONS_AND_DATA
 
-  // If TRUE, print a warning if the pointed-to fucntion is out of
-  // date.  This variable may be removed when updating is properly
-  // implemented.
-  mutable bool warn_reload;
-
 protected:
 
   // The function we are handling.
@@ -128,14 +171,49 @@ protected:
 
   // The name of the handle, including the "@".
   std::string nm;
+
+  // Whether the function is overloaded at all.
+  bool has_overloads;
+
+  // Overloads for builtin types. We use array to make lookup faster.
+  octave_value builtin_overloads[btyp_num_types];
+
+  // Overloads for other classes.
+  str_ov_map overloads;
+
+  friend octave_value make_fcn_handle (const std::string &, bool);
 };
 
-extern octave_value make_fcn_handle (const std::string& nm);
+extern octave_value make_fcn_handle (const std::string& nm,
+                                     bool local_funcs = true);
 
+class
+OCTINTERP_API
+octave_fcn_binder : public octave_fcn_handle
+{
+private:
+  // Private ctor.
+  octave_fcn_binder (const octave_value& f, const octave_value& root,
+                     const octave_value_list& templ,
+                     const std::vector<int>& mask, int exp_nargin);
+
+public:
+
+  // Factory method.
+  static octave_fcn_handle *maybe_binder (const octave_value& f);
+
+  octave_value_list
+  do_multi_index_op (int nargout, const octave_value_list& args);
+
+  octave_value_list
+  do_multi_index_op (int nargout, const octave_value_list& args,
+                     const std::list<octave_lvalue>* lvalue_list);
+
+protected:
+
+  octave_value root_handle;
+  octave_value_list arg_template;
+  std::vector<int> arg_mask;
+  int expected_nargin;
+};
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

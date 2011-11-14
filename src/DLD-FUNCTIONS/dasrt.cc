@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2009 John W. Eaton
+Copyright (C) 2002-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -59,7 +59,7 @@ static int call_depth = 0;
 
 static ColumnVector
 dasrt_user_f (const ColumnVector& x, const ColumnVector& xdot,
-	      double t, octave_idx_type&)
+              double t, octave_idx_type&)
 {
   ColumnVector retval;
 
@@ -76,26 +76,26 @@ dasrt_user_f (const ColumnVector& x, const ColumnVector& xdot,
       octave_value_list tmp = dasrt_f->do_multi_index_op (1, args);
 
       if (error_state)
-	{
-	  gripe_user_supplied_eval ("dasrt");
-	  return retval;
-	}
+        {
+          gripe_user_supplied_eval ("dasrt");
+          return retval;
+        }
 
       if (tmp.length () > 0 && tmp(0).is_defined ())
-	{
-	  if (! warned_fcn_imaginary && tmp(0).is_complex_type ())
-	    {
-	      warning ("dasrt: ignoring imaginary part returned from user-supplied function");
-	      warned_fcn_imaginary = true;
-	    }
+        {
+          if (! warned_fcn_imaginary && tmp(0).is_complex_type ())
+            {
+              warning ("dasrt: ignoring imaginary part returned from user-supplied function");
+              warned_fcn_imaginary = true;
+            }
 
-	  retval = ColumnVector (tmp(0).vector_value ());
+          retval = ColumnVector (tmp(0).vector_value ());
 
-	  if (error_state || retval.length () == 0)
-	    gripe_user_supplied_eval ("dasrt");
-	}
+          if (error_state || retval.length () == 0)
+            gripe_user_supplied_eval ("dasrt");
+        }
       else
-	gripe_user_supplied_eval ("dasrt");
+        gripe_user_supplied_eval ("dasrt");
     }
 
   return retval;
@@ -116,26 +116,26 @@ dasrt_user_cf (const ColumnVector& x, double t)
       octave_value_list tmp = dasrt_cf->do_multi_index_op (1, args);
 
       if (error_state)
-	{
-	  gripe_user_supplied_eval ("dasrt");
-	  return retval;
-	}
+        {
+          gripe_user_supplied_eval ("dasrt");
+          return retval;
+        }
 
       if (tmp.length () > 0 && tmp(0).is_defined ())
-	{
-	  if (! warned_cf_imaginary && tmp(0).is_complex_type ())
-	    {
-	      warning ("dasrt: ignoring imaginary part returned from user-supplied constraint function");
-	      warned_cf_imaginary = true;
-	    }
+        {
+          if (! warned_cf_imaginary && tmp(0).is_complex_type ())
+            {
+              warning ("dasrt: ignoring imaginary part returned from user-supplied constraint function");
+              warned_cf_imaginary = true;
+            }
 
-	  retval = ColumnVector (tmp(0).vector_value ());
+          retval = ColumnVector (tmp(0).vector_value ());
 
-	  if (error_state || retval.length () == 0)
-	    gripe_user_supplied_eval ("dasrt");
-	}
+          if (error_state || retval.length () == 0)
+            gripe_user_supplied_eval ("dasrt");
+        }
       else
-	gripe_user_supplied_eval ("dasrt");
+        gripe_user_supplied_eval ("dasrt");
     }
 
   return retval;
@@ -143,7 +143,7 @@ dasrt_user_cf (const ColumnVector& x, double t)
 
 static Matrix
 dasrt_user_j (const ColumnVector& x, const ColumnVector& xdot,
-	      double t, double cj)
+              double t, double cj)
 {
   Matrix retval;
 
@@ -161,39 +161,34 @@ dasrt_user_j (const ColumnVector& x, const ColumnVector& xdot,
       octave_value_list tmp = dasrt_j->do_multi_index_op (1, args);
 
       if (error_state)
-	{
-	  gripe_user_supplied_eval ("dasrt");
-	  return retval;
-	}
+        {
+          gripe_user_supplied_eval ("dasrt");
+          return retval;
+        }
 
       int tlen = tmp.length ();
       if (tlen > 0 && tmp(0).is_defined ())
-	{
-	  if (! warned_jac_imaginary && tmp(0).is_complex_type ())
-	    {
-	      warning ("dasrt: ignoring imaginary part returned from user-supplied jacobian function");
-	      warned_jac_imaginary = true;
-	    }
+        {
+          if (! warned_jac_imaginary && tmp(0).is_complex_type ())
+            {
+              warning ("dasrt: ignoring imaginary part returned from user-supplied jacobian function");
+              warned_jac_imaginary = true;
+            }
 
-	  retval = tmp(0).matrix_value ();
+          retval = tmp(0).matrix_value ();
 
-	  if (error_state || retval.length () == 0)
-	    gripe_user_supplied_eval ("dasrt");
-	}
+          if (error_state || retval.length () == 0)
+            gripe_user_supplied_eval ("dasrt");
+        }
       else
-	gripe_user_supplied_eval ("dasrt");
+        gripe_user_supplied_eval ("dasrt");
     }
 
   return retval;
 }
 
 #define DASRT_ABORT \
-  do \
-    { \
-      unwind_protect::run_frame ("Fdasrt"); \
-      return retval; \
-    } \
-  while (0)
+  return retval
 
 #define DASRT_ABORT1(msg) \
   do \
@@ -213,7 +208,10 @@ dasrt_user_j (const ColumnVector& x, const ColumnVector& xdot,
 
 DEFUN_DLD (dasrt, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Loadable Function} {[@var{x}, @var{xdot}, @var{t_out}, @var{istat}, @var{msg}] =} dasrt (@var{fcn} [, @var{g}], @var{x_0}, @var{xdot_0}, @var{t} [, @var{t_crit}])\n\
+@deftypefn  {Loadable Function} {[@var{x}, @var{xdot}, @var{t_out}, @var{istat}, @var{msg}] =} dasrt (@var{fcn}, [], @var{x_0}, @var{xdot_0}, @var{t})\n\
+@deftypefnx {Loadable Function} {@dots{} =} dasrt (@var{fcn}, @var{g}, @var{x_0}, @var{xdot_0}, @var{t})\n\
+@deftypefnx {Loadable Function} {@dots{} =} dasrt (@var{fcn}, [], @var{x_0}, @var{xdot_0}, @var{t}, @var{t_crit})\n\
+@deftypefnx {Loadable Function} {@dots{} =} dasrt (@var{fcn}, @var{g}, @var{x_0}, @var{xdot_0}, @var{t}, @var{t_crit})\n\
 Solve the set of differential-algebraic equations\n\
 @tex\n\
 $$ 0 = f (x, \\dot{x}, t) $$\n\
@@ -226,6 +224,7 @@ $$ x(t_0) = x_0, \\dot{x}(t_0) = \\dot{x}_0 $$\n\
 0 = f (x, xdot, t)\n\
 @end example\n\
 \n\
+@noindent\n\
 with\n\
 \n\
 @example\n\
@@ -302,23 +301,24 @@ This function must have the form\n\
 @var{g_out} = g (@var{x}, @var{t})\n\
 @end example\n\
 \n\
+@noindent\n\
 and return a vector of the constraint function values.\n\
-If the value of any of the constraint functions changes sign, @sc{Dasrt}\n\
+If the value of any of the constraint functions changes sign, @sc{dasrt}\n\
 will attempt to stop the integration at the point of the sign change.\n\
 \n\
 If the name of the constraint function is omitted, @code{dasrt} solves\n\
 the same problem as @code{daspk} or @code{dassl}.\n\
 \n\
 Note that because of numerical errors in the constraint functions\n\
-due to roundoff and integration error, @sc{Dasrt} may return false\n\
+due to round-off and integration error, @sc{dasrt} may return false\n\
 roots, or return the same root at two or more nearly equal values of\n\
 @var{T}.  If such false roots are suspected, the user should consider\n\
 smaller error tolerances or higher precision in the evaluation of the\n\
 constraint functions.\n\
 \n\
 If a root of some constraint function defines the end of the problem,\n\
-the input to @sc{Dasrt} should nevertheless allow integration to a\n\
-point slightly past that root, so that @sc{Dasrt} can locate the root\n\
+the input to @sc{dasrt} should nevertheless allow integration to a\n\
+point slightly past that root, so that @sc{dasrt} can locate the root\n\
 by interpolation.\n\
 \n\
 The third and fourth arguments to @code{dasrt} specify the initial\n\
@@ -327,7 +327,7 @@ specifies a vector of output times at which the solution is desired,\n\
 including the time corresponding to the initial condition.\n\
 \n\
 The set of initial states and derivatives are not strictly required to\n\
-be consistent.  In practice, however, @sc{Dassl} is not very good at\n\
+be consistent.  In practice, however, @sc{dassl} is not very good at\n\
 determining a consistent set for you, so it is best if you ensure that\n\
 the initial values result in the function evaluating to zero.\n\
 \n\
@@ -337,14 +337,14 @@ avoiding difficulties with singularities and points where there is a\n\
 discontinuity in the derivative.\n\
 \n\
 After a successful computation, the value of @var{istate} will be\n\
-greater than zero (consistent with the Fortran version of @sc{Dassl}).\n\
+greater than zero (consistent with the Fortran version of @sc{dassl}).\n\
 \n\
 If the computation is not successful, the value of @var{istate} will be\n\
 less than zero and @var{msg} will contain additional information.\n\
 \n\
 You can use the function @code{dasrt_options} to set optional\n\
 parameters for @code{dasrt}.\n\
-@seealso{daspk, dasrt, lsode}\n\
+@seealso{dasrt_options, daspk, dasrt, lsode}\n\
 @end deftypefn")
 {
   octave_value_list retval;
@@ -353,9 +353,9 @@ parameters for @code{dasrt}.\n\
   warned_jac_imaginary = false;
   warned_cf_imaginary = false;
 
-  unwind_protect::begin_frame ("Fdasrt");
+  unwind_protect frame;
 
-  unwind_protect_int (call_depth);
+  frame.protect_var (call_depth);
   call_depth++;
 
   if (call_depth > 1)
@@ -368,7 +368,6 @@ parameters for @code{dasrt}.\n\
   if (nargin < 4 || nargin > 6)
     {
       print_usage ();
-      unwind_protect::run_frame ("Fdasrt");
       return retval;
     }
 
@@ -387,113 +386,113 @@ parameters for @code{dasrt}.\n\
     {
       Cell c = f_arg.cell_value ();
       if (c.length() == 1)
-	f_arg = c(0);
+        f_arg = c(0);
       else if (c.length() == 2)
-	{
-	  if (c(0).is_function_handle () || c(0).is_inline_function ())
-	    dasrt_f = c(0).function_value ();
-	  else
-	    {
-	      fcn_name = unique_symbol_name ("__dasrt_fcn__");
-	      fname = "function y = ";
-	      fname.append (fcn_name);
-	      fname.append (" (x, xdot, t) y = ");
-	      dasrt_f = extract_function
-		(c(0), "dasrt", fcn_name, fname, "; endfunction");
-	    }
+        {
+          if (c(0).is_function_handle () || c(0).is_inline_function ())
+            dasrt_f = c(0).function_value ();
+          else
+            {
+              fcn_name = unique_symbol_name ("__dasrt_fcn__");
+              fname = "function y = ";
+              fname.append (fcn_name);
+              fname.append (" (x, xdot, t) y = ");
+              dasrt_f = extract_function
+                (c(0), "dasrt", fcn_name, fname, "; endfunction");
+            }
 
-	  if (dasrt_f)
-	    {
-	      if (c(1).is_function_handle () || c(1).is_inline_function ())
-		dasrt_j = c(1).function_value ();
-	      else
-		{
-		  jac_name = unique_symbol_name ("__dasrt_jac__");
-		  jname = "function jac = ";
-		  jname.append(jac_name);
-		  jname.append (" (x, xdot, t, cj) jac = ");
-		  dasrt_j = extract_function
-		    (c(1), "dasrt", jac_name, jname, "; endfunction");
+          if (dasrt_f)
+            {
+              if (c(1).is_function_handle () || c(1).is_inline_function ())
+                dasrt_j = c(1).function_value ();
+              else
+                {
+                  jac_name = unique_symbol_name ("__dasrt_jac__");
+                  jname = "function jac = ";
+                  jname.append(jac_name);
+                  jname.append (" (x, xdot, t, cj) jac = ");
+                  dasrt_j = extract_function
+                    (c(1), "dasrt", jac_name, jname, "; endfunction");
 
-		  if (!dasrt_j)
-		    {
-		      if (fcn_name.length())
-			clear_function (fcn_name);
-		      dasrt_f = 0;
-		    }
-		}
-	    }
-	}
+                  if (!dasrt_j)
+                    {
+                      if (fcn_name.length())
+                        clear_function (fcn_name);
+                      dasrt_f = 0;
+                    }
+                }
+            }
+        }
       else
-	DASRT_ABORT1 ("incorrect number of elements in cell array");
+        DASRT_ABORT1 ("incorrect number of elements in cell array");
     }
 
   if (!dasrt_f && ! f_arg.is_cell())
     {
       if (f_arg.is_function_handle () || f_arg.is_inline_function ())
-	dasrt_f = f_arg.function_value ();
+        dasrt_f = f_arg.function_value ();
       else
-	{
-	  switch (f_arg.rows ())
-	    {
-	    case 1:
-	      fcn_name = unique_symbol_name ("__dasrt_fcn__");
-	      fname = "function y = ";
-	      fname.append (fcn_name);
-	      fname.append (" (x, xdot, t) y = ");
-	      dasrt_f = extract_function
-		(f_arg, "dasrt", fcn_name, fname, "; endfunction");
-	      break;
-      
-	    case 2:
-	      {
-		string_vector tmp = args(0).all_strings ();
-	
-		if (! error_state)
-		  {
-		    fcn_name = unique_symbol_name ("__dasrt_fcn__");
-		    fname = "function y = ";
-		    fname.append (fcn_name);
-		    fname.append (" (x, xdot, t) y = ");
-		    dasrt_f = extract_function
-		      (tmp(0), "dasrt", fcn_name, fname, "; endfunction");
-	    
-		    if (dasrt_f)
-		      {
-			jac_name = unique_symbol_name ("__dasrt_jac__");
-			jname = "function jac = ";
-			jname.append(jac_name);
-			jname.append (" (x, xdot, t, cj) jac = ");
-			dasrt_j = extract_function
-			  (tmp(1), "dasrt", jac_name, jname, "; endfunction");
+        {
+          switch (f_arg.rows ())
+            {
+            case 1:
+              fcn_name = unique_symbol_name ("__dasrt_fcn__");
+              fname = "function y = ";
+              fname.append (fcn_name);
+              fname.append (" (x, xdot, t) y = ");
+              dasrt_f = extract_function
+                (f_arg, "dasrt", fcn_name, fname, "; endfunction");
+              break;
 
-			if (! dasrt_j)
-			  dasrt_f = 0;
-		      }
-		  }
-	      }
-	      break;
-      
-	    default:
-	      DASRT_ABORT1
-		("first arg should be a string or 2-element string array");
-	    }
-	}
+            case 2:
+              {
+                string_vector tmp = args(0).all_strings ();
+
+                if (! error_state)
+                  {
+                    fcn_name = unique_symbol_name ("__dasrt_fcn__");
+                    fname = "function y = ";
+                    fname.append (fcn_name);
+                    fname.append (" (x, xdot, t) y = ");
+                    dasrt_f = extract_function
+                      (tmp(0), "dasrt", fcn_name, fname, "; endfunction");
+
+                    if (dasrt_f)
+                      {
+                        jac_name = unique_symbol_name ("__dasrt_jac__");
+                        jname = "function jac = ";
+                        jname.append(jac_name);
+                        jname.append (" (x, xdot, t, cj) jac = ");
+                        dasrt_j = extract_function
+                          (tmp(1), "dasrt", jac_name, jname, "; endfunction");
+
+                        if (! dasrt_j)
+                          dasrt_f = 0;
+                      }
+                  }
+              }
+              break;
+
+            default:
+              DASRT_ABORT1
+                ("first arg should be a string or 2-element string array");
+            }
+        }
     }
-  
+
   if (error_state || (! dasrt_f))
     DASRT_ABORT;
-  
+
   DAERTFunc func (dasrt_user_f);
-  
+
   argp++;
-  
+
   if (args(1).is_function_handle() || args(1).is_inline_function())
     {
       dasrt_cf = args(1).function_value();
 
       if (! dasrt_cf)
-	DASRT_ABORT1 ("expecting function name as argument 2");
+        DASRT_ABORT1 ("expecting function name as argument 2");
 
       argp++;
 
@@ -503,7 +502,7 @@ parameters for @code{dasrt}.\n\
     {
       dasrt_cf = is_valid_function (args(1), "dasrt", true);
       if (! dasrt_cf)
-	DASRT_ABORT1 ("expecting function name as argument 2");
+        DASRT_ABORT1 ("expecting function name as argument 2");
 
       argp++;
 
@@ -518,14 +517,14 @@ parameters for @code{dasrt}.\n\
   ColumnVector stateprime (args(argp++).vector_value ());
 
   if (error_state)
-    DASRT_ABORT2 
+    DASRT_ABORT2
        ("expecting time derivative of state vector as argument %d", argp);
 
   ColumnVector out_times (args(argp++).vector_value ());
 
   if (error_state)
     DASRT_ABORT2
-	("expecting output time vector as %s argument %d", argp);
+        ("expecting output time vector as %s argument %d", argp);
 
   double tzero = out_times (0);
 
@@ -538,8 +537,8 @@ parameters for @code{dasrt}.\n\
       crit_times = ColumnVector (args(argp++).vector_value ());
 
       if (error_state)
-	DASRT_ABORT2
-	  ("expecting critical time vector as argument %d", argp);
+        DASRT_ABORT2
+          ("expecting critical time vector as argument %d", argp);
 
       crit_times_set = true;
     }
@@ -571,29 +570,21 @@ parameters for @code{dasrt}.\n\
       retval(3) = static_cast<double> (dae.integration_state ());
 
       if (dae.integration_ok ())
-	{
-	  retval(2) = output.times ();
-	  retval(1) = output.deriv ();
-	  retval(0) = output.state ();
-	}
+        {
+          retval(2) = output.times ();
+          retval(1) = output.deriv ();
+          retval(0) = output.state ();
+        }
       else
-	{
-	  retval(2) = Matrix ();
-	  retval(1) = Matrix ();
-	  retval(0) = Matrix ();
+        {
+          retval(2) = Matrix ();
+          retval(1) = Matrix ();
+          retval(0) = Matrix ();
 
-	  if (nargout < 4)
-	    error ("dasrt: %s", msg.c_str ());
-	}
+          if (nargout < 4)
+            error ("dasrt: %s", msg.c_str ());
+        }
     }
-
-  unwind_protect::run_frame ("Fdasrt");
 
   return retval;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 Thomas L. Scofield <scofield@calvin.edu>
+## Copyright (C) 2008-2011 Thomas L. Scofield <scofield@calvin.edu>
 ## Copyright (C) 2008 Kristian Rumberg <kristianrumberg@gmail.com>
 ## Copyright (C) 2006 Thomas Weber <thomas.weber.mail@gmail.com>
 ## Copyright (C) 2005 Stefan van der Walt <stefan@sun.ac.za>
@@ -26,10 +26,10 @@
 ##
 ## The size and numeric class of the output depends on the
 ## format of the image.  A color image is returned as an
-## MxNx3 matrix.  Grey-level and black-and-white images are
-## of size MxN.
+## @nospell{MxNx3} matrix.  Gray-level and black-and-white images are
+## of size @nospell{MxN}.
 ## The color depth of the image determines the numeric
-## class of the output: "uint8" or "uint16" for grey
+## class of the output: "uint8" or "uint16" for gray
 ## and color, and "logical" for black and white.
 ##
 ## @seealso{imwrite, imfinfo}
@@ -42,7 +42,7 @@ function varargout = imread (filename, varargin)
   endif
 
   if (! ischar (filename))
-    error ("imread: filename must be a string");
+    error ("imread: FILENAME must be a string");
   endif
 
   filename = tilde_expand (filename);
@@ -66,9 +66,9 @@ function varargout = imread (filename, varargin)
     try
       vars = load (fn);
       if (isstruct (vars))
-	img_field = isfield (vars, "img");
-	x_field = isfield (vars, "X");
-	map_field = isfield (vars, "map");
+        img_field = isfield (vars, "img");
+        x_field = isfield (vars, "X");
+        map_field = isfield (vars, "map");
       endif
     catch
       error ("imread: invalid image file: %s", magick_error);
@@ -77,9 +77,9 @@ function varargout = imread (filename, varargin)
     if (map_field && (img_field || x_field))
       varargout{2} = vars.map;
       if (img_field)
-	varargout{1} = vars.img;
+        varargout{1} = vars.img;
       else
-	varargout{1} = vars.X;
+        varargout{1} = vars.X;
       endif
     else
       error ("imread: invalid Octave image file format");
@@ -89,7 +89,7 @@ function varargout = imread (filename, varargin)
 
 endfunction
 
-%!test 
+%!testif HAVE_MAGICK
 %! vpng = [ ...
 %!  137,  80,  78,  71,  13,  10,  26,  10,   0,   0, ...
 %!    0,  13,  73,  72,  68,  82,   0,   0,   0,   3, ...

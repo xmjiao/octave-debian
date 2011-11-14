@@ -1,5 +1,4 @@
-## Copyright (C) 1996, 1997, 1999, 2002, 2003, 2005, 2006, 2007, 2008, 2009
-##               Kurt Hornik
+## Copyright (C) 1996-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -27,7 +26,7 @@
 ## whos ans;
 ##      @result{}
 ##       Attr Name        Size                     Bytes  Class
-##       ==== ====        ====                     =====  ===== 
+##       ==== ====        ====                     =====  =====
 ##            ans         1x10                        10  char
 ## @end group
 ## @end example
@@ -42,7 +41,7 @@ function s = blanks (n)
   if (nargin != 1)
     print_usage ();
   elseif (! (isscalar (n) && n == round (n)))
-    error ("blanks: n must be a non-negative integer");
+    error ("blanks: N must be a non-negative integer");
   endif
 
   ## If 1:n is empty, the following expression will create an empty

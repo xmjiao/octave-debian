@@ -1,5 +1,4 @@
-## Copyright (C) 1993, 1994, 1995, 1996, 1997, 2000, 2005, 2006, 2007
-##               John W. Eaton
+## Copyright (C) 1993-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -40,17 +39,18 @@ function [x, y, z] = sombrero (n)
 
   if (nargin < 2)
     if (n > 1)
-      tx = ty = linspace (-8, 8, n)';
+      tx = linspace (-8, 8, n)';
+      ty = tx;
       [xx, yy] = meshgrid (tx, ty);
       r = sqrt (xx .^ 2 + yy .^ 2) + eps;
       tz = sin (r) ./ r;
       if (nargout == 0)
         surf (tx, ty, tz);
-	box ("off");
+        box ("off");
       else
-	x = tx;
-	y = ty;
-	z = tz;
+        x = tx;
+        y = ty;
+        z = tz;
       endif
     else
       error ("sombrero: number of grid lines must be greater than 1");

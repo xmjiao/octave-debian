@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 1999, 2000, 2002, 2004, 2005,
-##               2006, 2007, 2009 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -18,13 +17,15 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} studentize (@var{x}, @var{dim})
+## @deftypefn  {Function File} {} studentize (@var{x})
+## @deftypefnx {Function File} {} studentize (@var{x}, @var{dim})
 ## If @var{x} is a vector, subtract its mean and divide by its standard
 ## deviation.
 ##
 ## If @var{x} is a matrix, do the above along the first non-singleton
-## dimension.  If the optional argument @var{dim} is given then operate
-## along this dimension.
+## dimension.
+## If the optional argument @var{dim} is given, operate along this dimension.
+## @seealso{center}
 ## @end deftypefn
 
 ## Author: KH <Kurt.Hornik@wu-wien.ac.at>
@@ -36,33 +37,52 @@ function t = studentize (x, dim)
     print_usage ();
   endif
 
+  if (! isnumeric(x))
+    error ("studentize: X must be a numeric vector or matrix");
+  endif
+
+  if (isinteger (x))
+    x = double (x);
+  endif
+
   nd = ndims (x);
   sz = size (x);
   if (nargin != 2)
     ## Find the first non-singleton dimension.
-    dim  = 1;
-    while (dim < nd + 1 && sz(dim) == 1)
-      dim = dim + 1;
-    endwhile
-    if (dim > nd)
+    dim = find (sz > 1, 1);
+    if (isempty (dim))
       dim = 1;
     endif
   else
-    if (! (isscalar (dim) && dim == round (dim))
-	&& dim > 0
-	&& dim < (nd + 1))
-      error ("studentize: dim must be an integer and valid dimension");
+    if (!(isscalar (dim) && dim == fix (dim))
+        || !(1 <= dim && dim <= nd))
+      error ("studentize: DIM must be an integer and a valid dimension");
     endif
   endif
 
-  if (! ismatrix (x))
-    error ("studentize: x must be a vector or a matrix");
+  c = sz(dim);
+  if (c == 0)
+    t = x;
+  else
+    idx = ones (1, nd);
+    idx(dim) = c;
+    t = x - repmat (mean (x, dim), idx);
+    t = t ./ repmat (max (cat (dim, std(t, [], dim), ! any (t, dim)), [], dim), idx);
   endif
 
-  c = sz(dim);
-  idx = ones (1, nd);
-  idx(dim) = c;
-  t = x - repmat (mean (x, dim), idx);
-  t = t ./ repmat (max (cat (dim, std(t, [], dim), ! any (t, dim)), [], dim), idx);
-
 endfunction
+
+%!assert(studentize ([1,2,3]), [-1,0,1])
+%!assert(studentize (int8 ([1,2,3])), [-1,0,1])
+#%!assert(studentize (ones (3,2,0,2)), zeros (3,2,0,2))
+%!assert(studentize ([2,0,-2;0,2,0;-2,-2,2]), [1,0,-1;0,1,0;-1,-1,1])
+
+%% Test input validation
+%!error studentize ()
+%!error studentize (1, 2, 3)
+%!error studentize ([true true])
+%!error studentize (1, ones(2,2))
+%!error studentize (1, 1.5)
+%!error studentize (1, 0)
+%!error studentize (1, 3)
+

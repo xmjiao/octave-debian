@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2000, 2002, 2003, 2004, 2005, 2006,
-              2007, 2008 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -27,8 +26,6 @@ along with Octave; see the file COPYING.  If not, see
 #include <string>
 
 #include "Array.h"
-#include "Array2.h"
-#include "Array3.h"
 
 #include "ov.h"
 
@@ -53,7 +50,8 @@ public:
     (const octave_base_value&, const octave_base_value&);
 
   typedef octave_value (*cat_op_fcn)
-    (octave_base_value&, const octave_base_value&, const Array<octave_idx_type>& ra_idx);
+    (octave_base_value&, const octave_base_value&,
+     const Array<octave_idx_type>& ra_idx);
 
   typedef octave_value (*assign_op_fcn)
     (octave_base_value&, const octave_value_list&, const octave_base_value&);
@@ -64,35 +62,35 @@ public:
   static bool instance_ok (void);
 
   static int register_type (const std::string&, const std::string&,
-			    const octave_value&);
+                            const octave_value&);
 
   static bool register_unary_class_op (octave_value::unary_op,
-				       unary_class_op_fcn);
+                                       unary_class_op_fcn);
 
   static bool register_unary_op (octave_value::unary_op, int, unary_op_fcn);
 
   static bool register_non_const_unary_op (octave_value::unary_op, int,
-					   non_const_unary_op_fcn);
+                                           non_const_unary_op_fcn);
 
   static bool register_binary_class_op (octave_value::binary_op,
-					binary_class_op_fcn);
+                                        binary_class_op_fcn);
 
   static bool register_binary_op (octave_value::binary_op, int, int,
-				  binary_op_fcn);
+                                  binary_op_fcn);
 
   static bool register_binary_class_op (octave_value::compound_binary_op,
-					binary_class_op_fcn);
+                                        binary_class_op_fcn);
 
   static bool register_binary_op (octave_value::compound_binary_op, int, int,
-				  binary_op_fcn);
+                                  binary_op_fcn);
 
   static bool register_cat_op (int, int, cat_op_fcn);
 
   static bool register_assign_op (octave_value::assign_op, int, int,
-				  assign_op_fcn);
+                                  assign_op_fcn);
 
   static bool register_assignany_op (octave_value::assign_op, int,
-				     assignany_op_fcn);
+                                     assignany_op_fcn);
 
   static bool register_pref_assign_conv (int, int, int);
 
@@ -194,19 +192,21 @@ public:
 protected:
 
   octave_value_typeinfo (void)
-    : num_types (0), types (init_tab_sz, std::string ()),
-      vals (init_tab_sz),
-      unary_class_ops (octave_value::num_unary_ops, 0),
-      unary_ops (octave_value::num_unary_ops, init_tab_sz, 0),
-      non_const_unary_ops (octave_value::num_unary_ops, init_tab_sz, 0),
-      binary_class_ops (octave_value::num_binary_ops, 0),
-      binary_ops (octave_value::num_binary_ops, init_tab_sz, init_tab_sz, 0),
-      cat_ops (init_tab_sz, init_tab_sz, 0),
-      assign_ops (octave_value::num_assign_ops, init_tab_sz, init_tab_sz, 0),
-      assignany_ops (octave_value::num_assign_ops, init_tab_sz, 0),
-      pref_assign_conv (init_tab_sz, init_tab_sz, -1),
-      type_conv_ops (init_tab_sz, init_tab_sz, 0),
-      widening_ops (init_tab_sz, init_tab_sz, 0)  { }
+    : num_types (0), types (dim_vector (init_tab_sz, 1), std::string ()),
+      vals (dim_vector (init_tab_sz, 1)),
+      unary_class_ops (dim_vector (octave_value::num_unary_ops, 1), 0),
+      unary_ops (dim_vector (octave_value::num_unary_ops, init_tab_sz), 0),
+      non_const_unary_ops (dim_vector (octave_value::num_unary_ops, init_tab_sz), 0),
+      binary_class_ops (dim_vector (octave_value::num_binary_ops, 1), 0),
+      binary_ops (dim_vector (octave_value::num_binary_ops, init_tab_sz, init_tab_sz), 0),
+      compound_binary_class_ops (dim_vector (octave_value::num_compound_binary_ops, 1), 0),
+      compound_binary_ops (dim_vector (octave_value::num_compound_binary_ops, init_tab_sz, init_tab_sz), 0),
+      cat_ops (dim_vector (init_tab_sz, init_tab_sz), 0),
+      assign_ops (dim_vector (octave_value::num_assign_ops, init_tab_sz, init_tab_sz), 0),
+      assignany_ops (dim_vector (octave_value::num_assign_ops, init_tab_sz), 0),
+      pref_assign_conv (dim_vector (init_tab_sz, init_tab_sz), -1),
+      type_conv_ops (dim_vector (init_tab_sz, init_tab_sz), 0),
+      widening_ops (dim_vector (init_tab_sz, init_tab_sz), 0)  { }
 
 private:
 
@@ -222,59 +222,59 @@ private:
 
   Array<void *> unary_class_ops;
 
-  Array2<void *> unary_ops;
+  Array<void *> unary_ops;
 
-  Array2<void *> non_const_unary_ops;
+  Array<void *> non_const_unary_ops;
 
   Array<void *> binary_class_ops;
 
-  Array3<void *> binary_ops;
+  Array<void *> binary_ops;
 
   Array<void *> compound_binary_class_ops;
 
-  Array3<void *> compound_binary_ops;
+  Array<void *> compound_binary_ops;
 
-  Array2<void *> cat_ops;
+  Array<void *> cat_ops;
 
-  Array3<void *> assign_ops;
+  Array<void *> assign_ops;
 
-  Array2<void *> assignany_ops;
+  Array<void *> assignany_ops;
 
-  Array2<int> pref_assign_conv;
+  Array<int> pref_assign_conv;
 
-  Array2<void *> type_conv_ops;
+  Array<void *> type_conv_ops;
 
-  Array2<void *> widening_ops;
+  Array<void *> widening_ops;
 
   int do_register_type (const std::string&, const std::string&,
-			const octave_value&);
+                        const octave_value&);
 
   bool do_register_unary_class_op (octave_value::unary_op, unary_class_op_fcn);
 
   bool do_register_unary_op (octave_value::unary_op, int, unary_op_fcn);
 
   bool do_register_non_const_unary_op (octave_value::unary_op, int,
-				       non_const_unary_op_fcn);
+                                       non_const_unary_op_fcn);
 
   bool do_register_binary_class_op (octave_value::binary_op,
-				    binary_class_op_fcn);
+                                    binary_class_op_fcn);
 
   bool do_register_binary_op (octave_value::binary_op, int, int,
-			      binary_op_fcn);
+                              binary_op_fcn);
 
   bool do_register_binary_class_op (octave_value::compound_binary_op,
-				    binary_class_op_fcn);
+                                    binary_class_op_fcn);
 
   bool do_register_binary_op (octave_value::compound_binary_op, int, int,
-			      binary_op_fcn);
+                              binary_op_fcn);
 
   bool do_register_cat_op (int, int, cat_op_fcn);
 
   bool do_register_assign_op (octave_value::assign_op, int, int,
-			      assign_op_fcn);
+                              assign_op_fcn);
 
   bool do_register_assignany_op (octave_value::assign_op, int,
-				 assignany_op_fcn);
+                                 assignany_op_fcn);
 
   bool do_register_pref_assign_conv (int, int, int);
 
@@ -321,9 +321,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,24 +1,27 @@
-## Copyright (C) 2009 S�ren Hauberg
+## Copyright (C) 2009-2011 S�ren Hauberg
 ##
-## This program is free software; you can redistribute it and/or modify it
+## This file is part of Octave.
+##
+## Octave is free software; you can redistribute it and/or modify it
 ## under the terms of the GNU General Public License as published by
 ## the Free Software Foundation; either version 3 of the License, or (at
 ## your option) any later version.
 ##
-## This program is distributed in the hope that it will be useful, but
+## Octave is distributed in the hope that it will be useful, but
 ## WITHOUT ANY WARRANTY; without even the implied warranty of
 ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 ## General Public License for more details.
 ##
 ## You should have received a copy of the GNU General Public License
-## along with this program; see the file COPYING.  If not, see
+## along with Octave; see the file COPYING.  If not, see
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} gen_doc_cache (@var{out_file}, @var{directory})
+## @deftypefn {Function File} {} gen_doc_cache (@var{out_file}, @var{directory})
 ## Generate documentation caches for all functions in a given directory.
 ##
-## A documentation cache is generated for all functions in @var{directory}.  The
+## A documentation cache is generated for all functions in @var{directory}.
+## The
 ## resulting cache is saved in the file @var{out_file}.
 ## The cache is used to speed up @code{lookfor}.
 ##
@@ -33,7 +36,7 @@ function gen_doc_cache (out_file = "doc-cache", directory = [])
   if (!ischar (out_file))
     print_usage ();
   endif
-  
+
   ## Generate cache
   if (isempty (directory))
     cache = gen_builtin_cache ();
@@ -42,7 +45,7 @@ function gen_doc_cache (out_file = "doc-cache", directory = [])
   else
     error ("gen_doc_cache: second input argument must be a string");
   endif
-  
+
   ## Save cache
   if (! isempty (cache))
     save ("-text", out_file, "cache");
@@ -68,10 +71,10 @@ function [text, first_sentence, status] = handle_function (f, text, format)
     otherwise
       status = 1;
   endswitch
-    
+
   ## Did we get the help text?
   if (status != 0 || isempty (text))
-    warning ("gen_doc_cache: unusable help text in '%s'. Ignoring function.", f);
+    warning ("gen_doc_cache: unusable help text found in file '%s'", f);
     return;
   endif
 
@@ -81,21 +84,21 @@ endfunction
 
 function cache = create_cache (list)
   cache = {};
-  
+
   ## For each function:
   for n = 1:length (list)
     f = list {n};
-    
+
     ## Get help text
     [text, format] = get_help_text (f);
-    
+
     [text, first_sentence, status] = handle_function (f, text, format);
 
     ## Did we get the help text?
     if (status != 0)
       continue;
     endif
-    
+
     ## Store the help text
     cache (1, end+1) = f;
     cache (2, end) = text;
@@ -117,7 +120,7 @@ function cache = gen_doc_cache_in_dir (directory)
     endif
     prev_idx = idx (n) + 1;
   endfor
-  
+
   if (!dir_in_path)
     addpath (directory);
   endif
@@ -125,7 +128,7 @@ function cache = gen_doc_cache_in_dir (directory)
   ## Get list of functions in directory and create cache
   list = __list_functions__ (directory);
   cache = create_cache (list);
-  
+
   if (!dir_in_path)
     rmpath (directory);
   endif

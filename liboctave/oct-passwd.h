@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2000, 2005, 2006, 2007 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -25,9 +25,7 @@ along with Octave; see the file COPYING.  If not, see
 
 #include <string>
 
-#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#endif
 
 class
 OCTAVE_API
@@ -50,14 +48,14 @@ public:
   {
     if (this != &pw)
       {
-	pw_name = pw.pw_name;
-	pw_passwd = pw.pw_passwd;
-	pw_uid = pw.pw_uid;
-	pw_gid = pw.pw_gid;
-	pw_gecos = pw.pw_gecos;
-	pw_dir = pw.pw_dir;
-	pw_shell = pw.pw_shell;
-	valid = pw.valid;
+        pw_name = pw.pw_name;
+        pw_passwd = pw.pw_passwd;
+        pw_uid = pw.pw_uid;
+        pw_gid = pw.pw_gid;
+        pw_gecos = pw.pw_gecos;
+        pw_dir = pw.pw_dir;
+        pw_shell = pw.pw_shell;
+        valid = pw.valid;
       }
 
     return *this;
@@ -132,9 +130,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

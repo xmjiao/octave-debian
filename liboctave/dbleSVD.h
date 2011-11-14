@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2000, 2002, 2003, 2004, 2005,
-              2006, 2007, 2009 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -42,28 +41,42 @@ public:
       sigma_only
     };
 
-  SVD (void) : sigma (), left_sm (), right_sm () { }
-
-  SVD (const Matrix& a, type svd_type = SVD::std) { init (a, svd_type); }
-
-  SVD (const Matrix& a, octave_idx_type& info, type svd_type = SVD::std)
+  enum driver
     {
-      info = init (a, svd_type);
+      GESVD,
+      GESDD
+    };
+
+  SVD (void) : type_computed (), sigma (), left_sm (), right_sm () { }
+
+  SVD (const Matrix& a,
+       type svd_type = SVD::std, driver svd_driver = SVD::GESVD)
+    : type_computed (), sigma (), left_sm (), right_sm ()
+    {
+      init (a, svd_type, svd_driver);
+    }
+
+  SVD (const Matrix& a, octave_idx_type& info,
+       type svd_type = SVD::std, driver svd_driver = SVD::GESVD)
+    : type_computed (), sigma (), left_sm (), right_sm ()
+    {
+      info = init (a, svd_type, svd_driver);
     }
 
   SVD (const SVD& a)
-    : type_computed (a.type_computed),
-      sigma (a.sigma), left_sm (a.left_sm), right_sm (a.right_sm) { }
+    : type_computed (a.type_computed), sigma (a.sigma),
+      left_sm (a.left_sm), right_sm (a.right_sm)
+    { }
 
   SVD& operator = (const SVD& a)
     {
       if (this != &a)
-	{
-	  type_computed = a.type_computed;
-	  sigma = a.sigma;
-	  left_sm = a.left_sm;
-	  right_sm = a.right_sm;
-	}
+        {
+          type_computed = a.type_computed;
+          sigma = a.sigma;
+          left_sm = a.left_sm;
+          right_sm = a.right_sm;
+        }
 
       return *this;
     }
@@ -86,13 +99,8 @@ private:
   Matrix left_sm;
   Matrix right_sm;
 
-  octave_idx_type init (const Matrix& a, type svd_type = std);
+  octave_idx_type init (const Matrix& a,
+                        type svd_type = std, driver svd_driver = GESVD);
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,25 +1,27 @@
-## Copyright (C) 2009 John W. Eaton
+## Copyright (C) 2009-2011 John W. Eaton
 ##
-## This program is free software; you can redistribute it and/or modify it
+## This file is part of Octave.
+##
+## Octave is free software; you can redistribute it and/or modify it
 ## under the terms of the GNU General Public License as published by
 ## the Free Software Foundation; either version 3 of the License, or (at
 ## your option) any later version.
 ##
-## This program is distributed in the hope that it will be useful, but
+## Octave is distributed in the hope that it will be useful, but
 ## WITHOUT ANY WARRANTY; without even the implied warranty of
 ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 ## General Public License for more details.
 ##
 ## You should have received a copy of the GNU General Public License
-## along with this program; see the file COPYING.  If not, see
+## along with Octave; see the file COPYING.  If not, see
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deffn {Command} which name @dots{}
+## @deftypefn {Command} {} which name @dots{}
 ## Display the type of each @var{name}.  If @var{name} is defined from a
 ## function file, the full name of the file is also displayed.
 ## @seealso{help, lookfor}
-## @end deffn
+## @end deftypefn
 
 function varargout = which (varargin)
 
@@ -28,20 +30,20 @@ function varargout = which (varargin)
 
     if (nargout == 0)
       for i = 1:nargin
-	if (isempty (m(i).file))
-	  if (! isempty (m(i).type))
-	    printf ("`%s' is a %s\n",
-		    m(i).name, m(i).type);
-	  endif
-	else
-	  if (isempty (m(i).type))
-	    printf ("`%s' is the file %s\n",
-		    m(i).name, m(i).file);
-	  else
-	    printf ("`%s' is a %s from the file %s\n",
-		    m(i).name, m(i).type, m(i).file);
-	  endif
-	endif
+        if (isempty (m(i).file))
+          if (! isempty (m(i).type))
+            printf ("`%s' is a %s\n",
+                    m(i).name, m(i).type);
+          endif
+        else
+          if (isempty (m(i).type))
+            printf ("`%s' is the file %s\n",
+                    m(i).name, m(i).file);
+          else
+            printf ("`%s' is a %s from the file %s\n",
+                    m(i).name, m(i).type, m(i).file);
+          endif
+        endif
       endfor
     else
       varargout = {m.file};

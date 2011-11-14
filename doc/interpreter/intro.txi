@@ -1,4 +1,4 @@
-@c Copyright (C) 1996, 1997, 2007, 2008, 2009 John W. Eaton
+@c Copyright (C) 1996-2011 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -72,7 +72,7 @@ before doing that, it might be helpful to give a sampling of some of its
 capabilities.
 
 If you are new to Octave, I recommend that you try these examples to
-begin learning Octave by using it.  Lines marked with @samp{octave:13>}
+begin learning Octave by using it.  Lines marked like so, @samp{octave:13>},
 are lines you type, ending each with a carriage return.  Octave will
 respond with an answer, or by displaying a graph.
 
@@ -197,22 +197,21 @@ message and compute a minimum norm solution.
 A simple example comes from chemistry and the need to obtain balanced 
 chemical equations.  Consider the burning of hydrogen and oxygen to 
 produce water.
-
 @tex
 $$ {\rm H_{2}} + {\rm O_{2}} \rightarrow {\rm H_{2}O} $$
 @end tex
 @ifnottex
+
 @example
 H2 + O2 --> H2O
 @end example
-@end ifnottex
 
+@end ifnottex
 @noindent
 The equation above is not accurate.  The Law of Conservation of Mass requires 
 that the number of molecules of each type balance on the left- and right-hand 
 sides of the equation.  Writing the variable overall reaction with 
 individual equations for hydrogen and oxygen one finds:
-
 @tex
 \vbox{
 $$ x_{1}{\rm H_{2}} + x_{2}{\rm O_{2}} \rightarrow {\rm H_{2}O} $$
@@ -221,6 +220,7 @@ $$ {\rm O:}\quad 0x_{1} + 2x_{2} \rightarrow 1 $$
 }
 @end tex
 @ifnottex
+
 @example
 @group
 x1*H2 + x2*O2 --> H2O
@@ -228,8 +228,8 @@ H: 2*x1 + 0*x2 --> 2
 O: 0*x1 + 2*x2 --> 1
 @end group
 @end example
-@end ifnottex
 
+@end ifnottex
 @noindent
 The solution in Octave is found in just three steps.
 
@@ -266,8 +266,8 @@ with the initial condition
 @example
 x(t = t0) = x0
 @end example
-@end ifnottex
 
+@end ifnottex
 @noindent
 For Octave to integrate equations of this form, you must first provide a
 definition of the function
@@ -385,11 +385,11 @@ file.
 
 In order to get good help you first need to know the name of the command
 that you want to use.  This name of the function may not always be
-obvious, but a good place to start is to just type @code{help}.
-This will show you all the operators, reserved words, functions,
-built-in variables, and function files.  An alternative is to search the
-documentation using the @code{lookfor} function.  This function is
-described in @ref{Getting Help}.
+obvious, but a good place to start is to type @code{help --list}.
+This will show you all the operators, keywords, built-in functions,
+and loadable functions available in the current session of Octave.  An
+alternative is to search the documentation using the @code{lookfor}
+function.  This function is described in @ref{Getting Help}.
 
 Once you know the name of the function you wish to use, you can get more
 help on the function by simply including the name as an argument to help.
@@ -444,7 +444,7 @@ in this font or form: @key{ANY}.
 @cindex documentation notation
 
 In the examples in this manual, results from expressions that you
-evaluate are indicated with @samp{@result{}}.  For example,
+evaluate are indicated with @samp{@result{}}.  For example:
 
 @example
 @group
@@ -483,7 +483,7 @@ in order to clearly show the structure of the result.
 
 Sometimes to help describe one expression, another expression is
 shown that produces identical results.  The exact equivalence of
-expressions is indicated with @samp{@equiv{}}.  For example,
+expressions is indicated with @samp{@equiv{}}.  For example:
 
 @example
 @group
@@ -535,10 +535,10 @@ error: fieldnames: wrong type argument `matrix'
 Functions, commands, and variables are described in this manual in a 
 uniform format.  The first line of a description contains the name of
 the item followed by its arguments, if any.
-@ifinfo
+@ifnottex
 The category---function, variable, or whatever---appears at the
 beginning of the line.
-@end ifinfo
+@end ifnottex
 @iftex
 The category---function, variable, or whatever---is printed next to the
 right margin.
@@ -633,13 +633,13 @@ functions that may be called without surrounding their arguments in
 parentheses.  For example, here is the description for Octave's
 @code{cd} command:
 
-@deffn {Command} cd dir
-@deffnx {Command} chdir dir
+@deftypefn  {Command} {} cd dir
+@deftypefnx {Command} {} chdir dir
 Change the current working directory to @var{dir}.  For example,
 @kbd{cd ~/octave} changes the current working directory to
 @file{~/octave}.  If the directory does not exist, an error message is
 printed and the working directory is not changed.
-@end deffn
+@end deftypefn
 
 @node A Sample Variable Description
 @subsubsection A Sample Variable Description

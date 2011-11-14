@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008 Michael Goffioul
+Copyright (C) 2008-2011 Michael Goffioul
 
 This file is part of Octave.
 
@@ -51,8 +51,8 @@ public:
   octave_mutex (void);
 
   octave_mutex (const octave_mutex& m)
+    : rep (m.rep)
   {
-    rep = m.rep;
     rep->count++;
   }
 
@@ -66,11 +66,11 @@ public:
   {
     if (rep != m.rep)
       {
-	if (--rep->count == 0)
-	  delete rep;
+        if (--rep->count == 0)
+          delete rep;
 
-	rep = m.rep;
-	rep->count++;
+        rep = m.rep;
+        rep->count++;
       }
 
     return *this;

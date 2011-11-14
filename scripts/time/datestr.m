@@ -1,5 +1,4 @@
-## Copyright (C) 2000, 2001, 2002, 2003, 2005, 2006, 2007, 2008,
-##               2009 Paul Kienzle
+## Copyright (C) 2000-2011 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -18,7 +17,9 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{str} =} datestr (@var{date}, [@var{f}, [@var{p}]])
+## @deftypefn  {Function File} {@var{str} =} datestr (@var{date})
+## @deftypefnx {Function File} {@var{str} =} datestr (@var{date}, @var{f})
+## @deftypefnx {Function File} {@var{str} =} datestr (@var{date}, @var{f}, @var{p})
 ## Format the given date/time according to the format @code{f} and return
 ## the result in @var{str}.  @var{date} is a serial date number (see
 ## @code{datenum}) or a date vector (see @code{datevec}).  The value of
@@ -197,8 +198,8 @@ function retval = datestr (date, f, p)
       ## Make sure that the input really is a datevec.
       maxdatevec = [Inf, 12, 31, 23, 59, 60];
       for i = 1:numel (maxdatevec)
-        if (any (date(:,i) > maxdatevec(i)) || 
-	    (i != 6 && any (floor (date(:, i)) != date (:, i))))
+        if (any (date(:,i) > maxdatevec(i))
+            || (i != 6 && any (floor (date(:,i)) != date(:,i))))
           v = datevec (date, p);
           break;
         endif
@@ -214,7 +215,7 @@ function retval = datestr (date, f, p)
     if (isempty (f) || f == -1)
       if (v(i,4:6) == 0)
         f = 1;
-	## elseif (v(i,1:3) == [0, 1, 1])
+        ## elseif (v(i,1:3) == [0, 1, 1])
       elseif (v(i,1:3) == [-1, 12, 31])
         f = 16;
       else
@@ -229,27 +230,28 @@ function retval = datestr (date, f, p)
     endif
 
     df_orig = df;
-    df = regexprep (df, "[AP]M", "%p");
+    df = regexprep (df, '[AP]M', "%p");
     if (strcmp (df, df_orig))
       ## PM not set.
       df = strrep (df, "HH", "%H");
     else
       df = strrep (df, "HH", sprintf ("%2d", v(i,4)));
-    endif  
+    endif
 
-    df = regexprep (df, "[Yy][Yy][Yy][Yy]", "%Y");
+    df = regexprep (df, '[Yy][Yy][Yy][Yy]', "%Y");
 
-    df = regexprep (df, "[Yy][Yy]", "%y");
+    df = regexprep (df, '[Yy][Yy]', "%y");
 
-    df = regexprep (df, "[Dd][Dd][Dd][Dd]", "%A");
+    df = regexprep (df, '[Dd][Dd][Dd][Dd]', "%A");
 
-    df = regexprep (df, "[Dd][Dd][Dd]", "%a");
+    df = regexprep (df, '[Dd][Dd][Dd]', "%a");
 
-    df = regexprep (df, "[Dd][Dd]", "%d");
+    df = regexprep (df, '[Dd][Dd]', "%d");
 
-    tmp = names_d{weekday (datenum (v(i,1), v(i,2), v(i,3)))};
-    df = regexprep (df, "([^%])[Dd]", sprintf ("$1%s", tmp));
-    df = regexprep (df, "^[Dd]", sprintf ("%s", tmp));
+    wday = weekday (datenum (v(i,1), v(i,2), v(i,3)));
+    tmp = names_d{wday};
+    df = regexprep (df, '([^%])[Dd]', sprintf ("$1%s", tmp));
+    df = regexprep (df, '^[Dd]', sprintf ("%s", tmp));
 
     df = strrep (df, "mmmm", "%B");
 
@@ -258,15 +260,15 @@ function retval = datestr (date, f, p)
     df = strrep (df, "mm", "%m");
 
     tmp = names_m{v(i,2)};
-    pos = regexp (df, "[^%]m") + 1;
+    pos = regexp (df, '[^%]m') + 1;
     df(pos) = tmp;
-    df = regexprep (df, "^m", tmp);
+    df = regexprep (df, '^m', tmp);
 
     df = strrep (df, "MM", "%M");
 
     df = strrep (df, "SS", "%S");
 
-    df = regexprep (df, "[Qq][Qq]", sprintf ("Q%d", fix ((v(i,2) + 2) / 3)));
+    df = regexprep (df, '[Qq][Qq]', sprintf ("Q%d", fix ((v(i,2) + 2) / 3)));
 
     vi = v(i,:);
     tm.year = vi(1) - 1900;
@@ -277,10 +279,14 @@ function retval = datestr (date, f, p)
     sec = vi(6);
     tm.sec = fix (sec);
     tm.usec = fix (rem (sec, 1) * 1e6);
-    ## Force mktime to check for DST.
-    tm.isdst = -1;
- 
-    str = strftime (df, localtime (mktime (tm)));
+    tm.wday = wday - 1;
+    ## FIXME -- Do we need YDAY and DST?  How should they be computed?
+    ## We don't want to use "localtime (mktime (tm))" because that
+    ## doesn't correctly handle dates before 1970-01-01 on some systems.
+    ## tm.yday = ?;
+    ## tm.isdst = ?;
+
+    str = strftime (df, tm);
 
     if (i == 1)
       retval = str;
@@ -331,6 +337,8 @@ endfunction
 ## avoid the bug where someone happens to give a vector of datenums that
 ## happens to be 6 wide
 %!assert(datestr(733452.933:733457.933), ["14-Feb-2008 22:23:31";"15-Feb-2008 22:23:31";"16-Feb-2008 22:23:31";"17-Feb-2008 22:23:31";"18-Feb-2008 22:23:31";"19-Feb-2008 22:23:31"])
+%!assert (datestr ([1944, 6, 6, 6, 30, 0], 0), "06-Jun-1944 06:30:00");
+
 # demos
 %!demo
 %! datestr (now ())

@@ -1,4 +1,4 @@
-## Copyright (C) 2000, 2007, 2008, 2009 Kai Habel
+## Copyright (C) 2000-2011 Kai Habel
 ## Copyright (C) 2007  David Bateman
 ##
 ## This file is part of Octave.
@@ -18,9 +18,9 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn  {Function File} {@var{d} =} del2 (@var{m})
-## @deftypefnx {Function File} {@var{d} =} del2 (@var{m}, @var{h})
-## @deftypefnx {Function File} {@var{d} =} del2 (@var{m}, @var{dx}, @var{dy}, @dots{})
+## @deftypefn  {Function File} {@var{d} =} del2 (@var{M})
+## @deftypefnx {Function File} {@var{d} =} del2 (@var{M}, @var{h})
+## @deftypefnx {Function File} {@var{d} =} del2 (@var{M}, @var{dx}, @var{dy}, @dots{})
 ##
 ## Calculate the discrete Laplace
 ## @tex
@@ -29,31 +29,31 @@
 ## @ifnottex
 ## operator.
 ## @end ifnottex
-## For a 2-dimensional matrix @var{m} this is defined as
-##
+## For a 2-dimensional matrix @var{M} this is defined as
 ## @tex
 ## $$d = {1 \over 4} \left( {d^2 \over dx^2} M(x,y) + {d^2 \over dy^2} M(x,y) \right)$$
 ## @end tex
 ## @ifnottex
+##
 ## @example
 ## @group
 ##       1    / d^2            d^2         \
-## D  = --- * | ---  M(x,y) +  ---  M(x,y) | 
+## D  = --- * | ---  M(x,y) +  ---  M(x,y) |
 ##       4    \ dx^2           dy^2        /
 ## @end group
 ## @end example
-## @end ifnottex
 ##
-## For N-dimensional arrays the sum in parentheses is expanded to include second derivatives 
-## over the additional higher dimensions.
+## @end ifnottex
+## For N-dimensional arrays the sum in parentheses is expanded to include second
+## derivatives over the additional higher dimensions.
 ##
 ## The spacing between evaluation points may be defined by @var{h}, which is a
-## scalar defining the equidistant spacing in all dimensions.  Alternatively, 
-## the spacing in each dimension may be defined separately by @var{dx}, @var{dy},
-## etc.  A scalar spacing argument defines equidistant spacing, whereas a vector
-## argument can be used to specify variable spacing.  The length of the spacing vectors
-## must match the respective dimension of @var{m}.  The default spacing value
-## is 1.
+## scalar defining the equidistant spacing in all dimensions.  Alternatively,
+## the spacing in each dimension may be defined separately by @var{dx},
+## @var{dy}, etc.  A scalar spacing argument defines equidistant spacing,
+## whereas a vector argument can be used to specify variable spacing.  The
+## length of the spacing vectors must match the respective dimension of
+## @var{M}.  The default spacing value is 1.
 ##
 ## At least 3 data points are needed for each dimension.  Boundary points are
 ## calculated from the linear extrapolation of interior points.
@@ -64,7 +64,7 @@
 ## Author:  Kai Habel <kai.habel@gmx.de>
 
 function D = del2 (M, varargin)
-  
+
   if (nargin < 1)
     print_usage ();
   endif
@@ -80,13 +80,13 @@ function D = del2 (M, varargin)
     endif
     for i = 1 : nd
       if (isscalar (h))
-	dx{i} = h * ones (sz (i), 1);
+        dx{i} = h * ones (sz (i), 1);
       else
-	if (length (h) == sz (i))
-	  dx{i} = diff (h)(:);
-	else
-	  error ("dimensionality mismatch in %d-th spacing vector", i);
-	endif
+        if (length (h) == sz (i))
+          dx{i} = diff (h)(:);
+        else
+          error ("del2: dimensionality mismatch in %d-th spacing vector", i);
+        endif
       endif
     endfor
   elseif (nargin - 1 == nd)
@@ -97,13 +97,13 @@ function D = del2 (M, varargin)
 
     for i = 1 : nd
       if (isscalar (varargin{i}))
-	dx{i} = varargin{i} * ones (sz (i), 1);
+        dx{i} = varargin{i} * ones (sz (i), 1);
       else
-	if (length (varargin{i}) == sz (i))
-	  dx{i} = diff (varargin{i})(:);
-	else
-	  error ("dimensionality mismatch in %d-th spacing vector", i);
-	endif
+        if (length (varargin{i}) == sz (i))
+          dx{i} = diff (varargin{i})(:);
+        else
+          error ("del2: dimensionality mismatch in %d-th spacing vector", i);
+        endif
       endif
     endfor
   else
@@ -131,24 +131,24 @@ function D = del2 (M, varargin)
       h1 = repmat (shiftdim (dx{i}(1 : sz(i) - 2), 1 - i), szi);
       h2 = repmat (shiftdim (dx{i}(2 : sz(i) - 1), 1 - i), szi);
       DD(idx2{:}) = ((M(idx1{:}) - M(idx2{:})) ./ h1 + ...
-		     (M(idx3{:}) - M(idx2{:})) ./ h2) ./ (h1 + h2);
+                     (M(idx3{:}) - M(idx2{:})) ./ h2) ./ (h1 + h2);
 
       ## left and right boundary
       if (sz(i) == 3)
-	DD(idx1{:}) = DD(idx3{:}) = DD(idx2{:});
+        DD(idx1{:}) = DD(idx3{:}) = DD(idx2{:});
       else
-	idx1{i} = 1;
-	idx2{i} = 2;
-	idx3{i} = 3;
-	DD(idx1{:}) = (dx{i}(1) + dx{i}(2)) / dx{i}(2) * DD (idx2{:}) - ...
-	    dx{i}(1) / dx{i}(2) * DD (idx3{:});
+        idx1{i} = 1;
+        idx2{i} = 2;
+        idx3{i} = 3;
+        DD(idx1{:}) = (dx{i}(1) + dx{i}(2)) / dx{i}(2) * DD (idx2{:}) - ...
+            dx{i}(1) / dx{i}(2) * DD (idx3{:});
 
-	idx1{i} = sz(i);
-	idx2{i} = sz(i) - 1;
-	idx3{i} = sz(i) - 2;
-	DD(idx1{:}) =  (dx{i}(sz(i) - 1) + dx{i}(sz(i) - 2)) / ...
-	    dx{i}(sz(i) - 2) * DD (idx2{:}) - ...
-	    dx{i}(sz(i) - 1) / dx{i}(sz(i) - 2) * DD (idx3{:});
+        idx1{i} = sz(i);
+        idx2{i} = sz(i) - 1;
+        idx3{i} = sz(i) - 2;
+        DD(idx1{:}) =  (dx{i}(sz(i) - 1) + dx{i}(sz(i) - 2)) / ...
+            dx{i}(sz(i) - 2) * DD (idx2{:}) - ...
+            dx{i}(sz(i) - 1) / dx{i}(sz(i) - 2) * DD (idx3{:});
       endif
 
       D += DD;

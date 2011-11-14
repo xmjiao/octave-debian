@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 1999, 2000, 2002, 2005, 2006,
-##               2007, 2009 Friedrich Leisch
+## Copyright (C) 1995-2011 Friedrich Leisch
 ##
 ## This file is part of Octave.
 ##
@@ -34,7 +33,7 @@ function H = hurst (x)
   endif
 
   if (isscalar (x))
-    error ("hurst: x must not be a scalar");
+    error ("hurst: X must not be a scalar");
   elseif (isvector (x))
     x = reshape (x, length (x), 1);
   endif

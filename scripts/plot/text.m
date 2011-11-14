@@ -1,4 +1,4 @@
-## Copyright (C) 2007 John W. Eaton
+## Copyright (C) 2007-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{h} =} text (@var{x}, @var{y}, @var{label})
+## @deftypefn  {Function File} {@var{h} =} text (@var{x}, @var{y}, @var{label})
 ## @deftypefnx {Function File} {@var{h} =} text (@var{x}, @var{y}, @var{z}, @var{label})
 ## @deftypefnx {Function File} {@var{h} =} text (@var{x}, @var{y}, @var{label}, @var{p1}, @var{v1}, @dots{})
 ## @deftypefnx {Function File} {@var{h} =} text (@var{x}, @var{y}, @var{z}, @var{label}, @var{p1}, @var{v1}, @dots{})
@@ -50,14 +50,14 @@ function h = text (varargin)
     if (ischar (label) || iscellstr (label))
       varargin(1:offset) = [];
       if (ischar (label))
-	label = cellstr (label);
+        label = cellstr (label);
       endif
       n = numel (label);
       nx = numel (x);
       ny = numel (y);
       nz = numel (z);
     else
-      error ("text: expecting label to be a character string or cell array of character strings");
+      error ("text: expecting LABEL to be a character string or cell array of character strings");
     endif
   else
     x = y = z = 0;
@@ -73,22 +73,22 @@ function h = text (varargin)
       ca = gca ();
       tmp = zeros (n, 1);
       if (n == 1)
-	label = label{1};
-	for i = 1:nx
-	  tmp(i) = __go_text__ (ca, "string", label,
-				"position", pos(i,:),
-				varargin{:});
-	endfor
-	__request_drawnow__ ();
+        label = label{1};
+        for i = 1:nx
+          tmp(i) = __go_text__ (ca, "string", label,
+                                varargin{:},
+                                "position", pos(i,:));
+        endfor
+        __request_drawnow__ ();
       elseif (n == nx)
-	for i = 1:nx
-	  tmp(i) = __go_text__ (ca, "string", label{i},
-				"position", pos(i,:),
-				varargin{:});
-	endfor
-	__request_drawnow__ ();
+        for i = 1:nx
+          tmp(i) = __go_text__ (ca, "string", label{i},
+                                varargin{:},
+                                "position", pos(i,:));
+        endfor
+        __request_drawnow__ ();
       else
-	error ("text: dimension mismatch for coordinates and label");
+        error ("text: dimension mismatch for coordinates and LABEL");
       endif
     else
       error ("text: dimension mismatch for coordinates");
@@ -103,3 +103,42 @@ function h = text (varargin)
   endif
 
 endfunction
+
+%!demo
+%! clf
+%! ha = {"left", "center", "right"};
+%! va = {"bottom", "middle", "top"};
+%! x = [0.25 0.5 0.75];
+%! y = [0.25 0.5 0.75];
+%! for t = 0:30:359;
+%!   for nh = 1:numel(ha)
+%!     for nv = 1:numel(va)
+%!       text (x(nh), y(nv), "Hello World", ...
+%!             "rotation", t, ...
+%!             "horizontalalignment", ha{nh}, ...
+%!             "verticalalignment", va{nv})
+%!     endfor
+%!   endfor
+%! endfor
+%! set (gca, "xtick", [0.25, 0.5, 0.75], ...
+%!           "xticklabel", ha, ...
+%!           "ytick", [0.25, 0.5, 0.75], ...
+%!           "yticklabel", va)
+%! axis ([0 1 0 1])
+%! xlabel ("horizontal alignment")
+%! ylabel ("vertical alignment")
+%! title ("text alignment and rotation (0:30:360 degrees)")
+
+%!demo
+%! clf
+%! h = mesh (peaks, "edgecolor", 0.7 * [1 1 1], ...
+%!                  "facecolor", "none", ...
+%!                  "facealpha", 0);
+%! for t = 0:45:359;
+%!   text (25, 25, 0, "Vertical Alignment = Bottom", ...
+%!                    "rotation", t, ...
+%!                    "horizontalalignment", "left", ...
+%!                    "verticalalignment", "bottom")
+%! endfor
+%! caxis ([-100 100])
+%! title ("Vertically Aligned at Bottom")

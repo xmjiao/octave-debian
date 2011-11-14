@@ -1,4 +1,4 @@
-## Copyright (C) 2008, 2009 David Bateman
+## Copyright (C) 2008-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -28,7 +28,7 @@ function retval = spprod (varargin)
   if (! warned)
     warned = true;
     warning ("Octave:deprecated-function",
-	     "spprod is obsolete and will be removed from a future version of Octave; please use prod instead");
+             "spprod is obsolete and will be removed from a future version of Octave; please use prod instead");
   endif
 
   retval = prod (varargin{:});

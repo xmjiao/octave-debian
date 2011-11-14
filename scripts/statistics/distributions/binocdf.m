@@ -1,4 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 2005, 2006, 2007 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -34,7 +34,7 @@ function cdf = binocdf (x, n, p)
   if (!isscalar (n) || !isscalar (p))
     [retval, x, n, p] = common_size (x, n, p);
     if (retval > 0)
-      error ("binocdf: x, n and p must be of common size or scalar");
+      error ("binocdf: X, N and P must be of common size or scalar");
     endif
   endif
 
@@ -42,19 +42,19 @@ function cdf = binocdf (x, n, p)
   cdf = zeros (sz);
 
   k = find (isnan (x) | !(n >= 0) | (n != round (n))
-	    | !(p >= 0) | !(p <= 1));
+            | !(p >= 0) | !(p <= 1));
   if (any (k))
     cdf(k) = NaN;
   endif
 
   k = find ((x >= n) & (n >= 0) & (n == round (n))
-	    & (p >= 0) & (p <= 1));
+            & (p >= 0) & (p <= 1));
   if (any (k))
     cdf(k) = 1;
   endif
 
   k = find ((x >= 0) & (x < n) & (n == round (n))
-	    & (p >= 0) & (p <= 1));
+            & (p >= 0) & (p <= 1));
   if (any (k))
     tmp = floor (x(k));
     if (isscalar (n) && isscalar (p))

@@ -1,4 +1,4 @@
-@c Copyright (C) 1996, 1997, 2007, 2008, 2009 John W. Eaton
+@c Copyright (C) 1996-2011 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -25,15 +25,15 @@ Golub and Van Loan, @cite{Matrix Computations, 2nd Ed.}, Johns Hopkins,
 1989, and in the @cite{@sc{lapack} Users' Guide}, SIAM, 1992.
 
 @menu
-* Techniques used for Linear Algebra::
+* Techniques Used for Linear Algebra::
 * Basic Matrix Functions::      
 * Matrix Factorizations::       
 * Functions of a Matrix::       
 * Specialized Solvers::
 @end menu
 
-@node Techniques used for Linear Algebra
-@section Techniques used for Linear Algebra
+@node Techniques Used for Linear Algebra
+@section Techniques Used for Linear Algebra
 
 Octave includes a polymorphic solver, that selects an appropriate
 matrix factorization depending on the properties of the matrix itself. 
@@ -55,11 +55,11 @@ backward substitution using the @sc{lapack} xTRTRS function, and goto 4.
 @c or lower triangular matrix with row permutations, perform a forward or
 @c backward substitution, and goto 5.
 
-@item If the matrix is square, hermitian with a real positive diagonal,
-attempt Cholesky factorization using the @sc{lapack} xPOTRF function.
+@item If the matrix is square, Hermitian with a real positive diagonal,
+attempt Cholesky@tie{}factorization using the @sc{lapack} xPOTRF function.
 
-@item If the Cholesky factorization failed or the matrix is not
-hermitian with a real positive diagonal, and the matrix is square, factorize 
+@item If the Cholesky@tie{}factorization failed or the matrix is not
+Hermitian with a real positive diagonal, and the matrix is square, factorize 
 using the @sc{lapack} xGETRF function.
 
 @item If the matrix is not square, or any of the previous solvers flags
@@ -74,7 +74,7 @@ will lead to unpredictable results, and so @code{matrix_type} should be
 used with care.
 
 It should be noted that the test for whether a matrix is a candidate for
-Cholesky factorization, performed above and by the @code{matrix_type}
+Cholesky@tie{}factorization, performed above and by the @code{matrix_type}
 function, does not give a certainty that the matrix is
 Hermitian.  However, the attempt to factorize the matrix will quickly
 flag a non-Hermitian matrix.
@@ -87,10 +87,6 @@ flag a non-Hermitian matrix.
 @DOCSTRING(cond)
 
 @DOCSTRING(det)
-
-@DOCSTRING(dmult)
-
-@DOCSTRING(dot)
 
 @DOCSTRING(eig)
 
@@ -107,6 +103,8 @@ flag a non-Hermitian matrix.
 @DOCSTRING(null)
 
 @DOCSTRING(orth)
+
+@DOCSTRING(mgorth)
 
 @DOCSTRING(pinv)
 
@@ -139,6 +137,8 @@ flag a non-Hermitian matrix.
 
 @DOCSTRING(lu)
 
+@DOCSTRING(luupdate)
+
 @DOCSTRING(qr)
 
 @DOCSTRING(qrupdate)
@@ -155,9 +155,13 @@ flag a non-Hermitian matrix.
 
 @DOCSTRING(schur)
 
+@DOCSTRING(rsf2csf)
+
 @DOCSTRING(subspace)
 
 @DOCSTRING(svd)
+
+@DOCSTRING(svd_driver)
 
 @c FIXME -- should there be a new section here?
 
@@ -176,6 +180,8 @@ flag a non-Hermitian matrix.
 
 @DOCSTRING(kron)
 
+@DOCSTRING(blkmm)
+
 @DOCSTRING(syl)
 
 @node Specialized Solvers
@@ -184,3 +190,5 @@ flag a non-Hermitian matrix.
 @DOCSTRING(bicgstab)
 
 @DOCSTRING(cgs)
+
+@DOCSTRING(gmres)

@@ -1,22 +1,24 @@
-## Copyright (C) 2009 Søren Hauberg
+## Copyright (C) 2009-2011 Sï¿½ren Hauberg
 ##
-## This program is free software; you can redistribute it and/or modify it
+## This file is part of Octave.
+##
+## Octave is free software; you can redistribute it and/or modify it
 ## under the terms of the GNU General Public License as published by
 ## the Free Software Foundation; either version 3 of the License, or (at
 ## your option) any later version.
 ##
-## This program is distributed in the hope that it will be useful, but
+## Octave is distributed in the hope that it will be useful, but
 ## WITHOUT ANY WARRANTY; without even the implied warranty of
 ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 ## General Public License for more details.
 ##
 ## You should have received a copy of the GNU General Public License
-## along with this program; see the file COPYING.  If not, see
+## along with Octave; see the file COPYING.  If not, see
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {[@var{retval}, @var{status}] =} __makeinfo__ (@var{text}, @var{output_type})
-## @deftypefnx{Function File} {[@var{retval}, @var{status}] =} __makeinfo__ (@var{text}, @var{output_type}, @var{see_also})
+## @deftypefn  {Function File} {[@var{retval}, @var{status}] =} __makeinfo__ (@var{text}, @var{output_type})
+## @deftypefnx {Function File} {[@var{retval}, @var{status}] =} __makeinfo__ (@var{text}, @var{output_type}, @var{see_also})
 ## Undocumented internal function.
 ## @end deftypefn
 
@@ -61,16 +63,16 @@ function [retval, status] = __makeinfo__ (text, output_type = "plain text", see_
   if (nargin == 0)
     print_usage ();
   endif
-  
+
   if (!ischar (text))
     error ("__makeinfo__: first input argument must be a string");
   endif
-  
+
   if (!ischar (output_type))
     error ("__makeinfo__: second input argument must be a string");
   endif
-  
-  ## Define the @seealso macro
+
+  ## Define the function which expands @seealso macro
   if (isempty (see_also))
     if (strcmpi (output_type, "plain text"))
       see_also = @simple_see_also;
@@ -78,19 +80,19 @@ function [retval, status] = __makeinfo__ (text, output_type = "plain text", see_
       see_also = @simple_see_also_with_refs;
     endif
   endif
-  
+
   if (!isa (see_also, "function_handle"))
     error ("__makeinfo__: third input argument must be the empty matrix, or a function handle");
   endif
-  
-  ## It seems like makeinfo sometimes gets angry if the character on a line is
-  ## a space, so we remove these.
+
+  ## It seems like makeinfo sometimes gets angry if the first character
+  ## on a line is a space, so we remove these.
   text = strrep (text, "\n ", "\n");
-  
+
   ## Handle @seealso macro
   SEE_ALSO = "@seealso";
   starts = strfind (text, SEE_ALSO);
-  for start = starts
+  for start = fliplr (starts)
     if (start == 1 || (text (start-1) != "@"))
       bracket_start = find (text (start:end) == "{", 1);
       stop = find (text (start:end) == "}", 1);
@@ -112,19 +114,47 @@ function [retval, status] = __makeinfo__ (text, output_type = "plain text", see_
       text = strcat (text (1:start-1), expanded, text (stop+1:end));
     endif
   endfor
-  
+
+  ## Handle @nospell macro
+  NOSPELL = "@nospell";
+  starts = strfind (text, NOSPELL);
+  for start = fliplr (starts)
+    if (start == 1 || (text (start-1) != "@"))
+      bracket_start = find (text (start:end) == "{", 1);
+      stop = find (text (start:end) == "}", 1);
+      if (!isempty (stop) && !isempty (bracket_start))
+        stop += start - 1;
+        bracket_start += start - 1;
+      else
+        bracket_start = start + length (NOSPELL);
+        stop = find (text (start:end) == "\n", 1);
+        if (isempty (stop))
+          stop = length (text);
+        else
+          stop += start - 1;
+        endif
+      endif
+      text(stop) = [];
+      text(start:bracket_start) = [];
+    endif
+  endfor
+
   if (strcmpi (output_type, "texinfo"))
     status = 0;
     retval = text;
     return;
   endif
-  
+
   ## Create the final TeXinfo input string
   text = sprintf ("\\input texinfo\n\n%s\n\n@bye\n", text);
-  
+
   unwind_protect
     ## Write Texinfo to tmp file
-    [fid, name, msg] = mkstemp ("octave_help_XXXXXX", true);
+    template = "octave-help-XXXXXX";
+    [fid, name, msg] = mkstemp (fullfile (P_tmpdir, template), true);
+    if (fid < 0)
+      error ("__makeinfo__: could not create temporary file");
+    endif
     fwrite (fid, text);
     fclose (fid);
 
@@ -139,10 +169,10 @@ function [retval, status] = __makeinfo__ (text, output_type = "plain text", see_
       otherwise
         error ("__makeinfo__: unsupported output type: '%s'", output_type);
     endswitch
-  
+
     ## Call makeinfo
     [status, retval] = system (cmd);
-   
+
   unwind_protect_cleanup
     if (exist (name, "file"))
       delete (name);

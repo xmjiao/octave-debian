@@ -1,4 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 2005, 2006, 2007 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -41,7 +41,7 @@ function pdf = unifpdf (x, a, b)
   if (!isscalar (a) || !isscalar(b))
     [retval, x, a, b] = common_size (x, a, b);
     if (retval > 0)
-      error ("unifpdf: x, a and b must be of common size or scalars");
+      error ("unifpdf: X, A and B must be of common size or scalars");
     endif
   endif
 
@@ -53,7 +53,7 @@ function pdf = unifpdf (x, a, b)
     pdf(k) = NaN;
   endif
 
-  k = find ((x > a) & (x < b));
+  k = find ((x >= a) & (x <= b));
   if (any (k))
     if (isscalar (a) && isscalar(b))
       pdf(k) = 1 ./ (b - a);

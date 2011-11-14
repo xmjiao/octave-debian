@@ -1,4 +1,4 @@
-## Copyright (C) 2007, 2009 David Bateman
+## Copyright (C) 2007-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -18,8 +18,8 @@
 
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} swapbytes (@var{x})
-## Swaps the byte order on values, converting from little endian to big 
-## endian and vice versa.  For example
+## Swap the byte order on values, converting from little endian to big
+## endian and vice versa.  For example:
 ##
 ## @example
 ## @group
@@ -44,13 +44,13 @@ function y = swapbytes (x)
       nb = 2;
     elseif (strcmp (clx, "int32") || strcmp (clx, "uint32"))
       nb = 4;
-    elseif (strcmp (clx, "int64") || strcmp (clx, "uint64") ||
-	    strcmp (clx, "double"))
+    elseif (strcmp (clx, "int64") || strcmp (clx, "uint64")
+            || strcmp (clx, "double"))
       nb = 8;
     else
       error ("swapbytes: invalid class of object");
     endif
     y = reshape (typecast (reshape (typecast (x(:), "uint8"), nb, numel (x))
-			   ([nb : -1 : 1], :) (:), clx), size(x));
+                           ([nb : -1 : 1], :) (:), clx), size(x));
   endif
 endfunction

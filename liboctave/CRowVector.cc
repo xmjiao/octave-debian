@@ -1,8 +1,7 @@
 // RowVector manipulations.
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 1999, 2000, 2001, 2002, 2003,
-              2004, 2005, 2006, 2007, 2008 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -42,24 +41,20 @@ extern "C"
 {
   F77_RET_T
   F77_FUNC (zgemv, ZGEMV) (F77_CONST_CHAR_ARG_DECL,
-			   const octave_idx_type&, const octave_idx_type&, const Complex&,
-			   const Complex*, const octave_idx_type&, const Complex*,
-			   const octave_idx_type&, const Complex&, Complex*, const octave_idx_type&
-			   F77_CHAR_ARG_LEN_DECL);
+                           const octave_idx_type&, const octave_idx_type&,
+                           const Complex&, const Complex*,
+                           const octave_idx_type&, const Complex*,
+                           const octave_idx_type&, const Complex&, Complex*,
+                           const octave_idx_type&
+                           F77_CHAR_ARG_LEN_DECL);
 
   F77_RET_T
-  F77_FUNC (xzdotu, XZDOTU) (const octave_idx_type&, const Complex*, const octave_idx_type&,
-			     const Complex*, const octave_idx_type&, Complex&);
+  F77_FUNC (xzdotu, XZDOTU) (const octave_idx_type&, const Complex*,
+                             const octave_idx_type&, const Complex*,
+                             const octave_idx_type&, Complex&);
 }
 
 // Complex Row Vector class
-
-ComplexRowVector::ComplexRowVector (const RowVector& a)
-  : MArray<Complex> (a.length ())
-{
-  for (octave_idx_type i = 0; i < length (); i++)
-    elem (i) = a.elem (i);
-}
 
 bool
 ComplexRowVector::operator == (const ComplexRowVector& a) const
@@ -67,7 +62,7 @@ ComplexRowVector::operator == (const ComplexRowVector& a) const
   octave_idx_type len = length ();
   if (len != a.length ())
     return 0;
-  return mx_inline_equal (data (), a.data (), len);
+  return mx_inline_equal (len, data (), a.data ());
 }
 
 bool
@@ -94,7 +89,7 @@ ComplexRowVector::insert (const RowVector& a, octave_idx_type c)
       make_unique ();
 
       for (octave_idx_type i = 0; i < a_len; i++)
-	xelem (c+i) = a.elem (i);
+        xelem (c+i) = a.elem (i);
     }
 
   return *this;
@@ -116,7 +111,7 @@ ComplexRowVector::insert (const ComplexRowVector& a, octave_idx_type c)
       make_unique ();
 
       for (octave_idx_type i = 0; i < a_len; i++)
-	xelem (c+i) = a.elem (i);
+        xelem (c+i) = a.elem (i);
     }
 
   return *this;
@@ -132,7 +127,7 @@ ComplexRowVector::fill (double val)
       make_unique ();
 
       for (octave_idx_type i = 0; i < len; i++)
-	xelem (i) = val;
+        xelem (i) = val;
     }
 
   return *this;
@@ -148,7 +143,7 @@ ComplexRowVector::fill (const Complex& val)
       make_unique ();
 
       for (octave_idx_type i = 0; i < len; i++)
-	xelem (i) = val;
+        xelem (i) = val;
     }
 
   return *this;
@@ -172,7 +167,7 @@ ComplexRowVector::fill (double val, octave_idx_type c1, octave_idx_type c2)
       make_unique ();
 
       for (octave_idx_type i = c1; i <= c2; i++)
-	xelem (i) = val;
+        xelem (i) = val;
     }
 
   return *this;
@@ -196,7 +191,7 @@ ComplexRowVector::fill (const Complex& val, octave_idx_type c1, octave_idx_type 
       make_unique ();
 
       for (octave_idx_type i = c1; i <= c2; i++)
-	xelem (i) = val;
+        xelem (i) = val;
     }
 
   return *this;
@@ -239,11 +234,7 @@ ComplexRowVector::transpose (void) const
 ComplexRowVector
 conj (const ComplexRowVector& a)
 {
-  octave_idx_type a_len = a.length ();
-  ComplexRowVector retval;
-  if (a_len > 0)
-    retval = ComplexRowVector (mx_inline_conj_dup (a.data (), a_len), a_len);
-  return retval;
+  return do_mx_unary_map<Complex, Complex, std::conj> (a);
 }
 
 // resize is the destructive equivalent for this one
@@ -294,7 +285,7 @@ ComplexRowVector::operator += (const RowVector& a)
 
   Complex *d = fortran_vec (); // Ensures only one reference to my privates!
 
-  mx_inline_add2 (d, a.data (), len);
+  mx_inline_add2 (len, d, a.data ());
   return *this;
 }
 
@@ -316,7 +307,7 @@ ComplexRowVector::operator -= (const RowVector& a)
 
   Complex *d = fortran_vec (); // Ensures only one reference to my privates!
 
-  mx_inline_subtract2 (d, a.data (), len);
+  mx_inline_sub2 (len, d, a.data ());
   return *this;
 }
 
@@ -337,21 +328,21 @@ operator * (const ComplexRowVector& v, const ComplexMatrix& a)
   else
     {
       if (len == 0)
-	retval.resize (a_nc, 0.0);
+        retval.resize (a_nc, 0.0);
       else
-	{
-	  // Transpose A to form A'*x == (x'*A)'
+        {
+          // Transpose A to form A'*x == (x'*A)'
 
-	  octave_idx_type ld = a_nr;
+          octave_idx_type ld = a_nr;
 
-	  retval.resize (a_nc);
-	  Complex *y = retval.fortran_vec ();
+          retval.resize (a_nc);
+          Complex *y = retval.fortran_vec ();
 
-	  F77_XFCN (zgemv, ZGEMV, (F77_CONST_CHAR_ARG2 ("T", 1),
-				   a_nr, a_nc, 1.0, a.data (),
-				   ld, v.data (), 1, 0.0, y, 1
-				   F77_CHAR_ARG_LEN (1)));
-	}
+          F77_XFCN (zgemv, ZGEMV, (F77_CONST_CHAR_ARG2 ("T", 1),
+                                   a_nr, a_nc, 1.0, a.data (),
+                                   ld, v.data (), 1, 0.0, y, 1
+                                   F77_CHAR_ARG_LEN (1)));
+        }
     }
 
   return retval;
@@ -366,18 +357,6 @@ operator * (const RowVector& v, const ComplexMatrix& a)
 
 // other operations
 
-RowVector
-ComplexRowVector::map (dmapper fcn) const
-{
-  return MArray<Complex>::map<double> (func_ptr (fcn));
-}
-
-ComplexRowVector
-ComplexRowVector::map (cmapper fcn) const
-{
-  return MArray<Complex>::map<Complex> (func_ptr (fcn));
-}
-
 Complex
 ComplexRowVector::min (void) const
 {
@@ -391,8 +370,8 @@ ComplexRowVector::min (void) const
   for (octave_idx_type i = 1; i < len; i++)
     if (std::abs (elem (i)) < absres)
       {
-	res = elem (i);
-	absres = std::abs (res);
+        res = elem (i);
+        absres = std::abs (res);
       }
 
   return res;
@@ -411,8 +390,8 @@ ComplexRowVector::max (void) const
   for (octave_idx_type i = 1; i < len; i++)
     if (std::abs (elem (i)) > absres)
       {
-	res = elem (i);
-	absres = std::abs (res);
+        res = elem (i);
+        absres = std::abs (res);
       }
 
   return res;
@@ -482,28 +461,15 @@ operator * (const ComplexRowVector& v, const ComplexColumnVector& a)
 ComplexRowVector
 linspace (const Complex& x1, const Complex& x2, octave_idx_type n)
 {
-  ComplexRowVector retval;
+  if (n < 1) n = 1;
 
-  if (n > 0)
-    {
-      retval.resize (n);
-      Complex delta = (x2 - x1) / (n - 1.0);
-      retval.elem (0) = x1;
-      for (octave_idx_type i = 1; i < n-1; i++)
-	retval.elem (i) = x1 + 1.0 * i * delta;
-      retval.elem (n-1) = x2;
-    }
-  else
-    {
-      retval.resize (1);
-      retval.elem (0) = x2;
-    }
+  NoAlias<ComplexRowVector> retval (n);
+
+  Complex delta = (x2 - x1) / (n - 1.0);
+  retval(0) = x1;
+  for (octave_idx_type i = 1; i < n-1; i++)
+    retval(i) = x1 + static_cast<double> (i)*delta;
+  retval(n-1) = x2;
 
   return retval;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

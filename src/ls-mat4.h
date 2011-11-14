@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2003, 2005, 2006, 2007 John W. Eaton
+Copyright (C) 2003-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -30,22 +30,16 @@ extern int
 float_format_to_mopt_digit (oct_mach_info::float_format flt_fmt);
 
 extern int
-read_mat_file_header (std::istream& is, bool& swap, int32_t& mopt, 
-		      int32_t& nr, int32_t& nc, int32_t& imag,
-		      int32_t& len, int quiet = 0);
+read_mat_file_header (std::istream& is, bool& swap, int32_t& mopt,
+                      int32_t& nr, int32_t& nc, int32_t& imag,
+                      int32_t& len, int quiet = 0);
 
 extern std::string
 read_mat_binary_data (std::istream& is, const std::string& filename,
-		      octave_value& tc);
+                      octave_value& tc);
 
 extern bool
 save_mat_binary_data (std::ostream& os, const octave_value& tc,
-		      const std::string& name) ;
+                      const std::string& name) ;
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

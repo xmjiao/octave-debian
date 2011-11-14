@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2000, 2002, 2004, 2005, 2006,
-              2007, 2008 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -35,26 +34,35 @@ FloatSCHUR
 {
 public:
 
-  FloatSCHUR (void)
-    : schur_mat (), unitary_mat () { }
+  FloatSCHUR (void) : schur_mat (), unitary_mat (), selector (0) { }
 
-  FloatSCHUR (const FloatMatrix& a, const std::string& ord, bool calc_unitary = true)
-    : schur_mat (), unitary_mat () { init (a, ord, calc_unitary); }
+  FloatSCHUR (const FloatMatrix& a, const std::string& ord,
+              bool calc_unitary = true)
+    : schur_mat (), unitary_mat (), selector (0)
+    {
+      init (a, ord, calc_unitary);
+    }
 
-  FloatSCHUR (const FloatMatrix& a, const std::string& ord, int& info, 
-	 bool calc_unitary = true)
-    : schur_mat (), unitary_mat () { info = init (a, ord, calc_unitary); }
+  FloatSCHUR (const FloatMatrix& a, const std::string& ord, int& info,
+              bool calc_unitary = true)
+    : schur_mat (), unitary_mat (), selector (0)
+    {
+      info = init (a, ord, calc_unitary);
+    }
 
   FloatSCHUR (const FloatSCHUR& a)
-    : schur_mat (a.schur_mat), unitary_mat (a.unitary_mat) { }
+    : schur_mat (a.schur_mat), unitary_mat (a.unitary_mat), selector (0)
+    { }
+
+  FloatSCHUR (const FloatMatrix& s, const FloatMatrix& u);
 
   FloatSCHUR& operator = (const FloatSCHUR& a)
     {
       if (this != &a)
-	{
-	  schur_mat = a.schur_mat;
-	  unitary_mat = a.unitary_mat;
-	}
+        {
+          schur_mat = a.schur_mat;
+          unitary_mat = a.unitary_mat;
+        }
       return *this;
     }
 
@@ -79,9 +87,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

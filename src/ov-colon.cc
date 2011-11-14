@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2000, 2002, 2003, 2004, 2005, 2007
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -33,7 +32,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "ov-colon.h"
 
 DEFINE_OV_TYPEID_FUNCTIONS_AND_DATA (octave_magic_colon,
-				     "magic-colon", "magic-colon");
+                                     "magic-colon", "magic-colon");
 
 void
 octave_magic_colon::print (std::ostream& os, bool) const
@@ -47,9 +46,3 @@ octave_magic_colon::print_raw (std::ostream& os, bool) const
 {
   os << ":";
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

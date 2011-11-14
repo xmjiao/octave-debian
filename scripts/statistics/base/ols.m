@@ -1,5 +1,4 @@
-## Copyright (C) 1996, 1997, 1998, 1999, 2000, 2005, 2006, 2007, 2009
-##               John W. Eaton
+## Copyright (C) 1996-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -26,7 +25,7 @@
 ## $\bar{e} = 0$, and cov(vec($e$)) = kron ($s, I$)
 ## @end tex
 ## @ifnottex
-## @math{y = x b + e} with
+## @w{@math{y = x*b + e}} with
 ## @math{mean (e) = 0} and @math{cov (vec (e)) = kron (s, I)}.
 ## @end ifnottex
 ##  where
@@ -48,9 +47,17 @@
 ##
 ## @table @var
 ## @item beta
-## The OLS estimator for @var{b}, @code{@var{beta} = pinv (@var{x}) *
-## @var{y}}, where @code{pinv (@var{x})} denotes the pseudoinverse of
-## @var{x}.
+## The OLS estimator for @math{b}.
+## @tex
+## $beta$ is calculated directly via $(x^Tx)^{-1} x^T y$ if the matrix $x^Tx$ is
+## of full rank.
+## @end tex
+## @ifnottex
+## @var{beta} is calculated directly via @code{inv (x'*x) * x' * y} if the
+## matrix @code{x'*x} is of full rank.
+## @end ifnottex
+## Otherwise, @code{@var{beta} = pinv (@var{x}) * @var{y}} where
+## @code{pinv (@var{x})} denotes the pseudoinverse of @var{x}.
 ##
 ## @item sigma
 ## The OLS estimator for the matrix @var{s},
@@ -64,37 +71,65 @@
 ## @end example
 ##
 ## @item r
-## The matrix of OLS residuals, @code{@var{r} = @var{y} - @var{x} *
-## @var{beta}}.
+## The matrix of OLS residuals, @code{@var{r} = @var{y} - @var{x}*@var{beta}}.
 ## @end table
+## @seealso{gls, pinv}
 ## @end deftypefn
 
 ## Author: Teresa Twaroch <twaroch@ci.tuwien.ac.at>
 ## Created: May 1993
 ## Adapted-By: jwe
 
-function [BETA, SIGMA, R] = ols (Y, X)
+function [beta, sigma, r] = ols (y, x)
 
   if (nargin != 2)
     print_usage ();
   endif
 
-  [nr, nc] = size (X);
-  [ry, cy] = size (Y);
+  if (! (isnumeric (x) && isnumeric (y)))
+    error ("ols: X and Y must be numeric matrices or vectors");
+  endif
+
+  if (ndims (x) != 2 || ndims (y) != 2)
+    error ("ols: X and Y must be 2-D matrices or vectors");
+  endif
+
+  [nr, nc] = size (x);
+  [ry, cy] = size (y);
   if (nr != ry)
-    error ("ols: incorrect matrix dimensions");
+    error ("ols: number of rows of X and Y must be equal");
   endif
 
-  Z = X' * X;
-  r = rank (Z);
+  z = x' * x;
+  rnk = rank (z);
 
-  if (r == nc)
-    BETA = inv (Z) * X' * Y;
+  if (rnk == nc)
+    beta = inv (z) * x' * y;
   else
-    BETA = pinv (X) * Y;
+    beta = pinv (x) * y;
   endif
 
-  R = Y - X * BETA;
-  SIGMA = R' * R / (nr - r);
+  if (isargout (2) || isargout (3))
+    r = y - x * beta;
+  endif
+  if (isargout (2))
+    sigma = r' * r / (nr - rnk);
+  endif
 
 endfunction
+
+%!test
+%! x = [1:5]';
+%! y = 3*x + 2;
+%! x = [x, ones(5,1)];
+%! assert (ols(y,x), [3; 2], 50*eps)
+
+%% Test input validation
+%!error ols ();
+%!error ols (1);
+%!error ols (1, 2, 3);
+%!error ols ([true, true], [1, 2]);
+%!error ols ([1, 2], [true, true]);
+%!error ols (ones (2,2,2), ones (2,2));
+%!error ols (ones (2,2), ones (2,2,2));
+%!error ols (ones(1,2), ones(2,2));

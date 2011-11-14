@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2000, 2002, 2004, 2005, 2006,
-              2007, 2008 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -38,28 +37,28 @@ public:
 
   QRP (void) : QR (), p () { }
 
-  QRP (const Matrix&, QR::type = QR::std);
+  QRP (const Matrix&, qr_type_t = qr_type_std);
 
   QRP (const QRP& a) : QR (a), p (a.p) { }
 
   QRP& operator = (const QRP& a)
     {
       if (this != &a)
-	{
-	  QR::operator = (a);
-	  p = a.p;
-	}
+        {
+          QR::operator = (a);
+          p = a.p;
+        }
 
       return *this;
     }
 
   ~QRP (void) { }
 
-  void init (const Matrix&, QR::type = QR::std);
+  void init (const Matrix&, qr_type_t = qr_type_std);
 
   PermMatrix P (void) const { return p; }
 
-  ColumnVector Pvec (void) const;
+  RowVector Pvec (void) const;
 
   friend std::ostream&  operator << (std::ostream&, const QRP&);
 
@@ -69,9 +68,3 @@ protected:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 1999, 2000, 2002, 2003, 2005, 2006
-              2007 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -29,12 +28,8 @@ along with Octave; see the file COPYING.  If not, see
 
 #include <iostream>
 
-#ifdef HAVE_UNISTD_H
-#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#endif
 #include <unistd.h>
-#endif
 
 #include "lo-mappers.h"
 #include "lo-utils.h"
@@ -61,7 +56,7 @@ octave_procbuf::open (const char *command, int mode)
 {
 #if defined (__CYGWIN__) || defined (__MINGW32__) || defined (_MSC_VER)
 
-  if (is_open ()) 
+  if (is_open ())
     return 0;
 
   f = octave_popen (command, (mode & std::ios::in) ? "r" : "w");
@@ -79,7 +74,7 @@ octave_procbuf::open (const char *command, int mode)
     ::setvbuf (f, 0, _IOLBF, BUFSIZ);
 
   return this;
-  
+
 #elif defined (HAVE_SYS_WAIT_H)
 
   int pipe_fds[2];
@@ -109,37 +104,37 @@ octave_procbuf::open (const char *command, int mode)
 
   if (proc_pid == 0)
     {
-      ::close (parent_end);
+      gnulib::close (parent_end);
 
       if (child_end != child_std_end)
-	{
-	  ::dup2 (child_end, child_std_end);
-	  ::close (child_end);
-	}
+        {
+          gnulib::dup2 (child_end, child_std_end);
+          gnulib::close (child_end);
+        }
 
       while (octave_procbuf_list)
-	{
-	  FILE *fp = octave_procbuf_list->f;
+        {
+          FILE *fp = octave_procbuf_list->f;
 
-	  if (fp)
-	    {
-	      ::fclose (fp);
-	      fp = 0;
-	    }
+          if (fp)
+            {
+              gnulib::fclose (fp);
+              fp = 0;
+            }
 
-	  octave_procbuf_list = octave_procbuf_list->next;
-	}
+          octave_procbuf_list = octave_procbuf_list->next;
+        }
 
       execl ("/bin/sh", "sh", "-c", command, static_cast<void *> (0));
 
       exit (127);
     }
 
-  ::close (child_end);
+  gnulib::close (child_end);
 
   if (proc_pid < 0)
     {
-      ::close (parent_end);
+      gnulib::close (parent_end);
       return 0;
     }
 
@@ -176,7 +171,7 @@ octave_procbuf::close (void)
   open_p = false;
 
   return this;
-  
+
 #elif defined (HAVE_SYS_WAIT_H)
 
   if (f)
@@ -186,27 +181,27 @@ octave_procbuf::close (void)
       int status = -1;
 
       for (octave_procbuf **ptr = &octave_procbuf_list;
-	   *ptr != 0;
-	   ptr = &(*ptr)->next)
-	{
-	  if (*ptr == this)
-	    {
-	      *ptr = (*ptr)->next;
-	      status = 0;
-	      break;
-	    }
-	}
+           *ptr != 0;
+           ptr = &(*ptr)->next)
+        {
+          if (*ptr == this)
+            {
+              *ptr = (*ptr)->next;
+              status = 0;
+              break;
+            }
+        }
 
-      if (status == 0 && ::fclose (f) == 0)
-	{
-	  using namespace std;
+      if (status == 0 && gnulib::fclose (f) == 0)
+        {
+          using namespace std;
 
-	  do
-	    {
-	      wait_pid = octave_syscalls::waitpid (proc_pid, &wstatus, 0);
-	    }
-	  while (wait_pid == -1 && errno == EINTR);
-	}
+          do
+            {
+              wait_pid = octave_syscalls::waitpid (proc_pid, &wstatus, 0);
+            }
+          while (wait_pid == -1 && errno == EINTR);
+        }
 
       f = 0;
     }
@@ -221,9 +216,3 @@ octave_procbuf::close (void)
 
 #endif
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

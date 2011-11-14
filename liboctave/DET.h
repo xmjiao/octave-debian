@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008, 2009 Jaroslav Hajek
+Copyright (C) 2008-2011 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -33,14 +33,16 @@ base_det
 {
 public:
 
-  base_det (T c = 1, int e = 0) 
-    { 
-      c2 = xlog2 (c, e2); 
-      e2 += e; 
+  base_det (T c = 1, int e = 0)
+    : c2 (), e2 ()
+    {
+      c2 = xlog2 (c, e2);
+      e2 += e;
     }
 
-  base_det (T c, double e, double b) 
-    { 
+  base_det (T c, double e, double b)
+    : c2 (), e2 ()
+    {
       e *= xlog2 (b);
       e2 = e;
       c *= xexp2 (e - e2);
@@ -49,7 +51,7 @@ public:
       e2 += f;
     }
 
-  base_det (const base_det& a) : c2(a.c2), e2(a.e2) { }
+  base_det (const base_det& a) : c2 (a.c2), e2 (a.e2) { }
 
   base_det& operator = (const base_det& a)
     {

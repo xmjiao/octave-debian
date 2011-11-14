@@ -1,5 +1,4 @@
-## Copyright (C) 1993, 1998, 1999, 2000, 2002, 2003, 2005, 2006, 2007,
-##               2008, 2009 Auburn University.  All rights reserved.
+## Copyright (C) 1993-2011 Auburn University.  All rights reserved.
 ##
 ## This file is part of Octave.
 ##
@@ -18,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {[@var{u}, @var{h}, @var{nu}] =} krylov (@var{a}, @var{v}, @var{k}, @var{eps1}, @var{pflg})
+## @deftypefn {Function File} {[@var{u}, @var{h}, @var{nu}] =} krylov (@var{A}, @var{V}, @var{k}, @var{eps1}, @var{pflg})
 ## Construct an orthogonal basis @var{u} of block Krylov subspace
 ##
 ## @example
@@ -28,21 +27,21 @@
 ## @noindent
 ## Using Householder reflections to guard against loss of orthogonality.
 ##
-## If @var{v} is a vector, then @var{h} contains the Hessenberg matrix
+## If @var{V} is a vector, then @var{h} contains the Hessenberg matrix
 ## such that @code{a*u == u*h+rk*ek'}, in which @code{rk =
 ## a*u(:,k)-u*h(:,k)}, and @code{ek'} is the vector
 ## @code{[0, 0, @dots{}, 1]} of length @code{k}.  Otherwise, @var{h} is
 ## meaningless.
 ##
-## If @var{v} is a vector and @var{k} is greater than
+## If @var{V} is a vector and @var{k} is greater than
 ## @code{length(A)-1}, then @var{h} contains the Hessenberg matrix such
 ## that @code{a*u == u*h}.
 ##
-## The value of @var{nu} is the dimension of the span of the krylov
+## The value of @var{nu} is the dimension of the span of the Krylov
 ## subspace (based on @var{eps1}).
 ##
 ## If @var{b} is a vector and @var{k} is greater than @var{m-1}, then
-## @var{h} contains the Hessenberg decomposition of @var{a}.
+## @var{h} contains the Hessenberg decomposition of @var{A}.
 ##
 ## The optional parameter @var{eps1} is the threshold for zero.  The
 ## default value is 1e-12.
@@ -50,9 +49,9 @@
 ## If the optional parameter @var{pflg} is nonzero, row pivoting is used
 ## to improve numerical behavior.  The default value is 0.
 ##
-## Reference: Hodel and Misra, "Partial Pivoting in the Computation of
-## Krylov Subspaces", to be submitted to Linear Algebra and its
-## Applications
+## Reference: A. Hodel, P. Misra, @cite{Partial Pivoting in the Computation of
+## Krylov Subspaces of Large Sparse Systems}, Proceedings of the 42nd IEEE
+## Conference on Decision and Control, December 2003.
 ## @end deftypefn
 
 ## Author: A. Scottedward Hodel <a.s.hodel@eng.auburn.edu>
@@ -60,7 +59,7 @@
 function [Uret, H, nu] = krylov (A, V, k, eps1, pflg);
 
   if (isa (A, "single") || isa (V, "single"))
-    defeps = 1e-6
+    defeps = 1e-6;
   else
     defeps = 1e-12;
   endif
@@ -81,19 +80,19 @@ function [Uret, H, nu] = krylov (A, V, k, eps1, pflg);
     eps1 = defeps;
   endif
 
-  na = issquare (A);
-  if (! na)
-    error ("A(%d x %d) must be square", rows (A), columns (A));
+  if (! issquare (A) || isempty (A))
+    error ("krylov: A(%d x %d) must be a non-empty square matrix", rows (A), columns (A));
   endif
+  na = rows (A);
 
   [m, kb] = size (V);
   if (m != na)
-    error("A(%d x %d), V(%d x %d): argument dimensions do not match",
-	  na, na, m, kb)
+    error ("krylov: A(%d x %d), V(%d x %d): argument dimensions do not match",
+          na, na, m, kb);
   endif
 
   if (! isscalar (k))
-    error ("krylov: third argument must be a scalar integer");
+    error ("krylov: K must be a scalar integer");
   endif
 
   Vnrm = norm (V, Inf);
@@ -130,18 +129,18 @@ function [Uret, H, nu] = krylov (A, V, k, eps1, pflg);
       short_q = q(short_pv);
 
       if (norm (short_q) < eps1)
-	## Insignificant column; delete.
+        ## Insignificant column; delete.
         nv = columns (V);
         if (jj != nv)
           [V(:,jj), V(:,nv)] = swap (V(:,jj), V(:,nv));
-	  ## FIXME -- H columns should be swapped too.  Not done
-	  ## since Block Hessenberg structure is lost anyway.
+          ## FIXME -- H columns should be swapped too.  Not done
+          ## since Block Hessenberg structure is lost anyway.
         endif
         V = V(:,1:(nv-1));
-	## One less reflection.
+        ## One less reflection.
         nu--;
       else
-	## New householder reflection.
+        ## New householder reflection.
         if (pflg)
           ## Locate max magnitude element in short_q.
           asq = abs (short_q);
@@ -149,15 +148,15 @@ function [Uret, H, nu] = krylov (A, V, k, eps1, pflg);
           maxidx = find (asq == maxv, 1);
           pivot_idx = short_pv(maxidx);
 
-	  ## See if need to change the pivot list.
+          ## See if need to change the pivot list.
           if (pivot_idx != pivot_vec(nu))
             swapidx = maxidx + (nu-1);
             [pivot_vec(nu), pivot_vec(swapidx)] = ...
-		swap (pivot_vec(nu), pivot_vec(swapidx));
+                swap (pivot_vec(nu), pivot_vec(swapidx));
           endif
         endif
 
-	## Isolate portion of vector for reflection.
+        ## Isolate portion of vector for reflection.
         idx = pivot_vec(nu:na);
         jdx = pivot_vec(1:nu);
 
@@ -168,7 +167,7 @@ function [Uret, H, nu] = krylov (A, V, k, eps1, pflg);
         ## Reduce V per the reflection.
         V(idx,:) = V(idx,:) - av*hv*(hv' * V(idx,:));
         if(iter > 1)
-	  ## FIXME -- not done correctly for block case.
+          ## FIXME -- not done correctly for block case.
           H(nu,nu-1) = V(pivot_vec(nu),jj);
         endif
 
@@ -182,10 +181,10 @@ function [Uret, H, nu] = krylov (A, V, k, eps1, pflg);
       ## Trim to size.
       V = V(:,1:na);
     elseif (columns(V) > na)
-      krylov_V = V
-      krylov_na = na
-      krylov_length_alpha = length (alpha)
-      error ("This case should never happen; submit a bug report");
+      krylov_V = V;
+      krylov_na = na;
+      krylov_length_alpha = length (alpha);
+      error ("krylov: this case should never happen; submit a bug report");
     endif
 
     if (columns (V) > 0)
@@ -233,7 +232,15 @@ function [Uret, H, nu] = krylov (A, V, k, eps1, pflg);
   Uret = U;
   if (max (max (abs (Uret(zidx,:)))) > 0)
     warning ("krylov: trivial null space corrupted; set pflg = 1 or eps1 > %e",
-	     eps1);
+             eps1);
   endif
+
+endfunction
+
+
+function [a1, b1] = swap (a, b)
+
+  a1 = b;
+  b1 = a;
 
 endfunction

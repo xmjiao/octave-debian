@@ -1,4 +1,4 @@
-## Copyright (C) 2007, 2009 Kai Habel
+## Copyright (C) 2007-2011 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -46,12 +46,12 @@ function spinmap (t, inc)
   while (etime (clock, t0) < t)
     for n = 1:inc:clen
       newmap = shift (cmap, n, 1);
-      set (gcf (), "colormap", newmap)
+      set (gcf (), "colormap", newmap);
       drawnow ();
     endfor
   endwhile
 
-  set (gcf (), "colormap", cmap)
+  set (gcf (), "colormap", cmap);
 
 endfunction
 

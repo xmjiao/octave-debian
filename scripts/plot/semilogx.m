@@ -1,5 +1,4 @@
-## Copyright (C) 1993, 1994, 1995, 1996, 1997, 1999, 2000, 2002, 2004,
-##               2005, 2006, 2007 John W. Eaton
+## Copyright (C) 1993-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -18,9 +17,14 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} semilogx (@var{args})
-## Produce a two-dimensional plot using a log scale for the @var{x}
-## axis.  See the description of @code{plot} for a description of the
+## @deftypefn  {Function File} {} semilogx (@var{y})
+## @deftypefnx {Function File} {} semilogx (@var{x}, @var{y})
+## @deftypefnx {Function File} {} semilogx (@var{x}, @var{y}, @var{property}, @var{value}, @dots{})
+## @deftypefnx {Function File} {} semilogx (@var{x}, @var{y}, @var{fmt})
+## @deftypefnx {Function File} {} semilogx (@var{h}, @dots{})
+## @deftypefnx {Function File} {@var{h} =} semilogx (@dots{})
+## Produce a two-dimensional plot using a logarithmic scale for the @var{x}
+## axis.  See the documentation of @code{plot} for a description of the
 ## arguments that @code{semilogx} will accept.
 ## @seealso{plot, semilogy, loglog}
 ## @end deftypefn
@@ -29,7 +33,11 @@
 
 function retval = semilogx (varargin)
 
-  [h, varargin] = __plt_get_axis_arg__ ("semilogx", varargin{:});
+  [h, varargin, nargs] = __plt_get_axis_arg__ ("semilogx", varargin{:});
+
+  if (nargs < 1)
+    print_usage();
+  endif
 
   oldh = gca ();
   unwind_protect
@@ -37,6 +45,9 @@ function retval = semilogx (varargin)
     newplot ();
 
     set (h, "xscale", "log");
+    if (any( strcmp (get (gca, "nextplot"), {"new", "replace"})))
+      set (h, "xminortick", "on");
+    endif
 
     tmp = __plt__ ("semilogx", h, varargin{:});
 

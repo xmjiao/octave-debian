@@ -1,4 +1,4 @@
-## Copyright (C) 2007, 2008, 2009 Kai Habel
+## Copyright (C) 2007-2011 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -17,11 +17,12 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} pcolor (@var{x}, @var{y}, @var{c})
+## @deftypefn  {Function File} {} pcolor (@var{x}, @var{y}, @var{c})
 ## @deftypefnx {Function File} {} pcolor (@var{c})
 ## Density plot for given matrices @var{x}, and @var{y} from @code{meshgrid} and
 ## a matrix @var{c} corresponding to the @var{x} and @var{y} coordinates of
-## the mesh's vertices.  If @var{x} and @var{y} are vectors, then a typical vertex
+## the mesh's vertices.  If @var{x} and @var{y} are vectors, then a typical
+## vertex
 ## is (@var{x}(j), @var{y}(i), @var{c}(i,j)).  Thus, columns of @var{c}
 ## correspond to different @var{x} values and rows of @var{c} correspond
 ## to different @var{y} values.
@@ -32,7 +33,7 @@
 ## parent axis.
 ##
 ## The face color of each cell of the mesh is determined by interpolating
-## the values of @var{c} for the cell's vertices.  Contrast this with 
+## the values of @var{c} for the cell's vertices.  Contrast this with
 ## @code{imagesc} which renders one cell for each element of @var{c}.
 ##
 ## @code{shading} modifies an attribute determining the manner by which the
@@ -69,7 +70,7 @@ function h = pcolor (x, y, c)
 
   set (tmp, "facecolor", "flat");
   set (ax, "box", "on");
-  
+
   if (! ishold ())
     set (ax, "view", [0, 90]);
   endif

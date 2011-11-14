@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2000, 2002, 2003, 2004, 2005,
-              2006, 2007, 2008 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -25,6 +24,7 @@ along with Octave; see the file COPYING.  If not, see
 #define octave_ComplexRowVector_h 1
 
 #include "MArray.h"
+#include "dRowVector.h"
 
 #include "mx-defs.h"
 
@@ -36,17 +36,25 @@ friend class ComplexColumnVector;
 
 public:
 
-  ComplexRowVector (void) : MArray<Complex> () { }
+ ComplexRowVector (void) : MArray<Complex> (dim_vector (1, 0)) { }
 
-  explicit ComplexRowVector (octave_idx_type n) : MArray<Complex> (n) { }
+  explicit ComplexRowVector (octave_idx_type n)
+    : MArray<Complex> (dim_vector (1, n)) { }
 
-  ComplexRowVector (octave_idx_type n, const Complex& val) : MArray<Complex> (n, val) { }
+  explicit ComplexRowVector (const dim_vector& dv) : MArray<Complex> (dv) { }
+
+  ComplexRowVector (octave_idx_type n, const Complex& val)
+    : MArray<Complex> (dim_vector (1, n), val) { }
 
   ComplexRowVector (const ComplexRowVector& a) : MArray<Complex> (a) { }
 
-  ComplexRowVector (const MArray<Complex>& a) : MArray<Complex> (a) { }
+  ComplexRowVector (const MArray<Complex>& a)
+    : MArray<Complex> (a.as_row ()) { }
 
-  explicit ComplexRowVector (const RowVector& a);
+  ComplexRowVector (const Array<Complex>& a)
+    : MArray<Complex> (a.as_row ()) { }
+
+  explicit ComplexRowVector (const RowVector& a) : MArray<Complex> (a) { }
 
   ComplexRowVector& operator = (const ComplexRowVector& a)
     {
@@ -89,18 +97,12 @@ public:
   // row vector by matrix -> row vector
 
   friend ComplexRowVector operator * (const ComplexRowVector& a,
-				      const ComplexMatrix& b);
+                                      const ComplexMatrix& b);
 
   friend ComplexRowVector operator * (const RowVector& a,
-				      const ComplexMatrix& b);
+                                      const ComplexMatrix& b);
 
   // other operations
-
-  typedef double (*dmapper) (const Complex&);
-  typedef Complex (*cmapper) (const Complex&);
-
-  RowVector map (dmapper fcn) const;
-  ComplexRowVector map (cmapper fcn) const;
 
   Complex min (void) const;
   Complex max (void) const;
@@ -110,9 +112,15 @@ public:
   friend std::ostream& operator << (std::ostream& os, const ComplexRowVector& a);
   friend std::istream& operator >> (std::istream& is, ComplexRowVector& a);
 
-private:
+  void resize (octave_idx_type n,
+               const Complex& rfv = Array<Complex>::resize_fill_value ())
+  {
+    Array<Complex>::resize (dim_vector (1, n), rfv);
+  }
 
-  ComplexRowVector (Complex *d, octave_idx_type l) : MArray<Complex> (d, l) { }
+  void clear (octave_idx_type n)
+    { Array<Complex>::clear (1, n); }
+
 };
 
 // row vector by column vector -> scalar
@@ -128,9 +136,3 @@ OCTAVE_API ComplexRowVector linspace (const Complex& x1, const Complex& x2, octa
 MARRAY_FORWARD_DEFS (MArray, ComplexRowVector, Complex)
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

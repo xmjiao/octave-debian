@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1999, 2000, 2004, 2005, 2006, 2007, 2008, 2009
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -38,29 +37,29 @@ along with Octave; see the file COPYING.  If not, see
 
 DEFUN_DLD (hess, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Loadable Function} {@var{h} =} hess (@var{a})\n\
-@deftypefnx {Loadable Function} {[@var{p}, @var{h}] =} hess (@var{a})\n\
+@deftypefn  {Loadable Function} {@var{H} =} hess (@var{A})\n\
+@deftypefnx {Loadable Function} {[@var{P}, @var{H}] =} hess (@var{A})\n\
 @cindex Hessenberg decomposition\n\
-Compute the Hessenberg decomposition of the matrix @var{a}.\n\
+Compute the Hessenberg decomposition of the matrix @var{A}.\n\
 \n\
-The Hessenberg decomposition is usually used as the first step in an\n\
-eigenvalue computation, but has other applications as well (see Golub,\n\
-Nash, and Van Loan, IEEE Transactions on Automatic Control, 1979).  The\n\
-Hessenberg decomposition is\n\
-@iftex\n\
+The Hessenberg decomposition is\n\
 @tex\n\
 $$\n\
 A = PHP^T\n\
 $$\n\
-where $P$ is a square unitary matrix ($P^HP = I$), and $H$\n\
+where $P$ is a square unitary matrix ($P^TP = I$), and $H$\n\
 is upper Hessenberg ($H_{i,j} = 0, \\forall i \\ge j+1$).\n\
 @end tex\n\
-@end iftex\n\
 @ifnottex\n\
-@code{p * h * p' = a} where @code{p} is a square unitary matrix\n\
-(@code{p' * p = I}, using complex-conjugate transposition) and @code{h}\n\
-is upper Hessenberg (@code{i >= j+1 => h (i, j) = 0}).\n\
+@code{@var{P} * @var{H} * @var{P}' = @var{A}} where @var{P} is a square\n\
+unitary matrix (@code{@var{P}' * @var{P} = I}, using complex-conjugate\n\
+transposition) and @var{H} is upper Hessenberg\n\
+(@code{@var{H}(i, j) = 0 forall i >= j+1)}.\n\
 @end ifnottex\n\
+\n\
+The Hessenberg decomposition is usually used as the first step in an\n\
+eigenvalue computation, but has other applications as well (see Golub,\n\
+Nash, and Van Loan, IEEE Transactions on Automatic Control, 1979).\n\
 @end deftypefn")
 {
   octave_value_list retval;
@@ -94,60 +93,80 @@ is upper Hessenberg (@code{i >= j+1 => h (i, j) = 0}).\n\
   if (arg.is_single_type ())
     {
       if (arg.is_real_type ())
-	{
-	 FloatMatrix tmp = arg.float_matrix_value ();
+        {
+         FloatMatrix tmp = arg.float_matrix_value ();
 
-	  if (! error_state)
-	    {
-	      FloatHESS result (tmp);
+          if (! error_state)
+            {
+              FloatHESS result (tmp);
 
-	      retval(1) = result.hess_matrix ();
-	      retval(0) = result.unitary_hess_matrix ();
-	    }
-	}
+              if (nargout <= 1)
+                retval(0) = result.hess_matrix ();
+              else
+                {
+                  retval(1) = result.hess_matrix ();
+                  retval(0) = result.unitary_hess_matrix ();
+                }
+            }
+        }
       else if (arg.is_complex_type ())
-	{
-	  FloatComplexMatrix ctmp = arg.float_complex_matrix_value ();
+        {
+          FloatComplexMatrix ctmp = arg.float_complex_matrix_value ();
 
-	  if (! error_state)
-	    {
-	      FloatComplexHESS result (ctmp);
+          if (! error_state)
+            {
+              FloatComplexHESS result (ctmp);
 
-	      retval(1) = result.hess_matrix ();
-	      retval(0) = result.unitary_hess_matrix ();
-	    }
-	}
+              if (nargout <= 1)
+                retval(0) = result.hess_matrix ();
+              else
+                {
+                  retval(1) = result.hess_matrix ();
+                  retval(0) = result.unitary_hess_matrix ();
+                }
+            }
+        }
     }
   else
     {
       if (arg.is_real_type ())
-	{
-	  Matrix tmp = arg.matrix_value ();
+        {
+          Matrix tmp = arg.matrix_value ();
 
-	  if (! error_state)
-	    {
-	      HESS result (tmp);
+          if (! error_state)
+            {
+              HESS result (tmp);
 
-	      retval(1) = result.hess_matrix ();
-	      retval(0) = result.unitary_hess_matrix ();
-	    }
-	}
+              if (nargout <= 1)
+                retval(0) = result.hess_matrix ();
+              else
+                {
+                  retval(1) = result.hess_matrix ();
+                  retval(0) = result.unitary_hess_matrix ();
+                }
+            }
+        }
       else if (arg.is_complex_type ())
-	{
-	  ComplexMatrix ctmp = arg.complex_matrix_value ();
+        {
+          ComplexMatrix ctmp = arg.complex_matrix_value ();
 
-	  if (! error_state)
-	    {
-	      ComplexHESS result (ctmp);
+          if (! error_state)
+            {
+              ComplexHESS result (ctmp);
 
-	      retval(1) = result.hess_matrix ();
-	      retval(0) = result.unitary_hess_matrix ();
-	    }
-	}
+              if (nargout <= 1)
+                retval(0) = result.hess_matrix ();
+              else
+                {
+                  retval(1) = result.hess_matrix ();
+                  retval(0) = result.unitary_hess_matrix ();
+                }
+            }
+        }
       else
-	{
-	  gripe_wrong_type_arg ("hess", arg);
-	}
+        {
+          gripe_wrong_type_arg ("hess", arg);
+        }
     }
 
   return retval;
@@ -169,10 +188,4 @@ is upper Hessenberg (@code{i >= j+1 => h (i, j) = 0}).\n\
 %!error <Invalid call to hess.*> hess ([1, 2; 3, 4], 2);
 %!error hess ([1, 2; 3, 4; 5, 6]);
 
-*/
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
 */

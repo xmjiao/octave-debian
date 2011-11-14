@@ -1,4 +1,4 @@
-## Copyright (C) 1996, 1997, 1998, 2000, 2002, 2005, 2007 Kurt Hornik
+## Copyright (C) 1996-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -33,7 +33,7 @@ function inv = empirical_inv (x, data)
   endif
 
   if (! isvector (data))
-    error ("empirical_inv: data must be a vector");
+    error ("empirical_inv: DATA must be a vector");
   endif
 
   inv = discrete_inv (x, data, ones (size (data)) / length (data));

@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 1999, 2000, 2002, 2003, 2005,
-##               2006, 2007, 2008, 2009 John W. Eaton
+## Copyright (C) 1995-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -18,9 +17,9 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} subplot (@var{rows}, @var{cols}, @var{index})
+## @deftypefn  {Function File} {} subplot (@var{rows}, @var{cols}, @var{index})
 ## @deftypefnx {Function File} {} subplot (@var{rcn})
-## Set up a plot grid with @var{cols} by @var{rows} subwindows and plot
+## Set up a plot grid with @var{rows} by @var{cols} subwindows and plot
 ## in location given by @var{index}.
 ##
 ## If only one argument is supplied, then it must be a three digit value
@@ -42,10 +41,9 @@
 ## \vskip 10pt
 ## @end tex
 ## @ifnottex
-## @display
+##
 ## @example
 ## @group
-##
 ## +-----+-----+-----+
 ## |  1  |  2  |  3  |
 ## +-----+-----+-----+
@@ -53,57 +51,80 @@
 ## +-----+-----+-----+
 ## @end group
 ## @end example
-## @end display
+##
+## @var{index} may be a vector.  In which case, the new axis will enclose
+## the grid locations specified.  The first demo illustrates an example:
+##
+## @example
+## @code{demo ("subplot", 1)}
+## @end example
+##
 ## @end ifnottex
-## @seealso{plot}
+## @seealso{axes, plot}
 ## @end deftypefn
 
 ## Author: Vinayak Dutt <Dutt.Vinayak@mayo.EDU>
 ## Adapted-By: jwe
 
-function h = subplot (rows, columns, index)
+function h = subplot (rows, cols, index, varargin)
 
-  if (nargin != 3 && nargin != 1)
+  align_axes = false;
+  replace_axes = false;
+
+  if (! (nargin >= 3) && nargin != 1)
     print_usage ();
+  elseif (nargin > 3)
+    for n = 1:numel(varargin)
+      switch lower(varargin{n})
+      case "align"
+        align_axes = true;
+      case "replace"
+        replace_axes = true;
+      otherwise
+        print_usage ();
+      endswitch
+    endfor
   endif
 
   if (nargin == 1)
 
     if (! (isscalar (rows) && rows >= 0))
-      error ("subplot: input rcn has to be a positive scalar");
+      error ("subplot: input RCN has to be a positive scalar");
     endif
 
     tmp = rows;
     index = rem (tmp, 10);
     tmp = (tmp - index) / 10;
-    columns = rem (tmp, 10);
-    tmp = (tmp - columns) / 10;
+    cols = rem (tmp, 10);
+    tmp = (tmp - cols) / 10;
     rows = rem (tmp, 10);
 
-  elseif (! (isscalar (columns) && isscalar (rows)))
-    error ("subplot: columns, and rows must be scalars");
-  elseif (any (index < 1) || any (index > rows*columns))
-    error ("subplot: index value must be greater than 1 and less than rows*columns")
+  elseif (! (isscalar (cols) && isscalar (rows)))
+    error ("subplot: COLS, and ROWS must be scalars");
+  elseif (any (index < 1) || any (index > rows*cols))
+    error ("subplot: INDEX value must be greater than 1 and less than ROWS*COLS");
   endif
 
-  columns = round (columns);
+  cols = round (cols);
   rows = round (rows);
   index = round (index);
 
-  if (index > columns*rows)
-    error ("subplot: index must be less than columns*rows");
+  if (index > cols*rows)
+    error ("subplot: INDEX must be less than COLS*ROWS");
   endif
 
-  if (columns < 1 || rows < 1 || index < 1)
-    error ("subplot: columns,rows,index must be be positive");
+  if (cols < 1 || rows < 1 || index < 1)
+    error ("subplot: COLS,ROWS,INDEX must be be positive");
   endif
 
-  units = get (0, "defaultaxesunits");
+  axesunits = get (0, "defaultaxesunits");
+  cf = gcf ();
+  figureunits = get (cf, "units");
   unwind_protect
-    set (0, "defaultaxesunits", "normalized")
-    pos = subplot_position (rows, columns, index, "position", units);
-
-    cf = gcf ();
+    units = "normalized";
+    set (0, "defaultaxesunits", units);
+    set (cf, "units", "pixels");
+    pos = subplot_position (rows, cols, index, "position");
 
     set (cf, "nextplot", "add");
 
@@ -119,30 +140,30 @@ function h = subplot (rows, columns, index)
       endif
       if (strcmp (get (child, "type"), "axes"))
         ## Skip legend and colorbar objects.
-        if (strcmp (get (child, "tag"), "legend") || 
-	    strcmp (get (child, "tag"), "colorbar"))
+        if (strcmp (get (child, "tag"), "legend")
+            || strcmp (get (child, "tag"), "colorbar"))
           continue;
         endif
         objpos = get (child, "position");
-        if (all (objpos == pos))
-	  ## If the new axes are in exactly the same position as an
-	  ## existing axes object, use the existing axes.
-	  found = true;
-	  tmp = child;
+        if (all (objpos == pos) && ! replace_axes)
+          ## If the new axes are in exactly the same position as an
+          ## existing axes object, use the existing axes.
+          found = true;
+          tmp = child;
         else
-	  ## If the new axes overlap an old axes object, delete the old
-	  ## axes.
-	  x0 = pos(1);
-	  x1 = x0 + pos(3);
-	  y0 = pos(2);
-	  y1 = y0 + pos(4);	
-	  objx0 = objpos(1);
-	  objx1 = objx0 + objpos(3);
-	  objy0 = objpos(2);
-	  objy1 = objy0 + objpos(4);
-	  if (! (x0 >= objx1 || x1 <= objx0 || y0 >= objy1 || y1 <= objy0))
-	    delete (child);
-	  endif
+          ## If the new axes overlap an old axes object, delete the old
+          ## axes.
+          x0 = pos(1);
+          x1 = x0 + pos(3);
+          y0 = pos(2);
+          y1 = y0 + pos(4);
+          objx0 = objpos(1);
+          objx1 = objx0 + objpos(3);
+          objy0 = objpos(2);
+          objy1 = objy0 + objpos(4);
+          if (! (x0 >= objx1 || x1 <= objx0 || y0 >= objy1 || y1 <= objy0))
+            delete (child);
+          endif
         endif
       endif
     endfor
@@ -150,13 +171,18 @@ function h = subplot (rows, columns, index)
     if (found)
       set (cf, "currentaxes", tmp);
     else
-      pos = subplot_position (rows, columns, index, "outerposition", units);
-      pos2 = subplot_position (rows, columns, index, "position", units);
-      tmp = axes ("outerposition", pos, "position", pos2);
+      outpos = subplot_position (rows, cols, index, "outerposition");
+      tmp = axes ("looseinset", [0 0 0 0], "box", "off",
+                  "outerposition", outpos, "position", pos);
+    endif
+
+    if (align_axes || strcmp (get (cf, "__graphics_toolkit__"), "gnuplot"))
+      set (tmp, "activepositionproperty", "position");
     endif
 
   unwind_protect_cleanup
-    set (0, "defaultaxesunits", units);
+    set (0, "defaultaxesunits", axesunits);
+    set (cf, "units", figureunits);
   end_unwind_protect
 
   if (nargout > 0)
@@ -165,50 +191,60 @@ function h = subplot (rows, columns, index)
 
 endfunction
 
-function pos = subplot_position (rows, columns, index, position_property, units)
+function pos = subplot_position (rows, cols, index, position_property)
 
-  ## For 1 row and 1 column return the usual default.
-  if (rows == 1 && columns == 1)
+  defaultaxesposition = get (0, "defaultaxesposition");
+  defaultaxesouterposition = get (0, "defaultaxesouterposition");
+
+  if (rows == 1 && cols == 1)
+    ## Trivial result for subplot (1,1,1)
     if (strcmpi (position_property, "position"))
-      pos = get (0, "defaultaxesposition");
+      pos = defaultaxesposition;
     else
-      pos = get (0, "defaultaxesouterposition");
+      pos = defaultaxesouterposition;
     endif
     return
   endif
 
-  ## This produces compatible behavior for the "position" property.
-  margins.left   = 0.130;
-  margins.right  = 0.095;
-  margins.top    = 0.075;
-  margins.bottom = 0.110;
+  ## The outer margins surrounding all subplot "positions" are independent of
+  ## the number of rows and/or columns
+  margins.left   = defaultaxesposition(1);
+  margins.bottom = defaultaxesposition(2);
+  margins.right  = 1.0 - margins.left - defaultaxesposition(3);
+  margins.top    = 1.0 - margins.bottom - defaultaxesposition(4);
+
+  ## Fit from Matlab experiments
   pc = 1 ./ [0.1860, (margins.left + margins.right - 1)];
-  margins.column = 1 ./ polyval (pc , columns);
+  margins.column = 1 ./ polyval (pc , cols);
   pr = 1 ./ [0.2282, (margins.top + margins.bottom - 1)];
   margins.row    = 1 ./ polyval (pr , rows);
 
-  ## Calculate the width/height of the subplot axes.
-  width = 1 - margins.left - margins.right - (columns-1)*margins.column;
-  width = width / columns;
+  ## Calculate the width/height of the subplot axes "position".
+  ## This is also consistent with Matlab
+  width = 1 - margins.left - margins.right - (cols-1)*margins.column;
+  width = width / cols;
   height = 1 - margins.top - margins.bottom - (rows-1)*margins.row;
   height = height / rows;
 
   if (strcmp (position_property, "outerposition") )
-    ## Calculate the outerposition/position inset
+    ## Calculate the inset of the position relative to the outerposition
+    ## The outerpositions are assumed to be tiled. Matlab's implementation
+    ## has outerposition overlap.
     if (rows > 1)
-      inset.top    = 8/420;
-      inset.bottom = max (polyval ([0.1382,-0.0026], height), 16/420);
+      ## Title on top and xlabel & xticks on bottom
+      inset.top = margins.row * (1/3);
+      inset.bottom = margins.row * (2/3);
+      ## Matlab behavior is approximately ...
+      % inset.bottom = margins.row;
     else
       inset.bottom = margins.bottom;
       inset.top = margins.top;
     endif
-    if (columns > 1)
-      if (strcmpi (units, "normalized"))
-        inset.right = max (polyval ([0.1200,-0.0014], width), 5/560);
-      else
-        inset.right = max (polyval ([0.1252,-0.0023], width), 5/560);
-      endif
-      inset.left   = 22/560;
+    if (cols > 1)
+      ## ylabel & yticks on left and some overhang for xticks on right
+      x = 0.1;
+      inset.right = x * margins.column;
+      inset.left = (1 - x) * margins.column;
     else
       inset.left  = margins.left;
       inset.right = margins.right;
@@ -220,25 +256,30 @@ function pos = subplot_position (rows, columns, index, position_property, units)
     height = height + inset.top + inset.bottom;
   endif
 
-  yp = fix ((index(:)-1)/columns);
-  xp = index(:) - yp*columns - 1;
-  yp = (rows - 1) - yp;
+  ## Index offsets from the lower left subplot
+  yi = fix ((index(:)-1)/cols);
+  xi = index(:) - yi*cols - 1;
+  yi = (rows - 1) - yi;
 
-  x0 = xp .* (width + margins.column) + margins.left;
-  y0 = yp .* (height + margins.row) + margins.bottom;
+  ## Lower left corner of the subplot, i.e. position(1:2)
+  x0 = xi .* (width + margins.column) + margins.left;
+  y0 = yi .* (height + margins.row) + margins.bottom;
 
   if (strcmp (position_property, "outerposition") )
+    ## Shift from position(1:2) to outerposition(1:2)
     x0 = x0 - inset.left;
     y0 = y0 - inset.bottom;
   endif
 
   if (numel(x0) > 1)
-    x1 = max (x0) + width;
-    y1 = max (y0) + height;
-    x0 = min (x0);
-    y0 = min (y0);
+    ## subplot (row, col, m:n)
+    x1 = max (x0(:)) + width;
+    y1 = max (y0(:)) + height;
+    x0 = min (x0(:));
+    y0 = min (y0(:));
     pos = [x0, y0, x1-x0, y1-y0];
   else
+    ## subplot (row, col, num)
     pos = [x0, y0, width, height];
   endif
 
@@ -263,4 +304,20 @@ endfunction
 %! title (sprintf ("title #%d:%d", 1, 3))
 %! text (0.5, 0.5, sprintf('subplot(%d,%d,%d:%d)', r, c, 1, 3), fmt{:})
 %! axis ([0 1 0 1])
+
+%!demo
+%! clf
+%! x = 0:1;
+%! for n = 1:4
+%!   subplot (2, 2, n, "align")
+%!   plot (x, x)
+%!   xlabel (sprintf ("xlabel (2,2,%d)", n))
+%!   ylabel (sprintf ("ylabel (2,2,%d)", n))
+%!   title (sprintf ("title (2,2,%d)", n))
+%! endfor
+%! subplot (1, 2, 1, "align")
+%! plot (x, x)
+%! xlabel ("xlabel (1,2,1)")
+%! ylabel ("ylabel (1,2,1)")
+%! title ("title (1,2,1)")
 

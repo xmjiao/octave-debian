@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 2005, 2006, 2007 David Bateman
-Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005 Andy Adler
+Copyright (C) 2005-2011 David Bateman
+Copyright (C) 1998-2005 Andy Adler
 
 This file is part of Octave.
 
@@ -50,27 +50,21 @@ chol2inv (const SparseMatrix& r)
       SparseMatrix rinv;
 
       if (typ == MatrixType::Upper)
-	{
-	  rinv = r.inverse(mattype, info, rcond, true, false);
-	  retval = rinv.transpose() * rinv;
-	}
+        {
+          rinv = r.inverse(mattype, info, rcond, true, false);
+          retval = rinv.transpose() * rinv;
+        }
       else if (typ == MatrixType::Lower)
-	{
-	  rinv = r.transpose().inverse(mattype, info, rcond, true, false);
-	  retval = rinv.transpose() * rinv;
-	}
+        {
+          rinv = r.transpose().inverse(mattype, info, rcond, true, false);
+          retval = rinv.transpose() * rinv;
+        }
       else
-	(*current_liboctave_error_handler) 
-	  ("spchol2inv requires triangular matrix");
+        (*current_liboctave_error_handler)
+          ("spchol2inv requires triangular matrix");
     }
   else
     (*current_liboctave_error_handler) ("spchol2inv requires square matrix");
 
   return retval;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,5 +1,4 @@
-## Copyright (C) 1996, 1997, 1998, 2000, 2002, 2005, 2006, 2007
-##               Kurt Hornik
+## Copyright (C) 1996-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -62,7 +61,7 @@ function [pval, z] = prop_test_2 (x1, n1, x2, n2, alt)
   endif
 
   if (! ischar (alt))
-    error ("prop_test_2: alt must be a string");
+    error ("prop_test_2: ALT must be a string");
   endif
   if (strcmp (alt, "!=") || strcmp (alt, "<>"))
     pval = 2 * min (cdf, 1 - cdf);

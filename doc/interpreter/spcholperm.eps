@@ -1,9 +1,9 @@
 %!PS-Adobe-2.0 EPSF-2.0
 %%Title: spcholperm.eps
-%%Creator: gnuplot 4.3 patchlevel 0
-%%CreationDate: Mon May 25 08:46:57 2009
+%%Creator: gnuplot 4.4 patchlevel 0
+%%CreationDate: Thu Sep 29 14:47:19 2011
 %%DocumentFonts: (atend)
-%%BoundingBox: 50 50 625 481
+%%BoundingBox: 50 50 410 302
 %%EndComments
 %%BeginProlog
 /gnudict 256 dict def
@@ -25,7 +25,7 @@ gnudict begin
 /userlinewidth gnulinewidth def
 /Gamma 1.0 def
 %
-/vshift -46 def
+/vshift -66 def
 /dl1 {
   10.0 Dashlength mul mul
   Rounded { currentlinewidth 0.75 mul sub dup 0 le { pop 0.01 } if } if
@@ -46,22 +46,24 @@ systemdict /pdfmark known not {
 SDict begin [
   /Title (spcholperm.eps)
   /Subject (gnuplot plot)
-  /Creator (gnuplot 4.3 patchlevel 0)
-  /Author (Jaroslav Hajek)
+  /Creator (gnuplot 4.4 patchlevel 0)
+  /Author (jwe)
 %  /Producer (gnuplot)
 %  /Keywords ()
-  /CreationDate (Mon May 25 08:46:57 2009)
+  /CreationDate (Thu Sep 29 14:47:19 2011)
   /DOCINFO pdfmark
 end
 } ifelse
 /doclip {
   ClipToBoundingBox {
-    newpath 50 50 moveto 625 50 lineto 625 481 lineto 50 481 lineto closepath
+    newpath 50 50 moveto 410 50 lineto 410 302 lineto 50 302 lineto closepath
     clip
   } if
 } def
 %
-% Gnuplot Prolog Version 4.2 (November 2007)
+% Gnuplot Prolog Version 4.4 (January 2010)
+%
+%/SuppressPDFMark true def
 %
 /M {moveto} bind def
 /L {lineto} bind def
@@ -466,7 +468,7 @@ doclip
 0.050 0.050 scale
 0 setgray
 newpath
-(Helvetica) findfont 140 scalefont setfont
+(Helvetica) findfont 200 scalefont setfont
 gsave % colour palette begin
 /maxcolors 64 def
 /HSV2RGB {  exch dup 0.0 eq {pop exch pop dup dup} % achromatic gray
@@ -530,7 +532,7 @@ gsave % colour palette begin
 	{pop 1} {maxcolors mul floor maxcolors 1 sub div} ifelse} if} def
 /pm3dGamma 1.0 1.5 Gamma mul div def
 /ColorSpace (RGB) def
-Color true and { % COLOUR vs. GRAY map
+Color InterpolatedColor or { % COLOUR vs. GRAY map
   InterpolatedColor { %% Interpolation vs. RGB-Formula
     /g {stroke pm3dround /grayv exch def interpolate
         SelectSpace setrgbcolor} bind def
@@ -543,529 +545,521 @@ Color true and { % COLOUR vs. GRAY map
 } ifelse
 0.500 UL
 LTb
-1475 7962 M
+780 4799 M
 88 0 V
-8833 0 R
+6031 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 1391 7962 M
-[ [(Helvetica) 120.0 0.0 true true 0 (0)]
-] -40.0 MRshow
+0.00 0.00 0.00 C 660 4799 M
+[ [({}) 200.0 0.0 true true 0 (0)]
+] -66.7 MRshow
 0.500 UL
 LTb
-1475 6212 M
+780 3705 M
 88 0 V
-8833 0 R
+6031 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 1391 6212 M
-[ [(Helvetica) 120.0 0.0 true true 0 (50)]
-] -40.0 MRshow
+0.00 0.00 0.00 C 660 3705 M
+[ [({}) 200.0 0.0 true true 0 (50)]
+] -66.7 MRshow
 0.500 UL
 LTb
-1475 4462 M
+780 2610 M
 88 0 V
-8833 0 R
+6031 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 1391 4462 M
-[ [(Helvetica) 120.0 0.0 true true 0 (100)]
-] -40.0 MRshow
+0.00 0.00 0.00 C 660 2610 M
+[ [({}) 200.0 0.0 true true 0 (100)]
+] -66.7 MRshow
 0.500 UL
 LTb
-1475 2713 M
+780 1516 M
 88 0 V
-8833 0 R
+6031 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 1391 2713 M
-[ [(Helvetica) 120.0 0.0 true true 0 (150)]
-] -40.0 MRshow
+0.00 0.00 0.00 C 660 1516 M
+[ [({}) 200.0 0.0 true true 0 (150)]
+] -66.7 MRshow
 0.500 UL
 LTb
-1475 963 M
+780 422 M
 88 0 V
-8833 0 R
+6031 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 1391 963 M
-[ [(Helvetica) 120.0 0.0 true true 0 (200)]
-] -40.0 MRshow
+0.00 0.00 0.00 C 660 422 M
+[ [({}) 200.0 0.0 true true 0 (200)]
+] -66.7 MRshow
 0.500 UL
 LTb
-1475 928 M
+780 400 M
 0 88 V
-0 6946 R
+0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 1475 788 M
-[ [(Helvetica) 120.0 0.0 true true 0 (0)]
-] -40.0 MCshow
+0.00 0.00 0.00 C 780 200 M
+[ [({}) 200.0 0.0 true true 0 (0)]
+] -66.7 MCshow
 0.500 UL
 LTb
-3694 928 M
+2302 400 M
 0 88 V
-0 6946 R
+0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 3694 788 M
-[ [(Helvetica) 120.0 0.0 true true 0 (50)]
-] -40.0 MCshow
+0.00 0.00 0.00 C 2302 200 M
+[ [({}) 200.0 0.0 true true 0 (50)]
+] -66.7 MCshow
 0.500 UL
 LTb
-5913 928 M
+3824 400 M
 0 88 V
-0 6946 R
+0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 5913 788 M
-[ [(Helvetica) 120.0 0.0 true true 0 (100)]
-] -40.0 MCshow
+0.00 0.00 0.00 C 3824 200 M
+[ [({}) 200.0 0.0 true true 0 (100)]
+] -66.7 MCshow
 0.500 UL
 LTb
-8132 928 M
+5346 400 M
 0 88 V
-0 6946 R
+0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 8132 788 M
-[ [(Helvetica) 120.0 0.0 true true 0 (150)]
-] -40.0 MCshow
+0.00 0.00 0.00 C 5346 200 M
+[ [({}) 200.0 0.0 true true 0 (150)]
+] -66.7 MCshow
 0.500 UL
 LTb
-10352 928 M
+6869 400 M
 0 88 V
-0 6946 R
+0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 10352 788 M
-[ [(Helvetica) 120.0 0.0 true true 0 (200)]
-] -40.0 MCshow
+0.00 0.00 0.00 C 6869 200 M
+[ [({}) 200.0 0.0 true true 0 (200)]
+] -66.7 MCshow
 0.500 UL
 LTb
 0.500 UL
 LTb
-1475 7962 N
-0 -7034 V
-8921 0 V
-0 7034 V
--8921 0 V
+780 4799 N
+780 400 L
+6119 0 V
+0 4399 V
+-6119 0 V
 Z stroke
 1.000 UP
 0.500 UL
 LTb
 % Begin plot #1
-2.000 UP
+0.667 UP
 0.500 UL
 LT0
-0.00 0.00 1.00 C 1519 7927 Star
-1564 7892 Star
-1608 7927 Star
-1608 7892 Star
-1608 7857 Star
-1653 7822 Star
-1697 7787 Star
-1741 7822 Star
-1741 7787 Star
-1741 7752 Star
-1786 7857 Star
-1786 7752 Star
-1786 7717 Star
-1830 7682 Star
-1874 7647 Star
-1919 7682 Star
-1919 7647 Star
-1919 7612 Star
-1963 7577 Star
-2008 7542 Star
-2052 7577 Star
-2052 7542 Star
-2052 7507 Star
-2096 7612 Star
-2096 7507 Star
-2096 7472 Star
-2141 7717 Star
-2141 7472 Star
-2141 7437 Star
-2185 7402 Star
-2230 7367 Star
-2274 7402 Star
-2274 7367 Star
-2274 7332 Star
-2318 7297 Star
-2363 7262 Star
-2407 7297 Star
-2407 7262 Star
-2407 7227 Star
-2451 7332 Star
-2451 7227 Star
-2451 7192 Star
-2496 7157 Star
-2540 7122 Star
-2585 7157 Star
-2585 7122 Star
-2585 7087 Star
-2629 7052 Star
-2673 7017 Star
-2718 7052 Star
-2718 7017 Star
-2718 6982 Star
-2762 7087 Star
-2762 6982 Star
-2762 6947 Star
-2806 7192 Star
-2806 6947 Star
-2806 6912 Star
-2851 7437 Star
-2851 6912 Star
-2851 6877 Star
-2895 6842 Star
-2940 6807 Star
-2984 6842 Star
-2984 6807 Star
-2984 6772 Star
-3028 6737 Star
-3073 6702 Star
-3117 6737 Star
-3117 6702 Star
-3117 6667 Star
-3162 6772 Star
-3162 6667 Star
-3162 6632 Star
-3206 6597 Star
-3250 6562 Star
-3295 6597 Star
-3295 6562 Star
-3295 6527 Star
-3339 6492 Star
-3383 6457 Star
-3428 6492 Star
-3428 6457 Star
-3428 6422 Star
-3472 6527 Star
-3472 6422 Star
-3472 6387 Star
-3517 6632 Star
-3517 6387 Star
-3517 6352 Star
-3561 6317 Star
-3605 6282 Star
-3650 6317 Star
-3650 6282 Star
-3650 6247 Star
-3694 6212 Star
-3739 6177 Star
-3783 6212 Star
-3783 6177 Star
-3783 6142 Star
-3827 6247 Star
-3827 6142 Star
-3827 6107 Star
-3872 6072 Star
-3916 6037 Star
-3960 6072 Star
-3960 6037 Star
-3960 6002 Star
-4005 5967 Star
-4049 5932 Star
-4094 5967 Star
-4094 5932 Star
-4094 5897 Star
-4138 6002 Star
-4138 5897 Star
-4138 5862 Star
-4182 6107 Star
-4182 5862 Star
-4182 5827 Star
-4227 6352 Star
-4227 5827 Star
-4227 5792 Star
-4271 6877 Star
-4271 5792 Star
-4271 5757 Star
-4316 5722 Star
-4360 5687 Star
-4404 5722 Star
-4404 5687 Star
-4404 5652 Star
-4449 5617 Star
-4493 5582 Star
-4537 5617 Star
-4537 5582 Star
-4537 5547 Star
-4582 5652 Star
-4582 5547 Star
-4582 5512 Star
-4626 5477 Star
-4671 5442 Star
-4715 5477 Star
-4715 5442 Star
-4715 5407 Star
-4759 5372 Star
-4804 5337 Star
-4848 5372 Star
-4848 5337 Star
-4848 5302 Star
-4892 5407 Star
-4892 5302 Star
-4892 5267 Star
-4937 5512 Star
-4937 5267 Star
-4937 5232 Star
-4981 5197 Star
-5026 5162 Star
-5070 5197 Star
-5070 5162 Star
-5070 5127 Star
-5114 5092 Star
-5159 5057 Star
-5203 5092 Star
-5203 5057 Star
-5203 5022 Star
-5248 5127 Star
-5248 5022 Star
-5248 4987 Star
-5292 4952 Star
-5336 4917 Star
-5381 4952 Star
-5381 4917 Star
-5381 4882 Star
-5425 4847 Star
-5469 4812 Star
-5514 4847 Star
-5514 4812 Star
-5514 4777 Star
-5558 4882 Star
-5558 4777 Star
-5558 4742 Star
-5603 4987 Star
-5603 4742 Star
-5603 4707 Star
-5647 5232 Star
-5647 4707 Star
-5647 4672 Star
-5691 4637 Star
-5736 4602 Star
-5780 4637 Star
-5780 4602 Star
-5780 4567 Star
-5825 4532 Star
-5869 4497 Star
-5913 4532 Star
-5913 4497 Star
-5913 4462 Star
-5958 4567 Star
-5958 4462 Star
-5958 4428 Star
-6002 4393 Star
-6046 4358 Star
-6091 4393 Star
-6091 4358 Star
-6091 4323 Star
-6135 4288 Star
-6180 4253 Star
-6224 4288 Star
-6224 4253 Star
-6224 4218 Star
-6268 4323 Star
-6268 4218 Star
-6268 4183 Star
-6313 4428 Star
-6313 4183 Star
-6313 4148 Star
-6357 4113 Star
-6402 4078 Star
-6446 4113 Star
-6446 4078 Star
-6446 4043 Star
-6490 4008 Star
-6535 3973 Star
-6579 4008 Star
-6579 3973 Star
-6579 3938 Star
-6623 4043 Star
-6623 3938 Star
-6623 3903 Star
-6668 3868 Star
-6712 3833 Star
-6757 3868 Star
-6757 3833 Star
-6757 3798 Star
-6801 3763 Star
-6845 3728 Star
-6890 3763 Star
-6890 3728 Star
-6890 3693 Star
-6934 3798 Star
-6934 3693 Star
-6934 3658 Star
-6979 3903 Star
-6979 3658 Star
-6979 3623 Star
-7023 4148 Star
-7023 3623 Star
-7023 3588 Star
-7067 4672 Star
-7067 3588 Star
-7067 3553 Star
-7112 5757 Star
-7112 3553 Star
-7112 3518 Star
-7156 3483 Star
-7200 3448 Star
-7245 3483 Star
-7245 3448 Star
-7245 3413 Star
-7289 3378 Star
-7334 3343 Star
-7378 3378 Star
-7378 3343 Star
-7378 3308 Star
-7422 3413 Star
-7422 3308 Star
-7422 3273 Star
-7467 3238 Star
-7511 3203 Star
-7555 3238 Star
-7555 3203 Star
-7555 3168 Star
-7600 3133 Star
-7644 3098 Star
-7689 3133 Star
-7689 3098 Star
-7689 3063 Star
-7733 3168 Star
-7733 3063 Star
-7733 3028 Star
-7777 3273 Star
-7777 3028 Star
-7777 2993 Star
-7822 2958 Star
-7866 2923 Star
-7911 2958 Star
-7911 2923 Star
-7911 2888 Star
-7955 2853 Star
-7999 2818 Star
-8044 2853 Star
-8044 2818 Star
-8044 2783 Star
-8088 2888 Star
-8088 2783 Star
-8088 2748 Star
-8132 2713 Star
-8177 2678 Star
-8221 2713 Star
-8221 2678 Star
-8221 2643 Star
-8266 2608 Star
-8310 2573 Star
-8354 2608 Star
-8354 2573 Star
-8354 2538 Star
-8399 2643 Star
-8399 2538 Star
-8399 2503 Star
-8443 2748 Star
-8443 2503 Star
-8443 2468 Star
-8488 2993 Star
-8488 2468 Star
-8488 2433 Star
-8532 2398 Star
-8576 2363 Star
-8621 2398 Star
-8621 2363 Star
-8621 2328 Star
-8665 2293 Star
-8709 2258 Star
-8754 2293 Star
-8754 2258 Star
-8754 2223 Star
-8798 2328 Star
-8798 2223 Star
-8798 2188 Star
-8843 2153 Star
-8887 2118 Star
-8931 2153 Star
-8931 2118 Star
-8931 2083 Star
-8976 2048 Star
-9020 2013 Star
-9065 2048 Star
-9065 2013 Star
-9065 1978 Star
-9109 2083 Star
-9109 1978 Star
-9109 1943 Star
-9153 2188 Star
-9153 1943 Star
-9153 1908 Star
-9198 1873 Star
-9242 1838 Star
-9286 1873 Star
-9286 1838 Star
-9286 1803 Star
-9331 1768 Star
-9375 1733 Star
-9420 1768 Star
-9420 1733 Star
-9420 1698 Star
-9464 1803 Star
-9464 1698 Star
-9464 1663 Star
-9508 1628 Star
-9553 1593 Star
-9597 1628 Star
-9597 1593 Star
-9597 1558 Star
-9641 1523 Star
-9686 1488 Star
-9730 1523 Star
-9730 1488 Star
-9730 1453 Star
-9775 1558 Star
-9775 1453 Star
-9775 1418 Star
-9819 1663 Star
-9819 1418 Star
-9819 1383 Star
-9863 1348 Star
-9908 1313 Star
-9952 1348 Star
-9952 1313 Star
-9952 1278 Star
-9997 1243 Star
-10041 1208 Star
-10085 1243 Star
-10085 1208 Star
-10085 1173 Star
-10130 1278 Star
-10130 1173 Star
-10130 1138 Star
-10174 1383 Star
-10174 1138 Star
-10174 1103 Star
-10218 1908 Star
-10218 1103 Star
-10218 1068 Star
-10263 2433 Star
-10263 1068 Star
-10263 1033 Star
-10307 998 Star
-10352 3518 Star
-10352 1033 Star
-10352 998 Star
-10352 963 Star
+0.00 0.00 1.00 C 810 4777 CircleF
+841 4755 CircleF
+871 4777 CircleF
+871 4755 CircleF
+871 4733 CircleF
+902 4711 CircleF
+932 4690 CircleF
+963 4711 CircleF
+963 4690 CircleF
+963 4668 CircleF
+993 4733 CircleF
+993 4668 CircleF
+993 4646 CircleF
+1024 4624 CircleF
+1054 4602 CircleF
+1084 4624 CircleF
+1084 4602 CircleF
+1084 4580 CircleF
+1115 4558 CircleF
+1145 4536 CircleF
+1176 4558 CircleF
+1176 4536 CircleF
+1176 4514 CircleF
+1206 4580 CircleF
+1206 4514 CircleF
+1206 4493 CircleF
+1237 4646 CircleF
+1237 4493 CircleF
+1237 4471 CircleF
+1267 4449 CircleF
+1298 4427 CircleF
+1328 4449 CircleF
+1328 4427 CircleF
+1328 4405 CircleF
+1358 4383 CircleF
+1389 4361 CircleF
+1419 4383 CircleF
+1419 4361 CircleF
+1419 4339 CircleF
+1450 4405 CircleF
+1450 4339 CircleF
+1450 4318 CircleF
+1480 4296 CircleF
+1511 4274 CircleF
+1541 4296 CircleF
+1541 4274 CircleF
+1541 4252 CircleF
+1572 4230 CircleF
+1602 4208 CircleF
+1632 4230 CircleF
+1632 4208 CircleF
+1632 4186 CircleF
+1663 4252 CircleF
+1663 4186 CircleF
+1663 4164 CircleF
+1693 4318 CircleF
+1693 4164 CircleF
+1693 4142 CircleF
+1724 4471 CircleF
+1724 4142 CircleF
+1724 4121 CircleF
+1754 4099 CircleF
+1785 4077 CircleF
+1815 4099 CircleF
+1815 4077 CircleF
+1815 4055 CircleF
+1845 4033 CircleF
+1876 4011 CircleF
+1906 4033 CircleF
+1906 4011 CircleF
+1906 3989 CircleF
+1937 4055 CircleF
+1937 3989 CircleF
+1937 3967 CircleF
+1967 3945 CircleF
+1998 3924 CircleF
+2028 3945 CircleF
+2028 3924 CircleF
+2028 3902 CircleF
+2059 3880 CircleF
+2089 3858 CircleF
+2119 3880 CircleF
+2119 3858 CircleF
+2119 3836 CircleF
+2150 3902 CircleF
+2150 3836 CircleF
+2150 3814 CircleF
+2180 3967 CircleF
+2180 3814 CircleF
+2180 3792 CircleF
+2211 3770 CircleF
+2241 3748 CircleF
+2272 3770 CircleF
+2272 3748 CircleF
+2272 3727 CircleF
+2302 3705 CircleF
+2333 3683 CircleF
+2363 3705 CircleF
+2363 3683 CircleF
+2363 3661 CircleF
+2393 3727 CircleF
+2393 3661 CircleF
+2393 3639 CircleF
+2424 3617 CircleF
+2454 3595 CircleF
+2485 3617 CircleF
+2485 3595 CircleF
+2485 3573 CircleF
+2515 3552 CircleF
+2546 3530 CircleF
+2576 3552 CircleF
+2576 3530 CircleF
+2576 3508 CircleF
+2607 3573 CircleF
+2607 3508 CircleF
+2607 3486 CircleF
+2637 3639 CircleF
+2637 3486 CircleF
+2637 3464 CircleF
+2667 3792 CircleF
+2667 3464 CircleF
+2667 3442 CircleF
+2698 4121 CircleF
+2698 3442 CircleF
+2698 3420 CircleF
+2728 3398 CircleF
+2759 3376 CircleF
+2789 3398 CircleF
+2789 3376 CircleF
+2789 3355 CircleF
+2820 3333 CircleF
+2850 3311 CircleF
+2881 3333 CircleF
+2881 3311 CircleF
+2881 3289 CircleF
+2911 3355 CircleF
+2911 3289 CircleF
+2911 3267 CircleF
+2941 3245 CircleF
+2972 3223 CircleF
+3002 3245 CircleF
+3002 3223 CircleF
+3002 3201 CircleF
+3033 3179 CircleF
+3063 3158 CircleF
+3094 3179 CircleF
+3094 3158 CircleF
+3094 3136 CircleF
+3124 3201 CircleF
+3124 3136 CircleF
+3124 3114 CircleF
+3155 3267 CircleF
+3155 3114 CircleF
+3155 3092 CircleF
+3185 3070 CircleF
+3215 3048 CircleF
+3246 3070 CircleF
+3246 3048 CircleF
+3246 3026 CircleF
+3276 3004 CircleF
+3307 2982 CircleF
+3337 3004 CircleF
+3337 2982 CircleF
+3337 2961 CircleF
+3368 3026 CircleF
+3368 2961 CircleF
+3368 2939 CircleF
+3398 2917 CircleF
+3429 2895 CircleF
+3459 2917 CircleF
+3459 2895 CircleF
+3459 2873 CircleF
+3489 2851 CircleF
+3520 2829 CircleF
+3550 2851 CircleF
+3550 2829 CircleF
+3550 2807 CircleF
+3581 2873 CircleF
+3581 2807 CircleF
+3581 2786 CircleF
+3611 2939 CircleF
+3611 2786 CircleF
+3611 2764 CircleF
+3642 3092 CircleF
+3642 2764 CircleF
+3642 2742 CircleF
+3672 2720 CircleF
+3703 2698 CircleF
+3733 2720 CircleF
+3733 2698 CircleF
+3733 2676 CircleF
+3763 2654 CircleF
+3794 2632 CircleF
+3824 2654 CircleF
+3824 2632 CircleF
+3824 2610 CircleF
+3855 2676 CircleF
+3855 2610 CircleF
+3855 2589 CircleF
+3885 2567 CircleF
+3916 2545 CircleF
+3946 2567 CircleF
+3946 2545 CircleF
+3946 2523 CircleF
+3976 2501 CircleF
+4007 2479 CircleF
+4037 2501 CircleF
+4037 2479 CircleF
+4037 2457 CircleF
+4068 2523 CircleF
+4068 2457 CircleF
+4068 2435 CircleF
+4098 2589 CircleF
+4098 2435 CircleF
+4098 2413 CircleF
+4129 2392 CircleF
+4159 2370 CircleF
+4190 2392 CircleF
+4190 2370 CircleF
+4190 2348 CircleF
+4220 2326 CircleF
+4250 2304 CircleF
+4281 2326 CircleF
+4281 2304 CircleF
+4281 2282 CircleF
+4311 2348 CircleF
+4311 2282 CircleF
+4311 2260 CircleF
+4342 2238 CircleF
+4372 2217 CircleF
+4403 2238 CircleF
+4403 2217 CircleF
+4403 2195 CircleF
+4433 2173 CircleF
+4464 2151 CircleF
+4494 2173 CircleF
+4494 2151 CircleF
+4494 2129 CircleF
+4524 2195 CircleF
+4524 2129 CircleF
+4524 2107 CircleF
+4555 2260 CircleF
+4555 2107 CircleF
+4555 2085 CircleF
+4585 2413 CircleF
+4585 2085 CircleF
+4585 2063 CircleF
+4616 2742 CircleF
+4616 2063 CircleF
+4616 2041 CircleF
+4646 3420 CircleF
+4646 2041 CircleF
+4646 2020 CircleF
+4677 1998 CircleF
+4707 1976 CircleF
+4738 1998 CircleF
+4738 1976 CircleF
+4738 1954 CircleF
+4768 1932 CircleF
+4798 1910 CircleF
+4829 1932 CircleF
+4829 1910 CircleF
+4829 1888 CircleF
+4859 1954 CircleF
+4859 1888 CircleF
+4859 1866 CircleF
+4890 1844 CircleF
+4920 1823 CircleF
+4951 1844 CircleF
+4951 1823 CircleF
+4951 1801 CircleF
+4981 1779 CircleF
+5012 1757 CircleF
+5042 1779 CircleF
+5042 1757 CircleF
+5042 1735 CircleF
+5072 1801 CircleF
+5072 1735 CircleF
+5072 1713 CircleF
+5103 1866 CircleF
+5103 1713 CircleF
+5103 1691 CircleF
+5133 1669 CircleF
+5164 1647 CircleF
+5194 1669 CircleF
+5194 1647 CircleF
+5194 1626 CircleF
+5225 1604 CircleF
+5255 1582 CircleF
+5286 1604 CircleF
+5286 1582 CircleF
+5286 1560 CircleF
+5316 1626 CircleF
+5316 1560 CircleF
+5316 1538 CircleF
+5346 1516 CircleF
+5377 1494 CircleF
+5407 1516 CircleF
+5407 1494 CircleF
+5407 1472 CircleF
+5438 1451 CircleF
+5468 1429 CircleF
+5499 1451 CircleF
+5499 1429 CircleF
+5499 1407 CircleF
+5529 1472 CircleF
+5529 1407 CircleF
+5529 1385 CircleF
+5560 1538 CircleF
+5560 1385 CircleF
+5560 1363 CircleF
+5590 1691 CircleF
+5590 1363 CircleF
+5590 1341 CircleF
+5620 1319 CircleF
+5651 1297 CircleF
+5681 1319 CircleF
+5681 1297 CircleF
+5681 1275 CircleF
+5712 1254 CircleF
+5742 1232 CircleF
+5773 1254 CircleF
+5773 1232 CircleF
+5773 1210 CircleF
+5803 1275 CircleF
+5803 1210 CircleF
+5803 1188 CircleF
+5834 1166 CircleF
+5864 1144 CircleF
+5894 1166 CircleF
+5894 1144 CircleF
+5894 1122 CircleF
+5925 1100 CircleF
+5955 1078 CircleF
+5986 1100 CircleF
+5986 1078 CircleF
+5986 1057 CircleF
+6016 1122 CircleF
+6016 1057 CircleF
+6016 1035 CircleF
+6047 1188 CircleF
+6047 1035 CircleF
+6047 1013 CircleF
+6077 991 CircleF
+6107 969 CircleF
+6138 991 CircleF
+6138 969 CircleF
+6138 947 CircleF
+6168 925 CircleF
+6199 903 CircleF
+6229 925 CircleF
+6229 903 CircleF
+6229 881 CircleF
+6260 947 CircleF
+6260 881 CircleF
+6260 860 CircleF
+6290 838 CircleF
+6321 816 CircleF
+6351 838 CircleF
+6351 816 CircleF
+6351 794 CircleF
+6381 772 CircleF
+6412 750 CircleF
+6442 772 CircleF
+6442 750 CircleF
+6442 728 CircleF
+6473 794 CircleF
+6473 728 CircleF
+6473 706 CircleF
+6503 860 CircleF
+6503 706 CircleF
+6503 685 CircleF
+6534 663 CircleF
+6564 641 CircleF
+6595 663 CircleF
+6595 641 CircleF
+6595 619 CircleF
+6625 597 CircleF
+6655 575 CircleF
+6686 597 CircleF
+6686 575 CircleF
+6686 553 CircleF
+6716 619 CircleF
+6716 553 CircleF
+6716 531 CircleF
+6747 685 CircleF
+6747 531 CircleF
+6747 509 CircleF
+6777 1013 CircleF
+6777 509 CircleF
+6777 488 CircleF
+6808 1341 CircleF
+6808 488 CircleF
+6808 466 CircleF
+6838 444 CircleF
+6869 2020 CircleF
+6869 466 CircleF
+6869 444 CircleF
+6869 422 CircleF
 % End plot #1
-0.500 UL
-LTb
-1475 7962 N
-0 -7034 V
-8921 0 V
-0 7034 V
--8921 0 V
-Z stroke
 1.000 UP
 0.500 UL
 LTb

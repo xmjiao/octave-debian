@@ -1,5 +1,4 @@
-## Copyright (C) 2000, 2001, 2002, 2004, 2005, 2006, 2007, 2009
-##               Teemu Ikonen
+## Copyright (C) 2000-2011 Teemu Ikonen
 ##
 ## This file is part of Octave.
 ##
@@ -28,9 +27,9 @@
 ## @end example
 ##
 ## @noindent
-## which produces a double logarithm plot of @var{y} versus @var{x} 
+## which produces a double logarithm plot of @var{y} versus @var{x}
 ## with errors in the @var{y}-scale defined by @var{ey} and the plot
-## format defined by @var{fmt}.  See errorbar for available formats and 
+## format defined by @var{fmt}.  See errorbar for available formats and
 ## additional information.
 ## @seealso{errorbar, semilogxerr, semilogyerr}
 ## @end deftypefn
@@ -60,3 +59,12 @@ function retval = loglogerr (varargin)
   end_unwind_protect
 
 endfunction
+
+%!demo
+%! x = exp (log(0.01):0.2:log(10));
+%! y = wblpdf (x, 3, 2);
+%! eyu = 2*rand (size (y)) .* y;
+%! eyl = 0.5*rand (size (y)) .* y;
+%! loglogerr (x, y, eyl, eyu, "#~x-")
+%! xlim (x([1, end]))
+

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2000, 2003, 2005, 2007 John W. Eaton
+Copyright (C) 2000-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -24,6 +24,8 @@ along with Octave; see the file COPYING.  If not, see
 #include <config.h>
 #endif
 
+#include "oct-rl-hist.h"
+
 #if defined (USE_READLINE)
 
 #include <stdio.h>
@@ -32,10 +34,82 @@ along with Octave; see the file COPYING.  If not, see
 
 #include <readline/history.h>
 
-void
-octave_add_history (const char *line)
+/* check_history_control, hc_erasedup, and the core of
+   octave_add_history were borrowed from Bash.  */
+
+/* Check LINE against what HISTCONTROL says to do.  Returns 1 if the line
+   should be saved; 0 if it should be discarded.  */
+static int
+check_history_control (const char *line, int history_control)
 {
-  add_history (line);
+  HIST_ENTRY *temp;
+  int r;
+
+  if (history_control == 0)
+    return 1;
+
+  /* ignorespace or ignoreboth */
+  if ((history_control & HC_IGNSPACE) && *line == ' ')
+    return 0;
+
+  /* ignoredups or ignoreboth */
+  if (history_control & HC_IGNDUPS)
+    {
+      using_history ();
+      temp = previous_history ();
+
+      r = (temp == 0 || strcmp (temp->line, line));
+
+      using_history ();
+
+      if (r == 0)
+        return r;
+    }
+
+  return 1;
+}
+
+/* Remove all entries matching LINE from the history list.  Triggered when
+   HISTCONTROL includes `erasedups'.  */
+
+static void
+hc_erasedups (const char *line)
+{
+  HIST_ENTRY *temp;
+  int r;
+
+  using_history ();
+  while ((temp = previous_history ()))
+    {
+      if (! strcmp (temp->line, line))
+        {
+          r = where_history ();
+          remove_history (r);
+        }
+    }
+  using_history ();
+}
+
+/* Check LINE against HISTCONTROL and add it to the history if it's OK.
+   Returns 1 if the line was saved in the history, 0 otherwise.  */
+
+int
+octave_add_history (const char *line, int history_control)
+{
+  if (check_history_control (line, history_control))
+    {
+      /* We're committed to saving the line.  If the user has requested it,
+         remove other matching lines from the history.  */
+
+      if (history_control & HC_ERASEDUPS)
+        hc_erasedups (line);
+
+      add_history (line);
+
+      return 1;
+    }
+
+  return 0;
 }
 
 int
@@ -130,7 +204,7 @@ octave_remove_history (int n)
   if (discard)
     {
       if (discard->line)
-	free (discard->line);
+        free (discard->line);
 
       free (discard);
     }
@@ -148,7 +222,7 @@ octave_history_goto_mark (int n)
       h = current_history ();
 
       if (h)
-	retval = h->line;
+        retval = h->line;
     }
 
   return retval;
@@ -179,7 +253,7 @@ octave_history_list (int limit, int number_lines)
       char **p = retval;
 
       while (*p)
-	free (*p++);
+        free (*p++);
 
       free (retval);
 
@@ -195,7 +269,7 @@ octave_history_list (int limit, int number_lines)
       int beg = 0;
       int end = 0;
       while (hlist[end])
-	end++;
+        end++;
 
       beg = (limit < 0 || end < limit) ? 0 : (end - limit);
 
@@ -203,21 +277,21 @@ octave_history_list (int limit, int number_lines)
 
       k = 0;
       for (i = beg; i < end; i++)
-	{
-	  char *line = hlist[i]->line;
-	  int len = line ? strlen (line) : 0;
-	  char *tmp = malloc (len + 64);
+        {
+          char *line = hlist[i]->line;
+          int len = line ? strlen (line) : 0;
+          char *tmp = malloc (len + 64);
 
-	  if (number_lines)
-	    sprintf (tmp, "%5d%c%s", i + history_base,
-		     hlist[i]->data ? '*' : ' ',
-		     line ? line : "");
-	  else
-	    sprintf (tmp, "%c%s", hlist[i]->data ? '*' : ' ',
-		     line ? line : "");
+          if (number_lines)
+            sprintf (tmp, "%5d%c%s", i + history_base,
+                     hlist[i]->data ? '*' : ' ',
+                     line ? line : "");
+          else
+            sprintf (tmp, "%c%s", hlist[i]->data ? '*' : ' ',
+                     line ? line : "");
 
-	  retval[k++] = tmp;
-	}
+          retval[k++] = tmp;
+        }
 
       retval[k] = 0;
     }
@@ -233,16 +307,10 @@ octave_replace_history_entry (int which, const char *line)
   if (discard)
     {
       if (discard->line)
-	free (discard->line);
+        free (discard->line);
 
       free (discard);
     }
 }
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

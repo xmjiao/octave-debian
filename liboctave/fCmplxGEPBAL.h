@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2000, 2002, 2004, 2005, 2006,
-              2007, 2008 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -36,26 +35,32 @@ FloatComplexGEPBALANCE
 {
 public:
 
-  FloatComplexGEPBALANCE (void) : balanced_mat (), balancing_mat () { }
+  FloatComplexGEPBALANCE (void)
+    : balanced_mat (), balanced_mat2 (), balancing_mat (), balancing_mat2 ()
+    { }
 
-  FloatComplexGEPBALANCE (const FloatComplexMatrix& a, const FloatComplexMatrix& b, const std::string& balance_job)
+  FloatComplexGEPBALANCE (const FloatComplexMatrix& a,
+                          const FloatComplexMatrix& b,
+                          const std::string& balance_job)
+    : balanced_mat (), balanced_mat2 (), balancing_mat (), balancing_mat2 ()
     {
-      init (a, b, balance_job); 
+      init (a, b, balance_job);
     }
 
   FloatComplexGEPBALANCE (const FloatComplexGEPBALANCE& a)
     : balanced_mat (a.balanced_mat), balanced_mat2 (a.balanced_mat2),
-    balancing_mat (a.balancing_mat), balancing_mat2 (a.balancing_mat2) { }
+      balancing_mat (a.balancing_mat), balancing_mat2 (a.balancing_mat2)
+    { }
 
   FloatComplexGEPBALANCE& operator = (const FloatComplexGEPBALANCE& a)
     {
       if (this != &a)
-	{
-	  balanced_mat = a.balanced_mat;
-	  balanced_mat2 = a.balanced_mat2;
-	  balancing_mat = a.balancing_mat;
-	  balancing_mat2 = a.balancing_mat2;
-	}
+        {
+          balanced_mat = a.balanced_mat;
+          balanced_mat2 = a.balanced_mat2;
+          balancing_mat = a.balancing_mat;
+          balancing_mat2 = a.balancing_mat2;
+        }
       return *this;
     }
 
@@ -78,14 +83,8 @@ private:
   FloatMatrix balancing_mat;
   FloatMatrix balancing_mat2;
 
-  octave_idx_type init (const FloatComplexMatrix& a, const FloatComplexMatrix& b, 
-			const std::string& balance_job);
+  octave_idx_type init (const FloatComplexMatrix& a, const FloatComplexMatrix& b,
+                        const std::string& balance_job);
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

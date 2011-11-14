@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 2008, 2009 Jaroslav Hajek
-Copyright (C) 2004, 2005, 2006, 2007 John W. Eaton
+Copyright (C) 2004-2011 John W. Eaton
+Copyright (C) 2008-2009 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -32,18 +32,11 @@ along with Octave; see the file COPYING.  If not, see
 
 #include "lo-traits.h"
 #include "lo-math.h"
-#include "oct-types.h"
 #include "lo-mappers.h"
 
 #ifdef OCTAVE_INT_USE_LONG_DOUBLE
 inline long double xround (long double x) { return roundl (x); }
 inline long double xisnan (long double x) { return xisnan (static_cast<double> (x)); }
-#endif
-
-// Undefine min/max if needed (this may happen under Windows)
-#ifdef min
-#undef min
-#undef max
 #endif
 
 // FIXME -- we define this by our own because some compilers, such as
@@ -58,7 +51,7 @@ struct query_integer_type
 {
 public:
   static const bool registered = false;
-  typedef void type; // Void shall result in a compile-time error if we 
+  typedef void type; // Void shall result in a compile-time error if we
                      // attempt to use it in computations.
 };
 
@@ -83,7 +76,7 @@ REGISTER_INT_TYPE (uint64_t);
 
 // Rationale: Comparators have a single static method, rel(), that returns the
 // result of the binary relation. They also have two static boolean fields:
-// ltval, gtval determine the value of x OP y if x < y, x > y, respectively. 
+// ltval, gtval determine the value of x OP y if x < y, x > y, respectively.
 #define REGISTER_OCTAVE_CMP_OP(NM,OP) \
   class NM \
     { \
@@ -116,14 +109,14 @@ class octave_int_cmp_op
   class prom
     {
       // Promote to int?
-      static const bool pint = (sizeof (T1) < sizeof (int) 
+      static const bool pint = (sizeof (T1) < sizeof (int)
                                 && sizeof (T2) < sizeof (int));
       static const bool t1sig = std::numeric_limits<T1>::is_signed;
       static const bool t2sig = std::numeric_limits<T2>::is_signed;
-      static const bool psig = 
+      static const bool psig =
         (pint || (sizeof (T2) > sizeof (T1) && t2sig) || t1sig);
       static const int psize =
-        (pint ? sizeof (int) : (sizeof (T2) > sizeof (T1) 
+        (pint ? sizeof (int) : (sizeof (T2) > sizeof (T1)
                                 ? sizeof (T2) : sizeof (T1)));
     public:
       typedef typename query_integer_type<psize, psig>::type type;
@@ -137,13 +130,13 @@ class octave_int_cmp_op
       typedef typename query_integer_type<size, false>::type utype;
       typedef typename query_integer_type<size, true>::type stype;
     public:
-      static bool op (utype x, utype y) 
+      static bool op (utype x, utype y)
         { return xop::op (x, y); }
-      static bool op (stype x, stype y) 
+      static bool op (stype x, stype y)
         { return xop::op (x, y); }
-      static bool op (stype x, utype y) 
+      static bool op (stype x, utype y)
         { return (x < 0) ? xop::ltval : xop::op (static_cast<utype> (x), y); }
-      static bool op (utype x, stype y) 
+      static bool op (utype x, stype y)
         { return (y < 0) ? xop::gtval : xop::op (x, static_cast<utype> (y)); }
     };
 
@@ -164,10 +157,10 @@ public:
     {
       typedef typename prom<T1, T2>::type PT1;
       typedef typename prom<T2, T1>::type PT2;
-      return uiop<xop, sizeof (PT1)>::op (static_cast<PT1> (x), 
+      return uiop<xop, sizeof (PT1)>::op (static_cast<PT1> (x),
                                           static_cast<PT2> (y));
     }
-  
+
 public:
 
   // Mixed comparisons
@@ -192,7 +185,7 @@ public:
       return xop::op (static_cast<long double> (x), \
                       static_cast<long double> (y)); \
     }
-#else 
+#else
   // ... otherwise, use external handlers
 
   // FIXME: We could declare directly the mop methods as external,
@@ -218,7 +211,7 @@ public:
 };
 
 // Base integer class. No data, just conversion methods and exception flags.
-template <class T> 
+template <class T>
 class octave_int_base
 {
 protected:
@@ -230,17 +223,17 @@ public:
 
   // Convert integer value.
   template <class S>
-  static T 
+  static T
   truncate_int (const S& value)
-    { 
+    {
       // An exhaustive test whether the max and/or min check can be omitted.
       static const bool t_is_signed = std::numeric_limits<T>::is_signed;
       static const bool s_is_signed = std::numeric_limits<S>::is_signed;
       static const int t_size = sizeof (T), s_size = sizeof (S);
-      static const bool omit_chk_min = 
+      static const bool omit_chk_min =
         (! s_is_signed || (t_is_signed && t_size >= s_size));
-      static const bool omit_chk_max = 
-        (t_size > s_size || (t_size == s_size 
+      static const bool omit_chk_max =
+        (t_size > s_size || (t_size == s_size
          && (! t_is_signed || s_is_signed)));
       // If the check can be omitted, substitute constant false relation.
       typedef octave_int_cmp_op::cf cf;
@@ -253,12 +246,10 @@ public:
       // elimination, but that should be a piece of cake for most compilers.
       if (chk_min::op (value, static_cast<S> (min_val ())))
         {
-          ftrunc = true;
           return min_val ();
         }
       else if (chk_max::op (value, static_cast<S> (max_val ())))
         {
-          ftrunc = true;
           return max_val ();
         }
       else
@@ -267,23 +258,23 @@ public:
 
 private:
 
-  // Computes a real-valued threshold for a max/min check. 
+  // Computes a real-valued threshold for a max/min check.
   template <class S>
-  static S 
+  static S
   compute_threshold (S val, T orig_val)
-    { 
+    {
       val = xround (val); // Fool optimizations (maybe redundant)
       // If val is even, but orig_val is odd, we're one unit off.
       if (orig_val % 2 && val / 2 == xround (val / 2))
         // FIXME -- is this always correct?
-        val *= (static_cast<S>(1) - (std::numeric_limits<S>::epsilon () / 2)); 
+        val *= (static_cast<S>(1) - (std::numeric_limits<S>::epsilon () / 2));
       return val;
     }
-  
+
 public:
   // Convert a real number (check NaN and non-int).
   template <class S>
-  static T 
+  static T
   convert_real (const S& value)
     {
       // Compute proper thresholds.
@@ -291,61 +282,23 @@ public:
       static const S thmax = compute_threshold (static_cast<S> (max_val ()), max_val ());
       if (xisnan (value))
         {
-          fnan = true;
           return static_cast<T> (0);
         }
       else if (value < thmin)
         {
-          ftrunc = true;
           return min_val ();
         }
       else if (value > thmax)
         {
-          ftrunc = true;
           return max_val ();
         }
       else
         {
           S rvalue = xround (value);
-          if (rvalue != value) fnon_int = true;
           return static_cast<T> (rvalue);
         }
     }
-
-  // Exception flags rationale:
-  // There is little reason to distinguish math and conversion exceptions at
-  // octave_int level. Doing this would require special constructors for
-  // intermediate int results in math computations.
-  // 
-  // Boolean flags are used rather than a single flag, because raising a boolean
-  // flag is faster than masking an int flag (single mov versus mov, or, mov).
-  // Also, it is atomic, and thus thread-safe (but there is *one* flag for all
-  // threads).
-
-  static bool get_trunc_flag () { return ftrunc; }
-  static bool get_nan_flag () { return fnan; }
-  static bool get_non_int_flag () { return fnon_int; }
-  static void clear_conv_flags () 
-    { 
-      ftrunc = false;
-      fnan = false;
-      fnon_int = false;
-    }
-  // For compatibility.
-  static bool get_math_trunc_flag () { return ftrunc || fnan; }
-  static void clear_conv_flag () { clear_conv_flags (); }
-
-protected:
-
-  // Conversion flags.
-  static bool ftrunc;
-  static bool fnon_int;
-  static bool fnan;
 };
-
-template<class T> bool octave_int_base<T>::ftrunc = false;
-template<class T> bool octave_int_base<T>::fnon_int = false;
-template<class T> bool octave_int_base<T>::fnan = false;
 
 // Saturated (homogeneous) integer arithmetics. The signed and unsigned
 // implementations are significantly different, so we implement another layer
@@ -377,52 +330,49 @@ public:
   lshift (T x, int n) { return x << n; }
 
   static T
-  minus (T x)
+  minus (T)
     {
-      if (x != 0) octave_int_base<T>::ftrunc = true;
       return static_cast<T> (0);
     }
 
   // the overflow behaviour for unsigned integers is guaranteed by C/C++,
   // so the following should always work.
-  static T 
+  static T
   add (T x, T y)
     {
       T u = x + y;
       if (u < x)
         {
           u = octave_int_base<T>::max_val ();
-          octave_int_base<T>::ftrunc = true; 
         }
       return u;
     }
 
-  static T 
+  static T
   sub (T x, T y)
     {
       T u = x - y;
       if (u > x)
         {
           u = 0;
-          octave_int_base<T>::ftrunc = true; 
         }
       return u;
     }
 
   // Multiplication is done using promotion to wider integer type. If there is
-  // no suitable promotion type, this operation *MUST* be specialized. 
-  static T 
+  // no suitable promotion type, this operation *MUST* be specialized.
+  static T
   mul (T x, T y)
     {
       // Promotion type for multiplication (if exists).
       typedef typename query_integer_type<2*sizeof (T), false>::type mptype;
-      return truncate_int (static_cast<mptype> (x) 
+      return truncate_int (static_cast<mptype> (x)
                            * static_cast<mptype> (y));
     }
 
   // Division with rounding to nearest. Note that / and % are probably
   // computed by a single instruction.
-  static T 
+  static T
   div (T x, T y)
     {
       if (y != 0)
@@ -433,9 +383,22 @@ public:
         }
       else
         {
-          octave_int_base<T>::ftrunc = true; 
           return x ? octave_int_base<T>::max_val () : 0;
         }
+    }
+
+  // Remainder.
+  static T
+  rem (T x, T y)
+    {
+      return y != 0 ? x % y : 0;
+    }
+
+  // Modulus. Note the weird y = 0 case for Matlab compatibility.
+  static T
+  mod (T x, T y)
+    {
+      return y != 0 ? x % y : x;
     }
 };
 
@@ -448,7 +411,6 @@ octave_int_arith_base<uint64_t, false>:: mul (uint64_t x, uint64_t y)
   long double p = static_cast<long double> (x) * static_cast<long double> (y);
   if (p > static_cast<long double> (octave_int_base<uint64_t>::max_val ()))
     {
-      octave_int_base<uint64_t>::ftrunc = true;
       return octave_int_base<uint64_t>::max_val ();
     }
   else
@@ -457,7 +419,7 @@ octave_int_arith_base<uint64_t, false>:: mul (uint64_t x, uint64_t y)
 #else
 // Special handler for 64-bit integer multiply.
 template <>
-OCTAVE_API uint64_t 
+OCTAVE_API uint64_t
 octave_int_arith_base<uint64_t, false>::mul (uint64_t, uint64_t);
 #endif
 
@@ -478,7 +440,7 @@ octave_int_arith_base<uint64_t, false>::mul (uint64_t, uint64_t);
 // HAVE_FAST_INT_OPS is defined, bit tricks and wraparound arithmetics are used
 // to avoid conditional jumps as much as possible, thus being friendly to modern
 // pipeline processor architectures.
-// Otherwise, we fall back to a bullet-proof code that only uses assumptions 
+// Otherwise, we fall back to a bullet-proof code that only uses assumptions
 // guaranteed by the standard.
 
 template <class T>
@@ -490,12 +452,12 @@ public:
 
   // Returns 1 for negative number, 0 otherwise.
   static T
-  signbit (T x) 
-    { 
+  signbit (T x)
+    {
 #ifdef HAVE_FAST_INT_OPS
       return static_cast<UT> (x) >> std::numeric_limits<T>::digits;
 #else
-      return (x < 0) ? 1 : 0; 
+      return (x < 0) ? 1 : 0;
 #endif
     }
 
@@ -508,10 +470,9 @@ public:
       // discard the following test.
       T m = x >> std::numeric_limits<T>::digits;
       T y = (x ^ m) - m;
-      if (y < 0) 
+      if (y < 0)
         {
           y = octave_int_base<T>::max_val ();
-          octave_int_base<T>::ftrunc = true;
         }
       return y;
 #else
@@ -524,7 +485,6 @@ public:
           && x == octave_int_base<T>::min_val ())
         {
           y = octave_int_base<T>::max_val ();
-          octave_int_base<T>::ftrunc = true;
         }
       else
         y = (x < 0) ? -x : x;
@@ -533,10 +493,10 @@ public:
     }
 
   static T
-  signum (T x) 
-    { 
+  signum (T x)
+    {
       // With modest optimizations, this will compile without a jump.
-      return ((x > 0) ? 1 : 0) - signbit (x); 
+      return ((x > 0) ? 1 : 0) - signbit (x);
     }
 
   // FIXME -- we do not have an authority what signed shifts should
@@ -558,7 +518,6 @@ public:
       if (y == octave_int_base<T>::min_val ())
         {
           --y;
-          octave_int_base<T>::ftrunc = false;
         }
       return y;
 #else
@@ -567,7 +526,6 @@ public:
           && x == octave_int_base<T>::min_val ())
         {
           y = octave_int_base<T>::max_val ();
-          octave_int_base<T>::ftrunc = true;
         }
       else
         y = -x;
@@ -575,7 +533,7 @@ public:
 #endif
     }
 
-  static T 
+  static T
   add (T x, T y)
     {
 #ifdef HAVE_FAST_INT_OPS
@@ -583,11 +541,10 @@ public:
     // compiler from interfering. Also, the signed operations on small types
     // actually return int.
       T u = static_cast<UT> (x) + static_cast<UT> (y);
-      T ux = u ^ x, uy = u ^ y; 
-      if ((ux & uy) < 0) 
+      T ux = u ^ x, uy = u ^ y;
+      if ((ux & uy) < 0)
         {
           u = octave_int_base<T>::max_val () + signbit (~u);
-          octave_int_base<T>::ftrunc = true;
         }
       return u;
 #else
@@ -598,7 +555,6 @@ public:
           if (x < octave_int_base<T>::min_val () - y)
             {
               u = octave_int_base<T>::min_val ();
-              octave_int_base<T>::ftrunc = true;
             }
           else
             u = x + y;
@@ -608,7 +564,6 @@ public:
           if (x > octave_int_base<T>::max_val () - y)
             {
               u = octave_int_base<T>::max_val ();
-              octave_int_base<T>::ftrunc = true;
             }
           else
             u = x + y;
@@ -619,7 +574,7 @@ public:
     }
 
   // This is very similar to addition.
-  static T 
+  static T
   sub (T x, T y)
     {
 #ifdef HAVE_FAST_INT_OPS
@@ -627,11 +582,10 @@ public:
     // compiler from interfering. Also, the signed operations on small types
     // actually return int.
       T u = static_cast<UT> (x) - static_cast<UT> (y);
-      T ux = u ^ x, uy = u ^ ~y; 
-      if ((ux & uy) < 0) 
+      T ux = u ^ x, uy = u ^ ~y;
+      if ((ux & uy) < 0)
         {
           u = octave_int_base<T>::max_val () + signbit (~u);
-          octave_int_base<T>::ftrunc = true;
         }
       return u;
 #else
@@ -642,7 +596,6 @@ public:
           if (x > octave_int_base<T>::max_val () + y)
             {
               u = octave_int_base<T>::max_val ();
-              octave_int_base<T>::ftrunc = true;
             }
           else
             u = x - y;
@@ -652,7 +605,6 @@ public:
           if (x < octave_int_base<T>::min_val () + y)
             {
               u = octave_int_base<T>::min_val ();
-              octave_int_base<T>::ftrunc = true;
             }
           else
             u = x - y;
@@ -663,24 +615,23 @@ public:
     }
 
   // Multiplication is done using promotion to wider integer type. If there is
-  // no suitable promotion type, this operation *MUST* be specialized. 
-  static T 
+  // no suitable promotion type, this operation *MUST* be specialized.
+  static T
   mul (T x, T y)
     {
       // Promotion type for multiplication (if exists).
       typedef typename query_integer_type<2*sizeof (T), true>::type mptype;
-      return truncate_int (static_cast<mptype> (x) 
+      return truncate_int (static_cast<mptype> (x)
                            * static_cast<mptype> (y));
     }
 
   // Division.
-  static T 
+  static T
   div (T x, T y)
     {
       T z;
       if (y == 0)
         {
-          octave_int_base<T>::ftrunc = true;
           if (x < 0)
             z = octave_int_base<T>::min_val ();
           else if (x != 0)
@@ -693,14 +644,13 @@ public:
           // This is a special case that overflows as well.
           if (y == -1 && x == octave_int_base<T>::min_val ())
             {
-              octave_int_base<T>::ftrunc = true;
               z = octave_int_base<T>::max_val ();
             }
           else
             {
               z = x / y;
               T w = -octave_int_abs (x % y); // Can't overflow, but std::abs (x) can!
-              if (w <= y - w) 
+              if (w <= y - w)
                 z -= 1 - (signbit (x) << 1);
             }
         }
@@ -710,14 +660,33 @@ public:
           // FIXME -- this is a workaround due to MSVC's absence of
           // std::abs (int64_t).  The call to octave_int_abs can't
           // overflow, but std::abs (x) can!
-	  T w = octave_int_abs (x % y);
+          T w = octave_int_abs (x % y);
 
-          if (w >= y - w) 
+          if (w >= y - w)
             z += 1 - (signbit (x) << 1);
         }
       return z;
     }
 
+  // Remainder.
+  static T
+  rem (T x, T y)
+    {
+      return y != 0 ? x % y : 0;
+    }
+
+  // Modulus. Note the weird y = 0 case for Matlab compatibility.
+  static T
+  mod (T x, T y)
+    {
+      if (y != 0)
+        {
+          T r = x % y;
+          return ((r < 0) != (y < 0)) ? r + y : r;
+        }
+      else
+        return x;
+    }
 };
 
 #ifdef OCTAVE_INT_USE_LONG_DOUBLE
@@ -732,12 +701,10 @@ octave_int_arith_base<int64_t, true>:: mul (int64_t x, int64_t y)
   // really be faster.
   if (p > static_cast<long double> (octave_int_base<int64_t>::max_val ()))
     {
-      octave_int_base<int64_t>::ftrunc = true;
       return octave_int_base<int64_t>::max_val ();
     }
   else if (p < static_cast<long double> (octave_int_base<int64_t>::min_val ()))
     {
-      octave_int_base<int64_t>::ftrunc = true;
       return octave_int_base<int64_t>::min_val ();
     }
   else
@@ -746,13 +713,13 @@ octave_int_arith_base<int64_t, true>:: mul (int64_t x, int64_t y)
 #else
 // Special handler for 64-bit integer multiply.
 template <>
-OCTAVE_API int64_t 
+OCTAVE_API int64_t
 octave_int_arith_base<int64_t, true>::mul (int64_t, int64_t);
 #endif
 
 // This class simply selects the proper arithmetics.
 template<class T>
-class octave_int_arith 
+class octave_int_arith
  : public octave_int_arith_base<T, std::numeric_limits<T>::is_signed>
 {};
 
@@ -767,12 +734,12 @@ public:
 
   octave_int (T i) : ival (i) { }
 
-  octave_int (double d) : ival (octave_int_base<T>::convert_real (d)) { } 
+  octave_int (double d) : ival (octave_int_base<T>::convert_real (d)) { }
 
-  octave_int (float d) : ival (octave_int_base<T>::convert_real (d)) { } 
+  octave_int (float d) : ival (octave_int_base<T>::convert_real (d)) { }
 
 #ifdef OCTAVE_INT_USE_LONG_DOUBLE
-  octave_int (long double d) : ival (octave_int_base<T>::convert_real (d)) { } 
+  octave_int (long double d) : ival (octave_int_base<T>::convert_real (d)) { }
 #endif
 
   octave_int (bool b) : ival (b) { }
@@ -847,6 +814,7 @@ public:
   OCTAVE_INT_BIN_OP(-, sub, octave_int<T>)
   OCTAVE_INT_BIN_OP(*, mul, octave_int<T>)
   OCTAVE_INT_BIN_OP(/, div, octave_int<T>)
+  OCTAVE_INT_BIN_OP(%, rem, octave_int<T>)
   OCTAVE_INT_BIN_OP(<<, lshift, int)
   OCTAVE_INT_BIN_OP(>>, rshift, int)
 
@@ -863,7 +831,7 @@ public:
 
   // The following are provided for convenience.
   static const octave_int zero, one;
-  
+
   // Unsafe.  This function exists to support the MEX interface.
   // You should not use it anywhere else.
   void *mex_get_data (void) const { return const_cast<T *> (&ival); }
@@ -872,6 +840,16 @@ private:
 
   T ival;
 };
+
+template <class T>
+inline octave_int<T>
+rem (const octave_int<T>& x, const octave_int<T>& y)
+{ return octave_int_arith<T>::rem (x.value (), y.value ()); }
+
+template <class T>
+inline octave_int<T>
+mod (const octave_int<T>& x, const octave_int<T>& y)
+{ return octave_int_arith<T>::mod (x.value (), y.value ()); }
 
 // No mixed integer binary operations!
 
@@ -956,7 +934,7 @@ OCTAVE_INT_BITCMP_OP (^)
 template <class T>
 octave_int<T>
 bitshift (const octave_int<T>& a, int n,
-	  const octave_int<T>& mask = std::numeric_limits<T>::max ())
+          const octave_int<T>& mask = std::numeric_limits<T>::max ())
 {
   if (n > 0)
     return (a << n) & mask;
@@ -1091,10 +1069,20 @@ OCTAVE_INT_FLOAT_CMP_OP (!=)
 
 #undef OCTAVE_INT_FLOAT_CMP_OP
 
-#endif
+template <class T>
+octave_int<T>
+xmax (const octave_int<T>& x, const octave_int<T>& y)
+{
+  const T xv = x.value (), yv = y.value ();
+  return octave_int<T> (xv >= yv ? xv : yv);
+}
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+template <class T>
+octave_int<T>
+xmin (const octave_int<T>& x, const octave_int<T>& y)
+{
+  const T xv = x.value (), yv = y.value ();
+  return octave_int<T> (xv <= yv ? xv : yv);
+}
+
+#endif

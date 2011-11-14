@@ -1,8 +1,8 @@
 // ColumnVector manipulations.
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2000, 2001, 2002, 2003, 2004,
-              2005, 2007, 2008 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
+Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
 
@@ -42,11 +42,11 @@ extern "C"
 {
   F77_RET_T
   F77_FUNC (sgemv, SGEMV) (F77_CONST_CHAR_ARG_DECL,
-			   const octave_idx_type&, const octave_idx_type&, const float&,
-			   const float*, const octave_idx_type&, const float*,
-			   const octave_idx_type&, const float&, float*,
-			   const octave_idx_type&
-			   F77_CHAR_ARG_LEN_DECL);
+                           const octave_idx_type&, const octave_idx_type&,
+                           const float&, const float*, const octave_idx_type&,
+                           const float*, const octave_idx_type&, const float&,
+                           float*, const octave_idx_type&
+                           F77_CHAR_ARG_LEN_DECL);
 }
 
 // Column Vector class.
@@ -57,7 +57,7 @@ FloatColumnVector::operator == (const FloatColumnVector& a) const
   octave_idx_type len = length ();
   if (len != a.length ())
     return 0;
-  return mx_inline_equal (data (), a.data (), len);
+  return mx_inline_equal (len, data (), a.data ());
 }
 
 bool
@@ -82,7 +82,7 @@ FloatColumnVector::insert (const FloatColumnVector& a, octave_idx_type r)
       make_unique ();
 
       for (octave_idx_type i = 0; i < a_len; i++)
-	xelem (r+i) = a.elem (i);
+        xelem (r+i) = a.elem (i);
     }
 
   return *this;
@@ -98,7 +98,7 @@ FloatColumnVector::fill (float val)
       make_unique ();
 
       for (octave_idx_type i = 0; i < len; i++)
-	xelem (i) = val;
+        xelem (i) = val;
     }
 
   return *this;
@@ -122,7 +122,7 @@ FloatColumnVector::fill (float val, octave_idx_type r1, octave_idx_type r2)
       make_unique ();
 
       for (octave_idx_type i = r1; i <= r2; i++)
-	xelem (i) = val;
+        xelem (i) = val;
     }
 
   return *this;
@@ -146,23 +146,21 @@ FloatColumnVector::transpose (void) const
 }
 
 FloatColumnVector
+FloatColumnVector::abs (void) const
+{
+  return do_mx_unary_map<float, float, std::abs> (*this);
+}
+
+FloatColumnVector
 real (const FloatComplexColumnVector& a)
 {
-  octave_idx_type a_len = a.length ();
-  FloatColumnVector retval;
-  if (a_len > 0)
-    retval = FloatColumnVector (mx_inline_real_dup (a.data (), a_len), a_len);
-  return retval;
+  return do_mx_unary_op<float, FloatComplex> (a, mx_inline_real);
 }
 
 FloatColumnVector
 imag (const FloatComplexColumnVector& a)
 {
-  octave_idx_type a_len = a.length ();
-  FloatColumnVector retval;
-  if (a_len > 0)
-    retval = FloatColumnVector (mx_inline_imag_dup (a.data (), a_len), a_len);
-  return retval;
+  return do_mx_unary_op<float, FloatComplex> (a, mx_inline_imag);
 }
 
 // resize is the destructive equivalent for this one
@@ -209,20 +207,17 @@ operator * (const FloatMatrix& m, const FloatColumnVector& a)
     gripe_nonconformant ("operator *", nr, nc, a_len, 1);
   else
     {
-      if (nr == 0 || nc == 0)
-	retval.resize (nr, 0.0);
-      else
-	{
-	  octave_idx_type ld = nr;
+      retval.clear (nr);
 
-	  retval.resize (nr);
-	  float *y = retval.fortran_vec ();
+      if (nr != 0)
+        {
+          float *y = retval.fortran_vec ();
 
-	  F77_XFCN (sgemv, SGEMV, (F77_CONST_CHAR_ARG2 ("N", 1),
-				   nr, nc, 1.0, m.data (), ld,
-				   a.data (), 1, 0.0, y, 1
-				   F77_CHAR_ARG_LEN (1)));
-	}
+          F77_XFCN (sgemv, SGEMV, (F77_CONST_CHAR_ARG2 ("N", 1),
+                                   nr, nc, 1.0f, m.data (), nr,
+                                   a.data (), 1, 0.0f, y, 1
+                                   F77_CHAR_ARG_LEN (1)));
+        }
     }
 
   return retval;
@@ -245,35 +240,23 @@ operator * (const FloatDiagMatrix& m, const FloatColumnVector& a)
   else
     {
       if (nr == 0 || nc == 0)
-	retval.resize (nr, 0.0);
+        retval.resize (nr, 0.0);
       else
-	{
-	  retval.resize (nr);
+        {
+          retval.resize (nr);
 
-	  for (octave_idx_type i = 0; i < a_len; i++)
-	    retval.elem (i) = a.elem (i) * m.elem (i, i);
+          for (octave_idx_type i = 0; i < a_len; i++)
+            retval.elem (i) = a.elem (i) * m.elem (i, i);
 
-	  for (octave_idx_type i = a_len; i < nr; i++)
-	    retval.elem (i) = 0.0;
-	}
+          for (octave_idx_type i = a_len; i < nr; i++)
+            retval.elem (i) = 0.0;
+        }
     }
 
   return retval;
 }
 
 // other operations
-
-FloatColumnVector
-FloatColumnVector::map (dmapper fcn) const
-{
-  return MArray<float>::map<float> (func_ptr (fcn));
-}
-
-FloatComplexColumnVector
-FloatColumnVector::map (cmapper fcn) const
-{
-  return MArray<float>::map<FloatComplex> (func_ptr (fcn));
-}
 
 float
 FloatColumnVector::min (void) const
@@ -335,9 +318,3 @@ operator >> (std::istream& is, FloatColumnVector& a)
     }
   return is;
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

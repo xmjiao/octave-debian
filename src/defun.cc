@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 1999, 2000, 2002, 2003, 2004, 2005,
-              2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -40,6 +39,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "ov-mex-fcn.h"
 #include "ov-usr-fcn.h"
 #include "oct-obj.h"
+#include "oct-lvalue.h"
 #include "pager.h"
 #include "symtab.h"
 #include "toplev.h"
@@ -69,10 +69,10 @@ check_version (const std::string& version, const std::string& fcn)
   if (version != OCTAVE_API_VERSION)
     {
       error ("API version %s found in .oct file function `%s'\n"
-	     "       does not match the running Octave (API version %s)\n"
-	     "       this can lead to incorrect results or other failures\n"
-	     "       you can fix this problem by recompiling this .oct file",
-	     version.c_str (), fcn.c_str (), OCTAVE_API_VERSION);
+             "       does not match the running Octave (API version %s)\n"
+             "       this can lead to incorrect results or other failures\n"
+             "       you can fix this problem by recompiling this .oct file",
+             version.c_str (), fcn.c_str (), OCTAVE_API_VERSION);
     }
 }
 
@@ -80,8 +80,8 @@ check_version (const std::string& version, const std::string& fcn)
 
 void
 install_builtin_function (octave_builtin::fcn f, const std::string& name,
-			  const std::string& doc,
-			  bool /* can_hide_function -- not yet implemented */)
+                          const std::string& doc,
+                          bool /* can_hide_function -- not yet implemented */)
 {
   octave_value fcn (new octave_builtin (f, name, doc));
 
@@ -90,8 +90,8 @@ install_builtin_function (octave_builtin::fcn f, const std::string& name,
 
 void
 install_dld_function (octave_dld_function::fcn f, const std::string& name,
-		      const octave_shlib& shl, const std::string& doc,
-		      bool relative)
+                      const octave_shlib& shl, const std::string& doc,
+                      bool relative)
 {
   octave_dld_function *fcn = new octave_dld_function (f, shl, name, doc);
 
@@ -105,7 +105,7 @@ install_dld_function (octave_dld_function::fcn f, const std::string& name,
 
 void
 install_mex_function (void *fptr, bool fmex, const std::string& name,
-		      const octave_shlib& shl, bool relative)
+                      const octave_shlib& shl, bool relative)
 {
   octave_mex_function *fcn = new octave_mex_function (fptr, fmex, shl, name);
 
@@ -123,8 +123,78 @@ alias_builtin (const std::string& alias, const std::string& name)
   symbol_table::alias_built_in_function (alias, name);
 }
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+octave_shlib
+get_current_shlib (void)
+{
+  octave_shlib retval;
+
+  octave_function *curr_fcn = octave_call_stack::current ();
+  if (curr_fcn)
+    {
+      if (curr_fcn->is_dld_function ())
+        {
+          octave_dld_function *dld = dynamic_cast<octave_dld_function *> (curr_fcn);
+          retval = dld->get_shlib ();
+        }
+      else if (curr_fcn->is_mex_function ())
+        {
+          octave_mex_function *mex = dynamic_cast<octave_mex_function *> (curr_fcn);
+          retval = mex->get_shlib ();
+        }
+    }
+
+  return retval;
+}
+
+bool defun_isargout (int nargout, int iout)
+{
+  const std::list<octave_lvalue> *lvalue_list = octave_builtin::curr_lvalue_list;
+  if (iout >= std::max (nargout, 1))
+    return false;
+  else if (lvalue_list)
+    {
+      int k = 0;
+      for (std::list<octave_lvalue>::const_iterator p = lvalue_list->begin ();
+           p != lvalue_list->end (); p++)
+        {
+          if (k == iout)
+            return ! p->is_black_hole ();
+          k += p->numel ();
+          if (k > iout)
+            break;
+        }
+
+      return true;
+    }
+  else
+    return true;
+}
+
+void defun_isargout (int nargout, int nout, bool *isargout)
+{
+  const std::list<octave_lvalue> *lvalue_list = octave_builtin::curr_lvalue_list;
+  if (lvalue_list)
+    {
+      int k = 0;
+      for (std::list<octave_lvalue>::const_iterator p = lvalue_list->begin ();
+           p != lvalue_list->end () && k < nout; p++)
+        {
+          if (p->is_black_hole ())
+            isargout[k++] = false;
+          else
+            {
+              int l = std::min (k + p->numel (),
+                                static_cast<octave_idx_type> (nout));
+              while (k < l)
+                isargout[k++] = true;
+            }
+        }
+    }
+  else
+    for (int i = 0; i < nout; i++)
+      isargout[i] = true;
+
+  for (int i = std::max(nargout, 1); i < nout; i++)
+    isargout[i] = false;
+}
+

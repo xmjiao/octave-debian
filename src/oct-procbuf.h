@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2000, 2005, 2007 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -26,9 +26,7 @@ along with Octave; see the file COPYING.  If not, see
 #if !defined (octave_octave_procbuf_h)
 #define octave_octave_procbuf_h 1
 
-#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#endif
 
 #include "c-file-ptr-stream.h"
 
@@ -66,14 +64,16 @@ protected:
   pid_t proc_pid;
 
   octave_procbuf *next;
+
+private:
+
+  // No copying!
+
+  octave_procbuf (const octave_procbuf&);
+
+  octave_procbuf& operator = (const octave_procbuf&);
 };
 
 extern void symbols_of_oct_procbuf (void);
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

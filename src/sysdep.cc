@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 1999, 2000, 2002, 2003,
-              2005, 2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -34,12 +33,8 @@ along with Octave; see the file COPYING.  If not, see
 #include <iostream>
 #include <string>
 
-#ifdef HAVE_UNISTD_H
-#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#endif
 #include <unistd.h>
-#endif
 
 #if defined (HAVE_TERMIOS_H)
 #include <termios.h>
@@ -47,7 +42,7 @@ along with Octave; see the file COPYING.  If not, see
 #include <termio.h>
 #elif defined (HAVE_SGTTY_H)
 #include <sgtty.h>
-#endif 
+#endif
 
 #if defined (HAVE_CONIO_H)
 #include <conio.h>
@@ -63,10 +58,6 @@ along with Octave; see the file COPYING.  If not, see
 
 #if defined (HAVE_IEEEFP_H)
 #include <ieeefp.h>
-#endif
-
-#if !defined (HAVE_GETHOSTNAME) && defined (HAVE_SYS_UTSNAME_H)
-#include <sys/utsname.h>
 #endif
 
 #include "cmd-edit.h"
@@ -123,15 +114,15 @@ w32_set_octave_home (void)
       int status = GetModuleFileName (hMod, &bin_dir[0], n);
 
       if (status < n)
-	{
-	  bin_dir.resize (status);
-	  break;
-	}
+        {
+          bin_dir.resize (status);
+          break;
+        }
       else
-	{
-	  n *= 2;
-	  bin_dir.resize (n);
-	}
+        {
+          n *= 2;
+          bin_dir.resize (n);
+        }
     }
 
   if (! bin_dir.empty ())
@@ -139,7 +130,7 @@ w32_set_octave_home (void)
       size_t pos = bin_dir.rfind ("\\bin\\");
 
       if (pos != std::string::npos)
-	octave_env::putenv ("OCTAVE_HOME", bin_dir.substr (0, pos));
+        octave_env::putenv ("OCTAVE_HOME", bin_dir.substr (0, pos));
     }
 }
 
@@ -180,7 +171,7 @@ static void
 MSVC_init (void)
 {
   w32_set_octave_home ();
-  
+
   // Init mutex to protect setjmp/longjmp and get main thread context
   w32_sigint_init ();
 
@@ -198,31 +189,31 @@ same_file_internal (const std::string& file1, const std::string& file2)
 
   bool retval = false;
 
-  // Windows native code 
+  // Windows native code
   // Reference: http://msdn2.microsoft.com/en-us/library/aa363788.aspx
 
   HANDLE hfile1 = CreateFile (file1.c_str (), 0, FILE_SHARE_READ, 0,
-			      OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0); 
+                              OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
   if (hfile1 != INVALID_HANDLE_VALUE)
     {
       HANDLE hfile2 = CreateFile (file2.c_str (), 0, FILE_SHARE_READ, 0,
-				  OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+                                  OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
       if (hfile2 != INVALID_HANDLE_VALUE)
-	{  
-	  BY_HANDLE_FILE_INFORMATION hfi1;
-	  BY_HANDLE_FILE_INFORMATION hfi2;
-  
-	  if (GetFileInformationByHandle (hfile1, &hfi1)
-	      && GetFileInformationByHandle (hfile2, &hfi2))
-  
-	    retval = (hfi1.dwVolumeSerialNumber == hfi2.dwVolumeSerialNumber
-		      && hfi1.nFileIndexHigh == hfi2.nFileIndexHigh
-		      && hfi1.nFileIndexLow == hfi2.nFileIndexLow);
+        {
+          BY_HANDLE_FILE_INFORMATION hfi1;
+          BY_HANDLE_FILE_INFORMATION hfi2;
 
-	  CloseHandle (hfile2);
-	}
+          if (GetFileInformationByHandle (hfile1, &hfi1)
+              && GetFileInformationByHandle (hfile2, &hfi2))
+
+            retval = (hfi1.dwVolumeSerialNumber == hfi2.dwVolumeSerialNumber
+                      && hfi1.nFileIndexHigh == hfi2.nFileIndexHigh
+                      && hfi1.nFileIndexLow == hfi2.nFileIndexLow);
+
+          CloseHandle (hfile2);
+        }
 
       CloseHandle (hfile1);
     }
@@ -237,65 +228,11 @@ same_file_internal (const std::string& file1, const std::string& file2)
   file_stat fs_file2 (file2);
 
   return (fs_file1 && fs_file2
-	  && fs_file1.ino () == fs_file2.ino ()
-	  && fs_file1.dev () == fs_file2.dev ());
+          && fs_file1.ino () == fs_file2.ino ()
+          && fs_file1.dev () == fs_file2.dev ());
 
 #endif
 }
-
-#if defined (__DECCXX)
-
-// These don't seem to be instantiated automatically...
-
-template std::istream&
-std::operator >> (std::istream&, std::complex<double>&);
-
-template std::string&
-std::string::append (const std::string&, size_t, size_t);
-
-#endif
-
-#if defined (NeXT)
-extern "C"
-{
-  typedef void (*_cplus_fcn_int) (int);
-  extern void (*malloc_error (_cplus_fcn_int)) (int);
-}
-
-static void
-malloc_handler (int code)
-{
-  if (code == 5)
-    warning ("hopefully recoverable malloc error: freeing wild pointer");
-  else
-    panic ("probably irrecoverable malloc error: code %d", code);
-}
-
-static void
-NeXT_init (void)
-{
-  malloc_error (malloc_handler);
-}
-#endif
-
-#if defined (__EMX__)
-OS2_init (void)
-{
-  _control87 ((EM_INVALID | EM_DENORMAL | EM_ZERODIVIDE | EM_OVERFLOW
-	       | EM_UNDERFLOW | EM_INEXACT), MCW_EM);
-}
-#endif
-
-#if defined (SCO)
-static void
-SCO_init (void)
-{
-#if defined (HAVE_IEEEFP_H)
-  // Disable trapping on common exceptions.
-  fpsetmask (~(FP_X_OFL|FP_X_INV|FP_X_DZ|FP_X_DNML|FP_X_UFL|FP_X_IMP));
-#endif
-}
-#endif
 
 void
 sysdep_init (void)
@@ -306,15 +243,7 @@ sysdep_init (void)
   MINGW_init ();
 #elif defined (_MSC_VER)
   MSVC_init ();
-#elif defined (NeXT)
-  NeXT_init ();
-#elif defined (__EMX__)
-  OS2_init ();
-#elif defined (SCO)
-  SCO_init ();
 #endif
-
-  octave_ieee_init ();
 }
 
 void
@@ -326,13 +255,13 @@ sysdep_cleanup (void)
 // Set terminal in raw mode.  From less-177.
 //
 // Change terminal to "raw mode", or restore to "normal" mode.
-// "Raw mode" means 
-//	1. An outstanding read will complete on receipt of a single keystroke.
-//	2. Input is not echoed.  
-//	3. On output, \n is mapped to \r\n.
-//	4. \t is NOT expanded into spaces.
-//	5. Signal-causing characters such as ctrl-C (interrupt),
-//	   etc. are NOT disabled.
+// "Raw mode" means
+//      1. An outstanding read will complete on receipt of a single keystroke.
+//      2. Input is not echoed.
+//      3. On output, \n is mapped to \r\n.
+//      4. \t is NOT expanded into spaces.
+//      5. Signal-causing characters such as ctrl-C (interrupt),
+//         etc. are NOT disabled.
 // It doesn't matter whether an input \n is mapped to \r, or vice versa.
 
 void
@@ -344,7 +273,7 @@ raw_mode (bool on, bool wait)
   if (! isatty (tty_fd))
     {
       if (interactive)
-	error ("stdin is not a tty!");
+        error ("stdin is not a tty!");
       return;
     }
 
@@ -358,38 +287,38 @@ raw_mode (bool on, bool wait)
 
     if (on)
       {
-	// Get terminal modes.
+        // Get terminal modes.
 
-	tcgetattr (tty_fd, &s);
+        tcgetattr (tty_fd, &s);
 
-	// Save modes and set certain variables dependent on modes.
+        // Save modes and set certain variables dependent on modes.
 
-	save_term = s;
-//	ospeed = s.c_cflag & CBAUD;
-//	erase_char = s.c_cc[VERASE];
-//	kill_char = s.c_cc[VKILL];
+        save_term = s;
+//      ospeed = s.c_cflag & CBAUD;
+//      erase_char = s.c_cc[VERASE];
+//      kill_char = s.c_cc[VKILL];
 
-	// Set the modes to the way we want them.
+        // Set the modes to the way we want them.
 
-	s.c_lflag &= ~(ICANON|ECHO|ECHOE|ECHOK|ECHONL);
-	s.c_oflag |=  (OPOST|ONLCR);
+        s.c_lflag &= ~(ICANON|ECHO|ECHOE|ECHOK|ECHONL);
+        s.c_oflag |=  (OPOST|ONLCR);
 #if defined (OCRNL)
-	s.c_oflag &= ~(OCRNL);
+        s.c_oflag &= ~(OCRNL);
 #endif
 #if defined (ONOCR)
-	s.c_oflag &= ~(ONOCR);
+        s.c_oflag &= ~(ONOCR);
 #endif
 #if defined (ONLRET)
-	s.c_oflag &= ~(ONLRET);
+        s.c_oflag &= ~(ONLRET);
 #endif
-	s.c_cc[VMIN] = wait ? 1 : 0;
-	s.c_cc[VTIME] = 0;
-      }      
+        s.c_cc[VMIN] = wait ? 1 : 0;
+        s.c_cc[VTIME] = 0;
+      }
     else
       {
-	// Restore saved modes.
+        // Restore saved modes.
 
-	s = save_term;
+        s = save_term;
       }
 
     tcsetattr (tty_fd, wait ? TCSAFLUSH : TCSADRAIN, &s);
@@ -401,37 +330,37 @@ raw_mode (bool on, bool wait)
 
     if (on)
       {
-	// Get terminal modes.
+        // Get terminal modes.
 
-	ioctl (tty_fd, TCGETA, &s);
+        ioctl (tty_fd, TCGETA, &s);
 
-	// Save modes and set certain variables dependent on modes.
+        // Save modes and set certain variables dependent on modes.
 
-	save_term = s;
-//	ospeed = s.c_cflag & CBAUD;
-//	erase_char = s.c_cc[VERASE];
-//	kill_char = s.c_cc[VKILL];
+        save_term = s;
+//      ospeed = s.c_cflag & CBAUD;
+//      erase_char = s.c_cc[VERASE];
+//      kill_char = s.c_cc[VKILL];
 
-	// Set the modes to the way we want them.
+        // Set the modes to the way we want them.
 
-	s.c_lflag &= ~(ICANON|ECHO|ECHOE|ECHOK|ECHONL);
-	s.c_oflag |=  (OPOST|ONLCR);
+        s.c_lflag &= ~(ICANON|ECHO|ECHOE|ECHOK|ECHONL);
+        s.c_oflag |=  (OPOST|ONLCR);
 #if defined (OCRNL)
-	s.c_oflag &= ~(OCRNL);
+        s.c_oflag &= ~(OCRNL);
 #endif
 #if defined (ONOCR)
-	s.c_oflag &= ~(ONOCR);
+        s.c_oflag &= ~(ONOCR);
 #endif
 #if defined (ONLRET)
-	s.c_oflag &= ~(ONLRET);
+        s.c_oflag &= ~(ONLRET);
 #endif
-	s.c_cc[VMIN] = wait ? 1 : 0;
-      }      
+        s.c_cc[VMIN] = wait ? 1 : 0;
+      }
     else
       {
-	// Restore saved modes.
+        // Restore saved modes.
 
-	s = save_term;
+        s = save_term;
       }
 
     ioctl (tty_fd, TCSETAW, &s);
@@ -443,27 +372,27 @@ raw_mode (bool on, bool wait)
 
     if (on)
       {
-	// Get terminal modes.
+        // Get terminal modes.
 
-	ioctl (tty_fd, TIOCGETP, &s);
+        ioctl (tty_fd, TIOCGETP, &s);
 
-	// Save modes and set certain variables dependent on modes.
+        // Save modes and set certain variables dependent on modes.
 
-	save_term = s;
-//	ospeed = s.sg_ospeed;
-//	erase_char = s.sg_erase;
-//	kill_char = s.sg_kill;
+        save_term = s;
+//      ospeed = s.sg_ospeed;
+//      erase_char = s.sg_erase;
+//      kill_char = s.sg_kill;
 
-	// Set the modes to the way we want them.
+        // Set the modes to the way we want them.
 
-	s.sg_flags |= CBREAK;
-	s.sg_flags &= ~(ECHO);
-      } 
+        s.sg_flags |= CBREAK;
+        s.sg_flags &= ~(ECHO);
+      }
     else
       {
-	// Restore saved modes.
+        // Restore saved modes.
 
-	s = save_term;
+        s = save_term;
       }
 
     ioctl (tty_fd, TIOCSETN, &s);
@@ -528,7 +457,7 @@ octave_kbhit (bool wait)
   octave_set_interrupt_handler (saved_interrupt_handler, false);
 
   int c = std::cin.get ();
- 
+
   if (std::cin.fail () || std::cin.eof ())
     std::cin.clear ();
 
@@ -541,9 +470,48 @@ octave_kbhit (bool wait)
   return c;
 }
 
+std::string
+get_P_tmpdir (void)
+{
+#if defined (__WIN32__) && ! defined (_POSIX_VERSION)
+
+  std::string retval;
+
+#if defined (P_tmpdir)
+  retval = P_tmpdir;
+#endif
+
+  // Apparently some versions of MinGW and MSVC either don't define
+  // P_tmpdir, or they define it to a single backslash, neither of which
+  // is particularly helpful.
+
+  if (retval.empty () || retval == "\\")
+    {
+      retval = octave_env::getenv ("TEMP");
+
+      if (retval.empty ())
+        retval = octave_env::getenv ("TMP");
+
+      if (retval.empty ())
+        retval = "c:\\temp";
+    }
+
+  return retval;
+
+#elif defined (P_tmpdir)
+
+  return P_tmpdir;
+
+#else
+
+  return "/tmp";
+
+#endif
+}
+
 DEFUN (clc, , ,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {} clc ()\n\
+@deftypefn  {Built-in Function} {} clc ()\n\
 @deftypefnx {Built-in Function} {} home ()\n\
 Clear the terminal screen and move the cursor to the upper left corner.\n\
 @end deftypefn")
@@ -577,7 +545,7 @@ returns a string containing the value of your path.\n\
       std::string name = args(0).string_value ();
 
       if (! error_state)
-	retval = octave_env::getenv (name);
+        retval = octave_env::getenv (name);
     }
   else
     print_usage ();
@@ -587,7 +555,7 @@ returns a string containing the value of your path.\n\
 
 DEFUN (putenv, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {} putenv (@var{var}, @var{value})\n\
+@deftypefn  {Built-in Function} {} putenv (@var{var}, @var{value})\n\
 @deftypefnx {Built-in Function} {} setenv (@var{var}, @var{value})\n\
 Set the value of the environment variable @var{var} to @var{value}.\n\
 @end deftypefn")
@@ -598,20 +566,20 @@ Set the value of the environment variable @var{var} to @var{value}.\n\
 
   if (nargin == 2 || nargin == 1)
     {
-      std::string var = args(0).string_value (); 
+      std::string var = args(0).string_value ();
 
       if (! error_state)
-	{
-	  std::string val = (nargin == 2
-			     ? args(1).string_value () : std::string ()); 
+        {
+          std::string val = (nargin == 2
+                             ? args(1).string_value () : std::string ());
 
-	  if (! error_state)
-	    octave_env::putenv (var, val);
-	  else
-	    error ("putenv: second argument should be a string");
-	}
+          if (! error_state)
+            octave_env::putenv (var, val);
+          else
+            error ("putenv: VALUE must be a string");
+        }
       else
-	error ("putenv: first argument should be a string");
+        error ("putenv: VAR must be a string");
     }
   else
     print_usage ();
@@ -656,7 +624,7 @@ returning the empty string if no key is available.\n\
       int c = octave_kbhit (args.length () == 0);
 
       if (c == -1)
-	c = 0;
+        c = 0;
 
       char *s = new char [2];
       s[0] = c;
@@ -700,22 +668,22 @@ clc;\n\
       double dval = args(0).double_value ();
 
       if (! error_state)
-	{
-	  if (! xisnan (dval))
-	    {
-	      feval ("drawnow");
+        {
+          if (! xisnan (dval))
+            {
+              feval ("drawnow");
 
-	      if (xisinf (dval))
-		{
-		  flush_octave_stdout ();
-		  octave_kbhit ();
-		}
-	      else
-		octave_sleep (dval);
-	    }
-	  else
-	    warning ("pause: NaN is an invalid delay");
-	}
+              if (xisinf (dval))
+                {
+                  flush_octave_stdout ();
+                  octave_kbhit ();
+                }
+              else
+                octave_sleep (dval);
+            }
+          else
+            warning ("pause: NaN is an invalid delay");
+        }
     }
   else
     {
@@ -740,15 +708,15 @@ Suspend the execution of the program for the given number of seconds.\n\
       double dval = args(0).double_value ();
 
       if (! error_state)
-	{
-	  if (xisnan (dval))
-	    warning ("sleep: NaN is an invalid delay");
-	  else
-	    {
-	      feval ("drawnow");
-	      octave_sleep (dval);
-	    }
-	}
+        {
+          if (xisnan (dval))
+            warning ("sleep: NaN is an invalid delay");
+          else
+            {
+              feval ("drawnow");
+              octave_sleep (dval);
+            }
+        }
     }
   else
     print_usage ();
@@ -772,19 +740,19 @@ of time less than one second, @code{usleep} will pause the execution for\n\
       double dval = args(0).double_value ();
 
       if (! error_state)
-	{
-	  if (xisnan (dval))
-	    warning ("usleep: NaN is an invalid delay");
-	  else
-	    {
-	      feval ("drawnow");
+        {
+          if (xisnan (dval))
+            warning ("usleep: NaN is an invalid delay");
+          else
+            {
+              feval ("drawnow");
 
-	      int delay = NINT (dval);
+              int delay = NINT (dval);
 
-	      if (delay > 0)
-		octave_usleep (delay);
-	    }
-	}
+              if (delay > 0)
+                octave_usleep (delay);
+            }
+        }
     }
   else
     print_usage ();
@@ -798,14 +766,14 @@ of time less than one second, @code{usleep} will pause the execution for\n\
 DEFUN (isieee, , ,
   "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {} isieee ()\n\
-Return 1 if your computer claims to conform to the IEEE standard for\n\
-floating point calculations.\n\
+Return true if your computer @emph{claims} to conform to the IEEE standard\n\
+for floating point calculations.  No actual tests are performed.\n\
 @end deftypefn")
 {
   oct_mach_info::float_format flt_fmt = oct_mach_info::native_float_format ();
 
   return octave_value (flt_fmt == oct_mach_info::flt_fmt_ieee_little_endian
-		       || flt_fmt == oct_mach_info::flt_fmt_ieee_big_endian);
+                       || flt_fmt == oct_mach_info::flt_fmt_ieee_big_endian);
 }
 
 DEFUN (native_float_format, , ,
@@ -822,13 +790,13 @@ Return the native floating point format as a string\n\
 DEFUN (tilde_expand, args, ,
   "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {} tilde_expand (@var{string})\n\
-Performs tilde expansion on @var{string}.  If @var{string} begins with a\n\
+Perform tilde expansion on @var{string}.  If @var{string} begins with a\n\
 tilde character, (@samp{~}), all of the characters preceding the first\n\
 slash (or all characters, if there is no slash) are treated as a\n\
 possible user name, and the tilde and the following characters up to the\n\
 slash are replaced by the home directory of the named user.  If the\n\
 tilde is followed immediately by a slash, the tilde is replaced by the\n\
-home directory of the user running Octave.  For example,\n\
+home directory of the user running Octave.  For example:\n\
 \n\
 @example\n\
 @group\n\
@@ -851,37 +819,19 @@ tilde_expand (\"~/bin\")\n\
       string_vector sv = arg.all_strings ();
 
       if (! error_state)
-	{
-	  sv = file_ops::tilde_expand (sv);
+        {
+          sv = file_ops::tilde_expand (sv);
 
-	  if (arg.is_cellstr ())
-	    retval = Cell (arg.dims (), sv);
-	  else
-	    retval = sv;
-	}
+          if (arg.is_cellstr ())
+            retval = Cell (arg.dims (), sv);
+          else
+            retval = sv;
+        }
       else
-	error ("tilde_expand: expecting argument to be char or cellstr object");
+        error ("tilde_expand: expecting argument to be char or cellstr object");
     }
   else
     print_usage ();
 
   return retval;
 }
-
-#if defined (__EMX__) && defined (OS2)
-
-DEFUN (extproc, , ,
-  "extproc: ignored by Octave")
-{
-  return octave_value_list ();
-}
-
-DEFALIAS (EXTPROC, extproc);
-
-#endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

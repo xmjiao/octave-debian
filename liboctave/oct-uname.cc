@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2005, 2007 John W. Eaton
+Copyright (C) 2005-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -42,10 +42,7 @@ octave_uname::init (void)
   err = ::uname (&unm);
 
   if (err < 0)
-    {
-      using namespace std;
-      msg = ::strerror (errno);
-    }
+    msg = gnulib::strerror (errno);
   else
     {
       utsname_sysname = unm.sysname;
@@ -56,9 +53,3 @@ octave_uname::init (void)
     }
 #endif
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

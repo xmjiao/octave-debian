@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 1999, 2000, 2002, 2003, 2004,
-##               2005, 2006, 2007 John W. Eaton
+## Copyright (C) 1995-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -18,9 +17,9 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} playaudio (@var{name}, @var{ext})
+## @deftypefn  {Function File} {} playaudio (@var{name}, @var{ext})
 ## @deftypefnx {Function File} {} playaudio (@var{x})
-## Plays the audio file @file{@var{name}.@var{ext}} or the audio data
+## Play the audio file @file{@var{name}.@var{ext}} or the audio data
 ## stored in the vector @var{x}.
 ## @seealso{lin2mu, mu2lin, loadaudio, saveaudio, setaudio, record}
 ## @end deftypefn
@@ -64,10 +63,10 @@ function playaudio (name, ext)
     if (strcmp (ext, "lin") || strcmp (ext, "raw"))
       system (sprintf ("cat \"%s\" > /dev/dsp", name));
     elseif (strcmp (ext, "mu") || strcmp (ext, "au")
-	    || strcmp (ext, "snd") || strcmp (ext, "ul"))
+            || strcmp (ext, "snd") || strcmp (ext, "ul"))
       system (sprintf ("cat \"%s\" > /dev/audio", name));
     else
-      error ("playaudio does not support given extension");
+      error ("playaudio: unsupported extension");
     endif
   else
     print_usage ();

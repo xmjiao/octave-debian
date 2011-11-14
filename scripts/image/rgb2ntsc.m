@@ -1,5 +1,4 @@
-## Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2005, 2006, 2007, 2008
-##               John W. Eaton
+## Copyright (C) 1994-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -52,7 +51,7 @@ function yiq = rgb2ntsc (rgb)
   if (! ismatrix (rgb) || columns (rgb) != 3)
     error ("rgb2ntsc: argument must be a matrix of size Nx3 or NxMx3");
   endif
-  
+
   ## Convert data
   trans = [ 0.299,  0.596,  0.211;
             0.587, -0.274, -0.523;

@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 2004, 2005, 2007, 2008, 2009 David Bateman
-Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004 Andy Adler
+Copyright (C) 2004-2011 David Bateman
+Copyright (C) 1998-2004 Andy Adler
 
 This file is part of Octave.
 
@@ -30,14 +30,8 @@ along with Octave; see the file COPYING.  If not, see
 #include "Sparse.h"
 #include "Sparse.cc"
 
-INSTANTIATE_SPARSE_AND_ASSIGN (bool, OCTAVE_API);
+INSTANTIATE_SPARSE (bool, OCTAVE_API);
 
 #if 0
 template std::ostream& operator << (std::ostream&, const Sparse<bool>&);
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

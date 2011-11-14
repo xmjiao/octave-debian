@@ -1,8 +1,7 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2000, 2002, 2004, 2005, 2006,
-              2007 John W. Eaton
-Copyright (C) 2008, 2009 Jaroslav Hajek
+Copyright (C) 1994-2011 John W. Eaton
+Copyright (C) 2008-2009 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -36,22 +35,30 @@ FloatCHOL
 {
 public:
 
-  FloatCHOL (void) : chol_mat () { }
+  FloatCHOL (void) : chol_mat (), xrcond (0) { }
 
-  FloatCHOL (const FloatMatrix& a, bool calc_cond = false) { init (a, calc_cond); }
+  FloatCHOL (const FloatMatrix& a, bool calc_cond = false)
+    : chol_mat (), xrcond (0)
+    {
+      init (a, calc_cond);
+    }
 
-  FloatCHOL (const FloatMatrix& a, octave_idx_type& info, bool calc_cond = false) 
-    { info = init (a, calc_cond); }
+  FloatCHOL (const FloatMatrix& a, octave_idx_type& info,
+             bool calc_cond = false)
+    : chol_mat (), xrcond (0)
+    {
+      info = init (a, calc_cond);
+    }
 
   FloatCHOL (const FloatCHOL& a) : chol_mat (a.chol_mat), xrcond (a.xrcond) { }
 
   FloatCHOL& operator = (const FloatCHOL& a)
     {
       if (this != &a)
-	{
-	  chol_mat = a.chol_mat;
-	  xrcond = a.xrcond;
-	}
+        {
+          chol_mat = a.chol_mat;
+          xrcond = a.xrcond;
+        }
       return *this;
     }
 
@@ -88,9 +95,3 @@ private:
 FloatMatrix OCTAVE_API chol2inv (const FloatMatrix& r);
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

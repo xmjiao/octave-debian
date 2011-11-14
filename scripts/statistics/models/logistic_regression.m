@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 1999, 2000, 2002, 2005, 2007,
-##               2009 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -85,8 +84,7 @@
 ## Uses the auxiliary functions logistic_regression_derivatives and
 ## logistic_regression_likelihood.
 
-function [theta, beta, dev, dl, d2l, p] ...
-  = logistic_regression (y, x, print, theta, beta)
+function [theta, beta, dev, dl, d2l, p] = logistic_regression (y, x, print, theta, beta)
 
   ## check input
   y = round (vec (y));
@@ -96,7 +94,7 @@ function [theta, beta, dev, dl, d2l, p] ...
   endif;
   [mx, nx] = size (x);
   if (mx != my)
-    error ("x and y must have the same number of observations");
+    error ("logistic_regression: X and Y must have the same number of observations");
   endif
 
   ## initial calculations
@@ -141,7 +139,7 @@ function [theta, beta, dev, dl, d2l, p] ...
       while ((dev - devold) / (dl' * (tb - tbold)) > 0)
         epsilon = epsilon * incr;
          if (epsilon > 1e+15)
-           error ("epsilon too large");
+           error ("logistic_regression: epsilon too large");
          endif
          tb = tbold - (d2l - epsilon * eye (size (d2l))) \ dl;
          [g, g1, p, dev] = logistic_regression_likelihood (y, x, tb, z, z1);

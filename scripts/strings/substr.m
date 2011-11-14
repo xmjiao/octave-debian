@@ -1,5 +1,4 @@
-## Copyright (C) 1996, 1999, 2000, 2004, 2005, 2006, 2007, 2008,
-##               2009 Kurt Hornik
+## Copyright (C) 1996-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -26,7 +25,7 @@
 ## the string.  If @var{len} is omitted, the substring extends to the end
 ## of S.
 ##
-## For example,
+## For example:
 ##
 ## @example
 ## @group
@@ -35,7 +34,7 @@
 ## @end group
 ## @end example
 ##
-## This function is patterned after AWK.  You can get the same result by
+## This function is patterned after AWK@.  You can get the same result by
 ## @code{@var{s}(@var{offset} : (@var{offset} + @var{len} - 1))}.
 ## @end deftypefn
 
@@ -65,7 +64,7 @@ function t = substr (s, offset, len)
         error ("substr: length = %d out of range", len);
       endif
     else
-      error ("substr: offset = %d out of range", offset);
+      error ("substr: OFFSET = %d out of range", offset);
     endif
   else
     error ("substr: expecting string argument");

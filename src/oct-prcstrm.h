@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1999, 2000, 2003, 2004, 2005, 2006, 2007
-              John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -35,14 +34,14 @@ octave_iprocstream : public octave_stdiostream
 public:
 
   octave_iprocstream (const std::string& n,
-		      std::ios::openmode arg_md = std::ios::in,
-		      oct_mach_info::float_format flt_fmt
-		        = oct_mach_info::native_float_format ());
+                      std::ios::openmode arg_md = std::ios::in,
+                      oct_mach_info::float_format flt_fmt
+                        = oct_mach_info::native_float_format ());
 
   static octave_stream
   create (const std::string& n, std::ios::openmode arg_md = std::ios::in,
-	  oct_mach_info::float_format flt_fmt
-	    = oct_mach_info::native_float_format ());
+          oct_mach_info::float_format flt_fmt
+            = oct_mach_info::native_float_format ());
 
 protected:
 
@@ -63,14 +62,14 @@ octave_oprocstream : public octave_stdiostream
 public:
 
   octave_oprocstream (const std::string& n,
-		      std::ios::openmode arg_md = std::ios::out,
-		      oct_mach_info::float_format flt_fmt
-		        = oct_mach_info::native_float_format ());
+                      std::ios::openmode arg_md = std::ios::out,
+                      oct_mach_info::float_format flt_fmt
+                        = oct_mach_info::native_float_format ());
 
   static octave_stream
   create (const std::string& n, std::ios::openmode arg_md = std::ios::out,
-	  oct_mach_info::float_format flt_fmt
-	    = oct_mach_info::native_float_format ());
+          oct_mach_info::float_format flt_fmt
+            = oct_mach_info::native_float_format ());
 
 protected:
 
@@ -86,9 +85,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2002,
-              2003, 2004, 2005, 2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -46,23 +45,23 @@ extern OCTINTERP_API void clear_mex_functions (void);
 
 extern OCTINTERP_API octave_function *
 is_valid_function (const octave_value&, const std::string& = std::string (),
-		   bool warn = false); 
+                   bool warn = false);
 
 extern OCTINTERP_API octave_function *
 is_valid_function (const std::string&, const std::string& = std::string (),
-		   bool warn = false); 
+                   bool warn = false);
 
 extern OCTINTERP_API octave_function *
 extract_function (const octave_value& arg, const std::string& warn_for,
-		  const std::string& fname, const std::string& header,
-		  const std::string& trailer);
+                  const std::string& fname, const std::string& header,
+                  const std::string& trailer);
 
 extern OCTINTERP_API string_vector
 get_struct_elts (const std::string& text);
 
 extern OCTINTERP_API string_vector
 generate_struct_completions (const std::string& text, std::string& prefix,
-			     std::string& hint);
+                             std::string& hint);
 
 extern OCTINTERP_API bool
 looks_like_struct (const std::string& text);
@@ -78,29 +77,40 @@ extern OCTINTERP_API octave_value lookup_function_handle (const std::string& nm)
 extern OCTINTERP_API octave_value
 get_global_value (const std::string& nm, bool silent = false);
 
-extern OCTINTERP_API void set_global_value (const std::string& nm, const octave_value& val);
+extern OCTINTERP_API void
+set_global_value (const std::string& nm, const octave_value& val);
+
+extern OCTINTERP_API octave_value
+get_top_level_value (const std::string& nm, bool silent = false);
+
+extern OCTINTERP_API void
+set_top_level_value (const std::string& nm, const octave_value& val);
 
 extern OCTINTERP_API octave_value
 set_internal_variable (bool& var, const octave_value_list& args,
-		       int nargout, const char *nm);
+                       int nargout, const char *nm);
 
 extern OCTINTERP_API octave_value
 set_internal_variable (char& var, const octave_value_list& args,
-		       int nargout, const char *nm);
+                       int nargout, const char *nm);
 
 extern OCTINTERP_API octave_value
 set_internal_variable (int& var, const octave_value_list& args,
-		       int nargout, const char *nm,
-		       int minval = INT_MIN, int maxval = INT_MAX);
+                       int nargout, const char *nm,
+                       int minval = INT_MIN, int maxval = INT_MAX);
 
 extern OCTINTERP_API octave_value
 set_internal_variable (double& var, const octave_value_list& args,
-		       int nargout, const char *nm,
-		       double minval = DBL_MIN, double maxval = DBL_MAX);
+                       int nargout, const char *nm,
+                       double minval = DBL_MIN, double maxval = DBL_MAX);
 
 extern OCTINTERP_API octave_value
 set_internal_variable (std::string& var, const octave_value_list& args,
-		       int nargout, const char *nm, bool empty_ok = true);
+                       int nargout, const char *nm, bool empty_ok = true);
+
+extern OCTINTERP_API octave_value
+set_internal_variable (int& var, const octave_value_list& args,
+                       int nargout, const char *nm, const char **choices);
 
 #define SET_INTERNAL_VARIABLE(NM) \
   set_internal_variable (V ## NM, args, nargout, #NM)
@@ -110,6 +120,10 @@ set_internal_variable (std::string& var, const octave_value_list& args,
 
 #define SET_INTERNAL_VARIABLE_WITH_LIMITS(NM, MINVAL, MAXVAL) \
   set_internal_variable (V ## NM, args, nargout, #NM, MINVAL, MAXVAL)
+
+// in the following, CHOICES must be a C string array terminated by null.
+#define SET_INTERNAL_VARIABLE_CHOICES(NM, CHOICES) \
+  set_internal_variable (V ## NM, args, nargout, #NM, CHOICES)
 
 extern OCTINTERP_API std::string builtin_string_variable (const std::string&);
 extern OCTINTERP_API int builtin_real_scalar_variable (const std::string&, double&);
@@ -128,10 +142,6 @@ extern OCTINTERP_API void clear_function (const std::string& nm);
 extern OCTINTERP_API void clear_variable (const std::string& nm);
 extern OCTINTERP_API void clear_symbol (const std::string& nm);
 
-#endif
+extern OCTINTERP_API void maybe_missing_function_hook (const std::string& name);
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+#endif

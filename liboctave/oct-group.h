@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 2000, 2005, 2006, 2007 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -25,9 +25,7 @@ along with Octave; see the file COPYING.  If not, see
 
 #include <string>
 
-#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#endif
 
 #include "str-vec.h"
 
@@ -43,18 +41,18 @@ public:
 
   octave_group (const octave_group& gr)
     : gr_name (gr.gr_name), gr_passwd (gr.gr_passwd),
-      gr_gid (gr.gr_gid), gr_mem (gr.gr_mem), valid (gr.valid) 
+      gr_gid (gr.gr_gid), gr_mem (gr.gr_mem), valid (gr.valid)
   { }
 
   octave_group& operator = (const octave_group& gr)
   {
     if (this != &gr)
       {
-	gr_name  = gr.gr_name;
-	gr_passwd = gr.gr_passwd;
-	gr_gid = gr.gr_gid;
-	gr_mem = gr.gr_mem;
-	valid = gr.valid;
+        gr_name  = gr.gr_name;
+        gr_passwd = gr.gr_passwd;
+        gr_gid = gr.gr_gid;
+        gr_mem = gr.gr_mem;
+        valid = gr.valid;
       }
 
     return *this;
@@ -112,9 +110,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2000, 2002, 2003, 2004, 2005,
-              2006, 2007, 2008 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -34,15 +33,21 @@ RowVector : public MArray<double>
 {
 public:
 
-  RowVector (void) : MArray<double> () { }
+  RowVector (void) : MArray<double> (dim_vector (1, 0)) { }
 
-  explicit RowVector (octave_idx_type n) : MArray<double> (n) { }
+  explicit RowVector (octave_idx_type n)
+    : MArray<double> (dim_vector (1, n)) { }
 
-  RowVector (octave_idx_type n, double val) : MArray<double> (n, val) { }
+  explicit RowVector (const dim_vector& dv) : MArray<double> (dv.as_row ()) { }
+
+  RowVector (octave_idx_type n, double val)
+    : MArray<double> (dim_vector (1, n), val) { }
 
   RowVector (const RowVector& a) : MArray<double> (a) { }
 
-  RowVector (const MArray<double>& a) : MArray<double> (a) { }
+  RowVector (const MArray<double>& a) : MArray<double> (a.as_row ()) { }
+
+  RowVector (const Array<double>& a) : MArray<double> (a.as_row ()) { }
 
   RowVector& operator = (const RowVector& a)
     {
@@ -79,12 +84,6 @@ public:
 
   // other operations
 
-  typedef double (*dmapper) (double);
-  typedef Complex (*cmapper) (const Complex&);
-
-  RowVector map (dmapper fcn) const;
-  ComplexRowVector map (cmapper fcn) const;
-
   double min (void) const;
   double max (void) const;
 
@@ -93,9 +92,15 @@ public:
   friend OCTAVE_API std::ostream& operator << (std::ostream& os, const RowVector& a);
   friend OCTAVE_API std::istream& operator >> (std::istream& is, RowVector& a);
 
-private:
+  void resize (octave_idx_type n,
+               const double& rfv = Array<double>::resize_fill_value ())
+  {
+    Array<double>::resize (dim_vector (1, n), rfv);
+  }
 
-  RowVector (double *d, octave_idx_type l) : MArray<double> (d, l) { }
+  void clear (octave_idx_type n)
+    { Array<double>::clear (1, n); }
+
 };
 
 // row vector by column vector -> scalar
@@ -111,9 +116,3 @@ OCTAVE_API RowVector linspace (double x1, double x2, octave_idx_type n);
 MARRAY_FORWARD_DEFS (MArray, RowVector, double)
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

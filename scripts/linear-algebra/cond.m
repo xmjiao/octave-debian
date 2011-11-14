@@ -1,5 +1,4 @@
-## Copyright (C) 1993, 1994, 1995, 1996, 1997, 1999, 2000, 2003, 2004,
-##               2005, 2006, 2007, 2008, 2009 John W. Eaton
+## Copyright (C) 1993-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -18,21 +17,31 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} cond (@var{a},@var{p})
-## Compute the @var{p}-norm condition number of a matrix.  @code{cond (@var{a})} is
-## defined as @code{norm (@var{a}, @var{p}) * norm (inv (@var{a}), @var{p})}.
-## By default @code{@var{p}=2} is used which implies a (relatively slow)
-## singular value decomposition.  Other possible selections are 
-## @code{@var{p}= 1, Inf, inf, 'Inf', 'fro'} which are generally faster.
+## @deftypefn  {Function File} {} cond (@var{A})
+## @deftypefnx {Function File} {} cond (@var{A}, @var{p})
+## Compute the @var{p}-norm condition number of a matrix.
+##
+## @code{cond (@var{A})} is ## defined as
+## @tex
+## $ {\parallel A \parallel_p * \parallel A^{-1} \parallel_p .} $
+## @end tex
+## @ifnottex
+## @code{norm (@var{A}, @var{p}) * norm (inv (@var{A}), @var{p})}.
+## @end ifnottex
+##
+## By default @code{@var{p} = 2} is used which implies a (relatively slow)
+## singular value decomposition.  Other possible selections are
+## @code{@var{p} = 1, Inf, "fro"} which are generally faster.  See
+## @code{norm} for a full discussion of possible @var{p} values.
 ## @seealso{condest, rcond, norm, svd}
 ## @end deftypefn
 
 ## Author: jwe
 
-function retval = cond (a, p)
+function retval = cond (A, p)
 
   if (nargin && nargin < 3)
-    if (ndims (a) > 2)
+    if (ndims (A) > 2)
       error ("cond: only valid on 2-D objects");
     endif
 
@@ -41,13 +50,13 @@ function retval = cond (a, p)
     endif
 
     if (! ischar (p) && p == 2)
-      [nr, nc] = size (a);
+      [nr, nc] = size (A);
       if (nr == 0 || nc == 0)
         retval = 0.0;
-      elseif (any (any (isinf (a) | isnan (a))))
+      elseif (any (any (isinf (A) | isnan (A))))
         error ("cond: argument must not contain Inf or NaN values");
       else
-        sigma   = svd (a);
+        sigma   = svd (A);
         sigma_1 = sigma(1);
         sigma_n = sigma(end);
         if (sigma_1 == 0 || sigma_n == 0)
@@ -57,7 +66,7 @@ function retval = cond (a, p)
         endif
       endif
     else
-      retval = norm (a, p) * norm (inv (a), p);  
+      retval = norm (A, p) * norm (inv (A), p);
     endif
   else
     print_usage ();

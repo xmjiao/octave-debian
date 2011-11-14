@@ -1,4 +1,4 @@
-## Copyright (C) 2005, 2006, 2007 John W. Eaton
+## Copyright (C) 2005-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -19,7 +19,8 @@
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} isfigure (@var{h})
 ## Return true if @var{h} is a graphics handle that contains a figure
-## object and false otherwise.
+## object.
+## @seealso{ishandle}
 ## @end deftypefn
 
 ## Author: jwe

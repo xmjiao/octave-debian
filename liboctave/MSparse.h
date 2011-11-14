@@ -1,7 +1,7 @@
 /*
 
-Copyright (C) 2004, 2005, 2007, 2008 David Bateman
-Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004 Andy Adler
+Copyright (C) 2004-2011 David Bateman
+Copyright (C) 1998-2004 Andy Adler
 
 This file is part of Octave.
 
@@ -24,7 +24,7 @@ along with Octave; see the file COPYING.  If not, see
 #if !defined (octave_MSparse_h)
 #define octave_MSparse_h 1
 
-#include "MArray2.h"
+#include "MArray.h"
 
 #include "Sparse.h"
 
@@ -34,7 +34,7 @@ along with Octave; see the file COPYING.  If not, see
 
 #include "MSparse-defs.h"
 
-SPARSE_OPS_FORWARD_DECLS (MSparse, MArray2, )
+SPARSE_OPS_FORWARD_DECLS (MSparse, MArray, )
 
 template <class T>
 class
@@ -46,7 +46,7 @@ public:
 
   MSparse (octave_idx_type n, octave_idx_type m) : Sparse<T> (n, m) { }
 
-  MSparse (const dim_vector& dv, octave_idx_type nz = 0) : 
+  MSparse (const dim_vector& dv, octave_idx_type nz = 0) :
     Sparse<T> (dv, nz) { }
 
   MSparse (const MSparse<T>& a) : Sparse<T> (a) { }
@@ -55,15 +55,13 @@ public:
 
   MSparse (const Sparse<T>& a) : Sparse<T> (a) { }
 
-  MSparse (const Array<T> a, const Array<octave_idx_type>& r, 
-	   const Array<octave_idx_type>& c, octave_idx_type nr = -1, 
-	   octave_idx_type nc = -1, bool sum_terms = true)
-    : Sparse<T> (a, r, c, nr, nc, sum_terms) { }
+  template <class U>
+  MSparse (const Sparse<U>& a) : Sparse<T> (a) { }
 
-  MSparse (const Array<T> a, const Array<double>& r, 
-	   const Array<double>& c, octave_idx_type nr = -1, 
-	   octave_idx_type nc = -1, bool sum_terms = true)
-    : Sparse<T> (a, r, c, nr, nc, sum_terms) { }
+  MSparse (const Array<T>& a, const idx_vector& r, const idx_vector& c,
+           octave_idx_type nr = -1, octave_idx_type nc = -1,
+           bool sum_terms = true, octave_idx_type nzm = -1)
+    : Sparse<T> (a, r, c, nr, nc, sum_terms, nzm) { }
 
   explicit MSparse (octave_idx_type r, octave_idx_type c, T val) : Sparse<T> (r, c, val) { }
 
@@ -93,18 +91,9 @@ public:
 
   MSparse<T> squeeze (void) const { return Sparse<T>::squeeze (); }
 
-  MSparse<T> index (idx_vector& i, int resize_ok) const 
-    { return Sparse<T>::index (i, resize_ok); }
-
-  MSparse<T> index (idx_vector& i, idx_vector& j, int resize_ok) const 
-    { return Sparse<T>::index (i, j, resize_ok); }
-  
-  MSparse<T> index (Array<idx_vector>& ra_idx, int resize_ok) const 
-    { return Sparse<T>::index (ra_idx, resize_ok); }
-
   MSparse<T> reshape (const dim_vector& new_dims) const
     { return Sparse<T>::reshape (new_dims); }
-     
+
   MSparse<T> permute (const Array<octave_idx_type>& vec, bool inv = false) const
     { return Sparse<T>::permute (vec, inv); }
 
@@ -117,22 +106,21 @@ public:
     return Sparse<T>::diag (k);
   }
 
- template <class U, class F>
-  MSparse<U> map (F fcn) const
-  {
-    return Sparse<T>::template map<U> (fcn);
-  }
+  // FIXME: should go away.
+  template <class U>
+  MSparse<U>
+  map (U (&fcn) (T)) const
+  { return Sparse<T>::template map<U> (fcn); }
+
+  template <class U>
+  MSparse<U>
+  map (U (&fcn) (const T&)) const
+  { return Sparse<T>::template map<U> (fcn); }
 
   // Currently, the OPS functions don't need to be friends, but that
   // may change.
 
-  // SPARSE_OPS_FRIEND_DECLS (MSparse, MArray2)
+  // SPARSE_OPS_FRIEND_DECLS (MSparse, MArray)
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

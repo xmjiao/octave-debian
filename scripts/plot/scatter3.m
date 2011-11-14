@@ -1,4 +1,4 @@
-## Copyright (C) 2007, 2008, 2009 David Bateman
+## Copyright (C) 2007-2011 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -17,28 +17,28 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} scatter3 (@var{x}, @var{y}, @var{z}, @var{s}, @var{c})
+## @deftypefn  {Function File} {} scatter3 (@var{x}, @var{y}, @var{z}, @var{s}, @var{c})
 ## @deftypefnx {Function File} {} scatter3 (@dots{}, 'filled')
 ## @deftypefnx {Function File} {} scatter3 (@dots{}, @var{style})
 ## @deftypefnx {Function File} {} scatter3 (@dots{}, @var{prop}, @var{val})
 ## @deftypefnx {Function File} {} scatter3 (@var{h}, @dots{})
 ## @deftypefnx {Function File} {@var{h} =} scatter3 (@dots{})
 ##
-## Plot a scatter plot of the data in 3D.  A marker is plotted at each point 
+## Plot a scatter plot of the data in 3D@.  A marker is plotted at each point
 ## defined by the points in the vectors @var{x}, @var{y} and @var{z}.  The size
 ## of the markers used is determined by @var{s}, which can be a scalar or
 ## a vector of the same length of @var{x}, @var{y} and @var{z}.  If @var{s} is
 ## not given or is an empty matrix, then the default value of 8 points is used.
 ##
 ## The color of the markers is determined by @var{c}, which can be a string
-## defining a fixed color, a 3 element vector giving the red, green and blue 
-## components of the color, a vector of the same length as @var{x} that gives
-## a scaled index into the current colormap, or a @var{n}-by-3 matrix defining
+## defining a fixed color; a 3-element vector giving the red, green, and blue
+## components of the color; a vector of the same length as @var{x} that gives
+## a scaled index into the current colormap; or a @var{n}-by-3 matrix defining
 ## the colors of each of the markers individually.
 ##
-## The marker to use can be changed with the @var{style} argument, that is a 
-## string defining a marker in the same manner as the @code{plot} command. 
-## If the argument 'filled' is given then the markers as filled.  All 
+## The marker to use can be changed with the @var{style} argument, that is a
+## string defining a marker in the same manner as the @code{plot} command.
+## If the argument 'filled' is given then the markers as filled.  All
 ## additional arguments are passed to the underlying patch command.
 ##
 ## The optional return value @var{h} provides a handle to the patch object
@@ -71,7 +71,8 @@ function retval = scatter3 (varargin)
   endif
 
   if (! ishold ())
-    set (get (tmp, "parent"), "view", [-37.5, 30]);
+    set (h, "view", [-37.5, 30],
+         "xgrid", "on", "ygrid", "on", "zgrid", "on");
   endif
 
   if (nargout > 0)
@@ -79,6 +80,7 @@ function retval = scatter3 (varargin)
   endif
 
 endfunction
+
 
 %!demo
 %! [x, y, z] = peaks (20);
@@ -101,6 +103,4 @@ endfunction
 %! y = rand (20,1);
 %! z = rand (20,1);
 %! scatter3 (x(:), y(:), z(:), 20*z(:), [], "s");
-
-
 

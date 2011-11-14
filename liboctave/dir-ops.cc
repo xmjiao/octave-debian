@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2000, 2005, 2006, 2007, 2008 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -50,18 +50,15 @@ dir_entry::open (const std::string& n)
   if (! name.empty ())
     {
       close ();
-      
+
       std::string fullname = file_ops::tilde_expand (name);
 
-      dir = static_cast<void *> (opendir (fullname.c_str ()));
+      dir = static_cast<void *> (gnulib::opendir (fullname.c_str ()));
 
       if (dir)
-	fail = false;
+        fail = false;
       else
-	{
-	  using namespace std;
-	  errmsg = strerror (errno);
-	}
+        errmsg = gnulib::strerror (errno);
     }
   else
     errmsg = "dir_entry::open: empty file name";
@@ -81,12 +78,12 @@ dir_entry::read (void)
       struct dirent *dir_ent;
 
       while ((dir_ent = readdir (static_cast<DIR *> (dir))))
-	{
-	  if (dir_ent)
-	    dirlist.push_back (dir_ent->d_name);
-	  else
-	    break;
-	}
+        {
+          if (dir_ent)
+            dirlist.push_back (dir_ent->d_name);
+          else
+            break;
+        }
 
       retval = string_vector (dirlist);
     }
@@ -98,22 +95,7 @@ void
 dir_entry::close (void)
 {
   if (dir)
-    closedir (static_cast<DIR *> (dir));
+    gnulib::closedir (static_cast<DIR *> (dir));
 
   dir = 0;
 }
-
-void
-dir_entry::copy (const dir_entry& de)
-{
-  name = de.name;
-  dir = de.dir;
-  fail = de.fail;
-  errmsg = de.errmsg;
-}
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

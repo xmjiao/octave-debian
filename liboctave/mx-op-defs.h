@@ -1,8 +1,8 @@
 /*
 
-Copyright (C) 2008, 2009 Jaroslav Hajek
-Copyright (C) 1996, 1997, 1998, 2000, 2001, 2003, 2004, 2005, 2006,
-              2007 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
+Copyright (C) 2008-2009 Jaroslav Hajek
+Copyright (C) 2009-2010 VZLU Prague, a.s.
 
 This file is part of Octave.
 
@@ -28,27 +28,28 @@ along with Octave; see the file COPYING.  If not, see
 #include "mx-op-decl.h"
 #include "mx-inlines.cc"
 
+#define SNANCHK(s) \
+  if (xisnan (s)) \
+    gripe_nan_to_logical_conversion ()
+
+#define MNANCHK(m, MT) \
+  if (do_mx_check (m, mx_inline_any_nan<MT>)) \
+    gripe_nan_to_logical_conversion ()
+
 // vector by scalar operations.
 
 #define VS_BIN_OP(R, F, OP, V, S) \
   R \
   F (const V& v, const S& s) \
   { \
-    octave_idx_type len = v.length (); \
- \
-    R r (len); \
- \
-    for (octave_idx_type i = 0; i < len; i++) \
-      r.elem(i) = v.elem(i) OP s; \
- \
-    return r; \
+    return do_ms_binary_op<R::element_type, V::element_type, S> (v, s, OP); \
   }
 
 #define VS_BIN_OPS(R, V, S) \
-  VS_BIN_OP (R, operator +, +, V, S) \
-  VS_BIN_OP (R, operator -, -, V, S) \
-  VS_BIN_OP (R, operator *, *, V, S) \
-  VS_BIN_OP (R, operator /, /, V, S)
+  VS_BIN_OP (R, operator +, mx_inline_add, V, S) \
+  VS_BIN_OP (R, operator -, mx_inline_sub, V, S) \
+  VS_BIN_OP (R, operator *, mx_inline_mul, V, S) \
+  VS_BIN_OP (R, operator /, mx_inline_div, V, S)
 
 // scalar by vector by operations.
 
@@ -56,21 +57,14 @@ along with Octave; see the file COPYING.  If not, see
   R \
   F (const S& s, const V& v) \
   { \
-    octave_idx_type len = v.length (); \
- \
-    R r (len); \
- \
-    for (octave_idx_type i = 0; i < len; i++) \
-      r.elem(i) = s OP v.elem(i); \
- \
-    return r; \
+    return do_sm_binary_op<R::element_type, S, V::element_type> (s, v, OP); \
   }
 
 #define SV_BIN_OPS(R, S, V) \
-  SV_BIN_OP (R, operator +, +, S, V) \
-  SV_BIN_OP (R, operator -, -, S, V) \
-  SV_BIN_OP (R, operator *, *, S, V) \
-  SV_BIN_OP (R, operator /, /, S, V)
+  SV_BIN_OP (R, operator +, mx_inline_add, S, V) \
+  SV_BIN_OP (R, operator -, mx_inline_sub, S, V) \
+  SV_BIN_OP (R, operator *, mx_inline_mul, S, V) \
+  SV_BIN_OP (R, operator /, mx_inline_div, S, V)
 
 // vector by vector operations.
 
@@ -78,29 +72,14 @@ along with Octave; see the file COPYING.  If not, see
   R \
   F (const V1& v1, const V2& v2) \
   { \
-    R r; \
- \
-    octave_idx_type v1_len = v1.length (); \
-    octave_idx_type v2_len = v2.length (); \
- \
-    if (v1_len != v2_len) \
-      gripe_nonconformant (#OP, v1_len, v2_len); \
-    else \
-      { \
-	r.resize (v1_len); \
- \
-	for (octave_idx_type i = 0; i < v1_len; i++) \
-	  r.elem(i) = v1.elem(i) OP v2.elem(i); \
-      } \
- \
-    return r; \
+    return do_mm_binary_op<R::element_type, V1::element_type, V2::element_type> (v1, v2, OP, #F); \
   }
 
 #define VV_BIN_OPS(R, V1, V2) \
-  VV_BIN_OP (R, operator +, +, V1, V2) \
-  VV_BIN_OP (R, operator -, -, V1, V2) \
-  VV_BIN_OP (R, product,    *, V1, V2) \
-  VV_BIN_OP (R, quotient,   /, V1, V2)
+  VV_BIN_OP (R, operator +, mx_inline_add, V1, V2) \
+  VV_BIN_OP (R, operator -, mx_inline_sub, V1, V2) \
+  VV_BIN_OP (R, product,    mx_inline_mul, V1, V2) \
+  VV_BIN_OP (R, quotient,   mx_inline_div, V1, V2)
 
 // matrix by scalar operations.
 
@@ -108,91 +87,42 @@ along with Octave; see the file COPYING.  If not, see
   R \
   OP (const M& m, const S& s) \
   { \
-    octave_idx_type nr = m.rows (); \
-    octave_idx_type nc = m.cols (); \
- \
-    R r (nr, nc); \
- \
-    if (nr > 0 && nc > 0) \
-      F ## _vs (r.fortran_vec (), m.data (), nr * nc, s); \
- \
-    return r; \
+    return do_ms_binary_op<R::element_type, M::element_type, S> (m, s, F); \
   }
 
 #define MS_BIN_OPS(R, M, S) \
   MS_BIN_OP (R, operator +, M, S, mx_inline_add) \
-  MS_BIN_OP (R, operator -, M, S, mx_inline_subtract) \
-  MS_BIN_OP (R, operator *, M, S, mx_inline_multiply) \
-  MS_BIN_OP (R, operator /, M, S, mx_inline_divide)
+  MS_BIN_OP (R, operator -, M, S, mx_inline_sub) \
+  MS_BIN_OP (R, operator *, M, S, mx_inline_mul) \
+  MS_BIN_OP (R, operator /, M, S, mx_inline_div)
 
-#define MS_CMP_OP(F, OP, M, MC, S, SC) \
+#define MS_CMP_OP(F, OP, M, S) \
   boolMatrix \
   F (const M& m, const S& s) \
   { \
-    boolMatrix r; \
- \
-    octave_idx_type nr = m.rows (); \
-    octave_idx_type nc = m.cols (); \
- \
-    r.resize (nr, nc); \
- \
-    if (nr > 0 && nc > 0) \
-      { \
-        for (octave_idx_type j = 0; j < nc; j++) \
-          for (octave_idx_type i = 0; i < nr; i++) \
-	    r.elem(i, j) = MC (m.elem(i, j)) OP SC (s); \
-      } \
- \
-    return r; \
+    return do_ms_binary_op<bool, M::element_type, S> (m, s, OP); \
   }
 
-#define MS_CMP_OPS(M, CM, S, CS) \
-  MS_CMP_OP (mx_el_lt, <,  M, CM, S, CS) \
-  MS_CMP_OP (mx_el_le, <=, M, CM, S, CS) \
-  MS_CMP_OP (mx_el_ge, >=, M, CM, S, CS) \
-  MS_CMP_OP (mx_el_gt, >,  M, CM, S, CS) \
-  MS_CMP_OP (mx_el_eq, ==, M,   , S,   ) \
-  MS_CMP_OP (mx_el_ne, !=, M,   , S,   )
+#define MS_CMP_OPS(M, S) \
+  MS_CMP_OP (mx_el_lt, mx_inline_lt, M, S) \
+  MS_CMP_OP (mx_el_le, mx_inline_le, M, S) \
+  MS_CMP_OP (mx_el_ge, mx_inline_ge, M, S) \
+  MS_CMP_OP (mx_el_gt, mx_inline_gt, M, S) \
+  MS_CMP_OP (mx_el_eq, mx_inline_eq, M, S) \
+  MS_CMP_OP (mx_el_ne, mx_inline_ne, M, S)
 
-#define MS_BOOL_OP(F, OP, M, S, LHS_ZERO, RHS_ZERO) \
+#define MS_BOOL_OP(F, OP, M, S) \
   boolMatrix \
   F (const M& m, const S& s) \
   { \
-    boolMatrix r; \
- \
-    octave_idx_type nr = m.rows (); \
-    octave_idx_type nc = m.cols (); \
- \
-    if (nr != 0 && nc != 0) \
-      { \
-        r.resize (nr, nc); \
- \
-	if (xisnan (s)) \
-	  gripe_nan_to_logical_conversion (); \
-	else \
-	  { \
- \
-	    for (octave_idx_type j = 0; j < nc; j++) \
-	      for (octave_idx_type i = 0; i < nr; i++) \
-		if (xisnan (m.elem(i, j))) \
-		  { \
-		    gripe_nan_to_logical_conversion (); \
-		    return r; \
-		  } \
-		else \
-		  r.elem(i, j) = (m.elem(i, j) != LHS_ZERO) OP (s != RHS_ZERO); \
-	    } \
-      } \
- \
-    return r; \
+    MNANCHK (m, M::element_type); \
+    SNANCHK (s); \
+    return do_ms_binary_op<bool, M::element_type, S> (m, s, OP); \
   }
 
-#define MS_BOOL_OPS2(M, S, LHS_ZERO, RHS_ZERO) \
-  MS_BOOL_OP (mx_el_and, &&, M, S, LHS_ZERO, RHS_ZERO) \
-  MS_BOOL_OP (mx_el_or,  ||, M, S, LHS_ZERO, RHS_ZERO)
-
-#define MS_BOOL_OPS(M, S, ZERO) \
-  MS_BOOL_OPS2(M, S, ZERO, ZERO)
+#define MS_BOOL_OPS(M, S) \
+  MS_BOOL_OP (mx_el_and, mx_inline_and, M, S) \
+  MS_BOOL_OP (mx_el_or,  mx_inline_or,  M, S)
 
 // scalar by matrix operations.
 
@@ -200,90 +130,42 @@ along with Octave; see the file COPYING.  If not, see
   R \
   OP (const S& s, const M& m) \
   { \
-    octave_idx_type nr = m.rows (); \
-    octave_idx_type nc = m.cols (); \
- \
-    R r (nr, nc); \
- \
-    if (nr > 0 && nc > 0) \
-      F ## _sv (r.fortran_vec (), s, m.data (), nr * nc); \
- \
-    return r; \
+    return do_sm_binary_op<R::element_type, S, M::element_type> (s, m, F); \
   }
 
 #define SM_BIN_OPS(R, S, M) \
   SM_BIN_OP (R, operator +, S, M, mx_inline_add) \
-  SM_BIN_OP (R, operator -, S, M, mx_inline_subtract) \
-  SM_BIN_OP (R, operator *, S, M, mx_inline_multiply) \
-  SM_BIN_OP (R, operator /, S, M, mx_inline_divide)
+  SM_BIN_OP (R, operator -, S, M, mx_inline_sub) \
+  SM_BIN_OP (R, operator *, S, M, mx_inline_mul) \
+  SM_BIN_OP (R, operator /, S, M, mx_inline_div)
 
-#define SM_CMP_OP(F, OP, S, SC, M, MC) \
+#define SM_CMP_OP(F, OP, S, M) \
   boolMatrix \
   F (const S& s, const M& m) \
   { \
-    boolMatrix r; \
- \
-    octave_idx_type nr = m.rows (); \
-    octave_idx_type nc = m.cols (); \
- \
-    r.resize (nr, nc); \
- \
-    if (nr > 0 && nc > 0) \
-      { \
-        for (octave_idx_type j = 0; j < nc; j++) \
-          for (octave_idx_type i = 0; i < nr; i++) \
-	    r.elem(i, j) = SC (s) OP MC (m.elem(i, j)); \
-      } \
- \
-    return r; \
+    return do_sm_binary_op<bool, S, M::element_type> (s, m, OP); \
   }
 
-#define SM_CMP_OPS(S, CS, M, CM) \
-  SM_CMP_OP (mx_el_lt, <,  S, CS, M, CM) \
-  SM_CMP_OP (mx_el_le, <=, S, CS, M, CM) \
-  SM_CMP_OP (mx_el_ge, >=, S, CS, M, CM) \
-  SM_CMP_OP (mx_el_gt, >,  S, CS, M, CM) \
-  SM_CMP_OP (mx_el_eq, ==, S,   , M,   ) \
-  SM_CMP_OP (mx_el_ne, !=, S,   , M,   )
+#define SM_CMP_OPS(S, M) \
+  SM_CMP_OP (mx_el_lt, mx_inline_lt, S, M) \
+  SM_CMP_OP (mx_el_le, mx_inline_le, S, M) \
+  SM_CMP_OP (mx_el_ge, mx_inline_ge, S, M) \
+  SM_CMP_OP (mx_el_gt, mx_inline_gt, S, M) \
+  SM_CMP_OP (mx_el_eq, mx_inline_eq, S, M) \
+  SM_CMP_OP (mx_el_ne, mx_inline_ne, S, M)
 
-#define SM_BOOL_OP(F, OP, S, M, LHS_ZERO, RHS_ZERO) \
+#define SM_BOOL_OP(F, OP, S, M) \
   boolMatrix \
   F (const S& s, const M& m) \
   { \
-    boolMatrix r; \
- \
-    octave_idx_type nr = m.rows (); \
-    octave_idx_type nc = m.cols (); \
- \
-    if (nr != 0 && nc != 0) \
-      { \
-        r.resize (nr, nc); \
- \
-	if (xisnan (s)) \
-	  gripe_nan_to_logical_conversion (); \
-	else \
-	  { \
-	    for (octave_idx_type j = 0; j < nc; j++) \
-	      for (octave_idx_type i = 0; i < nr; i++) \
-		if (xisnan (m.elem(i, j))) \
-		  { \
-		    gripe_nan_to_logical_conversion (); \
-		    return r; \
-		  } \
-		else \
-		  r.elem(i, j) = (s != LHS_ZERO) OP (m.elem(i, j) != RHS_ZERO); \
-	  } \
-      } \
- \
-    return r; \
+    SNANCHK (s); \
+    MNANCHK (m, M::element_type); \
+    return do_sm_binary_op<bool, S, M::element_type> (s, m, OP); \
   }
 
-#define SM_BOOL_OPS2(S, M, LHS_ZERO, RHS_ZERO) \
-  SM_BOOL_OP (mx_el_and, &&, S, M, LHS_ZERO, RHS_ZERO) \
-  SM_BOOL_OP (mx_el_or,  ||, S, M, LHS_ZERO, RHS_ZERO)
-
-#define SM_BOOL_OPS(S, M, ZERO) \
-  SM_BOOL_OPS2(S, M, ZERO, ZERO)
+#define SM_BOOL_OPS(S, M) \
+  SM_BOOL_OP (mx_el_and, mx_inline_and, S, M) \
+  SM_BOOL_OP (mx_el_or,  mx_inline_or,  S, M)
 
 // matrix by matrix operations.
 
@@ -291,112 +173,42 @@ along with Octave; see the file COPYING.  If not, see
   R \
   OP (const M1& m1, const M2& m2) \
   { \
-    R r; \
- \
-    octave_idx_type m1_nr = m1.rows (); \
-    octave_idx_type m1_nc = m1.cols (); \
- \
-    octave_idx_type m2_nr = m2.rows (); \
-    octave_idx_type m2_nc = m2.cols (); \
- \
-    if (m1_nr != m2_nr || m1_nc != m2_nc) \
-      gripe_nonconformant (#OP, m1_nr, m1_nc, m2_nr, m2_nc); \
-    else \
-      { \
-	r.resize (m1_nr, m1_nc); \
- \
-	if (m1_nr > 0 && m1_nc > 0) \
-	  F ## _vv (r.fortran_vec (), m1.data (), m2.data (), m1_nr * m1_nc); \
-      } \
- \
-    return r; \
+    return do_mm_binary_op<R::element_type, M1::element_type, M2::element_type> (m1, m2, F, #OP); \
   }
 
 #define MM_BIN_OPS(R, M1, M2) \
   MM_BIN_OP (R, operator +, M1, M2, mx_inline_add) \
-  MM_BIN_OP (R, operator -, M1, M2, mx_inline_subtract) \
-  MM_BIN_OP (R, product,    M1, M2, mx_inline_multiply) \
-  MM_BIN_OP (R, quotient,   M1, M2, mx_inline_divide)
+  MM_BIN_OP (R, operator -, M1, M2, mx_inline_sub) \
+  MM_BIN_OP (R, product,    M1, M2, mx_inline_mul) \
+  MM_BIN_OP (R, quotient,   M1, M2, mx_inline_div)
 
-#define MM_CMP_OP(F, OP, M1, C1, M2, C2) \
+#define MM_CMP_OP(F, OP, M1, M2) \
   boolMatrix \
   F (const M1& m1, const M2& m2) \
   { \
-    boolMatrix r; \
- \
-    octave_idx_type m1_nr = m1.rows (); \
-    octave_idx_type m1_nc = m1.cols (); \
- \
-    octave_idx_type m2_nr = m2.rows (); \
-    octave_idx_type m2_nc = m2.cols (); \
- \
-    if (m1_nr == m2_nr && m1_nc == m2_nc) \
-      { \
-	r.resize (m1_nr, m1_nc); \
- \
-	for (octave_idx_type j = 0; j < m1_nc; j++) \
-	  for (octave_idx_type i = 0; i < m1_nr; i++) \
-	    r.elem(i, j) = C1 (m1.elem(i, j)) OP C2 (m2.elem(i, j)); \
-      } \
-    else \
-      gripe_nonconformant (#F, m1_nr, m1_nc, m2_nr, m2_nc); \
- \
-    return r; \
+    return do_mm_binary_op<bool, M1::element_type, M2::element_type> (m1, m2, OP, #F); \
   }
 
-#define MM_CMP_OPS(M1, C1, M2, C2) \
-  MM_CMP_OP (mx_el_lt, <,  M1, C1, M2, C2) \
-  MM_CMP_OP (mx_el_le, <=, M1, C1, M2, C2) \
-  MM_CMP_OP (mx_el_ge, >=, M1, C1, M2, C2) \
-  MM_CMP_OP (mx_el_gt, >,  M1, C1, M2, C2) \
-  MM_CMP_OP (mx_el_eq, ==, M1,   , M2,   ) \
-  MM_CMP_OP (mx_el_ne, !=, M1,   , M2,   )
+#define MM_CMP_OPS(M1, M2) \
+  MM_CMP_OP (mx_el_lt, mx_inline_lt, M1, M2) \
+  MM_CMP_OP (mx_el_le, mx_inline_le, M1, M2) \
+  MM_CMP_OP (mx_el_ge, mx_inline_ge, M1, M2) \
+  MM_CMP_OP (mx_el_gt, mx_inline_gt, M1, M2) \
+  MM_CMP_OP (mx_el_eq, mx_inline_eq, M1, M2) \
+  MM_CMP_OP (mx_el_ne, mx_inline_ne, M1, M2)
 
-#define MM_BOOL_OP(F, OP, M1, M2, LHS_ZERO, RHS_ZERO) \
+#define MM_BOOL_OP(F, OP, M1, M2) \
   boolMatrix \
   F (const M1& m1, const M2& m2) \
   { \
-    boolMatrix r; \
- \
-    octave_idx_type m1_nr = m1.rows (); \
-    octave_idx_type m1_nc = m1.cols (); \
- \
-    octave_idx_type m2_nr = m2.rows (); \
-    octave_idx_type m2_nc = m2.cols (); \
- \
-    if (m1_nr == m2_nr && m1_nc == m2_nc) \
-      { \
-	if (m1_nr != 0 || m1_nc != 0) \
-	  { \
-	    r.resize (m1_nr, m1_nc); \
- \
-	    for (octave_idx_type j = 0; j < m1_nc; j++) \
-	      for (octave_idx_type i = 0; i < m1_nr; i++) \
-		if (xisnan (m1.elem(i, j)) || xisnan (m2.elem(i, j))) \
-		  { \
-		    gripe_nan_to_logical_conversion (); \
-		    return r; \
-		  } \
-		else \
-		  r.elem(i, j) = (m1.elem(i, j) != LHS_ZERO) \
-		    OP (m2.elem(i, j) != RHS_ZERO); \
-	  } \
-      } \
-    else \
-      { \
-	if ((m1_nr != 0 || m1_nc != 0) && (m2_nr != 0 || m2_nc != 0)) \
-	  gripe_nonconformant (#F, m1_nr, m1_nc, m2_nr, m2_nc); \
-      } \
- \
-    return r; \
+    MNANCHK (m1, M1::element_type); \
+    MNANCHK (m2, M2::element_type); \
+    return do_mm_binary_op<bool, M1::element_type, M2::element_type> (m1, m2, OP, #F); \
   }
 
-#define MM_BOOL_OPS2(M1, M2, LHS_ZERO, RHS_ZERO) \
-  MM_BOOL_OP (mx_el_and, &&, M1, M2, LHS_ZERO, RHS_ZERO) \
-  MM_BOOL_OP (mx_el_or,  ||, M1, M2, LHS_ZERO, RHS_ZERO)
-
-#define MM_BOOL_OPS(M1, M2, ZERO) \
-  MM_BOOL_OPS2(M1, M2, ZERO, ZERO)
+#define MM_BOOL_OPS(M1, M2) \
+  MM_BOOL_OP (mx_el_and, mx_inline_and, M1, M2) \
+  MM_BOOL_OP (mx_el_or,  mx_inline_or,  M1, M2)
 
 // N-d matrix by scalar operations.
 
@@ -404,134 +216,46 @@ along with Octave; see the file COPYING.  If not, see
   R \
   OP (const ND& m, const S& s) \
   { \
-    R r (m.dims ()); \
- \
-    octave_idx_type len = m.length (); \
- \
-    if (len > 0) \
-      F ## _vs (r.fortran_vec (), m.data (), len, s); \
- \
-    return r; \
+    return do_ms_binary_op<R::element_type, ND::element_type, S> (m, s, F); \
   }
 
 #define NDS_BIN_OPS(R, ND, S) \
   NDS_BIN_OP (R, operator +, ND, S, mx_inline_add) \
-  NDS_BIN_OP (R, operator -, ND, S, mx_inline_subtract) \
-  NDS_BIN_OP (R, operator *, ND, S, mx_inline_multiply) \
-  NDS_BIN_OP (R, operator /, ND, S, mx_inline_divide)
+  NDS_BIN_OP (R, operator -, ND, S, mx_inline_sub) \
+  NDS_BIN_OP (R, operator *, ND, S, mx_inline_mul) \
+  NDS_BIN_OP (R, operator /, ND, S, mx_inline_div)
 
-#define NDS_CMP_OP(F, OP, ND, NDC, S, SC) \
+#define NDS_CMP_OP(F, OP, ND, S) \
   boolNDArray \
   F (const ND& m, const S& s) \
   { \
-    boolNDArray r (m.dims ()); \
- \
-    octave_idx_type len = m.length (); \
- \
-    if (s == S ()) \
-      { \
-        for (octave_idx_type i = 0; i < len; i++) \
-        r.xelem(i) = NDC (m.elem(i)) OP SC (S ()); \
-      } \
-    else \
-      { \
-        for (octave_idx_type i = 0; i < len; i++) \
-          r.xelem(i) = NDC (m.elem(i)) OP SC (s); \
-      } \
- \
-    return r; \
+    return do_ms_binary_op<bool, ND::element_type, S> (m, s, OP); \
   }
 
-#define NDS_CMP_OPS(ND, NDC, S, SC) \
-  NDS_CMP_OP (mx_el_lt, <,  ND, NDC, S, SC) \
-  NDS_CMP_OP (mx_el_le, <=, ND, NDC, S, SC) \
-  NDS_CMP_OP (mx_el_ge, >=, ND, NDC, S, SC) \
-  NDS_CMP_OP (mx_el_gt, >,  ND, NDC, S, SC) \
-  NDS_CMP_OP (mx_el_eq, ==, ND,    , S,   ) \
-  NDS_CMP_OP (mx_el_ne, !=, ND,    , S,   )
+#define NDS_CMP_OPS(ND, S) \
+  NDS_CMP_OP (mx_el_lt, mx_inline_lt, ND, S) \
+  NDS_CMP_OP (mx_el_le, mx_inline_le, ND, S) \
+  NDS_CMP_OP (mx_el_ge, mx_inline_ge, ND, S) \
+  NDS_CMP_OP (mx_el_gt, mx_inline_gt, ND, S) \
+  NDS_CMP_OP (mx_el_eq, mx_inline_eq, ND, S) \
+  NDS_CMP_OP (mx_el_ne, mx_inline_ne, ND, S)
 
-#define NDS_CMP_OP1(F, OP, ND, NDC, S, SC, SPEC) \
+#define NDS_BOOL_OP(F, OP, ND, S) \
   boolNDArray \
   F (const ND& m, const S& s) \
   { \
-    boolNDArray r (m.dims ()); \
- \
-    octave_idx_type len = m.length (); \
- \
-    for (octave_idx_type i = 0; i < len; i++) \
-      r.elem(i) = operator OP <SPEC> (NDC (m.elem(i)), SC (s)); \
- \
-    return r; \
+    MNANCHK (m, ND::element_type); \
+    SNANCHK (s); \
+    return do_ms_binary_op<bool, ND::element_type, S> (m, s, OP); \
   }
 
-#define NDS_CMP_OPS1(ND, NDC, S, SC, SPEC) \
-  NDS_CMP_OP1 (mx_el_lt, <,  ND, NDC, S, SC, SPEC) \
-  NDS_CMP_OP1 (mx_el_le, <=, ND, NDC, S, SC, SPEC) \
-  NDS_CMP_OP1 (mx_el_ge, >=, ND, NDC, S, SC, SPEC) \
-  NDS_CMP_OP1 (mx_el_gt, >,  ND, NDC, S, SC, SPEC) \
-  NDS_CMP_OP1 (mx_el_eq, ==, ND,    , S,   , SPEC) \
-  NDS_CMP_OP1 (mx_el_ne, !=, ND,    , S,   , SPEC)
-
-#define NDS_CMP_OP2(F, OP, ND, NDC, S, SC, SPEC1, SPEC2) \
-  boolNDArray \
-  F (const ND& m, const S& s) \
-  { \
-    boolNDArray r; \
- \
-    octave_idx_type len = m.length (); \
- \
-    r.resize (m.dims ()); \
- \
-    for (octave_idx_type i = 0; i < len; i++) \
-      r.elem(i) = operator OP <SPEC1,SPEC2> (NDC (m.elem(i)), SC (s)); \
- \
-    return r; \
-  }
-
-#define NDS_CMP_OPS2(ND, NDC, S, SC, SPEC1, SPEC2) \
-  NDS_CMP_OP2 (mx_el_lt, <,  ND, NDC, S, SC, SPEC1, SPEC2) \
-  NDS_CMP_OP2 (mx_el_le, <=, ND, NDC, S, SC, SPEC1, SPEC2) \
-  NDS_CMP_OP2 (mx_el_ge, >=, ND, NDC, S, SC, SPEC1, SPEC2) \
-  NDS_CMP_OP2 (mx_el_gt, >,  ND, NDC, S, SC, SPEC1, SPEC2) \
-  NDS_CMP_OP2 (mx_el_eq, ==, ND,    , S,   , SPEC1, SPEC2) \
-  NDS_CMP_OP2 (mx_el_ne, !=, ND,    , S,   , SPEC1, SPEC2)
-
-#define NDS_BOOL_OP(F, EQ, OP, ND, S, LHS_ZERO, RHS_ZERO) \
-  boolNDArray \
-  F (const ND& m, const S& s) \
-  { \
-    boolNDArray r (m.dims ()); \
- \
-    octave_idx_type len = m.length (); \
- \
-    if (len > 0) \
-      { \
-	if (xisnan (s)) \
-	  gripe_nan_to_logical_conversion (); \
-	else \
-	  { \
-	    for (octave_idx_type i = 0; i < len; i++) \
-	      if (xisnan (m.elem(i))) \
-		{ \
-		  gripe_nan_to_logical_conversion (); \
-		  return r; \
-		} \
-	      else \
-		r.xelem(i) = (m.elem(i) EQ LHS_ZERO) OP (s != RHS_ZERO); \
-	  } \
-      } \
- \
-    return r; \
-  }
-
-#define NDS_BOOL_OPS2(ND, S, LHS_ZERO, RHS_ZERO) \
-  NDS_BOOL_OP (mx_el_and, !=, &&, ND, S, LHS_ZERO, RHS_ZERO) \
-  NDS_BOOL_OP (mx_el_or,  !=, ||, ND, S, LHS_ZERO, RHS_ZERO) \
-  NDS_BOOL_OP (mx_el_not_and, ==, &&, ND, S, LHS_ZERO, RHS_ZERO) \
-  NDS_BOOL_OP (mx_el_not_or,  ==, ||, ND, S, LHS_ZERO, RHS_ZERO)
-
-#define NDS_BOOL_OPS(ND, S, ZERO) \
-  NDS_BOOL_OPS2(ND, S, ZERO, ZERO)
+#define NDS_BOOL_OPS(ND, S) \
+  NDS_BOOL_OP (mx_el_and,     mx_inline_and,     ND, S) \
+  NDS_BOOL_OP (mx_el_or,      mx_inline_or,      ND, S) \
+  NDS_BOOL_OP (mx_el_not_and, mx_inline_not_and, ND, S) \
+  NDS_BOOL_OP (mx_el_not_or,  mx_inline_not_or,  ND, S) \
+  NDS_BOOL_OP (mx_el_and_not, mx_inline_and_not, ND, S) \
+  NDS_BOOL_OP (mx_el_or_not,  mx_inline_or_not,  ND, S)
 
 // scalar by N-d matrix operations.
 
@@ -539,132 +263,46 @@ along with Octave; see the file COPYING.  If not, see
   R \
   OP (const S& s, const ND& m) \
   { \
-    R r (m.dims ()); \
- \
-    octave_idx_type len = m.length (); \
- \
-    if (len > 0) \
-      F ## _sv (r.fortran_vec (), s, m.data (), len); \
- \
-    return r; \
+    return do_sm_binary_op<R::element_type, S, ND::element_type> (s, m, F); \
   }
 
 #define SND_BIN_OPS(R, S, ND) \
   SND_BIN_OP (R, operator +, S, ND, mx_inline_add) \
-  SND_BIN_OP (R, operator -, S, ND, mx_inline_subtract) \
-  SND_BIN_OP (R, operator *, S, ND, mx_inline_multiply) \
-  SND_BIN_OP (R, operator /, S, ND, mx_inline_divide)
+  SND_BIN_OP (R, operator -, S, ND, mx_inline_sub) \
+  SND_BIN_OP (R, operator *, S, ND, mx_inline_mul) \
+  SND_BIN_OP (R, operator /, S, ND, mx_inline_div)
 
-#define SND_CMP_OP(F, OP, S, SC, ND, NDC) \
+#define SND_CMP_OP(F, OP, S, ND) \
   boolNDArray \
   F (const S& s, const ND& m) \
   { \
-    boolNDArray r (m.dims ()); \
- \
-    octave_idx_type len = m.length (); \
- \
-    if (s == S ()) \
-      { \
-        for (octave_idx_type i = 0; i < len; i++) \
-        r.xelem(i) = SC (S ()) OP NDC (m.elem(i)); \
-      } \
-    else \
-      { \
-        for (octave_idx_type i = 0; i < len; i++) \
-          r.xelem(i) = SC (s) OP NDC (m.elem(i)); \
-      } \
- \
-    return r; \
+    return do_sm_binary_op<bool, S, ND::element_type> (s, m, OP); \
   }
 
-#define SND_CMP_OPS(S, CS, ND, CND) \
-  SND_CMP_OP (mx_el_lt, <,  S, CS, ND, CND) \
-  SND_CMP_OP (mx_el_le, <=, S, CS, ND, CND) \
-  SND_CMP_OP (mx_el_ge, >=, S, CS, ND, CND) \
-  SND_CMP_OP (mx_el_gt, >,  S, CS, ND, CND) \
-  SND_CMP_OP (mx_el_eq, ==, S,   , ND,    ) \
-  SND_CMP_OP (mx_el_ne, !=, S,   , ND,    )
+#define SND_CMP_OPS(S, ND) \
+  SND_CMP_OP (mx_el_lt, mx_inline_lt, S, ND) \
+  SND_CMP_OP (mx_el_le, mx_inline_le, S, ND) \
+  SND_CMP_OP (mx_el_ge, mx_inline_ge, S, ND) \
+  SND_CMP_OP (mx_el_gt, mx_inline_gt, S, ND) \
+  SND_CMP_OP (mx_el_eq, mx_inline_eq, S, ND) \
+  SND_CMP_OP (mx_el_ne, mx_inline_ne, S, ND)
 
-#define SND_CMP_OP1(F, OP, S, SC, ND, NDC, SPEC) \
+#define SND_BOOL_OP(F, OP, S, ND) \
   boolNDArray \
   F (const S& s, const ND& m) \
   { \
-    boolNDArray r (m.dims ()); \
- \
-    octave_idx_type len = m.length (); \
- \
-    for (octave_idx_type i = 0; i < len; i++) \
-      r.elem(i) = operator OP <SPEC> (SC (s), NDC (m.elem(i))); \
- \
-    return r; \
+    SNANCHK (s); \
+    MNANCHK (m, ND::element_type); \
+    return do_sm_binary_op<bool, S, ND::element_type> (s, m, OP); \
   }
 
-#define SND_CMP_OPS1(S, CS, ND, CND, SPEC) \
-  SND_CMP_OP1 (mx_el_lt, <,  S, CS, ND, CND, SPEC) \
-  SND_CMP_OP1 (mx_el_le, <=, S, CS, ND, CND, SPEC) \
-  SND_CMP_OP1 (mx_el_ge, >=, S, CS, ND, CND, SPEC) \
-  SND_CMP_OP1 (mx_el_gt, >,  S, CS, ND, CND, SPEC) \
-  SND_CMP_OP1 (mx_el_eq, ==, S,   , ND,    , SPEC) \
-  SND_CMP_OP1 (mx_el_ne, !=, S,   , ND,    , SPEC)
-
-#define SND_CMP_OP2(F, OP, S, SC, ND, NDC, SPEC1, SPEC2) \
-  boolNDArray \
-  F (const S& s, const ND& m) \
-  { \
-    boolNDArray r (m.dims ()); \
- \
-    octave_idx_type len = m.length (); \
- \
-    for (octave_idx_type i = 0; i < len; i++) \
-      r.elem(i) = operator OP <SPEC1, SPEC2> (SC (s), NDC (m.elem(i))); \
- \
-    return r; \
-  }
-
-#define SND_CMP_OPS2(S, CS, ND, CND, SPEC1, SPEC2) \
-  SND_CMP_OP2 (mx_el_lt, <,  S, CS, ND, CND, SPEC1, SPEC2) \
-  SND_CMP_OP2 (mx_el_le, <=, S, CS, ND, CND, SPEC1, SPEC2) \
-  SND_CMP_OP2 (mx_el_ge, >=, S, CS, ND, CND, SPEC1, SPEC2) \
-  SND_CMP_OP2 (mx_el_gt, >,  S, CS, ND, CND, SPEC1, SPEC2) \
-  SND_CMP_OP2 (mx_el_eq, ==, S,   , ND,    , SPEC1, SPEC2) \
-  SND_CMP_OP2 (mx_el_ne, !=, S,   , ND,    , SPEC1, SPEC2)
-
-#define SND_BOOL_OP(F, OP, EQ, S, ND, LHS_ZERO, RHS_ZERO) \
-  boolNDArray \
-  F (const S& s, const ND& m) \
-  { \
-    boolNDArray r (m.dims ()); \
- \
-    octave_idx_type len = m.length (); \
- \
-    if (len > 0) \
-      { \
-	if (xisnan (s)) \
-	  gripe_nan_to_logical_conversion (); \
-	else \
-	  { \
-	    for (octave_idx_type i = 0; i < len; i++) \
-	      if (xisnan (m.elem(i))) \
-		{ \
-	          gripe_nan_to_logical_conversion (); \
-		  return r; \
-		} \
-	      else \
-		r.xelem(i) = (s != LHS_ZERO) OP (m.elem(i) EQ RHS_ZERO); \
-	    } \
-      } \
- \
-    return r; \
-  }
-
-#define SND_BOOL_OPS2(S, ND, LHS_ZERO, RHS_ZERO) \
-  SND_BOOL_OP (mx_el_and, &&, !=, S, ND, LHS_ZERO, RHS_ZERO) \
-  SND_BOOL_OP (mx_el_or,  ||, !=, S, ND, LHS_ZERO, RHS_ZERO) \
-  SND_BOOL_OP (mx_el_and_not, &&, ==, S, ND, LHS_ZERO, RHS_ZERO) \
-  SND_BOOL_OP (mx_el_or_not,  ||, ==, S, ND, LHS_ZERO, RHS_ZERO)
-
-#define SND_BOOL_OPS(S, ND, ZERO) \
-  SND_BOOL_OPS2(S, ND, ZERO, ZERO)
+#define SND_BOOL_OPS(S, ND) \
+  SND_BOOL_OP (mx_el_and,     mx_inline_and,     S, ND) \
+  SND_BOOL_OP (mx_el_or,      mx_inline_or,      S, ND) \
+  SND_BOOL_OP (mx_el_not_and, mx_inline_not_and, S, ND) \
+  SND_BOOL_OP (mx_el_not_or,  mx_inline_not_or,  S, ND) \
+  SND_BOOL_OP (mx_el_and_not, mx_inline_and_not, S, ND) \
+  SND_BOOL_OP (mx_el_or_not,  mx_inline_or_not,  S, ND)
 
 // N-d matrix by N-d matrix operations.
 
@@ -672,145 +310,81 @@ along with Octave; see the file COPYING.  If not, see
   R \
   OP (const ND1& m1, const ND2& m2) \
   { \
-    R r; \
- \
-    dim_vector m1_dims = m1.dims (); \
-    dim_vector m2_dims = m2.dims (); \
- \
-    if (m1_dims != m2_dims) \
-      gripe_nonconformant (#OP, m1_dims, m2_dims); \
-    else \
-      { \
-	r = R (m1_dims); \
- \
-	octave_idx_type len = m1.length (); \
- \
-	if (len > 0) \
-	  F ## _vv (r.fortran_vec (), m1.data (), m2.data (), len); \
-      } \
- \
-    return r; \
+    return do_mm_binary_op<R::element_type, ND1::element_type, ND2::element_type> (m1, m2, F, #OP); \
   }
 
 #define NDND_BIN_OPS(R, ND1, ND2) \
   NDND_BIN_OP (R, operator +, ND1, ND2, mx_inline_add) \
-  NDND_BIN_OP (R, operator -, ND1, ND2, mx_inline_subtract) \
-  NDND_BIN_OP (R, product,    ND1, ND2, mx_inline_multiply) \
-  NDND_BIN_OP (R, quotient,   ND1, ND2, mx_inline_divide)
+  NDND_BIN_OP (R, operator -, ND1, ND2, mx_inline_sub) \
+  NDND_BIN_OP (R, product,    ND1, ND2, mx_inline_mul) \
+  NDND_BIN_OP (R, quotient,   ND1, ND2, mx_inline_div)
 
-#define NDND_CMP_OP(F, OP, ND1, C1, ND2, C2) \
+#define NDND_CMP_OP(F, OP, ND1, ND2) \
   boolNDArray \
   F (const ND1& m1, const ND2& m2) \
   { \
-    boolNDArray r; \
- \
-    dim_vector m1_dims = m1.dims (); \
-    dim_vector m2_dims = m2.dims (); \
- \
-    if (m1_dims == m2_dims) \
-      { \
-	r = boolNDArray (m1_dims); \
- \
-	for (octave_idx_type i = 0; i < m1.length (); i++) \
-	  r.xelem(i) = C1 (m1.elem(i)) OP C2 (m2.elem(i)); \
-      } \
-    else \
-      gripe_nonconformant (#F, m1_dims, m2_dims); \
- \
-    return r; \
+    return do_mm_binary_op<bool, ND1::element_type, ND2::element_type> (m1, m2, OP, #F); \
   }
 
-#define NDND_CMP_OPS(ND1, C1, ND2, C2) \
-  NDND_CMP_OP (mx_el_lt, <,  ND1, C1, ND2, C2) \
-  NDND_CMP_OP (mx_el_le, <=, ND1, C1, ND2, C2) \
-  NDND_CMP_OP (mx_el_ge, >=, ND1, C1, ND2, C2) \
-  NDND_CMP_OP (mx_el_gt, >,  ND1, C1, ND2, C2) \
-  NDND_CMP_OP (mx_el_eq, ==, ND1,   , ND2,   ) \
-  NDND_CMP_OP (mx_el_ne, !=, ND1,   , ND2,   )
+#define NDND_CMP_OPS(ND1, ND2) \
+  NDND_CMP_OP (mx_el_lt, mx_inline_lt, ND1, ND2) \
+  NDND_CMP_OP (mx_el_le, mx_inline_le, ND1, ND2) \
+  NDND_CMP_OP (mx_el_ge, mx_inline_ge, ND1, ND2) \
+  NDND_CMP_OP (mx_el_gt, mx_inline_gt, ND1, ND2) \
+  NDND_CMP_OP (mx_el_eq, mx_inline_eq, ND1, ND2) \
+  NDND_CMP_OP (mx_el_ne, mx_inline_ne, ND1, ND2)
 
-#define NDND_BOOL_OP(F, EQ1, OP, EQ2, ND1, ND2, LHS_ZERO, RHS_ZERO) \
+#define NDND_BOOL_OP(F, OP, ND1, ND2) \
   boolNDArray \
   F (const ND1& m1, const ND2& m2) \
   { \
-    boolNDArray r; \
- \
-    dim_vector m1_dims = m1.dims (); \
-    dim_vector m2_dims = m2.dims (); \
- \
-    if (m1_dims == m2_dims) \
-      { \
-	if (! m1_dims.all_zero ()) \
-	  { \
-	    r = boolNDArray (m1_dims); \
- \
-	    for (octave_idx_type i = 0; i < m1.length (); i++) \
-	      if (xisnan (m1.elem(i)) || xisnan (m2.elem(i))) \
-		{ \
-	          gripe_nan_to_logical_conversion (); \
-		  return r; \
-		} \
-	      else \
-		r.xelem(i) = (m1.elem(i) EQ1 LHS_ZERO) OP (m2.elem(i) EQ2 RHS_ZERO); \
-	  } \
-      } \
-    else \
-      gripe_nonconformant (#F, m1_dims, m2_dims); \
- \
-    return r; \
+    MNANCHK (m1, ND1::element_type); \
+    MNANCHK (m2, ND2::element_type); \
+    return do_mm_binary_op<bool, ND1::element_type, ND2::element_type> (m1, m2, OP, #F); \
   }
 
-#define NDND_BOOL_OPS2(ND1, ND2, LHS_ZERO, RHS_ZERO) \
-  NDND_BOOL_OP (mx_el_and, !=, &&, !=, ND1, ND2, LHS_ZERO, RHS_ZERO) \
-  NDND_BOOL_OP (mx_el_or,  !=, ||, !=, ND1, ND2, LHS_ZERO, RHS_ZERO) \
-  NDND_BOOL_OP (mx_el_and_not, != , &&, ==, ND1, ND2, LHS_ZERO, RHS_ZERO) \
-  NDND_BOOL_OP (mx_el_or_not, !=, ||, ==, ND1, ND2, LHS_ZERO, RHS_ZERO) \
-  NDND_BOOL_OP (mx_el_not_and, ==, &&, !=, ND1, ND2, LHS_ZERO, RHS_ZERO) \
-  NDND_BOOL_OP (mx_el_not_or,  ==, ||, !=, ND1, ND2, LHS_ZERO, RHS_ZERO)
-
-#define NDND_BOOL_OPS(ND1, ND2, ZERO) \
-  NDND_BOOL_OPS2(ND1, ND2, ZERO, ZERO)
+#define NDND_BOOL_OPS(ND1, ND2) \
+  NDND_BOOL_OP (mx_el_and,     mx_inline_and,     ND1, ND2) \
+  NDND_BOOL_OP (mx_el_or,      mx_inline_or,      ND1, ND2) \
+  NDND_BOOL_OP (mx_el_not_and, mx_inline_not_and, ND1, ND2) \
+  NDND_BOOL_OP (mx_el_not_or,  mx_inline_not_or,  ND1, ND2) \
+  NDND_BOOL_OP (mx_el_and_not, mx_inline_and_not, ND1, ND2) \
+  NDND_BOOL_OP (mx_el_or_not,  mx_inline_or_not,  ND1, ND2)
 
 // scalar by diagonal matrix operations.
 
-#define SDM_BIN_OP(R, OP, S, DM, OPEQ) \
+#define SDM_BIN_OP(R, OP, S, DM) \
   R \
-  OP (const S& s, const DM& dm) \
+  operator OP (const S& s, const DM& dm) \
   { \
-    octave_idx_type nr = dm.rows (); \
-    octave_idx_type nc = dm.cols (); \
- \
-    R r (nr, nc, s); \
+    R r (dm.rows (), dm.cols ()); \
  \
     for (octave_idx_type i = 0; i < dm.length (); i++) \
-      r.elem(i, i) OPEQ dm.elem(i, i); \
+      r.dgxelem (i) = s OP dm.dgelem (i); \
  \
     return r; \
 }
 
 #define SDM_BIN_OPS(R, S, DM) \
-  SDM_BIN_OP (R, operator +, S, DM, +=) \
-  SDM_BIN_OP (R, operator -, S, DM, -=)
+  SDM_BIN_OP (R, *, S, DM)
 
 // diagonal matrix by scalar operations.
 
-#define DMS_BIN_OP(R, OP, DM, S, SGN) \
+#define DMS_BIN_OP(R, OP, DM, S) \
   R \
-  OP (const DM& dm, const S& s) \
+  operator OP (const DM& dm, const S& s) \
   { \
-    octave_idx_type nr = dm.rows (); \
-    octave_idx_type nc = dm.cols (); \
- \
-    R r (nr, nc, SGN s); \
+    R r (dm.rows (), dm.cols ()); \
  \
     for (octave_idx_type i = 0; i < dm.length (); i++) \
-      r.elem(i, i) += dm.elem(i, i); \
+      r.dgxelem (i) = dm.dgelem (i) OP s; \
  \
     return r; \
   }
 
 #define DMS_BIN_OPS(R, DM, S) \
-  DMS_BIN_OP (R, operator +, DM, S, ) \
-  DMS_BIN_OP (R, operator -, DM, S, -)
+  DMS_BIN_OP (R, *, DM, S) \
+  DMS_BIN_OP (R, /, DM, S)
 
 // matrix by diagonal matrix operations.
 
@@ -833,14 +407,14 @@ OP (const M& m, const DM& dm) \
       r.resize (m_nr, m_nc); \
  \
       if (m_nr > 0 && m_nc > 0) \
-	{ \
-	  r = R (m); \
+        { \
+          r = R (m); \
  \
-	  octave_idx_type len = dm.length (); \
+          octave_idx_type len = dm.length (); \
  \
-	  for (octave_idx_type i = 0; i < len; i++) \
-	    r.elem(i, i) OPEQ dm.elem(i, i); \
-	} \
+          for (octave_idx_type i = 0; i < len; i++) \
+            r.elem(i, i) OPEQ dm.elem(i, i); \
+        } \
     } \
  \
   return r; \
@@ -870,10 +444,10 @@ operator * (const M& m, const DM& dm) \
       octave_idx_type len = dm.length (); \
       for (octave_idx_type i = 0; i < len; i++) \
         { \
-          mx_inline_multiply_vs (rd, md, m_nr, dd[i]); \
+          mx_inline_mul (m_nr, rd, md, dd[i]); \
           rd += m_nr; md += m_nr; \
         } \
-      mx_inline_fill_vs (rd, m_nr * (dm_nc - len), R_ZERO); \
+      mx_inline_fill (m_nr * (dm_nc - len), rd, R_ZERO); \
     } \
  \
   return r; \
@@ -903,16 +477,16 @@ OP (const DM& dm, const M& m) \
   else \
     { \
       if (m_nr > 0 && m_nc > 0) \
-	{ \
-	  r = R (PREOP m); \
+        { \
+          r = R (PREOP m); \
  \
-	  octave_idx_type len = dm.length (); \
+          octave_idx_type len = dm.length (); \
  \
-	  for (octave_idx_type i = 0; i < len; i++) \
-	    r.elem(i, i) OPEQ dm.elem(i, i); \
-	} \
+          for (octave_idx_type i = 0; i < len; i++) \
+            r.elem(i, i) OPEQ dm.elem(i, i); \
+        } \
       else \
-	r.resize (m_nr, m_nc); \
+        r.resize (m_nr, m_nc); \
     } \
  \
   return r; \
@@ -942,9 +516,9 @@ operator * (const DM& dm, const M& m) \
       octave_idx_type len = dm.length (); \
       for (octave_idx_type i = 0; i < m_nc; i++) \
         { \
-          mx_inline_multiply_vv (rd, md, dd, len); \
+          mx_inline_mul (len, rd, md, dd); \
           rd += len; md += m_nr; \
-          mx_inline_fill_vs (rd, dm_nr - len, R_ZERO); \
+          mx_inline_fill (dm_nr - len, rd, R_ZERO); \
           rd += dm_nr - len; \
         } \
     } \
@@ -975,11 +549,10 @@ operator * (const DM& dm, const M& m) \
       gripe_nonconformant (#OP, dm1_nr, dm1_nc, dm2_nr, dm2_nc); \
     else \
       { \
-	r.resize (dm1_nr, dm1_nc); \
+        r.resize (dm1_nr, dm1_nc); \
  \
-	if (dm1_nr > 0 && dm1_nc > 0) \
-	  F ## _vv (r.fortran_vec (), dm1.data (), dm2.data (), \
-		    dm1.length ()); \
+        if (dm1_nr > 0 && dm1_nc > 0) \
+          F (dm1.length (), r.fortran_vec (), dm1.data (), dm2.data ()); \
       } \
  \
     return r; \
@@ -987,88 +560,39 @@ operator * (const DM& dm, const M& m) \
 
 #define DMDM_BIN_OPS(R, DM1, DM2) \
   DMDM_BIN_OP (R, operator +, DM1, DM2, mx_inline_add) \
-  DMDM_BIN_OP (R, operator -, DM1, DM2, mx_inline_subtract) \
-  DMDM_BIN_OP (R, product,    DM1, DM2, mx_inline_multiply)
+  DMDM_BIN_OP (R, operator -, DM1, DM2, mx_inline_sub) \
+  DMDM_BIN_OP (R, product,    DM1, DM2, mx_inline_mul)
 
 // scalar by N-d array min/max ops
 
-#define SND_MINMAX_FCN(FCN, OP, T) \
-T ## NDArray \
-FCN (octave_ ## T d, const T ## NDArray& m) \
+#define SND_MINMAX_FCN(FCN, OP, T, S) \
+T \
+FCN (S d, const T& m) \
 { \
-  dim_vector dv = m.dims (); \
-  octave_idx_type nel = dv.numel (); \
-\
-  if (nel == 0)	\
-    return T ## NDArray (dv); \
-\
-  T ## NDArray result (dv); \
-\
-  for (octave_idx_type i = 0; i < nel; i++) \
-    { \
-      OCTAVE_QUIT; \
-      result (i) = d OP m (i) ? d : m(i); \
-    } \
-\
-  return result; \
+  return do_sm_binary_op<T::element_type, S, T::element_type> (d, m, mx_inline_x##FCN); \
 }
 
-#define NDS_MINMAX_FCN(FCN, OP, T) \
-T ## NDArray \
-FCN (const T ## NDArray& m, octave_ ## T d) \
+#define NDS_MINMAX_FCN(FCN, OP, T, S) \
+T \
+FCN (const T& m, S d) \
 { \
-  dim_vector dv = m.dims (); \
-  octave_idx_type nel = dv.numel (); \
-\
-  if (nel == 0)	\
-    return T ## NDArray (dv); \
-\
-  T ## NDArray result (dv); \
-\
-  for (octave_idx_type i = 0; i < nel; i++) \
-    { \
-      OCTAVE_QUIT; \
-      result (i) = m (i) OP d ? m(i) : d; \
-    } \
-\
-  return result; \
+  return do_ms_binary_op<T::element_type, T::element_type, S> (m, d, mx_inline_x##FCN); \
 }
 
-#define NDND_MINMAX_FCN(FCN, OP, T) \
-T ## NDArray \
-FCN (const T ## NDArray& a, const T ## NDArray& b) \
+#define NDND_MINMAX_FCN(FCN, OP, T, S) \
+T \
+FCN (const T& a, const T& b) \
 { \
-  dim_vector dv = a.dims (); \
-  octave_idx_type nel = dv.numel (); \
-\
-  if (dv != b.dims ()) \
-    { \
-      (*current_liboctave_error_handler) \
-	("two-arg min expecting args of same size"); \
-      return T ## NDArray (); \
-    } \
-\
-  if (nel == 0)	\
-    return T ## NDArray (dv); \
-\
-  T ## NDArray result (dv); \
-\
-  for (octave_idx_type i = 0; i < nel; i++) \
-    { \
-      OCTAVE_QUIT; \
-      result (i) = a(i) OP b(i) ? a(i) : b(i); \
-    } \
-\
-  return result; \
+  return do_mm_binary_op<T::element_type, T::element_type, T::element_type> (a, b, mx_inline_x##FCN, #FCN); \
 }
 
-#define MINMAX_FCNS(T) \
-  SND_MINMAX_FCN (min, <, T) \
-  NDS_MINMAX_FCN (min, <, T) \
-  NDND_MINMAX_FCN (min, <, T) \
-  SND_MINMAX_FCN (max, >, T) \
-  NDS_MINMAX_FCN (max, >, T) \
-  NDND_MINMAX_FCN (max, >, T)
+#define MINMAX_FCNS(T, S) \
+  SND_MINMAX_FCN (min, <, T, S) \
+  NDS_MINMAX_FCN (min, <, T, S) \
+  NDND_MINMAX_FCN (min, <, T, S) \
+  SND_MINMAX_FCN (max, >, T, S) \
+  NDS_MINMAX_FCN (max, >, T, S) \
+  NDND_MINMAX_FCN (max, >, T, S)
 
 // permutation matrix by matrix ops and vice versa
 
@@ -1128,10 +652,3 @@ M operator * (const M& x, const PM& p) \
   return retval;
 
 #endif
-
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

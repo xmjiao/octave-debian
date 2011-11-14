@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 2000, 2001, 2002, 2003, 2005,
-##               2006, 2007 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -54,7 +53,7 @@ function [p, y] = ppplot (x, dist, varargin)
   endif
 
   if (! isvector (x))
-    error ("ppplot: x must be a vector");
+    error ("ppplot: X must be a vector");
   endif
 
   s = sort (x);
@@ -63,7 +62,7 @@ function [p, y] = ppplot (x, dist, varargin)
   if (nargin == 1)
     F = @stdnormal_cdf;
   else
-    F = str2func (sprintf ("%s_cdf", dist));
+    F = str2func (sprintf ("%scdf", dist));
   endif;
   if (nargin <= 2)
     y = feval (F, s);
@@ -77,3 +76,8 @@ function [p, y] = ppplot (x, dist, varargin)
   endif
 
 endfunction
+
+%% Test input validation
+%!error ppplot ();
+%!error ppplot (ones(2,2));
+

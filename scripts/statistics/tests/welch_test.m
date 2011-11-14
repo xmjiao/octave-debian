@@ -1,5 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 1998, 2000, 2001, 2002, 2005, 2006,
-##               2007 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -48,7 +47,7 @@ function [pval, t, df] = welch_test (x, y, alt)
   endif
 
   if (! (isvector (x) && isvector (y)))
-    error ("welch_test: both x and y must be vectors");
+    error ("welch_test: both X and Y must be vectors");
   endif
 
   n_x  = length (x);
@@ -60,14 +59,14 @@ function [pval, t, df] = welch_test (x, y, alt)
   c    = v_x / (v_x + v_y);
   df   = 1 / (c^2 / (n_x - 1) + (1 - c)^2 / (n_y - 1));
   t    = (mu_x - mu_y) / sqrt (v_x + v_y);
-  cdf  = t_cdf (t, df);
+  cdf  = tcdf (t, df);
 
   if (nargin == 2)
     alt  = "!=";
   endif
 
   if (! ischar (alt))
-    error ("welch_test: alt must be a string");
+    error ("welch_test: ALT must be a string");
   endif
   if (strcmp (alt, "!=") || strcmp (alt, "<>"))
     pval = 2 * min (cdf, 1 - cdf);

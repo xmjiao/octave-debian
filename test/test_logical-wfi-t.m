@@ -1,4 +1,4 @@
-## Copyright (C) 2006, 2007, 2008 John W. Eaton
+## Copyright (C) 2006-2011 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -46,7 +46,7 @@
 %! warning ("on", "Octave:fortran-indexing");
 %!shared a
 %! a = 2;
-%!error <A\(I\): Index exceeds matrix dimension\.> a(logical ([1,1]));
+%!error id=Octave:index-out-of-bounds a(logical ([1,1]));
 %! warning ("wfi.state", "Octave:fortran-indexing");
 
 %% test/octave.test/logical-wfi-t/v-1.m

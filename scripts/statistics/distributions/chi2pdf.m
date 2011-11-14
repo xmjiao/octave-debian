@@ -1,4 +1,4 @@
-## Copyright (C) 1995, 1996, 1997, 2005, 2006, 2007 Kurt Hornik
+## Copyright (C) 1995-2011 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {} chisquare_pdf (@var{x}, @var{n})
+## @deftypefn {Function File} {} chi2pdf (@var{x}, @var{n})
 ## For each element of @var{x}, compute the probability density function
 ## (PDF) at @var{x} of the chisquare distribution with @var{n} degrees
 ## of freedom.
@@ -35,7 +35,7 @@ function pdf = chi2pdf (x, n)
   if (!isscalar (n))
     [retval, x, n] = common_size (x, n);
     if (retval > 0)
-      error ("chi2pdf: x and n must be of common size or scalar");
+      error ("chi2pdf: X and N must be of common size or scalar");
     endif
   endif
 

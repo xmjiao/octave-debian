@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2000, 2002, 2004, 2005, 2006,
-              2007, 2008 John W. Eaton
+Copyright (C) 1994-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -38,27 +37,27 @@ public:
 
   ComplexQRP (void) : ComplexQR (), p () { }
 
-  ComplexQRP (const ComplexMatrix&, QR::type = QR::std);
+  ComplexQRP (const ComplexMatrix&, qr_type_t = qr_type_std);
 
   ComplexQRP (const ComplexQRP& a) : ComplexQR (a), p (a.p) { }
 
   ComplexQRP& operator = (const ComplexQRP& a)
     {
       if (this != &a)
-	{
-	  ComplexQR::operator = (a);
-	  p = a.p;
-	}
+        {
+          ComplexQR::operator = (a);
+          p = a.p;
+        }
       return *this;
     }
 
   ~ComplexQRP (void) { }
 
-  void init (const ComplexMatrix&, QR::type = QR::std);
+  void init (const ComplexMatrix&, qr_type_t = qr_type_std);
 
   PermMatrix P (void) const { return p; }
 
-  ColumnVector Pvec (void) const;
+  RowVector Pvec (void) const;
 
   friend std::ostream&  operator << (std::ostream&, const ComplexQRP&);
 
@@ -68,9 +67,3 @@ private:
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

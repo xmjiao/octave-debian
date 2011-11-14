@@ -1,17 +1,20 @@
-## Copyright (C) 2009 Martin Helm
+## Copyright (C) 2009-2011 Martin Helm
 ##
-## This program is free software; you can redistribute it and/or modify
-## it under the terms of the GNU General Public License as published by
-## the Free Software Foundation; either version 3 of the License, or
-## (at your option) any later version.
+## This file is part of Octave.
 ##
-## This program is distributed in the hope that it will be useful,
-## but WITHOUT ANY WARRANTY; without even the implied warranty of
-## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-## GNU General Public License for more details.
+## Octave is free software; you can redistribute it and/or modify it
+## under the terms of the GNU General Public License as published by
+## the Free Software Foundation; either version 3 of the License, or (at
+## your option) any later version.
+##
+## Octave is distributed in the hope that it will be useful, but
+## WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+## General Public License for more details.
 ##
 ## You should have received a copy of the GNU General Public License
-## along with this program; if not, see http://www.gnu.org/licenses/gpl.html.
+## along with Octave; see the file COPYING.  If not, see
+## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
 ## @deftypefn  {Function File} {[@var{n}] =} isonormals (@var{val}, @var{v})
@@ -19,10 +22,10 @@
 ## @deftypefnx {Function File} {[@var{n}] =} isonormals (@var{x}, @var{y}, @var{z}, @var{val}, @var{v})
 ## @deftypefnx {Function File} {[@var{n}] =} isonormals (@var{x}, @var{y}, @var{z}, @var{val}, @var{p})
 ## @deftypefnx {Function File} {[@var{n}] =} isonormals (@dots{}, "negate")
-## @deftypefnx {Function File} isonormals (@dots{}, @var{p})
+## @deftypefnx {Function File} {} isonormals (@dots{}, @var{p})
 ##
 ## If called with one output argument and the first input argument
-## @var{val} is a three--dimensional array that contains the data for an
+## @var{val} is a three-dimensional array that contains the data for an
 ## isosurface geometry and the second input argument @var{v} keeps the
 ## vertices of an isosurface then return the normals @var{n} in form of
 ## a matrix with the same size than @var{v} at computed points
@@ -41,10 +44,11 @@
 ## If no output argument is given then directly redraw the patch that is
 ## given by the patch handle @var{p}.
 ##
-## For example,
+## For example:
+##
 ## @example
 ## function [] = isofinish (p)
-##   set (gca, "DataAspectRatioMode","manual","DataAspectRatio",[1 1 1]);
+##   set (gca, "PlotBoxAspectRatioMode","manual","PlotBoxAspectRatio",[1 1 1]);
 ##   set (p, "VertexNormals", -get(p,"VertexNormals")); ## Revert normals
 ##   set (p, "FaceColor", "interp");
 ##   ## set (p, "FaceLighting", "phong");
@@ -61,31 +65,30 @@
 ## subplot (2, 2, 1); view (-38, 20);
 ## [f, v, cdat] = isosurface (x, y, z, c, iso, y);
 ## p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, \
-## 	   "FaceColor", "interp", "EdgeColor", "none");
+##         "FaceColor", "interp", "EdgeColor", "none");
 ## isofinish (p); ## Call user function isofinish
 ##
 ## subplot (2, 2, 2); view (-38, 20);
 ## p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, \
-## 	   "FaceColor", "interp", "EdgeColor", "none");
+##         "FaceColor", "interp", "EdgeColor", "none");
 ## isonormals (x, y, z, c, p); ## Directly modify patch
 ## isofinish (p);
 ##
 ## subplot (2, 2, 3); view (-38, 20);
 ## p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, \
-## 	   "FaceColor", "interp", "EdgeColor", "none");
+##         "FaceColor", "interp", "EdgeColor", "none");
 ## n = isonormals (x, y, z, c, v); ## Compute normals of isosurface
 ## set (p, "VertexNormals", n);    ## Manually set vertex normals
 ## isofinish (p);
 ##
 ## subplot (2, 2, 4); view (-38, 20);
 ## p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, \
-## 	   "FaceColor", "interp", "EdgeColor", "none");
+##         "FaceColor", "interp", "EdgeColor", "none");
 ## isonormals (x, y, z, c, v, "negate"); ## Use reverse directly
 ## isofinish (p);
 ## @end example
 ##
-## @seealso {isosurface, isocolors, isocaps, marching_cube}
-##
+## @seealso{isosurface, isocolors}
 ## @end deftypefn
 
 ## Author: Martin Helm <martin@mhelm.de>
@@ -98,10 +101,10 @@ function varargout = isonormals(varargin)
     if (strcmp (lower (varargin{nargin}), "negate"))
       negate = true;
     else
-      error ("Unknown option '%s'", varargin{nargin});
+      error ("isonormals: Unknown option '%s'", varargin{nargin});
     endif
   endif
-  switch na
+  switch (na)
     case 2
       c = varargin{1};
       vp = varargin{2};
@@ -114,7 +117,7 @@ function varargout = isonormals(varargin)
       z = varargin{3};
       c = varargin{4};
       vp = varargin{5};
-    otherwise 
+    otherwise
       print_usage ();
   endswitch
   if (ismatrix (vp) && size (vp,2) == 3)
@@ -124,14 +127,14 @@ function varargout = isonormals(varargin)
     pa = vp;
     v = get (pa, "Vertices");
   else
-    error ("Last argument is no vertex list and no patch handle");
+    error ("isonormals: Last argument is not a vertex list or a patch handle");
   endif
   if (negate)
     normals = -__interp_cube__ (x, y, z, c, v, "normals");
   else
     normals = __interp_cube__ (x, y, z, c, v, "normals");
   endif
-  switch nargout
+  switch (nargout)
     case 0
       if (!isempty (pa))
         set (pa, "VertexNormals", normals);
@@ -145,13 +148,13 @@ endfunction
 
 %!test
 %!  [x, y, z] = meshgrid (0:.5:2, 0:.5:2, 0:.5:2);
-%!  c = abs ((x-.5).^2 + (y-.5).^2 + (z-.5).^2); 
+%!  c = abs ((x-.5).^2 + (y-.5).^2 + (z-.5).^2);
 %!  [f, v, cdat] = isosurface (x, y, z, c, .4, y);
 %!  n = isonormals (x, y, z, c, v);
 %!  assert (size (v), size (n));
 %!test
 %!  [x, y, z] = meshgrid (0:.5:2, 0:.5:2, 0:.5:2);
-%!  c = abs ((x-.5).^2 + (y-.5).^2 + (z-.5).^2); 
+%!  c = abs ((x-.5).^2 + (y-.5).^2 + (z-.5).^2);
 %!  [f, v, cdat] = isosurface (x, y, z, c, .4, y);
 %!  np = isonormals (x, y, z, c, v);
 %!  nn = isonormals (x, y, z, c, v, "negate");

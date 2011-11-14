@@ -1,8 +1,7 @@
 /*
 
-Copyright (C) 1994, 1995, 1996, 1997, 2000, 2002, 2004, 2005, 2006,
-              2007 John W. Eaton
-Copyright (C) 2008, 2009 Jaroslav Hajek              
+Copyright (C) 1994-2011 John W. Eaton
+Copyright (C) 2008-2009 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -30,42 +29,25 @@ along with Octave; see the file COPYING.  If not, see
 #include "CMatrix.h"
 #include "CColVector.h"
 #include "CRowVector.h"
-#include "dbleQR.h"
+#include "base-qr.h"
 
 
 class
 OCTAVE_API
-ComplexQR
+ComplexQR : public base_qr<ComplexMatrix>
 {
 public:
 
-  ComplexQR (void) : q (), r () { }
+  ComplexQR (void) : base_qr<ComplexMatrix> () { }
 
-  ComplexQR (const ComplexMatrix&, QR::type = QR::std);
+  ComplexQR (const ComplexMatrix&, qr_type_t = qr_type_std);
 
-  ComplexQR (const ComplexMatrix& q, const ComplexMatrix& r);
+  ComplexQR (const ComplexMatrix& qx, const ComplexMatrix& rx)
+    : base_qr<ComplexMatrix> (qx, rx) { }
 
-  ComplexQR (const ComplexQR& a) : q (a.q), r (a.r) { }
+  ComplexQR (const ComplexQR& a) : base_qr<ComplexMatrix> (a) { }
 
-  ComplexQR& operator = (const ComplexQR& a)
-    {
-      if (this != &a)
-	{
-	  q = a.q;
-	  r = a.r;
-	}
-      return *this;
-    }
-
-  ~ComplexQR (void) { }
-
-  void init (const ComplexMatrix&, QR::type = QR::std);
-
-  ComplexMatrix Q (void) const { return q; }
-
-  ComplexMatrix R (void) const { return r; }
-
-  QR::type get_type (void) const;
+  void init (const ComplexMatrix&, qr_type_t = qr_type_std);
 
   void update (const ComplexColumnVector& u, const ComplexColumnVector& v);
 
@@ -85,21 +67,10 @@ public:
 
   void shift_cols (octave_idx_type i, octave_idx_type j);
 
-  friend std::ostream&  operator << (std::ostream&, const ComplexQR&);
-
 protected:
 
-  void form (octave_idx_type n, ComplexMatrix& afact, 
-             Complex *tau, QR::type qr_type);
-
-  ComplexMatrix q;
-  ComplexMatrix r;
+  void form (octave_idx_type n, ComplexMatrix& afact,
+             Complex *tau, qr_type_t qr_type);
 };
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

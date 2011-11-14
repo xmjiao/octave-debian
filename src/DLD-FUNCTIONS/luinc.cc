@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2005, 2006, 2007, 2008 David Bateman
+Copyright (C) 2005-2011 David Bateman
 
 This file is part of Octave.
 
@@ -39,31 +39,31 @@ along with Octave; see the file COPYING.  If not, see
 
 DEFUN_DLD (luinc, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Loadable Function} {[@var{l}, @var{u}, @var{p}, @var{q}] =} luinc (@var{a}, '0')\n\
-@deftypefnx {Loadable Function} {[@var{l}, @var{u}, @var{p}, @var{q}] =} luinc (@var{a}, @var{droptol})\n\
-@deftypefnx {Loadable Function} {[@var{l}, @var{u}, @var{p}, @var{q}] =} luinc (@var{a}, @var{opts})\n\
+@deftypefn  {Loadable Function} {[@var{L}, @var{U}, @var{P}, @var{Q}] =} luinc (@var{A}, '0')\n\
+@deftypefnx {Loadable Function} {[@var{L}, @var{U}, @var{P}, @var{Q}] =} luinc (@var{A}, @var{droptol})\n\
+@deftypefnx {Loadable Function} {[@var{L}, @var{U}, @var{P}, @var{Q}] =} luinc (@var{A}, @var{opts})\n\
 @cindex LU decomposition\n\
-Produce the incomplete LU factorization of the sparse matrix @var{a}.\n\
+Produce the incomplete LU@tie{}factorization of the sparse matrix @var{A}.\n\
 Two types of incomplete factorization are possible, and the type\n\
-is determined by the second argument to @dfn{luinc}.\n\
+is determined by the second argument to @code{luinc}.\n\
 \n\
 Called with a second argument of '0', the zero-level incomplete\n\
-LU factorization is produced.  This creates a factorization of @var{a}\n\
+LU@tie{}factorization is produced.  This creates a factorization of @var{A}\n\
 where the position of the non-zero arguments correspond to the same\n\
-positions as in the matrix @var{a}.\n\
+positions as in the matrix @var{A}.\n\
 \n\
-Alternatively, the fill-in of the incomplete LU factorization can\n\
+Alternatively, the fill-in of the incomplete LU@tie{}factorization can\n\
 be controlled through the variable @var{droptol} or the structure\n\
-@var{opts}.  The UMFPACK multifrontal factorization code by Tim A.\n\
-Davis is used for the incomplete LU factorization, (availability\n\
+@var{opts}.  The @sc{umfpack} multifrontal factorization code by Tim A.\n\
+Davis is used for the incomplete LU@tie{}factorization, (availability\n\
 @url{http://www.cise.ufl.edu/research/sparse/umfpack/})\n\
 \n\
-@var{droptol} determines the values below which the values in the LU\n\
-factorization are dropped and replaced by zero.  It must be a positive\n\
-scalar, and any values in the factorization whose absolute value are\n\
-less than this value are dropped, expect if leaving them increase the\n\
-sparsity of the matrix.  Setting @var{droptol} to zero results in a\n\
-complete LU factorization which is the default.\n\
+@var{droptol} determines the values below which the values in the\n\
+LU@tie{} factorization are dropped and replaced by zero.  It must be a\n\
+positive scalar, and any values in the factorization whose absolute value\n\
+are less than this value are dropped, expect if leaving them increase the\n\
+sparsity of the matrix.  Setting @var{droptol} to zero results in a complete\n\
+LU@tie{}factorization which is the default.\n\
 \n\
 @var{opts} is a structure containing one or more of the fields\n\
 \n\
@@ -73,14 +73,14 @@ The drop tolerance as above.  If @var{opts} only contains @code{droptol}\n\
 then this is equivalent to using the variable @var{droptol}.\n\
 \n\
 @item milu\n\
-A logical variable flagging whether to use the modified incomplete LU\n\
-factorization.  In the case that @code{milu} is true, the dropped values\n\
-are subtracted from the diagonal of the matrix U of the factorization.\n\
-The default is @code{false}.\n\
+A logical variable flagging whether to use the modified incomplete\n\
+LU@tie{} factorization.  In the case that @code{milu} is true, the dropped\n\
+values are subtracted from the diagonal of the matrix @var{U} of the\n\
+factorization.  The default is @code{false}.\n\
 \n\
 @item udiag\n\
-A logical variable that flags whether zero elements on the diagonal of U\n\
-should be replaced with @var{droptol} to attempt to avoid singular\n\
+A logical variable that flags whether zero elements on the diagonal of\n\
+@var{U} should be replaced with @var{droptol} to attempt to avoid singular\n\
 factors.  The default is @code{false}.\n\
 \n\
 @item thresh\n\
@@ -88,11 +88,11 @@ Defines the pivot threshold in the interval [0,1].  Values outside that\n\
 range are ignored.\n\
 @end table\n\
 \n\
-All other fields in @var{opts} are ignored.  The outputs from @dfn{luinc}\n\
-are the same as for @dfn{lu}.\n\
+All other fields in @var{opts} are ignored.  The outputs from @code{luinc}\n\
+are the same as for @code{lu}.\n\
 \n\
-Given the string argument 'vector', @dfn{luinc} returns the values of @var{p}\n\
-@var{q} as vector values.\n\
+Given the string argument 'vector', @code{luinc} returns the values of\n\
+@var{p} @var{q} as vector values.\n\
 @seealso{sparse, lu}\n\
 @end deftypefn")
 {
@@ -113,235 +113,252 @@ Given the string argument 'vector', @dfn{luinc} returns the values of @var{p}\n\
       bool vecout;
 
       if (args(1).is_string ())
-	{
-	  if (args(1).string_value () == "0")
-	    zero_level = true;
-	  else
-	    error ("luinc: unrecognized string argument");
-	}
+        {
+          if (args(1).string_value () == "0")
+            zero_level = true;
+          else
+            error ("luinc: unrecognized string argument");
+        }
       else if (args(1).is_map ())
-	{
-	  Octave_map map = args(1).map_value ();
+        {
+          octave_scalar_map map = args(1).scalar_map_value ();
 
-	  if (map.contains ("droptol"))
-	    droptol = map.contents ("droptol")(0).double_value ();
+          if (! error_state)
+            {
+              octave_value tmp;
 
-	  if (map.contains ("milu"))
-	    {
-	      double tmp = map.contents ("milu")(0).double_value ();
+              tmp = map.getfield ("droptol");
+              if (tmp.is_defined ())
+                droptol = tmp.double_value ();
 
-	      milu = (tmp == 0. ? false : true);
-	    }
+              tmp = map.getfield ("milu");
+              if (tmp.is_defined ())
+                {
+                  double val = tmp.double_value ();
 
-	  if (map.contains ("udiag"))
-	    {
-	      double tmp = map.contents ("udiag")(0).double_value ();
+                  milu = (val == 0. ? false : true);
+                }
 
-	      udiag = (tmp == 0. ? false : true);
-	    }
+              tmp = map.getfield ("udiag");
+              if (tmp.is_defined ())
+                {
+                  double val = tmp.double_value ();
 
-	  if (map.contains ("thresh"))
-	    {
-	      thresh = map.contents ("thresh")(0).matrix_value ();
+                  udiag = (val == 0. ? false : true);
+                }
 
-	      if (thresh.nelem () == 1)
-		{
-		  thresh.resize(1,2);
-		  thresh(1) = thresh(0);
-		}
-	      else if (thresh.nelem () != 2)
-		error ("chol: expecting 2 element vector for thresh");
-	    }
-	}
+              tmp = map.getfield ("thresh");
+              if (tmp.is_defined ())
+                {
+                  thresh = tmp.matrix_value ();
+
+                  if (thresh.nelem () == 1)
+                    {
+                      thresh.resize(1,2);
+                      thresh(1) = thresh(0);
+                    }
+                  else if (thresh.nelem () != 2)
+                    {
+                      error ("luinc: expecting 2-element vector for thresh");
+                      return retval;
+                    }
+                }
+            }
+          else
+            {
+              error ("luinc: OPTS must be a scalar structure");
+              return retval;
+            }
+        }
       else
-	droptol = args(1).double_value ();
+        droptol = args(1).double_value ();
 
       if (nargin == 3)
-	{
-	  std::string tmp = args(2).string_value ();
+        {
+          std::string tmp = args(2).string_value ();
 
-	  if (! error_state )
-	    {
-	      if (tmp.compare ("vector") == 0)
-		vecout = true;
-	      else
-		error ("luinc: unrecognized string argument");
-	    }
-	}
+          if (! error_state )
+            {
+              if (tmp.compare ("vector") == 0)
+                vecout = true;
+              else
+                error ("luinc: unrecognized string argument");
+            }
+        }
 
       // FIXME Add code for zero-level factorization
       if (zero_level)
-	error ("luinc: zero-level factorization not implemented");
+        error ("luinc: zero-level factorization not implemented");
 
       if (!error_state)
-	{
-	  if (args(0).type_name () == "sparse matrix") 
-	    {
-	      SparseMatrix sm = args(0).sparse_matrix_value ();
-	      octave_idx_type sm_nr = sm.rows ();
-	      octave_idx_type sm_nc = sm.cols ();
-	      ColumnVector Qinit (sm_nc);
+        {
+          if (args(0).type_name () == "sparse matrix")
+            {
+              SparseMatrix sm = args(0).sparse_matrix_value ();
+              octave_idx_type sm_nr = sm.rows ();
+              octave_idx_type sm_nc = sm.cols ();
+              ColumnVector Qinit (sm_nc);
 
-	      for (octave_idx_type i = 0; i < sm_nc; i++)
-		Qinit (i) = i;
+              for (octave_idx_type i = 0; i < sm_nc; i++)
+                Qinit (i) = i;
 
-	      if (! error_state)
-		{
-		  switch (nargout)
-		    {
-		    case 0:
-		    case 1:
-		    case 2:
-		      {
-			SparseLU fact (sm, Qinit, thresh, false, true, droptol,
-				       milu, udiag);
+              if (! error_state)
+                {
+                  switch (nargout)
+                    {
+                    case 0:
+                    case 1:
+                    case 2:
+                      {
+                        SparseLU fact (sm, Qinit, thresh, false, true, droptol,
+                                       milu, udiag);
 
-			if (! error_state)
-			  {
-			    SparseMatrix P = fact.Pr ();
-			    SparseMatrix L = P.transpose () * fact.L ();
-			    retval(1) = octave_value (fact.U (),
-						      MatrixType (MatrixType::Upper));
-			    retval(0) = octave_value (L, MatrixType 
-						      (MatrixType::Permuted_Lower, 
-						       sm_nr, fact.row_perm ()));
-			  }
-		      }
-		      break;
+                        if (! error_state)
+                          {
+                            SparseMatrix P = fact.Pr ();
+                            SparseMatrix L = P.transpose () * fact.L ();
+                            retval(1) = octave_value (fact.U (),
+                                                      MatrixType (MatrixType::Upper));
+                            retval(0) = octave_value (L, MatrixType
+                                                      (MatrixType::Permuted_Lower,
+                                                       sm_nr, fact.row_perm ()));
+                          }
+                      }
+                      break;
 
-		    case 3:
-		      {
-			SparseLU fact (sm, Qinit, thresh, false, true, droptol,
-				       milu, udiag);
+                    case 3:
+                      {
+                        SparseLU fact (sm, Qinit, thresh, false, true, droptol,
+                                       milu, udiag);
 
-			if (! error_state)
-			  {
-			    if (vecout)
-			      retval(2) = fact.Pr_vec ();
-			    else
-			      retval(2) = fact.Pr ();
-			    retval(1) = octave_value (fact.U (),
-						      MatrixType (MatrixType::Upper));
-			    retval(0) = octave_value (fact.L (),
-						      MatrixType (MatrixType::Lower));
-			  }
-		      }
-		      break;
+                        if (! error_state)
+                          {
+                            if (vecout)
+                              retval(2) = fact.Pr_vec ();
+                            else
+                              retval(2) = fact.Pr ();
+                            retval(1) = octave_value (fact.U (),
+                                                      MatrixType (MatrixType::Upper));
+                            retval(0) = octave_value (fact.L (),
+                                                      MatrixType (MatrixType::Lower));
+                          }
+                      }
+                      break;
 
-		    case 4:
-		    default:
-		      {
-			SparseLU fact (sm, Qinit, thresh, false, false, droptol,
-				       milu, udiag);
+                    case 4:
+                    default:
+                      {
+                        SparseLU fact (sm, Qinit, thresh, false, false, droptol,
+                                       milu, udiag);
 
-			if (! error_state)
-			  {
-			    if (vecout)
-			      {
-				retval(3) = fact.Pc_vec ();
-				retval(2) = fact.Pr_vec ();
-			      }
-			    else
-			      {
-				retval(3) = fact.Pc ();
-				retval(2) = fact.Pr ();
-			      }
-			    retval(1) = octave_value (fact.U (),
-						      MatrixType (MatrixType::Upper));
-			    retval(0) = octave_value (fact.L (),
-						      MatrixType (MatrixType::Lower));
-			  }
-		      }
-		      break;
-		    }
-		}
-	    }
-	  else if (args(0).type_name () == "sparse complex matrix") 
-	    {
-	      SparseComplexMatrix sm = 
-		args(0).sparse_complex_matrix_value ();
-	      octave_idx_type sm_nr = sm.rows ();
-	      octave_idx_type sm_nc = sm.cols ();
-	      ColumnVector Qinit (sm_nc);
+                        if (! error_state)
+                          {
+                            if (vecout)
+                              {
+                                retval(3) = fact.Pc_vec ();
+                                retval(2) = fact.Pr_vec ();
+                              }
+                            else
+                              {
+                                retval(3) = fact.Pc ();
+                                retval(2) = fact.Pr ();
+                              }
+                            retval(1) = octave_value (fact.U (),
+                                                      MatrixType (MatrixType::Upper));
+                            retval(0) = octave_value (fact.L (),
+                                                      MatrixType (MatrixType::Lower));
+                          }
+                      }
+                      break;
+                    }
+                }
+            }
+          else if (args(0).type_name () == "sparse complex matrix")
+            {
+              SparseComplexMatrix sm =
+                args(0).sparse_complex_matrix_value ();
+              octave_idx_type sm_nr = sm.rows ();
+              octave_idx_type sm_nc = sm.cols ();
+              ColumnVector Qinit (sm_nc);
 
-	      for (octave_idx_type i = 0; i < sm_nc; i++)
-		Qinit (i) = i;
+              for (octave_idx_type i = 0; i < sm_nc; i++)
+                Qinit (i) = i;
 
-	      if (! error_state)
-		{
-		  switch (nargout)
-		    {
-		    case 0:
-		    case 1:
-		    case 2:
-		      {
-			SparseComplexLU fact (sm, Qinit, thresh, false, true, 
-					      droptol, milu, udiag);
+              if (! error_state)
+                {
+                  switch (nargout)
+                    {
+                    case 0:
+                    case 1:
+                    case 2:
+                      {
+                        SparseComplexLU fact (sm, Qinit, thresh, false, true,
+                                              droptol, milu, udiag);
 
 
-			if (! error_state)
-			  {
-			    SparseMatrix P = fact.Pr ();
-			    SparseComplexMatrix L = P.transpose () * fact.L ();
-			    retval(1) = octave_value (fact.U (),
-						      MatrixType (MatrixType::Upper));
-			    retval(0) = octave_value (L, MatrixType 
-						      (MatrixType::Permuted_Lower, 
-						       sm_nr, fact.row_perm ()));
-			  }
-		      }
-		      break;
+                        if (! error_state)
+                          {
+                            SparseMatrix P = fact.Pr ();
+                            SparseComplexMatrix L = P.transpose () * fact.L ();
+                            retval(1) = octave_value (fact.U (),
+                                                      MatrixType (MatrixType::Upper));
+                            retval(0) = octave_value (L, MatrixType
+                                                      (MatrixType::Permuted_Lower,
+                                                       sm_nr, fact.row_perm ()));
+                          }
+                      }
+                      break;
 
-		    case 3:
-		      {
-			SparseComplexLU fact (sm, Qinit, thresh, false, true,
-					      droptol, milu, udiag);
+                    case 3:
+                      {
+                        SparseComplexLU fact (sm, Qinit, thresh, false, true,
+                                              droptol, milu, udiag);
 
-			if (! error_state)
-			  {
-			    if (vecout)
-			      retval(2) = fact.Pr_vec ();
-			    else
-			      retval(2) = fact.Pr ();
-			    retval(1) = octave_value (fact.U (),
-						      MatrixType (MatrixType::Upper));
-			    retval(0) = octave_value (fact.L (),
-						      MatrixType (MatrixType::Lower));
-			  }
-		      }
-		      break;
+                        if (! error_state)
+                          {
+                            if (vecout)
+                              retval(2) = fact.Pr_vec ();
+                            else
+                              retval(2) = fact.Pr ();
+                            retval(1) = octave_value (fact.U (),
+                                                      MatrixType (MatrixType::Upper));
+                            retval(0) = octave_value (fact.L (),
+                                                      MatrixType (MatrixType::Lower));
+                          }
+                      }
+                      break;
 
-		    case 4:
-		    default:
-		      {
-			SparseComplexLU fact (sm, Qinit, thresh, false, false,
-					      droptol, milu, udiag);
+                    case 4:
+                    default:
+                      {
+                        SparseComplexLU fact (sm, Qinit, thresh, false, false,
+                                              droptol, milu, udiag);
 
-			if (! error_state)
-			  {
-			    if (vecout)
-			      {
-				retval(3) = fact.Pc_vec ();
-				retval(2) = fact.Pr_vec ();
-			      }
-			    else
-			      {
-				retval(3) = fact.Pc ();
-				retval(2) = fact.Pr ();
-			      }
-			    retval(1) = octave_value (fact.U (),
-						      MatrixType (MatrixType::Upper));
-			    retval(0) = octave_value (fact.L (),
-						      MatrixType (MatrixType::Lower));
-			  }
-		      }
-		      break;
-		    }
-		}
-	    }
-	  else
-	    error ("luinc: first argument must be sparse");
-	}
+                        if (! error_state)
+                          {
+                            if (vecout)
+                              {
+                                retval(3) = fact.Pc_vec ();
+                                retval(2) = fact.Pr_vec ();
+                              }
+                            else
+                              {
+                                retval(3) = fact.Pc ();
+                                retval(2) = fact.Pr ();
+                              }
+                            retval(1) = octave_value (fact.U (),
+                                                      MatrixType (MatrixType::Upper));
+                            retval(0) = octave_value (fact.L (),
+                                                      MatrixType (MatrixType::Lower));
+                          }
+                      }
+                      break;
+                    }
+                }
+            }
+          else
+            error ("luinc: matrix A must be sparse");
+        }
     }
 
   return retval;
@@ -365,10 +382,4 @@ Given the string argument 'vector', @dfn{luinc} returns the values of @var{p}\n\
 %! [l,u]=luinc(a,opts);
 %! assert(l*u, sparse([1i,2,0,0;0,1,2,0;0,0,3,0;0,0,0,1]),1e-10);
 
-*/
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
 */

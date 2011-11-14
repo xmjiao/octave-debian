@@ -1,4 +1,4 @@
-## Copyright (C) 1999, 2000, 2001, 2006, 2007, 2009 Paul Kienzle
+## Copyright (C) 1999-2011 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -19,9 +19,11 @@
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} magic (@var{n})
 ##
-## Create an @var{n}-by-@var{n} magic square.  Note that @code{magic
-## (@var{2})} is undefined since there is no 2-by-2 magic square.
+## Create an @var{n}-by-@var{n} magic square.  A magic square is an arrangement
+## of the integers @code{1:n^2} such that the row sums, column sums, and
+## diagonal sums are all equal to the same value.
 ##
+## Note: @var{n} must be greater than 2 for the magic square to exist.
 ## @end deftypefn
 
 function A = magic(n)
@@ -31,7 +33,7 @@ function A = magic(n)
   endif
 
   if (n != floor (n) || n < 0 || n == 2)
-    error ("magic: n must be an positive integer not equal to 2");
+    error ("magic: N must be an positive integer not equal to 2");
   endif
 
   if (n == 0)
@@ -71,7 +73,7 @@ function A = magic(n)
     A([I,I+m],1) = A([I+m,I],1);
     I = k + 1;
     A([I,I+m],I) = A([I+m,I],I);
-  
+
   endif
 
 endfunction

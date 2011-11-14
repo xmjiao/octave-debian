@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 2000, 2001, 2005, 2006, 2007, 2008 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -28,18 +28,13 @@ along with Octave; see the file COPYING.  If not, see
 #include <string>
 #include <vector>
 
-#ifdef HAVE_UNISTD_H
-#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#endif
 #include <unistd.h>
-#endif
 
-#ifdef HAVE_FCNTL_H
 #include <fcntl.h>
-#endif
 
 #if defined (__WIN32__) && ! defined (__CYGWIN__)
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #endif
 
@@ -55,20 +50,17 @@ octave_getcwd (void)
 {
   std::string retval;
 
-  char buf[MAXPATHLEN];
+  // Using the gnulib getcwd module ensures that we have a getcwd that
+  // will allocate a buffer as large as necessary if buf and size are
+  // both 0.
 
-  char *tmp = 0;
-
-#if defined (__EMX__)
-  tmp = _getcwd2 (buf, MAXPATHLEN);
-#elif defined (HAVE_GETCWD)
-  tmp = getcwd (buf, MAXPATHLEN);
-#elif defined (HAVE_GETWD)
-  tmp = getwd (buf);
-#endif
+  char *tmp = gnulib::getcwd (0, 0);
 
   if (tmp)
-    retval = tmp;
+    {
+      retval = tmp;
+      free (tmp);
+    }
   else
     (*current_liboctave_error_handler) ("unable to find current directory");
 
@@ -80,33 +72,12 @@ octave_chdir (const std::string& path_arg)
 {
   std::string path = file_ops::tilde_expand (path_arg);
 
-#if defined (__EMX__)
-  int retval = -1;
-
-  char *tmp_path = strsave (path.c_str ());
-
-  if (path.length () == 2 && path[1] == ':')
-    {
-      char *upper_case_dir_name = strupr (tmp_path);
-      _chdrive (upper_case_dir_name[0]);
-      if (_getdrive () == upper_case_dir_name[0])
-	retval = _chdir2 ("/");
-    }
-  else
-    retval = _chdir2 (tmp_path);
-
-  delete [] tmp_path;
-
-  return retval;
-#else
-
 #if defined (__WIN32__) && ! defined (__CYGWIN__)
   if (path.length() == 2 && path[1] == ':')
     path += "\\";
 #endif
 
   return chdir (path.c_str ());
-#endif
 }
 
 #if defined (__WIN32__) && ! defined (__CYGWIN__)
@@ -201,7 +172,10 @@ opendir (const char *name)
   d->current = buffer;
   d->hnd = FindFirstFile (buffer, &(d->fd));
   if (d->hnd == INVALID_HANDLE_VALUE)
-    return 0;
+    {
+      free (d);
+      return 0;
+    }
   d->dirty = 1;
   return d;
 }
@@ -229,7 +203,7 @@ readdir (DIR *d)
   if (! d->dirty)
     {
       if (! FindNextFile(d->hnd, &(d->fd)))
-	return 0;
+        return 0;
     }
   d->d.d_name = d->fd.cFileName;
   d->dirty = 0;
@@ -237,9 +211,3 @@ readdir (DIR *d)
 }
 
 #endif
- 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

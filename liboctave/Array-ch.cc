@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1995, 1996, 1997, 1998, 2001, 2003, 2004, 2005, 2006,
-              2007, 2008, 2009 John W. Eaton
+Copyright (C) 1995-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -29,30 +28,17 @@ along with Octave; see the file COPYING.  If not, see
 
 #include "Array.h"
 #include "Array.cc"
+#define INLINE_ASCENDING_SORT
+#define INLINE_DESCENDING_SORT
 #include "oct-sort.cc"
 
 INSTANTIATE_ARRAY_SORT (char);
 
 INSTANTIATE_ARRAY (char, OCTAVE_API);
 
-#include "Array2.h"
-
-template class OCTAVE_API Array2<char>;
-
-#include "ArrayN.h"
-#include "ArrayN.cc"
-
-template class OCTAVE_API ArrayN<char>;
-
-template OCTAVE_API std::ostream& operator << (std::ostream&, const ArrayN<char>&);
+template OCTAVE_API std::ostream& operator << (std::ostream&, const Array<char>&);
 
 #include "DiagArray2.h"
 #include "DiagArray2.cc"
 
 template class OCTAVE_API DiagArray2<char>;
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

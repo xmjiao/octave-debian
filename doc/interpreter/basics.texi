@@ -1,7 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.
 
-@c Copyright (C) 1996, 1997, 1999, 2000, 2001, 2002, 2003, 2005, 2006,
-@c               2007, 2008, 2009 John W. Eaton
+@c Copyright (C) 1996-2011 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -82,7 +81,7 @@ probably only useful if you are actually trying to debug the parser.
 @cindex @code{--doc-cache-file @var{filename}}
 Specify the name of the doc cache file to use.  The value of @var{filename}
 specified on the command line will override any value of
-@w{@code{OCTAVE_DOC_CACHE_FILE}} found in the environment, but not any commands
+@w{@env{OCTAVE_DOC_CACHE_FILE}} found in the environment, but not any commands
 in the system or user startup files that use the @code{doc_cache_file}
 function.
 
@@ -93,16 +92,16 @@ function.
 Echo commands as they are executed.
 
 @item --eval @var{code}
-Evaluate @var{code} and exit when finished unless @code{--persist} is also
+Evaluate @var{code} and exit when finished unless @option{--persist} is also
 specified.
 
 @item --exec-path @var{path}
 @cindex @code{--exec-path @var{path}}
 Specify the path to search for programs to run.  The value of @var{path}
 specified on the command line will override any value of
-@w{@code{OCTAVE_EXEC_PATH}} found in the environment, but not any commands
+@w{@env{OCTAVE_EXEC_PATH}} found in the environment, but not any commands
 in the system or user startup files that set the built-in variable
-@w{@code{EXEC_PATH}}.
+@w{@env{EXEC_PATH}}.
 
 @item  --help
 @itemx -h
@@ -116,15 +115,15 @@ Print short help message and exit.
 @cindex @code{--image-path @var{path}}
 Add path to the head of the search path for images.  The value of 
 @var{path} specified on the command line will override any value of 
-@w{@code{OCTAVE_IMAGE_PATH}} found in the environment, but not any commands 
+@w{@env{OCTAVE_IMAGE_PATH}} found in the environment, but not any commands 
 in the system or user startup files that set the built-in variable 
-@w{@code{IMAGE_PATH}}.
+@w{@env{IMAGE_PATH}}.
 
 @item --info-file @var{filename}
 @cindex @code{--info-file @var{filename}}
 Specify the name of the info file to use.  The value of @var{filename}
 specified on the command line will override any value of
-@w{@code{OCTAVE_INFO_FILE}} found in the environment, but not any commands
+@w{@env{OCTAVE_INFO_FILE}} found in the environment, but not any commands
 in the system or user startup files that use the @code{info_file}
 function.
 
@@ -132,7 +131,7 @@ function.
 @cindex @code{--info-program @var{program}}
 Specify the name of the info program to use.  The value of @var{program}
 specified on the command line will override any value of
-@w{@code{OCTAVE_INFO_PROGRAM}} found in the environment, but not any
+@w{@env{OCTAVE_INFO_PROGRAM}} found in the environment, but not any
 commands in the system or user startup files that use the
 @code{info_program} function.
 
@@ -176,8 +175,8 @@ Don't read the site-wide @file{octaverc} initialization files.
 @cindex @code{--norc}
 @cindex @code{-f}
 Don't read any of the system or user initialization files at startup.
-This is equivalent to using both of the options @code{--no-init-file}
-and @code{--no-site-file}.
+This is equivalent to using both of the options @option{--no-init-file}
+and @option{--no-site-file}.
 
 @item  --path @var{path}
 @itemx -p @var{path}
@@ -185,13 +184,13 @@ and @code{--no-site-file}.
 @cindex @code{-p @var{path}}
 Add path to the head of the search path for function files.  The 
 value of @var{path} specified on the command line will override any value
-of @w{@code{OCTAVE_PATH}} found in the environment, but not any commands in the
+of @w{@env{OCTAVE_PATH}} found in the environment, but not any commands in the
 system or user startup files that set the internal load path through one
 of the path functions.
 
 @item --persist
 @cindex @code{--persist}
-Go to interactive mode after @code{--eval} or reading from a file
+Go to interactive mode after @option{--eval} or reading from a file
 named on the command line.
 
 @item  --silent
@@ -211,24 +210,27 @@ user preferences to the following values
 
 @example
 @group
-PS1                     = ">> "
-PS2                     = ""
-beep_on_error           = true
-confirm_recursive_rmdir = false
-crash_dumps_octave_core = false
-default_save_options    = "-mat-binary"
-fixed_point_format      = true
-history_timestamp_format_string
-                        = "%%-- %D %I:%M %p --%%"
-page_screen_output      = false
-print_empty_dimensions  = false
+PS1                             = ">> "
+PS2                             = ""
+allow_noninteger_range_as_index = true
+beep_on_error                   = true
+confirm_recursive_rmdir         = false
+crash_dumps_octave_core         = false
+default_save_options            = "-mat-binary"
+do_braindead_shortcircuit_evaluation = true
+fixed_point_format              = true
+history_timestamp_format_string = "%%-- %D %I:%M %p --%%"
+page_screen_output              = false
+print_empty_dimensions          = false
 @end group
 @end example
 
 @noindent
 and disable the following warnings
+
 @example
 @group
+Octave:abbreviated-property-match
 Octave:fopen-file-in-path
 Octave:function-name-clash
 Octave:load-file-in-path
@@ -249,14 +251,14 @@ Print the program version number and exit.
 
 @item @var{file}
 Execute commands from @var{file}.  Exit when done unless
-@code{--persist} is also specified.
+@option{--persist} is also specified.
 @end table
 
 Octave also includes several functions which return information 
 about the command line, including the number of arguments and all of the
 options.
 
-@c octave.cc
+@c argv src/octave.cc
 @anchor{doc-argv}
 @deftypefn {Built-in Function} {} argv ()
 Return the command line arguments passed to Octave.  For example,
@@ -268,7 +270,7 @@ octave --no-line-editing --silent
 
 @noindent
 @code{argv} would return a cell array of strings with the elements
-@code{--no-line-editing} and @code{--silent}.
+@option{--no-line-editing} and @option{--silent}.
 
 If you write an executable Octave script, @code{argv} will return the
 list of arguments passed to the script.  @xref{Executable Octave Programs},
@@ -276,7 +278,7 @@ for an example of how to create an executable Octave script.
 @end deftypefn
 
 
-@c octave.cc
+@c program_name src/octave.cc
 @anchor{doc-program_name}
 @deftypefn {Built-in Function} {} program_name ()
 Return the last component of the value returned by
@@ -285,9 +287,9 @@ Return the last component of the value returned by
 @end deftypefn
 
 
-@c octave.cc
+@c program_invocation_name src/octave.cc
 @anchor{doc-program_invocation_name}
-@deftypefn {Built-in Function} program_invocation_name ()
+@deftypefn {Built-in Function} {} program_invocation_name ()
 Return the name that was typed at the shell prompt to run Octave.
 
 If executing a script from the command line (e.g., @code{octave foo.m})
@@ -332,23 +334,23 @@ including function definitions.
 @item @var{octave-home}/share/octave/site/m/startup/octaverc
 @cindex site startup file
 where @var{octave-home} is the directory in which Octave is installed
-(the default is @file{@value{OCTAVEHOME}}).
+(the default is @file{/usr/local}).
 This file is provided so that changes to the default Octave environment 
 can be made globally for all users at your site for all versions of Octave
 you have installed.  Care should be taken when making changes to this file 
 since all users of Octave at your site will be affected.  The default file 
-may be overridden by the environment variable @w{@code{OCTAVE_SITE_INITFILE}}.
+may be overridden by the environment variable @w{@env{OCTAVE_SITE_INITFILE}}.
 
 @item @var{octave-home}/share/octave/@var{version}/m/startup/octaverc
 @cindex version startup file
 where @var{octave-home} is the directory in which Octave is
-installed (the default is @file{@value{OCTAVEHOME}}), and @var{version}
+installed (the default is @file{/usr/local}), and @var{version}
 is the version number of Octave.  This file is provided so that changes
 to the default Octave environment can be made globally for all users of
 a particular version of Octave.  Care should be taken when making
 changes to this file since all users of Octave at your site will be
 affected.  The default file may be overridden by the environment variable
-@w{@code{OCTAVE_VERSION_INITFILE}}.
+@w{@env{OCTAVE_VERSION_INITFILE}}.
 
 @item ~/.octaverc
 @cindex personal startup file
@@ -370,17 +372,30 @@ If you start Octave in your home directory, commands from the file
 @end table
 
 A message will be displayed as each of the startup files is read if you
-invoke Octave with the @code{--verbose} option but without the
-@code{--silent} option.
+invoke Octave with the @option{--verbose} option but without the
+@option{--silent} option.
+
+The @code{dump_prefs} function is useful for determining what customizations
+to Octave are possible and which are in effect.
+
+@c dump_prefs scripts/miscellaneous/dump_prefs.m
+@anchor{doc-dump_prefs}
+@deftypefn  {Function File} {} dump_prefs ()
+@deftypefnx {Function File} {} dump_prefs (@var{fid})
+Dump all of the current user preference variables in a format that can be
+parsed by Octave later.  @var{fid} is a file descriptor as returned by
+@code{fopen}.  If @var{file} is omitted, the listing is printed to stdout.
+@end deftypefn
+
 
 @node Quitting Octave
 @section Quitting Octave
 @cindex exiting octave
 @cindex quitting octave
 
-@c toplev.cc
+@c quit src/toplev.cc
 @anchor{doc-quit}
-@deftypefn {Built-in Function} {} exit (@var{status})
+@deftypefn  {Built-in Function} {} exit (@var{status})
 @deftypefnx {Built-in Function} {} quit (@var{status})
 Exit the current Octave session.  If the optional integer value
 @var{status} is supplied, pass that value to the operating system as the
@@ -388,9 +403,9 @@ Octave's exit status.  The default value is zero.
 @end deftypefn
 
 
-@c toplev.cc
+@c atexit src/toplev.cc
 @anchor{doc-atexit}
-@deftypefn {Built-in Function} {} atexit (@var{fcn})
+@deftypefn  {Built-in Function} {} atexit (@var{fcn})
 @deftypefnx {Built-in Function} {} atexit (@var{fcn}, @var{flag})
 Register a function to be called when Octave exits.  For example,
 
@@ -440,15 +455,20 @@ reading the manual and the documentation strings for user-supplied
 functions and variables.  @xref{Function Files}, for more information
 about how to document the functions you write.
 
-@c ./help/help.m
+@c help scripts/help/help.m
 @anchor{doc-help}
-@deftypefn {Command} help @var{name}
-Display the help text for @var{name}.
-If invoked without any arguments, @code{help} prints a list
-of all the available operators and functions.
+@deftypefn  {Command} {} help @var{name}
+@deftypefnx {Command} {} help @code{--list}
+Display the help text for @var{name}.   For example, the command
+@kbd{help help} prints a short message describing the @code{help}
+command.
 
-For example, the command @kbd{help help} prints a short message
-describing the @code{help} command.
+Given the single argument @code{--list}, list all operators,
+keywords, built-in functions, and loadable functions available
+in the current session of Octave.
+
+If invoked without any arguments, @code{help} display instructions
+on how to access help from the command line.
 
 The help command can give you information about operators, but not the
 comma and semicolons that are used as command separators.  To get help
@@ -457,9 +477,9 @@ for those, you must type @kbd{help comma} or @kbd{help semicolon}.
 @end deftypefn
 
 
-@c ./help/doc.m
+@c doc scripts/help/doc.m
 @anchor{doc-doc}
-@deftypefn {Command} doc @var{function_name}
+@deftypefn {Command} {} doc @var{function_name}
 Display documentation for the function @var{function_name}
 directly from an on-line version of
 the printed manual, using the GNU Info browser.  If invoked without
@@ -474,28 +494,28 @@ using the command @kbd{C-h}.
 @end deftypefn
 
 
-@c ./help/lookfor.m
+@c lookfor scripts/help/lookfor.m
 @anchor{doc-lookfor}
-@deftypefn {Command} lookfor @var{str}
-@deftypefnx {Command} lookfor -all @var{str}
-@deftypefnx {Function} {[@var{func}, @var{helpstring}] =} lookfor (@var{str})
-@deftypefnx {Function} {[@var{func}, @var{helpstring}] =} lookfor ('-all', @var{str})
-Search for the string @var{str} in all functions found in the current 
+@deftypefn  {Command} {} lookfor @var{str}
+@deftypefnx {Command} {} lookfor -all @var{str}
+@deftypefnx {Function File} {[@var{func}, @var{helpstring}] =} lookfor (@var{str})
+@deftypefnx {Function File} {[@var{func}, @var{helpstring}] =} lookfor ('-all', @var{str})
+Search for the string @var{str} in all functions found in the current
 function search path.  By default, @code{lookfor} searches for @var{str}
 in the first sentence of the help string of each function found.  The entire
-help text of each function can be searched if the '-all' argument is 
+help text of each function can be searched if the '-all' argument is
 supplied.  All searches are case insensitive.
 
-Called with no output arguments, @code{lookfor} prints the list of 
-matching functions to the terminal.  Otherwise, the output arguments 
-@var{func} and @var{helpstring} define the matching functions and the 
+Called with no output arguments, @code{lookfor} prints the list of
+matching functions to the terminal.  Otherwise, the output arguments
+@var{func} and @var{helpstring} define the matching functions and the
 first sentence of each of their help strings.
 
 The ability of @code{lookfor} to correctly identify the first
 sentence of the help text is dependent on the format of the
 function's help.  All Octave core functions are correctly
 formatted, but the same can not be guaranteed for external packages and
-user-supplied functions.  Therefore, the use of the '-all' argument may 
+user-supplied functions.  Therefore, the use of the '-all' argument may
 be necessary to find related functions that are not a part of Octave.
 @seealso{@ref{doc-help,,help}, @ref{doc-doc,,doc}, @ref{doc-which,,which}}
 @end deftypefn
@@ -504,21 +524,21 @@ be necessary to find related functions that are not a part of Octave.
 To see what is new in the current release of Octave, use the @code{news}
 function.
 
-@c ./miscellaneous/news.m
+@c news scripts/miscellaneous/news.m
 @anchor{doc-news}
 @deftypefn {Function File} {} news ()
 Display the current NEWS file for Octave.
 @end deftypefn
 
 
-@c ./miscellaneous/info.m
+@c info scripts/miscellaneous/info.m
 @anchor{doc-info}
 @deftypefn {Function File} {} info ()
 Display contact information for the GNU Octave community.
 @end deftypefn
 
 
-@c toplev.cc
+@c warranty src/toplev.cc
 @anchor{doc-warranty}
 @deftypefn {Built-in Function} {} warranty ()
 Describe the conditions for copying and distributing Octave.
@@ -529,24 +549,24 @@ The following functions can be used to change which programs are used
 for displaying the documentation, and where the documentation can be
 found.
 
-@c help.cc
+@c info_file src/help.cc
 @anchor{doc-info_file}
-@deftypefn {Built-in Function} {@var{val} =} info_file ()
+@deftypefn  {Built-in Function} {@var{val} =} info_file ()
 @deftypefnx {Built-in Function} {@var{old_val} =} info_file (@var{new_val})
 Query or set the internal variable that specifies the name of the
 Octave info file.  The default value is
 @file{@var{octave-home}/info/octave.info}, in
 which @var{octave-home} is the root directory of the Octave installation.
 The default value may be overridden by the environment variable
-@w{@code{OCTAVE_INFO_FILE}}, or the command line argument
+@w{@env{OCTAVE_INFO_FILE}}, or the command line argument
 @samp{--info-file NAME}.
 @seealso{@ref{doc-info_program,,info_program}, @ref{doc-doc,,doc}, @ref{doc-help,,help}, @ref{doc-makeinfo_program,,makeinfo_program}}
 @end deftypefn
 
 
-@c help.cc
+@c info_program src/help.cc
 @anchor{doc-info_program}
-@deftypefn {Built-in Function} {@var{val} =} info_program ()
+@deftypefn  {Built-in Function} {@var{val} =} info_program ()
 @deftypefnx {Built-in Function} {@var{old_val} =} info_program (@var{new_val})
 Query or set the internal variable that specifies the name of the
 info program to run.  The default value is
@@ -555,15 +575,15 @@ in which @var{octave-home} is the root directory of the Octave installation,
 @var{version} is the Octave version number, and @var{arch}
 is the system type (for example, @code{i686-pc-linux-gnu}).  The
 default value may be overridden by the environment variable
-@w{@code{OCTAVE_INFO_PROGRAM}}, or the command line argument
+@w{@env{OCTAVE_INFO_PROGRAM}}, or the command line argument
 @samp{--info-program NAME}.
 @seealso{@ref{doc-info_file,,info_file}, @ref{doc-doc,,doc}, @ref{doc-help,,help}, @ref{doc-makeinfo_program,,makeinfo_program}}
 @end deftypefn
 
 
-@c help.cc
+@c makeinfo_program src/help.cc
 @anchor{doc-makeinfo_program}
-@deftypefn {Built-in Function} {@var{val} =} makeinfo_program ()
+@deftypefn  {Built-in Function} {@var{val} =} makeinfo_program ()
 @deftypefnx {Built-in Function} {@var{old_val} =} makeinfo_program (@var{new_val})
 Query or set the internal variable that specifies the name of the
 program that Octave runs to format help text containing
@@ -572,9 +592,9 @@ Texinfo markup commands.  The default value is @code{makeinfo}.
 @end deftypefn
 
 
-@c help.cc
+@c doc_cache_file src/help.cc
 @anchor{doc-doc_cache_file}
-@deftypefn {Built-in Function} {@var{val} =} doc_cache_file ()
+@deftypefn  {Built-in Function} {@var{val} =} doc_cache_file ()
 @deftypefnx {Built-in Function} {@var{old_val} =} doc_cache_file (@var{new_val})
 Query or set the internal variable that specifies the name of the
 Octave documentation cache file.  A cache file significantly improves
@@ -583,19 +603,88 @@ the performance of the @code{lookfor} command.  The default value is
 in which @var{octave-home} is the root directory of the Octave installation,
 and @var{version} is the Octave version number.
 The default value may be overridden by the environment variable
-@w{@code{OCTAVE_DOC_CACHE_FILE}}, or the command line argument
+@w{@env{OCTAVE_DOC_CACHE_FILE}}, or the command line argument
 @samp{--doc-cache-file NAME}.
 @seealso{@ref{doc-lookfor,,lookfor}, @ref{doc-info_program,,info_program}, @ref{doc-doc,,doc}, @ref{doc-help,,help}, @ref{doc-makeinfo_program,,makeinfo_program}}
 @end deftypefn
 
 
-@c help.cc
+@c suppress_verbose_help_message src/help.cc
 @anchor{doc-suppress_verbose_help_message}
-@deftypefn {Built-in Function} {@var{val} =} suppress_verbose_help_message ()
+@deftypefn  {Built-in Function} {@var{val} =} suppress_verbose_help_message ()
 @deftypefnx {Built-in Function} {@var{old_val} =} suppress_verbose_help_message (@var{new_val})
 Query or set the internal variable that controls whether Octave
 will add additional help information to the end of the output from
 the @code{help} command and usage messages for built-in commands.
+@end deftypefn
+
+
+The following functions are principally used internally by Octave for
+generating the documentation.  They are documented here for completeness
+and because they may occasionally be useful for users.
+
+@c gen_doc_cache scripts/help/gen_doc_cache.m
+@anchor{doc-gen_doc_cache}
+@deftypefn {Function File} {} gen_doc_cache (@var{out_file}, @var{directory})
+Generate documentation caches for all functions in a given directory.
+
+A documentation cache is generated for all functions in @var{directory}.
+The
+resulting cache is saved in the file @var{out_file}.
+The cache is used to speed up @code{lookfor}.
+
+If no directory is given (or it is the empty matrix), a cache for builtin
+operators, etc. is generated.
+
+@seealso{@ref{doc-lookfor,,lookfor}, @ref{doc-path,,path}}
+@end deftypefn
+
+
+@c get_help_text src/help.cc
+@anchor{doc-get_help_text}
+@deftypefn {Loadable Function} {[@var{text}, @var{format}] =} get_help_text (@var{name})
+Return the raw help text of function @var{name}.
+
+The raw help text is returned in @var{text} and the format in @var{format}
+The format is a string which is one of @t{"texinfo"}, @t{"html"}, or
+@t{"plain text"}.
+@end deftypefn
+
+
+@c get_help_text_from_file src/help.cc
+@anchor{doc-get_help_text_from_file}
+@deftypefn {Loadable Function} {[@var{text}, @var{format}] =} get_help_text_from_file (@var{fname})
+Return the raw help text from the file @var{fname}.
+
+The raw help text is returned in @var{text} and the format in @var{format}
+The format is a string which is one of @t{"texinfo"}, @t{"html"}, or
+@t{"plain text"}.
+@end deftypefn
+
+
+@c get_first_help_sentence scripts/help/get_first_help_sentence.m
+@anchor{doc-get_first_help_sentence}
+@deftypefn  {Function File} {[@var{text}, @var{status}] =} get_first_help_sentence (@var{name})
+@deftypefnx {Function File} {[@var{text}, @var{status}] =} get_first_help_sentence (@var{name}, @var{max_len})
+Return the first sentence of a function's help text.
+
+The first sentence is defined as the text after the function
+declaration until either the first period (".") or the first appearance of
+two consecutive newlines ("\n\n").  The text is truncated to a maximum
+length of @var{max_len}, which defaults to 80.
+
+The optional output argument @var{status} returns the status reported by
+@code{makeinfo}.  If only one output argument is requested, and @var{status}
+is non-zero, a warning is displayed.
+
+As an example, the first sentence of this help text is
+
+@example
+@group
+get_first_help_sentence ("get_first_help_sentence")
+@print{} ans = Return the first sentence of a function's help text.
+@end group
+@end example
 @end deftypefn
 
 
@@ -656,8 +745,11 @@ Move back one character.
 @item C-f
 Move forward one character.
 
-@item @key{DEL}
+@item @key{BACKSPACE}
 Delete the character to the left of the cursor.
+
+@item @key{DEL}
+Delete the character underneath the cursor.
 
 @item C-d
 Delete the character underneath the cursor.
@@ -700,9 +792,9 @@ operate on characters while meta keystrokes operate on words.
 The function @code{clc} will allow you to clear the screen from within
 Octave programs.
 
-@c sysdep.cc
+@c clc src/sysdep.cc
 @anchor{doc-clc}
-@deftypefn {Built-in Function} {} clc ()
+@deftypefn  {Built-in Function} {} clc ()
 @deftypefnx {Built-in Function} {} home ()
 Clear the terminal screen and move the cursor to the upper left corner.
 @end deftypefn
@@ -810,9 +902,9 @@ complete the names of commands and variables.
 List the possible completions of the text before the cursor.
 @end table
 
-@c input.cc
+@c completion_append_char src/input.cc
 @anchor{doc-completion_append_char}
-@deftypefn {Built-in Function} {@var{val} =} completion_append_char ()
+@deftypefn  {Built-in Function} {@var{val} =} completion_append_char ()
 @deftypefnx {Built-in Function} {@var{old_val} =} completion_append_char (@var{new_val})
 Query or set the internal character variable that is appended to
 successful command-line completion attempts.  The default
@@ -820,7 +912,7 @@ value is @code{" "} (a single space).
 @end deftypefn
 
 
-@c input.cc
+@c completion_matches src/input.cc
 @anchor{doc-completion_matches}
 @deftypefn {Built-in Function} {} completion_matches (@var{hint})
 Generate possible completions given @var{hint}.
@@ -883,9 +975,9 @@ In addition to the keyboard commands for moving through the history
 list, Octave provides three functions for viewing, editing, and
 re-running chunks of commands from the history list.
 
-@c oct-hist.cc
+@c history src/oct-hist.cc
 @anchor{doc-history}
-@deffn {Command} history options
+@deftypefn {Command} {} history options
 If invoked with no arguments, @code{history} displays a list of commands
 that you have executed.  Valid options are:
 
@@ -895,8 +987,8 @@ Write the current history to the file @var{file}.  If the name is
 omitted, use the default history file (normally @file{~/.octave_hist}).
 
 @item -r @var{file}
-Read the file @var{file}, replacing the current history list with its
-contents.  If the name is omitted, use the default history file
+Read the file @var{file}, appending its contents to the current
+history list.  If the name is omitted, use the default history file
 (normally @file{~/.octave_hist}).
 
 @item @var{n}
@@ -910,17 +1002,17 @@ and pasting commands using the X Window System.
 For example, to display the five most recent commands that you have
 typed without displaying line numbers, use the command
 @kbd{history -q 5}.
-@end deffn
+@end deftypefn
 
 
-@c oct-hist.cc
+@c edit_history src/oct-hist.cc
 @anchor{doc-edit_history}
-@deffn {Command} edit_history [@var{first}] [@var{last}]
+@deftypefn {Command} {} edit_history [@var{first}] [@var{last}]
 If invoked with no arguments, @code{edit_history} allows you to edit the
-history list using the editor named by the variable @w{@code{EDITOR}}.  The
+history list using the editor named by the variable @w{@env{EDITOR}}.  The
 commands to be edited are first copied to a temporary file.  When you
 exit the editor, Octave executes the commands that remain in the file.
-It is often more convenient to use @code{edit_history} to define functions 
+It is often more convenient to use @code{edit_history} to define functions
 rather than attempting to enter them directly on the command line.
 By default, the block of commands is executed as soon as you exit the
 editor.  To avoid executing any commands, simply delete all the lines
@@ -948,58 +1040,82 @@ the first command than the last command reverses the list of commands
 before placing them in the buffer to be edited.  If both arguments are
 omitted, the previous command in the history list is used.
 @seealso{@ref{doc-run_history,,run_history}}
-@end deffn
+@end deftypefn
 
 
-@c oct-hist.cc
+@c run_history src/oct-hist.cc
 @anchor{doc-run_history}
-@deffn {Command} run_history [@var{first}] [@var{last}]
+@deftypefn {Command} {} run_history [@var{first}] [@var{last}]
 Similar to @code{edit_history}, except that the editor is not invoked,
 and the commands are simply executed as they appear in the history list.
 @seealso{@ref{doc-edit_history,,edit_history}}
-@end deffn
+@end deftypefn
 
 
 @noindent
 Octave also allows you customize the details of when, where, and how history
 is saved.
 
-@c oct-hist.cc
+@c saving_history src/oct-hist.cc
 @anchor{doc-saving_history}
-@deftypefn {Built-in Function} {@var{val} =} saving_history ()
+@deftypefn  {Built-in Function} {@var{val} =} saving_history ()
 @deftypefnx {Built-in Function} {@var{old_val} =} saving_history (@var{new_val})
 Query or set the internal variable that controls whether commands entered
 on the command line are saved in the history file.
-@seealso{@ref{doc-history_file,,history_file}, @ref{doc-history_size,,history_size}, @ref{doc-history_timestamp_format_string,,history_timestamp_format_string}}
+@seealso{@ref{doc-history_control,,history_control}, @ref{doc-history_file,,history_file}, @ref{doc-history_size,,history_size}, @ref{doc-history_timestamp_format_string,,history_timestamp_format_string}}
 @end deftypefn
 
 
-@c oct-hist.cc
+@c history_control src/oct-hist.cc
+@anchor{doc-history_control}
+@deftypefn  {Built-in Function} {@var{val} =} history_control ()
+@deftypefnx {Built-in Function} {@var{old_val} =} history_control (@var{new_val})
+Query or set the internal variable that specifies how commands are saved
+to the history list.  The default value is an empty character string,
+but may be overridden by the environment variable
+@w{@env{OCTAVE_HISTCONTROL}}.
+
+The value of @code{history_control} is a colon-separated list of values
+controlling how commands are saved on the history list.  If the list
+of values includes @code{ignorespace}, lines which begin with a space
+character are not saved in the history list.  A value of @code{ignoredups}
+causes lines matching the previous history entry to not be saved.
+A value of @code{ignoreboth} is shorthand for @code{ignorespace} and
+@code{ignoredups}.  A value of @code{erasedups} causes all previous lines
+matching the current line to be removed from the history list before that
+line is saved.  Any value not in the above list is ignored.  If
+@code{history_control} is the empty string, all commands are saved on
+the history list, subject to the value of @code{saving_history}.
+@seealso{@ref{doc-history_file,,history_file}, @ref{doc-history_size,,history_size}, @ref{doc-history_timestamp_format_string,,history_timestamp_format_string}, @ref{doc-saving_history,,saving_history}}
+@end deftypefn
+
+
+@c history_file src/oct-hist.cc
 @anchor{doc-history_file}
-@deftypefn {Built-in Function} {@var{val} =} history_file ()
+@deftypefn  {Built-in Function} {@var{val} =} history_file ()
 @deftypefnx {Built-in Function} {@var{old_val} =} history_file (@var{new_val})
 Query or set the internal variable that specifies the name of the
 file used to store command history.  The default value is
 @file{~/.octave_hist}, but may be overridden by the environment
-variable @w{@code{OCTAVE_HISTFILE}}.
+variable @w{@env{OCTAVE_HISTFILE}}.
 @seealso{@ref{doc-history_size,,history_size}, @ref{doc-saving_history,,saving_history}, @ref{doc-history_timestamp_format_string,,history_timestamp_format_string}}
 @end deftypefn
 
 
-@c oct-hist.cc
+@c history_size src/oct-hist.cc
 @anchor{doc-history_size}
-@deftypefn {Built-in Function} {@var{val} =} history_size ()
+@deftypefn  {Built-in Function} {@var{val} =} history_size ()
 @deftypefnx {Built-in Function} {@var{old_val} =} history_size (@var{new_val})
 Query or set the internal variable that specifies how many entries
 to store in the history file.  The default value is @code{1024},
-but may be overridden by the environment variable @w{@code{OCTAVE_HISTSIZE}}.
+but may be overridden by the environment variable @w{@env{OCTAVE_HISTSIZE}}.
 @seealso{@ref{doc-history_file,,history_file}, @ref{doc-history_timestamp_format_string,,history_timestamp_format_string}, @ref{doc-saving_history,,saving_history}}
 @end deftypefn
 
 
-@c oct-hist.cc
+@c history_timestamp_format_string src/oct-hist.cc
 @anchor{doc-history_timestamp_format_string}
-@deftypefn {Built-in Function} {@var{val} =} history_timestamp_format_string ()
+@deftypefn  {Built-in Function} {@var{val} =} history_timestamp_format_string ()
 @deftypefnx {Built-in Function} {@var{old_val} =} history_timestamp_format_string (@var{new_val})
 Query or set the internal variable that specifies the format string
 for the comment line that is written to the history file when Octave
@@ -1013,14 +1129,14 @@ value is
 @end deftypefn
 
 
-@c defaults.cc
+@c EDITOR src/defaults.cc
 @anchor{doc-EDITOR}
-@deftypefn {Built-in Function} {@var{val} =} EDITOR ()
+@deftypefn  {Built-in Function} {@var{val} =} EDITOR ()
 @deftypefnx {Built-in Function} {@var{old_val} =} EDITOR (@var{new_val})
 Query or set the internal variable that specifies the editor to
 use with the @code{edit_history} command.  The default value is taken from
-the environment variable @w{@code{EDITOR}} when Octave starts.  If the
-environment variable is not initialized, @w{@code{EDITOR}} will be set to
+the environment variable @w{@env{EDITOR}} when Octave starts.  If the
+environment variable is not initialized, @w{@env{EDITOR}} will be set to
 @code{"emacs"}.
 @seealso{@ref{doc-edit_history,,edit_history}}
 @end deftypefn
@@ -1028,7 +1144,7 @@ environment variable is not initialized, @w{@code{EDITOR}} will be set to
 
 @node Customizing readline
 @subsection Customizing @code{readline}
-@cindex @file{~/.inputrc}
+@cindex @code{~/.inputrc}
 @cindex customizing @code{readline}
 @cindex @code{readline} customization
 
@@ -1041,7 +1157,7 @@ exact command syntax).  The default configuration file is normally
 Octave provides two commands for initializing Readline and thereby changing
 the command line behavior.
 
-@c input.cc
+@c read_readline_init_file src/input.cc
 @anchor{doc-read_readline_init_file}
 @deftypefn {Built-in Function} {} read_readline_init_file (@var{file})
 Read the readline library initialization file @var{file}.  If
@@ -1053,7 +1169,7 @@ for details.
 @end deftypefn
 
 
-@c input.cc
+@c re_read_readline_init_file src/input.cc
 @anchor{doc-re_read_readline_init_file}
 @deftypefn {Built-in Function} {} re_read_readline_init_file ()
 Re-read the last readline library initialization file that was read.
@@ -1118,9 +1234,9 @@ The character whose character code in octal is @var{nnn}.
 A backslash.
 @end table
 
-@c input.cc
+@c PS1 src/input.cc
 @anchor{doc-PS1}
-@deftypefn {Built-in Function} {@var{val} =} PS1 ()
+@deftypefn  {Built-in Function} {@var{val} =} PS1 ()
 @deftypefnx {Built-in Function} {@var{old_val} =} PS1 (@var{new_val})
 Query or set the primary prompt string.  When executing interactively,
 Octave displays the primary prompt when it is ready to read a command.
@@ -1129,22 +1245,31 @@ The default value of the primary prompt string is @code{"\s:\#> "}.
 To change it, use a command like
 
 @example
-octave:13> PS1 ("\\u@@\\H> ")
+PS1 ("\\u@@\\H> ")
 @end example
 
 @noindent
 which will result in the prompt @samp{boris@@kremvax> } for the user
 @samp{boris} logged in on the host @samp{kremvax.kgb.su}.  Note that two
 backslashes are required to enter a backslash into a double-quoted
-character string.
-@xref{Strings}.
+character string.  @xref{Strings}.
+
+You can also use ANSI escape sequences if your terminal supports them.
+This can be useful for coloring the prompt.  For example,
+
+@example
+PS1 ("\\[\\033[01;31m\\]\\s:\\#> \\[\\033[0m\]")
+@end example
+
+@noindent
+will give the default Octave prompt a red coloring.
 @seealso{@ref{doc-PS2,,PS2}, @ref{doc-PS4,,PS4}}
 @end deftypefn
 
 
-@c input.cc
+@c PS2 src/input.cc
 @anchor{doc-PS2}
-@deftypefn {Built-in Function} {@var{val} =} PS2 ()
+@deftypefn  {Built-in Function} {@var{val} =} PS2 ()
 @deftypefnx {Built-in Function} {@var{old_val} =} PS2 (@var{new_val})
 Query or set the secondary prompt string.  The secondary prompt is
 printed when Octave is expecting additional input to complete a
@@ -1156,9 +1281,9 @@ string is @code{"> "}.
 @end deftypefn
 
 
-@c input.cc
+@c PS4 src/input.cc
 @anchor{doc-PS4}
-@deftypefn {Built-in Function} {@var{val} =} PS4 ()
+@deftypefn  {Built-in Function} {@var{val} =} PS4 ()
 @deftypefnx {Built-in Function} {@var{old_val} =} PS4 (@var{new_val})
 Query or set the character string used to prefix output produced
 when echoing commands is enabled.
@@ -1180,9 +1305,9 @@ Octave's diary feature allows you to keep a log of all or part of an
 interactive session by recording the input you type and the output that
 Octave produces in a separate file.
 
-@c pager.cc
+@c diary src/pager.cc
 @anchor{doc-diary}
-@deffn {Command} diary options
+@deftypefn {Command} {} diary options
 Record a list of all commands @emph{and} the output they produce, mixed
 together just as you see them on your terminal.  Valid options are:
 
@@ -1199,16 +1324,16 @@ Record your session in the file named @var{file}.
 @end table
 
 With no arguments, @code{diary} toggles the current diary state.
-@end deffn
+@end deftypefn
 
 
 Sometimes it is useful to see the commands in a function or script as
 they are being evaluated.  This can be especially helpful for debugging
 some kinds of problems.
 
-@c input.cc
+@c echo src/input.cc
 @anchor{doc-echo}
-@deffn {Command} echo options
+@deftypefn {Command} {} echo options
 Control whether commands are displayed as they are executed.  Valid
 options are:
 
@@ -1230,12 +1355,12 @@ functions.
 
 @noindent
 With no arguments, @code{echo} toggles the current echo state.
-@end deffn
+@end deftypefn
 
 
-@c input.cc
+@c echo_executing_commands src/input.cc
 @anchor{doc-echo_executing_commands}
-@deftypefn {Built-in Function} {@var{val} =} echo_executing_commands ()
+@deftypefn  {Built-in Function} {@var{val} =} echo_executing_commands ()
 @deftypefnx {Built-in Function} {@var{old_val} =} echo_executing_commands (@var{new_val})
 Query or set the internal variable that controls the echo state.
 It may be the sum of the following values:
@@ -1255,7 +1380,7 @@ More than one state can be active at once.  For example, a value of 3 is
 equivalent to the command @kbd{echo on all}.
 
 The value of @code{echo_executing_commands} may be set by the @kbd{echo}
-command or the command line option @code{--echo-commands}.
+command or the command line option @option{--echo-commands}.
 @end deftypefn
 
 
@@ -1482,6 +1607,7 @@ character, @samp{#}, or the percent symbol @samp{%} and continues to the
 end of the line.  Any text following the sharp sign or percent symbol is
 ignored by the Octave interpreter and not executed.  The following example
 shows whole line and partial line comments.
+
 @example
 @group
 function countdown
@@ -1504,6 +1630,7 @@ endfunction
 Entire blocks of code can be commented by enclosing the code between 
 matching @samp{#@{} and @samp{#@}} or @samp{%@{} and @samp{%@}} markers.  
 For example,
+
 @example
 @group
 function quick_countdown
@@ -1522,6 +1649,9 @@ endfunction
 will produce a very quick countdown from '3' to 'Blast Off' as the
 lines "@code{disp(2);}" and "@code{disp(1);}" won't be executed.
 
+The block comment markers must appear alone as the only characters on a line
+(excepting whitespace) in order to to be parsed correctly.
+
 @node Comments and the Help System
 @subsection Comments and the Help System
 @cindex documenting functions
@@ -1533,6 +1663,7 @@ block of comments in a function and return those as a documentation
 string.  This means that the same commands used to get help
 on built-in functions are available for properly formatted user-defined
 functions.  For example, after defining the function @code{f} below,
+
 @example
 @group
 function xdot = f (x, t)
@@ -1549,6 +1680,7 @@ endfunction
 @end group
 @end example
 
+@noindent
 the command @kbd{help f} produces the output
 
 @example

@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1996, 1997, 1998, 1999, 2000, 2002, 2003, 2004, 2005,
-              2006, 2007, 2008, 2009 John W. Eaton
+Copyright (C) 1996-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -58,11 +57,11 @@ tree_decl_elt::eval (void)
       octave_value init_val = expr->rvalue1 ();
 
       if (! error_state)
-	{
-	  ult.assign (octave_value::op_asn_eq, init_val);
+        {
+          ult.assign (octave_value::op_asn_eq, init_val);
 
-	  retval = true;
-	}
+          retval = true;
+        }
     }
 
   return retval;
@@ -70,10 +69,10 @@ tree_decl_elt::eval (void)
 
 tree_decl_elt *
 tree_decl_elt::dup (symbol_table::scope_id scope,
-		    symbol_table::context_id context) const
+                    symbol_table::context_id context) const
 {
   return new tree_decl_elt (id ? id->dup (scope, context) : 0,
-			    expr ? expr->dup (scope, context) : 0);
+                            expr ? expr->dup (scope, context) : 0);
 }
 
 void
@@ -86,7 +85,7 @@ tree_decl_elt::accept (tree_walker& tw)
 
 tree_decl_init_list *
 tree_decl_init_list::dup (symbol_table::scope_id scope,
-			  symbol_table::context_id context) const
+                          symbol_table::context_id context) const
 {
   tree_decl_init_list *new_dil = new tree_decl_init_list ();
 
@@ -96,7 +95,7 @@ tree_decl_init_list::dup (symbol_table::scope_id scope,
 
       new_dil->append (elt ? elt->dup (scope, context) : 0);
     }
-  
+
   return new_dil;
 }
 
@@ -117,11 +116,11 @@ tree_decl_command::~tree_decl_command (void)
 
 tree_command *
 tree_global_command::dup (symbol_table::scope_id scope,
-			  symbol_table::context_id context) const
+                          symbol_table::context_id context) const
 {
   return
     new tree_global_command (init_list ? init_list->dup (scope, context) : 0,
-			     line (), column ());
+                             line (), column ());
 }
 
 void
@@ -134,11 +133,11 @@ tree_global_command::accept (tree_walker& tw)
 
 tree_command *
 tree_static_command::dup (symbol_table::scope_id scope,
-			  symbol_table::context_id context) const
+                          symbol_table::context_id context) const
 {
   return
     new tree_static_command (init_list ? init_list->dup (scope, context) : 0,
-			     line (), column ());
+                             line (), column ());
 }
 
 void
@@ -146,9 +145,3 @@ tree_static_command::accept (tree_walker& tw)
 {
   tw.visit_static_command (*this);
 }
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/

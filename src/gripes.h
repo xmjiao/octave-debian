@@ -1,7 +1,6 @@
 /*
 
-Copyright (C) 1993, 1994, 1995, 1996, 1997, 2000, 2003, 2005, 2006,
-              2007, 2008, 2009 John W. Eaton
+Copyright (C) 1993-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -26,7 +25,7 @@ along with Octave; see the file COPYING.  If not, see
 
 #include <string>
 
-#include "oct-types.h"
+#include "lo-array-gripes.h"
 
 class octave_value;
 
@@ -80,19 +79,19 @@ gripe_data_conversion (const char *from, const char *to);
 
 extern OCTINTERP_API void
 gripe_wrong_type_arg (const char *name, const char *s,
-		      bool is_error = true);
+                      bool is_error = true);
 
 extern OCTINTERP_API void
 gripe_wrong_type_arg (const char *name, const std::string& s,
-		      bool is_error = true);
+                      bool is_error = true);
 
 extern OCTINTERP_API void
 gripe_wrong_type_arg (const char *name, const octave_value& tc,
-		      bool is_error = true);
+                      bool is_error = true);
 
 extern OCTINTERP_API void
 gripe_wrong_type_arg (const std::string& name, const octave_value& tc,
-		      bool is_error = true);
+                      bool is_error = true);
 
 extern OCTINTERP_API void
 gripe_wrong_type_arg_for_unary_op (const octave_value& op);
@@ -105,25 +104,7 @@ gripe_implicit_conversion (const char *id, const char *from, const char *to);
 
 extern OCTINTERP_API void
 gripe_implicit_conversion (const std::string& id, const std::string& from,
-			   const std::string& to);
-
-extern OCTINTERP_API void
-gripe_truncated_conversion (const char *srctype, const char *desttype);
-
-extern OCTINTERP_API void
-gripe_binop_integer_math_truncated (const char *op, const char *type1, const char *type2);
-
-extern OCTINTERP_API void
-gripe_native_integer_math_truncated (const char *fcn, const char *type);
-
-extern OCTINTERP_API void
-gripe_unop_integer_math_truncated (const char *op, const char *type);
-
-extern OCTINTERP_API void
-gripe_non_integer_conversion (const char *srctype, const char *desttype);
-
-extern OCTINTERP_API void
-gripe_nan_conversion (const char *srctype, const char *desttype);
+                           const std::string& to);
 
 extern OCTINTERP_API void
 gripe_divide_by_zero (void);
@@ -140,10 +121,10 @@ gripe_invalid_inquiry_subscript (void);
 extern OCTINTERP_API void
 gripe_indexed_cs_list (void);
 
-#endif
+extern OCTINTERP_API void
+gripe_nonbraced_cs_list_assignment (void);
 
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
+extern OCTINTERP_API void
+gripe_warn_complex_cmp (void);
+
+#endif

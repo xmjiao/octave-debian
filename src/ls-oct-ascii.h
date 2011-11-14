@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008 John W. Eaton
+Copyright (C) 2003-2011 John W. Eaton
 
 This file is part of Octave.
 
@@ -42,24 +42,24 @@ along with Octave; see the file COPYING.  If not, see
 #endif
 
 extern OCTINTERP_API std::string
-extract_keyword (std::istream& is, const char *keyword, 
-		 const bool next_only = false);
+extract_keyword (std::istream& is, const char *keyword,
+                 const bool next_only = false);
 
 extern OCTINTERP_API std::string
 read_ascii_data (std::istream& is, const std::string& filename, bool& global,
-		 octave_value& tc, octave_idx_type count);
+                 octave_value& tc, octave_idx_type count);
 
 extern OCTINTERP_API bool
 save_ascii_data (std::ostream& os, const octave_value& val_arg,
-		 const std::string& name, bool mark_as_global, int precision);
+                 const std::string& name, bool mark_as_global, int precision);
 
 extern OCTINTERP_API bool
 save_ascii_data_for_plotting (std::ostream& os, const octave_value& t,
-			      const std::string& name);
+                              const std::string& name);
 
 extern OCTINTERP_API bool
 save_three_d (std::ostream& os, const octave_value& t,
-	      bool parametric = false);
+              bool parametric = false);
 
 // Match KEYWORD on stream IS, placing the associated value in VALUE,
 // returning TRUE if successful and FALSE otherwise.
@@ -70,8 +70,8 @@ save_three_d (std::ostream& os, const octave_value& t,
 
 template <class T>
 bool
-extract_keyword (std::istream& is, const char *keyword, T& value, 
-		 const bool next_only = false)
+extract_keyword (std::istream& is, const char *keyword, T& value,
+                 const bool next_only = false)
 {
   bool status = false;
   value = T();
@@ -80,39 +80,47 @@ extract_keyword (std::istream& is, const char *keyword, T& value,
   while (is.get (c))
     {
       if (c == '%' || c == '#')
-	{
-	  std::ostringstream buf;
+        {
+          std::ostringstream buf;
 
-	  while (is.get (c) && (c == ' ' || c == '\t' || c == '%' || c == '#'))
-	    ; // Skip whitespace and comment characters.
+          while (is.get (c) && (c == ' ' || c == '\t' || c == '%' || c == '#'))
+            ; // Skip whitespace and comment characters.
 
-	  if (isalpha (c))
-	    buf << c;
+          if (isalpha (c))
+            buf << c;
 
-	  while (is.get (c) && isalpha (c))
-	    buf << c;
+          while (is.get (c) && isalpha (c))
+            buf << c;
 
-	  std::string tmp = buf.str ();
-	  bool match = (tmp.compare (0, strlen (keyword), keyword) == 0);
+          std::string tmp = buf.str ();
+          bool match = (tmp.compare (0, strlen (keyword), keyword) == 0);
 
-	  if (match)
-	    {
-	      while (is.get (c) && (c == ' ' || c == '\t' || c == ':'))
-		; // Skip whitespace and the colon.
+          if (match)
+            {
+              while (is.get (c) && (c == ' ' || c == '\t' || c == ':'))
+                ; // Skip whitespace and the colon.
 
-	      is.putback (c);
-	      if (c != '\n' && c != '\r')
-		is >> value;
-	      if (is)
-		status = true;
-	      skip_until_newline (is, false);
-	      break;
-	    }
-	  else if (next_only)
-	    break;
-	}
+              is.putback (c);
+              if (c != '\n' && c != '\r')
+                is >> value;
+              if (is)
+                status = true;
+              skip_until_newline (is, false);
+              break;
+            }
+          else if (next_only)
+            break;
+        }
     }
   return status;
+}
+
+template <class T>
+bool
+extract_keyword (std::istream& is, const std::string& kw, T& value,
+                 const bool next_only = false)
+{
+  return extract_keyword (is, kw.c_str (), value, next_only);
 }
 
 // Match one of the elements in KEYWORDS on stream IS, placing the
@@ -126,7 +134,7 @@ extract_keyword (std::istream& is, const char *keyword, T& value,
 template <class T>
 bool
 extract_keyword (std::istream& is, const string_vector& keywords,
-		 std::string& kw, T& value, const bool next_only = false)
+                 std::string& kw, T& value, const bool next_only = false)
 {
   bool status = false;
   kw = "";
@@ -136,53 +144,46 @@ extract_keyword (std::istream& is, const string_vector& keywords,
   while (is.get (c))
     {
       if (c == '%' || c == '#')
-	{
-	  std::ostringstream buf;
+        {
+          std::ostringstream buf;
 
-	  while (is.get (c) && (c == ' ' || c == '\t' || c == '%' || c == '#'))
-	    ; // Skip whitespace and comment characters.
+          while (is.get (c) && (c == ' ' || c == '\t' || c == '%' || c == '#'))
+            ; // Skip whitespace and comment characters.
 
-	  if (isalpha (c))
-	    buf << c;
+          if (isalpha (c))
+            buf << c;
 
-	  while (is.get (c) && isalpha (c))
-	    buf << c;
+          while (is.get (c) && isalpha (c))
+            buf << c;
 
-	  std::string tmp = buf.str ();
+          std::string tmp = buf.str ();
 
-	  for (int i = 0; i < keywords.length (); i++)
-	    {
-	      int match = (tmp == keywords[i]);
+          for (int i = 0; i < keywords.length (); i++)
+            {
+              int match = (tmp == keywords[i]);
 
-	      if (match)
-		{
-		  kw = keywords[i];
+              if (match)
+                {
+                  kw = keywords[i];
 
-		  while (is.get (c) && (c == ' ' || c == '\t' || c == ':'))
-		    ; // Skip whitespace and the colon.
+                  while (is.get (c) && (c == ' ' || c == '\t' || c == ':'))
+                    ; // Skip whitespace and the colon.
 
-		  is.putback (c);
-		  if (c != '\n' && c != '\r')
-		    is >> value;
-		  if (is)
-		    status = true;
-		  skip_until_newline (is, false);
-		  return status;
-		}
-	    }
+                  is.putback (c);
+                  if (c != '\n' && c != '\r')
+                    is >> value;
+                  if (is)
+                    status = true;
+                  skip_until_newline (is, false);
+                  return status;
+                }
+            }
 
-	  if (next_only)
-	    break;
-	}
+          if (next_only)
+            break;
+        }
     }
   return status;
 }
 
 #endif
-
-/*
-;;; Local Variables: ***
-;;; mode: C++ ***
-;;; End: ***
-*/
-
