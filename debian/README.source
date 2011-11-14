@@ -1,9 +1,0 @@
-README.source for octave
-========================
-
-This package uses dpatch to manage all modifications to the upstream sources.
-See `man dpatch' to get more information on how to use it.
-
- -- Rafael Laboissiere <rafael@debian.org>  Tue, 05 May 2009 13:04:21 +0200
-
-
