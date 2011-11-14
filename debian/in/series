@@ -1,14 +1,4 @@
-[V_3_0:
-50_octave-bug-tempfile.diff
-50_fix_handle_for_plotyy.diff
-no_pdf_in_print.diff
-dont_set_helvetica.diff
-glpk-new-api.diff
-real-no-history.diff
-termios-h-check-3.0.diff
-no-argout-intersect.diff
-datenum-vector-input-any-orientation.diff
-:][V_3_2:
+[V_3_2:
 drop_old_curl_header
 scale_image_point_color
 fix-interp2
