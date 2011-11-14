@@ -2,7 +2,6 @@
 drop_old_curl_header
 scale_image_point_color
 fix-interp2
-50_octave-bug-tempfile.diff
 no_pdf_in_print.diff
 dont_set_helvetica-3.1.diff
 normal-markersize.diff
