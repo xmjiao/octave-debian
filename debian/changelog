@@ -1,3 +1,9 @@
+octave (3.4.3-1) UNRELEASED; urgency=low
+
+  * New upstream release (closes: #641246, #618692, #619519)
+
+ -- Thomas Weber <tweber@debian.org>  Mon, 12 Sep 2011 10:36:00 +0200
+
 octave3.2 (3.2.4-12) unstable; urgency=low
 
   [ Colin Watson ]
