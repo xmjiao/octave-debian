@@ -1,0 +1,3 @@
+usr/bin/octave /usr/bin
+usr/lib/octave/* /usr/lib/octave
+usr/share/applications /usr/share
