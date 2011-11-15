@@ -1,0 +1,52 @@
+Description: Install the Octave libraries publically in /usr/lib/
+ Thanks to John Eaton for helping with this.
+ .
+ The patch is currently not needed upstream, but forwarding it might make sense
+ in the future.
+Forwarded: not-needed
+Author: Thomas Weber <tweber@debian.org>
+--- a/libcruft/Makefile.am
++++ b/libcruft/Makefile.am
+@@ -24,7 +24,8 @@
+ 
+ AUTOMAKE_OPTIONS = subdir-objects
+ 
+-octlib_LTLIBRARIES = libcruft.la
++lib_LTLIBRARIES = libcruft.la
++octlib_LTLIBRARIES =
+ 
+ libcruft_la_SOURCES =
+ 
+@@ -54,7 +55,7 @@
+   $(LAPACK_LIBS) $(BLAS_LIBS) \
+   $(FLIBS)
+ 
+-libcruft_la_DEPENDENCIES = cruft.def
++libcruft_la_DEPENDENCIES = cruft.def libranlib.la
+ 
+ noinst_LTLIBRARIES = libranlib.la
+ 
+--- a/liboctave/Makefile.am
++++ b/liboctave/Makefile.am
+@@ -408,7 +408,8 @@
+   uint64NDArray.cc \
+   uint8NDArray.cc
+ 
+-octlib_LTLIBRARIES = liboctave.la
++lib_LTLIBRARIES = liboctave.la
++octlib_LTLIBRARIES =
+ 
+ LIBOCTAVE_CXX_SOURCES = \
+   CollocWt.cc \
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -28,7 +28,8 @@
+ 
+ AUTOMAKE_OPTIONS = subdir-objects
+ 
+-octlib_LTLIBRARIES = liboctinterp.la
++lib_LTLIBRARIES = liboctinterp.la
++octlib_LTLIBRARIES =
+ 
+ if AMCOND_BUILD_COMPILED_AUX_PROGRAMS
+ bin_PROGRAMS = \
