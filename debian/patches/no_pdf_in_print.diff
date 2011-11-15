@@ -5,8 +5,8 @@ missing pdflib (closes: #478677)
 
 --- a/scripts/plot/print.m
 +++ b/scripts/plot/print.m
-@@ -103,6 +103,9 @@
- ##     Scalable vector graphics
+@@ -141,6 +141,9 @@
+ ##
  ##   @item pdf
  ##     Portable document format
 +##
