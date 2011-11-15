@@ -1,0 +1,17 @@
+Description: Don't install binarys with a version in them
+ We don't need them.
+Forwarded: not-needed
+Author: Thomas Weber <tweber@debian.org>
+Index: octave-3.4.2-rc2/src/Makefile.am
+===================================================================
+--- octave-3.4.2-rc2.orig/src/Makefile.am	2011-06-28 19:53:51.000000000 +0000
++++ octave-3.4.2-rc2/src/Makefile.am	2011-06-28 19:54:25.000000000 +0000
+@@ -847,7 +847,7 @@
+ 	chmod a+rx $@
+ endif
+ 
+-install-exec-hook: make-version-links
++install-exec-hook: 
+ 
+ install-data-hook: install-oct
+ 

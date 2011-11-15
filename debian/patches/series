@@ -1,2 +1,3 @@
 drop_version_from_pkg_function_calls
 enable_dirs_in_pkg
+drop_versioned_binarys
