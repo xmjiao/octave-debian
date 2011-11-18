@@ -1,0 +1,34 @@
+Description: Fix typos, thanks lintian
+Forwarded: not yet
+Author: Thomas Weber <tweber@debian.org>
+--- a/scripts/io/dlmwrite.m
++++ b/scripts/io/dlmwrite.m
+@@ -81,7 +81,7 @@
+ ## 2002-03-08 Paul Kienzle <pkienzle@users.sf.net>
+ ## * Initial revision
+ ## 2005-11-27 Bill Denney <bill@givebillmoney.com>
+-## * Significant modifications of the input arguements for additional
++## * Significant modifications of the input arguments for additional
+ ## functionality.
+ 
+ function dlmwrite (file, M, varargin)
+@@ -102,7 +102,7 @@
+   endif
+   opentype = "wt";
+ 
+-  ## process the input arguements
++  ## process the input arguments
+   i = 0;
+   while (i < length (varargin))
+     i = i + 1;
+--- a/src/debug.cc
++++ b/src/debug.cc
+@@ -563,7 +563,7 @@
+ 
+   if (nargin != 0 && nargin != 1)
+     {
+-      error ("dbstatus: only zero or one arguements accepted\n");
++      error ("dbstatus: only zero or one arguments accepted\n");
+       return octave_value ();
+     }
+ 
