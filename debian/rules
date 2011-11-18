@@ -26,9 +26,13 @@ override_dh_compress:
 override_dh_auto_install:
 	dh_auto_install --max-parallel=1
 
-# save debug information into the debug package
+# save debug information into the debug package and strip the executable bit
+# from the .oct files
+# The latter cannot be done in dh_fixperms, as then dh_strip doesn't take the
+# .oct files into account for debug information
 override_dh_strip:
 	dh_strip -a --dbg-package=octave-dbg
+	find debian/octave -name '*.oct' -print0 2>/dev/null | xargs -0r chmod 644
 
 get-orig-source:
 	uscan --force-download --rename --destdir .
