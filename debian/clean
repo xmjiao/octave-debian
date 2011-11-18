@@ -1,0 +1,19 @@
+# Remove info files 
+# They differ if we recreate them and they are binary files, meaning
+# dpkg-source cannot handle the diff
+doc/faq/OctaveFAQ.info
+doc/liboctave/liboctave.info
+doc/interpreter/octave.info*
+
+# Remove all DVI, PS and PDF files, to ensure they are recreated (and dpkg-source
+# doesn't handle diffs in binary files)
+doc/faq/*.dvi
+doc/faq/*.ps
+doc/faq/*.pdf
+doc/liboctave/*.dvi
+doc/liboctave/*.ps
+doc/liboctave/*.pdf
+doc/interpreter/*.dvi
+doc/interpreter/*.ps
+# only delete octave.pdf, we cannot recreate octave_logo.pdf
+doc/interpreter/octave.pdf
