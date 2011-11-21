@@ -119,7 +119,7 @@ Architecture: any
 Depends: liboctave0 (= ${binary:Version}), octave (= ${binary:Version}), ${misc:Depends},
  libreadline-dev | libreadline6-dev | libreadline5-dev, libncurses5-dev,
  libhdf5-serial-dev (>= 1.8.4), 
- libblas-dev (>=1.2-7), liblapack-dev (>=3.2.1-7), libfftw3-dev, gfortran, gcc, g++, f2c [m68k]
+ libblas-dev (>=1.2-7), liblapack-dev (>=3.2.1-7), libfftw3-dev, gfortran, gcc, g++
 Section: libdevel
 Description: Development files for the GNU Octave language
  Octave is a (mostly Matlab (R) compatible) high-level language, primarily
