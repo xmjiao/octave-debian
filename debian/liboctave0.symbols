@@ -36048,24 +36048,6 @@ liboctinterp.so.0 liboctave0 #MINVER#
  get_input_from_eval_string@Base 3.4.3
  getcgn_@Base 3.4.3
  getsd_@Base 3.4.3
- gl2psBeginPage@Base 3.4.3
- gl2psBeginViewport@Base 3.4.3
- gl2psBlendFunc@Base 3.4.3
- gl2psDisable@Base 3.4.3
- gl2psDrawImageMap@Base 3.4.3
- gl2psDrawPixels@Base 3.4.3
- gl2psEnable@Base 3.4.3
- gl2psEndPage@Base 3.4.3
- gl2psEndViewport@Base 3.4.3
- gl2psGetFileExtension@Base 3.4.3
- gl2psGetFormatDescription@Base 3.4.3
- gl2psGetOptions@Base 3.4.3
- gl2psLineWidth@Base 3.4.3
- gl2psPointSize@Base 3.4.3
- gl2psSetOptions@Base 3.4.3
- gl2psSpecial@Base 3.4.3
- gl2psText@Base 3.4.3
- gl2psTextOpt@Base 3.4.3
  gl_sockets_cleanup@Base 3.4.3
  gl_sockets_startup@Base 3.4.3
  global_command@Base 3.4.3

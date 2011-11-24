@@ -5,3 +5,4 @@ install_libraries_publically
 no_pdf_in_print.diff
 add_info_dir_categories
 correct_typos
+use_system_gl2ps

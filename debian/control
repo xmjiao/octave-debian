@@ -11,7 +11,7 @@ Build-Depends: gfortran, debhelper (>= 7.0.50~), automake, dh-autoreconf, texinf
  libblas-dev (>=1.2-7), liblapack-dev (>=3.2.1-7), gnuplot-nox, libfftw3-dev, texi2html,
  less, quilt, libpcre3-dev, flex, libglpk-dev (>= 4.15),
  libsuitesparse-dev (>= 1:3.2.0), gawk, ghostscript, libcurl4-gnutls-dev | libcurl4-dev,
- libqhull-dev, desktop-file-utils, libfltk1.1-dev,
+ libqhull-dev, desktop-file-utils, libfltk1.1-dev, libgl2ps-dev,
  libgraphicsmagick++1-dev, libftgl-dev, libfontconfig1-dev,
  libqrupdate-dev, libarpack2-dev (>= 2.1+parpack96.dfsg-2)
 Standards-Version: 3.8.4
