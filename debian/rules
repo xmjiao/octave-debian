@@ -25,6 +25,8 @@ override_dh_compress:
 # override this call, so we do not pass the --parallel option to it; 
 # "make -j2 install" does not work as of now
 override_dh_auto_install:
+	# Smuggle our configuration file into the installed files
+	mkdir -p debian/tmp/etc && cp debian/octave.conf debian/tmp/etc/
 	dh_auto_install --max-parallel=1
 
 # save debug information into the debug package and strip the executable bit
