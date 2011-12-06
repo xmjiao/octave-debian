@@ -11,7 +11,7 @@ export DH_OPTIONS
 	dh $@ --with autoreconf --parallel
 
 clean:
-	dh clean
+	dh clean --with autoreconf
 
 # override normal dh_auto_configure call to pass OpenMP flag to it (#631831)
 # and while we are at it, disable the rpath (thanks lintian)
