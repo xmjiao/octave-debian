@@ -1,6 +1,52 @@
 octave (3.4.3-1) UNRELEASED; urgency=low
 
+  [ Thomas Weber ]
   * New upstream release (closes: #641246, #618692, #619519)
+    - Remove emacsen package stuff.  Octave no longer provides these files.
+    - Completely revamp debian/rules for debhelper 7.  Bump compat level to 7
+      for that.
+    - Completely revamp packaging to properly support public libraries
+      (Closes: #510579).
+  * Remove 50_octave-bug-tempfile.diff, Octave switched its bug tracking
+    system to a web based one.
+  * Removed patches (applied upstream):
+      - avoid-implicit-conversion
+      - clear_symbol_table
+      - drop_old_curl_header
+      - filter_empty_vector
+      - fix-interp2
+      - fix_relative_addpath
+      - fixes-for-gcc-4.6
+      - handle_new_graphicsmagic
+      - scale_image_point_color
+  * New patches:
+    - drop_version_from_pkg_function_calls
+    - enable_dirs_in_pkg
+    - drop_versioned_binarys
+    - install_libraries_publically
+    - add_info_dir_categories.  Add categories to Octave's info files (thanks
+      lintian).
+    - New patch: correct_typos.  Correct some spelling mistakes
+  * Build Octave with OpenMP support (Closes: #631831)
+  * Only allow the serial HDF5 library when building.
+    Drop patch include_mpi_headers as well, as it was only needed for the
+    HDF5 libraries with MPI support. (Closes: #601511)
+  * Switch to dpkg-source 3.0 (quilt) format
+  * Disable the rpath when calling ./configure
+    +1 for making Lintian happy
+  * Add doc-base files for the PDF documentation in the octave-doc package.
+  * Use the gl2ps system library packaged in Debian.
+     - Remove gl2ps symbols from the symbol file
+     - Build-depend on libgl2ps-dev
+     - Patch Octave for this change with patches/use_system_gl2ps
+  * Override the Lintian warning about license.m
+  * Change defs.make file for new directory structure.
+    We put external .m and .oct files in directories without any API or
+    version information.
+
+  [ Sébastien Villemot ]
+  * Add Conflicts with octave3.2* packages
+  * debian/source/options: exclude various regenerated files from source diff
 
  -- Thomas Weber <tweber@debian.org>  Mon, 12 Sep 2011 10:36:00 +0200
 
