@@ -1,4 +1,4 @@
-octave (3.4.3-1) UNRELEASED; urgency=low
+octave (3.4.3-1) experimental; urgency=low
 
   [ Thomas Weber ]
   * New upstream release (closes: #641246, #618692, #619519)
@@ -48,7 +48,7 @@ octave (3.4.3-1) UNRELEASED; urgency=low
   * Add Conflicts with octave3.2* packages
   * debian/source/options: exclude various regenerated files from source diff
 
- -- Thomas Weber <tweber@debian.org>  Mon, 12 Sep 2011 10:36:00 +0200
+ -- Thomas Weber <tweber@debian.org>  Sun, 18 Dec 2011 21:18:17 +0100
 
 octave3.2 (3.2.4-12) unstable; urgency=low
 
