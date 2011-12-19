@@ -11280,7 +11280,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN10dim_vector6concatERKS_i@Base 3.4.3
  _ZN10dim_vector6resizeEii@Base 3.4.3
  _ZN10dim_vector7dim_maxEv@Base 3.4.3
- _ZN10dim_vector7freerepEv@Base 3.4.3
  _ZN10dim_vectorC1Eii@Base 3.4.3
  _ZN10dim_vectorC1Ev@Base 3.4.3
  _ZN10dim_vectorC2Eii@Base 3.4.3
@@ -11804,14 +11803,12 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN11FloatMatrixC1ERK14FloatRowVector@Base 3.4.3
  _ZN11FloatMatrixC1ERK15FloatDiagMatrix@Base 3.4.3
  _ZN11FloatMatrixC1ERK17FloatColumnVector@Base 3.4.3
- _ZN11FloatMatrixC1IfEERK6MArrayIT_E@Base 3.4.3
  _ZN11FloatMatrixC2ERK10PermMatrix@Base 3.4.3
  _ZN11FloatMatrixC2ERK10boolMatrix@Base 3.4.3
  _ZN11FloatMatrixC2ERK10charMatrix@Base 3.4.3
  _ZN11FloatMatrixC2ERK14FloatRowVector@Base 3.4.3
  _ZN11FloatMatrixC2ERK15FloatDiagMatrix@Base 3.4.3
  _ZN11FloatMatrixC2ERK17FloatColumnVector@Base 3.4.3
- _ZN11FloatMatrixC2IfEERK6MArrayIT_E@Base 3.4.3
  _ZN11FloatMatrixD1Ev@Base 3.4.3
  _ZN11FloatMatrixD2Ev@Base 3.4.3
  _ZN11FloatMatrixmIERK15FloatDiagMatrix@Base 3.4.3
@@ -14223,13 +14220,11 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN19SparseComplexMatrixC1ERK16SparseBoolMatrix@Base 3.4.3
  _ZN19SparseComplexMatrixC1ERK17ComplexDiagMatrix@Base 3.4.3
  _ZN19SparseComplexMatrixC1Eii@Base 3.4.3
- _ZN19SparseComplexMatrixC1Eiii@Base 3.4.3
  _ZN19SparseComplexMatrixC1Ev@Base 3.4.3
  _ZN19SparseComplexMatrixC2ERK12SparseMatrix@Base 3.4.3
  _ZN19SparseComplexMatrixC2ERK16SparseBoolMatrix@Base 3.4.3
  _ZN19SparseComplexMatrixC2ERK17ComplexDiagMatrix@Base 3.4.3
  _ZN19SparseComplexMatrixC2Eii@Base 3.4.3
- _ZN19SparseComplexMatrixC2Eiii@Base 3.4.3
  _ZN19SparseComplexMatrixC2Ev@Base 3.4.3
  _ZN19SparseComplexMatrixD0Ev@Base 3.4.3
  _ZN19SparseComplexMatrixD1Ev@Base 3.4.3
@@ -16377,6 +16372,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN6MatrixC1ERK9RowVector@Base 3.4.3
  _ZN6MatrixC1Eiid@Base 3.4.3
  _ZN6MatrixC1Ev@Base 3.4.3
+# template instantiation
+ (c++|optional=templateInstantiation)"Matrix::Matrix<double>(Array<double> const&)@Base" 3.4.3
  _ZN6MatrixC1IdEERK6MArrayIT_E@Base 3.4.3
  _ZN6MatrixC2ERK10DiagMatrix@Base 3.4.3
  _ZN6MatrixC2ERK10PermMatrix@Base 3.4.3
@@ -25151,7 +25148,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN10charMatrixD2Ev@Base 3.4.3
  _ZN10dim_vector24chop_trailing_singletonsEv@Base 3.4.3
  _ZN10dim_vector6resizeEii@Base 3.4.3
- _ZN10dim_vector7freerepEv@Base 3.4.3
+# not part of API (private function)
+ (c++|optional=notPartOfAPI)"dim_vector::freerep()@Base" 3.4.3
  _ZN10dim_vectorC1Eii@Base 3.4.3
  _ZN10dim_vectorC1Ev@Base 3.4.3
  _ZN10dim_vectorC2Eii@Base 3.4.3
@@ -25856,6 +25854,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN12symbol_table19clear_mex_functionsEv@Base 3.4.3
  _ZN12symbol_table19clear_user_functionERKSs@Base 3.4.3
  _ZN12symbol_table19install_subfunctionERKSsRK12octave_valuei@Base 3.4.3
+# not part of API
+ (c++|optional=notPartOfAPI)"symbol_table::user_function_names()@Base" 3.4.3
  _ZN12symbol_table21glob_global_variablesERKSs@Base 3.4.3
  _ZN12symbol_table21global_variable_namesEv@Base 3.4.3
  _ZN12symbol_table22class_precedence_tableE@Base 3.4.3
@@ -26225,9 +26225,7 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN14mxArray_matlabD2Ev@Base 3.4.3
  _ZN14mxArray_number13set_imag_dataEPv@Base 3.4.3
  _ZN14mxArray_number8set_dataEPv@Base 3.4.3
- _ZN14mxArray_numberC1ERKS_@Base 3.4.3
  _ZN14mxArray_numberC1EiPPKc@Base 3.4.3
- _ZN14mxArray_numberC2ERKS_@Base 3.4.3
  _ZN14mxArray_numberC2EiPPKc@Base 3.4.3
  _ZN14mxArray_numberD0Ev@Base 3.4.3
  _ZN14mxArray_numberD1Ev@Base 3.4.3
@@ -26601,21 +26599,26 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN15octave_functionD1Ev@Base 3.4.3
  _ZN15octave_functionD2Ev@Base 3.4.3
  _ZN15octave_int_baseIaE12convert_realIdEEaRKT_@Base 3.4.3
+# not part of API (private function)
+ (c++|optional=notPartOfAPI)"double octave_int_base<signed char>::compute_threshold<double>(double, signed char)@Base" 3.4.3
  _ZN15octave_int_baseIhE12convert_realIdEEhRKT_@Base 3.4.3
  _ZN15octave_int_baseIiE12convert_realIdEEiRKT_@Base 3.4.3
  _ZN15octave_int_baseIiE17compute_thresholdIdEET_S2_i@Base 3.4.3
  _ZN15octave_int_baseIiE17compute_thresholdIfEET_S2_i@Base 3.4.3
  _ZN15octave_int_baseIjE12convert_realIdEEjRKT_@Base 3.4.3
- _ZN15octave_int_baseIjE17compute_thresholdIfEET_S2_j@Base 3.4.3
+# not part of API (private function)
+ (c++|optional=notPartOfAPI)"double octave_int_base<unsigned int>::compute_threshold<double>(double, unsigned int)@Base" 3.4.3
+# template instantiation
+ (c++|optional=templateInstantiation)"long octave_int_base<long>::convert_real<double>(double const&)@Base" 3.4.3
  _ZN15octave_int_baseIlE12convert_realIeEElRKT_@Base 3.4.3
- _ZN15octave_int_baseIlE17compute_thresholdIfEET_S2_l@Base 3.4.3
  _ZN15octave_int_baseImE12convert_realIeEEmRKT_@Base 3.4.3
  _ZN15octave_int_baseImE17compute_thresholdIdEET_S2_m@Base 3.4.3
- _ZN15octave_int_baseImE17compute_thresholdIfEET_S2_m@Base 3.4.3
  _ZN15octave_int_baseIsE12convert_realIdEEsRKT_@Base 3.4.3
  _ZN15octave_int_baseIsE17compute_thresholdIdEET_S2_s@Base 3.4.3
- _ZN15octave_int_baseIsE17compute_thresholdIfEET_S2_s@Base 3.4.3
  _ZN15octave_int_baseItE12convert_realIdEEtRKT_@Base 3.4.3
+# not part of API (private function)
+ (c++|optional=notPartOfAPI)"double octave_int_base<unsigned short>::compute_threshold<double>(double, unsigned short)@Base" 3.4.3
+ (c++|optional=notPartOfAPI)"float octave_int_base<unsigned short>::compute_threshold<float>(float, unsigned short)@Base" 3.4.3
  _ZN15octave_null_str13register_typeEv@Base 3.4.3
  _ZN15octave_null_str4t_idE@Base 3.4.3
  _ZN15octave_null_str6c_nameE@Base 3.4.3
@@ -29088,6 +29091,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN3EIGD1Ev@Base 3.4.3
  _ZN3EIGD2Ev@Base 3.4.3
  _ZN3mex14global_memlistE@Base 3.4.3
+# not part of API (not in any .h file)
+ (c++|optional=notPartOfAPI)"mex::malloc(unsigned long)@Base" 3.4.3
  _ZN3mex7cleanupEPv@Base 3.4.3
  _ZN3mex7reallocEPvm@Base 3.4.3
  _ZN3mexD1Ev@Base 3.4.3
@@ -29832,7 +29837,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN6MatrixC1Eii@Base 3.4.3
  _ZN6MatrixC1Eiid@Base 3.4.3
  _ZN6MatrixC1Ev@Base 3.4.3
- _ZN6MatrixC1IdEERK5ArrayIT_E@Base 3.4.3
+# template instantiation
+ (c++|optional=templateInstantiation)"Matrix::Matrix<double>(Array<double> const&)@Base" 3.4.3
  _ZN6MatrixC1IfEERK6MArrayIT_E@Base 3.4.3
  _ZN6MatrixC2Eii@Base 3.4.3
  _ZN6MatrixC2Eiid@Base 3.4.3
@@ -30042,8 +30048,6 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN8propertyD2Ev@Base 3.4.3
  _ZN8propertyaSERKS_@Base 3.4.3
  _ZN8tm_const4initERK11tree_matrix@Base 3.4.3
- _ZN8tm_constD1Ev@Base 3.4.3
- _ZN8tm_constD2Ev@Base 3.4.3
  _ZN9RowVectorD1Ev@Base 3.4.3
  _ZN9RowVectorD2Ev@Base 3.4.3
  _ZN9dir_entryD1Ev@Base 3.4.3
@@ -34483,8 +34487,6 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZNSt11_Deque_baseI12octave_valueSaIS0_EED1Ev@Base 3.4.3
  _ZNSt11_Deque_baseI12octave_valueSaIS0_EED2Ev@Base 3.4.3
  _ZNSt11_Deque_baseI13string_vectorSaIS0_EE17_M_initialize_mapEm@Base 3.4.3
- _ZNSt11_Deque_baseI13string_vectorSaIS0_EED1Ev@Base 3.4.3
- _ZNSt11_Deque_baseI13string_vectorSaIS0_EED2Ev@Base 3.4.3
  _ZNSt11_Deque_baseIN17octave_call_stack14call_stack_eltESaIS1_EE17_M_initialize_mapEm@Base 3.4.3
  _ZNSt11_Deque_baseIP5tokenSaIS1_EE17_M_initialize_mapEm@Base 3.4.3
  _ZNSt11_Deque_baseIP5tokenSaIS1_EED1Ev@Base 3.4.3
@@ -34634,7 +34636,6 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZNSt5dequeI12octave_valueSaIS0_EED2Ev@Base 3.4.3
  _ZNSt5dequeI13string_vectorSaIS0_EE16_M_push_back_auxERKS0_@Base 3.4.3
  _ZNSt5dequeI13string_vectorSaIS0_EE17_M_reallocate_mapEmb@Base 3.4.3
- _ZNSt5dequeI13string_vectorSaIS0_EE19_M_destroy_data_auxESt15_Deque_iteratorIS0_RS0_PS0_ES6_@Base 3.4.3
  _ZNSt5dequeI13string_vectorSaIS0_EED1Ev@Base 3.4.3
  _ZNSt5dequeI13string_vectorSaIS0_EED2Ev@Base 3.4.3
  _ZNSt5dequeIN17octave_call_stack14call_stack_eltESaIS1_EE16_M_push_back_auxERKS1_@Base 3.4.3
@@ -34853,9 +34854,10 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZSt4tanhIfESt7complexIT_ERKS2_@Base 3.4.3
  _ZSt5log10IdESt7complexIT_ERKS2_@Base 3.4.3
  _ZSt5log10IfESt7complexIT_ERKS2_@Base 3.4.3
+# template instantiation
+ (c++|optional=templateInstantiation)"void std::_Destroy<Cell*>(Cell*, Cell*)@Base" 3.4.3
  _ZSteqIcEN9__gnu_cxx11__enable_ifIXsrSt9__is_charIT_E7__valueEbE6__typeERKSbIS3_St11char_traitsIS3_ESaIS3_EESC_@Base 3.4.3
  _ZSteqIcSt11char_traitsIcESaIcEEbRKSbIT_T0_T1_EPKS3_@Base 3.4.3
- _ZStneIcSt11char_traitsIcESaIcEEbRKSbIT_T0_T1_ES8_@Base 3.4.3
  _ZStplIcSt11char_traitsIcESaIcEESbIT_T0_T1_EPKS3_RKS6_@Base 3.4.3
  _ZStplIcSt11char_traitsIcESaIcEESbIT_T0_T1_ERKS6_PKS3_@Base 3.4.3
  _ZStplIcSt11char_traitsIcESaIcEESbIT_T0_T1_ERKS6_S8_@Base 3.4.3
