@@ -1138,11 +1138,14 @@ liboctave.so.0 liboctave0 #MINVER#
  _Z12octave_is_NARKSt7complexIfE@Base 3.4.3
  _Z12octave_is_NAd@Base 3.4.3
  _Z12octave_is_NAf@Base 3.4.3
- _Z12octave_mkdirRKSsj@Base 3.4.3
- _Z12octave_mkdirRKSsjRSs@Base 3.4.3
+ (arch=!kfreebsd-i386 !kfreebsd-amd64)_Z12octave_mkdirRKSsj@Base 3.4.3
+ (arch=!kfreebsd-i386 !kfreebsd-amd64)_Z12octave_mkdirRKSsjRSs@Base 3.4.3
+ (arch=kfreebsd-i386 kfreebsd-amd64)_Z12octave_mkdirRKSst@Base 3.4.3
+ (arch=kfreebsd-i386 kfreebsd-amd64)_Z12octave_mkdirRKSstRSs@Base 3.4.3
  _Z12octave_rmdirRKSs@Base 3.4.3
  _Z12octave_rmdirRKSsRSs@Base 3.4.3
- _Z12octave_umaskj@Base 3.4.3
+ (arch=!kfreebsd-i386 !kfreebsd-amd64)_Z12octave_umaskj@Base 3.4.3
+ (arch=kfreebsd-i386 kfreebsd-amd64)_Z12octave_umaskt@Base 3.4.3
  _Z12read_doublesRSiPd9save_typeibN13oct_mach_info12float_formatE@Base 3.4.3
  _Z12write_floatsRSoPKf9save_typei@Base 3.4.3
  _Z13compute_indexRK5ArrayIiERK10dim_vector@Base 3.4.3
@@ -1669,8 +1672,10 @@ liboctave.so.0 liboctave0 #MINVER#
  _Z13mx_inline_sumIdEvPKT_PS0_iii@Base 3.4.3
  _Z13mx_inline_sumIfEvPKT_PS0_iii@Base 3.4.3
  _Z13octave_getcwdv@Base 3.4.3
- _Z13octave_mkfifoRKSsj@Base 3.4.3
- _Z13octave_mkfifoRKSsjRSs@Base 3.4.3
+ (arch=!kfreebsd-i386 !kfreebsd-amd64)_Z13octave_mkfifoRKSsj@Base 3.4.3
+ (arch=!kfreebsd-i386 !kfreebsd-amd64)_Z13octave_mkfifoRKSsjRSs@Base 3.4.3
+ (arch=kfreebsd-i386 kfreebsd-amd64)_Z13octave_mkfifoRKSst@Base 3.4.3
+ (arch=kfreebsd-i386 kfreebsd-amd64)_Z13octave_mkfifoRKSstRSs@Base 3.4.3
  _Z13octave_putenvRKSsS0_@Base 3.4.3
  _Z13octave_renameRKSsS0_@Base 3.4.3
  _Z13octave_renameRKSsS0_RSs@Base 3.4.3
@@ -7353,13 +7358,20 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN14FloatRowVector4fillEf@Base 3.4.3
  _ZN14FloatRowVector4fillEfii@Base 3.4.3
  _ZN14FloatRowVector6insertERKS_i@Base 3.4.3
- _ZN14base_file_stat6is_blkEj@Base 3.4.3
- _ZN14base_file_stat6is_chrEj@Base 3.4.3
- _ZN14base_file_stat6is_dirEj@Base 3.4.3
- _ZN14base_file_stat6is_lnkEj@Base 3.4.3
- _ZN14base_file_stat6is_regEj@Base 3.4.3
- _ZN14base_file_stat7is_fifoEj@Base 3.4.3
- _ZN14base_file_stat7is_sockEj@Base 3.4.3
+ (arch=!kfreebsd-i386 !kfreebsd-amd64)_ZN14base_file_stat6is_blkEj@Base 3.4.3
+ (arch=!kfreebsd-i386 !kfreebsd-amd64)_ZN14base_file_stat6is_chrEj@Base 3.4.3
+ (arch=!kfreebsd-i386 !kfreebsd-amd64)_ZN14base_file_stat6is_dirEj@Base 3.4.3
+ (arch=!kfreebsd-i386 !kfreebsd-amd64)_ZN14base_file_stat6is_lnkEj@Base 3.4.3
+ (arch=!kfreebsd-i386 !kfreebsd-amd64)_ZN14base_file_stat6is_regEj@Base 3.4.3
+ (arch=!kfreebsd-i386 !kfreebsd-amd64)_ZN14base_file_stat7is_fifoEj@Base 3.4.3
+ (arch=!kfreebsd-i386 !kfreebsd-amd64)_ZN14base_file_stat7is_sockEj@Base 3.4.3
+ (arch=kfreebsd-i386 kfreebsd-amd64)_ZN14base_file_stat6is_blkEt@Base 3.4.3
+ (arch=kfreebsd-i386 kfreebsd-amd64)_ZN14base_file_stat6is_chrEt@Base 3.4.3
+ (arch=kfreebsd-i386 kfreebsd-amd64)_ZN14base_file_stat6is_dirEt@Base 3.4.3
+ (arch=kfreebsd-i386 kfreebsd-amd64)_ZN14base_file_stat6is_lnkEt@Base 3.4.3
+ (arch=kfreebsd-i386 kfreebsd-amd64)_ZN14base_file_stat6is_regEt@Base 3.4.3
+ (arch=kfreebsd-i386 kfreebsd-amd64)_ZN14base_file_stat7is_fifoEt@Base 3.4.3
+ (arch=kfreebsd-i386 kfreebsd-amd64)_ZN14base_file_stat7is_sockEt@Base 3.4.3
  _ZN14base_file_stat8is_newerERKSsRK11octave_time@Base 3.4.3
  _ZN14base_file_statD0Ev@Base 3.4.3
  _ZN14base_file_statD1Ev@Base 3.4.3
