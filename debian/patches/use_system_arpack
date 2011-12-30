@@ -1,4 +1,4 @@
-Description: Use libarpack-dev as packaged in Debian
+Description: Use libarpack2-dev as packaged in Debian
  The patch removes arpack from the original sources, just to be sure that we
  are really using the system library. 
  . 
@@ -32,11 +32,11 @@ Author: Sébastien Villemot <sebastien.villemot@ens.fr>
  AC_SUBST(GL2PS_LIBS)
  
 +# System arpack
-+save_LIBS="$LIBS"
-+AC_CHECK_LIB([arpack], [cgetv0])
++AC_CHECK_LIB([arpack], [cgetv0_],
++		 [AC_MSG_NOTICE([System arpack was found])],
++		 [AC_MSG_ERROR([Unable to find arpack])])
 +ARPACK_LIBS="-larpack"
 +AC_SUBST(ARPACK_LIBS)
-+LIBS="$save_LIBS"
  
  # ----------------------------------------------------------------------
  
