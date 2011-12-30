@@ -12,7 +12,6 @@ libcruft.so.0 liboctave0 #MINVER#
  algams_@Base 3.4.3
  alngam_@Base 3.4.3
  alnrel_@Base 3.4.3
- arscnd_@Base 3.4.3
  asinh_@Base 3.4.3
  asnprintf@Base 3.4.3
  atanh_@Base 3.4.3
@@ -53,19 +52,10 @@ libcruft.so.0 liboctave0 #MINVER#
  cconv2o_@Base 3.4.3
  cdotc3_@Base 3.4.3
  cfode_@Base 3.4.3
- cgetv0_@Base 3.4.3
  chdir_long@Base 3.4.3
  ckscl_@Base 3.4.3
  cmatm3_@Base 3.4.3
  cmlri_@Base 3.4.3
- cmout_@Base 3.4.3
- cnaitr_@Base 3.4.3
- cnapps_@Base 3.4.3
- cnaup2_@Base 3.4.3
- cnaupd_@Base 3.4.3
- cneigh_@Base 3.4.3
- cneupd_@Base 3.4.3
- cngets_@Base 3.4.3
  crati_@Base 3.4.3
  crcrot1_@Base 3.4.3
  crcrot2_@Base 3.4.3
@@ -76,8 +66,6 @@ libcruft.so.0 liboctave0 #MINVER#
  cseri_@Base 3.4.3
  csevl_@Base 3.4.3
  cshch_@Base 3.4.3
- csortc_@Base 3.4.3
- cstatn_@Base 3.4.3
  cuchk_@Base 3.4.3
  cunhj_@Base 3.4.3
  cuni1_@Base 3.4.3
@@ -91,7 +79,6 @@ libcruft.so.0 liboctave0 #MINVER#
  current_liboctave_error_with_id_handler@Base 3.4.3
  current_liboctave_warning_handler@Base 3.4.3
  current_liboctave_warning_with_id_handler@Base 3.4.3
- cvout_@Base 3.4.3
  cwrsk_@Base 3.4.3
  d1mach_@Base 3.4.3
  d9gmit_@Base 3.4.3
@@ -124,7 +111,6 @@ libcruft.so.0 liboctave0 #MINVER#
  ddot3_@Base 3.4.3
  ddstp_@Base 3.4.3
  ddwnrm_@Base 3.4.3
- debug_@Base 3.4.3
  derf_@Base 3.4.3
  derfc_@Base 3.4.3
  dfnrmd_@Base 3.4.3
@@ -139,13 +125,11 @@ libcruft.so.0 liboctave0 #MINVER#
  dgengam_@Base 3.4.3
  dgennor_@Base 3.4.3
  dgenunf_@Base 3.4.3
- dgetv0_@Base 3.4.3
  dhels_@Base 3.4.3
  dheqr_@Base 3.4.3
  dignpoi_@Base 3.4.3
  dinvwt_@Base 3.4.3
  dir_len@Base 3.4.3
- dlaqrb_@Base 3.4.3
  dlbeta_@Base 3.4.3
  dlgams_@Base 3.4.3
  dlinsd_@Base 3.4.3
@@ -155,17 +139,8 @@ libcruft.so.0 liboctave0 #MINVER#
  dlsode_@Base 3.4.3
  dmatd_@Base 3.4.3
  dmatm3_@Base 3.4.3
- dmout_@Base 3.4.3
- dnaitr_@Base 3.4.3
- dnapps_@Base 3.4.3
- dnaup2_@Base 3.4.3
- dnaupd_@Base 3.4.3
- dnconv_@Base 3.4.3
  dnedd_@Base 3.4.3
  dnedk_@Base 3.4.3
- dneigh_@Base 3.4.3
- dneupd_@Base 3.4.3
- dngets_@Base 3.4.3
  dnsd_@Base 3.4.3
  dnsid_@Base 3.4.3
  dnsik_@Base 3.4.3
@@ -183,27 +158,12 @@ libcruft.so.0 liboctave0 #MINVER#
  dqpsrt_@Base 3.4.3
  drchek_@Base 3.4.3
  droots_@Base 3.4.3
- dsaitr_@Base 3.4.3
- dsapps_@Base 3.4.3
- dsaup2_@Base 3.4.3
- dsaupd_@Base 3.4.3
- dsconv_@Base 3.4.3
- dseigt_@Base 3.4.3
- dsesrt_@Base 3.4.3
- dseupd_@Base 3.4.3
- dsgets_@Base 3.4.3
  dslvd_@Base 3.4.3
  dslvk_@Base 3.4.3
- dsortc_@Base 3.4.3
- dsortr_@Base 3.4.3
  dspigm_@Base 3.4.3
- dstatn_@Base 3.4.3
- dstats_@Base 3.4.3
- dstqrb_@Base 3.4.3
  dsubsp_@Base 3.4.3
  dup_cloexec@Base 3.4.3
  dup_safer@Base 3.4.3
- dvout_@Base 3.4.3
  dyypnw_@Base 3.4.3
  erf_@Base 3.4.3
  erfc_@Base 3.4.3
@@ -242,8 +202,6 @@ libcruft.so.0 liboctave0 #MINVER#
  gl_sockets_startup@Base 3.4.3
  globe_@Base 3.4.3
  i1mach_@Base 3.4.3
- icnteq_@Base 3.4.3
- icopy_@Base 3.4.3
  ignbin_@Base 3.4.3
  ignlgi_@Base 3.4.3
  ignnbn_@Base 3.4.3
@@ -254,9 +212,6 @@ libcruft.so.0 liboctave0 #MINVER#
  inits_@Base 3.4.3
  inrgcm_@Base 3.4.3
  intdy_@Base 3.4.3
- iset_@Base 3.4.3
- iswap_@Base 3.4.3
- ivout_@Base 3.4.3
  ixsav_@Base 3.4.3
  j4save_@Base 3.4.3
  last_component@Base 3.4.3
@@ -350,48 +305,21 @@ libcruft.so.0 liboctave0 #MINVER#
  sexchqz_@Base 3.4.3
  sexpo_@Base 3.4.3
  sgamma_@Base 3.4.3
- sgetv0_@Base 3.4.3
  sintdy_@Base 3.4.3
- slaqrb_@Base 3.4.3
  sls001_@Base 3.4.3
  slsode_@Base 3.4.3
  smatm3_@Base 3.4.3
- smout_@Base 3.4.3
- snaitr_@Base 3.4.3
- snapps_@Base 3.4.3
- snaup2_@Base 3.4.3
- snaupd_@Base 3.4.3
- snconv_@Base 3.4.3
- sneigh_@Base 3.4.3
- sneupd_@Base 3.4.3
- sngets_@Base 3.4.3
  snorm_@Base 3.4.3
  solsy_@Base 3.4.3
  sprepj_@Base 3.4.3
- ssaitr_@Base 3.4.3
- ssapps_@Base 3.4.3
- ssaup2_@Base 3.4.3
- ssaupd_@Base 3.4.3
- ssconv_@Base 3.4.3
- sseigt_@Base 3.4.3
- ssesrt_@Base 3.4.3
- sseupd_@Base 3.4.3
- ssgets_@Base 3.4.3
  ssolsy_@Base 3.4.3
- ssortc_@Base 3.4.3
- ssortr_@Base 3.4.3
- sstatn_@Base 3.4.3
- sstats_@Base 3.4.3
  sstode_@Base 3.4.3
- sstqrb_@Base 3.4.3
  ssubsp_@Base 3.4.3
  stode_@Base 3.4.3
  strip_trailing_slashes@Base 3.4.3
  strmode@Base 3.4.3
  strnlen1@Base 3.4.3
  svnorm_@Base 3.4.3
- svout_@Base 3.4.3
- timing_@Base 3.4.3
  vasnprintf@Base 3.4.3
  vnorm_@Base 3.4.3
  xacosh_@Base 3.4.3
@@ -467,19 +395,10 @@ libcruft.so.0 liboctave0 #MINVER#
  zdconv2o_@Base 3.4.3
  zdiv_@Base 3.4.3
  zdotc3_@Base 3.4.3
- zgetv0_@Base 3.4.3
  zkscl_@Base 3.4.3
  zmatm3_@Base 3.4.3
  zmlri_@Base 3.4.3
  zmlt_@Base 3.4.3
- zmout_@Base 3.4.3
- znaitr_@Base 3.4.3
- znapps_@Base 3.4.3
- znaup2_@Base 3.4.3
- znaupd_@Base 3.4.3
- zneigh_@Base 3.4.3
- zneupd_@Base 3.4.3
- zngets_@Base 3.4.3
  zrati_@Base 3.4.3
  zrcrot1_@Base 3.4.3
  zrcrot2_@Base 3.4.3
@@ -487,8 +406,6 @@ libcruft.so.0 liboctave0 #MINVER#
  zs1s2_@Base 3.4.3
  zseri_@Base 3.4.3
  zshch_@Base 3.4.3
- zsortc_@Base 3.4.3
- zstatn_@Base 3.4.3
  zuchk_@Base 3.4.3
  zunhj_@Base 3.4.3
  zuni1_@Base 3.4.3
@@ -497,7 +414,6 @@ libcruft.so.0 liboctave0 #MINVER#
  zunk1_@Base 3.4.3
  zunk2_@Base 3.4.3
  zuoik_@Base 3.4.3
- zvout_@Base 3.4.3
  zwrsk_@Base 3.4.3
 liboctave.so.0 liboctave0 #MINVER#
  _Z10bsxfun_addRK10intNDArrayI10octave_intIaEES4_@Base 3.4.3
