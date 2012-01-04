@@ -7656,8 +7656,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN17octave_base_mutexD0Ev@Base 3.4.3
  _ZN17octave_base_mutexD1Ev@Base 3.4.3
  _ZN17octave_base_mutexD2Ev@Base 3.4.3
- _ZN17rec_resize_helperC1ERK10dim_vectorS2_@Base 3.4.3
- _ZN17rec_resize_helperC2ERK10dim_vectorS2_@Base 3.4.3
+# not part of API (private class)
+ (c++|regex|optional=notPartOfAPI)".*rec_resize_helper.*@Base" 3.4.3
  _ZN18FloatComplexMatrix4fillERKSt7complexIfE@Base 3.4.3
  _ZN18FloatComplexMatrix4fillERKSt7complexIfEiiii@Base 3.4.3
  _ZN18FloatComplexMatrix4fillEf@Base 3.4.3
@@ -11609,25 +11609,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK17FloatColumnVector9transposeEv@Base 3.4.3
  _ZNK17FloatColumnVectoreqERKS_@Base 3.4.3
  _ZNK17FloatColumnVectorneERKS_@Base 3.4.3
- _ZNK17rec_resize_helper14do_resize_fillI10idx_vectorEEvPKT_PS2_RS3_i@Base 3.4.3
- _ZNK17rec_resize_helper14do_resize_fillI10octave_intIaEEEvPKT_PS3_RS4_i@Base 3.4.3
- _ZNK17rec_resize_helper14do_resize_fillI10octave_intIhEEEvPKT_PS3_RS4_i@Base 3.4.3
- _ZNK17rec_resize_helper14do_resize_fillI10octave_intIiEEEvPKT_PS3_RS4_i@Base 3.4.3
- _ZNK17rec_resize_helper14do_resize_fillI10octave_intIjEEEvPKT_PS3_RS4_i@Base 3.4.3
- _ZNK17rec_resize_helper14do_resize_fillI10octave_intIsEEEvPKT_PS3_RS4_i@Base 3.4.3
- _ZNK17rec_resize_helper14do_resize_fillI10octave_intItEEEvPKT_PS3_RS4_i@Base 3.4.3
- _ZNK17rec_resize_helper14do_resize_fillIPvEEvPKT_PS2_RS3_i@Base 3.4.3
- _ZNK17rec_resize_helper14do_resize_fillISsEEvPKT_PS1_RS2_i@Base 3.4.3
- _ZNK17rec_resize_helper14do_resize_fillISt7complexIdEEEvPKT_PS3_RS4_i@Base 3.4.3
- _ZNK17rec_resize_helper14do_resize_fillISt7complexIfEEEvPKT_PS3_RS4_i@Base 3.4.3
- _ZNK17rec_resize_helper14do_resize_fillIbEEvPKT_PS1_RS2_i@Base 3.4.3
- _ZNK17rec_resize_helper14do_resize_fillIcEEvPKT_PS1_RS2_i@Base 3.4.3
- _ZNK17rec_resize_helper14do_resize_fillIdEEvPKT_PS1_RS2_i@Base 3.4.3
- _ZNK17rec_resize_helper14do_resize_fillIfEEvPKT_PS1_RS2_i@Base 3.4.3
- _ZNK17rec_resize_helper14do_resize_fillIiEEvPKT_PS1_RS2_i@Base 3.4.3
- _ZNK17rec_resize_helper14do_resize_fillIlEEvPKT_PS1_RS2_i@Base 3.4.3
- _ZNK17rec_resize_helper14do_resize_fillIsEEvPKT_PS1_RS2_i@Base 3.4.3
- _ZNK17rec_resize_helper14do_resize_fillIxEEvPKT_PS1_RS2_i@Base 3.4.3
  _ZNK18FloatComplexMatrix10column_maxER5ArrayIiE@Base 3.4.3
  _ZNK18FloatComplexMatrix10column_maxEv@Base 3.4.3
  _ZNK18FloatComplexMatrix10column_minER5ArrayIiE@Base 3.4.3
@@ -19584,8 +19565,6 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN17opengl_tesselatorD0Ev@Base 3.4.3
  _ZN17opengl_tesselatorD1Ev@Base 3.4.3
  _ZN17opengl_tesselatorD2Ev@Base 3.4.3
- _ZN17rec_resize_helperC1ERK10dim_vectorS2_@Base 3.4.3
- _ZN17rec_resize_helperC2ERK10dim_vectorS2_@Base 3.4.3
  _ZN17scanf_format_list15add_elt_to_listEibccRiRKSs@Base 3.4.3
  _ZN17scanf_format_list23all_numeric_conversionsEv@Base 3.4.3
  _ZN17scanf_format_list25all_character_conversionsEv@Base 3.4.3
@@ -23568,10 +23547,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZNK17octave_value_list6spliceEiiRKS_@Base 3.4.3
  _ZNK17octave_value_list8any_cellEv@Base 3.4.3
  _ZNK17octave_value_list9make_argvERKSs@Base 3.4.3
- _ZNK17rec_resize_helper14do_resize_fillI12octave_valueEEvPKT_PS2_RS3_i@Base 3.4.3
- _ZNK17rec_resize_helper14do_resize_fillI13octave_streamEEvPKT_PS2_RS3_i@Base 3.4.3
- _ZNK17rec_resize_helper14do_resize_fillIP16scanf_format_eltEEvPKT_PS3_RS4_i@Base 3.4.3
- _ZNK17rec_resize_helper14do_resize_fillIP17printf_format_eltEEvPKT_PS3_RS4_i@Base 3.4.3
+# not part of API (private class)
+ (c++|regex|optional=notPartOfAPI)".*rec_resize_helper.*@Base" 3.4.3
  _ZNK17scanf_format_list7printmeEv@Base 3.4.3
  _ZNK18FloatComplexMatrix9transposeEv@Base 3.4.3
  _ZNK18octave_base_matrixI10intNDArrayI10octave_intIaEEE10full_valueEv@Base 3.4.3

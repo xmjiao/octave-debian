@@ -6615,8 +6615,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK10octave_intIyEpsEv@Base 3.4.3
  _ZNK10octave_intIyErmERKS0_@Base 3.4.3
  _ZNK10octave_intIyErsERKi@Base 3.4.3
- _ZNK17rec_resize_helper14do_resize_fillI10octave_intIxEEEvPKT_PS3_RS4_i@Base 3.4.3
- _ZNK17rec_resize_helper14do_resize_fillI10octave_intIyEEEvPKT_PS3_RS4_i@Base 3.4.3
  _ZNK5ArrayI10octave_intIxEE10print_infoERSoRKSs@Base 3.4.3
  _ZNK5ArrayI10octave_intIxEE11fortran_vecEv@Base 3.4.3
  _ZNK5ArrayI10octave_intIxEE11nth_elementERK10idx_vectori@Base 3.4.3
