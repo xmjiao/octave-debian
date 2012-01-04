@@ -5494,6 +5494,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN11FloatMatrixC1ERK14FloatRowVector@Base 3.4.3
  _ZN11FloatMatrixC1ERK15FloatDiagMatrix@Base 3.4.3
  _ZN11FloatMatrixC1ERK17FloatColumnVector@Base 3.4.3
+# template instantiation
+ (c++|regex|optional=templateInstantiation)"FloatMatrix::FloatMatrix<.*@Base" 3.4.3
  _ZN11FloatMatrixC2ERK10PermMatrix@Base 3.4.3
  _ZN11FloatMatrixC2ERK10boolMatrix@Base 3.4.3
  _ZN11FloatMatrixC2ERK10charMatrix@Base 3.4.3
