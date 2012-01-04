@@ -7702,27 +7702,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN18FloatComplexMatrixpLERK11FloatMatrix@Base 3.4.3
  _ZN18FloatComplexMatrixpLERK15FloatDiagMatrix@Base 3.4.3
  _ZN18FloatComplexMatrixpLERK22FloatComplexDiagMatrix@Base 3.4.3
- _ZN18rec_permute_helper9blk_transI10idx_vectorEEPT_PKS2_S3_ii@Base 3.4.3
- _ZN18rec_permute_helper9blk_transI10octave_intIaEEEPT_PKS3_S4_ii@Base 3.4.3
- _ZN18rec_permute_helper9blk_transI10octave_intIhEEEPT_PKS3_S4_ii@Base 3.4.3
- _ZN18rec_permute_helper9blk_transI10octave_intIiEEEPT_PKS3_S4_ii@Base 3.4.3
- _ZN18rec_permute_helper9blk_transI10octave_intIjEEEPT_PKS3_S4_ii@Base 3.4.3
- _ZN18rec_permute_helper9blk_transI10octave_intIsEEEPT_PKS3_S4_ii@Base 3.4.3
- _ZN18rec_permute_helper9blk_transI10octave_intItEEEPT_PKS3_S4_ii@Base 3.4.3
- _ZN18rec_permute_helper9blk_transIPvEEPT_PKS2_S3_ii@Base 3.4.3
- _ZN18rec_permute_helper9blk_transISsEEPT_PKS1_S2_ii@Base 3.4.3
- _ZN18rec_permute_helper9blk_transISt7complexIdEEEPT_PKS3_S4_ii@Base 3.4.3
- _ZN18rec_permute_helper9blk_transISt7complexIfEEEPT_PKS3_S4_ii@Base 3.4.3
- _ZN18rec_permute_helper9blk_transIbEEPT_PKS1_S2_ii@Base 3.4.3
- _ZN18rec_permute_helper9blk_transIcEEPT_PKS1_S2_ii@Base 3.4.3
- _ZN18rec_permute_helper9blk_transIdEEPT_PKS1_S2_ii@Base 3.4.3
- _ZN18rec_permute_helper9blk_transIfEEPT_PKS1_S2_ii@Base 3.4.3
- _ZN18rec_permute_helper9blk_transIiEEPT_PKS1_S2_ii@Base 3.4.3
- _ZN18rec_permute_helper9blk_transIlEEPT_PKS1_S2_ii@Base 3.4.3
- _ZN18rec_permute_helper9blk_transIsEEPT_PKS1_S2_ii@Base 3.4.3
- _ZN18rec_permute_helper9blk_transIxEEPT_PKS1_S2_ii@Base 3.4.3
- _ZN18rec_permute_helperC1ERK10dim_vectorRK5ArrayIiE@Base 3.4.3
- _ZN18rec_permute_helperC2ERK10dim_vectorRK5ArrayIiE@Base 3.4.3
+# not part of API (private class)
+ (c++|regex|optional=notPartOfAPI)".*rec_permute_helper.*@Base" 3.4.3
  _ZN19ComplexColumnVector4fillERKSt7complexIdE@Base 3.4.3
  _ZN19ComplexColumnVector4fillERKSt7complexIdEii@Base 3.4.3
  _ZN19ComplexColumnVector4fillEd@Base 3.4.3
@@ -11766,25 +11747,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK18FloatComplexMatrixeqERKS_@Base 3.4.3
  _ZNK18FloatComplexMatrixneERKS_@Base 3.4.3
  _ZNK18FloatComplexMatrixntEv@Base 3.4.3
- _ZNK18rec_permute_helper10do_permuteI10idx_vectorEEPT_PKS2_S3_i@Base 3.4.3
- _ZNK18rec_permute_helper10do_permuteI10octave_intIaEEEPT_PKS3_S4_i@Base 3.4.3
- _ZNK18rec_permute_helper10do_permuteI10octave_intIhEEEPT_PKS3_S4_i@Base 3.4.3
- _ZNK18rec_permute_helper10do_permuteI10octave_intIiEEEPT_PKS3_S4_i@Base 3.4.3
- _ZNK18rec_permute_helper10do_permuteI10octave_intIjEEEPT_PKS3_S4_i@Base 3.4.3
- _ZNK18rec_permute_helper10do_permuteI10octave_intIsEEEPT_PKS3_S4_i@Base 3.4.3
- _ZNK18rec_permute_helper10do_permuteI10octave_intItEEEPT_PKS3_S4_i@Base 3.4.3
- _ZNK18rec_permute_helper10do_permuteIPvEEPT_PKS2_S3_i@Base 3.4.3
- _ZNK18rec_permute_helper10do_permuteISsEEPT_PKS1_S2_i@Base 3.4.3
- _ZNK18rec_permute_helper10do_permuteISt7complexIdEEEPT_PKS3_S4_i@Base 3.4.3
- _ZNK18rec_permute_helper10do_permuteISt7complexIfEEEPT_PKS3_S4_i@Base 3.4.3
- _ZNK18rec_permute_helper10do_permuteIbEEPT_PKS1_S2_i@Base 3.4.3
- _ZNK18rec_permute_helper10do_permuteIcEEPT_PKS1_S2_i@Base 3.4.3
- _ZNK18rec_permute_helper10do_permuteIdEEPT_PKS1_S2_i@Base 3.4.3
- _ZNK18rec_permute_helper10do_permuteIfEEPT_PKS1_S2_i@Base 3.4.3
- _ZNK18rec_permute_helper10do_permuteIiEEPT_PKS1_S2_i@Base 3.4.3
- _ZNK18rec_permute_helper10do_permuteIlEEPT_PKS1_S2_i@Base 3.4.3
- _ZNK18rec_permute_helper10do_permuteIsEEPT_PKS1_S2_i@Base 3.4.3
- _ZNK18rec_permute_helper10do_permuteIxEEPT_PKS1_S2_i@Base 3.4.3
  _ZNK19ComplexColumnVector3absEv@Base 3.4.3
  _ZNK19ComplexColumnVector3maxEv@Base 3.4.3
  _ZNK19ComplexColumnVector3minEv@Base 3.4.3
@@ -14605,25 +14567,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZZN15octave_int_baseItE12convert_realIfEEtRKT_E5thmin@Base 3.4.3
  _ZZN16sparse_base_cholI12SparseMatrixdS0_E20sparse_base_chol_rep4initERKS0_bE3tmp@Base 3.4.3
  _ZZN16sparse_base_cholI19SparseComplexMatrixSt7complexIdE12SparseMatrixE20sparse_base_chol_rep4initERKS0_bE3tmp@Base 3.4.3
- _ZZN18rec_permute_helper9blk_transI10idx_vectorEEPT_PKS2_S3_iiE1m@Base 3.4.3
- _ZZN18rec_permute_helper9blk_transI10octave_intIaEEEPT_PKS3_S4_iiE1m@Base 3.4.3
- _ZZN18rec_permute_helper9blk_transI10octave_intIhEEEPT_PKS3_S4_iiE1m@Base 3.4.3
- _ZZN18rec_permute_helper9blk_transI10octave_intIiEEEPT_PKS3_S4_iiE1m@Base 3.4.3
- _ZZN18rec_permute_helper9blk_transI10octave_intIjEEEPT_PKS3_S4_iiE1m@Base 3.4.3
- _ZZN18rec_permute_helper9blk_transI10octave_intIsEEEPT_PKS3_S4_iiE1m@Base 3.4.3
- _ZZN18rec_permute_helper9blk_transI10octave_intItEEEPT_PKS3_S4_iiE1m@Base 3.4.3
- _ZZN18rec_permute_helper9blk_transIPvEEPT_PKS2_S3_iiE1m@Base 3.4.3
- _ZZN18rec_permute_helper9blk_transISsEEPT_PKS1_S2_iiE1m@Base 3.4.3
- _ZZN18rec_permute_helper9blk_transISt7complexIdEEEPT_PKS3_S4_iiE1m@Base 3.4.3
- _ZZN18rec_permute_helper9blk_transISt7complexIfEEEPT_PKS3_S4_iiE1m@Base 3.4.3
- _ZZN18rec_permute_helper9blk_transIbEEPT_PKS1_S2_iiE1m@Base 3.4.3
- _ZZN18rec_permute_helper9blk_transIcEEPT_PKS1_S2_iiE1m@Base 3.4.3
- _ZZN18rec_permute_helper9blk_transIdEEPT_PKS1_S2_iiE1m@Base 3.4.3
- _ZZN18rec_permute_helper9blk_transIfEEPT_PKS1_S2_iiE1m@Base 3.4.3
- _ZZN18rec_permute_helper9blk_transIiEEPT_PKS1_S2_iiE1m@Base 3.4.3
- _ZZN18rec_permute_helper9blk_transIlEEPT_PKS1_S2_iiE1m@Base 3.4.3
- _ZZN18rec_permute_helper9blk_transIsEEPT_PKS1_S2_iiE1m@Base 3.4.3
- _ZZN18rec_permute_helper9blk_transIxEEPT_PKS1_S2_iiE1m@Base 3.4.3
  _ZZN19octave_fftw_planner11create_planEi10dim_vectoriiiPKdPSt7complexIdEE5dummy@Base 3.4.3
  _ZZN19octave_fftw_planner11create_planEii10dim_vectoriiiPKSt7complexIdEPS2_E5dummy@Base 3.4.3
  _ZZN25octave_float_fftw_planner11create_planEi10dim_vectoriiiPKfPSt7complexIfEE5dummy@Base 3.4.3
@@ -20309,12 +20252,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN18printf_value_cache9int_valueEv@Base 3.4.3
  _ZN18printf_value_cacheD1Ev@Base 3.4.3
  _ZN18printf_value_cacheD2Ev@Base 3.4.3
- _ZN18rec_permute_helper9blk_transI12octave_valueEEPT_PKS2_S3_ii@Base 3.4.3
- _ZN18rec_permute_helper9blk_transI13octave_streamEEPT_PKS2_S3_ii@Base 3.4.3
- _ZN18rec_permute_helper9blk_transIP16scanf_format_eltEEPT_PKS3_S4_ii@Base 3.4.3
- _ZN18rec_permute_helper9blk_transIP17printf_format_eltEEPT_PKS3_S4_ii@Base 3.4.3
- _ZN18rec_permute_helperC1ERK10dim_vectorRK5ArrayIiE@Base 3.4.3
- _ZN18rec_permute_helperC2ERK10dim_vectorRK5ArrayIiE@Base 3.4.3
+# not part of API (private class)
+ (c++|regex|optional=notPartOfAPI)".*rec_permute_helper.*@Base" 3.4.3
  _ZN18tree_argument_list11lvalue_listEv@Base 3.4.3
  _ZN18tree_argument_list23convert_to_const_vectorEPK12octave_value@Base 3.4.3
  _ZN18tree_argument_list6acceptER11tree_walker@Base 3.4.3
@@ -24756,10 +24695,6 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZNK18octave_user_script7type_idEv@Base 3.4.3
  _ZNK18octave_user_script9type_nameEv@Base 3.4.3
  _ZNK18printf_format_list7printmeEv@Base 3.4.3
- _ZNK18rec_permute_helper10do_permuteI12octave_valueEEPT_PKS2_S3_i@Base 3.4.3
- _ZNK18rec_permute_helper10do_permuteI13octave_streamEEPT_PKS2_S3_i@Base 3.4.3
- _ZNK18rec_permute_helper10do_permuteIP16scanf_format_eltEEPT_PKS3_S4_i@Base 3.4.3
- _ZNK18rec_permute_helper10do_permuteIP17printf_format_eltEEPT_PKS3_S4_i@Base 3.4.3
  _ZNK18tree_argument_list13get_arg_namesEv@Base 3.4.3
  _ZNK18tree_argument_list13has_magic_endEv@Base 3.4.3
  _ZNK18tree_argument_list25all_elements_are_constantEv@Base 3.4.3
@@ -27844,10 +27779,6 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZZN15octave_int_baseItE12convert_realIdEEtRKT_E5thmin@Base 3.4.3
  _ZZN15octave_int_baseItE12convert_realIfEEtRKT_E5thmax@Base 3.4.3
  _ZZN15octave_int_baseItE12convert_realIfEEtRKT_E5thmin@Base 3.4.3
- _ZZN18rec_permute_helper9blk_transI12octave_valueEEPT_PKS2_S3_iiE1m@Base 3.4.3
- _ZZN18rec_permute_helper9blk_transI13octave_streamEEPT_PKS2_S3_iiE1m@Base 3.4.3
- _ZZN18rec_permute_helper9blk_transIP16scanf_format_eltEEPT_PKS3_S4_iiE1m@Base 3.4.3
- _ZZN18rec_permute_helper9blk_transIP17printf_format_eltEEPT_PKS3_S4_iiE1m@Base 3.4.3
  _ZZN20base_graphics_object14get_propertiesEvE10properties@Base 3.4.3
  _ZZN5ArrayI12octave_valueE17resize_fill_valueEvE4zero@Base 3.4.3
  _ZZN5ArrayI12octave_valueE7resize1EiRKS0_E15max_stack_chunk@Base 3.4.3
