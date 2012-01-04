@@ -6617,12 +6617,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK10octave_intIyEpsEv@Base 3.4.3
  _ZNK10octave_intIyErmERKS0_@Base 3.4.3
  _ZNK10octave_intIyErsERKi@Base 3.4.3
- _ZNK16rec_index_helper7do_fillI10octave_intIxEEEvRKT_PS3_i@Base 3.4.3
- _ZNK16rec_index_helper7do_fillI10octave_intIyEEEvRKT_PS3_i@Base 3.4.3
- _ZNK16rec_index_helper8do_indexI10octave_intIxEEEPT_PKS3_S4_i@Base 3.4.3
- _ZNK16rec_index_helper8do_indexI10octave_intIyEEEPT_PKS3_S4_i@Base 3.4.3
- _ZNK16rec_index_helper9do_assignI10octave_intIxEEEPKT_S5_PS3_i@Base 3.4.3
- _ZNK16rec_index_helper9do_assignI10octave_intIyEEEPKT_S5_PS3_i@Base 3.4.3
  _ZNK17rec_resize_helper14do_resize_fillI10octave_intIxEEEvPKT_PS3_RS4_i@Base 3.4.3
  _ZNK17rec_resize_helper14do_resize_fillI10octave_intIyEEEvPKT_PS3_RS4_i@Base 3.4.3
  _ZNK18rec_permute_helper10do_permuteI10octave_intIxEEEPT_PKS3_S4_i@Base 3.4.3

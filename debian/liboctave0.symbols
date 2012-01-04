@@ -7568,8 +7568,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN16octave_localtimeD0Ev@Base 3.4.3
  _ZN16octave_localtimeD1Ev@Base 3.4.3
  _ZN16octave_localtimeD2Ev@Base 3.4.3
- _ZN16rec_index_helperC1ERK10dim_vectorRK5ArrayI10idx_vectorE@Base 3.4.3
- _ZN16rec_index_helperC2ERK10dim_vectorRK5ArrayI10idx_vectorE@Base 3.4.3
+# not part of API (private class)
+ (c++|regex|optional=notPartOfAPI)".*rec_index_helper.*@Base" 3.4.3
  _ZN16sparse_base_cholI12SparseMatrixdS0_E20sparse_base_chol_rep10drop_zerosEPK21cholmod_sparse_struct@Base 3.4.3
  _ZN16sparse_base_cholI12SparseMatrixdS0_E20sparse_base_chol_rep4initERKS0_b@Base 3.4.3
  _ZN16sparse_base_cholI12SparseMatrixdS0_E20sparse_base_chol_repC1ERKS0_Rib@Base 3.4.3
@@ -19390,7 +19390,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN16octave_user_codeD1Ev@Base 3.4.3
  _ZN16octave_user_codeD2Ev@Base 3.4.3
  _ZN16rec_index_helperC1ERK10dim_vectorRK5ArrayI10idx_vectorE@Base 3.4.3
- _ZN16rec_index_helperC2ERK10dim_vectorRK5ArrayI10idx_vectorE@Base 3.4.3
+# not part of API (private class)
+ (c++|regex|optional=notPartOfAPI)".*rec_index_helper.*@Base" 3.4.3
  _ZN16symbol_info_list11symbol_infoC1ERKN12symbol_table13symbol_recordERKSsRK12octave_value@Base 3.4.3
  _ZN16symbol_info_list11symbol_infoC2ERKN12symbol_table13symbol_recordERKSsRK12octave_value@Base 3.4.3
  _ZN16symbol_info_list11symbol_infoD1Ev@Base 3.4.3
