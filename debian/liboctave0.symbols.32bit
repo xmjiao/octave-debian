@@ -3719,31 +3719,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _Z14mx_inline_imagIfEvjPT_PKSt7complexIS0_E@Base 3.4.3
  _Z14mx_inline_realIdEvjPT_PKSt7complexIS0_E@Base 3.4.3
  _Z14mx_inline_realIfEvjPT_PKSt7complexIS0_E@Base 3.4.3
- _Z14mx_inline_sub2I10octave_intIaES1_EvjPT_PKT0_@Base 3.4.3
- _Z14mx_inline_sub2I10octave_intIaES1_EvjPT_T0_@Base 3.4.3
- _Z14mx_inline_sub2I10octave_intIhES1_EvjPT_PKT0_@Base 3.4.3
- _Z14mx_inline_sub2I10octave_intIhES1_EvjPT_T0_@Base 3.4.3
- _Z14mx_inline_sub2I10octave_intIiES1_EvjPT_PKT0_@Base 3.4.3
- _Z14mx_inline_sub2I10octave_intIiES1_EvjPT_T0_@Base 3.4.3
- _Z14mx_inline_sub2I10octave_intIjES1_EvjPT_PKT0_@Base 3.4.3
- _Z14mx_inline_sub2I10octave_intIjES1_EvjPT_T0_@Base 3.4.3
- _Z14mx_inline_sub2I10octave_intIsES1_EvjPT_PKT0_@Base 3.4.3
- _Z14mx_inline_sub2I10octave_intIsES1_EvjPT_T0_@Base 3.4.3
- _Z14mx_inline_sub2I10octave_intItES1_EvjPT_PKT0_@Base 3.4.3
- _Z14mx_inline_sub2I10octave_intItES1_EvjPT_T0_@Base 3.4.3
- _Z14mx_inline_sub2I10octave_intIxES1_EvjPT_PKT0_@Base 3.4.3
- _Z14mx_inline_sub2I10octave_intIxES1_EvjPT_T0_@Base 3.4.3
- _Z14mx_inline_sub2I10octave_intIyES1_EvjPT_PKT0_@Base 3.4.3
- _Z14mx_inline_sub2I10octave_intIyES1_EvjPT_T0_@Base 3.4.3
- _Z14mx_inline_sub2ISt7complexIdES1_EvjPT_PKT0_@Base 3.4.3
- _Z14mx_inline_sub2ISt7complexIdES1_EvjPT_T0_@Base 3.4.3
- _Z14mx_inline_sub2ISt7complexIfES1_EvjPT_PKT0_@Base 3.4.3
- _Z14mx_inline_sub2ISt7complexIfES1_EvjPT_T0_@Base 3.4.3
- _Z14mx_inline_sub2IddEvjPT_PKT0_@Base 3.4.3
- _Z14mx_inline_sub2IffEvjPT_PKT0_@Base 3.4.3
- _Z14mx_inline_sub2IiiEvjPT_PKT0_@Base 3.4.3
- _Z14mx_inline_sub2IllEvjPT_PKT0_@Base 3.4.3
- _Z14mx_inline_sub2IssEvjPT_PKT0_@Base 3.4.3
  _Z14mx_inline_xmaxI10octave_intIaEEvjPT_PKS2_S2_@Base 3.4.3
  _Z14mx_inline_xmaxI10octave_intIaEEvjPT_PKS2_S5_@Base 3.4.3
  _Z14mx_inline_xmaxI10octave_intIaEEvjPT_S2_PKS2_@Base 3.4.3
