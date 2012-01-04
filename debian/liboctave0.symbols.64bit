@@ -3698,31 +3698,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _Z14fill_or_memsetmRKfPf@Base 3.4.3
  _Z14fill_or_memsetmRKiPi@Base 3.4.3
  _Z14fill_or_memsetmRKsPs@Base 3.4.3
- _Z14mx_inline_add2I10octave_intIaES1_EvmPT_PKT0_@Base 3.4.3
- _Z14mx_inline_add2I10octave_intIaES1_EvmPT_T0_@Base 3.4.3
- _Z14mx_inline_add2I10octave_intIhES1_EvmPT_PKT0_@Base 3.4.3
- _Z14mx_inline_add2I10octave_intIhES1_EvmPT_T0_@Base 3.4.3
- _Z14mx_inline_add2I10octave_intIiES1_EvmPT_PKT0_@Base 3.4.3
- _Z14mx_inline_add2I10octave_intIiES1_EvmPT_T0_@Base 3.4.3
- _Z14mx_inline_add2I10octave_intIjES1_EvmPT_PKT0_@Base 3.4.3
- _Z14mx_inline_add2I10octave_intIjES1_EvmPT_T0_@Base 3.4.3
- _Z14mx_inline_add2I10octave_intIlES1_EvmPT_PKT0_@Base 3.4.3
- _Z14mx_inline_add2I10octave_intIlES1_EvmPT_T0_@Base 3.4.3
- _Z14mx_inline_add2I10octave_intImES1_EvmPT_PKT0_@Base 3.4.3
- _Z14mx_inline_add2I10octave_intImES1_EvmPT_T0_@Base 3.4.3
- _Z14mx_inline_add2I10octave_intIsES1_EvmPT_PKT0_@Base 3.4.3
- _Z14mx_inline_add2I10octave_intIsES1_EvmPT_T0_@Base 3.4.3
- _Z14mx_inline_add2I10octave_intItES1_EvmPT_PKT0_@Base 3.4.3
- _Z14mx_inline_add2I10octave_intItES1_EvmPT_T0_@Base 3.4.3
- _Z14mx_inline_add2ISt7complexIdES1_EvmPT_PKT0_@Base 3.4.3
- _Z14mx_inline_add2ISt7complexIdES1_EvmPT_T0_@Base 3.4.3
- _Z14mx_inline_add2ISt7complexIfES1_EvmPT_PKT0_@Base 3.4.3
- _Z14mx_inline_add2ISt7complexIfES1_EvmPT_T0_@Base 3.4.3
- _Z14mx_inline_add2IddEvmPT_PKT0_@Base 3.4.3
- _Z14mx_inline_add2IffEvmPT_PKT0_@Base 3.4.3
- _Z14mx_inline_add2IiiEvmPT_PKT0_@Base 3.4.3
- _Z14mx_inline_add2IllEvmPT_PKT0_@Base 3.4.3
- _Z14mx_inline_add2IssEvmPT_PKT0_@Base 3.4.3
  _Z14mx_inline_and2IbEvmPbPKT_@Base 3.4.3
  _Z14mx_inline_diffI10octave_intIlEEvPKT_PS2_ii@Base 3.4.3
  _Z14mx_inline_diffI10octave_intIlEEvPKT_PS2_iii@Base 3.4.3

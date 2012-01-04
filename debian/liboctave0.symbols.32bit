@@ -3706,31 +3706,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _Z14fill_or_memsetjRKfPf@Base 3.4.3
  _Z14fill_or_memsetjRKiPi@Base 3.4.3
  _Z14fill_or_memsetjRKsPs@Base 3.4.3
- _Z14mx_inline_add2I10octave_intIaES1_EvjPT_PKT0_@Base 3.4.3
- _Z14mx_inline_add2I10octave_intIaES1_EvjPT_T0_@Base 3.4.3
- _Z14mx_inline_add2I10octave_intIhES1_EvjPT_PKT0_@Base 3.4.3
- _Z14mx_inline_add2I10octave_intIhES1_EvjPT_T0_@Base 3.4.3
- _Z14mx_inline_add2I10octave_intIiES1_EvjPT_PKT0_@Base 3.4.3
- _Z14mx_inline_add2I10octave_intIiES1_EvjPT_T0_@Base 3.4.3
- _Z14mx_inline_add2I10octave_intIjES1_EvjPT_PKT0_@Base 3.4.3
- _Z14mx_inline_add2I10octave_intIjES1_EvjPT_T0_@Base 3.4.3
- _Z14mx_inline_add2I10octave_intIsES1_EvjPT_PKT0_@Base 3.4.3
- _Z14mx_inline_add2I10octave_intIsES1_EvjPT_T0_@Base 3.4.3
- _Z14mx_inline_add2I10octave_intItES1_EvjPT_PKT0_@Base 3.4.3
- _Z14mx_inline_add2I10octave_intItES1_EvjPT_T0_@Base 3.4.3
- _Z14mx_inline_add2I10octave_intIxES1_EvjPT_PKT0_@Base 3.4.3
- _Z14mx_inline_add2I10octave_intIxES1_EvjPT_T0_@Base 3.4.3
- _Z14mx_inline_add2I10octave_intIyES1_EvjPT_PKT0_@Base 3.4.3
- _Z14mx_inline_add2I10octave_intIyES1_EvjPT_T0_@Base 3.4.3
- _Z14mx_inline_add2ISt7complexIdES1_EvjPT_PKT0_@Base 3.4.3
- _Z14mx_inline_add2ISt7complexIdES1_EvjPT_T0_@Base 3.4.3
- _Z14mx_inline_add2ISt7complexIfES1_EvjPT_PKT0_@Base 3.4.3
- _Z14mx_inline_add2ISt7complexIfES1_EvjPT_T0_@Base 3.4.3
- _Z14mx_inline_add2IddEvjPT_PKT0_@Base 3.4.3
- _Z14mx_inline_add2IffEvjPT_PKT0_@Base 3.4.3
- _Z14mx_inline_add2IiiEvjPT_PKT0_@Base 3.4.3
- _Z14mx_inline_add2IllEvjPT_PKT0_@Base 3.4.3
- _Z14mx_inline_add2IssEvjPT_PKT0_@Base 3.4.3
  _Z14mx_inline_and2IbEvjPbPKT_@Base 3.4.3
  _Z14mx_inline_diffI10octave_intIxEEvPKT_PS2_ii@Base 3.4.3
  _Z14mx_inline_diffI10octave_intIxEEvPKT_PS2_iii@Base 3.4.3

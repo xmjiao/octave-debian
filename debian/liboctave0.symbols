@@ -1600,6 +1600,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _Z13write_doublesRSoPKd9save_typei@Base 3.4.3
  _Z14any_orig_emptyRK5ArrayI10idx_vectorE@Base 3.4.3
  _Z14get_scalar_idxR5ArrayIiER10dim_vector@Base 3.4.3
+# not part of API (private function)
+ (c++|regex|optional=notPartOfAPI)"void mx_inline_add2<.*@Base" 3.4.3
  _Z14mx_inline_diffI10octave_intIaEEvPKT_PS2_ii@Base 3.4.3
  _Z14mx_inline_diffI10octave_intIaEEvPKT_PS2_iii@Base 3.4.3
  _Z14mx_inline_diffI10octave_intIaEEvPKT_PS2_iiii@Base 3.4.3
