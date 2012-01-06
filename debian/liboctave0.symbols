@@ -5172,7 +5172,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN10idx_vector14idx_vector_repD2Ev@Base 3.4.3
  _ZN10idx_vector3rawEv@Base 3.4.3
  _ZN10idx_vector5colonE@Base 3.4.3
- _ZN10idx_vector6chkerrEv@Base 3.4.3
+# not part of API (private function)
+ (c++|optional=notPartOfAPI)"idx_vector::chkerr()@Base" 3.4.3
  _ZN10idx_vector6freezeEiPKcb@Base 3.4.3
  _ZN10idx_vector7nil_repEv@Base 3.4.3
  _ZN10idx_vectorC1ERK5ArrayIbE@Base 3.4.3
@@ -17728,6 +17729,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN10gzofstreamC2Ev@Base 3.4.3
  _ZN10gzofstreamD0Ev@Base 3.4.3
  _ZN10gzofstreamD1Ev@Base 3.4.3
+# not part of API (private function)
+ (c++|optional=notPartOfAPI)"idx_vector::chkerr()@Base" 3.4.3
  _ZN10idx_vectorC1Eiii@Base 3.4.3
  _ZN10idx_vectorC2Eiii@Base 3.4.3
  _ZN10idx_vectorD1Ev@Base 3.4.3
