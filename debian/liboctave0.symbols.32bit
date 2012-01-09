@@ -6036,18 +6036,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZGVN10octave_intIxE4zeroE@Base 3.4.3
  _ZGVN10octave_intIyE3oneE@Base 3.4.3
  _ZGVN10octave_intIyE4zeroE@Base 3.4.3
- _ZGVZN15octave_int_baseIxE12convert_realIdEExRKT_E5thmax@Base 3.4.3
- _ZGVZN15octave_int_baseIxE12convert_realIdEExRKT_E5thmin@Base 3.4.3
- _ZGVZN15octave_int_baseIxE12convert_realIeEExRKT_E5thmax@Base 3.4.3
- _ZGVZN15octave_int_baseIxE12convert_realIeEExRKT_E5thmin@Base 3.4.3
- _ZGVZN15octave_int_baseIxE12convert_realIfEExRKT_E5thmax@Base 3.4.3
- _ZGVZN15octave_int_baseIxE12convert_realIfEExRKT_E5thmin@Base 3.4.3
- _ZGVZN15octave_int_baseIyE12convert_realIdEEyRKT_E5thmax@Base 3.4.3
- _ZGVZN15octave_int_baseIyE12convert_realIdEEyRKT_E5thmin@Base 3.4.3
- _ZGVZN15octave_int_baseIyE12convert_realIeEEyRKT_E5thmax@Base 3.4.3
- _ZGVZN15octave_int_baseIyE12convert_realIeEEyRKT_E5thmin@Base 3.4.3
- _ZGVZN15octave_int_baseIyE12convert_realIfEEyRKT_E5thmax@Base 3.4.3
- _ZGVZN15octave_int_baseIyE12convert_realIfEEyRKT_E5thmin@Base 3.4.3
  _ZGVZN5ArrayI10octave_intIxEE17resize_fill_valueEvE4zero@Base 3.4.3
  _ZGVZN5ArrayI10octave_intIyEE17resize_fill_valueEvE4zero@Base 3.4.3
  _ZGVZNK5ArrayI10octave_intIxEE7nil_repEvE2nr@Base 3.4.3
@@ -7000,18 +6988,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZThn60_N5DASRTD1Ev@Base 3.4.3
  _ZThn60_N5DASSLD0Ev@Base 3.4.3
  _ZThn60_N5DASSLD1Ev@Base 3.4.3
- _ZZN15octave_int_baseIxE12convert_realIdEExRKT_E5thmax@Base 3.4.3
- _ZZN15octave_int_baseIxE12convert_realIdEExRKT_E5thmin@Base 3.4.3
- _ZZN15octave_int_baseIxE12convert_realIeEExRKT_E5thmax@Base 3.4.3
- _ZZN15octave_int_baseIxE12convert_realIeEExRKT_E5thmin@Base 3.4.3
- _ZZN15octave_int_baseIxE12convert_realIfEExRKT_E5thmax@Base 3.4.3
- _ZZN15octave_int_baseIxE12convert_realIfEExRKT_E5thmin@Base 3.4.3
- _ZZN15octave_int_baseIyE12convert_realIdEEyRKT_E5thmax@Base 3.4.3
- _ZZN15octave_int_baseIyE12convert_realIdEEyRKT_E5thmin@Base 3.4.3
- _ZZN15octave_int_baseIyE12convert_realIeEEyRKT_E5thmax@Base 3.4.3
- _ZZN15octave_int_baseIyE12convert_realIeEEyRKT_E5thmin@Base 3.4.3
- _ZZN15octave_int_baseIyE12convert_realIfEEyRKT_E5thmax@Base 3.4.3
- _ZZN15octave_int_baseIyE12convert_realIfEEyRKT_E5thmin@Base 3.4.3
  _ZZN5ArrayI10octave_intIxEE17resize_fill_valueEvE4zero@Base 3.4.3
  _ZZN5ArrayI10octave_intIxEE7resize1EiRKS1_E15max_stack_chunk@Base 3.4.3
  _ZZN5ArrayI10octave_intIyEE17resize_fill_valueEvE4zero@Base 3.4.3
@@ -7288,18 +7264,6 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _Z9write_intI10octave_intIxEEvRSobRKT_@Base 3.4.3
  _Z9write_intI10octave_intIyEEvRSobRKT_@Base 3.4.3
  _ZGVZN12symbol_table6varrefERKSsijE6foobar@Base 3.4.3
- _ZGVZN15octave_int_baseIxE12convert_realIdEExRKT_E5thmax@Base 3.4.3
- _ZGVZN15octave_int_baseIxE12convert_realIdEExRKT_E5thmin@Base 3.4.3
- _ZGVZN15octave_int_baseIxE12convert_realIeEExRKT_E5thmax@Base 3.4.3
- _ZGVZN15octave_int_baseIxE12convert_realIeEExRKT_E5thmin@Base 3.4.3
- _ZGVZN15octave_int_baseIxE12convert_realIfEExRKT_E5thmax@Base 3.4.3
- _ZGVZN15octave_int_baseIxE12convert_realIfEExRKT_E5thmin@Base 3.4.3
- _ZGVZN15octave_int_baseIyE12convert_realIdEEyRKT_E5thmax@Base 3.4.3
- _ZGVZN15octave_int_baseIyE12convert_realIdEEyRKT_E5thmin@Base 3.4.3
- _ZGVZN15octave_int_baseIyE12convert_realIeEEyRKT_E5thmax@Base 3.4.3
- _ZGVZN15octave_int_baseIyE12convert_realIeEEyRKT_E5thmin@Base 3.4.3
- _ZGVZN15octave_int_baseIyE12convert_realIfEEyRKT_E5thmax@Base 3.4.3
- _ZGVZN15octave_int_baseIyE12convert_realIfEEyRKT_E5thmin@Base 3.4.3
  _ZGVZNK18octave_base_scalarI10octave_intIxEE4dimsEvE2dv@Base 3.4.3
  _ZGVZNK18octave_base_scalarI10octave_intIyEE4dimsEvE2dv@Base 3.4.3
  _ZGVZNK5ArrayI10octave_intIxEE7nil_repEvE2nr@Base 3.4.3
@@ -7389,9 +7353,6 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN15octave_int_baseIhE17compute_thresholdIfEET_S2_h@Base 3.4.3
  _ZN15octave_int_baseIjE17compute_thresholdIfEET_S2_j@Base 3.4.3
  _ZN15octave_int_baseIsE17compute_thresholdIfEET_S2_s@Base 3.4.3
- _ZN15octave_int_baseIxE12convert_realIdEExRKT_@Base 3.4.3
- _ZN15octave_int_baseIxE12convert_realIeEExRKT_@Base 3.4.3
- _ZN15octave_int_baseIyE12convert_realIeEEyRKT_@Base 3.4.3
  _ZN15octave_int_baseIyE17compute_thresholdIdEET_S2_y@Base 3.4.3
  _ZN17octave_call_stack13do_goto_frameEjb@Base 3.4.3
  _ZN17octave_call_stack13restore_frameEj@Base 3.4.3
@@ -7906,18 +7867,6 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZZ23write_mat5_integer_dataI10octave_intIxEEvRSoPKT_iiE3buf@Base 3.4.3
  _ZZ23write_mat5_integer_dataI10octave_intIyEEvRSoPKT_iiE3buf@Base 3.4.3
  _ZZN12symbol_table6varrefERKSsijE6foobar@Base 3.4.3
- _ZZN15octave_int_baseIxE12convert_realIdEExRKT_E5thmax@Base 3.4.3
- _ZZN15octave_int_baseIxE12convert_realIdEExRKT_E5thmin@Base 3.4.3
- _ZZN15octave_int_baseIxE12convert_realIeEExRKT_E5thmax@Base 3.4.3
- _ZZN15octave_int_baseIxE12convert_realIeEExRKT_E5thmin@Base 3.4.3
- _ZZN15octave_int_baseIxE12convert_realIfEExRKT_E5thmax@Base 3.4.3
- _ZZN15octave_int_baseIxE12convert_realIfEExRKT_E5thmin@Base 3.4.3
- _ZZN15octave_int_baseIyE12convert_realIdEEyRKT_E5thmax@Base 3.4.3
- _ZZN15octave_int_baseIyE12convert_realIdEEyRKT_E5thmin@Base 3.4.3
- _ZZN15octave_int_baseIyE12convert_realIeEEyRKT_E5thmax@Base 3.4.3
- _ZZN15octave_int_baseIyE12convert_realIeEEyRKT_E5thmin@Base 3.4.3
- _ZZN15octave_int_baseIyE12convert_realIfEEyRKT_E5thmax@Base 3.4.3
- _ZZN15octave_int_baseIyE12convert_realIfEEyRKT_E5thmin@Base 3.4.3
  _ZZNK18octave_base_scalarI10octave_intIxEE4dimsEvE2dv@Base 3.4.3
  _ZZNK18octave_base_scalarI10octave_intIyEE4dimsEvE2dv@Base 3.4.3
  _ZZNK5ArrayI10octave_intIxEE7nil_repEvE2nr@Base 3.4.3
