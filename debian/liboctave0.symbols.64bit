@@ -7269,8 +7269,6 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN12octave_valueC2ERK5ArrayI10octave_intImEE@Base 3.4.3
  _ZN12symbol_table10do_inheritERS_m@Base 3.4.3
  _ZN12symbol_table13all_variablesEimb@Base 3.4.3
- _ZN12symbol_table13symbol_record14force_variableEm@Base 3.4.3
- _ZN12symbol_table13symbol_record17symbol_record_rep14force_variableEm@Base 3.4.3
  _ZN12symbol_table13symbol_record17symbol_record_rep6varrefEm@Base 3.4.3
  _ZN12symbol_table13symbol_record6varrefEm@Base 3.4.3
  _ZN12symbol_table6varrefERKSsim@Base 3.4.3

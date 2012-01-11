@@ -7217,6 +7217,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN14ComplexNDArray6insertERKS_RK5ArrayIiE@Base 3.4.3
  _ZN14ComplexNDArray6insertERKS_ii@Base 3.4.3
  _ZN14ComplexNDArrayC1ERK11charNDArray@Base 3.4.3
+# inline method in the header file => always available!
+ (c++|optional=inlineMethod)"ComplexNDArray::ComplexNDArray()@Base" 3.4.3
  _ZN14ComplexNDArrayC2ERK11charNDArray@Base 3.4.3
  _ZN14FloatComplexLU10update_pivERK18FloatComplexMatrixS2_@Base 3.4.3
  _ZN14FloatComplexLU10update_pivERK24FloatComplexColumnVectorS2_@Base 3.4.3
@@ -7688,6 +7690,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN19FloatComplexNDArray6insertERKS_RK5ArrayIiE@Base 3.4.3
  _ZN19FloatComplexNDArray6insertERKS_ii@Base 3.4.3
  _ZN19FloatComplexNDArrayC1ERK11charNDArray@Base 3.4.3
+# inline method in the header file => always available!
+ (c++|optional=inlineMethod)"FloatComplexNDArray::FloatComplexNDArray()@Base" 3.4.3
  _ZN19FloatComplexNDArrayC2ERK11charNDArray@Base 3.4.3
  _ZN19SparseComplexMatrix6concatERK12SparseMatrixRK5ArrayIiE@Base 3.4.3
  _ZN19SparseComplexMatrix6concatERKS_RK5ArrayIiE@Base 3.4.3
@@ -17534,6 +17538,10 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN10gh_manager19do_execute_callbackERK15graphics_handleRK12octave_valueS5_@Base 3.4.3
  _ZN10gh_manager21do_make_figure_handleEd@Base 3.4.3
  _ZN10gh_manager23do_make_graphics_handleERKSsRK15graphics_handleb@Base 3.4.3
+# inline method in the header file => always available!
+ (c++|optional=inlineMethod)"gh_manager::lock()@Base" 3.4.3
+# inline method in the header file => always available!
+ (c++|optional=inlineMethod)"gh_manager::lookup(double)@Base" 3.4.3
  _ZN10gh_manager6unlockEv@Base 3.4.3
  _ZN10gh_manager7do_freeERK15graphics_handle@Base 3.4.3
  _ZN10gh_manager8instanceE@Base 3.4.3
@@ -17675,6 +17683,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN10octave_map8contentsERKSs@Base 3.4.3
  _ZN10octave_map8setfieldERKSsRK4Cell@Base 3.4.3
  _ZN10octave_mapC1ERK10Octave_map@Base 3.4.3
+# inline method in the header file => always available!
+ (c++|optional=inlineMethod)"octave_map::octave_map(dim_vector const&)@Base" 3.4.3
  _ZN10octave_mapC1ERK10dim_vectorRK13octave_fields@Base 3.4.3
  _ZN10octave_mapC1ERK10dim_vectorRK13string_vector@Base 3.4.3
  _ZN10octave_mapC1ERK13octave_fields@Base 3.4.3
@@ -17902,6 +17912,10 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN12octave_unameD1Ev@Base 3.4.3
  _ZN12octave_unameD2Ev@Base 3.4.3
  _ZN12octave_value10empty_convERKSsRKS_@Base 3.4.3
+# inline method in the header file => always available!
+ (c++|optional=inlineMethod)"octave_value::make_unique(int)@Base" 3.4.3
+# inline method in the header file => always available!
+ (c++|optional=inlineMethod)"octave_value::make_unique()@Base" 3.4.3
  _ZN12octave_value12maybe_mutateEv@Base 3.4.3
  _ZN12octave_value14single_subsrefERKSsRK17octave_value_list@Base 3.4.3
  _ZN12octave_value14undef_subsasgnERKSsRKSt4listI17octave_value_listSaIS3_EERKS_@Base 3.4.3
@@ -18112,6 +18126,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN12octave_valueC2Ey@Base 3.4.3
  _ZN12octave_valueD1Ev@Base 3.4.3
  _ZN12octave_valueD2Ev@Base 3.4.3
+# inline method in the header file => always available!
+ (c++|optional=inlineMethod)"octave_value::operator=(octave_value const&)@Base" 3.4.3
  _ZN12radio_values8containsERKSs@Base 3.4.3
  _ZN12radio_valuesC1ERKS_@Base 3.4.3
  _ZN12radio_valuesC1ERKSs@Base 3.4.3
@@ -18135,6 +18151,10 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN12symbol_table13clear_objectsEi@Base 3.4.3
  _ZN12symbol_table13find_functionERKSsRK17octave_value_listb@Base 3.4.3
  _ZN12symbol_table13is_superiortoERKSsS1_@Base 3.4.3
+# inline method in the header file => always available!
+ (c++|regex|optional=inlineMethod)"symbol_table::symbol_record::force_variable\(.*\)@Base" 3.4.3
+ (c++|regex|optional=inlineMethod)"symbol_table::symbol_record::init_persistent\(\)@Base" 3.4.3
+ (c++|regex|optional=inlineMethod)"symbol_table::symbol_record::symbol_record_rep::force_variable\(.*\)@Base" 3.4.3
  _ZN12symbol_table13symbol_record17symbol_record_rep5clearEv@Base 3.4.3
  _ZN12symbol_table13symbol_record17symbol_record_repD1Ev@Base 3.4.3
  _ZN12symbol_table13symbol_record17symbol_record_repD2Ev@Base 3.4.3
@@ -19477,10 +19497,10 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN17tree_function_defD2Ev@Base 3.4.3
  _ZN18FloatComplexMatrixC1Eii@Base 3.4.3
  _ZN18FloatComplexMatrixC1Ev@Base 3.4.3
- _ZN18FloatComplexMatrixC1IdEERK6MArrayIT_E@Base 3.4.3
+# inline method in the header file => always available!
+ (c++|regex|optional=inlineMethod)"FloatComplexMatrix::FloatComplexMatrix<.*>\(MArray<.*> const&\)@Base" 3.4.3
  _ZN18FloatComplexMatrixC2Eii@Base 3.4.3
  _ZN18FloatComplexMatrixC2Ev@Base 3.4.3
- _ZN18FloatComplexMatrixC2IdEERK6MArrayIT_E@Base 3.4.3
  _ZN18FloatComplexMatrixaSERKS_@Base 3.4.3
  _ZN18flex_stream_reader4getcEv@Base 3.4.3
  _ZN18flex_stream_reader6ungetcEi@Base 3.4.3
@@ -22478,6 +22498,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZNK12octave_value5cloneEv@Base 3.4.3
  _ZNK12octave_value5writeER13octave_streamiN13oct_data_conv9data_typeEiN13oct_mach_info12float_formatE@Base 3.4.3
  _ZNK12octave_value6lengthEv@Base 3.4.3
+# inline method in the header file => always available!
+ (c++|optional=inlineMethod)"octave_value::columns() const@Base" 3.4.3
  _ZNK12octave_value8is_equalERKS_@Base 3.4.3
  _ZNK12octave_value8xisalnumEv@Base 3.4.3
  _ZNK12octave_value8xisalphaEv@Base 3.4.3
