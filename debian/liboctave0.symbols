@@ -8640,7 +8640,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN5ArrayISt7complexIdEE9checkelemEiii@Base 3.4.3
  _ZN5ArrayISt7complexIdEE9is_sharedEv@Base 3.4.3
  _ZN5ArrayISt7complexIdEEC1ERK10dim_vector@Base 3.4.3
- _ZN5ArrayISt7complexIdEEC1ERK10dim_vectorRKS1_@Base 3.4.3
+# template instantiation
+ (c++|optional=templateInstantiation)"Array<std::complex<double> >::Array(dim_vector const&, std::complex<double> const&)@Base" 3.4.3
  _ZN5ArrayISt7complexIdEEC1ERKS2_@Base 3.4.3
  _ZN5ArrayISt7complexIdEEC1ERKS2_RK10dim_vector@Base 3.4.3
  _ZN5ArrayISt7complexIdEEC1ERKS2_RK10dim_vectorii@Base 3.4.3
@@ -8648,7 +8649,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN5ArrayISt7complexIdEEC1EiRKS1_@Base 3.4.3
  _ZN5ArrayISt7complexIdEEC1Ev@Base 3.4.3
  _ZN5ArrayISt7complexIdEEC2ERK10dim_vector@Base 3.4.3
- _ZN5ArrayISt7complexIdEEC2ERK10dim_vectorRKS1_@Base 3.4.3
+# template instantiation
+ (c++|optional=templateInstantiation)"Array<std::complex<double> >::Array(dim_vector const&, std::complex<double> const&)@Base" 3.4.3
  _ZN5ArrayISt7complexIdEEC2ERKS2_@Base 3.4.3
  _ZN5ArrayISt7complexIdEEC2ERKS2_RK10dim_vector@Base 3.4.3
  _ZN5ArrayISt7complexIdEEC2ERKS2_RK10dim_vectorii@Base 3.4.3
@@ -8730,9 +8732,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN5ArrayISt7complexIfEED2Ev@Base 3.4.3
  _ZN5ArrayISt7complexIfEEaSERKS2_@Base 3.4.3
  _ZN5ArrayISt7complexIfEEclERKS_IiE@Base 3.4.3
- _ZN5ArrayISt7complexIfEEclEi@Base 3.4.3
- _ZN5ArrayISt7complexIfEEclEii@Base 3.4.3
- _ZN5ArrayISt7complexIfEEclEiii@Base 3.4.3
+# template instantiation
+ (c++|regex|optional=templateInstantiation)"Array<.*>::operator\(\).*@Base" 3.4.3
  _ZN5ArrayIbE11fortran_vecEv@Base 3.4.3
  _ZN5ArrayIbE11make_uniqueEv@Base 3.4.3
  _ZN5ArrayIbE15delete_elementsERK10idx_vector@Base 3.4.3
@@ -11964,7 +11965,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK5ArrayI10idx_vectorE8test_allERFbS0_E@Base 3.4.3
  _ZNK5ArrayI10idx_vectorE8test_anyERFbRKS0_E@Base 3.4.3
  _ZNK5ArrayI10idx_vectorE8test_anyERFbS0_E@Base 3.4.3
- _ZNK5ArrayI10idx_vectorE9as_columnEv@Base 3.4.3
+# template instantiation
+ (c++|regex|optional=templateInstantiation)"Array<.*>::as_column\(\) const@Base" 3.4.3
  _ZNK5ArrayI10idx_vectorE9as_matrixEv@Base 3.4.3
  _ZNK5ArrayI10idx_vectorE9byte_sizeEv@Base 3.4.3
  _ZNK5ArrayI10idx_vectorE9checkelemERKS_IiE@Base 3.4.3
@@ -12045,7 +12047,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK5ArrayI10octave_intIaEE8test_allERFbS1_E@Base 3.4.3
  _ZNK5ArrayI10octave_intIaEE8test_anyERFbRKS1_E@Base 3.4.3
  _ZNK5ArrayI10octave_intIaEE8test_anyERFbS1_E@Base 3.4.3
- _ZNK5ArrayI10octave_intIaEE9as_columnEv@Base 3.4.3
  _ZNK5ArrayI10octave_intIaEE9as_matrixEv@Base 3.4.3
  _ZNK5ArrayI10octave_intIaEE9byte_sizeEv@Base 3.4.3
  _ZNK5ArrayI10octave_intIaEE9checkelemERKS_IiE@Base 3.4.3
@@ -12126,7 +12127,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK5ArrayI10octave_intIhEE8test_allERFbS1_E@Base 3.4.3
  _ZNK5ArrayI10octave_intIhEE8test_anyERFbRKS1_E@Base 3.4.3
  _ZNK5ArrayI10octave_intIhEE8test_anyERFbS1_E@Base 3.4.3
- _ZNK5ArrayI10octave_intIhEE9as_columnEv@Base 3.4.3
  _ZNK5ArrayI10octave_intIhEE9as_matrixEv@Base 3.4.3
  _ZNK5ArrayI10octave_intIhEE9byte_sizeEv@Base 3.4.3
  _ZNK5ArrayI10octave_intIhEE9checkelemERKS_IiE@Base 3.4.3
@@ -12207,7 +12207,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK5ArrayI10octave_intIiEE8test_allERFbS1_E@Base 3.4.3
  _ZNK5ArrayI10octave_intIiEE8test_anyERFbRKS1_E@Base 3.4.3
  _ZNK5ArrayI10octave_intIiEE8test_anyERFbS1_E@Base 3.4.3
- _ZNK5ArrayI10octave_intIiEE9as_columnEv@Base 3.4.3
  _ZNK5ArrayI10octave_intIiEE9as_matrixEv@Base 3.4.3
  _ZNK5ArrayI10octave_intIiEE9byte_sizeEv@Base 3.4.3
  _ZNK5ArrayI10octave_intIiEE9checkelemERKS_IiE@Base 3.4.3
@@ -12288,7 +12287,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK5ArrayI10octave_intIjEE8test_allERFbS1_E@Base 3.4.3
  _ZNK5ArrayI10octave_intIjEE8test_anyERFbRKS1_E@Base 3.4.3
  _ZNK5ArrayI10octave_intIjEE8test_anyERFbS1_E@Base 3.4.3
- _ZNK5ArrayI10octave_intIjEE9as_columnEv@Base 3.4.3
  _ZNK5ArrayI10octave_intIjEE9as_matrixEv@Base 3.4.3
  _ZNK5ArrayI10octave_intIjEE9byte_sizeEv@Base 3.4.3
  _ZNK5ArrayI10octave_intIjEE9checkelemERKS_IiE@Base 3.4.3
@@ -12369,7 +12367,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK5ArrayI10octave_intIsEE8test_allERFbS1_E@Base 3.4.3
  _ZNK5ArrayI10octave_intIsEE8test_anyERFbRKS1_E@Base 3.4.3
  _ZNK5ArrayI10octave_intIsEE8test_anyERFbS1_E@Base 3.4.3
- _ZNK5ArrayI10octave_intIsEE9as_columnEv@Base 3.4.3
  _ZNK5ArrayI10octave_intIsEE9as_matrixEv@Base 3.4.3
  _ZNK5ArrayI10octave_intIsEE9byte_sizeEv@Base 3.4.3
  _ZNK5ArrayI10octave_intIsEE9checkelemERKS_IiE@Base 3.4.3
@@ -12450,7 +12447,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK5ArrayI10octave_intItEE8test_allERFbS1_E@Base 3.4.3
  _ZNK5ArrayI10octave_intItEE8test_anyERFbRKS1_E@Base 3.4.3
  _ZNK5ArrayI10octave_intItEE8test_anyERFbS1_E@Base 3.4.3
- _ZNK5ArrayI10octave_intItEE9as_columnEv@Base 3.4.3
  _ZNK5ArrayI10octave_intItEE9as_matrixEv@Base 3.4.3
  _ZNK5ArrayI10octave_intItEE9byte_sizeEv@Base 3.4.3
  _ZNK5ArrayI10octave_intItEE9checkelemERKS_IiE@Base 3.4.3
@@ -12531,7 +12527,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK5ArrayIPvE8test_allERFbS0_E@Base 3.4.3
  _ZNK5ArrayIPvE8test_anyERFbRKS0_E@Base 3.4.3
  _ZNK5ArrayIPvE8test_anyERFbS0_E@Base 3.4.3
- _ZNK5ArrayIPvE9as_columnEv@Base 3.4.3
  _ZNK5ArrayIPvE9as_matrixEv@Base 3.4.3
  _ZNK5ArrayIPvE9byte_sizeEv@Base 3.4.3
  _ZNK5ArrayIPvE9checkelemERKS_IiE@Base 3.4.3
@@ -12612,7 +12607,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK5ArrayISsE8test_allERFbSsE@Base 3.4.3
  _ZNK5ArrayISsE8test_anyERFbRKSsE@Base 3.4.3
  _ZNK5ArrayISsE8test_anyERFbSsE@Base 3.4.3
- _ZNK5ArrayISsE9as_columnEv@Base 3.4.3
  _ZNK5ArrayISsE9as_matrixEv@Base 3.4.3
  _ZNK5ArrayISsE9byte_sizeEv@Base 3.4.3
  _ZNK5ArrayISsE9checkelemERKS_IiE@Base 3.4.3
@@ -12694,7 +12688,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK5ArrayISt7complexIdEE8test_allERFbS1_E@Base 3.4.3
  _ZNK5ArrayISt7complexIdEE8test_anyERFbRKS1_E@Base 3.4.3
  _ZNK5ArrayISt7complexIdEE8test_anyERFbS1_E@Base 3.4.3
- _ZNK5ArrayISt7complexIdEE9as_columnEv@Base 3.4.3
  _ZNK5ArrayISt7complexIdEE9as_matrixEv@Base 3.4.3
  _ZNK5ArrayISt7complexIdEE9byte_sizeEv@Base 3.4.3
  _ZNK5ArrayISt7complexIdEE9checkelemERKS_IiE@Base 3.4.3
@@ -12776,7 +12769,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK5ArrayISt7complexIfEE8test_allERFbS1_E@Base 3.4.3
  _ZNK5ArrayISt7complexIfEE8test_anyERFbRKS1_E@Base 3.4.3
  _ZNK5ArrayISt7complexIfEE8test_anyERFbS1_E@Base 3.4.3
- _ZNK5ArrayISt7complexIfEE9as_columnEv@Base 3.4.3
  _ZNK5ArrayISt7complexIfEE9as_matrixEv@Base 3.4.3
  _ZNK5ArrayISt7complexIfEE9byte_sizeEv@Base 3.4.3
  _ZNK5ArrayISt7complexIfEE9checkelemERKS_IiE@Base 3.4.3
@@ -12857,7 +12849,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK5ArrayIbE8test_allERFbbE@Base 3.4.3
  _ZNK5ArrayIbE8test_anyERFbRKbE@Base 3.4.3
  _ZNK5ArrayIbE8test_anyERFbbE@Base 3.4.3
- _ZNK5ArrayIbE9as_columnEv@Base 3.4.3
  _ZNK5ArrayIbE9as_matrixEv@Base 3.4.3
  _ZNK5ArrayIbE9byte_sizeEv@Base 3.4.3
  _ZNK5ArrayIbE9checkelemERKS_IiE@Base 3.4.3
@@ -12938,7 +12929,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK5ArrayIcE8test_allERFbcE@Base 3.4.3
  _ZNK5ArrayIcE8test_anyERFbRKcE@Base 3.4.3
  _ZNK5ArrayIcE8test_anyERFbcE@Base 3.4.3
- _ZNK5ArrayIcE9as_columnEv@Base 3.4.3
  _ZNK5ArrayIcE9as_matrixEv@Base 3.4.3
  _ZNK5ArrayIcE9byte_sizeEv@Base 3.4.3
  _ZNK5ArrayIcE9checkelemERKS_IiE@Base 3.4.3
@@ -13020,7 +13010,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK5ArrayIdE8test_allERFbdE@Base 3.4.3
  _ZNK5ArrayIdE8test_anyERFbRKdE@Base 3.4.3
  _ZNK5ArrayIdE8test_anyERFbdE@Base 3.4.3
- _ZNK5ArrayIdE9as_columnEv@Base 3.4.3
  _ZNK5ArrayIdE9as_matrixEv@Base 3.4.3
  _ZNK5ArrayIdE9byte_sizeEv@Base 3.4.3
  _ZNK5ArrayIdE9checkelemERKS_IiE@Base 3.4.3
@@ -13102,7 +13091,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK5ArrayIfE8test_allERFbfE@Base 3.4.3
  _ZNK5ArrayIfE8test_anyERFbRKfE@Base 3.4.3
  _ZNK5ArrayIfE8test_anyERFbfE@Base 3.4.3
- _ZNK5ArrayIfE9as_columnEv@Base 3.4.3
  _ZNK5ArrayIfE9as_matrixEv@Base 3.4.3
  _ZNK5ArrayIfE9byte_sizeEv@Base 3.4.3
  _ZNK5ArrayIfE9checkelemERKS_IiE@Base 3.4.3
@@ -13184,7 +13172,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK5ArrayIiE8test_allERFbiE@Base 3.4.3
  _ZNK5ArrayIiE8test_anyERFbRKiE@Base 3.4.3
  _ZNK5ArrayIiE8test_anyERFbiE@Base 3.4.3
- _ZNK5ArrayIiE9as_columnEv@Base 3.4.3
  _ZNK5ArrayIiE9as_matrixEv@Base 3.4.3
  _ZNK5ArrayIiE9byte_sizeEv@Base 3.4.3
  _ZNK5ArrayIiE9checkelemERKS0_@Base 3.4.3
@@ -13265,7 +13252,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK5ArrayIlE8test_allERFblE@Base 3.4.3
  _ZNK5ArrayIlE8test_anyERFbRKlE@Base 3.4.3
  _ZNK5ArrayIlE8test_anyERFblE@Base 3.4.3
- _ZNK5ArrayIlE9as_columnEv@Base 3.4.3
  _ZNK5ArrayIlE9as_matrixEv@Base 3.4.3
  _ZNK5ArrayIlE9byte_sizeEv@Base 3.4.3
  _ZNK5ArrayIlE9checkelemERKS_IiE@Base 3.4.3
@@ -13347,7 +13333,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK5ArrayIsE8test_allERFbsE@Base 3.4.3
  _ZNK5ArrayIsE8test_anyERFbRKsE@Base 3.4.3
  _ZNK5ArrayIsE8test_anyERFbsE@Base 3.4.3
- _ZNK5ArrayIsE9as_columnEv@Base 3.4.3
  _ZNK5ArrayIsE9as_matrixEv@Base 3.4.3
  _ZNK5ArrayIsE9byte_sizeEv@Base 3.4.3
  _ZNK5ArrayIsE9checkelemERKS_IiE@Base 3.4.3
@@ -13428,7 +13413,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK5ArrayIxE8test_allERFbxE@Base 3.4.3
  _ZNK5ArrayIxE8test_anyERFbRKxE@Base 3.4.3
  _ZNK5ArrayIxE8test_anyERFbxE@Base 3.4.3
- _ZNK5ArrayIxE9as_columnEv@Base 3.4.3
  _ZNK5ArrayIxE9as_matrixEv@Base 3.4.3
  _ZNK5ArrayIxE9byte_sizeEv@Base 3.4.3
  _ZNK5ArrayIxE9checkelemERKS_IiE@Base 3.4.3
@@ -14005,6 +13989,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNSt5stackI14sortrows_run_tSt5dequeIS0_SaIS0_EEE4pushERKS0_@Base 3.4.3
  _ZNSt5stackI14sortrows_run_tSt5dequeIS0_SaIS0_EEEC1ERKS3_@Base 3.4.3
  _ZNSt5stackI14sortrows_run_tSt5dequeIS0_SaIS0_EEEC2ERKS3_@Base 3.4.3
+# template instantiation, probably in oct-sort.cc, octave_sort<T>::is_sorted_rows (and there the runs variable)
+ (c++|optional=templateInstantiation)"std::stack<std::pair<bool const*, int>, std::deque<std::pair<bool const*, int>, std::allocator<std::pair<bool const*, int> > > >::push(std::pair<bool const*, int> const&)@Base" 3.4.3
  _ZNSt5stackISt4pairIPKbiESt5dequeIS3_SaIS3_EEEC1ERKS6_@Base 3.4.3
  _ZNSt5stackISt4pairIPKbiESt5dequeIS3_SaIS3_EEEC2ERKS6_@Base 3.4.3
  _ZNSt5stackISt4pairIPKciESt5dequeIS3_SaIS3_EEEC1ERKS6_@Base 3.4.3
@@ -17474,8 +17460,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZGVZNK6SparseIdE7nil_repEvE2nr@Base 3.4.3
  _ZN10DiagArray2ISt7complexIfEEC1IdEERKS_IT_E@Base 3.4.3
  _ZN10DiagArray2ISt7complexIfEEC2IdEERKS_IT_E@Base 3.4.3
- _ZN10DiagArray2IfEC1IdEERKS_IT_E@Base 3.4.3
- _ZN10DiagArray2IfEC2IdEERKS_IT_E@Base 3.4.3
+# template instantiation
+ (c++|optional=templateInstantiation)"DiagArray2<float>::DiagArray2<double>(DiagArray2<double> const&)@Base" 3.4.3
  _ZN10DiagMatrixC1Eiid@Base 3.4.3
  _ZN10DiagMatrixC2Eiid@Base 3.4.3
  _ZN10DiagMatrixaSERKS_@Base 3.4.3
@@ -21738,10 +21724,12 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN5ArrayISt7complexIdEE8ArrayRepC1EPS1_i@Base 3.4.3
  _ZN5ArrayISt7complexIdEE8ArrayRepC2EPS1_i@Base 3.4.3
  _ZN5ArrayISt7complexIdEEC1ERK10dim_vector@Base 3.4.3
- _ZN5ArrayISt7complexIdEEC1ERK10dim_vectorRKS1_@Base 3.4.3
+# template instantiation
+ (c++|optional=templateInstantiation)"Array<std::complex<double> >::Array(dim_vector const&, std::complex<double> const&)@Base" 3.4.3
  _ZN5ArrayISt7complexIdEEC1Ev@Base 3.4.3
  _ZN5ArrayISt7complexIdEEC2ERK10dim_vector@Base 3.4.3
- _ZN5ArrayISt7complexIdEEC2ERK10dim_vectorRKS1_@Base 3.4.3
+# template instantiation
+ (c++|optional=templateInstantiation)"Array<std::complex<double> >::Array(dim_vector const&, std::complex<double> const&)@Base" 3.4.3
  _ZN5ArrayISt7complexIdEEC2Ev@Base 3.4.3
  _ZN5ArrayISt7complexIdEED1Ev@Base 3.4.3
  _ZN5ArrayISt7complexIdEED2Ev@Base 3.4.3
@@ -21757,7 +21745,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN5ArrayISt7complexIfEEC2Ev@Base 3.4.3
  _ZN5ArrayISt7complexIfEED1Ev@Base 3.4.3
  _ZN5ArrayISt7complexIfEED2Ev@Base 3.4.3
- _ZN5ArrayISt7complexIfEEclEi@Base 3.4.3
+# template instantiation
+ (c++|optional=templateInstantiation)"Array<std::complex<float> >::operator()(int)@Base" 3.4.3
  _ZN5ArrayIbE4elemEi@Base 3.4.3
  _ZN5ArrayIbEC1ERK10dim_vector@Base 3.4.3
  _ZN5ArrayIbEC1ERK10dim_vectorRKb@Base 3.4.3
@@ -22001,9 +21990,9 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN7MSparseIdED1Ev@Base 3.4.3
  _ZN7MSparseIdED2Ev@Base 3.4.3
  _ZN7NDArrayC1ERK10dim_vector@Base 3.4.3
- _ZN7NDArrayC1IbEERK5ArrayIT_E@Base 3.4.3
+# template instantiation
+ (c++|optional=templateInstantiation)"NDArray::NDArray<bool>(Array<bool> const&)@Base" 3.4.3
  _ZN7NDArrayC2ERK10dim_vector@Base 3.4.3
- _ZN7NDArrayC2IbEERK5ArrayIT_E@Base 3.4.3
  _ZN7NDArrayaSERKS_@Base 3.4.3
  _ZN7hggroup10properties12get_propertyERK12caseless_str@Base 3.4.3
  _ZN7hggroup10properties12remove_childERK15graphics_handle@Base 3.4.3
@@ -25872,7 +25861,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZNK5ArrayI12octave_valueE8test_allERFbS0_E@Base 3.4.3
  _ZNK5ArrayI12octave_valueE8test_anyERFbRKS0_E@Base 3.4.3
  _ZNK5ArrayI12octave_valueE8test_anyERFbS0_E@Base 3.4.3
- _ZNK5ArrayI12octave_valueE9as_columnEv@Base 3.4.3
+# template instantiation
+ (c++|regex|optional=templateInstantiation)"Array<.*>::as_column\(\) const@Base" 3.4.3
  _ZNK5ArrayI12octave_valueE9as_matrixEv@Base 3.4.3
  _ZNK5ArrayI12octave_valueE9byte_sizeEv@Base 3.4.3
  _ZNK5ArrayI12octave_valueE9checkelemERKS_IiE@Base 3.4.3
@@ -25953,7 +25943,6 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZNK5ArrayI13octave_streamE8test_allERFbS0_E@Base 3.4.3
  _ZNK5ArrayI13octave_streamE8test_anyERFbRKS0_E@Base 3.4.3
  _ZNK5ArrayI13octave_streamE8test_anyERFbS0_E@Base 3.4.3
- _ZNK5ArrayI13octave_streamE9as_columnEv@Base 3.4.3
  _ZNK5ArrayI13octave_streamE9as_matrixEv@Base 3.4.3
  _ZNK5ArrayI13octave_streamE9byte_sizeEv@Base 3.4.3
  _ZNK5ArrayI13octave_streamE9checkelemERKS_IiE@Base 3.4.3
@@ -26034,7 +26023,6 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZNK5ArrayIP16scanf_format_eltE8test_allERFbS1_E@Base 3.4.3
  _ZNK5ArrayIP16scanf_format_eltE8test_anyERFbRKS1_E@Base 3.4.3
  _ZNK5ArrayIP16scanf_format_eltE8test_anyERFbS1_E@Base 3.4.3
- _ZNK5ArrayIP16scanf_format_eltE9as_columnEv@Base 3.4.3
  _ZNK5ArrayIP16scanf_format_eltE9as_matrixEv@Base 3.4.3
  _ZNK5ArrayIP16scanf_format_eltE9byte_sizeEv@Base 3.4.3
  _ZNK5ArrayIP16scanf_format_eltE9checkelemERKS_IiE@Base 3.4.3
@@ -26115,7 +26103,6 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZNK5ArrayIP17printf_format_eltE8test_allERFbS1_E@Base 3.4.3
  _ZNK5ArrayIP17printf_format_eltE8test_anyERFbRKS1_E@Base 3.4.3
  _ZNK5ArrayIP17printf_format_eltE8test_anyERFbS1_E@Base 3.4.3
- _ZNK5ArrayIP17printf_format_eltE9as_columnEv@Base 3.4.3
  _ZNK5ArrayIP17printf_format_eltE9as_matrixEv@Base 3.4.3
  _ZNK5ArrayIP17printf_format_eltE9byte_sizeEv@Base 3.4.3
  _ZNK5ArrayIP17printf_format_eltE9checkelemERKS_IiE@Base 3.4.3
@@ -26134,11 +26121,9 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZNK5ArrayISt7complexIdEE3mapIS1_RFS1_RKS1_EEES_IT_ET0_@Base 3.4.3
  _ZNK5ArrayISt7complexIdEE3mapIbRFbRKS1_EEES_IT_ET0_@Base 3.4.3
  _ZNK5ArrayISt7complexIdEE3mapIdRFdRKS1_EEES_IT_ET0_@Base 3.4.3
- _ZNK5ArrayISt7complexIdEE9as_columnEv@Base 3.4.3
  _ZNK5ArrayISt7complexIfEE3mapIS1_RFS1_RKS1_EEES_IT_ET0_@Base 3.4.3
  _ZNK5ArrayISt7complexIfEE3mapIbRFbRKS1_EEES_IT_ET0_@Base 3.4.3
  _ZNK5ArrayISt7complexIfEE3mapIfRFfRKS1_EEES_IT_ET0_@Base 3.4.3
- _ZNK5ArrayISt7complexIfEE9as_columnEv@Base 3.4.3
  _ZNK5ArrayIcE3mapIbRFiiEEES_IT_ET0_@Base 3.4.3
  _ZNK5ArrayIcE3mapIcRFiiEEES_IT_ET0_@Base 3.4.3
  _ZNK5ArrayIcE3mapIdRFiiEEES_IT_ET0_@Base 3.4.3
@@ -26490,6 +26475,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZNSt4pairIKSsSt3mapISsiSt4lessISsESaIS_IS0_iEEEED2Ev@Base 3.4.3
  _ZNSt4pairIKSsSt3mapIiiSt4lessIiESaIS_IKiiEEEED1Ev@Base 3.4.3
  _ZNSt4pairIKSsSt3mapIiiSt4lessIiESaIS_IKiiEEEED2Ev@Base 3.4.3
+# template instantiation
+ (c++|optional=templateInstantiation)"std::pair<std::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::set<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::basic_string<char, std::char_traits<char>, std::allocator<char> > > > >::~pair()@Base" 3.4.3
  _ZNSt4pairIKSsSt4listIN9load_path9file_infoESaIS3_EEED1Ev@Base 3.4.3
  _ZNSt4pairIKSsSt4listIN9load_path9file_infoESaIS3_EEED2Ev@Base 3.4.3
  _ZNSt4pairISs12octave_valueED1Ev@Base 3.4.3
@@ -26664,7 +26651,12 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZNSt8_Rb_treeIiiSt9_IdentityIiESt4lessIiESaIiEE10_M_insert_EPKSt18_Rb_tree_node_baseS8_RKi@Base 3.4.3
  _ZNSt8_Rb_treeIiiSt9_IdentityIiESt4lessIiESaIiEE16_M_insert_uniqueERKi@Base 3.4.3
  _ZSt13__copy_move_aILb0EP4CellS1_ET1_T0_S3_S2_@Base 3.4.3
- _ZSt13__copy_move_aILb0EPK12octave_valuePS0_ET1_T0_S5_S4_@Base 3.4.3
+# template instantiation
+ (c++|optional=templateInstantiation)"octave_value* std::__copy_move_a<false, octave_value const*, octave_value*>(octave_value const*, octave_value const*, octave_value*)*@Base" 3.4.3
+# template instantiation
+ (c++|optional=templateInstantiation)"octave_value* std::copy_backward<octave_value*, octave_value*>(octave_value*, octave_value*, octave_value*)@Base" 3.4.3
+# template instantiation
+  (c++|optional=templateInstantiation)"octave_value* std::__copy_move_a<false, octave_value const*, octave_value*>(octave_value const*, octave_value const*, octave_value*)@Base" 3.4.3
  _ZSt13copy_backwardIP12octave_valueS1_ET0_T_S3_S2_@Base 3.4.3
  _ZSt22__complex_pow_unsignedIdESt7complexIT_ES2_j@Base 3.4.3
  _ZSt3argIdET_RKSt7complexIS0_E@Base 3.4.3
@@ -26685,6 +26677,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZSt4conjIfESt7complexIT_ERKS2_@Base 3.4.3
  _ZSt4coshIdESt7complexIT_ERKS2_@Base 3.4.3
  _ZSt4coshIfESt7complexIT_ERKS2_@Base 3.4.3
+# template instantiation
+ (c++|optional=templateInstantiation)"void std::fill<octave_value*, octave_value>(octave_value*, octave_value*, octave_value const&) @Base" 3.4.3
  _ZSt4fillIP13octave_streamS0_EvT_S2_RKT0_@Base 3.4.3
  _ZSt4sinhIdESt7complexIT_ERKS2_@Base 3.4.3
  _ZSt4sinhIfESt7complexIT_ERKS2_@Base 3.4.3

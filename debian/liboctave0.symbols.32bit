@@ -6668,7 +6668,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK5ArrayI10octave_intIxEE8test_allERFbS1_E@Base 3.4.3
  _ZNK5ArrayI10octave_intIxEE8test_anyERFbRKS1_E@Base 3.4.3
  _ZNK5ArrayI10octave_intIxEE8test_anyERFbS1_E@Base 3.4.3
- _ZNK5ArrayI10octave_intIxEE9as_columnEv@Base 3.4.3
  _ZNK5ArrayI10octave_intIxEE9as_matrixEv@Base 3.4.3
  _ZNK5ArrayI10octave_intIxEE9byte_sizeEv@Base 3.4.3
  _ZNK5ArrayI10octave_intIxEE9checkelemERKS_IiE@Base 3.4.3
@@ -6749,7 +6748,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK5ArrayI10octave_intIyEE8test_allERFbS1_E@Base 3.4.3
  _ZNK5ArrayI10octave_intIyEE8test_anyERFbRKS1_E@Base 3.4.3
  _ZNK5ArrayI10octave_intIyEE8test_anyERFbS1_E@Base 3.4.3
- _ZNK5ArrayI10octave_intIyEE9as_columnEv@Base 3.4.3
  _ZNK5ArrayI10octave_intIyEE9as_matrixEv@Base 3.4.3
  _ZNK5ArrayI10octave_intIyEE9byte_sizeEv@Base 3.4.3
  _ZNK5ArrayI10octave_intIyEE9checkelemERKS_IiE@Base 3.4.3

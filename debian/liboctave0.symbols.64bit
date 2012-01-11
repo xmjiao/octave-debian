@@ -6648,7 +6648,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK5ArrayI10octave_intIlEE8test_allERFbS1_E@Base 3.4.3
  _ZNK5ArrayI10octave_intIlEE8test_anyERFbRKS1_E@Base 3.4.3
  _ZNK5ArrayI10octave_intIlEE8test_anyERFbS1_E@Base 3.4.3
- _ZNK5ArrayI10octave_intIlEE9as_columnEv@Base 3.4.3
  _ZNK5ArrayI10octave_intIlEE9as_matrixEv@Base 3.4.3
  _ZNK5ArrayI10octave_intIlEE9byte_sizeEv@Base 3.4.3
  _ZNK5ArrayI10octave_intIlEE9checkelemERKS_IiE@Base 3.4.3
@@ -6729,7 +6728,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK5ArrayI10octave_intImEE8test_allERFbS1_E@Base 3.4.3
  _ZNK5ArrayI10octave_intImEE8test_anyERFbRKS1_E@Base 3.4.3
  _ZNK5ArrayI10octave_intImEE8test_anyERFbS1_E@Base 3.4.3
- _ZNK5ArrayI10octave_intImEE9as_columnEv@Base 3.4.3
  _ZNK5ArrayI10octave_intImEE9as_matrixEv@Base 3.4.3
  _ZNK5ArrayI10octave_intImEE9byte_sizeEv@Base 3.4.3
  _ZNK5ArrayI10octave_intImEE9checkelemERKS_IiE@Base 3.4.3
@@ -6806,7 +6804,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNSt5dequeISt4pairIPKliESaIS3_EE17_M_reallocate_mapEmb@Base 3.4.3
  _ZNSt5dequeISt4pairIPKsiESaIS3_EE17_M_reallocate_mapEmb@Base 3.4.3
  _ZNSt5dequeISt4pairIPKxiESaIS3_EE17_M_reallocate_mapEmb@Base 3.4.3
- _ZNSt5stackISt4pairIPKbiESt5dequeIS3_SaIS3_EEE4pushERKS3_@Base 3.4.3
  _ZNSt8_Rb_treeISsSt4pairIKSsmESt10_Select1stIS2_ESt4lessISsESaIS2_EE10_M_insert_EPKSt18_Rb_tree_node_baseSB_RKS2_@Base 3.4.3
  _ZNSt8_Rb_treeISsSt4pairIKSsmESt10_Select1stIS2_ESt4lessISsESaIS2_EE11equal_rangeERS1_@Base 3.4.3
  _ZNSt8_Rb_treeISsSt4pairIKSsmESt10_Select1stIS2_ESt4lessISsESaIS2_EE12_M_erase_auxESt23_Rb_tree_const_iteratorIS2_ESA_@Base 3.4.3
@@ -7701,7 +7698,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZNSt11_Deque_baseIcSaIcEE17_M_initialize_mapEm@Base 3.4.3
  _ZNSt11_Deque_baseIiSaIiEE17_M_initialize_mapEm@Base 3.4.3
  _ZNSt11_Deque_baseImSaImEE17_M_initialize_mapEm@Base 3.4.3
- _ZNSt15_Deque_iteratorImRmPmEpLEl@Base 3.4.3
+# template instantiation
+ (c++|optional=templateInstantiation)"std::_Deque_iterator<unsigned long, unsigned long&, unsigned long*>::operator+=(long)@Base" 3.4.3
  _ZNSt5dequeI12octave_valueSaIS0_EE17_M_reallocate_mapEmb@Base 3.4.3
  _ZNSt5dequeI13string_vectorSaIS0_EE17_M_reallocate_mapEmb@Base 3.4.3
  _ZNSt5dequeIN17octave_call_stack14call_stack_eltESaIS1_EE17_M_reallocate_mapEmb@Base 3.4.3
