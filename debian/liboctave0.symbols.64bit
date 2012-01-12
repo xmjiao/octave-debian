@@ -6453,8 +6453,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN5ArrayI10octave_intIlEE8ArrayRepC2Ei@Base 3.4.3
  _ZN5ArrayI10octave_intIlEE8ArrayRepC2EiRKS1_@Base 3.4.3
  _ZN5ArrayI10octave_intIlEE8ArrayRepC2Ev@Base 3.4.3
- _ZN5ArrayI10octave_intIlEE8ArrayRepD1Ev@Base 3.4.3
- _ZN5ArrayI10octave_intIlEE8ArrayRepD2Ev@Base 3.4.3
  _ZN5ArrayI10octave_intIlEE9checkelemERKS_IiE@Base 3.4.3
  _ZN5ArrayI10octave_intIlEE9checkelemEi@Base 3.4.3
  _ZN5ArrayI10octave_intIlEE9checkelemEii@Base 3.4.3
@@ -6526,8 +6524,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN5ArrayI10octave_intImEE8ArrayRepC2Ei@Base 3.4.3
  _ZN5ArrayI10octave_intImEE8ArrayRepC2EiRKS1_@Base 3.4.3
  _ZN5ArrayI10octave_intImEE8ArrayRepC2Ev@Base 3.4.3
- _ZN5ArrayI10octave_intImEE8ArrayRepD1Ev@Base 3.4.3
- _ZN5ArrayI10octave_intImEE8ArrayRepD2Ev@Base 3.4.3
  _ZN5ArrayI10octave_intImEE9checkelemERKS_IiE@Base 3.4.3
  _ZN5ArrayI10octave_intImEE9checkelemEi@Base 3.4.3
  _ZN5ArrayI10octave_intImEE9checkelemEii@Base 3.4.3
