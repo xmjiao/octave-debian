@@ -7348,12 +7348,6 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN15c_zfile_ptr_buf6xsgetnEPci@Base 3.4.3
  _ZN15c_zfile_ptr_buf6xsputnEPKci@Base 3.4.3
  _ZN15c_zfile_ptr_buf7seekoffExSt12_Ios_SeekdirSt13_Ios_Openmode@Base 3.4.3
- _ZN15octave_int_baseIaE17compute_thresholdIfEET_S2_a@Base 3.4.3
- _ZN15octave_int_baseIhE17compute_thresholdIdEET_S2_h@Base 3.4.3
- _ZN15octave_int_baseIhE17compute_thresholdIfEET_S2_h@Base 3.4.3
- _ZN15octave_int_baseIjE17compute_thresholdIfEET_S2_j@Base 3.4.3
- _ZN15octave_int_baseIsE17compute_thresholdIfEET_S2_s@Base 3.4.3
- _ZN15octave_int_baseIyE17compute_thresholdIdEET_S2_y@Base 3.4.3
  _ZN17octave_call_stack13do_goto_frameEjb@Base 3.4.3
  _ZN17octave_call_stack13restore_frameEj@Base 3.4.3
  _ZN17octave_call_stack16caller_user_codeEj@Base 3.4.3

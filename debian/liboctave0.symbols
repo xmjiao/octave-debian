@@ -18894,16 +18894,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN15octave_functionD0Ev@Base 3.4.3
  _ZN15octave_functionD1Ev@Base 3.4.3
  _ZN15octave_functionD2Ev@Base 3.4.3
-# not part of API (private function)
- (c++|optional=notPartOfAPI)"double octave_int_base<signed char>::compute_threshold<double>(double, signed char)@Base" 3.4.3
- _ZN15octave_int_baseIiE17compute_thresholdIdEET_S2_i@Base 3.4.3
- _ZN15octave_int_baseIiE17compute_thresholdIfEET_S2_i@Base 3.4.3
-# not part of API (private function)
- (c++|optional=notPartOfAPI)"double octave_int_base<unsigned int>::compute_threshold<double>(double, unsigned int)@Base" 3.4.3
- _ZN15octave_int_baseIsE17compute_thresholdIdEET_S2_s@Base 3.4.3
-# not part of API (private function)
- (c++|optional=notPartOfAPI)"double octave_int_base<unsigned short>::compute_threshold<double>(double, unsigned short)@Base" 3.4.3
- (c++|optional=notPartOfAPI)"float octave_int_base<unsigned short>::compute_threshold<float>(float, unsigned short)@Base" 3.4.3
+# not part of API (private function), template based
+ (c++|regex|optional=notPartOfAPI)".*octave_int_base<.*>::compute_threshold<.*>.*Base" 3.4.3
  _ZN15octave_null_str13register_typeEv@Base 3.4.3
  _ZN15octave_null_str4t_idE@Base 3.4.3
  _ZN15octave_null_str6c_nameE@Base 3.4.3
