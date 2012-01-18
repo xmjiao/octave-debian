@@ -1,3 +1,17 @@
+octave (3.4.3-2) experimental; urgency=low
+
+  [ Sébastien Villemot ]
+  * New patch: drop_version_from_mkoctfile_function_call
+  * New patch: use_system_arpack
+  * debian/control: make liboctave-dev depend on libgl1-mesa-dev | libgl-dev
+
+  [ Thomas Weber ]
+  * Update the debian/symbols file to work on ia64; this includes splitting it
+    into a 32/64 bit part and three different files for the implementation of
+    va_list
+
+ -- Thomas Weber <tweber@debian.org>  Wed, 18 Jan 2012 19:22:52 +0100
+
 octave (3.4.3-1) experimental; urgency=low
 
   [ Thomas Weber ]
