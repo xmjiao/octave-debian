@@ -26657,7 +26657,6 @@ liboctinterp.so.0 liboctave0 #MINVER#
  (c++|optional=templateInstantiation)"octave_value* std::copy_backward<octave_value*, octave_value*>(octave_value*, octave_value*, octave_value*)@Base" 3.4.3
 # template instantiation
   (c++|optional=templateInstantiation)"octave_value* std::__copy_move_a<false, octave_value const*, octave_value*>(octave_value const*, octave_value const*, octave_value*)@Base" 3.4.3
- _ZSt13copy_backwardIP12octave_valueS1_ET0_T_S3_S2_@Base 3.4.3
  _ZSt22__complex_pow_unsignedIdESt7complexIT_ES2_j@Base 3.4.3
  _ZSt3argIdET_RKSt7complexIS0_E@Base 3.4.3
  _ZSt3argIfET_RKSt7complexIS0_E@Base 3.4.3
