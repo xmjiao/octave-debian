@@ -26677,7 +26677,7 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZSt4coshIdESt7complexIT_ERKS2_@Base 3.4.3
  _ZSt4coshIfESt7complexIT_ERKS2_@Base 3.4.3
 # template instantiation
- (c++|optional=templateInstantiation)"void std::fill<octave_value*, octave_value>(octave_value*, octave_value*, octave_value const&) @Base" 3.4.3
+ (c++|optional=templateInstantiation)"void std::fill<octave_value*, octave_value>(octave_value*, octave_value*, octave_value const&)@Base" 3.4.3
  _ZSt4fillIP13octave_streamS0_EvT_S2_RKT0_@Base 3.4.3
  _ZSt4sinhIdESt7complexIT_ERKS2_@Base 3.4.3
  _ZSt4sinhIfESt7complexIT_ERKS2_@Base 3.4.3
