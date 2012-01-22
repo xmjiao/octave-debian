@@ -2861,8 +2861,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _Z13mx_inline_addIsssEvmPT_PKT0_PKT1_@Base 3.4.3
  _Z13mx_inline_addIsssEvmPT_PKT0_T1_@Base 3.4.3
  _Z13mx_inline_addIsssEvmPT_T0_PKT1_@Base 3.4.3
- _Z13mx_inline_allI10octave_intIlEEvPKT_Pbiii@Base 3.4.3
- _Z13mx_inline_allI10octave_intImEEvPKT_Pbiii@Base 3.4.3
  _Z13mx_inline_andI10octave_intIaES0_IhEEvmPbPKT_PKT0_@Base 3.4.3
  _Z13mx_inline_andI10octave_intIaES0_IhEEvmPbPKT_T0_@Base 3.4.3
  _Z13mx_inline_andI10octave_intIaES0_IhEEvmPbT_PKT0_@Base 3.4.3
