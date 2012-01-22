@@ -1612,16 +1612,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _Z15SparseCholErroriPciS_@Base 3.4.3
  _Z15SparseCholPrintPKcz@Base 3.4.3
  _Z15all_colon_equivRK5ArrayI10idx_vectorERK10dim_vector@Base 3.4.3
- _Z15do_mx_minmax_opI10octave_intIaEE5ArrayIT_ERKS4_RS2_IiEiPFvPKS3_PS3_PiiiiE@Base 3.4.3
- _Z15do_mx_minmax_opI10octave_intIhEE5ArrayIT_ERKS4_RS2_IiEiPFvPKS3_PS3_PiiiiE@Base 3.4.3
- _Z15do_mx_minmax_opI10octave_intIiEE5ArrayIT_ERKS4_RS2_IiEiPFvPKS3_PS3_PiiiiE@Base 3.4.3
- _Z15do_mx_minmax_opI10octave_intIjEE5ArrayIT_ERKS4_RS2_IiEiPFvPKS3_PS3_PiiiiE@Base 3.4.3
- _Z15do_mx_minmax_opI10octave_intIsEE5ArrayIT_ERKS4_RS2_IiEiPFvPKS3_PS3_PiiiiE@Base 3.4.3
- _Z15do_mx_minmax_opI10octave_intItEE5ArrayIT_ERKS4_RS2_IiEiPFvPKS3_PS3_PiiiiE@Base 3.4.3
- _Z15do_mx_minmax_opISt7complexIdEE5ArrayIT_ERKS4_RS2_IiEiPFvPKS3_PS3_PiiiiE@Base 3.4.3
- _Z15do_mx_minmax_opISt7complexIfEE5ArrayIT_ERKS4_RS2_IiEiPFvPKS3_PS3_PiiiiE@Base 3.4.3
- _Z15do_mx_minmax_opIdE5ArrayIT_ERKS2_RS0_IiEiPFvPKS1_PS1_PiiiiE@Base 3.4.3
- _Z15do_mx_minmax_opIfE5ArrayIT_ERKS2_RS0_IiEiPFvPKS1_PS1_PiiiiE@Base 3.4.3
+# not part of API (private function)
+ (c++|regex|optional=notPartOfAPI)"Array<.*> do_mx_minmax_op<.*@Base" 3.4.3
  _Z15increment_indexR5ArrayIiERK10dim_vectori@Base 3.4.3
  _Z15index_in_boundsRK5ArrayIiERK10dim_vector@Base 3.4.3
  _Z15mx_el_or_assignR11boolNDArrayRKS_@Base 3.4.3
