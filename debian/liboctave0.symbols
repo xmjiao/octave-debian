@@ -1635,42 +1635,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _Z16mx_el_and_assignR11boolNDArrayRKS_@Base 3.4.3
 # not part of API (private function)
  (c++|regex|optional=notPartOfAPI)"void mx_inline_cummax<.*@Base" 3.4.3
- _Z16mx_inline_cumminI10octave_intIaEEvPKT_PS2_Piiii@Base 3.4.3
- _Z16mx_inline_cumminI10octave_intIaEEvPKT_PS2_iii@Base 3.4.3
- _Z16mx_inline_cumminI10octave_intIhEEvPKT_PS2_Piiii@Base 3.4.3
- _Z16mx_inline_cumminI10octave_intIhEEvPKT_PS2_iii@Base 3.4.3
- _Z16mx_inline_cumminI10octave_intIiEEvPKT_PS2_Piiii@Base 3.4.3
- _Z16mx_inline_cumminI10octave_intIiEEvPKT_PS2_iii@Base 3.4.3
- _Z16mx_inline_cumminI10octave_intIjEEvPKT_PS2_Piiii@Base 3.4.3
- _Z16mx_inline_cumminI10octave_intIjEEvPKT_PS2_iii@Base 3.4.3
- _Z16mx_inline_cumminI10octave_intIsEEvPKT_PS2_Piiii@Base 3.4.3
- _Z16mx_inline_cumminI10octave_intIsEEvPKT_PS2_iii@Base 3.4.3
- _Z16mx_inline_cumminI10octave_intItEEvPKT_PS2_Piiii@Base 3.4.3
- _Z16mx_inline_cumminI10octave_intItEEvPKT_PS2_iii@Base 3.4.3
- _Z16mx_inline_cumminISt7complexIdEEvPKT_PS2_Pii@Base 3.4.3
- _Z16mx_inline_cumminISt7complexIdEEvPKT_PS2_Piii@Base 3.4.3
- _Z16mx_inline_cumminISt7complexIdEEvPKT_PS2_Piiii@Base 3.4.3
- _Z16mx_inline_cumminISt7complexIdEEvPKT_PS2_i@Base 3.4.3
- _Z16mx_inline_cumminISt7complexIdEEvPKT_PS2_ii@Base 3.4.3
- _Z16mx_inline_cumminISt7complexIdEEvPKT_PS2_iii@Base 3.4.3
- _Z16mx_inline_cumminISt7complexIfEEvPKT_PS2_Pii@Base 3.4.3
- _Z16mx_inline_cumminISt7complexIfEEvPKT_PS2_Piii@Base 3.4.3
- _Z16mx_inline_cumminISt7complexIfEEvPKT_PS2_Piiii@Base 3.4.3
- _Z16mx_inline_cumminISt7complexIfEEvPKT_PS2_i@Base 3.4.3
- _Z16mx_inline_cumminISt7complexIfEEvPKT_PS2_ii@Base 3.4.3
- _Z16mx_inline_cumminISt7complexIfEEvPKT_PS2_iii@Base 3.4.3
- _Z16mx_inline_cumminIdEvPKT_PS0_Pii@Base 3.4.3
- _Z16mx_inline_cumminIdEvPKT_PS0_Piii@Base 3.4.3
- _Z16mx_inline_cumminIdEvPKT_PS0_Piiii@Base 3.4.3
- _Z16mx_inline_cumminIdEvPKT_PS0_i@Base 3.4.3
- _Z16mx_inline_cumminIdEvPKT_PS0_ii@Base 3.4.3
- _Z16mx_inline_cumminIdEvPKT_PS0_iii@Base 3.4.3
- _Z16mx_inline_cumminIfEvPKT_PS0_Pii@Base 3.4.3
- _Z16mx_inline_cumminIfEvPKT_PS0_Piii@Base 3.4.3
- _Z16mx_inline_cumminIfEvPKT_PS0_Piiii@Base 3.4.3
- _Z16mx_inline_cumminIfEvPKT_PS0_i@Base 3.4.3
- _Z16mx_inline_cumminIfEvPKT_PS0_ii@Base 3.4.3
- _Z16mx_inline_cumminIfEvPKT_PS0_iii@Base 3.4.3
+# not part of API (private function)
+ (c++|regex|optional=notPartOfAPI)"void mx_inline_cummin<.*@Base" 3.4.3
  _Z16mx_inline_cumsumI10octave_intIaEEvPKT_PS2_iii@Base 3.4.3
  _Z16mx_inline_cumsumI10octave_intIhEEvPKT_PS2_iii@Base 3.4.3
  _Z16mx_inline_cumsumI10octave_intIiEEvPKT_PS2_iii@Base 3.4.3

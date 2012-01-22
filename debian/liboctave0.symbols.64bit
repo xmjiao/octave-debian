@@ -3799,10 +3799,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _Z15do_mm_binary_opIfffE5ArrayIT_ERKS0_IT0_ERKS0_IT1_EPFvmPS1_PKS3_PKS7_EPKc@Base 3.4.3
  _Z15do_mm_binary_opIiiiE5ArrayIT_ERKS0_IT0_ERKS0_IT1_EPFvmPS1_PKS3_PKS7_EPKc@Base 3.4.3
  _Z15do_mm_binary_opIlllE5ArrayIT_ERKS0_IT0_ERKS0_IT1_EPFvmPS1_PKS3_PKS7_EPKc@Base 3.4.3
- _Z16mx_inline_cumminI10octave_intIlEEvPKT_PS2_Piiii@Base 3.4.3
- _Z16mx_inline_cumminI10octave_intIlEEvPKT_PS2_iii@Base 3.4.3
- _Z16mx_inline_cumminI10octave_intImEEvPKT_PS2_Piiii@Base 3.4.3
- _Z16mx_inline_cumminI10octave_intImEEvPKT_PS2_iii@Base 3.4.3
  _Z16mx_inline_cumsumI10octave_intIlEEvPKT_PS2_iii@Base 3.4.3
  _Z16mx_inline_cumsumI10octave_intImEEvPKT_PS2_iii@Base 3.4.3
  _Z16mx_inline_not_orI10octave_intIaES0_IhEEvmPbPKT_PKT0_@Base 3.4.3
