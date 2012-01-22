@@ -1523,34 +1523,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _Z13mx_inline_anyIfEvPKT_Pbiii@Base 3.4.3
 # not part of API (private function)
  (c++|regex|optional=notPartOfAPI)"void mx_inline_div2<.*@Base" 3.4.3
- _Z13mx_inline_maxI10octave_intIaEEvPKT_PS2_Piiii@Base 3.4.3
- _Z13mx_inline_maxI10octave_intIaEEvPKT_PS2_iii@Base 3.4.3
- _Z13mx_inline_maxI10octave_intIhEEvPKT_PS2_Piiii@Base 3.4.3
- _Z13mx_inline_maxI10octave_intIhEEvPKT_PS2_iii@Base 3.4.3
- _Z13mx_inline_maxI10octave_intIiEEvPKT_PS2_Piiii@Base 3.4.3
- _Z13mx_inline_maxI10octave_intIiEEvPKT_PS2_iii@Base 3.4.3
- _Z13mx_inline_maxI10octave_intIjEEvPKT_PS2_Piiii@Base 3.4.3
- _Z13mx_inline_maxI10octave_intIjEEvPKT_PS2_iii@Base 3.4.3
- _Z13mx_inline_maxI10octave_intIsEEvPKT_PS2_Piiii@Base 3.4.3
- _Z13mx_inline_maxI10octave_intIsEEvPKT_PS2_iii@Base 3.4.3
- _Z13mx_inline_maxI10octave_intItEEvPKT_PS2_Piiii@Base 3.4.3
- _Z13mx_inline_maxI10octave_intItEEvPKT_PS2_iii@Base 3.4.3
- _Z13mx_inline_maxISt7complexIdEEvPKT_PS2_Pii@Base 3.4.3
- _Z13mx_inline_maxISt7complexIdEEvPKT_PS2_Piii@Base 3.4.3
- _Z13mx_inline_maxISt7complexIdEEvPKT_PS2_Piiii@Base 3.4.3
- _Z13mx_inline_maxISt7complexIdEEvPKT_PS2_i@Base 3.4.3
- _Z13mx_inline_maxISt7complexIdEEvPKT_PS2_ii@Base 3.4.3
- _Z13mx_inline_maxISt7complexIdEEvPKT_PS2_iii@Base 3.4.3
- _Z13mx_inline_maxISt7complexIfEEvPKT_PS2_Pii@Base 3.4.3
- _Z13mx_inline_maxISt7complexIfEEvPKT_PS2_Piii@Base 3.4.3
- _Z13mx_inline_maxISt7complexIfEEvPKT_PS2_Piiii@Base 3.4.3
- _Z13mx_inline_maxISt7complexIfEEvPKT_PS2_i@Base 3.4.3
- _Z13mx_inline_maxISt7complexIfEEvPKT_PS2_ii@Base 3.4.3
- _Z13mx_inline_maxISt7complexIfEEvPKT_PS2_iii@Base 3.4.3
- _Z13mx_inline_maxIdEvPKT_PS0_Piiii@Base 3.4.3
- _Z13mx_inline_maxIdEvPKT_PS0_iii@Base 3.4.3
- _Z13mx_inline_maxIfEvPKT_PS0_Piiii@Base 3.4.3
- _Z13mx_inline_maxIfEvPKT_PS0_iii@Base 3.4.3
+# not part of API (private function)
+ (c++|regex|optional=notPartOfAPI)"void mx_inline_max<.*@Base" 3.4.3
  _Z13mx_inline_minI10octave_intIaEEvPKT_PS2_Piiii@Base 3.4.3
  _Z13mx_inline_minI10octave_intIaEEvPKT_PS2_iii@Base 3.4.3
  _Z13mx_inline_minI10octave_intIhEEvPKT_PS2_Piiii@Base 3.4.3
