@@ -1505,22 +1505,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _Z13mx_inline_allIdEvPKT_Pbiii@Base 3.4.3
  _Z13mx_inline_allIfEvPKT_Pbii@Base 3.4.3
  _Z13mx_inline_allIfEvPKT_Pbiii@Base 3.4.3
- _Z13mx_inline_anyI10octave_intIaEEvPKT_Pbiii@Base 3.4.3
- _Z13mx_inline_anyI10octave_intIhEEvPKT_Pbiii@Base 3.4.3
- _Z13mx_inline_anyI10octave_intIiEEvPKT_Pbiii@Base 3.4.3
- _Z13mx_inline_anyI10octave_intIjEEvPKT_Pbiii@Base 3.4.3
- _Z13mx_inline_anyI10octave_intIsEEvPKT_Pbiii@Base 3.4.3
- _Z13mx_inline_anyI10octave_intItEEvPKT_Pbiii@Base 3.4.3
- _Z13mx_inline_anyISt7complexIdEEvPKT_Pbii@Base 3.4.3
- _Z13mx_inline_anyISt7complexIdEEvPKT_Pbiii@Base 3.4.3
- _Z13mx_inline_anyISt7complexIfEEvPKT_Pbii@Base 3.4.3
- _Z13mx_inline_anyISt7complexIfEEvPKT_Pbiii@Base 3.4.3
- _Z13mx_inline_anyIbEvPKT_Pbiii@Base 3.4.3
- _Z13mx_inline_anyIcEvPKT_Pbiii@Base 3.4.3
- _Z13mx_inline_anyIdEvPKT_Pbii@Base 3.4.3
- _Z13mx_inline_anyIdEvPKT_Pbiii@Base 3.4.3
- _Z13mx_inline_anyIfEvPKT_Pbii@Base 3.4.3
- _Z13mx_inline_anyIfEvPKT_Pbiii@Base 3.4.3
+# not part of API (private function)
+ (c++|regex|optional=notPartOfAPI)"void mx_inline_any<.*@Base" 3.4.3
 # not part of API (private function)
  (c++|regex|optional=notPartOfAPI)"void mx_inline_div2<.*@Base" 3.4.3
 # not part of API (private function)
