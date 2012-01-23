@@ -6059,9 +6059,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN11octave_sortI10octave_intIlEE10MergeStateC2Ev@Base 3.4.3
  _ZN11octave_sortI10octave_intIlEE10MergeStateD1Ev@Base 3.4.3
  _ZN11octave_sortI10octave_intIlEE10MergeStateD2Ev@Base 3.4.3
- _ZN11octave_sortI10octave_intIlEE10binarysortIPFbRKS1_S5_EEEvPS1_PiiiT_@Base 3.4.3
- _ZN11octave_sortI10octave_intIlEE10binarysortISt4lessIS1_EEEvPS1_PiiiT_@Base 3.4.3
- _ZN11octave_sortI10octave_intIlEE10binarysortISt7greaterIS1_EEEvPS1_PiiiT_@Base 3.4.3
  _ZN11octave_sortI10octave_intIlEE11gallop_leftIPFbRKS1_S5_EEEiS1_PS1_iiT_@Base 3.4.3
  _ZN11octave_sortI10octave_intIlEE11gallop_leftISt4lessIS1_EEEiS1_PS1_iiT_@Base 3.4.3
  _ZN11octave_sortI10octave_intIlEE11gallop_leftISt7greaterIS1_EEEiS1_PS1_iiT_@Base 3.4.3
@@ -6138,9 +6135,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN11octave_sortI10octave_intImEE10MergeStateC2Ev@Base 3.4.3
  _ZN11octave_sortI10octave_intImEE10MergeStateD1Ev@Base 3.4.3
  _ZN11octave_sortI10octave_intImEE10MergeStateD2Ev@Base 3.4.3
- _ZN11octave_sortI10octave_intImEE10binarysortIPFbRKS1_S5_EEEvPS1_PiiiT_@Base 3.4.3
- _ZN11octave_sortI10octave_intImEE10binarysortISt4lessIS1_EEEvPS1_PiiiT_@Base 3.4.3
- _ZN11octave_sortI10octave_intImEE10binarysortISt7greaterIS1_EEEvPS1_PiiiT_@Base 3.4.3
  _ZN11octave_sortI10octave_intImEE11gallop_leftIPFbRKS1_S5_EEEiS1_PS1_iiT_@Base 3.4.3
  _ZN11octave_sortI10octave_intImEE11gallop_leftISt4lessIS1_EEEiS1_PS1_iiT_@Base 3.4.3
  _ZN11octave_sortI10octave_intImEE11gallop_leftISt7greaterIS1_EEEiS1_PS1_iiT_@Base 3.4.3

@@ -6059,10 +6059,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN11octave_sortI10octave_intIxEE10MergeStateC2Ev@Base 3.4.3
  _ZN11octave_sortI10octave_intIxEE10MergeStateD1Ev@Base 3.4.3
  _ZN11octave_sortI10octave_intIxEE10MergeStateD2Ev@Base 3.4.3
- _ZN11octave_sortI10octave_intIxEE10binarysortIPFbRKS1_S5_EEEvPS1_PiiiT_@Base 3.4.3
- _ZN11octave_sortI10octave_intIxEE10binarysortIPFbRKS1_S5_EEEvPS1_iiT_@Base 3.4.3
- _ZN11octave_sortI10octave_intIxEE10binarysortISt4lessIS1_EEEvPS1_PiiiT_@Base 3.4.3
- _ZN11octave_sortI10octave_intIxEE10binarysortISt7greaterIS1_EEEvPS1_PiiiT_@Base 3.4.3
  _ZN11octave_sortI10octave_intIxEE11gallop_leftIPFbRKS1_S5_EEEiS1_PS1_iiT_@Base 3.4.3
  _ZN11octave_sortI10octave_intIxEE11gallop_leftISt4lessIS1_EEEiS1_PS1_iiT_@Base 3.4.3
  _ZN11octave_sortI10octave_intIxEE11gallop_leftISt7greaterIS1_EEEiS1_PS1_iiT_@Base 3.4.3
@@ -6141,10 +6137,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN11octave_sortI10octave_intIyEE10MergeStateC2Ev@Base 3.4.3
  _ZN11octave_sortI10octave_intIyEE10MergeStateD1Ev@Base 3.4.3
  _ZN11octave_sortI10octave_intIyEE10MergeStateD2Ev@Base 3.4.3
- _ZN11octave_sortI10octave_intIyEE10binarysortIPFbRKS1_S5_EEEvPS1_PiiiT_@Base 3.4.3
- _ZN11octave_sortI10octave_intIyEE10binarysortIPFbRKS1_S5_EEEvPS1_iiT_@Base 3.4.3
- _ZN11octave_sortI10octave_intIyEE10binarysortISt4lessIS1_EEEvPS1_PiiiT_@Base 3.4.3
- _ZN11octave_sortI10octave_intIyEE10binarysortISt7greaterIS1_EEEvPS1_PiiiT_@Base 3.4.3
  _ZN11octave_sortI10octave_intIyEE11gallop_leftIPFbRKS1_S5_EEEiS1_PS1_iiT_@Base 3.4.3
  _ZN11octave_sortI10octave_intIyEE11gallop_leftISt4lessIS1_EEEiS1_PS1_iiT_@Base 3.4.3
  _ZN11octave_sortI10octave_intIyEE11gallop_leftISt7greaterIS1_EEEiS1_PS1_iiT_@Base 3.4.3
@@ -6216,8 +6208,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN11octave_sortI10octave_intIyEEC2Ev@Base 3.4.3
  _ZN11octave_sortI10octave_intIyEED1Ev@Base 3.4.3
  _ZN11octave_sortI10octave_intIyEED2Ev@Base 3.4.3
- _ZN11octave_sortIdE10binarysortIPFbddEEEvPdiiT_@Base 3.4.3
- _ZN11octave_sortIxE10binarysortIPFbxxEEEvPxiiT_@Base 3.4.3
  _ZN16octave_allocator4freeEPvj@Base 3.4.3
  _ZN16octave_allocator5allocEj@Base 3.4.3
  _ZN18norm_accumulator_2IdE5accumEd@Base 3.4.3
