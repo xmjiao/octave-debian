@@ -6046,64 +6046,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN10intNDArrayI10octave_intIyEEC2ES1_@Base 3.4.3
  _ZN10intNDArrayI10octave_intIyEEC2Ev@Base 3.4.3
  _ZN10intNDArrayI10octave_intIyEEaSERKS2_@Base 3.4.3
- _ZN10octave_intIxE3maxEv@Base 3.4.3
- _ZN10octave_intIxE3minEv@Base 3.4.3
- _ZN10octave_intIxE3oneE@Base 3.4.3
- _ZN10octave_intIxE4zeroE@Base 3.4.3
- _ZN10octave_intIxE5nbitsEv@Base 3.4.3
- _ZN10octave_intIxE9byte_sizeEv@Base 3.4.3
- _ZN10octave_intIxE9type_nameEv@Base 3.4.3
- _ZN10octave_intIxEC1ERKS0_@Base 3.4.3
- _ZN10octave_intIxEC1Eb@Base 3.4.3
- _ZN10octave_intIxEC1Ed@Base 3.4.3
- _ZN10octave_intIxEC1Ee@Base 3.4.3
- _ZN10octave_intIxEC1Ef@Base 3.4.3
- _ZN10octave_intIxEC1Ev@Base 3.4.3
- _ZN10octave_intIxEC1Ex@Base 3.4.3
- _ZN10octave_intIxEC2ERKS0_@Base 3.4.3
- _ZN10octave_intIxEC2Eb@Base 3.4.3
- _ZN10octave_intIxEC2Ed@Base 3.4.3
- _ZN10octave_intIxEC2Ee@Base 3.4.3
- _ZN10octave_intIxEC2Ef@Base 3.4.3
- _ZN10octave_intIxEC2Ev@Base 3.4.3
- _ZN10octave_intIxEC2Ex@Base 3.4.3
- _ZN10octave_intIxEaSERKS0_@Base 3.4.3
- _ZN10octave_intIxEdVERKS0_@Base 3.4.3
- _ZN10octave_intIxElSERKi@Base 3.4.3
- _ZN10octave_intIxEmIERKS0_@Base 3.4.3
- _ZN10octave_intIxEmLERKS0_@Base 3.4.3
- _ZN10octave_intIxEpLERKS0_@Base 3.4.3
- _ZN10octave_intIxErMERKS0_@Base 3.4.3
- _ZN10octave_intIxErSERKi@Base 3.4.3
- _ZN10octave_intIyE3maxEv@Base 3.4.3
- _ZN10octave_intIyE3minEv@Base 3.4.3
- _ZN10octave_intIyE3oneE@Base 3.4.3
- _ZN10octave_intIyE4zeroE@Base 3.4.3
- _ZN10octave_intIyE5nbitsEv@Base 3.4.3
- _ZN10octave_intIyE9byte_sizeEv@Base 3.4.3
- _ZN10octave_intIyE9type_nameEv@Base 3.4.3
- _ZN10octave_intIyEC1ERKS0_@Base 3.4.3
- _ZN10octave_intIyEC1Eb@Base 3.4.3
- _ZN10octave_intIyEC1Ed@Base 3.4.3
- _ZN10octave_intIyEC1Ee@Base 3.4.3
- _ZN10octave_intIyEC1Ef@Base 3.4.3
- _ZN10octave_intIyEC1Ev@Base 3.4.3
- _ZN10octave_intIyEC1Ey@Base 3.4.3
- _ZN10octave_intIyEC2ERKS0_@Base 3.4.3
- _ZN10octave_intIyEC2Eb@Base 3.4.3
- _ZN10octave_intIyEC2Ed@Base 3.4.3
- _ZN10octave_intIyEC2Ee@Base 3.4.3
- _ZN10octave_intIyEC2Ef@Base 3.4.3
- _ZN10octave_intIyEC2Ev@Base 3.4.3
- _ZN10octave_intIyEC2Ey@Base 3.4.3
- _ZN10octave_intIyEaSERKS0_@Base 3.4.3
- _ZN10octave_intIyEdVERKS0_@Base 3.4.3
- _ZN10octave_intIyElSERKi@Base 3.4.3
- _ZN10octave_intIyEmIERKS0_@Base 3.4.3
- _ZN10octave_intIyEmLERKS0_@Base 3.4.3
- _ZN10octave_intIyEpLERKS0_@Base 3.4.3
- _ZN10octave_intIyErMERKS0_@Base 3.4.3
- _ZN10octave_intIyErSERKi@Base 3.4.3
  _ZN11octave_fftw3fftEPKSt7complexIdEPS1_jjii@Base 3.4.3
  _ZN11octave_fftw3fftEPKSt7complexIfEPS1_jjii@Base 3.4.3
  _ZN11octave_fftw3fftEPKdPSt7complexIdEjjii@Base 3.4.3
