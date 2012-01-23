@@ -17684,6 +17684,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN12symbol_table11is_variableERKSs@Base 3.4.3
  _ZN12symbol_table11pop_contextEv@Base 3.4.3
  _ZN12symbol_table12builtin_findERKSs@Base 3.4.3
+# inline method in the header file => always available!
+ (c++|regex|optional=inlineMethod)"symbol_table::get_dispatch\(.*\)@Base" 3.4.3
  _ZN12symbol_table12get_instanceEib@Base 3.4.3
  _ZN12symbol_table12global_tableE@Base 3.4.3
  _ZN12symbol_table13all_instancesE@Base 3.4.3
@@ -17709,6 +17711,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN12symbol_table14scope_id_cache4freeEi@Base 3.4.3
  _ZN12symbol_table14scope_id_cache5allocEv@Base 3.4.3
  _ZN12symbol_table14scope_id_cache8instanceE@Base 3.4.3
+# inline method in the header file => always available!
+ (c++|optional=inlineMethod)"symbol_table::variable_names()@Base" 3.4.3
  _ZN12symbol_table14xcurrent_scopeE@Base 3.4.3
  _ZN12symbol_table15clear_functionsEv@Base 3.4.3
  _ZN12symbol_table15clear_variablesEv@Base 3.4.3
@@ -17738,11 +17742,15 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN12symbol_table24do_clear_variable_regexpERKSs@Base 3.4.3
  _ZN12symbol_table24install_cmdline_functionERKSsRK12octave_value@Base 3.4.3
  _ZN12symbol_table25do_clear_variable_patternERKSs@Base 3.4.3
+# inline method in the header file => always available!
+ (c++|regex|optional=inlineMethod)"symbol_table::install_built_in_function\(.*\)@Base" 3.4.3
  _ZN12symbol_table25is_built_in_function_nameERKSs@Base 3.4.3
  _ZN12symbol_table27erase_subfunctions_in_scopeEi@Base 3.4.3
  _ZN12symbol_table31stash_dir_name_for_subfunctionsEiRKSs@Base 3.4.3
  _ZN12symbol_table4dumpERSoi@Base 3.4.3
  _ZN12symbol_table4findERKSsRK17octave_value_listbb@Base 3.4.3
+# inline method in the header file => always available!
+ (c++|regex|optional=inlineMethod)"symbol_table::glob\(.*\)@Base" 3.4.3
  _ZN12symbol_table6insertERKSs@Base 3.4.3
  _ZN12symbol_table6scopesEv@Base 3.4.3
  _ZN12symbol_table7cleanupEv@Base 3.4.3
