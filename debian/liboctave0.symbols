@@ -7246,7 +7246,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN18FloatComplexMatrixC1ERK22FloatComplexDiagMatrix@Base 3.4.3
  _ZN18FloatComplexMatrixC1ERK24FloatComplexColumnVector@Base 3.4.3
  _ZN18FloatComplexMatrixC1Ev@Base 3.4.3
- _ZN18FloatComplexMatrixC1ISt7complexIfEEERK6MArrayIT_E@Base 3.4.3
+# inline method in the header file => always available!
+ (c++|regex|optional=inlineMethod)"FloatComplexMatrix::FloatComplexMatrix<.*>\(MArray<.*> const&\)@Base" 3.4.3
  _ZN18FloatComplexMatrixC2ERK10boolMatrix@Base 3.4.3
  _ZN18FloatComplexMatrixC2ERK10charMatrix@Base 3.4.3
  _ZN18FloatComplexMatrixC2ERK11FloatMatrix@Base 3.4.3
@@ -7258,7 +7259,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN18FloatComplexMatrixC2ERK22FloatComplexDiagMatrix@Base 3.4.3
  _ZN18FloatComplexMatrixC2ERK24FloatComplexColumnVector@Base 3.4.3
  _ZN18FloatComplexMatrixC2Ev@Base 3.4.3
- _ZN18FloatComplexMatrixC2ISt7complexIfEEERK6MArrayIT_E@Base 3.4.3
  _ZN18FloatComplexMatrixD1Ev@Base 3.4.3
  _ZN18FloatComplexMatrixD2Ev@Base 3.4.3
  _ZN18FloatComplexMatrixmIERK11FloatMatrix@Base 3.4.3
