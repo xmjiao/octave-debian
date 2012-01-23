@@ -6204,7 +6204,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN11octave_sortI10octave_intIyEED2Ev@Base 3.4.3
  _ZN16octave_allocator4freeEPvj@Base 3.4.3
  _ZN16octave_allocator5allocEj@Base 3.4.3
- _ZN18norm_accumulator_2IdE5accumEd@Base 3.4.3
+# This is a private class (no idea why it shows up only on some 32bit arches
+ (optional=notPartOfAPI)_ZN18norm_accumulator_2IdE5accumEd@Base 3.4.3
  _ZN19octave_chunk_bufferC1Ej@Base 3.4.3
  _ZN19octave_chunk_bufferC2Ej@Base 3.4.3
  _ZN19octave_local_bufferI10idx_vectorEC1Ej@Base 3.4.3
