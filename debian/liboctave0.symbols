@@ -5386,7 +5386,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN11octave_sortI10octave_intIaEE8merge_loISt4lessIS1_EEEiPS1_iS6_iT_@Base 3.4.3
  _ZN11octave_sortI10octave_intIaEE8merge_loISt7greaterIS1_EEEiPS1_PiiS6_S7_iT_@Base 3.4.3
  _ZN11octave_sortI10octave_intIaEE8merge_loISt7greaterIS1_EEEiPS1_iS6_iT_@Base 3.4.3
- _ZN11octave_sortI10octave_intIaEE9count_runIPFbRKS1_S5_EEEiPS1_iRbT_@Base 3.4.3
+# template instantiation
+ (c++|regex|optional=templateInstantiation)"int octave_sort<.*>::count_run<.*>\(.*\)@Base" 3.4.3
  _ZN11octave_sortI10octave_intIaEE9is_sortedEPKS1_i@Base 3.4.3
  _ZN11octave_sortI10octave_intIaEE9sort_rowsEPKS1_Piii@Base 3.4.3
  _ZN11octave_sortI10octave_intIaEE9sort_rowsIPFbRKS1_S5_EEEvPS4_PiiiT_@Base 3.4.3
@@ -5462,7 +5463,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN11octave_sortI10octave_intIhEE8merge_loISt4lessIS1_EEEiPS1_iS6_iT_@Base 3.4.3
  _ZN11octave_sortI10octave_intIhEE8merge_loISt7greaterIS1_EEEiPS1_PiiS6_S7_iT_@Base 3.4.3
  _ZN11octave_sortI10octave_intIhEE8merge_loISt7greaterIS1_EEEiPS1_iS6_iT_@Base 3.4.3
- _ZN11octave_sortI10octave_intIhEE9count_runIPFbRKS1_S5_EEEiPS1_iRbT_@Base 3.4.3
  _ZN11octave_sortI10octave_intIhEE9is_sortedEPKS1_i@Base 3.4.3
  _ZN11octave_sortI10octave_intIhEE9sort_rowsEPKS1_Piii@Base 3.4.3
  _ZN11octave_sortI10octave_intIhEE9sort_rowsIPFbRKS1_S5_EEEvPS4_PiiiT_@Base 3.4.3
@@ -5538,7 +5538,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN11octave_sortI10octave_intIiEE8merge_loISt4lessIS1_EEEiPS1_iS6_iT_@Base 3.4.3
  _ZN11octave_sortI10octave_intIiEE8merge_loISt7greaterIS1_EEEiPS1_PiiS6_S7_iT_@Base 3.4.3
  _ZN11octave_sortI10octave_intIiEE8merge_loISt7greaterIS1_EEEiPS1_iS6_iT_@Base 3.4.3
- _ZN11octave_sortI10octave_intIiEE9count_runIPFbRKS1_S5_EEEiPS1_iRbT_@Base 3.4.3
  _ZN11octave_sortI10octave_intIiEE9is_sortedEPKS1_i@Base 3.4.3
  _ZN11octave_sortI10octave_intIiEE9sort_rowsEPKS1_Piii@Base 3.4.3
  _ZN11octave_sortI10octave_intIiEE9sort_rowsIPFbRKS1_S5_EEEvPS4_PiiiT_@Base 3.4.3
@@ -5614,7 +5613,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN11octave_sortI10octave_intIjEE8merge_loISt4lessIS1_EEEiPS1_iS6_iT_@Base 3.4.3
  _ZN11octave_sortI10octave_intIjEE8merge_loISt7greaterIS1_EEEiPS1_PiiS6_S7_iT_@Base 3.4.3
  _ZN11octave_sortI10octave_intIjEE8merge_loISt7greaterIS1_EEEiPS1_iS6_iT_@Base 3.4.3
- _ZN11octave_sortI10octave_intIjEE9count_runIPFbRKS1_S5_EEEiPS1_iRbT_@Base 3.4.3
  _ZN11octave_sortI10octave_intIjEE9is_sortedEPKS1_i@Base 3.4.3
  _ZN11octave_sortI10octave_intIjEE9sort_rowsEPKS1_Piii@Base 3.4.3
  _ZN11octave_sortI10octave_intIjEE9sort_rowsIPFbRKS1_S5_EEEvPS4_PiiiT_@Base 3.4.3
@@ -5690,7 +5688,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN11octave_sortI10octave_intIsEE8merge_loISt4lessIS1_EEEiPS1_iS6_iT_@Base 3.4.3
  _ZN11octave_sortI10octave_intIsEE8merge_loISt7greaterIS1_EEEiPS1_PiiS6_S7_iT_@Base 3.4.3
  _ZN11octave_sortI10octave_intIsEE8merge_loISt7greaterIS1_EEEiPS1_iS6_iT_@Base 3.4.3
- _ZN11octave_sortI10octave_intIsEE9count_runIPFbRKS1_S5_EEEiPS1_iRbT_@Base 3.4.3
  _ZN11octave_sortI10octave_intIsEE9is_sortedEPKS1_i@Base 3.4.3
  _ZN11octave_sortI10octave_intIsEE9sort_rowsEPKS1_Piii@Base 3.4.3
  _ZN11octave_sortI10octave_intIsEE9sort_rowsIPFbRKS1_S5_EEEvPS4_PiiiT_@Base 3.4.3
@@ -5766,7 +5763,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN11octave_sortI10octave_intItEE8merge_loISt4lessIS1_EEEiPS1_iS6_iT_@Base 3.4.3
  _ZN11octave_sortI10octave_intItEE8merge_loISt7greaterIS1_EEEiPS1_PiiS6_S7_iT_@Base 3.4.3
  _ZN11octave_sortI10octave_intItEE8merge_loISt7greaterIS1_EEEiPS1_iS6_iT_@Base 3.4.3
- _ZN11octave_sortI10octave_intItEE9count_runIPFbRKS1_S5_EEEiPS1_iRbT_@Base 3.4.3
  _ZN11octave_sortI10octave_intItEE9is_sortedEPKS1_i@Base 3.4.3
  _ZN11octave_sortI10octave_intItEE9sort_rowsEPKS1_Piii@Base 3.4.3
  _ZN11octave_sortI10octave_intItEE9sort_rowsIPFbRKS1_S5_EEEvPS4_PiiiT_@Base 3.4.3
@@ -5812,7 +5808,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN11octave_sortIP22octave_idx_vector_sortE8merge_hiIPFbS1_S1_EEEiPS1_iS6_iT_@Base 3.4.3
  _ZN11octave_sortIP22octave_idx_vector_sortE8merge_loIPFbS1_S1_EEEiPS1_PiiS6_S7_iT_@Base 3.4.3
  _ZN11octave_sortIP22octave_idx_vector_sortE8merge_loIPFbS1_S1_EEEiPS1_iS6_iT_@Base 3.4.3
- _ZN11octave_sortIP22octave_idx_vector_sortE9count_runIPFbS1_S1_EEEiPS1_iRbT_@Base 3.4.3
  _ZN11octave_sortIP22octave_idx_vector_sortE9is_sortedEPKS1_i@Base 3.4.3
  _ZN11octave_sortIP22octave_idx_vector_sortE9sort_rowsEPKS1_Piii@Base 3.4.3
  _ZN11octave_sortIP22octave_idx_vector_sortE9sort_rowsIPFbS1_S1_EEEvPKS1_PiiiT_@Base 3.4.3
@@ -5856,7 +5851,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN11octave_sortIP23octave_sparse_sort_idxlE8merge_hiIPFbS1_S1_EEEiPS1_iS6_iT_@Base 3.4.3
  _ZN11octave_sortIP23octave_sparse_sort_idxlE8merge_loIPFbS1_S1_EEEiPS1_PiiS6_S7_iT_@Base 3.4.3
  _ZN11octave_sortIP23octave_sparse_sort_idxlE8merge_loIPFbS1_S1_EEEiPS1_iS6_iT_@Base 3.4.3
- _ZN11octave_sortIP23octave_sparse_sort_idxlE9count_runIPFbS1_S1_EEEiPS1_iRbT_@Base 3.4.3
  _ZN11octave_sortIP23octave_sparse_sort_idxlE9is_sortedEPKS1_i@Base 3.4.3
  _ZN11octave_sortIP23octave_sparse_sort_idxlE9sort_rowsEPKS1_Piii@Base 3.4.3
  _ZN11octave_sortIP23octave_sparse_sort_idxlE9sort_rowsIPFbS1_S1_EEEvPKS1_PiiiT_@Base 3.4.3
@@ -5900,7 +5894,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN11octave_sortISsE8merge_hiIPFbRKSsS3_EEEiPSsiS6_iT_@Base 3.4.3
  _ZN11octave_sortISsE8merge_loIPFbRKSsS3_EEEiPSsPiiS6_S7_iT_@Base 3.4.3
  _ZN11octave_sortISsE8merge_loIPFbRKSsS3_EEEiPSsiS6_iT_@Base 3.4.3
- _ZN11octave_sortISsE9count_runIPFbRKSsS3_EEEiPSsiRbT_@Base 3.4.3
  _ZN11octave_sortISsE9is_sortedEPKSsi@Base 3.4.3
  _ZN11octave_sortISsE9sort_rowsEPKSsPiii@Base 3.4.3
  _ZN11octave_sortISsE9sort_rowsIPFbRKSsS3_EEEvPS2_PiiiT_@Base 3.4.3
@@ -5944,7 +5937,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN11octave_sortISt7complexIdEE8merge_hiIPFbRKS1_S5_EEEiPS1_iS8_iT_@Base 3.4.3
  _ZN11octave_sortISt7complexIdEE8merge_loIPFbRKS1_S5_EEEiPS1_PiiS8_S9_iT_@Base 3.4.3
  _ZN11octave_sortISt7complexIdEE8merge_loIPFbRKS1_S5_EEEiPS1_iS8_iT_@Base 3.4.3
- _ZN11octave_sortISt7complexIdEE9count_runIPFbRKS1_S5_EEEiPS1_iRbT_@Base 3.4.3
  _ZN11octave_sortISt7complexIdEE9is_sortedEPKS1_i@Base 3.4.3
  _ZN11octave_sortISt7complexIdEE9sort_rowsEPKS1_Piii@Base 3.4.3
  _ZN11octave_sortISt7complexIdEE9sort_rowsIPFbRKS1_S5_EEEvPS4_PiiiT_@Base 3.4.3
@@ -5988,7 +5980,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN11octave_sortISt7complexIfEE8merge_hiIPFbRKS1_S5_EEEiPS1_iS8_iT_@Base 3.4.3
  _ZN11octave_sortISt7complexIfEE8merge_loIPFbRKS1_S5_EEEiPS1_PiiS8_S9_iT_@Base 3.4.3
  _ZN11octave_sortISt7complexIfEE8merge_loIPFbRKS1_S5_EEEiPS1_iS8_iT_@Base 3.4.3
- _ZN11octave_sortISt7complexIfEE9count_runIPFbRKS1_S5_EEEiPS1_iRbT_@Base 3.4.3
  _ZN11octave_sortISt7complexIfEE9is_sortedEPKS1_i@Base 3.4.3
  _ZN11octave_sortISt7complexIfEE9sort_rowsEPKS1_Piii@Base 3.4.3
  _ZN11octave_sortISt7complexIfEE9sort_rowsIPFbRKS1_S5_EEEvPS4_PiiiT_@Base 3.4.3
@@ -6042,7 +6033,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN11octave_sortIbE8merge_hiIPFbbbEEEiPbiS4_iT_@Base 3.4.3
  _ZN11octave_sortIbE8merge_loIPFbbbEEEiPbPiiS4_S5_iT_@Base 3.4.3
  _ZN11octave_sortIbE8merge_loIPFbbbEEEiPbiS4_iT_@Base 3.4.3
- _ZN11octave_sortIbE9count_runIPFbbbEEEiPbiRbT_@Base 3.4.3
  _ZN11octave_sortIbE9is_sortedEPKbi@Base 3.4.3
  _ZN11octave_sortIbE9sort_rowsEPKbPiii@Base 3.4.3
  _ZN11octave_sortIbE9sort_rowsIPFbbbEEEvPKbPiiiT_@Base 3.4.3
@@ -6118,7 +6108,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN11octave_sortIcE8merge_loISt4lessIcEEEiPciS4_iT_@Base 3.4.3
  _ZN11octave_sortIcE8merge_loISt7greaterIcEEEiPcPiiS4_S5_iT_@Base 3.4.3
  _ZN11octave_sortIcE8merge_loISt7greaterIcEEEiPciS4_iT_@Base 3.4.3
- _ZN11octave_sortIcE9count_runIPFbccEEEiPciRbT_@Base 3.4.3
  _ZN11octave_sortIcE9is_sortedEPKci@Base 3.4.3
  _ZN11octave_sortIcE9sort_rowsEPKcPiii@Base 3.4.3
  _ZN11octave_sortIcE9sort_rowsIPFbccEEEvPKcPiiiT_@Base 3.4.3
@@ -6194,9 +6183,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN11octave_sortIdE8merge_loISt4lessIdEEEiPdiS4_iT_@Base 3.4.3
  _ZN11octave_sortIdE8merge_loISt7greaterIdEEEiPdPiiS4_S5_iT_@Base 3.4.3
  _ZN11octave_sortIdE8merge_loISt7greaterIdEEEiPdiS4_iT_@Base 3.4.3
- _ZN11octave_sortIdE9count_runIPFbddEEEiPdiRbT_@Base 3.4.3
- _ZN11octave_sortIdE9count_runISt4lessIdEEEiPdiRbT_@Base 3.4.3
- _ZN11octave_sortIdE9count_runISt7greaterIdEEEiPdiRbT_@Base 3.4.3
  _ZN11octave_sortIdE9is_sortedEPKdi@Base 3.4.3
  _ZN11octave_sortIdE9sort_rowsEPKdPiii@Base 3.4.3
  _ZN11octave_sortIdE9sort_rowsIPFbddEEEvPKdPiiiT_@Base 3.4.3
@@ -6272,9 +6258,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN11octave_sortIfE8merge_loISt4lessIfEEEiPfiS4_iT_@Base 3.4.3
  _ZN11octave_sortIfE8merge_loISt7greaterIfEEEiPfPiiS4_S5_iT_@Base 3.4.3
  _ZN11octave_sortIfE8merge_loISt7greaterIfEEEiPfiS4_iT_@Base 3.4.3
- _ZN11octave_sortIfE9count_runIPFbffEEEiPfiRbT_@Base 3.4.3
- _ZN11octave_sortIfE9count_runISt4lessIfEEEiPfiRbT_@Base 3.4.3
- _ZN11octave_sortIfE9count_runISt7greaterIfEEEiPfiRbT_@Base 3.4.3
  _ZN11octave_sortIfE9is_sortedEPKfi@Base 3.4.3
  _ZN11octave_sortIfE9sort_rowsEPKfPiii@Base 3.4.3
  _ZN11octave_sortIfE9sort_rowsIPFbffEEEvPKfPiiiT_@Base 3.4.3
@@ -6350,9 +6333,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN11octave_sortIiE8merge_loISt4lessIiEEEiPiiS4_iT_@Base 3.4.3
  _ZN11octave_sortIiE8merge_loISt7greaterIiEEEiPiS4_iS4_S4_iT_@Base 3.4.3
  _ZN11octave_sortIiE8merge_loISt7greaterIiEEEiPiiS4_iT_@Base 3.4.3
- _ZN11octave_sortIiE9count_runIPFbiiEEEiPiiRbT_@Base 3.4.3
- _ZN11octave_sortIiE9count_runISt4lessIiEEEiPiiRbT_@Base 3.4.3
- _ZN11octave_sortIiE9count_runISt7greaterIiEEEiPiiRbT_@Base 3.4.3
  _ZN11octave_sortIiE9is_sortedEPKii@Base 3.4.3
  _ZN11octave_sortIiE9sort_rowsEPKiPiii@Base 3.4.3
  _ZN11octave_sortIiE9sort_rowsIPFbiiEEEvPKiPiiiT_@Base 3.4.3
@@ -6428,9 +6408,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN11octave_sortIlE8merge_loISt4lessIlEEEiPliS4_iT_@Base 3.4.3
  _ZN11octave_sortIlE8merge_loISt7greaterIlEEEiPlPiiS4_S5_iT_@Base 3.4.3
  _ZN11octave_sortIlE8merge_loISt7greaterIlEEEiPliS4_iT_@Base 3.4.3
- _ZN11octave_sortIlE9count_runIPFbllEEEiPliRbT_@Base 3.4.3
- _ZN11octave_sortIlE9count_runISt4lessIlEEEiPliRbT_@Base 3.4.3
- _ZN11octave_sortIlE9count_runISt7greaterIlEEEiPliRbT_@Base 3.4.3
  _ZN11octave_sortIlE9is_sortedEPKli@Base 3.4.3
  _ZN11octave_sortIlE9sort_rowsEPKlPiii@Base 3.4.3
  _ZN11octave_sortIlE9sort_rowsIPFbllEEEvPKlPiiiT_@Base 3.4.3
@@ -6506,9 +6483,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN11octave_sortIsE8merge_loISt4lessIsEEEiPsiS4_iT_@Base 3.4.3
  _ZN11octave_sortIsE8merge_loISt7greaterIsEEEiPsPiiS4_S5_iT_@Base 3.4.3
  _ZN11octave_sortIsE8merge_loISt7greaterIsEEEiPsiS4_iT_@Base 3.4.3
- _ZN11octave_sortIsE9count_runIPFbssEEEiPsiRbT_@Base 3.4.3
- _ZN11octave_sortIsE9count_runISt4lessIsEEEiPsiRbT_@Base 3.4.3
- _ZN11octave_sortIsE9count_runISt7greaterIsEEEiPsiRbT_@Base 3.4.3
  _ZN11octave_sortIsE9is_sortedEPKsi@Base 3.4.3
  _ZN11octave_sortIsE9sort_rowsEPKsPiii@Base 3.4.3
  _ZN11octave_sortIsE9sort_rowsIPFbssEEEvPKsPiiiT_@Base 3.4.3
@@ -6584,9 +6558,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN11octave_sortIxE8merge_loISt4lessIxEEEiPxiS4_iT_@Base 3.4.3
  _ZN11octave_sortIxE8merge_loISt7greaterIxEEEiPxPiiS4_S5_iT_@Base 3.4.3
  _ZN11octave_sortIxE8merge_loISt7greaterIxEEEiPxiS4_iT_@Base 3.4.3
- _ZN11octave_sortIxE9count_runIPFbxxEEEiPxiRbT_@Base 3.4.3
- _ZN11octave_sortIxE9count_runISt4lessIxEEEiPxiRbT_@Base 3.4.3
- _ZN11octave_sortIxE9count_runISt7greaterIxEEEiPxiRbT_@Base 3.4.3
  _ZN11octave_sortIxE9is_sortedEPKxi@Base 3.4.3
  _ZN11octave_sortIxE9sort_rowsEPKxPiii@Base 3.4.3
  _ZN11octave_sortIxE9sort_rowsIPFbxxEEEvPKxPiiiT_@Base 3.4.3
