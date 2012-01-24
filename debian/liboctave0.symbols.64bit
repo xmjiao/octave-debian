@@ -6392,7 +6392,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN6MArrayI10octave_intImEED1Ev@Base 3.4.3
  _ZN6MArrayI10octave_intImEED2Ev@Base 3.4.3
  _ZN6MArrayI10octave_intImEEaSERKS2_@Base 3.4.3
- _ZN6Matrix6resizeEiid@Base 3.4.3
  _ZNK10idx_vector4fillI10octave_intIlEEEiRKT_iPS3_@Base 3.4.3
  _ZNK10idx_vector4fillI10octave_intImEEEiRKT_iPS3_@Base 3.4.3
  _ZNK10idx_vector4loopI15_idxadda_helperI10octave_intIlEEEEviT_@Base 3.4.3

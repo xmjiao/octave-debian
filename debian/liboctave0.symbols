@@ -9172,6 +9172,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN6Matrix6insertERK12ColumnVectorii@Base 3.4.3
  _ZN6Matrix6insertERK9RowVectorii@Base 3.4.3
  _ZN6Matrix6insertERKS_ii@Base 3.4.3
+# inline method in the dMatrix.h header file => always available!
+ (c++|optional=inlineMethod)"Matrix::resize(int, int, double)@Base" 3.4.3
  _ZN6MatrixC1ERK10DiagMatrix@Base 3.4.3
  _ZN6MatrixC1ERK10PermMatrix@Base 3.4.3
  _ZN6MatrixC1ERK10boolMatrix@Base 3.4.3
