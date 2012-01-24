@@ -16794,6 +16794,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _Z9FwarrantyRK17octave_value_listi@Base 3.4.3
  _Z9do_cat_opRK12octave_valueS1_RK5ArrayIiE@Base 3.4.3
  _Z9do_dbtypeRSoRKSsii@Base 3.4.3
+# not part of API (private function)
+ (c++|regex|optional=notPartOfAPI)"usage_1\(.*\)@Base" 3.4.3
  _Z9elem_xpow10intNDArrayI10octave_intIaEES1_@Base 3.4.3
  _Z9elem_xpow10intNDArrayI10octave_intIaEEd@Base 3.4.3
  _Z9elem_xpow10intNDArrayI10octave_intIaEEf@Base 3.4.3

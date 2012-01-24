@@ -11,6 +11,5 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _Z20vparse_error_with_idPKcS0_Pc@Base 3.4.3
  _Z6verrorPKcPc@Base 3.4.3
  _Z6vusagePKcPc@Base 3.4.3
- _Z7usage_1PKcS0_Pc@Base 3.4.3
  _Z8vmessagePKcS0_Pc@Base 3.4.3
  _Z8vwarningPKcPc@Base 3.4.3

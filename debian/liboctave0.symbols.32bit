@@ -7117,7 +7117,6 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _Z7do_readI12FloatNDArray10octave_intIyEE12octave_valueR13octave_streamiiiibbN13oct_mach_info12float_formatERi@Base 3.4.3
  _Z7do_readI7NDArray10octave_intIxEE12octave_valueR13octave_streamiiiibbN13oct_mach_info12float_formatERi@Base 3.4.3
  _Z7do_readI7NDArray10octave_intIyEE12octave_valueR13octave_streamiiiibbN13oct_mach_info12float_formatERi@Base 3.4.3
- _Z7usage_1PKcS0_Pc@Base 3.4.3
  _Z8bitshiftIxE10octave_intIT_ERKS2_iS4_@Base 3.4.3
  _Z8bitshiftIyE10octave_intIT_ERKS2_iS4_@Base 3.4.3
  _Z8vmessagePKcS0_Pc@Base 3.4.3
