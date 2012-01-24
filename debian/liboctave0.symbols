@@ -27537,6 +27537,6 @@ liboctinterp.so.0 liboctave0 #MINVER#
 (arch=!amd64 !kfreebsd-amd64 !ia64 !alpha !sparc64)#include "liboctave0.symbols.32bit"
 
 # va_list differs across architectures; most 64bit have __va_list_tag
-(arch=ia64))#include "liboctave0.symbols.va_list_as_void_ptr"
+(arch=ia64 sparc)#include "liboctave0.symbols.va_list_as_void_ptr"
 (arch=amd64 kfreebsd-amd64 alpha sparc64)#include "liboctave0.symbols.va_list_as__va_list_tag"
 (arch=!ia64 !amd64 !kfreebsd-amd64 !alpha !sparc64)#include "liboctave0.symbols.va_list_as_char_ptr"
