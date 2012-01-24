@@ -12188,7 +12188,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK5ArrayISt7complexIdEE13sort_rows_idxE8sortmode@Base 3.4.3
  _ZNK5ArrayISt7complexIdEE14is_sorted_rowsE8sortmode@Base 3.4.3
  _ZNK5ArrayISt7complexIdEE23compute_index_uncheckedERKS_IiE@Base 3.4.3
- _ZNK5ArrayISt7complexIdEE3mapIS1_PFS1_RKS1_EEES_IT_ET0_@Base 3.4.3
+# template instantiation
+ (c++|regex|optional=templateInstantiation)"Array<.*> Array<.*>::map<.*>\(.*\) const@Base" 3.4.3
  _ZNK5ArrayISt7complexIdEE3nnzEv@Base 3.4.3
  _ZNK5ArrayISt7complexIdEE4colsEv@Base 3.4.3
  _ZNK5ArrayISt7complexIdEE4dataEv@Base 3.4.3
@@ -12269,7 +12270,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK5ArrayISt7complexIfEE13sort_rows_idxE8sortmode@Base 3.4.3
  _ZNK5ArrayISt7complexIfEE14is_sorted_rowsE8sortmode@Base 3.4.3
  _ZNK5ArrayISt7complexIfEE23compute_index_uncheckedERKS_IiE@Base 3.4.3
- _ZNK5ArrayISt7complexIfEE3mapIS1_PFS1_RKS1_EEES_IT_ET0_@Base 3.4.3
  _ZNK5ArrayISt7complexIfEE3nnzEv@Base 3.4.3
  _ZNK5ArrayISt7complexIfEE4colsEv@Base 3.4.3
  _ZNK5ArrayISt7complexIfEE4dataEv@Base 3.4.3
@@ -12510,7 +12510,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK5ArrayIdE13sort_rows_idxE8sortmode@Base 3.4.3
  _ZNK5ArrayIdE14is_sorted_rowsE8sortmode@Base 3.4.3
  _ZNK5ArrayIdE23compute_index_uncheckedERKS_IiE@Base 3.4.3
- _ZNK5ArrayIdE3mapIdPFdRKdEEES_IT_ET0_@Base 3.4.3
  _ZNK5ArrayIdE3nnzEv@Base 3.4.3
  _ZNK5ArrayIdE4colsEv@Base 3.4.3
  _ZNK5ArrayIdE4dataEv@Base 3.4.3
@@ -12591,7 +12590,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK5ArrayIfE13sort_rows_idxE8sortmode@Base 3.4.3
  _ZNK5ArrayIfE14is_sorted_rowsE8sortmode@Base 3.4.3
  _ZNK5ArrayIfE23compute_index_uncheckedERKS_IiE@Base 3.4.3
- _ZNK5ArrayIfE3mapIfPFfRKfEEES_IT_ET0_@Base 3.4.3
  _ZNK5ArrayIfE3nnzEv@Base 3.4.3
  _ZNK5ArrayIfE4colsEv@Base 3.4.3
  _ZNK5ArrayIfE4dataEv@Base 3.4.3
@@ -12672,7 +12670,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK5ArrayIiE13sort_rows_idxE8sortmode@Base 3.4.3
  _ZNK5ArrayIiE14is_sorted_rowsE8sortmode@Base 3.4.3
  _ZNK5ArrayIiE23compute_index_uncheckedERKS0_@Base 3.4.3
- _ZNK5ArrayIiE3mapIiPFiRKiEEES_IT_ET0_@Base 3.4.3
  _ZNK5ArrayIiE3nnzEv@Base 3.4.3
  _ZNK5ArrayIiE4colsEv@Base 3.4.3
  _ZNK5ArrayIiE4dataEv@Base 3.4.3
@@ -12833,7 +12830,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK5ArrayIsE13sort_rows_idxE8sortmode@Base 3.4.3
  _ZNK5ArrayIsE14is_sorted_rowsE8sortmode@Base 3.4.3
  _ZNK5ArrayIsE23compute_index_uncheckedERKS_IiE@Base 3.4.3
- _ZNK5ArrayIsE3mapIsPFsRKsEEES_IT_ET0_@Base 3.4.3
  _ZNK5ArrayIsE3nnzEv@Base 3.4.3
  _ZNK5ArrayIsE4colsEv@Base 3.4.3
  _ZNK5ArrayIsE4dataEv@Base 3.4.3
@@ -25681,21 +25677,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZNK5ArrayIP17printf_format_eltEclEi@Base 3.4.3
  _ZNK5ArrayIP17printf_format_eltEclEii@Base 3.4.3
  _ZNK5ArrayIP17printf_format_eltEclEiii@Base 3.4.3
- _ZNK5ArrayISt7complexIdEE3mapIS1_RFS1_RKS1_EEES_IT_ET0_@Base 3.4.3
- _ZNK5ArrayISt7complexIdEE3mapIbRFbRKS1_EEES_IT_ET0_@Base 3.4.3
- _ZNK5ArrayISt7complexIdEE3mapIdRFdRKS1_EEES_IT_ET0_@Base 3.4.3
- _ZNK5ArrayISt7complexIfEE3mapIS1_RFS1_RKS1_EEES_IT_ET0_@Base 3.4.3
- _ZNK5ArrayISt7complexIfEE3mapIbRFbRKS1_EEES_IT_ET0_@Base 3.4.3
- _ZNK5ArrayISt7complexIfEE3mapIfRFfRKS1_EEES_IT_ET0_@Base 3.4.3
- _ZNK5ArrayIcE3mapIbRFiiEEES_IT_ET0_@Base 3.4.3
- _ZNK5ArrayIcE3mapIcRFiiEEES_IT_ET0_@Base 3.4.3
- _ZNK5ArrayIcE3mapIdRFiiEEES_IT_ET0_@Base 3.4.3
- _ZNK5ArrayIdE3mapISt7complexIdERFS3_dEEES_IT_ET0_@Base 3.4.3
- _ZNK5ArrayIdE3mapIbRFbdEEES_IT_ET0_@Base 3.4.3
- _ZNK5ArrayIdE3mapIdRFddEEES_IT_ET0_@Base 3.4.3
- _ZNK5ArrayIfE3mapISt7complexIfERFS3_fEEES_IT_ET0_@Base 3.4.3
- _ZNK5ArrayIfE3mapIbRFbfEEES_IT_ET0_@Base 3.4.3
- _ZNK5ArrayIfE3mapIfRFffEEES_IT_ET0_@Base 3.4.3
+# template instantiation
+ (c++|regex|optional=templateInstantiation)"Array<.*> Array<.*>::map<.*>\(.*\) const@Base" 3.4.3
  _ZNK5image10properties12has_propertyERK12caseless_str@Base 3.4.3
  _ZNK5image10properties14get_color_dataEv@Base 3.4.3
  _ZNK5image10properties14is_climincludeEv@Base 3.4.3
