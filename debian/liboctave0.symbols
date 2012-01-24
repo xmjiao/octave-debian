@@ -26205,7 +26205,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  (c++|optional=templateInstantiation)"octave_value* std::copy_backward<octave_value*, octave_value*>(octave_value*, octave_value*, octave_value*)@Base" 3.4.3
 # template instantiation
   (c++|optional=templateInstantiation)"octave_value* std::__copy_move_a<false, octave_value const*, octave_value*>(octave_value const*, octave_value const*, octave_value*)@Base" 3.4.3
- _ZSt22__complex_pow_unsignedIdESt7complexIT_ES2_j@Base 3.4.3
+# template instantiation
+  (c++|regex|optional=templateInstantiation)"std::complex<.*> std::__complex_pow_unsigned<.*>\(.*\)@Base" 3.4.3
  _ZSt3argIdET_RKSt7complexIS0_E@Base 3.4.3
  _ZSt3argIfET_RKSt7complexIS0_E@Base 3.4.3
  _ZSt3cosIdESt7complexIT_ERKS2_@Base 3.4.3
@@ -26214,8 +26215,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZSt3expIfESt7complexIT_ERKS2_@Base 3.4.3
  _ZSt3logIdESt7complexIT_ERKS2_@Base 3.4.3
  _ZSt3logIfESt7complexIT_ERKS2_@Base 3.4.3
- _ZSt3powIdESt7complexIT_ERKS2_RKS1_@Base 3.4.3
- _ZSt3powIfESt7complexIT_ERKS2_RKS1_@Base 3.4.3
+# template instantiation
+ (c++|regex|optional=templateInstantiation)"std::complex<.*> std::pow<.*>\(.*\)@Base" 3.4.3
  _ZSt3sinIdESt7complexIT_ERKS2_@Base 3.4.3
  _ZSt3sinIfESt7complexIT_ERKS2_@Base 3.4.3
  _ZSt3tanIdESt7complexIT_ERKS2_@Base 3.4.3

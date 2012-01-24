@@ -7631,7 +7631,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZNSt6vectorI12octave_valueSaIS0_EE14_M_fill_insertEN9__gnu_cxx17__normal_iteratorIPS0_S2_EEmRKS0_@Base 3.4.3
  _ZNSt6vectorI4CellSaIS0_EE7reserveEm@Base 3.4.3
  _ZSt13copy_backwardImESt15_Deque_iteratorIT_RS1_PS1_ES0_IS1_RKS1_PS5_ES8_S4_@Base 3.4.3
- _ZSt22__complex_pow_unsignedIfESt7complexIT_ES2_j@Base 3.4.3
+# template instantiation
+  (c++|regex|optional=templateInstantiation)"std::complex<.*> std::__complex_pow_unsigned<.*>\(.*\)@Base" 3.4.3
  _ZSt22__uninitialized_copy_aISt15_Deque_iteratorImRKmPS1_ES0_ImRmPmEmET0_T_S9_S8_RSaIT1_E@Base 3.4.3
  _ZSt22__uninitialized_move_aISt15_Deque_iteratorImRmPmES3_SaImEET0_T_S6_S5_RT1_@Base 3.4.3
  _ZSt4copyImESt15_Deque_iteratorIT_RS1_PS1_ES0_IS1_RKS1_PS5_ES8_S4_@Base 3.4.3
