@@ -13574,15 +13574,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNSt8_Rb_treeIiSt4pairIKi12ColumnVectorESt10_Select1stIS3_ESt4lessIiESaIS3_EE16_M_insert_uniqueERKS3_@Base 3.4.3
  _ZNSt8_Rb_treeIiSt4pairIKi12ColumnVectorESt10_Select1stIS3_ESt4lessIiESaIS3_EE17_M_insert_unique_ESt23_Rb_tree_const_iteratorIS3_ERKS3_@Base 3.4.3
  _ZNSt8_Rb_treeIiSt4pairIKi12ColumnVectorESt10_Select1stIS3_ESt4lessIiESaIS3_EE8_M_eraseEPSt13_Rb_tree_nodeIS3_E@Base 3.4.3
- _ZSt12partial_sortIPSsSt26pointer_to_binary_functionIRKSsS3_bEEvT_S5_S5_T0_@Base 3.4.3
- _ZSt12partial_sortIPSt7complexIdESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_S7_T0_@Base 3.4.3
- _ZSt12partial_sortIPSt7complexIfESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_S7_T0_@Base 3.4.3
- _ZSt12partial_sortIPbSt26pointer_to_binary_functionIbbbEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt12partial_sortIPcSt26pointer_to_binary_functionIccbEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt12partial_sortIPdSt26pointer_to_binary_functionIddbEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt12partial_sortIPfSt26pointer_to_binary_functionIffbEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt12partial_sortIPiEvT_S1_S1_@Base 3.4.3
- _ZSt12partial_sortIPsSt26pointer_to_binary_functionIssbEEvT_S3_S3_T0_@Base 3.4.3
+# template instantiation
+ (c++|regex|optional=templateInstantiation)"void std::partial_sort<.*>\(.*\)@Base" 3.4.3
 # template instantiation
  (c++|regex|optional=templateInstantiation)"void std::__adjust_heap<.*>\(.*\)@Base" 3.4.3
  _ZSt13__heap_selectIP10octave_intIaESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_S7_T0_@Base 3.4.3
