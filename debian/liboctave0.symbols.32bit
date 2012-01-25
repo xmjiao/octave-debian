@@ -6817,10 +6817,12 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZdvRKdRK10intNDArrayI10octave_intIyEE@Base 3.4.3
  _ZdvRKfRK10intNDArrayI10octave_intIxEE@Base 3.4.3
  _ZdvRKfRK10intNDArrayI10octave_intIyEE@Base 3.4.3
- _ZgtIdEbRKSt7complexIT_ES4_@Base 3.4.3
+# template instantiation (probably the inline bool operator OP macro in oct-cmplx.h)
+ (c++|optional=templateInstantiation)"bool operator><double>(std::complex<double> const&, std::complex<double> const&)@Base" 3.4.3
  _ZlsI10octave_intIxEERSoS2_RK10intNDArrayIT_E@Base 3.4.3
  _ZlsI10octave_intIyEERSoS2_RK10intNDArrayIT_E@Base 3.4.3
- _ZltIdEbRKSt7complexIT_ES4_@Base 3.4.3
+# template instantiation (probably the inline bool operator OP macro in oct-cmplx.h)
+ (c++|optional=templateInstantiation)"bool operator<<double>(std::complex<double> const&, std::complex<double> const&)@Base" 3.4.3
  _ZmII10octave_intIxEER6MArrayIT_ES5_RKS3_@Base 3.4.3
  _ZmII10octave_intIxEER6MArrayIT_ES5_RKS4_@Base 3.4.3
  _ZmII10octave_intIyEER6MArrayIT_ES5_RKS3_@Base 3.4.3
