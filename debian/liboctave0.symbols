@@ -13583,30 +13583,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZSt13copy_backwardIPiS0_ET0_T_S2_S1_@Base 3.4.3
 # template instantiation
  (c++|regex|optional=templateInstantiation)"void std::__insertion_sort<.*>\(.*\)@Base" 3.4.3
- _ZSt19__move_median_firstIP10octave_intIaESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_S7_T0_@Base 3.4.3
- _ZSt19__move_median_firstIP10octave_intIhESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_S7_T0_@Base 3.4.3
- _ZSt19__move_median_firstIP10octave_intIiESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_S7_T0_@Base 3.4.3
- _ZSt19__move_median_firstIP10octave_intIjESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_S7_T0_@Base 3.4.3
- _ZSt19__move_median_firstIP10octave_intIsESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_S7_T0_@Base 3.4.3
- _ZSt19__move_median_firstIP10octave_intItESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_S7_T0_@Base 3.4.3
- _ZSt19__move_median_firstIPP22octave_idx_vector_sortSt26pointer_to_binary_functionIS1_S1_bEEvT_S5_S5_T0_@Base 3.4.3
- _ZSt19__move_median_firstIPP23octave_sparse_sort_idxlSt26pointer_to_binary_functionIS1_S1_bEEvT_S5_S5_T0_@Base 3.4.3
- _ZSt19__move_median_firstIPSsSt26pointer_to_binary_functionIRKSsS3_bEEvT_S5_S5_T0_@Base 3.4.3
- _ZSt19__move_median_firstIPSt4pairIiiEEvT_S3_S3_@Base 3.4.3
- _ZSt19__move_median_firstIPSt7complexIdESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_S7_T0_@Base 3.4.3
- _ZSt19__move_median_firstIPSt7complexIfESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_S7_T0_@Base 3.4.3
- _ZSt19__move_median_firstIPbSt26pointer_to_binary_functionIbbbEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt19__move_median_firstIPcSt26pointer_to_binary_functionIccbEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt19__move_median_firstIPdSt26pointer_to_binary_functionIddbEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt19__move_median_firstIPdSt4lessIdEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt19__move_median_firstIPdSt7greaterIdEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt19__move_median_firstIPfSt26pointer_to_binary_functionIffbEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt19__move_median_firstIPfSt4lessIfEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt19__move_median_firstIPfSt7greaterIfEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt19__move_median_firstIPiSt26pointer_to_binary_functionIiibEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt19__move_median_firstIPlSt26pointer_to_binary_functionIllbEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt19__move_median_firstIPsSt26pointer_to_binary_functionIssbEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt19__move_median_firstIPxSt26pointer_to_binary_functionIxxbEEvT_S3_S3_T0_@Base 3.4.3
+# template instantiation
+ (c++|regex|optional=templateInstantiation)"void std::__move_median_first<.*>\(.*\)@Base" 3.4.3
  _ZSt25__unguarded_linear_insertIPSt4pairIiiEEvT_@Base 3.4.3
  _ZSt3absIdET_RKSt7complexIS0_E@Base 3.4.3
  _ZSt3absIfET_RKSt7complexIS0_E@Base 3.4.3
