@@ -13915,6 +13915,23 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZTVN10idx_vector14idx_scalar_repE@Base 3.4.3
  _ZTVN10idx_vector14idx_vector_repE@Base 3.4.3
  _ZTVN12octave_shlib9shlib_repE@Base 3.4.3
+# non-virtual thunks differ across architectures in their mangled name
+# So we use the demangled name (see dpkg-gensymbols(1))
+# NOTE: these symbols are NOT optional!
+ (c++)"non-virtual thunk to ODE::~ODE()@Base" 3.4.3
+ (c++)"non-virtual thunk to ODE::~ODE()@Base" 3.4.3
+ (c++)"non-virtual thunk to LSODE::~LSODE()@Base" 3.4.3
+ (c++)"non-virtual thunk to LSODE::~LSODE()@Base" 3.4.3
+ (c++)"non-virtual thunk to DAE::~DAE()@Base" 3.4.3
+ (c++)"non-virtual thunk to DAE::~DAE()@Base" 3.4.3
+ (c++)"non-virtual thunk to DAERT::~DAERT()@Base" 3.4.3
+ (c++)"non-virtual thunk to DAERT::~DAERT()@Base" 3.4.3
+ (c++)"non-virtual thunk to DASPK::~DASPK()@Base" 3.4.3
+ (c++)"non-virtual thunk to DASPK::~DASPK()@Base" 3.4.3
+ (c++)"non-virtual thunk to DASRT::~DASRT()@Base" 3.4.3
+ (c++)"non-virtual thunk to DASRT::~DASRT()@Base" 3.4.3
+ (c++)"non-virtual thunk to DASSL::~DASSL()@Base" 3.4.3
+ (c++)"non-virtual thunk to DASSL::~DASSL()@Base" 3.4.3
  _ZZN10DiagArray2ISt7complexIdEE4elemEiiE4zero@Base 3.4.3
  _ZZN10DiagArray2ISt7complexIfEE4elemEiiE4zero@Base 3.4.3
  _ZZN10DiagArray2IbE4elemEiiE4zero@Base 3.4.3
@@ -27078,6 +27095,21 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZTVN6uimenu10propertiesE@Base 3.4.3
  _ZTVN7hggroup10propertiesE@Base 3.4.3
  _ZTVN7surface10propertiesE@Base 3.4.3
+# non-virtual thunks differ across architectures in their mangled name
+# So we use the demangled name (see dpkg-gensymbols(1))
+# NOTE: these symbols are NOT optional!
+ (c++)"non-virtual thunk to iprocstream::~iprocstream()@Base" 3.4.3
+ (c++)"non-virtual thunk to iprocstream::~iprocstream()@Base" 3.4.3
+ (c++)"non-virtual thunk to hdf5_ifstream::~hdf5_ifstream()@Base" 3.4.3
+ (c++)"non-virtual thunk to hdf5_ifstream::~hdf5_ifstream()@Base" 3.4.3
+ (c++)"non-virtual thunk to hdf5_ofstream::~hdf5_ofstream()@Base" 3.4.3
+ (c++)"non-virtual thunk to hdf5_ofstream::~hdf5_ofstream()@Base" 3.4.3
+ (c++)"non-virtual thunk to c_file_ptr_stream<std::basic_iostream<char, std::char_traits<char> >, _IO_FILE*, c_file_ptr_buf>::~c_file_ptr_stream()@Base" 3.4.3
+ (c++)"non-virtual thunk to c_file_ptr_stream<std::basic_iostream<char, std::char_traits<char> >, _IO_FILE*, c_file_ptr_buf>::~c_file_ptr_stream()@Base" 3.4.3
+ (c++)"non-virtual thunk to c_file_ptr_stream<std::basic_iostream<char, std::char_traits<char> >, void*, c_zfile_ptr_buf>::~c_file_ptr_stream()@Base" 3.4.3
+ (c++)"non-virtual thunk to c_file_ptr_stream<std::basic_iostream<char, std::char_traits<char> >, void*, c_zfile_ptr_buf>::~c_file_ptr_stream()@Base" 3.4.3
+ (c++)"non-virtual thunk to oprocstream::~oprocstream()@Base" 3.4.3
+ (c++)"non-virtual thunk to oprocstream::~oprocstream()@Base" 3.4.3
  _ZZ23write_mat5_integer_dataI10octave_intIaEEvRSoPKT_iiE3buf@Base 3.4.3
  _ZZ23write_mat5_integer_dataI10octave_intIhEEvRSoPKT_iiE3buf@Base 3.4.3
  _ZZ23write_mat5_integer_dataI10octave_intIiEEvRSoPKT_iiE3buf@Base 3.4.3

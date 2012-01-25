@@ -6789,20 +6789,6 @@ liboctave.so.0 liboctave0 #MINVER#
  (c++|regex|optional=templateInstantiation)"void std::reverse<.*>\(.*\)@Base" 3.4.3
  _ZSt8__rotateIP10octave_intIxEEvT_S3_S3_St26random_access_iterator_tag@Base 3.4.3
  _ZSt8__rotateIP10octave_intIyEEvT_S3_S3_St26random_access_iterator_tag@Base 3.4.3
- _ZThn44_N3ODED0Ev@Base 3.4.3
- _ZThn44_N3ODED1Ev@Base 3.4.3
- _ZThn44_N5LSODED0Ev@Base 3.4.3
- _ZThn44_N5LSODED1Ev@Base 3.4.3
- _ZThn60_N3DAED0Ev@Base 3.4.3
- _ZThn60_N3DAED1Ev@Base 3.4.3
- _ZThn60_N5DAERTD0Ev@Base 3.4.3
- _ZThn60_N5DAERTD1Ev@Base 3.4.3
- _ZThn60_N5DASPKD0Ev@Base 3.4.3
- _ZThn60_N5DASPKD1Ev@Base 3.4.3
- _ZThn60_N5DASRTD0Ev@Base 3.4.3
- _ZThn60_N5DASRTD1Ev@Base 3.4.3
- _ZThn60_N5DASSLD0Ev@Base 3.4.3
- _ZThn60_N5DASSLD1Ev@Base 3.4.3
  _ZZN5ArrayI10octave_intIxEE17resize_fill_valueEvE4zero@Base 3.4.3
  _ZZN5ArrayI10octave_intIxEE7resize1EiRKS1_E15max_stack_chunk@Base 3.4.3
  _ZZN5ArrayI10octave_intIyEE17resize_fill_valueEvE4zero@Base 3.4.3
@@ -7622,18 +7608,6 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZTV22octave_base_int_scalarI10octave_intIxEE@Base 3.4.3
  _ZTV22octave_base_int_scalarI10octave_intIyEE@Base 3.4.3
  _ZTVN14unwind_protect12fcn_arg_elemIjEE@Base 3.4.3
- _ZThn12_N13hdf5_ifstreamD0Ev@Base 3.4.3
- _ZThn12_N13hdf5_ifstreamD1Ev@Base 3.4.3
- _ZThn12_N13hdf5_ofstreamD0Ev@Base 3.4.3
- _ZThn12_N13hdf5_ofstreamD1Ev@Base 3.4.3
- _ZThn4_N11oprocstreamD0Ev@Base 3.4.3
- _ZThn4_N11oprocstreamD1Ev@Base 3.4.3
- _ZThn8_N11iprocstreamD0Ev@Base 3.4.3
- _ZThn8_N11iprocstreamD1Ev@Base 3.4.3
- _ZThn8_N17c_file_ptr_streamISdP8_IO_FILE14c_file_ptr_bufED0Ev@Base 3.4.3
- _ZThn8_N17c_file_ptr_streamISdP8_IO_FILE14c_file_ptr_bufED1Ev@Base 3.4.3
- _ZThn8_N17c_file_ptr_streamISdPv15c_zfile_ptr_bufED0Ev@Base 3.4.3
- _ZThn8_N17c_file_ptr_streamISdPv15c_zfile_ptr_bufED1Ev@Base 3.4.3
  _ZTv0_n12_N10gzifstreamD0Ev@Base 3.4.3
  _ZTv0_n12_N10gzifstreamD1Ev@Base 3.4.3
  _ZTv0_n12_N10gzofstreamD0Ev@Base 3.4.3
