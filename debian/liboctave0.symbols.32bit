@@ -6781,9 +6781,10 @@ liboctave.so.0 liboctave0 #MINVER#
  (optional=notPartOfAPI)_ZSt13copy_backwardIPSsS0_ET0_T_S2_S1_@Base 3.4.3
  _ZSt16__introsort_loopIPSt4pairIiiEiEvT_S3_T0_@Base 3.4.3
  _ZSt16__introsort_loopIPiiEvT_S1_T0_@Base 3.4.3
- _ZSt21__unguarded_partitionIPddSt26pointer_to_binary_functionIddbEET_S3_S3_RKT0_T1_@Base 3.4.3
- _ZSt21__unguarded_partitionIPxxSt26pointer_to_binary_functionIxxbEET_S3_S3_RKT0_T1_@Base 3.4.3
- _ZSt27__unguarded_partition_pivotIPSt7complexIdESt26pointer_to_binary_functionIRKS1_S5_bEET_S7_S7_T0_@Base 3.4.3
+# template instantiation
+ (c++|regex|optional=templateInstantiation)".* std::__unguarded_partition<.*>\(.*\)@Base" 3.4.3
+# template instantiation
+ (c++|regex|optional=templateInstantiation)".* std::__unguarded_partition_pivot<.*>\(.*\)@Base" 3.4.3
  _ZSt7reverseIPSt7complexIdEEvT_S3_@Base 3.4.3
  _ZSt8__rotateIP10octave_intIxEEvT_S3_S3_St26random_access_iterator_tag@Base 3.4.3
  _ZSt8__rotateIP10octave_intIyEEvT_S3_S3_St26random_access_iterator_tag@Base 3.4.3
