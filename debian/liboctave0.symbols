@@ -17046,6 +17046,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN10intNDArrayI10octave_intIaEEC1ERK10dim_vector@Base 3.4.3
  _ZN10intNDArrayI10octave_intIaEEC1ERK10dim_vectorS1_@Base 3.4.3
  _ZN10intNDArrayI10octave_intIaEEC1Ev@Base 3.4.3
+# template instantiation (the intNDArray copy constructor for some values)
+ (c++|regex|optional=templateInstantiation)"intNDArray<.*>::intNDArray<.*>\(intNDArray<.*> const&\)@Base" 3.4.3
  _ZN10intNDArrayI10octave_intIaEEC1IdEERK6MArrayIT_E@Base 3.4.3
  _ZN10intNDArrayI10octave_intIaEEC1IfEERK6MArrayIT_E@Base 3.4.3
  _ZN10intNDArrayI10octave_intIaEEC2ERK10dim_vector@Base 3.4.3

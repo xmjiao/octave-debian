@@ -7060,28 +7060,14 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN10DiagArray2ISt7complexIdEEC2IfEERKS_IT_E@Base 3.4.3
  _ZN10DiagArray2IdEC1IfEERKS_IT_E@Base 3.4.3
  _ZN10DiagArray2IdEC2IfEERKS_IT_E@Base 3.4.3
- _ZN10intNDArrayI10octave_intIaEEC1IS0_IxEEERKS_IT_E@Base 3.4.3
- _ZN10intNDArrayI10octave_intIaEEC2IS0_IxEEERKS_IT_E@Base 3.4.3
- _ZN10intNDArrayI10octave_intIhEEC1IS0_IxEEERKS_IT_E@Base 3.4.3
- _ZN10intNDArrayI10octave_intIhEEC2IS0_IxEEERKS_IT_E@Base 3.4.3
- _ZN10intNDArrayI10octave_intIiEEC1IS0_IxEEERKS_IT_E@Base 3.4.3
- _ZN10intNDArrayI10octave_intIiEEC2IS0_IxEEERKS_IT_E@Base 3.4.3
- _ZN10intNDArrayI10octave_intIjEEC1IS0_IxEEERKS_IT_E@Base 3.4.3
- _ZN10intNDArrayI10octave_intIjEEC2IS0_IxEEERKS_IT_E@Base 3.4.3
- _ZN10intNDArrayI10octave_intIsEEC1IS0_IxEEERKS_IT_E@Base 3.4.3
- _ZN10intNDArrayI10octave_intIsEEC2IS0_IxEEERKS_IT_E@Base 3.4.3
- _ZN10intNDArrayI10octave_intItEEC1IS0_IxEEERKS_IT_E@Base 3.4.3
- _ZN10intNDArrayI10octave_intItEEC2IS0_IxEEERKS_IT_E@Base 3.4.3
  _ZN10intNDArrayI10octave_intIxEEC1ERK10dim_vector@Base 3.4.3
  _ZN10intNDArrayI10octave_intIxEEC1ERK10dim_vectorS1_@Base 3.4.3
  _ZN10intNDArrayI10octave_intIxEEC1Ev@Base 3.4.3
- _ZN10intNDArrayI10octave_intIxEEC1IS0_IyEEERKS_IT_E@Base 3.4.3
  _ZN10intNDArrayI10octave_intIxEEC1IdEERK6MArrayIT_E@Base 3.4.3
  _ZN10intNDArrayI10octave_intIxEEC1IfEERK6MArrayIT_E@Base 3.4.3
  _ZN10intNDArrayI10octave_intIxEEC2ERK10dim_vector@Base 3.4.3
  _ZN10intNDArrayI10octave_intIxEEC2ERK10dim_vectorS1_@Base 3.4.3
  _ZN10intNDArrayI10octave_intIxEEC2Ev@Base 3.4.3
- _ZN10intNDArrayI10octave_intIxEEC2IS0_IyEEERKS_IT_E@Base 3.4.3
  _ZN10intNDArrayI10octave_intIxEEC2IdEERK6MArrayIT_E@Base 3.4.3
  _ZN10intNDArrayI10octave_intIxEEC2IfEERK6MArrayIT_E@Base 3.4.3
  _ZN10intNDArrayI10octave_intIxEED1Ev@Base 3.4.3
