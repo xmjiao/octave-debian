@@ -25781,7 +25781,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZNK9load_path8do_filesERKSsb@Base 3.4.3
  _ZNK9load_path9do_updateEv@Base 3.4.3
  _ZNK9tree_cell9rvalue_okEv@Base 3.4.3
- _ZNKSt3mapISsN12symbol_table13symbol_recordESt4lessISsESaISt4pairIKSsS1_EEE4findERS5_@Base 3.4.3
+# template instantiation
+ (c++|regex|optional=templateInstantiation)"^std::map<.*>::find.*@Base" 3.4.3
  _ZNSsC1IPcEET_S1_RKSaIcE@Base 3.4.3
  _ZNSsC2IPcEET_S1_RKSaIcE@Base 3.4.3
  _ZNSt10_List_baseI10dim_vectorSaIS0_EED1Ev@Base 3.4.3
@@ -25819,7 +25820,6 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZNSt3mapI12caseless_str15graphics_objectSt4lessIS0_ESaISt4pairIKS0_S1_EEED2Ev@Base 3.4.3
  _ZNSt3mapI12caseless_str15graphics_objectSt4lessIS0_ESaISt4pairIKS0_S1_EEEixERS5_@Base 3.4.3
  _ZNSt3mapI12caseless_str8propertyN15base_properties16cmp_caseless_strESaISt4pairIKS0_S1_EEEixERS5_@Base 3.4.3
- _ZNSt3mapISs12octave_valueSt4lessISsESaISt4pairIKSsS0_EEE4findERS4_@Base 3.4.3
  _ZNSt3mapISs12octave_valueSt4lessISsESaISt4pairIKSsS0_EEED1Ev@Base 3.4.3
  _ZNSt3mapISs12octave_valueSt4lessISsESaISt4pairIKSsS0_EEED2Ev@Base 3.4.3
  _ZNSt3mapISs12octave_valueSt4lessISsESaISt4pairIKSsS0_EEEixERS4_@Base 3.4.3
@@ -25827,13 +25827,10 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZNSt3mapISs16graphics_toolkitSt4lessISsESaISt4pairIKSsS0_EEED2Ev@Base 3.4.3
  _ZNSt3mapISs16graphics_toolkitSt4lessISsESaISt4pairIKSsS0_EEEixERS4_@Base 3.4.3
  _ZNSt3mapISs4CellSt4lessISsESaISt4pairIKSsS0_EEEixERS4_@Base 3.4.3
- _ZNSt3mapISsN12octave_class13exemplar_infoESt4lessISsESaISt4pairIKSsS1_EEE4findERS5_@Base 3.4.3
  _ZNSt3mapISsN12octave_class13exemplar_infoESt4lessISsESaISt4pairIKSsS1_EEED1Ev@Base 3.4.3
  _ZNSt3mapISsN12octave_class13exemplar_infoESt4lessISsESaISt4pairIKSsS1_EEED2Ev@Base 3.4.3
  _ZNSt3mapISsN12octave_class13exemplar_infoESt4lessISsESaISt4pairIKSsS1_EEEixERS5_@Base 3.4.3
- _ZNSt3mapISsN12symbol_table13symbol_recordESt4lessISsESaISt4pairIKSsS1_EEE4findERS5_@Base 3.4.3
  _ZNSt3mapISsN12symbol_table13symbol_recordESt4lessISsESaISt4pairIKSsS1_EEEixERS5_@Base 3.4.3
- _ZNSt3mapISsN12symbol_table8fcn_infoESt4lessISsESaISt4pairIKSsS1_EEE4findERS5_@Base 3.4.3
  _ZNSt3mapISsN12symbol_table8fcn_infoESt4lessISsESaISt4pairIKSsS1_EEED1Ev@Base 3.4.3
  _ZNSt3mapISsN12symbol_table8fcn_infoESt4lessISsESaISt4pairIKSsS1_EEED2Ev@Base 3.4.3
  _ZNSt3mapISsN12symbol_table8fcn_infoESt4lessISsESaISt4pairIKSsS1_EEEixERS5_@Base 3.4.3
@@ -25847,7 +25844,6 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZNSt3mapISsS_ISsiSt4lessISsESaISt4pairIKSsiEEES1_SaIS2_IS3_S6_EEEixERS3_@Base 3.4.3
  _ZNSt3mapISsS_IiiSt4lessIiESaISt4pairIKiiEEES0_ISsESaIS2_IKSsS6_EEED1Ev@Base 3.4.3
  _ZNSt3mapISsS_IiiSt4lessIiESaISt4pairIKiiEEES0_ISsESaIS2_IKSsS6_EEED2Ev@Base 3.4.3
- _ZNSt3mapISsSsSt4lessISsESaISt4pairIKSsSsEEE4findERS3_@Base 3.4.3
  _ZNSt3mapISsSsSt4lessISsESaISt4pairIKSsSsEEEC1IPKS4_EET_SA_@Base 3.4.3
  _ZNSt3mapISsSsSt4lessISsESaISt4pairIKSsSsEEEC2IPKS4_EET_SA_@Base 3.4.3
  _ZNSt3mapISsSsSt4lessISsESaISt4pairIKSsSsEEED1Ev@Base 3.4.3
@@ -25862,7 +25858,6 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZNSt3mapISsiSt4lessISsESaISt4pairIKSsiEEED1Ev@Base 3.4.3
  _ZNSt3mapISsiSt4lessISsESaISt4pairIKSsiEEED2Ev@Base 3.4.3
  _ZNSt3mapISsiSt4lessISsESaISt4pairIKSsiEEEixERS3_@Base 3.4.3
- _ZNSt3mapIi12octave_valueSt4lessIiESaISt4pairIKiS0_EEE4findERS4_@Base 3.4.3
  _ZNSt3mapIiP12symbol_tableSt4lessIiESaISt4pairIKiS1_EEED1Ev@Base 3.4.3
  _ZNSt3mapIiP12symbol_tableSt4lessIiESaISt4pairIKiS1_EEED2Ev@Base 3.4.3
  _ZNSt3mapIiP12symbol_tableSt4lessIiESaISt4pairIKiS1_EEEixERS5_@Base 3.4.3
