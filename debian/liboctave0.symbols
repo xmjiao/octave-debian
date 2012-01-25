@@ -13578,53 +13578,8 @@ liboctave.so.0 liboctave0 #MINVER#
  (c++|regex|optional=templateInstantiation)"void std::partial_sort<.*>\(.*\)@Base" 3.4.3
 # template instantiation
  (c++|regex|optional=templateInstantiation)"void std::__adjust_heap<.*>\(.*\)@Base" 3.4.3
- _ZSt13__heap_selectIP10octave_intIaESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_S7_T0_@Base 3.4.3
- _ZSt13__heap_selectIP10octave_intIaESt4lessIS1_EEvT_S5_S5_T0_@Base 3.4.3
- _ZSt13__heap_selectIP10octave_intIaESt7greaterIS1_EEvT_S5_S5_T0_@Base 3.4.3
- _ZSt13__heap_selectIP10octave_intIhESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_S7_T0_@Base 3.4.3
- _ZSt13__heap_selectIP10octave_intIhESt4lessIS1_EEvT_S5_S5_T0_@Base 3.4.3
- _ZSt13__heap_selectIP10octave_intIhESt7greaterIS1_EEvT_S5_S5_T0_@Base 3.4.3
- _ZSt13__heap_selectIP10octave_intIiESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_S7_T0_@Base 3.4.3
- _ZSt13__heap_selectIP10octave_intIiESt4lessIS1_EEvT_S5_S5_T0_@Base 3.4.3
- _ZSt13__heap_selectIP10octave_intIiESt7greaterIS1_EEvT_S5_S5_T0_@Base 3.4.3
- _ZSt13__heap_selectIP10octave_intIjESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_S7_T0_@Base 3.4.3
- _ZSt13__heap_selectIP10octave_intIjESt4lessIS1_EEvT_S5_S5_T0_@Base 3.4.3
- _ZSt13__heap_selectIP10octave_intIjESt7greaterIS1_EEvT_S5_S5_T0_@Base 3.4.3
- _ZSt13__heap_selectIP10octave_intIsESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_S7_T0_@Base 3.4.3
- _ZSt13__heap_selectIP10octave_intIsESt4lessIS1_EEvT_S5_S5_T0_@Base 3.4.3
- _ZSt13__heap_selectIP10octave_intIsESt7greaterIS1_EEvT_S5_S5_T0_@Base 3.4.3
- _ZSt13__heap_selectIP10octave_intItESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_S7_T0_@Base 3.4.3
- _ZSt13__heap_selectIP10octave_intItESt4lessIS1_EEvT_S5_S5_T0_@Base 3.4.3
- _ZSt13__heap_selectIP10octave_intItESt7greaterIS1_EEvT_S5_S5_T0_@Base 3.4.3
- _ZSt13__heap_selectIPP22octave_idx_vector_sortSt26pointer_to_binary_functionIS1_S1_bEEvT_S5_S5_T0_@Base 3.4.3
- _ZSt13__heap_selectIPP23octave_sparse_sort_idxlSt26pointer_to_binary_functionIS1_S1_bEEvT_S5_S5_T0_@Base 3.4.3
- _ZSt13__heap_selectIPSsSt26pointer_to_binary_functionIRKSsS3_bEEvT_S5_S5_T0_@Base 3.4.3
- _ZSt13__heap_selectIPSt7complexIdESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_S7_T0_@Base 3.4.3
- _ZSt13__heap_selectIPSt7complexIfESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_S7_T0_@Base 3.4.3
- _ZSt13__heap_selectIPbSt26pointer_to_binary_functionIbbbEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt13__heap_selectIPbSt4lessIbEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt13__heap_selectIPbSt7greaterIbEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt13__heap_selectIPcSt26pointer_to_binary_functionIccbEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt13__heap_selectIPcSt4lessIcEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt13__heap_selectIPcSt7greaterIcEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt13__heap_selectIPdSt26pointer_to_binary_functionIddbEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt13__heap_selectIPdSt4lessIdEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt13__heap_selectIPdSt7greaterIdEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt13__heap_selectIPfSt26pointer_to_binary_functionIffbEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt13__heap_selectIPfSt4lessIfEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt13__heap_selectIPfSt7greaterIfEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt13__heap_selectIPiSt26pointer_to_binary_functionIiibEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt13__heap_selectIPiSt4lessIiEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt13__heap_selectIPiSt7greaterIiEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt13__heap_selectIPlSt26pointer_to_binary_functionIllbEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt13__heap_selectIPlSt4lessIlEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt13__heap_selectIPlSt7greaterIlEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt13__heap_selectIPsSt26pointer_to_binary_functionIssbEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt13__heap_selectIPsSt4lessIsEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt13__heap_selectIPsSt7greaterIsEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt13__heap_selectIPxSt26pointer_to_binary_functionIxxbEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt13__heap_selectIPxSt4lessIxEEvT_S3_S3_T0_@Base 3.4.3
- _ZSt13__heap_selectIPxSt7greaterIxEEvT_S3_S3_T0_@Base 3.4.3
+# template instantiation
+ (c++|regex|optional=templateInstantiation)"void std::__heap_select<.*>\(.*\)@Base" 3.4.3
  _ZSt13copy_backwardIPiS0_ET0_T_S2_S1_@Base 3.4.3
  _ZSt16__insertion_sortIP10octave_intIaESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_T0_@Base 3.4.3
  _ZSt16__insertion_sortIP10octave_intIhESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_T0_@Base 3.4.3
