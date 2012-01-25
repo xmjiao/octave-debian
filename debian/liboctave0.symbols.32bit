@@ -6779,14 +6779,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZSt13__introselectIPxiSt7greaterIxEEvT_S3_S3_T0_T1_@Base 3.4.3
 # This is only used in .cc files
  (optional=notPartOfAPI)_ZSt13copy_backwardIPSsS0_ET0_T_S2_S1_@Base 3.4.3
- _ZSt16__insertion_sortIP10octave_intIxESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_T0_@Base 3.4.3
- _ZSt16__insertion_sortIP10octave_intIxESt4lessIS1_EEvT_S5_T0_@Base 3.4.3
- _ZSt16__insertion_sortIP10octave_intIxESt7greaterIS1_EEvT_S5_T0_@Base 3.4.3
- _ZSt16__insertion_sortIP10octave_intIyESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_T0_@Base 3.4.3
- _ZSt16__insertion_sortIP10octave_intIyESt4lessIS1_EEvT_S5_T0_@Base 3.4.3
- _ZSt16__insertion_sortIP10octave_intIyESt7greaterIS1_EEvT_S5_T0_@Base 3.4.3
- _ZSt16__insertion_sortIPdSt4lessIdEEvT_S3_T0_@Base 3.4.3
- _ZSt16__insertion_sortIPdSt7greaterIdEEvT_S3_T0_@Base 3.4.3
  _ZSt16__introsort_loopIPSt4pairIiiEiEvT_S3_T0_@Base 3.4.3
  _ZSt16__introsort_loopIPiiEvT_S1_T0_@Base 3.4.3
  _ZSt19__move_median_firstIP10octave_intIxESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_S7_T0_@Base 3.4.3

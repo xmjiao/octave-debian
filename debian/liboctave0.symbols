@@ -13581,27 +13581,8 @@ liboctave.so.0 liboctave0 #MINVER#
 # template instantiation
  (c++|regex|optional=templateInstantiation)"void std::__heap_select<.*>\(.*\)@Base" 3.4.3
  _ZSt13copy_backwardIPiS0_ET0_T_S2_S1_@Base 3.4.3
- _ZSt16__insertion_sortIP10octave_intIaESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_T0_@Base 3.4.3
- _ZSt16__insertion_sortIP10octave_intIhESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_T0_@Base 3.4.3
- _ZSt16__insertion_sortIP10octave_intIiESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_T0_@Base 3.4.3
- _ZSt16__insertion_sortIP10octave_intIjESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_T0_@Base 3.4.3
- _ZSt16__insertion_sortIP10octave_intIsESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_T0_@Base 3.4.3
- _ZSt16__insertion_sortIP10octave_intItESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_T0_@Base 3.4.3
- _ZSt16__insertion_sortIPP22octave_idx_vector_sortSt26pointer_to_binary_functionIS1_S1_bEEvT_S5_T0_@Base 3.4.3
- _ZSt16__insertion_sortIPP23octave_sparse_sort_idxlSt26pointer_to_binary_functionIS1_S1_bEEvT_S5_T0_@Base 3.4.3
- _ZSt16__insertion_sortIPSsSt26pointer_to_binary_functionIRKSsS3_bEEvT_S5_T0_@Base 3.4.3
- _ZSt16__insertion_sortIPSt4pairIiiEEvT_S3_@Base 3.4.3
- _ZSt16__insertion_sortIPSt7complexIdESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_T0_@Base 3.4.3
- _ZSt16__insertion_sortIPSt7complexIfESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_T0_@Base 3.4.3
- _ZSt16__insertion_sortIPbSt26pointer_to_binary_functionIbbbEEvT_S3_T0_@Base 3.4.3
- _ZSt16__insertion_sortIPcSt26pointer_to_binary_functionIccbEEvT_S3_T0_@Base 3.4.3
- _ZSt16__insertion_sortIPdSt26pointer_to_binary_functionIddbEEvT_S3_T0_@Base 3.4.3
- _ZSt16__insertion_sortIPfSt26pointer_to_binary_functionIffbEEvT_S3_T0_@Base 3.4.3
- _ZSt16__insertion_sortIPiEvT_S1_@Base 3.4.3
- _ZSt16__insertion_sortIPiSt26pointer_to_binary_functionIiibEEvT_S3_T0_@Base 3.4.3
- _ZSt16__insertion_sortIPlSt26pointer_to_binary_functionIllbEEvT_S3_T0_@Base 3.4.3
- _ZSt16__insertion_sortIPsSt26pointer_to_binary_functionIssbEEvT_S3_T0_@Base 3.4.3
- _ZSt16__insertion_sortIPxSt26pointer_to_binary_functionIxxbEEvT_S3_T0_@Base 3.4.3
+# template instantiation
+ (c++|regex|optional=templateInstantiation)"void std::__insertion_sort<.*>\(.*\)@Base" 3.4.3
  _ZSt19__move_median_firstIP10octave_intIaESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_S7_T0_@Base 3.4.3
  _ZSt19__move_median_firstIP10octave_intIhESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_S7_T0_@Base 3.4.3
  _ZSt19__move_median_firstIP10octave_intIiESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_S7_T0_@Base 3.4.3

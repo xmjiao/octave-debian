@@ -6774,8 +6774,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZSt13__introselectIPxlSt26pointer_to_binary_functionIxxbEEvT_S3_S3_T0_T1_@Base 3.4.3
  _ZSt13__introselectIPxlSt4lessIxEEvT_S3_S3_T0_T1_@Base 3.4.3
  _ZSt13__introselectIPxlSt7greaterIxEEvT_S3_S3_T0_T1_@Base 3.4.3
- _ZSt16__insertion_sortIP10octave_intIlESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_T0_@Base 3.4.3
- _ZSt16__insertion_sortIP10octave_intImESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_T0_@Base 3.4.3
  _ZSt16__introsort_loopIPSt4pairIiiElEvT_S3_T0_@Base 3.4.3
  _ZSt16__introsort_loopIPilEvT_S1_T0_@Base 3.4.3
  _ZSt19__move_median_firstIP10octave_intIlESt26pointer_to_binary_functionIRKS1_S5_bEEvT_S7_S7_T0_@Base 3.4.3
