@@ -2183,12 +2183,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _Z8besselh2fRK18FloatComplexMatrixbR5ArrayIiE@Base 3.4.3
  _Z8besselh2fRK19FloatComplexNDArraybR5ArrayIiE@Base 3.4.3
  _Z8besselh2fRKSt7complexIfEbRi@Base 3.4.3
- _Z8bitshiftIaE10octave_intIT_ERKS2_iS4_@Base 3.4.3
- _Z8bitshiftIhE10octave_intIT_ERKS2_iS4_@Base 3.4.3
- _Z8bitshiftIiE10octave_intIT_ERKS2_iS4_@Base 3.4.3
- _Z8bitshiftIjE10octave_intIT_ERKS2_iS4_@Base 3.4.3
- _Z8bitshiftIsE10octave_intIT_ERKS2_iS4_@Base 3.4.3
- _Z8bitshiftItE10octave_intIT_ERKS2_iS4_@Base 3.4.3
+# template instantiation
+ (c++|regex|optional=templateInstantiation)"octave_int<.*> bitshift<.*>\(.*const&\)@Base" 3.4.3
  _Z8chol2invRK11FloatMatrix@Base 3.4.3
  _Z8chol2invRK12SparseMatrix@Base 3.4.3
  _Z8chol2invRK13ComplexMatrix@Base 3.4.3
@@ -16619,8 +16615,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _Z8FwaitpidRK17octave_value_listi@Base 3.4.3
  _Z8FwarningRK17octave_value_listi@Base 3.4.3
  _Z8bind_ansRK12octave_valueb@Base 3.4.3
- _Z8bitshiftIhE10octave_intIT_ERKS2_iS4_@Base 3.4.3
- _Z8bitshiftItE10octave_intIT_ERKS2_iS4_@Base 3.4.3
+# template instantiation
+ (c++|regex|optional=templateInstantiation)"octave_int<.*> bitshift<.*>\(.*const&\)@Base" 3.4.3
  _Z8call_mexbPvRK17octave_value_listiP19octave_mex_function@Base 3.4.3
  _Z8do_whichRKSs@Base 3.4.3
  _Z8raw_helpRKSsRb@Base 3.4.3

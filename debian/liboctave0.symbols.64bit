@@ -5110,8 +5110,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _Z7productRK12FloatNDArrayRK10intNDArrayI10octave_intImEE@Base 3.4.3
  _Z7productRK7NDArrayRK10intNDArrayI10octave_intIlEE@Base 3.4.3
  _Z7productRK7NDArrayRK10intNDArrayI10octave_intImEE@Base 3.4.3
- _Z8bitshiftIlE10octave_intIT_ERKS2_iS4_@Base 3.4.3
- _Z8bitshiftImE10octave_intIT_ERKS2_iS4_@Base 3.4.3
  _Z8mx_el_eqRK10intNDArrayI10octave_intIaEERKS0_IlE@Base 3.4.3
  _Z8mx_el_eqRK10intNDArrayI10octave_intIaEERKS0_ImE@Base 3.4.3
  _Z8mx_el_eqRK10intNDArrayI10octave_intIaEERKS_IS0_IlEE@Base 3.4.3
