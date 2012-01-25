@@ -6785,7 +6785,8 @@ liboctave.so.0 liboctave0 #MINVER#
  (c++|regex|optional=templateInstantiation)".* std::__unguarded_partition<.*>\(.*\)@Base" 3.4.3
 # template instantiation
  (c++|regex|optional=templateInstantiation)".* std::__unguarded_partition_pivot<.*>\(.*\)@Base" 3.4.3
- _ZSt7reverseIPSt7complexIdEEvT_S3_@Base 3.4.3
+# template instantiation
+ (c++|regex|optional=templateInstantiation)"void std::reverse<.*>\(.*\)@Base" 3.4.3
  _ZSt8__rotateIP10octave_intIxEEvT_S3_S3_St26random_access_iterator_tag@Base 3.4.3
  _ZSt8__rotateIP10octave_intIyEEvT_S3_S3_St26random_access_iterator_tag@Base 3.4.3
  _ZThn44_N3ODED0Ev@Base 3.4.3
