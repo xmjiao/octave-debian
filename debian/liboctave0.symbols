@@ -16933,10 +16933,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZGVZNK6SparseISt7complexIdEE7nil_repEvE2nr@Base 3.4.3
  _ZGVZNK6SparseIbE7nil_repEvE2nr@Base 3.4.3
  _ZGVZNK6SparseIdE7nil_repEvE2nr@Base 3.4.3
- _ZN10DiagArray2ISt7complexIfEEC1IdEERKS_IT_E@Base 3.4.3
- _ZN10DiagArray2ISt7complexIfEEC2IdEERKS_IT_E@Base 3.4.3
 # template instantiation
- (c++|optional=templateInstantiation)"DiagArray2<float>::DiagArray2<double>(DiagArray2<double> const&)@Base" 3.4.3
+ (c++|regex|optional=templateInstantiation)"DiagArray2<.*>::DiagArray2<.*>\(DiagArray2<.*> const&\)@Base" 3.4.3
  _ZN10DiagMatrixC1Eiid@Base 3.4.3
  _ZN10DiagMatrixC2Eiid@Base 3.4.3
  _ZN10DiagMatrixaSERKS_@Base 3.4.3

@@ -7054,10 +7054,6 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZGVZNK18octave_base_scalarI10octave_intIyEE4dimsEvE2dv@Base 3.4.3
  _ZGVZNK5ArrayI10octave_intIxEE7nil_repEvE2nr@Base 3.4.3
  _ZGVZNK5ArrayI10octave_intIyEE7nil_repEvE2nr@Base 3.4.3
- _ZN10DiagArray2ISt7complexIdEEC1IfEERKS_IT_E@Base 3.4.3
- _ZN10DiagArray2ISt7complexIdEEC2IfEERKS_IT_E@Base 3.4.3
- _ZN10DiagArray2IdEC1IfEERKS_IT_E@Base 3.4.3
- _ZN10DiagArray2IdEC2IfEERKS_IT_E@Base 3.4.3
  _ZN10intNDArrayI10octave_intIxEEC1ERK10dim_vector@Base 3.4.3
  _ZN10intNDArrayI10octave_intIxEEC1ERK10dim_vectorS1_@Base 3.4.3
  _ZN10intNDArrayI10octave_intIxEEC1Ev@Base 3.4.3
