@@ -7518,7 +7518,6 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZNK24tree_complex_for_command3dupEij@Base 3.4.3
  _ZNK27tree_unwind_protect_command3dupEij@Base 3.4.3
  _ZNK9tree_cell3dupEij@Base 3.4.3
- _ZNKSt15_Deque_iteratorIN17octave_call_stack14call_stack_eltERS1_PS1_EixEi@Base 3.4.3
  _ZNKSt6vectorI12octave_valueSaIS0_EE12_M_check_lenEjPKc@Base 3.4.3
  _ZNSt11_Deque_baseI12octave_valueSaIS0_EE17_M_initialize_mapEj@Base 3.4.3
  _ZNSt11_Deque_baseI13string_vectorSaIS0_EE17_M_initialize_mapEj@Base 3.4.3
@@ -7529,7 +7528,6 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZNSt11_Deque_baseIcSaIcEE17_M_initialize_mapEj@Base 3.4.3
  _ZNSt11_Deque_baseIiSaIiEE17_M_initialize_mapEj@Base 3.4.3
  _ZNSt11_Deque_baseIjSaIjEE17_M_initialize_mapEj@Base 3.4.3
- _ZNSt15_Deque_iteratorIjRjPjEpLEi@Base 3.4.3
  _ZNSt5dequeI12octave_valueSaIS0_EE17_M_reallocate_mapEjb@Base 3.4.3
  _ZNSt5dequeI13string_vectorSaIS0_EE17_M_reallocate_mapEjb@Base 3.4.3
  _ZNSt5dequeIN17octave_call_stack14call_stack_eltESaIS1_EE17_M_reallocate_mapEjb@Base 3.4.3
