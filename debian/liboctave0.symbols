@@ -8284,7 +8284,7 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN5ArrayISt7complexIfEEaSERKS2_@Base 3.4.3
  _ZN5ArrayISt7complexIfEEclERKS_IiE@Base 3.4.3
 # template instantiation
- (c++|regex|optional=templateInstantiation)"Array<.*>::operator\(\).*@Base" 3.4.3
+ (c++|regex|optional=templateInstantiation)"^Array<.*>::operator\(\).*@Base" 3.4.3
  _ZN5ArrayIbE11fortran_vecEv@Base 3.4.3
  _ZN5ArrayIbE11make_uniqueEv@Base 3.4.3
  _ZN5ArrayIbE15delete_elementsERK10idx_vector@Base 3.4.3
@@ -11519,7 +11519,7 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK5ArrayI10idx_vectorE8test_anyERFbRKS0_E@Base 3.4.3
  _ZNK5ArrayI10idx_vectorE8test_anyERFbS0_E@Base 3.4.3
 # template instantiation
- (c++|regex|optional=templateInstantiation)"Array<.*>::as_column\(\) const@Base" 3.4.3
+ (c++|regex|optional=templateInstantiation)"^Array<.*>::as_column\(\) const@Base" 3.4.3
  _ZNK5ArrayI10idx_vectorE9as_matrixEv@Base 3.4.3
  _ZNK5ArrayI10idx_vectorE9byte_sizeEv@Base 3.4.3
  _ZNK5ArrayI10idx_vectorE9checkelemERKS_IiE@Base 3.4.3
@@ -12187,7 +12187,7 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK5ArrayISt7complexIdEE14is_sorted_rowsE8sortmode@Base 3.4.3
  _ZNK5ArrayISt7complexIdEE23compute_index_uncheckedERKS_IiE@Base 3.4.3
 # template instantiation
- (c++|regex|optional=templateInstantiation)"Array<.*> Array<.*>::map<.*>\(.*\) const@Base" 3.4.3
+ (c++|regex|optional=templateInstantiation)"^Array<.*> Array<.*>::map<.*>\(.*\) const@Base" 3.4.3
  _ZNK5ArrayISt7complexIdEE3nnzEv@Base 3.4.3
  _ZNK5ArrayISt7complexIdEE4colsEv@Base 3.4.3
  _ZNK5ArrayISt7complexIdEE4dataEv@Base 3.4.3
@@ -13573,16 +13573,16 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNSt8_Rb_treeIiSt4pairIKi12ColumnVectorESt10_Select1stIS3_ESt4lessIiESaIS3_EE17_M_insert_unique_ESt23_Rb_tree_const_iteratorIS3_ERKS3_@Base 3.4.3
  _ZNSt8_Rb_treeIiSt4pairIKi12ColumnVectorESt10_Select1stIS3_ESt4lessIiESaIS3_EE8_M_eraseEPSt13_Rb_tree_nodeIS3_E@Base 3.4.3
 # template instantiation
- (c++|regex|optional=templateInstantiation)"void std::partial_sort<.*>\(.*\)@Base" 3.4.3
+ (c++|regex|optional=templateInstantiation)"^void std::partial_sort<.*>\(.*\)@Base" 3.4.3
 # template instantiation
- (c++|regex|optional=templateInstantiation)"void std::__adjust_heap<.*>\(.*\)@Base" 3.4.3
+ (c++|regex|optional=templateInstantiation)"^void std::__adjust_heap<.*>\(.*\)@Base" 3.4.3
 # template instantiation
- (c++|regex|optional=templateInstantiation)"void std::__heap_select<.*>\(.*\)@Base" 3.4.3
+ (c++|regex|optional=templateInstantiation)"^void std::__heap_select<.*>\(.*\)@Base" 3.4.3
  _ZSt13copy_backwardIPiS0_ET0_T_S2_S1_@Base 3.4.3
 # template instantiation
- (c++|regex|optional=templateInstantiation)"void std::__insertion_sort<.*>\(.*\)@Base" 3.4.3
+ (c++|regex|optional=templateInstantiation)"^void std::__insertion_sort<.*>\(.*\)@Base" 3.4.3
 # template instantiation
- (c++|regex|optional=templateInstantiation)"void std::__move_median_first<.*>\(.*\)@Base" 3.4.3
+ (c++|regex|optional=templateInstantiation)"^void std::__move_median_first<.*>\(.*\)@Base" 3.4.3
  _ZSt25__unguarded_linear_insertIPSt4pairIiiEEvT_@Base 3.4.3
  _ZSt3absIdET_RKSt7complexIS0_E@Base 3.4.3
  _ZSt3absIfET_RKSt7complexIS0_E@Base 3.4.3
@@ -16618,7 +16618,7 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _Z8FwarningRK17octave_value_listi@Base 3.4.3
  _Z8bind_ansRK12octave_valueb@Base 3.4.3
 # template instantiation
- (c++|regex|optional=templateInstantiation)"octave_int<.*> bitshift<.*>\(.*const&\)@Base" 3.4.3
+ (c++|regex|optional=templateInstantiation)"^octave_int<.*> bitshift<.*>\(.*const&\)@Base" 3.4.3
  _Z8call_mexbPvRK17octave_value_listiP19octave_mex_function@Base 3.4.3
  _Z8do_whichRKSs@Base 3.4.3
  _Z8raw_helpRKSsRb@Base 3.4.3
@@ -16719,7 +16719,7 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _Z9do_cat_opRK12octave_valueS1_RK5ArrayIiE@Base 3.4.3
  _Z9do_dbtypeRSoRKSsii@Base 3.4.3
 # not part of API (private function)
- (c++|regex|optional=notPartOfAPI)"usage_1\(.*\)@Base" 3.4.3
+ (c++|regex|optional=notPartOfAPI)"^usage_1\(.*\)@Base" 3.4.3
  _Z9elem_xpow10intNDArrayI10octave_intIaEES1_@Base 3.4.3
  _Z9elem_xpow10intNDArrayI10octave_intIaEEd@Base 3.4.3
  _Z9elem_xpow10intNDArrayI10octave_intIaEEf@Base 3.4.3
@@ -16936,7 +16936,7 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZGVZNK6SparseIbE7nil_repEvE2nr@Base 3.4.3
  _ZGVZNK6SparseIdE7nil_repEvE2nr@Base 3.4.3
 # template instantiation
- (c++|regex|optional=templateInstantiation)"DiagArray2<.*>::DiagArray2<.*>\(DiagArray2<.*> const&\)@Base" 3.4.3
+ (c++|regex|optional=templateInstantiation)"^DiagArray2<.*>::DiagArray2<.*>\(DiagArray2<.*> const&\)@Base" 3.4.3
  _ZN10DiagMatrixC1Eiid@Base 3.4.3
  _ZN10DiagMatrixC2Eiid@Base 3.4.3
  _ZN10DiagMatrixaSERKS_@Base 3.4.3
@@ -17043,7 +17043,7 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN10intNDArrayI10octave_intIaEEC1ERK10dim_vectorS1_@Base 3.4.3
  _ZN10intNDArrayI10octave_intIaEEC1Ev@Base 3.4.3
 # template instantiation (the intNDArray copy constructor for some values)
- (c++|regex|optional=templateInstantiation)"intNDArray<.*>::intNDArray<.*>\(intNDArray<.*> const&\)@Base" 3.4.3
+ (c++|regex|optional=templateInstantiation)"^intNDArray<.*>::intNDArray<.*>\(intNDArray<.*> const&\)@Base" 3.4.3
  _ZN10intNDArrayI10octave_intIaEEC1IdEERK6MArrayIT_E@Base 3.4.3
  _ZN10intNDArrayI10octave_intIaEEC1IfEERK6MArrayIT_E@Base 3.4.3
  _ZN10intNDArrayI10octave_intIaEEC2ERK10dim_vector@Base 3.4.3
@@ -17609,7 +17609,7 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN12symbol_table11pop_contextEv@Base 3.4.3
  _ZN12symbol_table12builtin_findERKSs@Base 3.4.3
 # inline method in the header file => always available!
- (c++|regex|optional=inlineMethod)"symbol_table::get_dispatch\(.*\)@Base" 3.4.3
+ (c++|regex|optional=inlineMethod)"^symbol_table::get_dispatch\(.*\)@Base" 3.4.3
  _ZN12symbol_table12get_instanceEib@Base 3.4.3
  _ZN12symbol_table12global_tableE@Base 3.4.3
  _ZN12symbol_table13all_instancesE@Base 3.4.3
@@ -17617,9 +17617,9 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN12symbol_table13find_functionERKSsRK17octave_value_listb@Base 3.4.3
  _ZN12symbol_table13is_superiortoERKSsS1_@Base 3.4.3
 # inline method in the header file => always available!
- (c++|regex|optional=inlineMethod)"symbol_table::symbol_record::force_variable\(.*\)@Base" 3.4.3
- (c++|regex|optional=inlineMethod)"symbol_table::symbol_record::init_persistent\(\)@Base" 3.4.3
- (c++|regex|optional=inlineMethod)"symbol_table::symbol_record::symbol_record_rep::force_variable\(.*\)@Base" 3.4.3
+ (c++|regex|optional=inlineMethod)"^symbol_table::symbol_record::force_variable\(.*\)@Base" 3.4.3
+ (c++|regex|optional=inlineMethod)"^symbol_table::symbol_record::init_persistent\(\)@Base" 3.4.3
+ (c++|regex|optional=inlineMethod)"^symbol_table::symbol_record::symbol_record_rep::force_variable\(.*\)@Base" 3.4.3
  _ZN12symbol_table13symbol_record17symbol_record_rep5clearEv@Base 3.4.3
  _ZN12symbol_table13symbol_record17symbol_record_repD1Ev@Base 3.4.3
  _ZN12symbol_table13symbol_record17symbol_record_repD2Ev@Base 3.4.3
@@ -17667,14 +17667,14 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN12symbol_table24install_cmdline_functionERKSsRK12octave_value@Base 3.4.3
  _ZN12symbol_table25do_clear_variable_patternERKSs@Base 3.4.3
 # inline method in the header file => always available!
- (c++|regex|optional=inlineMethod)"symbol_table::install_built_in_function\(.*\)@Base" 3.4.3
+ (c++|regex|optional=inlineMethod)"^symbol_table::install_built_in_function\(.*\)@Base" 3.4.3
  _ZN12symbol_table25is_built_in_function_nameERKSs@Base 3.4.3
  _ZN12symbol_table27erase_subfunctions_in_scopeEi@Base 3.4.3
  _ZN12symbol_table31stash_dir_name_for_subfunctionsEiRKSs@Base 3.4.3
  _ZN12symbol_table4dumpERSoi@Base 3.4.3
  _ZN12symbol_table4findERKSsRK17octave_value_listbb@Base 3.4.3
 # inline method in the header file => always available!
- (c++|regex|optional=inlineMethod)"symbol_table::glob\(.*\)@Base" 3.4.3
+ (c++|regex|optional=inlineMethod)"^symbol_table::glob\(.*\)@Base" 3.4.3
  _ZN12symbol_table6insertERKSs@Base 3.4.3
  _ZN12symbol_table6scopesEv@Base 3.4.3
  _ZN12symbol_table7cleanupEv@Base 3.4.3
@@ -18969,7 +18969,7 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN18FloatComplexMatrixC1Eii@Base 3.4.3
  _ZN18FloatComplexMatrixC1Ev@Base 3.4.3
 # inline method in the header file => always available!
- (c++|regex|optional=inlineMethod)"FloatComplexMatrix::FloatComplexMatrix<.*>\(MArray<.*> const&\)@Base" 3.4.3
+ (c++|regex|optional=inlineMethod)"^FloatComplexMatrix::FloatComplexMatrix<.*>\(MArray<.*> const&\)@Base" 3.4.3
  _ZN18FloatComplexMatrixC2Eii@Base 3.4.3
  _ZN18FloatComplexMatrixC2Ev@Base 3.4.3
  _ZN18FloatComplexMatrixaSERKS_@Base 3.4.3
@@ -20666,7 +20666,7 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN3EIGD2Ev@Base 3.4.3
  _ZN3mex14global_memlistE@Base 3.4.3
 # not part of API (not in any .h file)
- (c++|regex|optional=notPartOfAPI)"mex::malloc\(.*\)@Base" 3.4.3
+ (c++|regex|optional=notPartOfAPI)"^mex::malloc\(.*\)@Base" 3.4.3
  _ZN3mex7cleanupEPv@Base 3.4.3
  _ZN3mexD1Ev@Base 3.4.3
  _ZN3mexD2Ev@Base 3.4.3
@@ -25348,7 +25348,7 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZNK5ArrayI12octave_valueE8test_anyERFbRKS0_E@Base 3.4.3
  _ZNK5ArrayI12octave_valueE8test_anyERFbS0_E@Base 3.4.3
 # template instantiation
- (c++|regex|optional=templateInstantiation)"Array<.*>::as_column\(\) const@Base" 3.4.3
+ (c++|regex|optional=templateInstantiation)"^Array<.*>::as_column\(\) const@Base" 3.4.3
  _ZNK5ArrayI12octave_valueE9as_matrixEv@Base 3.4.3
  _ZNK5ArrayI12octave_valueE9byte_sizeEv@Base 3.4.3
  _ZNK5ArrayI12octave_valueE9checkelemERKS_IiE@Base 3.4.3
@@ -25605,7 +25605,7 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZNK5ArrayIP17printf_format_eltEclEii@Base 3.4.3
  _ZNK5ArrayIP17printf_format_eltEclEiii@Base 3.4.3
 # template instantiation
- (c++|regex|optional=templateInstantiation)"Array<.*> Array<.*>::map<.*>\(.*\) const@Base" 3.4.3
+ (c++|regex|optional=templateInstantiation)"^Array<.*> Array<.*>::map<.*>\(.*\) const@Base" 3.4.3
  _ZNK5image10properties12has_propertyERK12caseless_str@Base 3.4.3
  _ZNK5image10properties14get_color_dataEv@Base 3.4.3
  _ZNK5image10properties14is_climincludeEv@Base 3.4.3
@@ -25800,7 +25800,7 @@ liboctinterp.so.0 liboctave0 #MINVER#
 # template instantiation
  (c++|regex|optional=templateInstantiation)"^std::set<.*>.*const@Base" 3.4.3
 # template instantiation
- (c++|regex|optional=templateInstantiation)"std::_Deque_iterator<.*>.*@Base" 3.4.3
+ (c++|regex|optional=templateInstantiation)"^std::_Deque_iterator<.*>.*@Base" 3.4.3
 # template instantiation
  (c++|regex|optional=templateInstantiation)"^std::map<.*>::find.*@Base" 3.4.3
  _ZNSsC1IPcEET_S1_RKSaIcE@Base 3.4.3
@@ -26130,7 +26130,7 @@ liboctinterp.so.0 liboctave0 #MINVER#
 # template instantiation
   (c++|optional=templateInstantiation)"octave_value* std::__copy_move_a<false, octave_value const*, octave_value*>(octave_value const*, octave_value const*, octave_value*)@Base" 3.4.3
 # template instantiation
-  (c++|regex|optional=templateInstantiation)"std::complex<.*> std::__complex_pow_unsigned<.*>\(.*\)@Base" 3.4.3
+  (c++|regex|optional=templateInstantiation)"^std::complex<.*> std::__complex_pow_unsigned<.*>\(.*\)@Base" 3.4.3
  _ZSt3argIdET_RKSt7complexIS0_E@Base 3.4.3
  _ZSt3argIfET_RKSt7complexIS0_E@Base 3.4.3
  _ZSt3cosIdESt7complexIT_ERKS2_@Base 3.4.3
@@ -26140,7 +26140,7 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZSt3logIdESt7complexIT_ERKS2_@Base 3.4.3
  _ZSt3logIfESt7complexIT_ERKS2_@Base 3.4.3
 # template instantiation
- (c++|regex|optional=templateInstantiation)"std::complex<.*> std::pow<.*>\(.*\)@Base" 3.4.3
+ (c++|regex|optional=templateInstantiation)"^std::complex<.*> std::pow<.*>\(.*\)@Base" 3.4.3
  _ZSt3sinIdESt7complexIT_ERKS2_@Base 3.4.3
  _ZSt3sinIfESt7complexIT_ERKS2_@Base 3.4.3
  _ZSt3tanIdESt7complexIT_ERKS2_@Base 3.4.3
