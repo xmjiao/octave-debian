@@ -25798,6 +25798,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZNK9load_path9do_updateEv@Base 3.4.3
  _ZNK9tree_cell9rvalue_okEv@Base 3.4.3
 # template instantiation
+ (c++|regex|optional=templateInstantiation)"^std::set<.*>.*const@Base" 3.4.3
+# template instantiation
  (c++|regex|optional=templateInstantiation)"std::_Deque_iterator<.*>.*@Base" 3.4.3
 # template instantiation
  (c++|regex|optional=templateInstantiation)"^std::map<.*>::find.*@Base" 3.4.3
