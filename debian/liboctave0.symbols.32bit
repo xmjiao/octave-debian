@@ -7297,7 +7297,6 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN22octave_base_int_scalarI10octave_intIyEED0Ev@Base 3.4.3
  _ZN22octave_base_int_scalarI10octave_intIyEED1Ev@Base 3.4.3
  _ZN22octave_base_int_scalarI10octave_intIyEED2Ev@Base 3.4.3
- _ZN3mex6mallocEj@Base 3.4.3
  _ZN3mex7reallocEPvj@Base 3.4.3
  _ZN5ArrayI10octave_intIxEE4elemEi@Base 3.4.3
  _ZN5ArrayI10octave_intIxEEC1ERK10dim_vector@Base 3.4.3

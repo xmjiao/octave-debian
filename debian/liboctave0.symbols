@@ -416,6 +416,8 @@ libcruft.so.0 liboctave0 #MINVER#
  zuoik_@Base 3.4.3
  zwrsk_@Base 3.4.3
 liboctave.so.0 liboctave0 #MINVER#
+# not part of API (not in any .h file)
+ (c++|regex|optional=notPartOfAPI)"mex::malloc\(.*\)@Base" 3.4.3
  _Z10bsxfun_addRK10intNDArrayI10octave_intIaEES4_@Base 3.4.3
  _Z10bsxfun_addRK10intNDArrayI10octave_intIhEES4_@Base 3.4.3
  _Z10bsxfun_addRK10intNDArrayI10octave_intIiEES4_@Base 3.4.3
@@ -20664,7 +20666,7 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN3EIGD2Ev@Base 3.4.3
  _ZN3mex14global_memlistE@Base 3.4.3
 # not part of API (not in any .h file)
- (c++|optional=notPartOfAPI)"mex::malloc(unsigned long)@Base" 3.4.3
+ (c++|regex|optional=notPartOfAPI)"mex::malloc\(.*\)@Base" 3.4.3
  _ZN3mex7cleanupEPv@Base 3.4.3
  _ZN3mexD1Ev@Base 3.4.3
  _ZN3mexD2Ev@Base 3.4.3
