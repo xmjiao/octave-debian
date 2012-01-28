@@ -7110,7 +7110,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN14unwind_protect12fcn_arg_elemIjED0Ev@Base 3.4.3
  _ZN14unwind_protect12fcn_arg_elemIjED1Ev@Base 3.4.3
  _ZN14unwind_protect12fcn_arg_elemIjED2Ev@Base 3.4.3
- _ZN15FloatDiagMatrixaSERKS_@Base 3.4.3
+# inline method in the header file => always available!
+ (c++|optional=inlineMethod)"FloatDiagMatrix::operator=(FloatDiagMatrix const&)@Base" 3.4.3
  _ZN15c_zfile_ptr_buf6xsgetnEPci@Base 3.4.3
  _ZN15c_zfile_ptr_buf6xsputnEPKci@Base 3.4.3
  _ZN15c_zfile_ptr_buf7seekoffExSt12_Ios_SeekdirSt13_Ios_Openmode@Base 3.4.3
@@ -7320,10 +7321,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN5ArrayI10octave_intIyEED2Ev@Base 3.4.3
  _ZN5ArrayI10octave_intIyEEaSERKS2_@Base 3.4.3
  _ZN5ArrayI10octave_intIyEEclEi@Base 3.4.3
- _ZN6MArrayISt7complexIdEEC1IfEERK5ArrayIT_E@Base 3.4.3
- _ZN6MArrayISt7complexIdEEC2IfEERK5ArrayIT_E@Base 3.4.3
- _ZN6MArrayIdEC1IfEERK5ArrayIT_E@Base 3.4.3
- _ZN6MArrayIdEC2IfEERK5ArrayIT_E@Base 3.4.3
+# template instantiation
+ (c++|regex|optional=templateInstantiation)"MArray<.*> >::MArray<.*>\(.* const&\)@Base" 3.4.3
  _ZN7mxArray6callocEjj@Base 3.4.3
  _ZN7mxArray6mallocEj@Base 3.4.3
  _ZN9gzfilebuf6setbufEPci@Base 3.4.3
