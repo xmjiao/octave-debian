@@ -21648,7 +21648,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN9load_path15move_method_mapERKSsb@Base 3.4.3
  _ZN9load_path17command_line_pathE@Base 3.4.3
  _ZN9load_path17remove_method_mapERKSs@Base 3.4.3
- _ZN9load_path21set_command_line_pathERKSs@Base 3.4.3
+# inline method in the header file => always available!
+ (c++|regex|optional=inlineMethod)"load_path::set_command_line_path\(.*\)@Base" 3.4.3
  _ZN9load_path22remove_private_fcn_mapERKSs@Base 3.4.3
  _ZN9load_path4moveESt14_List_iteratorINS_8dir_infoEEb@Base 3.4.3
  _ZN9load_path6do_addERKSsbb@Base 3.4.3
