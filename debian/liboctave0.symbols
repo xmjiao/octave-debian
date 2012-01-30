@@ -4943,9 +4943,12 @@ liboctave.so.0 liboctave0 #MINVER#
 # not part of API (private function)
  (c++|optional=notPartOfAPI)"idx_vector::chkerr()@Base" 3.4.3
  _ZN10idx_vector6freezeEiPKcb@Base 3.4.3
- _ZN10idx_vector7nil_repEv@Base 3.4.3
+# inline method in the header file idx-vector.h => always available!
+ (c++|optional=inlineMethod)"idx_vector::nil_rep()@Base" 3.4.3
  _ZN10idx_vectorC1ERK5ArrayIbE@Base 3.4.3
  _ZN10idx_vectorC1Eiii@Base 3.4.3
+# inline method in the header file idx-vector.h => always available!
+ (c++|optional=inlineMethod)"idx_vector::idx_vector()@Base" 3.4.3
  _ZN10idx_vectorC2ERK5ArrayIbE@Base 3.4.3
  _ZN10idx_vectorC2Eiii@Base 3.4.3
  _ZN10idx_vectorD1Ev@Base 3.4.3
@@ -5084,6 +5087,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN11FloatMatrix6insertERK15FloatDiagMatrixii@Base 3.4.3
  _ZN11FloatMatrix6insertERK17FloatColumnVectorii@Base 3.4.3
  _ZN11FloatMatrix6insertERKS_ii@Base 3.4.3
+# inline method in the header file fMatrix.h => always available!
+ (c++|regex|optional=inlineMethod)"^FloatMatrix::resize\(.*\)@Base" 3.4.3
  _ZN11FloatMatrixC1ERK10PermMatrix@Base 3.4.3
  _ZN11FloatMatrixC1ERK10boolMatrix@Base 3.4.3
  _ZN11FloatMatrixC1ERK10charMatrix@Base 3.4.3
@@ -13539,6 +13544,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNSt3mapISsbSt4lessISsESaISt4pairIKSsbEEED2Ev@Base 3.4.3
  _ZNSt3setIPFivESt4lessIS1_ESaIS1_EED1Ev@Base 3.4.3
  _ZNSt3setIPFivESt4lessIS1_ESaIS1_EED2Ev@Base 3.4.3
+# template instantiation
+ (c++|regex|optional=templateInstantiation)"std::deque<.*>::.*const&\)@Base" 3.4.3
  _ZNSt5stackI14sortrows_run_tSt5dequeIS0_SaIS0_EEE4pushERKS0_@Base 3.4.3
  _ZNSt5stackI14sortrows_run_tSt5dequeIS0_SaIS0_EEEC1ERKS3_@Base 3.4.3
  _ZNSt5stackI14sortrows_run_tSt5dequeIS0_SaIS0_EEEC2ERKS3_@Base 3.4.3
@@ -14201,6 +14208,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZlsRSoRK8CollocWt@Base 3.4.3
  _ZlsRSoRK8FloatSVD@Base 3.4.3
  _ZlsRSoRK9RowVector@Base 3.4.3
+# template instantiation
+ (c++|optional=templateInstantiation)"bool operator< <double>(std::complex<double> const&, std::complex<double> const&)@Base" 3.4.3
  _ZmII10octave_intIaEER6MArrayIT_ES5_RKS3_@Base 3.4.3
  _ZmII10octave_intIaEER6MArrayIT_ES5_RKS4_@Base 3.4.3
  _ZmII10octave_intIhEER6MArrayIT_ES5_RKS3_@Base 3.4.3
@@ -14579,6 +14588,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZmlRK13ComplexMatrixRK19ComplexColumnVector@Base 3.4.3
  _ZmlRK13ComplexMatrixRK19SparseComplexMatrix@Base 3.4.3
  _ZmlRK13ComplexMatrixRK6Matrix@Base 3.4.3
+# template instantiation
+ (c++|optional=templateInstantiation)"operator*(ComplexMatrix const&, std::complex<double> const&)@Base" 3.4.3
  _ZmlRK13ComplexMatrixRKd@Base 3.4.3
  _ZmlRK13ComplexMatrixS1_@Base 3.4.3
  _ZmlRK14ComplexNDArrayRKd@Base 3.4.3
@@ -14654,6 +14665,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZmlRK6MatrixRK19ComplexColumnVector@Base 3.4.3
  _ZmlRK6MatrixRK19SparseComplexMatrix@Base 3.4.3
  _ZmlRK6MatrixRKSt7complexIdE@Base 3.4.3
+# inline method in the header file => always available!
+ (c++|optional=inlineMethod)"operator*(Matrix const&, double const&)@Base" 3.4.3
  _ZmlRK6MatrixS1_@Base 3.4.3
  _ZmlRK7NDArrayRK10octave_intIaE@Base 3.4.3
  _ZmlRK7NDArrayRK10octave_intIhE@Base 3.4.3
