@@ -17794,6 +17794,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN13base_property15delete_listenerERK12octave_value13listener_mode@Base 3.4.3
  _ZN13base_property3setERK12octave_valueb@Base 3.4.3
  _ZN13base_property6do_setERK12octave_value@Base 3.4.3
+# inline method in the header file => always available!
+ (c++|optional=inlineMethod)"base_property::base_property(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, graphics_handle const&)@Base" 3.4.3
  _ZN13base_propertyD0Ev@Base 3.4.3
  _ZN13base_propertyD1Ev@Base 3.4.3
  _ZN13base_propertyD2Ev@Base 3.4.3
@@ -17819,6 +17821,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN13hdf5_ofstreamC1EPKcii@Base 3.4.3
  _ZN13hdf5_ofstreamD0Ev@Base 3.4.3
  _ZN13hdf5_ofstreamD1Ev@Base 3.4.3
+# inline method in the header file => always available!
+ (c++|optional=inlineMethod)"octave_fields::make_unique()@Base" 3.4.3
  _ZN13octave_fields11orderfieldsER5ArrayIiE@Base 3.4.3
  _ZN13octave_fields7nil_repEv@Base 3.4.3
  _ZN13octave_fields7rmfieldERKSs@Base 3.4.3
@@ -21600,6 +21604,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN8FloatEIGC2ERK18FloatComplexMatrixb@Base 3.4.3
  _ZN8FloatEIGD1Ev@Base 3.4.3
  _ZN8FloatEIGD2Ev@Base 3.4.3
+# inline method in the header file debug.h=> always available!
+ (c++|optional=inlineMethod)"bp_table::instance_ok()@Base" 3.4.3
  _ZN8bp_table17do_add_breakpointERKSsRKSt3mapIiiSt4lessIiESaISt4pairIKiiEEE@Base 3.4.3
  _ZN8bp_table19get_breakpoint_listERK17octave_value_list@Base 3.4.3
  _ZN8bp_table20do_remove_breakpointERKSsRKSt3mapIiiSt4lessIiESaISt4pairIKiiEEE@Base 3.4.3
@@ -21611,6 +21617,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN8dir_pathD2Ev@Base 3.4.3
  _ZN8file_ops13dir_sep_charsEv@Base 3.4.3
  _ZN8property6createERKSsRK15graphics_handleRK12caseless_strRK17octave_value_list@Base 3.4.3
+# inline method in the header file graphics.h.in => always available!
+ (c++|optional=inlineMethod)"property::property()@Base" 3.4.3
  _ZN8propertyC1Ev@Base 3.4.3
  _ZN8propertyC2Ev@Base 3.4.3
  _ZN8propertyD1Ev@Base 3.4.3
@@ -21674,6 +21682,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
 # inline method in the header file => always available!
  (c++|regex|optional=inlineMethod)"load_path::set_command_line_path\(.*\)@Base" 3.4.3
  _ZN9load_path22remove_private_fcn_mapERKSs@Base 3.4.3
+# inline method in the header load-path.hfile => always available!
+ (c++|optional=inlineMethod)"load_path::dirs()@Base" 3.4.3
  _ZN9load_path4moveESt14_List_iteratorINS_8dir_infoEEb@Base 3.4.3
  _ZN9load_path6do_addERKSsbb@Base 3.4.3
  _ZN9load_path6do_setERKSsb@Base 3.4.3
@@ -26145,7 +26155,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZNSt8_Rb_treeIiSt4pairIKiiESt10_Select1stIS2_ESt4lessIiESaIS2_EEaSERKS8_@Base 3.4.3
  _ZNSt8_Rb_treeIiiSt9_IdentityIiESt4lessIiESaIiEE10_M_insert_EPKSt18_Rb_tree_node_baseS8_RKi@Base 3.4.3
  _ZNSt8_Rb_treeIiiSt9_IdentityIiESt4lessIiESaIiEE16_M_insert_uniqueERKi@Base 3.4.3
- _ZSt13__copy_move_aILb0EP4CellS1_ET1_T0_S3_S2_@Base 3.4.3
+# template instantiation
+ (c++|optional=templateInstantiation)"Cell* std::__copy_move_a<false, Cell*, Cell*>(Cell*, Cell*, Cell*)@Base" 3.4.3
 # template instantiation
  (c++|optional=templateInstantiation)"octave_value* std::__copy_move_a<false, octave_value const*, octave_value*>(octave_value const*, octave_value const*, octave_value*)*@Base" 3.4.3
 # template instantiation
