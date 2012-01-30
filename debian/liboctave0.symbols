@@ -17690,7 +17690,7 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN12symbol_table25is_built_in_function_nameERKSs@Base 3.4.3
  _ZN12symbol_table27erase_subfunctions_in_scopeEi@Base 3.4.3
 # inline method in the header file => always available!
- (c++|optional=inlineMethod)"^symbol_table::subfunctions_defined_in_scope(int)@Base" 3.4.3
+ (c++|optional=inlineMethod)"symbol_table::subfunctions_defined_in_scope(int)@Base" 3.4.3
  _ZN12symbol_table31stash_dir_name_for_subfunctionsEiRKSs@Base 3.4.3
  _ZN12symbol_table4dumpERSoi@Base 3.4.3
  _ZN12symbol_table4findERKSsRK17octave_value_listbb@Base 3.4.3
@@ -17726,7 +17726,7 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN12symbol_table9fcn_tableE@Base 3.4.3
  _ZN12symbol_table9set_scopeEi@Base 3.4.3
 # inline method in the header file => always available!
- (c++|optional=inlineMethod)"^symbol_table::symbol_table()@Base" 3.4.3
+ (c++|optional=inlineMethod)"symbol_table::symbol_table()@Base" 3.4.3
  _ZN12text_elementD0Ev@Base 3.4.3
  _ZN12text_elementD1Ev@Base 3.4.3
  _ZN12text_elementD2Ev@Base 3.4.3
@@ -21619,8 +21619,7 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _ZN8property6createERKSsRK15graphics_handleRK12caseless_strRK17octave_value_list@Base 3.4.3
 # inline method in the header file graphics.h.in => always available!
  (c++|optional=inlineMethod)"property::property()@Base" 3.4.3
- _ZN8propertyC1Ev@Base 3.4.3
- _ZN8propertyC2Ev@Base 3.4.3
+ (c++|optional=inlineMethod)"property::property()@Base" 3.4.3
  _ZN8propertyD1Ev@Base 3.4.3
  _ZN8propertyD2Ev@Base 3.4.3
  _ZN8propertyaSERKS_@Base 3.4.3
