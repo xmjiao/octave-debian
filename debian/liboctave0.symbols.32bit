@@ -3678,14 +3678,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _Z14copy_or_memcpyI10idx_vectorEvjPKT_PS1_@Base 3.4.3
  _Z14copy_or_memcpyIPvEvjPKT_PS1_@Base 3.4.3
  _Z14copy_or_memcpyISsEvjPKT_PS0_@Base 3.4.3
- _Z14fill_or_memsetI10idx_vectorEvjRKT_PS1_@Base 3.4.3
- _Z14fill_or_memsetISsEvjRKT_PS0_@Base 3.4.3
- _Z14fill_or_memsetjRKSt7complexIdEPS0_@Base 3.4.3
- _Z14fill_or_memsetjRKSt7complexIfEPS0_@Base 3.4.3
- _Z14fill_or_memsetjRKdPd@Base 3.4.3
- _Z14fill_or_memsetjRKfPf@Base 3.4.3
- _Z14fill_or_memsetjRKiPi@Base 3.4.3
- _Z14fill_or_memsetjRKsPs@Base 3.4.3
  _Z14mx_inline_and2IbEvjPbPKT_@Base 3.4.3
  _Z14mx_inline_diffI10octave_intIxEEvPKT_PS2_ii@Base 3.4.3
  _Z14mx_inline_diffI10octave_intIxEEvPKT_PS2_iii@Base 3.4.3
@@ -6930,8 +6922,6 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _Z14copy_or_memcpyI13octave_streamEvjPKT_PS1_@Base 3.4.3
  _Z14copy_or_memcpyIP16scanf_format_eltEvjPKT_PS2_@Base 3.4.3
  _Z14copy_or_memcpyIP17printf_format_eltEvjPKT_PS2_@Base 3.4.3
- _Z14fill_or_memsetI12octave_valueEvjRKT_PS1_@Base 3.4.3
- _Z14fill_or_memsetI13octave_streamEvjRKT_PS1_@Base 3.4.3
  _Z14octave_reallocPvj@Base 3.4.3
  _Z14safe_size_compjj@Base 3.4.3
  _Z15identity_matrixI10intNDArrayI10octave_intIxEEE12octave_valueii@Base 3.4.3

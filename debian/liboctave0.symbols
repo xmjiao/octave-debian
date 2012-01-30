@@ -1479,6 +1479,10 @@ liboctave.so.0 liboctave0 #MINVER#
  _Z13octave_unlinkRKSsRSs@Base 3.4.3
  _Z13write_doublesRSoPKd9save_typei@Base 3.4.3
  _Z14any_orig_emptyRK5ArrayI10idx_vectorE@Base 3.4.3
+# inline method in the header file => always available!
+ (c++|regex|optional=inlineMethod)"^void fill_or_memset<.*>\(.*\)@Base" 3.4.3
+# inline method in the header file => always available!
+ (c++|regex|optional=inlineMethod)"^fill_or_memset\(.*\)@Base" 3.4.3
  _Z14get_scalar_idxR5ArrayIiER10dim_vector@Base 3.4.3
 # not part of API (private function)
  (c++|regex|optional=notPartOfAPI)"void mx_inline_add2<.*@Base" 3.4.3
@@ -15453,6 +15457,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _Z14do_printf_convIlEiRSoPKciiiT_RKSs@Base 3.4.3
  _Z14do_printf_convImEiRSoPKciiiT_RKSs@Base 3.4.3
  _Z14error_with_cfnPKcz@Base 3.4.3
+# inline method in the header file => always available!
+ (c++|regex|optional=inlineMethod)"^void fill_or_memset<.*>\(.*\)@Base" 3.4.3
  _Z14get_dimensionsRK12octave_valuePKcR10dim_vector@Base 3.4.3
  _Z14get_dimensionsRK12octave_valuePKcRiS4_@Base 3.4.3
  _Z14get_dimensionsRK12octave_valueS1_PKcRiS4_@Base 3.4.3
