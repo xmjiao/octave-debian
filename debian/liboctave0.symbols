@@ -10302,7 +10302,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK10octave_intIaEmlERKS0_@Base 3.4.3
  _ZNK10octave_intIaEngEv@Base 3.4.3
  _ZNK10octave_intIaEntEv@Base 3.4.3
- _ZNK10octave_intIaEplERKS0_@Base 3.4.3
+# inline template instantiation in oct-inttypes.h
+ (c++|regex|optional=templateInstantiation)"^octave_int<.*>::operator+\(octave_int<.*> const&\) const@Base" 3.4.3
  _ZNK10octave_intIaEpsEv@Base 3.4.3
  _ZNK10octave_intIaErmERKS0_@Base 3.4.3
  _ZNK10octave_intIaErsERKi@Base 3.4.3
@@ -10324,7 +10325,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK10octave_intIhEmlERKS0_@Base 3.4.3
  _ZNK10octave_intIhEngEv@Base 3.4.3
  _ZNK10octave_intIhEntEv@Base 3.4.3
- _ZNK10octave_intIhEplERKS0_@Base 3.4.3
  _ZNK10octave_intIhEpsEv@Base 3.4.3
  _ZNK10octave_intIhErmERKS0_@Base 3.4.3
  _ZNK10octave_intIhErsERKi@Base 3.4.3
@@ -10346,7 +10346,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK10octave_intIiEmlERKS0_@Base 3.4.3
  _ZNK10octave_intIiEngEv@Base 3.4.3
  _ZNK10octave_intIiEntEv@Base 3.4.3
- _ZNK10octave_intIiEplERKS0_@Base 3.4.3
  _ZNK10octave_intIiEpsEv@Base 3.4.3
  _ZNK10octave_intIiErmERKS0_@Base 3.4.3
  _ZNK10octave_intIiErsERKi@Base 3.4.3
@@ -10368,7 +10367,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK10octave_intIjEmlERKS0_@Base 3.4.3
  _ZNK10octave_intIjEngEv@Base 3.4.3
  _ZNK10octave_intIjEntEv@Base 3.4.3
- _ZNK10octave_intIjEplERKS0_@Base 3.4.3
  _ZNK10octave_intIjEpsEv@Base 3.4.3
  _ZNK10octave_intIjErmERKS0_@Base 3.4.3
  _ZNK10octave_intIjErsERKi@Base 3.4.3
@@ -10390,7 +10388,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK10octave_intIsEmlERKS0_@Base 3.4.3
  _ZNK10octave_intIsEngEv@Base 3.4.3
  _ZNK10octave_intIsEntEv@Base 3.4.3
- _ZNK10octave_intIsEplERKS0_@Base 3.4.3
  _ZNK10octave_intIsEpsEv@Base 3.4.3
  _ZNK10octave_intIsErmERKS0_@Base 3.4.3
  _ZNK10octave_intIsErsERKi@Base 3.4.3
@@ -10412,7 +10409,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK10octave_intItEmlERKS0_@Base 3.4.3
  _ZNK10octave_intItEngEv@Base 3.4.3
  _ZNK10octave_intItEntEv@Base 3.4.3
- _ZNK10octave_intItEplERKS0_@Base 3.4.3
  _ZNK10octave_intItEpsEv@Base 3.4.3
  _ZNK10octave_intItErmERKS0_@Base 3.4.3
  _ZNK10octave_intItErsERKi@Base 3.4.3
