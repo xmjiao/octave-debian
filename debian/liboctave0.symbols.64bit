@@ -6454,7 +6454,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK10octave_intIlEcvlEv@Base 3.4.3
  _ZNK10octave_intIlEdvERKS0_@Base 3.4.3
  _ZNK10octave_intIlElsERKi@Base 3.4.3
- _ZNK10octave_intIlEmlERKS0_@Base 3.4.3
  _ZNK10octave_intIlEngEv@Base 3.4.3
  _ZNK10octave_intIlEntEv@Base 3.4.3
  _ZNK10octave_intIlEpsEv@Base 3.4.3
@@ -6474,7 +6473,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK10octave_intImEcvmEv@Base 3.4.3
  _ZNK10octave_intImEdvERKS0_@Base 3.4.3
  _ZNK10octave_intImElsERKi@Base 3.4.3
- _ZNK10octave_intImEmlERKS0_@Base 3.4.3
  _ZNK10octave_intImEngEv@Base 3.4.3
  _ZNK10octave_intImEntEv@Base 3.4.3
  _ZNK10octave_intImEpsEv@Base 3.4.3
