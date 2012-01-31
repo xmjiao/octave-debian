@@ -4549,6 +4549,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZGVZN10idx_vector7err_repEvE3ivr@Base 3.4.3
  _ZGVZN10idx_vector7nil_repEvE3ivr@Base 3.4.3
 # template instantiation
+ (c++|regex|optional=templateInstantiation)"^guard variable for bool octave_int_cmp_op::emulate_mop<octave_int_cmp_op::.*\(.*\)::.*@Base" 3.4.3
+# template instantiation
  (c++|regex|optional=templateInstantiation)".*octave_int_base<.*>::convert_real<.*>.*@Base" 3.4.3
  _ZGVZN5ArrayI10idx_vectorE17resize_fill_valueEvE4zero@Base 3.4.3
  _ZGVZN5ArrayI10octave_intIaEE17resize_fill_valueEvE4zero@Base 3.4.3
@@ -7185,6 +7187,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN17octave_base_mutexD0Ev@Base 3.4.3
  _ZN17octave_base_mutexD1Ev@Base 3.4.3
  _ZN17octave_base_mutexD2Ev@Base 3.4.3
+# template instantiation
+ (c++|regex|optional=templateInstantiation)"^bool octave_int_cmp_op::emulate_mop<octave_int_cmp_op::.*>\(.*\)@Base" 3.4.3
 # not part of API (private class)
  (c++|regex|optional=notPartOfAPI)".*rec_resize_helper.*@Base" 3.4.3
  _ZN18FloatComplexMatrix4fillERKSt7complexIfE@Base 3.4.3
@@ -13955,6 +13959,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZZN10idx_vector7nil_repEvE3ivr@Base 3.4.3
  _ZZN16sparse_base_cholI12SparseMatrixdS0_E20sparse_base_chol_rep4initERKS0_bE3tmp@Base 3.4.3
  _ZZN16sparse_base_cholI19SparseComplexMatrixSt7complexIdE12SparseMatrixE20sparse_base_chol_rep4initERKS0_bE3tmp@Base 3.4.3
+# template instantiation
+ (c++|regex|optional=templateInstantiation)"^bool octave_int_cmp_op::emulate_mop<octave_int_cmp_op::.*>\(.*\)::.*@Base" 3.4.3
  _ZZN19octave_fftw_planner11create_planEi10dim_vectoriiiPKdPSt7complexIdEE5dummy@Base 3.4.3
  _ZZN19octave_fftw_planner11create_planEii10dim_vectoriiiPKSt7complexIdEPS2_E5dummy@Base 3.4.3
  _ZZN25octave_float_fftw_planner11create_planEi10dim_vectoriiiPKfPSt7complexIfEE5dummy@Base 3.4.3
