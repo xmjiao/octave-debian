@@ -4946,7 +4946,8 @@ liboctave.so.0 liboctave0 #MINVER#
 # inline method in the header file idx-vector.h => always available!
  (c++|optional=inlineMethod)"idx_vector::nil_rep()@Base" 3.4.3
  _ZN10idx_vectorC1ERK5ArrayIbE@Base 3.4.3
- _ZN10idx_vectorC1Eiii@Base 3.4.3
+# inline method in the header file idx-vector.h => always available!
+ (c++|optional=inlineMethod)"idx_vector::idx_vector(int, int, int)@Base" 3.4.3
 # inline method in the header file idx-vector.h => always available!
  (c++|optional=inlineMethod)"idx_vector::idx_vector()@Base" 3.4.3
  _ZN10idx_vectorC2ERK5ArrayIbE@Base 3.4.3
@@ -17054,7 +17055,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
 # not part of API (private function)
  (c++|optional=notPartOfAPI)"idx_vector::chkerr()@Base" 3.4.3
  _ZN10idx_vectorC1Eiii@Base 3.4.3
- _ZN10idx_vectorC2Eiii@Base 3.4.3
+# inline method in the header file => always available!
+ (c++|optional=inlineMethod)idx_vector::idx_vector()@Base" 3.4.3
  _ZN10idx_vectorD1Ev@Base 3.4.3
  _ZN10idx_vectorD2Ev@Base 3.4.3
  _ZN10idx_vectoraSERKS_@Base 3.4.3
