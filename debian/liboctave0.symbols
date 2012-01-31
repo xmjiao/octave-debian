@@ -10296,7 +10296,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK10octave_intIaEcvaEv@Base 3.4.3
  _ZNK10octave_intIaEcvdEv@Base 3.4.3
  _ZNK10octave_intIaEcvfEv@Base 3.4.3
- _ZNK10octave_intIaEdvERKS0_@Base 3.4.3
+# inline template instantiation in oct-inttypes.h
+ (c++|regex|optional=templateInstantiation)"^octave_int<.*>::operator/\(octave_int<.*> const&\) const@Base" 3.4.3
  _ZNK10octave_intIaElsERKi@Base 3.4.3
 # inline template instantiation in oct-inttypes.h
  (c++|regex|optional=templateInstantiation)"^octave_int<.*>::operator-\(octave_int<.*> const&\) const@Base" 3.4.3
@@ -10321,7 +10322,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK10octave_intIhEcvdEv@Base 3.4.3
  _ZNK10octave_intIhEcvfEv@Base 3.4.3
  _ZNK10octave_intIhEcvhEv@Base 3.4.3
- _ZNK10octave_intIhEdvERKS0_@Base 3.4.3
  _ZNK10octave_intIhElsERKi@Base 3.4.3
  _ZNK10octave_intIhEngEv@Base 3.4.3
  _ZNK10octave_intIhEntEv@Base 3.4.3
@@ -10340,7 +10340,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK10octave_intIiEcvdEv@Base 3.4.3
  _ZNK10octave_intIiEcvfEv@Base 3.4.3
  _ZNK10octave_intIiEcviEv@Base 3.4.3
- _ZNK10octave_intIiEdvERKS0_@Base 3.4.3
  _ZNK10octave_intIiElsERKi@Base 3.4.3
  _ZNK10octave_intIiEngEv@Base 3.4.3
  _ZNK10octave_intIiEntEv@Base 3.4.3
@@ -10359,7 +10358,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK10octave_intIjEcvdEv@Base 3.4.3
  _ZNK10octave_intIjEcvfEv@Base 3.4.3
  _ZNK10octave_intIjEcvjEv@Base 3.4.3
- _ZNK10octave_intIjEdvERKS0_@Base 3.4.3
  _ZNK10octave_intIjElsERKi@Base 3.4.3
  _ZNK10octave_intIjEngEv@Base 3.4.3
  _ZNK10octave_intIjEntEv@Base 3.4.3
@@ -10378,7 +10376,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK10octave_intIsEcvdEv@Base 3.4.3
  _ZNK10octave_intIsEcvfEv@Base 3.4.3
  _ZNK10octave_intIsEcvsEv@Base 3.4.3
- _ZNK10octave_intIsEdvERKS0_@Base 3.4.3
  _ZNK10octave_intIsElsERKi@Base 3.4.3
  _ZNK10octave_intIsEngEv@Base 3.4.3
  _ZNK10octave_intIsEntEv@Base 3.4.3
@@ -10397,7 +10394,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZNK10octave_intItEcvdEv@Base 3.4.3
  _ZNK10octave_intItEcvfEv@Base 3.4.3
  _ZNK10octave_intItEcvtEv@Base 3.4.3
- _ZNK10octave_intItEdvERKS0_@Base 3.4.3
  _ZNK10octave_intItElsERKi@Base 3.4.3
  _ZNK10octave_intItEngEv@Base 3.4.3
  _ZNK10octave_intItEntEv@Base 3.4.3
