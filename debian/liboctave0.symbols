@@ -542,6 +542,8 @@ liboctave.so.0 liboctave0 #MINVER#
  (c++|regex|optional=templateInstantiation)"void column_norms<.*>\(.*\)@Base" 3.4.3
 # template instantiation
  (c++|regex|optional=templateInstantiation)"MArray<.*> column_norms<.*>\(.*\)@Base" 3.4.3
+# template instantiation
+ (c++|regex|optional=templateInstantiation)"^Array<.*> do_bsxfun_op<.*>.*\(.*\)@Base" 3.4.3
  _Z12do_mul_dm_smI12SparseMatrix10DiagMatrixS0_ET_RKT0_RKT1_@Base 3.4.3
  _Z12do_mul_dm_smI19SparseComplexMatrix10DiagMatrixS0_ET_RKT0_RKT1_@Base 3.4.3
  _Z12do_mul_dm_smI19SparseComplexMatrix17ComplexDiagMatrix12SparseMatrixET_RKT0_RKT1_@Base 3.4.3
