@@ -1006,6 +1006,8 @@ liboctave.so.0 liboctave0 #MINVER#
  (c++|regex|optional=templateInstantiation)"^void mx_inline_lt<.*>\(.*\)@Base" 3.4.3
 # template instantiation
  (c++|regex|optional=templateInstantiation)"^void mx_inline_gt<.*>\(.*\)@Base" 3.4.3
+# template instantiation
+ (c++|regex|optional=templateInstantiation)"^void mx_inline_ge<.*>\(.*\)@Base" 3.4.3
  _Z12oct_md5_fileSs@Base 3.4.3
  _Z12octave_chdirRKSs@Base 3.4.3
  _Z12octave_fcntliil@Base 3.4.3
