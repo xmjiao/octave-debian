@@ -1606,6 +1606,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _Z17mx_inline_cumprodISt7complexIfEEvPKT_PS2_iii@Base 3.4.3
  _Z17mx_inline_cumprodIdEvPKT_PS0_iii@Base 3.4.3
  _Z17mx_inline_cumprodIfEvPKT_PS0_iii@Base 3.4.3
+# template instantiation
+ (c++|regex|optional=templateInstantiation)"^void mx_inline_not_and<.*>\(.*\)@Base" 3.4.3
  _Z17octave_read_valueISt7complexIdEET_RSi@Base 3.4.3
  _Z17octave_read_valueISt7complexIfEET_RSi@Base 3.4.3
  _Z17octave_read_valueIbET_RSi@Base 3.4.3
