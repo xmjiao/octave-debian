@@ -453,18 +453,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _Z13mx_el_not_andRKdRK10intNDArrayI10octave_intIyEE@Base 3.4.3
  _Z13mx_el_not_andRKfRK10intNDArrayI10octave_intIxEE@Base 3.4.3
  _Z13mx_el_not_andRKfRK10intNDArrayI10octave_intIyEE@Base 3.4.3
- _Z13mx_inline_mapIbSt7complexIdEXadL_Z6xisinfIdEbRKS0_IT_EEEEvjPT_PKT0_@Base 3.4.3
- _Z13mx_inline_mapIbSt7complexIdEXadL_Z6xisnanIdEbRKS0_IT_EEEEvjPT_PKT0_@Base 3.4.3
- _Z13mx_inline_mapIbSt7complexIdEXadL_Z7xfiniteIdEbRKS0_IT_EEEEvjPT_PKT0_@Base 3.4.3
- _Z13mx_inline_mapIbSt7complexIfEXadL_Z6xisinfIfEbRKS0_IT_EEEEvjPT_PKT0_@Base 3.4.3
- _Z13mx_inline_mapIbSt7complexIfEXadL_Z6xisnanIfEbRKS0_IT_EEEEvjPT_PKT0_@Base 3.4.3
- _Z13mx_inline_mapIbSt7complexIfEXadL_Z7xfiniteIfEbRKS0_IT_EEEEvjPT_PKT0_@Base 3.4.3
- _Z13mx_inline_mapIbdXadL_Z6xisinfdEEEvjPT_PKT0_@Base 3.4.3
- _Z13mx_inline_mapIbdXadL_Z6xisnandEEEvjPT_PKT0_@Base 3.4.3
- _Z13mx_inline_mapIbdXadL_Z7xfinitedEEEvjPT_PKT0_@Base 3.4.3
- _Z13mx_inline_mapIbfXadL_Z6xisinffEEEvjPT_PKT0_@Base 3.4.3
- _Z13mx_inline_mapIbfXadL_Z6xisnanfEEEvjPT_PKT0_@Base 3.4.3
- _Z13mx_inline_mapIbfXadL_Z7xfinitefEEEvjPT_PKT0_@Base 3.4.3
  _Z13mx_inline_notISt7complexIdEEvjPbPKT_@Base 3.4.3
  _Z13mx_inline_notISt7complexIfEEvjPbPKT_@Base 3.4.3
  _Z13mx_inline_notIdEvjPbPKT_@Base 3.4.3
