@@ -456,9 +456,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _Z13mx_inline_or2IbEvjPbPKT_@Base 3.4.3
  _Z13mx_inline_sumI10octave_intIxEEvPKT_PS2_iii@Base 3.4.3
  _Z13mx_inline_sumI10octave_intIyEEvPKT_PS2_iii@Base 3.4.3
- _Z14copy_or_memcpyI10idx_vectorEvjPKT_PS1_@Base 3.4.3
- _Z14copy_or_memcpyIPvEvjPKT_PS1_@Base 3.4.3
- _Z14copy_or_memcpyISsEvjPKT_PS0_@Base 3.4.3
  _Z14mx_inline_and2IbEvjPbPKT_@Base 3.4.3
  _Z14mx_inline_diffI10octave_intIxEEvPKT_PS2_ii@Base 3.4.3
  _Z14mx_inline_diffI10octave_intIxEEvPKT_PS2_iii@Base 3.4.3
@@ -2407,10 +2404,6 @@ liboctave.so.0 liboctave0 #MINVER#
 liboctinterp.so.0 liboctave0 #MINVER#
  _Z12octave_allocj@Base 3.4.3
  _Z13get_file_lineRKSsj@Base 3.4.3
- _Z14copy_or_memcpyI12octave_valueEvjPKT_PS1_@Base 3.4.3
- _Z14copy_or_memcpyI13octave_streamEvjPKT_PS1_@Base 3.4.3
- _Z14copy_or_memcpyIP16scanf_format_eltEvjPKT_PS2_@Base 3.4.3
- _Z14copy_or_memcpyIP17printf_format_eltEvjPKT_PS2_@Base 3.4.3
  _Z14octave_reallocPvj@Base 3.4.3
  _Z14safe_size_compjj@Base 3.4.3
  _Z15identity_matrixI10intNDArrayI10octave_intIxEEE12octave_valueii@Base 3.4.3

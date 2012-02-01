@@ -1510,6 +1510,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _Z13write_doublesRSoPKd9save_typei@Base 3.4.3
  _Z14any_orig_emptyRK5ArrayI10idx_vectorE@Base 3.4.3
 # inline method in the header file => always available!
+ (c++|regex|optional=inlineMethod)"^void copy_or_memcpy<.*>\(.*\)@Base" 3.4.3
+# inline method in the header file => always available!
  (c++|regex|optional=inlineMethod)"^void fill_or_memset<.*>\(.*\)@Base" 3.4.3
 # inline method in the header file => always available!
  (c++|regex|optional=inlineMethod)"^fill_or_memset\(.*\)@Base" 3.4.3
@@ -15483,6 +15485,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _Z14Fterminal_sizeRK17octave_value_listi@Base 3.4.3
  _Z14clear_functionRKSs@Base 3.4.3
  _Z14clear_variableRKSs@Base 3.4.3
+# inline method in the header file => always available!
+ (c++|regex|optional=inlineMethod)"^void copy_or_memcpy<.*>\(.*\)@Base" 3.4.3
  _Z14current_bufferv@Base 3.4.3
  _Z14defun_isargoutii@Base 3.4.3
  _Z14defun_isargoutiiPb@Base 3.4.3
