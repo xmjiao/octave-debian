@@ -458,24 +458,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _Z13mx_inline_notIdEvmPbPKT_@Base 3.4.3
  _Z13mx_inline_notIfEvmPbPKT_@Base 3.4.3
  _Z13mx_inline_or2IbEvmPbPKT_@Base 3.4.3
- _Z13mx_inline_powISt7complexIdES1_S1_EvmPT_PKT0_PKT1_@Base 3.4.3
- _Z13mx_inline_powISt7complexIdES1_S1_EvmPT_PKT0_T1_@Base 3.4.3
- _Z13mx_inline_powISt7complexIdES1_S1_EvmPT_T0_PKT1_@Base 3.4.3
- _Z13mx_inline_powISt7complexIdES1_dEvmPT_PKT0_PKT1_@Base 3.4.3
- _Z13mx_inline_powISt7complexIdES1_dEvmPT_PKT0_T1_@Base 3.4.3
- _Z13mx_inline_powISt7complexIdES1_dEvmPT_T0_PKT1_@Base 3.4.3
- _Z13mx_inline_powISt7complexIfES1_S1_EvmPT_PKT0_PKT1_@Base 3.4.3
- _Z13mx_inline_powISt7complexIfES1_S1_EvmPT_PKT0_T1_@Base 3.4.3
- _Z13mx_inline_powISt7complexIfES1_S1_EvmPT_T0_PKT1_@Base 3.4.3
- _Z13mx_inline_powISt7complexIfES1_fEvmPT_PKT0_PKT1_@Base 3.4.3
- _Z13mx_inline_powISt7complexIfES1_fEvmPT_PKT0_T1_@Base 3.4.3
- _Z13mx_inline_powISt7complexIfES1_fEvmPT_T0_PKT1_@Base 3.4.3
- _Z13mx_inline_powIdddEvmPT_PKT0_PKT1_@Base 3.4.3
- _Z13mx_inline_powIdddEvmPT_PKT0_T1_@Base 3.4.3
- _Z13mx_inline_powIdddEvmPT_T0_PKT1_@Base 3.4.3
- _Z13mx_inline_powIfffEvmPT_PKT0_PKT1_@Base 3.4.3
- _Z13mx_inline_powIfffEvmPT_PKT0_T1_@Base 3.4.3
- _Z13mx_inline_powIfffEvmPT_T0_PKT1_@Base 3.4.3
  _Z13mx_inline_sumI10octave_intIlEEvPKT_PS2_iii@Base 3.4.3
  _Z13mx_inline_sumI10octave_intImEEvPKT_PS2_iii@Base 3.4.3
  _Z14copy_or_memcpyI10idx_vectorEvmPKT_PS1_@Base 3.4.3
