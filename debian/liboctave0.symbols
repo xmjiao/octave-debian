@@ -1466,6 +1466,8 @@ liboctave.so.0 liboctave0 #MINVER#
 # not part of API (private function)
  (c++|regex|optional=notPartOfAPI)"void mx_inline_add<.*@Base" 3.4.3
 # not part of API (private function)
+ (c++|regex|optional=notPartOfAPI)"void mx_inline_sub<.*@Base" 3.4.3
+# not part of API (private function)
  (c++|regex|optional=notPartOfAPI)"void mx_inline_all<.*@Base" 3.4.3
 # not part of API (private function)
  (c++|regex|optional=notPartOfAPI)"void mx_inline_any<.*@Base" 3.4.3
