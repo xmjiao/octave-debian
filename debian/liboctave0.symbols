@@ -1597,6 +1597,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _Z16mx_inline_cumsumISt7complexIfEEvPKT_PS2_iii@Base 3.4.3
  _Z16mx_inline_cumsumIdEvPKT_PS0_iii@Base 3.4.3
  _Z16mx_inline_cumsumIfEvPKT_PS0_iii@Base 3.4.3
+# template instantiation
+ (c++|regex|optional=templateInstantiation)"^void mx_inline_not_or<.*>\(.*\)@Base" 3.4.3
  _Z17conv_to_int_arrayRK5ArrayI10idx_vectorE@Base 3.4.3
  _Z17matrix_real_probeIdEN10MatrixType11matrix_typeERK6MArrayIT_E@Base 3.4.3
  _Z17matrix_real_probeIfEN10MatrixType11matrix_typeERK6MArrayIT_E@Base 3.4.3
