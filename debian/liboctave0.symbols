@@ -1000,6 +1000,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _Z12mx_el_or_notRKfRK10intNDArrayI10octave_intItEE@Base 3.4.3
  _Z12mx_el_or_notRKfRK12FloatNDArray@Base 3.4.3
  _Z12mx_el_or_notRKfRK19FloatComplexNDArray@Base 3.4.3
+# template instantiation
+ (c++|regex|optional=templateInstantiation)"^void mx_inline_eq<.*>\(.*\)@Base" 3.4.3
  _Z12oct_md5_fileSs@Base 3.4.3
  _Z12octave_chdirRKSs@Base 3.4.3
  _Z12octave_fcntliil@Base 3.4.3
