@@ -1464,6 +1464,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _Z13mx_el_not_andRKfRK12FloatNDArray@Base 3.4.3
  _Z13mx_el_not_andRKfRK19FloatComplexNDArray@Base 3.4.3
 # not part of API (private function)
+ (c++|regex|optional=notPartOfAPI)"void mx_inline_add<.*@Base" 3.4.3
+# not part of API (private function)
  (c++|regex|optional=notPartOfAPI)"void mx_inline_all<.*@Base" 3.4.3
 # not part of API (private function)
  (c++|regex|optional=notPartOfAPI)"void mx_inline_any<.*@Base" 3.4.3
