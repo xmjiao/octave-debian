@@ -517,6 +517,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _Z11matrix_normI18FloatComplexMatrixS0_15FloatComplexSVDfET2_RKT_S2_T0_T1_@Base 3.4.3
  _Z11matrix_normI19SparseComplexMatrix13ComplexMatrixdET1_RKT_S2_T0_@Base 3.4.3
  _Z11matrix_normI6MatrixS0_3SVDdET2_RKT_S2_T0_T1_@Base 3.4.3
+# template instantiation
+ (c++|regex|optional=templateInstantiation)".*no_ctor_new<.*>\(.*\)@Base" 3.4.3
  _Z11octave_globRK13string_vector@Base 3.4.3
  _Z11octave_linkRKSsS0_@Base 3.4.3
  _Z11octave_linkRKSsS0_RSs@Base 3.4.3
@@ -15348,6 +15350,8 @@ liboctinterp.so.0 liboctave0 #MINVER#
  _Z11map_2_xlog2ISt7complexIfEfEvRK5ArrayIT_ERS4_RS2_IT0_E@Base 3.4.3
  _Z11map_2_xlog2IddEvRK5ArrayIT_ERS2_RS0_IT0_E@Base 3.4.3
  _Z11map_2_xlog2IffEvRK5ArrayIT_ERS2_RS0_IT0_E@Base 3.4.3
+# template instantiation
+ (c++|regex|optional=templateInstantiation)".*no_ctor_new<.*>\(.*\)@Base" 3.4.3
  _Z11octave_freePv@Base 3.4.3
  _Z11octave_readPcj@Base 3.4.3
  _Z11octave_scanIcERSiS0_RK16scanf_format_eltPT_@Base 3.4.3

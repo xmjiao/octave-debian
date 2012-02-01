@@ -13,7 +13,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _Z10bsxfun_subRK10intNDArrayI10octave_intIyEES4_@Base 3.4.3
  _Z10product_eqI10octave_intIxEER6MArrayIT_ES5_RKS4_@Base 3.4.3
  _Z10product_eqI10octave_intIyEER6MArrayIT_ES5_RKS4_@Base 3.4.3
- _Z11no_ctor_newI10idx_vectorEPT_j@Base 3.4.3
  _Z11quotient_eqI10octave_intIxEER6MArrayIT_ES5_RKS4_@Base 3.4.3
  _Z11quotient_eqI10octave_intIyEER6MArrayIT_ES5_RKS4_@Base 3.4.3
  _Z12do_mx_red_opI10octave_intIxES1_E5ArrayIT_ERKS2_IT0_EiPFvPKS5_PS3_iiiE@Base 3.4.3
@@ -3052,12 +3051,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZrsI10octave_intIxEERSiS2_R10intNDArrayIT_E@Base 3.4.3
  _ZrsI10octave_intIyEERSiS2_R10intNDArrayIT_E@Base 3.4.3
 liboctinterp.so.0 liboctave0 #MINVER#
- _Z11no_ctor_newI10idx_vectorEPT_j@Base 3.4.3
- _Z11no_ctor_newI10octave_intIhEEPT_j@Base 3.4.3
- _Z11no_ctor_newI12octave_valueEPT_j@Base 3.4.3
- _Z11no_ctor_newI13octave_streamEPT_j@Base 3.4.3
- _Z11no_ctor_newISsEPT_j@Base 3.4.3
- _Z11no_ctor_newIiEPT_j@Base 3.4.3
  _Z12octave_allocj@Base 3.4.3
  _Z13get_file_lineRKSsj@Base 3.4.3
  _Z14copy_or_memcpyI12octave_valueEvjPKT_PS1_@Base 3.4.3
