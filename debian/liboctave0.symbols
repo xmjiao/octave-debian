@@ -1003,6 +1003,8 @@ liboctave.so.0 liboctave0 #MINVER#
 # template instantiation
  (c++|regex|optional=templateInstantiation)"^void mx_inline_eq<.*>\(.*\)@Base" 3.4.3
 # template instantiation
+ (c++|regex|optional=templateInstantiation)"^void mx_inline_ne<.*>\(.*\)@Base" 3.4.3
+# template instantiation
  (c++|regex|optional=templateInstantiation)"^void mx_inline_lt<.*>\(.*\)@Base" 3.4.3
 # template instantiation
  (c++|regex|optional=templateInstantiation)"^void mx_inline_gt<.*>\(.*\)@Base" 3.4.3
