@@ -1581,6 +1581,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _Z15xis_one_or_zerod@Base 3.4.3
  _Z15xis_one_or_zerof@Base 3.4.3
  _Z16mx_el_and_assignR11boolNDArrayRKS_@Base 3.4.3
+# template instantiation
+ (c++|regex|optional=templateInstantiation)"^void mx_inline_or_not<.*>\(.*\)@Base" 3.4.3
 # not part of API (private function)
  (c++|regex|optional=notPartOfAPI)"void mx_inline_cummax<.*@Base" 3.4.3
 # not part of API (private function)
