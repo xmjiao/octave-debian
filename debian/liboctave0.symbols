@@ -1521,6 +1521,8 @@ liboctave.so.0 liboctave0 #MINVER#
 # not part of API (private function)
  (c++|regex|optional=notPartOfAPI)"void mx_inline_and2<.*@Base" 3.4.3
 # not part of API (private function)
+ (c++|regex|optional=notPartOfAPI)"void mx_inline_or2<.*@Base" 3.4.3
+# not part of API (private function)
  (c++|regex|optional=notPartOfAPI)"void mx_inline_diff<.*@Base" 3.4.3
  _Z14mx_inline_dsumI10octave_intIaEEvPKT_PN20subst_template_paramISt7complexS2_dE4typeEiii@Base 3.4.3
  _Z14mx_inline_dsumI10octave_intIhEEvPKT_PN20subst_template_paramISt7complexS2_dE4typeEiii@Base 3.4.3

@@ -453,7 +453,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _Z13mx_el_not_andRKdRK10intNDArrayI10octave_intImEE@Base 3.4.3
  _Z13mx_el_not_andRKfRK10intNDArrayI10octave_intIlEE@Base 3.4.3
  _Z13mx_el_not_andRKfRK10intNDArrayI10octave_intImEE@Base 3.4.3
- _Z13mx_inline_or2IbEvmPbPKT_@Base 3.4.3
  _Z13mx_inline_sumI10octave_intIlEEvPKT_PS2_iii@Base 3.4.3
  _Z13mx_inline_sumI10octave_intImEEvPKT_PS2_iii@Base 3.4.3
  _Z14mx_inline_dsumI10octave_intIlEEvPKT_PN20subst_template_paramISt7complexS2_dE4typeEiii@Base 3.4.3
