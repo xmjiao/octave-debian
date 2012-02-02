@@ -459,12 +459,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _Z14mx_inline_dsumI10octave_intImEEvPKT_PN20subst_template_paramISt7complexS2_dE4typeEiii@Base 3.4.3
  _Z16mx_inline_cumsumI10octave_intIlEEvPKT_PS2_iii@Base 3.4.3
  _Z16mx_inline_cumsumI10octave_intImEEvPKT_PS2_iii@Base 3.4.3
- _Z16mx_inline_uminusISt7complexIdES1_EvmPT_PKT0_@Base 3.4.3
- _Z16mx_inline_uminusISt7complexIfES1_EvmPT_PKT0_@Base 3.4.3
- _Z16mx_inline_uminusIddEvmPT_PKT0_@Base 3.4.3
- _Z16mx_inline_uminusIffEvmPT_PKT0_@Base 3.4.3
- _Z16mx_inline_uminusIiiEvmPT_PKT0_@Base 3.4.3
- _Z16mx_inline_uminusIssEvmPT_PKT0_@Base 3.4.3
  _Z18do_mx_cumminmax_opI10octave_intIlEE5ArrayIT_ERKS4_RS2_IiEiPFvPKS3_PS3_PiiiiE@Base 3.4.3
  _Z18do_mx_cumminmax_opI10octave_intImEE5ArrayIT_ERKS4_RS2_IiEiPFvPKS3_PS3_PiiiiE@Base 3.4.3
  _Z26do_float_format_conversionPvmiN13oct_mach_info12float_formatES1_@Base 3.4.3
