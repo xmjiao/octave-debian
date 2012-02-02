@@ -457,42 +457,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _Z13mx_inline_sumI10octave_intImEEvPKT_PS2_iii@Base 3.4.3
  _Z14mx_inline_dsumI10octave_intIlEEvPKT_PN20subst_template_paramISt7complexS2_dE4typeEiii@Base 3.4.3
  _Z14mx_inline_dsumI10octave_intImEEvPKT_PN20subst_template_paramISt7complexS2_dE4typeEiii@Base 3.4.3
- _Z14mx_inline_xmaxI10octave_intIaEEvmPT_PKS2_S2_@Base 3.4.3
- _Z14mx_inline_xmaxI10octave_intIaEEvmPT_PKS2_S5_@Base 3.4.3
- _Z14mx_inline_xmaxI10octave_intIaEEvmPT_S2_PKS2_@Base 3.4.3
- _Z14mx_inline_xmaxI10octave_intIhEEvmPT_PKS2_S2_@Base 3.4.3
- _Z14mx_inline_xmaxI10octave_intIhEEvmPT_PKS2_S5_@Base 3.4.3
- _Z14mx_inline_xmaxI10octave_intIhEEvmPT_S2_PKS2_@Base 3.4.3
- _Z14mx_inline_xmaxI10octave_intIiEEvmPT_PKS2_S2_@Base 3.4.3
- _Z14mx_inline_xmaxI10octave_intIiEEvmPT_PKS2_S5_@Base 3.4.3
- _Z14mx_inline_xmaxI10octave_intIiEEvmPT_S2_PKS2_@Base 3.4.3
- _Z14mx_inline_xmaxI10octave_intIjEEvmPT_PKS2_S2_@Base 3.4.3
- _Z14mx_inline_xmaxI10octave_intIjEEvmPT_PKS2_S5_@Base 3.4.3
- _Z14mx_inline_xmaxI10octave_intIjEEvmPT_S2_PKS2_@Base 3.4.3
- _Z14mx_inline_xmaxI10octave_intIlEEvmPT_PKS2_S2_@Base 3.4.3
- _Z14mx_inline_xmaxI10octave_intIlEEvmPT_PKS2_S5_@Base 3.4.3
- _Z14mx_inline_xmaxI10octave_intIlEEvmPT_S2_PKS2_@Base 3.4.3
- _Z14mx_inline_xmaxI10octave_intImEEvmPT_PKS2_S2_@Base 3.4.3
- _Z14mx_inline_xmaxI10octave_intImEEvmPT_PKS2_S5_@Base 3.4.3
- _Z14mx_inline_xmaxI10octave_intImEEvmPT_S2_PKS2_@Base 3.4.3
- _Z14mx_inline_xmaxI10octave_intIsEEvmPT_PKS2_S2_@Base 3.4.3
- _Z14mx_inline_xmaxI10octave_intIsEEvmPT_PKS2_S5_@Base 3.4.3
- _Z14mx_inline_xmaxI10octave_intIsEEvmPT_S2_PKS2_@Base 3.4.3
- _Z14mx_inline_xmaxI10octave_intItEEvmPT_PKS2_S2_@Base 3.4.3
- _Z14mx_inline_xmaxI10octave_intItEEvmPT_PKS2_S5_@Base 3.4.3
- _Z14mx_inline_xmaxI10octave_intItEEvmPT_S2_PKS2_@Base 3.4.3
- _Z14mx_inline_xmaxISt7complexIdEEvmPT_PKS2_S2_@Base 3.4.3
- _Z14mx_inline_xmaxISt7complexIdEEvmPT_PKS2_S5_@Base 3.4.3
- _Z14mx_inline_xmaxISt7complexIdEEvmPT_S2_PKS2_@Base 3.4.3
- _Z14mx_inline_xmaxISt7complexIfEEvmPT_PKS2_S2_@Base 3.4.3
- _Z14mx_inline_xmaxISt7complexIfEEvmPT_PKS2_S5_@Base 3.4.3
- _Z14mx_inline_xmaxISt7complexIfEEvmPT_S2_PKS2_@Base 3.4.3
- _Z14mx_inline_xmaxIdEvmPT_PKS0_S0_@Base 3.4.3
- _Z14mx_inline_xmaxIdEvmPT_PKS0_S3_@Base 3.4.3
- _Z14mx_inline_xmaxIdEvmPT_S0_PKS0_@Base 3.4.3
- _Z14mx_inline_xmaxIfEvmPT_PKS0_S0_@Base 3.4.3
- _Z14mx_inline_xmaxIfEvmPT_PKS0_S3_@Base 3.4.3
- _Z14mx_inline_xmaxIfEvmPT_S0_PKS0_@Base 3.4.3
  _Z14mx_inline_xminI10octave_intIaEEvmPT_PKS2_S2_@Base 3.4.3
  _Z14mx_inline_xminI10octave_intIaEEvmPT_PKS2_S5_@Base 3.4.3
  _Z14mx_inline_xminI10octave_intIaEEvmPT_S2_PKS2_@Base 3.4.3

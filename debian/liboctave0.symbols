@@ -1544,6 +1544,8 @@ liboctave.so.0 liboctave0 #MINVER#
  (c++|regex|optional=notPartOfAPI)"void mx_inline_real<.*@Base" 3.4.3
 # not part of API (private function)
  (c++|regex|optional=notPartOfAPI)"void mx_inline_sub2<.*@Base" 3.4.3
+# not part of API (private function)
+ (c++|regex|optional=notPartOfAPI)"void mx_inline_xmax<.*@Base" 3.4.3
  _Z14mx_inline_xsumISt7complexIdEEvPKT_PS2_ii@Base 3.4.3
  _Z14mx_inline_xsumISt7complexIdEEvPKT_PS2_iii@Base 3.4.3
  _Z14mx_inline_xsumIdEvPKT_PS0_iii@Base 3.4.3
