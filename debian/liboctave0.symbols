@@ -1562,6 +1562,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _Z15SparseCholErroriPciS_@Base 3.4.3
  _Z15SparseCholPrintPKcz@Base 3.4.3
  _Z15all_colon_equivRK5ArrayI10idx_vectorERK10dim_vector@Base 3.4.3
+# template instantiation
+ (c++|regex|optional=templateInstantiation)"Array<.*> do_mm_binary_op<.*@Base" 3.4.3
 # not part of API (private function)
  (c++|regex|optional=notPartOfAPI)"Array<.*> do_mx_minmax_op<.*@Base" 3.4.3
  _Z15increment_indexR5ArrayIiERK10dim_vectori@Base 3.4.3
