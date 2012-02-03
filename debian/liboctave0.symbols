@@ -1690,6 +1690,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _Z25sparse_descending_compareIbEbN9ref_paramIT_E4typeES3_@Base 3.4.3
  _Z25sparse_descending_compareIdEbN9ref_paramIT_E4typeES3_@Base 3.4.3
  _Z26do_float_format_conversionPviN13oct_mach_info12float_formatES1_@Base 3.4.3
+# size_t replacement
+ (c++|regex)"^do_float_format_conversion\(void\*, unsigned (int|long), int, oct_mach_info::float_format, oct_mach_info::float_format\)@Base" 3.4.3
  _Z26octave_write_float_complexRSoRKSt7complexIfE@Base 3.4.3
  _Z27do_double_format_conversionPviN13oct_mach_info12float_formatES1_@Base 3.4.3
  _Z27octinternal_do_mul_colpm_smI12SparseMatrixET_PKiRKS1_@Base 3.4.3

@@ -461,7 +461,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _Z16mx_inline_cumsumI10octave_intIyEEvPKT_PS2_iii@Base 3.4.3
  _Z18do_mx_cumminmax_opI10octave_intIxEE5ArrayIT_ERKS4_RS2_IiEiPFvPKS3_PS3_PiiiiE@Base 3.4.3
  _Z18do_mx_cumminmax_opI10octave_intIyEE5ArrayIT_ERKS4_RS2_IiEiPFvPKS3_PS3_PiiiiE@Base 3.4.3
- _Z26do_float_format_conversionPvjiN13oct_mach_info12float_formatES1_@Base 3.4.3
  _Z3max10octave_intIxERK10intNDArrayIS0_E@Base 3.4.3
  _Z3max10octave_intIyERK10intNDArrayIS0_E@Base 3.4.3
  _Z3maxRK10intNDArrayI10octave_intIxEES1_@Base 3.4.3
