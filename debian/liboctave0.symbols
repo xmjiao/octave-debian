@@ -5285,6 +5285,13 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN11gnu_historyD0Ev@Base 3.4.3
  _ZN11gnu_historyD1Ev@Base 3.4.3
  _ZN11gnu_historyD2Ev@Base 3.4.3
+# size_t replacement
+ (c++|regex)"octave_fftw::fft(std::complex<double> const*, std::complex<double>*, unsigned (int|long), unsigned (int|long), int, int)@Base 3.4.3
+ (c++|regex)"octave_fftw::fft(std::complex<float> const*, std::complex<float>*, unsigned (int|long), unsigned (int|long), int, int)@Base 3.4.3
+ (c++|regex)"octave_fftw::fft(double const*, std::complex<double>*, unsigned (int|long), unsigned (int|long), int, int)@Base 3.4.3
+ (c++|regex)"octave_fftw::fft(float const*, std::complex<float>*, unsigned (int|long), unsigned (int|long), int, int)@Base 3.4.3
+ (c++|regex)"octave_fftw::ifft(std::complex<double> const*, std::complex<double>*, unsigned (int|long), unsigned (int|long), int, int)@Base 3.4.3
+ (c++|regex)"octave_fftw::ifft(std::complex<float> const*, std::complex<float>*, unsigned (int|long), unsigned (int|long), int, int)@Base 3.4.3
  _ZN11octave_fftw5fftNdEPKSt7complexIdEPS1_iRK10dim_vector@Base 3.4.3
  _ZN11octave_fftw5fftNdEPKSt7complexIfEPS1_iRK10dim_vector@Base 3.4.3
  _ZN11octave_fftw5fftNdEPKdPSt7complexIdEiRK10dim_vector@Base 3.4.3

@@ -1427,12 +1427,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN10intNDArrayI10octave_intIyEEC2ES1_@Base 3.4.3
  _ZN10intNDArrayI10octave_intIyEEC2Ev@Base 3.4.3
  _ZN10intNDArrayI10octave_intIyEEaSERKS2_@Base 3.4.3
- _ZN11octave_fftw3fftEPKSt7complexIdEPS1_jjii@Base 3.4.3
- _ZN11octave_fftw3fftEPKSt7complexIfEPS1_jjii@Base 3.4.3
- _ZN11octave_fftw3fftEPKdPSt7complexIdEjjii@Base 3.4.3
- _ZN11octave_fftw3fftEPKfPSt7complexIfEjjii@Base 3.4.3
- _ZN11octave_fftw4ifftEPKSt7complexIdEPS1_jjii@Base 3.4.3
- _ZN11octave_fftw4ifftEPKSt7complexIfEPS1_jjii@Base 3.4.3
  _ZN11octave_sortI10octave_intIxEE10MergeState5resetEv@Base 3.4.3
  _ZN11octave_sortI10octave_intIxEE10MergeState6getmemEi@Base 3.4.3
  _ZN11octave_sortI10octave_intIxEE10MergeState7getmemiEi@Base 3.4.3
