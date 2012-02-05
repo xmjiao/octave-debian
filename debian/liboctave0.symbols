@@ -7135,6 +7135,8 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN16SparseBoolMatrixD0Ev@Base 3.4.3
  _ZN16SparseBoolMatrixD1Ev@Base 3.4.3
  _ZN16SparseBoolMatrixD2Ev@Base 3.4.3
+# size_t replacement
+ (c++|regex)"^octave_allocator::free\(void\*, unsigned (int|long)\)@Base" 3.4.3
  _ZN16octave_allocator4growEv@Base 3.4.3
  _ZN16octave_localtime4initERK11octave_time@Base 3.4.3
  _ZN16octave_localtimeD0Ev@Base 3.4.3

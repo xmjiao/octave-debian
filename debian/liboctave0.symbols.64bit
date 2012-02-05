@@ -1577,7 +1577,6 @@ liboctave.so.0 liboctave0 #MINVER#
  _ZN11octave_sortI10octave_intImEEC2Ev@Base 3.4.3
  _ZN11octave_sortI10octave_intImEED1Ev@Base 3.4.3
  _ZN11octave_sortI10octave_intImEED2Ev@Base 3.4.3
- _ZN16octave_allocator4freeEPvm@Base 3.4.3
  _ZN16octave_allocator5allocEm@Base 3.4.3
  _ZN19octave_chunk_bufferC1Em@Base 3.4.3
  _ZN19octave_chunk_bufferC2Em@Base 3.4.3
