@@ -1,3 +1,9 @@
+octave (3.4.3-4) experimental; urgency=low
+
+  * Remove all symbols files and use shlibs for library versioning.
+
+ -- Thomas Weber <tweber@debian.org>  Tue, 07 Feb 2012 20:43:39 +0100
+
 octave (3.4.3-3) experimental; urgency=low
 
   [ Thomas Weber ]
