@@ -27,6 +27,7 @@ Suggests: octave-info,
  octave-doc,
  octave-htmldoc,
 Conflicts: octave3.2
+Replaces: octave3.2
 Description: GNU Octave language for numerical computations
  Octave is a (mostly Matlab (R) compatible) high-level language, primarily
  intended for numerical computations. It provides a convenient command-line
@@ -94,6 +95,7 @@ Package: octave-info
 Architecture: all
 Depends: info, ${misc:Depends}
 Conflicts: octave3.2-info
+Replaces: octave3.2-info
 Section: doc
 Description: GNU Info documentation on the GNU Octave language
  Octave is a (mostly Matlab (R) compatible) high-level language, primarily
@@ -123,6 +125,7 @@ Depends: liboctave0 (= ${binary:Version}), octave (= ${binary:Version}), ${misc:
  libhdf5-dev (>= 1.8.8), libgl1-mesa-dev | libgl-dev,
  libblas-dev (>=1.2-7), liblapack-dev (>=3.2.1-7), libfftw3-dev, gfortran, gcc, g++
 Conflicts: octave3.2-headers
+Replaces: octave3.2-headers
 Section: libdevel
 Description: Development files for the GNU Octave language
  Octave is a (mostly Matlab (R) compatible) high-level language, primarily
