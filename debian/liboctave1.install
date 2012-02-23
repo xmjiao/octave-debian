@@ -1,0 +1,5 @@
+usr/lib/liboctave.so.1* /usr/lib
+
+usr/lib/libcruft.so.1* /usr/lib
+
+usr/lib/liboctinterp.so.1* /usr/lib

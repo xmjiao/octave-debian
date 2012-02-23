@@ -107,7 +107,7 @@ Description: GNU Info documentation on the GNU Octave language
  octave documentation which is needed for the 'help -i foo' command within
  Octave.
 
-Package: liboctave0
+Package: liboctave1
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Section: libs
@@ -120,7 +120,7 @@ Description: Shared libraries of the GNU Octave language
 
 Package: liboctave-dev
 Architecture: any
-Depends: liboctave0 (= ${binary:Version}), octave (= ${binary:Version}), ${misc:Depends},
+Depends: liboctave1 (= ${binary:Version}), octave (= ${binary:Version}), ${misc:Depends},
  libreadline-dev | libreadline6-dev | libreadline5-dev, libncurses5-dev,
  libhdf5-dev (>= 1.8.8), libgl1-mesa-dev | libgl-dev,
  libblas-dev (>=1.2-7), liblapack-dev (>=3.2.1-7), libfftw3-dev, gfortran, gcc, g++
