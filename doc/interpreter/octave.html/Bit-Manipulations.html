@@ -42,14 +42,14 @@ values of individual bits are <code>bitset</code> and <code>bitget</code>.
    <p><a name="doc_002dbitset"></a>
 
 <div class="defun">
-&mdash; Function File: <var>C</var> = <b>bitset</b> (<var>A, n</var>)<var><a name="index-bitset-263"></a></var><br>
-&mdash; Function File: <var>C</var> = <b>bitset</b> (<var>A, n, val</var>)<var><a name="index-bitset-264"></a></var><br>
+&mdash; Function File: <var>C</var> = <b>bitset</b> (<var>A, n</var>)<var><a name="index-bitset-283"></a></var><br>
+&mdash; Function File: <var>C</var> = <b>bitset</b> (<var>A, n, val</var>)<var><a name="index-bitset-284"></a></var><br>
 <blockquote><p>Set or reset bit(s) <var>n</var> of unsigned integers in <var>A</var>. 
 <var>val</var> = 0 resets and <var>val</var> = 1 sets the bits. 
 The lowest significant bit is: <var>n</var> = 1
 
      <pre class="example">          dec2bin (bitset (10, 1))
-          &rArr; 1011
+            &rArr; 1011
 </pre>
         <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
      <!-- A simple blank line produces the correct behavior. -->
@@ -61,7 +61,7 @@ The lowest significant bit is: <var>n</var> = 1
    <p><a name="doc_002dbitget"></a>
 
 <div class="defun">
-&mdash; Function File: <var>c</var> = <b>bitget</b> (<var>A, n</var>)<var><a name="index-bitget-265"></a></var><br>
+&mdash; Function File: <var>c</var> = <b>bitget</b> (<var>A, n</var>)<var><a name="index-bitget-285"></a></var><br>
 <blockquote><p>Return the status of bit(s) <var>n</var> of unsigned integers in <var>A</var>
 the lowest significant bit is <var>n</var> = 1.
 
@@ -102,9 +102,9 @@ the function <code>bitmax</code>.
    <p><a name="doc_002dbitmax"></a>
 
 <div class="defun">
-&mdash; Built-in Function:  <b>bitmax</b> ()<var><a name="index-bitmax-266"></a></var><br>
-&mdash; Built-in Function:  <b>bitmax</b> (<var>"double"</var>)<var><a name="index-bitmax-267"></a></var><br>
-&mdash; Built-in Function:  <b>bitmax</b> (<var>"single"</var>)<var><a name="index-bitmax-268"></a></var><br>
+&mdash; Built-in Function:  <b>bitmax</b> ()<var><a name="index-bitmax-286"></a></var><br>
+&mdash; Built-in Function:  <b>bitmax</b> (<var>"double"</var>)<var><a name="index-bitmax-287"></a></var><br>
+&mdash; Built-in Function:  <b>bitmax</b> (<var>"single"</var>)<var><a name="index-bitmax-288"></a></var><br>
 <blockquote><p>Return the largest integer that can be represented within a floating point
 value.  The default class is "double", but "single" is a valid option. 
 On IEEE-754 compatible systems, <code>bitmax</code> is 2^53&nbsp;-&nbsp;1<!-- /@w -->. 
@@ -120,7 +120,7 @@ operators.
    <p><a name="doc_002dbitand"></a>
 
 <div class="defun">
-&mdash; Built-in Function:  <b>bitand</b> (<var>x, y</var>)<var><a name="index-bitand-269"></a></var><br>
+&mdash; Built-in Function:  <b>bitand</b> (<var>x, y</var>)<var><a name="index-bitand-289"></a></var><br>
 <blockquote><p>Return the bitwise AND of non-negative integers. 
 <var>x</var>, <var>y</var> must be in the range [0,bitmax]
 <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
@@ -134,7 +134,7 @@ operators.
    <p><a name="doc_002dbitor"></a>
 
 <div class="defun">
-&mdash; Built-in Function:  <b>bitor</b> (<var>x, y</var>)<var><a name="index-bitor-270"></a></var><br>
+&mdash; Built-in Function:  <b>bitor</b> (<var>x, y</var>)<var><a name="index-bitor-290"></a></var><br>
 <blockquote><p>Return the bitwise OR of non-negative integers. 
 <var>x</var>, <var>y</var> must be in the range [0,bitmax]
 <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
@@ -148,7 +148,7 @@ operators.
    <p><a name="doc_002dbitxor"></a>
 
 <div class="defun">
-&mdash; Built-in Function:  <b>bitxor</b> (<var>x, y</var>)<var><a name="index-bitxor-271"></a></var><br>
+&mdash; Built-in Function:  <b>bitxor</b> (<var>x, y</var>)<var><a name="index-bitxor-291"></a></var><br>
 <blockquote><p>Return the bitwise XOR of non-negative integers. 
 <var>x</var>, <var>y</var> must be in the range [0,bitmax]
 <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
@@ -167,16 +167,16 @@ bitwise 'not' operator is <code>bitcmp</code>.
    <p><a name="doc_002dbitcmp"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>bitcmp</b> (<var>A, k</var>)<var><a name="index-bitcmp-272"></a></var><br>
+&mdash; Function File:  <b>bitcmp</b> (<var>A, k</var>)<var><a name="index-bitcmp-292"></a></var><br>
 <blockquote><p>Return the <var>k</var>-bit complement of integers in <var>A</var>.  If
 <var>k</var> is omitted <code>k = log2 (bitmax) + 1</code> is assumed.
 
-     <pre class="example">          bitcmp(7,4)
-          &rArr; 8
-          dec2bin(11)
-          &rArr; 1011
-          dec2bin(bitcmp(11, 6))
-          &rArr; 110100
+     <pre class="example">          bitcmp (7,4)
+            &rArr; 8
+          dec2bin (11)
+            &rArr; 1011
+          dec2bin (bitcmp (11, 6))
+            &rArr; 110100
 </pre>
         <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
      <!-- A simple blank line produces the correct behavior. -->
@@ -190,13 +190,13 @@ bitwise 'not' operator is <code>bitcmp</code>.
    <p><a name="doc_002dbitshift"></a>
 
 <div class="defun">
-&mdash; Built-in Function:  <b>bitshift</b> (<var>a, k</var>)<var><a name="index-bitshift-273"></a></var><br>
-&mdash; Built-in Function:  <b>bitshift</b> (<var>a, k, n</var>)<var><a name="index-bitshift-274"></a></var><br>
+&mdash; Built-in Function:  <b>bitshift</b> (<var>a, k</var>)<var><a name="index-bitshift-293"></a></var><br>
+&mdash; Built-in Function:  <b>bitshift</b> (<var>a, k, n</var>)<var><a name="index-bitshift-294"></a></var><br>
 <blockquote><p>Return a <var>k</var> bit shift of <var>n</var>-digit unsigned
-integers in <var>a</var>.  A positive <var>k</var> leads to a left shift. 
+integers in <var>a</var>.  A positive <var>k</var> leads to a left shift;
 A negative value to a right shift.  If <var>n</var> is omitted it defaults
 to log2(bitmax)+1. 
-<var>n</var> must be in the range [1,log2(bitmax)+1] usually [1,33]
+<var>n</var> must be in the range [1,log2(bitmax)+1] usually [1,33].
 
      <pre class="example">          bitshift (eye (3), 1)
           &rArr;

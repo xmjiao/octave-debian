@@ -1,4 +1,4 @@
-## Copyright (C) 2004-2011 John W. Eaton
+## Copyright (C) 2004-2012 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -31,3 +31,6 @@ function retval = isunix ()
   endif
 
 endfunction
+
+%!error isunix (1);
+%!assert (islogical (isunix ()));

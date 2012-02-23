@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2011 David Bateman
+## Copyright (C) 2007-2012 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -27,8 +27,8 @@
 ##
 ## @example
 ## @group
-## [@var{x}, @var{y}] = meshgrid (1:size(@var{z}, 1),
-##                      1:size(@var{z}, 2));
+## [@var{x}, @var{y}] = meshgrid (1:size (@var{z}, 1),
+##                    1:size (@var{z}, 2));
 ## @end group
 ## @end example
 ##
@@ -142,13 +142,16 @@ function [Nx, Ny, Nz] = surfnorm (varargin)
 endfunction
 
 %!demo
+%! clf
 %! colormap (jet (64))
 %! [x, y, z] = peaks(10);
 %! surfnorm (x, y, z);
 
 %!demo
+%! clf
 %! surfnorm (peaks(10));
 
 %!demo
+%! clf
 %! surfnorm (peaks(32));
 %! shading interp

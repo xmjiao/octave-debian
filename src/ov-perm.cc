@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008-2011 Jaroslav Hajek
+Copyright (C) 2008-2012 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -215,6 +215,12 @@ SparseMatrix
 octave_perm_matrix::sparse_matrix_value (bool) const
 {
   return SparseMatrix (matrix);
+}
+
+SparseBoolMatrix
+octave_perm_matrix::sparse_bool_matrix_value (bool) const
+{
+  return SparseBoolMatrix (matrix);
 }
 
 SparseComplexMatrix

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2003-2011 John W. Eaton
+Copyright (C) 2003-2012 John W. Eaton
 Copyright (C) 2009 VZLU Prague, a.s.
 Copyright (C) 2010 Jaroslav Hajek
 
@@ -164,7 +164,38 @@ octave_fcn_handle::do_multi_index_op (int nargout,
       else
         {
           str_ov_map::iterator it = overloads.find (dispatch_type);
-          if (it != overloads.end ())
+
+          if (it == overloads.end ())
+            {
+              // Try parent classes too.
+
+              std::list<std::string> plist
+                = symbol_table::parent_classes (dispatch_type);
+
+              std::list<std::string>::const_iterator pit = plist.begin ();
+
+              while (pit != plist.end ())
+                {
+                  std::string pname = *pit;
+
+                  std::string fnm = fcn_name ();
+
+                  octave_value ftmp = symbol_table::find_method (fnm, pname);
+
+                  if (ftmp.is_defined ())
+                    {
+                      set_overload (pname, ftmp);
+
+                      out_of_date_check (ftmp, pname, false);
+                      ov_fcn = ftmp;
+
+                      break;
+                    }
+
+                  pit++;
+                }
+            }
+          else
             {
               out_of_date_check (it->second, dispatch_type, false);
               ov_fcn = it->second;
@@ -1728,7 +1759,8 @@ are ignored in the lookup.\n\
 }
 
 /*
-%!function y = testrecursionfunc (f, x, n)
+
+%!function y = __testrecursionfunc (f, x, n)
 %!  if (nargin < 3)
 %!    n = 0;
 %!  endif
@@ -1736,11 +1768,45 @@ are ignored in the lookup.\n\
 %!    y = f (x);
 %!  else
 %!    n++;
-%!    y = testrecursionfunc (@(x) f(2*x), x, n);
+%!    y = __testrecursionfunc (@(x) f(2*x), x, n);
 %!  endif
-%!test
-%! assert (testrecursionfunc (@(x) x, 1), 8);
+%!endfunction
+%!
+%!assert (__testrecursionfunc (@(x) x, 1), 8)
+
 */
+
+DEFUN (is_function_handle, args, ,
+  "-*- texinfo -*-\n\
+@deftypefn {Built-in Function} {} is_function_handle (@var{x})\n\
+Return true if @var{x} is a function handle.\n\
+@seealso{isa, typeinfo, class}\n\
+@end deftypefn")
+{
+  octave_value retval;
+
+  int nargin = args.length ();
+
+  if (nargin == 1)
+    retval = args(0).is_function_handle ();
+  else
+    print_usage ();
+
+  return retval;
+}
+
+/*
+%!shared fh
+%! fh = @(x) x;
+
+%!assert (is_function_handle (fh))
+%!assert (! is_function_handle ({fh}))
+%!assert (! is_function_handle (1))
+%!error is_function_handle ();
+%!error is_function_handle (1, 2);
+
+*/
+
 
 octave_fcn_binder::octave_fcn_binder (const octave_value& f,
                                       const octave_value& root,
@@ -1925,3 +1991,12 @@ octave_fcn_binder::do_multi_index_op (int nargout,
 
   return retval;
 }
+
+/*
+%!function r = __f (g, i)
+%!  r = g(i);
+%!endfunction
+%!test
+%! x = [1,2;3,4];
+%! assert (__f (@(i) x(:,i), 1), [1;3]);
+*/

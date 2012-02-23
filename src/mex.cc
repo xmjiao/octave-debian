@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2006-2011 John W. Eaton
+Copyright (C) 2006-2012 John W. Eaton
 
 This file is part of Octave.
 
@@ -1274,9 +1274,16 @@ public:
 
   int get_string (char *buf, mwSize buflen) const
   {
-    int retval = 1;
+    int retval = 0;
 
     mwSize nel = get_number_of_elements ();
+
+    if (! (nel < buflen))
+      {
+        retval = 1;
+        if (buflen > 0)
+          nel = buflen-1;
+      }
 
     if (nel < buflen)
       {

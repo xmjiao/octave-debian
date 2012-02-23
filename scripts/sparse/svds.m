@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2011 David Bateman
+## Copyright (C) 2006-2012 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -29,9 +29,9 @@
 ##
 ## @example
 ## @group
-## [@var{m}, @var{n}] = size(@var{A})
-## @var{s} = eigs([sparse(@var{m}, @var{m}), @var{A};
-##                     @var{A}', sparse(@var{n}, @var{n})])
+## [@var{m}, @var{n}] = size (@var{A});
+## @var{s} = eigs ([sparse(@var{m}, @var{m}), @var{A};
+##                      @var{A}', sparse(@var{n}, @var{n})])
 ## @end group
 ## @end example
 ##
@@ -150,6 +150,8 @@ function [u, s, v, flag] = svds (A, k, sigma, opts)
     ## Scale everything by the 1-norm to make things more stable.
     b = A / max_a;
     b_opts = opts;
+    ## Call to eigs is always a symmetric matrix by construction
+    b_opts.issym = true;
     b_opts.tol = opts.tol / max_a;
     b_sigma = sigma;
     if (!ischar (b_sigma))
@@ -239,41 +241,56 @@ function [u, s, v, flag] = svds (A, k, sigma, opts)
 
 endfunction
 
-%!shared n, k, A, u, s, v, opts
+%!shared n, k, A, u, s, v, opts, rand_state, randn_state
 %! n = 100;
 %! k = 7;
-%! A = sparse([3:n,1:n,1:(n-2)],[1:(n-2),1:n,3:n],[ones(1,n-2),0.4*n*ones(1,n),ones(1,n-2)]);
-%! [u,s,v] = svd(full(A));
-%! s = diag(s);
-%! [~, idx] = sort(abs(s));
+%! A = sparse ([3:n,1:n,1:(n-2)],[1:(n-2),1:n,3:n],[ones(1,n-2),0.4*n*ones(1,n),ones(1,n-2)]);
+%! [u,s,v] = svd (full (A));
+%! s = diag (s);
+%! [~, idx] = sort (abs(s));
 %! s = s(idx);
-%! u = u(:,idx);
-%! v = v(:,idx);
-%! randn ('state', 42);      % Initialize to make normest function reproducible
-%! rand ('state', 42)
+%! u = u(:, idx);
+%! v = v(:, idx);
+%! randn_state = randn ("state");
+%! rand_state = rand ("state");
+%! randn ("state", 42);      % Initialize to make normest function reproducible
+%! rand ("state", 42);
 %! opts.v0 = rand (2*n,1); % Initialize eigs ARPACK starting vector
 %!                         % to guarantee reproducible results
-%!test
-%! [u2,s2,v2,flag] = svds(A,k);
-%! s2 = diag(s2);
-%! assert(flag,!1);
-%! assert(s2, s(end:-1:end-k+1), 1e-10);
-%!testif HAVE_UMFPACK
-%! [u2,s2,v2,flag] = svds(A,k,0,opts);
-%! s2 = diag(s2);
-%! assert(flag,!1);
-%! assert(s2, s(k:-1:1), 1e-10);
-%!testif HAVE_UMFPACK
+%!
+%!testif HAVE_ARPACK
+%! [u2,s2,v2,flag] = svds (A,k);
+%! s2 = diag (s2);
+%! assert (flag, !1);
+%! assert (s2, s(end:-1:end-k+1), 1e-10);
+%!
+%!testif HAVE_ARPACK, HAVE_UMFPACK
+%! [u2,s2,v2,flag] = svds (A,k,0,opts);
+%! s2 = diag (s2);
+%! assert (flag, !1);
+%! assert (s2, s(k:-1:1), 1e-10);
+%!
+%!testif HAVE_ARPACK, HAVE_UMFPACK
 %! idx = floor(n/2);
 %! % Don't put sigma right on a singular value or there are convergence issues
 %! sigma = 0.99*s(idx) + 0.01*s(idx+1);
-%! [u2,s2,v2,flag] = svds(A,k,sigma,opts);
-%! s2 = diag(s2);
-%! assert(flag,!1);
-%! assert(s2, s((idx+floor(k/2)):-1:(idx-floor(k/2))), 1e-10);
-%!test
-%! [u2,s2,v2,flag] = svds(zeros (10), k);
-%! assert (isequal(u2, eye (10, k)) && isequal (s2, zeros(k)) && isequal (v2, eye(10, 7)));
-%!test
+%! [u2,s2,v2,flag] = svds (A,k,sigma,opts);
+%! s2 = diag (s2);
+%! assert (flag, !1);
+%! assert (s2, s((idx+floor(k/2)):-1:(idx-floor(k/2))), 1e-10);
+%!
+%!testif HAVE_ARPACK
+%! [u2,s2,v2,flag] = svds (zeros (10), k);
+%! assert (u2, eye (10, k));
+%! assert (s2, zeros (k));
+%! assert (v2, eye (10, 7));
+%!
+%!testif HAVE_ARPACK
 %! s = svds (speye (10));
 %! assert (s, ones (6, 1), 2*eps);
+
+%!test
+%! ## Restore random number generator seeds at end of tests
+%! rand ("state", rand_state);
+%! randn ("state", randn_state);
+

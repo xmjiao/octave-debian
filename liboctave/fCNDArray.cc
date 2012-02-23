@@ -1,7 +1,7 @@
 // N-D Array  manipulations.
 /*
 
-Copyright (C) 1996-2011 John W. Eaton
+Copyright (C) 1996-2012 John W. Eaton
 Copyright (C) 2009 VZLU Prague, a.s.
 
 This file is part of Octave.
@@ -757,7 +757,7 @@ FloatComplexNDArray::isfinite (void) const
 FloatComplexNDArray
 conj (const FloatComplexNDArray& a)
 {
-  return do_mx_unary_map<FloatComplex, FloatComplex, std::conj> (a);
+  return do_mx_unary_map<FloatComplex, FloatComplex, std::conj<float> > (a);
 }
 
 FloatComplexNDArray&

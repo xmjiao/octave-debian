@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004-2011 John W. Eaton
+Copyright (C) 2004-2012 John W. Eaton
 
 This file is part of Octave.
 
@@ -82,3 +82,14 @@ Convert @var{x} to unsigned 32-bit integer type.\n\
 {
   OCTAVE_TYPE_CONV_BODY (uint32);
 }
+
+/*
+
+%!assert (class (uint32 (1)), "uint32")
+%!assert (uint32 (1.25), uint32 (1))
+%!assert (uint32 (1.5), uint32 (2))
+%!assert (uint32 (-1.5), uint32 (0))
+%!assert (uint32 (2^33), uint32 (2^32-1))
+%!assert (uint32 (-2^33), uint32 (0))
+
+*/

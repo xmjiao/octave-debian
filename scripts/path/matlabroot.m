@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2011 Ben Abbott
+## Copyright (C) 2008-2012 Ben Abbott
 ##
 ## This file is part of Octave.
 ##
@@ -20,7 +20,7 @@
 ## @deftypefn {Function File} {} matlabroot ()
 ## Return the name of the top-level Octave installation directory.
 ##
-## This is an alias for the function @code{OCTAVE_HOME} provided
+## This is an alias for the function @w{@code{OCTAVE_HOME}} provided
 ## for compatibility.
 ## @seealso{OCTAVE_HOME}
 ## @end deftypefn
@@ -31,5 +31,5 @@ function val = matlabroot ()
 
 endfunction
 
-
+%!assert (matlabroot(), OCTAVE_HOME())
 

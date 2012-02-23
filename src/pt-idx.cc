@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2011 John W. Eaton
+Copyright (C) 1996-2012 John W. Eaton
 
 This file is part of Octave.
 
@@ -113,6 +113,13 @@ tree_index_expression::~tree_index_expression (void)
       delete *p;
       args.erase (p);
     }
+
+  while (! dyn_field.empty ())
+    {
+      std::list<tree_expression *>::iterator p = dyn_field.begin ();
+      delete *p;
+      dyn_field.erase (p);
+    }
 }
 
 bool
@@ -170,13 +177,13 @@ make_subs_cell (tree_argument_list *args, const string_vector& arg_nm)
 
 static inline octave_value_list
 make_value_list (tree_argument_list *args, const string_vector& arg_nm,
-                 const octave_value *object)
+                 const octave_value *object, bool rvalue = true)
 {
   octave_value_list retval;
 
   if (args)
     {
-      if (object && args->has_magic_end () && object->is_undefined ())
+      if (rvalue && object && args->has_magic_end () && object->is_undefined ())
         gripe_invalid_inquiry_subscript ();
       else
         retval = args->convert_to_const_vector (object);
@@ -469,7 +476,7 @@ tree_index_expression::lvalue (void)
             case '(':
               {
                 octave_value_list tidx
-                  = make_value_list (*p_args, *p_arg_nm, &tmp);
+                  = make_value_list (*p_args, *p_arg_nm, &tmp, false);
 
                 idx.push_back (tidx);
 
@@ -489,7 +496,7 @@ tree_index_expression::lvalue (void)
             case '{':
               {
                 octave_value_list tidx
-                  = make_value_list (*p_args, *p_arg_nm, &tmp);
+                  = make_value_list (*p_args, *p_arg_nm, &tmp, false);
 
                 if (tmp.is_undefined ())
                   {
@@ -593,6 +600,18 @@ tree_index_expression::lvalue (void)
 }
 
 /*
+%!test
+%! clear x
+%! clear y
+%! y = 3;
+%! x(y(end)) = 1;
+%! assert (x, [0, 0, 1]);
+%! clear x
+%! clear y
+%! y = {3};
+%! x(y{end}) = 1;
+%! assert (x, [0, 0, 1]);
+
 %!test
 %! x = {1, 2, 3};
 %! [x{:}] = deal (4, 5, 6);

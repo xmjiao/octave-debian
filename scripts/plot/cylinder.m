@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2011 Michael Goffioul and Kai Habel
+## Copyright (C) 2007-2012 Michael Goffioul and Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -38,9 +38,9 @@
 ##
 ## @example
 ## @group
-## [x, y, z] = cylinder (10:-1:0,50);
+## [x, y, z] = cylinder (10:-1:0, 50);
 ## surf (x, y, z);
-## title ("a cone")
+## title ("a cone");
 ## @end group
 ## @end example
 ## @seealso{sphere}
@@ -86,6 +86,7 @@ function [xx, yy, zz] = cylinder (varargin)
 endfunction
 
 %!demo
+%! clf
 %! [x, y, z] = cylinder (10:-1:0,50);
 %! surf (x, y, z);
 %! title ("a cone")

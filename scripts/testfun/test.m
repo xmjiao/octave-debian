@@ -1,4 +1,4 @@
-## Copyright (C) 2005-2011 Paul Kienzle
+## Copyright (C) 2005-2012 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -132,7 +132,7 @@ function [__ret1, __ret2, __ret3, __ret4] = test (__name, __flag, __fid)
     __rundemo = 0;
     __verbose = 0;
     __demo_code = "";
-    __demo_idx = 1;
+    __demo_idx = [];
   elseif (strcmp (__flag, "explain"))
     fprintf (__fid, "# %s new test file\n", __signal_file);
     fprintf (__fid, "# %s no tests in file\n", __signal_empty);
@@ -286,7 +286,7 @@ function [__ret1, __ret2, __ret3, __ret4] = test (__name, __flag, __fid)
           input ("Press <enter> to continue: ", "s");
         catch
           __success = 0;
-          __msg = sprintf ("%sdemo failed\n%s",  __signal_fail, __error_text__);
+          __msg = sprintf ("%sdemo failed\n%s",  __signal_fail, lasterr ());
         end_try_catch
         clear __test__;
 
@@ -359,9 +359,17 @@ function [__ret1, __ret2, __ret3, __ret4] = test (__name, __flag, __fid)
         catch
           __success = 0;
           __msg = sprintf ("%stest failed: syntax error\n%s",
-                           __signal_fail, __error_text__);
+                           __signal_fail, lasterr ());
         end_try_catch
       endif
+      __code = "";
+
+### ENDFUNCTION
+
+    elseif (strcmp (__type, "endfunction"))
+      ## endfunction simply declares the end of a previous function block.
+      ## There is no processing to be done here, just skip to next block.
+      __istest = 0;
       __code = "";
 
 ### ASSERT/FAIL
@@ -389,7 +397,7 @@ function [__ret1, __ret2, __ret3, __ret4] = test (__name, __flag, __fid)
       catch
         __success = 0;
         __msg = sprintf ("%stest failed: syntax error\n%s",
-                         __signal_fail, __error_text__);
+                         __signal_fail, lasterr ());
       end_try_catch
 
       if (__success)
@@ -448,8 +456,12 @@ function [__ret1, __ret2, __ret3, __ret4] = test (__name, __flag, __fid)
 ### TESTIF
 
     elseif (strcmp (__type, "testif"))
-      [__e, __feat] = regexp (__code, '^\s*(\S+)', 'end', 'tokens');
-      if (isempty (findstr (octave_config_info ("DEFS"), __feat{1}{1})))
+      __e = regexp (__code, '.$', 'lineanchors', 'once');
+      ## Strip comment any comment from testif line before looking for features
+      __feat_line = strtok (__code(1:__e), '#%'); 
+      __feat = regexp (__feat_line, '\w+', 'match');
+      __have_feat = strfind (octave_config_info ("DEFS"), __feat); 
+      if (any (cellfun ("isempty", __have_feat)))
         __xskip++;
         __istest = 0;
         __code = ""; # Skip the code.
@@ -483,18 +495,26 @@ function [__ret1, __ret2, __ret3, __ret4] = test (__name, __flag, __fid)
     ## evaluate code for test, shared, and assert.
     if (! isempty(__code))
       try
-        eval (sprintf ("function %s__test__(%s)\n%s\nendfunction",
-                       __shared_r,__shared, __code));
-        eval (sprintf ("%s__test__(%s);", __shared_r, __shared));
+        ## FIXME: need to check for embedded test functions, which cause
+        ## segfaults, until issues with subfunctions in functions are resolved.
+        embed_func = regexp (__code, '^\s*function ', 'once', 'lineanchors');
+        if (isempty (embed_func))
+          eval (sprintf ("function %s__test__(%s)\n%s\nendfunction",
+                         __shared_r,__shared, __code));
+          eval (sprintf ("%s__test__(%s);", __shared_r, __shared));
+        else
+          error (["Functions embedded in %!test blocks are not allowed.\n", ...
+                  "Use the %!function/%!endfunction syntax instead to define shared functions for testing.\n"]);
+        endif
       catch
         if (strcmp (__type, "xtest"))
-           __msg = sprintf ("%sknown failure\n%s", __signal_fail, __error_text__);
+           __msg = sprintf ("%sknown failure\n%s", __signal_fail, lasterr ());
            __xfail++;
         else
-           __msg = sprintf ("%stest failed\n%s", __signal_fail, __error_text__);
+           __msg = sprintf ("%stest failed\n%s", __signal_fail, lasterr ());
            __success = 0;
         endif
-        if (isempty (__error_text__))
+        if (isempty (lasterr ()))
           error ("empty error text, probably Ctrl-C --- aborting");
         endif
       end_try_catch
@@ -669,13 +689,14 @@ endfunction
 %!xtest error("This test is known to fail")
 
 ### example from toeplitz
-%!shared msg
-%! msg="expecting vector arguments";
-%!fail ('toeplitz([])', msg);
-%!fail ('toeplitz([1,2],[])', msg);
-%!fail ('toeplitz([1,2;3,4])', msg);
-%!fail ('toeplitz([1,2],[1,2;3,4])', msg);
-%!fail ('toeplitz ([1,2;3,4],[1,2])', msg);
+%!shared msg1,msg2
+%! msg1="C must be a vector";
+%! msg2="C and R must be vectors";
+%!fail ('toeplitz([])', msg1);
+%!fail ('toeplitz([1,2;3,4])', msg1);
+%!fail ('toeplitz([1,2],[])', msg2);
+%!fail ('toeplitz([1,2],[1,2;3,4])', msg2);
+%!fail ('toeplitz ([1,2;3,4],[1,2])', msg2);
 % !fail ('toeplitz','usage: toeplitz'); # usage doesn't generate an error
 % !fail ('toeplitz(1, 2, 3)', 'usage: toeplitz');
 %!test  assert (toeplitz ([1,2,3], [1,4]), [1,4; 2,1; 3,2]);
@@ -761,16 +782,19 @@ endfunction
 
 %!function x = __test_a(y)
 %! x = 2*y;
+%!endfunction
 %!assert(__test_a(2),4);       # Test a test function
 
 %!function __test_a (y)
 %! x = 2*y;
+%!endfunction
 %!test
 %! __test_a(2);                # Test a test function with no return value
 
 %!function [x,z] = __test_a (y)
 %! x = 2*y;
 %! z = 3*y;
+%!endfunction
 %!test                   # Test a test function with multiple returns
 %! [x,z] = __test_a(3);
 %! assert(x,6);

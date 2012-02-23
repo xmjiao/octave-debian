@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2011 Kurt Hornik
+## Copyright (C) 1995-2012 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -27,10 +27,18 @@
 
 function y = probit (p)
 
-  if (nargin == 1)
-    y = stdnormal_inv (p);
-  else
+
+  if (nargin != 1)
     print_usage ();
   endif
 
+  y = stdnormal_inv (p);
+
 endfunction
+
+%!assert(probit([-1, 0, 0.5, 1, 2]), [NaN, -Inf, 0, Inf, NaN]);
+
+%% Test input validation
+%!error probit ()
+%!error probit (1, 2)
+

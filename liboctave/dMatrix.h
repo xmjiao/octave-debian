@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1994-2011 John W. Eaton
+Copyright (C) 1994-2012 John W. Eaton
 
 This file is part of Octave.
 
@@ -296,6 +296,7 @@ public:
   // other operations
 
   bool any_element_is_negative (bool = false) const;
+  bool any_element_is_positive (bool = false) const;
   bool any_element_is_nan (void) const;
   bool any_element_is_inf_or_nan (void) const;
   bool any_element_not_one_or_zero (void) const;

@@ -1,4 +1,4 @@
-## Copyright (C) 2003-2011 John W. Eaton
+## Copyright (C) 2003-2012 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -26,10 +26,13 @@
 
 function beep ()
 
-  if (nargin == 0)
-    puts ("\a");
-  else
+  if (nargin != 0)
     print_usage ();
   endif
 
+  puts ("\a");
+
 endfunction
+
+
+%!error (beep (1))

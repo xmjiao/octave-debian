@@ -1,4 +1,4 @@
-## Copyright (C) 2010-2011 Rik Wehbring
+## Copyright (C) 2010-2012 Rik Wehbring
 ##
 ## This file is part of Octave.
 ##
@@ -40,7 +40,7 @@
 ## The following example returns 150 integers in the range 1-10.
 ##
 ## @example
-## ri = randi (10, 150, 1);
+## ri = randi (10, 150, 1)
 ## @end example
 ##
 ## Implementation Note: @code{randi} relies internally on @code{rand} which

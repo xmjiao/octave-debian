@@ -1,7 +1,7 @@
 /* -*- buffer-read-only: t -*- vi: set ro: */
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* provide a replacement openat function
-   Copyright (C) 2004-2006, 2008-2011 Free Software Foundation, Inc.
+   Copyright (C) 2004-2006, 2008-2012 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -25,7 +25,6 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <dirent.h>
 #include <unistd.h>
 #include <stdbool.h>
 
@@ -49,6 +48,9 @@ _Noreturn void openat_save_fail (int);
 /* Using these function names makes application code
    slightly more readable than it would be with
    fchownat (..., 0) or fchownat (..., AT_SYMLINK_NOFOLLOW).  */
+
+#if GNULIB_FCHOWNAT
+
 static inline int
 chownat (int fd, char const *file, uid_t owner, gid_t group)
 {
@@ -60,6 +62,10 @@ lchownat (int fd, char const *file, uid_t owner, gid_t group)
 {
   return fchownat (fd, file, owner, group, AT_SYMLINK_NOFOLLOW);
 }
+
+#endif
+
+#if GNULIB_FCHMODAT
 
 static inline int
 chmodat (int fd, char const *file, mode_t mode)
@@ -73,6 +79,10 @@ lchmodat (int fd, char const *file, mode_t mode)
   return fchmodat (fd, file, mode, AT_SYMLINK_NOFOLLOW);
 }
 
+#endif
+
+#if GNULIB_FSTATAT
+
 static inline int
 statat (int fd, char const *name, struct stat *st)
 {
@@ -84,6 +94,8 @@ lstatat (int fd, char const *name, struct stat *st)
 {
   return fstatat (fd, name, st, AT_SYMLINK_NOFOLLOW);
 }
+
+#endif
 
 /* For now, there are no wrappers named laccessat or leuidaccessat,
    since gnulib doesn't support faccessat(,AT_SYMLINK_NOFOLLOW) and

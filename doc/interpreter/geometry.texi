@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.
 
-@c Copyright (C) 2007-2011 John W. Eaton and David Bateman
+@c Copyright (C) 2007-2012 John W. Eaton and David Bateman
 @c
 @c This file is part of Octave.
 @c
@@ -52,29 +52,46 @@ circum-circle.  In this case the Delaunay triangulation is not unique.
 
 @c delaunay scripts/geometry/delaunay.m
 @anchor{doc-delaunay}
-@deftypefn  {Function File} {@var{tri} =} delaunay (@var{x}, @var{y})
-@deftypefnx {Function File} {@var{tri} =} delaunay (@var{x}, @var{y}, @var{opt})
-The return matrix of size [n, 3] contains a set triangles which are
-described by the indices to the data point x and y vector.
-The triangulation satisfies the Delaunay circum-circle criterion.
-No other data point is in the circum-circle of the defining triangle.
+@deftypefn  {Function File} {} delaunay (@var{x}, @var{y})
+@deftypefnx {Function File} {@var{tri} =} delaunay (@var{x}, @var{y})
+@deftypefnx {Function File} {@var{tri} =} delaunay (@var{x}, @var{y}, @var{options})
+Compute the Delaunay triangulation for a 2-D set of points.
+The return value @var{tri} is a set of triangles which satisfies the
+Delaunay circum-circle criterion, i.e., only a single data point from
+[@var{x}, @var{y}] is within the circum-circle of the defining triangle.
 
-A third optional argument, which must be a string, contains extra options
-passed to the underlying qhull command.  See the documentation for the
-Qhull library for details.
+The set of triangles @var{tri} is a matrix of size [n, 3].  Each
+row defines a triangle and the three columns are the three vertices
+of the triangle.  The value of @code{@var{tri}(i,j)} is an index into
+@var{x} and @var{y} for the location of the j-th vertex of the i-th
+triangle.
+
+An optional third argument, which must be a string or cell array of strings,
+contains options passed to the underlying qhull command.
+See the documentation for the Qhull library for details
+@url{http://www.qhull.org/html/qh-quick.htm#options}.
+The default options are @code{@{"Qt", "Qbb", "Qc", "Qz"@}}.
+
+If @var{options} is not present or @code{[]} then the default arguments are
+used.  Otherwise, @var{options} replaces the default argument list. 
+To append user options to the defaults it is necessary to repeat the 
+default arguments in @var{options}.  Use a null string to pass no arguments.
+
+If no output argument is specified the resulting Delaunay triangulation 
+is plotted along with the original set of points.
 
 @example
 @group
 x = rand (1, 10);
-y = rand (size (x));
+y = rand (1, 10);
 T = delaunay (x, y);
-X = [x(T(:,1)); x(T(:,2)); x(T(:,3)); x(T(:,1))];
-Y = [y(T(:,1)); y(T(:,2)); y(T(:,3)); y(T(:,1))];
+VX = [ x(T(:,1)); x(T(:,2)); x(T(:,3)); x(T(:,1)) ];
+VY = [ y(T(:,1)); y(T(:,2)); y(T(:,3)); y(T(:,1)) ];
 axis ([0,1,0,1]);
-plot (X, Y, "b", x, y, "r*");
+plot (VX, VY, "b", x, y, "r*");
 @end group
 @end example
-@seealso{@ref{doc-voronoi,,voronoi}, @ref{doc-delaunay3,,delaunay3}, @ref{doc-delaunayn,,delaunayn}}
+@seealso{@ref{doc-delaunay3,,delaunay3}, @ref{doc-delaunayn,,delaunayn}, @ref{doc-convhull,,convhull}, @ref{doc-voronoi,,voronoi}}
 @end deftypefn
 
 
@@ -87,50 +104,68 @@ The N-dimensional extension of a triangulation is called a tessellation.
 
 @c delaunay3 scripts/geometry/delaunay3.m
 @anchor{doc-delaunay3}
-@deftypefn  {Function File} {@var{T} =} delaunay3 (@var{x}, @var{y}, @var{z})
-@deftypefnx {Function File} {@var{T} =} delaunay3 (@var{x}, @var{y}, @var{z}, @var{opt})
-A matrix of size [n, 4] is returned.  Each row contains a
-set of tetrahedron which are
-described by the indices to the data point vectors (x,y,z).
+@deftypefn  {Function File} {@var{tetr} =} delaunay3 (@var{x}, @var{y}, @var{z})
+@deftypefnx {Function File} {@var{tetr} =} delaunay3 (@var{x}, @var{y}, @var{z}, @var{options})
+Compute the Delaunay triangulation for a 3-D set of points.
+The return value @var{tetr} is a set of tetrahedrons which satisfies the
+Delaunay circum-circle criterion, i.e., only a single data point from
+[@var{x}, @var{y}, @var{z}] is within the circum-circle of the defining
+tetrahedron.
 
-A fourth optional argument, which must be a string or cell array of strings,
-contains extra options passed to the underlying qhull command.  See the
-documentation for the Qhull library for details.
-@seealso{@ref{doc-delaunay,,delaunay}, @ref{doc-delaunayn,,delaunayn}}
+The set of tetrahedrons @var{tetr} is a matrix of size [n, 4].  Each
+row defines a tetrahedron and the four columns are the four vertices
+of the tetrahedron.  The value of @code{@var{tetr}(i,j)} is an index into
+@var{x}, @var{y}, @var{z} for the location of the j-th vertex of the i-th
+tetrahedron.
+
+An optional fourth argument, which must be a string or cell array of strings,
+contains options passed to the underlying qhull command.
+See the documentation for the Qhull library for details
+@url{http://www.qhull.org/html/qh-quick.htm#options}.
+The default options are @code{@{"Qt", "Qbb", "Qc", "Qz"@}}.
+
+If @var{options} is not present or @code{[]} then the default arguments are
+used.  Otherwise, @var{options} replaces the default argument list. 
+To append user options to the defaults it is necessary to repeat the 
+default arguments in @var{options}.  Use a null string to pass no arguments.
+
+@seealso{@ref{doc-delaunay,,delaunay}, @ref{doc-delaunayn,,delaunayn}, @ref{doc-convhull,,convhull}, @ref{doc-voronoi,,voronoi}}
 @end deftypefn
 
 
 @c delaunayn scripts/geometry/delaunayn.m
 @anchor{doc-delaunayn}
-@deftypefn  {Function File} {@var{t} =} delaunayn (@var{p})
-@deftypefnx {Function File} {@var{t} =} delaunayn (@var{p}, @var{opt})
-Form the Delaunay triangulation for a set of points.
-The Delaunay triangulation is a tessellation of the convex hull of the
-points such that no n-sphere defined by the n-triangles contains
+@deftypefn  {Function File} {@var{T} =} delaunayn (@var{pts})
+@deftypefnx {Function File} {@var{T} =} delaunayn (@var{pts}, @var{options})
+Compute the Delaunay triangulation for an N-dimensional set of points.
+The Delaunay triangulation is a tessellation of the convex hull of a set
+of points such that no N-sphere defined by the N-triangles contains
 any other points from the set.
-The input matrix @var{p} of size @code{[n, dim]} contains @math{n}
-points in a space of dimension dim.  The return matrix @var{t} has the
-size @code{[m, dim+1]}.  It contains for each row a set of indices to
-the points, which describes a simplex of dimension dim.  For example,
-a 2-D simplex is a triangle and 3-D simplex is a tetrahedron.
 
-Extra options for the underlying Qhull command can be specified by the
-second argument.  This argument is a cell array of strings.  The default
-options depend on the dimension of the input:
+The input matrix @var{pts} of size [n, dim] contains n points in a space of
+dimension dim.  The return matrix @var{T} has size [m, dim+1].  Each row
+of @var{T} contains a set of indices back into the original set of points
+@var{pts} which describes a simplex of dimension dim.  For example, a 2-D
+simplex is a triangle and 3-D simplex is a tetrahedron.
+
+An optional second argument, which must be a string or cell array of strings,
+contains options passed to the underlying qhull command.
+See the documentation for the Qhull library for details
+@url{http://www.qhull.org/html/qh-quick.htm#options}.
+The default options depend on the dimension of the input:
 
 @itemize
-@item 2D and 3D: @var{opt} = @code{@{"Qt", "Qbb", "Qc"@}}
+@item 2-D and 3-D: @var{options} = @code{@{"Qt", "Qbb", "Qc", "Qz"@}}
 
-@item 4D and higher: @var{opt} = @code{@{"Qt", "Qbb", "Qc", "Qz"@}}
+@item 4-D and higher: @var{options} = @code{@{"Qt", "Qbb", "Qc", "Qx"@}}
 @end itemize
 
-If @var{opt} is [], then the default arguments are used.  If @var{opt}
-is @code{@{"@w{}"@}}, then none of the default arguments are used by Qhull.
-See the Qhull documentation for the available options.
+If @var{options} is not present or @code{[]} then the default arguments are
+used.  Otherwise, @var{options} replaces the default argument list. 
+To append user options to the defaults it is necessary to repeat the 
+default arguments in @var{options}.  Use a null string to pass no arguments.
 
-All options can also be specified as single string, for example
-@code{"Qt Qbb Qc Qz"}.
-
+@seealso{@ref{doc-delaunay,,delaunay}, @ref{doc-delaunay3,,delaunay3}, @ref{doc-convhulln,,convhulln}, @ref{doc-voronoin,,voronoin}}
 @end deftypefn
 
 
@@ -170,42 +205,45 @@ The result of which can be seen in @ref{fig:delaunay}.
 Octave has the functions @code{triplot}, @code{trimesh}, and @code{trisurf}
 to plot the Delaunay triangulation of a 2-dimensional set of points.
 
-@c triplot scripts/geometry/triplot.m
+@c triplot scripts/plot/triplot.m
 @anchor{doc-triplot}
 @deftypefn  {Function File} {} triplot (@var{tri}, @var{x}, @var{y})
 @deftypefnx {Function File} {} triplot (@var{tri}, @var{x}, @var{y}, @var{linespec})
 @deftypefnx {Function File} {@var{h} =} triplot (@dots{})
 Plot a triangular mesh in 2D@.  The variable @var{tri} is the triangular
 meshing of the points @code{(@var{x}, @var{y})} which is returned from
-@code{delaunay}.  If given, the @var{linespec} determines the properties
-to use for the lines.  The output argument @var{h} is the graphic handle
-of the plot.
+@code{delaunay}.  If given, @var{linespec} determines the properties
+to use for the lines. 
+
+The optional return value @var{h} is a graphics handle to the created plot.
 @seealso{@ref{doc-plot,,plot}, @ref{doc-trimesh,,trimesh}, @ref{doc-trisurf,,trisurf}, @ref{doc-delaunay,,delaunay}}
 @end deftypefn
 
 
-@c trimesh scripts/geometry/trimesh.m
+@c trimesh scripts/plot/trimesh.m
 @anchor{doc-trimesh}
 @deftypefn  {Function File} {} trimesh (@var{tri}, @var{x}, @var{y}, @var{z})
 @deftypefnx {Function File} {@var{h} =} trimesh (@dots{})
 Plot a triangular mesh in 3D@.  The variable @var{tri} is the triangular
 meshing of the points @code{(@var{x}, @var{y})} which is returned
 from @code{delaunay}.  The variable @var{z} is value at the point
-@code{(@var{x}, @var{y})}.  The output argument @var{h} is the graphic
-handle of the plot.
+@code{(@var{x}, @var{y})}.
+
+The optional return value @var{h} is a graphics handle to the created plot.
 @seealso{@ref{doc-triplot,,triplot}, @ref{doc-trisurf,,trisurf}, @ref{doc-delaunay3,,delaunay3}}
 @end deftypefn
 
 
-@c trisurf scripts/geometry/trisurf.m
+@c trisurf scripts/plot/trisurf.m
 @anchor{doc-trisurf}
 @deftypefn  {Function File} {} trisurf (@var{tri}, @var{x}, @var{y}, @var{z})
 @deftypefnx {Function File} {@var{h} =} trisurf (@dots{})
 Plot a triangular surface in 3D@.  The variable @var{tri} is the triangular
 meshing of the points @code{(@var{x}, @var{y})} which is returned
 from @code{delaunay}.  The variable @var{z} is value at the point
-@code{(@var{x}, @var{y})}.  The output argument @var{h} is the graphic
-handle of the plot.
+@code{(@var{x}, @var{y})}.
+
+The optional return value @var{h} is a graphics handle to the created plot.
 @seealso{@ref{doc-triplot,,triplot}, @ref{doc-trimesh,,trimesh}, @ref{doc-delaunay3,,delaunay3}}
 @end deftypefn
 
@@ -438,27 +476,36 @@ simplices of the Delaunay tessellation.
 @c voronoi scripts/geometry/voronoi.m
 @anchor{doc-voronoi}
 @deftypefn  {Function File} {} voronoi (@var{x}, @var{y})
-@deftypefnx {Function File} {} voronoi (@var{x}, @var{y}, "plotstyle")
-@deftypefnx {Function File} {} voronoi (@var{x}, @var{y}, "plotstyle", @var{options})
+@deftypefnx {Function File} {} voronoi (@var{x}, @var{y}, @var{options})
+@deftypefnx {Function File} {} voronoi (@dots{}, "linespec")
+@deftypefnx {Function File} {} voronoi (@var{hax}, @dots{})
+@deftypefnx {Function File} {@var{h} =} voronoi (@dots{})
 @deftypefnx {Function File} {[@var{vx}, @var{vy}] =} voronoi (@dots{})
-Plot Voronoi diagram of points @code{(@var{x}, @var{y})}.
+Plot the Voronoi diagram of points @code{(@var{x}, @var{y})}.
 The Voronoi facets with points at infinity are not drawn.
-[@var{vx}, @var{vy}] = voronoi(@dots{}) returns the vertices instead of
-plotting the
-diagram. plot (@var{vx}, @var{vy}) shows the Voronoi diagram.
 
-A fourth optional argument, which must be a string, contains extra options
-passed to the underlying qhull command.  See the documentation for the
-Qhull library for details.
+If "linespec" is given it is used to set the color and line style of the
+plot.  If an axis graphics handle @var{hax} is supplied then the Voronoi
+diagram is drawn on the specified axis rather than in a new figure.
+
+The @var{options} argument, which must be a string or cell array of strings,
+contains options passed to the underlying qhull command.
+See the documentation for the Qhull library for details
+@url{http://www.qhull.org/html/qh-quick.htm#options}.
+
+If a single output argument is requested then the Voronoi diagram will be
+plotted and a graphics handle @var{h} to the plot is returned.
+[@var{vx}, @var{vy}] = voronoi(@dots{}) returns the Voronoi vertices
+instead of plotting the diagram.
 
 @example
 @group
-  x = rand (10, 1);
-  y = rand (size (x));
-  h = convhull (x, y);
-  [vx, vy] = voronoi (x, y);
-  plot (vx, vy, "-b", x, y, "o", x(h), y(h), "-g")
-  legend ("", "points", "hull");
+x = rand (10, 1);
+y = rand (size (x));
+h = convhull (x, y);
+[vx, vy] = voronoi (x, y);
+plot (vx, vy, "-b", x, y, "o", x(h), y(h), "-g");
+legend ("", "points", "hull");
 @end group
 @end example
 
@@ -471,14 +518,15 @@ Qhull library for details.
 @deftypefn  {Function File} {[@var{C}, @var{F}] =} voronoin (@var{pts})
 @deftypefnx {Function File} {[@var{C}, @var{F}] =} voronoin (@var{pts}, @var{options})
 Compute N-dimensional Voronoi facets.  The input matrix @var{pts}
-of size [n, dim] contains n points of dimension dim.
+of size [n, dim] contains n points in a space of dimension dim.
 @var{C} contains the points of the Voronoi facets.  The list @var{F}
-contains for each facet the indices of the Voronoi points.
+contains, for each facet, the indices of the Voronoi points.
 
-A second optional argument, which must be a string, contains extra options
-passed to the underlying qhull command.  See the documentation for the
-Qhull library for details.
-@seealso{@ref{doc-voronoin,,voronoin}, @ref{doc-delaunay,,delaunay}, @ref{doc-convhull,,convhull}}
+An optional second argument, which must be a string or cell array of strings,
+contains options passed to the underlying qhull command.
+See the documentation for the Qhull library for details
+@url{http://www.qhull.org/html/qh-quick.htm#options}.
+@seealso{@ref{doc-voronoi,,voronoi}, @ref{doc-convhulln,,convhulln}, @ref{doc-delaunayn,,delaunayn}}
 @end deftypefn
 
 
@@ -519,7 +567,7 @@ with the @code{polyarea} and @code{inpolygon} functions respectively.
 @deftypefn  {Function File} {} polyarea (@var{x}, @var{y})
 @deftypefnx {Function File} {} polyarea (@var{x}, @var{y}, @var{dim})
 
-Determines area of a polygon by triangle method.  The variables
+Determine area of a polygon by triangle method.  The variables
 @var{x} and @var{y} define the vertex pairs, and must therefore have
 the same shape.  They can be either vectors or arrays.  If they are
 arrays then the columns of @var{x} and @var{y} are treated separately
@@ -616,34 +664,57 @@ N-dimensional sets of points.
 @c convhull scripts/geometry/convhull.m
 @anchor{doc-convhull}
 @deftypefn  {Function File} {@var{H} =} convhull (@var{x}, @var{y})
-@deftypefnx {Function File} {@var{H} =} convhull (@var{x}, @var{y}, @var{opt})
-Return the index vector to the points of the enclosing convex hull.  The
-data points are defined by the x and y vectors.
+@deftypefnx {Function File} {@var{H} =} convhull (@var{x}, @var{y}, @var{options})
+Compute the convex hull of the set of points defined by the
+vectors @var{x} and @var{y}.  The hull @var{H} is an index vector into
+the set of points and specifies which points form the enclosing hull.
 
-A third optional argument, which must be a string, contains extra options
-passed to the underlying qhull command.  See the documentation for the
-Qhull library for details.
+An optional third argument, which must be a string or cell array of strings,
+contains options passed to the underlying qhull command.
+See the documentation for the Qhull library for details
+@url{http://www.qhull.org/html/qh-quick.htm#options}.
+The default option is @code{@{"Qt"@}}.
 
-@seealso{@ref{doc-delaunay,,delaunay}, @ref{doc-convhulln,,convhulln}}
+If @var{options} is not present or @code{[]} then the default arguments are
+used.  Otherwise, @var{options} replaces the default argument list. 
+To append user options to the defaults it is necessary to repeat the 
+default arguments in @var{options}.  Use a null string to pass no arguments.
+
+@seealso{@ref{doc-convhulln,,convhulln}, @ref{doc-delaunay,,delaunay}, @ref{doc-voronoi,,voronoi}}
 @end deftypefn
 
 
 @c convhulln src/DLD-FUNCTIONS/convhulln.cc
 @anchor{doc-convhulln}
-@deftypefn  {Loadable Function} {@var{h} =} convhulln (@var{p})
-@deftypefnx {Loadable Function} {@var{h} =} convhulln (@var{p}, @var{opt})
+@deftypefn  {Loadable Function} {@var{h} =} convhulln (@var{pts})
+@deftypefnx {Loadable Function} {@var{h} =} convhulln (@var{pts}, @var{options})
 @deftypefnx {Loadable Function} {[@var{h}, @var{v}] =} convhulln (@dots{})
-Return an index vector to the points of the enclosing convex hull.
-The input matrix of size [n, dim] contains n points of dimension dim.
+Compute the convex hull of the set of points @var{pts} which is a matrix
+of size [n, dim] containing n points in a space of dimension dim.
+The hull @var{h} is an index vector into the set of points and specifies
+which points form the enclosing hull.
 
-If a second optional argument is given, it must be a string or cell array
-of strings containing options for the underlying qhull command.  (See
-the Qhull documentation for the available options.)  The default options
-are "s Qci Tcv".
-If the second output @var{v} is requested the volume of the convex hull is
-calculated.
+An optional second argument, which must be a string or cell array of strings,
+contains options passed to the underlying qhull command.
+See the documentation for the Qhull library for details
+@url{http://www.qhull.org/html/qh-quick.htm#options}.
+The default options depend on the dimension of the input:
 
-@seealso{@ref{doc-convhull,,convhull}, @ref{doc-delaunayn,,delaunayn}}
+@itemize
+@item 2D, 3D, 4D: @var{options} = @code{@{"Qt"@}}
+
+@item 5D and higher: @var{options} = @code{@{"Qt", "Qx"@}}
+@end itemize
+
+If @var{options} is not present or @code{[]} then the default arguments are
+used.  Otherwise, @var{options} replaces the default argument list.
+To append user options to the defaults it is necessary to repeat the
+default arguments in @var{options}.  Use a null string to pass no arguments.
+
+If the second output @var{v} is requested the volume of the enclosing
+convex hull is calculated.
+
+@seealso{@ref{doc-convhull,,convhull}, @ref{doc-delaunayn,,delaunayn}, @ref{doc-voronoin,,voronoin}}
 @end deftypefn
 
 
@@ -703,15 +774,15 @@ The interpolation method can be @code{"nearest"}, @code{"cubic"} or
 
 @c griddata3 scripts/geometry/griddata3.m
 @anchor{doc-griddata3}
-@deftypefn {Function File} {@var{vi} =} griddata3 (@var{x}, @var{y}, @var{z}, @var{v} @var{xi}, @var{yi}, @var{zi}, @var{method}, @var{options})
+@deftypefn {Function File} {@var{vi} =} griddata3 (@var{x}, @var{y}, @var{z}, @var{v}, @var{xi}, @var{yi}, @var{zi}, @var{method}, @var{options})
 
 Generate a regular mesh from irregular data using interpolation.
-The function is defined by @code{@var{y} = f (@var{x},@var{y},@var{z})}.
-The interpolation points are all @var{xi}.
+The function is defined by @code{@var{v} = f (@var{x}, @var{y}, @var{z})}.
+The interpolation points are specified by @var{xi}, @var{yi}, @var{zi}.
 
 The interpolation method can be @code{"nearest"} or @code{"linear"}.
 If method is omitted it defaults to @code{"linear"}.
-@seealso{@ref{doc-griddata,,griddata}, @ref{doc-delaunayn,,delaunayn}}
+@seealso{@ref{doc-griddata,,griddata}, @ref{doc-griddatan,,griddatan}, @ref{doc-delaunayn,,delaunayn}}
 @end deftypefn
 
 

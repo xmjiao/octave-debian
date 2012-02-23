@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.
 
-@c Copyright (C) 1996-2011 John W. Eaton
+@c Copyright (C) 1996-2012 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -125,9 +125,9 @@ $$
 
 @example
 @group
-            x(ceil(N/2)),             N odd
-median(x) =
-            (x(N/2) + x((N/2)+1))/2,  N even
+              x(ceil(N/2))             N odd
+median (x) =
+             (x(N/2) + x((N/2)+1))/2   N even
 @end group
 @end example
 
@@ -283,7 +283,7 @@ measures to be developed.
 Compute the variance of the elements of the vector @var{x}.
 @tex
 $$
-{\rm std} (x) = \sigma^2 = {\sum_{i=1}^N (x_i - \bar{x})^2 \over N - 1}
+{\rm var} (x) = \sigma^2 = {\sum_{i=1}^N (x_i - \bar{x})^2 \over N - 1}
 $$
 where $\bar{x}$ is the mean value of $x$.
 @end tex
@@ -291,7 +291,7 @@ where $\bar{x}$ is the mean value of $x$.
 
 @example
 @group
-std (x) = 1/(N-1) SUM_i (x(i) - mean(x))^2
+var (x) = 1/(N-1) SUM_i (x(i) - mean(x))^2
 @end group
 @end example
 
@@ -330,7 +330,7 @@ where $\bar{x}$ is the mean value of $x$.
 @ifnottex
 
 @example
-skewness (x) = N^(-1) std(x)^(-3) sum ((x - mean(x)).^3)
+skewness (x) = 1/N std(x)^(-3) sum ((x - mean(x)).^3)
 @end example
 
 @end ifnottex
@@ -357,7 +357,7 @@ where $\bar{x}$ is the mean value of $x$.
 @ifnottex
 
 @example
-kurtosis (x) = N^(-1) std(x)^(-4) sum ((x - mean(x)).^4) - 3
+kurtosis (x) = 1/N std(x)^(-4) sum ((x - mean(x)).^4) - 3
 @end example
 
 @end ifnottex
@@ -401,6 +401,7 @@ If @var{x} is a matrix, return the row vector containing the
 
 The optional string @var{type} specifies the type of moment to be computed.
 Valid options are:
+
 @table @asis
 @item "c"
   Central Moment.  The moment about the mean defined as
@@ -430,7 +431,7 @@ $$
 
 @example
 @group
-1/N SUM_i ( abs(x(i)) )^p
+1/N SUM_i ( abs (x(i)) )^p
 @end group
 @end example
 
@@ -447,7 +448,7 @@ $$
 
 @example
 @group
-1/N SUM_i ( abs(x(i) - mean(x)) )^p
+1/N SUM_i ( abs (x(i) - mean(x)) )^p
 @end group
 @end example
 
@@ -535,14 +536,15 @@ statistical packages, American Statistician, 50, 361--365.
 @end itemize
 
 Examples:
+@c Set example in small font to prevent overfull line
 
-@example
+@smallexample
 @group
-x = randi (1000, [10, 1]);  # Create random empirical data in range 1-1000
-q = quantile (x, [0, 1]);   # Return minimum, maximum of empirical distribution
-q = quantile (x, [0.25 0.5 0.75]); # Return quartiles of empirical distribution
+x = randi (1000, [10, 1]);  # Create empirical data in range 1-1000
+q = quantile (x, [0, 1]);   # Return minimum, maximum of distribution
+q = quantile (x, [0.25 0.5 0.75]); # Return quartiles of distribution
 @end group
-@end example
+@end smallexample
 @seealso{@ref{doc-prctile,,prctile}}
 @end deftypefn
 
@@ -602,14 +604,14 @@ different measures from those of the basic descriptive statistics.
 If @var{x} is a vector, subtract its mean.
 If @var{x} is a matrix, do the above for each column.
 If the optional argument @var{dim} is given, operate along this dimension.
-@seealso{@ref{doc-studentize,,studentize}}
+@seealso{@ref{doc-zscore,,zscore}}
 @end deftypefn
 
 
-@c studentize scripts/statistics/base/studentize.m
-@anchor{doc-studentize}
-@deftypefn  {Function File} {} studentize (@var{x})
-@deftypefnx {Function File} {} studentize (@var{x}, @var{dim})
+@c zscore scripts/statistics/base/zscore.m
+@anchor{doc-zscore}
+@deftypefn  {Function File} {} zscore (@var{x})
+@deftypefnx {Function File} {} zscore (@var{x}, @var{dim})
 If @var{x} is a vector, subtract its mean and divide by its standard
 deviation.
 
@@ -647,34 +649,18 @@ of @var{x} was counted.
 @end deftypefn
 
 
-@c cut scripts/statistics/base/cut.m
-@anchor{doc-cut}
-@deftypefn {Function File} {} cut (@var{x}, @var{breaks})
-Create categorical data from numerical or continuous data by
-cutting into intervals.
-
-If @var{breaks} is a scalar, the data is cut into that many
-equal-width intervals.  If @var{breaks} is a vector of break points,
-the category has @code{length (@var{breaks}) - 1} groups.
-
-The returned value is a vector of the same size as @var{x} telling
-which group each point in @var{x} belongs to.  Groups are labelled
-from 1 to the number of groups; points outside the range of
-@var{breaks} are labelled by @code{NaN}.
-@seealso{@ref{doc-histc,,histc}}
-@end deftypefn
-
-
 @c FIXME: really want to put a reference to unique here
 @c @DOCSTRING(values)
 
 @c nchoosek scripts/specfun/nchoosek.m
 @anchor{doc-nchoosek}
-@deftypefn {Function File} {@var{c} =} nchoosek (@var{n}, @var{k})
+@deftypefn  {Function File} {@var{c} =} nchoosek (@var{n}, @var{k})
+@deftypefnx {Function File} {@var{c} =} nchoosek (@var{set}, @var{k})
 
-Compute the binomial coefficient or all combinations of @var{n}.
-If @var{n} is a scalar then, calculate the binomial coefficient
-of @var{n} and @var{k}, defined as
+Compute the binomial coefficient or all combinations of a set of items.
+
+If @var{n} is a scalar then calculate the binomial coefficient
+of @var{n} and @var{k} which is defined as
 @tex
 $$
  {n \choose k} = {n (n-1) (n-2) \cdots (n-k+1) \over k!}
@@ -694,17 +680,43 @@ $$
 @end example
 
 @end ifnottex
+@noindent
+This is the number of combinations of @var{n} items taken in groups of
+size @var{k}.
 
-If @var{n} is a vector generate all combinations of the elements
-of @var{n}, taken @var{k} at a time, one row per combination.  The
-resulting @var{c} has size @code{[nchoosek (length (@var{n}),
-@var{k}), @var{k}]}.
+If the first argument is a vector, @var{set}, then generate all
+combinations of the elements of @var{set}, taken @var{k} at a time, with
+one row per combination.  The result @var{c} has @var{k} columns and
+@w{@code{nchoosek (length (@var{set}), @var{k})}} rows.
 
-@code{nchoosek} works only for non-negative integer arguments; use
-@code{bincoeff} for non-integer scalar arguments and for using vector
-arguments to compute many coefficients at once.
+For example:
 
-@seealso{@ref{doc-bincoeff,,bincoeff}}
+How many ways can three items be grouped into pairs?
+
+@example
+@group
+nchoosek (3, 2)
+   @result{} 3
+@end group
+@end example
+
+What are the possible pairs?
+
+@example
+@group
+nchoosek (1:3, 2)
+   @result{}  1   2
+       1   3
+       2   3
+@end group
+@end example
+
+@code{nchoosek} works only for non-negative, integer arguments.  Use
+@code{bincoeff} for non-integer and negative scalar arguments, or for
+computing many binomial coefficients at once with vector inputs
+for @var{n} or @var{k}.
+
+@seealso{@ref{doc-bincoeff,,bincoeff}, @ref{doc-perms,,perms}}
 @end deftypefn
 
 
@@ -789,7 +801,7 @@ $$
 @ifnottex
 
 @example
-logit(@var{p}) = log (@var{p} / (1-@var{p}))
+logit (@var{p}) = log (@var{p} / (1-@var{p}))
 @end example
 
 @end ifnottex
@@ -809,7 +821,7 @@ $$
 @ifnottex
 
 @example
-cloglog(x) = - log (- log (@var{x}))
+cloglog (x) = - log (- log (@var{x}))
 @end example
 
 @end ifnottex
@@ -960,44 +972,33 @@ covariance [default]
 @item 1:
   normalize with @math{N}, this provides the second moment around the mean
 @end table
-@seealso{@ref{doc-corrcoef,,corrcoef}, @ref{doc-cor,,cor}}
+@seealso{@ref{doc-corr,,corr}}
 @end deftypefn
 
 
-@c cor scripts/statistics/base/cor.m
-@anchor{doc-cor}
-@deftypefn  {Function File} {} cor (@var{x})
-@deftypefnx {Function File} {} cor (@var{x}, @var{y})
-Compute matrix of correlation coefficients.
-
-This is an alias for @code{corrcoef}.
-@seealso{@ref{doc-corrcoef,,corrcoef}}
-@end deftypefn
-
-
-@c corrcoef scripts/statistics/base/corrcoef.m
-@anchor{doc-corrcoef}
-@deftypefn  {Function File} {} corrcoef (@var{x})
-@deftypefnx {Function File} {} corrcoef (@var{x}, @var{y})
+@c corr scripts/statistics/base/corr.m
+@anchor{doc-corr}
+@deftypefn  {Function File} {} corr (@var{x})
+@deftypefnx {Function File} {} corr (@var{x}, @var{y})
 Compute matrix of correlation coefficients.
 
 If each row of @var{x} and @var{y} is an observation and each column is
 a variable, then the @w{(@var{i}, @var{j})-th} entry of
-@code{corrcoef (@var{x}, @var{y})} is the correlation between the
+@code{corr (@var{x}, @var{y})} is the correlation between the
 @var{i}-th variable in @var{x} and the @var{j}-th variable in @var{y}.
 @tex
 $$
-{\rm corrcoef}(x,y) = {{\rm cov}(x,y) \over {\rm std}(x) {\rm std}(y)}
+{\rm corr}(x,y) = {{\rm cov}(x,y) \over {\rm std}(x) {\rm std}(y)}
 $$
 @end tex
 @ifnottex
 
 @example
-corrcoef(x,y) = cov(x,y)/(std(x)*std(y))
+corr (x,y) = cov (x,y) / (std (x) * std (y))
 @end example
 
 @end ifnottex
-If called with one argument, compute @code{corrcoef (@var{x}, @var{x})},
+If called with one argument, compute @code{corr (@var{x}, @var{x})},
 the correlation between the columns of @var{x}.
 @seealso{@ref{doc-cov,,cov}}
 @end deftypefn
@@ -1262,9 +1263,9 @@ alphabetical order).
   @tab @code{poisscdf}
   @tab @code{poissinv}
 @item Standard Normal Distribution
-  @tab @code{stdtormal_pdf}
-  @tab @code{stdtormal_cdf}
-  @tab @code{stdtormal_inv}
+  @tab @code{stdnormal_pdf}
+  @tab @code{stdnormal_cdf}
+  @tab @code{stdnormal_inv}
 @item t (Student) Distribution
   @tab @code{tpdf}
   @tab @code{tcdf}
@@ -1287,24 +1288,24 @@ alphabetical order).
 @c betapdf scripts/statistics/distributions/betapdf.m
 @anchor{doc-betapdf}
 @deftypefn {Function File} {} betapdf (@var{x}, @var{a}, @var{b})
-For each element of @var{x}, returns the PDF at @var{x} of the beta
-distribution with parameters @var{a} and @var{b}.
+For each element of @var{x}, compute the probability density function (PDF)
+at @var{x} of the Beta distribution with parameters @var{a} and @var{b}.
 @end deftypefn
 
 
 @c betacdf scripts/statistics/distributions/betacdf.m
 @anchor{doc-betacdf}
 @deftypefn {Function File} {} betacdf (@var{x}, @var{a}, @var{b})
-For each element of @var{x}, returns the CDF at @var{x} of the beta
-distribution with parameters @var{a} and @var{b}, i.e.,
-PROB (beta (@var{a}, @var{b}) @leq{} @var{x}).
+For each element of @var{x}, compute the cumulative distribution function
+(CDF) at @var{x} of the Beta distribution with parameters @var{a} and
+@var{b}.
 @end deftypefn
 
 
 @c betainv scripts/statistics/distributions/betainv.m
 @anchor{doc-betainv}
 @deftypefn {Function File} {} betainv (@var{x}, @var{a}, @var{b})
-For each component of @var{x}, compute the quantile (the inverse of
+For each element of @var{x}, compute the quantile (the inverse of
 the CDF) at @var{x} of the Beta distribution with parameters @var{a}
 and @var{b}.
 @end deftypefn
@@ -1315,29 +1316,35 @@ and @var{b}.
 @deftypefn {Function File} {} binopdf (@var{x}, @var{n}, @var{p})
 For each element of @var{x}, compute the probability density function
 (PDF) at @var{x} of the binomial distribution with parameters @var{n}
-and @var{p}.
+and @var{p}, where @var{n} is the number of trials and @var{p} is the
+probability of success.
 @end deftypefn
 
 
 @c binocdf scripts/statistics/distributions/binocdf.m
 @anchor{doc-binocdf}
 @deftypefn {Function File} {} binocdf (@var{x}, @var{n}, @var{p})
-For each element of @var{x}, compute the CDF at @var{x} of the
-binomial distribution with parameters @var{n} and @var{p}.
+For each element of @var{x}, compute the cumulative distribution function
+(CDF) at @var{x} of the binomial distribution with parameters @var{n} and
+@var{p}, where @var{n} is the number of trials and @var{p} is the
+probability of success.
 @end deftypefn
 
 
 @c binoinv scripts/statistics/distributions/binoinv.m
 @anchor{doc-binoinv}
 @deftypefn {Function File} {} binoinv (@var{x}, @var{n}, @var{p})
-For each element of @var{x}, compute the quantile at @var{x} of the
-binomial distribution with parameters @var{n} and @var{p}.
+For each element of @var{x}, compute the quantile (the inverse of
+the CDF) at @var{x} of the binomial distribution with parameters 
+@var{n} and @var{p}, where @var{n} is the number of trials and
+@var{p} is the probability of success.
 @end deftypefn
 
 
 @c cauchy_pdf scripts/statistics/distributions/cauchy_pdf.m
 @anchor{doc-cauchy_pdf}
-@deftypefn {Function File} {} cauchy_pdf (@var{x}, @var{location}, @var{scale})
+@deftypefn  {Function File} {} cauchy_pdf (@var{x})
+@deftypefnx {Function File} {} cauchy_pdf (@var{x}, @var{location}, @var{scale})
 For each element of @var{x}, compute the probability density function
 (PDF) at @var{x} of the Cauchy distribution with location parameter
 @var{location} and scale parameter @var{scale} > 0.  Default values are
@@ -1347,7 +1354,8 @@ For each element of @var{x}, compute the probability density function
 
 @c cauchy_cdf scripts/statistics/distributions/cauchy_cdf.m
 @anchor{doc-cauchy_cdf}
-@deftypefn {Function File} {} cauchy_cdf (@var{x}, @var{location}, @var{scale})
+@deftypefn  {Function File} {} cauchy_cdf (@var{x})
+@deftypefnx {Function File} {} cauchy_cdf (@var{x}, @var{location}, @var{scale})
 For each element of @var{x}, compute the cumulative distribution
 function (CDF) at @var{x} of the Cauchy distribution with location
 parameter @var{location} and scale parameter @var{scale}.  Default
@@ -1357,7 +1365,8 @@ values are @var{location} = 0, @var{scale} = 1.
 
 @c cauchy_inv scripts/statistics/distributions/cauchy_inv.m
 @anchor{doc-cauchy_inv}
-@deftypefn {Function File} {} cauchy_inv (@var{x}, @var{location}, @var{scale})
+@deftypefn  {Function File} {} cauchy_inv (@var{x})
+@deftypefnx {Function File} {} cauchy_inv (@var{x}, @var{location}, @var{scale})
 For each element of @var{x}, compute the quantile (the inverse of the
 CDF) at @var{x} of the Cauchy distribution with location parameter
 @var{location} and scale parameter @var{scale}.  Default values are
@@ -1369,7 +1378,7 @@ CDF) at @var{x} of the Cauchy distribution with location parameter
 @anchor{doc-chi2pdf}
 @deftypefn {Function File} {} chi2pdf (@var{x}, @var{n})
 For each element of @var{x}, compute the probability density function
-(PDF) at @var{x} of the chisquare distribution with @var{n} degrees
+(PDF) at @var{x} of the chi-square distribution with @var{n} degrees
 of freedom.
 @end deftypefn
 
@@ -1378,7 +1387,7 @@ of freedom.
 @anchor{doc-chi2cdf}
 @deftypefn {Function File} {} chi2cdf (@var{x}, @var{n})
 For each element of @var{x}, compute the cumulative distribution
-function (CDF) at @var{x} of the chisquare distribution with @var{n}
+function (CDF) at @var{x} of the chi-square distribution with @var{n}
 degrees of freedom.
 @end deftypefn
 
@@ -1387,7 +1396,7 @@ degrees of freedom.
 @anchor{doc-chi2inv}
 @deftypefn {Function File} {} chi2inv (@var{x}, @var{n})
 For each element of @var{x}, compute the quantile (the inverse of the
-CDF) at @var{x} of the chisquare distribution with @var{n} degrees of
+CDF) at @var{x} of the chi-square distribution with @var{n} degrees of
 freedom.
 @end deftypefn
 
@@ -1413,7 +1422,7 @@ assumes the values in @var{v} with probabilities @var{p}.
 @c discrete_inv scripts/statistics/distributions/discrete_inv.m
 @anchor{doc-discrete_inv}
 @deftypefn {Function File} {} discrete_inv (@var{x}, @var{v}, @var{p})
-For each component of @var{x}, compute the quantile (the inverse of
+For each element of @var{x}, compute the quantile (the inverse of
 the CDF) at @var{x} of the univariate distribution which assumes the
 values in @var{v} with probabilities @var{p}.
 @end deftypefn
@@ -1450,7 +1459,7 @@ univariate sample @var{data}.
 @anchor{doc-exppdf}
 @deftypefn {Function File} {} exppdf (@var{x}, @var{lambda})
 For each element of @var{x}, compute the probability density function
-(PDF) of the exponential distribution with mean @var{lambda}.
+(PDF) at @var{x} of the exponential distribution with mean @var{lambda}.
 @end deftypefn
 
 
@@ -1461,7 +1470,7 @@ For each element of @var{x}, compute the cumulative distribution
 function (CDF) at @var{x} of the exponential distribution with
 mean @var{lambda}.
 
-The arguments can be of common size or scalar.
+The arguments can be of common size or scalars.
 @end deftypefn
 
 
@@ -1469,8 +1478,7 @@ The arguments can be of common size or scalar.
 @anchor{doc-expinv}
 @deftypefn {Function File} {} expinv (@var{x}, @var{lambda})
 For each element of @var{x}, compute the quantile (the inverse of the
-CDF) at @var{x} of the exponential distribution with mean
-@var{lambda}.
+CDF) at @var{x} of the exponential distribution with mean @var{lambda}.
 @end deftypefn
 
 
@@ -1486,18 +1494,18 @@ degrees of freedom.
 @c fcdf scripts/statistics/distributions/fcdf.m
 @anchor{doc-fcdf}
 @deftypefn {Function File} {} fcdf (@var{x}, @var{m}, @var{n})
-For each element of @var{x}, compute the CDF at @var{x} of the F
-distribution with @var{m} and @var{n} degrees of freedom, i.e.,
-PROB (F (@var{m}, @var{n}) @leq{} @var{x}).
+For each element of @var{x}, compute the cumulative distribution function
+(CDF) at @var{x} of the F distribution with @var{m} and @var{n} degrees of
+freedom.
 @end deftypefn
 
 
 @c finv scripts/statistics/distributions/finv.m
 @anchor{doc-finv}
 @deftypefn {Function File} {} finv (@var{x}, @var{m}, @var{n})
-For each component of @var{x}, compute the quantile (the inverse of
-the CDF) at @var{x} of the F distribution with parameters @var{m} and
-@var{n}.
+For each element of @var{x}, compute the quantile (the inverse of
+the CDF) at @var{x} of the F distribution with @var{m} and @var{n}
+degrees of freedom.
 @end deftypefn
 
 
@@ -1505,9 +1513,8 @@ the CDF) at @var{x} of the F distribution with parameters @var{m} and
 @anchor{doc-gampdf}
 @deftypefn {Function File} {} gampdf (@var{x}, @var{a}, @var{b})
 For each element of @var{x}, return the probability density function
-(PDF) at @var{x} of the Gamma distribution with parameters @var{a}
-and @var{b}.
-@seealso{@ref{doc-gamma,,gamma}, @ref{doc-gammaln,,gammaln}, @ref{doc-gammainc,,gammainc}, @ref{doc-gamcdf,,gamcdf}, @ref{doc-gaminv,,gaminv}, @ref{doc-gamrnd,,gamrnd}}
+(PDF) at @var{x} of the Gamma distribution with shape parameter
+@var{a} and scale @var{b}.
 @end deftypefn
 
 
@@ -1515,19 +1522,17 @@ and @var{b}.
 @anchor{doc-gamcdf}
 @deftypefn {Function File} {} gamcdf (@var{x}, @var{a}, @var{b})
 For each element of @var{x}, compute the cumulative distribution
-function (CDF) at @var{x} of the Gamma distribution with parameters
-@var{a} and @var{b}.
-@seealso{@ref{doc-gamma,,gamma}, @ref{doc-gammaln,,gammaln}, @ref{doc-gammainc,,gammainc}, @ref{doc-gampdf,,gampdf}, @ref{doc-gaminv,,gaminv}, @ref{doc-gamrnd,,gamrnd}}
+function (CDF) at @var{x} of the Gamma distribution with shape
+parameter @var{a} and scale @var{b}.
 @end deftypefn
 
 
 @c gaminv scripts/statistics/distributions/gaminv.m
 @anchor{doc-gaminv}
 @deftypefn {Function File} {} gaminv (@var{x}, @var{a}, @var{b})
-For each component of @var{x}, compute the quantile (the inverse of
-the CDF) at @var{x} of the Gamma distribution with parameters @var{a}
-and @var{b}.
-@seealso{@ref{doc-gamma,,gamma}, @ref{doc-gammaln,,gammaln}, @ref{doc-gammainc,,gammainc}, @ref{doc-gampdf,,gampdf}, @ref{doc-gamcdf,,gamcdf}, @ref{doc-gamrnd,,gamrnd}}
+For each element of @var{x}, compute the quantile (the inverse of
+the CDF) at @var{x} of the Gamma distribution with shape parameter
+@var{a} and scale @var{b}.
 @end deftypefn
 
 
@@ -1542,16 +1547,16 @@ For each element of @var{x}, compute the probability density function
 @c geocdf scripts/statistics/distributions/geocdf.m
 @anchor{doc-geocdf}
 @deftypefn {Function File} {} geocdf (@var{x}, @var{p})
-For each element of @var{x}, compute the CDF at @var{x} of the
-geometric distribution with parameter @var{p}.
+For each element of @var{x}, compute the cumulative distribution function
+(CDF) at @var{x} of the geometric distribution with parameter @var{p}.
 @end deftypefn
 
 
 @c geoinv scripts/statistics/distributions/geoinv.m
 @anchor{doc-geoinv}
 @deftypefn {Function File} {} geoinv (@var{x}, @var{p})
-For each element of @var{x}, compute the quantile at @var{x} of the
-geometric distribution with parameter @var{p}.
+For each element of @var{x}, compute the quantile (the inverse of
+the CDF) at @var{x} of the geometric distribution with parameter @var{p}.
 @end deftypefn
 
 
@@ -1564,7 +1569,8 @@ hypergeometric distribution with parameters @var{t}, @var{m}, and
 when randomly drawing a sample of size @var{n} without replacement
 from a population of total size @var{t} containing @var{m} marked items.
 
-The arguments must be of common size or scalar.
+The parameters @var{t}, @var{m}, and @var{n} must be positive integers
+with @var{m} and @var{n} not greater than @var{t}.
 @end deftypefn
 
 
@@ -1578,7 +1584,7 @@ marked items when randomly drawing a sample of size @var{n} without
 replacement from a population of total size @var{t} containing
 @var{m} marked items.
 
-The parameters @var{t}, @var{m}, and @var{n} must positive integers
+The parameters @var{t}, @var{m}, and @var{n} must be positive integers
 with @var{m} and @var{n} not greater than @var{t}.
 @end deftypefn
 
@@ -1586,11 +1592,14 @@ with @var{m} and @var{n} not greater than @var{t}.
 @c hygeinv scripts/statistics/distributions/hygeinv.m
 @anchor{doc-hygeinv}
 @deftypefn {Function File} {} hygeinv (@var{x}, @var{t}, @var{m}, @var{n})
-For each element of @var{x}, compute the quantile at @var{x} of the
-hypergeometric distribution with parameters @var{t}, @var{m}, and
-@var{n}.
+For each element of @var{x}, compute the quantile (the inverse of
+the CDF) at @var{x} of the hypergeometric distribution with parameters
+@var{t}, @var{m}, and @var{n}.  This is the probability of obtaining @var{x}
+marked items when randomly drawing a sample of size @var{n} without
+replacement from a population of total size @var{t} containing @var{m}
+marked items.
 
-The parameters @var{t}, @var{m}, and @var{n} must positive integers
+The parameters @var{t}, @var{m}, and @var{n} must be positive integers
 with @var{m} and @var{n} not greater than @var{t}.
 @end deftypefn
 
@@ -1598,16 +1607,17 @@ with @var{m} and @var{n} not greater than @var{t}.
 @c kolmogorov_smirnov_cdf scripts/statistics/distributions/kolmogorov_smirnov_cdf.m
 @anchor{doc-kolmogorov_smirnov_cdf}
 @deftypefn {Function File} {} kolmogorov_smirnov_cdf (@var{x}, @var{tol})
-Return the CDF at @var{x} of the Kolmogorov-Smirnov distribution,
+Return the cumulative distribution function (CDF) at @var{x} of the 
+Kolmogorov-Smirnov distribution,
 @tex
-$$ Q(x) = \sum_{k=-\infty}^\infty (-1)^k \exp(-2 k^2 x^2) $$
+$$ Q(x) = \sum_{k=-\infty}^\infty (-1)^k \exp (-2 k^2 x^2) $$
 @end tex
 @ifnottex
 
 @example
 @group
          Inf
-Q(x) =   SUM    (-1)^k exp(-2 k^2 x^2)
+Q(x) =   SUM    (-1)^k exp (-2 k^2 x^2)
        k = -Inf
 @end group
 @end example
@@ -1648,7 +1658,7 @@ CDF) at @var{x} of the Laplace distribution.
 @c logistic_pdf scripts/statistics/distributions/logistic_pdf.m
 @anchor{doc-logistic_pdf}
 @deftypefn {Function File} {} logistic_pdf (@var{x})
-For each component of @var{x}, compute the PDF at @var{x} of the
+For each element of @var{x}, compute the PDF at @var{x} of the
 logistic distribution.
 @end deftypefn
 
@@ -1656,22 +1666,23 @@ logistic distribution.
 @c logistic_cdf scripts/statistics/distributions/logistic_cdf.m
 @anchor{doc-logistic_cdf}
 @deftypefn {Function File} {} logistic_cdf (@var{x})
-For each component of @var{x}, compute the CDF at @var{x} of the
-logistic distribution.
+For each element of @var{x}, compute the cumulative distribution function
+(CDF) at @var{x} of the logistic distribution.
 @end deftypefn
 
 
 @c logistic_inv scripts/statistics/distributions/logistic_inv.m
 @anchor{doc-logistic_inv}
 @deftypefn {Function File} {} logistic_inv (@var{x})
-For each component of @var{x}, compute the quantile (the inverse of
+For each element of @var{x}, compute the quantile (the inverse of
 the CDF) at @var{x} of the logistic distribution.
 @end deftypefn
 
 
 @c lognpdf scripts/statistics/distributions/lognpdf.m
 @anchor{doc-lognpdf}
-@deftypefn {Function File} {} lognpdf (@var{x}, @var{mu}, @var{sigma})
+@deftypefn  {Function File} {} lognpdf (@var{x})
+@deftypefnx {Function File} {} lognpdf (@var{x}, @var{mu}, @var{sigma})
 For each element of @var{x}, compute the probability density function
 (PDF) at @var{x} of the lognormal distribution with parameters
 @var{mu} and @var{sigma}.  If a random variable follows this distribution,
@@ -1684,7 +1695,8 @@ Default values are @var{mu} = 1, @var{sigma} = 1.
 
 @c logncdf scripts/statistics/distributions/logncdf.m
 @anchor{doc-logncdf}
-@deftypefn {Function File} {} logncdf (@var{x}, @var{mu}, @var{sigma})
+@deftypefn  {Function File} {} logncdf (@var{x})
+@deftypefnx {Function File} {} logncdf (@var{x}, @var{mu}, @var{sigma})
 For each element of @var{x}, compute the cumulative distribution
 function (CDF) at @var{x} of the lognormal distribution with
 parameters @var{mu} and @var{sigma}.  If a random variable follows this
@@ -1697,7 +1709,8 @@ Default values are @var{mu} = 1, @var{sigma} = 1.
 
 @c logninv scripts/statistics/distributions/logninv.m
 @anchor{doc-logninv}
-@deftypefn {Function File} {} logninv (@var{x}, @var{mu}, @var{sigma})
+@deftypefn  {Function File} {} logninv (@var{x})
+@deftypefnx {Function File} {} logninv (@var{x}, @var{mu}, @var{sigma})
 For each element of @var{x}, compute the quantile (the inverse of the
 CDF) at @var{x} of the lognormal distribution with parameters @var{mu}
 and @var{sigma}.  If a random variable follows this distribution, its
@@ -1712,8 +1725,11 @@ Default values are @var{mu} = 1, @var{sigma} = 1.
 @anchor{doc-nbinpdf}
 @deftypefn {Function File} {} nbinpdf (@var{x}, @var{n}, @var{p})
 For each element of @var{x}, compute the probability density function
-(PDF) at @var{x} of the Pascal (negative binomial) distribution with
+(PDF) at @var{x} of the negative binomial distribution with
 parameters @var{n} and @var{p}.
+
+When @var{n} is integer this is the Pascal distribution.  When
+@var{n} is extended to real numbers this is the Polya distribution.
 
 The number of failures in a Bernoulli experiment with success
 probability @var{p} before the @var{n}-th success follows this
@@ -1724,8 +1740,12 @@ distribution.
 @c nbincdf scripts/statistics/distributions/nbincdf.m
 @anchor{doc-nbincdf}
 @deftypefn {Function File} {} nbincdf (@var{x}, @var{n}, @var{p})
-For each element of @var{x}, compute the CDF at x of the Pascal
-(negative binomial) distribution with parameters @var{n} and @var{p}.
+For each element of @var{x}, compute the cumulative distribution function
+(CDF) at @var{x} of the negative binomial distribution with
+parameters @var{n} and @var{p}.
+
+When @var{n} is integer this is the Pascal distribution.  When
+@var{n} is extended to real numbers this is the Polya distribution.
 
 The number of failures in a Bernoulli experiment with success
 probability @var{p} before the @var{n}-th success follows this
@@ -1736,9 +1756,12 @@ distribution.
 @c nbininv scripts/statistics/distributions/nbininv.m
 @anchor{doc-nbininv}
 @deftypefn {Function File} {} nbininv (@var{x}, @var{n}, @var{p})
-For each element of @var{x}, compute the quantile at @var{x} of the
-Pascal (negative binomial) distribution with parameters @var{n} and
-@var{p}.
+For each element of @var{x}, compute the quantile (the inverse of
+the CDF) at @var{x} of the negative binomial distribution
+with parameters @var{n} and @var{p}.
+
+When @var{n} is integer this is the Pascal distribution.  When
+@var{n} is extended to real numbers this is the Polya distribution.
 
 The number of failures in a Bernoulli experiment with success
 probability @var{p} before the @var{n}-th success follows this
@@ -1748,34 +1771,37 @@ distribution.
 
 @c normpdf scripts/statistics/distributions/normpdf.m
 @anchor{doc-normpdf}
-@deftypefn {Function File} {} normpdf (@var{x}, @var{m}, @var{s})
+@deftypefn  {Function File} {} normpdf (@var{x})
+@deftypefnx {Function File} {} normpdf (@var{x}, @var{mu}, @var{sigma})
 For each element of @var{x}, compute the probability density function
-(PDF) at @var{x} of the normal distribution with mean @var{m} and
-standard deviation @var{s}.
+(PDF) at @var{x} of the normal distribution with mean @var{mu} and
+standard deviation @var{sigma}.
 
-Default values are @var{m} = 0, @var{s} = 1.
+Default values are @var{mu} = 0, @var{sigma} = 1.
 @end deftypefn
 
 
 @c normcdf scripts/statistics/distributions/normcdf.m
 @anchor{doc-normcdf}
-@deftypefn {Function File} {} normcdf (@var{x}, @var{m}, @var{s})
+@deftypefn  {Function File} {} normcdf (@var{x})
+@deftypefnx {Function File} {} normcdf (@var{x}, @var{mu}, @var{sigma})
 For each element of @var{x}, compute the cumulative distribution
 function (CDF) at @var{x} of the normal distribution with mean
-@var{m} and standard deviation @var{s}.
+@var{mu} and standard deviation @var{sigma}.
 
-Default values are @var{m} = 0, @var{s} = 1.
+Default values are @var{mu} = 0, @var{sigma} = 1.
 @end deftypefn
 
 
 @c norminv scripts/statistics/distributions/norminv.m
 @anchor{doc-norminv}
-@deftypefn {Function File} {} norminv (@var{x}, @var{m}, @var{s})
+@deftypefn  {Function File} {} norminv (@var{x})
+@deftypefnx {Function File} {} norminv (@var{x}, @var{mu}, @var{sigma})
 For each element of @var{x}, compute the quantile (the inverse of the
-CDF) at @var{x} of the normal distribution with mean @var{m} and
-standard deviation @var{s}.
+CDF) at @var{x} of the normal distribution with mean @var{mu} and
+standard deviation @var{sigma}.
 
-Default values are @var{m} = 0, @var{s} = 1.
+Default values are @var{mu} = 0, @var{sigma} = 1.
 @end deftypefn
 
 
@@ -1799,7 +1825,7 @@ lambda.
 @c poissinv scripts/statistics/distributions/poissinv.m
 @anchor{doc-poissinv}
 @deftypefn {Function File} {} poissinv (@var{x}, @var{lambda})
-For each component of @var{x}, compute the quantile (the inverse of
+For each element of @var{x}, compute the quantile (the inverse of
 the CDF) at @var{x} of the Poisson distribution with parameter
 @var{lambda}.
 @end deftypefn
@@ -1809,23 +1835,26 @@ the CDF) at @var{x} of the Poisson distribution with parameter
 @anchor{doc-stdnormal_pdf}
 @deftypefn {Function File} {} stdnormal_pdf (@var{x})
 For each element of @var{x}, compute the probability density function
-(PDF) of the standard normal distribution at @var{x}.
+(PDF) at @var{x} of the standard normal distribution (mean = 0,
+standard deviation = 1).
 @end deftypefn
 
 
 @c stdnormal_cdf scripts/statistics/distributions/stdnormal_cdf.m
 @anchor{doc-stdnormal_cdf}
 @deftypefn {Function File} {} stdnormal_cdf (@var{x})
-For each component of @var{x}, compute the CDF of the standard normal
-distribution at @var{x}.
+For each element of @var{x}, compute the cumulative distribution
+function (CDF) at @var{x} of the standard normal distribution
+(mean = 0, standard deviation = 1).
 @end deftypefn
 
 
 @c stdnormal_inv scripts/statistics/distributions/stdnormal_inv.m
 @anchor{doc-stdnormal_inv}
 @deftypefn {Function File} {} stdnormal_inv (@var{x})
-For each component of @var{x}, compute the quantile (the
-inverse of the CDF) at @var{x} of the standard normal distribution.
+For each element of @var{x}, compute the quantile (the
+inverse of the CDF) at @var{x} of the standard normal distribution
+(mean = 0, standard deviation = 1).
 @end deftypefn
 
 
@@ -1850,52 +1879,50 @@ function (CDF) at @var{x} of the t (Student) distribution with
 @c tinv scripts/statistics/distributions/tinv.m
 @anchor{doc-tinv}
 @deftypefn {Function File} {} tinv (@var{x}, @var{n})
-For each probability value @var{x}, compute the inverse of the
-cumulative distribution function (CDF) of the t (Student)
-distribution with degrees of freedom @var{n}.  This function is
-analogous to looking in a table for the t-value of a single-tailed
-distribution.
+For each element of @var{x}, compute the quantile (the inverse of
+the CDF) at @var{x} of the t (Student) distribution with @var{n} 
+degrees of freedom.  This function is analogous to looking in a table
+for the t-value of a single-tailed distribution.
 @end deftypefn
 
 
 @c unidpdf scripts/statistics/distributions/unidpdf.m
 @anchor{doc-unidpdf}
-@deftypefn {Function File} {} unidpdf (@var{x}, @var{v})
+@deftypefn {Function File} {} unidpdf (@var{x}, @var{n})
 For each element of @var{x}, compute the probability density function
 (PDF) at @var{x} of a discrete uniform distribution which assumes
-the values in @var{v} with equal probability.
-If @var{v} is a scalar then @code{1/@var{v}} is the probability of a
-single element.
+the integer values 1--@var{n} with equal probability.
+
+Warning: The underlying implementation uses the double class and
+will only be accurate for @var{n} @leq{} @code{bitmax} 
+(@w{@math{2^{53} - 1}} on IEEE-754 compatible systems).
 @end deftypefn
 
 
 @c unidcdf scripts/statistics/distributions/unidcdf.m
 @anchor{doc-unidcdf}
-@deftypefn {Function File} {} unidcdf (@var{x}, @var{v})
+@deftypefn {Function File} {} unidcdf (@var{x}, @var{n})
 For each element of @var{x}, compute the cumulative distribution
-function (CDF) at @var{x} of a discrete uniform distribution which
-assumes the values in @var{v} with equal probability.
-If @var{v} is a scalar then @code{1/@var{v}} is the probability of a
-single element.
+function (CDF) at @var{x} of a discrete uniform distribution which assumes
+the integer values 1--@var{n} with equal probability.
 @end deftypefn
 
 
 @c unidinv scripts/statistics/distributions/unidinv.m
 @anchor{doc-unidinv}
-@deftypefn {Function File} {} unidinv (@var{x}, @var{v})
-For each component of @var{x}, compute the quantile (the inverse of
-the CDF) at @var{x} of the discrete uniform distribution which assumes the
-values in @var{v} with equal probability.
-If @var{v} is a scalar then @code{1/@var{v}} is the probability of a
-single element.
+@deftypefn {Function File} {} unidinv (@var{x}, @var{n})
+For each element of @var{x}, compute the quantile (the inverse of
+the CDF) at @var{x} of the discrete uniform distribution which assumes
+the integer values 1--@var{n} with equal probability.
 @end deftypefn
 
 
 @c unifpdf scripts/statistics/distributions/unifpdf.m
 @anchor{doc-unifpdf}
-@deftypefn {Function File} {} unifpdf (@var{x}, @var{a}, @var{b})
-For each element of @var{x}, compute the PDF at @var{x} of the uniform
-distribution on [@var{a}, @var{b}].
+@deftypefn  {Function File} {} unifpdf (@var{x})
+@deftypefnx {Function File} {} unifpdf (@var{x}, @var{a}, @var{b})
+For each element of @var{x}, compute the probability density function (PDF)
+at @var{x} of the uniform distribution on the interval [@var{a}, @var{b}].
 
 Default values are @var{a} = 0, @var{b} = 1.
 @end deftypefn
@@ -1903,9 +1930,11 @@ Default values are @var{a} = 0, @var{b} = 1.
 
 @c unifcdf scripts/statistics/distributions/unifcdf.m
 @anchor{doc-unifcdf}
-@deftypefn {Function File} {} unifcdf (@var{x}, @var{a}, @var{b})
-Return the CDF at @var{x} of the uniform distribution on [@var{a},
-@var{b}], i.e., PROB (uniform (@var{a}, @var{b}) @leq{} x).
+@deftypefn  {Function File} {} unifcdf (@var{x})
+@deftypefnx {Function File} {} unifcdf (@var{x}, @var{a}, @var{b})
+For each element of @var{x}, compute the cumulative distribution
+function (CDF) at @var{x} of the uniform distribution on the interval
+[@var{a}, @var{b}].
 
 Default values are @var{a} = 0, @var{b} = 1.
 @end deftypefn
@@ -1913,9 +1942,11 @@ Default values are @var{a} = 0, @var{b} = 1.
 
 @c unifinv scripts/statistics/distributions/unifinv.m
 @anchor{doc-unifinv}
-@deftypefn {Function File} {} unifinv (@var{x}, @var{a}, @var{b})
+@deftypefn  {Function File} {} unifinv (@var{x})
+@deftypefnx {Function File} {} unifinv (@var{x}, @var{a}, @var{b})
 For each element of @var{x}, compute the quantile (the inverse of the
-CDF) at @var{x} of the uniform distribution on [@var{a}, @var{b}].
+CDF) at @var{x} of the uniform distribution on the interval
+[@var{a}, @var{b}].
 
 Default values are @var{a} = 0, @var{b} = 1.
 @end deftypefn
@@ -1923,7 +1954,9 @@ Default values are @var{a} = 0, @var{b} = 1.
 
 @c wblpdf scripts/statistics/distributions/wblpdf.m
 @anchor{doc-wblpdf}
-@deftypefn {Function File} {} wblpdf (@var{x}, @var{scale}, @var{shape})
+@deftypefn  {Function File} {} wblpdf (@var{x})
+@deftypefnx {Function File} {} wblpdf (@var{x}, @var{scale})
+@deftypefnx {Function File} {} wblpdf (@var{x}, @var{scale}, @var{shape})
 Compute the probability density function (PDF) at @var{x} of the
 Weibull distribution with scale parameter @var{scale} and shape
 parameter @var{shape} which is given by
@@ -1933,18 +1966,22 @@ $$  {shape \over scale^{shape}} \cdot x^{shape-1} \cdot e^{-({x \over scale})^{s
 @ifnottex
 
 @example
-   shape * scale^(-shape) * x^(shape-1) * exp(-(x/scale)^shape)
+shape * scale^(-shape) * x^(shape-1) * exp (-(x/scale)^shape)
 @end example
 
 @end ifnottex
 @noindent
 for @var{x} @geq{} 0.
+
+Default values are @var{scale} = 1, @var{shape} = 1.
 @end deftypefn
 
 
 @c wblcdf scripts/statistics/distributions/wblcdf.m
 @anchor{doc-wblcdf}
-@deftypefn {Function File} {} wblcdf (@var{x}, @var{scale}, @var{shape})
+@deftypefn  {Function File} {} wblcdf (@var{x})
+@deftypefnx {Function File} {} wblcdf (@var{x}, @var{scale})
+@deftypefnx {Function File} {} wblcdf (@var{x}, @var{scale}, @var{shape})
 Compute the cumulative distribution function (CDF) at @var{x} of the
 Weibull distribution with scale parameter @var{scale} and shape
 parameter @var{shape}, which is
@@ -1955,21 +1992,27 @@ for $x \geq 0$.
 @ifnottex
 
 @example
-1 - exp(-(x/scale)^shape)
+1 - exp (-(x/scale)^shape)
 @end example
 
 @noindent
 for @var{x} @geq{} 0.
+
+Default values are @var{scale} = 1, @var{shape} = 1.
 @end ifnottex
 @end deftypefn
 
 
 @c wblinv scripts/statistics/distributions/wblinv.m
 @anchor{doc-wblinv}
-@deftypefn {Function File} {} wblinv (@var{x}, @var{scale}, @var{shape})
+@deftypefn  {Function File} {} wblinv (@var{x})
+@deftypefnx {Function File} {} wblinv (@var{x}, @var{scale})
+@deftypefnx {Function File} {} wblinv (@var{x}, @var{scale}, @var{shape})
 Compute the quantile (the inverse of the CDF) at @var{x} of the
 Weibull distribution with scale parameter @var{scale} and shape
 parameter @var{shape}.
+
+Default values are @var{scale} = 1, @var{shape} = 1.
 @end deftypefn
 
 
@@ -2577,7 +2620,7 @@ Wilcoxon signed-rank test of the null hypothesis PROB (@var{x} >
 @var{y}) == 1/2.  Under the null, the test statistic @var{z}
 approximately follows a standard normal distribution when @var{n} > 25.
 
-@strong{Warning}: This function assumes a normal distribution for @var{z}
+@strong{Caution:} This function assumes a normal distribution for @var{z}
 and thus is invalid for @var{n} @leq{} 25.
 
 With the optional argument string @var{alt}, the alternative of
@@ -2719,300 +2762,432 @@ The following table summarizes the available random number generators
 
 @c betarnd scripts/statistics/distributions/betarnd.m
 @anchor{doc-betarnd}
-@deftypefn  {Function File} {} betarnd (@var{a}, @var{b}, @var{r}, @var{c})
-@deftypefnx {Function File} {} betarnd (@var{a}, @var{b}, @var{sz})
-Return an @var{r} by @var{c} or @code{size (@var{sz})} matrix of
-random samples from the Beta distribution with parameters @var{a} and
-@var{b}.  Both @var{a} and @var{b} must be scalar or of size @var{r}
- by @var{c}.
+@deftypefn  {Function File} {} betarnd (@var{a}, @var{b})
+@deftypefnx {Function File} {} betarnd (@var{a}, @var{b}, @var{r})
+@deftypefnx {Function File} {} betarnd (@var{a}, @var{b}, @var{r}, @var{c}, @dots{})
+@deftypefnx {Function File} {} betarnd (@var{a}, @var{b}, [@var{sz}])
+Return a matrix of random samples from the Beta distribution with parameters
+@var{a} and @var{b}.
 
-If @var{r} and @var{c} are omitted, the size of the result matrix is
-the common size of @var{a} and @var{b}.
+When called with a single size argument, return a square matrix with
+the dimension specified.  When called with more than one scalar argument the
+first two arguments are taken as the number of rows and columns and any
+further arguments specify additional matrix dimensions.  The size may also
+be specified with a vector of dimensions @var{sz}.
+
+If no size arguments are given then the result matrix is the common size of
+@var{a} and @var{b}.
 @end deftypefn
 
 
 @c binornd scripts/statistics/distributions/binornd.m
 @anchor{doc-binornd}
-@deftypefn  {Function File} {} binornd (@var{n}, @var{p}, @var{r}, @var{c})
-@deftypefnx {Function File} {} binornd (@var{n}, @var{p}, @var{sz})
-Return an @var{r} by @var{c}  or a @code{size (@var{sz})} matrix of
-random samples from the binomial distribution with parameters @var{n}
-and @var{p}.  Both @var{n} and @var{p} must be scalar or of size
-@var{r} by @var{c}.
+@deftypefn  {Function File} {} binornd (@var{n}, @var{p})
+@deftypefnx {Function File} {} binornd (@var{n}, @var{p}, @var{r})
+@deftypefnx {Function File} {} binornd (@var{n}, @var{p}, @var{r}, @var{c}, @dots{})
+@deftypefnx {Function File} {} binornd (@var{n}, @var{p}, [@var{sz}])
+Return a matrix of random samples from the binomial distribution with
+parameters @var{n} and @var{p}, where @var{n} is the number of trials
+and @var{p} is the probability of success.
 
-If @var{r} and @var{c} are omitted, the size of the result matrix is
-the common size of @var{n} and @var{p}.
+When called with a single size argument, return a square matrix with
+the dimension specified.  When called with more than one scalar argument the
+first two arguments are taken as the number of rows and columns and any
+further arguments specify additional matrix dimensions.  The size may also
+be specified with a vector of dimensions @var{sz}.
+
+If no size arguments are given then the result matrix is the common size of
+@var{n} and @var{p}.
 @end deftypefn
 
 
 @c cauchy_rnd scripts/statistics/distributions/cauchy_rnd.m
 @anchor{doc-cauchy_rnd}
-@deftypefn  {Function File} {} cauchy_rnd (@var{location}, @var{scale}, @var{r}, @var{c})
-@deftypefnx {Function File} {} cauchy_rnd (@var{location}, @var{scale}, @var{sz})
-Return an @var{r} by @var{c} or a @code{size (@var{sz})} matrix of
-random samples from the Cauchy distribution with parameters @var{location}
-and @var{scale} which must both be scalar or of size @var{r} by @var{c}.
+@deftypefn  {Function File} {} cauchy_rnd (@var{location}, @var{scale})
+@deftypefnx {Function File} {} cauchy_rnd (@var{location}, @var{scale}, @var{r})
+@deftypefnx {Function File} {} cauchy_rnd (@var{location}, @var{scale}, @var{r}, @var{c}, @dots{})
+@deftypefnx {Function File} {} cauchy_rnd (@var{location}, @var{scale}, [@var{sz}])
+Return a matrix of random samples from the Cauchy distribution with
+parameters @var{location} and @var{scale}.
 
-If @var{r} and @var{c} are omitted, the size of the result matrix is
-the common size of @var{location} and @var{scale}.
+When called with a single size argument, return a square matrix with
+the dimension specified.  When called with more than one scalar argument the
+first two arguments are taken as the number of rows and columns and any
+further arguments specify additional matrix dimensions.  The size may also
+be specified with a vector of dimensions @var{sz}.
+
+If no size arguments are given then the result matrix is the common size of
+@var{location} and @var{scale}.
 @end deftypefn
 
 
 @c chi2rnd scripts/statistics/distributions/chi2rnd.m
 @anchor{doc-chi2rnd}
-@deftypefn  {Function File} {} chi2rnd (@var{n}, @var{r}, @var{c})
-@deftypefnx {Function File} {} chi2rnd (@var{n}, @var{sz})
-Return an @var{r} by @var{c}  or a @code{size (@var{sz})} matrix of
-random samples from the chisquare distribution with @var{n} degrees
-of freedom.  @var{n} must be a scalar or of size @var{r} by @var{c}.
+@deftypefn  {Function File} {} chi2rnd (@var{n})
+@deftypefnx {Function File} {} chi2rnd (@var{n}, @var{r})
+@deftypefnx {Function File} {} chi2rnd (@var{n}, @var{r}, @var{c}, @dots{})
+@deftypefnx {Function File} {} chi2rnd (@var{n}, [@var{sz}])
+Return a matrix of random samples from the chi-square distribution with
+@var{n} degrees of freedom.
 
-If @var{r} and @var{c} are omitted, the size of the result matrix is
-the size of @var{n}.
+When called with a single size argument, return a square matrix with
+the dimension specified.  When called with more than one scalar argument the
+first two arguments are taken as the number of rows and columns and any
+further arguments specify additional matrix dimensions.  The size may also
+be specified with a vector of dimensions @var{sz}.
+
+If no size arguments are given then the result matrix is the size of
+@var{n}.
 @end deftypefn
 
 
 @c discrete_rnd scripts/statistics/distributions/discrete_rnd.m
 @anchor{doc-discrete_rnd}
-@deftypefn  {Function File} {} discrete_rnd (@var{n}, @var{v}, @var{p})
-@deftypefnx {Function File} {} discrete_rnd (@var{v}, @var{p}, @var{r}, @var{c})
-@deftypefnx {Function File} {} discrete_rnd (@var{v}, @var{p}, @var{sz})
-Generate a row vector containing a random sample of size @var{n} from
-the univariate distribution which assumes the values in @var{v} with
-probabilities @var{p}.  @var{n} must be a scalar.
+@deftypefn  {Function File} {} discrete_rnd (@var{v}, @var{p})
+@deftypefnx {Function File} {} discrete_rnd (@var{v}, @var{p}, @var{r})
+@deftypefnx {Function File} {} discrete_rnd (@var{v}, @var{p}, @var{r}, @var{c}, @dots{})
+@deftypefnx {Function File} {} discrete_rnd (@var{v}, @var{p}, [@var{sz}])
+Return a matrix of random samples from the univariate distribution which
+assumes the values in @var{v} with probabilities @var{p}.
 
-If @var{r} and @var{c} are given create a matrix with @var{r} rows and
-@var{c} columns.  Or if @var{sz} is a vector, create a matrix of size
-@var{sz}.
+When called with a single size argument, return a square matrix with
+the dimension specified.  When called with more than one scalar argument the
+first two arguments are taken as the number of rows and columns and any
+further arguments specify additional matrix dimensions.  The size may also
+be specified with a vector of dimensions @var{sz}.
+
+If no size arguments are given then the result matrix is the common size of
+@var{v} and @var{p}.
 @end deftypefn
 
 
 @c empirical_rnd scripts/statistics/distributions/empirical_rnd.m
 @anchor{doc-empirical_rnd}
-@deftypefn  {Function File} {} empirical_rnd (@var{n}, @var{data})
-@deftypefnx {Function File} {} empirical_rnd (@var{data}, @var{r}, @var{c})
-@deftypefnx {Function File} {} empirical_rnd (@var{data}, @var{sz})
-Generate a bootstrap sample of size @var{n} from the empirical
-distribution obtained from the univariate sample @var{data}.
+@deftypefn  {Function File} {} empirical_rnd (@var{data})
+@deftypefnx {Function File} {} empirical_rnd (@var{data}, @var{r})
+@deftypefnx {Function File} {} empirical_rnd (@var{data}, @var{r}, @var{c}, @dots{})
+@deftypefnx {Function File} {} empirical_rnd (@var{data}, [@var{sz}])
+Return a matrix of random samples from the empirical distribution obtained
+from the univariate sample @var{data}.
 
-If @var{r} and @var{c} are given create a matrix with @var{r} rows and
-@var{c} columns.  Or if @var{sz} is a vector, create a matrix of size
-@var{sz}.
+When called with a single size argument, return a square matrix with
+the dimension specified.  When called with more than one scalar argument the
+first two arguments are taken as the number of rows and columns and any
+further arguments specify additional matrix dimensions.  The size may also
+be specified with a vector of dimensions @var{sz}.
+
+If no size arguments are given then the result matrix is a random ordering
+of the sample @var{data}.
 @end deftypefn
 
 
 @c exprnd scripts/statistics/distributions/exprnd.m
 @anchor{doc-exprnd}
-@deftypefn  {Function File} {} exprnd (@var{lambda}, @var{r}, @var{c})
-@deftypefnx {Function File} {} exprnd (@var{lambda}, @var{sz})
-Return an @var{r} by @var{c} matrix of random samples from the
-exponential distribution with mean @var{lambda}, which must be a
-scalar or of size @var{r} by @var{c}.  Or if @var{sz} is a vector,
-create a matrix of size @var{sz}.
+@deftypefn  {Function File} {} exprnd (@var{lambda})
+@deftypefnx {Function File} {} exprnd (@var{lambda}, @var{r})
+@deftypefnx {Function File} {} exprnd (@var{lambda}, @var{r}, @var{c}, @dots{})
+@deftypefnx {Function File} {} exprnd (@var{lambda}, [@var{sz}])
+Return a matrix of random samples from the exponential distribution with
+mean @var{lambda}.
 
-If @var{r} and @var{c} are omitted, the size of the result matrix is
-the size of @var{lambda}.
+When called with a single size argument, return a square matrix with
+the dimension specified.  When called with more than one scalar argument the
+first two arguments are taken as the number of rows and columns and any
+further arguments specify additional matrix dimensions.  The size may also
+be specified with a vector of dimensions @var{sz}.
+
+If no size arguments are given then the result matrix is the size of
+@var{lambda}.
 @end deftypefn
 
 
 @c frnd scripts/statistics/distributions/frnd.m
 @anchor{doc-frnd}
-@deftypefn  {Function File} {} frnd (@var{m}, @var{n}, @var{r}, @var{c})
-@deftypefnx {Function File} {} frnd (@var{m}, @var{n}, @var{sz})
-Return an @var{r} by @var{c} matrix of random samples from the F
-distribution with @var{m} and @var{n} degrees of freedom.  Both
-@var{m} and @var{n} must be scalar or of size @var{r} by @var{c}.
-If @var{sz} is a vector the random samples are in a matrix of
-size @var{sz}.
+@deftypefn  {Function File} {} frnd (@var{m}, @var{n})
+@deftypefnx {Function File} {} frnd (@var{m}, @var{n}, @var{r})
+@deftypefnx {Function File} {} frnd (@var{m}, @var{n}, @var{r}, @var{c}, @dots{})
+@deftypefnx {Function File} {} frnd (@var{m}, @var{n}, [@var{sz}])
+Return a matrix of random samples from the F distribution with
+@var{m} and @var{n} degrees of freedom.
 
-If @var{r} and @var{c} are omitted, the size of the result matrix is
-the common size of @var{m} and @var{n}.
+When called with a single size argument, return a square matrix with
+the dimension specified.  When called with more than one scalar argument the
+first two arguments are taken as the number of rows and columns and any
+further arguments specify additional matrix dimensions.  The size may also
+be specified with a vector of dimensions @var{sz}.
+
+If no size arguments are given then the result matrix is the common size of
+@var{m} and @var{n}.
 @end deftypefn
 
 
 @c gamrnd scripts/statistics/distributions/gamrnd.m
 @anchor{doc-gamrnd}
-@deftypefn  {Function File} {} gamrnd (@var{a}, @var{b}, @var{r}, @var{c})
-@deftypefnx {Function File} {} gamrnd (@var{a}, @var{b}, @var{sz})
-Return an @var{r} by @var{c} or a @code{size (@var{sz})} matrix of
-random samples from the Gamma distribution with parameters @var{a}
-and @var{b}.  Both @var{a} and @var{b} must be scalar or of size
-@var{r} by @var{c}.
+@deftypefn  {Function File} {} gamrnd (@var{a}, @var{b})
+@deftypefnx {Function File} {} gamrnd (@var{a}, @var{b}, @var{r})
+@deftypefnx {Function File} {} gamrnd (@var{a}, @var{b}, @var{r}, @var{c}, @dots{})
+@deftypefnx {Function File} {} gamrnd (@var{a}, @var{b}, [@var{sz}])
+Return a matrix of random samples from the Gamma distribution with
+shape parameter @var{a} and scale @var{b}.
 
-If @var{r} and @var{c} are omitted, the size of the result matrix is
-the common size of @var{a} and @var{b}.
-@seealso{@ref{doc-gamma,,gamma}, @ref{doc-gammaln,,gammaln}, @ref{doc-gammainc,,gammainc}, @ref{doc-gampdf,,gampdf}, @ref{doc-gamcdf,,gamcdf}, @ref{doc-gaminv,,gaminv}}
+When called with a single size argument, return a square matrix with
+the dimension specified.  When called with more than one scalar argument the
+first two arguments are taken as the number of rows and columns and any
+further arguments specify additional matrix dimensions.  The size may also
+be specified with a vector of dimensions @var{sz}.
+
+If no size arguments are given then the result matrix is the common size of
+@var{a} and @var{b}.
 @end deftypefn
 
 
 @c geornd scripts/statistics/distributions/geornd.m
 @anchor{doc-geornd}
-@deftypefn  {Function File} {} geornd (@var{p}, @var{r}, @var{c})
-@deftypefnx {Function File} {} geornd (@var{p}, @var{sz})
-Return an @var{r} by @var{c} matrix of random samples from the
-geometric distribution with parameter @var{p}, which must be a scalar
-or of size @var{r} by @var{c}.
+@deftypefn  {Function File} {} geornd (@var{p})
+@deftypefnx {Function File} {} geornd (@var{p}, @var{r})
+@deftypefnx {Function File} {} geornd (@var{p}, @var{r}, @var{c}, @dots{})
+@deftypefnx {Function File} {} geornd (@var{p}, [@var{sz}])
+Return a matrix of random samples from the geometric distribution with
+parameter @var{p}.
 
-If @var{r} and @var{c} are given create a matrix with @var{r} rows and
-@var{c} columns.  Or if @var{sz} is a vector, create a matrix of size
-@var{sz}.
+When called with a single size argument, return a square matrix with
+the dimension specified.  When called with more than one scalar argument the
+first two arguments are taken as the number of rows and columns and any
+further arguments specify additional matrix dimensions.  The size may also
+be specified with a vector of dimensions @var{sz}.
+
+If no size arguments are given then the result matrix is the size of
+@var{p}.
 @end deftypefn
 
 
 @c hygernd scripts/statistics/distributions/hygernd.m
 @anchor{doc-hygernd}
-@deftypefn  {Function File} {} hygernd (@var{t}, @var{m}, @var{n}, @var{r}, @var{c})
-@deftypefnx {Function File} {} hygernd (@var{t}, @var{m}, @var{n}, @var{sz})
-@deftypefnx {Function File} {} hygernd (@var{t}, @var{m}, @var{n})
-Return an @var{r} by @var{c} matrix of random samples from the
-hypergeometric distribution with parameters @var{t}, @var{m},
-and @var{n}.
+@deftypefn  {Function File} {} hygernd (@var{t}, @var{m}, @var{n})
+@deftypefnx {Function File} {} hygernd (@var{t}, @var{m}, @var{n}, @var{r})
+@deftypefnx {Function File} {} hygernd (@var{t}, @var{m}, @var{n}, @var{r}, @var{c}, @dots{})
+@deftypefnx {Function File} {} hygernd (@var{t}, @var{m}, @var{n}, [@var{sz}])
+Return a matrix of random samples from the hypergeometric distribution
+with parameters @var{t}, @var{m}, and @var{n}.
 
-The parameters @var{t}, @var{m}, and @var{n} must positive integers
+The parameters @var{t}, @var{m}, and @var{n} must be positive integers
 with @var{m} and @var{n} not greater than @var{t}.
 
-The parameter @var{sz} must be scalar or a vector of matrix
-dimensions.  If @var{sz} is scalar, then a @var{sz} by @var{sz}
-matrix of random samples is generated.
+When called with a single size argument, return a square matrix with
+the dimension specified.  When called with more than one scalar argument the
+first two arguments are taken as the number of rows and columns and any
+further arguments specify additional matrix dimensions.  The size may also
+be specified with a vector of dimensions @var{sz}.
+
+If no size arguments are given then the result matrix is the common size of
+@var{t}, @var{m}, and @var{n}.
 @end deftypefn
 
 
 @c laplace_rnd scripts/statistics/distributions/laplace_rnd.m
 @anchor{doc-laplace_rnd}
-@deftypefn  {Function File} {} laplace_rnd (@var{r}, @var{c})
-@deftypefnx {Function File} {} laplace_rnd (@var{sz});
-Return an @var{r} by @var{c} matrix of random numbers from the
-Laplace distribution.  Or if @var{sz} is a vector, create a matrix of
-@var{sz}.
+@deftypefn  {Function File} {} laplace_rnd (@var{r})
+@deftypefnx {Function File} {} laplace_rnd (@var{r}, @var{c}, @dots{})
+@deftypefnx {Function File} {} laplace_rnd ([@var{sz}])
+Return a matrix of random samples from the Laplace distribution.
+
+When called with a single size argument, return a square matrix with
+the dimension specified.  When called with more than one scalar argument the
+first two arguments are taken as the number of rows and columns and any
+further arguments specify additional matrix dimensions.  The size may also
+be specified with a vector of dimensions @var{sz}.
 @end deftypefn
 
 
 @c logistic_rnd scripts/statistics/distributions/logistic_rnd.m
 @anchor{doc-logistic_rnd}
-@deftypefn  {Function File} {} logistic_rnd (@var{r}, @var{c})
-@deftypefnx {Function File} {} logistic_rnd (@var{sz})
-Return an @var{r} by @var{c} matrix of random numbers from the
-logistic distribution.  Or if @var{sz} is a vector, create a matrix of
-@var{sz}.
+@deftypefn  {Function File} {} logistic_rnd (@var{r})
+@deftypefnx {Function File} {} logistic_rnd (@var{r}, @var{c}, @dots{})
+@deftypefnx {Function File} {} logistic_rnd ([@var{sz}])
+Return a matrix of random samples from the logistic distribution.
+
+When called with a single size argument, return a square matrix with
+the dimension specified.  When called with more than one scalar argument the
+first two arguments are taken as the number of rows and columns and any
+further arguments specify additional matrix dimensions.  The size may also
+be specified with a vector of dimensions @var{sz}.
 @end deftypefn
 
 
 @c lognrnd scripts/statistics/distributions/lognrnd.m
 @anchor{doc-lognrnd}
-@deftypefn  {Function File} {} lognrnd (@var{mu}, @var{sigma}, @var{r}, @var{c})
-@deftypefnx {Function File} {} lognrnd (@var{mu}, @var{sigma}, @var{sz})
-Return an @var{r} by @var{c} matrix of random samples from the
-lognormal distribution with parameters @var{mu} and @var{sigma}.  Both
-@var{mu} and @var{sigma} must be scalar or of size @var{r} by @var{c}.
-Or if @var{sz} is a vector, create a matrix of size @var{sz}.
+@deftypefn  {Function File} {} lognrnd (@var{mu}, @var{sigma})
+@deftypefnx {Function File} {} lognrnd (@var{mu}, @var{sigma}, @var{r})
+@deftypefnx {Function File} {} lognrnd (@var{mu}, @var{sigma}, @var{r}, @var{c}, @dots{})
+@deftypefnx {Function File} {} lognrnd (@var{mu}, @var{sigma}, [@var{sz}])
+Return a matrix of random samples from the lognormal distribution with
+parameters @var{mu} and @var{sigma}.
 
-If @var{r} and @var{c} are omitted, the size of the result matrix is
-the common size of @var{mu} and @var{sigma}.
+When called with a single size argument, return a square matrix with
+the dimension specified.  When called with more than one scalar argument the
+first two arguments are taken as the number of rows and columns and any
+further arguments specify additional matrix dimensions.  The size may also
+be specified with a vector of dimensions @var{sz}.
+
+If no size arguments are given then the result matrix is the common size of
+@var{mu} and @var{sigma}.
 @end deftypefn
 
 
 @c nbinrnd scripts/statistics/distributions/nbinrnd.m
 @anchor{doc-nbinrnd}
-@deftypefn  {Function File} {} nbinrnd (@var{n}, @var{p}, @var{r}, @var{c})
-@deftypefnx {Function File} {} nbinrnd (@var{n}, @var{p}, @var{sz})
-Return an @var{r} by @var{c} matrix of random samples from the Pascal
-(negative binomial) distribution with parameters @var{n} and @var{p}.
-Both @var{n} and @var{p} must be scalar or of size @var{r} by @var{c}.
+@deftypefn  {Function File} {} nbinrnd (@var{n}, @var{p})
+@deftypefnx {Function File} {} nbinrnd (@var{n}, @var{p}, @var{r})
+@deftypefnx {Function File} {} nbinrnd (@var{n}, @var{p}, @var{r}, @var{c}, @dots{})
+@deftypefnx {Function File} {} nbinrnd (@var{n}, @var{p}, [@var{sz}])
+Return a matrix of random samples from the negative binomial
+distribution with parameters @var{n} and @var{p}.
 
-If @var{r} and @var{c} are omitted, the size of the result matrix is
-the common size of @var{n} and @var{p}.  Or if @var{sz} is a vector,
-create a matrix of size @var{sz}.
+When called with a single size argument, return a square matrix with
+the dimension specified.  When called with more than one scalar argument the
+first two arguments are taken as the number of rows and columns and any
+further arguments specify additional matrix dimensions.  The size may also
+be specified with a vector of dimensions @var{sz}.
+
+If no size arguments are given then the result matrix is the common size of
+@var{n} and @var{p}.
 @end deftypefn
 
 
 @c normrnd scripts/statistics/distributions/normrnd.m
 @anchor{doc-normrnd}
-@deftypefn  {Function File} {} normrnd (@var{m}, @var{s}, @var{r}, @var{c})
-@deftypefnx {Function File} {} normrnd (@var{m}, @var{s}, @var{sz})
-Return an @var{r} by @var{c}  or @code{size (@var{sz})} matrix of
-random samples from the normal distribution with parameters mean @var{m}
-and standard deviation @var{s}.  Both @var{m} and @var{s} must be scalar
-or of size @var{r} by @var{c}.
+@deftypefn  {Function File} {} normrnd (@var{mu}, @var{sigma})
+@deftypefnx {Function File} {} normrnd (@var{mu}, @var{sigma}, @var{r})
+@deftypefnx {Function File} {} normrnd (@var{mu}, @var{sigma}, @var{r}, @var{c}, @dots{})
+@deftypefnx {Function File} {} normrnd (@var{mu}, @var{sigma}, [@var{sz}])
+Return a matrix of random samples from the normal distribution with
+parameters mean @var{mu} and standard deviation @var{sigma}.
 
-If @var{r} and @var{c} are omitted, the size of the result matrix is
-the common size of @var{m} and @var{s}.
+When called with a single size argument, return a square matrix with
+the dimension specified.  When called with more than one scalar argument the
+first two arguments are taken as the number of rows and columns and any
+further arguments specify additional matrix dimensions.  The size may also
+be specified with a vector of dimensions @var{sz}.
+
+If no size arguments are given then the result matrix is the common size of
+@var{mu} and @var{sigma}.
 @end deftypefn
 
 
 @c poissrnd scripts/statistics/distributions/poissrnd.m
 @anchor{doc-poissrnd}
-@deftypefn {Function File} {} poissrnd (@var{lambda}, @var{r}, @var{c})
-Return an @var{r} by @var{c} matrix of random samples from the
-Poisson distribution with parameter @var{lambda}, which must be a
-scalar or of size @var{r} by @var{c}.
+@deftypefn  {Function File} {} poissrnd (@var{lambda})
+@deftypefnx {Function File} {} poissrnd (@var{lambda}, @var{r})
+@deftypefnx {Function File} {} poissrnd (@var{lambda}, @var{r}, @var{c}, @dots{})
+@deftypefnx {Function File} {} poissrnd (@var{lambda}, [@var{sz}])
+Return a matrix of random samples from the Poisson distribution with
+parameter @var{lambda}.
 
-If @var{r} and @var{c} are omitted, the size of the result matrix is
-the size of @var{lambda}.
+When called with a single size argument, return a square matrix with
+the dimension specified.  When called with more than one scalar argument the
+first two arguments are taken as the number of rows and columns and any
+further arguments specify additional matrix dimensions.  The size may also
+be specified with a vector of dimensions @var{sz}.
+
+If no size arguments are given then the result matrix is the size of
+@var{lambda}.
 @end deftypefn
 
 
 @c stdnormal_rnd scripts/statistics/distributions/stdnormal_rnd.m
 @anchor{doc-stdnormal_rnd}
-@deftypefn  {Function File} {} stdnormal_rnd (@var{r}, @var{c})
-@deftypefnx {Function File} {} stdnormal_rnd (@var{sz})
-Return an @var{r} by @var{c} or @code{size (@var{sz})} matrix of
-random numbers from the standard normal distribution.
+@deftypefn  {Function File} {} stdnormal_rnd (@var{r})
+@deftypefnx {Function File} {} stdnormal_rnd (@var{r}, @var{c}, @dots{})
+@deftypefnx {Function File} {} stdnormal_rnd ([@var{sz}])
+Return a matrix of random samples from the standard normal distribution
+(mean = 0, standard deviation = 1).
+
+When called with a single size argument, return a square matrix with
+the dimension specified.  When called with more than one scalar argument the
+first two arguments are taken as the number of rows and columns and any
+further arguments specify additional matrix dimensions.  The size may also
+be specified with a vector of dimensions @var{sz}.
 @end deftypefn
 
 
 @c trnd scripts/statistics/distributions/trnd.m
 @anchor{doc-trnd}
-@deftypefn  {Function File} {} trnd (@var{n}, @var{r}, @var{c})
-@deftypefnx {Function File} {} trnd (@var{n}, @var{sz})
-Return an @var{r} by @var{c} matrix of random samples from the t
-(Student) distribution with @var{n} degrees of freedom.  @var{n} must
-be a scalar or of size @var{r} by @var{c}.  Or if @var{sz} is a
-vector create a matrix of size @var{sz}.
+@deftypefn  {Function File} {} trnd (@var{n})
+@deftypefnx {Function File} {} trnd (@var{n}, @var{r})
+@deftypefnx {Function File} {} trnd (@var{n}, @var{r}, @var{c}, @dots{})
+@deftypefnx {Function File} {} trnd (@var{n}, [@var{sz}])
+Return a matrix of random samples from the t (Student) distribution with
+@var{n} degrees of freedom.
 
-If @var{r} and @var{c} are omitted, the size of the result matrix is
-the size of @var{n}.
+When called with a single size argument, return a square matrix with
+the dimension specified.  When called with more than one scalar argument the
+first two arguments are taken as the number of rows and columns and any
+further arguments specify additional matrix dimensions.  The size may also
+be specified with a vector of dimensions @var{sz}.
+
+If no size arguments are given then the result matrix is the size of
+@var{n}.
 @end deftypefn
 
 
 @c unidrnd scripts/statistics/distributions/unidrnd.m
 @anchor{doc-unidrnd}
-@deftypefn  {Function File} {} unidrnd (@var{mx});
-@deftypefnx {Function File} {} unidrnd (@var{mx}, @var{v});
-@deftypefnx {Function File} {} unidrnd (@var{mx}, @var{m}, @var{n}, @dots{});
-Return random values from a discrete uniform distribution with maximum
-value(s) given by the integer @var{mx} (which may be a scalar or
-multi-dimensional array).
+@deftypefn  {Function File} {} unidrnd (@var{n})
+@deftypefnx {Function File} {} unidrnd (@var{n}, @var{r})
+@deftypefnx {Function File} {} unidrnd (@var{n}, @var{r}, @var{c}, @dots{})
+@deftypefnx {Function File} {} unidrnd (@var{n}, [@var{sz}])
+Return a matrix of random samples from the discrete uniform distribution
+which assumes the integer values 1--@var{n} with equal probability.
+@var{n} may be a scalar or a multi-dimensional array.
 
-If @var{mx} is a scalar, the size of the result is specified by
-the vector @var{v}, or by the optional arguments @var{m}, @var{n},
-@dots{}.  Otherwise, the size of the result is the same as the size
-of @var{mx}.
+When called with a single size argument, return a square matrix with
+the dimension specified.  When called with more than one scalar argument the
+first two arguments are taken as the number of rows and columns and any
+further arguments specify additional matrix dimensions.  The size may also
+be specified with a vector of dimensions @var{sz}.
+
+If no size arguments are given then the result matrix is the size of
+@var{n}.
 @end deftypefn
 
 
 @c unifrnd scripts/statistics/distributions/unifrnd.m
 @anchor{doc-unifrnd}
-@deftypefn  {Function File} {} unifrnd (@var{a}, @var{b}, @var{r}, @var{c})
-@deftypefnx {Function File} {} unifrnd (@var{a}, @var{b}, @var{sz})
-Return an @var{r} by @var{c} or a @code{size (@var{sz})} matrix of
-random samples from the uniform distribution on [@var{a}, @var{b}].
-Both @var{a} and @var{b} must be scalar or of size @var{r} by @var{c}.
+@deftypefn  {Function File} {} unifrnd (@var{a}, @var{b})
+@deftypefnx {Function File} {} unifrnd (@var{a}, @var{b}, @var{r})
+@deftypefnx {Function File} {} unifrnd (@var{a}, @var{b}, @var{r}, @var{c}, @dots{})
+@deftypefnx {Function File} {} unifrnd (@var{a}, @var{b}, [@var{sz}])
+Return a matrix of random samples from the uniform distribution on
+[@var{a}, @var{b}].
 
-If @var{r} and @var{c} are omitted, the size of the result matrix is
-the common size of @var{a} and @var{b}.
+When called with a single size argument, return a square matrix with
+the dimension specified.  When called with more than one scalar argument the
+first two arguments are taken as the number of rows and columns and any
+further arguments specify additional matrix dimensions.  The size may also
+be specified with a vector of dimensions @var{sz}.
+
+If no size arguments are given then the result matrix is the common size of
+@var{a} and @var{b}.
 @end deftypefn
 
 
 @c wblrnd scripts/statistics/distributions/wblrnd.m
 @anchor{doc-wblrnd}
-@deftypefn  {Function File} {} wblrnd (@var{scale}, @var{shape}, @var{r}, @var{c})
-@deftypefnx {Function File} {} wblrnd (@var{scale}, @var{shape}, @var{sz})
-Return an @var{r} by @var{c} matrix of random samples from the
-Weibull distribution with parameters @var{scale} and @var{shape}
-which must be scalar or of size @var{r} by @var{c}.  Or if @var{sz}
-is a vector return a matrix of size @var{sz}.
+@deftypefn  {Function File} {} wblrnd (@var{scale}, @var{shape})
+@deftypefnx {Function File} {} wblrnd (@var{scale}, @var{shape}, @var{r})
+@deftypefnx {Function File} {} wblrnd (@var{scale}, @var{shape}, @var{r}, @var{c}, @dots{})
+@deftypefnx {Function File} {} wblrnd (@var{scale}, @var{shape}, [@var{sz}])
+Return a matrix of random samples from the Weibull distribution with
+parameters @var{scale} and @var{shape}.
 
-If @var{r} and @var{c} are omitted, the size of the result matrix is
-the common size of @var{alpha} and @var{sigma}.
+When called with a single size argument, return a square matrix with
+the dimension specified.  When called with more than one scalar argument the
+first two arguments are taken as the number of rows and columns and any
+further arguments specify additional matrix dimensions.  The size may also
+be specified with a vector of dimensions @var{sz}.
+
+If no size arguments are given then the result matrix is the common size of
+@var{scale} and @var{shape}.
 @end deftypefn
 
 

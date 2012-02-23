@@ -1,7 +1,7 @@
 // N-D Array  manipulations.
 /*
 
-Copyright (C) 1996-2011 John W. Eaton
+Copyright (C) 1996-2012 John W. Eaton
 Copyright (C) 2009 VZLU Prague, a.s.
 
 This file is part of Octave.
@@ -40,7 +40,7 @@ along with Octave; see the file COPYING.  If not, see
 boolNDArray
 boolNDArray::operator ! (void) const
 {
-  return do_mx_unary_op<bool> (*this, mx_inline_not);
+  return do_mx_unary_op<bool, bool> (*this, mx_inline_not);
 }
 
 boolNDArray&
@@ -149,7 +149,8 @@ mx_el_and_assign (boolNDArray& a, const boolNDArray& b)
   if (a.is_shared ())
     a = mx_el_and (a, b);
   else
-    do_mm_inplace_op<bool, bool> (a, b, mx_inline_and2, "operator &=");
+    do_mm_inplace_op<bool, bool> (a, b, mx_inline_and2, mx_inline_and2,
+                                  "operator &=");
 
   return a;
 }
@@ -160,7 +161,8 @@ mx_el_or_assign (boolNDArray& a, const boolNDArray& b)
   if (a.is_shared ())
     a = mx_el_or (a, b);
   else
-    do_mm_inplace_op<bool, bool> (a, b, mx_inline_or2, "operator |=");
+    do_mm_inplace_op<bool, bool> (a, b, mx_inline_or2, mx_inline_or2,
+                                  "operator |=");
 
   return a;
 }

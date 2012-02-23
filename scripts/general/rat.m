@@ -1,4 +1,4 @@
-## Copyright (C) 2001-2011 Paul Kienzle
+## Copyright (C) 2001-2012 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -25,9 +25,9 @@
 ##
 ## @example
 ## @group
-## rat(pi) = 3 + 1/(7 + 1/16) = 355/113
-## rat(e) = 3 + 1/(-4 + 1/(2 + 1/(5 + 1/(-2 + 1/(-7)))))
-##        = 1457/536
+## rat (pi) = 3 + 1/(7 + 1/16) = 355/113
+## rat (e) = 3 + 1/(-4 + 1/(2 + 1/(5 + 1/(-2 + 1/(-7)))))
+##         = 1457/536
 ## @end group
 ## @end example
 ##
@@ -150,3 +150,11 @@ function [n,d] = rat(x,tol)
   endif
 
 endfunction
+
+%!error rat ();
+%!error rat (1, 2, 3);
+
+%!test
+%! [n, d] = rat ([0.5, 0.3, 1/3]);
+%! assert (n, [1, 3, 1]);
+%! assert (d, [2, 10, 3]);

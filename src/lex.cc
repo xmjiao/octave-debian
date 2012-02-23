@@ -1256,7 +1256,7 @@ char *octave_text;
 #line 1 "lex.ll"
 /*
 
-Copyright (C) 1993-2011 John W. Eaton
+Copyright (C) 1993-2012 John W. Eaton
 
 This file is part of Octave.
 
@@ -1328,6 +1328,7 @@ along with Octave; see the file COPYING.  If not, see
 // via the gnulib namespace.
 #define fprintf GNULIB_NAMESPACE::fprintf
 #define fwrite GNULIB_NAMESPACE::fwrite
+#define isatty GNULIB_NAMESPACE::isatty
 #define malloc GNULIB_NAMESPACE::malloc
 #define realloc GNULIB_NAMESPACE::realloc
 #endif
@@ -1409,17 +1410,32 @@ along with Octave; see the file COPYING.  If not, see
     } \
   while (0)
 
-#define BIN_OP_RETURN(tok, convert, bos) \
+#define BIN_OP_RETURN_INTERNAL(tok, convert, bos, qit) \
   do \
     { \
       yylval.tok_val = new token (input_line_number, current_input_column); \
       token_stack.push (yylval.tok_val); \
       current_input_column += octave_leng; \
-      lexer_flags.quote_is_transpose = false; \
+      lexer_flags.quote_is_transpose = qit; \
       lexer_flags.convert_spaces_to_comma = convert; \
       lexer_flags.looking_for_object_index = false; \
       lexer_flags.at_beginning_of_statement = bos; \
       COUNT_TOK_AND_RETURN (tok); \
+    } \
+  while (0)
+
+#define XBIN_OP_RETURN_INTERNAL(tok, convert, bos, qit) \
+  do \
+    { \
+      gripe_matlab_incompatible_operator (octave_text); \
+      BIN_OP_RETURN_INTERNAL (tok, convert, bos, qit); \
+    } \
+  while (0)
+
+#define BIN_OP_RETURN(tok, convert, bos) \
+  do \
+    { \
+      BIN_OP_RETURN_INTERNAL (tok, convert, bos, false); \
     } \
   while (0)
 
@@ -1559,7 +1575,7 @@ static void gripe_matlab_incompatible_operator (const std::string& op);
 static void display_token (int tok);
 static void lexer_debug (const char *pattern, const char *text);
 
-#line 1563 "lex.cc"
+#line 1579 "lex.cc"
 
 #define INITIAL 0
 #define COMMAND_START 1
@@ -1753,7 +1769,7 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 336 "lex.ll"
+#line 352 "lex.ll"
 
 
 
@@ -1761,7 +1777,7 @@ YY_DECL
 // the parser go down a special path.
 
 
-#line 1765 "lex.cc"
+#line 1781 "lex.cc"
 
 	if ( !(yy_init) )
 		{
@@ -1847,7 +1863,7 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 343 "lex.ll"
+#line 359 "lex.ll"
 {
     LEXER_DEBUG ("<SCRIPT_FILE_BEGIN>.");
 
@@ -1858,7 +1874,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 351 "lex.ll"
+#line 367 "lex.ll"
 {
     LEXER_DEBUG ("<FUNCTION_FILE_BEGIN>.");
 
@@ -1873,7 +1889,7 @@ YY_RULE_SETUP
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 363 "lex.ll"
+#line 379 "lex.ll"
 {
     LEXER_DEBUG ("<COMMAND_START>{NL}");
 
@@ -1891,7 +1907,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 378 "lex.ll"
+#line 394 "lex.ll"
 {
     LEXER_DEBUG ("<COMMAND_START>[\\;\\,]");
 
@@ -1908,7 +1924,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 392 "lex.ll"
+#line 408 "lex.ll"
 {
     LEXER_DEBUG ("<COMMAND_START>[\\\"\\']");
 
@@ -1922,7 +1938,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 403 "lex.ll"
+#line 419 "lex.ll"
 {
     LEXER_DEBUG ("<COMMAND_START>[^#% \\t\\r\\n\\;\\,\\\"\\'][^ \\t\\r\\n\\;\\,]*{S}*");
 
@@ -1950,7 +1966,7 @@ YY_RULE_SETUP
 case 7:
 /* rule 7 can match eol */
 YY_RULE_SETUP
-#line 428 "lex.ll"
+#line 444 "lex.ll"
 {
     LEXER_DEBUG ("<MATRIX_START>{SNLCMT}*\\]{S}*");
 
@@ -1979,7 +1995,7 @@ YY_RULE_SETUP
 case 8:
 /* rule 8 can match eol */
 YY_RULE_SETUP
-#line 454 "lex.ll"
+#line 470 "lex.ll"
 {
     LEXER_DEBUG ("<MATRIX_START>{SNLCMT}*\\}{S}*");
 
@@ -2009,7 +2025,7 @@ YY_RULE_SETUP
 
 case 9:
 YY_RULE_SETUP
-#line 482 "lex.ll"
+#line 498 "lex.ll"
 {
     LEXER_DEBUG ("<MATRIX_START>{S}*\\,{S}*");
 
@@ -2043,7 +2059,7 @@ YY_RULE_SETUP
 
 case 10:
 YY_RULE_SETUP
-#line 514 "lex.ll"
+#line 530 "lex.ll"
 {
     LEXER_DEBUG ("<MATRIX_START>{S}+");
 
@@ -2072,6 +2088,7 @@ YY_RULE_SETUP
 
             lexer_flags.quote_is_transpose = false;
             lexer_flags.convert_spaces_to_comma = true;
+            lexer_flags.looking_for_object_index = false;
 
             maybe_warn_separator_insert (',');
 
@@ -2090,7 +2107,7 @@ YY_RULE_SETUP
 case 11:
 /* rule 11 can match eol */
 YY_RULE_SETUP
-#line 558 "lex.ll"
+#line 575 "lex.ll"
 {
     LEXER_DEBUG ("<MATRIX_START>{SNLCMT}*;{SNLCMT}*");
 
@@ -2115,11 +2132,11 @@ YY_RULE_SETUP
 
 case 12:
 /* rule 12 can match eol */
-#line 582 "lex.ll"
+#line 599 "lex.ll"
 case 13:
 /* rule 13 can match eol */
 YY_RULE_SETUP
-#line 582 "lex.ll"
+#line 599 "lex.ll"
 {
     LEXER_DEBUG ("<MATRIX_START>{S}*{COMMENT}{SNLCMT}*|<MATRIX_START>{S}*{NL}{SNLCMT}*");
 
@@ -2145,7 +2162,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 605 "lex.ll"
+#line 622 "lex.ll"
 {
     LEXER_DEBUG ("\\[{S}*");
 
@@ -2175,7 +2192,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 632 "lex.ll"
+#line 649 "lex.ll"
 {
     LEXER_DEBUG ("\\]");
 
@@ -2194,7 +2211,7 @@ YY_RULE_SETUP
 
 case 16:
 YY_RULE_SETUP
-#line 649 "lex.ll"
+#line 666 "lex.ll"
 {
     LEXER_DEBUG ("{NUMBER}{Im}");
 
@@ -2210,10 +2227,10 @@ case 17:
 *yy_cp = (yy_hold_char); /* undo effects of setting up octave_text */
 (yy_c_buf_p) = yy_cp -= 2;
 YY_DO_BEFORE_ACTION; /* set up octave_text again */
-#line 662 "lex.ll"
+#line 679 "lex.ll"
 case 18:
 YY_RULE_SETUP
-#line 662 "lex.ll"
+#line 679 "lex.ll"
 {
     LEXER_DEBUG ("{D}+/\\.[\\*/\\^\\']|{NUMBER}");
     handle_number ();
@@ -2226,7 +2243,7 @@ YY_RULE_SETUP
 
 case 19:
 YY_RULE_SETUP
-#line 673 "lex.ll"
+#line 690 "lex.ll"
 {
     current_input_column += octave_leng;
   }
@@ -2236,11 +2253,11 @@ YY_RULE_SETUP
 
 case 20:
 /* rule 20 can match eol */
-#line 682 "lex.ll"
+#line 699 "lex.ll"
 case 21:
 /* rule 21 can match eol */
 YY_RULE_SETUP
-#line 682 "lex.ll"
+#line 699 "lex.ll"
 {
     LEXER_DEBUG ("{CONT}{S}*{NL}|{CONT}{S}*{COMMENT}");
 
@@ -2260,7 +2277,7 @@ case YY_STATE_EOF(COMMAND_START):
 case YY_STATE_EOF(MATRIX_START):
 case YY_STATE_EOF(SCRIPT_FILE_BEGIN):
 case YY_STATE_EOF(FUNCTION_FILE_BEGIN):
-#line 697 "lex.ll"
+#line 714 "lex.ll"
 {
     LEXER_DEBUG ("<<EOF>>");
 
@@ -2283,7 +2300,7 @@ case YY_STATE_EOF(FUNCTION_FILE_BEGIN):
 
 case 22:
 YY_RULE_SETUP
-#line 718 "lex.ll"
+#line 735 "lex.ll"
 {
     LEXER_DEBUG ("{IDENT}{S}*");
 
@@ -2297,10 +2314,10 @@ YY_RULE_SETUP
 // Superclass method identifiers.
 
 case 23:
-#line 732 "lex.ll"
+#line 749 "lex.ll"
 case 24:
 YY_RULE_SETUP
-#line 732 "lex.ll"
+#line 749 "lex.ll"
 {
     LEXER_DEBUG ("{IDENT}@{IDENT}{S}*|{IDENT}@{IDENT}.{IDENT}{S}*");
 
@@ -2318,10 +2335,10 @@ YY_RULE_SETUP
 // Metaclass query
 
 case 25:
-#line 750 "lex.ll"
+#line 767 "lex.ll"
 case 26:
 YY_RULE_SETUP
-#line 750 "lex.ll"
+#line 767 "lex.ll"
 {
     LEXER_DEBUG ("\?{IDENT}{S}* | \?{IDENT}.{IDENT}{S}*");
 
@@ -2340,7 +2357,7 @@ YY_RULE_SETUP
 
 case 27:
 YY_RULE_SETUP
-#line 767 "lex.ll"
+#line 784 "lex.ll"
 {
     LEXER_DEBUG ("@");
 
@@ -2364,7 +2381,7 @@ YY_RULE_SETUP
 case 28:
 /* rule 28 can match eol */
 YY_RULE_SETUP
-#line 788 "lex.ll"
+#line 805 "lex.ll"
 {
     LEXER_DEBUG ("{NL}");
 
@@ -2394,7 +2411,7 @@ YY_RULE_SETUP
 
 case 29:
 YY_RULE_SETUP
-#line 816 "lex.ll"
+#line 833 "lex.ll"
 {
     LEXER_DEBUG ("'");
 
@@ -2418,7 +2435,7 @@ YY_RULE_SETUP
 
 case 30:
 YY_RULE_SETUP
-#line 838 "lex.ll"
+#line 855 "lex.ll"
 {
     LEXER_DEBUG ("\"");
 
@@ -2433,7 +2450,7 @@ YY_RULE_SETUP
 
 case 31:
 YY_RULE_SETUP
-#line 851 "lex.ll"
+#line 868 "lex.ll"
 {
     LEXER_DEBUG ("{CCHAR}");
 
@@ -2456,7 +2473,7 @@ YY_RULE_SETUP
 case 32:
 /* rule 32 can match eol */
 YY_RULE_SETUP
-#line 871 "lex.ll"
+#line 888 "lex.ll"
 {
     LEXER_DEBUG ("^{S}*{CCHAR}\\{{S}*{NL}");
 
@@ -2476,177 +2493,177 @@ YY_RULE_SETUP
 
 case 33:
 YY_RULE_SETUP
-#line 889 "lex.ll"
+#line 906 "lex.ll"
 { LEXER_DEBUG (":"); BIN_OP_RETURN (':', false, false); }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 891 "lex.ll"
+#line 908 "lex.ll"
 { LEXER_DEBUG (".+"); XBIN_OP_RETURN (EPLUS, false, false); }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 892 "lex.ll"
+#line 909 "lex.ll"
 { LEXER_DEBUG (".-"); XBIN_OP_RETURN (EMINUS, false, false); }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 893 "lex.ll"
+#line 910 "lex.ll"
 { LEXER_DEBUG (".*"); BIN_OP_RETURN (EMUL, false, false); }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 894 "lex.ll"
+#line 911 "lex.ll"
 { LEXER_DEBUG ("./"); BIN_OP_RETURN (EDIV, false, false); }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 895 "lex.ll"
+#line 912 "lex.ll"
 { LEXER_DEBUG (".\\"); BIN_OP_RETURN (ELEFTDIV, false, false); }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 896 "lex.ll"
+#line 913 "lex.ll"
 { LEXER_DEBUG (".^"); BIN_OP_RETURN (EPOW, false, false); }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 897 "lex.ll"
+#line 914 "lex.ll"
 { LEXER_DEBUG (".**"); XBIN_OP_RETURN (EPOW, false, false); }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 898 "lex.ll"
+#line 915 "lex.ll"
 { LEXER_DEBUG (".'"); do_comma_insert_check (); BIN_OP_RETURN (TRANSPOSE, true, false); }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 899 "lex.ll"
-{ LEXER_DEBUG ("++"); do_comma_insert_check (); XBIN_OP_RETURN (PLUS_PLUS, true, false); }
+#line 916 "lex.ll"
+{ LEXER_DEBUG ("++"); do_comma_insert_check (); XBIN_OP_RETURN_INTERNAL (PLUS_PLUS, true, false, true); }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 900 "lex.ll"
-{ LEXER_DEBUG ("--"); do_comma_insert_check (); XBIN_OP_RETURN (MINUS_MINUS, true, false); }
+#line 917 "lex.ll"
+{ LEXER_DEBUG ("--"); do_comma_insert_check (); XBIN_OP_RETURN_INTERNAL (MINUS_MINUS, true, false, true); }
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 901 "lex.ll"
+#line 918 "lex.ll"
 { LEXER_DEBUG ("<="); BIN_OP_RETURN (EXPR_LE, false, false); }
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 902 "lex.ll"
+#line 919 "lex.ll"
 { LEXER_DEBUG ("=="); BIN_OP_RETURN (EXPR_EQ, false, false); }
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 903 "lex.ll"
+#line 920 "lex.ll"
 { LEXER_DEBUG ("~="); BIN_OP_RETURN (EXPR_NE, false, false); }
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 904 "lex.ll"
+#line 921 "lex.ll"
 { LEXER_DEBUG ("!="); XBIN_OP_RETURN (EXPR_NE, false, false); }
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 905 "lex.ll"
+#line 922 "lex.ll"
 { LEXER_DEBUG (">="); BIN_OP_RETURN (EXPR_GE, false, false); }
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 906 "lex.ll"
+#line 923 "lex.ll"
 { LEXER_DEBUG ("&"); BIN_OP_RETURN (EXPR_AND, false, false); }
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 907 "lex.ll"
+#line 924 "lex.ll"
 { LEXER_DEBUG ("|"); BIN_OP_RETURN (EXPR_OR, false, false); }
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 908 "lex.ll"
+#line 925 "lex.ll"
 { LEXER_DEBUG ("<"); BIN_OP_RETURN (EXPR_LT, false, false); }
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 909 "lex.ll"
+#line 926 "lex.ll"
 { LEXER_DEBUG (">"); BIN_OP_RETURN (EXPR_GT, false, false); }
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 910 "lex.ll"
+#line 927 "lex.ll"
 { LEXER_DEBUG ("+"); BIN_OP_RETURN ('+', false, false); }
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 911 "lex.ll"
+#line 928 "lex.ll"
 { LEXER_DEBUG ("-"); BIN_OP_RETURN ('-', false, false); }
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 912 "lex.ll"
+#line 929 "lex.ll"
 { LEXER_DEBUG ("*"); BIN_OP_RETURN ('*', false, false); }
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 913 "lex.ll"
+#line 930 "lex.ll"
 { LEXER_DEBUG ("/"); BIN_OP_RETURN ('/', false, false); }
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 914 "lex.ll"
+#line 931 "lex.ll"
 { LEXER_DEBUG ("\\"); BIN_OP_RETURN (LEFTDIV, false, false); }
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 915 "lex.ll"
+#line 932 "lex.ll"
 { LEXER_DEBUG (";"); BIN_OP_RETURN (';', true, true); }
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 916 "lex.ll"
+#line 933 "lex.ll"
 { LEXER_DEBUG (","); BIN_OP_RETURN (',', true, ! lexer_flags.looking_at_object_index.front ()); }
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 917 "lex.ll"
+#line 934 "lex.ll"
 { LEXER_DEBUG ("^"); BIN_OP_RETURN (POW, false, false); }
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 918 "lex.ll"
+#line 935 "lex.ll"
 { LEXER_DEBUG ("**"); XBIN_OP_RETURN (POW, false, false); }
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 919 "lex.ll"
+#line 936 "lex.ll"
 { LEXER_DEBUG ("="); BIN_OP_RETURN ('=', true, false); }
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 920 "lex.ll"
+#line 937 "lex.ll"
 { LEXER_DEBUG ("&&"); BIN_OP_RETURN (EXPR_AND_AND, false, false); }
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 921 "lex.ll"
+#line 938 "lex.ll"
 { LEXER_DEBUG ("||"); BIN_OP_RETURN (EXPR_OR_OR, false, false); }
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 922 "lex.ll"
+#line 939 "lex.ll"
 { LEXER_DEBUG ("<<"); XBIN_OP_RETURN (LSHIFT, false, false); }
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 923 "lex.ll"
+#line 940 "lex.ll"
 { LEXER_DEBUG (">>"); XBIN_OP_RETURN (RSHIFT, false, false); }
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 925 "lex.ll"
+#line 942 "lex.ll"
 {
     LEXER_DEBUG ("{NOT}");
 
@@ -2658,7 +2675,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
-#line 934 "lex.ll"
+#line 951 "lex.ll"
 {
     LEXER_DEBUG ("(");
 
@@ -2682,7 +2699,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
-#line 955 "lex.ll"
+#line 972 "lex.ll"
 {
     LEXER_DEBUG (")");
 
@@ -2692,9 +2709,14 @@ YY_RULE_SETUP
     lexer_flags.looking_at_object_index.pop_front ();
 
     lexer_flags.quote_is_transpose = true;
-    lexer_flags.convert_spaces_to_comma = nesting_level.is_bracket_or_brace ();
+    lexer_flags.convert_spaces_to_comma
+      = (nesting_level.is_bracket_or_brace ()
+         && ! lexer_flags.looking_at_anon_fcn_args);
     lexer_flags.looking_for_object_index = true;
     lexer_flags.at_beginning_of_statement = false;
+
+    if (lexer_flags.looking_at_anon_fcn_args)
+      lexer_flags.looking_at_anon_fcn_args = false;
 
     do_comma_insert_check ();
 
@@ -2703,7 +2725,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
-#line 973 "lex.ll"
+#line 995 "lex.ll"
 {
     LEXER_DEBUG (".");
 
@@ -2715,87 +2737,87 @@ YY_RULE_SETUP
 	YY_BREAK
 case 71:
 YY_RULE_SETUP
-#line 982 "lex.ll"
+#line 1004 "lex.ll"
 { LEXER_DEBUG ("+="); XBIN_OP_RETURN (ADD_EQ, false, false); }
 	YY_BREAK
 case 72:
 YY_RULE_SETUP
-#line 983 "lex.ll"
+#line 1005 "lex.ll"
 { LEXER_DEBUG ("-="); XBIN_OP_RETURN (SUB_EQ, false, false); }
 	YY_BREAK
 case 73:
 YY_RULE_SETUP
-#line 984 "lex.ll"
+#line 1006 "lex.ll"
 { LEXER_DEBUG ("*="); XBIN_OP_RETURN (MUL_EQ, false, false); }
 	YY_BREAK
 case 74:
 YY_RULE_SETUP
-#line 985 "lex.ll"
+#line 1007 "lex.ll"
 { LEXER_DEBUG ("/="); XBIN_OP_RETURN (DIV_EQ, false, false); }
 	YY_BREAK
 case 75:
 YY_RULE_SETUP
-#line 986 "lex.ll"
+#line 1008 "lex.ll"
 { LEXER_DEBUG ("\\="); XBIN_OP_RETURN (LEFTDIV_EQ, false, false); }
 	YY_BREAK
 case 76:
 YY_RULE_SETUP
-#line 987 "lex.ll"
+#line 1009 "lex.ll"
 { LEXER_DEBUG (".+="); XBIN_OP_RETURN (ADD_EQ, false, false); }
 	YY_BREAK
 case 77:
 YY_RULE_SETUP
-#line 988 "lex.ll"
+#line 1010 "lex.ll"
 { LEXER_DEBUG (".-="); XBIN_OP_RETURN (SUB_EQ, false, false); }
 	YY_BREAK
 case 78:
 YY_RULE_SETUP
-#line 989 "lex.ll"
+#line 1011 "lex.ll"
 { LEXER_DEBUG (".*="); XBIN_OP_RETURN (EMUL_EQ, false, false); }
 	YY_BREAK
 case 79:
 YY_RULE_SETUP
-#line 990 "lex.ll"
+#line 1012 "lex.ll"
 { LEXER_DEBUG ("./="); XBIN_OP_RETURN (EDIV_EQ, false, false); }
 	YY_BREAK
 case 80:
 YY_RULE_SETUP
-#line 991 "lex.ll"
+#line 1013 "lex.ll"
 { LEXER_DEBUG (".\\="); XBIN_OP_RETURN (ELEFTDIV_EQ, false, false); }
 	YY_BREAK
 case 81:
 YY_RULE_SETUP
-#line 992 "lex.ll"
+#line 1014 "lex.ll"
 { LEXER_DEBUG ("{POW}="); XBIN_OP_RETURN (POW_EQ, false, false); }
 	YY_BREAK
 case 82:
 YY_RULE_SETUP
-#line 993 "lex.ll"
+#line 1015 "lex.ll"
 { LEXER_DEBUG ("{EPOW}="); XBIN_OP_RETURN (EPOW_EQ, false, false); }
 	YY_BREAK
 case 83:
 YY_RULE_SETUP
-#line 994 "lex.ll"
+#line 1016 "lex.ll"
 { LEXER_DEBUG ("&="); XBIN_OP_RETURN (AND_EQ, false, false); }
 	YY_BREAK
 case 84:
 YY_RULE_SETUP
-#line 995 "lex.ll"
+#line 1017 "lex.ll"
 { LEXER_DEBUG ("|="); XBIN_OP_RETURN (OR_EQ, false, false); }
 	YY_BREAK
 case 85:
 YY_RULE_SETUP
-#line 996 "lex.ll"
+#line 1018 "lex.ll"
 { LEXER_DEBUG ("<<="); XBIN_OP_RETURN (LSHIFT_EQ, false, false); }
 	YY_BREAK
 case 86:
 YY_RULE_SETUP
-#line 997 "lex.ll"
+#line 1019 "lex.ll"
 { LEXER_DEBUG (">>="); XBIN_OP_RETURN (RSHIFT_EQ, false, false); }
 	YY_BREAK
 case 87:
 YY_RULE_SETUP
-#line 999 "lex.ll"
+#line 1021 "lex.ll"
 {
     LEXER_DEBUG ("\\{{S}*");
 
@@ -2820,7 +2842,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 88:
 YY_RULE_SETUP
-#line 1021 "lex.ll"
+#line 1043 "lex.ll"
 {
     LEXER_DEBUG ("}");
 
@@ -2839,7 +2861,7 @@ YY_RULE_SETUP
 
 case 89:
 YY_RULE_SETUP
-#line 1038 "lex.ll"
+#line 1060 "lex.ll"
 {
     LEXER_DEBUG (".");
 
@@ -2863,10 +2885,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 90:
 YY_RULE_SETUP
-#line 1059 "lex.ll"
+#line 1081 "lex.ll"
 ECHO;
 	YY_BREAK
-#line 2870 "lex.cc"
+#line 2892 "lex.cc"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -3865,7 +3887,7 @@ void octave_free (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 1059 "lex.ll"
+#line 1081 "lex.ll"
 
 
 
@@ -3931,9 +3953,11 @@ reset_parser (void)
 
   // Only ask for input from stdin if we are expecting interactive
   // input.
-  if ((interactive || forced_interactive)
+
+  if (! quitting_gracefully
+      && (interactive || forced_interactive)
       && ! (reading_fcn_file
-        || reading_classdef_file
+            || reading_classdef_file
             || reading_script_file
             || get_input_from_eval_string
             || input_from_startup_file))
@@ -4206,6 +4230,22 @@ delete_buffer (YY_BUFFER_STATE buf)
   octave__delete_buffer (buf);
 }
 
+// Delete all buffers from the stack.
+void
+clear_all_buffers (void)
+{                 
+  while (current_buffer ())
+    octave_pop_buffer_state ();
+}
+
+void
+cleanup_parser (void)
+{
+  reset_parser ();
+
+  clear_all_buffers ();
+}
+
 // Restore a buffer (for unwind-prot).
 
 void
@@ -4312,6 +4352,11 @@ is_keyword_token (const std::string& s)
           lexer_flags.at_beginning_of_statement = true;
           break;
 
+        case endparfor_kw:
+          yylval.tok_val = new token (token::parfor_end, l, c);
+          lexer_flags.at_beginning_of_statement = true;
+          break;
+
         case endswitch_kw:
           yylval.tok_val = new token (token::switch_end, l, c);
           lexer_flags.at_beginning_of_statement = true;
@@ -4324,6 +4369,11 @@ is_keyword_token (const std::string& s)
 
         case endclassdef_kw:
           yylval.tok_val = new token (token::classdef_end, l, c);
+          lexer_flags.at_beginning_of_statement = true;
+          break;
+
+        case endenumeration_kw:
+          yylval.tok_val = new token (token::enumeration_end, l, c);
           lexer_flags.at_beginning_of_statement = true;
           break;
 
@@ -4342,7 +4392,9 @@ is_keyword_token (const std::string& s)
           lexer_flags.at_beginning_of_statement = true;
           break;
 
+
         case for_kw:
+        case parfor_kw:
         case while_kw:
           promptflag--;
           lexer_flags.looping++;
@@ -4373,9 +4425,10 @@ is_keyword_token (const std::string& s)
             return 0;
           break;
 
-        case properties_kw:
-        case methods_kw:
+        case enumeration_kw:
         case events_kw:
+        case methods_kw:
+        case properties_kw:
           // 'properties', 'methods' and 'events' are keywords for
           // classdef blocks.
           if (! lexer_flags.parsing_classdef)
@@ -6164,6 +6217,9 @@ lexical_feedback::init (void)
   // Not initiallly looking at a function handle.
   looking_at_function_handle = 0;
 
+  // Not initiallly looking at an anonymous function argument list.
+  looking_at_anon_fcn_args = 0;
+
   // Not parsing a function return, parameter, or declaration list.
   looking_at_return_list = false;
   looking_at_parameter_list = false;
@@ -6245,6 +6301,14 @@ is omitted, return a list of keywords.\n\
 
   return retval;
 }
+
+/*
+
+%!assert (iskeyword ("for"))
+%!assert (iskeyword ("fort"), false)
+%!assert (iskeyword ("fft"), false)
+
+*/
 
 void
 prep_lexer_for_script_file (void)

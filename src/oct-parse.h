@@ -1,10 +1,8 @@
+/* A Bison parser, made by GNU Bison 2.5.  */
 
-/* A Bison parser, made by GNU Bison 2.4.1.  */
-
-/* Skeleton interface for Bison's Yacc-like parsers in C
+/* Bison interface for Yacc-like parsers in C
    
-      Copyright (C) 1984, 1989, 1990, 2000, 2001, 2002, 2003, 2004, 2005, 2006
-   Free Software Foundation, Inc.
+      Copyright (C) 1984, 1989-1990, 2000-2011 Free Software Foundation, Inc.
    
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -86,40 +84,42 @@
      DQ_STRING = 302,
      SQ_STRING = 303,
      FOR = 304,
-     WHILE = 305,
-     DO = 306,
-     UNTIL = 307,
-     IF = 308,
-     ELSEIF = 309,
-     ELSE = 310,
-     SWITCH = 311,
-     CASE = 312,
-     OTHERWISE = 313,
-     BREAK = 314,
-     CONTINUE = 315,
-     FUNC_RET = 316,
-     UNWIND = 317,
-     CLEANUP = 318,
-     TRY = 319,
-     CATCH = 320,
-     GLOBAL = 321,
-     STATIC = 322,
-     FCN_HANDLE = 323,
-     PROPERTIES = 324,
-     METHODS = 325,
-     EVENTS = 326,
-     METAQUERY = 327,
-     SUPERCLASSREF = 328,
-     GET = 329,
-     SET = 330,
-     END_OF_INPUT = 331,
-     LEXICAL_ERROR = 332,
-     FCN = 333,
-     SCRIPT_FILE = 334,
-     FUNCTION_FILE = 335,
-     CLASSDEF = 336,
-     CLOSE_BRACE = 337,
-     UNARY = 338
+     PARFOR = 305,
+     WHILE = 306,
+     DO = 307,
+     UNTIL = 308,
+     IF = 309,
+     ELSEIF = 310,
+     ELSE = 311,
+     SWITCH = 312,
+     CASE = 313,
+     OTHERWISE = 314,
+     BREAK = 315,
+     CONTINUE = 316,
+     FUNC_RET = 317,
+     UNWIND = 318,
+     CLEANUP = 319,
+     TRY = 320,
+     CATCH = 321,
+     GLOBAL = 322,
+     STATIC = 323,
+     FCN_HANDLE = 324,
+     PROPERTIES = 325,
+     METHODS = 326,
+     EVENTS = 327,
+     ENUMERATION = 328,
+     METAQUERY = 329,
+     SUPERCLASSREF = 330,
+     GET = 331,
+     SET = 332,
+     END_OF_INPUT = 333,
+     LEXICAL_ERROR = 334,
+     FCN = 335,
+     SCRIPT_FILE = 336,
+     FUNCTION_FILE = 337,
+     CLASSDEF = 338,
+     CLOSE_BRACE = 339,
+     UNARY = 340
    };
 #endif
 /* Tokens.  */
@@ -170,40 +170,42 @@
 #define DQ_STRING 302
 #define SQ_STRING 303
 #define FOR 304
-#define WHILE 305
-#define DO 306
-#define UNTIL 307
-#define IF 308
-#define ELSEIF 309
-#define ELSE 310
-#define SWITCH 311
-#define CASE 312
-#define OTHERWISE 313
-#define BREAK 314
-#define CONTINUE 315
-#define FUNC_RET 316
-#define UNWIND 317
-#define CLEANUP 318
-#define TRY 319
-#define CATCH 320
-#define GLOBAL 321
-#define STATIC 322
-#define FCN_HANDLE 323
-#define PROPERTIES 324
-#define METHODS 325
-#define EVENTS 326
-#define METAQUERY 327
-#define SUPERCLASSREF 328
-#define GET 329
-#define SET 330
-#define END_OF_INPUT 331
-#define LEXICAL_ERROR 332
-#define FCN 333
-#define SCRIPT_FILE 334
-#define FUNCTION_FILE 335
-#define CLASSDEF 336
-#define CLOSE_BRACE 337
-#define UNARY 338
+#define PARFOR 305
+#define WHILE 306
+#define DO 307
+#define UNTIL 308
+#define IF 309
+#define ELSEIF 310
+#define ELSE 311
+#define SWITCH 312
+#define CASE 313
+#define OTHERWISE 314
+#define BREAK 315
+#define CONTINUE 316
+#define FUNC_RET 317
+#define UNWIND 318
+#define CLEANUP 319
+#define TRY 320
+#define CATCH 321
+#define GLOBAL 322
+#define STATIC 323
+#define FCN_HANDLE 324
+#define PROPERTIES 325
+#define METHODS 326
+#define EVENTS 327
+#define ENUMERATION 328
+#define METAQUERY 329
+#define SUPERCLASSREF 330
+#define GET 331
+#define SET 332
+#define END_OF_INPUT 333
+#define LEXICAL_ERROR 334
+#define FCN 335
+#define SCRIPT_FILE 336
+#define FUNCTION_FILE 337
+#define CLASSDEF 338
+#define CLOSE_BRACE 339
+#define UNARY 340
 
 
 
@@ -212,8 +214,8 @@
 typedef union YYSTYPE
 {
 
-/* Line 1676 of yacc.c  */
-#line 389 "oct-parse.yy"
+/* Line 2068 of yacc.c  */
+#line 390 "oct-parse.yy"
 
   // The type of the basic tokens returned by the lexer.
   token *tok_val;
@@ -252,8 +254,8 @@ typedef union YYSTYPE
 
 
 
-/* Line 1676 of yacc.c  */
-#line 257 "oct-parse.h"
+/* Line 2068 of yacc.c  */
+#line 259 "oct-parse.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

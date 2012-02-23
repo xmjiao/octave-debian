@@ -37,16 +37,16 @@ Up:&nbsp;<a rel="up" accesskey="u" href="Two_002dDimensional-Plots.html#Two_002d
 <p><a name="doc_002drectangle"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>rectangle</b> ()<var><a name="index-rectangle-1161"></a></var><br>
-&mdash; Function File:  <b>rectangle</b> (<var><small class="dots">...</small>, "Position", pos</var>)<var><a name="index-rectangle-1162"></a></var><br>
-&mdash; Function File:  <b>rectangle</b> (<var><small class="dots">...</small>, "Curvature", curv</var>)<var><a name="index-rectangle-1163"></a></var><br>
-&mdash; Function File:  <b>rectangle</b> (<var><small class="dots">...</small>, "EdgeColor", ec</var>)<var><a name="index-rectangle-1164"></a></var><br>
-&mdash; Function File:  <b>rectangle</b> (<var><small class="dots">...</small>, "FaceColor", fc</var>)<var><a name="index-rectangle-1165"></a></var><br>
-&mdash; Function File: <var>h</var> = <b>rectangle</b> (<var><small class="dots">...</small></var>)<var><a name="index-rectangle-1166"></a></var><br>
+&mdash; Function File:  <b>rectangle</b> ()<var><a name="index-rectangle-1231"></a></var><br>
+&mdash; Function File:  <b>rectangle</b> (<var><small class="dots">...</small>, "Position", pos</var>)<var><a name="index-rectangle-1232"></a></var><br>
+&mdash; Function File:  <b>rectangle</b> (<var><small class="dots">...</small>, "Curvature", curv</var>)<var><a name="index-rectangle-1233"></a></var><br>
+&mdash; Function File:  <b>rectangle</b> (<var><small class="dots">...</small>, "EdgeColor", ec</var>)<var><a name="index-rectangle-1234"></a></var><br>
+&mdash; Function File:  <b>rectangle</b> (<var><small class="dots">...</small>, "FaceColor", fc</var>)<var><a name="index-rectangle-1235"></a></var><br>
+&mdash; Function File: <var>h</var> = <b>rectangle</b> (<var><small class="dots">...</small></var>)<var><a name="index-rectangle-1236"></a></var><br>
 <blockquote>
         <p>Draw rectangular patch defined by <var>pos</var> and <var>curv</var>.  The variable
-<var>pos</var><code>(1 : 2)</code> defines the lower left-hand corner of the patch
-and <var>pos</var><code>(3 : 4)</code> defines its width and height.  By default, the
+<var>pos</var><code>(1:2)</code> defines the lower left-hand corner of the patch
+and <var>pos</var><code>(3:4)</code> defines its width and height.  By default, the
 value of <var>pos</var> is <code>[0, 0, 1, 1]</code>.
 
         <p>The variable <var>curv</var> defines the curvature of the sides of the rectangle
@@ -60,11 +60,12 @@ curvature along the x-axis of the patch and the second along y-axis.
 two sides of the rectangle and the curvature of the other side is defined
 by
 
-     <pre class="example">          min (pos (1: 2)) / max (pos (1:2)) * curv
+     <pre class="example">          min (pos (1:2)) / max (pos (1:2)) * curv
 </pre>
-        <p>Other properties are passed to the underlying patch command.  If called
-with an output argument, <code>rectangle</code> returns the handle to the
-rectangle. 
+        <p>Other properties are passed to the underlying patch command.
+
+        <p>The optional return value <var>h</var> is a graphics handle to the created
+rectangle object. 
 </p></blockquote></div>
    <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
 <!-- A simple blank line produces the correct behavior. -->

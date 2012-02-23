@@ -1,4 +1,4 @@
-## Copyright (C) 2003-2011 Shai Ayal
+## Copyright (C) 2003-2012 Shai Ayal
 ##
 ## This file is part of Octave.
 ##
@@ -50,9 +50,8 @@
 ## y = x;
 ## z = x' * y;
 ## contourc (x, y, z, 2:3)
-##      @result{}   2.0000   2.0000   1.0000   3.0000   1.5000   2.0000
-##      2.0000   1.0000   2.0000   2.0000   2.0000   1.5000
-##
+##    @result{}   2.0000   2.0000   1.0000   3.0000   1.5000   2.0000
+##         2.0000   1.0000   2.0000   2.0000   2.0000   1.5000
 ## @end group
 ## @end example
 ## @seealso{contour}

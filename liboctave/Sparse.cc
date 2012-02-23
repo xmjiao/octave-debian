@@ -1,7 +1,7 @@
 // Template sparse array class
 /*
 
-Copyright (C) 2004-2011 David Bateman
+Copyright (C) 2004-2012 David Bateman
 Copyright (C) 1998-2004 Andy Adler
 Copyright (C) 2010 VZLU Prague
 
@@ -49,6 +49,34 @@ along with Octave; see the file COPYING.  If not, see
 #include "sparse-util.h"
 #include "oct-spparms.h"
 #include "mx-inlines.cc"
+
+#include "PermMatrix.h"
+
+template <class T>
+Sparse<T>::Sparse (const PermMatrix& a)
+  : rep (new typename Sparse<T>::SparseRep (a.rows (), a.cols (), a.rows ())),
+         dimensions (dim_vector (a.rows (), a.cols()))
+{
+  octave_idx_type n = a.rows ();
+  for (octave_idx_type i = 0; i <= n; i++)
+    cidx (i) = i;
+
+  const Array<octave_idx_type> pv = a.pvec ();
+
+  if (a.is_row_perm ())
+    {
+      for (octave_idx_type i = 0; i < n; i++)
+        ridx (pv (i)) = i;
+    }
+  else
+    {
+      for (octave_idx_type i = 0; i < n; i++)
+        ridx (i) = pv (i);
+    }
+
+  for (octave_idx_type i = 0; i < n; i++)
+    data (i) = 1.0;
+}
 
 template <class T>
 T&
@@ -639,7 +667,7 @@ Sparse<T>::Sparse (const Array<T>& a)
 template <class T>
 Sparse<T>::~Sparse (void)
 {
-  if (--rep->count <= 0)
+  if (--rep->count == 0)
     delete rep;
 }
 
@@ -649,7 +677,7 @@ Sparse<T>::operator = (const Sparse<T>& a)
 {
   if (this != &a)
     {
-      if (--rep->count <= 0)
+      if (--rep->count == 0)
         delete rep;
 
       rep = a.rep;
@@ -1458,9 +1486,6 @@ Sparse<T>::index (const idx_vector& idx, bool resize_ok) const
     }
   else
     {
-      (*current_liboctave_warning_with_id_handler)
-        ("Octave:fortran-indexing", "single index used for sparse matrix");
-
       if (nr != 0 && idx.is_scalar ())
         retval = Sparse<T> (1, 1, elem (idx(0) % nr, idx(0) / nr));
       else

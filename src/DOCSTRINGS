@@ -33,10 +33,10 @@ Return the bitwise XOR of non-negative integers.
 @deftypefn  {Built-in Function} {} bitshift (@var{a}, @var{k})
 @deftypefnx {Built-in Function} {} bitshift (@var{a}, @var{k}, @var{n})
 Return a @var{k} bit shift of @var{n}-digit unsigned
-integers in @var{a}.  A positive @var{k} leads to a left shift.
+integers in @var{a}.  A positive @var{k} leads to a left shift;
 A negative value to a right shift.  If @var{n} is omitted it defaults
 to log2(bitmax)+1.
-@var{n} must be in the range [1,log2(bitmax)+1] usually [1,33]
+@var{n} must be in the range [1,log2(bitmax)+1] usually [1,33].
 
 @example
 @group
@@ -494,14 +494,17 @@ return the number of elements that would result from the indexing
   @var{a}(@var{idx1}, @var{idx2}, @dots{})
 @end example
 
-Note that the indices do not have to be numerical. For example
+Note that the indices do not have to be numerical.  For example,
 
 @example
+@group
   @var{a} = 1;
   @var{b} = ones (2, 3);
   numel (@var{a}, @var{b});
+@end group
 @end example
 
+@noindent
 will return 6, as this is the number of ways to index with @var{b}.
 
 This method is also called when an object appears as lvalue with cs-list
@@ -778,6 +781,9 @@ val = zeros (m,n, "uint8")
 Inf
 @c Inf src/data.cc
 -*- texinfo -*-
+@c List other form of function in documentation index
+@findex inf
+
 @deftypefn  {Built-in Function} {} Inf
 @deftypefnx {Built-in Function} {} Inf (@var{n})
 @deftypefnx {Built-in Function} {} Inf (@var{n}, @var{m})
@@ -810,6 +816,9 @@ either "double" or "single".
 NaN
 @c NaN src/data.cc
 -*- texinfo -*-
+@c List other form of function in documentation index
+@findex nan
+
 @deftypefn  {Built-in Function} {} NaN
 @deftypefnx {Built-in Function} {} NaN (@var{n})
 @deftypefnx {Built-in Function} {} NaN (@var{n}, @var{m})
@@ -991,6 +1000,11 @@ either "double" or "single".
 I
 @c I src/data.cc
 -*- texinfo -*-
+@c List other forms of function in documentation index
+@findex i
+@findex j
+@findex J
+
 @deftypefn  {Built-in Function} {} I
 @deftypefnx {Built-in Function} {} I (@var{n})
 @deftypefnx {Built-in Function} {} I (@var{n}, @var{m})
@@ -1107,8 +1121,8 @@ val = zeros (n,m, "uint8")
 @end example
 
 Calling @code{eye} with no arguments is equivalent to calling it
-with an argument of 1.  This odd definition is for compatibility
-with @sc{matlab}.
+with an argument of 1.  Any negative dimensions are treated as zero. 
+These odd definitions are for compatibility with @sc{matlab}.
 @seealso{speye}
 @end deftypefn
 linspace
@@ -1306,27 +1320,28 @@ Return the logical NOT of @var{x}.  This function is equivalent to
 @c uplus src/data.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} uplus (@var{x})
-This function is equivalent to @w{@code{+ x}}.
+This function and @w{@xcode{+ x}} are equivalent.
 @end deftypefn
 uminus
 @c uminus src/data.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} uminus (@var{x})
-This function is equivalent to @w{@code{- x}}.
+This function and @w{@xcode{- x}} are equivalent.
 @end deftypefn
 transpose
 @c transpose src/data.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} transpose (@var{x})
-Return the transpose of @var{x}.  This function is equivalent to @code{x.'}.
+Return the transpose of @var{x}.
+This function and @xcode{x.'} are equivalent.
 @seealso{ctranspose}
 @end deftypefn
 ctranspose
 @c ctranspose src/data.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} ctranspose (@var{x})
-Return the complex conjugate transpose of @var{x}.  This function is
-equivalent to @code{x'}.
+Return the complex conjugate transpose of @var{x}.
+This function and @xcode{x'} are equivalent.
 @seealso{transpose}
 @end deftypefn
 plus
@@ -1334,7 +1349,7 @@ equivalent to @code{x'}.
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {} plus (@var{x}, @var{y})
 @deftypefnx {Built-in Function} {} plus (@var{x1}, @var{x2}, @dots{})
-This function is equivalent to @w{@code{x + y}}.
+This function and @w{@xcode{x + y}} are equivalent.
 If more arguments are given, the summation is applied
 cumulatively from left to right:
 
@@ -1349,7 +1364,7 @@ At least one argument is required.
 @c minus src/data.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} minus (@var{x}, @var{y})
-This function is equivalent to @w{@code{x - y}}.
+This function and @w{@xcode{x - y}} are equivalent.
 @seealso{plus}
 @end deftypefn
 mtimes
@@ -1358,7 +1373,7 @@ This function is equivalent to @w{@code{x - y}}.
 @deftypefn  {Built-in Function} {} mtimes (@var{x}, @var{y})
 @deftypefnx {Built-in Function} {} mtimes (@var{x1}, @var{x2}, @dots{})
 Return the matrix multiplication product of inputs.
-This function is equivalent to @w{@code{x * y}}.
+This function and @w{@xcode{x * y}} are equivalent.
 If more arguments are given, the multiplication is applied
 cumulatively from left to right:
 
@@ -1374,7 +1389,7 @@ At least one argument is required.
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} mrdivide (@var{x}, @var{y})
 Return the matrix right division of @var{x} and @var{y}.
-This function is equivalent to @w{@code{x / y}}.
+This function and @w{@xcode{x / y}} are equivalent.
 @seealso{mldivide, rdivide}
 @end deftypefn
 mpower
@@ -1382,7 +1397,7 @@ This function is equivalent to @w{@code{x / y}}.
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} mpower (@var{x}, @var{y})
 Return the matrix power operation of @var{x} raised to the @var{y} power.
-This function is equivalent to @w{@code{x ^ y}}.
+This function and @w{@xcode{x ^ y}} are equivalent.
 @seealso{power}
 @end deftypefn
 mldivide
@@ -1390,7 +1405,7 @@ This function is equivalent to @w{@code{x ^ y}}.
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} mldivide (@var{x}, @var{y})
 Return the matrix left division of @var{x} and @var{y}.
-This function is equivalent to @w{@code{x \ y}}.
+This function and @w{@xcode{x \ y}} are equivalent.
 @seealso{mrdivide, ldivide}
 @end deftypefn
 lt
@@ -1439,7 +1454,7 @@ This function is equivalent to @w{@code{x != y}}.
 @deftypefn  {Built-in Function} {} times (@var{x}, @var{y})
 @deftypefnx {Built-in Function} {} times (@var{x1}, @var{x2}, @dots{})
 Return the element-by-element multiplication product of inputs.
-This function is equivalent to @w{@code{x .* y}}.
+This function and @w{@xcode{x .* y}} are equivalent.
 If more arguments are given, the multiplication is applied
 cumulatively from left to right:
 
@@ -1455,7 +1470,7 @@ At least one argument is required.
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} rdivide (@var{x}, @var{y})
 Return the element-by-element right division of @var{x} and @var{y}.
-This function is equivalent to @w{@code{x ./ y}}.
+This function and @w{@xcode{x ./ y}} are equivalent.
 @seealso{ldivide, mrdivide}
 @end deftypefn
 power
@@ -1463,16 +1478,20 @@ This function is equivalent to @w{@code{x ./ y}}.
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} power (@var{x}, @var{y})
 Return the element-by-element operation of @var{x} raised to the
-@var{y} power.
-This function is equivalent to @w{@code{x .^ y}}.
-@seealso{mpower}
+@var{y} power.  If several complex results are possible,
+returns the one with smallest non-negative argument (angle).  Use
+@code{realpow}, @code{realsqrt}, @code{cbrt}, or @code{nthroot} if a
+real result is preferred.
+
+This function and @w{@xcode{x .^ y}} are equivalent.
+@seealso{mpower, realpow, realsqrt, cbrt, nthroot}
 @end deftypefn
 ldivide
 @c ldivide src/data.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} ldivide (@var{x}, @var{y})
 Return the element-by-element left division of @var{x} and @var{y}.
-This function is equivalent to @w{@code{x .\ y}}.
+This function and @w{@xcode{x .\ y}} are equivalent.
 @seealso{rdivide, mldivide}
 @end deftypefn
 and
@@ -1809,73 +1828,145 @@ endfor
 dbstop
 @c dbstop src/debug.cc
 -*- texinfo -*-
-@deftypefn {Loadable Function} {@var{rline} =} dbstop (@var{func}, @var{line}, @dots{})
-Set a breakpoint in a function
-@table @code
+@deftypefn  {Loadable Function} {@var{rline} =} dbstop ("@var{func}")
+@deftypefnx {Loadable Function} {@var{rline} =} dbstop ("@var{func}", @var{line}, @dots{})
+Set a breakpoint in function @var{func}.
+
+Arguments are
+
+@table @var
 @item func
-String representing the function name.  When already in debug
+Function name as a string variable.  When already in debug
 mode this should be left out and only the line should be given.
 
 @item line
-Line number you would like the breakpoint to be set on.  Multiple
-lines might be given as separate arguments or as a vector.
+Line number where the breakpoint should be set.  Multiple
+lines may be given as separate arguments or as a vector.
 @end table
 
-The rline returned is the real line that the breakpoint was set at.
-@seealso{dbclear, dbstatus, dbstep}
+When called with a single argument @var{func}, the breakpoint
+is set at the first executable line in the named function.
+
+The optional output @var{rline} is the real line number where the
+breakpoint was set.  This can differ from specified line if
+the line is not executable.  For example, if a breakpoint attempted on a
+blank line then Octave will set the real breakpoint at the
+next executable line.
+@seealso{dbclear, dbstatus, dbstep, debug_on_error, debug_on_warning, debug_on_interrupt}
 @end deftypefn
 dbclear
 @c dbclear src/debug.cc
 -*- texinfo -*-
-@deftypefn {Loadable Function} {} dbclear (@var{func}, @var{line}, @dots{})
-Delete a breakpoint in a function
-@table @code
+@deftypefn  {Loadable Function} {} dbclear ("@var{func}")
+@deftypefnx {Loadable Function} {} dbclear ("@var{func}", @var{line}, @dots{})
+Delete a breakpoint in the function @var{func}.
+
+Arguments are
+
+@table @var
 @item func
-String representing the function name.  When already in debug
+Function name as a string variable.  When already in debug
 mode this should be left out and only the line should be given.
 
 @item line
-Line number where you would like to remove the breakpoint.  Multiple
-lines might be given as separate arguments or as a vector.
+Line number from which to remove a breakpoint.  Multiple
+lines may be given as separate arguments or as a vector.
 @end table
-No checking is done to make sure that the line you requested is really
-a breakpoint.  If you get the wrong line nothing will happen.
+
+When called without a line number specification all breakpoints
+in the named function are cleared.
+
+If the requested line is not a breakpoint no action is performed.
 @seealso{dbstop, dbstatus, dbwhere}
 @end deftypefn
 dbstatus
 @c dbstatus src/debug.cc
 -*- texinfo -*-
-@deftypefn {Loadable Function} {lst =} dbstatus (@var{func})
-Return a vector containing the lines on which a function has
-breakpoints set.
-@table @code
-@item func
-String representing the function name.  When already in debug
-mode this should be left out.
+@deftypefn  {Loadable Function} {} dbstatus ()
+@deftypefnx {Loadable Function} {@var{brk_list} =} dbstatus ()
+@deftypefnx {Loadable Function} {@var{brk_list} =} dbstatus ("@var{func}")
+Report the location of active breakpoints.
+
+When called with no input or output arguments, print the list of
+all functions with breakpoints and the line numbers where those
+breakpoints are set.
+If a function name @var{func} is specified then only report breakpoints
+for the named function.
+
+The optional return argument @var{brk_list} is a struct array with the
+following fields.
+
+@table @asis
+@item name
+The name of the function with a breakpoint.
+
+@item file
+The name of the m-file where the function code is located.
+
+@item line
+A line number, or vector of line numbers, with a breakpoint.
 @end table
+
 @seealso{dbclear, dbwhere}
 @end deftypefn
 dbwhere
 @c dbwhere src/debug.cc
 -*- texinfo -*-
 @deftypefn {Loadable Function} {} dbwhere ()
-Show where we are in the code
-@seealso{dbclear, dbstatus, dbstop}
+In debugging mode, report the current file and line number where
+execution is stopped.
+@seealso{dbstatus, dbcont, dbstep, dbup}
 @end deftypefn
 dbtype
 @c dbtype src/debug.cc
 -*- texinfo -*-
-@deftypefn {Loadable Function} {} dbtype ()
-List script file with line numbers.
-@seealso{dbclear, dbstatus, dbstop}
+@deftypefn  {Loadable Function} {} dbtype ()
+@deftypefnx {Loadable Function} {} dbtype ("startl:endl")
+@deftypefnx {Loadable Function} {} dbtype ("@var{func}")
+@deftypefnx {Loadable Function} {} dbtype ("@var{func}", "startl:endl")
+When in debugging mode and called with no arguments, list the script file
+being debugged with line numbers.  An optional range specification,
+specified as a string, can be used to list only a portion of the file.
+
+When called with the name of a function, list that script file
+with line numbers.
+@seealso{dbstatus, dbstop}
 @end deftypefn
 dbstack
 @c dbstack src/debug.cc
 -*- texinfo -*-
-@deftypefn {Loadable Function} {[@var{stack}, @var{idx}]} dbstack (@var{n})
-Print or return current stack information.  With optional argument
-@var{n}, omit the @var{n} innermost stack frames.
-@seealso{dbclear, dbstatus, dbstop}
+@deftypefn  {Loadable Function} {} dbstack ()
+@deftypefnx {Loadable Function} {} dbstack (@var{n})
+@deftypefnx {Loadable Function} {[@var{stack}, @var{idx}] =} dbstack (@dots{})
+Display or return current debugging function stack information.
+With optional argument @var{n}, omit the @var{n} innermost stack frames.
+
+The optional return argument @var{stack} is a struct array with the
+following fields:
+
+@table @asis
+@item file
+The name of the m-file where the function code is located.
+
+@item name
+The name of the function with a breakpoint.
+
+@item line
+The line number of an active breakpoint.
+
+@item column
+The column number of the line where the breakpoint begins.
+
+@item scope
+Undocumented.
+
+@item context
+Undocumented.
+@end table
+
+The return argument @var{idx} specifies which element of the @var{stack}
+struct array is currently active.
+@seealso{dbup, dbdown, dbwhere, dbstatus}
 @end deftypefn
 dbup
 @c dbup src/debug.cc
@@ -1884,7 +1975,7 @@ Print or return current stack information.  With optional argument
 @deftypefnx {Loadable Function} {} dbup (@var{n})
 In debugging mode, move up the execution stack @var{n} frames.
 If @var{n} is omitted, move up one frame.
-@seealso{dbstack}
+@seealso{dbstack, dbdown}
 @end deftypefn
 dbdown
 @c dbdown src/debug.cc
@@ -1893,7 +1984,7 @@ If @var{n} is omitted, move up one frame.
 @deftypefnx {Loadable Function} {} dbdown (@var{n})
 In debugging mode, move down the execution stack @var{n} frames.
 If @var{n} is omitted, move down one frame.
-@seealso{dbstack}
+@seealso{dbstack, dbup}
 @end deftypefn
 dbstep
 @c dbstep src/debug.cc
@@ -1902,47 +1993,56 @@ If @var{n} is omitted, move down one frame.
 @deftypefnx {Command} {} dbstep @var{n}
 @deftypefnx {Command} {} dbstep in
 @deftypefnx {Command} {} dbstep out
+@deftypefnx {Command} {} dbnext @dots{}
 In debugging mode, execute the next @var{n} lines of code.
-If @var{n} is omitted , execute the next single line of code.
-If the next line of code is itself
-defined in terms of an m-file remain in the existing function.
+If @var{n} is omitted, execute the next single line of code.
+If the next line of code is itself defined in terms of an m-file remain in
+the existing function.
 
 Using @code{dbstep in} will cause execution of the next line to step into
 any m-files defined on the next line.  Using @code{dbstep out} will cause
 execution to continue until the current function returns.
+
+@code{dbnext} is an alias for @code{dbstep}.
 @seealso{dbcont, dbquit}
 @end deftypefn
 dbcont
 @c dbcont src/debug.cc
 -*- texinfo -*-
 @deftypefn {Command} {} dbcont
-In debugging mode, quit debugging mode and continue execution.
+Leave command-line debugging mode and continue code execution normally.
 @seealso{dbstep, dbquit}
 @end deftypefn
 dbquit
 @c dbquit src/debug.cc
 -*- texinfo -*-
 @deftypefn {Command} {} dbquit
-In debugging mode, quit debugging mode and return to the top level.
-@seealso{dbstep, dbcont}
+Quit debugging mode immediately without further code execution and
+return to the Octave prompt.
+@seealso{dbcont, dbstep}
 @end deftypefn
 isdebugmode
 @c isdebugmode src/debug.cc
 -*- texinfo -*-
 @deftypefn {Loadable Function} {} isdebugmode ()
-Return true if debug mode is on, otherwise false.
-@seealso{dbstack, dbclear, dbstop, dbstatus}
+Return true if in debugging mode, otherwise false.
+@seealso{dbwhere, dbstack, dbstatus}
 @end deftypefn
 EDITOR
 @c EDITOR src/defaults.cc
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} EDITOR ()
 @deftypefnx {Built-in Function} {@var{old_val} =} EDITOR (@var{new_val})
+@deftypefnx {Built-in Function} {} EDITOR (@var{new_val}, "local")
 Query or set the internal variable that specifies the editor to
 use with the @code{edit_history} command.  The default value is taken from
 the environment variable @w{@env{EDITOR}} when Octave starts.  If the
 environment variable is not initialized, @w{@env{EDITOR}} will be set to
 @code{"emacs"}.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{edit_history}
 @end deftypefn
 EXEC_PATH
@@ -1950,19 +2050,29 @@ environment variable is not initialized, @w{@env{EDITOR}} will be set to
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} EXEC_PATH ()
 @deftypefnx {Built-in Function} {@var{old_val} =} EXEC_PATH (@var{new_val})
+@deftypefnx {Built-in Function} {} EXEC_PATH (@var{new_val}, "local")
 Query or set the internal variable that specifies a colon separated
 list of directories to append to the shell PATH when executing external
 programs.  The initial value of is taken from the environment variable
 @w{@env{OCTAVE_EXEC_PATH}}, but that value can be overridden by
 the command line argument @option{--exec-path PATH}.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 IMAGE_PATH
 @c IMAGE_PATH src/defaults.cc
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} IMAGE_PATH ()
 @deftypefnx {Built-in Function} {@var{old_val} =} IMAGE_PATH (@var{new_val})
+@deftypefnx {Built-in Function} {} IMAGE_PATH (@var{new_val}, "local")
 Query or set the internal variable that specifies a colon separated
 list of directories in which to search for image files.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 OCTAVE_HOME
 @c OCTAVE_HOME src/defaults.cc
@@ -2176,8 +2286,13 @@ Query or set the character used to separate directories in a path.
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} confirm_recursive_rmdir ()
 @deftypefnx {Built-in Function} {@var{old_val} =} confirm_recursive_rmdir (@var{new_val})
+@deftypefnx {Built-in Function} {} confirm_recursive_rmdir (@var{new_val}, "local")
 Query or set the internal variable that controls whether Octave
 will ask for confirmation before recursively removing a directory tree.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 rethrow
 @c rethrow src/error.cc
@@ -2252,6 +2367,10 @@ error: nargin != 1
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {} warning (@var{template}, @dots{})
 @deftypefnx {Built-in Function} {} warning (@var{id}, @var{template}, @dots{})
+@deftypefnx {Built-in Function} {} warning ("on", @var{id})
+@deftypefnx {Built-in Function} {} warning ("off", @var{id})
+@deftypefnx {Built-in Function} {} warning ("query", @var{id})
+@deftypefnx {Built-in Function} {} warning ("error", @var{id})
 Format the optional arguments under the control of the template string
 @var{template} using the same rules as the @code{printf} family of
 functions (@pxref{Formatted Output}) and print the resulting message
@@ -2265,14 +2384,19 @@ The optional message identifier allows users to enable or disable
 warnings tagged by @var{id}.  The special identifier @samp{"all"} may
 be used to set the state of all warnings.
 
-@deftypefnx {Built-in Function} {} warning ("on", @var{id})
-@deftypefnx {Built-in Function} {} warning ("off", @var{id})
-@deftypefnx {Built-in Function} {} warning ("error", @var{id})
-@deftypefnx {Built-in Function} {} warning ("query", @var{id})
-Set or query the state of a particular warning using the identifier
-@var{id}.  If the identifier is omitted, a value of @samp{"all"} is
-assumed.  If you set the state of a warning to @samp{"error"}, the
-warning named by @var{id} is handled as if it were an error instead.
+If the first argument is @samp{"on"} or @samp{"off"}, set the state
+of a particular warning using the identifier @var{id}.  If the first
+argument is @samp{"query"}, query the state of this warning instead.
+If the identifier is omitted, a value of @samp{"all"} is assumed.  If
+you set the state of a warning to @samp{"error"}, the warning named by
+@var{id} is handled as if it were an error instead.  So, for example, the
+following handles all warnings as errors:
+
+@example
+@group
+warning ("error");
+@end group
+@end example
 @seealso{warning_ids}
 @end deftypefn
 lasterror
@@ -2281,8 +2405,8 @@ warning named by @var{id} is handled as if it were an error instead.
 @deftypefn  {Built-in Function} {@var{lasterr} =} lasterror ()
 @deftypefnx {Built-in Function} {} lasterror (@var{err})
 @deftypefnx {Built-in Function} {} lasterror ('reset')
-Query or set the last error message structure.  When called without arguments
-, return a structure containing the last error message and other
+Query or set the last error message structure.  When called without
+arguments, return a structure containing the last error message and other
 information related to this error.  The elements of the structure are:
 
 @table @asis
@@ -2374,26 +2498,41 @@ to check for the proper number of arguments.
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} beep_on_error ()
 @deftypefnx {Built-in Function} {@var{old_val} =} beep_on_error (@var{new_val})
+@deftypefnx {Built-in Function} {} beep_on_error (@var{new_val}, "local")
 Query or set the internal variable that controls whether Octave will try
 to ring the terminal bell before printing an error message.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 debug_on_error
 @c debug_on_error src/error.cc
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} debug_on_error ()
 @deftypefnx {Built-in Function} {@var{old_val} =} debug_on_error (@var{new_val})
+@deftypefnx {Built-in Function} {} debug_on_error (@var{new_val}, "local")
 Query or set the internal variable that controls whether Octave will try
 to enter the debugger when an error is encountered.  This will also
 inhibit printing of the normal traceback message (you will only see
 the top-level error message).
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 debug_on_warning
 @c debug_on_warning src/error.cc
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} debug_on_warning ()
 @deftypefnx {Built-in Function} {@var{old_val} =} debug_on_warning (@var{new_val})
+@deftypefnx {Built-in Function} {} debug_on_warning (@var{new_val}, "local")
 Query or set the internal variable that controls whether Octave will try
 to enter the debugger when a warning is encountered.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 fclose
 @c fclose src/file-io.cc
@@ -2673,8 +2812,8 @@ converted.
 fscanf
 @c fscanf src/file-io.cc
 -*- texinfo -*-
-@deftypefn  {Built-in Function} {[@var{val}, @var{count}] =} fscanf (@var{fid}, @var{template}, @var{size})
-@deftypefnx {Built-in Function} {[@var{v1}, @var{v2}, @dots{}, @var{count}] =} fscanf (@var{fid}, @var{template}, "C")
+@deftypefn  {Built-in Function} {[@var{val}, @var{count}, @var{errmsg}] =} fscanf (@var{fid}, @var{template}, @var{size})
+@deftypefnx {Built-in Function} {[@var{v1}, @var{v2}, @dots{}, @var{count}, @var{errmsg}] =} fscanf (@var{fid}, @var{template}, "C")
 In the first form, read from @var{fid} according to @var{template},
 returning the result in the matrix @var{val}.
 
@@ -2707,6 +2846,8 @@ conversions.
 
 The number of items successfully read is returned in @var{count}.
 
+If an error occurs, @var{errmsg} contains a system-dependent error message.
+
 In the second form, read from @var{fid} according to @var{template},
 with each conversion specifier in @var{template} corresponding to a
 single scalar return value.  This form is more `C-like', and also
@@ -2722,20 +2863,20 @@ complete description of the syntax of the template string.
 sscanf
 @c sscanf src/file-io.cc
 -*- texinfo -*-
-@deftypefn  {Built-in Function} {[@var{val}, @var{count}, @var{pos}] =} sscanf (@var{string}, @var{template}, @var{size})
-@deftypefnx {Built-in Function} {[@var{v1}, @var{v2}, @dots{}, @var{count}] =} sscanf (@var{string}, @var{template}, "C")
+@deftypefn  {Built-in Function} {[@var{val}, @var{count}, @var{errmsg}, @var{pos}] =} sscanf (@var{string}, @var{template}, @var{size})
+@deftypefnx {Built-in Function} {[@var{v1}, @var{v2}, @dots{}, @var{count}, @var{errmsg}] =} sscanf (@var{string}, @var{template}, "C")
 This is like @code{fscanf}, except that the characters are taken from the
 string @var{string} instead of from a stream.  Reaching the end of the
 string is treated as an end-of-file condition.  In addition to the values
 returned by @code{fscanf}, the index of the next character to be read
-is returned in in @var{pos}.
+is returned in @var{pos}.
 @seealso{fscanf, scanf, sprintf}
 @end deftypefn
 scanf
 @c scanf src/file-io.cc
 -*- texinfo -*-
-@deftypefn  {Built-in Function} {[@var{val}, @var{count}] =} scanf (@var{template}, @var{size})
-@deftypefnx {Built-in Function} {[@var{v1}, @var{v2}, @dots{}, @var{count}]] =} scanf (@var{template}, "C")
+@deftypefn  {Built-in Function} {[@var{val}, @var{count}, @var{errmsg}] =} scanf (@var{template}, @var{size})
+@deftypefnx {Built-in Function} {[@var{v1}, @var{v2}, @dots{}, @var{count}, @var{errmsg}]] =} scanf (@var{template}, "C")
 This is equivalent to calling @code{fscanf} with @var{fid} = @code{stdin}.
 
 It is currently not useful to call @code{scanf} in interactive
@@ -3000,6 +3141,9 @@ use @code{fclose} for the same purpose.
 tmpnam
 @c tmpnam src/file-io.cc
 -*- texinfo -*-
+@c List other forms of function in documentation index
+@findex octave_tmp_file_name
+
 @deftypefn  {Built-in Function} {} tmpnam ()
 @deftypefnx {Built-in Function} {} tmpnam (@var{dir})
 @deftypefnx {Built-in Function} {} tmpnam (@var{dir}, @var{prefix})
@@ -3037,7 +3181,7 @@ must be @code{XXXXXX} and these are replaced with a string that makes the
 filename unique.  The file is then created with mode read/write and
 permissions that are system dependent (on GNU/Linux systems, the permissions
 will be 0600 for versions of glibc 2.0.7 and later).  The file is opened
-with the @w{@code{O_EXCL}} flag.
+in binary mode and with the @w{@code{O_EXCL}} flag.
 
 If the optional argument @var{delete} is supplied and is true,
 the file will be deleted automatically when Octave exits, or when
@@ -3071,7 +3215,7 @@ this system.  The name of this directory is system dependent.
 @deftypefn  {Built-in Function} {} SEEK_SET ()
 @deftypefnx {Built-in Function} {} SEEK_CUR ()
 @deftypefnx {Built-in Function} {} SEEK_END ()
-Return the value required to request that @code{fseek} perform
+Return the numerical value to pass to @code{fseek} to perform
 one of the following actions:
 @table @code
 @item SEEK_SET
@@ -3083,18 +3227,23 @@ Position file relative to the current position.
 @item SEEK_END
 Position file relative to the end.
 @end table
+@seealso{fseek}
 @end deftypefn
 SEEK_CUR
 @c SEEK_CUR src/file-io.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} SEEK_CUR ()
-See SEEK_SET.
+Return the numerical value to pass to @code{fseek} to
+position the file pointer relative to the current position.
+@seealso{SEEK_SET, SEEK_END}.
 @end deftypefn
 SEEK_END
 @c SEEK_END src/file-io.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} SEEK_END ()
-See SEEK_SET.
+Return the numerical value to pass to @code{fseek} to
+position the file pointer relative to the end of the file.
+@seealso{SEEK_SET, SEEK_CUR}.
 @end deftypefn
 stdin
 @c stdin src/file-io.cc
@@ -3131,6 +3280,12 @@ Return true if @var{h} is a graphics handle and false otherwise.
 array is returned that is true where the elements of @var{h} are
 graphics handles and false where they are not.
 @seealso{isfigure}
+@end deftypefn
+__is_handle_visible__
+@c __is_handle_visible__ src/graphics.cc
+-*- texinfo -*-
+@deftypefn {Built-in Function} __is_handle_visible__ (@var{h})
+Undocumented internal function.
 @end deftypefn
 reset
 @c reset src/graphics.cc
@@ -3252,6 +3407,42 @@ Undocumented internal function.
 @deftypefn {Built-in Function} {} __go_uimenu__ (@var{parent})
 Undocumented internal function.
 @end deftypefn
+__go_uicontrol__
+@c __go_uicontrol__ src/graphics.cc
+-*- texinfo -*-
+@deftypefn {Built-in Function} {} __go_uicontrol__ (@var{parent})
+Undocumented internal function.
+@end deftypefn
+__go_uipanel__
+@c __go_uipanel__ src/graphics.cc
+-*- texinfo -*-
+@deftypefn {Built-in Function} {} __go_uipanel__ (@var{parent})
+Undocumented internal function.
+@end deftypefn
+__go_uicontextmenu__
+@c __go_uicontextmenu__ src/graphics.cc
+-*- texinfo -*-
+@deftypefn {Built-in Function} {} __go_uicontextmenu__ (@var{parent})
+Undocumented internal function.
+@end deftypefn
+__go_uitoolbar__
+@c __go_uitoolbar__ src/graphics.cc
+-*- texinfo -*-
+@deftypefn {Built-in Function} {} __go_uitoolbar__ (@var{parent})
+Undocumented internal function.
+@end deftypefn
+__go_uipushtool__
+@c __go_uipushtool__ src/graphics.cc
+-*- texinfo -*-
+@deftypefn {Built-in Function} {} __go_uipushtool__ (@var{parent})
+Undocumented internal function.
+@end deftypefn
+__go_uitoggletool__
+@c __go_uitoggletool__ src/graphics.cc
+-*- texinfo -*-
+@deftypefn {Built-in Function} {} __go_uitoggletool__ (@var{parent})
+Undocumented internal function.
+@end deftypefn
 __go_delete__
 @c __go_delete__ src/graphics.cc
 -*- texinfo -*-
@@ -3267,13 +3458,13 @@ Undocumented internal function.
 __go_handles__
 @c __go_handles__ src/graphics.cc
 -*- texinfo -*-
-@deftypefn {Built-in Function} {} __go_handles__ ()
+@deftypefn {Built-in Function} {} __go_handles__ (@var{show_hidden})
 Undocumented internal function.
 @end deftypefn
 __go_figure_handles__
 @c __go_figure_handles__ src/graphics.cc
 -*- texinfo -*-
-@deftypefn {Built-in Function} {} __go_figure_handles__ ()
+@deftypefn {Built-in Function} {} __go_figure_handles__ (@var{show_hidden})
 Undocumented internal function.
 @end deftypefn
 __go_execute_callback__
@@ -3294,6 +3485,21 @@ Internal function: returns the pixel size of the image in normalized units.
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} available_graphics_toolkits ()
 Return a cell array of registered graphics toolkits.
+@seealso{graphics_toolkit, register_graphics_toolkit}
+@end deftypefn
+register_graphics_toolkit
+@c register_graphics_toolkit src/graphics.cc
+-*- texinfo -*-
+@deftypefn {Built-in Function} {} register_graphics_toolkit (@var{toolkit})
+List @var{toolkit} as an available graphics toolkit.
+@seealso{available_graphics_toolkits}
+@end deftypefn
+loaded_graphics_toolkits
+@c loaded_graphics_toolkits src/graphics.cc
+-*- texinfo -*-
+@deftypefn {Built-in Function} {} loaded_graphics_toolkits ()
+Return a cell array of the currently loaded graphics toolkits.
+@seealso{available_graphics_toolkits}
 @end deftypefn
 drawnow
 @c drawnow src/graphics.cc
@@ -3438,6 +3644,47 @@ addproperty ("my_style", gcf, "linelinestyle", "--");
 @end example
 
 @end deftypefn
+waitfor
+@c waitfor src/graphics.cc
+-*- texinfo -*-
+@deftypefn  {Built-in Function} {} waitfor (@var{h})
+@deftypefnx {Built-in Function} {} waitfor (@var{h}, @var{prop})
+@deftypefnx {Built-in Function} {} waitfor (@var{h}, @var{prop}, @var{value})
+@deftypefnx {Built-in Function} {} waitfor (@dots{}, "timeout", @var{timeout})
+Suspend the execution of the current program until a condition is
+satisfied on the graphics handle @var{h}.  While the program is suspended
+graphics events are still being processed normally, allowing callbacks to
+modify the state of graphics objects.  This function is reentrant and can be
+called from a callback, while another @code{waitfor} call is pending at
+top-level.
+
+In the first form, program execution is suspended until the graphics object
+@var{h} is destroyed.  If the graphics handle is invalid, the function
+returns immediately.
+
+In the second form, execution is suspended until the graphics object is
+destroyed or the property named @var{prop} is modified.  If the graphics
+handle is invalid or the property does not exist, the function returns
+immediately.
+
+In the third form, execution is suspended until the graphics object is
+destroyed or the property named @var{prop} is set to @var{value}.  The
+function @code{isequal} is used to compare property values.  If the graphics
+handle is invalid, the property does not exist or the property is already
+set to @var{value}, the function returns immediately.
+
+An optional timeout can be specified using the property @code{timeout}.
+This timeout value is the number of seconds to wait for the condition to be
+true.  @var{timeout} must be at least 1. If a smaller value is specified, a
+warning is issued and a value of 1 is used instead.  If the timeout value is
+not an integer, it is truncated towards 0.
+
+To define a condition on a property named @code{timeout}, use the string
+@code{\timeout} instead.
+
+In all cases, typing CTRL-C stops program execution immediately.
+@seealso{isequal}
+@end deftypefn
 get_help_text
 @c get_help_text src/help.cc
 -*- texinfo -*-
@@ -3494,6 +3741,7 @@ Undocumented internal function.
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} doc_cache_file ()
 @deftypefnx {Built-in Function} {@var{old_val} =} doc_cache_file (@var{new_val})
+@deftypefnx {Built-in Function} {} doc_cache_file (@var{new_val}, "local")
 Query or set the internal variable that specifies the name of the
 Octave documentation cache file.  A cache file significantly improves
 the performance of the @code{lookfor} command.  The default value is 
@@ -3503,6 +3751,10 @@ and @var{version} is the Octave version number.
 The default value may be overridden by the environment variable
 @w{@env{OCTAVE_DOC_CACHE_FILE}}, or the command line argument
 @samp{--doc-cache-file NAME}.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{lookfor, info_program, doc, help, makeinfo_program}
 @end deftypefn
 info_file
@@ -3510,6 +3762,7 @@ The default value may be overridden by the environment variable
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} info_file ()
 @deftypefnx {Built-in Function} {@var{old_val} =} info_file (@var{new_val})
+@deftypefnx {Built-in Function} {} info_file (@var{new_val}, "local")
 Query or set the internal variable that specifies the name of the
 Octave info file.  The default value is
 @file{@var{octave-home}/info/octave.info}, in
@@ -3517,6 +3770,10 @@ which @var{octave-home} is the root directory of the Octave installation.
 The default value may be overridden by the environment variable
 @w{@env{OCTAVE_INFO_FILE}}, or the command line argument
 @samp{--info-file NAME}.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{info_program, doc, help, makeinfo_program}
 @end deftypefn
 info_program
@@ -3524,6 +3781,7 @@ The default value may be overridden by the environment variable
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} info_program ()
 @deftypefnx {Built-in Function} {@var{old_val} =} info_program (@var{new_val})
+@deftypefnx {Built-in Function} {} info_program (@var{new_val}, "local")
 Query or set the internal variable that specifies the name of the
 info program to run.  The default value is
 @file{@var{octave-home}/libexec/octave/@var{version}/exec/@var{arch}/info}
@@ -3533,6 +3791,10 @@ is the system type (for example, @code{i686-pc-linux-gnu}).  The
 default value may be overridden by the environment variable
 @w{@env{OCTAVE_INFO_PROGRAM}}, or the command line argument
 @samp{--info-program NAME}.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{info_file, doc, help, makeinfo_program}
 @end deftypefn
 makeinfo_program
@@ -3540,9 +3802,14 @@ default value may be overridden by the environment variable
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} makeinfo_program ()
 @deftypefnx {Built-in Function} {@var{old_val} =} makeinfo_program (@var{new_val})
+@deftypefnx {Built-in Function} {} makeinfo_program (@var{new_val}, "local")
 Query or set the internal variable that specifies the name of the
 program that Octave runs to format help text containing
 Texinfo markup commands.  The default value is @code{makeinfo}.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{info_file, info_program, doc, help}
 @end deftypefn
 suppress_verbose_help_message
@@ -3550,9 +3817,14 @@ Texinfo markup commands.  The default value is @code{makeinfo}.
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} suppress_verbose_help_message ()
 @deftypefnx {Built-in Function} {@var{old_val} =} suppress_verbose_help_message (@var{new_val})
+@deftypefnx {Built-in Function} {} suppress_verbose_help_message (@var{new_val}, "local")
 Query or set the internal variable that controls whether Octave
 will add additional help information to the end of the output from
 the @code{help} command and usage messages for built-in commands.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 input
 @c input src/input.cc
@@ -3703,6 +3975,7 @@ periodically when Octave is waiting for input.
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} PS1 ()
 @deftypefnx {Built-in Function} {@var{old_val} =} PS1 (@var{new_val})
+@deftypefnx {Built-in Function} {} PS1 (@var{new_val}, "local")
 Query or set the primary prompt string.  When executing interactively,
 Octave displays the primary prompt when it is ready to read a command.
 
@@ -3728,6 +4001,10 @@ PS1 ("\\[\\033[01;31m\\]\\s:\\#> \\[\\033[0m\]")
 
 @noindent
 will give the default Octave prompt a red coloring.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{PS2, PS4}
 @end deftypefn
 PS2
@@ -3735,12 +4012,17 @@ will give the default Octave prompt a red coloring.
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} PS2 ()
 @deftypefnx {Built-in Function} {@var{old_val} =} PS2 (@var{new_val})
+@deftypefnx {Built-in Function} {} PS2 (@var{new_val}, "local")
 Query or set the secondary prompt string.  The secondary prompt is
 printed when Octave is expecting additional input to complete a
 command.  For example, if you are typing a @code{for} loop that spans several
 lines, Octave will print the secondary prompt at the beginning of
 each line after the first.  The default value of the secondary prompt
 string is @code{"> "}.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{PS1, PS4}
 @end deftypefn
 PS4
@@ -3748,10 +4030,15 @@ string is @code{"> "}.
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} PS4 ()
 @deftypefnx {Built-in Function} {@var{old_val} =} PS4 (@var{new_val})
+@deftypefnx {Built-in Function} {} PS4 (@var{new_val}, "local")
 Query or set the character string used to prefix output produced
 when echoing commands is enabled.
 The default value is @code{"+ "}.
 @xref{Diary and Echo Commands}, for a description of echoing commands.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{echo, echo_executing_commands, PS1, PS2}
 @end deftypefn
 completion_append_char
@@ -3759,15 +4046,21 @@ The default value is @code{"+ "}.
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} completion_append_char ()
 @deftypefnx {Built-in Function} {@var{old_val} =} completion_append_char (@var{new_val})
+@deftypefnx {Built-in Function} {} completion_append_char (@var{new_val}, "local")
 Query or set the internal character variable that is appended to
 successful command-line completion attempts.  The default
 value is @code{" "} (a single space).
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 echo_executing_commands
 @c echo_executing_commands src/input.cc
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} echo_executing_commands ()
 @deftypefnx {Built-in Function} {@var{old_val} =} echo_executing_commands (@var{new_val})
+@deftypefnx {Built-in Function} {} echo_executing_commands (@var{new_val}, "local")
 Query or set the internal variable that controls the echo state.
 It may be the sum of the following values:
 
@@ -3787,6 +4080,10 @@ equivalent to the command @kbd{echo on all}.
 
 The value of @code{echo_executing_commands} may be set by the @kbd{echo}
 command or the command line option @option{--echo-commands}.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 __request_drawnow__
 @c __request_drawnow__ src/input.cc
@@ -3806,6 +4103,7 @@ Undocumented internal function.
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} filemarker ()
 @deftypefnx {Built-in Function} {} filemarker (@var{new_val})
+@deftypefnx {Built-in Function} {} filemarker (@var{new_val}, "local")
 Query or set the character used to separate filename from the
 the subfunction names contained within the file.  This can be used in
 a generic manner to interact with subfunctions.  For example,
@@ -3826,6 +4124,10 @@ dbstop (["myfunc", filemarker, "mysubfunc"])
 
 @noindent
 will set a breakpoint at the first line of the subfunction @code{mysubfunc}.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 iskeyword
 @c iskeyword src/lex.cc
@@ -3951,6 +4253,9 @@ rmpath ("dir1:/dir2:~/dir3");
 @deftypefnx {Command} {} load options file
 @deftypefnx {Command} {} load options file v1 v2 @dots{}
 @deftypefnx {Command} {S =} load ("options", "file", "v1", "v2", @dots{})
+@deftypefnx {Command} {} load file options
+@deftypefnx {Command} {} load file options v1 v2 @dots{}
+@deftypefnx {Command} {S =} load ("file", "options", "v1", "v2", @dots{})
 Load the named variables @var{v1}, @var{v2}, @dots{}, from the file
 @var{file}.  If no variables are specified then all variables found in the
 file will be loaded.  As with @code{save}, the list of variables to extract
@@ -4070,6 +4375,7 @@ then the @var{options}, @var{file}, and variable name arguments
 @table @code
 @item -append
 Append to the destination instead of overwriting.
+
 @item -ascii
 Save a single matrix in a text file without header or any other information.
 
@@ -4159,16 +4465,21 @@ save -binary data a b*
 @noindent
 saves the variable @samp{a} and all variables beginning with @samp{b} to
 the file @file{data} in Octave's binary format.
-@seealso{load, default_save_options, dlmread, csvread, fread}
+@seealso{load, default_save_options, save_header_format_string, dlmread, csvread, fread}
 @end deftypefn
 crash_dumps_octave_core
 @c crash_dumps_octave_core src/load-save.cc
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} crash_dumps_octave_core ()
 @deftypefnx {Built-in Function} {@var{old_val} =} crash_dumps_octave_core (@var{new_val})
+@deftypefnx {Built-in Function} {} crash_dumps_octave_core (@var{new_val}, "local")
 Query or set the internal variable that controls whether Octave tries
 to save all current variables to the file "octave-core" if it
 crashes or receives a hangup, terminate or similar signal.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{octave_core_file_limit, octave_core_file_name, octave_core_file_options}
 @end deftypefn
 default_save_options
@@ -4176,10 +4487,15 @@ crashes or receives a hangup, terminate or similar signal.
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} default_save_options ()
 @deftypefnx {Built-in Function} {@var{old_val} =} default_save_options (@var{new_val})
+@deftypefnx {Built-in Function} {} default_save_options (@var{new_val}, "local")
 Query or set the internal variable that specifies the default options
 for the @code{save} command, and defines the default format.
 Typical values include @code{"-ascii"}, @code{"-text -zip"}.
 The default value is @option{-text}.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{save}
 @end deftypefn
 octave_core_file_limit
@@ -4187,6 +4503,7 @@ The default value is @option{-text}.
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} octave_core_file_limit ()
 @deftypefnx {Built-in Function} {@var{old_val} =} octave_core_file_limit (@var{new_val})
+@deftypefnx {Built-in Function} {} octave_core_file_limit (@var{new_val}, "local")
 Query or set the internal variable that specifies the maximum amount
 of memory (in kilobytes) of the top-level workspace that Octave will
 attempt to save when writing data to the crash dump file (the name of
@@ -4195,6 +4512,10 @@ the file is specified by @var{octave_core_file_name}).  If
 then @var{octave_core_file_limit} will be approximately the maximum
 size of the file.  If a text file format is used, then the file could
 be much larger than the limit.  The default value is -1 (unlimited)
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{crash_dumps_octave_core, octave_core_file_name, octave_core_file_options}
 @end deftypefn
 octave_core_file_name
@@ -4202,9 +4523,14 @@ be much larger than the limit.  The default value is -1 (unlimited)
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} octave_core_file_name ()
 @deftypefnx {Built-in Function} {@var{old_val} =} octave_core_file_name (@var{new_val})
+@deftypefnx {Built-in Function} {} octave_core_file_name (@var{new_val}, "local")
 Query or set the internal variable that specifies the name of the file
 used for saving data from the top-level workspace if Octave aborts.
 The default value is @code{"octave-core"}
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{crash_dumps_octave_core, octave_core_file_name, octave_core_file_options}
 @end deftypefn
 octave_core_file_options
@@ -4212,11 +4538,16 @@ The default value is @code{"octave-core"}
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} octave_core_file_options ()
 @deftypefnx {Built-in Function} {@var{old_val} =} octave_core_file_options (@var{new_val})
+@deftypefnx {Built-in Function} {} octave_core_file_options (@var{new_val}, "local")
 Query or set the internal variable that specifies the options used for
 saving the workspace data if Octave aborts.  The value of
 @code{octave_core_file_options} should follow the same format as the
 options for the @code{save} function.  The default value is Octave's binary
 format.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{crash_dumps_octave_core, octave_core_file_name, octave_core_file_limit}
 @end deftypefn
 save_header_format_string
@@ -4224,6 +4555,7 @@ format.
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} save_header_format_string ()
 @deftypefnx {Built-in Function} {@var{old_val} =} save_header_format_string (@var{new_val})
+@deftypefnx {Built-in Function} {} save_header_format_string (@var{new_val}, "local")
 Query or set the internal variable that specifies the format
 string used for the comment line written at the beginning of
 text-format data files saved by Octave.  The format string is
@@ -4237,6 +4569,10 @@ default value is
 @smallexample
 "# Created by Octave VERSION, %a %b %d %H:%M:%S %Y %Z <USER@@HOST>"
 @end smallexample
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{strftime, save}
 @end deftypefn
 save_precision
@@ -4244,8 +4580,13 @@ default value is
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} save_precision ()
 @deftypefnx {Built-in Function} {@var{old_val} =} save_precision (@var{new_val})
+@deftypefnx {Built-in Function} {} save_precision (@var{new_val}, "local")
 Query or set the internal variable that specifies the number of
 digits to keep when saving data in text format.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 abs
 @c abs src/mappers.cc
@@ -4776,7 +5117,7 @@ Return the real part of @var{z}.
 -*- texinfo -*-
 @deftypefn {Mapping Function} {} round (@var{x})
 Return the integer nearest to @var{x}.  If @var{x} is complex, return
-@code{round (real (@var{x})) + round (imag (@var{x})) * I}. If there
+@code{round (real (@var{x})) + round (imag (@var{x})) * I}.  If there
 are two nearest integers, return the one further away from zero.
 
 @example
@@ -5029,6 +5370,7 @@ variable @w{@env{OCTAVE_HISTFILE}}.
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} history_timestamp_format_string ()
 @deftypefnx {Built-in Function} {@var{old_val} =} history_timestamp_format_string (@var{new_val})
+@deftypefnx {Built-in Function} {} history_timestamp_format_string (@var{new_val}, "local")
 Query or set the internal variable that specifies the format string
 for the comment line that is written to the history file when Octave
 exits.  The format string is passed to @code{strftime}.  The default
@@ -5037,6 +5379,10 @@ value is
 @example
 "# Octave VERSION, %a %b %d %H:%M:%S %Y %Z <USER@@HOST>"
 @end example
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{strftime, history_file, history_size, saving_history}
 @end deftypefn
 saving_history
@@ -5044,8 +5390,13 @@ value is
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} saving_history ()
 @deftypefnx {Built-in Function} {@var{old_val} =} saving_history (@var{new_val})
+@deftypefnx {Built-in Function} {} saving_history (@var{new_val}, "local")
 Query or set the internal variable that controls whether commands entered
 on the command line are saved in the history file.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{history_control, history_file, history_size, history_timestamp_format_string}
 @end deftypefn
 autoload
@@ -5150,7 +5501,8 @@ another function for the given type signature.
 eval
 @c eval src/oct-parse.cc
 -*- texinfo -*-
-@deftypefn {Built-in Function} {} eval (@var{try}, @var{catch})
+@deftypefn  {Built-in Function} {} eval (@var{try})
+@deftypefnx {Built-in Function} {} eval (@var{try}, @var{catch})
 Parse the string @var{try} and evaluate it as if it were an Octave
 program.  If that fails, evaluate the optional string @var{catch}.
 The string @var{try} is evaluated in the current context,
@@ -5174,6 +5526,11 @@ eval ('error ("This is a bad example");',
         This is a bad example
 @end group
 @end example
+
+Consider using try/catch blocks instead if you are only using @code{eval}
+as an error-capturing mechanism rather than for the execution of arbitrary
+code strings.
+@seealso{evalin}
 @end deftypefn
 assignin
 @c assignin src/oct-parse.cc
@@ -5181,14 +5538,17 @@ eval ('error ("This is a bad example");',
 @deftypefn {Built-in Function} {} assignin (@var{context}, @var{varname}, @var{value})
 Assign @var{value} to @var{varname} in context @var{context}, which
 may be either @code{"base"} or @code{"caller"}.
+@seealso{evalin}
 @end deftypefn
 evalin
 @c evalin src/oct-parse.cc
 -*- texinfo -*-
-@deftypefn {Built-in Function} {} evalin (@var{context}, @var{try}, @var{catch})
+@deftypefn  {Built-in Function} {} evalin (@var{context}, @var{try})
+@deftypefnx {Built-in Function} {} evalin (@var{context}, @var{try}, @var{catch})
 Like @code{eval}, except that the expressions are evaluated in the
 context @var{context}, which may be either @code{"caller"} or
 @code{"base"}.
+@seealso{eval, assignin}
 @end deftypefn
 __parser_debug_flag__
 @c __parser_debug_flag__ src/oct-parse.cc
@@ -5284,33 +5644,48 @@ terminal window in characters (rows and columns).
 @c page_output_immediately src/pager.cc
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} page_output_immediately ()
-@deftypefnx {Built-in Function} {@var{val} =} page_output_immediately (@var{new_val})
+@deftypefnx {Built-in Function} {@var{old_val} =} page_output_immediately (@var{new_val})
+@deftypefnx {Built-in Function} {} page_output_immediately (@var{new_val}, "local")
 Query or set the internal variable that controls whether Octave sends
 output to the pager as soon as it is available.  Otherwise, Octave
 buffers its output and waits until just before the prompt is printed to
 flush it to the pager.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 page_screen_output
 @c page_screen_output src/pager.cc
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} page_screen_output ()
 @deftypefnx {Built-in Function} {@var{old_val} =} page_screen_output (@var{new_val})
+@deftypefnx {Built-in Function} {} page_screen_output (@var{new_val}, "local")
 Query or set the internal variable that controls whether output intended
 for the terminal window that is longer than one page is sent through a
 pager.  This allows you to view one screenful at a time.  Some pagers
 (such as @code{less}---see @ref{Installation}) are also capable of moving
 backward on the output.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 PAGER
 @c PAGER src/pager.cc
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} PAGER ()
 @deftypefnx {Built-in Function} {@var{old_val} =} PAGER (@var{new_val})
+@deftypefnx {Built-in Function} {} PAGER (@var{new_val}, "local")
 Query or set the internal variable that specifies the program to use
 to display terminal output on your system.  The default value is
 normally @code{"less"}, @code{"more"}, or
 @code{"pg"}, depending on what programs are installed on your system.
 @xref{Installation}.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{more, page_screen_output, page_output_immediately, PAGER_FLAGS}
 @end deftypefn
 PAGER_FLAGS
@@ -5318,8 +5693,13 @@ normally @code{"less"}, @code{"more"}, or
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} PAGER_FLAGS ()
 @deftypefnx {Built-in Function} {@var{old_val} =} PAGER_FLAGS (@var{new_val})
+@deftypefnx {Built-in Function} {} PAGER_FLAGS (@var{new_val}, "local")
 Query or set the internal variable that specifies the options to pass
 to the pager.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{PAGER}
 @end deftypefn
 rats
@@ -5542,12 +5922,12 @@ The following two options affect the display of all matrices.
 
 @table @code
 @item compact
-Remove extra blank space around column number labels producing more compact
-output with more data per page.
+Remove blank lines around column number labels and between
+matrices producing more compact output with more data per page.
 
 @item loose
-Insert blank lines above and below column number labels to produce a more
-readable output with less data per page.  (default).
+Insert blank lines above and below column number labels and between matrices
+to produce a more readable output with less data per page.  (default).
 @end table
 @seealso{fixed_point_format, output_max_field_width, output_precision, split_long_rows, rats}
 @end deftypefn
@@ -5556,6 +5936,7 @@ readable output with less data per page.  (default).
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} fixed_point_format ()
 @deftypefnx {Built-in Function} {@var{old_val} =} fixed_point_format (@var{new_val})
+@deftypefnx {Built-in Function} {} fixed_point_format (@var{new_val}, "local")
 Query or set the internal variable that controls whether Octave will
 use a scaled format to print matrix values such that the largest
 element may be written with a single leading digit with the scaling
@@ -5580,6 +5961,10 @@ ans =
 Notice that first value appears to be zero when it is actually 1.  For
 this reason, you should be careful when setting
 @code{fixed_point_format} to a nonzero value.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{format, output_max_field_width, output_precision}
 @end deftypefn
 print_empty_dimensions
@@ -5587,6 +5972,7 @@ this reason, you should be careful when setting
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} print_empty_dimensions ()
 @deftypefnx {Built-in Function} {@var{old_val} =} print_empty_dimensions (@var{new_val})
+@deftypefnx {Built-in Function} {} print_empty_dimensions (@var{new_val}, "local")
 Query or set the internal variable that controls whether the
 dimensions of empty matrices are printed along with the empty matrix
 symbol, @samp{[]}.  For example, the expression
@@ -5601,6 +5987,10 @@ will print
 @example
 ans = [](3x0)
 @end example
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{format}
 @end deftypefn
 split_long_rows
@@ -5608,6 +5998,7 @@ ans = [](3x0)
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} split_long_rows ()
 @deftypefnx {Built-in Function} {@var{old_val} =} split_long_rows (@var{new_val})
+@deftypefnx {Built-in Function} {} split_long_rows (@var{new_val}, "local")
 Query or set the internal variable that controls whether rows of a matrix
 may be split when displayed to a terminal window.  If the rows are split,
 Octave will display the matrix in a series of smaller pieces, each of
@@ -5631,6 +6022,10 @@ ans =
   0.44672  0.94303  0.56564  0.82150
 @end group
 @end example
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{format}
 @end deftypefn
 output_max_field_width
@@ -5638,8 +6033,13 @@ ans =
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} output_max_field_width ()
 @deftypefnx {Built-in Function} {@var{old_val} =} output_max_field_width (@var{new_val})
+@deftypefnx {Built-in Function} {} output_max_field_width (@var{new_val}, "local")
 Query or set the internal variable that specifies the maximum width
 of a numeric output field.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{format, fixed_point_format, output_precision}
 @end deftypefn
 output_precision
@@ -5647,9 +6047,32 @@ of a numeric output field.
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} output_precision ()
 @deftypefnx {Built-in Function} {@var{old_val} =} output_precision (@var{new_val})
+@deftypefnx {Built-in Function} {} output_precision (@var{new_val}, "local")
 Query or set the internal variable that specifies the minimum number of
 significant figures to display for numeric output.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{format, fixed_point_format, output_max_field_width}
+@end deftypefn
+__profiler_enable__
+@c __profiler_enable__ src/profiler.cc
+-*- texinfo -*-
+@deftypefn {Function File} __profiler_enable ()
+Undocumented internal function.
+@end deftypefn
+__profiler_reset__
+@c __profiler_reset__ src/profiler.cc
+-*- texinfo -*-
+@deftypefn {Function File} __profiler_reset ()
+Undocumented internal function.
+@end deftypefn
+__profiler_data__
+@c __profiler_data__ src/profiler.cc
+-*- texinfo -*-
+@deftypefn {Function File} __profiler_data ()
+Undocumented internal function.
 @end deftypefn
 SIG
 @c SIG src/sighandlers.cc
@@ -5662,28 +6085,43 @@ Return a structure containing Unix signal names and their defined values.
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} debug_on_interrupt ()
 @deftypefnx {Built-in Function} {@var{old_val} =} debug_on_interrupt (@var{new_val})
+@deftypefnx {Built-in Function} {} debug_on_interrupt (@var{new_val}, "local")
 Query or set the internal variable that controls whether Octave will try
 to enter debugging mode when it receives an interrupt signal (typically
 generated with @kbd{C-c}).  If a second interrupt signal is received
 before reaching the debugging mode, a normal interrupt will occur.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 sighup_dumps_octave_core
 @c sighup_dumps_octave_core src/sighandlers.cc
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} sighup_dumps_octave_core ()
 @deftypefnx {Built-in Function} {@var{old_val} =} sighup_dumps_octave_core (@var{new_val})
+@deftypefnx {Built-in Function} {} sighup_dumps_octave_core (@var{new_val}, "local")
 Query or set the internal variable that controls whether Octave tries
 to save all current variables to the file "octave-core" if it receives
 a hangup signal.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 sigterm_dumps_octave_core
 @c sigterm_dumps_octave_core src/sighandlers.cc
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} sigterm_dumps_octave_core ()
 @deftypefnx {Built-in Function} {@var{old_val} =} sigterm_dumps_octave_core (@var{new_val})
+@deftypefnx {Built-in Function} {} sigterm_dumps_octave_core (@var{new_val}, "local")
 Query or set the internal variable that controls whether Octave tries
 to save all current variables to the file "octave-core" if it receives
 a terminate signal.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 issparse
 @c issparse src/sparse.cc
@@ -5951,8 +6389,9 @@ columns with an overall maximum width of @var{width}.  The argument
 If @var{width} is not specified, the width of the terminal screen is used.
 Newline characters are used to break the lines in the output string.
 For example:
+@c Set example in small font to prevent overfull line
 
-@example
+@smallexample
 @group
 list_in_columns (@{"abc", "def", "ghijkl", "mnop", "qrs", "tuv"@}, 20)
      @result{} ans = abc     mnop
@@ -5969,7 +6408,7 @@ whos ans
 
      Total is 37 elements using 37 bytes
 @end group
-@end example
+@end smallexample
 
 @seealso{terminal_size}
 @end deftypefn
@@ -6568,7 +7007,7 @@ Return the canonical name of file @var{name}.
 @c F_DUPFD src/syscalls.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} F_DUPFD ()
-Return the value required to request that @code{fcntl} return a
+Return the numerical value to pass to @code{fcntl} to return a
 duplicate file descriptor.
 @seealso{fcntl, F_GETFD, F_GETFL, F_SETFD, F_SETFL}
 @end deftypefn
@@ -6576,7 +7015,7 @@ duplicate file descriptor.
 @c F_GETFD src/syscalls.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} F_GETFD ()
-Return the value required to request that @code{fcntl} to return the
+Return the numerical value to pass to @code{fcntl} to return the
 file descriptor flags.
 @seealso{fcntl, F_DUPFD, F_GETFL, F_SETFD, F_SETFL}
 @end deftypefn
@@ -6584,7 +7023,7 @@ file descriptor flags.
 @c F_GETFL src/syscalls.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} F_GETFL ()
-Return the value required to request that @code{fcntl} to return the
+Return the numerical value to pass to @code{fcntl} to return the
 file status flags.
 @seealso{fcntl, F_DUPFD, F_GETFD, F_SETFD, F_SETFL}
 @end deftypefn
@@ -6592,7 +7031,7 @@ file status flags.
 @c F_SETFD src/syscalls.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} F_SETFD ()
-Return the value required to request that @code{fcntl} to set the file
+Return the numerical value to pass to @code{fcntl} to set the file
 descriptor flags.
 @seealso{fcntl, F_DUPFD, F_GETFD, F_GETFL, F_SETFL}
 @end deftypefn
@@ -6600,7 +7039,7 @@ descriptor flags.
 @c F_SETFL src/syscalls.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} F_SETFL ()
-Return the value required to request that @code{fcntl} to set the file
+Return the numerical value to pass to @code{fcntl} to set the file
 status flags.
 @seealso{fcntl, F_DUPFD, F_GETFD, F_GETFL, F_SETFD}
 @end deftypefn
@@ -6856,31 +7295,36 @@ Describe the conditions for copying and distributing Octave.
 system
 @c system src/toplev.cc
 -*- texinfo -*-
-@deftypefn  {Built-in Function} {[@var{status}, @var{output}]} system (@var{string}, @var{return_output}, @var{type})
-@deftypefnx {Built-in Function} {[@var{status}, @var{output}]} shell_cmd (@var{string}, @var{return_output}, @var{type})
+@deftypefn  {Built-in Function} {} system ("@var{string}")
+@deftypefnx {Built-in Function} {} system ("@var{string}", @var{return_output})
+@deftypefnx {Built-in Function} {} system ("@var{string}", @var{return_output}, @var{type})
+@deftypefnx {Built-in Function} {[@var{status}, @var{output}] =} system (@dots{})
 Execute a shell command specified by @var{string}.
-If the optional argument @var{type} is @code{"async"}, the process
-is started in the background and the process id of the child process
-is returned immediately.  Otherwise, the process is started, and
-Octave waits until it exits.  If the @var{type} argument is omitted, a
-value of @code{"sync"} is assumed.
+If the optional argument @var{type} is "async", the process
+is started in the background and the process ID of the child process
+is returned immediately.  Otherwise, the child process is started and
+Octave waits until it exits.  If the @var{type} argument is omitted, it
+defaults to the value "sync".
 
-If the optional argument @var{return_output} is true and the subprocess
-is started synchronously, or if @var{system} is called with one input
-argument and one or more output arguments, the output from the command
-is returned.  Otherwise, if the subprocess is executed synchronously, its
-output is sent to the standard output.  To send the output of a command
-executed with @code{system} through the pager, use a command like
+If @var{system} is called with one or more output arguments, or if the
+optional argument @var{return_output} is true and the subprocess is started
+synchronously, then the output from the command is returned as a variable.  
+Otherwise, if the subprocess is executed synchronously, its output is sent
+to the standard output.  To send the output of a command executed with
+@code{system} through the pager, use a command like
 
 @example
-disp (system (cmd, 1));
+@group
+[output, text] = system ("cmd");
+disp (text);
+@end group
 @end example
 
 @noindent
 or
 
 @example
-printf ("%s\n", system (cmd, 1));
+printf ("%s\n", nthargout (2, "system", "cmd"));
 @end example
 
 The @code{system} function can return two values.  The first is the
@@ -6897,6 +7341,7 @@ variable @code{status} to the integer @samp{2}.
 
 For commands run asynchronously, @var{status} is the process id of the
 command shell that is started to run the command.
+@seealso{unix, dos}
 @end deftypefn
 atexit
 @c atexit src/toplev.cc
@@ -7208,6 +7653,9 @@ Variable in local scope
 Automatic variable.  An automatic variable is one created by the
 interpreter, for example @code{argn}.
 
+@item @code{c}
+Variable of complex type.
+
 @item @code{f}
 Formal parameter (function argument).
 
@@ -7341,6 +7789,7 @@ without the dash as well.
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} whos_line_format ()
 @deftypefnx {Built-in Function} {@var{old_val} =} whos_line_format (@var{new_val})
+@deftypefnx {Built-in Function} {} whos_line_format (@var{new_val}, "local")
 Query or set the format string used by the command @code{whos}.
 
 A full format string is:
@@ -7402,6 +7851,10 @@ left of the specified balance column.
 
 The default format is
 @code{"  %a:4; %ln:6; %cs:16:6:1;  %rb:12;  %lc:-1;\n"}.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{whos}
 @end deftypefn
 missing_function_hook
@@ -7409,8 +7862,13 @@ The default format is
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} missing_function_hook ()
 @deftypefnx {Built-in Function} {@var{old_val} =} missing_function_hook (@var{new_val})
+@deftypefnx {Built-in Function} {} missing_function_hook (@var{new_val}, "local")
 Query or set the internal variable that specifies the function to call when
 an unknown identifier is requested.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 __varval__
 @c __varval__ src/variables.cc
@@ -7423,23 +7881,28 @@ Undocumented internal function.
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} sparse_auto_mutate ()
 @deftypefnx {Built-in Function} {@var{old_val} =} sparse_auto_mutate (@var{new_val})
+@deftypefnx {Built-in Function} {} sparse_auto_mutate (@var{new_val}, "local")
 Query or set the internal variable that controls whether Octave will
-automatically mutate sparse matrices to real matrices to save memory.
+automatically mutate sparse matrices to full matrices to save memory.
 For example:
 
 @example
 @group
-s = speye(3);
+s = speye (3);
 sparse_auto_mutate (false)
-s (:, 1) = 1;
+s(:, 1) = 1;
 typeinfo (s)
 @result{} sparse matrix
 sparse_auto_mutate (true)
-s (1, :) = 1;
+s(1, :) = 1;
 typeinfo (s)
 @result{} matrix
 @end group
 @end example
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 logical
 @c logical src/ov-bool-mat.cc
@@ -7604,6 +8067,13 @@ Return a function handle constructed from the string @var{fcn_name}.
 If the optional "global" argument is passed, locally visible functions
 are ignored in the lookup.
 @end deftypefn
+is_function_handle
+@c is_function_handle src/ov-fcn-handle.cc
+-*- texinfo -*-
+@deftypefn {Built-in Function} {} is_function_handle (@var{x})
+Return true if @var{x} is a function handle.
+@seealso{isa, typeinfo, class}
+@end deftypefn
 inline
 @c inline src/ov-fcn-inline.cc
 -*- texinfo -*-
@@ -7663,6 +8133,7 @@ quadv (fcn, 0, 3)
    @result{} 6
 @end group
 @end example
+@seealso{inline, formula, argnames}
 @end deftypefn
 single
 @c single src/ov-flt-re-mat.cc
@@ -7689,15 +8160,31 @@ This should give an error if @code{I} is nonempty.
 @end table
 @seealso{isempty, isindex}
 @end deftypefn
+onCleanup
+@c onCleanup src/ov-oncleanup.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{c} =} onCleanup (@var{action})
+Create a special object that executes a given function upon destruction.
+If the object is copied to multiple variables (or cell or struct array
+elements) or returned from a function, @var{action} will be executed after
+clearing the last copy of the object.  Note that if multiple local onCleanup
+variables are created, the order in which they are called is unspecified.
+For similar functionality @xref{The @code{unwind_protect} Statement}.
+@end deftypefn
 allow_noninteger_range_as_index
 @c allow_noninteger_range_as_index src/ov-range.cc
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} allow_noninteger_range_as_index ()
 @deftypefnx {Built-in Function} {@var{old_val} =} allow_noninteger_range_as_index (@var{new_val})
+@deftypefnx {Built-in Function} {} allow_noninteger_range_as_index (@var{new_val}, "local")
 Query or set the internal variable that controls whether non-integer
 ranges are allowed as indices.  This might be useful for @sc{matlab}
 compatibility; however, it is still not entirely compatible because
 @sc{matlab} treats the range expression differently in different contexts.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 double
 @c double src/ov-re-mat.cc
@@ -7757,6 +8244,7 @@ Return the number of fields of the structure @var{s}.
 Convert @var{cell} to a structure.  The number of fields in @var{fields}
 must match the number of elements in @var{cell} along dimension @var{dim},
 that is @code{numel (@var{fields}) == size (@var{cell}, @var{dim})}.
+If @var{dim} is omitted, a value of 1 is assumed.
 
 @example
 @group
@@ -7787,19 +8275,29 @@ the named fields.
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} struct_levels_to_print ()
 @deftypefnx {Built-in Function} {@var{old_val} =} struct_levels_to_print (@var{new_val})
+@deftypefnx {Built-in Function} {} struct_levels_to_print (@var{new_val}, "local")
 Query or set the internal variable that specifies the number of
 structure levels to display.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 print_struct_array_contents
 @c print_struct_array_contents src/ov-struct.cc
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} print_struct_array_contents ()
 @deftypefnx {Built-in Function} {@var{old_val} =} print_struct_array_contents (@var{new_val})
+@deftypefnx {Built-in Function} {} print_struct_array_contents (@var{new_val}, "local")
 Query or set the internal variable that specifies whether to print struct
 array contents.  If true, values of struct array elements are printed.
 This variable does not affect scalar structures.  Their elements
 are always printed.  In both cases, however, printing will be limited to
 the number of levels specified by @var{struct_levels_to_print}.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 typeinfo
 @c typeinfo src/ov-typeinfo.cc
@@ -7808,7 +8306,7 @@ the number of levels specified by @var{struct_levels_to_print}.
 @deftypefnx {Built-in Function} {} typeinfo (@var{expr})
 
 Return the type of the expression @var{expr}, as a string.  If
-@var{expr} is omitted, return an array of strings containing all the
+@var{expr} is omitted, return an cell array of strings containing all the
 currently installed data types.
 @end deftypefn
 nargin
@@ -7821,7 +8319,7 @@ At the top level, return the number of command line arguments passed to
 Octave.  If called with the optional argument @var{fcn_name}, return the
 maximum number of arguments the named function can accept, or -1 if the
 function accepts a variable number of arguments.
-@seealso{nargout, varargin, varargout}
+@seealso{nargout, varargin, isargout, varargout, nthargout}
 @end deftypefn
 nargout
 @c nargout src/ov-usr-fcn.cc
@@ -7851,16 +8349,21 @@ will cause @code{nargout} to return 2 inside the function
 @code{f}.
 
 At the top level, @code{nargout} is undefined.
-@seealso{nargin, isargout, varargin, varargout}
+@seealso{nargin, varargin, isargout, varargout, nthargout}
 @end deftypefn
 optimize_subsasgn_calls
 @c optimize_subsasgn_calls src/ov-usr-fcn.cc
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} optimize_subsasgn_calls ()
 @deftypefnx {Built-in Function} {@var{old_val} =} optimize_subsasgn_calls (@var{new_val})
+@deftypefnx {Built-in Function} {} optimize_subsasgn_calls (@var{new_val}, "local")
 Query or set the internal flag for subsasgn method call optimizations.
 If true, Octave will attempt to eliminate the redundant copying when calling
 subsasgn method of a user-defined class.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 isargout
 @c isargout src/ov-usr-fcn.cc
@@ -7876,7 +8379,7 @@ If @var{k} is outside the range @code{1:max(nargout)}, the function returns
 false.  @var{k} can also be an array, in which case the function works
 element-by-element and a logical array is returned.  At the top level,
 @code{isargout} returns an error.
-@seealso{nargout, nargin, varargin, varargout}
+@seealso{nargout, nargin, varargin, varargout, nthargout}
 @end deftypefn
 sizeof
 @c sizeof src/ov.cc
@@ -7918,6 +8421,9 @@ subsref(val, idx)
 
 @noindent
 Note that this is the same as writing @code{val(:,1:2)}.
+
+If @var{idx} is an empty structure array with fields @samp{type}
+and @samp{subs}, return @var{val}.
 @seealso{subsasgn, substruct}
 @end deftypefn
 subsasgn
@@ -7949,7 +8455,24 @@ subsasgn (val, idx, 0)
 @end example
 
 Note that this is the same as writing @code{val(:,1:2) = 0}.
+
+If @var{idx} is an empty structure array with fields @samp{type}
+and @samp{subs}, return @var{rhs}.
 @seealso{subsref, substruct}
+@end deftypefn
+is_sq_string
+@c is_sq_string src/ov.cc
+-*- texinfo -*-
+@deftypefn {Built-in Function} {} is_sq_string (@var{x})
+Return true if @var{x} is a single-quoted character string.
+@seealso{is_dq_string, ischar}
+@end deftypefn
+is_dq_string
+@c is_dq_string src/ov.cc
+-*- texinfo -*-
+@deftypefn {Built-in Function} {} is_dq_string (@var{x})
+Return true if @var{x} is a double-quoted character string.
+@seealso{is_sq_string, ischar}
 @end deftypefn
 int16
 @c int16 src/ov-int16.cc
@@ -8007,6 +8530,7 @@ internal function
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} do_braindead_shortcircuit_evaluation ()
 @deftypefnx {Built-in Function} {@var{old_val} =} do_braindead_shortcircuit_evaluation (@var{new_val})
+@deftypefnx {Built-in Function} {} do_braindead_shortcircuit_evaluation (@var{new_val}, "local")
 Query or set the internal variable that controls whether Octave will
 do short-circuit evaluation of @samp{|} and @samp{&} operators inside the
 conditions of if or while statements.
@@ -8016,31 +8540,46 @@ not be used unless you are porting old code that relies on this feature.
 
 To obtain short-circuit behavior for logical expressions in new programs,
 you should always use the @samp{&&} and @samp{||} operators.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 max_recursion_depth
 @c max_recursion_depth src/pt-eval.cc
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} max_recursion_depth ()
 @deftypefnx {Built-in Function} {@var{old_val} =} max_recursion_depth (@var{new_val})
+@deftypefnx {Built-in Function} {} max_recursion_depth (@var{new_val}, "local")
 Query or set the internal limit on the number of times a function may
 be called recursively.  If the limit is exceeded, an error message is
 printed and control returns to the top level.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 silent_functions
 @c silent_functions src/pt-eval.cc
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} silent_functions ()
 @deftypefnx {Built-in Function} {@var{old_val} =} silent_functions (@var{new_val})
+@deftypefnx {Built-in Function} {} silent_functions (@var{new_val}, "local")
 Query or set the internal variable that controls whether internal
 output from a function is suppressed.  If this option is disabled,
 Octave will display the results produced by evaluating expressions
 within a function body that are not terminated with a semicolon.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 string_fill_char
 @c string_fill_char src/pt-mat.cc
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} string_fill_char ()
 @deftypefnx {Built-in Function} {@var{old_val} =} string_fill_char (@var{new_val})
+@deftypefnx {Built-in Function} {} string_fill_char (@var{new_val}, "local")
 Query or set the internal variable used to pad all rows of a character
 matrix to the same length.  It must be a single character.  The default
 value is @code{" "} (a single space).  For example:
@@ -8054,6 +8593,10 @@ string_fill_char ("X");
         "strings"
 @end group
 @end example
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 __contourc__
 @c __contourc__ src/DLD-FUNCTIONS/__contourc__.cc
@@ -8064,8 +8607,8 @@ Undocumented internal function.
 __delaunayn__
 @c __delaunayn__ src/DLD-FUNCTIONS/__delaunayn__.cc
 -*- texinfo -*-
-@deftypefn  {Loadable Function} {@var{T} =} __delaunayn__ (@var{P})
-@deftypefnx {Loadable Function} {@var{T} =} __delaunayn__ (@var{P}, @var{opt})
+@deftypefn  {Loadable Function} {@var{T} =} __delaunayn__ (@var{pts})
+@deftypefnx {Loadable Function} {@var{T} =} __delaunayn__ (@var{pts}, @var{options})
 Undocumented internal function.
 @end deftypefn
 __dispatch__
@@ -8094,9 +8637,6 @@ Undocumented internal function.
 
 __fltk_redraw__
 @c __fltk_redraw__ src/DLD-FUNCTIONS/__init_fltk__.cc
-
-__remove_fltk__
-@c __remove_fltk__ src/DLD-FUNCTIONS/__init_fltk__.cc
 
 __fltk_maxtime__
 @c __fltk_maxtime__ src/DLD-FUNCTIONS/__init_fltk__.cc
@@ -8132,6 +8672,9 @@ Mouse inputs have no effect.
 This function is currently implemented only for the FLTK graphics toolkit.
 @seealso{mouse_wheel_zoom}
 @end deftypefn
+__init_gnuplot__
+@c __init_gnuplot__ src/DLD-FUNCTIONS/__init_gnuplot__.cc
+
 __lin_interpn__
 @c __lin_interpn__ src/DLD-FUNCTIONS/__lin_interpn__.cc
 -*- texinfo -*-
@@ -8186,8 +8729,9 @@ Undocumented internal function.
 __voronoi__
 @c __voronoi__ src/DLD-FUNCTIONS/__voronoi__.cc
 -*- texinfo -*-
-@deftypefn  {Loadable Function} {@var{tri} =} __voronoi__ (@var{point})
-@deftypefnx {Loadable Function} {@var{tri} =} __voronoi__ (@var{point}, @var{options})
+@deftypefn  {Loadable Function} {@var{C}, @var{F} =} __voronoi__ (@var{caller}, @var{pts})
+@deftypefnx {Loadable Function} {@var{C}, @var{F} =} __voronoi__ (@var{caller}, @var{pts}, @var{options})
+@deftypefnx {Loadable Function} {@var{C}, @var{F}, @var{Inf_Pts} =} __voronoi__ (@dots{})
 Undocumented internal function.
 @end deftypefn
 amd
@@ -8196,7 +8740,7 @@ Undocumented internal function.
 @deftypefn  {Loadable Function} {@var{p} =} amd (@var{S})
 @deftypefnx {Loadable Function} {@var{p} =} amd (@var{S}, @var{opts})
 
-Returns the approximate minimum degree permutation of a matrix.  This
+Return the approximate minimum degree permutation of a matrix.  This
 permutation such that the Cholesky@tie{}factorization of @code{@var{S}
 (@var{p}, @var{p})} tends to be sparser than the Cholesky@tie{}factorization
 of @var{S} itself.  @code{amd} is typically faster than @code{symamd} but
@@ -8442,15 +8986,18 @@ compatible dimensions.
 @c bsxfun src/DLD-FUNCTIONS/bsxfun.cc
 -*- texinfo -*-
 @deftypefn {Loadable Function} {} bsxfun (@var{f}, @var{A}, @var{B})
-Apply a binary function @var{f} element-by-element to two matrix arguments
-@var{A} and @var{B}.  @var{f} is a function handle, inline function, or
-string containing the name of the function to evaluate.
-The function @var{f} must be capable of accepting two column-vector
-arguments of equal length, or one column vector argument and a scalar.
+The binary singleton expansion function applier performs broadcasting,
+that is, applies a binary function @var{f} element-by-element to two
+array arguments @var{A} and @var{B}, and expands as necessary
+singleton dimensions in either input argument.  @var{f} is a function
+handle, inline function, or string containing the name of the function
+to evaluate.  The function @var{f} must be capable of accepting two
+column-vector arguments of equal length, or one column vector argument
+and a scalar.
 
 The dimensions of @var{A} and @var{B} must be equal or singleton.  The
-singleton dimensions of the matrices will be expanded to the same
-dimensionality as the other matrix.
+singleton dimensions of the arrays will be expanded to the same
+dimensionality as the other array.
 @seealso{arrayfun, cellfun}
 @end deftypefn
 ccolamd
@@ -8638,8 +9185,10 @@ Return a vector of the lengths of cell elements.
 @item ndims
 Return the number of dimensions of each element.
 
-@item prodofsize
-Return the product of dimensions of each element.
+@item numel
+@itemx prodofsize
+Return the number of elements contained within each cell element.  The
+number is the product of the dimensions of the object at each cell element.
 
 @item size
 Return the size along the @var{k}-th dimension.
@@ -8658,7 +9207,7 @@ function can return one or more output arguments.  For example:
 
 @example
 @group
-cellfun (@@atan2, @{1, 0@}, @{0, 1@})
+cellfun ("atan2", @{1, 0@}, @{0, 1@})
      @result{}ans = [1.57080   0.00000]
 @end group
 @end example
@@ -8693,7 +9242,7 @@ cell array (or cell arrays).  For example:
 
 @example
 @group
-cellfun ("tolower(x)", @{"Foo", "Bar", "FooBar"@},
+cellfun ("tolower", @{"Foo", "Bar", "FooBar"@},
          "UniformOutput",false)
 @result{} ans = @{"foo", "bar", "foobar"@}
 @end group
@@ -8716,12 +9265,140 @@ of the element that caused the error.  For example:
 @example
 @group
 function y = foo (s, x), y = NaN; endfunction
-cellfun (@@factorial, @{-1,2@},'ErrorHandler',@@foo)
+cellfun ("factorial", @{-1,2@}, 'ErrorHandler', @@foo)
 @result{} ans = [NaN 2]
 @end group
 @end example
 
+Use @code{cellfun} intelligently.  The @code{cellfun} function is a
+useful tool for avoiding loops.  It is often used with anonymous
+function handles; however, calling an anonymous function involves an
+overhead quite comparable to the overhead of an m-file function.
+Passing a handle to a built-in function is faster, because the
+interpreter is not involved in the internal loop.  For example:
+
+@example
+@group
+a = @{@dots{}@}
+v = cellfun (@@(x) det(x), a); # compute determinants
+v = cellfun (@@det, a); # faster
+@end group
+@end example
+
 @seealso{arrayfun, structfun, spfun}
+@end deftypefn
+arrayfun
+@c arrayfun src/DLD-FUNCTIONS/cellfun.cc
+-*- texinfo -*-
+@deftypefn  {Function File} {} arrayfun (@var{func}, @var{A})
+@deftypefnx {Function File} {@var{x} =} arrayfun (@var{func}, @var{A})
+@deftypefnx {Function File} {@var{x} =} arrayfun (@var{func}, @var{A}, @var{b}, @dots{})
+@deftypefnx {Function File} {[@var{x}, @var{y}, @dots{}] =} arrayfun (@var{func}, @var{A}, @dots{})
+@deftypefnx {Function File} {} arrayfun (@dots{}, "UniformOutput", @var{val})
+@deftypefnx {Function File} {} arrayfun (@dots{}, "ErrorHandler", @var{errfunc})
+
+Execute a function on each element of an array.  This is useful for
+functions that do not accept array arguments.  If the function does
+accept array arguments it is better to call the function directly.
+
+The first input argument @var{func} can be a string, a function
+handle, an inline function, or an anonymous function.  The input
+argument @var{A} can be a logic array, a numeric array, a string
+array, a structure array, or a cell array.  By a call of the function
+@command{arrayfun} all elements of @var{A} are passed on to the named
+function @var{func} individually.
+
+The named function can also take more than two input arguments, with
+the input arguments given as third input argument @var{b}, fourth
+input argument @var{c}, @dots{}  If given more than one array input
+argument then all input arguments must have the same sizes, for
+example:
+
+@example
+@group
+arrayfun (@@atan2, [1, 0], [0, 1])
+@result{} ans = [1.5708   0.0000]
+@end group
+@end example
+
+If the parameter @var{val} after a further string input argument
+"UniformOutput" is set @code{true} (the default), then the named
+function @var{func} must return a single element which then will be
+concatenated into the return value and is of type matrix.  Otherwise,
+if that parameter is set to @code{false}, then the outputs are
+concatenated in a cell array.  For example:
+
+@example
+@group
+arrayfun (@@(x,y) x:y, "abc", "def", "UniformOutput", false)
+@result{} ans =
+    @{
+      [1,1] = abcd
+      [1,2] = bcde
+      [1,3] = cdef
+    @}
+@end group
+@end example
+
+If more than one output arguments are given then the named function
+must return the number of return values that also are expected, for
+example:
+
+@example
+@group
+[A, B, C] = arrayfun (@@find, [10; 0], "UniformOutput", false)
+@result{}
+A =
+@{
+  [1,1] =  1
+  [2,1] = [](0x0)
+@}
+B =
+@{
+  [1,1] =  1
+  [2,1] = [](0x0)
+@}
+C =
+@{
+  [1,1] =  10
+  [2,1] = [](0x0)
+@}
+@end group
+@end example
+
+If the parameter @var{errfunc} after a further string input argument
+"ErrorHandler" is another string, a function handle, an inline
+function, or an anonymous function, then @var{errfunc} defines a
+function to call in the case that @var{func} generates an error.
+The definition of the function must be of the form
+
+@example
+function [@dots{}] = errfunc (@var{s}, @dots{})
+@end example
+
+@noindent
+where there is an additional input argument to @var{errfunc}
+relative to @var{func}, given by @var{s}.  This is a structure with
+the elements "identifier", "message", and "index" giving,
+respectively, the error identifier, the error message, and the index of
+the array elements that caused the error.  The size of the output
+argument of @var{errfunc} must have the same size as the output
+argument of @var{func}, otherwise a real error is thrown.  For
+example:
+
+@example
+@group
+function y = ferr (s, x), y = "MyString"; endfunction
+arrayfun (@@str2num, [1234],
+           "UniformOutput", false, "ErrorHandler", @@ferr)
+@result{} ans =
+    @{
+     [1,1] = MyString
+    @}
+@end group
+@end example
+
+@seealso{spfun, cellfun, structfun}
 @end deftypefn
 num2cell
 @c num2cell src/DLD-FUNCTIONS/cellfun.cc
@@ -8820,6 +9497,7 @@ endfor
 
 The position of the index is determined by @var{dim}.  If not specified,
 slicing is done along the first non-singleton dimension.
+@seealso{cell2mat, cellindexmat, cellfun}
 @end deftypefn
 cellindexmat
 @c cellindexmat src/DLD-FUNCTIONS/cellfun.cc
@@ -8835,7 +9513,7 @@ Given a cell array of matrices @var{x}, this function computes
   endfor
 @end group
 @end example
-@seealso{cellfun, cellslices}
+@seealso{cellslices, cellfun}
 @end deftypefn
 chol
 @c chol src/DLD-FUNCTIONS/chol.cc
@@ -8845,6 +9523,7 @@ Given a cell array of matrices @var{x}, this function computes
 @deftypefnx {Loadable Function} {[@var{R}, @var{p}, @var{Q}] =} chol (@var{S})
 @deftypefnx {Loadable Function} {[@var{R}, @var{p}, @var{Q}] =} chol (@var{S}, 'vector')
 @deftypefnx {Loadable Function} {[@var{L}, @dots{}] =} chol (@dots{}, 'lower')
+@deftypefnx {Loadable Function} {[@var{L}, @dots{}] =} chol (@dots{}, 'upper')
 @cindex Cholesky factorization
 Compute the Cholesky@tie{}factor, @var{R}, of the symmetric positive definite
 matrix @var{A}, where
@@ -8905,6 +9584,10 @@ $ L L^T = A $.
 @end example
 
 @end ifnottex
+
+For full matrices, if the 'lower' flag is set only the lower triangular part
+of the matrix is used for the factorization, otherwise the upper triangular
+part is used.
 
 In general the lower triangular factorization is significantly faster for
 sparse matrices.
@@ -9144,7 +9827,7 @@ Ng, Oak Ridge National Laboratory.  (see
 @deftypefnx {Loadable Function} {@var{p} =} etree (@var{S}, @var{typ})
 @deftypefnx {Loadable Function} {[@var{p}, @var{q}] =} etree (@var{S}, @var{typ})
 
-Returns the elimination tree for the matrix @var{S}.  By default @var{S}
+Return the elimination tree for the matrix @var{S}.  By default @var{S}
 is assumed to be symmetric and the symmetric elimination tree is
 returned.  The argument @var{typ} controls whether a symmetric or
 column elimination tree is returned.  Valid values of @var{typ} are
@@ -9178,54 +9861,76 @@ Return the full convolution.  (default)
 
 @item @var{shape} = "same"
 Return the central part of the convolution with the same size as @var{A}.
+The central part of the convolution begins at the indices
+@code{floor ([size(@var{B})/2] + 1)}.
 
 @item @var{shape} = "valid"
 Return only the parts which do not include zero-padded edges.
+The size of the result is @code{max (size (A) - size (B) + 1, 0)}.
 @end table
 
 When the third argument is a matrix, return the convolution of the matrix
 @var{m} by the vector @var{v1} in the column direction and by the vector
-@var{v2} in the row direction
+@var{v2} in the row direction.
 @seealso{conv, convn}
 @end deftypefn
 convn
 @c convn src/DLD-FUNCTIONS/conv2.cc
 -*- texinfo -*-
-@deftypefn {Loadable Function} {@var{C} =} convn (@var{A}, @var{B}, @var{shape})
-Return the n-D convolution of @var{A} and @var{B} where the size
-of @var{C} is given by
+@deftypefn  {Loadable Function} {@var{C} =} convn (@var{A}, @var{B})
+@deftypefnx {Loadable Function} {@var{C} =} convn (@var{A}, @var{B}, @var{shape})
+Return the n-D convolution of @var{A} and @var{B}.  The size of the result
+is determined by the optional @var{shape} argument which takes the following
+values
 
 @table @asis
 @item @var{shape} = "full"
-Return the full convolution.
+Return the full convolution.  (default)
 
 @item @var{shape} = "same"
 Return central part of the convolution with the same size as @var{A}.
+The central part of the convolution begins at the indices
+@code{floor ([size(@var{B})/2] + 1)}.
 
 @item @var{shape} = "valid"
 Return only the parts which do not include zero-padded edges.
+The size of the result is @code{max (size (A) - size (B) + 1, 0)}.
 @end table
 
-By default @var{shape} is @samp{"full"}.
 @seealso{conv2, conv}
 @end deftypefn
 convhulln
 @c convhulln src/DLD-FUNCTIONS/convhulln.cc
 -*- texinfo -*-
-@deftypefn  {Loadable Function} {@var{h} =} convhulln (@var{p})
-@deftypefnx {Loadable Function} {@var{h} =} convhulln (@var{p}, @var{opt})
+@deftypefn  {Loadable Function} {@var{h} =} convhulln (@var{pts})
+@deftypefnx {Loadable Function} {@var{h} =} convhulln (@var{pts}, @var{options})
 @deftypefnx {Loadable Function} {[@var{h}, @var{v}] =} convhulln (@dots{})
-Return an index vector to the points of the enclosing convex hull.
-The input matrix of size [n, dim] contains n points of dimension dim.
+Compute the convex hull of the set of points @var{pts} which is a matrix
+of size [n, dim] containing n points in a space of dimension dim.
+The hull @var{h} is an index vector into the set of points and specifies
+which points form the enclosing hull.
 
-If a second optional argument is given, it must be a string or cell array
-of strings containing options for the underlying qhull command.  (See
-the Qhull documentation for the available options.)  The default options
-are "s Qci Tcv".
-If the second output @var{v} is requested the volume of the convex hull is
-calculated.
+An optional second argument, which must be a string or cell array of strings,
+contains options passed to the underlying qhull command.
+See the documentation for the Qhull library for details
+@url{http://www.qhull.org/html/qh-quick.htm#options}.
+The default options depend on the dimension of the input:
 
-@seealso{convhull, delaunayn}
+@itemize
+@item 2D, 3D, 4D: @var{options} = @code{@{"Qt"@}}
+
+@item 5D and higher: @var{options} = @code{@{"Qt", "Qx"@}}
+@end itemize
+
+If @var{options} is not present or @code{[]} then the default arguments are
+used.  Otherwise, @var{options} replaces the default argument list.
+To append user options to the defaults it is necessary to repeat the
+default arguments in @var{options}.  Use a null string to pass no arguments.
+
+If the second output @var{v} is requested the volume of the enclosing
+convex hull is calculated.
+
+@seealso{convhull, delaunayn, voronoin}
 @end deftypefn
 daspk_options
 @c daspk_options src/DLD-FUNCTIONS/daspk.cc
@@ -9360,7 +10065,7 @@ option (default is 0).
 A vector of the same length as the state specifying the type of
 inequality constraint.  Each element of the vector corresponds to an
 element of the state and should be assigned one of the following
-codes 
+codes
 
 @table @asis
 @item -2
@@ -10875,8 +11580,10 @@ This is an alias for @code{inv}.
 kron
 @c kron src/DLD-FUNCTIONS/kron.cc
 -*- texinfo -*-
-@deftypefn {Loadable Function} {} kron (@var{A}, @var{B})
-Form the Kronecker product of two matrices, defined block by block as
+@deftypefn  {Loadable Function} {} kron (@var{A}, @var{B})
+@deftypefnx {Loadable Function} {} kron (@var{A1}, @var{A2}, @dots{})
+Form the Kronecker product of two or more matrices, defined block by 
+block as
 
 @example
 x = [a(i, j) b]
@@ -10892,6 +11599,16 @@ kron (1:4, ones (3, 1))
           1  2  3  4
 @end group
 @end example
+
+If there are more than two input arguments @var{A1}, @var{A2}, @dots{}, 
+@var{An} the Kronecker product is computed as
+
+@example
+kron (kron (@var{A1}, @var{A2}), @dots{}, @var{An})
+@end example
+
+@noindent
+Since the Kronecker product is associative, this is well-defined.
 @end deftypefn
 lookup
 @c lookup src/DLD-FUNCTIONS/lookup.cc
@@ -11228,7 +11945,7 @@ as obtained by @code{lu}:
 @end example
 
 @noindent
-then a factorization of @code{@var{A}+@var{x}*@var{y}.'} can be obtained
+then a factorization of @xcode{@var{A}+@var{x}*@var{y}.'} can be obtained
 either as
 
 @example
@@ -11392,11 +12109,13 @@ LU@tie{}factorization.  Once the matrix has been factorized,
 -*- texinfo -*-
 @deftypefn  {Loadable Function} {} min (@var{x})
 @deftypefnx {Loadable Function} {} min (@var{x}, @var{y})
+@deftypefnx {Loadable Function} {} min (@var{x}, [], @var{dim})
 @deftypefnx {Loadable Function} {} min (@var{x}, @var{y}, @var{dim})
 @deftypefnx {Loadable Function} {[@var{w}, @var{iw}] =} min (@var{x})
 For a vector argument, return the minimum value.  For a matrix
 argument, return the minimum value from each column, as a row
-vector, or over the dimension @var{dim} if defined.  For two matrices
+vector, or over the dimension @var{dim} if defined, in which case @var{y} 
+should be set to the empty matrix (it's ignored otherwise).  For two matrices
 (or a matrix and scalar), return the pair-wise minimum.
 Thus,
 
@@ -11439,11 +12158,13 @@ minimum value(s).  Thus,
 -*- texinfo -*-
 @deftypefn  {Loadable Function} {} max (@var{x})
 @deftypefnx {Loadable Function} {} max (@var{x}, @var{y})
+@deftypefnx {Loadable Function} {} max (@var{x}, [], @var{dim})
 @deftypefnx {Loadable Function} {} max (@var{x}, @var{y}, @var{dim})
 @deftypefnx {Loadable Function} {[@var{w}, @var{iw}] =} max (@var{x})
 For a vector argument, return the maximum value.  For a matrix
 argument, return the maximum value from each column, as a row
-vector, or over the dimension @var{dim} if defined.  For two matrices
+vector, or over the dimension @var{dim} if defined, in which case @var{y} 
+should be set to the empty matrix (it's ignored otherwise).  For two matrices
 (or a matrix and scalar), return the pair-wise maximum.
 Thus,
 
@@ -11605,17 +12326,6 @@ likewise, but overridable through the @w{@env{OMP_NUM_THREADS}} environment
 variable.
 @end table
 @end deftypefn
-onCleanup
-@c onCleanup src/DLD-FUNCTIONS/onCleanup.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {@var{c} =} onCleanup (@var{action})
-Create a special object that executes a given function upon destruction.
-If the object is copied to multiple variables (or cell or struct array
-elements) or returned from a function, @var{action} will be executed after
-clearing the last copy of the object.  Note that if multiple local onCleanup
-variables are created, the order in which they are called is unspecified.
-For similar functionality @xref{The @code{unwind_protect} Statement}.
-@end deftypefn
 pinv
 @c pinv src/DLD-FUNCTIONS/pinv.cc
 -*- texinfo -*-
@@ -11638,6 +12348,8 @@ where @code{sigma_max (@var{x})} is the maximal singular value of @var{x}.
 -*- texinfo -*-
 @deftypefn  {Loadable Function} {[@var{Q}, @var{R}, @var{P}] =} qr (@var{A})
 @deftypefnx {Loadable Function} {[@var{Q}, @var{R}, @var{P}] =} qr (@var{A}, '0')
+@deftypefnx {Loadable Function} {[@var{C}, @var{R}] =} qr (@var{A}, @var{B})
+@deftypefnx {Loadable Function} {[@var{C}, @var{R}] =} qr (@var{A}, @var{B}, '0')
 @cindex QR factorization
 Compute the QR@tie{}factorization of @var{A}, using standard @sc{lapack}
 subroutines.  For example, given the matrix @code{@var{A} = [1, 2; 3, 4]},
@@ -11750,7 +12462,7 @@ as
 
 @example
 @group
-[@var{C},@var{R}] = spqr (@var{A},@var{B})
+[@var{C}, @var{R}] = qr (@var{A}, @var{B})
 x = @var{R} \ @var{C}
 @end group
 @end example
@@ -11811,8 +12523,8 @@ Given a QR@tie{}factorization of a real or complex matrix
 @var{R}@tie{}upper trapezoidal, return the QR@tie{}factorization of
 @w{[A(:,1:j-1) A(:,j+1:n)]}, i.e., @var{A} with one column deleted
 (if @var{orient} is "col"), or the QR@tie{}factorization of
-@w{[A(1:j-1,:);A(:,j+1:n)]}, i.e., @var{A} with one row deleted (if
-@var{orient} is "row").
+@w{[A(1:j-1,:);A(j+1:n,:)]}, i.e., @var{A} with one row deleted (if
+   @var{orient} is "row").
 
 The default value of @var{orient} is "col".
 
@@ -11866,16 +12578,16 @@ Absolute tolerance; may be zero for pure relative error test.
 
 @item "relative tolerance"
 Non-negative relative tolerance.  If the absolute tolerance is zero,
-the relative tolerance must be greater than or equal to 
+the relative tolerance must be greater than or equal to
 @w{@code{max (50*eps, 0.5e-28)}}.
 
 @item "single precision absolute tolerance"
-Absolute tolerance for single precision; may be zero for pure relative 
+Absolute tolerance for single precision; may be zero for pure relative
 error test.
 
 @item "single precision relative tolerance"
 Non-negative relative tolerance for single precision.  If the absolute
-tolerance is zero, the relative tolerance must be greater than or equal to 
+tolerance is zero, the relative tolerance must be greater than or equal to
 @w{@code{max (50*eps, 0.5e-28)}}.
 @end table
 @end deftypefn
@@ -12345,10 +13057,11 @@ D 50 p1284, 1994.
 @deftypefn  {Loadable Function} {} randperm (@var{n})
 @deftypefnx {Loadable Function} {} randperm (@var{n}, @var{m})
 Return a row vector containing a random permutation of @code{1:@var{n}}.
-If @var{m} is supplied, return @var{m} permutations,
-one in each row of an @nospell{MxN} matrix.  The complexity is O(M*N) in both
-time and memory.  The randomization is performed using rand().
-All permutations are equally likely.
+If @var{m} is supplied, return @var{m} unique entries, sampled without
+replacement from @code{1:@var{n}}.  The complexity is O(@var{n}) in
+memory and O(@var{m}) in time, unless @var{m} < @var{n}/5, in which case
+O(@var{m}) memory is used as well.  The randomization is performed using
+rand(). All permutations are equally likely.
 @seealso{perms}
 @end deftypefn
 rcond
@@ -12484,6 +13197,9 @@ A cell array of the text of each token matched
 A structure containing the text of each matched named token, with the name
 being used as the fieldname.  A named token is denoted by
 @code{(?<name>@dots{})}.
+
+@item sp
+A cell array of the text not returned by match.
 @end table
 
 Particular output arguments, or the order of the output arguments, can be
@@ -12498,6 +13214,7 @@ are
 @item @tab 'match'        @tab @var{m}  @tab
 @item @tab 'tokens'       @tab @var{t}  @tab
 @item @tab 'names'        @tab @var{nm} @tab
+@item @tab 'split'        @tab @var{sp} @tab
 @end multitable
 
 Additional arguments are summarized below.
@@ -12681,7 +13398,7 @@ $UR \cdot TR \cdot {UR}^T = U T U^{\dagger}$ and
 $U^{\dagger} U$ is the identity matrix I.
 @end tex
 @ifnottex
-@code{@var{UR} * @var{TR} * @var{UR}' = @var{U} * @var{T} * @var{U}'} and
+@xcode{@var{UR} * @var{TR} * @var{UR}' = @var{U} * @var{T} * @var{U}'} and
 @code{@var{U}' * @var{U}} is the identity matrix I.
 @end ifnottex
 
@@ -12990,9 +13707,14 @@ decomposition, eliminating the unnecessary rows or columns of @var{U} or
 -*- texinfo -*-
 @deftypefn  {Loadable Function} {@var{val} =} svd_driver ()
 @deftypefnx {Loadable Function} {@var{old_val} =} svd_driver (@var{new_val})
+@deftypefnx {Loadable Function} {} svd_driver (@var{new_val}, "local")
 Query or set the underlying @sc{lapack} driver used by @code{svd}.
 Currently recognized values are "gesvd" and "gesdd".  The default
 is "gesvd".
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{svd}
 @end deftypefn
 syl
@@ -13046,10 +13768,10 @@ Factorize @var{S}.  This is the default.
 Factorize @code{@var{S}' * @var{S}}.
 
 @item row
-Factorize @code{@var{S} * @var{S}'}.
+Factorize @xcode{@var{S} * @var{S}'}.
 
 @item lo
-Factorize @code{@var{S}'}
+Factorize @xcode{@var{S}'}
 @end table
 
 @item mode
@@ -13502,7 +14224,7 @@ it is a column vector.
 bitunpack
 @c bitunpack src/DLD-FUNCTIONS/typecast.cc
 -*- texinfo -*-
-@deftypefn {Loadable Function} {@var{y} =} bitpack (@var{x})
+@deftypefn {Loadable Function} {@var{y} =} bitunpack (@var{x})
 Return an array @var{y} corresponding to the raw bit patterns of
 @var{x}.  @var{x} must belong to one of the built-in numeric classes:
 

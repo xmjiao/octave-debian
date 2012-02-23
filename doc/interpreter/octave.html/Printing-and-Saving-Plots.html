@@ -34,7 +34,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="High_002dLevel-Plotting.html#High_002dL
 
 <h4 class="subsection">15.2.9 Printing and Saving Plots</h4>
 
-<p><a name="index-printing-plots-1389"></a><a name="index-saving-plots-1390"></a>
+<p><a name="index-printing-plots-1463"></a><a name="index-saving-plots-1464"></a>
 The <code>print</code> command allows you to save plots in a variety of
 formats.  For example,
 
@@ -47,10 +47,10 @@ formats.  For example,
    <p><a name="doc_002dprint"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>print</b> ()<var><a name="index-print-1391"></a></var><br>
-&mdash; Function File:  <b>print</b> (<var>options</var>)<var><a name="index-print-1392"></a></var><br>
-&mdash; Function File:  <b>print</b> (<var>filename, options</var>)<var><a name="index-print-1393"></a></var><br>
-&mdash; Function File:  <b>print</b> (<var>h, filename, options</var>)<var><a name="index-print-1394"></a></var><br>
+&mdash; Function File:  <b>print</b> ()<var><a name="index-print-1465"></a></var><br>
+&mdash; Function File:  <b>print</b> (<var>options</var>)<var><a name="index-print-1466"></a></var><br>
+&mdash; Function File:  <b>print</b> (<var>filename, options</var>)<var><a name="index-print-1467"></a></var><br>
+&mdash; Function File:  <b>print</b> (<var>h, filename, options</var>)<var><a name="index-print-1468"></a></var><br>
 <blockquote><p>Print a graph, or save it to a file
 
         <p><var>filename</var> defines the file name of the output file.  If the
@@ -199,16 +199,16 @@ option.  For example, by writing <code>"-S640,480"</code><!-- /@w -->.
 
         <p>Example: Print to a file, using the svg device.
 
-     <pre class="example">          figure (1)
-          clf ()
-          surf (peaks)
+     <pre class="example">          figure (1);
+          clf ();
+          surf (peaks);
           print -dsvg figure1.svg
 </pre>
         <p>Example: Print to an HP Deskjet 550C.
 
-     <pre class="example">          figure (1)
-          clf ()
-          surf (peaks)
+     <pre class="example">          figure (1);
+          clf ();
+          surf (peaks);
           print -dcdj550
 </pre>
         <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
@@ -221,8 +221,8 @@ option.  For example, by writing <code>"-S640,480"</code><!-- /@w -->.
    <p><a name="doc_002dsaveas"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>saveas</b> (<var>h, filename</var>)<var><a name="index-saveas-1395"></a></var><br>
-&mdash; Function File:  <b>saveas</b> (<var>h, filename, fmt</var>)<var><a name="index-saveas-1396"></a></var><br>
+&mdash; Function File:  <b>saveas</b> (<var>h, filename</var>)<var><a name="index-saveas-1469"></a></var><br>
+&mdash; Function File:  <b>saveas</b> (<var>h, filename, fmt</var>)<var><a name="index-saveas-1470"></a></var><br>
 <blockquote><p>Save graphic object <var>h</var> to the file <var>filename</var> in graphic
 format <var>fmt</var>.
 
@@ -246,10 +246,9 @@ format <var>fmt</var>.
 <var>fmt</var> is omitted it is extracted from the extension of <var>filename</var>. 
 The default format is <code>"pdf"</code>.
 
-     <pre class="example">          figure (1);
-          clf ();
+     <pre class="example">          clf ();
           surf (peaks);
-          saveas(1, "figure1.png");
+          saveas (1, "figure1.png");
 </pre>
         <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
      <!-- A simple blank line produces the correct behavior. -->
@@ -261,7 +260,7 @@ The default format is <code>"pdf"</code>.
    <p><a name="doc_002dorient"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>orient</b> (<var>orientation</var>)<var><a name="index-orient-1397"></a></var><br>
+&mdash; Function File:  <b>orient</b> (<var>orientation</var>)<var><a name="index-orient-1471"></a></var><br>
 <blockquote><p>Set the default print orientation.  Valid values for
 <var>orientation</var> include <code>"landscape"</code>, <code>"portrait"</code>,
 and <code>"tall"</code>.

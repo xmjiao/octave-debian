@@ -1,4 +1,4 @@
-## Copyright (C) 2003-2011 John W. Eaton
+## Copyright (C) 2003-2012 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -29,3 +29,7 @@ function filename = tempname (varargin)
   filename = tmpnam (varargin{:});
 
 endfunction
+
+
+%% No tests needed for alias.
+%!assert (1)

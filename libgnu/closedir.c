@@ -1,7 +1,7 @@
 /* -*- buffer-read-only: t -*- vi: set ro: */
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* Stop reading the entries of a directory.
-   Copyright (C) 2006-2011 Free Software Foundation, Inc.
+   Copyright (C) 2006-2012 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -20,6 +20,10 @@
 
 /* Specification.  */
 #include <dirent.h>
+
+#if REPLACE_FCHDIR
+# include <unistd.h>
+#endif
 
 #if HAVE_CLOSEDIR
 

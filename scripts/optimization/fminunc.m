@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2011 VZLU Prague, a.s.
+## Copyright (C) 2008-2012 VZLU Prague, a.s.
 ##
 ## This file is part of Octave.
 ##
@@ -77,7 +77,8 @@
 ## @seealso{fminbnd, optimset}
 ## @end deftypefn
 
-## PKG_ADD: __all_opts__ ("fminunc");
+## PKG_ADD: ## Discard result to avoid polluting workspace with ans at startup.
+## PKG_ADD: [~] = __all_opts__ ("fminunc");
 
 function [x, fval, info, output, grad, hess] = fminunc (fcn, x0, options = struct ())
 
@@ -349,26 +350,25 @@ function [fx, gx] = guarded_eval (fun, x)
     gx = [];
   endif
 
-  if (! (isreal (fx) && isreal (jx)))
+  if (! (isreal (fx) && isreal (gx)))
     error ("fminunc:notreal", "fminunc: non-real value encountered");
-  elseif (complexeqn && ! (isnumeric (fx) && isnumeric(jx)))
-    error ("fminunc:notnum", "fminunc: non-numeric value encountered");
   elseif (any (isnan (fx(:))))
     error ("fminunc:isnan", "fminunc: NaN value encountered");
   endif
 endfunction
 
-%!function f = rosenb (x)
+%!function f = __rosenb (x)
 %!  n = length (x);
 %!  f = sumsq (1 - x(1:n-1)) + 100 * sumsq (x(2:n) - x(1:n-1).^2);
+%!endfunction
 %!test
-%! [x, fval, info, out] = fminunc (@rosenb, [5, -5]);
+%! [x, fval, info, out] = fminunc (@__rosenb, [5, -5]);
 %! tol = 2e-5;
 %! assert (info > 0);
 %! assert (x, ones (1, 2), tol);
 %! assert (fval, 0, tol);
 %!test
-%! [x, fval, info, out] = fminunc (@rosenb, zeros (1, 4));
+%! [x, fval, info, out] = fminunc (@__rosenb, zeros (1, 4));
 %! tol = 2e-5;
 %! assert (info > 0);
 %! assert (x, ones (1, 4), tol);

@@ -34,7 +34,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="Graphics-Data-Structures.html#Graphics-
 
 <h4 class="subsection">15.3.2 Graphics Objects</h4>
 
-<p><a name="index-graphics-objects-1414"></a>
+<p><a name="index-graphics-objects-1488"></a>
 The hierarchy of graphics objects was explained above.  (See
 <a href="Introduction-to-Graphics-Structures.html#Introduction-to-Graphics-Structures">Introduction to Graphics Structures</a>.  Here the
 specific objects are described, and the properties contained in
@@ -44,29 +44,29 @@ graphics objects are always referenced by <dfn>handle</dfn>.
      <dl>
 <!-- @group -->
 
-     <dt>root figure<dd><a name="index-root-figure-graphics-object-1415"></a><a name="index-graphics-object_002c-root-figure-1416"></a>the top level of the hierarchy and the parent of all figure objects. 
+     <dt>root figure<dd><a name="index-root-figure-graphics-object-1489"></a><a name="index-graphics-object_002c-root-figure-1490"></a>the top level of the hierarchy and the parent of all figure objects. 
 The <code>handle</code> index of the root figure is 0.
 
-     <br><dt>figure<dd><a name="index-figure-graphics-object-1417"></a><a name="index-graphics-object_002c-figure-1418"></a>A figure window.
+     <br><dt>figure<dd><a name="index-figure-graphics-object-1491"></a><a name="index-graphics-object_002c-figure-1492"></a>A figure window.
 
-     <br><dt>axes<dd><a name="index-axes-graphics-object-1419"></a><a name="index-graphics-object_002c-axes-1420"></a>A set of axes.  This object is a child of a figure object and may be a
+     <br><dt>axes<dd><a name="index-axes-graphics-object-1493"></a><a name="index-graphics-object_002c-axes-1494"></a>A set of axes.  This object is a child of a figure object and may be a
 parent of line, text, image, patch, or surface objects.
 
-     <br><dt>line<dd><a name="index-line-graphics-object-1421"></a><a name="index-graphics-object_002c-line-1422"></a>A line in two or three dimensions.
+     <br><dt>line<dd><a name="index-line-graphics-object-1495"></a><a name="index-graphics-object_002c-line-1496"></a>A line in two or three dimensions.
 
-     <br><dt>text<dd><a name="index-text-graphics-object-1423"></a><a name="index-graphics-object_002c-text-1424"></a>Text annotations.
+     <br><dt>text<dd><a name="index-text-graphics-object-1497"></a><a name="index-graphics-object_002c-text-1498"></a>Text annotations.
 
-     <br><dt>image<dd><a name="index-image-graphics-object-1425"></a><a name="index-graphics-object_002c-image-1426"></a>A bitmap image.
+     <br><dt>image<dd><a name="index-image-graphics-object-1499"></a><a name="index-graphics-object_002c-image-1500"></a>A bitmap image.
 
-     <br><dt>patch<dd><a name="index-patch-graphics-object-1427"></a><a name="index-graphics-object_002c-patch-1428"></a>A filled polygon, currently limited to two dimensions.
+     <br><dt>patch<dd><a name="index-patch-graphics-object-1501"></a><a name="index-graphics-object_002c-patch-1502"></a>A filled polygon, currently limited to two dimensions.
 
-     <br><dt>surface<dd><a name="index-surface-graphics-object-1429"></a><a name="index-graphics-object_002c-surface-1430"></a>A three-dimensional surface. 
+     <br><dt>surface<dd><a name="index-surface-graphics-object-1503"></a><a name="index-graphics-object_002c-surface-1504"></a>A three-dimensional surface. 
 <!-- @end group -->
 </dl>
 
 <h5 class="subsubsection">15.3.2.1 Handle Functions</h5>
 
-<p><a name="index-handle-functions-1431"></a>
+<p><a name="index-handle-functions-1505"></a>
 To determine whether a variable is a graphics object index or a figure
 index, use the functions <code>ishandle</code> and <code>isfigure</code>.
 
@@ -74,7 +74,7 @@ index, use the functions <code>ishandle</code> and <code>isfigure</code>.
    <p><a name="doc_002dishandle"></a>
 
 <div class="defun">
-&mdash; Built-in Function:  <b>ishandle</b> (<var>h</var>)<var><a name="index-ishandle-1432"></a></var><br>
+&mdash; Built-in Function:  <b>ishandle</b> (<var>h</var>)<var><a name="index-ishandle-1506"></a></var><br>
 <blockquote><p>Return true if <var>h</var> is a graphics handle and false otherwise. 
 <var>h</var> may also be a matrix of handles in which case a logical
 array is returned that is true where the elements of <var>h</var> are
@@ -90,7 +90,7 @@ graphics handles and false where they are not.
    <p><a name="doc_002dishghandle"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>ishghandle</b> (<var>h</var>)<var><a name="index-ishghandle-1433"></a></var><br>
+&mdash; Function File:  <b>ishghandle</b> (<var>h</var>)<var><a name="index-ishghandle-1507"></a></var><br>
 <blockquote><p>Return true if <var>h</var> is a graphics handle and false otherwise. 
 </p></blockquote></div>
 
@@ -98,7 +98,7 @@ graphics handles and false where they are not.
    <p><a name="doc_002disfigure"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>isfigure</b> (<var>h</var>)<var><a name="index-isfigure-1434"></a></var><br>
+&mdash; Function File:  <b>isfigure</b> (<var>h</var>)<var><a name="index-isfigure-1508"></a></var><br>
 <blockquote><p>Return true if <var>h</var> is a graphics handle that contains a figure
 object. 
 <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
@@ -117,7 +117,7 @@ none exists.
    <p><a name="doc_002dgcf"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>gcf</b> ()<var><a name="index-gcf-1435"></a></var><br>
+&mdash; Function File:  <b>gcf</b> ()<var><a name="index-gcf-1509"></a></var><br>
 <blockquote><p>Return the current figure handle.  If a figure does not exist, create
 one and return its handle.  The handle may then be used to examine or
 set properties of the figure.  For example,
@@ -140,7 +140,7 @@ figure to <code>"on"</code> will cause it to be displayed again.
    <p><a name="doc_002dgca"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>gca</b> ()<var><a name="index-gca-1436"></a></var><br>
+&mdash; Function File:  <b>gca</b> ()<var><a name="index-gca-1510"></a></var><br>
 <blockquote><p>Return a handle to the current axis object.  If no axis object
 exists, create one and return its handle.  The handle may then be
 used to examine or set properties of the axes.  For example,
@@ -205,7 +205,7 @@ objects.
    <p><a name="doc_002dget"></a>
 
 <div class="defun">
-&mdash; Built-in Function:  <b>get</b> (<var>h, p</var>)<var><a name="index-get-1437"></a></var><br>
+&mdash; Built-in Function:  <b>get</b> (<var>h, p</var>)<var><a name="index-get-1511"></a></var><br>
 <blockquote><p>Return the named property <var>p</var> from the graphics handle <var>h</var>. 
 If <var>p</var> is omitted, return the complete property list for <var>h</var>. 
 If <var>h</var> is a vector, return a cell array including the property
@@ -216,9 +216,9 @@ values or lists respectively.
    <p><a name="doc_002dset"></a>
 
 <div class="defun">
-&mdash; Built-in Function:  <b>set</b> (<var>h, property, value, <small class="dots">...</small></var>)<var><a name="index-set-1438"></a></var><br>
-&mdash; Built-in Function:  <b>set</b> (<var>h, properties, values</var>)<var><a name="index-set-1439"></a></var><br>
-&mdash; Built-in Function:  <b>set</b> (<var>h, pv</var>)<var><a name="index-set-1440"></a></var><br>
+&mdash; Built-in Function:  <b>set</b> (<var>h, property, value, <small class="dots">...</small></var>)<var><a name="index-set-1512"></a></var><br>
+&mdash; Built-in Function:  <b>set</b> (<var>h, properties, values</var>)<var><a name="index-set-1513"></a></var><br>
+&mdash; Built-in Function:  <b>set</b> (<var>h, pv</var>)<var><a name="index-set-1514"></a></var><br>
 <blockquote><p>Set named property values for the graphics handle (or vector of graphics
 handles) <var>h</var>. 
 There are three ways how to give the property names and values:
@@ -253,8 +253,8 @@ the dimensions of <var>pv</var>.
    <p><a name="doc_002dancestor"></a>
 
 <div class="defun">
-&mdash; Function File: <var>parent</var> = <b>ancestor</b> (<var>h, type</var>)<var><a name="index-ancestor-1441"></a></var><br>
-&mdash; Function File: <var>parent</var> = <b>ancestor</b> (<var>h, type, 'toplevel'</var>)<var><a name="index-ancestor-1442"></a></var><br>
+&mdash; Function File: <var>parent</var> = <b>ancestor</b> (<var>h, type</var>)<var><a name="index-ancestor-1515"></a></var><br>
+&mdash; Function File: <var>parent</var> = <b>ancestor</b> (<var>h, type, 'toplevel'</var>)<var><a name="index-ancestor-1516"></a></var><br>
 <blockquote><p>Return the first ancestor of handle object <var>h</var> whose type matches
 <var>type</var>, where <var>type</var> is a character string.  If <var>type</var> is a
 cell array of strings, return the first parent whose type matches
@@ -276,7 +276,7 @@ of the first (nearest) one.
    <p><a name="doc_002dallchild"></a>
 
 <div class="defun">
-&mdash; Function File: <var>h</var> = <b>allchild</b> (<var>handles</var>)<var><a name="index-allchild-1443"></a></var><br>
+&mdash; Function File: <var>h</var> = <b>allchild</b> (<var>handles</var>)<var><a name="index-allchild-1517"></a></var><br>
 <blockquote><p>Find all children, including hidden children, of a graphics object.
 
         <p>This function is similar to <code>get (h, "children")</code>, but also

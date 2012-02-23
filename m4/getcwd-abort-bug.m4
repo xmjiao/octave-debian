@@ -1,9 +1,9 @@
-# serial 6
+# serial 7
 # Determine whether getcwd aborts when the length of the working directory
 # name is unusually large.  Any length between 4k and 16k trigger the bug
 # when using glibc-2.4.90-9 or older.
 
-# Copyright (C) 2006, 2009-2011 Free Software Foundation, Inc.
+# Copyright (C) 2006, 2009-2012 Free Software Foundation, Inc.
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
 # with or without modifications, as long as this notice is preserved.
@@ -91,7 +91,8 @@ main ()
      results in a failed assertion.  */
   cwd = getcwd (NULL, 0);
   if (cwd == NULL)
-    fail = 4; /* getcwd failed.  This is ok, and expected.  */
+    fail = 4; /* getcwd failed: it refuses to return a string longer
+                 than PATH_MAX.  */
   free (cwd);
 
   /* Call rmdir first, in case the above chdir failed.  */
@@ -110,11 +111,18 @@ main ()
 }
           ]])],
     [gl_cv_func_getcwd_abort_bug=no],
-    dnl A "regular" nonzero return does not indicate this bug.
-    dnl An abort will provoke an exit code of something like 134 (128 + 6).
-    [test $? -gt 128 \
-      && gl_cv_func_getcwd_abort_bug=yes \
-      || gl_cv_func_getcwd_abort_bug=no],
+    [dnl An abort will provoke an exit code of something like 134 (128 + 6).
+     dnl An exit code of 4 can also occur (in OpenBSD 4.9, NetBSD 5.1 for
+     dnl example): getcwd (NULL, 0) fails rather than returning a string
+     dnl longer than PATH_MAX.  This may be POSIX compliant (in some
+     dnl interpretations of POSIX).  But gnulib's getcwd module wants to
+     dnl provide a non-NULL value in this case.
+     ret=$?
+     if test $ret -ge 128 || test $ret = 4; then
+       gl_cv_func_getcwd_abort_bug=yes
+     else
+       gl_cv_func_getcwd_abort_bug=no
+     fi],
     [gl_cv_func_getcwd_abort_bug=yes])
   ])
   AS_IF([test $gl_cv_func_getcwd_abort_bug = yes], [$1], [$2])

@@ -76,11 +76,11 @@ three-dimensional plots.
    <p><a name="doc_002dmesh"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>mesh</b> (<var>x, y, z</var>)<var><a name="index-mesh-1167"></a></var><br>
-&mdash; Function File:  <b>mesh</b> (<var>z</var>)<var><a name="index-mesh-1168"></a></var><br>
-&mdash; Function File:  <b>mesh</b> (<var><small class="dots">...</small>, c</var>)<var><a name="index-mesh-1169"></a></var><br>
-&mdash; Function File:  <b>mesh</b> (<var>hax, <small class="dots">...</small></var>)<var><a name="index-mesh-1170"></a></var><br>
-&mdash; Function File: <var>h</var> = <b>mesh</b> (<var><small class="dots">...</small></var>)<var><a name="index-mesh-1171"></a></var><br>
+&mdash; Function File:  <b>mesh</b> (<var>x, y, z</var>)<var><a name="index-mesh-1237"></a></var><br>
+&mdash; Function File:  <b>mesh</b> (<var>z</var>)<var><a name="index-mesh-1238"></a></var><br>
+&mdash; Function File:  <b>mesh</b> (<var><small class="dots">...</small>, c</var>)<var><a name="index-mesh-1239"></a></var><br>
+&mdash; Function File:  <b>mesh</b> (<var>hax, <small class="dots">...</small></var>)<var><a name="index-mesh-1240"></a></var><br>
+&mdash; Function File: <var>h</var> = <b>mesh</b> (<var><small class="dots">...</small></var>)<var><a name="index-mesh-1241"></a></var><br>
 <blockquote><p>Plot a mesh given matrices <var>x</var>, and <var>y</var> from <code>meshgrid</code> and
 a matrix <var>z</var> corresponding to the <var>x</var> and <var>y</var> coordinates of
 the mesh.  If <var>x</var> and <var>y</var> are vectors, then a typical vertex
@@ -90,7 +90,10 @@ to different <var>y</var> values.
 
         <p>The color of the mesh is derived from the <code>colormap</code>
 and the value of <var>z</var>.  Optionally the color of the mesh can be
-specified independent of <var>z</var>, by adding a fourth matrix, <var>c</var>. 
+specified independent of <var>z</var>, by adding a fourth matrix, <var>c</var>.
+
+        <p>The optional return value <var>h</var> is a graphics handle to the created
+surface object. 
 <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
 <!-- A simple blank line produces the correct behavior. -->
 <!-- @sp 1 -->
@@ -102,7 +105,7 @@ specified independent of <var>z</var>, by adding a fourth matrix, <var>c</var>.
    <p><a name="doc_002dmeshc"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>meshc</b> (<var>x, y, z</var>)<var><a name="index-meshc-1172"></a></var><br>
+&mdash; Function File:  <b>meshc</b> (<var>x, y, z</var>)<var><a name="index-meshc-1242"></a></var><br>
 <blockquote><p>Plot a mesh and contour given matrices <var>x</var>, and <var>y</var> from
 <code>meshgrid</code> and a matrix <var>z</var> corresponding to the <var>x</var> and
 <var>y</var> coordinates of the mesh.  If <var>x</var> and <var>y</var> are vectors,
@@ -120,7 +123,7 @@ columns of <var>z</var> correspond to different <var>x</var> values and rows of
    <p><a name="doc_002dmeshz"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>meshz</b> (<var>x, y, z</var>)<var><a name="index-meshz-1173"></a></var><br>
+&mdash; Function File:  <b>meshz</b> (<var>x, y, z</var>)<var><a name="index-meshz-1243"></a></var><br>
 <blockquote><p>Plot a curtain mesh given matrices <var>x</var>, and <var>y</var> from
 <code>meshgrid</code> and a matrix <var>z</var> corresponding to the <var>x</var> and
 <var>y</var> coordinates of the mesh.  If <var>x</var> and <var>y</var> are vectors,
@@ -138,8 +141,8 @@ columns of <var>z</var> correspond to different <var>x</var> values and rows of
    <p><a name="doc_002dhidden"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>hidden</b> (<var>mode</var>)<var><a name="index-hidden-1174"></a></var><br>
-&mdash; Function File:  <b>hidden</b> ()<var><a name="index-hidden-1175"></a></var><br>
+&mdash; Function File:  <b>hidden</b> (<var>mode</var>)<var><a name="index-hidden-1244"></a></var><br>
+&mdash; Function File:  <b>hidden</b> ()<var><a name="index-hidden-1245"></a></var><br>
 <blockquote><p>Manipulation the mesh hidden line removal.  Called with no argument
 the hidden line removal is toggled.  The argument <var>mode</var> can be either
 'on' or 'off' and the set of the hidden line removal is set accordingly. 
@@ -154,11 +157,11 @@ the hidden line removal is toggled.  The argument <var>mode</var> can be either
    <p><a name="doc_002dsurf"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>surf</b> (<var>x, y, z</var>)<var><a name="index-surf-1176"></a></var><br>
-&mdash; Function File:  <b>surf</b> (<var>z</var>)<var><a name="index-surf-1177"></a></var><br>
-&mdash; Function File:  <b>surf</b> (<var><small class="dots">...</small>, c</var>)<var><a name="index-surf-1178"></a></var><br>
-&mdash; Function File:  <b>surf</b> (<var>hax, <small class="dots">...</small></var>)<var><a name="index-surf-1179"></a></var><br>
-&mdash; Function File: <var>h</var> = <b>surf</b> (<var><small class="dots">...</small></var>)<var><a name="index-surf-1180"></a></var><br>
+&mdash; Function File:  <b>surf</b> (<var>x, y, z</var>)<var><a name="index-surf-1246"></a></var><br>
+&mdash; Function File:  <b>surf</b> (<var>z</var>)<var><a name="index-surf-1247"></a></var><br>
+&mdash; Function File:  <b>surf</b> (<var><small class="dots">...</small>, c</var>)<var><a name="index-surf-1248"></a></var><br>
+&mdash; Function File:  <b>surf</b> (<var>hax, <small class="dots">...</small></var>)<var><a name="index-surf-1249"></a></var><br>
+&mdash; Function File: <var>h</var> = <b>surf</b> (<var><small class="dots">...</small></var>)<var><a name="index-surf-1250"></a></var><br>
 <blockquote><p>Plot a surface given matrices <var>x</var>, and <var>y</var> from <code>meshgrid</code> and
 a matrix <var>z</var> corresponding to the <var>x</var> and <var>y</var> coordinates of
 the mesh.  If <var>x</var> and <var>y</var> are vectors, then a typical vertex
@@ -168,7 +171,10 @@ to different <var>y</var> values.
 
         <p>The color of the surface is derived from the <code>colormap</code> and
 the value of <var>z</var>.  Optionally the color of the surface can be
-specified independent of <var>z</var>, by adding a fourth matrix, <var>c</var>. 
+specified independent of <var>z</var>, by adding a fourth matrix, <var>c</var>.
+
+        <p>The optional return value <var>h</var> is a graphics handle to the created
+surface object. 
 <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
 <!-- A simple blank line produces the correct behavior. -->
 <!-- @sp 1 -->
@@ -180,7 +186,7 @@ specified independent of <var>z</var>, by adding a fourth matrix, <var>c</var>.
    <p><a name="doc_002dsurfc"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>surfc</b> (<var>x, y, z</var>)<var><a name="index-surfc-1181"></a></var><br>
+&mdash; Function File:  <b>surfc</b> (<var>x, y, z</var>)<var><a name="index-surfc-1251"></a></var><br>
 <blockquote><p>Plot a surface and contour given matrices <var>x</var>, and <var>y</var> from
 <code>meshgrid</code> and a matrix <var>z</var> corresponding to the <var>x</var> and
 <var>y</var> coordinates of the mesh.  If <var>x</var> and <var>y</var> are vectors,
@@ -198,11 +204,11 @@ columns of <var>z</var> correspond to different <var>x</var> values and rows of
    <p><a name="doc_002dsurfl"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>surfl</b> (<var>x, y, z</var>)<var><a name="index-surfl-1182"></a></var><br>
-&mdash; Function File:  <b>surfl</b> (<var>z</var>)<var><a name="index-surfl-1183"></a></var><br>
-&mdash; Function File:  <b>surfl</b> (<var>x, y, z, L</var>)<var><a name="index-surfl-1184"></a></var><br>
-&mdash; Function File:  <b>surfl</b> (<var>x, y, z, L, P</var>)<var><a name="index-surfl-1185"></a></var><br>
-&mdash; Function File:  <b>surfl</b> (<var><small class="dots">...</small>, "light"</var>)<var><a name="index-surfl-1186"></a></var><br>
+&mdash; Function File:  <b>surfl</b> (<var>x, y, z</var>)<var><a name="index-surfl-1252"></a></var><br>
+&mdash; Function File:  <b>surfl</b> (<var>z</var>)<var><a name="index-surfl-1253"></a></var><br>
+&mdash; Function File:  <b>surfl</b> (<var>x, y, z, L</var>)<var><a name="index-surfl-1254"></a></var><br>
+&mdash; Function File:  <b>surfl</b> (<var>x, y, z, L, P</var>)<var><a name="index-surfl-1255"></a></var><br>
+&mdash; Function File:  <b>surfl</b> (<var><small class="dots">...</small>, "light"</var>)<var><a name="index-surfl-1256"></a></var><br>
 <blockquote><p>Plot a lighted surface given matrices <var>x</var>, and <var>y</var> from
 <code>meshgrid</code> and
 a matrix <var>z</var> corresponding to the <var>x</var> and <var>y</var> coordinates of
@@ -233,8 +239,8 @@ object to illuminate the surface is not implemented (yet).
 
         <p>Example:
 
-     <pre class="example">          colormap(bone);
-          surfl(peaks);
+     <pre class="example">          colormap (bone (64));
+          surfl (peaks);
           shading interp;
 </pre>
         <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
@@ -247,16 +253,16 @@ object to illuminate the surface is not implemented (yet).
    <p><a name="doc_002dsurfnorm"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>surfnorm</b> (<var>x, y, z</var>)<var><a name="index-surfnorm-1187"></a></var><br>
-&mdash; Function File:  <b>surfnorm</b> (<var>z</var>)<var><a name="index-surfnorm-1188"></a></var><br>
-&mdash; Function File: [<var>nx</var>, <var>ny</var>, <var>nz</var>] = <b>surfnorm</b> (<var><small class="dots">...</small></var>)<var><a name="index-surfnorm-1189"></a></var><br>
-&mdash; Function File:  <b>surfnorm</b> (<var>h, <small class="dots">...</small></var>)<var><a name="index-surfnorm-1190"></a></var><br>
+&mdash; Function File:  <b>surfnorm</b> (<var>x, y, z</var>)<var><a name="index-surfnorm-1257"></a></var><br>
+&mdash; Function File:  <b>surfnorm</b> (<var>z</var>)<var><a name="index-surfnorm-1258"></a></var><br>
+&mdash; Function File: [<var>nx</var>, <var>ny</var>, <var>nz</var>] = <b>surfnorm</b> (<var><small class="dots">...</small></var>)<var><a name="index-surfnorm-1259"></a></var><br>
+&mdash; Function File:  <b>surfnorm</b> (<var>h, <small class="dots">...</small></var>)<var><a name="index-surfnorm-1260"></a></var><br>
 <blockquote><p>Find the vectors normal to a meshgridded surface.  The meshed gridded
 surface is defined by <var>x</var>, <var>y</var>, and <var>z</var>.  If <var>x</var> and
 <var>y</var> are not defined, then it is assumed that they are given by
 
-     <pre class="example">          [<var>x</var>, <var>y</var>] = meshgrid (1:size(<var>z</var>, 1),
-                               1:size(<var>z</var>, 2));
+     <pre class="example">          [<var>x</var>, <var>y</var>] = meshgrid (1:size (<var>z</var>, 1),
+                             1:size (<var>z</var>, 2));
 </pre>
         <p>If no return arguments are requested, a surface plot with the normal
 vectors to the surface is plotted.  Otherwise the components of the normal
@@ -283,13 +289,13 @@ normal to the surface at the meshgridded points.
    <p><a name="doc_002disosurface"></a>
 
 <div class="defun">
-&mdash; Function File: [<var>fv</var>] = <b>isosurface</b> (<var>val, iso</var>)<var><a name="index-isosurface-1191"></a></var><br>
-&mdash; Function File: [<var>fv</var>] = <b>isosurface</b> (<var>x, y, z, val, iso</var>)<var><a name="index-isosurface-1192"></a></var><br>
-&mdash; Function File: [<var>fv</var>] = <b>isosurface</b> (<var><small class="dots">...</small>, "noshare", "verbose"</var>)<var><a name="index-isosurface-1193"></a></var><br>
-&mdash; Function File: [<var>fvc</var>] = <b>isosurface</b> (<var><small class="dots">...</small>, col</var>)<var><a name="index-isosurface-1194"></a></var><br>
-&mdash; Function File: [<var>f</var>, <var>v</var>] = <b>isosurface</b> (<var>x, y, z, val, iso</var>)<var><a name="index-isosurface-1195"></a></var><br>
-&mdash; Function File: [<var>f</var>, <var>v</var>, <var>c</var>] = <b>isosurface</b> (<var>x, y, z, val, iso, col</var>)<var><a name="index-isosurface-1196"></a></var><br>
-&mdash; Function File:  <b>isosurface</b> (<var>x, y, z, val, iso, col, opt</var>)<var><a name="index-isosurface-1197"></a></var><br>
+&mdash; Function File: [<var>fv</var>] = <b>isosurface</b> (<var>val, iso</var>)<var><a name="index-isosurface-1261"></a></var><br>
+&mdash; Function File: [<var>fv</var>] = <b>isosurface</b> (<var>x, y, z, val, iso</var>)<var><a name="index-isosurface-1262"></a></var><br>
+&mdash; Function File: [<var>fv</var>] = <b>isosurface</b> (<var><small class="dots">...</small>, "noshare", "verbose"</var>)<var><a name="index-isosurface-1263"></a></var><br>
+&mdash; Function File: [<var>fvc</var>] = <b>isosurface</b> (<var><small class="dots">...</small>, col</var>)<var><a name="index-isosurface-1264"></a></var><br>
+&mdash; Function File: [<var>f</var>, <var>v</var>] = <b>isosurface</b> (<var>x, y, z, val, iso</var>)<var><a name="index-isosurface-1265"></a></var><br>
+&mdash; Function File: [<var>f</var>, <var>v</var>, <var>c</var>] = <b>isosurface</b> (<var>x, y, z, val, iso, col</var>)<var><a name="index-isosurface-1266"></a></var><br>
+&mdash; Function File:  <b>isosurface</b> (<var>x, y, z, val, iso, col, opt</var>)<var><a name="index-isosurface-1267"></a></var><br>
 <blockquote>
         <p>If called with one output argument and the first input argument
 <var>val</var> is a three-dimensional array that contains the data of an
@@ -331,39 +337,44 @@ isosurface geometry with the <samp><span class="command">patch</span></samp> com
         <p class="noindent">will directly draw a random isosurface geometry in a graphics window. 
 Another example for an isosurface geometry with different additional
 coloring
+<!-- Set example in small font to prevent overfull line -->
 
-     <pre class="example">          N = 15;    ## Increase number of vertices in each direction
-          iso = .4;  ## Change isovalue to .1 to display a sphere
+     <pre class="smallexample">          N = 15;    # Increase number of vertices in each direction
+          iso = .4;  # Change isovalue to .1 to display a sphere
           lin = linspace (0, 2, N);
           [x, y, z] = meshgrid (lin, lin, lin);
           c = abs ((x-.5).^2 + (y-.5).^2 + (z-.5).^2);
-          figure (); ## Open another figure window
+          figure (); # Open another figure window
           
-          subplot (2, 2, 1); view (-38, 20);
+          subplot (2,2,1); view (-38, 20);
           [f, v] = isosurface (x, y, z, c, iso);
           p = patch ("Faces", f, "Vertices", v, "EdgeColor", "none");
-          set (gca, "PlotBoxAspectRatioMode","manual", "PlotBoxAspectRatio", [1 1 1]);
+          set (gca, "PlotBoxAspectRatioMode", "manual", ...
+                    "PlotBoxAspectRatio", [1 1 1]);
            set (p, "FaceColor", "green", "FaceLighting", "phong");
-           light ("Position", [1 1 5]); ## Available with the JHandles package
+           light ("Position", [1 1 5]); # Available with the JHandles package
           
-          subplot (2, 2, 2); view (-38, 20);
+          subplot (2,2,2); view (-38, 20);
           p = patch ("Faces", f, "Vertices", v, "EdgeColor", "blue");
-          set (gca, "PlotBoxAspectRatioMode","manual", "PlotBoxAspectRatio", [1 1 1]);
+          set (gca, "PlotBoxAspectRatioMode", "manual", ...
+                    "PlotBoxAspectRatio", [1 1 1]);
            set (p, "FaceColor", "none", "FaceLighting", "phong");
            light ("Position", [1 1 5]);
           
-          subplot (2, 2, 3); view (-38, 20);
+          subplot (2,2,3); view (-38, 20);
           [f, v, c] = isosurface (x, y, z, c, iso, y);
-          p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", c, \
+          p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", c, ...
                      "FaceColor", "interp", "EdgeColor", "none");
-          set (gca, "PlotBoxAspectRatioMode","manual", "PlotBoxAspectRatio", [1 1 1]);
+          set (gca, "PlotBoxAspectRatioMode", "manual", ...
+                    "PlotBoxAspectRatio", [1 1 1]);
            set (p, "FaceLighting", "phong");
            light ("Position", [1 1 5]);
           
-          subplot (2, 2, 4); view (-38, 20);
-          p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", c, \
+          subplot (2,2,4); view (-38, 20);
+          p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", c, ...
                      "FaceColor", "interp", "EdgeColor", "blue");
-          set (gca, "PlotBoxAspectRatioMode","manual", "PlotBoxAspectRatio", [1 1 1]);
+          set (gca, "PlotBoxAspectRatioMode", "manual", ...
+                    "PlotBoxAspectRatio", [1 1 1]);
            set (p, "FaceLighting", "phong");
            light ("Position", [1 1 5]);
 </pre>
@@ -377,12 +388,12 @@ coloring
    <p><a name="doc_002disonormals"></a>
 
 <div class="defun">
-&mdash; Function File: [<var>n</var>] = <b>isonormals</b> (<var>val, v</var>)<var><a name="index-isonormals-1198"></a></var><br>
-&mdash; Function File: [<var>n</var>] = <b>isonormals</b> (<var>val, p</var>)<var><a name="index-isonormals-1199"></a></var><br>
-&mdash; Function File: [<var>n</var>] = <b>isonormals</b> (<var>x, y, z, val, v</var>)<var><a name="index-isonormals-1200"></a></var><br>
-&mdash; Function File: [<var>n</var>] = <b>isonormals</b> (<var>x, y, z, val, p</var>)<var><a name="index-isonormals-1201"></a></var><br>
-&mdash; Function File: [<var>n</var>] = <b>isonormals</b> (<var><small class="dots">...</small>, "negate"</var>)<var><a name="index-isonormals-1202"></a></var><br>
-&mdash; Function File:  <b>isonormals</b> (<var><small class="dots">...</small>, p</var>)<var><a name="index-isonormals-1203"></a></var><br>
+&mdash; Function File: [<var>n</var>] = <b>isonormals</b> (<var>val, v</var>)<var><a name="index-isonormals-1268"></a></var><br>
+&mdash; Function File: [<var>n</var>] = <b>isonormals</b> (<var>val, p</var>)<var><a name="index-isonormals-1269"></a></var><br>
+&mdash; Function File: [<var>n</var>] = <b>isonormals</b> (<var>x, y, z, val, v</var>)<var><a name="index-isonormals-1270"></a></var><br>
+&mdash; Function File: [<var>n</var>] = <b>isonormals</b> (<var>x, y, z, val, p</var>)<var><a name="index-isonormals-1271"></a></var><br>
+&mdash; Function File: [<var>n</var>] = <b>isonormals</b> (<var><small class="dots">...</small>, "negate"</var>)<var><a name="index-isonormals-1272"></a></var><br>
+&mdash; Function File:  <b>isonormals</b> (<var><small class="dots">...</small>, p</var>)<var><a name="index-isonormals-1273"></a></var><br>
 <blockquote>
         <p>If called with one output argument and the first input argument
 <var>val</var> is a three-dimensional array that contains the data for an
@@ -405,45 +416,47 @@ then compute the reverse vector normals of an isosurface geometry.
 given by the patch handle <var>p</var>.
 
         <p>For example:
+<!-- Set example in small font to prevent overfull line -->
 
-     <pre class="example">          function [] = isofinish (p)
-            set (gca, "PlotBoxAspectRatioMode","manual","PlotBoxAspectRatio",[1 1 1]);
-            set (p, "VertexNormals", -get(p,"VertexNormals")); ## Revert normals
+     <pre class="smallexample">          function [] = isofinish (p)
+            set (gca, "PlotBoxAspectRatioMode", "manual", ...
+                      "PlotBoxAspectRatio", [1 1 1]);
+            set (p, "VertexNormals", -get (p,"VertexNormals")); # Revert normals
             set (p, "FaceColor", "interp");
             ## set (p, "FaceLighting", "phong");
-            ## light ("Position", [1 1 5]); ## Available with JHandles
+            ## light ("Position", [1 1 5]); # Available with JHandles
           endfunction
           
-          N = 15;    ## Increase number of vertices in each direction
-          iso = .4;  ## Change isovalue to .1 to display a sphere
+          N = 15;    # Increase number of vertices in each direction
+          iso = .4;  # Change isovalue to .1 to display a sphere
           lin = linspace (0, 2, N);
           [x, y, z] = meshgrid (lin, lin, lin);
           c = abs ((x-.5).^2 + (y-.5).^2 + (z-.5).^2);
-          figure (); ## Open another figure window
+          figure (); # Open another figure window
           
-          subplot (2, 2, 1); view (-38, 20);
+          subplot (2,2,1); view (-38, 20);
           [f, v, cdat] = isosurface (x, y, z, c, iso, y);
-          p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, \
-                  "FaceColor", "interp", "EdgeColor", "none");
+          p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, ...
+                     "FaceColor", "interp", "EdgeColor", "none");
           isofinish (p); ## Call user function isofinish
           
-          subplot (2, 2, 2); view (-38, 20);
-          p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, \
-                  "FaceColor", "interp", "EdgeColor", "none");
-          isonormals (x, y, z, c, p); ## Directly modify patch
+          subplot (2,2,2); view (-38, 20);
+          p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, ...
+                     "FaceColor", "interp", "EdgeColor", "none");
+          isonormals (x, y, z, c, p); # Directly modify patch
           isofinish (p);
           
-          subplot (2, 2, 3); view (-38, 20);
-          p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, \
-                  "FaceColor", "interp", "EdgeColor", "none");
-          n = isonormals (x, y, z, c, v); ## Compute normals of isosurface
-          set (p, "VertexNormals", n);    ## Manually set vertex normals
+          subplot (2,2,3); view (-38, 20);
+          p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, ...
+                     "FaceColor", "interp", "EdgeColor", "none");
+          n = isonormals (x, y, z, c, v); # Compute normals of isosurface
+          set (p, "VertexNormals", n);    # Manually set vertex normals
           isofinish (p);
           
-          subplot (2, 2, 4); view (-38, 20);
-          p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, \
-                  "FaceColor", "interp", "EdgeColor", "none");
-          isonormals (x, y, z, c, v, "negate"); ## Use reverse directly
+          subplot (2,2,4); view (-38, 20);
+          p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, ...
+                     "FaceColor", "interp", "EdgeColor", "none");
+          isonormals (x, y, z, c, v, "negate"); # Use reverse directly
           isofinish (p);
 </pre>
         <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
@@ -456,12 +469,12 @@ given by the patch handle <var>p</var>.
    <p><a name="doc_002disocolors"></a>
 
 <div class="defun">
-&mdash; Function File: [<var>cd</var>] = <b>isocolors</b> (<var>c, v</var>)<var><a name="index-isocolors-1204"></a></var><br>
-&mdash; Function File: [<var>cd</var>] = <b>isocolors</b> (<var>x, y, z, c, v</var>)<var><a name="index-isocolors-1205"></a></var><br>
-&mdash; Function File: [<var>cd</var>] = <b>isocolors</b> (<var>x, y, z, r, g, b, v</var>)<var><a name="index-isocolors-1206"></a></var><br>
-&mdash; Function File: [<var>cd</var>] = <b>isocolors</b> (<var>r, g, b, v</var>)<var><a name="index-isocolors-1207"></a></var><br>
-&mdash; Function File: [<var>cd</var>] = <b>isocolors</b> (<var><small class="dots">...</small>, p</var>)<var><a name="index-isocolors-1208"></a></var><br>
-&mdash; Function File:  <b>isocolors</b> (<var><small class="dots">...</small></var>)<var><a name="index-isocolors-1209"></a></var><br>
+&mdash; Function File: [<var>cd</var>] = <b>isocolors</b> (<var>c, v</var>)<var><a name="index-isocolors-1274"></a></var><br>
+&mdash; Function File: [<var>cd</var>] = <b>isocolors</b> (<var>x, y, z, c, v</var>)<var><a name="index-isocolors-1275"></a></var><br>
+&mdash; Function File: [<var>cd</var>] = <b>isocolors</b> (<var>x, y, z, r, g, b, v</var>)<var><a name="index-isocolors-1276"></a></var><br>
+&mdash; Function File: [<var>cd</var>] = <b>isocolors</b> (<var>r, g, b, v</var>)<var><a name="index-isocolors-1277"></a></var><br>
+&mdash; Function File: [<var>cd</var>] = <b>isocolors</b> (<var><small class="dots">...</small>, p</var>)<var><a name="index-isocolors-1278"></a></var><br>
+&mdash; Function File:  <b>isocolors</b> (<var><small class="dots">...</small></var>)<var><a name="index-isocolors-1279"></a></var><br>
 <blockquote>
         <p>If called with one output argument and the first input argument
 <var>c</var> is a three-dimensional array that contains color values and
@@ -488,43 +501,43 @@ change the colors of a patch that is given by the patch handle
         <p>For example:
 
      <pre class="example">          function [] = isofinish (p)
-            set (gca, "PlotBoxAspectRatioMode", "manual", \
-                 "PlotBoxAspectRatio", [1 1 1]);
+            set (gca, "PlotBoxAspectRatioMode", "manual", ...
+                      "PlotBoxAspectRatio", [1 1 1]);
             set (p, "FaceColor", "interp");
             ## set (p, "FaceLighting", "flat");
             ## light ("Position", [1 1 5]); ## Available with JHandles
           endfunction
           
-          N = 15;    ## Increase number of vertices in each direction
-          iso = .4;  ## Change isovalue to .1 to display a sphere
+          N = 15;    # Increase number of vertices in each direction
+          iso = .4;  # Change isovalue to .1 to display a sphere
           lin = linspace (0, 2, N);
           [x, y, z] = meshgrid (lin, lin, lin);
           c = abs ((x-.5).^2 + (y-.5).^2 + (z-.5).^2);
-          figure (); ## Open another figure window
+          figure (); # Open another figure window
           
-          subplot (2, 2, 1); view (-38, 20);
+          subplot (2,2,1); view (-38, 20);
           [f, v] = isosurface (x, y, z, c, iso);
           p = patch ("Faces", f, "Vertices", v, "EdgeColor", "none");
-          cdat = rand (size (c));       ## Compute random patch color data
-          isocolors (x, y, z, cdat, p); ## Directly set colors of patch
-          isofinish (p);                ## Call user function isofinish
+          cdat = rand (size (c));       # Compute random patch color data
+          isocolors (x, y, z, cdat, p); # Directly set colors of patch
+          isofinish (p);                # Call user function isofinish
           
-          subplot (2, 2, 2); view (-38, 20);
+          subplot (2,2,2); view (-38, 20);
           p = patch ("Faces", f, "Vertices", v, "EdgeColor", "none");
           [r, g, b] = meshgrid (lin, 2-lin, 2-lin);
-          cdat = isocolors (x, y, z, c, v); ## Compute color data vertices
-          set (p, "FaceVertexCData", cdat); ## Set color data manually
+          cdat = isocolors (x, y, z, c, v); # Compute color data vertices
+          set (p, "FaceVertexCData", cdat); # Set color data manually
           isofinish (p);
           
-          subplot (2, 2, 3); view (-38, 20);
+          subplot (2,2,3); view (-38, 20);
           p = patch ("Faces", f, "Vertices", v, "EdgeColor", "none");
-          cdat = isocolors (r, g, b, c, p); ## Compute color data patch
-          set (p, "FaceVertexCData", cdat); ## Set color data manually
+          cdat = isocolors (r, g, b, c, p); # Compute color data patch
+          set (p, "FaceVertexCData", cdat); # Set color data manually
           isofinish (p);
           
-          subplot (2, 2, 4); view (-38, 20);
+          subplot (2,2,4); view (-38, 20);
           p = patch ("Faces", f, "Vertices", v, "EdgeColor", "none");
-          r = g = b = repmat ([1:N] / N, [N, 1, N]); ## Black to white
+          r = g = b = repmat ([1:N] / N, [N, 1, N]); # Black to white
           cdat = isocolors (x, y, z, r, g, b, v);
           set (p, "FaceVertexCData", cdat);
           isofinish (p);
@@ -540,7 +553,7 @@ change the colors of a patch that is given by the patch handle
    <p><a name="doc_002ddiffuse"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>diffuse</b> (<var>sx, sy, sz, lv</var>)<var><a name="index-diffuse-1210"></a></var><br>
+&mdash; Function File:  <b>diffuse</b> (<var>sx, sy, sz, lv</var>)<var><a name="index-diffuse-1280"></a></var><br>
 <blockquote><p>Calculate diffuse reflection strength of a surface defined by the normal
 vector elements <var>sx</var>, <var>sy</var>, <var>sz</var>. 
 The light vector can be specified using parameter <var>lv</var>.  It can be
@@ -557,8 +570,8 @@ vector [lx, ly, lz].
    <p><a name="doc_002dspecular"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>specular</b> (<var>sx, sy, sz, lv, vv</var>)<var><a name="index-specular-1211"></a></var><br>
-&mdash; Function File:  <b>specular</b> (<var>sx, sy, sz, lv, vv, se</var>)<var><a name="index-specular-1212"></a></var><br>
+&mdash; Function File:  <b>specular</b> (<var>sx, sy, sz, lv, vv</var>)<var><a name="index-specular-1281"></a></var><br>
+&mdash; Function File:  <b>specular</b> (<var>sx, sy, sz, lv, vv, se</var>)<var><a name="index-specular-1282"></a></var><br>
 <blockquote><p>Calculate specular reflection strength of a surface defined by the normal
 vector elements <var>sx</var>, <var>sy</var>, <var>sz</var> using Phong's approximation. 
 The light and view vectors can be specified using parameter <var>lv</var> and
@@ -578,9 +591,9 @@ vector [x, y, z].  An optional 6th argument describes the specular exponent
    <p><a name="doc_002dmeshgrid"></a>
 
 <div class="defun">
-&mdash; Function File: [<var>xx</var>, <var>yy</var>, <var>zz</var>] = <b>meshgrid</b> (<var>x, y, z</var>)<var><a name="index-meshgrid-1213"></a></var><br>
-&mdash; Function File: [<var>xx</var>, <var>yy</var>] = <b>meshgrid</b> (<var>x, y</var>)<var><a name="index-meshgrid-1214"></a></var><br>
-&mdash; Function File: [<var>xx</var>, <var>yy</var>] = <b>meshgrid</b> (<var>x</var>)<var><a name="index-meshgrid-1215"></a></var><br>
+&mdash; Function File: [<var>xx</var>, <var>yy</var>, <var>zz</var>] = <b>meshgrid</b> (<var>x, y, z</var>)<var><a name="index-meshgrid-1283"></a></var><br>
+&mdash; Function File: [<var>xx</var>, <var>yy</var>] = <b>meshgrid</b> (<var>x, y</var>)<var><a name="index-meshgrid-1284"></a></var><br>
+&mdash; Function File: [<var>xx</var>, <var>yy</var>] = <b>meshgrid</b> (<var>x</var>)<var><a name="index-meshgrid-1285"></a></var><br>
 <blockquote><p>Given vectors of <var>x</var> and <var>y</var> and <var>z</var> coordinates, and
 returning 3 arguments, return three-dimensional arrays corresponding
 to the <var>x</var>, <var>y</var>, and <var>z</var> coordinates of a mesh.  When
@@ -600,8 +613,8 @@ and <var>z</var> is assumed the same as <var>y</var>.
    <p><a name="doc_002dndgrid"></a>
 
 <div class="defun">
-&mdash; Function File: [<var>y1</var>, <var>y2</var>, <small class="dots">...</small>, <var>y</var>n] = <b>ndgrid</b> (<var>x1, x2, <small class="dots">...</small>, xn</var>)<var><a name="index-ndgrid-1216"></a></var><br>
-&mdash; Function File: [<var>y1</var>, <var>y2</var>, <small class="dots">...</small>, <var>y</var>n] = <b>ndgrid</b> (<var>x</var>)<var><a name="index-ndgrid-1217"></a></var><br>
+&mdash; Function File: [<var>y1</var>, <var>y2</var>, <small class="dots">...</small>, <var>y</var>n] = <b>ndgrid</b> (<var>x1, x2, <small class="dots">...</small>, xn</var>)<var><a name="index-ndgrid-1286"></a></var><br>
+&mdash; Function File: [<var>y1</var>, <var>y2</var>, <small class="dots">...</small>, <var>y</var>n] = <b>ndgrid</b> (<var>x</var>)<var><a name="index-ndgrid-1287"></a></var><br>
 <blockquote><p>Given n vectors <var>x1</var>, <small class="dots">...</small> <var>x</var>n, <code>ndgrid</code> returns
 n arrays of dimension n. The elements of the i-th output argument
 contains the elements of the vector <var>x</var>i repeated over all
@@ -621,7 +634,7 @@ all n input arguments equal to <var>x</var>:
    <p><a name="doc_002dplot3"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>plot3</b> (<var>args</var>)<var><a name="index-plot3-1218"></a></var><br>
+&mdash; Function File:  <b>plot3</b> (<var>args</var>)<var><a name="index-plot3-1288"></a></var><br>
 <blockquote><p>Produce three-dimensional plots.  Many different combinations of
 arguments are possible.  The simplest form is
 
@@ -662,9 +675,9 @@ with an empty format string, as
 </pre>
         <p>An example of the use of <code>plot3</code> is
 
-     <pre class="example">             z = [0:0.05:5];
-             plot3 (cos(2*pi*z), sin(2*pi*z), z, ";helix;");
-             plot3 (z, exp(2i*pi*z), ";complex sinusoid;");
+     <pre class="example">          z = [0:0.05:5];
+          plot3 (cos (2*pi*z), sin (2*pi*z), z, ";helix;");
+          plot3 (z, exp (2i*pi*z), ";complex sinusoid;");
 </pre>
         <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
      <!-- A simple blank line produces the correct behavior. -->
@@ -676,12 +689,12 @@ with an empty format string, as
    <p><a name="doc_002dview"></a>
 
 <div class="defun">
-&mdash; Function File: [<var>azimuth</var>, <var>elevation</var>] = <b>view</b> ()<var><a name="index-view-1219"></a></var><br>
-&mdash; Function File:  <b>view</b> (<var>azimuth, elevation</var>)<var><a name="index-view-1220"></a></var><br>
-&mdash; Function File:  <b>view</b> ([<var>azimuth elevation</var>])<var><a name="index-view-1221"></a></var><br>
-&mdash; Function File:  <b>view</b> ([<var>x y z</var>])<var><a name="index-view-1222"></a></var><br>
-&mdash; Function File:  <b>view</b> (<var>dims</var>)<var><a name="index-view-1223"></a></var><br>
-&mdash; Function File:  <b>view</b> (<var>ax, <small class="dots">...</small></var>)<var><a name="index-view-1224"></a></var><br>
+&mdash; Function File: [<var>azimuth</var>, <var>elevation</var>] = <b>view</b> ()<var><a name="index-view-1289"></a></var><br>
+&mdash; Function File:  <b>view</b> (<var>azimuth, elevation</var>)<var><a name="index-view-1290"></a></var><br>
+&mdash; Function File:  <b>view</b> ([<var>azimuth elevation</var>])<var><a name="index-view-1291"></a></var><br>
+&mdash; Function File:  <b>view</b> ([<var>x y z</var>])<var><a name="index-view-1292"></a></var><br>
+&mdash; Function File:  <b>view</b> (<var>dims</var>)<var><a name="index-view-1293"></a></var><br>
+&mdash; Function File:  <b>view</b> (<var>ax, <small class="dots">...</small></var>)<var><a name="index-view-1294"></a></var><br>
 <blockquote><p>Query or set the viewpoint for the current axes.  The parameters
 <var>azimuth</var> and <var>elevation</var> can be given as two arguments or as
 2-element vector. 
@@ -699,12 +712,12 @@ it is set for the current axes.
    <p><a name="doc_002dslice"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>slice</b> (<var>x, y, z, v, sx, sy, sz</var>)<var><a name="index-slice-1225"></a></var><br>
-&mdash; Function File:  <b>slice</b> (<var>x, y, z, v, xi, yi, zi</var>)<var><a name="index-slice-1226"></a></var><br>
-&mdash; Function File:  <b>slice</b> (<var>v, sx, sy, sz</var>)<var><a name="index-slice-1227"></a></var><br>
-&mdash; Function File:  <b>slice</b> (<var>v, xi, yi, zi</var>)<var><a name="index-slice-1228"></a></var><br>
-&mdash; Function File: <var>h</var> = <b>slice</b> (<var><small class="dots">...</small></var>)<var><a name="index-slice-1229"></a></var><br>
-&mdash; Function File: <var>h</var> = <b>slice</b> (<var><small class="dots">...</small>, method</var>)<var><a name="index-slice-1230"></a></var><br>
+&mdash; Function File:  <b>slice</b> (<var>x, y, z, v, sx, sy, sz</var>)<var><a name="index-slice-1295"></a></var><br>
+&mdash; Function File:  <b>slice</b> (<var>x, y, z, v, xi, yi, zi</var>)<var><a name="index-slice-1296"></a></var><br>
+&mdash; Function File:  <b>slice</b> (<var>v, sx, sy, sz</var>)<var><a name="index-slice-1297"></a></var><br>
+&mdash; Function File:  <b>slice</b> (<var>v, xi, yi, zi</var>)<var><a name="index-slice-1298"></a></var><br>
+&mdash; Function File: <var>h</var> = <b>slice</b> (<var><small class="dots">...</small></var>)<var><a name="index-slice-1299"></a></var><br>
+&mdash; Function File: <var>h</var> = <b>slice</b> (<var><small class="dots">...</small>, method</var>)<var><a name="index-slice-1300"></a></var><br>
 <blockquote><p>Plot slices of 3-D data/scalar fields.  Each element of the 3-dimensional
 array <var>v</var> represents a scalar value at a location given by the
 parameters <var>x</var>, <var>y</var>, and <var>z</var>.  The parameters <var>x</var>,
@@ -732,9 +745,10 @@ interpolated using interp3.  The vectors <var>sx</var>, <var>sy</var>, and
 throughout the curve. 
 </dl>
 
-        <p>The default method is <code>"linear"</code>. 
-The optional return value <var>h</var> is a vector of handles to the
-surface graphic objects.
+        <p>The default method is <code>"linear"</code>.
+
+        <p>The optional return value <var>h</var> is a graphics handle to the created
+surface object.
 
         <p>Examples:
 
@@ -755,27 +769,24 @@ surface graphic objects.
    <p><a name="doc_002dribbon"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>ribbon</b> (<var>x, y, width</var>)<var><a name="index-ribbon-1231"></a></var><br>
-&mdash; Function File:  <b>ribbon</b> (<var>y</var>)<var><a name="index-ribbon-1232"></a></var><br>
-&mdash; Function File: <var>h</var> = <b>ribbon</b> (<var><small class="dots">...</small></var>)<var><a name="index-ribbon-1233"></a></var><br>
+&mdash; Function File:  <b>ribbon</b> (<var>x, y, width</var>)<var><a name="index-ribbon-1301"></a></var><br>
+&mdash; Function File:  <b>ribbon</b> (<var>y</var>)<var><a name="index-ribbon-1302"></a></var><br>
+&mdash; Function File: <var>h</var> = <b>ribbon</b> (<var><small class="dots">...</small></var>)<var><a name="index-ribbon-1303"></a></var><br>
 <blockquote><p>Plot a ribbon plot for the columns of <var>y</var> vs.  <var>x</var>.  The
 optional parameter <var>width</var> specifies the width of a single ribbon
 (default is 0.75).  If <var>x</var> is omitted, a vector containing the
-row numbers is assumed (1:rows(Y)).  If requested, return a vector
-<var>h</var> of the handles to the surface objects. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
+row numbers is assumed (1:rows(Y)).
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dgca.html#doc_002dgca">gca</a>, <a href="doc_002dcolorbar.html#doc_002dcolorbar">colorbar</a>. 
+        <p>The optional return value <var>h</var> is a vector of graphics handles to
+the surface objects representing each ribbon. 
 </p></blockquote></div>
 
 <!-- shading scripts/plot/shading.m -->
    <p><a name="doc_002dshading"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>shading</b> (<var>type</var>)<var><a name="index-shading-1234"></a></var><br>
-&mdash; Function File:  <b>shading</b> (<var>ax, <small class="dots">...</small></var>)<var><a name="index-shading-1235"></a></var><br>
+&mdash; Function File:  <b>shading</b> (<var>type</var>)<var><a name="index-shading-1304"></a></var><br>
+&mdash; Function File:  <b>shading</b> (<var>ax, <small class="dots">...</small></var>)<var><a name="index-shading-1305"></a></var><br>
 <blockquote><p>Set the shading of surface or patch graphic objects.  Valid arguments
 for <var>type</var> are
 
@@ -796,12 +807,12 @@ of the current axis.
    <p><a name="doc_002dscatter3"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>scatter3</b> (<var>x, y, z, s, c</var>)<var><a name="index-scatter3-1236"></a></var><br>
-&mdash; Function File:  <b>scatter3</b> (<var><small class="dots">...</small>, 'filled'</var>)<var><a name="index-scatter3-1237"></a></var><br>
-&mdash; Function File:  <b>scatter3</b> (<var><small class="dots">...</small>, style</var>)<var><a name="index-scatter3-1238"></a></var><br>
-&mdash; Function File:  <b>scatter3</b> (<var><small class="dots">...</small>, prop, val</var>)<var><a name="index-scatter3-1239"></a></var><br>
-&mdash; Function File:  <b>scatter3</b> (<var>h, <small class="dots">...</small></var>)<var><a name="index-scatter3-1240"></a></var><br>
-&mdash; Function File: <var>h</var> = <b>scatter3</b> (<var><small class="dots">...</small></var>)<var><a name="index-scatter3-1241"></a></var><br>
+&mdash; Function File:  <b>scatter3</b> (<var>x, y, z, s, c</var>)<var><a name="index-scatter3-1306"></a></var><br>
+&mdash; Function File:  <b>scatter3</b> (<var><small class="dots">...</small>, 'filled'</var>)<var><a name="index-scatter3-1307"></a></var><br>
+&mdash; Function File:  <b>scatter3</b> (<var><small class="dots">...</small>, style</var>)<var><a name="index-scatter3-1308"></a></var><br>
+&mdash; Function File:  <b>scatter3</b> (<var><small class="dots">...</small>, prop, val</var>)<var><a name="index-scatter3-1309"></a></var><br>
+&mdash; Function File:  <b>scatter3</b> (<var>h, <small class="dots">...</small></var>)<var><a name="index-scatter3-1310"></a></var><br>
+&mdash; Function File: <var>h</var> = <b>scatter3</b> (<var><small class="dots">...</small></var>)<var><a name="index-scatter3-1311"></a></var><br>
 <blockquote>
         <p>Plot a scatter plot of the data in 3D.  A marker is plotted at each point
 defined by the points in the vectors <var>x</var>, <var>y</var> and <var>z</var>.  The size
@@ -820,7 +831,8 @@ string defining a marker in the same manner as the <code>plot</code> command.
 If the argument 'filled' is given then the markers as filled.  All
 additional arguments are passed to the underlying patch command.
 
-        <p>The optional return value <var>h</var> provides a handle to the patch object
+        <p>The optional return value <var>h</var> is a graphics handle to the hggroup
+object representing the points.
 
      <pre class="example">          [x, y, z] = peaks (20);
           scatter3 (x(:), y(:), z(:), [], z(:));

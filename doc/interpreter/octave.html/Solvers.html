@@ -30,7 +30,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="Nonlinear-Equations.html#Nonlinear-Equa
 <hr>
 </div>
 
-<h3 class="section">19.1 Solvers</h3>
+<h3 class="section">20.1 Solvers</h3>
 
 <p>Octave can solve sets of nonlinear equations of the form
 
@@ -45,8 +45,8 @@ convergence is not guaranteed even if a solution exists.
    <p><a name="doc_002dfsolve"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>fsolve</b> (<var>fcn, x0, options</var>)<var><a name="index-fsolve-2042"></a></var><br>
-&mdash; Function File: [<var>x</var>, <var>fvec</var>, <var>info</var>, <var>output</var>, <var>fjac</var>] = <b>fsolve</b> (<var>fcn, <small class="dots">...</small></var>)<var><a name="index-fsolve-2043"></a></var><br>
+&mdash; Function File:  <b>fsolve</b> (<var>fcn, x0, options</var>)<var><a name="index-fsolve-2165"></a></var><br>
+&mdash; Function File: [<var>x</var>, <var>fvec</var>, <var>info</var>, <var>output</var>, <var>fjac</var>] = <b>fsolve</b> (<var>fcn, <small class="dots">...</small></var>)<var><a name="index-fsolve-2166"></a></var><br>
 <blockquote><p>Solve a system of nonlinear equations defined by the function <var>fcn</var>. 
 <var>fcn</var> should accept a vector (array) defining the unknown variables,
 and return a vector of left-hand sides of the equations.  Right-hand sides
@@ -106,12 +106,7 @@ specified by TolFun.
 </dl>
 
         <p>Note: If you only have a single nonlinear equation of one variable, using
-<code>fzero</code> is usually a much better idea. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
-
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dfzero.html#doc_002dfzero">fzero</a>, <a href="doc_002doptimset.html#doc_002doptimset">optimset</a>.
+<code>fzero</code> is usually a much better idea.
 
         <p>Note about user-supplied Jacobians:
 As an inherent property of the algorithm, Jacobian is always requested for a
@@ -145,11 +140,15 @@ example how this can be achieved follows:
           endif
           endfunction
           
-           ....
+           ...
           
           fsolve (@user_func, x0, optimset ("OutputFcn", @user_func, ...))
 </pre>
-        </blockquote></div>
+        <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
+     <!-- A simple blank line produces the correct behavior. -->
+     <!-- @sp 1 -->
+     <p class="noindent"><strong>See also:</strong> <a href="doc_002dfzero.html#doc_002dfzero">fzero</a>, <a href="doc_002doptimset.html#doc_002doptimset">optimset</a>. 
+</p></blockquote></div>
 
    <p>The following is a complete example.  To solve the set of equations
 
@@ -215,9 +214,9 @@ analytically as
    <p><a name="doc_002dfzero"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>fzero</b> (<var>fun, x0</var>)<var><a name="index-fzero-2044"></a></var><br>
-&mdash; Function File:  <b>fzero</b> (<var>fun, x0, options</var>)<var><a name="index-fzero-2045"></a></var><br>
-&mdash; Function File: [<var>x</var>, <var>fval</var>, <var>info</var>, <var>output</var>] = <b>fzero</b> (<var><small class="dots">...</small></var>)<var><a name="index-fzero-2046"></a></var><br>
+&mdash; Function File:  <b>fzero</b> (<var>fun, x0</var>)<var><a name="index-fzero-2167"></a></var><br>
+&mdash; Function File:  <b>fzero</b> (<var>fun, x0, options</var>)<var><a name="index-fzero-2168"></a></var><br>
+&mdash; Function File: [<var>x</var>, <var>fval</var>, <var>info</var>, <var>output</var>] = <b>fzero</b> (<var><small class="dots">...</small></var>)<var><a name="index-fzero-2169"></a></var><br>
 <blockquote><p>Find a zero of a univariate function.
 
         <p><var>fun</var> is a function handle, inline function, or string

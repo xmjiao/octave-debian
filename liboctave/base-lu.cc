@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2011 John W. Eaton
+Copyright (C) 1996-2012 John W. Eaton
 Copyright (C) 2009 VZLU Prague
 
 This file is part of Octave.
@@ -173,14 +173,18 @@ template <class lu_type>
 bool
 base_lu<lu_type>::regular (void) const
 {
-  octave_idx_type k = std::min (a_fact.rows (), a_fact.columns ());
   bool retval = true;
-  for (octave_idx_type i = 0; i < k; i++)
-    if (a_fact(i, i) == lu_elt_type ())
-      {
-        retval = false;
-        break;
-      }
 
-  return true;
+  octave_idx_type k = std::min (a_fact.rows (), a_fact.columns ());
+
+  for (octave_idx_type i = 0; i < k; i++)
+    {
+      if (a_fact(i, i) == lu_elt_type ())
+        {
+          retval = false;
+          break;
+        }
+    }
+
+  return retval;
 }

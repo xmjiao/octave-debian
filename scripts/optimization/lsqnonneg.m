@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2011 Bill Denney
+## Copyright (C) 2008-2012 Bill Denney
 ## Copyright (C) 2008 Jaroslav Hajek
 ## Copyright (C) 2009 VZLU Prague
 ##
@@ -63,7 +63,8 @@
 ## @seealso{optimset, pqpnonneg}
 ## @end deftypefn
 
-## PKG_ADD: __all_opts__ ("lsqnonneg");
+## PKG_ADD: ## Discard result to avoid polluting workspace with ans at startup.
+## PKG_ADD: [~] = __all_opts__ ("lsqnonneg");
 
 ## This is implemented from Lawson and Hanson's 1973 algorithm on page
 ## 161 of Solving Least Squares Problems.

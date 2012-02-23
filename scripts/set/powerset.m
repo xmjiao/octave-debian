@@ -1,4 +1,4 @@
-## Copyright (C) 2010-2011 Jaroslav Hajek
+## Copyright (C) 2010-2012 Jaroslav Hajek
 ##
 ## This file is part of Octave.
 ##
@@ -75,3 +75,9 @@ function p = powerset (a, byrows_arg)
   endif
 
 endfunction
+
+
+%!test
+%! c = sort (cellstr ({ [], [1], [2], [3], [1, 2], [1, 3], [2, 3], [1, 2, 3]}));
+%! p = sort (cellstr (powerset ([1, 2, 3])));
+%! assert (p, c);

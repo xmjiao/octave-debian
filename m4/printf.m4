@@ -1,5 +1,5 @@
-# printf.m4 serial 45
-dnl Copyright (C) 2003, 2007-2011 Free Software Foundation, Inc.
+# printf.m4 serial 48
+dnl Copyright (C) 2003, 2007-2012 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
 dnl with or without modifications, as long as this notice is preserved.
@@ -251,6 +251,7 @@ AC_DEFUN([gl_PRINTF_INFINITE_LONG_DOUBLE],
   AC_REQUIRE([gl_PRINTF_LONG_DOUBLE])
   AC_REQUIRE([AC_PROG_CC])
   AC_REQUIRE([gl_BIGENDIAN])
+  AC_REQUIRE([gl_LONG_DOUBLE_VS_DOUBLE])
   AC_REQUIRE([AC_CANONICAL_HOST]) dnl for cross-compiles
   dnl The user can set or unset the variable gl_printf_safe to indicate
   dnl that he wishes a safe handling of non-IEEE-754 'long double' values.
@@ -321,7 +322,7 @@ int main ()
   if (sprintf (buf, "%Lg", zeroL / zeroL) < 0
       || !strisnan (buf, 0, strlen (buf)))
     result |= 1;
-#if CHECK_PRINTF_SAFE && ((defined __ia64 && LDBL_MANT_DIG == 64) || (defined __x86_64__ || defined __amd64__) || (defined __i386 || defined __i386__ || defined _I386 || defined _M_IX86 || defined _X86_))
+#if CHECK_PRINTF_SAFE && ((defined __ia64 && LDBL_MANT_DIG == 64) || (defined __x86_64__ || defined __amd64__) || (defined __i386 || defined __i386__ || defined _I386 || defined _M_IX86 || defined _X86_)) && !HAVE_SAME_LONG_DOUBLE_AS_DOUBLE
 /* Representation of an 80-bit 'long double' as an initializer for a sequence
    of 'unsigned int' words.  */
 # ifdef WORDS_BIGENDIAN
@@ -951,7 +952,7 @@ int main ()
         [
 changequote(,)dnl
          case "$host_os" in
-           # Guess no only on Solaris, native Win32, and BeOS systems.
+           # Guess no only on Solaris, native Windows, and BeOS systems.
            solaris*)     gl_cv_func_printf_precision="guessing no" ;;
            mingw* | pw*) gl_cv_func_printf_precision="guessing no" ;;
            beos*)        gl_cv_func_printf_precision="guessing no" ;;
@@ -1544,7 +1545,7 @@ dnl   OpenBSD 3.9, 4.0               .  .  #  #  #  #  .  #  .  #  .  #  .  #  .
 dnl   Cygwin 1.7.0 (2009)            .  .  .  #  .  .  .  ?  .  .  .  .  .  ?  .  .  .  .  .  .
 dnl   Cygwin 1.5.25 (2008)           .  .  .  #  #  .  .  #  .  .  .  .  .  #  .  .  .  .  .  .
 dnl   Cygwin 1.5.19 (2006)           #  .  .  #  #  #  .  #  .  #  .  #  #  #  .  .  .  .  .  .
-dnl   Solaris 11 2010-11             .  .  #  #  #  .  .  #  .  .  .  #  .  .  .  .  .  .  .  .
+dnl   Solaris 11 2011-11             .  .  #  #  #  .  .  #  .  .  .  #  .  .  .  .  .  .  .  .
 dnl   Solaris 10                     .  .  #  #  #  .  .  #  .  .  .  #  #  .  .  .  .  .  .  .
 dnl   Solaris 2.6 ... 9              #  .  #  #  #  #  .  #  .  .  .  #  #  .  .  .  #  .  .  .
 dnl   Solaris 2.5.1                  #  .  #  #  #  #  .  #  .  .  .  #  .  .  #  #  #  #  #  #

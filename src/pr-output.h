@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2011 John W. Eaton
+Copyright (C) 1993-2012 John W. Eaton
 
 This file is part of Octave.
 
@@ -255,5 +255,8 @@ octave_print_internal (std::ostream& os, const Cell& cell,
 // TRUE means that the dimensions of empty objects should be printed
 // like this: x = [](2x0).
 extern bool Vprint_empty_dimensions;
+
+// TRUE means don't put empty lines in output
+extern bool Vcompact_format;
 
 #endif

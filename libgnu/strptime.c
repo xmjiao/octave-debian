@@ -1,6 +1,6 @@
 /* -*- buffer-read-only: t -*- vi: set ro: */
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
-/* Copyright (C) 2002, 2004-2005, 2007, 2009-2011 Free Software Foundation,
+/* Copyright (C) 2002, 2004-2005, 2007, 2009-2012 Free Software Foundation,
    Inc.
    This file is part of the GNU C Library.
 
@@ -280,7 +280,7 @@ __strptime_internal (rp, fmt, tm, decided, era_cnt LOCALE_PARAM)
           continue;
         }
 
-      /* Any character but `%' must be matched by the same character
+      /* Any character but '%' must be matched by the same character
          in the iput string.  */
       if (*fmt != '%')
         {
@@ -290,7 +290,7 @@ __strptime_internal (rp, fmt, tm, decided, era_cnt LOCALE_PARAM)
 
       ++fmt;
 #ifndef _NL_CURRENT
-      /* We need this for handling the `E' modifier.  */
+      /* We need this for handling the 'E' modifier.  */
     start_over:
 #endif
 
@@ -300,7 +300,7 @@ __strptime_internal (rp, fmt, tm, decided, era_cnt LOCALE_PARAM)
       switch (*fmt++)
         {
         case '%':
-          /* Match the `%' character itself.  */
+          /* Match the '%' character itself.  */
           match_char ('%', *rp++);
           break;
         case 'a':
@@ -561,7 +561,7 @@ __strptime_internal (rp, fmt, tm, decided, era_cnt LOCALE_PARAM)
         case 's':
           {
             /* The number of seconds may be very high so we cannot use
-               the `get_number' macro.  Instead read the number
+               the 'get_number' macro.  Instead read the number
                character for character and construct the result while
                doing this.  */
             time_t secs = 0;

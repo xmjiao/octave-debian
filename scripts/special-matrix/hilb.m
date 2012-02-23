@@ -1,4 +1,4 @@
-## Copyright (C) 1993-2011 John W. Eaton
+## Copyright (C) 1993-2012 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -22,13 +22,13 @@
 ## of a Hilbert matrix is defined as
 ## @tex
 ## $$
-## H (i, j) = {1 \over (i + j - 1)}
+## H(i, j) = {1 \over (i + j - 1)}
 ## $$
 ## @end tex
 ## @ifnottex
 ##
 ## @example
-## H (i, j) = 1 / (i + j - 1)
+## H(i, j) = 1 / (i + j - 1)
 ## @end example
 ##
 ## @end ifnottex
@@ -41,9 +41,9 @@
 ## @example
 ## @group
 ## cond (rand (5))
-##     @result{} 14.392
+##    @result{} 14.392
 ## cond (hilb (5))
-##     @result{} 4.7661e+05
+##    @result{} 4.7661e+05
 ## @end group
 ## @end example
 ##
@@ -54,28 +54,26 @@
 
 function retval = hilb (n)
 
-
   if (nargin != 1)
     print_usage ();
+  elseif (! isscalar (n))
+    error ("hilb: N must be a scalar integer");
   endif
 
-  nmax = length (n);
-  if (nmax == 1)
-    retval = zeros (n);
-    tmp = 1:n;
-    for i = 1:n
-      retval (i, :) = 1.0 ./ (tmp + (i - 1));
-    endfor
-  else
-    error ("hilb: expecting scalar argument, found something else");
-  endif
+  retval = zeros (n);
+  tmp = 1:n;
+  for i = 1:n
+    retval(i, :) = 1.0 ./ tmp;
+    tmp++;
+  endfor
 
 endfunction
 
-%!assert((hilb (2) == [1, 1/2; 1/2, 1/3]
-%! && hilb (3) == [1, 1/2, 1/3; 1/2, 1/3, 1/4; 1/3, 1/4, 1/5]));
 
-%!error hilb ();
+%!assert (hilb (2), [1, 1/2; 1/2, 1/3])
+%!assert (hilb (3), [1, 1/2, 1/3; 1/2, 1/3, 1/4; 1/3, 1/4, 1/5])
 
-%!error hilb (1, 2);
+%!error hilb ()
+%!error hilb (1, 2)
+%!error <N must be a scalar integer> hilb (ones(2))
 

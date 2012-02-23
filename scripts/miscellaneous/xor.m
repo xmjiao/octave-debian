@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2011 Kurt Hornik
+## Copyright (C) 1995-2012 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -48,7 +48,11 @@ function z = xor (x, y)
       ## Typecast to logicals is necessary for other numeric types.
       z = logical (x) != logical (y);
     else
-      error ("xor: X and Y must be of common size or scalars");
+      try
+        z = bsxfun (@xor, x, y);
+      catch
+        error ("xor: X and Y must be of compatible size or scalars");
+      end_try_catch
     endif
   else
     print_usage ();

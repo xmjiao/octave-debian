@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2009-2011 Shai Ayal
+Copyright (C) 2009-2012 Shai Ayal
 
 This file is part of Octave.
 
@@ -79,7 +79,8 @@ glps_renderer::draw (const graphics_object& go)
                           gl2ps_term, GL2PS_BSP_SORT,
                           (GL2PS_SILENT | GL2PS_SIMPLE_LINE_OFFSET
                            | GL2PS_NO_BLENDING | GL2PS_OCCLUSION_CULL
-                           | GL2PS_BEST_ROOT | gl2ps_text),
+                           | GL2PS_BEST_ROOT | gl2ps_text
+                           | GL2PS_NO_PS3_SHADING),
                           GL_RGBA, 0, NULL, 0, 0, 0,
                           buffsize, fp, "" );
 
@@ -199,7 +200,7 @@ glps_renderer::draw_pixels (GLsizei w, GLsizei h, GLenum format,
 void
 glps_renderer::draw_text (const text::properties& props)
 {
-  if (props.get_string ().empty ())
+  if (props.get_string ().is_empty ())
     return;
 
   set_font (props);
@@ -223,9 +224,15 @@ glps_renderer::draw_text (const text::properties& props)
   // FIXME: handle margin and surrounding box
 
   glRasterPos3d (pos(0), pos(1), pos(2));
-  gl2psTextOpt (props.get_string ().c_str (), fontname.c_str (), fontsize,
-                alignment_to_mode (halign, valign), props.get_rotation ());
 
+  octave_value string_prop = props.get_string ();
+
+  string_vector sv = string_prop.all_strings ();
+
+  std::string s = sv.join ("\n");
+
+  gl2psTextOpt (s.c_str (), fontname.c_str (), fontsize,
+                alignment_to_mode (halign, valign), props.get_rotation ());
 }
 
 #endif

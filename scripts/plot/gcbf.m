@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2011 Michael Goffioul
+## Copyright (C) 2008-2012 Michael Goffioul
 ##
 ## This file is part of Octave.
 ##
@@ -31,3 +31,6 @@ function fig = gcbf ()
   [dummy, fig] = gcbo ();
 
 endfunction
+
+%!test
+%! assert (isempty (gcbf ));

@@ -1,4 +1,4 @@
-## Copyright (C) 2009-2011 Kai Habel
+## Copyright (C) 2009-2012 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -58,8 +58,8 @@
 ##
 ## @example
 ## @group
-## colormap(bone);
-## surfl(peaks);
+## colormap (bone (64));
+## surfl (peaks);
 ## shading interp;
 ## @end group
 ## @end example
@@ -179,6 +179,7 @@ endfunction
 %! shading interp;
 
 %!demo
+%! clf
 %! [X,Y,Z]=sombrero;
 %! colormap(copper);
 %! [az, el] = view;

@@ -33,7 +33,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="Boolean-Expressions.html#Boolean-Expres
 
 <h4 class="subsection">8.5.2 Short-circuit Boolean Operators</h4>
 
-<p><a name="index-short_002dcircuit-evaluation-625"></a>
+<p><a name="index-short_002dcircuit-evaluation-652"></a>
 Combined with the implicit conversion to scalar values in <code>if</code> and
 <code>while</code> conditions, Octave's element-by-element boolean operators
 are often sufficient for performing most logical operations.  However,
@@ -42,7 +42,7 @@ soon as the overall truth value can be determined.  Octave's
 <dfn>short-circuit</dfn> boolean operators work this way.
 
      <dl>
-<dt><var>boolean1</var><code> &amp;&amp; </code><var>boolean2</var><dd><a name="index-g_t_0026_0026-626"></a>The expression <var>boolean1</var> is evaluated and converted to a scalar
+<dt><var>boolean1</var><code> &amp;&amp; </code><var>boolean2</var><dd><a name="index-g_t_0026_0026-653"></a>The expression <var>boolean1</var> is evaluated and converted to a scalar
 using the equivalent of the operation <code>all (</code><var>boolean1</var><code>(:))</code>. 
 If it is false, the result of the overall expression is 0.  If it is
 true, the expression <var>boolean2</var> is evaluated and converted to a
@@ -56,7 +56,7 @@ empty matrix.  The truth value of an empty matrix is always <code>false</code>
 so <code>[] &amp;&amp; true</code> evaluates to <code>false</code> even though
 <code>all ([])</code> is <code>true</code>.
 
-     <br><dt><var>boolean1</var><code> || </code><var>boolean2</var><dd><a name="index-g_t_007c_007c-627"></a>The expression <var>boolean1</var> is evaluated and converted to a scalar
+     <br><dt><var>boolean1</var><code> || </code><var>boolean2</var><dd><a name="index-g_t_007c_007c-654"></a>The expression <var>boolean1</var> is evaluated and converted to a scalar
 using the equivalent of the operation <code>all (</code><var>boolean1</var><code>(:))</code>. 
 If it is true, the result of the overall expression is 1.  If it is
 false, the expression <var>boolean2</var> is evaluated and converted to a
@@ -112,8 +112,9 @@ same manner, but its use is strongly discouraged.
    <p><a name="doc_002ddo_005fbraindead_005fshortcircuit_005fevaluation"></a>
 
 <div class="defun">
-&mdash; Built-in Function: <var>val</var> = <b>do_braindead_shortcircuit_evaluation</b> ()<var><a name="index-do_005fbraindead_005fshortcircuit_005fevaluation-628"></a></var><br>
-&mdash; Built-in Function: <var>old_val</var> = <b>do_braindead_shortcircuit_evaluation</b> (<var>new_val</var>)<var><a name="index-do_005fbraindead_005fshortcircuit_005fevaluation-629"></a></var><br>
+&mdash; Built-in Function: <var>val</var> = <b>do_braindead_shortcircuit_evaluation</b> ()<var><a name="index-do_005fbraindead_005fshortcircuit_005fevaluation-655"></a></var><br>
+&mdash; Built-in Function: <var>old_val</var> = <b>do_braindead_shortcircuit_evaluation</b> (<var>new_val</var>)<var><a name="index-do_005fbraindead_005fshortcircuit_005fevaluation-656"></a></var><br>
+&mdash; Built-in Function:  <b>do_braindead_shortcircuit_evaluation</b> (<var>new_val, "local"</var>)<var><a name="index-do_005fbraindead_005fshortcircuit_005fevaluation-657"></a></var><br>
 <blockquote><p>Query or set the internal variable that controls whether Octave will
 do short-circuit evaluation of &lsquo;<samp><span class="samp">|</span></samp>&rsquo; and &lsquo;<samp><span class="samp">&amp;</span></samp>&rsquo; operators inside the
 conditions of if or while statements.
@@ -122,7 +123,11 @@ conditions of if or while statements.
 not be used unless you are porting old code that relies on this feature.
 
         <p>To obtain short-circuit behavior for logical expressions in new programs,
-you should always use the &lsquo;<samp><span class="samp">&amp;&amp;</span></samp>&rsquo; and &lsquo;<samp><span class="samp">||</span></samp>&rsquo; operators. 
+you should always use the &lsquo;<samp><span class="samp">&amp;&amp;</span></samp>&rsquo; and &lsquo;<samp><span class="samp">||</span></samp>&rsquo; operators.
+
+        <p>When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function. 
 </p></blockquote></div>
 
    <p>Finally, the ternary operator (?:) is not supported in Octave.  If
@@ -133,8 +138,8 @@ function.
    <p><a name="doc_002dmerge"></a>
 
 <div class="defun">
-&mdash; Built-in Function:  <b>merge</b> (<var>mask, tval, fval</var>)<var><a name="index-merge-630"></a></var><br>
-&mdash; Built-in Function:  <b>ifelse</b> (<var>mask, tval, fval</var>)<var><a name="index-ifelse-631"></a></var><br>
+&mdash; Built-in Function:  <b>merge</b> (<var>mask, tval, fval</var>)<var><a name="index-merge-658"></a></var><br>
+&mdash; Built-in Function:  <b>ifelse</b> (<var>mask, tval, fval</var>)<var><a name="index-ifelse-659"></a></var><br>
 <blockquote><p>Merge elements of <var>true_val</var> and <var>false_val</var>, depending on the
 value of <var>mask</var>.  If <var>mask</var> is a logical scalar, the other two
 arguments can be arbitrary values.  Otherwise, <var>mask</var> must be a logical

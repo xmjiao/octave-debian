@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.
 
-@c Copyright (C) 1996-2011 John W. Eaton
+@c Copyright (C) 1996-2012 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -31,7 +31,6 @@ lower-triangular parts, or sort the columns of a matrix.
 @menu
 * Finding Elements and Checking Conditions::  
 * Rearranging Matrices::        
-* Applying a Function to an Array::
 * Special Utility Matrices::    
 * Famous Matrices::             
 @end menu
@@ -423,8 +422,8 @@ For example:
 @example
 @group
 flipdim ([1, 2; 3, 4], 2)
-     @result{}  2  1
-         4  3
+      @result{}  2  1
+          4  3
 @end group
 @end example
 @seealso{@ref{doc-fliplr,,fliplr}, @ref{doc-flipud,,flipud}, @ref{doc-rot90,,rot90}, @ref{doc-rotdim,,rotdim}}
@@ -444,8 +443,8 @@ For example,
 @example
 @group
 rot90 ([1, 2; 3, 4], -1)
-     @result{}  3  1
-         4  2
+    @result{}  3  1
+        4  2
 @end group
 @end example
 
@@ -756,12 +755,12 @@ For example:
 @group
 x = ones (1, 2, 3);
 size (shiftdim (x, -1))
-     @result{} [1, 1, 2, 3]
+   @result{} [1, 1, 2, 3]
 size (shiftdim (x, 1))
-     @result{} [2, 3]
-[b, ns] = shiftdim (x);
-     @result{} b =  [1, 1, 1; 1, 1, 1]
-     @result{} ns = 1
+   @result{} [2, 3]
+[b, ns] = shiftdim (x)
+   @result{} b = [1, 1, 1; 1, 1, 1]
+   @result{} ns = 1
 @end group
 @end example
 @seealso {reshape, permute, ipermute, circshift, squeeze}
@@ -845,6 +844,7 @@ columns specified in @var{c}.  If @var{c} is omitted, a
 lexicographical sort is used.  By default ascending order is used
 however if elements of @var{c} are negative then the corresponding
 column is sorted in descending order.
+@seealso{@ref{doc-sort,,sort}}
 @end deftypefn
 
 
@@ -1047,141 +1047,9 @@ Given a matrix argument, instead of a vector, @code{diag} extracts the
 @deftypefn {Function File} {} blkdiag (@var{A}, @var{B}, @var{C}, @dots{})
 Build a block diagonal matrix from @var{A}, @var{B}, @var{C}, @dots{}
 All the arguments must be numeric and are two-dimensional matrices or
-scalars.
-@seealso{@ref{doc-diag,,diag}, @ref{doc-horzcat,,horzcat}, @ref{doc-vertcat,,vertcat}}
-@end deftypefn
-
-
-@node Applying a Function to an Array
-@section Applying a Function to an Array
-
-@c arrayfun scripts/general/arrayfun.m
-@anchor{doc-arrayfun}
-@deftypefn  {Function File} {} arrayfun (@var{func}, @var{A})
-@deftypefnx {Function File} {@var{x} =} arrayfun (@var{func}, @var{A})
-@deftypefnx {Function File} {@var{x} =} arrayfun (@var{func}, @var{A}, @var{b}, @dots{})
-@deftypefnx {Function File} {[@var{x}, @var{y}, @dots{}] =} arrayfun (@var{func}, @var{A}, @dots{})
-@deftypefnx {Function File} {} arrayfun (@dots{}, "UniformOutput", @var{val})
-@deftypefnx {Function File} {} arrayfun (@dots{}, "ErrorHandler", @var{errfunc})
-
-Execute a function on each element of an array.  This is useful for
-functions that do not accept array arguments.  If the function does
-accept array arguments it is better to call the function directly.
-
-The first input argument @var{func} can be a string, a function
-handle, an inline function, or an anonymous function.  The input
-argument @var{A} can be a logic array, a numeric array, a string
-array, a structure array, or a cell array.  By a call of the function
-@command{arrayfun} all elements of @var{A} are passed on to the named
-function @var{func} individually.
-
-The named function can also take more than two input arguments, with
-the input arguments given as third input argument @var{b}, fourth
-input argument @var{c}, @dots{}  If given more than one array input
-argument then all input arguments must have the same sizes, for
-example:
-
-@example
-@group
-arrayfun (@@atan2, [1, 0], [0, 1])
-@result{} ans = [1.5708   0.0000]
-@end group
-@end example
-
-If the parameter @var{val} after a further string input argument
-"UniformOutput" is set @code{true} (the default), then the named
-function @var{func} must return a single element which then will be
-concatenated into the return value and is of type matrix.  Otherwise,
-if that parameter is set to @code{false}, then the outputs are
-concatenated in a cell array.  For example:
-
-@example
-@group
-arrayfun (@@(x,y) x:y, "abc", "def", "UniformOutput", false)
-@result{} ans =
-@{
-  [1,1] = abcd
-  [1,2] = bcde
-  [1,3] = cdef
-@}
-@end group
-@end example
-
-If more than one output arguments are given then the named function
-must return the number of return values that also are expected, for
-example:
-
-@example
-@group
-[A, B, C] = arrayfun (@@find, [10; 0], "UniformOutput", false)
-@result{}
-A =
-@{
-  [1,1] =  1
-  [2,1] = [](0x0)
-@}
-B =
-@{
-  [1,1] =  1
-  [2,1] = [](0x0)
-@}
-C =
-@{
-  [1,1] =  10
-  [2,1] = [](0x0)
-@}
-@end group
-@end example
-
-If the parameter @var{errfunc} after a further string input argument
-"ErrorHandler" is another string, a function handle, an inline
-function, or an anonymous function, then @var{errfunc} defines a
-function to call in the case that @var{func} generates an error.
-The definition of the function must be of the form
-
-@example
-function [@dots{}] = errfunc (@var{s}, @dots{})
-@end example
-
-@noindent
-where there is an additional input argument to @var{errfunc}
-relative to @var{func}, given by @var{s}.  This is a structure with
-the elements "identifier", "message", and "index" giving,
-respectively, the error identifier, the error message, and the index of
-the array elements that caused the error.  The size of the output
-argument of @var{errfunc} must have the same size as the output
-argument of @var{func}, otherwise a real error is thrown.  For
-example:
-
-@example
-@group
-function y = ferr (s, x), y = "MyString"; endfunction
-arrayfun (@@str2num, [1234], \
-          "UniformOutput", false, "ErrorHandler", @@ferr)
-@result{} ans =
-@{
- [1,1] = MyString
-@}
-@end group
-@end example
-
-@seealso{@ref{doc-spfun,,spfun}, @ref{doc-cellfun,,cellfun}, @ref{doc-structfun,,structfun}}
-@end deftypefn
-
-
-@c bsxfun src/DLD-FUNCTIONS/bsxfun.cc
-@anchor{doc-bsxfun}
-@deftypefn {Loadable Function} {} bsxfun (@var{f}, @var{A}, @var{B})
-Apply a binary function @var{f} element-by-element to two matrix arguments
-@var{A} and @var{B}.  @var{f} is a function handle, inline function, or
-string containing the name of the function to evaluate.
-The function @var{f} must be capable of accepting two column-vector
-arguments of equal length, or one column vector argument and a scalar.
-
-The dimensions of @var{A} and @var{B} must be equal or singleton.  The
-singleton dimensions of the matrices will be expanded to the same
-dimensionality as the other matrix.
-@seealso{@ref{doc-arrayfun,,arrayfun}, @ref{doc-cellfun,,cellfun}}
+scalars.  If any argument is of type sparse, the output will also be
+sparse.
+@seealso{@ref{doc-diag,,diag}, @ref{doc-horzcat,,horzcat}, @ref{doc-vertcat,,vertcat}, @ref{doc-sparse,,sparse}}
 @end deftypefn
 
 
@@ -1230,8 +1098,8 @@ val = zeros (n,m, "uint8")
 @end example
 
 Calling @code{eye} with no arguments is equivalent to calling it
-with an argument of 1.  This odd definition is for compatibility
-with @sc{matlab}.
+with an argument of 1.  Any negative dimensions are treated as zero. 
+These odd definitions are for compatibility with @sc{matlab}.
 @seealso{@ref{doc-speye,,speye}}
 @end deftypefn
 
@@ -1504,7 +1372,7 @@ type.  The default is "double".
 The following example returns 150 integers in the range 1-10.
 
 @example
-ri = randi (10, 150, 1);
+ri = randi (10, 150, 1)
 @end example
 
 Implementation Note: @code{randi} relies internally on @code{rand} which
@@ -1771,10 +1639,11 @@ Houston, TX 77030.
 @deftypefn  {Loadable Function} {} randperm (@var{n})
 @deftypefnx {Loadable Function} {} randperm (@var{n}, @var{m})
 Return a row vector containing a random permutation of @code{1:@var{n}}.
-If @var{m} is supplied, return @var{m} permutations,
-one in each row of an @nospell{MxN} matrix.  The complexity is O(M*N) in both
-time and memory.  The randomization is performed using rand().
-All permutations are equally likely.
+If @var{m} is supplied, return @var{m} unique entries, sampled without
+replacement from @code{1:@var{n}}.  The complexity is O(@var{n}) in
+memory and O(@var{m}) in time, unless @var{m} < @var{n}/5, in which case
+O(@var{m}) memory is used as well.  The randomization is performed using
+rand(). All permutations are equally likely.
 @seealso{@ref{doc-perms,,perms}}
 @end deftypefn
 
@@ -1830,7 +1699,7 @@ A Hankel matrix formed from an m-vector @var{c}, and an n-vector
 @var{r}, has the elements
 @tex
 $$
-H (i, j) = \cases{c_{i+j-1},&$i+j-1\le m$;\cr r_{i+j-m},&otherwise.\cr}
+H(i, j) = \cases{c_{i+j-1},&$i+j-1\le m$;\cr r_{i+j-m},&otherwise.\cr}
 $$
 @end tex
 @ifnottex
@@ -1854,13 +1723,13 @@ Return the Hilbert matrix of order @var{n}.  The @math{i,j} element
 of a Hilbert matrix is defined as
 @tex
 $$
-H (i, j) = {1 \over (i + j - 1)}
+H(i, j) = {1 \over (i + j - 1)}
 $$
 @end tex
 @ifnottex
 
 @example
-H (i, j) = 1 / (i + j - 1)
+H(i, j) = 1 / (i + j - 1)
 @end example
 
 @end ifnottex
@@ -1873,9 +1742,9 @@ a Hilbert matrix of order 5 reveals just how difficult the problem is.
 @example
 @group
 cond (rand (5))
-    @result{} 14.392
+   @result{} 14.392
 cond (hilb (5))
-    @result{} 4.7661e+05
+   @result{} 4.7661e+05
 @end group
 @end example
 
@@ -1977,21 +1846,6 @@ Return the Rosser matrix.  This is a difficult test case used to evaluate
 eigenvalue algorithms.
 
 @seealso{@ref{doc-wilkinson,,wilkinson}, @ref{doc-eig,,eig}}
-@end deftypefn
-
-
-@c sylvester_matrix scripts/special-matrix/sylvester_matrix.m
-@anchor{doc-sylvester_matrix}
-@deftypefn {Function File} {} sylvester_matrix (@var{k})
-Return the Sylvester matrix of order
-@tex
-$n = 2^k$.
-@end tex
-@ifnottex
-n = 2^@var{k}.
-@end ifnottex
-
-@seealso{@ref{doc-toeplitz,,toeplitz}, @ref{doc-hankel,,hankel}}
 @end deftypefn
 
 

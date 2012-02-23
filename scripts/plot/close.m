@@ -1,4 +1,4 @@
-## Copyright (C) 2002-2011 John W. Eaton
+## Copyright (C) 2002-2012 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -79,3 +79,15 @@ function close_all_figures (close_hidden_figs)
   endwhile
 
 endfunction
+
+%!test
+%! hf = figure ("visible", "off");
+%! unwind_protect
+%!   close (hf);
+%!   objs = findobj ("type", "figure");
+%!   assert (isempty (intersect (objs, hf)));
+%! unwind_protect_cleanup
+%!   if (isfigure (hf))
+%!     close (hf);
+%!   endif
+%! end_unwind_protect

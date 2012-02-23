@@ -1,7 +1,7 @@
 /* -*- buffer-read-only: t -*- vi: set ro: */
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* Round toward nearest, breaking ties away from zero.
-   Copyright (C) 2007, 2010-2011 Free Software Foundation, Inc.
+   Copyright (C) 2007, 2010-2012 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -20,7 +20,9 @@
 /* Written by Ben Pfaff <blp@gnu.org>, 2007.
    Based heavily on code by Bruno Haible. */
 
-#include <config.h>
+#if ! defined USE_LONG_DOUBLE
+# include <config.h>
+#endif
 
 /* Specification.  */
 #include <math.h>

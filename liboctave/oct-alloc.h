@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2011 John W. Eaton
+Copyright (C) 1996-2012 John W. Eaton
 
 This file is part of Octave.
 
@@ -72,6 +72,8 @@ private:
       { ::operator delete (p); }
 #endif
 
+#if defined (USE_OCTAVE_ALLOCATOR)
+
 #define DECLARE_OCTAVE_ALLOCATOR \
   public: \
     void *operator new (size_t size, void *p) \
@@ -87,5 +89,13 @@ private:
 
 #define DEFINE_OCTAVE_ALLOCATOR2(t, s) \
   octave_allocator t::allocator (sizeof (t), s)
+
+#else
+
+#define DECLARE_OCTAVE_ALLOCATOR
+#define DEFINE_OCTAVE_ALLOCATOR(t)
+#define DEFINE_OCTAVE_ALLOCATOR2(t, s)
+
+#endif
 
 #endif

@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2011 Kurt Hornik
+## Copyright (C) 1995-2012 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -27,7 +27,7 @@
 ## @ifnottex
 ##
 ## @example
-## logit(@var{p}) = log (@var{p} / (1-@var{p}))
+## logit (@var{p}) = log (@var{p} / (1-@var{p}))
 ## @end example
 ##
 ## @end ifnottex
@@ -46,6 +46,7 @@ function y = logit (p)
   y = logistic_inv (p);
 
 endfunction
+
 
 %!test
 %! p = [0.01:0.01:0.99];

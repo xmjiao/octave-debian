@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2011 VZLU Prague, a.s.
+## Copyright (C) 2008-2012 VZLU Prague, a.s.
 ##
 ## This file is part of Octave.
 ##
@@ -93,7 +93,8 @@
 ## the need for external functions and error handling. The algorithm has
 ## also been slightly modified.
 
-## PKG_ADD: __all_opts__ ("fzero");
+## PKG_ADD: ## Discard result to avoid polluting workspace with ans at startup.
+## PKG_ADD: [~] = __all_opts__ ("fzero");
 
 function [x, fval, info, output] = fzero (fun, x0, options = struct ())
 

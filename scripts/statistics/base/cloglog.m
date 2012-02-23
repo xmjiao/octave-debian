@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2011 Kurt Hornik
+## Copyright (C) 1995-2012 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -27,7 +27,7 @@
 ## @ifnottex
 ##
 ## @example
-## cloglog(x) = - log (- log (@var{x}))
+## cloglog (x) = - log (- log (@var{x}))
 ## @end example
 ##
 ## @end ifnottex

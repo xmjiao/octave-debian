@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.
 
-@c Copyright (C) 2004-2011 David Bateman
+@c Copyright (C) 2004-2012 David Bateman
 @c
 @c This file is part of Octave.
 @c
@@ -248,7 +248,7 @@ For example:
 @example
 @group
 spdiags (reshape (1:12, 4, 3), [-1 0 1], 5, 4)
-@result{}    5 10  0  0
+   @result{} 5 10  0  0
       1  6 11  0
       0  2  7 12
       0  0  3  8
@@ -275,17 +275,6 @@ is taken to be the size of the matrix to create.
 @end deftypefn
 
 
-@c spfun scripts/sparse/spfun.m
-@anchor{doc-spfun}
-@deftypefn {Function File} {@var{y} =} spfun (@var{f}, @var{S})
-Compute @code{f(@var{S})} for the non-zero values of @var{S}.
-This results in a sparse matrix with the same structure as
-@var{S}.  The function @var{f} can be passed as a string, a
-function handle, or an inline function.
-@seealso{@ref{doc-arrayfun,,arrayfun}, @ref{doc-cellfun,,cellfun}, @ref{doc-structfun,,structfun}}
-@end deftypefn
-
-
 @c spones scripts/sparse/spones.m
 @anchor{doc-spones}
 @deftypefn {Function File} {@var{r} =} spones (@var{S})
@@ -303,12 +292,9 @@ Generate a random sparse matrix.  The size of the matrix will be
 @var{d} should be between 0 and 1.  Values will be uniformly
 distributed between 0 and 1.
 
-Note: sometimes the actual density may be a bit smaller than @var{d}.
-This is unlikely to happen for large, truly sparse, matrices.
-
 If called with a single matrix argument, a random sparse matrix is
 generated wherever the matrix @var{S} is non-zero.
-@seealso{@ref{doc-sprandn,,sprandn}}
+@seealso{@ref{doc-sprandn,,sprandn}, @ref{doc-sprandsym,,sprandsym}}
 @end deftypefn
 
 
@@ -321,12 +307,9 @@ Generate a random sparse matrix.  The size of the matrix will be
 @var{d} should be between 0 and 1. Values will be normally
 distributed with mean of zero and variance 1.
 
-Note: sometimes the actual density may be a bit smaller than @var{d}.
-This is unlikely to happen for large really sparse matrices.
-
 If called with a single matrix argument, a random sparse matrix is
 generated wherever the matrix @var{S} is non-zero.
-@seealso{@ref{doc-sprand,,sprand}}
+@seealso{@ref{doc-sprand,,sprand}, @ref{doc-sprandsym,,sprandsym}}
 @end deftypefn
 
 
@@ -338,9 +321,6 @@ Generate a symmetric random sparse matrix.  The size of the matrix will be
 @var{n} by @var{n}, with a density of values given by @var{d}.
 @var{d} should be between 0 and 1. Values will be normally
 distributed with mean of zero and variance 1.
-
-Note: sometimes the actual density may be a bit smaller than @var{d}.
-This is unlikely to happen for large really sparse matrices.
 
 If called with a single matrix argument, a random sparse matrix is
 generated wherever the matrix @var{S} is non-zero in its lower
@@ -357,7 +337,7 @@ vector of the same size containing the data to be stored.  For example,
 @group
   ri = ci = d = [];
   for j = 1:c
-    ri = [ri; randperm(r)(1:n)'];
+    ri = [ri; randperm(r,n)'];
     ci = [ci; j*ones(n,1)];
     d = [d; rand(n,1)];
   endfor
@@ -686,7 +666,7 @@ symmetric or @code{treeplot(etree(A+A'))} otherwise.
 @deftypefnx {Function File} {} spy (@dots{}, @var{markersize})
 @deftypefnx {Function File} {} spy (@dots{}, @var{line_spec})
 Plot the sparsity pattern of the sparse matrix @var{x}.  If the argument
-@var{markersize} is given as an scalar value, it is used to determine the
+@var{markersize} is given as a scalar value, it is used to determine the
 point size in the plot.  If the string @var{line_spec} is given it is
 passed to @code{plot} and determines the appearance of the plot.
 @seealso{@ref{doc-plot,,plot}}
@@ -699,7 +679,7 @@ passed to @code{plot} and determines the appearance of the plot.
 @deftypefnx {Loadable Function} {@var{p} =} etree (@var{S}, @var{typ})
 @deftypefnx {Loadable Function} {[@var{p}, @var{q}] =} etree (@var{S}, @var{typ})
 
-Returns the elimination tree for the matrix @var{S}.  By default @var{S}
+Return the elimination tree for the matrix @var{S}.  By default @var{S}
 is assumed to be symmetric and the symmetric elimination tree is
 returned.  The argument @var{typ} controls whether a symmetric or
 column elimination tree is returned.  Valid values of @var{typ} are
@@ -715,7 +695,7 @@ permutations on the tree.
 @deftypefn  {Function File} {} etreeplot (@var{A})
 @deftypefnx {Function File} {} etreeplot (@var{A}, @var{node_style}, @var{edge_style})
 Plot the elimination tree of the matrix @var{A} or
-@code{@var{A}+@var{A}'} if @var{A} in not symmetric.  The optional
+@xcode{@var{A}+@var{A}'} if @var{A} in not symmetric.  The optional
 parameters @var{node_style} and @var{edge_style} define the output
 style.
 @seealso{@ref{doc-treeplot,,treeplot}, @ref{doc-gplot,,gplot}}
@@ -893,23 +873,28 @@ than its full representation.
 @anchor{doc-sparse_auto_mutate}
 @deftypefn  {Built-in Function} {@var{val} =} sparse_auto_mutate ()
 @deftypefnx {Built-in Function} {@var{old_val} =} sparse_auto_mutate (@var{new_val})
+@deftypefnx {Built-in Function} {} sparse_auto_mutate (@var{new_val}, "local")
 Query or set the internal variable that controls whether Octave will
-automatically mutate sparse matrices to real matrices to save memory.
+automatically mutate sparse matrices to full matrices to save memory.
 For example:
 
 @example
 @group
-s = speye(3);
+s = speye (3);
 sparse_auto_mutate (false)
-s (:, 1) = 1;
+s(:, 1) = 1;
 typeinfo (s)
 @result{} sparse matrix
 sparse_auto_mutate (true)
-s (1, :) = 1;
+s(1, :) = 1;
 typeinfo (s)
 @result{} matrix
 @end group
 @end example
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 
 
@@ -1074,7 +1059,7 @@ reorder the matrix to maximize performance.
 @deftypefn  {Loadable Function} {@var{p} =} amd (@var{S})
 @deftypefnx {Loadable Function} {@var{p} =} amd (@var{S}, @var{opts})
 
-Returns the approximate minimum degree permutation of a matrix.  This
+Return the approximate minimum degree permutation of a matrix.  This
 permutation such that the Cholesky@tie{}factorization of @code{@var{S}
 (@var{p}, @var{p})} tends to be sparser than the Cholesky@tie{}factorization
 of @var{S} itself.  @code{amd} is typically faster than @code{symamd} but
@@ -1768,10 +1753,10 @@ Factorize @var{S}.  This is the default.
 Factorize @code{@var{S}' * @var{S}}.
 
 @item row
-Factorize @code{@var{S} * @var{S}'}.
+Factorize @xcode{@var{S} * @var{S}'}.
 
 @item lo
-Factorize @code{@var{S}'}
+Factorize @xcode{@var{S}'}
 @end table
 
 @item mode
@@ -1811,19 +1796,18 @@ Create the augmented matrix of @var{A}.  This is given by
 
 @example
 @group
-[@var{c} * eye(@var{m}, @var{m}),@var{A}; @var{A}', zeros(@var{n},
-@var{n})]
+[@var{c} * eye(@var{m}, @var{m}), @var{A};
+            @var{A}', zeros(@var{n}, @var{n})]
 @end group
 @end example
 
 @noindent
 This is related to the least squares solution of
-@code{@var{A} \\ @var{b}}, by
+@code{@var{A} \ @var{b}}, by
 
 @example
 @group
-@var{s} * [ @var{r} / @var{c}; x] = [@var{b}, zeros(@var{n},
-columns(@var{b})]
+@var{s} * [ @var{r} / @var{c}; x] = [ @var{b}, zeros(@var{n}, columns(@var{b})) ]
 @end group
 @end example
 
@@ -1842,7 +1826,7 @@ problems, and example can be
 
 @example
 @group
-m = 11; n = 10; mn = max(m ,n);
+m = 11; n = 10; mn = max (m, n);
 A = spdiags ([ones(mn,1), 10*ones(mn,1), -ones(mn,1)],
              [-1, 0, 1], m, n);
 x0 = A \ ones (m,1);
@@ -2056,9 +2040,9 @@ are calculated using
 
 @example
 @group
-[@var{m}, @var{n}] = size(@var{A})
-@var{s} = eigs([sparse(@var{m}, @var{m}), @var{A};
-                    @var{A}', sparse(@var{n}, @var{n})])
+[@var{m}, @var{n}] = size (@var{A});
+@var{s} = eigs ([sparse(@var{m}, @var{m}), @var{A};
+                     @var{A}', sparse(@var{n}, @var{n})])
 @end group
 @end example
 
@@ -2132,7 +2116,7 @@ functions to solve sparse linear equations using iterative techniques.
 @deftypefn  {Function File} {@var{x} =} pcg (@var{A}, @var{b}, @var{tol}, @var{maxit}, @var{m1}, @var{m2}, @var{x0}, @dots{})
 @deftypefnx {Function File} {[@var{x}, @var{flag}, @var{relres}, @var{iter}, @var{resvec}, @var{eigest}] =} pcg (@dots{})
 
-Solves the linear system of equations @code{@var{A} * @var{x} = @var{b}}
+Solve the linear system of equations @code{@var{A} * @var{x} = @var{b}}
 by means of the Preconditioned Conjugate Gradient iterative
 method.  The input arguments are
 
@@ -2236,17 +2220,17 @@ sparsity of A)
 
 @example
 @group
-     n = 10;
-     A = diag (sparse (1:n));
-     b = rand (n, 1);
-     [l, u, p, q] = luinc (A, 1.e-3);
+n = 10;
+A = diag (sparse (1:n));
+b = rand (n, 1);
+[l, u, p, q] = luinc (A, 1.e-3);
 @end group
 @end example
 
 @sc{Example 1:} Simplest use of @code{pcg}
 
 @example
-  x = pcg(A,b)
+x = pcg (A,b)
 @end example
 
 @sc{Example 2:} @code{pcg} with a function which computes
@@ -2254,18 +2238,18 @@ sparsity of A)
 
 @example
 @group
-  function y = apply_a (x)
-    y = [1:N]'.*x;
-  endfunction
+function y = apply_a (x)
+  y = [1:N]' .* x;
+endfunction
 
-  x = pcg ("apply_a", b)
+x = pcg ("apply_a", b)
 @end group
 @end example
 
 @sc{Example 3:} @code{pcg} with a preconditioner: @var{l} * @var{u}
 
 @example
-x = pcg (A, b, 1.e-6, 500, l*u);
+x = pcg (A, b, 1.e-6, 500, l*u)
 @end example
 
 @sc{Example 4:} @code{pcg} with a preconditioner: @var{l} * @var{u}.
@@ -2273,7 +2257,7 @@ Faster than @sc{Example 3} since lower and upper triangular matrices
 are easier to invert
 
 @example
-x = pcg (A, b, 1.e-6, 500, l, u);
+x = pcg (A, b, 1.e-6, 500, l, u)
 @end example
 
 @sc{Example 5:} Preconditioned iteration, with full diagnostics.  The
@@ -2282,15 +2266,15 @@ preconditioner (quite strange, because even the original matrix
 
 @example
 @group
-  function y = apply_m (x)
-    k = floor (length (x) - 2);
-    y = x;
-    y(1:k) = x(1:k)./[1:k]';
-  endfunction
+function y = apply_m (x)
+  k = floor (length (x) - 2);
+  y = x;
+  y(1:k) = x(1:k) ./ [1:k]';
+endfunction
 
-  [x, flag, relres, iter, resvec, eigest] = ...
-                     pcg (A, b, [], [], "apply_m");
-  semilogy (1:iter+1, resvec);
+[x, flag, relres, iter, resvec, eigest] = ...
+                   pcg (A, b, [], [], "apply_m");
+semilogy (1:iter+1, resvec);
 @end group
 @end example
 
@@ -2299,14 +2283,14 @@ parameter @var{k}.
 
 @example
 @group
-  function y = apply_M (x, varargin)
+function y = apply_M (x, varargin)
   K = varargin@{1@};
   y = x;
-  y(1:K) = x(1:K)./[1:K]';
-  endfunction
+  y(1:K) = x(1:K) ./ [1:K]';
+endfunction
 
-  [x, flag, relres, iter, resvec, eigest] = ...
-       pcg (A, b, [], [], "apply_m", [], [], 3)
+[x, flag, relres, iter, resvec, eigest] = ...
+     pcg (A, b, [], [], "apply_m", [], [], 3)
 @end group
 @end example
 
@@ -2332,7 +2316,7 @@ available online at @url{http://www-users.cs.umn.edu/~saad/books.html}
 @deftypefn  {Function File} {@var{x} =} pcr (@var{A}, @var{b}, @var{tol}, @var{maxit}, @var{m}, @var{x0}, @dots{})
 @deftypefnx {Function File} {[@var{x}, @var{flag}, @var{relres}, @var{iter}, @var{resvec}] =} pcr (@dots{})
 
-Solves the linear system of equations @code{@var{A} * @var{x} = @var{b}}
+Solve the linear system of equations @code{@var{A} * @var{x} = @var{b}}
 by means of the Preconditioned Conjugate Residuals iterative
 method.  The input arguments are
 
@@ -2413,16 +2397,16 @@ sparsity of A)
 
 @example
 @group
-     n = 10;
-     A = sparse (diag (1:n));
-     b = rand (N, 1);
+n = 10;
+A = sparse (diag (1:n));
+b = rand (N, 1);
 @end group
 @end example
 
 @sc{Example 1:} Simplest use of @code{pcr}
 
 @example
-  x = pcr(A, b)
+x = pcr (A, b)
 @end example
 
 @sc{Example 2:} @code{pcr} with a function which computes
@@ -2430,11 +2414,11 @@ sparsity of A)
 
 @example
 @group
-  function y = apply_a (x)
-    y = [1:10]'.*x;
-  endfunction
+function y = apply_a (x)
+  y = [1:10]' .* x;
+endfunction
 
-  x = pcr ("apply_a", b)
+x = pcr ("apply_a", b)
 @end group
 @end example
 
@@ -2444,15 +2428,15 @@ preconditioner (quite strange, because even the original matrix
 
 @example
 @group
-  function y = apply_m (x)
-    k = floor (length(x)-2);
-    y = x;
-    y(1:k) = x(1:k)./[1:k]';
-  endfunction
+function y = apply_m (x)
+  k = floor (length (x) - 2);
+  y = x;
+  y(1:k) = x(1:k) ./ [1:k]';
+endfunction
 
-  [x, flag, relres, iter, resvec] = ...
-                     pcr (A, b, [], [], "apply_m")
-  semilogy([1:iter+1], resvec);
+[x, flag, relres, iter, resvec] = ...
+                   pcr (A, b, [], [], "apply_m")
+semilogy ([1:iter+1], resvec);
 @end group
 @end example
 
@@ -2461,13 +2445,14 @@ parameter @var{k}.
 
 @example
 @group
-  function y = apply_m (x, varargin)
-    k = varargin@{1@};
-    y = x; y(1:k) = x(1:k)./[1:k]';
-  endfunction
+function y = apply_m (x, varargin)
+  k = varargin@{1@};
+  y = x;
+  y(1:k) = x(1:k) ./ [1:k]';
+endfunction
 
-  [x, flag, relres, iter, resvec] = ...
-                     pcr (A, b, [], [], "apply_m"', [], 3)
+[x, flag, relres, iter, resvec] = ...
+                   pcr (A, b, [], [], "apply_m"', [], 3)
 @end group
 @end example
 

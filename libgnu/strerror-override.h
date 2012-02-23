@@ -2,7 +2,7 @@
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* strerror-override.h --- POSIX compatible system error routine
 
-   Copyright (C) 2010-2011 Free Software Foundation, Inc.
+   Copyright (C) 2010-2012 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -31,8 +31,8 @@
 /* If ERRNUM maps to an errno value defined by gnulib, return a string
    describing the error.  Otherwise return NULL.  */
 # if REPLACE_STRERROR_0 \
-     || GNULIB_defined_ETXTBSY \
      || GNULIB_defined_ESOCK \
+     || GNULIB_defined_EWINSOCK \
      || GNULIB_defined_ENOMSG \
      || GNULIB_defined_EIDRM \
      || GNULIB_defined_ENOLINK \

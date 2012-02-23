@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2011 Teemu Ikonen
+## Copyright (C) 2000-2012 Teemu Ikonen
 ##
 ## This file is part of Octave.
 ##
@@ -61,6 +61,7 @@ function retval = loglogerr (varargin)
 endfunction
 
 %!demo
+%! clf
 %! x = exp (log(0.01):0.2:log(10));
 %! y = wblpdf (x, 3, 2);
 %! eyu = 2*rand (size (y)) .* y;

@@ -40,7 +40,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="Structures.html#Structures">Structures<
    <p><a name="doc_002dnfields"></a>
 
 <div class="defun">
-&mdash; Built-in Function:  <b>nfields</b> (<var>s</var>)<var><a name="index-nfields-410"></a></var><br>
+&mdash; Built-in Function:  <b>nfields</b> (<var>s</var>)<var><a name="index-nfields-444"></a></var><br>
 <blockquote><p>Return the number of fields of the structure <var>s</var>. 
 </p></blockquote></div>
 
@@ -48,7 +48,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="Structures.html#Structures">Structures<
    <p><a name="doc_002dfieldnames"></a>
 
 <div class="defun">
-&mdash; Built-in Function:  <b>fieldnames</b> (<var>struct</var>)<var><a name="index-fieldnames-411"></a></var><br>
+&mdash; Built-in Function:  <b>fieldnames</b> (<var>struct</var>)<var><a name="index-fieldnames-445"></a></var><br>
 <blockquote><p>Return a cell array of strings naming the elements of the structure
 <var>struct</var>.  It is an error to call <code>fieldnames</code> with an
 argument that is not a structure. 
@@ -58,7 +58,7 @@ argument that is not a structure.
    <p><a name="doc_002disfield"></a>
 
 <div class="defun">
-&mdash; Built-in Function:  <b>isfield</b> (<var>x, name</var>)<var><a name="index-isfield-412"></a></var><br>
+&mdash; Built-in Function:  <b>isfield</b> (<var>x, name</var>)<var><a name="index-isfield-446"></a></var><br>
 <blockquote><p>Return true if the <var>x</var> is a structure and it
 includes an element named <var>name</var>.  If <var>name</var> is a cell
 array of strings then a logical array of equal dimension is returned. 
@@ -68,19 +68,19 @@ array of strings then a logical array of equal dimension is returned.
    <p><a name="doc_002dgetfield"></a>
 
 <div class="defun">
-&mdash; Function File: [<var>v1</var>, <small class="dots">...</small>] = <b>getfield</b> (<var>s, key, <small class="dots">...</small></var>)<var><a name="index-getfield-413"></a></var><br>
+&mdash; Function File: [<var>v1</var>, <small class="dots">...</small>] = <b>getfield</b> (<var>s, key, <small class="dots">...</small></var>)<var><a name="index-getfield-447"></a></var><br>
 <blockquote><p>Extract a field from a structure (or a nested structure).  For example:
 
      <pre class="example">          ss(1,2).fd(3).b = 5;
           getfield (ss, {1,2}, "fd", {3}, "b")
-               &rArr; ans = 5
+             &rArr; 5
 </pre>
         <p>Note that the function call in the previous example is equivalent to
 the expression
 
      <pre class="example">          i1 = {1,2}; i2 = "fd"; i3 = {3}; i4= "b";
           ss(i1{:}).(i2)(i3{:}).(i4)
-               &rArr; ans = 5
+             &rArr; 5
 </pre>
         <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
      <!-- A simple blank line produces the correct behavior. -->
@@ -92,7 +92,7 @@ the expression
    <p><a name="doc_002dsetfield"></a>
 
 <div class="defun">
-&mdash; Function File: [<var>k1</var>, <small class="dots">...</small>, <var>v1</var>] = <b>setfield</b> (<var>s, k1, v1, <small class="dots">...</small></var>)<var><a name="index-setfield-414"></a></var><br>
+&mdash; Function File: [<var>k1</var>, <small class="dots">...</small>, <var>v1</var>] = <b>setfield</b> (<var>s, k1, v1, <small class="dots">...</small></var>)<var><a name="index-setfield-448"></a></var><br>
 <blockquote><p>Set a field member in a (nested) structure array.  For example:
 
      <pre class="example">          oo(1,1).f0 = 1;
@@ -116,7 +116,7 @@ the expression
    <p><a name="doc_002drmfield"></a>
 
 <div class="defun">
-&mdash; Built-in Function:  <b>rmfield</b> (<var>s, f</var>)<var><a name="index-rmfield-415"></a></var><br>
+&mdash; Built-in Function:  <b>rmfield</b> (<var>s, f</var>)<var><a name="index-rmfield-449"></a></var><br>
 <blockquote><p>Return a copy of the structure (array) <var>s</var> with the field <var>f</var>
 removed.  If <var>f</var> is a cell array of strings or a character array, remove
 the named fields. 
@@ -131,8 +131,8 @@ the named fields.
    <p><a name="doc_002dorderfields"></a>
 
 <div class="defun">
-&mdash; Function File: [<var>t</var>, <var>p</var>] = <b>orderfields</b> (<var>s1</var>)<var><a name="index-orderfields-416"></a></var><br>
-&mdash; Function File: [<var>t</var>, <var>p</var>] = <b>orderfields</b> (<var>s1, s2</var>)<var><a name="index-orderfields-417"></a></var><br>
+&mdash; Function File: [<var>t</var>, <var>p</var>] = <b>orderfields</b> (<var>s1</var>)<var><a name="index-orderfields-450"></a></var><br>
+&mdash; Function File: [<var>t</var>, <var>p</var>] = <b>orderfields</b> (<var>s1, s2</var>)<var><a name="index-orderfields-451"></a></var><br>
 <blockquote><p>Return a copy of <var>s1</var> with fields arranged alphabetically or
 as specified by <var>s2</var>.
 
@@ -150,7 +150,7 @@ which converts the original name order into the new name order.
         <p>Examples:
 
      <pre class="example">          s = struct("d", 4, "b", 2, "a", 1, "c", 3);
-          t1 = orderfields(s)
+          t1 = orderfields (s)
                &rArr; t1 =
                   {
                     a =  1
@@ -159,7 +159,7 @@ which converts the original name order into the new name order.
                     d =  4
                   }
           t = struct("d", {}, "c", {}, "b", "a", {});
-          t2 = orderfields(s, t)
+          t2 = orderfields (s, t)
                &rArr; t2 =
                   {
                     d =  4
@@ -167,7 +167,7 @@ which converts the original name order into the new name order.
                     b =  2
                     a =  1
                   }
-          t3 = orderfields(s, [3, 2, 4, 1]);
+          t3 = orderfields (s, [3, 2, 4, 1]);
                &rArr; t3 =
                   {
                     a =  1
@@ -175,18 +175,19 @@ which converts the original name order into the new name order.
                     c =  3
                     d =  4
                   }
-          [t4, p] = orderfields(s, {"d", "c", "b", "a"})
-               &rArr; t4 = {
+          [t4, p] = orderfields (s, {"d", "c", "b", "a"})
+               &rArr; t4 =
+                  {
                     d =  4
                     c =  3
                     b =  2
                     a =  1
                   }
-               p =
-                  1
-                  4
-                  2
-                  3
+                  p =
+                     1
+                     4
+                     2
+                     3
 </pre>
         <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
      <!-- A simple blank line produces the correct behavior. -->
@@ -198,11 +199,11 @@ which converts the original name order into the new name order.
    <p><a name="doc_002dsubstruct"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>substruct</b> (<var>type, subs, <small class="dots">...</small></var>)<var><a name="index-substruct-418"></a></var><br>
+&mdash; Function File:  <b>substruct</b> (<var>type, subs, <small class="dots">...</small></var>)<var><a name="index-substruct-452"></a></var><br>
 <blockquote><p>Create a subscript structure for use with <code>subsref</code> or
 <code>subsasgn</code>.  For example:
 
-     <pre class="example">          idx = substruct("()", {3, ":"})
+     <pre class="example">          idx = substruct ("()", {3, ":"})
                &rArr;
                  idx =
                  {
@@ -214,9 +215,8 @@ which converts the original name order into the new name order.
                    }
                  }
           x = [1, 2, 3; 4, 5, 6; 7, 8, 9];
-          subsref(x, idx)
-               &rArr; ans =
-                  7  8  9
+          subsref (x, idx)
+             &rArr; 7  8  9
 </pre>
         <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
      <!-- A simple blank line produces the correct behavior. -->

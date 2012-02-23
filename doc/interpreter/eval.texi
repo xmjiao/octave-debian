@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.
 
-@c Copyright (C) 1996-2011 John W. Eaton
+@c Copyright (C) 1996-2012 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -31,7 +31,8 @@ been computed and stored in a string, which is exactly what the
 
 @c eval src/oct-parse.cc
 @anchor{doc-eval}
-@deftypefn {Built-in Function} {} eval (@var{try}, @var{catch})
+@deftypefn  {Built-in Function} {} eval (@var{try})
+@deftypefnx {Built-in Function} {} eval (@var{try}, @var{catch})
 Parse the string @var{try} and evaluate it as if it were an Octave
 program.  If that fails, evaluate the optional string @var{catch}.
 The string @var{try} is evaluated in the current context,
@@ -55,6 +56,11 @@ eval ('error ("This is a bad example");',
         This is a bad example
 @end group
 @end example
+
+Consider using try/catch blocks instead if you are only using @code{eval}
+as an error-capturing mechanism rather than for the execution of arbitrary
+code strings.
+@seealso{@ref{doc-evalin,,evalin}}
 @end deftypefn
 
 
@@ -257,10 +263,12 @@ are in the @samp{caller} context and @code{evalin} is not needed.
 
 @c evalin src/oct-parse.cc
 @anchor{doc-evalin}
-@deftypefn {Built-in Function} {} evalin (@var{context}, @var{try}, @var{catch})
+@deftypefn  {Built-in Function} {} evalin (@var{context}, @var{try})
+@deftypefnx {Built-in Function} {} evalin (@var{context}, @var{try}, @var{catch})
 Like @code{eval}, except that the expressions are evaluated in the
 context @var{context}, which may be either @code{"caller"} or
 @code{"base"}.
+@seealso{@ref{doc-eval,,eval}, @ref{doc-assignin,,assignin}}
 @end deftypefn
 
 
@@ -269,5 +277,6 @@ context @var{context}, which may be either @code{"caller"} or
 @deftypefn {Built-in Function} {} assignin (@var{context}, @var{varname}, @var{value})
 Assign @var{value} to @var{varname} in context @var{context}, which
 may be either @code{"base"} or @code{"caller"}.
+@seealso{@ref{doc-evalin,,evalin}}
 @end deftypefn
 

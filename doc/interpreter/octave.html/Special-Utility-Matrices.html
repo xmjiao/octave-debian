@@ -6,7 +6,7 @@
 <meta name="generator" content="makeinfo 4.13">
 <link title="Top" rel="start" href="index.html#Top">
 <link rel="up" href="Matrix-Manipulation.html#Matrix-Manipulation" title="Matrix Manipulation">
-<link rel="prev" href="Applying-a-Function-to-an-Array.html#Applying-a-Function-to-an-Array" title="Applying a Function to an Array">
+<link rel="prev" href="Rearranging-Matrices.html#Rearranging-Matrices" title="Rearranging Matrices">
 <link rel="next" href="Famous-Matrices.html#Famous-Matrices" title="Famous Matrices">
 <link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
 <meta http-equiv="Content-Style-Type" content="text/css">
@@ -27,21 +27,21 @@
 <a name="Special-Utility-Matrices"></a>
 <p>
 Next:&nbsp;<a rel="next" accesskey="n" href="Famous-Matrices.html#Famous-Matrices">Famous Matrices</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="Applying-a-Function-to-an-Array.html#Applying-a-Function-to-an-Array">Applying a Function to an Array</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Rearranging-Matrices.html#Rearranging-Matrices">Rearranging Matrices</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="Matrix-Manipulation.html#Matrix-Manipulation">Matrix Manipulation</a>
 <hr>
 </div>
 
-<h3 class="section">16.4 Special Utility Matrices</h3>
+<h3 class="section">16.3 Special Utility Matrices</h3>
 
 <!-- eye src/data.cc -->
 <p><a name="doc_002deye"></a>
 
 <div class="defun">
-&mdash; Built-in Function:  <b>eye</b> (<var>n</var>)<var><a name="index-eye-1614"></a></var><br>
-&mdash; Built-in Function:  <b>eye</b> (<var>m, n</var>)<var><a name="index-eye-1615"></a></var><br>
-&mdash; Built-in Function:  <b>eye</b> ([<var>m n</var>])<var><a name="index-eye-1616"></a></var><br>
-&mdash; Built-in Function:  <b>eye</b> (<var><small class="dots">...</small>, class</var>)<var><a name="index-eye-1617"></a></var><br>
+&mdash; Built-in Function:  <b>eye</b> (<var>n</var>)<var><a name="index-eye-1684"></a></var><br>
+&mdash; Built-in Function:  <b>eye</b> (<var>m, n</var>)<var><a name="index-eye-1685"></a></var><br>
+&mdash; Built-in Function:  <b>eye</b> ([<var>m n</var>])<var><a name="index-eye-1686"></a></var><br>
+&mdash; Built-in Function:  <b>eye</b> (<var><small class="dots">...</small>, class</var>)<var><a name="index-eye-1687"></a></var><br>
 <blockquote><p>Return an identity matrix.  If invoked with a single scalar argument <var>n</var>,
 return a square NxN identity matrix.  If
 supplied two scalar arguments (<var>m</var>, <var>n</var>), <code>eye</code> takes them to be
@@ -68,8 +68,8 @@ the specified type, like
      <pre class="example">          val = zeros (n,m, "uint8")
 </pre>
         <p>Calling <code>eye</code> with no arguments is equivalent to calling it
-with an argument of 1.  This odd definition is for compatibility
-with <span class="sc">matlab</span>. 
+with an argument of 1.  Any negative dimensions are treated as zero. 
+These odd definitions are for compatibility with <span class="sc">matlab</span>. 
 <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
 <!-- A simple blank line produces the correct behavior. -->
 <!-- @sp 1 -->
@@ -81,11 +81,11 @@ with <span class="sc">matlab</span>.
    <p><a name="doc_002dones"></a>
 
 <div class="defun">
-&mdash; Built-in Function:  <b>ones</b> (<var>n</var>)<var><a name="index-ones-1618"></a></var><br>
-&mdash; Built-in Function:  <b>ones</b> (<var>m, n</var>)<var><a name="index-ones-1619"></a></var><br>
-&mdash; Built-in Function:  <b>ones</b> (<var>m, n, k, <small class="dots">...</small></var>)<var><a name="index-ones-1620"></a></var><br>
-&mdash; Built-in Function:  <b>ones</b> ([<var>m n <small class="dots">...</small></var>])<var><a name="index-ones-1621"></a></var><br>
-&mdash; Built-in Function:  <b>ones</b> (<var><small class="dots">...</small>, class</var>)<var><a name="index-ones-1622"></a></var><br>
+&mdash; Built-in Function:  <b>ones</b> (<var>n</var>)<var><a name="index-ones-1688"></a></var><br>
+&mdash; Built-in Function:  <b>ones</b> (<var>m, n</var>)<var><a name="index-ones-1689"></a></var><br>
+&mdash; Built-in Function:  <b>ones</b> (<var>m, n, k, <small class="dots">...</small></var>)<var><a name="index-ones-1690"></a></var><br>
+&mdash; Built-in Function:  <b>ones</b> ([<var>m n <small class="dots">...</small></var>])<var><a name="index-ones-1691"></a></var><br>
+&mdash; Built-in Function:  <b>ones</b> (<var><small class="dots">...</small>, class</var>)<var><a name="index-ones-1692"></a></var><br>
 <blockquote><p>Return a matrix or N-dimensional array whose elements are all 1. 
 If invoked with a single scalar integer argument <var>n</var>, return a square
 NxN matrix.  If invoked with two or more scalar
@@ -112,11 +112,11 @@ and defaults to double.  For example:
    <p><a name="doc_002dzeros"></a>
 
 <div class="defun">
-&mdash; Built-in Function:  <b>zeros</b> (<var>n</var>)<var><a name="index-zeros-1623"></a></var><br>
-&mdash; Built-in Function:  <b>zeros</b> (<var>m, n</var>)<var><a name="index-zeros-1624"></a></var><br>
-&mdash; Built-in Function:  <b>zeros</b> (<var>m, n, k, <small class="dots">...</small></var>)<var><a name="index-zeros-1625"></a></var><br>
-&mdash; Built-in Function:  <b>zeros</b> ([<var>m n <small class="dots">...</small></var>])<var><a name="index-zeros-1626"></a></var><br>
-&mdash; Built-in Function:  <b>zeros</b> (<var><small class="dots">...</small>, class</var>)<var><a name="index-zeros-1627"></a></var><br>
+&mdash; Built-in Function:  <b>zeros</b> (<var>n</var>)<var><a name="index-zeros-1693"></a></var><br>
+&mdash; Built-in Function:  <b>zeros</b> (<var>m, n</var>)<var><a name="index-zeros-1694"></a></var><br>
+&mdash; Built-in Function:  <b>zeros</b> (<var>m, n, k, <small class="dots">...</small></var>)<var><a name="index-zeros-1695"></a></var><br>
+&mdash; Built-in Function:  <b>zeros</b> ([<var>m n <small class="dots">...</small></var>])<var><a name="index-zeros-1696"></a></var><br>
+&mdash; Built-in Function:  <b>zeros</b> (<var><small class="dots">...</small>, class</var>)<var><a name="index-zeros-1697"></a></var><br>
 <blockquote><p>Return a matrix or N-dimensional array whose elements are all 0. 
 If invoked with a single scalar integer argument, return a square
 NxN matrix.  If invoked with two or more scalar
@@ -138,11 +138,11 @@ and defaults to double.  For example:
    <p><a name="doc_002drepmat"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>repmat</b> (<var>A, m</var>)<var><a name="index-repmat-1628"></a></var><br>
-&mdash; Function File:  <b>repmat</b> (<var>A, m, n</var>)<var><a name="index-repmat-1629"></a></var><br>
-&mdash; Function File:  <b>repmat</b> (<var>A, m, n, p, <small class="dots">...</small></var>)<var><a name="index-repmat-1630"></a></var><br>
-&mdash; Function File:  <b>repmat</b> (<var>A, </var>[<var>m n</var>])<var><a name="index-repmat-1631"></a></var><br>
-&mdash; Function File:  <b>repmat</b> (<var>A, </var>[<var>m n p <small class="dots">...</small></var>])<var><a name="index-repmat-1632"></a></var><br>
+&mdash; Function File:  <b>repmat</b> (<var>A, m</var>)<var><a name="index-repmat-1698"></a></var><br>
+&mdash; Function File:  <b>repmat</b> (<var>A, m, n</var>)<var><a name="index-repmat-1699"></a></var><br>
+&mdash; Function File:  <b>repmat</b> (<var>A, m, n, p, <small class="dots">...</small></var>)<var><a name="index-repmat-1700"></a></var><br>
+&mdash; Function File:  <b>repmat</b> (<var>A, </var>[<var>m n</var>])<var><a name="index-repmat-1701"></a></var><br>
+&mdash; Function File:  <b>repmat</b> (<var>A, </var>[<var>m n p <small class="dots">...</small></var>])<var><a name="index-repmat-1702"></a></var><br>
 <blockquote><p>Form a block matrix of size <var>m</var> by <var>n</var>, with a copy of matrix
 <var>A</var> as each element.  If <var>n</var> is not specified, form an
 <var>m</var> by <var>m</var> block matrix. 
@@ -157,7 +157,7 @@ and defaults to double.  For example:
    <p><a name="doc_002drepelems"></a>
 
 <div class="defun">
-&mdash; Built-in Function:  <b>repelems</b> (<var>x, r</var>)<var><a name="index-repelems-1633"></a></var><br>
+&mdash; Built-in Function:  <b>repelems</b> (<var>x, r</var>)<var><a name="index-repelems-1703"></a></var><br>
 <blockquote><p>Construct a vector of repeated elements from <var>x</var>.  <var>r</var>
 is a 2x<var>N</var> integer matrix specifying which elements to repeat and
 how often to repeat each element.
@@ -189,8 +189,8 @@ See <a href="Ranges.html#Ranges">Ranges</a>.
    <p><a name="doc_002dlinspace"></a>
 
 <div class="defun">
-&mdash; Built-in Function:  <b>linspace</b> (<var>base, limit</var>)<var><a name="index-linspace-1634"></a></var><br>
-&mdash; Built-in Function:  <b>linspace</b> (<var>base, limit, n</var>)<var><a name="index-linspace-1635"></a></var><br>
+&mdash; Built-in Function:  <b>linspace</b> (<var>base, limit</var>)<var><a name="index-linspace-1704"></a></var><br>
+&mdash; Built-in Function:  <b>linspace</b> (<var>base, limit, n</var>)<var><a name="index-linspace-1705"></a></var><br>
 <blockquote><p>Return a row vector with <var>n</var> linearly spaced elements between
 <var>base</var> and <var>limit</var>.  If the number of elements is greater than one,
 then the endpoints <var>base</var> and <var>limit</var> are always included in
@@ -210,9 +210,9 @@ if fewer than two values are requested.
    <p><a name="doc_002dlogspace"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>logspace</b> (<var>a, b</var>)<var><a name="index-logspace-1636"></a></var><br>
-&mdash; Function File:  <b>logspace</b> (<var>b, b, n</var>)<var><a name="index-logspace-1637"></a></var><br>
-&mdash; Function File:  <b>logspace</b> (<var>a, pi, n</var>)<var><a name="index-logspace-1638"></a></var><br>
+&mdash; Function File:  <b>logspace</b> (<var>a, b</var>)<var><a name="index-logspace-1706"></a></var><br>
+&mdash; Function File:  <b>logspace</b> (<var>b, b, n</var>)<var><a name="index-logspace-1707"></a></var><br>
+&mdash; Function File:  <b>logspace</b> (<var>a, pi, n</var>)<var><a name="index-logspace-1708"></a></var><br>
 <blockquote><p>Return a row vector with <var>n</var> elements logarithmically spaced from
 10^<var>a</var> to 10^<var>b</var>. 
 If <var>n</var> is unspecified it defaults to 50.
@@ -238,15 +238,15 @@ if fewer than two values are requested.
    <p><a name="doc_002drand"></a>
 
 <div class="defun">
-&mdash; Loadable Function:  <b>rand</b> (<var>n</var>)<var><a name="index-rand-1639"></a></var><br>
-&mdash; Loadable Function:  <b>rand</b> (<var>n, m, <small class="dots">...</small></var>)<var><a name="index-rand-1640"></a></var><br>
-&mdash; Loadable Function:  <b>rand</b> ([<var>n m <small class="dots">...</small></var>])<var><a name="index-rand-1641"></a></var><br>
-&mdash; Loadable Function: <var>v</var> = <b>rand</b> (<var>"state"</var>)<var><a name="index-rand-1642"></a></var><br>
-&mdash; Loadable Function:  <b>rand</b> (<var>"state", v</var>)<var><a name="index-rand-1643"></a></var><br>
-&mdash; Loadable Function:  <b>rand</b> (<var>"state", "reset"</var>)<var><a name="index-rand-1644"></a></var><br>
-&mdash; Loadable Function: <var>v</var> = <b>rand</b> (<var>"seed"</var>)<var><a name="index-rand-1645"></a></var><br>
-&mdash; Loadable Function:  <b>rand</b> (<var>"seed", v</var>)<var><a name="index-rand-1646"></a></var><br>
-&mdash; Loadable Function:  <b>rand</b> (<var>"seed", "reset"</var>)<var><a name="index-rand-1647"></a></var><br>
+&mdash; Loadable Function:  <b>rand</b> (<var>n</var>)<var><a name="index-rand-1709"></a></var><br>
+&mdash; Loadable Function:  <b>rand</b> (<var>n, m, <small class="dots">...</small></var>)<var><a name="index-rand-1710"></a></var><br>
+&mdash; Loadable Function:  <b>rand</b> ([<var>n m <small class="dots">...</small></var>])<var><a name="index-rand-1711"></a></var><br>
+&mdash; Loadable Function: <var>v</var> = <b>rand</b> (<var>"state"</var>)<var><a name="index-rand-1712"></a></var><br>
+&mdash; Loadable Function:  <b>rand</b> (<var>"state", v</var>)<var><a name="index-rand-1713"></a></var><br>
+&mdash; Loadable Function:  <b>rand</b> (<var>"state", "reset"</var>)<var><a name="index-rand-1714"></a></var><br>
+&mdash; Loadable Function: <var>v</var> = <b>rand</b> (<var>"seed"</var>)<var><a name="index-rand-1715"></a></var><br>
+&mdash; Loadable Function:  <b>rand</b> (<var>"seed", v</var>)<var><a name="index-rand-1716"></a></var><br>
+&mdash; Loadable Function:  <b>rand</b> (<var>"seed", "reset"</var>)<var><a name="index-rand-1717"></a></var><br>
 <blockquote><p>Return a matrix with random elements uniformly distributed on the
 interval (0, 1).  The arguments are handled the same as the arguments
 for <code>eye</code>.
@@ -315,11 +315,11 @@ using the "reset" keyword.
    <p><a name="doc_002drandi"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>randi</b> (<var>imax</var>)<var><a name="index-randi-1648"></a></var><br>
-&mdash; Function File:  <b>randi</b> (<var>imax, n</var>)<var><a name="index-randi-1649"></a></var><br>
-&mdash; Function File:  <b>randi</b> (<var>imax, m, n, <small class="dots">...</small></var>)<var><a name="index-randi-1650"></a></var><br>
-&mdash; Function File:  <b>randi</b> ([<var>imin imax</var>]<var>, <small class="dots">...</small></var>)<var><a name="index-randi-1651"></a></var><br>
-&mdash; Function File:  <b>randi</b> (<var><small class="dots">...</small>, "class"</var>)<var><a name="index-randi-1652"></a></var><br>
+&mdash; Function File:  <b>randi</b> (<var>imax</var>)<var><a name="index-randi-1718"></a></var><br>
+&mdash; Function File:  <b>randi</b> (<var>imax, n</var>)<var><a name="index-randi-1719"></a></var><br>
+&mdash; Function File:  <b>randi</b> (<var>imax, m, n, <small class="dots">...</small></var>)<var><a name="index-randi-1720"></a></var><br>
+&mdash; Function File:  <b>randi</b> ([<var>imin imax</var>]<var>, <small class="dots">...</small></var>)<var><a name="index-randi-1721"></a></var><br>
+&mdash; Function File:  <b>randi</b> (<var><small class="dots">...</small>, "class"</var>)<var><a name="index-randi-1722"></a></var><br>
 <blockquote><p>Return random integers in the range 1:<var>imax</var>.
 
         <p>Additional arguments determine the shape of the return matrix.  When no
@@ -337,7 +337,7 @@ type.  The default is "double".
 
         <p>The following example returns 150 integers in the range 1-10.
 
-     <pre class="example">          ri = randi (10, 150, 1);
+     <pre class="example">          ri = randi (10, 150, 1)
 </pre>
         <p>Implementation Note: <code>randi</code> relies internally on <code>rand</code> which
 uses class "double" to represent numbers.  This limits the maximum
@@ -355,15 +355,15 @@ this value is 2^53&nbsp;-&nbsp;1<!-- /@w -->.
    <p><a name="doc_002drandn"></a>
 
 <div class="defun">
-&mdash; Loadable Function:  <b>randn</b> (<var>n</var>)<var><a name="index-randn-1653"></a></var><br>
-&mdash; Loadable Function:  <b>randn</b> (<var>n, m, <small class="dots">...</small></var>)<var><a name="index-randn-1654"></a></var><br>
-&mdash; Loadable Function:  <b>randn</b> ([<var>n m <small class="dots">...</small></var>])<var><a name="index-randn-1655"></a></var><br>
-&mdash; Loadable Function: <var>v</var> = <b>randn</b> (<var>"state"</var>)<var><a name="index-randn-1656"></a></var><br>
-&mdash; Loadable Function:  <b>randn</b> (<var>"state", v</var>)<var><a name="index-randn-1657"></a></var><br>
-&mdash; Loadable Function:  <b>randn</b> (<var>"state", "reset"</var>)<var><a name="index-randn-1658"></a></var><br>
-&mdash; Loadable Function: <var>v</var> = <b>randn</b> (<var>"seed"</var>)<var><a name="index-randn-1659"></a></var><br>
-&mdash; Loadable Function:  <b>randn</b> (<var>"seed", v</var>)<var><a name="index-randn-1660"></a></var><br>
-&mdash; Loadable Function:  <b>randn</b> (<var>"seed", "reset"</var>)<var><a name="index-randn-1661"></a></var><br>
+&mdash; Loadable Function:  <b>randn</b> (<var>n</var>)<var><a name="index-randn-1723"></a></var><br>
+&mdash; Loadable Function:  <b>randn</b> (<var>n, m, <small class="dots">...</small></var>)<var><a name="index-randn-1724"></a></var><br>
+&mdash; Loadable Function:  <b>randn</b> ([<var>n m <small class="dots">...</small></var>])<var><a name="index-randn-1725"></a></var><br>
+&mdash; Loadable Function: <var>v</var> = <b>randn</b> (<var>"state"</var>)<var><a name="index-randn-1726"></a></var><br>
+&mdash; Loadable Function:  <b>randn</b> (<var>"state", v</var>)<var><a name="index-randn-1727"></a></var><br>
+&mdash; Loadable Function:  <b>randn</b> (<var>"state", "reset"</var>)<var><a name="index-randn-1728"></a></var><br>
+&mdash; Loadable Function: <var>v</var> = <b>randn</b> (<var>"seed"</var>)<var><a name="index-randn-1729"></a></var><br>
+&mdash; Loadable Function:  <b>randn</b> (<var>"seed", v</var>)<var><a name="index-randn-1730"></a></var><br>
+&mdash; Loadable Function:  <b>randn</b> (<var>"seed", "reset"</var>)<var><a name="index-randn-1731"></a></var><br>
 <blockquote><p>Return a matrix with normally distributed random
 elements having zero mean and variance one.  The arguments are
 handled the same as the arguments for <code>rand</code>.
@@ -386,15 +386,15 @@ J. Statistical Software, vol 5, 2000,
    <p><a name="doc_002drande"></a>
 
 <div class="defun">
-&mdash; Loadable Function:  <b>rande</b> (<var>n</var>)<var><a name="index-rande-1662"></a></var><br>
-&mdash; Loadable Function:  <b>rande</b> (<var>n, m, <small class="dots">...</small></var>)<var><a name="index-rande-1663"></a></var><br>
-&mdash; Loadable Function:  <b>rande</b> ([<var>n m <small class="dots">...</small></var>])<var><a name="index-rande-1664"></a></var><br>
-&mdash; Loadable Function: <var>v</var> = <b>rande</b> (<var>"state"</var>)<var><a name="index-rande-1665"></a></var><br>
-&mdash; Loadable Function:  <b>rande</b> (<var>"state", v</var>)<var><a name="index-rande-1666"></a></var><br>
-&mdash; Loadable Function:  <b>rande</b> (<var>"state", "reset"</var>)<var><a name="index-rande-1667"></a></var><br>
-&mdash; Loadable Function: <var>v</var> = <b>rande</b> (<var>"seed"</var>)<var><a name="index-rande-1668"></a></var><br>
-&mdash; Loadable Function:  <b>rande</b> (<var>"seed", v</var>)<var><a name="index-rande-1669"></a></var><br>
-&mdash; Loadable Function:  <b>rande</b> (<var>"seed", "reset"</var>)<var><a name="index-rande-1670"></a></var><br>
+&mdash; Loadable Function:  <b>rande</b> (<var>n</var>)<var><a name="index-rande-1732"></a></var><br>
+&mdash; Loadable Function:  <b>rande</b> (<var>n, m, <small class="dots">...</small></var>)<var><a name="index-rande-1733"></a></var><br>
+&mdash; Loadable Function:  <b>rande</b> ([<var>n m <small class="dots">...</small></var>])<var><a name="index-rande-1734"></a></var><br>
+&mdash; Loadable Function: <var>v</var> = <b>rande</b> (<var>"state"</var>)<var><a name="index-rande-1735"></a></var><br>
+&mdash; Loadable Function:  <b>rande</b> (<var>"state", v</var>)<var><a name="index-rande-1736"></a></var><br>
+&mdash; Loadable Function:  <b>rande</b> (<var>"state", "reset"</var>)<var><a name="index-rande-1737"></a></var><br>
+&mdash; Loadable Function: <var>v</var> = <b>rande</b> (<var>"seed"</var>)<var><a name="index-rande-1738"></a></var><br>
+&mdash; Loadable Function:  <b>rande</b> (<var>"seed", v</var>)<var><a name="index-rande-1739"></a></var><br>
+&mdash; Loadable Function:  <b>rande</b> (<var>"seed", "reset"</var>)<var><a name="index-rande-1740"></a></var><br>
 <blockquote><p>Return a matrix with exponentially distributed random elements.  The
 arguments are handled the same as the arguments for <code>rand</code>.
 
@@ -416,15 +416,15 @@ J. Statistical Software, vol 5, 2000,
    <p><a name="doc_002drandp"></a>
 
 <div class="defun">
-&mdash; Loadable Function:  <b>randp</b> (<var>l, n</var>)<var><a name="index-randp-1671"></a></var><br>
-&mdash; Loadable Function:  <b>randp</b> (<var>l, n, m, <small class="dots">...</small></var>)<var><a name="index-randp-1672"></a></var><br>
-&mdash; Loadable Function:  <b>randp</b> (<var>l, </var>[<var>n m <small class="dots">...</small></var>])<var><a name="index-randp-1673"></a></var><br>
-&mdash; Loadable Function: <var>v</var> = <b>randp</b> (<var>"state"</var>)<var><a name="index-randp-1674"></a></var><br>
-&mdash; Loadable Function:  <b>randp</b> (<var>"state", v</var>)<var><a name="index-randp-1675"></a></var><br>
-&mdash; Loadable Function:  <b>randp</b> (<var>"state", "reset"</var>)<var><a name="index-randp-1676"></a></var><br>
-&mdash; Loadable Function: <var>v</var> = <b>randp</b> (<var>"seed"</var>)<var><a name="index-randp-1677"></a></var><br>
-&mdash; Loadable Function:  <b>randp</b> (<var>"seed", v</var>)<var><a name="index-randp-1678"></a></var><br>
-&mdash; Loadable Function:  <b>randp</b> (<var>"seed", "reset"</var>)<var><a name="index-randp-1679"></a></var><br>
+&mdash; Loadable Function:  <b>randp</b> (<var>l, n</var>)<var><a name="index-randp-1741"></a></var><br>
+&mdash; Loadable Function:  <b>randp</b> (<var>l, n, m, <small class="dots">...</small></var>)<var><a name="index-randp-1742"></a></var><br>
+&mdash; Loadable Function:  <b>randp</b> (<var>l, </var>[<var>n m <small class="dots">...</small></var>])<var><a name="index-randp-1743"></a></var><br>
+&mdash; Loadable Function: <var>v</var> = <b>randp</b> (<var>"state"</var>)<var><a name="index-randp-1744"></a></var><br>
+&mdash; Loadable Function:  <b>randp</b> (<var>"state", v</var>)<var><a name="index-randp-1745"></a></var><br>
+&mdash; Loadable Function:  <b>randp</b> (<var>"state", "reset"</var>)<var><a name="index-randp-1746"></a></var><br>
+&mdash; Loadable Function: <var>v</var> = <b>randp</b> (<var>"seed"</var>)<var><a name="index-randp-1747"></a></var><br>
+&mdash; Loadable Function:  <b>randp</b> (<var>"seed", v</var>)<var><a name="index-randp-1748"></a></var><br>
+&mdash; Loadable Function:  <b>randp</b> (<var>"seed", "reset"</var>)<var><a name="index-randp-1749"></a></var><br>
 <blockquote><p>Return a matrix with Poisson distributed random elements with mean value
 parameter given by the first argument, <var>l</var>.  The arguments
 are handled the same as the arguments for <code>rand</code>, except for the
@@ -461,15 +461,15 @@ D 50 p1284, 1994.
    <p><a name="doc_002drandg"></a>
 
 <div class="defun">
-&mdash; Loadable Function:  <b>randg</b> (<var>n</var>)<var><a name="index-randg-1680"></a></var><br>
-&mdash; Loadable Function:  <b>randg</b> (<var>n, m, <small class="dots">...</small></var>)<var><a name="index-randg-1681"></a></var><br>
-&mdash; Loadable Function:  <b>randg</b> ([<var>n m <small class="dots">...</small></var>])<var><a name="index-randg-1682"></a></var><br>
-&mdash; Loadable Function: <var>v</var> = <b>randg</b> (<var>"state"</var>)<var><a name="index-randg-1683"></a></var><br>
-&mdash; Loadable Function:  <b>randg</b> (<var>"state", v</var>)<var><a name="index-randg-1684"></a></var><br>
-&mdash; Loadable Function:  <b>randg</b> (<var>"state", "reset"</var>)<var><a name="index-randg-1685"></a></var><br>
-&mdash; Loadable Function: <var>v</var> = <b>randg</b> (<var>"seed"</var>)<var><a name="index-randg-1686"></a></var><br>
-&mdash; Loadable Function:  <b>randg</b> (<var>"seed", v</var>)<var><a name="index-randg-1687"></a></var><br>
-&mdash; Loadable Function:  <b>randg</b> (<var>"seed", "reset"</var>)<var><a name="index-randg-1688"></a></var><br>
+&mdash; Loadable Function:  <b>randg</b> (<var>n</var>)<var><a name="index-randg-1750"></a></var><br>
+&mdash; Loadable Function:  <b>randg</b> (<var>n, m, <small class="dots">...</small></var>)<var><a name="index-randg-1751"></a></var><br>
+&mdash; Loadable Function:  <b>randg</b> ([<var>n m <small class="dots">...</small></var>])<var><a name="index-randg-1752"></a></var><br>
+&mdash; Loadable Function: <var>v</var> = <b>randg</b> (<var>"state"</var>)<var><a name="index-randg-1753"></a></var><br>
+&mdash; Loadable Function:  <b>randg</b> (<var>"state", v</var>)<var><a name="index-randg-1754"></a></var><br>
+&mdash; Loadable Function:  <b>randg</b> (<var>"state", "reset"</var>)<var><a name="index-randg-1755"></a></var><br>
+&mdash; Loadable Function: <var>v</var> = <b>randg</b> (<var>"seed"</var>)<var><a name="index-randg-1756"></a></var><br>
+&mdash; Loadable Function:  <b>randg</b> (<var>"seed", v</var>)<var><a name="index-randg-1757"></a></var><br>
+&mdash; Loadable Function:  <b>randg</b> (<var>"seed", "reset"</var>)<var><a name="index-randg-1758"></a></var><br>
 <blockquote><p>Return a matrix with <code>gamma(</code><var>a</var><code>,1)</code> distributed random elements. 
 The arguments are handled the same as the arguments for <code>rand</code>,
 except for the argument <var>a</var>.
@@ -570,13 +570,14 @@ Houston, TX 77030.
    <p><a name="doc_002drandperm"></a>
 
 <div class="defun">
-&mdash; Loadable Function:  <b>randperm</b> (<var>n</var>)<var><a name="index-randperm-1689"></a></var><br>
-&mdash; Loadable Function:  <b>randperm</b> (<var>n, m</var>)<var><a name="index-randperm-1690"></a></var><br>
+&mdash; Loadable Function:  <b>randperm</b> (<var>n</var>)<var><a name="index-randperm-1759"></a></var><br>
+&mdash; Loadable Function:  <b>randperm</b> (<var>n, m</var>)<var><a name="index-randperm-1760"></a></var><br>
 <blockquote><p>Return a row vector containing a random permutation of <code>1:</code><var>n</var>. 
-If <var>m</var> is supplied, return <var>m</var> permutations,
-one in each row of an MxN matrix.  The complexity is O(M*N) in both
-time and memory.  The randomization is performed using rand(). 
-All permutations are equally likely. 
+If <var>m</var> is supplied, return <var>m</var> unique entries, sampled without
+replacement from <code>1:</code><var>n</var>.  The complexity is O(<var>n</var>) in
+memory and O(<var>m</var>) in time, unless <var>m</var> &lt; <var>n</var>/5, in which case
+O(<var>m</var>) memory is used as well.  The randomization is performed using
+rand(). All permutations are equally likely. 
 <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
 <!-- A simple blank line produces the correct behavior. -->
 <!-- @sp 1 -->

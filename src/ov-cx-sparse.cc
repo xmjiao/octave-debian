@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004-2011 David Bateman
+Copyright (C) 2004-2012 David Bateman
 Copyright (C) 1998-2004 Andy Adler
 
 This file is part of Octave.
@@ -904,7 +904,7 @@ octave_sparse_complex_matrix::map (unary_mapper_t umap) const
       ARRAY_MAPPER (atan, Complex, ::atan);
       ARRAY_MAPPER (atanh, Complex, ::atanh);
       ARRAY_MAPPER (ceil, Complex, ::ceil);
-      ARRAY_MAPPER (conj, Complex, std::conj);
+      ARRAY_MAPPER (conj, Complex, std::conj<double>);
       ARRAY_MAPPER (cos, Complex, std::cos);
       ARRAY_MAPPER (cosh, Complex, std::cosh);
       ARRAY_MAPPER (exp, Complex, std::exp);

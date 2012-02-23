@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.
 
-@c Copyright (C) 1996-2011 John W. Eaton
+@c Copyright (C) 1996-2012 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -136,8 +136,13 @@ quality and lower compression.
 @anchor{doc-IMAGE_PATH}
 @deftypefn  {Built-in Function} {@var{val} =} IMAGE_PATH ()
 @deftypefnx {Built-in Function} {@var{old_val} =} IMAGE_PATH (@var{new_val})
+@deftypefnx {Built-in Function} {} IMAGE_PATH (@var{new_val}, "local")
 Query or set the internal variable that specifies a colon separated
 list of directories in which to search for image files.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 
 
@@ -255,6 +260,7 @@ shows the image given in the first input argument.
 @deftypefnx {Function File} {} imshow (@var{rgb}, @dots{})
 @deftypefnx {Function File} {} imshow (@var{filename})
 @deftypefnx {Function File} {} imshow (@dots{}, @var{string_param1}, @var{value1}, @dots{})
+@deftypefnx {Function File} {@var{h} =} imshow (@dots{})
 Display the image @var{im}, where @var{im} can be a 2-dimensional
 (gray-scale image) or a 3-dimensional (RGB image) matrix.
 
@@ -276,6 +282,8 @@ If given, the parameter @var{string_param1} has value
 @item "displayrange"
 @var{value1} is the display range as described above.
 @end table
+
+The optional return value @var{h} is a graphics handle to the image.
 @seealso{@ref{doc-image,,image}, @ref{doc-imagesc,,imagesc}, @ref{doc-colormap,,colormap}, @ref{doc-gray2ind,,gray2ind}, @ref{doc-rgb2ind,,rgb2ind}}
 @end deftypefn
 
@@ -284,9 +292,10 @@ If given, the parameter @var{string_param1} has value
 @anchor{doc-image}
 @deftypefn  {Function File} {} image (@var{img})
 @deftypefnx {Function File} {} image (@var{x}, @var{y}, @var{img})
-Display a matrix as a color image.  The elements of @var{x} are indices
+@deftypefnx {Function File} {@var{h} =} image (@dots{})
+Display a matrix as a color image.  The elements of @var{img} are indices
 into the current colormap, and the colormap will be scaled so that the
-extremes of @var{x} are mapped to the extremes of the colormap.
+extremes of @var{img} are mapped to the extremes of the colormap.
 
 The axis values corresponding to the matrix elements are specified in
 @var{x} and @var{y}.  If you're not using gnuplot 4.2 or later, these
@@ -300,6 +309,8 @@ and then reversing the direction of the y-axis by setting the
 an image and an ordinary plot need to be overlaid.  The recommended
 solution is to display the image and then plot the reversed ydata
 using, for example, @code{flipud (ydata,1)}.
+
+The optional return value @var{h} is a graphics handle to the image.
 @seealso{@ref{doc-imshow,,imshow}, @ref{doc-imagesc,,imagesc}, @ref{doc-colormap,,colormap}}
 @end deftypefn
 
@@ -321,6 +332,7 @@ The axis values corresponding to the matrix elements are specified in
 values for the respective axes, or as values for each row and column
 of the matrix @var{A}.
 
+The optional return value @var{h} is a graphics handle to the image.
 @seealso{@ref{doc-image,,image}, @ref{doc-imshow,,imshow}, @ref{doc-caxis,,caxis}}
 @end deftypefn
 

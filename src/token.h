@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2011 John W. Eaton
+Copyright (C) 1993-2012 John W. Eaton
 
 This file is part of Octave.
 
@@ -45,11 +45,13 @@ public:
     {
       simple_end,
       classdef_end,
+      enumeration_end,
       events_end,
       for_end,
       function_end,
       if_end,
       methods_end,
+      parfor_end,
       properties_end,
       switch_end,
       while_end,

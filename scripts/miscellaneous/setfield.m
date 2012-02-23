@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2011 Etienne Grossmann
+## Copyright (C) 2000-2012 Etienne Grossmann
 ## Copyright (C) 2009 VZLU Prague
 ##
 ## This file is part of Octave.
@@ -50,8 +50,8 @@ function obj = setfield (obj, varargin)
   endif
   subs = varargin(1:end-1);
   rhs = varargin{end};
-  flds = cellfun (@ischar, subs);
-  idxs = cellfun (@iscell, subs);
+  flds = cellfun ("isclass", subs, "char");
+  idxs = cellfun ("isclass", subs, "cell");
   if (all (flds | idxs))
     typs = merge (flds, {"."}, {"()"});
     obj = subsasgn (obj, struct ("type", typs, "subs", subs), rhs);

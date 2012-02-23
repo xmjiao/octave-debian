@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2007-2011 Alexander Barth
+Copyright (C) 2007-2012 Alexander Barth
 
 This file is part of Octave.
 
@@ -355,3 +355,10 @@ Undocumented internal function.\n\
 
   return retval;
 }
+
+/*
+
+## No test needed for internal helper function.
+%!assert (1)
+
+*/

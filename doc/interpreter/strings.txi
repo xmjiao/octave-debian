@@ -1,4 +1,4 @@
-@c Copyright (C) 1996-2011 John W. Eaton
+@c Copyright (C) 1996-2012 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -147,6 +147,12 @@ example,
 @end group
 @end example
 
+In scripts the two different string types can be distinguished if necessary
+by using @code{is_dq_string} and @code{is_sq_string}.
+
+@DOCSTRING(is_dq_string)
+
+@DOCSTRING(is_sq_string)
 
 @node Character Arrays
 @section Character Arrays

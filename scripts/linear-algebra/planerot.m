@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2011 David Bateman
+## Copyright (C) 2008-2012 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -34,3 +34,14 @@ function [G, y] = planerot (x)
   G = givens (x(1), x(2));
   y = G * x(:);
 endfunction
+
+%!test
+%! x = [3 4];
+%! [g y] = planerot(x);
+%! assert(g - [x(1) x(2); -x(2) x(1)] / sqrt(x(1)^2 + x(2)^2), zeros(2), 2e-8);
+%! assert(y(2), 0, 2e-8);
+
+%!error planerot([0]);
+%!error planerot([0 0 0]);
+%!error planerot();
+

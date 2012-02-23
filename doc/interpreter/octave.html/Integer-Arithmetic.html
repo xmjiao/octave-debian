@@ -53,7 +53,7 @@ result is often floored to the nearest integer.  So, the result of
    <p><a name="doc_002didivide"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>idivide</b> (<var>x, y, op</var>)<var><a name="index-idivide-262"></a></var><br>
+&mdash; Function File:  <b>idivide</b> (<var>x, y, op</var>)<var><a name="index-idivide-282"></a></var><br>
 <blockquote><p>Integer division with different rounding rules.
 
         <p>The standard behavior of integer division such as <var>a</var><code> ./ </code><var>b</var>
@@ -81,13 +81,13 @@ towards positive infinity.
 An example demonstrating these rounding rules is
 
      <pre class="example">          idivide (int8 ([-3, 3]), int8 (4), "fix")
-          &rArr; int8 ([0, 0])
+            &rArr; int8 ([0, 0])
           idivide (int8 ([-3, 3]), int8 (4), "round")
-          &rArr; int8 ([-1, 1])
+            &rArr; int8 ([-1, 1])
           idivide (int8 ([-3, 3]), int8 (4), "floor")
-          &rArr; int8 ([-1, 0])
+            &rArr; int8 ([-1, 0])
           idivide (int8 ([-3, 3]), int8 (4), "ceil")
-          &rArr; int8 ([0, 1])
+            &rArr; int8 ([0, 1])
 </pre>
         <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
      <!-- A simple blank line produces the correct behavior. -->

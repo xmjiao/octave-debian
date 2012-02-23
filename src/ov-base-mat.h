@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1998-2011 John W. Eaton
+Copyright (C) 1998-2012 John W. Eaton
 Copyright (C) 2009-2010 VZLU Prague
 
 This file is part of Octave.
@@ -88,6 +88,9 @@ public:
 
   octave_value do_index_op (const octave_value_list& idx,
                             bool resize_ok = false);
+
+  octave_value_list do_multi_index_op (int, const octave_value_list& idx)
+    { return do_index_op (idx); }
 
   void assign (const octave_value_list& idx, const MT& rhs);
 

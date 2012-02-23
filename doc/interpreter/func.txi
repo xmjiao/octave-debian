@@ -1,4 +1,4 @@
-@c Copyright (C) 1996-2011 John W. Eaton
+@c Copyright (C) 1996-2012 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -289,6 +289,12 @@ convenient.  The values to be returned may not have compatible
 dimensions, and it is often desirable to give the individual return
 values distinct names.
 
+It is possible to use the @code{nthargout} function to obtain only some
+of the return values or several at once in a cell array.
+@ref{Cell Array Objects}
+
+@DOCSTRING(nthargout)
+
 In addition to setting @code{nargin} each time a function is called,
 Octave also automatically initializes @code{nargout} to the number of
 values that are expected to be returned.  This allows you to write
@@ -353,10 +359,12 @@ endif
 which stops the function execution and prints a message about the correct
 way to call the function whenever the number of inputs is wrong.
 
-For compatibility with @sc{matlab}, @code{nargchk} and @code{nargoutchk} are
-available which provide similar error checking.
+For compatibility with @sc{matlab}, @code{nargchk}, @code{narginchk} and
+@code{nargoutchk} are available which provide similar error checking.
 
 @DOCSTRING(nargchk)
+
+@DOCSTRING(narginchk)
 
 @DOCSTRING(nargoutchk)
 
@@ -1137,6 +1145,8 @@ f (pi/4)
 @end group
 @end example
 
+@DOCSTRING(is_function_handle)
+
 @DOCSTRING(functions)
 
 @DOCSTRING(func2str)
@@ -1216,8 +1226,6 @@ writing @code{f(x)}.
 @DOCSTRING(argnames)
 
 @DOCSTRING(formula)
-
-@DOCSTRING(vectorize)
 
 @DOCSTRING(symvar)
 
@@ -1341,6 +1349,9 @@ Functions for displaying and printing two- and three-dimensional graphs.
 
 @item polynomial
 Functions for manipulating polynomials.
+
+@item prefs
+Functions implementing user-defined preferences.
 
 @item set
 Functions for creating and manipulating sets of unique values.

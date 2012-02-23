@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2011 David Bateman
+## Copyright (C) 2008-2012 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -54,9 +54,7 @@
 ## the histogram and @var{pax} the corresponding axes objects.
 ##
 ## @example
-## @group
-## plotmatrix (randn (100, 3), 'g+')
-## @end group
+## plotmatrix (randn (100, 3), "g+")
 ## @end example
 ##
 ## @end deftypefn
@@ -96,6 +94,7 @@ function [h, ax, bigax, p, pax] = plotmatrix (varargin)
 endfunction
 
 %!demo
+%! clf
 %! plotmatrix (randn (100, 3), 'g+')
 
 function plotmatrixdelete (h, d, ax)

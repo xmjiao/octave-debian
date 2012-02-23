@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.
 
-@c Copyright (C) 1996-2011 John W. Eaton
+@c Copyright (C) 1996-2012 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -216,16 +216,16 @@ Absolute tolerance; may be zero for pure relative error test.
 
 @item "relative tolerance"
 Non-negative relative tolerance.  If the absolute tolerance is zero,
-the relative tolerance must be greater than or equal to 
+the relative tolerance must be greater than or equal to
 @w{@code{max (50*eps, 0.5e-28)}}.
 
 @item "single precision absolute tolerance"
-Absolute tolerance for single precision; may be zero for pure relative 
+Absolute tolerance for single precision; may be zero for pure relative
 error test.
 
 @item "single precision relative tolerance"
 Non-negative relative tolerance for single precision.  If the absolute
-tolerance is zero, the relative tolerance must be greater than or equal to 
+tolerance is zero, the relative tolerance must be greater than or equal to
 @w{@code{max (50*eps, 0.5e-28)}}.
 @end table
 @end deftypefn
@@ -338,7 +338,7 @@ Variable transformation will be used to treat any infinite intervals and
 weaken the singularities.  For example:
 
 @example
-quadgk(@@(x) 1 ./ (sqrt (x) .* (x + 1)), 0, Inf)
+quadgk (@@(x) 1 ./ (sqrt (x) .* (x + 1)), 0, Inf)
 @end example
 
 @noindent
@@ -385,7 +385,7 @@ significantly improved estimation of the error in the integral, faster
 computation, or both.  For example,
 
 @example
-quadgk (@@(x) abs (1 - x.^2), 0, 2, 'Waypoints', 1)
+quadgk (@@(x) abs (1 - x.^2), 0, 2, "Waypoints", 1)
 @end example
 
 @noindent
@@ -736,10 +736,10 @@ integrate each sub-integral.  The default value is @math{1e^{-6}}.
 
 The optional argument @var{quadf} specifies which underlying integrator
 function to use.  Any choice but @code{quad} is available and the default
-is @code{quadgk}.
+is @code{quadcc}.
 
 Additional arguments, are passed directly to @var{f}.  To use the default
-value for @var{tol} or @var{quadf} one may pass an empty matrix ([]).
+value for @var{tol} or @var{quadf} one may pass ':' or an empty matrix ([]).
 @seealso{@ref{doc-triplequad,,triplequad}, @ref{doc-quad,,quad}, @ref{doc-quadv,,quadv}, @ref{doc-quadl,,quadl}, @ref{doc-quadgk,,quadgk}, @ref{doc-quadcc,,quadcc}, @ref{doc-trapz,,trapz}}
 @end deftypefn
 
@@ -766,10 +766,10 @@ integrate each sub-integral.  The default value is @math{1e^{-6}}.
 
 The optional argument @var{quadf} specifies which underlying integrator
 function to use.  Any choice but @code{quad} is available and the default
-is @code{quadgk}.
+is @code{quadcc}.
 
 Additional arguments, are passed directly to @var{f}.  To use the default
-value for @var{tol} or @var{quadf} one may pass an empty matrix ([]).
+value for @var{tol} or @var{quadf} one may pass ':' or an empty matrix ([]).
 @seealso{@ref{doc-dblquad,,dblquad}, @ref{doc-quad,,quad}, @ref{doc-quadv,,quadv}, @ref{doc-quadl,,quadl}, @ref{doc-quadgk,,quadgk}, @ref{doc-quadcc,,quadcc}, @ref{doc-trapz,,trapz}}
 @end deftypefn
 

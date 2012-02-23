@@ -1,7 +1,7 @@
 /* -*- buffer-read-only: t -*- vi: set ro: */
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* Round towards negative infinity.
-   Copyright (C) 2007, 2010-2011 Free Software Foundation, Inc.
+   Copyright (C) 2007, 2010-2012 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -18,7 +18,9 @@
 
 /* Written by Bruno Haible <bruno@clisp.org>, 2007.  */
 
-#include <config.h>
+#if ! defined USE_LONG_DOUBLE
+# include <config.h>
+#endif
 
 /* Specification.  */
 #include <math.h>

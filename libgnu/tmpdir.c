@@ -1,6 +1,6 @@
 /* -*- buffer-read-only: t -*- vi: set ro: */
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
-/* Copyright (C) 1999, 2001-2002, 2006, 2009-2011 Free Software Foundation,
+/* Copyright (C) 1999, 2001-2002, 2006, 2009-2012 Free Software Foundation,
    Inc.
    This file is part of the GNU C Library.
 
@@ -66,7 +66,7 @@
    ISSLASH(C)           tests whether C is a directory separator character.
  */
 #if defined _WIN32 || defined __WIN32__ || defined __CYGWIN__ || defined __EMX__ || defined __DJGPP__
-  /* Win32, Cygwin, OS/2, DOS */
+  /* Native Windows, Cygwin, OS/2, DOS */
 # define ISSLASH(C) ((C) == '/' || (C) == '\\')
 #else
   /* Unix */

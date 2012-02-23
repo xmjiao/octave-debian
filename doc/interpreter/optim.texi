@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.
 
-@c Copyright (C) 1996-2011 John W. Eaton
+@c Copyright (C) 1996-2012 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -569,8 +569,8 @@ $$
 
 @example
 @group
-     min 0.5 x'*H*x + x'*q
-      x
+min 0.5 x'*H*x + x'*q
+ x
 @end group
 @end example
 
@@ -585,9 +585,9 @@ $$
 
 @example
 @group
-     A*x = b
-     lb <= x <= ub
-     A_lb <= A_in*x <= A_ub
+A*x = b
+lb <= x <= ub
+A_lb <= A_in*x <= A_ub
 @end group
 @end example
 
@@ -711,8 +711,8 @@ $$
 
 @example
 @group
-     min phi (x)
-      x
+min phi (x)
+ x
 @end group
 @end example
 
@@ -727,9 +727,9 @@ $$
 
 @example
 @group
-     g(x)  = 0
-     h(x) >= 0
-     lb <= x <= ub
+g(x)  = 0
+h(x) >= 0
+lb <= x <= ub
 @end group
 @end example
 
@@ -753,7 +753,7 @@ differences.  If the Hessian function is not supplied, a BFGS update
 formula is used to approximate the Hessian.
 
 When supplied, the gradient function @code{@var{phi}@{2@}} must accept
-one vector argument and return a vector. When supplifed, the Hessian
+one vector argument and return a vector.  When supplied, the Hessian
 function @code{@var{phi}@{3@}} must accept one vector argument and
 return a matrix.
 
@@ -761,7 +761,7 @@ The third and fourth arguments @var{g} and @var{h} are function
 handles pointing to functions that compute the equality constraints
 and the inequality constraints, respectively.  If the problem does
 not have equality (or inequality) constraints, then use an empty
-matrix ([]) for @var{g} (or @var{h}). When supplied, these equality
+matrix ([]) for @var{g} (or @var{h}).  When supplied, these equality
 and inequality constraint functions must accept one vector argument
 and return a vector.
 
@@ -780,9 +780,9 @@ $$
 
 @example
 @group
-                [ d f(x)   d f(x)        d f(x) ]
-    transpose ( [ ------   -----   ...   ------ ] )
-                [  dx_1     dx_2          dx_N  ]
+            [ d f(x)   d f(x)        d f(x) ]
+transpose ( [ ------   -----   ...   ------ ] )
+            [  dx_1     dx_2          dx_N  ]
 @end group
 @end example
 
@@ -791,16 +791,16 @@ The fifth and sixth arguments, @var{lb} and @var{ub}, contain lower
 and upper bounds on @var{x}.  These must be consistent with the
 equality and inequality constraints @var{g} and @var{h}.  If the
 arguments are vectors then @var{x}(i) is bound by @var{lb}(i) and
-@var{ub}(i). A bound can also be a scalar in which case all elements
+@var{ub}(i).  A bound can also be a scalar in which case all elements
 of @var{x} will share the same bound.  If only one bound (lb, ub) is
 specified then the other will default to (-@var{realmax},
 +@var{realmax}).
 
 The seventh argument @var{maxiter} specifies the maximum number of
-iterations. The default value is 100.
+iterations.  The default value is 100.
 
 The eighth argument @var{tol} specifies the tolerance for the
-stopping criteria. The default value is @code{sqrt(eps)}.
+stopping criteria.  The default value is @code{sqrt(eps)}.
 
 The value returned in @var{info} may be one of the following:
 
@@ -833,7 +833,7 @@ function r = g (x)
 endfunction
 
 function obj = phi (x)
-  obj = exp(prod(x)) - 0.5*(x(1)^3+x(2)^3+1)^2;
+  obj = exp (prod (x)) - 0.5*(x(1)^3+x(2)^3+1)^2;
 endfunction
 
 x0 = [-1.8; 1.7; 1.9; -0.8; -0.8];
@@ -1040,6 +1040,57 @@ Not implemented.
 @deftypefnx {Function File} {} optimset (@var{old}, @var{par}, @var{val}, @dots{})
 @deftypefnx {Function File} {} optimset (@var{old}, @var{new})
 Create options struct for optimization functions.
+
+Valid parameters are:
+@itemize @bullet
+@item AutoScaling
+
+@item ComplexEqn
+
+@item FinDiffType
+
+@item FunValCheck
+When enabled, display an error if the objective function returns a complex
+value or NaN@.  Must be set to "on" or "off" [default].
+
+@item GradObj
+When set to "on", the function to be minimized must return a second argument
+which is the gradient, or first derivative, of the function at the point
+@var{x}.  If set to "off" [default], the gradient is computed via finite
+differences.
+
+@item Jacobian
+When set to "on", the function to be minimized must return a second argument
+which is the Jacobian, or first derivative, of the function at the point
+@var{x}.  If set to "off" [default], the Jacobian is computed via finite
+differences.
+
+@item MaxFunEvals
+Maximum number of function evaluations before optimization stops.
+Must be a positive integer.
+
+@item MaxIter
+Maximum number of algorithm iterations before optimization stops.
+Must be a positive integer.
+
+@item OutputFcn
+A user-defined function executed once per algorithm iteration.
+
+@item TolFun
+Termination criterion for the function output.  If the difference in the
+calculated objective function between one algorithm iteration and the next
+is less than @code{TolFun} the optimization stops.  Must be a positive
+scalar.
+
+@item TolX
+Termination criterion for the function input.  If the difference in @var{x},
+the current search point, between one algorithm iteration and the next is
+less than @code{TolX} the optimization stops.  Must be a positive scalar.
+
+@item TypicalX
+
+@item Updating
+@end itemize
 @end deftypefn
 
 

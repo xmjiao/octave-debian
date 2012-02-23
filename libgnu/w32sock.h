@@ -2,7 +2,7 @@
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* w32sock.h --- internal auxilliary functions for Windows socket functions
 
-   Copyright (C) 2008-2011 Free Software Foundation, Inc.
+   Copyright (C) 2008-2012 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -50,14 +50,86 @@ set_winsock_errno (void)
     case WSA_INVALID_PARAMETER:
       errno = EINVAL;
       break;
-    case WSAEWOULDBLOCK:
-      errno = EWOULDBLOCK;
-      break;
     case WSAENAMETOOLONG:
       errno = ENAMETOOLONG;
       break;
     case WSAENOTEMPTY:
       errno = ENOTEMPTY;
+      break;
+    case WSAEWOULDBLOCK:
+      errno = EWOULDBLOCK;
+      break;
+    case WSAEINPROGRESS:
+      errno = EINPROGRESS;
+      break;
+    case WSAEALREADY:
+      errno = EALREADY;
+      break;
+    case WSAENOTSOCK:
+      errno = ENOTSOCK;
+      break;
+    case WSAEDESTADDRREQ:
+      errno = EDESTADDRREQ;
+      break;
+    case WSAEMSGSIZE:
+      errno = EMSGSIZE;
+      break;
+    case WSAEPROTOTYPE:
+      errno = EPROTOTYPE;
+      break;
+    case WSAENOPROTOOPT:
+      errno = ENOPROTOOPT;
+      break;
+    case WSAEPROTONOSUPPORT:
+      errno = EPROTONOSUPPORT;
+      break;
+    case WSAEOPNOTSUPP:
+      errno = EOPNOTSUPP;
+      break;
+    case WSAEAFNOSUPPORT:
+      errno = EAFNOSUPPORT;
+      break;
+    case WSAEADDRINUSE:
+      errno = EADDRINUSE;
+      break;
+    case WSAEADDRNOTAVAIL:
+      errno = EADDRNOTAVAIL;
+      break;
+    case WSAENETDOWN:
+      errno = ENETDOWN;
+      break;
+    case WSAENETUNREACH:
+      errno = ENETUNREACH;
+      break;
+    case WSAENETRESET:
+      errno = ENETRESET;
+      break;
+    case WSAECONNABORTED:
+      errno = ECONNABORTED;
+      break;
+    case WSAECONNRESET:
+      errno = ECONNRESET;
+      break;
+    case WSAENOBUFS:
+      errno = ENOBUFS;
+      break;
+    case WSAEISCONN:
+      errno = EISCONN;
+      break;
+    case WSAENOTCONN:
+      errno = ENOTCONN;
+      break;
+    case WSAETIMEDOUT:
+      errno = ETIMEDOUT;
+      break;
+    case WSAECONNREFUSED:
+      errno = ECONNREFUSED;
+      break;
+    case WSAELOOP:
+      errno = ELOOP;
+      break;
+    case WSAEHOSTUNREACH:
+      errno = EHOSTUNREACH;
       break;
     default:
       errno = (err > 10000 && err < 10025) ? err - 10000 : err;

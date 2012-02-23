@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004-2011 John W. Eaton
+Copyright (C) 2004-2012 John W. Eaton
 
 This file is part of Octave.
 
@@ -44,6 +44,7 @@ MARRAY_FORWARD_DEFS (MArray, int8NDArray, octave_int8)
 MINMAX_DECLS (int8NDArray, octave_int8, OCTAVE_API)
 
 BSXFUN_STDOP_DECLS (int8NDArray, OCTAVE_API)
+BSXFUN_MIXED_INT_DECLS(int8NDArray, OCTAVE_API)
 BSXFUN_STDREL_DECLS (int8NDArray, OCTAVE_API)
 
 #endif

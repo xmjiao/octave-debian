@@ -34,10 +34,11 @@ Up:&nbsp;<a rel="up" accesskey="u" href="Structures.html#Structures">Structures<
 
 <h4 class="subsection">6.1.3 Creating Structures</h4>
 
-<p><a name="index-dynamic-naming-407"></a>
+<p><a name="index-dynamic-naming-441"></a>
 Besides the index operator ".", Octave can use dynamic naming "(var)" or the
 <code>struct</code> function to create structures.  Dynamic naming uses the string
-value of a variable as the field name.  For example,
+value of a variable as the field name.  For example:
+
 <pre class="example">     a = "field2";
      x.a = 1;
      x.(a) = 2;
@@ -119,7 +120,7 @@ the following example:
    <p><a name="doc_002dstruct"></a>
 
 <div class="defun">
-&mdash; Built-in Function:  <b>struct</b> (<var>"field", value, "field", value, <small class="dots">...</small></var>)<var><a name="index-struct-408"></a></var><br>
+&mdash; Built-in Function:  <b>struct</b> (<var>"field", value, "field", value, <small class="dots">...</small></var>)<var><a name="index-struct-442"></a></var><br>
 <blockquote>
         <p>Create a structure and initialize its value.
 
@@ -139,7 +140,7 @@ structure or a structure array.
    <p><a name="doc_002disstruct"></a>
 
 <div class="defun">
-&mdash; Built-in Function:  <b>isstruct</b> (<var>x</var>)<var><a name="index-isstruct-409"></a></var><br>
+&mdash; Built-in Function:  <b>isstruct</b> (<var>x</var>)<var><a name="index-isstruct-443"></a></var><br>
 <blockquote><p>Return true if <var>x</var> is a structure or a structure array. 
 <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
 <!-- A simple blank line produces the correct behavior. -->

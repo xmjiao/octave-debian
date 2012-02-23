@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.
 
-@c Copyright (C) 1996-2011 John W. Eaton
+@c Copyright (C) 1996-2012 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -526,8 +526,11 @@ function.
 
 @c news scripts/miscellaneous/news.m
 @anchor{doc-news}
-@deftypefn {Function File} {} news ()
-Display the current NEWS file for Octave.
+@deftypefn {Function File} {} news (@var{package})
+Display the current NEWS file for Octave or installed package.
+
+If @var{package} is the name of an installed package, display the current
+NEWS file for that package.
 @end deftypefn
 
 
@@ -553,6 +556,7 @@ found.
 @anchor{doc-info_file}
 @deftypefn  {Built-in Function} {@var{val} =} info_file ()
 @deftypefnx {Built-in Function} {@var{old_val} =} info_file (@var{new_val})
+@deftypefnx {Built-in Function} {} info_file (@var{new_val}, "local")
 Query or set the internal variable that specifies the name of the
 Octave info file.  The default value is
 @file{@var{octave-home}/info/octave.info}, in
@@ -560,6 +564,10 @@ which @var{octave-home} is the root directory of the Octave installation.
 The default value may be overridden by the environment variable
 @w{@env{OCTAVE_INFO_FILE}}, or the command line argument
 @samp{--info-file NAME}.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{@ref{doc-info_program,,info_program}, @ref{doc-doc,,doc}, @ref{doc-help,,help}, @ref{doc-makeinfo_program,,makeinfo_program}}
 @end deftypefn
 
@@ -568,6 +576,7 @@ The default value may be overridden by the environment variable
 @anchor{doc-info_program}
 @deftypefn  {Built-in Function} {@var{val} =} info_program ()
 @deftypefnx {Built-in Function} {@var{old_val} =} info_program (@var{new_val})
+@deftypefnx {Built-in Function} {} info_program (@var{new_val}, "local")
 Query or set the internal variable that specifies the name of the
 info program to run.  The default value is
 @file{@var{octave-home}/libexec/octave/@var{version}/exec/@var{arch}/info}
@@ -577,6 +586,10 @@ is the system type (for example, @code{i686-pc-linux-gnu}).  The
 default value may be overridden by the environment variable
 @w{@env{OCTAVE_INFO_PROGRAM}}, or the command line argument
 @samp{--info-program NAME}.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{@ref{doc-info_file,,info_file}, @ref{doc-doc,,doc}, @ref{doc-help,,help}, @ref{doc-makeinfo_program,,makeinfo_program}}
 @end deftypefn
 
@@ -585,9 +598,14 @@ default value may be overridden by the environment variable
 @anchor{doc-makeinfo_program}
 @deftypefn  {Built-in Function} {@var{val} =} makeinfo_program ()
 @deftypefnx {Built-in Function} {@var{old_val} =} makeinfo_program (@var{new_val})
+@deftypefnx {Built-in Function} {} makeinfo_program (@var{new_val}, "local")
 Query or set the internal variable that specifies the name of the
 program that Octave runs to format help text containing
 Texinfo markup commands.  The default value is @code{makeinfo}.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{@ref{doc-info_file,,info_file}, @ref{doc-info_program,,info_program}, @ref{doc-doc,,doc}, @ref{doc-help,,help}}
 @end deftypefn
 
@@ -596,6 +614,7 @@ Texinfo markup commands.  The default value is @code{makeinfo}.
 @anchor{doc-doc_cache_file}
 @deftypefn  {Built-in Function} {@var{val} =} doc_cache_file ()
 @deftypefnx {Built-in Function} {@var{old_val} =} doc_cache_file (@var{new_val})
+@deftypefnx {Built-in Function} {} doc_cache_file (@var{new_val}, "local")
 Query or set the internal variable that specifies the name of the
 Octave documentation cache file.  A cache file significantly improves
 the performance of the @code{lookfor} command.  The default value is 
@@ -605,6 +624,10 @@ and @var{version} is the Octave version number.
 The default value may be overridden by the environment variable
 @w{@env{OCTAVE_DOC_CACHE_FILE}}, or the command line argument
 @samp{--doc-cache-file NAME}.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{@ref{doc-lookfor,,lookfor}, @ref{doc-info_program,,info_program}, @ref{doc-doc,,doc}, @ref{doc-help,,help}, @ref{doc-makeinfo_program,,makeinfo_program}}
 @end deftypefn
 
@@ -613,9 +636,14 @@ The default value may be overridden by the environment variable
 @anchor{doc-suppress_verbose_help_message}
 @deftypefn  {Built-in Function} {@var{val} =} suppress_verbose_help_message ()
 @deftypefnx {Built-in Function} {@var{old_val} =} suppress_verbose_help_message (@var{new_val})
+@deftypefnx {Built-in Function} {} suppress_verbose_help_message (@var{new_val}, "local")
 Query or set the internal variable that controls whether Octave
 will add additional help information to the end of the output from
 the @code{help} command and usage messages for built-in commands.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 
 
@@ -906,9 +934,14 @@ List the possible completions of the text before the cursor.
 @anchor{doc-completion_append_char}
 @deftypefn  {Built-in Function} {@var{val} =} completion_append_char ()
 @deftypefnx {Built-in Function} {@var{old_val} =} completion_append_char (@var{new_val})
+@deftypefnx {Built-in Function} {} completion_append_char (@var{new_val}, "local")
 Query or set the internal character variable that is appended to
 successful command-line completion attempts.  The default
 value is @code{" "} (a single space).
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 
 
@@ -1060,8 +1093,13 @@ is saved.
 @anchor{doc-saving_history}
 @deftypefn  {Built-in Function} {@var{val} =} saving_history ()
 @deftypefnx {Built-in Function} {@var{old_val} =} saving_history (@var{new_val})
+@deftypefnx {Built-in Function} {} saving_history (@var{new_val}, "local")
 Query or set the internal variable that controls whether commands entered
 on the command line are saved in the history file.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{@ref{doc-history_control,,history_control}, @ref{doc-history_file,,history_file}, @ref{doc-history_size,,history_size}, @ref{doc-history_timestamp_format_string,,history_timestamp_format_string}}
 @end deftypefn
 
@@ -1117,6 +1155,7 @@ but may be overridden by the environment variable @w{@env{OCTAVE_HISTSIZE}}.
 @anchor{doc-history_timestamp_format_string}
 @deftypefn  {Built-in Function} {@var{val} =} history_timestamp_format_string ()
 @deftypefnx {Built-in Function} {@var{old_val} =} history_timestamp_format_string (@var{new_val})
+@deftypefnx {Built-in Function} {} history_timestamp_format_string (@var{new_val}, "local")
 Query or set the internal variable that specifies the format string
 for the comment line that is written to the history file when Octave
 exits.  The format string is passed to @code{strftime}.  The default
@@ -1125,6 +1164,10 @@ value is
 @example
 "# Octave VERSION, %a %b %d %H:%M:%S %Y %Z <USER@@HOST>"
 @end example
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{@ref{doc-strftime,,strftime}, @ref{doc-history_file,,history_file}, @ref{doc-history_size,,history_size}, @ref{doc-saving_history,,saving_history}}
 @end deftypefn
 
@@ -1133,11 +1176,16 @@ value is
 @anchor{doc-EDITOR}
 @deftypefn  {Built-in Function} {@var{val} =} EDITOR ()
 @deftypefnx {Built-in Function} {@var{old_val} =} EDITOR (@var{new_val})
+@deftypefnx {Built-in Function} {} EDITOR (@var{new_val}, "local")
 Query or set the internal variable that specifies the editor to
 use with the @code{edit_history} command.  The default value is taken from
 the environment variable @w{@env{EDITOR}} when Octave starts.  If the
 environment variable is not initialized, @w{@env{EDITOR}} will be set to
 @code{"emacs"}.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{@ref{doc-edit_history,,edit_history}}
 @end deftypefn
 
@@ -1238,6 +1286,7 @@ A backslash.
 @anchor{doc-PS1}
 @deftypefn  {Built-in Function} {@var{val} =} PS1 ()
 @deftypefnx {Built-in Function} {@var{old_val} =} PS1 (@var{new_val})
+@deftypefnx {Built-in Function} {} PS1 (@var{new_val}, "local")
 Query or set the primary prompt string.  When executing interactively,
 Octave displays the primary prompt when it is ready to read a command.
 
@@ -1263,6 +1312,10 @@ PS1 ("\\[\\033[01;31m\\]\\s:\\#> \\[\\033[0m\]")
 
 @noindent
 will give the default Octave prompt a red coloring.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{@ref{doc-PS2,,PS2}, @ref{doc-PS4,,PS4}}
 @end deftypefn
 
@@ -1271,12 +1324,17 @@ will give the default Octave prompt a red coloring.
 @anchor{doc-PS2}
 @deftypefn  {Built-in Function} {@var{val} =} PS2 ()
 @deftypefnx {Built-in Function} {@var{old_val} =} PS2 (@var{new_val})
+@deftypefnx {Built-in Function} {} PS2 (@var{new_val}, "local")
 Query or set the secondary prompt string.  The secondary prompt is
 printed when Octave is expecting additional input to complete a
 command.  For example, if you are typing a @code{for} loop that spans several
 lines, Octave will print the secondary prompt at the beginning of
 each line after the first.  The default value of the secondary prompt
 string is @code{"> "}.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{@ref{doc-PS1,,PS1}, @ref{doc-PS4,,PS4}}
 @end deftypefn
 
@@ -1285,10 +1343,15 @@ string is @code{"> "}.
 @anchor{doc-PS4}
 @deftypefn  {Built-in Function} {@var{val} =} PS4 ()
 @deftypefnx {Built-in Function} {@var{old_val} =} PS4 (@var{new_val})
+@deftypefnx {Built-in Function} {} PS4 (@var{new_val}, "local")
 Query or set the character string used to prefix output produced
 when echoing commands is enabled.
 The default value is @code{"+ "}.
 @xref{Diary and Echo Commands}, for a description of echoing commands.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{@ref{doc-echo,,echo}, @ref{doc-echo_executing_commands,,echo_executing_commands}, @ref{doc-PS1,,PS1}, @ref{doc-PS2,,PS2}}
 @end deftypefn
 
@@ -1362,6 +1425,7 @@ With no arguments, @code{echo} toggles the current echo state.
 @anchor{doc-echo_executing_commands}
 @deftypefn  {Built-in Function} {@var{val} =} echo_executing_commands ()
 @deftypefnx {Built-in Function} {@var{old_val} =} echo_executing_commands (@var{new_val})
+@deftypefnx {Built-in Function} {} echo_executing_commands (@var{new_val}, "local")
 Query or set the internal variable that controls the echo state.
 It may be the sum of the following values:
 
@@ -1381,6 +1445,10 @@ equivalent to the command @kbd{echo on all}.
 
 The value of @code{echo_executing_commands} may be set by the @kbd{echo}
 command or the command line option @option{--echo-commands}.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 
 
@@ -1650,7 +1718,7 @@ will produce a very quick countdown from '3' to 'Blast Off' as the
 lines "@code{disp(2);}" and "@code{disp(1);}" won't be executed.
 
 The block comment markers must appear alone as the only characters on a line
-(excepting whitespace) in order to to be parsed correctly.
+(excepting whitespace) in order to be parsed correctly.
 
 @node Comments and the Help System
 @subsection Comments and the Help System

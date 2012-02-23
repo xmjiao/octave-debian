@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2011 David Bateman
+## Copyright (C) 2008-2012 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -24,8 +24,8 @@
 ##
 ## @example
 ## @group
-## a = myclass (@dots{})
-## b = myclass (@dots{})
+## a = myclass (@dots{});
+## b = myclass (@dots{});
 ## c = a : b
 ## @end group
 ## @end example
@@ -38,3 +38,7 @@ function r = colon (varargin)
     error ("colon: not defined for class \"%s\"", class(varargin{1}));
   endif
 endfunction
+
+%!error colon (1)
+
+## FIXME -- what does colon () mean since it doesn't set a return value?

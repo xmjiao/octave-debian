@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2007-2011 David Bateman
+Copyright (C) 2007-2012 David Bateman
 Copyright (C) 2009 VZLU Prague
 
 This file is part of Octave.
@@ -382,7 +382,7 @@ do_bitunpack (const ArrayType& array)
 
 DEFUN_DLD (bitunpack, args, ,
   "-*- texinfo -*-\n\
-@deftypefn {Loadable Function} {@var{y} =} bitpack (@var{x})\n\
+@deftypefn {Loadable Function} {@var{y} =} bitunpack (@var{x})\n\
 Return an array @var{y} corresponding to the raw bit patterns of\n\
 @var{x}.  @var{x} must belong to one of the built-in numeric classes:\n\
 \n\

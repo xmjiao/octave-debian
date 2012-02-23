@@ -1,4 +1,4 @@
-## Copyright (C) 2005-2011 John W. Eaton
+## Copyright (C) 2005-2012 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -64,3 +64,13 @@ function newplot ()
   endif
 
 endfunction
+
+%!test
+%! hf = figure ("visible", "off");
+%! unwind_protect
+%!   p = plot ([0, 1]);
+%!   newplot;
+%!   assert (isempty (get (gca, "children")));
+%! unwind_protect_cleanup
+%!   close (hf);
+%! end_unwind_protect

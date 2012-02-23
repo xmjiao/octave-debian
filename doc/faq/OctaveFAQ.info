@@ -1,4 +1,4 @@
-This is /home/jwe/src/octave-stable/doc/faq/OctaveFAQ.info, produced by makeinfo version 4.13 from /home/jwe/src/octave-stable/doc/faq/OctaveFAQ.texi.
+This is OctaveFAQ.info, produced by makeinfo version 4.13 from OctaveFAQ.texi.
 
 START-INFO-DIR-ENTRY
 * OctaveFAQ: (OctaveFAQ).  Frequently asked questions about Octave
@@ -36,7 +36,7 @@ should first check to see if the topic is covered in the manual.
 * Getting Octave::
 * Installation::
 * Common problems::
-* How do I ...?::
+* Using Octave::
 * MATLAB compatibility::
 * Index::
 
@@ -710,7 +710,7 @@ please report them to the `http://bugs.octave.org' bug tracker, or ask
 for help on the <help@octave.org> mailing list.
 
 
-File: OctaveFAQ.info,  Node: Common problems,  Next: How do I ...?,  Prev: Installation,  Up: Top
+File: OctaveFAQ.info,  Node: Common problems,  Next: Using Octave,  Prev: Installation,  Up: Top
 
 9 Common problems
 *****************
@@ -751,17 +751,18 @@ questions (preferably with answers!)
 
 
 
-File: OctaveFAQ.info,  Node: How do I ...?,  Next: MATLAB compatibility,  Prev: Common problems,  Up: Top
+File: OctaveFAQ.info,  Node: Using Octave,  Next: MATLAB compatibility,  Prev: Common problems,  Up: Top
 
-10 How do I ...?
-****************
+10 Using Octave
+***************
 
 * Menu:
 
 * How do I set the number of displayed decimals?::
+* How does Octave solve linear systems?::
 
 
-File: OctaveFAQ.info,  Node: How do I set the number of displayed decimals?,  Up: How do I ...?
+File: OctaveFAQ.info,  Node: How do I set the number of displayed decimals?,  Next: How does Octave solve linear systems?,  Up: Using Octave
 
 10.1 How do I set the number of displayed decimals?
 ===================================================
@@ -774,7 +775,20 @@ File: OctaveFAQ.info,  Node: How do I set the number of displayed decimals?,  Up
      pi = 3.1416
 
 
-File: OctaveFAQ.info,  Node: MATLAB compatibility,  Next: Index,  Prev: How do I ...?,  Up: Top
+File: OctaveFAQ.info,  Node: How does Octave solve linear systems?,  Prev: How do I set the number of displayed decimals?,  Up: Using Octave
+
+10.2 How does Octave solve linear systems?
+==========================================
+
+In addition to consulting Octave's source for the precise details, the
+Octave manual contains a complete high-level description of the
+algorithm that Octave uses to decide how to solve a particular linear
+system, e.g. how the backslash operator `A\x' will be interpreted.
+Sections "Techniques Used for Linear Algebra" and "Linear Algebra on
+Sparse Matrices" from the manual describe this procedure.
+
+
+File: OctaveFAQ.info,  Node: MATLAB compatibility,  Next: Index,  Prev: Using Octave,  Up: Top
 
 11 Porting programs from MATLAB to Octave
 *****************************************
@@ -1176,6 +1190,8 @@ Appendix A Concept Index
 
 * Additional help:                       Getting additional help.
                                                                (line  6)
+* backslash operator:                    How does Octave solve linear systems?.
+                                                               (line  6)
 * Binaries:                              Pre-compiled binary packages.
                                                                (line  6)
 * Bug in Octave, newly found:            Bug reports.          (line  6)
@@ -1196,7 +1212,6 @@ Appendix A Concept Index
 * GNU g++:                               What else do I need?. (line  6)
 * GNU gcc:                               What else do I need?. (line  6)
 * GNU Make:                              What else do I need?. (line  6)
-* How do I ... ?:                        How do I ...?.        (line 10)
 * Increment operators:                   Increment and decrement operators.
                                                                (line  6)
 * libg++:                                What else do I need?. (line  6)
@@ -1219,8 +1234,9 @@ Appendix A Concept Index
 * Pre-compiled binary packages:          Pre-compiled binary packages.
                                                                (line  6)
 * Source code:                           Source code.          (line  6)
-* Tips and tricks:                       How do I ...?.        (line 10)
+* Tips and tricks:                       Using Octave.         (line 11)
 * Unwind-protect:                        Unwind-protect.       (line  6)
+* Using Octave:                          Using Octave.         (line 11)
 * VAX:                                   Octave for other platforms.
                                                                (line  6)
 * VMS support:                           Octave for other platforms.
@@ -1231,46 +1247,47 @@ Appendix A Concept Index
 
 
 Tag Table:
-Node: Top260
-Node: What is Octave?1305
-Ref: What is Octave?-Footnote-12529
-Node: Who develops Octave?2593
-Node: Why GNU Octave?3363
-Node: What version should I use?4171
-Node: On what platforms does Octave run?4818
-Node: Licensing Issues6023
-Node: GPL6679
-Node: Licensing MEX Files8644
-Node: Requesting License Changes9690
-Node: How can I cite Octave?10466
-Node: Series 3.4.N11144
-Node: Octave Features13828
-Node: Functions defined on the command-line14403
-Node: Comments with #14965
-Node: Strings delimited by double quotes "15492
-Node: Line continuation by backslash15995
-Node: Informative block closing16339
-Node: Coherent syntax16809
-Node: Exclamation mark as not operator17154
-Node: Increment and decrement operators17736
-Node: Unwind-protect18791
-Node: Built-in ODE and DAE solvers19727
-Node: Learning more about Octave20074
-Node: Documentation20362
-Node: Getting additional help21212
-Node: User community21636
-Node: Bug reports22370
-Node: Getting Octave23035
-Node: Source code23273
-Node: Pre-compiled binary packages23734
-Node: Octave for other platforms24325
-Node: Installation24802
-Node: What else do I need?25351
-Node: Other C++ compilers?25836
-Node: Common problems26371
-Node: How do I ...?27712
-Node: How do I set the number of displayed decimals?27917
-Node: MATLAB compatibility28257
-Node: Index45491
+Node: Top188
+Node: What is Octave?1232
+Ref: What is Octave?-Footnote-12456
+Node: Who develops Octave?2520
+Node: Why GNU Octave?3290
+Node: What version should I use?4098
+Node: On what platforms does Octave run?4745
+Node: Licensing Issues5950
+Node: GPL6606
+Node: Licensing MEX Files8571
+Node: Requesting License Changes9617
+Node: How can I cite Octave?10393
+Node: Series 3.4.N11071
+Node: Octave Features13755
+Node: Functions defined on the command-line14330
+Node: Comments with #14892
+Node: Strings delimited by double quotes "15419
+Node: Line continuation by backslash15922
+Node: Informative block closing16266
+Node: Coherent syntax16736
+Node: Exclamation mark as not operator17081
+Node: Increment and decrement operators17663
+Node: Unwind-protect18718
+Node: Built-in ODE and DAE solvers19654
+Node: Learning more about Octave20001
+Node: Documentation20289
+Node: Getting additional help21139
+Node: User community21563
+Node: Bug reports22297
+Node: Getting Octave22962
+Node: Source code23200
+Node: Pre-compiled binary packages23661
+Node: Octave for other platforms24252
+Node: Installation24729
+Node: What else do I need?25278
+Node: Other C++ compilers?25763
+Node: Common problems26298
+Node: Using Octave27638
+Node: How do I set the number of displayed decimals?27882
+Node: How does Octave solve linear systems?28267
+Node: MATLAB compatibility28898
+Node: Index46131
 
 End Tag Table

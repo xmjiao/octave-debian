@@ -1,4 +1,4 @@
-## Copyright (C) 2005-2011 Paul Kienzle
+## Copyright (C) 2005-2012 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -33,8 +33,8 @@
 ##
 ## @example
 ## @group
-##    fplot ("cos", [0, 2*pi])
-##    fplot ("[cos(x), sin(x)]", [0, 2*pi])
+## fplot ("cos", [0, 2*pi])
+## fplot ("[cos(x), sin(x)]", [0, 2*pi])
 ## @end group
 ## @end example
 ## @seealso{plot}
@@ -128,7 +128,9 @@ function fplot (fn, limits, n, fmt)
 endfunction
 
 %!demo
+%! clf
 %! fplot ("cos", [0, 2*pi])
 
 %!demo
+%! clf
 %! fplot ("[cos(x), sin(x)]", [0, 2*pi])

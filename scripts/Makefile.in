@@ -17,20 +17,20 @@
 
 # Makefile for octave's scripts directory
 #
-# Copyright (C) 1993-2011 John W. Eaton
+# Copyright (C) 1993-2012 John W. Eaton
 #
 # This file is part of Octave.
-# 
+#
 # Octave is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
 # Free Software Foundation; either version 3 of the License, or (at
 # your option) any later version.
-# 
+#
 # Octave is distributed in the hope that it will be useful, but WITHOUT
 # ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 # FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 # for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with Octave; see the file COPYING.  If not, see
 # <http://www.gnu.org/licenses/>.
@@ -63,10 +63,10 @@ DIST_COMMON = $(srcdir)/@ftp/module.mk $(srcdir)/Makefile.am \
 	$(srcdir)/miscellaneous/module.mk \
 	$(srcdir)/optimization/module.mk $(srcdir)/path/module.mk \
 	$(srcdir)/pkg/module.mk $(srcdir)/plot/module.mk \
-	$(srcdir)/polynomial/module.mk $(srcdir)/set/module.mk \
-	$(srcdir)/signal/module.mk $(srcdir)/sparse/module.mk \
-	$(srcdir)/specfun/module.mk $(srcdir)/special-matrix/module.mk \
-	$(srcdir)/startup/module.mk \
+	$(srcdir)/polynomial/module.mk $(srcdir)/prefs/module.mk \
+	$(srcdir)/set/module.mk $(srcdir)/signal/module.mk \
+	$(srcdir)/sparse/module.mk $(srcdir)/specfun/module.mk \
+	$(srcdir)/special-matrix/module.mk $(srcdir)/startup/module.mk \
 	$(srcdir)/statistics/base/module.mk \
 	$(srcdir)/statistics/distributions/module.mk \
 	$(srcdir)/statistics/models/module.mk \
@@ -84,26 +84,29 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
 	$(top_srcdir)/m4/ax_lapack.m4 $(top_srcdir)/m4/alloca.m4 \
 	$(top_srcdir)/m4/canonicalize.m4 $(top_srcdir)/m4/ceil.m4 \
 	$(top_srcdir)/m4/ceilf.m4 $(top_srcdir)/m4/chdir-long.m4 \
-	$(top_srcdir)/m4/check-math-lib.m4 $(top_srcdir)/m4/chown.m4 \
-	$(top_srcdir)/m4/close.m4 $(top_srcdir)/m4/closedir.m4 \
-	$(top_srcdir)/m4/codeset.m4 $(top_srcdir)/m4/configmake.m4 \
-	$(top_srcdir)/m4/d-ino.m4 $(top_srcdir)/m4/d-type.m4 \
-	$(top_srcdir)/m4/dirent_h.m4 $(top_srcdir)/m4/dirfd.m4 \
-	$(top_srcdir)/m4/dirname.m4 \
+	$(top_srcdir)/m4/check-math-lib.m4 $(top_srcdir)/m4/close.m4 \
+	$(top_srcdir)/m4/closedir.m4 $(top_srcdir)/m4/codeset.m4 \
+	$(top_srcdir)/m4/configmake.m4 $(top_srcdir)/m4/copysign.m4 \
+	$(top_srcdir)/m4/copysignf.m4 $(top_srcdir)/m4/d-ino.m4 \
+	$(top_srcdir)/m4/d-type.m4 $(top_srcdir)/m4/dirent_h.m4 \
+	$(top_srcdir)/m4/dirfd.m4 $(top_srcdir)/m4/dirname.m4 \
 	$(top_srcdir)/m4/double-slash-root.m4 $(top_srcdir)/m4/dup.m4 \
 	$(top_srcdir)/m4/dup2.m4 $(top_srcdir)/m4/eealloc.m4 \
 	$(top_srcdir)/m4/errno_h.m4 $(top_srcdir)/m4/error.m4 \
-	$(top_srcdir)/m4/extensions.m4 $(top_srcdir)/m4/fchdir.m4 \
-	$(top_srcdir)/m4/fclose.m4 $(top_srcdir)/m4/fcntl-o.m4 \
-	$(top_srcdir)/m4/fcntl.m4 $(top_srcdir)/m4/fcntl_h.m4 \
-	$(top_srcdir)/m4/fdopendir.m4 $(top_srcdir)/m4/fflush.m4 \
-	$(top_srcdir)/m4/filemode.m4 $(top_srcdir)/m4/filenamecat.m4 \
-	$(top_srcdir)/m4/float_h.m4 $(top_srcdir)/m4/floor.m4 \
-	$(top_srcdir)/m4/floorf.m4 $(top_srcdir)/m4/fnmatch.m4 \
-	$(top_srcdir)/m4/fopen.m4 $(top_srcdir)/m4/fpurge.m4 \
+	$(top_srcdir)/m4/exponentd.m4 $(top_srcdir)/m4/exponentf.m4 \
+	$(top_srcdir)/m4/exponentl.m4 $(top_srcdir)/m4/extensions.m4 \
+	$(top_srcdir)/m4/fchdir.m4 $(top_srcdir)/m4/fclose.m4 \
+	$(top_srcdir)/m4/fcntl-o.m4 $(top_srcdir)/m4/fcntl.m4 \
+	$(top_srcdir)/m4/fcntl_h.m4 $(top_srcdir)/m4/fdopendir.m4 \
+	$(top_srcdir)/m4/fflush.m4 $(top_srcdir)/m4/filemode.m4 \
+	$(top_srcdir)/m4/filenamecat.m4 $(top_srcdir)/m4/float_h.m4 \
+	$(top_srcdir)/m4/floor.m4 $(top_srcdir)/m4/floorf.m4 \
+	$(top_srcdir)/m4/fnmatch.m4 $(top_srcdir)/m4/fopen.m4 \
+	$(top_srcdir)/m4/fpieee.m4 $(top_srcdir)/m4/fpurge.m4 \
 	$(top_srcdir)/m4/freading.m4 $(top_srcdir)/m4/fseek.m4 \
 	$(top_srcdir)/m4/fseeko.m4 $(top_srcdir)/m4/fstat.m4 \
-	$(top_srcdir)/m4/ftell.m4 $(top_srcdir)/m4/ftello.m4 \
+	$(top_srcdir)/m4/fstatat.m4 $(top_srcdir)/m4/ftell.m4 \
+	$(top_srcdir)/m4/ftello.m4 \
 	$(top_srcdir)/m4/getcwd-abort-bug.m4 \
 	$(top_srcdir)/m4/getcwd-path-max.m4 $(top_srcdir)/m4/getcwd.m4 \
 	$(top_srcdir)/m4/getdtablesize.m4 \
@@ -113,21 +116,23 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
 	$(top_srcdir)/m4/gnulib-common.m4 \
 	$(top_srcdir)/m4/gnulib-comp.m4 \
 	$(top_srcdir)/m4/include_next.m4 $(top_srcdir)/m4/intmax_t.m4 \
-	$(top_srcdir)/m4/inttypes_h.m4 $(top_srcdir)/m4/largefile.m4 \
-	$(top_srcdir)/m4/lchown.m4 $(top_srcdir)/m4/libtool.m4 \
-	$(top_srcdir)/m4/link.m4 $(top_srcdir)/m4/localcharset.m4 \
-	$(top_srcdir)/m4/locale-fr.m4 $(top_srcdir)/m4/locale-ja.m4 \
-	$(top_srcdir)/m4/locale-zh.m4 $(top_srcdir)/m4/longlong.m4 \
-	$(top_srcdir)/m4/lseek.m4 $(top_srcdir)/m4/lstat.m4 \
-	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
-	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
-	$(top_srcdir)/m4/malloc.m4 $(top_srcdir)/m4/malloca.m4 \
-	$(top_srcdir)/m4/math_h.m4 $(top_srcdir)/m4/mathfunc.m4 \
-	$(top_srcdir)/m4/mbrtowc.m4 $(top_srcdir)/m4/mbsinit.m4 \
-	$(top_srcdir)/m4/mbsrtowcs.m4 $(top_srcdir)/m4/mbstate_t.m4 \
-	$(top_srcdir)/m4/md5.m4 $(top_srcdir)/m4/memchr.m4 \
-	$(top_srcdir)/m4/mempcpy.m4 $(top_srcdir)/m4/memrchr.m4 \
-	$(top_srcdir)/m4/mkdir.m4 $(top_srcdir)/m4/mkfifo.m4 \
+	$(top_srcdir)/m4/inttypes_h.m4 $(top_srcdir)/m4/isatty.m4 \
+	$(top_srcdir)/m4/isnand.m4 $(top_srcdir)/m4/isnanf.m4 \
+	$(top_srcdir)/m4/isnanl.m4 $(top_srcdir)/m4/largefile.m4 \
+	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/link.m4 \
+	$(top_srcdir)/m4/localcharset.m4 $(top_srcdir)/m4/locale-fr.m4 \
+	$(top_srcdir)/m4/locale-ja.m4 $(top_srcdir)/m4/locale-zh.m4 \
+	$(top_srcdir)/m4/longlong.m4 $(top_srcdir)/m4/lseek.m4 \
+	$(top_srcdir)/m4/lstat.m4 $(top_srcdir)/m4/ltoptions.m4 \
+	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
+	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/m4/malloc.m4 \
+	$(top_srcdir)/m4/malloca.m4 $(top_srcdir)/m4/math_h.m4 \
+	$(top_srcdir)/m4/mathfunc.m4 $(top_srcdir)/m4/mbrtowc.m4 \
+	$(top_srcdir)/m4/mbsinit.m4 $(top_srcdir)/m4/mbsrtowcs.m4 \
+	$(top_srcdir)/m4/mbstate_t.m4 $(top_srcdir)/m4/md5.m4 \
+	$(top_srcdir)/m4/memchr.m4 $(top_srcdir)/m4/mempcpy.m4 \
+	$(top_srcdir)/m4/memrchr.m4 $(top_srcdir)/m4/mkdir.m4 \
+	$(top_srcdir)/m4/mkfifo.m4 $(top_srcdir)/m4/mkostemp.m4 \
 	$(top_srcdir)/m4/mkstemp.m4 $(top_srcdir)/m4/mktime.m4 \
 	$(top_srcdir)/m4/mmap-anon.m4 $(top_srcdir)/m4/mode_t.m4 \
 	$(top_srcdir)/m4/msvc-inval.m4 \
@@ -138,23 +143,24 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
 	$(top_srcdir)/m4/pathmax.m4 $(top_srcdir)/m4/printf.m4 \
 	$(top_srcdir)/m4/raise.m4 $(top_srcdir)/m4/readdir.m4 \
 	$(top_srcdir)/m4/readlink.m4 $(top_srcdir)/m4/realloc.m4 \
-	$(top_srcdir)/m4/rename.m4 $(top_srcdir)/m4/rmdir.m4 \
-	$(top_srcdir)/m4/round.m4 $(top_srcdir)/m4/roundf.m4 \
-	$(top_srcdir)/m4/save-cwd.m4 $(top_srcdir)/m4/select.m4 \
-	$(top_srcdir)/m4/sigaction.m4 $(top_srcdir)/m4/signal_h.m4 \
-	$(top_srcdir)/m4/signalblocking.m4 \
+	$(top_srcdir)/m4/rename.m4 $(top_srcdir)/m4/rewinddir.m4 \
+	$(top_srcdir)/m4/rmdir.m4 $(top_srcdir)/m4/round.m4 \
+	$(top_srcdir)/m4/roundf.m4 $(top_srcdir)/m4/save-cwd.m4 \
+	$(top_srcdir)/m4/select.m4 $(top_srcdir)/m4/sigaction.m4 \
+	$(top_srcdir)/m4/signal_h.m4 \
+	$(top_srcdir)/m4/signalblocking.m4 $(top_srcdir)/m4/signbit.m4 \
 	$(top_srcdir)/m4/size_max.m4 $(top_srcdir)/m4/sleep.m4 \
 	$(top_srcdir)/m4/socketlib.m4 $(top_srcdir)/m4/sockets.m4 \
 	$(top_srcdir)/m4/socklen.m4 $(top_srcdir)/m4/ssize_t.m4 \
 	$(top_srcdir)/m4/st_dm_mode.m4 $(top_srcdir)/m4/stat.m4 \
-	$(top_srcdir)/m4/stdbool.m4 $(top_srcdir)/m4/stddef_h.m4 \
-	$(top_srcdir)/m4/stdint.m4 $(top_srcdir)/m4/stdint_h.m4 \
-	$(top_srcdir)/m4/stdio_h.m4 $(top_srcdir)/m4/stdlib_h.m4 \
-	$(top_srcdir)/m4/strcase.m4 $(top_srcdir)/m4/strdup.m4 \
-	$(top_srcdir)/m4/strerror.m4 $(top_srcdir)/m4/strftime.m4 \
-	$(top_srcdir)/m4/string_h.m4 $(top_srcdir)/m4/strings_h.m4 \
-	$(top_srcdir)/m4/strptime.m4 $(top_srcdir)/m4/symlink.m4 \
-	$(top_srcdir)/m4/sys_select_h.m4 \
+	$(top_srcdir)/m4/stdalign.m4 $(top_srcdir)/m4/stdbool.m4 \
+	$(top_srcdir)/m4/stddef_h.m4 $(top_srcdir)/m4/stdint.m4 \
+	$(top_srcdir)/m4/stdint_h.m4 $(top_srcdir)/m4/stdio_h.m4 \
+	$(top_srcdir)/m4/stdlib_h.m4 $(top_srcdir)/m4/strcase.m4 \
+	$(top_srcdir)/m4/strdup.m4 $(top_srcdir)/m4/strerror.m4 \
+	$(top_srcdir)/m4/strftime.m4 $(top_srcdir)/m4/string_h.m4 \
+	$(top_srcdir)/m4/strings_h.m4 $(top_srcdir)/m4/strptime.m4 \
+	$(top_srcdir)/m4/symlink.m4 $(top_srcdir)/m4/sys_select_h.m4 \
 	$(top_srcdir)/m4/sys_socket_h.m4 \
 	$(top_srcdir)/m4/sys_stat_h.m4 $(top_srcdir)/m4/sys_time_h.m4 \
 	$(top_srcdir)/m4/sys_times_h.m4 \
@@ -165,7 +171,7 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
 	$(top_srcdir)/m4/tmpfile.m4 $(top_srcdir)/m4/trunc.m4 \
 	$(top_srcdir)/m4/truncf.m4 $(top_srcdir)/m4/unistd-safer.m4 \
 	$(top_srcdir)/m4/unistd_h.m4 $(top_srcdir)/m4/unlink.m4 \
-	$(top_srcdir)/m4/vasnprintf.m4 $(top_srcdir)/m4/vsnprintf.m4 \
+	$(top_srcdir)/m4/vasnprintf.m4 $(top_srcdir)/m4/vasprintf.m4 \
 	$(top_srcdir)/m4/warn-on-use.m4 $(top_srcdir)/m4/wchar_h.m4 \
 	$(top_srcdir)/m4/wchar_t.m4 $(top_srcdir)/m4/wctype_h.m4 \
 	$(top_srcdir)/m4/wint_t.m4 $(top_srcdir)/m4/xsize.m4 \
@@ -232,6 +238,9 @@ AMTAR = @AMTAR@
 APPLE_UNIVERSAL_BUILD = @APPLE_UNIVERSAL_BUILD@
 AR = @AR@
 ARFLAGS = @ARFLAGS@ 
+ARPACK_CPPFLAGS = @ARPACK_CPPFLAGS@
+ARPACK_LDFLAGS = @ARPACK_LDFLAGS@
+ARPACK_LIBS = @ARPACK_LIBS@
 AS = @AS@
 AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
@@ -267,6 +276,7 @@ CHOLMOD_LIBS = @CHOLMOD_LIBS@
 COLAMD_CPPFLAGS = @COLAMD_CPPFLAGS@
 COLAMD_LDFLAGS = @COLAMD_LDFLAGS@
 COLAMD_LIBS = @COLAMD_LIBS@
+COPYSIGNF_LIBM = @COPYSIGNF_LIBM@
 COPYSIGN_LIBM = @COPYSIGN_LIBM@
 CPICFLAG = @CPICFLAG@
 CPP = @CPP@
@@ -353,9 +363,13 @@ GLPK_LDFLAGS = @GLPK_LDFLAGS@
 GLPK_LIBS = @GLPK_LIBS@
 GNULIB_ACCEPT = @GNULIB_ACCEPT@
 GNULIB_ACCEPT4 = @GNULIB_ACCEPT4@
+GNULIB_ACOSF = @GNULIB_ACOSF@
 GNULIB_ACOSL = @GNULIB_ACOSL@
 GNULIB_ALPHASORT = @GNULIB_ALPHASORT@
+GNULIB_ASINF = @GNULIB_ASINF@
 GNULIB_ASINL = @GNULIB_ASINL@
+GNULIB_ATAN2F = @GNULIB_ATAN2F@
+GNULIB_ATANF = @GNULIB_ATANF@
 GNULIB_ATANL = @GNULIB_ATANL@
 GNULIB_ATOLL = @GNULIB_ATOLL@
 GNULIB_BIND = @GNULIB_BIND@
@@ -370,6 +384,11 @@ GNULIB_CHOWN = @GNULIB_CHOWN@
 GNULIB_CLOSE = @GNULIB_CLOSE@
 GNULIB_CLOSEDIR = @GNULIB_CLOSEDIR@
 GNULIB_CONNECT = @GNULIB_CONNECT@
+GNULIB_COPYSIGN = @GNULIB_COPYSIGN@
+GNULIB_COPYSIGNF = @GNULIB_COPYSIGNF@
+GNULIB_COPYSIGNL = @GNULIB_COPYSIGNL@
+GNULIB_COSF = @GNULIB_COSF@
+GNULIB_COSHF = @GNULIB_COSHF@
 GNULIB_COSL = @GNULIB_COSL@
 GNULIB_DIRFD = @GNULIB_DIRFD@
 GNULIB_DPRINTF = @GNULIB_DPRINTF@
@@ -378,7 +397,9 @@ GNULIB_DUP2 = @GNULIB_DUP2@
 GNULIB_DUP3 = @GNULIB_DUP3@
 GNULIB_ENVIRON = @GNULIB_ENVIRON@
 GNULIB_EUIDACCESS = @GNULIB_EUIDACCESS@
+GNULIB_EXPF = @GNULIB_EXPF@
 GNULIB_EXPL = @GNULIB_EXPL@
+GNULIB_FABSF = @GNULIB_FABSF@
 GNULIB_FACCESSAT = @GNULIB_FACCESSAT@
 GNULIB_FCHDIR = @GNULIB_FCHDIR@
 GNULIB_FCHMODAT = @GNULIB_FCHMODAT@
@@ -397,6 +418,10 @@ GNULIB_FGETS = @GNULIB_FGETS@
 GNULIB_FLOOR = @GNULIB_FLOOR@
 GNULIB_FLOORF = @GNULIB_FLOORF@
 GNULIB_FLOORL = @GNULIB_FLOORL@
+GNULIB_FMA = @GNULIB_FMA@
+GNULIB_FMAF = @GNULIB_FMAF@
+GNULIB_FMAL = @GNULIB_FMAL@
+GNULIB_FMODF = @GNULIB_FMODF@
 GNULIB_FOPEN = @GNULIB_FOPEN@
 GNULIB_FPRINTF = @GNULIB_FPRINTF@
 GNULIB_FPRINTF_POSIX = @GNULIB_FPRINTF_POSIX@
@@ -406,6 +431,7 @@ GNULIB_FPUTS = @GNULIB_FPUTS@
 GNULIB_FREAD = @GNULIB_FREAD@
 GNULIB_FREOPEN = @GNULIB_FREOPEN@
 GNULIB_FREXP = @GNULIB_FREXP@
+GNULIB_FREXPF = @GNULIB_FREXPF@
 GNULIB_FREXPL = @GNULIB_FREXPL@
 GNULIB_FSCANF = @GNULIB_FSCANF@
 GNULIB_FSEEK = @GNULIB_FSEEK@
@@ -438,8 +464,10 @@ GNULIB_GETSOCKOPT = @GNULIB_GETSOCKOPT@
 GNULIB_GETSUBOPT = @GNULIB_GETSUBOPT@
 GNULIB_GETTIMEOFDAY = @GNULIB_GETTIMEOFDAY@
 GNULIB_GETUSERSHELL = @GNULIB_GETUSERSHELL@
+GNULIB_GL_UNISTD_H_GETOPT = @GNULIB_GL_UNISTD_H_GETOPT@
 GNULIB_GRANTPT = @GNULIB_GRANTPT@
 GNULIB_GROUP_MEMBER = @GNULIB_GROUP_MEMBER@
+GNULIB_ISATTY = @GNULIB_ISATTY@
 GNULIB_ISFINITE = @GNULIB_ISFINITE@
 GNULIB_ISINF = @GNULIB_ISINF@
 GNULIB_ISNAN = @GNULIB_ISNAN@
@@ -450,11 +478,14 @@ GNULIB_ISWBLANK = @GNULIB_ISWBLANK@
 GNULIB_ISWCTYPE = @GNULIB_ISWCTYPE@
 GNULIB_LCHMOD = @GNULIB_LCHMOD@
 GNULIB_LCHOWN = @GNULIB_LCHOWN@
+GNULIB_LDEXPF = @GNULIB_LDEXPF@
 GNULIB_LDEXPL = @GNULIB_LDEXPL@
 GNULIB_LINK = @GNULIB_LINK@
 GNULIB_LINKAT = @GNULIB_LINKAT@
 GNULIB_LISTEN = @GNULIB_LISTEN@
+GNULIB_LOG10F = @GNULIB_LOG10F@
 GNULIB_LOGB = @GNULIB_LOGB@
+GNULIB_LOGF = @GNULIB_LOGF@
 GNULIB_LOGL = @GNULIB_LOGL@
 GNULIB_LSEEK = @GNULIB_LSEEK@
 GNULIB_LSTAT = @GNULIB_LSTAT@
@@ -494,6 +525,7 @@ GNULIB_MKOSTEMPS = @GNULIB_MKOSTEMPS@
 GNULIB_MKSTEMP = @GNULIB_MKSTEMP@
 GNULIB_MKSTEMPS = @GNULIB_MKSTEMPS@
 GNULIB_MKTIME = @GNULIB_MKTIME@
+GNULIB_MODFF = @GNULIB_MODFF@
 GNULIB_NANOSLEEP = @GNULIB_NANOSLEEP@
 GNULIB_NONBLOCKING = @GNULIB_NONBLOCKING@
 GNULIB_OBSTACK_PRINTF = @GNULIB_OBSTACK_PRINTF@
@@ -506,12 +538,15 @@ GNULIB_PERROR = @GNULIB_PERROR@
 GNULIB_PIPE = @GNULIB_PIPE@
 GNULIB_PIPE2 = @GNULIB_PIPE2@
 GNULIB_POPEN = @GNULIB_POPEN@
+GNULIB_POSIX_OPENPT = @GNULIB_POSIX_OPENPT@
+GNULIB_POWF = @GNULIB_POWF@
 GNULIB_PREAD = @GNULIB_PREAD@
 GNULIB_PRINTF = @GNULIB_PRINTF@
 GNULIB_PRINTF_POSIX = @GNULIB_PRINTF_POSIX@
 GNULIB_PSELECT = @GNULIB_PSELECT@
 GNULIB_PTHREAD_SIGMASK = @GNULIB_PTHREAD_SIGMASK@
 GNULIB_PTSNAME = @GNULIB_PTSNAME@
+GNULIB_PTSNAME_R = @GNULIB_PTSNAME_R@
 GNULIB_PUTC = @GNULIB_PUTC@
 GNULIB_PUTCHAR = @GNULIB_PUTCHAR@
 GNULIB_PUTENV = @GNULIB_PUTENV@
@@ -532,6 +567,9 @@ GNULIB_REMOVE = @GNULIB_REMOVE@
 GNULIB_RENAME = @GNULIB_RENAME@
 GNULIB_RENAMEAT = @GNULIB_RENAMEAT@
 GNULIB_REWINDDIR = @GNULIB_REWINDDIR@
+GNULIB_RINT = @GNULIB_RINT@
+GNULIB_RINTF = @GNULIB_RINTF@
+GNULIB_RINTL = @GNULIB_RINTL@
 GNULIB_RMDIR = @GNULIB_RMDIR@
 GNULIB_ROUND = @GNULIB_ROUND@
 GNULIB_ROUNDF = @GNULIB_ROUNDF@
@@ -543,17 +581,21 @@ GNULIB_SELECT = @GNULIB_SELECT@
 GNULIB_SEND = @GNULIB_SEND@
 GNULIB_SENDTO = @GNULIB_SENDTO@
 GNULIB_SETENV = @GNULIB_SETENV@
+GNULIB_SETHOSTNAME = @GNULIB_SETHOSTNAME@
 GNULIB_SETSOCKOPT = @GNULIB_SETSOCKOPT@
 GNULIB_SHUTDOWN = @GNULIB_SHUTDOWN@
 GNULIB_SIGACTION = @GNULIB_SIGACTION@
 GNULIB_SIGNAL_H_SIGPIPE = @GNULIB_SIGNAL_H_SIGPIPE@
 GNULIB_SIGNBIT = @GNULIB_SIGNBIT@
 GNULIB_SIGPROCMASK = @GNULIB_SIGPROCMASK@
+GNULIB_SINF = @GNULIB_SINF@
+GNULIB_SINHF = @GNULIB_SINHF@
 GNULIB_SINL = @GNULIB_SINL@
 GNULIB_SLEEP = @GNULIB_SLEEP@
 GNULIB_SNPRINTF = @GNULIB_SNPRINTF@
 GNULIB_SOCKET = @GNULIB_SOCKET@
 GNULIB_SPRINTF_POSIX = @GNULIB_SPRINTF_POSIX@
+GNULIB_SQRTF = @GNULIB_SQRTF@
 GNULIB_SQRTL = @GNULIB_SQRTL@
 GNULIB_STAT = @GNULIB_STAT@
 GNULIB_STDIO_H_NONBLOCKING = @GNULIB_STDIO_H_NONBLOCKING@
@@ -581,6 +623,8 @@ GNULIB_STRVERSCMP = @GNULIB_STRVERSCMP@
 GNULIB_SYMLINK = @GNULIB_SYMLINK@
 GNULIB_SYMLINKAT = @GNULIB_SYMLINKAT@
 GNULIB_SYSTEM_POSIX = @GNULIB_SYSTEM_POSIX@
+GNULIB_TANF = @GNULIB_TANF@
+GNULIB_TANHF = @GNULIB_TANHF@
 GNULIB_TANL = @GNULIB_TANL@
 GNULIB_TIMEGM = @GNULIB_TIMEGM@
 GNULIB_TIMES = @GNULIB_TIMES@
@@ -591,7 +635,6 @@ GNULIB_TRUNC = @GNULIB_TRUNC@
 GNULIB_TRUNCF = @GNULIB_TRUNCF@
 GNULIB_TRUNCL = @GNULIB_TRUNCL@
 GNULIB_TTYNAME_R = @GNULIB_TTYNAME_R@
-GNULIB_UNISTD_H_GETOPT = @GNULIB_UNISTD_H_GETOPT@
 GNULIB_UNISTD_H_NONBLOCKING = @GNULIB_UNISTD_H_NONBLOCKING@
 GNULIB_UNISTD_H_SIGPIPE = @GNULIB_UNISTD_H_SIGPIPE@
 GNULIB_UNLINK = @GNULIB_UNLINK@
@@ -657,15 +700,24 @@ GRAPHICS_CFLAGS = @GRAPHICS_CFLAGS@
 GRAPHICS_LIBS = @GRAPHICS_LIBS@
 GREP = @GREP@
 HAVE_ACCEPT4 = @HAVE_ACCEPT4@
+HAVE_ACOSF = @HAVE_ACOSF@
 HAVE_ACOSL = @HAVE_ACOSL@
 HAVE_ALPHASORT = @HAVE_ALPHASORT@
+HAVE_ASINF = @HAVE_ASINF@
 HAVE_ASINL = @HAVE_ASINL@
+HAVE_ATAN2F = @HAVE_ATAN2F@
+HAVE_ATANF = @HAVE_ATANF@
 HAVE_ATANL = @HAVE_ATANL@
 HAVE_ATOLL = @HAVE_ATOLL@
 HAVE_BTOWC = @HAVE_BTOWC@
 HAVE_CANONICALIZE_FILE_NAME = @HAVE_CANONICALIZE_FILE_NAME@
 HAVE_CHOWN = @HAVE_CHOWN@
 HAVE_CLOSEDIR = @HAVE_CLOSEDIR@
+HAVE_COPYSIGN = @HAVE_COPYSIGN@
+HAVE_COPYSIGNF = @HAVE_COPYSIGNF@
+HAVE_COPYSIGNL = @HAVE_COPYSIGNL@
+HAVE_COSF = @HAVE_COSF@
+HAVE_COSHF = @HAVE_COSHF@
 HAVE_COSL = @HAVE_COSL@
 HAVE_DECL_ACOSL = @HAVE_DECL_ACOSL@
 HAVE_DECL_ASINL = @HAVE_DECL_ASINL@
@@ -703,6 +755,7 @@ HAVE_DECL_ROUND = @HAVE_DECL_ROUND@
 HAVE_DECL_ROUNDF = @HAVE_DECL_ROUNDF@
 HAVE_DECL_ROUNDL = @HAVE_DECL_ROUNDL@
 HAVE_DECL_SETENV = @HAVE_DECL_SETENV@
+HAVE_DECL_SETHOSTNAME = @HAVE_DECL_SETHOSTNAME@
 HAVE_DECL_SINL = @HAVE_DECL_SINL@
 HAVE_DECL_SNPRINTF = @HAVE_DECL_SNPRINTF@
 HAVE_DECL_SQRTL = @HAVE_DECL_SQRTL@
@@ -727,7 +780,9 @@ HAVE_DPRINTF = @HAVE_DPRINTF@
 HAVE_DUP2 = @HAVE_DUP2@
 HAVE_DUP3 = @HAVE_DUP3@
 HAVE_EUIDACCESS = @HAVE_EUIDACCESS@
+HAVE_EXPF = @HAVE_EXPF@
 HAVE_EXPL = @HAVE_EXPL@
+HAVE_FABSF = @HAVE_FABSF@
 HAVE_FACCESSAT = @HAVE_FACCESSAT@
 HAVE_FCHDIR = @HAVE_FCHDIR@
 HAVE_FCHMODAT = @HAVE_FCHMODAT@
@@ -739,6 +794,11 @@ HAVE_FEATURES_H = @HAVE_FEATURES_H@
 HAVE_FFS = @HAVE_FFS@
 HAVE_FFSL = @HAVE_FFSL@
 HAVE_FFSLL = @HAVE_FFSLL@
+HAVE_FMA = @HAVE_FMA@
+HAVE_FMAF = @HAVE_FMAF@
+HAVE_FMAL = @HAVE_FMAL@
+HAVE_FMODF = @HAVE_FMODF@
+HAVE_FREXPF = @HAVE_FREXPF@
 HAVE_FSEEKO = @HAVE_FSEEKO@
 HAVE_FSTATAT = @HAVE_FSTATAT@
 HAVE_FSYNC = @HAVE_FSYNC@
@@ -763,8 +823,11 @@ HAVE_ISWBLANK = @HAVE_ISWBLANK@
 HAVE_ISWCNTRL = @HAVE_ISWCNTRL@
 HAVE_LCHMOD = @HAVE_LCHMOD@
 HAVE_LCHOWN = @HAVE_LCHOWN@
+HAVE_LDEXPF = @HAVE_LDEXPF@
 HAVE_LINK = @HAVE_LINK@
 HAVE_LINKAT = @HAVE_LINKAT@
+HAVE_LOG10F = @HAVE_LOG10F@
+HAVE_LOGF = @HAVE_LOGF@
 HAVE_LOGL = @HAVE_LOGL@
 HAVE_LONG_LONG_INT = @HAVE_LONG_LONG_INT@
 HAVE_LSTAT = @HAVE_LSTAT@
@@ -786,6 +849,7 @@ HAVE_MKOSTEMP = @HAVE_MKOSTEMP@
 HAVE_MKOSTEMPS = @HAVE_MKOSTEMPS@
 HAVE_MKSTEMP = @HAVE_MKSTEMP@
 HAVE_MKSTEMPS = @HAVE_MKSTEMPS@
+HAVE_MODFF = @HAVE_MODFF@
 HAVE_MSVC_INVALID_PARAMETER_HANDLER = @HAVE_MSVC_INVALID_PARAMETER_HANDLER@
 HAVE_NANOSLEEP = @HAVE_NANOSLEEP@
 HAVE_OPENAT = @HAVE_OPENAT@
@@ -796,11 +860,14 @@ HAVE_PCRE_CONFIG = @HAVE_PCRE_CONFIG@
 HAVE_PIPE = @HAVE_PIPE@
 HAVE_PIPE2 = @HAVE_PIPE2@
 HAVE_POPEN = @HAVE_POPEN@
+HAVE_POSIX_OPENPT = @HAVE_POSIX_OPENPT@
 HAVE_POSIX_SIGNALBLOCKING = @HAVE_POSIX_SIGNALBLOCKING@
+HAVE_POWF = @HAVE_POWF@
 HAVE_PREAD = @HAVE_PREAD@
 HAVE_PSELECT = @HAVE_PSELECT@
 HAVE_PTHREAD_SIGMASK = @HAVE_PTHREAD_SIGMASK@
 HAVE_PTSNAME = @HAVE_PTSNAME@
+HAVE_PTSNAME_R = @HAVE_PTSNAME_R@
 HAVE_PWRITE = @HAVE_PWRITE@
 HAVE_RAISE = @HAVE_RAISE@
 HAVE_RANDOM_H = @HAVE_RANDOM_H@
@@ -812,10 +879,15 @@ HAVE_READLINKAT = @HAVE_READLINKAT@
 HAVE_REALPATH = @HAVE_REALPATH@
 HAVE_RENAMEAT = @HAVE_RENAMEAT@
 HAVE_REWINDDIR = @HAVE_REWINDDIR@
+HAVE_RINT = @HAVE_RINT@
+HAVE_RINTF = @HAVE_RINTF@
+HAVE_RINTL = @HAVE_RINTL@
 HAVE_RPMATCH = @HAVE_RPMATCH@
+HAVE_SAME_LONG_DOUBLE_AS_DOUBLE = @HAVE_SAME_LONG_DOUBLE_AS_DOUBLE@
 HAVE_SA_FAMILY_T = @HAVE_SA_FAMILY_T@
 HAVE_SCANDIR = @HAVE_SCANDIR@
 HAVE_SETENV = @HAVE_SETENV@
+HAVE_SETHOSTNAME = @HAVE_SETHOSTNAME@
 HAVE_SIGACTION = @HAVE_SIGACTION@
 HAVE_SIGHANDLER_T = @HAVE_SIGHANDLER_T@
 HAVE_SIGINFO_T = @HAVE_SIGINFO_T@
@@ -823,8 +895,11 @@ HAVE_SIGNED_SIG_ATOMIC_T = @HAVE_SIGNED_SIG_ATOMIC_T@
 HAVE_SIGNED_WCHAR_T = @HAVE_SIGNED_WCHAR_T@
 HAVE_SIGNED_WINT_T = @HAVE_SIGNED_WINT_T@
 HAVE_SIGSET_T = @HAVE_SIGSET_T@
+HAVE_SINF = @HAVE_SINF@
+HAVE_SINHF = @HAVE_SINHF@
 HAVE_SINL = @HAVE_SINL@
 HAVE_SLEEP = @HAVE_SLEEP@
+HAVE_SQRTF = @HAVE_SQRTF@
 HAVE_SQRTL = @HAVE_SQRTL@
 HAVE_STDINT_H = @HAVE_STDINT_H@
 HAVE_STPCPY = @HAVE_STPCPY@
@@ -859,6 +934,8 @@ HAVE_SYS_TIMES_H = @HAVE_SYS_TIMES_H@
 HAVE_SYS_TIME_H = @HAVE_SYS_TIME_H@
 HAVE_SYS_TYPES_H = @HAVE_SYS_TYPES_H@
 HAVE_SYS_UIO_H = @HAVE_SYS_UIO_H@
+HAVE_TANF = @HAVE_TANF@
+HAVE_TANHF = @HAVE_TANHF@
 HAVE_TANL = @HAVE_TANL@
 HAVE_TIMEGM = @HAVE_TIMEGM@
 HAVE_TIMES = @HAVE_TIMES@
@@ -1076,11 +1153,15 @@ REPLACE_FFLUSH = @REPLACE_FFLUSH@
 REPLACE_FLOOR = @REPLACE_FLOOR@
 REPLACE_FLOORF = @REPLACE_FLOORF@
 REPLACE_FLOORL = @REPLACE_FLOORL@
+REPLACE_FMA = @REPLACE_FMA@
+REPLACE_FMAF = @REPLACE_FMAF@
+REPLACE_FMAL = @REPLACE_FMAL@
 REPLACE_FOPEN = @REPLACE_FOPEN@
 REPLACE_FPRINTF = @REPLACE_FPRINTF@
 REPLACE_FPURGE = @REPLACE_FPURGE@
 REPLACE_FREOPEN = @REPLACE_FREOPEN@
 REPLACE_FREXP = @REPLACE_FREXP@
+REPLACE_FREXPF = @REPLACE_FREXPF@
 REPLACE_FREXPL = @REPLACE_FREXPL@
 REPLACE_FSEEK = @REPLACE_FSEEK@
 REPLACE_FSEEKO = @REPLACE_FSEEKO@
@@ -1098,11 +1179,13 @@ REPLACE_GETLOGIN_R = @REPLACE_GETLOGIN_R@
 REPLACE_GETPAGESIZE = @REPLACE_GETPAGESIZE@
 REPLACE_GETTIMEOFDAY = @REPLACE_GETTIMEOFDAY@
 REPLACE_HUGE_VAL = @REPLACE_HUGE_VAL@
+REPLACE_ISATTY = @REPLACE_ISATTY@
 REPLACE_ISFINITE = @REPLACE_ISFINITE@
 REPLACE_ISINF = @REPLACE_ISINF@
 REPLACE_ISNAN = @REPLACE_ISNAN@
 REPLACE_ISWBLANK = @REPLACE_ISWBLANK@
 REPLACE_ISWCNTRL = @REPLACE_ISWCNTRL@
+REPLACE_ITOLD = @REPLACE_ITOLD@
 REPLACE_LCHOWN = @REPLACE_LCHOWN@
 REPLACE_LDEXPL = @REPLACE_LDEXPL@
 REPLACE_LINK = @REPLACE_LINK@
@@ -1138,6 +1221,7 @@ REPLACE_PREAD = @REPLACE_PREAD@
 REPLACE_PRINTF = @REPLACE_PRINTF@
 REPLACE_PSELECT = @REPLACE_PSELECT@
 REPLACE_PTHREAD_SIGMASK = @REPLACE_PTHREAD_SIGMASK@
+REPLACE_PTSNAME_R = @REPLACE_PTSNAME_R@
 REPLACE_PUTENV = @REPLACE_PUTENV@
 REPLACE_PWRITE = @REPLACE_PWRITE@
 REPLACE_RAISE = @REPLACE_RAISE@
@@ -1202,7 +1286,6 @@ REPLACE_WCTOB = @REPLACE_WCTOB@
 REPLACE_WCTOMB = @REPLACE_WCTOMB@
 REPLACE_WCWIDTH = @REPLACE_WCWIDTH@
 REPLACE_WRITE = @REPLACE_WRITE@
-RLD_FLAG = @RLD_FLAG@
 ROUNDF_LIBM = @ROUNDF_LIBM@
 ROUND_LIBM = @ROUND_LIBM@
 SED = @SED@
@@ -1223,6 +1306,7 @@ SH_LDFLAGS = @SH_LDFLAGS@
 SIG_ATOMIC_T_SUFFIX = @SIG_ATOMIC_T_SUFFIX@
 SIZE_T_SUFFIX = @SIZE_T_SUFFIX@
 SONAME_FLAGS = @SONAME_FLAGS@
+STDALIGN_H = @STDALIGN_H@
 STDBOOL_H = @STDBOOL_H@
 STDDEF_H = @STDDEF_H@
 STDINT_H = @STDINT_H@
@@ -1234,6 +1318,7 @@ TERM_LIBS = @TERM_LIBS@
 TEXI2DVI = @TEXI2DVI@
 TEXI2PDF = @TEXI2PDF@
 TEXINFO_AMD = @TEXINFO_AMD@
+TEXINFO_ARPACK = @TEXINFO_ARPACK@
 TEXINFO_CAMD = @TEXINFO_CAMD@
 TEXINFO_CCOLAMD = @TEXINFO_CCOLAMD@
 TEXINFO_CHOLMOD = @TEXINFO_CHOLMOD@
@@ -1501,7 +1586,7 @@ EXTRA_DIST = $(STARTUP_FILE_SRC) $(IMAGES) $(FCN_FILES) \
 	$(FCN_FILES_IN) $(GEN_FCN_FILES) DOCSTRINGS mkdoc mk-pkg-add
 FCN_FILE_DIRS = @ftp audio deprecated elfun general geometry help \
 	image io linear-algebra miscellaneous optimization path pkg \
-	plot polynomial set signal sparse specfun special-matrix \
+	plot polynomial prefs set signal sparse specfun special-matrix \
 	startup statistics/base statistics/distributions \
 	statistics/models statistics/tests strings testfun time
 FCN_FILES = $(@ftp_FCN_FILES) $(audio_FCN_FILES) \
@@ -1510,8 +1595,8 @@ FCN_FILES = $(@ftp_FCN_FILES) $(audio_FCN_FILES) \
 	$(image_FCN_FILES) $(io_FCN_FILES) $(linear_algebra_FCN_FILES) \
 	$(miscellaneous_FCN_FILES) $(optimization_FCN_FILES) \
 	$(path_FCN_FILES) $(pkg_FCN_FILES) $(plot_FCN_FILES) \
-	$(polynomial_FCN_FILES) $(set_FCN_FILES) $(signal_FCN_FILES) \
-	$(sparse_FCN_FILES) $(specfun_FCN_FILES) \
+	$(polynomial_FCN_FILES) $(prefs_FCN_FILES) $(set_FCN_FILES) \
+	$(signal_FCN_FILES) $(sparse_FCN_FILES) $(specfun_FCN_FILES) \
 	$(special_matrix_FCN_FILES) $(startup_FCN_FILES) \
 	$(statistics_base_FCN_FILES) \
 	$(statistics_distributions_FCN_FILES) \
@@ -1522,8 +1607,8 @@ PKG_ADD_FILES = @ftp/PKG_ADD audio/PKG_ADD deprecated/PKG_ADD \
 	elfun/PKG_ADD general/PKG_ADD geometry/PKG_ADD help/PKG_ADD \
 	image/PKG_ADD io/PKG_ADD linear-algebra/PKG_ADD \
 	miscellaneous/PKG_ADD optimization/PKG_ADD path/PKG_ADD \
-	pkg/PKG_ADD plot/PKG_ADD polynomial/PKG_ADD set/PKG_ADD \
-	signal/PKG_ADD sparse/PKG_ADD specfun/PKG_ADD \
+	pkg/PKG_ADD plot/PKG_ADD polynomial/PKG_ADD prefs/PKG_ADD \
+	set/PKG_ADD signal/PKG_ADD sparse/PKG_ADD specfun/PKG_ADD \
 	special-matrix/PKG_ADD startup/PKG_ADD statistics/base/PKG_ADD \
 	statistics/distributions/PKG_ADD statistics/models/PKG_ADD \
 	statistics/tests/PKG_ADD strings/PKG_ADD testfun/PKG_ADD \
@@ -1536,10 +1621,11 @@ DIRSTAMP_FILES = @ftp/$(octave_dirstamp) audio/$(octave_dirstamp) \
 	miscellaneous/$(octave_dirstamp) \
 	optimization/$(octave_dirstamp) path/$(octave_dirstamp) \
 	pkg/$(octave_dirstamp) plot/$(octave_dirstamp) \
-	polynomial/$(octave_dirstamp) set/$(octave_dirstamp) \
-	signal/$(octave_dirstamp) sparse/$(octave_dirstamp) \
-	specfun/$(octave_dirstamp) special-matrix/$(octave_dirstamp) \
-	startup/$(octave_dirstamp) statistics/base/$(octave_dirstamp) \
+	polynomial/$(octave_dirstamp) prefs/$(octave_dirstamp) \
+	set/$(octave_dirstamp) signal/$(octave_dirstamp) \
+	sparse/$(octave_dirstamp) specfun/$(octave_dirstamp) \
+	special-matrix/$(octave_dirstamp) startup/$(octave_dirstamp) \
+	statistics/base/$(octave_dirstamp) \
 	statistics/distributions/$(octave_dirstamp) \
 	statistics/models/$(octave_dirstamp) \
 	statistics/tests/$(octave_dirstamp) strings/$(octave_dirstamp) \
@@ -1574,60 +1660,35 @@ audio_FCN_FILES = \
   audio/wavwrite.m
 
 deprecated_FCN_FILES = \
+  deprecated/__error_text__.m \
   deprecated/autocor.m \
   deprecated/autocov.m \
   deprecated/betai.m \
   deprecated/cellidx.m \
   deprecated/clg.m \
-  deprecated/complement.m \
-  deprecated/create_set.m \
+  deprecated/cor.m \
+  deprecated/corrcoef.m \
   deprecated/cquad.m \
+  deprecated/cut.m \
   deprecated/dispatch.m \
-  deprecated/dmult.m \
+  deprecated/error_text.m \
   deprecated/fstat.m \
   deprecated/gammai.m \
   deprecated/glpkmex.m \
   deprecated/intwarning.m \
-  deprecated/iscommand.m \
   deprecated/is_duplicate_entry.m \
   deprecated/is_global.m \
-  deprecated/israwcommand.m \
   deprecated/isstr.m \
-  deprecated/lchol.m \
-  deprecated/loadimage.m \
   deprecated/krylovb.m \
-  deprecated/mark_as_command.m \
-  deprecated/mark_as_rawcommand.m \
   deprecated/perror.m \
+  deprecated/polyderiv.m \
   deprecated/replot.m \
   deprecated/saveimage.m \
   deprecated/setstr.m \
-  deprecated/spatan2.m \
-  deprecated/spchol2inv.m \
-  deprecated/spcholinv.m \
-  deprecated/spchol.m \
-  deprecated/spcumprod.m \
-  deprecated/spcumsum.m \
-  deprecated/spdet.m \
-  deprecated/spdiag.m \
-  deprecated/spfind.m \
-  deprecated/sphcat.m \
-  deprecated/spinv.m \
-  deprecated/spkron.m \
-  deprecated/splchol.m \
-  deprecated/split.m \
-  deprecated/splu.m \
-  deprecated/spmax.m \
-  deprecated/spmin.m \
-  deprecated/spprod.m \
-  deprecated/spqr.m \
-  deprecated/spsum.m \
-  deprecated/spsumsq.m \
-  deprecated/spvcat.m \
-  deprecated/str2mat.m \
+  deprecated/shell_cmd.m \
   deprecated/strerror.m \
-  deprecated/unmark_command.m \
-  deprecated/unmark_rawcommand.m \
+  deprecated/studentize.m \
+  deprecated/sylvester_matrix.m \
   deprecated/values.m \
   deprecated/weibcdf.m \
   deprecated/weibinv.m \
@@ -1654,7 +1715,6 @@ elfun_FCN_FILES = \
   elfun/csc.m \
   elfun/cscd.m \
   elfun/csch.m \
-  elfun/lcm.m \
   elfun/sec.m \
   elfun/secd.m \
   elfun/sech.m \
@@ -1668,7 +1728,6 @@ general_PRIVATE_FCN_FILES = \
 general_FCN_FILES = \
   general/accumarray.m \
   general/accumdim.m \
-  general/arrayfun.m \
   general/bicubic.m \
   general/bitcmp.m \
   general/bitget.m \
@@ -1715,13 +1774,18 @@ general_FCN_FILES = \
   general/loadobj.m \
   general/logspace.m \
   general/nargchk.m \
+  general/narginchk.m \
   general/nargoutchk.m \
+  general/nthargout.m \
   general/nextpow2.m \
   general/num2str.m \
   general/pol2cart.m \
   general/polyarea.m \
   general/postpad.m \
   general/prepad.m \
+  general/profexplore.m \
+  general/profile.m \
+  general/profshow.m \
   general/quadgk.m \
   general/quadl.m \
   general/quadv.m \
@@ -1753,19 +1817,16 @@ geometry_FCN_FILES = \
   geometry/griddatan.m \
   geometry/inpolygon.m \
   geometry/rectint.m \
-  geometry/trimesh.m \
-  geometry/triplot.m \
-  geometry/trisurf.m \
   geometry/tsearchn.m \
   geometry/voronoi.m \
   geometry/voronoin.m
 
 help_PRIVATE_FCN_FILES = \
-  help/private/__additional_help_message__.m
+  help/private/__additional_help_message__.m \
+  help/private/__strip_html_tags__.m
 
 help_FCN_FILES = \
   help/__makeinfo__.m \
-  help/__strip_html_tags__.m \
   help/doc.m \
   help/gen_doc_cache.m \
   help/get_first_help_sentence.m \
@@ -1773,6 +1834,7 @@ help_FCN_FILES = \
   help/lookfor.m \
   help/print_usage.m \
   help/type.m \
+  help/unimplemented.m \
   help/which.m \
   $(help_PRIVATE_FCN_FILES)
 
@@ -1831,7 +1893,6 @@ linear_algebra_FCN_FILES = \
   linear-algebra/cross.m \
   linear-algebra/duplication_matrix.m \
   linear-algebra/expm.m \
-  linear-algebra/gmres.m \
   linear-algebra/housh.m \
   linear-algebra/isdefinite.m \
   linear-algebra/ishermitian.m \
@@ -1870,6 +1931,7 @@ miscellaneous_FCN_FILES = \
   miscellaneous/dos.m \
   miscellaneous/dump_prefs.m \
   miscellaneous/edit.m \
+	miscellaneous/fact.m \
   miscellaneous/fileattrib.m \
   miscellaneous/fileparts.m \
   miscellaneous/fullfile.m \
@@ -1900,6 +1962,8 @@ miscellaneous_FCN_FILES = \
   miscellaneous/paren.m \
   miscellaneous/parseparams.m \
   miscellaneous/perl.m \
+  miscellaneous/python.m \
+  miscellaneous/recycle.m \
   miscellaneous/rmappdata.m \
   miscellaneous/run.m \
   miscellaneous/semicolon.m \
@@ -1911,11 +1975,11 @@ miscellaneous_FCN_FILES = \
   miscellaneous/tar.m \
   miscellaneous/tempdir.m \
   miscellaneous/tempname.m \
-  miscellaneous/unimplemented.m \
   miscellaneous/unix.m \
   miscellaneous/unpack.m \
   miscellaneous/untar.m \
   miscellaneous/unzip.m \
+  miscellaneous/usejava.m \
   miscellaneous/ver.m \
   miscellaneous/version.m \
   miscellaneous/warning_ids.m \
@@ -1971,39 +2035,44 @@ plot_PRIVATE_FCN_FILES = \
   plot/private/__errcomm__.m \
   plot/private/__errplot__.m \
   plot/private/__ezplot__.m \
+  plot/private/__file_filter__.m \
   plot/private/__fltk_file_filter__.m \
-  plot/private/__ghostscript__.m \
+  plot/private/__fltk_ginput__.m \
+  plot/private/__fltk_print__.m \
   plot/private/__getlegenddata__.m \
+  plot/private/__ghostscript__.m \
+  plot/private/__gnuplot_get_var__.m \
+  plot/private/__gnuplot_ginput__.m \
+  plot/private/__gnuplot_has_feature__.m \
   plot/private/__gnuplot_has_terminal__.m\
+  plot/private/__gnuplot_open_stream__.m \
+  plot/private/__gnuplot_print__.m \
+  plot/private/__gnuplot_version__.m \
+  plot/private/__go_draw_axes__.m \
+  plot/private/__go_draw_figure__.m \
   plot/private/__interp_cube__.m \
+  plot/private/__is_function__.m \
   plot/private/__line__.m \
+  plot/private/__marching_cube__.m \
+  plot/private/__next_line_color__.m \
+  plot/private/__next_line_style__.m \
   plot/private/__patch__.m \
   plot/private/__pie__.m \
   plot/private/__plt__.m \
   plot/private/__pltopt__.m \
+  plot/private/__print_parse_opts__.m \
   plot/private/__quiver__.m \
   plot/private/__scatter__.m \
   plot/private/__stem__.m \
-  plot/private/__tight_eps_bbox__.m
+  plot/private/__tight_eps_bbox__.m \
+  plot/private/__uigetdir_fltk__.m \
+  plot/private/__uigetfile_fltk__.m \
+  plot/private/__uiputfile_fltk__.m \
+  plot/private/__uiobject_split_args__.m
 
 plot_FCN_FILES = \
-  plot/__fltk_ginput__.m \
-  plot/__fltk_print__.m \
   plot/__gnuplot_drawnow__.m \
-  plot/__gnuplot_get_var__.m \
-  plot/__gnuplot_ginput__.m \
-  plot/__gnuplot_has_feature__.m \
-  plot/__gnuplot_open_stream__.m \
-  plot/__gnuplot_print__.m \
-  plot/__gnuplot_version__.m \
-  plot/__go_close_all__.m \
-  plot/__go_draw_axes__.m \
-  plot/__go_draw_figure__.m \
-  plot/__marching_cube__.m \
-  plot/__next_line_color__.m \
-  plot/__next_line_style__.m \
   plot/__plt_get_axis_arg__.m \
-  plot/__print_parse_opts__.m \
   plot/allchild.m \
   plot/ancestor.m \
   plot/area.m \
@@ -2055,6 +2124,8 @@ plot_FCN_FILES = \
   plot/graphics_toolkit.m \
   plot/grid.m \
   plot/gtext.m \
+  plot/guidata.m \
+  plot/guihandles.m \
   plot/hggroup.m \
   plot/hidden.m \
   plot/hist.m \
@@ -2123,11 +2194,23 @@ plot_FCN_FILES = \
   plot/surfnorm.m \
   plot/text.m \
   plot/title.m \
+  plot/trimesh.m \
+  plot/triplot.m \
+  plot/trisurf.m \
+  plot/uicontextmenu.m \
+  plot/uicontrol.m \
   plot/uigetdir.m \
   plot/uigetfile.m \
   plot/uimenu.m \
+  plot/uipanel.m \
+  plot/uipushtool.m \
   plot/uiputfile.m \
+  plot/uiresume.m \
+  plot/uitoggletool.m \
+  plot/uitoolbar.m \
+  plot/uiwait.m \
   plot/view.m \
+  plot/waitbar.m \
   plot/waitforbuttonpress.m \
   plot/whitebg.m \
   plot/xlabel.m \
@@ -2148,7 +2231,6 @@ polynomial_FCN_FILES = \
   polynomial/poly.m \
   polynomial/polyaffine.m \
   polynomial/polyder.m \
-  polynomial/polyderiv.m \
   polynomial/polyfit.m \
   polynomial/polygcd.m \
   polynomial/polyint.m \
@@ -2164,6 +2246,19 @@ polynomial_FCN_FILES = \
   polynomial/roots.m \
   polynomial/spline.m \
   polynomial/unmkpp.m
+
+prefs_PRIVATE_FCN_FILES = \
+  prefs/private/loadprefs.m \
+  prefs/private/prefsfile.m \
+  prefs/private/saveprefs.m
+
+prefs_FCN_FILES = \
+  prefs/addpref.m \
+  prefs/getpref.m \
+  prefs/ispref.m \
+  prefs/rmpref.m \
+  prefs/setpref.m \
+  $(prefs_PRIVATE_FCN_FILES)
 
 set_FCN_FILES = \
   set/intersect.m \
@@ -2216,11 +2311,16 @@ signal_FCN_FILES = \
   signal/yulewalker.m \
   $(signal_PRIVATE_FCN_FILES)
 
+sparse_PRIVATE_FCN_FILES = \
+	sparse/private/__sprand_impl__.m
+
 sparse_FCN_FILES = \
+  sparse/bicg.m \
   sparse/bicgstab.m \
   sparse/cgs.m \
   sparse/colperm.m \
   sparse/etreeplot.m \
+  sparse/gmres.m \
   sparse/gplot.m \
   sparse/nonzeros.m \
   sparse/pcg.m \
@@ -2238,7 +2338,8 @@ sparse_FCN_FILES = \
   sparse/spy.m \
   sparse/svds.m \
   sparse/treelayout.m \
-  sparse/treeplot.m
+  sparse/treeplot.m \
+	$(sparse_PRIVATE_FCN_FILES)
 
 specfun_FCN_FILES = \
   specfun/bessel.m \
@@ -2247,6 +2348,7 @@ specfun_FCN_FILES = \
   specfun/factor.m \
   specfun/factorial.m \
   specfun/isprime.m \
+  specfun/lcm.m \
   specfun/legendre.m \
   specfun/nchoosek.m \
   specfun/nthroot.m \
@@ -2265,7 +2367,6 @@ special_matrix_FCN_FILES = \
   special-matrix/magic.m \
   special-matrix/pascal.m \
   special-matrix/rosser.m \
-  special-matrix/sylvester_matrix.m \
   special-matrix/toeplitz.m \
   special-matrix/vander.m \
   special-matrix/wilkinson.m
@@ -2284,10 +2385,8 @@ STARTUP_FILE_SRC = \
 statistics_base_FCN_FILES = \
   statistics/base/center.m \
   statistics/base/cloglog.m \
-  statistics/base/cor.m \
-  statistics/base/corrcoef.m \
+  statistics/base/corr.m \
   statistics/base/cov.m \
-  statistics/base/cut.m \
   statistics/base/gls.m \
   statistics/base/histc.m \
   statistics/base/iqr.m \
@@ -2314,9 +2413,9 @@ statistics_base_FCN_FILES = \
   statistics/base/spearman.m \
   statistics/base/statistics.m \
   statistics/base/std.m \
-  statistics/base/studentize.m \
   statistics/base/table.m \
-  statistics/base/var.m
+  statistics/base/var.m \
+  statistics/base/zscore.m
 
 statistics_distributions_FCN_FILES = \
   statistics/distributions/betacdf.m \
@@ -2518,7 +2617,7 @@ all: all-am
 
 .SUFFIXES:
 .SUFFIXES: .cc .lo .o .obj
-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/build-aux/common.mk $(srcdir)/@ftp/module.mk $(srcdir)/audio/module.mk $(srcdir)/deprecated/module.mk $(srcdir)/elfun/module.mk $(srcdir)/general/module.mk $(srcdir)/geometry/module.mk $(srcdir)/help/module.mk $(srcdir)/image/module.mk $(srcdir)/io/module.mk $(srcdir)/linear-algebra/module.mk $(srcdir)/miscellaneous/module.mk $(srcdir)/optimization/module.mk $(srcdir)/path/module.mk $(srcdir)/pkg/module.mk $(srcdir)/plot/module.mk $(srcdir)/polynomial/module.mk $(srcdir)/set/module.mk $(srcdir)/signal/module.mk $(srcdir)/sparse/module.mk $(srcdir)/specfun/module.mk $(srcdir)/special-matrix/module.mk $(srcdir)/startup/module.mk $(srcdir)/statistics/base/module.mk $(srcdir)/statistics/distributions/module.mk $(srcdir)/statistics/models/module.mk $(srcdir)/statistics/tests/module.mk $(srcdir)/strings/module.mk $(srcdir)/testfun/module.mk $(srcdir)/time/module.mk $(am__configure_deps)
+$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/build-aux/common.mk $(srcdir)/@ftp/module.mk $(srcdir)/audio/module.mk $(srcdir)/deprecated/module.mk $(srcdir)/elfun/module.mk $(srcdir)/general/module.mk $(srcdir)/geometry/module.mk $(srcdir)/help/module.mk $(srcdir)/image/module.mk $(srcdir)/io/module.mk $(srcdir)/linear-algebra/module.mk $(srcdir)/miscellaneous/module.mk $(srcdir)/optimization/module.mk $(srcdir)/path/module.mk $(srcdir)/pkg/module.mk $(srcdir)/plot/module.mk $(srcdir)/polynomial/module.mk $(srcdir)/prefs/module.mk $(srcdir)/set/module.mk $(srcdir)/signal/module.mk $(srcdir)/sparse/module.mk $(srcdir)/specfun/module.mk $(srcdir)/special-matrix/module.mk $(srcdir)/startup/module.mk $(srcdir)/statistics/base/module.mk $(srcdir)/statistics/distributions/module.mk $(srcdir)/statistics/models/module.mk $(srcdir)/statistics/tests/module.mk $(srcdir)/strings/module.mk $(srcdir)/testfun/module.mk $(srcdir)/time/module.mk $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
 	    *$$dep*) \
@@ -2891,6 +2990,9 @@ $(SED) < $< \
   -e "s|%OCTAVE_CONF_AMD_LIBS%|\"${AMD_LIBS}\"|" \
   -e "s|%OCTAVE_CONF_AR%|\"${AR}\"|" \
   -e "s|%OCTAVE_CONF_ARFLAGS%|\"${ARFLAGS}\"|" \
+  -e "s|%OCTAVE_CONF_ARPACK_CPPFLAGS%|\"${ARPACK_CPPFLAGS}\"|" \
+  -e "s|%OCTAVE_CONF_ARPACK_LDFLAGS%|\"${ARPACK_LDFLAGS}\"|" \
+  -e "s|%OCTAVE_CONF_ARPACK_LIBS%|\"${ARPACK_LIBS}\"|" \
   -e "s|%OCTAVE_CONF_BLAS_LIBS%|\"${BLAS_LIBS}\"|" \
   -e "s|%OCTAVE_CONF_CAMD_CPPFLAGS%|\"${CAMD_CPPFLAGS}\"|" \
   -e "s|%OCTAVE_CONF_CAMD_LDFLAGS%|\"${CAMD_LDFLAGS}\"|" \
@@ -2972,8 +3074,12 @@ $(SED) < $< \
   -e "s|%OCTAVE_CONF_MAGICK_LDFLAGS%|\"${MAGICK_LDFLAGS}\"|" \
   -e "s|%OCTAVE_CONF_MAGICK_LIBS%|\"${MAGICK_LIBS}\"|" \
   -e 's|%OCTAVE_CONF_MKOCTFILE_DL_LDFLAGS%|\"@MKOCTFILE_DL_LDFLAGS@\"|' \
+  -e "s|%OCTAVE_CONF_OCTAVE_LINK_DEPS%|\"${OCTAVE_LINK_DEPS}\"|" \
+  -e "s|%OCTAVE_CONF_OCTAVE_LINK_OPTS%|\"${OCTAVE_LINK_OPTS}\"|" \
   -e "s|%OCTAVE_CONF_OCTINCLUDEDIR%|\"${octincludedir}\"|" \
   -e "s|%OCTAVE_CONF_OCTLIBDIR%|\"${octlibdir}\"|" \
+  -e "s|%OCTAVE_CONF_OCT_LINK_DEPS%|\"${OCT_LINK_DEPS}\"|" \
+  -e "s|%OCTAVE_CONF_OCT_LINK_OPTS%|\"${OCT_LINK_OPTS}\"|" \
   -e "s|%OCTAVE_CONF_OPENGL_LIBS%|\"${OPENGL_LIBS}\"|" \
   -e "s|%OCTAVE_CONF_PREFIX%|\"${prefix}\"|" \
   -e "s|%OCTAVE_CONF_PTHREAD_CFLAGS%|\"${PTHREAD_CFLAGS}\"|" \
@@ -2988,7 +3094,6 @@ $(SED) < $< \
   -e "s|%OCTAVE_CONF_RDYNAMIC_FLAG%|\"${RDYNAMIC_FLAG}\"|" \
   -e "s|%OCTAVE_CONF_READLINE_LIBS%|\"${READLINE_LIBS}\"|" \
   -e "s|%OCTAVE_CONF_REGEX_LIBS%|\"${REGEX_LIBS}\"|" \
-  -e "s|%OCTAVE_CONF_RLD_FLAG%|\"${RLD_FLAG}\"|" \
   -e "s|%OCTAVE_CONF_SED%|\"${SED}\"|" \
   -e "s|%OCTAVE_CONF_SHARED_LIBS%|\"${SHARED_LIBS}\"|" \
   -e "s|%OCTAVE_CONF_SHLEXT%|\"${SHLEXT}\"|" \
@@ -3170,6 +3275,10 @@ polynomial/PKG_ADD: $(polynomial_FCN_FILES) $(polynomial_GEN_FCN_FILES) polynomi
 	$(srcdir)/mk-pkg-add $(srcdir) $(polynomial_FCN_FILES) -- $(polynomial_GEN_FCN_FILES) > $@-t
 	mv $@-t $@
 
+prefs/PKG_ADD: $(prefs_FCN_FILES) $(prefs_GEN_FCN_FILES) prefs/$(octave_dirstamp) mk-pkg-add
+	$(srcdir)/mk-pkg-add $(srcdir) $(prefs_FCN_FILES) -- $(prefs_GEN_FCN_FILES) > $@-t
+	mv $@-t $@
+
 set/PKG_ADD: $(set_FCN_FILES) $(set_GEN_FCN_FILES) set/$(octave_dirstamp) mk-pkg-add
 	$(srcdir)/mk-pkg-add $(srcdir) $(set_FCN_FILES) -- $(set_GEN_FCN_FILES) > $@-t
 	mv $@-t $@
@@ -3238,6 +3347,7 @@ $(path_GEN_FCN_FILES): path/$(octave_dirstamp)
 $(pkg_GEN_FCN_FILES): pkg/$(octave_dirstamp)
 $(plot_GEN_FCN_FILES): plot/$(octave_dirstamp)
 $(polynomial_GEN_FCN_FILES): polynomial/$(octave_dirstamp)
+$(prefs_GEN_FCN_FILES): prefs/$(octave_dirstamp)
 $(set_GEN_FCN_FILES): set/$(octave_dirstamp)
 $(signal_GEN_FCN_FILES): signal/$(octave_dirstamp)
 $(sparse_GEN_FCN_FILES): sparse/$(octave_dirstamp)
@@ -3300,6 +3410,9 @@ plot/$(octave_dirstamp):
 polynomial/$(octave_dirstamp):
 	$(MKDIR_P) polynomial
 	: > polynomial/$(octave_dirstamp)
+prefs/$(octave_dirstamp):
+	$(MKDIR_P) prefs
+	: > prefs/$(octave_dirstamp)
 set/$(octave_dirstamp):
 	$(MKDIR_P) set
 	: > set/$(octave_dirstamp)

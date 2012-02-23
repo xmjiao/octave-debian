@@ -1,4 +1,4 @@
-## Copyright (C) 2010-2011 Ben Abbott
+## Copyright (C) 2010-2012 Ben Abbott
 ##
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -36,9 +36,10 @@ function val = getappdata (h, name)
     for nh = 1:numel(h)
       try
         appdata = get (h(nh), "__appdata__");
-      catch
-        appdata.(name) = [];
       end_try_catch
+      if (! isfield (appdata, name))
+        appdata.(name) = [];
+      endif
       val(nh) = {appdata.(name)};
     endfor
     if (nh == 1)

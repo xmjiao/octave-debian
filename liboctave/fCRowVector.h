@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1994-2011 John W. Eaton
+Copyright (C) 1994-2012 John W. Eaton
 
 This file is part of Octave.
 
@@ -129,9 +129,9 @@ public:
 
 // row vector by column vector -> scalar
 
-FloatComplex operator * (const FloatComplexRowVector& a, const ColumnVector& b);
+FloatComplex OCTAVE_API operator * (const FloatComplexRowVector& a, const ColumnVector& b);
 
-FloatComplex operator * (const FloatComplexRowVector& a, const FloatComplexColumnVector& b);
+FloatComplex OCTAVE_API operator * (const FloatComplexRowVector& a, const FloatComplexColumnVector& b);
 
 // other operations
 

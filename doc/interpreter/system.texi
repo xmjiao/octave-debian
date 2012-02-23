@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.
 
-@c Copyright (C) 1996-2011 John W. Eaton
+@c Copyright (C) 1996-2012 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -104,16 +104,14 @@ value returned by @code{time} was 856163706.
 @c now scripts/time/now.m
 @anchor{doc-now}
 @deftypefn {Function File} {t =} now ()
-Return the current local time as the number of days since Jan 1, 0000.
-By this reckoning, Jan 1, 1970 is day number 719529.
+Return the current local date/time as a serial day number
+(see @code{datenum}).
 
-The integral part, @code{floor (now)} corresponds to 00:00:00 today.
+The integral part, @code{floor (now)} corresponds to the number of days
+between today and Jan 1, 0000.
 
 The fractional part, @code{rem (now, 1)} corresponds to the current
-time on Jan 1, 0000.
-
-The returned value is also called a "serial date number"
-(see @code{datenum}).
+time.
 @seealso{@ref{doc-clock,,clock}, @ref{doc-date,,date}, @ref{doc-datenum,,datenum}}
 @end deftypefn
 
@@ -129,9 +127,10 @@ integer), to the local time and return a string of the same form as
 @example
 @group
 ctime (time ())
-     @result{} "Mon Feb 17 01:15:06 1997\n"
+   @result{} "Mon Feb 17 01:15:06 1997"
 @end group
 @end example
+@seealso{@ref{doc-asctime,,asctime}, @ref{doc-time,,time}, @ref{doc-localtime,,localtime}}
 @end deftypefn
 
 
@@ -211,17 +210,18 @@ mktime (localtime (time ()))
 @c asctime scripts/time/asctime.m
 @anchor{doc-asctime}
 @deftypefn {Function File} {} asctime (@var{tm_struct})
-Convert a time structure to a string using the following five-field
-format: Thu Mar 28 08:40:14 1996.  For example:
+Convert a time structure to a string using the following 
+format: "ddd mmm mm HH:MM:SS yyyy".  For example:
 
 @example
 @group
 asctime (localtime (time ()))
-     @result{} "Mon Feb 17 01:15:06 1997\n"
+     @result{} "Mon Feb 17 01:15:06 1997"
 @end group
 @end example
 
 This is equivalent to @code{ctime (time ())}.
+@seealso{@ref{doc-ctime,,ctime}, @ref{doc-localtime,,localtime}, @ref{doc-time,,time}}
 @end deftypefn
 
 
@@ -400,33 +400,40 @@ useful.
 @c clock scripts/time/clock.m
 @anchor{doc-clock}
 @deftypefn {Function File} {} clock ()
-Return a vector containing the current year, month (1-12), day (1-31),
-hour (0-23), minute (0-59) and second (0-61).  For example:
+Return the current local date and time as a date vector.  The date vector
+contains the following fields: current year, month (1-12), day (1-31),
+hour (0-23), minute (0-59), and second (0-61).  The seconds field has
+a fractional part after the decimal point for extended accuracy.
+
+For example:
 
 @example
 @group
-clock ()
+fix (clock ())
      @result{} [ 1993, 8, 20, 4, 56, 1 ]
 @end group
 @end example
 
 The function clock is more accurate on systems that have the
 @code{gettimeofday} function.
+@seealso{@ref{doc-now,,now}, @ref{doc-date,,date}, @ref{doc-datevec,,datevec}}
 @end deftypefn
 
 
 @c date scripts/time/date.m
 @anchor{doc-date}
 @deftypefn {Function File} {} date ()
-Return the date as a character string in the form DD-MMM-YY@.  For
-example:
+Return the current date as a character string in the form DD-MMM-YYYY@.
+
+For example:
 
 @example
 @group
 date ()
-     @result{} "20-Aug-93"
+  @result{} "20-Aug-1993"
 @end group
 @end example
+@seealso{@ref{doc-now,,now}, @ref{doc-clock,,clock}, @ref{doc-datestr,,datestr}, @ref{doc-localtime,,localtime}}
 @end deftypefn
 
 
@@ -447,7 +454,7 @@ elapsed_time = etime (clock (), t0);
 @noindent
 will set the variable @code{elapsed_time} to the number of seconds since
 the variable @code{t0} was set.
-@seealso{@ref{doc-tic,,tic}, @ref{doc-toc,,toc}, @ref{doc-clock,,clock}, @ref{doc-cputime,,cputime}}
+@seealso{@ref{doc-tic,,tic}, @ref{doc-toc,,toc}, @ref{doc-clock,,clock}, @ref{doc-cputime,,cputime}, @ref{doc-addtodate,,addtodate}}
 @end deftypefn
 
 
@@ -470,16 +477,17 @@ CPU time used is nonzero.
 @anchor{doc-is_leap_year}
 @deftypefn  {Function File} {} is_leap_year ()
 @deftypefnx {Function File} {} is_leap_year (@var{year})
-Return true if the given year is a leap year and false otherwise.  If no
-year is provided, @code{is_leap_year} will use the current year.
+Return true if @var{year} is a leap year and false otherwise.  If no
+year is specified, @code{is_leap_year} uses the current year.
 For example:
 
 @example
 @group
 is_leap_year (2000)
-     @result{} 1
+   @result{} 1
 @end group
 @end example
+@seealso{@ref{doc-weekday,,weekday}, @ref{doc-eomday,,eomday}, @ref{doc-calendar,,calendar}}
 @end deftypefn
 
 
@@ -577,16 +585,32 @@ of time less than one second, @code{usleep} will pause the execution for
 
 @c datenum scripts/time/datenum.m
 @anchor{doc-datenum}
-@deftypefn  {Function File} {} datenum (@var{year}, @var{month}, @var{day})
-@deftypefnx {Function File} {} datenum (@var{year}, @var{month}, @var{day}, @var{hour})
-@deftypefnx {Function File} {} datenum (@var{year}, @var{month}, @var{day}, @var{hour}, @var{minute})
-@deftypefnx {Function File} {} datenum (@var{year}, @var{month}, @var{day}, @var{hour}, @var{minute}, @var{second})
-@deftypefnx {Function File} {} datenum ("date")
-@deftypefnx {Function File} {} datenum ("date", @var{p})
-Return the specified local time as a day number, with Jan 1, 0000
-being day 1.  By this reckoning, Jan 1, 1970 is day number 719529.
-The fractional portion, @var{p}, corresponds to the portion of the
-specified day.
+@deftypefn  {Function File} {@var{days} =} datenum (@var{datevec})
+@deftypefnx {Function File} {@var{days} =} datenum (@var{year}, @var{month}, @var{day})
+@deftypefnx {Function File} {@var{days} =} datenum (@var{year}, @var{month}, @var{day}, @var{hour})
+@deftypefnx {Function File} {@var{days} =} datenum (@var{year}, @var{month}, @var{day}, @var{hour}, @var{minute})
+@deftypefnx {Function File} {@var{days} =} datenum (@var{year}, @var{month}, @var{day}, @var{hour}, @var{minute}, @var{second})
+@deftypefnx {Function File} {@var{days} =} datenum ("datestr")
+@deftypefnx {Function File} {@var{days} =} datenum ("datestr", @var{p})
+@deftypefnx {Function File} {[@var{days}, @var{secs}] =} datenum (@dots{})
+Return the date/time input as a serial day number, with Jan 1, 0000
+defined as day 1.
+
+The integer part, @code{floor (@var{days})} counts the number of
+complete days in the date input.
+
+The fractional part, @code{rem (@var{days}, 1)} corresponds to the time
+on the given day.
+
+The input may be a date vector (see @code{datevec}), 
+datestr (see @code{datestr}), or directly specified as input.
+
+When processing input datestrings, @var{p} is the year at the start of the
+century to which two-digit years will be referenced.  If not specified, it
+defaults to the current year minus 50.
+
+The optional output @var{secs} holds the time on the specified day with
+greater precision than @var{days}.
 
 Notes:
 
@@ -610,16 +634,16 @@ Days before the beginning of the month go to the previous month.
 Days can be fractional.
 @end itemize
 
-@strong{Warning:} this function does not attempt to handle Julian
+@strong{Caution:} this function does not attempt to handle Julian
 calendars so dates before Octave 15, 1582 are wrong by as much
-as eleven days.  Also be aware that only Roman Catholic countries
+as eleven days.  Also, be aware that only Roman Catholic countries
 adopted the calendar in 1582.  It took until 1924 for it to be
 adopted everywhere.  See the Wikipedia entry on the Gregorian
 calendar for more details.
 
 @strong{Warning:} leap seconds are ignored.  A table of leap seconds
 is available on the Wikipedia entry for leap seconds.
-@seealso{@ref{doc-date,,date}, @ref{doc-clock,,clock}, @ref{doc-now,,now}, @ref{doc-datestr,,datestr}, @ref{doc-datevec,,datevec}, @ref{doc-calendar,,calendar}, @ref{doc-weekday,,weekday}}
+@seealso{@ref{doc-datestr,,datestr}, @ref{doc-datevec,,datevec}, @ref{doc-now,,now}, @ref{doc-clock,,clock}, @ref{doc-date,,date}}
 @end deftypefn
 
 
@@ -697,6 +721,8 @@ If @var{f} is a format string, the following symbols are recognized:
 @item      @tab and not padded with zeros otherwise          @tab 9:00 AM
 @item MM   @tab Minute of hour (padded with zeros)           @tab 10:05
 @item SS   @tab Second of minute (padded with zeros)         @tab 10:05:03
+@item FFF  @tab Milliseconds of second (padded with zeros)   @tab 10:05:03.012
+@item AM   @tab Use 12-hour time format                      @tab 11:30 AM
 @item PM   @tab Use 12-hour time format                      @tab 11:30 PM
 @end multitable
 
@@ -706,10 +732,10 @@ depending on whether the date portion or the time portion of
 
 If @var{p} is nor specified, it defaults to the current year minus 50.
 
-If a matrix or cell array of dates is given, a vector of date strings is
-returned.
+If a matrix or cell array of dates is given, a column vector of date strings
+is returned.
 
-@seealso{@ref{doc-datenum,,datenum}, @ref{doc-datevec,,datevec}, @ref{doc-date,,date}, @ref{doc-clock,,clock}, @ref{doc-now,,now}, @ref{doc-datetick,,datetick}}
+@seealso{@ref{doc-datenum,,datenum}, @ref{doc-datevec,,datevec}, @ref{doc-date,,date}, @ref{doc-now,,now}, @ref{doc-clock,,clock}}
 @end deftypefn
 
 
@@ -729,42 +755,42 @@ month, day, hour, minute, and seconds respectively.
 @var{f} is the format string used to interpret date strings
 (see @code{datestr}).
 
-@var{p} is the year at the start of the century in which two-digit years
-are to be interpreted in.  If not specified, it defaults to the current
-year minus 50.
-@seealso{@ref{doc-datenum,,datenum}, @ref{doc-datestr,,datestr}, @ref{doc-date,,date}, @ref{doc-clock,,clock}, @ref{doc-now,,now}}
+@var{p} is the year at the start of the century to which two-digit years
+will be referenced.  If not specified, it defaults to the current year
+minus 50.
+@seealso{@ref{doc-datenum,,datenum}, @ref{doc-datestr,,datestr}, @ref{doc-clock,,clock}, @ref{doc-now,,now}, @ref{doc-date,,date}}
 @end deftypefn
 
 
 @c addtodate scripts/time/addtodate.m
 @anchor{doc-addtodate}
 @deftypefn {Function File} {@var{d} =} addtodate (@var{d}, @var{q}, @var{f})
-Add @var{q} amount of time (with units @var{f}) to the datenum, @var{d}.
+Add @var{q} amount of time (with units @var{f}) to the serial datenum,
+@var{d}.
 
-@var{f} must be one of "year", "month", "day", "hour", "minute", or
-"second".
-@seealso{@ref{doc-datenum,,datenum}, @ref{doc-datevec,,datevec}}
+@var{f} must be one of "year", "month", "day", "hour", "minute", "second",
+or "millisecond".
+@seealso{@ref{doc-datenum,,datenum}, @ref{doc-datevec,,datevec}, @ref{doc-etime,,etime}}
 @end deftypefn
 
 
 @c calendar scripts/time/calendar.m
 @anchor{doc-calendar}
-@deftypefn  {Function File} {} calendar (@dots{})
-@deftypefnx {Function File} {@var{c} =} calendar ()
+@deftypefn  {Function File} {@var{c} =} calendar ()
 @deftypefnx {Function File} {@var{c} =} calendar (@var{d})
 @deftypefnx {Function File} {@var{c} =} calendar (@var{y}, @var{m})
-If called with no arguments, return the current monthly calendar in
-a 6x7 matrix.
+@deftypefnx {Function File} {} calendar (@dots{})
+Return the current monthly calendar in a 6x7 matrix.
 
 If @var{d} is specified, return the calendar for the month containing
-the day @var{d}, which must be a serial date number or a date string.
+the date @var{d}, which must be a serial date number or a date string.
 
 If @var{y} and @var{m} are specified, return the calendar for year @var{y}
 and month @var{m}.
 
 If no output arguments are specified, print the calendar on the screen
 instead of returning a matrix.
-@seealso{@ref{doc-datenum,,datenum}}
+@seealso{@ref{doc-datenum,,datenum}, @ref{doc-datestr,,datestr}}
 @end deftypefn
 
 
@@ -772,16 +798,29 @@ instead of returning a matrix.
 @anchor{doc-weekday}
 @deftypefn  {Function File} {[@var{n}, @var{s}] =} weekday (@var{d})
 @deftypefnx {Function File} {[@var{n}, @var{s}] =} weekday (@var{d}, @var{format})
-Return the day of week as a number in @var{n} and a string in @var{s},
-for example @code{[1, "Sun"]}, @code{[2, "Mon"]}, @dots{}, or
-@code{[7, "Sat"]}.
+Return the day of the week as a number in @var{n} and as a string in @var{s}.
+The days of the week are numbered 1--7 with the first day being Sunday.
 
 @var{d} is a serial date number or a date string.
 
-If the string @var{format} is given and is @code{"long"}, @var{s} will
-contain the full name of the weekday; otherwise (or if @var{format} is
-@code{"short"}), @var{s} will contain the abbreviated name of the weekday.
-@seealso{@ref{doc-datenum,,datenum}, @ref{doc-datevec,,datevec}, @ref{doc-eomday,,eomday}}
+If the string @var{format} is not present or is equal to "short" then
+@var{s} will contain the abbreviated name of the weekday.  If @var{format}
+is "long" then @var{s} will contain the full name.
+
+Table of return values based on @var{format}:
+
+@multitable @columnfractions .06 .13 .16
+@headitem @var{n} @tab "short" @tab "long"
+@item 1 @tab Sun @tab Sunday
+@item 2 @tab Mon @tab Monday
+@item 3 @tab Tue @tab Tuesday
+@item 4 @tab Wed @tab Wednesday
+@item 5 @tab Thu @tab Thursday
+@item 6 @tab Fri @tab Friday
+@item 7 @tab Sat @tab Saturday
+@end multitable
+
+@seealso{@ref{doc-eomday,,eomday}, @ref{doc-is_leap_year,,is_leap_year}, @ref{doc-calendar,,calendar}, @ref{doc-datenum,,datenum}, @ref{doc-datevec,,datevec}}
 @end deftypefn
 
 
@@ -789,7 +828,7 @@ contain the full name of the weekday; otherwise (or if @var{format} is
 @anchor{doc-eomday}
 @deftypefn {Function File} {@var{e} =} eomday (@var{y}, @var{m})
 Return the last day of the month @var{m} for the year @var{y}.
-@seealso{@ref{doc-datenum,,datenum}, @ref{doc-datevec,,datevec}, @ref{doc-weekday,,weekday}}
+@seealso{@ref{doc-weekday,,weekday}, @ref{doc-datenum,,datenum}, @ref{doc-datevec,,datevec}, @ref{doc-is_leap_year,,is_leap_year}, @ref{doc-calendar,,calendar}}
 @end deftypefn
 
 
@@ -947,8 +986,13 @@ recursively remove all subdirectories as well.
 @anchor{doc-confirm_recursive_rmdir}
 @deftypefn  {Built-in Function} {@var{val} =} confirm_recursive_rmdir ()
 @deftypefnx {Built-in Function} {@var{old_val} =} confirm_recursive_rmdir (@var{new_val})
+@deftypefnx {Built-in Function} {} confirm_recursive_rmdir (@var{new_val}, "local")
 Query or set the internal variable that controls whether Octave
 will ask for confirmation before recursively removing a directory tree.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 
 
@@ -1135,7 +1179,7 @@ of @var{mode} is assumed to be returned from a call to @code{stat}.
 
 @c fileattrib scripts/miscellaneous/fileattrib.m
 @anchor{doc-fileattrib}
-@deftypefn {Function File} {[@var{status}, @var{msg}, @var{msgid}] =} fileattrib (@var{file})
+@deftypefn {Function File} {[@var{status}, @var{result}, @var{msgid}] =} fileattrib (@var{file})
 Return information about @var{file}.
 
 If successful, @var{status} is 1, with @var{result} containing a
@@ -1317,6 +1361,7 @@ It is @samp{/} (forward slash) under UNIX or @w{Mac OS X}, @samp{/} and
 @anchor{doc-filemarker}
 @deftypefn  {Built-in Function} {@var{val} =} filemarker ()
 @deftypefnx {Built-in Function} {} filemarker (@var{new_val})
+@deftypefnx {Built-in Function} {} filemarker (@var{new_val}, "local")
 Query or set the character used to separate filename from the
 the subfunction names contained within the file.  This can be used in
 a generic manner to interact with subfunctions.  For example,
@@ -1337,6 +1382,10 @@ dbstop (["myfunc", filemarker, "mysubfunc"])
 
 @noindent
 will set a breakpoint at the first line of the subfunction @code{mysubfunc}.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 
 
@@ -1432,6 +1481,19 @@ Return the name of the system's directory for temporary files.
 @deftypefnx {Function File} {} tempname (@var{dir}, @var{prefix})
 This function is an alias for @code{tmpnam}.
 @seealso{@ref{doc-tmpnam,,tmpnam}}
+@end deftypefn
+
+
+@c recycle scripts/miscellaneous/recycle.m
+@anchor{doc-recycle}
+@deftypefn  {Function File} {@var{current_state}} recycle ()
+@deftypefnx {Function File} {@var{old_state}} recycle (@var{new_state})
+Query or set the preference for recycling deleted files.
+
+Recycling files instead of permanently deleting them is currently not
+implemented in Octave.  To help avoid accidental data loss it
+is an error to attempt enable file recycling.
+@seealso{@ref{doc-delete,,delete}}
 @end deftypefn
 
 
@@ -1731,31 +1793,36 @@ higher-level functions.
 
 @c system src/toplev.cc
 @anchor{doc-system}
-@deftypefn  {Built-in Function} {[@var{status}, @var{output}]} system (@var{string}, @var{return_output}, @var{type})
-@deftypefnx {Built-in Function} {[@var{status}, @var{output}]} shell_cmd (@var{string}, @var{return_output}, @var{type})
+@deftypefn  {Built-in Function} {} system ("@var{string}")
+@deftypefnx {Built-in Function} {} system ("@var{string}", @var{return_output})
+@deftypefnx {Built-in Function} {} system ("@var{string}", @var{return_output}, @var{type})
+@deftypefnx {Built-in Function} {[@var{status}, @var{output}] =} system (@dots{})
 Execute a shell command specified by @var{string}.
-If the optional argument @var{type} is @code{"async"}, the process
-is started in the background and the process id of the child process
-is returned immediately.  Otherwise, the process is started, and
-Octave waits until it exits.  If the @var{type} argument is omitted, a
-value of @code{"sync"} is assumed.
+If the optional argument @var{type} is "async", the process
+is started in the background and the process ID of the child process
+is returned immediately.  Otherwise, the child process is started and
+Octave waits until it exits.  If the @var{type} argument is omitted, it
+defaults to the value "sync".
 
-If the optional argument @var{return_output} is true and the subprocess
-is started synchronously, or if @var{system} is called with one input
-argument and one or more output arguments, the output from the command
-is returned.  Otherwise, if the subprocess is executed synchronously, its
-output is sent to the standard output.  To send the output of a command
-executed with @code{system} through the pager, use a command like
+If @var{system} is called with one or more output arguments, or if the
+optional argument @var{return_output} is true and the subprocess is started
+synchronously, then the output from the command is returned as a variable.  
+Otherwise, if the subprocess is executed synchronously, its output is sent
+to the standard output.  To send the output of a command executed with
+@code{system} through the pager, use a command like
 
 @example
-disp (system (cmd, 1));
+@group
+[output, text] = system ("cmd");
+disp (text);
+@end group
 @end example
 
 @noindent
 or
 
 @example
-printf ("%s\n", system (cmd, 1));
+printf ("%s\n", nthargout (2, "system", "cmd"));
 @end example
 
 The @code{system} function can return two values.  The first is the
@@ -1772,32 +1839,37 @@ variable @code{status} to the integer @samp{2}.
 
 For commands run asynchronously, @var{status} is the process id of the
 command shell that is started to run the command.
+@seealso{@ref{doc-unix,,unix}, @ref{doc-dos,,dos}}
 @end deftypefn
 
 
 @c unix scripts/miscellaneous/unix.m
 @anchor{doc-unix}
-@deftypefn  {Function File} {[@var{status}, @var{text}] =} unix (@var{command})
-@deftypefnx {Function File} {[@var{status}, @var{text}] =} unix (@var{command}, "-echo")
+@deftypefn  {Function File} {} unix ("@var{command}")
+@deftypefnx {Function File} {@var{status} =} unix ("@var{command}")
+@deftypefnx {Function File} {[@var{status}, @var{text}] =} unix ("@var{command}")
+@deftypefnx {Function File} {[@dots{}] =} unix ("@var{command}", "-echo")
 Execute a system command if running under a Unix-like operating
 system, otherwise do nothing.  Return the exit status of the program
-in @var{status} and any output sent to the standard output in
-@var{text}.  If the optional second argument @code{"-echo"} is given,
-then also send the output from the command to the standard output.
-@seealso{@ref{doc-isunix,,isunix}, @ref{doc-ispc,,ispc}, @ref{doc-system,,system}}
+in @var{status} and any output from the command in @var{text}.
+When called with no output argument, or the "-echo" argument is
+given, then @var{text} is also sent to standard output.
+@seealso{@ref{doc-dos,,dos}, @ref{doc-system,,system}, @ref{doc-isunix,,isunix}, @ref{doc-ispc,,ispc}}
 @end deftypefn
 
 
 @c dos scripts/miscellaneous/dos.m
 @anchor{doc-dos}
-@deftypefn  {Function File} {[@var{status}, @var{text}] =} dos (@var{command})
-@deftypefnx {Function File} {[@var{status}, @var{text}] =} dos (@var{command}, "-echo")
+@deftypefn  {Function File} {} dos ("@var{command}")
+@deftypefnx {Function File} {@var{status} =} dos ("@var{command}")
+@deftypefnx {Function File} {[@var{status}, @var{text}] =} dos ("@var{command"})
+@deftypefnx {Function File} {[@dots{}] =} dos ("@var{command}", "-echo")
 Execute a system command if running under a Windows-like operating
 system, otherwise do nothing.  Return the exit status of the program
-in @var{status} and any output sent to the standard output in
-@var{text}.  If the optional second argument @code{"-echo"} is given,
-then also send the output from the command to the standard output.
-@seealso{@ref{doc-unix,,unix}, @ref{doc-isunix,,isunix}, @ref{doc-ispc,,ispc}, @ref{doc-system,,system}}
+in @var{status} and any output from the command in @var{text}.
+When called with no output argument, or the "-echo" argument is
+given, then @var{text} is also sent to standard output.
+@seealso{@ref{doc-unix,,unix}, @ref{doc-system,,system}, @ref{doc-isunix,,isunix}, @ref{doc-ispc,,ispc}}
 @end deftypefn
 
 
@@ -1806,6 +1878,18 @@ then also send the output from the command to the standard output.
 @deftypefn  {Function File} {[@var{output}, @var{status}] =} perl (@var{scriptfile})
 @deftypefnx {Function File} {[@var{output}, @var{status}] =} perl (@var{scriptfile}, @var{argument1}, @var{argument2}, @dots{})
 Invoke Perl script @var{scriptfile} with possibly a list of
+command line arguments.
+Returns output in @var{output} and status
+in @var{status}.
+@seealso{@ref{doc-system,,system}}
+@end deftypefn
+
+
+@c python scripts/miscellaneous/python.m
+@anchor{doc-python}
+@deftypefn  {Function File} {[@var{output}, @var{status}] =} python (@var{scriptfile})
+@deftypefnx {Function File} {[@var{output}, @var{status}] =} python (@var{scriptfile}, @var{argument1}, @var{argument2}, @dots{})
+Invoke python script @var{scriptfile} with possibly a list of
 command line arguments.
 Returns output in @var{output} and status
 in @var{status}.
@@ -1903,11 +1987,16 @@ exit status, it will linger until Octave exits.
 @anchor{doc-EXEC_PATH}
 @deftypefn  {Built-in Function} {@var{val} =} EXEC_PATH ()
 @deftypefnx {Built-in Function} {@var{old_val} =} EXEC_PATH (@var{new_val})
+@deftypefnx {Built-in Function} {} EXEC_PATH (@var{new_val}, "local")
 Query or set the internal variable that specifies a colon separated
 list of directories to append to the shell PATH when executing external
 programs.  The initial value of is taken from the environment variable
 @w{@env{OCTAVE_EXEC_PATH}}, but that value can be overridden by
 the command line argument @option{--exec-path PATH}.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 
 
@@ -2376,7 +2465,7 @@ statinfo
 @end example
 
 @noindent
-in which @code{statinfo} is the structure returned from @code{stat}.
+where @code{statinfo} is the structure returned from @code{stat}.
 
 If @var{directory} is not a directory, return information about the
 named @var{filename}.  @var{directory} may be a list of directories
@@ -2384,7 +2473,7 @@ specified either by name or with wildcard characters (like * and ?)
 which will be expanded with glob.
 
 Note that for symbolic links, @code{dir} returns information about
-the file that a symbolic link points to instead of the link itself.
+the file that the symbolic link points to instead of the link itself.
 However, if the link points to a nonexistent file, @code{dir} returns
 information about the link.
 @seealso{@ref{doc-ls,,ls}, @ref{doc-stat,,stat}, @ref{doc-lstat,,lstat}, @ref{doc-readdir,,readdir}, @ref{doc-glob,,glob}, @ref{doc-filesep,,filesep}}
@@ -2540,7 +2629,8 @@ Close the group database.
 
 @c computer scripts/miscellaneous/computer.m
 @anchor{doc-computer}
-@deftypefn {Function File} {[@var{c}, @var{maxsize}, @var{endian}] =} computer ()
+@deftypefn  {Function File} {[@var{c}, @var{maxsize}, @var{endian}] =} computer ()
+@deftypefnx {Function File} {@var{arch} =} computer ("arch")
 Print or return a string of the form @var{cpu}-@var{vendor}-@var{os}
 that identifies the kind of computer Octave is running on.  If invoked
 with an output argument, the value is returned instead of printed.  For
@@ -2549,10 +2639,10 @@ example:
 @example
 @group
 computer ()
-     @print{} i586-pc-linux-gnu
+   @print{} i586-pc-linux-gnu
 
 x = computer ()
-     @result{} x = "i586-pc-linux-gnu"
+   @result{} x = "i586-pc-linux-gnu"
 @end group
 @end example
 
@@ -2562,6 +2652,10 @@ of elements for an array.
 If three output arguments are requested, also return the byte order
 of the current system as a character (@code{"B"} for big-endian or
 @code{"L"} for little-endian).
+
+If the argument @code{"arch"} is specified, return a string
+indicating the architecture of the computer on which Octave is
+running.
 @end deftypefn
 
 
@@ -2665,7 +2759,7 @@ Return the name of the top-level Octave installation directory.
 @deftypefn {Function File} {} matlabroot ()
 Return the name of the top-level Octave installation directory.
 
-This is an alias for the function @code{OCTAVE_HOME} provided
+This is an alias for the function @w{@code{OCTAVE_HOME}} provided
 for compatibility.
 @seealso{@ref{doc-OCTAVE_HOME,,OCTAVE_HOME}}
 @end deftypefn
@@ -2683,7 +2777,7 @@ Return the version number of Octave, as a string.
 @deftypefn {Function File} {} version ()
 Return the version number of Octave, as a string.
 
-This is an alias for the function @code{OCTAVE_VERSION} provided for
+This is an alias for the function @w{@env{OCTAVE_VERSION}} provided for
 compatibility
 @seealso{@ref{doc-OCTAVE_VERSION,,OCTAVE_VERSION}}.
 @end deftypefn
@@ -2828,6 +2922,34 @@ information for Octave.
 If @var{option} is a string, return the configuration information for the
 specified option.
 
+@end deftypefn
+
+
+@c usejava scripts/miscellaneous/usejava.m
+@anchor{doc-usejava}
+@deftypefn {Function File} {} usejava (@var{feature})
+Return true if the specific Sun Java element @var{feature} is available.
+
+Possible features are:
+
+@table @asis
+@item "awt"
+Abstract Window Toolkit for GUIs.
+
+@item "desktop"
+Interactive desktop is running.
+
+@item "jvm"
+Java Virtual Machine.
+
+@item "swing"
+Swing components for lightweight GUIs.
+@end table
+
+This function is provided for compatibility with @sc{matlab} scripts which
+may alter their behavior based on the availability of Java.  Octave does
+not implement an interface to Java and this function always returns
+@code{false}.
 @end deftypefn
 
 

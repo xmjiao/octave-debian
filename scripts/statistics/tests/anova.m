@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2011 Kurt Hornik
+## Copyright (C) 1995-2012 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -88,7 +88,7 @@ function [pval, f, df_b, df_w] = anova (y, g)
   v_b = SSB / df_b;
   v_w = SSW / df_w;
   f = v_b / v_w;
-  pval = 1 - f_cdf (f, df_b, df_w);
+  pval = 1 - fcdf (f, df_b, df_w);
 
   if (nargout == 0)
     ## This eventually needs to be done more cleanly ...

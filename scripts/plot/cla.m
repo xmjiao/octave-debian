@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2011 Ben Abbott
+## Copyright (C) 2008-2012 Ben Abbott
 ##
 ## This file is part of Octave.
 ##
@@ -90,9 +90,8 @@ function cla (varargin)
 endfunction
 
 %!test
-%! hf = figure (1, "visible", "off");
+%! hf = figure ("visible", "off");
 %! unwind_protect
-%!   clf
 %!   plot (1:10)
 %!   cla ()
 %!   kids = get (gca, "children");

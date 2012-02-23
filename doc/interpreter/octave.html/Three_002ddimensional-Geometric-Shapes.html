@@ -37,11 +37,11 @@ Up:&nbsp;<a rel="up" accesskey="u" href="Three_002dDimensional-Plots.html#Three_
 <p><a name="doc_002dcylinder"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>cylinder</b><var><a name="index-cylinder-1285"></a></var><br>
-&mdash; Function File:  <b>cylinder</b> (<var>r</var>)<var><a name="index-cylinder-1286"></a></var><br>
-&mdash; Function File:  <b>cylinder</b> (<var>r, n</var>)<var><a name="index-cylinder-1287"></a></var><br>
-&mdash; Function File: [<var>x</var>, <var>y</var>, <var>z</var>] = <b>cylinder</b> (<var><small class="dots">...</small></var>)<var><a name="index-cylinder-1288"></a></var><br>
-&mdash; Function File:  <b>cylinder</b> (<var>ax, <small class="dots">...</small></var>)<var><a name="index-cylinder-1289"></a></var><br>
+&mdash; Function File:  <b>cylinder</b><var><a name="index-cylinder-1355"></a></var><br>
+&mdash; Function File:  <b>cylinder</b> (<var>r</var>)<var><a name="index-cylinder-1356"></a></var><br>
+&mdash; Function File:  <b>cylinder</b> (<var>r, n</var>)<var><a name="index-cylinder-1357"></a></var><br>
+&mdash; Function File: [<var>x</var>, <var>y</var>, <var>z</var>] = <b>cylinder</b> (<var><small class="dots">...</small></var>)<var><a name="index-cylinder-1358"></a></var><br>
+&mdash; Function File:  <b>cylinder</b> (<var>ax, <small class="dots">...</small></var>)<var><a name="index-cylinder-1359"></a></var><br>
 <blockquote><p>Generate three matrices in <code>meshgrid</code> format, such that
 <code>surf (</code><var>x</var><code>, </code><var>y</var><code>, </code><var>z</var><code>)</code> generates a unit cylinder. 
 The matrices are of size <var>n</var><code>+1</code>-by-<var>n</var><code>+1</code>. 
@@ -56,9 +56,9 @@ of axes.
 
         <p>Examples:
 
-     <pre class="example">          [x, y, z] = cylinder (10:-1:0,50);
+     <pre class="example">          [x, y, z] = cylinder (10:-1:0, 50);
           surf (x, y, z);
-          title ("a cone")
+          title ("a cone");
 </pre>
         <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
      <!-- A simple blank line produces the correct behavior. -->
@@ -70,8 +70,8 @@ of axes.
    <p><a name="doc_002dsphere"></a>
 
 <div class="defun">
-&mdash; Function File: [<var>x</var>, <var>y</var>, <var>z</var>] = <b>sphere</b> (<var>n</var>)<var><a name="index-sphere-1290"></a></var><br>
-&mdash; Function File:  <b>sphere</b> (<var>h, <small class="dots">...</small></var>)<var><a name="index-sphere-1291"></a></var><br>
+&mdash; Function File: [<var>x</var>, <var>y</var>, <var>z</var>] = <b>sphere</b> (<var>n</var>)<var><a name="index-sphere-1360"></a></var><br>
+&mdash; Function File:  <b>sphere</b> (<var>h, <small class="dots">...</small></var>)<var><a name="index-sphere-1361"></a></var><br>
 <blockquote><p>Generate three matrices in <code>meshgrid</code> format, such that
 <code>surf (</code><var>x</var><code>, </code><var>y</var><code>, </code><var>z</var><code>)</code> generates a unit sphere. 
 The matrices of <var>n</var><code>+1</code>-by-<var>n</var><code>+1</code>.  If <var>n</var> is
@@ -91,8 +91,8 @@ as the first argument, the surface is plotted to this set of axes.
    <p><a name="doc_002dellipsoid"></a>
 
 <div class="defun">
-&mdash; Function File: [<var>x</var>, <var>y</var>, <var>z</var>] = <b>ellipsoid</b> (<var>xc, yc, zc, xr, yr, zr, n</var>)<var><a name="index-ellipsoid-1292"></a></var><br>
-&mdash; Function File:  <b>ellipsoid</b> (<var>h, <small class="dots">...</small></var>)<var><a name="index-ellipsoid-1293"></a></var><br>
+&mdash; Function File: [<var>x</var>, <var>y</var>, <var>z</var>] = <b>ellipsoid</b> (<var>xc, yc, zc, xr, yr, zr, n</var>)<var><a name="index-ellipsoid-1362"></a></var><br>
+&mdash; Function File:  <b>ellipsoid</b> (<var>h, <small class="dots">...</small></var>)<var><a name="index-ellipsoid-1363"></a></var><br>
 <blockquote><p>Generate three matrices in <code>meshgrid</code> format that define an
 ellipsoid.  Called with no return arguments, <code>ellipsoid</code> calls
 directly <code>surf (</code><var>x</var><code>, </code><var>y</var><code>, </code><var>z</var><code>)</code>.  If an axes handle

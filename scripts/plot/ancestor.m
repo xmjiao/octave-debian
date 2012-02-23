@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2011 Michael Goffioul
+## Copyright (C) 2007-2012 Michael Goffioul
 ##
 ## This file is part of Octave.
 ##
@@ -74,3 +74,13 @@ function p = ancestor (h, type, toplevel)
   endif
 
 endfunction
+
+%!test
+%! hf = figure ("visible", "off");
+%! unwind_protect
+%!   l = line;
+%!   assert (ancestor (l, "axes"), gca);
+%!   assert (ancestor (l, "figure"), hf);
+%! unwind_protect_cleanup
+%!   close (hf);
+%! end_unwind_protect

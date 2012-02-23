@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2011 John W. Eaton
+## Copyright (C) 2008-2012 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -35,6 +35,7 @@ function rundemos (directory)
     if (is_absolute_filename (directory))
       dirs = {directory};
     else
+      directory = regexprep (directory, ['\',filesep(),'$'], "");
       fullname = find_dir_in_path (directory);
       if (! isempty (fullname))
         dirs = {fullname};
@@ -61,7 +62,11 @@ function run_all_demos (directory)
     if (length (f) > 2 && strcmp (f((end-1):end), ".m"))
       f = fullfile (directory, f);
       if (has_demos (f))
-        demo (f);
+        try
+          demo (f);
+        catch
+          printf ("error: %s\n\n", lasterror().message)
+        end_try_catch
         if (i != numel (flist))
           input ("Press <enter> to continue: ", "s");
         endif
@@ -80,3 +85,5 @@ function retval = has_demos (f)
     retval = findstr (str, "%!demo");
   endif
 endfunction
+
+%!error rundemos ("foo", 1);

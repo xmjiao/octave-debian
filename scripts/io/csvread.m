@@ -1,4 +1,4 @@
-## Copyright (C) 2001-2011 Paul Kienzle
+## Copyright (C) 2001-2012 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -33,3 +33,9 @@
 function x = csvread (filename, varargin)
   x = dlmread (filename, ",", varargin{:});
 endfunction
+
+
+%% Tests for csvread() are in csvwrite()
+%% Mark file as being tested
+%!assert (1)
+

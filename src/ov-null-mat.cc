@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008-2011 Jaroslav Hajek
+Copyright (C) 2008-2012 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -118,3 +118,17 @@ This should give an error if @code{I} is nonempty.\n\
   return retval;
 }
 
+/*
+
+%!assert (isnull ([]), true)
+%!assert (isnull ([1]), false)
+%!assert (isnull (zeros (0,3)), false)
+%!assert (isnull (""), true)
+%!assert (isnull ("A"), false)
+%!assert (isnull (''), true)
+%!assert (isnull ('A'), false)
+%!test
+%! x = [];
+%! assert (isnull (x), false);
+
+*/

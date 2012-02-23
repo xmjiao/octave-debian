@@ -1,7 +1,7 @@
 /* -*- buffer-read-only: t -*- vi: set ro: */
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* Substitute for <sys/select.h>.
-   Copyright (C) 2007-2011 Free Software Foundation, Inc.
+   Copyright (C) 2007-2012 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -97,11 +97,15 @@
 #  include <string.h>
 # endif
 /* On native Windows platforms:
-   Get the 'fd_set' type.  */
-# if @HAVE_WINSOCK2_H@ && !defined _GL_INCLUDING_WINSOCK2_H
-#  define _GL_INCLUDING_WINSOCK2_H
-#  include <winsock2.h>
-#  undef _GL_INCLUDING_WINSOCK2_H
+   Get the 'fd_set' type.
+   Get the close() declaration before we override it.  */
+# if @HAVE_WINSOCK2_H@
+#  if !defined _GL_INCLUDING_WINSOCK2_H
+#   define _GL_INCLUDING_WINSOCK2_H
+#   include <winsock2.h>
+#   undef _GL_INCLUDING_WINSOCK2_H
+#  endif
+#  include <io.h>
 # endif
 #endif
 

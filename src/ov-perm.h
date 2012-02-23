@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008-2011 Jaroslav Hajek
+Copyright (C) 2008-2012 Jaroslav Hajek
 
 This file is part of Octave.
 
@@ -159,6 +159,8 @@ public:
   FloatNDArray float_array_value (bool = false) const;
 
   SparseMatrix sparse_matrix_value (bool = false) const;
+
+  SparseBoolMatrix sparse_bool_matrix_value (bool = false) const;
 
   SparseComplexMatrix sparse_complex_matrix_value (bool = false) const;
 

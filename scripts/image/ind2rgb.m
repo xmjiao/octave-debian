@@ -1,4 +1,4 @@
-## Copyright (C) 1994-2011 John W. Eaton
+## Copyright (C) 1994-2012 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -40,7 +40,7 @@ function [R, G, B] = ind2rgb (x, map)
   endif
 
   ## Check if X is an indexed image.
-  if (ndims (x) != 2 || any (x(:) != round (x(:))) || min (x(:)) < 1)
+  if (ndims (x) != 2 || any (x(:) != fix (x(:))) || min (x(:)) < 1)
     error ("ind2rgb: X must be an indexed image");
   endif
 

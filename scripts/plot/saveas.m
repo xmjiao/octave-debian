@@ -1,4 +1,4 @@
-## Copyright (C) 2010-2011 Kai Habel
+## Copyright (C) 2010-2012 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -50,10 +50,9 @@
 ##
 ## @example
 ## @group
-## figure (1);
 ## clf ();
 ## surf (peaks);
-## saveas(1, "figure1.png");
+## saveas (1, "figure1.png");
 ## @end group
 ## @end example
 ##

@@ -1,4 +1,4 @@
-## Copyright (C) 2005-2011 William Poetra Yoga Hadisoeseno
+## Copyright (C) 2005-2012 William Poetra Yoga Hadisoeseno
 ##
 ## This file is part of Octave.
 ##
@@ -25,11 +25,11 @@
 
 function retval = isequalwithequalnans (x1, varargin)
 
-  if (nargin > 1)
-    retval = __isequal__ (true, x1, varargin{:});
-  else
+  if (nargin < 2)
     print_usage ();
   endif
+
+  retval = __isequal__ (true, x1, varargin{:});
 
 endfunction
 

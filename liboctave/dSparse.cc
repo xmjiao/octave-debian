@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004-2011 David Bateman
+Copyright (C) 2004-2012 David Bateman
 Copyright (C) 1998-2004 Andy Adler
 Copyright (C) 2010 VZLU Prague
 
@@ -178,29 +178,6 @@ SparseMatrix::SparseMatrix (const DiagMatrix& a)
     }
   for (octave_idx_type i = l; i <= a.cols (); i++)
     cidx(i) = j;
-}
-
-SparseMatrix::SparseMatrix (const PermMatrix& a)
-  : MSparse<double> (a.rows (), a.cols (), a.rows ())
-{
-  octave_idx_type n = a.rows ();
-  for (octave_idx_type i = 0; i <= n; i++)
-    cidx (i) = i;
-  const Array<octave_idx_type> pv = a.pvec ();
-
-  if (a.is_row_perm ())
-    {
-      for (octave_idx_type i = 0; i < n; i++)
-        ridx (pv (i)) = i;
-    }
-  else
-    {
-      for (octave_idx_type i = 0; i < n; i++)
-        ridx (i) = pv (i);
-    }
-
-  for (octave_idx_type i = 0; i < n; i++)
-    data (i) = 1.0;
 }
 
 bool
@@ -608,7 +585,7 @@ ColumnVector
 SparseMatrix::column (octave_idx_type i) const
 {
   octave_idx_type nr = rows ();
-  ColumnVector retval (nr);
+  ColumnVector retval (nr, 0);
 
   for (octave_idx_type k = cidx (i); k < cidx (i+1); k++)
     retval(ridx (k)) = data (k);

@@ -43,18 +43,18 @@ and populated with specific user commands via the <code>uimenu</code> function.
    <p><a name="doc_002dginput"></a>
 
 <div class="defun">
-&mdash; Function File: [<var>x</var>, <var>y</var>, <var>buttons</var>] = <b>ginput</b> (<var>n</var>)<var><a name="index-ginput-1398"></a></var><br>
+&mdash; Function File: [<var>x</var>, <var>y</var>, <var>buttons</var>] = <b>ginput</b> (<var>n</var>)<var><a name="index-ginput-1472"></a></var><br>
 <blockquote><p>Return which mouse buttons were pressed and keys were hit on the current
 figure.  If <var>n</var> is defined, then wait for <var>n</var> mouse clicks
 before returning.  If <var>n</var> is not defined, then <code>ginput</code> will
-loop until the return key is pressed. 
+loop until the return key &lt;RET&gt; is pressed. 
 </p></blockquote></div>
 
 <!-- waitforbuttonpress scripts/plot/waitforbuttonpress.m -->
    <p><a name="doc_002dwaitforbuttonpress"></a>
 
 <div class="defun">
-&mdash; Function File: <var>b</var> = <b>waitforbuttonpress</b> ()<var><a name="index-waitforbuttonpress-1399"></a></var><br>
+&mdash; Function File: <var>b</var> = <b>waitforbuttonpress</b> ()<var><a name="index-waitforbuttonpress-1473"></a></var><br>
 <blockquote><p>Wait for button or mouse press.over a figure window.  The value of
 <var>b</var> returns 0 if a mouse button was pressed or 1 is a key was
 pressed. 
@@ -69,9 +69,9 @@ pressed.
    <p><a name="doc_002dgtext"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>gtext</b> (<var>s</var>)<var><a name="index-gtext-1400"></a></var><br>
-&mdash; Function File:  <b>gtext</b> (<var>{s1; s2; <small class="dots">...</small>}</var>)<var><a name="index-gtext-1401"></a></var><br>
-&mdash; Function File:  <b>gtext</b> (<var><small class="dots">...</small>, prop, val</var>)<var><a name="index-gtext-1402"></a></var><br>
+&mdash; Function File:  <b>gtext</b> (<var>s</var>)<var><a name="index-gtext-1474"></a></var><br>
+&mdash; Function File:  <b>gtext</b> (<var>{s1; s2; <small class="dots">...</small>}</var>)<var><a name="index-gtext-1475"></a></var><br>
+&mdash; Function File:  <b>gtext</b> (<var><small class="dots">...</small>, prop, val</var>)<var><a name="index-gtext-1476"></a></var><br>
 <blockquote><p>Place text on the current figure using the mouse.  The text is defined
 by the string <var>s</var>.  If <var>s</var> is a cell array, each element of the cell
 array is written to a separate line.  Additional arguments are passed to
@@ -87,8 +87,8 @@ the underlying text object as properties.
    <p><a name="doc_002duimenu"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>uimenu</b> (<var>property, value, <small class="dots">...</small></var>)<var><a name="index-uimenu-1403"></a></var><br>
-&mdash; Function File:  <b>uimenu</b> (<var>h, property, value, <small class="dots">...</small></var>)<var><a name="index-uimenu-1404"></a></var><br>
+&mdash; Function File:  <b>uimenu</b> (<var>property, value, <small class="dots">...</small></var>)<var><a name="index-uimenu-1477"></a></var><br>
+&mdash; Function File:  <b>uimenu</b> (<var>h, property, value, <small class="dots">...</small></var>)<var><a name="index-uimenu-1478"></a></var><br>
 <blockquote><p>Create a uimenu object and return a handle to it.  If <var>h</var> is ommited
 then a top-level menu for the current figure is created.  If <var>h</var>
 is given then a submenu relative to <var>h</var> is created.
@@ -124,10 +124,12 @@ current position.  It is ignored for top level entries.
 
         <p>Examples:
 
-     <pre class="example">          f = uimenu("label", "&amp;File", "accelerator", "f");
-          e = uimenu("label", "&amp;Edit", "accelerator", "e");
-          uimenu(f, "label", "Close", "accelerator", "q", "callback", "close (gcf)");
-          uimenu(e, "label", "Toggle &amp;Grid", "accelerator", "g", "callback", "grid (gca)");
+     <pre class="example">          f = uimenu ("label", "&amp;File", "accelerator", "f");
+          e = uimenu ("label", "&amp;Edit", "accelerator", "e");
+          uimenu (f, "label", "Close", "accelerator", "q", ...
+                     "callback", "close (gcf)");
+          uimenu (e, "label", "Toggle &amp;Grid", "accelerator", "g", ...
+                     "callback", "grid (gca)");
 </pre>
         <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
      <!-- A simple blank line produces the correct behavior. -->

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2002-2011 John W. Eaton
+Copyright (C) 2002-2012 John W. Eaton
 
 This file is part of Octave.
 
@@ -45,11 +45,6 @@ along with Octave; see the file COPYING.  If not, see
 #if ! defined (HAVE_FINITE) && defined (HAVE__FINITE)
 #define finite _finite
 #define HAVE_FINITE 1
-#endif
-
-#if ! defined (HAVE_COPYSIGN) && defined (HAVE__COPYSIGN)
-#define copysign _copysign
-#define HAVE_COPYSIGN 1
 #endif
 
 #if defined (_AIX) && defined (__GNUG__)
