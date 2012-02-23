@@ -17,9 +17,9 @@ Author: Thomas Weber <tweber@debian.org>
  
  libcruft_la_SOURCES =
  
-@@ -54,7 +55,7 @@
-   $(LAPACK_LIBS) $(BLAS_LIBS) \
-   $(FLIBS)
+@@ -56,7 +57,7 @@
+   -bindir $(bindir) \
+   $(LIBCRUFT_LINK_OPTS)
  
 -libcruft_la_DEPENDENCIES = cruft.def
 +libcruft_la_DEPENDENCIES = cruft.def libranlib.la
@@ -28,7 +28,7 @@ Author: Thomas Weber <tweber@debian.org>
  
 --- a/liboctave/Makefile.am
 +++ b/liboctave/Makefile.am
-@@ -408,7 +408,8 @@
+@@ -411,7 +411,8 @@
    uint64NDArray.cc \
    uint8NDArray.cc
  

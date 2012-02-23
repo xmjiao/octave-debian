@@ -3,7 +3,7 @@ Forwarded: not-needed
 Author: Sébastien Villemot <sebastien.villemot@ens.fr>
 --- a/scripts/miscellaneous/mkoctfile.m
 +++ b/scripts/miscellaneous/mkoctfile.m
-@@ -137,7 +137,7 @@
+@@ -144,7 +144,7 @@
  
    bindir = octave_config_info ("bindir");
  

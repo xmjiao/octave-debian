@@ -3,7 +3,7 @@ Forwarded: not-needed
 Author: Thomas Weber <tweber@debian.org>
 --- a/scripts/pkg/pkg.m
 +++ b/scripts/pkg/pkg.m
-@@ -1295,10 +1295,9 @@
+@@ -1341,10 +1341,9 @@
    if (exist (fullfile (packdir, "src"), "dir"))
      src = fullfile (packdir, "src");
      octave_bindir = octave_config_info ("bindir");
