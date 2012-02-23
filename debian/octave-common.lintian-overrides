@@ -1,1 +1,1 @@
-octave-common: extra-license-file usr/share/octave/3.4.3/m/miscellaneous/license.m
+octave-common: extra-license-file usr/share/octave/*/m/miscellaneous/license.m
