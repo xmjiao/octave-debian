@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2011 John W. Eaton
+Copyright (C) 1996-2012 John W. Eaton
 
 This file is part of Octave.
 
@@ -104,6 +104,8 @@ public:
   string_vector& append (const std::string& s);
 
   string_vector& append (const string_vector& sv);
+
+  std::string join (const std::string& sep = std::string ()) const;
 
   char **c_str_vec (void) const;
 

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2007-2011 David Bateman
+Copyright (C) 2007-2012 David Bateman
 
 This file is part of Octave.
 
@@ -108,3 +108,10 @@ Undocumented internal function.\n\
 
   return retval;
 }
+
+/*
+
+## No test needed for internal helper function.
+%!assert (1)
+
+*/

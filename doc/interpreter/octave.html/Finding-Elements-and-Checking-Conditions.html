@@ -41,8 +41,8 @@ a matrix meet a specified condition.
    <p><a name="doc_002dany"></a>
 
 <div class="defun">
-&mdash; Built-in Function:  <b>any</b> (<var>x</var>)<var><a name="index-any-1529"></a></var><br>
-&mdash; Built-in Function:  <b>any</b> (<var>x, dim</var>)<var><a name="index-any-1530"></a></var><br>
+&mdash; Built-in Function:  <b>any</b> (<var>x</var>)<var><a name="index-any-1606"></a></var><br>
+&mdash; Built-in Function:  <b>any</b> (<var>x, dim</var>)<var><a name="index-any-1607"></a></var><br>
 <blockquote><p>For a vector argument, return true (logical 1) if any element of the vector
 is nonzero.
 
@@ -69,8 +69,8 @@ corresponding column of the matrix are nonzero.  For example:
    <p><a name="doc_002dall"></a>
 
 <div class="defun">
-&mdash; Built-in Function:  <b>all</b> (<var>x</var>)<var><a name="index-all-1531"></a></var><br>
-&mdash; Built-in Function:  <b>all</b> (<var>x, dim</var>)<var><a name="index-all-1532"></a></var><br>
+&mdash; Built-in Function:  <b>all</b> (<var>x</var>)<var><a name="index-all-1608"></a></var><br>
+&mdash; Built-in Function:  <b>all</b> (<var>x, dim</var>)<var><a name="index-all-1609"></a></var><br>
 <blockquote><p>For a vector argument, return true (logical 1) if all elements of the vector
 are nonzero.
 
@@ -108,7 +108,7 @@ than 0.9.
    <p><a name="doc_002dxor"></a>
 
 <div class="defun">
-&mdash; Mapping Function: <var>z</var> = <b>xor</b> (<var>x, y</var>)<var><a name="index-xor-1533"></a></var><br>
+&mdash; Mapping Function: <var>z</var> = <b>xor</b> (<var>x, y</var>)<var><a name="index-xor-1610"></a></var><br>
 <blockquote><p>Return the `exclusive or' of the entries of <var>x</var> and <var>y</var>. 
 For boolean expressions <var>x</var> and <var>y</var>,
 <code>xor (</code><var>x</var><code>, </code><var>y</var><code>)</code> is true if and only if one of <var>x</var> or
@@ -134,9 +134,9 @@ false, <code>xor</code> returns false.
    <p><a name="doc_002ddiff"></a>
 
 <div class="defun">
-&mdash; Built-in Function:  <b>diff</b> (<var>x</var>)<var><a name="index-diff-1534"></a></var><br>
-&mdash; Built-in Function:  <b>diff</b> (<var>x, k</var>)<var><a name="index-diff-1535"></a></var><br>
-&mdash; Built-in Function:  <b>diff</b> (<var>x, k, dim</var>)<var><a name="index-diff-1536"></a></var><br>
+&mdash; Built-in Function:  <b>diff</b> (<var>x</var>)<var><a name="index-diff-1611"></a></var><br>
+&mdash; Built-in Function:  <b>diff</b> (<var>x, k</var>)<var><a name="index-diff-1612"></a></var><br>
+&mdash; Built-in Function:  <b>diff</b> (<var>x, k, dim</var>)<var><a name="index-diff-1613"></a></var><br>
 <blockquote><p>If <var>x</var> is a vector of length n, <code>diff (</code><var>x</var><code>)</code> is the
 vector of first differences
  <var>x</var>(2) - <var>x</var>(1), <small class="dots">...</small>, <var>x</var>(n) - <var>x</var>(n-1).
@@ -162,7 +162,7 @@ an empty matrix is returned.
    <p><a name="doc_002disinf"></a>
 
 <div class="defun">
-&mdash; Mapping Function:  <b>isinf</b> (<var>x</var>)<var><a name="index-isinf-1537"></a></var><br>
+&mdash; Mapping Function:  <b>isinf</b> (<var>x</var>)<var><a name="index-isinf-1614"></a></var><br>
 <blockquote><p>Return a logical array which is true where the elements of <var>x</var> are
 are infinite and false where they are not. 
 For example:
@@ -180,7 +180,7 @@ For example:
    <p><a name="doc_002disnan"></a>
 
 <div class="defun">
-&mdash; Mapping Function:  <b>isnan</b> (<var>x</var>)<var><a name="index-isnan-1538"></a></var><br>
+&mdash; Mapping Function:  <b>isnan</b> (<var>x</var>)<var><a name="index-isnan-1615"></a></var><br>
 <blockquote><p>Return a logical array which is true where the elements of <var>x</var> are
 NaN values and false where they are not. 
 NA values are also considered NaN values.  For example:
@@ -198,8 +198,8 @@ NA values are also considered NaN values.  For example:
    <p><a name="doc_002disfinite"></a>
 
 <div class="defun">
-&mdash; Mapping Function:  <b>isfinite</b> (<var>x</var>)<var><a name="index-isfinite-1539"></a></var><br>
-&mdash; Mapping Function:  <b>finite</b> (<var>x</var>)<var><a name="index-finite-1540"></a></var><br>
+&mdash; Mapping Function:  <b>isfinite</b> (<var>x</var>)<var><a name="index-isfinite-1616"></a></var><br>
+&mdash; Mapping Function:  <b>finite</b> (<var>x</var>)<var><a name="index-finite-1617"></a></var><br>
 <blockquote><p>Return a logical array which is true where the elements of <var>x</var> are
 finite values and false where they are not. 
 For example:
@@ -217,7 +217,7 @@ For example:
    <p><a name="doc_002dcommon_005fsize"></a>
 
 <div class="defun">
-&mdash; Function File: [<var>err</var>, <var>y1</var>, <small class="dots">...</small>] = <b>common_size</b> (<var>x1, <small class="dots">...</small></var>)<var><a name="index-common_005fsize-1541"></a></var><br>
+&mdash; Function File: [<var>err</var>, <var>y1</var>, <small class="dots">...</small>] = <b>common_size</b> (<var>x1, <small class="dots">...</small></var>)<var><a name="index-common_005fsize-1618"></a></var><br>
 <blockquote><p>Determine if all input arguments are either scalar or of common
 size.  If so, <var>err</var> is zero, and <var>yi</var> is a matrix of the
 common size with all entries equal to <var>xi</var> if this is a scalar or
@@ -237,11 +237,11 @@ be scalars or of common size.
    <p><a name="doc_002dfind"></a>
 
 <div class="defun">
-&mdash; Loadable Function: <var>idx</var> = <b>find</b> (<var>x</var>)<var><a name="index-find-1542"></a></var><br>
-&mdash; Loadable Function: <var>idx</var> = <b>find</b> (<var>x, n</var>)<var><a name="index-find-1543"></a></var><br>
-&mdash; Loadable Function: <var>idx</var> = <b>find</b> (<var>x, n, direction</var>)<var><a name="index-find-1544"></a></var><br>
-&mdash; Loadable Function: [i, j] = <b>find</b> (<var><small class="dots">...</small></var>)<var><a name="index-find-1545"></a></var><br>
-&mdash; Loadable Function: [i, j, v] = <b>find</b> (<var><small class="dots">...</small></var>)<var><a name="index-find-1546"></a></var><br>
+&mdash; Loadable Function: <var>idx</var> = <b>find</b> (<var>x</var>)<var><a name="index-find-1619"></a></var><br>
+&mdash; Loadable Function: <var>idx</var> = <b>find</b> (<var>x, n</var>)<var><a name="index-find-1620"></a></var><br>
+&mdash; Loadable Function: <var>idx</var> = <b>find</b> (<var>x, n, direction</var>)<var><a name="index-find-1621"></a></var><br>
+&mdash; Loadable Function: [i, j] = <b>find</b> (<var><small class="dots">...</small></var>)<var><a name="index-find-1622"></a></var><br>
+&mdash; Loadable Function: [i, j, v] = <b>find</b> (<var><small class="dots">...</small></var>)<var><a name="index-find-1623"></a></var><br>
 <blockquote><p>Return a vector of indices of nonzero elements of a matrix, as a row if
 <var>x</var> is a row vector or as a column otherwise.  To obtain a single index
 for each matrix element, Octave pretends that the columns of a matrix form
@@ -290,8 +290,8 @@ create the original matrix.  For example:
    <p><a name="doc_002dlookup"></a>
 
 <div class="defun">
-&mdash; Loadable Function: <var>idx</var> = <b>lookup</b> (<var>table, y</var>)<var><a name="index-lookup-1547"></a></var><br>
-&mdash; Loadable Function: <var>idx</var> = <b>lookup</b> (<var>table, y, opt</var>)<var><a name="index-lookup-1548"></a></var><br>
+&mdash; Loadable Function: <var>idx</var> = <b>lookup</b> (<var>table, y</var>)<var><a name="index-lookup-1624"></a></var><br>
+&mdash; Loadable Function: <var>idx</var> = <b>lookup</b> (<var>table, y, opt</var>)<var><a name="index-lookup-1625"></a></var><br>
 <blockquote><p>Lookup values in a sorted table.  Usually used as a prelude to
 interpolation.
 

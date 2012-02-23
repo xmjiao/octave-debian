@@ -55,11 +55,11 @@ For example:
        ...
      endfunction  # rand generator state restored by onCleanup
 </pre>
-   <!-- onCleanup src/DLD-FUNCTIONS/onCleanup.cc -->
+   <!-- onCleanup src/ov-oncleanup.cc -->
    <p><a name="doc_002donCleanup"></a>
 
 <div class="defun">
-&mdash; Loadable Function: <var>c</var> = <b>onCleanup</b> (<var>action</var>)<var><a name="index-onCleanup-785"></a></var><br>
+&mdash; Loadable Function: <var>c</var> = <b>onCleanup</b> (<var>action</var>)<var><a name="index-onCleanup-821"></a></var><br>
 <blockquote><p>Create a special object that executes a given function upon destruction. 
 If the object is copied to multiple variables (or cell or struct array
 elements) or returned from a function, <var>action</var> will be executed after

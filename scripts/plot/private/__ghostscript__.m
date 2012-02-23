@@ -1,4 +1,4 @@
-## Copyright (C) 2010-2011 Ben Abbott
+## Copyright (C) 2010-2012 Ben Abbott
 ##
 ## This file is part of Octave.
 ##
@@ -44,7 +44,7 @@ function [gs_cmd, cleanup_cmd] = __ghostscript__ (varargin);
   cleanup_cmd = "";
 
   args = varargin;
-  n = find (cellfun (@isstruct, args));
+  n = find (cellfun ("isclass", args, "struct"));
   if (! isempty (n))
     f = fieldnames (args{n});
     for m = 1:numel(f)

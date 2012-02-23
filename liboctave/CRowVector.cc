@@ -1,7 +1,7 @@
 // RowVector manipulations.
 /*
 
-Copyright (C) 1994-2011 John W. Eaton
+Copyright (C) 1994-2012 John W. Eaton
 
 This file is part of Octave.
 
@@ -234,7 +234,7 @@ ComplexRowVector::transpose (void) const
 ComplexRowVector
 conj (const ComplexRowVector& a)
 {
-  return do_mx_unary_map<Complex, Complex, std::conj> (a);
+  return do_mx_unary_map<Complex, Complex, std::conj<double> > (a);
 }
 
 // resize is the destructive equivalent for this one

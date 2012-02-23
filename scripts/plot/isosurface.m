@@ -1,4 +1,4 @@
-## Copyright (C) 2009-2011 Martin Helm
+## Copyright (C) 2009-2012 Martin Helm
 ##
 ## This file is part of Octave.
 ##
@@ -70,43 +70,48 @@
 ## will directly draw a random isosurface geometry in a graphics window.
 ## Another example for an isosurface geometry with different additional
 ## coloring
+## @c Set example in small font to prevent overfull line
 ##
-## @example
-## N = 15;    ## Increase number of vertices in each direction
-## iso = .4;  ## Change isovalue to .1 to display a sphere
+## @smallexample
+## N = 15;    # Increase number of vertices in each direction
+## iso = .4;  # Change isovalue to .1 to display a sphere
 ## lin = linspace (0, 2, N);
 ## [x, y, z] = meshgrid (lin, lin, lin);
 ## c = abs ((x-.5).^2 + (y-.5).^2 + (z-.5).^2);
-## figure (); ## Open another figure window
+## figure (); # Open another figure window
 ##
-## subplot (2, 2, 1); view (-38, 20);
+## subplot (2,2,1); view (-38, 20);
 ## [f, v] = isosurface (x, y, z, c, iso);
 ## p = patch ("Faces", f, "Vertices", v, "EdgeColor", "none");
-## set (gca, "PlotBoxAspectRatioMode","manual", "PlotBoxAspectRatio", [1 1 1]);
+## set (gca, "PlotBoxAspectRatioMode", "manual", ...
+##           "PlotBoxAspectRatio", [1 1 1]);
 ## # set (p, "FaceColor", "green", "FaceLighting", "phong");
-## # light ("Position", [1 1 5]); ## Available with the JHandles package
+## # light ("Position", [1 1 5]); # Available with the JHandles package
 ##
-## subplot (2, 2, 2); view (-38, 20);
+## subplot (2,2,2); view (-38, 20);
 ## p = patch ("Faces", f, "Vertices", v, "EdgeColor", "blue");
-## set (gca, "PlotBoxAspectRatioMode","manual", "PlotBoxAspectRatio", [1 1 1]);
+## set (gca, "PlotBoxAspectRatioMode", "manual", ...
+##           "PlotBoxAspectRatio", [1 1 1]);
 ## # set (p, "FaceColor", "none", "FaceLighting", "phong");
 ## # light ("Position", [1 1 5]);
 ##
-## subplot (2, 2, 3); view (-38, 20);
+## subplot (2,2,3); view (-38, 20);
 ## [f, v, c] = isosurface (x, y, z, c, iso, y);
-## p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", c, \
+## p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", c, ...
 ##            "FaceColor", "interp", "EdgeColor", "none");
-## set (gca, "PlotBoxAspectRatioMode","manual", "PlotBoxAspectRatio", [1 1 1]);
+## set (gca, "PlotBoxAspectRatioMode", "manual", ...
+##           "PlotBoxAspectRatio", [1 1 1]);
 ## # set (p, "FaceLighting", "phong");
 ## # light ("Position", [1 1 5]);
 ##
-## subplot (2, 2, 4); view (-38, 20);
-## p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", c, \
+## subplot (2,2,4); view (-38, 20);
+## p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", c, ...
 ##            "FaceColor", "interp", "EdgeColor", "blue");
-## set (gca, "PlotBoxAspectRatioMode","manual", "PlotBoxAspectRatio", [1 1 1]);
+## set (gca, "PlotBoxAspectRatioMode", "manual", ...
+##           "PlotBoxAspectRatio", [1 1 1]);
 ## # set (p, "FaceLighting", "phong");
 ## # light ("Position", [1 1 5]);
-## @end example
+## @end smallexample
 ##
 ## @seealso{isonormals, isocolors}
 ## @end deftypefn

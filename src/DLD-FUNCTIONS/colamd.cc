@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004-2011 David Bateman
+Copyright (C) 2004-2012 David Bateman
 Copyright (C) 1998-2004 Andy Adler
 
 This file is part of Octave.
@@ -544,7 +544,7 @@ Ng, Oak Ridge National Laboratory.  (see\n\
         octave_stdout << "symamd: dense row/col fraction: "
                       << knobs [COLAMD_DENSE_ROW] << std::endl;
 
-      octave_idx_type n_row, n_col, nnz;
+      octave_idx_type n_row, n_col;
       octave_idx_type *ridx, *cidx;
       SparseMatrix sm;
       SparseComplexMatrix scm;
@@ -556,7 +556,6 @@ Ng, Oak Ridge National Laboratory.  (see\n\
               scm = args(0).sparse_complex_matrix_value ();
               n_row = scm.rows ();
               n_col = scm.cols ();
-              nnz = scm.nnz ();
               ridx = scm.xridx ();
               cidx = scm.xcidx ();
             }
@@ -565,7 +564,6 @@ Ng, Oak Ridge National Laboratory.  (see\n\
               sm = args(0).sparse_matrix_value ();
               n_row = sm.rows ();
               n_col = sm.cols ();
-              nnz = sm.nnz ();
               ridx = sm.xridx ();
               cidx = sm.xcidx ();
             }
@@ -579,7 +577,6 @@ Ng, Oak Ridge National Laboratory.  (see\n\
 
           n_row = sm.rows ();
           n_col = sm.cols ();
-          nnz = sm.nnz ();
           ridx = sm.xridx ();
           cidx = sm.xcidx ();
         }
@@ -650,7 +647,7 @@ DEFUN_DLD (etree, args, nargout,
 @deftypefnx {Loadable Function} {@var{p} =} etree (@var{S}, @var{typ})\n\
 @deftypefnx {Loadable Function} {[@var{p}, @var{q}] =} etree (@var{S}, @var{typ})\n\
 \n\
-Returns the elimination tree for the matrix @var{S}.  By default @var{S}\n\
+Return the elimination tree for the matrix @var{S}.  By default @var{S}\n\
 is assumed to be symmetric and the symmetric elimination tree is\n\
 returned.  The argument @var{typ} controls whether a symmetric or\n\
 column elimination tree is returned.  Valid values of @var{typ} are\n\
@@ -668,7 +665,7 @@ permutations on the tree.\n\
     print_usage ();
   else
     {
-      octave_idx_type n_row, n_col, nnz;
+      octave_idx_type n_row, n_col;
       octave_idx_type *ridx, *cidx;
       bool is_sym = true;
       SparseMatrix sm;
@@ -681,7 +678,6 @@ permutations on the tree.\n\
               scm = args(0).sparse_complex_matrix_value ();
               n_row = scm.rows ();
               n_col = scm.cols ();
-              nnz = scm.nnz ();
               ridx = scm.xridx ();
               cidx = scm.xcidx ();
             }
@@ -690,7 +686,6 @@ permutations on the tree.\n\
               sm = args(0).sparse_matrix_value ();
               n_row = sm.rows ();
               n_col = sm.cols ();
-              nnz = sm.nnz ();
               ridx = sm.xridx ();
               cidx = sm.xcidx ();
             }

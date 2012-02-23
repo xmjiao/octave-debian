@@ -30,7 +30,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="Tips-and-Standards.html#Tips-and-Standa
 <hr>
 </div>
 
-<h3 class="section">C.5 Tips for Documentation Strings</h3>
+<h3 class="section">C.4 Tips for Documentation Strings</h3>
 
 <p>As noted above, documentation is typically in a commented header block
 on an Octave function following the copyright statement.  The help string
@@ -238,15 +238,17 @@ example of which is the <code>nchoosek</code> function.  The Texinfo
 documentation string for <code>nchoosek</code> is
 
 <pre class="example">     -*- texinfo -*-
-     @deftypefn {Function File} {} nchoosek (@var{n}, @var{k})
+     @deftypefn  {Function File} {@var{c} =} nchoosek (@var{n}, @var{k})
+     @deftypefnx {Function File} {@var{c} =} nchoosek (@var{set}, @var{k})
      
-     Compute the binomial coefficient or all combinations of
-     @var{n}.  If @var{n} is a scalar then, calculate the
-     binomial coefficient of @var{n} and @var{k}, defined as
+     Compute the binomial coefficient or all combinations of a set of items.
      
+     If @var{n} is a scalar then calculate the binomial coefficient
+     of @var{n} and @var{k} which is defined as
      @tex
      $$
       {n \choose k} = {n (n-1) (n-2) \cdots (n-k+1) \over k!}
+                    = {n! \over k! (n-k)!}
      $$
      @end tex
      @ifnottex
@@ -254,30 +256,58 @@ documentation string for <code>nchoosek</code> is
      @example
      @group
       /   \
-      | n |    n (n-1) (n-2) ... (n-k+1)
-      |   |  = -------------------------
-      | k |               k!
+      | n |    n (n-1) (n-2) @dots{} (n-k+1)       n!
+      |   |  = ------------------------- =  ---------
+      | k |               k!                k! (n-k)!
       \   /
      @end group
      @end example
+     
      @end ifnottex
+     @noindent
+     This is the number of combinations of @var{n} items taken in groups of
+     size @var{k}.
      
-     If @var{n} is a vector, this generates all combinations
-     of the elements of @var{n}, taken @var{k} at a time,
-     one row per combination.  The resulting @var{c} has size
-     @code{[nchoosek (length (@var{n}),@var{k}), @var{k}]}.
+     If the first argument is a vector, @var{set}, then generate all
+     combinations of the elements of @var{set}, taken @var{k} at a time, with
+     one row per combination.  The result @var{c} has @var{k} columns and
+     @w{@code{nchoosek (length (@var{set}), @var{k})}} rows.
      
-     @code{nchoosek} works only for non-negative integer arguments; use
-     @code{bincoeff} for non-integer scalar arguments and for using vector
-     arguments to compute many coefficients at once.
+     For example:
      
-     @seealso{bincoeff}
+     How many ways can three items be grouped into pairs?
+     
+     @example
+     @group
+     nchoosek (3, 2)
+        @result{} 3
+     @end group
+     @end example
+     
+     What are the possible pairs?
+     
+     @example
+     @group
+     nchoosek (1:3, 2)
+        @result{}  1   2
+            1   3
+            2   3
+     @end group
+     @end example
+     
+     @code{nchoosek} works only for non-negative, integer arguments.  Use
+     @code{bincoeff} for non-integer and negative scalar arguments, or for
+     computing many binomial coefficients at once with vector inputs
+     for @var{n} or @var{k}.
+     
+     @seealso{bincoeff, perms}
      @end deftypefn
 </pre>
-   <p>which demonstrates most of the concepts discussed above.
+   <p class="noindent">which demonstrates most of the concepts discussed above.
 
 <!-- DO NOT EDIT!  Generated automatically by munge-texi. -->
-<!-- Copyright (C) 2008-2011 Jaroslav Hajek -->
+<!-- Copyright (C) 2012 John W. Eaton -->
+<!-- Copyright (C) 2008-2012 Jaroslav Hajek -->
 <!-- This file is part of Octave. -->
 <!-- Octave is free software; you can redistribute it and/or modify it -->
 <!-- under the terms of the GNU General Public License as published by the -->

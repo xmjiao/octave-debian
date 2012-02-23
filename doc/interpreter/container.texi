@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.
 
-@c Copyright (C) 1996-2011 John W. Eaton
+@c Copyright (C) 1996-2012 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -173,8 +173,13 @@ contents of structure arrays.
 @anchor{doc-struct_levels_to_print}
 @deftypefn  {Built-in Function} {@var{val} =} struct_levels_to_print ()
 @deftypefnx {Built-in Function} {@var{old_val} =} struct_levels_to_print (@var{new_val})
+@deftypefnx {Built-in Function} {} struct_levels_to_print (@var{new_val}, "local")
 Query or set the internal variable that specifies the number of
 structure levels to display.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 
 
@@ -182,11 +187,16 @@ structure levels to display.
 @anchor{doc-print_struct_array_contents}
 @deftypefn  {Built-in Function} {@var{val} =} print_struct_array_contents ()
 @deftypefnx {Built-in Function} {@var{old_val} =} print_struct_array_contents (@var{new_val})
+@deftypefnx {Built-in Function} {} print_struct_array_contents (@var{new_val}, "local")
 Query or set the internal variable that specifies whether to print struct
 array contents.  If true, values of struct array elements are printed.
 This variable does not affect scalar structures.  Their elements
 are always printed.  In both cases, however, printing will be limited to
 the number of levels specified by @var{struct_levels_to_print}.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 
 
@@ -393,7 +403,8 @@ in.call1
 
 Besides the index operator ".", Octave can use dynamic naming "(var)" or the
 @code{struct} function to create structures.  Dynamic naming uses the string
-value of a variable as the field name.  For example,
+value of a variable as the field name.  For example:
+
 @example
 @group
 a = "field2";
@@ -557,7 +568,7 @@ Extract a field from a structure (or a nested structure).  For example:
 @group
 ss(1,2).fd(3).b = 5;
 getfield (ss, @{1,2@}, "fd", @{3@}, "b")
-     @result{} ans = 5
+   @result{} 5
 @end group
 @end example
 
@@ -568,7 +579,7 @@ the expression
 @group
 i1 = @{1,2@}; i2 = "fd"; i3 = @{3@}; i4= "b";
 ss(i1@{:@}).(i2)(i3@{:@}).(i4)
-     @result{} ans = 5
+   @result{} 5
 
 @end group
 @end example
@@ -636,7 +647,7 @@ Examples:
 @example
 @group
 s = struct("d", 4, "b", 2, "a", 1, "c", 3);
-t1 = orderfields(s)
+t1 = orderfields (s)
      @result{} t1 =
         @{
           a =  1
@@ -647,7 +658,7 @@ t1 = orderfields(s)
 @end group
 @group
 t = struct("d", @{@}, "c", @{@}, "b", "a", @{@});
-t2 = orderfields(s, t)
+t2 = orderfields (s, t)
      @result{} t2 =
         @{
           d =  4
@@ -657,7 +668,7 @@ t2 = orderfields(s, t)
         @}
 @end group
 @group
-t3 = orderfields(s, [3, 2, 4, 1]);
+t3 = orderfields (s, [3, 2, 4, 1]);
      @result{} t3 =
         @{
           a =  1
@@ -667,18 +678,19 @@ t3 = orderfields(s, [3, 2, 4, 1]);
         @}
 @end group
 @group
-[t4, p] = orderfields(s, @{"d", "c", "b", "a"@})
-     @result{} t4 = @{
+[t4, p] = orderfields (s, @{"d", "c", "b", "a"@})
+     @result{} t4 =
+        @{
           d =  4
           c =  3
           b =  2
           a =  1
         @}
-     p =
-        1
-        4
-        2
-        3
+        p =
+           1
+           4
+           2
+           3
 @end group
 @end example
 
@@ -694,7 +706,7 @@ Create a subscript structure for use with @code{subsref} or
 
 @example
 @group
-idx = substruct("()", @{3, ":"@})
+idx = substruct ("()", @{3, ":"@})
      @result{}
        idx =
        @{
@@ -706,9 +718,8 @@ idx = substruct("()", @{3, ":"@})
          @}
        @}
 x = [1, 2, 3; 4, 5, 6; 7, 8, 9];
-subsref(x, idx)
-     @result{} ans =
-        7  8  9
+subsref (x, idx)
+   @result{} 7  8  9
 @end group
 @end example
 @seealso{@ref{doc-subsref,,subsref}, @ref{doc-subsasgn,,subsasgn}}
@@ -721,65 +732,7 @@ subsref(x, idx)
 The simplest way to process data in a structure is within a @code{for}
 loop (@pxref{Looping Over Structure Elements}).  A similar effect can be
 achieved with the @code{structfun} function, where a user defined
-function is applied to each field of the structure.
-
-@c structfun scripts/general/structfun.m
-@anchor{doc-structfun}
-@deftypefn  {Function File} {} structfun (@var{func}, @var{S})
-@deftypefnx {Function File} {[@var{A}, @dots{}] =} structfun (@dots{})
-@deftypefnx {Function File} {} structfun (@dots{}, "ErrorHandler", @var{errfunc})
-@deftypefnx {Function File} {} structfun (@dots{}, "UniformOutput", @var{val})
-
-Evaluate the function named @var{name} on the fields of the structure
-@var{S}.  The fields of @var{S} are passed to the function @var{func}
-individually.
-
-@code{structfun} accepts an arbitrary function @var{func} in the form of
-an inline function, function handle, or the name of a function (in a
-character string).  In the case of a character string argument, the
-function must accept a single argument named @var{x}, and it must return
-a string value.  If the function returns more than one argument, they are
-returned as separate output variables.
-
-If the parameter "UniformOutput" is set to true (the default), then the
-function
-must return a single element which will be concatenated into the
-return value.  If "UniformOutput" is false, the outputs are placed into a
-structure
-with the same fieldnames as the input structure.
-
-@example
-@group
-s.name1 = "John Smith";
-s.name2 = "Jill Jones";
-structfun (@@(x) regexp (x, '(\w+)$', "matches")@{1@}, s,
-           "UniformOutput", false)
-    @result{}
-   @{
-     name1 = Smith
-     name2 = Jones
-   @}
-@end group
-@end example
-
-Given the parameter "ErrorHandler", @var{errfunc} defines a function to
-call in case @var{func} generates an error.  The form of the function is
-
-@example
-function [@dots{}] = errfunc (@var{se}, @dots{})
-@end example
-
-@noindent
-where there is an additional input argument to @var{errfunc} relative to
-@var{func}, given by @var{se}.  This is a structure with the elements
-"identifier", "message" and "index", giving respectively the error
-identifier, the error message, and the index into the input arguments
-of the element that caused the error.  For an example on how to use
-an error handler, @pxref{doc-cellfun, @code{cellfun}}.
-
-@seealso{@ref{doc-cellfun,,cellfun}, @ref{doc-arrayfun,,arrayfun}, @ref{doc-spfun,,spfun}}
-@end deftypefn
-
+function is applied to each field of the structure.  @xref{doc-structfun}.
 
 Alternatively, to process the data in a structure, the structure might
 be converted to another type of container before being treated.
@@ -867,16 +820,11 @@ extracted by indexing with a vector of indexes
 @example
 @group
 c@{1:2@}
+     @result{} ans = a string
      @result{} ans =
-          
-          (,
-            [1] = a string
-            [2] =
           
                0.593993   0.627732
                0.377037   0.033643
-          
-          ,)
 @end group
 @end example
 
@@ -918,16 +866,16 @@ can be replaced with the variable @var{name}.  For example:
 @example
 @group
 c = @{1, 2, @{31, 32@}@};
-celldisp(c, "b")
-     @result{}
-        b@{1@} =
-         1
-        b@{2@} =
-         2
-        b@{3@}@{1@} =
-         31
-        b@{3@}@{2@} =
-         32
+celldisp (c, "b")
+   @result{}
+      b@{1@} =
+       1
+      b@{2@} =
+       2
+      b@{3@}@{1@} =
+       31
+      b@{3@}@{2@} =
+       32
 @end group
 @end example
 
@@ -1124,6 +1072,7 @@ endfor
 
 The position of the index is determined by @var{dim}.  If not specified,
 slicing is done along the first non-singleton dimension.
+@seealso{@ref{doc-cell2mat,,cell2mat}, @ref{doc-cellindexmat,,cellindexmat}, @ref{doc-cellfun,,cellfun}}
 @end deftypefn
 
 
@@ -1276,7 +1225,7 @@ Given a cell array of matrices @var{x}, this function computes
   endfor
 @end group
 @end example
-@seealso{@ref{doc-cellfun,,cellfun}, @ref{doc-cellslices,,cellslices}}
+@seealso{@ref{doc-cellslices,,cellslices}, @ref{doc-cellfun,,cellfun}}
 @end deftypefn
 
 
@@ -1361,125 +1310,7 @@ depending on the actual data.  The simplest way to process that data
 is to iterate through it using one or more @code{for} loops.  The same
 idea can be implemented more easily through the use of the @code{cellfun}
 function that calls a user-specified function on all elements of a cell
-array.
-
-@c cellfun src/DLD-FUNCTIONS/cellfun.cc
-@anchor{doc-cellfun}
-@deftypefn  {Loadable Function} {} cellfun (@var{name}, @var{C})
-@deftypefnx {Loadable Function} {} cellfun ("size", @var{C}, @var{k})
-@deftypefnx {Loadable Function} {} cellfun ("isclass", @var{C}, @var{class})
-@deftypefnx {Loadable Function} {} cellfun (@var{func}, @var{C})
-@deftypefnx {Loadable Function} {} cellfun (@var{func}, @var{C}, @var{D})
-@deftypefnx {Loadable Function} {[@var{a}, @dots{}] =} cellfun (@dots{})
-@deftypefnx {Loadable Function} {} cellfun (@dots{}, 'ErrorHandler', @var{errfunc})
-@deftypefnx {Loadable Function} {} cellfun (@dots{}, 'UniformOutput', @var{val})
-
-Evaluate the function named @var{name} on the elements of the cell array
-@var{C}.  Elements in @var{C} are passed on to the named function
-individually.  The function @var{name} can be one of the functions
-
-@table @code
-@item isempty
-Return 1 for empty elements.
-
-@item islogical
-Return 1 for logical elements.
-
-@item isreal
-Return 1 for real elements.
-
-@item length
-Return a vector of the lengths of cell elements.
-
-@item ndims
-Return the number of dimensions of each element.
-
-@item prodofsize
-Return the product of dimensions of each element.
-
-@item size
-Return the size along the @var{k}-th dimension.
-
-@item isclass
-Return 1 for elements of @var{class}.
-@end table
-
-Additionally, @code{cellfun} accepts an arbitrary function @var{func}
-in the form of an inline function, function handle, or the name of a
-function (in a character string).  In the case of a character string
-argument, the function must accept a single argument named @var{x}, and
-it must return a string value.  The function can take one or more arguments,
-with the inputs arguments given by @var{C}, @var{D}, etc.  Equally the
-function can return one or more output arguments.  For example:
-
-@example
-@group
-cellfun (@@atan2, @{1, 0@}, @{0, 1@})
-     @result{}ans = [1.57080   0.00000]
-@end group
-@end example
-
-The number of output arguments of @code{cellfun} matches the number of output
-arguments of the function.  The outputs of the function will be collected
-into the output arguments of @code{cellfun} like this:
-
-@example
-@group
-function [a, b] = twoouts (x)
-  a = x;
-  b = x*x;
-endfunction
-[aa, bb] = cellfun(@@twoouts, @{1, 2, 3@})
-     @result{}
-        aa =
-           1 2 3
-        bb =
-           1 4 9
-@end group
-@end example
-
-Note that per default the output argument(s) are arrays of the same size as
-the input arguments.  Input arguments that are singleton (1x1) cells will be
-automatically expanded to the size of the other arguments.
-
-If the parameter 'UniformOutput' is set to true (the default), then the
-function must return scalars which will be concatenated into the return
-array(s).  If 'UniformOutput' is false, the outputs are concatenated into a
-cell array (or cell arrays).  For example:
-
-@example
-@group
-cellfun ("tolower(x)", @{"Foo", "Bar", "FooBar"@},
-         "UniformOutput",false)
-@result{} ans = @{"foo", "bar", "foobar"@}
-@end group
-@end example
-
-Given the parameter 'ErrorHandler', then @var{errfunc} defines a function to
-call in case @var{func} generates an error.  The form of the function is
-
-@example
-function [@dots{}] = errfunc (@var{s}, @dots{})
-@end example
-
-@noindent
-where there is an additional input argument to @var{errfunc} relative to
-@var{func}, given by @var{s}.  This is a structure with the elements
-'identifier', 'message' and 'index', giving respectively the error
-identifier, the error message, and the index into the input arguments
-of the element that caused the error.  For example:
-
-@example
-@group
-function y = foo (s, x), y = NaN; endfunction
-cellfun (@@factorial, @{-1,2@},'ErrorHandler',@@foo)
-@result{} ans = [NaN 2]
-@end group
-@end example
-
-@seealso{@ref{doc-arrayfun,,arrayfun}, @ref{doc-structfun,,structfun}, @ref{doc-spfun,,spfun}}
-@end deftypefn
-
+array.  @xref{doc-cellfun}.
 
 An alternative is to convert the data to a different container, such as
 a matrix or a data structure.  Depending on the data this is possible
@@ -1502,6 +1333,7 @@ must be able to concatenate them together.
 Convert @var{cell} to a structure.  The number of fields in @var{fields}
 must match the number of elements in @var{cell} along dimension @var{dim},
 that is @code{numel (@var{fields}) == size (@var{cell}, @var{dim})}.
+If @var{dim} is omitted, a value of 1 is assumed.
 
 @example
 @group

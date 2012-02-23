@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2005-2011 David Bateman
+Copyright (C) 2005-2012 David Bateman
 Copyright (C) 1998-2005 Andy Adler
 
 This file is part of Octave.
@@ -63,10 +63,10 @@ Factorize @var{S}.  This is the default.\n\
 Factorize @code{@var{S}' * @var{S}}.\n\
 \n\
 @item row\n\
-Factorize @code{@var{S} * @var{S}'}.\n\
+Factorize @xcode{@var{S} * @var{S}'}.\n\
 \n\
 @item lo\n\
-Factorize @code{@var{S}'}\n\
+Factorize @xcode{@var{S}'}\n\
 @end table\n\
 \n\
 @item mode\n\

@@ -1,4 +1,4 @@
-## Copyright (C) 2005-2011 John W. Eaton
+## Copyright (C) 2005-2012 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -53,3 +53,11 @@ function h = gcf ()
   endif
 
 endfunction
+
+%!test
+%! hf = figure ("visible", "off");
+%! unwind_protect
+%!   assert (gcf, hf);
+%! unwind_protect_cleanup
+%!   close (hf);
+%! end_unwind_protect

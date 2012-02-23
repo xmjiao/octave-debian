@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2011 Kai Habel
+## Copyright (C) 2007-2012 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -80,3 +80,15 @@ function h = pcolor (x, y, c)
   endif
 
 endfunction
+
+%!demo
+%! clf
+%! [~,~,Z]=peaks;
+%! pcolor(Z);
+
+%!demo
+%! clf
+%! [X,Y,Z]=sombrero;
+%! [Fx,Fy] = gradient(Z);
+%! pcolor(X,Y,Fx+Fy);
+%! shading interp;

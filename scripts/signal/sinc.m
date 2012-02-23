@@ -1,4 +1,4 @@
-## Copyright (C) 1994-2011 John W. Eaton
+## Copyright (C) 1994-2012 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -45,3 +45,10 @@ function result = sinc (x)
   endif
 
 endfunction
+
+
+%!assert (sinc (0), 1);
+%!assert (sinc (1), 0,1e-6);
+%!assert (sinc (1/2), 2/pi, 1e-6)
+
+%!error sinc()

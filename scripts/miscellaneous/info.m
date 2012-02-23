@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2011 Julian Schnidder
+## Copyright (C) 2008-2012 Julian Schnidder
 ##
 ## This file is part of Octave.
 ##
@@ -43,3 +43,6 @@ function info ()
   http://www.octave.org/bugs.html\n");
 
 endfunction
+
+## Mark file as being tested.  No real test needed for this function.
+%! assert (1)

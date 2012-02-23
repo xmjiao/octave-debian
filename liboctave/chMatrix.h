@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1995-2011 John W. Eaton
+Copyright (C) 1995-2012 John W. Eaton
 Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
@@ -62,7 +62,7 @@ public:
 
   charMatrix (const std::string& s);
 
-  charMatrix (const string_vector& s);
+  charMatrix (const string_vector& s, char fill_value = '\0');
 
   charMatrix& operator = (const charMatrix& a)
     {

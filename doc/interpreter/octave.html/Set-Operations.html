@@ -28,7 +28,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="Sets.html#Sets">Sets</a>
 <hr>
 </div>
 
-<h3 class="section">26.1 Set Operations</h3>
+<h3 class="section">27.1 Set Operations</h3>
 
 <p>Octave supports the basic set operations.  That is, Octave can compute
 the union, intersection, and difference of two sets. 
@@ -45,9 +45,9 @@ pretty much the same way.  As an example, assume that <code>x</code> and
    <p><a name="doc_002dismember"></a>
 
 <div class="defun">
-&mdash; Function File: <var>tf</var> = <b>ismember</b> (<var>A, s</var>)<var><a name="index-ismember-2507"></a></var><br>
-&mdash; Function File: [<var>tf</var>, <var>S_idx</var>] = <b>ismember</b> (<var>A, s</var>)<var><a name="index-ismember-2508"></a></var><br>
-&mdash; Function File: [<var>tf</var>, <var>S_idx</var>] = <b>ismember</b> (<var>A, s, "rows"</var>)<var><a name="index-ismember-2509"></a></var><br>
+&mdash; Function File: <var>tf</var> = <b>ismember</b> (<var>A, s</var>)<var><a name="index-ismember-2684"></a></var><br>
+&mdash; Function File: [<var>tf</var>, <var>S_idx</var>] = <b>ismember</b> (<var>A, s</var>)<var><a name="index-ismember-2685"></a></var><br>
+&mdash; Function File: [<var>tf</var>, <var>S_idx</var>] = <b>ismember</b> (<var>A, s, "rows"</var>)<var><a name="index-ismember-2686"></a></var><br>
 <blockquote><p>Return a logical matrix <var>tf</var> with the same shape as <var>A</var> which is
 true (1) if <code>A(i,j)</code> is in <var>s</var> and false (0) if it is not.  If a
 second output argument is requested, the index into <var>s</var> of each of the
@@ -55,7 +55,7 @@ matching elements is also returned.
 
      <pre class="example">          a = [3, 10, 1];
           s = [0:9];
-          [tf, s_idx] = ismember (a, s);
+          [tf, s_idx] = ismember (a, s)
                &rArr; tf = [1, 0, 1]
                &rArr; s_idx = [4, 0, 2]
 </pre>
@@ -63,7 +63,7 @@ matching elements is also returned.
 
      <pre class="example">          a = {'abc'};
           s = {'abc', 'def'};
-          [tf, s_idx] = ismember (a, s);
+          [tf, s_idx] = ismember (a, s)
                &rArr; tf = [1, 0]
                &rArr; s_idx = [1, 0]
 </pre>
@@ -73,7 +73,7 @@ matching elements is also returned.
 
      <pre class="example">          a = [1:3; 5:7; 4:6];
           s = [0:2; 1:3; 2:4; 3:5; 4:6];
-          [tf, s_idx] = ismember(a, s, 'rows');
+          [tf, s_idx] = ismember(a, s, "rows")
                &rArr; tf = logical ([1; 0; 1])
                &rArr; s_idx = [2; 0; 5];
 </pre>
@@ -87,29 +87,28 @@ matching elements is also returned.
    <p><a name="doc_002dunion"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>union</b> (<var>a, b</var>)<var><a name="index-union-2510"></a></var><br>
-&mdash; Function File:  <b>union</b> (<var>a, b, "rows"</var>)<var><a name="index-union-2511"></a></var><br>
+&mdash; Function File:  <b>union</b> (<var>a, b</var>)<var><a name="index-union-2687"></a></var><br>
+&mdash; Function File:  <b>union</b> (<var>a, b, "rows"</var>)<var><a name="index-union-2688"></a></var><br>
 <blockquote><p>Return the set of elements that are in either of the sets <var>a</var> and
 <var>b</var>.  <var>a</var>, <var>b</var> may be cell arrays of string(s). 
 For example:
 
      <pre class="example">          union ([1, 2, 4], [2, 3, 5])
-               &rArr; [1, 2, 3, 4, 5]
+              &rArr; [1, 2, 3, 4, 5]
 </pre>
         <p>If the optional third input argument is the string "rows" each row of
 the matrices <var>a</var> and <var>b</var> will be considered an element of sets. 
 For example:
 
-     <pre class="example">          union([1, 2; 2, 3], [1, 2; 3, 4], "rows")
-               &rArr;  1   2
-              2   3
-              3   4
+     <pre class="example">          union ([1, 2; 2, 3], [1, 2; 3, 4], "rows")
+             &rArr;  1   2
+                 2   3
+                 3   4
 </pre>
-        &mdash; Function File: [<var>c</var>, <var>ia</var>, <var>ib</var>] = <b>union</b> (<var>a, b</var>)<var><a name="index-union-2512"></a></var><br>
+        &mdash; Function File: [<var>c</var>, <var>ia</var>, <var>ib</var>] = <b>union</b> (<var>a, b</var>)<var><a name="index-union-2689"></a></var><br>
 <blockquote>
         <p>Return index vectors <var>ia</var> and <var>ib</var> such that <code>a(ia)</code> and
-<code>b(ib)</code> are
-disjoint sets whose union is <var>c</var>.
+<code>b(ib)</code> are disjoint sets whose union is <var>c</var>.
 
      <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
      <!-- A simple blank line produces the correct behavior. -->
@@ -121,8 +120,8 @@ disjoint sets whose union is <var>c</var>.
    <p><a name="doc_002dintersect"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>intersect</b> (<var>a, b</var>)<var><a name="index-intersect-2513"></a></var><br>
-&mdash; Function File: [<var>c</var>, <var>ia</var>, <var>ib</var>] = <b>intersect</b> (<var>a, b</var>)<var><a name="index-intersect-2514"></a></var><br>
+&mdash; Function File:  <b>intersect</b> (<var>a, b</var>)<var><a name="index-intersect-2690"></a></var><br>
+&mdash; Function File: [<var>c</var>, <var>ia</var>, <var>ib</var>] = <b>intersect</b> (<var>a, b</var>)<var><a name="index-intersect-2691"></a></var><br>
 <blockquote>
         <p>Return the elements in both <var>a</var> and <var>b</var>, sorted in ascending
 order.  If <var>a</var> and <var>b</var> are both column vectors return a column
@@ -143,9 +142,9 @@ vector, otherwise return a row vector.
    <p><a name="doc_002dsetdiff"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>setdiff</b> (<var>a, b</var>)<var><a name="index-setdiff-2515"></a></var><br>
-&mdash; Function File:  <b>setdiff</b> (<var>a, b, "rows"</var>)<var><a name="index-setdiff-2516"></a></var><br>
-&mdash; Function File: [<var>c</var>, <var>i</var>] = <b>setdiff</b> (<var>a, b</var>)<var><a name="index-setdiff-2517"></a></var><br>
+&mdash; Function File:  <b>setdiff</b> (<var>a, b</var>)<var><a name="index-setdiff-2692"></a></var><br>
+&mdash; Function File:  <b>setdiff</b> (<var>a, b, "rows"</var>)<var><a name="index-setdiff-2693"></a></var><br>
+&mdash; Function File: [<var>c</var>, <var>i</var>] = <b>setdiff</b> (<var>a, b</var>)<var><a name="index-setdiff-2694"></a></var><br>
 <blockquote><p>Return the elements in <var>a</var> that are not in <var>b</var>, sorted in
 ascending order.  If <var>a</var> and <var>b</var> are both column vectors
 return a column vector, otherwise return a row vector. 
@@ -166,19 +165,18 @@ return a column vector, otherwise return a row vector.
    <p><a name="doc_002dsetxor"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>setxor</b> (<var>a, b</var>)<var><a name="index-setxor-2518"></a></var><br>
-&mdash; Function File:  <b>setxor</b> (<var>a, b, 'rows'</var>)<var><a name="index-setxor-2519"></a></var><br>
+&mdash; Function File:  <b>setxor</b> (<var>a, b</var>)<var><a name="index-setxor-2695"></a></var><br>
+&mdash; Function File:  <b>setxor</b> (<var>a, b, 'rows'</var>)<var><a name="index-setxor-2696"></a></var><br>
+&mdash; Function File: [<var>c</var>, <var>ia</var>, <var>ib</var>] = <b>setxor</b> (<var>a, b</var>)<var><a name="index-setxor-2697"></a></var><br>
 <blockquote>
         <p>Return the elements exclusive to <var>a</var> or <var>b</var>, sorted in ascending
 order.  If <var>a</var> and <var>b</var> are both column vectors return a column
 vector, otherwise return a row vector. 
 <var>a</var>, <var>b</var> may be cell arrays of string(s).
 
-   &mdash; Function File: [<var>c</var>, <var>ia</var>, <var>ib</var>] = <b>setxor</b> (<var>a, b</var>)<var><a name="index-setxor-2520"></a></var><br>
-<blockquote>
-        <p>Return index vectors <var>ia</var> and <var>ib</var> such that <code>a(ia)</code> and
-<code>b(ib)</code> are
-disjoint sets whose union is <var>c</var>.
+        <p>With three output arguments, return index vectors <var>ia</var> and <var>ib</var>
+such that <code>a(ia)</code> and <code>b(ib)</code> are disjoint sets whose union
+is <var>c</var>.
 
      <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
      <!-- A simple blank line produces the correct behavior. -->
@@ -190,8 +188,8 @@ disjoint sets whose union is <var>c</var>.
    <p><a name="doc_002dpowerset"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>powerset</b> (<var>a</var>)<var><a name="index-powerset-2521"></a></var><br>
-&mdash; Function File:  <b>powerset</b> (<var>a, "rows"</var>)<var><a name="index-powerset-2522"></a></var><br>
+&mdash; Function File:  <b>powerset</b> (<var>a</var>)<var><a name="index-powerset-2698"></a></var><br>
+&mdash; Function File:  <b>powerset</b> (<var>a, "rows"</var>)<var><a name="index-powerset-2699"></a></var><br>
 <blockquote>
         <p>Return a cell array containing all subsets of the set <var>a</var>.
 
@@ -203,7 +201,7 @@ disjoint sets whose union is <var>c</var>.
 <p class="noindent"><strong>See also:</strong> <a href="doc_002dunique.html#doc_002dunique">unique</a>, <a href="doc_002dunion.html#doc_002dunion">union</a>, <a href="doc_002dsetxor.html#doc_002dsetxor">setxor</a>, <a href="doc_002dsetdiff.html#doc_002dsetdiff">setdiff</a>, <a href="doc_002dismember.html#doc_002dismember">ismember</a>.
 
 <!-- DO NOT EDIT!  Generated automatically by munge-texi. -->
-<!-- Copyright (C) 1996-2011 John W. Eaton -->
+<!-- Copyright (C) 1996-2012 John W. Eaton -->
 <!-- This file is part of Octave. -->
 <!-- Octave is free software; you can redistribute it and/or modify it -->
 <!-- under the terms of the GNU General Public License as published by the -->

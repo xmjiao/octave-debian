@@ -30,7 +30,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="Numerical-Integration.html#Numerical-In
 <hr>
 </div>
 
-<h3 class="section">22.1 Functions of One Variable</h3>
+<h3 class="section">23.1 Functions of One Variable</h3>
 
 <p>Octave supports five different algorithms for computing the integral
 of a function f over the interval from a to b. 
@@ -119,10 +119,10 @@ without having to fully define a function in an m-file.  For example:
    <p><a name="doc_002dquad"></a>
 
 <div class="defun">
-&mdash; Loadable Function: <var>q</var> = <b>quad</b> (<var>f, a, b</var>)<var><a name="index-quad-2180"></a></var><br>
-&mdash; Loadable Function: <var>q</var> = <b>quad</b> (<var>f, a, b, tol</var>)<var><a name="index-quad-2181"></a></var><br>
-&mdash; Loadable Function: <var>q</var> = <b>quad</b> (<var>f, a, b, tol, sing</var>)<var><a name="index-quad-2182"></a></var><br>
-&mdash; Loadable Function: [<var>q</var>, <var>ier</var>, <var>nfun</var>, <var>err</var>] = <b>quad</b> (<var><small class="dots">...</small></var>)<var><a name="index-quad-2183"></a></var><br>
+&mdash; Loadable Function: <var>q</var> = <b>quad</b> (<var>f, a, b</var>)<var><a name="index-quad-2303"></a></var><br>
+&mdash; Loadable Function: <var>q</var> = <b>quad</b> (<var>f, a, b, tol</var>)<var><a name="index-quad-2304"></a></var><br>
+&mdash; Loadable Function: <var>q</var> = <b>quad</b> (<var>f, a, b, tol, sing</var>)<var><a name="index-quad-2305"></a></var><br>
+&mdash; Loadable Function: [<var>q</var>, <var>ier</var>, <var>nfun</var>, <var>err</var>] = <b>quad</b> (<var><small class="dots">...</small></var>)<var><a name="index-quad-2306"></a></var><br>
 <blockquote><p>Numerically evaluate the integral of <var>f</var> from <var>a</var> to <var>b</var> using
 Fortran routines from <span class="sc">quadpack</span><!-- /@w -->.  <var>f</var> is a function handle,
 inline function, or a string containing the name of the function to
@@ -166,9 +166,9 @@ variable by routines <code>dblquad</code> and <code>triplequad</code>.
    <p><a name="doc_002dquad_005foptions"></a>
 
 <div class="defun">
-&mdash; Loadable Function:  <b>quad_options</b> ()<var><a name="index-quad_005foptions-2184"></a></var><br>
-&mdash; Loadable Function: val = <b>quad_options</b> (<var>opt</var>)<var><a name="index-quad_005foptions-2185"></a></var><br>
-&mdash; Loadable Function:  <b>quad_options</b> (<var>opt, val</var>)<var><a name="index-quad_005foptions-2186"></a></var><br>
+&mdash; Loadable Function:  <b>quad_options</b> ()<var><a name="index-quad_005foptions-2307"></a></var><br>
+&mdash; Loadable Function: val = <b>quad_options</b> (<var>opt</var>)<var><a name="index-quad_005foptions-2308"></a></var><br>
+&mdash; Loadable Function:  <b>quad_options</b> (<var>opt, val</var>)<var><a name="index-quad_005foptions-2309"></a></var><br>
 <blockquote><p>Query or set options for the function <code>quad</code>. 
 When called with no arguments, the names of all available options and
 their current values are displayed. 
@@ -198,11 +198,11 @@ tolerance is zero, the relative tolerance must be greater than or equal to
    <p><a name="doc_002dquadv"></a>
 
 <div class="defun">
-&mdash; Function File: <var>q</var> = <b>quadv</b> (<var>f, a, b</var>)<var><a name="index-quadv-2187"></a></var><br>
-&mdash; Function File: <var>q</var> = <b>quadv</b> (<var>f, a, b, tol</var>)<var><a name="index-quadv-2188"></a></var><br>
-&mdash; Function File: <var>q</var> = <b>quadv</b> (<var>f, a, b, tol, trace</var>)<var><a name="index-quadv-2189"></a></var><br>
-&mdash; Function File: <var>q</var> = <b>quadv</b> (<var>f, a, b, tol, trace, p1, p2, <small class="dots">...</small></var>)<var><a name="index-quadv-2190"></a></var><br>
-&mdash; Function File: [<var>q</var>, <var>nfun</var>] = <b>quadv</b> (<var><small class="dots">...</small></var>)<var><a name="index-quadv-2191"></a></var><br>
+&mdash; Function File: <var>q</var> = <b>quadv</b> (<var>f, a, b</var>)<var><a name="index-quadv-2310"></a></var><br>
+&mdash; Function File: <var>q</var> = <b>quadv</b> (<var>f, a, b, tol</var>)<var><a name="index-quadv-2311"></a></var><br>
+&mdash; Function File: <var>q</var> = <b>quadv</b> (<var>f, a, b, tol, trace</var>)<var><a name="index-quadv-2312"></a></var><br>
+&mdash; Function File: <var>q</var> = <b>quadv</b> (<var>f, a, b, tol, trace, p1, p2, <small class="dots">...</small></var>)<var><a name="index-quadv-2313"></a></var><br>
+&mdash; Function File: [<var>q</var>, <var>nfun</var>] = <b>quadv</b> (<var><small class="dots">...</small></var>)<var><a name="index-quadv-2314"></a></var><br>
 <blockquote>
         <p>Numerically evaluate the integral of <var>f</var> from <var>a</var> to <var>b</var>
 using an adaptive Simpson's rule. 
@@ -246,10 +246,10 @@ similar <code>quad</code> function.
    <p><a name="doc_002dquadl"></a>
 
 <div class="defun">
-&mdash; Function File: <var>q</var> = <b>quadl</b> (<var>f, a, b</var>)<var><a name="index-quadl-2192"></a></var><br>
-&mdash; Function File: <var>q</var> = <b>quadl</b> (<var>f, a, b, tol</var>)<var><a name="index-quadl-2193"></a></var><br>
-&mdash; Function File: <var>q</var> = <b>quadl</b> (<var>f, a, b, tol, trace</var>)<var><a name="index-quadl-2194"></a></var><br>
-&mdash; Function File: <var>q</var> = <b>quadl</b> (<var>f, a, b, tol, trace, p1, p2, <small class="dots">...</small></var>)<var><a name="index-quadl-2195"></a></var><br>
+&mdash; Function File: <var>q</var> = <b>quadl</b> (<var>f, a, b</var>)<var><a name="index-quadl-2315"></a></var><br>
+&mdash; Function File: <var>q</var> = <b>quadl</b> (<var>f, a, b, tol</var>)<var><a name="index-quadl-2316"></a></var><br>
+&mdash; Function File: <var>q</var> = <b>quadl</b> (<var>f, a, b, tol, trace</var>)<var><a name="index-quadl-2317"></a></var><br>
+&mdash; Function File: <var>q</var> = <b>quadl</b> (<var>f, a, b, tol, trace, p1, p2, <small class="dots">...</small></var>)<var><a name="index-quadl-2318"></a></var><br>
 <blockquote>
         <p>Numerically evaluate the integral of <var>f</var> from <var>a</var> to <var>b</var>
 using an adaptive Lobatto rule. 
@@ -288,11 +288,11 @@ Revisited</cite>, BIT Vol. 40, No. 1, March 2000, pp. 84&ndash;101.
    <p><a name="doc_002dquadgk"></a>
 
 <div class="defun">
-&mdash; Function File: <var>q</var> = <b>quadgk</b> (<var>f, a, b</var>)<var><a name="index-quadgk-2196"></a></var><br>
-&mdash; Function File: <var>q</var> = <b>quadgk</b> (<var>f, a, b, abstol</var>)<var><a name="index-quadgk-2197"></a></var><br>
-&mdash; Function File: <var>q</var> = <b>quadgk</b> (<var>f, a, b, abstol, trace</var>)<var><a name="index-quadgk-2198"></a></var><br>
-&mdash; Function File: <var>q</var> = <b>quadgk</b> (<var>f, a, b, prop, val, <small class="dots">...</small></var>)<var><a name="index-quadgk-2199"></a></var><br>
-&mdash; Function File: [<var>q</var>, <var>err</var>] = <b>quadgk</b> (<var><small class="dots">...</small></var>)<var><a name="index-quadgk-2200"></a></var><br>
+&mdash; Function File: <var>q</var> = <b>quadgk</b> (<var>f, a, b</var>)<var><a name="index-quadgk-2319"></a></var><br>
+&mdash; Function File: <var>q</var> = <b>quadgk</b> (<var>f, a, b, abstol</var>)<var><a name="index-quadgk-2320"></a></var><br>
+&mdash; Function File: <var>q</var> = <b>quadgk</b> (<var>f, a, b, abstol, trace</var>)<var><a name="index-quadgk-2321"></a></var><br>
+&mdash; Function File: <var>q</var> = <b>quadgk</b> (<var>f, a, b, prop, val, <small class="dots">...</small></var>)<var><a name="index-quadgk-2322"></a></var><br>
+&mdash; Function File: [<var>q</var>, <var>err</var>] = <b>quadgk</b> (<var><small class="dots">...</small></var>)<var><a name="index-quadgk-2323"></a></var><br>
 <blockquote>
         <p>Numerically evaluate the integral of <var>f</var> from <var>a</var> to <var>b</var>
 using adaptive Gauss-Konrod quadrature. 
@@ -312,7 +312,7 @@ or both limits may be infinite or contain weak end singularities.
 Variable transformation will be used to treat any infinite intervals and
 weaken the singularities.  For example:
 
-     <pre class="example">          quadgk(@(x) 1 ./ (sqrt (x) .* (x + 1)), 0, Inf)
+     <pre class="example">          quadgk (@(x) 1 ./ (sqrt (x) .* (x + 1)), 0, Inf)
 </pre>
         <p class="noindent">Note that the formulation of the integrand uses the
 element-by-element operator <code>./</code> and all user functions to
@@ -352,7 +352,7 @@ a subinterval to fall on the breakpoints of the function and can result in
 significantly improved estimation of the error in the integral, faster
 computation, or both.  For example,
 
-          <pre class="example">               quadgk (@(x) abs (1 - x.^2), 0, 2, 'Waypoints', 1)
+          <pre class="example">               quadgk (@(x) abs (1 - x.^2), 0, 2, "Waypoints", 1)
 </pre>
           <p class="noindent">signals the breakpoint in the integrand at <var>x</var><code> = 1</code>.
 
@@ -386,10 +386,10 @@ integral.
    <p><a name="doc_002dquadcc"></a>
 
 <div class="defun">
-&mdash; Function File: <var>q</var> = <b>quadcc</b> (<var>f, a, b</var>)<var><a name="index-quadcc-2201"></a></var><br>
-&mdash; Function File: <var>q</var> = <b>quadcc</b> (<var>f, a, b, tol</var>)<var><a name="index-quadcc-2202"></a></var><br>
-&mdash; Function File: <var>q</var> = <b>quadcc</b> (<var>f, a, b, tol, sing</var>)<var><a name="index-quadcc-2203"></a></var><br>
-&mdash; Function File: [<var>q</var>, <var>err</var>, <var>nr_points</var>] = <b>quadcc</b> (<var><small class="dots">...</small></var>)<var><a name="index-quadcc-2204"></a></var><br>
+&mdash; Function File: <var>q</var> = <b>quadcc</b> (<var>f, a, b</var>)<var><a name="index-quadcc-2324"></a></var><br>
+&mdash; Function File: <var>q</var> = <b>quadcc</b> (<var>f, a, b, tol</var>)<var><a name="index-quadcc-2325"></a></var><br>
+&mdash; Function File: <var>q</var> = <b>quadcc</b> (<var>f, a, b, tol, sing</var>)<var><a name="index-quadcc-2326"></a></var><br>
+&mdash; Function File: [<var>q</var>, <var>err</var>, <var>nr_points</var>] = <b>quadcc</b> (<var><small class="dots">...</small></var>)<var><a name="index-quadcc-2327"></a></var><br>
 <blockquote><p>Numerically evaluate the integral of <var>f</var> from <var>a</var> to <var>b</var>
 using the doubly-adaptive Clenshaw-Curtis quadrature described by P. Gonnet
 in <cite>Increasing the Reliability of Adaptive Quadrature Using Explicit
@@ -491,9 +491,9 @@ issue when using <code>trapz</code>.
    <p><a name="doc_002dtrapz"></a>
 
 <div class="defun">
-&mdash; Function File: <var>q</var> = <b>trapz</b> (<var>y</var>)<var><a name="index-trapz-2205"></a></var><br>
-&mdash; Function File: <var>q</var> = <b>trapz</b> (<var>x, y</var>)<var><a name="index-trapz-2206"></a></var><br>
-&mdash; Function File: <var>q</var> = <b>trapz</b> (<var><small class="dots">...</small>, dim</var>)<var><a name="index-trapz-2207"></a></var><br>
+&mdash; Function File: <var>q</var> = <b>trapz</b> (<var>y</var>)<var><a name="index-trapz-2328"></a></var><br>
+&mdash; Function File: <var>q</var> = <b>trapz</b> (<var>x, y</var>)<var><a name="index-trapz-2329"></a></var><br>
+&mdash; Function File: <var>q</var> = <b>trapz</b> (<var><small class="dots">...</small>, dim</var>)<var><a name="index-trapz-2330"></a></var><br>
 <blockquote>
         <p>Numerically evaluate the integral of points <var>y</var> using the trapezoidal
 method. 
@@ -530,9 +530,9 @@ calculate the integral in three different ways.
    <p><a name="doc_002dcumtrapz"></a>
 
 <div class="defun">
-&mdash; Function File: <var>q</var> = <b>cumtrapz</b> (<var>y</var>)<var><a name="index-cumtrapz-2208"></a></var><br>
-&mdash; Function File: <var>q</var> = <b>cumtrapz</b> (<var>x, y</var>)<var><a name="index-cumtrapz-2209"></a></var><br>
-&mdash; Function File: <var>q</var> = <b>cumtrapz</b> (<var><small class="dots">...</small>, dim</var>)<var><a name="index-cumtrapz-2210"></a></var><br>
+&mdash; Function File: <var>q</var> = <b>cumtrapz</b> (<var>y</var>)<var><a name="index-cumtrapz-2331"></a></var><br>
+&mdash; Function File: <var>q</var> = <b>cumtrapz</b> (<var>x, y</var>)<var><a name="index-cumtrapz-2332"></a></var><br>
+&mdash; Function File: <var>q</var> = <b>cumtrapz</b> (<var><small class="dots">...</small>, dim</var>)<var><a name="index-cumtrapz-2333"></a></var><br>
 <blockquote>
         <p>Cumulative numerical integration of points <var>y</var> using the trapezoidal
 method. 

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2000-2011 Gabriele Pannocchia
+Copyright (C) 2000-2012 Gabriele Pannocchia
 
 This file is part of Octave.
 
@@ -528,3 +528,10 @@ Undocumented internal function.\n\
 
   return retval;
 }
+
+/*
+
+## No test needed for internal helper function.
+%!assert (1)
+
+*/

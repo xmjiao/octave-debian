@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.
 
-@c Copyright (C) 1996-2011 John W. Eaton
+@c Copyright (C) 1996-2012 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -556,7 +556,7 @@ option (default is 0).
 A vector of the same length as the state specifying the type of
 inequality constraint.  Each element of the vector corresponds to an
 element of the state and should be assigned one of the following
-codes 
+codes
 
 @table @asis
 @item -2

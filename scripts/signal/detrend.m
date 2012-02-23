@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2011 Kurt Hornik
+## Copyright (C) 1995-2012 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -45,7 +45,7 @@ function y = detrend (x, p = 1)
       p = 0;
     elseif (ischar (p) && strcmpi (p, "linear"))
       p = 1;
-    elseif (!isscalar (p) || p < 0 || p != round (p))
+    elseif (!isscalar (p) || p < 0 || p != fix (p))
       error ("detrend: second input argument must be 'constant', 'linear' or a positive integer");
     endif
   else

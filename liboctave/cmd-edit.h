@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2011 John W. Eaton
+Copyright (C) 1996-2012 John W. Eaton
 
 This file is part of Octave.
 
@@ -137,6 +137,8 @@ public:
 
   static void remove_event_hook (event_hook_fcn f);
 
+  static void run_event_hooks (void);
+
   static void read_init_file (const std::string& file = std::string ());
 
   static void re_read_init_file (void);
@@ -181,6 +183,8 @@ private:
 
   // The real thing.
   static command_editor *instance;
+
+  static void cleanup_instance (void) { delete instance; instance = 0; }
 
 protected:
 

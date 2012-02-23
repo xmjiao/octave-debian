@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2011 Kurt Hornik
+## Copyright (C) 1995-2012 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -59,6 +59,7 @@ function [t, v, w] = table (x, y)
   endif
 
 endfunction
+
 
 %% Test input validation
 %!error table ()

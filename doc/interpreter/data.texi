@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.
 
-@c Copyright (C) 1996-2011 John W. Eaton
+@c Copyright (C) 1996-2012 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -40,7 +40,7 @@ to define a new data type for Octave.
 @deftypefnx {Built-in Function} {} typeinfo (@var{expr})
 
 Return the type of the expression @var{expr}, as a string.  If
-@var{expr} is omitted, return an array of strings containing all the
+@var{expr} is omitted, return an cell array of strings containing all the
 currently installed data types.
 @end deftypefn
 
@@ -196,7 +196,7 @@ it is a column vector.
 
 @c bitunpack src/DLD-FUNCTIONS/typecast.cc
 @anchor{doc-bitunpack}
-@deftypefn {Loadable Function} {@var{y} =} bitpack (@var{x})
+@deftypefn {Loadable Function} {@var{y} =} bitunpack (@var{x})
 Return an array @var{y} corresponding to the raw bit patterns of
 @var{x}.  @var{x} must belong to one of the built-in numeric classes:
 
@@ -411,14 +411,17 @@ return the number of elements that would result from the indexing
   @var{a}(@var{idx1}, @var{idx2}, @dots{})
 @end example
 
-Note that the indices do not have to be numerical. For example
+Note that the indices do not have to be numerical.  For example,
 
 @example
+@group
   @var{a} = 1;
   @var{b} = ones (2, 3);
   numel (@var{a}, @var{b});
+@end group
 @end example
 
+@noindent
 will return 6, as this is the number of ways to index with @var{b}.
 
 This method is also called when an object appears as lvalue with cs-list

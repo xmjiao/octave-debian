@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2001-2011 John W. Eaton and Paul Kienzle
+Copyright (C) 2001-2012 John W. Eaton and Paul Kienzle
 
 This file is part of Octave.
 
@@ -129,3 +129,10 @@ DEFUN_DLD (__dispatch__, args, nargout,
 
   return retval;
 }
+
+/*
+
+## No test needed for internal helper function.
+%!assert (1)
+
+*/

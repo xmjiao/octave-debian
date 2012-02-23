@@ -51,10 +51,10 @@ legend displaying the name of the plotted function.
    <p><a name="doc_002dfplot"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>fplot</b> (<var>fn, limits</var>)<var><a name="index-fplot-1136"></a></var><br>
-&mdash; Function File:  <b>fplot</b> (<var>fn, limits, tol</var>)<var><a name="index-fplot-1137"></a></var><br>
-&mdash; Function File:  <b>fplot</b> (<var>fn, limits, n</var>)<var><a name="index-fplot-1138"></a></var><br>
-&mdash; Function File:  <b>fplot</b> (<var><small class="dots">...</small>, fmt</var>)<var><a name="index-fplot-1139"></a></var><br>
+&mdash; Function File:  <b>fplot</b> (<var>fn, limits</var>)<var><a name="index-fplot-1206"></a></var><br>
+&mdash; Function File:  <b>fplot</b> (<var>fn, limits, tol</var>)<var><a name="index-fplot-1207"></a></var><br>
+&mdash; Function File:  <b>fplot</b> (<var>fn, limits, n</var>)<var><a name="index-fplot-1208"></a></var><br>
+&mdash; Function File:  <b>fplot</b> (<var><small class="dots">...</small>, fmt</var>)<var><a name="index-fplot-1209"></a></var><br>
 <blockquote><p>Plot a function <var>fn</var> within defined limits. 
 <var>fn</var> is a function handle, inline function, or string
 containing the name of the function to evaluate. 
@@ -65,8 +65,8 @@ plot, and if <var>tol</var> is an integer it is assumed that it defines the
 number points to use in the plot.  The <var>fmt</var> argument is passed
 to the plot command.
 
-     <pre class="example">             fplot ("cos", [0, 2*pi])
-             fplot ("[cos(x), sin(x)]", [0, 2*pi])
+     <pre class="example">          fplot ("cos", [0, 2*pi])
+          fplot ("[cos(x), sin(x)]", [0, 2*pi])
 </pre>
         <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
      <!-- A simple blank line produces the correct behavior. -->
@@ -82,14 +82,14 @@ function include <code>ezplot</code>, <code>ezcontour</code>, <code>ezcontourf</
    <p><a name="doc_002dezplot"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>ezplot</b> (<var>f</var>)<var><a name="index-ezplot-1140"></a></var><br>
-&mdash; Function File:  <b>ezplot</b> (<var>fx, fy</var>)<var><a name="index-ezplot-1141"></a></var><br>
-&mdash; Function File:  <b>ezplot</b> (<var><small class="dots">...</small>, dom</var>)<var><a name="index-ezplot-1142"></a></var><br>
-&mdash; Function File:  <b>ezplot</b> (<var><small class="dots">...</small>, n</var>)<var><a name="index-ezplot-1143"></a></var><br>
-&mdash; Function File:  <b>ezplot</b> (<var>h, <small class="dots">...</small></var>)<var><a name="index-ezplot-1144"></a></var><br>
-&mdash; Function File: <var>h</var> = <b>ezplot</b> (<var><small class="dots">...</small></var>)<var><a name="index-ezplot-1145"></a></var><br>
+&mdash; Function File:  <b>ezplot</b> (<var>f</var>)<var><a name="index-ezplot-1210"></a></var><br>
+&mdash; Function File:  <b>ezplot</b> (<var>fx, fy</var>)<var><a name="index-ezplot-1211"></a></var><br>
+&mdash; Function File:  <b>ezplot</b> (<var><small class="dots">...</small>, dom</var>)<var><a name="index-ezplot-1212"></a></var><br>
+&mdash; Function File:  <b>ezplot</b> (<var><small class="dots">...</small>, n</var>)<var><a name="index-ezplot-1213"></a></var><br>
+&mdash; Function File:  <b>ezplot</b> (<var>h, <small class="dots">...</small></var>)<var><a name="index-ezplot-1214"></a></var><br>
+&mdash; Function File: <var>h</var> = <b>ezplot</b> (<var><small class="dots">...</small></var>)<var><a name="index-ezplot-1215"></a></var><br>
 <blockquote>
-        <p>Plots in two-dimensions the curve defined by <var>f</var>.  The function
+        <p>Plot the curve defined by <var>f</var> in two dimensions.  The function
 <var>f</var> may be a string, inline function or function handle and can
 have either one or two variables.  If <var>f</var> has one variable, then
 the function is plotted over the domain <code>-2*pi &lt; </code><var>x</var><code> &lt; 2*pi</code>
@@ -99,7 +99,7 @@ with 500 points.
 is calculated over the meshed domain <code>-2*pi &lt; </code><var>x</var><code> | </code><var>y</var><code>
 &lt; 2*pi</code> with 60 by 60 in the mesh.  For example:
 
-     <pre class="example">          ezplot (@(<var>x</var>, <var>y</var>) <var>x</var> .^ 2 - <var>y</var> .^ 2 - 1)
+     <pre class="example">          ezplot (@(<var>x</var>, <var>y</var>) <var>x</var>.^2 - <var>y</var>.^2 - 1)
 </pre>
         <p>If two functions are passed as strings, inline functions or function
 handles, then the parametric function
@@ -119,8 +119,7 @@ of <var>y</var> by the second pair of elements.
         <p><var>n</var> is a scalar defining the number of points to use in plotting
 the function.
 
-        <p>The optional return value <var>h</var> provides a list of handles to the
-the line objects plotted.
+        <p>The optional return value <var>h</var> is a graphics handle to the created plot.
 
      <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
      <!-- A simple blank line produces the correct behavior. -->
@@ -132,13 +131,13 @@ the line objects plotted.
    <p><a name="doc_002dezcontour"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>ezcontour</b> (<var>f</var>)<var><a name="index-ezcontour-1146"></a></var><br>
-&mdash; Function File:  <b>ezcontour</b> (<var><small class="dots">...</small>, dom</var>)<var><a name="index-ezcontour-1147"></a></var><br>
-&mdash; Function File:  <b>ezcontour</b> (<var><small class="dots">...</small>, n</var>)<var><a name="index-ezcontour-1148"></a></var><br>
-&mdash; Function File:  <b>ezcontour</b> (<var>h, <small class="dots">...</small></var>)<var><a name="index-ezcontour-1149"></a></var><br>
-&mdash; Function File: <var>h</var> = <b>ezcontour</b> (<var><small class="dots">...</small></var>)<var><a name="index-ezcontour-1150"></a></var><br>
+&mdash; Function File:  <b>ezcontour</b> (<var>f</var>)<var><a name="index-ezcontour-1216"></a></var><br>
+&mdash; Function File:  <b>ezcontour</b> (<var><small class="dots">...</small>, dom</var>)<var><a name="index-ezcontour-1217"></a></var><br>
+&mdash; Function File:  <b>ezcontour</b> (<var><small class="dots">...</small>, n</var>)<var><a name="index-ezcontour-1218"></a></var><br>
+&mdash; Function File:  <b>ezcontour</b> (<var>h, <small class="dots">...</small></var>)<var><a name="index-ezcontour-1219"></a></var><br>
+&mdash; Function File: <var>h</var> = <b>ezcontour</b> (<var><small class="dots">...</small></var>)<var><a name="index-ezcontour-1220"></a></var><br>
 <blockquote>
-        <p>Plots the contour lines of a function.  <var>f</var> is a string, inline function
+        <p>Plot the contour lines of a function.  <var>f</var> is a string, inline function
 or function handle with two arguments defining the function.  By default the
 plot is over the domain <code>-2*pi &lt; </code><var>x</var><code> &lt; 2*pi</code> and <code>-2*pi &lt;
 </code><var>y</var><code> &lt; 2*pi</code> with 60 points in each dimension.
@@ -150,10 +149,9 @@ separately.
 
         <p><var>n</var> is a scalar defining the number of points to use in each dimension.
 
-        <p>The optional return value <var>h</var> provides a list of handles to the
-the parts of the vector field (body, arrow and marker).
+        <p>The optional return value <var>h</var> is a graphics handle to the created plot.
 
-     <pre class="example">          f = @(x,y) sqrt(abs(x .* y)) ./ (1 + x.^2 + y.^2);
+     <pre class="example">          f = @(x,y) sqrt (abs (x .* y)) ./ (1 + x.^2 + y.^2);
           ezcontour (f, [-3, 3]);
 </pre>
         <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
@@ -166,13 +164,13 @@ the parts of the vector field (body, arrow and marker).
    <p><a name="doc_002dezcontourf"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>ezcontourf</b> (<var>f</var>)<var><a name="index-ezcontourf-1151"></a></var><br>
-&mdash; Function File:  <b>ezcontourf</b> (<var><small class="dots">...</small>, dom</var>)<var><a name="index-ezcontourf-1152"></a></var><br>
-&mdash; Function File:  <b>ezcontourf</b> (<var><small class="dots">...</small>, n</var>)<var><a name="index-ezcontourf-1153"></a></var><br>
-&mdash; Function File:  <b>ezcontourf</b> (<var>h, <small class="dots">...</small></var>)<var><a name="index-ezcontourf-1154"></a></var><br>
-&mdash; Function File: <var>h</var> = <b>ezcontourf</b> (<var><small class="dots">...</small></var>)<var><a name="index-ezcontourf-1155"></a></var><br>
+&mdash; Function File:  <b>ezcontourf</b> (<var>f</var>)<var><a name="index-ezcontourf-1221"></a></var><br>
+&mdash; Function File:  <b>ezcontourf</b> (<var><small class="dots">...</small>, dom</var>)<var><a name="index-ezcontourf-1222"></a></var><br>
+&mdash; Function File:  <b>ezcontourf</b> (<var><small class="dots">...</small>, n</var>)<var><a name="index-ezcontourf-1223"></a></var><br>
+&mdash; Function File:  <b>ezcontourf</b> (<var>h, <small class="dots">...</small></var>)<var><a name="index-ezcontourf-1224"></a></var><br>
+&mdash; Function File: <var>h</var> = <b>ezcontourf</b> (<var><small class="dots">...</small></var>)<var><a name="index-ezcontourf-1225"></a></var><br>
 <blockquote>
-        <p>Plots the filled contour lines of a function.  <var>f</var> is a string, inline
+        <p>Plot the filled contour lines of a function.  <var>f</var> is a string, inline
 function or function handle with two arguments defining the function.  By
 default the plot is over the domain <code>-2*pi &lt; </code><var>x</var><code> &lt; 2*pi</code> and
 <code>-2*pi &lt; </code><var>y</var><code> &lt; 2*pi</code> with 60 points in each dimension.
@@ -184,10 +182,9 @@ separately.
 
         <p><var>n</var> is a scalar defining the number of points to use in each dimension.
 
-        <p>The optional return value <var>h</var> provides a list of handles to the
-the parts of the vector field (body, arrow and marker).
+        <p>The optional return value <var>h</var> is a graphics handle to the created plot.
 
-     <pre class="example">          f = @(x,y) sqrt(abs(x .* y)) ./ (1 + x.^2 + y.^2);
+     <pre class="example">          f = @(x,y) sqrt (abs (x .* y)) ./ (1 + x.^2 + y.^2);
           ezcontourf (f, [-3, 3]);
 </pre>
         <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
@@ -200,13 +197,13 @@ the parts of the vector field (body, arrow and marker).
    <p><a name="doc_002dezpolar"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>ezpolar</b> (<var>f</var>)<var><a name="index-ezpolar-1156"></a></var><br>
-&mdash; Function File:  <b>ezpolar</b> (<var><small class="dots">...</small>, dom</var>)<var><a name="index-ezpolar-1157"></a></var><br>
-&mdash; Function File:  <b>ezpolar</b> (<var><small class="dots">...</small>, n</var>)<var><a name="index-ezpolar-1158"></a></var><br>
-&mdash; Function File:  <b>ezpolar</b> (<var>h, <small class="dots">...</small></var>)<var><a name="index-ezpolar-1159"></a></var><br>
-&mdash; Function File: <var>h</var> = <b>ezpolar</b> (<var><small class="dots">...</small></var>)<var><a name="index-ezpolar-1160"></a></var><br>
+&mdash; Function File:  <b>ezpolar</b> (<var>f</var>)<var><a name="index-ezpolar-1226"></a></var><br>
+&mdash; Function File:  <b>ezpolar</b> (<var><small class="dots">...</small>, dom</var>)<var><a name="index-ezpolar-1227"></a></var><br>
+&mdash; Function File:  <b>ezpolar</b> (<var><small class="dots">...</small>, n</var>)<var><a name="index-ezpolar-1228"></a></var><br>
+&mdash; Function File:  <b>ezpolar</b> (<var>h, <small class="dots">...</small></var>)<var><a name="index-ezpolar-1229"></a></var><br>
+&mdash; Function File: <var>h</var> = <b>ezpolar</b> (<var><small class="dots">...</small></var>)<var><a name="index-ezpolar-1230"></a></var><br>
 <blockquote>
-        <p>Plots in polar plot defined by a function.  The function <var>f</var> is either
+        <p>Plot a function in polar coordinates.  The function <var>f</var> is either
 a string, inline function or function handle with one arguments defining
 the function.  By default the plot is over the domain <code>0 &lt; </code><var>x</var><code> &lt;
 2*pi</code> with 60 points.
@@ -215,8 +212,7 @@ the function.  By default the plot is over the domain <code>0 &lt; </code><var>x
 value of both <var>t</var>.  <var>n</var> is a scalar defining the number of points to
 use.
 
-        <p>The optional return value <var>h</var> provides a list of handles to the
-the parts of the vector field (body, arrow and marker).
+        <p>The optional return value <var>h</var> is a graphics handle to the created plot.
 
      <pre class="example">          ezpolar (@(t) 1 + sin (t));
 </pre>

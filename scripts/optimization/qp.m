@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2011 Gabriele Pannocchia.
+## Copyright (C) 2000-2012 Gabriele Pannocchia.
 ##
 ## This file is part of Octave.
 ##
@@ -33,8 +33,8 @@
 ##
 ## @example
 ## @group
-##      min 0.5 x'*H*x + x'*q
-##       x
+## min 0.5 x'*H*x + x'*q
+##  x
 ## @end group
 ## @end example
 ##
@@ -49,9 +49,9 @@
 ##
 ## @example
 ## @group
-##      A*x = b
-##      lb <= x <= ub
-##      A_lb <= A_in*x <= A_ub
+## A*x = b
+## lb <= x <= ub
+## A_lb <= A_in*x <= A_ub
 ## @end group
 ## @end example
 ##
@@ -108,7 +108,8 @@
 ## @end table
 ## @end deftypefn
 
-## PKG_ADD: __all_opts__ ("qp");
+## PKG_ADD: ## Discard result to avoid polluting workspace with ans at startup.
+## PKG_ADD: [~] = __all_opts__ ("qp");
 
 function [x, obj, INFO, lambda] = qp (x0, H, varargin)
 

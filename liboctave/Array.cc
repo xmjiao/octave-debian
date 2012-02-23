@@ -1,7 +1,7 @@
 // Template array classes
 /*
 
-Copyright (C) 1993-2011 John W. Eaton
+Copyright (C) 1993-2012 John W. Eaton
 Copyright (C) 2008-2009 Jaroslav Hajek
 Copyright (C) 2009 VZLU Prague
 
@@ -84,7 +84,7 @@ template <class T>
 void
 Array<T>::clear (void)
 {
-  if (--rep->count <= 0)
+  if (--rep->count == 0)
     delete rep;
 
   rep = nil_rep ();
@@ -99,7 +99,7 @@ template <class T>
 void
 Array<T>::clear (const dim_vector& dv)
 {
-  if (--rep->count <= 0)
+  if (--rep->count == 0)
     delete rep;
 
   rep = new ArrayRep (dv.safe_numel ());
@@ -783,7 +783,7 @@ Array<T>::index (const idx_vector& i, const idx_vector& j) const
       if (i.extent (r) != r)
         gripe_index_out_of_range (2, 1, i.extent (r), r); // throws
       if (j.extent (c) != c)
-        gripe_index_out_of_range (2, 2, i.extent (c), c); // throws
+        gripe_index_out_of_range (2, 2, j.extent (c), c); // throws
 
       octave_idx_type n = numel (), il = i.length (r), jl = j.length (c);
 
@@ -2485,7 +2485,7 @@ Array<T>::diag (octave_idx_type k) const
         }
       else
         {
-          // Create diag matrix from vector  
+          // Create diag matrix from vector
           octave_idx_type roff = 0;
           octave_idx_type coff = 0;
           if (k > 0)

@@ -1,4 +1,4 @@
-% Copyright (C) 1996-2011 John W. Eaton
+% Copyright (C) 1996-2012 John W. Eaton
 %
 % This file is part of Octave.
 %
@@ -45,6 +45,20 @@
 @macro nospell {arg}
 \arg\
 @end macro
+
+@c The following macro works around a situation where the Info/plain text
+@c expansion of the @code{XXX} macro is `XXX'.  The use of the apostrophe
+@c can be confusing if the code segment itself ends with a transpose operator.
+@ifinfo
+@macro xcode{arg}
+\arg\
+@end macro
+@end ifinfo
+@ifnotinfo
+@macro xcode{arg}
+@code{\arg\}
+@end macro
+@end ifnotinfo
 
 @ifinfo
 @format
@@ -183,8 +197,9 @@ It corresponds to GNU Octave version @value{VERSION}.
 * Plotting::                    
 * Matrix Manipulation::         
 * Arithmetic::                  
-* Linear Algebra::              
-* Nonlinear Equations::         
+* Linear Algebra::
+* Vectorization and Faster Code Execution::
+* Nonlinear Equations::
 * Diagonal and Permutation Matrices::
 * Sparse Matrices::
 * Numerical Integration::                  
@@ -199,6 +214,7 @@ It corresponds to GNU Octave version @value{VERSION}.
 * Image Processing::            
 * Audio Processing::            
 * Object Oriented Programming::            
+* GUI Development::            
 * System Utilities::            
 * Packages:: 
 * Dynamically Linked Functions::
@@ -368,6 +384,10 @@ Expressions
 * Increment Ops::               
 * Operator Precedence::         
 
+Index Expressions
+
+* Advanced Indexing::
+
 Calling Functions
 
 * Call by Value::               
@@ -457,19 +477,19 @@ Debugging
 * Breakpoints::
 * Debug Mode::
 * Call Stack::
+* Profiling::
+* Profiler Example::
 
 Input and Output
 
 * Basic Input and Output::      
 * C-Style I/O Functions::       
-* GUI Dialogs for I/O::       
 
 Basic Input and Output
 
 * Terminal Output::             
 * Terminal Input::              
 * Simple File I/O::             
-* Rational Approximations::
 
 Terminal Output
 
@@ -527,7 +547,7 @@ Two-Dimensional Plots
 
 Three-Dimensional Plots
 
-* Aspect Ratio::  
+* Aspect Ratio::
 * Three-dimensional Function Plotting::  
 * Three-dimensional Geometric Shapes::  
 
@@ -556,7 +576,7 @@ Advanced Plotting
 * Line Styles::                 
 * Marker Styles::               
 * Callbacks::                   
-* Application-defined Data
+* Application-defined Data::
 * Object Groups::               
 * Graphics Toolkits::           
 
@@ -576,13 +596,12 @@ Object Groups
 
 Graphics Toolkits
 
-* Customizing Toolkit Behavior::
+* Customizing Toolkit Behavior::    
 
 Matrix Manipulation
 
 * Finding Elements and Checking Conditions::  
 * Rearranging Matrices::        
-* Applying a Function to an Array::
 * Special Utility Matrices::    
 * Famous Matrices::             
 
@@ -606,10 +625,19 @@ Linear Algebra
 * Functions of a Matrix::       
 * Specialized Solvers::
 
+Vectorization and Faster Code Execution
+
+* Basic Vectorization::        Basic techniques for code optimization
+* Broadcasting::               Broadcasting operations
+* Function Application::       Applying functions to arrays, cells, and structs
+* Accumulation::               Accumulation functions
+* Miscellaneous Techniques::   Other techniques for speeding up code
+* Examples::
+
 Nonlinear Equations
 
 * Solvers::
-* Minimizers::
+* Minimizers::          
 
 Diagonal and Permutation Matrices
 
@@ -678,7 +706,7 @@ Statistics
 * Descriptive Statistics::
 * Basic Statistical Functions:: 
 * Statistical Plots:: 
-* Correlation and Regression Analysis::
+* Correlation and Regression Analysis::                      
 * Distributions::     
 * Tests::                       
 * Random Number Generation::          
@@ -739,6 +767,13 @@ Overloading Objects
 * Function Overloading::
 * Operator Overloading::
 * Precedence of Objects::
+
+GUI Development
+
+* I/O Dialogs::       
+* Progress Bar::       
+* GUI Utility Functions::       
+* User-Defined Preferences::       
 
 System Utilities
 
@@ -819,7 +854,6 @@ Test and Demo Functions
 Tips and Standards
 
 * Style Tips::                  Writing clean and robust programs.
-* Coding Tips::                 Making code run faster.
 * Comment Tips::                Conventions for writing comments.
 * Function Headers::            Standard headers for functions.
 * Documentation Tips::          Writing readable documentation strings.
@@ -827,6 +861,8 @@ Tips and Standards
 Contributing Guidelines
 
 * How to Contribute::
+* Building the Development Sources::
+* Basics of Generating a Changeset::
 * General Guidelines::
 * Octave Sources (m-files)::
 * C++ Sources::
@@ -841,13 +877,22 @@ Trouble
 Reporting Bugs
 
 * Bug Criteria::                
-* Bug Tracker::ff               Where to submit your bug report.
-* Bug Reporting::               How to report a bug effectively.
-* Sending Patches::             How to send a patch for Octave.
+* Bug Tracker::        Where to submit your bug report.
+* Bug Reporting::      How to report a bug effectively.
+* Sending Patches::    How to send a patch for Octave.
 
 Installation
 
-* Installation Problems::       
+* Build Dependencies::
+* Running Configure and Make::
+* Compiling Octave with 64-bit Indexing::
+* Installation Problems::
+
+Build Dependencies
+
+* Tips for Specific Systems::
+* Build Tools::
+* External Packages::
 
 Emacs Octave Support
 
@@ -885,6 +930,7 @@ Grammar and Parser
 @include matrix.texi
 @include arith.texi
 @include linalg.texi
+@include vectorize.texi
 @include nonlin.texi
 @include diagperm.texi
 @include sparse.texi
@@ -900,6 +946,7 @@ Grammar and Parser
 @include image.texi
 @include audio.texi
 @include oop.texi
+@include gui.texi
 @include system.texi
 @include package.texi
 

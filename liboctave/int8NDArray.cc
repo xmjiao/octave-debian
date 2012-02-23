@@ -1,7 +1,7 @@
 // N-D Array  manipulations.
 /*
 
-Copyright (C) 2004-2011 John W. Eaton
+Copyright (C) 2004-2012 John W. Eaton
 
 This file is part of Octave.
 
@@ -54,3 +54,6 @@ MINMAX_FCNS (int8NDArray, octave_int8)
 
 BSXFUN_STDOP_DEFS_MXLOOP (int8NDArray)
 BSXFUN_STDREL_DEFS_MXLOOP (int8NDArray)
+
+BSXFUN_OP_DEF_MXLOOP (pow, int8NDArray, mx_inline_pow)
+BSXFUN_POW_MIXED_MXLOOP (int8NDArray)

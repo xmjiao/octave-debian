@@ -3,7 +3,8 @@
 EXTRA_DIST += \
   DLD-FUNCTIONS/config-module.sh \
   DLD-FUNCTIONS/config-module.awk \
-  DLD-FUNCTIONS/module-files
+  DLD-FUNCTIONS/module-files \
+  DLD-FUNCTIONS/oct-qhull.h
 
 DLD_FUNCTIONS_SRC = \
   DLD-FUNCTIONS/__contourc__.cc \
@@ -13,6 +14,7 @@ DLD_FUNCTIONS_SRC = \
   DLD-FUNCTIONS/__fltk_uigetfile__.cc \
   DLD-FUNCTIONS/__glpk__.cc \
   DLD-FUNCTIONS/__init_fltk__.cc \
+  DLD-FUNCTIONS/__init_gnuplot__.cc \
   DLD-FUNCTIONS/__lin_interpn__.cc \
   DLD-FUNCTIONS/__magick_read__.cc \
   DLD-FUNCTIONS/__pchip_deriv__.cc \
@@ -64,7 +66,6 @@ DLD_FUNCTIONS_SRC = \
   DLD-FUNCTIONS/md5sum.cc \
   DLD-FUNCTIONS/mgorth.cc \
   DLD-FUNCTIONS/nproc.cc \
-  DLD-FUNCTIONS/onCleanup.cc \
   DLD-FUNCTIONS/pinv.cc \
   DLD-FUNCTIONS/qr.cc \
   DLD-FUNCTIONS/quad.cc \
@@ -91,9 +92,9 @@ DLD_FUNCTIONS_SRC = \
 
 DLD_FUNCTIONS_LIBS = $(DLD_FUNCTIONS_SRC:.cc=.la)
 
-octlib_LTLIBRARIES += $(DLD_FUNCTIONS_LIBS)
-
 if AMCOND_ENABLE_DYNAMIC_LINKING
+
+octlib_LTLIBRARIES += $(DLD_FUNCTIONS_LIBS)
 
 ## Use stamp files to avoid problems with checking timestamps
 ## of symbolic links
@@ -147,6 +148,14 @@ DLD-FUNCTIONS/$(am__leading_dot)__glpk__.oct-stamp: DLD-FUNCTIONS/__glpk__.la
 	  touch $(@F)
 
 DLD-FUNCTIONS/$(am__leading_dot)__init_fltk__.oct-stamp: DLD-FUNCTIONS/__init_fltk__.la
+	rm -f $(<:.la=.oct)
+	la=$(<F) && \
+	  of=$(<F:.la=.oct) && \
+	  cd DLD-FUNCTIONS && \
+	  $(LN_S) .libs/`$(SED) -n -e "s/dlname='\([^']*\)'/\1/p" < $$la` $$of && \
+	  touch $(@F)
+
+DLD-FUNCTIONS/$(am__leading_dot)__init_gnuplot__.oct-stamp: DLD-FUNCTIONS/__init_gnuplot__.la
 	rm -f $(<:.la=.oct)
 	la=$(<F) && \
 	  of=$(<F:.la=.oct) && \
@@ -562,14 +571,6 @@ DLD-FUNCTIONS/$(am__leading_dot)nproc.oct-stamp: DLD-FUNCTIONS/nproc.la
 	  $(LN_S) .libs/`$(SED) -n -e "s/dlname='\([^']*\)'/\1/p" < $$la` $$of && \
 	  touch $(@F)
 
-DLD-FUNCTIONS/$(am__leading_dot)onCleanup.oct-stamp: DLD-FUNCTIONS/onCleanup.la
-	rm -f $(<:.la=.oct)
-	la=$(<F) && \
-	  of=$(<F:.la=.oct) && \
-	  cd DLD-FUNCTIONS && \
-	  $(LN_S) .libs/`$(SED) -n -e "s/dlname='\([^']*\)'/\1/p" < $$la` $$of && \
-	  touch $(@F)
-
 DLD-FUNCTIONS/$(am__leading_dot)pinv.oct-stamp: DLD-FUNCTIONS/pinv.la
 	rm -f $(<:.la=.oct)
 	la=$(<F) && \
@@ -754,252 +755,380 @@ DLD-FUNCTIONS/$(am__leading_dot)urlwrite.oct-stamp: DLD-FUNCTIONS/urlwrite.la
 	  $(LN_S) .libs/`$(SED) -n -e "s/dlname='\([^']*\)'/\1/p" < $$la` $$of && \
 	  touch $(@F)
 
+else
+
+noinst_LTLIBRARIES = $(DLD_FUNCTIONS_LIBS)
+
 endif
 
 DLD_FUNCTIONS___contourc___la_SOURCES = DLD-FUNCTIONS/__contourc__.cc
-DLD_FUNCTIONS___contourc___la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS___contourc___la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS___delaunayn___la_SOURCES = DLD-FUNCTIONS/__delaunayn__.cc
-DLD_FUNCTIONS___delaunayn___la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS___delaunayn___la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS___dispatch___la_SOURCES = DLD-FUNCTIONS/__dispatch__.cc
-DLD_FUNCTIONS___dispatch___la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS___dispatch___la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS___dsearchn___la_SOURCES = DLD-FUNCTIONS/__dsearchn__.cc
-DLD_FUNCTIONS___dsearchn___la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS___dsearchn___la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS___fltk_uigetfile___la_SOURCES = DLD-FUNCTIONS/__fltk_uigetfile__.cc
-DLD_FUNCTIONS___fltk_uigetfile___la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS___fltk_uigetfile___la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS___glpk___la_SOURCES = DLD-FUNCTIONS/__glpk__.cc
-DLD_FUNCTIONS___glpk___la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS___glpk___la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS___init_fltk___la_SOURCES = DLD-FUNCTIONS/__init_fltk__.cc
-DLD_FUNCTIONS___init_fltk___la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS___init_fltk___la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS___lin_interpn___la_SOURCES = DLD-FUNCTIONS/__lin_interpn__.cc
-DLD_FUNCTIONS___lin_interpn___la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS___lin_interpn___la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS___magick_read___la_SOURCES = DLD-FUNCTIONS/__magick_read__.cc
-DLD_FUNCTIONS___magick_read___la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS___magick_read___la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS___pchip_deriv___la_SOURCES = DLD-FUNCTIONS/__pchip_deriv__.cc
-DLD_FUNCTIONS___pchip_deriv___la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS___pchip_deriv___la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS___qp___la_SOURCES = DLD-FUNCTIONS/__qp__.cc
-DLD_FUNCTIONS___qp___la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS___qp___la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS___voronoi___la_SOURCES = DLD-FUNCTIONS/__voronoi__.cc
-DLD_FUNCTIONS___voronoi___la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS___voronoi___la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_amd_la_SOURCES = DLD-FUNCTIONS/amd.cc
-DLD_FUNCTIONS_amd_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_amd_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_balance_la_SOURCES = DLD-FUNCTIONS/balance.cc
-DLD_FUNCTIONS_balance_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_balance_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_besselj_la_SOURCES = DLD-FUNCTIONS/besselj.cc
-DLD_FUNCTIONS_besselj_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_besselj_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_betainc_la_SOURCES = DLD-FUNCTIONS/betainc.cc
-DLD_FUNCTIONS_betainc_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_betainc_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_bsxfun_la_SOURCES = DLD-FUNCTIONS/bsxfun.cc
-DLD_FUNCTIONS_bsxfun_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_bsxfun_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_ccolamd_la_SOURCES = DLD-FUNCTIONS/ccolamd.cc
-DLD_FUNCTIONS_ccolamd_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_ccolamd_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_cellfun_la_SOURCES = DLD-FUNCTIONS/cellfun.cc
-DLD_FUNCTIONS_cellfun_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_cellfun_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_chol_la_SOURCES = DLD-FUNCTIONS/chol.cc
-DLD_FUNCTIONS_chol_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_chol_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_colamd_la_SOURCES = DLD-FUNCTIONS/colamd.cc
-DLD_FUNCTIONS_colamd_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_colamd_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_colloc_la_SOURCES = DLD-FUNCTIONS/colloc.cc
-DLD_FUNCTIONS_colloc_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_colloc_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_conv2_la_SOURCES = DLD-FUNCTIONS/conv2.cc
-DLD_FUNCTIONS_conv2_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_conv2_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_convhulln_la_SOURCES = DLD-FUNCTIONS/convhulln.cc
-DLD_FUNCTIONS_convhulln_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_convhulln_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_daspk_la_SOURCES = DLD-FUNCTIONS/daspk.cc
-DLD_FUNCTIONS_daspk_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_daspk_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_dasrt_la_SOURCES = DLD-FUNCTIONS/dasrt.cc
-DLD_FUNCTIONS_dasrt_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_dasrt_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_dassl_la_SOURCES = DLD-FUNCTIONS/dassl.cc
-DLD_FUNCTIONS_dassl_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_dassl_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_det_la_SOURCES = DLD-FUNCTIONS/det.cc
-DLD_FUNCTIONS_det_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_det_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_dlmread_la_SOURCES = DLD-FUNCTIONS/dlmread.cc
-DLD_FUNCTIONS_dlmread_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_dlmread_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_dmperm_la_SOURCES = DLD-FUNCTIONS/dmperm.cc
-DLD_FUNCTIONS_dmperm_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_dmperm_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_dot_la_SOURCES = DLD-FUNCTIONS/dot.cc
-DLD_FUNCTIONS_dot_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_dot_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_eig_la_SOURCES = DLD-FUNCTIONS/eig.cc
-DLD_FUNCTIONS_eig_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_eig_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_eigs_la_SOURCES = DLD-FUNCTIONS/eigs.cc
-DLD_FUNCTIONS_eigs_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_eigs_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_fft_la_SOURCES = DLD-FUNCTIONS/fft.cc
-DLD_FUNCTIONS_fft_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_fft_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_fft2_la_SOURCES = DLD-FUNCTIONS/fft2.cc
-DLD_FUNCTIONS_fft2_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_fft2_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_fftn_la_SOURCES = DLD-FUNCTIONS/fftn.cc
-DLD_FUNCTIONS_fftn_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_fftn_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_fftw_la_SOURCES = DLD-FUNCTIONS/fftw.cc
-DLD_FUNCTIONS_fftw_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_fftw_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_filter_la_SOURCES = DLD-FUNCTIONS/filter.cc
-DLD_FUNCTIONS_filter_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_filter_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_find_la_SOURCES = DLD-FUNCTIONS/find.cc
-DLD_FUNCTIONS_find_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_find_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_gammainc_la_SOURCES = DLD-FUNCTIONS/gammainc.cc
-DLD_FUNCTIONS_gammainc_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_gammainc_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_gcd_la_SOURCES = DLD-FUNCTIONS/gcd.cc
-DLD_FUNCTIONS_gcd_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_gcd_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_getgrent_la_SOURCES = DLD-FUNCTIONS/getgrent.cc
-DLD_FUNCTIONS_getgrent_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_getgrent_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_getpwent_la_SOURCES = DLD-FUNCTIONS/getpwent.cc
-DLD_FUNCTIONS_getpwent_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_getpwent_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_getrusage_la_SOURCES = DLD-FUNCTIONS/getrusage.cc
-DLD_FUNCTIONS_getrusage_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_getrusage_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_givens_la_SOURCES = DLD-FUNCTIONS/givens.cc
-DLD_FUNCTIONS_givens_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_givens_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_hess_la_SOURCES = DLD-FUNCTIONS/hess.cc
-DLD_FUNCTIONS_hess_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_hess_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_hex2num_la_SOURCES = DLD-FUNCTIONS/hex2num.cc
-DLD_FUNCTIONS_hex2num_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_hex2num_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_inv_la_SOURCES = DLD-FUNCTIONS/inv.cc
-DLD_FUNCTIONS_inv_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_inv_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_kron_la_SOURCES = DLD-FUNCTIONS/kron.cc
-DLD_FUNCTIONS_kron_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_kron_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_lookup_la_SOURCES = DLD-FUNCTIONS/lookup.cc
-DLD_FUNCTIONS_lookup_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_lookup_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_lsode_la_SOURCES = DLD-FUNCTIONS/lsode.cc
-DLD_FUNCTIONS_lsode_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_lsode_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_lu_la_SOURCES = DLD-FUNCTIONS/lu.cc
-DLD_FUNCTIONS_lu_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_lu_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_luinc_la_SOURCES = DLD-FUNCTIONS/luinc.cc
-DLD_FUNCTIONS_luinc_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_luinc_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_matrix_type_la_SOURCES = DLD-FUNCTIONS/matrix_type.cc
-DLD_FUNCTIONS_matrix_type_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_matrix_type_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_max_la_SOURCES = DLD-FUNCTIONS/max.cc
-DLD_FUNCTIONS_max_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_max_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_md5sum_la_SOURCES = DLD-FUNCTIONS/md5sum.cc
-DLD_FUNCTIONS_md5sum_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_md5sum_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_mgorth_la_SOURCES = DLD-FUNCTIONS/mgorth.cc
-DLD_FUNCTIONS_mgorth_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_mgorth_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_nproc_la_SOURCES = DLD-FUNCTIONS/nproc.cc
-DLD_FUNCTIONS_nproc_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_nproc_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_onCleanup_la_SOURCES = DLD-FUNCTIONS/onCleanup.cc
-DLD_FUNCTIONS_onCleanup_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_onCleanup_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_pinv_la_SOURCES = DLD-FUNCTIONS/pinv.cc
-DLD_FUNCTIONS_pinv_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_pinv_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_qr_la_SOURCES = DLD-FUNCTIONS/qr.cc
-DLD_FUNCTIONS_qr_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_qr_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_quad_la_SOURCES = DLD-FUNCTIONS/quad.cc
-DLD_FUNCTIONS_quad_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_quad_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_quadcc_la_SOURCES = DLD-FUNCTIONS/quadcc.cc
-DLD_FUNCTIONS_quadcc_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_quadcc_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_qz_la_SOURCES = DLD-FUNCTIONS/qz.cc
-DLD_FUNCTIONS_qz_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_qz_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_rand_la_SOURCES = DLD-FUNCTIONS/rand.cc
-DLD_FUNCTIONS_rand_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_rand_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_rcond_la_SOURCES = DLD-FUNCTIONS/rcond.cc
-DLD_FUNCTIONS_rcond_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_rcond_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_regexp_la_SOURCES = DLD-FUNCTIONS/regexp.cc
-DLD_FUNCTIONS_regexp_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_regexp_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_schur_la_SOURCES = DLD-FUNCTIONS/schur.cc
-DLD_FUNCTIONS_schur_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_schur_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_spparms_la_SOURCES = DLD-FUNCTIONS/spparms.cc
-DLD_FUNCTIONS_spparms_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_spparms_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_sqrtm_la_SOURCES = DLD-FUNCTIONS/sqrtm.cc
-DLD_FUNCTIONS_sqrtm_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_sqrtm_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_strfind_la_SOURCES = DLD-FUNCTIONS/strfind.cc
-DLD_FUNCTIONS_strfind_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_strfind_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_str2double_la_SOURCES = DLD-FUNCTIONS/str2double.cc
-DLD_FUNCTIONS_str2double_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_str2double_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_sub2ind_la_SOURCES = DLD-FUNCTIONS/sub2ind.cc
-DLD_FUNCTIONS_sub2ind_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_sub2ind_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_svd_la_SOURCES = DLD-FUNCTIONS/svd.cc
-DLD_FUNCTIONS_svd_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_svd_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_syl_la_SOURCES = DLD-FUNCTIONS/syl.cc
-DLD_FUNCTIONS_syl_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_syl_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_symbfact_la_SOURCES = DLD-FUNCTIONS/symbfact.cc
-DLD_FUNCTIONS_symbfact_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_symbfact_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_symrcm_la_SOURCES = DLD-FUNCTIONS/symrcm.cc
-DLD_FUNCTIONS_symrcm_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_symrcm_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_time_la_SOURCES = DLD-FUNCTIONS/time.cc
-DLD_FUNCTIONS_time_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_time_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_tril_la_SOURCES = DLD-FUNCTIONS/tril.cc
-DLD_FUNCTIONS_tril_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_tril_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_tsearch_la_SOURCES = DLD-FUNCTIONS/tsearch.cc
-DLD_FUNCTIONS_tsearch_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_tsearch_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_typecast_la_SOURCES = DLD-FUNCTIONS/typecast.cc
-DLD_FUNCTIONS_typecast_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_typecast_la_LIBADD = $(OCT_LINK_DEPS)
-DLD_FUNCTIONS_urlwrite_la_SOURCES = DLD-FUNCTIONS/urlwrite.cc
-DLD_FUNCTIONS_urlwrite_la_LDFLAGS = @NO_UNDEFINED_LDFLAG@ -module
-DLD_FUNCTIONS_urlwrite_la_LIBADD = $(OCT_LINK_DEPS)
+DLD_FUNCTIONS___contourc___la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS___contourc___la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
 
+DLD_FUNCTIONS___delaunayn___la_SOURCES = DLD-FUNCTIONS/__delaunayn__.cc
+DLD-FUNCTIONS/__delaunayn__.df: CPPFLAGS += $(QHULL_CPPFLAGS)
+DLD_FUNCTIONS___delaunayn___la_CPPFLAGS = $(AM_CPPFLAGS) $(QHULL_CPPFLAGS)
+DLD_FUNCTIONS___delaunayn___la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(QHULL_LDFLAGS) $(OCT_LINK_OPTS)
+DLD_FUNCTIONS___delaunayn___la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la $(QHULL_LIBS) $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS___dispatch___la_SOURCES = DLD-FUNCTIONS/__dispatch__.cc
+DLD_FUNCTIONS___dispatch___la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS___dispatch___la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS___dsearchn___la_SOURCES = DLD-FUNCTIONS/__dsearchn__.cc
+DLD_FUNCTIONS___dsearchn___la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS___dsearchn___la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS___fltk_uigetfile___la_SOURCES = DLD-FUNCTIONS/__fltk_uigetfile__.cc
+DLD-FUNCTIONS/__fltk_uigetfile__.df: CPPFLAGS += $(GRAPHICS_CFLAGS) $(FT2_CPPFLAGS)
+DLD_FUNCTIONS___fltk_uigetfile___la_CPPFLAGS = $(AM_CPPFLAGS) $(GRAPHICS_CFLAGS) $(FT2_CPPFLAGS)
+DLD_FUNCTIONS___fltk_uigetfile___la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(GRAPHICS_LDFLAGS) $(FT2_LDFLAGS) $(OCT_LINK_OPTS)
+DLD_FUNCTIONS___fltk_uigetfile___la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la $(GRAPHICS_LIBS) $(FT2_LIBS) $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS___glpk___la_SOURCES = DLD-FUNCTIONS/__glpk__.cc
+DLD-FUNCTIONS/__glpk__.df: CPPFLAGS += $(GLPK_CPPFLAGS)
+DLD_FUNCTIONS___glpk___la_CPPFLAGS = $(AM_CPPFLAGS) $(GLPK_CPPFLAGS)
+DLD_FUNCTIONS___glpk___la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(GLPK_LDFLAGS) $(OCT_LINK_OPTS)
+DLD_FUNCTIONS___glpk___la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la $(GLPK_LIBS) $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS___init_fltk___la_SOURCES = DLD-FUNCTIONS/__init_fltk__.cc
+DLD-FUNCTIONS/__init_fltk__.df: CPPFLAGS += $(GRAPHICS_CFLAGS) $(FT2_CPPFLAGS)
+DLD_FUNCTIONS___init_fltk___la_CPPFLAGS = $(AM_CPPFLAGS) $(GRAPHICS_CFLAGS) $(FT2_CPPFLAGS)
+DLD_FUNCTIONS___init_fltk___la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(GRAPHICS_LDFLAGS) $(FT2_LDFLAGS) $(OCT_LINK_OPTS)
+DLD_FUNCTIONS___init_fltk___la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la $(GRAPHICS_LIBS) $(FT2_LIBS) $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS___init_gnuplot___la_SOURCES = DLD-FUNCTIONS/__init_gnuplot__.cc
+DLD_FUNCTIONS___init_gnuplot___la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS___init_gnuplot___la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS___lin_interpn___la_SOURCES = DLD-FUNCTIONS/__lin_interpn__.cc
+DLD_FUNCTIONS___lin_interpn___la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS___lin_interpn___la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS___magick_read___la_SOURCES = DLD-FUNCTIONS/__magick_read__.cc
+DLD-FUNCTIONS/__magick_read__.df: CPPFLAGS += $(MAGICK_CPPFLAGS)
+DLD_FUNCTIONS___magick_read___la_CPPFLAGS = $(AM_CPPFLAGS) $(MAGICK_CPPFLAGS)
+DLD_FUNCTIONS___magick_read___la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(MAGICK_LDFLAGS) $(OCT_LINK_OPTS)
+DLD_FUNCTIONS___magick_read___la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la $(MAGICK_LIBS) $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS___pchip_deriv___la_SOURCES = DLD-FUNCTIONS/__pchip_deriv__.cc
+DLD_FUNCTIONS___pchip_deriv___la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS___pchip_deriv___la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS___qp___la_SOURCES = DLD-FUNCTIONS/__qp__.cc
+DLD_FUNCTIONS___qp___la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS___qp___la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS___voronoi___la_SOURCES = DLD-FUNCTIONS/__voronoi__.cc
+DLD-FUNCTIONS/__voronoi__.df: CPPFLAGS += $(QHULL_CPPFLAGS)
+DLD_FUNCTIONS___voronoi___la_CPPFLAGS = $(AM_CPPFLAGS) $(QHULL_CPPFLAGS)
+DLD_FUNCTIONS___voronoi___la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(QHULL_LDFLAGS) $(OCT_LINK_OPTS)
+DLD_FUNCTIONS___voronoi___la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la $(QHULL_LIBS) $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_amd_la_SOURCES = DLD-FUNCTIONS/amd.cc
+DLD-FUNCTIONS/amd.df: CPPFLAGS += $(SPARSE_XCPPFLAGS)
+DLD_FUNCTIONS_amd_la_CPPFLAGS = $(AM_CPPFLAGS) $(SPARSE_XCPPFLAGS)
+DLD_FUNCTIONS_amd_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(SPARSE_XLDFLAGS) $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_amd_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la $(SPARSE_XLIBS) $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_balance_la_SOURCES = DLD-FUNCTIONS/balance.cc
+DLD_FUNCTIONS_balance_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_balance_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_besselj_la_SOURCES = DLD-FUNCTIONS/besselj.cc
+DLD_FUNCTIONS_besselj_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_besselj_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_betainc_la_SOURCES = DLD-FUNCTIONS/betainc.cc
+DLD_FUNCTIONS_betainc_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_betainc_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_bsxfun_la_SOURCES = DLD-FUNCTIONS/bsxfun.cc
+DLD_FUNCTIONS_bsxfun_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_bsxfun_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_ccolamd_la_SOURCES = DLD-FUNCTIONS/ccolamd.cc
+DLD-FUNCTIONS/ccolamd.df: CPPFLAGS += $(SPARSE_XCPPFLAGS)
+DLD_FUNCTIONS_ccolamd_la_CPPFLAGS = $(AM_CPPFLAGS) $(SPARSE_XCPPFLAGS)
+DLD_FUNCTIONS_ccolamd_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(SPARSE_XLDFLAGS) $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_ccolamd_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la $(SPARSE_XLIBS) $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_cellfun_la_SOURCES = DLD-FUNCTIONS/cellfun.cc
+DLD_FUNCTIONS_cellfun_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_cellfun_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_chol_la_SOURCES = DLD-FUNCTIONS/chol.cc
+DLD-FUNCTIONS/chol.df: CPPFLAGS += $(QRUPDATE_CPPFLAGS) $(SPARSE_XCPPFLAGS)
+DLD_FUNCTIONS_chol_la_CPPFLAGS = $(AM_CPPFLAGS) $(QRUPDATE_CPPFLAGS) $(SPARSE_XCPPFLAGS)
+DLD_FUNCTIONS_chol_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(QRUPDATE_LDFLAGS) $(SPARSE_XLDFLAGS) $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_chol_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la $(QRUPDATE_LIBS) $(SPARSE_XLIBS) $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_colamd_la_SOURCES = DLD-FUNCTIONS/colamd.cc
+DLD-FUNCTIONS/colamd.df: CPPFLAGS += $(SPARSE_XCPPFLAGS)
+DLD_FUNCTIONS_colamd_la_CPPFLAGS = $(AM_CPPFLAGS) $(SPARSE_XCPPFLAGS)
+DLD_FUNCTIONS_colamd_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(SPARSE_XLDFLAGS) $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_colamd_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la $(SPARSE_XLIBS) $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_colloc_la_SOURCES = DLD-FUNCTIONS/colloc.cc
+DLD_FUNCTIONS_colloc_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_colloc_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_conv2_la_SOURCES = DLD-FUNCTIONS/conv2.cc
+DLD_FUNCTIONS_conv2_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_conv2_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_convhulln_la_SOURCES = DLD-FUNCTIONS/convhulln.cc
+DLD-FUNCTIONS/convhulln.df: CPPFLAGS += $(QHULL_CPPFLAGS)
+DLD_FUNCTIONS_convhulln_la_CPPFLAGS = $(AM_CPPFLAGS) $(QHULL_CPPFLAGS)
+DLD_FUNCTIONS_convhulln_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(QHULL_LDFLAGS) $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_convhulln_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la $(QHULL_LIBS) $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_daspk_la_SOURCES = DLD-FUNCTIONS/daspk.cc
+DLD_FUNCTIONS_daspk_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_daspk_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_dasrt_la_SOURCES = DLD-FUNCTIONS/dasrt.cc
+DLD_FUNCTIONS_dasrt_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_dasrt_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_dassl_la_SOURCES = DLD-FUNCTIONS/dassl.cc
+DLD_FUNCTIONS_dassl_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_dassl_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_det_la_SOURCES = DLD-FUNCTIONS/det.cc
+DLD_FUNCTIONS_det_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_det_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_dlmread_la_SOURCES = DLD-FUNCTIONS/dlmread.cc
+DLD_FUNCTIONS_dlmread_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_dlmread_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_dmperm_la_SOURCES = DLD-FUNCTIONS/dmperm.cc
+DLD-FUNCTIONS/dmperm.df: CPPFLAGS += $(SPARSE_XCPPFLAGS)
+DLD_FUNCTIONS_dmperm_la_CPPFLAGS = $(AM_CPPFLAGS) $(SPARSE_XCPPFLAGS)
+DLD_FUNCTIONS_dmperm_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(SPARSE_XLDFLAGS) $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_dmperm_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la $(SPARSE_XLIBS) $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_dot_la_SOURCES = DLD-FUNCTIONS/dot.cc
+DLD_FUNCTIONS_dot_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_dot_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_eig_la_SOURCES = DLD-FUNCTIONS/eig.cc
+DLD_FUNCTIONS_eig_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_eig_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_eigs_la_SOURCES = DLD-FUNCTIONS/eigs.cc
+DLD-FUNCTIONS/eigs.df: CPPFLAGS += $(ARPACK_CPPFLAGS) $(SPARSE_XCPPFLAGS)
+DLD_FUNCTIONS_eigs_la_CPPFLAGS = $(AM_CPPFLAGS) $(ARPACK_CPPFLAGS) $(SPARSE_XCPPFLAGS)
+DLD_FUNCTIONS_eigs_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(ARPACK_LDFLAGS) $(SPARSE_XLDFLAGS) $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_eigs_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la $(ARPACK_LIBS) $(SPARSE_XLIBS) $(LAPACK_LIBS) $(BLAS_LIBS) $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_fft_la_SOURCES = DLD-FUNCTIONS/fft.cc
+DLD-FUNCTIONS/fft.df: CPPFLAGS += $(FFTW_XCPPFLAGS)
+DLD_FUNCTIONS_fft_la_CPPFLAGS = $(AM_CPPFLAGS) $(FFTW_XCPPFLAGS)
+DLD_FUNCTIONS_fft_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(FFTW_XLDFLAGS) $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_fft_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la $(FFTW_XLIBS) $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_fft2_la_SOURCES = DLD-FUNCTIONS/fft2.cc
+DLD-FUNCTIONS/fft2.df: CPPFLAGS += $(FFTW_XCPPFLAGS)
+DLD_FUNCTIONS_fft2_la_CPPFLAGS = $(AM_CPPFLAGS) $(FFTW_XCPPFLAGS)
+DLD_FUNCTIONS_fft2_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(FFTW_XLDFLAGS) $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_fft2_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la $(FFTW_XLIBS) $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_fftn_la_SOURCES = DLD-FUNCTIONS/fftn.cc
+DLD-FUNCTIONS/fftn.df: CPPFLAGS += $(FFTW_XCPPFLAGS)
+DLD_FUNCTIONS_fftn_la_CPPFLAGS = $(AM_CPPFLAGS) $(FFTW_XCPPFLAGS)
+DLD_FUNCTIONS_fftn_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(FFTW_XLDFLAGS) $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_fftn_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la $(FFTW_XLIBS) $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_fftw_la_SOURCES = DLD-FUNCTIONS/fftw.cc
+DLD-FUNCTIONS/fftw.df: CPPFLAGS += $(FFTW_XCPPFLAGS)
+DLD_FUNCTIONS_fftw_la_CPPFLAGS = $(AM_CPPFLAGS) $(FFTW_XCPPFLAGS)
+DLD_FUNCTIONS_fftw_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(FFTW_XLDFLAGS) $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_fftw_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la $(FFTW_XLIBS) $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_filter_la_SOURCES = DLD-FUNCTIONS/filter.cc
+DLD_FUNCTIONS_filter_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_filter_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_find_la_SOURCES = DLD-FUNCTIONS/find.cc
+DLD_FUNCTIONS_find_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_find_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_gammainc_la_SOURCES = DLD-FUNCTIONS/gammainc.cc
+DLD_FUNCTIONS_gammainc_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_gammainc_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_gcd_la_SOURCES = DLD-FUNCTIONS/gcd.cc
+DLD_FUNCTIONS_gcd_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_gcd_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_getgrent_la_SOURCES = DLD-FUNCTIONS/getgrent.cc
+DLD_FUNCTIONS_getgrent_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_getgrent_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_getpwent_la_SOURCES = DLD-FUNCTIONS/getpwent.cc
+DLD_FUNCTIONS_getpwent_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_getpwent_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_getrusage_la_SOURCES = DLD-FUNCTIONS/getrusage.cc
+DLD_FUNCTIONS_getrusage_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_getrusage_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_givens_la_SOURCES = DLD-FUNCTIONS/givens.cc
+DLD_FUNCTIONS_givens_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_givens_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_hess_la_SOURCES = DLD-FUNCTIONS/hess.cc
+DLD_FUNCTIONS_hess_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_hess_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_hex2num_la_SOURCES = DLD-FUNCTIONS/hex2num.cc
+DLD_FUNCTIONS_hex2num_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_hex2num_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_inv_la_SOURCES = DLD-FUNCTIONS/inv.cc
+DLD_FUNCTIONS_inv_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_inv_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_kron_la_SOURCES = DLD-FUNCTIONS/kron.cc
+DLD_FUNCTIONS_kron_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_kron_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_lookup_la_SOURCES = DLD-FUNCTIONS/lookup.cc
+DLD_FUNCTIONS_lookup_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_lookup_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_lsode_la_SOURCES = DLD-FUNCTIONS/lsode.cc
+DLD_FUNCTIONS_lsode_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_lsode_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_lu_la_SOURCES = DLD-FUNCTIONS/lu.cc
+DLD_FUNCTIONS_lu_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_lu_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_luinc_la_SOURCES = DLD-FUNCTIONS/luinc.cc
+DLD_FUNCTIONS_luinc_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_luinc_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_matrix_type_la_SOURCES = DLD-FUNCTIONS/matrix_type.cc
+DLD_FUNCTIONS_matrix_type_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_matrix_type_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_max_la_SOURCES = DLD-FUNCTIONS/max.cc
+DLD_FUNCTIONS_max_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_max_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_md5sum_la_SOURCES = DLD-FUNCTIONS/md5sum.cc
+DLD_FUNCTIONS_md5sum_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_md5sum_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_mgorth_la_SOURCES = DLD-FUNCTIONS/mgorth.cc
+DLD_FUNCTIONS_mgorth_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_mgorth_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_nproc_la_SOURCES = DLD-FUNCTIONS/nproc.cc
+DLD_FUNCTIONS_nproc_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_nproc_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_pinv_la_SOURCES = DLD-FUNCTIONS/pinv.cc
+DLD_FUNCTIONS_pinv_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_pinv_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_qr_la_SOURCES = DLD-FUNCTIONS/qr.cc
+DLD-FUNCTIONS/qr.df: CPPFLAGS += $(QRUPDATE_CPPFLAGS) $(SPARSE_XCPPFLAGS)
+DLD_FUNCTIONS_qr_la_CPPFLAGS = $(AM_CPPFLAGS) $(QRUPDATE_CPPFLAGS) $(SPARSE_XCPPFLAGS)
+DLD_FUNCTIONS_qr_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(QRUPDATE_LDFLAGS) $(SPARSE_XLDFLAGS) $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_qr_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la $(QRUPDATE_LIBS) $(SPARSE_XLIBS) $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_quad_la_SOURCES = DLD-FUNCTIONS/quad.cc
+DLD_FUNCTIONS_quad_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_quad_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_quadcc_la_SOURCES = DLD-FUNCTIONS/quadcc.cc
+DLD_FUNCTIONS_quadcc_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_quadcc_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_qz_la_SOURCES = DLD-FUNCTIONS/qz.cc
+DLD_FUNCTIONS_qz_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_qz_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la $(LAPACK_LIBS) $(BLAS_LIBS) $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_rand_la_SOURCES = DLD-FUNCTIONS/rand.cc
+DLD_FUNCTIONS_rand_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_rand_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_rcond_la_SOURCES = DLD-FUNCTIONS/rcond.cc
+DLD_FUNCTIONS_rcond_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_rcond_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_regexp_la_SOURCES = DLD-FUNCTIONS/regexp.cc
+DLD-FUNCTIONS/regexp.df: CPPFLAGS += $(REGEX_CPPFLAGS)
+DLD_FUNCTIONS_regexp_la_CPPFLAGS = $(AM_CPPFLAGS) $(REGEX_CPPFLAGS)
+DLD_FUNCTIONS_regexp_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(REGEX_LDFLAGS) $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_regexp_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la $(REGEX_LIBS) $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_schur_la_SOURCES = DLD-FUNCTIONS/schur.cc
+DLD_FUNCTIONS_schur_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_schur_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_spparms_la_SOURCES = DLD-FUNCTIONS/spparms.cc
+DLD_FUNCTIONS_spparms_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_spparms_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_sqrtm_la_SOURCES = DLD-FUNCTIONS/sqrtm.cc
+DLD_FUNCTIONS_sqrtm_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_sqrtm_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_strfind_la_SOURCES = DLD-FUNCTIONS/strfind.cc
+DLD_FUNCTIONS_strfind_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_strfind_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_str2double_la_SOURCES = DLD-FUNCTIONS/str2double.cc
+DLD_FUNCTIONS_str2double_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_str2double_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_sub2ind_la_SOURCES = DLD-FUNCTIONS/sub2ind.cc
+DLD_FUNCTIONS_sub2ind_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_sub2ind_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_svd_la_SOURCES = DLD-FUNCTIONS/svd.cc
+DLD_FUNCTIONS_svd_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_svd_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_syl_la_SOURCES = DLD-FUNCTIONS/syl.cc
+DLD_FUNCTIONS_syl_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_syl_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_symbfact_la_SOURCES = DLD-FUNCTIONS/symbfact.cc
+DLD-FUNCTIONS/symbfact.df: CPPFLAGS += $(SPARSE_XCPPFLAGS)
+DLD_FUNCTIONS_symbfact_la_CPPFLAGS = $(AM_CPPFLAGS) $(SPARSE_XCPPFLAGS)
+DLD_FUNCTIONS_symbfact_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(SPARSE_XLDFLAGS) $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_symbfact_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la $(SPARSE_XLIBS) $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_symrcm_la_SOURCES = DLD-FUNCTIONS/symrcm.cc
+DLD-FUNCTIONS/symrcm.df: CPPFLAGS += $(SPARSE_XCPPFLAGS)
+DLD_FUNCTIONS_symrcm_la_CPPFLAGS = $(AM_CPPFLAGS) $(SPARSE_XCPPFLAGS)
+DLD_FUNCTIONS_symrcm_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(SPARSE_XLDFLAGS) $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_symrcm_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la $(SPARSE_XLIBS) $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_time_la_SOURCES = DLD-FUNCTIONS/time.cc
+DLD_FUNCTIONS_time_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_time_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_tril_la_SOURCES = DLD-FUNCTIONS/tril.cc
+DLD_FUNCTIONS_tril_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_tril_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_tsearch_la_SOURCES = DLD-FUNCTIONS/tsearch.cc
+DLD_FUNCTIONS_tsearch_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_tsearch_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_typecast_la_SOURCES = DLD-FUNCTIONS/typecast.cc
+DLD_FUNCTIONS_typecast_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_typecast_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la  $(OCT_LINK_DEPS)
+
+DLD_FUNCTIONS_urlwrite_la_SOURCES = DLD-FUNCTIONS/urlwrite.cc
+DLD-FUNCTIONS/urlwrite.df: CPPFLAGS += $(CURL_CPPFLAGS)
+DLD_FUNCTIONS_urlwrite_la_CPPFLAGS = $(AM_CPPFLAGS) $(CURL_CPPFLAGS)
+DLD_FUNCTIONS_urlwrite_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(CURL_LDFLAGS) $(OCT_LINK_OPTS)
+DLD_FUNCTIONS_urlwrite_la_LIBADD = liboctinterp.la ../liboctave/liboctave.la ../libcruft/libcruft.la $(CURL_LIBS) $(OCT_LINK_DEPS)

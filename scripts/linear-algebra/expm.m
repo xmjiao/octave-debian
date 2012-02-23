@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2011 Jaroslav Hajek, Marco Caliari
+## Copyright (C) 2008-2012 Jaroslav Hajek, Marco Caliari
 ##
 ## This file is part of Octave.
 ##
@@ -28,7 +28,7 @@
 ## @ifnottex
 ##
 ## @example
-## expm(A) = I + A + A^2/2! + A^3/3! + @dots{}
+## expm (A) = I + A + A^2/2! + A^3/3! + @dots{}
 ## @end example
 ##
 ## @end ifnottex

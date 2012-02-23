@@ -1,4 +1,4 @@
-## Copyright (C) 2004-2011 David Bateman
+## Copyright (C) 2004-2012 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -23,12 +23,12 @@
 ##
 ## @example
 ## @group
-## bitcmp(7,4)
-## @result{} 8
-## dec2bin(11)
-## @result{} 1011
-## dec2bin(bitcmp(11, 6))
-## @result{} 110100
+## bitcmp (7,4)
+##   @result{} 8
+## dec2bin (11)
+##   @result{} 1011
+## dec2bin (bitcmp (11, 6))
+##   @result{} 110100
 ## @end group
 ## @end example
 ## @seealso{bitand, bitor, bitxor, bitset, bitget, bitcmp, bitshift, bitmax}

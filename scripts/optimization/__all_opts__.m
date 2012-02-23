@@ -1,4 +1,4 @@
-## Copyright (C) 2009-2011 VZLU Prague
+## Copyright (C) 2009-2012 VZLU Prague
 ##
 ## This file is part of Octave.
 ##
@@ -66,4 +66,8 @@ function names = __all_opts__ (varargin)
   endif
 
 endfunction
+
+
+## No test needed for internal helper function.
+%!assert (1)
 

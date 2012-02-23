@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2011 David Bateman
+## Copyright (C) 2008-2012 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -24,7 +24,7 @@
 ## @deftypefnx {Function File} {} ezplot (@var{h}, @dots{})
 ## @deftypefnx {Function File} {@var{h} =} ezplot (@dots{})
 ##
-## Plots in two-dimensions the curve defined by @var{f}.  The function
+## Plot the curve defined by @var{f} in two dimensions.  The function
 ## @var{f} may be a string, inline function or function handle and can
 ## have either one or two variables.  If @var{f} has one variable, then
 ## the function is plotted over the domain @code{-2*pi < @var{x} < 2*pi}
@@ -35,7 +35,7 @@
 ## < 2*pi} with 60 by 60 in the mesh.  For example:
 ##
 ## @example
-## ezplot (@@(@var{x}, @var{y}) @var{x} .^ 2 - @var{y} .^ 2 - 1)
+## ezplot (@@(@var{x}, @var{y}) @var{x}.^2 - @var{y}.^2 - 1)
 ## @end example
 ##
 ## If two functions are passed as strings, inline functions or function
@@ -61,8 +61,7 @@
 ## @var{n} is a scalar defining the number of points to use in plotting
 ## the function.
 ##
-## The optional return value @var{h} provides a list of handles to the
-## the line objects plotted.
+## The optional return value @var{h} is a graphics handle to the created plot.
 ##
 ## @seealso{plot, ezplot3}
 ## @end deftypefn
@@ -80,11 +79,16 @@ function retval = ezplot (varargin)
   endif
 endfunction
 
+
 %!demo
+%! clf
 %! ezplot (@cos, @sin)
 
 %!demo
+%! clf
 %! ezplot ("1/x")
 
 %!demo
-%! ezplot (inline("x^2 - y^2 = 1"))
+%! clf
+%! ezplot (inline ("x^2 - y^2 = 1"))
+

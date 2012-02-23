@@ -1,4 +1,4 @@
-This is /home/jwe/src/octave-stable/doc/interpreter/octave.info, produced by makeinfo version 4.13 from /home/jwe/src/octave-stable/doc/interpreter/octave.texi.
+This is octave.info, produced by makeinfo version 4.13 from octave.texi.
 
 START-INFO-DIR-ENTRY
 * Octave: (octave).           Interactive language for numerical computations.
@@ -29,7 +29,7 @@ GNU Octave
 
 This manual documents how to run, install and port GNU Octave, as well
 as its new features and incompatibilities, and how to report bugs.  It
-corresponds to GNU Octave version 3.4.3.
+corresponds to GNU Octave version 3.6.1.
 
 * Menu:
 
@@ -52,6 +52,7 @@ corresponds to GNU Octave version 3.4.3.
 * Matrix Manipulation::
 * Arithmetic::
 * Linear Algebra::
+* Vectorization and Faster Code Execution::
 * Nonlinear Equations::
 * Diagonal and Permutation Matrices::
 * Sparse Matrices::
@@ -67,6 +68,7 @@ corresponds to GNU Octave version 3.4.3.
 * Image Processing::
 * Audio Processing::
 * Object Oriented Programming::
+* GUI Development::
 * System Utilities::
 * Packages::
 * Dynamically Linked Functions::
@@ -235,6 +237,10 @@ Expressions
 * Increment Ops::
 * Operator Precedence::
 
+Index Expressions
+
+* Advanced Indexing::
+
 Calling Functions
 
 * Call by Value::
@@ -324,19 +330,19 @@ Debugging
 * Breakpoints::
 * Debug Mode::
 * Call Stack::
+* Profiling::
+* Profiler Example::
 
 Input and Output
 
 * Basic Input and Output::
 * C-Style I/O Functions::
-* GUI Dialogs for I/O::
 
 Basic Input and Output
 
 * Terminal Output::
 * Terminal Input::
 * Simple File I/O::
-* Rational Approximations::
 
 Terminal Output
 
@@ -423,7 +429,7 @@ Advanced Plotting
 * Line Styles::
 * Marker Styles::
 * Callbacks::
-* Application-defined Data
+* Application-defined Data::
 * Object Groups::
 * Graphics Toolkits::
 
@@ -449,7 +455,6 @@ Matrix Manipulation
 
 * Finding Elements and Checking Conditions::
 * Rearranging Matrices::
-* Applying a Function to an Array::
 * Special Utility Matrices::
 * Famous Matrices::
 
@@ -472,6 +477,15 @@ Linear Algebra
 * Matrix Factorizations::
 * Functions of a Matrix::
 * Specialized Solvers::
+
+Vectorization and Faster Code Execution
+
+* Basic Vectorization::        Basic techniques for code optimization
+* Broadcasting::               Broadcasting operations
+* Function Application::       Applying functions to arrays, cells, and structs
+* Accumulation::               Accumulation functions
+* Miscellaneous Techniques::   Other techniques for speeding up code
+* Examples::
 
 Nonlinear Equations
 
@@ -607,6 +621,13 @@ Overloading Objects
 * Operator Overloading::
 * Precedence of Objects::
 
+GUI Development
+
+* I/O Dialogs::
+* Progress Bar::
+* GUI Utility Functions::
+* User-Defined Preferences::
+
 System Utilities
 
 * Timing Utilities::
@@ -686,7 +707,6 @@ Test and Demo Functions
 Tips and Standards
 
 * Style Tips::                  Writing clean and robust programs.
-* Coding Tips::                 Making code run faster.
 * Comment Tips::                Conventions for writing comments.
 * Function Headers::            Standard headers for functions.
 * Documentation Tips::          Writing readable documentation strings.
@@ -694,6 +714,8 @@ Tips and Standards
 Contributing Guidelines
 
 * How to Contribute::
+* Building the Development Sources::
+* Basics of Generating a Changeset::
 * General Guidelines::
 * Octave Sources (m-files)::
 * C++ Sources::
@@ -708,13 +730,22 @@ Trouble
 Reporting Bugs
 
 * Bug Criteria::
-* Bug Tracker::ff               Where to submit your bug report.
-* Bug Reporting::               How to report a bug effectively.
-* Sending Patches::             How to send a patch for Octave.
+* Bug Tracker::        Where to submit your bug report.
+* Bug Reporting::      How to report a bug effectively.
+* Sending Patches::    How to send a patch for Octave.
 
 Installation
 
+* Build Dependencies::
+* Running Configure and Make::
+* Compiling Octave with 64-bit Indexing::
 * Installation Problems::
+
+Build Dependencies
+
+* Tips for Specific Systems::
+* Build Tools::
+* External Packages::
 
 Emacs Octave Support
 
@@ -744,30 +775,29 @@ package with limited utility beyond the classroom.  Although our
 initial goals were somewhat vague, we knew that we wanted to create
 something that would enable students to solve realistic problems, and
 that they could use for many things other than chemical reactor design
-problems.
-
-   There are those who would say that we should be teaching the students
-Fortran instead, because that is the computer language of engineering,
-but every time we have tried that, the students have spent far too much
-time trying to figure out why their Fortran code crashes and not enough
-time learning about chemical engineering.  With Octave, most students
-pick up the basics quickly, and are using it confidently in just a few
-hours.
+problems.  We find that most students pick up the basics of Octave
+quickly, and are using it confidently in just a few hours.
 
    Although it was originally intended to be used to teach reactor
 design, it has been used in several other undergraduate and graduate
 courses in the Chemical Engineering Department at the University of
 Texas, and the math department at the University of Texas has been using
-it for teaching differential equations and linear algebra as well.  If
-you find it useful, please let us know.  We are always interested to
-find out how Octave is being used in other places.
+it for teaching differential equations and linear algebra as well.
+More recently, Octave has been used as the primary computational tool
+for teaching Stanford's online Machine Learning class (`ml-class.org')
+taught by Andrew Ng.  Tens of thousands of students participated in the
+course.
+
+   If you find Octave useful, please let us know.  We are always
+interested to find out how Octave is being used.
 
    Virtually everyone thinks that the name Octave has something to do
-with music, but it is actually the name of a former professor of mine
-who wrote a famous textbook on chemical reaction engineering, and who
-was also well known for his ability to do quick `back of the envelope'
-calculations.  We hope that this software will make it possible for many
-people to do more ambitious computations just as easily.
+with music, but it is actually the name of one of John W. Eaton's former
+professors who wrote a famous textbook on chemical reaction engineering,
+and who was also well known for his ability to do quick `back of the
+envelope' calculations.  We hope that this software will make it
+possible for many people to do more ambitious computations just as
+easily.
 
    Everyone is encouraged to share this software with others under the
 terms of the GNU General Public License (*note Copying::).  You are
@@ -791,30 +821,34 @@ Acknowledgements
 people have helped code parts of Octave or aided in various other ways
 (listed alphabetically).
 
-Ben Abbott               Andy Adler               Joel Andersson
-Muthiah Annamalai        Shai Ayal                Roger Banks
-Ben Barrowes             Alexander Barth          David Bateman
-Heinz Bauschke           Karl Berry               David Billinghurst
+Ben Abbott               Andy Adler               Giles Anderson
+Joel Andersson           Muthiah Annamalai        Marco Atzeri
+Shai Ayal                Roger Banks              Ben Barrowes
+Alexander Barth          David Bateman            Heinz Bauschke
+Roman Belov              Karl Berry               David Billinghurst
 Don Bindner              Jakub Bogusz             Moritz Borgmann
-Richard Bovey            Marcus Brinkmann         Remy Bruno
+Paul Boven               Richard Bovey            John Bradshaw
+Marcus Brinkmann         Remy Bruno               Ansgar Burchard
 Marco Caliari            Daniel Calvelo           John C. Campbell
-Jean-Francois Cardoso    Joao Cardoso             Larrie Carr
-David Castelow           Vincent Cautaerts        Clinton Chee
-Albert Chin-A-Young      Carsten Clark            J. D. Cole
-Martin Costabel          Michael Creel            Jeff Cunningham
-Martin Dalecki           Jorge Barros de Abreu    Carlo de Falco
-Thomas D. Dean           Philippe Defert          Bill Denney
-Christos Dimitrakakis    David M. Doolin          Pascal A. Dupuis
-John W. Eaton            Dirk Eddelbuettel        Paul Eggert
-Stephen Eglen            Peter Ekberg             Rolf Fabian
-Gunnar Farnebäck         Stephen Fegan            Ramon Garcia Fernandez
-Torsten Finke            Jose Daniel Munoz Frias  Brad Froehle
-Castor Fu                Eduardo Gallestey        Walter Gautschi
-Klaus Gebhardt           Driss Ghaddab            Nicolo Giorgetti
-Michael D. Godfrey       Michael Goffioul         Glenn Golden
-Tomislav Goles           Keith Goodman            Brian Gough
-Steffen Groot            Etienne Grossmann        David Grundberg
-Peter Gustafson          Kai Habel                William P. Y.
+Juan Pablo Carbajal      Jean-Francois Cardoso    Joao Cardoso
+Larrie Carr              David Castelow           Vincent Cautaerts
+Clinton Chee             Albert Chin-A-Young      Carsten Clark
+J. D. Cole               Martin Costabel          Michael Creel
+Jeff Cunningham          Martin Dalecki           Jorge Barros de Abreu
+Carlo de Falco           Jacob Dawid              Thomas D. Dean
+Philippe Defert          Bill Denney              Fabian Deutsch
+Christos Dimitrakakis    David M. Doolin          Carnë Draug
+Pascal A. Dupuis         John W. Eaton            Dirk Eddelbuettel
+Pieter Eendebak          Paul Eggert              Stephen Eglen
+Peter Ekberg             Rolf Fabian              Gunnar Farnebäck
+Stephen Fegan            Ramon Garcia Fernandez   Torsten Finke
+Jose Daniel Munoz Frias  Brad Froehle             Castor Fu
+Eduardo Gallestey        Walter Gautschi          Klaus Gebhardt
+Driss Ghaddab            Nicolo Giorgetti         Michael D. Godfrey
+Michael Goffioul         Glenn Golden             Tomislav Goles
+Keith Goodman            Brian Gough              Steffen Groot
+Etienne Grossmann        David Grundberg          Peter Gustafson
+Kai Habel                Patrick Häcker           William P. Y.
                                                   Hadisoeseno
 Jaroslav Hajek           Benjamin Hall            Kim Hansen
 Søren Hauberg            Dave Hawthorne           Daniel Heiserer
@@ -824,56 +858,65 @@ A. Scottedward Hodel     Richard Allan Holcombe   Tom Holroyd
 David Hoover             Kurt Hornik              Christopher Hulbert
 Cyril Humbert            Teemu Ikonen             Alan W. Irwin
 Geoff Jacobsen           Mats Jansson             Cai Jianming
-Steven G. Johnson        Heikki Junes             Atsushi Kajita
-Jarkko Kaleva            Mohamed Kamoun           Lute Kamstra
-Fotios Kasolis           Thomas Kasper            Joel Keay
-Mumit Khan               Paul Kienzle             Aaron A. King
-Arno J. Klaassen         Geoffrey Knauth          Heine Kolltveit
-Ken Kouno                Kacper Kowalik           Daniel Kraft
+Steven G. Johnson        Heikki Junes             Matthias Jüschke
+Atsushi Kajita           Jarkko Kaleva            Mohamed Kamoun
+Lute Kamstra             Fotios Kasolis           Thomas Kasper
+Joel Keay                Mumit Khan               Paul Kienzle
+Aaron A. King            Arno J. Klaassen         Alexander Klein
+Geoffrey Knauth          Heine Kolltveit          Ken Kouno
+Kacper Kowalik           Daniel Kraft             Aravindh Krishnamoorthy
 Oyvind Kristiansen       Piotr Krzyzanowski       Volker Kuhlmann
 Tetsuro Kurita           Miroslaw Kwasniak        Rafael Laboissiere
 Kai Labusch              Claude Lacoursiere       Walter Landry
 Bill Lash                Dirk Laurie              Maurice LeBrun
-Friedrich Leisch         Timo Lindfors            Benjamin Lindner
-Ross Lippert             David Livings            Erik de Castro Lopo
-Massimo Lorenzin         Emil Lucretiu            Hoxide Ma
-James Macnicol           Jens-Uwe Mager           Ricardo Marranita
+Friedrich Leisch         Jyh-miin Lin             Timo Lindfors
+Benjamin Lindner         Ross Lippert             David Livings
+Sebastien Loisel         Erik de Castro Lopo      Massimo Lorenzin
+Emil Lucretiu            Hoxide Ma                James Macnicol
+Jens-Uwe Mager           Rob Mahurin              Ricardo Marranita
 Orestes Mas              Makoto Matsumoto         Tatsuro Matsuoka
 Laurent Mazet            G. D. McBain             Alexander Mamonov
-Christoph Mayer          Thorsten Meyer           Petr Mikulik
-Stefan Monnier           Antoine Moreau           Kai P. Mueller
-Victor Munoz             Carmen Navarrete         Todd Neal
+Christoph Mayer          Júlio Hoffimann Mendes   Thorsten Meyer
+Petr Mikulik             Stefan Monnier           Antoine Moreau
+Kai P. Mueller           Hannes Müller            Victor Munoz
+Carmen Navarrete         Todd Neal                Philip Nienhuis
 Al Niessner              Rick Niles               Takuji Nishimura
 Kai Noda                 Eric Norum               Krzesimir Nowak
 Michael O'Brien          Peter O'Gorman           Thorsten Ohl
 Arno Onken               Luis F. Ortiz            Scott Pakin
 Gabriele Pannocchia      Sylvain Pelissier        Per Persson
 Primozz Peterlin         Jim Peterson             Danilo Piazzalunga
-Nicholas Piper           Robert Platt             Hans Ekkehard Plesser
-Tom Poage                Orion Poplawski          Ondrej Popp
-Jef Poskanzer            Francesco Potorti        Konstantinos Poulios
-James B. Rawlings        Eric S. Raymond          Balint Reczey
-Michael Reifenberger     Jason Riedy              Petter Risholm
+Nicholas Piper           Elias Pipping            Robert Platt
+Hans Ekkehard Plesser    Tom Poage                Orion Poplawski
+Ondrej Popp              Jef Poskanzer            Francesco Potortì
+Konstantinos Poulios     Jarno Rajahalme          James B. Rawlings
+Eric S. Raymond          Balint Reczey            Joshua Redstone
+Lukas Reichlin           Michael Reifenberger     Anthony Richardson
+Jason Riedy              E. Joshua Rigler         Petter Risholm
 Matthew W. Roberts       Andrew Ross              Mark van Rossum
-Kevin Ruland             Kristian Rumberg         Ryan Rusaw
-Olli Saarela             Toni Saarela             Juhani Saastamoinen
-Radek Salac              Ben Sapp                 Aleksej Saushev
-Alois Schloegl           Michel D. Schmid         Julian Schnidder
-Nicol N. Schraudolph     Sebastian Schubert       Ludwig Schwardt
-Thomas L. Scofield       Daniel J. Sebald         Dmitri A. Sergatskov
-Baylis Shanks            Joseph P. Skudlarek      John Smith
-Julius Smith             Shan G. Smith            Joerg Specht
-Quentin H. Spencer       Christoph Spiel          Richard Stallman
-Russell Standish         Doug Stewart             Jonathan Stickel
+Joe Rothweiler           Kevin Ruland             Kristian Rumberg
+Ryan Rusaw               Olli Saarela             Toni Saarela
+Juhani Saastamoinen      Radek Salac              Ben Sapp
+Aleksej Saushev          Alois Schlögl            Michel D. Schmid
+Julian Schnidder         Nicol N. Schraudolph     Sebastian Schubert
+Ludwig Schwardt          Thomas L. Scofield       Daniel J. Sebald
+Dmitri A. Sergatskov     Vanya Sergeev            Baylis Shanks
+Andriy Shinkarchuck      Robert T. Short          Joseph P. Skudlarek
+John Smith               Julius Smith             Shan G. Smith
+Peter L. Sondergaard     Joerg Specht             Quentin H. Spencer
+Christoph Spiel          Richard Stallman         Russell Standish
+Brett Stewart            Doug Stewart             Jonathan Stickel
 Judd Storrs              Thomas Stuart            Ivan Sutoris
 John Swensen             Daisuke Takago           Ariel Tankus
-Georg Thimm              Duncan Temple Lang       Kris Thielemans
-Olaf Till                Christophe Tournery      Thomas Treichl
-Frederick Umminger       Utkarsh Upadhyay         Stefan van der Walt
-Peter Van Wieren         James R. Van Zandt       Gregory Vanuxem
-Ivana Varekova           Thomas Walter            Olaf Weber
+Matthew Tenny            Georg Thimm              Duncan Temple Lang
+Kris Thielemans          Olaf Till                Christophe Tournery
+Thomas Treichl           Karsten Trulsen          Frederick Umminger
+Utkarsh Upadhyay         Stefan van der Walt      Peter Van Wieren
+James R. Van Zandt       Gregory Vanuxem          Ivana Varekova
+Thomas Walter            Andreas Weber            Olaf Weber
 Thomas Weber             Rik Wehbring             Bob Weigel
-Andreas Weingessel       Michael Weitzel          Fook Fah Yap
+Andreas Weingessel       Martin Weiser            Michael Weitzel
+David Wells              Fook Fah Yap             Sean Young
 Michael Zeising          Federico Zenith          Alex Zvoleff
 
    Special thanks to the following people and organizations for
@@ -943,6 +986,21 @@ continue its development.  Even a modest amount of additional funding
 could make a significant difference in the amount of time that is
 available for development and support.
 
+   Donations supporting Octave development may be made on the web at
+`https://my.fsf.org/donate/working-together/octave'.  These donations
+also help to support the Free Software Foundation
+
+   If you'd prefer to pay by check or money order, you can do so by
+sending a check to the FSF at the following address:
+
+     Free Software Foundation
+     51 Franklin Street, Suite 500
+     Boston, MA 02110-1335
+     USA
+
+If you pay by check, please be sure to write "GNU Octave" in the memo
+field of your check.
+
    If you cannot provide funding or contribute code, you can still help
 make Octave better and more reliable by reporting any bugs you find and
 by offering suggestions for ways to improve Octave.  *Note Trouble::,
@@ -963,18 +1021,8 @@ Octave that you have.  The precise conditions can be found in the GNU
 General Public License that comes with Octave and that also appears in
 *note Copying::.
 
-   Octave is available on CD-ROM, with various collections of other free
-software, from the Free Software Foundation.  Ordering a copy of Octave
-from the Free Software Foundation helps to fund the development of more
-free software.  For more information, write to
-
-     Free Software Foundation
-     51 Franklin Street, Fifth Floor
-     Boston, MA 02110-1301-1307
-     USA
-
-   Octave can also be downloaded from `http://www.octave.org', where
-additional information is available.
+   To download a copy of Octave, please visit
+`http://www.octave.org/download.html'.
 
 
 File: octave.info,  Node: Introduction,  Next: Getting Started,  Prev: Preface,  Up: Top
@@ -997,7 +1045,7 @@ this manual in *note Copying::.
 run, use, and extend GNU Octave.  Additional chapters describe how to
 report bugs and help contribute code.
 
-   This document corresponds to Octave version 3.4.3.
+   This document corresponds to Octave version 3.6.1.
 
 * Menu:
 
@@ -1398,7 +1446,9 @@ description.
 
    Here is a description of an imaginary function `foo':
 
- -- Function:  foo (X, Y, ...)
+ -- Function File:  foo (X)
+ -- Function File:  foo (X, Y)
+ -- Function File:  foo (X, Y, ...)
      The function `foo' subtracts X from Y, then adds the remaining
      arguments to the result.  If Y is not supplied, then the number 19
      is used by default.
@@ -1904,8 +1954,11 @@ document the functions you write.
    To see what is new in the current release of Octave, use the `news'
 function.
 
- -- Function File:  news ()
-     Display the current NEWS file for Octave.
+ -- Function File:  news (PACKAGE)
+     Display the current NEWS file for Octave or installed package.
+
+     If PACKAGE is the name of an installed package, display the current
+     NEWS file for that package.
 
  -- Function File:  info ()
      Display contact information for the GNU Octave community.
@@ -1919,6 +1972,7 @@ found.
 
  -- Built-in Function: VAL = info_file ()
  -- Built-in Function: OLD_VAL = info_file (NEW_VAL)
+ -- Built-in Function:  info_file (NEW_VAL, "local")
      Query or set the internal variable that specifies the name of the
      Octave info file.  The default value is
      `OCTAVE-HOME/info/octave.info', in which OCTAVE-HOME is the root
@@ -1926,12 +1980,18 @@ found.
      overridden by the environment variable `OCTAVE_INFO_FILE', or the
      command line argument `--info-file NAME'.
 
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
+
      *See also:* *note info_program: doc-info_program, *note doc:
      doc-doc, *note help: doc-help, *note makeinfo_program:
      doc-makeinfo_program.
 
  -- Built-in Function: VAL = info_program ()
  -- Built-in Function: OLD_VAL = info_program (NEW_VAL)
+ -- Built-in Function:  info_program (NEW_VAL, "local")
      Query or set the internal variable that specifies the name of the
      info program to run.  The default value is
      `OCTAVE-HOME/libexec/octave/VERSION/exec/ARCH/info' in which
@@ -1941,20 +2001,32 @@ found.
      overridden by the environment variable `OCTAVE_INFO_PROGRAM', or
      the command line argument `--info-program NAME'.
 
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
+
      *See also:* *note info_file: doc-info_file, *note doc: doc-doc,
      *note help: doc-help, *note makeinfo_program: doc-makeinfo_program.
 
  -- Built-in Function: VAL = makeinfo_program ()
  -- Built-in Function: OLD_VAL = makeinfo_program (NEW_VAL)
+ -- Built-in Function:  makeinfo_program (NEW_VAL, "local")
      Query or set the internal variable that specifies the name of the
      program that Octave runs to format help text containing Texinfo
      markup commands.  The default value is `makeinfo'.
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
 
      *See also:* *note info_file: doc-info_file, *note info_program:
      doc-info_program, *note doc: doc-doc, *note help: doc-help.
 
  -- Built-in Function: VAL = doc_cache_file ()
  -- Built-in Function: OLD_VAL = doc_cache_file (NEW_VAL)
+ -- Built-in Function:  doc_cache_file (NEW_VAL, "local")
      Query or set the internal variable that specifies the name of the
      Octave documentation cache file.  A cache file significantly
      improves the performance of the `lookfor' command.  The default
@@ -1964,15 +2036,26 @@ found.
      be overridden by the environment variable `OCTAVE_DOC_CACHE_FILE',
      or the command line argument `--doc-cache-file NAME'.
 
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
+
      *See also:* *note lookfor: doc-lookfor, *note info_program:
      doc-info_program, *note doc: doc-doc, *note help: doc-help, *note
      makeinfo_program: doc-makeinfo_program.
 
  -- Built-in Function: VAL = suppress_verbose_help_message ()
  -- Built-in Function: OLD_VAL = suppress_verbose_help_message (NEW_VAL)
+ -- Built-in Function:  suppress_verbose_help_message (NEW_VAL, "local")
      Query or set the internal variable that controls whether Octave
      will add additional help information to the end of the output from
      the `help' command and usage messages for built-in commands.
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
 
    The following functions are principally used internally by Octave for
 generating the documentation.  They are documented here for completeness
@@ -2240,9 +2323,15 @@ names for you.
 
  -- Built-in Function: VAL = completion_append_char ()
  -- Built-in Function: OLD_VAL = completion_append_char (NEW_VAL)
+ -- Built-in Function:  completion_append_char (NEW_VAL, "local")
      Query or set the internal character variable that is appended to
      successful command-line completion attempts.  The default value is
      `" "' (a single space).
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
 
  -- Built-in Function:  completion_matches (HINT)
      Generate possible completions given HINT.
@@ -2370,8 +2459,14 @@ history is saved.
 
  -- Built-in Function: VAL = saving_history ()
  -- Built-in Function: OLD_VAL = saving_history (NEW_VAL)
+ -- Built-in Function:  saving_history (NEW_VAL, "local")
      Query or set the internal variable that controls whether commands
      entered on the command line are saved in the history file.
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
 
      *See also:* *note history_control: doc-history_control, *note
      history_file: doc-history_file, *note history_size:
@@ -2430,6 +2525,8 @@ history is saved.
  -- Built-in Function: VAL = history_timestamp_format_string ()
  -- Built-in Function: OLD_VAL = history_timestamp_format_string
           (NEW_VAL)
+ -- Built-in Function:  history_timestamp_format_string (NEW_VAL,
+          "local")
      Query or set the internal variable that specifies the format string
      for the comment line that is written to the history file when
      Octave exits.  The format string is passed to `strftime'.  The
@@ -2437,17 +2534,28 @@ history is saved.
 
           "# Octave VERSION, %a %b %d %H:%M:%S %Y %Z <USER@HOST>"
 
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
+
      *See also:* *note strftime: doc-strftime, *note history_file:
      doc-history_file, *note history_size: doc-history_size, *note
      saving_history: doc-saving_history.
 
  -- Built-in Function: VAL = EDITOR ()
  -- Built-in Function: OLD_VAL = EDITOR (NEW_VAL)
+ -- Built-in Function:  EDITOR (NEW_VAL, "local")
      Query or set the internal variable that specifies the editor to
      use with the `edit_history' command.  The default value is taken
      from the environment variable `EDITOR' when Octave starts.  If the
      environment variable is not initialized, `EDITOR' will be set to
      `"emacs"'.
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
 
      *See also:* *note edit_history: doc-edit_history.
 
@@ -2537,6 +2645,7 @@ decoded as follows:
 
  -- Built-in Function: VAL = PS1 ()
  -- Built-in Function: OLD_VAL = PS1 (NEW_VAL)
+ -- Built-in Function:  PS1 (NEW_VAL, "local")
      Query or set the primary prompt string.  When executing
      interactively, Octave displays the primary prompt when it is ready
      to read a command.
@@ -2558,10 +2667,16 @@ decoded as follows:
 
      will give the default Octave prompt a red coloring.
 
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
+
      *See also:* *note PS2: doc-PS2, *note PS4: doc-PS4.
 
  -- Built-in Function: VAL = PS2 ()
  -- Built-in Function: OLD_VAL = PS2 (NEW_VAL)
+ -- Built-in Function:  PS2 (NEW_VAL, "local")
      Query or set the secondary prompt string.  The secondary prompt is
      printed when Octave is expecting additional input to complete a
      command.  For example, if you are typing a `for' loop that spans
@@ -2569,14 +2684,25 @@ decoded as follows:
      beginning of each line after the first.  The default value of the
      secondary prompt string is `"> "'.
 
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
+
      *See also:* *note PS1: doc-PS1, *note PS4: doc-PS4.
 
  -- Built-in Function: VAL = PS4 ()
  -- Built-in Function: OLD_VAL = PS4 (NEW_VAL)
+ -- Built-in Function:  PS4 (NEW_VAL, "local")
      Query or set the character string used to prefix output produced
      when echoing commands is enabled.  The default value is `"+ "'.
      *Note Diary and Echo Commands::, for a description of echoing
      commands.
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
 
      *See also:* *note echo: doc-echo, *note echo_executing_commands:
      doc-echo_executing_commands, *note PS1: doc-PS1, *note PS2:
@@ -2636,6 +2762,7 @@ some kinds of problems.
 
  -- Built-in Function: VAL = echo_executing_commands ()
  -- Built-in Function: OLD_VAL = echo_executing_commands (NEW_VAL)
+ -- Built-in Function:  echo_executing_commands (NEW_VAL, "local")
      Query or set the internal variable that controls the echo state.
      It may be the sum of the following values:
 
@@ -2653,6 +2780,11 @@ some kinds of problems.
 
      The value of `echo_executing_commands' may be set by the `echo'
      command or the command line option `--echo-commands'.
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
 
 
 File: octave.info,  Node: Errors,  Next: Executable Octave Programs,  Prev: Command Line Editing,  Up: Getting Started
@@ -2869,7 +3001,7 @@ will produce a very quick countdown from '3' to 'Blast Off' as the
 lines "`disp(2);'" and "`disp(1);'" won't be executed.
 
    The block comment markers must appear alone as the only characters
-on a line (excepting whitespace) in order to to be parsed correctly.
+on a line (excepting whitespace) in order to be parsed correctly.
 
 
 File: octave.info,  Node: Comments and the Help System,  Prev: Block Comments,  Up: Comments
@@ -2933,8 +3065,8 @@ do to define a new data type for Octave.
  -- Built-in Function:  typeinfo ()
  -- Built-in Function:  typeinfo (EXPR)
      Return the type of the expression EXPR, as a string.  If EXPR is
-     omitted, return an array of strings containing all the currently
-     installed data types.
+     omitted, return an cell array of strings containing all the
+     currently installed data types.
 
 * Menu:
 
@@ -3054,7 +3186,7 @@ use of the following functions.
      *See also:* *note bitunpack: doc-bitunpack, *note typecast:
      doc-typecast.
 
- -- Loadable Function: Y = bitpack (X)
+ -- Loadable Function: Y = bitunpack (X)
      Return an array Y corresponding to the raw bit patterns of X.  X
      must belong to one of the built-in numeric classes:
 
@@ -3240,7 +3372,7 @@ structure type doesn't have rows or columns, so the `rows' and
 
             A(IDX1, IDX2, ...)
 
-     Note that the indices do not have to be numerical. For example
+     Note that the indices do not have to be numerical.  For example,
 
             A = 1;
             B = ones (2, 3);
@@ -3530,8 +3662,14 @@ following variables to control the format of the output.
 
  -- Built-in Function: VAL = output_max_field_width ()
  -- Built-in Function: OLD_VAL = output_max_field_width (NEW_VAL)
+ -- Built-in Function:  output_max_field_width (NEW_VAL, "local")
      Query or set the internal variable that specifies the maximum width
      of a numeric output field.
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
 
      *See also:* *note format: doc-format, *note fixed_point_format:
      doc-fixed_point_format, *note output_precision:
@@ -3539,8 +3677,14 @@ following variables to control the format of the output.
 
  -- Built-in Function: VAL = output_precision ()
  -- Built-in Function: OLD_VAL = output_precision (NEW_VAL)
+ -- Built-in Function:  output_precision (NEW_VAL, "local")
      Query or set the internal variable that specifies the minimum
      number of significant figures to display for numeric output.
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
 
      *See also:* *note format: doc-format, *note fixed_point_format:
      doc-fixed_point_format, *note output_max_field_width:
@@ -3553,6 +3697,7 @@ Basic Input and Output::.
 
  -- Built-in Function: VAL = split_long_rows ()
  -- Built-in Function: OLD_VAL = split_long_rows (NEW_VAL)
+ -- Built-in Function:  split_long_rows (NEW_VAL, "local")
      Query or set the internal variable that controls whether rows of a
      matrix may be split when displayed to a terminal window.  If the
      rows are split, Octave will display the matrix in a series of
@@ -3574,6 +3719,11 @@ Basic Input and Output::.
             0.90174  0.11854  0.72313  0.73326
             0.44672  0.94303  0.56564  0.82150
 
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
+
      *See also:* *note format: doc-format.
 
    Octave automatically switches to scientific notation when values
@@ -3586,6 +3736,7 @@ that can easily be misinterpreted.
 
  -- Built-in Function: VAL = fixed_point_format ()
  -- Built-in Function: OLD_VAL = fixed_point_format (NEW_VAL)
+ -- Built-in Function:  fixed_point_format (NEW_VAL, "local")
      Query or set the internal variable that controls whether Octave
      will use a scaled format to print matrix values such that the
      largest element may be written with a single leading digit with
@@ -3606,6 +3757,11 @@ that can easily be misinterpreted.
      Notice that first value appears to be zero when it is actually 1.
      For this reason, you should be careful when setting
      `fixed_point_format' to a nonzero value.
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
 
      *See also:* *note format: doc-format, *note
      output_max_field_width: doc-output_max_field_width, *note
@@ -3646,6 +3802,7 @@ empty matrix symbol, `[]'.  The built-in variable
 
  -- Built-in Function: VAL = print_empty_dimensions ()
  -- Built-in Function: OLD_VAL = print_empty_dimensions (NEW_VAL)
+ -- Built-in Function:  print_empty_dimensions (NEW_VAL, "local")
      Query or set the internal variable that controls whether the
      dimensions of empty matrices are printed along with the empty
      matrix symbol, `[]'.  For example, the expression
@@ -3655,6 +3812,11 @@ empty matrix symbol, `[]'.  The built-in variable
      will print
 
           ans = [](3x0)
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
 
      *See also:* *note format: doc-format.
 
@@ -3960,13 +4122,13 @@ result of `int32(5) ./ int32(8)' is `1'.
      demonstrating these rounding rules is
 
           idivide (int8 ([-3, 3]), int8 (4), "fix")
-          => int8 ([0, 0])
+            => int8 ([0, 0])
           idivide (int8 ([-3, 3]), int8 (4), "round")
-          => int8 ([-1, 1])
+            => int8 ([-1, 1])
           idivide (int8 ([-3, 3]), int8 (4), "floor")
-          => int8 ([-1, 0])
+            => int8 ([-1, 0])
           idivide (int8 ([-3, 3]), int8 (4), "ceil")
-          => int8 ([0, 1])
+            => int8 ([0, 1])
 
      *See also:* *note ldivide: doc-ldivide, *note rdivide: doc-rdivide.
 
@@ -3986,7 +4148,7 @@ values of individual bits are `bitset' and `bitget'.
      and VAL = 1 sets the bits.  The lowest significant bit is: N = 1
 
           dec2bin (bitset (10, 1))
-          => 1011
+            => 1011
 
      *See also:* *note bitand: doc-bitand, *note bitor: doc-bitor,
      *note bitxor: doc-bitxor, *note bitget: doc-bitget, *note bitcmp:
@@ -4074,12 +4236,12 @@ Octave's bitwise 'not' operator is `bitcmp'.
      Return the K-bit complement of integers in A.  If K is omitted `k
      = log2 (bitmax) + 1' is assumed.
 
-          bitcmp(7,4)
-          => 8
-          dec2bin(11)
-          => 1011
-          dec2bin(bitcmp(11, 6))
-          => 110100
+          bitcmp (7,4)
+            => 8
+          dec2bin (11)
+            => 1011
+          dec2bin (bitcmp (11, 6))
+            => 110100
 
      *See also:* *note bitand: doc-bitand, *note bitor: doc-bitor,
      *note bitxor: doc-bitxor, *note bitset: doc-bitset, *note bitget:
@@ -4092,9 +4254,9 @@ values bitwise.
  -- Built-in Function:  bitshift (A, K)
  -- Built-in Function:  bitshift (A, K, N)
      Return a K bit shift of N-digit unsigned integers in A.  A
-     positive K leads to a left shift.  A negative value to a right
+     positive K leads to a left shift; A negative value to a right
      shift.  If N is omitted it defaults to log2(bitmax)+1.  N must be
-     in the range [1,log2(bitmax)+1] usually [1,33]
+     in the range [1,log2(bitmax)+1] usually [1,33].
 
           bitshift (eye (3), 1)
           =>
@@ -4501,6 +4663,21 @@ succession.  For example,
      'I can''t escape'
          => I can't escape
 
+   In scripts the two different string types can be distinguished if
+necessary by using `is_dq_string' and `is_sq_string'.
+
+ -- Built-in Function:  is_dq_string (X)
+     Return true if X is a double-quoted character string.
+
+     *See also:* *note is_sq_string: doc-is_sq_string, *note ischar:
+     doc-ischar.
+
+ -- Built-in Function:  is_sq_string (X)
+     Return true if X is a single-quoted character string.
+
+     *See also:* *note is_dq_string: doc-is_dq_string, *note ischar:
+     doc-ischar.
+
 
 File: octave.info,  Node: Character Arrays,  Next: Creating Strings,  Prev: Escape Sequences in String Constants,  Up: Strings
 
@@ -4554,6 +4731,7 @@ character using the `string_fill_char' function.
 
  -- Built-in Function: VAL = string_fill_char ()
  -- Built-in Function: OLD_VAL = string_fill_char (NEW_VAL)
+ -- Built-in Function:  string_fill_char (NEW_VAL, "local")
      Query or set the internal variable used to pad all rows of a
      character matrix to the same length.  It must be a single
      character.  The default value is `" "' (a single space).  For
@@ -4564,6 +4742,11 @@ character using the `string_fill_char' function.
                => "theseXX"
                   "areXXXX"
                   "strings"
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
 
    This shows a problem with character matrices.  It simply isn't
 possible to represent strings of different lengths.  The solution is to
@@ -4585,7 +4768,7 @@ only of blank characters (ASCII code 32).
  -- Function File:  blanks (N)
      Return a string of N blanks, for example:
 
-          blanks(10);
+          blanks (10);
           whos ans;
                =>
                 Attr Name        Size                     Bytes  Class
@@ -4755,13 +4938,13 @@ horzcat: doc-horzcat. and *note vertcat: doc-vertcat.
 
           s = [ "ab"; "cde" ];
           strcat (s, s, s)
-               => ans =
+              =>
                   "ab ab ab "
                   "cdecdecde"
 
           s = { "ab"; "cde" };
           strcat (s, s, s)
-               => ans =
+              =>
                   {
                     [1,1] = ababab
                     [2,1] = cdecdecde
@@ -4775,12 +4958,11 @@ horzcat: doc-horzcat. and *note vertcat: doc-vertcat.
      horizontally.  Trailing white space is preserved.  For example:
 
           cstrcat ("ab   ", "cd")
-               => "ab   cd"
+                => "ab   cd"
 
           s = [ "ab"; "cde" ];
           cstrcat (s, s, s)
-               => ans =
-                  "ab ab ab "
+               => "ab ab ab "
                   "cdecdecde"
 
      *See also:* *note strcat: doc-strcat, *note char: doc-char, *note
@@ -4802,29 +4984,35 @@ flexible way to format numerical data as strings is the `sprintf'
 function (*note Formatted Output::, *note doc-sprintf::).
 
  -- Function File: S = mat2str (X, N)
- -- Function File: S = mat2str (..., 'class')
-     Format real/complex numerical matrices as strings.  This function
-     returns values that are suitable for the use of the `eval'
-     function.
+ -- Function File: S = mat2str (X, N, "class")
+     Format real, complex, and logical matrices as strings.  The
+     returned string may be used to reconstruct the original matrix by
+     using the `eval' function.
 
      The precision of the values is given by N.  If N is a scalar then
      both real and imaginary parts of the matrix are printed to the
-     same precision.  Otherwise `N (1)' defines the precision of the
-     real part and `N (2)' defines the precision of the imaginary part.
-     The default for N is 17.
+     same precision.  Otherwise `N(1)' defines the precision of the
+     real part and `N(2)' defines the precision of the imaginary part.
+     The default for N is 15.
 
-     If the argument 'class' is given, then the class of X is included
-     in the string in such a way that the eval will result in the
+     If the argument "class" is given then the class of X is included
+     in the string in such a way that `eval' will result in the
      construction of a matrix of the same class.
 
           mat2str ([ -1/3 + i/7; 1/3 - i/7 ], [4 2])
                => "[-0.3333+0.14i;0.3333-0.14i]"
 
           mat2str ([ -1/3 +i/7; 1/3 -i/7 ], [4 2])
-               => "[-0.3333+0i,0+0.14i;0.3333+0i,-0-0.14i]"
+               => "[-0.3333+0i 0+0.14i;0.3333+0i -0-0.14i]"
 
-          mat2str (int16([1 -1]), 'class')
-               => "int16([1,-1])"
+          mat2str (int16([1 -1]), "class")
+               => "int16([1 -1])"
+
+          mat2str (logical (eye (2)))
+               => "[true false;false true]"
+
+          isequal (x, eval (mat2str (x)))
+               => 1
 
      *See also:* *note sprintf: doc-sprintf, *note num2str:
      doc-num2str, *note int2str: doc-int2str.
@@ -4870,7 +5058,6 @@ function (*note Formatted Output::, *note doc-sprintf::).
  -- Function File:  int2str (N)
      Convert an integer (or array of integers) to a string (or a
      character array).
-
 
           int2str (123)
                => "123"
@@ -4997,17 +5184,31 @@ for case-insensitive comparison.
  -- Function File: VALIDSTR = validatestring (STR, STRARRAY, FUNCNAME,
           VARNAME)
  -- Function File: VALIDSTR = validatestring (..., POSITION)
-     Verify that STR is a string or substring of an element of STRARRAY.
+     Verify that STR is an element, or substring of an element, in
+     STRARRAY.
 
-     STR is a character string to be tested, and STRARRAY is a cellstr
-     of valid values.  VALIDSTR will be the validated form of STR where
-     validation is defined as STR being a member or substring of
-     VALIDSTR.  If STR is a substring of VALIDSTR and there are
+     When STR is a character string to be tested, and STRARRAY is a
+     cellstr of valid values, then VALIDSTR will be the validated form
+     of STR where validation is defined as STR being a member or
+     substring of VALIDSTR.  This is useful for both verifying and
+     expanding short options, such as "r", to their longer forms, such
+     as "red".  If STR is a substring of VALIDSTR, and there are
      multiple matches, the shortest match will be returned if all
-     matches are substrings of each other, and an error will be raised
-     if the matches are not substrings of each other.
+     matches are substrings of each other.  Otherwise, an error will be
+     raised because the expansion of STR is ambiguous.  All comparisons
+     are case insensitive.
 
-     All comparisons are case insensitive.
+     The additional inputs FUNCNAME, VARNAME, and POSITION are optional
+     and will make any generated validation error message more specific.
+
+     Examples:
+
+          validatestring ("r", {"red", "green", "blue"})
+          => "red"
+
+          validatestring ("b", {"red", "green", "blue", "black"})
+          => error: validatestring: multiple unique matches were found for 'b':
+             blue, black
 
      *See also:* *note strcmp: doc-strcmp, *note strcmpi: doc-strcmpi.
 
@@ -5032,39 +5233,54 @@ to replace all blank characters with underscores.
 general regular expressions, the following functions come with Octave.
 
  -- Function File:  deblank (S)
-     Remove trailing blanks and nulls from S.  If S is a matrix,
+     Remove trailing whitespace and nulls from S.  If S is a matrix,
      DEBLANK trims each row to the length of longest string.  If S is a
-     cell array, operate recursively on each element of the cell array.
+     cell array of strings, operate recursively on each string element.
+
+     Examples:
+
+          deblank ("    abc  ")
+               =>  "    abc"
+
+          deblank ([" abc   "; "   def   "])
+               =>  [" abc  " ; "   def"]
+
+     *See also:* *note strtrim: doc-strtrim.
 
  -- Function File:  strtrim (S)
-     Remove leading and trailing whitespace and nulls from S.  If S is
-     a matrix, STRTRIM trims each row to the length of longest string.
-     If S is a cell array, operate recursively on each element of the
-     cell array.  For example:
+     Remove leading and trailing whitespace from S.  If S is a matrix,
+     STRTRIM trims each row to the length of longest string.  If S is a
+     cell array of strings, operate recursively on each string element.
+     For example:
 
           strtrim ("    abc  ")
-               => "abc"
+               =>  "abc"
 
           strtrim ([" abc   "; "   def   "])
-               => ["abc  "; "  def"]
+               =>  ["abc  "  ; "  def"]
+
+     *See also:* *note deblank: doc-deblank.
 
  -- Function File:  strtrunc (S, N)
-     Truncate the character string S to length N.  If S is a char
-     matrix, then the number of columns is adjusted.
+     Truncate the character string S to length N.  If S is a character
+     matrix, then the number of columns is adjusted.  If S is a cell
+     array of strings, then the operation is performed on each cell
+     element and the new cell array is returned.
 
-     If S is a cell array of strings, then the operation is performed
-     on its members and the new cell array is returned.
-
+ -- Function File:  findstr (S, T)
  -- Function File:  findstr (S, T, OVERLAP)
      Return the vector of all positions in the longer of the two strings
      S and T where an occurrence of the shorter of the two starts.  If
-     the optional argument OVERLAP is nonzero, the returned vector can
+     the optional argument OVERLAP is true, the returned vector can
      include overlapping positions (this is the default).  For example:
 
           findstr ("ababab", "a")
-               => [1, 3, 5]
+               => [1, 3, 5];
           findstr ("abababa", "aba", 0)
                => [1, 5]
+
+     *Caution:* `findstr' is scheduled for deprecation.  Use `strfind'
+     in all new code.
 
      *See also:* *note strfind: doc-strfind, *note strmatch:
      doc-strmatch, *note strcmp: doc-strcmp, *note strncmp:
@@ -5074,8 +5290,9 @@ general regular expressions, the following functions come with Octave.
  -- Function File: IDX = strchr (STR, CHARS)
  -- Function File: IDX = strchr (STR, CHARS, N)
  -- Function File: IDX = strchr (STR, CHARS, N, DIRECTION)
+ -- Function File: [I, J] = strchr (...)
      Search for the string STR for occurrences of characters from the
-     set CHARS.  The return value, as well as the N and DIRECTION
+     set CHARS.  The return value(s), as well as the N and DIRECTION
      arguments behave identically as in `find'.
 
      This will be faster than using regexp in most cases.
@@ -5085,31 +5302,31 @@ general regular expressions, the following functions come with Octave.
  -- Function File:  index (S, T)
  -- Function File:  index (S, T, DIRECTION)
      Return the position of the first occurrence of the string T in the
-     string S, or 0 if no occurrence is found.  For example:
+     string S, or 0 if no occurrence is found.  S may also be a string
+     array or cell array of strings.
+
+     For example:
 
           index ("Teststring", "t")
-               => 4
+             => 4
 
      If DIRECTION is `"first"', return the first element found.  If
-     DIRECTION is `"last"', return the last element found.  The
-     `rindex' function is equivalent to `index' with DIRECTION set to
-     `"last"'.
-
-     *Caution:*  This function does not work for arrays of character
-     strings.
+     DIRECTION is `"last"', return the last element found.
 
      *See also:* *note find: doc-find, *note rindex: doc-rindex.
 
  -- Function File:  rindex (S, T)
      Return the position of the last occurrence of the character string
-     T in the character string S, or 0 if no occurrence is found.  For
-     example:
+     T in the character string S, or 0 if no occurrence is found.  S
+     may also be a string array or cell array of strings.
+
+     For example:
 
           rindex ("Teststring", "t")
                => 6
 
-     *Caution:* This function does not work for arrays of character
-     strings.
+     The `rindex' function is equivalent to `index' with DIRECTION set
+     to `"last"'.
 
      *See also:* *note find: doc-find, *note index: doc-index.
 
@@ -5141,33 +5358,45 @@ general regular expressions, the following functions come with Octave.
      doc-strmatch, *note regexp: doc-regexp, *note regexpi:
      doc-regexpi, *note find: doc-find.
 
+ -- Function File:  strmatch (S, A)
  -- Function File:  strmatch (S, A, "exact")
-     Return indices of entries of A that match the string S.  The
-     second argument A may be a string matrix or a cell array of
-     strings.  If the third argument `"exact"' is not given, then S
-     only needs to match A up to the length of S.  Trailing whitespace
-     is ignored.  Results are returned as a column vector.  For example:
+     Return indices of entries of A which begin with the string S.  The
+     second argument A must be a string, character matrix, or a cell
+     array of strings.  If the third argument `"exact"' is not given,
+     then S only needs to match A up to the length of S.  Trailing
+     spaces and nulls in S and A are ignored when matching.  option.
+
+     For example:
 
           strmatch ("apple", "apple juice")
                => 1
 
-          strmatch ("apple", ["apple pie"; "apple juice"; "an apple"])
+          strmatch ("apple", ["apple  "; "apple juice"; "an apple"])
                => [1; 2]
 
-          strmatch ("apple", {"apple pie"; "apple juice"; "tomato"})
-               => [1; 2]
+          strmatch ("apple", ["apple  "; "apple juice"; "an apple"], "exact")
+               => [1]
+
+     *Caution:* `strmatch' is scheduled for deprecation.  Use `strcmpi'
+     or `strncmpi' in all new code.
 
      *See also:* *note strfind: doc-strfind, *note findstr:
      doc-findstr, *note strcmp: doc-strcmp, *note strncmp: doc-strncmp,
      *note strcmpi: doc-strcmpi, *note strncmpi: doc-strncmpi, *note
      find: doc-find.
 
+ -- Function File: [TOK, REM] = strtok (STR)
  -- Function File: [TOK, REM] = strtok (STR, DELIM)
-     Find all characters up to but not including the first character
-     which is in the string delim.  If REM is requested, it contains the
-     remainder of the string, starting at the first delimiter.  Leading
-     delimiters are ignored.  If DELIM is not specified, space is
-     assumed.  For example:
+     Find all characters in the string STR up to, but not including, the
+     first character which is in the string DELIM.  If REM is
+     requested, it contains the remainder of the string, starting at
+     the first delimiter.  Leading delimiters are ignored.  If DELIM is
+     not specified, whitespace is assumed.  STR may also be a cell
+     array of strings in which case the function executes on every
+     individual string and returns a cell array of tokens and
+     remainders.
+
+     Examples:
 
           strtok ("this is the life")
                => "this"
@@ -5177,19 +5406,45 @@ general regular expressions, the following functions come with Octave.
                   tok = 14
                   rem = *27+31
 
-     *See also:* *note index: doc-index, *note strsplit: doc-strsplit.
+     *See also:* *note index: doc-index, *note strsplit: doc-strsplit,
+     *note strchr: doc-strchr, *note isspace: doc-isspace.
 
- -- Function File: [S] = strsplit (P, SEP, STRIP_EMPTY)
-     Split a single string using one or more delimiters and return a
-     cell array of strings.  Consecutive delimiters and delimiters at
+ -- Function File: [CSTR] = strsplit (S, SEP)
+ -- Function File: [CSTR] = strsplit (S, SEP, STRIP_EMPTY)
+     Split the string S using one or more separators SEP and return a
+     cell array of strings.  Consecutive separators and separators at
      boundaries result in empty strings, unless STRIP_EMPTY is true.
      The default value of STRIP_EMPTY is false.
+
+     2-D character arrays are split at separators and at the original
+     column boundaries.
+
+     Example:
+
+          strsplit ("a,b,c", ",")
+                =>
+                    {
+                      [1,1] = a
+                      [1,2] = b
+                      [1,3] = c
+                    }
+
+          strsplit (["a,b" ; "cde"], ",")
+                =>
+                    {
+                      [1,1] = a
+                      [1,2] = b
+                      [1,3] = cde
+                    }
 
      *See also:* *note strtok: doc-strtok.
 
  -- Function File: [A, ...] = strread (STR)
  -- Function File: [A, ...] = strread (STR, FORMAT)
+ -- Function File: [A, ...] = strread (STR, FORMAT, FORMAT_REPEAT)
  -- Function File: [A, ...] = strread (STR, FORMAT, PROP1, VALUE1, ...)
+ -- Function File: [A, ...] = strread (STR, FORMAT, FORMAT_REPEAT,
+          PROP1, VALUE1, ...)
      Read data from a string.
 
      The string STR is split into words that are repeatedly matched to
@@ -5200,21 +5455,36 @@ general regular expressions, the following functions come with Octave.
 
      The string FORMAT describes how the words in STR should be parsed.
      It may contain any combination of the following specifiers:
+
     `%s'
           The word is parsed as a string.
 
-    `%d'
     `%f'
-          The word is parsed as a number.
+    `%n'
+          The word is parsed as a number and converted to double.
 
-    `%*'
+    `%d'
+    `%u'
+          The word is parsed as a number and converted to int32.
+
+    `%*', '%*f', '%*s'
           The word is skipped.
+
+          For %s and %d, %f, %n, %u and the associated %*s ...
+          specifiers an optional width can be specified as %Ns, etc.
+          where N is an integer > 1.  For %f, format specifiers like
+          %N.Mf are allowed.
+
+    `literals'
+          In addition the format may contain literal character strings;
+          these will be skipped during reading.
 
      Parsed word corresponding to the first specifier are returned in
      the first output argument and likewise for the rest of the
      specifiers.
 
-     By default, FORMAT is "%f", meaning that numbers are read from STR.
+     By default, FORMAT is "%f", meaning that numbers are read from
+     STR.  This will do if STR contains only numeric fields.
 
      For example, the string
 
@@ -5227,6 +5497,16 @@ general regular expressions, the following functions come with Octave.
 
           [A, B, C] = strread (STR, "%s %s %f");
 
+     Optional numeric argument FORMAT_REPEAT can be used for limiting
+     the number of items read:
+
+    -1
+          (default) read all of the string until the end.
+
+    N
+          Read N times NARGOUT items.  0 (zero) is an acceptable value
+          for FORMAT_REPEAT.
+
      The behavior of `strread' can be changed via property-value pairs.
      The following properties are recognized:
 
@@ -5234,25 +5514,56 @@ general regular expressions, the following functions come with Octave.
           Parts of STR are considered comments and will be skipped.
           VALUE is the comment style and can be any of the following.
              * "shell" Everything from `#' characters to the nearest
-               end-line is skipped.
+               end-of-line is skipped.
 
              * "c" Everything between `/*' and `*/' is skipped.
 
              * "c++" Everything from `//' characters to the nearest
-               end-line is skipped.
+               end-of-line is skipped.
 
              * "matlab" Everything from `%' characters to the nearest
-               end-line is skipped.
+               end-of-line is skipped.
+
+             * user-supplied.  Two options: (1) One string, or 1x1 cell
+               string: Skip everything to the right of it; (2) 2x1 cell
+               string array: Everything between the left and right
+               strings is skipped.
 
     "delimiter"
-          Any character in VALUE will be used to split STR into words.
+          Any character in VALUE will be used to split STR into words
+          (default value = any whitespace).
 
-    "emptyvalue"
-          Parts of the output where no word is available is filled with
-          VALUE.
+    "emptyvalue":
+          Value to return for empty numeric values in non-whitespace
+          delimited data.  The default is NaN.  When the data type does
+          not support NaN (int32 for example), then default is zero.
 
-     *See also:* *note textread: doc-textread, *note load: doc-load,
-     *note dlmread: doc-dlmread, *note fscanf: doc-fscanf.
+    "multipledelimsasone"
+          Treat a series of consecutive delimiters, without whitespace
+          in between, as a single delimiter.  Consecutive delimiter
+          series need not be vertically "aligned".
+
+    "treatasempty"
+          Treat single occurrences (surrounded by delimiters or
+          whitespace) of the string(s) in VALUE as missing values.
+
+    "returnonerror"
+          If VALUE true (1, default), ignore read errors and return
+          normally.  If false (0), return an error.
+
+    "whitespace"
+          Any character in VALUE will be interpreted as whitespace and
+          trimmed; the string defining whitespace must be enclosed in
+          double quotes for proper processing of special characters
+          like \t.  The default value for whitespace = " \b\r\n\t"
+          (note the space).  Unless whitespace is set to " (empty) AND
+          at least one "%s" format conversion specifier is supplied, a
+          space is always part of whitespace.
+
+
+     *See also:* *note textscan: doc-textscan, *note textread:
+     doc-textread, *note load: doc-load, *note dlmread: doc-dlmread,
+     *note fscanf: doc-fscanf.
 
  -- Loadable Function:  strrep (S, PTN, REP)
  -- Loadable Function:  strrep (S, PTN, REP, "overlaps", O)
@@ -5268,21 +5579,28 @@ general regular expressions, the following functions come with Octave.
      *See also:* *note regexprep: doc-regexprep, *note strfind:
      doc-strfind, *note findstr: doc-findstr.
 
+ -- Function File:  substr (S, OFFSET)
  -- Function File:  substr (S, OFFSET, LEN)
      Return the substring of S which starts at character number OFFSET
      and is LEN characters long.
 
-     If OFFSET is negative, extraction starts that far from the end of
-     the string.  If LEN is omitted, the substring extends to the end
-     of S.
+     Position numbering for offsets begins with 1.  If OFFSET is
+     negative, extraction starts that far from the end of the string.
 
-     For example:
+     If LEN is omitted, the substring extends to the end of S.  A
+     negative value for LEN extracts to within LEN characters of the
+     end of the string
+
+     Examples:
 
           substr ("This is a test string", 6, 9)
                => "is a test"
+          substr ("This is a test string", -11)
+               => "test string"
+          substr ("This is a test string", -11, -7)
+               => "test"
 
-     This function is patterned after AWK.  You can get the same result
-     by `S(OFFSET : (OFFSET + LEN - 1))'.
+     This function is patterned after the equivalent function in Perl.
 
  -- Loadable Function: [S, E, TE, M, T, NM] = regexp (STR, PAT)
  -- Loadable Function: [...] = regexp (STR, PAT, "OPT1", ...)
@@ -5395,6 +5713,9 @@ general regular expressions, the following functions come with Octave.
           with the name being used as the fieldname.  A named token is
           denoted by `(?<name>...)'.
 
+    SP
+          A cell array of the text not returned by match.
+
      Particular output arguments, or the order of the output arguments,
      can be selected by additional OPT arguments.  These are strings
      and the correspondence between the output arguments and the
@@ -5406,6 +5727,7 @@ general regular expressions, the following functions come with Octave.
                    'match'              M                    
                    'tokens'             T                    
                    'names'              NM                   
+                   'split'              SP                   
 
      Additional arguments are summarized below.
 
@@ -5499,12 +5821,13 @@ general regular expressions, the following functions come with Octave.
      *note strrep: doc-strrep.
 
  -- Function File:  regexptranslate (OP, S)
-     Translate a string for use in a regular expression.  This might
+     Translate a string for use in a regular expression.  This may
      include either wildcard replacement or special character escaping.
-     The behavior can be controlled by the OP that can have the values
+     The behavior is controlled by OP which can take the following
+     values
 
     "wildcard"
-          The wildcard characters `.', `*' and `?' are replaced with
+          The wildcard characters `.', `*', and `?' are replaced with
           wildcards that are appropriate for a regular expression.  For
           example:
 
@@ -5568,8 +5891,11 @@ a hexadecimal number to a floating point number.
           bin2dec ("1110")
                => 14
 
-     If S is a string matrix, return a column vector of converted
-     numbers, one per row of S.  Invalid rows evaluate to NaN.
+     If S is a string matrix, return a column vector with one converted
+     number per row of S; Invalid rows evaluate to NaN.
+
+     If S is a cell array of strings, return a column vector with one
+     converted number per cell element in S.
 
      *See also:* *note dec2bin: doc-dec2bin, *note base2dec:
      doc-base2dec, *note hex2dec: doc-hex2dec.
@@ -5581,8 +5907,9 @@ a hexadecimal number to a floating point number.
           dec2bin (14)
                => "1110"
 
-     If D is a vector, returns a string matrix, one row per value,
-     padded with leading zeros to the width of the largest value.
+     If D is a matrix or cell array, return a string matrix with one
+     row per element in D, padded with leading zeros to the width of
+     the largest value.
 
      The optional second argument, LEN, specifies the minimum number of
      digits in the result.
@@ -5597,8 +5924,9 @@ a hexadecimal number to a floating point number.
           dec2hex (2748)
                => "ABC"
 
-     If D is a vector, return a string matrix, one row per value,
-     padded with leading zeros to the width of the largest value.
+     If D is a matrix or cell array, return a string matrix with one
+     row per element in D, padded with leading zeros to the width of
+     the largest value.
 
      The optional second argument, LEN, specifies the minimum number of
      digits in the result.
@@ -5615,8 +5943,11 @@ a hexadecimal number to a floating point number.
           hex2dec ("12b")
                => 299
 
-     If S is a string matrix, returns a column vector of converted
-     numbers, one per row of S.  Invalid rows evaluate to NaN.
+     If S is a string matrix, return a column vector with one converted
+     number per row of S; Invalid rows evaluate to NaN.
+
+     If S is a cell array of strings, return a column vector with one
+     converted number per cell element in S.
 
      *See also:* *note dec2hex: doc-dec2hex, *note base2dec:
      doc-base2dec, *note bin2dec: doc-bin2dec.
@@ -5627,17 +5958,18 @@ a hexadecimal number to a floating point number.
      non-negative integer D.
 
           dec2base (123, 3)
-               => "11120"
+             => "11120"
 
-     If D is a vector, return a string matrix with one row per value,
-     padded with leading zeros to the width of the largest value.
+     If D is a matrix or cell array, return a string matrix with one
+     row per element in D, padded with leading zeros to the width of
+     the largest value.
 
      If BASE is a string then the characters of BASE are used as the
      symbols for the digits of D.  Space (' ') may not be used as a
      symbol.
 
           dec2base (123, "aei")
-               => "eeeia"
+             => "eeeia"
 
      The optional third argument, LEN, specifies the minimum number of
      digits in the result.
@@ -5650,19 +5982,21 @@ a hexadecimal number to a floating point number.
      integer (base 10).
 
           base2dec ("11120", 3)
-               => 123
+             => 123
 
-     If S is a matrix, returns a column vector with one value per row
-     of S.  If a row contains invalid symbols then the corresponding
-     value will be NaN.  Rows are right-justified before converting so
-     that trailing spaces are ignored.
+     If S is a string matrix, return a column vector with one value per
+     row of S.  If a row contains invalid symbols then the
+     corresponding value will be NaN.
+
+     If S is a cell array of strings, return a column vector with one
+     value per cell element in S.
 
      If BASE is a string, the characters of BASE are used as the
      symbols for the digits of S.  Space (' ') may not be used as a
      symbol.
 
           base2dec ("yyyzx", "xyz")
-               => 123
+             => 123
 
      *See also:* *note dec2base: doc-dec2base, *note bin2dec:
      doc-bin2dec, *note hex2dec: doc-hex2dec.
@@ -5733,10 +6067,11 @@ a hexadecimal number to a floating point number.
 
      *See also:* *note str2num: doc-str2num.
 
+ -- Function File:  strjust (S)
  -- Function File:  strjust (S, POS)
      Return the text, S, justified according to POS, which may be
-     `"left"', `"center"', or `"right"'.  If POS is omitted, `"right"'
-     is assumed.
+     `"left"', `"center"', or `"right"'.  If POS is omitted it defaults
+     to `"right"'.
 
      Null characters are replaced by spaces.  All other character data
      are treated as non-white space.
@@ -5744,11 +6079,11 @@ a hexadecimal number to a floating point number.
      Example:
 
           strjust (["a"; "ab"; "abc"; "abcd"])
-               => ans =
-                     a
-                    ab
-                   abc
-                  abcd
+               =>
+                  "   a"
+                  "  ab"
+                  " abc"
+                  "abcd"
 
      *See also:* *note deblank: doc-deblank, *note strrep: doc-strrep,
      *note strtrim: doc-strtrim, *note untabify: doc-untabify.
@@ -5761,18 +6096,19 @@ a hexadecimal number to a floating point number.
           str2num ("3.141596")
                 => 3.141596
 
-          str2num (["1, 2, 3"; "4, 5, 6"]);
-                => ans =
-                   1  2  3
+          str2num (["1, 2, 3"; "4, 5, 6"])
+                => 1  2  3
                    4  5  6
 
      The optional second output, STATE, is logically true when the
-     coversion is successful. If the conversion fails the numeric
+     conversion is successful.  If the conversion fails the numeric
      output, X, is empty and STATE is false.
 
      *Caution:* As `str2num' uses the `eval' function to do the
      conversion, `str2num' will execute any code contained in the
      string S.  Use `str2double' for a safer and faster conversion.
+
+     For cell array of strings use `str2double'.
 
      *See also:* *note str2double: doc-str2double, *note eval: doc-eval.
 
@@ -6147,17 +6483,29 @@ contents of structure arrays.
 
  -- Built-in Function: VAL = struct_levels_to_print ()
  -- Built-in Function: OLD_VAL = struct_levels_to_print (NEW_VAL)
+ -- Built-in Function:  struct_levels_to_print (NEW_VAL, "local")
      Query or set the internal variable that specifies the number of
      structure levels to display.
 
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
+
  -- Built-in Function: VAL = print_struct_array_contents ()
  -- Built-in Function: OLD_VAL = print_struct_array_contents (NEW_VAL)
+ -- Built-in Function:  print_struct_array_contents (NEW_VAL, "local")
      Query or set the internal variable that specifies whether to print
      struct array contents.  If true, values of struct array elements
      are printed.  This variable does not affect scalar structures.
      Their elements are always printed.  In both cases, however,
      printing will be limited to the number of levels specified by
      STRUCT_LEVELS_TO_PRINT.
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
 
    Functions can return structures.  For example, the following function
 separates the real and complex parts of a matrix and stores them in two
@@ -6324,7 +6672,8 @@ File: octave.info,  Node: Creating Structures,  Next: Manipulating Structures,  
 
 Besides the index operator ".", Octave can use dynamic naming "(var)"
 or the `struct' function to create structures.  Dynamic naming uses the
-string value of a variable as the field name.  For example,
+string value of a variable as the field name.  For example:
+
      a = "field2";
      x.a = 1;
      x.(a) = 2;
@@ -6453,14 +6802,14 @@ below.
 
           ss(1,2).fd(3).b = 5;
           getfield (ss, {1,2}, "fd", {3}, "b")
-               => ans = 5
+             => 5
 
      Note that the function call in the previous example is equivalent
      to the expression
 
           i1 = {1,2}; i2 = "fd"; i3 = {3}; i4= "b";
           ss(i1{:}).(i2)(i3{:}).(i4)
-               => ans = 5
+             => 5
 
      *See also:* *note setfield: doc-setfield, *note rmfield:
      doc-rmfield, *note isfield: doc-isfield, *note isstruct:
@@ -6514,7 +6863,7 @@ below.
      Examples:
 
           s = struct("d", 4, "b", 2, "a", 1, "c", 3);
-          t1 = orderfields(s)
+          t1 = orderfields (s)
                => t1 =
                   {
                     a =  1
@@ -6523,7 +6872,7 @@ below.
                     d =  4
                   }
           t = struct("d", {}, "c", {}, "b", "a", {});
-          t2 = orderfields(s, t)
+          t2 = orderfields (s, t)
                => t2 =
                   {
                     d =  4
@@ -6531,7 +6880,7 @@ below.
                     b =  2
                     a =  1
                   }
-          t3 = orderfields(s, [3, 2, 4, 1]);
+          t3 = orderfields (s, [3, 2, 4, 1]);
                => t3 =
                   {
                     a =  1
@@ -6539,18 +6888,19 @@ below.
                     c =  3
                     d =  4
                   }
-          [t4, p] = orderfields(s, {"d", "c", "b", "a"})
-               => t4 = {
+          [t4, p] = orderfields (s, {"d", "c", "b", "a"})
+               => t4 =
+                  {
                     d =  4
                     c =  3
                     b =  2
                     a =  1
                   }
-               p =
-                  1
-                  4
-                  2
-                  3
+                  p =
+                     1
+                     4
+                     2
+                     3
 
      *See also:* *note getfield: doc-getfield, *note rmfield:
      doc-rmfield, *note isfield: doc-isfield, *note isstruct:
@@ -6561,7 +6911,7 @@ below.
      Create a subscript structure for use with `subsref' or `subsasgn'.
      For example:
 
-          idx = substruct("()", {3, ":"})
+          idx = substruct ("()", {3, ":"})
                =>
                  idx =
                  {
@@ -6573,9 +6923,8 @@ below.
                    }
                  }
           x = [1, 2, 3; 4, 5, 6; 7, 8, 9];
-          subsref(x, idx)
-               => ans =
-                  7  8  9
+          subsref (x, idx)
+             => 7  8  9
 
      *See also:* *note subsref: doc-subsref, *note subsasgn:
      doc-subsasgn.
@@ -6589,52 +6938,7 @@ File: octave.info,  Node: Processing Data in Structures,  Prev: Manipulating Str
 The simplest way to process data in a structure is within a `for' loop
 (*note Looping Over Structure Elements::).  A similar effect can be
 achieved with the `structfun' function, where a user defined function
-is applied to each field of the structure.
-
- -- Function File:  structfun (FUNC, S)
- -- Function File: [A, ...] = structfun (...)
- -- Function File:  structfun (..., "ErrorHandler", ERRFUNC)
- -- Function File:  structfun (..., "UniformOutput", VAL)
-     Evaluate the function named NAME on the fields of the structure S.
-     The fields of S are passed to the function FUNC individually.
-
-     `structfun' accepts an arbitrary function FUNC in the form of an
-     inline function, function handle, or the name of a function (in a
-     character string).  In the case of a character string argument, the
-     function must accept a single argument named X, and it must return
-     a string value.  If the function returns more than one argument,
-     they are returned as separate output variables.
-
-     If the parameter "UniformOutput" is set to true (the default),
-     then the function must return a single element which will be
-     concatenated into the return value.  If "UniformOutput" is false,
-     the outputs are placed into a structure with the same fieldnames
-     as the input structure.
-
-          s.name1 = "John Smith";
-          s.name2 = "Jill Jones";
-          structfun (@(x) regexp (x, '(\w+)$', "matches"){1}, s,
-                     "UniformOutput", false)
-              =>
-             {
-               name1 = Smith
-               name2 = Jones
-             }
-
-     Given the parameter "ErrorHandler", ERRFUNC defines a function to
-     call in case FUNC generates an error.  The form of the function is
-
-          function [...] = errfunc (SE, ...)
-
-     where there is an additional input argument to ERRFUNC relative to
-     FUNC, given by SE.  This is a structure with the elements
-     "identifier", "message" and "index", giving respectively the error
-     identifier, the error message, and the index into the input
-     arguments of the element that caused the error.  For an example on
-     how to use an error handler, *note `cellfun': doc-cellfun.
-
-     *See also:* *note cellfun: doc-cellfun, *note arrayfun:
-     doc-arrayfun, *note spfun: doc-spfun.
+is applied to each field of the structure.  *Note doc-structfun::.
 
    Alternatively, to process the data in a structure, the structure
 might be converted to another type of container before being treated.
@@ -6709,16 +7013,11 @@ As with numerical arrays several elements of a cell array can be
 extracted by indexing with a vector of indexes
 
      c{1:2}
+          => ans = a string
           => ans =
-
-               (,
-                 [1] = a string
-                 [2] =
 
                     0.593993   0.627732
                     0.377037   0.033643
-
-               ,)
 
    The indexing operators can also be used to insert or overwrite
 elements of a cell array.  The following code inserts the scalar 3 on
@@ -6751,16 +7050,16 @@ function.
      this name can be replaced with the variable NAME.  For example:
 
           c = {1, 2, {31, 32}};
-          celldisp(c, "b")
-               =>
-                  b{1} =
-                   1
-                  b{2} =
-                   2
-                  b{3}{1} =
-                   31
-                  b{3}{2} =
-                   32
+          celldisp (c, "b")
+             =>
+                b{1} =
+                 1
+                b{2} =
+                 2
+                b{3}{1} =
+                 31
+                b{3}{2} =
+                 32
 
      *See also:* *note disp: doc-disp.
 
@@ -6916,6 +7215,9 @@ the `num2cell', `mat2cell' and `cellslices' functions.
      The position of the index is determined by DIM.  If not specified,
      slicing is done along the first non-singleton dimension.
 
+     *See also:* *note cell2mat: doc-cell2mat, *note cellindexmat:
+     doc-cellindexmat, *note cellfun: doc-cellfun.
+
 
 File: octave.info,  Node: Indexing Cell Arrays,  Next: Cell Arrays of Strings,  Prev: Creating Cell Arrays,  Up: Cell Arrays
 
@@ -7037,8 +7339,8 @@ the requested values.
               Y{i} = X{i}(varargin{:});
             endfor
 
-     *See also:* *note cellfun: doc-cellfun, *note cellslices:
-     doc-cellslices.
+     *See also:* *note cellslices: doc-cellslices, *note cellfun:
+     doc-cellfun.
 
 
 File: octave.info,  Node: Cell Arrays of Strings,  Next: Processing Data in Cell Arrays,  Prev: Indexing Cell Arrays,  Up: Cell Arrays
@@ -7109,103 +7411,7 @@ depending on the actual data.  The simplest way to process that data is
 to iterate through it using one or more `for' loops.  The same idea can
 be implemented more easily through the use of the `cellfun' function
 that calls a user-specified function on all elements of a cell array.
-
- -- Loadable Function:  cellfun (NAME, C)
- -- Loadable Function:  cellfun ("size", C, K)
- -- Loadable Function:  cellfun ("isclass", C, CLASS)
- -- Loadable Function:  cellfun (FUNC, C)
- -- Loadable Function:  cellfun (FUNC, C, D)
- -- Loadable Function: [A, ...] = cellfun (...)
- -- Loadable Function:  cellfun (..., 'ErrorHandler', ERRFUNC)
- -- Loadable Function:  cellfun (..., 'UniformOutput', VAL)
-     Evaluate the function named NAME on the elements of the cell array
-     C.  Elements in C are passed on to the named function
-     individually.  The function NAME can be one of the functions
-
-    `isempty'
-          Return 1 for empty elements.
-
-    `islogical'
-          Return 1 for logical elements.
-
-    `isreal'
-          Return 1 for real elements.
-
-    `length'
-          Return a vector of the lengths of cell elements.
-
-    `ndims'
-          Return the number of dimensions of each element.
-
-    `prodofsize'
-          Return the product of dimensions of each element.
-
-    `size'
-          Return the size along the K-th dimension.
-
-    `isclass'
-          Return 1 for elements of CLASS.
-
-     Additionally, `cellfun' accepts an arbitrary function FUNC in the
-     form of an inline function, function handle, or the name of a
-     function (in a character string).  In the case of a character
-     string argument, the function must accept a single argument named
-     X, and it must return a string value.  The function can take one
-     or more arguments, with the inputs arguments given by C, D, etc.
-     Equally the function can return one or more output arguments.  For
-     example:
-
-          cellfun (@atan2, {1, 0}, {0, 1})
-               =>ans = [1.57080   0.00000]
-
-     The number of output arguments of `cellfun' matches the number of
-     output arguments of the function.  The outputs of the function
-     will be collected into the output arguments of `cellfun' like this:
-
-          function [a, b] = twoouts (x)
-            a = x;
-            b = x*x;
-          endfunction
-          [aa, bb] = cellfun(@twoouts, {1, 2, 3})
-               =>
-                  aa =
-                     1 2 3
-                  bb =
-                     1 4 9
-
-     Note that per default the output argument(s) are arrays of the
-     same size as the input arguments.  Input arguments that are
-     singleton (1x1) cells will be automatically expanded to the size
-     of the other arguments.
-
-     If the parameter 'UniformOutput' is set to true (the default),
-     then the function must return scalars which will be concatenated
-     into the return array(s).  If 'UniformOutput' is false, the
-     outputs are concatenated into a cell array (or cell arrays).  For
-     example:
-
-          cellfun ("tolower(x)", {"Foo", "Bar", "FooBar"},
-                   "UniformOutput",false)
-          => ans = {"foo", "bar", "foobar"}
-
-     Given the parameter 'ErrorHandler', then ERRFUNC defines a
-     function to call in case FUNC generates an error.  The form of the
-     function is
-
-          function [...] = errfunc (S, ...)
-
-     where there is an additional input argument to ERRFUNC relative to
-     FUNC, given by S.  This is a structure with the elements
-     'identifier', 'message' and 'index', giving respectively the error
-     identifier, the error message, and the index into the input
-     arguments of the element that caused the error.  For example:
-
-          function y = foo (s, x), y = NaN; endfunction
-          cellfun (@factorial, {-1,2},'ErrorHandler',@foo)
-          => ans = [NaN 2]
-
-     *See also:* *note arrayfun: doc-arrayfun, *note structfun:
-     doc-structfun, *note spfun: doc-spfun.
+*Note doc-cellfun::.
 
    An alternative is to convert the data to a different container, such
 as a matrix or a data structure.  Depending on the data this is possible
@@ -7223,7 +7429,8 @@ using the `cell2mat' and `cell2struct' functions.
  -- Built-in Function:  cell2struct (CELL, FIELDS, DIM)
      Convert CELL to a structure.  The number of fields in FIELDS must
      match the number of elements in CELL along dimension DIM, that is
-     `numel (FIELDS) == size (CELL, DIM)'.
+     `numel (FIELDS) == size (CELL, DIM)'.  If DIM is omitted, a value
+     of 1 is assumed.
 
           A = cell2struct ({'Peter', 'Hannah', 'Robert';
                              185, 170, 168},
@@ -7431,25 +7638,25 @@ an error.
 
           x = 3.141;
           genvarname ("x", who ())
-          => x1
+            => x1
 
      If WANTED is a cell array, genvarname will make sure the returned
      strings are distinct:
 
           genvarname ({"foo", "foo"})
-          =>
-          {
-            [1,1] = foo
-            [1,2] = foo1
-          }
+            =>
+               {
+                 [1,1] = foo
+                 [1,2] = foo1
+               }
 
      Note that the result is a char array/cell array of strings, not the
      variables themselves.  To define a variable, `eval()' can be used.
      The following trivial example sets `x' to `42'.
 
           name = genvarname ("x");
-          eval([name " = 42"]);
-          => x =  42
+          eval ([name " = 42"]);
+            => x =  42
 
      Also, this can be useful for creating unique struct field names.
 
@@ -7457,13 +7664,12 @@ an error.
           for i = 1:3
             x.(genvarname ("a", fieldnames (x))) = i;
           endfor
-          =>
-          x =
-          {
-            a =  1
-            a1 =  2
-            a2 =  3
-          }
+            => x =
+               {
+                 a =  1
+                 a1 =  2
+                 a2 =  3
+               }
 
      Since variable names may only contain letters, digits and
      underscores, genvarname replaces any sequence of disallowed
@@ -7486,9 +7692,9 @@ an error.
 
  -- Function File:  namelengthmax ()
      Return the MATLAB compatible maximum variable name length.  Octave
-     is capable of storing strings up to `2 ^ 31 - 1' in length.
-     However for MATLAB compatibility all variable, function and
-     structure field names should be shorter than the length supplied by
+     is capable of storing strings up to 2^31 - 1 in length.  However
+     for MATLAB compatibility all variable, function, and structure
+     field names should be shorter than the length supplied by
      `namelengthmax'.  In particular variables stored to a MATLAB file
      format will have their names truncated to this length.
 
@@ -7747,6 +7953,9 @@ information about what is in memory, as the following shows.
                Automatic variable.  An automatic variable is one
                created by the interpreter, for example `argn'.
 
+         `c'
+               Variable of complex type.
+
          `f'
                Formal parameter (function argument).
 
@@ -7783,6 +7992,7 @@ information about what is in memory, as the following shows.
 
  -- Built-in Function: VAL = whos_line_format ()
  -- Built-in Function: OLD_VAL = whos_line_format (NEW_VAL)
+ -- Built-in Function:  whos_line_format (NEW_VAL, "local")
      Query or set the format string used by the command `whos'.
 
      A full format string is:
@@ -7837,6 +8047,11 @@ information about what is in memory, as the following shows.
 
      The default format is `"  %a:4; %ln:6; %cs:16:6:1;  %rb:12;
      %lc:-1;\n"'.
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
 
      *See also:* *note whos: doc-whos.
 
@@ -8030,99 +8245,172 @@ elements of a matrix or vector.
    Indices may be scalars, vectors, ranges, or the special operator
 `:', which may be used to select entire rows or columns.
 
-   Vectors are indexed using a single index expression.  Matrices may be
-indexed using one or two indices.  When using a single index
-expression, the elements of the matrix are taken in column-first order;
-the dimensions of the output match those of the index expression.  For
-example,
+   Vectors are indexed using a single index expression.  Matrices (2-D)
+and higher multi-dimensional arrays are indexed using either one index
+or N indices where N is the dimension of the array.  When using a
+single index expression to index 2-D or higher data the elements of the
+array are taken in column-first order (like Fortran).
 
-     a(2)       # a scalar
-     a(1:2)     # a row vector
-     a([1; 2])  # a column vector
+   The output from indexing assumes the dimensions of the index
+expression.  For example:
+
+     a(2)       # result is a scalar
+     a(1:2)     # result is a row vector
+     a([1; 2])  # result is a column vector
 
    As a special case, when a colon is used as a single index, the output
 is a column vector containing all the elements of the vector or matrix.
 For example:
 
-     a(:)       # a column vector
+     a(:)       # result is a column vector
+     a(:)'      # result is a row vector
+
+   The above two code idioms are often used in place of `reshape' when
+a simple vector, rather than an arbitrarily sized array, is needed.
 
    Given the matrix
 
      a = [1, 2; 3, 4]
 
-all of the following expressions are equivalent
+all of the following expressions are equivalent and select the first
+row of the matrix.
 
-     a(1, [1, 2])
-     a(1, 1:2)
-     a(1, :)
+     a(1, [1, 2])  # row 1, columns 1 and 2
+     a(1, 1:2)     # row 1, columns in range 1-2
+     a(1, :)       # row 1, all columns
 
-and select the first row of the matrix.
+   In index expressions the keyword `end' automatically refers to the
+last entry for a particular dimension.  This magic index can also be
+used in ranges and typically eliminates the needs to call `size' or
+`length' to gather array bounds before indexing.  For example:
 
-   In general, an array with `n' dimensions can be indexed using `m'
-indices.  If `n == m', each index corresponds to its respective
-dimension.  The set of index tuples determining the result is formed by
-the Cartesian product of the index vectors (or ranges or scalars).  If
-`n < m', then the array is padded by trailing singleton dimensions.  If
-`n > m', the last `n-m+1' dimensions are folded into a single dimension
-with extent equal to product of extents of the original dimensions.
+     a = [1, 2, 3, 4];
 
-   Indexing a scalar with a vector of ones can be used to create a
-vector the same size as the index vector, with each element equal to
-the value of the original scalar.  For example, the following statements
+     a(1:end/2)        # first half of a => [1, 2]
+     a(end + 1) = 5;   # append element
+     a(end) = [];      # delete element
+     a(1:2:end)        # odd elements of a => [1, 3]
+     a(2:2:end)        # even elements of a => [2, 4]
+     a(end:-1:1)       # reversal of a => [4, 3, 2 , 1]
+
+* Menu:
+
+* Advanced Indexing::
+
+
+File: octave.info,  Node: Advanced Indexing,  Up: Index Expressions
+
+8.1.1 Advanced Indexing
+-----------------------
+
+An array with `n' dimensions can be indexed using `m' indices.  More
+generally, the set of index tuples determining the result is formed by
+the Cartesian product of the index vectors (or ranges or scalars).
+
+   For the ordinary and most common case, `m == n', and each index
+corresponds to its respective dimension.  If `m < n' and every index is
+less than the size of the array in the i^th dimension, `m(i) < n(i)',
+then the index expression is padded with trailing singleton dimensions
+(`[ones (m-n, 1)]').  If `m < n' but one of the indices `m(i)' is
+outside the size of the current array, then the last `n-m+1' dimensions
+are folded into a single dimension with an extent equal to the product
+of extents of the original dimensions.  This is easiest to understand
+with an example.
+
+     a = reshape (1:8, 2, 2, 2)  # Create 3-D array
+     a =
+
+     ans(:,:,1) =
+
+        1   3
+        2   4
+
+     ans(:,:,2) =
+
+        5   7
+        6   8
+
+     a(2,1,2);   # Case (m == n): ans = 6
+     a(2,1);     # Case (m < n), idx within array:
+                 # equivalent to a(2,1,1), ans = 2
+     a(2,4);     # Case (m < n), idx outside array:
+                 # Dimension 2 & 3 folded into new dimension of size 2x2 = 4
+                 # Select 2nd row, 4th element of [2, 4, 6, 8], ans = 8
+
+   One advanced use of indexing is to create arrays filled with a single
+value.  This can be done by using an index of ones on a scalar value.
+The result is an object with the dimensions of the index expression and
+every element equal to the original scalar.  For example, the following
+statements
 
      a = 13;
      a(ones (1, 4))
 
 produce a vector whose four elements are all equal to 13.
 
-   Similarly, indexing a scalar with two vectors of ones can be used to
-create a matrix.  For example the following statements
+   Similarly, by indexing a scalar with two vectors of ones it is
+possible to create a matrix.  The following statements
 
      a = 13;
      a(ones (1, 2), ones (1, 3))
 
-create a 2 by 3 matrix with all elements equal to 13.
+create a 2x3 matrix with all elements equal to 13.
 
    The last example could also be written as
 
-     13 (ones (2, 3))
+     13(ones (2, 3))
+
+   It is more efficient to use indexing rather than the code
+construction `scalar * ones (N, M, ...)' because it avoids the
+unnecessary multiplication operation.  Moreover, multiplication may not
+be defined for the object to be replicated whereas indexing an array is
+always defined.  The following code shows how to create a 2x3 cell
+array from a base unit which is not itself a scalar.
+
+     {"Hello"}(ones (2, 3))
 
    It should be, noted that `ones (1, n)' (a row vector of ones)
-results in a range (with zero increment), and is therefore more
-efficient when used in index expression than other forms of "ones".  In
-particular, when `r' is a row vector, the expressions
+results in a range (with zero increment).  A range is stored internally
+as a starting value, increment, end value, and total number of values;
+hence, it is more efficient for storage than a vector or matrix of ones
+whenever the number of elements is greater than 4.  In particular, when
+`r' is a row vector, the expressions
 
        r(ones (1, n), :)
 
        r(ones (n, 1), :)
 
 will produce identical results, but the first one will be significantly
-faster, at least for `r' and `n' large enough.  The reason is that in
-the first case the index is kept in a compressed form, which allows
-Octave to choose a more efficient algorithm to handle the expression.
+faster, at least for `r' and `n' large enough.  In the first case the
+index is held in compressed form as a range which allows Octave to
+choose a more efficient algorithm to handle the expression.
 
-   In general, for an user unaware of these subtleties, it is best to
-use the function "repmat" for spreading arrays into bigger ones.
+   A general recommendation, for a user unaware of these subtleties, is
+to use the function `repmat' for replicating smaller arrays into bigger
+ones.
 
-   It is also possible to create a matrix with different values.  The
-following example creates a 10 dimensional row vector a containing the
-values a(i) = sqrt(i).
+   A second use of indexing is to speed up code.  Indexing is a fast
+operation and judicious use of it can reduce the requirement for
+looping over individual array elements which is a slow operation.
+
+   Consider the following example which creates a 10-element row vector
+a containing the values a(i) = sqrt(i).
 
      for i = 1:10
        a(i) = sqrt (i);
      endfor
 
-Note that it is quite inefficient to create a vector using a loop like
-the one shown in the example above.  In this particular case, it would
-have been much more efficient to use the expression
+It is quite inefficient to create a vector using a loop like this.  In
+this case, it would have been much more efficient to use the expression
 
      a = sqrt (1:10);
 
-thus avoiding the loop entirely.  In cases where a loop is still
-required, or a number of values must be combined to form a larger
-matrix, it is generally much faster to set the size of the matrix first,
-and then insert elements using indexing commands.  For example, given a
-matrix `a',
+which avoids the loop entirely.
+
+   In cases where a loop cannot be avoided, or a number of values must
+be combined to form a larger matrix, it is generally faster to set the
+size of the matrix first (pre-allocate storage), and then insert
+elements using indexing commands.  For example, given a matrix `a',
 
      [nr, nc] = size (a);
      x = zeros (nr, n * nc);
@@ -8137,8 +8425,8 @@ is considerably faster than
        x = [x, a];
      endfor
 
-particularly for large matrices because Octave does not have to
-repeatedly resize the result.
+because Octave does not have to repeatedly resize the intermediate
+result.
 
  -- Function File: IND = sub2ind (DIMS, I, J)
  -- Function File: IND = sub2ind (DIMS, S1, S2, ..., SN)
@@ -8179,11 +8467,18 @@ repeatedly resize the result.
  -- Built-in Function: VAL = allow_noninteger_range_as_index ()
  -- Built-in Function: OLD_VAL = allow_noninteger_range_as_index
           (NEW_VAL)
+ -- Built-in Function:  allow_noninteger_range_as_index (NEW_VAL,
+          "local")
      Query or set the internal variable that controls whether
      non-integer ranges are allowed as indices.  This might be useful
      for MATLAB compatibility; however, it is still not entirely
      compatible because MATLAB treats the range expression differently
      in different contexts.
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
 
 
 File: octave.info,  Node: Calling Functions,  Next: Arithmetic Ops,  Prev: Index Expressions,  Up: Expressions
@@ -8327,9 +8622,15 @@ recursion depth and prevents Octave from recursing infinitely.
 
  -- Built-in Function: VAL = max_recursion_depth ()
  -- Built-in Function: OLD_VAL = max_recursion_depth (NEW_VAL)
+ -- Built-in Function:  max_recursion_depth (NEW_VAL, "local")
      Query or set the internal limit on the number of times a function
      may be called recursively.  If the limit is exceeded, an error
      message is printed and control returns to the top level.
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
 
    ---------- Footnotes ----------
 
@@ -8351,33 +8652,37 @@ File: octave.info,  Node: Arithmetic Ops,  Next: Comparison Ops,  Prev: Calling 
 ========================
 
 The following arithmetic operators are available, and work on scalars
-and matrices.
+and matrices.  The element-by-element operators and functions broadcast
+(*note Broadcasting::).
 
-`X + Y'
+X + Y
      Addition.  If both operands are matrices, the number of rows and
-     columns must both agree.  If one operand is a scalar, its value is
-     added to all the elements of the other operand.
+     columns must both agree, or they must be broadcastable to the same
+     shape.
 
-`X .+ Y'
-     Element by element addition.  This operator is equivalent to `+'.
+X .+ Y
+     Element-by-element addition.  This operator is equivalent to `+'.
 
-`X - Y'
+X - Y
      Subtraction.  If both operands are matrices, the number of rows and
-     columns of both must agree.
+     columns of both must agree, or they must be broadcastable to the
+     same shape.
 
-`X .- Y'
-     Element by element subtraction.  This operator is equivalent to
+X .- Y
+     Element-by-element subtraction.  This operator is equivalent to
      `-'.
 
-`X * Y'
+X * Y
      Matrix multiplication.  The number of columns of X must agree with
-     the number of rows of Y.
+     the number of rows of Y, or they must be broadcastable to the same
+     shape.
 
-`X .* Y'
-     Element by element multiplication.  If both operands are matrices,
-     the number of rows and columns must both agree.
+X .* Y
+     Element-by-element multiplication.  If both operands are matrices,
+     the number of rows and columns must both agree, or they must be
+     broadcastable to the same shape.
 
-`X / Y'
+X / Y
      Right division.  This is conceptually equivalent to the expression
 
           (inverse (y') * x')'
@@ -8387,10 +8692,10 @@ and matrices.
      If the system is not square, or if the coefficient matrix is
      singular, a minimum norm solution is computed.
 
-`X ./ Y'
-     Element by element right division.
+X ./ Y
+     Element-by-element right division.
 
-`X \ Y'
+X \ Y
      Left division.  This is conceptually equivalent to the expression
 
           inverse (x) * y
@@ -8400,12 +8705,12 @@ and matrices.
      If the system is not square, or if the coefficient matrix is
      singular, a minimum norm solution is computed.
 
-`X .\ Y'
-     Element by element left division.  Each element of Y is divided by
+X .\ Y
+     Element-by-element left division.  Each element of Y is divided by
      each corresponding element of X.
 
-`X ^ Y'
-`X ** Y'
+X ^ Y
+X ** Y
      Power operator.  If X and Y are both scalars, this operator
      returns X raised to the power Y.  If X is a scalar and Y is a
      square matrix, the result is computed using an eigenvalue
@@ -8416,28 +8721,33 @@ and matrices.
 
      The implementation of this operator needs to be improved.
 
-`X .^ Y'
-`X .** Y'
-     Element by element power operator.  If both operands are matrices,
-     the number of rows and columns must both agree.
+X .^ Y
+X .** Y
+     Element-by-element power operator.  If both operands are matrices,
+     the number of rows and columns must both agree, or they must be
+     broadcastable to the same shape.  If several complex results are
+     possible, the one with smallest non-negative argument (angle) is
+     taken.  This rule may return a complex root even when a real root
+     is also possible.  Use `realpow', `realsqrt', `cbrt', or `nthroot'
+     if a real result is preferred.
 
-`-X'
+-X
      Negation.
 
-`+X'
++X
      Unary plus.  This operator has no effect on the operand.
 
-`X''
+X'
      Complex conjugate transpose.  For real arguments, this operator is
      the same as the transpose operator.  For complex arguments, this
      operator is equivalent to the expression
 
           conj (x.')
 
-`X.''
+X.'
      Transpose.
 
-   Note that because Octave's element by element operators begin with a
+   Note that because Octave's element-by-element operators begin with a
 `.', there is a possible ambiguity for statements like
 
      1./m
@@ -8458,39 +8768,39 @@ preferring the longest possible match at any given point, it is more
 useful in this case.
 
  -- Built-in Function:  ctranspose (X)
-     Return the complex conjugate transpose of X.  This function is
-     equivalent to `x''.
+     Return the complex conjugate transpose of X.  This function and x'
+     are equivalent.
 
      *See also:* *note transpose: doc-transpose.
 
  -- Built-in Function:  ldivide (X, Y)
      Return the element-by-element left division of X and Y.  This
-     function is equivalent to `x .\ y'.
+     function and x . y are equivalent.
 
      *See also:* *note rdivide: doc-rdivide, *note mldivide:
      doc-mldivide.
 
  -- Built-in Function:  minus (X, Y)
-     This function is equivalent to `x - y'.
+     This function and x - y are equivalent.
 
      *See also:* *note plus: doc-plus.
 
  -- Built-in Function:  mldivide (X, Y)
-     Return the matrix left division of X and Y.  This function is
-     equivalent to `x \ y'.
+     Return the matrix left division of X and Y.  This function and
+     x  y are equivalent.
 
      *See also:* *note mrdivide: doc-mrdivide, *note ldivide:
      doc-ldivide.
 
  -- Built-in Function:  mpower (X, Y)
      Return the matrix power operation of X raised to the Y power.
-     This function is equivalent to `x ^ y'.
+     This function and x ^ y are equivalent.
 
      *See also:* *note power: doc-power.
 
  -- Built-in Function:  mrdivide (X, Y)
-     Return the matrix right division of X and Y.  This function is
-     equivalent to `x / y'.
+     Return the matrix right division of X and Y.  This function and
+     x / y are equivalent.
 
      *See also:* *note mldivide: doc-mldivide, *note rdivide:
      doc-rdivide.
@@ -8498,7 +8808,7 @@ useful in this case.
  -- Built-in Function:  mtimes (X, Y)
  -- Built-in Function:  mtimes (X1, X2, ...)
      Return the matrix multiplication product of inputs.  This function
-     is equivalent to `x * y'.  If more arguments are given, the
+     and x * y are equivalent.  If more arguments are given, the
      multiplication is applied cumulatively from left to right:
 
             (...((x1 * x2) * x3) * ...)
@@ -8509,7 +8819,7 @@ useful in this case.
 
  -- Built-in Function:  plus (X, Y)
  -- Built-in Function:  plus (X1, X2, ...)
-     This function is equivalent to `x + y'.  If more arguments are
+     This function and x + y are equivalent.  If more arguments are
      given, the summation is applied cumulatively from left to right:
 
             (...((x1 + x2) + x3) + ...)
@@ -8519,14 +8829,20 @@ useful in this case.
      *See also:* *note minus: doc-minus.
 
  -- Built-in Function:  power (X, Y)
-     Return the element-by-element operation of X raised to the Y power.
-     This function is equivalent to `x .^ y'.
+     Return the element-by-element operation of X raised to the Y
+     power.  If several complex results are possible, returns the one
+     with smallest non-negative argument (angle).  Use `realpow',
+     `realsqrt', `cbrt', or `nthroot' if a real result is preferred.
 
-     *See also:* *note mpower: doc-mpower.
+     This function and x .^ y are equivalent.
+
+     *See also:* *note mpower: doc-mpower, *note realpow: doc-realpow,
+     *note realsqrt: doc-realsqrt, *note cbrt: doc-cbrt, *note nthroot:
+     doc-nthroot.
 
  -- Built-in Function:  rdivide (X, Y)
      Return the element-by-element right division of X and Y.  This
-     function is equivalent to `x ./ y'.
+     function and x ./ y are equivalent.
 
      *See also:* *note ldivide: doc-ldivide, *note mrdivide:
      doc-mrdivide.
@@ -8534,7 +8850,7 @@ useful in this case.
  -- Built-in Function:  times (X, Y)
  -- Built-in Function:  times (X1, X2, ...)
      Return the element-by-element multiplication product of inputs.
-     This function is equivalent to `x .* y'.  If more arguments are
+     This function and x .* y are equivalent.  If more arguments are
      given, the multiplication is applied cumulatively from left to
      right:
 
@@ -8545,325 +8861,13 @@ useful in this case.
      *See also:* *note mtimes: doc-mtimes.
 
  -- Built-in Function:  transpose (X)
-     Return the transpose of X.  This function is equivalent to `x.''.
+     Return the transpose of X.  This function and x.' are equivalent.
 
      *See also:* *note ctranspose: doc-ctranspose.
 
  -- Built-in Function:  uminus (X)
-     This function is equivalent to `- x'.
+     This function and - x are equivalent.
 
  -- Built-in Function:  uplus (X)
-     This function is equivalent to `+ x'.
-
-
-File: octave.info,  Node: Comparison Ops,  Next: Boolean Expressions,  Prev: Arithmetic Ops,  Up: Expressions
-
-8.4 Comparison Operators
-========================
-
-"Comparison operators" compare numeric values for relationships such as
-equality.  They are written using _relational operators_.
-
-   All of Octave's comparison operators return a value of 1 if the
-comparison is true, or 0 if it is false.  For matrix values, they all
-work on an element-by-element basis.  For example:
-
-     [1, 2; 3, 4] == [1, 3; 2, 4]
-          =>  1  0
-              0  1
-
-   If one operand is a scalar and the other is a matrix, the scalar is
-compared to each element of the matrix in turn, and the result is the
-same size as the matrix.
-
-`X < Y'
-     True if X is less than Y.
-
-`X <= Y'
-     True if X is less than or equal to Y.
-
-`X == Y'
-     True if X is equal to Y.
-
-`X >= Y'
-     True if X is greater than or equal to Y.
-
-`X > Y'
-     True if X is greater than Y.
-
-`X != Y'
-`X ~= Y'
-     True if X is not equal to Y.
-
-   For complex numbers, the following ordering is defined: Z1 < Z2 iff
-
-       abs(Z1) < abs(Z2)
-       || (abs(Z1) == abs(Z2) && arg(Z1) < arg(Z2))
-
-   This is consistent with the ordering used by "max", "min" and
-"sort", but is not consistent with MATLAB, which only compares the real
-parts.
-
-   String comparisons may also be performed with the `strcmp' function,
-not with the comparison operators listed above.  *Note Strings::.
-
- -- Built-in Function:  eq (X, Y)
-     Return true if the two inputs are equal.  This function is
-     equivalent to `x == y'.
-
-     *See also:* *note ne: doc-ne, *note isequal: doc-isequal.
-
- -- Built-in Function:  ge (X, Y)
-     This function is equivalent to `x >= y'.
-
- -- Built-in Function:  gt (X, Y)
-     This function is equivalent to `x > y'.
-
- -- Function File:  isequal (X1, X2, ...)
-     Return true if all of X1, X2, ... are equal.
-
-     *See also:* *note isequalwithequalnans: doc-isequalwithequalnans.
-
- -- Function File:  isequalwithequalnans (X1, X2, ...)
-     Assuming NaN == NaN, return true if all of X1, X2, ...  are equal.
-
-     *See also:* *note isequal: doc-isequal.
-
- -- Built-in Function:  le (X, Y)
-     This function is equivalent to `x <= y'.
-
- -- Built-in Function:  lt (X, Y)
-     This function is equivalent to `x < y'.
-
- -- Built-in Function:  ne (X, Y)
-     Return true if the two inputs are not equal.  This function is
-     equivalent to `x != y'.
-
-     *See also:* *note eq: doc-eq, *note isequal: doc-isequal.
-
-
-File: octave.info,  Node: Boolean Expressions,  Next: Assignment Ops,  Prev: Comparison Ops,  Up: Expressions
-
-8.5 Boolean Expressions
-=======================
-
-* Menu:
-
-* Element-by-element Boolean Operators::
-* Short-circuit Boolean Operators::
-
-
-File: octave.info,  Node: Element-by-element Boolean Operators,  Next: Short-circuit Boolean Operators,  Up: Boolean Expressions
-
-8.5.1 Element-by-element Boolean Operators
-------------------------------------------
-
-An "element-by-element boolean expression" is a combination of
-comparison expressions using the boolean operators "or" (`|'), "and"
-(`&'), and "not" (`!'), along with parentheses to control nesting.  The
-truth of the boolean expression is computed by combining the truth
-values of the corresponding elements of the component expressions.  A
-value is considered to be false if it is zero, and true otherwise.
-
-   Element-by-element boolean expressions can be used wherever
-comparison expressions can be used.  They can be used in `if' and
-`while' statements.  However, a matrix value used as the condition in an
-`if' or `while' statement is only true if _all_ of its elements are
-nonzero.
-
-   Like comparison operations, each element of an element-by-element
-boolean expression also has a numeric value (1 if true, 0 if false) that
-comes into play if the result of the boolean expression is stored in a
-variable, or used in arithmetic.
-
-   Here are descriptions of the three element-by-element boolean
-operators.
-
-`BOOLEAN1 & BOOLEAN2'
-     Elements of the result are true if both corresponding elements of
-     BOOLEAN1 and BOOLEAN2 are true.
-
-`BOOLEAN1 | BOOLEAN2'
-     Elements of the result are true if either of the corresponding
-     elements of BOOLEAN1 or BOOLEAN2 is true.
-
-`! BOOLEAN'
-`~ BOOLEAN'
-     Each element of the result is true if the corresponding element of
-     BOOLEAN is false.
-
-   For matrix operands, these operators work on an element-by-element
-basis.  For example, the expression
-
-     [1, 0; 0, 1] & [1, 0; 2, 3]
-
-returns a two by two identity matrix.
-
-   For the binary operators, the dimensions of the operands must
-conform if both are matrices.  If one of the operands is a scalar and
-the other a matrix, the operator is applied to the scalar and each
-element of the matrix.
-
-   For the binary element-by-element boolean operators, both
-subexpressions BOOLEAN1 and BOOLEAN2 are evaluated before computing the
-result.  This can make a difference when the expressions have side
-effects.  For example, in the expression
-
-     a & b++
-
-the value of the variable B is incremented even if the variable A is
-zero.
-
-   This behavior is necessary for the boolean operators to work as
-described for matrix-valued operands.
-
- -- Built-in Function:  and (X, Y)
- -- Built-in Function:  and (X1, X2, ...)
-     Return the logical AND of X and Y.  This function is equivalent to
-     `x & y'.  If more arguments are given, the logical and is applied
-     cumulatively from left to right:
-
-            (...((x1 & x2) & x3) & ...)
-
-     At least one argument is required.
-
-     *See also:* *note or: doc-or, *note not: doc-not, *note xor:
-     doc-xor.
-
- -- Built-in Function:  not (X)
-     Return the logical NOT of X.  This function is equivalent to `! x'.
-
-     *See also:* *note and: doc-and, *note or: doc-or, *note xor:
-     doc-xor.
-
- -- Built-in Function:  or (X, Y)
- -- Built-in Function:  or (X1, X2, ...)
-     Return the logical OR of X and Y.  This function is equivalent to
-     `x | y'.  If more arguments are given, the logical or is applied
-     cumulatively from left to right:
-
-            (...((x1 | x2) | x3) | ...)
-
-     At least one argument is required.
-
-     *See also:* *note and: doc-and, *note not: doc-not, *note xor:
-     doc-xor.
-
-
-File: octave.info,  Node: Short-circuit Boolean Operators,  Prev: Element-by-element Boolean Operators,  Up: Boolean Expressions
-
-8.5.2 Short-circuit Boolean Operators
--------------------------------------
-
-Combined with the implicit conversion to scalar values in `if' and
-`while' conditions, Octave's element-by-element boolean operators are
-often sufficient for performing most logical operations.  However, it
-is sometimes desirable to stop evaluating a boolean expression as soon
-as the overall truth value can be determined.  Octave's "short-circuit"
-boolean operators work this way.
-
-`BOOLEAN1 && BOOLEAN2'
-     The expression BOOLEAN1 is evaluated and converted to a scalar
-     using the equivalent of the operation `all (BOOLEAN1(:))'.  If it
-     is false, the result of the overall expression is 0.  If it is
-     true, the expression BOOLEAN2 is evaluated and converted to a
-     scalar using the equivalent of the operation `all (BOOLEAN1(:))'.
-     If it is true, the result of the overall expression is 1.
-     Otherwise, the result of the overall expression is 0.
-
-     *Warning:* there is one exception to the rule of evaluating `all
-     (BOOLEAN1(:))', which is when `boolean1' is the empty matrix.  The
-     truth value of an empty matrix is always `false' so `[] && true'
-     evaluates to `false' even though `all ([])' is `true'.
-
-`BOOLEAN1 || BOOLEAN2'
-     The expression BOOLEAN1 is evaluated and converted to a scalar
-     using the equivalent of the operation `all (BOOLEAN1(:))'.  If it
-     is true, the result of the overall expression is 1.  If it is
-     false, the expression BOOLEAN2 is evaluated and converted to a
-     scalar using the equivalent of the operation `all (BOOLEAN1(:))'.
-     If it is true, the result of the overall expression is 1.
-     Otherwise, the result of the overall expression is 0.
-
-     *Warning:* the truth value of an empty matrix is always `false',
-     see the previous list item for details.
-
-   The fact that both operands may not be evaluated before determining
-the overall truth value of the expression can be important.  For
-example, in the expression
-
-     a && b++
-
-the value of the variable B is only incremented if the variable A is
-nonzero.
-
-   This can be used to write somewhat more concise code.  For example,
-it is possible write
-
-     function f (a, b, c)
-       if (nargin > 2 && ischar (c))
-         ...
-
-instead of having to use two `if' statements to avoid attempting to
-evaluate an argument that doesn't exist.  For example, without the
-short-circuit feature, it would be necessary to write
-
-     function f (a, b, c)
-       if (nargin > 2)
-         if (ischar (c))
-           ...
-
-Writing
-
-     function f (a, b, c)
-       if (nargin > 2 & ischar (c))
-         ...
-
-would result in an error if `f' were called with one or two arguments
-because Octave would be forced to try to evaluate both of the operands
-for the operator `&'.
-
-   MATLAB has special behavior that allows the operators `&' and `|' to
-short-circuit when used in the truth expression for `if' and `while'
-statements.  The Octave parser may be instructed to behave in the same
-manner, but its use is strongly discouraged.
-
- -- Built-in Function: VAL = do_braindead_shortcircuit_evaluation ()
- -- Built-in Function: OLD_VAL = do_braindead_shortcircuit_evaluation
-          (NEW_VAL)
-     Query or set the internal variable that controls whether Octave
-     will do short-circuit evaluation of `|' and `&' operators inside
-     the conditions of if or while statements.
-
-     This feature is only provided for compatibility with MATLAB and
-     should not be used unless you are porting old code that relies on
-     this feature.
-
-     To obtain short-circuit behavior for logical expressions in new
-     programs, you should always use the `&&' and `||' operators.
-
-   Finally, the ternary operator (?:) is not supported in Octave.  If
-short-circuiting is not important, it can be replaced by the `ifelse'
-function.
-
- -- Built-in Function:  merge (MASK, TVAL, FVAL)
- -- Built-in Function:  ifelse (MASK, TVAL, FVAL)
-     Merge elements of TRUE_VAL and FALSE_VAL, depending on the value
-     of MASK.  If MASK is a logical scalar, the other two arguments can
-     be arbitrary values.  Otherwise, MASK must be a logical array, and
-     TVAL, FVAL should be arrays of matching class, or cell arrays.  In
-     the scalar mask case, TVAL is returned if MASK is true, otherwise
-     FVAL is returned.
-
-     In the array mask case, both TVAL and FVAL must be either scalars
-     or arrays with dimensions equal to MASK.  The result is
-     constructed as follows:
-
-          result(mask) = tval(mask);
-          result(! mask) = fval(! mask);
-
-     MASK can also be arbitrary numeric type, in which case it is first
-     converted to logical.
-
-     *See also:* *note logical: doc-logical.
+     This function and + x are equivalent.
 

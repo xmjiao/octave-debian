@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2011 Paul Kienzle
+## Copyright (C) 2000-2012 Paul Kienzle
 ## Copyright (C) 2009 Jaroslav Hajek
 ##
 ## This file is part of Octave.
@@ -30,7 +30,7 @@
 ## @group
 ## a = [3, 10, 1];
 ## s = [0:9];
-## [tf, s_idx] = ismember (a, s);
+## [tf, s_idx] = ismember (a, s)
 ##      @result{} tf = [1, 0, 1]
 ##      @result{} s_idx = [4, 0, 2]
 ## @end group
@@ -42,7 +42,7 @@
 ## @group
 ## a = @{'abc'@};
 ## s = @{'abc', 'def'@};
-## [tf, s_idx] = ismember (a, s);
+## [tf, s_idx] = ismember (a, s)
 ##      @result{} tf = [1, 0]
 ##      @result{} s_idx = [1, 0]
 ## @end group
@@ -56,7 +56,7 @@
 ## @group
 ## a = [1:3; 5:7; 4:6];
 ## s = [0:2; 1:3; 2:4; 3:5; 4:6];
-## [tf, s_idx] = ismember(a, s, 'rows');
+## [tf, s_idx] = ismember(a, s, "rows")
 ##      @result{} tf = logical ([1; 0; 1])
 ##      @result{} s_idx = [2; 0; 5];
 ## @end group
@@ -75,6 +75,14 @@ function [tf, a_idx] = ismember (A, s, varargin)
 
   if (nargin < 2 || nargin > 3)
     print_usage ();
+  endif
+
+  ## lookup() does not handle logical values
+  if (islogical (A))
+    A = uint8 (A);
+  endif
+  if (islogical (s))
+    s = uint8 (s);
   endif
 
   [A, s] = validargs ("ismember", A, s, varargin{:});

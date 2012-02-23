@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2011 David Bateman
+## Copyright (C) 2007-2012 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -25,16 +25,16 @@
 ## @example
 ## @group
 ## c = @{1, 2, @{31, 32@}@};
-## celldisp(c, "b")
-##      @result{}
-##         b@{1@} =
-##          1
-##         b@{2@} =
-##          2
-##         b@{3@}@{1@} =
-##          31
-##         b@{3@}@{2@} =
-##          32
+## celldisp (c, "b")
+##    @result{}
+##       b@{1@} =
+##        1
+##       b@{2@} =
+##        2
+##       b@{3@}@{1@} =
+##        31
+##       b@{3@}@{2@} =
+##        32
 ## @end group
 ## @end example
 ##
@@ -81,3 +81,7 @@ endfunction
 %!demo
 %! c = {1, 2, {31, 32}};
 %! celldisp(c, "b")
+
+%!error celldisp ();
+%!error celldisp ({}, "name", 1);
+%!error celldisp (1);

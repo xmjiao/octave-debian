@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.
 
-@c Copyright (C) 1996-2011 John W. Eaton
+@c Copyright (C) 1996-2012 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -149,6 +149,24 @@ example,
 @end group
 @end example
 
+In scripts the two different string types can be distinguished if necessary
+by using @code{is_dq_string} and @code{is_sq_string}.
+
+@c is_dq_string src/ov.cc
+@anchor{doc-is_dq_string}
+@deftypefn {Built-in Function} {} is_dq_string (@var{x})
+Return true if @var{x} is a double-quoted character string.
+@seealso{@ref{doc-is_sq_string,,is_sq_string}, @ref{doc-ischar,,ischar}}
+@end deftypefn
+
+
+@c is_sq_string src/ov.cc
+@anchor{doc-is_sq_string}
+@deftypefn {Built-in Function} {} is_sq_string (@var{x})
+Return true if @var{x} is a single-quoted character string.
+@seealso{@ref{doc-is_dq_string,,is_dq_string}, @ref{doc-ischar,,ischar}}
+@end deftypefn
+
 
 @node Character Arrays
 @section Character Arrays
@@ -210,6 +228,7 @@ blank character using the @code{string_fill_char} function.
 @anchor{doc-string_fill_char}
 @deftypefn  {Built-in Function} {@var{val} =} string_fill_char ()
 @deftypefnx {Built-in Function} {@var{old_val} =} string_fill_char (@var{new_val})
+@deftypefnx {Built-in Function} {} string_fill_char (@var{new_val}, "local")
 Query or set the internal variable used to pad all rows of a character
 matrix to the same length.  It must be a single character.  The default
 value is @code{" "} (a single space).  For example:
@@ -223,6 +242,10 @@ string_fill_char ("X");
         "strings"
 @end group
 @end example
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 
 
@@ -246,7 +269,7 @@ Return a string of @var{n} blanks, for example:
 
 @example
 @group
-blanks(10);
+blanks (10);
 whos ans;
      @result{}
       Attr Name        Size                     Bytes  Class
@@ -466,7 +489,7 @@ For example:
 @group
 s = [ "ab"; "cde" ];
 strcat (s, s, s)
-     @result{} ans =
+    @result{}
         "ab ab ab "
         "cdecdecde"
 @end group
@@ -476,7 +499,7 @@ strcat (s, s, s)
 @group
 s = @{ "ab"; "cde" @};
 strcat (s, s, s)
-     @result{} ans =
+    @result{}
         @{
           [1,1] = ababab
           [2,1] = cdecdecde
@@ -497,7 +520,7 @@ horizontally.  Trailing white space is preserved.  For example:
 @example
 @group
 cstrcat ("ab   ", "cd")
-     @result{} "ab   cd"
+      @result{} "ab   cd"
 @end group
 @end example
 
@@ -505,8 +528,7 @@ cstrcat ("ab   ", "cd")
 @group
 s = [ "ab"; "cde" ];
 cstrcat (s, s, s)
-     @result{} ans =
-        "ab ab ab "
+     @result{} "ab ab ab "
         "cdecdecde"
 @end group
 @end example
@@ -528,20 +550,19 @@ data as strings is the @code{sprintf} function (@pxref{Formatted Output},
 @c mat2str scripts/strings/mat2str.m
 @anchor{doc-mat2str}
 @deftypefn  {Function File} {@var{s} =} mat2str (@var{x}, @var{n})
-@deftypefnx {Function File} {@var{s} =} mat2str (@dots{}, 'class')
-
-Format real/complex numerical matrices as strings.  This function
-returns values that are suitable for the use of the @code{eval}
-function.
+@deftypefnx {Function File} {@var{s} =} mat2str (@var{x}, @var{n}, "class")
+Format real, complex, and logical matrices as strings.  The 
+returned string may be used to reconstruct the original matrix by using
+the @code{eval} function.
 
 The precision of the values is given by @var{n}.  If @var{n} is a
 scalar then both real and imaginary parts of the matrix are printed
-to the same precision.  Otherwise @code{@var{n} (1)} defines the
-precision of the real part and @code{@var{n} (2)} defines the
-precision of the imaginary part.  The default for @var{n} is 17.
+to the same precision.  Otherwise @code{@var{n}(1)} defines the
+precision of the real part and @code{@var{n}(2)} defines the
+precision of the imaginary part.  The default for @var{n} is 15.
 
-If the argument 'class' is given, then the class of @var{x} is
-included in the string in such a way that the eval will result in the
+If the argument "class" is given then the class of @var{x} is
+included in the string in such a way that @code{eval} will result in the
 construction of a matrix of the same class.
 
 @example
@@ -550,10 +571,16 @@ mat2str ([ -1/3 + i/7; 1/3 - i/7 ], [4 2])
      @result{} "[-0.3333+0.14i;0.3333-0.14i]"
 
 mat2str ([ -1/3 +i/7; 1/3 -i/7 ], [4 2])
-     @result{} "[-0.3333+0i,0+0.14i;0.3333+0i,-0-0.14i]"
+     @result{} "[-0.3333+0i 0+0.14i;0.3333+0i -0-0.14i]"
 
-mat2str (int16([1 -1]), 'class')
-     @result{} "int16([1,-1])"
+mat2str (int16([1 -1]), "class")
+     @result{} "int16([1 -1])"
+
+mat2str (logical (eye (2)))
+     @result{} "[true false;false true]"
+
+isequal (x, eval (mat2str (x)))
+     @result{} 1
 @end group
 @end example
 
@@ -613,7 +640,6 @@ array).
 
 @example
 @group
-
 int2str (123)
      @result{} "123"
 
@@ -757,18 +783,37 @@ This is just the opposite of the corresponding C library function.
 @deftypefnx {Function File} {@var{validstr} =} validatestring (@var{str}, @var{strarray}, @var{funcname})
 @deftypefnx {Function File} {@var{validstr} =} validatestring (@var{str}, @var{strarray}, @var{funcname}, @var{varname})
 @deftypefnx {Function File} {@var{validstr} =} validatestring (@dots{}, @var{position})
-Verify that @var{str} is a string or substring of an element of
+Verify that @var{str} is an element, or substring of an element, in
 @var{strarray}.
 
-@var{str} is a character string to be tested, and @var{strarray} is a
-cellstr of valid values.  @var{validstr} will be the validated form
+When @var{str} is a character string to be tested, and @var{strarray} is a
+cellstr of valid values, then @var{validstr} will be the validated form
 of @var{str} where validation is defined as @var{str} being a member
-or substring of @var{validstr}.  If @var{str} is a substring of
-@var{validstr} and there are multiple matches, the shortest match
-will be returned if all matches are substrings of each other, and an
-error will be raised if the matches are not substrings of each other.
+or substring of @var{validstr}.  This is useful for both verifying
+and expanding short options, such as "r", to their longer forms, such as
+"red".  If @var{str} is a substring of @var{validstr}, and there are
+multiple matches, the shortest match will be returned if all matches are
+substrings of each other.  Otherwise, an error will be raised because the
+expansion of @var{str} is ambiguous.  All comparisons are case insensitive.
 
-All comparisons are case insensitive.
+The additional inputs @var{funcname}, @var{varname}, and @var{position}
+are optional and will make any generated validation error message more
+specific.
+
+Examples:
+@c Set example in small font to prevent overfull line
+
+@smallexample
+@group
+validatestring ("r", @{"red", "green", "blue"@})
+@result{} "red"
+
+validatestring ("b", @{"red", "green", "blue", "black"@})
+@result{} error: validatestring: multiple unique matches were found for 'b':
+   blue, black
+@end group
+@end smallexample
+
 @seealso{@ref{doc-strcmp,,strcmp}, @ref{doc-strcmpi,,strcmpi}}
 @end deftypefn
 
@@ -797,30 +842,44 @@ general regular expressions, the following functions come with Octave.
 @c deblank scripts/strings/deblank.m
 @anchor{doc-deblank}
 @deftypefn {Function File} {} deblank (@var{s})
-Remove trailing blanks and nulls from @var{s}.  If @var{s}
+Remove trailing whitespace and nulls from @var{s}.  If @var{s}
 is a matrix, @var{deblank} trims each row to the length of longest
-string.  If @var{s} is a cell array, operate recursively on each
-element of the cell array.
+string.  If @var{s} is a cell array of strings, operate recursively on each
+string element.
+
+Examples:
+
+@example
+@group
+deblank ("    abc  ")
+     @result{}  "    abc"
+
+deblank ([" abc   "; "   def   "])
+     @result{}  [" abc  " ; "   def"]
+@end group
+@end example
+@seealso{@ref{doc-strtrim,,strtrim}}
 @end deftypefn
 
 
 @c strtrim scripts/strings/strtrim.m
 @anchor{doc-strtrim}
 @deftypefn {Function File} {} strtrim (@var{s})
-Remove leading and trailing whitespace and nulls from @var{s}.  If
+Remove leading and trailing whitespace from @var{s}.  If
 @var{s} is a matrix, @var{strtrim} trims each row to the length of
-longest string.  If @var{s} is a cell array, operate recursively on
-each element of the cell array.  For example:
+longest string.  If @var{s} is a cell array of strings, operate recursively
+on each string element.  For example:
 
 @example
 @group
 strtrim ("    abc  ")
-     @result{} "abc"
+     @result{}  "abc"
 
 strtrim ([" abc   "; "   def   "])
-     @result{} ["abc  "; "  def"]
+     @result{}  ["abc  "  ; "  def"]
 @end group
 @end example
+@seealso{@ref{doc-deblank,,deblank}}
 @end deftypefn
 
 
@@ -828,29 +887,32 @@ strtrim ([" abc   "; "   def   "])
 @anchor{doc-strtrunc}
 @deftypefn {Function File} {} strtrunc (@var{s}, @var{n})
 Truncate the character string @var{s} to length @var{n}.  If @var{s}
-is a char matrix, then the number of columns is adjusted.
-
+is a character matrix, then the number of columns is adjusted.
 If @var{s} is a cell array of strings, then the operation is performed
-on its members and the new cell array is returned.
+on each cell element and the new cell array is returned.
 @end deftypefn
 
 
 @c findstr scripts/strings/findstr.m
 @anchor{doc-findstr}
-@deftypefn {Function File} {} findstr (@var{s}, @var{t}, @var{overlap})
+@deftypefn  {Function File} {} findstr (@var{s}, @var{t})
+@deftypefnx {Function File} {} findstr (@var{s}, @var{t}, @var{overlap})
 Return the vector of all positions in the longer of the two strings
 @var{s} and @var{t} where an occurrence of the shorter of the two starts.
-If the optional argument @var{overlap} is nonzero, the returned vector
+If the optional argument @var{overlap} is true, the returned vector
 can include overlapping positions (this is the default).  For example:
 
 @example
 @group
 findstr ("ababab", "a")
-     @result{} [1, 3, 5]
+     @result{} [1, 3, 5];
 findstr ("abababa", "aba", 0)
      @result{} [1, 5]
 @end group
 @end example
+
+@strong{Caution:} @code{findstr} is scheduled for deprecation.  Use
+@code{strfind} in all new code.
 @seealso{@ref{doc-strfind,,strfind}, @ref{doc-strmatch,,strmatch}, @ref{doc-strcmp,,strcmp}, @ref{doc-strncmp,,strncmp}, @ref{doc-strcmpi,,strcmpi}, @ref{doc-strncmpi,,strncmpi}, @ref{doc-find,,find}}
 @end deftypefn
 
@@ -860,8 +922,9 @@ findstr ("abababa", "aba", 0)
 @deftypefn  {Function File} {@var{idx} =} strchr (@var{str}, @var{chars})
 @deftypefnx {Function File} {@var{idx} =} strchr (@var{str}, @var{chars}, @var{n})
 @deftypefnx {Function File} {@var{idx} =} strchr (@var{str}, @var{chars}, @var{n}, @var{direction})
+@deftypefnx {Function File} {[@var{i}, @var{j}] =} strchr (@dots{})
 Search for the string @var{str} for occurrences of characters from
-the set @var{chars}.  The return value, as well as the @var{n} and
+the set @var{chars}.  The return value(s), as well as the @var{n} and
 @var{direction} arguments behave identically as in @code{find}.
 
 This will be faster than using regexp in most cases.
@@ -875,22 +938,21 @@ This will be faster than using regexp in most cases.
 @deftypefn  {Function File} {} index (@var{s}, @var{t})
 @deftypefnx {Function File} {} index (@var{s}, @var{t}, @var{direction})
 Return the position of the first occurrence of the string @var{t} in the
-string @var{s}, or 0 if no occurrence is found.  For example:
+string @var{s}, or 0 if no occurrence is found.  @var{s} may also be a
+string array or cell array of strings.
+
+For example:
 
 @example
 @group
 index ("Teststring", "t")
-     @result{} 4
+   @result{} 4
 @end group
 @end example
 
 If @var{direction} is @samp{"first"}, return the first element found.
 If @var{direction} is @samp{"last"}, return the last element found.
-The @code{rindex} function is equivalent to @code{index} with
-@var{direction} set to @samp{"last"}.
 
-@strong{Caution:}  This function does not work for arrays of
-character strings.
 @seealso{@ref{doc-find,,find}, @ref{doc-rindex,,rindex}}
 @end deftypefn
 
@@ -900,7 +962,9 @@ character strings.
 @deftypefn {Function File} {} rindex (@var{s}, @var{t})
 Return the position of the last occurrence of the character string
 @var{t} in the character string @var{s}, or 0 if no occurrence is
-found.  For example:
+found.  @var{s} may also be a string array or cell array of strings.
+
+For example:
 
 @example
 @group
@@ -909,8 +973,9 @@ rindex ("Teststring", "t")
 @end group
 @end example
 
-@strong{Caution:} This function does not work for arrays of
-character strings.
+The @code{rindex} function is equivalent to @code{index} with
+@var{direction} set to @samp{"last"}.
+
 @seealso{@ref{doc-find,,find}, @ref{doc-index,,index}}
 @end deftypefn
 
@@ -951,13 +1016,15 @@ strfind (@{"abababa", "bebebe", "ab"@}, "aba")
 
 @c strmatch scripts/strings/strmatch.m
 @anchor{doc-strmatch}
-@deftypefn {Function File} {} strmatch (@var{s}, @var{A}, "exact")
-Return indices of entries of @var{A} that match the string @var{s}.
-The second argument @var{A} may be a string matrix or a cell array of
-strings.  If the third argument @code{"exact"} is not given, then
+@deftypefn  {Function File} {} strmatch (@var{s}, @var{A})
+@deftypefnx {Function File} {} strmatch (@var{s}, @var{A}, "exact")
+Return indices of entries of @var{A} which begin with the string @var{s}.
+The second argument @var{A} must be a string, character matrix, or a cell
+array of strings.  If the third argument @code{"exact"} is not given, then
 @var{s} only needs to match @var{A} up to the length of @var{s}.
-Trailing whitespace is ignored.
-Results are returned as a column vector.
+Trailing spaces and nulls in @var{s} and @var{A} are ignored when matching.
+option.
+
 For example:
 
 @example
@@ -965,26 +1032,34 @@ For example:
 strmatch ("apple", "apple juice")
      @result{} 1
 
-strmatch ("apple", ["apple pie"; "apple juice"; "an apple"])
+strmatch ("apple", ["apple  "; "apple juice"; "an apple"])
      @result{} [1; 2]
 
-strmatch ("apple", @{"apple pie"; "apple juice"; "tomato"@})
-     @result{} [1; 2]
+strmatch ("apple", ["apple  "; "apple juice"; "an apple"], "exact")
+     @result{} [1]
 @end group
 @end example
+
+@strong{Caution:} @code{strmatch} is scheduled for deprecation.  Use
+@code{strcmpi} or @code{strncmpi} in all new code.
 @seealso{@ref{doc-strfind,,strfind}, @ref{doc-findstr,,findstr}, @ref{doc-strcmp,,strcmp}, @ref{doc-strncmp,,strncmp}, @ref{doc-strcmpi,,strcmpi}, @ref{doc-strncmpi,,strncmpi}, @ref{doc-find,,find}}
 @end deftypefn
 
 
 @c strtok scripts/strings/strtok.m
 @anchor{doc-strtok}
-@deftypefn {Function File} {[@var{tok}, @var{rem}] =} strtok (@var{str}, @var{delim})
+@deftypefn  {Function File} {[@var{tok}, @var{rem}] =} strtok (@var{str})
+@deftypefnx {Function File} {[@var{tok}, @var{rem}] =} strtok (@var{str}, @var{delim})
 
-Find all characters up to but not including the first character which
-is in the string delim.  If @var{rem} is requested, it contains the
-remainder of the string, starting at the first delimiter.  Leading
-delimiters are ignored.  If @var{delim} is not specified, space is
-assumed.  For example:
+Find all characters in the string @var{str} up to, but not including, the 
+first character which is in the string @var{delim}.  If @var{rem} is
+requested, it contains the remainder of the string, starting at the first
+delimiter.  Leading delimiters are ignored.  If @var{delim} is not
+specified, whitespace is assumed.  @var{str} may also be a cell array of
+strings in which case the function executes on every individual string
+and returns a cell array of tokens and remainders.
+
+Examples:
 
 @example
 @group
@@ -997,17 +1072,43 @@ strtok ("this is the life")
         rem = *27+31
 @end group
 @end example
-@seealso{@ref{doc-index,,index}, @ref{doc-strsplit,,strsplit}}
+@seealso{@ref{doc-index,,index}, @ref{doc-strsplit,,strsplit}, @ref{doc-strchr,,strchr}, @ref{doc-isspace,,isspace}}
 @end deftypefn
 
 
 @c strsplit scripts/strings/strsplit.m
 @anchor{doc-strsplit}
-@deftypefn {Function File} {[@var{s}] =} strsplit (@var{p}, @var{sep}, @var{strip_empty})
-Split a single string using one or more delimiters and return a cell
-array of strings.  Consecutive delimiters and delimiters at
+@deftypefn  {Function File} {[@var{cstr}] =} strsplit (@var{s}, @var{sep})
+@deftypefnx {Function File} {[@var{cstr}] =} strsplit (@var{s}, @var{sep}, @var{strip_empty})
+Split the string @var{s} using one or more separators @var{sep} and return
+a cell array of strings.  Consecutive separators and separators at
 boundaries result in empty strings, unless @var{strip_empty} is true.
 The default value of @var{strip_empty} is false.
+
+2-D character arrays are split at separators and at the original column
+boundaries.
+
+Example:
+
+@example
+@group
+strsplit ("a,b,c", ",")
+      @result{}
+          @{
+            [1,1] = a
+            [1,2] = b
+            [1,3] = c
+          @}
+
+strsplit (["a,b" ; "cde"], ",")
+      @result{}
+          @{
+            [1,1] = a
+            [1,2] = b
+            [1,3] = cde
+          @}
+@end group
+@end example
 @seealso{@ref{doc-strtok,,strtok}}
 @end deftypefn
 
@@ -1016,36 +1117,50 @@ The default value of @var{strip_empty} is false.
 @anchor{doc-strread}
 @deftypefn  {Function File} {[@var{a}, @dots{}] =} strread (@var{str})
 @deftypefnx {Function File} {[@var{a}, @dots{}] =} strread (@var{str}, @var{format})
+@deftypefnx {Function File} {[@var{a}, @dots{}] =} strread (@var{str}, @var{format}, @var{format_repeat})
 @deftypefnx {Function File} {[@var{a}, @dots{}] =} strread (@var{str}, @var{format}, @var{prop1}, @var{value1}, @dots{})
+@deftypefnx {Function File} {[@var{a}, @dots{}] =} strread (@var{str}, @var{format}, @var{format_repeat}, @var{prop1}, @var{value1}, @dots{})
 Read data from a string.
 
 The string @var{str} is split into words that are repeatedly matched to the
 specifiers in @var{format}.  The first word is matched to the first
-specifier,
-the second to the second specifier and so forth.  If there are more words
-than
-specifiers, the process is repeated until all words have been processed.
+specifier, the second to the second specifier and so forth.  If there are
+more words than specifiers, the process is repeated until all words have
+been processed.
 
 The string @var{format} describes how the words in @var{str} should be
 parsed.
 It may contain any combination of the following specifiers:
+
 @table @code
 @item %s
 The word is parsed as a string.
 
-@item %d
 @itemx %f
-The word is parsed as a number.
+@itemx %n
+The word is parsed as a number and converted to double.
 
-@item %*
+@item  %d
+@itemx %u
+The word is parsed as a number and converted to int32.
+
+@item %*', '%*f', '%*s
 The word is skipped.
+
+For %s and %d, %f, %n, %u and the associated %*s @dots{} specifiers an
+optional width can be specified as %Ns, etc. where N is an integer > 1.
+For %f, format specifiers like %N.Mf are allowed.
+
+@item literals
+In addition the format may contain literal character strings; these will be
+skipped during reading.
 @end table
 
 Parsed word corresponding to the first specifier are returned in the first
 output argument and likewise for the rest of the specifiers.
 
 By default, @var{format} is @t{"%f"}, meaning that numbers are read from
-@var{str}.
+@var{str}.  This will do if @var{str} contains only numeric fields.
 
 For example, the string
 
@@ -1065,6 +1180,18 @@ can be read using
 [@var{a}, @var{b}, @var{c}] = strread (@var{str}, "%s %s %f");
 @end example
 
+Optional numeric argument @var{format_repeat} can be used for
+limiting the number of items read:
+
+@table @asis
+@item -1
+(default) read all of the string until the end.
+
+@item N
+Read N times @var{nargout} items.  0 (zero) is an acceptable
+value for @var{format_repeat}.
+@end table
+
 The behavior of @code{strread} can be changed via property-value
 pairs.  The following properties are recognized:
 
@@ -1074,26 +1201,56 @@ Parts of @var{str} are considered comments and will be skipped.
 @var{value} is the comment style and can be any of the following.
 @itemize
 @item "shell"
-Everything from @code{#} characters to the nearest end-line is skipped.
+Everything from @code{#} characters to the nearest end-of-line is skipped.
 
 @item "c"
 Everything between @code{/*} and @code{*/} is skipped.
 
 @item "c++"
-Everything from @code{//} characters to the nearest end-line is skipped.
+Everything from @code{//} characters to the nearest end-of-line is skipped.
 
 @item "matlab"
-Everything from @code{%} characters to the nearest end-line is skipped.
+Everything from @code{%} characters to the nearest end-of-line is skipped.
+
+@item user-supplied.  Two options:
+(1) One string, or 1x1 cell string: Skip everything to the right of it;
+(2) 2x1 cell string array: Everything between the left and right strings
+is skipped.
 @end itemize
 
 @item "delimiter"
-Any character in @var{value} will be used to split @var{str} into words.
+Any character in @var{value} will be used to split @var{str} into words
+(default value = any whitespace).
 
-@item "emptyvalue"
-Parts of the output where no word is available is filled with @var{value}.
+@item "emptyvalue":
+Value to return for empty numeric values in non-whitespace delimited data.
+The default is NaN@.  When the data type does not support NaN
+(int32 for example), then default is zero.
+
+@item "multipledelimsasone"
+Treat a series of consecutive delimiters, without whitespace in between,
+as a single delimiter.  Consecutive delimiter series need not be vertically
+"aligned".
+
+@item "treatasempty"
+Treat single occurrences (surrounded by delimiters or whitespace) of the
+string(s) in @var{value} as missing values.
+
+@item "returnonerror"
+If @var{value} true (1, default), ignore read errors and return normally.
+If false (0), return an error.
+
+@item "whitespace"
+Any character in @var{value} will be interpreted as whitespace and
+trimmed; the string defining whitespace must be enclosed in double
+quotes for proper processing of special characters like \t.
+The default value for whitespace = " \b\r\n\t" (note the space).
+Unless whitespace is set to '' (empty) AND at least one "%s" format
+conversion specifier is supplied, a space is always part of whitespace.
+
 @end table
 
-@seealso{@ref{doc-textread,,textread}, @ref{doc-load,,load}, @ref{doc-dlmread,,dlmread}, @ref{doc-fscanf,,fscanf}}
+@seealso{@ref{doc-textscan,,textscan}, @ref{doc-textread,,textread}, @ref{doc-load,,load}, @ref{doc-dlmread,,dlmread}, @ref{doc-fscanf,,fscanf}}
 @end deftypefn
 
 
@@ -1119,25 +1276,32 @@ done for each element and a cell array is returned.
 
 @c substr scripts/strings/substr.m
 @anchor{doc-substr}
-@deftypefn {Function File} {} substr (@var{s}, @var{offset}, @var{len})
+@deftypefn  {Function File} {} substr (@var{s}, @var{offset})
+@deftypefnx {Function File} {} substr (@var{s}, @var{offset}, @var{len})
 Return the substring of @var{s} which starts at character number
 @var{offset} and is @var{len} characters long.
 
-If @var{offset} is negative, extraction starts that far from the end of
-the string.  If @var{len} is omitted, the substring extends to the end
-of S.
+Position numbering for offsets begins with 1.  If @var{offset} is negative,
+extraction starts that far from the end of the string.
 
-For example:
+If @var{len} is omitted, the substring extends to the end of @var{S}.  A
+negative value for @var{len} extracts to within @var{len} characters of
+the end of the string
+
+Examples:
 
 @example
 @group
 substr ("This is a test string", 6, 9)
      @result{} "is a test"
+substr ("This is a test string", -11)
+     @result{} "test string"
+substr ("This is a test string", -11, -7)
+     @result{} "test"
 @end group
 @end example
 
-This function is patterned after AWK@.  You can get the same result by
-@code{@var{s}(@var{offset} : (@var{offset} + @var{len} - 1))}.
+This function is patterned after the equivalent function in Perl.
 @end deftypefn
 
 
@@ -1260,6 +1424,9 @@ A cell array of the text of each token matched
 A structure containing the text of each matched named token, with the name
 being used as the fieldname.  A named token is denoted by
 @code{(?<name>@dots{})}.
+
+@item sp
+A cell array of the text not returned by match.
 @end table
 
 Particular output arguments, or the order of the output arguments, can be
@@ -1274,6 +1441,7 @@ are
 @item @tab 'match'        @tab @var{m}  @tab
 @item @tab 'tokens'       @tab @var{t}  @tab
 @item @tab 'names'        @tab @var{nm} @tab
+@item @tab 'split'        @tab @var{sp} @tab
 @end multitable
 
 Additional arguments are summarized below.
@@ -1381,14 +1549,14 @@ This option is present for compatibility but is ignored.
 @c regexptranslate scripts/strings/regexptranslate.m
 @anchor{doc-regexptranslate}
 @deftypefn {Function File} {} regexptranslate (@var{op}, @var{s})
-Translate a string for use in a regular expression.  This might
+Translate a string for use in a regular expression.  This may
 include either wildcard replacement or special character escaping.
-The behavior can be controlled by the @var{op} that can have the
+The behavior is controlled by @var{op} which can take the following
 values
 
 @table @asis
 @item "wildcard"
-The wildcard characters @code{.}, @code{*} and @code{?} are replaced
+The wildcard characters @code{.}, @code{*}, and @code{?} are replaced
 with wildcards that are appropriate for a regular expression.
 For example:
 
@@ -1475,8 +1643,11 @@ bin2dec ("1110")
 @end group
 @end example
 
-If @var{s} is a string matrix, return a column vector of converted
-numbers, one per row of @var{s}.  Invalid rows evaluate to NaN.
+If @var{s} is a string matrix, return a column vector with one converted
+number per row of @var{s}; Invalid rows evaluate to NaN@.
+
+If @var{s} is a cell array of strings, return a column vector with one
+converted number per cell element in @var{s}.
 @seealso{@ref{doc-dec2bin,,dec2bin}, @ref{doc-base2dec,,base2dec}, @ref{doc-hex2dec,,hex2dec}}
 @end deftypefn
 
@@ -1494,8 +1665,9 @@ dec2bin (14)
 @end group
 @end example
 
-If @var{d} is a vector, returns a string matrix, one row per value,
-padded with leading zeros to the width of the largest value.
+If @var{d} is a matrix or cell array, return a string matrix with one
+row per element in @var{d}, padded with leading zeros to the width of 
+the largest value.
 
 The optional second argument, @var{len}, specifies the minimum
 number of digits in the result.
@@ -1516,8 +1688,9 @@ dec2hex (2748)
 @end group
 @end example
 
-If @var{d} is a vector, return a string matrix, one row per value,
-padded with leading zeros to the width of the largest value.
+If @var{d} is a matrix or cell array, return a string matrix with one
+row per element in @var{d}, padded with leading zeros to the width of 
+the largest value.
 
 The optional second argument, @var{len}, specifies the minimum
 number of digits in the result.
@@ -1540,8 +1713,12 @@ hex2dec ("12b")
 @end group
 @end example
 
-If @var{s} is a string matrix, returns a column vector of converted
-numbers, one per row of @var{s}.  Invalid rows evaluate to NaN.
+If @var{s} is a string matrix, return a column vector with one converted
+number per row of @var{s}; Invalid rows evaluate to NaN@.
+
+If @var{s} is a cell array of strings, return a column vector with one
+converted number per cell element in @var{s}.
+
 @seealso{@ref{doc-dec2hex,,dec2hex}, @ref{doc-base2dec,,base2dec}, @ref{doc-bin2dec,,bin2dec}}
 @end deftypefn
 
@@ -1556,12 +1733,13 @@ the non-negative integer @var{d}.
 @example
 @group
 dec2base (123, 3)
-     @result{} "11120"
+   @result{} "11120"
 @end group
 @end example
 
-If @var{d} is a vector, return a string matrix with one row per value,
-padded with leading zeros to the width of the largest value.
+If @var{d} is a matrix or cell array, return a string matrix with one
+row per element in @var{d}, padded with leading zeros to the width of 
+the largest value.
 
 If @var{base} is a string then the characters of @var{base} are used as
 the symbols for the digits of @var{d}.  Space (' ') may not be used
@@ -1570,7 +1748,7 @@ as a symbol.
 @example
 @group
 dec2base (123, "aei")
-     @result{} "eeeia"
+   @result{} "eeeia"
 @end group
 @end example
 
@@ -1589,14 +1767,16 @@ integer (base 10).
 @example
 @group
 base2dec ("11120", 3)
-     @result{} 123
+   @result{} 123
 @end group
 @end example
 
-If @var{s} is a matrix, returns a column vector with one value per
+If @var{s} is a string matrix, return a column vector with one value per
 row of @var{s}.  If a row contains invalid symbols then the
-corresponding value will be NaN@.  Rows are right-justified before
-converting so that trailing spaces are ignored.
+corresponding value will be NaN@.  
+
+If @var{s} is a cell array of strings, return a column vector with one
+value per cell element in @var{s}.
 
 If @var{base} is a string, the characters of @var{base} are used as the
 symbols for the digits of @var{s}.  Space (' ') may not be used as a
@@ -1605,7 +1785,7 @@ symbol.
 @example
 @group
 base2dec ("yyyzx", "xyz")
-     @result{} 123
+   @result{} 123
 @end group
 @end example
 @seealso{@ref{doc-dec2base,,dec2base}, @ref{doc-bin2dec,,bin2dec}, @ref{doc-hex2dec,,hex2dec}}
@@ -1696,10 +1876,11 @@ risk of using @code{eval} on unknown data.
 
 @c strjust scripts/strings/strjust.m
 @anchor{doc-strjust}
-@deftypefn {Function File} {} strjust (@var{s}, @var{pos})
+@deftypefn  {Function File} {} strjust (@var{s})
+@deftypefnx {Function File} {} strjust (@var{s}, @var{pos})
 Return the text, @var{s}, justified according to @var{pos}, which may
 be @samp{"left"}, @samp{"center"}, or @samp{"right"}.  If @var{pos}
-is omitted, @samp{"right"} is assumed.
+is omitted it defaults to @samp{"right"}.
 
 Null characters are replaced by spaces.  All other character
 data are treated as non-white space.
@@ -1709,11 +1890,11 @@ Example:
 @example
 @group
 strjust (["a"; "ab"; "abc"; "abcd"])
-     @result{} ans =
-           a
-          ab
-         abc
-        abcd
+     @result{}
+        "   a"
+        "  ab"
+        " abc"
+        "abcd"
 @end group
 @end example
 @seealso{@ref{doc-deblank,,deblank}, @ref{doc-strrep,,strrep}, @ref{doc-strtrim,,strtrim}, @ref{doc-untabify,,untabify}}
@@ -1722,7 +1903,7 @@ strjust (["a"; "ab"; "abc"; "abcd"])
 
 @c str2num scripts/strings/str2num.m
 @anchor{doc-str2num}
-@deftypefn {Function File} {@var{x} =} str2num (@var{s})
+@deftypefn  {Function File} {@var{x} =} str2num (@var{s})
 @deftypefnx {Function File} {[@var{x}, @var{state}] =} str2num (@var{s})
 Convert the string (or character array) @var{s} to a number (or an
 array).  Examples:
@@ -1732,21 +1913,22 @@ array).  Examples:
 str2num ("3.141596")
       @result{} 3.141596
 
-str2num (["1, 2, 3"; "4, 5, 6"]);
-      @result{} ans =
-         1  2  3
+str2num (["1, 2, 3"; "4, 5, 6"])
+      @result{} 1  2  3
          4  5  6
 @end group
 @end example
 
 The optional second output, @var{state}, is logically true when the
-coversion is successful. If the conversion fails the numeric output,
+conversion is successful.  If the conversion fails the numeric output,
 @var{x}, is empty and @var{state} is false.
 
 @strong{Caution:} As @code{str2num} uses the @code{eval} function
 to do the conversion, @code{str2num} will execute any code contained
 in the string @var{s}.  Use @code{str2double} for a safer and faster
 conversion.
+
+For cell array of strings use @code{str2double}.  
 @seealso{@ref{doc-str2double,,str2double}, @ref{doc-eval,,eval}}
 @end deftypefn
 

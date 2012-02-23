@@ -1,4 +1,4 @@
-## Copyright (C) 2009-2011 Martin Helm
+## Copyright (C) 2009-2012 Martin Helm
 ##
 ## This file is part of Octave.
 ##
@@ -45,48 +45,50 @@
 ## given by the patch handle @var{p}.
 ##
 ## For example:
+## @c Set example in small font to prevent overfull line
 ##
-## @example
+## @smallexample
 ## function [] = isofinish (p)
-##   set (gca, "PlotBoxAspectRatioMode","manual","PlotBoxAspectRatio",[1 1 1]);
-##   set (p, "VertexNormals", -get(p,"VertexNormals")); ## Revert normals
+##   set (gca, "PlotBoxAspectRatioMode", "manual", ...
+##             "PlotBoxAspectRatio", [1 1 1]);
+##   set (p, "VertexNormals", -get (p,"VertexNormals")); # Revert normals
 ##   set (p, "FaceColor", "interp");
 ##   ## set (p, "FaceLighting", "phong");
-##   ## light ("Position", [1 1 5]); ## Available with JHandles
+##   ## light ("Position", [1 1 5]); # Available with JHandles
 ## endfunction
 ##
-## N = 15;    ## Increase number of vertices in each direction
-## iso = .4;  ## Change isovalue to .1 to display a sphere
+## N = 15;    # Increase number of vertices in each direction
+## iso = .4;  # Change isovalue to .1 to display a sphere
 ## lin = linspace (0, 2, N);
 ## [x, y, z] = meshgrid (lin, lin, lin);
 ## c = abs ((x-.5).^2 + (y-.5).^2 + (z-.5).^2);
-## figure (); ## Open another figure window
+## figure (); # Open another figure window
 ##
-## subplot (2, 2, 1); view (-38, 20);
+## subplot (2,2,1); view (-38, 20);
 ## [f, v, cdat] = isosurface (x, y, z, c, iso, y);
-## p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, \
-##         "FaceColor", "interp", "EdgeColor", "none");
+## p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, ...
+##            "FaceColor", "interp", "EdgeColor", "none");
 ## isofinish (p); ## Call user function isofinish
 ##
-## subplot (2, 2, 2); view (-38, 20);
-## p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, \
-##         "FaceColor", "interp", "EdgeColor", "none");
-## isonormals (x, y, z, c, p); ## Directly modify patch
+## subplot (2,2,2); view (-38, 20);
+## p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, ...
+##            "FaceColor", "interp", "EdgeColor", "none");
+## isonormals (x, y, z, c, p); # Directly modify patch
 ## isofinish (p);
 ##
-## subplot (2, 2, 3); view (-38, 20);
-## p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, \
-##         "FaceColor", "interp", "EdgeColor", "none");
-## n = isonormals (x, y, z, c, v); ## Compute normals of isosurface
-## set (p, "VertexNormals", n);    ## Manually set vertex normals
+## subplot (2,2,3); view (-38, 20);
+## p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, ...
+##            "FaceColor", "interp", "EdgeColor", "none");
+## n = isonormals (x, y, z, c, v); # Compute normals of isosurface
+## set (p, "VertexNormals", n);    # Manually set vertex normals
 ## isofinish (p);
 ##
-## subplot (2, 2, 4); view (-38, 20);
-## p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, \
-##         "FaceColor", "interp", "EdgeColor", "none");
-## isonormals (x, y, z, c, v, "negate"); ## Use reverse directly
+## subplot (2,2,4); view (-38, 20);
+## p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, ...
+##            "FaceColor", "interp", "EdgeColor", "none");
+## isonormals (x, y, z, c, v, "negate"); # Use reverse directly
 ## isofinish (p);
-## @end example
+## @end smallexample
 ##
 ## @seealso{isosurface, isocolors}
 ## @end deftypefn

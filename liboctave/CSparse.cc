@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004-2011 David Bateman
+Copyright (C) 2004-2012 David Bateman
 Copyright (C) 1998-2004 Andy Adler
 Copyright (C) 2010 VZLU Prague
 
@@ -579,7 +579,7 @@ ComplexColumnVector
 SparseComplexMatrix::column (octave_idx_type i) const
 {
   octave_idx_type nr = rows ();
-  ComplexColumnVector retval (nr);
+  ComplexColumnVector retval (nr, 0);
 
   for (octave_idx_type k = cidx (i); k < cidx (i+1); k++)
     retval(ridx (k)) = data (k);

@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2011 Kurt Hornik
+## Copyright (C) 1995-2012 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -43,6 +43,7 @@
 ##
 ## The optional string @var{type} specifies the type of moment to be computed.
 ## Valid options are:
+##
 ## @table @asis
 ## @item "c"
 ##   Central Moment.  The moment about the mean defined as
@@ -72,7 +73,7 @@
 ##
 ## @example
 ## @group
-## 1/N SUM_i ( abs(x(i)) )^p
+## 1/N SUM_i ( abs (x(i)) )^p
 ## @end group
 ## @end example
 ##
@@ -89,7 +90,7 @@
 ##
 ## @example
 ## @group
-## 1/N SUM_i ( abs(x(i) - mean(x)) )^p
+## 1/N SUM_i ( abs (x(i) - mean(x)) )^p
 ## @end group
 ## @end example
 ##
@@ -110,27 +111,27 @@
 
 function m = moment (x, p, opt1, opt2)
 
-  if ((nargin < 2) || (nargin > 4))
+  if (nargin < 2 || nargin > 4)
     print_usage ();
   endif
 
-  if (!isnumeric(x) || isempty(x) )
+  if (!(isnumeric (x) || islogical (x)) || isempty (x))
     error ("moment: X must be a non-empty numeric matrix or vector");
   endif
 
-  if (!(isnumeric(p) && isscalar(p)))
+  if (! (isnumeric (p) && isscalar (p)))
     error ("moment: P must be a numeric scalar");
   endif
 
-  need_dim = 0;
+  need_dim = false;
 
   if (nargin == 2)
     type = "";
-    need_dim = 1;
+    need_dim = true;
   elseif (nargin == 3)
     if (ischar (opt1))
       type = opt1;
-      need_dim = 1;
+      need_dim = true;
     else
       dim = opt1;
       type = "";
@@ -151,10 +152,7 @@ function m = moment (x, p, opt1, opt2)
   sz = size (x);
   if (need_dim)
     ## Find the first non-singleton dimension.
-    dim = find (sz > 1, 1);
-    if (isempty (dim))
-      dim = 1;
-    endif
+    (dim = find (sz > 1, 1)) || (dim = 1);
   else
     if (!(isscalar (dim) && dim == fix (dim)) ||
         !(1 <= dim && dim <= nd))
@@ -164,10 +162,8 @@ function m = moment (x, p, opt1, opt2)
 
   n = sz(dim);
 
-  if any (type == "c")
-    rng = ones (1, length (sz));
-    rng(dim) = sz(dim);
-    x = x - repmat (sum (x, dim), rng) / n;
+  if (any (type == "c"))
+    x = center (x, dim);
   endif
   if any (type == "a")
     x = abs (x);
@@ -178,11 +174,21 @@ function m = moment (x, p, opt1, opt2)
 endfunction
 
 
+%!test
+%! x = rand (10);
+%! assert (moment (x,1), mean (x), 1e1*eps);
+%! assert (moment (x,2), meansq (x), 1e1*eps);
+%! assert (moment (x,1,2), mean (x,2), 1e1*eps);
+%! assert (moment (x,1,'c'), mean (center (x)), 1e1*eps);
+%! assert (moment (x,1,'a'), mean (abs (x)), 1e1*eps);
+
+%!assert (moment (single([1 2 3]),1), single(2));
+
 %% Test input validation
 %!error moment ()
 %!error moment (1)
 %!error moment (1, 2, 3, 4, 5)
-%!error moment ([true true], 2)
+%!error moment (['A'; 'B'], 2)
 %!error moment (ones(2,0,3), 2)
 %!error moment (1, true)
 %!error moment (1, ones(2,2))

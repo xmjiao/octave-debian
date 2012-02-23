@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2011 John W. Eaton
+Copyright (C) 1993-2012 John W. Eaton
 
 This file is part of Octave.
 
@@ -35,6 +35,7 @@ along with Octave; see the file COPYING.  If not, see
 #include "cmd-edit.h"
 #include "oct-syscalls.h"
 #include "quit.h"
+#include "singleton-cleanup.h"
 
 #include "debug.h"
 #include "defun.h"
@@ -78,13 +79,25 @@ static bool octave_signals_caught[NSIG];
 #define BADSIG (void (*)(int))-1
 #endif
 
+// The following is a workaround for an apparent bug in GCC 4.1.2 and
+// possibly earlier versions.  See Octave bug report #30685 for details.
+#if defined (__GNUC__)
+# if ! (__GNUC__ > 4 \
+        || (__GNUC__ == 4 && (__GNUC_MINOR__ > 1 \
+                              || (__GNUC_MINOR__ == 1 && __GNUC_PATCHLEVEL__ > 2))))
+#  undef GNULIB_NAMESPACE
+#  define GNULIB_NAMESPACE
+#  warning "disabling GNULIB_NAMESPACE for signal functions -- consider upgrading to a current version of GCC"
+# endif
+#endif
+
 #define BLOCK_SIGNAL(sig, nvar, ovar) \
   do \
     { \
-      gnulib::sigemptyset (&nvar); \
-      gnulib::sigaddset (&nvar, sig); \
-      gnulib::sigemptyset (&ovar); \
-      gnulib::sigprocmask (SIG_BLOCK, &nvar, &ovar); \
+      GNULIB_NAMESPACE::sigemptyset (&nvar); \
+      GNULIB_NAMESPACE::sigaddset (&nvar, sig); \
+      GNULIB_NAMESPACE::sigemptyset (&ovar); \
+      GNULIB_NAMESPACE::sigprocmask (SIG_BLOCK, &nvar, &ovar); \
     } \
   while (0)
 
@@ -93,7 +106,7 @@ static bool octave_signals_caught[NSIG];
 #endif
 
 #define BLOCK_CHILD(nvar, ovar) BLOCK_SIGNAL (SIGCHLD, nvar, ovar)
-#define UNBLOCK_CHILD(ovar) gnulib::sigprocmask (SIG_SETMASK, &ovar, 0)
+#define UNBLOCK_CHILD(ovar) GNULIB_NAMESPACE::sigprocmask (SIG_SETMASK, &ovar, 0)
 
 // Called from octave_quit () to actually do something about the signals
 // we have caught.
@@ -184,15 +197,8 @@ my_friendly_exit (const char *sig_name, int sig_number,
         {
           octave_set_signal_handler (sig_number, SIG_DFL);
 
-#if defined (HAVE_RAISE)
-          raise (sig_number);
-#elif defined (HAVE_KILL)
-          kill (getpid (), sig_number);
-#else
-          exit (1);
-#endif
+          GNULIB_NAMESPACE::raise (sig_number);
         }
-
     }
 }
 
@@ -222,10 +228,10 @@ octave_set_signal_handler (int sig, sig_handler *handler,
     act.sa_flags |= SA_RESTART;
 #endif
 
-  gnulib::sigemptyset (&act.sa_mask);
-  gnulib::sigemptyset (&oact.sa_mask);
+  GNULIB_NAMESPACE::sigemptyset (&act.sa_mask);
+  GNULIB_NAMESPACE::sigemptyset (&oact.sa_mask);
 
-  gnulib::sigaction (sig, &act, &oact);
+  GNULIB_NAMESPACE::sigaction (sig, &act, &oact);
 
   return oact.sa_handler;
 }
@@ -804,7 +810,12 @@ octave_child_list::instance_ok (void)
   bool retval = true;
 
   if (! instance)
-    instance = new octave_child_list_rep ();
+    {
+      instance = new octave_child_list_rep ();
+
+      if (instance)
+        singleton_cleanup_list::add (cleanup_instance);
+    }
 
   if (! instance)
     {
@@ -945,39 +956,93 @@ Return a structure containing Unix signal names and their defined values.\n\
   return retval;
 }
 
+/*
+%!error SIG (1);
+%!assert (isstruct (SIG ()));
+%!assert (! isempty (SIG ()));
+*/
+
 DEFUN (debug_on_interrupt, args, nargout,
   "-*- texinfo -*-\n\
 @deftypefn  {Built-in Function} {@var{val} =} debug_on_interrupt ()\n\
 @deftypefnx {Built-in Function} {@var{old_val} =} debug_on_interrupt (@var{new_val})\n\
+@deftypefnx {Built-in Function} {} debug_on_interrupt (@var{new_val}, \"local\")\n\
 Query or set the internal variable that controls whether Octave will try\n\
 to enter debugging mode when it receives an interrupt signal (typically\n\
 generated with @kbd{C-c}).  If a second interrupt signal is received\n\
 before reaching the debugging mode, a normal interrupt will occur.\n\
+\n\
+When called from inside a function with the \"local\" option, the variable is\n\
+changed locally for the function and any subroutines it calls.  The original\n\
+variable value is restored when exiting the function.\n\
 @end deftypefn")
 {
   return SET_INTERNAL_VARIABLE (debug_on_interrupt);
 }
 
+/*
+%!error (debug_on_interrupt (1, 2));
+%!test
+%! orig_val = debug_on_interrupt ();
+%! old_val = debug_on_interrupt (! orig_val);
+%! assert (orig_val, old_val);
+%! assert (debug_on_interrupt (), ! orig_val);
+%! debug_on_interrupt (orig_val);
+%! assert (debug_on_interrupt (), orig_val);
+*/
+
 DEFUN (sighup_dumps_octave_core, args, nargout,
   "-*- texinfo -*-\n\
 @deftypefn  {Built-in Function} {@var{val} =} sighup_dumps_octave_core ()\n\
 @deftypefnx {Built-in Function} {@var{old_val} =} sighup_dumps_octave_core (@var{new_val})\n\
+@deftypefnx {Built-in Function} {} sighup_dumps_octave_core (@var{new_val}, \"local\")\n\
 Query or set the internal variable that controls whether Octave tries\n\
 to save all current variables to the file \"octave-core\" if it receives\n\
 a hangup signal.\n\
+\n\
+When called from inside a function with the \"local\" option, the variable is\n\
+changed locally for the function and any subroutines it calls.  The original\n\
+variable value is restored when exiting the function.\n\
 @end deftypefn")
 {
   return SET_INTERNAL_VARIABLE (sighup_dumps_octave_core);
 }
 
+/*
+%!error (sighup_dumps_octave_core (1, 2));
+%!test
+%! orig_val = sighup_dumps_octave_core ();
+%! old_val = sighup_dumps_octave_core (! orig_val);
+%! assert (orig_val, old_val);
+%! assert (sighup_dumps_octave_core (), ! orig_val);
+%! sighup_dumps_octave_core (orig_val);
+%! assert (sighup_dumps_octave_core (), orig_val);
+*/
+
 DEFUN (sigterm_dumps_octave_core, args, nargout,
   "-*- texinfo -*-\n\
 @deftypefn  {Built-in Function} {@var{val} =} sigterm_dumps_octave_core ()\n\
 @deftypefnx {Built-in Function} {@var{old_val} =} sigterm_dumps_octave_core (@var{new_val})\n\
+@deftypefnx {Built-in Function} {} sigterm_dumps_octave_core (@var{new_val}, \"local\")\n\
 Query or set the internal variable that controls whether Octave tries\n\
 to save all current variables to the file \"octave-core\" if it receives\n\
 a terminate signal.\n\
+\n\
+When called from inside a function with the \"local\" option, the variable is\n\
+changed locally for the function and any subroutines it calls.  The original\n\
+variable value is restored when exiting the function.\n\
 @end deftypefn")
 {
   return SET_INTERNAL_VARIABLE (sigterm_dumps_octave_core);
 }
+
+/*
+%!error (sigterm_dumps_octave_core (1, 2));
+%!test
+%! orig_val = sigterm_dumps_octave_core ();
+%! old_val = sigterm_dumps_octave_core (! orig_val);
+%! assert (orig_val, old_val);
+%! assert (sigterm_dumps_octave_core (), ! orig_val);
+%! sigterm_dumps_octave_core (orig_val);
+%! assert (sigterm_dumps_octave_core (), orig_val);
+*/

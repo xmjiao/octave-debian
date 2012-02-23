@@ -30,7 +30,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="Statistics.html#Statistics">Statistics<
 <hr>
 </div>
 
-<h3 class="section">25.1 Descriptive Statistics</h3>
+<h3 class="section">26.1 Descriptive Statistics</h3>
 
 <p>One principal goal of descriptive statistics is to represent the essence of a
 large data set concisely.  Octave provides the mean, median, and mode functions
@@ -41,10 +41,10 @@ the central tendency of the data.
    <p><a name="doc_002dmean"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>mean</b> (<var>x</var>)<var><a name="index-mean-2284"></a></var><br>
-&mdash; Function File:  <b>mean</b> (<var>x, dim</var>)<var><a name="index-mean-2285"></a></var><br>
-&mdash; Function File:  <b>mean</b> (<var>x, opt</var>)<var><a name="index-mean-2286"></a></var><br>
-&mdash; Function File:  <b>mean</b> (<var>x, dim, opt</var>)<var><a name="index-mean-2287"></a></var><br>
+&mdash; Function File:  <b>mean</b> (<var>x</var>)<var><a name="index-mean-2407"></a></var><br>
+&mdash; Function File:  <b>mean</b> (<var>x, dim</var>)<var><a name="index-mean-2408"></a></var><br>
+&mdash; Function File:  <b>mean</b> (<var>x, opt</var>)<var><a name="index-mean-2409"></a></var><br>
+&mdash; Function File:  <b>mean</b> (<var>x, dim, opt</var>)<var><a name="index-mean-2410"></a></var><br>
 <blockquote><p>Compute the mean of the elements of the vector <var>x</var>.
 
      <pre class="example">          mean (x) = SUM_i x(i) / N
@@ -78,15 +78,15 @@ either may appear first.
    <p><a name="doc_002dmedian"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>median</b> (<var>x</var>)<var><a name="index-median-2288"></a></var><br>
-&mdash; Function File:  <b>median</b> (<var>x, dim</var>)<var><a name="index-median-2289"></a></var><br>
+&mdash; Function File:  <b>median</b> (<var>x</var>)<var><a name="index-median-2411"></a></var><br>
+&mdash; Function File:  <b>median</b> (<var>x, dim</var>)<var><a name="index-median-2412"></a></var><br>
 <blockquote><p>Compute the median value of the elements of the vector <var>x</var>. 
 If the elements of <var>x</var> are sorted, the median is defined
 as
 
-     <pre class="example">                      x(ceil(N/2)),             N odd
-          median(x) =
-                      (x(N/2) + x((N/2)+1))/2,  N even
+     <pre class="example">                        x(ceil(N/2))             N odd
+          median (x) =
+                       (x(N/2) + x((N/2)+1))/2   N even
 </pre>
         <p>If <var>x</var> is a matrix, compute the median value for each
 column and return them in a row vector.  If the optional <var>dim</var>
@@ -102,9 +102,9 @@ argument is given, operate along this dimension.
    <p><a name="doc_002dmode"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>mode</b> (<var>x</var>)<var><a name="index-mode-2290"></a></var><br>
-&mdash; Function File:  <b>mode</b> (<var>x, dim</var>)<var><a name="index-mode-2291"></a></var><br>
-&mdash; Function File: [<var>m</var>, <var>f</var>, <var>c</var>] = <b>mode</b> (<var><small class="dots">...</small></var>)<var><a name="index-mode-2292"></a></var><br>
+&mdash; Function File:  <b>mode</b> (<var>x</var>)<var><a name="index-mode-2413"></a></var><br>
+&mdash; Function File:  <b>mode</b> (<var>x, dim</var>)<var><a name="index-mode-2414"></a></var><br>
+&mdash; Function File: [<var>m</var>, <var>f</var>, <var>c</var>] = <b>mode</b> (<var><small class="dots">...</small></var>)<var><a name="index-mode-2415"></a></var><br>
 <blockquote><p>Compute the most frequently occurring value in a dataset (mode). 
 <code>mode</code> determines the frequency of values along the first non-singleton
 dimension and returns the value with the highest frequency.  If two, or
@@ -131,8 +131,8 @@ measuring dispersion.
    <p><a name="doc_002drange"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>range</b> (<var>x</var>)<var><a name="index-range-2293"></a></var><br>
-&mdash; Function File:  <b>range</b> (<var>x, dim</var>)<var><a name="index-range-2294"></a></var><br>
+&mdash; Function File:  <b>range</b> (<var>x</var>)<var><a name="index-range-2416"></a></var><br>
+&mdash; Function File:  <b>range</b> (<var>x, dim</var>)<var><a name="index-range-2417"></a></var><br>
 <blockquote><p>Return the range, i.e., the difference between the maximum and the minimum
 of the input data.  If <var>x</var> is a vector, the range is calculated over
 the elements of <var>x</var>.  If <var>x</var> is a matrix, the range is calculated
@@ -153,8 +153,8 @@ is less accurate than <code>iqr</code> if there are outlying data points.
    <p><a name="doc_002diqr"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>iqr</b> (<var>x</var>)<var><a name="index-iqr-2295"></a></var><br>
-&mdash; Function File:  <b>iqr</b> (<var>x, dim</var>)<var><a name="index-iqr-2296"></a></var><br>
+&mdash; Function File:  <b>iqr</b> (<var>x</var>)<var><a name="index-iqr-2418"></a></var><br>
+&mdash; Function File:  <b>iqr</b> (<var>x, dim</var>)<var><a name="index-iqr-2419"></a></var><br>
 <blockquote><p>Return the interquartile range, i.e., the difference between the upper
 and lower quartile of the input data.  If <var>x</var> is a matrix, do the
 above for first non-singleton dimension of <var>x</var>.
@@ -174,8 +174,8 @@ outliers than either <code>range</code> or <code>std</code>.
    <p><a name="doc_002dmeansq"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>meansq</b> (<var>x</var>)<var><a name="index-meansq-2297"></a></var><br>
-&mdash; Function File:  <b>meansq</b> (<var>x, dim</var>)<var><a name="index-meansq-2298"></a></var><br>
+&mdash; Function File:  <b>meansq</b> (<var>x</var>)<var><a name="index-meansq-2420"></a></var><br>
+&mdash; Function File:  <b>meansq</b> (<var>x, dim</var>)<var><a name="index-meansq-2421"></a></var><br>
 <blockquote><p>Compute the mean square of the elements of the vector <var>x</var>.
 
      <pre class="example">          std (x) = 1/N SUM_i x(i)^2
@@ -195,9 +195,9 @@ of each column.
    <p><a name="doc_002dstd"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>std</b> (<var>x</var>)<var><a name="index-std-2299"></a></var><br>
-&mdash; Function File:  <b>std</b> (<var>x, opt</var>)<var><a name="index-std-2300"></a></var><br>
-&mdash; Function File:  <b>std</b> (<var>x, opt, dim</var>)<var><a name="index-std-2301"></a></var><br>
+&mdash; Function File:  <b>std</b> (<var>x</var>)<var><a name="index-std-2422"></a></var><br>
+&mdash; Function File:  <b>std</b> (<var>x, opt</var>)<var><a name="index-std-2423"></a></var><br>
+&mdash; Function File:  <b>std</b> (<var>x, opt, dim</var>)<var><a name="index-std-2424"></a></var><br>
 <blockquote><p>Compute the standard deviation of the elements of the vector <var>x</var>.
 
      <pre class="example">          std (x) = sqrt ( 1/(N-1) SUM_i (x(i) - mean(x))^2 )
@@ -236,12 +236,12 @@ measures to be developed.
    <p><a name="doc_002dvar"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>var</b> (<var>x</var>)<var><a name="index-var-2302"></a></var><br>
-&mdash; Function File:  <b>var</b> (<var>x, opt</var>)<var><a name="index-var-2303"></a></var><br>
-&mdash; Function File:  <b>var</b> (<var>x, opt, dim</var>)<var><a name="index-var-2304"></a></var><br>
+&mdash; Function File:  <b>var</b> (<var>x</var>)<var><a name="index-var-2425"></a></var><br>
+&mdash; Function File:  <b>var</b> (<var>x, opt</var>)<var><a name="index-var-2426"></a></var><br>
+&mdash; Function File:  <b>var</b> (<var>x, opt, dim</var>)<var><a name="index-var-2427"></a></var><br>
 <blockquote><p>Compute the variance of the elements of the vector <var>x</var>.
 
-     <pre class="example">          std (x) = 1/(N-1) SUM_i (x(i) - mean(x))^2
+     <pre class="example">          var (x) = 1/(N-1) SUM_i (x(i) - mean(x))^2
 </pre>
         <p>If <var>x</var> is a matrix, compute the variance for each column
 and return them in a row vector.
@@ -268,11 +268,11 @@ variance [default]
    <p><a name="doc_002dskewness"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>skewness</b> (<var>x</var>)<var><a name="index-skewness-2305"></a></var><br>
-&mdash; Function File:  <b>skewness</b> (<var>x, dim</var>)<var><a name="index-skewness-2306"></a></var><br>
+&mdash; Function File:  <b>skewness</b> (<var>x</var>)<var><a name="index-skewness-2428"></a></var><br>
+&mdash; Function File:  <b>skewness</b> (<var>x, dim</var>)<var><a name="index-skewness-2429"></a></var><br>
 <blockquote><p>Compute the skewness of the elements of the vector <var>x</var>.
 
-     <pre class="example">          skewness (x) = N^(-1) std(x)^(-3) sum ((x - mean(x)).^3)
+     <pre class="example">          skewness (x) = 1/N std(x)^(-3) sum ((x - mean(x)).^3)
 </pre>
         <p class="noindent">If <var>x</var> is a matrix, return the skewness along the
 first non-singleton dimension of the matrix.  If the optional
@@ -288,11 +288,11 @@ first non-singleton dimension of the matrix.  If the optional
    <p><a name="doc_002dkurtosis"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>kurtosis</b> (<var>x</var>)<var><a name="index-kurtosis-2307"></a></var><br>
-&mdash; Function File:  <b>kurtosis</b> (<var>x, dim</var>)<var><a name="index-kurtosis-2308"></a></var><br>
+&mdash; Function File:  <b>kurtosis</b> (<var>x</var>)<var><a name="index-kurtosis-2430"></a></var><br>
+&mdash; Function File:  <b>kurtosis</b> (<var>x, dim</var>)<var><a name="index-kurtosis-2431"></a></var><br>
 <blockquote><p>Compute the kurtosis of the elements of the vector <var>x</var>.
 
-     <pre class="example">          kurtosis (x) = N^(-1) std(x)^(-4) sum ((x - mean(x)).^4) - 3
+     <pre class="example">          kurtosis (x) = 1/N std(x)^(-4) sum ((x - mean(x)).^4) - 3
 </pre>
         <p>If <var>x</var> is a matrix, return the kurtosis over the
 first non-singleton dimension of the matrix.  If the optional
@@ -313,11 +313,11 @@ To calculate kurtosis without the normalization factor of -3 use
    <p><a name="doc_002dmoment"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>moment</b> (<var>x, p</var>)<var><a name="index-moment-2309"></a></var><br>
-&mdash; Function File:  <b>moment</b> (<var>x, p, type</var>)<var><a name="index-moment-2310"></a></var><br>
-&mdash; Function File:  <b>moment</b> (<var>x, p, dim</var>)<var><a name="index-moment-2311"></a></var><br>
-&mdash; Function File:  <b>moment</b> (<var>x, p, type, dim</var>)<var><a name="index-moment-2312"></a></var><br>
-&mdash; Function File:  <b>moment</b> (<var>x, p, dim, type</var>)<var><a name="index-moment-2313"></a></var><br>
+&mdash; Function File:  <b>moment</b> (<var>x, p</var>)<var><a name="index-moment-2432"></a></var><br>
+&mdash; Function File:  <b>moment</b> (<var>x, p, type</var>)<var><a name="index-moment-2433"></a></var><br>
+&mdash; Function File:  <b>moment</b> (<var>x, p, dim</var>)<var><a name="index-moment-2434"></a></var><br>
+&mdash; Function File:  <b>moment</b> (<var>x, p, type, dim</var>)<var><a name="index-moment-2435"></a></var><br>
+&mdash; Function File:  <b>moment</b> (<var>x, p, dim, type</var>)<var><a name="index-moment-2436"></a></var><br>
 <blockquote><p>Compute the <var>p</var>-th moment of the vector <var>x</var> about zero.
 
      <pre class="example">          moment (x) = 1/N SUM_i x(i)^p
@@ -327,6 +327,7 @@ To calculate kurtosis without the normalization factor of -3 use
 
         <p>The optional string <var>type</var> specifies the type of moment to be computed. 
 Valid options are:
+
           <dl>
 <dt>"c"<dd>  Central Moment.  The moment about the mean defined as
 
@@ -334,11 +335,11 @@ Valid options are:
 </pre>
           <br><dt>"a"<dd>  Absolute Moment.  The moment about zero ignoring sign defined as
 
-          <pre class="example">               1/N SUM_i ( abs(x(i)) )^p
+          <pre class="example">               1/N SUM_i ( abs (x(i)) )^p
 </pre>
           <br><dt>"ac"<dd>  Absolute Central Moment.  Defined as
 
-          <pre class="example">               1/N SUM_i ( abs(x(i) - mean(x)) )^p
+          <pre class="example">               1/N SUM_i ( abs (x(i) - mean(x)) )^p
 </pre>
           </dl>
 
@@ -356,9 +357,9 @@ Valid options are:
    <p><a name="doc_002dquantile"></a>
 
 <div class="defun">
-&mdash; Function File: <var>q</var> = <b>quantile</b> (<var>x, p</var>)<var><a name="index-quantile-2314"></a></var><br>
-&mdash; Function File: <var>q</var> = <b>quantile</b> (<var>x, p, dim</var>)<var><a name="index-quantile-2315"></a></var><br>
-&mdash; Function File: <var>q</var> = <b>quantile</b> (<var>x, p, dim, method</var>)<var><a name="index-quantile-2316"></a></var><br>
+&mdash; Function File: <var>q</var> = <b>quantile</b> (<var>x, p</var>)<var><a name="index-quantile-2437"></a></var><br>
+&mdash; Function File: <var>q</var> = <b>quantile</b> (<var>x, p, dim</var>)<var><a name="index-quantile-2438"></a></var><br>
+&mdash; Function File: <var>q</var> = <b>quantile</b> (<var>x, p, dim, method</var>)<var><a name="index-quantile-2439"></a></var><br>
 <blockquote><p>For a sample, <var>x</var>, calculate the quantiles, <var>q</var>, corresponding to
 the cumulative probability values in <var>p</var>.  All non-numeric values (NaNs)
 of <var>x</var> are ignored.
@@ -428,10 +429,11 @@ statistical packages, American Statistician, 50, 361&ndash;365.
 </ul>
 
         <p>Examples:
+<!-- Set example in small font to prevent overfull line -->
 
-     <pre class="example">          x = randi (1000, [10, 1]);  # Create random empirical data in range 1-1000
-          q = quantile (x, [0, 1]);   # Return minimum, maximum of empirical distribution
-          q = quantile (x, [0.25 0.5 0.75]); # Return quartiles of empirical distribution
+     <pre class="smallexample">          x = randi (1000, [10, 1]);  # Create empirical data in range 1-1000
+          q = quantile (x, [0, 1]);   # Return minimum, maximum of distribution
+          q = quantile (x, [0.25 0.5 0.75]); # Return quartiles of distribution
 </pre>
         <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
      <!-- A simple blank line produces the correct behavior. -->
@@ -443,9 +445,9 @@ statistical packages, American Statistician, 50, 361&ndash;365.
    <p><a name="doc_002dprctile"></a>
 
 <div class="defun">
-&mdash; Function File: <var>q</var> = <b>prctile</b> (<var>x</var>)<var><a name="index-prctile-2317"></a></var><br>
-&mdash; Function File: <var>q</var> = <b>prctile</b> (<var>x, p</var>)<var><a name="index-prctile-2318"></a></var><br>
-&mdash; Function File: <var>q</var> = <b>prctile</b> (<var>x, p, dim</var>)<var><a name="index-prctile-2319"></a></var><br>
+&mdash; Function File: <var>q</var> = <b>prctile</b> (<var>x</var>)<var><a name="index-prctile-2440"></a></var><br>
+&mdash; Function File: <var>q</var> = <b>prctile</b> (<var>x, p</var>)<var><a name="index-prctile-2441"></a></var><br>
+&mdash; Function File: <var>q</var> = <b>prctile</b> (<var>x, p, dim</var>)<var><a name="index-prctile-2442"></a></var><br>
 <blockquote><p>For a sample <var>x</var>, compute the quantiles, <var>q</var>, corresponding
 to the cumulative probability values, <var>p</var>, in percent.  All non-numeric
 values (NaNs) of <var>x</var> are ignored.
@@ -474,8 +476,8 @@ dimension.
    <p><a name="doc_002dstatistics"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>statistics</b> (<var>x</var>)<var><a name="index-statistics-2320"></a></var><br>
-&mdash; Function File:  <b>statistics</b> (<var>x, dim</var>)<var><a name="index-statistics-2321"></a></var><br>
+&mdash; Function File:  <b>statistics</b> (<var>x</var>)<var><a name="index-statistics-2443"></a></var><br>
+&mdash; Function File:  <b>statistics</b> (<var>x, dim</var>)<var><a name="index-statistics-2444"></a></var><br>
 <blockquote><p>Return a vector with the minimum, first quartile, median, third quartile,
 maximum, mean, standard deviation, skewness, and kurtosis of the elements of
 the vector <var>x</var>.

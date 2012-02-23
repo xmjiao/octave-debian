@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2011 Etienne Grossmann
+## Copyright (C) 2000-2012 Etienne Grossmann
 ## Copyright (C) 2009 VZLU Prague
 ##
 ## This file is part of Octave.
@@ -25,7 +25,7 @@
 ## @group
 ## ss(1,2).fd(3).b = 5;
 ## getfield (ss, @{1,2@}, "fd", @{3@}, "b")
-##      @result{} ans = 5
+##    @result{} 5
 ## @end group
 ## @end example
 ##
@@ -36,7 +36,7 @@
 ## @group
 ## i1 = @{1,2@}; i2 = "fd"; i3 = @{3@}; i4= "b";
 ## ss(i1@{:@}).(i2)(i3@{:@}).(i4)
-##      @result{} ans = 5
+##    @result{} 5
 ##
 ## @end group
 ## @end example
@@ -50,8 +50,8 @@ function obj = getfield (s, varargin)
     print_usage ();
   endif
   subs = varargin;
-  flds = cellfun (@ischar, subs);
-  idxs = cellfun (@iscell, subs);
+  flds = cellfun ("isclass", subs, "char");
+  idxs = cellfun ("isclass", subs, "cell");
   if (all (flds | idxs))
     typs = merge (flds, {"."}, {"()"});
     obj = subsref (s, struct ("type", typs, "subs", subs));

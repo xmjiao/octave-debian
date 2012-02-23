@@ -52,7 +52,7 @@ values with <code>disp</code> and through the normal echoing mechanism.
    <p><a name="doc_002ddisp"></a>
 
 <div class="defun">
-&mdash; Built-in Function:  <b>disp</b> (<var>x</var>)<var><a name="index-disp-818"></a></var><br>
+&mdash; Built-in Function:  <b>disp</b> (<var>x</var>)<var><a name="index-disp-879"></a></var><br>
 <blockquote><p>Display the value of <var>x</var>.  For example:
 
      <pre class="example">          disp ("The value of pi is:"), disp (pi)
@@ -75,15 +75,16 @@ returns the formatted output in a string.
    <p><a name="doc_002dlist_005fin_005fcolumns"></a>
 
 <div class="defun">
-&mdash; Built-in Function:  <b>list_in_columns</b> (<var>arg, width</var>)<var><a name="index-list_005fin_005fcolumns-819"></a></var><br>
+&mdash; Built-in Function:  <b>list_in_columns</b> (<var>arg, width</var>)<var><a name="index-list_005fin_005fcolumns-880"></a></var><br>
 <blockquote><p>Return a string containing the elements of <var>arg</var> listed in
 columns with an overall maximum width of <var>width</var>.  The argument
 <var>arg</var> must be a cell array of character strings or a character array. 
 If <var>width</var> is not specified, the width of the terminal screen is used. 
 Newline characters are used to break the lines in the output string. 
 For example:
+<!-- Set example in small font to prevent overfull line -->
 
-     <pre class="example">          list_in_columns ({"abc", "def", "ghijkl", "mnop", "qrs", "tuv"}, 20)
+     <pre class="smallexample">          list_in_columns ({"abc", "def", "ghijkl", "mnop", "qrs", "tuv"}, 20)
                &rArr; ans = abc     mnop
                       def     qrs
                       ghijkl  tuv
@@ -108,7 +109,7 @@ For example:
    <p><a name="doc_002dterminal_005fsize"></a>
 
 <div class="defun">
-&mdash; Built-in Function:  <b>terminal_size</b> ()<var><a name="index-terminal_005fsize-820"></a></var><br>
+&mdash; Built-in Function:  <b>terminal_size</b> ()<var><a name="index-terminal_005fsize-881"></a></var><br>
 <blockquote><p>Return a two-element row vector containing the current size of the
 terminal window in characters (rows and columns). 
 <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
@@ -122,8 +123,8 @@ terminal window in characters (rows and columns).
    <p><a name="doc_002dformat"></a>
 
 <div class="defun">
-&mdash; Command:  <b>format</b><var><a name="index-format-821"></a></var><br>
-&mdash; Command:  <b>format</b><var> options<a name="index-format-822"></a></var><br>
+&mdash; Command:  <b>format</b><var><a name="index-format-882"></a></var><br>
+&mdash; Command:  <b>format</b><var> options<a name="index-format-883"></a></var><br>
 <blockquote><p>Reset or specify the format of the output produced by <code>disp</code> and
 Octave's normal echoing mechanism.  This command only affects the display
 of numbers but not how they are stored or computed.  To change the internal
@@ -243,11 +244,11 @@ For example, with the &lsquo;<samp><span class="samp">rat</span></samp>&rsquo; f
         <p>The following two options affect the display of all matrices.
 
           <dl>
-<dt><code>compact</code><dd>Remove extra blank space around column number labels producing more compact
-output with more data per page.
+<dt><code>compact</code><dd>Remove blank lines around column number labels and between
+matrices producing more compact output with more data per page.
 
-          <br><dt><code>loose</code><dd>Insert blank lines above and below column number labels to produce a more
-readable output with less data per page.  (default). 
+          <br><dt><code>loose</code><dd>Insert blank lines above and below column number labels and between matrices
+to produce a more readable output with less data per page.  (default). 
 </dl>
         <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
 <!-- A simple blank line produces the correct behavior. -->

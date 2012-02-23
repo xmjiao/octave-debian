@@ -1,4 +1,4 @@
-@c Copyright (C) 1996-2011 John W. Eaton
+@c Copyright (C) 1996-2012 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -28,7 +28,6 @@ after the C standard library are also provided by Octave.
 @menu
 * Basic Input and Output::      
 * C-Style I/O Functions::       
-* GUI Dialogs for I/O::       
 @end menu
 
 @node Basic Input and Output
@@ -583,7 +582,7 @@ Conversions}, for details.
 
 @item @samp{%x}, @samp{%X}
 Print an integer as an unsigned hexadecimal number.  @samp{%x} uses
-lower-case letters and @samp{%X} uses upper-case.  @xref{Integer
+lowercase letters and @samp{%X} uses uppercase.  @xref{Integer
 Conversions}, for details.
 
 @item @samp{%f}
@@ -592,13 +591,13 @@ Print a floating-point number in normal (fixed-point) notation.
 
 @item @samp{%e}, @samp{%E}
 Print a floating-point number in exponential notation.  @samp{%e} uses
-lower-case letters and @samp{%E} uses upper-case.  @xref{Floating-Point
+lowercase letters and @samp{%E} uses uppercase.  @xref{Floating-Point
 Conversions}, for details.
 
 @item @samp{%g}, @samp{%G}
 Print a floating-point number in either normal (fixed-point) or
 exponential notation, whichever is more appropriate for its magnitude.
-@samp{%g} uses lower-case letters and @samp{%G} uses upper-case.
+@samp{%g} uses lowercase letters and @samp{%G} uses uppercase.
 @xref{Floating-Point Conversions}, for details.
 
 @item @samp{%c}
@@ -1064,17 +1063,4 @@ fourch = fgets (myfile, 4);
 fseek (myfile, marker, SEEK_SET);
 @end group
 @end example
-
-@node GUI Dialogs for I/O
-@section GUI Dialogs for I/O
-
-Simple dialog menus are available for choosing directories or files.  They
-return a string variable which can then be used when calling any command
-requiring a file name.
-
-@DOCSTRING(uigetdir)
-
-@DOCSTRING(uigetfile)
-
-@DOCSTRING(uiputfile)
 

@@ -1,4 +1,4 @@
-## Copyright (C) 2003-2011 John W. Eaton
+## Copyright (C) 2003-2012 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -26,7 +26,7 @@ function filename = fullfile (varargin)
 
   if (nargin > 0)
     ## Discard all empty arguments
-    varargin(cellfun (@isempty, varargin)) = [];
+    varargin(cellfun ("isempty", varargin)) = [];
     nargs = numel (varargin);
     if (nargs > 1)
       filename = varargin{1};

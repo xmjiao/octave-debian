@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.
 
-@c Copyright (C) 1996-2011 John W. Eaton
+@c Copyright (C) 1996-2012 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -720,7 +720,8 @@ time samples spaced by @math{dt}, then
 f = [ -(ceil((N-1)/2):-1:1)*df 0 (1:floor((N-1)/2))*df ]
 @end example
 
-where @math{df} = 1 / @math{dt}.
+@noindent
+where @nospell{@math{df}} = 1 / @math{dt}.
 
 If @var{x} is a matrix, the same holds for rows and columns.  If
 @var{x} is an array, then the same holds along each dimension.
@@ -781,16 +782,19 @@ every single column.
 @anchor{doc-pchip}
 @deftypefn  {Function File} {@var{pp} =} pchip (@var{x}, @var{y})
 @deftypefnx {Function File} {@var{yi} =} pchip (@var{x}, @var{y}, @var{xi})
+Return the Piecewise Cubic Hermite Interpolating Polynomial (pchip) of
+points @var{x} and @var{y}.
 
-Piecewise Cubic Hermite interpolating polynomial.  Called with two
-arguments, the piecewise polynomial @var{pp} is returned, that may
-later be used with @code{ppval} to evaluate the polynomial at
-specific points.
+If called with two arguments, return the piecewise polynomial @var{pp}
+that may be used with @code{ppval} to evaluate the polynomial at specific
+points.  When called with a third input argument, @code{pchip} evaluates
+the pchip polynomial at the points @var{xi}.  The third calling form is
+equivalent to @code{ppval (pchip (@var{x}, @var{y}), @var{xi})}.
 
 The variable @var{x} must be a strictly monotonic vector (either
-increasing or decreasing).  While @var{y} can be either a vector or
-array.  In the case where @var{y} is a vector, it must have a length
-of @var{n}.  If @var{y} is an array, then the size of @var{y} must
+increasing or decreasing) of length @var{n}.  @var{y} can be either a
+vector or array.  If @var{y} is a vector then it must be the same length
+@var{n} as @var{x}.  If @var{y} is an array then the size of @var{y} must
 have the form
 @tex
 $$[s_1, s_2, \cdots, s_k, n]$$
@@ -798,7 +802,7 @@ $$[s_1, s_2, \cdots, s_k, n]$$
 @ifnottex
 @code{[@var{s1}, @var{s2}, @dots{}, @var{sk}, @var{n}]}
 @end ifnottex
-The array is then reshaped internally to a matrix where the leading
+The array is reshaped internally to a matrix where the leading
 dimension is given by
 @tex
 $$s_1 s_2 \cdots s_k$$
@@ -806,14 +810,9 @@ $$s_1 s_2 \cdots s_k$$
 @ifnottex
 @code{@var{s1} * @var{s2} * @dots{} * @var{sk}}
 @end ifnottex
-and each row in this matrix is then treated separately.  Note that this
-is exactly the opposite treatment than @code{interp1} and is done
-for compatibility.
-
-Called with a third input argument, @code{pchip} evaluates the
-piecewise polynomial at the points @var{xi}.  There is an equivalence
-between @code{ppval (pchip (@var{x}, @var{y}), @var{xi})} and
-@code{pchip (@var{x}, @var{y}, @var{xi})}.
+and each row of this matrix is then treated separately.  Note that this
+is exactly opposite to @code{interp1} but is done for @sc{matlab}
+compatibility.
 
 @seealso{@ref{doc-spline,,spline}, @ref{doc-ppval,,ppval}, @ref{doc-mkpp,,mkpp}, @ref{doc-unmkpp,,unmkpp}}
 @end deftypefn

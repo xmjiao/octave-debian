@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2011 David Bateman
+## Copyright (C) 2008-2012 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -234,9 +234,9 @@
 ##
 ## @example
 ## @group
-## figure (1)
-## clf ()
-## surf (peaks)
+## figure (1);
+## clf ();
+## surf (peaks);
 ## print -dsvg figure1.svg
 ## @end group
 ## @end example
@@ -245,9 +245,9 @@
 ##
 ## @example
 ## @group
-## figure (1)
-## clf ()
-## surf (peaks)
+## figure (1);
+## clf ();
+## surf (peaks);
 ## print -dcdj550
 ## @end group
 ## @end example
@@ -611,7 +611,7 @@ function latex_standalone (opts)
              "print.m: error closing file '%s'", latexfile);
     endif
     ## TODO - should this be fixed in GL2PS?
-    latex = strrep (latex, "\\includegraphics{}", 
+    latex = strrep (latex, "\\includegraphics{}",
                     sprintf ("\\includegraphics{%s}", graphicsfile));
   else
     error ("print:erroropeningfile",

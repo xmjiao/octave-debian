@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2011 Daniel Calvelo
+## Copyright (C) 2000-2012 Daniel Calvelo
 ##
 ## This file is part of Octave.
 ##
@@ -24,14 +24,16 @@
 ## @example
 ## @group
 ## base2dec ("11120", 3)
-##      @result{} 123
+##    @result{} 123
 ## @end group
 ## @end example
 ##
-## If @var{s} is a matrix, returns a column vector with one value per
+## If @var{s} is a string matrix, return a column vector with one value per
 ## row of @var{s}.  If a row contains invalid symbols then the
-## corresponding value will be NaN@.  Rows are right-justified before
-## converting so that trailing spaces are ignored.
+## corresponding value will be NaN@.  
+##
+## If @var{s} is a cell array of strings, return a column vector with one
+## value per cell element in @var{s}.
 ##
 ## If @var{base} is a string, the characters of @var{base} are used as the
 ## symbols for the digits of @var{s}.  Space (' ') may not be used as a
@@ -40,7 +42,7 @@
 ## @example
 ## @group
 ## base2dec ("yyyzx", "xyz")
-##      @result{} 123
+##    @result{} 123
 ## @end group
 ## @end example
 ## @seealso{dec2base, bin2dec, hex2dec}
@@ -53,6 +55,12 @@ function out = base2dec (s, base)
 
   if (nargin != 2)
     print_usage ();
+  endif
+
+  if (iscellstr (s))
+    s = char (s);
+  elseif (! ischar (s))
+    error ("base2dec: S must be a string or cellstring");
   endif
 
   symbols = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -89,9 +97,11 @@ function out = base2dec (s, base)
 
 endfunction
 
+
 %!assert(base2dec ("11120", 3), 123);
 %!assert(base2dec ("yyyzx", "xyz"), 123);
 %!assert(base2dec ("-1", 2), NaN);
+%!assert(base2dec ({"A1", "1A"}, 16), [161; 26]);
 
 %%Test input validation
 %!error base2dec ();

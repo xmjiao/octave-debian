@@ -38,7 +38,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="Arithmetic.html#Arithmetic">Arithmetic<
 <p><a name="doc_002dairy"></a>
 
 <div class="defun">
-&mdash; Loadable Function: [<var>a</var>, <var>ierr</var>] = <b>airy</b> (<var>k, z, opt</var>)<var><a name="index-airy-1845"></a></var><br>
+&mdash; Loadable Function: [<var>a</var>, <var>ierr</var>] = <b>airy</b> (<var>k, z, opt</var>)<var><a name="index-airy-1913"></a></var><br>
 <blockquote><p>Compute Airy functions of the first and second kind, and their
 derivatives.
 
@@ -78,11 +78,11 @@ return <code>NaN</code>.
    <p><a name="doc_002dbesselj"></a>
 
 <div class="defun">
-&mdash; Loadable Function: [<var>j</var>, <var>ierr</var>] = <b>besselj</b> (<var>alpha, x, opt</var>)<var><a name="index-besselj-1846"></a></var><br>
-&mdash; Loadable Function: [<var>y</var>, <var>ierr</var>] = <b>bessely</b> (<var>alpha, x, opt</var>)<var><a name="index-bessely-1847"></a></var><br>
-&mdash; Loadable Function: [<var>i</var>, <var>ierr</var>] = <b>besseli</b> (<var>alpha, x, opt</var>)<var><a name="index-besseli-1848"></a></var><br>
-&mdash; Loadable Function: [<var>k</var>, <var>ierr</var>] = <b>besselk</b> (<var>alpha, x, opt</var>)<var><a name="index-besselk-1849"></a></var><br>
-&mdash; Loadable Function: [<var>h</var>, <var>ierr</var>] = <b>besselh</b> (<var>alpha, k, x, opt</var>)<var><a name="index-besselh-1850"></a></var><br>
+&mdash; Loadable Function: [<var>j</var>, <var>ierr</var>] = <b>besselj</b> (<var>alpha, x, opt</var>)<var><a name="index-besselj-1914"></a></var><br>
+&mdash; Loadable Function: [<var>y</var>, <var>ierr</var>] = <b>bessely</b> (<var>alpha, x, opt</var>)<var><a name="index-bessely-1915"></a></var><br>
+&mdash; Loadable Function: [<var>i</var>, <var>ierr</var>] = <b>besseli</b> (<var>alpha, x, opt</var>)<var><a name="index-besseli-1916"></a></var><br>
+&mdash; Loadable Function: [<var>k</var>, <var>ierr</var>] = <b>besselk</b> (<var>alpha, x, opt</var>)<var><a name="index-besselk-1917"></a></var><br>
+&mdash; Loadable Function: [<var>h</var>, <var>ierr</var>] = <b>besselh</b> (<var>alpha, k, x, opt</var>)<var><a name="index-besselh-1918"></a></var><br>
 <blockquote><p>Compute Bessel or Hankel functions of various kinds:
 
           <dl>
@@ -140,7 +140,7 @@ return <code>NaN</code>.
    <p><a name="doc_002dbeta"></a>
 
 <div class="defun">
-&mdash; Mapping Function:  <b>beta</b> (<var>a, b</var>)<var><a name="index-beta-1851"></a></var><br>
+&mdash; Mapping Function:  <b>beta</b> (<var>a, b</var>)<var><a name="index-beta-1919"></a></var><br>
 <blockquote><p>For real inputs, return the Beta function,
 
      <pre class="example">          beta (a, b) = gamma (a) * gamma (b) / gamma (a + b).
@@ -151,7 +151,7 @@ return <code>NaN</code>.
    <p><a name="doc_002dbetainc"></a>
 
 <div class="defun">
-&mdash; Mapping Function:  <b>betainc</b> (<var>x, a, b</var>)<var><a name="index-betainc-1852"></a></var><br>
+&mdash; Mapping Function:  <b>betainc</b> (<var>x, a, b</var>)<var><a name="index-betainc-1920"></a></var><br>
 <blockquote><p>Return the regularized incomplete Beta function,
 <!-- Set example in small font to prevent overfull line -->
 
@@ -171,7 +171,7 @@ compatible dimensions.
    <p><a name="doc_002dbetaln"></a>
 
 <div class="defun">
-&mdash; Mapping Function:  <b>betaln</b> (<var>a, b</var>)<var><a name="index-betaln-1853"></a></var><br>
+&mdash; Mapping Function:  <b>betaln</b> (<var>a, b</var>)<var><a name="index-betaln-1921"></a></var><br>
 <blockquote><p>Return the natural logarithm of the Beta function,
 
      <pre class="example">          betaln (a, b) = log (beta (a, b))
@@ -188,7 +188,7 @@ compatible dimensions.
    <p><a name="doc_002dbincoeff"></a>
 
 <div class="defun">
-&mdash; Mapping Function:  <b>bincoeff</b> (<var>n, k</var>)<var><a name="index-bincoeff-1854"></a></var><br>
+&mdash; Mapping Function:  <b>bincoeff</b> (<var>n, k</var>)<var><a name="index-bincoeff-1922"></a></var><br>
 <blockquote><p>Return the binomial coefficient of <var>n</var> and <var>k</var>, defined as
 
      <pre class="example">           /   \
@@ -200,7 +200,7 @@ compatible dimensions.
         <p>For example:
 
      <pre class="example">          bincoeff (5, 2)
-               &rArr; 10
+             &rArr; 10
 </pre>
         <p>In most cases, the <code>nchoosek</code> function is faster for small
 scalar integer arguments.  It also warns about loss of precision for
@@ -216,7 +216,7 @@ big arguments.
    <p><a name="doc_002dcommutation_005fmatrix"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>commutation_matrix</b> (<var>m, n</var>)<var><a name="index-commutation_005fmatrix-1855"></a></var><br>
+&mdash; Function File:  <b>commutation_matrix</b> (<var>m, n</var>)<var><a name="index-commutation_005fmatrix-1923"></a></var><br>
 <blockquote><p>Return the commutation matrix
  K(m,n)
  which is the unique
@@ -240,7 +240,7 @@ Applications in Statistics and Econometrics.</cite>
    <p><a name="doc_002dduplication_005fmatrix"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>duplication_matrix</b> (<var>n</var>)<var><a name="index-duplication_005fmatrix-1856"></a></var><br>
+&mdash; Function File:  <b>duplication_matrix</b> (<var>n</var>)<var><a name="index-duplication_005fmatrix-1924"></a></var><br>
 <blockquote><p>Return the duplication matrix
 Dn
  which is the unique
@@ -260,7 +260,7 @@ applications in statistics and econometrics.
    <p><a name="doc_002derf"></a>
 
 <div class="defun">
-&mdash; Mapping Function:  <b>erf</b> (<var>z</var>)<var><a name="index-erf-1857"></a></var><br>
+&mdash; Mapping Function:  <b>erf</b> (<var>z</var>)<var><a name="index-erf-1925"></a></var><br>
 <blockquote><p>Compute the error function,
 
      <pre class="example">          <!-- spacing appears odd here, but is correct after Makeinfo -->
@@ -280,7 +280,7 @@ applications in statistics and econometrics.
    <p><a name="doc_002derfc"></a>
 
 <div class="defun">
-&mdash; Mapping Function:  <b>erfc</b> (<var>z</var>)<var><a name="index-erfc-1858"></a></var><br>
+&mdash; Mapping Function:  <b>erfc</b> (<var>z</var>)<var><a name="index-erfc-1926"></a></var><br>
 <blockquote><p>Compute the complementary error function,
 <code>1&nbsp;-&nbsp;erf&nbsp;(</code><var>z</var><code>)</code><!-- /@w -->. 
 <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
@@ -294,7 +294,7 @@ applications in statistics and econometrics.
    <p><a name="doc_002derfcx"></a>
 
 <div class="defun">
-&mdash; Mapping Function:  <b>erfcx</b> (<var>z</var>)<var><a name="index-erfcx-1859"></a></var><br>
+&mdash; Mapping Function:  <b>erfcx</b> (<var>z</var>)<var><a name="index-erfcx-1927"></a></var><br>
 <blockquote><p>Compute the scaled complementary error function,
 
      <pre class="example">          exp (z^2) * erfc (x)
@@ -309,7 +309,7 @@ applications in statistics and econometrics.
    <p><a name="doc_002derfinv"></a>
 
 <div class="defun">
-&mdash; Mapping Function:  <b>erfinv</b> (<var>x</var>)<var><a name="index-erfinv-1860"></a></var><br>
+&mdash; Mapping Function:  <b>erfinv</b> (<var>x</var>)<var><a name="index-erfinv-1928"></a></var><br>
 <blockquote><p>Compute the inverse error function, i.e., <var>y</var> such that
 
      <pre class="example">            erf (<var>y</var>) == <var>x</var>
@@ -324,7 +324,7 @@ applications in statistics and econometrics.
    <p><a name="doc_002dgamma"></a>
 
 <div class="defun">
-&mdash; Mapping Function:  <b>gamma</b> (<var>z</var>)<var><a name="index-gamma-1861"></a></var><br>
+&mdash; Mapping Function:  <b>gamma</b> (<var>z</var>)<var><a name="index-gamma-1929"></a></var><br>
 <blockquote><p>Compute the Gamma function,
 
      <pre class="example">          <!-- spacing appears odd here, but is correct after Makeinfo -->
@@ -344,9 +344,9 @@ applications in statistics and econometrics.
    <p><a name="doc_002dgammainc"></a>
 
 <div class="defun">
-&mdash; Mapping Function:  <b>gammainc</b> (<var>x, a</var>)<var><a name="index-gammainc-1862"></a></var><br>
-&mdash; Mapping Function:  <b>gammainc</b> (<var>x, a, "lower"</var>)<var><a name="index-gammainc-1863"></a></var><br>
-&mdash; Mapping Function:  <b>gammainc</b> (<var>x, a, "upper"</var>)<var><a name="index-gammainc-1864"></a></var><br>
+&mdash; Mapping Function:  <b>gammainc</b> (<var>x, a</var>)<var><a name="index-gammainc-1930"></a></var><br>
+&mdash; Mapping Function:  <b>gammainc</b> (<var>x, a, "lower"</var>)<var><a name="index-gammainc-1931"></a></var><br>
+&mdash; Mapping Function:  <b>gammainc</b> (<var>x, a, "upper"</var>)<var><a name="index-gammainc-1932"></a></var><br>
 <blockquote><p>Compute the normalized incomplete gamma function,
 
      <pre class="example">                                           x
@@ -380,8 +380,8 @@ from <var>x</var> to infinity is calculated.  It should be noted that
    <p><a name="doc_002dlegendre"></a>
 
 <div class="defun">
-&mdash; Function File: <var>l</var> = <b>legendre</b> (<var>n, x</var>)<var><a name="index-legendre-1865"></a></var><br>
-&mdash; Function File: <var>l</var> = <b>legendre</b> (<var>n, x, normalization</var>)<var><a name="index-legendre-1866"></a></var><br>
+&mdash; Function File: <var>l</var> = <b>legendre</b> (<var>n, x</var>)<var><a name="index-legendre-1933"></a></var><br>
+&mdash; Function File: <var>l</var> = <b>legendre</b> (<var>n, x, normalization</var>)<var><a name="index-legendre-1934"></a></var><br>
 <blockquote><p>Compute the Legendre function of degree <var>n</var> and order
 <var>m</var> = 0 <small class="dots">...</small> N.  The optional argument, <var>normalization</var>,
 may be one of <code>"unnorm"</code>, <code>"sch"</code>, or <code>"norm"</code>. 
@@ -396,18 +396,18 @@ The return value has one dimension more than <var>x</var>.
         <p>The Legendre Function of degree <var>n</var> and order <var>m</var>:
 
      <pre class="example">           m        m       2  m/2   d^m
-          P(x) = (-1) * (1-x  )    * ----  P (x)
+          P(x) = (-1) * (1-x  )    * ----  P(x)
            n                         dx^m   n
 </pre>
         <p class="noindent">with Legendre polynomial of degree <var>n</var>:
 
-     <pre class="example">                    1     d^n   2    n
-          P (x) = ------ [----(x - 1)  ]
-           n      2^n n!  dx^n
+     <pre class="example">                    1    d^n   2    n
+          P(x) = ------ [----(x - 1) ]
+           n     2^n n!  dx^n
 </pre>
         <p class="noindent"><code>legendre (3, [-1.0, -0.9, -0.8])</code> returns the matrix:
 
-     <pre class="example">           x  |   -1.0   |   -0.9   |  -0.8
+     <pre class="example">           x  |   -1.0   |   -0.9   |   -0.8
           ------------------------------------
           m=0 | -1.00000 | -0.47250 | -0.08000
           m=1 |  0.00000 | -1.99420 | -1.98000
@@ -421,15 +421,15 @@ to the unnormalized Legendre functions by the following:
 
         <p>For Legendre functions of degree n and order 0:
 
-     <pre class="example">            0       0
-          SP (x) = P (x)
-            n       n
+     <pre class="example">            0      0
+          SP(x) = P(x)
+            n      n
 </pre>
         <p>For Legendre functions of degree n and order m:
 
-     <pre class="example">            m       m          m    2(n-m)! 0.5
-          SP (x) = P (x) * (-1)  * [-------]
-            n       n               (n+m)!
+     <pre class="example">            m      m         m    2(n-m)! 0.5
+          SP(x) = P(x) * (-1)  * [-------]
+            n      n              (n+m)!
 </pre>
         <p>If the optional argument <var>normalization</var> is <code>"norm"</code>,
 compute the fully normalized associated Legendre function. 
@@ -438,9 +438,9 @@ to the unnormalized Legendre functions by the following:
 
         <p>For Legendre functions of degree <var>n</var> and order <var>m</var>
 
-     <pre class="example">            m       m          m    (n+0.5)(n-m)! 0.5
-          NP (x) = P (x) * (-1)  * [-------------]
-            n       n                   (n+m)!
+     <pre class="example">            m      m         m    (n+0.5)(n-m)! 0.5
+          NP(x) = P(x) * (-1)  * [-------------]
+            n      n                  (n+m)!
 </pre>
         </blockquote></div>
 
@@ -448,8 +448,8 @@ to the unnormalized Legendre functions by the following:
 <a name="doc_002dlgamma"></a>
 
 <div class="defun">
-&mdash; Mapping Function:  <b>lgamma</b> (<var>x</var>)<var><a name="index-lgamma-1867"></a></var><br>
-&mdash; Mapping Function:  <b>gammaln</b> (<var>x</var>)<var><a name="index-gammaln-1868"></a></var><br>
+&mdash; Mapping Function:  <b>lgamma</b> (<var>x</var>)<var><a name="index-lgamma-1935"></a></var><br>
+&mdash; Mapping Function:  <b>gammaln</b> (<var>x</var>)<var><a name="index-gammaln-1936"></a></var><br>
 <blockquote><p>Return the natural logarithm of the gamma function of <var>x</var>. 
 <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
 <!-- A simple blank line produces the correct behavior. -->

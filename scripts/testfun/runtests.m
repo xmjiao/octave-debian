@@ -1,4 +1,4 @@
-## Copyright (C) 2010-2011 John W. Eaton
+## Copyright (C) 2010-2012 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -35,6 +35,7 @@ function runtests (directory)
     if (is_absolute_filename (directory))
       dirs = {directory};
     else
+      directory = regexprep (directory, ['\',filesep(),'$'], "");
       fullname = find_dir_in_path (directory);
       if (! isempty (fullname))
         dirs = {fullname};

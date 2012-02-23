@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2011 Kurt Hornik
+## Copyright (C) 1995-2012 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -55,3 +55,14 @@ function n = nextpow2 (x)
   endif
 
 endfunction
+
+%!error nexpow2 ();
+%!error nexpow2 (1, 2);
+
+%!assert (nextpow2 (16), 4);
+%!assert (nextpow2 (17), 5);
+%!assert (nextpow2 (31), 5);
+%!assert (nextpow2 (-16), 4);
+%!assert (nextpow2 (-17), 5);
+%!assert (nextpow2 (-31), 5);
+%!assert (nextpow2 (1:17), 5);

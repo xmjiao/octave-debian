@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2002-2011 Kai Habel
+Copyright (C) 2002-2012 Kai Habel
 Copyright (C) 2008-2009 Jaroslav Hajek
 
 This file is part of Octave.
@@ -147,3 +147,10 @@ Undocumented internal function.\n\
 
   return retval;
 }
+
+/*
+
+## No test needed for internal helper function.
+%!assert (1)
+
+*/

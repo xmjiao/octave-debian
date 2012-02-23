@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2004-2011 David Bateman
+Copyright (C) 2004-2012 David Bateman
 Copyright (C) 1998-2004 Andy Adler
 
 This file is part of Octave.
@@ -56,6 +56,8 @@ public:
   explicit SparseBoolMatrix (const boolMatrix& a) : Sparse<bool> (a) { }
 
   explicit SparseBoolMatrix (const boolNDArray& a) : Sparse<bool> (a) { }
+
+  explicit SparseBoolMatrix (const PermMatrix& a) : Sparse<bool> (a) { };
 
   SparseBoolMatrix (const Array<bool>& a, const idx_vector& r,
                     const idx_vector& c, octave_idx_type nr = -1,

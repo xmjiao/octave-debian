@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2011 N.J. Higham
+## Copyright (C) 2008-2012 N.J. Higham
 ## Copyright (C) 2010 Richard T. Guy <guyrt7@wfu.edu>
 ## Copyright (C) 2010 Marco Caliari <marco.caliari@univr.it>
 ##
@@ -26,7 +26,7 @@
 ## implementation utilizes a Pad@'e approximant and the identity
 ##
 ## @example
-## logm(@var{A}) = 2^k * logm(@var{A}^(1 / 2^k))
+## logm (@var{A}) = 2^k * logm (@var{A}^(1 / 2^k))
 ## @end example
 ##
 ## The optional argument @var{opt_iters} is the maximum number of square roots

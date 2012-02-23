@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.
 
-@c Copyright (C) 1996-2011 John W. Eaton
+@c Copyright (C) 1996-2012 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -30,7 +30,6 @@ after the C standard library are also provided by Octave.
 @menu
 * Basic Input and Output::      
 * C-Style I/O Functions::       
-* GUI Dialogs for I/O::       
 @end menu
 
 @node Basic Input and Output
@@ -99,8 +98,9 @@ columns with an overall maximum width of @var{width}.  The argument
 If @var{width} is not specified, the width of the terminal screen is used.
 Newline characters are used to break the lines in the output string.
 For example:
+@c Set example in small font to prevent overfull line
 
-@example
+@smallexample
 @group
 list_in_columns (@{"abc", "def", "ghijkl", "mnop", "qrs", "tuv"@}, 20)
      @result{} ans = abc     mnop
@@ -117,7 +117,7 @@ whos ans
 
      Total is 37 elements using 37 bytes
 @end group
-@end example
+@end smallexample
 
 @seealso{@ref{doc-terminal_size,,terminal_size}}
 @end deftypefn
@@ -292,12 +292,12 @@ The following two options affect the display of all matrices.
 
 @table @code
 @item compact
-Remove extra blank space around column number labels producing more compact
-output with more data per page.
+Remove blank lines around column number labels and between
+matrices producing more compact output with more data per page.
 
 @item loose
-Insert blank lines above and below column number labels to produce a more
-readable output with less data per page.  (default).
+Insert blank lines above and below column number labels and between matrices
+to produce a more readable output with less data per page.  (default).
 @end table
 @seealso{@ref{doc-fixed_point_format,,fixed_point_format}, @ref{doc-output_max_field_width,,output_max_field_width}, @ref{doc-output_precision,,output_precision}, @ref{doc-split_long_rows,,split_long_rows}, @ref{doc-rats,,rats}}
 @end deftypefn
@@ -345,11 +345,16 @@ The current state can be determined via @code{page_screen_output}.
 @anchor{doc-PAGER}
 @deftypefn  {Built-in Function} {@var{val} =} PAGER ()
 @deftypefnx {Built-in Function} {@var{old_val} =} PAGER (@var{new_val})
+@deftypefnx {Built-in Function} {} PAGER (@var{new_val}, "local")
 Query or set the internal variable that specifies the program to use
 to display terminal output on your system.  The default value is
 normally @code{"less"}, @code{"more"}, or
 @code{"pg"}, depending on what programs are installed on your system.
 @xref{Installation}.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{@ref{doc-more,,more}, @ref{doc-page_screen_output,,page_screen_output}, @ref{doc-page_output_immediately,,page_output_immediately}, @ref{doc-PAGER_FLAGS,,PAGER_FLAGS}}
 @end deftypefn
 
@@ -358,8 +363,13 @@ normally @code{"less"}, @code{"more"}, or
 @anchor{doc-PAGER_FLAGS}
 @deftypefn  {Built-in Function} {@var{val} =} PAGER_FLAGS ()
 @deftypefnx {Built-in Function} {@var{old_val} =} PAGER_FLAGS (@var{new_val})
+@deftypefnx {Built-in Function} {} PAGER_FLAGS (@var{new_val}, "local")
 Query or set the internal variable that specifies the options to pass
 to the pager.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{@ref{doc-PAGER,,PAGER}}
 @end deftypefn
 
@@ -368,22 +378,32 @@ to the pager.
 @anchor{doc-page_screen_output}
 @deftypefn  {Built-in Function} {@var{val} =} page_screen_output ()
 @deftypefnx {Built-in Function} {@var{old_val} =} page_screen_output (@var{new_val})
+@deftypefnx {Built-in Function} {} page_screen_output (@var{new_val}, "local")
 Query or set the internal variable that controls whether output intended
 for the terminal window that is longer than one page is sent through a
 pager.  This allows you to view one screenful at a time.  Some pagers
 (such as @code{less}---see @ref{Installation}) are also capable of moving
 backward on the output.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 
 
 @c page_output_immediately src/pager.cc
 @anchor{doc-page_output_immediately}
 @deftypefn  {Built-in Function} {@var{val} =} page_output_immediately ()
-@deftypefnx {Built-in Function} {@var{val} =} page_output_immediately (@var{new_val})
+@deftypefnx {Built-in Function} {@var{old_val} =} page_output_immediately (@var{new_val})
+@deftypefnx {Built-in Function} {} page_output_immediately (@var{new_val}, "local")
 Query or set the internal variable that controls whether Octave sends
 output to the pager as soon as it is available.  Otherwise, Octave
 buffers its output and waits until just before the prompt is printed to
 flush it to the pager.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 
 
@@ -574,6 +594,7 @@ then the @var{options}, @var{file}, and variable name arguments
 @table @code
 @item -append
 Append to the destination instead of overwriting.
+
 @item -ascii
 Save a single matrix in a text file without header or any other information.
 
@@ -663,7 +684,7 @@ save -binary data a b*
 @noindent
 saves the variable @samp{a} and all variables beginning with @samp{b} to
 the file @file{data} in Octave's binary format.
-@seealso{@ref{doc-load,,load}, @ref{doc-default_save_options,,default_save_options}, @ref{doc-dlmread,,dlmread}, @ref{doc-csvread,,csvread}, @ref{doc-fread,,fread}}
+@seealso{@ref{doc-load,,load}, @ref{doc-default_save_options,,default_save_options}, @ref{doc-save_header_format_string,,save_header_format_string}, @ref{doc-dlmread,,dlmread}, @ref{doc-csvread,,csvread}, @ref{doc-fread,,fread}}
 @end deftypefn
 
 
@@ -673,6 +694,9 @@ the file @file{data} in Octave's binary format.
 @deftypefnx {Command} {} load options file
 @deftypefnx {Command} {} load options file v1 v2 @dots{}
 @deftypefnx {Command} {S =} load ("options", "file", "v1", "v2", @dots{})
+@deftypefnx {Command} {} load file options
+@deftypefnx {Command} {} load file options v1 v2 @dots{}
+@deftypefnx {Command} {S =} load ("file", "options", "v1", "v2", @dots{})
 Load the named variables @var{v1}, @var{v2}, @dots{}, from the file
 @var{file}.  If no variables are specified then all variables found in the
 file will be loaded.  As with @code{save}, the list of variables to extract
@@ -776,10 +800,15 @@ There are three functions that modify the behavior of @code{save}.
 @anchor{doc-default_save_options}
 @deftypefn  {Built-in Function} {@var{val} =} default_save_options ()
 @deftypefnx {Built-in Function} {@var{old_val} =} default_save_options (@var{new_val})
+@deftypefnx {Built-in Function} {} default_save_options (@var{new_val}, "local")
 Query or set the internal variable that specifies the default options
 for the @code{save} command, and defines the default format.
 Typical values include @code{"-ascii"}, @code{"-text -zip"}.
 The default value is @option{-text}.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{@ref{doc-save,,save}}
 @end deftypefn
 
@@ -788,8 +817,13 @@ The default value is @option{-text}.
 @anchor{doc-save_precision}
 @deftypefn  {Built-in Function} {@var{val} =} save_precision ()
 @deftypefnx {Built-in Function} {@var{old_val} =} save_precision (@var{new_val})
+@deftypefnx {Built-in Function} {} save_precision (@var{new_val}, "local")
 Query or set the internal variable that specifies the number of
 digits to keep when saving data in text format.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 
 
@@ -797,6 +831,7 @@ digits to keep when saving data in text format.
 @anchor{doc-save_header_format_string}
 @deftypefn  {Built-in Function} {@var{val} =} save_header_format_string ()
 @deftypefnx {Built-in Function} {@var{old_val} =} save_header_format_string (@var{new_val})
+@deftypefnx {Built-in Function} {} save_header_format_string (@var{new_val}, "local")
 Query or set the internal variable that specifies the format
 string used for the comment line written at the beginning of
 text-format data files saved by Octave.  The format string is
@@ -810,6 +845,10 @@ default value is
 @smallexample
 "# Created by Octave VERSION, %a %b %d %H:%M:%S %Y %Z <USER@@HOST>"
 @end smallexample
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{@ref{doc-strftime,,strftime}, @ref{doc-save,,save}}
 @end deftypefn
 
@@ -869,6 +908,7 @@ separated lists.
 @deftypefnx {Function File} {} dlmwrite (@var{file}, @var{M}, @var{delim}, @var{r}, @var{c})
 @deftypefnx {Function File} {} dlmwrite (@var{file}, @var{M}, @var{key}, @var{val} @dots{})
 @deftypefnx {Function File} {} dlmwrite (@var{file}, @var{M}, "-append", @dots{})
+@deftypefnx {Function File} {} dlmwrite (@var{fid}, @dots{})
 Write the matrix @var{M} to the named file using delimiters.
 
 @var{file} should be a file name or writable file ID given by @code{fopen}.
@@ -882,11 +922,12 @@ add to the start of the file.
 The value of @var{c} specifies the number of delimiters to prepend to
 each line of data.
 
-If the argument @code{"-append"} is given, append to the end of the
+If the argument @code{"-append"} is given, append to the end of
 @var{file}.
 
 In addition, the following keyword value pairs may appear at the end
 of the argument list:
+
 @table @asis
 @item "append"
 Either @samp{"on"} or @samp{"off"}.  See @samp{"-append"} above.
@@ -896,9 +937,9 @@ See @var{delim} above.
 
 @item "newline"
 The character(s) to use to separate each row.  Three special cases
-exist for this option.  @samp{"unix"} is changed into '\n',
-@samp{"pc"} is changed into '\r\n', and @samp{"mac"} is changed
-into '\r'.  Other values for this option are kept as is.
+exist for this option.  @samp{"unix"} is changed into "\n",
+@samp{"pc"} is changed into "\r\n", and @samp{"mac"} is changed
+into "\r".  Other values for this option are kept as is.
 
 @item "roffset"
 See @var{r} above.
@@ -992,20 +1033,32 @@ Formatted data from can be read from, or written to, text files as well.
 @anchor{doc-textread}
 @deftypefn  {Function File} {[@var{a}, @dots{}] =} textread (@var{filename})
 @deftypefnx {Function File} {[@var{a}, @dots{}] =} textread (@var{filename}, @var{format})
+@deftypefnx {Function File} {[@var{a}, @dots{}] =} textread (@var{filename}, @var{format}, @var{n})
 @deftypefnx {Function File} {[@var{a}, @dots{}] =} textread (@var{filename}, @var{format}, @var{prop1}, @var{value1}, @dots{})
+@deftypefnx {Function File} {[@var{a}, @dots{}] =} textread (@var{filename}, @var{format}, @var{n}, @var{prop1}, @var{value1}, @dots{})
 Read data from a text file.
 
 The file @var{filename} is read and parsed according to @var{format}.  The
 function behaves like @code{strread} except it works by parsing a file
-instead
-of a string.  See the documentation of @code{strread} for details.
+instead of a string.  See the documentation of @code{strread} for details.
+
 In addition to the options supported by @code{strread}, this function
-supports one more:
+supports two more:
+
 @itemize
 @item "headerlines":
+The first @var{value} number of lines of @var{filename} are skipped.
+
+@item "endofline":
+Specify a single character or "\r\n".  If no value is given, it will be
+inferred from the file.  If set to "" (empty string) EOLs are ignored as
+delimiters.
 @end itemize
-The first @var{value} number of lines of @var{str} are skipped.
-@seealso{@ref{doc-strread,,strread}, @ref{doc-load,,load}, @ref{doc-dlmread,,dlmread}, @ref{doc-fscanf,,fscanf}}
+
+The optional input @var{n} specifes the number of times to use
+@var{format} when parsing, i.e., the format repeat count.
+
+@seealso{@ref{doc-strread,,strread}, @ref{doc-load,,load}, @ref{doc-dlmread,,dlmread}, @ref{doc-fscanf,,fscanf}, @ref{doc-textscan,,textscan}}
 @end deftypefn
 
 
@@ -1016,23 +1069,40 @@ The first @var{value} number of lines of @var{str} are skipped.
 @deftypefnx {Function File} {@var{C} =} textscan (@var{fid}, @var{format}, @var{param}, @var{value}, @dots{})
 @deftypefnx {Function File} {@var{C} =} textscan (@var{fid}, @var{format}, @var{n}, @var{param}, @var{value}, @dots{})
 @deftypefnx {Function File} {@var{C} =} textscan (@var{str}, @dots{})
-@deftypefnx {Function File} {[@var{C}, @var{position}] =} textscan (@dots{})
-Read data from a text file.
+@deftypefnx {Function File} {[@var{C}, @var{position}] =} textscan (@var{fid}, @dots{})
+Read data from a text file or string.
 
 The file associated with @var{fid} is read and parsed according to
 @var{format}.  The function behaves like @code{strread} except it works by
 parsing a file instead of a string.  See the documentation of
-@code{strread} for details.  In addition to the options supported by
-@code{strread}, this function supports one more:
+@code{strread} for details.
+
+In addition to the options supported by
+@code{strread}, this function supports a few more:
+
 @itemize
+@item "collectoutput":
+A value of 1 or true instructs textscan to concatenate consecutive columns
+of the same class in the output cell array.  A value of 0 or false (default)
+leaves output in distinct columns.
+
+@item "endofline":
+Specify "\r", "\n" or "\r\n" (for CR, LF, or CRLF).  If no value is given,
+it will be inferred from the file.  If set to "" (empty string) EOLs are
+ignored as delimiters and added to whitespace.
+
 @item "headerlines":
+The first @var{value} number of lines of @var{fid} are skipped.
+
+@item "returnonerror":
+If set to numerical 1 or true (default), return normally when read errors
+have been encountered.  If set to 0 or false, return an error and no data.
 @end itemize
-The first @var{value} number of lines of @var{str} are skipped.
 
-The optional input, @var{n}, specifes the number of lines to be read from
-the file, associated with @var{fid}.
+The optional input @var{n} specifes the number of times to use
+@var{format} when parsing, i.e., the format repeat count.
 
-The output, @var{C}, is a cell array whose length is given by the number
+The output @var{C} is a cell array whose length is given by the number
 of format specifiers.
 
 The second output, @var{position}, provides the position, in characters,
@@ -1060,9 +1130,14 @@ functions.
 @anchor{doc-crash_dumps_octave_core}
 @deftypefn  {Built-in Function} {@var{val} =} crash_dumps_octave_core ()
 @deftypefnx {Built-in Function} {@var{old_val} =} crash_dumps_octave_core (@var{new_val})
+@deftypefnx {Built-in Function} {} crash_dumps_octave_core (@var{new_val}, "local")
 Query or set the internal variable that controls whether Octave tries
 to save all current variables to the file "octave-core" if it
 crashes or receives a hangup, terminate or similar signal.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{@ref{doc-octave_core_file_limit,,octave_core_file_limit}, @ref{doc-octave_core_file_name,,octave_core_file_name}, @ref{doc-octave_core_file_options,,octave_core_file_options}}
 @end deftypefn
 
@@ -1071,9 +1146,14 @@ crashes or receives a hangup, terminate or similar signal.
 @anchor{doc-sighup_dumps_octave_core}
 @deftypefn  {Built-in Function} {@var{val} =} sighup_dumps_octave_core ()
 @deftypefnx {Built-in Function} {@var{old_val} =} sighup_dumps_octave_core (@var{new_val})
+@deftypefnx {Built-in Function} {} sighup_dumps_octave_core (@var{new_val}, "local")
 Query or set the internal variable that controls whether Octave tries
 to save all current variables to the file "octave-core" if it receives
 a hangup signal.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 
 
@@ -1081,9 +1161,14 @@ a hangup signal.
 @anchor{doc-sigterm_dumps_octave_core}
 @deftypefn  {Built-in Function} {@var{val} =} sigterm_dumps_octave_core ()
 @deftypefnx {Built-in Function} {@var{old_val} =} sigterm_dumps_octave_core (@var{new_val})
+@deftypefnx {Built-in Function} {} sigterm_dumps_octave_core (@var{new_val}, "local")
 Query or set the internal variable that controls whether Octave tries
 to save all current variables to the file "octave-core" if it receives
 a terminate signal.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @end deftypefn
 
 
@@ -1091,11 +1176,16 @@ a terminate signal.
 @anchor{doc-octave_core_file_options}
 @deftypefn  {Built-in Function} {@var{val} =} octave_core_file_options ()
 @deftypefnx {Built-in Function} {@var{old_val} =} octave_core_file_options (@var{new_val})
+@deftypefnx {Built-in Function} {} octave_core_file_options (@var{new_val}, "local")
 Query or set the internal variable that specifies the options used for
 saving the workspace data if Octave aborts.  The value of
 @code{octave_core_file_options} should follow the same format as the
 options for the @code{save} function.  The default value is Octave's binary
 format.
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{@ref{doc-crash_dumps_octave_core,,crash_dumps_octave_core}, @ref{doc-octave_core_file_name,,octave_core_file_name}, @ref{doc-octave_core_file_limit,,octave_core_file_limit}}
 @end deftypefn
 
@@ -1104,6 +1194,7 @@ format.
 @anchor{doc-octave_core_file_limit}
 @deftypefn  {Built-in Function} {@var{val} =} octave_core_file_limit ()
 @deftypefnx {Built-in Function} {@var{old_val} =} octave_core_file_limit (@var{new_val})
+@deftypefnx {Built-in Function} {} octave_core_file_limit (@var{new_val}, "local")
 Query or set the internal variable that specifies the maximum amount
 of memory (in kilobytes) of the top-level workspace that Octave will
 attempt to save when writing data to the crash dump file (the name of
@@ -1112,6 +1203,10 @@ the file is specified by @var{octave_core_file_name}).  If
 then @var{octave_core_file_limit} will be approximately the maximum
 size of the file.  If a text file format is used, then the file could
 be much larger than the limit.  The default value is -1 (unlimited)
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{@ref{doc-crash_dumps_octave_core,,crash_dumps_octave_core}, @ref{doc-octave_core_file_name,,octave_core_file_name}, @ref{doc-octave_core_file_options,,octave_core_file_options}}
 @end deftypefn
 
@@ -1120,9 +1215,14 @@ be much larger than the limit.  The default value is -1 (unlimited)
 @anchor{doc-octave_core_file_name}
 @deftypefn  {Built-in Function} {@var{val} =} octave_core_file_name ()
 @deftypefnx {Built-in Function} {@var{old_val} =} octave_core_file_name (@var{new_val})
+@deftypefnx {Built-in Function} {} octave_core_file_name (@var{new_val}, "local")
 Query or set the internal variable that specifies the name of the file
 used for saving data from the top-level workspace if Octave aborts.
 The default value is @code{"octave-core"}
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{@ref{doc-crash_dumps_octave_core,,crash_dumps_octave_core}, @ref{doc-octave_core_file_name,,octave_core_file_name}, @ref{doc-octave_core_file_options,,octave_core_file_options}}
 @end deftypefn
 
@@ -1676,7 +1776,7 @@ Conversions}, for details.
 
 @item @samp{%x}, @samp{%X}
 Print an integer as an unsigned hexadecimal number.  @samp{%x} uses
-lower-case letters and @samp{%X} uses upper-case.  @xref{Integer
+lowercase letters and @samp{%X} uses uppercase.  @xref{Integer
 Conversions}, for details.
 
 @item @samp{%f}
@@ -1685,13 +1785,13 @@ Print a floating-point number in normal (fixed-point) notation.
 
 @item @samp{%e}, @samp{%E}
 Print a floating-point number in exponential notation.  @samp{%e} uses
-lower-case letters and @samp{%E} uses upper-case.  @xref{Floating-Point
+lowercase letters and @samp{%E} uses uppercase.  @xref{Floating-Point
 Conversions}, for details.
 
 @item @samp{%g}, @samp{%G}
 Print a floating-point number in either normal (fixed-point) or
 exponential notation, whichever is more appropriate for its magnitude.
-@samp{%g} uses lower-case letters and @samp{%G} uses upper-case.
+@samp{%g} uses lowercase letters and @samp{%G} uses uppercase.
 @xref{Floating-Point Conversions}, for details.
 
 @item @samp{%c}
@@ -1872,8 +1972,8 @@ the other is more `C-like'.
 
 @c fscanf src/file-io.cc
 @anchor{doc-fscanf}
-@deftypefn  {Built-in Function} {[@var{val}, @var{count}] =} fscanf (@var{fid}, @var{template}, @var{size})
-@deftypefnx {Built-in Function} {[@var{v1}, @var{v2}, @dots{}, @var{count}] =} fscanf (@var{fid}, @var{template}, "C")
+@deftypefn  {Built-in Function} {[@var{val}, @var{count}, @var{errmsg}] =} fscanf (@var{fid}, @var{template}, @var{size})
+@deftypefnx {Built-in Function} {[@var{v1}, @var{v2}, @dots{}, @var{count}, @var{errmsg}] =} fscanf (@var{fid}, @var{template}, "C")
 In the first form, read from @var{fid} according to @var{template},
 returning the result in the matrix @var{val}.
 
@@ -1906,6 +2006,8 @@ conversions.
 
 The number of items successfully read is returned in @var{count}.
 
+If an error occurs, @var{errmsg} contains a system-dependent error message.
+
 In the second form, read from @var{fid} according to @var{template},
 with each conversion specifier in @var{template} corresponding to a
 single scalar return value.  This form is more `C-like', and also
@@ -1922,8 +2024,8 @@ complete description of the syntax of the template string.
 
 @c scanf src/file-io.cc
 @anchor{doc-scanf}
-@deftypefn  {Built-in Function} {[@var{val}, @var{count}] =} scanf (@var{template}, @var{size})
-@deftypefnx {Built-in Function} {[@var{v1}, @var{v2}, @dots{}, @var{count}]] =} scanf (@var{template}, "C")
+@deftypefn  {Built-in Function} {[@var{val}, @var{count}, @var{errmsg}] =} scanf (@var{template}, @var{size})
+@deftypefnx {Built-in Function} {[@var{v1}, @var{v2}, @dots{}, @var{count}, @var{errmsg}]] =} scanf (@var{template}, "C")
 This is equivalent to calling @code{fscanf} with @var{fid} = @code{stdin}.
 
 It is currently not useful to call @code{scanf} in interactive
@@ -1934,13 +2036,13 @@ programs.
 
 @c sscanf src/file-io.cc
 @anchor{doc-sscanf}
-@deftypefn  {Built-in Function} {[@var{val}, @var{count}, @var{pos}] =} sscanf (@var{string}, @var{template}, @var{size})
-@deftypefnx {Built-in Function} {[@var{v1}, @var{v2}, @dots{}, @var{count}] =} sscanf (@var{string}, @var{template}, "C")
+@deftypefn  {Built-in Function} {[@var{val}, @var{count}, @var{errmsg}, @var{pos}] =} sscanf (@var{string}, @var{template}, @var{size})
+@deftypefnx {Built-in Function} {[@var{v1}, @var{v2}, @dots{}, @var{count}, @var{errmsg}] =} sscanf (@var{string}, @var{template}, "C")
 This is like @code{fscanf}, except that the characters are taken from the
 string @var{string} instead of from a stream.  Reaching the end of the
 string is treated as an end-of-file condition.  In addition to the values
 returned by @code{fscanf}, the index of the next character to be read
-is returned in in @var{pos}.
+is returned in @var{pos}.
 @seealso{@ref{doc-fscanf,,fscanf}, @ref{doc-scanf,,scanf}, @ref{doc-sprintf,,sprintf}}
 @end deftypefn
 
@@ -2360,7 +2462,7 @@ must be @code{XXXXXX} and these are replaced with a string that makes the
 filename unique.  The file is then created with mode read/write and
 permissions that are system dependent (on GNU/Linux systems, the permissions
 will be 0600 for versions of glibc 2.0.7 and later).  The file is opened
-with the @w{@code{O_EXCL}} flag.
+in binary mode and with the @w{@code{O_EXCL}} flag.
 
 If the optional argument @var{delete} is supplied and is true,
 the file will be deleted automatically when Octave exits, or when
@@ -2391,6 +2493,9 @@ system-dependent error message.
 
 @c tmpnam src/file-io.cc
 @anchor{doc-tmpnam}
+@c List other forms of function in documentation index
+@findex octave_tmp_file_name
+
 @deftypefn  {Built-in Function} {} tmpnam ()
 @deftypefnx {Built-in Function} {} tmpnam (@var{dir})
 @deftypefnx {Built-in Function} {} tmpnam (@var{dir}, @var{prefix})
@@ -2521,7 +2626,7 @@ Return 0 on success and -1 on error.
 @deftypefn  {Built-in Function} {} SEEK_SET ()
 @deftypefnx {Built-in Function} {} SEEK_CUR ()
 @deftypefnx {Built-in Function} {} SEEK_END ()
-Return the value required to request that @code{fseek} perform
+Return the numerical value to pass to @code{fseek} to perform
 one of the following actions:
 @table @code
 @item SEEK_SET
@@ -2533,6 +2638,7 @@ Position file relative to the current position.
 @item SEEK_END
 Position file relative to the end.
 @end table
+@seealso{@ref{doc-fseek,,fseek}}
 @end deftypefn
 
 
@@ -2557,106 +2663,4 @@ fourch = fgets (myfile, 4);
 fseek (myfile, marker, SEEK_SET);
 @end group
 @end example
-
-@node GUI Dialogs for I/O
-@section GUI Dialogs for I/O
-
-Simple dialog menus are available for choosing directories or files.  They
-return a string variable which can then be used when calling any command
-requiring a file name.
-
-@c uigetdir scripts/plot/uigetdir.m
-@anchor{doc-uigetdir}
-@deftypefn  {Function File} {@var{dirname} =} uigetdir ()
-@deftypefnx {Function File} {@var{dirname} =} uigetdir (@var{init_path})
-@deftypefnx {Function File} {@var{dirname} =} uigetdir (@var{init_path}, @var{dialog_name})
-Open a GUI dialog for selecting a directory.  If @var{init_path} is not
-given the current working directory is used.  @var{dialog_name} may be
-used to customize the dialog title.
-@seealso{@ref{doc-uigetfile,,uigetfile}}
-@end deftypefn
-
-
-@c uigetfile scripts/plot/uigetfile.m
-@anchor{doc-uigetfile}
-@deftypefn  {Function File} {[@var{fname}, @var{fpath}, @var{fltidx}] =} uigetfile ()
-@deftypefnx {Function File} {[@dots{}] =} uigetfile (@var{flt})
-@deftypefnx {Function File} {[@dots{}] =} uigetfile (@var{flt}, @var{dialog_name})
-@deftypefnx {Function File} {[@dots{}] =} uigetfile (@var{flt}, @var{dialog_name}, @var{default_file})
-@deftypefnx {Function File} {[@dots{}] =} uigetfile (@dots{}, "Position", [@var{px} @var{py}])
-@deftypefnx {Function File} {[@dots{}] =} uigetfile (@dots{}, "MultiSelect", @var{mode})
-
-Open a GUI dialog for selecting a file.  It returns the filename @var{fname},
-the path to this file @var{fpath}, and the filter index @var{fltidx}.
-@var{flt} contains a (list of) file filter string(s) in one of the following
-formats:
-
-@table @asis
-@item "/path/to/filename.ext"
-If a filename is given then the file extension is extracted and used as
-filter.  In addition, the path is selected as current path and the filename
-is selected as default file.  Example: @code{uigetfile ("myfun.m")}
-
-@item A single file extension "*.ext"
-Example: @code{uigetfile ("*.ext")}
-
-@item A 2-column cell array
-containing a file extension in the first column and a brief description
-in the second column.
-Example: @code{uigetfile (@{"*.ext", "My Description";"*.xyz",
-"XYZ-Format"@})}
-
-The filter string can also contain a semicolon separated list of filter
-extensions.
-Example: @code{uigetfile (@{"*.gif;*.png;*.jpg", "Supported Picture
-Formats"@})}
-@end table
-
-@var{dialog_name} can be used to customize the dialog title.
-If @var{default_file} is given then it will be selected in the GUI dialog.
-If, in addition, a path is given it is also used as current path.
-
-The screen position of the GUI dialog can be set using the "Position" key
-and a 2-element vector containing the pixel coordinates.
-Two or more files can be selected when setting the "MultiSelect" key to "on".
-In that case @var{fname} is a cell array containing the files.
-@end deftypefn
-
-
-@c uiputfile scripts/plot/uiputfile.m
-@anchor{doc-uiputfile}
-@deftypefn  {Function File} {[@var{fname}, @var{fpath}, @var{fltidx}] =} uiputfile ()
-@deftypefnx {Function File} {[@var{fname}, @var{fpath}, @var{fltidx}] =} uiputfile (@var{flt})
-@deftypefnx {Function File} {[@var{fname}, @var{fpath}, @var{fltidx}] =} uiputfile (@var{flt}, @var{dialog_name})
-@deftypefnx {Function File} {[@var{fname}, @var{fpath}, @var{fltidx}] =} uiputfile (@var{flt}, @var{dialog_name}, @var{default_file})
-Open a GUI dialog for selecting a file.  @var{flt} contains a (list of) file
-filter string(s) in one of the following formats:
-
-@table @code
-@item "/path/to/filename.ext"
-If a filename is given the file extension is
-extracted and used as filter.
-In addition the path is selected as current path and the filename is selected
-as default file.
-Example: uiputfile("myfun.m");
-
-@item "*.ext"
-A single file extension.
-Example: uiputfile("*.ext");
-
-@item @{"*.ext","My Description"@}
-A 2-column cell array containing the file extension in the 1st column and
-a brief description in the 2nd column.
-Example: uiputfile(@{"*.ext","My Description";"*.xyz","XYZ-Format"@});
-@end table
-
-The filter string can also contain a semicolon separated list of filter
-extensions.
-Example: uiputfile(@{"*.gif;*.png;*.jpg", "Supported Picture Formats"@});
-
-@var{dialog_name} can be used to customize the dialog title.
-If @var{default_file} is given it is preselected in the GUI dialog.
-If, in addition, a path is given it is also used as current path.
-@end deftypefn
-
 

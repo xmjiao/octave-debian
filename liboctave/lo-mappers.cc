@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2011 John W. Eaton
+Copyright (C) 1996-2012 John W. Eaton
 Copyright (C) 2010 VZLU Prague
 
 This file is part of Octave.
@@ -46,6 +46,12 @@ double
 xtrunc (double x)
 {
   return gnulib::trunc (x);
+}
+
+double
+xcopysign (double x, double y)
+{
+  return gnulib::copysign (x, y);
 }
 
 double xfloor (double x)
@@ -265,6 +271,12 @@ float
 xtrunc (float x)
 {
   return gnulib::truncf (x);
+}
+
+float
+xcopysign (float x, float y)
+{
+  return gnulib::copysignf (x, y);
 }
 
 float

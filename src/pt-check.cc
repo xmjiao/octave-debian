@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2011 John W. Eaton
+Copyright (C) 1996-2012 John W. Eaton
 
 This file is part of Octave.
 
@@ -153,6 +153,11 @@ tree_checker::visit_simple_for_command (tree_simple_for_command& cmd)
 
   if (expr)
     expr->accept (*this);
+
+  tree_expression *maxproc = cmd.maxproc_expr ();
+
+  if (maxproc)
+    maxproc->accept (*this);
 
   tree_statement_list *list = cmd.body ();
 

@@ -1,7 +1,7 @@
 /* -*- buffer-read-only: t -*- vi: set ro: */
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* Case-insensitive string comparison functions in C locale.
-   Copyright (C) 1995-1996, 2001, 2003, 2005, 2009-2011 Free Software
+   Copyright (C) 1995-1996, 2001, 2003, 2005, 2009-2012 Free Software
    Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
@@ -42,12 +42,13 @@ extern "C" {
 /* Compare strings S1 and S2, ignoring case, returning less than, equal to or
    greater than zero if S1 is lexicographically less than, equal to or greater
    than S2.  */
-extern int c_strcasecmp (const char *s1, const char *s2);
+extern int c_strcasecmp (const char *s1, const char *s2) _GL_ATTRIBUTE_PURE;
 
 /* Compare no more than N characters of strings S1 and S2, ignoring case,
    returning less than, equal to or greater than zero if S1 is
    lexicographically less than, equal to or greater than S2.  */
-extern int c_strncasecmp (const char *s1, const char *s2, size_t n);
+extern int c_strncasecmp (const char *s1, const char *s2, size_t n)
+  _GL_ATTRIBUTE_PURE;
 
 
 #ifdef __cplusplus

@@ -30,7 +30,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="Matrix-Manipulation.html#Matrix-Manipul
 <hr>
 </div>
 
-<h3 class="section">16.5 Famous Matrices</h3>
+<h3 class="section">16.4 Famous Matrices</h3>
 
 <p>The following functions return famous matrix forms.
 
@@ -38,7 +38,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="Matrix-Manipulation.html#Matrix-Manipul
    <p><a name="doc_002dhadamard"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>hadamard</b> (<var>n</var>)<var><a name="index-hadamard-1691"></a></var><br>
+&mdash; Function File:  <b>hadamard</b> (<var>n</var>)<var><a name="index-hadamard-1761"></a></var><br>
 <blockquote><p>Construct a Hadamard matrix (Hn) of size <var>n</var>-by-<var>n</var>.  The
 size <var>n</var> must be of the form 2^k * p in which
 p is one of 1, 12, 20 or 28.  The returned matrix is normalized,
@@ -70,8 +70,8 @@ matrix.
    <p><a name="doc_002dhankel"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>hankel</b> (<var>c</var>)<var><a name="index-hankel-1692"></a></var><br>
-&mdash; Function File:  <b>hankel</b> (<var>c, r</var>)<var><a name="index-hankel-1693"></a></var><br>
+&mdash; Function File:  <b>hankel</b> (<var>c</var>)<var><a name="index-hankel-1762"></a></var><br>
+&mdash; Function File:  <b>hankel</b> (<var>c, r</var>)<var><a name="index-hankel-1763"></a></var><br>
 <blockquote><p>Return the Hankel matrix constructed from the first column <var>c</var>, and
 (optionally) the last row <var>r</var>.  If the last element of <var>c</var> is
 not the same as the first element of <var>r</var>, the last element of
@@ -94,11 +94,11 @@ be a vector of zeros with the same size as <var>c</var>.
    <p><a name="doc_002dhilb"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>hilb</b> (<var>n</var>)<var><a name="index-hilb-1694"></a></var><br>
+&mdash; Function File:  <b>hilb</b> (<var>n</var>)<var><a name="index-hilb-1764"></a></var><br>
 <blockquote><p>Return the Hilbert matrix of order <var>n</var>.  The i,j element
 of a Hilbert matrix is defined as
 
-     <pre class="example">          H (i, j) = 1 / (i + j - 1)
+     <pre class="example">          H(i, j) = 1 / (i + j - 1)
 </pre>
         <p>Hilbert matrices are close to being singular which make them difficult to
 invert with numerical routines. 
@@ -106,9 +106,9 @@ Comparing the condition number of a random matrix 5x5 matrix with that of
 a Hilbert matrix of order 5 reveals just how difficult the problem is.
 
      <pre class="example">          cond (rand (5))
-              &rArr; 14.392
+             &rArr; 14.392
           cond (hilb (5))
-              &rArr; 4.7661e+05
+             &rArr; 4.7661e+05
 </pre>
         <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
      <!-- A simple blank line produces the correct behavior. -->
@@ -120,7 +120,7 @@ a Hilbert matrix of order 5 reveals just how difficult the problem is.
    <p><a name="doc_002dinvhilb"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>invhilb</b> (<var>n</var>)<var><a name="index-invhilb-1695"></a></var><br>
+&mdash; Function File:  <b>invhilb</b> (<var>n</var>)<var><a name="index-invhilb-1765"></a></var><br>
 <blockquote><p>Return the inverse of the Hilbert matrix of order <var>n</var>.  This can be
 computed exactly using
 
@@ -156,7 +156,7 @@ finite precision of your computer's floating point arithmetic.
    <p><a name="doc_002dmagic"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>magic</b> (<var>n</var>)<var><a name="index-magic-1696"></a></var><br>
+&mdash; Function File:  <b>magic</b> (<var>n</var>)<var><a name="index-magic-1766"></a></var><br>
 <blockquote>
         <p>Create an <var>n</var>-by-<var>n</var> magic square.  A magic square is an arrangement
 of the integers <code>1:n^2</code> such that the row sums, column sums, and
@@ -169,8 +169,8 @@ diagonal sums are all equal to the same value.
    <p><a name="doc_002dpascal"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>pascal</b> (<var>n</var>)<var><a name="index-pascal-1697"></a></var><br>
-&mdash; Function File:  <b>pascal</b> (<var>n, t</var>)<var><a name="index-pascal-1698"></a></var><br>
+&mdash; Function File:  <b>pascal</b> (<var>n</var>)<var><a name="index-pascal-1767"></a></var><br>
+&mdash; Function File:  <b>pascal</b> (<var>n, t</var>)<var><a name="index-pascal-1768"></a></var><br>
 <blockquote><p>Return the Pascal matrix of order <var>n</var> if <var>t</var><code> = 0</code>.  <var>t</var>
 defaults to 0.  Return the pseudo-lower triangular Cholesky&nbsp;factor of
 the Pascal matrix if <var>t</var><code> = 1</code> (The sign of some columns may be
@@ -191,7 +191,7 @@ Cholesky&nbsp;factor with strictly positive values on the diagonal.  If
    <p><a name="doc_002drosser"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>rosser</b> ()<var><a name="index-rosser-1699"></a></var><br>
+&mdash; Function File:  <b>rosser</b> ()<var><a name="index-rosser-1769"></a></var><br>
 <blockquote><p>Return the Rosser matrix.  This is a difficult test case used to evaluate
 eigenvalue algorithms.
 
@@ -201,26 +201,12 @@ eigenvalue algorithms.
      <p class="noindent"><strong>See also:</strong> <a href="doc_002dwilkinson.html#doc_002dwilkinson">wilkinson</a>, <a href="doc_002deig.html#doc_002deig">eig</a>. 
 </p></blockquote></div>
 
-<!-- sylvester_matrix scripts/special-matrix/sylvester_matrix.m -->
-   <p><a name="doc_002dsylvester_005fmatrix"></a>
-
-<div class="defun">
-&mdash; Function File:  <b>sylvester_matrix</b> (<var>k</var>)<var><a name="index-sylvester_005fmatrix-1700"></a></var><br>
-<blockquote><p>Return the Sylvester matrix of order
-n = 2^<var>k</var>.
-
-     <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-     <!-- A simple blank line produces the correct behavior. -->
-     <!-- @sp 1 -->
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dtoeplitz.html#doc_002dtoeplitz">toeplitz</a>, <a href="doc_002dhankel.html#doc_002dhankel">hankel</a>. 
-</p></blockquote></div>
-
 <!-- toeplitz scripts/special-matrix/toeplitz.m -->
    <p><a name="doc_002dtoeplitz"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>toeplitz</b> (<var>c</var>)<var><a name="index-toeplitz-1701"></a></var><br>
-&mdash; Function File:  <b>toeplitz</b> (<var>c, r</var>)<var><a name="index-toeplitz-1702"></a></var><br>
+&mdash; Function File:  <b>toeplitz</b> (<var>c</var>)<var><a name="index-toeplitz-1770"></a></var><br>
+&mdash; Function File:  <b>toeplitz</b> (<var>c, r</var>)<var><a name="index-toeplitz-1771"></a></var><br>
 <blockquote><p>Return the Toeplitz matrix constructed from the first column <var>c</var>,
 and (optionally) the first row <var>r</var>.  If the first element of <var>r</var>
 is not the same as the first element of <var>c</var>, the first element of
@@ -247,8 +233,8 @@ taken to be the same as the first column.
    <p><a name="doc_002dvander"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>vander</b> (<var>c</var>)<var><a name="index-vander-1703"></a></var><br>
-&mdash; Function File:  <b>vander</b> (<var>c, n</var>)<var><a name="index-vander-1704"></a></var><br>
+&mdash; Function File:  <b>vander</b> (<var>c</var>)<var><a name="index-vander-1772"></a></var><br>
+&mdash; Function File:  <b>vander</b> (<var>c, n</var>)<var><a name="index-vander-1773"></a></var><br>
 <blockquote><p>Return the Vandermonde matrix whose next to last column is <var>c</var>. 
 If <var>n</var> is specified, it determines the number of columns;
 otherwise, <var>n</var> is taken to be equal to the length of <var>c</var>.
@@ -272,7 +258,7 @@ otherwise, <var>n</var> is taken to be equal to the length of <var>c</var>.
    <p><a name="doc_002dwilkinson"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>wilkinson</b> (<var>n</var>)<var><a name="index-wilkinson-1705"></a></var><br>
+&mdash; Function File:  <b>wilkinson</b> (<var>n</var>)<var><a name="index-wilkinson-1774"></a></var><br>
 <blockquote><p>Return the Wilkinson matrix of order <var>n</var>.  Wilkinson matrices are
 symmetric and tridiagonal with pairs of nearly, but not exactly, equal
 eigenvalues.  They are useful in testing the behavior and performance
@@ -285,7 +271,7 @@ of eigenvalue solvers.
 </p></blockquote></div>
 
 <!-- DO NOT EDIT!  Generated automatically by munge-texi. -->
-<!-- Copyright (C) 1996-2011 John W. Eaton -->
+<!-- Copyright (C) 1996-2012 John W. Eaton -->
 <!-- This file is part of Octave. -->
 <!-- Octave is free software; you can redistribute it and/or modify it -->
 <!-- under the terms of the GNU General Public License as published by the -->

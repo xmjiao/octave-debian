@@ -1,4 +1,4 @@
-## Copyright (C) 2004-2011 John W. Eaton
+## Copyright (C) 2004-2012 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -33,7 +33,7 @@
 ## @end example
 ##
 ## @noindent
-## in which @code{statinfo} is the structure returned from @code{stat}.
+## where @code{statinfo} is the structure returned from @code{stat}.
 ##
 ## If @var{directory} is not a directory, return information about the
 ## named @var{filename}.  @var{directory} may be a list of directories
@@ -41,7 +41,7 @@
 ## which will be expanded with glob.
 ##
 ## Note that for symbolic links, @code{dir} returns information about
-## the file that a symbolic link points to instead of the link itself.
+## the file that the symbolic link points to instead of the link itself.
 ## However, if the link points to a nonexistent file, @code{dir} returns
 ## information about the link.
 ## @seealso{ls, stat, lstat, readdir, glob, filesep}

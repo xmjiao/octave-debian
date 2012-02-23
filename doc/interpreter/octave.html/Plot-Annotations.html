@@ -53,24 +53,28 @@ border lines are on.
    <p><a name="doc_002dtitle"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>title</b> (<var>string</var>)<var><a name="index-title-1294"></a></var><br>
-&mdash; Function File:  <b>title</b> (<var>string, p1, v1, <small class="dots">...</small></var>)<var><a name="index-title-1295"></a></var><br>
-<blockquote><p>Create a title object and return a handle to it. 
+&mdash; Function File:  <b>title</b> (<var>string</var>)<var><a name="index-title-1364"></a></var><br>
+&mdash; Function File:  <b>title</b> (<var>string, p1, v1, <small class="dots">...</small></var>)<var><a name="index-title-1365"></a></var><br>
+&mdash; Function File:  <b>title</b> (<var>h, <small class="dots">...</small></var>)<var><a name="index-title-1366"></a></var><br>
+&mdash; Function File: <var>h</var> = <b>title</b> (<var><small class="dots">...</small></var>)<var><a name="index-title-1367"></a></var><br>
+<blockquote><p>Create a title object for a plot.
+
+        <p>The optional return value <var>h</var> is a graphics handle to the created object. 
 </p></blockquote></div>
 
 <!-- legend scripts/plot/legend.m -->
    <p><a name="doc_002dlegend"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>legend</b> (<var>str1, str2, <small class="dots">...</small></var>)<var><a name="index-legend-1296"></a></var><br>
-&mdash; Function File:  <b>legend</b> (<var>matstr</var>)<var><a name="index-legend-1297"></a></var><br>
-&mdash; Function File:  <b>legend</b> (<var>cell</var>)<var><a name="index-legend-1298"></a></var><br>
-&mdash; Function File:  <b>legend</b> (<var><small class="dots">...</small>, "location", pos</var>)<var><a name="index-legend-1299"></a></var><br>
-&mdash; Function File:  <b>legend</b> (<var><small class="dots">...</small>, "orientation", orient</var>)<var><a name="index-legend-1300"></a></var><br>
-&mdash; Function File:  <b>legend</b> (<var>hax, <small class="dots">...</small></var>)<var><a name="index-legend-1301"></a></var><br>
-&mdash; Function File:  <b>legend</b> (<var>hobjs, <small class="dots">...</small></var>)<var><a name="index-legend-1302"></a></var><br>
-&mdash; Function File:  <b>legend</b> (<var>hax, hobjs, <small class="dots">...</small></var>)<var><a name="index-legend-1303"></a></var><br>
-&mdash; Function File:  <b>legend</b> (<var>"option"</var>)<var><a name="index-legend-1304"></a></var><br>
+&mdash; Function File:  <b>legend</b> (<var>str1, str2, <small class="dots">...</small></var>)<var><a name="index-legend-1368"></a></var><br>
+&mdash; Function File:  <b>legend</b> (<var>matstr</var>)<var><a name="index-legend-1369"></a></var><br>
+&mdash; Function File:  <b>legend</b> (<var>cell</var>)<var><a name="index-legend-1370"></a></var><br>
+&mdash; Function File:  <b>legend</b> (<var><small class="dots">...</small>, "location", pos</var>)<var><a name="index-legend-1371"></a></var><br>
+&mdash; Function File:  <b>legend</b> (<var><small class="dots">...</small>, "orientation", orient</var>)<var><a name="index-legend-1372"></a></var><br>
+&mdash; Function File:  <b>legend</b> (<var>hax, <small class="dots">...</small></var>)<var><a name="index-legend-1373"></a></var><br>
+&mdash; Function File:  <b>legend</b> (<var>hobjs, <small class="dots">...</small></var>)<var><a name="index-legend-1374"></a></var><br>
+&mdash; Function File:  <b>legend</b> (<var>hax, hobjs, <small class="dots">...</small></var>)<var><a name="index-legend-1375"></a></var><br>
+&mdash; Function File:  <b>legend</b> (<var>"option"</var>)<var><a name="index-legend-1376"></a></var><br>
 <blockquote>
         <p>Display a legend for the axes with handle <var>hax</var>, or the current axes,
 using the specified strings as labels.  Legend entries may be specified
@@ -84,7 +88,10 @@ A plot must exist before legend is called.
 as follows:
 
         <p><table summary="">
-<tr align="left"><td valign="top" width="6%"></td><td valign="top" width="14%">north </td><td valign="top" width="80%">
+<tr align="left"><th valign="top" width="6%"></th><th valign="top" width="14%"><var>pos</var> </th><th valign="top" width="80%">
+  location of the legend
+
+     <p><br></th></tr><tr align="left"><td valign="top" width="6%"></td><td valign="top" width="14%">north </td><td valign="top" width="80%">
   center top
 
      <p><br></td></tr><tr align="left"><td valign="top" width="6%"></td><td valign="top" width="14%">south </td><td valign="top" width="80%">
@@ -142,13 +149,17 @@ or "horizontal" with the default being "vertical".
    <p><a name="doc_002dtext"></a>
 
 <div class="defun">
-&mdash; Function File: <var>h</var> = <b>text</b> (<var>x, y, label</var>)<var><a name="index-text-1305"></a></var><br>
-&mdash; Function File: <var>h</var> = <b>text</b> (<var>x, y, z, label</var>)<var><a name="index-text-1306"></a></var><br>
-&mdash; Function File: <var>h</var> = <b>text</b> (<var>x, y, label, p1, v1, <small class="dots">...</small></var>)<var><a name="index-text-1307"></a></var><br>
-&mdash; Function File: <var>h</var> = <b>text</b> (<var>x, y, z, label, p1, v1, <small class="dots">...</small></var>)<var><a name="index-text-1308"></a></var><br>
+&mdash; Function File:  <b>text</b> (<var>x, y, label</var>)<var><a name="index-text-1377"></a></var><br>
+&mdash; Function File:  <b>text</b> (<var>x, y, z, label</var>)<var><a name="index-text-1378"></a></var><br>
+&mdash; Function File:  <b>text</b> (<var>x, y, label, p1, v1, <small class="dots">...</small></var>)<var><a name="index-text-1379"></a></var><br>
+&mdash; Function File:  <b>text</b> (<var>x, y, z, label, p1, v1, <small class="dots">...</small></var>)<var><a name="index-text-1380"></a></var><br>
+&mdash; Function File: <var>h</var> = <b>text</b> (<var><small class="dots">...</small></var>)<var><a name="index-text-1381"></a></var><br>
 <blockquote><p>Create a text object with text <var>label</var> at position <var>x</var>,
 <var>y</var>, <var>z</var> on the current axes.  Property-value pairs following
-<var>label</var> may be used to specify the appearance of the text. 
+<var>label</var> may be used to specify the appearance of the text.
+
+        <p>The optional return value <var>h</var> is a graphics handle to the created text
+object. 
 </p></blockquote></div>
 
    <p>See <a href="Text-Properties.html#Text-Properties">Text Properties</a> for the properties that you can set.
@@ -157,32 +168,33 @@ or "horizontal" with the default being "vertical".
 <a name="doc_002dxlabel"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>xlabel</b> (<var>string</var>)<var><a name="index-xlabel-1309"></a></var><br>
-&mdash; Function File:  <b>xlabel</b> (<var>h, string</var>)<var><a name="index-xlabel-1310"></a></var><br>
-&mdash; Function File: <var>h</var> = <b>xlabel</b> (<var><small class="dots">...</small></var>)<var><a name="index-xlabel-1311"></a></var><br>
-&mdash; Function File:  <b>ylabel</b> (<var><small class="dots">...</small></var>)<var><a name="index-ylabel-1312"></a></var><br>
-&mdash; Function File:  <b>zlabel</b> (<var><small class="dots">...</small></var>)<var><a name="index-zlabel-1313"></a></var><br>
+&mdash; Function File:  <b>xlabel</b> (<var>string</var>)<var><a name="index-xlabel-1382"></a></var><br>
+&mdash; Function File:  <b>xlabel</b> (<var>h, string</var>)<var><a name="index-xlabel-1383"></a></var><br>
+&mdash; Function File: <var>h</var> = <b>xlabel</b> (<var><small class="dots">...</small></var>)<var><a name="index-xlabel-1384"></a></var><br>
+&mdash; Function File:  <b>ylabel</b> (<var><small class="dots">...</small></var>)<var><a name="index-ylabel-1385"></a></var><br>
+&mdash; Function File:  <b>zlabel</b> (<var><small class="dots">...</small></var>)<var><a name="index-zlabel-1386"></a></var><br>
 <blockquote><p>Specify x-, y-, or z-axis labels for the current axis.  If <var>h</var> is
-specified then label the axis defined by <var>h</var>.  The optional return
-value <var>h</var> provides a handle to the created label. 
+specified then label the axis defined by <var>h</var>.
+
+        <p>The optional return value <var>h</var> is a graphics handle to the created object. 
 <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
 <!-- A simple blank line produces the correct behavior. -->
 <!-- @sp 1 -->
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dplot.html#doc_002dplot">plot</a>, <a href="doc_002dsemilogx.html#doc_002dsemilogx">semilogx</a>, <a href="doc_002dsemilogy.html#doc_002dsemilogy">semilogy</a>, <a href="doc_002dloglog.html#doc_002dloglog">loglog</a>, <a href="doc_002dpolar.html#doc_002dpolar">polar</a>, <a href="doc_002dmesh.html#doc_002dmesh">mesh</a>, <a href="doc_002dcontour.html#doc_002dcontour">contour</a>, <a href="doc_002dbar.html#doc_002dbar">bar</a>, <a href="doc_002dstairs.html#doc_002dstairs">stairs</a>, <a href="doc_002dtitle.html#doc_002dtitle">title</a>. 
+     <p class="noindent"><strong>See also:</strong> <a href="doc_002dtitle.html#doc_002dtitle">title</a>, <a href="doc_002dtext.html#doc_002dtext">text</a>. 
 </p></blockquote></div>
 
 <!-- clabel scripts/plot/clabel.m -->
    <p><a name="doc_002dclabel"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>clabel</b> (<var>c, h</var>)<var><a name="index-clabel-1314"></a></var><br>
-&mdash; Function File:  <b>clabel</b> (<var>c, h, v</var>)<var><a name="index-clabel-1315"></a></var><br>
-&mdash; Function File:  <b>clabel</b> (<var>c, h, "manual"</var>)<var><a name="index-clabel-1316"></a></var><br>
-&mdash; Function File:  <b>clabel</b> (<var>c</var>)<var><a name="index-clabel-1317"></a></var><br>
-&mdash; Function File:  <b>clabel</b> (<var>c, h</var>)<var><a name="index-clabel-1318"></a></var><br>
-&mdash; Function File:  <b>clabel</b> (<var><small class="dots">...</small>, prop, val, <small class="dots">...</small></var>)<var><a name="index-clabel-1319"></a></var><br>
-&mdash; Function File: <var>h</var> = <b>clabel</b> (<var><small class="dots">...</small></var>)<var><a name="index-clabel-1320"></a></var><br>
+&mdash; Function File:  <b>clabel</b> (<var>c, h</var>)<var><a name="index-clabel-1387"></a></var><br>
+&mdash; Function File:  <b>clabel</b> (<var>c, h, v</var>)<var><a name="index-clabel-1388"></a></var><br>
+&mdash; Function File:  <b>clabel</b> (<var>c, h, "manual"</var>)<var><a name="index-clabel-1389"></a></var><br>
+&mdash; Function File:  <b>clabel</b> (<var>c</var>)<var><a name="index-clabel-1390"></a></var><br>
+&mdash; Function File:  <b>clabel</b> (<var>c, h</var>)<var><a name="index-clabel-1391"></a></var><br>
+&mdash; Function File:  <b>clabel</b> (<var><small class="dots">...</small>, prop, val, <small class="dots">...</small></var>)<var><a name="index-clabel-1392"></a></var><br>
+&mdash; Function File: <var>h</var> = <b>clabel</b> (<var><small class="dots">...</small></var>)<var><a name="index-clabel-1393"></a></var><br>
 <blockquote><p>Add labels to the contours of a contour plot.  The contour plot is specified
 by the contour matrix <var>c</var> and optionally the contourgroup object <var>h</var>
 that are returned by <code>contour</code>, <code>contourf</code> and <code>contour3</code>. 
@@ -198,14 +210,15 @@ the property "LabelSpacing" is available allowing the spacing between labels
 on a contour (in points) to be specified.  The default is 144 points, or 2
 inches.
 
-        <p>The returned value <var>h</var> is the set of text object that represent the
-contour labels.  The "userdata" property of the text objects contains the
-numerical value of the contour label.
+        <p>The optional return value <var>h</var> is a vector of graphics handles to
+the text objects representing each label. 
+The "userdata" property of the text objects contains the numerical value of
+the contour label.
 
         <p>An example of the use of <code>clabel</code> is
 
-     <pre class="example">          [c, h] = contour (peaks(), -4 : 6);
-          clabel (c, h, -4 : 2 : 6, 'fontsize', 12);
+     <pre class="example">          [c, h] = contour (peaks (), -4 : 6);
+          clabel (c, h, -4:2:6, "fontsize", 12);
 </pre>
         <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
      <!-- A simple blank line produces the correct behavior. -->
@@ -217,8 +230,8 @@ numerical value of the contour label.
    <p><a name="doc_002dbox"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>box</b> (<var>arg</var>)<var><a name="index-box-1321"></a></var><br>
-&mdash; Function File:  <b>box</b> (<var>h, <small class="dots">...</small></var>)<var><a name="index-box-1322"></a></var><br>
+&mdash; Function File:  <b>box</b> (<var>arg</var>)<var><a name="index-box-1394"></a></var><br>
+&mdash; Function File:  <b>box</b> (<var>h, <small class="dots">...</small></var>)<var><a name="index-box-1395"></a></var><br>
 <blockquote><p>Control the display of a border around the plot. 
 The argument may be either <code>"on"</code> or <code>"off"</code>.  If it is
 omitted, the current box state is toggled. 
@@ -233,9 +246,9 @@ omitted, the current box state is toggled.
    <p><a name="doc_002dgrid"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>grid</b> (<var>arg</var>)<var><a name="index-grid-1323"></a></var><br>
-&mdash; Function File:  <b>grid</b> (<var>"minor", arg2</var>)<var><a name="index-grid-1324"></a></var><br>
-&mdash; Function File:  <b>grid</b> (<var>hax, <small class="dots">...</small></var>)<var><a name="index-grid-1325"></a></var><br>
+&mdash; Function File:  <b>grid</b> (<var>arg</var>)<var><a name="index-grid-1396"></a></var><br>
+&mdash; Function File:  <b>grid</b> (<var>"minor", arg2</var>)<var><a name="index-grid-1397"></a></var><br>
+&mdash; Function File:  <b>grid</b> (<var>hax, <small class="dots">...</small></var>)<var><a name="index-grid-1398"></a></var><br>
 <blockquote><p>Force the display of a grid on the plot. 
 The argument may be either <code>"on"</code>, or <code>"off"</code>. 
 If it is omitted, the current grid state is toggled.
@@ -258,8 +271,8 @@ specified axis object.
    <p><a name="doc_002dcolorbar"></a>
 
 <div class="defun">
-&mdash; Function File:  <b>colorbar</b> (<var>s</var>)<var><a name="index-colorbar-1326"></a></var><br>
-&mdash; Function File:  <b>colorbar</b> (<var>"peer", h, <small class="dots">...</small></var>)<var><a name="index-colorbar-1327"></a></var><br>
+&mdash; Function File:  <b>colorbar</b> (<var>s</var>)<var><a name="index-colorbar-1399"></a></var><br>
+&mdash; Function File:  <b>colorbar</b> (<var>"peer", h, <small class="dots">...</small></var>)<var><a name="index-colorbar-1400"></a></var><br>
 <blockquote><p>Add a colorbar to the current axes.  Valid values for <var>s</var> are
 
           <dl>

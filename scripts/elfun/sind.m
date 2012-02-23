@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2011 David Bateman
+## Copyright (C) 2006-2012 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -31,7 +31,7 @@ function y = sind (x)
   endif
   I = x / 180;
   y = sin (I .* pi);
-  y(I == round (I) & finite (I)) = 0;
+  y(I == fix (I) & finite (I)) = 0;
 endfunction
 
 %!error(sind())

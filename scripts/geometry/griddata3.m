@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2011 David Bateman
+## Copyright (C) 2007-2012 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -17,15 +17,15 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{vi} =} griddata3 (@var{x}, @var{y}, @var{z}, @var{v} @var{xi}, @var{yi}, @var{zi}, @var{method}, @var{options})
+## @deftypefn {Function File} {@var{vi} =} griddata3 (@var{x}, @var{y}, @var{z}, @var{v}, @var{xi}, @var{yi}, @var{zi}, @var{method}, @var{options})
 ##
 ## Generate a regular mesh from irregular data using interpolation.
-## The function is defined by @code{@var{y} = f (@var{x},@var{y},@var{z})}.
-## The interpolation points are all @var{xi}.
+## The function is defined by @code{@var{v} = f (@var{x}, @var{y}, @var{z})}.
+## The interpolation points are specified by @var{xi}, @var{yi}, @var{zi}.
 ##
 ## The interpolation method can be @code{"nearest"} or @code{"linear"}.
 ## If method is omitted it defaults to @code{"linear"}.
-## @seealso{griddata, delaunayn}
+## @seealso{griddata, griddatan, delaunayn}
 ## @end deftypefn
 
 ## Author: David Bateman <dbateman@free.fr>
@@ -53,28 +53,32 @@ function vi = griddata3 (x, y, z, v, xi, yi, zi, method, varargin)
 
   vi = griddatan ([x(:), y(:), z(:)], v(:), [xi(:), yi(:), zi(:)], varargin{:});
   vi = reshape (vi, size (xi));
+
 endfunction
 
-%!testif HAVE_QHULL
-%! rand('state', 0);
-%! x = 2 * rand(1000, 1) - 1;
-%! y = 2 * rand(1000, 1) - 1;
-%! z = 2 * rand(1000, 1) - 1;
-%! v = x.^2 + y.^2 + z.^2;
-%! [xi, yi, zi] = meshgrid (-0.8:0.2:0.8);
-%! ##vi = reshape (griddatan([x(:), y(:), z(:)], v, [xi(:), yi(:), zi(:)], 'linear'), size (xi));
-%! vi = griddata3 (x, y, z, v, xi, yi, zi, 'linear');
-%! vv = vi - xi.^2 - yi.^2 - zi.^2;
-%! assert (max(abs(vv(:))), 0, 0.1)
 
 %!testif HAVE_QHULL
-%! rand('state', 0);
-%! x = 2 * rand(1000, 1) - 1;
-%! y = 2 * rand(1000, 1) - 1;
-%! z = 2 * rand(1000, 1) - 1;
+%! old_state = rand ("state");
+%! restore_state = onCleanup (@() rand ("state", old_state));
+%! rand ("state", 0);
+%! x = 2 * rand (1000, 1) - 1;
+%! y = 2 * rand (1000, 1) - 1;
+%! z = 2 * rand (1000, 1) - 1;
 %! v = x.^2 + y.^2 + z.^2;
 %! [xi, yi, zi] = meshgrid (-0.8:0.2:0.8);
-%! ##vi = reshape (griddatan([x(:), y(:), z(:)], v, [xi(:), yi(:), zi(:)], 'linear'), size (xi));
+%! vi = griddata3 (x, y, z, v, xi, yi, zi, 'linear');
+%! vv = vi - xi.^2 - yi.^2 - zi.^2;
+%! assert (max (abs (vv(:))), 0, 0.1);
+
+%!testif HAVE_QHULL
+%! old_state = rand ("state");
+%! restore_state = onCleanup (@() rand ("state", old_state));
+%! rand ("state", 0);
+%! x = 2 * rand (1000, 1) - 1;
+%! y = 2 * rand (1000, 1) - 1;
+%! z = 2 * rand (1000, 1) - 1;
+%! v = x.^2 + y.^2 + z.^2;
+%! [xi, yi, zi] = meshgrid (-0.8:0.2:0.8);
 %! vi = griddata3 (x, y, z, v, xi, yi, zi, 'nearest');
 %! vv = vi - xi.^2 - yi.^2 - zi.^2;
-%! assert (max(abs(vv(:))), 0, 0.1)
+%! assert (max (abs (vv(:))), 0, 0.1)

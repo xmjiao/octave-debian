@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2011 VZLU Prague, a.s.
+## Copyright (C) 2008-2012 VZLU Prague, a.s.
 ##
 ## This file is part of Octave.
 ##
@@ -49,7 +49,8 @@
 ## This is patterned after opt/fmin.f from Netlib, which in turn is taken from
 ## Richard Brent: Algorithms For Minimization Without Derivatives, Prentice-Hall (1973)
 
-## PKG_ADD: __all_opts__ ("fminbnd");
+## PKG_ADD: ## Discard result to avoid polluting workspace with ans at startup.
+## PKG_ADD: [~] = __all_opts__ ("fminbnd");
 
 function [x, fval, info, output] = fminbnd (fun, xmin, xmax, options = struct ())
 

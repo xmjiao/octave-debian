@@ -635,6 +635,7 @@ figure::properties::properties (const graphics_handle& mh, const graphics_handle
     mincolormap ("mincolormap", mh, 64),
     name ("name", mh, ""),
     numbertitle ("numbertitle", mh, "on"),
+    outerposition ("outerposition", mh, Matrix (1, 4, -1.0)),
     paperunits ("paperunits", mh, "{inches}|centimeters|normalized|points"),
     paperposition ("paperposition", mh, default_figure_paperposition ()),
     paperpositionmode ("paperpositionmode", mh, "auto|{manual}"),
@@ -662,7 +663,8 @@ figure::properties::properties (const graphics_handle& mh, const graphics_handle
     xvisual ("xvisual", mh, ""),
     xvisualmode ("xvisualmode", mh, "{auto}|manual"),
     buttondownfcn ("buttondownfcn", mh, Matrix ()),
-    __graphics_toolkit__ ("__graphics_toolkit__", mh, "gnuplot")
+    __graphics_toolkit__ ("__graphics_toolkit__", mh, "gnuplot"),
+    __guidata__ ("__guidata__", mh, Matrix ())
 {
   __plot_stream__.set_id (ID___PLOT_STREAM__);
   __plot_stream__.set_hidden (true);
@@ -689,6 +691,7 @@ figure::properties::properties (const graphics_handle& mh, const graphics_handle
   mincolormap.set_id (ID_MINCOLORMAP);
   name.set_id (ID_NAME);
   numbertitle.set_id (ID_NUMBERTITLE);
+  outerposition.set_id (ID_OUTERPOSITION);
   paperunits.set_id (ID_PAPERUNITS);
   paperposition.set_id (ID_PAPERPOSITION);
   paperpositionmode.set_id (ID_PAPERPOSITIONMODE);
@@ -717,6 +720,8 @@ figure::properties::properties (const graphics_handle& mh, const graphics_handle
   xvisualmode.set_id (ID_XVISUALMODE);
   buttondownfcn.set_id (ID_BUTTONDOWNFCN);
   __graphics_toolkit__.set_id (ID___GRAPHICS_TOOLKIT__);
+  __guidata__.set_id (ID___GUIDATA__);
+  __guidata__.set_hidden (true);
   init ();
 }
 
@@ -770,6 +775,8 @@ figure::properties::set (const caseless_str& pname_arg, const octave_value& val)
     set_name (val);
   else if (pname.compare ("numbertitle"))
     set_numbertitle (val);
+  else if (pname.compare ("outerposition"))
+    set_outerposition (val);
   else if (pname.compare ("paperunits"))
     set_paperunits (val);
   else if (pname.compare ("paperposition"))
@@ -826,6 +833,8 @@ figure::properties::set (const caseless_str& pname_arg, const octave_value& val)
     set_buttondownfcn (val);
   else if (pname.compare ("__graphics_toolkit__"))
     set___graphics_toolkit__ (val);
+  else if (pname.compare ("__guidata__"))
+    set___guidata__ (val);
   else
     base_properties::set (pname, val);
 }
@@ -860,6 +869,7 @@ figure::properties::get (bool all) const
   m.assign ("mincolormap", octave_value (get_mincolormap ()));
   m.assign ("name", octave_value (get_name ()));
   m.assign ("numbertitle", octave_value (get_numbertitle ()));
+  m.assign ("outerposition", octave_value (get_outerposition ()));
   m.assign ("paperunits", octave_value (get_paperunits ()));
   m.assign ("paperposition", octave_value (get_paperposition ()));
   m.assign ("paperpositionmode", octave_value (get_paperpositionmode ()));
@@ -888,6 +898,8 @@ figure::properties::get (bool all) const
   m.assign ("xvisualmode", octave_value (get_xvisualmode ()));
   m.assign ("buttondownfcn", octave_value (get_buttondownfcn ()));
   m.assign ("__graphics_toolkit__", octave_value (get___graphics_toolkit__ ()));
+  if (all)
+    m.assign ("__guidata__", octave_value (get___guidata__ ()));
 
   return m;
 }
@@ -950,6 +962,8 @@ figure::properties::get (const caseless_str& pname_arg) const
     retval = get_name ();
   else if (pname.compare ("numbertitle"))
     retval = get_numbertitle ();
+  else if (pname.compare ("outerposition"))
+    retval = get_outerposition ();
   else if (pname.compare ("paperunits"))
     retval = get_paperunits ();
   else if (pname.compare ("paperposition"))
@@ -1006,6 +1020,8 @@ figure::properties::get (const caseless_str& pname_arg) const
     retval = get_buttondownfcn ();
   else if (pname.compare ("__graphics_toolkit__"))
     retval = get___graphics_toolkit__ ();
+  else if (pname.compare ("__guidata__"))
+    retval = get___guidata__ ();
   else
     retval = base_properties::get (pname);
 
@@ -1068,6 +1084,8 @@ figure::properties::get_property (const caseless_str& pname_arg)
     return property (&name, true);
   else if (pname.compare ("numbertitle"))
     return property (&numbertitle, true);
+  else if (pname.compare ("outerposition"))
+    return property (&outerposition, true);
   else if (pname.compare ("paperunits"))
     return property (&paperunits, true);
   else if (pname.compare ("paperposition"))
@@ -1124,6 +1142,8 @@ figure::properties::get_property (const caseless_str& pname_arg)
     return property (&buttondownfcn, true);
   else if (pname.compare ("__graphics_toolkit__"))
     return property (&__graphics_toolkit__, true);
+  else if (pname.compare ("__guidata__"))
+    return property (&__guidata__, true);
   else
     return base_properties::get_property (pname);
 }
@@ -1156,6 +1176,7 @@ figure::properties::factory_defaults (void)
   m["mincolormap"] = 64;
   m["name"] = "";
   m["numbertitle"] = "on";
+  m["outerposition"] = Matrix (1, 4, -1.0);
   m["paperunits"] = "inches";
   m["paperposition"] = default_figure_paperposition ();
   m["paperpositionmode"] = "manual";
@@ -1184,6 +1205,7 @@ figure::properties::factory_defaults (void)
   m["xvisualmode"] = "auto";
   m["buttondownfcn"] = Matrix ();
   m["__graphics_toolkit__"] = "gnuplot";
+  m["__guidata__"] = Matrix ();
 
   return m;
 }
@@ -1222,6 +1244,7 @@ figure::properties::core_property_names (void)
       all_pnames.insert ("mincolormap");
       all_pnames.insert ("name");
       all_pnames.insert ("numbertitle");
+      all_pnames.insert ("outerposition");
       all_pnames.insert ("paperunits");
       all_pnames.insert ("paperposition");
       all_pnames.insert ("paperpositionmode");
@@ -1250,6 +1273,7 @@ figure::properties::core_property_names (void)
       all_pnames.insert ("xvisualmode");
       all_pnames.insert ("buttondownfcn");
       all_pnames.insert ("__graphics_toolkit__");
+      all_pnames.insert ("__guidata__");
 
       std::set<std::string> base_pnames = base_properties::core_property_names ();
       all_pnames.insert (base_pnames.begin (), base_pnames.end ());
@@ -1308,10 +1332,10 @@ axes::properties::properties (const graphics_handle& mh, const graphics_handle& 
     zlimmode ("zlimmode", mh, "{auto}|manual"),
     climmode ("climmode", mh, "{auto}|manual"),
     alimmode ("alimmode", mh, "{auto}|manual"),
-    xlabel ("xlabel", mh, gh_manager::make_graphics_handle ("text", __myhandle__, false)),
-    ylabel ("ylabel", mh, gh_manager::make_graphics_handle ("text", __myhandle__, false)),
-    zlabel ("zlabel", mh, gh_manager::make_graphics_handle ("text", __myhandle__, false)),
-    title ("title", mh, gh_manager::make_graphics_handle ("text", __myhandle__, false)),
+    xlabel ("xlabel", mh, gh_manager::make_graphics_handle ("text", __myhandle__, false, false, false)),
+    ylabel ("ylabel", mh, gh_manager::make_graphics_handle ("text", __myhandle__, false, false, false)),
+    zlabel ("zlabel", mh, gh_manager::make_graphics_handle ("text", __myhandle__, false, false, false)),
+    title ("title", mh, gh_manager::make_graphics_handle ("text", __myhandle__, false, false, false)),
     xgrid ("xgrid", mh, "off"),
     ygrid ("ygrid", mh, "off"),
     zgrid ("zgrid", mh, "off"),
@@ -1387,7 +1411,8 @@ axes::properties::properties (const graphics_handle& mh, const graphics_handle& 
     xmtick ("xmtick", mh, Matrix ()),
     ymtick ("ymtick", mh, Matrix ()),
     zmtick ("zmtick", mh, Matrix ()),
-    looseinset ("looseinset", mh, Matrix (1, 4, 0.0))
+    looseinset ("looseinset", mh, Matrix (1, 4, 0.0)),
+    autopos_tag ("autopos_tag", mh, "{none}|subplot")
 {
   position.set_id (ID_POSITION);
   box.set_id (ID_BOX);
@@ -1495,6 +1520,8 @@ axes::properties::properties (const graphics_handle& mh, const graphics_handle& 
   zmtick.set_hidden (true);
   looseinset.set_id (ID_LOOSEINSET);
   looseinset.set_hidden (true);
+  autopos_tag.set_id (ID_AUTOPOS_TAG);
+  autopos_tag.set_hidden (true);
   init ();
 }
 
@@ -1698,6 +1725,8 @@ axes::properties::set (const caseless_str& pname_arg, const octave_value& val)
     set_zmtick (val);
   else if (pname.compare ("looseinset"))
     set_looseinset (val);
+  else if (pname.compare ("autopos_tag"))
+    set_autopos_tag (val);
   else
     base_properties::set (pname, val);
 }
@@ -1813,6 +1842,8 @@ axes::properties::get (bool all) const
     m.assign ("zmtick", octave_value (get_zmtick ()));
   if (all)
     m.assign ("looseinset", octave_value (get_looseinset ()));
+  if (all)
+    m.assign ("autopos_tag", octave_value (get_autopos_tag ()));
 
   return m;
 }
@@ -2021,6 +2052,8 @@ axes::properties::get (const caseless_str& pname_arg) const
     retval = get_zmtick ();
   else if (pname.compare ("looseinset"))
     retval = get_looseinset ();
+  else if (pname.compare ("autopos_tag"))
+    retval = get_autopos_tag ();
   else
     retval = base_properties::get (pname);
 
@@ -2229,6 +2262,8 @@ axes::properties::get_property (const caseless_str& pname_arg)
     return property (&zmtick, true);
   else if (pname.compare ("looseinset"))
     return property (&looseinset, true);
+  else if (pname.compare ("autopos_tag"))
+    return property (&autopos_tag, true);
   else
     return base_properties::get_property (pname);
 }
@@ -2330,6 +2365,7 @@ axes::properties::factory_defaults (void)
   m["ymtick"] = Matrix ();
   m["zmtick"] = Matrix ();
   m["looseinset"] = Matrix (1, 4, 0.0);
+  m["autopos_tag"] = "none";
 
   return m;
 }
@@ -2441,6 +2477,7 @@ axes::properties::core_property_names (void)
       all_pnames.insert ("ymtick");
       all_pnames.insert ("zmtick");
       all_pnames.insert ("looseinset");
+      all_pnames.insert ("autopos_tag");
 
       std::set<std::string> base_pnames = base_properties::core_property_names ();
       all_pnames.insert (base_pnames.begin (), base_pnames.end ());
@@ -3598,7 +3635,7 @@ patch::properties::properties (const graphics_handle& mh, const graphics_handle&
     vertices ("vertices", mh, Matrix ()),
     vertexnormals ("vertexnormals", mh, Matrix ()),
     normalmode ("normalmode", mh, "{auto}|manual"),
-    facecolor ("facecolor", mh, "{flat}|none|interp"),
+    facecolor ("facecolor", mh, color_property (color_values (0, 0, 0), radio_values ("flat|none|interp"))),
     facealpha ("facealpha", mh, double_radio_property (1.0, radio_values ("flat|interp"))),
     facelighting ("facelighting", mh, "flat|{none}|gouraud|phong"),
     edgecolor ("edgecolor", mh, color_property (color_values (0, 0, 0), radio_values ("flat|none|interp"))),
@@ -4059,7 +4096,7 @@ patch::properties::factory_defaults (void)
   m["vertices"] = Matrix ();
   m["vertexnormals"] = Matrix ();
   m["normalmode"] = "auto";
-  m["facecolor"] = "{flat}|none|interp";
+  m["facecolor"] = color_property (color_values (0, 0, 0), radio_values ("flat|none|interp"));
   m["facealpha"] = double_radio_property (1.0, radio_values ("flat|interp"));
   m["facelighting"] = "none";
   m["edgecolor"] = color_property (color_values (0, 0, 0), radio_values ("flat|none|interp"));
@@ -4200,7 +4237,7 @@ surface::properties::properties (const graphics_handle& mh, const graphics_handl
     ydatasource ("ydatasource", mh, ""),
     zdatasource ("zdatasource", mh, ""),
     cdatasource ("cdatasource", mh, ""),
-    facecolor ("facecolor", mh, "{flat}|none|interp|texturemap"),
+    facecolor ("facecolor", mh, "{flat}|none|interp"),
     facealpha ("facealpha", mh, double_radio_property (1.0, radio_values ("flat|interp"))),
     edgecolor ("edgecolor", mh, color_property (color_values (0, 0, 0), radio_values ("flat|none|interp"))),
     linestyle ("linestyle", mh, "{-}|--|:|-.|none"),
@@ -4679,7 +4716,7 @@ surface::properties::factory_defaults (void)
   m["ydatasource"] = "";
   m["zdatasource"] = "";
   m["cdatasource"] = "";
-  m["facecolor"] = "{flat}|none|interp|texturemap";
+  m["facecolor"] = "{flat}|none|interp";
   m["facealpha"] = double_radio_property (1.0, radio_values ("flat|interp"));
   m["edgecolor"] = color_property (color_values (0, 0, 0), radio_values ("flat|none|interp"));
   m["linestyle"] = "-";
@@ -5058,6 +5095,7 @@ hggroup::properties::has_property (const caseless_str& pname) const
 
 uimenu::properties::properties (const graphics_handle& mh, const graphics_handle& p)
   : base_properties (go_name, mh, p),
+    __object__ ("__object__", mh, Matrix ()),
     accelerator ("accelerator", mh, ""),
     callback ("callback", mh, Matrix()),
     checked ("checked", mh, "off"),
@@ -5068,6 +5106,7 @@ uimenu::properties::properties (const graphics_handle& mh, const graphics_handle
     separator ("separator", mh, "off"),
     fltk_label ("fltk_label", mh, "")
 {
+  __object__.set_id (ID___OBJECT__);
   accelerator.set_id (ID_ACCELERATOR);
   callback.set_id (ID_CALLBACK);
   checked.set_id (ID_CHECKED);
@@ -5091,7 +5130,9 @@ uimenu::properties::set (const caseless_str& pname_arg, const octave_value& val)
   if (error_state)
     return;
 
-  if (pname.compare ("accelerator"))
+  if (pname.compare ("__object__"))
+    set___object__ (val);
+  else if (pname.compare ("accelerator"))
     set_accelerator (val);
   else if (pname.compare ("callback"))
     set_callback (val);
@@ -5118,6 +5159,7 @@ uimenu::properties::get (bool all) const
 {
   octave_map m = base_properties::get (all).map_value ();
 
+  m.assign ("__object__", octave_value (get___object__ ()));
   m.assign ("accelerator", octave_value (get_accelerator ()));
   m.assign ("callback", octave_value (get_callback ()));
   m.assign ("checked", octave_value (get_checked ()));
@@ -5144,7 +5186,9 @@ uimenu::properties::get (const caseless_str& pname_arg) const
   if (error_state)
     return retval;
 
-  if (pname.compare ("accelerator"))
+  if (pname.compare ("__object__"))
+    retval = get___object__ ();
+  else if (pname.compare ("accelerator"))
     retval = get_accelerator ();
   else if (pname.compare ("callback"))
     retval = get_callback ();
@@ -5178,7 +5222,9 @@ uimenu::properties::get_property (const caseless_str& pname_arg)
   if (error_state)
     return property ();
 
-  if (pname.compare ("accelerator"))
+  if (pname.compare ("__object__"))
+    return property (&__object__, true);
+  else if (pname.compare ("accelerator"))
     return property (&accelerator, true);
   else if (pname.compare ("callback"))
     return property (&callback, true);
@@ -5205,6 +5251,7 @@ uimenu::properties::factory_defaults (void)
 {
   property_list::pval_map_type m = base_properties::factory_defaults ();
 
+  m["__object__"] = Matrix ();
   m["accelerator"] = "";
   m["callback"] = Matrix();
   m["checked"] = "off";
@@ -5229,6 +5276,7 @@ uimenu::properties::core_property_names (void)
 
   if (! initialized)
     {
+      all_pnames.insert ("__object__");
       all_pnames.insert ("accelerator");
       all_pnames.insert ("callback");
       all_pnames.insert ("checked");
@@ -5270,6 +5318,1412 @@ uimenu::properties::all_property_names (void) const
 
 bool
 uimenu::properties::has_property (const caseless_str& pname) const
+{
+  std::set<std::string> pnames = all_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+// ******** uicontextmenu ********
+
+uicontextmenu::properties::properties (const graphics_handle& mh, const graphics_handle& p)
+  : base_properties (go_name, mh, p),
+    __object__ ("__object__", mh, Matrix ()),
+    callback ("callback", mh, Matrix()),
+    position ("position", mh, Matrix (1, 2, 0.0))
+{
+  __object__.set_id (ID___OBJECT__);
+  callback.set_id (ID_CALLBACK);
+  position.set_id (ID_POSITION);
+  init ();
+}
+
+void
+uicontextmenu::properties::set (const caseless_str& pname_arg, const octave_value& val)
+{
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return;
+
+  if (pname.compare ("__object__"))
+    set___object__ (val);
+  else if (pname.compare ("callback"))
+    set_callback (val);
+  else if (pname.compare ("position"))
+    set_position (val);
+  else
+    base_properties::set (pname, val);
+}
+
+octave_value
+uicontextmenu::properties::get (bool all) const
+{
+  octave_map m = base_properties::get (all).map_value ();
+
+  m.assign ("__object__", octave_value (get___object__ ()));
+  m.assign ("callback", octave_value (get_callback ()));
+  m.assign ("position", octave_value (get_position ()));
+
+  return m;
+}
+
+octave_value
+uicontextmenu::properties::get (const caseless_str& pname_arg) const
+{
+  octave_value retval;
+
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return retval;
+
+  if (pname.compare ("__object__"))
+    retval = get___object__ ();
+  else if (pname.compare ("callback"))
+    retval = get_callback ();
+  else if (pname.compare ("position"))
+    retval = get_position ();
+  else
+    retval = base_properties::get (pname);
+
+  return retval;
+}
+
+property
+uicontextmenu::properties::get_property (const caseless_str& pname_arg)
+{
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return property ();
+
+  if (pname.compare ("__object__"))
+    return property (&__object__, true);
+  else if (pname.compare ("callback"))
+    return property (&callback, true);
+  else if (pname.compare ("position"))
+    return property (&position, true);
+  else
+    return base_properties::get_property (pname);
+}
+
+property_list::pval_map_type
+uicontextmenu::properties::factory_defaults (void)
+{
+  property_list::pval_map_type m = base_properties::factory_defaults ();
+
+  m["__object__"] = Matrix ();
+  m["callback"] = Matrix();
+  m["position"] = Matrix (1, 2, 0.0);
+
+  return m;
+}
+
+std::string uicontextmenu::properties::go_name ("uicontextmenu");
+
+std::set<std::string>
+uicontextmenu::properties::core_property_names (void)
+{
+  static std::set<std::string> all_pnames;
+
+  static bool initialized = false;
+
+  if (! initialized)
+    {
+      all_pnames.insert ("__object__");
+      all_pnames.insert ("callback");
+      all_pnames.insert ("position");
+
+      std::set<std::string> base_pnames = base_properties::core_property_names ();
+      all_pnames.insert (base_pnames.begin (), base_pnames.end ());
+
+      initialized = true;
+    }
+
+  return all_pnames;
+}
+
+bool
+uicontextmenu::properties::has_core_property (const caseless_str& pname)
+{
+  std::set<std::string> pnames = core_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+std::set<std::string>
+uicontextmenu::properties::all_property_names (void) const
+{
+  static std::set<std::string> all_pnames = core_property_names ();
+
+  std::set<std::string> retval = all_pnames;
+  std::set<std::string> base_props = base_properties::all_property_names ();
+  retval.insert (base_props.begin (), base_props.end ());
+
+  return retval;
+}
+
+bool
+uicontextmenu::properties::has_property (const caseless_str& pname) const
+{
+  std::set<std::string> pnames = all_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+// ******** uicontrol ********
+
+uicontrol::properties::properties (const graphics_handle& mh, const graphics_handle& p)
+  : base_properties (go_name, mh, p),
+    __object__ ("__object__", mh, Matrix ()),
+    backgroundcolor ("backgroundcolor", mh, color_values (1, 1, 1)),
+    callback ("callback", mh, Matrix ()),
+    cdata ("cdata", mh, Matrix ()),
+    clipping ("clipping", mh, "on"),
+    enable ("enable", mh, "{on}|inactive|off"),
+    extent ("extent", mh, Matrix (1, 4, 0.0)),
+    fontangle ("fontangle", mh, "{normal}|italic|oblique"),
+    fontname ("fontname", mh, OCTAVE_DEFAULT_FONTNAME),
+    fontsize ("fontsize", mh, 10),
+    fontunits ("fontunits", mh, "inches|centimeters|normalized|{points}|pixels"),
+    fontweight ("fontweight", mh, "light|{normal}|demi|bold"),
+    foregroundcolor ("foregroundcolor", mh, color_values (0, 0, 0)),
+    horizontalalignment ("horizontalalignment", mh, "{left}|center|right"),
+    keypressfcn ("keypressfcn", mh, Matrix ()),
+    listboxtop ("listboxtop", mh, 1),
+    max ("max", mh, 1),
+    min ("min", mh, 0),
+    position ("position", mh, default_control_position ()),
+    sliderstep ("sliderstep", mh, default_control_sliderstep ()),
+    string ("string", mh, ""),
+    style ("style", mh, "{pushbutton}|togglebutton|radiobutton|checkbox|edit|text|slider|frame|listbox|popupmenu"),
+    tooltipstring ("tooltipstring", mh, ""),
+    units ("units", mh, "normalized|inches|centimeters|points|{pixels}|characters"),
+    value ("value", mh, Matrix (1, 1, 1.0)),
+    verticalalignment ("verticalalignment", mh, "top|{middle}|bottom")
+{
+  __object__.set_id (ID___OBJECT__);
+  backgroundcolor.set_id (ID_BACKGROUNDCOLOR);
+  callback.set_id (ID_CALLBACK);
+  cdata.set_id (ID_CDATA);
+  clipping.set_id (ID_CLIPPING);
+  enable.set_id (ID_ENABLE);
+  extent.set_id (ID_EXTENT);
+  fontangle.set_id (ID_FONTANGLE);
+  fontname.set_id (ID_FONTNAME);
+  fontsize.set_id (ID_FONTSIZE);
+  fontunits.set_id (ID_FONTUNITS);
+  fontweight.set_id (ID_FONTWEIGHT);
+  foregroundcolor.set_id (ID_FOREGROUNDCOLOR);
+  horizontalalignment.set_id (ID_HORIZONTALALIGNMENT);
+  keypressfcn.set_id (ID_KEYPRESSFCN);
+  listboxtop.set_id (ID_LISTBOXTOP);
+  max.set_id (ID_MAX);
+  min.set_id (ID_MIN);
+  position.set_id (ID_POSITION);
+  sliderstep.set_id (ID_SLIDERSTEP);
+  string.set_id (ID_STRING);
+  style.set_id (ID_STYLE);
+  tooltipstring.set_id (ID_TOOLTIPSTRING);
+  units.set_id (ID_UNITS);
+  value.set_id (ID_VALUE);
+  verticalalignment.set_id (ID_VERTICALALIGNMENT);
+  init ();
+}
+
+void
+uicontrol::properties::set (const caseless_str& pname_arg, const octave_value& val)
+{
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return;
+
+  if (pname.compare ("__object__"))
+    set___object__ (val);
+  else if (pname.compare ("backgroundcolor"))
+    set_backgroundcolor (val);
+  else if (pname.compare ("callback"))
+    set_callback (val);
+  else if (pname.compare ("cdata"))
+    set_cdata (val);
+  else if (pname.compare ("clipping"))
+    set_clipping (val);
+  else if (pname.compare ("enable"))
+    set_enable (val);
+  else if (pname.compare ("fontangle"))
+    set_fontangle (val);
+  else if (pname.compare ("fontname"))
+    set_fontname (val);
+  else if (pname.compare ("fontsize"))
+    set_fontsize (val);
+  else if (pname.compare ("fontunits"))
+    set_fontunits (val);
+  else if (pname.compare ("fontweight"))
+    set_fontweight (val);
+  else if (pname.compare ("foregroundcolor"))
+    set_foregroundcolor (val);
+  else if (pname.compare ("horizontalalignment"))
+    set_horizontalalignment (val);
+  else if (pname.compare ("keypressfcn"))
+    set_keypressfcn (val);
+  else if (pname.compare ("listboxtop"))
+    set_listboxtop (val);
+  else if (pname.compare ("max"))
+    set_max (val);
+  else if (pname.compare ("min"))
+    set_min (val);
+  else if (pname.compare ("position"))
+    set_position (val);
+  else if (pname.compare ("sliderstep"))
+    set_sliderstep (val);
+  else if (pname.compare ("string"))
+    set_string (val);
+  else if (pname.compare ("style"))
+    set_style (val);
+  else if (pname.compare ("tooltipstring"))
+    set_tooltipstring (val);
+  else if (pname.compare ("units"))
+    set_units (val);
+  else if (pname.compare ("value"))
+    set_value (val);
+  else if (pname.compare ("verticalalignment"))
+    set_verticalalignment (val);
+  else
+    base_properties::set (pname, val);
+}
+
+octave_value
+uicontrol::properties::get (bool all) const
+{
+  octave_map m = base_properties::get (all).map_value ();
+
+  m.assign ("__object__", octave_value (get___object__ ()));
+  m.assign ("backgroundcolor", octave_value (get_backgroundcolor ()));
+  m.assign ("callback", octave_value (get_callback ()));
+  m.assign ("cdata", octave_value (get_cdata ()));
+  m.assign ("clipping", octave_value (get_clipping ()));
+  m.assign ("enable", octave_value (get_enable ()));
+  m.assign ("extent", octave_value (get_extent ()));
+  m.assign ("fontangle", octave_value (get_fontangle ()));
+  m.assign ("fontname", octave_value (get_fontname ()));
+  m.assign ("fontsize", octave_value (get_fontsize ()));
+  m.assign ("fontunits", octave_value (get_fontunits ()));
+  m.assign ("fontweight", octave_value (get_fontweight ()));
+  m.assign ("foregroundcolor", octave_value (get_foregroundcolor ()));
+  m.assign ("horizontalalignment", octave_value (get_horizontalalignment ()));
+  m.assign ("keypressfcn", octave_value (get_keypressfcn ()));
+  m.assign ("listboxtop", octave_value (get_listboxtop ()));
+  m.assign ("max", octave_value (get_max ()));
+  m.assign ("min", octave_value (get_min ()));
+  m.assign ("position", octave_value (get_position ()));
+  m.assign ("sliderstep", octave_value (get_sliderstep ()));
+  m.assign ("string", octave_value (get_string ()));
+  m.assign ("style", octave_value (get_style ()));
+  m.assign ("tooltipstring", octave_value (get_tooltipstring ()));
+  m.assign ("units", octave_value (get_units ()));
+  m.assign ("value", octave_value (get_value ()));
+  m.assign ("verticalalignment", octave_value (get_verticalalignment ()));
+
+  return m;
+}
+
+octave_value
+uicontrol::properties::get (const caseless_str& pname_arg) const
+{
+  octave_value retval;
+
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return retval;
+
+  if (pname.compare ("__object__"))
+    retval = get___object__ ();
+  else if (pname.compare ("backgroundcolor"))
+    retval = get_backgroundcolor ();
+  else if (pname.compare ("callback"))
+    retval = get_callback ();
+  else if (pname.compare ("cdata"))
+    retval = get_cdata ();
+  else if (pname.compare ("clipping"))
+    retval = get_clipping ();
+  else if (pname.compare ("enable"))
+    retval = get_enable ();
+  else if (pname.compare ("extent"))
+    retval = get_extent ();
+  else if (pname.compare ("fontangle"))
+    retval = get_fontangle ();
+  else if (pname.compare ("fontname"))
+    retval = get_fontname ();
+  else if (pname.compare ("fontsize"))
+    retval = get_fontsize ();
+  else if (pname.compare ("fontunits"))
+    retval = get_fontunits ();
+  else if (pname.compare ("fontweight"))
+    retval = get_fontweight ();
+  else if (pname.compare ("foregroundcolor"))
+    retval = get_foregroundcolor ();
+  else if (pname.compare ("horizontalalignment"))
+    retval = get_horizontalalignment ();
+  else if (pname.compare ("keypressfcn"))
+    retval = get_keypressfcn ();
+  else if (pname.compare ("listboxtop"))
+    retval = get_listboxtop ();
+  else if (pname.compare ("max"))
+    retval = get_max ();
+  else if (pname.compare ("min"))
+    retval = get_min ();
+  else if (pname.compare ("position"))
+    retval = get_position ();
+  else if (pname.compare ("sliderstep"))
+    retval = get_sliderstep ();
+  else if (pname.compare ("string"))
+    retval = get_string ();
+  else if (pname.compare ("style"))
+    retval = get_style ();
+  else if (pname.compare ("tooltipstring"))
+    retval = get_tooltipstring ();
+  else if (pname.compare ("units"))
+    retval = get_units ();
+  else if (pname.compare ("value"))
+    retval = get_value ();
+  else if (pname.compare ("verticalalignment"))
+    retval = get_verticalalignment ();
+  else
+    retval = base_properties::get (pname);
+
+  return retval;
+}
+
+property
+uicontrol::properties::get_property (const caseless_str& pname_arg)
+{
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return property ();
+
+  if (pname.compare ("__object__"))
+    return property (&__object__, true);
+  else if (pname.compare ("backgroundcolor"))
+    return property (&backgroundcolor, true);
+  else if (pname.compare ("callback"))
+    return property (&callback, true);
+  else if (pname.compare ("cdata"))
+    return property (&cdata, true);
+  else if (pname.compare ("clipping"))
+    return property (&clipping, true);
+  else if (pname.compare ("enable"))
+    return property (&enable, true);
+  else if (pname.compare ("extent"))
+    return property (&extent, true);
+  else if (pname.compare ("fontangle"))
+    return property (&fontangle, true);
+  else if (pname.compare ("fontname"))
+    return property (&fontname, true);
+  else if (pname.compare ("fontsize"))
+    return property (&fontsize, true);
+  else if (pname.compare ("fontunits"))
+    return property (&fontunits, true);
+  else if (pname.compare ("fontweight"))
+    return property (&fontweight, true);
+  else if (pname.compare ("foregroundcolor"))
+    return property (&foregroundcolor, true);
+  else if (pname.compare ("horizontalalignment"))
+    return property (&horizontalalignment, true);
+  else if (pname.compare ("keypressfcn"))
+    return property (&keypressfcn, true);
+  else if (pname.compare ("listboxtop"))
+    return property (&listboxtop, true);
+  else if (pname.compare ("max"))
+    return property (&max, true);
+  else if (pname.compare ("min"))
+    return property (&min, true);
+  else if (pname.compare ("position"))
+    return property (&position, true);
+  else if (pname.compare ("sliderstep"))
+    return property (&sliderstep, true);
+  else if (pname.compare ("string"))
+    return property (&string, true);
+  else if (pname.compare ("style"))
+    return property (&style, true);
+  else if (pname.compare ("tooltipstring"))
+    return property (&tooltipstring, true);
+  else if (pname.compare ("units"))
+    return property (&units, true);
+  else if (pname.compare ("value"))
+    return property (&value, true);
+  else if (pname.compare ("verticalalignment"))
+    return property (&verticalalignment, true);
+  else
+    return base_properties::get_property (pname);
+}
+
+property_list::pval_map_type
+uicontrol::properties::factory_defaults (void)
+{
+  property_list::pval_map_type m = base_properties::factory_defaults ();
+
+  m["__object__"] = Matrix ();
+  m["backgroundcolor"] = color_values (1, 1, 1);
+  m["callback"] = Matrix ();
+  m["cdata"] = Matrix ();
+  m["clipping"] = "on";
+  m["enable"] = "on";
+  m["extent"] = Matrix (1, 4, 0.0);
+  m["fontangle"] = "normal";
+  m["fontname"] = OCTAVE_DEFAULT_FONTNAME;
+  m["fontsize"] = 10;
+  m["fontunits"] = "points";
+  m["fontweight"] = "normal";
+  m["foregroundcolor"] = color_values (0, 0, 0);
+  m["horizontalalignment"] = "left";
+  m["keypressfcn"] = Matrix ();
+  m["listboxtop"] = 1;
+  m["max"] = 1;
+  m["min"] = 0;
+  m["position"] = default_control_position ();
+  m["sliderstep"] = default_control_sliderstep ();
+  m["string"] = "";
+  m["style"] = "pushbutton";
+  m["tooltipstring"] = "";
+  m["units"] = "pixels";
+  m["value"] = Matrix (1, 1, 1.0);
+  m["verticalalignment"] = "middle";
+
+  return m;
+}
+
+std::string uicontrol::properties::go_name ("uicontrol");
+
+std::set<std::string>
+uicontrol::properties::core_property_names (void)
+{
+  static std::set<std::string> all_pnames;
+
+  static bool initialized = false;
+
+  if (! initialized)
+    {
+      all_pnames.insert ("__object__");
+      all_pnames.insert ("backgroundcolor");
+      all_pnames.insert ("callback");
+      all_pnames.insert ("cdata");
+      all_pnames.insert ("clipping");
+      all_pnames.insert ("enable");
+      all_pnames.insert ("extent");
+      all_pnames.insert ("fontangle");
+      all_pnames.insert ("fontname");
+      all_pnames.insert ("fontsize");
+      all_pnames.insert ("fontunits");
+      all_pnames.insert ("fontweight");
+      all_pnames.insert ("foregroundcolor");
+      all_pnames.insert ("horizontalalignment");
+      all_pnames.insert ("keypressfcn");
+      all_pnames.insert ("listboxtop");
+      all_pnames.insert ("max");
+      all_pnames.insert ("min");
+      all_pnames.insert ("position");
+      all_pnames.insert ("sliderstep");
+      all_pnames.insert ("string");
+      all_pnames.insert ("style");
+      all_pnames.insert ("tooltipstring");
+      all_pnames.insert ("units");
+      all_pnames.insert ("value");
+      all_pnames.insert ("verticalalignment");
+
+      std::set<std::string> base_pnames = base_properties::core_property_names ();
+      all_pnames.insert (base_pnames.begin (), base_pnames.end ());
+
+      initialized = true;
+    }
+
+  return all_pnames;
+}
+
+bool
+uicontrol::properties::has_core_property (const caseless_str& pname)
+{
+  std::set<std::string> pnames = core_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+std::set<std::string>
+uicontrol::properties::all_property_names (void) const
+{
+  static std::set<std::string> all_pnames = core_property_names ();
+
+  std::set<std::string> retval = all_pnames;
+  std::set<std::string> base_props = base_properties::all_property_names ();
+  retval.insert (base_props.begin (), base_props.end ());
+
+  return retval;
+}
+
+bool
+uicontrol::properties::has_property (const caseless_str& pname) const
+{
+  std::set<std::string> pnames = all_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+// ******** uipanel ********
+
+uipanel::properties::properties (const graphics_handle& mh, const graphics_handle& p)
+  : base_properties (go_name, mh, p),
+    __object__ ("__object__", mh, Matrix ()),
+    backgroundcolor ("backgroundcolor", mh, color_values (1, 1, 1)),
+    bordertype ("bordertype", mh, "none|{etchedin}|etchedout|beveledin|beveledout|line"),
+    borderwidth ("borderwidth", mh, 1),
+    fontangle ("fontangle", mh, "{normal}|italic|oblique"),
+    fontname ("fontname", mh, OCTAVE_DEFAULT_FONTNAME),
+    fontsize ("fontsize", mh, 10),
+    fontunits ("fontunits", mh, "inches|centimeters|normalized|{points}|pixels"),
+    fontweight ("fontweight", mh, "light|{normal}|demi|bold"),
+    foregroundcolor ("foregroundcolor", mh, color_values (0, 0, 0)),
+    highlightcolor ("highlightcolor", mh, color_values (1, 1, 1)),
+    position ("position", mh, default_panel_position ()),
+    resizefcn ("resizefcn", mh, Matrix ()),
+    shadowcolor ("shadowcolor", mh, color_values (0, 0, 0)),
+    title ("title", mh, ""),
+    titleposition ("titleposition", mh, "{lefttop}|centertop|righttop|leftbottom|centerbottom|rightbottom"),
+    units ("units", mh, "{normalized}|inches|centimeters|points|pixels|characters")
+{
+  __object__.set_id (ID___OBJECT__);
+  backgroundcolor.set_id (ID_BACKGROUNDCOLOR);
+  bordertype.set_id (ID_BORDERTYPE);
+  borderwidth.set_id (ID_BORDERWIDTH);
+  fontangle.set_id (ID_FONTANGLE);
+  fontname.set_id (ID_FONTNAME);
+  fontsize.set_id (ID_FONTSIZE);
+  fontunits.set_id (ID_FONTUNITS);
+  fontweight.set_id (ID_FONTWEIGHT);
+  foregroundcolor.set_id (ID_FOREGROUNDCOLOR);
+  highlightcolor.set_id (ID_HIGHLIGHTCOLOR);
+  position.set_id (ID_POSITION);
+  resizefcn.set_id (ID_RESIZEFCN);
+  shadowcolor.set_id (ID_SHADOWCOLOR);
+  title.set_id (ID_TITLE);
+  titleposition.set_id (ID_TITLEPOSITION);
+  units.set_id (ID_UNITS);
+  init ();
+}
+
+void
+uipanel::properties::set (const caseless_str& pname_arg, const octave_value& val)
+{
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return;
+
+  if (pname.compare ("__object__"))
+    set___object__ (val);
+  else if (pname.compare ("backgroundcolor"))
+    set_backgroundcolor (val);
+  else if (pname.compare ("bordertype"))
+    set_bordertype (val);
+  else if (pname.compare ("borderwidth"))
+    set_borderwidth (val);
+  else if (pname.compare ("fontangle"))
+    set_fontangle (val);
+  else if (pname.compare ("fontname"))
+    set_fontname (val);
+  else if (pname.compare ("fontsize"))
+    set_fontsize (val);
+  else if (pname.compare ("fontunits"))
+    set_fontunits (val);
+  else if (pname.compare ("fontweight"))
+    set_fontweight (val);
+  else if (pname.compare ("foregroundcolor"))
+    set_foregroundcolor (val);
+  else if (pname.compare ("highlightcolor"))
+    set_highlightcolor (val);
+  else if (pname.compare ("position"))
+    set_position (val);
+  else if (pname.compare ("resizefcn"))
+    set_resizefcn (val);
+  else if (pname.compare ("shadowcolor"))
+    set_shadowcolor (val);
+  else if (pname.compare ("title"))
+    set_title (val);
+  else if (pname.compare ("titleposition"))
+    set_titleposition (val);
+  else if (pname.compare ("units"))
+    set_units (val);
+  else
+    base_properties::set (pname, val);
+}
+
+octave_value
+uipanel::properties::get (bool all) const
+{
+  octave_map m = base_properties::get (all).map_value ();
+
+  m.assign ("__object__", octave_value (get___object__ ()));
+  m.assign ("backgroundcolor", octave_value (get_backgroundcolor ()));
+  m.assign ("bordertype", octave_value (get_bordertype ()));
+  m.assign ("borderwidth", octave_value (get_borderwidth ()));
+  m.assign ("fontangle", octave_value (get_fontangle ()));
+  m.assign ("fontname", octave_value (get_fontname ()));
+  m.assign ("fontsize", octave_value (get_fontsize ()));
+  m.assign ("fontunits", octave_value (get_fontunits ()));
+  m.assign ("fontweight", octave_value (get_fontweight ()));
+  m.assign ("foregroundcolor", octave_value (get_foregroundcolor ()));
+  m.assign ("highlightcolor", octave_value (get_highlightcolor ()));
+  m.assign ("position", octave_value (get_position ()));
+  m.assign ("resizefcn", octave_value (get_resizefcn ()));
+  m.assign ("shadowcolor", octave_value (get_shadowcolor ()));
+  m.assign ("title", octave_value (get_title ()));
+  m.assign ("titleposition", octave_value (get_titleposition ()));
+  m.assign ("units", octave_value (get_units ()));
+
+  return m;
+}
+
+octave_value
+uipanel::properties::get (const caseless_str& pname_arg) const
+{
+  octave_value retval;
+
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return retval;
+
+  if (pname.compare ("__object__"))
+    retval = get___object__ ();
+  else if (pname.compare ("backgroundcolor"))
+    retval = get_backgroundcolor ();
+  else if (pname.compare ("bordertype"))
+    retval = get_bordertype ();
+  else if (pname.compare ("borderwidth"))
+    retval = get_borderwidth ();
+  else if (pname.compare ("fontangle"))
+    retval = get_fontangle ();
+  else if (pname.compare ("fontname"))
+    retval = get_fontname ();
+  else if (pname.compare ("fontsize"))
+    retval = get_fontsize ();
+  else if (pname.compare ("fontunits"))
+    retval = get_fontunits ();
+  else if (pname.compare ("fontweight"))
+    retval = get_fontweight ();
+  else if (pname.compare ("foregroundcolor"))
+    retval = get_foregroundcolor ();
+  else if (pname.compare ("highlightcolor"))
+    retval = get_highlightcolor ();
+  else if (pname.compare ("position"))
+    retval = get_position ();
+  else if (pname.compare ("resizefcn"))
+    retval = get_resizefcn ();
+  else if (pname.compare ("shadowcolor"))
+    retval = get_shadowcolor ();
+  else if (pname.compare ("title"))
+    retval = get_title ();
+  else if (pname.compare ("titleposition"))
+    retval = get_titleposition ();
+  else if (pname.compare ("units"))
+    retval = get_units ();
+  else
+    retval = base_properties::get (pname);
+
+  return retval;
+}
+
+property
+uipanel::properties::get_property (const caseless_str& pname_arg)
+{
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return property ();
+
+  if (pname.compare ("__object__"))
+    return property (&__object__, true);
+  else if (pname.compare ("backgroundcolor"))
+    return property (&backgroundcolor, true);
+  else if (pname.compare ("bordertype"))
+    return property (&bordertype, true);
+  else if (pname.compare ("borderwidth"))
+    return property (&borderwidth, true);
+  else if (pname.compare ("fontangle"))
+    return property (&fontangle, true);
+  else if (pname.compare ("fontname"))
+    return property (&fontname, true);
+  else if (pname.compare ("fontsize"))
+    return property (&fontsize, true);
+  else if (pname.compare ("fontunits"))
+    return property (&fontunits, true);
+  else if (pname.compare ("fontweight"))
+    return property (&fontweight, true);
+  else if (pname.compare ("foregroundcolor"))
+    return property (&foregroundcolor, true);
+  else if (pname.compare ("highlightcolor"))
+    return property (&highlightcolor, true);
+  else if (pname.compare ("position"))
+    return property (&position, true);
+  else if (pname.compare ("resizefcn"))
+    return property (&resizefcn, true);
+  else if (pname.compare ("shadowcolor"))
+    return property (&shadowcolor, true);
+  else if (pname.compare ("title"))
+    return property (&title, true);
+  else if (pname.compare ("titleposition"))
+    return property (&titleposition, true);
+  else if (pname.compare ("units"))
+    return property (&units, true);
+  else
+    return base_properties::get_property (pname);
+}
+
+property_list::pval_map_type
+uipanel::properties::factory_defaults (void)
+{
+  property_list::pval_map_type m = base_properties::factory_defaults ();
+
+  m["__object__"] = Matrix ();
+  m["backgroundcolor"] = color_values (1, 1, 1);
+  m["bordertype"] = "etchedin";
+  m["borderwidth"] = 1;
+  m["fontangle"] = "normal";
+  m["fontname"] = OCTAVE_DEFAULT_FONTNAME;
+  m["fontsize"] = 10;
+  m["fontunits"] = "points";
+  m["fontweight"] = "normal";
+  m["foregroundcolor"] = color_values (0, 0, 0);
+  m["highlightcolor"] = color_values (1, 1, 1);
+  m["position"] = default_panel_position ();
+  m["resizefcn"] = Matrix ();
+  m["shadowcolor"] = color_values (0, 0, 0);
+  m["title"] = "";
+  m["titleposition"] = "lefttop";
+  m["units"] = "normalized";
+
+  return m;
+}
+
+std::string uipanel::properties::go_name ("uipanel");
+
+std::set<std::string>
+uipanel::properties::core_property_names (void)
+{
+  static std::set<std::string> all_pnames;
+
+  static bool initialized = false;
+
+  if (! initialized)
+    {
+      all_pnames.insert ("__object__");
+      all_pnames.insert ("backgroundcolor");
+      all_pnames.insert ("bordertype");
+      all_pnames.insert ("borderwidth");
+      all_pnames.insert ("fontangle");
+      all_pnames.insert ("fontname");
+      all_pnames.insert ("fontsize");
+      all_pnames.insert ("fontunits");
+      all_pnames.insert ("fontweight");
+      all_pnames.insert ("foregroundcolor");
+      all_pnames.insert ("highlightcolor");
+      all_pnames.insert ("position");
+      all_pnames.insert ("resizefcn");
+      all_pnames.insert ("shadowcolor");
+      all_pnames.insert ("title");
+      all_pnames.insert ("titleposition");
+      all_pnames.insert ("units");
+
+      std::set<std::string> base_pnames = base_properties::core_property_names ();
+      all_pnames.insert (base_pnames.begin (), base_pnames.end ());
+
+      initialized = true;
+    }
+
+  return all_pnames;
+}
+
+bool
+uipanel::properties::has_core_property (const caseless_str& pname)
+{
+  std::set<std::string> pnames = core_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+std::set<std::string>
+uipanel::properties::all_property_names (void) const
+{
+  static std::set<std::string> all_pnames = core_property_names ();
+
+  std::set<std::string> retval = all_pnames;
+  std::set<std::string> base_props = base_properties::all_property_names ();
+  retval.insert (base_props.begin (), base_props.end ());
+
+  return retval;
+}
+
+bool
+uipanel::properties::has_property (const caseless_str& pname) const
+{
+  std::set<std::string> pnames = all_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+// ******** uitoolbar ********
+
+uitoolbar::properties::properties (const graphics_handle& mh, const graphics_handle& p)
+  : base_properties (go_name, mh, p),
+    __object__ ("__object__", mh, Matrix ())
+{
+  __object__.set_id (ID___OBJECT__);
+  init ();
+}
+
+void
+uitoolbar::properties::set (const caseless_str& pname_arg, const octave_value& val)
+{
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return;
+
+  if (pname.compare ("__object__"))
+    set___object__ (val);
+  else
+    base_properties::set (pname, val);
+}
+
+octave_value
+uitoolbar::properties::get (bool all) const
+{
+  octave_map m = base_properties::get (all).map_value ();
+
+  m.assign ("__object__", octave_value (get___object__ ()));
+
+  return m;
+}
+
+octave_value
+uitoolbar::properties::get (const caseless_str& pname_arg) const
+{
+  octave_value retval;
+
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return retval;
+
+  if (pname.compare ("__object__"))
+    retval = get___object__ ();
+  else
+    retval = base_properties::get (pname);
+
+  return retval;
+}
+
+property
+uitoolbar::properties::get_property (const caseless_str& pname_arg)
+{
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return property ();
+
+  if (pname.compare ("__object__"))
+    return property (&__object__, true);
+  else
+    return base_properties::get_property (pname);
+}
+
+property_list::pval_map_type
+uitoolbar::properties::factory_defaults (void)
+{
+  property_list::pval_map_type m = base_properties::factory_defaults ();
+
+  m["__object__"] = Matrix ();
+
+  return m;
+}
+
+std::string uitoolbar::properties::go_name ("uitoolbar");
+
+std::set<std::string>
+uitoolbar::properties::core_property_names (void)
+{
+  static std::set<std::string> all_pnames;
+
+  static bool initialized = false;
+
+  if (! initialized)
+    {
+      all_pnames.insert ("__object__");
+
+      std::set<std::string> base_pnames = base_properties::core_property_names ();
+      all_pnames.insert (base_pnames.begin (), base_pnames.end ());
+
+      initialized = true;
+    }
+
+  return all_pnames;
+}
+
+bool
+uitoolbar::properties::has_core_property (const caseless_str& pname)
+{
+  std::set<std::string> pnames = core_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+std::set<std::string>
+uitoolbar::properties::all_property_names (void) const
+{
+  static std::set<std::string> all_pnames = core_property_names ();
+
+  std::set<std::string> retval = all_pnames;
+  std::set<std::string> base_props = base_properties::all_property_names ();
+  retval.insert (base_props.begin (), base_props.end ());
+
+  return retval;
+}
+
+bool
+uitoolbar::properties::has_property (const caseless_str& pname) const
+{
+  std::set<std::string> pnames = all_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+// ******** uipushtool ********
+
+uipushtool::properties::properties (const graphics_handle& mh, const graphics_handle& p)
+  : base_properties (go_name, mh, p),
+    __object__ ("__object__", mh, Matrix ()),
+    cdata ("cdata", mh, Matrix ()),
+    clickedcallback ("clickedcallback", mh, Matrix()),
+    enable ("enable", mh, "on"),
+    separator ("separator", mh, "off"),
+    tooltipstring ("tooltipstring", mh, "")
+{
+  __object__.set_id (ID___OBJECT__);
+  cdata.set_id (ID_CDATA);
+  clickedcallback.set_id (ID_CLICKEDCALLBACK);
+  enable.set_id (ID_ENABLE);
+  separator.set_id (ID_SEPARATOR);
+  tooltipstring.set_id (ID_TOOLTIPSTRING);
+  init ();
+}
+
+void
+uipushtool::properties::set (const caseless_str& pname_arg, const octave_value& val)
+{
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return;
+
+  if (pname.compare ("__object__"))
+    set___object__ (val);
+  else if (pname.compare ("cdata"))
+    set_cdata (val);
+  else if (pname.compare ("clickedcallback"))
+    set_clickedcallback (val);
+  else if (pname.compare ("enable"))
+    set_enable (val);
+  else if (pname.compare ("separator"))
+    set_separator (val);
+  else if (pname.compare ("tooltipstring"))
+    set_tooltipstring (val);
+  else
+    base_properties::set (pname, val);
+}
+
+octave_value
+uipushtool::properties::get (bool all) const
+{
+  octave_map m = base_properties::get (all).map_value ();
+
+  m.assign ("__object__", octave_value (get___object__ ()));
+  m.assign ("cdata", octave_value (get_cdata ()));
+  m.assign ("clickedcallback", octave_value (get_clickedcallback ()));
+  m.assign ("enable", octave_value (get_enable ()));
+  m.assign ("separator", octave_value (get_separator ()));
+  m.assign ("tooltipstring", octave_value (get_tooltipstring ()));
+
+  return m;
+}
+
+octave_value
+uipushtool::properties::get (const caseless_str& pname_arg) const
+{
+  octave_value retval;
+
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return retval;
+
+  if (pname.compare ("__object__"))
+    retval = get___object__ ();
+  else if (pname.compare ("cdata"))
+    retval = get_cdata ();
+  else if (pname.compare ("clickedcallback"))
+    retval = get_clickedcallback ();
+  else if (pname.compare ("enable"))
+    retval = get_enable ();
+  else if (pname.compare ("separator"))
+    retval = get_separator ();
+  else if (pname.compare ("tooltipstring"))
+    retval = get_tooltipstring ();
+  else
+    retval = base_properties::get (pname);
+
+  return retval;
+}
+
+property
+uipushtool::properties::get_property (const caseless_str& pname_arg)
+{
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return property ();
+
+  if (pname.compare ("__object__"))
+    return property (&__object__, true);
+  else if (pname.compare ("cdata"))
+    return property (&cdata, true);
+  else if (pname.compare ("clickedcallback"))
+    return property (&clickedcallback, true);
+  else if (pname.compare ("enable"))
+    return property (&enable, true);
+  else if (pname.compare ("separator"))
+    return property (&separator, true);
+  else if (pname.compare ("tooltipstring"))
+    return property (&tooltipstring, true);
+  else
+    return base_properties::get_property (pname);
+}
+
+property_list::pval_map_type
+uipushtool::properties::factory_defaults (void)
+{
+  property_list::pval_map_type m = base_properties::factory_defaults ();
+
+  m["__object__"] = Matrix ();
+  m["cdata"] = Matrix ();
+  m["clickedcallback"] = Matrix();
+  m["enable"] = "on";
+  m["separator"] = "off";
+  m["tooltipstring"] = "";
+
+  return m;
+}
+
+std::string uipushtool::properties::go_name ("uipushtool");
+
+std::set<std::string>
+uipushtool::properties::core_property_names (void)
+{
+  static std::set<std::string> all_pnames;
+
+  static bool initialized = false;
+
+  if (! initialized)
+    {
+      all_pnames.insert ("__object__");
+      all_pnames.insert ("cdata");
+      all_pnames.insert ("clickedcallback");
+      all_pnames.insert ("enable");
+      all_pnames.insert ("separator");
+      all_pnames.insert ("tooltipstring");
+
+      std::set<std::string> base_pnames = base_properties::core_property_names ();
+      all_pnames.insert (base_pnames.begin (), base_pnames.end ());
+
+      initialized = true;
+    }
+
+  return all_pnames;
+}
+
+bool
+uipushtool::properties::has_core_property (const caseless_str& pname)
+{
+  std::set<std::string> pnames = core_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+std::set<std::string>
+uipushtool::properties::all_property_names (void) const
+{
+  static std::set<std::string> all_pnames = core_property_names ();
+
+  std::set<std::string> retval = all_pnames;
+  std::set<std::string> base_props = base_properties::all_property_names ();
+  retval.insert (base_props.begin (), base_props.end ());
+
+  return retval;
+}
+
+bool
+uipushtool::properties::has_property (const caseless_str& pname) const
+{
+  std::set<std::string> pnames = all_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+// ******** uitoggletool ********
+
+uitoggletool::properties::properties (const graphics_handle& mh, const graphics_handle& p)
+  : base_properties (go_name, mh, p),
+    __object__ ("__object__", mh, Matrix ()),
+    cdata ("cdata", mh, Matrix ()),
+    clickedcallback ("clickedcallback", mh, Matrix()),
+    enable ("enable", mh, "on"),
+    offcallback ("offcallback", mh, Matrix()),
+    oncallback ("oncallback", mh, Matrix()),
+    separator ("separator", mh, "off"),
+    state ("state", mh, "off"),
+    tooltipstring ("tooltipstring", mh, "")
+{
+  __object__.set_id (ID___OBJECT__);
+  cdata.set_id (ID_CDATA);
+  clickedcallback.set_id (ID_CLICKEDCALLBACK);
+  enable.set_id (ID_ENABLE);
+  offcallback.set_id (ID_OFFCALLBACK);
+  oncallback.set_id (ID_ONCALLBACK);
+  separator.set_id (ID_SEPARATOR);
+  state.set_id (ID_STATE);
+  tooltipstring.set_id (ID_TOOLTIPSTRING);
+  init ();
+}
+
+void
+uitoggletool::properties::set (const caseless_str& pname_arg, const octave_value& val)
+{
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return;
+
+  if (pname.compare ("__object__"))
+    set___object__ (val);
+  else if (pname.compare ("cdata"))
+    set_cdata (val);
+  else if (pname.compare ("clickedcallback"))
+    set_clickedcallback (val);
+  else if (pname.compare ("enable"))
+    set_enable (val);
+  else if (pname.compare ("offcallback"))
+    set_offcallback (val);
+  else if (pname.compare ("oncallback"))
+    set_oncallback (val);
+  else if (pname.compare ("separator"))
+    set_separator (val);
+  else if (pname.compare ("state"))
+    set_state (val);
+  else if (pname.compare ("tooltipstring"))
+    set_tooltipstring (val);
+  else
+    base_properties::set (pname, val);
+}
+
+octave_value
+uitoggletool::properties::get (bool all) const
+{
+  octave_map m = base_properties::get (all).map_value ();
+
+  m.assign ("__object__", octave_value (get___object__ ()));
+  m.assign ("cdata", octave_value (get_cdata ()));
+  m.assign ("clickedcallback", octave_value (get_clickedcallback ()));
+  m.assign ("enable", octave_value (get_enable ()));
+  m.assign ("offcallback", octave_value (get_offcallback ()));
+  m.assign ("oncallback", octave_value (get_oncallback ()));
+  m.assign ("separator", octave_value (get_separator ()));
+  m.assign ("state", octave_value (get_state ()));
+  m.assign ("tooltipstring", octave_value (get_tooltipstring ()));
+
+  return m;
+}
+
+octave_value
+uitoggletool::properties::get (const caseless_str& pname_arg) const
+{
+  octave_value retval;
+
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return retval;
+
+  if (pname.compare ("__object__"))
+    retval = get___object__ ();
+  else if (pname.compare ("cdata"))
+    retval = get_cdata ();
+  else if (pname.compare ("clickedcallback"))
+    retval = get_clickedcallback ();
+  else if (pname.compare ("enable"))
+    retval = get_enable ();
+  else if (pname.compare ("offcallback"))
+    retval = get_offcallback ();
+  else if (pname.compare ("oncallback"))
+    retval = get_oncallback ();
+  else if (pname.compare ("separator"))
+    retval = get_separator ();
+  else if (pname.compare ("state"))
+    retval = get_state ();
+  else if (pname.compare ("tooltipstring"))
+    retval = get_tooltipstring ();
+  else
+    retval = base_properties::get (pname);
+
+  return retval;
+}
+
+property
+uitoggletool::properties::get_property (const caseless_str& pname_arg)
+{
+  const std::set<std::string>& pnames = all_property_names ();
+
+  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+
+  if (error_state)
+    return property ();
+
+  if (pname.compare ("__object__"))
+    return property (&__object__, true);
+  else if (pname.compare ("cdata"))
+    return property (&cdata, true);
+  else if (pname.compare ("clickedcallback"))
+    return property (&clickedcallback, true);
+  else if (pname.compare ("enable"))
+    return property (&enable, true);
+  else if (pname.compare ("offcallback"))
+    return property (&offcallback, true);
+  else if (pname.compare ("oncallback"))
+    return property (&oncallback, true);
+  else if (pname.compare ("separator"))
+    return property (&separator, true);
+  else if (pname.compare ("state"))
+    return property (&state, true);
+  else if (pname.compare ("tooltipstring"))
+    return property (&tooltipstring, true);
+  else
+    return base_properties::get_property (pname);
+}
+
+property_list::pval_map_type
+uitoggletool::properties::factory_defaults (void)
+{
+  property_list::pval_map_type m = base_properties::factory_defaults ();
+
+  m["__object__"] = Matrix ();
+  m["cdata"] = Matrix ();
+  m["clickedcallback"] = Matrix();
+  m["enable"] = "on";
+  m["offcallback"] = Matrix();
+  m["oncallback"] = Matrix();
+  m["separator"] = "off";
+  m["state"] = "off";
+  m["tooltipstring"] = "";
+
+  return m;
+}
+
+std::string uitoggletool::properties::go_name ("uitoggletool");
+
+std::set<std::string>
+uitoggletool::properties::core_property_names (void)
+{
+  static std::set<std::string> all_pnames;
+
+  static bool initialized = false;
+
+  if (! initialized)
+    {
+      all_pnames.insert ("__object__");
+      all_pnames.insert ("cdata");
+      all_pnames.insert ("clickedcallback");
+      all_pnames.insert ("enable");
+      all_pnames.insert ("offcallback");
+      all_pnames.insert ("oncallback");
+      all_pnames.insert ("separator");
+      all_pnames.insert ("state");
+      all_pnames.insert ("tooltipstring");
+
+      std::set<std::string> base_pnames = base_properties::core_property_names ();
+      all_pnames.insert (base_pnames.begin (), base_pnames.end ());
+
+      initialized = true;
+    }
+
+  return all_pnames;
+}
+
+bool
+uitoggletool::properties::has_core_property (const caseless_str& pname)
+{
+  std::set<std::string> pnames = core_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+std::set<std::string>
+uitoggletool::properties::all_property_names (void) const
+{
+  static std::set<std::string> all_pnames = core_property_names ();
+
+  std::set<std::string> retval = all_pnames;
+  std::set<std::string> base_props = base_properties::all_property_names ();
+  retval.insert (base_props.begin (), base_props.end ());
+
+  return retval;
+}
+
+bool
+uitoggletool::properties::has_property (const caseless_str& pname) const
 {
   std::set<std::string> pnames = all_property_names ();
 

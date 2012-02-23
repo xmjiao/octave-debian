@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.
 
-@c Copyright (C) 1996-2011 John W. Eaton
+@c Copyright (C) 1996-2012 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -248,8 +248,9 @@ nthroot (-1, 3)
 @end group
 @end example
 
-@var{n} must be a scalar.  If @var{n} is not an even integer and @var{X} has
-negative entries, an error is produced.
+@var{x} must have all real entries.  @var{n} must be a scalar.
+If @var{n} is an even integer and @var{X} has negative entries, an
+error is produced.
 @seealso{@ref{doc-realsqrt,,realsqrt}, @ref{doc-sqrt,,sqrt}, @ref{doc-cbrt,,cbrt}}
 @end deftypefn
 
@@ -767,122 +768,6 @@ but it uses less memory and avoids calling @code{conj} if @var{x} is real.
 @end deftypefn
 
 
-@c accumarray scripts/general/accumarray.m
-@anchor{doc-accumarray}
-@deftypefn  {Function File} {} accumarray (@var{subs}, @var{vals}, @var{sz}, @var{func}, @var{fillval}, @var{issparse})
-@deftypefnx {Function File} {} accumarray (@var{subs}, @var{vals}, @dots{})
-
-Create an array by accumulating the elements of a vector into the
-positions defined by their subscripts.  The subscripts are defined by
-the rows of the matrix @var{subs} and the values by @var{vals}.  Each
-row of @var{subs} corresponds to one of the values in @var{vals}. If
-@var{vals} is a scalar, it will be used for each of the row of
-@var{subs}.
-
-The size of the matrix will be determined by the subscripts
-themselves. However, if @var{sz} is defined it determines the matrix
-size. The length of @var{sz} must correspond to the number of columns
-in @var{subs}.
-
-The default action of @code{accumarray} is to sum the elements with
-the same subscripts.  This behavior can be modified by defining the
-@var{func} function.  This should be a function or function handle
-that accepts a column vector and returns a scalar.  The result of the
-function should not depend on the order of the subscripts.
-
-The elements of the returned array that have no subscripts associated
-with them are set to zero.  Defining @var{fillval} to some other
-value allows these values to be defined.
-
-By default @code{accumarray} returns a full matrix.  If
-@var{issparse} is logically true, then a sparse matrix is returned
-instead.
-
-The following @code{accumarray} example constructs a frequency table
-that in the first column counts how many occurrences each number in
-the second column has, taken from the vector @var{x}. Note the usage
-of @code{unique}  for assigning to all repeated elements of @var{x}
-the same index (@pxref{doc-unique}).
-
-@example
-@group
-x = [91, 92, 90, 92, 90, 89, 91, 89, 90, 100, 100, 100];
-[u, ~, j] = unique (x);
-[accumarray(j', 1), u']
-@result{} 2    89
-   3    90
-   2    91
-   2    92
-   3   100
-@end group
-@end example
-
-Another example, where the result is a multidimensional 3D array and
-the default value (zero) appears in the output:
-
-@example
-@group
-accumarray ([1, 1, 1;
-             2, 1, 2;
-             2, 3, 2;
-             2, 1, 2;
-             2, 3, 2], 101:105)
-@result{} ans(:,:,1) = [101, 0, 0; 0, 0, 0]
-   ans(:,:,2) = [0, 0, 0; 206, 0, 208]
-@end group
-@end example
-
-The complexity in the non-sparse case is generally O(M+N), where N is
-the number of subscripts and M is the maximum subscript (linearized
-in multi-dimensional case). If @var{func} is one of @code{@@sum}
-(default), @code{@@max}, @code{@@min} or @code{@@(x) @{x@}}, an
-optimized code path is used. Note that for general reduction function
-the interpreter overhead can play a major part and it may be more
-efficient to do multiple accumarray calls and compute the results in
-a vectorized manner.
-
-@seealso{@ref{doc-accumdim,,accumdim}, @ref{doc-unique,,unique}}
-@end deftypefn
-
-
-@c accumdim scripts/general/accumdim.m
-@anchor{doc-accumdim}
-@deftypefn {Function File} {} accumdim (@var{subs}, @var{vals}, @var{dim}, @var{n}, @var{func}, @var{fillval})
-Create an array by accumulating the slices of an array into the
-positions defined by their subscripts along a specified dimension.
-The subscripts are defined by the index vector @var{subs}.
-The dimension is specified by @var{dim}.  If not given, it defaults
-to the first non-singleton dimension.
-
-The extent of the result matrix in the working dimension will be determined
-by the subscripts themselves.
-However, if @var{n} is defined it determines this extent.
-
-The default action of @code{accumdim} is to sum the subarrays with the
-same subscripts.  This behavior can be modified by defining the @var{func}
-function.  This should be a function or function handle that accepts an
-array and a dimension, and reduces the array along this dimension.
-As a special exception, the built-in @code{min} and @code{max} functions
-can be used directly, and @code{accumdim} accounts for the middle empty
-argument that is used in their calling.
-
-The slices of the returned array that have no subscripts associated with
-them are set to zero.  Defining @var{fillval} to some other value allows
-these values to be defined.
-
-An example of the use of @code{accumdim} is:
-
-@example
-@group
-accumdim ([1, 2, 1, 2, 1], [7,-10,4;-5,-12,8;-12,2,8;-10,9,-3;-5,-3,-13])
-@result{} ans = [-10,-11,-1;-15,-3,5]
-@end group
-@end example
-
-@seealso{@ref{doc-accumarray,,accumarray}}
-@end deftypefn
-
-
 @node Utility Functions
 @section Utility Functions
 
@@ -941,7 +826,7 @@ floor ([-2.7, 2.7])
 @anchor{doc-round}
 @deftypefn {Mapping Function} {} round (@var{x})
 Return the integer nearest to @var{x}.  If @var{x} is complex, return
-@code{round (real (@var{x})) + round (imag (@var{x})) * I}. If there
+@code{round (real (@var{x})) + round (imag (@var{x})) * I}.  If there
 are two nearest integers, return the one further away from zero.
 
 @example
@@ -968,11 +853,13 @@ return @code{roundb (real (@var{x})) + roundb (imag (@var{x})) * I}.
 @anchor{doc-max}
 @deftypefn  {Loadable Function} {} max (@var{x})
 @deftypefnx {Loadable Function} {} max (@var{x}, @var{y})
+@deftypefnx {Loadable Function} {} max (@var{x}, [], @var{dim})
 @deftypefnx {Loadable Function} {} max (@var{x}, @var{y}, @var{dim})
 @deftypefnx {Loadable Function} {[@var{w}, @var{iw}] =} max (@var{x})
 For a vector argument, return the maximum value.  For a matrix
 argument, return the maximum value from each column, as a row
-vector, or over the dimension @var{dim} if defined.  For two matrices
+vector, or over the dimension @var{dim} if defined, in which case @var{y} 
+should be set to the empty matrix (it's ignored otherwise).  For two matrices
 (or a matrix and scalar), return the pair-wise maximum.
 Thus,
 
@@ -1016,11 +903,13 @@ maximum value(s).  Thus,
 @anchor{doc-min}
 @deftypefn  {Loadable Function} {} min (@var{x})
 @deftypefnx {Loadable Function} {} min (@var{x}, @var{y})
+@deftypefnx {Loadable Function} {} min (@var{x}, [], @var{dim})
 @deftypefnx {Loadable Function} {} min (@var{x}, @var{y}, @var{dim})
 @deftypefnx {Loadable Function} {[@var{w}, @var{iw}] =} min (@var{x})
 For a vector argument, return the minimum value.  For a matrix
 argument, return the minimum value from each column, as a row
-vector, or over the dimension @var{dim} if defined.  For two matrices
+vector, or over the dimension @var{dim} if defined, in which case @var{y} 
+should be set to the empty matrix (it's ignored otherwise).  For two matrices
 (or a matrix and scalar), return the pair-wise minimum.
 Thus,
 
@@ -1424,7 +1313,7 @@ $g = v_1 a_1 + v_2 a_2 + \cdots$
 @end deftypefn
 
 
-@c lcm scripts/elfun/lcm.m
+@c lcm scripts/specfun/lcm.m
 @anchor{doc-lcm}
 @deftypefn  {Mapping Function} {} lcm (@var{x}, @var{y})
 @deftypefnx {Mapping Function} {} lcm (@var{x}, @var{y}, @dots{})
@@ -1445,9 +1334,9 @@ specified it defaults to 10.
 @example
 @group
 chop (-pi, 5, 10)
-     @result{} -3.14200000000000
+   @result{} -3.14200000000000
 chop (-pi, 5, 5)
-     @result{} -3.14150000000000
+   @result{} -3.14150000000000
 @end group
 @end example
 @end deftypefn
@@ -1772,7 +1661,7 @@ For example:
 @example
 @group
 bincoeff (5, 2)
-     @result{} 10
+   @result{} 10
 @end group
 @end example
 
@@ -2052,7 +1941,7 @@ $$
 @example
 @group
  m        m       2  m/2   d^m
-P(x) = (-1) * (1-x  )    * ----  P (x)
+P(x) = (-1) * (1-x  )    * ----  P(x)
  n                         dx^m   n
 @end group
 @end example
@@ -2071,9 +1960,9 @@ $$
 
 @example
 @group
-          1     d^n   2    n
-P (x) = ------ [----(x - 1)  ]
- n      2^n n!  dx^n
+          1    d^n   2    n
+P(x) = ------ [----(x - 1) ]
+ n     2^n n!  dx^n
 @end group
 @end example
 
@@ -2084,7 +1973,7 @@ P (x) = ------ [----(x - 1)  ]
 
 @example
 @group
- x  |   -1.0   |   -0.9   |  -0.8
+ x  |   -1.0   |   -0.9   |   -0.8
 ------------------------------------
 m=0 | -1.00000 | -0.47250 | -0.08000
 m=1 |  0.00000 | -1.99420 | -1.98000
@@ -2109,9 +1998,9 @@ $$
 
 @example
 @group
-  0       0
-SP (x) = P (x)
-  n       n
+  0      0
+SP(x) = P(x)
+  n      n
 @end group
 @end example
 
@@ -2128,9 +2017,9 @@ $$
 
 @example
 @group
-  m       m          m    2(n-m)! 0.5
-SP (x) = P (x) * (-1)  * [-------]
-  n       n               (n+m)!
+  m      m         m    2(n-m)! 0.5
+SP(x) = P(x) * (-1)  * [-------]
+  n      n              (n+m)!
 @end group
 @end example
 
@@ -2152,9 +2041,9 @@ $$
 
 @example
 @group
-  m       m          m    (n+0.5)(n-m)! 0.5
-NP (x) = P (x) * (-1)  * [-------------]
-  n       n                   (n+m)!
+  m      m         m    (n+0.5)(n-m)! 0.5
+NP(x) = P(x) * (-1)  * [-------------]
+  n      n                  (n+m)!
 @end group
 @end example
 
@@ -2185,9 +2074,9 @@ by @var{tol} using a continued fraction expansion.  For example:
 
 @example
 @group
-rat(pi) = 3 + 1/(7 + 1/16) = 355/113
-rat(e) = 3 + 1/(-4 + 1/(2 + 1/(5 + 1/(-2 + 1/(-7)))))
-       = 1457/536
+rat (pi) = 3 + 1/(7 + 1/16) = 355/113
+rat (e) = 3 + 1/(-4 + 1/(2 + 1/(5 + 1/(-2 + 1/(-7)))))
+        = 1457/536
 @end group
 @end example
 
@@ -2370,6 +2259,11 @@ either "double" or "single".
 
 @c I src/data.cc
 @anchor{doc-I}
+@c List other forms of function in documentation index
+@findex i
+@findex j
+@findex J
+
 @deftypefn  {Built-in Function} {} I
 @deftypefnx {Built-in Function} {} I (@var{n})
 @deftypefnx {Built-in Function} {} I (@var{n}, @var{m})
@@ -2398,6 +2292,9 @@ either "double" or "single".
 
 @c Inf src/data.cc
 @anchor{doc-Inf}
+@c List other form of function in documentation index
+@findex inf
+
 @deftypefn  {Built-in Function} {} Inf
 @deftypefnx {Built-in Function} {} Inf (@var{n})
 @deftypefnx {Built-in Function} {} Inf (@var{n}, @var{m})
@@ -2431,6 +2328,9 @@ either "double" or "single".
 
 @c NaN src/data.cc
 @anchor{doc-NaN}
+@c List other form of function in documentation index
+@findex nan
+
 @deftypefn  {Built-in Function} {} NaN
 @deftypefnx {Built-in Function} {} NaN (@var{n})
 @deftypefnx {Built-in Function} {} NaN (@var{n}, @var{m})

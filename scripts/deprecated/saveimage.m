@@ -1,4 +1,4 @@
-## Copyright (C) 1994-2011 John W. Eaton
+## Copyright (C) 1994-2012 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -30,8 +30,7 @@
 ## Portable pixmap format.
 ##
 ## @item "ps"
-## PostScript format.  Note that images saved in PostScript format cannot
-## be read back into Octave with loadimage.
+## PostScript format.
 ## @end table
 ##
 ## If the fourth argument is supplied, the specified colormap will also be
@@ -42,7 +41,7 @@
 ## image is a gray scale image (the entries within each row of the colormap
 ## are equal) the gray scale ppm and PostScript image formats are used,
 ## otherwise the full color formats are used.
-## @seealso{loadimage, save, load, colormap}
+## @seealso{imread, save, load, colormap}
 ## @end deftypefn
 
 ## The conversion to PostScript is based on pbmtolps.c, which was

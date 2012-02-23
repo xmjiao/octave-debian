@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.
 
-@c Copyright (C) 1996-2011 John W. Eaton
+@c Copyright (C) 1996-2012 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -528,6 +528,7 @@ has been performed.
 @deftypefnx {Loadable Function} {[@var{R}, @var{p}, @var{Q}] =} chol (@var{S})
 @deftypefnx {Loadable Function} {[@var{R}, @var{p}, @var{Q}] =} chol (@var{S}, 'vector')
 @deftypefnx {Loadable Function} {[@var{L}, @dots{}] =} chol (@dots{}, 'lower')
+@deftypefnx {Loadable Function} {[@var{L}, @dots{}] =} chol (@dots{}, 'upper')
 @cindex Cholesky factorization
 Compute the Cholesky@tie{}factor, @var{R}, of the symmetric positive definite
 matrix @var{A}, where
@@ -588,6 +589,10 @@ $ L L^T = A $.
 @end example
 
 @end ifnottex
+
+For full matrices, if the 'lower' flag is set only the lower triangular part
+of the matrix is used for the factorization, otherwise the upper triangular
+part is used.
 
 In general the lower triangular factorization is significantly faster for
 sparse matrices.
@@ -823,7 +828,7 @@ as obtained by @code{lu}:
 @end example
 
 @noindent
-then a factorization of @code{@var{A}+@var{x}*@var{y}.'} can be obtained
+then a factorization of @xcode{@var{A}+@var{x}*@var{y}.'} can be obtained
 either as
 
 @example
@@ -852,6 +857,8 @@ recompute the factorization from scratch.
 @anchor{doc-qr}
 @deftypefn  {Loadable Function} {[@var{Q}, @var{R}, @var{P}] =} qr (@var{A})
 @deftypefnx {Loadable Function} {[@var{Q}, @var{R}, @var{P}] =} qr (@var{A}, '0')
+@deftypefnx {Loadable Function} {[@var{C}, @var{R}] =} qr (@var{A}, @var{B})
+@deftypefnx {Loadable Function} {[@var{C}, @var{R}] =} qr (@var{A}, @var{B}, '0')
 @cindex QR factorization
 Compute the QR@tie{}factorization of @var{A}, using standard @sc{lapack}
 subroutines.  For example, given the matrix @code{@var{A} = [1, 2; 3, 4]},
@@ -964,7 +971,7 @@ as
 
 @example
 @group
-[@var{C},@var{R}] = spqr (@var{A},@var{B})
+[@var{C}, @var{R}] = qr (@var{A}, @var{B})
 x = @var{R} \ @var{C}
 @end group
 @end example
@@ -1028,8 +1035,8 @@ Given a QR@tie{}factorization of a real or complex matrix
 @var{R}@tie{}upper trapezoidal, return the QR@tie{}factorization of
 @w{[A(:,1:j-1) A(:,j+1:n)]}, i.e., @var{A} with one column deleted
 (if @var{orient} is "col"), or the QR@tie{}factorization of
-@w{[A(1:j-1,:);A(:,j+1:n)]}, i.e., @var{A} with one row deleted (if
-@var{orient} is "row").
+@w{[A(1:j-1,:);A(j+1:n,:)]}, i.e., @var{A} with one row deleted (if
+   @var{orient} is "row").
 
 The default value of @var{orient} is "col".
 
@@ -1169,8 +1176,8 @@ orthogonal.  For example:
 The Hessenberg-triangular decomposition is the first step in
 Moler and Stewart's QZ@tie{}decomposition algorithm.
 
-Algorithm taken from Golub and Van Loan, @cite{Matrix Computations, 2nd
-edition}.
+Algorithm taken from Golub and Van Loan,
+@cite{Matrix Computations, 2nd edition}.
 @end deftypefn
 
 
@@ -1257,7 +1264,7 @@ $UR \cdot TR \cdot {UR}^T = U T U^{\dagger}$ and
 $U^{\dagger} U$ is the identity matrix I.
 @end tex
 @ifnottex
-@code{@var{UR} * @var{TR} * @var{UR}' = @var{U} * @var{T} * @var{U}'} and
+@xcode{@var{UR} * @var{TR} * @var{UR}' = @var{U} * @var{T} * @var{U}'} and
 @code{@var{U}' * @var{U}} is the identity matrix I.
 @end ifnottex
 
@@ -1364,9 +1371,14 @@ decomposition, eliminating the unnecessary rows or columns of @var{U} or
 @anchor{doc-svd_driver}
 @deftypefn  {Loadable Function} {@var{val} =} svd_driver ()
 @deftypefnx {Loadable Function} {@var{old_val} =} svd_driver (@var{new_val})
+@deftypefnx {Loadable Function} {} svd_driver (@var{new_val}, "local")
 Query or set the underlying @sc{lapack} driver used by @code{svd}.
 Currently recognized values are "gesvd" and "gesdd".  The default
 is "gesvd".
+
+When called from inside a function with the "local" option, the variable is
+changed locally for the function and any subroutines it calls.  The original
+variable value is restored when exiting the function.
 @seealso{@ref{doc-svd,,svd}}
 @end deftypefn
 
@@ -1381,8 +1393,8 @@ to be the j-th column of identity, i.e.,
 
 @example
 @group
-(I - beta*housv*housv')x =  norm(x)*e(j) if x(1) < 0,
-(I - beta*housv*housv')x = -norm(x)*e(j) if x(1) >= 0
+(I - beta*housv*housv')x =  norm(x)*e(j) if x(j) < 0,
+(I - beta*housv*housv')x = -norm(x)*e(j) if x(j) >= 0
 @end group
 @end example
 
@@ -1426,8 +1438,8 @@ Construct an orthogonal basis @var{u} of block Krylov subspace
 Using Householder reflections to guard against loss of orthogonality.
 
 If @var{V} is a vector, then @var{h} contains the Hessenberg matrix
-such that @code{a*u == u*h+rk*ek'}, in which @code{rk =
-a*u(:,k)-u*h(:,k)}, and @code{ek'} is the vector
+such that @nospell{@xcode{a*u == u*h+rk*ek'}}, in which @code{rk =
+a*u(:,k)-u*h(:,k)}, and @nospell{@xcode{ek'}} is the vector
 @code{[0, 0, @dots{}, 1]} of length @code{k}.  Otherwise, @var{h} is
 meaningless.
 
@@ -1469,7 +1481,7 @@ $$
 @ifnottex
 
 @example
-expm(A) = I + A + A^2/2! + A^3/3! + @dots{}
+expm (A) = I + A + A^2/2! + A^3/3! + @dots{}
 @end example
 
 @end ifnottex
@@ -1522,7 +1534,7 @@ Compute the matrix logarithm of the square matrix @var{A}.  The
 implementation utilizes a Pad@'e approximant and the identity
 
 @example
-logm(@var{A}) = 2^k * logm(@var{A}^(1 / 2^k))
+logm (@var{A}) = 2^k * logm (@var{A}^(1 / 2^k))
 @end example
 
 The optional argument @var{opt_iters} is the maximum number of square roots
@@ -1547,8 +1559,10 @@ Mathematics, Manchester, England, January 1999.
 
 @c kron src/DLD-FUNCTIONS/kron.cc
 @anchor{doc-kron}
-@deftypefn {Loadable Function} {} kron (@var{A}, @var{B})
-Form the Kronecker product of two matrices, defined block by block as
+@deftypefn  {Loadable Function} {} kron (@var{A}, @var{B})
+@deftypefnx {Loadable Function} {} kron (@var{A1}, @var{A2}, @dots{})
+Form the Kronecker product of two or more matrices, defined block by 
+block as
 
 @example
 x = [a(i, j) b]
@@ -1564,6 +1578,16 @@ kron (1:4, ones (3, 1))
           1  2  3  4
 @end group
 @end example
+
+If there are more than two input arguments @var{A1}, @var{A2}, @dots{}, 
+@var{An} the Kronecker product is computed as
+
+@example
+kron (kron (@var{A1}, @var{A2}), @dots{}, @var{An})
+@end example
+
+@noindent
+Since the Kronecker product is associative, this is well-defined.
 @end deftypefn
 
 
@@ -1616,55 +1640,167 @@ syl ([1, 2; 3, 4], [5, 6; 7, 8], [9, 10; 11, 12])
 @node Specialized Solvers
 @section Specialized Solvers
 
+@c bicg scripts/sparse/bicg.m
+@anchor{doc-bicg}
+@deftypefn  {Function File} {@var{x} =} bicg (@var{A}, @var{b}, @var{rtol}, @var{maxit}, @var{M1}, @var{M2}, @var{x0})
+@deftypefnx {Function File} {@var{x} =} bicg (@var{A}, @var{b}, @var{rtol}, @var{maxit}, @var{P})
+@deftypefnx {Function File} {[@var{x}, @var{flag}, @var{relres}, @var{iter}, @var{resvec}] =} bicg (@var{A}, @var{b}, @dots{})
+Solve @code{A x = b} using the Bi-conjugate gradient iterative method.
+
+@itemize @minus
+@item @var{rtol} is the relative tolerance, if not given
+or set to [] the default value 1e-6 is used.
+
+@item @var{maxit} the maximum number of outer iterations,
+if not given or set to [] the default value
+@code{min (20, numel (b))} is used.
+
+@item @var{x0} the initial guess, if not given or set to []
+the default value @code{zeros (size (b))} is used.
+@end itemize
+
+@var{A} can be passed as a matrix or as a function handle or
+inline function @code{f} such that @code{f(x, "notransp") = A*x}
+and @code{f(x, "transp") = A'*x}.
+
+The preconditioner @var{P} is given as @code{P = M1 * M2}.
+Both @var{M1} and @var{M2} can be passed as a matrix or as
+a function handle or inline function @code{g} such that
+@code{g(x, 'notransp') = M1 \ x} or @code{g(x, 'notransp') = M2 \ x} and
+@code{g(x, 'transp') = M1' \ x} or @code{g(x, 'transp') = M2' \ x}.
+
+If called with more than one output parameter
+
+@itemize @minus
+@item @var{flag} indicates the exit status:
+@itemize @minus
+@item 0: iteration converged to the within the chosen tolerance
+
+@item 1: the maximum number of iterations was reached before convergence
+
+@item 3: the algorithm reached stagnation
+@end itemize
+(the value 2 is unused but skipped for compatibility).
+
+@item @var{relres} is the final value of the relative residual.
+
+@item @var{iter} is the number of iterations performed.
+
+@item @var{resvec} is a vector containing the relative residual at each iteration.
+@end itemize
+
+@seealso{@ref{doc-bicgstab,,bicgstab}, @ref{doc-cgs,,cgs}, @ref{doc-gmres,,gmres}, @ref{doc-pcg,,pcg}}
+
+@end deftypefn
+
+
 @c bicgstab scripts/sparse/bicgstab.m
 @anchor{doc-bicgstab}
-@deftypefn  {Function File} {} bicgstab (@var{A}, @var{b})
-@deftypefnx {Function File} {} bicgstab (@var{A}, @var{b}, @var{tol}, @var{maxit}, @var{M1}, @var{M2}, @var{x0})
-This procedure attempts to solve a system of linear equations A*x = b for x.
-The @var{A} must be square, symmetric and positive definite real matrix N*N.
-The @var{b} must be a one column vector with a length of N.
-The @var{tol} specifies the tolerance of the method, the default value is
-1e-6.
-The @var{maxit} specifies the maximum number of iterations, the default value
-is min(20,N).
-The @var{M1} specifies a preconditioner, can also be a function handler which
-returns M\X.
-The @var{M2} combined with @var{M1} defines preconditioner as
-preconditioner=M1*M2.
-The @var{x0} is the initial guess, the default value is zeros(N,1).
+@deftypefn  {Function File} {@var{x} =} bicgstab (@var{A}, @var{b}, @var{rtol}, @var{maxit}, @var{M1}, @var{M2}, @var{x0})
+@deftypefnx {Function File} {@var{x} =} bicgstab (@var{A}, @var{b}, @var{rtol}, @var{maxit}, @var{P})
+@deftypefnx {Function File} {[@var{x}, @var{flag}, @var{relres}, @var{iter}, @var{resvec}] =} bicgstab (@var{A}, @var{b}, @dots{})
+Solve @code{A x = b} using the stabilizied Bi-conjugate gradient iterative
+method.
 
-The value @var{x} is a computed result of this procedure.
-The value @var{flag} can be 0 when we reach tolerance in @var{maxit}
-iterations, 1 when
-we don't reach tolerance in @var{maxit} iterations and 3 when the procedure
-stagnates.
-The value @var{relres} is a relative residual - norm(b-A*x)/norm(b).
-The value @var{iter} is an iteration number in which x was computed.
-The value @var{resvec} is a vector of @var{relres} for each iteration.
+@itemize @minus
+@item @var{rtol} is the relative tolerance, if not given or set to
+[] the default value 1e-6 is used.
+
+@item @var{maxit} the maximum number of outer iterations, if not
+given or set to [] the default value @code{min (20, numel (b))} is
+used.
+
+@item @var{x0} the initial guess, if not given or set to [] the
+default value @code{zeros (size (b))} is used.
+@end itemize
+
+@var{A} can be passed as a matrix or as a function handle or
+inline function @code{f} such that @code{f(x) = A*x}.
+
+The preconditioner @var{P} is given as @code{P = M1 * M2}.
+Both @var{M1} and @var{M2} can be passed as a matrix or as a function
+handle or inline function @code{g} such that @code{g(x) = M1 \ x} or
+@code{g(x) = M2 \ x}.
+
+If called with more than one output parameter
+
+@itemize @minus
+@item @var{flag} indicates the exit status:
+@itemize @minus
+@item 0: iteration converged to the within the chosen tolerance
+
+@item 1: the maximum number of iterations was reached before convergence
+
+@item 3: the algorithm reached stagnation
+@end itemize
+(the value 2 is unused but skipped for compatibility).
+
+@item @var{relres} is the final value of the relative residual.
+
+@item @var{iter} is the number of iterations performed.
+
+@item @var{resvec} is a vector containing the relative residual at each iteration.
+@end itemize
+
+@seealso{@ref{doc-bicg,,bicg}, @ref{doc-cgs,,cgs}, @ref{doc-gmres,,gmres}, @ref{doc-pcg,,pcg}}
 
 @end deftypefn
 
 
 @c cgs scripts/sparse/cgs.m
 @anchor{doc-cgs}
-@deftypefn  {Function File} {} cgs (@var{A}, @var{b})
-@deftypefnx {Function File} {} cgs (@var{A}, @var{b}, @var{tol}, @var{maxit}, @var{M1}, @var{M2}, @var{x0})
-This procedure attempts to solve a system of linear equations A*x = b for x.
-The @var{A} must be square, symmetric and positive definite real matrix N*N.
-The @var{b} must be a one column vector with a length of N.
-The @var{tol} specifies the tolerance of the method, default value is 1e-6.
-The @var{maxit} specifies the maximum number of iteration, default value is
-MIN(20,N).
-The @var{M1} specifies a preconditioner, can also be a function handler which
-returns M\X.
-The @var{M2} combined with @var{M1} defines preconditioner as
-preconditioner=M1*M2.
-The @var{x0} is initial guess, default value is zeros(N,1).
+@deftypefn  {Function File} {@var{x} =} cgs (@var{A}, @var{b}, @var{rtol}, @var{maxit}, @var{M1}, @var{M2}, @var{x0})
+@deftypefnx {Function File} {@var{x} =} cgs (@var{A}, @var{b}, @var{rtol}, @var{maxit}, @var{P})
+@deftypefnx {Function File} {[@var{x}, @var{flag}, @var{relres}, @var{iter}, @var{resvec}] =} cgs (@var{A}, @var{b}, @dots{})
+Solve @code{A x = b}, where @var{A} is a square matrix, using the
+Conjugate Gradients Squared method.
 
+@itemize @minus
+@item @var{rtol} is the relative tolerance, if not given or set to []
+the default value 1e-6 is used.
+
+@item @var{maxit} the maximum number of outer iterations, if not
+given or set to [] the default value @code{min (20, numel (b))} is
+used.
+
+@item @var{x0} the initial guess, if not given or set to [] the
+default value @code{zeros (size (b))} is used.
+@end itemize
+
+@var{A} can be passed as a matrix or as a function handle or
+inline function @code{f} such that @code{f(x) = A*x}.
+
+The preconditioner @var{P} is given as @code{P = M1 * M2}.
+Both @var{M1} and @var{M2} can be passed as a matrix or as a function
+handle or inline function @code{g} such that @code{g(x) = M1 \ x} or
+@code{g(x) = M2 \ x}.
+
+If called with more than one output parameter
+
+@itemize @minus
+@item @var{flag} indicates the exit status:
+@itemize @minus
+@item 0: iteration converged to the within the chosen tolerance
+
+@item 1: the maximum number of iterations was reached before convergence
+
+@item 3: the algorithm reached stagnation
+@end itemize
+(the value 2 is unused but skipped for compatibility).
+
+@item @var{relres} is the final value of the relative residual.
+
+@item @var{iter} is the number of iterations performed.
+
+@item @var{resvec} is a vector containing the relative residual at
+each iteration.
+@end itemize
+
+@seealso{@ref{doc-pcg,,pcg}, @ref{doc-bicgstab,,bicgstab}, @ref{doc-bicg,,bicg}, @ref{doc-gmres,,gmres}}
 @end deftypefn
 
 
-@c gmres scripts/linear-algebra/gmres.m
+@c gmres scripts/sparse/gmres.m
 @anchor{doc-gmres}
 @deftypefn  {Function File} {@var{x} =} gmres (@var{A}, @var{b}, @var{m}, @var{rtol}, @var{maxit}, @var{M1}, @var{M2}, @var{x0})
 @deftypefnx {Function File} {@var{x} =} gmres (@var{A}, @var{b}, @var{m}, @var{rtol}, @var{maxit}, @var{P})
@@ -1698,7 +1834,6 @@ Besides the vector @var{x}, additional outputs are:
 
 @itemize @minus
 @item @var{flag} indicates the exit status:
-
 @table @asis
 @item 0 : iteration converged to within the specified tolerance
 
@@ -1718,6 +1853,6 @@ total iterations performed.
 iteration.
 @end itemize
 
-@seealso{@ref{doc-pcg,,pcg}, @ref{doc-cgs,,cgs}, @ref{doc-bicgstab,,bicgstab}}
+@seealso{@ref{doc-bicg,,bicg}, @ref{doc-bicgstab,,bicgstab}, @ref{doc-cgs,,cgs}, @ref{doc-pcg,,pcg}}
 @end deftypefn
 

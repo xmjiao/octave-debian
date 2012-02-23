@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2011 Ben Abbott
+## Copyright (C) 2008-2012 Ben Abbott
 ##
 ## This file is part of Octave.
 ##
@@ -36,3 +36,5 @@ function __finish__ ()
 
 endfunction
 
+## No test needed for internal helper function.
+%!assert (1)

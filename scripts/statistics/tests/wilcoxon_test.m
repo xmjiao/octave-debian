@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2011 Kurt Hornik
+## Copyright (C) 1995-2012 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -23,7 +23,7 @@
 ## @var{y}) == 1/2.  Under the null, the test statistic @var{z}
 ## approximately follows a standard normal distribution when @var{n} > 25.
 ##
-## @strong{Warning}: This function assumes a normal distribution for @var{z}
+## @strong{Caution:} This function assumes a normal distribution for @var{z}
 ## and thus is invalid for @var{n} @leq{} 25.
 ##
 ## With the optional argument string @var{alt}, the alternative of

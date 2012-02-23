@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2011 John W. Eaton
+Copyright (C) 1996-2012 John W. Eaton
 
 This file is part of Octave.
 
@@ -228,8 +228,8 @@ of a sparse matrix if possible.\n\
 %!assert(inv ([1, 2; 3, 4]), [-2, 1; 1.5, -0.5], sqrt (eps))
 %!assert(inv (single([1, 2; 3, 4])), single([-2, 1; 1.5, -0.5]), sqrt (eps ('single')))
 
-%!error <Invalid call to inv.*> inv ();
-%!error <Invalid call to inv.*> inv ([1, 2; 3, 4], 2);
+%!error <Invalid call to inv> inv ();
+%!error <Invalid call to inv> inv ([1, 2; 3, 4], 2);
 %!error inv ([1, 2; 3, 4; 5, 6]);
 
  */

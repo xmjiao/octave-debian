@@ -1,4 +1,4 @@
-c Copyright (C) 2009-2011  VZLU Prague, a.s., Czech Republic
+c Copyright (C) 2009-2012  VZLU Prague, a.s., Czech Republic
 c
 c Author: Jaroslav Hajek <highegg@gmail.com>
 c
@@ -19,7 +19,7 @@ c along with this software; see the file COPYING.  If not, see
 c <http://www.gnu.org/licenses/>.
 c
       subroutine sdot3(m,n,k,a,b,c)
-c purpose:      a 3-dimensional dot product. 
+c purpose:      a 3-dimensional dot product.
 c               c = sum (a .* b, 2), where a and b are 3d arrays.
 c arguments:
 c m,n,k (in)    the dimensions of a and b

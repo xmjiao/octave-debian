@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2011 David Bateman
+## Copyright (C) 2007-2012 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -30,22 +30,21 @@
 ## @var{r} bins.  If @var{r} is a vector, then the center of each bin are
 ## defined by the values of @var{r}.
 ##
-## The optional return value @var{h} provides a list of handles to the
-## the parts of the vector field (body, arrow and marker).
+## The optional return value @var{h} is a vector of graphics handles to the
+## line objects representing each histogram.
 ##
-## If two output arguments are requested, then rather than plotting the
+## If two output arguments are requested then, rather than plotting the
 ## histogram, the polar vectors necessary to plot the histogram are
 ## returned.
 ##
 ## @example
 ## @group
-## [r, t] = rose ([2*randn(1e5,1), pi + 2 * randn(1e5,1)]);
+## [r, t] = rose ([2*randn(1e5,1), pi + 2*randn(1e5,1)]);
 ## polar (r, t);
 ## @end group
 ## @end example
 ##
-##
-## @seealso{plot, compass, polar, hist}
+## @seealso{polar, compass, hist}
 ## @end deftypefn
 
 function [thout, rout] = rose (varargin)
@@ -107,5 +106,6 @@ endfunction
 
 
 %!demo
+%! clf
 %! rose ([2*randn(1e5, 1), pi + 2*randn(1e5, 1)]);
 

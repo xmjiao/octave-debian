@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2011 David Bateman
+## Copyright (C) 2008-2012 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -30,7 +30,7 @@
 ## function b = saveobj (a)
 ##   b = a;
 ##   if (isempty (b.field))
-##      b.field = initfield(b);
+##      b.field = initfield (b);
 ##   endif
 ## endfunction
 ## @end group

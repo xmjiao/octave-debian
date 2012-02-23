@@ -17,20 +17,20 @@
 
 # Makefile for octave's libcruft directory
 #
-# Copyright (C) 1993-2011 John W. Eaton
+# Copyright (C) 1993-2012 John W. Eaton
 #
 # This file is part of Octave.
-# 
+#
 # Octave is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
 # Free Software Foundation; either version 3 of the License, or (at
 # your option) any later version.
-# 
+#
 # Octave is distributed in the hope that it will be useful, but WITHOUT
 # ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 # FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 # for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with Octave; see the file COPYING.  If not, see
 # <http://www.gnu.org/licenses/>.
@@ -56,10 +56,10 @@ build_triplet = @build@
 host_triplet = @host@
 DIST_COMMON = $(octinclude_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(srcdir)/amos/module.mk \
-	$(srcdir)/arpack/module.mk $(srcdir)/blas-xtra/module.mk \
-	$(srcdir)/daspk/module.mk $(srcdir)/dasrt/module.mk \
-	$(srcdir)/dassl/module.mk $(srcdir)/fftpack/module.mk \
-	$(srcdir)/lapack-xtra/module.mk $(srcdir)/misc/module.mk \
+	$(srcdir)/blas-xtra/module.mk $(srcdir)/daspk/module.mk \
+	$(srcdir)/dasrt/module.mk $(srcdir)/dassl/module.mk \
+	$(srcdir)/fftpack/module.mk $(srcdir)/lapack-xtra/module.mk \
+	$(srcdir)/link-deps.mk $(srcdir)/misc/module.mk \
 	$(srcdir)/mkf77def.in $(srcdir)/odepack/module.mk \
 	$(srcdir)/ordered-qz/module.mk $(srcdir)/quadpack/module.mk \
 	$(srcdir)/ranlib/module.mk $(srcdir)/slatec-err/module.mk \
@@ -76,26 +76,29 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
 	$(top_srcdir)/m4/ax_lapack.m4 $(top_srcdir)/m4/alloca.m4 \
 	$(top_srcdir)/m4/canonicalize.m4 $(top_srcdir)/m4/ceil.m4 \
 	$(top_srcdir)/m4/ceilf.m4 $(top_srcdir)/m4/chdir-long.m4 \
-	$(top_srcdir)/m4/check-math-lib.m4 $(top_srcdir)/m4/chown.m4 \
-	$(top_srcdir)/m4/close.m4 $(top_srcdir)/m4/closedir.m4 \
-	$(top_srcdir)/m4/codeset.m4 $(top_srcdir)/m4/configmake.m4 \
-	$(top_srcdir)/m4/d-ino.m4 $(top_srcdir)/m4/d-type.m4 \
-	$(top_srcdir)/m4/dirent_h.m4 $(top_srcdir)/m4/dirfd.m4 \
-	$(top_srcdir)/m4/dirname.m4 \
+	$(top_srcdir)/m4/check-math-lib.m4 $(top_srcdir)/m4/close.m4 \
+	$(top_srcdir)/m4/closedir.m4 $(top_srcdir)/m4/codeset.m4 \
+	$(top_srcdir)/m4/configmake.m4 $(top_srcdir)/m4/copysign.m4 \
+	$(top_srcdir)/m4/copysignf.m4 $(top_srcdir)/m4/d-ino.m4 \
+	$(top_srcdir)/m4/d-type.m4 $(top_srcdir)/m4/dirent_h.m4 \
+	$(top_srcdir)/m4/dirfd.m4 $(top_srcdir)/m4/dirname.m4 \
 	$(top_srcdir)/m4/double-slash-root.m4 $(top_srcdir)/m4/dup.m4 \
 	$(top_srcdir)/m4/dup2.m4 $(top_srcdir)/m4/eealloc.m4 \
 	$(top_srcdir)/m4/errno_h.m4 $(top_srcdir)/m4/error.m4 \
-	$(top_srcdir)/m4/extensions.m4 $(top_srcdir)/m4/fchdir.m4 \
-	$(top_srcdir)/m4/fclose.m4 $(top_srcdir)/m4/fcntl-o.m4 \
-	$(top_srcdir)/m4/fcntl.m4 $(top_srcdir)/m4/fcntl_h.m4 \
-	$(top_srcdir)/m4/fdopendir.m4 $(top_srcdir)/m4/fflush.m4 \
-	$(top_srcdir)/m4/filemode.m4 $(top_srcdir)/m4/filenamecat.m4 \
-	$(top_srcdir)/m4/float_h.m4 $(top_srcdir)/m4/floor.m4 \
-	$(top_srcdir)/m4/floorf.m4 $(top_srcdir)/m4/fnmatch.m4 \
-	$(top_srcdir)/m4/fopen.m4 $(top_srcdir)/m4/fpurge.m4 \
+	$(top_srcdir)/m4/exponentd.m4 $(top_srcdir)/m4/exponentf.m4 \
+	$(top_srcdir)/m4/exponentl.m4 $(top_srcdir)/m4/extensions.m4 \
+	$(top_srcdir)/m4/fchdir.m4 $(top_srcdir)/m4/fclose.m4 \
+	$(top_srcdir)/m4/fcntl-o.m4 $(top_srcdir)/m4/fcntl.m4 \
+	$(top_srcdir)/m4/fcntl_h.m4 $(top_srcdir)/m4/fdopendir.m4 \
+	$(top_srcdir)/m4/fflush.m4 $(top_srcdir)/m4/filemode.m4 \
+	$(top_srcdir)/m4/filenamecat.m4 $(top_srcdir)/m4/float_h.m4 \
+	$(top_srcdir)/m4/floor.m4 $(top_srcdir)/m4/floorf.m4 \
+	$(top_srcdir)/m4/fnmatch.m4 $(top_srcdir)/m4/fopen.m4 \
+	$(top_srcdir)/m4/fpieee.m4 $(top_srcdir)/m4/fpurge.m4 \
 	$(top_srcdir)/m4/freading.m4 $(top_srcdir)/m4/fseek.m4 \
 	$(top_srcdir)/m4/fseeko.m4 $(top_srcdir)/m4/fstat.m4 \
-	$(top_srcdir)/m4/ftell.m4 $(top_srcdir)/m4/ftello.m4 \
+	$(top_srcdir)/m4/fstatat.m4 $(top_srcdir)/m4/ftell.m4 \
+	$(top_srcdir)/m4/ftello.m4 \
 	$(top_srcdir)/m4/getcwd-abort-bug.m4 \
 	$(top_srcdir)/m4/getcwd-path-max.m4 $(top_srcdir)/m4/getcwd.m4 \
 	$(top_srcdir)/m4/getdtablesize.m4 \
@@ -105,21 +108,23 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
 	$(top_srcdir)/m4/gnulib-common.m4 \
 	$(top_srcdir)/m4/gnulib-comp.m4 \
 	$(top_srcdir)/m4/include_next.m4 $(top_srcdir)/m4/intmax_t.m4 \
-	$(top_srcdir)/m4/inttypes_h.m4 $(top_srcdir)/m4/largefile.m4 \
-	$(top_srcdir)/m4/lchown.m4 $(top_srcdir)/m4/libtool.m4 \
-	$(top_srcdir)/m4/link.m4 $(top_srcdir)/m4/localcharset.m4 \
-	$(top_srcdir)/m4/locale-fr.m4 $(top_srcdir)/m4/locale-ja.m4 \
-	$(top_srcdir)/m4/locale-zh.m4 $(top_srcdir)/m4/longlong.m4 \
-	$(top_srcdir)/m4/lseek.m4 $(top_srcdir)/m4/lstat.m4 \
-	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
-	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
-	$(top_srcdir)/m4/malloc.m4 $(top_srcdir)/m4/malloca.m4 \
-	$(top_srcdir)/m4/math_h.m4 $(top_srcdir)/m4/mathfunc.m4 \
-	$(top_srcdir)/m4/mbrtowc.m4 $(top_srcdir)/m4/mbsinit.m4 \
-	$(top_srcdir)/m4/mbsrtowcs.m4 $(top_srcdir)/m4/mbstate_t.m4 \
-	$(top_srcdir)/m4/md5.m4 $(top_srcdir)/m4/memchr.m4 \
-	$(top_srcdir)/m4/mempcpy.m4 $(top_srcdir)/m4/memrchr.m4 \
-	$(top_srcdir)/m4/mkdir.m4 $(top_srcdir)/m4/mkfifo.m4 \
+	$(top_srcdir)/m4/inttypes_h.m4 $(top_srcdir)/m4/isatty.m4 \
+	$(top_srcdir)/m4/isnand.m4 $(top_srcdir)/m4/isnanf.m4 \
+	$(top_srcdir)/m4/isnanl.m4 $(top_srcdir)/m4/largefile.m4 \
+	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/link.m4 \
+	$(top_srcdir)/m4/localcharset.m4 $(top_srcdir)/m4/locale-fr.m4 \
+	$(top_srcdir)/m4/locale-ja.m4 $(top_srcdir)/m4/locale-zh.m4 \
+	$(top_srcdir)/m4/longlong.m4 $(top_srcdir)/m4/lseek.m4 \
+	$(top_srcdir)/m4/lstat.m4 $(top_srcdir)/m4/ltoptions.m4 \
+	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
+	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/m4/malloc.m4 \
+	$(top_srcdir)/m4/malloca.m4 $(top_srcdir)/m4/math_h.m4 \
+	$(top_srcdir)/m4/mathfunc.m4 $(top_srcdir)/m4/mbrtowc.m4 \
+	$(top_srcdir)/m4/mbsinit.m4 $(top_srcdir)/m4/mbsrtowcs.m4 \
+	$(top_srcdir)/m4/mbstate_t.m4 $(top_srcdir)/m4/md5.m4 \
+	$(top_srcdir)/m4/memchr.m4 $(top_srcdir)/m4/mempcpy.m4 \
+	$(top_srcdir)/m4/memrchr.m4 $(top_srcdir)/m4/mkdir.m4 \
+	$(top_srcdir)/m4/mkfifo.m4 $(top_srcdir)/m4/mkostemp.m4 \
 	$(top_srcdir)/m4/mkstemp.m4 $(top_srcdir)/m4/mktime.m4 \
 	$(top_srcdir)/m4/mmap-anon.m4 $(top_srcdir)/m4/mode_t.m4 \
 	$(top_srcdir)/m4/msvc-inval.m4 \
@@ -130,23 +135,24 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
 	$(top_srcdir)/m4/pathmax.m4 $(top_srcdir)/m4/printf.m4 \
 	$(top_srcdir)/m4/raise.m4 $(top_srcdir)/m4/readdir.m4 \
 	$(top_srcdir)/m4/readlink.m4 $(top_srcdir)/m4/realloc.m4 \
-	$(top_srcdir)/m4/rename.m4 $(top_srcdir)/m4/rmdir.m4 \
-	$(top_srcdir)/m4/round.m4 $(top_srcdir)/m4/roundf.m4 \
-	$(top_srcdir)/m4/save-cwd.m4 $(top_srcdir)/m4/select.m4 \
-	$(top_srcdir)/m4/sigaction.m4 $(top_srcdir)/m4/signal_h.m4 \
-	$(top_srcdir)/m4/signalblocking.m4 \
+	$(top_srcdir)/m4/rename.m4 $(top_srcdir)/m4/rewinddir.m4 \
+	$(top_srcdir)/m4/rmdir.m4 $(top_srcdir)/m4/round.m4 \
+	$(top_srcdir)/m4/roundf.m4 $(top_srcdir)/m4/save-cwd.m4 \
+	$(top_srcdir)/m4/select.m4 $(top_srcdir)/m4/sigaction.m4 \
+	$(top_srcdir)/m4/signal_h.m4 \
+	$(top_srcdir)/m4/signalblocking.m4 $(top_srcdir)/m4/signbit.m4 \
 	$(top_srcdir)/m4/size_max.m4 $(top_srcdir)/m4/sleep.m4 \
 	$(top_srcdir)/m4/socketlib.m4 $(top_srcdir)/m4/sockets.m4 \
 	$(top_srcdir)/m4/socklen.m4 $(top_srcdir)/m4/ssize_t.m4 \
 	$(top_srcdir)/m4/st_dm_mode.m4 $(top_srcdir)/m4/stat.m4 \
-	$(top_srcdir)/m4/stdbool.m4 $(top_srcdir)/m4/stddef_h.m4 \
-	$(top_srcdir)/m4/stdint.m4 $(top_srcdir)/m4/stdint_h.m4 \
-	$(top_srcdir)/m4/stdio_h.m4 $(top_srcdir)/m4/stdlib_h.m4 \
-	$(top_srcdir)/m4/strcase.m4 $(top_srcdir)/m4/strdup.m4 \
-	$(top_srcdir)/m4/strerror.m4 $(top_srcdir)/m4/strftime.m4 \
-	$(top_srcdir)/m4/string_h.m4 $(top_srcdir)/m4/strings_h.m4 \
-	$(top_srcdir)/m4/strptime.m4 $(top_srcdir)/m4/symlink.m4 \
-	$(top_srcdir)/m4/sys_select_h.m4 \
+	$(top_srcdir)/m4/stdalign.m4 $(top_srcdir)/m4/stdbool.m4 \
+	$(top_srcdir)/m4/stddef_h.m4 $(top_srcdir)/m4/stdint.m4 \
+	$(top_srcdir)/m4/stdint_h.m4 $(top_srcdir)/m4/stdio_h.m4 \
+	$(top_srcdir)/m4/stdlib_h.m4 $(top_srcdir)/m4/strcase.m4 \
+	$(top_srcdir)/m4/strdup.m4 $(top_srcdir)/m4/strerror.m4 \
+	$(top_srcdir)/m4/strftime.m4 $(top_srcdir)/m4/string_h.m4 \
+	$(top_srcdir)/m4/strings_h.m4 $(top_srcdir)/m4/strptime.m4 \
+	$(top_srcdir)/m4/symlink.m4 $(top_srcdir)/m4/sys_select_h.m4 \
 	$(top_srcdir)/m4/sys_socket_h.m4 \
 	$(top_srcdir)/m4/sys_stat_h.m4 $(top_srcdir)/m4/sys_time_h.m4 \
 	$(top_srcdir)/m4/sys_times_h.m4 \
@@ -157,7 +163,7 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
 	$(top_srcdir)/m4/tmpfile.m4 $(top_srcdir)/m4/trunc.m4 \
 	$(top_srcdir)/m4/truncf.m4 $(top_srcdir)/m4/unistd-safer.m4 \
 	$(top_srcdir)/m4/unistd_h.m4 $(top_srcdir)/m4/unlink.m4 \
-	$(top_srcdir)/m4/vasnprintf.m4 $(top_srcdir)/m4/vsnprintf.m4 \
+	$(top_srcdir)/m4/vasnprintf.m4 $(top_srcdir)/m4/vasprintf.m4 \
 	$(top_srcdir)/m4/warn-on-use.m4 $(top_srcdir)/m4/wchar_h.m4 \
 	$(top_srcdir)/m4/wchar_t.m4 $(top_srcdir)/m4/wctype_h.m4 \
 	$(top_srcdir)/m4/wint_t.m4 $(top_srcdir)/m4/xsize.m4 \
@@ -193,6 +199,13 @@ am__installdirs = "$(DESTDIR)$(octlibdir)" \
 	"$(DESTDIR)$(octincludedir)"
 LTLIBRARIES = $(noinst_LTLIBRARIES) $(octlib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
+am__DEPENDENCIES_2 = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am__libcruft_la_SOURCES_DIST = amos/cacai.f amos/cacon.f amos/cbesh.f \
 	amos/cbesi.f amos/cbesj.f amos/cbesk.f amos/cbesy.f \
 	amos/cbinu.f amos/cbuni.f amos/cbunk.f amos/cunk1.f \
@@ -209,35 +222,7 @@ am__libcruft_la_SOURCES_DIST = amos/cacai.f amos/cacon.f amos/cbesh.f \
 	amos/zmlri.f amos/zmlt.f amos/zrati.f amos/zs1s2.f \
 	amos/zseri.f amos/zshch.f amos/zuchk.f amos/zunhj.f \
 	amos/zuni1.f amos/zuni2.f amos/zunik.f amos/zunk1.f \
-	amos/zunk2.f amos/zuoik.f amos/zwrsk.f arpack/src/cgetv0.f \
-	arpack/src/cnaitr.f arpack/src/cnapps.f arpack/src/cnaup2.f \
-	arpack/src/cnaupd.f arpack/src/cneigh.f arpack/src/cneupd.f \
-	arpack/src/cngets.f arpack/src/csortc.f arpack/src/cstatn.f \
-	arpack/src/dgetv0.f arpack/src/dlaqrb.f arpack/src/dnaitr.f \
-	arpack/src/dnapps.f arpack/src/dnaup2.f arpack/src/dnaupd.f \
-	arpack/src/dnaupe.f arpack/src/dnconv.f arpack/src/dneigh.f \
-	arpack/src/dneupd.f arpack/src/dngets.f arpack/src/dsaitr.f \
-	arpack/src/dsapps.f arpack/src/dsaup2.f arpack/src/dsaupd.f \
-	arpack/src/dsconv.f arpack/src/dseigt.f arpack/src/dsesrt.f \
-	arpack/src/dseupd.f arpack/src/dsgets.f arpack/src/dsortc.f \
-	arpack/src/dsortr.f arpack/src/dstatn.f arpack/src/dstats.f \
-	arpack/src/dstqrb.f arpack/src/sgetv0.f arpack/src/slaqrb.f \
-	arpack/src/snaitr.f arpack/src/snapps.f arpack/src/snaup2.f \
-	arpack/src/snaupd.f arpack/src/snaupe.f arpack/src/snconv.f \
-	arpack/src/sneigh.f arpack/src/sneupd.f arpack/src/sngets.f \
-	arpack/src/ssaitr.f arpack/src/ssapps.f arpack/src/ssaup2.f \
-	arpack/src/ssaupd.f arpack/src/ssconv.f arpack/src/sseigt.f \
-	arpack/src/ssesrt.f arpack/src/sseupd.f arpack/src/ssgets.f \
-	arpack/src/ssortc.f arpack/src/ssortr.f arpack/src/sstatn.f \
-	arpack/src/sstats.f arpack/src/sstqrb.f arpack/src/zgetv0.f \
-	arpack/src/znaitr.f arpack/src/znapps.f arpack/src/znaup2.f \
-	arpack/src/znaupd.f arpack/src/zneigh.f arpack/src/zneupd.f \
-	arpack/src/zngets.f arpack/src/zsortc.f arpack/src/zstatn.f \
-	arpack/util/cmout.f arpack/util/cvout.f arpack/util/dmout.f \
-	arpack/util/dvout.f arpack/util/icnteq.f arpack/util/icopy.f \
-	arpack/util/iset.f arpack/util/iswap.f arpack/util/ivout.f \
-	arpack/util/second.f arpack/util/smout.f arpack/util/svout.f \
-	arpack/util/zmout.f arpack/util/zvout.f blas-xtra/ddot3.f \
+	amos/zunk2.f amos/zuoik.f amos/zwrsk.f blas-xtra/ddot3.f \
 	blas-xtra/zdotc3.f blas-xtra/sdot3.f blas-xtra/cdotc3.f \
 	blas-xtra/dmatm3.f blas-xtra/zmatm3.f blas-xtra/smatm3.f \
 	blas-xtra/cmatm3.f blas-xtra/xddot.f blas-xtra/xdnrm2.f \
@@ -363,92 +348,9 @@ am_libcruft_la_OBJECTS = amos/libcruft_la-cacai.lo \
 	amos/libcruft_la-zuni1.lo amos/libcruft_la-zuni2.lo \
 	amos/libcruft_la-zunik.lo amos/libcruft_la-zunk1.lo \
 	amos/libcruft_la-zunk2.lo amos/libcruft_la-zuoik.lo \
-	amos/libcruft_la-zwrsk.lo arpack/src/libcruft_la-cgetv0.lo \
-	arpack/src/libcruft_la-cnaitr.lo \
-	arpack/src/libcruft_la-cnapps.lo \
-	arpack/src/libcruft_la-cnaup2.lo \
-	arpack/src/libcruft_la-cnaupd.lo \
-	arpack/src/libcruft_la-cneigh.lo \
-	arpack/src/libcruft_la-cneupd.lo \
-	arpack/src/libcruft_la-cngets.lo \
-	arpack/src/libcruft_la-csortc.lo \
-	arpack/src/libcruft_la-cstatn.lo \
-	arpack/src/libcruft_la-dgetv0.lo \
-	arpack/src/libcruft_la-dlaqrb.lo \
-	arpack/src/libcruft_la-dnaitr.lo \
-	arpack/src/libcruft_la-dnapps.lo \
-	arpack/src/libcruft_la-dnaup2.lo \
-	arpack/src/libcruft_la-dnaupd.lo \
-	arpack/src/libcruft_la-dnaupe.lo \
-	arpack/src/libcruft_la-dnconv.lo \
-	arpack/src/libcruft_la-dneigh.lo \
-	arpack/src/libcruft_la-dneupd.lo \
-	arpack/src/libcruft_la-dngets.lo \
-	arpack/src/libcruft_la-dsaitr.lo \
-	arpack/src/libcruft_la-dsapps.lo \
-	arpack/src/libcruft_la-dsaup2.lo \
-	arpack/src/libcruft_la-dsaupd.lo \
-	arpack/src/libcruft_la-dsconv.lo \
-	arpack/src/libcruft_la-dseigt.lo \
-	arpack/src/libcruft_la-dsesrt.lo \
-	arpack/src/libcruft_la-dseupd.lo \
-	arpack/src/libcruft_la-dsgets.lo \
-	arpack/src/libcruft_la-dsortc.lo \
-	arpack/src/libcruft_la-dsortr.lo \
-	arpack/src/libcruft_la-dstatn.lo \
-	arpack/src/libcruft_la-dstats.lo \
-	arpack/src/libcruft_la-dstqrb.lo \
-	arpack/src/libcruft_la-sgetv0.lo \
-	arpack/src/libcruft_la-slaqrb.lo \
-	arpack/src/libcruft_la-snaitr.lo \
-	arpack/src/libcruft_la-snapps.lo \
-	arpack/src/libcruft_la-snaup2.lo \
-	arpack/src/libcruft_la-snaupd.lo \
-	arpack/src/libcruft_la-snaupe.lo \
-	arpack/src/libcruft_la-snconv.lo \
-	arpack/src/libcruft_la-sneigh.lo \
-	arpack/src/libcruft_la-sneupd.lo \
-	arpack/src/libcruft_la-sngets.lo \
-	arpack/src/libcruft_la-ssaitr.lo \
-	arpack/src/libcruft_la-ssapps.lo \
-	arpack/src/libcruft_la-ssaup2.lo \
-	arpack/src/libcruft_la-ssaupd.lo \
-	arpack/src/libcruft_la-ssconv.lo \
-	arpack/src/libcruft_la-sseigt.lo \
-	arpack/src/libcruft_la-ssesrt.lo \
-	arpack/src/libcruft_la-sseupd.lo \
-	arpack/src/libcruft_la-ssgets.lo \
-	arpack/src/libcruft_la-ssortc.lo \
-	arpack/src/libcruft_la-ssortr.lo \
-	arpack/src/libcruft_la-sstatn.lo \
-	arpack/src/libcruft_la-sstats.lo \
-	arpack/src/libcruft_la-sstqrb.lo \
-	arpack/src/libcruft_la-zgetv0.lo \
-	arpack/src/libcruft_la-znaitr.lo \
-	arpack/src/libcruft_la-znapps.lo \
-	arpack/src/libcruft_la-znaup2.lo \
-	arpack/src/libcruft_la-znaupd.lo \
-	arpack/src/libcruft_la-zneigh.lo \
-	arpack/src/libcruft_la-zneupd.lo \
-	arpack/src/libcruft_la-zngets.lo \
-	arpack/src/libcruft_la-zsortc.lo \
-	arpack/src/libcruft_la-zstatn.lo \
-	arpack/util/libcruft_la-cmout.lo \
-	arpack/util/libcruft_la-cvout.lo \
-	arpack/util/libcruft_la-dmout.lo \
-	arpack/util/libcruft_la-dvout.lo \
-	arpack/util/libcruft_la-icnteq.lo \
-	arpack/util/libcruft_la-icopy.lo \
-	arpack/util/libcruft_la-iset.lo \
-	arpack/util/libcruft_la-iswap.lo \
-	arpack/util/libcruft_la-ivout.lo \
-	arpack/util/libcruft_la-second.lo \
-	arpack/util/libcruft_la-smout.lo \
-	arpack/util/libcruft_la-svout.lo \
-	arpack/util/libcruft_la-zmout.lo \
-	arpack/util/libcruft_la-zvout.lo \
-	blas-xtra/libcruft_la-ddot3.lo blas-xtra/libcruft_la-zdotc3.lo \
-	blas-xtra/libcruft_la-sdot3.lo blas-xtra/libcruft_la-cdotc3.lo \
+	amos/libcruft_la-zwrsk.lo blas-xtra/libcruft_la-ddot3.lo \
+	blas-xtra/libcruft_la-zdotc3.lo blas-xtra/libcruft_la-sdot3.lo \
+	blas-xtra/libcruft_la-cdotc3.lo \
 	blas-xtra/libcruft_la-dmatm3.lo \
 	blas-xtra/libcruft_la-zmatm3.lo \
 	blas-xtra/libcruft_la-smatm3.lo \
@@ -648,6 +550,9 @@ AMTAR = @AMTAR@
 APPLE_UNIVERSAL_BUILD = @APPLE_UNIVERSAL_BUILD@
 AR = @AR@
 ARFLAGS = @ARFLAGS@ 
+ARPACK_CPPFLAGS = @ARPACK_CPPFLAGS@
+ARPACK_LDFLAGS = @ARPACK_LDFLAGS@
+ARPACK_LIBS = @ARPACK_LIBS@
 AS = @AS@
 AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
@@ -683,6 +588,7 @@ CHOLMOD_LIBS = @CHOLMOD_LIBS@
 COLAMD_CPPFLAGS = @COLAMD_CPPFLAGS@
 COLAMD_LDFLAGS = @COLAMD_LDFLAGS@
 COLAMD_LIBS = @COLAMD_LIBS@
+COPYSIGNF_LIBM = @COPYSIGNF_LIBM@
 COPYSIGN_LIBM = @COPYSIGN_LIBM@
 CPICFLAG = @CPICFLAG@
 CPP = @CPP@
@@ -769,9 +675,13 @@ GLPK_LDFLAGS = @GLPK_LDFLAGS@
 GLPK_LIBS = @GLPK_LIBS@
 GNULIB_ACCEPT = @GNULIB_ACCEPT@
 GNULIB_ACCEPT4 = @GNULIB_ACCEPT4@
+GNULIB_ACOSF = @GNULIB_ACOSF@
 GNULIB_ACOSL = @GNULIB_ACOSL@
 GNULIB_ALPHASORT = @GNULIB_ALPHASORT@
+GNULIB_ASINF = @GNULIB_ASINF@
 GNULIB_ASINL = @GNULIB_ASINL@
+GNULIB_ATAN2F = @GNULIB_ATAN2F@
+GNULIB_ATANF = @GNULIB_ATANF@
 GNULIB_ATANL = @GNULIB_ATANL@
 GNULIB_ATOLL = @GNULIB_ATOLL@
 GNULIB_BIND = @GNULIB_BIND@
@@ -786,6 +696,11 @@ GNULIB_CHOWN = @GNULIB_CHOWN@
 GNULIB_CLOSE = @GNULIB_CLOSE@
 GNULIB_CLOSEDIR = @GNULIB_CLOSEDIR@
 GNULIB_CONNECT = @GNULIB_CONNECT@
+GNULIB_COPYSIGN = @GNULIB_COPYSIGN@
+GNULIB_COPYSIGNF = @GNULIB_COPYSIGNF@
+GNULIB_COPYSIGNL = @GNULIB_COPYSIGNL@
+GNULIB_COSF = @GNULIB_COSF@
+GNULIB_COSHF = @GNULIB_COSHF@
 GNULIB_COSL = @GNULIB_COSL@
 GNULIB_DIRFD = @GNULIB_DIRFD@
 GNULIB_DPRINTF = @GNULIB_DPRINTF@
@@ -794,7 +709,9 @@ GNULIB_DUP2 = @GNULIB_DUP2@
 GNULIB_DUP3 = @GNULIB_DUP3@
 GNULIB_ENVIRON = @GNULIB_ENVIRON@
 GNULIB_EUIDACCESS = @GNULIB_EUIDACCESS@
+GNULIB_EXPF = @GNULIB_EXPF@
 GNULIB_EXPL = @GNULIB_EXPL@
+GNULIB_FABSF = @GNULIB_FABSF@
 GNULIB_FACCESSAT = @GNULIB_FACCESSAT@
 GNULIB_FCHDIR = @GNULIB_FCHDIR@
 GNULIB_FCHMODAT = @GNULIB_FCHMODAT@
@@ -813,6 +730,10 @@ GNULIB_FGETS = @GNULIB_FGETS@
 GNULIB_FLOOR = @GNULIB_FLOOR@
 GNULIB_FLOORF = @GNULIB_FLOORF@
 GNULIB_FLOORL = @GNULIB_FLOORL@
+GNULIB_FMA = @GNULIB_FMA@
+GNULIB_FMAF = @GNULIB_FMAF@
+GNULIB_FMAL = @GNULIB_FMAL@
+GNULIB_FMODF = @GNULIB_FMODF@
 GNULIB_FOPEN = @GNULIB_FOPEN@
 GNULIB_FPRINTF = @GNULIB_FPRINTF@
 GNULIB_FPRINTF_POSIX = @GNULIB_FPRINTF_POSIX@
@@ -822,6 +743,7 @@ GNULIB_FPUTS = @GNULIB_FPUTS@
 GNULIB_FREAD = @GNULIB_FREAD@
 GNULIB_FREOPEN = @GNULIB_FREOPEN@
 GNULIB_FREXP = @GNULIB_FREXP@
+GNULIB_FREXPF = @GNULIB_FREXPF@
 GNULIB_FREXPL = @GNULIB_FREXPL@
 GNULIB_FSCANF = @GNULIB_FSCANF@
 GNULIB_FSEEK = @GNULIB_FSEEK@
@@ -854,8 +776,10 @@ GNULIB_GETSOCKOPT = @GNULIB_GETSOCKOPT@
 GNULIB_GETSUBOPT = @GNULIB_GETSUBOPT@
 GNULIB_GETTIMEOFDAY = @GNULIB_GETTIMEOFDAY@
 GNULIB_GETUSERSHELL = @GNULIB_GETUSERSHELL@
+GNULIB_GL_UNISTD_H_GETOPT = @GNULIB_GL_UNISTD_H_GETOPT@
 GNULIB_GRANTPT = @GNULIB_GRANTPT@
 GNULIB_GROUP_MEMBER = @GNULIB_GROUP_MEMBER@
+GNULIB_ISATTY = @GNULIB_ISATTY@
 GNULIB_ISFINITE = @GNULIB_ISFINITE@
 GNULIB_ISINF = @GNULIB_ISINF@
 GNULIB_ISNAN = @GNULIB_ISNAN@
@@ -866,11 +790,14 @@ GNULIB_ISWBLANK = @GNULIB_ISWBLANK@
 GNULIB_ISWCTYPE = @GNULIB_ISWCTYPE@
 GNULIB_LCHMOD = @GNULIB_LCHMOD@
 GNULIB_LCHOWN = @GNULIB_LCHOWN@
+GNULIB_LDEXPF = @GNULIB_LDEXPF@
 GNULIB_LDEXPL = @GNULIB_LDEXPL@
 GNULIB_LINK = @GNULIB_LINK@
 GNULIB_LINKAT = @GNULIB_LINKAT@
 GNULIB_LISTEN = @GNULIB_LISTEN@
+GNULIB_LOG10F = @GNULIB_LOG10F@
 GNULIB_LOGB = @GNULIB_LOGB@
+GNULIB_LOGF = @GNULIB_LOGF@
 GNULIB_LOGL = @GNULIB_LOGL@
 GNULIB_LSEEK = @GNULIB_LSEEK@
 GNULIB_LSTAT = @GNULIB_LSTAT@
@@ -910,6 +837,7 @@ GNULIB_MKOSTEMPS = @GNULIB_MKOSTEMPS@
 GNULIB_MKSTEMP = @GNULIB_MKSTEMP@
 GNULIB_MKSTEMPS = @GNULIB_MKSTEMPS@
 GNULIB_MKTIME = @GNULIB_MKTIME@
+GNULIB_MODFF = @GNULIB_MODFF@
 GNULIB_NANOSLEEP = @GNULIB_NANOSLEEP@
 GNULIB_NONBLOCKING = @GNULIB_NONBLOCKING@
 GNULIB_OBSTACK_PRINTF = @GNULIB_OBSTACK_PRINTF@
@@ -922,12 +850,15 @@ GNULIB_PERROR = @GNULIB_PERROR@
 GNULIB_PIPE = @GNULIB_PIPE@
 GNULIB_PIPE2 = @GNULIB_PIPE2@
 GNULIB_POPEN = @GNULIB_POPEN@
+GNULIB_POSIX_OPENPT = @GNULIB_POSIX_OPENPT@
+GNULIB_POWF = @GNULIB_POWF@
 GNULIB_PREAD = @GNULIB_PREAD@
 GNULIB_PRINTF = @GNULIB_PRINTF@
 GNULIB_PRINTF_POSIX = @GNULIB_PRINTF_POSIX@
 GNULIB_PSELECT = @GNULIB_PSELECT@
 GNULIB_PTHREAD_SIGMASK = @GNULIB_PTHREAD_SIGMASK@
 GNULIB_PTSNAME = @GNULIB_PTSNAME@
+GNULIB_PTSNAME_R = @GNULIB_PTSNAME_R@
 GNULIB_PUTC = @GNULIB_PUTC@
 GNULIB_PUTCHAR = @GNULIB_PUTCHAR@
 GNULIB_PUTENV = @GNULIB_PUTENV@
@@ -948,6 +879,9 @@ GNULIB_REMOVE = @GNULIB_REMOVE@
 GNULIB_RENAME = @GNULIB_RENAME@
 GNULIB_RENAMEAT = @GNULIB_RENAMEAT@
 GNULIB_REWINDDIR = @GNULIB_REWINDDIR@
+GNULIB_RINT = @GNULIB_RINT@
+GNULIB_RINTF = @GNULIB_RINTF@
+GNULIB_RINTL = @GNULIB_RINTL@
 GNULIB_RMDIR = @GNULIB_RMDIR@
 GNULIB_ROUND = @GNULIB_ROUND@
 GNULIB_ROUNDF = @GNULIB_ROUNDF@
@@ -959,17 +893,21 @@ GNULIB_SELECT = @GNULIB_SELECT@
 GNULIB_SEND = @GNULIB_SEND@
 GNULIB_SENDTO = @GNULIB_SENDTO@
 GNULIB_SETENV = @GNULIB_SETENV@
+GNULIB_SETHOSTNAME = @GNULIB_SETHOSTNAME@
 GNULIB_SETSOCKOPT = @GNULIB_SETSOCKOPT@
 GNULIB_SHUTDOWN = @GNULIB_SHUTDOWN@
 GNULIB_SIGACTION = @GNULIB_SIGACTION@
 GNULIB_SIGNAL_H_SIGPIPE = @GNULIB_SIGNAL_H_SIGPIPE@
 GNULIB_SIGNBIT = @GNULIB_SIGNBIT@
 GNULIB_SIGPROCMASK = @GNULIB_SIGPROCMASK@
+GNULIB_SINF = @GNULIB_SINF@
+GNULIB_SINHF = @GNULIB_SINHF@
 GNULIB_SINL = @GNULIB_SINL@
 GNULIB_SLEEP = @GNULIB_SLEEP@
 GNULIB_SNPRINTF = @GNULIB_SNPRINTF@
 GNULIB_SOCKET = @GNULIB_SOCKET@
 GNULIB_SPRINTF_POSIX = @GNULIB_SPRINTF_POSIX@
+GNULIB_SQRTF = @GNULIB_SQRTF@
 GNULIB_SQRTL = @GNULIB_SQRTL@
 GNULIB_STAT = @GNULIB_STAT@
 GNULIB_STDIO_H_NONBLOCKING = @GNULIB_STDIO_H_NONBLOCKING@
@@ -997,6 +935,8 @@ GNULIB_STRVERSCMP = @GNULIB_STRVERSCMP@
 GNULIB_SYMLINK = @GNULIB_SYMLINK@
 GNULIB_SYMLINKAT = @GNULIB_SYMLINKAT@
 GNULIB_SYSTEM_POSIX = @GNULIB_SYSTEM_POSIX@
+GNULIB_TANF = @GNULIB_TANF@
+GNULIB_TANHF = @GNULIB_TANHF@
 GNULIB_TANL = @GNULIB_TANL@
 GNULIB_TIMEGM = @GNULIB_TIMEGM@
 GNULIB_TIMES = @GNULIB_TIMES@
@@ -1007,7 +947,6 @@ GNULIB_TRUNC = @GNULIB_TRUNC@
 GNULIB_TRUNCF = @GNULIB_TRUNCF@
 GNULIB_TRUNCL = @GNULIB_TRUNCL@
 GNULIB_TTYNAME_R = @GNULIB_TTYNAME_R@
-GNULIB_UNISTD_H_GETOPT = @GNULIB_UNISTD_H_GETOPT@
 GNULIB_UNISTD_H_NONBLOCKING = @GNULIB_UNISTD_H_NONBLOCKING@
 GNULIB_UNISTD_H_SIGPIPE = @GNULIB_UNISTD_H_SIGPIPE@
 GNULIB_UNLINK = @GNULIB_UNLINK@
@@ -1073,15 +1012,24 @@ GRAPHICS_CFLAGS = @GRAPHICS_CFLAGS@
 GRAPHICS_LIBS = @GRAPHICS_LIBS@
 GREP = @GREP@
 HAVE_ACCEPT4 = @HAVE_ACCEPT4@
+HAVE_ACOSF = @HAVE_ACOSF@
 HAVE_ACOSL = @HAVE_ACOSL@
 HAVE_ALPHASORT = @HAVE_ALPHASORT@
+HAVE_ASINF = @HAVE_ASINF@
 HAVE_ASINL = @HAVE_ASINL@
+HAVE_ATAN2F = @HAVE_ATAN2F@
+HAVE_ATANF = @HAVE_ATANF@
 HAVE_ATANL = @HAVE_ATANL@
 HAVE_ATOLL = @HAVE_ATOLL@
 HAVE_BTOWC = @HAVE_BTOWC@
 HAVE_CANONICALIZE_FILE_NAME = @HAVE_CANONICALIZE_FILE_NAME@
 HAVE_CHOWN = @HAVE_CHOWN@
 HAVE_CLOSEDIR = @HAVE_CLOSEDIR@
+HAVE_COPYSIGN = @HAVE_COPYSIGN@
+HAVE_COPYSIGNF = @HAVE_COPYSIGNF@
+HAVE_COPYSIGNL = @HAVE_COPYSIGNL@
+HAVE_COSF = @HAVE_COSF@
+HAVE_COSHF = @HAVE_COSHF@
 HAVE_COSL = @HAVE_COSL@
 HAVE_DECL_ACOSL = @HAVE_DECL_ACOSL@
 HAVE_DECL_ASINL = @HAVE_DECL_ASINL@
@@ -1119,6 +1067,7 @@ HAVE_DECL_ROUND = @HAVE_DECL_ROUND@
 HAVE_DECL_ROUNDF = @HAVE_DECL_ROUNDF@
 HAVE_DECL_ROUNDL = @HAVE_DECL_ROUNDL@
 HAVE_DECL_SETENV = @HAVE_DECL_SETENV@
+HAVE_DECL_SETHOSTNAME = @HAVE_DECL_SETHOSTNAME@
 HAVE_DECL_SINL = @HAVE_DECL_SINL@
 HAVE_DECL_SNPRINTF = @HAVE_DECL_SNPRINTF@
 HAVE_DECL_SQRTL = @HAVE_DECL_SQRTL@
@@ -1143,7 +1092,9 @@ HAVE_DPRINTF = @HAVE_DPRINTF@
 HAVE_DUP2 = @HAVE_DUP2@
 HAVE_DUP3 = @HAVE_DUP3@
 HAVE_EUIDACCESS = @HAVE_EUIDACCESS@
+HAVE_EXPF = @HAVE_EXPF@
 HAVE_EXPL = @HAVE_EXPL@
+HAVE_FABSF = @HAVE_FABSF@
 HAVE_FACCESSAT = @HAVE_FACCESSAT@
 HAVE_FCHDIR = @HAVE_FCHDIR@
 HAVE_FCHMODAT = @HAVE_FCHMODAT@
@@ -1155,6 +1106,11 @@ HAVE_FEATURES_H = @HAVE_FEATURES_H@
 HAVE_FFS = @HAVE_FFS@
 HAVE_FFSL = @HAVE_FFSL@
 HAVE_FFSLL = @HAVE_FFSLL@
+HAVE_FMA = @HAVE_FMA@
+HAVE_FMAF = @HAVE_FMAF@
+HAVE_FMAL = @HAVE_FMAL@
+HAVE_FMODF = @HAVE_FMODF@
+HAVE_FREXPF = @HAVE_FREXPF@
 HAVE_FSEEKO = @HAVE_FSEEKO@
 HAVE_FSTATAT = @HAVE_FSTATAT@
 HAVE_FSYNC = @HAVE_FSYNC@
@@ -1179,8 +1135,11 @@ HAVE_ISWBLANK = @HAVE_ISWBLANK@
 HAVE_ISWCNTRL = @HAVE_ISWCNTRL@
 HAVE_LCHMOD = @HAVE_LCHMOD@
 HAVE_LCHOWN = @HAVE_LCHOWN@
+HAVE_LDEXPF = @HAVE_LDEXPF@
 HAVE_LINK = @HAVE_LINK@
 HAVE_LINKAT = @HAVE_LINKAT@
+HAVE_LOG10F = @HAVE_LOG10F@
+HAVE_LOGF = @HAVE_LOGF@
 HAVE_LOGL = @HAVE_LOGL@
 HAVE_LONG_LONG_INT = @HAVE_LONG_LONG_INT@
 HAVE_LSTAT = @HAVE_LSTAT@
@@ -1202,6 +1161,7 @@ HAVE_MKOSTEMP = @HAVE_MKOSTEMP@
 HAVE_MKOSTEMPS = @HAVE_MKOSTEMPS@
 HAVE_MKSTEMP = @HAVE_MKSTEMP@
 HAVE_MKSTEMPS = @HAVE_MKSTEMPS@
+HAVE_MODFF = @HAVE_MODFF@
 HAVE_MSVC_INVALID_PARAMETER_HANDLER = @HAVE_MSVC_INVALID_PARAMETER_HANDLER@
 HAVE_NANOSLEEP = @HAVE_NANOSLEEP@
 HAVE_OPENAT = @HAVE_OPENAT@
@@ -1212,11 +1172,14 @@ HAVE_PCRE_CONFIG = @HAVE_PCRE_CONFIG@
 HAVE_PIPE = @HAVE_PIPE@
 HAVE_PIPE2 = @HAVE_PIPE2@
 HAVE_POPEN = @HAVE_POPEN@
+HAVE_POSIX_OPENPT = @HAVE_POSIX_OPENPT@
 HAVE_POSIX_SIGNALBLOCKING = @HAVE_POSIX_SIGNALBLOCKING@
+HAVE_POWF = @HAVE_POWF@
 HAVE_PREAD = @HAVE_PREAD@
 HAVE_PSELECT = @HAVE_PSELECT@
 HAVE_PTHREAD_SIGMASK = @HAVE_PTHREAD_SIGMASK@
 HAVE_PTSNAME = @HAVE_PTSNAME@
+HAVE_PTSNAME_R = @HAVE_PTSNAME_R@
 HAVE_PWRITE = @HAVE_PWRITE@
 HAVE_RAISE = @HAVE_RAISE@
 HAVE_RANDOM_H = @HAVE_RANDOM_H@
@@ -1228,10 +1191,15 @@ HAVE_READLINKAT = @HAVE_READLINKAT@
 HAVE_REALPATH = @HAVE_REALPATH@
 HAVE_RENAMEAT = @HAVE_RENAMEAT@
 HAVE_REWINDDIR = @HAVE_REWINDDIR@
+HAVE_RINT = @HAVE_RINT@
+HAVE_RINTF = @HAVE_RINTF@
+HAVE_RINTL = @HAVE_RINTL@
 HAVE_RPMATCH = @HAVE_RPMATCH@
+HAVE_SAME_LONG_DOUBLE_AS_DOUBLE = @HAVE_SAME_LONG_DOUBLE_AS_DOUBLE@
 HAVE_SA_FAMILY_T = @HAVE_SA_FAMILY_T@
 HAVE_SCANDIR = @HAVE_SCANDIR@
 HAVE_SETENV = @HAVE_SETENV@
+HAVE_SETHOSTNAME = @HAVE_SETHOSTNAME@
 HAVE_SIGACTION = @HAVE_SIGACTION@
 HAVE_SIGHANDLER_T = @HAVE_SIGHANDLER_T@
 HAVE_SIGINFO_T = @HAVE_SIGINFO_T@
@@ -1239,8 +1207,11 @@ HAVE_SIGNED_SIG_ATOMIC_T = @HAVE_SIGNED_SIG_ATOMIC_T@
 HAVE_SIGNED_WCHAR_T = @HAVE_SIGNED_WCHAR_T@
 HAVE_SIGNED_WINT_T = @HAVE_SIGNED_WINT_T@
 HAVE_SIGSET_T = @HAVE_SIGSET_T@
+HAVE_SINF = @HAVE_SINF@
+HAVE_SINHF = @HAVE_SINHF@
 HAVE_SINL = @HAVE_SINL@
 HAVE_SLEEP = @HAVE_SLEEP@
+HAVE_SQRTF = @HAVE_SQRTF@
 HAVE_SQRTL = @HAVE_SQRTL@
 HAVE_STDINT_H = @HAVE_STDINT_H@
 HAVE_STPCPY = @HAVE_STPCPY@
@@ -1275,6 +1246,8 @@ HAVE_SYS_TIMES_H = @HAVE_SYS_TIMES_H@
 HAVE_SYS_TIME_H = @HAVE_SYS_TIME_H@
 HAVE_SYS_TYPES_H = @HAVE_SYS_TYPES_H@
 HAVE_SYS_UIO_H = @HAVE_SYS_UIO_H@
+HAVE_TANF = @HAVE_TANF@
+HAVE_TANHF = @HAVE_TANHF@
 HAVE_TANL = @HAVE_TANL@
 HAVE_TIMEGM = @HAVE_TIMEGM@
 HAVE_TIMES = @HAVE_TIMES@
@@ -1492,11 +1465,15 @@ REPLACE_FFLUSH = @REPLACE_FFLUSH@
 REPLACE_FLOOR = @REPLACE_FLOOR@
 REPLACE_FLOORF = @REPLACE_FLOORF@
 REPLACE_FLOORL = @REPLACE_FLOORL@
+REPLACE_FMA = @REPLACE_FMA@
+REPLACE_FMAF = @REPLACE_FMAF@
+REPLACE_FMAL = @REPLACE_FMAL@
 REPLACE_FOPEN = @REPLACE_FOPEN@
 REPLACE_FPRINTF = @REPLACE_FPRINTF@
 REPLACE_FPURGE = @REPLACE_FPURGE@
 REPLACE_FREOPEN = @REPLACE_FREOPEN@
 REPLACE_FREXP = @REPLACE_FREXP@
+REPLACE_FREXPF = @REPLACE_FREXPF@
 REPLACE_FREXPL = @REPLACE_FREXPL@
 REPLACE_FSEEK = @REPLACE_FSEEK@
 REPLACE_FSEEKO = @REPLACE_FSEEKO@
@@ -1514,11 +1491,13 @@ REPLACE_GETLOGIN_R = @REPLACE_GETLOGIN_R@
 REPLACE_GETPAGESIZE = @REPLACE_GETPAGESIZE@
 REPLACE_GETTIMEOFDAY = @REPLACE_GETTIMEOFDAY@
 REPLACE_HUGE_VAL = @REPLACE_HUGE_VAL@
+REPLACE_ISATTY = @REPLACE_ISATTY@
 REPLACE_ISFINITE = @REPLACE_ISFINITE@
 REPLACE_ISINF = @REPLACE_ISINF@
 REPLACE_ISNAN = @REPLACE_ISNAN@
 REPLACE_ISWBLANK = @REPLACE_ISWBLANK@
 REPLACE_ISWCNTRL = @REPLACE_ISWCNTRL@
+REPLACE_ITOLD = @REPLACE_ITOLD@
 REPLACE_LCHOWN = @REPLACE_LCHOWN@
 REPLACE_LDEXPL = @REPLACE_LDEXPL@
 REPLACE_LINK = @REPLACE_LINK@
@@ -1554,6 +1533,7 @@ REPLACE_PREAD = @REPLACE_PREAD@
 REPLACE_PRINTF = @REPLACE_PRINTF@
 REPLACE_PSELECT = @REPLACE_PSELECT@
 REPLACE_PTHREAD_SIGMASK = @REPLACE_PTHREAD_SIGMASK@
+REPLACE_PTSNAME_R = @REPLACE_PTSNAME_R@
 REPLACE_PUTENV = @REPLACE_PUTENV@
 REPLACE_PWRITE = @REPLACE_PWRITE@
 REPLACE_RAISE = @REPLACE_RAISE@
@@ -1618,7 +1598,6 @@ REPLACE_WCTOB = @REPLACE_WCTOB@
 REPLACE_WCTOMB = @REPLACE_WCTOMB@
 REPLACE_WCWIDTH = @REPLACE_WCWIDTH@
 REPLACE_WRITE = @REPLACE_WRITE@
-RLD_FLAG = @RLD_FLAG@
 ROUNDF_LIBM = @ROUNDF_LIBM@
 ROUND_LIBM = @ROUND_LIBM@
 SED = @SED@
@@ -1639,6 +1618,7 @@ SH_LDFLAGS = @SH_LDFLAGS@
 SIG_ATOMIC_T_SUFFIX = @SIG_ATOMIC_T_SUFFIX@
 SIZE_T_SUFFIX = @SIZE_T_SUFFIX@
 SONAME_FLAGS = @SONAME_FLAGS@
+STDALIGN_H = @STDALIGN_H@
 STDBOOL_H = @STDBOOL_H@
 STDDEF_H = @STDDEF_H@
 STDINT_H = @STDINT_H@
@@ -1650,6 +1630,7 @@ TERM_LIBS = @TERM_LIBS@
 TEXI2DVI = @TEXI2DVI@
 TEXI2PDF = @TEXI2PDF@
 TEXINFO_AMD = @TEXINFO_AMD@
+TEXINFO_ARPACK = @TEXINFO_ARPACK@
 TEXINFO_CAMD = @TEXINFO_CAMD@
 TEXINFO_CCOLAMD = @TEXINFO_CCOLAMD@
 TEXINFO_CHOLMOD = @TEXINFO_CHOLMOD@
@@ -1931,35 +1912,7 @@ libcruft_la_SOURCES = amos/cacai.f amos/cacon.f amos/cbesh.f \
 	amos/zmlri.f amos/zmlt.f amos/zrati.f amos/zs1s2.f \
 	amos/zseri.f amos/zshch.f amos/zuchk.f amos/zunhj.f \
 	amos/zuni1.f amos/zuni2.f amos/zunik.f amos/zunk1.f \
-	amos/zunk2.f amos/zuoik.f amos/zwrsk.f arpack/src/cgetv0.f \
-	arpack/src/cnaitr.f arpack/src/cnapps.f arpack/src/cnaup2.f \
-	arpack/src/cnaupd.f arpack/src/cneigh.f arpack/src/cneupd.f \
-	arpack/src/cngets.f arpack/src/csortc.f arpack/src/cstatn.f \
-	arpack/src/dgetv0.f arpack/src/dlaqrb.f arpack/src/dnaitr.f \
-	arpack/src/dnapps.f arpack/src/dnaup2.f arpack/src/dnaupd.f \
-	arpack/src/dnaupe.f arpack/src/dnconv.f arpack/src/dneigh.f \
-	arpack/src/dneupd.f arpack/src/dngets.f arpack/src/dsaitr.f \
-	arpack/src/dsapps.f arpack/src/dsaup2.f arpack/src/dsaupd.f \
-	arpack/src/dsconv.f arpack/src/dseigt.f arpack/src/dsesrt.f \
-	arpack/src/dseupd.f arpack/src/dsgets.f arpack/src/dsortc.f \
-	arpack/src/dsortr.f arpack/src/dstatn.f arpack/src/dstats.f \
-	arpack/src/dstqrb.f arpack/src/sgetv0.f arpack/src/slaqrb.f \
-	arpack/src/snaitr.f arpack/src/snapps.f arpack/src/snaup2.f \
-	arpack/src/snaupd.f arpack/src/snaupe.f arpack/src/snconv.f \
-	arpack/src/sneigh.f arpack/src/sneupd.f arpack/src/sngets.f \
-	arpack/src/ssaitr.f arpack/src/ssapps.f arpack/src/ssaup2.f \
-	arpack/src/ssaupd.f arpack/src/ssconv.f arpack/src/sseigt.f \
-	arpack/src/ssesrt.f arpack/src/sseupd.f arpack/src/ssgets.f \
-	arpack/src/ssortc.f arpack/src/ssortr.f arpack/src/sstatn.f \
-	arpack/src/sstats.f arpack/src/sstqrb.f arpack/src/zgetv0.f \
-	arpack/src/znaitr.f arpack/src/znapps.f arpack/src/znaup2.f \
-	arpack/src/znaupd.f arpack/src/zneigh.f arpack/src/zneupd.f \
-	arpack/src/zngets.f arpack/src/zsortc.f arpack/src/zstatn.f \
-	arpack/util/cmout.f arpack/util/cvout.f arpack/util/dmout.f \
-	arpack/util/dvout.f arpack/util/icnteq.f arpack/util/icopy.f \
-	arpack/util/iset.f arpack/util/iswap.f arpack/util/ivout.f \
-	arpack/util/second.f arpack/util/smout.f arpack/util/svout.f \
-	arpack/util/zmout.f arpack/util/zvout.f blas-xtra/ddot3.f \
+	amos/zunk2.f amos/zuoik.f amos/zwrsk.f blas-xtra/ddot3.f \
 	blas-xtra/zdotc3.f blas-xtra/sdot3.f blas-xtra/cdotc3.f \
 	blas-xtra/dmatm3.f blas-xtra/zmatm3.f blas-xtra/smatm3.f \
 	blas-xtra/cmatm3.f blas-xtra/xddot.f blas-xtra/xdnrm2.f \
@@ -2028,10 +1981,32 @@ libcruft_la_CPPFLAGS = \
   @CRUFT_DLL_DEFS@ \
   $(AM_CPPFLAGS)
 
+LIBCRUFT_LINK_DEPS = \
+  $(COPYSIGN_LIBM) \
+  $(FLOOR_LIBM) \
+  $(GETHOSTNAME_LIB) \
+  $(LIBSOCKET) \
+  $(LIB_NANOSLEEP) \
+  $(LTLIBINTL) \
+  $(ROUNDF_LIBM) \
+  $(ROUND_LIBM) \
+  $(TRUNCF_LIBM) \
+  $(TRUNC_LIBM) \
+  $(LAPACK_LIBS) \
+  $(BLAS_LIBS) \
+  $(FLIBS) \
+  $(LIBS)
+
+LIBCRUFT_LINK_OPTS = 
+libcruft_la_LIBADD = \
+  libranlib.la \
+  ../libgnu/libgnu.la \
+  $(LIBCRUFT_LINK_DEPS)
+
 
 # Increment these as needed and according to the rules in the libtool
 # manual:
-libcruft_current = 0
+libcruft_current = 1
 libcruft_revision = 0
 libcruft_age = 0
 libcruft_version_info = $(libcruft_current):$(libcruft_revision):$(libcruft_age)
@@ -2039,13 +2014,8 @@ libcruft_la_LDFLAGS = \
   -version-info $(libcruft_version_info) \
   $(NO_UNDEFINED_LDFLAG) \
   @XTRA_CRUFT_SH_LDFLAGS@ \
-  -bindir $(bindir)
-
-libcruft_la_LIBADD = \
-  ../libgnu/libgnu.la \
-  libranlib.la \
-  $(LAPACK_LIBS) $(BLAS_LIBS) \
-  $(FLIBS)
+  -bindir $(bindir) \
+  $(LIBCRUFT_LINK_OPTS)
 
 libcruft_la_DEPENDENCIES = cruft.def
 noinst_LTLIBRARIES = libranlib.la
@@ -2061,20 +2031,15 @@ libranlib_la_SOURCES = ranlib/advnst.f ranlib/genbet.f ranlib/genchi.f \
 	ranlib/sgamma.f ranlib/snorm.f ranlib/wrap.f
 libranlib_la_DEPENDENCIES = ranlib.def
 octinclude_HEADERS = misc/f77-fcn.h misc/lo-error.h misc/quit.h
-EXTRA_DIST = amos/module.mk arpack/LICENSE arpack/README \
-	arpack/docs/README arpack/docs/debug.doc \
-	arpack/docs/ex-complex.doc arpack/docs/ex-nonsym.doc \
-	arpack/docs/ex-sym.doc arpack/docs/stat.doc arpack/module.mk \
-	arpack/src/debug.h arpack/src/stat.h arpack/src/version.h \
-	blas-xtra/module.mk daspk/module.mk dasrt/module.mk \
-	dassl/module.mk fftpack/module.mk fftpack/fftpack.doc \
-	$(am__append_1) lapack-xtra/module.mk misc/module.mk \
-	misc/d1mach-tst.for odepack/module.mk ordered-qz/module.mk \
-	quadpack/module.mk ranlib/module.mk ranlib/Basegen.doc \
-	ranlib/HOWTOGET ranlib/README ranlib/randlib.chs \
-	ranlib/randlib.fdoc ranlib/tstbot.for ranlib/tstgmn.for \
-	ranlib/tstmid.for slatec-err/module.mk slatec-fn/module.mk \
-	mkf77def.in
+EXTRA_DIST = amos/module.mk blas-xtra/module.mk daspk/module.mk \
+	dasrt/module.mk dassl/module.mk fftpack/module.mk \
+	fftpack/fftpack.doc $(am__append_1) lapack-xtra/module.mk \
+	misc/module.mk misc/d1mach-tst.for odepack/module.mk \
+	ordered-qz/module.mk quadpack/module.mk ranlib/module.mk \
+	ranlib/Basegen.doc ranlib/HOWTOGET ranlib/README \
+	ranlib/randlib.chs ranlib/randlib.fdoc ranlib/tstbot.for \
+	ranlib/tstgmn.for ranlib/tstmid.for slatec-err/module.mk \
+	slatec-fn/module.mk mkf77def.in
 FFTPACK_SRC = \
   fftpack/cfftb.f \
   fftpack/cfftb1.f \
@@ -2114,7 +2079,7 @@ all: all-am
 
 .SUFFIXES:
 .SUFFIXES: .c .cc .f .lo .o .obj
-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/build-aux/common.mk $(srcdir)/amos/module.mk $(srcdir)/arpack/module.mk $(srcdir)/blas-xtra/module.mk $(srcdir)/daspk/module.mk $(srcdir)/dasrt/module.mk $(srcdir)/dassl/module.mk $(srcdir)/fftpack/module.mk $(srcdir)/lapack-xtra/module.mk $(srcdir)/misc/module.mk $(srcdir)/odepack/module.mk $(srcdir)/ordered-qz/module.mk $(srcdir)/quadpack/module.mk $(srcdir)/ranlib/module.mk $(srcdir)/slatec-err/module.mk $(srcdir)/slatec-fn/module.mk $(am__configure_deps)
+$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/build-aux/common.mk $(srcdir)/link-deps.mk $(srcdir)/amos/module.mk $(srcdir)/blas-xtra/module.mk $(srcdir)/daspk/module.mk $(srcdir)/dasrt/module.mk $(srcdir)/dassl/module.mk $(srcdir)/fftpack/module.mk $(srcdir)/lapack-xtra/module.mk $(srcdir)/misc/module.mk $(srcdir)/odepack/module.mk $(srcdir)/ordered-qz/module.mk $(srcdir)/quadpack/module.mk $(srcdir)/ranlib/module.mk $(srcdir)/slatec-err/module.mk $(srcdir)/slatec-fn/module.mk $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
 	    *$$dep*) \
@@ -2324,186 +2289,6 @@ amos/libcruft_la-zuoik.lo: amos/$(am__dirstamp) \
 	amos/$(DEPDIR)/$(am__dirstamp)
 amos/libcruft_la-zwrsk.lo: amos/$(am__dirstamp) \
 	amos/$(DEPDIR)/$(am__dirstamp)
-arpack/src/$(am__dirstamp):
-	@$(MKDIR_P) arpack/src
-	@: > arpack/src/$(am__dirstamp)
-arpack/src/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) arpack/src/$(DEPDIR)
-	@: > arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-cgetv0.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-cnaitr.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-cnapps.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-cnaup2.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-cnaupd.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-cneigh.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-cneupd.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-cngets.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-csortc.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-cstatn.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-dgetv0.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-dlaqrb.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-dnaitr.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-dnapps.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-dnaup2.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-dnaupd.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-dnaupe.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-dnconv.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-dneigh.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-dneupd.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-dngets.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-dsaitr.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-dsapps.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-dsaup2.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-dsaupd.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-dsconv.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-dseigt.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-dsesrt.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-dseupd.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-dsgets.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-dsortc.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-dsortr.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-dstatn.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-dstats.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-dstqrb.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-sgetv0.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-slaqrb.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-snaitr.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-snapps.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-snaup2.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-snaupd.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-snaupe.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-snconv.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-sneigh.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-sneupd.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-sngets.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-ssaitr.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-ssapps.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-ssaup2.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-ssaupd.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-ssconv.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-sseigt.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-ssesrt.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-sseupd.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-ssgets.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-ssortc.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-ssortr.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-sstatn.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-sstats.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-sstqrb.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-zgetv0.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-znaitr.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-znapps.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-znaup2.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-znaupd.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-zneigh.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-zneupd.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-zngets.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-zsortc.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/src/libcruft_la-zstatn.lo: arpack/src/$(am__dirstamp) \
-	arpack/src/$(DEPDIR)/$(am__dirstamp)
-arpack/util/$(am__dirstamp):
-	@$(MKDIR_P) arpack/util
-	@: > arpack/util/$(am__dirstamp)
-arpack/util/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) arpack/util/$(DEPDIR)
-	@: > arpack/util/$(DEPDIR)/$(am__dirstamp)
-arpack/util/libcruft_la-cmout.lo: arpack/util/$(am__dirstamp) \
-	arpack/util/$(DEPDIR)/$(am__dirstamp)
-arpack/util/libcruft_la-cvout.lo: arpack/util/$(am__dirstamp) \
-	arpack/util/$(DEPDIR)/$(am__dirstamp)
-arpack/util/libcruft_la-dmout.lo: arpack/util/$(am__dirstamp) \
-	arpack/util/$(DEPDIR)/$(am__dirstamp)
-arpack/util/libcruft_la-dvout.lo: arpack/util/$(am__dirstamp) \
-	arpack/util/$(DEPDIR)/$(am__dirstamp)
-arpack/util/libcruft_la-icnteq.lo: arpack/util/$(am__dirstamp) \
-	arpack/util/$(DEPDIR)/$(am__dirstamp)
-arpack/util/libcruft_la-icopy.lo: arpack/util/$(am__dirstamp) \
-	arpack/util/$(DEPDIR)/$(am__dirstamp)
-arpack/util/libcruft_la-iset.lo: arpack/util/$(am__dirstamp) \
-	arpack/util/$(DEPDIR)/$(am__dirstamp)
-arpack/util/libcruft_la-iswap.lo: arpack/util/$(am__dirstamp) \
-	arpack/util/$(DEPDIR)/$(am__dirstamp)
-arpack/util/libcruft_la-ivout.lo: arpack/util/$(am__dirstamp) \
-	arpack/util/$(DEPDIR)/$(am__dirstamp)
-arpack/util/libcruft_la-second.lo: arpack/util/$(am__dirstamp) \
-	arpack/util/$(DEPDIR)/$(am__dirstamp)
-arpack/util/libcruft_la-smout.lo: arpack/util/$(am__dirstamp) \
-	arpack/util/$(DEPDIR)/$(am__dirstamp)
-arpack/util/libcruft_la-svout.lo: arpack/util/$(am__dirstamp) \
-	arpack/util/$(DEPDIR)/$(am__dirstamp)
-arpack/util/libcruft_la-zmout.lo: arpack/util/$(am__dirstamp) \
-	arpack/util/$(DEPDIR)/$(am__dirstamp)
-arpack/util/libcruft_la-zvout.lo: arpack/util/$(am__dirstamp) \
-	arpack/util/$(DEPDIR)/$(am__dirstamp)
 blas-xtra/$(am__dirstamp):
 	@$(MKDIR_P) blas-xtra
 	@: > blas-xtra/$(am__dirstamp)
@@ -3249,174 +3034,6 @@ mostlyclean-compile:
 	-rm -f amos/libcruft_la-zuoik.lo
 	-rm -f amos/libcruft_la-zwrsk.$(OBJEXT)
 	-rm -f amos/libcruft_la-zwrsk.lo
-	-rm -f arpack/src/libcruft_la-cgetv0.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-cgetv0.lo
-	-rm -f arpack/src/libcruft_la-cnaitr.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-cnaitr.lo
-	-rm -f arpack/src/libcruft_la-cnapps.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-cnapps.lo
-	-rm -f arpack/src/libcruft_la-cnaup2.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-cnaup2.lo
-	-rm -f arpack/src/libcruft_la-cnaupd.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-cnaupd.lo
-	-rm -f arpack/src/libcruft_la-cneigh.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-cneigh.lo
-	-rm -f arpack/src/libcruft_la-cneupd.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-cneupd.lo
-	-rm -f arpack/src/libcruft_la-cngets.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-cngets.lo
-	-rm -f arpack/src/libcruft_la-csortc.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-csortc.lo
-	-rm -f arpack/src/libcruft_la-cstatn.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-cstatn.lo
-	-rm -f arpack/src/libcruft_la-dgetv0.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-dgetv0.lo
-	-rm -f arpack/src/libcruft_la-dlaqrb.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-dlaqrb.lo
-	-rm -f arpack/src/libcruft_la-dnaitr.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-dnaitr.lo
-	-rm -f arpack/src/libcruft_la-dnapps.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-dnapps.lo
-	-rm -f arpack/src/libcruft_la-dnaup2.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-dnaup2.lo
-	-rm -f arpack/src/libcruft_la-dnaupd.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-dnaupd.lo
-	-rm -f arpack/src/libcruft_la-dnaupe.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-dnaupe.lo
-	-rm -f arpack/src/libcruft_la-dnconv.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-dnconv.lo
-	-rm -f arpack/src/libcruft_la-dneigh.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-dneigh.lo
-	-rm -f arpack/src/libcruft_la-dneupd.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-dneupd.lo
-	-rm -f arpack/src/libcruft_la-dngets.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-dngets.lo
-	-rm -f arpack/src/libcruft_la-dsaitr.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-dsaitr.lo
-	-rm -f arpack/src/libcruft_la-dsapps.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-dsapps.lo
-	-rm -f arpack/src/libcruft_la-dsaup2.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-dsaup2.lo
-	-rm -f arpack/src/libcruft_la-dsaupd.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-dsaupd.lo
-	-rm -f arpack/src/libcruft_la-dsconv.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-dsconv.lo
-	-rm -f arpack/src/libcruft_la-dseigt.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-dseigt.lo
-	-rm -f arpack/src/libcruft_la-dsesrt.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-dsesrt.lo
-	-rm -f arpack/src/libcruft_la-dseupd.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-dseupd.lo
-	-rm -f arpack/src/libcruft_la-dsgets.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-dsgets.lo
-	-rm -f arpack/src/libcruft_la-dsortc.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-dsortc.lo
-	-rm -f arpack/src/libcruft_la-dsortr.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-dsortr.lo
-	-rm -f arpack/src/libcruft_la-dstatn.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-dstatn.lo
-	-rm -f arpack/src/libcruft_la-dstats.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-dstats.lo
-	-rm -f arpack/src/libcruft_la-dstqrb.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-dstqrb.lo
-	-rm -f arpack/src/libcruft_la-sgetv0.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-sgetv0.lo
-	-rm -f arpack/src/libcruft_la-slaqrb.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-slaqrb.lo
-	-rm -f arpack/src/libcruft_la-snaitr.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-snaitr.lo
-	-rm -f arpack/src/libcruft_la-snapps.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-snapps.lo
-	-rm -f arpack/src/libcruft_la-snaup2.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-snaup2.lo
-	-rm -f arpack/src/libcruft_la-snaupd.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-snaupd.lo
-	-rm -f arpack/src/libcruft_la-snaupe.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-snaupe.lo
-	-rm -f arpack/src/libcruft_la-snconv.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-snconv.lo
-	-rm -f arpack/src/libcruft_la-sneigh.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-sneigh.lo
-	-rm -f arpack/src/libcruft_la-sneupd.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-sneupd.lo
-	-rm -f arpack/src/libcruft_la-sngets.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-sngets.lo
-	-rm -f arpack/src/libcruft_la-ssaitr.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-ssaitr.lo
-	-rm -f arpack/src/libcruft_la-ssapps.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-ssapps.lo
-	-rm -f arpack/src/libcruft_la-ssaup2.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-ssaup2.lo
-	-rm -f arpack/src/libcruft_la-ssaupd.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-ssaupd.lo
-	-rm -f arpack/src/libcruft_la-ssconv.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-ssconv.lo
-	-rm -f arpack/src/libcruft_la-sseigt.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-sseigt.lo
-	-rm -f arpack/src/libcruft_la-ssesrt.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-ssesrt.lo
-	-rm -f arpack/src/libcruft_la-sseupd.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-sseupd.lo
-	-rm -f arpack/src/libcruft_la-ssgets.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-ssgets.lo
-	-rm -f arpack/src/libcruft_la-ssortc.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-ssortc.lo
-	-rm -f arpack/src/libcruft_la-ssortr.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-ssortr.lo
-	-rm -f arpack/src/libcruft_la-sstatn.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-sstatn.lo
-	-rm -f arpack/src/libcruft_la-sstats.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-sstats.lo
-	-rm -f arpack/src/libcruft_la-sstqrb.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-sstqrb.lo
-	-rm -f arpack/src/libcruft_la-zgetv0.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-zgetv0.lo
-	-rm -f arpack/src/libcruft_la-znaitr.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-znaitr.lo
-	-rm -f arpack/src/libcruft_la-znapps.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-znapps.lo
-	-rm -f arpack/src/libcruft_la-znaup2.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-znaup2.lo
-	-rm -f arpack/src/libcruft_la-znaupd.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-znaupd.lo
-	-rm -f arpack/src/libcruft_la-zneigh.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-zneigh.lo
-	-rm -f arpack/src/libcruft_la-zneupd.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-zneupd.lo
-	-rm -f arpack/src/libcruft_la-zngets.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-zngets.lo
-	-rm -f arpack/src/libcruft_la-zsortc.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-zsortc.lo
-	-rm -f arpack/src/libcruft_la-zstatn.$(OBJEXT)
-	-rm -f arpack/src/libcruft_la-zstatn.lo
-	-rm -f arpack/util/libcruft_la-cmout.$(OBJEXT)
-	-rm -f arpack/util/libcruft_la-cmout.lo
-	-rm -f arpack/util/libcruft_la-cvout.$(OBJEXT)
-	-rm -f arpack/util/libcruft_la-cvout.lo
-	-rm -f arpack/util/libcruft_la-dmout.$(OBJEXT)
-	-rm -f arpack/util/libcruft_la-dmout.lo
-	-rm -f arpack/util/libcruft_la-dvout.$(OBJEXT)
-	-rm -f arpack/util/libcruft_la-dvout.lo
-	-rm -f arpack/util/libcruft_la-icnteq.$(OBJEXT)
-	-rm -f arpack/util/libcruft_la-icnteq.lo
-	-rm -f arpack/util/libcruft_la-icopy.$(OBJEXT)
-	-rm -f arpack/util/libcruft_la-icopy.lo
-	-rm -f arpack/util/libcruft_la-iset.$(OBJEXT)
-	-rm -f arpack/util/libcruft_la-iset.lo
-	-rm -f arpack/util/libcruft_la-iswap.$(OBJEXT)
-	-rm -f arpack/util/libcruft_la-iswap.lo
-	-rm -f arpack/util/libcruft_la-ivout.$(OBJEXT)
-	-rm -f arpack/util/libcruft_la-ivout.lo
-	-rm -f arpack/util/libcruft_la-second.$(OBJEXT)
-	-rm -f arpack/util/libcruft_la-second.lo
-	-rm -f arpack/util/libcruft_la-smout.$(OBJEXT)
-	-rm -f arpack/util/libcruft_la-smout.lo
-	-rm -f arpack/util/libcruft_la-svout.$(OBJEXT)
-	-rm -f arpack/util/libcruft_la-svout.lo
-	-rm -f arpack/util/libcruft_la-zmout.$(OBJEXT)
-	-rm -f arpack/util/libcruft_la-zmout.lo
-	-rm -f arpack/util/libcruft_la-zvout.$(OBJEXT)
-	-rm -f arpack/util/libcruft_la-zvout.lo
 	-rm -f blas-xtra/libcruft_la-cconv2.$(OBJEXT)
 	-rm -f blas-xtra/libcruft_la-cconv2.lo
 	-rm -f blas-xtra/libcruft_la-cdotc3.$(OBJEXT)
@@ -4253,258 +3870,6 @@ amos/libcruft_la-zuoik.lo: amos/zuoik.f
 amos/libcruft_la-zwrsk.lo: amos/zwrsk.f
 	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o amos/libcruft_la-zwrsk.lo `test -f 'amos/zwrsk.f' || echo '$(srcdir)/'`amos/zwrsk.f
 
-arpack/src/libcruft_la-cgetv0.lo: arpack/src/cgetv0.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-cgetv0.lo `test -f 'arpack/src/cgetv0.f' || echo '$(srcdir)/'`arpack/src/cgetv0.f
-
-arpack/src/libcruft_la-cnaitr.lo: arpack/src/cnaitr.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-cnaitr.lo `test -f 'arpack/src/cnaitr.f' || echo '$(srcdir)/'`arpack/src/cnaitr.f
-
-arpack/src/libcruft_la-cnapps.lo: arpack/src/cnapps.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-cnapps.lo `test -f 'arpack/src/cnapps.f' || echo '$(srcdir)/'`arpack/src/cnapps.f
-
-arpack/src/libcruft_la-cnaup2.lo: arpack/src/cnaup2.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-cnaup2.lo `test -f 'arpack/src/cnaup2.f' || echo '$(srcdir)/'`arpack/src/cnaup2.f
-
-arpack/src/libcruft_la-cnaupd.lo: arpack/src/cnaupd.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-cnaupd.lo `test -f 'arpack/src/cnaupd.f' || echo '$(srcdir)/'`arpack/src/cnaupd.f
-
-arpack/src/libcruft_la-cneigh.lo: arpack/src/cneigh.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-cneigh.lo `test -f 'arpack/src/cneigh.f' || echo '$(srcdir)/'`arpack/src/cneigh.f
-
-arpack/src/libcruft_la-cneupd.lo: arpack/src/cneupd.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-cneupd.lo `test -f 'arpack/src/cneupd.f' || echo '$(srcdir)/'`arpack/src/cneupd.f
-
-arpack/src/libcruft_la-cngets.lo: arpack/src/cngets.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-cngets.lo `test -f 'arpack/src/cngets.f' || echo '$(srcdir)/'`arpack/src/cngets.f
-
-arpack/src/libcruft_la-csortc.lo: arpack/src/csortc.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-csortc.lo `test -f 'arpack/src/csortc.f' || echo '$(srcdir)/'`arpack/src/csortc.f
-
-arpack/src/libcruft_la-cstatn.lo: arpack/src/cstatn.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-cstatn.lo `test -f 'arpack/src/cstatn.f' || echo '$(srcdir)/'`arpack/src/cstatn.f
-
-arpack/src/libcruft_la-dgetv0.lo: arpack/src/dgetv0.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-dgetv0.lo `test -f 'arpack/src/dgetv0.f' || echo '$(srcdir)/'`arpack/src/dgetv0.f
-
-arpack/src/libcruft_la-dlaqrb.lo: arpack/src/dlaqrb.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-dlaqrb.lo `test -f 'arpack/src/dlaqrb.f' || echo '$(srcdir)/'`arpack/src/dlaqrb.f
-
-arpack/src/libcruft_la-dnaitr.lo: arpack/src/dnaitr.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-dnaitr.lo `test -f 'arpack/src/dnaitr.f' || echo '$(srcdir)/'`arpack/src/dnaitr.f
-
-arpack/src/libcruft_la-dnapps.lo: arpack/src/dnapps.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-dnapps.lo `test -f 'arpack/src/dnapps.f' || echo '$(srcdir)/'`arpack/src/dnapps.f
-
-arpack/src/libcruft_la-dnaup2.lo: arpack/src/dnaup2.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-dnaup2.lo `test -f 'arpack/src/dnaup2.f' || echo '$(srcdir)/'`arpack/src/dnaup2.f
-
-arpack/src/libcruft_la-dnaupd.lo: arpack/src/dnaupd.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-dnaupd.lo `test -f 'arpack/src/dnaupd.f' || echo '$(srcdir)/'`arpack/src/dnaupd.f
-
-arpack/src/libcruft_la-dnaupe.lo: arpack/src/dnaupe.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-dnaupe.lo `test -f 'arpack/src/dnaupe.f' || echo '$(srcdir)/'`arpack/src/dnaupe.f
-
-arpack/src/libcruft_la-dnconv.lo: arpack/src/dnconv.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-dnconv.lo `test -f 'arpack/src/dnconv.f' || echo '$(srcdir)/'`arpack/src/dnconv.f
-
-arpack/src/libcruft_la-dneigh.lo: arpack/src/dneigh.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-dneigh.lo `test -f 'arpack/src/dneigh.f' || echo '$(srcdir)/'`arpack/src/dneigh.f
-
-arpack/src/libcruft_la-dneupd.lo: arpack/src/dneupd.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-dneupd.lo `test -f 'arpack/src/dneupd.f' || echo '$(srcdir)/'`arpack/src/dneupd.f
-
-arpack/src/libcruft_la-dngets.lo: arpack/src/dngets.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-dngets.lo `test -f 'arpack/src/dngets.f' || echo '$(srcdir)/'`arpack/src/dngets.f
-
-arpack/src/libcruft_la-dsaitr.lo: arpack/src/dsaitr.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-dsaitr.lo `test -f 'arpack/src/dsaitr.f' || echo '$(srcdir)/'`arpack/src/dsaitr.f
-
-arpack/src/libcruft_la-dsapps.lo: arpack/src/dsapps.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-dsapps.lo `test -f 'arpack/src/dsapps.f' || echo '$(srcdir)/'`arpack/src/dsapps.f
-
-arpack/src/libcruft_la-dsaup2.lo: arpack/src/dsaup2.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-dsaup2.lo `test -f 'arpack/src/dsaup2.f' || echo '$(srcdir)/'`arpack/src/dsaup2.f
-
-arpack/src/libcruft_la-dsaupd.lo: arpack/src/dsaupd.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-dsaupd.lo `test -f 'arpack/src/dsaupd.f' || echo '$(srcdir)/'`arpack/src/dsaupd.f
-
-arpack/src/libcruft_la-dsconv.lo: arpack/src/dsconv.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-dsconv.lo `test -f 'arpack/src/dsconv.f' || echo '$(srcdir)/'`arpack/src/dsconv.f
-
-arpack/src/libcruft_la-dseigt.lo: arpack/src/dseigt.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-dseigt.lo `test -f 'arpack/src/dseigt.f' || echo '$(srcdir)/'`arpack/src/dseigt.f
-
-arpack/src/libcruft_la-dsesrt.lo: arpack/src/dsesrt.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-dsesrt.lo `test -f 'arpack/src/dsesrt.f' || echo '$(srcdir)/'`arpack/src/dsesrt.f
-
-arpack/src/libcruft_la-dseupd.lo: arpack/src/dseupd.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-dseupd.lo `test -f 'arpack/src/dseupd.f' || echo '$(srcdir)/'`arpack/src/dseupd.f
-
-arpack/src/libcruft_la-dsgets.lo: arpack/src/dsgets.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-dsgets.lo `test -f 'arpack/src/dsgets.f' || echo '$(srcdir)/'`arpack/src/dsgets.f
-
-arpack/src/libcruft_la-dsortc.lo: arpack/src/dsortc.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-dsortc.lo `test -f 'arpack/src/dsortc.f' || echo '$(srcdir)/'`arpack/src/dsortc.f
-
-arpack/src/libcruft_la-dsortr.lo: arpack/src/dsortr.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-dsortr.lo `test -f 'arpack/src/dsortr.f' || echo '$(srcdir)/'`arpack/src/dsortr.f
-
-arpack/src/libcruft_la-dstatn.lo: arpack/src/dstatn.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-dstatn.lo `test -f 'arpack/src/dstatn.f' || echo '$(srcdir)/'`arpack/src/dstatn.f
-
-arpack/src/libcruft_la-dstats.lo: arpack/src/dstats.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-dstats.lo `test -f 'arpack/src/dstats.f' || echo '$(srcdir)/'`arpack/src/dstats.f
-
-arpack/src/libcruft_la-dstqrb.lo: arpack/src/dstqrb.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-dstqrb.lo `test -f 'arpack/src/dstqrb.f' || echo '$(srcdir)/'`arpack/src/dstqrb.f
-
-arpack/src/libcruft_la-sgetv0.lo: arpack/src/sgetv0.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-sgetv0.lo `test -f 'arpack/src/sgetv0.f' || echo '$(srcdir)/'`arpack/src/sgetv0.f
-
-arpack/src/libcruft_la-slaqrb.lo: arpack/src/slaqrb.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-slaqrb.lo `test -f 'arpack/src/slaqrb.f' || echo '$(srcdir)/'`arpack/src/slaqrb.f
-
-arpack/src/libcruft_la-snaitr.lo: arpack/src/snaitr.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-snaitr.lo `test -f 'arpack/src/snaitr.f' || echo '$(srcdir)/'`arpack/src/snaitr.f
-
-arpack/src/libcruft_la-snapps.lo: arpack/src/snapps.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-snapps.lo `test -f 'arpack/src/snapps.f' || echo '$(srcdir)/'`arpack/src/snapps.f
-
-arpack/src/libcruft_la-snaup2.lo: arpack/src/snaup2.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-snaup2.lo `test -f 'arpack/src/snaup2.f' || echo '$(srcdir)/'`arpack/src/snaup2.f
-
-arpack/src/libcruft_la-snaupd.lo: arpack/src/snaupd.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-snaupd.lo `test -f 'arpack/src/snaupd.f' || echo '$(srcdir)/'`arpack/src/snaupd.f
-
-arpack/src/libcruft_la-snaupe.lo: arpack/src/snaupe.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-snaupe.lo `test -f 'arpack/src/snaupe.f' || echo '$(srcdir)/'`arpack/src/snaupe.f
-
-arpack/src/libcruft_la-snconv.lo: arpack/src/snconv.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-snconv.lo `test -f 'arpack/src/snconv.f' || echo '$(srcdir)/'`arpack/src/snconv.f
-
-arpack/src/libcruft_la-sneigh.lo: arpack/src/sneigh.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-sneigh.lo `test -f 'arpack/src/sneigh.f' || echo '$(srcdir)/'`arpack/src/sneigh.f
-
-arpack/src/libcruft_la-sneupd.lo: arpack/src/sneupd.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-sneupd.lo `test -f 'arpack/src/sneupd.f' || echo '$(srcdir)/'`arpack/src/sneupd.f
-
-arpack/src/libcruft_la-sngets.lo: arpack/src/sngets.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-sngets.lo `test -f 'arpack/src/sngets.f' || echo '$(srcdir)/'`arpack/src/sngets.f
-
-arpack/src/libcruft_la-ssaitr.lo: arpack/src/ssaitr.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-ssaitr.lo `test -f 'arpack/src/ssaitr.f' || echo '$(srcdir)/'`arpack/src/ssaitr.f
-
-arpack/src/libcruft_la-ssapps.lo: arpack/src/ssapps.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-ssapps.lo `test -f 'arpack/src/ssapps.f' || echo '$(srcdir)/'`arpack/src/ssapps.f
-
-arpack/src/libcruft_la-ssaup2.lo: arpack/src/ssaup2.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-ssaup2.lo `test -f 'arpack/src/ssaup2.f' || echo '$(srcdir)/'`arpack/src/ssaup2.f
-
-arpack/src/libcruft_la-ssaupd.lo: arpack/src/ssaupd.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-ssaupd.lo `test -f 'arpack/src/ssaupd.f' || echo '$(srcdir)/'`arpack/src/ssaupd.f
-
-arpack/src/libcruft_la-ssconv.lo: arpack/src/ssconv.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-ssconv.lo `test -f 'arpack/src/ssconv.f' || echo '$(srcdir)/'`arpack/src/ssconv.f
-
-arpack/src/libcruft_la-sseigt.lo: arpack/src/sseigt.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-sseigt.lo `test -f 'arpack/src/sseigt.f' || echo '$(srcdir)/'`arpack/src/sseigt.f
-
-arpack/src/libcruft_la-ssesrt.lo: arpack/src/ssesrt.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-ssesrt.lo `test -f 'arpack/src/ssesrt.f' || echo '$(srcdir)/'`arpack/src/ssesrt.f
-
-arpack/src/libcruft_la-sseupd.lo: arpack/src/sseupd.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-sseupd.lo `test -f 'arpack/src/sseupd.f' || echo '$(srcdir)/'`arpack/src/sseupd.f
-
-arpack/src/libcruft_la-ssgets.lo: arpack/src/ssgets.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-ssgets.lo `test -f 'arpack/src/ssgets.f' || echo '$(srcdir)/'`arpack/src/ssgets.f
-
-arpack/src/libcruft_la-ssortc.lo: arpack/src/ssortc.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-ssortc.lo `test -f 'arpack/src/ssortc.f' || echo '$(srcdir)/'`arpack/src/ssortc.f
-
-arpack/src/libcruft_la-ssortr.lo: arpack/src/ssortr.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-ssortr.lo `test -f 'arpack/src/ssortr.f' || echo '$(srcdir)/'`arpack/src/ssortr.f
-
-arpack/src/libcruft_la-sstatn.lo: arpack/src/sstatn.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-sstatn.lo `test -f 'arpack/src/sstatn.f' || echo '$(srcdir)/'`arpack/src/sstatn.f
-
-arpack/src/libcruft_la-sstats.lo: arpack/src/sstats.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-sstats.lo `test -f 'arpack/src/sstats.f' || echo '$(srcdir)/'`arpack/src/sstats.f
-
-arpack/src/libcruft_la-sstqrb.lo: arpack/src/sstqrb.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-sstqrb.lo `test -f 'arpack/src/sstqrb.f' || echo '$(srcdir)/'`arpack/src/sstqrb.f
-
-arpack/src/libcruft_la-zgetv0.lo: arpack/src/zgetv0.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-zgetv0.lo `test -f 'arpack/src/zgetv0.f' || echo '$(srcdir)/'`arpack/src/zgetv0.f
-
-arpack/src/libcruft_la-znaitr.lo: arpack/src/znaitr.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-znaitr.lo `test -f 'arpack/src/znaitr.f' || echo '$(srcdir)/'`arpack/src/znaitr.f
-
-arpack/src/libcruft_la-znapps.lo: arpack/src/znapps.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-znapps.lo `test -f 'arpack/src/znapps.f' || echo '$(srcdir)/'`arpack/src/znapps.f
-
-arpack/src/libcruft_la-znaup2.lo: arpack/src/znaup2.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-znaup2.lo `test -f 'arpack/src/znaup2.f' || echo '$(srcdir)/'`arpack/src/znaup2.f
-
-arpack/src/libcruft_la-znaupd.lo: arpack/src/znaupd.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-znaupd.lo `test -f 'arpack/src/znaupd.f' || echo '$(srcdir)/'`arpack/src/znaupd.f
-
-arpack/src/libcruft_la-zneigh.lo: arpack/src/zneigh.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-zneigh.lo `test -f 'arpack/src/zneigh.f' || echo '$(srcdir)/'`arpack/src/zneigh.f
-
-arpack/src/libcruft_la-zneupd.lo: arpack/src/zneupd.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-zneupd.lo `test -f 'arpack/src/zneupd.f' || echo '$(srcdir)/'`arpack/src/zneupd.f
-
-arpack/src/libcruft_la-zngets.lo: arpack/src/zngets.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-zngets.lo `test -f 'arpack/src/zngets.f' || echo '$(srcdir)/'`arpack/src/zngets.f
-
-arpack/src/libcruft_la-zsortc.lo: arpack/src/zsortc.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-zsortc.lo `test -f 'arpack/src/zsortc.f' || echo '$(srcdir)/'`arpack/src/zsortc.f
-
-arpack/src/libcruft_la-zstatn.lo: arpack/src/zstatn.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/src/libcruft_la-zstatn.lo `test -f 'arpack/src/zstatn.f' || echo '$(srcdir)/'`arpack/src/zstatn.f
-
-arpack/util/libcruft_la-cmout.lo: arpack/util/cmout.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/util/libcruft_la-cmout.lo `test -f 'arpack/util/cmout.f' || echo '$(srcdir)/'`arpack/util/cmout.f
-
-arpack/util/libcruft_la-cvout.lo: arpack/util/cvout.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/util/libcruft_la-cvout.lo `test -f 'arpack/util/cvout.f' || echo '$(srcdir)/'`arpack/util/cvout.f
-
-arpack/util/libcruft_la-dmout.lo: arpack/util/dmout.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/util/libcruft_la-dmout.lo `test -f 'arpack/util/dmout.f' || echo '$(srcdir)/'`arpack/util/dmout.f
-
-arpack/util/libcruft_la-dvout.lo: arpack/util/dvout.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/util/libcruft_la-dvout.lo `test -f 'arpack/util/dvout.f' || echo '$(srcdir)/'`arpack/util/dvout.f
-
-arpack/util/libcruft_la-icnteq.lo: arpack/util/icnteq.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/util/libcruft_la-icnteq.lo `test -f 'arpack/util/icnteq.f' || echo '$(srcdir)/'`arpack/util/icnteq.f
-
-arpack/util/libcruft_la-icopy.lo: arpack/util/icopy.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/util/libcruft_la-icopy.lo `test -f 'arpack/util/icopy.f' || echo '$(srcdir)/'`arpack/util/icopy.f
-
-arpack/util/libcruft_la-iset.lo: arpack/util/iset.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/util/libcruft_la-iset.lo `test -f 'arpack/util/iset.f' || echo '$(srcdir)/'`arpack/util/iset.f
-
-arpack/util/libcruft_la-iswap.lo: arpack/util/iswap.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/util/libcruft_la-iswap.lo `test -f 'arpack/util/iswap.f' || echo '$(srcdir)/'`arpack/util/iswap.f
-
-arpack/util/libcruft_la-ivout.lo: arpack/util/ivout.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/util/libcruft_la-ivout.lo `test -f 'arpack/util/ivout.f' || echo '$(srcdir)/'`arpack/util/ivout.f
-
-arpack/util/libcruft_la-second.lo: arpack/util/second.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/util/libcruft_la-second.lo `test -f 'arpack/util/second.f' || echo '$(srcdir)/'`arpack/util/second.f
-
-arpack/util/libcruft_la-smout.lo: arpack/util/smout.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/util/libcruft_la-smout.lo `test -f 'arpack/util/smout.f' || echo '$(srcdir)/'`arpack/util/smout.f
-
-arpack/util/libcruft_la-svout.lo: arpack/util/svout.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/util/libcruft_la-svout.lo `test -f 'arpack/util/svout.f' || echo '$(srcdir)/'`arpack/util/svout.f
-
-arpack/util/libcruft_la-zmout.lo: arpack/util/zmout.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/util/libcruft_la-zmout.lo `test -f 'arpack/util/zmout.f' || echo '$(srcdir)/'`arpack/util/zmout.f
-
-arpack/util/libcruft_la-zvout.lo: arpack/util/zvout.f
-	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o arpack/util/libcruft_la-zvout.lo `test -f 'arpack/util/zvout.f' || echo '$(srcdir)/'`arpack/util/zvout.f
-
 blas-xtra/libcruft_la-ddot3.lo: blas-xtra/ddot3.f
 	$(LIBTOOL)  --tag=F77 $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(F77) $(libcruft_la_FFLAGS) $(FFLAGS) -c -o blas-xtra/libcruft_la-ddot3.lo `test -f 'blas-xtra/ddot3.f' || echo '$(srcdir)/'`blas-xtra/ddot3.f
 
@@ -5180,8 +4545,6 @@ mostlyclean-libtool:
 clean-libtool:
 	-rm -rf .libs _libs
 	-rm -rf amos/.libs amos/_libs
-	-rm -rf arpack/src/.libs arpack/src/_libs
-	-rm -rf arpack/util/.libs arpack/util/_libs
 	-rm -rf blas-xtra/.libs blas-xtra/_libs
 	-rm -rf daspk/.libs daspk/_libs
 	-rm -rf dasrt/.libs dasrt/_libs
@@ -5328,10 +4691,6 @@ distclean-generic:
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
 	-rm -f amos/$(DEPDIR)/$(am__dirstamp)
 	-rm -f amos/$(am__dirstamp)
-	-rm -f arpack/src/$(DEPDIR)/$(am__dirstamp)
-	-rm -f arpack/src/$(am__dirstamp)
-	-rm -f arpack/util/$(DEPDIR)/$(am__dirstamp)
-	-rm -f arpack/util/$(am__dirstamp)
 	-rm -f blas-xtra/$(DEPDIR)/$(am__dirstamp)
 	-rm -f blas-xtra/$(am__dirstamp)
 	-rm -f daspk/$(DEPDIR)/$(am__dirstamp)
@@ -5495,6 +4854,9 @@ $(SED) < $< \
   -e "s|%OCTAVE_CONF_AMD_LIBS%|\"${AMD_LIBS}\"|" \
   -e "s|%OCTAVE_CONF_AR%|\"${AR}\"|" \
   -e "s|%OCTAVE_CONF_ARFLAGS%|\"${ARFLAGS}\"|" \
+  -e "s|%OCTAVE_CONF_ARPACK_CPPFLAGS%|\"${ARPACK_CPPFLAGS}\"|" \
+  -e "s|%OCTAVE_CONF_ARPACK_LDFLAGS%|\"${ARPACK_LDFLAGS}\"|" \
+  -e "s|%OCTAVE_CONF_ARPACK_LIBS%|\"${ARPACK_LIBS}\"|" \
   -e "s|%OCTAVE_CONF_BLAS_LIBS%|\"${BLAS_LIBS}\"|" \
   -e "s|%OCTAVE_CONF_CAMD_CPPFLAGS%|\"${CAMD_CPPFLAGS}\"|" \
   -e "s|%OCTAVE_CONF_CAMD_LDFLAGS%|\"${CAMD_LDFLAGS}\"|" \
@@ -5576,8 +4938,12 @@ $(SED) < $< \
   -e "s|%OCTAVE_CONF_MAGICK_LDFLAGS%|\"${MAGICK_LDFLAGS}\"|" \
   -e "s|%OCTAVE_CONF_MAGICK_LIBS%|\"${MAGICK_LIBS}\"|" \
   -e 's|%OCTAVE_CONF_MKOCTFILE_DL_LDFLAGS%|\"@MKOCTFILE_DL_LDFLAGS@\"|' \
+  -e "s|%OCTAVE_CONF_OCTAVE_LINK_DEPS%|\"${OCTAVE_LINK_DEPS}\"|" \
+  -e "s|%OCTAVE_CONF_OCTAVE_LINK_OPTS%|\"${OCTAVE_LINK_OPTS}\"|" \
   -e "s|%OCTAVE_CONF_OCTINCLUDEDIR%|\"${octincludedir}\"|" \
   -e "s|%OCTAVE_CONF_OCTLIBDIR%|\"${octlibdir}\"|" \
+  -e "s|%OCTAVE_CONF_OCT_LINK_DEPS%|\"${OCT_LINK_DEPS}\"|" \
+  -e "s|%OCTAVE_CONF_OCT_LINK_OPTS%|\"${OCT_LINK_OPTS}\"|" \
   -e "s|%OCTAVE_CONF_OPENGL_LIBS%|\"${OPENGL_LIBS}\"|" \
   -e "s|%OCTAVE_CONF_PREFIX%|\"${prefix}\"|" \
   -e "s|%OCTAVE_CONF_PTHREAD_CFLAGS%|\"${PTHREAD_CFLAGS}\"|" \
@@ -5592,7 +4958,6 @@ $(SED) < $< \
   -e "s|%OCTAVE_CONF_RDYNAMIC_FLAG%|\"${RDYNAMIC_FLAG}\"|" \
   -e "s|%OCTAVE_CONF_READLINE_LIBS%|\"${READLINE_LIBS}\"|" \
   -e "s|%OCTAVE_CONF_REGEX_LIBS%|\"${REGEX_LIBS}\"|" \
-  -e "s|%OCTAVE_CONF_RLD_FLAG%|\"${RLD_FLAG}\"|" \
   -e "s|%OCTAVE_CONF_SED%|\"${SED}\"|" \
   -e "s|%OCTAVE_CONF_SHARED_LIBS%|\"${SHARED_LIBS}\"|" \
   -e "s|%OCTAVE_CONF_SHLEXT%|\"${SHLEXT}\"|" \

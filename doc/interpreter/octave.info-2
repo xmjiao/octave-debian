@@ -1,4 +1,4 @@
-This is /home/jwe/src/octave-stable/doc/interpreter/octave.info, produced by makeinfo version 4.13 from /home/jwe/src/octave-stable/doc/interpreter/octave.texi.
+This is octave.info, produced by makeinfo version 4.13 from octave.texi.
 
 START-INFO-DIR-ENTRY
 * Octave: (octave).           Interactive language for numerical computations.
@@ -20,6 +20,326 @@ permission notice identical to this one.
    Permission is granted to copy and distribute translations of this
 manual into another language, under the above conditions for modified
 versions.
+
+
+File: octave.info,  Node: Comparison Ops,  Next: Boolean Expressions,  Prev: Arithmetic Ops,  Up: Expressions
+
+8.4 Comparison Operators
+========================
+
+"Comparison operators" compare numeric values for relationships such as
+equality.  They are written using _relational operators_.
+
+   All of Octave's comparison operators return a value of 1 if the
+comparison is true, or 0 if it is false.  For matrix values, they all
+work on an element-by-element basis.  Broadcasting rules apply.  *Note
+Broadcasting::.  For example:
+
+     [1, 2; 3, 4] == [1, 3; 2, 4]
+          =>  1  0
+              0  1
+
+   According to broadcasting rules, if one operand is a scalar and the
+other is a matrix, the scalar is compared to each element of the matrix
+in turn, and the result is the same size as the matrix.
+
+`X < Y'
+     True if X is less than Y.
+
+`X <= Y'
+     True if X is less than or equal to Y.
+
+`X == Y'
+     True if X is equal to Y.
+
+`X >= Y'
+     True if X is greater than or equal to Y.
+
+`X > Y'
+     True if X is greater than Y.
+
+`X != Y'
+`X ~= Y'
+     True if X is not equal to Y.
+
+   For complex numbers, the following ordering is defined: Z1 < Z2 iff
+
+       abs(Z1) < abs(Z2)
+       || (abs(Z1) == abs(Z2) && arg(Z1) < arg(Z2))
+
+   This is consistent with the ordering used by "max", "min" and
+"sort", but is not consistent with MATLAB, which only compares the real
+parts.
+
+   String comparisons may also be performed with the `strcmp' function,
+not with the comparison operators listed above.  *Note Strings::.
+
+ -- Built-in Function:  eq (X, Y)
+     Return true if the two inputs are equal.  This function is
+     equivalent to `x == y'.
+
+     *See also:* *note ne: doc-ne, *note isequal: doc-isequal.
+
+ -- Built-in Function:  ge (X, Y)
+     This function is equivalent to `x >= y'.
+
+ -- Built-in Function:  gt (X, Y)
+     This function is equivalent to `x > y'.
+
+ -- Function File:  isequal (X1, X2, ...)
+     Return true if all of X1, X2, ... are equal.
+
+     *See also:* *note isequalwithequalnans: doc-isequalwithequalnans.
+
+ -- Function File:  isequalwithequalnans (X1, X2, ...)
+     Assuming NaN == NaN, return true if all of X1, X2, ...  are equal.
+
+     *See also:* *note isequal: doc-isequal.
+
+ -- Built-in Function:  le (X, Y)
+     This function is equivalent to `x <= y'.
+
+ -- Built-in Function:  lt (X, Y)
+     This function is equivalent to `x < y'.
+
+ -- Built-in Function:  ne (X, Y)
+     Return true if the two inputs are not equal.  This function is
+     equivalent to `x != y'.
+
+     *See also:* *note eq: doc-eq, *note isequal: doc-isequal.
+
+
+File: octave.info,  Node: Boolean Expressions,  Next: Assignment Ops,  Prev: Comparison Ops,  Up: Expressions
+
+8.5 Boolean Expressions
+=======================
+
+* Menu:
+
+* Element-by-element Boolean Operators::
+* Short-circuit Boolean Operators::
+
+
+File: octave.info,  Node: Element-by-element Boolean Operators,  Next: Short-circuit Boolean Operators,  Up: Boolean Expressions
+
+8.5.1 Element-by-element Boolean Operators
+------------------------------------------
+
+An "element-by-element boolean expression" is a combination of
+comparison expressions using the boolean operators "or" (`|'), "and"
+(`&'), and "not" (`!'), along with parentheses to control nesting.  The
+truth of the boolean expression is computed by combining the truth
+values of the corresponding elements of the component expressions.  A
+value is considered to be false if it is zero, and true otherwise.
+
+   Element-by-element boolean expressions can be used wherever
+comparison expressions can be used.  They can be used in `if' and
+`while' statements.  However, a matrix value used as the condition in an
+`if' or `while' statement is only true if _all_ of its elements are
+nonzero.
+
+   Like comparison operations, each element of an element-by-element
+boolean expression also has a numeric value (1 if true, 0 if false) that
+comes into play if the result of the boolean expression is stored in a
+variable, or used in arithmetic.
+
+   Here are descriptions of the three element-by-element boolean
+operators.
+
+`BOOLEAN1 & BOOLEAN2'
+     Elements of the result are true if both corresponding elements of
+     BOOLEAN1 and BOOLEAN2 are true.
+
+`BOOLEAN1 | BOOLEAN2'
+     Elements of the result are true if either of the corresponding
+     elements of BOOLEAN1 or BOOLEAN2 is true.
+
+`! BOOLEAN'
+`~ BOOLEAN'
+     Each element of the result is true if the corresponding element of
+     BOOLEAN is false.
+
+   These operators work on an element-by-element basis.  For example,
+the expression
+
+     [1, 0; 0, 1] & [1, 0; 2, 3]
+
+returns a two by two identity matrix.
+
+   For the binary operators, broadcasting rules apply.  *Note
+Broadcasting::.  In particular, if one of the operands is a scalar and
+the other a matrix, the operator is applied to the scalar and each
+element of the matrix.
+
+   For the binary element-by-element boolean operators, both
+subexpressions BOOLEAN1 and BOOLEAN2 are evaluated before computing the
+result.  This can make a difference when the expressions have side
+effects.  For example, in the expression
+
+     a & b++
+
+the value of the variable B is incremented even if the variable A is
+zero.
+
+   This behavior is necessary for the boolean operators to work as
+described for matrix-valued operands.
+
+ -- Built-in Function:  and (X, Y)
+ -- Built-in Function:  and (X1, X2, ...)
+     Return the logical AND of X and Y.  This function is equivalent to
+     `x & y'.  If more arguments are given, the logical and is applied
+     cumulatively from left to right:
+
+            (...((x1 & x2) & x3) & ...)
+
+     At least one argument is required.
+
+     *See also:* *note or: doc-or, *note not: doc-not, *note xor:
+     doc-xor.
+
+ -- Built-in Function:  not (X)
+     Return the logical NOT of X.  This function is equivalent to `! x'.
+
+     *See also:* *note and: doc-and, *note or: doc-or, *note xor:
+     doc-xor.
+
+ -- Built-in Function:  or (X, Y)
+ -- Built-in Function:  or (X1, X2, ...)
+     Return the logical OR of X and Y.  This function is equivalent to
+     `x | y'.  If more arguments are given, the logical or is applied
+     cumulatively from left to right:
+
+            (...((x1 | x2) | x3) | ...)
+
+     At least one argument is required.
+
+     *See also:* *note and: doc-and, *note not: doc-not, *note xor:
+     doc-xor.
+
+
+File: octave.info,  Node: Short-circuit Boolean Operators,  Prev: Element-by-element Boolean Operators,  Up: Boolean Expressions
+
+8.5.2 Short-circuit Boolean Operators
+-------------------------------------
+
+Combined with the implicit conversion to scalar values in `if' and
+`while' conditions, Octave's element-by-element boolean operators are
+often sufficient for performing most logical operations.  However, it
+is sometimes desirable to stop evaluating a boolean expression as soon
+as the overall truth value can be determined.  Octave's "short-circuit"
+boolean operators work this way.
+
+`BOOLEAN1 && BOOLEAN2'
+     The expression BOOLEAN1 is evaluated and converted to a scalar
+     using the equivalent of the operation `all (BOOLEAN1(:))'.  If it
+     is false, the result of the overall expression is 0.  If it is
+     true, the expression BOOLEAN2 is evaluated and converted to a
+     scalar using the equivalent of the operation `all (BOOLEAN1(:))'.
+     If it is true, the result of the overall expression is 1.
+     Otherwise, the result of the overall expression is 0.
+
+     *Warning:* there is one exception to the rule of evaluating `all
+     (BOOLEAN1(:))', which is when `boolean1' is the empty matrix.  The
+     truth value of an empty matrix is always `false' so `[] && true'
+     evaluates to `false' even though `all ([])' is `true'.
+
+`BOOLEAN1 || BOOLEAN2'
+     The expression BOOLEAN1 is evaluated and converted to a scalar
+     using the equivalent of the operation `all (BOOLEAN1(:))'.  If it
+     is true, the result of the overall expression is 1.  If it is
+     false, the expression BOOLEAN2 is evaluated and converted to a
+     scalar using the equivalent of the operation `all (BOOLEAN1(:))'.
+     If it is true, the result of the overall expression is 1.
+     Otherwise, the result of the overall expression is 0.
+
+     *Warning:* the truth value of an empty matrix is always `false',
+     see the previous list item for details.
+
+   The fact that both operands may not be evaluated before determining
+the overall truth value of the expression can be important.  For
+example, in the expression
+
+     a && b++
+
+the value of the variable B is only incremented if the variable A is
+nonzero.
+
+   This can be used to write somewhat more concise code.  For example,
+it is possible write
+
+     function f (a, b, c)
+       if (nargin > 2 && ischar (c))
+         ...
+
+instead of having to use two `if' statements to avoid attempting to
+evaluate an argument that doesn't exist.  For example, without the
+short-circuit feature, it would be necessary to write
+
+     function f (a, b, c)
+       if (nargin > 2)
+         if (ischar (c))
+           ...
+
+Writing
+
+     function f (a, b, c)
+       if (nargin > 2 & ischar (c))
+         ...
+
+would result in an error if `f' were called with one or two arguments
+because Octave would be forced to try to evaluate both of the operands
+for the operator `&'.
+
+   MATLAB has special behavior that allows the operators `&' and `|' to
+short-circuit when used in the truth expression for `if' and `while'
+statements.  The Octave parser may be instructed to behave in the same
+manner, but its use is strongly discouraged.
+
+ -- Built-in Function: VAL = do_braindead_shortcircuit_evaluation ()
+ -- Built-in Function: OLD_VAL = do_braindead_shortcircuit_evaluation
+          (NEW_VAL)
+ -- Built-in Function:  do_braindead_shortcircuit_evaluation (NEW_VAL,
+          "local")
+     Query or set the internal variable that controls whether Octave
+     will do short-circuit evaluation of `|' and `&' operators inside
+     the conditions of if or while statements.
+
+     This feature is only provided for compatibility with MATLAB and
+     should not be used unless you are porting old code that relies on
+     this feature.
+
+     To obtain short-circuit behavior for logical expressions in new
+     programs, you should always use the `&&' and `||' operators.
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
+
+   Finally, the ternary operator (?:) is not supported in Octave.  If
+short-circuiting is not important, it can be replaced by the `ifelse'
+function.
+
+ -- Built-in Function:  merge (MASK, TVAL, FVAL)
+ -- Built-in Function:  ifelse (MASK, TVAL, FVAL)
+     Merge elements of TRUE_VAL and FALSE_VAL, depending on the value
+     of MASK.  If MASK is a logical scalar, the other two arguments can
+     be arbitrary values.  Otherwise, MASK must be a logical array, and
+     TVAL, FVAL should be arrays of matching class, or cell arrays.  In
+     the scalar mask case, TVAL is returned if MASK is true, otherwise
+     FVAL is returned.
+
+     In the array mask case, both TVAL and FVAL must be either scalars
+     or arrays with dimensions equal to MASK.  The result is
+     constructed as follows:
+
+          result(mask) = tval(mask);
+          result(! mask) = fval(! mask);
+
+     MASK can also be arbitrary numeric type, in which case it is first
+     converted to logical.
+
+     *See also:* *note logical: doc-logical.
 
 
 File: octave.info,  Node: Assignment Ops,  Next: Increment Ops,  Prev: Boolean Expressions,  Up: Expressions
@@ -249,50 +569,59 @@ well, and then you too could make a mistake.  Explicit parentheses will
 help prevent any such mistake.
 
    When operators of equal precedence are used together, the leftmost
-operator groups first, except for the assignment and exponentiation
-operators, which group in the opposite order.  Thus, the expression `a
-- b + c' groups as `(a - b) + c', but the expression `a = b = c' groups
-as `a = (b = c)'.
+operator groups first, except for the assignment operators, which group
+in the opposite order.  Thus, the expression `a - b + c' groups as `(a
+- b) + c', but the expression `a = b = c' groups as `a = (b = c)'.
 
    The precedence of prefix unary operators is important when another
 operator follows the operand.  For example, `-x^2' means `-(x^2)',
 because `-' has lower precedence than `^'.
 
-   Here is a table of the operators in Octave, in order of increasing
-precedence.
+   Here is a table of the operators in Octave, in order of decreasing
+precedence.  Unless noted, all operators group left to right.
 
-`statement separators'
-     `;', `,'.
+`function call and array indexing, cell array indexing, and structure element indexing'
+     `()'  `{}' `.'
 
-`assignment'
-     `=', `+=', `-=', `*=',`/='.  This operator groups right to left.
+`postfix increment, and postfix decrement'
+     `++'  `--'
 
-`logical "or" and "and"'
-     `||', `&&'.
+     These operators group right to left.
 
-`element-wise "or" and "and"'
-     `|', `&'.
+`transpose and exponentiation'
+     `'' `.'' `^' `**' `.^' `.**'
 
-`relational'
-     `<', `<=', `==', `>=', `>', `!=', `~='.
+`unary plus, unary minus, prefix increment, prefix decrement, and logical "not"'
+     `+' `-' `++'  `--' `~' `!'
 
-`colon'
-     `:'.
+`multiply and divide'
+     `*' `/' `\' `.\' `.*' `./'
 
 `add, subtract'
-     `+', `-'.
+     `+' `-'
 
-`multiply, divide'
-     `*', `/', `\', `.\', `.*', `./'.
+`colon'
+     `:'
 
-`transpose'
-     `'', `.''
+`relational'
+     `<' `<=' `==' `>=' `>' `!=' `~='
 
-`unary plus, minus, increment, decrement, and ``not'''
-     `+', `-', `++', `--', `!', `~'.
+`element-wise "and"'
+     `&'
 
-`exponentiation'
-     `^', `**', `.^', `.**'.
+`element-wise "or"'
+     `|'
+
+`logical "and"'
+     `&&'
+
+`logical "or"'
+     `||'
+
+`assignment'
+     `=' `+=' `-=' `*=' `/=' `\=' `^=' `.*=' `./=' `.\=' `.^=' `|=' `&='
+
+     These operators group right to left.
 
 
 File: octave.info,  Node: Evaluation,  Next: Statements,  Prev: Expressions,  Up: Top
@@ -308,6 +637,7 @@ a file.
 has been computed and stored in a string, which is exactly what the
 `eval' function lets you do.
 
+ -- Built-in Function:  eval (TRY)
  -- Built-in Function:  eval (TRY, CATCH)
      Parse the string TRY and evaluate it as if it were an Octave
      program.  If that fails, evaluate the optional string CATCH.  The
@@ -326,6 +656,12 @@ has been computed and stored in a string, which is exactly what the
                 'printf ("This error occurred:\n%s\n", lasterr ());');
                -| This error occurred:
                   This is a bad example
+
+     Consider using try/catch blocks instead if you are only using
+     `eval' as an error-capturing mechanism rather than for the
+     execution of arbitrary code strings.
+
+     *See also:* *note evalin: doc-evalin.
 
 * Menu:
 
@@ -489,13 +825,18 @@ the given pattern.  Other examples such as `save' and `load' are
 written in C++ where all Octave variables are in the `caller' context
 and `evalin' is not needed.
 
+ -- Built-in Function:  evalin (CONTEXT, TRY)
  -- Built-in Function:  evalin (CONTEXT, TRY, CATCH)
      Like `eval', except that the expressions are evaluated in the
      context CONTEXT, which may be either `"caller"' or `"base"'.
 
+     *See also:* *note eval: doc-eval, *note assignin: doc-assignin.
+
  -- Built-in Function:  assignin (CONTEXT, VARNAME, VALUE)
      Assign VALUE to VARNAME in context CONTEXT, which may be either
      `"base"' or `"caller"'.
+
+     *See also:* *note evalin: doc-evalin.
 
 
 File: octave.info,  Node: Statements,  Next: Functions and Scripts,  Prev: Evaluation,  Up: Top
@@ -1389,7 +1730,8 @@ possibilities and issue our own error message.
      number of arguments.
 
      *See also:* *note nargout: doc-nargout, *note varargin:
-     doc-varargin, *note varargout: doc-varargout.
+     doc-varargin, *note isargout: doc-isargout, *note varargout:
+     doc-varargout, *note nthargout: doc-nthargout.
 
  -- Function File:  inputname (N)
      Return the name of the N-th argument to the calling function.  If
@@ -1397,10 +1739,16 @@ possibilities and issue our own error message.
 
  -- Built-in Function: VAL = silent_functions ()
  -- Built-in Function: OLD_VAL = silent_functions (NEW_VAL)
+ -- Built-in Function:  silent_functions (NEW_VAL, "local")
      Query or set the internal variable that controls whether internal
      output from a function is suppressed.  If this option is disabled,
      Octave will display the results produced by evaluating expressions
      within a function body that are not terminated with a semicolon.
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
 
 
 File: octave.info,  Node: Multiple Return Values,  Next: Variable-length Argument Lists,  Prev: Defining Functions,  Up: Functions and Scripts
@@ -1442,6 +1790,45 @@ elements of a single array, but that is not always possible or
 convenient.  The values to be returned may not have compatible
 dimensions, and it is often desirable to give the individual return
 values distinct names.
+
+   It is possible to use the `nthargout' function to obtain only some
+of the return values or several at once in a cell array.  *note Cell
+Array Objects::
+
+ -- Function File:  nthargout (N, FUNC, ...)
+ -- Function File:  nthargout (N, NTOT, FUNC, ...)
+     Return the Nth output argument of function given by the function
+     handle or string FUNC.  Any arguments after FUNC are passed to
+     FUNC.  The total number of arguments to call FUNC with can be
+     passed in NTOT; by default NTOT is N.  The input N can also be a
+     vector of indices of the output, in which case the output will be
+     a cell array of the requested output arguments.
+
+     The intended use `nthargout' is to avoid intermediate variables.
+     For example, when finding the indices of the maximum entry of a
+     matrix, the following two compositions of nthargout
+
+          M = magic (5);
+          cell2mat (nthargout ([1, 2], @ind2sub, size(M),
+                               nthargout (2, @max, M(:))))
+          => 5   3
+
+     are completely equivalent to the following lines:
+
+          M = magic(5);
+          [~, idx] = max (M(:));
+          [i, j] = ind2sub (size (M), idx);
+          [i, j]
+          => 5   3
+
+     It can also be helpful to have all output arguments in a single
+     cell in the following manner:
+
+          USV = nthargout ([1:3], @svd, hilb (5));
+
+     *See also:* *note nargin: doc-nargin, *note nargout: doc-nargout,
+     *note varargin: doc-varargin, *note varargout: doc-varargout,
+     *note isargout: doc-isargout.
 
    In addition to setting `nargin' each time a function is called,
 Octave also automatically initializes `nargout' to the number of values
@@ -1495,9 +1882,9 @@ along with a warning.
 
      At the top level, `nargout' is undefined.
 
-     *See also:* *note nargin: doc-nargin, *note isargout:
-     doc-isargout, *note varargin: doc-varargin, *note varargout:
-     doc-varargout.
+     *See also:* *note nargin: doc-nargin, *note varargin:
+     doc-varargin, *note isargout: doc-isargout, *note varargout:
+     doc-varargout, *note nthargout: doc-nthargout.
 
    It is good practice at the head of a function to verify that it has
 been called correctly.  In Octave the following idiom is seen frequently
@@ -1509,8 +1896,8 @@ been called correctly.  In Octave the following idiom is seen frequently
 which stops the function execution and prints a message about the
 correct way to call the function whenever the number of inputs is wrong.
 
-   For compatibility with MATLAB, `nargchk' and `nargoutchk' are
-available which provide similar error checking.
+   For compatibility with MATLAB, `nargchk', `narginchk' and
+`nargoutchk' are available which provide similar error checking.
 
  -- Function File: MSGSTR = nargchk (MINARGS, MAXARGS, NARGS)
  -- Function File: MSGSTR = nargchk (MINARGS, MAXARGS, NARGS, "string")
@@ -1522,22 +1909,52 @@ available which provide similar error checking.
      This is useful for checking to see that the number of input
      arguments supplied to a function is within an acceptable range.
 
-     *See also:* *note nargoutchk: doc-nargoutchk, *note error:
-     doc-error, *note nargin: doc-nargin, *note nargout: doc-nargout.
+     *See also:* *note nargoutchk: doc-nargoutchk, *note narginchk:
+     doc-narginchk, *note error: doc-error, *note nargin: doc-nargin,
+     *note nargout: doc-nargout.
 
+ -- Function File:  narginchk (MINARGS, MAXARGS)
+     Check for correct number of arguments or generate an error message
+     if the number of arguments in the calling function is outside the
+     range MINARGS and MAXARGS.  Otherwise, do nothing.
+
+     Both MINARGS and MAXARGS need to be scalar numeric values.  Zero,
+     Inf and negative values are all allowed, and MINARGS and MAXARGS
+     may be equal.
+
+     Note that this function evaluates `nargin' on the caller.
+
+     *See also:* *note nargchk: doc-nargchk, *note nargoutchk:
+     doc-nargoutchk, *note error: doc-error, *note nargout:
+     doc-nargout, *note nargin: doc-nargin.
+
+ -- Function File:  nargoutchk (MINARGS, MAXARGS)
  -- Function File: MSGSTR = nargoutchk (MINARGS, MAXARGS, NARGS)
  -- Function File: MSGSTR = nargoutchk (MINARGS, MAXARGS, NARGS,
           "string")
  -- Function File: MSGSTRUCT = nargoutchk (MINARGS, MAXARGS, NARGS,
           "struct")
-     Return an appropriate error message string (or structure) if the
-     number of outputs requested is invalid.
+     Check for correct number of output arguments.
+
+     On the first form, returns an error unless the number of arguments
+     in its caller is between the values of MINARGS and MAXARGS.  It
+     does nothing otherwise.  Note that this function evaluates the
+     value of `nargout' on the caller so its value must have not been
+     tampered with.
+
+     Both MINARGS and MAXARGS need to be a numeric scalar.  Zero, Inf
+     and negative are all valid, and they can have the same value.
+
+     For backward compatibility reasons, the other forms return an
+     appropriate error message string (or structure) if the number of
+     outputs requested is invalid.
 
      This is useful for checking to see that the number of output
      arguments supplied to a function is within an acceptable range.
 
-     *See also:* *note nargchk: doc-nargchk, *note error: doc-error,
-     *note nargout: doc-nargout, *note nargin: doc-nargin.
+     *See also:* *note nargchk: doc-nargchk, *note narginchk:
+     doc-narginchk, *note error: doc-error, *note nargout: doc-nargout,
+     *note nargin: doc-nargin.
 
 
 File: octave.info,  Node: Variable-length Argument Lists,  Next: Ignoring Arguments,  Prev: Multiple Return Values,  Up: Functions and Scripts
@@ -1629,7 +2046,7 @@ This function produces output like this
      directly with their default values given as name-value pairs.  If
      PARAMS do not form name-value pairs, or if an option occurs that
      does not match any of the available options, an error occurs.
-     When called from a m-file function, the error is prefixed with the
+     When called from an m-file function, the error is prefixed with the
      name of the caller function.  The matching of options is
      case-insensitive.
 
@@ -1679,7 +2096,8 @@ whether the output argument is wanted.  For example:
      level, `isargout' returns an error.
 
      *See also:* *note nargout: doc-nargout, *note nargin: doc-nargin,
-     *note varargin: doc-varargin, *note varargout: doc-varargout.
+     *note varargin: doc-varargin, *note varargout: doc-varargout,
+     *note nthargout: doc-nthargout.
 
 
 File: octave.info,  Node: Variable-length Return Lists,  Next: Returning from a Function,  Prev: Ignoring Arguments,  Up: Functions and Scripts
@@ -1907,7 +2325,7 @@ function resets the default behavior.
           filename.  If `name.ext' is not modifiable, it will be copied
           to `HOME' before editing.
 
-          *WARNING!* You may need to clear name before the new
+          *Warning:* You may need to clear name before the new
           definition is available.  If you are editing a .cc file, you
           will need to mkoctfile `name.cc' before the definition will
           be available.
@@ -2560,6 +2978,12 @@ list.  If there are no arguments, you must use an empty argument list
      f (pi/4)
          => 0.70711
 
+ -- Built-in Function:  is_function_handle (X)
+     Return true if X is a function handle.
+
+     *See also:* *note isa: doc-isa, *note typeinfo: doc-typeinfo,
+     *note class: doc-class.
+
  -- Built-in Function:  functions (FCN_HANDLE)
      Return a struct containing information about the function handle
      FCN_HANDLE.
@@ -2658,19 +3082,6 @@ After this it is possible to evaluate f at any x by writing `f(x)'.
 
      *See also:* *note argnames: doc-argnames, *note inline:
      doc-inline, *note vectorize: doc-vectorize.
-
- -- Built-in Function:  vectorize (FUN)
-     Create a vectorized version of the inline function FUN by
-     replacing all occurrences of `*', `/', etc., with `.*', `./', etc.
-
-     This may be useful, for example, when using inline functions with
-     numerical integration or optimization where a vector-valued
-     function is expected.
-
-          fcn = vectorize (inline ("x^2 - 1"))
-             => fcn = f(x) = x.^2 - 1
-          quadv (fcn, 0, 3)
-             => 6
 
  -- Function File:  symvar (S)
      Identify the argument names in the function defined by a string.
@@ -2787,6 +3198,9 @@ the types of functions you will find there.
 
 `polynomial'
      Functions for manipulating polynomials.
+
+`prefs'
+     Functions implementing user-defined preferences.
 
 `set'
      Functions for creating and manipulating sets of unique values.
@@ -2998,9 +3412,15 @@ error.
 
  -- Built-in Function: VAL = beep_on_error ()
  -- Built-in Function: OLD_VAL = beep_on_error (NEW_VAL)
+ -- Built-in Function:  beep_on_error (NEW_VAL, "local")
      Query or set the internal variable that controls whether Octave
      will try to ring the terminal bell before printing an error
      message.
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
 
 
 File: octave.info,  Node: Catching Errors,  Next: Recovering From Errors,  Prev: Raising Errors,  Up: Handling Errors
@@ -3044,10 +3464,10 @@ number of errors related to the `*' operator.
  -- Built-in Function: LASTERR = lasterror ()
  -- Built-in Function:  lasterror (ERR)
  -- Built-in Function:  lasterror ('reset')
-     Query or set the last error message structure.  When called
-     without arguments , return a structure containing the last error
-     message and other information related to this error.  The elements
-     of the structure are:
+     Query or set the last error message structure.  When called without
+     arguments, return a structure containing the last error message
+     and other information related to this error.  The elements of the
+     structure are:
 
     'message'
           The text of the last error message
@@ -3224,6 +3644,10 @@ identification string, and the second is the actual warning.
 
  -- Built-in Function:  warning (TEMPLATE, ...)
  -- Built-in Function:  warning (ID, TEMPLATE, ...)
+ -- Built-in Function:  warning ("on", ID)
+ -- Built-in Function:  warning ("off", ID)
+ -- Built-in Function:  warning ("query", ID)
+ -- Built-in Function:  warning ("error", ID)
      Format the optional arguments under the control of the template
      string TEMPLATE using the same rules as the `printf' family of
      functions (*note Formatted Output::) and print the resulting
@@ -3236,14 +3660,15 @@ identification string, and the second is the actual warning.
      warnings tagged by ID.  The special identifier `"all"' may be used
      to set the state of all warnings.
 
- -- Built-in Function:  warning ("on", ID)
- -- Built-in Function:  warning ("off", ID)
- -- Built-in Function:  warning ("error", ID)
- -- Built-in Function:  warning ("query", ID)
-     Set or query the state of a particular warning using the identifier
-     ID.  If the identifier is omitted, a value of `"all"' is assumed.
-     If you set the state of a warning to `"error"', the warning named
-     by ID is handled as if it were an error instead.
+     If the first argument is `"on"' or `"off"', set the state of a
+     particular warning using the identifier ID.  If the first argument
+     is `"query"', query the state of this warning instead.  If the
+     identifier is omitted, a value of `"all"' is assumed.  If you set
+     the state of a warning to `"error"', the warning named by ID is
+     handled as if it were an error instead.  So, for example, the
+     following handles all warnings as errors:
+
+          warning ("error");
 
      *See also:* *note warning_ids: doc-warning_ids.
 
@@ -3278,6 +3703,10 @@ while the following won't issue a warning
    The functions distributed with Octave can issue one of the following
 warnings.
 
+`Octave:abbreviated-property-match'
+     By default, the `Octave:abbreviated-property-match' warning is
+     enabled.
+
 `Octave:array-to-scalar'
      If the `Octave:array-to-scalar' warning is enabled, Octave will
      warn when an implicit conversion from an array to a scalar value is
@@ -3309,7 +3738,7 @@ warnings.
      assignments within the condition of a `while' or `if' statement.
      For example, statements like
 
-          while (c = getc())
+          while (c = getc ())
             ...
 
      are common in C programming.
@@ -3327,7 +3756,7 @@ warnings.
      statements by writing them with an extra set of parentheses.  For
      example, writing the previous example as
 
-          while ((c = getc()))
+          while ((c = getc ()))
             ...
 
      will prevent the warning from being printed for this statement,
@@ -3352,25 +3781,22 @@ warnings.
      command.  By default, the `Octave:autoload-relative-file-name'
      warning is enabled.
 
+`Octave:broadcast'
+     Warn when performing broadcasting operations.  By default, this is
+     enabled.  See *note Broadcasting:: in the chapter Vectorization
+     and Faster Code Execution of the manual.
+
+`Octave:built-in-variable-assignment'
+     By default, the `Octave:built-in-variable-assignment' warning is
+     enabled.
+
 `Octave:divide-by-zero'
      If the `Octave:divide-by-zero' warning is enabled, a warning is
      issued when Octave encounters a division by zero.  By default, the
      `Octave:divide-by-zero' warning is enabled.
 
-`Octave:empty-list-elements'
-     If the `Octave:empty-list-elements' warning is enabled, a warning
-     is issued when an empty matrix is found in a matrix list.  For
-     example:
-
-          a = [1, [], 3, [], 5]
-
-     By default, the `Octave:empty-list-elements' warning is enabled.
-
-`Octave:fortran-indexing'
-     If the `Octave:fortran-indexing' warning is enabled, a warning is
-     printed for expressions which select elements of a two-dimensional
-     matrix using a single index.  By default, the
-     `Octave:fortran-indexing' warning is disabled.
+`Octave:fopen-file-in-path'
+     By default, the `Octave:fopen-file-in-path' warning is enabled.
 
 `Octave:function-name-clash'
      If the `Octave:function-name-clash' warning is enabled, a warning
@@ -3385,20 +3811,42 @@ warnings.
      is in the future.  By default, the `Octave:future-time-stamp'
      warning is enabled.
 
+`Octave:glyph-render'
+     By default, the `Octave:glyph-render' warning is enabled.
+
 `Octave:imag-to-real'
      If the `Octave:imag-to-real' warning is enabled, a warning is
      printed for implicit conversions of complex numbers to real
      numbers.  By default, the `Octave:imag-to-real' warning is
      disabled.
 
+`Octave:load-file-in-path'
+     By default, the `Octave:load-file-in-path' warning is enabled.
+
+`Octave:logical-conversion'
+     By default, the `Octave:logical-conversion' warning is enabled.
+
 `Octave:matlab-incompatible'
      Print warnings for Octave language features that may cause
-     compatibility problems with MATLAB.
+     compatibility problems with MATLAB.  By default, the
+     `Octave:matlab-incompatible' warning is disabled.
+
+`Octave:md5sum-file-in-path'
+     By default, the `Octave:md5sum-file-in-path' warning is enabled.
+
+`Octave:missing-glyph'
+     By default, the `Octave:missing-glyph' warning is enabled.
 
 `Octave:missing-semicolon'
      If the `Octave:missing-semicolon' warning is enabled, Octave will
      warn when statements in function definitions don't end in
      semicolons.  By default the `Octave:missing-semicolon' warning is
+     disabled.
+
+`Octave:mixed-string-concat'
+     If the `Octave:mixed-string-concat' warning is enabled, print a
+     warning when concatenating a mixture of double and single quoted
+     strings.  By default, the `Octave:mixed-string-concat' warning is
      disabled.
 
 `Octave:neg-dim-as-zero'
@@ -3409,6 +3857,14 @@ warnings.
 
      By default, the `Octave:neg-dim-as-zero' warning is disabled.
 
+`Octave:nested-functions-coerced'
+     By default, the `Octave:nested-functions-coerced' warning is
+     enabled.
+
+`Octave:noninteger-range-as-index'
+     By default, the `Octave:noninteger-range-as-index' warning is
+     enabled.
+
 `Octave:num-to-str'
      If the `Octave:num-to-str' warning is enable, a warning is printed
      for implicit conversions of numbers to their ASCII character
@@ -3416,7 +3872,7 @@ warnings.
      strings and numbers in matrix notation.  For example,
 
           [ "f", 111, 111 ]
-               => "foo"
+          => "foo"
 
      elicits a warning if the `Octave:num-to-str' warning is enabled.
      By default, the `Octave:num-to-str' warning is enabled.
@@ -3429,13 +3885,14 @@ warnings.
      any logical operators are used in a condition.  You can turn on
      the option
 
-          do_braindead_shortcircuit_evaluation(1)
+          do_braindead_shortcircuit_evaluation (1)
 
      if you would like to enable this short-circuit evaluation in
      Octave.  Note that the `&&' and `||' operators always short
      circuit in both Octave and MATLAB, so it's only necessary to
      enable MATLAB-style short-circuiting it's too arduous to modify
-     existing code that relies on this behavior.
+     existing code that relies on this behavior.  By default, the
+     `Octave:possible-matlab-short-circuit-operator' warning is enabled.
 
 `Octave:precedence-change'
      If the `Octave:precedence-change' warning is enabled, Octave will
@@ -3443,6 +3900,9 @@ warnings.
      changes in precedence for some operators.  Precedence changes have
      typically been made for MATLAB compatibility.  By default, the
      `Octave:precedence-change' warning is enabled.
+
+`Octave:recursive-path-search'
+     By default, the `Octave:recursive-path-search' warning is enabled.
 
 `Octave:reload-forces-clear'
      If several functions have been loaded from the same file, Octave
@@ -3455,16 +3915,27 @@ warnings.
 `Octave:resize-on-range-error'
      If the `Octave:resize-on-range-error' warning is enabled, print a
      warning when a matrix is resized by an indexed assignment with
-     indices outside the current bounds.  By default, the
+     indices outside the current bounds.  By default, the ##
      `Octave:resize-on-range-error' warning is disabled.
 
 `Octave:separator-insert'
      Print warning if commas or semicolons might be inserted
-     automatically in literal matrices.
+     automatically in literal matrices.  By default, the
+     `Octave:separator-insert' warning is disabled.
+
+`Octave:shadowed-function'
+     By default, the `Octave:shadowed-function' warning is enabled.
 
 `Octave:single-quote-string'
      Print warning if a single quote character is used to introduce a
-     string constant.
+     string constant.  By default, the `Octave:single-quote-string'
+     warning is disabled.
+
+`Octave:singular-matrix-div'
+     By default, the `Octave:singular-matrix-div' warning is enabled.
+
+`Octave:sqrtm:SingularMatrix'
+     By default, the `Octave:sqrtm:SingularMatrix' warning is enabled.
 
 `Octave:str-to-num'
      If the `Octave:str-to-num' warning is enabled, a warning is printed
@@ -3472,15 +3943,10 @@ warnings.
      equivalents.  For example,
 
           "abc" + 0
-               => 97 98 99
+          => 97 98 99
 
      elicits a warning if the `Octave:str-to-num' warning is enabled.
      By default, the `Octave:str-to-num' warning is disabled.
-
-`Octave:string-concat'
-     If the `Octave:string-concat' warning is enabled, print a warning
-     when concatenating a mixture of double and single quoted strings.
-     By default, the `Octave:string-concat' warning is disabled.
 
 `Octave:undefined-return-values'
      If the `Octave:undefined-return-values' warning is disabled, print
@@ -3517,6 +3983,8 @@ in debug mode.
 * Breakpoints::
 * Debug Mode::
 * Call Stack::
+* Profiling::
+* Profiler Example::
 
 
 File: octave.info,  Node: Entering Debug Mode,  Next: Leaving Debug Mode,  Up: Debugging
@@ -3534,23 +4002,41 @@ set in the functions `debug_on_interrupt', `debug_on_warning' and
 
  -- Built-in Function: VAL = debug_on_interrupt ()
  -- Built-in Function: OLD_VAL = debug_on_interrupt (NEW_VAL)
+ -- Built-in Function:  debug_on_interrupt (NEW_VAL, "local")
      Query or set the internal variable that controls whether Octave
      will try to enter debugging mode when it receives an interrupt
      signal (typically generated with `C-c').  If a second interrupt
      signal is received before reaching the debugging mode, a normal
      interrupt will occur.
 
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
+
  -- Built-in Function: VAL = debug_on_warning ()
  -- Built-in Function: OLD_VAL = debug_on_warning (NEW_VAL)
+ -- Built-in Function:  debug_on_warning (NEW_VAL, "local")
      Query or set the internal variable that controls whether Octave
      will try to enter the debugger when a warning is encountered.
 
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
+
  -- Built-in Function: VAL = debug_on_error ()
  -- Built-in Function: OLD_VAL = debug_on_error (NEW_VAL)
+ -- Built-in Function:  debug_on_error (NEW_VAL, "local")
      Query or set the internal variable that controls whether Octave
      will try to enter the debugger when an error is encountered.  This
      will also inhibit printing of the normal traceback message (you
      will only see the top-level error message).
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
 
 
 File: octave.info,  Node: Leaving Debug Mode,  Next: Breakpoints,  Prev: Entering Debug Mode,  Up: Debugging
@@ -3561,7 +4047,8 @@ File: octave.info,  Node: Leaving Debug Mode,  Next: Breakpoints,  Prev: Enterin
 To leave the debug mode, use either `dbcont' or `return'.
 
  -- Command:  dbcont
-     In debugging mode, quit debugging mode and continue execution.
+     Leave command-line debugging mode and continue code execution
+     normally.
 
      *See also:* *note dbstep: doc-dbstep, *note dbquit: doc-dbquit.
 
@@ -3569,9 +4056,10 @@ To leave the debug mode, use either `dbcont' or `return'.
 be used instead
 
  -- Command:  dbquit
-     In debugging mode, quit debugging mode and return to the top level.
+     Quit debugging mode immediately without further code execution and
+     return to the Octave prompt.
 
-     *See also:* *note dbstep: doc-dbstep, *note dbcont: doc-dbcont.
+     *See also:* *note dbcont: doc-dbcont, *note dbstep: doc-dbstep.
 
    Finally, typing `exit' or `quit' at the debug prompt will result in
 Octave terminating normally.
@@ -3585,22 +4073,34 @@ File: octave.info,  Node: Breakpoints,  Next: Debug Mode,  Prev: Leaving Debug M
 Breakpoints can be set in any Octave function, using the `dbstop'
 function.
 
- -- Loadable Function: RLINE = dbstop (FUNC, LINE, ...)
-     Set a breakpoint in a function
-    `func'
-          String representing the function name.  When already in debug
+ -- Loadable Function: RLINE = dbstop ("FUNC")
+ -- Loadable Function: RLINE = dbstop ("FUNC", LINE, ...)
+     Set a breakpoint in function FUNC.
+
+     Arguments are
+
+    FUNC
+          Function name as a string variable.  When already in debug
           mode this should be left out and only the line should be
           given.
 
-    `line'
-          Line number you would like the breakpoint to be set on.
-          Multiple lines might be given as separate arguments or as a
-          vector.
+    LINE
+          Line number where the breakpoint should be set.  Multiple
+          lines may be given as separate arguments or as a vector.
 
-     The rline returned is the real line that the breakpoint was set at.
+     When called with a single argument FUNC, the breakpoint is set at
+     the first executable line in the named function.
+
+     The optional output RLINE is the real line number where the
+     breakpoint was set.  This can differ from specified line if the
+     line is not executable.  For example, if a breakpoint attempted on
+     a blank line then Octave will set the real breakpoint at the next
+     executable line.
 
      *See also:* *note dbclear: doc-dbclear, *note dbstatus:
-     doc-dbstatus, *note dbstep: doc-dbstep.
+     doc-dbstatus, *note dbstep: doc-dbstep, *note debug_on_error:
+     doc-debug_on_error, *note debug_on_warning: doc-debug_on_warning,
+     *note debug_on_interrupt: doc-debug_on_interrupt.
 
 Note that breakpoints cannot be set in built-in functions (e.g., `sin',
 etc.) or dynamically loaded function (i.e., oct-files).  To set a
@@ -3616,32 +4116,52 @@ Note that the return value of `27' means that the breakpoint was
 effectively set to line 27.  The status of breakpoints in a function can
 be queried with the `dbstatus' function.
 
- -- Loadable Function: lst = dbstatus (FUNC)
-     Return a vector containing the lines on which a function has
-     breakpoints set.
-    `func'
-          String representing the function name.  When already in debug
-          mode this should be left out.
+ -- Loadable Function:  dbstatus ()
+ -- Loadable Function: BRK_LIST = dbstatus ()
+ -- Loadable Function: BRK_LIST = dbstatus ("FUNC")
+     Report the location of active breakpoints.
+
+     When called with no input or output arguments, print the list of
+     all functions with breakpoints and the line numbers where those
+     breakpoints are set.  If a function name FUNC is specified then
+     only report breakpoints for the named function.
+
+     The optional return argument BRK_LIST is a struct array with the
+     following fields.
+
+    name
+          The name of the function with a breakpoint.
+
+    file
+          The name of the m-file where the function code is located.
+
+    line
+          A line number, or vector of line numbers, with a breakpoint.
 
      *See also:* *note dbclear: doc-dbclear, *note dbwhere: doc-dbwhere.
 
 Taking the above as an example, `dbstatus ("asind")' should return 28.
 The breakpoints can then be cleared with the `dbclear' function
 
- -- Loadable Function:  dbclear (FUNC, LINE, ...)
-     Delete a breakpoint in a function
-    `func'
-          String representing the function name.  When already in debug
+ -- Loadable Function:  dbclear ("FUNC")
+ -- Loadable Function:  dbclear ("FUNC", LINE, ...)
+     Delete a breakpoint in the function FUNC.
+
+     Arguments are
+
+    FUNC
+          Function name as a string variable.  When already in debug
           mode this should be left out and only the line should be
           given.
 
-    `line'
-          Line number where you would like to remove the breakpoint.
-          Multiple lines might be given as separate arguments or as a
-          vector.
-     No checking is done to make sure that the line you requested is
-     really a breakpoint.  If you get the wrong line nothing will
-     happen.
+    LINE
+          Line number from which to remove a breakpoint.  Multiple
+          lines may be given as separate arguments or as a vector.
+
+     When called without a line number specification all breakpoints in
+     the named function are cleared.
+
+     If the requested line is not a breakpoint no action is performed.
 
      *See also:* *note dbstop: doc-dbstop, *note dbstatus:
      doc-dbstatus, *note dbwhere: doc-dbwhere.
@@ -3705,26 +4225,34 @@ mode and to print the code in the script surrounding the point where
 Octave entered debug mode.
 
  -- Loadable Function:  dbwhere ()
-     Show where we are in the code
+     In debugging mode, report the current file and line number where
+     execution is stopped.
 
-     *See also:* *note dbclear: doc-dbclear, *note dbstatus:
-     doc-dbstatus, *note dbstop: doc-dbstop.
+     *See also:* *note dbstatus: doc-dbstatus, *note dbcont:
+     doc-dbcont, *note dbstep: doc-dbstep, *note dbup: doc-dbup.
 
  -- Loadable Function:  dbtype ()
-     List script file with line numbers.
+ -- Loadable Function:  dbtype ("startl:endl")
+ -- Loadable Function:  dbtype ("FUNC")
+ -- Loadable Function:  dbtype ("FUNC", "startl:endl")
+     When in debugging mode and called with no arguments, list the
+     script file being debugged with line numbers.  An optional range
+     specification, specified as a string, can be used to list only a
+     portion of the file.
 
-     *See also:* *note dbclear: doc-dbclear, *note dbstatus:
-     doc-dbstatus, *note dbstop: doc-dbstop.
+     When called with the name of a function, list that script file
+     with line numbers.
+
+     *See also:* *note dbstatus: doc-dbstatus, *note dbstop: doc-dbstop.
 
    You may also use `isdebugmode' to determine whether the debugger is
 currently active.
 
  -- Loadable Function:  isdebugmode ()
-     Return true if debug mode is on, otherwise false.
+     Return true if in debugging mode, otherwise false.
 
-     *See also:* *note dbstack: doc-dbstack, *note dbclear:
-     doc-dbclear, *note dbstop: doc-dbstop, *note dbstatus:
-     doc-dbstatus.
+     *See also:* *note dbwhere: doc-dbwhere, *note dbstack:
+     doc-dbstack, *note dbstatus: doc-dbstatus.
 
    Debug mode also allows single line stepping through a function using
 the commands `dbstep'.
@@ -3733,8 +4261,9 @@ the commands `dbstep'.
  -- Command:  dbstep N
  -- Command:  dbstep in
  -- Command:  dbstep out
+ -- Command:  dbnext ...
      In debugging mode, execute the next N lines of code.  If N is
-     omitted , execute the next single line of code.  If the next line
+     omitted, execute the next single line of code.  If the next line
      of code is itself defined in terms of an m-file remain in the
      existing function.
 
@@ -3743,34 +4272,352 @@ the commands `dbstep'.
      will cause execution to continue until the current function
      returns.
 
+     `dbnext' is an alias for `dbstep'.
+
      *See also:* *note dbcont: doc-dbcont, *note dbquit: doc-dbquit.
 
 
-File: octave.info,  Node: Call Stack,  Prev: Debug Mode,  Up: Debugging
+File: octave.info,  Node: Call Stack,  Next: Profiling,  Prev: Debug Mode,  Up: Debugging
 
 13.5 Call Stack
 ===============
 
- -- Loadable Function: [STACK, IDX] dbstack (N)
-     Print or return current stack information.  With optional argument
-     N, omit the N innermost stack frames.
+ -- Loadable Function:  dbstack ()
+ -- Loadable Function:  dbstack (N)
+ -- Loadable Function: [STACK, IDX] = dbstack (...)
+     Display or return current debugging function stack information.
+     With optional argument N, omit the N innermost stack frames.
 
-     *See also:* *note dbclear: doc-dbclear, *note dbstatus:
-     doc-dbstatus, *note dbstop: doc-dbstop.
+     The optional return argument STACK is a struct array with the
+     following fields:
+
+    file
+          The name of the m-file where the function code is located.
+
+    name
+          The name of the function with a breakpoint.
+
+    line
+          The line number of an active breakpoint.
+
+    column
+          The column number of the line where the breakpoint begins.
+
+    scope
+          Undocumented.
+
+    context
+          Undocumented.
+
+     The return argument IDX specifies which element of the STACK
+     struct array is currently active.
+
+     *See also:* *note dbup: doc-dbup, *note dbdown: doc-dbdown, *note
+     dbwhere: doc-dbwhere, *note dbstatus: doc-dbstatus.
 
  -- Loadable Function:  dbup
  -- Loadable Function:  dbup (N)
      In debugging mode, move up the execution stack N frames.  If N is
      omitted, move up one frame.
 
-     *See also:* *note dbstack: doc-dbstack.
+     *See also:* *note dbstack: doc-dbstack, *note dbdown: doc-dbdown.
 
  -- Loadable Function:  dbdown
  -- Loadable Function:  dbdown (N)
      In debugging mode, move down the execution stack N frames.  If N
      is omitted, move down one frame.
 
-     *See also:* *note dbstack: doc-dbstack.
+     *See also:* *note dbstack: doc-dbstack, *note dbup: doc-dbup.
+
+
+File: octave.info,  Node: Profiling,  Next: Profiler Example,  Prev: Call Stack,  Up: Debugging
+
+13.6 Profiling
+==============
+
+Octave supports profiling of code execution on a per-function level.  If
+profiling is enabled, each call to a function (supporting built-ins,
+operators, functions in oct- and mex-files, user-defined functions in
+Octave code and anonymous functions) is recorded while running Octave
+code.  After that, this data can aid in analyzing the code behavior, and
+is in particular helpful for finding "hot spots" in the code which use
+up a lot of computation time and are the best targets to spend
+optimization efforts on.
+
+   The main command for profiling is `profile', which can be used to
+start or stop the profiler and also to query collected data afterwards.
+The data is returned in an Octave data structure which can then be
+examined or further processed by other routines or tools.
+
+ -- Command:  profile on
+ -- Command:  profile off
+ -- Command:  profile resume
+ -- Command:  profile clear
+ -- Function File: S = profile ('status')
+ -- Function File: T = profile ('info')
+     Control the built-in profiler.
+
+    `profile on'
+          Start the profiler, clearing all previously collected data if
+          there is any.
+
+    `profile off'
+          Stop profiling.  The collected data can later be retrieved
+          and examined with calls like `S = profile ('info')'.
+
+    `profile clear'
+          Clear all collected profiler data.
+
+    `profile resume'
+          Restart profiling without cleaning up the old data and instead
+          all newly collected statistics are added to the already
+          existing ones.
+
+    `S = profile ('status')'
+          Return a structure filled with certain information about the
+          current status of the profiler.  At the moment, the only
+          field is `ProfilerStatus' which is either 'on' or 'off'.
+
+    `T = profile ('info')'
+          Return the collected profiling statistics in the structure T.
+          The flat profile is returned in the field `FunctionTable'
+          which is an array of structures, each entry corresponding to
+          a function which was called and for which profiling
+          statistics are present.  Furthermore, the field
+          `Hierarchical' contains the hierarchical call-tree.  Each node
+          has an index into the `FunctionTable' identifying the
+          function it corresponds to as well as data fields for number
+          of calls and time spent at this level in the call-tree.
+
+          *See also:* *note profshow: doc-profshow, *note profexplore:
+          doc-profexplore.
+
+   An easy way to get an overview over the collected data is
+`profshow'.  This function takes the profiler data returned by
+`profile' as input and prints a flat profile, for instance:
+
+      Function Attr     Time (s)        Calls
+     ----------------------------------------
+        >myfib    R        2.195        13529
+     binary <=             0.061        13529
+      binary -             0.050        13528
+      binary +             0.026         6764
+
+   This shows that most of the run time was spent executing the function
+`myfib', and some minor proportion evaluating the listed binary
+operators.  Furthermore, it is shown how often the function was called
+and the profiler also records that it is recursive.
+
+ -- Function File:  profshow (DATA)
+ -- Function File:  profshow (DATA, N)
+     Show flat profiler results.
+
+     This command prints out profiler data as a flat profile.  DATA is
+     the structure returned by `profile ('info')'.  If N is given, it
+     specifies the number of functions to show in the profile;
+     functions are sorted in descending order by total time spent in
+     them.  If there are more than N included in the profile, those
+     will not be shown.  N defaults to 20.
+
+     The attribute column shows `R' for recursive functions and nothing
+     otherwise.
+
+     *See also:* *note profexplore: doc-profexplore, *note profile:
+     doc-profile.
+
+ -- Function File:  profexplore (DATA)
+     Interactively explore hierarchical profiler output.
+
+     Assuming DATA is the structure with profile data returned by
+     `profile ('info')', this command opens an interactive prompt that
+     can be used to explore the call-tree.  Type `help' to get a list
+     of possible commands.
+
+     *See also:* *note profile: doc-profile, *note profshow:
+     doc-profshow.
+
+
+File: octave.info,  Node: Profiler Example,  Prev: Profiling,  Up: Debugging
+
+13.7 Profiler Example
+=====================
+
+Below, we will give a short example of a profiler session.  See also
+*note Profiling:: for the documentation of the profiler functions in
+detail.  Consider the code:
+
+     global N A;
+
+     N = 300;
+     A = rand (N, N);
+
+     function xt = timesteps (steps, x0, expM)
+       global N;
+
+       if (steps == 0)
+         xt = NA (N, 0);
+       else
+         xt = NA (N, steps);
+         x1 = expM * x0;
+         xt(:, 1) = x1;
+         xt(:, 2 : end) = timesteps (steps - 1, x1, expM);
+       endif
+     endfunction
+
+     function foo ()
+       global N A;
+
+       initial = @(x) sin (x);
+       x0 = (initial (linspace (0, 2 * pi, N)))';
+
+       expA = expm (A);
+       xt = timesteps (100, x0, expA);
+     endfunction
+
+     function fib = bar (N)
+       if (N <= 2)
+         fib = 1;
+       else
+         fib = bar (N - 1) + bar (N - 2);
+       endif
+     endfunction
+
+   If we execute the two main functions, we get:
+
+     tic; foo; toc;
+     => Elapsed time is 2.37338 seconds.
+
+     tic; bar (20); toc;
+     => Elapsed time is 2.04952 seconds.
+
+   But this does not give much information about where this time is
+spent; for instance, whether the single call to `expm' is more expensive
+or the recursive time-stepping itself.  To get a more detailed picture,
+we can use the profiler.
+
+     profile on;
+     foo;
+     profile off;
+
+     data = profile ('info');
+     profshow (data, 10);
+
+   This prints a table like:
+
+        #  Function Attr     Time (s)        Calls
+     ---------------------------------------------
+        7      expm             1.034            1
+        3  binary *             0.823          117
+       41  binary \             0.188            1
+       38  binary ^             0.126            2
+       43 timesteps    R        0.111          101
+       44        NA             0.029          101
+       39  binary +             0.024            8
+       34      norm             0.011            1
+       40  binary -             0.004          101
+       33   balance             0.003            1
+
+   The entries are the individual functions which have been executed
+(only the 10 most important ones), together with some information for
+each of them.  The entries like `binary *' denote operators, while other
+entries are ordinary functions.  They include both built-ins like
+`expm' and our own routines (for instance `timesteps').  From this
+profile, we can immediately deduce that `expm' uses up the largest
+proportion of the processing time, even though it is only called once.
+The second expensive operation is the matrix-vector product in the
+routine `timesteps'.  (1)
+
+   Timing, however, is not the only information available from the
+profile.  The attribute column shows us that `timesteps' calls itself
+recursively.  This may not be that remarkable in this example (since
+it's clear anyway), but could be helpful in a more complex setting.  As
+to the question of why is there a `binary \' in the output, we can
+easily shed some light on that too.  Note that `data' is a structure
+array (*note Structure Arrays::) which contains the field
+`FunctionTable'.  This stores the raw data for the profile shown.  The
+number in the first column of the table gives the index under which the
+shown function can be found there.  Looking up `data.FunctionTable(41)'
+gives:
+
+       scalar structure containing the fields:
+
+         FunctionName = binary \
+         TotalTime =  0.18765
+         NumCalls =  1
+         IsRecursive = 0
+         Parents =  7
+         Children = [](1x0)
+
+   Here we see the information from the table again, but have additional
+fields `Parents' and `Children'.  Those are both arrays, which contain
+the indices of functions which have directly called the function in
+question (which is entry 7, `expm', in this case) or been called by it
+(no functions).  Hence, the backslash operator has been used internally
+by `expm'.
+
+   Now let's take a look at `bar'.  For this, we start a fresh
+profiling session (`profile on' does this; the old data is removed
+before the profiler is restarted):
+
+     profile on;
+     bar (20);
+     profile off;
+
+     profshow (profile ('info'));
+
+   This gives:
+
+        #            Function Attr     Time (s)        Calls
+     -------------------------------------------------------
+        1                 bar    R        2.091        13529
+        2           binary <=             0.062        13529
+        3            binary -             0.042        13528
+        4            binary +             0.023         6764
+        5             profile             0.000            1
+        8               false             0.000            1
+        6              nargin             0.000            1
+        7           binary !=             0.000            1
+        9 __profiler_enable__             0.000            1
+
+   Unsurprisingly, `bar' is also recursive.  It has been called 13,529
+times in the course of recursively calculating the Fibonacci number in a
+suboptimal way, and most of the time was spent in `bar' itself.
+
+   Finally, let's say we want to profile the execution of both `foo'
+and `bar' together.  Since we already have the run-time data collected
+for `bar', we can restart the profiler without clearing the existing
+data and collect the missing statistics about `foo'.  This is done by:
+
+     profile resume;
+     foo;
+     profile off;
+
+     profshow (profile ('info'), 10);
+
+   As you can see in the table below, now we have both profiles mixed
+together.
+
+        #  Function Attr     Time (s)        Calls
+     ---------------------------------------------
+        1       bar    R        2.091        13529
+       16      expm             1.122            1
+       12  binary *             0.798          117
+       46  binary \             0.185            1
+       45  binary ^             0.124            2
+       48 timesteps    R        0.115          101
+        2 binary <=             0.062        13529
+        3  binary -             0.045        13629
+        4  binary +             0.041         6772
+       49        NA             0.036          101
+
+   ---------- Footnotes ----------
+
+   (1) We only know it is the binary multiplication operator, but
+fortunately this operator appears only at one place in the code and
+thus we know which occurrence takes so much time.  If there were
+multiple places, we would have to use the hierarchical profile to find
+out the exact place which uses up the time which is not covered in this
+example.
 
 
 File: octave.info,  Node: Input and Output,  Next: Plotting,  Prev: Debugging,  Up: Top
@@ -3788,7 +4635,6 @@ standard library are also provided by Octave.
 
 * Basic Input and Output::
 * C-Style I/O Functions::
-* GUI Dialogs for I/O::
 
 
 File: octave.info,  Node: Basic Input and Output,  Next: C-Style I/O Functions,  Up: Input and Output
@@ -4011,13 +4857,14 @@ values with `disp' and through the normal echoing mechanism.
      The following two options affect the display of all matrices.
 
     `compact'
-          Remove extra blank space around column number labels
-          producing more compact output with more data per page.
+          Remove blank lines around column number labels and between
+          matrices producing more compact output with more data per
+          page.
 
     `loose'
-          Insert blank lines above and below column number labels to
-          produce a more readable output with less data per page.
-          (default).
+          Insert blank lines above and below column number labels and
+          between matrices to produce a more readable output with less
+          data per page.  (default).
 
      *See also:* *note fixed_point_format: doc-fixed_point_format,
      *note output_max_field_width: doc-output_max_field_width, *note
@@ -4062,10 +4909,16 @@ function, and you can turn paging off by using the function `more'.
 
  -- Built-in Function: VAL = PAGER ()
  -- Built-in Function: OLD_VAL = PAGER (NEW_VAL)
+ -- Built-in Function:  PAGER (NEW_VAL, "local")
      Query or set the internal variable that specifies the program to
      use to display terminal output on your system.  The default value
      is normally `"less"', `"more"', or `"pg"', depending on what
      programs are installed on your system.  *Note Installation::.
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
 
      *See also:* *note more: doc-more, *note page_screen_output:
      doc-page_screen_output, *note page_output_immediately:
@@ -4073,25 +4926,43 @@ function, and you can turn paging off by using the function `more'.
 
  -- Built-in Function: VAL = PAGER_FLAGS ()
  -- Built-in Function: OLD_VAL = PAGER_FLAGS (NEW_VAL)
+ -- Built-in Function:  PAGER_FLAGS (NEW_VAL, "local")
      Query or set the internal variable that specifies the options to
      pass to the pager.
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
 
      *See also:* *note PAGER: doc-PAGER.
 
  -- Built-in Function: VAL = page_screen_output ()
  -- Built-in Function: OLD_VAL = page_screen_output (NEW_VAL)
+ -- Built-in Function:  page_screen_output (NEW_VAL, "local")
      Query or set the internal variable that controls whether output
      intended for the terminal window that is longer than one page is
      sent through a pager.  This allows you to view one screenful at a
      time.  Some pagers (such as `less'--see *note Installation::) are
      also capable of moving backward on the output.
 
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
+
  -- Built-in Function: VAL = page_output_immediately ()
- -- Built-in Function: VAL = page_output_immediately (NEW_VAL)
+ -- Built-in Function: OLD_VAL = page_output_immediately (NEW_VAL)
+ -- Built-in Function:  page_output_immediately (NEW_VAL, "local")
      Query or set the internal variable that controls whether Octave
      sends output to the pager as soon as it is available.  Otherwise,
      Octave buffers its output and waits until just before the prompt
      is printed to flush it to the pager.
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
 
  -- Built-in Function:  fflush (FID)
      Flush output to FID.  This is useful for ensuring that all pending
@@ -4321,13 +5192,17 @@ read into memory using the `load' command.
      file `data' in Octave's binary format.
 
      *See also:* *note load: doc-load, *note default_save_options:
-     doc-default_save_options, *note dlmread: doc-dlmread, *note
+     doc-default_save_options, *note save_header_format_string:
+     doc-save_header_format_string, *note dlmread: doc-dlmread, *note
      csvread: doc-csvread, *note fread: doc-fread.
 
  -- Command:  load file
  -- Command:  load options file
  -- Command:  load options file v1 v2 ...
  -- Command: S = load ("options", "file", "v1", "v2", ...)
+ -- Command:  load file options
+ -- Command:  load file options v1 v2 ...
+ -- Command: S = load ("file", "options", "v1", "v2", ...)
      Load the named variables V1, V2, ..., from the file FILE.  If no
      variables are specified then all variables found in the file will
      be loaded.  As with `save', the list of variables to extract can
@@ -4425,20 +5300,33 @@ read into memory using the `load' command.
 
  -- Built-in Function: VAL = default_save_options ()
  -- Built-in Function: OLD_VAL = default_save_options (NEW_VAL)
+ -- Built-in Function:  default_save_options (NEW_VAL, "local")
      Query or set the internal variable that specifies the default
      options for the `save' command, and defines the default format.
      Typical values include `"-ascii"', `"-text -zip"'.  The default
      value is `-text'.
 
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
+
      *See also:* *note save: doc-save.
 
  -- Built-in Function: VAL = save_precision ()
  -- Built-in Function: OLD_VAL = save_precision (NEW_VAL)
+ -- Built-in Function:  save_precision (NEW_VAL, "local")
      Query or set the internal variable that specifies the number of
      digits to keep when saving data in text format.
 
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
+
  -- Built-in Function: VAL = save_header_format_string ()
  -- Built-in Function: OLD_VAL = save_header_format_string (NEW_VAL)
+ -- Built-in Function:  save_header_format_string (NEW_VAL, "local")
      Query or set the internal variable that specifies the format
      string used for the comment line written at the beginning of
      text-format data files saved by Octave.  The format string is
@@ -4449,6 +5337,11 @@ read into memory using the `load' command.
      is
 
           "# Created by Octave VERSION, %a %b %d %H:%M:%S %Y %Z <USER@HOST>"
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
 
      *See also:* *note strftime: doc-strftime, *note save: doc-save.
 
@@ -4487,6 +5380,7 @@ separated lists.
  -- Function File:  dlmwrite (FILE, M, DELIM, R, C)
  -- Function File:  dlmwrite (FILE, M, KEY, VAL ...)
  -- Function File:  dlmwrite (FILE, M, "-append", ...)
+ -- Function File:  dlmwrite (FID, ...)
      Write the matrix M to the named file using delimiters.
 
      FILE should be a file name or writable file ID given by `fopen'.
@@ -4500,11 +5394,11 @@ separated lists.
      The value of C specifies the number of delimiters to prepend to
      each line of data.
 
-     If the argument `"-append"' is given, append to the end of the
-     FILE.
+     If the argument `"-append"' is given, append to the end of FILE.
 
      In addition, the following keyword value pairs may appear at the
      end of the argument list:
+
     "append"
           Either `"on"' or `"off"'.  See `"-append"' above.
 
@@ -4513,9 +5407,9 @@ separated lists.
 
     "newline"
           The character(s) to use to separate each row.  Three special
-          cases exist for this option.  `"unix"' is changed into '\n',
-          `"pc"' is changed into '\r\n', and `"mac"' is changed into
-          '\r'.  Other values for this option are kept as is.
+          cases exist for this option.  `"unix"' is changed into "\n",
+          `"pc"' is changed into "\r\n", and `"mac"' is changed into
+          "\r".  Other values for this option are kept as is.
 
     "roffset"
           See R above.
@@ -4592,41 +5486,72 @@ well.
 
  -- Function File: [A, ...] = textread (FILENAME)
  -- Function File: [A, ...] = textread (FILENAME, FORMAT)
+ -- Function File: [A, ...] = textread (FILENAME, FORMAT, N)
  -- Function File: [A, ...] = textread (FILENAME, FORMAT, PROP1,
+          VALUE1, ...)
+ -- Function File: [A, ...] = textread (FILENAME, FORMAT, N, PROP1,
           VALUE1, ...)
      Read data from a text file.
 
      The file FILENAME is read and parsed according to FORMAT.  The
      function behaves like `strread' except it works by parsing a file
      instead of a string.  See the documentation of `strread' for
-     details.  In addition to the options supported by `strread', this
-     function supports one more:
-        * "headerlines":
-     The first VALUE number of lines of STR are skipped.
+     details.
+
+     In addition to the options supported by `strread', this function
+     supports two more:
+
+        * "headerlines": The first VALUE number of lines of FILENAME
+          are skipped.
+
+        * "endofline": Specify a single character or "\r\n".  If no
+          value is given, it will be inferred from the file.  If set to
+          "" (empty string) EOLs are ignored as delimiters.
+
+     The optional input N specifes the number of times to use FORMAT
+     when parsing, i.e., the format repeat count.
 
      *See also:* *note strread: doc-strread, *note load: doc-load,
-     *note dlmread: doc-dlmread, *note fscanf: doc-fscanf.
+     *note dlmread: doc-dlmread, *note fscanf: doc-fscanf, *note
+     textscan: doc-textscan.
 
  -- Function File: C = textscan (FID, FORMAT)
  -- Function File: C = textscan (FID, FORMAT, N)
  -- Function File: C = textscan (FID, FORMAT, PARAM, VALUE, ...)
  -- Function File: C = textscan (FID, FORMAT, N, PARAM, VALUE, ...)
  -- Function File: C = textscan (STR, ...)
- -- Function File: [C, POSITION] = textscan (...)
-     Read data from a text file.
+ -- Function File: [C, POSITION] = textscan (FID, ...)
+     Read data from a text file or string.
 
      The file associated with FID is read and parsed according to
      FORMAT.  The function behaves like `strread' except it works by
      parsing a file instead of a string.  See the documentation of
-     `strread' for details.  In addition to the options supported by
-     `strread', this function supports one more:
-        * "headerlines":
-     The first VALUE number of lines of STR are skipped.
+     `strread' for details.
 
-     The optional input, N, specifes the number of lines to be read from
-     the file, associated with FID.
+     In addition to the options supported by `strread', this function
+     supports a few more:
 
-     The output, C, is a cell array whose length is given by the number
+        * "collectoutput": A value of 1 or true instructs textscan to
+          concatenate consecutive columns of the same class in the
+          output cell array.  A value of 0 or false (default) leaves
+          output in distinct columns.
+
+        * "endofline": Specify "\r", "\n" or "\r\n" (for CR, LF, or
+          CRLF).  If no value is given, it will be inferred from the
+          file.  If set to "" (empty string) EOLs are ignored as
+          delimiters and added to whitespace.
+
+        * "headerlines": The first VALUE number of lines of FID are
+          skipped.
+
+        * "returnonerror": If set to numerical 1 or true (default),
+          return normally when read errors have been encountered.  If
+          set to 0 or false, return an error and no data.
+
+     The optional input N specifes the number of times to use FORMAT
+     when parsing, i.e., the format repeat count.
+
+     The output C is a cell array whose length is given by the number
      of format specifiers.
 
      The second output, POSITION, provides the position, in characters,
@@ -4654,9 +5579,15 @@ is reasonable it can be changed through the following functions.
 
  -- Built-in Function: VAL = crash_dumps_octave_core ()
  -- Built-in Function: OLD_VAL = crash_dumps_octave_core (NEW_VAL)
+ -- Built-in Function:  crash_dumps_octave_core (NEW_VAL, "local")
      Query or set the internal variable that controls whether Octave
      tries to save all current variables to the file "octave-core" if it
      crashes or receives a hangup, terminate or similar signal.
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
 
      *See also:* *note octave_core_file_limit:
      doc-octave_core_file_limit, *note octave_core_file_name:
@@ -4665,23 +5596,41 @@ is reasonable it can be changed through the following functions.
 
  -- Built-in Function: VAL = sighup_dumps_octave_core ()
  -- Built-in Function: OLD_VAL = sighup_dumps_octave_core (NEW_VAL)
+ -- Built-in Function:  sighup_dumps_octave_core (NEW_VAL, "local")
      Query or set the internal variable that controls whether Octave
      tries to save all current variables to the file "octave-core" if
      it receives a hangup signal.
 
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
+
  -- Built-in Function: VAL = sigterm_dumps_octave_core ()
  -- Built-in Function: OLD_VAL = sigterm_dumps_octave_core (NEW_VAL)
+ -- Built-in Function:  sigterm_dumps_octave_core (NEW_VAL, "local")
      Query or set the internal variable that controls whether Octave
      tries to save all current variables to the file "octave-core" if
      it receives a terminate signal.
 
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
+
  -- Built-in Function: VAL = octave_core_file_options ()
  -- Built-in Function: OLD_VAL = octave_core_file_options (NEW_VAL)
+ -- Built-in Function:  octave_core_file_options (NEW_VAL, "local")
      Query or set the internal variable that specifies the options used
      for saving the workspace data if Octave aborts.  The value of
      `octave_core_file_options' should follow the same format as the
      options for the `save' function.  The default value is Octave's
      binary format.
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
 
      *See also:* *note crash_dumps_octave_core:
      doc-crash_dumps_octave_core, *note octave_core_file_name:
@@ -4690,6 +5639,7 @@ is reasonable it can be changed through the following functions.
 
  -- Built-in Function: VAL = octave_core_file_limit ()
  -- Built-in Function: OLD_VAL = octave_core_file_limit (NEW_VAL)
+ -- Built-in Function:  octave_core_file_limit (NEW_VAL, "local")
      Query or set the internal variable that specifies the maximum
      amount of memory (in kilobytes) of the top-level workspace that
      Octave will attempt to save when writing data to the crash dump
@@ -4699,6 +5649,11 @@ is reasonable it can be changed through the following functions.
      the file.  If a text file format is used, then the file could be
      much larger than the limit.  The default value is -1 (unlimited)
 
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
+
      *See also:* *note crash_dumps_octave_core:
      doc-crash_dumps_octave_core, *note octave_core_file_name:
      doc-octave_core_file_name, *note octave_core_file_options:
@@ -4706,9 +5661,15 @@ is reasonable it can be changed through the following functions.
 
  -- Built-in Function: VAL = octave_core_file_name ()
  -- Built-in Function: OLD_VAL = octave_core_file_name (NEW_VAL)
+ -- Built-in Function:  octave_core_file_name (NEW_VAL, "local")
      Query or set the internal variable that specifies the name of the
      file used for saving data from the top-level workspace if Octave
      aborts.  The default value is `"octave-core"'
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines
+     it calls.  The original variable value is restored when exiting
+     the function.
 
      *See also:* *note crash_dumps_octave_core:
      doc-crash_dumps_octave_core, *note octave_core_file_name:
@@ -4716,7 +5677,7 @@ is reasonable it can be changed through the following functions.
      doc-octave_core_file_options.
 
 
-File: octave.info,  Node: C-Style I/O Functions,  Next: GUI Dialogs for I/O,  Prev: Basic Input and Output,  Up: Input and Output
+File: octave.info,  Node: C-Style I/O Functions,  Prev: Basic Input and Output,  Up: Input and Output
 
 14.2 C-Style I/O Functions
 ==========================
@@ -5195,7 +6156,7 @@ Here is a table summarizing what all the different conversions do:
 
 `%x', `%X'
      Print an integer as an unsigned hexadecimal number.  `%x' uses
-     lower-case letters and `%X' uses upper-case.  *Note Integer
+     lowercase letters and `%X' uses uppercase.  *Note Integer
      Conversions::, for details.
 
 `%f'
@@ -5204,13 +6165,13 @@ Here is a table summarizing what all the different conversions do:
 
 `%e', `%E'
      Print a floating-point number in exponential notation.  `%e' uses
-     lower-case letters and `%E' uses upper-case.  *Note Floating-Point
+     lowercase letters and `%E' uses uppercase.  *Note Floating-Point
      Conversions::, for details.
 
 `%g', `%G'
      Print a floating-point number in either normal (fixed-point) or
      exponential notation, whichever is more appropriate for its
-     magnitude.  `%g' uses lower-case letters and `%G' uses upper-case.
+     magnitude.  `%g' uses lowercase letters and `%G' uses uppercase.
      *Note Floating-Point Conversions::, for details.
 
 `%c'
@@ -5384,9 +6345,10 @@ formatted input.  There are two forms of each of these functions.  One
 can be used to extract vectors of data from a file, and the other is
 more `C-like'.
 
- -- Built-in Function: [VAL, COUNT] = fscanf (FID, TEMPLATE, SIZE)
- -- Built-in Function: [V1, V2, ..., COUNT] = fscanf (FID, TEMPLATE,
-          "C")
+ -- Built-in Function: [VAL, COUNT, ERRMSG] = fscanf (FID, TEMPLATE,
+          SIZE)
+ -- Built-in Function: [V1, V2, ..., COUNT, ERRMSG] = fscanf (FID,
+          TEMPLATE, "C")
      In the first form, read from FID according to TEMPLATE, returning
      the result in the matrix VAL.
 
@@ -5416,6 +6378,9 @@ more `C-like'.
 
      The number of items successfully read is returned in COUNT.
 
+     If an error occurs, ERRMSG contains a system-dependent error
+     message.
+
      In the second form, read from FID according to TEMPLATE, with each
      conversion specifier in TEMPLATE corresponding to a single scalar
      return value.  This form is more `C-like', and also compatible
@@ -5429,8 +6394,9 @@ more `C-like'.
      *note fread: doc-fread, *note fprintf: doc-fprintf, *note fgets:
      doc-fgets, *note fputs: doc-fputs.
 
- -- Built-in Function: [VAL, COUNT] = scanf (TEMPLATE, SIZE)
- -- Built-in Function: [V1, V2, ..., COUNT]] = scanf (TEMPLATE, "C")
+ -- Built-in Function: [VAL, COUNT, ERRMSG] = scanf (TEMPLATE, SIZE)
+ -- Built-in Function: [V1, V2, ..., COUNT, ERRMSG]] = scanf (TEMPLATE,
+          "C")
      This is equivalent to calling `fscanf' with FID = `stdin'.
 
      It is currently not useful to call `scanf' in interactive programs.
@@ -5438,15 +6404,15 @@ more `C-like'.
      *See also:* *note fscanf: doc-fscanf, *note sscanf: doc-sscanf,
      *note printf: doc-printf.
 
- -- Built-in Function: [VAL, COUNT, POS] = sscanf (STRING, TEMPLATE,
-          SIZE)
- -- Built-in Function: [V1, V2, ..., COUNT] = sscanf (STRING, TEMPLATE,
-          "C")
+ -- Built-in Function: [VAL, COUNT, ERRMSG, POS] = sscanf (STRING,
+          TEMPLATE, SIZE)
+ -- Built-in Function: [V1, V2, ..., COUNT, ERRMSG] = sscanf (STRING,
+          TEMPLATE, "C")
      This is like `fscanf', except that the characters are taken from
      the string STRING instead of from a stream.  Reaching the end of
      the string is treated as an end-of-file condition.  In addition to
      the values returned by `fscanf', the index of the next character
-     to be read is returned in in POS.
+     to be read is returned in POS.
 
      *See also:* *note fscanf: doc-fscanf, *note scanf: doc-scanf,
      *note sprintf: doc-sprintf.
@@ -5846,7 +6812,8 @@ files will be deleted, so this step need not be executed manually.
      that makes the filename unique.  The file is then created with
      mode read/write and permissions that are system dependent (on
      GNU/Linux systems, the permissions will be 0600 for versions of
-     glibc 2.0.7 and later).  The file is opened with the `O_EXCL' flag.
+     glibc 2.0.7 and later).  The file is opened in binary mode and
+     with the `O_EXCL' flag.
 
      If the optional argument DELETE is supplied and is true, the file
      will be deleted automatically when Octave exits, or when the
@@ -5979,7 +6946,7 @@ of the file pointer for a given file.
  -- Built-in Function:  SEEK_SET ()
  -- Built-in Function:  SEEK_CUR ()
  -- Built-in Function:  SEEK_END ()
-     Return the value required to request that `fseek' perform one of
+     Return the numerical value to pass to `fseek' to perform one of
      the following actions:
     `SEEK_SET'
           Position file relative to the beginning.
@@ -5989,6 +6956,8 @@ of the file pointer for a given file.
 
     `SEEK_END'
           Position file relative to the end.
+
+     *See also:* *note fseek: doc-fseek.
 
  -- Built-in Function:  frewind (FID)
      Move the file pointer to the beginning of the file FID, returning
@@ -6003,95 +6972,6 @@ four characters, and then returns to the original position.
      frewind (myfile);
      fourch = fgets (myfile, 4);
      fseek (myfile, marker, SEEK_SET);
-
-
-File: octave.info,  Node: GUI Dialogs for I/O,  Prev: C-Style I/O Functions,  Up: Input and Output
-
-14.3 GUI Dialogs for I/O
-========================
-
-Simple dialog menus are available for choosing directories or files.
-They return a string variable which can then be used when calling any
-command requiring a file name.
-
- -- Function File: DIRNAME = uigetdir ()
- -- Function File: DIRNAME = uigetdir (INIT_PATH)
- -- Function File: DIRNAME = uigetdir (INIT_PATH, DIALOG_NAME)
-     Open a GUI dialog for selecting a directory.  If INIT_PATH is not
-     given the current working directory is used.  DIALOG_NAME may be
-     used to customize the dialog title.
-
-     *See also:* *note uigetfile: doc-uigetfile.
-
- -- Function File: [FNAME, FPATH, FLTIDX] = uigetfile ()
- -- Function File: [...] = uigetfile (FLT)
- -- Function File: [...] = uigetfile (FLT, DIALOG_NAME)
- -- Function File: [...] = uigetfile (FLT, DIALOG_NAME, DEFAULT_FILE)
- -- Function File: [...] = uigetfile (..., "Position", [PX PY])
- -- Function File: [...] = uigetfile (..., "MultiSelect", MODE)
-     Open a GUI dialog for selecting a file.  It returns the filename
-     FNAME, the path to this file FPATH, and the filter index FLTIDX.
-     FLT contains a (list of) file filter string(s) in one of the
-     following formats:
-
-    "/path/to/filename.ext"
-          If a filename is given then the file extension is extracted
-          and used as filter.  In addition, the path is selected as
-          current path and the filename is selected as default file.
-          Example: `uigetfile ("myfun.m")'
-
-    A single file extension "*.ext"
-          Example: `uigetfile ("*.ext")'
-
-    A 2-column cell array
-          containing a file extension in the first column and a brief
-          description in the second column.  Example: `uigetfile
-          ({"*.ext", "My Description";"*.xyz", "XYZ-Format"})'
-
-          The filter string can also contain a semicolon separated list
-          of filter extensions.  Example: `uigetfile
-          ({"*.gif;*.png;*.jpg", "Supported Picture Formats"})'
-
-     DIALOG_NAME can be used to customize the dialog title.  If
-     DEFAULT_FILE is given then it will be selected in the GUI dialog.
-     If, in addition, a path is given it is also used as current path.
-
-     The screen position of the GUI dialog can be set using the
-     "Position" key and a 2-element vector containing the pixel
-     coordinates.  Two or more files can be selected when setting the
-     "MultiSelect" key to "on".  In that case FNAME is a cell array
-     containing the files.
-
- -- Function File: [FNAME, FPATH, FLTIDX] = uiputfile ()
- -- Function File: [FNAME, FPATH, FLTIDX] = uiputfile (FLT)
- -- Function File: [FNAME, FPATH, FLTIDX] = uiputfile (FLT, DIALOG_NAME)
- -- Function File: [FNAME, FPATH, FLTIDX] = uiputfile (FLT,
-          DIALOG_NAME, DEFAULT_FILE)
-     Open a GUI dialog for selecting a file.  FLT contains a (list of)
-     file filter string(s) in one of the following formats:
-
-    `"/path/to/filename.ext"'
-          If a filename is given the file extension is extracted and
-          used as filter.  In addition the path is selected as current
-          path and the filename is selected as default file.  Example:
-          uiputfile("myfun.m");
-
-    `"*.ext"'
-          A single file extension.  Example: uiputfile("*.ext");
-
-    `{"*.ext","My Description"}'
-          A 2-column cell array containing the file extension in the
-          1st column and a brief description in the 2nd column.
-          Example: uiputfile({"*.ext","My
-          Description";"*.xyz","XYZ-Format"});
-
-     The filter string can also contain a semicolon separated list of
-     filter extensions.  Example: uiputfile({"*.gif;*.png;*.jpg",
-     "Supported Picture Formats"});
-
-     DIALOG_NAME can be used to customize the dialog title.  If
-     DEFAULT_FILE is given it is preselected in the GUI dialog.  If, in
-     addition, a path is given it is also used as current path.
 
 
 File: octave.info,  Node: Plotting,  Next: Matrix Manipulation,  Prev: Input and Output,  Up: Top
@@ -6172,11 +7052,10 @@ linear axes.  For example,
 displays a sine wave shown in *note fig:plot::.  On most systems, this
 command will open a separate plot window to display the graph.
 
- [image src="plot.png" text="
+
 +---------------------------------+
 | Image unavailable in text mode. |
 +---------------------------------+
-" ]
 Figure 15.1: Simple Two-Dimensional Plot.
 
  -- Function File:  plot (Y)
@@ -6306,6 +7185,9 @@ Figure 15.1: Simple Two-Dimensional Plot.
      If the first argument is an axis handle, then plot into these axes,
      rather than the current axis handle returned by `gca'.
 
+     The optional return value H is a graphics handle to the created
+     plot.
+
      *See also:* *note semilogx: doc-semilogx, *note semilogy:
      doc-semilogy, *note loglog: doc-loglog, *note polar: doc-polar,
      *note mesh: doc-mesh, *note contour: doc-contour, *note bar:
@@ -6361,6 +7243,9 @@ use log scales.
      axis.  See the documentation of `plot' for a description of the
      arguments that `semilogx' will accept.
 
+     The optional return value H is a graphics handle to the created
+     plot.
+
      *See also:* *note plot: doc-plot, *note semilogy: doc-semilogy,
      *note loglog: doc-loglog.
 
@@ -6373,6 +7258,9 @@ use log scales.
      Produce a two-dimensional plot using a logarithmic scale for the Y
      axis.  See the documentation of `plot' for a description of the
      arguments that `semilogy' will accept.
+
+     The optional return value H is a graphics handle to the created
+     plot.
 
      *See also:* *note plot: doc-plot, *note semilogx: doc-semilogx,
      *note loglog: doc-loglog.
@@ -6387,6 +7275,9 @@ use log scales.
      the documentation of `plot' for a description of the arguments
      that `loglog' will accept.
 
+     The optional return value H is a graphics handle to the created
+     plot.
+
      *See also:* *note plot: doc-plot, *note semilogx: doc-semilogx,
      *note semilogy: doc-semilogy.
 
@@ -6398,11 +7289,10 @@ displaying discrete data.  For example,
 produces the histogram of 10,000 normally distributed random numbers
 shown in *note fig:hist::.
 
- [image src="hist.png" text="
+
 +---------------------------------+
 | Image unavailable in text mode. |
 +---------------------------------+
-" ]
 Figure 15.2: Histogram.
 
  -- Function File:  bar (X, Y)
@@ -6425,7 +7315,7 @@ Figure 15.2: Histogram.
      argument, which can take the values `"grouped"' (the default), or
      `"stacked"'.
 
-     The optional return value H provides a handle to the "bar series"
+     The optional return value H is a handle to the created "bar series"
      object with one handle per column of the variable Y.  This series
      allows common elements of the group of bar series objects to be
      changed in a single bar series and the same properties are changed
@@ -6447,13 +7337,13 @@ Figure 15.2: Histogram.
      The color of the bars is taken from the figure's colormap, such
      that
 
-          bar (rand(10,3))
-          colormap (summer ())
+          bar (rand (10, 3));
+          colormap (summer (64));
 
      will change the colors used for the bars.  The color of bars can
      also be set manually using the "facecolor" property as shown below.
 
-          h = bar (rand(10,3))
+          h = bar (rand (10, 3));
           set (h(1), "facecolor", "r")
           set (h(2), "facecolor", "g")
           set (h(3), "facecolor", "b")
@@ -6479,12 +7369,13 @@ Figure 15.2: Histogram.
      argument, which can take the values `"grouped"' (the default), or
      `"stacked"'.
 
-     The optional return value H provides a handle to the bar series
-     object.  See `bar' for a description of the use of the bar series.
-
      The optional input handle H allows an axis handle to be passed.
      Properties of the patch graphics object can be changed using PROP,
      VAL pairs.
+
+     The optional return value H is a graphics handle to the created
+     bar series object.  See `bar' for a description of the use of the
+     bar series.
 
      *See also:* *note bar: doc-bar, *note plot: doc-plot.
 
@@ -6519,12 +7410,12 @@ Figure 15.2: Histogram.
      property/value pairs, PROP and VAL pairs.  For example the face
      and edge color may be modified.
 
-          hist (randn (1, 100), 25, "facecolor", "r", "edgecolor", "b")
+          hist (randn (1, 100), 25, "facecolor", "r", "edgecolor", "b");
 
      The histograms colors also depend upon the colormap.
 
-          hist (rand (10, 3))
-          colormap (summer ())
+          hist (rand (10, 3));
+          colormap (summer ());
 
      *See also:* *note bar: doc-bar.
 
@@ -6580,24 +7471,24 @@ Figure 15.2: Histogram.
      `plot' command.  For example,
 
           x = 1:10;
-          y = ones (1, length (x))*2.*x;
+          y = 2*x;
           stem (x, y, "r");
 
      plots 10 stems with heights from 2 to 20 in red;
 
-     The return value of `stem' is a vector of "stem series" graphics
-     handles, with one handle per column of the variable Y.  This
-     handle regroups the elements of the stem graph together as the
-     children of the "stem series" handle, allowing them to be altered
-     together.  For example,
+     The optional return value H is a vector of "stem series" graphics
+     handles with one handle per column of the variable Y.  The handle
+     regroups the elements of the stem graph together as the children
+     of the "stem series" handle, allowing them to be altered together.
+     For example,
 
-          x = [0 : 10]';
+          x = [0:10]';
           y = [sin(x), cos(x)]
           h = stem (x, y);
           set (h(2), "color", "g");
           set (h(1), "basevalue", -1)
 
-     changes the color of the second "stem series"  and moves the base
+     changes the color of the second "stem series" and moves the base
      line of the first.
 
      *See also:* *note bar: doc-bar, *note barh: doc-barh, *note plot:
@@ -6688,7 +7579,7 @@ Figure 15.2: Histogram.
      Finally P returns the graphics objects associated with the
      histogram and PAX the corresponding axes objects.
 
-          plotmatrix (randn (100, 3), 'g+')
+          plotmatrix (randn (100, 3), "g+")
 
 
  -- Function File:  pareto (X)
@@ -6715,12 +7606,16 @@ Figure 15.2: Histogram.
      then the abscissa are assumed to be `1 : length (X)'.  Y can be a
      string array, a cell array of strings or a numerical vector.
 
+     The optional return value H is a 2-element vector with a graphics
+     handle for the created bar plot and a second handle for the
+     created line plot.
+
      An example of the use of `pareto' is
 
           Cheese = {"Cheddar", "Swiss", "Camembert", ...
                     "Munster", "Stilton", "Blue"};
           Sold = [105, 30, 70, 10, 15, 20];
-          pareto(Sold, Cheese);
+          pareto (Sold, Cheese);
 
  -- Function File:  rose (TH, R)
  -- Function File:  rose (H, ...)
@@ -6734,18 +7629,18 @@ Figure 15.2: Histogram.
      R bins.  If R is a vector, then the center of each bin are defined
      by the values of R.
 
-     The optional return value H provides a list of handles to the the
-     parts of the vector field (body, arrow and marker).
+     The optional return value H is a vector of graphics handles to the
+     line objects representing each histogram.
 
-     If two output arguments are requested, then rather than plotting
+     If two output arguments are requested then, rather than plotting
      the histogram, the polar vectors necessary to plot the histogram
      are returned.
 
-          [r, t] = rose ([2*randn(1e5,1), pi + 2 * randn(1e5,1)]);
+          [r, t] = rose ([2*randn(1e5,1), pi + 2*randn(1e5,1)]);
           polar (r, t);
 
-     *See also:* *note plot: doc-plot, *note compass: doc-compass,
-     *note polar: doc-polar, *note hist: doc-hist.
+     *See also:* *note polar: doc-polar, *note compass: doc-compass,
+     *note hist: doc-hist.
 
    The `contour', `contourf' and `contourc' functions produce
 two-dimensional contour plots from three-dimensional data.
@@ -6840,8 +7735,8 @@ two-dimensional contour plots from three-dimensional data.
           y = x;
           z = x' * y;
           contourc (x, y, z, 2:3)
-               =>   2.0000   2.0000   1.0000   3.0000   1.5000   2.0000
-               2.0000   1.0000   2.0000   2.0000   2.0000   1.5000
+             =>   2.0000   2.0000   1.0000   3.0000   1.5000   2.0000
+                  2.0000   1.0000   2.0000   2.0000   2.0000   1.5000
 
      *See also:* *note contour: doc-contour.
 
@@ -6860,8 +7755,8 @@ two-dimensional contour plots from three-dimensional data.
 
           contour3 (peaks (19));
           hold on
-          surface (peaks (19), "facecolor", "none", "EdgeColor", "black")
-          colormap hot
+          surface (peaks (19), "facecolor", "none", "EdgeColor", "black");
+          colormap hot;
 
      The style to use for the plot can be defined with a line style
      STYLE in a similar manner to the line styles used with the `plot'
@@ -6885,11 +7780,10 @@ functions produce plots with error bar markers.  For example,
 
 produces the figure shown in *note fig:errorbar::.
 
- [image src="errorbar.png" text="
+
 +---------------------------------+
 | Image unavailable in text mode. |
 +---------------------------------+
-" ]
 Figure 15.3: Errorbar plot.
 
  -- Function File:  errorbar (ARGS)
@@ -7016,21 +7910,22 @@ and linear.  For example,
 
 produces the spiral plot shown in *note fig:polar::.
 
- [image src="polar.png" text="
+
 +---------------------------------+
 | Image unavailable in text mode. |
 +---------------------------------+
-" ]
 Figure 15.4: Polar plot.
 
  -- Function File:  polar (THETA, RHO)
  -- Function File:  polar (THETA, RHO, FMT)
  -- Function File:  polar (H, ...)
  -- Function File: H = polar (...)
-     Make a two-dimensional plot given the polar coordinates THETA and
-     RHO.
+     Create a two-dimensional plot from polar coordinates THETA and RHO.
 
-     The optional third argument specifies the line type.
+     The optional argument FMT specifies the line format.
+
+     The optional return value H is a graphics handle to the created
+     plot.
 
      *See also:* *note plot: doc-plot.
 
@@ -7039,7 +7934,7 @@ Figure 15.4: Polar plot.
  -- Function File:  pie (..., LABELS)
  -- Function File:  pie (H, ...);
  -- Function File: H = pie (...);
-     Produce a pie chart.
+     Produce a 2-D pie chart.
 
      Called with a single vector argument, produces a pie chart of the
      elements in X, with the size of the slice determined by percentage
@@ -7051,7 +7946,8 @@ Figure 15.4: Polar plot.
      If given LABELS is a cell array of strings of the same length as
      X, giving the labels of each of the slices of the pie chart.
 
-     The optional return value H provides a handle to the patch object.
+     The optional return value H is a list of handles to the patch and
+     text objects generating the plot.
 
      *See also:* *note pie3: doc-pie3, *note bar: doc-bar, *note stem:
      doc-stem.
@@ -7073,8 +7969,8 @@ Figure 15.4: Polar plot.
      If given LABELS is a cell array of strings of the same length as
      X, giving the labels of each of the slices of the pie chart.
 
-     The optional return value H provides a handle list to patch,
-     surface and text objects generating this plot.
+     The optional return value H is a list of graphics handles to the
+     patch, surface, and text objects generating the plot.
 
      *See also:* *note pie: doc-pie, *note bar: doc-bar, *note stem:
      doc-stem.
@@ -7103,9 +7999,10 @@ Figure 15.4: Polar plot.
      of the vectors are printed rather than arrows.  If the argument
      'filled' is given then the markers as filled.
 
-     The optional return value H provides a quiver group that regroups
-     the components of the quiver plot (body, arrow and marker), and
-     allows them to be changed together
+     The optional return value H is a graphics handle to a quiver
+     object.  A quiver object regroups the components of the quiver
+     plot (body, arrow, and marker), and allows them to be changed
+     together.
 
           [x, y] = meshgrid (1:2:20);
           h = quiver (x, y, sin (2*pi*x/10), sin (2*pi*y/10));
@@ -7137,9 +8034,10 @@ Figure 15.4: Polar plot.
      of the vectors are printed rather than arrows.  If the argument
      'filled' is given then the markers as filled.
 
-     The optional return value H provides a quiver group that regroups
-     the components of the quiver plot (body, arrow and marker), and
-     allows them to be changed together
+     The optional return value H is a graphics handle to a quiver
+     object.  A quiver object regroups the components of the quiver
+     plot (body, arrow, and marker), and allows them to be changed
+     together.
 
           [x, y, z] = peaks (25);
           surf (x, y, z);
@@ -7163,14 +8061,14 @@ Figure 15.4: Polar plot.
      STYLE in a similar manner to the line styles used with the `plot'
      command.
 
-     The optional return value H provides a list of handles to the the
-     parts of the vector field (body, arrow and marker).
+     The optional return value H is a vector of graphics handles to the
+     line objects representing the drawn vectors.
 
-          a = toeplitz([1;randn(9,1)],[1,randn(1,9)]);
-          compass (eig (a))
+          a = toeplitz ([1;randn(9,1)], [1,randn(1,9)]);
+          compass (eig (a));
 
-     *See also:* *note plot: doc-plot, *note polar: doc-polar, *note
-     quiver: doc-quiver, *note feather: doc-feather.
+     *See also:* *note polar: doc-polar, *note quiver: doc-quiver,
+     *note feather: doc-feather, *note plot: doc-plot.
 
  -- Function File:  feather (U, V)
  -- Function File:  feather (Z)
@@ -7185,11 +8083,11 @@ Figure 15.4: Polar plot.
      STYLE in a similar manner to the line styles used with the `plot'
      command.
 
-     The optional return value H provides a list of handles to the the
-     parts of the vector field (body, arrow and marker).
+     The optional return value H is a vector of graphics handles to the
+     line objects representing the drawn vectors.
 
-          phi = [0 : 15 : 360] * pi / 180;
-          feather (sin (phi), cos (phi))
+          phi = [0 : 15 : 360] * pi/180;
+          feather (sin (phi), cos (phi));
 
      *See also:* *note plot: doc-plot, *note quiver: doc-quiver, *note
      compass: doc-compass.
@@ -7237,9 +8135,10 @@ Figure 15.4: Polar plot.
      rows (Y)'.  A value LVL can be defined that determines where the
      base level of the shading under the curve should be defined.
 
-     Additional arguments to the `area' function are passed to the
-     `patch'.  The optional return value H provides a handle to area
-     series object representing the patches of the areas.
+     Additional arguments to the `area' function are passed to `patch'.
+
+     The optional return value H is a graphics handle to the hggroup
+     object representing the area patch objects.
 
      *See also:* *note plot: doc-plot, *note patch: doc-patch.
 
@@ -7271,993 +8170,4 @@ Figure 15.4: Polar plot.
 
      If AX is specified the animation is produced in that axis rather
      than the `gca'.
-
-
-File: octave.info,  Node: Axis Configuration,  Next: Two-dimensional Function Plotting,  Up: Two-Dimensional Plots
-
-15.2.1.1 Axis Configuration
-...........................
-
-The axis function may be used to change the axis limits of an existing
-plot and various other axis properties, such as the aspect ratio and the
-appearance of tic marks.
-
- -- Function File:  axis ()
- -- Function File:  axis ([X_lo X_hi])
- -- Function File:  axis ([X_lo X_hi Y_lo Y_hi])
- -- Function File:  axis ([X_lo X_hi Y_lo Y_hi Z_lo Z_hi])
- -- Function File:  axis (OPTION)
- -- Function File:  axis (..., OPTION)
- -- Function File:  axis (H, ...)
- -- Function File: LIMITS = axis ()
-     Set axis limits for plots.
-
-     The argument LIMITS should be a 2-, 4-, or 6-element vector.  The
-     first and second elements specify the lower and upper limits for
-     the x-axis.  The third and fourth specify the limits for the
-     y-axis, and the fifth and sixth specify the limits for the z-axis.
-
-     Without any arguments, `axis' turns autoscaling on.
-
-     With one output argument, `x = axis' returns the current axes.
-
-     The vector argument specifying limits is optional, and additional
-     string arguments may be used to specify various axis properties.
-     For example,
-
-          axis ([1, 2, 3, 4], "square");
-
-     forces a square aspect ratio, and
-
-          axis ("tic", "labely");
-
-     turns tic marks on for all axes and tic mark labels on for the
-     y-axis only.
-
-     The following options control the aspect ratio of the axes.
-
-    "square"
-          Force a square aspect ratio.
-
-    "equal"
-          Force x distance to equal y-distance.
-
-    "normal"
-          Restore the balance.
-
-     The following options control the way axis limits are interpreted.
-
-    "auto"
-          Set the specified axes to have nice limits around the data or
-          all if no axes are specified.
-
-    "manual"
-          Fix the current axes limits.
-
-    "tight"
-          Fix axes to the limits of the data.
-
-     The option `"image"' is equivalent to `"tight"' and `"equal"'.
-
-     The following options affect the appearance of tic marks.
-
-    "on"
-          Turn tic marks and labels on for all axes.
-
-    "off"
-          Turn tic marks off for all axes.
-
-    "tic[xyz]"
-          Turn tic marks on for all axes, or turn them on for the
-          specified axes and off for the remainder.
-
-    "label[xyz]"
-          Turn tic labels on for all axes, or turn them on for the
-          specified axes and off for the remainder.
-
-    "nolabel"
-          Turn tic labels off for all axes.
-     Note, if there are no tic marks for an axis, there can be no
-     labels.
-
-     The following options affect the direction of increasing values on
-     the axes.
-
-    "ij"
-          Reverse y-axis, so lower values are nearer the top.
-
-    "xy"
-          Restore y-axis, so higher values are nearer the top.
-
-     If an axes handle is passed as the first argument, then operate on
-     this axes rather than the current axes.
-
-   Similarly the axis limits of the colormap can be changed with the
-caxis function.
-
- -- Function File:  caxis (LIMITS)
- -- Function File:  caxis (H, ...)
-     Set color axis limits for plots.
-
-     The argument LIMITS should be a 2-element vector specifying the
-     lower and upper limits to assign to the first and last value in the
-     colormap.  Values outside this range are clamped to the first and
-     last colormap entries.
-
-     If LIMITS is 'auto', then automatic colormap scaling is applied,
-     whereas if LIMITS is 'manual' the colormap scaling is set to
-     manual.
-
-     Called without any arguments to current color axis limits are
-     returned.
-
-     If an axes handle is passed as the first argument, then operate on
-     this axes rather than the current axes.
-
-   The `xlim', `ylim', and `zlim' functions may be used to get or set
-individual axis limits.  Each has the same form.
-
- -- Function File: XL = xlim ()
- -- Function File:  xlim (XL)
- -- Function File: M = xlim ('mode')
- -- Function File:  xlim (M)
- -- Function File:  xlim (H, ...)
-     Get or set the limits of the x-axis of the current plot.  Called
-     without arguments `xlim' returns the x-axis limits of the current
-     plot.  If passed a two element vector XL, the limits of the x-axis
-     are set to this value.
-
-     The current mode for calculation of the x-axis can be returned
-     with a call `xlim ('mode')', and can be either 'auto' or 'manual'.
-     The current plotting mode can be set by passing either 'auto' or
-     'manual' as the argument.
-
-     If passed a handle as the first argument, then operate on this
-     handle rather than the current axes handle.
-
-     *See also:* *note ylim: doc-ylim, *note zlim: doc-zlim, *note set:
-     doc-set, *note get: doc-get, *note gca: doc-gca.
-
-
-File: octave.info,  Node: Two-dimensional Function Plotting,  Next: Two-dimensional Geometric Shapes,  Prev: Axis Configuration,  Up: Two-Dimensional Plots
-
-15.2.1.2 Two-dimensional Function Plotting
-..........................................
-
-Octave can plot a function from a function handle inline function or
-string defining the function without the user needing to explicitly
-create the data to be plotted.  The function `fplot' also generates
-two-dimensional plots with linear axes using a function name and limits
-for the range of the x-coordinate instead of the x and y data.  For
-example,
-
-     fplot (@sin, [-10, 10], 201);
-
-produces a plot that is equivalent to the one above, but also includes a
-legend displaying the name of the plotted function.
-
- -- Function File:  fplot (FN, LIMITS)
- -- Function File:  fplot (FN, LIMITS, TOL)
- -- Function File:  fplot (FN, LIMITS, N)
- -- Function File:  fplot (..., FMT)
-     Plot a function FN within defined limits.  FN is a function
-     handle, inline function, or string containing the name of the
-     function to evaluate.  The limits of the plot are given by LIMITS
-     of the form `[XLO, XHI]' or `[XLO, XHI, YLO, YHI]'.  TOL is the
-     default tolerance to use for the plot, and if TOL is an integer it
-     is assumed that it defines the number points to use in the plot.
-     The FMT argument is passed to the plot command.
-
-             fplot ("cos", [0, 2*pi])
-             fplot ("[cos(x), sin(x)]", [0, 2*pi])
-
-     *See also:* *note plot: doc-plot.
-
-   Other functions that can create two-dimensional plots directly from a
-function include `ezplot', `ezcontour', `ezcontourf' and `ezpolar'.
-
- -- Function File:  ezplot (F)
- -- Function File:  ezplot (FX, FY)
- -- Function File:  ezplot (..., DOM)
- -- Function File:  ezplot (..., N)
- -- Function File:  ezplot (H, ...)
- -- Function File: H = ezplot (...)
-     Plots in two-dimensions the curve defined by F.  The function F
-     may be a string, inline function or function handle and can have
-     either one or two variables.  If F has one variable, then the
-     function is plotted over the domain `-2*pi < X < 2*pi' with 500
-     points.
-
-     If F has two variables then `F(X,Y) = 0' is calculated over the
-     meshed domain `-2*pi < X | Y < 2*pi' with 60 by 60 in the mesh.
-     For example:
-
-          ezplot (@(X, Y) X .^ 2 - Y .^ 2 - 1)
-
-     If two functions are passed as strings, inline functions or
-     function handles, then the parametric function
-
-          X = FX (T)
-          Y = FY (T)
-
-     is plotted over the domain `-2*pi < T < 2*pi' with 500 points.
-
-     If DOM is a two element vector, it represents the minimum and
-     maximum value of X, Y and T.  If it is a four element vector, then
-     the minimum and maximum values of X and T are determined by the
-     first two elements and the minimum and maximum of Y by the second
-     pair of elements.
-
-     N is a scalar defining the number of points to use in plotting the
-     function.
-
-     The optional return value H provides a list of handles to the the
-     line objects plotted.
-
-     *See also:* *note plot: doc-plot, *note ezplot3: doc-ezplot3.
-
- -- Function File:  ezcontour (F)
- -- Function File:  ezcontour (..., DOM)
- -- Function File:  ezcontour (..., N)
- -- Function File:  ezcontour (H, ...)
- -- Function File: H = ezcontour (...)
-     Plots the contour lines of a function.  F is a string, inline
-     function or function handle with two arguments defining the
-     function.  By default the plot is over the domain `-2*pi < X <
-     2*pi' and `-2*pi < Y < 2*pi' with 60 points in each dimension.
-
-     If DOM is a two element vector, it represents the minimum and
-     maximum value of both X and Y.  If DOM is a four element vector,
-     then the minimum and maximum value of X and Y are specify
-     separately.
-
-     N is a scalar defining the number of points to use in each
-     dimension.
-
-     The optional return value H provides a list of handles to the the
-     parts of the vector field (body, arrow and marker).
-
-          f = @(x,y) sqrt(abs(x .* y)) ./ (1 + x.^2 + y.^2);
-          ezcontour (f, [-3, 3]);
-
-     *See also:* *note ezplot: doc-ezplot, *note ezcontourf:
-     doc-ezcontourf, *note ezsurfc: doc-ezsurfc, *note ezmeshc:
-     doc-ezmeshc.
-
- -- Function File:  ezcontourf (F)
- -- Function File:  ezcontourf (..., DOM)
- -- Function File:  ezcontourf (..., N)
- -- Function File:  ezcontourf (H, ...)
- -- Function File: H = ezcontourf (...)
-     Plots the filled contour lines of a function.  F is a string,
-     inline function or function handle with two arguments defining the
-     function.  By default the plot is over the domain `-2*pi < X <
-     2*pi' and `-2*pi < Y < 2*pi' with 60 points in each dimension.
-
-     If DOM is a two element vector, it represents the minimum and
-     maximum value of both X and Y.  If DOM is a four element vector,
-     then the minimum and maximum value of X and Y are specify
-     separately.
-
-     N is a scalar defining the number of points to use in each
-     dimension.
-
-     The optional return value H provides a list of handles to the the
-     parts of the vector field (body, arrow and marker).
-
-          f = @(x,y) sqrt(abs(x .* y)) ./ (1 + x.^2 + y.^2);
-          ezcontourf (f, [-3, 3]);
-
-     *See also:* *note ezplot: doc-ezplot, *note ezcontour:
-     doc-ezcontour, *note ezsurfc: doc-ezsurfc, *note ezmeshc:
-     doc-ezmeshc.
-
- -- Function File:  ezpolar (F)
- -- Function File:  ezpolar (..., DOM)
- -- Function File:  ezpolar (..., N)
- -- Function File:  ezpolar (H, ...)
- -- Function File: H = ezpolar (...)
-     Plots in polar plot defined by a function.  The function F is
-     either a string, inline function or function handle with one
-     arguments defining the function.  By default the plot is over the
-     domain `0 < X < 2*pi' with 60 points.
-
-     If DOM is a two element vector, it represents the minimum and
-     maximum value of both T.  N is a scalar defining the number of
-     points to use.
-
-     The optional return value H provides a list of handles to the the
-     parts of the vector field (body, arrow and marker).
-
-          ezpolar (@(t) 1 + sin (t));
-
-     *See also:* *note polar: doc-polar, *note ezplot: doc-ezplot,
-     *note ezsurf: doc-ezsurf, *note ezmesh: doc-ezmesh.
-
-
-File: octave.info,  Node: Two-dimensional Geometric Shapes,  Prev: Two-dimensional Function Plotting,  Up: Two-Dimensional Plots
-
-15.2.1.3 Two-dimensional Geometric Shapes
-.........................................
-
- -- Function File:  rectangle ()
- -- Function File:  rectangle (..., "Position", POS)
- -- Function File:  rectangle (..., "Curvature", CURV)
- -- Function File:  rectangle (..., "EdgeColor", EC)
- -- Function File:  rectangle (..., "FaceColor", FC)
- -- Function File: H = rectangle (...)
-     Draw rectangular patch defined by POS and CURV.  The variable
-     `POS(1 : 2)' defines the lower left-hand corner of the patch and
-     `POS(3 : 4)' defines its width and height.  By default, the value
-     of POS is `[0, 0, 1, 1]'.
-
-     The variable CURV defines the curvature of the sides of the
-     rectangle and may be a scalar or two-element vector with values
-     between 0 and 1.  A value of 0 represents no curvature of the
-     side, whereas a value of 1 means that the side is entirely curved
-     into the arc of a circle.  If CURV is a two-element vector, then
-     the first element is the curvature along the x-axis of the patch
-     and the second along y-axis.
-
-     If CURV is a scalar, it represents the curvature of the shorter of
-     the two sides of the rectangle and the curvature of the other side
-     is defined by
-
-          min (pos (1: 2)) / max (pos (1:2)) * curv
-
-     Other properties are passed to the underlying patch command.  If
-     called with an output argument, `rectangle' returns the handle to
-     the rectangle.
-
-*See also:* *note patch: doc-patch.
-
-
-File: octave.info,  Node: Three-Dimensional Plots,  Next: Plot Annotations,  Prev: Two-Dimensional Plots,  Up: High-Level Plotting
-
-15.2.2 Three-Dimensional Plots
-------------------------------
-
-The function `mesh' produces mesh surface plots.  For example,
-
-     tx = ty = linspace (-8, 8, 41)';
-     [xx, yy] = meshgrid (tx, ty);
-     r = sqrt (xx .^ 2 + yy .^ 2) + eps;
-     tz = sin (r) ./ r;
-     mesh (tx, ty, tz);
-
-produces the familiar "sombrero" plot shown in *note fig:mesh::.  Note
-the use of the function `meshgrid' to create matrices of X and Y
-coordinates to use for plotting the Z data.  The `ndgrid' function is
-similar to `meshgrid', but works for N-dimensional matrices.
-
- [image src="mesh.png" text="
-+---------------------------------+
-| Image unavailable in text mode. |
-+---------------------------------+
-" ]
-Figure 15.5: Mesh plot.
-
-   The `meshc' function is similar to `mesh', but also produces a plot
-of contours for the surface.
-
-   The `plot3' function displays arbitrary three-dimensional data,
-without requiring it to form a surface.  For example,
-
-     t = 0:0.1:10*pi;
-     r = linspace (0, 1, numel (t));
-     z = linspace (0, 1, numel (t));
-     plot3 (r.*sin(t), r.*cos(t), z);
-
-displays the spiral in three dimensions shown in *note fig:plot3::.
-
- [image src="plot3.png" text="
-+---------------------------------+
-| Image unavailable in text mode. |
-+---------------------------------+
-" ]
-Figure 15.6: Three-dimensional spiral.
-
-   Finally, the `view' function changes the viewpoint for
-three-dimensional plots.
-
- -- Function File:  mesh (X, Y, Z)
- -- Function File:  mesh (Z)
- -- Function File:  mesh (..., C)
- -- Function File:  mesh (HAX, ...)
- -- Function File: H = mesh (...)
-     Plot a mesh given matrices X, and Y from `meshgrid' and a matrix Z
-     corresponding to the X and Y coordinates of the mesh.  If X and Y
-     are vectors, then a typical vertex is (X(j), Y(i), Z(i,j)).  Thus,
-     columns of Z correspond to different X values and rows of Z
-     correspond to different Y values.
-
-     The color of the mesh is derived from the `colormap' and the value
-     of Z.  Optionally the color of the mesh can be specified
-     independent of Z, by adding a fourth matrix, C.
-
-     *See also:* *note colormap: doc-colormap, *note contour:
-     doc-contour, *note meshgrid: doc-meshgrid, *note surf: doc-surf.
-
- -- Function File:  meshc (X, Y, Z)
-     Plot a mesh and contour given matrices X, and Y from `meshgrid'
-     and a matrix Z corresponding to the X and Y coordinates of the
-     mesh.  If X and Y are vectors, then a typical vertex is (X(j),
-     Y(i), Z(i,j)).  Thus, columns of Z correspond to different X
-     values and rows of Z correspond to different Y values.
-
-     *See also:* *note meshgrid: doc-meshgrid, *note mesh: doc-mesh,
-     *note contour: doc-contour.
-
- -- Function File:  meshz (X, Y, Z)
-     Plot a curtain mesh given matrices X, and Y from `meshgrid' and a
-     matrix Z corresponding to the X and Y coordinates of the mesh.  If
-     X and Y are vectors, then a typical vertex is (X(j), Y(i),
-     Z(i,j)).  Thus, columns of Z correspond to different X values and
-     rows of Z correspond to different Y values.
-
-     *See also:* *note meshgrid: doc-meshgrid, *note mesh: doc-mesh,
-     *note contour: doc-contour.
-
- -- Function File:  hidden (MODE)
- -- Function File:  hidden ()
-     Manipulation the mesh hidden line removal.  Called with no argument
-     the hidden line removal is toggled.  The argument MODE can be
-     either 'on' or 'off' and the set of the hidden line removal is set
-     accordingly.
-
-     *See also:* *note mesh: doc-mesh, *note meshc: doc-meshc, *note
-     surf: doc-surf.
-
- -- Function File:  surf (X, Y, Z)
- -- Function File:  surf (Z)
- -- Function File:  surf (..., C)
- -- Function File:  surf (HAX, ...)
- -- Function File: H = surf (...)
-     Plot a surface given matrices X, and Y from `meshgrid' and a
-     matrix Z corresponding to the X and Y coordinates of the mesh.  If
-     X and Y are vectors, then a typical vertex is (X(j), Y(i),
-     Z(i,j)).  Thus, columns of Z correspond to different X values and
-     rows of Z correspond to different Y values.
-
-     The color of the surface is derived from the `colormap' and the
-     value of Z.  Optionally the color of the surface can be specified
-     independent of Z, by adding a fourth matrix, C.
-
-     *See also:* *note colormap: doc-colormap, *note contour:
-     doc-contour, *note meshgrid: doc-meshgrid, *note mesh: doc-mesh.
-
- -- Function File:  surfc (X, Y, Z)
-     Plot a surface and contour given matrices X, and Y from `meshgrid'
-     and a matrix Z corresponding to the X and Y coordinates of the
-     mesh.  If X and Y are vectors, then a typical vertex is (X(j),
-     Y(i), Z(i,j)).  Thus, columns of Z correspond to different X
-     values and rows of Z correspond to different Y values.
-
-     *See also:* *note meshgrid: doc-meshgrid, *note surf: doc-surf,
-     *note contour: doc-contour.
-
- -- Function File:  surfl (X, Y, Z)
- -- Function File:  surfl (Z)
- -- Function File:  surfl (X, Y, Z, L)
- -- Function File:  surfl (X, Y, Z, L, P)
- -- Function File:  surfl (..., "light")
-     Plot a lighted surface given matrices X, and Y from `meshgrid' and
-     a matrix Z corresponding to the X and Y coordinates of the mesh.
-     If X and Y are vectors, then a typical vertex is (X(j), Y(i),
-     Z(i,j)).  Thus, columns of Z correspond to different X values and
-     rows of Z correspond to different Y values.
-
-     The light direction can be specified using L.  It can be given as
-     2-element vector [azimuth, elevation] in degrees or as 3-element
-     vector [lx, ly, lz].  The default value is rotated 45°
-     counter-clockwise from the current view.
-
-     The material properties of the surface can specified using a
-     4-element vector P = [AM D SP EXP] which defaults to P = [0.55 0.6
-     0.4 10].
-    "AM" strength of ambient light
-
-    "D" strength of diffuse reflection
-
-    "SP" strength of specular reflection
-
-    "EXP" specular exponent
-
-     The default lighting mode "cdata", changes the cdata property to
-     give the impression of a lighted surface.  Please note: the
-     alternative "light" mode, which creates a light object to
-     illuminate the surface is not implemented (yet).
-
-     Example:
-
-          colormap(bone);
-          surfl(peaks);
-          shading interp;
-
-     *See also:* *note surf: doc-surf, *note diffuse: doc-diffuse,
-     *note specular: doc-specular, *note surface: doc-surface.
-
- -- Function File:  surfnorm (X, Y, Z)
- -- Function File:  surfnorm (Z)
- -- Function File: [NX, NY, NZ] = surfnorm (...)
- -- Function File:  surfnorm (H, ...)
-     Find the vectors normal to a meshgridded surface.  The meshed
-     gridded surface is defined by X, Y, and Z.  If X and Y are not
-     defined, then it is assumed that they are given by
-
-          [X, Y] = meshgrid (1:size(Z, 1),
-                               1:size(Z, 2));
-
-     If no return arguments are requested, a surface plot with the
-     normal vectors to the surface is plotted.  Otherwise the
-     components of the normal vectors at the mesh gridded points are
-     returned in NX, NY, and NZ.
-
-     The normal vectors are calculated by taking the cross product of
-     the diagonals of each of the quadrilaterals in the meshgrid to
-     find the normal vectors of the centers of these quadrilaterals.
-     The four nearest normal vectors to the meshgrid points are then
-     averaged to obtain the normal to the surface at the meshgridded
-     points.
-
-     An example of the use of `surfnorm' is
-
-          surfnorm (peaks (25));
-
-     *See also:* *note surf: doc-surf, *note quiver3: doc-quiver3.
-
- -- Function File: [FV] = isosurface (VAL, ISO)
- -- Function File: [FV] = isosurface (X, Y, Z, VAL, ISO)
- -- Function File: [FV] = isosurface (..., "noshare", "verbose")
- -- Function File: [FVC] = isosurface (..., COL)
- -- Function File: [F, V] = isosurface (X, Y, Z, VAL, ISO)
- -- Function File: [F, V, C] = isosurface (X, Y, Z, VAL, ISO, COL)
- -- Function File:  isosurface (X, Y, Z, VAL, ISO, COL, OPT)
-     If called with one output argument and the first input argument
-     VAL is a three-dimensional array that contains the data of an
-     isosurface geometry and the second input argument ISO keeps the
-     isovalue as a scalar value then return a structure array FV that
-     contains the fields FACES and VERTICES at computed points `[x, y,
-     z] = meshgrid (1:l, 1:m, 1:n)'.  The output argument FV can
-     directly be taken as an input argument for the `patch' function.
-
-     If called with further input arguments X, Y and Z which are
-     three-dimensional arrays with the same size than VAL then the
-     volume data is taken at those given points.
-
-     The string input argument "noshare" is only for compatibility and
-     has no effect.  If given the string input argument "verbose" then
-     print messages to the command line interface about the current
-     progress.
-
-     If called with the input argument COL which is a three-dimensional
-     array of the same size than VAL then take those values for the
-     interpolation of coloring the isosurface geometry.  Add the field
-     FACEVERTEXCDATA to the structure array FV.
-
-     If called with two or three output arguments then return the
-     information about the faces F, vertices V and color data C as
-     seperate arrays instead of a single structure array.
-
-     If called with no output argument then directly process the
-     isosurface geometry with the `patch' command.
-
-     For example,
-
-          [x, y, z] = meshgrid (1:5, 1:5, 1:5);
-          val = rand (5, 5, 5);
-          isosurface (x, y, z, val, .5);
-
-     will directly draw a random isosurface geometry in a graphics
-     window.  Another example for an isosurface geometry with different
-     additional coloring
-
-          N = 15;    ## Increase number of vertices in each direction
-          iso = .4;  ## Change isovalue to .1 to display a sphere
-          lin = linspace (0, 2, N);
-          [x, y, z] = meshgrid (lin, lin, lin);
-          c = abs ((x-.5).^2 + (y-.5).^2 + (z-.5).^2);
-          figure (); ## Open another figure window
-
-          subplot (2, 2, 1); view (-38, 20);
-          [f, v] = isosurface (x, y, z, c, iso);
-          p = patch ("Faces", f, "Vertices", v, "EdgeColor", "none");
-          set (gca, "PlotBoxAspectRatioMode","manual", "PlotBoxAspectRatio", [1 1 1]);
-           set (p, "FaceColor", "green", "FaceLighting", "phong");
-           light ("Position", [1 1 5]); ## Available with the JHandles package
-
-          subplot (2, 2, 2); view (-38, 20);
-          p = patch ("Faces", f, "Vertices", v, "EdgeColor", "blue");
-          set (gca, "PlotBoxAspectRatioMode","manual", "PlotBoxAspectRatio", [1 1 1]);
-           set (p, "FaceColor", "none", "FaceLighting", "phong");
-           light ("Position", [1 1 5]);
-
-          subplot (2, 2, 3); view (-38, 20);
-          [f, v, c] = isosurface (x, y, z, c, iso, y);
-          p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", c, \
-                     "FaceColor", "interp", "EdgeColor", "none");
-          set (gca, "PlotBoxAspectRatioMode","manual", "PlotBoxAspectRatio", [1 1 1]);
-           set (p, "FaceLighting", "phong");
-           light ("Position", [1 1 5]);
-
-          subplot (2, 2, 4); view (-38, 20);
-          p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", c, \
-                     "FaceColor", "interp", "EdgeColor", "blue");
-          set (gca, "PlotBoxAspectRatioMode","manual", "PlotBoxAspectRatio", [1 1 1]);
-           set (p, "FaceLighting", "phong");
-           light ("Position", [1 1 5]);
-
-     *See also:* *note isonormals: doc-isonormals, *note isocolors:
-     doc-isocolors.
-
- -- Function File: [N] = isonormals (VAL, V)
- -- Function File: [N] = isonormals (VAL, P)
- -- Function File: [N] = isonormals (X, Y, Z, VAL, V)
- -- Function File: [N] = isonormals (X, Y, Z, VAL, P)
- -- Function File: [N] = isonormals (..., "negate")
- -- Function File:  isonormals (..., P)
-     If called with one output argument and the first input argument
-     VAL is a three-dimensional array that contains the data for an
-     isosurface geometry and the second input argument V keeps the
-     vertices of an isosurface then return the normals N in form of a
-     matrix with the same size than V at computed points `[x, y, z] =
-     meshgrid (1:l, 1:m, 1:n)'.  The output argument N can be taken to
-     manually set VERTEXNORMALS of a patch.
-
-     If called with further input arguments X, Y and Z which are
-     three-dimensional arrays with the same size than VAL then the
-     volume data is taken at those given points.  Instead of the
-     vertices data V a patch handle P can be passed to this function.
-
-     If given the string input argument "negate" as last input argument
-     then compute the reverse vector normals of an isosurface geometry.
-
-     If no output argument is given then directly redraw the patch that
-     is given by the patch handle P.
-
-     For example:
-
-          function [] = isofinish (p)
-            set (gca, "PlotBoxAspectRatioMode","manual","PlotBoxAspectRatio",[1 1 1]);
-            set (p, "VertexNormals", -get(p,"VertexNormals")); ## Revert normals
-            set (p, "FaceColor", "interp");
-            ## set (p, "FaceLighting", "phong");
-            ## light ("Position", [1 1 5]); ## Available with JHandles
-          endfunction
-
-          N = 15;    ## Increase number of vertices in each direction
-          iso = .4;  ## Change isovalue to .1 to display a sphere
-          lin = linspace (0, 2, N);
-          [x, y, z] = meshgrid (lin, lin, lin);
-          c = abs ((x-.5).^2 + (y-.5).^2 + (z-.5).^2);
-          figure (); ## Open another figure window
-
-          subplot (2, 2, 1); view (-38, 20);
-          [f, v, cdat] = isosurface (x, y, z, c, iso, y);
-          p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, \
-                  "FaceColor", "interp", "EdgeColor", "none");
-          isofinish (p); ## Call user function isofinish
-
-          subplot (2, 2, 2); view (-38, 20);
-          p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, \
-                  "FaceColor", "interp", "EdgeColor", "none");
-          isonormals (x, y, z, c, p); ## Directly modify patch
-          isofinish (p);
-
-          subplot (2, 2, 3); view (-38, 20);
-          p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, \
-                  "FaceColor", "interp", "EdgeColor", "none");
-          n = isonormals (x, y, z, c, v); ## Compute normals of isosurface
-          set (p, "VertexNormals", n);    ## Manually set vertex normals
-          isofinish (p);
-
-          subplot (2, 2, 4); view (-38, 20);
-          p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, \
-                  "FaceColor", "interp", "EdgeColor", "none");
-          isonormals (x, y, z, c, v, "negate"); ## Use reverse directly
-          isofinish (p);
-
-     *See also:* *note isosurface: doc-isosurface, *note isocolors:
-     doc-isocolors.
-
- -- Function File: [CD] = isocolors (C, V)
- -- Function File: [CD] = isocolors (X, Y, Z, C, V)
- -- Function File: [CD] = isocolors (X, Y, Z, R, G, B, V)
- -- Function File: [CD] = isocolors (R, G, B, V)
- -- Function File: [CD] = isocolors (..., P)
- -- Function File:  isocolors (...)
-     If called with one output argument and the first input argument C
-     is a three-dimensional array that contains color values and the
-     second input argument V keeps the vertices of a geometry then
-     return a matrix CD with color data information for the geometry at
-     computed points `[x, y, z] = meshgrid (1:l, 1:m, 1:n)'.  The
-     output argument CD can be taken to manually set FaceVertexCData of
-     a patch.
-
-     If called with further input arguments X, Y and Z which are
-     three-dimensional arrays of the same size than C then the color
-     data is taken at those given points.  Instead of the color data C
-     this function can also be called with RGB values R, G, B.  If
-     input argumnets X, Y, Z are not given then again `meshgrid'
-     computed values are taken.
-
-     Optionally, the patch handle P can be given as the last input
-     argument to all variations of function calls instead of the
-     vertices data V.  Finally, if no output argument is given then
-     directly change the colors of a patch that is given by the patch
-     handle P.
-
-     For example:
-
-          function [] = isofinish (p)
-            set (gca, "PlotBoxAspectRatioMode", "manual", \
-                 "PlotBoxAspectRatio", [1 1 1]);
-            set (p, "FaceColor", "interp");
-            ## set (p, "FaceLighting", "flat");
-            ## light ("Position", [1 1 5]); ## Available with JHandles
-          endfunction
-
-          N = 15;    ## Increase number of vertices in each direction
-          iso = .4;  ## Change isovalue to .1 to display a sphere
-          lin = linspace (0, 2, N);
-          [x, y, z] = meshgrid (lin, lin, lin);
-          c = abs ((x-.5).^2 + (y-.5).^2 + (z-.5).^2);
-          figure (); ## Open another figure window
-
-          subplot (2, 2, 1); view (-38, 20);
-          [f, v] = isosurface (x, y, z, c, iso);
-          p = patch ("Faces", f, "Vertices", v, "EdgeColor", "none");
-          cdat = rand (size (c));       ## Compute random patch color data
-          isocolors (x, y, z, cdat, p); ## Directly set colors of patch
-          isofinish (p);                ## Call user function isofinish
-
-          subplot (2, 2, 2); view (-38, 20);
-          p = patch ("Faces", f, "Vertices", v, "EdgeColor", "none");
-          [r, g, b] = meshgrid (lin, 2-lin, 2-lin);
-          cdat = isocolors (x, y, z, c, v); ## Compute color data vertices
-          set (p, "FaceVertexCData", cdat); ## Set color data manually
-          isofinish (p);
-
-          subplot (2, 2, 3); view (-38, 20);
-          p = patch ("Faces", f, "Vertices", v, "EdgeColor", "none");
-          cdat = isocolors (r, g, b, c, p); ## Compute color data patch
-          set (p, "FaceVertexCData", cdat); ## Set color data manually
-          isofinish (p);
-
-          subplot (2, 2, 4); view (-38, 20);
-          p = patch ("Faces", f, "Vertices", v, "EdgeColor", "none");
-          r = g = b = repmat ([1:N] / N, [N, 1, N]); ## Black to white
-          cdat = isocolors (x, y, z, r, g, b, v);
-          set (p, "FaceVertexCData", cdat);
-          isofinish (p);
-
-     *See also:* *note isosurface: doc-isosurface, *note isonormals:
-     doc-isonormals.
-
-
- -- Function File:  diffuse (SX, SY, SZ, LV)
-     Calculate diffuse reflection strength of a surface defined by the
-     normal vector elements SX, SY, SZ.  The light vector can be
-     specified using parameter LV.  It can be given as 2-element vector
-     [azimuth, elevation] in degrees or as 3-element vector [lx, ly,
-     lz].
-
-     *See also:* *note specular: doc-specular, *note surfl: doc-surfl.
-
- -- Function File:  specular (SX, SY, SZ, LV, VV)
- -- Function File:  specular (SX, SY, SZ, LV, VV, SE)
-     Calculate specular reflection strength of a surface defined by the
-     normal vector elements SX, SY, SZ using Phong's approximation.
-     The light and view vectors can be specified using parameter LV and
-     VV respectively.  Both can be given as 2-element vectors [azimuth,
-     elevation] in degrees or as 3-element vector [x, y, z].  An
-     optional 6th argument describes the specular exponent (spread) SE.
-
-     *See also:* *note surfl: doc-surfl, *note diffuse: doc-diffuse.
-
- -- Function File: [XX, YY, ZZ] = meshgrid (X, Y, Z)
- -- Function File: [XX, YY] = meshgrid (X, Y)
- -- Function File: [XX, YY] = meshgrid (X)
-     Given vectors of X and Y and Z coordinates, and returning 3
-     arguments, return three-dimensional arrays corresponding to the X,
-     Y, and Z coordinates of a mesh.  When returning only 2 arguments,
-     return matrices corresponding to the X and Y coordinates of a
-     mesh.  The rows of XX are copies of X, and the columns of YY are
-     copies of Y.  If Y is omitted, then it is assumed to be the same
-     as X, and Z is assumed the same as Y.
-
-     *See also:* *note mesh: doc-mesh, *note contour: doc-contour.
-
- -- Function File: [Y1, Y2, ..., Yn] = ndgrid (X1, X2, ..., Xn)
- -- Function File: [Y1, Y2, ..., Yn] = ndgrid (X)
-     Given n vectors X1, ... Xn, `ndgrid' returns n arrays of dimension
-     n. The elements of the i-th output argument contains the elements
-     of the vector Xi repeated over all dimensions different from the
-     i-th dimension.  Calling ndgrid with only one input argument X is
-     equivalent of calling ndgrid with all n input arguments equal to X:
-
-     [Y1, Y2, ...,  Yn] = ndgrid (X, ..., X)
-
-     *See also:* *note meshgrid: doc-meshgrid.
-
- -- Function File:  plot3 (ARGS)
-     Produce three-dimensional plots.  Many different combinations of
-     arguments are possible.  The simplest form is
-
-          plot3 (X, Y, Z)
-
-     in which the arguments are taken to be the vertices of the points
-     to be plotted in three dimensions.  If all arguments are vectors
-     of the same length, then a single continuous line is drawn.  If
-     all arguments are matrices, then each column of the matrices is
-     treated as a separate line.  No attempt is made to transpose the
-     arguments to make the number of rows match.
-
-     If only two arguments are given, as
-
-          plot3 (X, C)
-
-     the real and imaginary parts of the second argument are used as
-     the Y and Z coordinates, respectively.
-
-     If only one argument is given, as
-
-          plot3 (C)
-
-     the real and imaginary parts of the argument are used as the Y and
-     Z values, and they are plotted versus their index.
-
-     Arguments may also be given in groups of three as
-
-          plot3 (X1, Y1, Z1, X2, Y2, Z2, ...)
-
-     in which each set of three arguments is treated as a separate line
-     or set of lines in three dimensions.
-
-     To plot multiple one- or two-argument groups, separate each group
-     with an empty format string, as
-
-          plot3 (X1, C1, "", C2, "", ...)
-
-     An example of the use of `plot3' is
-
-             z = [0:0.05:5];
-             plot3 (cos(2*pi*z), sin(2*pi*z), z, ";helix;");
-             plot3 (z, exp(2i*pi*z), ";complex sinusoid;");
-
-     *See also:* *note plot: doc-plot, *note xlabel: doc-xlabel, *note
-     ylabel: doc-ylabel, *note zlabel: doc-zlabel, *note title:
-     doc-title, *note print: doc-print.
-
- -- Function File: [AZIMUTH, ELEVATION] = view ()
- -- Function File:  view (AZIMUTH, ELEVATION)
- -- Function File:  view ([AZIMUTH ELEVATION])
- -- Function File:  view ([X Y Z])
- -- Function File:  view (DIMS)
- -- Function File:  view (AX, ...)
-     Query or set the viewpoint for the current axes.  The parameters
-     AZIMUTH and ELEVATION can be given as two arguments or as
-     2-element vector.  The viewpoint can also be given with Cartesian
-     coordinates X, Y, and Z.  The call `view (2)' sets the viewpoint
-     to AZIMUTH = 0 and ELEVATION = 90, which is the default for 2-D
-     graphs.  The call `view (3)' sets the viewpoint to AZIMUTH = -37.5
-     and ELEVATION = 30, which is the default for 3-D graphs.  If AX is
-     given, the viewpoint is set for this axes, otherwise it is set for
-     the current axes.
-
- -- Function File:  slice (X, Y, Z, V, SX, SY, SZ)
- -- Function File:  slice (X, Y, Z, V, XI, YI, ZI)
- -- Function File:  slice (V, SX, SY, SZ)
- -- Function File:  slice (V, XI, YI, ZI)
- -- Function File: H = slice (...)
- -- Function File: H = slice (..., METHOD)
-     Plot slices of 3-D data/scalar fields.  Each element of the
-     3-dimensional array V represents a scalar value at a location
-     given by the parameters X, Y, and Z.  The parameters X, X, and Z
-     are either 3-dimensional arrays of the same size as the array V in
-     the "meshgrid" format or vectors.  The parameters XI, etc. respect
-     a similar format to X, etc., and they represent the points at
-     which the array VI is interpolated using interp3.  The vectors SX,
-     SY, and SZ contain points of orthogonal slices of the respective
-     axes.
-
-     If X, Y, Z are omitted, they are assumed to be `x = 1:size (V,
-     2)', `y = 1:size (V, 1)' and `z = 1:size (V, 3)'.
-
-     METHOD is one of:
-
-    "nearest"
-          Return the nearest neighbor.
-
-    "linear"
-          Linear interpolation from nearest neighbors.
-
-    "cubic"
-          Cubic interpolation from four nearest neighbors (not
-          implemented yet).
-
-    "spline"
-          Cubic spline interpolation--smooth first and second
-          derivatives throughout the curve.
-
-     The default method is `"linear"'.  The optional return value H is
-     a vector of handles to the surface graphic objects.
-
-     Examples:
-
-          [x, y, z] = meshgrid (linspace (-8, 8, 32));
-          v = sin (sqrt (x.^2 + y.^2 + z.^2)) ./ (sqrt (x.^2 + y.^2 + z.^2));
-          slice (x, y, z, v, [], 0, []);
-          [xi, yi] = meshgrid (linspace (-7, 7));
-          zi = xi + yi;
-          slice (x, y, z, v, xi, yi, zi);
-
-     *See also:* *note interp3: doc-interp3, *note surface:
-     doc-surface, *note pcolor: doc-pcolor.
-
- -- Function File:  ribbon (X, Y, WIDTH)
- -- Function File:  ribbon (Y)
- -- Function File: H = ribbon (...)
-     Plot a ribbon plot for the columns of Y vs.  X.  The optional
-     parameter WIDTH specifies the width of a single ribbon (default is
-     0.75).  If X is omitted, a vector containing the row numbers is
-     assumed (1:rows(Y)).  If requested, return a vector H of the
-     handles to the surface objects.
-
-     *See also:* *note gca: doc-gca, *note colorbar: doc-colorbar.
-
- -- Function File:  shading (TYPE)
- -- Function File:  shading (AX, ...)
-     Set the shading of surface or patch graphic objects.  Valid
-     arguments for TYPE are
-
-    "flat"
-          Single colored patches with invisible edges.
-
-    "faceted"
-          Single colored patches with visible edges.
-
-    "interp"
-          Color between patch vertices are interpolated and the patch
-          edges are invisible.
-
-     If AX is given the shading is applied to axis AX instead of the
-     current axis.
-
- -- Function File:  scatter3 (X, Y, Z, S, C)
- -- Function File:  scatter3 (..., 'filled')
- -- Function File:  scatter3 (..., STYLE)
- -- Function File:  scatter3 (..., PROP, VAL)
- -- Function File:  scatter3 (H, ...)
- -- Function File: H = scatter3 (...)
-     Plot a scatter plot of the data in 3D.  A marker is plotted at
-     each point defined by the points in the vectors X, Y and Z.  The
-     size of the markers used is determined by S, which can be a scalar
-     or a vector of the same length of X, Y and Z.  If S is not given
-     or is an empty matrix, then the default value of 8 points is used.
-
-     The color of the markers is determined by C, which can be a string
-     defining a fixed color; a 3-element vector giving the red, green,
-     and blue components of the color; a vector of the same length as X
-     that gives a scaled index into the current colormap; or a N-by-3
-     matrix defining the colors of each of the markers individually.
-
-     The marker to use can be changed with the STYLE argument, that is a
-     string defining a marker in the same manner as the `plot' command.
-     If the argument 'filled' is given then the markers as filled.  All
-     additional arguments are passed to the underlying patch command.
-
-     The optional return value H provides a handle to the patch object
-
-          [x, y, z] = peaks (20);
-          scatter3 (x(:), y(:), z(:), [], z(:));
-
-     *See also:* *note plot: doc-plot, *note patch: doc-patch, *note
-     scatter: doc-scatter.
-
-* Menu:
-
-* Aspect Ratio::
-* Three-dimensional Function Plotting::
-* Three-dimensional Geometric Shapes::
 

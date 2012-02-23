@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2008-2011 David Bateman
+Copyright (C) 2008-2012 David Bateman
 
 This file is part of Octave.
 
@@ -75,6 +75,8 @@ hex2num ([\"4005bf0a8b145769\";\"4024000000000000\"])\n\
                 uint64_t ival;
                 double dval;
               } num;
+
+              num.ival = 0;
 
               for (octave_idx_type j = 0; j < nc; j++)
                 {

@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2011 David Bateman
+## Copyright (C) 2007-2012 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -45,7 +45,7 @@ function retval = __axes_limits__ (fcn, varargin)
         error ("%s: argument must be a 2 element vector", fcn);
       else
         if (arg(1) >= arg(2))
-          error ("%s: axis limits must be increasing", fcn)
+          error ("%s: axis limits must be increasing", fcn);
         else
           set (h, fcn, arg(:));
         endif

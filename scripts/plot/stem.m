@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2011 Michel D. Schmid
+## Copyright (C) 2006-2012 Michel D. Schmid
 ##
 ## This file is part of Octave.
 ##
@@ -39,7 +39,7 @@
 ## @example
 ## @group
 ## x = 1:10;
-## y = ones (1, length (x))*2.*x;
+## y = 2*x;
 ## stem (x, y, "r");
 ## @end group
 ## @end example
@@ -47,15 +47,15 @@
 ## @noindent
 ## plots 10 stems with heights from 2 to 20 in red;
 ##
-## The return value of @code{stem} is a vector of "stem series" graphics
-## handles, with one handle per column of the variable @var{y}.  This
+## The optional return value @var{h} is a vector of "stem series" graphics
+## handles with one handle per column of the variable @var{y}.  The
 ## handle regroups the elements of the stem graph together as the
 ## children of the "stem series" handle, allowing them to be altered
 ## together.  For example,
 ##
 ## @example
 ## @group
-## x = [0 : 10]';
+## x = [0:10]';
 ## y = [sin(x), cos(x)]
 ## h = stem (x, y);
 ## set (h(2), "color", "g");
@@ -64,7 +64,7 @@
 ## @end example
 ##
 ## @noindent
-## changes the color of the second "stem series"  and moves the base line
+## changes the color of the second "stem series" and moves the base line
 ## of the first.
 ## @seealso{bar, barh, plot}
 ## @end deftypefn
@@ -86,38 +86,47 @@ function h = stem (varargin)
 
 endfunction
 
+
 %!demo
+%! clf
 %! x = 1:10;
 %! stem (x);
 
 %!demo
+%! clf
 %! x = 1:10;
-%! y = ones (1, length (x))*2.*x;
+%! y = 2*x;
 %! stem (x, y);
 
 %!demo
+%! clf
 %! x = 1:10;
-%! y = ones (size (x))*2.*x;
+%! y = 2*x;
 %! h = stem (x, y, "r");
 
 %!demo
+%! clf
 %! x = 1:10;
-%! y = ones (size (x))*2.*x;
+%! y = 2*x;
 %! h = stem (x, y, "-.k");
 
 %!demo
+%! clf
 %! x = 1:10;
-%! y = ones (size (x))*2.*x;
+%! y = 2*x;
 %! h = stem (x, y, "-.k.");
 
 %!demo
+%! clf
 %! x = 1:10;
-%! y = ones (size (x))*2.*x;
+%! y = 2*x;
 %! h = stem (x, y, "filled");
 
 %!demo
+%! clf
 %! x = [0 : 10]';
 %! y = [sin(x), cos(x)];
 %! h = stem (x, y);
 %! set (h(2), "color", "g");
 %! set (h(1), "basevalue", -1)
+

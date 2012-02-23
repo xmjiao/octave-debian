@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2011 John W. Eaton
+## Copyright (C) 2006-2012 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -19,8 +19,11 @@
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} mexext ()
 ## Return the filename extension used for MEX files.
+## @seealso{mex}
 ## @end deftypefn
 
 function retval = mexext ()
   retval = "mex";
 endfunction
+
+%!assert (mexext (), "mex")

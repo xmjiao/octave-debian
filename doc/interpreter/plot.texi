@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.
 
-@c Copyright (C) 1996-2011 John W. Eaton
+@c Copyright (C) 1996-2012 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -255,6 +255,8 @@ in the key.
 If the first argument is an axis handle, then plot into these axes,
 rather than the current axis handle returned by @code{gca}.
 
+The optional return value @var{h} is a graphics handle to the created plot.
+
 @seealso{@ref{doc-semilogx,,semilogx}, @ref{doc-semilogy,,semilogy}, @ref{doc-loglog,,loglog}, @ref{doc-polar,,polar}, @ref{doc-mesh,,mesh}, @ref{doc-contour,,contour}, @ref{doc-bar,,bar}, @ref{doc-stairs,,stairs}, @ref{doc-errorbar,,errorbar}, @ref{doc-xlabel,,xlabel}, @ref{doc-ylabel,,ylabel}, @ref{doc-title,,title}, @ref{doc-print,,print}}
 @end deftypefn
 
@@ -316,6 +318,8 @@ both of the axes use log scales.
 Produce a two-dimensional plot using a logarithmic scale for the @var{x}
 axis.  See the documentation of @code{plot} for a description of the
 arguments that @code{semilogx} will accept.
+
+The optional return value @var{h} is a graphics handle to the created plot.
 @seealso{@ref{doc-plot,,plot}, @ref{doc-semilogy,,semilogy}, @ref{doc-loglog,,loglog}}
 @end deftypefn
 
@@ -331,6 +335,8 @@ arguments that @code{semilogx} will accept.
 Produce a two-dimensional plot using a logarithmic scale for the @var{y}
 axis.  See the documentation of @code{plot} for a description of the
 arguments that @code{semilogy} will accept.
+
+The optional return value @var{h} is a graphics handle to the created plot.
 @seealso{@ref{doc-plot,,plot}, @ref{doc-semilogx,,semilogx}, @ref{doc-loglog,,loglog}}
 @end deftypefn
 
@@ -346,6 +352,8 @@ arguments that @code{semilogy} will accept.
 Produce a two-dimensional plot using log scales for both axes.  See
 the documentation of @code{plot} for a description of the arguments
 that @code{loglog} will accept.
+
+The optional return value @var{h} is a graphics handle to the created plot.
 @seealso{@ref{doc-plot,,plot}, @ref{doc-semilogx,,semilogx}, @ref{doc-semilogy,,semilogy}}
 @end deftypefn
 
@@ -389,7 +397,7 @@ are plotted side-by-side.  This behavior can be changed by the @var{style}
 argument, which can take the values @code{"grouped"} (the default),
 or @code{"stacked"}.
 
-The optional return value @var{h} provides a handle to the "bar series"
+The optional return value @var{h} is a handle to the created "bar series"
 object with one handle per column of the variable @var{y}.  This
 series allows common elements of the group of bar series objects to
 be changed in a single bar series and the same properties are changed
@@ -419,8 +427,8 @@ The color of the bars is taken from the figure's colormap, such that
 
 @example
 @group
-bar (rand(10,3))
-colormap (summer ())
+bar (rand (10, 3));
+colormap (summer (64));
 @end group
 @end example
 
@@ -430,7 +438,7 @@ manually using the "facecolor" property as shown below.
 
 @example
 @group
-h = bar (rand(10,3))
+h = bar (rand (10, 3));
 set (h(1), "facecolor", "r")
 set (h(2), "facecolor", "g")
 set (h(3), "facecolor", "b")
@@ -462,13 +470,13 @@ are plotted side-by-side.  This behavior can be changed by the @var{style}
 argument, which can take the values @code{"grouped"} (the default),
 or @code{"stacked"}.
 
-The optional return value @var{h} provides a handle to the bar series
-object.  See @code{bar} for a description of the use of the bar series.
-
 The optional input handle @var{h} allows an axis handle to be passed.
 Properties of the patch graphics object can be changed using
 @var{prop}, @var{val} pairs.
 
+The optional return value @var{h} is a graphics handle to the created
+bar series object.  See @code{bar} for a description of the use of the
+bar series.
 @seealso{@ref{doc-bar,,bar}, @ref{doc-plot,,plot}}
 @end deftypefn
 
@@ -509,7 +517,7 @@ color may be modified.
 
 @example
 @group
-hist (randn (1, 100), 25, "facecolor", "r", "edgecolor", "b")
+hist (randn (1, 100), 25, "facecolor", "r", "edgecolor", "b");
 @end group
 @end example
 
@@ -518,8 +526,8 @@ The histograms colors also depend upon the colormap.
 
 @example
 @group
-hist (rand (10, 3))
-colormap (summer ())
+hist (rand (10, 3));
+colormap (summer ());
 @end group
 @end example
 
@@ -589,7 +597,7 @@ be altered by the @code{linespec} argument in the same manner as the
 @example
 @group
 x = 1:10;
-y = ones (1, length (x))*2.*x;
+y = 2*x;
 stem (x, y, "r");
 @end group
 @end example
@@ -597,15 +605,15 @@ stem (x, y, "r");
 @noindent
 plots 10 stems with heights from 2 to 20 in red;
 
-The return value of @code{stem} is a vector of "stem series" graphics
-handles, with one handle per column of the variable @var{y}.  This
+The optional return value @var{h} is a vector of "stem series" graphics
+handles with one handle per column of the variable @var{y}.  The
 handle regroups the elements of the stem graph together as the
 children of the "stem series" handle, allowing them to be altered
 together.  For example,
 
 @example
 @group
-x = [0 : 10]';
+x = [0:10]';
 y = [sin(x), cos(x)]
 h = stem (x, y);
 set (h(2), "color", "g");
@@ -614,7 +622,7 @@ set (h(1), "basevalue", -1)
 @end example
 
 @noindent
-changes the color of the second "stem series"  and moves the base line
+changes the color of the second "stem series" and moves the base line
 of the first.
 @seealso{@ref{doc-bar,,bar}, @ref{doc-barh,,barh}, @ref{doc-plot,,plot}}
 @end deftypefn
@@ -726,9 +734,7 @@ axis.  Finally @var{p} returns the graphics objects associated with
 the histogram and @var{pax} the corresponding axes objects.
 
 @example
-@group
-plotmatrix (randn (100, 3), 'g+')
-@end group
+plotmatrix (randn (100, 3), "g+")
 @end example
 
 @end deftypefn
@@ -759,6 +765,10 @@ absent, then the abscissa are assumed to be @code{1 : length (@var{x})}.
 @var{y} can be a string array, a cell array of strings or a numerical
 vector.
 
+The optional return value @var{h} is a 2-element vector with a graphics
+handle for the created bar plot and a second handle for the created line
+plot.
+
 An example of the use of @code{pareto} is
 
 @example
@@ -766,7 +776,7 @@ An example of the use of @code{pareto} is
 Cheese = @{"Cheddar", "Swiss", "Camembert", ...
           "Munster", "Stilton", "Blue"@};
 Sold = [105, 30, 70, 10, 15, 20];
-pareto(Sold, Cheese);
+pareto (Sold, Cheese);
 @end group
 @end example
 @end deftypefn
@@ -787,22 +797,21 @@ If @var{r} is given and is a scalar, then the histogram is produced with
 @var{r} bins.  If @var{r} is a vector, then the center of each bin are
 defined by the values of @var{r}.
 
-The optional return value @var{h} provides a list of handles to the
-the parts of the vector field (body, arrow and marker).
+The optional return value @var{h} is a vector of graphics handles to the
+line objects representing each histogram.
 
-If two output arguments are requested, then rather than plotting the
+If two output arguments are requested then, rather than plotting the
 histogram, the polar vectors necessary to plot the histogram are
 returned.
 
 @example
 @group
-[r, t] = rose ([2*randn(1e5,1), pi + 2 * randn(1e5,1)]);
+[r, t] = rose ([2*randn(1e5,1), pi + 2*randn(1e5,1)]);
 polar (r, t);
 @end group
 @end example
 
-
-@seealso{@ref{doc-plot,,plot}, @ref{doc-compass,,compass}, @ref{doc-polar,,polar}, @ref{doc-hist,,hist}}
+@seealso{@ref{doc-polar,,polar}, @ref{doc-compass,,compass}, @ref{doc-hist,,hist}}
 @end deftypefn
 
 
@@ -920,9 +929,8 @@ x = 0:2;
 y = x;
 z = x' * y;
 contourc (x, y, z, 2:3)
-     @result{}   2.0000   2.0000   1.0000   3.0000   1.5000   2.0000
-     2.0000   1.0000   2.0000   2.0000   2.0000   1.5000
-
+   @result{}   2.0000   2.0000   1.0000   3.0000   1.5000   2.0000
+        2.0000   1.0000   2.0000   2.0000   2.0000   1.5000
 @end group
 @end example
 @seealso{@ref{doc-contour,,contour}}
@@ -948,8 +956,8 @@ contour levels, @var{c}, is only returned if requested.  For example:
 @group
 contour3 (peaks (19));
 hold on
-surface (peaks (19), "facecolor", "none", "EdgeColor", "black")
-colormap hot
+surface (peaks (19), "facecolor", "none", "EdgeColor", "black");
+colormap hot;
 @end group
 @end example
 
@@ -1166,10 +1174,13 @@ produces the spiral plot shown in @ref{fig:polar}.
 @deftypefnx {Function File} {} polar (@var{theta}, @var{rho}, @var{fmt})
 @deftypefnx {Function File} {} polar (@var{h}, @dots{})
 @deftypefnx {Function File} {@var{h} =} polar (@dots{})
-Make a two-dimensional plot given the polar coordinates @var{theta} and
+Create a two-dimensional plot from polar coordinates @var{theta} and
 @var{rho}.
 
-The optional third argument specifies the line type.
+The optional argument @var{fmt} specifies the line format.
+
+The optional return value @var{h} is a graphics handle to the created plot.
+
 @seealso{@ref{doc-plot,,plot}}
 @end deftypefn
 
@@ -1181,7 +1192,7 @@ The optional third argument specifies the line type.
 @deftypefnx {Function File} {} pie (@dots{}, @var{labels})
 @deftypefnx {Function File} {} pie (@var{h}, @dots{});
 @deftypefnx {Function File} {@var{h} =} pie (@dots{});
-Produce a pie chart.
+Produce a 2-D pie chart.
 
 Called with a single vector argument, produces a pie chart of the
 elements in @var{x}, with the size of the slice determined by percentage
@@ -1193,7 +1204,8 @@ if non zero 'explodes' the slice from the pie chart.
 If given @var{labels} is a cell array of strings of the same length as
 @var{x}, giving the labels of each of the slices of the pie chart.
 
-The optional return value @var{h} provides a handle to the patch object.
+The optional return value @var{h} is a list of handles to the patch
+and text objects generating the plot.
 
 @seealso{@ref{doc-pie3,,pie3}, @ref{doc-bar,,bar}, @ref{doc-stem,,stem}}
 @end deftypefn
@@ -1218,8 +1230,8 @@ if non zero 'explodes' the slice from the pie chart.
 If given @var{labels} is a cell array of strings of the same length as
 @var{x}, giving the labels of each of the slices of the pie chart.
 
-The optional return value @var{h} provides a handle list to patch, surface
-and text objects generating this plot.
+The optional return value @var{h} is a list of graphics handles to the patch,
+surface, and text objects generating the plot.
 
 @seealso{@ref{doc-pie,,pie}, @ref{doc-bar,,bar}, @ref{doc-stem,,stem}}
 @end deftypefn
@@ -1244,7 +1256,7 @@ If @var{x} and @var{y} are undefined they are assumed to be
 size(@var{u})}.
 
 The variable @var{s} is a scalar defining a scaling factor to use for
- the arrows of the field relative to the mesh spacing.  A value of 0
+the arrows of the field relative to the mesh spacing.  A value of 0
 disables all scaling.  The default value is 1.
 
 The style to use for the plot can be defined with a line style @var{style}
@@ -1253,9 +1265,9 @@ If a marker is specified then markers at the grid points of the vectors are
 printed rather than arrows.  If the argument 'filled' is given then the
 markers as filled.
 
-The optional return value @var{h} provides a quiver group that
-regroups the components of the quiver plot (body, arrow and marker),
-and allows them to be changed together
+The optional return value @var{h} is a graphics handle to a quiver object.
+A quiver object regroups the components of the quiver plot (body, arrow,
+and marker), and allows them to be changed together.
 
 @example
 @group
@@ -1297,9 +1309,9 @@ If a marker is specified then markers at the grid points of the vectors are
 printed rather than arrows.  If the argument 'filled' is given then the
 markers as filled.
 
-The optional return value @var{h} provides a quiver group that
-regroups the components of the quiver plot (body, arrow and marker),
-and allows them to be changed together
+The optional return value @var{h} is a graphics handle to a quiver object.
+A quiver object regroups the components of the quiver plot (body, arrow,
+and marker), and allows them to be changed together.
 
 @example
 @group
@@ -1332,17 +1344,17 @@ given, then @code{@var{u} = real (@var{z})} and @code{@var{v} = imag
 The style to use for the plot can be defined with a line style @var{style}
 in a similar manner to the line styles used with the @code{plot} command.
 
-The optional return value @var{h} provides a list of handles to the
-the parts of the vector field (body, arrow and marker).
+The optional return value @var{h} is a vector of graphics handles to the
+line objects representing the drawn vectors.
 
 @example
 @group
-a = toeplitz([1;randn(9,1)],[1,randn(1,9)]);
-compass (eig (a))
+a = toeplitz ([1;randn(9,1)], [1,randn(1,9)]);
+compass (eig (a));
 @end group
 @end example
 
-@seealso{@ref{doc-plot,,plot}, @ref{doc-polar,,polar}, @ref{doc-quiver,,quiver}, @ref{doc-feather,,feather}}
+@seealso{@ref{doc-polar,,polar}, @ref{doc-quiver,,quiver}, @ref{doc-feather,,feather}, @ref{doc-plot,,plot}}
 @end deftypefn
 
 
@@ -1362,13 +1374,13 @@ from equidistant points on the x-axis.  If a single complex argument
 The style to use for the plot can be defined with a line style @var{style}
 in a similar manner to the line styles used with the @code{plot} command.
 
-The optional return value @var{h} provides a list of handles to the
-the parts of the vector field (body, arrow and marker).
+The optional return value @var{h} is a vector of graphics handles to the
+line objects representing the drawn vectors.
 
 @example
 @group
-phi = [0 : 15 : 360] * pi / 180;
-feather (sin (phi), cos (phi))
+phi = [0 : 15 : 360] * pi/180;
+feather (sin (phi), cos (phi));
 @end group
 @end example
 
@@ -1426,9 +1438,11 @@ If the @var{x} argument is omitted it is assumed to be given by
 @code{1 : rows (@var{y})}.  A value @var{lvl} can be defined that determines
 where the base level of the shading under the curve should be defined.
 
-Additional arguments to the @code{area} function are passed to the
-@code{patch}.  The optional return value @var{h} provides a handle to
-area series object representing the patches of the areas.
+Additional arguments to the @code{area} function are passed to
+@code{patch}.
+
+The optional return value @var{h} is a graphics handle to the hggroup
+object representing the area patch objects.
 @seealso{@ref{doc-plot,,plot}, @ref{doc-patch,,patch}}
 @end deftypefn
 
@@ -1621,6 +1635,10 @@ get or set individual axis limits.  Each has the same form.
 @anchor{doc-zlim}
 @c xlim scripts/plot/xlim.m
 @anchor{doc-xlim}
+@c List other forms of function in documentation index
+@findex ylim
+@findex zlim
+
 @deftypefn  {Function File} {@var{xl} =} xlim ()
 @deftypefnx {Function File} {} xlim (@var{xl})
 @deftypefnx {Function File} {@var{m} =} xlim ('mode')
@@ -1680,8 +1698,8 @@ to the plot command.
 
 @example
 @group
-   fplot ("cos", [0, 2*pi])
-   fplot ("[cos(x), sin(x)]", [0, 2*pi])
+fplot ("cos", [0, 2*pi])
+fplot ("[cos(x), sin(x)]", [0, 2*pi])
 @end group
 @end example
 @seealso{@ref{doc-plot,,plot}}
@@ -1701,7 +1719,7 @@ function include @code{ezplot}, @code{ezcontour}, @code{ezcontourf} and
 @deftypefnx {Function File} {} ezplot (@var{h}, @dots{})
 @deftypefnx {Function File} {@var{h} =} ezplot (@dots{})
 
-Plots in two-dimensions the curve defined by @var{f}.  The function
+Plot the curve defined by @var{f} in two dimensions.  The function
 @var{f} may be a string, inline function or function handle and can
 have either one or two variables.  If @var{f} has one variable, then
 the function is plotted over the domain @code{-2*pi < @var{x} < 2*pi}
@@ -1712,7 +1730,7 @@ is calculated over the meshed domain @code{-2*pi < @var{x} | @var{y}
 < 2*pi} with 60 by 60 in the mesh.  For example:
 
 @example
-ezplot (@@(@var{x}, @var{y}) @var{x} .^ 2 - @var{y} .^ 2 - 1)
+ezplot (@@(@var{x}, @var{y}) @var{x}.^2 - @var{y}.^2 - 1)
 @end example
 
 If two functions are passed as strings, inline functions or function
@@ -1738,8 +1756,7 @@ of @var{y} by the second pair of elements.
 @var{n} is a scalar defining the number of points to use in plotting
 the function.
 
-The optional return value @var{h} provides a list of handles to the
-the line objects plotted.
+The optional return value @var{h} is a graphics handle to the created plot.
 
 @seealso{@ref{doc-plot,,plot}, @ref{doc-ezplot3,,ezplot3}}
 @end deftypefn
@@ -1753,7 +1770,7 @@ the line objects plotted.
 @deftypefnx {Function File} {} ezcontour (@var{h}, @dots{})
 @deftypefnx {Function File} {@var{h} =} ezcontour (@dots{})
 
-Plots the contour lines of a function.  @var{f} is a string, inline function
+Plot the contour lines of a function.  @var{f} is a string, inline function
 or function handle with two arguments defining the function.  By default the
 plot is over the domain @code{-2*pi < @var{x} < 2*pi} and @code{-2*pi <
 @var{y} < 2*pi} with 60 points in each dimension.
@@ -1765,12 +1782,11 @@ separately.
 
 @var{n} is a scalar defining the number of points to use in each dimension.
 
-The optional return value @var{h} provides a list of handles to the
-the parts of the vector field (body, arrow and marker).
+The optional return value @var{h} is a graphics handle to the created plot.
 
 @example
 @group
-f = @@(x,y) sqrt(abs(x .* y)) ./ (1 + x.^2 + y.^2);
+f = @@(x,y) sqrt (abs (x .* y)) ./ (1 + x.^2 + y.^2);
 ezcontour (f, [-3, 3]);
 @end group
 @end example
@@ -1787,7 +1803,7 @@ ezcontour (f, [-3, 3]);
 @deftypefnx {Function File} {} ezcontourf (@var{h}, @dots{})
 @deftypefnx {Function File} {@var{h} =} ezcontourf (@dots{})
 
-Plots the filled contour lines of a function.  @var{f} is a string, inline
+Plot the filled contour lines of a function.  @var{f} is a string, inline
 function or function handle with two arguments defining the function.  By
 default the plot is over the domain @code{-2*pi < @var{x} < 2*pi} and
 @code{-2*pi < @var{y} < 2*pi} with 60 points in each dimension.
@@ -1799,12 +1815,11 @@ separately.
 
 @var{n} is a scalar defining the number of points to use in each dimension.
 
-The optional return value @var{h} provides a list of handles to the
-the parts of the vector field (body, arrow and marker).
+The optional return value @var{h} is a graphics handle to the created plot.
 
 @example
 @group
-f = @@(x,y) sqrt(abs(x .* y)) ./ (1 + x.^2 + y.^2);
+f = @@(x,y) sqrt (abs (x .* y)) ./ (1 + x.^2 + y.^2);
 ezcontourf (f, [-3, 3]);
 @end group
 @end example
@@ -1821,7 +1836,7 @@ ezcontourf (f, [-3, 3]);
 @deftypefnx {Function File} {} ezpolar (@var{h}, @dots{})
 @deftypefnx {Function File} {@var{h} =} ezpolar (@dots{})
 
-Plots in polar plot defined by a function.  The function @var{f} is either
+Plot a function in polar coordinates.  The function @var{f} is either
 a string, inline function or function handle with one arguments defining
 the function.  By default the plot is over the domain @code{0 < @var{x} <
 2*pi} with 60 points.
@@ -1830,8 +1845,7 @@ If @var{dom} is a two element vector, it represents the minimum and maximum
 value of both @var{t}.  @var{n} is a scalar defining the number of points to
 use.
 
-The optional return value @var{h} provides a list of handles to the
-the parts of the vector field (body, arrow and marker).
+The optional return value @var{h} is a graphics handle to the created plot.
 
 @example
 ezpolar (@@(t) 1 + sin (t));
@@ -1854,15 +1868,15 @@ ezpolar (@@(t) 1 + sin (t));
 @deftypefnx {Function File} {@var{h} =} rectangle (@dots{})
 
 Draw rectangular patch defined by @var{pos} and @var{curv}.  The variable
-@code{@var{pos}(1 : 2)} defines the lower left-hand corner of the patch
-and @code{@var{pos}(3 : 4)} defines its width and height.  By default, the
+@code{@var{pos}(1:2)} defines the lower left-hand corner of the patch
+and @code{@var{pos}(3:4)} defines its width and height.  By default, the
 value of @var{pos} is @code{[0, 0, 1, 1]}.
 
 The variable @var{curv} defines the curvature of the sides of the rectangle
 and may be a scalar or two-element vector with values between 0 and 1.
 A value of 0 represents no curvature of the side, whereas a value of 1
 means that the side is entirely curved into the arc of a circle.
-If @var{curv} is a two-element vector, then the first element is the 
+If @var{curv} is a two-element vector, then the first element is the
 curvature along the x-axis of the patch and the second along y-axis.
 
 If @var{curv} is a scalar, it represents the curvature of the shorter of the
@@ -1870,12 +1884,13 @@ two sides of the rectangle and the curvature of the other side is defined
 by
 
 @example
-min (pos (1: 2)) / max (pos (1:2)) * curv
+min (pos (1:2)) / max (pos (1:2)) * curv
 @end example
 
-Other properties are passed to the underlying patch command.  If called 
-with an output argument, @code{rectangle} returns the handle to the 
-rectangle.
+Other properties are passed to the underlying patch command. 
+
+The optional return value @var{h} is a graphics handle to the created
+rectangle object.
 @end deftypefn
 @seealso{@ref{doc-patch,,patch}}
 
@@ -1949,6 +1964,9 @@ to different @var{y} values.
 The color of the mesh is derived from the @code{colormap}
 and the value of @var{z}.  Optionally the color of the mesh can be
 specified independent of @var{z}, by adding a fourth matrix, @var{c}.
+
+The optional return value @var{h} is a graphics handle to the created
+surface object.
 @seealso{@ref{doc-colormap,,colormap}, @ref{doc-contour,,contour}, @ref{doc-meshgrid,,meshgrid}, @ref{doc-surf,,surf}}
 @end deftypefn
 
@@ -2007,6 +2025,9 @@ to different @var{y} values.
 The color of the surface is derived from the @code{colormap} and
 the value of @var{z}.  Optionally the color of the surface can be
 specified independent of @var{z}, by adding a fourth matrix, @var{c}.
+
+The optional return value @var{h} is a graphics handle to the created
+surface object.
 @seealso{@ref{doc-colormap,,colormap}, @ref{doc-contour,,contour}, @ref{doc-meshgrid,,meshgrid}, @ref{doc-mesh,,mesh}}
 @end deftypefn
 
@@ -2067,8 +2088,8 @@ Example:
 
 @example
 @group
-colormap(bone);
-surfl(peaks);
+colormap (bone (64));
+surfl (peaks);
 shading interp;
 @end group
 @end example
@@ -2088,8 +2109,8 @@ surface is defined by @var{x}, @var{y}, and @var{z}.  If @var{x} and
 
 @example
 @group
-[@var{x}, @var{y}] = meshgrid (1:size(@var{z}, 1),
-                     1:size(@var{z}, 2));
+[@var{x}, @var{y}] = meshgrid (1:size (@var{z}, 1),
+                   1:size (@var{z}, 2));
 @end group
 @end example
 
@@ -2168,43 +2189,48 @@ isosurface (x, y, z, val, .5);
 will directly draw a random isosurface geometry in a graphics window.
 Another example for an isosurface geometry with different additional
 coloring
+@c Set example in small font to prevent overfull line
 
-@example
-N = 15;    ## Increase number of vertices in each direction
-iso = .4;  ## Change isovalue to .1 to display a sphere
+@smallexample
+N = 15;    # Increase number of vertices in each direction
+iso = .4;  # Change isovalue to .1 to display a sphere
 lin = linspace (0, 2, N);
 [x, y, z] = meshgrid (lin, lin, lin);
 c = abs ((x-.5).^2 + (y-.5).^2 + (z-.5).^2);
-figure (); ## Open another figure window
+figure (); # Open another figure window
 
-subplot (2, 2, 1); view (-38, 20);
+subplot (2,2,1); view (-38, 20);
 [f, v] = isosurface (x, y, z, c, iso);
 p = patch ("Faces", f, "Vertices", v, "EdgeColor", "none");
-set (gca, "PlotBoxAspectRatioMode","manual", "PlotBoxAspectRatio", [1 1 1]);
+set (gca, "PlotBoxAspectRatioMode", "manual", ...
+          "PlotBoxAspectRatio", [1 1 1]);
  set (p, "FaceColor", "green", "FaceLighting", "phong");
- light ("Position", [1 1 5]); ## Available with the JHandles package
+ light ("Position", [1 1 5]); # Available with the JHandles package
 
-subplot (2, 2, 2); view (-38, 20);
+subplot (2,2,2); view (-38, 20);
 p = patch ("Faces", f, "Vertices", v, "EdgeColor", "blue");
-set (gca, "PlotBoxAspectRatioMode","manual", "PlotBoxAspectRatio", [1 1 1]);
+set (gca, "PlotBoxAspectRatioMode", "manual", ...
+          "PlotBoxAspectRatio", [1 1 1]);
  set (p, "FaceColor", "none", "FaceLighting", "phong");
  light ("Position", [1 1 5]);
 
-subplot (2, 2, 3); view (-38, 20);
+subplot (2,2,3); view (-38, 20);
 [f, v, c] = isosurface (x, y, z, c, iso, y);
-p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", c, \
+p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", c, ...
            "FaceColor", "interp", "EdgeColor", "none");
-set (gca, "PlotBoxAspectRatioMode","manual", "PlotBoxAspectRatio", [1 1 1]);
+set (gca, "PlotBoxAspectRatioMode", "manual", ...
+          "PlotBoxAspectRatio", [1 1 1]);
  set (p, "FaceLighting", "phong");
  light ("Position", [1 1 5]);
 
-subplot (2, 2, 4); view (-38, 20);
-p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", c, \
+subplot (2,2,4); view (-38, 20);
+p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", c, ...
            "FaceColor", "interp", "EdgeColor", "blue");
-set (gca, "PlotBoxAspectRatioMode","manual", "PlotBoxAspectRatio", [1 1 1]);
+set (gca, "PlotBoxAspectRatioMode", "manual", ...
+          "PlotBoxAspectRatio", [1 1 1]);
  set (p, "FaceLighting", "phong");
  light ("Position", [1 1 5]);
-@end example
+@end smallexample
 
 @seealso{@ref{doc-isonormals,,isonormals}, @ref{doc-isocolors,,isocolors}}
 @end deftypefn
@@ -2240,48 +2266,50 @@ If no output argument is given then directly redraw the patch that is
 given by the patch handle @var{p}.
 
 For example:
+@c Set example in small font to prevent overfull line
 
-@example
+@smallexample
 function [] = isofinish (p)
-  set (gca, "PlotBoxAspectRatioMode","manual","PlotBoxAspectRatio",[1 1 1]);
-  set (p, "VertexNormals", -get(p,"VertexNormals")); ## Revert normals
+  set (gca, "PlotBoxAspectRatioMode", "manual", ...
+            "PlotBoxAspectRatio", [1 1 1]);
+  set (p, "VertexNormals", -get (p,"VertexNormals")); # Revert normals
   set (p, "FaceColor", "interp");
   ## set (p, "FaceLighting", "phong");
-  ## light ("Position", [1 1 5]); ## Available with JHandles
+  ## light ("Position", [1 1 5]); # Available with JHandles
 endfunction
 
-N = 15;    ## Increase number of vertices in each direction
-iso = .4;  ## Change isovalue to .1 to display a sphere
+N = 15;    # Increase number of vertices in each direction
+iso = .4;  # Change isovalue to .1 to display a sphere
 lin = linspace (0, 2, N);
 [x, y, z] = meshgrid (lin, lin, lin);
 c = abs ((x-.5).^2 + (y-.5).^2 + (z-.5).^2);
-figure (); ## Open another figure window
+figure (); # Open another figure window
 
-subplot (2, 2, 1); view (-38, 20);
+subplot (2,2,1); view (-38, 20);
 [f, v, cdat] = isosurface (x, y, z, c, iso, y);
-p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, \
-        "FaceColor", "interp", "EdgeColor", "none");
+p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, ...
+           "FaceColor", "interp", "EdgeColor", "none");
 isofinish (p); ## Call user function isofinish
 
-subplot (2, 2, 2); view (-38, 20);
-p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, \
-        "FaceColor", "interp", "EdgeColor", "none");
-isonormals (x, y, z, c, p); ## Directly modify patch
+subplot (2,2,2); view (-38, 20);
+p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, ...
+           "FaceColor", "interp", "EdgeColor", "none");
+isonormals (x, y, z, c, p); # Directly modify patch
 isofinish (p);
 
-subplot (2, 2, 3); view (-38, 20);
-p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, \
-        "FaceColor", "interp", "EdgeColor", "none");
-n = isonormals (x, y, z, c, v); ## Compute normals of isosurface
-set (p, "VertexNormals", n);    ## Manually set vertex normals
+subplot (2,2,3); view (-38, 20);
+p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, ...
+           "FaceColor", "interp", "EdgeColor", "none");
+n = isonormals (x, y, z, c, v); # Compute normals of isosurface
+set (p, "VertexNormals", n);    # Manually set vertex normals
 isofinish (p);
 
-subplot (2, 2, 4); view (-38, 20);
-p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, \
-        "FaceColor", "interp", "EdgeColor", "none");
-isonormals (x, y, z, c, v, "negate"); ## Use reverse directly
+subplot (2,2,4); view (-38, 20);
+p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", cdat, ...
+           "FaceColor", "interp", "EdgeColor", "none");
+isonormals (x, y, z, c, v, "negate"); # Use reverse directly
 isofinish (p);
-@end example
+@end smallexample
 
 @seealso{@ref{doc-isosurface,,isosurface}, @ref{doc-isocolors,,isocolors}}
 @end deftypefn
@@ -2322,43 +2350,43 @@ For example:
 
 @example
 function [] = isofinish (p)
-  set (gca, "PlotBoxAspectRatioMode", "manual", \
-       "PlotBoxAspectRatio", [1 1 1]);
+  set (gca, "PlotBoxAspectRatioMode", "manual", ...
+            "PlotBoxAspectRatio", [1 1 1]);
   set (p, "FaceColor", "interp");
   ## set (p, "FaceLighting", "flat");
   ## light ("Position", [1 1 5]); ## Available with JHandles
 endfunction
 
-N = 15;    ## Increase number of vertices in each direction
-iso = .4;  ## Change isovalue to .1 to display a sphere
+N = 15;    # Increase number of vertices in each direction
+iso = .4;  # Change isovalue to .1 to display a sphere
 lin = linspace (0, 2, N);
 [x, y, z] = meshgrid (lin, lin, lin);
 c = abs ((x-.5).^2 + (y-.5).^2 + (z-.5).^2);
-figure (); ## Open another figure window
+figure (); # Open another figure window
 
-subplot (2, 2, 1); view (-38, 20);
+subplot (2,2,1); view (-38, 20);
 [f, v] = isosurface (x, y, z, c, iso);
 p = patch ("Faces", f, "Vertices", v, "EdgeColor", "none");
-cdat = rand (size (c));       ## Compute random patch color data
-isocolors (x, y, z, cdat, p); ## Directly set colors of patch
-isofinish (p);                ## Call user function isofinish
+cdat = rand (size (c));       # Compute random patch color data
+isocolors (x, y, z, cdat, p); # Directly set colors of patch
+isofinish (p);                # Call user function isofinish
 
-subplot (2, 2, 2); view (-38, 20);
+subplot (2,2,2); view (-38, 20);
 p = patch ("Faces", f, "Vertices", v, "EdgeColor", "none");
 [r, g, b] = meshgrid (lin, 2-lin, 2-lin);
-cdat = isocolors (x, y, z, c, v); ## Compute color data vertices
-set (p, "FaceVertexCData", cdat); ## Set color data manually
+cdat = isocolors (x, y, z, c, v); # Compute color data vertices
+set (p, "FaceVertexCData", cdat); # Set color data manually
 isofinish (p);
 
-subplot (2, 2, 3); view (-38, 20);
+subplot (2,2,3); view (-38, 20);
 p = patch ("Faces", f, "Vertices", v, "EdgeColor", "none");
-cdat = isocolors (r, g, b, c, p); ## Compute color data patch
-set (p, "FaceVertexCData", cdat); ## Set color data manually
+cdat = isocolors (r, g, b, c, p); # Compute color data patch
+set (p, "FaceVertexCData", cdat); # Set color data manually
 isofinish (p);
 
-subplot (2, 2, 4); view (-38, 20);
+subplot (2,2,4); view (-38, 20);
 p = patch ("Faces", f, "Vertices", v, "EdgeColor", "none");
-r = g = b = repmat ([1:N] / N, [N, 1, N]); ## Black to white
+r = g = b = repmat ([1:N] / N, [N, 1, N]); # Black to white
 cdat = isocolors (x, y, z, r, g, b, v);
 set (p, "FaceVertexCData", cdat);
 isofinish (p);
@@ -2489,9 +2517,9 @@ An example of the use of @code{plot3} is
 
 @example
 @group
-   z = [0:0.05:5];
-   plot3 (cos(2*pi*z), sin(2*pi*z), z, ";helix;");
-   plot3 (z, exp(2i*pi*z), ";complex sinusoid;");
+z = [0:0.05:5];
+plot3 (cos (2*pi*z), sin (2*pi*z), z, ";helix;");
+plot3 (z, exp (2i*pi*z), ";complex sinusoid;");
 @end group
 @end example
 @seealso{@ref{doc-plot,,plot}, @ref{doc-xlabel,,xlabel}, @ref{doc-ylabel,,ylabel}, @ref{doc-zlabel,,zlabel}, @ref{doc-title,,title}, @ref{doc-print,,print}}
@@ -2560,8 +2588,9 @@ throughout the curve.
 @end table
 
 The default method is @code{"linear"}.
-The optional return value @var{h} is a vector of handles to the
-surface graphic objects.
+
+The optional return value @var{h} is a graphics handle to the created
+surface object.
 
 Examples:
 
@@ -2587,9 +2616,10 @@ slice (x, y, z, v, xi, yi, zi);
 Plot a ribbon plot for the columns of @var{y} vs.  @var{x}.  The
 optional parameter @var{width} specifies the width of a single ribbon
 (default is 0.75).  If @var{x} is omitted, a vector containing the
-row numbers is assumed (1:rows(Y)).  If requested, return a vector
-@var{h} of the handles to the surface objects.
-@seealso{@ref{doc-gca,,gca}, @ref{doc-colorbar,,colorbar}}
+row numbers is assumed (1:rows(Y)).
+
+The optional return value @var{h} is a vector of graphics handles to
+the surface objects representing each ribbon.
 @end deftypefn
 
 
@@ -2643,7 +2673,8 @@ string defining a marker in the same manner as the @code{plot} command.
 If the argument 'filled' is given then the markers as filled.  All
 additional arguments are passed to the underlying patch command.
 
-The optional return value @var{h} provides a handle to the patch object
+The optional return value @var{h} is a graphics handle to the hggroup
+object representing the points.
 
 @example
 @group
@@ -2727,7 +2758,7 @@ Use the axes, with handle @var{hax}, instead of the current axes.
 @deftypefnx {Function File} {} ezplot3 (@var{h}, @dots{})
 @deftypefnx {Function File} {@var{h} =} ezplot3 (@dots{})
 
-Plots in three-dimensions the curve defined parametrically.
+Plot a parametrically defined curve in three dimensions.
 @var{fx}, @var{fy}, and @var{fz} are strings, inline functions
 or function handles with one arguments defining the function.  By
 default the plot is over the domain @code{-2*pi < @var{x} < 2*pi}
@@ -2736,8 +2767,7 @@ with 60 points.
 If @var{dom} is a two element vector, it represents the minimum and maximum
 value of @var{t}.  @var{n} is a scalar defining the number of points to use.
 
-The optional return value @var{h} provides a list of handles to the
-the parts of the vector field (body, arrow and marker).
+The optional return value @var{h} is a graphics handle to the created plot.
 
 @example
 @group
@@ -2762,7 +2792,7 @@ ezplot3 (fx, fy, fz, [0, 10*pi], 100);
 @deftypefnx {Function File} {} ezmesh (@var{h}, @dots{})
 @deftypefnx {Function File} {@var{h} =} ezmesh (@dots{})
 
-Plots the mesh defined by a function.  @var{f} is a string, inline
+Plot the mesh defined by a function.  @var{f} is a string, inline
 function or function handle with two arguments defining the function.  By
 default the plot is over the domain @code{-2*pi < @var{x} < 2*pi} and
 @code{-2*pi < @var{y} < 2*pi} with 60 points in each dimension.
@@ -2781,12 +2811,12 @@ function @code{[@var{fx} (@var{s}, @var{t}), @var{fy} (@var{s}, @var{t}),
 If the argument 'circ' is given, then the function is plotted over a disk
 centered on the middle of the domain @var{dom}.
 
-The optional return value @var{h} provides a list of handles to the
-the parts of the vector field (body, arrow and marker).
+The optional return value @var{h} is a graphics handle to the created 
+surface object.
 
 @example
 @group
-f = @@(x,y) sqrt(abs(x .* y)) ./ (1 + x.^2 + y.^2);
+f = @@(x,y) sqrt (abs (x .* y)) ./ (1 + x.^2 + y.^2);
 ezmesh (f, [-3, 3]);
 @end group
 @end example
@@ -2802,7 +2832,7 @@ ezmesh (fx, fy, fz, [-pi, pi, -pi/2, pi/2], 20);
 @end group
 @end example
 
-@seealso{@ref{doc-ezplot,,ezplot}, @ref{doc-ezsurf,,ezsurf}, @ref{doc-ezsurfc,,ezsurfc}, @ref{doc-ezmeshc,,ezmeshc}}
+@seealso{@ref{doc-ezplot,,ezplot}, @ref{doc-ezmeshc,,ezmeshc}, @ref{doc-ezsurf,,ezsurf}, @ref{doc-ezsurfc,,ezsurfc}}
 @end deftypefn
 
 
@@ -2816,7 +2846,7 @@ ezmesh (fx, fy, fz, [-pi, pi, -pi/2, pi/2], 20);
 @deftypefnx {Function File} {} ezmeshc (@var{h}, @dots{})
 @deftypefnx {Function File} {@var{h} =} ezmeshc (@dots{})
 
-Plots the mesh and contour lines defined by a function.  @var{f} is a string,
+Plot the mesh and contour lines defined by a function.  @var{f} is a string,
 inline function or function handle with two arguments defining the function.
 By default the plot is over the domain @code{-2*pi < @var{x} < 2*pi} and
 @code{-2*pi < @var{y} < 2*pi} with 60 points in each dimension.
@@ -2835,12 +2865,13 @@ function @code{[@var{fx} (@var{s}, @var{t}), @var{fy} (@var{s}, @var{t}),
 If the argument 'circ' is given, then the function is plotted over a disk
 centered on the middle of the domain @var{dom}.
 
-The optional return value @var{h} provides a list of handles to the
-the parts of the vector field (body, arrow and marker).
+The optional return value @var{h} is a 2-element vector with a graphics
+handle for the created mesh plot and a second handle for the created contour
+plot.
 
 @example
 @group
-f = @@(x,y) sqrt(abs(x .* y)) ./ (1 + x.^2 + y.^2);
+f = @@(x,y) sqrt (abs (x .* y)) ./ (1 + x.^2 + y.^2);
 ezmeshc (f, [-3, 3]);
 @end group
 @end example
@@ -2859,7 +2890,7 @@ ezmeshc (f, [-3, 3]);
 @deftypefnx {Function File} {} ezsurf (@var{h}, @dots{})
 @deftypefnx {Function File} {@var{h} =} ezsurf (@dots{})
 
-Plots the surface defined by a function.  @var{f} is a string, inline
+Plot the surface defined by a function.  @var{f} is a string, inline
 function or function handle with two arguments defining the function.  By
 default the plot is over the domain @code{-2*pi < @var{x} < 2*pi} and
 @code{-2*pi < @var{y} < 2*pi} with 60 points in each dimension.
@@ -2878,12 +2909,12 @@ function @code{[@var{fx} (@var{s}, @var{t}), @var{fy} (@var{s}, @var{t}),
 If the argument 'circ' is given, then the function is plotted over a disk
 centered on the middle of the domain @var{dom}.
 
-The optional return value @var{h} provides a list of handles to the
-the parts of the vector field (body, arrow and marker).
+The optional return value @var{h} is a graphics handle to the created
+surface object.
 
 @example
 @group
-f = @@(x,y) sqrt(abs(x .* y)) ./ (1 + x.^2 + y.^2);
+f = @@(x,y) sqrt (abs (x .* y)) ./ (1 + x.^2 + y.^2);
 ezsurf (f, [-3, 3]);
 @end group
 @end example
@@ -2892,9 +2923,9 @@ An example of a parametrically defined function is
 
 @example
 @group
-fx = @@(s,t) cos (s) .* cos(t);
-fy = @@(s,t) sin (s) .* cos(t);
-fz = @@(s,t) sin(t);
+fx = @@(s,t) cos (s) .* cos (t);
+fy = @@(s,t) sin (s) .* cos (t);
+fz = @@(s,t) sin (t);
 ezsurf (fx, fy, fz, [-pi, pi, -pi/2, pi/2], 20);
 @end group
 @end example
@@ -2913,7 +2944,7 @@ ezsurf (fx, fy, fz, [-pi, pi, -pi/2, pi/2], 20);
 @deftypefnx {Function File} {} ezsurfc (@var{h}, @dots{})
 @deftypefnx {Function File} {@var{h} =} ezsurfc (@dots{})
 
-Plots the surface and contour lines defined by a function.  @var{f} is a
+Plot the surface and contour lines defined by a function.  @var{f} is a
 string, inline function or function handle with two arguments defining the
 function.  By default the plot is over the domain @code{-2*pi < @var{x} <
 2*pi} and @code{-2*pi < @var{y} < 2*pi} with 60 points in each dimension.
@@ -2932,12 +2963,13 @@ function @code{[@var{fx} (@var{s}, @var{t}), @var{fy} (@var{s}, @var{t}),
 If the argument 'circ' is given, then the function is plotted over a disk
 centered on the middle of the domain @var{dom}.
 
-The optional return value @var{h} provides a list of handles to the
-the parts of the vector field (body, arrow and marker).
+The optional return value @var{h} is a 2-element vector with a graphics
+for the created surface plot and a second handle for the created contour
+plot.
 
 @example
 @group
-f = @@(x,y) sqrt(abs(x .* y)) ./ (1 + x.^2 + y.^2);
+f = @@(x,y) sqrt (abs (x .* y)) ./ (1 + x.^2 + y.^2);
 ezsurfc (f, [-3, 3]);
 @end group
 @end example
@@ -2972,9 +3004,9 @@ Examples:
 
 @example
 @group
-[x, y, z] = cylinder (10:-1:0,50);
+[x, y, z] = cylinder (10:-1:0, 50);
 surf (x, y, z);
-title ("a cone")
+title ("a cone");
 @end group
 @end example
 @seealso{@ref{doc-sphere,,sphere}}
@@ -3036,7 +3068,11 @@ border lines are on.
 @anchor{doc-title}
 @deftypefn  {Function File} {} title (@var{string})
 @deftypefnx {Function File} {} title (@var{string}, @var{p1}, @var{v1}, @dots{})
-Create a title object and return a handle to it.
+@deftypefnx {Function File} {} title (@var{h}, @dots{})
+@deftypefnx {Function File} {@var{h} =} title (@dots{})
+Create a title object for a plot.
+
+The optional return value @var{h} is a graphics handle to the created object.
 @end deftypefn
 
 
@@ -3064,6 +3100,9 @@ The optional parameter @var{pos} specifies the location of the legend
 as follows:
 
 @multitable @columnfractions 0.06 0.14 0.80
+
+@headitem @tab @var{pos} @tab
+  location of the legend
 
 @item @tab north @tab
   center top
@@ -3131,13 +3170,17 @@ The following customizations are available using @var{option}:
 
 @c text scripts/plot/text.m
 @anchor{doc-text}
-@deftypefn  {Function File} {@var{h} =} text (@var{x}, @var{y}, @var{label})
-@deftypefnx {Function File} {@var{h} =} text (@var{x}, @var{y}, @var{z}, @var{label})
-@deftypefnx {Function File} {@var{h} =} text (@var{x}, @var{y}, @var{label}, @var{p1}, @var{v1}, @dots{})
-@deftypefnx {Function File} {@var{h} =} text (@var{x}, @var{y}, @var{z}, @var{label}, @var{p1}, @var{v1}, @dots{})
+@deftypefn  {Function File} {} text (@var{x}, @var{y}, @var{label})
+@deftypefnx {Function File} {} text (@var{x}, @var{y}, @var{z}, @var{label})
+@deftypefnx {Function File} {} text (@var{x}, @var{y}, @var{label}, @var{p1}, @var{v1}, @dots{})
+@deftypefnx {Function File} {} text (@var{x}, @var{y}, @var{z}, @var{label}, @var{p1}, @var{v1}, @dots{})
+@deftypefnx {Function File} {@var{h} =} text (@dots{})
 Create a text object with text @var{label} at position @var{x},
 @var{y}, @var{z} on the current axes.  Property-value pairs following
 @var{label} may be used to specify the appearance of the text.
+
+The optional return value @var{h} is a graphics handle to the created text
+object.
 @end deftypefn
 
 
@@ -3153,9 +3196,10 @@ See @ref{Text Properties} for the properties that you can set.
 @deftypefnx {Function File} {} ylabel (@dots{})
 @deftypefnx {Function File} {} zlabel (@dots{})
 Specify x-, y-, or z-axis labels for the current axis.  If @var{h} is
-specified then label the axis defined by @var{h}.  The optional return
-value @var{h} provides a handle to the created label.
-@seealso{@ref{doc-plot,,plot}, @ref{doc-semilogx,,semilogx}, @ref{doc-semilogy,,semilogy}, @ref{doc-loglog,,loglog}, @ref{doc-polar,,polar}, @ref{doc-mesh,,mesh}, @ref{doc-contour,,contour}, @ref{doc-bar,,bar}, @ref{doc-stairs,,stairs}, @ref{doc-title,,title}}
+specified then label the axis defined by @var{h}.
+
+The optional return value @var{h} is a graphics handle to the created object.
+@seealso{@ref{doc-title,,title}, @ref{doc-text,,text}}
 @end deftypefn
 
 
@@ -3183,16 +3227,17 @@ the property "LabelSpacing" is available allowing the spacing between labels
 on a contour (in points) to be specified.  The default is 144 points, or 2
 inches.
 
-The returned value @var{h} is the set of text object that represent the
-contour labels.  The "userdata" property of the text objects contains the
-numerical value of the contour label.
+The optional return value @var{h} is a vector of graphics handles to
+the text objects representing each label.  
+The "userdata" property of the text objects contains the numerical value of
+the contour label.
 
 An example of the use of @code{clabel} is
 
 @example
 @group
-[c, h] = contour (peaks(), -4 : 6);
-clabel (c, h, -4 : 2 : 6, 'fontsize', 12);
+[c, h] = contour (peaks (), -4 : 6);
+clabel (c, h, -4:2:6, "fontsize", 12);
 @end group
 @end example
 
@@ -3336,7 +3381,7 @@ height13pt&4&5&6\cr height12pt&&&\cr\noalign{\hrule}}}
 the grid locations specified.  The first demo illustrates an example:
 
 @example
-@code{demo ("subplot", 1)}
+demo ("subplot", 1)
 @end example
 
 @end ifnottex
@@ -3423,6 +3468,10 @@ example, "r" or "red").
 If passed a structure @var{fv} contain the fields "vertices", "faces"
 and optionally "facevertexcdata", create the patch based on these
 properties.
+
+The optional return value @var{h} is a graphics handle to the created patch
+object.
+@seealso{@ref{doc-fill,,fill}}
 @end deftypefn
 
 
@@ -3433,7 +3482,11 @@ properties.
 @deftypefnx {Function File} {} fill (@dots{}, @var{prop}, @var{val})
 @deftypefnx {Function File} {} fill (@var{h}, @dots{})
 @deftypefnx {Function File} {@var{h} =} fill (@dots{})
-Create one or more filled patch objects, returning a patch object for each.
+Create one or more filled patch objects.
+
+The optional return value @var{h} is an array of graphics handles to
+the created patch objects.
+@seealso{@ref{doc-patch,,patch}}
 @end deftypefn
 
 
@@ -3455,6 +3508,9 @@ columns of @var{z} correspond to different @var{x} values and rows of
 are missing, they are constructed from size of the matrix @var{z}.
 
 Any additional properties passed are assigned to the surface.
+
+The optional return value @var{h} is a graphics handle to the created
+surface object.
 @seealso{@ref{doc-surf,,surf}, @ref{doc-mesh,,mesh}, @ref{doc-patch,,patch}, @ref{doc-line,,line}}
 @end deftypefn
 
@@ -3584,11 +3640,15 @@ figure window, call the @code{close} function.
 @deftypefnx {Function File} {} clf ("reset")
 @deftypefnx {Function File} {} clf (@var{hfig})
 @deftypefnx {Function File} {} clf (@var{hfig}, "reset")
+@deftypefnx {Function File} {@var{h} =} clf (@dots{})
 Clear the current figure window.  @code{clf} operates by deleting child
 graphics objects with visible handles (@code{handlevisibility} = on).
 If @var{hfig} is specified operate on it instead of the current figure.
 If the optional argument @code{"reset"} is specified, all objects including
 those with hidden handles are deleted.
+
+The optional return value @var{h} is the graphics handle of the figure
+window that was cleared.
 @seealso{@ref{doc-cla,,cla}, @ref{doc-close,,close}, @ref{doc-delete,,delete}}
 @end deftypefn
 
@@ -3624,7 +3684,7 @@ Delete the named file or graphics handle.
 
 Deleting graphics objects is the proper way to remove
 features from a plot without clearing the entire figure.
-@seealso{@ref{doc-clf,,clf}, @ref{doc-cla,,cla}}
+@seealso{@ref{doc-clf,,clf}, @ref{doc-cla,,cla}, @ref{doc-unlink,,unlink}}
 @end deftypefn
 
 
@@ -4129,9 +4189,9 @@ Example: Print to a file, using the svg device.
 
 @example
 @group
-figure (1)
-clf ()
-surf (peaks)
+figure (1);
+clf ();
+surf (peaks);
 print -dsvg figure1.svg
 @end group
 @end example
@@ -4140,9 +4200,9 @@ Example: Print to an HP Deskjet 550C.
 
 @example
 @group
-figure (1)
-clf ()
-surf (peaks)
+figure (1);
+clf ();
+surf (peaks);
 print -dcdj550
 @end group
 @end example
@@ -4186,10 +4246,9 @@ The default format is @code{"pdf"}.
 
 @example
 @group
-figure (1);
 clf ();
 surf (peaks);
-saveas(1, "figure1.png");
+saveas (1, "figure1.png");
 @end group
 @end example
 
@@ -4225,7 +4284,7 @@ and populated with specific user commands via the @code{uimenu} function.
 Return which mouse buttons were pressed and keys were hit on the current
 figure.  If @var{n} is defined, then wait for @var{n} mouse clicks
 before returning.  If @var{n} is not defined, then @code{ginput} will
-loop until the return key is pressed.
+loop until the return key @key{RET} is pressed.
 @end deftypefn
 
 
@@ -4301,10 +4360,12 @@ Examples:
 
 @example
 @group
-f = uimenu("label", "&File", "accelerator", "f");
-e = uimenu("label", "&Edit", "accelerator", "e");
-uimenu(f, "label", "Close", "accelerator", "q", "callback", "close (gcf)");
-uimenu(e, "label", "Toggle &Grid", "accelerator", "g", "callback", "grid (gca)");
+f = uimenu ("label", "&File", "accelerator", "f");
+e = uimenu ("label", "&Edit", "accelerator", "e");
+uimenu (f, "label", "Close", "accelerator", "q", ...
+           "callback", "close (gcf)");
+uimenu (e, "label", "Toggle &Grid", "accelerator", "g", ...
+           "callback", "grid (gca)");
 @end group
 @end example
 @seealso{@ref{doc-figure,,figure}}
@@ -5433,6 +5494,7 @@ The RGB color of the line, or a color name.  @xref{Colors}.
 @item deletefcn
 
 @item displayname
+The text of the legend entry corresponding to this line.
 
 @item erasemode
 
@@ -5443,11 +5505,6 @@ The RGB color of the line, or a color name.  @xref{Colors}.
 @item interpreter
 
 @item interruptible
-
-@item keylabel
-The text of the legend entry corresponding to this line.  Note that this
-property is not compatible with @sc{matlab} and may be removed in a
-future version of Octave.
 
 @item ldata
 The lower errorbar in the y direction to be plotted.
@@ -5550,6 +5607,7 @@ The color of the text.  @xref{Colors}.
 @item deletefcn
 
 @item displayname
+The text of the legend entry corresponding to this line.
 
 @item edgecolor
 
@@ -5757,6 +5815,9 @@ Data defining the patch object.
 
 @item diffusestrength
 
+@item displayname
+The text of the legend entry corresponding to this line.
+
 @item edgealpha
 
 @item edgecolor
@@ -5787,8 +5848,6 @@ The fill color of the patch.  @xref{Colors}.
 @item interpreter
 
 @item interruptible
-
-@item keylabel
 
 @item linestyle
 @xref{Line Styles}.
@@ -5907,6 +5966,9 @@ The @code{surface} properties are:
 
 @item diffusestrength
 
+@item displayname
+The text of the legend entry corresponding to this surface.
+
 @item edgealpha
 
 @item edgecolor
@@ -5928,11 +5990,6 @@ The @code{surface} properties are:
 @item interpreter
 
 @item interruptible
-
-@item keylabel
-The text of the legend entry corresponding to this surface.  Note that
-this property is not compatible with @sc{matlab} and may be removed in a
-future version of Octave.
 
 @item linestyle
 
@@ -6012,44 +6069,44 @@ elements are vectors and @code{zdata} must be a matrix.
 @anchor{doc-findobj}
 @deftypefn  {Function File} {@var{h} =} findobj ()
 @deftypefnx {Function File} {@var{h} =} findobj (@var{prop_name}, @var{prop_value})
-@deftypefnx {Function File} {@var{h} =} findobj ('-property', @var{prop_name})
-@deftypefnx {Function File} {@var{h} =} findobj ('-regexp', @var{prop_name}, @var{pattern})
-@deftypefnx {Function File} {@var{h} =} findobj ('flat', @dots{})
+@deftypefnx {Function File} {@var{h} =} findobj ("-property", @var{prop_name})
+@deftypefnx {Function File} {@var{h} =} findobj ("-regexp", @var{prop_name}, @var{pattern})
+@deftypefnx {Function File} {@var{h} =} findobj ("flat", @dots{})
 @deftypefnx {Function File} {@var{h} =} findobj (@var{h}, @dots{})
-@deftypefnx {Function File} {@var{h} =} findobj (@var{h}, '-depth', @var{d}, @dots{})
-Find object with specified property values.  The simplest form is
+@deftypefnx {Function File} {@var{h} =} findobj (@var{h}, "-depth", @var{d}, @dots{})
+Find graphics object with specified property values.  The simplest form is
 
 @example
-findobj (@var{prop_name}, @var{prop_Value})
+findobj (@var{prop_name}, @var{prop_value})
 @end example
 
 @noindent
 which returns all of the handles to the objects with the name
-@var{prop_name} and the name @var{prop_Value}.  The search can be limited
+@var{prop_name} and the name @var{prop_value}.  The search can be limited
 to a particular object or set of objects and their descendants by
 passing a handle or set of handles @var{h} as the first argument to
 @code{findobj}.
 
 The depth of hierarchy of objects to which to search to can be limited
-with the '-depth' argument.  To limit the number depth of the hierarchy
+with the "-depth" argument.  To limit the number depth of the hierarchy
 to search to @var{d} generations of children, and example is
 
 @example
-findobj (@var{h}, '-depth', @var{d}, @var{prop_Name}, @var{prop_Value})
+findobj (@var{h}, "-depth", @var{d}, @var{prop_name}, @var{prop_value})
 @end example
 
 Specifying a depth @var{d} of 0, limits the search to the set of object
-passed in @var{h}.  A depth @var{d} of 0 is equivalent to the '-flat'
+passed in @var{h}.  A depth @var{d} of 0 is equivalent to the "-flat"
 argument.
 
-A specified logical operator may be applied to the pairs of @var{prop_Name}
-and @var{prop_Value}.  The supported logical operators are '-and', '-or',
-'-xor', '-not'.
+A specified logical operator may be applied to the pairs of @var{prop_name}
+and @var{prop_value}.  The supported logical operators are "-and", "-or",
+"-xor", "-not".
 
 The objects may also be matched by comparing a regular expression to the
 property values, where property values that match @code{regexp
-(@var{prop_Value}, @var{pattern})} are returned.  Finally, objects may be
-matched by property name only, using the '-property' option.
+(@var{prop_value}, @var{pattern})} are returned.  Finally, objects may be
+matched by property name only, using the "-property" option.
 @seealso{@ref{doc-get,,get}, @ref{doc-set,,set}}
 @end deftypefn
 
@@ -6060,7 +6117,7 @@ matched by property name only, using the '-property' option.
 @deftypefnx {Function File} {@var{h} =} findall (@var{prop_name}, @var{prop_value})
 @deftypefnx {Function File} {@var{h} =} findall (@var{h}, @dots{})
 @deftypefnx {Function File} {@var{h} =} findall (@var{h}, "-depth", @var{d}, @dots{})
-Find object with specified property values including hidden handles.
+Find graphics object with specified property values including hidden handles.
 
 This function performs the same function as @code{findobj}, but it
 includes hidden objects in its search.  For full documentation, see
@@ -6078,7 +6135,11 @@ defaults} (the initial values) and @dfn{user-defined defaults}, which
 may override the factory defaults.
 
 Although default values may be set for any object, they are set in
-parent objects and apply to child objects.  For example,
+parent objects and apply to child objects, of the specified object type.
+For example, setting the default @code{color} property of @code{line}
+objects to "green", for the @code{root} object, will result in all
+@code{line} objects inheriting the @code{color} "green" as the default
+value.
 
 @example
 set (0, "defaultlinecolor", "green");
@@ -6635,9 +6696,9 @@ An example of the use of linkprop is
 @example
 @group
 x = 0:0.1:10;
-subplot (1, 2, 1);
+subplot (1,2,1);
 h1 = plot (x, sin (x));
-subplot (1, 2, 2);
+subplot (1,2,2);
 h2 = plot (x, cos (x));
 hlink = linkprop ([h1, h2], @{"color","linestyle"@});
 set (h1, "color", "green");
@@ -6744,9 +6805,9 @@ x = 0:0.1:10;
 y = sin (x);
 plot (x, y, "ydatasource", "y");
 for i = 1 : 100
-  pause(0.1)
-  y = sin (x + 0.1 * i);
-  refreshdata();
+  pause (0.1);
+  y = sin (x + 0.1*i);
+  refreshdata ();
 endfor
 @end group
 @end example
@@ -7229,9 +7290,10 @@ Data source variables.
 
 @c graphics_toolkit scripts/plot/graphics_toolkit.m
 @anchor{doc-graphics_toolkit}
-@deftypefn  {Function File} {} graphics_toolkit (@var{name})
+@deftypefn  {Function File} {@var{name} =} graphics_toolkit ()
+@deftypefnx {Function File} {@var{old_name} =} graphics_toolkit (@var{name})
 @deftypefnx {Function File} {} graphics_toolkit (@var{hlist}, @var{name})
-Change the default graphics toolkit to @var{name}.  If the
+Query or set the default graphics toolkit to @var{name}.  If the
 toolkit is not already loaded, it is first initialized by calling the
 function @code{__init_@var{name}__}.
 
@@ -7245,6 +7307,23 @@ toolkit is changed only for the listed figures.
 @anchor{doc-available_graphics_toolkits}
 @deftypefn {Built-in Function} {} available_graphics_toolkits ()
 Return a cell array of registered graphics toolkits.
+@seealso{@ref{doc-graphics_toolkit,,graphics_toolkit}, @ref{doc-register_graphics_toolkit,,register_graphics_toolkit}}
+@end deftypefn
+
+
+@c loaded_graphics_toolkits src/graphics.cc
+@anchor{doc-loaded_graphics_toolkits}
+@deftypefn {Built-in Function} {} loaded_graphics_toolkits ()
+Return a cell array of the currently loaded graphics toolkits.
+@seealso{@ref{doc-available_graphics_toolkits,,available_graphics_toolkits}}
+@end deftypefn
+
+
+@c register_graphics_toolkit src/graphics.cc
+@anchor{doc-register_graphics_toolkit}
+@deftypefn {Built-in Function} {} register_graphics_toolkit (@var{toolkit})
+List @var{toolkit} as an available graphics toolkit.
+@seealso{@ref{doc-available_graphics_toolkits,,available_graphics_toolkits}}
 @end deftypefn
 
 

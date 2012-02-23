@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2011 David Bateman
+## Copyright (C) 2008-2012 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -66,6 +66,9 @@ endfunction
 %! set(ax,'xtick',datenum(1990:5:2005,1,1))
 %! datetick(2,'keepticks')
 %! set(ax,'ytick',12:16)
+
+## Remove from test statistics.  No real tests possible.
+%!assert (1)
 
 function __datetick__ (varargin)
 

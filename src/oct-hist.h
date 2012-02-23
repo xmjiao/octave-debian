@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2011 John W. Eaton
+Copyright (C) 1993-2012 John W. Eaton
 
 This file is part of Octave.
 
@@ -34,8 +34,5 @@ extern void octave_history_write_timestamp (void);
 
 // TRUE means input is coming from temporary history file.
 extern bool input_from_tmp_history_file;
-
-// TRUE if we are saving history.
-extern bool Vsaving_history;
 
 #endif

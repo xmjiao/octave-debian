@@ -1,4 +1,4 @@
-## Copyright (C) 1996-2011 John W. Eaton
+## Copyright (C) 1996-2012 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -41,7 +41,7 @@ function h = figure (varargin)
       f = tmp;
       varargin(1) = [];
       nargs--;
-    elseif (isnumeric (tmp) && tmp > 0 && round (tmp) == tmp)
+    elseif (isnumeric (tmp) && tmp > 0 && tmp == fix (tmp))
       f = tmp;
       init_new_figure = true;
       varargin(1) = [];
@@ -63,7 +63,16 @@ function h = figure (varargin)
 
   if (rem (nargs, 2) == 0)
     if (isnan (f) || init_new_figure)
-      f = __go_figure__ (f, varargin{:});
+      if (ismac () && strcmp (graphics_toolkit (), "fltk"))
+        ## FIXME - Hack for fltk-aqua to work around bug # 31931
+        f = __go_figure__ (f);
+        drawnow ();
+        if (! isempty (varargin))
+          set (f, varargin{:});
+        endif
+      else
+        f = __go_figure__ (f, varargin{:});
+      endif
     elseif (nargs > 0)
       set (f, varargin{:});
     endif
@@ -73,10 +82,21 @@ function h = figure (varargin)
   endif
 
   cf = get (0, "currentfigure");
-  __add_default_menu__ (cf);
+  if (strcmp (get (cf, "__graphics_toolkit__"), "fltk"))
+    __add_default_menu__ (cf);
+  endif
 
   if (nargout > 0)
     h = f;
   endif
 
 endfunction
+
+%!test
+%! hf = figure ("visible", "off");
+%! unwind_protect
+%!   assert (gcf, hf);
+%!   assert (isfigure (hf));
+%! unwind_protect_cleanup
+%!   close (hf);
+%! end_unwind_protect

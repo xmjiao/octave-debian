@@ -2,7 +2,7 @@
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* A GNU-like <stdio.h>.
 
-   Copyright (C) 2004, 2007-2011 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2007-2012 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -188,7 +188,7 @@ _GL_CXXALIASWARN (fdopen);
 #elif defined GNULIB_POSIXCHECK
 # undef fdopen
 /* Assume fdopen is always declared.  */
-_GL_WARN_ON_USE (fdopen, "fdopen on Win32 platforms is not POSIX compatible - "
+_GL_WARN_ON_USE (fdopen, "fdopen on native Windows platforms is not POSIX compliant - "
                  "use gnulib module fdopen for portability");
 #endif
 
@@ -261,7 +261,7 @@ _GL_CXXALIASWARN (fopen);
 #elif defined GNULIB_POSIXCHECK
 # undef fopen
 /* Assume fopen is always declared.  */
-_GL_WARN_ON_USE (fopen, "fopen on Win32 platforms is not POSIX compatible - "
+_GL_WARN_ON_USE (fopen, "fopen on native Windows platforms is not POSIX compliant - "
                  "use gnulib module fopen for portability");
 #endif
 
@@ -389,7 +389,7 @@ _GL_CXXALIASWARN (freopen);
 # undef freopen
 /* Assume freopen is always declared.  */
 _GL_WARN_ON_USE (freopen,
-                 "freopen on Win32 platforms is not POSIX compatible - "
+                 "freopen on native Windows platforms is not POSIX compliant - "
                  "use gnulib module freopen for portability");
 #endif
 

@@ -1,4 +1,4 @@
-## Copyright (C) 2009-2011 S�ren Hauberg
+## Copyright (C) 2009-2012 S�ren Hauberg
 ##
 ## This file is part of Octave.
 ##
@@ -50,7 +50,7 @@ function [text, status] = get_first_help_sentence (name, max_len = 80)
     error ("get_first_help_sentence: NAME must be a string");
   endif
 
-  if (!isnumeric (max_len) || max_len <= 0 || max_len != round (max_len))
+  if (!isnumeric (max_len) || max_len <= 0 || max_len != fix (max_len))
     error ("get_first_help_sentence: MAX_LEN must be positive integer");
   endif
 

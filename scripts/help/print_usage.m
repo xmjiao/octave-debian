@@ -1,4 +1,4 @@
-## Copyright (C) 2009-2011 S�ren Hauberg
+## Copyright (C) 2009-2012 S�ren Hauberg
 ##
 ## This file is part of Octave.
 ##
@@ -135,4 +135,8 @@ function [retval, status] = get_usage_html (help_text, max_len)
   ## Extract first line with plain text method.
   retval = get_usage_plain_text (help_text, max_len);
 endfunction
+
+
+## Stop reporting function as missing tests.  No good tests possible.
+%!assert (1)
 

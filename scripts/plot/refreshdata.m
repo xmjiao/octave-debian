@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2011 David Bateman
+## Copyright (C) 2008-2012 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -42,9 +42,9 @@
 ## y = sin (x);
 ## plot (x, y, "ydatasource", "y");
 ## for i = 1 : 100
-##   pause(0.1)
-##   y = sin (x + 0.1 * i);
-##   refreshdata();
+##   pause (0.1);
+##   y = sin (x + 0.1*i);
+##   refreshdata ();
 ## endfor
 ## @end group
 ## @end example
@@ -83,7 +83,7 @@ function refreshdata (h, workspace)
     obj = get (h (i));
     fldnames = fieldnames (obj);
     m = regexpi (fieldnames(obj), '^.+datasource$', "match");
-    idx = cellfun (@(x) !isempty(x), m);
+    idx = ! cellfun ("isempty", m);
     if (any (idx))
       tmp = m(idx);
       props = [props; {vertcat(tmp{:})}];
@@ -106,6 +106,7 @@ function refreshdata (h, workspace)
 endfunction
 
 %!demo
+%! clf
 %! x = 0:0.1:10;
 %! y = sin (x);
 %! plot (x, y, "ydatasource", "y");

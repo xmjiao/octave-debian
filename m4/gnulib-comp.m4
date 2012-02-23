@@ -1,7 +1,7 @@
 # -*- buffer-read-only: t -*- vi: set ro:
 # DO NOT EDIT! GENERATED AUTOMATICALLY!
 # DO NOT EDIT! GENERATED AUTOMATICALLY!
-# Copyright (C) 2002-2011 Free Software Foundation, Inc.
+# Copyright (C) 2002-2012 Free Software Foundation, Inc.
 #
 # This file is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -40,20 +40,20 @@ AC_DEFUN([gl_EARLY],
   m4_pattern_allow([^gl_LIBOBJS$])dnl a variable
   m4_pattern_allow([^gl_LTLIBOBJS$])dnl a variable
   AC_REQUIRE([gl_PROG_AR_RANLIB])
-  # Code from module alignof:
   # Code from module alloca:
   # Code from module alloca-opt:
+  # Code from module at-internal:
   # Code from module c-ctype:
   # Code from module c-strcase:
   # Code from module canonicalize-lgpl:
   # Code from module chdir:
   # Code from module chdir-long:
-  # Code from module chown:
   # Code from module cloexec:
   # Code from module close:
   # Code from module closedir:
   # Code from module configmake:
   # Code from module copysign:
+  # Code from module copysignf:
   # Code from module crypto/md5:
   # Code from module d-ino:
   # Code from module d-type:
@@ -84,12 +84,15 @@ AC_DEFUN([gl_EARLY],
   # Code from module floor:
   # Code from module fnmatch:
   # Code from module fopen:
+  # Code from module fpieee:
+  AC_REQUIRE([gl_FP_IEEE])
   # Code from module fpurge:
   # Code from module freading:
   # Code from module fseek:
   # Code from module fseeko:
   AC_REQUIRE([AC_FUNC_FSEEKO])
   # Code from module fstat:
+  # Code from module fstatat:
   # Code from module ftell:
   # Code from module ftello:
   AC_REQUIRE([AC_FUNC_FSEEKO])
@@ -105,9 +108,12 @@ AC_DEFUN([gl_EARLY],
   # Code from module glob:
   # Code from module include_next:
   # Code from module intprops:
+  # Code from module isatty:
+  # Code from module isnand-nolibm:
+  # Code from module isnanf-nolibm:
+  # Code from module isnanl-nolibm:
   # Code from module largefile:
   AC_REQUIRE([AC_SYS_LARGEFILE])
-  # Code from module lchown:
   # Code from module link:
   # Code from module localcharset:
   # Code from module lseek:
@@ -123,6 +129,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module memrchr:
   # Code from module mkdir:
   # Code from module mkfifo:
+  # Code from module mkostemp:
   # Code from module mkstemp:
   # Code from module mktime:
   # Code from module msvc-inval:
@@ -134,6 +141,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module open:
   # Code from module openat:
   # Code from module openat-die:
+  # Code from module openat-h:
   # Code from module opendir:
   # Code from module pathmax:
   # Code from module progname:
@@ -142,6 +150,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module readlink:
   # Code from module realloc-posix:
   # Code from module rename:
+  # Code from module rewinddir:
   # Code from module rmdir:
   # Code from module round:
   # Code from module roundf:
@@ -151,6 +160,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module sigaction:
   # Code from module signal:
   # Code from module signal-h:
+  # Code from module signbit:
   # Code from module sigprocmask:
   # Code from module size_max:
   # Code from module sleep:
@@ -163,6 +173,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module socklen:
   # Code from module ssize_t:
   # Code from module stat:
+  # Code from module stdalign:
   # Code from module stdbool:
   # Code from module stddef:
   # Code from module stdint:
@@ -198,8 +209,8 @@ AC_DEFUN([gl_EARLY],
   # Code from module unistd-safer:
   # Code from module unlink:
   # Code from module vasnprintf:
+  # Code from module vasprintf:
   # Code from module verify:
-  # Code from module vsnprintf:
   # Code from module wchar:
   # Code from module wctype-h:
   # Code from module xsize:
@@ -224,6 +235,7 @@ LTALLOCA=`echo "$ALLOCA" | sed -e 's/\.[^.]* /.lo /g;s/\.[^.]*$/.lo/'`
 changequote([, ])dnl
 AC_SUBST([LTALLOCA])
 gl_FUNC_ALLOCA
+AC_LIBOBJ([openat-proc])
 gl_CANONICALIZE_LGPL
 if test $HAVE_CANONICALIZE_FILE_NAME = 0 || test $REPLACE_CANONICALIZE_FILE_NAME = 1; then
   AC_LIBOBJ([canonicalize-lgpl])
@@ -237,14 +249,6 @@ if test $gl_cv_have_arbitrary_file_name_length_limit = yes; then
   AC_LIBOBJ([chdir-long])
   gl_PREREQ_CHDIR_LONG
 fi
-gl_FUNC_CHOWN
-if test $HAVE_CHOWN = 0 || test $REPLACE_CHOWN = 1; then
-  AC_LIBOBJ([chown])
-fi
-if test $REPLACE_CHOWN = 1 && test $ac_cv_func_fchown = no; then
-  AC_LIBOBJ([fchown-stub])
-fi
-gl_UNISTD_MODULE_INDICATOR([chown])
 gl_MODULE_INDICATOR_FOR_TESTS([cloexec])
 gl_FUNC_CLOSE
 if test $REPLACE_CLOSE = 1; then
@@ -257,7 +261,16 @@ if test $HAVE_CLOSEDIR = 0 || test $REPLACE_CLOSEDIR = 1; then
 fi
 gl_DIRENT_MODULE_INDICATOR([closedir])
 gl_CONFIGMAKE_PREP
-gl_MATHFUNC([copysign], [double], [(double, double)])
+gl_FUNC_COPYSIGN
+if test $HAVE_COPYSIGN = 0; then
+  AC_LIBOBJ([copysign])
+fi
+gl_MATH_MODULE_INDICATOR([copysign])
+gl_FUNC_COPYSIGNF
+if test $HAVE_COPYSIGNF = 0; then
+  AC_LIBOBJ([copysignf])
+fi
+gl_MATH_MODULE_INDICATOR([copysignf])
 gl_MD5
 gl_CHECK_TYPE_STRUCT_DIRENT_D_INO
 gl_CHECK_TYPE_STRUCT_DIRENT_D_TYPE
@@ -308,9 +321,6 @@ gl_FUNC_FDOPENDIR
 if test $HAVE_FDOPENDIR = 0 || test $REPLACE_FDOPENDIR = 1; then
   AC_LIBOBJ([fdopendir])
 fi
-if test $HAVE_FDOPENDIR = 0; then
-  AC_LIBOBJ([openat-proc])
-fi
 gl_DIRENT_MODULE_INDICATOR([fdopendir])
 gl_MODULE_INDICATOR([fdopendir])
 gl_FUNC_FFLUSH
@@ -325,6 +335,9 @@ gl_FILE_NAME_CONCAT_LGPL
 gl_FLOAT_H
 if test $REPLACE_FLOAT_LDBL = 1; then
   AC_LIBOBJ([float])
+fi
+if test $REPLACE_ITOLD = 1; then
+  AC_LIBOBJ([itold])
 fi
 gl_FUNC_FLOOR
 if test $REPLACE_FLOOR = 1; then
@@ -364,6 +377,13 @@ if test $REPLACE_FSTAT = 1; then
   gl_PREREQ_FSTAT
 fi
 gl_SYS_STAT_MODULE_INDICATOR([fstat])
+gl_FUNC_FSTATAT
+if test $HAVE_FSTATAT = 0 || test $REPLACE_FSTATAT = 1; then
+  AC_LIBOBJ([fstatat])
+fi
+AC_REQUIRE([AC_C_INLINE]) dnl because 'inline' is used in lib/openat.h
+gl_MODULE_INDICATOR([fstatat]) dnl for lib/openat.h
+gl_SYS_STAT_MODULE_INDICATOR([fstatat])
 gl_FUNC_FTELL
 if test $REPLACE_FTELL = 1; then
   AC_LIBOBJ([ftell])
@@ -409,14 +429,20 @@ if test $REPLACE_GETOPT = 1; then
   AC_LIBOBJ([getopt])
   AC_LIBOBJ([getopt1])
   gl_PREREQ_GETOPT
+  dnl Arrange for unistd.h to include getopt.h.
+  GNULIB_GL_UNISTD_H_GETOPT=1
 fi
+AC_SUBST([GNULIB_GL_UNISTD_H_GETOPT])
 gl_MODULE_INDICATOR_FOR_TESTS([getopt-gnu])
 gl_FUNC_GETOPT_POSIX
 if test $REPLACE_GETOPT = 1; then
   AC_LIBOBJ([getopt])
   AC_LIBOBJ([getopt1])
   gl_PREREQ_GETOPT
+  dnl Arrange for unistd.h to include getopt.h.
+  GNULIB_GL_UNISTD_H_GETOPT=1
 fi
+AC_SUBST([GNULIB_GL_UNISTD_H_GETOPT])
 AC_SUBST([LIBINTL])
 AC_SUBST([LTLIBINTL])
 gl_FUNC_GETTIMEOFDAY
@@ -430,18 +456,34 @@ if test -n "$GLOB_H"; then
   AC_LIBOBJ([glob])
   gl_PREREQ_GLOB
 fi
-gl_FUNC_LCHOWN
-if test $HAVE_LCHOWN = 0 || test $REPLACE_LCHOWN = 1; then
-  AC_LIBOBJ([lchown])
+gl_FUNC_ISATTY
+if test $REPLACE_ISATTY = 1; then
+  AC_LIBOBJ([isatty])
+  gl_PREREQ_ISATTY
 fi
-gl_UNISTD_MODULE_INDICATOR([lchown])
+gl_UNISTD_MODULE_INDICATOR([isatty])
+gl_FUNC_ISNAND_NO_LIBM
+if test $gl_func_isnand_no_libm != yes; then
+  AC_LIBOBJ([isnand])
+  gl_PREREQ_ISNAND
+fi
+gl_FUNC_ISNANF_NO_LIBM
+if test $gl_func_isnanf_no_libm != yes; then
+  AC_LIBOBJ([isnanf])
+  gl_PREREQ_ISNANF
+fi
+gl_FUNC_ISNANL_NO_LIBM
+if test $gl_func_isnanl_no_libm != yes; then
+  AC_LIBOBJ([isnanl])
+  gl_PREREQ_ISNANL
+fi
 gl_FUNC_LINK
 if test $HAVE_LINK = 0 || test $REPLACE_LINK = 1; then
   AC_LIBOBJ([link])
 fi
 gl_UNISTD_MODULE_INDICATOR([link])
 gl_LOCALCHARSET
-LOCALCHARSET_TESTS_ENVIRONMENT="CHARSETALIASDIR=\"\$(top_builddir)/$gl_source_base\""
+LOCALCHARSET_TESTS_ENVIRONMENT="CHARSETALIASDIR=\"\$(abs_top_builddir)/$gl_source_base\""
 AC_SUBST([LOCALCHARSET_TESTS_ENVIRONMENT])
 gl_FUNC_LSEEK
 if test $REPLACE_LSEEK = 1; then
@@ -507,6 +549,13 @@ if test $HAVE_MKFIFO = 0 || test $REPLACE_MKFIFO = 1; then
   AC_LIBOBJ([mkfifo])
 fi
 gl_UNISTD_MODULE_INDICATOR([mkfifo])
+gl_FUNC_MKOSTEMP
+if test $HAVE_MKOSTEMP = 0; then
+  AC_LIBOBJ([mkostemp])
+  gl_PREREQ_MKOSTEMP
+fi
+gl_MODULE_INDICATOR([mkostemp])
+gl_STDLIB_MODULE_INDICATOR([mkostemp])
 gl_FUNC_MKSTEMP
 if test $HAVE_MKSTEMP = 0 || test $REPLACE_MKSTEMP = 1; then
   AC_LIBOBJ([mkstemp])
@@ -542,25 +591,12 @@ if test $REPLACE_OPEN = 1; then
 fi
 gl_FCNTL_MODULE_INDICATOR([open])
 gl_FUNC_OPENAT
-AC_LIBOBJ([openat-proc])
-if test $HAVE_FCHMODAT = 0; then
-  AC_LIBOBJ([fchmodat])
-fi
-if test $ac_cv_func_fstatat = no || test $REPLACE_FSTATAT = 1; then
-  AC_LIBOBJ([fstatat])
-fi
-if test $HAVE_MKDIRAT = 0; then
-  AC_LIBOBJ([mkdirat])
-fi
 if test $HAVE_OPENAT = 0 || test $REPLACE_OPENAT = 1; then
   AC_LIBOBJ([openat])
+  gl_PREREQ_OPENAT
 fi
-if test $ac_cv_func_unlinkat = no || test $REPLACE_UNLINKAT = 1; then
-  AC_LIBOBJ([unlinkat])
-fi
-if test $HAVE_FCHOWNAT = 0 || test $REPLACE_FCHOWNAT = 1; then
-  AC_LIBOBJ([fchownat])
-fi
+gl_MODULE_INDICATOR([openat]) dnl for lib/getcwd.c
+gl_FCNTL_MODULE_INDICATOR([openat])
 gl_FUNC_OPENDIR
 if test $HAVE_OPENDIR = 0 || test $REPLACE_OPENDIR = 1; then
   AC_LIBOBJ([opendir])
@@ -596,6 +632,11 @@ if test $REPLACE_RENAME = 1; then
   AC_LIBOBJ([rename])
 fi
 gl_STDIO_MODULE_INDICATOR([rename])
+gl_FUNC_REWINDDIR
+if test $HAVE_REWINDDIR = 0; then
+  AC_LIBOBJ([rewinddir])
+fi
+gl_DIRENT_MODULE_INDICATOR([rewinddir])
 gl_FUNC_RMDIR
 if test $REPLACE_RMDIR = 1; then
   AC_LIBOBJ([rmdir])
@@ -624,6 +665,13 @@ if test $HAVE_SIGACTION = 0; then
 fi
 gl_SIGNAL_MODULE_INDICATOR([sigaction])
 gl_SIGNAL_H
+gl_SIGNBIT
+if test $REPLACE_SIGNBIT = 1; then
+  AC_LIBOBJ([signbitf])
+  AC_LIBOBJ([signbitd])
+  AC_LIBOBJ([signbitl])
+fi
+gl_MATH_MODULE_INDICATOR([signbit])
 gl_SIGNALBLOCKING
 if test $HAVE_POSIX_SIGNALBLOCKING = 0; then
   AC_LIBOBJ([sigprocmask])
@@ -646,6 +694,7 @@ if test $REPLACE_STAT = 1; then
   gl_PREREQ_STAT
 fi
 gl_SYS_STAT_MODULE_INDICATOR([stat])
+gl_STDALIGN_H
 AM_STDBOOL_H
 gl_STDDEF_H
 gl_STDINT_H
@@ -744,8 +793,11 @@ if test $REPLACE_UNLINK = 1; then
 fi
 gl_UNISTD_MODULE_INDICATOR([unlink])
 gl_FUNC_VASNPRINTF
-gl_FUNC_VSNPRINTF
-gl_STDIO_MODULE_INDICATOR([vsnprintf])
+gl_FUNC_VASPRINTF
+gl_STDIO_MODULE_INDICATOR([vasprintf])
+m4_ifdef([AM_XGETTEXT_OPTION],
+  [AM_][XGETTEXT_OPTION([--flag=asprintf:2:c-format])
+   AM_][XGETTEXT_OPTION([--flag=vasprintf:2:c-format])])
 gl_WCHAR_H
 gl_WCTYPE_H
 gl_XSIZE
@@ -889,10 +941,10 @@ AC_DEFUN([gl_FILE_LIST], [
   build-aux/snippet/arg-nonnull.h
   build-aux/snippet/c++defs.h
   build-aux/snippet/warn-on-use.h
-  lib/alignof.h
   lib/alloca.c
   lib/alloca.in.h
   lib/asnprintf.c
+  lib/asprintf.c
   lib/at-func.c
   lib/basename-lgpl.c
   lib/c-ctype.c
@@ -903,12 +955,13 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/canonicalize-lgpl.c
   lib/chdir-long.c
   lib/chdir-long.h
-  lib/chown.c
   lib/cloexec.c
   lib/cloexec.h
   lib/close.c
   lib/closedir.c
   lib/config.charset
+  lib/copysign.c
+  lib/copysignf.c
   lib/dirent-private.h
   lib/dirent.in.h
   lib/dirfd.c
@@ -924,9 +977,6 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/exitfail.c
   lib/exitfail.h
   lib/fchdir.c
-  lib/fchmodat.c
-  lib/fchown-stub.c
-  lib/fchownat.c
   lib/fclose.c
   lib/fcntl.c
   lib/fcntl.in.h
@@ -972,7 +1022,15 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/glob.c
   lib/glob.in.h
   lib/intprops.h
-  lib/lchown.c
+  lib/isatty.c
+  lib/isnan.c
+  lib/isnand-nolibm.h
+  lib/isnand.c
+  lib/isnanf-nolibm.h
+  lib/isnanf.c
+  lib/isnanl-nolibm.h
+  lib/isnanl.c
+  lib/itold.c
   lib/link.c
   lib/localcharset.c
   lib/localcharset.h
@@ -995,8 +1053,8 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/mempcpy.c
   lib/memrchr.c
   lib/mkdir.c
-  lib/mkdirat.c
   lib/mkfifo.c
+  lib/mkostemp.c
   lib/mkstemp.c
   lib/mktime-internal.h
   lib/mktime.c
@@ -1029,6 +1087,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/ref-add.sin
   lib/ref-del.sin
   lib/rename.c
+  lib/rewinddir.c
   lib/rmdir.c
   lib/round.c
   lib/roundf.c
@@ -1039,12 +1098,16 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/sig-handler.h
   lib/sigaction.c
   lib/signal.in.h
+  lib/signbitd.c
+  lib/signbitf.c
+  lib/signbitl.c
   lib/sigprocmask.c
   lib/size_max.h
   lib/sleep.c
   lib/sockets.c
   lib/sockets.h
   lib/stat.c
+  lib/stdalign.in.h
   lib/stdbool.in.h
   lib/stddef.in.h
   lib/stdint.in.h
@@ -1088,11 +1151,10 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/unistd-safer.h
   lib/unistd.in.h
   lib/unlink.c
-  lib/unlinkat.c
   lib/vasnprintf.c
   lib/vasnprintf.h
+  lib/vasprintf.c
   lib/verify.h
-  lib/vsnprintf.c
   lib/w32sock.h
   lib/wchar.in.h
   lib/wctype.in.h
@@ -1104,11 +1166,12 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/ceilf.m4
   m4/chdir-long.m4
   m4/check-math-lib.m4
-  m4/chown.m4
   m4/close.m4
   m4/closedir.m4
   m4/codeset.m4
   m4/configmake.m4
+  m4/copysign.m4
+  m4/copysignf.m4
   m4/d-ino.m4
   m4/d-type.m4
   m4/dirent_h.m4
@@ -1120,6 +1183,9 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/eealloc.m4
   m4/errno_h.m4
   m4/error.m4
+  m4/exponentd.m4
+  m4/exponentf.m4
+  m4/exponentl.m4
   m4/extensions.m4
   m4/fchdir.m4
   m4/fclose.m4
@@ -1135,11 +1201,13 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/floorf.m4
   m4/fnmatch.m4
   m4/fopen.m4
+  m4/fpieee.m4
   m4/fpurge.m4
   m4/freading.m4
   m4/fseek.m4
   m4/fseeko.m4
   m4/fstat.m4
+  m4/fstatat.m4
   m4/ftell.m4
   m4/ftello.m4
   m4/getcwd-abort-bug.m4
@@ -1156,8 +1224,11 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/include_next.m4
   m4/intmax_t.m4
   m4/inttypes_h.m4
+  m4/isatty.m4
+  m4/isnand.m4
+  m4/isnanf.m4
+  m4/isnanl.m4
   m4/largefile.m4
-  m4/lchown.m4
   m4/link.m4
   m4/localcharset.m4
   m4/locale-fr.m4
@@ -1180,6 +1251,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/memrchr.m4
   m4/mkdir.m4
   m4/mkfifo.m4
+  m4/mkostemp.m4
   m4/mkstemp.m4
   m4/mktime.m4
   m4/mmap-anon.m4
@@ -1200,6 +1272,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/readlink.m4
   m4/realloc.m4
   m4/rename.m4
+  m4/rewinddir.m4
   m4/rmdir.m4
   m4/round.m4
   m4/roundf.m4
@@ -1208,6 +1281,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/sigaction.m4
   m4/signal_h.m4
   m4/signalblocking.m4
+  m4/signbit.m4
   m4/size_max.m4
   m4/sleep.m4
   m4/socketlib.m4
@@ -1217,6 +1291,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/ssize_t.m4
   m4/st_dm_mode.m4
   m4/stat.m4
+  m4/stdalign.m4
   m4/stdbool.m4
   m4/stddef_h.m4
   m4/stdint.m4
@@ -1251,7 +1326,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/unistd_h.m4
   m4/unlink.m4
   m4/vasnprintf.m4
-  m4/vsnprintf.m4
+  m4/vasprintf.m4
   m4/warn-on-use.m4
   m4/wchar_h.m4
   m4/wchar_t.m4
