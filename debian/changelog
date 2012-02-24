@@ -1,3 +1,15 @@
+octave (3.6.1-1) unstable; urgency=low
+
+  [ Sébastien Villemot ]
+  * Add Replaces: octave3.2* fields, in order to help the apt resolver
+  * Remove use_system_arpack patch, applied upstream
+  * Rename liboctave0 to liboctave1 to reflect the SOVERSION bump
+
+  [ Thomas Weber ]
+  * New upstream release 3.6.1
+
+ -- Thomas Weber <tweber@debian.org>  Fri, 24 Feb 2012 21:24:53 +0100
+
 octave (3.4.3-4) experimental; urgency=low
 
   * Remove all symbols files and use shlibs for library versioning.
