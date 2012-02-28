@@ -4,7 +4,7 @@ Priority: extra
 Maintainer: Debian Octave Group <pkg-octave-devel@lists.alioth.debian.org>
 Uploaders: Thomas Weber <tweber@debian.org>
 DM-Upload-Allowed: yes
-Build-Depends: gfortran, debhelper (>= 7.0.50~), automake, dh-autoreconf, texinfo,
+Build-Depends: gfortran, debhelper (>= 9), automake, dh-autoreconf, texinfo,
  texlive-latex-base, texlive-generic-recommended, epstool, transfig, pstoedit,
  libreadline-dev | libreadline6-dev | libreadline5-dev,
  libncurses5-dev, gperf, libhdf5-dev (>= 1.8.8),
@@ -13,7 +13,7 @@ Build-Depends: gfortran, debhelper (>= 7.0.50~), automake, dh-autoreconf, texinf
  libsuitesparse-dev (>= 1:3.2.0), gawk, ghostscript, libcurl4-gnutls-dev | libcurl4-dev,
  libqhull-dev, desktop-file-utils, libfltk1.1-dev, libgl2ps-dev,
  libgraphicsmagick++1-dev, libftgl-dev, libfontconfig1-dev,
- libqrupdate-dev, libarpack2-dev (>= 2.1+parpack96.dfsg-2)
+ libqrupdate-dev, libarpack2-dev (>= 2.1+parpack96.dfsg-2), dh-exec
 Standards-Version: 3.8.4
 Homepage: http://www.octave.org/
 Vcs-Git: git://git.debian.org/git/pkg-octave/octave.git
@@ -109,7 +109,9 @@ Description: GNU Info documentation on the GNU Octave language
 
 Package: liboctave1
 Architecture: any
+Pre-Depends: ${misc:Pre-Depends}
 Depends: ${shlibs:Depends}, ${misc:Depends}
+Multi-Arch: same
 Section: libs
 Description: Shared libraries of the GNU Octave language
  Octave is a (mostly Matlab (R) compatible) high-level language, primarily
