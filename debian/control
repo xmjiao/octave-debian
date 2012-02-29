@@ -13,7 +13,8 @@ Build-Depends: gfortran, debhelper (>= 9), automake, dh-autoreconf, texinfo,
  libsuitesparse-dev (>= 1:3.2.0), gawk, ghostscript, libcurl4-gnutls-dev | libcurl4-dev,
  libqhull-dev, desktop-file-utils, libfltk1.1-dev, libgl2ps-dev,
  libgraphicsmagick++1-dev, libftgl-dev, libfontconfig1-dev,
- libqrupdate-dev, libarpack2-dev (>= 2.1+parpack96.dfsg-2), dh-exec
+ libqrupdate-dev, libarpack2-dev (>= 2.1+parpack96.dfsg-2), dh-exec,
+ dpkg-dev (>= 1.16.1)
 Standards-Version: 3.8.4
 Homepage: http://www.octave.org/
 Vcs-Git: git://git.debian.org/git/pkg-octave/octave.git
