@@ -15,7 +15,7 @@ Build-Depends: gfortran, debhelper (>= 9), automake, dh-autoreconf, texinfo,
  libgraphicsmagick++1-dev, libftgl-dev, libfontconfig1-dev,
  libqrupdate-dev, libarpack2-dev (>= 2.1+parpack96.dfsg-2), dh-exec,
  dpkg-dev (>= 1.16.1)
-Standards-Version: 3.8.4
+Standards-Version: 3.9.3
 Homepage: http://www.octave.org/
 Vcs-Git: git://git.debian.org/git/pkg-octave/octave.git
 Vcs-Browser: http://git.debian.org/?p=pkg-octave/octave.git
