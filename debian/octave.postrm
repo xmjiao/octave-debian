@@ -8,7 +8,7 @@ if [ "$1" = purge ] ; then
 	# Remove the packages database file
         rm -f /usr/share/octave/octave_packages
         # Remove the directories, if we can
-	rmdir /usr/share/octave/packages/ 2>/dev/null	\
-            && rmdir /usr/share/octave/ 2>/dev/null || true
+	rmdir /usr/share/octave/packages/ 2>/dev/null || true
+	rmdir /usr/share/octave/ 2>/dev/null || true
 fi
 
