@@ -1,3 +1,17 @@
+octave (3.6.1-2) unstable; urgency=low
+
+  [ Sébastien Villemot ]
+  * Bump to dehelper compat level 9. Convert to multi-arch by the way.
+  * debian/octave-common.links: no longer hardcode upstream version number
+  * Bump to Standards-Version 3.9.3
+  * Add myself to Uploaders
+  * debian/octave.postrm: fix piuparts uninstallation error
+
+  [ Jordi Gutiérrez Hermoso ]
+  * Style fixes: untabify and use [~, foo] = bar() idiom
+
+ -- Thomas Weber <tweber@debian.org>  Wed, 07 Mar 2012 19:31:24 +0100
+
 octave (3.6.1-1) unstable; urgency=low
 
   [ Sébastien Villemot ]
