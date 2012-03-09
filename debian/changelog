@@ -1,9 +1,13 @@
-octave (3.6.1-3) UNRELEASED; urgency=low
+octave (3.6.1-3) unstable; urgency=low
 
+  [ Rafael Laboissiere ]
   * debian/octave.docs: Include useful documentation files into the octave
     package
 
- -- Rafael Laboissiere <rafael@laboissiere.net>  Thu, 08 Mar 2012 21:49:12 +0100
+  [ Sébastien Villemot ]
+  * Add dependency of octave on dpkg-dev (Closes: #663088)
+
+ -- Sébastien Villemot <sebastien.villemot@ens.fr>  Fri, 09 Mar 2012 10:13:28 +0100
 
 octave (3.6.1-2) unstable; urgency=low
 
