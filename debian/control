@@ -23,7 +23,8 @@ Vcs-Browser: http://git.debian.org/?p=pkg-octave/octave.git
 
 Package: octave
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, texinfo, octave-common (= ${source:Version})
+Depends: ${shlibs:Depends}, ${misc:Depends}, texinfo, octave-common (= ${source:Version}),
+ dpkg-dev (>= 1.16.0)
 Recommends: gnuplot, libatlas3gf-base
 Suggests: octave-info,
  octave-doc,
