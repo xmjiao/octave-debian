@@ -1,3 +1,10 @@
+octave (3.6.1-4) unstable; urgency=low
+
+  * debian/rules: remove the +x bit of .oct files after dh_shlibdeps, in order
+    to generate correct shlib dependencies
+
+ -- Sébastien Villemot <sebastien.villemot@ens.fr>  Mon, 12 Mar 2012 13:05:01 +0000
+
 octave (3.6.1-3) unstable; urgency=low
 
   [ Rafael Laboissiere ]
