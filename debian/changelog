@@ -117,6 +117,8 @@ octave (3.4.3-1) experimental; urgency=low
   * Change defs.make file for new directory structure.
     We put external .m and .oct files in directories without any API or
     version information.
+  * Remove /usr/bin/octave-depends (no longer needed since there is now
+    only one octave package)
 
   [ Sébastien Villemot ]
   * Add Conflicts with octave3.2* packages
