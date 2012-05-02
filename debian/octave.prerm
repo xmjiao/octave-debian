@@ -6,20 +6,11 @@
 
 #DEBHELPER#
 
-case "$1" in
-    remove|upgrade|deconfigure)
-	# This is for old installations of the octave package
-	if [ -f /usr/share/octave/ls-R ]
-	then
-	    rm -f /usr/share/octave/ls-R
-	fi
+# Remove the packages database file
+rm -f /usr/share/octave/octave_packages
 
-	;;
-    failed-upgrade)
-	;;
-    *)
-        echo "prerm called with unknown argument \`$1'" >&2
-        exit 0
-    ;;
-esac
-
+# This is for old installations of the octave package
+if [ -f /usr/share/octave/ls-R ]
+then
+    rm -f /usr/share/octave/ls-R
+fi
