@@ -1,3 +1,13 @@
+octave (3.6.1-5) unstable; urgency=low
+
+  * Mention in the changelog entry for 3.4.3-1 that octave-depends was removed
+    (Closes: #665326)
+  * /usr/share/octave/packages now owned by octave instead of octave-common
+    (Closes: #670892)
+  * Delete 'Forge packages file in octave's prerm instead of postrm
+
+ -- Sébastien Villemot <sebastien.villemot@ens.fr>  Tue, 08 May 2012 10:09:35 +0200
+
 octave (3.6.1-4) unstable; urgency=low
 
   * debian/rules: remove the +x bit of .oct files after dh_shlibdeps, in order
