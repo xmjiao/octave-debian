@@ -8,7 +8,7 @@ DM-Upload-Allowed: yes
 Build-Depends: gfortran, debhelper (>= 8), automake, dh-autoreconf, texinfo,
  texlive-latex-base, texlive-generic-recommended, epstool, transfig, pstoedit,
  libreadline-dev | libreadline6-dev | libreadline5-dev,
- libncurses5-dev, gperf, libhdf5-dev (>= 1.8.8),
+ libncurses5-dev, gperf, libhdf5-serial-dev,
  libblas-dev (>=1.2-7), liblapack-dev (>=3.2.1-7), gnuplot-nox, libfftw3-dev, texi2html,
  less, quilt, libpcre3-dev, flex, libglpk-dev (>= 4.15),
  libsuitesparse-dev (>= 1:3.2.0), gawk, ghostscript, libcurl4-gnutls-dev | libcurl4-dev,
@@ -125,7 +125,7 @@ Package: liboctave-dev
 Architecture: any
 Depends: liboctave1 (= ${binary:Version}), octave (= ${binary:Version}), ${misc:Depends},
  libreadline-dev | libreadline6-dev | libreadline5-dev, libncurses5-dev,
- libhdf5-dev (>= 1.8.8), libgl1-mesa-dev | libgl-dev,
+ libhdf5-serial-dev, libgl1-mesa-dev | libgl-dev,
  libblas-dev (>=1.2-7), liblapack-dev (>=3.2.1-7), libfftw3-dev, gfortran, gcc, g++
 Conflicts: octave3.2-headers
 Replaces: octave3.2-headers
