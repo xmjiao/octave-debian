@@ -1,9 +1,8 @@
-#!/usr/bin/dh-exec
 src/mkoctfile /usr/bin/
 src/octave-config /usr/bin/
 examples/ /usr/share/doc/liboctave-dev/
 usr/include  /usr
 debian/defs.make /usr/share/octave/debian/
-usr/lib/${DEB_HOST_MULTIARCH}/liboctave.so /usr/lib/${DEB_HOST_MULTIARCH}
-usr/lib/${DEB_HOST_MULTIARCH}/libcruft.so /usr/lib/${DEB_HOST_MULTIARCH}
-usr/lib/${DEB_HOST_MULTIARCH}/liboctinterp.so /usr/lib/${DEB_HOST_MULTIARCH}
+usr/lib/liboctave.so /usr/lib
+usr/lib/libcruft.so /usr/lib
+usr/lib/liboctinterp.so /usr/lib

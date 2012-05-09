@@ -1,7 +1,3 @@
-#!/usr/bin/dh-exec
-
-usr/lib/${DEB_HOST_MULTIARCH}/liboctave.so.1* /usr/lib/${DEB_HOST_MULTIARCH}
-
-usr/lib/${DEB_HOST_MULTIARCH}/libcruft.so.1* /usr/lib/${DEB_HOST_MULTIARCH}
-
-usr/lib/${DEB_HOST_MULTIARCH}/liboctinterp.so.1* /usr/lib/${DEB_HOST_MULTIARCH}
+usr/lib/liboctave.so.1* /usr/lib
+usr/lib/libcruft.so.1* /usr/lib
+usr/lib/liboctinterp.so.1* /usr/lib

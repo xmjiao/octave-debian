@@ -5,7 +5,7 @@ Maintainer: Debian Octave Group <pkg-octave-devel@lists.alioth.debian.org>
 Uploaders: Thomas Weber <tweber@debian.org>,
            Sébastien Villemot <sebastien.villemot@ens.fr>
 DM-Upload-Allowed: yes
-Build-Depends: gfortran, debhelper (>= 9), automake, dh-autoreconf, texinfo,
+Build-Depends: gfortran, debhelper (>= 8), automake, dh-autoreconf, texinfo,
  texlive-latex-base, texlive-generic-recommended, epstool, transfig, pstoedit,
  libreadline-dev | libreadline6-dev | libreadline5-dev,
  libncurses5-dev, gperf, libhdf5-dev (>= 1.8.8),
@@ -14,8 +14,7 @@ Build-Depends: gfortran, debhelper (>= 9), automake, dh-autoreconf, texinfo,
  libsuitesparse-dev (>= 1:3.2.0), gawk, ghostscript, libcurl4-gnutls-dev | libcurl4-dev,
  libqhull-dev, desktop-file-utils, libfltk1.1-dev, libgl2ps-dev,
  libgraphicsmagick++1-dev, libftgl-dev, libfontconfig1-dev,
- libqrupdate-dev, libarpack2-dev (>= 2.1+parpack96.dfsg-2), dh-exec,
- dpkg-dev (>= 1.16.1)
+ libqrupdate-dev, libarpack2-dev (>= 2.1+parpack96.dfsg-2)
 Standards-Version: 3.9.3
 Homepage: http://www.octave.org/
 Vcs-Git: git://git.debian.org/git/pkg-octave/octave.git
@@ -23,8 +22,7 @@ Vcs-Browser: http://git.debian.org/?p=pkg-octave/octave.git
 
 Package: octave
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, texinfo, octave-common (= ${source:Version}),
- dpkg-dev (>= 1.16.0)
+Depends: ${shlibs:Depends}, ${misc:Depends}, texinfo, octave-common (= ${source:Version})
 Recommends: gnuplot, libatlas3gf-base
 Suggests: octave-info,
  octave-doc,
