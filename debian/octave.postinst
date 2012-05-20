@@ -1,6 +1,8 @@
-#!/bin/sh -e
+#!/bin/sh
 #
 # postinst script for the Debian GNU/Linux octave packages
+
+set -e
 
 #DEBHELPER#
 
