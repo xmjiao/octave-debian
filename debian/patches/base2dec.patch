@@ -1,0 +1,31 @@
+Description: Fix bug in base2dec.m
+ In particular, this patch removes a failure in the testsuite of
+ octave-communications 1.1.1.
+Origin: upstream, http://hg.savannah.gnu.org/hgweb/octave/rev/731e9e1539a8
+Bug: http://savannah.gnu.org/bugs/?func=detailitem&item_id=35621
+Last-Update: 2012-05-20
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+diff --git a/scripts/strings/base2dec.m b/scripts/strings/base2dec.m
+--- a/scripts/strings/base2dec.m
++++ b/scripts/strings/base2dec.m
+@@ -89,7 +89,7 @@
+   table = NaN (1, 256);
+   table(toascii (symbols(1:base))) = 0 : base-1;
+   table(toascii (" ")) = 0;
+-  s = table(toascii (s));
++  s = reshape (table(toascii (s)), size (s));
+ 
+   ## Multiply the resulting digits by the appropriate power
+   ## and sum the rows.
+@@ -103,6 +103,9 @@
+ %!assert(base2dec ("-1", 2), NaN);
+ %!assert(base2dec ({"A1", "1A"}, 16), [161; 26]);
+ 
++%% Bug #35621
++%!assert (base2dec (["0"; "1"], 2), [0; 1])
++
+ %%Test input validation
+ %!error base2dec ();
+ %!error base2dec ("11120");
+
