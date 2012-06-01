@@ -29,7 +29,7 @@ GNU Octave
 
 This manual documents how to run, install and port GNU Octave, as well
 as its new features and incompatibilities, and how to report bugs.  It
-corresponds to GNU Octave version 3.6.1.
+corresponds to GNU Octave version 3.6.2.
 
 * Menu:
 
@@ -743,7 +743,7 @@ Installation
 
 Build Dependencies
 
-* Tips for Specific Systems::
+* Obtaining the Depencies Automatically::
 * Build Tools::
 * External Packages::
 
@@ -1045,7 +1045,7 @@ this manual in *note Copying::.
 run, use, and extend GNU Octave.  Additional chapters describe how to
 report bugs and help contribute code.
 
-   This document corresponds to Octave version 3.6.1.
+   This document corresponds to Octave version 3.6.2.
 
 * Menu:
 
@@ -5890,6 +5890,12 @@ a hexadecimal number to a floating point number.
 
           bin2dec ("1110")
                => 14
+
+     Spaces are ignored during conversion and may be used to make the
+     binary number more readable.
+
+          bin2dec ("1000 0001")
+               => 129
 
      If S is a string matrix, return a column vector with one converted
      number per row of S; Invalid rows evaluate to NaN.

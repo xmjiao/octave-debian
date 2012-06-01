@@ -1,7 +1,7 @@
 %!PS-Adobe-2.0 EPSF-2.0
 %%Title: delaunay.eps
-%%Creator: gnuplot 4.4 patchlevel 0
-%%CreationDate: Wed Feb 22 15:01:39 2012
+%%Creator: gnuplot 4.6 patchlevel 0
+%%CreationDate: Thu May 31 11:40:45 2012
 %%DocumentFonts: (atend)
 %%BoundingBox: 50 50 410 302
 %%EndComments
@@ -20,10 +20,12 @@ gnudict begin
 /Level1 false def
 /Rounded false def
 /ClipToBoundingBox false def
+/SuppressPDFMark false def
 /TransparentPatterns false def
 /gnulinewidth 5.000 def
 /userlinewidth gnulinewidth def
 /Gamma 1.0 def
+/BackgroundColor {-1.000 -1.000 -1.000} def
 %
 /vshift -66 def
 /dl1 {
@@ -38,22 +40,6 @@ gnudict begin
 /vpt_ 31.5 def
 /hpt hpt_ def
 /vpt vpt_ def
-Level1 {} {
-/SDict 10 dict def
-systemdict /pdfmark known not {
-  userdict /pdfmark systemdict /cleartomark get put
-} if
-SDict begin [
-  /Title (delaunay.eps)
-  /Subject (gnuplot plot)
-  /Creator (gnuplot 4.4 patchlevel 0)
-  /Author (jwe)
-%  /Producer (gnuplot)
-%  /Keywords ()
-  /CreationDate (Wed Feb 22 15:01:39 2012)
-  /DOCINFO pdfmark
-end
-} ifelse
 /doclip {
   ClipToBoundingBox {
     newpath 50 50 moveto 410 50 lineto 410 302 lineto 50 302 lineto closepath
@@ -61,7 +47,7 @@ end
   } if
 } def
 %
-% Gnuplot Prolog Version 4.4 (January 2010)
+% Gnuplot Prolog Version 4.4 (August 2010)
 %
 %/SuppressPDFMark true def
 %
@@ -73,6 +59,7 @@ end
 /Z {closepath} bind def
 /C {setrgbcolor} bind def
 /f {rlineto fill} bind def
+/g {setgray} bind def
 /Gshow {show} def   % May be redefined later in the file to support UTF-8
 /vpt2 vpt 2 mul def
 /hpt2 hpt 2 mul def
@@ -94,6 +81,7 @@ end
 	dup 1 lt {pop 1} if 10 mul /udl exch def} def
 /PL {stroke userlinewidth setlinewidth
 	Rounded {1 setlinejoin 1 setlinecap} if} def
+3.8 setmiterlimit
 % Default Line colors
 /LCw {1 1 1} def
 /LCb {0 0 0} def
@@ -459,8 +447,26 @@ currentdict end definefont pop
   Blacktext {gsave 0 setgray MFshow grestore} {MFshow} ifelse } bind def
 /XYsave    { [( ) 1 2 true false 3 ()] } bind def
 /XYrestore { [( ) 1 2 true false 4 ()] } bind def
+Level1 SuppressPDFMark or 
+{} {
+/SDict 10 dict def
+systemdict /pdfmark known not {
+  userdict /pdfmark systemdict /cleartomark get put
+} if
+SDict begin [
+  /Title (delaunay.eps)
+  /Subject (gnuplot plot)
+  /Creator (gnuplot 4.6 patchlevel 0)
+  /Author (jwe)
+%  /Producer (gnuplot)
+%  /Keywords ()
+  /CreationDate (Thu May 31 11:40:45 2012)
+  /DOCINFO pdfmark
+end
+} ifelse
 end
 %%EndProlog
+%%Page: 1 1
 gnudict begin
 gsave
 doclip
@@ -469,6 +475,7 @@ doclip
 0 setgray
 newpath
 (Helvetica) findfont 200 scalefont setfont
+BackgroundColor 0 lt 3 1 roll 0 lt exch 0 lt or or not {BackgroundColor C 1.000 0 0 7200.00 5040.00 BoxColFill} if
 gsave % colour palette begin
 /maxcolors 64 def
 /HSV2RGB {  exch dup 0.0 eq {pop exch pop dup dup} % achromatic gray
@@ -545,133 +552,133 @@ Color InterpolatedColor or { % COLOUR vs. GRAY map
 } ifelse
 0.500 UL
 LTb
-780 400 M
+660 400 M
 88 0 V
-6031 0 R
+6091 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 660 400 M
+0.00 0.00 0.00 C 540 400 M
 [ [({}) 200.0 0.0 true true 0 (0)]
 ] -66.7 MRshow
 0.500 UL
 LTb
-780 1280 M
+660 1280 M
 88 0 V
-6031 0 R
+6091 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 660 1280 M
+0.00 0.00 0.00 C 540 1280 M
 [ [({}) 200.0 0.0 true true 0 (0.2)]
 ] -66.7 MRshow
 0.500 UL
 LTb
-780 2160 M
+660 2160 M
 88 0 V
-6031 0 R
+6091 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 660 2160 M
+0.00 0.00 0.00 C 540 2160 M
 [ [({}) 200.0 0.0 true true 0 (0.4)]
 ] -66.7 MRshow
 0.500 UL
 LTb
-780 3039 M
+660 3039 M
 88 0 V
-6031 0 R
+6091 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 660 3039 M
+0.00 0.00 0.00 C 540 3039 M
 [ [({}) 200.0 0.0 true true 0 (0.6)]
 ] -66.7 MRshow
 0.500 UL
 LTb
-780 3919 M
+660 3919 M
 88 0 V
-6031 0 R
+6091 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 660 3919 M
+0.00 0.00 0.00 C 540 3919 M
 [ [({}) 200.0 0.0 true true 0 (0.8)]
 ] -66.7 MRshow
 0.500 UL
 LTb
-780 4799 M
+660 4799 M
 88 0 V
-6031 0 R
+6091 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 660 4799 M
+0.00 0.00 0.00 C 540 4799 M
 [ [({}) 200.0 0.0 true true 0 (1)]
 ] -66.7 MRshow
 0.500 UL
 LTb
-780 400 M
+660 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 780 200 M
+0.00 0.00 0.00 C 660 200 M
 [ [({}) 200.0 0.0 true true 0 (0)]
 ] -66.7 MCshow
 0.500 UL
 LTb
-2004 400 M
+1896 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 2004 200 M
+0.00 0.00 0.00 C 1896 200 M
 [ [({}) 200.0 0.0 true true 0 (0.2)]
 ] -66.7 MCshow
 0.500 UL
 LTb
-3228 400 M
+3132 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 3228 200 M
+0.00 0.00 0.00 C 3132 200 M
 [ [({}) 200.0 0.0 true true 0 (0.4)]
 ] -66.7 MCshow
 0.500 UL
 LTb
-4451 400 M
+4367 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 4451 200 M
+0.00 0.00 0.00 C 4367 200 M
 [ [({}) 200.0 0.0 true true 0 (0.6)]
 ] -66.7 MCshow
 0.500 UL
 LTb
-5675 400 M
+5603 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 5675 200 M
+0.00 0.00 0.00 C 5603 200 M
 [ [({}) 200.0 0.0 true true 0 (0.8)]
 ] -66.7 MCshow
 0.500 UL
 LTb
-6899 400 M
+6839 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 6899 200 M
+0.00 0.00 0.00 C 6839 200 M
 [ [({}) 200.0 0.0 true true 0 (1)]
 ] -66.7 MCshow
 0.500 UL
 LTb
 0.500 UL
 LTb
-780 4799 N
-780 400 L
-6119 0 V
+660 4799 N
+660 400 L
+6179 0 V
 0 4399 V
--6119 0 V
+-6179 0 V
 Z stroke
 1.000 UP
 0.500 UL
@@ -679,113 +686,113 @@ LTb
 % Begin plot #1
 0.500 UL
 LT0
-0.00 0.00 1.00 C 5454 3753 M
-152 805 V
-5965 2304 L
-5454 3753 L
+0.00 0.00 1.00 C 5379 3753 M
+155 805 V
+5896 2304 L
+5379 3753 L
 % End plot #1
 % Begin plot #2
 stroke
 LT0
-0.00 0.00 1.00 C 5454 3753 M
-3530 3574 L
-2076 984 V
-5454 3753 L
+0.00 0.00 1.00 C 5379 3753 M
+3437 3574 L
+2097 984 V
+5379 3753 L
 % End plot #2
 % Begin plot #3
 stroke
 LT0
-0.00 0.00 1.00 C 5454 3753 M
-3812 2359 L
-2153 -55 V
-5454 3753 L
+0.00 0.00 1.00 C 5379 3753 M
+3721 2359 L
+2175 -55 V
+5379 3753 L
 % End plot #3
 % Begin plot #4
 stroke
 LT0
-0.00 0.00 1.00 C 5454 3753 M
-3812 2359 L
-3530 3574 L
-1924 179 V
+0.00 0.00 1.00 C 5379 3753 M
+3721 2359 L
+3437 3574 L
+1942 179 V
 % End plot #4
 % Begin plot #5
 stroke
 LT0
-0.00 0.00 1.00 C 1602 4077 M
-3812 2359 L
-953 535 L
-649 3542 V
+0.00 0.00 1.00 C 1490 4077 M
+3721 2359 L
+835 535 L
+655 3542 V
 % End plot #5
 % Begin plot #6
 stroke
 LT0
-0.00 0.00 1.00 C 1602 4077 M
-3812 2359 L
-3530 3574 L
-1602 4077 L
+0.00 0.00 1.00 C 1490 4077 M
+3721 2359 L
+3437 3574 L
+1490 4077 L
 % End plot #6
 % Begin plot #7
 stroke
 LT0
-0.00 0.00 1.00 C 4767 1406 M
--955 953 V
-2153 -55 V
-4767 1406 L
+0.00 0.00 1.00 C 4686 1406 M
+-965 953 V
+2175 -55 V
+4686 1406 L
 % End plot #7
 % Begin plot #8
 stroke
 LT0
-0.00 0.00 1.00 C 1354 4365 M
-3530 3574 L
-2076 984 V
-1354 4365 L
+0.00 0.00 1.00 C 1240 4365 M
+3437 3574 L
+2097 984 V
+1240 4365 L
 % End plot #8
 % Begin plot #9
 stroke
 LT0
-0.00 0.00 1.00 C 1354 4365 M
-248 -288 V
-3530 3574 L
-1354 4365 L
+0.00 0.00 1.00 C 1240 4365 M
+250 -288 V
+3437 3574 L
+1240 4365 L
 % End plot #9
 % Begin plot #10
 stroke
 LT0
-0.00 0.00 1.00 C 1354 4365 M
-248 -288 V
-953 535 L
-401 3830 V
+0.00 0.00 1.00 C 1240 4365 M
+250 -288 V
+835 535 L
+405 3830 V
 % End plot #10
 % Begin plot #11
 stroke
 LT0
-0.00 0.00 1.00 C 2341 409 M
-3812 2359 L
-953 535 L
-2341 409 L
+0.00 0.00 1.00 C 2236 409 M
+3721 2359 L
+835 535 L
+2236 409 L
 % End plot #11
 % Begin plot #12
 stroke
 LT0
-0.00 0.00 1.00 C 2341 409 M
-2426 997 V
--955 953 V
-2341 409 L
+0.00 0.00 1.00 C 2236 409 M
+2450 997 V
+-965 953 V
+2236 409 L
 % End plot #12
 % Begin plot #13
 2.000 UP
 stroke
 LT3
-1.00 0.00 0.00 C 1602 4077 Star
-5965 2304 Star
-5454 3753 Star
-2341 409 Star
-3812 2359 Star
-3530 3574 Star
-4767 1406 Star
-5606 4558 Star
-1354 4365 Star
-953 535 Star
+1.00 0.00 0.00 C 1490 4077 Star
+5896 2304 Star
+5379 3753 Star
+2236 409 Star
+3721 2359 Star
+3437 3574 Star
+4686 1406 Star
+5534 4558 Star
+1240 4365 Star
+835 535 Star
 % End plot #13
 1.000 UP
 0.500 UL

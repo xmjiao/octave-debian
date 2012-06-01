@@ -27,11 +27,14 @@ be able to find pre-packaged versions of the dependencies distributed as
 part of your system, or you may have to build some or all of them
 yourself.
 
-1.1.1 Tips for Specific Systems
--------------------------------
+1.1.1 Obtaining the Depencies Automatically
+-------------------------------------------
 
-The names of pre-compiled packages vary by system and do not always
-match exactly the names listed above.
+On some systems you can obtain many of Octave's build dependencies
+automatically. The commands for doing this vary by system. Similarly,
+the names of pre-compiled packages vary by system and do not always
+match exactly the names listed in *note Build Tools:: and *note
+External Packages::.
 
    You will usually need the development version of an external
 dependency so that you get the libraries and header files for building

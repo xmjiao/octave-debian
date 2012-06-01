@@ -4237,7 +4237,7 @@ surface::properties::properties (const graphics_handle& mh, const graphics_handl
     ydatasource ("ydatasource", mh, ""),
     zdatasource ("zdatasource", mh, ""),
     cdatasource ("cdatasource", mh, ""),
-    facecolor ("facecolor", mh, "{flat}|none|interp"),
+    facecolor ("facecolor", mh, "{flat}|none|interp|texturemap"),
     facealpha ("facealpha", mh, double_radio_property (1.0, radio_values ("flat|interp"))),
     edgecolor ("edgecolor", mh, color_property (color_values (0, 0, 0), radio_values ("flat|none|interp"))),
     linestyle ("linestyle", mh, "{-}|--|:|-.|none"),
@@ -4716,7 +4716,7 @@ surface::properties::factory_defaults (void)
   m["ydatasource"] = "";
   m["zdatasource"] = "";
   m["cdatasource"] = "";
-  m["facecolor"] = "{flat}|none|interp";
+  m["facecolor"] = "{flat}|none|interp|texturemap";
   m["facealpha"] = double_radio_property (1.0, radio_values ("flat|interp"));
   m["edgecolor"] = color_property (color_values (0, 0, 0), radio_values ("flat|none|interp"));
   m["linestyle"] = "-";

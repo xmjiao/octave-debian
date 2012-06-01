@@ -20,7 +20,10 @@
 
 include $(top_srcdir)/build-aux/common.mk
 
-AM_CPPFLAGS = @CPPFLAGS@ -I../libgnu -I$(top_srcdir)/libgnu
+## Search local directories before those specified by the user.
+AM_CPPFLAGS = \
+  -I../libgnu -I$(top_srcdir)/libgnu \
+  @CPPFLAGS@
 
 AUTOMAKE_OPTIONS = subdir-objects
 
@@ -44,7 +47,7 @@ libcruft_la_LIBADD = \
 # Increment these as needed and according to the rules in the libtool
 # manual:
 libcruft_current = 1
-libcruft_revision = 0
+libcruft_revision = 1
 libcruft_age = 0
 
 libcruft_version_info = $(libcruft_current):$(libcruft_revision):$(libcruft_age)

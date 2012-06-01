@@ -1,7 +1,7 @@
 %!PS-Adobe-2.0 EPSF-2.0
 %%Title: interpft.eps
-%%Creator: gnuplot 4.4 patchlevel 0
-%%CreationDate: Wed Feb 22 15:01:41 2012
+%%Creator: gnuplot 4.6 patchlevel 0
+%%CreationDate: Thu May 31 11:40:47 2012
 %%DocumentFonts: (atend)
 %%BoundingBox: 50 50 410 302
 %%EndComments
@@ -20,10 +20,12 @@ gnudict begin
 /Level1 false def
 /Rounded false def
 /ClipToBoundingBox false def
+/SuppressPDFMark false def
 /TransparentPatterns false def
 /gnulinewidth 5.000 def
 /userlinewidth gnulinewidth def
 /Gamma 1.0 def
+/BackgroundColor {-1.000 -1.000 -1.000} def
 %
 /vshift -66 def
 /dl1 {
@@ -38,22 +40,6 @@ gnudict begin
 /vpt_ 31.5 def
 /hpt hpt_ def
 /vpt vpt_ def
-Level1 {} {
-/SDict 10 dict def
-systemdict /pdfmark known not {
-  userdict /pdfmark systemdict /cleartomark get put
-} if
-SDict begin [
-  /Title (interpft.eps)
-  /Subject (gnuplot plot)
-  /Creator (gnuplot 4.4 patchlevel 0)
-  /Author (jwe)
-%  /Producer (gnuplot)
-%  /Keywords ()
-  /CreationDate (Wed Feb 22 15:01:41 2012)
-  /DOCINFO pdfmark
-end
-} ifelse
 /doclip {
   ClipToBoundingBox {
     newpath 50 50 moveto 410 50 lineto 410 302 lineto 50 302 lineto closepath
@@ -61,7 +47,7 @@ end
   } if
 } def
 %
-% Gnuplot Prolog Version 4.4 (January 2010)
+% Gnuplot Prolog Version 4.4 (August 2010)
 %
 %/SuppressPDFMark true def
 %
@@ -73,6 +59,7 @@ end
 /Z {closepath} bind def
 /C {setrgbcolor} bind def
 /f {rlineto fill} bind def
+/g {setgray} bind def
 /Gshow {show} def   % May be redefined later in the file to support UTF-8
 /vpt2 vpt 2 mul def
 /hpt2 hpt 2 mul def
@@ -94,6 +81,7 @@ end
 	dup 1 lt {pop 1} if 10 mul /udl exch def} def
 /PL {stroke userlinewidth setlinewidth
 	Rounded {1 setlinejoin 1 setlinecap} if} def
+3.8 setmiterlimit
 % Default Line colors
 /LCw {1 1 1} def
 /LCb {0 0 0} def
@@ -459,8 +447,26 @@ currentdict end definefont pop
   Blacktext {gsave 0 setgray MFshow grestore} {MFshow} ifelse } bind def
 /XYsave    { [( ) 1 2 true false 3 ()] } bind def
 /XYrestore { [( ) 1 2 true false 4 ()] } bind def
+Level1 SuppressPDFMark or 
+{} {
+/SDict 10 dict def
+systemdict /pdfmark known not {
+  userdict /pdfmark systemdict /cleartomark get put
+} if
+SDict begin [
+  /Title (interpft.eps)
+  /Subject (gnuplot plot)
+  /Creator (gnuplot 4.6 patchlevel 0)
+  /Author (jwe)
+%  /Producer (gnuplot)
+%  /Keywords ()
+  /CreationDate (Thu May 31 11:40:47 2012)
+  /DOCINFO pdfmark
+end
+} ifelse
 end
 %%EndProlog
+%%Page: 1 1
 gnudict begin
 gsave
 doclip
@@ -469,6 +475,7 @@ doclip
 0 setgray
 newpath
 (Helvetica) findfont 200 scalefont setfont
+BackgroundColor 0 lt 3 1 roll 0 lt exch 0 lt or or not {BackgroundColor C 1.000 0 0 7200.00 5040.00 BoxColFill} if
 gsave % colour palette begin
 /maxcolors 64 def
 /HSV2RGB {  exch dup 0.0 eq {pop exch pop dup dup} % achromatic gray
@@ -545,153 +552,153 @@ Color InterpolatedColor or { % COLOUR vs. GRAY map
 } ifelse
 0.500 UL
 LTb
-900 400 M
+780 400 M
 88 0 V
-5911 0 R
+5971 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 780 400 M
+0.00 0.00 0.00 C 660 400 M
 [ [({}) 200.0 0.0 true true 0 (-1)]
 ] -66.7 MRshow
 0.500 UL
 LTb
-900 1280 M
+780 1280 M
 88 0 V
-5911 0 R
+5971 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 780 1280 M
+0.00 0.00 0.00 C 660 1280 M
 [ [({}) 200.0 0.0 true true 0 (-0.5)]
 ] -66.7 MRshow
 0.500 UL
 LTb
-900 2160 M
+780 2160 M
 88 0 V
-5911 0 R
+5971 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 780 2160 M
+0.00 0.00 0.00 C 660 2160 M
 [ [({}) 200.0 0.0 true true 0 (0)]
 ] -66.7 MRshow
 0.500 UL
 LTb
-900 3039 M
+780 3039 M
 88 0 V
-5911 0 R
+5971 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 780 3039 M
+0.00 0.00 0.00 C 660 3039 M
 [ [({}) 200.0 0.0 true true 0 (0.5)]
 ] -66.7 MRshow
 0.500 UL
 LTb
-900 3919 M
+780 3919 M
 88 0 V
-5911 0 R
+5971 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 780 3919 M
+0.00 0.00 0.00 C 660 3919 M
 [ [({}) 200.0 0.0 true true 0 (1)]
 ] -66.7 MRshow
 0.500 UL
 LTb
-900 4799 M
+780 4799 M
 88 0 V
-5911 0 R
+5971 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 780 4799 M
+0.00 0.00 0.00 C 660 4799 M
 [ [({}) 200.0 0.0 true true 0 (1.5)]
 ] -66.7 MRshow
 0.500 UL
 LTb
-900 400 M
+780 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 900 200 M
+0.00 0.00 0.00 C 780 200 M
 [ [({}) 200.0 0.0 true true 0 (0)]
 ] -66.7 MCshow
 0.500 UL
 LTb
-1757 400 M
+1646 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 1757 200 M
+0.00 0.00 0.00 C 1646 200 M
 [ [({}) 200.0 0.0 true true 0 (0.5)]
 ] -66.7 MCshow
 0.500 UL
 LTb
-2614 400 M
+2511 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 2614 200 M
+0.00 0.00 0.00 C 2511 200 M
 [ [({}) 200.0 0.0 true true 0 (1)]
 ] -66.7 MCshow
 0.500 UL
 LTb
-3471 400 M
+3377 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 3471 200 M
+0.00 0.00 0.00 C 3377 200 M
 [ [({}) 200.0 0.0 true true 0 (1.5)]
 ] -66.7 MCshow
 0.500 UL
 LTb
-4328 400 M
+4242 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 4328 200 M
+0.00 0.00 0.00 C 4242 200 M
 [ [({}) 200.0 0.0 true true 0 (2)]
 ] -66.7 MCshow
 0.500 UL
 LTb
-5185 400 M
+5108 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 5185 200 M
+0.00 0.00 0.00 C 5108 200 M
 [ [({}) 200.0 0.0 true true 0 (2.5)]
 ] -66.7 MCshow
 0.500 UL
 LTb
-6042 400 M
+5973 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 6042 200 M
+0.00 0.00 0.00 C 5973 200 M
 [ [({}) 200.0 0.0 true true 0 (3)]
 ] -66.7 MCshow
 0.500 UL
 LTb
-6899 400 M
+6839 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 6899 200 M
+0.00 0.00 0.00 C 6839 200 M
 [ [({}) 200.0 0.0 true true 0 (3.5)]
 ] -66.7 MCshow
 0.500 UL
 LTb
 0.500 UL
 LTb
-900 4799 N
-900 400 L
-5999 0 V
+780 4799 N
+780 400 L
+6059 0 V
 0 4399 V
--5999 0 V
+-6059 0 V
 Z stroke
 1.000 UP
 0.500 UL
@@ -700,212 +707,212 @@ LTb
 0.500 UL
 LT0
 0.00 1.00 0.00 C LCb setrgbcolor
-5996 4636 M
+5936 4636 M
 [ [({}) 200.0 0.0 true true 0 (sin\(4t+0.3\)cos\(3t-0.1\))]
 ] -66.7 MRshow
 LT0
-0.00 1.00 0.00 C 6116 4636 M
+0.00 1.00 0.00 C 6056 4636 M
 543 0 V
-900 2677 M
+780 2677 M
 57 219 V
-56 200 V
+57 200 V
 57 170 V
-56 133 V
+58 133 V
 57 91 V
-56 45 V
+57 45 V
 57 -3 V
-56 -49 V
+57 -49 V
 57 -90 V
 57 -127 V
-56 -155 V
-57 -174 V
-56 -183 V
+57 -155 V
+58 -174 V
+57 -183 V
 57 -180 V
-56 -168 V
+57 -168 V
 57 -145 V
 57 -113 V
-56 -76 V
+57 -76 V
 57 -33 V
-56 13 V
+58 13 V
 57 59 V
-56 102 V
+57 102 V
 57 140 V
-56 172 V
+57 172 V
 57 195 V
 57 209 V
-56 211 V
-57 203 V
-56 185 V
+57 211 V
+58 203 V
+57 185 V
 57 156 V
-56 121 V
+57 121 V
 57 78 V
 57 33 V
-56 -15 V
+57 -15 V
 57 -62 V
-56 -106 V
+58 -106 V
 57 -143 V
-56 -174 V
+57 -174 V
 57 -194 V
-56 -206 V
+57 -206 V
 57 -206 V
 57 -195 V
-56 -175 V
-57 -145 V
-56 -109 V
+57 -175 V
+58 -145 V
+57 -109 V
 57 -66 V
-56 -22 V
+57 -22 V
 57 25 V
 57 68 V
-56 108 V
-57 141 V
-56 167 V
+57 108 V
+58 141 V
+57 167 V
 57 181 V
-56 187 V
+57 187 V
 57 180 V
-56 165 V
+57 165 V
 57 138 V
 57 104 V
-56 64 V
+58 64 V
 57 18 V
-56 -29 V
+57 -29 V
 57 -76 V
-56 -120 V
+57 -120 V
 57 -159 V
 57 -190 V
-56 -213 V
-57 -225 V
-56 -227 V
+57 -213 V
+58 -225 V
+57 -227 V
 57 -219 V
-56 -199 V
+57 -199 V
 57 -171 V
-56 -135 V
+57 -135 V
 57 -94 V
 57 -47 V
-56 -2 V
+58 -2 V
 57 44 V
-56 85 V
+57 85 V
 57 120 V
-56 148 V
+57 148 V
 57 165 V
 57 174 V
-56 171 V
-57 157 V
-56 133 V
+57 171 V
+58 157 V
+57 133 V
 57 102 V
-56 63 V
+57 63 V
 57 19 V
-56 -27 V
+57 -27 V
 57 -73 V
 57 -118 V
-56 -156 V
+58 -156 V
 57 -189 V
-56 -212 V
+57 -212 V
 57 -227 V
-56 -229 V
+57 -229 V
 57 -223 V
 57 -204 V
-56 -176 V
+58 -176 V
 57 -142 V
 % End plot #1
 % Begin plot #2
 stroke
 LT0
 0.00 0.00 1.00 C LCb setrgbcolor
-5996 4436 M
+5936 4436 M
 [ [({}) 200.0 0.0 true true 0 (spline)]
 ] -66.7 MRshow
 LT0
-0.00 0.00 1.00 C 6116 4436 M
+0.00 0.00 1.00 C 6056 4436 M
 543 0 V
-900 2677 M
+780 2677 M
 57 377 V
-56 282 V
+57 282 V
 57 197 V
-56 119 V
+58 119 V
 57 51 V
-56 -8 V
+57 -8 V
 57 -60 V
-56 -103 V
+57 -103 V
 57 -136 V
 57 -161 V
-56 -179 V
-57 -186 V
-56 -185 V
+57 -179 V
+58 -186 V
+57 -185 V
 57 -177 V
-56 -158 V
+57 -158 V
 57 -133 V
 57 -97 V
-56 -53 V
+57 -53 V
 57 -2 V
-56 45 V
+58 45 V
 57 86 V
-56 119 V
+57 119 V
 57 145 V
-56 164 V
+57 164 V
 57 174 V
 57 178 V
-56 175 V
-57 163 V
-56 148 V
+57 175 V
+58 163 V
+57 148 V
 57 128 V
-56 104 V
+57 104 V
 57 77 V
 57 45 V
-56 10 V
+57 10 V
 57 -30 V
-56 -73 V
+58 -73 V
 57 -119 V
-56 -161 V
+57 -161 V
 57 -189 V
-56 -207 V
+57 -207 V
 57 -211 V
 57 -204 V
-56 -185 V
-57 -153 V
-56 -111 V
+57 -185 V
+58 -153 V
+57 -111 V
 57 -56 V
-56 1 V
+57 1 V
 57 47 V
 57 88 V
-56 118 V
-57 140 V
-56 155 V
+57 118 V
+58 140 V
+57 155 V
 57 160 V
-56 157 V
+57 157 V
 57 146 V
-56 129 V
+57 129 V
 57 108 V
 57 84 V
-56 57 V
+58 57 V
 57 25 V
-56 -8 V
+57 -8 V
 57 -46 V
-56 -88 V
+57 -88 V
 57 -131 V
 57 -173 V
-56 -203 V
-57 -223 V
-56 -230 V
+57 -203 V
+58 -223 V
+57 -230 V
 57 -225 V
-56 -209 V
+57 -209 V
 57 -182 V
-56 -143 V
+57 -143 V
 57 -92 V
 57 -36 V
-56 14 V
+58 14 V
 57 57 V
-56 92 V
+57 92 V
 57 119 V
-56 140 V
+57 140 V
 57 153 V
 57 158 V
-56 156 V
-57 147 V
-56 130 V
+57 156 V
+58 147 V
+57 130 V
 57 106 V
-56 75 V
+57 75 V
 57 35 V
-56 -11 V
+57 -11 V
 57 -64 V
 57 -126 V
 % End plot #2
@@ -913,111 +920,111 @@ LT0
 stroke
 LT0
 0.00 1.00 1.00 C LCb setrgbcolor
-5996 4236 M
+5936 4236 M
 [ [({}) 200.0 0.0 true true 0 (interpft)]
 ] -66.7 MRshow
 LT0
-0.00 1.00 1.00 C 6116 4236 M
+0.00 1.00 1.00 C 6056 4236 M
 543 0 V
-900 2677 M
+780 2677 M
 57 120 V
-56 130 V
+57 130 V
 57 131 V
-56 124 V
+58 124 V
 57 107 V
-56 80 V
+57 80 V
 57 47 V
-56 7 V
+57 7 V
 57 -35 V
 57 -78 V
-56 -117 V
-57 -150 V
-56 -173 V
+57 -117 V
+58 -150 V
+57 -173 V
 57 -185 V
-56 -185 V
+57 -185 V
 57 -171 V
 57 -145 V
-56 -107 V
+57 -107 V
 57 -60 V
-56 -10 V
+58 -10 V
 57 45 V
-56 96 V
+57 96 V
 57 143 V
-56 182 V
+57 182 V
 57 210 V
 57 225 V
-56 228 V
-57 217 V
-56 195 V
+57 228 V
+58 217 V
+57 195 V
 57 163 V
-56 122 V
+57 122 V
 57 75 V
 57 27 V
-56 -22 V
+57 -22 V
 57 -68 V
-56 -110 V
+58 -110 V
 57 -147 V
-56 -173 V
+57 -173 V
 57 -193 V
-56 -202 V
+57 -202 V
 57 -203 V
 57 -192 V
-56 -175 V
-57 -147 V
-56 -114 V
+57 -175 V
+58 -147 V
+57 -114 V
 57 -74 V
-56 -30 V
+57 -30 V
 57 15 V
 57 61 V
-56 103 V
-57 140 V
-56 171 V
+57 103 V
+58 140 V
+57 171 V
 57 191 V
-56 200 V
+57 200 V
 57 197 V
-56 182 V
+57 182 V
 57 155 V
 57 117 V
-56 70 V
+58 70 V
 57 18 V
-56 -38 V
+57 -38 V
 57 -91 V
-56 -141 V
+57 -141 V
 57 -184 V
 57 -216 V
-56 -236 V
-57 -243 V
-56 -237 V
+57 -236 V
+58 -243 V
+57 -237 V
 57 -218 V
-56 -189 V
+57 -189 V
 57 -150 V
-56 -106 V
+57 -106 V
 57 -59 V
 57 -12 V
-56 31 V
+58 31 V
 57 70 V
-56 100 V
+57 100 V
 57 122 V
-56 134 V
+57 134 V
 57 139 V
 57 133 V
-56 121 V
-57 103 V
-56 80 V
+57 121 V
+58 103 V
+57 80 V
 57 55 V
-56 29 V
+57 29 V
 57 5 V
-56 -17 V
+57 -17 V
 57 -34 V
 57 -47 V
-56 -54 V
+58 -54 V
 57 -53 V
-56 -48 V
+57 -48 V
 57 -35 V
-56 -17 V
+57 -17 V
 57 5 V
 57 30 V
-56 56 V
+58 56 V
 57 81 V
 % End plot #3
 % Begin plot #4
@@ -1025,22 +1032,22 @@ LT0
 stroke
 LT3
 1.00 0.00 0.00 C LCb setrgbcolor
-5996 4036 M
+5936 4036 M
 [ [({}) 200.0 0.0 true true 0 (data)]
 ] -66.7 MRshow
 LT3
-1.00 0.00 0.00 C 900 2677 Pls
-1414 3382 Pls
-1928 2063 Pls
-2443 3197 Pls
-2957 3685 Pls
-3471 2151 Pls
-3985 3075 Pls
-4499 3322 Pls
-5014 1608 Pls
-5528 2414 Pls
-6042 2560 Pls
-6387 4036 Pls
+1.00 0.00 0.00 C 780 2677 Pls
+1299 3382 Pls
+1819 2063 Pls
+2338 3197 Pls
+2857 3685 Pls
+3377 2151 Pls
+3896 3075 Pls
+4415 3322 Pls
+4935 1608 Pls
+5454 2414 Pls
+5973 2560 Pls
+6327 4036 Pls
 % End plot #4
 1.000 UP
 0.500 UL

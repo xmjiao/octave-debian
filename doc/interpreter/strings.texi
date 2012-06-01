@@ -1643,6 +1643,16 @@ bin2dec ("1110")
 @end group
 @end example
 
+Spaces are ignored during conversion and may be used to make the binary
+number more readable.
+
+@example
+@group
+bin2dec ("1000 0001")
+     @result{} 129
+@end group
+@end example
+
 If @var{s} is a string matrix, return a column vector with one converted
 number per row of @var{s}; Invalid rows evaluate to NaN@.
 

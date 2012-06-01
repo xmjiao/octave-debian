@@ -5978,7 +5978,7 @@ vectors with evenly or logarithmically spaced elements.  *Note Ranges::.
      if fewer than two values are requested.
 
  -- Function File:  logspace (A, B)
- -- Function File:  logspace (B, B, N)
+ -- Function File:  logspace (A, B, N)
  -- Function File:  logspace (A, pi, N)
      Return a row vector with N elements logarithmically spaced from
      10^A to 10^B.  If N is unspecified it defaults to 50.

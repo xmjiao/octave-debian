@@ -1,7 +1,7 @@
 %!PS-Adobe-2.0 EPSF-2.0
 %%Title: plot3.eps
-%%Creator: gnuplot 4.4 patchlevel 0
-%%CreationDate: Wed Feb 22 15:01:47 2012
+%%Creator: gnuplot 4.6 patchlevel 0
+%%CreationDate: Thu May 31 11:40:54 2012
 %%DocumentFonts: (atend)
 %%BoundingBox: 50 50 410 302
 %%EndComments
@@ -20,10 +20,12 @@ gnudict begin
 /Level1 false def
 /Rounded false def
 /ClipToBoundingBox false def
+/SuppressPDFMark false def
 /TransparentPatterns false def
 /gnulinewidth 5.000 def
 /userlinewidth gnulinewidth def
 /Gamma 1.0 def
+/BackgroundColor {-1.000 -1.000 -1.000} def
 %
 /vshift -66 def
 /dl1 {
@@ -38,22 +40,6 @@ gnudict begin
 /vpt_ 31.5 def
 /hpt hpt_ def
 /vpt vpt_ def
-Level1 {} {
-/SDict 10 dict def
-systemdict /pdfmark known not {
-  userdict /pdfmark systemdict /cleartomark get put
-} if
-SDict begin [
-  /Title (plot3.eps)
-  /Subject (gnuplot plot)
-  /Creator (gnuplot 4.4 patchlevel 0)
-  /Author (jwe)
-%  /Producer (gnuplot)
-%  /Keywords ()
-  /CreationDate (Wed Feb 22 15:01:47 2012)
-  /DOCINFO pdfmark
-end
-} ifelse
 /doclip {
   ClipToBoundingBox {
     newpath 50 50 moveto 410 50 lineto 410 302 lineto 50 302 lineto closepath
@@ -61,7 +47,7 @@ end
   } if
 } def
 %
-% Gnuplot Prolog Version 4.4 (January 2010)
+% Gnuplot Prolog Version 4.4 (August 2010)
 %
 %/SuppressPDFMark true def
 %
@@ -73,6 +59,7 @@ end
 /Z {closepath} bind def
 /C {setrgbcolor} bind def
 /f {rlineto fill} bind def
+/g {setgray} bind def
 /Gshow {show} def   % May be redefined later in the file to support UTF-8
 /vpt2 vpt 2 mul def
 /hpt2 hpt 2 mul def
@@ -94,6 +81,7 @@ end
 	dup 1 lt {pop 1} if 10 mul /udl exch def} def
 /PL {stroke userlinewidth setlinewidth
 	Rounded {1 setlinejoin 1 setlinecap} if} def
+3.8 setmiterlimit
 % Default Line colors
 /LCw {1 1 1} def
 /LCb {0 0 0} def
@@ -459,8 +447,26 @@ currentdict end definefont pop
   Blacktext {gsave 0 setgray MFshow grestore} {MFshow} ifelse } bind def
 /XYsave    { [( ) 1 2 true false 3 ()] } bind def
 /XYrestore { [( ) 1 2 true false 4 ()] } bind def
+Level1 SuppressPDFMark or 
+{} {
+/SDict 10 dict def
+systemdict /pdfmark known not {
+  userdict /pdfmark systemdict /cleartomark get put
+} if
+SDict begin [
+  /Title (plot3.eps)
+  /Subject (gnuplot plot)
+  /Creator (gnuplot 4.6 patchlevel 0)
+  /Author (jwe)
+%  /Producer (gnuplot)
+%  /Keywords ()
+  /CreationDate (Thu May 31 11:40:54 2012)
+  /DOCINFO pdfmark
+end
+} ifelse
 end
 %%EndProlog
+%%Page: 1 1
 gnudict begin
 gsave
 doclip
@@ -469,1269 +475,1586 @@ doclip
 0 setgray
 newpath
 (Helvetica) findfont 200 scalefont setfont
+BackgroundColor 0 lt 3 1 roll 0 lt exch 0 lt or or not {BackgroundColor C 1.000 0 0 7200.00 5040.00 BoxColFill} if
 0.500 UL
 LTb
 1.000 UP
+% Begin plot #1
 0.500 UL
 LT0
-0.00 0.00 1.00 C 3597 1580 M
+LC0 setrgbcolor
+3597 1580 M
 3 -8 V
 stroke
 LT0
-0.00 0.00 1.00 C 3595 1589 M
+LC0 setrgbcolor
+3595 1589 M
 2 -9 V
 stroke
 LT0
-0.00 0.00 1.00 C 3594 1598 M
+LC0 setrgbcolor
+3594 1598 M
 1 -9 V
 stroke
 LT0
-0.00 0.00 1.00 C 3594 1606 M
+LC0 setrgbcolor
+3594 1606 M
 0 -8 V
 stroke
 LT0
-0.00 0.00 1.00 C 3596 1615 M
+LC0 setrgbcolor
+3596 1615 M
 -2 -9 V
 stroke
 LT0
-0.00 0.00 1.00 C 3599 1624 M
+LC0 setrgbcolor
+3599 1624 M
 -3 -9 V
 stroke
 LT0
-0.00 0.00 1.00 C 3601 1632 M
+LC0 setrgbcolor
+3601 1632 M
 -2 -8 V
 stroke
 LT0
-0.00 0.00 1.00 C 3606 1641 M
+LC0 setrgbcolor
+3606 1641 M
 -5 -9 V
 stroke
 LT0
-0.00 0.00 1.00 C 3613 1649 M
+LC0 setrgbcolor
+3613 1649 M
 -7 -8 V
 stroke
 LT0
-0.00 0.00 1.00 C 3620 1657 M
+LC0 setrgbcolor
+3620 1657 M
 -7 -8 V
 stroke
 LT0
-0.00 0.00 1.00 C 3628 1665 M
+LC0 setrgbcolor
+3628 1665 M
 -8 -8 V
 stroke
 LT0
-0.00 0.00 1.00 C 3637 1672 M
+LC0 setrgbcolor
+3637 1672 M
 -9 -7 V
 stroke
 LT0
-0.00 0.00 1.00 C 3646 1679 M
+LC0 setrgbcolor
+3646 1679 M
 -9 -7 V
 stroke
 LT0
-0.00 0.00 1.00 C 3656 1685 M
+LC0 setrgbcolor
+3656 1685 M
 -10 -6 V
 stroke
 LT0
-0.00 0.00 1.00 C 3667 1692 M
+LC0 setrgbcolor
+3667 1692 M
 -11 -7 V
 stroke
 LT0
-0.00 0.00 1.00 C 3677 1697 M
+LC0 setrgbcolor
+3677 1697 M
 -10 -5 V
 stroke
 LT0
-0.00 0.00 1.00 C 3688 1702 M
+LC0 setrgbcolor
+3688 1702 M
 -11 -5 V
 stroke
 LT0
-0.00 0.00 1.00 C 3545 2156 M
+LC0 setrgbcolor
+3545 2156 M
 40 10 V
 stroke
 LT0
-0.00 0.00 1.00 C 3626 2174 M
+LC0 setrgbcolor
+3626 2174 M
 -41 -8 V
 stroke
 LT0
-0.00 0.00 1.00 C 3668 2181 M
+LC0 setrgbcolor
+3668 2181 M
 -42 -7 V
 stroke
 LT0
-0.00 0.00 1.00 C 3698 1707 M
+LC0 setrgbcolor
+3698 1707 M
 -10 -5 V
 stroke
 LT0
-0.00 0.00 1.00 C 3506 2145 M
+LC0 setrgbcolor
+3506 2145 M
 39 11 V
 stroke
 LT0
-0.00 0.00 1.00 C 3712 2187 M
+LC0 setrgbcolor
+3712 2187 M
 -44 -6 V
 stroke
 LT0
-0.00 0.00 1.00 C 3469 2133 M
+LC0 setrgbcolor
+3469 2133 M
 37 12 V
 stroke
 LT0
-0.00 0.00 1.00 C 3708 1711 M
+LC0 setrgbcolor
+3708 1711 M
 -10 -4 V
 stroke
 LT0
-0.00 0.00 1.00 C 3755 2191 M
+LC0 setrgbcolor
+3755 2191 M
 -43 -4 V
 stroke
 LT0
-0.00 0.00 1.00 C 3435 2120 M
+LC0 setrgbcolor
+3435 2120 M
 34 13 V
 stroke
 LT0
-0.00 0.00 1.00 C 3716 1714 M
+LC0 setrgbcolor
+3716 1714 M
 -8 -3 V
 stroke
 LT0
-0.00 0.00 1.00 C 3798 2194 M
+LC0 setrgbcolor
+3798 2194 M
 -43 -3 V
 stroke
 LT0
-0.00 0.00 1.00 C 3404 2105 M
+LC0 setrgbcolor
+3404 2105 M
 31 15 V
 stroke
 LT0
-0.00 0.00 1.00 C 3725 1717 M
+LC0 setrgbcolor
+3725 1717 M
 -9 -3 V
 stroke
 LT0
-0.00 0.00 1.00 C 3375 2090 M
+LC0 setrgbcolor
+3375 2090 M
 29 15 V
 stroke
 LT0
-0.00 0.00 1.00 C 3839 2195 M
+LC0 setrgbcolor
+3839 2195 M
 -41 -1 V
 stroke
 LT0
-0.00 0.00 1.00 C 3506 2697 M
+LC0 setrgbcolor
+3506 2697 M
 78 10 V
 stroke
 LT0
-0.00 0.00 1.00 C 3663 2715 M
+LC0 setrgbcolor
+3663 2715 M
 -79 -8 V
 stroke
 LT0
-0.00 0.00 1.00 C 3743 2720 M
+LC0 setrgbcolor
+3743 2720 M
 -80 -5 V
 stroke
 LT0
-0.00 0.00 1.00 C 3430 2684 M
+LC0 setrgbcolor
+3430 2684 M
 76 13 V
 stroke
 LT0
-0.00 0.00 1.00 C 3731 1720 M
+LC0 setrgbcolor
+3731 1720 M
 -6 -3 V
 stroke
 LT0
-0.00 0.00 1.00 C 3350 2075 M
+LC0 setrgbcolor
+3350 2075 M
 25 15 V
 stroke
 LT0
-0.00 0.00 1.00 C 3823 2723 M
+LC0 setrgbcolor
+3823 2723 M
 -80 -3 V
 stroke
 LT0
-0.00 0.00 1.00 C 3880 2195 M
+LC0 setrgbcolor
+3880 2195 M
 -41 0 V
 stroke
 LT0
-0.00 0.00 1.00 C 3356 2669 M
+LC0 setrgbcolor
+3356 2669 M
 74 15 V
 stroke
 LT0
-0.00 0.00 1.00 C 3737 1722 M
+LC0 setrgbcolor
+3737 1722 M
 -6 -2 V
 stroke
 LT0
-0.00 0.00 1.00 C 3329 2058 M
+LC0 setrgbcolor
+3329 2058 M
 21 17 V
 stroke
 LT0
-0.00 0.00 1.00 C 3902 2723 M
+LC0 setrgbcolor
+3902 2723 M
 -79 0 V
 stroke
 LT0
-0.00 0.00 1.00 C 3287 2651 M
+LC0 setrgbcolor
+3287 2651 M
 69 18 V
 stroke
 LT0
-0.00 0.00 1.00 C 3919 2194 M
+LC0 setrgbcolor
+3919 2194 M
 -39 1 V
 stroke
 LT0
-0.00 0.00 1.00 C 3741 1724 M
+LC0 setrgbcolor
+3741 1724 M
 -4 -2 V
 stroke
 LT0
-0.00 0.00 1.00 C 3310 2041 M
+LC0 setrgbcolor
+3310 2041 M
 19 17 V
 stroke
 LT0
-0.00 0.00 1.00 C 3480 3238 M
+LC0 setrgbcolor
+3480 3238 M
 116 11 V
 stroke
 LT0
-0.00 0.00 1.00 C 3712 3256 M
+LC0 setrgbcolor
+3712 3256 M
 -116 -7 V
 stroke
 LT0
-0.00 0.00 1.00 C 3978 2720 M
+LC0 setrgbcolor
+3978 2720 M
 -76 3 V
 stroke
 LT0
-0.00 0.00 1.00 C 3221 2632 M
+LC0 setrgbcolor
+3221 2632 M
 66 19 V
 stroke
 LT0
-0.00 0.00 1.00 C 3366 3224 M
+LC0 setrgbcolor
+3366 3224 M
 114 14 V
 stroke
 LT0
-0.00 0.00 1.00 C 3830 3259 M
+LC0 setrgbcolor
+3830 3259 M
 -118 -3 V
 stroke
 LT0
-0.00 0.00 1.00 C 3744 1726 M
+LC0 setrgbcolor
+3744 1726 M
 -3 -2 V
 stroke
 LT0
-0.00 0.00 1.00 C 3955 2191 M
+LC0 setrgbcolor
+3955 2191 M
 -36 3 V
 stroke
 LT0
-0.00 0.00 1.00 C 3296 2024 M
+LC0 setrgbcolor
+3296 2024 M
 14 17 V
 stroke
 LT0
-0.00 0.00 1.00 C 3256 3206 M
+LC0 setrgbcolor
+3256 3206 M
 110 18 V
 stroke
 LT0
-0.00 0.00 1.00 C 3946 3258 M
+LC0 setrgbcolor
+3946 3258 M
 -116 1 V
 stroke
 LT0
-0.00 0.00 1.00 C 3745 1727 M
+LC0 setrgbcolor
+3745 1727 M
 -1 -1 V
 stroke
 LT0
-0.00 0.00 1.00 C 3161 2611 M
+LC0 setrgbcolor
+3161 2611 M
 60 21 V
 stroke
 LT0
-0.00 0.00 1.00 C 4053 2715 M
+LC0 setrgbcolor
+4053 2715 M
 -75 5 V
 stroke
 LT0
-0.00 0.00 1.00 C 3285 2006 M
+LC0 setrgbcolor
+3285 2006 M
 11 18 V
 stroke
 LT0
-0.00 0.00 1.00 C 3150 3185 M
+LC0 setrgbcolor
+3150 3185 M
 106 21 V
 stroke
 LT0
-0.00 0.00 1.00 C 4060 3254 M
+LC0 setrgbcolor
+4060 3254 M
 -114 4 V
 stroke
 LT0
-0.00 0.00 1.00 C 3988 2187 M
+LC0 setrgbcolor
+3988 2187 M
 -33 4 V
 stroke
 LT0
-0.00 0.00 1.00 C 3744 1729 M
+LC0 setrgbcolor
+3744 1729 M
 1 -2 V
 stroke
 LT0
-0.00 0.00 1.00 C 3466 3781 M
+LC0 setrgbcolor
+3466 3781 M
 153 10 V
 stroke
 LT0
-0.00 0.00 1.00 C 3774 3797 M
+LC0 setrgbcolor
+3774 3797 M
 -155 -6 V
 stroke
 LT0
-0.00 0.00 1.00 C 3315 3765 M
+LC0 setrgbcolor
+3315 3765 M
 151 16 V
 stroke
 LT0
-0.00 0.00 1.00 C 3929 3797 M
+LC0 setrgbcolor
+3929 3797 M
 -155 0 V
 stroke
 LT0
-0.00 0.00 1.00 C 3277 1989 M
+LC0 setrgbcolor
+3277 1989 M
 8 17 V
 stroke
 LT0
-0.00 0.00 1.00 C 3105 2588 M
+LC0 setrgbcolor
+3105 2588 M
 56 23 V
 stroke
 LT0
-0.00 0.00 1.00 C 3741 1730 M
+LC0 setrgbcolor
+3741 1730 M
 3 -1 V
 stroke
 LT0
-0.00 0.00 1.00 C 4123 2708 M
+LC0 setrgbcolor
+4123 2708 M
 -70 7 V
 stroke
 LT0
-0.00 0.00 1.00 C 3167 3745 M
+LC0 setrgbcolor
+3167 3745 M
 148 20 V
 stroke
 LT0
-0.00 0.00 1.00 C 3050 3161 M
+LC0 setrgbcolor
+3050 3161 M
 100 24 V
 stroke
 LT0
-0.00 0.00 1.00 C 4019 2181 M
+LC0 setrgbcolor
+4019 2181 M
 -31 6 V
 stroke
 LT0
-0.00 0.00 1.00 C 4081 3793 M
+LC0 setrgbcolor
+4081 3793 M
 -152 4 V
 stroke
 LT0
-0.00 0.00 1.00 C 4171 3246 M
+LC0 setrgbcolor
+4171 3246 M
 -111 8 V
 stroke
 LT0
-0.00 0.00 1.00 C 3274 1971 M
+LC0 setrgbcolor
+3274 1971 M
 3 18 V
 stroke
 LT0
-0.00 0.00 1.00 C 3735 1731 M
+LC0 setrgbcolor
+3735 1731 M
 6 -1 V
 stroke
 LT0
-0.00 0.00 1.00 C 3025 3721 M
+LC0 setrgbcolor
+3025 3721 M
 142 24 V
 stroke
 LT0
-0.00 0.00 1.00 C 3056 2563 M
+LC0 setrgbcolor
+3056 2563 M
 49 25 V
 stroke
 LT0
-0.00 0.00 1.00 C 3728 1732 M
+LC0 setrgbcolor
+3728 1732 M
 7 -1 V
 stroke
 LT0
-0.00 0.00 1.00 C 3273 1953 M
+LC0 setrgbcolor
+3273 1953 M
 1 18 V
 stroke
 LT0
-0.00 0.00 1.00 C 4190 2698 M
+LC0 setrgbcolor
+4190 2698 M
 -67 10 V
 stroke
 LT0
-0.00 0.00 1.00 C 2956 3133 M
+LC0 setrgbcolor
+2956 3133 M
 94 28 V
 stroke
 LT0
-0.00 0.00 1.00 C 4230 3783 M
+LC0 setrgbcolor
+4230 3783 M
 -149 10 V
 stroke
 LT0
-0.00 0.00 1.00 C 4046 2175 M
+LC0 setrgbcolor
+4046 2175 M
 -27 6 V
 stroke
 LT0
-0.00 0.00 1.00 C 4276 3234 M
+LC0 setrgbcolor
+4276 3234 M
 -105 12 V
 stroke
 LT0
-0.00 0.00 1.00 C 3719 1733 M
+LC0 setrgbcolor
+3719 1733 M
 9 -1 V
 stroke
 LT0
-0.00 0.00 1.00 C 3277 1936 M
+LC0 setrgbcolor
+3277 1936 M
 -4 17 V
 stroke
 LT0
-0.00 0.00 1.00 C 2890 3691 M
+LC0 setrgbcolor
+2890 3691 M
 135 30 V
 stroke
 LT0
-0.00 0.00 1.00 C 3013 2537 M
+LC0 setrgbcolor
+3013 2537 M
 43 26 V
 stroke
 LT0
-0.00 0.00 1.00 C 3707 1735 M
+LC0 setrgbcolor
+3707 1735 M
 12 -2 V
 stroke
 LT0
-0.00 0.00 1.00 C 3283 1919 M
+LC0 setrgbcolor
+3283 1919 M
 -6 17 V
 stroke
 LT0
-0.00 0.00 1.00 C 4068 2168 M
+LC0 setrgbcolor
+4068 2168 M
 -22 7 V
 stroke
 LT0
-0.00 0.00 1.00 C 4251 2686 M
+LC0 setrgbcolor
+4251 2686 M
 -61 12 V
 stroke
 LT0
-0.00 0.00 1.00 C 4374 3769 M
+LC0 setrgbcolor
+4374 3769 M
 -144 14 V
 stroke
 LT0
-0.00 0.00 1.00 C 2870 3103 M
+LC0 setrgbcolor
+2870 3103 M
 86 30 V
 stroke
 LT0
-0.00 0.00 1.00 C 3694 1737 M
+LC0 setrgbcolor
+3694 1737 M
 13 -2 V
 stroke
 LT0
-0.00 0.00 1.00 C 3293 1903 M
+LC0 setrgbcolor
+3293 1903 M
 -10 16 V
 stroke
 LT0
-0.00 0.00 1.00 C 4377 3219 M
+LC0 setrgbcolor
+4377 3219 M
 -101 15 V
 stroke
 LT0
-0.00 0.00 1.00 C 3678 1739 M
+LC0 setrgbcolor
+3678 1739 M
 16 -2 V
 stroke
 LT0
-0.00 0.00 1.00 C 2976 2510 M
+LC0 setrgbcolor
+2976 2510 M
 37 27 V
 stroke
 LT0
-0.00 0.00 1.00 C 2763 3658 M
+LC0 setrgbcolor
+2763 3658 M
 127 33 V
 stroke
 LT0
-0.00 0.00 1.00 C 3305 1887 M
+LC0 setrgbcolor
+3305 1887 M
 -12 16 V
 stroke
 LT0
-0.00 0.00 1.00 C 4087 2159 M
+LC0 setrgbcolor
+4087 2159 M
 -19 9 V
 stroke
 LT0
-0.00 0.00 1.00 C 3661 1741 M
+LC0 setrgbcolor
+3661 1741 M
 17 -2 V
 stroke
 LT0
-0.00 0.00 1.00 C 3320 1871 M
+LC0 setrgbcolor
+3320 1871 M
 -15 16 V
 stroke
 LT0
-0.00 0.00 1.00 C 4307 2672 M
+LC0 setrgbcolor
+4307 2672 M
 -56 14 V
 stroke
 LT0
-0.00 0.00 1.00 C 2792 3070 M
+LC0 setrgbcolor
+2792 3070 M
 78 33 V
 stroke
 LT0
-0.00 0.00 1.00 C 3642 1744 M
+LC0 setrgbcolor
+3642 1744 M
 19 -3 V
 stroke
 LT0
-0.00 0.00 1.00 C 4511 3750 M
+LC0 setrgbcolor
+4511 3750 M
 -137 19 V
 stroke
 LT0
-0.00 0.00 1.00 C 3338 1857 M
+LC0 setrgbcolor
+3338 1857 M
 -18 14 V
 stroke
 LT0
-0.00 0.00 1.00 C 3621 1748 M
+LC0 setrgbcolor
+3621 1748 M
 21 -4 V
 stroke
 LT0
-0.00 0.00 1.00 C 2947 2482 M
+LC0 setrgbcolor
+2947 2482 M
 29 28 V
 stroke
 LT0
-0.00 0.00 1.00 C 4470 3200 M
+LC0 setrgbcolor
+4470 3200 M
 -93 19 V
 stroke
 LT0
-0.00 0.00 1.00 C 3358 1843 M
+LC0 setrgbcolor
+3358 1843 M
 -20 14 V
 stroke
 LT0
-0.00 0.00 1.00 C 4101 2151 M
+LC0 setrgbcolor
+4101 2151 M
 -14 8 V
 stroke
 LT0
-0.00 0.00 1.00 C 3600 1753 M
+LC0 setrgbcolor
+3600 1753 M
 21 -5 V
 stroke
 LT0
-0.00 0.00 1.00 C 3379 1830 M
+LC0 setrgbcolor
+3379 1830 M
 -21 13 V
 stroke
 LT0
-0.00 0.00 1.00 C 2645 3621 M
+LC0 setrgbcolor
+2645 3621 M
 118 37 V
 stroke
 LT0
-0.00 0.00 1.00 C 3576 1758 M
+LC0 setrgbcolor
+3576 1758 M
 24 -5 V
 stroke
 LT0
-0.00 0.00 1.00 C 3402 1818 M
+LC0 setrgbcolor
+3402 1818 M
 -23 12 V
 stroke
 LT0
-0.00 0.00 1.00 C 3552 1764 M
+LC0 setrgbcolor
+3552 1764 M
 24 -6 V
 stroke
 LT0
-0.00 0.00 1.00 C 4356 2656 M
+LC0 setrgbcolor
+4356 2656 M
 -49 16 V
 stroke
 LT0
-0.00 0.00 1.00 C 3426 1807 M
+LC0 setrgbcolor
+3426 1807 M
 -24 11 V
 stroke
 LT0
-0.00 0.00 1.00 C 3527 1771 M
+LC0 setrgbcolor
+3527 1771 M
 25 -7 V
 stroke
 LT0
-0.00 0.00 1.00 C 2724 3035 M
+LC0 setrgbcolor
+2724 3035 M
 68 35 V
 stroke
 LT0
-0.00 0.00 1.00 C 3451 1796 M
+LC0 setrgbcolor
+3451 1796 M
 -25 11 V
 stroke
 LT0
-0.00 0.00 1.00 C 3501 1778 M
+LC0 setrgbcolor
+3501 1778 M
 26 -7 V
 stroke
 LT0
-0.00 0.00 1.00 C 3476 1787 M
+LC0 setrgbcolor
+3476 1787 M
 -25 9 V
 stroke
 LT0
-0.00 0.00 1.00 C 2924 2453 M
+LC0 setrgbcolor
+2924 2453 M
 23 29 V
 stroke
 LT0
-0.00 0.00 1.00 C 3476 1787 M
+LC0 setrgbcolor
+3476 1787 M
 25 -9 V
 stroke
 LT0
-0.00 0.00 1.00 C 4109 2141 M
+LC0 setrgbcolor
+4109 2141 M
 -8 10 V
 stroke
 LT0
-0.00 0.00 1.00 C 4639 3727 M
+LC0 setrgbcolor
+4639 3727 M
 -128 23 V
 stroke
 LT0
-0.00 0.00 1.00 C 4555 3179 M
+LC0 setrgbcolor
+4555 3179 M
 -85 21 V
 stroke
 LT0
-0.00 0.00 1.00 C 2538 3581 M
+LC0 setrgbcolor
+2538 3581 M
 107 40 V
 stroke
 LT0
-0.00 0.00 1.00 C 4113 2131 M
+LC0 setrgbcolor
+4113 2131 M
 -4 10 V
 stroke
 LT0
-0.00 0.00 1.00 C 2909 2423 M
+LC0 setrgbcolor
+2909 2423 M
 15 30 V
 stroke
 LT0
-0.00 0.00 1.00 C 4398 2639 M
+LC0 setrgbcolor
+4398 2639 M
 -42 17 V
 stroke
 LT0
-0.00 0.00 1.00 C 2664 2998 M
+LC0 setrgbcolor
+2664 2998 M
 60 37 V
 stroke
 LT0
-0.00 0.00 1.00 C 4758 3700 M
+LC0 setrgbcolor
+4758 3700 M
 -119 27 V
 stroke
 LT0
-0.00 0.00 1.00 C 4112 2121 M
+LC0 setrgbcolor
+4112 2121 M
 1 10 V
 stroke
 LT0
-0.00 0.00 1.00 C 2900 2394 M
+LC0 setrgbcolor
+2900 2394 M
 9 29 V
 stroke
 LT0
-0.00 0.00 1.00 C 4632 3155 M
+LC0 setrgbcolor
+4632 3155 M
 -77 24 V
 stroke
 LT0
-0.00 0.00 1.00 C 4433 2620 M
+LC0 setrgbcolor
+4433 2620 M
 -35 19 V
 stroke
 LT0
-0.00 0.00 1.00 C 2442 3537 M
+LC0 setrgbcolor
+2442 3537 M
 96 44 V
 stroke
 LT0
-0.00 0.00 1.00 C 2615 2959 M
+LC0 setrgbcolor
+2615 2959 M
 49 39 V
 stroke
 LT0
-0.00 0.00 1.00 C 2293 4094 M
+LC0 setrgbcolor
+2293 4094 M
 137 48 V
 stroke
 LT0
-0.00 0.00 1.00 C 4105 2111 M
+LC0 setrgbcolor
+4105 2111 M
 7 10 V
 stroke
 LT0
-0.00 0.00 1.00 C 2899 2365 M
+LC0 setrgbcolor
+2899 2365 M
 1 29 V
 stroke
 LT0
-0.00 0.00 1.00 C 4867 3669 M
+LC0 setrgbcolor
+4867 3669 M
 -109 31 V
 stroke
 LT0
-0.00 0.00 1.00 C 4699 3128 M
+LC0 setrgbcolor
+4699 3128 M
 -67 27 V
 stroke
 LT0
-0.00 0.00 1.00 C 4459 2601 M
+LC0 setrgbcolor
+4459 2601 M
 -26 19 V
 stroke
 LT0
-0.00 0.00 1.00 C 4093 2101 M
+LC0 setrgbcolor
+4093 2101 M
 12 10 V
 stroke
 LT0
-0.00 0.00 1.00 C 2905 2336 M
+LC0 setrgbcolor
+2905 2336 M
 -6 29 V
 stroke
 LT0
-0.00 0.00 1.00 C 2576 2920 M
+LC0 setrgbcolor
+2576 2920 M
 39 39 V
 stroke
 LT0
-0.00 0.00 1.00 C 2359 3491 M
+LC0 setrgbcolor
+2359 3491 M
 83 46 V
 stroke
 LT0
-0.00 0.00 1.00 C 4076 2091 M
+LC0 setrgbcolor
+4076 2091 M
 17 10 V
 stroke
 LT0
-0.00 0.00 1.00 C 2169 4042 M
+LC0 setrgbcolor
+2169 4042 M
 124 52 V
 stroke
 LT0
-0.00 0.00 1.00 C 2918 2307 M
+LC0 setrgbcolor
+2918 2307 M
 -13 29 V
 stroke
 LT0
-0.00 0.00 1.00 C 4478 2580 M
+LC0 setrgbcolor
+4478 2580 M
 -19 21 V
 stroke
 LT0
-0.00 0.00 1.00 C 4755 3099 M
+LC0 setrgbcolor
+4755 3099 M
 -56 29 V
 stroke
 LT0
-0.00 0.00 1.00 C 4964 3634 M
+LC0 setrgbcolor
+4964 3634 M
 -97 35 V
 stroke
 LT0
-0.00 0.00 1.00 C 2547 2879 M
+LC0 setrgbcolor
+2547 2879 M
 29 41 V
 stroke
 LT0
-0.00 0.00 1.00 C 4053 2082 M
+LC0 setrgbcolor
+4053 2082 M
 23 9 V
 stroke
 LT0
-0.00 0.00 1.00 C 2288 3442 M
+LC0 setrgbcolor
+2288 3442 M
 71 49 V
 stroke
 LT0
-0.00 0.00 1.00 C 2938 2279 M
+LC0 setrgbcolor
+2938 2279 M
 -20 28 V
 stroke
 LT0
-0.00 0.00 1.00 C 4025 2073 M
+LC0 setrgbcolor
+4025 2073 M
 28 9 V
 stroke
 LT0
-0.00 0.00 1.00 C 4487 2558 M
+LC0 setrgbcolor
+4487 2558 M
 -9 22 V
 stroke
 LT0
-0.00 0.00 1.00 C 2061 3986 M
+LC0 setrgbcolor
+2061 3986 M
 108 56 V
 stroke
 LT0
-0.00 0.00 1.00 C 2964 2252 M
+LC0 setrgbcolor
+2964 2252 M
 -26 27 V
 stroke
 LT0
-0.00 0.00 1.00 C 2530 2838 M
+LC0 setrgbcolor
+2530 2838 M
 17 41 V
 stroke
 LT0
-0.00 0.00 1.00 C 4801 3069 M
+LC0 setrgbcolor
+4801 3069 M
 -46 30 V
 stroke
 LT0
-0.00 0.00 1.00 C 3992 2066 M
+LC0 setrgbcolor
+3992 2066 M
 33 7 V
 stroke
 LT0
-0.00 0.00 1.00 C 5047 3597 M
+LC0 setrgbcolor
+5047 3597 M
 -83 37 V
 stroke
 LT0
-0.00 0.00 1.00 C 2995 2226 M
+LC0 setrgbcolor
+2995 2226 M
 -31 26 V
 stroke
 LT0
-0.00 0.00 1.00 C 2232 3391 M
+LC0 setrgbcolor
+2232 3391 M
 56 51 V
 stroke
 LT0
-0.00 0.00 1.00 C 4488 2536 M
+LC0 setrgbcolor
+4488 2536 M
 -1 22 V
 stroke
 LT0
-0.00 0.00 1.00 C 3954 2059 M
+LC0 setrgbcolor
+3954 2059 M
 38 7 V
 stroke
 LT0
-0.00 0.00 1.00 C 3033 2202 M
+LC0 setrgbcolor
+3033 2202 M
 -38 24 V
 stroke
 LT0
-0.00 0.00 1.00 C 2523 2796 M
+LC0 setrgbcolor
+2523 2796 M
 7 42 V
 stroke
 LT0
-0.00 0.00 1.00 C 3912 2053 M
+LC0 setrgbcolor
+3912 2053 M
 42 6 V
 stroke
 LT0
-0.00 0.00 1.00 C 1969 3928 M
+LC0 setrgbcolor
+1969 3928 M
 92 58 V
 stroke
 LT0
-0.00 0.00 1.00 C 4834 3037 M
+LC0 setrgbcolor
+4834 3037 M
 -33 32 V
 stroke
 LT0
-0.00 0.00 1.00 C 3075 2178 M
+LC0 setrgbcolor
+3075 2178 M
 -42 24 V
 stroke
 LT0
-0.00 0.00 1.00 C 4480 2514 M
+LC0 setrgbcolor
+4480 2514 M
 8 22 V
 stroke
 LT0
-0.00 0.00 1.00 C 3865 2049 M
+LC0 setrgbcolor
+3865 2049 M
 47 4 V
 stroke
 LT0
-0.00 0.00 1.00 C 5117 3556 M
+LC0 setrgbcolor
+5117 3556 M
 -70 41 V
 stroke
 LT0
-0.00 0.00 1.00 C 2189 3339 M
+LC0 setrgbcolor
+2189 3339 M
 43 52 V
 stroke
 LT0
-0.00 0.00 1.00 C 3122 2157 M
+LC0 setrgbcolor
+3122 2157 M
 -47 21 V
 stroke
 LT0
-0.00 0.00 1.00 C 2527 2755 M
+LC0 setrgbcolor
+2527 2755 M
 -4 41 V
 stroke
 LT0
-0.00 0.00 1.00 C 3815 2046 M
+LC0 setrgbcolor
+3815 2046 M
 50 3 V
 stroke
 LT0
-0.00 0.00 1.00 C 3173 2137 M
+LC0 setrgbcolor
+3173 2137 M
 -51 20 V
 stroke
 LT0
-0.00 0.00 1.00 C 3762 2045 M
+LC0 setrgbcolor
+3762 2045 M
 53 1 V
 stroke
 LT0
-0.00 0.00 1.00 C 4463 2492 M
+LC0 setrgbcolor
+4463 2492 M
 17 22 V
 stroke
 LT0
-0.00 0.00 1.00 C 4856 3004 M
+LC0 setrgbcolor
+4856 3004 M
 -22 33 V
 stroke
 LT0
-0.00 0.00 1.00 C 3227 2119 M
+LC0 setrgbcolor
+3227 2119 M
 -54 18 V
 stroke
 LT0
-0.00 0.00 1.00 C 3705 2045 M
+LC0 setrgbcolor
+3705 2045 M
 57 0 V
 stroke
 LT0
-0.00 0.00 1.00 C 1893 3867 M
+LC0 setrgbcolor
+1893 3867 M
 76 61 V
 stroke
 LT0
-0.00 0.00 1.00 C 3284 2103 M
+LC0 setrgbcolor
+3284 2103 M
 -57 16 V
 stroke
 LT0
-0.00 0.00 1.00 C 3647 2048 M
+LC0 setrgbcolor
+3647 2048 M
 58 -3 V
 stroke
 LT0
-0.00 0.00 1.00 C 2542 2714 M
+LC0 setrgbcolor
+2542 2714 M
 -15 41 V
 stroke
 LT0
-0.00 0.00 1.00 C 3343 2089 M
+LC0 setrgbcolor
+3343 2089 M
 -59 14 V
 stroke
 LT0
-0.00 0.00 1.00 C 2161 3286 M
+LC0 setrgbcolor
+2161 3286 M
 28 53 V
 stroke
 LT0
-0.00 0.00 1.00 C 3588 2052 M
+LC0 setrgbcolor
+3588 2052 M
 59 -4 V
 stroke
 LT0
-0.00 0.00 1.00 C 3404 2076 M
+LC0 setrgbcolor
+3404 2076 M
 -61 13 V
 stroke
 LT0
-0.00 0.00 1.00 C 5172 3514 M
+LC0 setrgbcolor
+5172 3514 M
 -55 42 V
 stroke
 LT0
-0.00 0.00 1.00 C 3527 2058 M
+LC0 setrgbcolor
+3527 2058 M
 61 -6 V
 stroke
 LT0
-0.00 0.00 1.00 C 3465 2066 M
+LC0 setrgbcolor
+3465 2066 M
 -61 10 V
 stroke
 LT0
-0.00 0.00 1.00 C 3465 2066 M
+LC0 setrgbcolor
+3465 2066 M
 62 -8 V
 stroke
 LT0
-0.00 0.00 1.00 C 4437 2471 M
+LC0 setrgbcolor
+4437 2471 M
 26 21 V
 stroke
 LT0
-0.00 0.00 1.00 C 4865 2970 M
+LC0 setrgbcolor
+4865 2970 M
 -9 34 V
 stroke
 LT0
-0.00 0.00 1.00 C 2567 2674 M
+LC0 setrgbcolor
+2567 2674 M
 -25 40 V
 stroke
 LT0
-0.00 0.00 1.00 C 4401 2450 M
+LC0 setrgbcolor
+4401 2450 M
 36 21 V
 stroke
 LT0
-0.00 0.00 1.00 C 1835 3803 M
+LC0 setrgbcolor
+1835 3803 M
 58 64 V
 stroke
 LT0
-0.00 0.00 1.00 C 2148 3233 M
+LC0 setrgbcolor
+2148 3233 M
 13 53 V
 stroke
 LT0
-0.00 0.00 1.00 C 5211 3470 M
+LC0 setrgbcolor
+5211 3470 M
 -39 44 V
 stroke
 LT0
-0.00 0.00 1.00 C 2603 2635 M
+LC0 setrgbcolor
+2603 2635 M
 -36 39 V
 stroke
 LT0
-0.00 0.00 1.00 C 4862 2936 M
+LC0 setrgbcolor
+4862 2936 M
 3 34 V
 stroke
 LT0
-0.00 0.00 1.00 C 4358 2431 M
+LC0 setrgbcolor
+4358 2431 M
 43 19 V
 stroke
 LT0
-0.00 0.00 1.00 C 2149 3179 M
+LC0 setrgbcolor
+2149 3179 M
 -1 54 V
 stroke
 LT0
-0.00 0.00 1.00 C 2648 2599 M
+LC0 setrgbcolor
+2648 2599 M
 -45 36 V
 stroke
 LT0
-0.00 0.00 1.00 C 1795 3739 M
+LC0 setrgbcolor
+1795 3739 M
 40 64 V
 stroke
 LT0
-0.00 0.00 1.00 C 4306 2413 M
+LC0 setrgbcolor
+4306 2413 M
 52 18 V
 stroke
 LT0
-0.00 0.00 1.00 C 4845 2902 M
+LC0 setrgbcolor
+4845 2902 M
 17 34 V
 stroke
 LT0
-0.00 0.00 1.00 C 5235 3425 M
+LC0 setrgbcolor
+5235 3425 M
 -24 45 V
 stroke
 LT0
-0.00 0.00 1.00 C 2701 2564 M
+LC0 setrgbcolor
+2701 2564 M
 -53 35 V
 stroke
 LT0
-0.00 0.00 1.00 C 4246 2396 M
+LC0 setrgbcolor
+4246 2396 M
 60 17 V
 stroke
 LT0
-0.00 0.00 1.00 C 2164 3126 M
+LC0 setrgbcolor
+2164 3126 M
 -15 53 V
 stroke
 LT0
-0.00 0.00 1.00 C 2764 2530 M
+LC0 setrgbcolor
+2764 2530 M
 -63 34 V
 stroke
 LT0
-0.00 0.00 1.00 C 4179 2382 M
+LC0 setrgbcolor
+4179 2382 M
 67 14 V
 stroke
 LT0
-0.00 0.00 1.00 C 1774 3674 M
+LC0 setrgbcolor
+1774 3674 M
 21 65 V
 stroke
 LT0
-0.00 0.00 1.00 C 4816 2868 M
+LC0 setrgbcolor
+4816 2868 M
 29 34 V
 stroke
 LT0
-0.00 0.00 1.00 C 5242 3379 M
+LC0 setrgbcolor
+5242 3379 M
 -7 46 V
 stroke
 LT0
-0.00 0.00 1.00 C 2834 2499 M
+LC0 setrgbcolor
+2834 2499 M
 -70 31 V
 stroke
 LT0
-0.00 0.00 1.00 C 4105 2370 M
+LC0 setrgbcolor
+4105 2370 M
 74 12 V
 stroke
 LT0
-0.00 0.00 1.00 C 2194 3074 M
+LC0 setrgbcolor
+2194 3074 M
 -30 52 V
 stroke
 LT0
-0.00 0.00 1.00 C 2911 2470 M
+LC0 setrgbcolor
+2911 2470 M
 -77 29 V
 stroke
 LT0
-0.00 0.00 1.00 C 4775 2836 M
+LC0 setrgbcolor
+4775 2836 M
 41 32 V
 stroke
 LT0
-0.00 0.00 1.00 C 4025 2360 M
+LC0 setrgbcolor
+4025 2360 M
 80 10 V
 stroke
 LT0
-0.00 0.00 1.00 C 1771 3608 M
+LC0 setrgbcolor
+1771 3608 M
 3 66 V
 stroke
 LT0
-0.00 0.00 1.00 C 2993 2444 M
+LC0 setrgbcolor
+2993 2444 M
 -82 26 V
 stroke
 LT0
-0.00 0.00 1.00 C 3940 2352 M
+LC0 setrgbcolor
+3940 2352 M
 85 8 V
 stroke
 LT0
-0.00 0.00 1.00 C 5233 3332 M
+LC0 setrgbcolor
+5233 3332 M
 9 47 V
 stroke
 LT0
-0.00 0.00 1.00 C 2238 3024 M
+LC0 setrgbcolor
+2238 3024 M
 -44 50 V
 stroke
 LT0
-0.00 0.00 1.00 C 3081 2421 M
+LC0 setrgbcolor
+3081 2421 M
 -88 23 V
 stroke
 LT0
-0.00 0.00 1.00 C 3850 2348 M
+LC0 setrgbcolor
+3850 2348 M
 90 4 V
 stroke
 LT0
-0.00 0.00 1.00 C 4721 2805 M
+LC0 setrgbcolor
+4721 2805 M
 54 31 V
 stroke
 LT0
-0.00 0.00 1.00 C 3173 2401 M
+LC0 setrgbcolor
+3173 2401 M
 -92 20 V
 stroke
 LT0
-0.00 0.00 1.00 C 3757 2346 M
+LC0 setrgbcolor
+3757 2346 M
 93 2 V
 stroke
 LT0
-0.00 0.00 1.00 C 3269 2384 M
+LC0 setrgbcolor
+3269 2384 M
 -96 17 V
 stroke
 LT0
-0.00 0.00 1.00 C 3661 2347 M
+LC0 setrgbcolor
+3661 2347 M
 96 -1 V
 stroke
 LT0
-0.00 0.00 1.00 C 2295 2975 M
+LC0 setrgbcolor
+2295 2975 M
 -57 49 V
 stroke
 LT0
-0.00 0.00 1.00 C 3366 2370 M
+LC0 setrgbcolor
+3366 2370 M
 -97 14 V
 stroke
 LT0
-0.00 0.00 1.00 C 3564 2351 M
+LC0 setrgbcolor
+3564 2351 M
 97 -4 V
 stroke
 LT0
-0.00 0.00 1.00 C 1786 3543 M
+LC0 setrgbcolor
+1786 3543 M
 -15 65 V
 stroke
 LT0
-0.00 0.00 1.00 C 3465 2359 M
+LC0 setrgbcolor
+3465 2359 M
 -99 11 V
 stroke
 LT0
-0.00 0.00 1.00 C 3465 2359 M
+LC0 setrgbcolor
+3465 2359 M
 99 -8 V
 stroke
 LT0
-0.00 0.00 1.00 C 5207 3287 M
+LC0 setrgbcolor
+5207 3287 M
 26 45 V
 stroke
 LT0
-0.00 0.00 1.00 C 4655 2775 M
+LC0 setrgbcolor
+4655 2775 M
 66 30 V
 stroke
 LT0
-0.00 0.00 1.00 C 2364 2928 M
+LC0 setrgbcolor
+2364 2928 M
 -69 47 V
 stroke
 LT0
-0.00 0.00 1.00 C 4578 2748 M
+LC0 setrgbcolor
+4578 2748 M
 77 27 V
 stroke
 LT0
-0.00 0.00 1.00 C 1819 3479 M
+LC0 setrgbcolor
+1819 3479 M
 -33 64 V
 stroke
 LT0
-0.00 0.00 1.00 C 5165 3242 M
+LC0 setrgbcolor
+5165 3242 M
 42 45 V
 stroke
 LT0
-0.00 0.00 1.00 C 2445 2884 M
+LC0 setrgbcolor
+2445 2884 M
 -81 44 V
 stroke
 LT0
-0.00 0.00 1.00 C 4491 2723 M
+LC0 setrgbcolor
+4491 2723 M
 87 25 V
 stroke
 LT0
-0.00 0.00 1.00 C 2537 2843 M
+LC0 setrgbcolor
+2537 2843 M
 -92 41 V
 stroke
 LT0
-0.00 0.00 1.00 C 1869 3416 M
+LC0 setrgbcolor
+1869 3416 M
 -50 63 V
 stroke
 LT0
-0.00 0.00 1.00 C 5107 3198 M
+LC0 setrgbcolor
+5107 3198 M
 58 44 V
 stroke
 LT0
-0.00 0.00 1.00 C 4394 2701 M
+LC0 setrgbcolor
+4394 2701 M
 97 22 V
 stroke
 LT0
-0.00 0.00 1.00 C 2639 2805 M
+LC0 setrgbcolor
+2639 2805 M
 -102 38 V
 stroke
 LT0
-0.00 0.00 1.00 C 4288 2683 M
+LC0 setrgbcolor
+4288 2683 M
 106 18 V
 stroke
 LT0
-0.00 0.00 1.00 C 1937 3355 M
+LC0 setrgbcolor
+1937 3355 M
 -68 61 V
 stroke
 LT0
-0.00 0.00 1.00 C 5034 3157 M
+LC0 setrgbcolor
+5034 3157 M
 73 41 V
 stroke
 LT0
-0.00 0.00 1.00 C 2750 2771 M
+LC0 setrgbcolor
+2750 2771 M
 -111 34 V
 stroke
 LT0
-0.00 0.00 1.00 C 4174 2667 M
+LC0 setrgbcolor
+4174 2667 M
 114 16 V
 stroke
 LT0
-0.00 0.00 1.00 C 2868 2740 M
+LC0 setrgbcolor
+2868 2740 M
 -118 31 V
 stroke
 LT0
-0.00 0.00 1.00 C 4053 2656 M
+LC0 setrgbcolor
+4053 2656 M
 121 11 V
 stroke
 LT0
-0.00 0.00 1.00 C 2021 3297 M
+LC0 setrgbcolor
+2021 3297 M
 -84 58 V
 stroke
 LT0
-0.00 0.00 1.00 C 2992 2714 M
+LC0 setrgbcolor
+2992 2714 M
 -124 26 V
 stroke
 LT0
-0.00 0.00 1.00 C 4945 3118 M
+LC0 setrgbcolor
+4945 3118 M
 89 39 V
 stroke
 LT0
-0.00 0.00 1.00 C 3926 2648 M
+LC0 setrgbcolor
+3926 2648 M
 127 8 V
 stroke
 LT0
-0.00 0.00 1.00 C 3122 2691 M
+LC0 setrgbcolor
+3122 2691 M
 -130 23 V
 stroke
 LT0
-0.00 0.00 1.00 C 3795 2644 M
+LC0 setrgbcolor
+3795 2644 M
 131 4 V
 stroke
 LT0
-0.00 0.00 1.00 C 3255 2673 M
+LC0 setrgbcolor
+3255 2673 M
 -133 18 V
 stroke
 LT0
-0.00 0.00 1.00 C 3661 2645 M
+LC0 setrgbcolor
+3661 2645 M
 134 -1 V
 stroke
 LT0
-0.00 0.00 1.00 C 3390 2659 M
+LC0 setrgbcolor
+3390 2659 M
 -135 14 V
 stroke
 LT0
-0.00 0.00 1.00 C 3527 2650 M
+LC0 setrgbcolor
+3527 2650 M
 134 -5 V
 stroke
 LT0
-0.00 0.00 1.00 C 3527 2650 M
+LC0 setrgbcolor
+3527 2650 M
 -137 9 V
 stroke
 LT0
-0.00 0.00 1.00 C 2119 3242 M
+LC0 setrgbcolor
+2119 3242 M
 -98 55 V
 stroke
 LT0
-0.00 0.00 1.00 C 4842 3081 M
+LC0 setrgbcolor
+4842 3081 M
 103 37 V
 stroke
 LT0
-0.00 0.00 1.00 C 2233 3191 M
+LC0 setrgbcolor
+2233 3191 M
 -114 51 V
 stroke
 LT0
-0.00 0.00 1.00 C 4726 3049 M
+LC0 setrgbcolor
+4726 3049 M
 116 32 V
 stroke
 LT0
-0.00 0.00 1.00 C 4598 3020 M
+LC0 setrgbcolor
+4598 3020 M
 128 29 V
 stroke
 LT0
-0.00 0.00 1.00 C 2358 3144 M
+LC0 setrgbcolor
+2358 3144 M
 -125 47 V
 stroke
 LT0
-0.00 0.00 1.00 C 4459 2995 M
+LC0 setrgbcolor
+4459 2995 M
 139 25 V
 stroke
 LT0
-0.00 0.00 1.00 C 2496 3101 M
+LC0 setrgbcolor
+2496 3101 M
 -138 43 V
 stroke
 LT0
-0.00 0.00 1.00 C 4311 2975 M
+LC0 setrgbcolor
+4311 2975 M
 148 20 V
 stroke
 LT0
-0.00 0.00 1.00 C 2644 3063 M
+LC0 setrgbcolor
+2644 3063 M
 -148 38 V
 stroke
 LT0
-0.00 0.00 1.00 C 4154 2959 M
+LC0 setrgbcolor
+4154 2959 M
 157 16 V
 stroke
 LT0
-0.00 0.00 1.00 C 2800 3029 M
+LC0 setrgbcolor
+2800 3029 M
 -156 34 V
 stroke
 LT0
-0.00 0.00 1.00 C 3990 2949 M
+LC0 setrgbcolor
+3990 2949 M
 164 10 V
 stroke
 LT0
-0.00 0.00 1.00 C 2963 3001 M
+LC0 setrgbcolor
+2963 3001 M
 -163 28 V
 stroke
 LT0
-0.00 0.00 1.00 C 3822 2944 M
+LC0 setrgbcolor
+3822 2944 M
 168 5 V
 stroke
 LT0
-0.00 0.00 1.00 C 3131 2979 M
+LC0 setrgbcolor
+3131 2979 M
 -168 22 V
 stroke
 LT0
-0.00 0.00 1.00 C 3649 2944 M
+LC0 setrgbcolor
+3649 2944 M
 173 0 V
 stroke
 LT0
-0.00 0.00 1.00 C 3303 2962 M
+LC0 setrgbcolor
+3303 2962 M
 -172 17 V
 stroke
 LT0
-0.00 0.00 1.00 C 3477 2950 M
+LC0 setrgbcolor
+3477 2950 M
 172 -6 V
 stroke
 LT0
-0.00 0.00 1.00 C 3477 2950 M
+LC0 setrgbcolor
+3477 2950 M
 -174 12 V
-% Begin plot #1
+% End plot #1
+% Begin plot #2
 stroke
 LT0
-0.00 0.00 1.00 C % End plot #1
+0.00 0.00 1.00 C % End plot #2
 0.500 UL
 LTb
 6241 1460 M

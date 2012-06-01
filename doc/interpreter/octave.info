@@ -24,1835 +24,1835 @@ versions.
 
 Indirect:
 octave.info-1: 853
-octave.info-2: 302846
-octave.info-3: 605636
-octave.info-4: 911796
-octave.info-5: 1215137
-octave.info-6: 1519504
-octave.info-7: 1791799
+octave.info-2: 303018
+octave.info-3: 605807
+octave.info-4: 911967
+octave.info-5: 1215308
+octave.info-6: 1519675
+octave.info-7: 1792214
 
 Tag Table:
 (Indirect)
 Node: Top853
-Node: Preface15708
-Node: Acknowledgements17995
-Node: How You Can Contribute to Octave26568
-Node: Distribution28104
-Node: Introduction28816
-Node: Running Octave29840
-Node: Simple Examples30642
-Node: Conventions38903
-Node: Fonts39275
-Node: Evaluation Notation39812
-Node: Printing Notation40805
-Node: Error Messages41330
-Node: Format of Descriptions41727
-Node: A Sample Function Description42331
-Node: A Sample Command Description44539
-Node: A Sample Variable Description45361
-Node: Getting Started46478
-Node: Invoking Octave from the Command Line47008
-Node: Command Line Options47897
-Ref: doc-argv52988
-Ref: doc-program_name53515
-Ref: doc-program_invocation_name53727
-Node: Startup Files54606
-Ref: doc-dump_prefs56917
-Node: Quitting Octave57212
-Ref: doc-quit57387
-Ref: doc-atexit57660
-Node: Getting Help58659
-Ref: doc-help59285
-Ref: doc-doc60072
-Ref: doc-lookfor60614
-Ref: doc-news61978
-Ref: doc-info62189
-Ref: doc-warranty62281
-Ref: doc-info_file62534
-Ref: doc-info_program63438
-Ref: doc-makeinfo_program64481
-Ref: doc-doc_cache_file65210
-Ref: doc-suppress_verbose_help_message66331
-Ref: doc-gen_doc_cache67177
-Ref: doc-get_help_text67673
-Ref: doc-get_help_text_from_file67937
-Ref: doc-get_first_help_sentence68215
-Node: Command Line Editing69078
-Node: Cursor Motion70943
-Ref: doc-clc72377
-Node: Killing and Yanking72523
-Node: Commands For Text74226
-Node: Commands For Completion75617
-Ref: doc-completion_append_char76116
-Ref: doc-completion_matches76703
-Node: Commands For History77054
-Ref: doc-history78783
-Ref: doc-edit_history79682
-Ref: doc-run_history81049
-Ref: doc-saving_history81389
-Ref: doc-history_control82145
-Ref: doc-history_file83505
-Ref: doc-history_size84027
-Ref: doc-history_timestamp_format_string84529
-Ref: doc-EDITOR85465
-Node: Customizing readline86186
-Ref: doc-read_readline_init_file86781
-Ref: doc-re_read_readline_init_file87067
-Node: Customizing the Prompt87276
-Ref: doc-PS188512
-Ref: doc-PS289732
-Ref: doc-PS490537
-Node: Diary and Echo Commands91267
-Ref: doc-diary91617
-Ref: doc-echo92280
-Ref: doc-echo_executing_commands92883
-Node: Errors93831
-Node: Executable Octave Programs96420
-Ref: Executable Octave Programs-Footnote-199885
-Node: Comments100019
-Node: Single Line Comments100595
-Node: Block Comments101244
-Node: Comments and the Help System102011
-Node: Data Types103307
-Ref: doc-typeinfo104098
-Node: Built-in Data Types104426
-Ref: doc-class105101
-Ref: doc-isa105441
-Ref: doc-cast105610
-Ref: doc-typecast105939
-Ref: doc-swapbytes107483
-Ref: doc-bitpack107779
-Ref: doc-bitunpack108639
-Node: Numeric Objects109323
-Node: Missing Data110202
-Ref: doc-NA110641
-Ref: doc-isna111582
-Node: String Objects111925
-Node: Data Structure Objects112408
-Node: Cell Array Objects112867
-Node: User-defined Data Types113161
-Node: Object Sizes113620
-Ref: doc-ndims114079
-Ref: doc-columns114343
-Ref: doc-rows114637
-Ref: doc-numel114931
-Ref: doc-length115623
-Ref: doc-size115859
-Ref: doc-isempty116670
-Ref: doc-isnull116860
-Ref: doc-sizeof117455
-Ref: doc-size_equal117571
-Ref: doc-squeeze117859
-Node: Numeric Data Types118092
-Ref: doc-double119575
-Ref: doc-complex119696
-Node: Matrices120434
-Ref: doc-sizemax123239
-Ref: doc-output_max_field_width124044
-Ref: doc-output_precision124715
-Ref: doc-split_long_rows125643
-Ref: doc-fixed_point_format127303
-Node: Empty Matrices128539
-Ref: doc-print_empty_dimensions129538
-Node: Ranges130611
-Node: Single Precision Data Types133576
-Ref: doc-single133995
-Node: Integer Data Types134599
-Ref: doc-isinteger135640
-Ref: doc-int8136042
-Ref: doc-uint8136114
-Ref: doc-int16136196
-Ref: doc-uint16136270
-Ref: doc-int32136354
-Ref: doc-uint32136428
-Ref: doc-int64136512
-Ref: doc-uint64136586
-Ref: doc-intmax136670
-Ref: doc-intmin137302
-Node: Integer Arithmetic137968
-Ref: doc-idivide139138
-Node: Bit Manipulations140562
-Ref: doc-bitset140926
-Ref: doc-bitget141414
-Ref: doc-bitmax142847
-Ref: doc-bitand143362
-Ref: doc-bitor143710
-Ref: doc-bitxor144056
-Ref: doc-bitcmp144653
-Ref: doc-bitshift145264
-Node: Logical Values146377
-Ref: doc-logical147828
-Ref: doc-true147994
-Ref: doc-false148470
-Node: Promotion and Demotion of Data Types148947
-Node: Predicates for Numeric Objects151039
-Ref: doc-isnumeric151905
-Ref: doc-isfloat152368
-Ref: doc-isreal152701
-Ref: doc-iscomplex152969
-Ref: doc-ismatrix153147
-Ref: doc-isvector153609
-Ref: doc-isrow154002
-Ref: doc-iscolumn154220
-Ref: doc-isscalar154433
-Ref: doc-issquare154585
-Ref: doc-issymmetric154796
-Ref: doc-ishermitian155198
-Ref: doc-isdefinite155590
-Ref: doc-islogical156001
-Ref: doc-isprime156284
-Node: Strings156914
-Node: Escape Sequences in String Constants157980
-Ref: doc-is_dq_string159780
-Ref: doc-is_sq_string159968
-Node: Character Arrays160156
-Ref: doc-ischar161154
-Ref: doc-string_fill_char162149
-Node: Creating Strings163138
-Ref: doc-blanks163607
-Node: Concatenating Strings164084
-Ref: doc-char167052
-Ref: doc-strvcat168250
-Ref: doc-strcat169474
-Ref: doc-cstrcat170285
-Node: Conversion of Numerical Data to Strings170743
-Ref: doc-mat2str171492
-Ref: doc-num2str172785
-Ref: doc-int2str174227
-Node: Comparing Strings175001
-Ref: doc-strcmp175743
-Ref: doc-strncmp176516
-Ref: doc-strcmpi177452
-Ref: doc-strncmpi178323
-Ref: doc-validatestring179207
-Node: Manipulating Strings180701
-Ref: doc-deblank181456
-Ref: doc-strtrim181913
-Ref: doc-strtrunc182369
-Ref: doc-findstr182663
-Ref: doc-strchr183475
-Ref: doc-index183955
-Ref: doc-rindex184481
-Ref: doc-strfind184946
-Ref: doc-strmatch185897
-Ref: doc-strtok186938
-Ref: doc-strsplit187864
-Ref: doc-strread188779
-Ref: doc-strrep193446
-Ref: doc-substr194027
-Ref: doc-regexp194835
-Ref: doc-regexpi200007
-Ref: doc-regexprep200443
-Ref: doc-regexptranslate201295
-Ref: doc-untabify202189
-Node: String Conversions203209
-Ref: doc-bin2dec203611
-Ref: doc-dec2bin204161
-Ref: doc-dec2hex204743
-Ref: doc-hex2dec205302
-Ref: doc-dec2base205898
-Ref: doc-base2dec206709
-Ref: doc-num2hex207479
-Ref: doc-hex2num208016
-Ref: doc-str2double208535
-Ref: doc-strjust209579
-Ref: doc-str2num210231
-Ref: doc-toascii211063
-Ref: doc-tolower211275
-Ref: doc-toupper211659
-Ref: doc-do_string_escapes212043
-Ref: doc-undo_string_escapes212161
-Node: Character Class Functions212929
-Ref: doc-isalnum213489
-Ref: doc-isalpha213875
-Ref: doc-isletter214312
-Ref: doc-islower214711
-Ref: doc-isupper215012
-Ref: doc-isdigit215313
-Ref: doc-isxdigit215680
-Ref: doc-ispunct215875
-Ref: doc-isspace216179
-Ref: doc-iscntrl216554
-Ref: doc-isgraph216854
-Ref: doc-isprint217097
-Ref: doc-isascii217342
-Ref: doc-isstrprop217537
-Node: Data Containers219230
-Node: Structures219814
-Node: Basic Usage and Examples220268
-Ref: doc-struct_levels_to_print222602
-Ref: doc-print_struct_array_contents223121
-Node: Structure Arrays225367
-Node: Creating Structures228056
-Ref: doc-struct230368
-Ref: doc-isstruct230998
-Node: Manipulating Structures231194
-Ref: doc-nfields231471
-Ref: doc-fieldnames231561
-Ref: doc-isfield231776
-Ref: doc-getfield231998
-Ref: doc-setfield232644
-Ref: doc-rmfield233329
-Ref: doc-orderfields233643
-Ref: doc-substruct235605
-Node: Processing Data in Structures236202
-Ref: doc-struct2cell236799
-Node: Cell Arrays237722
-Node: Basic Usage of Cell Arrays238331
-Ref: doc-celldisp239817
-Ref: doc-iscell240515
-Node: Creating Cell Arrays240732
-Ref: doc-cell242354
-Ref: doc-num2cell242970
-Ref: doc-mat2cell243769
-Ref: doc-cellslices244794
-Node: Indexing Cell Arrays245496
-Ref: doc-cellindexmat248725
-Node: Cell Arrays of Strings249052
-Ref: doc-cellstr250110
-Ref: doc-iscellstr251228
-Node: Processing Data in Cell Arrays251399
-Ref: doc-cell2mat252153
-Ref: doc-cell2struct252517
-Node: Comma Separated Lists253109
-Ref: Comma Separated Lists-Footnote-1254649
-Node: Comma Separated Lists Generated from Cell Arrays254736
-Node: Comma Separated Lists Generated from Structure Arrays256902
-Node: Variables257601
-Ref: doc-ans259452
-Ref: doc-isvarname259684
-Ref: doc-genvarname259876
-Ref: doc-namelengthmax262111
-Node: Global Variables262633
-Ref: doc-isglobal264357
-Node: Persistent Variables264608
-Ref: doc-persistent264778
-Node: Status of Variables268139
-Ref: doc-who268680
-Ref: doc-whos269938
-Ref: doc-whos_line_format271698
-Ref: doc-exist274035
-Ref: doc-clear275733
-Ref: doc-pack277889
-Ref: doc-type278255
-Ref: doc-which278748
-Ref: doc-what278974
-Node: Expressions279308
-Node: Index Expressions280167
-Node: Advanced Indexing282352
-Ref: doc-sub2ind286854
-Ref: doc-ind2sub287347
-Ref: doc-isindex287793
-Ref: doc-allow_noninteger_range_as_index288235
-Node: Calling Functions288994
-Node: Call by Value291507
-Node: Recursion293519
-Ref: doc-max_recursion_depth294458
-Ref: Recursion-Footnote-1295102
-Ref: Recursion-Footnote-2295491
-Node: Arithmetic Ops295652
-Ref: doc-ctranspose299438
-Ref: doc-ldivide299621
-Ref: doc-minus299849
-Ref: doc-mldivide299972
-Ref: doc-mpower300188
-Ref: doc-mrdivide300381
-Ref: doc-mtimes300599
-Ref: doc-plus301008
-Ref: doc-power301350
-Ref: doc-rdivide301868
-Ref: doc-times302098
-Ref: doc-transpose302527
-Ref: doc-uminus302689
-Ref: doc-uplus302768
-Node: Comparison Ops302846
-Ref: doc-eq304372
-Ref: doc-ge304564
-Ref: doc-gt304645
-Ref: doc-isequal304725
-Ref: doc-isequalwithequalnans304890
-Ref: doc-le305064
-Ref: doc-lt305145
-Ref: doc-ne305225
-Node: Boolean Expressions305421
-Node: Element-by-element Boolean Operators305670
-Ref: doc-and308112
-Ref: doc-not308534
-Ref: doc-or308721
-Node: Short-circuit Boolean Operators309141
-Ref: doc-do_braindead_shortcircuit_evaluation312320
-Ref: doc-merge313431
-Node: Assignment Ops314298
-Node: Increment Ops319546
-Node: Operator Precedence321167
-Node: Evaluation323497
-Ref: doc-eval323935
-Node: Calling a Function by its Name325021
-Ref: doc-feval326729
-Ref: doc-run327732
-Node: Evaluation in a Different Context328133
-Ref: doc-evalin330531
-Ref: doc-assignin330834
-Node: Statements331036
-Node: The `if' Statement332559
-Node: The `switch' Statement336091
-Node: Notes for the C Programmer338914
-Node: The `while' Statement340018
-Node: The `do-until' Statement342226
-Node: The `for' Statement343640
-Node: Looping Over Structure Elements346805
-Node: The `break' Statement348076
-Node: The `continue' Statement349595
-Node: The `unwind_protect' Statement350889
-Node: The `try' Statement352304
-Node: Continuation Lines353340
-Node: Functions and Scripts355025
-Node: Defining Functions355765
-Ref: doc-nargin360949
-Ref: doc-inputname361571
-Ref: doc-silent_functions361750
-Node: Multiple Return Values362433
-Ref: doc-nthargout364065
-Ref: doc-nargout366318
-Ref: doc-nargchk367595
-Ref: doc-narginchk368236
-Ref: doc-nargoutchk368878
-Ref: doc-varargin370131
-Ref: doc-varargout370131
-Node: Variable-length Argument Lists370131
-Ref: doc-parseparams372260
-Node: Ignoring Arguments373476
-Ref: doc-isargout374469
-Node: Variable-length Return Lists375326
-Ref: doc-deal376483
-Node: Returning from a Function376987
-Node: Default Arguments378576
-Node: Function Files379869
-Ref: doc-edit382477
-Ref: doc-mfilename387289
-Ref: doc-ignore_function_time_stamp387744
-Ref: Function Files-Footnote-1388811
-Node: Manipulating the Load Path388877
-Ref: doc-addpath389692
-Ref: doc-genpath390454
-Ref: doc-rmpath390726
-Ref: doc-savepath391218
-Ref: doc-path391664
-Ref: doc-pathdef392360
-Ref: doc-pathsep392880
-Ref: doc-rehash393090
-Ref: doc-file_in_loadpath393179
-Ref: doc-restoredefaultpath393917
-Ref: doc-command_line_path394250
-Ref: doc-find_dir_in_path394566
-Node: Subfunctions395091
-Node: Private Functions395887
-Node: Overloading and Autoloading396971
-Ref: doc-builtin397665
-Ref: doc-autoload398580
-Node: Function Locking399612
-Ref: doc-mlock401548
-Ref: doc-munlock401771
-Ref: doc-mislocked402058
-Node: Function Precedence402381
-Node: Script Files403843
-Ref: doc-source407653
-Node: Function Handles Inline Functions and Anonymous Functions407862
-Node: Function Handles408449
-Ref: doc-is_function_handle409377
-Ref: doc-functions409566
-Ref: doc-func2str409701
-Ref: doc-str2func409856
-Node: Anonymous Functions410132
-Node: Inline Functions411221
-Ref: doc-inline411668
-Ref: doc-argnames412634
-Ref: doc-formula412900
-Ref: doc-symvar413181
-Node: Commands413521
-Node: Organization of Functions414748
-Node: Errors and Warnings417195
-Node: Handling Errors417800
-Node: Raising Errors418559
-Ref: doc-error419178
-Ref: doc-print_usage422360
-Ref: doc-usage422658
-Ref: doc-beep423510
-Ref: doc-beep_on_error423717
-Node: Catching Errors424254
-Ref: doc-lasterror425430
-Ref: doc-lasterr426861
-Ref: doc-rethrow427948
-Ref: doc-errno428392
-Ref: doc-errno_list428744
-Node: Recovering From Errors428853
-Ref: doc-onCleanup429975
-Node: Handling Warnings430489
-Node: Issuing Warnings431068
-Ref: doc-warning432316
-Ref: doc-lastwarn433787
-Node: Enabling and Disabling Warnings434035
-Ref: doc-warning_ids434991
-Node: Debugging445026
-Node: Entering Debug Mode445740
-Ref: doc-debug_on_interrupt446231
-Ref: doc-debug_on_warning446937
-Ref: doc-debug_on_error447471
-Node: Leaving Debug Mode448122
-Ref: doc-dbcont448342
-Ref: doc-dbquit448605
-Node: Breakpoints448904
-Ref: doc-dbstop449119
-Ref: doc-dbstatus450855
-Ref: doc-dbclear451828
-Ref: doc-keyboard453285
-Node: Debug Mode454220
-Ref: doc-dbwhere454583
-Ref: doc-dbtype454843
-Ref: doc-isdebugmode455510
-Ref: doc-dbstep455811
-Node: Call Stack456486
-Ref: doc-dbstack456612
-Ref: doc-dbup457554
-Ref: doc-dbdown457793
-Node: Profiling458036
-Ref: doc-profile458948
-Ref: doc-profshow461382
-Ref: doc-profexplore462052
-Node: Profiler Example462465
-Ref: Profiler Example-Footnote-1468721
-Node: Input and Output469073
-Node: Basic Input and Output469596
-Node: Terminal Output469827
-Ref: doc-disp470565
-Ref: doc-list_in_columns470978
-Ref: doc-terminal_size471998
-Ref: doc-format472229
-Node: Paging Screen Output478074
-Ref: doc-more479218
-Ref: doc-PAGER479451
-Ref: doc-PAGER_FLAGS480286
-Ref: doc-page_screen_output480805
-Ref: doc-page_output_immediately481542
-Ref: doc-fflush482213
-Node: Terminal Input482663
-Ref: doc-input483074
-Ref: doc-menu484199
-Ref: doc-yes_or_no484735
-Ref: doc-kbhit485351
-Node: Simple File I/O485775
-Ref: doc-save486568
-Ref: doc-load490789
-Ref: doc-fileread494720
-Ref: doc-default_save_options494997
-Ref: doc-save_precision495675
-Ref: doc-save_header_format_string496189
-Ref: doc-native_float_format497229
-Ref: doc-fdisp497810
-Ref: doc-dlmwrite498238
-Ref: doc-dlmread499971
-Ref: doc-csvwrite501401
-Ref: doc-csvread501771
-Ref: doc-textread502205
-Ref: doc-textscan503478
-Node: Saving Data on Unexpected Exits505491
-Ref: doc-crash_dumps_octave_core506007
-Ref: doc-sighup_dumps_octave_core506841
-Ref: doc-sigterm_dumps_octave_core507436
-Ref: doc-octave_core_file_options508037
-Ref: doc-octave_core_file_limit508963
-Ref: doc-octave_core_file_name510146
-Node: C-Style I/O Functions510962
-Ref: doc-stdin511775
-Ref: doc-stdout512060
-Ref: doc-stderr512325
-Node: Opening and Closing Files513129
-Ref: doc-fopen513864
-Ref: doc-fclose517348
-Ref: doc-is_valid_file_id517723
-Node: Simple Output517857
-Ref: doc-fputs518402
-Ref: doc-puts518922
-Node: Line-Oriented Input519088
-Ref: doc-fgetl519670
-Ref: doc-fgets520121
-Ref: doc-fskipl520661
-Node: Formatted Output521172
-Ref: doc-printf521687
-Ref: doc-fprintf522130
-Ref: doc-sprintf522546
-Node: Output Conversion for Matrices525061
-Node: Output Conversion Syntax526151
-Node: Table of Output Conversions529119
-Node: Integer Conversions531297
-Node: Floating-Point Conversions533353
-Node: Other Output Conversions536189
-Node: Formatted Input537298
-Ref: doc-fscanf537711
-Ref: doc-scanf539562
-Ref: doc-sscanf539958
-Node: Input Conversion Syntax541802
-Node: Table of Input Conversions544292
-Node: Numeric Input Conversions546131
-Node: String Input Conversions547171
-Node: Binary I/O548202
-Ref: doc-fread548664
-Ref: doc-fwrite553049
-Node: Temporary Files553751
-Ref: doc-mkstemp554186
-Ref: doc-tmpfile555252
-Ref: doc-tmpnam555795
-Node: EOF and Errors556500
-Ref: doc-feof557381
-Ref: doc-ferror557784
-Ref: doc-fclear558184
-Ref: doc-freport558274
-Node: File Positioning558675
-Ref: doc-ftell558933
-Ref: doc-fseek559181
-Ref: doc-SEEK_SET559837
-Ref: doc-frewind560286
-Node: Plotting560831
-Node: Introduction to Plotting561071
-Node: High-Level Plotting562109
-Node: Two-Dimensional Plots562749
-Ref: fig:plot563300
-Ref: doc-plot563452
-Ref: doc-plotyy568216
-Ref: doc-semilogx569632
-Ref: doc-semilogy570244
-Ref: doc-loglog570856
-Ref: fig:hist571689
-Ref: doc-bar571823
-Ref: doc-barh573878
-Ref: doc-hist575052
-Ref: doc-stairs576533
-Ref: doc-stem577649
-Ref: doc-stem3579253
-Ref: doc-scatter579889
-Ref: doc-plotmatrix581536
-Ref: doc-pareto582943
-Ref: doc-rose584562
-Ref: doc-contour585651
-Ref: doc-contourf586731
-Ref: doc-contourc588168
-Ref: doc-contour3589266
-Ref: fig:errorbar590816
-Ref: doc-errorbar590954
-Ref: doc-semilogxerr593301
-Ref: doc-semilogyerr593911
-Ref: doc-loglogerr594521
-Ref: fig:polar595354
-Ref: doc-polar595489
-Ref: doc-pie595896
-Ref: doc-pie3596733
-Ref: doc-quiver597593
-Ref: doc-quiver3599031
-Ref: doc-compass600590
-Ref: doc-feather601447
-Ref: doc-pcolor602283
-Ref: doc-area603591
-Ref: doc-comet604497
-Ref: doc-comet3605080
-Node: Axis Configuration605636
-Ref: doc-axis605981
-Ref: doc-caxis608733
-Ref: doc-ylim609555
-Ref: doc-zlim609555
-Ref: doc-xlim609555
-Node: Two-dimensional Function Plotting610446
-Ref: doc-fplot611209
-Ref: doc-ezplot612105
-Ref: doc-ezcontour613577
-Ref: doc-ezcontourf614659
-Ref: doc-ezpolar615752
-Node: Two-dimensional Geometric Shapes616578
-Ref: doc-rectangle616795
-Node: Three-Dimensional Plots618177
-Ref: fig:mesh618869
-Ref: fig:plot3619430
-Ref: doc-mesh619663
-Ref: doc-meshc620563
-Ref: doc-meshz621034
-Ref: doc-hidden621501
-Ref: doc-surf621887
-Ref: doc-surfc622796
-Ref: doc-surfl623270
-Ref: doc-surfnorm624819
-Ref: doc-isosurface625998
-Ref: doc-isonormals630151
-Ref: doc-isocolors633494
-Ref: doc-diffuse636937
-Ref: doc-specular637342
-Ref: doc-meshgrid637938
-Ref: doc-ndgrid638607
-Ref: doc-plot3639173
-Ref: doc-view640857
-Ref: doc-slice641685
-Ref: doc-ribbon643554
-Ref: doc-shading644017
-Ref: doc-scatter3644523
-Node: Aspect Ratio646167
-Ref: doc-daspect646534
-Ref: doc-pbaspect647318
-Node: Three-dimensional Function Plotting648138
-Ref: doc-ezplot3648388
-Ref: doc-ezmesh649328
-Ref: doc-ezmeshc650950
-Ref: doc-ezsurf652446
-Ref: doc-ezsurfc654074
-Node: Three-dimensional Geometric Shapes655569
-Ref: doc-cylinder655796
-Ref: doc-sphere656626
-Ref: doc-ellipsoid657134
-Node: Plot Annotations657553
-Ref: doc-title658186
-Ref: doc-legend658462
-Ref: doc-text660548
-Ref: doc-ylabel661110
-Ref: doc-zlabel661110
-Ref: doc-xlabel661110
-Ref: doc-clabel661553
-Ref: doc-box663197
-Ref: doc-grid663465
-Ref: doc-colorbar664080
-Node: Multiple Plots on One Page665025
-Ref: doc-subplot665905
-Node: Multiple Plot Windows666862
-Ref: doc-figure667374
-Ref: doc-axes667966
-Ref: doc-line668126
-Ref: doc-patch668527
-Ref: doc-fill669420
-Ref: doc-surface669805
-Ref: doc-drawnow671003
-Ref: doc-refresh671641
-Ref: doc-newplot672457
-Ref: doc-hold672678
-Ref: doc-ishold673736
-Ref: doc-clf674379
-Ref: doc-cla675072
-Ref: doc-shg675513
-Ref: doc-delete675690
-Ref: doc-close676019
-Ref: doc-closereq676338
-Ref: tab:extended678633
-Node: Printing and Saving Plots681463
-Ref: doc-print681862
-Ref: doc-saveas688494
-Ref: doc-orient689223
-Node: Interacting with Plots689592
-Ref: doc-ginput690064
-Ref: doc-waitforbuttonpress690364
-Ref: doc-gtext690605
-Ref: doc-uimenu691058
-Node: Test Plotting Functions693146
-Ref: doc-sombrero693507
-Ref: doc-peaks693854
-Node: Graphics Data Structures694799
-Node: Introduction to Graphics Structures695142
-Ref: doc-graphics structures695350
-Ref: doc-isprop699879
-Node: Graphics Objects700048
-Ref: doc-ishandle701233
-Ref: doc-ishghandle701563
-Ref: doc-isfigure701663
-Ref: doc-gcf702038
-Ref: doc-gca702626
-Ref: doc-get704512
-Ref: doc-set704775
-Ref: doc-ancestor706263
-Ref: doc-allchild706893
-Node: Graphics Object Properties707390
-Node: Root Figure Properties707946
-Node: Figure Properties708783
-Node: Axes Properties712070
-Node: Line Properties719116
-Node: Text Properties720390
-Node: Image Properties721962
-Node: Patch Properties723057
-Node: Surface Properties724737
-Node: Searching Properties726276
-Ref: doc-findobj726485
-Ref: doc-findall728175
-Node: Managing Default Properties728724
-Ref: doc-reset731114
-Node: Advanced Plotting731752
-Node: Colors732032
-Node: Line Styles732355
-Node: Marker Styles732976
-Ref: doc-colstyle733893
-Node: Callbacks734121
-Ref: doc-gcbo736040
-Ref: doc-gcbf736630
-Node: Application-defined Data737117
-Ref: doc-setappdata737493
-Ref: doc-getappdata737713
-Ref: doc-rmappdata737987
-Ref: doc-isappdata738108
-Node: Object Groups738371
-Ref: doc-hggroup738838
-Ref: doc-addproperty739761
-Ref: doc-addlistener742682
-Ref: doc-dellistener743828
-Ref: doc-linkprop745444
-Node: Data Sources in Object Groups747873
-Ref: doc-datasources748051
-Ref: doc-refreshdata748276
-Ref: doc-linkdata749199
-Node: Area Series749199
-Node: Bar Series750072
-Node: Contour Groups751902
-Node: Error Bar Series754540
-Node: Line Series755499
-Node: Quiver Group756250
-Node: Scatter Group757838
-Node: Stair Group758909
-Node: Stem Series759732
-Node: Surface Group761185
-Node: Graphics Toolkits762083
-Ref: doc-graphics_toolkit762227
-Ref: doc-available_graphics_toolkits762762
-Ref: doc-loaded_graphics_toolkits763009
-Ref: doc-register_graphics_toolkit763221
-Node: Customizing Toolkit Behavior763468
-Ref: doc-gnuplot_binary763786
-Ref: doc-gui_mode764242
-Ref: doc-mouse_wheel_zoom764780
-Node: Matrix Manipulation765062
-Node: Finding Elements and Checking Conditions765732
-Ref: doc-any766185
-Ref: doc-all766814
-Ref: doc-xor767849
-Ref: doc-diff768482
-Ref: doc-isinf769444
-Ref: doc-isnan769780
-Ref: doc-isfinite770162
-Ref: doc-common_size770531
-Ref: doc-find771173
-Ref: doc-lookup772929
-Node: Rearranging Matrices774710
-Ref: doc-fliplr774921
-Ref: doc-flipud775417
-Ref: doc-flipdim775910
-Ref: doc-rot90776320
-Ref: doc-rotdim777220
-Ref: doc-cat778374
-Ref: doc-horzcat779250
-Ref: doc-vertcat779651
-Ref: doc-permute780048
-Ref: doc-ipermute780338
-Ref: doc-reshape780571
-Ref: doc-resize781579
-Ref: doc-circshift782827
-Ref: doc-shift783619
-Ref: doc-shiftdim783911
-Ref: doc-sort784822
-Ref: doc-sortrows786687
-Ref: doc-issorted787107
-Ref: doc-nth_element787734
-Ref: doc-triu788690
-Ref: doc-tril788690
-Ref: doc-vec790028
-Ref: doc-vech790448
-Ref: doc-prepad790826
-Ref: doc-postpad791427
-Ref: doc-diag792020
-Ref: doc-blkdiag792956
-Node: Special Utility Matrices793338
-Ref: doc-eye793532
-Ref: doc-ones794696
-Ref: doc-zeros795537
-Ref: doc-repmat796231
-Ref: doc-repelems796618
-Ref: doc-linspace797511
-Ref: doc-logspace798271
-Ref: doc-rand798840
-Ref: doc-randi801747
-Ref: doc-randn803048
-Ref: doc-rande804041
-Ref: doc-randp805010
-Ref: doc-randg806756
-Ref: doc-randperm810200
-Ref: Special Utility Matrices-Footnote-1810726
-Node: Famous Matrices810823
-Ref: doc-hadamard811023
-Ref: doc-hankel811775
-Ref: doc-hilb812416
-Ref: doc-invhilb813009
-Ref: doc-magic814047
-Ref: doc-pascal814338
-Ref: doc-rosser815005
-Ref: doc-toeplitz815213
-Ref: doc-vander815962
-Ref: doc-wilkinson816550
-Node: Arithmetic816897
-Node: Exponents and Logarithms817629
-Ref: doc-exp817788
-Ref: doc-expm1817969
-Ref: doc-log818108
-Ref: doc-reallog818423
-Ref: doc-log1p818696
-Ref: doc-log10818884
-Ref: doc-log2819090
-Ref: doc-pow2819498
-Ref: doc-nextpow2819748
-Ref: doc-realpow819981
-Ref: doc-sqrt820277
-Ref: doc-realsqrt820565
-Ref: doc-cbrt820834
-Ref: doc-nthroot821037
-Node: Complex Arithmetic821508
-Ref: doc-abs821792
-Ref: doc-arg821957
-Ref: doc-conj822176
-Ref: doc-cplxpair822343
-Ref: doc-imag823303
-Ref: doc-real823452
-Node: Trigonometry823579
-Ref: doc-sin824242
-Ref: doc-cos824419
-Ref: doc-tan824598
-Ref: doc-sec824778
-Ref: doc-csc824957
-Ref: doc-cot825138
-Ref: doc-asin825320
-Ref: doc-acos825479
-Ref: doc-atan825640
-Ref: doc-asec825802
-Ref: doc-acsc825963
-Ref: doc-acot826126
-Ref: doc-sinh826290
-Ref: doc-cosh826470
-Ref: doc-tanh826652
-Ref: doc-sech826831
-Ref: doc-csch826963
-Ref: doc-coth827097
-Ref: doc-asinh827232
-Ref: doc-acosh827370
-Ref: doc-atanh827510
-Ref: doc-asech827651
-Ref: doc-acsch827790
-Ref: doc-acoth827931
-Ref: doc-atan2828073
-Ref: doc-sind828562
-Ref: doc-cosd828771
-Ref: doc-tand828987
-Ref: doc-secd829260
-Ref: doc-cscd829410
-Ref: doc-cotd829562
-Ref: doc-asind829715
-Ref: doc-acosd829872
-Ref: doc-atand830031
-Ref: doc-asecd830191
-Ref: doc-acscd830350
-Ref: doc-acotd830511
-Node: Sums and Products830673
-Ref: doc-sum830831
-Ref: doc-prod831899
-Ref: doc-cumsum832158
-Ref: doc-cumprod832668
-Ref: doc-sumsq832944
-Node: Utility Functions833350
-Ref: doc-ceil833513
-Ref: doc-fix833876
-Ref: doc-floor834242
-Ref: doc-round834610
-Ref: doc-roundb835006
-Ref: doc-max835278
-Ref: doc-min836496
-Ref: doc-cummax837704
-Ref: doc-cummin838411
-Ref: doc-hypot839115
-Ref: doc-gradient839636
-Ref: doc-dot841546
-Ref: doc-cross842101
-Ref: doc-divergence842633
-Ref: doc-curl843367
-Ref: doc-del2844464
-Ref: doc-factorial845686
-Ref: doc-factor846072
-Ref: doc-gcd846462
-Ref: doc-lcm847337
-Ref: doc-chop847611
-Ref: doc-rem847949
-Ref: doc-mod848306
-Ref: doc-primes848834
-Ref: doc-list_primes849313
-Ref: doc-sign849604
-Node: Special Functions849850
-Ref: doc-airy850019
-Ref: doc-besselj851138
-Ref: doc-beta853287
-Ref: doc-betainc853436
-Ref: doc-betaln853931
-Ref: doc-bincoeff854236
-Ref: doc-commutation_matrix854769
-Ref: doc-duplication_matrix855158
-Ref: doc-erf855490
-Ref: doc-erfc855847
-Ref: doc-erfcx856035
-Ref: doc-erfinv856246
-Ref: doc-gamma856455
-Ref: doc-gammainc856749
-Ref: doc-legendre857885
-Ref: doc-gammaln860170
-Ref: doc-lgamma860170
-Node: Rational Approximations860374
-Ref: doc-rat860564
-Ref: doc-rats861061
-Node: Coordinate Transformations861493
-Ref: doc-cart2pol861694
-Ref: doc-pol2cart862557
-Ref: doc-cart2sph863406
-Ref: doc-sph2cart864195
-Node: Mathematical Constants864980
-Ref: doc-e865141
-Ref: doc-pi865959
-Ref: doc-I866812
-Ref: doc-Inf867742
-Ref: doc-NaN868841
-Ref: doc-eps870136
-Ref: doc-realmax871226
-Ref: doc-realmin872373
-Node: Linear Algebra873501
-Node: Techniques Used for Linear Algebra874057
-Node: Basic Matrix Functions876000
-Ref: doc-balance876203
-Ref: doc-cond877686
-Ref: doc-det878235
-Ref: doc-eig878796
-Ref: doc-givens879447
-Ref: doc-planerot879770
-Ref: doc-inv879978
-Ref: doc-matrix_type880771
-Ref: doc-norm884125
-Ref: doc-null885518
-Ref: doc-orth885895
-Ref: doc-mgorth886270
-Ref: doc-pinv886578
-Ref: doc-rank886913
-Ref: doc-rcond887369
-Ref: doc-trace887838
-Ref: doc-rref887916
-Node: Matrix Factorizations888287
-Ref: doc-chol888475
-Ref: doc-cholinv890181
-Ref: doc-chol2inv890422
-Ref: doc-cholupdate890826
-Ref: doc-cholinsert891474
-Ref: doc-choldelete892209
-Ref: doc-cholshift892588
-Ref: doc-hess893077
-Ref: doc-lu893660
-Ref: doc-luupdate896199
-Ref: doc-qr897496
-Ref: doc-qrupdate899780
-Ref: doc-qrinsert900503
-Ref: doc-qrdelete901647
-Ref: doc-qrshift902707
-Ref: doc-qz903150
-Ref: doc-qzhess905165
-Ref: doc-schur905903
-Ref: doc-rsf2csf907668
-Ref: doc-subspace908027
-Ref: doc-svd908185
-Ref: doc-svd_driver909390
-Ref: doc-housh909958
-Ref: doc-krylov910557
-Node: Functions of a Matrix911796
-Ref: doc-expm911981
-Ref: doc-logm912929
-Ref: doc-sqrtm913482
-Ref: doc-kron913878
-Ref: doc-blkmm914440
-Ref: doc-syl914861
-Node: Specialized Solvers915143
-Ref: doc-bicg915294
-Ref: doc-bicgstab917075
-Ref: doc-cgs918747
-Ref: doc-gmres920416
-Node: Vectorization and Faster Code Execution922207
-Node: Basic Vectorization923670
-Ref: doc-vectorize925702
-Node: Broadcasting927536
-Ref: doc-bsxfun930464
-Node: Function Application934196
-Ref: doc-arrayfun934756
-Ref: doc-spfun938312
-Ref: doc-cellfun938670
-Ref: doc-structfun942980
-Node: Accumulation945024
-Ref: doc-accumarray945364
-Ref: doc-accumdim949512
-Node: Miscellaneous Techniques951185
-Node: Examples955914
-Node: Nonlinear Equations956764
-Node: Solvers956997
-Ref: doc-fsolve957423
-Ref: doc-fzero963710
-Node: Minimizers965720
-Ref: doc-fminbnd966362
-Ref: doc-fminunc967349
-Node: Diagonal and Permutation Matrices969547
-Node: Basic Usage970111
-Node: Creating Diagonal Matrices971347
-Node: Creating Permutation Matrices972458
-Node: Explicit and Implicit Conversions974220
-Node: Matrix Algebra975490
-Node: Expressions Involving Diagonal Matrices976117
-Node: Expressions Involving Permutation Matrices979360
-Node: Function Support981484
-Node: Diagonal Matrix Functions982120
-Node: Permutation Matrix Functions982807
-Node: Example Codes983575
-Node: Zeros Treatment984837
-Node: Sparse Matrices987951
-Node: Basics988377
-Node: Storage of Sparse Matrices989676
-Ref: Storage of Sparse Matrices-Footnote-1993880
-Node: Creating Sparse Matrices994024
-Ref: doc-spdiags995954
-Ref: doc-speye997024
-Ref: doc-spones997518
-Ref: doc-sprand997668
-Ref: doc-sprandn998153
-Ref: doc-sprandsym998658
-Ref: doc-full1001251
-Ref: doc-spalloc1001429
-Ref: doc-sparse1002524
-Ref: doc-spconvert1003993
-Node: Information1004733
-Ref: doc-issparse1005801
-Ref: doc-nnz1005929
-Ref: doc-nonzeros1006064
-Ref: doc-nzmax1006166
-Ref: doc-spstats1006633
-Ref: fig:spmatrix1008726
-Ref: doc-spy1010643
-Ref: doc-etree1011073
-Ref: doc-etreeplot1011645
-Ref: doc-gplot1011974
-Ref: doc-treeplot1012629
-Ref: doc-treelayout1013059
-Node: Operators and Functions1013524
-Node: Sparse Functions1013830
-Node: Return Types of Operators and Functions1015635
-Ref: doc-sparse_auto_mutate1018112
-Node: Mathematical Considerations1019026
-Ref: fig:simplematrix1022178
-Ref: fig:simplechol1023911
-Ref: fig:simplecholperm1024666
-Ref: doc-amd1025791
-Ref: doc-ccolamd1027103
-Ref: doc-colamd1031004
-Ref: doc-colperm1034625
-Ref: doc-csymamd1034942
-Ref: doc-dmperm1037720
-Ref: doc-symamd1038514
-Ref: doc-symrcm1041964
-Node: Sparse Linear Algebra1043004
-Ref: doc-normest1047212
-Ref: doc-onenormest1047733
-Ref: doc-condest1049117
-Ref: doc-spparms1050854
-Ref: doc-sprank1053242
-Ref: doc-symbfact1053691
-Ref: doc-spaugment1055114
-Ref: doc-eigs1056638
-Ref: doc-svds1062623
-Ref: Sparse Linear Algebra-Footnote-11064988
-Node: Iterative Techniques1065127
-Ref: doc-pcg1065650
-Ref: doc-pcr1071814
-Ref: doc-luinc1076503
-Node: Real Life Example1078959
-Node: Numerical Integration1084390
-Node: Functions of One Variable1084843
-Ref: doc-quad1088194
-Ref: doc-quad_options1090151
-Ref: doc-quadv1091338
-Ref: doc-quadl1093282
-Ref: doc-quadgk1094885
-Ref: doc-quadcc1099249
-Ref: doc-trapz1103921
-Ref: doc-cumtrapz1105207
-Node: Orthogonal Collocation1106229
-Ref: doc-colloc1106440
-Node: Functions of Multiple Variables1107452
-Ref: doc-dblquad1108982
-Ref: doc-triplequad1110372
-Node: Differential Equations1112818
-Node: Ordinary Differential Equations1113249
-Ref: doc-lsode1113588
-Ref: doc-lsode_options1116396
-Node: Differential-Algebraic Equations1119580
-Ref: doc-daspk1120008
-Ref: doc-daspk_options1122598
-Ref: doc-dassl1129188
-Ref: doc-dassl_options1131856
-Ref: doc-dasrt1134409
-Ref: doc-dasrt_options1138852
-Node: Optimization1140919
-Node: Linear Programming1141391
-Ref: doc-glpk1141774
-Node: Quadratic Programming1154339
-Ref: doc-qp1154703
-Ref: doc-pqpnonneg1156595
-Node: Nonlinear Programming1157852
-Ref: doc-sqp1158141
-Node: Linear Least Squares1162371
-Ref: doc-ols1162931
-Ref: doc-gls1163890
-Ref: doc-lsqnonneg1164530
-Ref: doc-optimset1165849
-Ref: doc-optimget1167815
-Node: Statistics1168115
-Node: Descriptive Statistics1169285
-Ref: doc-mean1169714
-Ref: doc-median1170549
-Ref: doc-mode1171119
-Ref: doc-range1172103
-Ref: doc-iqr1172710
-Ref: doc-meansq1173232
-Ref: doc-std1173665
-Ref: doc-var1174932
-Ref: doc-skewness1175774
-Ref: doc-kurtosis1176248
-Ref: doc-moment1176993
-Ref: doc-quantile1178106
-Ref: doc-prctile1181088
-Ref: doc-statistics1182054
-Node: Basic Statistical Functions1182671
-Ref: doc-center1183086
-Ref: doc-zscore1183369
-Ref: doc-histc1183723
-Ref: doc-nchoosek1184792
-Ref: doc-perms1186132
-Ref: doc-ranks1186492
-Ref: doc-run_count1186775
-Ref: doc-runlength1187073
-Ref: doc-probit1187336
-Ref: doc-logit1187478
-Ref: doc-cloglog1187667
-Ref: doc-mahalanobis1187808
-Ref: doc-table1188060
-Node: Statistical Plots1188327
-Ref: doc-qqplot1188824
-Ref: doc-ppplot1189890
-Node: Correlation and Regression Analysis1190754
-Ref: doc-cov1190967
-Ref: doc-corr1191855
-Ref: doc-spearman1192378
-Ref: doc-kendall1192904
-Ref: doc-logistic_regression1193683
-Node: Distributions1195365
-Ref: doc-betapdf1198176
-Ref: doc-betacdf1198350
-Ref: doc-betainv1198528
-Ref: doc-binopdf1198701
-Ref: doc-binocdf1198958
-Ref: doc-binoinv1199219
-Ref: doc-cauchy_pdf1199475
-Ref: doc-cauchy_cdf1199794
-Ref: doc-cauchy_inv1200113
-Ref: doc-chi2pdf1200427
-Ref: doc-chi2cdf1200611
-Ref: doc-chi2inv1200799
-Ref: doc-discrete_pdf1200977
-Ref: doc-discrete_cdf1201201
-Ref: doc-discrete_inv1201429
-Ref: doc-empirical_pdf1201645
-Ref: doc-empirical_cdf1201852
-Ref: doc-empirical_inv1202063
-Ref: doc-exppdf1202269
-Ref: doc-expcdf1202444
-Ref: doc-expinv1202682
-Ref: doc-fpdf1202856
-Ref: doc-fcdf1203032
-Ref: doc-finv1203212
-Ref: doc-gampdf1203387
-Ref: doc-gamcdf1203576
-Ref: doc-gaminv1203770
-Ref: doc-geopdf1203959
-Ref: doc-geocdf1204127
-Ref: doc-geoinv1204299
-Ref: doc-hygepdf1204466
-Ref: doc-hygecdf1204921
-Ref: doc-hygeinv1205394
-Ref: doc-kolmogorov_smirnov_cdf1205871
-Ref: doc-laplace_pdf1206280
-Ref: doc-laplace_cdf1206431
-Ref: doc-laplace_inv1206586
-Ref: doc-logistic_pdf1206736
-Ref: doc-logistic_cdf1206858
-Ref: doc-logistic_inv1207015
-Ref: doc-lognpdf1207167
-Ref: doc-logncdf1207577
-Ref: doc-logninv1207991
-Ref: doc-nbinpdf1208398
-Ref: doc-nbincdf1208858
-Ref: doc-nbininv1209322
-Ref: doc-normpdf1209781
-Ref: doc-normcdf1210061
-Ref: doc-norminv1210345
-Ref: doc-poisspdf1210624
-Ref: doc-poisscdf1210802
-Ref: doc-poissinv1210989
-Ref: doc-stdnormal_pdf1211166
-Ref: doc-stdnormal_cdf1211367
-Ref: doc-stdnormal_inv1211572
-Ref: doc-tpdf1211772
-Ref: doc-tcdf1211954
-Ref: doc-tinv1212164
-Ref: doc-unidpdf1212449
-Ref: doc-unidcdf1212835
-Ref: doc-unidinv1213061
-Ref: doc-unifpdf1213284
-Ref: doc-unifcdf1213531
-Ref: doc-unifinv1213787
-Ref: doc-wblpdf1214033
-Ref: doc-wblcdf1214452
-Ref: doc-wblinv1214832
-Node: Tests1215137
-Ref: doc-anova1216793
-Ref: doc-bartlett_test1217803
-Ref: doc-chisquare_test_homogeneity1218292
-Ref: doc-chisquare_test_independence1218911
-Ref: doc-cor_test1219370
-Ref: doc-f_test_regression1220766
-Ref: doc-hotelling_test1221280
-Ref: doc-hotelling_test_21221848
-Ref: doc-kolmogorov_smirnov_test1222532
-Ref: doc-kolmogorov_smirnov_test_21223898
-Ref: doc-kruskal_wallis_test1225070
-Ref: doc-manova1226205
-Ref: doc-mcnemar_test1226852
-Ref: doc-prop_test_21227404
-Ref: doc-run_test1228272
-Ref: doc-sign_test1228607
-Ref: doc-t_test1229565
-Ref: doc-t_test_21230417
-Ref: doc-t_test_regression1231303
-Ref: doc-u_test1232160
-Ref: doc-var_test1233054
-Ref: doc-welch_test1233942
-Ref: doc-wilcoxon_test1234842
-Ref: doc-z_test1235798
-Ref: doc-z_test_21236649
-Node: Random Number Generation1237533
-Ref: doc-betarnd1239098
-Ref: doc-binornd1239820
-Ref: doc-cauchy_rnd1240620
-Ref: doc-chi2rnd1241422
-Ref: doc-discrete_rnd1242127
-Ref: doc-empirical_rnd1242902
-Ref: doc-exprnd1243680
-Ref: doc-frnd1244398
-Ref: doc-gamrnd1245113
-Ref: doc-geornd1245843
-Ref: doc-hygernd1246534
-Ref: doc-laplace_rnd1247383
-Ref: doc-logistic_rnd1247942
-Ref: doc-lognrnd1248505
-Ref: doc-nbinrnd1249262
-Ref: doc-normrnd1249997
-Ref: doc-poissrnd1250775
-Ref: doc-stdnormal_rnd1251502
-Ref: doc-trnd1252115
-Ref: doc-unidrnd1252809
-Ref: doc-unifrnd1253608
-Ref: doc-wblrnd1254319
-Ref: doc-wienrnd1255088
-Node: Sets1255543
-Ref: doc-unique1255840
-Node: Set Operations1257012
-Ref: doc-ismember1257510
-Ref: doc-union1258787
-Ref: doc-intersect1259609
-Ref: doc-setdiff1260132
-Ref: doc-setxor1260822
-Ref: doc-powerset1261469
-Node: Polynomial Manipulations1261754
-Node: Evaluating Polynomials1262321
-Ref: doc-polyval1263229
-Ref: doc-polyvalm1264107
-Node: Finding Roots1264522
-Ref: doc-roots1264894
-Ref: doc-compan1265437
-Ref: doc-mpoles1266370
-Node: Products of Polynomials1267376
-Ref: doc-conv1267586
-Ref: doc-convn1268284
-Ref: doc-deconv1269027
-Ref: doc-conv21269423
-Ref: doc-polygcd1270381
-Ref: doc-residue1271211
-Node: Derivatives / Integrals / Transforms1273705
-Ref: doc-polyder1274332
-Ref: doc-polyint1274929
-Ref: doc-polyaffine1275277
-Node: Polynomial Interpolation1275644
-Ref: doc-polyfit1276368
-Ref: doc-mkpp1278313
-Ref: doc-unmkpp1279487
-Ref: doc-ppval1280259
-Ref: doc-ppder1280744
-Ref: doc-ppint1281051
-Ref: doc-ppjumps1281336
-Node: Miscellaneous Functions1281596
-Ref: doc-poly1281772
-Ref: doc-polyout1282784
-Ref: doc-polyreduce1283146
-Node: Interpolation1283342
-Node: One-dimensional Interpolation1283560
-Ref: doc-interp11283967
-Ref: doc-interp1q1287800
-Ref: doc-interpft1288742
-Ref: doc-spline1290263
-Node: Multi-dimensional Interpolation1291672
-Ref: doc-interp21292058
-Ref: doc-interp31293899
-Ref: doc-interpn1295728
-Ref: doc-bicubic1298653
-Node: Geometry1299027
-Ref: Geometry-Footnote-11299526
-Node: Delaunay Triangulation1299712
-Ref: doc-delaunay1300432
-Ref: doc-delaunay31302684
-Ref: doc-delaunayn1304125
-Node: Plotting the Triangulation1306154
-Ref: doc-triplot1306483
-Ref: doc-trimesh1307037
-Ref: doc-trisurf1307504
-Node: Identifying Points in Triangulation1308434
-Ref: doc-tsearch1310707
-Ref: doc-tsearchn1311041
-Ref: doc-dsearch1312264
-Ref: doc-dsearchn1312618
-Node: Voronoi Diagrams1313554
-Ref: doc-voronoi1314199
-Ref: doc-voronoin1315623
-Ref: doc-polyarea1316803
-Ref: doc-rectint1317739
-Ref: doc-inpolygon1318215
-Node: Convex Hull1318852
-Ref: doc-convhull1319238
-Ref: doc-convhulln1320231
-Node: Interpolation on Scattered Data1321760
-Ref: doc-griddata1322434
-Ref: doc-griddata31323069
-Ref: doc-griddatan1323573
-Node: Signal Processing1324299
-Ref: doc-detrend1324652
-Ref: doc-fft1325242
-Ref: doc-fftw1326919
-Ref: doc-ifft1329954
-Ref: doc-fft21331048
-Ref: doc-ifft21331585
-Ref: doc-fftn1332132
-Ref: doc-ifftn1332814
-Ref: doc-fftconv1333516
-Ref: doc-fftfilt1334124
-Ref: doc-filter1334508
-Ref: doc-filter21336187
-Ref: doc-freqz1336763
-Ref: doc-freqz_plot1338006
-Ref: doc-sinc1338105
-Ref: doc-unwrap1338166
-Ref: doc-arch_fit1338539
-Ref: doc-arch_rnd1339431
-Ref: doc-arch_test1339810
-Ref: doc-arma_rnd1340777
-Ref: doc-autoreg_matrix1341357
-Ref: doc-bartlett1341712
-Ref: doc-blackman1341964
-Ref: doc-diffpara1342198
-Ref: doc-durbinlevinson1342926
-Ref: doc-fftshift1343329
-Ref: doc-ifftshift1344036
-Ref: doc-fractdiff1344248
-Ref: doc-hamming1344400
-Ref: doc-hanning1344631
-Ref: doc-hurst1344860
-Ref: doc-pchip1345052
-Ref: doc-periodogram1346251
-Ref: doc-rectangle_lw1347511
-Ref: doc-rectangle_sw1347637
-Ref: doc-sinetone1347768
-Ref: doc-sinewave1348062
-Ref: doc-spectral_adf1348265
-Ref: doc-spectral_xdf1348655
-Ref: doc-spencer1349031
-Ref: doc-stft1349131
-Ref: doc-synthesis1350135
-Ref: doc-triangle_lw1350400
-Ref: doc-triangle_sw1350524
-Ref: doc-yulewalker1350653
-Node: Image Processing1350891
-Node: Loading and Saving Images1351716
-Ref: doc-imread1352397
-Ref: doc-imwrite1352932
-Ref: doc-IMAGE_PATH1354637
-Ref: doc-imfinfo1355395
-Node: Displaying Images1357735
-Ref: doc-imshow1358095
-Ref: doc-image1359399
-Ref: doc-imagesc1360607
-Node: Representing Images1361449
-Ref: doc-gray2ind1362746
-Ref: doc-ind2gray1362974
-Ref: doc-rgb2ind1363308
-Ref: doc-ind2rgb1363536
-Ref: doc-colormap1364035
-Ref: doc-autumn1364655
-Ref: doc-bone1364973
-Ref: doc-cool1365295
-Ref: doc-copper1365594
-Ref: doc-flag1365912
-Ref: doc-gray1366255
-Ref: doc-hot1366526
-Ref: doc-hsv1366868
-Ref: doc-jet1367461
-Ref: doc-ocean1367811
-Ref: doc-pink1368085
-Ref: doc-prism1368469
-Ref: doc-rainbow1368831
-Ref: doc-spring1369178
-Ref: doc-summer1369485
-Ref: doc-white1369789
-Ref: doc-winter1370089
-Ref: doc-contrast1370391
-Ref: doc-gmap401371050
-Ref: doc-brighten1371649
-Ref: doc-spinmap1372374
-Ref: doc-whitebg1372726
-Node: Plotting on top of Images1373591
-Node: Color Conversion1374662
-Ref: doc-rgb2hsv1374896
-Ref: doc-hsv2rgb1375398
-Ref: doc-rgb2ntsc1375564
-Ref: doc-ntsc2rgb1375701
-Node: Audio Processing1375838
-Ref: doc-lin2mu1377123
-Ref: doc-mu2lin1377574
-Ref: doc-loadaudio1377968
-Ref: doc-saveaudio1378621
-Ref: doc-playaudio1379556
-Ref: doc-record1379916
-Ref: doc-setaudio1380403
-Ref: doc-wavread1380615
-Ref: doc-wavwrite1381422
-Node: Object Oriented Programming1381848
-Node: Creating a Class1382709
-Ref: doc-isobject1386355
-Ref: doc-methods1386641
-Ref: doc-ismethod1386934
-Node: Manipulating Classes1387209
-Ref: doc-display1387818
-Ref: doc-saveobj1391762
-Ref: doc-loadobj1392692
-Node: Indexing Objects1393228
-Node: Defining Indexing And Indexed Assignment1393501
-Ref: doc-subsref1394174
-Ref: doc-subsasgn1396566
-Ref: doc-optimize_subsasgn_calls1397495
-Ref: doc-subsindex1399177
-Ref: doc-colon1400166
-Node: Indexed Assignment Optimization1400512
-Node: Overloading Objects1403349
-Node: Function Overloading1403630
-Node: Operator Overloading1405231
-Ref: tab:overload_ops1405423
-Node: Precedence of Objects1408931
-Ref: doc-superiorto1409477
-Ref: doc-inferiorto1409795
-Node: Inheritance and Aggregation1411623
-Node: GUI Development1418660
-Node: I/O Dialogs1419682
-Ref: doc-uigetdir1419964
-Ref: doc-uigetfile1420351
-Ref: doc-uiputfile1422209
-Node: Progress Bar1423612
-Ref: doc-waitbar1423763
-Node: GUI Utility Functions1424626
-Ref: doc-guidata1425009
-Ref: doc-guihandles1425096
-Ref: doc-uiwait1425182
-Ref: doc-uiresume1426074
-Ref: doc-waitfor1426407
-Node: User-Defined Preferences1428337
-Ref: doc-addpref1428504
-Ref: doc-getpref1429093
-Ref: doc-ispref1430041
-Ref: doc-rmpref1430548
-Ref: doc-setpref1431083
-Node: System Utilities1431732
-Node: Timing Utilities1432538
-Ref: doc-time1433508
-Ref: doc-now1434220
-Ref: doc-ctime1434622
-Ref: doc-gmtime1435081
-Ref: doc-localtime1436091
-Ref: doc-mktime1437069
-Ref: doc-asctime1437704
-Ref: doc-strftime1438096
-Ref: doc-strptime1441304
-Ref: doc-clock1442297
-Ref: doc-date1442911
-Ref: doc-etime1443215
-Ref: doc-cputime1443734
-Ref: doc-is_leap_year1444425
-Ref: doc-toc1444807
-Ref: doc-tic1444807
-Ref: doc-pause1446227
-Ref: doc-sleep1446669
-Ref: doc-usleep1446790
-Ref: doc-datenum1447096
-Ref: doc-datestr1449256
-Ref: doc-datevec1453661
-Ref: doc-addtodate1454517
-Ref: doc-calendar1454829
-Ref: doc-weekday1455441
-Ref: doc-eomday1456403
-Ref: doc-datetick1456677
-Node: Filesystem Utilities1457385
-Ref: doc-movefile1457795
-Ref: doc-rename1458462
-Ref: doc-copyfile1458755
-Ref: doc-unlink1459404
-Ref: doc-link1459629
-Ref: doc-symlink1459941
-Ref: doc-readlink1460271
-Ref: doc-mkdir1460658
-Ref: doc-rmdir1461092
-Ref: doc-confirm_recursive_rmdir1461687
-Ref: doc-mkfifo1462257
-Ref: doc-umask1462518
-Ref: doc-lstat1462839
-Ref: doc-stat1462839
-Ref: doc-S_ISBLK1465465
-Ref: doc-S_ISCHR1465698
-Ref: doc-S_ISDIR1465935
-Ref: doc-S_ISFIFO1466165
-Ref: doc-S_ISLNK1466391
-Ref: doc-S_ISREG1466625
-Ref: doc-S_ISSOCK1466858
-Ref: doc-fileattrib1467086
-Ref: doc-isdir1468327
-Ref: doc-readdir1468541
-Ref: doc-glob1468966
-Ref: doc-fnmatch1470239
-Ref: doc-file_in_path1470554
-Ref: doc-filesep1471426
-Ref: doc-filemarker1471901
-Ref: doc-fileparts1472915
-Ref: doc-fullfile1473113
-Ref: doc-tilde_expand1473298
-Ref: doc-canonicalize_file_name1473990
-Ref: doc-make_absolute_filename1474120
-Ref: doc-is_absolute_filename1474419
-Ref: doc-is_rooted_relative_filename1474700
-Ref: doc-P_tmpdir1474980
-Ref: doc-tempdir1475153
-Ref: doc-tempname1475258
-Ref: doc-recycle1475458
-Node: File Archiving Utilities1475852
-Ref: doc-bunzip21476048
-Ref: doc-gzip1476408
-Ref: doc-gunzip1476953
-Ref: doc-tar1477371
-Ref: doc-untar1477916
-Ref: doc-zip1478273
-Ref: doc-unzip1478729
-Ref: doc-unpack1479086
-Ref: doc-bzip21479709
-Node: Networking Utilities1480240
-Ref: doc-gethostname1480479
-Node: FTP Objects1480583
-Ref: doc-@ftp/ftp1480715
-Ref: doc-@ftp/mget1481041
-Ref: doc-@ftp/mput1481600
-Ref: doc-@ftp/ascii1481914
-Ref: doc-@ftp/binary1482049
-Node: URL Manipulation1482186
-Ref: doc-urlread1482328
-Ref: doc-urlwrite1483580
-Node: Controlling Subprocesses1484980
-Ref: doc-system1485641
-Ref: doc-unix1487372
-Ref: doc-dos1488002
-Ref: doc-perl1488633
-Ref: doc-python1488963
-Ref: doc-popen1489299
-Ref: doc-pclose1490188
-Ref: doc-popen21490337
-Ref: doc-EXEC_PATH1491625
-Ref: doc-fork1492557
-Ref: doc-exec1493242
-Ref: doc-pipe1493745
-Ref: doc-dup21494066
-Ref: doc-waitpid1494318
-Ref: doc-WCONTINUE1496038
-Ref: doc-WCOREDUMP1496394
-Ref: doc-WEXITSTATUS1497068
-Ref: doc-WIFCONTINUED1497572
-Ref: doc-WIFSIGNALED1498035
-Ref: doc-WIFSTOPPED1498489
-Ref: doc-WIFEXITED1499075
-Ref: doc-WNOHANG1499516
-Ref: doc-WSTOPSIG1499863
-Ref: doc-WTERMSIG1500398
-Ref: doc-WUNTRACED1500946
-Ref: doc-fcntl1501316
-Ref: doc-kill1502653
-Ref: doc-SIG1503236
-Node: Process ID Information1503352
-Ref: doc-getpgrp1503559
-Ref: doc-getpid1503658
-Ref: doc-getppid1503749
-Ref: doc-geteuid1503840
-Ref: doc-getuid1503940
-Ref: doc-getegid1504033
-Ref: doc-getgid1504134
-Node: Environment Variables1504228
-Ref: doc-getenv1504422
-Ref: doc-putenv1504614
-Node: Current Working Directory1504764
-Ref: doc-cd1504971
-Ref: doc-ls1505460
-Ref: doc-ls_command1506063
-Ref: doc-dir1506256
-Ref: doc-pwd1507269
-Node: Password Database Functions1507400
-Ref: doc-getpwent1508060
-Ref: doc-getpwuid1508281
-Ref: doc-getpwnam1508513
-Ref: doc-setpwent1508751
-Ref: doc-endpwent1508869
-Node: Group Database Functions1508940
-Ref: doc-getgrent1509496
-Ref: doc-getgrgid1509682
-Ref: doc-getgrnam1509891
-Ref: doc-setgrent1510105
-Ref: doc-endgrent1510215
-Node: System Information1510283
-Ref: doc-computer1510464
-Ref: doc-uname1511327
-Ref: doc-nproc1511879
-Ref: doc-ispc1512343
-Ref: doc-isunix1512524
-Ref: doc-ismac1512705
-Ref: doc-isieee1512886
-Ref: doc-isdeployed1513071
-Ref: doc-OCTAVE_HOME1513345
-Ref: doc-matlabroot1513454
-Ref: doc-OCTAVE_VERSION1513699
-Ref: doc-version1513797
-Ref: doc-ver1514034
-Ref: doc-compare_versions1514890
-Ref: doc-license1516080
-Ref: doc-octave_config_info1517225
-Ref: doc-usejava1517517
-Ref: doc-getrusage1518114
-Node: Hashing Functions1519504
-Ref: doc-md5sum1520465
-Node: Packages1520696
-Node: Installing and Removing Packages1521517
-Ref: doc-pkg1523984
-Node: Using Packages1531312
-Node: Administrating Packages1531926
-Node: Creating Packages1533407
-Ref: doc-PKG_ADD1534925
-Node: The DESCRIPTION File1537935
-Node: The INDEX File1541989
-Node: PKG_ADD and PKG_DEL Directives1544263
-Node: Dynamically Linked Functions1545390
-Node: Oct-Files1547425
-Node: Getting Started with Oct-Files1548051
-Ref: doc-mkoctfile1548360
-Node: Matrices and Arrays in Oct-Files1554926
-Node: Character Strings in Oct-Files1561759
-Node: Cell Arrays in Oct-Files1564233
-Node: Structures in Oct-Files1565534
-Node: Sparse Matrices in Oct-Files1567929
-Node: Array and Sparse Differences1569375
-Node: Creating Sparse Matrices in Oct-Files1572428
-Node: Using Sparse Matrices in Oct-Files1579361
-Node: Accessing Global Variables in Oct-Files1580309
-Node: Calling Octave Functions from Oct-Files1581861
-Node: Calling External Code from Oct-Files1585040
-Node: Allocating Local Memory in Oct-Files1589304
-Node: Input Parameter Checking in Oct-Files1589976
-Node: Exception and Error Handling in Oct-Files1592691
-Node: Documentation and Test of Oct-Files1596115
-Node: Mex-Files1598359
-Node: Getting Started with Mex-Files1599455
-Ref: doc-mex1599929
-Ref: doc-mexext1600155
-Node: Working with Matrices and Arrays in Mex-Files1603384
-Node: Character Strings in Mex-Files1607192
-Node: Cell Arrays with Mex-Files1608962
-Node: Structures with Mex-Files1610499
-Node: Sparse Matrices with Mex-Files1614167
-Node: Calling Other Functions in Mex-Files1619415
-Node: Standalone Programs1620757
-Node: Test and Demo Functions1623583
-Node: Test Functions1623984
-Ref: doc-test1624129
-Ref: doc-assert1633398
-Ref: doc-fail1634959
-Node: Demonstration Functions1635770
-Ref: doc-demo1635933
-Ref: doc-example1638306
-Ref: doc-rundemos1638914
-Ref: doc-runtests1639244
-Ref: doc-speed1639574
-Node: Tips and Standards1644443
-Node: Style Tips1645064
-Node: Comment Tips1646816
-Node: Function Headers1647981
-Node: Documentation Tips1652377
-Node: Contributing Guidelines1662839
-Node: How to Contribute1663294
-Node: Building the Development Sources1663888
-Node: Basics of Generating a Changeset1665913
-Node: General Guidelines1668820
-Node: Octave Sources (m-files)1672175
-Node: C++ Sources1673731
-Node: Other Sources1676589
-Node: Obsolete Functions1678240
-Node: Trouble1684950
-Node: Actual Bugs1685609
-Node: Reporting Bugs1686431
-Node: Bug Criteria1687402
-Node: Bug Tracker1688617
-Node: Bug Reporting1688983
-Node: Sending Patches1694461
-Node: Service1697286
-Node: Installation1698076
-Node: Build Dependencies1698714
-Node: Tips for Specific Systems1699163
-Node: Build Tools1700668
-Node: External Packages1702795
-Node: Running Configure and Make1706796
-Node: Compiling Octave with 64-bit Indexing1717788
-Node: Installation Problems1724954
-Node: Emacs Octave Support1732122
-Node: Installing EOS1733358
-Node: Using Octave Mode1734093
-Node: Running Octave from Within Emacs1744971
-Node: Using the Emacs Info Reader for Octave1749237
-Node: Grammar and Parser1750383
-Node: Keywords1750668
-Ref: doc-iskeyword1751880
-Node: Parser1752133
-Ref: doc-add_input_event_hook1752753
-Ref: doc-remove_input_event_hook1753204
-Ref: doc-missing_function_hook1753690
-Node: Copying1754225
-Node: Concept Index1791799
-Node: Function Index1840064
-Node: Operator Index1991446
+Node: Preface15720
+Node: Acknowledgements18007
+Node: How You Can Contribute to Octave26580
+Node: Distribution28116
+Node: Introduction28828
+Node: Running Octave29852
+Node: Simple Examples30654
+Node: Conventions38915
+Node: Fonts39287
+Node: Evaluation Notation39824
+Node: Printing Notation40817
+Node: Error Messages41342
+Node: Format of Descriptions41739
+Node: A Sample Function Description42343
+Node: A Sample Command Description44551
+Node: A Sample Variable Description45373
+Node: Getting Started46490
+Node: Invoking Octave from the Command Line47020
+Node: Command Line Options47909
+Ref: doc-argv53000
+Ref: doc-program_name53527
+Ref: doc-program_invocation_name53739
+Node: Startup Files54618
+Ref: doc-dump_prefs56929
+Node: Quitting Octave57224
+Ref: doc-quit57399
+Ref: doc-atexit57672
+Node: Getting Help58671
+Ref: doc-help59297
+Ref: doc-doc60084
+Ref: doc-lookfor60626
+Ref: doc-news61990
+Ref: doc-info62201
+Ref: doc-warranty62293
+Ref: doc-info_file62546
+Ref: doc-info_program63450
+Ref: doc-makeinfo_program64493
+Ref: doc-doc_cache_file65222
+Ref: doc-suppress_verbose_help_message66343
+Ref: doc-gen_doc_cache67189
+Ref: doc-get_help_text67685
+Ref: doc-get_help_text_from_file67949
+Ref: doc-get_first_help_sentence68227
+Node: Command Line Editing69090
+Node: Cursor Motion70955
+Ref: doc-clc72389
+Node: Killing and Yanking72535
+Node: Commands For Text74238
+Node: Commands For Completion75629
+Ref: doc-completion_append_char76128
+Ref: doc-completion_matches76715
+Node: Commands For History77066
+Ref: doc-history78795
+Ref: doc-edit_history79694
+Ref: doc-run_history81061
+Ref: doc-saving_history81401
+Ref: doc-history_control82157
+Ref: doc-history_file83517
+Ref: doc-history_size84039
+Ref: doc-history_timestamp_format_string84541
+Ref: doc-EDITOR85477
+Node: Customizing readline86198
+Ref: doc-read_readline_init_file86793
+Ref: doc-re_read_readline_init_file87079
+Node: Customizing the Prompt87288
+Ref: doc-PS188524
+Ref: doc-PS289744
+Ref: doc-PS490549
+Node: Diary and Echo Commands91279
+Ref: doc-diary91629
+Ref: doc-echo92292
+Ref: doc-echo_executing_commands92895
+Node: Errors93843
+Node: Executable Octave Programs96432
+Ref: Executable Octave Programs-Footnote-199897
+Node: Comments100031
+Node: Single Line Comments100607
+Node: Block Comments101256
+Node: Comments and the Help System102023
+Node: Data Types103319
+Ref: doc-typeinfo104110
+Node: Built-in Data Types104438
+Ref: doc-class105113
+Ref: doc-isa105453
+Ref: doc-cast105622
+Ref: doc-typecast105951
+Ref: doc-swapbytes107495
+Ref: doc-bitpack107791
+Ref: doc-bitunpack108651
+Node: Numeric Objects109335
+Node: Missing Data110214
+Ref: doc-NA110653
+Ref: doc-isna111594
+Node: String Objects111937
+Node: Data Structure Objects112420
+Node: Cell Array Objects112879
+Node: User-defined Data Types113173
+Node: Object Sizes113632
+Ref: doc-ndims114091
+Ref: doc-columns114355
+Ref: doc-rows114649
+Ref: doc-numel114943
+Ref: doc-length115635
+Ref: doc-size115871
+Ref: doc-isempty116682
+Ref: doc-isnull116872
+Ref: doc-sizeof117467
+Ref: doc-size_equal117583
+Ref: doc-squeeze117871
+Node: Numeric Data Types118104
+Ref: doc-double119587
+Ref: doc-complex119708
+Node: Matrices120446
+Ref: doc-sizemax123251
+Ref: doc-output_max_field_width124056
+Ref: doc-output_precision124727
+Ref: doc-split_long_rows125655
+Ref: doc-fixed_point_format127315
+Node: Empty Matrices128551
+Ref: doc-print_empty_dimensions129550
+Node: Ranges130623
+Node: Single Precision Data Types133588
+Ref: doc-single134007
+Node: Integer Data Types134611
+Ref: doc-isinteger135652
+Ref: doc-int8136054
+Ref: doc-uint8136126
+Ref: doc-int16136208
+Ref: doc-uint16136282
+Ref: doc-int32136366
+Ref: doc-uint32136440
+Ref: doc-int64136524
+Ref: doc-uint64136598
+Ref: doc-intmax136682
+Ref: doc-intmin137314
+Node: Integer Arithmetic137980
+Ref: doc-idivide139150
+Node: Bit Manipulations140574
+Ref: doc-bitset140938
+Ref: doc-bitget141426
+Ref: doc-bitmax142859
+Ref: doc-bitand143374
+Ref: doc-bitor143722
+Ref: doc-bitxor144068
+Ref: doc-bitcmp144665
+Ref: doc-bitshift145276
+Node: Logical Values146389
+Ref: doc-logical147840
+Ref: doc-true148006
+Ref: doc-false148482
+Node: Promotion and Demotion of Data Types148959
+Node: Predicates for Numeric Objects151051
+Ref: doc-isnumeric151917
+Ref: doc-isfloat152380
+Ref: doc-isreal152713
+Ref: doc-iscomplex152981
+Ref: doc-ismatrix153159
+Ref: doc-isvector153621
+Ref: doc-isrow154014
+Ref: doc-iscolumn154232
+Ref: doc-isscalar154445
+Ref: doc-issquare154597
+Ref: doc-issymmetric154808
+Ref: doc-ishermitian155210
+Ref: doc-isdefinite155602
+Ref: doc-islogical156013
+Ref: doc-isprime156296
+Node: Strings156926
+Node: Escape Sequences in String Constants157992
+Ref: doc-is_dq_string159792
+Ref: doc-is_sq_string159980
+Node: Character Arrays160168
+Ref: doc-ischar161166
+Ref: doc-string_fill_char162161
+Node: Creating Strings163150
+Ref: doc-blanks163619
+Node: Concatenating Strings164096
+Ref: doc-char167064
+Ref: doc-strvcat168262
+Ref: doc-strcat169486
+Ref: doc-cstrcat170297
+Node: Conversion of Numerical Data to Strings170755
+Ref: doc-mat2str171504
+Ref: doc-num2str172797
+Ref: doc-int2str174239
+Node: Comparing Strings175013
+Ref: doc-strcmp175755
+Ref: doc-strncmp176528
+Ref: doc-strcmpi177464
+Ref: doc-strncmpi178335
+Ref: doc-validatestring179219
+Node: Manipulating Strings180713
+Ref: doc-deblank181468
+Ref: doc-strtrim181925
+Ref: doc-strtrunc182381
+Ref: doc-findstr182675
+Ref: doc-strchr183487
+Ref: doc-index183967
+Ref: doc-rindex184493
+Ref: doc-strfind184958
+Ref: doc-strmatch185909
+Ref: doc-strtok186950
+Ref: doc-strsplit187876
+Ref: doc-strread188791
+Ref: doc-strrep193458
+Ref: doc-substr194039
+Ref: doc-regexp194847
+Ref: doc-regexpi200019
+Ref: doc-regexprep200455
+Ref: doc-regexptranslate201307
+Ref: doc-untabify202201
+Node: String Conversions203221
+Ref: doc-bin2dec203623
+Ref: doc-dec2bin204333
+Ref: doc-dec2hex204915
+Ref: doc-hex2dec205474
+Ref: doc-dec2base206070
+Ref: doc-base2dec206881
+Ref: doc-num2hex207651
+Ref: doc-hex2num208188
+Ref: doc-str2double208707
+Ref: doc-strjust209751
+Ref: doc-str2num210403
+Ref: doc-toascii211235
+Ref: doc-tolower211447
+Ref: doc-toupper211831
+Ref: doc-do_string_escapes212215
+Ref: doc-undo_string_escapes212333
+Node: Character Class Functions213101
+Ref: doc-isalnum213661
+Ref: doc-isalpha214047
+Ref: doc-isletter214484
+Ref: doc-islower214883
+Ref: doc-isupper215184
+Ref: doc-isdigit215485
+Ref: doc-isxdigit215852
+Ref: doc-ispunct216047
+Ref: doc-isspace216351
+Ref: doc-iscntrl216726
+Ref: doc-isgraph217026
+Ref: doc-isprint217269
+Ref: doc-isascii217514
+Ref: doc-isstrprop217709
+Node: Data Containers219402
+Node: Structures219986
+Node: Basic Usage and Examples220440
+Ref: doc-struct_levels_to_print222774
+Ref: doc-print_struct_array_contents223293
+Node: Structure Arrays225539
+Node: Creating Structures228228
+Ref: doc-struct230540
+Ref: doc-isstruct231170
+Node: Manipulating Structures231366
+Ref: doc-nfields231643
+Ref: doc-fieldnames231733
+Ref: doc-isfield231948
+Ref: doc-getfield232170
+Ref: doc-setfield232816
+Ref: doc-rmfield233501
+Ref: doc-orderfields233815
+Ref: doc-substruct235777
+Node: Processing Data in Structures236374
+Ref: doc-struct2cell236971
+Node: Cell Arrays237894
+Node: Basic Usage of Cell Arrays238503
+Ref: doc-celldisp239989
+Ref: doc-iscell240687
+Node: Creating Cell Arrays240904
+Ref: doc-cell242526
+Ref: doc-num2cell243142
+Ref: doc-mat2cell243941
+Ref: doc-cellslices244966
+Node: Indexing Cell Arrays245668
+Ref: doc-cellindexmat248897
+Node: Cell Arrays of Strings249224
+Ref: doc-cellstr250282
+Ref: doc-iscellstr251400
+Node: Processing Data in Cell Arrays251571
+Ref: doc-cell2mat252325
+Ref: doc-cell2struct252689
+Node: Comma Separated Lists253281
+Ref: Comma Separated Lists-Footnote-1254821
+Node: Comma Separated Lists Generated from Cell Arrays254908
+Node: Comma Separated Lists Generated from Structure Arrays257074
+Node: Variables257773
+Ref: doc-ans259624
+Ref: doc-isvarname259856
+Ref: doc-genvarname260048
+Ref: doc-namelengthmax262283
+Node: Global Variables262805
+Ref: doc-isglobal264529
+Node: Persistent Variables264780
+Ref: doc-persistent264950
+Node: Status of Variables268311
+Ref: doc-who268852
+Ref: doc-whos270110
+Ref: doc-whos_line_format271870
+Ref: doc-exist274207
+Ref: doc-clear275905
+Ref: doc-pack278061
+Ref: doc-type278427
+Ref: doc-which278920
+Ref: doc-what279146
+Node: Expressions279480
+Node: Index Expressions280339
+Node: Advanced Indexing282524
+Ref: doc-sub2ind287026
+Ref: doc-ind2sub287519
+Ref: doc-isindex287965
+Ref: doc-allow_noninteger_range_as_index288407
+Node: Calling Functions289166
+Node: Call by Value291679
+Node: Recursion293691
+Ref: doc-max_recursion_depth294630
+Ref: Recursion-Footnote-1295274
+Ref: Recursion-Footnote-2295663
+Node: Arithmetic Ops295824
+Ref: doc-ctranspose299610
+Ref: doc-ldivide299793
+Ref: doc-minus300021
+Ref: doc-mldivide300144
+Ref: doc-mpower300360
+Ref: doc-mrdivide300553
+Ref: doc-mtimes300771
+Ref: doc-plus301180
+Ref: doc-power301522
+Ref: doc-rdivide302040
+Ref: doc-times302270
+Ref: doc-transpose302699
+Ref: doc-uminus302861
+Ref: doc-uplus302940
+Node: Comparison Ops303018
+Ref: doc-eq304544
+Ref: doc-ge304736
+Ref: doc-gt304817
+Ref: doc-isequal304897
+Ref: doc-isequalwithequalnans305062
+Ref: doc-le305236
+Ref: doc-lt305317
+Ref: doc-ne305397
+Node: Boolean Expressions305593
+Node: Element-by-element Boolean Operators305842
+Ref: doc-and308284
+Ref: doc-not308706
+Ref: doc-or308893
+Node: Short-circuit Boolean Operators309313
+Ref: doc-do_braindead_shortcircuit_evaluation312492
+Ref: doc-merge313603
+Node: Assignment Ops314470
+Node: Increment Ops319718
+Node: Operator Precedence321339
+Node: Evaluation323669
+Ref: doc-eval324107
+Node: Calling a Function by its Name325193
+Ref: doc-feval326901
+Ref: doc-run327904
+Node: Evaluation in a Different Context328305
+Ref: doc-evalin330703
+Ref: doc-assignin331006
+Node: Statements331208
+Node: The `if' Statement332731
+Node: The `switch' Statement336263
+Node: Notes for the C Programmer339086
+Node: The `while' Statement340190
+Node: The `do-until' Statement342398
+Node: The `for' Statement343812
+Node: Looping Over Structure Elements346977
+Node: The `break' Statement348248
+Node: The `continue' Statement349767
+Node: The `unwind_protect' Statement351061
+Node: The `try' Statement352476
+Node: Continuation Lines353512
+Node: Functions and Scripts355197
+Node: Defining Functions355937
+Ref: doc-nargin361121
+Ref: doc-inputname361743
+Ref: doc-silent_functions361922
+Node: Multiple Return Values362605
+Ref: doc-nthargout364237
+Ref: doc-nargout366490
+Ref: doc-nargchk367767
+Ref: doc-narginchk368408
+Ref: doc-nargoutchk369050
+Ref: doc-varargin370303
+Ref: doc-varargout370303
+Node: Variable-length Argument Lists370303
+Ref: doc-parseparams372432
+Node: Ignoring Arguments373648
+Ref: doc-isargout374641
+Node: Variable-length Return Lists375498
+Ref: doc-deal376655
+Node: Returning from a Function377159
+Node: Default Arguments378748
+Node: Function Files380041
+Ref: doc-edit382649
+Ref: doc-mfilename387460
+Ref: doc-ignore_function_time_stamp387915
+Ref: Function Files-Footnote-1388982
+Node: Manipulating the Load Path389048
+Ref: doc-addpath389863
+Ref: doc-genpath390625
+Ref: doc-rmpath390897
+Ref: doc-savepath391389
+Ref: doc-path391835
+Ref: doc-pathdef392531
+Ref: doc-pathsep393051
+Ref: doc-rehash393261
+Ref: doc-file_in_loadpath393350
+Ref: doc-restoredefaultpath394088
+Ref: doc-command_line_path394421
+Ref: doc-find_dir_in_path394737
+Node: Subfunctions395262
+Node: Private Functions396058
+Node: Overloading and Autoloading397142
+Ref: doc-builtin397836
+Ref: doc-autoload398751
+Node: Function Locking399783
+Ref: doc-mlock401719
+Ref: doc-munlock401942
+Ref: doc-mislocked402229
+Node: Function Precedence402552
+Node: Script Files404014
+Ref: doc-source407824
+Node: Function Handles Inline Functions and Anonymous Functions408033
+Node: Function Handles408620
+Ref: doc-is_function_handle409548
+Ref: doc-functions409737
+Ref: doc-func2str409872
+Ref: doc-str2func410027
+Node: Anonymous Functions410303
+Node: Inline Functions411392
+Ref: doc-inline411839
+Ref: doc-argnames412805
+Ref: doc-formula413071
+Ref: doc-symvar413352
+Node: Commands413692
+Node: Organization of Functions414919
+Node: Errors and Warnings417366
+Node: Handling Errors417971
+Node: Raising Errors418730
+Ref: doc-error419349
+Ref: doc-print_usage422531
+Ref: doc-usage422829
+Ref: doc-beep423681
+Ref: doc-beep_on_error423888
+Node: Catching Errors424425
+Ref: doc-lasterror425601
+Ref: doc-lasterr427032
+Ref: doc-rethrow428119
+Ref: doc-errno428563
+Ref: doc-errno_list428915
+Node: Recovering From Errors429024
+Ref: doc-onCleanup430146
+Node: Handling Warnings430660
+Node: Issuing Warnings431239
+Ref: doc-warning432487
+Ref: doc-lastwarn433958
+Node: Enabling and Disabling Warnings434206
+Ref: doc-warning_ids435162
+Node: Debugging445197
+Node: Entering Debug Mode445911
+Ref: doc-debug_on_interrupt446402
+Ref: doc-debug_on_warning447108
+Ref: doc-debug_on_error447642
+Node: Leaving Debug Mode448293
+Ref: doc-dbcont448513
+Ref: doc-dbquit448776
+Node: Breakpoints449075
+Ref: doc-dbstop449290
+Ref: doc-dbstatus451026
+Ref: doc-dbclear451999
+Ref: doc-keyboard453456
+Node: Debug Mode454391
+Ref: doc-dbwhere454754
+Ref: doc-dbtype455014
+Ref: doc-isdebugmode455681
+Ref: doc-dbstep455982
+Node: Call Stack456657
+Ref: doc-dbstack456783
+Ref: doc-dbup457725
+Ref: doc-dbdown457964
+Node: Profiling458207
+Ref: doc-profile459119
+Ref: doc-profshow461553
+Ref: doc-profexplore462223
+Node: Profiler Example462636
+Ref: Profiler Example-Footnote-1468892
+Node: Input and Output469244
+Node: Basic Input and Output469767
+Node: Terminal Output469998
+Ref: doc-disp470736
+Ref: doc-list_in_columns471149
+Ref: doc-terminal_size472169
+Ref: doc-format472400
+Node: Paging Screen Output478245
+Ref: doc-more479389
+Ref: doc-PAGER479622
+Ref: doc-PAGER_FLAGS480457
+Ref: doc-page_screen_output480976
+Ref: doc-page_output_immediately481713
+Ref: doc-fflush482384
+Node: Terminal Input482834
+Ref: doc-input483245
+Ref: doc-menu484370
+Ref: doc-yes_or_no484906
+Ref: doc-kbhit485522
+Node: Simple File I/O485946
+Ref: doc-save486739
+Ref: doc-load490960
+Ref: doc-fileread494891
+Ref: doc-default_save_options495168
+Ref: doc-save_precision495846
+Ref: doc-save_header_format_string496360
+Ref: doc-native_float_format497400
+Ref: doc-fdisp497981
+Ref: doc-dlmwrite498409
+Ref: doc-dlmread500142
+Ref: doc-csvwrite501572
+Ref: doc-csvread501942
+Ref: doc-textread502376
+Ref: doc-textscan503649
+Node: Saving Data on Unexpected Exits505662
+Ref: doc-crash_dumps_octave_core506178
+Ref: doc-sighup_dumps_octave_core507012
+Ref: doc-sigterm_dumps_octave_core507607
+Ref: doc-octave_core_file_options508208
+Ref: doc-octave_core_file_limit509134
+Ref: doc-octave_core_file_name510317
+Node: C-Style I/O Functions511133
+Ref: doc-stdin511946
+Ref: doc-stdout512231
+Ref: doc-stderr512496
+Node: Opening and Closing Files513300
+Ref: doc-fopen514035
+Ref: doc-fclose517519
+Ref: doc-is_valid_file_id517894
+Node: Simple Output518028
+Ref: doc-fputs518573
+Ref: doc-puts519093
+Node: Line-Oriented Input519259
+Ref: doc-fgetl519841
+Ref: doc-fgets520292
+Ref: doc-fskipl520832
+Node: Formatted Output521343
+Ref: doc-printf521858
+Ref: doc-fprintf522301
+Ref: doc-sprintf522717
+Node: Output Conversion for Matrices525232
+Node: Output Conversion Syntax526322
+Node: Table of Output Conversions529290
+Node: Integer Conversions531468
+Node: Floating-Point Conversions533524
+Node: Other Output Conversions536360
+Node: Formatted Input537469
+Ref: doc-fscanf537882
+Ref: doc-scanf539733
+Ref: doc-sscanf540129
+Node: Input Conversion Syntax541973
+Node: Table of Input Conversions544463
+Node: Numeric Input Conversions546302
+Node: String Input Conversions547342
+Node: Binary I/O548373
+Ref: doc-fread548835
+Ref: doc-fwrite553220
+Node: Temporary Files553922
+Ref: doc-mkstemp554357
+Ref: doc-tmpfile555423
+Ref: doc-tmpnam555966
+Node: EOF and Errors556671
+Ref: doc-feof557552
+Ref: doc-ferror557955
+Ref: doc-fclear558355
+Ref: doc-freport558445
+Node: File Positioning558846
+Ref: doc-ftell559104
+Ref: doc-fseek559352
+Ref: doc-SEEK_SET560008
+Ref: doc-frewind560457
+Node: Plotting561002
+Node: Introduction to Plotting561242
+Node: High-Level Plotting562280
+Node: Two-Dimensional Plots562920
+Ref: fig:plot563471
+Ref: doc-plot563623
+Ref: doc-plotyy568387
+Ref: doc-semilogx569803
+Ref: doc-semilogy570415
+Ref: doc-loglog571027
+Ref: fig:hist571860
+Ref: doc-bar571994
+Ref: doc-barh574049
+Ref: doc-hist575223
+Ref: doc-stairs576704
+Ref: doc-stem577820
+Ref: doc-stem3579424
+Ref: doc-scatter580060
+Ref: doc-plotmatrix581707
+Ref: doc-pareto583114
+Ref: doc-rose584733
+Ref: doc-contour585822
+Ref: doc-contourf586902
+Ref: doc-contourc588339
+Ref: doc-contour3589437
+Ref: fig:errorbar590987
+Ref: doc-errorbar591125
+Ref: doc-semilogxerr593472
+Ref: doc-semilogyerr594082
+Ref: doc-loglogerr594692
+Ref: fig:polar595525
+Ref: doc-polar595660
+Ref: doc-pie596067
+Ref: doc-pie3596904
+Ref: doc-quiver597764
+Ref: doc-quiver3599202
+Ref: doc-compass600761
+Ref: doc-feather601618
+Ref: doc-pcolor602454
+Ref: doc-area603762
+Ref: doc-comet604668
+Ref: doc-comet3605251
+Node: Axis Configuration605807
+Ref: doc-axis606152
+Ref: doc-caxis608904
+Ref: doc-ylim609726
+Ref: doc-zlim609726
+Ref: doc-xlim609726
+Node: Two-dimensional Function Plotting610617
+Ref: doc-fplot611380
+Ref: doc-ezplot612276
+Ref: doc-ezcontour613748
+Ref: doc-ezcontourf614830
+Ref: doc-ezpolar615923
+Node: Two-dimensional Geometric Shapes616749
+Ref: doc-rectangle616966
+Node: Three-Dimensional Plots618348
+Ref: fig:mesh619040
+Ref: fig:plot3619601
+Ref: doc-mesh619834
+Ref: doc-meshc620734
+Ref: doc-meshz621205
+Ref: doc-hidden621672
+Ref: doc-surf622058
+Ref: doc-surfc622967
+Ref: doc-surfl623441
+Ref: doc-surfnorm624990
+Ref: doc-isosurface626169
+Ref: doc-isonormals630322
+Ref: doc-isocolors633665
+Ref: doc-diffuse637108
+Ref: doc-specular637513
+Ref: doc-meshgrid638109
+Ref: doc-ndgrid638778
+Ref: doc-plot3639344
+Ref: doc-view641028
+Ref: doc-slice641856
+Ref: doc-ribbon643725
+Ref: doc-shading644188
+Ref: doc-scatter3644694
+Node: Aspect Ratio646338
+Ref: doc-daspect646705
+Ref: doc-pbaspect647489
+Node: Three-dimensional Function Plotting648309
+Ref: doc-ezplot3648559
+Ref: doc-ezmesh649499
+Ref: doc-ezmeshc651121
+Ref: doc-ezsurf652617
+Ref: doc-ezsurfc654245
+Node: Three-dimensional Geometric Shapes655740
+Ref: doc-cylinder655967
+Ref: doc-sphere656797
+Ref: doc-ellipsoid657305
+Node: Plot Annotations657724
+Ref: doc-title658357
+Ref: doc-legend658633
+Ref: doc-text660719
+Ref: doc-ylabel661281
+Ref: doc-zlabel661281
+Ref: doc-xlabel661281
+Ref: doc-clabel661724
+Ref: doc-box663368
+Ref: doc-grid663636
+Ref: doc-colorbar664251
+Node: Multiple Plots on One Page665196
+Ref: doc-subplot666076
+Node: Multiple Plot Windows667033
+Ref: doc-figure667545
+Ref: doc-axes668137
+Ref: doc-line668297
+Ref: doc-patch668698
+Ref: doc-fill669591
+Ref: doc-surface669976
+Ref: doc-drawnow671174
+Ref: doc-refresh671812
+Ref: doc-newplot672628
+Ref: doc-hold672849
+Ref: doc-ishold673907
+Ref: doc-clf674550
+Ref: doc-cla675243
+Ref: doc-shg675684
+Ref: doc-delete675861
+Ref: doc-close676190
+Ref: doc-closereq676509
+Ref: tab:extended678804
+Node: Printing and Saving Plots681634
+Ref: doc-print682033
+Ref: doc-saveas688665
+Ref: doc-orient689394
+Node: Interacting with Plots689763
+Ref: doc-ginput690235
+Ref: doc-waitforbuttonpress690535
+Ref: doc-gtext690776
+Ref: doc-uimenu691229
+Node: Test Plotting Functions693317
+Ref: doc-sombrero693678
+Ref: doc-peaks694025
+Node: Graphics Data Structures694970
+Node: Introduction to Graphics Structures695313
+Ref: doc-graphics structures695521
+Ref: doc-isprop700050
+Node: Graphics Objects700219
+Ref: doc-ishandle701404
+Ref: doc-ishghandle701734
+Ref: doc-isfigure701834
+Ref: doc-gcf702209
+Ref: doc-gca702797
+Ref: doc-get704683
+Ref: doc-set704946
+Ref: doc-ancestor706434
+Ref: doc-allchild707064
+Node: Graphics Object Properties707561
+Node: Root Figure Properties708117
+Node: Figure Properties708954
+Node: Axes Properties712241
+Node: Line Properties719287
+Node: Text Properties720561
+Node: Image Properties722133
+Node: Patch Properties723228
+Node: Surface Properties724908
+Node: Searching Properties726447
+Ref: doc-findobj726656
+Ref: doc-findall728346
+Node: Managing Default Properties728895
+Ref: doc-reset731285
+Node: Advanced Plotting731923
+Node: Colors732203
+Node: Line Styles732526
+Node: Marker Styles733147
+Ref: doc-colstyle734064
+Node: Callbacks734292
+Ref: doc-gcbo736211
+Ref: doc-gcbf736801
+Node: Application-defined Data737288
+Ref: doc-setappdata737664
+Ref: doc-getappdata737884
+Ref: doc-rmappdata738158
+Ref: doc-isappdata738279
+Node: Object Groups738542
+Ref: doc-hggroup739009
+Ref: doc-addproperty739932
+Ref: doc-addlistener742853
+Ref: doc-dellistener743999
+Ref: doc-linkprop745615
+Node: Data Sources in Object Groups748044
+Ref: doc-datasources748222
+Ref: doc-refreshdata748447
+Ref: doc-linkdata749370
+Node: Area Series749370
+Node: Bar Series750243
+Node: Contour Groups752073
+Node: Error Bar Series754711
+Node: Line Series755670
+Node: Quiver Group756421
+Node: Scatter Group758009
+Node: Stair Group759080
+Node: Stem Series759903
+Node: Surface Group761356
+Node: Graphics Toolkits762254
+Ref: doc-graphics_toolkit762398
+Ref: doc-available_graphics_toolkits762933
+Ref: doc-loaded_graphics_toolkits763180
+Ref: doc-register_graphics_toolkit763392
+Node: Customizing Toolkit Behavior763639
+Ref: doc-gnuplot_binary763957
+Ref: doc-gui_mode764413
+Ref: doc-mouse_wheel_zoom764951
+Node: Matrix Manipulation765233
+Node: Finding Elements and Checking Conditions765903
+Ref: doc-any766356
+Ref: doc-all766985
+Ref: doc-xor768020
+Ref: doc-diff768653
+Ref: doc-isinf769615
+Ref: doc-isnan769951
+Ref: doc-isfinite770333
+Ref: doc-common_size770702
+Ref: doc-find771344
+Ref: doc-lookup773100
+Node: Rearranging Matrices774881
+Ref: doc-fliplr775092
+Ref: doc-flipud775588
+Ref: doc-flipdim776081
+Ref: doc-rot90776491
+Ref: doc-rotdim777391
+Ref: doc-cat778545
+Ref: doc-horzcat779421
+Ref: doc-vertcat779822
+Ref: doc-permute780219
+Ref: doc-ipermute780509
+Ref: doc-reshape780742
+Ref: doc-resize781750
+Ref: doc-circshift782998
+Ref: doc-shift783790
+Ref: doc-shiftdim784082
+Ref: doc-sort784993
+Ref: doc-sortrows786858
+Ref: doc-issorted787278
+Ref: doc-nth_element787905
+Ref: doc-triu788861
+Ref: doc-tril788861
+Ref: doc-vec790199
+Ref: doc-vech790619
+Ref: doc-prepad790997
+Ref: doc-postpad791598
+Ref: doc-diag792191
+Ref: doc-blkdiag793127
+Node: Special Utility Matrices793509
+Ref: doc-eye793703
+Ref: doc-ones794867
+Ref: doc-zeros795708
+Ref: doc-repmat796402
+Ref: doc-repelems796789
+Ref: doc-linspace797682
+Ref: doc-logspace798442
+Ref: doc-rand799011
+Ref: doc-randi801918
+Ref: doc-randn803219
+Ref: doc-rande804212
+Ref: doc-randp805181
+Ref: doc-randg806927
+Ref: doc-randperm810371
+Ref: Special Utility Matrices-Footnote-1810897
+Node: Famous Matrices810994
+Ref: doc-hadamard811194
+Ref: doc-hankel811946
+Ref: doc-hilb812587
+Ref: doc-invhilb813180
+Ref: doc-magic814218
+Ref: doc-pascal814509
+Ref: doc-rosser815176
+Ref: doc-toeplitz815384
+Ref: doc-vander816133
+Ref: doc-wilkinson816721
+Node: Arithmetic817068
+Node: Exponents and Logarithms817800
+Ref: doc-exp817959
+Ref: doc-expm1818140
+Ref: doc-log818279
+Ref: doc-reallog818594
+Ref: doc-log1p818867
+Ref: doc-log10819055
+Ref: doc-log2819261
+Ref: doc-pow2819669
+Ref: doc-nextpow2819919
+Ref: doc-realpow820152
+Ref: doc-sqrt820448
+Ref: doc-realsqrt820736
+Ref: doc-cbrt821005
+Ref: doc-nthroot821208
+Node: Complex Arithmetic821679
+Ref: doc-abs821963
+Ref: doc-arg822128
+Ref: doc-conj822347
+Ref: doc-cplxpair822514
+Ref: doc-imag823474
+Ref: doc-real823623
+Node: Trigonometry823750
+Ref: doc-sin824413
+Ref: doc-cos824590
+Ref: doc-tan824769
+Ref: doc-sec824949
+Ref: doc-csc825128
+Ref: doc-cot825309
+Ref: doc-asin825491
+Ref: doc-acos825650
+Ref: doc-atan825811
+Ref: doc-asec825973
+Ref: doc-acsc826134
+Ref: doc-acot826297
+Ref: doc-sinh826461
+Ref: doc-cosh826641
+Ref: doc-tanh826823
+Ref: doc-sech827002
+Ref: doc-csch827134
+Ref: doc-coth827268
+Ref: doc-asinh827403
+Ref: doc-acosh827541
+Ref: doc-atanh827681
+Ref: doc-asech827822
+Ref: doc-acsch827961
+Ref: doc-acoth828102
+Ref: doc-atan2828244
+Ref: doc-sind828733
+Ref: doc-cosd828942
+Ref: doc-tand829158
+Ref: doc-secd829431
+Ref: doc-cscd829581
+Ref: doc-cotd829733
+Ref: doc-asind829886
+Ref: doc-acosd830043
+Ref: doc-atand830202
+Ref: doc-asecd830362
+Ref: doc-acscd830521
+Ref: doc-acotd830682
+Node: Sums and Products830844
+Ref: doc-sum831002
+Ref: doc-prod832070
+Ref: doc-cumsum832329
+Ref: doc-cumprod832839
+Ref: doc-sumsq833115
+Node: Utility Functions833521
+Ref: doc-ceil833684
+Ref: doc-fix834047
+Ref: doc-floor834413
+Ref: doc-round834781
+Ref: doc-roundb835177
+Ref: doc-max835449
+Ref: doc-min836667
+Ref: doc-cummax837875
+Ref: doc-cummin838582
+Ref: doc-hypot839286
+Ref: doc-gradient839807
+Ref: doc-dot841717
+Ref: doc-cross842272
+Ref: doc-divergence842804
+Ref: doc-curl843538
+Ref: doc-del2844635
+Ref: doc-factorial845857
+Ref: doc-factor846243
+Ref: doc-gcd846633
+Ref: doc-lcm847508
+Ref: doc-chop847782
+Ref: doc-rem848120
+Ref: doc-mod848477
+Ref: doc-primes849005
+Ref: doc-list_primes849484
+Ref: doc-sign849775
+Node: Special Functions850021
+Ref: doc-airy850190
+Ref: doc-besselj851309
+Ref: doc-beta853458
+Ref: doc-betainc853607
+Ref: doc-betaln854102
+Ref: doc-bincoeff854407
+Ref: doc-commutation_matrix854940
+Ref: doc-duplication_matrix855329
+Ref: doc-erf855661
+Ref: doc-erfc856018
+Ref: doc-erfcx856206
+Ref: doc-erfinv856417
+Ref: doc-gamma856626
+Ref: doc-gammainc856920
+Ref: doc-legendre858056
+Ref: doc-gammaln860341
+Ref: doc-lgamma860341
+Node: Rational Approximations860545
+Ref: doc-rat860735
+Ref: doc-rats861232
+Node: Coordinate Transformations861664
+Ref: doc-cart2pol861865
+Ref: doc-pol2cart862728
+Ref: doc-cart2sph863577
+Ref: doc-sph2cart864366
+Node: Mathematical Constants865151
+Ref: doc-e865312
+Ref: doc-pi866130
+Ref: doc-I866983
+Ref: doc-Inf867913
+Ref: doc-NaN869012
+Ref: doc-eps870307
+Ref: doc-realmax871397
+Ref: doc-realmin872544
+Node: Linear Algebra873672
+Node: Techniques Used for Linear Algebra874228
+Node: Basic Matrix Functions876171
+Ref: doc-balance876374
+Ref: doc-cond877857
+Ref: doc-det878406
+Ref: doc-eig878967
+Ref: doc-givens879618
+Ref: doc-planerot879941
+Ref: doc-inv880149
+Ref: doc-matrix_type880942
+Ref: doc-norm884296
+Ref: doc-null885689
+Ref: doc-orth886066
+Ref: doc-mgorth886441
+Ref: doc-pinv886749
+Ref: doc-rank887084
+Ref: doc-rcond887540
+Ref: doc-trace888009
+Ref: doc-rref888087
+Node: Matrix Factorizations888458
+Ref: doc-chol888646
+Ref: doc-cholinv890352
+Ref: doc-chol2inv890593
+Ref: doc-cholupdate890997
+Ref: doc-cholinsert891645
+Ref: doc-choldelete892380
+Ref: doc-cholshift892759
+Ref: doc-hess893248
+Ref: doc-lu893831
+Ref: doc-luupdate896370
+Ref: doc-qr897667
+Ref: doc-qrupdate899951
+Ref: doc-qrinsert900674
+Ref: doc-qrdelete901818
+Ref: doc-qrshift902878
+Ref: doc-qz903321
+Ref: doc-qzhess905336
+Ref: doc-schur906074
+Ref: doc-rsf2csf907839
+Ref: doc-subspace908198
+Ref: doc-svd908356
+Ref: doc-svd_driver909561
+Ref: doc-housh910129
+Ref: doc-krylov910728
+Node: Functions of a Matrix911967
+Ref: doc-expm912152
+Ref: doc-logm913100
+Ref: doc-sqrtm913653
+Ref: doc-kron914049
+Ref: doc-blkmm914611
+Ref: doc-syl915032
+Node: Specialized Solvers915314
+Ref: doc-bicg915465
+Ref: doc-bicgstab917246
+Ref: doc-cgs918918
+Ref: doc-gmres920587
+Node: Vectorization and Faster Code Execution922378
+Node: Basic Vectorization923841
+Ref: doc-vectorize925873
+Node: Broadcasting927707
+Ref: doc-bsxfun930635
+Node: Function Application934367
+Ref: doc-arrayfun934927
+Ref: doc-spfun938483
+Ref: doc-cellfun938841
+Ref: doc-structfun943151
+Node: Accumulation945195
+Ref: doc-accumarray945535
+Ref: doc-accumdim949683
+Node: Miscellaneous Techniques951356
+Node: Examples956085
+Node: Nonlinear Equations956935
+Node: Solvers957168
+Ref: doc-fsolve957594
+Ref: doc-fzero963881
+Node: Minimizers965891
+Ref: doc-fminbnd966533
+Ref: doc-fminunc967520
+Node: Diagonal and Permutation Matrices969718
+Node: Basic Usage970282
+Node: Creating Diagonal Matrices971518
+Node: Creating Permutation Matrices972629
+Node: Explicit and Implicit Conversions974391
+Node: Matrix Algebra975661
+Node: Expressions Involving Diagonal Matrices976288
+Node: Expressions Involving Permutation Matrices979531
+Node: Function Support981655
+Node: Diagonal Matrix Functions982291
+Node: Permutation Matrix Functions982978
+Node: Example Codes983746
+Node: Zeros Treatment985008
+Node: Sparse Matrices988122
+Node: Basics988548
+Node: Storage of Sparse Matrices989847
+Ref: Storage of Sparse Matrices-Footnote-1994051
+Node: Creating Sparse Matrices994195
+Ref: doc-spdiags996125
+Ref: doc-speye997195
+Ref: doc-spones997689
+Ref: doc-sprand997839
+Ref: doc-sprandn998324
+Ref: doc-sprandsym998829
+Ref: doc-full1001422
+Ref: doc-spalloc1001600
+Ref: doc-sparse1002695
+Ref: doc-spconvert1004164
+Node: Information1004904
+Ref: doc-issparse1005972
+Ref: doc-nnz1006100
+Ref: doc-nonzeros1006235
+Ref: doc-nzmax1006337
+Ref: doc-spstats1006804
+Ref: fig:spmatrix1008897
+Ref: doc-spy1010814
+Ref: doc-etree1011244
+Ref: doc-etreeplot1011816
+Ref: doc-gplot1012145
+Ref: doc-treeplot1012800
+Ref: doc-treelayout1013230
+Node: Operators and Functions1013695
+Node: Sparse Functions1014001
+Node: Return Types of Operators and Functions1015806
+Ref: doc-sparse_auto_mutate1018283
+Node: Mathematical Considerations1019197
+Ref: fig:simplematrix1022349
+Ref: fig:simplechol1024082
+Ref: fig:simplecholperm1024837
+Ref: doc-amd1025962
+Ref: doc-ccolamd1027274
+Ref: doc-colamd1031175
+Ref: doc-colperm1034796
+Ref: doc-csymamd1035113
+Ref: doc-dmperm1037891
+Ref: doc-symamd1038685
+Ref: doc-symrcm1042135
+Node: Sparse Linear Algebra1043175
+Ref: doc-normest1047383
+Ref: doc-onenormest1047904
+Ref: doc-condest1049288
+Ref: doc-spparms1051025
+Ref: doc-sprank1053413
+Ref: doc-symbfact1053862
+Ref: doc-spaugment1055285
+Ref: doc-eigs1056809
+Ref: doc-svds1062794
+Ref: Sparse Linear Algebra-Footnote-11065159
+Node: Iterative Techniques1065298
+Ref: doc-pcg1065821
+Ref: doc-pcr1071985
+Ref: doc-luinc1076674
+Node: Real Life Example1079130
+Node: Numerical Integration1084561
+Node: Functions of One Variable1085014
+Ref: doc-quad1088365
+Ref: doc-quad_options1090322
+Ref: doc-quadv1091509
+Ref: doc-quadl1093453
+Ref: doc-quadgk1095056
+Ref: doc-quadcc1099420
+Ref: doc-trapz1104092
+Ref: doc-cumtrapz1105378
+Node: Orthogonal Collocation1106400
+Ref: doc-colloc1106611
+Node: Functions of Multiple Variables1107623
+Ref: doc-dblquad1109153
+Ref: doc-triplequad1110543
+Node: Differential Equations1112989
+Node: Ordinary Differential Equations1113420
+Ref: doc-lsode1113759
+Ref: doc-lsode_options1116567
+Node: Differential-Algebraic Equations1119751
+Ref: doc-daspk1120179
+Ref: doc-daspk_options1122769
+Ref: doc-dassl1129359
+Ref: doc-dassl_options1132027
+Ref: doc-dasrt1134580
+Ref: doc-dasrt_options1139023
+Node: Optimization1141090
+Node: Linear Programming1141562
+Ref: doc-glpk1141945
+Node: Quadratic Programming1154510
+Ref: doc-qp1154874
+Ref: doc-pqpnonneg1156766
+Node: Nonlinear Programming1158023
+Ref: doc-sqp1158312
+Node: Linear Least Squares1162542
+Ref: doc-ols1163102
+Ref: doc-gls1164061
+Ref: doc-lsqnonneg1164701
+Ref: doc-optimset1166020
+Ref: doc-optimget1167986
+Node: Statistics1168286
+Node: Descriptive Statistics1169456
+Ref: doc-mean1169885
+Ref: doc-median1170720
+Ref: doc-mode1171290
+Ref: doc-range1172274
+Ref: doc-iqr1172881
+Ref: doc-meansq1173403
+Ref: doc-std1173836
+Ref: doc-var1175103
+Ref: doc-skewness1175945
+Ref: doc-kurtosis1176419
+Ref: doc-moment1177164
+Ref: doc-quantile1178277
+Ref: doc-prctile1181259
+Ref: doc-statistics1182225
+Node: Basic Statistical Functions1182842
+Ref: doc-center1183257
+Ref: doc-zscore1183540
+Ref: doc-histc1183894
+Ref: doc-nchoosek1184963
+Ref: doc-perms1186303
+Ref: doc-ranks1186663
+Ref: doc-run_count1186946
+Ref: doc-runlength1187244
+Ref: doc-probit1187507
+Ref: doc-logit1187649
+Ref: doc-cloglog1187838
+Ref: doc-mahalanobis1187979
+Ref: doc-table1188231
+Node: Statistical Plots1188498
+Ref: doc-qqplot1188995
+Ref: doc-ppplot1190061
+Node: Correlation and Regression Analysis1190925
+Ref: doc-cov1191138
+Ref: doc-corr1192026
+Ref: doc-spearman1192549
+Ref: doc-kendall1193075
+Ref: doc-logistic_regression1193854
+Node: Distributions1195536
+Ref: doc-betapdf1198347
+Ref: doc-betacdf1198521
+Ref: doc-betainv1198699
+Ref: doc-binopdf1198872
+Ref: doc-binocdf1199129
+Ref: doc-binoinv1199390
+Ref: doc-cauchy_pdf1199646
+Ref: doc-cauchy_cdf1199965
+Ref: doc-cauchy_inv1200284
+Ref: doc-chi2pdf1200598
+Ref: doc-chi2cdf1200782
+Ref: doc-chi2inv1200970
+Ref: doc-discrete_pdf1201148
+Ref: doc-discrete_cdf1201372
+Ref: doc-discrete_inv1201600
+Ref: doc-empirical_pdf1201816
+Ref: doc-empirical_cdf1202023
+Ref: doc-empirical_inv1202234
+Ref: doc-exppdf1202440
+Ref: doc-expcdf1202615
+Ref: doc-expinv1202853
+Ref: doc-fpdf1203027
+Ref: doc-fcdf1203203
+Ref: doc-finv1203383
+Ref: doc-gampdf1203558
+Ref: doc-gamcdf1203747
+Ref: doc-gaminv1203941
+Ref: doc-geopdf1204130
+Ref: doc-geocdf1204298
+Ref: doc-geoinv1204470
+Ref: doc-hygepdf1204637
+Ref: doc-hygecdf1205092
+Ref: doc-hygeinv1205565
+Ref: doc-kolmogorov_smirnov_cdf1206042
+Ref: doc-laplace_pdf1206451
+Ref: doc-laplace_cdf1206602
+Ref: doc-laplace_inv1206757
+Ref: doc-logistic_pdf1206907
+Ref: doc-logistic_cdf1207029
+Ref: doc-logistic_inv1207186
+Ref: doc-lognpdf1207338
+Ref: doc-logncdf1207748
+Ref: doc-logninv1208162
+Ref: doc-nbinpdf1208569
+Ref: doc-nbincdf1209029
+Ref: doc-nbininv1209493
+Ref: doc-normpdf1209952
+Ref: doc-normcdf1210232
+Ref: doc-norminv1210516
+Ref: doc-poisspdf1210795
+Ref: doc-poisscdf1210973
+Ref: doc-poissinv1211160
+Ref: doc-stdnormal_pdf1211337
+Ref: doc-stdnormal_cdf1211538
+Ref: doc-stdnormal_inv1211743
+Ref: doc-tpdf1211943
+Ref: doc-tcdf1212125
+Ref: doc-tinv1212335
+Ref: doc-unidpdf1212620
+Ref: doc-unidcdf1213006
+Ref: doc-unidinv1213232
+Ref: doc-unifpdf1213455
+Ref: doc-unifcdf1213702
+Ref: doc-unifinv1213958
+Ref: doc-wblpdf1214204
+Ref: doc-wblcdf1214623
+Ref: doc-wblinv1215003
+Node: Tests1215308
+Ref: doc-anova1216964
+Ref: doc-bartlett_test1217974
+Ref: doc-chisquare_test_homogeneity1218463
+Ref: doc-chisquare_test_independence1219082
+Ref: doc-cor_test1219541
+Ref: doc-f_test_regression1220937
+Ref: doc-hotelling_test1221451
+Ref: doc-hotelling_test_21222019
+Ref: doc-kolmogorov_smirnov_test1222703
+Ref: doc-kolmogorov_smirnov_test_21224069
+Ref: doc-kruskal_wallis_test1225241
+Ref: doc-manova1226376
+Ref: doc-mcnemar_test1227023
+Ref: doc-prop_test_21227575
+Ref: doc-run_test1228443
+Ref: doc-sign_test1228778
+Ref: doc-t_test1229736
+Ref: doc-t_test_21230588
+Ref: doc-t_test_regression1231474
+Ref: doc-u_test1232331
+Ref: doc-var_test1233225
+Ref: doc-welch_test1234113
+Ref: doc-wilcoxon_test1235013
+Ref: doc-z_test1235969
+Ref: doc-z_test_21236820
+Node: Random Number Generation1237704
+Ref: doc-betarnd1239269
+Ref: doc-binornd1239991
+Ref: doc-cauchy_rnd1240791
+Ref: doc-chi2rnd1241593
+Ref: doc-discrete_rnd1242298
+Ref: doc-empirical_rnd1243073
+Ref: doc-exprnd1243851
+Ref: doc-frnd1244569
+Ref: doc-gamrnd1245284
+Ref: doc-geornd1246014
+Ref: doc-hygernd1246705
+Ref: doc-laplace_rnd1247554
+Ref: doc-logistic_rnd1248113
+Ref: doc-lognrnd1248676
+Ref: doc-nbinrnd1249433
+Ref: doc-normrnd1250168
+Ref: doc-poissrnd1250946
+Ref: doc-stdnormal_rnd1251673
+Ref: doc-trnd1252286
+Ref: doc-unidrnd1252980
+Ref: doc-unifrnd1253779
+Ref: doc-wblrnd1254490
+Ref: doc-wienrnd1255259
+Node: Sets1255714
+Ref: doc-unique1256011
+Node: Set Operations1257183
+Ref: doc-ismember1257681
+Ref: doc-union1258958
+Ref: doc-intersect1259780
+Ref: doc-setdiff1260303
+Ref: doc-setxor1260993
+Ref: doc-powerset1261640
+Node: Polynomial Manipulations1261925
+Node: Evaluating Polynomials1262492
+Ref: doc-polyval1263400
+Ref: doc-polyvalm1264278
+Node: Finding Roots1264693
+Ref: doc-roots1265065
+Ref: doc-compan1265608
+Ref: doc-mpoles1266541
+Node: Products of Polynomials1267547
+Ref: doc-conv1267757
+Ref: doc-convn1268455
+Ref: doc-deconv1269198
+Ref: doc-conv21269594
+Ref: doc-polygcd1270552
+Ref: doc-residue1271382
+Node: Derivatives / Integrals / Transforms1273876
+Ref: doc-polyder1274503
+Ref: doc-polyint1275100
+Ref: doc-polyaffine1275448
+Node: Polynomial Interpolation1275815
+Ref: doc-polyfit1276539
+Ref: doc-mkpp1278484
+Ref: doc-unmkpp1279658
+Ref: doc-ppval1280430
+Ref: doc-ppder1280915
+Ref: doc-ppint1281222
+Ref: doc-ppjumps1281507
+Node: Miscellaneous Functions1281767
+Ref: doc-poly1281943
+Ref: doc-polyout1282955
+Ref: doc-polyreduce1283317
+Node: Interpolation1283513
+Node: One-dimensional Interpolation1283731
+Ref: doc-interp11284138
+Ref: doc-interp1q1287971
+Ref: doc-interpft1288913
+Ref: doc-spline1290434
+Node: Multi-dimensional Interpolation1291843
+Ref: doc-interp21292229
+Ref: doc-interp31294070
+Ref: doc-interpn1295899
+Ref: doc-bicubic1298824
+Node: Geometry1299198
+Ref: Geometry-Footnote-11299697
+Node: Delaunay Triangulation1299883
+Ref: doc-delaunay1300603
+Ref: doc-delaunay31302855
+Ref: doc-delaunayn1304296
+Node: Plotting the Triangulation1306325
+Ref: doc-triplot1306654
+Ref: doc-trimesh1307208
+Ref: doc-trisurf1307675
+Node: Identifying Points in Triangulation1308605
+Ref: doc-tsearch1310878
+Ref: doc-tsearchn1311212
+Ref: doc-dsearch1312435
+Ref: doc-dsearchn1312789
+Node: Voronoi Diagrams1313725
+Ref: doc-voronoi1314370
+Ref: doc-voronoin1315794
+Ref: doc-polyarea1316974
+Ref: doc-rectint1317910
+Ref: doc-inpolygon1318386
+Node: Convex Hull1319023
+Ref: doc-convhull1319409
+Ref: doc-convhulln1320402
+Node: Interpolation on Scattered Data1321931
+Ref: doc-griddata1322605
+Ref: doc-griddata31323240
+Ref: doc-griddatan1323744
+Node: Signal Processing1324470
+Ref: doc-detrend1324823
+Ref: doc-fft1325413
+Ref: doc-fftw1327090
+Ref: doc-ifft1330125
+Ref: doc-fft21331219
+Ref: doc-ifft21331756
+Ref: doc-fftn1332303
+Ref: doc-ifftn1332985
+Ref: doc-fftconv1333687
+Ref: doc-fftfilt1334295
+Ref: doc-filter1334679
+Ref: doc-filter21336358
+Ref: doc-freqz1336934
+Ref: doc-freqz_plot1338177
+Ref: doc-sinc1338276
+Ref: doc-unwrap1338337
+Ref: doc-arch_fit1338710
+Ref: doc-arch_rnd1339602
+Ref: doc-arch_test1339981
+Ref: doc-arma_rnd1340948
+Ref: doc-autoreg_matrix1341528
+Ref: doc-bartlett1341883
+Ref: doc-blackman1342135
+Ref: doc-diffpara1342369
+Ref: doc-durbinlevinson1343097
+Ref: doc-fftshift1343500
+Ref: doc-ifftshift1344207
+Ref: doc-fractdiff1344419
+Ref: doc-hamming1344571
+Ref: doc-hanning1344802
+Ref: doc-hurst1345031
+Ref: doc-pchip1345223
+Ref: doc-periodogram1346422
+Ref: doc-rectangle_lw1347682
+Ref: doc-rectangle_sw1347808
+Ref: doc-sinetone1347939
+Ref: doc-sinewave1348233
+Ref: doc-spectral_adf1348436
+Ref: doc-spectral_xdf1348826
+Ref: doc-spencer1349202
+Ref: doc-stft1349302
+Ref: doc-synthesis1350306
+Ref: doc-triangle_lw1350571
+Ref: doc-triangle_sw1350695
+Ref: doc-yulewalker1350824
+Node: Image Processing1351062
+Node: Loading and Saving Images1351887
+Ref: doc-imread1352568
+Ref: doc-imwrite1353103
+Ref: doc-IMAGE_PATH1354808
+Ref: doc-imfinfo1355566
+Node: Displaying Images1357906
+Ref: doc-imshow1358266
+Ref: doc-image1359570
+Ref: doc-imagesc1360778
+Node: Representing Images1361620
+Ref: doc-gray2ind1362917
+Ref: doc-ind2gray1363145
+Ref: doc-rgb2ind1363479
+Ref: doc-ind2rgb1363707
+Ref: doc-colormap1364206
+Ref: doc-autumn1364826
+Ref: doc-bone1365144
+Ref: doc-cool1365466
+Ref: doc-copper1365765
+Ref: doc-flag1366083
+Ref: doc-gray1366426
+Ref: doc-hot1366697
+Ref: doc-hsv1367039
+Ref: doc-jet1367632
+Ref: doc-ocean1367982
+Ref: doc-pink1368256
+Ref: doc-prism1368640
+Ref: doc-rainbow1369002
+Ref: doc-spring1369349
+Ref: doc-summer1369656
+Ref: doc-white1369960
+Ref: doc-winter1370260
+Ref: doc-contrast1370562
+Ref: doc-gmap401371221
+Ref: doc-brighten1371820
+Ref: doc-spinmap1372545
+Ref: doc-whitebg1372897
+Node: Plotting on top of Images1373762
+Node: Color Conversion1374833
+Ref: doc-rgb2hsv1375067
+Ref: doc-hsv2rgb1375569
+Ref: doc-rgb2ntsc1375735
+Ref: doc-ntsc2rgb1375872
+Node: Audio Processing1376009
+Ref: doc-lin2mu1377294
+Ref: doc-mu2lin1377745
+Ref: doc-loadaudio1378139
+Ref: doc-saveaudio1378792
+Ref: doc-playaudio1379727
+Ref: doc-record1380087
+Ref: doc-setaudio1380574
+Ref: doc-wavread1380786
+Ref: doc-wavwrite1381593
+Node: Object Oriented Programming1382019
+Node: Creating a Class1382880
+Ref: doc-isobject1386526
+Ref: doc-methods1386812
+Ref: doc-ismethod1387105
+Node: Manipulating Classes1387380
+Ref: doc-display1387989
+Ref: doc-saveobj1391933
+Ref: doc-loadobj1392863
+Node: Indexing Objects1393399
+Node: Defining Indexing And Indexed Assignment1393672
+Ref: doc-subsref1394345
+Ref: doc-subsasgn1396737
+Ref: doc-optimize_subsasgn_calls1397666
+Ref: doc-subsindex1399348
+Ref: doc-colon1400337
+Node: Indexed Assignment Optimization1400683
+Node: Overloading Objects1403520
+Node: Function Overloading1403801
+Node: Operator Overloading1405402
+Ref: tab:overload_ops1405594
+Node: Precedence of Objects1409102
+Ref: doc-superiorto1409648
+Ref: doc-inferiorto1409966
+Node: Inheritance and Aggregation1411794
+Node: GUI Development1418831
+Node: I/O Dialogs1419853
+Ref: doc-uigetdir1420135
+Ref: doc-uigetfile1420522
+Ref: doc-uiputfile1422380
+Node: Progress Bar1423783
+Ref: doc-waitbar1423934
+Node: GUI Utility Functions1424797
+Ref: doc-guidata1425180
+Ref: doc-guihandles1425267
+Ref: doc-uiwait1425353
+Ref: doc-uiresume1426245
+Ref: doc-waitfor1426578
+Node: User-Defined Preferences1428508
+Ref: doc-addpref1428675
+Ref: doc-getpref1429264
+Ref: doc-ispref1430212
+Ref: doc-rmpref1430719
+Ref: doc-setpref1431254
+Node: System Utilities1431903
+Node: Timing Utilities1432709
+Ref: doc-time1433679
+Ref: doc-now1434391
+Ref: doc-ctime1434793
+Ref: doc-gmtime1435252
+Ref: doc-localtime1436262
+Ref: doc-mktime1437240
+Ref: doc-asctime1437875
+Ref: doc-strftime1438267
+Ref: doc-strptime1441475
+Ref: doc-clock1442468
+Ref: doc-date1443082
+Ref: doc-etime1443386
+Ref: doc-cputime1443905
+Ref: doc-is_leap_year1444596
+Ref: doc-toc1444978
+Ref: doc-tic1444978
+Ref: doc-pause1446398
+Ref: doc-sleep1446840
+Ref: doc-usleep1446961
+Ref: doc-datenum1447267
+Ref: doc-datestr1449427
+Ref: doc-datevec1453832
+Ref: doc-addtodate1454688
+Ref: doc-calendar1455000
+Ref: doc-weekday1455612
+Ref: doc-eomday1456574
+Ref: doc-datetick1456848
+Node: Filesystem Utilities1457556
+Ref: doc-movefile1457966
+Ref: doc-rename1458633
+Ref: doc-copyfile1458926
+Ref: doc-unlink1459575
+Ref: doc-link1459800
+Ref: doc-symlink1460112
+Ref: doc-readlink1460442
+Ref: doc-mkdir1460829
+Ref: doc-rmdir1461263
+Ref: doc-confirm_recursive_rmdir1461858
+Ref: doc-mkfifo1462428
+Ref: doc-umask1462689
+Ref: doc-lstat1463010
+Ref: doc-stat1463010
+Ref: doc-S_ISBLK1465636
+Ref: doc-S_ISCHR1465869
+Ref: doc-S_ISDIR1466106
+Ref: doc-S_ISFIFO1466336
+Ref: doc-S_ISLNK1466562
+Ref: doc-S_ISREG1466796
+Ref: doc-S_ISSOCK1467029
+Ref: doc-fileattrib1467257
+Ref: doc-isdir1468498
+Ref: doc-readdir1468712
+Ref: doc-glob1469137
+Ref: doc-fnmatch1470410
+Ref: doc-file_in_path1470725
+Ref: doc-filesep1471597
+Ref: doc-filemarker1472072
+Ref: doc-fileparts1473086
+Ref: doc-fullfile1473284
+Ref: doc-tilde_expand1473469
+Ref: doc-canonicalize_file_name1474161
+Ref: doc-make_absolute_filename1474291
+Ref: doc-is_absolute_filename1474590
+Ref: doc-is_rooted_relative_filename1474871
+Ref: doc-P_tmpdir1475151
+Ref: doc-tempdir1475324
+Ref: doc-tempname1475429
+Ref: doc-recycle1475629
+Node: File Archiving Utilities1476023
+Ref: doc-bunzip21476219
+Ref: doc-gzip1476579
+Ref: doc-gunzip1477124
+Ref: doc-tar1477542
+Ref: doc-untar1478087
+Ref: doc-zip1478444
+Ref: doc-unzip1478900
+Ref: doc-unpack1479257
+Ref: doc-bzip21479880
+Node: Networking Utilities1480411
+Ref: doc-gethostname1480650
+Node: FTP Objects1480754
+Ref: doc-@ftp/ftp1480886
+Ref: doc-@ftp/mget1481212
+Ref: doc-@ftp/mput1481771
+Ref: doc-@ftp/ascii1482085
+Ref: doc-@ftp/binary1482220
+Node: URL Manipulation1482357
+Ref: doc-urlread1482499
+Ref: doc-urlwrite1483751
+Node: Controlling Subprocesses1485151
+Ref: doc-system1485812
+Ref: doc-unix1487543
+Ref: doc-dos1488173
+Ref: doc-perl1488804
+Ref: doc-python1489134
+Ref: doc-popen1489470
+Ref: doc-pclose1490359
+Ref: doc-popen21490508
+Ref: doc-EXEC_PATH1491796
+Ref: doc-fork1492728
+Ref: doc-exec1493413
+Ref: doc-pipe1493916
+Ref: doc-dup21494237
+Ref: doc-waitpid1494489
+Ref: doc-WCONTINUE1496209
+Ref: doc-WCOREDUMP1496565
+Ref: doc-WEXITSTATUS1497239
+Ref: doc-WIFCONTINUED1497743
+Ref: doc-WIFSIGNALED1498206
+Ref: doc-WIFSTOPPED1498660
+Ref: doc-WIFEXITED1499246
+Ref: doc-WNOHANG1499687
+Ref: doc-WSTOPSIG1500034
+Ref: doc-WTERMSIG1500569
+Ref: doc-WUNTRACED1501117
+Ref: doc-fcntl1501487
+Ref: doc-kill1502824
+Ref: doc-SIG1503407
+Node: Process ID Information1503523
+Ref: doc-getpgrp1503730
+Ref: doc-getpid1503829
+Ref: doc-getppid1503920
+Ref: doc-geteuid1504011
+Ref: doc-getuid1504111
+Ref: doc-getegid1504204
+Ref: doc-getgid1504305
+Node: Environment Variables1504399
+Ref: doc-getenv1504593
+Ref: doc-putenv1504785
+Node: Current Working Directory1504935
+Ref: doc-cd1505142
+Ref: doc-ls1505631
+Ref: doc-ls_command1506234
+Ref: doc-dir1506427
+Ref: doc-pwd1507440
+Node: Password Database Functions1507571
+Ref: doc-getpwent1508231
+Ref: doc-getpwuid1508452
+Ref: doc-getpwnam1508684
+Ref: doc-setpwent1508922
+Ref: doc-endpwent1509040
+Node: Group Database Functions1509111
+Ref: doc-getgrent1509667
+Ref: doc-getgrgid1509853
+Ref: doc-getgrnam1510062
+Ref: doc-setgrent1510276
+Ref: doc-endgrent1510386
+Node: System Information1510454
+Ref: doc-computer1510635
+Ref: doc-uname1511498
+Ref: doc-nproc1512050
+Ref: doc-ispc1512514
+Ref: doc-isunix1512695
+Ref: doc-ismac1512876
+Ref: doc-isieee1513057
+Ref: doc-isdeployed1513242
+Ref: doc-OCTAVE_HOME1513516
+Ref: doc-matlabroot1513625
+Ref: doc-OCTAVE_VERSION1513870
+Ref: doc-version1513968
+Ref: doc-ver1514205
+Ref: doc-compare_versions1515061
+Ref: doc-license1516251
+Ref: doc-octave_config_info1517396
+Ref: doc-usejava1517688
+Ref: doc-getrusage1518285
+Node: Hashing Functions1519675
+Ref: doc-md5sum1520636
+Node: Packages1520867
+Node: Installing and Removing Packages1521688
+Ref: doc-pkg1524155
+Node: Using Packages1531483
+Node: Administrating Packages1532097
+Node: Creating Packages1533578
+Ref: doc-PKG_ADD1535096
+Node: The DESCRIPTION File1538106
+Node: The INDEX File1542160
+Node: PKG_ADD and PKG_DEL Directives1544434
+Node: Dynamically Linked Functions1545561
+Node: Oct-Files1547596
+Node: Getting Started with Oct-Files1548222
+Ref: doc-mkoctfile1548531
+Node: Matrices and Arrays in Oct-Files1555097
+Node: Character Strings in Oct-Files1561930
+Node: Cell Arrays in Oct-Files1564404
+Node: Structures in Oct-Files1565705
+Node: Sparse Matrices in Oct-Files1568100
+Node: Array and Sparse Differences1569546
+Node: Creating Sparse Matrices in Oct-Files1572599
+Node: Using Sparse Matrices in Oct-Files1579532
+Node: Accessing Global Variables in Oct-Files1580480
+Node: Calling Octave Functions from Oct-Files1582032
+Node: Calling External Code from Oct-Files1585211
+Node: Allocating Local Memory in Oct-Files1589475
+Node: Input Parameter Checking in Oct-Files1590147
+Node: Exception and Error Handling in Oct-Files1592862
+Node: Documentation and Test of Oct-Files1596286
+Node: Mex-Files1598530
+Node: Getting Started with Mex-Files1599626
+Ref: doc-mex1600100
+Ref: doc-mexext1600326
+Node: Working with Matrices and Arrays in Mex-Files1603555
+Node: Character Strings in Mex-Files1607363
+Node: Cell Arrays with Mex-Files1609133
+Node: Structures with Mex-Files1610670
+Node: Sparse Matrices with Mex-Files1614338
+Node: Calling Other Functions in Mex-Files1619586
+Node: Standalone Programs1620928
+Node: Test and Demo Functions1623754
+Node: Test Functions1624155
+Ref: doc-test1624300
+Ref: doc-assert1633569
+Ref: doc-fail1635130
+Node: Demonstration Functions1635941
+Ref: doc-demo1636104
+Ref: doc-example1638477
+Ref: doc-rundemos1639085
+Ref: doc-runtests1639415
+Ref: doc-speed1639745
+Node: Tips and Standards1644614
+Node: Style Tips1645235
+Node: Comment Tips1646987
+Node: Function Headers1648152
+Node: Documentation Tips1652548
+Node: Contributing Guidelines1663010
+Node: How to Contribute1663465
+Node: Building the Development Sources1664059
+Node: Basics of Generating a Changeset1666084
+Node: General Guidelines1668991
+Node: Octave Sources (m-files)1672346
+Node: C++ Sources1673902
+Node: Other Sources1676760
+Node: Obsolete Functions1678411
+Node: Trouble1685121
+Node: Actual Bugs1685780
+Node: Reporting Bugs1686602
+Node: Bug Criteria1687573
+Node: Bug Tracker1688788
+Node: Bug Reporting1689154
+Node: Sending Patches1694632
+Node: Service1697457
+Node: Installation1698247
+Node: Build Dependencies1698885
+Node: Obtaining the Depencies Automatically1699346
+Node: Build Tools1701071
+Node: External Packages1703210
+Node: Running Configure and Make1707211
+Node: Compiling Octave with 64-bit Indexing1718203
+Node: Installation Problems1725369
+Node: Emacs Octave Support1732537
+Node: Installing EOS1733773
+Node: Using Octave Mode1734508
+Node: Running Octave from Within Emacs1745386
+Node: Using the Emacs Info Reader for Octave1749652
+Node: Grammar and Parser1750798
+Node: Keywords1751083
+Ref: doc-iskeyword1752295
+Node: Parser1752548
+Ref: doc-add_input_event_hook1753168
+Ref: doc-remove_input_event_hook1753619
+Ref: doc-missing_function_hook1754105
+Node: Copying1754640
+Node: Concept Index1792214
+Node: Function Index1840479
+Node: Operator Index1991861
 
 End Tag Table

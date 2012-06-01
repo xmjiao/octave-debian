@@ -1,7 +1,7 @@
 %!PS-Adobe-2.0 EPSF-2.0
 %%Title: inpolygon.eps
-%%Creator: gnuplot 4.4 patchlevel 0
-%%CreationDate: Wed Feb 22 15:01:40 2012
+%%Creator: gnuplot 4.6 patchlevel 0
+%%CreationDate: Thu May 31 11:40:46 2012
 %%DocumentFonts: (atend)
 %%BoundingBox: 50 50 410 302
 %%EndComments
@@ -20,10 +20,12 @@ gnudict begin
 /Level1 false def
 /Rounded false def
 /ClipToBoundingBox false def
+/SuppressPDFMark false def
 /TransparentPatterns false def
 /gnulinewidth 5.000 def
 /userlinewidth gnulinewidth def
 /Gamma 1.0 def
+/BackgroundColor {-1.000 -1.000 -1.000} def
 %
 /vshift -66 def
 /dl1 {
@@ -38,22 +40,6 @@ gnudict begin
 /vpt_ 31.5 def
 /hpt hpt_ def
 /vpt vpt_ def
-Level1 {} {
-/SDict 10 dict def
-systemdict /pdfmark known not {
-  userdict /pdfmark systemdict /cleartomark get put
-} if
-SDict begin [
-  /Title (inpolygon.eps)
-  /Subject (gnuplot plot)
-  /Creator (gnuplot 4.4 patchlevel 0)
-  /Author (jwe)
-%  /Producer (gnuplot)
-%  /Keywords ()
-  /CreationDate (Wed Feb 22 15:01:40 2012)
-  /DOCINFO pdfmark
-end
-} ifelse
 /doclip {
   ClipToBoundingBox {
     newpath 50 50 moveto 410 50 lineto 410 302 lineto 50 302 lineto closepath
@@ -61,7 +47,7 @@ end
   } if
 } def
 %
-% Gnuplot Prolog Version 4.4 (January 2010)
+% Gnuplot Prolog Version 4.4 (August 2010)
 %
 %/SuppressPDFMark true def
 %
@@ -73,6 +59,7 @@ end
 /Z {closepath} bind def
 /C {setrgbcolor} bind def
 /f {rlineto fill} bind def
+/g {setgray} bind def
 /Gshow {show} def   % May be redefined later in the file to support UTF-8
 /vpt2 vpt 2 mul def
 /hpt2 hpt 2 mul def
@@ -94,6 +81,7 @@ end
 	dup 1 lt {pop 1} if 10 mul /udl exch def} def
 /PL {stroke userlinewidth setlinewidth
 	Rounded {1 setlinejoin 1 setlinecap} if} def
+3.8 setmiterlimit
 % Default Line colors
 /LCw {1 1 1} def
 /LCb {0 0 0} def
@@ -459,8 +447,26 @@ currentdict end definefont pop
   Blacktext {gsave 0 setgray MFshow grestore} {MFshow} ifelse } bind def
 /XYsave    { [( ) 1 2 true false 3 ()] } bind def
 /XYrestore { [( ) 1 2 true false 4 ()] } bind def
+Level1 SuppressPDFMark or 
+{} {
+/SDict 10 dict def
+systemdict /pdfmark known not {
+  userdict /pdfmark systemdict /cleartomark get put
+} if
+SDict begin [
+  /Title (inpolygon.eps)
+  /Subject (gnuplot plot)
+  /Creator (gnuplot 4.6 patchlevel 0)
+  /Author (jwe)
+%  /Producer (gnuplot)
+%  /Keywords ()
+  /CreationDate (Thu May 31 11:40:46 2012)
+  /DOCINFO pdfmark
+end
+} ifelse
 end
 %%EndProlog
+%%Page: 1 1
 gnudict begin
 gsave
 doclip
@@ -469,6 +475,7 @@ doclip
 0 setgray
 newpath
 (Helvetica) findfont 200 scalefont setfont
+BackgroundColor 0 lt 3 1 roll 0 lt exch 0 lt or or not {BackgroundColor C 1.000 0 0 7200.00 5040.00 BoxColFill} if
 gsave % colour palette begin
 /maxcolors 64 def
 /HSV2RGB {  exch dup 0.0 eq {pop exch pop dup dup} % achromatic gray
@@ -545,193 +552,193 @@ Color InterpolatedColor or { % COLOUR vs. GRAY map
 } ifelse
 0.500 UL
 LTb
-900 400 M
+780 400 M
 88 0 V
-5911 0 R
+5971 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 780 400 M
+0.00 0.00 0.00 C 660 400 M
 [ [({}) 200.0 0.0 true true 0 (-2)]
 ] -66.7 MRshow
 0.500 UL
 LTb
-900 950 M
+780 950 M
 88 0 V
-5911 0 R
+5971 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 780 950 M
+0.00 0.00 0.00 C 660 950 M
 [ [({}) 200.0 0.0 true true 0 (-1.5)]
 ] -66.7 MRshow
 0.500 UL
 LTb
-900 1500 M
+780 1500 M
 88 0 V
-5911 0 R
+5971 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 780 1500 M
+0.00 0.00 0.00 C 660 1500 M
 [ [({}) 200.0 0.0 true true 0 (-1)]
 ] -66.7 MRshow
 0.500 UL
 LTb
-900 2050 M
+780 2050 M
 88 0 V
-5911 0 R
+5971 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 780 2050 M
+0.00 0.00 0.00 C 660 2050 M
 [ [({}) 200.0 0.0 true true 0 (-0.5)]
 ] -66.7 MRshow
 0.500 UL
 LTb
-900 2600 M
+780 2600 M
 88 0 V
-5911 0 R
+5971 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 780 2600 M
+0.00 0.00 0.00 C 660 2600 M
 [ [({}) 200.0 0.0 true true 0 (0)]
 ] -66.7 MRshow
 0.500 UL
 LTb
-900 3149 M
+780 3149 M
 88 0 V
-5911 0 R
+5971 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 780 3149 M
+0.00 0.00 0.00 C 660 3149 M
 [ [({}) 200.0 0.0 true true 0 (0.5)]
 ] -66.7 MRshow
 0.500 UL
 LTb
-900 3699 M
+780 3699 M
 88 0 V
-5911 0 R
+5971 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 780 3699 M
+0.00 0.00 0.00 C 660 3699 M
 [ [({}) 200.0 0.0 true true 0 (1)]
 ] -66.7 MRshow
 0.500 UL
 LTb
-900 4249 M
+780 4249 M
 88 0 V
-5911 0 R
+5971 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 780 4249 M
+0.00 0.00 0.00 C 660 4249 M
 [ [({}) 200.0 0.0 true true 0 (1.5)]
 ] -66.7 MRshow
 0.500 UL
 LTb
-900 4799 M
+780 4799 M
 88 0 V
-5911 0 R
+5971 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 780 4799 M
+0.00 0.00 0.00 C 660 4799 M
 [ [({}) 200.0 0.0 true true 0 (2)]
 ] -66.7 MRshow
 0.500 UL
 LTb
-900 400 M
+780 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 900 200 M
+0.00 0.00 0.00 C 780 200 M
 [ [({}) 200.0 0.0 true true 0 (-2)]
 ] -66.7 MCshow
 0.500 UL
 LTb
-1650 400 M
+1537 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 1650 200 M
+0.00 0.00 0.00 C 1537 200 M
 [ [({}) 200.0 0.0 true true 0 (-1.5)]
 ] -66.7 MCshow
 0.500 UL
 LTb
-2400 400 M
+2295 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 2400 200 M
+0.00 0.00 0.00 C 2295 200 M
 [ [({}) 200.0 0.0 true true 0 (-1)]
 ] -66.7 MCshow
 0.500 UL
 LTb
-3150 400 M
+3052 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 3150 200 M
+0.00 0.00 0.00 C 3052 200 M
 [ [({}) 200.0 0.0 true true 0 (-0.5)]
 ] -66.7 MCshow
 0.500 UL
 LTb
-3900 400 M
+3810 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 3900 200 M
+0.00 0.00 0.00 C 3810 200 M
 [ [({}) 200.0 0.0 true true 0 (0)]
 ] -66.7 MCshow
 0.500 UL
 LTb
-4649 400 M
+4567 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 4649 200 M
+0.00 0.00 0.00 C 4567 200 M
 [ [({}) 200.0 0.0 true true 0 (0.5)]
 ] -66.7 MCshow
 0.500 UL
 LTb
-5399 400 M
+5324 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 5399 200 M
+0.00 0.00 0.00 C 5324 200 M
 [ [({}) 200.0 0.0 true true 0 (1)]
 ] -66.7 MCshow
 0.500 UL
 LTb
-6149 400 M
+6082 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 6149 200 M
+0.00 0.00 0.00 C 6082 200 M
 [ [({}) 200.0 0.0 true true 0 (1.5)]
 ] -66.7 MCshow
 0.500 UL
 LTb
-6899 400 M
+6839 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 6899 200 M
+0.00 0.00 0.00 C 6839 200 M
 [ [({}) 200.0 0.0 true true 0 (2)]
 ] -66.7 MCshow
 0.500 UL
 LTb
 0.500 UL
 LTb
-900 4799 N
-900 400 L
-5999 0 V
+780 4799 N
+780 400 L
+6059 0 V
 0 4399 V
--5999 0 V
+-6059 0 V
 Z stroke
 1.000 UP
 0.500 UL
@@ -739,128 +746,128 @@ LTb
 % Begin plot #1
 0.500 UL
 LT0
-0.00 0.00 1.00 C 2400 2599 M
-73 -339 V
-213 -307 V
-332 -243 V
-418 -156 V
-464 -54 V
-463 54 V
-418 156 V
-332 243 V
-213 307 V
-73 340 V
--73 339 V
--213 307 V
--332 243 V
--418 156 V
--463 54 V
--464 -54 V
-3018 3489 L
-2686 3246 L
-2473 2939 L
--73 -339 V
+0.00 0.00 1.00 C 2295 2599 M
+74 -339 V
+215 -307 V
+335 -243 V
+422 -156 V
+469 -54 V
+468 54 V
+422 156 V
+335 243 V
+215 307 V
+74 340 V
+-74 339 V
+-215 307 V
+-335 243 V
+-422 156 V
+-468 54 V
+-469 -54 V
+2919 3489 L
+2584 3246 L
+2369 2939 L
+-74 -339 V
 % End plot #1
 % Begin plot #2
 2.000 UP
 stroke
 LT1
-1.00 0.00 0.00 C 3203 2806 Pls
-4252 2632 Pls
-2875 2941 Pls
-2659 2292 Pls
-2702 2118 Pls
-3511 1650 Pls
-3600 2521 Pls
-4092 2148 Pls
-3103 3103 Pls
-2879 2438 Pls
-5080 2559 Pls
-3846 2851 Pls
-2467 2744 Pls
-5106 2756 Pls
-2820 2727 Pls
-4271 2600 Pls
-4407 3224 Pls
-4243 2139 Pls
-4406 1878 Pls
-3472 3045 Pls
-3862 3315 Pls
-4429 2250 Pls
-4412 2840 Pls
-3687 2829 Pls
-3322 2756 Pls
-4086 3605 Pls
-5222 2266 Pls
-5202 3112 Pls
-4213 3002 Pls
-3913 1826 Pls
+1.00 0.00 0.00 C 3106 2806 Pls
+4166 2632 Pls
+2774 2941 Pls
+2557 2292 Pls
+2600 2118 Pls
+3417 1650 Pls
+3507 2521 Pls
+4004 2148 Pls
+3005 3103 Pls
+2779 2438 Pls
+5001 2559 Pls
+3755 2851 Pls
+2363 2744 Pls
+5028 2756 Pls
+2719 2727 Pls
+4184 2600 Pls
+4322 3224 Pls
+4157 2139 Pls
+4322 1878 Pls
+3377 3045 Pls
+3772 3315 Pls
+4345 2250 Pls
+4327 2840 Pls
+3595 2829 Pls
+3226 2756 Pls
+3998 3605 Pls
+5145 2266 Pls
+5125 3112 Pls
+4126 3002 Pls
+3823 1826 Pls
 % End plot #2
 % Begin plot #3
 2.000 UP
 0.500 UL
 LT2
-0.00 0.00 1.00 C 1474 3791 Circle
-1020 848 Circle
-5025 4348 Circle
-4239 4213 Circle
-1653 3480 Circle
-5529 2790 Circle
-1736 3049 Circle
-3349 1401 Circle
-6148 578 Circle
-3293 1279 Circle
-4142 952 Circle
-5616 3115 Circle
-4848 3468 Circle
-2949 1603 Circle
-4283 3798 Circle
-4502 4070 Circle
-5554 3493 Circle
-5973 2964 Circle
-4963 1557 Circle
-1955 1591 Circle
-5255 3398 Circle
-4970 1547 Circle
-4535 4201 Circle
-5560 3045 Circle
-1560 1484 Circle
-5673 4717 Circle
-6834 3091 Circle
-4647 3594 Circle
-6304 2664 Circle
-2493 3559 Circle
-1543 3332 Circle
-2422 2410 Circle
-5978 1659 Circle
-5528 3215 Circle
-2634 1688 Circle
-5381 1591 Circle
-4343 798 Circle
-3998 491 Circle
-5566 3027 Circle
-5106 1748 Circle
-3333 688 Circle
-2189 2419 Circle
-5722 3142 Circle
-1382 2203 Circle
-5178 3177 Circle
-5442 2642 Circle
-5792 3194 Circle
-4801 4136 Circle
-5756 3344 Circle
-2582 1624 Circle
-4273 1406 Circle
-6210 1862 Circle
-5230 3161 Circle
-1714 4716 Circle
-5141 1733 Circle
-3507 472 Circle
-5204 1291 Circle
-2892 3578 Circle
-5528 1861 Circle
-3440 964 Circle
-3026 4398 Circle
+0.00 0.00 1.00 C 1360 3791 Circle
+901 848 Circle
+4946 4348 Circle
+4152 4213 Circle
+1540 3480 Circle
+5455 2790 Circle
+1625 3049 Circle
+3254 1401 Circle
+6081 578 Circle
+3197 1279 Circle
+4054 952 Circle
+5543 3115 Circle
+4768 3468 Circle
+2849 1603 Circle
+4196 3798 Circle
+4418 4070 Circle
+5481 3493 Circle
+5903 2964 Circle
+4883 1557 Circle
+1846 1591 Circle
+5178 3398 Circle
+4890 1547 Circle
+4452 4201 Circle
+5486 3045 Circle
+1446 1484 Circle
+5601 4717 Circle
+6773 3091 Circle
+4565 3594 Circle
+6238 2664 Circle
+2389 3559 Circle
+1429 3332 Circle
+2317 2410 Circle
+5908 1659 Circle
+5455 3215 Circle
+2531 1688 Circle
+5306 1591 Circle
+4258 798 Circle
+3909 491 Circle
+5493 3027 Circle
+5028 1748 Circle
+3237 688 Circle
+2082 2419 Circle
+5650 3142 Circle
+1267 2203 Circle
+5101 3177 Circle
+5367 2642 Circle
+5721 3194 Circle
+4720 4136 Circle
+5685 3344 Circle
+2479 1624 Circle
+4187 1406 Circle
+6143 1862 Circle
+5153 3161 Circle
+1602 4716 Circle
+5063 1733 Circle
+3413 472 Circle
+5127 1291 Circle
+2792 3578 Circle
+5454 1861 Circle
+3346 964 Circle
+2927 4398 Circle
 % End plot #3
 1.000 UP
 0.500 UL
