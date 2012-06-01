@@ -4846,18 +4846,21 @@ yourself.
 
 * Menu:
 
-* Tips for Specific Systems::
+* Obtaining the Depencies Automatically::
 * Build Tools::
 * External Packages::
 
 
-File: octave.info,  Node: Tips for Specific Systems,  Next: Build Tools,  Up: Build Dependencies
+File: octave.info,  Node: Obtaining the Depencies Automatically,  Next: Build Tools,  Up: Build Dependencies
 
-G.1.1 Tips for Specific Systems
--------------------------------
+G.1.1 Obtaining the Depencies Automatically
+-------------------------------------------
 
-The names of pre-compiled packages vary by system and do not always
-match exactly the names listed above.
+On some systems you can obtain many of Octave's build dependencies
+automatically. The commands for doing this vary by system. Similarly,
+the names of pre-compiled packages vary by system and do not always
+match exactly the names listed in *note Build Tools:: and *note
+External Packages::.
 
    You will usually need the development version of an external
 dependency so that you get the libraries and header files for building
@@ -4891,7 +4894,7 @@ the version you are installing, but you should use the most recent one
 available.
 
 
-File: octave.info,  Node: Build Tools,  Next: External Packages,  Prev: Tips for Specific Systems,  Up: Build Dependencies
+File: octave.info,  Node: Build Tools,  Next: External Packages,  Prev: Obtaining the Depencies Automatically,  Up: Build Dependencies
 
 G.1.2 Build Tools
 -----------------

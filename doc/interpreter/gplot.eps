@@ -1,7 +1,7 @@
 %!PS-Adobe-2.0 EPSF-2.0
 %%Title: gplot.eps
-%%Creator: gnuplot 4.4 patchlevel 0
-%%CreationDate: Wed Feb 22 15:01:49 2012
+%%Creator: gnuplot 4.6 patchlevel 0
+%%CreationDate: Thu May 31 11:40:56 2012
 %%DocumentFonts: (atend)
 %%BoundingBox: 50 50 410 302
 %%EndComments
@@ -20,10 +20,12 @@ gnudict begin
 /Level1 false def
 /Rounded false def
 /ClipToBoundingBox false def
+/SuppressPDFMark false def
 /TransparentPatterns false def
 /gnulinewidth 5.000 def
 /userlinewidth gnulinewidth def
 /Gamma 1.0 def
+/BackgroundColor {-1.000 -1.000 -1.000} def
 %
 /vshift -66 def
 /dl1 {
@@ -38,22 +40,6 @@ gnudict begin
 /vpt_ 31.5 def
 /hpt hpt_ def
 /vpt vpt_ def
-Level1 {} {
-/SDict 10 dict def
-systemdict /pdfmark known not {
-  userdict /pdfmark systemdict /cleartomark get put
-} if
-SDict begin [
-  /Title (gplot.eps)
-  /Subject (gnuplot plot)
-  /Creator (gnuplot 4.4 patchlevel 0)
-  /Author (jwe)
-%  /Producer (gnuplot)
-%  /Keywords ()
-  /CreationDate (Wed Feb 22 15:01:49 2012)
-  /DOCINFO pdfmark
-end
-} ifelse
 /doclip {
   ClipToBoundingBox {
     newpath 50 50 moveto 410 50 lineto 410 302 lineto 50 302 lineto closepath
@@ -61,7 +47,7 @@ end
   } if
 } def
 %
-% Gnuplot Prolog Version 4.4 (January 2010)
+% Gnuplot Prolog Version 4.4 (August 2010)
 %
 %/SuppressPDFMark true def
 %
@@ -73,6 +59,7 @@ end
 /Z {closepath} bind def
 /C {setrgbcolor} bind def
 /f {rlineto fill} bind def
+/g {setgray} bind def
 /Gshow {show} def   % May be redefined later in the file to support UTF-8
 /vpt2 vpt 2 mul def
 /hpt2 hpt 2 mul def
@@ -94,6 +81,7 @@ end
 	dup 1 lt {pop 1} if 10 mul /udl exch def} def
 /PL {stroke userlinewidth setlinewidth
 	Rounded {1 setlinejoin 1 setlinecap} if} def
+3.8 setmiterlimit
 % Default Line colors
 /LCw {1 1 1} def
 /LCb {0 0 0} def
@@ -459,8 +447,26 @@ currentdict end definefont pop
   Blacktext {gsave 0 setgray MFshow grestore} {MFshow} ifelse } bind def
 /XYsave    { [( ) 1 2 true false 3 ()] } bind def
 /XYrestore { [( ) 1 2 true false 4 ()] } bind def
+Level1 SuppressPDFMark or 
+{} {
+/SDict 10 dict def
+systemdict /pdfmark known not {
+  userdict /pdfmark systemdict /cleartomark get put
+} if
+SDict begin [
+  /Title (gplot.eps)
+  /Subject (gnuplot plot)
+  /Creator (gnuplot 4.6 patchlevel 0)
+  /Author (jwe)
+%  /Producer (gnuplot)
+%  /Keywords ()
+  /CreationDate (Thu May 31 11:40:56 2012)
+  /DOCINFO pdfmark
+end
+} ifelse
 end
 %%EndProlog
+%%Page: 1 1
 gnudict begin
 gsave
 doclip
@@ -469,6 +475,7 @@ doclip
 0 setgray
 newpath
 (Helvetica) findfont 200 scalefont setfont
+BackgroundColor 0 lt 3 1 roll 0 lt exch 0 lt or or not {BackgroundColor C 1.000 0 0 7200.00 5040.00 BoxColFill} if
 gsave % colour palette begin
 /maxcolors 64 def
 /HSV2RGB {  exch dup 0.0 eq {pop exch pop dup dup} % achromatic gray
@@ -545,183 +552,183 @@ Color InterpolatedColor or { % COLOUR vs. GRAY map
 } ifelse
 0.500 UL
 LTb
-540 400 M
+420 400 M
 88 0 V
-6271 0 R
+6331 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 420 400 M
+0.00 0.00 0.00 C 300 400 M
 [ [({}) 200.0 0.0 true true 0 (0)]
 ] -66.7 MRshow
 0.500 UL
 LTb
-540 1028 M
+420 1028 M
 88 0 V
-6271 0 R
+6331 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 420 1028 M
+0.00 0.00 0.00 C 300 1028 M
 [ [({}) 200.0 0.0 true true 0 (1)]
 ] -66.7 MRshow
 0.500 UL
 LTb
-540 1657 M
+420 1657 M
 88 0 V
-6271 0 R
+6331 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 420 1657 M
+0.00 0.00 0.00 C 300 1657 M
 [ [({}) 200.0 0.0 true true 0 (2)]
 ] -66.7 MRshow
 0.500 UL
 LTb
-540 2285 M
+420 2285 M
 88 0 V
-6271 0 R
+6331 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 420 2285 M
+0.00 0.00 0.00 C 300 2285 M
 [ [({}) 200.0 0.0 true true 0 (3)]
 ] -66.7 MRshow
 0.500 UL
 LTb
-540 2914 M
+420 2914 M
 88 0 V
-6271 0 R
+6331 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 420 2914 M
+0.00 0.00 0.00 C 300 2914 M
 [ [({}) 200.0 0.0 true true 0 (4)]
 ] -66.7 MRshow
 0.500 UL
 LTb
-540 3542 M
+420 3542 M
 88 0 V
-6271 0 R
+6331 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 420 3542 M
+0.00 0.00 0.00 C 300 3542 M
 [ [({}) 200.0 0.0 true true 0 (5)]
 ] -66.7 MRshow
 0.500 UL
 LTb
-540 4171 M
+420 4171 M
 88 0 V
-6271 0 R
+6331 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 420 4171 M
+0.00 0.00 0.00 C 300 4171 M
 [ [({}) 200.0 0.0 true true 0 (6)]
 ] -66.7 MRshow
 0.500 UL
 LTb
-540 4799 M
+420 4799 M
 88 0 V
-6271 0 R
+6331 0 R
 -88 0 V
 stroke
-0.00 0.00 0.00 C 420 4799 M
+0.00 0.00 0.00 C 300 4799 M
 [ [({}) 200.0 0.0 true true 0 (7)]
 ] -66.7 MRshow
 0.500 UL
 LTb
-540 400 M
+420 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 540 200 M
+0.00 0.00 0.00 C 420 200 M
 [ [({}) 200.0 0.0 true true 0 (0)]
 ] -66.7 MCshow
 0.500 UL
 LTb
-1335 400 M
+1222 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 1335 200 M
+0.00 0.00 0.00 C 1222 200 M
 [ [({}) 200.0 0.0 true true 0 (1)]
 ] -66.7 MCshow
 0.500 UL
 LTb
-2130 400 M
+2025 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 2130 200 M
+0.00 0.00 0.00 C 2025 200 M
 [ [({}) 200.0 0.0 true true 0 (2)]
 ] -66.7 MCshow
 0.500 UL
 LTb
-2925 400 M
+2827 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 2925 200 M
+0.00 0.00 0.00 C 2827 200 M
 [ [({}) 200.0 0.0 true true 0 (3)]
 ] -66.7 MCshow
 0.500 UL
 LTb
-3720 400 M
+3630 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 3720 200 M
+0.00 0.00 0.00 C 3630 200 M
 [ [({}) 200.0 0.0 true true 0 (4)]
 ] -66.7 MCshow
 0.500 UL
 LTb
-4514 400 M
+4432 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 4514 200 M
+0.00 0.00 0.00 C 4432 200 M
 [ [({}) 200.0 0.0 true true 0 (5)]
 ] -66.7 MCshow
 0.500 UL
 LTb
-5309 400 M
+5234 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 5309 200 M
+0.00 0.00 0.00 C 5234 200 M
 [ [({}) 200.0 0.0 true true 0 (6)]
 ] -66.7 MCshow
 0.500 UL
 LTb
-6104 400 M
+6037 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 6104 200 M
+0.00 0.00 0.00 C 6037 200 M
 [ [({}) 200.0 0.0 true true 0 (7)]
 ] -66.7 MCshow
 0.500 UL
 LTb
-6899 400 M
+6839 400 M
 0 88 V
 0 4311 R
 0 -88 V
 stroke
-0.00 0.00 0.00 C 6899 200 M
+0.00 0.00 0.00 C 6839 200 M
 [ [({}) 200.0 0.0 true true 0 (8)]
 ] -66.7 MCshow
 0.500 UL
 LTb
 0.500 UL
 LTb
-540 4799 N
-540 400 L
-6359 0 V
+420 4799 N
+420 400 L
+6419 0 V
 0 4399 V
--6359 0 V
+-6419 0 V
 Z stroke
 1.000 UP
 0.500 UL
@@ -729,26 +736,26 @@ LTb
 % Begin plot #1
 0.500 UL
 LT0
-0.00 0.00 1.00 C 3720 400 M
-540 3542 L
-2130 4799 M
-540 3542 L
-3720 400 L
-6899 3542 M
-3720 400 L
-6899 3542 L
-5309 4799 M
-6899 3542 L
-5309 4799 L
-3720 3542 M
-5309 4799 L
-3720 3542 L
-2130 4799 M
-3720 3542 L
--3180 0 R
-2130 4799 L
-3720 3542 M
-2130 4799 L
+0.00 0.00 1.00 C 3630 400 M
+420 3542 L
+2025 4799 M
+420 3542 L
+3630 400 L
+6839 3542 M
+3630 400 L
+6839 3542 L
+5234 4799 M
+6839 3542 L
+5234 4799 L
+3630 3542 M
+5234 4799 L
+3630 3542 L
+2025 4799 M
+3630 3542 L
+-3210 0 R
+2025 4799 L
+3630 3542 M
+2025 4799 L
 % End plot #1
 1.000 UP
 stroke
