@@ -1,3 +1,15 @@
+octave (3.6.2-1) unstable; urgency=low
+
+  * Imported Upstream version 3.6.2
+  * base2dec.patch: remove patch, applied upstream
+  * Refresh other patches
+  * debian/copyright: convert to machine-readable format 1.0
+  * README.Debian: discourage the use of pkg.m; other minor improvements
+    (Closes: #672651)
+  * Remove Lintian overrides for hardening-no-stackprotector
+
+ -- Sébastien Villemot <sebastien.villemot@ens.fr>  Fri, 01 Jun 2012 16:06:30 +0200
+
 octave (3.6.1-6) unstable; urgency=low
 
   * base2dec.path: new patch
