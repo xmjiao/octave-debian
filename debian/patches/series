@@ -7,4 +7,3 @@ add_info_dir_categories
 correct_typos
 use_system_gl2ps
 drop_version_from_mkoctfile_function_call
-base2dec.patch
