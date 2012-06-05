@@ -1,3 +1,379 @@
+2012-05-31  John W. Eaton  <jwe@octave.org>
+
+	Version 3.6.2 released.
+
+	* configure.ac (AC_INIT): Version is now 3.6.2.
+	(OCTAVE_RELEASE_DATE): Now 2012-05-31.
+
+	Files: configure.ac
+
+2012-05-25  Jordi Gutiérrez Hermoso  <jordigh@octave.org>
+
+	Fix bad two-arg call of randperm (bug #36535)
+
+	* rand.cc (Frandperm): Rewrite algorithm for short_shuffle. Add another test.
+
+	Files: src/DLD-FUNCTIONS/rand.cc
+
+2012-05-24  John W. Eaton  <jwe@octave.org>
+
+	Added tag rc-3-6-2-2 for changeset 4460c4fb20e6
+
+	Files: .hgtags
+
+	3.6.2-rc2 release candidate
+
+	* configure.ac (AC_INIT): Version is now 3.6.2-rc2.
+
+	Files: configure.ac
+
+	3.6.2-rc1 release candidate
+
+	* configure.ac (AC_INIT): Version is now 3.6.2-rc1.
+	(OCTAVE_RELEASE_DATE): Now 2012-05-24.
+
+	Files: configure.ac
+
+2012-05-12  John W. Eaton  <jwe@octave.org>
+
+	maint: update library version numbers for release
+
+	* libcruft/Makefile.am (libcruft_revision): Incrememnt.
+	* liboctave/Makefile.am (liboctave_revision): Set to 0.
+	(liboctave_current, liboctave_age): Incrememnt.
+	* src/Makefile.am (liboctinterp_revision): Increment.
+
+	Files: libcruft/Makefile.am liboctave/Makefile.am src/Makefile.am
+
+	preserve DiagArray2 interface for stable release series
+
+	* DiagArray2.h (DiagArray2::checkelem): Restore function.  Provide
+	non-const version.
+	(DiagArray2::check_idx): Return bool status.
+	(DiagArray2::operator ()): Call checkelem, not check_idx.
+
+	Files: liboctave/DiagArray2.cc liboctave/DiagArray2.h
+
+2012-05-11  John W. Eaton  <jwe@octave.org>
+
+	Added tag rc-3-6-2-0 for changeset f947d2922feb
+
+	Files: .hgtags
+
+	3.6.2-rc0 release candidate
+
+	* configure.ac (AC_INIT): Version is now 3.6.2-rc0.
+	(OCTAVE_RELEASE_DATE): Now 2012-05-11.
+
+	Files: configure.ac
+
+	when redimensioning, always pad dim_vector objects with 1 (bug #33216)
+
+	* dim-vector.cc (dim_vector::redim): Always pad with 1.
+	* dim-vector.h (dim_vector::redim): Update comment.
+	* Array.cc (Array<T>::assign): Query dimensions for all zeros before
+	redimensioning.
+	* ov-struct.cc: New test.
+
+	Files: liboctave/Array.cc liboctave/dim-vector.cc liboctave/dim-vector.h
+	src/ov-struct.cc
+
+2012-05-03  Jordi Gutiérrez Hermoso  <jordigh@octave.org>
+
+	conv2.c: Unmark a test as a known failure (bug #34893)
+
+	Files: src/DLD-FUNCTIONS/conv2.cc
+
+2012-04-17  Sunghyun Cho  <sodomau@gmail.com>
+
+	perform convolution properly independently of matrix orientation (bug #34893)
+
+	* cconv2.f (cconv2i), csconv2.f (csconv2i), dconv2.f (dconv2i),
+	  sconv2.f (sconv2i), zconv2.f (zconv2i), zdconv2.f (zdconv2i): Fix
+	  iteration over the a matrix, so it's properly reversed.
+
+	* conv2.cc: Uncomment test to check for this, and add a new xtest.
+
+	Files: libcruft/blas-xtra/cconv2.f libcruft/blas-xtra/csconv2.f libcruft
+	/blas-xtra/dconv2.f libcruft/blas-xtra/sconv2.f libcruft/blas-
+	xtra/zconv2.f libcruft/blas-xtra/zdconv2.f src/DLD-
+	FUNCTIONS/conv2.cc
+
+2012-05-02  Jordi Gutiérrez Hermoso  <jordigh@octave.org>
+
+	Implement proper op() indexing for diagonal matrices (bug #36368)
+
+	* DiagArray2.h (DiagArray2<T>::check_idx): New function.
+	  (DiagArray2<T>::checkelem): Deleted. (DiagArray2<T>::operator()): New
+	  non-const version, returns references. Conditionally call check_idx.
+
+	* DiagArray2.cc (DiagArray2<T>::check_idx): Contents copied over from
+	  checkelem.
+	  (DiagArray2<T>::checkelem): Deleted.
+
+	* ov-base-diag.cc (octave_base_diag<DMT, MT>::do_index_op): Replace
+	  call to now-inaccessible checkelem() with elem().
+
+	* ov-cx-diag.cc: Add a test for this bug.
+
+	Files: liboctave/DiagArray2.cc liboctave/DiagArray2.h src/ov-base-diag.cc
+	src/ov-cx-diag.cc
+
+2012-04-30  Ben Abbott  <bpabbott@mac.com>
+
+	poissrnd should return zero when lambda = 0. (Bug # 36326)
+
+	poissrnd.m: poissonrnd should return zero when lambda = 0.
+	Add demos.
+
+	Files: scripts/statistics/distributions/poissrnd.m
+
+2012-04-19  John W. Eaton  <jwe@octave.org>
+
+	avoid error for calls to functions returning varargout that ignore final outputs (bug #36221)
+
+	* pt-assign.cc (tree_multi_assignment::rvalue): Don't error if more
+	output values are requested than returned when the requested outputs
+	are ignored.  New test.
+
+	Files: src/pt-assign.cc
+
+2012-04-18  John W. Eaton  <jwe@octave.org>
+
+	ensure isargout is not sticky
+
+	* ov-usr-fcn.cc (octave_user_function::bind_automatic_vars):
+	Ensure .ignored. is undefined by default.  New tests.
+
+	Files: src/ov-usr-fcn.cc
+
+2012-04-17  John W. Eaton  <jwe@octave.org>
+
+	seconds after the minute can be 0-60, not 0-61
+
+	* system.txi (Timing Utilities): Correct possible values for number of
+	seconds in time structures.  From Rafael Arndt <rafaelarndt@gmail.com>.
+
+	Files: doc/interpreter/system.txi
+
+	correctly fill struct arrays for assignments that cause resizing (bug #33178)
+
+	* oct-map.cc (octave_map::assign): Pass Matrix fill value to cell
+	array assignment functions.  New test.
+
+	Files: src/oct-map.cc
+
+	correctly fill cell arrays for three-arg diag function calls
+
+	* data.cc (Fdiag): Special case for cell arrays so that off-diagonal
+	elements are filled with [].
+
+	Files: src/data.cc
+
+2012-04-16  John W. Eaton  <jwe@octave.org>
+
+	avoid unnecessary index overflow error when printing sparse array (bug #35148)
+
+	* ov-base-sparse.cc (octave_base_sparse<T>::print_info): Don't use
+	numel when computing percentage of non-zero elements.
+
+	Files: src/ov-base-sparse.cc
+
+2012-04-14  Rik  <octave@nomad.inbox5.com>
+
+	Restore 'TextureMap' option for surface objects (Bug #35661)
+
+	* graphics.h.in (surface::properties): Add 'TextureMap' to option
+	to 'FaceColor' property.
+
+	Files: src/graphics.h.in
+
+2012-04-12  John W. Eaton  <jwe@octave.org>
+
+	allow kron to work for two diag matrix arguments (bug #35647)
+
+	* kron.cc (dispatch_kron): Fix recursive call for case of two diagonal
+	matrix objects as arguments.  New tests.
+
+	Files: src/DLD-FUNCTIONS/kron.cc
+
+2012-04-05  Rik  <octave@nomad.inbox5.com>
+
+	Fix regression after 3.4.0 with '-r0' option to print (bug #36092).
+
+	* __print_parse_opts__.m: Don't convert numeric value (resolution) to string.
+
+	Files: scripts/plot/private/__print_parse_opts__.m
+
+2012-03-28  Jordi Gutiérrez Hermoso  <jordigh@octave.org>
+
+	doc: Fix typo in logspace.m docstring (bug #36024)
+
+	Files: scripts/general/logspace.m
+
+2012-03-24  Rik  <octave@nomad.inbox5.com>
+
+	Stop segfault when regular expression contains malformed lookbehind atom (bug #35961)
+
+	* liboctave/regexp.cc (compile_internal): Change '<=' to '<' in while loop condition
+	to stop running beyond length of pattern.
+
+	Files: liboctave/regexp.cc
+
+2012-03-22  Jordi Gutiérrez Hermoso  <jordigh@octave.org>
+
+	Initialise memory in non-square diag call (bug #35946)
+
+	* diag.cc (Fdiag): Initialise memory in call to resize(), and write a
+	  test to check for this.
+
+	Files: src/data.cc
+
+2012-03-21  Mike Miller  <mtmiller@ieee.org>
+
+	doc: Fix edit command default mode description
+
+	Files: scripts/miscellaneous/edit.m
+
+2012-03-13  Marco Caliari  <marco.caliari@univr.it>
+
+	Fix logm for complex matrix with real eigenvalues (bug #34893).
+
+	* crsf2csf, zrsf2csf: Fix off-by-one error.
+	* logm.m: Only truncate imaginary parts for real matrices. Add a test.
+	* schur.cc: Add a test for rsf2csf.x
+
+	Files: libcruft/lapack-xtra/crsf2csf.f libcruft/lapack-xtra/zrsf2csf.f
+	scripts/linear-algebra/logm.m src/DLD-FUNCTIONS/schur.cc
+
+2012-03-17  Jordi Gutiérrez Hermoso  <jordigh@octave.org>
+
+	doc: Reword the manual section on getting build dependencies
+
+	Files: doc/interpreter/install.txi doc/interpreter/octave.texi
+
+2012-03-16  Rik  <octave@nomad.inbox5.com>
+
+	Fix regression in bin2dec which did not allow space-separated input.
+
+	* base2dec.m: Squeeze spaces from input before applying algorithm.
+
+	* bin2dec.m: Add tests for using spaces in binary number.
+
+	Files: scripts/strings/base2dec.m scripts/strings/bin2dec.m
+
+2012-03-15  John W. Eaton  <jwe@octave.org>
+
+	fix scalar indexing in anonymous function bug (bug #34765)
+
+	* ov-base-scalar.h (octave_base_scalar<T>::do_multi_index_op):
+	New function.
+
+	Files: src/ov-base-scalar.h
+
+2012-03-14  Jordi Gutiérrez Hermoso  <jordigh@octave.org>
+
+	Fix segfault in pchip when input array is too small (bug #35835).
+
+	* __pchip_deriv__.cc (F__pchip_deriv__): Error out if x isn't at least
+	  of length 2.
+	* pchip.m: Write two tests for this.
+
+	Files: scripts/polynomial/pchip.m src/DLD-FUNCTIONS/__pchip_deriv__.cc
+
+2012-03-11  Rik  <octave@nomad.inbox5.com>
+
+	Stop segfault when using regular expressions with named capture buffers (bug #35683).
+
+	liboctave/regexp.cc (match): Check current match has a named buffer before assigning it.
+
+	DLD-FUNCTIONS/regexp.cc: Add %!test for mix of named and unnamed buffers.
+
+	Files: liboctave/regexp.cc src/DLD-FUNCTIONS/regexp.cc
+
+2012-03-01  Miguel Bazdresch  <lmb@2pif.info>
+
+	pkg: bug fix - accessing non-existent variable for error message
+
+	Files: scripts/pkg/pkg.m
+
+2012-03-07  Jordi Gutiérrez Hermoso  <jordigh@octave.org>
+
+	NEWS: mention randperm changes
+
+	Files: NEWS
+
+	Fix segfault on multidimensional median call (bug #35679).
+
+	* Array.c (Array::nth_elemnt): Readjust dim after chopping singletons.
+	* median.m: Add tests.
+
+	Files: liboctave/Array.cc scripts/statistics/base/median.m
+
+2012-03-05  Marco Caliari  <marco.caliari@univr.it>
+
+	Fix sparse range indexing bug (bug #35570)
+
+	* Sparse.cc (Sparse::index): Correctly compute and assign the row and
+	  column index vectors. Also add a test to check for this bug.
+
+	Files: liboctave/Sparse.cc
+
+2012-02-25  Rik  <octave@nomad.inbox5.com>
+
+	doc: Correct a few typos in NEWS.
+
+	* NEWS: Correct a few typos.
+
+	Files: NEWS
+
+2012-02-24  Rik  <octave@nomad.inbox5.com>
+
+	doc: Fix wording in NEWS file.
+
+	* NEWS: Improve wording and correct typo.
+
+	Files: NEWS
+
+	base2dec.m: Fix incorrect bin2dec results (bug #35621).
+
+	* base2dec.m: Fix incorrect bin2dec results (bug #35621).
+
+	Files: scripts/strings/base2dec.m
+
+2012-02-23  John W. Eaton  <jwe@octave.org>
+
+	maint: Move @CPPFLAGS@ to end of AM_CPPFLAGS lists in Makefiles.
+
+	* libcruft/Makefile.am (AM_CPPFLAGS): Move @CPPFLAGS@ to the end of
+	the list.
+	* liboctave/Makefile.am: Likewise.
+	* src/Makefile.am: Likewise.
+
+	Files: libcruft/Makefile.am liboctave/Makefile.am src/Makefile.am
+
+	maint: avoid $(echo ...) in shell script string (bug #35572)
+
+	* mk-ops.awk, sparse-mk-ops.awk: Print lists of source files on one line.
+	* config-ops.sh: Don't call $(echo ...) inside string.
+
+	Files: liboctave/config-ops.sh liboctave/mk-ops.awk liboctave/sparse-mk-
+	ops.awk
+
+	correctly fill result for M * v for Nx0 * 0x1 operations
+
+	* dColVector.cc (operator * (const Matrix&, const ColumnVector&)):
+	Fill result if NC is 0.
+	* CColVector.cc (operator * (const ComplexMatrix&, const
+	ComplexColumnVector&)): Likewise.
+	* fCColVector.cc (const FloatComplexMatrix&, const
+	FloatComplexColumnVector&)): Likewise.
+	* fColVector.cc (const FloatMatrix&, const FloatColumnVector&)):
+	Likewise.
+
+	Files: liboctave/CColVector.cc liboctave/dColVector.cc
+	liboctave/fCColVector.cc liboctave/fColVector.cc
+
 2012-02-22  John W. Eaton  <jwe@octave.org>
 
 	Version 3.6.1 released.

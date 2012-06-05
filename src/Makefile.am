@@ -20,11 +20,13 @@
 
 include $(top_srcdir)/build-aux/common.mk
 
+## Search local directories before those specified by the user.
 AM_CPPFLAGS = \
-  @CPPFLAGS@ -I../libgnu -I$(top_srcdir)/libgnu \
+  -I../libgnu -I$(top_srcdir)/libgnu \
   -I$(top_srcdir)/libcruft/misc \
   -I../liboctave -I$(top_srcdir)/liboctave \
-  -I. -I$(srcdir)
+  -I. -I$(srcdir) \
+  @CPPFLAGS@
 
 AUTOMAKE_OPTIONS = subdir-objects
 
@@ -516,7 +518,7 @@ liboctinterp_la_LIBADD = \
 
 # Increment these as needed and according to the rules in the libtool manual:
 liboctinterp_current = 1
-liboctinterp_revision = 1
+liboctinterp_revision = 2
 liboctinterp_age = 0
 
 liboctinterp_version_info = $(liboctinterp_current):$(liboctinterp_revision):$(liboctinterp_age)

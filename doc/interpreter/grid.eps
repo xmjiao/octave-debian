@@ -1,7 +1,7 @@
 %!PS-Adobe-2.0 EPSF-2.0
 %%Title: grid.eps
-%%Creator: gnuplot 4.4 patchlevel 0
-%%CreationDate: Wed Feb 22 15:01:50 2012
+%%Creator: gnuplot 4.6 patchlevel 0
+%%CreationDate: Thu May 31 11:40:57 2012
 %%DocumentFonts: (atend)
 %%BoundingBox: 50 50 410 302
 %%EndComments
@@ -20,10 +20,12 @@ gnudict begin
 /Level1 false def
 /Rounded false def
 /ClipToBoundingBox false def
+/SuppressPDFMark false def
 /TransparentPatterns false def
 /gnulinewidth 5.000 def
 /userlinewidth gnulinewidth def
 /Gamma 1.0 def
+/BackgroundColor {-1.000 -1.000 -1.000} def
 %
 /vshift -66 def
 /dl1 {
@@ -38,22 +40,6 @@ gnudict begin
 /vpt_ 31.5 def
 /hpt hpt_ def
 /vpt vpt_ def
-Level1 {} {
-/SDict 10 dict def
-systemdict /pdfmark known not {
-  userdict /pdfmark systemdict /cleartomark get put
-} if
-SDict begin [
-  /Title (grid.eps)
-  /Subject (gnuplot plot)
-  /Creator (gnuplot 4.4 patchlevel 0)
-  /Author (jwe)
-%  /Producer (gnuplot)
-%  /Keywords ()
-  /CreationDate (Wed Feb 22 15:01:50 2012)
-  /DOCINFO pdfmark
-end
-} ifelse
 /doclip {
   ClipToBoundingBox {
     newpath 50 50 moveto 410 50 lineto 410 302 lineto 50 302 lineto closepath
@@ -61,7 +47,7 @@ end
   } if
 } def
 %
-% Gnuplot Prolog Version 4.4 (January 2010)
+% Gnuplot Prolog Version 4.4 (August 2010)
 %
 %/SuppressPDFMark true def
 %
@@ -73,6 +59,7 @@ end
 /Z {closepath} bind def
 /C {setrgbcolor} bind def
 /f {rlineto fill} bind def
+/g {setgray} bind def
 /Gshow {show} def   % May be redefined later in the file to support UTF-8
 /vpt2 vpt 2 mul def
 /hpt2 hpt 2 mul def
@@ -94,6 +81,7 @@ end
 	dup 1 lt {pop 1} if 10 mul /udl exch def} def
 /PL {stroke userlinewidth setlinewidth
 	Rounded {1 setlinejoin 1 setlinecap} if} def
+3.8 setmiterlimit
 % Default Line colors
 /LCw {1 1 1} def
 /LCb {0 0 0} def
@@ -459,8 +447,26 @@ currentdict end definefont pop
   Blacktext {gsave 0 setgray MFshow grestore} {MFshow} ifelse } bind def
 /XYsave    { [( ) 1 2 true false 3 ()] } bind def
 /XYrestore { [( ) 1 2 true false 4 ()] } bind def
+Level1 SuppressPDFMark or 
+{} {
+/SDict 10 dict def
+systemdict /pdfmark known not {
+  userdict /pdfmark systemdict /cleartomark get put
+} if
+SDict begin [
+  /Title (grid.eps)
+  /Subject (gnuplot plot)
+  /Creator (gnuplot 4.6 patchlevel 0)
+  /Author (jwe)
+%  /Producer (gnuplot)
+%  /Keywords ()
+  /CreationDate (Thu May 31 11:40:57 2012)
+  /DOCINFO pdfmark
+end
+} ifelse
 end
 %%EndProlog
+%%Page: 1 1
 gnudict begin
 gsave
 doclip
@@ -469,6 +475,7 @@ doclip
 0 setgray
 newpath
 (Helvetica) findfont 200 scalefont setfont
+BackgroundColor 0 lt 3 1 roll 0 lt exch 0 lt or or not {BackgroundColor C 1.000 0 0 7200.00 5040.00 BoxColFill} if
 gsave % colour palette begin
 /maxcolors 64 def
 /HSV2RGB {  exch dup 0.0 eq {pop exch pop dup dup} % achromatic gray
@@ -546,1446 +553,1848 @@ Color InterpolatedColor or { % COLOUR vs. GRAY map
 0.500 UL
 LTb
 1.000 UP
+% Begin plot #1
 0.500 UL
 LT0
-0.00 0.75 0.75 C 1941 1589 M
+LC6 setrgbcolor
+1941 1589 M
 131 83 V
 stroke
 LT0
-0.00 0.75 0.75 C 2127 1784 M
+LC6 setrgbcolor
+2127 1784 M
 -55 -112 V
 stroke
 LT0
-0.00 0.00 1.00 C 2258 1867 M
+LC5 setrgbcolor
+2258 1867 M
 2072 1672 L
 stroke
 LT0
-0.00 0.00 1.00 C 2127 1784 M
+LC5 setrgbcolor
+2127 1784 M
 -55 -112 V
 stroke
 LT0
-0.00 0.00 1.00 C 2127 1784 M
+LC5 setrgbcolor
+2127 1784 M
 131 83 V
 stroke
 LT0
-0.75 0.00 0.75 C 2127 1784 M
+LC4 setrgbcolor
+2127 1784 M
 131 83 V
 stroke
 LT0
-0.75 0.00 0.75 C 2312 1979 M
+LC4 setrgbcolor
+2312 1979 M
 -54 -112 V
 stroke
 LT0
-0.00 0.50 0.00 C 2443 2062 M
+LC3 setrgbcolor
+2443 2062 M
 2258 1867 L
 stroke
 LT0
-0.00 0.50 0.00 C 2312 1979 M
+LC3 setrgbcolor
+2312 1979 M
 -54 -112 V
 stroke
 LT0
-0.00 0.50 0.00 C 2312 1979 M
+LC3 setrgbcolor
+2312 1979 M
 131 83 V
 stroke
 LT0
-0.75 0.75 0.00 C 2312 1979 M
+LC2 setrgbcolor
+2312 1979 M
 131 83 V
 stroke
 LT0
-0.75 0.75 0.00 C 2684 2171 M
+LC2 setrgbcolor
+2684 2171 M
 2443 2062 L
 stroke
 LT0
-1.00 0.00 0.00 C 2814 2253 M
+LC1 setrgbcolor
+2814 2253 M
 2443 2062 L
 stroke
 LT0
-1.00 0.00 0.00 C 2684 2171 M
+LC1 setrgbcolor
+2684 2171 M
 2443 2062 L
 stroke
 LT0
-1.00 0.00 0.00 C 2684 2171 M
+LC1 setrgbcolor
+2684 2171 M
 130 82 V
 stroke
 LT0
-0.25 0.25 0.25 C 2684 2171 M
+LC0 setrgbcolor
+2684 2171 M
 130 82 V
 stroke
 LT0
-0.25 0.25 0.25 C 3055 2362 M
+LC0 setrgbcolor
+3055 2362 M
 2814 2253 L
 stroke
 LT0
-0.00 0.75 0.75 C 3186 2445 M
+LC8 setrgbcolor
+3186 2445 M
 2814 2253 L
 stroke
 LT0
-0.00 0.75 0.75 C 3055 2362 M
+LC8 setrgbcolor
+3055 2362 M
 2814 2253 L
 stroke
 LT0
-0.00 0.75 0.75 C 3055 2362 M
+LC8 setrgbcolor
+3055 2362 M
 131 83 V
 stroke
 LT0
-0.00 0.00 1.00 C 3055 2362 M
+LC7 setrgbcolor
+3055 2362 M
 131 83 V
 stroke
 LT0
-0.00 0.00 1.00 C 3796 2744 M
+LC7 setrgbcolor
+3796 2744 M
 3186 2445 L
 stroke
 LT0
-0.75 0.00 0.75 C 3927 2827 M
+LC6 setrgbcolor
+3927 2827 M
 3186 2445 L
 stroke
 LT0
-0.75 0.00 0.75 C 3796 2744 M
+LC6 setrgbcolor
+3796 2744 M
 3186 2445 L
 stroke
 LT0
-0.75 0.00 0.75 C 3796 2744 M
+LC6 setrgbcolor
+3796 2744 M
 131 83 V
 stroke
 LT0
-0.00 0.50 0.00 C 3796 2744 M
+LC5 setrgbcolor
+3796 2744 M
 131 83 V
 stroke
 LT0
-0.00 0.50 0.00 C 4538 3126 M
+LC5 setrgbcolor
+4538 3126 M
 3927 2827 L
 stroke
 LT0
-0.75 0.75 0.00 C 4669 3209 M
+LC4 setrgbcolor
+4669 3209 M
 3927 2827 L
 stroke
 LT0
-0.75 0.75 0.00 C 4538 3126 M
+LC4 setrgbcolor
+4538 3126 M
 3927 2827 L
 stroke
 LT0
-1.00 0.00 0.00 C 1745 1465 M
+LC4 setrgbcolor
+1745 1465 M
 196 124 V
 stroke
 LT0
-1.00 0.00 0.00 C 1931 1660 M
+LC4 setrgbcolor
+1931 1660 M
 10 -71 V
 stroke
 LT0
-0.00 0.75 0.75 C 2127 1784 M
+LC6 setrgbcolor
+2127 1784 M
 1941 1589 L
 stroke
 LT0
-0.25 0.25 0.25 C 2127 1784 M
+LC3 setrgbcolor
+2127 1784 M
 1941 1589 L
 stroke
 LT0
-0.25 0.25 0.25 C 1931 1660 M
+LC3 setrgbcolor
+1931 1660 M
 10 -71 V
 stroke
 LT0
-0.25 0.25 0.25 C 1931 1660 M
+LC3 setrgbcolor
+1931 1660 M
 196 124 V
 stroke
 LT0
-0.00 0.75 0.75 C 1931 1660 M
+LC2 setrgbcolor
+1931 1660 M
 196 124 V
 stroke
 LT0
-0.00 0.75 0.75 C 2116 1855 M
+LC2 setrgbcolor
+2116 1855 M
 11 -71 V
 stroke
 LT0
-0.75 0.00 0.75 C 2312 1979 M
+LC4 setrgbcolor
+2312 1979 M
 2127 1784 L
 stroke
 LT0
-0.00 0.00 1.00 C 2312 1979 M
+LC1 setrgbcolor
+2312 1979 M
 2127 1784 L
 stroke
 LT0
-0.00 0.00 1.00 C 2116 1855 M
+LC1 setrgbcolor
+2116 1855 M
 11 -71 V
 stroke
 LT0
-0.75 0.75 0.00 C 4538 3126 M
+LC4 setrgbcolor
+4538 3126 M
 131 83 V
 stroke
 LT0
-1.00 0.00 0.00 C 4538 3126 M
+LC3 setrgbcolor
+4538 3126 M
 131 83 V
 stroke
 LT0
-1.00 0.00 0.00 C 4909 3318 M
+LC3 setrgbcolor
+4909 3318 M
 4669 3209 L
 stroke
 LT0
-0.25 0.25 0.25 C 5040 3401 M
+LC2 setrgbcolor
+5040 3401 M
 4669 3209 L
 stroke
 LT0
-0.25 0.25 0.25 C 4909 3318 M
+LC2 setrgbcolor
+4909 3318 M
 4669 3209 L
 stroke
 LT0
-0.00 0.00 1.00 C 2116 1855 M
+LC1 setrgbcolor
+2116 1855 M
 196 124 V
 stroke
 LT0
-0.75 0.00 0.75 C 2116 1855 M
+LC0 setrgbcolor
+2116 1855 M
 196 124 V
 stroke
 LT0
-0.75 0.00 0.75 C 2487 2046 M
+LC0 setrgbcolor
+2487 2046 M
 -175 -67 V
 stroke
 LT0
-0.75 0.75 0.00 C 2684 2171 M
+LC2 setrgbcolor
+2684 2171 M
 2312 1979 L
 stroke
 LT0
-0.00 0.50 0.00 C 2684 2171 M
+LC8 setrgbcolor
+2684 2171 M
 2312 1979 L
 stroke
 LT0
-0.00 0.50 0.00 C 2487 2046 M
+LC8 setrgbcolor
+2487 2046 M
 -175 -67 V
 stroke
 LT0
-0.25 0.25 0.25 C 4909 3318 M
+LC2 setrgbcolor
+4909 3318 M
 131 83 V
 stroke
 LT0
-0.00 0.75 0.75 C 4909 3318 M
+LC1 setrgbcolor
+4909 3318 M
 131 83 V
 stroke
 LT0
-0.00 0.75 0.75 C 5280 3509 M
+LC1 setrgbcolor
+5280 3509 M
 5040 3401 L
 stroke
 LT0
-0.00 0.00 1.00 C 5411 3592 M
+LC0 setrgbcolor
+5411 3592 M
 5040 3401 L
 stroke
 LT0
-0.00 0.00 1.00 C 5280 3509 M
+LC0 setrgbcolor
+5280 3509 M
 5040 3401 L
 stroke
 LT0
-0.00 0.50 0.00 C 2487 2046 M
+LC8 setrgbcolor
+2487 2046 M
 197 125 V
 stroke
 LT0
-0.75 0.75 0.00 C 2487 2046 M
+LC7 setrgbcolor
+2487 2046 M
 197 125 V
 stroke
 LT0
-0.75 0.75 0.00 C 2858 2238 M
+LC7 setrgbcolor
+2858 2238 M
 -174 -67 V
 stroke
 LT0
-0.25 0.25 0.25 C 3055 2362 M
+LC0 setrgbcolor
+3055 2362 M
 2684 2171 L
 stroke
 LT0
-1.00 0.00 0.00 C 3055 2362 M
+LC6 setrgbcolor
+3055 2362 M
 2684 2171 L
 stroke
 LT0
-1.00 0.00 0.00 C 2858 2238 M
+LC6 setrgbcolor
+2858 2238 M
 -174 -67 V
 stroke
 LT0
-0.00 0.00 1.00 C 5280 3509 M
+LC0 setrgbcolor
+5280 3509 M
 131 83 V
 stroke
 LT0
-0.75 0.00 0.75 C 5280 3509 M
+LC8 setrgbcolor
+5280 3509 M
 131 83 V
 stroke
 LT0
-0.75 0.00 0.75 C 5466 3704 M
+LC8 setrgbcolor
+5466 3704 M
 -55 -112 V
 stroke
 LT0
-0.00 0.50 0.00 C 5596 3787 M
+LC7 setrgbcolor
+5596 3787 M
 5411 3592 L
 stroke
 LT0
-0.00 0.50 0.00 C 5466 3704 M
+LC7 setrgbcolor
+5466 3704 M
 -55 -112 V
 stroke
 LT0
-1.00 0.00 0.00 C 2858 2238 M
+LC6 setrgbcolor
+2858 2238 M
 197 124 V
 stroke
 LT0
-0.25 0.25 0.25 C 2858 2238 M
+LC5 setrgbcolor
+2858 2238 M
 197 124 V
 stroke
 LT0
-0.25 0.25 0.25 C 3600 2620 M
+LC5 setrgbcolor
+3600 2620 M
 3055 2362 L
 stroke
 LT0
-0.00 0.00 1.00 C 3796 2744 M
+LC7 setrgbcolor
+3796 2744 M
 3055 2362 L
 stroke
 LT0
-0.00 0.75 0.75 C 3796 2744 M
+LC4 setrgbcolor
+3796 2744 M
 3055 2362 L
 stroke
 LT0
-0.00 0.75 0.75 C 3600 2620 M
+LC4 setrgbcolor
+3600 2620 M
 3055 2362 L
 stroke
 LT0
-0.00 0.50 0.00 C 5466 3704 M
+LC7 setrgbcolor
+5466 3704 M
 130 83 V
 stroke
 LT0
-0.75 0.75 0.00 C 5466 3704 M
+LC6 setrgbcolor
+5466 3704 M
 130 83 V
 stroke
 LT0
-0.75 0.75 0.00 C 5651 3899 M
+LC6 setrgbcolor
+5651 3899 M
 -55 -112 V
 stroke
 LT0
-1.00 0.00 0.00 C 5782 3982 M
+LC5 setrgbcolor
+5782 3982 M
 5596 3787 L
 stroke
 LT0
-1.00 0.00 0.00 C 5651 3899 M
+LC5 setrgbcolor
+5651 3899 M
 -55 -112 V
 stroke
 LT0
-1.00 0.00 0.00 C 5651 3899 M
+LC5 setrgbcolor
+5651 3899 M
 131 83 V
 stroke
 LT0
-0.00 0.75 0.75 C 3600 2620 M
+LC4 setrgbcolor
+3600 2620 M
 196 124 V
 stroke
 LT0
-0.00 0.00 1.00 C 3600 2620 M
+LC3 setrgbcolor
+3600 2620 M
 196 124 V
 stroke
 LT0
-0.00 0.00 1.00 C 4342 3002 M
+LC3 setrgbcolor
+4342 3002 M
 3796 2744 L
 stroke
 LT0
-0.00 0.50 0.00 C 4538 3126 M
+LC5 setrgbcolor
+4538 3126 M
 3796 2744 L
 stroke
 LT0
-0.75 0.00 0.75 C 4538 3126 M
+LC2 setrgbcolor
+4538 3126 M
 3796 2744 L
 stroke
 LT0
-0.75 0.00 0.75 C 4342 3002 M
+LC2 setrgbcolor
+4342 3002 M
 3796 2744 L
 stroke
 LT0
-0.75 0.00 0.75 C 4342 3002 M
+LC2 setrgbcolor
+4342 3002 M
 196 124 V
 stroke
 LT0
-0.00 0.50 0.00 C 4342 3002 M
+LC1 setrgbcolor
+4342 3002 M
 196 124 V
 stroke
 LT0
-0.00 0.50 0.00 C 4713 3194 M
+LC1 setrgbcolor
+4713 3194 M
 -175 -68 V
 stroke
 LT0
-1.00 0.00 0.00 C 4909 3318 M
+LC3 setrgbcolor
+4909 3318 M
 4538 3126 L
 stroke
 LT0
-0.75 0.75 0.00 C 4909 3318 M
+LC0 setrgbcolor
+4909 3318 M
 4538 3126 L
 stroke
 LT0
-0.75 0.75 0.00 C 4713 3194 M
+LC0 setrgbcolor
+4713 3194 M
 -175 -68 V
 stroke
 LT0
-0.75 0.75 0.00 C 4713 3194 M
+LC0 setrgbcolor
+4713 3194 M
 196 124 V
 stroke
 LT0
-1.00 0.00 0.00 C 4713 3194 M
+LC8 setrgbcolor
+4713 3194 M
 196 124 V
 stroke
 LT0
-1.00 0.00 0.00 C 5084 3385 M
+LC8 setrgbcolor
+5084 3385 M
 -175 -67 V
 stroke
 LT0
-0.00 0.75 0.75 C 5280 3509 M
+LC1 setrgbcolor
+5280 3509 M
 4909 3318 L
 stroke
 LT0
-0.25 0.25 0.25 C 5280 3509 M
+LC7 setrgbcolor
+5280 3509 M
 4909 3318 L
 stroke
 LT0
-0.25 0.25 0.25 C 5084 3385 M
+LC7 setrgbcolor
+5084 3385 M
 -175 -67 V
 stroke
 LT0
-0.00 0.50 0.00 C 1549 1341 M
+LC2 setrgbcolor
+1549 1341 M
 196 124 V
 stroke
 LT0
-0.00 0.50 0.00 C 1734 1536 M
+LC2 setrgbcolor
+1734 1536 M
 11 -71 V
 stroke
 LT0
-1.00 0.00 0.00 C 1931 1660 M
+LC4 setrgbcolor
+1931 1660 M
 1745 1465 L
 stroke
 LT0
-0.75 0.75 0.00 C 1931 1660 M
+LC1 setrgbcolor
+1931 1660 M
 1745 1465 L
 stroke
 LT0
-0.75 0.75 0.00 C 1734 1536 M
+LC1 setrgbcolor
+1734 1536 M
 11 -71 V
 stroke
 LT0
-0.25 0.25 0.25 C 5084 3385 M
+LC7 setrgbcolor
+5084 3385 M
 196 124 V
 stroke
 LT0
-0.00 0.75 0.75 C 5084 3385 M
+LC6 setrgbcolor
+5084 3385 M
 196 124 V
 stroke
 LT0
-0.00 0.75 0.75 C 5269 3580 M
+LC6 setrgbcolor
+5269 3580 M
 11 -71 V
 stroke
 LT0
-0.75 0.00 0.75 C 5466 3704 M
+LC8 setrgbcolor
+5466 3704 M
 5280 3509 L
 stroke
 LT0
-0.00 0.00 1.00 C 5466 3704 M
+LC5 setrgbcolor
+5466 3704 M
 5280 3509 L
 stroke
 LT0
-0.00 0.00 1.00 C 5269 3580 M
+LC5 setrgbcolor
+5269 3580 M
 11 -71 V
 stroke
 LT0
-0.75 0.75 0.00 C 1734 1536 M
+LC1 setrgbcolor
+1734 1536 M
 197 124 V
 stroke
 LT0
-1.00 0.00 0.00 C 1734 1536 M
+LC0 setrgbcolor
+1734 1536 M
 197 124 V
 stroke
 LT0
-1.00 0.00 0.00 C 1920 1731 M
+LC0 setrgbcolor
+1920 1731 M
 11 -71 V
 stroke
 LT0
-0.00 0.75 0.75 C 2116 1855 M
+LC2 setrgbcolor
+2116 1855 M
 1931 1660 L
 stroke
 LT0
-0.25 0.25 0.25 C 2116 1855 M
+LC8 setrgbcolor
+2116 1855 M
 1931 1660 L
 stroke
 LT0
-0.25 0.25 0.25 C 1920 1731 M
+LC8 setrgbcolor
+1920 1731 M
 11 -71 V
 stroke
 LT0
-0.00 0.00 1.00 C 5269 3580 M
+LC5 setrgbcolor
+5269 3580 M
 197 124 V
 stroke
 LT0
-0.75 0.00 0.75 C 5269 3580 M
+LC4 setrgbcolor
+5269 3580 M
 197 124 V
 stroke
 LT0
-0.75 0.00 0.75 C 5455 3775 M
+LC4 setrgbcolor
+5455 3775 M
 11 -71 V
 stroke
 LT0
-0.75 0.75 0.00 C 5651 3899 M
+LC6 setrgbcolor
+5651 3899 M
 5466 3704 L
 stroke
 LT0
-0.00 0.50 0.00 C 5651 3899 M
+LC3 setrgbcolor
+5651 3899 M
 5466 3704 L
 stroke
 LT0
-0.00 0.50 0.00 C 5455 3775 M
+LC3 setrgbcolor
+5455 3775 M
 11 -71 V
 stroke
 LT0
-0.25 0.25 0.25 C 1920 1731 M
+LC8 setrgbcolor
+1920 1731 M
 196 124 V
 stroke
 LT0
-0.00 0.75 0.75 C 1920 1731 M
+LC7 setrgbcolor
+1920 1731 M
 196 124 V
 stroke
 LT0
-0.00 0.75 0.75 C 2291 1922 M
+LC7 setrgbcolor
+2291 1922 M
 -175 -67 V
 stroke
 LT0
-0.75 0.00 0.75 C 2487 2046 M
+LC0 setrgbcolor
+2487 2046 M
 2116 1855 L
 stroke
 LT0
-0.00 0.00 1.00 C 2487 2046 M
+LC6 setrgbcolor
+2487 2046 M
 2116 1855 L
 stroke
 LT0
-0.00 0.00 1.00 C 2291 1922 M
+LC6 setrgbcolor
+2291 1922 M
 -175 -67 V
 stroke
 LT0
-0.00 0.50 0.00 C 5455 3775 M
+LC3 setrgbcolor
+5455 3775 M
 196 124 V
 stroke
 LT0
-0.00 0.00 1.00 C 2291 1922 M
+LC6 setrgbcolor
+2291 1922 M
 196 124 V
 stroke
 LT0
-0.75 0.00 0.75 C 2291 1922 M
+LC5 setrgbcolor
+2291 1922 M
 196 124 V
 stroke
 LT0
-0.75 0.00 0.75 C 2662 2114 M
+LC5 setrgbcolor
+2662 2114 M
 -175 -68 V
 stroke
 LT0
-0.75 0.75 0.00 C 2858 2238 M
+LC7 setrgbcolor
+2858 2238 M
 2487 2046 L
 stroke
 LT0
-0.00 0.50 0.00 C 2858 2238 M
+LC4 setrgbcolor
+2858 2238 M
 2487 2046 L
 stroke
 LT0
-0.00 0.50 0.00 C 2662 2114 M
+LC4 setrgbcolor
+2662 2114 M
 -175 -68 V
 stroke
 LT0
-0.00 0.50 0.00 C 2662 2114 M
+LC4 setrgbcolor
+2662 2114 M
 196 124 V
 stroke
 LT0
-0.75 0.75 0.00 C 2662 2114 M
+LC3 setrgbcolor
+2662 2114 M
 196 124 V
 stroke
 LT0
-0.75 0.75 0.00 C 3404 2496 M
+LC3 setrgbcolor
+3404 2496 M
 2858 2238 L
 stroke
 LT0
-0.25 0.25 0.25 C 3600 2620 M
+LC5 setrgbcolor
+3600 2620 M
 2858 2238 L
 stroke
 LT0
-1.00 0.00 0.00 C 3600 2620 M
+LC2 setrgbcolor
+3600 2620 M
 2858 2238 L
 stroke
 LT0
-1.00 0.00 0.00 C 3404 2496 M
+LC2 setrgbcolor
+3404 2496 M
 2858 2238 L
 stroke
 LT0
-1.00 0.00 0.00 C 3404 2496 M
+LC2 setrgbcolor
+3404 2496 M
 196 124 V
 stroke
 LT0
-0.25 0.25 0.25 C 3404 2496 M
+LC1 setrgbcolor
+3404 2496 M
 196 124 V
 stroke
 LT0
-0.25 0.25 0.25 C 4145 2878 M
+LC1 setrgbcolor
+4145 2878 M
 3600 2620 L
 stroke
 LT0
-0.00 0.00 1.00 C 4342 3002 M
+LC3 setrgbcolor
+4342 3002 M
 3600 2620 L
 stroke
 LT0
-0.00 0.75 0.75 C 4342 3002 M
+LC0 setrgbcolor
+4342 3002 M
 3600 2620 L
 stroke
 LT0
-0.00 0.75 0.75 C 4145 2878 M
+LC0 setrgbcolor
+4145 2878 M
 3600 2620 L
 stroke
 LT0
-0.00 0.75 0.75 C 4145 2878 M
+LC0 setrgbcolor
+4145 2878 M
 197 124 V
 stroke
 LT0
-0.00 0.00 1.00 C 4145 2878 M
+LC8 setrgbcolor
+4145 2878 M
 197 124 V
 stroke
 LT0
-0.00 0.00 1.00 C 4516 3069 M
+LC8 setrgbcolor
+4516 3069 M
 -174 -67 V
 stroke
 LT0
-0.00 0.50 0.00 C 4713 3194 M
+LC1 setrgbcolor
+4713 3194 M
 4342 3002 L
 stroke
 LT0
-0.75 0.00 0.75 C 4713 3194 M
+LC7 setrgbcolor
+4713 3194 M
 4342 3002 L
 stroke
 LT0
-0.75 0.00 0.75 C 4516 3069 M
+LC7 setrgbcolor
+4516 3069 M
 -174 -67 V
 stroke
 LT0
-0.75 0.00 0.75 C 4516 3069 M
+LC7 setrgbcolor
+4516 3069 M
 197 125 V
 stroke
 LT0
-0.00 0.50 0.00 C 4516 3069 M
+LC6 setrgbcolor
+4516 3069 M
 197 125 V
 stroke
 LT0
-0.00 0.50 0.00 C 4888 3261 M
+LC6 setrgbcolor
+4888 3261 M
 -175 -67 V
 stroke
 LT0
-1.00 0.00 0.00 C 5084 3385 M
+LC8 setrgbcolor
+5084 3385 M
 4713 3194 L
 stroke
 LT0
-0.75 0.75 0.00 C 5084 3385 M
+LC5 setrgbcolor
+5084 3385 M
 4713 3194 L
 stroke
 LT0
-0.75 0.75 0.00 C 4888 3261 M
+LC5 setrgbcolor
+4888 3261 M
 -175 -67 V
 stroke
 LT0
-0.00 0.00 1.00 C 1418 1258 M
+LC0 setrgbcolor
+1418 1258 M
 131 83 V
 stroke
 LT0
-0.00 0.00 1.00 C 1604 1453 M
+LC0 setrgbcolor
+1604 1453 M
 -55 -112 V
 stroke
 LT0
-0.00 0.50 0.00 C 1734 1536 M
+LC2 setrgbcolor
+1734 1536 M
 1549 1341 L
 stroke
 LT0
-0.75 0.00 0.75 C 1734 1536 M
+LC8 setrgbcolor
+1734 1536 M
 1549 1341 L
 stroke
 LT0
-0.75 0.00 0.75 C 1604 1453 M
+LC8 setrgbcolor
+1604 1453 M
 -55 -112 V
 stroke
 LT0
-0.75 0.75 0.00 C 4888 3261 M
+LC5 setrgbcolor
+4888 3261 M
 196 124 V
 stroke
 LT0
-1.00 0.00 0.00 C 4888 3261 M
+LC4 setrgbcolor
+4888 3261 M
 196 124 V
 stroke
 LT0
-1.00 0.00 0.00 C 5073 3456 M
+LC4 setrgbcolor
+5073 3456 M
 11 -71 V
 stroke
 LT0
-0.00 0.75 0.75 C 5269 3580 M
+LC6 setrgbcolor
+5269 3580 M
 5084 3385 L
 stroke
 LT0
-0.25 0.25 0.25 C 5269 3580 M
+LC3 setrgbcolor
+5269 3580 M
 5084 3385 L
 stroke
 LT0
-0.25 0.25 0.25 C 5073 3456 M
+LC3 setrgbcolor
+5073 3456 M
 11 -71 V
 stroke
 LT0
-0.75 0.00 0.75 C 1604 1453 M
+LC8 setrgbcolor
+1604 1453 M
 130 83 V
 stroke
 LT0
-0.00 0.50 0.00 C 1604 1453 M
+LC7 setrgbcolor
+1604 1453 M
 130 83 V
 stroke
 LT0
-0.00 0.50 0.00 C 1789 1648 M
+LC7 setrgbcolor
+1789 1648 M
 -55 -112 V
 stroke
 LT0
-1.00 0.00 0.00 C 1920 1731 M
+LC0 setrgbcolor
+1920 1731 M
 1734 1536 L
 stroke
 LT0
-0.75 0.75 0.00 C 1920 1731 M
+LC6 setrgbcolor
+1920 1731 M
 1734 1536 L
 stroke
 LT0
-0.75 0.75 0.00 C 1789 1648 M
+LC6 setrgbcolor
+1789 1648 M
 -55 -112 V
 stroke
 LT0
-0.25 0.25 0.25 C 5073 3456 M
+LC3 setrgbcolor
+5073 3456 M
 196 124 V
 stroke
 LT0
-0.00 0.75 0.75 C 5073 3456 M
+LC2 setrgbcolor
+5073 3456 M
 196 124 V
 stroke
 LT0
-0.00 0.75 0.75 C 5259 3651 M
+LC2 setrgbcolor
+5259 3651 M
 10 -71 V
 stroke
 LT0
-0.75 0.00 0.75 C 5455 3775 M
+LC4 setrgbcolor
+5455 3775 M
 5269 3580 L
 stroke
 LT0
-0.00 0.00 1.00 C 5455 3775 M
+LC1 setrgbcolor
+5455 3775 M
 5269 3580 L
 stroke
 LT0
-0.00 0.00 1.00 C 5259 3651 M
+LC1 setrgbcolor
+5259 3651 M
 10 -71 V
 stroke
 LT0
-0.75 0.75 0.00 C 1789 1648 M
+LC6 setrgbcolor
+1789 1648 M
 131 83 V
 stroke
 LT0
-1.00 0.00 0.00 C 1789 1648 M
+LC5 setrgbcolor
+1789 1648 M
 131 83 V
 stroke
 LT0
-1.00 0.00 0.00 C 2160 1839 M
+LC5 setrgbcolor
+2160 1839 M
 1920 1731 L
 stroke
 LT0
-0.00 0.75 0.75 C 2291 1922 M
+LC7 setrgbcolor
+2291 1922 M
 1920 1731 L
 stroke
 LT0
-0.25 0.25 0.25 C 2291 1922 M
+LC4 setrgbcolor
+2291 1922 M
 1920 1731 L
 stroke
 LT0
-0.25 0.25 0.25 C 2160 1839 M
+LC4 setrgbcolor
+2160 1839 M
 1920 1731 L
 stroke
 LT0
-0.00 0.00 1.00 C 5259 3651 M
+LC1 setrgbcolor
+5259 3651 M
 196 124 V
 stroke
 LT0
-0.25 0.25 0.25 C 2160 1839 M
+LC4 setrgbcolor
+2160 1839 M
 131 83 V
 stroke
 LT0
-0.00 0.75 0.75 C 2160 1839 M
+LC3 setrgbcolor
+2160 1839 M
 131 83 V
 stroke
 LT0
-0.00 0.75 0.75 C 2531 2031 M
+LC3 setrgbcolor
+2531 2031 M
 2291 1922 L
 stroke
 LT0
-0.75 0.00 0.75 C 2662 2114 M
+LC5 setrgbcolor
+2662 2114 M
 2291 1922 L
 stroke
 LT0
-0.00 0.00 1.00 C 2662 2114 M
+LC2 setrgbcolor
+2662 2114 M
 2291 1922 L
 stroke
 LT0
-0.00 0.00 1.00 C 2531 2031 M
+LC2 setrgbcolor
+2531 2031 M
 2291 1922 L
 stroke
 LT0
-0.00 0.00 1.00 C 2531 2031 M
+LC2 setrgbcolor
+2531 2031 M
 131 83 V
 stroke
 LT0
-0.75 0.00 0.75 C 2531 2031 M
+LC1 setrgbcolor
+2531 2031 M
 131 83 V
 stroke
 LT0
-0.75 0.00 0.75 C 3273 2413 M
+LC1 setrgbcolor
+3273 2413 M
 2662 2114 L
 stroke
 LT0
-0.75 0.75 0.00 C 3404 2496 M
+LC3 setrgbcolor
+3404 2496 M
 2662 2114 L
 stroke
 LT0
-0.00 0.50 0.00 C 3404 2496 M
+LC0 setrgbcolor
+3404 2496 M
 2662 2114 L
 stroke
 LT0
-0.00 0.50 0.00 C 3273 2413 M
+LC0 setrgbcolor
+3273 2413 M
 2662 2114 L
 stroke
 LT0
-0.00 0.50 0.00 C 3273 2413 M
+LC0 setrgbcolor
+3273 2413 M
 131 83 V
 stroke
 LT0
-0.75 0.75 0.00 C 3273 2413 M
+LC8 setrgbcolor
+3273 2413 M
 131 83 V
 stroke
 LT0
-0.75 0.75 0.00 C 4014 2795 M
+LC8 setrgbcolor
+4014 2795 M
 3404 2496 L
 stroke
 LT0
-0.25 0.25 0.25 C 4145 2878 M
+LC1 setrgbcolor
+4145 2878 M
 3404 2496 L
 stroke
 LT0
-1.00 0.00 0.00 C 4145 2878 M
+LC7 setrgbcolor
+4145 2878 M
 3404 2496 L
 stroke
 LT0
-1.00 0.00 0.00 C 4014 2795 M
+LC7 setrgbcolor
+4014 2795 M
 3404 2496 L
 stroke
 LT0
-0.00 0.00 1.00 C 1604 1453 M
+LC0 setrgbcolor
+1604 1453 M
 1418 1258 L
 stroke
 LT0
-0.00 0.50 0.00 C 1789 1648 M
+LC7 setrgbcolor
+1789 1648 M
 1604 1453 L
 stroke
 LT0
-1.00 0.00 0.00 C 4014 2795 M
+LC7 setrgbcolor
+4014 2795 M
 131 83 V
 stroke
 LT0
-0.25 0.25 0.25 C 4014 2795 M
+LC6 setrgbcolor
+4014 2795 M
 131 83 V
 stroke
 LT0
-0.25 0.25 0.25 C 4386 2987 M
+LC6 setrgbcolor
+4386 2987 M
 4145 2878 L
 stroke
 LT0
-0.00 0.00 1.00 C 4516 3069 M
+LC8 setrgbcolor
+4516 3069 M
 4145 2878 L
 stroke
 LT0
-0.00 0.75 0.75 C 4516 3069 M
+LC5 setrgbcolor
+4516 3069 M
 4145 2878 L
 stroke
 LT0
-0.00 0.75 0.75 C 4386 2987 M
+LC5 setrgbcolor
+4386 2987 M
 4145 2878 L
 stroke
 LT0
-1.00 0.00 0.00 C 2160 1839 M
+LC5 setrgbcolor
+2160 1839 M
 1789 1648 L
 stroke
 LT0
-0.00 0.75 0.75 C 4386 2987 M
+LC5 setrgbcolor
+4386 2987 M
 130 82 V
 stroke
 LT0
-0.00 0.00 1.00 C 4386 2987 M
+LC4 setrgbcolor
+4386 2987 M
 130 82 V
 stroke
 LT0
-0.00 0.00 1.00 C 4757 3178 M
+LC4 setrgbcolor
+4757 3178 M
 4516 3069 L
 stroke
 LT0
-0.00 0.50 0.00 C 4888 3261 M
+LC6 setrgbcolor
+4888 3261 M
 4516 3069 L
 stroke
 LT0
-0.75 0.00 0.75 C 4888 3261 M
+LC3 setrgbcolor
+4888 3261 M
 4516 3069 L
 stroke
 LT0
-0.75 0.00 0.75 C 4757 3178 M
+LC3 setrgbcolor
+4757 3178 M
 4516 3069 L
 stroke
 LT0
-0.00 0.75 0.75 C 2531 2031 M
+LC3 setrgbcolor
+2531 2031 M
 2160 1839 L
 stroke
 LT0
-0.75 0.00 0.75 C 4757 3178 M
+LC3 setrgbcolor
+4757 3178 M
 131 83 V
 stroke
 LT0
-0.00 0.50 0.00 C 4757 3178 M
+LC2 setrgbcolor
+4757 3178 M
 131 83 V
 stroke
 LT0
-0.00 0.50 0.00 C 4942 3373 M
+LC2 setrgbcolor
+4942 3373 M
 -54 -112 V
 stroke
 LT0
-1.00 0.00 0.00 C 5073 3456 M
+LC4 setrgbcolor
+5073 3456 M
 4888 3261 L
 stroke
 LT0
-0.75 0.75 0.00 C 5073 3456 M
+LC1 setrgbcolor
+5073 3456 M
 4888 3261 L
 stroke
 LT0
-0.75 0.75 0.00 C 4942 3373 M
+LC1 setrgbcolor
+4942 3373 M
 -54 -112 V
 stroke
 LT0
-0.75 0.00 0.75 C 3273 2413 M
+LC1 setrgbcolor
+3273 2413 M
 2531 2031 L
 stroke
 LT0
-0.75 0.75 0.00 C 4942 3373 M
+LC1 setrgbcolor
+4942 3373 M
 131 83 V
 stroke
 LT0
-1.00 0.00 0.00 C 4942 3373 M
+LC0 setrgbcolor
+4942 3373 M
 131 83 V
 stroke
 LT0
-1.00 0.00 0.00 C 5128 3568 M
+LC0 setrgbcolor
+5128 3568 M
 -55 -112 V
 stroke
 LT0
-0.00 0.75 0.75 C 5259 3651 M
+LC2 setrgbcolor
+5259 3651 M
 5073 3456 L
 stroke
 LT0
-0.25 0.25 0.25 C 5259 3651 M
+LC8 setrgbcolor
+5259 3651 M
 5073 3456 L
 stroke
 LT0
-0.25 0.25 0.25 C 5128 3568 M
+LC8 setrgbcolor
+5128 3568 M
 -55 -112 V
 stroke
 LT0
-0.25 0.25 0.25 C 5128 3568 M
+LC8 setrgbcolor
+5128 3568 M
 131 83 V
 stroke
 LT0
-0.75 0.75 0.00 C 4014 2795 M
+LC8 setrgbcolor
+4014 2795 M
 3273 2413 L
 stroke
 LT0
-0.25 0.25 0.25 C 4386 2987 M
+LC6 setrgbcolor
+4386 2987 M
 4014 2795 L
 stroke
 LT0
-0.00 0.00 1.00 C 4757 3178 M
+LC4 setrgbcolor
+4757 3178 M
 4386 2987 L
 stroke
 LT0
-0.00 0.50 0.00 C 4942 3373 M
+LC2 setrgbcolor
+4942 3373 M
 4757 3178 L
 stroke
 LT0
-1.00 0.00 0.00 C 5128 3568 M
+LC0 setrgbcolor
+5128 3568 M
 4942 3373 L
+% End plot #1
+% Begin plot #2
 %pm3d_map_begin
-%pm3d_map_end
-% Begin plot #1
 stroke
 LT0
-0.00 0.00 1.00 C % End plot #1
-%pm3d_map_begin
-%pm3d_map_end
-% Begin plot #2
+0.00 0.00 1.00 C %pm3d_map_end
 0.500 UL
 LT0
-0.00 0.50 0.00 C % End plot #2
-%pm3d_map_begin
-%pm3d_map_end
+0.00 0.00 1.00 C % End plot #2
 % Begin plot #3
+%pm3d_map_begin
 0.500 UL
 LT0
-1.00 0.00 0.00 C % End plot #3
-%pm3d_map_begin
-%pm3d_map_end
+0.00 0.50 0.00 C %pm3d_map_end
+0.500 UL
+LT0
+0.00 0.50 0.00 C % End plot #3
 % Begin plot #4
+%pm3d_map_begin
 0.500 UL
 LT0
-0.00 0.75 0.75 C % End plot #4
-%pm3d_map_begin
-%pm3d_map_end
+1.00 0.00 0.00 C %pm3d_map_end
+0.500 UL
+LT0
+1.00 0.00 0.00 C % End plot #4
 % Begin plot #5
+%pm3d_map_begin
 0.500 UL
 LT0
-0.75 0.00 0.75 C % End plot #5
-%pm3d_map_begin
-%pm3d_map_end
+0.00 0.75 0.75 C %pm3d_map_end
+0.500 UL
+LT0
+0.00 0.75 0.75 C % End plot #5
 % Begin plot #6
+%pm3d_map_begin
 0.500 UL
 LT0
-0.75 0.75 0.00 C % End plot #6
-%pm3d_map_begin
-%pm3d_map_end
+0.75 0.00 0.75 C %pm3d_map_end
+0.500 UL
+LT0
+0.75 0.00 0.75 C % End plot #6
 % Begin plot #7
+%pm3d_map_begin
 0.500 UL
 LT0
-0.25 0.25 0.25 C % End plot #7
-%pm3d_map_begin
-%pm3d_map_end
+0.75 0.75 0.00 C %pm3d_map_end
+0.500 UL
+LT0
+0.75 0.75 0.00 C % End plot #7
 % Begin plot #8
+%pm3d_map_begin
 0.500 UL
 LT0
-0.00 0.00 1.00 C % End plot #8
-%pm3d_map_begin
-%pm3d_map_end
+0.25 0.25 0.25 C %pm3d_map_end
+0.500 UL
+LT0
+0.25 0.25 0.25 C % End plot #8
 % Begin plot #9
+%pm3d_map_begin
 0.500 UL
 LT0
-0.00 0.50 0.00 C % End plot #9
-%pm3d_map_begin
-%pm3d_map_end
+0.00 0.00 1.00 C %pm3d_map_end
+0.500 UL
+LT0
+0.00 0.00 1.00 C % End plot #9
 % Begin plot #10
+%pm3d_map_begin
 0.500 UL
 LT0
-1.00 0.00 0.00 C % End plot #10
-%pm3d_map_begin
-%pm3d_map_end
+0.00 0.50 0.00 C %pm3d_map_end
+0.500 UL
+LT0
+0.00 0.50 0.00 C % End plot #10
 % Begin plot #11
+%pm3d_map_begin
 0.500 UL
 LT0
-0.00 0.75 0.75 C % End plot #11
-%pm3d_map_begin
-%pm3d_map_end
+1.00 0.00 0.00 C %pm3d_map_end
+0.500 UL
+LT0
+1.00 0.00 0.00 C % End plot #11
 % Begin plot #12
+%pm3d_map_begin
 0.500 UL
 LT0
-0.75 0.00 0.75 C % End plot #12
-%pm3d_map_begin
-%pm3d_map_end
+0.00 0.75 0.75 C %pm3d_map_end
+0.500 UL
+LT0
+0.00 0.75 0.75 C % End plot #12
 % Begin plot #13
+%pm3d_map_begin
 0.500 UL
 LT0
-0.75 0.75 0.00 C % End plot #13
-%pm3d_map_begin
-%pm3d_map_end
+0.75 0.00 0.75 C %pm3d_map_end
+0.500 UL
+LT0
+0.75 0.00 0.75 C % End plot #13
 % Begin plot #14
+%pm3d_map_begin
 0.500 UL
 LT0
-0.25 0.25 0.25 C % End plot #14
-%pm3d_map_begin
-%pm3d_map_end
+0.75 0.75 0.00 C %pm3d_map_end
+0.500 UL
+LT0
+0.75 0.75 0.00 C % End plot #14
 % Begin plot #15
+%pm3d_map_begin
 0.500 UL
 LT0
-0.00 0.00 1.00 C % End plot #15
-%pm3d_map_begin
-%pm3d_map_end
+0.25 0.25 0.25 C %pm3d_map_end
+0.500 UL
+LT0
+0.25 0.25 0.25 C % End plot #15
 % Begin plot #16
+%pm3d_map_begin
 0.500 UL
 LT0
-0.00 0.50 0.00 C % End plot #16
-%pm3d_map_begin
-%pm3d_map_end
+0.00 0.00 1.00 C %pm3d_map_end
+0.500 UL
+LT0
+0.00 0.00 1.00 C % End plot #16
 % Begin plot #17
+%pm3d_map_begin
 0.500 UL
 LT0
-1.00 0.00 0.00 C % End plot #17
-%pm3d_map_begin
-%pm3d_map_end
+0.00 0.50 0.00 C %pm3d_map_end
+0.500 UL
+LT0
+0.00 0.50 0.00 C % End plot #17
 % Begin plot #18
+%pm3d_map_begin
 0.500 UL
 LT0
-0.00 0.75 0.75 C % End plot #18
-%pm3d_map_begin
-%pm3d_map_end
+1.00 0.00 0.00 C %pm3d_map_end
+0.500 UL
+LT0
+1.00 0.00 0.00 C % End plot #18
 % Begin plot #19
+%pm3d_map_begin
 0.500 UL
 LT0
-0.75 0.00 0.75 C % End plot #19
-%pm3d_map_begin
-%pm3d_map_end
+0.00 0.75 0.75 C %pm3d_map_end
+0.500 UL
+LT0
+0.00 0.75 0.75 C % End plot #19
 % Begin plot #20
+%pm3d_map_begin
 0.500 UL
 LT0
-0.75 0.75 0.00 C % End plot #20
-%pm3d_map_begin
-%pm3d_map_end
+0.75 0.00 0.75 C %pm3d_map_end
+0.500 UL
+LT0
+0.75 0.00 0.75 C % End plot #20
 % Begin plot #21
+%pm3d_map_begin
 0.500 UL
 LT0
-0.25 0.25 0.25 C % End plot #21
-%pm3d_map_begin
-%pm3d_map_end
+0.75 0.75 0.00 C %pm3d_map_end
+0.500 UL
+LT0
+0.75 0.75 0.00 C % End plot #21
 % Begin plot #22
+%pm3d_map_begin
 0.500 UL
 LT0
-0.00 0.00 1.00 C % End plot #22
-%pm3d_map_begin
-%pm3d_map_end
+0.25 0.25 0.25 C %pm3d_map_end
+0.500 UL
+LT0
+0.25 0.25 0.25 C % End plot #22
 % Begin plot #23
+%pm3d_map_begin
 0.500 UL
 LT0
-0.00 0.50 0.00 C % End plot #23
-%pm3d_map_begin
-%pm3d_map_end
+0.00 0.00 1.00 C %pm3d_map_end
+0.500 UL
+LT0
+0.00 0.00 1.00 C % End plot #23
 % Begin plot #24
+%pm3d_map_begin
 0.500 UL
 LT0
-1.00 0.00 0.00 C % End plot #24
-%pm3d_map_begin
-%pm3d_map_end
+0.00 0.50 0.00 C %pm3d_map_end
+0.500 UL
+LT0
+0.00 0.50 0.00 C % End plot #24
 % Begin plot #25
+%pm3d_map_begin
 0.500 UL
 LT0
-0.00 0.75 0.75 C % End plot #25
-%pm3d_map_begin
-%pm3d_map_end
+1.00 0.00 0.00 C %pm3d_map_end
+0.500 UL
+LT0
+1.00 0.00 0.00 C % End plot #25
 % Begin plot #26
+%pm3d_map_begin
 0.500 UL
 LT0
-0.75 0.00 0.75 C % End plot #26
-%pm3d_map_begin
-%pm3d_map_end
+0.00 0.75 0.75 C %pm3d_map_end
+0.500 UL
+LT0
+0.00 0.75 0.75 C % End plot #26
 % Begin plot #27
+%pm3d_map_begin
 0.500 UL
 LT0
-0.75 0.75 0.00 C % End plot #27
-%pm3d_map_begin
-%pm3d_map_end
+0.75 0.00 0.75 C %pm3d_map_end
+0.500 UL
+LT0
+0.75 0.00 0.75 C % End plot #27
 % Begin plot #28
+%pm3d_map_begin
 0.500 UL
 LT0
-0.25 0.25 0.25 C % End plot #28
-%pm3d_map_begin
-%pm3d_map_end
+0.75 0.75 0.00 C %pm3d_map_end
+0.500 UL
+LT0
+0.75 0.75 0.00 C % End plot #28
 % Begin plot #29
+%pm3d_map_begin
 0.500 UL
 LT0
-0.00 0.00 1.00 C % End plot #29
-%pm3d_map_begin
-%pm3d_map_end
+0.25 0.25 0.25 C %pm3d_map_end
+0.500 UL
+LT0
+0.25 0.25 0.25 C % End plot #29
 % Begin plot #30
+%pm3d_map_begin
 0.500 UL
 LT0
-0.00 0.50 0.00 C % End plot #30
-%pm3d_map_begin
-%pm3d_map_end
+0.00 0.00 1.00 C %pm3d_map_end
+0.500 UL
+LT0
+0.00 0.00 1.00 C % End plot #30
 % Begin plot #31
+%pm3d_map_begin
 0.500 UL
 LT0
-1.00 0.00 0.00 C % End plot #31
-%pm3d_map_begin
-%pm3d_map_end
+0.00 0.50 0.00 C %pm3d_map_end
+0.500 UL
+LT0
+0.00 0.50 0.00 C % End plot #31
 % Begin plot #32
+%pm3d_map_begin
 0.500 UL
 LT0
-0.00 0.75 0.75 C % End plot #32
-%pm3d_map_begin
-%pm3d_map_end
+1.00 0.00 0.00 C %pm3d_map_end
+0.500 UL
+LT0
+1.00 0.00 0.00 C % End plot #32
 % Begin plot #33
+%pm3d_map_begin
 0.500 UL
 LT0
-0.75 0.00 0.75 C % End plot #33
-%pm3d_map_begin
-%pm3d_map_end
+0.00 0.75 0.75 C %pm3d_map_end
+0.500 UL
+LT0
+0.00 0.75 0.75 C % End plot #33
 % Begin plot #34
+%pm3d_map_begin
 0.500 UL
 LT0
-0.75 0.75 0.00 C % End plot #34
-%pm3d_map_begin
-%pm3d_map_end
+0.75 0.00 0.75 C %pm3d_map_end
+0.500 UL
+LT0
+0.75 0.00 0.75 C % End plot #34
 % Begin plot #35
+%pm3d_map_begin
 0.500 UL
 LT0
-0.25 0.25 0.25 C % End plot #35
-%pm3d_map_begin
-%pm3d_map_end
+0.75 0.75 0.00 C %pm3d_map_end
+0.500 UL
+LT0
+0.75 0.75 0.00 C % End plot #35
 % Begin plot #36
+%pm3d_map_begin
 0.500 UL
 LT0
-0.00 0.00 1.00 C % End plot #36
-%pm3d_map_begin
-%pm3d_map_end
+0.25 0.25 0.25 C %pm3d_map_end
+0.500 UL
+LT0
+0.25 0.25 0.25 C % End plot #36
 % Begin plot #37
+%pm3d_map_begin
 0.500 UL
 LT0
-0.00 0.50 0.00 C % End plot #37
-%pm3d_map_begin
-%pm3d_map_end
+0.00 0.00 1.00 C %pm3d_map_end
+0.500 UL
+LT0
+0.00 0.00 1.00 C % End plot #37
 % Begin plot #38
+%pm3d_map_begin
 0.500 UL
 LT0
-1.00 0.00 0.00 C % End plot #38
-%pm3d_map_begin
-%pm3d_map_end
+0.00 0.50 0.00 C %pm3d_map_end
+0.500 UL
+LT0
+0.00 0.50 0.00 C % End plot #38
 % Begin plot #39
+%pm3d_map_begin
 0.500 UL
 LT0
-0.00 0.75 0.75 C % End plot #39
-%pm3d_map_begin
-%pm3d_map_end
+1.00 0.00 0.00 C %pm3d_map_end
+0.500 UL
+LT0
+1.00 0.00 0.00 C % End plot #39
 % Begin plot #40
+%pm3d_map_begin
 0.500 UL
 LT0
-0.75 0.00 0.75 C % End plot #40
-%pm3d_map_begin
-%pm3d_map_end
+0.00 0.75 0.75 C %pm3d_map_end
+0.500 UL
+LT0
+0.00 0.75 0.75 C % End plot #40
 % Begin plot #41
+%pm3d_map_begin
 0.500 UL
 LT0
-0.75 0.75 0.00 C % End plot #41
-%pm3d_map_begin
-%pm3d_map_end
+0.75 0.00 0.75 C %pm3d_map_end
+0.500 UL
+LT0
+0.75 0.00 0.75 C % End plot #41
 % Begin plot #42
+%pm3d_map_begin
 0.500 UL
 LT0
-0.25 0.25 0.25 C % End plot #42
-%pm3d_map_begin
-%pm3d_map_end
+0.75 0.75 0.00 C %pm3d_map_end
+0.500 UL
+LT0
+0.75 0.75 0.00 C % End plot #42
 % Begin plot #43
+%pm3d_map_begin
 0.500 UL
 LT0
-0.00 0.00 1.00 C % End plot #43
-%pm3d_map_begin
-%pm3d_map_end
+0.25 0.25 0.25 C %pm3d_map_end
+0.500 UL
+LT0
+0.25 0.25 0.25 C % End plot #43
 % Begin plot #44
+%pm3d_map_begin
 0.500 UL
 LT0
-0.00 0.50 0.00 C % End plot #44
-%pm3d_map_begin
-%pm3d_map_end
+0.00 0.00 1.00 C %pm3d_map_end
+0.500 UL
+LT0
+0.00 0.00 1.00 C % End plot #44
 % Begin plot #45
+%pm3d_map_begin
 0.500 UL
 LT0
-1.00 0.00 0.00 C % End plot #45
-%pm3d_map_begin
-%pm3d_map_end
+0.00 0.50 0.00 C %pm3d_map_end
+0.500 UL
+LT0
+0.00 0.50 0.00 C % End plot #45
 % Begin plot #46
+%pm3d_map_begin
 0.500 UL
 LT0
-0.00 0.75 0.75 C % End plot #46
-%pm3d_map_begin
-%pm3d_map_end
+1.00 0.00 0.00 C %pm3d_map_end
+0.500 UL
+LT0
+1.00 0.00 0.00 C % End plot #46
 % Begin plot #47
+%pm3d_map_begin
 0.500 UL
 LT0
-0.75 0.00 0.75 C % End plot #47
-%pm3d_map_begin
-%pm3d_map_end
+0.00 0.75 0.75 C %pm3d_map_end
+0.500 UL
+LT0
+0.00 0.75 0.75 C % End plot #47
 % Begin plot #48
+%pm3d_map_begin
 0.500 UL
 LT0
-0.75 0.75 0.00 C % End plot #48
-%pm3d_map_begin
-%pm3d_map_end
+0.75 0.00 0.75 C %pm3d_map_end
+0.500 UL
+LT0
+0.75 0.00 0.75 C % End plot #48
 % Begin plot #49
+%pm3d_map_begin
 0.500 UL
 LT0
-0.25 0.25 0.25 C % End plot #49
-%pm3d_map_begin
-%pm3d_map_end
+0.75 0.75 0.00 C %pm3d_map_end
+0.500 UL
+LT0
+0.75 0.75 0.00 C % End plot #49
 % Begin plot #50
+%pm3d_map_begin
 0.500 UL
 LT0
-0.00 0.00 1.00 C % End plot #50
-%pm3d_map_begin
-%pm3d_map_end
+0.25 0.25 0.25 C %pm3d_map_end
+0.500 UL
+LT0
+0.25 0.25 0.25 C % End plot #50
 % Begin plot #51
+%pm3d_map_begin
 0.500 UL
 LT0
-0.00 0.50 0.00 C % End plot #51
-%pm3d_map_begin
-%pm3d_map_end
+0.00 0.00 1.00 C %pm3d_map_end
+0.500 UL
+LT0
+0.00 0.00 1.00 C % End plot #51
 % Begin plot #52
+%pm3d_map_begin
 0.500 UL
 LT0
-1.00 0.00 0.00 C % End plot #52
-%pm3d_map_begin
-%pm3d_map_end
+0.00 0.50 0.00 C %pm3d_map_end
+0.500 UL
+LT0
+0.00 0.50 0.00 C % End plot #52
 % Begin plot #53
+%pm3d_map_begin
 0.500 UL
 LT0
-0.00 0.75 0.75 C % End plot #53
-%pm3d_map_begin
-%pm3d_map_end
+1.00 0.00 0.00 C %pm3d_map_end
+0.500 UL
+LT0
+1.00 0.00 0.00 C % End plot #53
 % Begin plot #54
+%pm3d_map_begin
 0.500 UL
 LT0
-0.75 0.00 0.75 C % End plot #54
-%pm3d_map_begin
-%pm3d_map_end
+0.00 0.75 0.75 C %pm3d_map_end
+0.500 UL
+LT0
+0.00 0.75 0.75 C % End plot #54
 % Begin plot #55
+%pm3d_map_begin
 0.500 UL
 LT0
-0.75 0.75 0.00 C % End plot #55
-%pm3d_map_begin
-%pm3d_map_end
+0.75 0.00 0.75 C %pm3d_map_end
+0.500 UL
+LT0
+0.75 0.00 0.75 C % End plot #55
 % Begin plot #56
+%pm3d_map_begin
 0.500 UL
 LT0
-0.25 0.25 0.25 C % End plot #56
-%pm3d_map_begin
-%pm3d_map_end
+0.75 0.75 0.00 C %pm3d_map_end
+0.500 UL
+LT0
+0.75 0.75 0.00 C % End plot #56
 % Begin plot #57
+%pm3d_map_begin
 0.500 UL
 LT0
-0.00 0.00 1.00 C % End plot #57
-%pm3d_map_begin
-%pm3d_map_end
+0.25 0.25 0.25 C %pm3d_map_end
+0.500 UL
+LT0
+0.25 0.25 0.25 C % End plot #57
 % Begin plot #58
+%pm3d_map_begin
 0.500 UL
 LT0
-0.00 0.50 0.00 C % End plot #58
-%pm3d_map_begin
-%pm3d_map_end
+0.00 0.00 1.00 C %pm3d_map_end
+0.500 UL
+LT0
+0.00 0.00 1.00 C % End plot #58
 % Begin plot #59
+%pm3d_map_begin
 0.500 UL
 LT0
-1.00 0.00 0.00 C % End plot #59
-%pm3d_map_begin
-%pm3d_map_end
+0.00 0.50 0.00 C %pm3d_map_end
+0.500 UL
+LT0
+0.00 0.50 0.00 C % End plot #59
 % Begin plot #60
+%pm3d_map_begin
 0.500 UL
 LT0
-0.00 0.75 0.75 C % End plot #60
-%pm3d_map_begin
-%pm3d_map_end
+1.00 0.00 0.00 C %pm3d_map_end
+0.500 UL
+LT0
+1.00 0.00 0.00 C % End plot #60
 % Begin plot #61
+%pm3d_map_begin
 0.500 UL
 LT0
-0.75 0.00 0.75 C % End plot #61
-%pm3d_map_begin
-%pm3d_map_end
+0.00 0.75 0.75 C %pm3d_map_end
+0.500 UL
+LT0
+0.00 0.75 0.75 C % End plot #61
 % Begin plot #62
+%pm3d_map_begin
 0.500 UL
 LT0
-0.75 0.75 0.00 C % End plot #62
-%pm3d_map_begin
-%pm3d_map_end
+0.75 0.00 0.75 C %pm3d_map_end
+0.500 UL
+LT0
+0.75 0.00 0.75 C % End plot #62
 % Begin plot #63
+%pm3d_map_begin
 0.500 UL
 LT0
-0.25 0.25 0.25 C % End plot #63
-%pm3d_map_begin
-%pm3d_map_end
+0.75 0.75 0.00 C %pm3d_map_end
+0.500 UL
+LT0
+0.75 0.75 0.00 C % End plot #63
 % Begin plot #64
+%pm3d_map_begin
 0.500 UL
 LT0
-0.00 0.00 1.00 C % End plot #64
-%pm3d_map_begin
-%pm3d_map_end
+0.25 0.25 0.25 C %pm3d_map_end
+0.500 UL
+LT0
+0.25 0.25 0.25 C % End plot #64
 % Begin plot #65
+%pm3d_map_begin
 0.500 UL
 LT0
-0.00 0.50 0.00 C % End plot #65
-%pm3d_map_begin
-%pm3d_map_end
+0.00 0.00 1.00 C %pm3d_map_end
+0.500 UL
+LT0
+0.00 0.00 1.00 C % End plot #65
 % Begin plot #66
+%pm3d_map_begin
 0.500 UL
 LT0
-1.00 0.00 0.00 C % End plot #66
-%pm3d_map_begin
-%pm3d_map_end
+0.00 0.50 0.00 C %pm3d_map_end
+0.500 UL
+LT0
+0.00 0.50 0.00 C % End plot #66
 % Begin plot #67
+%pm3d_map_begin
 0.500 UL
 LT0
-0.00 0.75 0.75 C % End plot #67
-%pm3d_map_begin
-%pm3d_map_end
+1.00 0.00 0.00 C %pm3d_map_end
+0.500 UL
+LT0
+1.00 0.00 0.00 C % End plot #67
 % Begin plot #68
+%pm3d_map_begin
 0.500 UL
 LT0
-0.75 0.00 0.75 C % End plot #68
-%pm3d_map_begin
-%pm3d_map_end
+0.00 0.75 0.75 C %pm3d_map_end
+0.500 UL
+LT0
+0.00 0.75 0.75 C % End plot #68
 % Begin plot #69
+%pm3d_map_begin
 0.500 UL
 LT0
-0.75 0.75 0.00 C % End plot #69
-%pm3d_map_begin
-%pm3d_map_end
+0.75 0.00 0.75 C %pm3d_map_end
+0.500 UL
+LT0
+0.75 0.00 0.75 C % End plot #69
 % Begin plot #70
+%pm3d_map_begin
 0.500 UL
 LT0
-0.25 0.25 0.25 C % End plot #70
-%pm3d_map_begin
-%pm3d_map_end
+0.75 0.75 0.00 C %pm3d_map_end
+0.500 UL
+LT0
+0.75 0.75 0.00 C % End plot #70
 % Begin plot #71
+%pm3d_map_begin
 0.500 UL
 LT0
-0.00 0.00 1.00 C % End plot #71
-%pm3d_map_begin
-%pm3d_map_end
+0.25 0.25 0.25 C %pm3d_map_end
+0.500 UL
+LT0
+0.25 0.25 0.25 C % End plot #71
 % Begin plot #72
+%pm3d_map_begin
 0.500 UL
 LT0
-0.00 0.50 0.00 C % End plot #72
-%pm3d_map_begin
-%pm3d_map_end
+0.00 0.00 1.00 C %pm3d_map_end
+0.500 UL
+LT0
+0.00 0.00 1.00 C % End plot #72
 % Begin plot #73
+%pm3d_map_begin
 0.500 UL
 LT0
-1.00 0.00 0.00 C % End plot #73
-%pm3d_map_begin
-%pm3d_map_end
+0.00 0.50 0.00 C %pm3d_map_end
+0.500 UL
+LT0
+0.00 0.50 0.00 C % End plot #73
 % Begin plot #74
+%pm3d_map_begin
 0.500 UL
 LT0
-0.00 0.75 0.75 C % End plot #74
-%pm3d_map_begin
-%pm3d_map_end
+1.00 0.00 0.00 C %pm3d_map_end
+0.500 UL
+LT0
+1.00 0.00 0.00 C % End plot #74
 % Begin plot #75
+%pm3d_map_begin
 0.500 UL
 LT0
-0.75 0.00 0.75 C % End plot #75
-%pm3d_map_begin
-%pm3d_map_end
+0.00 0.75 0.75 C %pm3d_map_end
+0.500 UL
+LT0
+0.00 0.75 0.75 C % End plot #75
 % Begin plot #76
+%pm3d_map_begin
 0.500 UL
 LT0
-0.75 0.75 0.00 C % End plot #76
-%pm3d_map_begin
-%pm3d_map_end
+0.75 0.00 0.75 C %pm3d_map_end
+0.500 UL
+LT0
+0.75 0.00 0.75 C % End plot #76
 % Begin plot #77
+%pm3d_map_begin
 0.500 UL
 LT0
-0.25 0.25 0.25 C % End plot #77
-%pm3d_map_begin
-%pm3d_map_end
+0.75 0.75 0.00 C %pm3d_map_end
+0.500 UL
+LT0
+0.75 0.75 0.00 C % End plot #77
 % Begin plot #78
+%pm3d_map_begin
 0.500 UL
 LT0
-0.00 0.00 1.00 C % End plot #78
-%pm3d_map_begin
-%pm3d_map_end
+0.25 0.25 0.25 C %pm3d_map_end
+0.500 UL
+LT0
+0.25 0.25 0.25 C % End plot #78
 % Begin plot #79
-0.500 UL
-LT0
-0.00 0.50 0.00 C % End plot #79
 %pm3d_map_begin
-%pm3d_map_end
-% Begin plot #80
 0.500 UL
 LT0
-1.00 0.00 0.00 C % End plot #80
+0.00 0.00 1.00 C %pm3d_map_end
+0.500 UL
+LT0
+0.00 0.00 1.00 C % End plot #79
+% Begin plot #80
+%pm3d_map_begin
+0.500 UL
+LT0
+0.00 0.50 0.00 C %pm3d_map_end
+0.500 UL
+LT0
+0.00 0.50 0.00 C % End plot #80
+% Begin plot #81
+%pm3d_map_begin
+0.500 UL
+LT0
+1.00 0.00 0.00 C %pm3d_map_end
+0.500 UL
+LT0
+1.00 0.00 0.00 C % End plot #81
 0.500 UL
 LTb
 5782 1599 M

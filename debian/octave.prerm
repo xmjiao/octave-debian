@@ -1,8 +1,10 @@
-#!/bin/sh -e
+#!/bin/sh
 #
 # prerm script for the Debian GNU/Linux octave package
 #
 # Originally written by Dirk Eddelbuettel <edd@debian.org>
+
+set -e
 
 #DEBHELPER#
 

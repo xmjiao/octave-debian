@@ -81,15 +81,34 @@ function out = base2dec (s, base)
     s = toupper (s);
   endif
 
-  ## Right justify the values before anything else.
-  s = strjust (s, "right");
+  ## Right justify the values and squeeze out any spaces.
+  ## This looks complicated, but indexing solution is very fast
+  ## compared to alternatives which use cellstr or cellfun or looping.
+  [nr, nc] = size (s);
+  if (nc > 1)   # Bug #35621
+    s = s.';
+    nonbl = s != " ";
+    num_nonbl = sum (nonbl);
+    nc = max (num_nonbl);
+    num_blank = nc - num_nonbl;
+    R = repmat ([1 2; 0 0], 1, nr);
+    R(2, 1:2:2*nr) = num_blank;
+    R(2, 2:2:2*nr) = num_nonbl;
+    idx = repelems ([false, true], R);
+    idx = reshape (idx, nc, nr);
+    
+    ## Create a blank matrix and position the nonblank characters.
+    s2 = repmat (" ", nc, nr);
+    s2(idx) = s(nonbl);
+    s = s2.';
+  endif
 
   ## Lookup value of symbols in symbol table, with invalid symbols
   ## evaluating to NaN and space evaluating to 0.
   table = NaN (1, 256);
   table(toascii (symbols(1:base))) = 0 : base-1;
   table(toascii (" ")) = 0;
-  s = table(toascii (s));
+  s = reshape (table(toascii (s)), size (s));
 
   ## Multiply the resulting digits by the appropriate power
   ## and sum the rows.
@@ -102,6 +121,9 @@ endfunction
 %!assert(base2dec ("yyyzx", "xyz"), 123);
 %!assert(base2dec ("-1", 2), NaN);
 %!assert(base2dec ({"A1", "1A"}, 16), [161; 26]);
+
+%% Bug #35621
+%!assert (base2dec (["0"; "1"], 2), [0; 1])
 
 %%Test input validation
 %!error base2dec ();

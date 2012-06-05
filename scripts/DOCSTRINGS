@@ -2105,7 +2105,7 @@ endfunction
 @c logspace scripts/general/logspace.m
 -*- texinfo -*-
 @deftypefn  {Function File} {} logspace (@var{a}, @var{b})
-@deftypefnx {Function File} {} logspace (@var{b}, @var{b}, @var{n})
+@deftypefnx {Function File} {} logspace (@var{a}, @var{b}, @var{n})
 @deftypefnx {Function File} {} logspace (@var{a}, pi, @var{n})
 Return a row vector with @var{n} elements logarithmically spaced from
 @tex
@@ -5411,8 +5411,8 @@ with "Copyright (C) yyyy Function Author".
 @item mode
 This value determines whether the editor should be started in async mode
 (editor is started in the background and Octave continues) or sync mode
-(Octave waits until the editor exits).  Set it to "async" to start the editor
-in async mode.  The default is "sync" (see also "system").
+(Octave waits until the editor exits).  Set it to "sync" to start the editor
+in sync mode.  The default is "async" (see also "system").
 
 @item editinplace
 Determines whether files should be edited in place, without regard to
@@ -18561,6 +18561,16 @@ by the string @var{s}.  For example:
 @group
 bin2dec ("1110")
      @result{} 14
+@end group
+@end example
+
+Spaces are ignored during conversion and may be used to make the binary
+number more readable.
+
+@example
+@group
+bin2dec ("1000 0001")
+     @result{} 129
 @end group
 @end example
 

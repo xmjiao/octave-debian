@@ -7,7 +7,7 @@ Forwarded: not-needed
 Author: Thomas Weber <tweber@debian.org>
 --- a/libcruft/Makefile.am
 +++ b/libcruft/Makefile.am
-@@ -24,7 +24,8 @@
+@@ -27,7 +27,8 @@
  
  AUTOMAKE_OPTIONS = subdir-objects
  
@@ -17,7 +17,7 @@ Author: Thomas Weber <tweber@debian.org>
  
  libcruft_la_SOURCES =
  
-@@ -56,7 +57,7 @@
+@@ -59,7 +60,7 @@
    -bindir $(bindir) \
    $(LIBCRUFT_LINK_OPTS)
  
@@ -28,7 +28,7 @@ Author: Thomas Weber <tweber@debian.org>
  
 --- a/liboctave/Makefile.am
 +++ b/liboctave/Makefile.am
-@@ -411,7 +411,8 @@
+@@ -413,7 +413,8 @@
    uint64NDArray.cc \
    uint8NDArray.cc
  
@@ -40,7 +40,7 @@ Author: Thomas Weber <tweber@debian.org>
    CollocWt.cc \
 --- a/src/Makefile.am
 +++ b/src/Makefile.am
-@@ -28,7 +28,8 @@
+@@ -30,7 +30,8 @@
  
  AUTOMAKE_OPTIONS = subdir-objects
  

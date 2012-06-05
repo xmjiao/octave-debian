@@ -6324,7 +6324,7 @@ Author: Thomas Weber <tweber@debian.org>
  OCTINTERP_API
 --- a/src/Makefile.am
 +++ b/src/Makefile.am
-@@ -100,7 +100,6 @@
+@@ -102,7 +102,6 @@
    DOCSTRINGS \
    find-defun-files.sh \
    genprops.awk \
@@ -6332,7 +6332,7 @@ Author: Thomas Weber <tweber@debian.org>
    graphics.h.in \
    mk-errno-list \
    mk-pkg-add \
-@@ -247,7 +246,6 @@
+@@ -249,7 +248,6 @@
    error.h \
    file-io.h \
    gl-render.h \
@@ -6340,7 +6340,7 @@ Author: Thomas Weber <tweber@debian.org>
    gl2ps-renderer.h \
    graphics-props.cc \
    gripes.h \
-@@ -467,7 +465,6 @@
+@@ -469,7 +467,6 @@
    utils.cc \
    variables.cc \
    xdiv.cc \

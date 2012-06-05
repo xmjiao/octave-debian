@@ -1,3 +1,24 @@
+octave (3.6.2-1) unstable; urgency=low
+
+  * Imported Upstream version 3.6.2
+  * base2dec.patch: remove patch, applied upstream
+  * Refresh other patches
+  * debian/copyright: convert to machine-readable format 1.0
+  * README.Debian: discourage the use of pkg.m; other minor improvements
+    (Closes: #672651)
+  * Remove Lintian overrides for hardening-no-stackprotector
+
+ -- Sébastien Villemot <sebastien.villemot@ens.fr>  Fri, 01 Jun 2012 16:06:30 +0200
+
+octave (3.6.1-6) unstable; urgency=low
+
+  * base2dec.path: new patch
+  * Remove unneeded Build-Depends on quilt, to make lintian happy
+  * Use "set -e" in octave.{postinst,prerm}, to make lintian happy
+  * Add lintian overrides for false positives on hardening compilation flags
+
+ -- Sébastien Villemot <sebastien.villemot@ens.fr>  Sun, 20 May 2012 16:59:45 +0200
+
 octave (3.6.1-5) unstable; urgency=low
 
   * Mention in the changelog entry for 3.4.3-1 that octave-depends was removed
