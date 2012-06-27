@@ -1,3 +1,12 @@
+octave (3.6.2-2) unstable; urgency=low
+
+  * Recommend libatlas3-base instead of libatlas3gf-base (package name changed)
+  * Recommend libopenblas-base as an alternative to libatlas3-base
+  * Recommend gnuplot-x11 | gnuplot-qt instead of gnuplot (Closes: #677672)
+  * Build-Depends on liblapack-dev >= 3.4.1-4 to get the correct shlibs:Depends
+
+ -- Sébastien Villemot <sebastien.villemot@ens.fr>  Wed, 27 Jun 2012 20:32:07 +0000
+
 octave (3.6.2-1) unstable; urgency=low
 
   * Imported Upstream version 3.6.2
