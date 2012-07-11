@@ -1,3 +1,11 @@
+octave (3.6.2-3) unstable; urgency=low
+
+  * octave.postinst: make sure that /usr/share/octave/packages exists.
+    This directory can be incorrectly removed by octave3.2's postrm during an
+    upgrade from Squeeze. (Closes: #681064)
+
+ -- Sébastien Villemot <sebastien.villemot@ens.fr>  Wed, 11 Jul 2012 15:00:12 +0000
+
 octave (3.6.2-2) unstable; urgency=low
 
   * Recommend libatlas3-base instead of libatlas3gf-base (package name changed)
