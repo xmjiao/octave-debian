@@ -1,3 +1,11 @@
+octave (3.6.2-4) unstable; urgency=low
+
+  [ Mike Miller ]
+  * Modify octave.conf to set pkg prefix without dpkg-architecture
+    (Closes: #682207)
+
+ -- Sébastien Villemot <sebastien.villemot@ens.fr>  Mon, 30 Jul 2012 17:12:54 +0200
+
 octave (3.6.2-3) unstable; urgency=low
 
   * octave.postinst: make sure that /usr/share/octave/packages exists.
