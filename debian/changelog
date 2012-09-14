@@ -1,3 +1,15 @@
+octave (3.6.3-1) experimental; urgency=low
+
+  [ Sébastien Villemot ]
+  * Imported Upstream version 3.6.3
+  * debian/copyright: reflect upstream changes
+  * rcond.patch: new patch taken from upstream, fixes rcond function
+
+  [ Rafael Laboissiere ]
+  * Avoid X11-related warning in postint script (Closes: #681065)
+
+ -- Sébastien Villemot <sebastien.villemot@ens.fr>  Fri, 14 Sep 2012 11:24:24 +0200
+
 octave (3.6.2-5) unstable; urgency=low
 
   * Make liboctave-dev coinstallable again with all HDF5 variants
