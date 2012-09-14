@@ -1,3 +1,12 @@
+octave (3.6.2-5) unstable; urgency=low
+
+  * Make liboctave-dev coinstallable again with all HDF5 variants
+    + Now depends on libhdf5-dev | libhdf5-openmpi-dev | libhdf5-mpich2-dev
+    + mkoctfile-mpi.diff: patch reintroduced back; includes MPI headers when
+      compiling with mkoctfile (see #598227)
+
+ -- Sébastien Villemot <sebastien.villemot@ens.fr>  Sat, 18 Aug 2012 16:35:11 +0000
+
 octave (3.6.2-4) unstable; urgency=low
 
   [ Mike Miller ]
