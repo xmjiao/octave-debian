@@ -1,4 +1,140 @@
+2012-09-04  John W. Eaton  <jwe@octave.org>
+
+	Version 3.6.3 released.
+
+	* configure.ac (AC_INIT): Version is now 3.6.3.
+	(OCTAVE_RELEASE_DATE): Now 2012-09-04.
+
+	Files: configure.ac
+
+	handle scalar-sparse-matrix .^ matrix ops
+
+	* sparse-xpow.cc (scalar_xpow): New function.
+	(elem_xpow (const SparseMatrix&, const SparseMatrix&),
+	elem_xpow (const SparseComplexMatrix&, const SparseMatrix&),
+	elem_xpow (const SparseMatrix&, const SparseComplexMatrix&),
+	elem_xpow (const SparseComplexMatrix&, const SparseComplexMatrix&)):
+	Forward to scalar_xpow if first arg is 1x1.  New tests.
+
+	Files: src/sparse-xpow.cc
+
+2012-08-06  Carlo de Falco  <cdf@users.sourceforge.net>
+
+	Fix bug #37033 in diff ()
+
+	* mx-inlines.cc(mx_inline_diff): fix bug leading to incorrect results
+	when order=2
+
+	Files: liboctave/mx-inlines.cc
+
+2012-07-21  Jordi Gutiérrez Hermoso  <jordigh@octave.org>
+
+	Fix think-o in 4315a39da4c9
+
+	Files: liboctave/sparse-dmsolve.cc
+
+2012-07-20  John W. Eaton  <jwe@octave.org>
+
+	avoid error in "help gsvd" call
+
+	* unimplemented.m: Missing continuation in string construction.
+
+	Files: scripts/help/unimplemented.m
+
+2012-07-19  Jordi Gutiérrez Hermoso  <jordigh@octave.org>
+
+	Do computations with octave_uint64 to avoid overflow
+
+	* sparse-dmsolve (MSparse<T>::dmsolve_extract): Perform multiplication
+	  and comparison in octave_uint64 to avoid overflow.
+
+	Files: liboctave/sparse-dmsolve.cc
+
+2012-07-16  Carnë Draug  <carandraug+dev@gmail.com>
+
+	doc: typo on PS1 documentation example
+
+	Files: src/input.cc
+
+2012-07-16  Nicholas Musolino  <musolino@mit.edu>
+
+	* voronoi.m: Fix cut and paste error.
+
+	Files: scripts/geometry/voronoi.m
+
+2012-07-04  John W. Eaton  <jwe@octave.org>
+
+	use mwSize for size arguments to mxArray_sparse constructor (bug #36783)
+
+	* mex.cc (mxArray_sparse::mxArray_sparse): Declare size arguments
+	mwSize, not int.
+
+	Files: src/mex.cc
+
+2012-06-29  Ben Abbott  <bpabbott@mac.com>
+
+	__go_draw_axes__.m: Add missing terminating semicolon.
+
+	Files: scripts/plot/private/__go_draw_axes__.m
+
+2012-06-26  John W. Eaton  <jwe@octave.org>
+
+	doc: trivial doc fix
+
+	* oop.txi: remove stray \ from @ifnottex table, not @iftex table (I
+	guess this fix wasn't so trivial after all).
+
+	Files: doc/interpreter/oop.txi
+
+	avoid calling putback more than once between reads
+
+	* liboctave/lo-utils.cc (octave_read_value<double>,
+	(octave_read_value<float>): Save stream position with tellg.  On
+	failure, restore stream position with seekg. Avoid calling putback
+	multiple times between stream reads.
+	(octave_read_inf_nan_na, octave_read_float_inf_nan_na): Don't call
+	putback.  Make it the caller's responsibility to reset stream
+	positioning on failed reads.
+
+	Files: liboctave/lo-utils.cc
+
+	doc: trivial doc fix
+
+	oop.txi: Remove stray \ in table.
+
+	Files: doc/interpreter/oop.txi
+
+2012-06-21  David Bateman  <dbateman@free.fr>
+
+	Return sparse column vectors when the indexing allows it (bug #36656)
+
+	* Sparse.cc (Sparse<T>::index): Return a column vector when it's known
+	  to be the desired output. Add a test
+
+	Files: liboctave/Sparse.cc
+
+2012-06-21  Jordi Gutiérrez Hermoso  <jordigh@octave.org>
+
+	Assign the sparse column index when deleting contiguous columns (bug #36656)
+
+	* Sparse.cc (Sparse<T>::delete_elements): Fix the offset for which the
+	  column index needs to be amended after deleting columns. Add a test.
+
+	Files: liboctave/Sparse.cc
+
+2012-06-05  Rik  <octave@nomad.inbox5.com>
+
+	prctile.m: Fix error when called with just a single argument (bug #36597).
+
+	* prctile.m: Fix error when called with just a single argument (bug #36597).
+
+	Files: scripts/statistics/base/prctile.m
+
 2012-05-31  John W. Eaton  <jwe@octave.org>
+
+	Added tag release-3-6-2 for changeset 551566201318
+
+	Files: .hgtags
 
 	Version 3.6.2 released.
 

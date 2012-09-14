@@ -79,7 +79,7 @@ compatibility.
      <p>Octave has limited support for nested functions. That is
 
      <pre class="example">          function y = foo (x)
-            y = bar(x)
+            y = bar (x)
             function y = bar (x)
               y = ...;
             end
@@ -88,7 +88,7 @@ compatibility.
      <p>is equivalent to
 
      <pre class="example">          function y = foo (x)
-             y = bar(x)
+             y = bar (x)
           end
           function y = bar (x)
              y = ...;
@@ -253,7 +253,7 @@ need to use code written for <span class="sc">Matlab</span> that depends on this
 behaviour, you can enable it since Octave 3.4.0 with the following
 command:
 
-     <pre class="example">            do_braindead_shortcircuit_evaluation(1)
+     <pre class="example">            do_braindead_shortcircuit_evaluation (1)
 </pre>
      <p>Note that the difference with <span class="sc">Matlab</span> is also significant when
 either argument is a function with side effects or if the first argument
@@ -278,7 +278,7 @@ considered true, every element of the object must be nonzero or
 logically true).
 
      <p>Finally, note the inconsistence of thinking of the condition of an if
-statement as being equivalent to <code>all(X(:))</code> when <var>X</var> is a
+statement as being equivalent to <code>all (X(:))</code> when <var>X</var> is a
 matrix.  This is true for all cases EXCEPT empty matrices:
 
      <pre class="example">            if ([0, 1]) == if (all ([0, 1]))   ==&gt;  i.e., condition is false.
@@ -315,7 +315,7 @@ use a minimum norm solution, whereas <span class="sc">Matlab</span> uses an appr
 is equivalent to
 
      <pre class="example">          function x = mldivide (A, b)
-            [Q, R, E] = qr(A);
+            [Q, R, E] = qr (A);
             x = [A \ b, E(:, 1:m) * (R(:, 1:m) \ (Q' * b))]
           end
 </pre>
@@ -326,26 +326,26 @@ other ways.
      <p>A numerical question arises: how big can the null space component
 become, relative to the minimum-norm solution? Can it be nicely bounded,
 or can it be arbitrarily big? Consider this example:
-
+OctaveFAQ.texi
      <pre class="example">          m = 10;
           n = 10000;
-          A = ones(m, n) + 1e-6 * randn(m,n);
-          b = ones(m, 1) + 1e-6 * randn(m,1);
-          norm(A \ b)
+          A = ones (m, n) + 1e-6 * randn (m,n);
+          b = ones (m, 1) + 1e-6 * randn (m,1);
+          norm (A \ b)
 </pre>
      <p class="noindent">while Octave's minimum-norm values are around 3e-2, <span class="sc">Matlab</span>'s
 results are 50-times larger. For another issue, try this code:
 
      <pre class="example">          m = 5;
           n = 100;
-          j = floor(m * rand(1, n)) + 1;
-          b = ones(m, 1);
-          A = zeros(m, n);
-          A(sub2ind(size(A),j,1:n)) = 1;
+          j = floor (m * rand (1, n)) + 1;
+          b = ones (m, 1);
+          A = zeros (m, n);
+          A(sub2ind (size (A),j,1:n)) = 1;
           x = A \ b;
-          [dummy,p] = sort(rand(1,n));
-          y = A(:,p)\b;
-          norm(x(p)-y)
+          [dummy,p] = sort (rand (1,n));
+          y = A(:,p) \ b;
+          norm (x(p)-y)
 </pre>
      <p class="noindent">It shows that unlike in Octave, mldivide in <span class="sc">Matlab</span> is not invariant
 with respect to column permutations. If there are multiple columns of
@@ -424,10 +424,10 @@ prompt, and the variable "a" is not reset to the saved value. In the
 second case the variable "a" is reset correctly.  Therefore <span class="sc">Matlab</span>
 gives no safe way of temporarily changing global variables.
 
-          <li>Indexing can be applied to all objects in Octave and not just
+          <li>Indexing can be applied to all objects in Octave and not just a
 variable. Therefore <code>sin(x)(1:10);</code> for example is perfectly valid
 in Octave but not <span class="sc">Matlab</span>. To do the same in <span class="sc">Matlab</span> you must do
-<code>y = sin(x); y = y([1:10]);</code>
+<code>y = sin (x); y = y([1:10]);</code>
 
           <li>Octave has the operators "++", "&ndash;", "-=", "+=", "*=", etc.  As
 <span class="sc">Matlab</span> doesn't, if you are sharing code these should be avoided.

@@ -1,4 +1,4 @@
-This is octave.info, produced by makeinfo version 4.13 from octave.texi.
+This is /home/jwe/src/octave-stable/doc/interpreter/octave.info, produced by makeinfo version 4.13 from /home/jwe/src/octave-stable/doc/interpreter/octave.texi.
 
 START-INFO-DIR-ENTRY
 * Octave: (octave).           Interactive language for numerical computations.
@@ -7052,10 +7052,11 @@ linear axes.  For example,
 displays a sine wave shown in *note fig:plot::.  On most systems, this
 command will open a separate plot window to display the graph.
 
-
+ [image src="plot.png" text="
 +---------------------------------+
 | Image unavailable in text mode. |
 +---------------------------------+
+" ]
 Figure 15.1: Simple Two-Dimensional Plot.
 
  -- Function File:  plot (Y)
@@ -7289,10 +7290,11 @@ displaying discrete data.  For example,
 produces the histogram of 10,000 normally distributed random numbers
 shown in *note fig:hist::.
 
-
+ [image src="hist.png" text="
 +---------------------------------+
 | Image unavailable in text mode. |
 +---------------------------------+
+" ]
 Figure 15.2: Histogram.
 
  -- Function File:  bar (X, Y)
@@ -7780,10 +7782,11 @@ functions produce plots with error bar markers.  For example,
 
 produces the figure shown in *note fig:errorbar::.
 
-
+ [image src="errorbar.png" text="
 +---------------------------------+
 | Image unavailable in text mode. |
 +---------------------------------+
+" ]
 Figure 15.3: Errorbar plot.
 
  -- Function File:  errorbar (ARGS)
@@ -7910,10 +7913,11 @@ and linear.  For example,
 
 produces the spiral plot shown in *note fig:polar::.
 
-
+ [image src="polar.png" text="
 +---------------------------------+
 | Image unavailable in text mode. |
 +---------------------------------+
+" ]
 Figure 15.4: Polar plot.
 
  -- Function File:  polar (THETA, RHO)
