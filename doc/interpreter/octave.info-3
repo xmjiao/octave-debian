@@ -1,4 +1,4 @@
-This is octave.info, produced by makeinfo version 4.13 from octave.texi.
+This is /home/jwe/src/octave-stable/doc/interpreter/octave.info, produced by makeinfo version 4.13 from /home/jwe/src/octave-stable/doc/interpreter/octave.texi.
 
 START-INFO-DIR-ENTRY
 * Octave: (octave).           Interactive language for numerical computations.
@@ -380,10 +380,11 @@ the use of the function `meshgrid' to create matrices of X and Y
 coordinates to use for plotting the Z data.  The `ndgrid' function is
 similar to `meshgrid', but works for N-dimensional matrices.
 
-
+ [image src="mesh.png" text="
 +---------------------------------+
 | Image unavailable in text mode. |
 +---------------------------------+
+" ]
 Figure 15.5: Mesh plot.
 
    The `meshc' function is similar to `mesh', but also produces a plot
@@ -399,10 +400,11 @@ without requiring it to form a surface.  For example,
 
 displays the spiral in three dimensions shown in *note fig:plot3::.
 
-
+ [image src="plot3.png" text="
 +---------------------------------+
 | Image unavailable in text mode. |
 +---------------------------------+
+" ]
 Figure 15.6: Three-dimensional spiral.
 
    Finally, the `view' function changes the viewpoint for

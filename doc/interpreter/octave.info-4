@@ -1,4 +1,4 @@
-This is octave.info, produced by makeinfo version 4.13 from octave.texi.
+This is /home/jwe/src/octave-stable/doc/interpreter/octave.info, produced by makeinfo version 4.13 from /home/jwe/src/octave-stable/doc/interpreter/octave.texi.
 
 START-INFO-DIR-ENTRY
 * Octave: (octave).           Interactive language for numerical computations.
@@ -2550,7 +2550,7 @@ fig:spmatrix::, for an example of the use of "spy".  More advanced
 graphical information can be obtained with the "treeplot", "etreeplot"
 and "gplot" commands.
 
-
+ [image src="spmatrix.png" text="
             |  * *
             |  * * * *
             |    * *   * *
@@ -2567,7 +2567,7 @@ and "gplot" commands.
             |              *             *
          15 -                *             *
             |----------|---------|---------|
-                       5        10        15
+                       5        10        15" ]
 Figure 22.1: Structure of simple sparse matrix.
 
    One use of sparse matrices is in graph theory, where the
@@ -2875,7 +2875,7 @@ reordering functions "colperm" and "randperm" are also available.
    *Note fig:simplematrix::, for an example of the structure of a simple
 positive definite matrix.
 
-
+ [image src="spmatrix.png" text="
             |  * *
             |  * * * *
             |    * *   * *
@@ -2892,7 +2892,7 @@ positive definite matrix.
             |              *             *
          15 -                *             *
             |----------|---------|---------|
-                       5        10        15
+                       5        10        15" ]
 Figure 22.2: Structure of simple sparse matrix.
 
    The standard Cholesky factorization of this matrix can be obtained
@@ -2915,7 +2915,7 @@ appropriate sparsity preserving reordering of the matrix during the
 factorization, In that case this might be obtained with three return
 arguments as r`[r, p, q] = chol(A); spy(r)'.
 
-
+ [image src="spchol.png" text="
             |  * *
             |    * * *
             |      * * * *
@@ -2932,11 +2932,11 @@ arguments as r`[r, p, q] = chol(A); spy(r)'.
             |                            * *
          15 -                              *
             |----------|---------|---------|
-                       5        10        15
+                       5        10        15" ]
 Figure 22.3: Structure of the un-permuted Cholesky factorization of the
 above matrix.
 
-
+ [image src="spcholperm.png" text="
             |  * *
             |    *       *
             |      *   *
@@ -2953,7 +2953,7 @@ above matrix.
             |                            * *
          15 -                              *
             |----------|---------|---------|
-                       5        10        15
+                       5        10        15" ]
 Figure 22.4: Structure of the permuted Cholesky factorization of the
 above matrix.
 
