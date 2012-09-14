@@ -229,7 +229,6 @@ Files: m4/00gnulib.m4
        m4/isnand.m4
        m4/isnanf.m4
        m4/isnanl.m4
-       m4/largefile.m4
        m4/link.m4
        m4/localcharset.m4
        m4/locale-fr.m4
