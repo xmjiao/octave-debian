@@ -1,3 +1,18 @@
+octave (3.6.3-2) experimental; urgency=low
+
+  [ Rafael Laboissiere ]
+  * debian/patches/fix-sparse-unit-testing.patch: Add patch
+
+  [ Sébastien Villemot ]
+  * Use my @debian.org email address
+  * debian/rules: add missing dependency information for dh_makeshlibs.
+    The latest backward-compatible API change occurred in Octave 3.6.2. This
+    has to be reflected in the shlibs file.
+  * Bump Standards-Version to 3.9.4, no changes needed
+  * Remove obsolete DM-Upload-Allowed flag
+
+ -- Sébastien Villemot <sebastien@debian.org>  Wed, 26 Sep 2012 22:26:10 +0000
+
 octave (3.6.3-1) experimental; urgency=low
 
   [ Sébastien Villemot ]
