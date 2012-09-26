@@ -40,5 +40,5 @@ these packages, so one can use mkoctfile then.
 pkg.m is not part of liboctave-dev as it's used to find already installed
 packages (via /etc/octave.conf).
 
- -- Sébastien Villemot <sebastien.villemot@ens.fr>, Fri,  1 Jun 2012 14:30:32 +0200
+ -- Sébastien Villemot <sebastien@debian.org>, Fri,  1 Jun 2012 14:30:32 +0200
 

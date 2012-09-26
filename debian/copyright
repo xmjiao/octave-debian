@@ -109,7 +109,7 @@ Copyright: Andrew D. Fernandes <adfernan@cnd.mcgill.ca>
            Dirk Eddelbuettel <edd@debian.org>
            2005-2009, 2012 Rafael Laboissiere <rafael@laboissiere.net>
            2006-2012 Thomas Weber <tweber@debian.org>
-           2011-2012 Sébastien Villemot <sebastien.villemot@ens.fr>
+           2011-2012 Sébastien Villemot <sebastien@debian.org>
 License: GPL-3+           
 
 Files: liboctave/kpse.cc
