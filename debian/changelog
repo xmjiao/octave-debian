@@ -1,3 +1,37 @@
+octave (3.6.2-5) unstable; urgency=low
+
+  * Make liboctave-dev coinstallable again with all HDF5 variants
+    + Now depends on libhdf5-dev | libhdf5-openmpi-dev | libhdf5-mpich2-dev
+    + mkoctfile-mpi.diff: patch reintroduced back; includes MPI headers when
+      compiling with mkoctfile (see #598227)
+
+ -- Sébastien Villemot <sebastien.villemot@ens.fr>  Sat, 18 Aug 2012 16:35:11 +0000
+
+octave (3.6.2-4) unstable; urgency=low
+
+  [ Mike Miller ]
+  * Modify octave.conf to set pkg prefix without dpkg-architecture
+    (Closes: #682207)
+
+ -- Sébastien Villemot <sebastien.villemot@ens.fr>  Mon, 30 Jul 2012 17:12:54 +0200
+
+octave (3.6.2-3) unstable; urgency=low
+
+  * octave.postinst: make sure that /usr/share/octave/packages exists.
+    This directory can be incorrectly removed by octave3.2's postrm during an
+    upgrade from Squeeze. (Closes: #681064)
+
+ -- Sébastien Villemot <sebastien.villemot@ens.fr>  Wed, 11 Jul 2012 15:00:12 +0000
+
+octave (3.6.2-2) unstable; urgency=low
+
+  * Recommend libatlas3-base instead of libatlas3gf-base (package name changed)
+  * Recommend libopenblas-base as an alternative to libatlas3-base
+  * Recommend gnuplot-x11 | gnuplot-qt instead of gnuplot (Closes: #677672)
+  * Build-Depends on liblapack-dev >= 3.4.1-4 to get the correct shlibs:Depends
+
+ -- Sébastien Villemot <sebastien.villemot@ens.fr>  Wed, 27 Jun 2012 20:32:07 +0000
+
 octave (3.6.2-1) unstable; urgency=low
 
   * Imported Upstream version 3.6.2
