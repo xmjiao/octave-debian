@@ -1,3 +1,15 @@
+octave (3.6.2-5~bpo60+1) squeeze-backports; urgency=low
+
+  * Rebuild for squeeze-backports.
+  * Downgrade to debhelper 8
+  * Drop build-dependencies on dh-exec and dpkg-dev
+  * Hardcode upstream version number in debian/octave-common.links
+  * Remove multi-arch support
+  * Adjust dependencies for BLAS, LAPACK and HDF5
+  * Thanks to Rafael Cunha de Almeida for independently contributing a backport
+
+ -- Sébastien Villemot <sebastien@debian.org>  Fri, 12 Oct 2012 20:03:37 +0200
+
 octave (3.6.2-5) unstable; urgency=low
 
   * Make liboctave-dev coinstallable again with all HDF5 variants
