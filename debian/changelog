@@ -1,3 +1,18 @@
+octave (3.6.4-1) experimental; urgency=low
+
+  * Imported Upstream version 3.6.4
+  * debian/copyright: add missing information about Fortran files
+  * Remove patches applied upstream:
+    + rcond.patch
+    + fix-sparse-unit-testing.patch
+  * Refresh other patches
+  * Tighten dependency of octave on liboctave1 (Closes: #691311)
+  * Recommend pstoedit (needed by plot/print.m)
+  * contourc-stack-overflow.diff: new patch, fixes segfault in contourc
+    (Closes: #695434)
+
+ -- Sébastien Villemot <sebastien@debian.org>  Sat, 23 Feb 2013 19:35:40 +0100
+
 octave (3.6.3-2) experimental; urgency=low
 
   [ Rafael Laboissiere ]
