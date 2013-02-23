@@ -6324,9 +6324,9 @@ Author: Thomas Weber <tweber@debian.org>
  OCTINTERP_API
 --- a/src/Makefile.am
 +++ b/src/Makefile.am
-@@ -102,7 +102,6 @@
-   DOCSTRINGS \
+@@ -103,7 +103,6 @@
    find-defun-files.sh \
+   gendoc.pl \
    genprops.awk \
 -  gl2ps.c \
    graphics.h.in \
@@ -6350,7 +6350,7 @@ Author: Thomas Weber <tweber@debian.org>
    zfstream.cc \
 --- a/configure.ac
 +++ b/configure.ac
-@@ -943,6 +943,16 @@
+@@ -953,6 +953,16 @@
  AC_SUBST(GRAPHICS_CFLAGS)
  AC_SUBST(GRAPHICS_LIBS)
  

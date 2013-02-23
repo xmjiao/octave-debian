@@ -8,12 +8,12 @@ Author: Thomas Weber <tweber@debian.org>
      src = fullfile (packdir, "src");
      octave_bindir = octave_config_info ("bindir");
 -    ver = version ();
--    mkoctfile = fullfile (octave_bindir, sprintf ("mkoctfile-%s", ver));
--    octave_config = fullfile (octave_bindir, sprintf ("octave-config-%s", ver));
+-    mkoctfile_program = fullfile (octave_bindir, sprintf ("mkoctfile-%s", ver));
+-    octave_config_program = fullfile (octave_bindir, sprintf ("octave-config-%s", ver));
 -    octave_binary = fullfile (octave_bindir, sprintf ("octave-%s", ver));
-+    mkoctfile = fullfile (octave_bindir, "mkoctfile");
-+    octave_config = fullfile (octave_bindir, "octave-config");
++    mkoctfile_program = fullfile (octave_bindir, "mkoctfile");
++    octave_config_program = fullfile (octave_bindir, "octave-config");
 +    octave_binary = fullfile (octave_bindir, "octave");
-     cenv = {"MKOCTFILE"; mkoctfile;
-             "OCTAVE_CONFIG"; octave_config;
+     cenv = {"MKOCTFILE"; mkoctfile_program;
+             "OCTAVE_CONFIG"; octave_config_program;
              "OCTAVE"; octave_binary;
