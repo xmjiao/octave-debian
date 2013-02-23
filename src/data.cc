@@ -1354,6 +1354,11 @@ Given a matrix argument, instead of a vector, @code{diag} extracts the\n\
 %!assert(diag (int8([0, 1, 0, 0; 0, 0, 2, 0; 0, 0, 0, 3; 0, 0, 0, 0]), 1), int8([1; 2; 3]));
 %!assert(diag (int8([0, 0, 0, 0; 1, 0, 0, 0; 0, 2, 0, 0; 0, 0, 3, 0]), -1), int8([1; 2; 3]));
 
+## bug #37411
+%!assert (diag (diag ([5, 2, 3])(:,1)), diag([5 0 0 ]))
+%!assert (diag (diag ([5, 2, 3])(:,1), 2),  [0 0 5 0 0; zeros(4, 5)])
+%!assert (diag (diag ([5, 2, 3])(:,1), -2), [[0 0 5 0 0]', zeros(5, 4)])
+
 ## Test non-square size
 %!assert(diag ([1,2,3], 6, 3), [1 0 0; 0 2 0; 0 0 3; 0 0 0; 0 0 0; 0 0 0])
 %!assert (diag (1, 2, 3), [1,0,0; 0,0,0]);
@@ -6200,7 +6205,7 @@ ordered lists.\n\
 */
 
 // Sort the rows of the matrix @var{a} according to the order
-// specified by @var{mode}, which can either be `ascend' or `descend'
+// specified by @var{mode}, which can either be 'ascend' or 'descend'
 // and return the index vector corresponding to the sort order.
 //
 // This function does not yet support sparse matrices.

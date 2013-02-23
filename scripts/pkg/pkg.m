@@ -1342,11 +1342,11 @@ function configure_make (desc, packdir, verbose)
     src = fullfile (packdir, "src");
     octave_bindir = octave_config_info ("bindir");
     ver = version ();
-    mkoctfile = fullfile (octave_bindir, sprintf ("mkoctfile-%s", ver));
-    octave_config = fullfile (octave_bindir, sprintf ("octave-config-%s", ver));
+    mkoctfile_program = fullfile (octave_bindir, sprintf ("mkoctfile-%s", ver));
+    octave_config_program = fullfile (octave_bindir, sprintf ("octave-config-%s", ver));
     octave_binary = fullfile (octave_bindir, sprintf ("octave-%s", ver));
-    cenv = {"MKOCTFILE"; mkoctfile;
-            "OCTAVE_CONFIG"; octave_config;
+    cenv = {"MKOCTFILE"; mkoctfile_program;
+            "OCTAVE_CONFIG"; octave_config_program;
             "OCTAVE"; octave_binary;
             "INSTALLDIR"; desc.dir};
     scenv = sprintf ("%s=\"%s\" ", cenv{:});
@@ -1354,16 +1354,16 @@ function configure_make (desc, packdir, verbose)
     if (exist (fullfile (src, "configure"), "file"))
       flags = "";
       if (isempty (getenv ("CC")))
-        flags = cstrcat (flags, " CC=\"", octave_config_info ("CC"), "\"");
+        flags = cstrcat (flags, " CC=\"", mkoctfile ("-p", "CC"), "\"");
       endif
       if (isempty (getenv ("CXX")))
-        flags = cstrcat (flags, " CXX=\"", octave_config_info ("CXX"), "\"");
+        flags = cstrcat (flags, " CXX=\"", mkoctfile ("-p", "CXX"), "\"");
       endif
       if (isempty (getenv ("AR")))
-        flags = cstrcat (flags, " AR=\"", octave_config_info ("AR"), "\"");
+        flags = cstrcat (flags, " AR=\"", mkoctfile ("-p", "AR"), "\"");
       endif
       if (isempty (getenv ("RANLIB")))
-        flags = cstrcat (flags, " RANLIB=\"", octave_config_info ("RANLIB"), "\"");
+        flags = cstrcat (flags, " RANLIB=\"", mkoctfile ("-p", "RANLIB"), "\"");
       endif
       [status, output] = shell (cstrcat ("cd '", src, "'; ", scenv,
                                          "./configure --prefix=\"",
@@ -1751,7 +1751,7 @@ function desc = get_description (filename)
         value = strip (line (colon+1:end));
         if (length (value) == 0)
             fclose (fid);
-            error ("The keyword `%s' of the package `%s' has an empty value",
+            error ("The keyword '%s' of the package '%s' has an empty value",
                     keyword, desc.name);
         endif
         desc.(keyword) = value;
@@ -1820,7 +1820,7 @@ function deps_cell = fix_depends (depends)
       sub = dep(lpar(1)+1:rpar(1)-1);
       parts = strsplit (sub, " ", true);
       if (length (parts) != 2)
-        error ("incorrect syntax for dependency `%s' in the DESCRIPTION file\n",
+        error ("incorrect syntax for dependency '%s' in the DESCRIPTION file\n",
                dep);
       endif
       operator = parts{1};
@@ -2416,7 +2416,7 @@ function [url, local_file] = get_forge_download (name)
 endfunction
 
 function list = list_forge_packages ()
-  [list, succ] = urlread ("http://octave.sourceforge.net/list_packages.php");
+  [list, succ] = urlread ("http://packages.octave.org/list_packages.php");
   if (succ)
     list = strsplit (list, " \n\t", true);
   else

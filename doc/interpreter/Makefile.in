@@ -35,7 +35,6 @@
 # along with Octave; see the file COPYING.  If not, see
 # <http://www.gnu.org/licenses/>.
 
-
 VPATH = @srcdir@
 am__make_dryrun = \
   { \
@@ -75,7 +74,6 @@ DIST_COMMON = $(dist_man1_MANS) $(octave_TEXINFOS) \
 	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(srcdir)/images.mk $(srcdir)/stamp-vti $(srcdir)/version.texi \
 	$(top_srcdir)/build-aux/common.mk TODO
-noinst_PROGRAMS = munge-texi$(EXEEXT)
 subdir = doc/interpreter
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
@@ -182,25 +180,8 @@ mkinstalldirs = $(SHELL) $(top_srcdir)/build-aux/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-PROGRAMS = $(noinst_PROGRAMS)
-am_munge_texi_OBJECTS = munge-texi.$(OBJEXT)
-munge_texi_OBJECTS = $(am_munge_texi_OBJECTS)
-munge_texi_LDADD = $(LDADD)
-DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
-depcomp = $(SHELL) $(top_srcdir)/build-aux/depcomp
-am__depfiles_maybe = depfiles
-am__mv = mv -f
-CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
-	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
-LTCXXCOMPILE = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
-	--mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
-	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
-CXXLD = $(CXX)
-CXXLINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
-	--mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
-	$(LDFLAGS) -o $@
-SOURCES = $(munge_texi_SOURCES)
-DIST_SOURCES = $(munge_texi_SOURCES)
+SOURCES =
+DIST_SOURCES =
 INFO_DEPS = $(srcdir)/octave.info
 am__TEXINFO_TEX_DIR = $(srcdir)/..
 DVIS = octave.dvi
@@ -248,8 +229,6 @@ am__uninstall_files_from_dir = { \
 NROFF = nroff
 MANS = $(dist_man1_MANS)
 DATA = $(octetc_DATA)
-ETAGS = etags
-CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 pkglibexecdir = @pkglibexecdir@
 ACLOCAL = @ACLOCAL@
@@ -305,6 +284,7 @@ COPYSIGN_LIBM = @COPYSIGN_LIBM@
 CPICFLAG = @CPICFLAG@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
+CROSS_TOOL_PREFIX = @CROSS_TOOL_PREFIX@
 CRUFT_DLL_DEFS = @CRUFT_DLL_DEFS@
 CURL_CPPFLAGS = @CURL_CPPFLAGS@
 CURL_LDFLAGS = @CURL_LDFLAGS@
@@ -375,7 +355,6 @@ FONTCONFIG_CFLAGS = @FONTCONFIG_CFLAGS@
 FONTCONFIG_LIBS = @FONTCONFIG_LIBS@
 FPICFLAG = @FPICFLAG@
 FT2_CFLAGS = @FT2_CFLAGS@
-FT2_CONFIG = @FT2_CONFIG@
 FT2_LIBS = @FT2_LIBS@
 GETHOSTNAME_LIB = @GETHOSTNAME_LIB@
 GETOPT_H = @GETOPT_H@
@@ -482,7 +461,6 @@ GNULIB_GETLOGIN = @GNULIB_GETLOGIN@
 GNULIB_GETLOGIN_R = @GNULIB_GETLOGIN_R@
 GNULIB_GETPAGESIZE = @GNULIB_GETPAGESIZE@
 GNULIB_GETPEERNAME = @GNULIB_GETPEERNAME@
-GNULIB_GETS = @GNULIB_GETS@
 GNULIB_GETSOCKNAME = @GNULIB_GETSOCKNAME@
 GNULIB_GETSOCKOPT = @GNULIB_GETSOCKOPT@
 GNULIB_GETSUBOPT = @GNULIB_GETSUBOPT@
@@ -1037,6 +1015,8 @@ LIBCRUFT = @LIBCRUFT@
 LIBINTL = @LIBINTL@
 LIBOBJS = @LIBOBJS@
 LIBOCTAVE = @LIBOCTAVE@
+
+# List of libraries and their special compilation flags
 LIBOCTINTERP = @LIBOCTINTERP@
 LIBPRE = @LIBPRE@
 LIBS = @LIBS@
@@ -1060,7 +1040,14 @@ MAGICK_LIBS = @MAGICK_LIBS@
 MAKEINFO = @MAKEINFO@
 MANIFEST_TOOL = @MANIFEST_TOOL@
 MKDIR_P = @MKDIR_P@
+MKOCTFILE_AR = @MKOCTFILE_AR@
+MKOCTFILE_CC = @MKOCTFILE_CC@
+MKOCTFILE_CXX = @MKOCTFILE_CXX@
+MKOCTFILE_DL_LD = @MKOCTFILE_DL_LD@
 MKOCTFILE_DL_LDFLAGS = @MKOCTFILE_DL_LDFLAGS@
+MKOCTFILE_F77 = @MKOCTFILE_F77@
+MKOCTFILE_LD_CXX = @MKOCTFILE_LD_CXX@
+MKOCTFILE_RANLIB = @MKOCTFILE_RANLIB@
 NEXT_AS_FIRST_DIRECTIVE_DIRENT_H = @NEXT_AS_FIRST_DIRECTIVE_DIRENT_H@
 NEXT_AS_FIRST_DIRECTIVE_ERRNO_H = @NEXT_AS_FIRST_DIRECTIVE_ERRNO_H@
 NEXT_AS_FIRST_DIRECTIVE_FCNTL_H = @NEXT_AS_FIRST_DIRECTIVE_FCNTL_H@
@@ -1761,17 +1748,18 @@ octave_TEXINFOS = \
 
 octetc_DATA = doc-cache
 DOCSTRING_FILES = $(shell $(srcdir)/find-docstring-files.sh "$(top_srcdir)")
-munge_texi_SOURCES = munge-texi.cc
 SPELLCHECK_FILES = $(MUNGED_TEXI_SRC:.texi=.scheck)
 EXTRA_DIST = \
   config-images.sh \
   contributors.in \
+  doc-cache \
   find-docstring-files.sh \
   images \
   images.awk \
   images.mk \
   mk_doc_cache.m \
   mkcontrib.awk \
+  munge-texi.pl \
   octave.dvi \
   octave.html \
   octave.pdf \
@@ -1781,12 +1769,12 @@ EXTRA_DIST = \
   $(LOGOS) \
   $(TXI_SRC)
 
-DISTCLEANFILES = $(octave_TEXINFOS) doc-cache
-MAINTAINERCLEANFILES = $(IMAGES)
+DISTCLEANFILES = $(octave_TEXINFOS)
+MAINTAINERCLEANFILES = $(IMAGES) doc-cache
 all: all-am
 
 .SUFFIXES:
-.SUFFIXES: .cc .dvi .html .info .lo .o .obj .pdf .ps .texi
+.SUFFIXES: .dvi .html .info .pdf .ps .texi
 $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/build-aux/common.mk $(srcdir)/images.mk $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
@@ -1818,47 +1806,6 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(am__aclocal_m4_deps):
-
-clean-noinstPROGRAMS:
-	@list='$(noinst_PROGRAMS)'; test -n "$$list" || exit 0; \
-	echo " rm -f" $$list; \
-	rm -f $$list || exit $$?; \
-	test -n "$(EXEEXT)" || exit 0; \
-	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
-	echo " rm -f" $$list; \
-	rm -f $$list
-munge-texi$(EXEEXT): $(munge_texi_OBJECTS) $(munge_texi_DEPENDENCIES) $(EXTRA_munge_texi_DEPENDENCIES) 
-	@rm -f munge-texi$(EXEEXT)
-	$(CXXLINK) $(munge_texi_OBJECTS) $(munge_texi_LDADD) $(LIBS)
-
-mostlyclean-compile:
-	-rm -f *.$(OBJEXT)
-
-distclean-compile:
-	-rm -f *.tab.c
-
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/munge-texi.Po@am__quote@
-
-.cc.o:
-@am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ $<
-
-.cc.obj:
-@am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
-
-.cc.lo:
-@am__fastdepCXX_TRUE@	$(LTCXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Plo
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ $<
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -2090,58 +2037,12 @@ uninstall-octetcDATA:
 	@list='$(octetc_DATA)'; test -n "$(octetcdir)" || list=; \
 	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
 	dir='$(DESTDIR)$(octetcdir)'; $(am__uninstall_files_from_dir)
-
-ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
-	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
-	unique=`for i in $$list; do \
-	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
-	  done | \
-	  $(AWK) '{ files[$$0] = 1; nonempty = 1; } \
-	      END { if (nonempty) { for (i in files) print i; }; }'`; \
-	mkid -fID $$unique
 tags: TAGS
+TAGS:
 
-TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
-		$(TAGS_FILES) $(LISP)
-	set x; \
-	here=`pwd`; \
-	list='$(SOURCES) $(HEADERS)  $(LISP) $(TAGS_FILES)'; \
-	unique=`for i in $$list; do \
-	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
-	  done | \
-	  $(AWK) '{ files[$$0] = 1; nonempty = 1; } \
-	      END { if (nonempty) { for (i in files) print i; }; }'`; \
-	shift; \
-	if test -z "$(ETAGS_ARGS)$$*$$unique"; then :; else \
-	  test -n "$$unique" || unique=$$empty_fix; \
-	  if test $$# -gt 0; then \
-	    $(ETAGS) $(ETAGSFLAGS) $(AM_ETAGSFLAGS) $(ETAGS_ARGS) \
-	      "$$@" $$unique; \
-	  else \
-	    $(ETAGS) $(ETAGSFLAGS) $(AM_ETAGSFLAGS) $(ETAGS_ARGS) \
-	      $$unique; \
-	  fi; \
-	fi
 ctags: CTAGS
-CTAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
-		$(TAGS_FILES) $(LISP)
-	list='$(SOURCES) $(HEADERS)  $(LISP) $(TAGS_FILES)'; \
-	unique=`for i in $$list; do \
-	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
-	  done | \
-	  $(AWK) '{ files[$$0] = 1; nonempty = 1; } \
-	      END { if (nonempty) { for (i in files) print i; }; }'`; \
-	test -z "$(CTAGS_ARGS)$$unique" \
-	  || $(CTAGS) $(CTAGSFLAGS) $(AM_CTAGSFLAGS) $(CTAGS_ARGS) \
-	     $$unique
+CTAGS:
 
-GTAGS:
-	here=`$(am__cd) $(top_builddir) && pwd` \
-	  && $(am__cd) $(top_srcdir) \
-	  && gtags -i $(GTAGS_ARGS) "$$here"
-
-distclean-tags:
-	-rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH tags
 
 distdir: $(DISTFILES)
 	@list='$(MANS)'; if test -n "$$list"; then \
@@ -2191,7 +2092,7 @@ distdir: $(DISTFILES)
 	  dist-info dist-hook
 check-am: all-am
 check: check-am
-all-am: Makefile $(INFO_DEPS) $(PROGRAMS) $(MANS) $(DATA) all-local
+all-am: Makefile $(INFO_DEPS) $(MANS) $(DATA) all-local
 installdirs:
 	for dir in "$(DESTDIR)$(infodir)" "$(DESTDIR)$(man1dir)" "$(DESTDIR)$(octetcdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
@@ -2230,14 +2131,11 @@ maintainer-clean-generic:
 	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
 clean: clean-am
 
-clean-am: clean-aminfo clean-generic clean-libtool \
-	clean-noinstPROGRAMS mostlyclean-am
+clean-am: clean-aminfo clean-generic clean-libtool mostlyclean-am
 
 distclean: distclean-am
-	-rm -rf ./$(DEPDIR)
 	-rm -f Makefile
-distclean-am: clean-am distclean-compile distclean-generic \
-	distclean-tags
+distclean-am: clean-am distclean-generic
 
 dvi: dvi-am
 
@@ -2371,15 +2269,14 @@ install-ps-am: $(PSS)
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-	-rm -rf ./$(DEPDIR)
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-aminfo \
 	maintainer-clean-generic maintainer-clean-vti
 
 mostlyclean: mostlyclean-am
 
-mostlyclean-am: mostlyclean-aminfo mostlyclean-compile \
-	mostlyclean-generic mostlyclean-libtool mostlyclean-vti
+mostlyclean-am: mostlyclean-aminfo mostlyclean-generic \
+	mostlyclean-libtool mostlyclean-vti
 
 pdf: pdf-am
 
@@ -2397,23 +2294,22 @@ uninstall-man: uninstall-man1
 
 .MAKE: install-am install-strip
 
-.PHONY: CTAGS GTAGS all all-am all-local check check-am clean \
-	clean-aminfo clean-generic clean-libtool clean-noinstPROGRAMS \
-	ctags dist-hook dist-info distclean distclean-compile \
-	distclean-generic distclean-libtool distclean-tags distdir dvi \
-	dvi-am html html-am info info-am install install-am \
-	install-data install-data-am install-dvi install-dvi-am \
-	install-exec install-exec-am install-html install-html-am \
-	install-info install-info-am install-man install-man1 \
-	install-octetcDATA install-pdf install-pdf-am install-ps \
-	install-ps-am install-strip installcheck installcheck-am \
-	installdirs maintainer-clean maintainer-clean-aminfo \
+.PHONY: all all-am all-local check check-am clean clean-aminfo \
+	clean-generic clean-libtool dist-hook dist-info distclean \
+	distclean-generic distclean-libtool distdir dvi dvi-am html \
+	html-am info info-am install install-am install-data \
+	install-data-am install-dvi install-dvi-am install-exec \
+	install-exec-am install-html install-html-am install-info \
+	install-info-am install-man install-man1 install-octetcDATA \
+	install-pdf install-pdf-am install-ps install-ps-am \
+	install-strip installcheck installcheck-am installdirs \
+	maintainer-clean maintainer-clean-aminfo \
 	maintainer-clean-generic maintainer-clean-vti mostlyclean \
-	mostlyclean-aminfo mostlyclean-compile mostlyclean-generic \
-	mostlyclean-libtool mostlyclean-vti pdf pdf-am ps ps-am tags \
-	uninstall uninstall-am uninstall-dvi-am uninstall-html-am \
-	uninstall-info-am uninstall-man uninstall-man1 \
-	uninstall-octetcDATA uninstall-pdf-am uninstall-ps-am
+	mostlyclean-aminfo mostlyclean-generic mostlyclean-libtool \
+	mostlyclean-vti pdf pdf-am ps ps-am uninstall uninstall-am \
+	uninstall-dvi-am uninstall-html-am uninstall-info-am \
+	uninstall-man uninstall-man1 uninstall-octetcDATA \
+	uninstall-pdf-am uninstall-ps-am
 
 export AWK
 export SED
@@ -2541,7 +2437,14 @@ $(SED) < $< \
   -e "s|%OCTAVE_CONF_MAGICK_CPPFLAGS%|\"${MAGICK_CPPFLAGS}\"|" \
   -e "s|%OCTAVE_CONF_MAGICK_LDFLAGS%|\"${MAGICK_LDFLAGS}\"|" \
   -e "s|%OCTAVE_CONF_MAGICK_LIBS%|\"${MAGICK_LIBS}\"|" \
-  -e 's|%OCTAVE_CONF_MKOCTFILE_DL_LDFLAGS%|\"@MKOCTFILE_DL_LDFLAGS@\"|' \
+  -e 's|%OCTAVE_CONF_MKOCTFILE_AR%|\"${MKOCTFILE_AR}\"|' \
+  -e 's|%OCTAVE_CONF_MKOCTFILE_CC%|\"${MKOCTFILE_CC}\"|' \
+  -e 's|%OCTAVE_CONF_MKOCTFILE_CXX%|\"${MKOCTFILE_CXX}\"|' \
+  -e 's|%OCTAVE_CONF_MKOCTFILE_DL_LD%|\"${MKOCTFILE_DL_LD}\"|' \
+  -e 's|%OCTAVE_CONF_MKOCTFILE_DL_LDFLAGS%|\"${MKOCTFILE_DL_LDFLAGS}\"|' \
+  -e 's|%OCTAVE_CONF_MKOCTFILE_F77%|\"${MKOCTFILE_F77}\"|' \
+  -e 's|%OCTAVE_CONF_MKOCTFILE_LD_CXX%|\"${MKOCTFILE_LD_CXX}\"|' \
+  -e 's|%OCTAVE_CONF_MKOCTFILE_RANLIB%|\"${MKOCTFILE_RANLIB}\"|' \
   -e "s|%OCTAVE_CONF_OCTAVE_LINK_DEPS%|\"${OCTAVE_LINK_DEPS}\"|" \
   -e "s|%OCTAVE_CONF_OCTAVE_LINK_OPTS%|\"${OCTAVE_LINK_OPTS}\"|" \
   -e "s|%OCTAVE_CONF_OCTINCLUDEDIR%|\"${octincludedir}\"|" \
@@ -2929,9 +2832,8 @@ doc-cache: $(DOCSTRING_FILES) mk_doc_cache.m
 
 $(MUNGED_TEXI_SRC): $(DOCSTRING_FILES) $(munge_texi_SOURCES)
 
-%.texi: %.txi
-	@$(MAKE) $(AM_MAKEFLAGS) munge-texi$(BUILD_EXEEXT)
-	./munge-texi $(top_srcdir) $(DOCSTRING_FILES) < $< > $@-t
+%.texi: %.txi munge-texi.pl
+	$(PERL) $(srcdir)/munge-texi.pl $(top_srcdir) $(DOCSTRING_FILES) < $< > $@-t
 	mv $@-t $@
 
 contributors.texi: contributors.in

@@ -100,6 +100,7 @@ EXTRA_DIST = \
   defaults.h.in \
   DOCSTRINGS \
   find-defun-files.sh \
+  gendoc.pl \
   genprops.awk \
   gl2ps.c \
   graphics.h.in \
@@ -107,7 +108,6 @@ EXTRA_DIST = \
   mk-pkg-add \
   mkbuiltins \
   mkdefs \
-  mkgendoc \
   mkoctfile.cc.in \
   mkoctfile.in \
   mkops \
@@ -572,6 +572,12 @@ DLL_CXXDEFS = @OCTINTERP_DLL_DEFS@
 	  -DMAKE_BUILTINS $< | $(srcdir)/mkdefs $(srcdir) $< > $@-t
 	mv $@-t $@
 
+## Override Automake's rule that forces a .hh extension on us even
+## though we don't want it.  It would be super awesome if automake
+## would allow users to choose the header file extension.
+.yy.cc:
+	$(am__skipyacc) $(SHELL) $(YLWRAP) $< y.tab.c $@ y.tab.h $*.h y.output $*.output -- $(YACCCOMPILE)
+
 ## Special rules:
 ## Mostly for sources which must be built before rest of compilation.
 
@@ -658,28 +664,21 @@ __fltk_uigetfile__.lo __fltk_uigetfile__.o: \
 __init_fltk__.lo __init_fltk__.o: \
   AM_CXXFLAGS := $(filter-out $(DLL_CXXDEFS), $(AM_CXXFLAGS) $(GRAPHICS_CFLAGS))
 
-.DOCSTRINGS: gendoc$(BUILD_EXEEXT)
+if AMCOND_BUILD_DOCS
+.DOCSTRINGS: $(ALL_DEF_FILES) gendoc.pl
 	if [ "x$(srcdir)" != "x." ] && [ -f $(srcdir)/DOCSTRINGS ] && [ ! -f DOCSTRINGS ]; then \
 		cp $(srcdir)/DOCSTRINGS DOCSTRINGS; \
 		touch -r $(srcdir)/DOCSTRINGS DOCSTRINGS; \
 	fi
 	@echo "creating .DOCSTRINGS from .cc source files"
-	@./gendoc > $@
+	@$(PERL) $(srcdir)/gendoc.pl $(ALL_DEF_FILES) > $@
 	$(top_srcdir)/build-aux/move-if-change $@ DOCSTRINGS
 	touch $@
 
-doc-files: $(ALL_DEF_FILES)
-	echo $(ALL_DEF_FILES) > $@-t
-	mv $@-t $@
-
-gendoc.cc: doc-files mkgendoc
-	$(srcdir)/mkgendoc doc-files > $@-t
-	mv $@-t $@
-
-gendoc$(BUILD_EXEEXT): gendoc.cc
-	$(BUILD_CXX) $(BUILD_CXXFLAGS) -o $@ $^ $(BUILD_LDFLAGS)
-
 all-local: $(OCT_STAMP_FILES) $(DLD_FUNCTIONS_PKG_ADD_FILE) .DOCSTRINGS
+else
+all-local: $(OCT_STAMP_FILES) $(DLD_FUNCTIONS_PKG_ADD_FILE)
+endif
 
 if AMCOND_BUILD_COMPILED_AUX_PROGRAMS
 octave-config.cc: octave-config.cc.in Makefile
@@ -762,9 +761,6 @@ endif
 CLEANFILES = \
   $(bin_SCRIPTS) \
   $(DLD_FUNCTIONS_PKG_ADD_FILE) \
-  doc-files \
-  gendoc.cc \
-  gendoc$(BUILD_EXEEXT) \
   graphics-props.cc \
   oct-parse.output
 

@@ -39,7 +39,8 @@ function txt = unimplemented (fcn)
 
   case "gsvd"
     txt = ["gsvd is not currently part of core Octave.  See the ",...
-    "linear-algebra package at @url{http://octave.sf.net/linear-algebra/}."];
+    "linear-algebra package at ",...
+    "@url{http://octave.sourceforge.net/linear-algebra/}."];
 
   case "linprog"
     txt = ["Octave does not currently provide linprog.  ",...
@@ -50,11 +51,11 @@ function txt = unimplemented (fcn)
     txt = ["Octave provides lsode for solving differential equations.  ",...
     "For more information try @code{help lsode}.  ",...
     "Matlab-compatible ODE functions are provided by the odepkg package.  ",...
-    "See @url{http://octave.sf.net/odepkg/}."];
+    "See @url{http://octave.sourceforge.net/odepkg/}."];
 
   otherwise
     if (ismember (fcn, missing_functions ()))
-      txt = sprintf ("the `%s' function is not yet implemented in Octave", fcn);
+      txt = sprintf ("the '%s' function is not yet implemented in Octave", fcn);
     else
       is_matlab_function = false;
       txt = "";
@@ -430,6 +431,6 @@ endfunction
 %! str = unimplemented ("quad2d");
 %! assert (str(1:51), "quad2d is not implemented.  Consider using dblquad.");
 %! str = unimplemented ("MException");
-%! assert (str(1:58), "the `MException' function is not yet implemented in Octave");
+%! assert (str(1:58), "the 'MException' function is not yet implemented in Octave");
 
 

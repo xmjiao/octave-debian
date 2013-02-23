@@ -1,4 +1,4 @@
-@c DO NOT EDIT!  Generated automatically by munge-texi.
+@c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
 @c Copyright (C) 1996-2012 John W. Eaton
 @c
@@ -909,10 +909,7 @@ also be set to zero.
 The default value of @var{k} is zero, so that @code{triu} and
 @code{tril} normally include the main diagonal as part of the result.
 
-If the value of @var{k} is negative, additional elements above (for
-@code{tril}) or below (for @code{triu}) the main diagonal are also
-selected.
-
+If the value of @var{k} is nonzero integer, the selection of elementsstarts at an offset of @var{k} diagonals above or below the maindiagonal; above for positive @var{k} and below for negative @var{k}.
 The absolute value of @var{k} must not be greater than the number of
 sub-diagonals or super-diagonals.
 

@@ -1,7 +1,7 @@
 %!PS-Adobe-2.0 EPSF-2.0
 %%Title: interpft.eps
 %%Creator: gnuplot 4.6 patchlevel 0
-%%CreationDate: Sun Sep  2 23:55:46 2012
+%%CreationDate: Thu Feb 21 15:38:03 2013
 %%DocumentFonts: (atend)
 %%BoundingBox: 50 50 410 302
 %%EndComments
@@ -460,7 +460,7 @@ SDict begin [
   /Author (jwe)
 %  /Producer (gnuplot)
 %  /Keywords ()
-  /CreationDate (Sun Sep  2 23:55:46 2012)
+  /CreationDate (Thu Feb 21 15:38:03 2013)
   /DOCINFO pdfmark
 end
 } ifelse
@@ -550,16 +550,6 @@ Color InterpolatedColor or { % COLOUR vs. GRAY map
 }{
   /g {stroke pm3dround pm3dGamma exp setgray} bind def
 } ifelse
-1.000 UL
-LTb
-1.00 1.00 1.00 C 1.000 780 400 6059 4399 BoxColFill
-LCb setrgbcolor
-780 400 M
-0 4399 V
-6059 0 V
-0 -4399 V
-780 400 L
-stroke
 0.500 UL
 LTb
 780 400 M
@@ -713,18 +703,11 @@ Z stroke
 1.000 UP
 0.500 UL
 LTb
-1.000 UL
-LTb
-3296 3936 N
-0 800 V
-3423 0 V
-0 -800 V
--3423 0 V
-Z stroke
 % Begin plot #1
 0.500 UL
 LT0
-0.00 1.00 0.00 C 0.00 0.00 0.00 C 5936 4636 M
+0.00 1.00 0.00 C LCb setrgbcolor
+5936 4636 M
 [ [({}) 200.0 0.0 true true 0 (sin\(4t+0.3\)cos\(3t-0.1\))]
 ] -66.7 MRshow
 LT0
@@ -834,7 +817,8 @@ LT0
 % Begin plot #2
 stroke
 LT0
-0.00 0.00 1.00 C 0.00 0.00 0.00 C 5936 4436 M
+0.00 0.00 1.00 C LCb setrgbcolor
+5936 4436 M
 [ [({}) 200.0 0.0 true true 0 (spline)]
 ] -66.7 MRshow
 LT0
@@ -935,7 +919,8 @@ LT0
 % Begin plot #3
 stroke
 LT0
-0.00 1.00 1.00 C 0.00 0.00 0.00 C 5936 4236 M
+0.00 1.00 1.00 C LCb setrgbcolor
+5936 4236 M
 [ [({}) 200.0 0.0 true true 0 (interpft)]
 ] -66.7 MRshow
 LT0
@@ -1046,7 +1031,8 @@ LT0
 2.000 UP
 stroke
 LT3
-1.00 0.00 0.00 C 0.00 0.00 0.00 C 5936 4036 M
+1.00 0.00 0.00 C LCb setrgbcolor
+5936 4036 M
 [ [({}) 200.0 0.0 true true 0 (data)]
 ] -66.7 MRshow
 LT3

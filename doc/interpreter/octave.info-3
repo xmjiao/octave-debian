@@ -1,4 +1,4 @@
-This is /home/jwe/src/octave-stable/doc/interpreter/octave.info, produced by makeinfo version 4.13 from /home/jwe/src/octave-stable/doc/interpreter/octave.texi.
+This is octave.info, produced by makeinfo version 4.13 from octave.texi.
 
 START-INFO-DIR-ENTRY
 * Octave: (octave).           Interactive language for numerical computations.
@@ -380,11 +380,10 @@ the use of the function `meshgrid' to create matrices of X and Y
 coordinates to use for plotting the Z data.  The `ndgrid' function is
 similar to `meshgrid', but works for N-dimensional matrices.
 
- [image src="mesh.png" text="
+
 +---------------------------------+
 | Image unavailable in text mode. |
 +---------------------------------+
-" ]
 Figure 15.5: Mesh plot.
 
    The `meshc' function is similar to `mesh', but also produces a plot
@@ -400,11 +399,10 @@ without requiring it to form a surface.  For example,
 
 displays the spiral in three dimensions shown in *note fig:plot3::.
 
- [image src="plot3.png" text="
+
 +---------------------------------+
 | Image unavailable in text mode. |
 +---------------------------------+
-" ]
 Figure 15.6: Three-dimensional spiral.
 
    Finally, the `view' function changes the viewpoint for
@@ -620,15 +618,15 @@ three-dimensional plots.
           p = patch ("Faces", f, "Vertices", v, "EdgeColor", "none");
           set (gca, "PlotBoxAspectRatioMode", "manual", ...
                     "PlotBoxAspectRatio", [1 1 1]);
-           set (p, "FaceColor", "green", "FaceLighting", "phong");
-           light ("Position", [1 1 5]); # Available with the JHandles package
+          # set (p, "FaceColor", "green", "FaceLighting", "phong");
+          # light ("Position", [1 1 5]); # Available with the JHandles package
 
           subplot (2,2,2); view (-38, 20);
           p = patch ("Faces", f, "Vertices", v, "EdgeColor", "blue");
           set (gca, "PlotBoxAspectRatioMode", "manual", ...
                     "PlotBoxAspectRatio", [1 1 1]);
-           set (p, "FaceColor", "none", "FaceLighting", "phong");
-           light ("Position", [1 1 5]);
+          # set (p, "FaceColor", "none", "FaceLighting", "phong");
+          # light ("Position", [1 1 5]);
 
           subplot (2,2,3); view (-38, 20);
           [f, v, c] = isosurface (x, y, z, c, iso, y);
@@ -636,16 +634,16 @@ three-dimensional plots.
                      "FaceColor", "interp", "EdgeColor", "none");
           set (gca, "PlotBoxAspectRatioMode", "manual", ...
                     "PlotBoxAspectRatio", [1 1 1]);
-           set (p, "FaceLighting", "phong");
-           light ("Position", [1 1 5]);
+          # set (p, "FaceLighting", "phong");
+          # light ("Position", [1 1 5]);
 
           subplot (2,2,4); view (-38, 20);
           p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", c, ...
                      "FaceColor", "interp", "EdgeColor", "blue");
           set (gca, "PlotBoxAspectRatioMode", "manual", ...
                     "PlotBoxAspectRatio", [1 1 1]);
-           set (p, "FaceLighting", "phong");
-           light ("Position", [1 1 5]);
+          # set (p, "FaceLighting", "phong");
+          # light ("Position", [1 1 5]);
 
      *See also:* *note isonormals: doc-isonormals, *note isocolors:
      doc-isocolors.
@@ -5737,10 +5735,10 @@ File: octave.info,  Node: Rearranging Matrices,  Next: Special Utility Matrices,
      The default value of K is zero, so that `triu' and `tril' normally
      include the main diagonal as part of the result.
 
-     If the value of K is negative, additional elements above (for
-     `tril') or below (for `triu') the main diagonal are also selected.
-
-     The absolute value of K must not be greater than the number of
+     If the value of K is nonzero integer, the selection of
+     elementsstarts at an offset of K diagonals above or below the
+     maindiagonal; above for positive K and below for negative K.  The
+     absolute value of K must not be greater than the number of
      sub-diagonals or super-diagonals.
 
      For example:

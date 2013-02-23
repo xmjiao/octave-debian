@@ -1,4 +1,4 @@
-@c DO NOT EDIT!  Generated automatically by munge-texi.
+@c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
 @c Copyright (C) 1996-2012 John W. Eaton
 @c
@@ -46,7 +46,7 @@ input arguments.
 Since an error can occur during the evaluation of a program, it is
 very convenient to be able to detect that an error occurred, so that
 the error can be fixed.  This is possible with the @code{try} statement
-described in @ref{The @code{try} Statement}.
+described in @ref{The try Statement}.
 
 @menu
 * Raising Errors::
@@ -173,7 +173,7 @@ f ()
 @print{}  
 @print{}  
 @print{}  Additional help for built-in functions and operators is
-@print{}  available in the on-line version of the manual.  Use the command
+@print{}  available in the online version of the manual.  Use the command
 @print{}  `doc <topic>' to search the manual index.
 @print{}  
 @print{}  Help and information about Octave is also available on the WWW
@@ -249,7 +249,7 @@ variable value is restored when exiting the function.
 @subsection Catching Errors
 
 When an error occurs, it can be detected and handled using the
-@code{try} statement as described in @ref{The @code{try} Statement}.
+@code{try} statement as described in @ref{The try Statement}.
 As an example, the following piece of code counts the number of errors
 that occurs during a @code{for} loop.
 
@@ -444,7 +444,7 @@ If the object is copied to multiple variables (or cell or struct array
 elements) or returned from a function, @var{action} will be executed after
 clearing the last copy of the object.  Note that if multiple local onCleanup
 variables are created, the order in which they are called is unspecified.
-For similar functionality @xref{The @code{unwind_protect} Statement}.
+For similar functionality @xref{The unwind_protect Statement}.
 @end deftypefn
 
 
@@ -499,7 +499,10 @@ It is also possible to assign an identification string to a warning.
 If a warning has such an ID the user can enable and disable this warning
 as will be described in the next section.  To assign an ID to a warning,
 simply call @code{warning} with two string arguments, where the first
-is the identification string, and the second is the actual warning.
+is the identification string, and the second is the actual warning.  Note
+that warning IDs are in the format "NAMESPACE:WARNING-NAME".  The namespace
+"Octave" is used for Octave's own warnings.  Any other string is available
+as a namespace for user's own warnings.
 
 @c warning src/error.cc
 @anchor{doc-warning}
@@ -519,8 +522,10 @@ of an unusual condition, but only when it makes sense for your program
 to go on.
 
 The optional message identifier allows users to enable or disable
-warnings tagged by @var{id}.  The special identifier @samp{"all"} may
-be used to set the state of all warnings.
+warnings tagged by @var{id}.  A message identifier is of the form
+"NAMESPACE:WARNING-NAME".  Octave's own warnings use the "Octave"
+namespace (@pxref{doc-warning_ids}).  The special identifier @samp{"all"}
+may be used to set the state of all warnings.
 
 If the first argument is @samp{"on"} or @samp{"off"}, set the state
 of a particular warning using the identifier @var{id}.  If the first
@@ -561,7 +566,7 @@ their string identifications.  The following code will issue a warning
 
 @example
 @group
-warning ("non-negative-variable", 
+warning ("example:non-negative-variable", 
          "'a' must be non-negative.  Setting 'a' to zero.");
 @end group
 @end example
@@ -571,8 +576,8 @@ while the following won't issue a warning
 
 @example
 @group
-warning ("off", "non-negative-variable");
-warning ("non-negative-variable", 
+warning ("off", "example:non-negative-variable");
+warning ("example:non-negative-variable", 
          "'a' must be non-negative.  Setting 'a' to zero.");
 @end group
 @end example

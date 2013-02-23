@@ -110,7 +110,7 @@ int warning_state = 0;
 
 // Tell the error handler whether to print messages, or just store
 // them for later.  Used for handling errors in eval() and
-// the `unwind_protect' statement.
+// the 'unwind_protect' statement.
 int buffer_error_messages = 0;
 
 // TRUE means error messages are turned off.
@@ -921,10 +921,10 @@ location of the error.  Typically @var{err} is returned from\n\
                           if (l > 0)
                             {
                               if (c > 0)
-                                pr_where_1 ("error: called from `%s' near line %d, column %d",
+                                pr_where_1 ("error: called from '%s' near line %d, column %d",
                                             nm.c_str (), l, c);
                               else
-                                pr_where_1 ("error: called from `%d' near line %d", nm.c_str (), l);
+                                pr_where_1 ("error: called from '%d' near line %d", nm.c_str (), l);
                             }
                         }
                     }
@@ -946,10 +946,10 @@ location of the error.  Typically @var{err} is returned from\n\
                           if (l > 0)
                             {
                               if (c > 0)
-                                pr_where_1 ("error: called from `%s' in file %s near line %d, column %d",
+                                pr_where_1 ("error: called from '%s' in file %s near line %d, column %d",
                                             nm.c_str (), file.c_str (), l, c);
                               else
-                                pr_where_1 ("error: called from `%d' in file %s near line %d", nm.c_str (), file.c_str (), l);
+                                pr_where_1 ("error: called from '%d' in file %s near line %d", nm.c_str (), file.c_str (), l);
                             }
                         }
                     }
@@ -1109,8 +1109,10 @@ of an unusual condition, but only when it makes sense for your program\n\
 to go on.\n\
 \n\
 The optional message identifier allows users to enable or disable\n\
-warnings tagged by @var{id}.  The special identifier @samp{\"all\"} may\n\
-be used to set the state of all warnings.\n\
+warnings tagged by @var{id}.  A message identifier is of the form\n\
+\"NAMESPACE:WARNING-NAME\".  Octave's own warnings use the \"Octave\"\n\
+namespace (@pxref{doc-warning_ids}).  The special identifier @samp{\"all\"}\n\
+may be used to set the state of all warnings.\n\
 \n\
 If the first argument is @samp{\"on\"} or @samp{\"off\"}, set the state\n\
 of a particular warning using the identifier @var{id}.  If the first\n\
@@ -1384,7 +1386,7 @@ warning (\"error\");\n\
           if (m.contains ("identifier") && m.contains ("state"))
             warning_options = m;
           else
-            error ("warning: expecting structure with fields `identifier' and `state'");
+            error ("warning: expecting structure with fields 'identifier' and 'state'");
 
           done = true;
 
@@ -1798,6 +1800,7 @@ the top-level error message).\n\
 When called from inside a function with the \"local\" option, the variable is\n\
 changed locally for the function and any subroutines it calls.  The original\n\
 variable value is restored when exiting the function.\n\
+@seealso{debug_on_warning, debug_on_interrupt}\n\
 @end deftypefn")
 {
   return SET_INTERNAL_VARIABLE (debug_on_error);
@@ -1814,6 +1817,7 @@ to enter the debugger when a warning is encountered.\n\
 When called from inside a function with the \"local\" option, the variable is\n\
 changed locally for the function and any subroutines it calls.  The original\n\
 variable value is restored when exiting the function.\n\
+@seealso{debug_on_error, debug_on_interrupt}\n\
 @end deftypefn")
 {
   return SET_INTERNAL_VARIABLE (debug_on_warning);

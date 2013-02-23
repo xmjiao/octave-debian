@@ -1,7 +1,7 @@
 ### DO NOT EDIT!
 ###
-### This file is generated automatically from the Octave sources.
-### Edit those files instead and run make to update this file.
+### This file is generated automatically from Octave source files.
+### Edit source files directly and run make to update this file.
 
 bitand
 @c bitand src/bitfcns.cc
@@ -2381,8 +2381,10 @@ of an unusual condition, but only when it makes sense for your program
 to go on.
 
 The optional message identifier allows users to enable or disable
-warnings tagged by @var{id}.  The special identifier @samp{"all"} may
-be used to set the state of all warnings.
+warnings tagged by @var{id}.  A message identifier is of the form
+"NAMESPACE:WARNING-NAME".  Octave's own warnings use the "Octave"
+namespace (@pxref{doc-warning_ids}).  The special identifier @samp{"all"}
+may be used to set the state of all warnings.
 
 If the first argument is @samp{"on"} or @samp{"off"}, set the state
 of a particular warning using the identifier @var{id}.  If the first
@@ -2520,6 +2522,7 @@ the top-level error message).
 When called from inside a function with the "local" option, the variable is
 changed locally for the function and any subroutines it calls.  The original
 variable value is restored when exiting the function.
+@seealso{debug_on_warning, debug_on_interrupt}
 @end deftypefn
 debug_on_warning
 @c debug_on_warning src/error.cc
@@ -2533,6 +2536,7 @@ to enter the debugger when a warning is encountered.
 When called from inside a function with the "local" option, the variable is
 changed locally for the function and any subroutines it calls.  The original
 variable value is restored when exiting the function.
+@seealso{debug_on_error, debug_on_interrupt}
 @end deftypefn
 fclose
 @c fclose src/file-io.cc
@@ -6094,6 +6098,7 @@ before reaching the debugging mode, a normal interrupt will occur.
 When called from inside a function with the "local" option, the variable is
 changed locally for the function and any subroutines it calls.  The original
 variable value is restored when exiting the function.
+@seealso{debug_on_error, debug_on_warning}
 @end deftypefn
 sighup_dumps_octave_core
 @c sighup_dumps_octave_core src/sighandlers.cc
@@ -8169,7 +8174,7 @@ If the object is copied to multiple variables (or cell or struct array
 elements) or returned from a function, @var{action} will be executed after
 clearing the last copy of the object.  Note that if multiple local onCleanup
 variables are created, the order in which they are called is unspecified.
-For similar functionality @xref{The @code{unwind_protect} Statement}.
+For similar functionality @xref{The unwind_protect Statement}.
 @end deftypefn
 allow_noninteger_range_as_index
 @c allow_noninteger_range_as_index src/ov-range.cc
@@ -14087,10 +14092,7 @@ also be set to zero.
 The default value of @var{k} is zero, so that @code{triu} and
 @code{tril} normally include the main diagonal as part of the result.
 
-If the value of @var{k} is negative, additional elements above (for
-@code{tril}) or below (for @code{triu}) the main diagonal are also
-selected.
-
+If the value of @var{k} is nonzero integer, the selection of elementsstarts at an offset of @var{k} diagonals above or below the maindiagonal; above for positive @var{k} and below for negative @var{k}.
 The absolute value of @var{k} must not be greater than the number of
 sub-diagonals or super-diagonals.
 
@@ -14185,7 +14187,7 @@ An example of the use of typecast on a little-endian machine is
 @group
 @var{x} = uint16 ([1, 65535]);
 typecast (@var{x}, 'uint8')
-@result{} [   0,   1, 255, 255]
+@result{} [   1,   0, 255, 255]
 @end group
 @end example
 @seealso{cast, bitunpack, bitpack, swapbytes}

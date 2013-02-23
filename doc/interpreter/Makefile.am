@@ -186,16 +186,10 @@ DOCSTRING_FILES = $(shell $(srcdir)/find-docstring-files.sh "$(top_srcdir)")
 doc-cache: $(DOCSTRING_FILES) mk_doc_cache.m
 	$(top_builddir)/run-octave -f -q -H $(srcdir)/mk_doc_cache.m doc-cache $(DOCSTRING_FILES) || { rm -f doc-cache; exit 1; }
 
-## Program compiled only to help build documentation.  No need to install
-noinst_PROGRAMS = munge-texi
-
-munge_texi_SOURCES = munge-texi.cc
-
 $(MUNGED_TEXI_SRC): $(DOCSTRING_FILES) $(munge_texi_SOURCES)
 
-%.texi: %.txi
-	@$(MAKE) $(AM_MAKEFLAGS) munge-texi$(BUILD_EXEEXT)
-	./munge-texi $(top_srcdir) $(DOCSTRING_FILES) < $< > $@-t
+%.texi: %.txi munge-texi.pl
+	$(PERL) $(srcdir)/munge-texi.pl $(top_srcdir) $(DOCSTRING_FILES) < $< > $@-t
 	mv $@-t $@
 
 contributors.texi: contributors.in
@@ -247,12 +241,14 @@ spellcheck: $(SPELLCHECK_FILES)
 EXTRA_DIST = \
   config-images.sh \
   contributors.in \
+  doc-cache \
   find-docstring-files.sh \
   images \
   images.awk \
   images.mk \
   mk_doc_cache.m \
   mkcontrib.awk \
+  munge-texi.pl \
   octave.dvi \
   octave.html \
   octave.pdf \
@@ -262,7 +258,7 @@ EXTRA_DIST = \
   $(LOGOS) \
   $(TXI_SRC)
 
-DISTCLEANFILES = $(octave_TEXINFOS) doc-cache
+DISTCLEANFILES = $(octave_TEXINFOS)
 
-MAINTAINERCLEANFILES = $(IMAGES)
+MAINTAINERCLEANFILES = $(IMAGES) doc-cache
 

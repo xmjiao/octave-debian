@@ -1,4 +1,4 @@
-This is /home/jwe/src/octave-stable/doc/interpreter/octave.info, produced by makeinfo version 4.13 from /home/jwe/src/octave-stable/doc/interpreter/octave.texi.
+This is octave.info, produced by makeinfo version 4.13 from octave.texi.
 
 START-INFO-DIR-ENTRY
 * Octave: (octave).           Interactive language for numerical computations.
@@ -868,22 +868,22 @@ control statement.
 
 * Menu:
 
-* The `if' Statement::
-* The `switch' Statement::
-* The `while' Statement::
-* The `do-until' Statement::
-* The `for' Statement::
-* The `break' Statement::
-* The `continue' Statement::
-* The `unwind_protect' Statement::
-* The `try' Statement::
+* The if Statement::
+* The switch Statement::
+* The while Statement::
+* The do-until Statement::
+* The for Statement::
+* The break Statement::
+* The continue Statement::
+* The unwind_protect Statement::
+* The try Statement::
 * Continuation Lines::
 
 
-File: octave.info,  Node: The `if' Statement,  Next: The `switch' Statement,  Up: Statements
+File: octave.info,  Node: The if Statement,  Next: The switch Statement,  Up: Statements
 
-10.1 The `if' Statement
-=======================
+10.1 The if Statement
+=====================
 
 The `if' statement is Octave's decision-making statement.  There are
 three basic forms of an `if' statement.  In its simplest form, it looks
@@ -992,10 +992,10 @@ using the indentation to show how Octave groups the statements.  *Note
 Functions and Scripts::.
 
 
-File: octave.info,  Node: The `switch' Statement,  Next: The `while' Statement,  Prev: The `if' Statement,  Up: Statements
+File: octave.info,  Node: The switch Statement,  Next: The while Statement,  Prev: The if Statement,  Up: Statements
 
-10.2 The `switch' Statement
-===========================
+10.2 The switch Statement
+=========================
 
 It is very common to take different actions depending on the value of
 one variable.  This is possible using the `if' statement in the
@@ -1084,7 +1084,7 @@ to write programs that look like this
 * Notes for the C Programmer::
 
 
-File: octave.info,  Node: Notes for the C Programmer,  Up: The `switch' Statement
+File: octave.info,  Node: Notes for the C Programmer,  Up: The switch Statement
 
 10.2.1 Notes for the C Programmer
 ---------------------------------
@@ -1123,10 +1123,10 @@ statement in Octave and C
 
 
 
-File: octave.info,  Node: The `while' Statement,  Next: The `do-until' Statement,  Prev: The `switch' Statement,  Up: Statements
+File: octave.info,  Node: The while Statement,  Next: The do-until Statement,  Prev: The switch Statement,  Up: Statements
 
-10.3 The `while' Statement
-==========================
+10.3 The while Statement
+========================
 
 In programming, a "loop" means a part of a program that is (or at least
 can be) executed two or more times in succession.
@@ -1179,10 +1179,10 @@ loop terminates when `i' reaches 11.
 using one makes the program clearer unless the body is very simple.
 
 
-File: octave.info,  Node: The `do-until' Statement,  Next: The `for' Statement,  Prev: The `while' Statement,  Up: Statements
+File: octave.info,  Node: The do-until Statement,  Next: The for Statement,  Prev: The while Statement,  Up: Statements
 
-10.4 The `do-until' Statement
-=============================
+10.4 The do-until Statement
+===========================
 
 The `do-until' statement is similar to the `while' statement, except
 that it repeatedly executes a statement until a condition becomes true,
@@ -1218,10 +1218,10 @@ elements of the Fibonacci sequence.
 using one makes the program clearer unless the body is very simple.
 
 
-File: octave.info,  Node: The `for' Statement,  Next: The `break' Statement,  Prev: The `do-until' Statement,  Up: Statements
+File: octave.info,  Node: The for Statement,  Next: The break Statement,  Prev: The do-until Statement,  Up: Statements
 
-10.5 The `for' Statement
-========================
+10.5 The for Statement
+======================
 
 The `for' statement makes it more convenient to count iterations of a
 loop.  The general form of the `for' statement looks like this:
@@ -1301,7 +1301,7 @@ do inside the loop.
 * Looping Over Structure Elements::
 
 
-File: octave.info,  Node: Looping Over Structure Elements,  Up: The `for' Statement
+File: octave.info,  Node: Looping Over Structure Elements,  Up: The for Statement
 
 10.5.1 Looping Over Structure Elements
 --------------------------------------
@@ -1347,10 +1347,10 @@ structure elements when the names of the elements do not need to be
 known.
 
 
-File: octave.info,  Node: The `break' Statement,  Next: The `continue' Statement,  Prev: The `for' Statement,  Up: Statements
+File: octave.info,  Node: The break Statement,  Next: The continue Statement,  Prev: The for Statement,  Up: Statements
 
-10.6 The `break' Statement
-==========================
+10.6 The break Statement
+========================
 
 The `break' statement jumps out of the innermost `for' or `while' loop
 that encloses it.  The `break' statement may only be used within the
@@ -1396,10 +1396,10 @@ be replaced with a `break' inside an `if':
      endwhile
 
 
-File: octave.info,  Node: The `continue' Statement,  Next: The `unwind_protect' Statement,  Prev: The `break' Statement,  Up: Statements
+File: octave.info,  Node: The continue Statement,  Next: The unwind_protect Statement,  Prev: The break Statement,  Up: Statements
 
-10.7 The `continue' Statement
-=============================
+10.7 The continue Statement
+===========================
 
 The `continue' statement, like `break', is used only inside `for' or
 `while' loops.  It skips over the rest of the loop body, causing the
@@ -1438,10 +1438,10 @@ would probably write the loop like this:
      endfor
 
 
-File: octave.info,  Node: The `unwind_protect' Statement,  Next: The `try' Statement,  Prev: The `continue' Statement,  Up: Statements
+File: octave.info,  Node: The unwind_protect Statement,  Next: The try Statement,  Prev: The continue Statement,  Up: Statements
 
-10.8 The `unwind_protect' Statement
-===================================
+10.8 The unwind_protect Statement
+=================================
 
 Octave supports a limited form of exception handling modelled after the
 unwind-protect form of Lisp.
@@ -1477,10 +1477,10 @@ restored if an error occurs while evaluating the first part of the
 the error and the statement to restore the value would not be executed.
 
 
-File: octave.info,  Node: The `try' Statement,  Next: Continuation Lines,  Prev: The `unwind_protect' Statement,  Up: Statements
+File: octave.info,  Node: The try Statement,  Next: Continuation Lines,  Prev: The unwind_protect Statement,  Up: Statements
 
-10.9 The `try' Statement
-========================
+10.9 The try Statement
+======================
 
 In addition to unwind_protect, Octave supports another limited form of
 exception handling.
@@ -1506,7 +1506,7 @@ the TRY and CATCH statements are evaluated.  *Note Errors and
 Warnings::, for more information about the `lasterr' function.
 
 
-File: octave.info,  Node: Continuation Lines,  Prev: The `try' Statement,  Up: Statements
+File: octave.info,  Node: Continuation Lines,  Prev: The try Statement,  Up: Statements
 
 10.10 Continuation Lines
 ========================
@@ -3267,7 +3267,7 @@ input arguments.
    Since an error can occur during the evaluation of a program, it is
 very convenient to be able to detect that an error occurred, so that
 the error can be fixed.  This is possible with the `try' statement
-described in *note The `try' Statement::.
+described in *note The try Statement::.
 
 * Menu:
 
@@ -3368,7 +3368,7 @@ error.
      -|
      -|
      -|  Additional help for built-in functions and operators is
-     -|  available in the on-line version of the manual.  Use the command
+     -|  available in the online version of the manual.  Use the command
      -|  `doc <topic>' to search the manual index.
      -|
      -|  Help and information about Octave is also available on the WWW
@@ -3429,7 +3429,7 @@ File: octave.info,  Node: Catching Errors,  Next: Recovering From Errors,  Prev:
 ----------------------
 
 When an error occurs, it can be detected and handled using the `try'
-statement as described in *note The `try' Statement::.  As an example,
+statement as described in *note The try Statement::.  As an example,
 the following piece of code counts the number of errors that occurs
 during a `for' loop.
 
@@ -3589,7 +3589,7 @@ convenient idiom for Octave code.  For example:
      will be executed after clearing the last copy of the object.  Note
      that if multiple local onCleanup variables are created, the order
      in which they are called is unspecified.  For similar
-     functionality *Note The `unwind_protect' Statement::.
+     functionality *Note The unwind_protect Statement::.
 
 
 File: octave.info,  Node: Handling Warnings,  Prev: Handling Errors,  Up: Errors and Warnings
@@ -3640,7 +3640,10 @@ is however possible to access the last warning as a string using the
 If a warning has such an ID the user can enable and disable this warning
 as will be described in the next section.  To assign an ID to a warning,
 simply call `warning' with two string arguments, where the first is the
-identification string, and the second is the actual warning.
+identification string, and the second is the actual warning.  Note that
+warning IDs are in the format "NAMESPACE:WARNING-NAME".  The namespace
+"Octave" is used for Octave's own warnings.  Any other string is
+available as a namespace for user's own warnings.
 
  -- Built-in Function:  warning (TEMPLATE, ...)
  -- Built-in Function:  warning (ID, TEMPLATE, ...)
@@ -3657,8 +3660,10 @@ identification string, and the second is the actual warning.
      it makes sense for your program to go on.
 
      The optional message identifier allows users to enable or disable
-     warnings tagged by ID.  The special identifier `"all"' may be used
-     to set the state of all warnings.
+     warnings tagged by ID.  A message identifier is of the form
+     "NAMESPACE:WARNING-NAME".  Octave's own warnings use the "Octave"
+     namespace (*note doc-warning_ids::).  The special identifier
+     `"all"' may be used to set the state of all warnings.
 
      If the first argument is `"on"' or `"off"', set the state of a
      particular warning using the identifier ID.  If the first argument
@@ -3691,13 +3696,13 @@ will be enabled or disabled.
    It is also possible to enable and disable individual warnings through
 their string identifications.  The following code will issue a warning
 
-     warning ("non-negative-variable",
+     warning ("example:non-negative-variable",
               "'a' must be non-negative.  Setting 'a' to zero.");
 
 while the following won't issue a warning
 
-     warning ("off", "non-negative-variable");
-     warning ("non-negative-variable",
+     warning ("off", "example:non-negative-variable");
+     warning ("example:non-negative-variable",
               "'a' must be non-negative.  Setting 'a' to zero.");
 
    The functions distributed with Octave can issue one of the following
@@ -4014,6 +4019,9 @@ set in the functions `debug_on_interrupt', `debug_on_warning' and
      it calls.  The original variable value is restored when exiting
      the function.
 
+     *See also:* *note debug_on_error: doc-debug_on_error, *note
+     debug_on_warning: doc-debug_on_warning.
+
  -- Built-in Function: VAL = debug_on_warning ()
  -- Built-in Function: OLD_VAL = debug_on_warning (NEW_VAL)
  -- Built-in Function:  debug_on_warning (NEW_VAL, "local")
@@ -4024,6 +4032,9 @@ set in the functions `debug_on_interrupt', `debug_on_warning' and
      variable is changed locally for the function and any subroutines
      it calls.  The original variable value is restored when exiting
      the function.
+
+     *See also:* *note debug_on_error: doc-debug_on_error, *note
+     debug_on_interrupt: doc-debug_on_interrupt.
 
  -- Built-in Function: VAL = debug_on_error ()
  -- Built-in Function: OLD_VAL = debug_on_error (NEW_VAL)
@@ -4037,6 +4048,9 @@ set in the functions `debug_on_interrupt', `debug_on_warning' and
      variable is changed locally for the function and any subroutines
      it calls.  The original variable value is restored when exiting
      the function.
+
+     *See also:* *note debug_on_warning: doc-debug_on_warning, *note
+     debug_on_interrupt: doc-debug_on_interrupt.
 
 
 File: octave.info,  Node: Leaving Debug Mode,  Next: Breakpoints,  Prev: Entering Debug Mode,  Up: Debugging
@@ -6003,12 +6017,12 @@ formatted and written to the output stream.  For example,
 
      pct = 37;
      filename = "foo.txt";
-     printf ("Processed %d%% of `%s'.\nPlease be patient.\n",
+     printf ("Processed %d%% of '%s'.\nPlease be patient.\n",
              pct, filename);
 
 produces output like
 
-     Processed 37% of `foo.txt'.
+     Processed 37% of 'foo.txt'.
      Please be patient.
 
    This example shows the use of the `%d' conversion to specify that a
@@ -7052,11 +7066,10 @@ linear axes.  For example,
 displays a sine wave shown in *note fig:plot::.  On most systems, this
 command will open a separate plot window to display the graph.
 
- [image src="plot.png" text="
+
 +---------------------------------+
 | Image unavailable in text mode. |
 +---------------------------------+
-" ]
 Figure 15.1: Simple Two-Dimensional Plot.
 
  -- Function File:  plot (Y)
@@ -7290,11 +7303,10 @@ displaying discrete data.  For example,
 produces the histogram of 10,000 normally distributed random numbers
 shown in *note fig:hist::.
 
- [image src="hist.png" text="
+
 +---------------------------------+
 | Image unavailable in text mode. |
 +---------------------------------+
-" ]
 Figure 15.2: Histogram.
 
  -- Function File:  bar (X, Y)
@@ -7782,11 +7794,10 @@ functions produce plots with error bar markers.  For example,
 
 produces the figure shown in *note fig:errorbar::.
 
- [image src="errorbar.png" text="
+
 +---------------------------------+
 | Image unavailable in text mode. |
 +---------------------------------+
-" ]
 Figure 15.3: Errorbar plot.
 
  -- Function File:  errorbar (ARGS)
@@ -7913,11 +7924,10 @@ and linear.  For example,
 
 produces the spiral plot shown in *note fig:polar::.
 
- [image src="polar.png" text="
+
 +---------------------------------+
 | Image unavailable in text mode. |
 +---------------------------------+
-" ]
 Figure 15.4: Polar plot.
 
  -- Function File:  polar (THETA, RHO)

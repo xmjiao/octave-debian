@@ -1,4 +1,4 @@
-This is /home/jwe/src/octave-stable/doc/faq/OctaveFAQ.info, produced by makeinfo version 4.13 from /home/jwe/src/octave-stable/doc/faq/OctaveFAQ.texi.
+This is OctaveFAQ.info, produced by makeinfo version 4.13 from OctaveFAQ.texi.
 
 START-INFO-DIR-ENTRY
 * OctaveFAQ: (OctaveFAQ).  Frequently asked questions about Octave
@@ -552,7 +552,7 @@ File: OctaveFAQ.info,  Node: Documentation,  Next: Getting additional help,  Up:
 
 The Octave distribution includes a 650+ page manual that is also
 distributed under the terms of the GNU GPL.  It is available on the web
-at `http://www.octave.org/docs.html' and you will also find there
+at `http://www.octave.org/support.html' and you will also find there
 instructions on how to order a paper version.
 
    The complete text of the Octave manual is also available using the
@@ -581,14 +581,14 @@ File: OctaveFAQ.info,  Node: User community,  Next: Bug reports,  Prev: Getting 
 6.3 User community
 ==================
 
-To subscribe to the list, go to `http://www.octave.org/archive.html'
+To subscribe to the list, go to `http://www.octave.org/support.html'
 and follow the link to the subscription page for the list.
 
    *Please do not* send requests to be added or removed from the
 mailing list, or other administrative trivia to the list itself.
 
    An archive of old postings to the help-octave mailing list is
-maintained on `http://www.octave.org/archive.html'.
+maintained on `http://www.octave.org/support.html'.
 
    You will also find some user advice and code spread over the web.
 Good starting points are the Octave Wiki `http://wiki.octave.org' and
@@ -649,7 +649,7 @@ projects do.  For an up-to-date listing of packagers, see:
 
    * `http://www.octave.org/download.html'
 
-   * `http://wiki.octave.org/wiki.pl?CategoryInstall'
+   * `http://wiki.octave.org/Installation'
 
    As of today, Octave binaries are available at least on Debian,
 Ubuntu, RedHat, Suse and Fedora GNU/Linuxen, Mac OS X, Windows' 98,
@@ -1247,47 +1247,47 @@ Appendix A Concept Index
 
 
 Tag Table:
-Node: Top260
-Node: What is Octave?1304
-Ref: What is Octave?-Footnote-12528
-Node: Who develops Octave?2592
-Node: Why GNU Octave?3362
-Node: What version should I use?4170
-Node: On what platforms does Octave run?4817
-Node: Licensing Issues6022
-Node: GPL6678
-Node: Licensing MEX Files8643
-Node: Requesting License Changes9689
-Node: How can I cite Octave?10465
-Node: Series 3.4.N11143
-Node: Octave Features13827
-Node: Functions defined on the command-line14402
-Node: Comments with #14964
-Node: Strings delimited by double quotes "15491
-Node: Line continuation by backslash15994
-Node: Informative block closing16338
-Node: Coherent syntax16808
-Node: Exclamation mark as not operator17153
-Node: Increment and decrement operators17735
-Node: Unwind-protect18790
-Node: Built-in ODE and DAE solvers19726
-Node: Learning more about Octave20073
-Node: Documentation20361
-Node: Getting additional help21211
-Node: User community21635
-Node: Bug reports22369
-Node: Getting Octave23034
-Node: Source code23272
-Node: Pre-compiled binary packages23733
-Node: Octave for other platforms24324
-Node: Installation24801
-Node: What else do I need?25350
-Node: Other C++ compilers?25835
-Node: Common problems26370
-Node: Using Octave27710
-Node: How do I set the number of displayed decimals?27954
-Node: How does Octave solve linear systems?28339
-Node: MATLAB compatibility28970
-Node: Index46203
+Node: Top188
+Node: What is Octave?1232
+Ref: What is Octave?-Footnote-12456
+Node: Who develops Octave?2520
+Node: Why GNU Octave?3290
+Node: What version should I use?4098
+Node: On what platforms does Octave run?4745
+Node: Licensing Issues5950
+Node: GPL6606
+Node: Licensing MEX Files8571
+Node: Requesting License Changes9617
+Node: How can I cite Octave?10393
+Node: Series 3.4.N11071
+Node: Octave Features13755
+Node: Functions defined on the command-line14330
+Node: Comments with #14892
+Node: Strings delimited by double quotes "15419
+Node: Line continuation by backslash15922
+Node: Informative block closing16266
+Node: Coherent syntax16736
+Node: Exclamation mark as not operator17081
+Node: Increment and decrement operators17663
+Node: Unwind-protect18718
+Node: Built-in ODE and DAE solvers19654
+Node: Learning more about Octave20001
+Node: Documentation20289
+Node: Getting additional help21142
+Node: User community21566
+Node: Bug reports22300
+Node: Getting Octave22965
+Node: Source code23203
+Node: Pre-compiled binary packages23664
+Node: Octave for other platforms24244
+Node: Installation24721
+Node: What else do I need?25270
+Node: Other C++ compilers?25755
+Node: Common problems26290
+Node: Using Octave27630
+Node: How do I set the number of displayed decimals?27874
+Node: How does Octave solve linear systems?28259
+Node: MATLAB compatibility28890
+Node: Index46123
 
 End Tag Table

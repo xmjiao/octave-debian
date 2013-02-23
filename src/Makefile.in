@@ -1857,6 +1857,7 @@ COPYSIGN_LIBM = @COPYSIGN_LIBM@
 CPICFLAG = @CPICFLAG@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
+CROSS_TOOL_PREFIX = @CROSS_TOOL_PREFIX@
 CRUFT_DLL_DEFS = @CRUFT_DLL_DEFS@
 CURL_CPPFLAGS = @CURL_CPPFLAGS@
 CURL_LDFLAGS = @CURL_LDFLAGS@
@@ -1927,7 +1928,6 @@ FONTCONFIG_CFLAGS = @FONTCONFIG_CFLAGS@
 FONTCONFIG_LIBS = @FONTCONFIG_LIBS@
 FPICFLAG = @FPICFLAG@
 FT2_CFLAGS = @FT2_CFLAGS@
-FT2_CONFIG = @FT2_CONFIG@
 FT2_LIBS = @FT2_LIBS@
 GETHOSTNAME_LIB = @GETHOSTNAME_LIB@
 GETOPT_H = @GETOPT_H@
@@ -2034,7 +2034,6 @@ GNULIB_GETLOGIN = @GNULIB_GETLOGIN@
 GNULIB_GETLOGIN_R = @GNULIB_GETLOGIN_R@
 GNULIB_GETPAGESIZE = @GNULIB_GETPAGESIZE@
 GNULIB_GETPEERNAME = @GNULIB_GETPEERNAME@
-GNULIB_GETS = @GNULIB_GETS@
 GNULIB_GETSOCKNAME = @GNULIB_GETSOCKNAME@
 GNULIB_GETSOCKOPT = @GNULIB_GETSOCKOPT@
 GNULIB_GETSUBOPT = @GNULIB_GETSUBOPT@
@@ -2589,6 +2588,8 @@ LIBCRUFT = @LIBCRUFT@
 LIBINTL = @LIBINTL@
 LIBOBJS = @LIBOBJS@
 LIBOCTAVE = @LIBOCTAVE@
+
+# List of libraries and their special compilation flags
 LIBOCTINTERP = @LIBOCTINTERP@
 LIBPRE = @LIBPRE@
 LIBS = @LIBS@
@@ -2612,7 +2613,14 @@ MAGICK_LIBS = @MAGICK_LIBS@
 MAKEINFO = @MAKEINFO@
 MANIFEST_TOOL = @MANIFEST_TOOL@
 MKDIR_P = @MKDIR_P@
+MKOCTFILE_AR = @MKOCTFILE_AR@
+MKOCTFILE_CC = @MKOCTFILE_CC@
+MKOCTFILE_CXX = @MKOCTFILE_CXX@
+MKOCTFILE_DL_LD = @MKOCTFILE_DL_LD@
 MKOCTFILE_DL_LDFLAGS = @MKOCTFILE_DL_LDFLAGS@
+MKOCTFILE_F77 = @MKOCTFILE_F77@
+MKOCTFILE_LD_CXX = @MKOCTFILE_LD_CXX@
+MKOCTFILE_RANLIB = @MKOCTFILE_RANLIB@
 NEXT_AS_FIRST_DIRECTIVE_DIRENT_H = @NEXT_AS_FIRST_DIRECTIVE_DIRENT_H@
 NEXT_AS_FIRST_DIRECTIVE_ERRNO_H = @NEXT_AS_FIRST_DIRECTIVE_ERRNO_H@
 NEXT_AS_FIRST_DIRECTIVE_FCNTL_H = @NEXT_AS_FIRST_DIRECTIVE_FCNTL_H@
@@ -3213,13 +3221,14 @@ BUILT_NODISTFILES = \
   builtins.cc
 
 EXTRA_DIST = Makefile.in defaults.h.in DOCSTRINGS find-defun-files.sh \
-	genprops.awk gl2ps.c graphics.h.in mk-errno-list mk-pkg-add \
-	mkbuiltins mkdefs mkgendoc mkoctfile.cc.in mkoctfile.in mkops \
-	mxarray.h.in oct-conf.h.in oct-errno.cc.in octave-config.cc.in \
-	octave-config.in octave.gperf version.h.in $(BUILT_DISTFILES) \
-	DLD-FUNCTIONS/config-module.sh DLD-FUNCTIONS/config-module.awk \
-	DLD-FUNCTIONS/module-files DLD-FUNCTIONS/oct-qhull.h \
-	OPERATORS/module.mk TEMPLATE-INST/module.mk
+	gendoc.pl genprops.awk gl2ps.c graphics.h.in mk-errno-list \
+	mk-pkg-add mkbuiltins mkdefs mkoctfile.cc.in mkoctfile.in \
+	mkops mxarray.h.in oct-conf.h.in oct-errno.cc.in \
+	octave-config.cc.in octave-config.in octave.gperf version.h.in \
+	$(BUILT_DISTFILES) DLD-FUNCTIONS/config-module.sh \
+	DLD-FUNCTIONS/config-module.awk DLD-FUNCTIONS/module-files \
+	DLD-FUNCTIONS/oct-qhull.h OPERATORS/module.mk \
+	TEMPLATE-INST/module.mk
 OPT_HANDLERS = \
   DASPK-opts.cc \
   DASRT-opts.cc \
@@ -4103,9 +4112,6 @@ DLL_CXXDEFS = @OCTINTERP_DLL_DEFS@
 CLEANFILES = \
   $(bin_SCRIPTS) \
   $(DLD_FUNCTIONS_PKG_ADD_FILE) \
-  doc-files \
-  gendoc.cc \
-  gendoc$(BUILD_EXEEXT) \
   graphics-props.cc \
   oct-parse.output
 
@@ -7844,9 +7850,6 @@ liboctinterp_la-ops.lo: ops.cc
 .ll.cc:
 	$(am__skiplex) $(SHELL) $(YLWRAP) $< $(LEX_OUTPUT_ROOT).c $@ -- $(LEXCOMPILE)
 
-.yy.cc:
-	$(am__skipyacc) $(SHELL) $(YLWRAP) $< y.tab.c $@ y.tab.h $*.h y.output $*.output -- $(YACCCOMPILE)
-
 mostlyclean-libtool:
 	-rm -f *.lo
 
@@ -8258,7 +8261,14 @@ $(SED) < $< \
   -e "s|%OCTAVE_CONF_MAGICK_CPPFLAGS%|\"${MAGICK_CPPFLAGS}\"|" \
   -e "s|%OCTAVE_CONF_MAGICK_LDFLAGS%|\"${MAGICK_LDFLAGS}\"|" \
   -e "s|%OCTAVE_CONF_MAGICK_LIBS%|\"${MAGICK_LIBS}\"|" \
-  -e 's|%OCTAVE_CONF_MKOCTFILE_DL_LDFLAGS%|\"@MKOCTFILE_DL_LDFLAGS@\"|' \
+  -e 's|%OCTAVE_CONF_MKOCTFILE_AR%|\"${MKOCTFILE_AR}\"|' \
+  -e 's|%OCTAVE_CONF_MKOCTFILE_CC%|\"${MKOCTFILE_CC}\"|' \
+  -e 's|%OCTAVE_CONF_MKOCTFILE_CXX%|\"${MKOCTFILE_CXX}\"|' \
+  -e 's|%OCTAVE_CONF_MKOCTFILE_DL_LD%|\"${MKOCTFILE_DL_LD}\"|' \
+  -e 's|%OCTAVE_CONF_MKOCTFILE_DL_LDFLAGS%|\"${MKOCTFILE_DL_LDFLAGS}\"|' \
+  -e 's|%OCTAVE_CONF_MKOCTFILE_F77%|\"${MKOCTFILE_F77}\"|' \
+  -e 's|%OCTAVE_CONF_MKOCTFILE_LD_CXX%|\"${MKOCTFILE_LD_CXX}\"|' \
+  -e 's|%OCTAVE_CONF_MKOCTFILE_RANLIB%|\"${MKOCTFILE_RANLIB}\"|' \
   -e "s|%OCTAVE_CONF_OCTAVE_LINK_DEPS%|\"${OCTAVE_LINK_DEPS}\"|" \
   -e "s|%OCTAVE_CONF_OCTAVE_LINK_OPTS%|\"${OCTAVE_LINK_OPTS}\"|" \
   -e "s|%OCTAVE_CONF_OCTINCLUDEDIR%|\"${octincludedir}\"|" \
@@ -9087,6 +9097,9 @@ $(DEF_FILES): $(OPT_HANDLERS) $(OPT_INC)
 	  -DMAKE_BUILTINS $< | $(srcdir)/mkdefs $(srcdir) $< > $@-t
 	mv $@-t $@
 
+.yy.cc:
+	$(am__skipyacc) $(SHELL) $(YLWRAP) $< y.tab.c $@ y.tab.h $*.h y.output $*.output -- $(YACCCOMPILE)
+
 defaults.h: defaults.h.in Makefile
 	@$(do_subst_default_vals)
 
@@ -9159,28 +9172,18 @@ __fltk_uigetfile__.lo __fltk_uigetfile__.o: \
 __init_fltk__.lo __init_fltk__.o: \
   AM_CXXFLAGS := $(filter-out $(DLL_CXXDEFS), $(AM_CXXFLAGS) $(GRAPHICS_CFLAGS))
 
-.DOCSTRINGS: gendoc$(BUILD_EXEEXT)
-	if [ "x$(srcdir)" != "x." ] && [ -f $(srcdir)/DOCSTRINGS ] && [ ! -f DOCSTRINGS ]; then \
-		cp $(srcdir)/DOCSTRINGS DOCSTRINGS; \
-		touch -r $(srcdir)/DOCSTRINGS DOCSTRINGS; \
-	fi
-	@echo "creating .DOCSTRINGS from .cc source files"
-	@./gendoc > $@
-	$(top_srcdir)/build-aux/move-if-change $@ DOCSTRINGS
-	touch $@
+@AMCOND_BUILD_DOCS_TRUE@.DOCSTRINGS: $(ALL_DEF_FILES) gendoc.pl
+@AMCOND_BUILD_DOCS_TRUE@	if [ "x$(srcdir)" != "x." ] && [ -f $(srcdir)/DOCSTRINGS ] && [ ! -f DOCSTRINGS ]; then \
+@AMCOND_BUILD_DOCS_TRUE@		cp $(srcdir)/DOCSTRINGS DOCSTRINGS; \
+@AMCOND_BUILD_DOCS_TRUE@		touch -r $(srcdir)/DOCSTRINGS DOCSTRINGS; \
+@AMCOND_BUILD_DOCS_TRUE@	fi
+@AMCOND_BUILD_DOCS_TRUE@	@echo "creating .DOCSTRINGS from .cc source files"
+@AMCOND_BUILD_DOCS_TRUE@	@$(PERL) $(srcdir)/gendoc.pl $(ALL_DEF_FILES) > $@
+@AMCOND_BUILD_DOCS_TRUE@	$(top_srcdir)/build-aux/move-if-change $@ DOCSTRINGS
+@AMCOND_BUILD_DOCS_TRUE@	touch $@
 
-doc-files: $(ALL_DEF_FILES)
-	echo $(ALL_DEF_FILES) > $@-t
-	mv $@-t $@
-
-gendoc.cc: doc-files mkgendoc
-	$(srcdir)/mkgendoc doc-files > $@-t
-	mv $@-t $@
-
-gendoc$(BUILD_EXEEXT): gendoc.cc
-	$(BUILD_CXX) $(BUILD_CXXFLAGS) -o $@ $^ $(BUILD_LDFLAGS)
-
-all-local: $(OCT_STAMP_FILES) $(DLD_FUNCTIONS_PKG_ADD_FILE) .DOCSTRINGS
+@AMCOND_BUILD_DOCS_TRUE@all-local: $(OCT_STAMP_FILES) $(DLD_FUNCTIONS_PKG_ADD_FILE) .DOCSTRINGS
+@AMCOND_BUILD_DOCS_FALSE@all-local: $(OCT_STAMP_FILES) $(DLD_FUNCTIONS_PKG_ADD_FILE)
 
 @AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@octave-config.cc: octave-config.cc.in Makefile
 @AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@	@$(do_subst_default_vals)
