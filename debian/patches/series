@@ -8,5 +8,3 @@ correct_typos
 use_system_gl2ps
 drop_version_from_mkoctfile_function_call
 mkoctfile-mpi.diff
-rcond.patch
-fix-sparse-unit-testing.patch
