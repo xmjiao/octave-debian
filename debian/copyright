@@ -4,7 +4,7 @@ Upstream-Contact: John W. Eaton <jwe@octave.org>
 Source: http://www.octave.org
 
 Files: *
-Copyright: 1992-2012 John W. Eaton <jwe@octave.org>
+Copyright: 1992-2013 John W. Eaton <jwe@octave.org>
            1984-1985, 1987-2012 Free Software Foundation, Inc
            1997-2012 David Bateman
            2008-2012 VZLU Prague, a.s., Czech Republic
@@ -111,6 +111,104 @@ Copyright: Andrew D. Fernandes <adfernan@cnd.mcgill.ca>
            2006-2012 Thomas Weber <tweber@debian.org>
            2011-2012 Sébastien Villemot <sebastien@debian.org>
 License: GPL-3+           
+
+Files: libcruft/amos/*
+       libcruft/dassl/*
+       libcruft/fftpack/*
+       libcruft/slatec-err/*
+       libcruft/slatec-fn/*
+Copyright: none
+License: public-domain
+ The Library is in the public domain and distributed by the Energy Science
+ and Technology Software Center.
+ .
+ Energy Science and Technology Software Center
+ P.O. Box 1020
+ Oak Ridge, TN  37831
+Comment:
+ Note that the AMOS library is part of SLATEC and is therefore covered by the
+ same license.
+
+Files: libcruft/daspk/*
+Copyright: none
+License: public-domain
+ Work performed under the auspices of the U.S. Department of Energy
+ by Lawrence Livermore National Laboratory under contract number 
+ W-7405-Eng-48.
+
+Files: libcruft/lapack-xtra/*
+       libcruft/blas-xtra/xerbla.f
+Copyright: 1992-2006 The University of Tennessee
+License: BSD-3-clause
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are
+ met:
+ .
+ - Redistributions of source code must retain the above copyright
+   notice, this list of conditions and the following disclaimer. 
+ .
+ - Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer listed
+   in this license in the documentation and/or other materials
+   provided with the distribution.
+ .
+ - Neither the name of the copyright holders nor the names of its
+   contributors may be used to endorse or promote products derived from
+   this software without specific prior written permission.
+ . 
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT  
+ LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT 
+ OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT  
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+
+Files: libcruft/opdepack/*
+Copyright: none
+License: public-domain
+ Written by Alan C. Hindmarsh
+ Center for Applied Scientific Computing
+ Lawrence Livermore National Laboratory
+ Livermore, CA 94551, U.S.A.
+ .
+ The following Fortran solvers for ordinary differential equation (ODE) systems
+ were written at LLNL. All are in the Public Domain and are freely available
+ from the CASC Software Download Site.
+
+Files: libcruft/quadpack/*
+Copyright: none
+License: public-domain
+ QUADPACK originated from a joint project of R. Piessens and E. de
+ Doncker-Kapenga (Appl. Math. and Progr. Div.- K.U.Leuven, Belgium),
+ C. Überhuber (Inst. Fuer Math.- Techn.U.Wien, Austria), and D. Kahaner
+ (Nation. Bur. of Standards- Washington D.C., U.S.A.). 
+
+Files: libcruft/ranlib/*
+Copyright: none
+License: public-domain
+ We place the Randlib code that we have written in the public domain.  
+ .
+                                 NO WARRANTY
+ .    
+     WE PROVIDE ABSOLUTELY  NO WARRANTY  OF ANY  KIND  EITHER  EXPRESSED OR
+     IMPLIED,  INCLUDING BUT   NOT LIMITED TO,  THE  IMPLIED  WARRANTIES OF
+     MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.  THE ENTIRE RISK
+     AS TO THE QUALITY AND PERFORMANCE OF THE PROGRAM IS  WITH YOU.  SHOULD
+     THIS PROGRAM PROVE  DEFECTIVE, YOU ASSUME  THE COST  OF  ALL NECESSARY
+     SERVICING, REPAIR OR CORRECTION.
+ .    
+     IN NO  EVENT  SHALL THE UNIVERSITY  OF TEXAS OR  ANY  OF ITS COMPONENT
+     INSTITUTIONS INCLUDING M. D.   ANDERSON HOSPITAL BE LIABLE  TO YOU FOR
+     DAMAGES, INCLUDING ANY  LOST PROFITS, LOST MONIES,   OR OTHER SPECIAL,
+     INCIDENTAL   OR  CONSEQUENTIAL DAMAGES   ARISING   OUT  OF  THE USE OR
+     INABILITY TO USE (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR DATA OR
+     ITS ANALYSIS BEING  RENDERED INACCURATE OR  LOSSES SUSTAINED  BY THIRD
+     PARTIES) THE PROGRAM.
 
 Files: liboctave/kpse.cc
 Copyright: 1992-1997 Free Software Foundation, Inc
