@@ -27,14 +27,14 @@ dnl Copyright (C) 1993-2012 John W. Eaton
 EXTERN_CFLAGS="$CFLAGS"
 EXTERN_CXXFLAGS="$CXXFLAGS"
 
-AC_INIT([GNU Octave], [3.6.3], [http://octave.org/bugs.html], [octave])
+AC_INIT([GNU Octave], [3.6.4], [http://octave.org/bugs.html], [octave])
 
 dnl PACKAGE_VERSION is set by the AC_INIT VERSION arg
 OCTAVE_VERSION="$PACKAGE_VERSION"
 OCTAVE_API_VERSION_NUMBER="48"
 OCTAVE_API_VERSION="api-v$OCTAVE_API_VERSION_NUMBER+"
-OCTAVE_RELEASE_DATE="2012-09-04"
-OCTAVE_COPYRIGHT="Copyright (C) 2012 John W. Eaton and others."
+OCTAVE_RELEASE_DATE="2013-02-21"
+OCTAVE_COPYRIGHT="Copyright (C) 2013 John W. Eaton and others."
 AC_SUBST(OCTAVE_VERSION)
 AC_SUBST(OCTAVE_API_VERSION_NUMBER)
 AC_SUBST(OCTAVE_API_VERSION)
@@ -670,7 +670,7 @@ AC_CACHE_CHECK([whether pcre.h defines the macros we need],
 #if defined (HAVE_PCRE_H)
 #include <pcre.h>
 #elif defined (HAVE_PCRE_PCRE_H)
-#include <pcre.h>
+#include <pcre/pcre.h>
 #error "NO PCRE HEADER"
 #endif
 #if defined (PCRE_INFO_NAMECOUNT) \
@@ -857,9 +857,19 @@ if test -n "$OPENGL_LIBS"; then
 
   ## freetype 2
 
-  AC_CHECK_FT2([9.0.3], [AC_DEFINE(HAVE_FREETYPE, 1, [Define to 1 if you have Freetype library.])
-    XTRA_CXXFLAGS="$XTRA_CXXFLAGS $FT2_CFLAGS"],
-    [warn_freetype="FreeType library not found.  Native graphics will be disabled."])
+  PKG_CHECK_MODULES([FT2], [freetype2], [
+    min_ft2_version=9.03
+    AC_MSG_CHECKING([for FreeType -- version >= $min_ft2_version])
+    $PKG_CONFIG freetype2 --atleast-version=$min_ft2_version
+    ac_status=$?
+    if test $ac_status = 0; then
+      AC_MSG_RESULT(yes)
+      AC_DEFINE(HAVE_FREETYPE, 1, [Define to 1 if you have Freetype library.])
+      XTRA_CXXFLAGS="$XTRA_CXXFLAGS $FT2_CFLAGS"
+    else
+      AC_MSG_RESULT(no)
+      warn_freetype="FreeType library not found.  Native graphics will be disabled."
+    fi])
 
   ## fontconfig library
 
@@ -1096,7 +1106,7 @@ OCTAVE_CHECK_LIBRARY(amd, AMD,
 
 OCTAVE_CHECK_LIBRARY(camd, CAMD,
   [CAMD library not found.  This will result in some lack of functionality for sparse matrices.],
-  [suitesparse/camd.h ufsparse/camd.h amd/camd.h camd.h],
+  [suitesparse/camd.h ufsparse/camd.h camd/camd.h camd.h],
   [camd_postorder],
   [], [don't use CAMD library, disable some sparse matrix functionality])
 
@@ -1104,7 +1114,7 @@ OCTAVE_CHECK_LIBRARY(camd, CAMD,
 
 OCTAVE_CHECK_LIBRARY(colamd, COLAMD,
   [COLAMD library not found.  This will result in some lack of functionality for sparse matrices.],
-  [suitesparse/colamd.h ufsparse/colamd.h amd/colamd.h colamd.h],
+  [suitesparse/colamd.h ufsparse/colamd.h colamd/colamd.h colamd.h],
   [colamd],
   [], [don't use COLAMD library, disable some sparse matrix functionality])
 
@@ -1112,7 +1122,7 @@ OCTAVE_CHECK_LIBRARY(colamd, COLAMD,
 
 OCTAVE_CHECK_LIBRARY(ccolamd, CCOLAMD,
   [CCOLAMD library not found.  This will result in some lack of functionality for sparse matrices.],
-  [suitesparse/ccolamd.h ufsparse/ccolamd.h amd/ccolamd.h ccolamd.h],
+  [suitesparse/ccolamd.h ufsparse/ccolamd.h ccolamd/ccolamd.h ccolamd.h],
   [ccolamd],
   [], [don't use CCOLAMD library, disable some sparse matrix functionality])
 
@@ -1132,7 +1142,7 @@ LIBS="$save_LIBS"
 
 OCTAVE_CHECK_LIBRARY(cxsparse, CXSparse,
   [CXSparse library not found.  This will result in some lack of functionality for sparse matrices.],
-  [suitesparse/cs.h ufsparse/cs.h amd/cs.h cs.h],
+  [suitesparse/cs.h ufsparse/cs.h cxsparse/cs.h cs.h],
   [cs_di_sqr],
   [C++], [don't use CXSparse library, disable some sparse matrix functionality])
 
@@ -1781,6 +1791,43 @@ dnl Maybe <cmath> defines the IEEE functions we need.
 OCTAVE_CMATH_FUNC(isnan)
 OCTAVE_CMATH_FUNC(isinf)
 OCTAVE_CMATH_FUNC(isfinite)
+
+if test "$cross_compiling" = yes && test -n "$ac_tool_prefix"; then
+  CROSS_TOOL_PREFIX="$ac_tool_prefix"
+  MKOCTFILE_AR='$(shell echo $(AR) | sed "s,$(CROSS_TOOL_PREFIX),,")'
+  MKOCTFILE_CC='$(shell echo $(CC) | sed "s,$(CROSS_TOOL_PREFIX),,")'
+  MKOCTFILE_CXX='$(shell echo $(CXX) | sed "s,$(CROSS_TOOL_PREFIX),,")'
+  MKOCTFILE_DL_LD='$(shell echo $(DL_LD) | sed "s,$(CROSS_TOOL_PREFIX),,")'
+  MKOCTFILE_F77='$(shell echo $(F77) | sed "s,$(CROSS_TOOL_PREFIX),,")'
+  MKOCTFILE_LD_CXX='$(shell echo $(LD_CXX) | sed "s,$(CROSS_TOOL_PREFIX),,")'
+  MKOCTFILE_RANLIB='$(shell echo $(RANLIB) | sed "s,$(CROSS_TOOL_PREFIX),,")'
+else
+  MKOCTFILE_AR="$AR"
+  MKOCTFILE_CC="$CC"
+  MKOCTFILE_CXX="$CXX"
+  MKOCTFILE_DL_LD="$DL_LD"
+  MKOCTFILE_F77="$F77"
+  MKOCTFILE_LD_CXX="$LD_CXX"
+  MKOCTFILE_RANLIB="$RANLIB"
+fi
+AC_MSG_NOTICE([defining CROSS_TOOL_PREFIX to be $CROSS_TOOL_PREFIX])
+AC_MSG_NOTICE([defining MKOCTFILE_AR to be $MKOCTFILE_AR])
+AC_MSG_NOTICE([defining MKOCTFILE_CC to be $MKOCTFILE_CC])
+AC_MSG_NOTICE([defining MKOCTFILE_CXX to be $MKOCTFILE_CXX])
+AC_MSG_NOTICE([defining MKOCTFILE_DL_LD to be $MKOCTFILE_DL_LD])
+AC_MSG_NOTICE([defining MKOCTFILE_F77 to be $MKOCTFILE_F77])
+AC_MSG_NOTICE([defining MKOCTFILE_LD_CXX to be $MKOCTFILE_LD_CXX])
+AC_MSG_NOTICE([defining MKOCTFILE_RANLIB to be $MKOCTFILE_RANLIB])
+AC_SUBST(CROSS_TOOL_PREFIX)
+AC_SUBST(MKOCTFILE_AR)
+AC_SUBST(MKOCTFILE_CC)
+AC_SUBST(MKOCTFILE_CXX)
+AC_SUBST(MKOCTFILE_DL_LD)
+AC_SUBST(MKOCTFILE_F77)
+AC_SUBST(MKOCTFILE_LD_CXX)
+AC_SUBST(MKOCTFILE_RANLIB)
+
+### Check for existence of various libraries
 
 dnl Would like to get rid of this cruft, and just have
 dnl

@@ -1,4 +1,650 @@
+2013-02-21  John W. Eaton  <jwe@octave.org>
+
+	Added tag release-3-6-4 for changeset b29b10fbb744
+
+	Files: .hgtags
+
+	Version 3.6.4 released.
+
+	* configure.ac (AC_INIT): Version is now 3.6.4.
+	(OCTAVE_RELEASE_DATE): Now 2013-02-21.
+
+	Files: configure.ac
+
+	override automake .yy.cc rule (bug #36407)
+
+	* libinterp/Makefile.am (.yy.cc): Override with our own rule.
+
+	Files: src/Makefile.am
+
+2013-02-16  John W. Eaton  <jwe@octave.org>
+
+	maint: merge away extra head on stable
+
+	Files: 
+
+2013-02-13  Rik  <rik@octave.org>
+
+	Fix building when --disable-docs argument given.
+
+	* scripts/Makefile.am: use AMCOND_BUILD_DOCS to decide
+	whether to build .DOCSTRINGS
+
+	Files: scripts/Makefile.am
+
+2013-02-11  John W. Eaton  <jwe@octave.org>
+
+	Added tag rc-3-6-4-2 for changeset cc5a7d1233f3
+
+	Files: .hgtags
+
+	bump version for 3.6.4-rc2
+
+	* configure.ac (AC_INIT): Version is now 3.6.4-rc2.
+	(OCTAVE_RELEASE_DATE): Now 2013-02-11.
+	(OCTAVE_COPYRIGHT): Now 2013.
+
+	Files: configure.ac
+
+	* sqp.m: Relax tolerance in test.
+
+	Files: scripts/optimization/sqp.m
+
+2013-02-11  Stefan Mahr  <dac922@gmx.de>
+
+	fix ErrorHandler in cellfun (bug #38256)
+
+	* cellfun.cc: The ErrorHandler was not executed on some errors that
+	  throw an expection. Test added.
+
+	Files: src/DLD-FUNCTIONS/cellfun.cc
+
+2013-02-11  John W. Eaton  <jwe@octave.org>
+
+	Backed out changeset 0ab55e17a47b
+
+	Files: .hgtags
+
+	Added tag ss-3-7-2 for changeset 23a7661e529a
+
+	Files: .hgtags
+
+2013-02-09  John W. Eaton  <jwe@octave.org>
+
+	* edit.m: Undo string escape sequences on values used in sprintf formats.
+
+	Files: scripts/miscellaneous/edit.m
+
+2013-02-11  John W. Eaton  <jwe@octave.org>
+
+	update to new gnulib revision for unistd patch
+
+	Files: .hgsubstate
+
+2012-07-08  Rik  <octave@nomad.inbox5.com>
+
+	maint: Allow scatter demo to be run under Octave or Matlab for plot comparisons
+
+	* __scatter__.m: Use columns() rather than size(c,2) for readability.
+
+	* scatter.m: Use single quotes in demo code so that it will run under Matlab.
+
+	Files: scripts/plot/private/__scatter__.m scripts/plot/scatter.m
+
+2012-06-19  John Hunt  <huntj@gmx.us>
+
+	Fix scatter() for filled markers using gnuplot.
+
+	* scripts/plot/scripts/__scatter__.m: Allow filled markers with using gnuplot
+	and when the color is specified as an RGB triplet.  Bug # 36193. Add demo.
+
+	Files: scripts/plot/private/__scatter__.m scripts/plot/scatter.m
+
+2013-01-18  John W. Eaton  <jwe@octave.org>
+
+	use packages.octave.org instead of sourceforge in pkg.m
+
+	* pkg.m (list_forge_packages): Download package list from
+	packages.octave.org instead of octave.sourceforge.net.
+	* get_forge_pkg.m (get_forge_pkg): Likewise, for package index.html
+	files and sources.
+
+	Files: scripts/pkg/pkg.m scripts/pkg/private/get_forge_pkg.m
+
+2013-01-14  John W. Eaton  <jwe@octave.org>
+
+	* pkg/pkg.m: Get it right this time.
+
+	Files: scripts/pkg/pkg.m
+
+	* pkg.m (configure_make): Finish previous change.
+
+	Files: scripts/pkg/pkg.m
+
+2013-01-14  Rik  <rik@octave.org>
+
+	doc: Update mkoctfile man page with newest list of configuration variables.
+
+	* doc/interpreter/mkoctfile.1: Update mkoctfile man page with newest list of
+	configuration variables.
+
+	Files: doc/interpreter/mkoctfile.1
+
+2013-01-14  John W. Eaton  <jwe@octave.org>
+
+	use mkoctfile, not octave_config_info to get default pkg compiler tools
+
+	* common.mk (MKOCTFILE_AR, MKOCTFILE_RANLIB): New variables.
+	(do_subst_config_vals): Include MKOCTFILE_AR and MKOCTFILE_RANLIB in
+	the list of substitutions.
+	* configure.ac (MKOCTFILE_AR, MKOCTFILE_RANLIB): Additional mkoctfile
+	values that receive special treatment when cross compiling.
+	* pkg/pkg.m (configure_make): Use mkoctfile, not octave_config_info
+	to get values for CC, CXX, AR, and RANLIB.
+	* mkoctfile.cc.in, mkoctfile.in (AR, RANLIB): New variables.
+	Update usage message.
+
+	Files: build-aux/common.mk configure.ac scripts/pkg/pkg.m
+	src/mkoctfile.cc.in src/mkoctfile.in
+
+2013-01-12  Kyle Guinn  <elyk03@gmail.com>
+
+	configure.ac: Fix CAMD/COLAMD/CCOLAMD/CXSparse include search directories
+	This appears to be a copy and paste error in changeset 0ce82753dd72.
+	As a result the headers were not found and some #defines in
+	liboctave/oct-sparse.h were never generated.
+
+	* configure.ac: Correct typo where amd was used as search directory for
+	camd.h, colamd.h, ccolamd.h, cs.h.
+
+	Files: configure.ac
+
+2013-01-11  John W. Eaton  <jwe@octave.org>
+
+	strip cross tool prefix from CC, CXX, etc. definitions used in mkoctfile
+
+	* configure.ac, build-aux/common.mk (CROSS_TOOL_PREFIX, MKOCTFILE_CC,
+	MKOCTFILE_CXX, MKOCTFILE_DL_LD, MKOCTFILE_DL_LDFLAGS, MKOCTFILE_F77,
+	MKOCTFILE_LD_CXX): New variables.
+	(do_subst_config_vals): Include MKOCTFILE_CC, MKOCTFILE_CXX,
+	MKOCTFILE_DL_LD, MKOCTFILE_F77, and MKOCTFILE_LD_CXX in the list of
+	substitutions.
+	* mkoctfile.cc.in, mkoctfile.in (CC, CXX, DL_LD, F77, LD_CXX):
+	Define from corresponding MKOCTFILE_ variables.
+
+	Files: build-aux/common.mk configure.ac src/mkoctfile.cc.in
+	src/mkoctfile.in
+
+	* lo-cutils.h: Include sys/types.h.
+
+	Files: liboctave/lo-cutils.h
+
+2013-01-11  Ben Abbott  <bpabbott@mac.com>
+
+	Fix typo from changeset 15904:7c469bffc599 in stable
+
+	Files: src/Makefile.am
+
+2013-01-08  John W. Eaton  <jwe@octave.org>
+
+	* src/Makefile.am: Fix bungled merge.
+
+	Files: src/Makefile.am
+
+2013-01-08  Jordi Gutiérrez Hermoso  <jordigh@octave.org>
+
+	Makefile.am: close automake conditional
+
+	Files: src/Makefile.am
+
+2013-01-05  Rik  <rik@octave.org>
+
+	munge-texi.pl: Strip EOL character(s) in a platform-agnostic way.
+
+	* doc/interpreter/munge-texi.pl: Use regex rather than chomp() to
+	remove EOL characters from line.
+
+	Files: doc/interpreter/munge-texi.pl
+
+2012-05-18  Rik  <octave@nomad.inbox5.com>
+
+	build: Use Perl to create DOCSTRINGS in src/ directory.
+
+	* gendoc.pl: New script generates DOCSTRINGS from *.df files
+
+	* mkgendoc: Delete file which created gendoc.cc.
+
+	* src/Makefile.am: Incorporate gendoc.pl into build system.  Remove
+	references to gendoc executable.
+
+	Files: src/Makefile.am src/gendoc.pl src/mkgendoc
+
+2013-01-05  John W. Eaton  <jwe@octave.org>
+
+	Added tag rc-3-6-4-1 for changeset 858cbf6fc2ec
+
+	Files: .hgtags
+
+	Bump version for 3.6.4-rc1
+
+	Files: configure.ac
+
+2013-01-03  John W. Eaton  <jwe@octave.org>
+
+	maint: update gnulib subrepo
+
+	Files: .hgsubstate
+
+2013-01-03  Jordi Gutiérrez Hermoso  <jordigh@octave.org>
+
+	Replace gnulib subrepo with gnulib-hg
+
+	Files: .hgsub .hgsubstate build-aux/bootstrap
+
+2013-01-03  Rik  <rik@octave.org>
+
+	Fix segfaults with gesdd driver for svd (bug #37998).
+
+	* liboctave/CmplxSVD.cc(init): Correctly size rwork array for gesdd driver.
+
+	* liboctave/fCmplxSVD.cc(init): Correctly size rwork array for gesdd driver.
+
+	* liboctave/dbleSVD.cc(init): Tweak coding style to match CmplxSVD.cc.
+
+	* liboctave/floatSVD.cc(init): Tweak coding style to match fCmplxSVD.cc.
+
+	* src/DLD-FUNCTIONS/svd.cc: Add %!test for gesdd driver and complex matrices.
+
+	Files: liboctave/CmplxSVD.cc liboctave/dbleSVD.cc liboctave/fCmplxSVD.cc
+	liboctave/floatSVD.cc src/DLD-FUNCTIONS/svd.cc
+
+2013-01-03  John W. Eaton  <jwe@octave.org>
+
+	fix incorrect results for convhulln in some cases (bug #38013)
+
+	* convhulln.cc (Fconvhulln): Skip check for non-simplicial facets for
+	2-dimensional hull.  New test.
+
+	Files: src/DLD-FUNCTIONS/convhulln.cc
+
+2013-01-02  Jordi Gutiérrez Hermoso  <jordigh@octave.org>
+
+	textscan.m: fix treatment of whitespace argument (bug #37961)
+
+	Files: scripts/io/textscan.m
+
+2012-12-21  John W. Eaton  <jwe@octave.org>
+
+	Remove doc-cache file in maintainer-clean target, not distclean
+
+	* doc/interpreter/Makefile.am (MAINTAINERCLEANFILES):
+	List doc-cache here.
+	(DISTCLEANFILES): Not here.
+
+	Files: doc/interpreter/Makefile.am
+
+2012-10-11  Rik  <rik@octave.org>
+
+	Export doc-cache in distribution tarball (bug #37542)
+
+	* doc/interpreter/Makefile.am: Add doc-cache to EXTRA_DIST target.
+
+	* doc/interpreter/mk_doc_cache.m: Define save_header_format_string so
+	that user and host information isn't exported into tarball.
+
+	Files: doc/interpreter/Makefile.am doc/interpreter/mk_doc_cache.m
+
+2012-12-04  John W. Eaton  <jwe@octave.org>
+
+	USe pkg-config for freetype2 configure check.
+
+	* configure.ac: Use PKG_CHECK_MODULES to check for freetype2 instead
+	of AC_CHECK_FT2.
+	* acinclude.m4 (AC_CHECK_FT2): Delete macro definition.
+
+	Files: configure.ac m4/acinclude.m4
+
+2012-06-07  Rik  <octave@nomad.inbox5.com>
+
+	maint: Use Octave 2-space indent for helper Perl scripts.
+
+	* doc/interpreter/munge-texi.pl, scripts/mkdoc.pl: Use Octave 2-space indent
+	for helper Perl scripts.
+
+	Files: doc/interpreter/munge-texi.pl scripts/mkdoc.pl
+
+2012-05-16  Rik  <octave@nomad.inbox5.com>
+
+	maint: Rename mygethelp function to gethelp in scripts/mkdoc.pl
+
+	* scripts/mkdoc.pl: Rename mygethelp function to gethelp in scripts/mkdoc.pl
+
+	Files: scripts/mkdoc.pl
+
+2012-05-10  Rik  <octave@nomad.inbox5.com>
+
+	doc: Use Perl to create DOCSTRINGS in scripts directory.
+
+	* mkdoc.pl: Perl script that generates DOCSTRINGS file.
+
+	* Makefile.am: Use mkdoc.pl in build procedures.
+
+	* gethelp.cc: Remove C++ helper program for building DOCSTRINGS file.
+
+	Files: scripts/Makefile.am scripts/gethelp.cc scripts/mkdoc.pl
+
+2012-05-08  Rik  <octave@nomad.inbox5.com>
+
+	doc: Produce .texi from .txi files using Perl rather than C++.
+
+	* munge-texi.pl: New Perl file to generate .texi files from .txi files.
+
+	* munge-texi.cc: Remove C++ file for generating .texi files.
+
+	* Makefile.am: Change build system to use munge-texi.pl
+
+	Files: doc/interpreter/Makefile.am doc/interpreter/munge-texi.cc
+	doc/interpreter/munge-texi.pl
+
+2012-12-06  Mike Miller  <mtmiller@ieee.org>
+
+	Fix infinite loop when setting fftw planner method (bug #37873)
+
+	* liboctave/oct-fftw.h (octave_float_fftw_planner::method): Fix typo
+	method -> do_method.
+	* src/DLD-FUNCTIONS/fftw.cc: Add tests.
+
+	Files: liboctave/oct-fftw.h src/DLD-FUNCTIONS/fftw.cc
+
+2012-11-28  Rik  <rik@octave.org>
+
+	Fix Info index for language statements (bug #37787)
+
+	* dynamic.txi, errors.txi, stmt.txi, vectorize.txi: Remove @code from all node
+	names, menus, and cross-references.
+
+	* octave.texi: Remove @code from menu for statements.
+
+	* ov-oncleanup.cc(Foncleanup): Remove @code from cross-reference in docstring.
+
+	Files: doc/interpreter/dynamic.txi doc/interpreter/errors.txi
+	doc/interpreter/octave.texi doc/interpreter/stmt.txi
+	doc/interpreter/vectorize.txi src/ov-oncleanup.cc
+
+2012-11-23  Jordi Gutiérrez Hermoso  <jordigh@octave.org>
+
+	doc: fix description of k in triu/tril (bug #37796)
+
+	* tril.cc (Ftril): Reword explanation of @var{k}
+
+	Files: src/DLD-FUNCTIONS/tril.cc
+
+2012-11-12  Dmitri A. Sergatskov  <dasergatskov@gmail.com>
+
+	Add correct typo ghostscript_binary -> ghostscript.binary.
+
+	* scripts/plot/private/__print_parse_opts__.m: Correct typo.
+	ghostscript_binary -> ghostscript.binary ("." not "_").
+
+	Files: scripts/plot/private/__print_parse_opts__.m
+
+2012-11-11  Ben Abbott  <bpabbott@mac.com>
+
+	Add "gswin64c.exe" to the list of possible ghostscript command line programs
+	under windows.
+
+	* scripts/plot/private/__print_parse_opts__.m: Include "gswin64c.exe" when
+	looking for ghostscript.
+
+	Files: scripts/plot/private/__print_parse_opts__.m
+
+2012-10-31  Rik  <rik@octave.org>
+
+	doc: Add seealso links between debug_on_XXX functions (bug #37576)
+
+	* error.cc (Fdebug_on_warning,Fdebug_on_error): Add seealso links between
+	debug_on_XXX functions.
+
+	* sighandlers.cc (Fdebug_on_interrupt): Add seealso links between debug_on_XXX
+	functions.
+
+	Files: src/error.cc src/sighandlers.cc
+
+2012-10-30  Rik  <rik@octave.org>
+
+	legend.m: Fix segmentation fault when deleting legend where plot has already been removed (Bug #37640)
+
+	* legend.m: Use ishandle to check that plot is still valid before removing listeners on it.
+
+	Files: scripts/plot/legend.m
+
+2012-10-19  Rik  <rik@octave.org>
+
+	doc: Replace 'on-line' with modern 'online' in documentation and messages.
+
+	* basics.txi, errors.txi, octave.texi, package.txi, doc.m,
+	__additional_help_message__.m: Replace 'on-line' with 'online'.
+
+	Files: doc/interpreter/basics.txi doc/interpreter/errors.txi
+	doc/interpreter/octave.texi doc/interpreter/package.txi
+	scripts/help/doc.m
+	scripts/help/private/__additional_help_message__.m
+
+	doc: Use now standard 'online' rather than 'on-line' in man page.
+
+	* octave.1: Use now standard 'online' rather than 'on-line' in man page.
+
+	Files: doc/interpreter/octave.1
+
+	Correct big-endian/little-endian reversal in typecast documentation.
+
+	* typecast.cc(Ftypecast): Correct big-endian/little-endian reversal in typecast
+	documentation.
+
+	Files: src/DLD-FUNCTIONS/typecast.cc
+
+2012-10-17  John W. Eaton  <jwe@octave.org>
+
+	Added tag rc-3-6-4-0 for changeset 2e8eb9ac43a5
+
+	Files: .hgtags
+
+	3.6.4-rc0  release candidate
+
+	* configure.ac (AC_INIT): Version is now 3.6.2-rc0.
+	(OCTAVE_RELEASE_DATE): Now 2012-05-11.
+
+	Files: configure.ac
+
+	increase tolerance for svds test
+
+	* svds.m: Increase tolerance for svds (speye (10)) test.
+
+	Files: scripts/sparse/svds.m
+
+2012-10-15  Rik  <rik@octave.org>
+
+	Document form of warning IDs is NAMESPACE:WARNING-NAME (bug #37559)
+
+	* errors.txi: Add explanation of warning ID form to documentation.
+	Correct example code to properly use warning IDs.
+
+	* error.cc (Fwarning): Document form of warning ID in warning()
+	docstring.
+
+	Files: doc/interpreter/errors.txi src/error.cc
+
+2012-10-15  Jordi Gutiérrez Hermoso  <jordigh@octave.org>
+
+	build: Fix pcre/pcre.h #include
+
+	Files: configure.ac
+
+2012-10-12  Jordi Gutiérrez Hermoso  <jordigh@octave.org>
+
+	Merge in Mike's changes
+
+	Files: 
+
+2012-10-06  Mike Miller  <mtmiller@ieee.org>
+
+	Avoid inefficient seeks in gzfilebuf (bug #37509)
+
+	* src/zfstream.cc (gzfilebuf::seekoff): Avoid calling gzseek and
+	invalidating buffers when not actually seeking.
+
+	Files: src/zfstream.cc
+
+2012-10-10  Rik  <rik@octave.org>
+
+	Fix legend and subplot interaction (bug #37499)
+
+	* subplot.m: Replace axis position exact match test with
+	matching to within 1*eps to avoid round-off errors.
+
+	Files: scripts/plot/subplot.m
+
+2012-10-08  Mike Miller  <mtmiller@ieee.org>
+
+	Update broken or inconsistent project and wiki urls
+
+	* README, doc/interpreter/contrib.txi, etc/HACKING, etc/README.MacOS,
+	etc/README.MinGW, etc/README.devel: Update urls to use the octave.org domain.
+	* doc/faq/OctaveFAQ.texi, scripts/miscellaneous/info.m: Replace broken links
+	to the manual and help mailing list.
+	* doc/faq/OctaveFAQ.texi, etc/PROJECTS, etc/README.MacOS: Update wiki urls to
+	short naming scheme.
+	* doc/interpreter/contrib.txi, scripts/help/unimplemented.m: Make Octave-Forge
+	project urls consistent.
+	* src/version.h.in: Update url to contribution page.
+
+	Files: README doc/faq/OctaveFAQ.texi doc/interpreter/contrib.txi
+	etc/HACKING etc/PROJECTS etc/README.MacOS etc/README.MinGW
+	etc/README.devel scripts/help/unimplemented.m
+	scripts/miscellaneous/info.m src/version.h.in
+
+2012-10-01  John W. Eaton  <jwe@octave.org>
+
+	use ' instead of ` in error messages, warnings and most comments
+
+	* intro.txi, io.txi, munge-texi.cc, octave.texi, cmd-edit.cc,
+	data-conv.cc, file-ops.cc, glob-match.h, kpse.cc, oct-env.cc,
+	oct-locbuf.h, oct-md5.cc, oct-rand.cc, general/interp2.m, doc.m,
+	get_first_help_sentence.m, help.m, print_usage.m,
+	__additional_help_message__.m, type.m, unimplemented.m, which.m,
+	cast.m, dir.m, license.m, mkoctfile.m, recycle.m, tempdir.m,
+	optimset.m, pkg/pkg.m, closereq.m, colstyle.m, __fltk_print__.m,
+	__gnuplot_print__.m, __go_draw_figure__.m, __pie__.m, __pltopt__.m,
+	__print_parse_opts__.m, uigetdir.m, uigetfile.m, uiputfile.m, stft.m,
+	mean.m, anova.m, cor_test.m, t_test_regression.m, __magick_read__.cc,
+	dlmread.cc, schur.cc, data.cc, debug.cc, defun-dld.h, defun.cc,
+	defun.h, dynamic-ld.cc, error.cc, error.h, gl-render.cc, graphics.cc,
+	gripes.cc, input.cc, lex.ll, load-path.cc, load-save.cc, ls-hdf5.cc,
+	ls-mat-ascii.cc, ls-mat4.cc, ls-mat5.cc, ls-oct-ascii.cc,
+	ls-oct-binary.cc, oct-hist.cc, oct-parse.yy, oct-stream.cc,
+	oct-stream.h, octave.cc, ov-base-diag.cc, ov-base.cc, ov-class.cc,
+	ov-colon.h, ov-struct.cc, ov-typeinfo.cc, ov.cc, pager.cc,
+	pr-output.cc, pt-binop.cc, pt-eval.cc, pt-id.cc, pt-idx.cc,
+	pt-misc.cc, pt-unop.cc, symtab.cc, symtab.h, toplev.cc, txt-eng-ft.cc,
+	utils.cc, variables.cc, test_eval-catch.m, test_try.m:
+	Use ' instead of ` in error messages, warnings, and most comments.
+
+	Files: doc/interpreter/intro.txi doc/interpreter/io.txi doc/interpreter
+	/munge-texi.cc doc/interpreter/octave.texi liboctave/cmd-edit.cc
+	liboctave/data-conv.cc liboctave/file-ops.cc liboctave/glob-match.h
+	liboctave/kpse.cc liboctave/oct-env.cc liboctave/oct-locbuf.h
+	liboctave/oct-md5.cc liboctave/oct-rand.cc scripts/general/interp2.m
+	scripts/help/doc.m scripts/help/get_first_help_sentence.m
+	scripts/help/help.m scripts/help/print_usage.m
+	scripts/help/private/__additional_help_message__.m
+	scripts/help/type.m scripts/help/unimplemented.m
+	scripts/help/which.m scripts/miscellaneous/cast.m
+	scripts/miscellaneous/dir.m scripts/miscellaneous/license.m
+	scripts/miscellaneous/mkoctfile.m scripts/miscellaneous/recycle.m
+	scripts/miscellaneous/tempdir.m scripts/optimization/optimset.m
+	scripts/pkg/pkg.m scripts/plot/closereq.m scripts/plot/colstyle.m
+	scripts/plot/private/__fltk_print__.m
+	scripts/plot/private/__gnuplot_print__.m
+	scripts/plot/private/__go_draw_figure__.m
+	scripts/plot/private/__pie__.m scripts/plot/private/__pltopt__.m
+	scripts/plot/private/__print_parse_opts__.m scripts/plot/uigetdir.m
+	scripts/plot/uigetfile.m scripts/plot/uiputfile.m
+	scripts/signal/stft.m scripts/statistics/base/mean.m
+	scripts/statistics/tests/anova.m scripts/statistics/tests/cor_test.m
+	scripts/statistics/tests/t_test_regression.m src/DLD-
+	FUNCTIONS/__magick_read__.cc src/DLD-FUNCTIONS/dlmread.cc src/DLD-
+	FUNCTIONS/schur.cc src/data.cc src/debug.cc src/defun-dld.h
+	src/defun.cc src/defun.h src/dynamic-ld.cc src/error.cc src/error.h
+	src/gl-render.cc src/graphics.cc src/gripes.cc src/input.cc
+	src/lex.ll src/load-path.cc src/load-save.cc src/ls-hdf5.cc src/ls-
+	mat-ascii.cc src/ls-mat4.cc src/ls-mat5.cc src/ls-oct-ascii.cc src
+	/ls-oct-binary.cc src/oct-hist.cc src/oct-parse.yy src/oct-stream.cc
+	src/oct-stream.h src/octave.cc src/ov-base-diag.cc src/ov-base.cc
+	src/ov-class.cc src/ov-colon.h src/ov-struct.cc src/ov-typeinfo.cc
+	src/ov.cc src/pager.cc src/pr-output.cc src/pt-binop.cc src/pt-
+	eval.cc src/pt-id.cc src/pt-idx.cc src/pt-misc.cc src/pt-unop.cc
+	src/symtab.cc src/symtab.h src/toplev.cc src/txt-eng-ft.cc
+	src/utils.cc src/variables.cc test/test_eval-catch.m test/test_try.m
+
+2012-09-23  Rik  <rik@octave.org>
+
+	Fix quadcc when there are NaNs in the integrand (bug #37414)
+
+	* quadcc.cc: Use fx[nans[i]] = octave_NaN instead of fx[i].
+	Add %!test for integrand with NaNs in it.
+
+	Files: src/DLD-FUNCTIONS/quadcc.cc
+
+2012-09-21  Jordi Gutiérrez Hermoso  <jordigh@octave.org>
+
+	Fix diag handling of diagvectors (bug #37411)
+
+	* DiagArray2.h (extract_diag): New function
+	* DiagArray2.cc (extract_diag): Ditto
+	* ov.h (octave_value): New constructors for DiagArray2<T> types.
+	* ov.cc (octave_value): Ditto
+	* ov-base-diag.h (octave_base_diag<DMT,MT>::diag): Remove definition.
+	* ov-base-diag.cc (octave_base_diag<DMT,MT>::diag) Rewrite to check
+	  for special diagvector case.
+	* data.cc: Add test for this bug
+
+	Files: liboctave/DiagArray2.cc liboctave/DiagArray2.h src/data.cc src/ov-
+	base-diag.cc src/ov-base-diag.h src/ov.cc src/ov.h
+
+2012-09-13  John W. Eaton  <jwe@octave.org>
+
+	rcond: use new copy of data for full factorization if positive definite cholesky factorization fails (bug #37336)
+
+	* dMatrix.cc (Matrix::rcond): Don't reuse modified matrix data if
+	positive definite cholesky factorization was attempted but fails.
+	* CMatrix.cc (ComplexMatrix::rcond): Likewise.
+	* fMatrix.cc (FloatMatrix::rcond): Likewise.
+	* fCMatrix.cc (FloatComplexMatrix::rcond): Likewise.
+	* rcond.cc: New tests.
+
+	Files: liboctave/CMatrix.cc liboctave/dMatrix.cc liboctave/fCMatrix.cc
+	liboctave/fMatrix.cc src/DLD-FUNCTIONS/rcond.cc
+
+2012-06-21  John W. Eaton  <jwe@octave.org>
+
+	Special-case removing rows or columns from empty sparse matrices
+
+	* Sparse.cc (Sparse<T>::delete_elements): Don't attempt to preserve
+	  elements if nnz = 0; simply reshape if number of rows or columns is zero.
+
+	Files: liboctave/Sparse.cc
+
+2012-05-19  David Bateman  <dbateman@free.fr>
+
+	Ensure sparse constructors have valid ridx and data indices even if they are zero matrices (bug #36104)
+
+	Files: liboctave/Sparse.cc
+
 2012-09-04  John W. Eaton  <jwe@octave.org>
+
+	Added tag release-3-6-3 for changeset a95432e7309c
+
+	Files: .hgtags
 
 	Version 3.6.3 released.
 
@@ -889,22 +1535,6 @@
 
 	Files: 
 
-2012-01-10  Rik  <octave@nomad.inbox5.com>
-
-	Don't process comments in %!testif specifications.
-
-	* test.m: Strip comments before processing testif specification line.
-
-	* build_sparse_tests.sh: Make comments on %!testif lines look attractive.
-
-	Files: scripts/testfun/test.m test/build_sparse_tests.sh
-
-	oct-parse.yy: Remove unused variable to stop compiler warning.
-
-	* oct-parse.yy: Remove unused variable to stop compiler warning.
-
-	Files: src/oct-parse.yy
-
 2012-01-10  John W. Eaton  <jwe@octave.org>
 
 	3.6.0-rc0 release candidate
@@ -928,6 +1558,24 @@
 	* autogen.sh: Set mode of edited configure script to 755.
 
 	Files: autogen.sh
+
+2012-01-10  Rik  <octave@nomad.inbox5.com>
+
+	Don't process comments in %!testif specifications.
+
+	* test.m: Strip comments before processing testif specification line.
+
+	* build_sparse_tests.sh: Make comments on %!testif lines look attractive.
+
+	Files: scripts/testfun/test.m test/build_sparse_tests.sh
+
+	oct-parse.yy: Remove unused variable to stop compiler warning.
+
+	* oct-parse.yy: Remove unused variable to stop compiler warning.
+
+	Files: src/oct-parse.yy
+
+2012-01-10  John W. Eaton  <jwe@octave.org>
 
 	update NEWS
 
@@ -3263,6 +3911,15 @@
 
 	Files: 
 
+2011-10-10  John W. Eaton  <jwe@octave.org>
+
+	Version 3.4.3 released.
+
+	* configure.ac (AC_INIT): Version number is now 3.4.3.
+	(OCTAVE_RELEASE_DATE): Update to 2011-10-10.
+
+	Files: configure.ac
+
 2011-10-18  Jordi Gutiérrez Hermoso  <jordigh@octave.org>
 
 	Fix segfault in do_minmax_bin_op (bug #34589)
@@ -3272,15 +3929,6 @@
 	imshow: check correctly for complex images (bug #34549)
 
 	Files: scripts/image/imshow.m
-
-2011-10-10  John W. Eaton  <jwe@octave.org>
-
-	Version 3.4.3 released.
-
-	* configure.ac (AC_INIT): Version number is now 3.4.3.
-	(OCTAVE_RELEASE_DATE): Update to 2011-10-10.
-
-	Files: configure.ac
 
 2011-09-29  Jordi Gutiérrez Hermoso  <jordigh@octave.org>
 

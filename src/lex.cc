@@ -1352,7 +1352,7 @@ along with Octave; see the file COPYING.  If not, see
 
 // Try to avoid crashing out completely on fatal scanner errors.
 // The call to yy_fatal_error should never happen, but it avoids a
-// `static function defined but not used' warning from gcc.
+// 'static function defined but not used' warning from gcc.
 
 #ifdef YY_FATAL_ERROR
 #undef YY_FATAL_ERROR
@@ -1952,7 +1952,7 @@ YY_RULE_SETUP
 	YY_BREAK
 
 // For this and the next two rules, we're looking at ']', and we
-// need to know if the next token is `=' or `=='.
+// need to know if the next token is '=' or '=='.
 //
 // It would have been so much easier if the delimiters were simply
 // different for the expression on the left hand side of the equals
@@ -2220,7 +2220,7 @@ YY_RULE_SETUP
   }
 	YY_BREAK
 
-// Real numbers.  Don't grab the `.' part of a dot operator as part of
+// Real numbers.  Don't grab the '.' part of a dot operator as part of
 // the constant.
 
 case 17:
@@ -2287,7 +2287,7 @@ case YY_STATE_EOF(FUNCTION_FILE_BEGIN):
 
         if ((reading_fcn_file || reading_script_file || reading_classdef_file)
             && ! curr_fcn_file_name.empty ())
-          warning ("near line %d of file `%s.m'",
+          warning ("near line %d of file '%s.m'",
                    input_line_number, curr_fcn_file_name.c_str ());
       }
 
@@ -2873,7 +2873,7 @@ YY_RULE_SETUP
       {
         current_input_column++;
 
-        error ("invalid character `%s' (ASCII %d) near line %d, column %d",
+        error ("invalid character '%s' (ASCII %d) near line %d, column %d",
                undo_string_escape (static_cast<char> (c)), c,
                input_line_number, current_input_column);
 
@@ -5339,7 +5339,7 @@ cleanup:
   return false;
 }
 
-// We have seen a `.' and need to see if it is the start of a
+// We have seen a '.' and need to see if it is the start of a
 // continuation.  If so, this eats it, up to and including the new
 // line character.
 
@@ -6130,7 +6130,7 @@ handle_identifier (void)
   // If we are looking at a text style function, set up to gobble its
   // arguments.
   //
-  // If the following token is `=', or if we are parsing a function
+  // If the following token is '=', or if we are parsing a function
   // return list or function parameter list, or if we are looking at
   // something like [ab,cd] = foo (), force the symbol to be inserted
   // as a variable in the current symbol table.
@@ -6329,11 +6329,11 @@ maybe_warn_separator_insert (char sep)
 
   if (nm.empty ())
     warning_with_id ("Octave:separator-insert",
-                     "potential auto-insertion of `%c' near line %d",
+                     "potential auto-insertion of '%c' near line %d",
                      sep, input_line_number);
   else
     warning_with_id ("Octave:separator-insert",
-                     "potential auto-insertion of `%c' near line %d of file %s",
+                     "potential auto-insertion of '%c' near line %d of file %s",
                      sep, input_line_number, nm.c_str ());
 }
 

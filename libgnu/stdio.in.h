@@ -1045,9 +1045,9 @@ _GL_WARN_ON_USE (snprintf, "snprintf is unportable - "
 # endif
 #endif
 
-/* Some people would argue that sprintf should be handled like gets
-   (for example, OpenBSD issues a link warning for both functions),
-   since both can cause security holes due to buffer overruns.
+/* Some people would argue that all sprintf uses should be warned about
+   (for example, OpenBSD issues a link warning for it),
+   since it can cause security holes due to buffer overruns.
    However, we believe that sprintf can be used safely, and is more
    efficient than snprintf in those safe cases; and as proof of our
    belief, we use sprintf in several gnulib modules.  So this header

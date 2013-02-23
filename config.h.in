@@ -410,18 +410,6 @@
 /* Define to 1 if you have the <amd/amd.h> header file. */
 #undef HAVE_AMD_AMD_H
 
-/* Define to 1 if you have the <amd/camd.h> header file. */
-#undef HAVE_AMD_CAMD_H
-
-/* Define to 1 if you have the <amd/ccolamd.h> header file. */
-#undef HAVE_AMD_CCOLAMD_H
-
-/* Define to 1 if you have the <amd/colamd.h> header file. */
-#undef HAVE_AMD_COLAMD_H
-
-/* Define to 1 if you have the <amd/cs.h> header file. */
-#undef HAVE_AMD_CS_H
-
 /* Define to 1 if you have the <amd.h> header file. */
 #undef HAVE_AMD_H
 
@@ -458,6 +446,9 @@
 /* Define if CAMD is available. */
 #undef HAVE_CAMD
 
+/* Define to 1 if you have the <camd/camd.h> header file. */
+#undef HAVE_CAMD_CAMD_H
+
 /* Define to 1 if you have the <camd.h> header file. */
 #undef HAVE_CAMD_H
 
@@ -472,6 +463,9 @@
 
 /* Define if CCOLAMD is available. */
 #undef HAVE_CCOLAMD
+
+/* Define to 1 if you have the <ccolamd/ccolamd.h> header file. */
+#undef HAVE_CCOLAMD_CCOLAMD_H
 
 /* Define to 1 if you have the <ccolamd.h> header file. */
 #undef HAVE_CCOLAMD_H
@@ -512,6 +506,9 @@
 /* Define if COLAMD is available. */
 #undef HAVE_COLAMD
 
+/* Define to 1 if you have the <colamd/colamd.h> header file. */
+#undef HAVE_COLAMD_COLAMD_H
+
 /* Define to 1 if you have the <colamd.h> header file. */
 #undef HAVE_COLAMD_H
 
@@ -544,6 +541,9 @@
 
 /* Define if CXSparse is available. */
 #undef HAVE_CXSPARSE
+
+/* Define to 1 if you have the <cxsparse/cs.h> header file. */
+#undef HAVE_CXSPARSE_CS_H
 
 /* Define if C++ complex class has T& real (void) and T& imag (void) methods
    */
@@ -1418,6 +1418,9 @@
 
 /* Define to 1 if getpeername is declared even after undefining macros. */
 #undef HAVE_RAW_DECL_GETPEERNAME
+
+/* Define to 1 if gets is declared even after undefining macros. */
+#undef HAVE_RAW_DECL_GETS
 
 /* Define to 1 if getsockname is declared even after undefining macros. */
 #undef HAVE_RAW_DECL_GETSOCKNAME

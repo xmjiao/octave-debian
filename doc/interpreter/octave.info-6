@@ -1,4 +1,4 @@
-This is /home/jwe/src/octave-stable/doc/interpreter/octave.info, produced by makeinfo version 4.13 from /home/jwe/src/octave-stable/doc/interpreter/octave.texi.
+This is octave.info, produced by makeinfo version 4.13 from octave.texi.
 
 START-INFO-DIR-ENTRY
 * Octave: (octave).           Interactive language for numerical computations.
@@ -64,7 +64,7 @@ programs amongst each other.  To aid this sharing Octave supports the
 installation of extra packages.  The `Octave-Forge' project is a
 community-maintained set of packages that can be downloaded and
 installed in Octave.  At the time of writing the `Octave-Forge' project
-can be found on-line at `http://octave.sourceforge.net', but since the
+can be found online at `http://octave.sourceforge.net', but since the
 Internet is an ever-changing place this may not be true at the time of
 reading.  Therefore it is recommended to see the Octave website for an
 updated reference.
@@ -2067,7 +2067,7 @@ without being deallocated.  Therefore, ideally Octave itself should
 allocate any memory that is needed by the foreign code, with either the
 fortran_vec method or the `OCTAVE_LOCAL_BUFFER' macro.
 
-   The Octave unwind_protect mechanism (*note The `unwind_protect'
+   The Octave unwind_protect mechanism (*note The unwind_protect
 Statement::) can also be used in oct-files.  In conjunction with the
 exception handling of Octave, it is important to enforce that certain
 code is run to allow variables, etc. to be restored even if an
@@ -3307,11 +3307,11 @@ B.2 Demonstration Functions
      remainder of the example can contain arbitrary Octave code.  For
      example:
 
-          !demo
-          ! t=0:0.01:2*pi; x = sin (t);
-          ! plot (t,x)
-          ! %-------------------------------------------------
-          ! % the figure window shows one cycle of a sine wave
+          %!demo
+          %! t=0:0.01:2*pi; x = sin (t);
+          %! plot (t,x)
+          %! %-------------------------------------------------
+          %! % the figure window shows one cycle of a sine wave
 
      Note that the code is displayed before it is executed, so a simple
      comment at the end suffices for labeling what is being shown.  It
@@ -3323,7 +3323,7 @@ B.2 Demonstration Functions
      initialization code.  Alternatively, all demos can be combined
      into a single large demo with the code
 
-          ! input("Press <enter> to continue: ","s");
+          %! input("Press <enter> to continue: ","s");
 
      between the sections, but this is discouraged.  Other techniques
      to avoid multiple initialization blocks include using multiple
@@ -3339,12 +3339,12 @@ B.2 Demonstration Functions
      <demo stuff> endif" with the 'if' on the same line as 'demo'.  For
      example:
 
-          !demo if 1
-          !  function y=f(x)
-          !    y=x;
-          !  endfunction
-          !  f(3)
-          ! endif
+          %!demo if 1
+          %!  function y=f(x)
+          %!    y=x;
+          %!  endfunction
+          %!  f(3)
+          %! endif
 
      *See also:* *note test: doc-test, *note example: doc-example.
 
@@ -4005,8 +4005,8 @@ contributions is <maintainers@octave.org>.  This concerns the
 development of Octave core, i.e., code that goes to Octave directly.
 You may consider developing and publishing a package instead; a great
 place for this is the allied Octave-Forge project
-(`http://octave.sf.net').  Note that the Octave project is inherently
-more conservative and follows narrower rules.
+(`http://octave.sourceforge.net').  Note that the Octave project is
+inherently more conservative and follows narrower rules.
 
 
 File: octave.info,  Node: Building the Development Sources,  Next: Basics of Generating a Changeset,  Prev: How to Contribute,  Up: Contributing Guidelines
@@ -4030,7 +4030,7 @@ Git
 doing
 
    * Check out a copy of the Octave sources:
-          hg clone http://hg.savannah.gnu.org/hgweb/octave
+          hg clone http://www.octave.org/hg/octave
 
    * Change to the top-level directory of the newly checked out sources:
           cd octave

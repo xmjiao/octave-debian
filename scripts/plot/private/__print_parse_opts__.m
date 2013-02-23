@@ -123,7 +123,7 @@ function arg_st = __print_parse_opts__ (varargin)
           error ("print: Ghostscript binary ""%s"" could not be located",
                  arg(3:end));
         else
-          arg_st.ghostscript_binary = __quote_path__ (arg_st.ghostscript_binary);
+          arg_st.ghostscript.binary = __quote_path__ (arg_st.ghostscript.binary);
         endif
       elseif (length (arg) > 2 && arg(1:2) == "-F")
         idx = rindex (arg, ":");
@@ -140,7 +140,7 @@ function arg_st = __print_parse_opts__ (varargin)
       elseif (length (arg) > 2 && arg(1:2) == "-f")
         arg_st.figure = str2num (arg(3:end));
       elseif (length (arg) >= 1 && arg(1) == "-")
-        error ("print: unknown option `%s'", arg);
+        error ("print: unknown option '%s'", arg);
       elseif (length (arg) > 0)
         arg_st.name = arg;
       endif
@@ -447,7 +447,7 @@ function gs = __ghostscript_binary__ ()
       gs_binaries = horzcat (gs_binaries, {"gs", "gs.exe"});
     else
       ## pc - Includes Win32 and mingw.
-      gs_binaries = horzcat (gs_binaries, {"gs.exe", "gswin32c.exe", "mgs.exe"});
+      gs_binaries = horzcat (gs_binaries, {"gs.exe", "gswin32c.exe", "gswin64c.exe", "mgs.exe"});
     endif
     n = 0;
     while (n < numel (gs_binaries) && isempty (ghostscript_binary))
@@ -470,7 +470,7 @@ function bin = __find_binary__ (binary)
   persistent data = struct ()
 
   if (! isfield (data, binary))
-    ## Reinitialize when `user_binaries' is present.
+    ## Reinitialize when 'user_binaries' is present.
     data.(binary).bin = "";
     data.(binary).warn_on_absence = false;
   endif

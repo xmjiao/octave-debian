@@ -1,4 +1,4 @@
-@c DO NOT EDIT!  Generated automatically by munge-texi.
+@c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
 @c Copyright (C) 1996-2012 John W. Eaton
 @c
@@ -526,7 +526,7 @@ on your terminal.  Error messages are shown on a line beginning with
 @example
 @group
 fieldnames ([1, 2; 3, 4])
-error: fieldnames: wrong type argument `matrix'
+error: fieldnames: wrong type argument 'matrix'
 @end group
 @end example
 

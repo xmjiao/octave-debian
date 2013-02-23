@@ -201,22 +201,25 @@ initialize (void)
 
   vars["CPPFLAGS"] = get_variable ("CPPFLAGS", %OCTAVE_CONF_CPPFLAGS%);
   vars["INCFLAGS"] = get_variable ("INCFLAGS", DEFAULT_INCFLAGS);
-  vars["F77"] = get_variable ("F77", %OCTAVE_CONF_F77%);
+  vars["F77"] = get_variable ("F77", %OCTAVE_CONF_MKOCTFILE_F77%);
   vars["FFLAGS"] = get_variable ("FFLAGS", %OCTAVE_CONF_FFLAGS%);
   vars["FPICFLAG"] = get_variable ("FPICFLAG", %OCTAVE_CONF_FPICFLAG%);
-  vars["CC"] = get_variable ("CC", %OCTAVE_CONF_CC%);
+  vars["CC"] = get_variable ("CC", %OCTAVE_CONF_MKOCTFILE_CC%);
   vars["CFLAGS"] = get_variable ("CFLAGS", %OCTAVE_CONF_CFLAGS%);
   vars["CPICFLAG"] = get_variable ("CPICFLAG", %OCTAVE_CONF_CPICFLAG%);
-  vars["CXX"] = get_variable ("CXX", %OCTAVE_CONF_CXX%);
+  vars["CXX"] = get_variable ("CXX", %OCTAVE_CONF_MKOCTFILE_CXX%);
   vars["CXXFLAGS"] = get_variable ("CXXFLAGS", %OCTAVE_CONF_CXXFLAGS%);
   vars["CXXPICFLAG"] = get_variable ("CXXPICFLAG", %OCTAVE_CONF_CXXPICFLAG%);
   vars["XTRA_CFLAGS"] = get_variable ("XTRA_CFLAGS", %OCTAVE_CONF_XTRA_CFLAGS%);
   vars["XTRA_CXXFLAGS"] = get_variable ("XTRA_CXXFLAGS", %OCTAVE_CONF_XTRA_CXXFLAGS%);
 
+  vars["AR"] = get_variable ("AR", %OCTAVE_CONF_MKOCTFILE_AR%);
+  vars["RANLIB"] = get_variable ("RANLIB", %OCTAVE_CONF_MKOCTFILE_RANLIB%);
+
   vars["DEPEND_FLAGS"] = get_variable ("DEPEND_FLAGS", %OCTAVE_CONF_DEPEND_FLAGS%);
   vars["DEPEND_EXTRA_SED_PATTERN"] = get_variable ("DEPEND_EXTRA_SED_PATTERN", %OCTAVE_CONF_DEPEND_EXTRA_SED_PATTERN%);
 
-  vars["DL_LD"] = get_variable ("DL_LD", %OCTAVE_CONF_DL_LD%);
+  vars["DL_LD"] = get_variable ("DL_LD", %OCTAVE_CONF_MKOCTFILE_DL_LD%);
   vars["DL_LDFLAGS"] = get_variable ("DL_LDFLAGS", %OCTAVE_CONF_MKOCTFILE_DL_LDFLAGS%);
 
   vars["RDYNAMIC_FLAG"] = get_variable ("RDYNAMIC_FLAG", %OCTAVE_CONF_RDYNAMIC_FLAG%);
@@ -236,7 +239,7 @@ initialize (void)
   vars["OCT_LINK_DEPS"] = get_variable ("FLIBS", %OCTAVE_CONF_OCT_LINK_DEPS%);
   vars["FLIBS"] = get_variable ("FLIBS", %OCTAVE_CONF_FLIBS%);
 
-  vars["LD_CXX"] = get_variable ("LD_CXX", %OCTAVE_CONF_LD_CXX%);
+  vars["LD_CXX"] = get_variable ("LD_CXX", %OCTAVE_CONF_MKOCTFILE_LD_CXX%);
   vars["LDFLAGS"] = get_variable ("LDFLAGS", %OCTAVE_CONF_LDFLAGS%);
   vars["LD_STATIC_FLAG"] = get_variable ("LD_STATIC_FLAG", %OCTAVE_CONF_LD_STATIC_FLAG%);
   vars["LFLAGS"] = get_variable ("LFLAGS", DEFAULT_LFLAGS);
@@ -299,30 +302,29 @@ static string help_msg =
 "  -p VAR, --print VAR     Print configuration variable VAR.  Recognized\n"
 "                          variables are:\n"
 "\n"
-"                            ALL_CFLAGS                FLIBS\n"
-"                            ALL_CXXFLAGS              FPICFLAG\n"
-"                            ALL_FFLAGS                INCFLAGS\n"
-"                            ALL_LDFLAGS               LAPACK_LIBS\n"
-"                            BLAS_LIBS                 LDFLAGS\n"
-"                            CC                        LD_CXX\n"
-"                            CFLAGS                    LD_STATIC_FLAG\n"
-"                            CPICFLAG                  LFLAGS\n"
-"                            CPPFLAGS                  LIBCRUFT\n"
+"                            ALL_CFLAGS                FFTW3F_LDFLAGS\n"
+"                            ALL_CXXFLAGS              FFTW3F_LIBS\n"
+"                            ALL_FFLAGS                FLIBS\n"
+"                            ALL_LDFLAGS               FPICFLAG\n"
+"                            AR                        INCFLAGS\n"
+"                            BLAS_LIBS                 LAPACK_LIBS\n"
+"                            CC                        LDFLAGS\n"
+"                            CFLAGS                    LD_CXX\n"
+"                            CPICFLAG                  LD_STATIC_FLAG\n"
+"                            CPPFLAGS                  LFLAGS\n"
 "                            CXX                       LIBOCTAVE\n"
 "                            CXXFLAGS                  LIBOCTINTERP\n"
 "                            CXXPICFLAG                LIBS\n"
 "                            DEPEND_EXTRA_SED_PATTERN  OCTAVE_LIBS\n"
 "                            DEPEND_FLAGS              OCTAVE_LINK_DEPS\n"
-"                            DL_LD                     OCTAVE_LINK_OPTS\n"
-"                            DL_LDFLAGS                OCT_LINK_DEPS\n"
-"                            EXEEXT                    OCT_LINK_OPTS\n"
-"                            F77                       RDYNAMIC_FLAG\n"
-"                            F77_INTEGER_8_FLAG        READLINE_LIBS\n"
-"                            FFLAGS                    SED\n"
-"                            FFTW3_LDFLAGS             XTRA_CFLAGS\n"
-"                            FFTW3_LIBS                XTRA_CXXFLAGS\n"
-"                            FFTW3F_LDFLAGS\n"
-"                            FFTW3F_LIBS\n"
+"                            DL_LD                     OCT_LINK_DEPS\n"
+"                            DL_LDFLAGS                RANLIB\n"
+"                            EXEEXT                    RDYNAMIC_FLAG\n"
+"                            F77                       READLINE_LIBS\n"
+"                            F77_INTEGER_8_FLAG        SED\n"
+"                            FFLAGS                    XTRA_CFLAGS\n"
+"                            FFTW3_LDFLAGS             XTRA_CXXFLAGS\n"
+"                            FFTW3_LIBS\n"
 "\n"
 "  --link-stand-alone      Link a stand-alone executable file.\n"
 "\n"

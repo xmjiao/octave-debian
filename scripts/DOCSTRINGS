@@ -1,7 +1,7 @@
 ### DO NOT EDIT!
 ###
-### This file is generated automatically from the Octave sources.
-### Edit those files instead and run make to update this file.
+### This file is generated automatically from Octave source files.
+### Edit source files directly and run make to update this file.
 
 @ftp/ascii
 @c @ftp/ascii scripts/@ftp/ascii.m
@@ -3360,12 +3360,12 @@ Undocumented internal function.
 -*- texinfo -*-
 @deftypefn {Command} {} doc @var{function_name}
 Display documentation for the function @var{function_name}
-directly from an on-line version of
+directly from an online version of
 the printed manual, using the GNU Info browser.  If invoked without
 any arguments, the manual is shown from the beginning.
 
 For example, the command @kbd{doc rand} starts the GNU Info browser
-at the @code{rand} node in the on-line version of the manual.
+at the @code{rand} node in the online version of the manual.
 
 Once the GNU Info browser is running, help for using it is available
 using the command @kbd{C-h}.
@@ -6839,7 +6839,7 @@ else
 endif
 endfunction
 
- @dots{}
+## @dots{}
 
 fsolve (@@user_func, x0, optimset ("OutputFcn", @@user_func, @dots{}))
 @end example
@@ -9918,15 +9918,15 @@ subplot (2,2,1); view (-38, 20);
 p = patch ("Faces", f, "Vertices", v, "EdgeColor", "none");
 set (gca, "PlotBoxAspectRatioMode", "manual", ...
           "PlotBoxAspectRatio", [1 1 1]);
- set (p, "FaceColor", "green", "FaceLighting", "phong");
- light ("Position", [1 1 5]); # Available with the JHandles package
+# set (p, "FaceColor", "green", "FaceLighting", "phong");
+# light ("Position", [1 1 5]); # Available with the JHandles package
 
 subplot (2,2,2); view (-38, 20);
 p = patch ("Faces", f, "Vertices", v, "EdgeColor", "blue");
 set (gca, "PlotBoxAspectRatioMode", "manual", ...
           "PlotBoxAspectRatio", [1 1 1]);
- set (p, "FaceColor", "none", "FaceLighting", "phong");
- light ("Position", [1 1 5]);
+# set (p, "FaceColor", "none", "FaceLighting", "phong");
+# light ("Position", [1 1 5]);
 
 subplot (2,2,3); view (-38, 20);
 [f, v, c] = isosurface (x, y, z, c, iso, y);
@@ -9934,16 +9934,16 @@ p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", c, ...
            "FaceColor", "interp", "EdgeColor", "none");
 set (gca, "PlotBoxAspectRatioMode", "manual", ...
           "PlotBoxAspectRatio", [1 1 1]);
- set (p, "FaceLighting", "phong");
- light ("Position", [1 1 5]);
+# set (p, "FaceLighting", "phong");
+# light ("Position", [1 1 5]);
 
 subplot (2,2,4); view (-38, 20);
 p = patch ("Faces", f, "Vertices", v, "FaceVertexCData", c, ...
            "FaceColor", "interp", "EdgeColor", "blue");
 set (gca, "PlotBoxAspectRatioMode", "manual", ...
           "PlotBoxAspectRatio", [1 1 1]);
- set (p, "FaceLighting", "phong");
- light ("Position", [1 1 5]);
+# set (p, "FaceLighting", "phong");
+# light ("Position", [1 1 5]);
 @end smallexample
 
 @seealso{isonormals, isocolors}
@@ -19358,11 +19358,11 @@ contain arbitrary Octave code.  For example:
 
 @example
 @group
-!demo
-! t=0:0.01:2*pi; x = sin (t);
-! plot (t,x)
-! %-------------------------------------------------
-! % the figure window shows one cycle of a sine wave
+%!demo
+%! t=0:0.01:2*pi; x = sin (t);
+%! plot (t,x)
+%! %-------------------------------------------------
+%! % the figure window shows one cycle of a sine wave
 @end group
 @end example
 
@@ -19376,7 +19376,7 @@ code.  Alternatively, all demos can be combined into a single large demo
 with the code
 
 @example
-! input("Press <enter> to continue: ","s");
+%! input("Press <enter> to continue: ","s");
 @end example
 
 @noindent
@@ -19395,12 +19395,12 @@ with the 'if' on the same line as 'demo'.  For example:
 
 @example
 @group
-!demo if 1
-!  function y=f(x)
-!    y=x;
-!  endfunction
-!  f(3)
-! endif
+%!demo if 1
+%!  function y=f(x)
+%!    y=x;
+%!  endfunction
+%!  f(3)
+%! endif
 @end group
 @end example
 
@@ -19973,7 +19973,7 @@ Return the difference in seconds between two time values returned from
 @example
 @group
 t0 = clock ();
- many computations later@dots{}
+# many computations later@dots{}
 elapsed_time = etime (clock (), t0);
 @end group
 @end example

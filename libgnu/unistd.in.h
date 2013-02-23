@@ -17,28 +17,12 @@
    along with this program; if not, write to the Free Software Foundation,
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
 
+#ifndef _@GUARD_PREFIX@_UNISTD_H
+
 #if __GNUC__ >= 3
 @PRAGMA_SYSTEM_HEADER@
 #endif
 @PRAGMA_COLUMNS@
-
-/* Special invocation convention:
-   - On mingw, several headers, including <winsock2.h>, include <unistd.h>,
-     but we need to ensure that both the system <unistd.h> and <winsock2.h>
-     are completely included before we replace gethostname.  */
-#if @GNULIB_GETHOSTNAME@ && @UNISTD_H_HAVE_WINSOCK2_H@ \
-  && !defined _GL_WINSOCK2_H_WITNESS && defined _WINSOCK2_H
-/* <unistd.h> is being indirectly included for the first time from
-   <winsock2.h>; avoid declaring any overrides.  */
-# if @HAVE_UNISTD_H@
-#  @INCLUDE_NEXT@ @NEXT_UNISTD_H@
-# else
-#  error unexpected; report this to bug-gnulib@gnu.org
-# endif
-# define _GL_WINSOCK2_H_WITNESS
-
-/* Normal invocation.  */
-#elif !defined _@GUARD_PREFIX@_UNISTD_H
 
 /* The include_next requires a split double-inclusion guard.  */
 #if @HAVE_UNISTD_H@
