@@ -1,3 +1,9 @@
+octave (3.6.2-5+deb7u1) stable; urgency=low
+
+  * rcond.patch: new patch taken from upstream, fixes rcond function
+
+ -- Sébastien Villemot <sebastien@debian.org>  Wed, 08 May 2013 20:05:07 +0200
+
 octave (3.6.2-5) unstable; urgency=low
 
   * Make liboctave-dev coinstallable again with all HDF5 variants
