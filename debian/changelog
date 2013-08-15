@@ -1,3 +1,15 @@
+octave (3.6.4-4) unstable; urgency=low
+
+  [ Rafael Laboissiere ]
+  * Drop useless build-dependency on texi2html
+
+  [ Sébastien Villemot ]
+  * Use canonical address for packaging VCS
+  * glpk-4.49.diff: new patch, fixes FTBFS against recent versions of GLPK
+    (Closes: #714360)
+
+ -- Sébastien Villemot <sebastien@debian.org>  Thu, 15 Aug 2013 14:12:46 +0200
+
 octave (3.6.4-3) unstable; urgency=low
 
   * gcc-4.8.diff: new patch, fixes compilation of C++ MEX files with GCC 4.8
