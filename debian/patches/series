@@ -11,3 +11,4 @@ mkoctfile-mpi.diff
 contourc-stack-overflow.diff
 texinfo5.diff
 gcc-4.8.diff
+glpk-4.49.diff
