@@ -1,6 +1,6 @@
 Source: octave
 Section: math
-Priority: extra
+Priority: optional
 Maintainer: Debian Octave Group <pkg-octave-devel@lists.alioth.debian.org>
 Uploaders: Thomas Weber <tweber@debian.org>,
            Sébastien Villemot <sebastien@debian.org>
