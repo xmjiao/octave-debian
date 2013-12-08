@@ -1,7 +1,5 @@
-/* -*- buffer-read-only: t -*- vi: set ro: */
-/* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* Open a descriptor to a file.
-   Copyright (C) 2007-2012 Free Software Foundation, Inc.
+   Copyright (C) 2007-2013 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -29,7 +27,7 @@
 #include <sys/types.h>
 #undef __need_system_fcntl_h
 
-static inline int
+static int
 orig_open (const char *filename, int flags, mode_t mode)
 {
   return open (filename, flags, mode);

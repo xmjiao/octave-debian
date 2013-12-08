@@ -1,35 +1,61 @@
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.2, http://www.gnu.org/software/texinfo/ -->
 <head>
-<title>Hashing Functions - GNU Octave</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="GNU Octave">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="System-Utilities.html#System-Utilities" title="System Utilities">
-<link rel="prev" href="System-Information.html#System-Information" title="System Information">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
-</head>
-<body>
-<div class="node">
-<a name="Hashing-Functions"></a>
-<p>
-Previous:&nbsp;<a rel="previous" accesskey="p" href="System-Information.html#System-Information">System Information</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="System-Utilities.html#System-Utilities">System Utilities</a>
-<hr>
-</div>
+<title>GNU Octave: Hashing Functions</title>
 
+<meta name="description" content="GNU Octave: Hashing Functions">
+<meta name="keywords" content="GNU Octave: Hashing Functions">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="System-Utilities.html#System-Utilities" rel="up" title="System Utilities">
+<link href="Java-Interface.html#Java-Interface" rel="next" title="Java Interface">
+<link href="System-Information.html#System-Information" rel="prev" title="System Information">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+<a name="Hashing-Functions"></a>
+<div class="header">
+<p>
+Previous: <a href="System-Information.html#System-Information" accesskey="p" rel="prev">System Information</a>, Up: <a href="System-Utilities.html#System-Utilities" accesskey="u" rel="up">System Utilities</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Hashing-Functions-1"></a>
 <h3 class="section">36.12 Hashing Functions</h3>
 
 <p>It is often necessary to find if two strings or files are
@@ -37,47 +63,37 @@ identical.  This might be done by comparing them character by character
 and looking for differences.  However, this can be slow, and so comparing
 a hash of the string or file can be a rapid way of finding if the files
 differ.
-
-   <p>Another use of the hashing function is to check for file integrity.  The
+</p>
+<p>Another use of the hashing function is to check for file integrity.  The
 user can check the hash of the file against a known value and find if
 the file they have is the same as the one that the original hash was
 produced with.
-
-   <p>Octave supplies the <code>md5sum</code> function to perform MD5 hashes on
+</p>
+<p>Octave supplies the <code>md5sum</code> function to perform MD5 hashes on
 strings and files.  An example of the use of <code>md5sum</code> function might
 be
+</p>
+<div class="example">
+<pre class="example">if exist (file, &quot;file&quot;)
+  hash = md5sum (file);
+else
+  # Treat the variable &quot;file&quot; as a string
+  hash = md5sum (file, true);
+endif
+</pre></div>
 
-<pre class="example">     if exist (file, "file")
-       hash = md5sum (file);
-     else
-       # Treat the variable "file" as a string
-       hash = md5sum (file, true);
-     endif
-</pre>
-   <!-- md5sum src/DLD-FUNCTIONS/md5sum.cc -->
-   <p><a name="doc_002dmd5sum"></a>
-
-<div class="defun">
-&mdash; Loadable Function:  <b>md5sum</b> (<var>file</var>)<var><a name="index-md5sum-3352"></a></var><br>
-&mdash; Loadable Function:  <b>md5sum</b> (<var>str, opt</var>)<var><a name="index-md5sum-3353"></a></var><br>
-<blockquote><p>Calculate the MD5 sum of the file <var>file</var>.  If the second parameter
+<a name="XREFmd5sum"></a><dl>
+<dt><a name="index-md5sum"></a>Built-in Function: <em></em> <strong>md5sum</strong> <em>(<var>file</var>)</em></dt>
+<dt><a name="index-md5sum-1"></a>Built-in Function: <em></em> <strong>md5sum</strong> <em>(<var>str</var>, <var>opt</var>)</em></dt>
+<dd><p>Calculate the MD5 sum of the file <var>file</var>.  If the second parameter
 <var>opt</var> exists and is true, then calculate the MD5 sum of the
-string <var>str</var>. 
-</p></blockquote></div>
+string <var>str</var>.
+</p></dd></dl>
 
-<!-- DO NOT EDIT!  Generated automatically by munge-texi.pl. -->
-<!-- Copyright (C) 2007-2012 S�ren Hauberg -->
-<!-- This file is part of Octave. -->
-<!-- Octave is free software; you can redistribute it and/or modify it -->
-<!-- under the terms of the GNU General Public License as published by the -->
-<!-- Free Software Foundation; either version 3 of the License, or (at -->
-<!-- your option) any later version. -->
-<!-- Octave is distributed in the hope that it will be useful, but WITHOUT -->
-<!-- ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or -->
-<!-- FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License -->
-<!-- for more details. -->
-<!-- You should have received a copy of the GNU General Public License -->
-<!-- along with Octave; see the file COPYING.  If not, see -->
-<!-- <http://www.gnu.org/licenses/>. -->
-   </body></html>
 
+
+
+
+
+</body>
+</html>

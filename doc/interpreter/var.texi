@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2012 John W. Eaton
+@c Copyright (C) 1996-2013 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -51,7 +51,7 @@ Case is significant in variable names.  The symbols @code{a} and
 A variable name is a valid expression by itself.  It represents the
 variable's current value.  Variables are given new values with
 @dfn{assignment operators} and @dfn{increment operators}.
-@xref{Assignment Ops, ,Assignment Expressions}.
+@xref{Assignment Ops,,Assignment Expressions}.
 
 There is one built-in variable with a special meaning.  The @code{ans} variable
 always contains the result of the last computation, where the output wasn't
@@ -66,7 +66,7 @@ before they have been given a value.  Doing so results in an error.
 
 @cindex @code{ans}
 @c ans scripts/miscellaneous/ans.m
-@anchor{doc-ans}
+@anchor{XREFans}
 @defvr {Automatic Variable} ans
 The most recently computed result that was not
 explicitly assigned to a variable.  For example, after the expression
@@ -80,16 +80,16 @@ is evaluated, the value returned by @code{ans} is 25.
 @end defvr
 
 
-@c isvarname src/utils.cc
-@anchor{doc-isvarname}
+@c isvarname libinterp/corefcn/utils.cc
+@anchor{XREFisvarname}
 @deftypefn {Built-in Function} {} isvarname (@var{name})
 Return true if @var{name} is a valid variable name.
-@seealso{@ref{doc-iskeyword,,iskeyword}, @ref{doc-exist,,exist}, @ref{doc-who,,who}}
+@seealso{@ref{XREFiskeyword,,iskeyword}, @ref{XREFexist,,exist}, @ref{XREFwho,,who}}
 @end deftypefn
 
 
-@c genvarname scripts/general/genvarname.m
-@anchor{doc-genvarname}
+@c genvarname scripts/miscellaneous/genvarname.m
+@anchor{XREFgenvarname}
 @deftypefn  {Function File} {@var{varname} =} genvarname (@var{str})
 @deftypefnx {Function File} {@var{varname} =} genvarname (@var{str}, @var{exclusions})
 Create unique variable(s) from @var{str}.  If @var{exclusions} is
@@ -155,20 +155,21 @@ genvarname replaces any sequence of disallowed characters with
 an underscore.  Also, variables may not begin with a digit; in this
 case an underscore is added before the variable name.
 
-Variable names beginning and ending with two underscores "__" are valid but
-they are used internally by octave and should generally be avoided, therefore
-genvarname will not generate such names.
+Variable names beginning and ending with two underscores @qcode{"__"} are
+valid but they are used internally by octave and should generally be
+avoided, therefore genvarname will not generate such names.
 
 genvarname will also make sure that returned names do not clash with
-keywords such as "for" and "if".  A number will be appended if necessary.
-Note, however, that this does @strong{not} include function names,
-such as "sin".  Such names should be included in @var{avoid} if necessary.
-@seealso{@ref{doc-isvarname,,isvarname}, @ref{doc-exist,,exist}, @ref{doc-tmpnam,,tmpnam}, @ref{doc-eval,,eval}}
+keywords such as @qcode{"for"} and @qcode{"if"}.  A number will be
+appended if necessary.  Note, however, that this does @strong{not} include
+function names, such as @qcode{"sin"}.  Such names should be included in
+@var{avoid} if necessary.
+@seealso{@ref{XREFisvarname,,isvarname}, @ref{XREFexist,,exist}, @ref{XREFtmpnam,,tmpnam}, @ref{XREFeval,,eval}}
 @end deftypefn
 
 
 @c namelengthmax scripts/miscellaneous/namelengthmax.m
-@anchor{doc-namelengthmax}
+@anchor{XREFnamelengthmax}
 @deftypefn {Function File} {} namelengthmax ()
 Return the @sc{matlab} compatible maximum variable name length.  Octave is
 capable of storing strings up to @math{2^{31} - 1} in length.
@@ -180,9 +181,9 @@ format will have their names truncated to this length.
 
 
 @menu
-* Global Variables::            
-* Persistent Variables::        
-* Status of Variables::         
+* Global Variables::
+* Persistent Variables::
+* Status of Variables::
 @end menu
 
 @node Global Variables
@@ -279,8 +280,8 @@ will display the value of @code{x} from inside the function as 0,
 but the value of @code{x} at the top level remains unchanged, because
 the function works with a @emph{copy} of its argument.
 
-@c isglobal src/variables.cc
-@anchor{doc-isglobal}
+@c isglobal libinterp/corefcn/variables.cc
+@anchor{XREFisglobal}
 @deftypefn {Built-in Function} {} isglobal (@var{name})
 Return true if @var{name} is a globally visible variable.
 For example:
@@ -289,10 +290,10 @@ For example:
 @group
 global x
 isglobal ("x")
-     @result{} 1
+   @result{} 1
 @end group
 @end example
-@seealso{@ref{doc-isvarname,,isvarname}, @ref{doc-exist,,exist}}
+@seealso{@ref{XREFisvarname,,isvarname}, @ref{XREFexist,,exist}}
 @end deftypefn
 
 
@@ -301,7 +302,7 @@ isglobal ("x")
 @cindex persistent variables
 @cindex @code{persistent} statement
 @cindex variables, persistent
-@anchor{doc-persistent}
+@anchor{XREFpersistent}
 
 A variable that has been declared @dfn{persistent} within a function
 will retain its contents in memory between subsequent calls to the
@@ -395,21 +396,21 @@ endfor
 
 clear
 for i = 1:2
-  count_calls();
+  count_calls ();
 endfor
 @print{} 'count_calls' has been called 3 times
 @print{} 'count_calls' has been called 4 times
 
 clear all
 for i = 1:2
-  count_calls();
+  count_calls ();
 endfor
 @print{} 'count_calls' has been called 1 times
 @print{} 'count_calls' has been called 2 times
 
 clear count_calls
 for i = 1:2
-  count_calls();
+  count_calls ();
 endfor
 @print{} 'count_calls' has been called 1 times
 @print{} 'count_calls' has been called 2 times
@@ -422,8 +423,8 @@ definition is typed directly into the Octave prompt, the persistent
 variable will be cleared by a simple @code{clear} command as the entire
 function definition will be removed from memory.  If you do not want
 a persistent variable to be removed from memory even if the function is
-cleared, you should use the @code{mlock} function as described in
-@xref{Function Locking}.
+cleared, you should use the @code{mlock} function
+(@pxref{Function Locking}).
 
 @node Status of Variables
 @section Status of Variables
@@ -443,8 +444,8 @@ who -variables
 @end group
 @end example
 
-@c who src/variables.cc
-@anchor{doc-who}
+@c who libinterp/corefcn/variables.cc
+@anchor{XREFwho}
 @deftypefn  {Command} {} who
 @deftypefnx {Command} {} who pattern @dots{}
 @deftypefnx {Command} {} who option pattern @dots{}
@@ -473,12 +474,12 @@ from a file.
 
 If called as a function, return a cell array of defined variable names
 matching the given patterns.
-@seealso{@ref{doc-whos,,whos}, @ref{doc-isglobal,,isglobal}, @ref{doc-isvarname,,isvarname}, @ref{doc-exist,,exist}, @ref{doc-regexp,,regexp}}
+@seealso{@ref{XREFwhos,,whos}, @ref{XREFisglobal,,isglobal}, @ref{XREFisvarname,,isvarname}, @ref{XREFexist,,exist}, @ref{XREFregexp,,regexp}}
 @end deftypefn
 
 
-@c whos src/variables.cc
-@anchor{doc-whos}
+@c whos libinterp/corefcn/variables.cc
+@anchor{XREFwhos}
 @deftypefn  {Command} {} whos
 @deftypefnx {Command} {} whos pattern @dots{}
 @deftypefnx {Command} {} whos option pattern @dots{}
@@ -491,6 +492,7 @@ summarized in a table with the following default entries.
 @table @asis
 @item Attr
 Attributes of the listed variable.  Possible attributes are:
+
 @table @asis
 @item blank
 Variable in local scope
@@ -534,12 +536,12 @@ If @code{whos} is called as a function, return a struct array of defined
 variable names matching the given patterns.  Fields in the structure
 describing each variable are: name, size, bytes, class, global, sparse,
 complex, nesting, persistent.
-@seealso{@ref{doc-who,,who}, @ref{doc-whos_line_format,,whos_line_format}}
+@seealso{@ref{XREFwho,,who}, @ref{XREFwhos_line_format,,whos_line_format}}
 @end deftypefn
 
 
-@c whos_line_format src/variables.cc
-@anchor{doc-whos_line_format}
+@c whos_line_format libinterp/corefcn/variables.cc
+@anchor{XREFwhos_line_format}
 @deftypefn  {Built-in Function} {@var{val} =} whos_line_format ()
 @deftypefnx {Built-in Function} {@var{old_val} =} whos_line_format (@var{new_val})
 @deftypefnx {Built-in Function} {} whos_line_format (@var{new_val}, "local")
@@ -603,12 +605,12 @@ leftmost column.  @code{left-min} specifies the minimum field width to the
 left of the specified balance column.
 
 The default format is
-@code{"  %a:4; %ln:6; %cs:16:6:1;  %rb:12;  %lc:-1;\n"}.
+@qcode{"  %a:4; %ln:6; %cs:16:6:1;  %rb:12;  %lc:-1;\n"}.
 
-When called from inside a function with the "local" option, the variable is
-changed locally for the function and any subroutines it calls.  The original
-variable value is restored when exiting the function.
-@seealso{@ref{doc-whos,,whos}}
+When called from inside a function with the @qcode{"local"} option, the
+variable is changed locally for the function and any subroutines it calls.  
+The original variable value is restored when exiting the function.
+@seealso{@ref{XREFwhos,,whos}}
 @end deftypefn
 
 
@@ -625,8 +627,8 @@ endif
 @end group
 @end example
 
-@c exist src/variables.cc
-@anchor{doc-exist}
+@c exist libinterp/corefcn/variables.cc
+@anchor{XREFexist}
 @deftypefn {Built-in Function} {} exist (@var{name}, @var{type})
 Return 1 if the name exists as a variable, 2 if the name is an
 absolute file name, an ordinary file in Octave's @code{path}, or (after
@@ -647,19 +649,20 @@ If the optional argument @var{type} is supplied, check only for
 symbols of the specified type.  Valid types are
 
 @table @asis
-@item "var"
+@item @qcode{"var"}
 Check only for variables.
 
-@item "builtin"
+@item @qcode{"builtin"}
 Check only for built-in functions.
 
-@item "file"
-Check only for files.
+@item @qcode{"file"}
+Check only for files and directories.
 
-@item "dir"
+@item @qcode{"dir"}
 Check only for directories.
 @end table
-@seealso{@ref{doc-file_in_loadpath,,file_in_loadpath}}
+
+@seealso{@ref{XREFfile_in_loadpath,,file_in_loadpath}, @ref{XREFfile_in_path,,file_in_path}, @ref{XREFfind_dir_in_path,,find_dir_in_path}, @ref{XREFstat,,stat}}
 @end deftypefn
 
 
@@ -678,8 +681,8 @@ Since having this variable in memory might slow down other computations,
 it can be necessary to remove it manually from memory.  The @code{clear}
 function allows this.
 
-@c clear src/variables.cc
-@anchor{doc-clear}
+@c clear libinterp/corefcn/variables.cc
+@anchor{XREFclear}
 @deftypefn {Command} {} clear [options] pattern @dots{}
 Delete the names matching the given patterns from the symbol table.  The
 pattern may contain the following special characters:
@@ -719,6 +722,7 @@ will clear the variable definition and restore the definition of
 clear the function definition.
 
 The following options are available in both long and short form
+
 @table @code
 @item -all, -a
 Clears all local and global user-defined variables and all functions
@@ -743,13 +747,14 @@ Clears the class structure table and clears all objects.
 The arguments are treated as regular expressions as any variables that
 match will be cleared.
 @end table
+
 With the exception of @code{exclusive}, all long options can be used
 without the dash as well.
 @end deftypefn
 
 
 @c pack scripts/miscellaneous/pack.m
-@anchor{doc-pack}
+@anchor{XREFpack}
 @deftypefn {Function File} {} pack ()
 Consolidate workspace memory in @sc{matlab}.  This function is provided for
 compatibility, but does nothing in Octave.
@@ -761,38 +766,40 @@ file system can also be acquired from within Octave.  This is usually
 only useful during development of programs, and not within a program.
 
 @c type scripts/help/type.m
-@anchor{doc-type}
+@anchor{XREFtype}
 @deftypefn  {Command} {} type @var{name} @dots{}
 @deftypefnx {Command} {} type -q @var{name} @dots{}
-@deftypefnx {Function File} {dfns =} type ("@var{name}", @dots{})
-Display the definition of each @var{name} that refers to a function.
+@deftypefnx {Function File} {text =} type ("@var{name}", @dots{})
+Display the contents of @var{name} which may be a file, function (m-file),
+variable, operator, or keyword.
 
-Normally also displays whether each @var{name} is user-defined or built-in;
-the @option{-q} option suppresses this behavior.
+@code{type} normally prepends a header line describing the category
+of @var{name} such as function or variable; The @option{-q} option
+suppresses this behavior.
 
-If an output argument is requested nothing is displayed.  Instead, a cell
-array of strings is returned, where each element corresponds to the
-definition of each requested function.
+If no output variable is used the contents are displayed on screen.
+Otherwise, a cell array of strings is returned, where each element
+corresponds to the contents of each requested function.
 @end deftypefn
 
 
 @c which scripts/help/which.m
-@anchor{doc-which}
+@anchor{XREFwhich}
 @deftypefn {Command} {} which name @dots{}
 Display the type of each @var{name}.  If @var{name} is defined from a
 function file, the full name of the file is also displayed.
-@seealso{@ref{doc-help,,help}, @ref{doc-lookfor,,lookfor}}
+@seealso{@ref{XREFhelp,,help}, @ref{XREFlookfor,,lookfor}}
 @end deftypefn
 
 
 @c what scripts/miscellaneous/what.m
-@anchor{doc-what}
+@anchor{XREFwhat}
 @deftypefn  {Command} {} what
 @deftypefnx {Command} {} what @var{dir}
 @deftypefnx {Function File} {w =} what (@var{dir})
 List the Octave specific files in directory @var{dir}.  If @var{dir} is
 not specified then the current directory is used.  If a return argument is
 requested, the files found are returned in the structure @var{w}.
-@seealso{@ref{doc-which,,which}}
+@seealso{@ref{XREFwhich,,which}}
 @end deftypefn
 

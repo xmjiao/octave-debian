@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 2005-2012 David Bateman
+@c Copyright (C) 2005-2013 David Bateman
 @c Copyright (C) 2002-2005 Paul Kienzle
 @c
 @c This file is part of Octave.
@@ -35,14 +35,14 @@ and demonstration code in the source code of the functions themselves.
 @section Test Functions
 
 @c test scripts/testfun/test.m
-@anchor{doc-test}
+@anchor{XREFtest}
 @deftypefn  {Command} {} test @var{name}
 @deftypefnx {Command} {} test @var{name} quiet|normal|verbose
-@deftypefnx {Function File} {} test ('@var{name}', 'quiet|normal|verbose', @var{fid})
-@deftypefnx {Function File} {} test ([], 'explain', @var{fid})
+@deftypefnx {Function File} {} test ("@var{name}", "quiet|normal|verbose", @var{fid})
+@deftypefnx {Function File} {} test ([], "explain", @var{fid})
 @deftypefnx {Function File} {@var{success} =} test (@dots{})
 @deftypefnx {Function File} {[@var{n}, @var{max}] =} test (@dots{})
-@deftypefnx {Function File} {[@var{code}, @var{idx}] =} test ('@var{name}', 'grabdemo')
+@deftypefnx {Function File} {[@var{code}, @var{idx}] =} test ("@var{name}", "grabdemo")
 
 Perform tests from the first file in the loadpath matching @var{name}.
 @code{test} can be called as a command or as a function.  Called with
@@ -53,14 +53,14 @@ With a second argument the tests which are performed and the amount of
 output is selected.
 
 @table @asis
-@item 'quiet'
+@item @qcode{"quiet"}
  Don't report all the tests as they happen, just the errors.
 
-@item 'normal'
+@item @qcode{"normal"}
 Report all tests as they happen, but don't do tests which require
 user interaction.
 
-@item 'verbose'
+@item @qcode{"verbose"}
 Do tests which require user interaction.
 @end table
 
@@ -77,14 +77,15 @@ true if all of the tests were successful.  Called with two output arguments
 @var{n} and @var{max}, the number of successful tests and the total number
 of tests in the file @var{name} are returned.
 
-If the second argument is the string 'grabdemo', the contents of the demo
-blocks are extracted but not executed.  Code for all code blocks is
-concatenated and returned as @var{code} with @var{idx} being a vector of
-positions of the ends of the demo blocks.
+If the second argument is the string @qcode{"grabdemo"}, the contents of
+the demo blocks are extracted but not executed.  Code for all code blocks
+is concatenated and returned as @var{code} with @var{idx} being a vector
+of positions of the ends of the demo blocks.
 
-If the second argument is 'explain', then @var{name} is ignored and an
-explanation of the line markers used is written to the file @var{fid}.
-@seealso{@ref{doc-assert,,assert}, @ref{doc-fail,,fail}, @ref{doc-error,,error}, @ref{doc-demo,,demo}, @ref{doc-example,,example}}
+If the second argument is @qcode{"explain"}, then @var{name} is ignored
+and an explanation of the line markers used is written to the file
+@var{fid}.
+@seealso{@ref{XREFassert,,assert}, @ref{XREFfail,,fail}, @ref{XREFerror,,error}, @ref{XREFdemo,,demo}, @ref{XREFexample,,example}}
 @end deftypefn
 
 
@@ -95,8 +96,12 @@ generates an error, then the test is said to fail.
 
 Since @code{eval()} will stop at the first error it encounters, you must
 divide your tests up into blocks, with anything in a separate
-block evaluated separately.  Blocks are introduced by the keyword
-@code{test} immediately following @samp{%!}.  For example:
+block evaluated separately.  Blocks are introduced by valid keywords like
+@code{test}, @code{function}, or @code{assert} immediately following @samp{%!}.
+A block is defined by indentation as in Python.  Lines beginning with
+@samp{%!<whitespace>} are part of the preceeding block.
+ 
+For example:
 
 @example
 @group
@@ -126,7 +131,7 @@ produces a correct value.  A real test might look something like
 %! get = kron (@var{b}, @var{a});
 %! if (any (size (expect) != size (get)))
 %!   error ("wrong size: expected %d,%d but got %d,%d",
-%!          size(expect), size(get));
+%!          size (expect), size (get));
 %! elseif (any (any (expect != get)))
 %!   error ("didn't get what was expected.");
 %! endif
@@ -191,7 +196,7 @@ for @code{svds} begin with
 @end example
 
 @noindent
-Review @file{config.h} or @code{octave_config_info ("DEFS")} to see some
+Review @file{config.h} or @code{octave_config_info ("features")} to see some
 of the possible values to check.
 
 Sometimes during development there is a test that should work but is
@@ -250,6 +255,24 @@ You can also share test functions:
 
 Note that all previous variables and values are lost when a new 
 shared block is declared.
+
+Remember that @code{%!function} begins a new block and that 
+@code{%!endfunction} ends this block.  Be aware that until a new block
+is started, lines starting with @samp{%!<space>} will be discarded as comments.
+The following is nearly identical to the example above, but does nothing.
+
+@example
+@group
+%!function @var{a} = fn (@var{b})
+%!  @var{a} = 2*@var{b};
+%!endfunction
+%! assert (fn(2), 4);
+@end group
+@end example
+
+@noindent
+Because there is a space after @samp{%!} the @code{assert} statement does
+not begin a new block and this line is treated as a comment.
 
 Error and warning blocks are like test blocks, but they only succeed 
 if the code generates an error.  You can check the text of the error
@@ -321,6 +344,45 @@ in the log file but not executed.  For example:
 @end group
 @end example
 
+@noindent
+The following trivial code snippet provides examples for the use of
+fail, assert, error and xtest:
+
+@example
+@group
+function output = must_be_zero (@var{input})
+  if (@var{input} != 0)
+    error ("Non-zero input!")
+  endif
+  output = input;
+endfunction
+
+%!fail ("must_be_zero (1)");
+%!assert (must_be_zero (0), 0);
+%!error <Non-zero> must_be_zero (1);
+%!xtest error ("This code generates an error");
+@end group
+@end example
+
+@noindent
+When putting this a file @file{must_be_zero.m}, and running the test, we see
+
+@example
+@group
+test must_be_zero verbose
+
+@result{}
+>>>>> /path/to/must_be_zero.m
+  ***** fail ("must_be_zero (1)");
+  ***** assert (must_be_zero (0), 0);
+  ***** error <Non-zero> must_be_zero (1);
+  ***** xtest error ("This code generates an error");
+!!!!! known failure
+This code generates an error
+PASSES 4 out of 4 tests (1 expected failures)
+@end group
+@end example
+
 @subsubheading Block type summary:
 
 @table @code
@@ -389,7 +451,7 @@ path and the user will have to remember to type
 @code{test ("funcname.cc")}.
 
 @c assert scripts/testfun/assert.m
-@anchor{doc-assert}
+@anchor{XREFassert}
 @deftypefn  {Function File} {} assert (@var{cond})
 @deftypefnx {Function File} {} assert (@var{cond}, @var{errmsg}, @dots{})
 @deftypefnx {Function File} {} assert (@var{cond}, @var{msg_id}, @var{errmsg}, @dots{})
@@ -400,7 +462,7 @@ Produce an error if the specified condition is not met.  @code{assert} can
 be called in three different ways.
 
 @table @code
-@item assert (@var{cond})
+@item  assert (@var{cond})
 @itemx assert (@var{cond}, @var{errmsg}, @dots{})
 @itemx assert (@var{cond}, @var{msg_id}, @var{errmsg}, @dots{})
 Called with a single argument @var{cond}, @code{assert} produces an
@@ -416,31 +478,42 @@ strings, cell arrays, or structures.
 Produce an error if observed is not the same as expected but equality
 comparison for numeric data uses a tolerance @var{tol}.
 If @var{tol} is positive then it is an absolute tolerance which will produce
-an error if @code{abs(@var{observed} - @var{expected}) > abs(@var{tol})}.
+an error if @code{abs (@var{observed} - @var{expected}) > abs (@var{tol})}.
 If @var{tol} is negative then it is a relative tolerance which will produce
-an error if @code{abs(@var{observed} - @var{expected}) >
-abs(@var{tol} * @var{expected})}.  If @var{expected} is zero @var{tol} will
-always be interpreted as an absolute tolerance.
+an error if @code{abs (@var{observed} - @var{expected}) >
+abs (@var{tol} * @var{expected})}.  If @var{expected} is zero @var{tol} will
+always be interpreted as an absolute tolerance.  If @var{tol} is not scalar
+its dimensions must agree with those of @var{observed} and @var{expected}
+and tests are performed on an element-wise basis.
 @end table
-@seealso{@ref{doc-test,,test}, @ref{doc-fail,,fail}, @ref{doc-error,,error}}
+@seealso{@ref{XREFtest,,test}, @ref{XREFfail,,fail}, @ref{XREFerror,,error}}
 @end deftypefn
 
 
 @c fail scripts/testfun/fail.m
-@anchor{doc-fail}
+@anchor{XREFfail}
 @deftypefn  {Function File} {} fail (@var{code})
 @deftypefnx {Function File} {} fail (@var{code}, @var{pattern})
-@deftypefnx {Function File} {} fail (@var{code}, 'warning', @var{pattern})
+@deftypefnx {Function File} {} fail (@var{code}, "warning", @var{pattern})
 
 Return true if @var{code} fails with an error message matching
 @var{pattern}, otherwise produce an error.  Note that @var{code}
 is a string and if @var{code} runs successfully, the error produced is:
 
 @example
-          expected error but got none
+          expected error <.> but got none
 @end example
 
-If the code fails with a different error, the message produced is:
+
+Code must be in the form of a string that may be passed by
+@code{fail} to the Octave interpreter via the @code{evalin} function,
+that is, a (quoted) string constant or a string variable.
+
+If called with two arguments, the behavior is similar to
+@code{fail (@var{code})}, except the return value will only be true if
+code fails with an error message containing pattern (case sensitive).
+If the code fails with a different error to that given in pattern,
+the message produced is:
 
 @example
 @group
@@ -452,9 +525,9 @@ If the code fails with a different error, the message produced is:
 The angle brackets are not part of the output.
 
 Called with three arguments, the behavior is similar to
-@code{fail(@var{code}, @var{pattern})}, but produces an error if no
+@code{fail (@var{code}, @var{pattern})}, but produces an error if no
 warning is given during code execution or if the code fails.
-@seealso{@ref{doc-assert,,assert}}
+@seealso{@ref{XREFassert,,assert}}
 @end deftypefn
 
 
@@ -462,11 +535,11 @@ warning is given during code execution or if the code fails.
 @section Demonstration Functions
 
 @c demo scripts/testfun/demo.m
-@anchor{doc-demo}
+@anchor{XREFdemo}
 @deftypefn  {Command} {} demo @var{name}
 @deftypefnx {Command} {} demo @var{name} @var{n}
-@deftypefnx {Function File} {} demo ('@var{name}')
-@deftypefnx {Function File} {} demo ('@var{name}', @var{n})
+@deftypefnx {Function File} {} demo ("@var{name}")
+@deftypefnx {Function File} {} demo ("@var{name}", @var{n})
 
 Run example code block @var{n} associated with the function @var{name}.
 If @var{n} is not specified, all examples are run.
@@ -474,15 +547,16 @@ If @var{n} is not specified, all examples are run.
 Examples are stored in the script file, or in a file with the same
 name but no extension located on Octave's load path.  To keep examples
 separate from regular script code, all lines are prefixed by @code{%!}.  Each
-example must also be introduced by the keyword 'demo' flush left to the
-prefix with no intervening spaces.  The remainder of the example can
-contain arbitrary Octave code.  For example:
+example must also be introduced by the keyword @qcode{"demo"} flush left
+to the prefix with no intervening spaces.  The remainder of the example
+can contain arbitrary Octave code.  For example:
 
 @example
 @group
 %!demo
-%! t=0:0.01:2*pi; x = sin (t);
-%! plot (t,x)
+%! t = 0:0.01:2*pi;
+%! x = sin (t);
+%! plot (t, x);
 %! %-------------------------------------------------
 %! % the figure window shows one cycle of a sine wave
 @end group
@@ -510,10 +584,10 @@ to put multiple plots in the same window.
 Also, because demo evaluates within a function context, you cannot
 define new functions inside a demo.  If you must have function blocks,
 rather than just anonymous functions or inline functions, you will have to
-use @code{eval(example('function',n))} to see them.  Because eval only
+use @code{eval (example ("function",n))} to see them.  Because eval only
 evaluates one line, or one statement if the statement crosses
-multiple lines, you must wrap your demo in "if 1 <demo stuff> endif"
-with the 'if' on the same line as 'demo'.  For example:
+multiple lines, you must wrap your demo in @qcode{"if 1 <demo stuff> endif"}
+with the @qcode{"if"} on the same line as @qcode{"demo"}.  For example:
 
 @example
 @group
@@ -526,20 +600,20 @@ with the 'if' on the same line as 'demo'.  For example:
 @end group
 @end example
 
-@seealso{@ref{doc-test,,test}, @ref{doc-example,,example}}
+@seealso{@ref{XREFtest,,test}, @ref{XREFexample,,example}}
 @end deftypefn
 
 
 @c example scripts/testfun/example.m
-@anchor{doc-example}
+@anchor{XREFexample}
 @deftypefn  {Command} {} example @var{name}
 @deftypefnx {Command} {} example @var{name} @var{n}
-@deftypefnx {Function File} {} example ('@var{name}')
-@deftypefnx {Function File} {} example ('@var{name}', @var{n})
+@deftypefnx {Function File} {} example ("@var{name}")
+@deftypefnx {Function File} {} example ("@var{name}", @var{n})
 @deftypefnx {Function File} {[@var{s}, @var{idx}] =} example (@dots{})
 
 Display the code for example @var{n} associated with the function
-'@var{name}', but do not run it.  If @var{n} is not specified, all examples
+@var{name}, but do not run it.  If @var{n} is not specified, all examples
 are displayed.
 
 When called with output arguments, the examples are returned in the form of
@@ -547,34 +621,40 @@ a string @var{s}, with @var{idx} indicating the ending position of the
 various examples.
 
 See @code{demo} for a complete explanation.
-@seealso{@ref{doc-demo,,demo}, @ref{doc-test,,test}}
+@seealso{@ref{XREFdemo,,demo}, @ref{XREFtest,,test}}
 @end deftypefn
 
 
 @c rundemos scripts/testfun/rundemos.m
-@anchor{doc-rundemos}
+@anchor{XREFrundemos}
 @deftypefn  {Function File} {} rundemos ()
 @deftypefnx {Function File} {} rundemos (@var{directory})
 Execute built-in demos for all function files in the specified directory.
+Also executes demos in any C++ source files found in the directory, for
+use with dynamically linked functions.
+
 If no directory is specified, operate on all directories in Octave's
 search path for functions.
-@seealso{@ref{doc-runtests,,runtests}, @ref{doc-path,,path}}
+@seealso{@ref{XREFruntests,,runtests}, @ref{XREFpath,,path}}
 @end deftypefn
 
 
 @c runtests scripts/testfun/runtests.m
-@anchor{doc-runtests}
+@anchor{XREFruntests}
 @deftypefn  {Function File} {} runtests ()
 @deftypefnx {Function File} {} runtests (@var{directory})
 Execute built-in tests for all function files in the specified directory.
+Also executes tests in any C++ source files found in the directory, for
+use with dynamically linked functions.
+
 If no directory is specified, operate on all directories in Octave's
 search path for functions.
-@seealso{@ref{doc-rundemos,,rundemos}, @ref{doc-path,,path}}
+@seealso{@ref{XREFrundemos,,rundemos}, @ref{XREFpath,,path}}
 @end deftypefn
 
 
 @c speed scripts/testfun/speed.m
-@anchor{doc-speed}
+@anchor{XREFspeed}
 @deftypefn  {Function File} {} speed (@var{f}, @var{init}, @var{max_n}, @var{f2}, @var{tol})
 @deftypefnx {Function File} {[@var{order}, @var{n}, @var{T_f}, @var{T_f2}] =} speed (@dots{})
 

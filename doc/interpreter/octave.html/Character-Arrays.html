@@ -1,115 +1,146 @@
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.2, http://www.gnu.org/software/texinfo/ -->
 <head>
-<title>Character Arrays - GNU Octave</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="GNU Octave">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="Strings.html#Strings" title="Strings">
-<link rel="prev" href="Escape-Sequences-in-String-Constants.html#Escape-Sequences-in-String-Constants" title="Escape Sequences in String Constants">
-<link rel="next" href="Creating-Strings.html#Creating-Strings" title="Creating Strings">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
-</head>
-<body>
-<div class="node">
-<a name="Character-Arrays"></a>
-<p>
-Next:&nbsp;<a rel="next" accesskey="n" href="Creating-Strings.html#Creating-Strings">Creating Strings</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="Escape-Sequences-in-String-Constants.html#Escape-Sequences-in-String-Constants">Escape Sequences in String Constants</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="Strings.html#Strings">Strings</a>
-<hr>
-</div>
+<title>GNU Octave: Character Arrays</title>
 
+<meta name="description" content="GNU Octave: Character Arrays">
+<meta name="keywords" content="GNU Octave: Character Arrays">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Strings.html#Strings" rel="up" title="Strings">
+<link href="Creating-Strings.html#Creating-Strings" rel="next" title="Creating Strings">
+<link href="Escape-Sequences-in-String-Constants.html#Escape-Sequences-in-String-Constants" rel="prev" title="Escape Sequences in String Constants">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+<a name="Character-Arrays"></a>
+<div class="header">
+<p>
+Next: <a href="Creating-Strings.html#Creating-Strings" accesskey="n" rel="next">Creating Strings</a>, Previous: <a href="Escape-Sequences-in-String-Constants.html#Escape-Sequences-in-String-Constants" accesskey="p" rel="prev">Escape Sequences in String Constants</a>, Up: <a href="Strings.html#Strings" accesskey="u" rel="up">Strings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Character-Arrays-1"></a>
 <h3 class="section">5.2 Character Arrays</h3>
 
 <p>The string representation used by Octave is an array of characters, so
-internally the string "dddddddddd" is actually a row vector of length 10
-containing the value 100 in all places (100 is the ASCII code of "d").  This
-lends itself to the obvious generalization to character matrices.  Using a
-matrix of characters, it is possible to represent a collection of same-length
-strings in one variable.  The convention used in Octave is that each row in a
-character matrix is a separate string, but letting each column represent a
-string is equally possible.
-
-   <p>The easiest way to create a character matrix is to put several strings
+internally the string <code>&quot;dddddddddd&quot;</code> is actually a row vector
+of length 10 containing the value 100 in all places (100 is the ASCII code of
+<code>&quot;d&quot;</code>).  This lends itself to the obvious generalization to character
+matrices.  Using a matrix of characters, it is possible to represent a
+collection of same-length strings in one variable.  The convention used in
+Octave is that each row in a character matrix is a separate string, but letting
+each column represent a string is equally possible.
+</p>
+<p>The easiest way to create a character matrix is to put several strings
 together into a matrix.
+</p>
+<div class="example">
+<pre class="example">collection = [ &quot;String #1&quot;; &quot;String #2&quot; ];
+</pre></div>
 
-<pre class="example">     collection = [ "String #1"; "String #2" ];
-</pre>
-   <p class="noindent">This creates a 2-by-9 character matrix.
-
-   <p>The function <code>ischar</code> can be used to test if an object is a character
+<p>This creates a 2-by-9 character matrix.
+</p>
+<p>The function <code>ischar</code> can be used to test if an object is a character
 matrix.
+</p>
+<a name="XREFischar"></a><dl>
+<dt><a name="index-ischar"></a>Built-in Function: <em></em> <strong>ischar</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>Return true if <var>x</var> is a character array.
+</p>
+<p><strong>See also:</strong> <a href="Predicates-for-Numeric-Objects.html#XREFisfloat">isfloat</a>, <a href="Integer-Data-Types.html#XREFisinteger">isinteger</a>, <a href="Predicates-for-Numeric-Objects.html#XREFislogical">islogical</a>, <a href="Predicates-for-Numeric-Objects.html#XREFisnumeric">isnumeric</a>, <a href="Cell-Arrays-of-Strings.html#XREFiscellstr">iscellstr</a>, <a href="Built_002din-Data-Types.html#XREFisa">isa</a>.
+</p></dd></dl>
 
-<!-- ischar src/strfns.cc -->
-   <p><a name="doc_002dischar"></a>
 
-<div class="defun">
-&mdash; Built-in Function:  <b>ischar</b> (<var>x</var>)<var><a name="index-ischar-328"></a></var><br>
-<blockquote><p>Return true if <var>x</var> is a character array. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
-
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002disfloat.html#doc_002disfloat">isfloat</a>, <a href="doc_002disinteger.html#doc_002disinteger">isinteger</a>, <a href="doc_002dislogical.html#doc_002dislogical">islogical</a>, <a href="doc_002disnumeric.html#doc_002disnumeric">isnumeric</a>, <a href="doc_002discellstr.html#doc_002discellstr">iscellstr</a>, <a href="doc_002disa.html#doc_002disa">isa</a>. 
-</p></blockquote></div>
-
-   <p>To test if an object is a string (i.e., a character vector and not a character
+<p>To test if an object is a string (i.e., a character vector and not a character
 matrix) you can use the <code>ischar</code> function in combination with the
 <code>isvector</code> function as in the following example:
+</p>
+<div class="example">
+<pre class="example">ischar (collection)
+     &rArr; 1
 
-<pre class="example">     ischar(collection)
-          &rArr; ans = 1
-     
-     ischar(collection) &amp;&amp; isvector(collection)
-          &rArr; ans = 0
-     
-     ischar("my string") &amp;&amp; isvector("my string")
-          &rArr; ans = 1
-</pre>
-   <p>One relevant question is, what happens when a character matrix is
+ischar (collection) &amp;&amp; isvector (collection)
+     &rArr; 0
+
+ischar (&quot;my string&quot;) &amp;&amp; isvector (&quot;my string&quot;)
+     &rArr; 1
+</pre></div>
+
+<p>One relevant question is, what happens when a character matrix is
 created from strings of different length.  The answer is that Octave
 puts blank characters at the end of strings shorter than the longest
 string.  It is possible to use a different character than the
 blank character using the <code>string_fill_char</code> function.
-
-<!-- string_fill_char src/pt-mat.cc -->
-   <p><a name="doc_002dstring_005ffill_005fchar"></a>
-
-<div class="defun">
-&mdash; Built-in Function: <var>val</var> = <b>string_fill_char</b> ()<var><a name="index-string_005ffill_005fchar-329"></a></var><br>
-&mdash; Built-in Function: <var>old_val</var> = <b>string_fill_char</b> (<var>new_val</var>)<var><a name="index-string_005ffill_005fchar-330"></a></var><br>
-&mdash; Built-in Function:  <b>string_fill_char</b> (<var>new_val, "local"</var>)<var><a name="index-string_005ffill_005fchar-331"></a></var><br>
-<blockquote><p>Query or set the internal variable used to pad all rows of a character
+</p>
+<a name="XREFstring_005ffill_005fchar"></a><dl>
+<dt><a name="index-string_005ffill_005fchar"></a>Built-in Function: <em><var>val</var> =</em> <strong>string_fill_char</strong> <em>()</em></dt>
+<dt><a name="index-string_005ffill_005fchar-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>string_fill_char</strong> <em>(<var>new_val</var>)</em></dt>
+<dt><a name="index-string_005ffill_005fchar-2"></a>Built-in Function: <em></em> <strong>string_fill_char</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
+<dd><p>Query or set the internal variable used to pad all rows of a character
 matrix to the same length.  It must be a single character.  The default
-value is <code>" "</code> (a single space).  For example:
+value is <code>&quot; &quot;</code> (a single space).  For example:
+</p>
+<div class="example">
+<pre class="example">string_fill_char (&quot;X&quot;);
+[ &quot;these&quot;; &quot;are&quot;; &quot;strings&quot; ]
+      &rArr;  &quot;theseXX&quot;
+          &quot;areXXXX&quot;
+          &quot;strings&quot;
+</pre></div>
 
-     <pre class="example">          string_fill_char ("X");
-          [ "these"; "are"; "strings" ]
-               &rArr; "theseXX"
-                  "areXXXX"
-                  "strings"
-</pre>
-        <p>When called from inside a function with the "local" option, the variable is
-changed locally for the function and any subroutines it calls.  The original
-variable value is restored when exiting the function. 
-</p></blockquote></div>
+<p>When called from inside a function with the <code>&quot;local&quot;</code> option, the
+variable is changed locally for the function and any subroutines it calls.  
+The original variable value is restored when exiting the function.
+</p></dd></dl>
 
-   <p>This shows a problem with character matrices.  It simply isn't possible to
+
+<p>This shows a problem with character matrices.  It simply isn&rsquo;t possible to
 represent strings of different lengths.  The solution is to use a cell array of
 strings, which is described in <a href="Cell-Arrays-of-Strings.html#Cell-Arrays-of-Strings">Cell Arrays of Strings</a>.
+</p>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Creating-Strings.html#Creating-Strings" accesskey="n" rel="next">Creating Strings</a>, Previous: <a href="Escape-Sequences-in-String-Constants.html#Escape-Sequences-in-String-Constants" accesskey="p" rel="prev">Escape Sequences in String Constants</a>, Up: <a href="Strings.html#Strings" accesskey="u" rel="up">Strings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
 
-   </body></html>
 
+
+</body>
+</html>

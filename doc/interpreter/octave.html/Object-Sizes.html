@@ -1,243 +1,241 @@
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.2, http://www.gnu.org/software/texinfo/ -->
 <head>
-<title>Object Sizes - GNU Octave</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="GNU Octave">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="Data-Types.html#Data-Types" title="Data Types">
-<link rel="prev" href="User_002ddefined-Data-Types.html#User_002ddefined-Data-Types" title="User-defined Data Types">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
-</head>
-<body>
-<div class="node">
-<a name="Object-Sizes"></a>
-<p>
-Previous:&nbsp;<a rel="previous" accesskey="p" href="User_002ddefined-Data-Types.html#User_002ddefined-Data-Types">User-defined Data Types</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="Data-Types.html#Data-Types">Data Types</a>
-<hr>
-</div>
+<title>GNU Octave: Object Sizes</title>
 
+<meta name="description" content="GNU Octave: Object Sizes">
+<meta name="keywords" content="GNU Octave: Object Sizes">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Data-Types.html#Data-Types" rel="up" title="Data Types">
+<link href="Numeric-Data-Types.html#Numeric-Data-Types" rel="next" title="Numeric Data Types">
+<link href="User_002ddefined-Data-Types.html#User_002ddefined-Data-Types" rel="prev" title="User-defined Data Types">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+<a name="Object-Sizes"></a>
+<div class="header">
+<p>
+Previous: <a href="User_002ddefined-Data-Types.html#User_002ddefined-Data-Types" accesskey="p" rel="prev">User-defined Data Types</a>, Up: <a href="Data-Types.html#Data-Types" accesskey="u" rel="up">Data Types</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Object-Sizes-1"></a>
 <h3 class="section">3.3 Object Sizes</h3>
 
 <p>The following functions allow you to determine the size of a variable or
 expression.  These functions are defined for all objects.  They return
-&minus;1 when the operation doesn't make sense.  For example, Octave's
-data structure type doesn't have rows or columns, so the <code>rows</code> and
-<code>columns</code> functions return &minus;1 for structure arguments.
-
-<!-- ndims src/data.cc -->
-   <p><a name="doc_002dndims"></a>
-
-<div class="defun">
-&mdash; Built-in Function:  <b>ndims</b> (<var>a</var>)<var><a name="index-ndims-228"></a></var><br>
-<blockquote><p>Return the number of dimensions of <var>a</var>. 
-For any array, the result will always be larger than or equal to 2. 
+-1 when the operation doesn&rsquo;t make sense.  For example, Octave&rsquo;s
+data structure type doesn&rsquo;t have rows or columns, so the <code>rows</code> and
+<code>columns</code> functions return -1 for structure arguments.
+</p>
+<a name="XREFndims"></a><dl>
+<dt><a name="index-ndims"></a>Built-in Function: <em></em> <strong>ndims</strong> <em>(<var>a</var>)</em></dt>
+<dd><p>Return the number of dimensions of <var>a</var>.
+For any array, the result will always be larger than or equal to 2.
 Trailing singleton dimensions are not counted.
+</p>
+<div class="example">
+<pre class="example">ndims (ones (4, 1, 2, 1))
+    &rArr; 3
+</pre></div>
 
-     <pre class="example">            ndims (ones (4, 1, 2, 1))
-               &rArr; 3
-</pre>
-        </blockquote></div>
+<p><strong>See also:</strong> <a href="#XREFsize">size</a>.
+</p></dd></dl>
 
-<!-- columns src/data.cc -->
-   <p><a name="doc_002dcolumns"></a>
 
-<div class="defun">
-&mdash; Built-in Function:  <b>columns</b> (<var>a</var>)<var><a name="index-columns-229"></a></var><br>
-<blockquote><p>Return the number of columns of <var>a</var>. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
+<a name="XREFcolumns"></a><dl>
+<dt><a name="index-columns"></a>Built-in Function: <em></em> <strong>columns</strong> <em>(<var>a</var>)</em></dt>
+<dd><p>Return the number of columns of <var>a</var>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFrows">rows</a>, <a href="#XREFsize">size</a>, <a href="#XREFlength">length</a>, <a href="#XREFnumel">numel</a>, <a href="Predicates-for-Numeric-Objects.html#XREFisscalar">isscalar</a>, <a href="Predicates-for-Numeric-Objects.html#XREFisvector">isvector</a>, <a href="Predicates-for-Numeric-Objects.html#XREFismatrix">ismatrix</a>.
+</p></dd></dl>
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002drows.html#doc_002drows">rows</a>, <a href="doc_002dsize.html#doc_002dsize">size</a>, <a href="doc_002dlength.html#doc_002dlength">length</a>, <a href="doc_002dnumel.html#doc_002dnumel">numel</a>, <a href="doc_002disscalar.html#doc_002disscalar">isscalar</a>, <a href="doc_002disvector.html#doc_002disvector">isvector</a>, <a href="doc_002dismatrix.html#doc_002dismatrix">ismatrix</a>. 
-</p></blockquote></div>
 
-<!-- rows src/data.cc -->
-   <p><a name="doc_002drows"></a>
+<a name="XREFrows"></a><dl>
+<dt><a name="index-rows"></a>Built-in Function: <em></em> <strong>rows</strong> <em>(<var>a</var>)</em></dt>
+<dd><p>Return the number of rows of <var>a</var>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFcolumns">columns</a>, <a href="#XREFsize">size</a>, <a href="#XREFlength">length</a>, <a href="#XREFnumel">numel</a>, <a href="Predicates-for-Numeric-Objects.html#XREFisscalar">isscalar</a>, <a href="Predicates-for-Numeric-Objects.html#XREFisvector">isvector</a>, <a href="Predicates-for-Numeric-Objects.html#XREFismatrix">ismatrix</a>.
+</p></dd></dl>
 
-<div class="defun">
-&mdash; Built-in Function:  <b>rows</b> (<var>a</var>)<var><a name="index-rows-230"></a></var><br>
-<blockquote><p>Return the number of rows of <var>a</var>. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dcolumns.html#doc_002dcolumns">columns</a>, <a href="doc_002dsize.html#doc_002dsize">size</a>, <a href="doc_002dlength.html#doc_002dlength">length</a>, <a href="doc_002dnumel.html#doc_002dnumel">numel</a>, <a href="doc_002disscalar.html#doc_002disscalar">isscalar</a>, <a href="doc_002disvector.html#doc_002disvector">isvector</a>, <a href="doc_002dismatrix.html#doc_002dismatrix">ismatrix</a>. 
-</p></blockquote></div>
-
-<!-- numel src/data.cc -->
-   <p><a name="doc_002dnumel"></a>
-
-<div class="defun">
-&mdash; Built-in Function:  <b>numel</b> (<var>a</var>)<var><a name="index-numel-231"></a></var><br>
-&mdash; Built-in Function:  <b>numel</b> (<var>a, idx1, idx2, <small class="dots">...</small></var>)<var><a name="index-numel-232"></a></var><br>
-<blockquote><p>Return the number of elements in the object <var>a</var>. 
-Optionally, if indices <var>idx1</var>, <var>idx2</var>, <small class="dots">...</small> are supplied,
+<a name="XREFnumel"></a><dl>
+<dt><a name="index-numel"></a>Built-in Function: <em></em> <strong>numel</strong> <em>(<var>a</var>)</em></dt>
+<dt><a name="index-numel-1"></a>Built-in Function: <em></em> <strong>numel</strong> <em>(<var>a</var>, <var>idx1</var>, <var>idx2</var>, &hellip;)</em></dt>
+<dd><p>Return the number of elements in the object <var>a</var>.
+Optionally, if indices <var>idx1</var>, <var>idx2</var>, &hellip; are supplied,
 return the number of elements that would result from the indexing
+</p>
+<div class="example">
+<pre class="example"><var>a</var>(<var>idx1</var>, <var>idx2</var>, &hellip;)
+</pre></div>
 
-     <pre class="example">            <var>a</var>(<var>idx1</var>, <var>idx2</var>, ...)
-</pre>
-        <p>Note that the indices do not have to be numerical.  For example,
+<p>Note that the indices do not have to be numerical.  For example,
+</p>
+<div class="example">
+<pre class="example"><var>a</var> = 1;
+<var>b</var> = ones (2, 3);
+numel (<var>a</var>, <var>b</var>)
+</pre></div>
 
-     <pre class="example">            <var>a</var> = 1;
-            <var>b</var> = ones (2, 3);
-            numel (<var>a</var>, <var>b</var>);
-</pre>
-        <p class="noindent">will return 6, as this is the number of ways to index with <var>b</var>.
+<p>will return 6, as this is the number of ways to index with <var>b</var>.
+</p>
+<p>This method is also called when an object appears as lvalue with cs-list
+indexing, i.e., <code>object{&hellip;}</code> or <code>object(&hellip;).field</code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFsize">size</a>.
+</p></dd></dl>
 
-        <p>This method is also called when an object appears as lvalue with cs-list
-indexing, i.e., <code>object{...}</code> or <code>object(...).field</code>. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dsize.html#doc_002dsize">size</a>. 
-</p></blockquote></div>
+<a name="XREFlength"></a><dl>
+<dt><a name="index-length"></a>Built-in Function: <em></em> <strong>length</strong> <em>(<var>a</var>)</em></dt>
+<dd><p>Return the length of the object <var>a</var>.
+</p>
+<p>The length is 0 for empty objects, 1 for scalars, and the number of elements
+for vectors.  For matrix objects, the length is the number of rows or
+columns, whichever is greater (this odd definition is used for compatibility
+with <small>MATLAB</small>).
+</p>
+<p><strong>See also:</strong> <a href="#XREFnumel">numel</a>, <a href="#XREFsize">size</a>.
+</p></dd></dl>
 
-<!-- length src/data.cc -->
-   <p><a name="doc_002dlength"></a>
 
-<div class="defun">
-&mdash; Built-in Function:  <b>length</b> (<var>a</var>)<var><a name="index-length-233"></a></var><br>
-<blockquote><p>Return the "length" of the object <var>a</var>.  For matrix objects, the
-length is the number of rows or columns, whichever is greater (this
-odd definition is used for compatibility with <span class="sc">matlab</span>). 
-</p></blockquote></div>
-
-<!-- size src/data.cc -->
-   <p><a name="doc_002dsize"></a>
-
-<div class="defun">
-&mdash; Built-in Function:  <b>size</b> (<var>a</var>)<var><a name="index-size-234"></a></var><br>
-&mdash; Built-in Function:  <b>size</b> (<var>a, dim</var>)<var><a name="index-size-235"></a></var><br>
-<blockquote><p>Return the number of rows and columns of <var>a</var>.
-
-        <p>With one input argument and one output argument, the result is returned
+<a name="XREFsize"></a><dl>
+<dt><a name="index-size"></a>Built-in Function: <em></em> <strong>size</strong> <em>(<var>a</var>)</em></dt>
+<dt><a name="index-size-1"></a>Built-in Function: <em></em> <strong>size</strong> <em>(<var>a</var>, <var>dim</var>)</em></dt>
+<dd><p>Return the number of rows and columns of <var>a</var>.
+</p>
+<p>With one input argument and one output argument, the result is returned
 in a row vector.  If there are multiple output arguments, the number of
 rows is assigned to the first, and the number of columns to the second,
 etc.  For example:
+</p>
+<div class="example">
+<pre class="example">size ([1, 2; 3, 4; 5, 6])
+   &rArr; [ 3, 2 ]
 
-     <pre class="example">          size ([1, 2; 3, 4; 5, 6])
-               &rArr; [ 3, 2 ]
-          
-          [nr, nc] = size ([1, 2; 3, 4; 5, 6])
-               &rArr; nr = 3
-               &rArr; nc = 2
-</pre>
-        <p>If given a second argument, <code>size</code> will return the size of the
+[nr, nc] = size ([1, 2; 3, 4; 5, 6])
+    &rArr; nr = 3
+    &rArr; nc = 2
+</pre></div>
+
+<p>If given a second argument, <code>size</code> will return the size of the
 corresponding dimension.  For example,
+</p>
+<div class="example">
+<pre class="example">size ([1, 2; 3, 4; 5, 6], 2)
+    &rArr; 2
+</pre></div>
 
-     <pre class="example">          size ([1, 2; 3, 4; 5, 6], 2)
-               &rArr; 2
-</pre>
-        <p class="noindent">returns the number of columns in the given matrix. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
+<p>returns the number of columns in the given matrix.
+</p>
+<p><strong>See also:</strong> <a href="#XREFnumel">numel</a>, <a href="#XREFndims">ndims</a>, <a href="#XREFlength">length</a>, <a href="#XREFrows">rows</a>, <a href="#XREFcolumns">columns</a>.
+</p></dd></dl>
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dnumel.html#doc_002dnumel">numel</a>. 
-</p></blockquote></div>
 
-<!-- isempty src/data.cc -->
-   <p><a name="doc_002disempty"></a>
+<a name="XREFisempty"></a><dl>
+<dt><a name="index-isempty"></a>Built-in Function: <em></em> <strong>isempty</strong> <em>(<var>a</var>)</em></dt>
+<dd><p>Return true if <var>a</var> is an empty matrix (any one of its dimensions is
+zero).  Otherwise, return false.
+</p>
+<p><strong>See also:</strong> <a href="#XREFisnull">isnull</a>, <a href="Built_002din-Data-Types.html#XREFisa">isa</a>.
+</p></dd></dl>
 
-<div class="defun">
-&mdash; Built-in Function:  <b>isempty</b> (<var>a</var>)<var><a name="index-isempty-236"></a></var><br>
-<blockquote><p>Return true if <var>a</var> is an empty matrix (any one of its dimensions is
-zero).  Otherwise, return false. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002disnull.html#doc_002disnull">isnull</a>. 
-</p></blockquote></div>
-
-<!-- isnull src/ov-null-mat.cc -->
-   <p><a name="doc_002disnull"></a>
-
-<div class="defun">
-&mdash; Built-in Function:  <b>isnull</b> (<var>x</var>)<var><a name="index-isnull-237"></a></var><br>
-<blockquote><p>Return true if <var>x</var> is a special null matrix, string, or single quoted
+<a name="XREFisnull"></a><dl>
+<dt><a name="index-isnull"></a>Built-in Function: <em></em> <strong>isnull</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>Return true if <var>x</var> is a special null matrix, string, or single quoted
 string.  Indexed assignment with such a value on the right-hand side should
 delete array elements.  This function should be used when overloading
 indexed assignment for user-defined classes instead of <code>isempty</code>, to
 distinguish the cases:
-          <dl>
-<dt><code>A(I) = []</code><dd>This should delete elements if <code>I</code> is nonempty.
-
-          <br><dt><code>X = []; A(I) = X</code><dd>This should give an error if <code>I</code> is nonempty. 
+</p>
+<dl compact="compact">
+<dt><code>A(I) = []</code></dt>
+<dd><p>This should delete elements if <code>I</code> is nonempty.
+</p>
+</dd>
+<dt><code>X = []; A(I) = X</code></dt>
+<dd><p>This should give an error if <code>I</code> is nonempty.
+</p></dd>
 </dl>
-        <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002disempty.html#doc_002disempty">isempty</a>, <a href="doc_002disindex.html#doc_002disindex">isindex</a>. 
-</p></blockquote></div>
+<p><strong>See also:</strong> <a href="#XREFisempty">isempty</a>, <a href="Advanced-Indexing.html#XREFisindex">isindex</a>.
+</p></dd></dl>
 
-<!-- sizeof src/ov.cc -->
-   <p><a name="doc_002dsizeof"></a>
 
-<div class="defun">
-&mdash; Built-in Function:  <b>sizeof</b> (<var>val</var>)<var><a name="index-sizeof-238"></a></var><br>
-<blockquote><p>Return the size of <var>val</var> in bytes. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
+<a name="XREFsizeof"></a><dl>
+<dt><a name="index-sizeof"></a>Built-in Function: <em></em> <strong>sizeof</strong> <em>(<var>val</var>)</em></dt>
+<dd><p>Return the size of <var>val</var> in bytes.
+</p>
+<p><strong>See also:</strong> <a href="Status-of-Variables.html#XREFwhos">whos</a>.
+</p></dd></dl>
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dwhos.html#doc_002dwhos">whos</a>. 
-</p></blockquote></div>
 
-<!-- size_equal src/data.cc -->
-   <p><a name="doc_002dsize_005fequal"></a>
+<a name="XREFsize_005fequal"></a><dl>
+<dt><a name="index-size_005fequal"></a>Built-in Function: <em></em> <strong>size_equal</strong> <em>(<var>a</var>, <var>b</var>, &hellip;)</em></dt>
+<dd><p>Return true if the dimensions of all arguments agree.
+Trailing singleton dimensions are ignored.
+Called with a single or no argument, size_equal returns true.
+</p>
+<p><strong>See also:</strong> <a href="#XREFsize">size</a>, <a href="#XREFnumel">numel</a>, <a href="#XREFndims">ndims</a>.
+</p></dd></dl>
 
-<div class="defun">
-&mdash; Built-in Function:  <b>size_equal</b> (<var>a, b, <small class="dots">...</small></var>)<var><a name="index-size_005fequal-239"></a></var><br>
-<blockquote><p>Return true if the dimensions of all arguments agree. 
-Trailing singleton dimensions are ignored. 
-Called with a single or no argument, size_equal returns true. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dsize.html#doc_002dsize">size</a>, <a href="doc_002dnumel.html#doc_002dnumel">numel</a>. 
-</p></blockquote></div>
+<a name="XREFsqueeze"></a><dl>
+<dt><a name="index-squeeze"></a>Built-in Function: <em></em> <strong>squeeze</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>Remove singleton dimensions from <var>x</var> and return the result.
+Note that for compatibility with <small>MATLAB</small>, all objects have
+a minimum of two dimensions and row vectors are left unchanged.
+</p>
+<p><strong>See also:</strong> <a href="Rearranging-Matrices.html#XREFreshape">reshape</a>.
+</p></dd></dl>
 
-<!-- squeeze src/data.cc -->
-   <p><a name="doc_002dsqueeze"></a>
 
-<div class="defun">
-&mdash; Built-in Function:  <b>squeeze</b> (<var>x</var>)<var><a name="index-squeeze-240"></a></var><br>
-<blockquote><p>Remove singleton dimensions from <var>x</var> and return the result. 
-Note that for compatibility with <span class="sc">matlab</span>, all objects have
-a minimum of two dimensions and row vectors are left unchanged. 
-</p></blockquote></div>
 
-<!-- DO NOT EDIT!  Generated automatically by munge-texi.pl. -->
-<!-- Copyright (C) 1996-2012 John W. Eaton -->
-<!-- This file is part of Octave. -->
-<!-- Octave is free software; you can redistribute it and/or modify it -->
-<!-- under the terms of the GNU General Public License as published by the -->
-<!-- Free Software Foundation; either version 3 of the License, or (at -->
-<!-- your option) any later version. -->
-<!-- Octave is distributed in the hope that it will be useful, but WITHOUT -->
-<!-- ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or -->
-<!-- FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License -->
-<!-- for more details. -->
-<!-- You should have received a copy of the GNU General Public License -->
-<!-- along with Octave; see the file COPYING.  If not, see -->
-<!-- <http://www.gnu.org/licenses/>. -->
-   </body></html>
+<hr>
+<div class="header">
+<p>
+Previous: <a href="User_002ddefined-Data-Types.html#User_002ddefined-Data-Types" accesskey="p" rel="prev">User-defined Data Types</a>, Up: <a href="Data-Types.html#Data-Types" accesskey="u" rel="up">Data Types</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
 
+
+
+</body>
+</html>

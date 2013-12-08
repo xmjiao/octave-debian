@@ -1,85 +1,101 @@
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.2, http://www.gnu.org/software/texinfo/ -->
 <head>
-<title>Nonlinear Programming - Octave C++ Classes</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="Octave C++ Classes">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="Optimization.html#Optimization" title="Optimization">
-<link rel="prev" href="Quadratic-Programming.html#Quadratic-Programming" title="Quadratic Programming">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
+<title>Octave C++ Classes: Nonlinear Programming</title>
+
+<meta name="description" content="Octave C++ Classes: Nonlinear Programming">
+<meta name="keywords" content="Octave C++ Classes: Nonlinear Programming">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Optimization.html#Optimization" rel="up" title="Optimization">
+<link href="Quadrature.html#Quadrature" rel="next" title="Quadrature">
+<link href="Quadratic-Programming.html#Quadratic-Programming" rel="prev" title="Quadratic Programming">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
 </head>
-<body>
-<div class="node">
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
 <a name="Nonlinear-Programming"></a>
+<div class="header">
 <p>
-Previous:&nbsp;<a rel="previous" accesskey="p" href="Quadratic-Programming.html#Quadratic-Programming">Quadratic Programming</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="Optimization.html#Optimization">Optimization</a>
-<hr>
+Previous: <a href="Quadratic-Programming.html#Quadratic-Programming" accesskey="p" rel="prev">Quadratic Programming</a>, Up: <a href="Optimization.html#Optimization" accesskey="u" rel="up">Optimization</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
 </div>
-
+<hr>
+<a name="Nonlinear-Programming-1"></a>
 <h3 class="section">9.6 Nonlinear Programming</h3>
+<a name="index-NLP"></a>
+<a name="index-nonlinear-programming"></a>
 
-<p><a name="index-NLP-895"></a><a name="index-nonlinear-programming-896"></a>
+<dl>
+<dt><a name="index-NLP-1"></a>: <em></em> <strong>NLP</strong> <em>(void)</em></dt>
+<dt><a name="index-NLP-2"></a>: <em></em> <strong>NLP</strong> <em>(const ColumnVector &amp;<var>x</var>, const Objective &amp;<var>phi</var>)</em></dt>
+<dt><a name="index-NLP-3"></a>: <em></em> <strong>NLP</strong> <em>(const ColumnVector &amp;<var>x</var>, const Objective &amp;<var>phi</var>, const Bounds &amp;<var>b</var>)</em></dt>
+<dt><a name="index-NLP-4"></a>: <em></em> <strong>NLP</strong> <em>(const ColumnVector &amp;<var>x</var>, const Objective &amp;<var>phi</var>, const Bounds &amp;<var>b</var>, const LinConst &amp;<var>lc</var>)</em></dt>
+<dt><a name="index-NLP-5"></a>: <em></em> <strong>NLP</strong> <em>(const ColumnVector &amp;<var>x</var>, const Objective &amp;<var>phi</var>, const Bounds &amp;<var>b</var>, const LinConst &amp;<var>lc</var>, const NLConst &amp;<var>nlc</var>)</em></dt>
+<dt><a name="index-NLP-6"></a>: <em></em> <strong>NLP</strong> <em>(const ColumnVector &amp;<var>x</var>, const Objective &amp;<var>phi</var>, const LinConst &amp;<var>lc</var>)</em></dt>
+<dt><a name="index-NLP-7"></a>: <em></em> <strong>NLP</strong> <em>(const ColumnVector &amp;<var>x</var>, const Objective &amp;<var>phi</var>, const LinConst &amp;<var>lc</var>, const NLConst &amp;<var>nlc</var>)</em></dt>
+<dt><a name="index-NLP-8"></a>: <em></em> <strong>NLP</strong> <em>(const ColumnVector &amp;<var>x</var>, const Objective &amp;<var>phi</var>, const NLConst &amp;<var>nlc</var>)</em></dt>
+<dt><a name="index-NLP-9"></a>: <em></em> <strong>NLP</strong> <em>(const ColumnVector &amp;<var>x</var>, const Objective &amp;<var>phi</var>, const Bounds &amp;<var>b</var>, const NLConst &amp;<var>nlc</var>)</em></dt>
+</dl>
 
-<div class="defun">
-&mdash; :  <b>NLP</b> (<var>void</var>)<var><a name="index-NLP-897"></a></var><br>
-&mdash; :  <b>NLP</b> (<var>const ColumnVector &amp;x, const Objective &amp;phi</var>)<var><a name="index-NLP-898"></a></var><br>
-&mdash; :  <b>NLP</b> (<var>const ColumnVector &amp;x, const Objective &amp;phi, const Bounds &amp;b</var>)<var><a name="index-NLP-899"></a></var><br>
-&mdash; :  <b>NLP</b> (<var>const ColumnVector &amp;x, const Objective &amp;phi, const Bounds &amp;b, const LinConst &amp;lc</var>)<var><a name="index-NLP-900"></a></var><br>
-&mdash; :  <b>NLP</b> (<var>const ColumnVector &amp;x, const Objective &amp;phi, const Bounds &amp;b, const LinConst &amp;lc, const NLConst &amp;nlc</var>)<var><a name="index-NLP-901"></a></var><br>
-&mdash; :  <b>NLP</b> (<var>const ColumnVector &amp;x, const Objective &amp;phi, const LinConst &amp;lc</var>)<var><a name="index-NLP-902"></a></var><br>
-&mdash; :  <b>NLP</b> (<var>const ColumnVector &amp;x, const Objective &amp;phi, const LinConst &amp;lc, const NLConst &amp;nlc</var>)<var><a name="index-NLP-903"></a></var><br>
-&mdash; :  <b>NLP</b> (<var>const ColumnVector &amp;x, const Objective &amp;phi, const NLConst &amp;nlc</var>)<var><a name="index-NLP-904"></a></var><br>
-&mdash; :  <b>NLP</b> (<var>const ColumnVector &amp;x, const Objective &amp;phi, const Bounds &amp;b, const NLConst &amp;nlc</var>)<var><a name="index-NLP-905"></a></var><br>
-        </div>
+<dl>
+<dt><a name="index-operator-_003d-33"></a>: <em>NLP&amp;</em> <strong>operator =</strong> <em>(const NLP &amp;<var>a</var>)</em></dt>
+</dl>
 
-<div class="defun">
-&mdash; : NLP&amp; <b>operator =</b> (<var>const NLP &amp;a</var>)<var><a name="index-operator-_003d-906"></a></var><br>
-        </div>
+<dl>
+<dt><a name="index-size-2"></a>: <em>int</em> <strong>size</strong> <em>(void) const</em></dt>
+</dl>
 
-<div class="defun">
-&mdash; : int <b>size</b> (<var>void</var>)<var> const<a name="index-size-907"></a></var><br>
-        </div>
+<dl>
+<dt><a name="index-minimize-9"></a>: <em>ColumnVector</em> <strong>minimize</strong> <em>(void)</em></dt>
+<dt><a name="index-minimize-10"></a>: <em>ColumnVector</em> <strong>minimize</strong> <em>(double &amp;<var>objf</var>)</em></dt>
+<dt><a name="index-minimize-11"></a>: <em>ColumnVector</em> <strong>minimize</strong> <em>(double &amp;<var>objf</var>, int &amp;<var>inform</var>)</em></dt>
+<dt><a name="index-minimize-12"></a>: <em>ColumnVector</em> <strong>minimize</strong> <em>(double &amp;<var>objf</var>, int &amp;<var>inform</var>, ColumnVector &amp;<var>lambda</var>)</em></dt>
+</dl>
 
-<div class="defun">
-&mdash; : ColumnVector <b>minimize</b> (<var>void</var>)<var><a name="index-minimize-908"></a></var><br>
-&mdash; : ColumnVector <b>minimize</b> (<var>double &amp;objf</var>)<var><a name="index-minimize-909"></a></var><br>
-&mdash; : ColumnVector <b>minimize</b> (<var>double &amp;objf, int &amp;inform</var>)<var><a name="index-minimize-910"></a></var><br>
-&mdash; : ColumnVector <b>minimize</b> (<var>double &amp;objf, int &amp;inform, ColumnVector &amp;lambda</var>)<var><a name="index-minimize-911"></a></var><br>
-        </div>
+<dl>
+<dt><a name="index-minimize-13"></a>: <em>ColumnVector</em> <strong>minimize</strong> <em>(const ColumnVector &amp;<var>x</var>)</em></dt>
+<dt><a name="index-minimize-14"></a>: <em>ColumnVector</em> <strong>minimize</strong> <em>(const ColumnVector &amp;<var>x</var>, double &amp;<var>objf</var>)</em></dt>
+<dt><a name="index-minimize-15"></a>: <em>ColumnVector</em> <strong>minimize</strong> <em>(const ColumnVector &amp;<var>x</var>, double &amp;<var>objf</var>, int &amp;<var>inform</var>)</em></dt>
+<dt><a name="index-minimize-16"></a>: <em>ColumnVector</em> <strong>minimize</strong> <em>(const ColumnVector &amp;<var>x</var>, double &amp;<var>objf</var>, int &amp;<var>inform</var>, ColumnVector &amp;<var>lambda</var>)</em></dt>
+</dl>
 
-<div class="defun">
-&mdash; : ColumnVector <b>minimize</b> (<var>const ColumnVector &amp;x</var>)<var><a name="index-minimize-912"></a></var><br>
-&mdash; : ColumnVector <b>minimize</b> (<var>const ColumnVector &amp;x, double &amp;objf</var>)<var><a name="index-minimize-913"></a></var><br>
-&mdash; : ColumnVector <b>minimize</b> (<var>const ColumnVector &amp;x, double &amp;objf, int &amp;inform</var>)<var><a name="index-minimize-914"></a></var><br>
-&mdash; : ColumnVector <b>minimize</b> (<var>const ColumnVector &amp;x, double &amp;objf, int &amp;inform, ColumnVector &amp;lambda</var>)<var><a name="index-minimize-915"></a></var><br>
-        </div>
 
-<!-- Copyright (C) 1996-2012 John W. Eaton -->
-<!-- This file is part of Octave. -->
-<!-- Octave is free software; you can redistribute it and/or modify it -->
-<!-- under the terms of the GNU General Public License as published by the -->
-<!-- Free Software Foundation; either version 3 of the License, or (at -->
-<!-- your option) any later version. -->
-<!-- Octave is distributed in the hope that it will be useful, but WITHOUT -->
-<!-- ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or -->
-<!-- FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License -->
-<!-- for more details. -->
-<!-- You should have received a copy of the GNU General Public License -->
-<!-- along with Octave; see the file COPYING.  If not, see -->
-<!-- <http://www.gnu.org/licenses/>. -->
-   </body></html>
 
+
+</body>
+</html>

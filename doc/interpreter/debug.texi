@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2012 John W. Eaton
+@c Copyright (C) 1996-2013 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -45,15 +45,15 @@ debug mode.
 @section Entering Debug Mode
 
 There are two basic means of interrupting the execution of an Octave
-script.  These are breakpoints @pxref{Breakpoints}, discussed in the next
+script.  These are breakpoints (@pxref{Breakpoints}), discussed in the next
 section and interruption based on some condition.
 
 Octave supports three means to stop execution based on the values set in
 the functions @code{debug_on_interrupt}, @code{debug_on_warning} and
 @code{debug_on_error}.
 
-@c debug_on_interrupt src/sighandlers.cc
-@anchor{doc-debug_on_interrupt}
+@c debug_on_interrupt libinterp/corefcn/sighandlers.cc
+@anchor{XREFdebug_on_interrupt}
 @deftypefn  {Built-in Function} {@var{val} =} debug_on_interrupt ()
 @deftypefnx {Built-in Function} {@var{old_val} =} debug_on_interrupt (@var{new_val})
 @deftypefnx {Built-in Function} {} debug_on_interrupt (@var{new_val}, "local")
@@ -62,30 +62,30 @@ to enter debugging mode when it receives an interrupt signal (typically
 generated with @kbd{C-c}).  If a second interrupt signal is received
 before reaching the debugging mode, a normal interrupt will occur.
 
-When called from inside a function with the "local" option, the variable is
-changed locally for the function and any subroutines it calls.  The original
-variable value is restored when exiting the function.
-@seealso{@ref{doc-debug_on_error,,debug_on_error}, @ref{doc-debug_on_warning,,debug_on_warning}}
+When called from inside a function with the @qcode{"local"} option, the
+variable is changed locally for the function and any subroutines it calls.  
+The original variable value is restored when exiting the function.
+@seealso{@ref{XREFdebug_on_error,,debug_on_error}, @ref{XREFdebug_on_warning,,debug_on_warning}}
 @end deftypefn
 
 
-@c debug_on_warning src/error.cc
-@anchor{doc-debug_on_warning}
+@c debug_on_warning libinterp/corefcn/error.cc
+@anchor{XREFdebug_on_warning}
 @deftypefn  {Built-in Function} {@var{val} =} debug_on_warning ()
 @deftypefnx {Built-in Function} {@var{old_val} =} debug_on_warning (@var{new_val})
 @deftypefnx {Built-in Function} {} debug_on_warning (@var{new_val}, "local")
 Query or set the internal variable that controls whether Octave will try
 to enter the debugger when a warning is encountered.
 
-When called from inside a function with the "local" option, the variable is
-changed locally for the function and any subroutines it calls.  The original
-variable value is restored when exiting the function.
-@seealso{@ref{doc-debug_on_error,,debug_on_error}, @ref{doc-debug_on_interrupt,,debug_on_interrupt}}
+When called from inside a function with the @qcode{"local"} option, the
+variable is changed locally for the function and any subroutines it calls.  
+The original variable value is restored when exiting the function.
+@seealso{@ref{XREFdebug_on_error,,debug_on_error}, @ref{XREFdebug_on_interrupt,,debug_on_interrupt}}
 @end deftypefn
 
 
-@c debug_on_error src/error.cc
-@anchor{doc-debug_on_error}
+@c debug_on_error libinterp/corefcn/error.cc
+@anchor{XREFdebug_on_error}
 @deftypefn  {Built-in Function} {@var{val} =} debug_on_error ()
 @deftypefnx {Built-in Function} {@var{old_val} =} debug_on_error (@var{new_val})
 @deftypefnx {Built-in Function} {} debug_on_error (@var{new_val}, "local")
@@ -94,10 +94,10 @@ to enter the debugger when an error is encountered.  This will also
 inhibit printing of the normal traceback message (you will only see
 the top-level error message).
 
-When called from inside a function with the "local" option, the variable is
-changed locally for the function and any subroutines it calls.  The original
-variable value is restored when exiting the function.
-@seealso{@ref{doc-debug_on_warning,,debug_on_warning}, @ref{doc-debug_on_interrupt,,debug_on_interrupt}}
+When called from inside a function with the @qcode{"local"} option, the
+variable is changed locally for the function and any subroutines it calls.  
+The original variable value is restored when exiting the function.
+@seealso{@ref{XREFdebug_on_warning,,debug_on_warning}, @ref{XREFdebug_on_interrupt,,debug_on_interrupt}}
 @end deftypefn
 
 
@@ -107,23 +107,23 @@ variable value is restored when exiting the function.
 To leave the debug mode, use either @code{dbcont} 
 or @code{return}.
 
-@c dbcont src/debug.cc
-@anchor{doc-dbcont}
+@c dbcont libinterp/corefcn/debug.cc
+@anchor{XREFdbcont}
 @deftypefn {Command} {} dbcont
 Leave command-line debugging mode and continue code execution normally.
-@seealso{@ref{doc-dbstep,,dbstep}, @ref{doc-dbquit,,dbquit}}
+@seealso{@ref{XREFdbstep,,dbstep}, @ref{XREFdbquit,,dbquit}}
 @end deftypefn
 
 
 To quit debug mode and return directly to the prompt @code{dbquit}
 should be used instead
 
-@c dbquit src/debug.cc
-@anchor{doc-dbquit}
+@c dbquit libinterp/corefcn/debug.cc
+@anchor{XREFdbquit}
 @deftypefn {Command} {} dbquit
 Quit debugging mode immediately without further code execution and
 return to the Octave prompt.
-@seealso{@ref{doc-dbcont,,dbcont}, @ref{doc-dbstep,,dbstep}}
+@seealso{@ref{XREFdbcont,,dbcont}, @ref{XREFdbstep,,dbstep}}
 @end deftypefn
 
 
@@ -136,10 +136,11 @@ result in Octave terminating normally.
 Breakpoints can be set in any Octave function, using the @code{dbstop}
 function.
 
-@c dbstop src/debug.cc
-@anchor{doc-dbstop}
-@deftypefn  {Loadable Function} {@var{rline} =} dbstop ("@var{func}")
-@deftypefnx {Loadable Function} {@var{rline} =} dbstop ("@var{func}", @var{line}, @dots{})
+@c dbstop libinterp/corefcn/debug.cc
+@anchor{XREFdbstop}
+@deftypefn  {Built-in Function} {@var{rline} =} dbstop ("@var{func}")
+@deftypefnx {Built-in Function} {@var{rline} =} dbstop ("@var{func}", @var{line})
+@deftypefnx {Built-in Function} {@var{rline} =} dbstop ("@var{func}", @var{line1}, @var{line2}, @dots{})
 Set a breakpoint in function @var{func}.
 
 Arguments are
@@ -162,7 +163,7 @@ breakpoint was set.  This can differ from specified line if
 the line is not executable.  For example, if a breakpoint attempted on a
 blank line then Octave will set the real breakpoint at the
 next executable line.
-@seealso{@ref{doc-dbclear,,dbclear}, @ref{doc-dbstatus,,dbstatus}, @ref{doc-dbstep,,dbstep}, @ref{doc-debug_on_error,,debug_on_error}, @ref{doc-debug_on_warning,,debug_on_warning}, @ref{doc-debug_on_interrupt,,debug_on_interrupt}}
+@seealso{@ref{XREFdbclear,,dbclear}, @ref{XREFdbstatus,,dbstatus}, @ref{XREFdbstep,,dbstep}, @ref{XREFdebug_on_error,,debug_on_error}, @ref{XREFdebug_on_warning,,debug_on_warning}, @ref{XREFdebug_on_interrupt,,debug_on_interrupt}}
 @end deftypefn
 
 
@@ -177,20 +178,20 @@ function.  For example:
 @example
 @group
 dbstop ("asind", 1)
-@result{} 28
+@result{} 29
 @end group
 @end example
 
 @noindent
-Note that the return value of @code{27} means that the breakpoint was
-effectively set to line 27.  The status of breakpoints in a function can
+Note that the return value of @code{29} means that the breakpoint was
+effectively set to line 29.  The status of breakpoints in a function can
 be queried with the @code{dbstatus} function.
 
-@c dbstatus src/debug.cc
-@anchor{doc-dbstatus}
-@deftypefn  {Loadable Function} {} dbstatus ()
-@deftypefnx {Loadable Function} {@var{brk_list} =} dbstatus ()
-@deftypefnx {Loadable Function} {@var{brk_list} =} dbstatus ("@var{func}")
+@c dbstatus libinterp/corefcn/debug.cc
+@anchor{XREFdbstatus}
+@deftypefn  {Built-in Function} {} dbstatus ()
+@deftypefnx {Built-in Function} {@var{brk_list} =} dbstatus ()
+@deftypefnx {Built-in Function} {@var{brk_list} =} dbstatus ("@var{func}")
 Report the location of active breakpoints.
 
 When called with no input or output arguments, print the list of
@@ -213,18 +214,20 @@ The name of the m-file where the function code is located.
 A line number, or vector of line numbers, with a breakpoint.
 @end table
 
-@seealso{@ref{doc-dbclear,,dbclear}, @ref{doc-dbwhere,,dbwhere}}
+@seealso{@ref{XREFdbclear,,dbclear}, @ref{XREFdbwhere,,dbwhere}}
 @end deftypefn
 
 
 @noindent
-Taking the above as an example, @code{dbstatus ("asind")} should return
-28.  The breakpoints can then be cleared with the @code{dbclear} function
+Reusing the previous example, @code{dbstatus ("asind")} will return
+29.  The breakpoints listed can then be cleared with the @code{dbclear}
+function.
 
-@c dbclear src/debug.cc
-@anchor{doc-dbclear}
-@deftypefn  {Loadable Function} {} dbclear ("@var{func}")
-@deftypefnx {Loadable Function} {} dbclear ("@var{func}", @var{line}, @dots{})
+@c dbclear libinterp/corefcn/debug.cc
+@anchor{XREFdbclear}
+@deftypefn  {Built-in Function} {} dbclear ("@var{func}")
+@deftypefnx {Built-in Function} {} dbclear ("@var{func}", @var{line}, @dots{})
+@deftypefnx {Built-in Function} {} dbclear (@var{line}, @dots{})
 Delete a breakpoint in the function @var{func}.
 
 Arguments are
@@ -232,7 +235,8 @@ Arguments are
 @table @var
 @item func
 Function name as a string variable.  When already in debug
-mode this should be left out and only the line should be given.
+mode this argument should be omitted and only the line number should be
+given.
 
 @item line
 Line number from which to remove a breakpoint.  Multiple
@@ -243,19 +247,19 @@ When called without a line number specification all breakpoints
 in the named function are cleared.
 
 If the requested line is not a breakpoint no action is performed.
-@seealso{@ref{doc-dbstop,,dbstop}, @ref{doc-dbstatus,,dbstatus}, @ref{doc-dbwhere,,dbwhere}}
+@seealso{@ref{XREFdbstop,,dbstop}, @ref{XREFdbstatus,,dbstatus}, @ref{XREFdbwhere,,dbwhere}}
 @end deftypefn
 
 
 @noindent
-These functions can be used to clear all the breakpoints in a function.  For
-example:
+These functions can be used together to clear all the breakpoints in a
+particular function.  For example:
 
 @example
 dbclear ("asind", dbstatus ("asind"));
 @end example
 
-A breakpoint can be set in a subfunction.  For example if a file contains
+A breakpoint may also be set in a subfunction.  For example, if a file contains
 the functions
 
 @example
@@ -286,10 +290,10 @@ subfunctions from the file containing them.
 Another simple way of setting a breakpoint in an Octave script is the
 use of the @code{keyboard} function.
 
-@c keyboard src/input.cc
-@anchor{doc-keyboard}
+@c keyboard libinterp/corefcn/input.cc
+@anchor{XREFkeyboard}
 @deftypefn  {Built-in Function} {} keyboard ()
-@deftypefnx {Built-in Function} {} keyboard (@var{prompt})
+@deftypefnx {Built-in Function} {} keyboard ("@var{prompt}")
 This function is normally used for simple debugging.  When the
 @code{keyboard} function is executed, Octave prints a prompt and waits
 for user input.  The input strings are then evaluated and the results
@@ -300,64 +304,82 @@ The @code{keyboard} function does not return an exit status.
 
 If @code{keyboard} is invoked without arguments, a default prompt of
 @samp{debug> } is used.
-@seealso{@ref{doc-dbcont,,dbcont}, @ref{doc-dbquit,,dbquit}}
+@seealso{@ref{XREFdbcont,,dbcont}, @ref{XREFdbquit,,dbquit}}
 @end deftypefn
 
 
 @noindent
 The @code{keyboard} function is typically placed in a script at the
-point where the user desires that the execution is stopped.  It
+point where the user desires that the execution be stopped.  It
 automatically sets the running script into the debug mode.
 
 @node Debug Mode
 @section Debug Mode
 
-There are two additional support functions that allow the user to
+There are three additional support functions that allow the user to
 interrogate where in the execution of a script Octave entered the debug
 mode and to print the code in the script surrounding the point where
 Octave entered debug mode.
 
-@c dbwhere src/debug.cc
-@anchor{doc-dbwhere}
-@deftypefn {Loadable Function} {} dbwhere ()
+@c dbwhere libinterp/corefcn/debug.cc
+@anchor{XREFdbwhere}
+@deftypefn {Command} {} dbwhere
 In debugging mode, report the current file and line number where
 execution is stopped.
-@seealso{@ref{doc-dbstatus,,dbstatus}, @ref{doc-dbcont,,dbcont}, @ref{doc-dbstep,,dbstep}, @ref{doc-dbup,,dbup}}
+@seealso{@ref{XREFdbstatus,,dbstatus}, @ref{XREFdbcont,,dbcont}, @ref{XREFdbstep,,dbstep}, @ref{XREFdbup,,dbup}}
 @end deftypefn
 
 
-@c dbtype src/debug.cc
-@anchor{doc-dbtype}
-@deftypefn  {Loadable Function} {} dbtype ()
-@deftypefnx {Loadable Function} {} dbtype ("startl:endl")
-@deftypefnx {Loadable Function} {} dbtype ("@var{func}")
-@deftypefnx {Loadable Function} {} dbtype ("@var{func}", "startl:endl")
-When in debugging mode and called with no arguments, list the script file
-being debugged with line numbers.  An optional range specification,
-specified as a string, can be used to list only a portion of the file.
+@c dbtype libinterp/corefcn/debug.cc
+@anchor{XREFdbtype}
+@deftypefn  {Command} {} dbtype
+@deftypefnx {Command} {} dbtype @var{lineno}
+@deftypefnx {Command} {} dbtype @var{startl:endl}
+@deftypefnx {Command} {} dbtype @var{startl:end}
+@deftypefnx {Command} {} dbtype @var{func}
+@deftypefnx {Command} {} dbtype @var{func} @var{lineno}
+@deftypefnx {Command} {} dbtype @var{func} @var{startl:endl}
+@deftypefnx {Command} {} dbtype @var{func} @var{startl:end}
+Display a script file with line numbers.
 
-When called with the name of a function, list that script file
-with line numbers.
-@seealso{@ref{doc-dbstatus,,dbstatus}, @ref{doc-dbstop,,dbstop}}
+When called with no arguments in debugging mode, display the script file
+currently being debugged.  An optional range specification can be used to
+list only a portion of the file.  The special keyword @qcode{"end"} is a
+valid line number specification for the last line of the file.
+
+When called with the name of a function, list that script file with line
+numbers.
+@seealso{@ref{XREFdbwhere,,dbwhere}, @ref{XREFdbstatus,,dbstatus}, @ref{XREFdbstop,,dbstop}}
+@end deftypefn
+
+
+@c dblist libinterp/corefcn/debug.cc
+@anchor{XREFdblist}
+@deftypefn  {Command} {} dblist
+@deftypefnx {Command} {} dblist @var{n}
+In debugging mode, list @var{n} lines of the function being debugged
+centered around the current line to be executed.  If unspecified @var{n}
+defaults to 10 (+/- 5 lines)
+@seealso{@ref{XREFdbwhere,,dbwhere}, @ref{XREFdbtype,,dbtype}}
 @end deftypefn
 
 
 You may also use @code{isdebugmode} to determine whether the debugger is
 currently active.
 
-@c isdebugmode src/debug.cc
-@anchor{doc-isdebugmode}
-@deftypefn {Loadable Function} {} isdebugmode ()
+@c isdebugmode libinterp/corefcn/debug.cc
+@anchor{XREFisdebugmode}
+@deftypefn {Built-in Function} {} isdebugmode ()
 Return true if in debugging mode, otherwise false.
-@seealso{@ref{doc-dbwhere,,dbwhere}, @ref{doc-dbstack,,dbstack}, @ref{doc-dbstatus,,dbstatus}}
+@seealso{@ref{XREFdbwhere,,dbwhere}, @ref{XREFdbstack,,dbstack}, @ref{XREFdbstatus,,dbstatus}}
 @end deftypefn
 
 
 Debug mode also allows single line stepping through a function using
-the commands @code{dbstep}.
+the command @code{dbstep}.
 
-@c dbstep src/debug.cc
-@anchor{doc-dbstep}
+@c dbstep libinterp/corefcn/debug.cc
+@anchor{XREFdbstep}
 @deftypefn  {Command} {} dbstep
 @deftypefnx {Command} {} dbstep @var{n}
 @deftypefnx {Command} {} dbstep in
@@ -373,20 +395,30 @@ any m-files defined on the next line.  Using @code{dbstep out} will cause
 execution to continue until the current function returns.
 
 @code{dbnext} is an alias for @code{dbstep}.
-@seealso{@ref{doc-dbcont,,dbcont}, @ref{doc-dbquit,,dbquit}}
+@seealso{@ref{XREFdbcont,,dbcont}, @ref{XREFdbquit,,dbquit}}
 @end deftypefn
 
+
+When in debug mode the @key{RETURN} will execute the last entered command.
+This is useful, for example, after hitting a breakpoint and entering
+@code{dbstep}.  After that one can advance line by line through the code
+with only a single key stroke.
 
 @node Call Stack
 @section Call Stack
 
-@c dbstack src/debug.cc
-@anchor{doc-dbstack}
-@deftypefn  {Loadable Function} {} dbstack ()
-@deftypefnx {Loadable Function} {} dbstack (@var{n})
-@deftypefnx {Loadable Function} {[@var{stack}, @var{idx}] =} dbstack (@dots{})
+@c dbstack libinterp/corefcn/debug.cc
+@anchor{XREFdbstack}
+@deftypefn  {Command} {} dbstack
+@deftypefnx {Command} {} dbstack @var{n}
+@deftypefnx {Command} {} dbstack @var{-completenames}
+@deftypefnx {Built-in Function} {[@var{stack}, @var{idx}] =} dbstack (@dots{})
 Display or return current debugging function stack information.
 With optional argument @var{n}, omit the @var{n} innermost stack frames.
+
+Although accepted, the argument @var{-completenames} is silently ignored.
+Octave always returns absolute file names.  The arguments @var{n} and
+@var{-completenames} can be both specified in any order.
 
 The optional return argument @var{stack} is a struct array with the
 following fields:
@@ -413,27 +445,27 @@ Undocumented.
 
 The return argument @var{idx} specifies which element of the @var{stack}
 struct array is currently active.
-@seealso{@ref{doc-dbup,,dbup}, @ref{doc-dbdown,,dbdown}, @ref{doc-dbwhere,,dbwhere}, @ref{doc-dbstatus,,dbstatus}}
+@seealso{@ref{XREFdbup,,dbup}, @ref{XREFdbdown,,dbdown}, @ref{XREFdbwhere,,dbwhere}, @ref{XREFdbstatus,,dbstatus}}
 @end deftypefn
 
 
-@c dbup src/debug.cc
-@anchor{doc-dbup}
-@deftypefn  {Loadable Function} {} dbup
-@deftypefnx {Loadable Function} {} dbup (@var{n})
+@c dbup libinterp/corefcn/debug.cc
+@anchor{XREFdbup}
+@deftypefn  {Built-in Function} {} dbup
+@deftypefnx {Built-in Function} {} dbup (@var{n})
 In debugging mode, move up the execution stack @var{n} frames.
 If @var{n} is omitted, move up one frame.
-@seealso{@ref{doc-dbstack,,dbstack}, @ref{doc-dbdown,,dbdown}}
+@seealso{@ref{XREFdbstack,,dbstack}, @ref{XREFdbdown,,dbdown}}
 @end deftypefn
 
 
-@c dbdown src/debug.cc
-@anchor{doc-dbdown}
-@deftypefn  {Loadable Function} {} dbdown
-@deftypefnx {Loadable Function} {} dbdown (@var{n})
+@c dbdown libinterp/corefcn/debug.cc
+@anchor{XREFdbdown}
+@deftypefn  {Built-in Function} {} dbdown
+@deftypefnx {Built-in Function} {} dbdown (@var{n})
 In debugging mode, move down the execution stack @var{n} frames.
 If @var{n} is omitted, move down one frame.
-@seealso{@ref{doc-dbstack,,dbstack}, @ref{doc-dbup,,dbup}}
+@seealso{@ref{XREFdbstack,,dbstack}, @ref{XREFdbup,,dbup}}
 @end deftypefn
 
 
@@ -457,13 +489,13 @@ The data is returned in an Octave data structure which can then be
 examined or further processed by other routines or tools.
 
 @c profile scripts/general/profile.m
-@anchor{doc-profile}
+@anchor{XREFprofile}
 @deftypefn  {Command} {} profile on
 @deftypefnx {Command} {} profile off
 @deftypefnx {Command} {} profile resume
 @deftypefnx {Command} {} profile clear
-@deftypefnx {Function File} {@var{S} =} profile ('status')
-@deftypefnx {Function File} {@var{T} =} profile ('info')
+@deftypefnx {Function File} {@var{S} =} profile ("status")
+@deftypefnx {Function File} {@var{T} =} profile ("info")
 Control the built-in profiler.
 
 @table @code
@@ -473,7 +505,7 @@ is any.
 
 @item profile off
 Stop profiling.  The collected data can later be retrieved and examined
-with calls like @code{S = profile ('info')}.
+with calls like @code{S = profile ("info")}.
 
 @item profile clear
 Clear all collected profiler data.
@@ -482,12 +514,12 @@ Clear all collected profiler data.
 Restart profiling without cleaning up the old data and instead
 all newly collected statistics are added to the already existing ones.
 
-@item @var{S} = profile ('status')
+@item @var{S} = profile ("status")
 Return a structure filled with certain information about the current status
 of the profiler.  At the moment, the only field is @code{ProfilerStatus}
-which is either 'on' or 'off'.
+which is either @qcode{"on"} or @qcode{"off"}.
 
-@item @var{T} = profile ('info')
+@item @var{T} = profile ("info")
 Return the collected profiling statistics in the structure @var{T}.
 The flat profile is returned in the field @code{FunctionTable} which is an
 array of structures, each entry corresponding to a function which was called
@@ -496,7 +528,7 @@ and for which profiling statistics are present.  Furthermore, the field
 has an index into the @code{FunctionTable} identifying the function it
 corresponds to as well as data fields for number of calls and time spent
 at this level in the call-tree.
-@seealso{@ref{doc-profshow,,profshow}, @ref{doc-profexplore,,profexplore}}
+@seealso{@ref{XREFprofshow,,profshow}, @ref{XREFprofexplore,,profexplore}}
 @end table
 @end deftypefn
 
@@ -522,13 +554,13 @@ operators.  Furthermore, it is shown how often the function was called
 and the profiler also records that it is recursive.
 
 @c profshow scripts/general/profshow.m
-@anchor{doc-profshow}
+@anchor{XREFprofshow}
 @deftypefn  {Function File} {} profshow (@var{data})
 @deftypefnx {Function File} {} profshow (@var{data}, @var{n})
 Show flat profiler results.
 
 This command prints out profiler data as a flat profile.  @var{data} is the
-structure returned by @code{profile ('info')}.  If @var{n} is given, it
+structure returned by @code{profile ("info")}.  If @var{n} is given, it
 specifies the number of functions to show in the profile; functions are
 sorted in descending order by total time spent in them.  If there are more
 than @var{n} included in the profile, those will not be shown.  @var{n}
@@ -536,28 +568,30 @@ defaults to 20.
 
 The attribute column shows @samp{R} for recursive functions and nothing
 otherwise.
-@seealso{@ref{doc-profexplore,,profexplore}, @ref{doc-profile,,profile}}
+@seealso{@ref{XREFprofexplore,,profexplore}, @ref{XREFprofile,,profile}}
 @end deftypefn
 
 
 @c profexplore scripts/general/profexplore.m
-@anchor{doc-profexplore}
-@deftypefn {Function File} {} profexplore (@var{data})
+@anchor{XREFprofexplore}
+@deftypefn  {Function File} {} profexplore ()
+@deftypefnx {Function File} {} profexplore (@var{data})
 Interactively explore hierarchical profiler output.
 
 Assuming @var{data} is the structure with profile data returned by
-@code{profile ('info')}, this command opens an interactive prompt
+@code{profile (@qcode{"info"})}, this command opens an interactive prompt
 that can be used to explore the call-tree.  Type @kbd{help} to get a list
-of possible commands.
-@seealso{@ref{doc-profile,,profile}, @ref{doc-profshow,,profshow}}
+of possible commands.  If @var{data} is omitted, @code{profile ("info")}
+is called and used in its place.
+@seealso{@ref{XREFprofile,,profile}, @ref{XREFprofshow,,profshow}}
 @end deftypefn
 
 
 @node Profiler Example
 @section Profiler Example
 
-Below, we will give a short example of a profiler session.  See also
-@ref{Profiling} for the documentation of the profiler functions in
+Below, we will give a short example of a profiler session.
+@xref{Profiling}, for the documentation of the profiler functions in
 detail.  Consider the code:
 
 @example
@@ -621,7 +655,7 @@ profile on;
 foo;
 profile off;
 
-data = profile ('info');
+data = profile ("info");
 profshow (data, 10);
 @end group
 @end example
@@ -701,7 +735,7 @@ profile on;
 bar (20);
 profile off;
 
-profshow (profile ('info'));
+profshow (profile ("info"));
 @end group
 @end example
 
@@ -739,7 +773,7 @@ profile resume;
 foo;
 profile off;
 
-profshow (profile ('info'), 10);
+profshow (profile ("info"), 10);
 @end group
 @end example
 

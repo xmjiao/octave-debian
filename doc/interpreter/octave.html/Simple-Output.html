@@ -1,77 +1,101 @@
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.2, http://www.gnu.org/software/texinfo/ -->
 <head>
-<title>Simple Output - GNU Octave</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="GNU Octave">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions" title="C-Style I/O Functions">
-<link rel="prev" href="Opening-and-Closing-Files.html#Opening-and-Closing-Files" title="Opening and Closing Files">
-<link rel="next" href="Line_002dOriented-Input.html#Line_002dOriented-Input" title="Line-Oriented Input">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
-</head>
-<body>
-<div class="node">
-<a name="Simple-Output"></a>
-<p>
-Next:&nbsp;<a rel="next" accesskey="n" href="Line_002dOriented-Input.html#Line_002dOriented-Input">Line-Oriented Input</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="Opening-and-Closing-Files.html#Opening-and-Closing-Files">Opening and Closing Files</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions">C-Style I/O Functions</a>
-<hr>
-</div>
+<title>GNU Octave: Simple Output</title>
 
+<meta name="description" content="GNU Octave: Simple Output">
+<meta name="keywords" content="GNU Octave: Simple Output">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions" rel="up" title="C-Style I/O Functions">
+<link href="Line_002dOriented-Input.html#Line_002dOriented-Input" rel="next" title="Line-Oriented Input">
+<link href="Opening-and-Closing-Files.html#Opening-and-Closing-Files" rel="prev" title="Opening and Closing Files">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+<a name="Simple-Output"></a>
+<div class="header">
+<p>
+Next: <a href="Line_002dOriented-Input.html#Line_002dOriented-Input" accesskey="n" rel="next">Line-Oriented Input</a>, Previous: <a href="Opening-and-Closing-Files.html#Opening-and-Closing-Files" accesskey="p" rel="prev">Opening and Closing Files</a>, Up: <a href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions" accesskey="u" rel="up">C-Style I/O Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Simple-Output-1"></a>
 <h4 class="subsection">14.2.2 Simple Output</h4>
 
 <p>Once a file has been opened for writing a string can be written to the
 file using the <code>fputs</code> function.  The following example shows
-how to write the string &lsquo;<samp><span class="samp">Free Software is needed for Free Science</span></samp>&rsquo;
-to the file &lsquo;<samp><span class="samp">free.txt</span></samp>&rsquo;.
+how to write the string &lsquo;<samp>Free Software is needed for Free Science</samp>&rsquo;
+to the file &lsquo;<samp>free.txt</samp>&rsquo;.
+</p>
+<div class="example">
+<pre class="example">filename = &quot;free.txt&quot;;
+fid = fopen (filename, &quot;w&quot;);
+fputs (fid, &quot;Free Software is needed for Free Science&quot;);
+fclose (fid);
+</pre></div>
 
-<pre class="example">     filename = "free.txt";
-     fid = fopen (filename, "w");
-     fputs (fid, "Free Software is needed for Free Science");
-     fclose (fid);
-</pre>
-   <!-- fputs src/file-io.cc -->
-   <p><a name="doc_002dfputs"></a>
+<a name="XREFfputs"></a><dl>
+<dt><a name="index-fputs"></a>Built-in Function: <em></em> <strong>fputs</strong> <em>(<var>fid</var>, <var>string</var>)</em></dt>
+<dd><p>Write a string to a file with no formatting.
+</p>
+<p>Return a non-negative number on success and EOF on error.
+</p>
+<p><strong>See also:</strong> <a href="Simple-File-I_002fO.html#XREFfdisp">fdisp</a>, <a href="Formatted-Output.html#XREFfprintf">fprintf</a>, <a href="Binary-I_002fO.html#XREFfwrite">fwrite</a>, <a href="Opening-and-Closing-Files.html#XREFfopen">fopen</a>.
+</p></dd></dl>
 
-<div class="defun">
-&mdash; Built-in Function:  <b>fputs</b> (<var>fid, string</var>)<var><a name="index-fputs-982"></a></var><br>
-<blockquote><p>Write a string to a file with no formatting.
 
-        <p>Return a non-negative number on success and EOF on error. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
-
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dscanf.html#doc_002dscanf">scanf</a>, <a href="doc_002dsscanf.html#doc_002dsscanf">sscanf</a>, <a href="doc_002dfread.html#doc_002dfread">fread</a>, <a href="doc_002dfprintf.html#doc_002dfprintf">fprintf</a>, <a href="doc_002dfgets.html#doc_002dfgets">fgets</a>, <a href="doc_002dfscanf.html#doc_002dfscanf">fscanf</a>. 
-</p></blockquote></div>
-
-   <p>A function much similar to <code>fputs</code> is available for writing data
+<p>A function much similar to <code>fputs</code> is available for writing data
 to the screen.  The <code>puts</code> function works just like <code>fputs</code>
-except it doesn't take a file pointer as its input.
+except it doesn&rsquo;t take a file pointer as its input.
+</p>
+<a name="XREFputs"></a><dl>
+<dt><a name="index-puts"></a>Built-in Function: <em></em> <strong>puts</strong> <em>(<var>string</var>)</em></dt>
+<dd><p>Write a string to the standard output with no formatting.
+</p>
+<p>Return a non-negative number on success and EOF on error.
+</p>
+<p><strong>See also:</strong> <a href="#XREFfputs">fputs</a>, <a href="Terminal-Output.html#XREFdisp">disp</a>.
+</p></dd></dl>
 
-<!-- puts src/file-io.cc -->
-   <p><a name="doc_002dputs"></a>
 
-<div class="defun">
-&mdash; Built-in Function:  <b>puts</b> (<var>string</var>)<var><a name="index-puts-983"></a></var><br>
-<blockquote><p>Write a string to the standard output with no formatting.
 
-        <p>Return a non-negative number on success and EOF on error. 
-</p></blockquote></div>
 
-   </body></html>
 
+</body>
+</html>

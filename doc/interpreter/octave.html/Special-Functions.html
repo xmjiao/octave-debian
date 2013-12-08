@@ -1,462 +1,635 @@
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.2, http://www.gnu.org/software/texinfo/ -->
 <head>
-<title>Special Functions - GNU Octave</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="GNU Octave">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="Arithmetic.html#Arithmetic" title="Arithmetic">
-<link rel="prev" href="Utility-Functions.html#Utility-Functions" title="Utility Functions">
-<link rel="next" href="Rational-Approximations.html#Rational-Approximations" title="Rational Approximations">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
-</head>
-<body>
-<div class="node">
-<a name="Special-Functions"></a>
-<p>
-Next:&nbsp;<a rel="next" accesskey="n" href="Rational-Approximations.html#Rational-Approximations">Rational Approximations</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="Utility-Functions.html#Utility-Functions">Utility Functions</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="Arithmetic.html#Arithmetic">Arithmetic</a>
-<hr>
-</div>
+<title>GNU Octave: Special Functions</title>
 
+<meta name="description" content="GNU Octave: Special Functions">
+<meta name="keywords" content="GNU Octave: Special Functions">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Arithmetic.html#Arithmetic" rel="up" title="Arithmetic">
+<link href="Rational-Approximations.html#Rational-Approximations" rel="next" title="Rational Approximations">
+<link href="Utility-Functions.html#Utility-Functions" rel="prev" title="Utility Functions">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+<a name="Special-Functions"></a>
+<div class="header">
+<p>
+Next: <a href="Rational-Approximations.html#Rational-Approximations" accesskey="n" rel="next">Rational Approximations</a>, Previous: <a href="Utility-Functions.html#Utility-Functions" accesskey="p" rel="prev">Utility Functions</a>, Up: <a href="Arithmetic.html#Arithmetic" accesskey="u" rel="up">Arithmetic</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Special-Functions-1"></a>
 <h3 class="section">17.6 Special Functions</h3>
 
-<!-- airy src/DLD-FUNCTIONS/besselj.cc -->
-<p><a name="doc_002dairy"></a>
-
-<div class="defun">
-&mdash; Loadable Function: [<var>a</var>, <var>ierr</var>] = <b>airy</b> (<var>k, z, opt</var>)<var><a name="index-airy-1913"></a></var><br>
-<blockquote><p>Compute Airy functions of the first and second kind, and their
+<a name="XREFairy"></a><dl>
+<dt><a name="index-airy"></a>Built-in Function: <em>[<var>a</var>, <var>ierr</var>] =</em> <strong>airy</strong> <em>(<var>k</var>, <var>z</var>, <var>opt</var>)</em></dt>
+<dd><p>Compute Airy functions of the first and second kind, and their
 derivatives.
+</p>
+<div class="example">
+<pre class="example"> K   Function   Scale factor (if &quot;opt&quot; is supplied)
+---  --------   ---------------------------------------
+ 0   Ai (Z)     exp ((2/3) * Z * sqrt (Z))
+ 1   dAi(Z)/dZ  exp ((2/3) * Z * sqrt (Z))
+ 2   Bi (Z)     exp (-abs (real ((2/3) * Z * sqrt (Z))))
+ 3   dBi(Z)/dZ  exp (-abs (real ((2/3) * Z * sqrt (Z))))
+</pre></div>
 
-     <pre class="example">           K   Function   Scale factor (if 'opt' is supplied)
-          ---  --------   ---------------------------------------
-           0   Ai (Z)     exp ((2/3) * Z * sqrt (Z))
-           1   dAi(Z)/dZ  exp ((2/3) * Z * sqrt (Z))
-           2   Bi (Z)     exp (-abs (real ((2/3) * Z *sqrt (Z))))
-           3   dBi(Z)/dZ  exp (-abs (real ((2/3) * Z *sqrt (Z))))
-</pre>
-        <p>The function call <code>airy (</code><var>z</var><code>)</code> is equivalent to
-<code>airy (0, </code><var>z</var><code>)</code>.
-
-        <p>The result is the same size as <var>z</var>.
-
-        <p>If requested, <var>ierr</var> contains the following status information and
+<p>The function call <code>airy (<var>z</var>)</code> is equivalent to
+<code>airy (0, <var>z</var>)</code>.
+</p>
+<p>The result is the same size as <var>z</var>.
+</p>
+<p>If requested, <var>ierr</var> contains the following status information and
 is the same size as the result.
+</p>
+<ol>
+<li> Normal return.
 
-          <ol type=1 start=0>
-<li>Normal return.
+</li><li> Input error, return <code>NaN</code>.
 
-          <li>Input error, return <code>NaN</code>.
+</li><li> Overflow, return <code>Inf</code>.
 
-          <li>Overflow, return <code>Inf</code>.
-
-          <li>Loss of significance by argument reduction results in less than half
+</li><li> Loss of significance by argument reduction results in less than half
  of machine accuracy.
 
-          <li>Complete loss of significance by argument reduction, return <code>NaN</code>.
+</li><li> Complete loss of significance by argument reduction, return <code>NaN</code>.
 
-          <li>Error&mdash;no computation, algorithm termination condition not met,
+</li><li> Error&mdash;no computation, algorithm termination condition not met,
 return <code>NaN</code>.
-             </ol>
-</p></blockquote></div>
+</li></ol>
+</dd></dl>
 
-<!-- besselj src/DLD-FUNCTIONS/besselj.cc -->
-   <p><a name="doc_002dbesselj"></a>
 
-<div class="defun">
-&mdash; Loadable Function: [<var>j</var>, <var>ierr</var>] = <b>besselj</b> (<var>alpha, x, opt</var>)<var><a name="index-besselj-1914"></a></var><br>
-&mdash; Loadable Function: [<var>y</var>, <var>ierr</var>] = <b>bessely</b> (<var>alpha, x, opt</var>)<var><a name="index-bessely-1915"></a></var><br>
-&mdash; Loadable Function: [<var>i</var>, <var>ierr</var>] = <b>besseli</b> (<var>alpha, x, opt</var>)<var><a name="index-besseli-1916"></a></var><br>
-&mdash; Loadable Function: [<var>k</var>, <var>ierr</var>] = <b>besselk</b> (<var>alpha, x, opt</var>)<var><a name="index-besselk-1917"></a></var><br>
-&mdash; Loadable Function: [<var>h</var>, <var>ierr</var>] = <b>besselh</b> (<var>alpha, k, x, opt</var>)<var><a name="index-besselh-1918"></a></var><br>
-<blockquote><p>Compute Bessel or Hankel functions of various kinds:
-
-          <dl>
-<dt><code>besselj</code><dd>Bessel functions of the first kind.  If the argument <var>opt</var> is supplied,
-the result is multiplied by <code>exp(-abs(imag(</code><var>x</var><code>)))</code>.
-
-          <br><dt><code>bessely</code><dd>Bessel functions of the second kind.  If the argument <var>opt</var> is supplied,
-the result is multiplied by <code>exp(-abs(imag(</code><var>x</var><code>)))</code>.
-
-          <br><dt><code>besseli</code><dd>
-Modified Bessel functions of the first kind.  If the argument <var>opt</var> is
-supplied, the result is multiplied by <code>exp(-abs(real(</code><var>x</var><code>)))</code>.
-
-          <br><dt><code>besselk</code><dd>
-Modified Bessel functions of the second kind.  If the argument <var>opt</var> is
-supplied, the result is multiplied by <code>exp(</code><var>x</var><code>)</code>.
-
-          <br><dt><code>besselh</code><dd>Compute Hankel functions of the first (<var>k</var> = 1) or second (<var>k</var>
+<a name="XREFbesselj"></a><dl>
+<dt><a name="index-besselj"></a>Built-in Function: <em>[<var>j</var>, <var>ierr</var>] =</em> <strong>besselj</strong> <em>(<var>alpha</var>, <var>x</var>, <var>opt</var>)</em></dt>
+<dt><a name="index-bessely"></a>Built-in Function: <em>[<var>y</var>, <var>ierr</var>] =</em> <strong>bessely</strong> <em>(<var>alpha</var>, <var>x</var>, <var>opt</var>)</em></dt>
+<dt><a name="index-besseli"></a>Built-in Function: <em>[<var>i</var>, <var>ierr</var>] =</em> <strong>besseli</strong> <em>(<var>alpha</var>, <var>x</var>, <var>opt</var>)</em></dt>
+<dt><a name="index-besselk"></a>Built-in Function: <em>[<var>k</var>, <var>ierr</var>] =</em> <strong>besselk</strong> <em>(<var>alpha</var>, <var>x</var>, <var>opt</var>)</em></dt>
+<dt><a name="index-besselh"></a>Built-in Function: <em>[<var>h</var>, <var>ierr</var>] =</em> <strong>besselh</strong> <em>(<var>alpha</var>, <var>k</var>, <var>x</var>, <var>opt</var>)</em></dt>
+<dd><p>Compute Bessel or Hankel functions of various kinds:
+</p>
+<dl compact="compact">
+<dt><code>besselj</code></dt>
+<dd><p>Bessel functions of the first kind.  If the argument <var>opt</var> is supplied,
+the result is multiplied by <code>exp (-abs (imag (<var>x</var>)))</code>.
+</p>
+</dd>
+<dt><code>bessely</code></dt>
+<dd><p>Bessel functions of the second kind.  If the argument <var>opt</var> is supplied,
+the result is multiplied by <code>exp (-abs (imag (<var>x</var>)))</code>.
+</p>
+</dd>
+<dt><code>besseli</code></dt>
+<dd>
+<p>Modified Bessel functions of the first kind.  If the argument <var>opt</var> is
+supplied, the result is multiplied by <code>exp (-abs (real (<var>x</var>)))</code>.
+</p>
+</dd>
+<dt><code>besselk</code></dt>
+<dd>
+<p>Modified Bessel functions of the second kind.  If the argument <var>opt</var> is
+supplied, the result is multiplied by <code>exp (<var>x</var>)</code>.
+</p>
+</dd>
+<dt><code>besselh</code></dt>
+<dd><p>Compute Hankel functions of the first (<var>k</var> = 1) or second (<var>k</var>
 = 2) kind.  If the argument <var>opt</var> is supplied, the result is multiplied
-by <code>exp (-I*</code><var>x</var><code>)</code> for <var>k</var> = 1 or <code>exp (I*</code><var>x</var><code>)</code> for
-<var>k</var> = 2. 
+by <code>exp (-I*<var>x</var>)</code> for <var>k</var> = 1 or <code>exp (I*<var>x</var>)</code> for
+<var>k</var> = 2.
+</p></dd>
 </dl>
 
-        <p>If <var>alpha</var> is a scalar, the result is the same size as <var>x</var>. 
-If <var>x</var> is a scalar, the result is the same size as <var>alpha</var>. 
+<p>If <var>alpha</var> is a scalar, the result is the same size as <var>x</var>.
+If <var>x</var> is a scalar, the result is the same size as <var>alpha</var>.
 If <var>alpha</var> is a row vector and <var>x</var> is a column vector, the
-result is a matrix with <code>length (</code><var>x</var><code>)</code> rows and
-<code>length (</code><var>alpha</var><code>)</code> columns.  Otherwise, <var>alpha</var> and
+result is a matrix with <code>length (<var>x</var>)</code> rows and
+<code>length (<var>alpha</var>)</code> columns.  Otherwise, <var>alpha</var> and
 <var>x</var> must conform and the result will be the same size.
-
-        <p>The value of <var>alpha</var> must be real.  The value of <var>x</var> may be
+</p>
+<p>The value of <var>alpha</var> must be real.  The value of <var>x</var> may be
 complex.
-
-        <p>If requested, <var>ierr</var> contains the following status information
+</p>
+<p>If requested, <var>ierr</var> contains the following status information
 and is the same size as the result.
+</p>
+<ol>
+<li> Normal return.
 
-          <ol type=1 start=0>
-<li>Normal return.
+</li><li> Input error, return <code>NaN</code>.
 
-          <li>Input error, return <code>NaN</code>.
+</li><li> Overflow, return <code>Inf</code>.
 
-          <li>Overflow, return <code>Inf</code>.
-
-          <li>Loss of significance by argument reduction results in less than
+</li><li> Loss of significance by argument reduction results in less than
 half of machine accuracy.
 
-          <li>Complete loss of significance by argument reduction, return <code>NaN</code>.
+</li><li> Complete loss of significance by argument reduction, return <code>NaN</code>.
 
-          <li>Error&mdash;no computation, algorithm termination condition not met,
+</li><li> Error&mdash;no computation, algorithm termination condition not met,
 return <code>NaN</code>.
-             </ol>
-</p></blockquote></div>
+</li></ol>
+</dd></dl>
 
-<!-- beta scripts/specfun/beta.m -->
-   <p><a name="doc_002dbeta"></a>
 
-<div class="defun">
-&mdash; Mapping Function:  <b>beta</b> (<var>a, b</var>)<var><a name="index-beta-1919"></a></var><br>
-<blockquote><p>For real inputs, return the Beta function,
+<a name="XREFbeta"></a><dl>
+<dt><a name="index-beta"></a>Mapping Function: <em></em> <strong>beta</strong> <em>(<var>a</var>, <var>b</var>)</em></dt>
+<dd><p>For real inputs, return the Beta function,
+</p>
+<div class="example">
+<pre class="example">beta (a, b) = gamma (a) * gamma (b) / gamma (a + b).
+</pre></div>
 
-     <pre class="example">          beta (a, b) = gamma (a) * gamma (b) / gamma (a + b).
-</pre>
-        </blockquote></div>
 
-<!-- betainc src/DLD-FUNCTIONS/betainc.cc -->
-   <p><a name="doc_002dbetainc"></a>
+<p><strong>See also:</strong> <a href="#XREFbetaln">betaln</a>, <a href="#XREFbetainc">betainc</a>.
+</p></dd></dl>
 
-<div class="defun">
-&mdash; Mapping Function:  <b>betainc</b> (<var>x, a, b</var>)<var><a name="index-betainc-1920"></a></var><br>
-<blockquote><p>Return the regularized incomplete Beta function,
-<!-- Set example in small font to prevent overfull line -->
 
-     <pre class="smallexample">          <!-- spacing appears odd here, but is correct after Makeinfo -->
-                                               x
-                                    1         /
-          betainc (x, a, b) = -----------    | t^(a-1) (1-t)^(b-1) dt.
-                               beta (a, b)    /
-                                           t=0
-</pre>
-        <p>If <var>x</var> has more than one component, both <var>a</var> and <var>b</var> must be
+<a name="XREFbetainc"></a><dl>
+<dt><a name="index-betainc"></a>Mapping Function: <em></em> <strong>betainc</strong> <em>(<var>x</var>, <var>a</var>, <var>b</var>)</em></dt>
+<dd><p>Return the regularized incomplete Beta function,
+</p>
+<div class="smallexample">
+<pre class="smallexample">                                   x
+                          1       /
+betainc (x, a, b) = -----------   | t^(a-1) (1-t)^(b-1) dt.
+                    beta (a, b)   /
+                               t=0
+</pre></div>
+
+
+<p>If <var>x</var> has more than one component, both <var>a</var> and <var>b</var> must be
 scalars.  If <var>x</var> is a scalar, <var>a</var> and <var>b</var> must be of
-compatible dimensions. 
-</p></blockquote></div>
+compatible dimensions.
+</p>
+<p><strong>See also:</strong> <a href="#XREFbetaincinv">betaincinv</a>, <a href="#XREFbeta">beta</a>, <a href="#XREFbetaln">betaln</a>.
+</p></dd></dl>
 
-<!-- betaln scripts/specfun/betaln.m -->
-   <p><a name="doc_002dbetaln"></a>
 
-<div class="defun">
-&mdash; Mapping Function:  <b>betaln</b> (<var>a, b</var>)<var><a name="index-betaln-1921"></a></var><br>
-<blockquote><p>Return the natural logarithm of the Beta function,
+<a name="XREFbetaincinv"></a><dl>
+<dt><a name="index-betaincinv"></a>Mapping Function: <em></em> <strong>betaincinv</strong> <em>(<var>y</var>, <var>a</var>, <var>b</var>)</em></dt>
+<dd><p>Compute the inverse of the incomplete Beta function, i.e., <var>x</var> such that
+</p>
+<div class="example">
+<pre class="example"><var>y</var> == betainc (<var>x</var>, <var>a</var>, <var>b</var>) 
+</pre></div>
 
-     <pre class="example">          betaln (a, b) = log (beta (a, b))
-</pre>
-        <p>calculated in a way to reduce the occurrence of underflow. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
+<p><strong>See also:</strong> <a href="#XREFbetainc">betainc</a>, <a href="#XREFbeta">beta</a>, <a href="#XREFbetaln">betaln</a>.
+</p></dd></dl>
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dbeta.html#doc_002dbeta">beta</a>, <a href="doc_002dbetainc.html#doc_002dbetainc">betainc</a>, <a href="doc_002dgammaln.html#doc_002dgammaln">gammaln</a>. 
-</p></blockquote></div>
 
-<!-- bincoeff scripts/miscellaneous/bincoeff.m -->
-   <p><a name="doc_002dbincoeff"></a>
+<a name="XREFbetaln"></a><dl>
+<dt><a name="index-betaln"></a>Mapping Function: <em></em> <strong>betaln</strong> <em>(<var>a</var>, <var>b</var>)</em></dt>
+<dd><p>Return the natural logarithm of the Beta function,
+</p>
+<div class="example">
+<pre class="example">betaln (a, b) = log (beta (a, b))
+</pre></div>
 
-<div class="defun">
-&mdash; Mapping Function:  <b>bincoeff</b> (<var>n, k</var>)<var><a name="index-bincoeff-1922"></a></var><br>
-<blockquote><p>Return the binomial coefficient of <var>n</var> and <var>k</var>, defined as
+<p>calculated in a way to reduce the occurrence of underflow.
+</p>
+<p><strong>See also:</strong> <a href="#XREFbeta">beta</a>, <a href="#XREFbetainc">betainc</a>, <a href="#XREFgammaln">gammaln</a>.
+</p></dd></dl>
 
-     <pre class="example">           /   \
-           | n |    n (n-1) (n-2) ... (n-k+1)
-           |   |  = -------------------------
-           | k |               k!
-           \   /
-</pre>
-        <p>For example:
 
-     <pre class="example">          bincoeff (5, 2)
-             &rArr; 10
-</pre>
-        <p>In most cases, the <code>nchoosek</code> function is faster for small
+<a name="XREFbincoeff"></a><dl>
+<dt><a name="index-bincoeff"></a>Mapping Function: <em></em> <strong>bincoeff</strong> <em>(<var>n</var>, <var>k</var>)</em></dt>
+<dd><p>Return the binomial coefficient of <var>n</var> and <var>k</var>, defined as
+</p>
+<div class="example">
+<pre class="example"> /   \
+ | n |    n (n-1) (n-2) &hellip; (n-k+1)
+ |   |  = -------------------------
+ | k |               k!
+ \   /
+</pre></div>
+
+<p>For example:
+</p>
+<div class="example">
+<pre class="example">bincoeff (5, 2)
+   &rArr; 10
+</pre></div>
+
+<p>In most cases, the <code>nchoosek</code> function is faster for small
 scalar integer arguments.  It also warns about loss of precision for
 big arguments.
+</p>
 
-     <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-     <!-- A simple blank line produces the correct behavior. -->
-     <!-- @sp 1 -->
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dnchoosek.html#doc_002dnchoosek">nchoosek</a>. 
-</p></blockquote></div>
+<p><strong>See also:</strong> <a href="Basic-Statistical-Functions.html#XREFnchoosek">nchoosek</a>.
+</p></dd></dl>
 
-<!-- commutation_matrix scripts/linear-algebra/commutation_matrix.m -->
-   <p><a name="doc_002dcommutation_005fmatrix"></a>
 
-<div class="defun">
-&mdash; Function File:  <b>commutation_matrix</b> (<var>m, n</var>)<var><a name="index-commutation_005fmatrix-1923"></a></var><br>
-<blockquote><p>Return the commutation matrix
+<a name="XREFcommutation_005fmatrix"></a><dl>
+<dt><a name="index-commutation_005fmatrix"></a>Function File: <em></em> <strong>commutation_matrix</strong> <em>(<var>m</var>, <var>n</var>)</em></dt>
+<dd><p>Return the commutation matrix
  K(m,n)
  which is the unique
 <var>m</var>*<var>n</var> by <var>m</var>*<var>n</var>
  matrix such that
-K(m,n) * vec(A) = vec(A')
+<em>K(m,n) * vec(A) = vec(A')</em>
  for all
-m by n
+<em>m</em> by <em>n</em>
  matrices
-A.
-
-        <p>If only one argument <var>m</var> is given,
-K(m,m)
+<em>A</em>.
+</p>
+<p>If only one argument <var>m</var> is given,
+<em>K(m,m)</em>
  is returned.
-
-        <p>See Magnus and Neudecker (1988), <cite>Matrix Differential Calculus with
+</p>
+<p>See Magnus and Neudecker (1988), <cite>Matrix Differential Calculus with
 Applications in Statistics and Econometrics.</cite>
-</p></blockquote></div>
+</p></dd></dl>
 
-<!-- duplication_matrix scripts/linear-algebra/duplication_matrix.m -->
-   <p><a name="doc_002dduplication_005fmatrix"></a>
 
-<div class="defun">
-&mdash; Function File:  <b>duplication_matrix</b> (<var>n</var>)<var><a name="index-duplication_005fmatrix-1924"></a></var><br>
-<blockquote><p>Return the duplication matrix
-Dn
+<a name="XREFduplication_005fmatrix"></a><dl>
+<dt><a name="index-duplication_005fmatrix"></a>Function File: <em></em> <strong>duplication_matrix</strong> <em>(<var>n</var>)</em></dt>
+<dd><p>Return the duplication matrix
+<em>Dn</em>
  which is the unique
-n^2 by n*(n+1)/2
+<em>n^2</em> by <em>n*(n+1)/2</em>
  matrix such that
-Dn vech (A) = vec (A)
+<em>Dn vech (A) = vec (A)</em>
  for all symmetric
-n by n
+<em>n</em> by <em>n</em>
  matrices
-A.
+<em>A</em>.
+</p>
+<p>See Magnus and Neudecker (1988), Matrix differential calculus with
+applications in statistics and econometrics.
+</p></dd></dl>
 
-        <p>See Magnus and Neudecker (1988), Matrix differential calculus with
-applications in statistics and econometrics. 
-</p></blockquote></div>
 
-<!-- erf src/mappers.cc -->
-   <p><a name="doc_002derf"></a>
+<a name="XREFdawson"></a><dl>
+<dt><a name="index-dawson"></a>Mapping Function: <em></em> <strong>dawson</strong> <em>(<var>z</var>)</em></dt>
+<dd><p>Compute the Dawson (scaled imaginary error) function,
+</p>
+<div class="example">
+<pre class="example">(sqrt (pi) / 2) * exp (-z^2) * erfi (z)
+</pre></div>
 
-<div class="defun">
-&mdash; Mapping Function:  <b>erf</b> (<var>z</var>)<var><a name="index-erf-1925"></a></var><br>
-<blockquote><p>Compute the error function,
 
-     <pre class="example">          <!-- spacing appears odd here, but is correct after Makeinfo -->
-                                    z
-                                   /
-          erf (z) = (2/sqrt (pi)) | e^(-t^2) dt
-                                   /
-                                t=0
-</pre>
-        <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-     <!-- A simple blank line produces the correct behavior. -->
-     <!-- @sp 1 -->
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002derfc.html#doc_002derfc">erfc</a>, <a href="doc_002derfcx.html#doc_002derfcx">erfcx</a>, <a href="doc_002derfinv.html#doc_002derfinv">erfinv</a>. 
-</p></blockquote></div>
+<p><strong>See also:</strong> <a href="#XREFerfc">erfc</a>, <a href="#XREFerf">erf</a>, <a href="#XREFerfcx">erfcx</a>, <a href="#XREFerfi">erfi</a>, <a href="#XREFerfinv">erfinv</a>, <a href="#XREFerfcinv">erfcinv</a>.
+</p></dd></dl>
 
-<!-- erfc src/mappers.cc -->
-   <p><a name="doc_002derfc"></a>
 
-<div class="defun">
-&mdash; Mapping Function:  <b>erfc</b> (<var>z</var>)<var><a name="index-erfc-1926"></a></var><br>
-<blockquote><p>Compute the complementary error function,
-<code>1&nbsp;-&nbsp;erf&nbsp;(</code><var>z</var><code>)</code><!-- /@w -->. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
+<a name="XREFellipj"></a><dl>
+<dt><a name="index-ellipj"></a>Built-in Function: <em>[<var>sn</var>, <var>cn</var>, <var>dn</var>, <var>err</var>] =</em> <strong>ellipj</strong> <em>(<var>u</var>, <var>m</var>)</em></dt>
+<dt><a name="index-ellipj-1"></a>Built-in Function: <em>[<var>sn</var>, <var>cn</var>, <var>dn</var>, <var>err</var>] =</em> <strong>ellipj</strong> <em>(<var>u</var>, <var>m</var>, <var>tol</var>)</em></dt>
+<dd><p>Compute the Jacobi elliptic functions <var>sn</var>, <var>cn</var>, and <var>dn</var>
+of complex argument <var>u</var> and real parameter <var>m</var>.
+</p>
+<p>If <var>m</var> is a scalar, the results are the same size as <var>u</var>.
+If <var>u</var> is a scalar, the results are the same size as <var>m</var>.
+If <var>u</var> is a column vector and <var>m</var> is a row vector, the
+results are matrices with <code>length (<var>u</var>)</code> rows and
+<code>length (<var>m</var>)</code> columns.  Otherwise, <var>u</var> and
+<var>m</var> must conform in size and the results will be the same size as the
+inputs.
+</p>
+<p>The value of <var>u</var> may be complex.
+The value of <var>m</var> must be 0 &le; <var>m</var> &le; 1.
+</p>
+<p>The optional input <var>tol</var> is currently ignored (<small>MATLAB</small> uses this to
+allow faster, less accurate approximation).
+</p>
+<p>If requested, <var>err</var> contains the following status information
+and is the same size as the result.
+</p>
+<ol>
+<li> Normal return.
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002derfcx.html#doc_002derfcx">erfcx</a>, <a href="doc_002derf.html#doc_002derf">erf</a>, <a href="doc_002derfinv.html#doc_002derfinv">erfinv</a>. 
-</p></blockquote></div>
+</li><li> Error&mdash;no computation, algorithm termination condition not met,
+return <code>NaN</code>.
+</li></ol>
 
-<!-- erfcx src/mappers.cc -->
-   <p><a name="doc_002derfcx"></a>
+<p>Reference: Milton Abramowitz and Irene A Stegun,
+<cite>Handbook of Mathematical Functions</cite>, Chapter 16 (Sections 16.4, 16.13,
+and 16.15), Dover, 1965.
+</p>
 
-<div class="defun">
-&mdash; Mapping Function:  <b>erfcx</b> (<var>z</var>)<var><a name="index-erfcx-1927"></a></var><br>
-<blockquote><p>Compute the scaled complementary error function,
+<p><strong>See also:</strong> <a href="#XREFellipke">ellipke</a>.
+</p></dd></dl>
 
-     <pre class="example">          exp (z^2) * erfc (x)
-</pre>
-        <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-     <!-- A simple blank line produces the correct behavior. -->
-     <!-- @sp 1 -->
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002derfc.html#doc_002derfc">erfc</a>, <a href="doc_002derf.html#doc_002derf">erf</a>, <a href="doc_002derfinv.html#doc_002derfinv">erfinv</a>. 
-</p></blockquote></div>
 
-<!-- erfinv src/mappers.cc -->
-   <p><a name="doc_002derfinv"></a>
+<a name="XREFellipke"></a><dl>
+<dt><a name="index-ellipke"></a>Function File: <em><var>k</var> =</em> <strong>ellipke</strong> <em>(<var>m</var>)</em></dt>
+<dt><a name="index-ellipke-1"></a>Function File: <em><var>k</var> =</em> <strong>ellipke</strong> <em>(<var>m</var>, <var>tol</var>)</em></dt>
+<dt><a name="index-ellipke-2"></a>Function File: <em>[<var>k</var>, <var>e</var>] =</em> <strong>ellipke</strong> <em>(&hellip;)</em></dt>
+<dd><p>Compute complete elliptic integrals of the first K(<var>m</var>) and second
+E(<var>m</var>) kind.
+</p>
+<p><var>m</var> must be a scalar or real array with -Inf &le; <var>m</var> &le; 1.
+</p>
+<p>The optional input <var>tol</var> is currently ignored (<small>MATLAB</small> uses this
+to allow a faster, less accurate approximation).
+</p>
+<p>Called with only one output, elliptic integrals of the first kind are
+returned.
+</p>
+<p>Reference: Milton Abramowitz and Irene A. Stegun,
+<cite>Handbook of Mathematical Functions</cite>, Chapter 17, Dover, 1965.
+</p>
+<p><strong>See also:</strong> <a href="#XREFellipj">ellipj</a>.
+</p></dd></dl>
 
-<div class="defun">
-&mdash; Mapping Function:  <b>erfinv</b> (<var>x</var>)<var><a name="index-erfinv-1928"></a></var><br>
-<blockquote><p>Compute the inverse error function, i.e., <var>y</var> such that
 
-     <pre class="example">            erf (<var>y</var>) == <var>x</var>
-</pre>
-        <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-     <!-- A simple blank line produces the correct behavior. -->
-     <!-- @sp 1 -->
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002derf.html#doc_002derf">erf</a>, <a href="doc_002derfc.html#doc_002derfc">erfc</a>, <a href="doc_002derfcx.html#doc_002derfcx">erfcx</a>. 
-</p></blockquote></div>
-
-<!-- gamma src/mappers.cc -->
-   <p><a name="doc_002dgamma"></a>
-
-<div class="defun">
-&mdash; Mapping Function:  <b>gamma</b> (<var>z</var>)<var><a name="index-gamma-1929"></a></var><br>
-<blockquote><p>Compute the Gamma function,
-
-     <pre class="example">          <!-- spacing appears odd here, but is correct after Makeinfo -->
-                        infinity
-                       /
-          gamma (z) = | t^(z-1) exp (-t) dt.
-                       /
+<a name="XREFerf"></a><dl>
+<dt><a name="index-erf"></a>Mapping Function: <em></em> <strong>erf</strong> <em>(<var>z</var>)</em></dt>
+<dd><p>Compute the error function,
+</p>
+<div class="example">
+<pre class="example">                        z
+              2        /
+erf (z) = --------- *  | e^(-t^2) dt
+          sqrt (pi)    /
                     t=0
-</pre>
-        <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-     <!-- A simple blank line produces the correct behavior. -->
-     <!-- @sp 1 -->
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dgammainc.html#doc_002dgammainc">gammainc</a>, <a href="doc_002dlgamma.html#doc_002dlgamma">lgamma</a>. 
-</p></blockquote></div>
+</pre></div>
 
-<!-- gammainc src/DLD-FUNCTIONS/gammainc.cc -->
-   <p><a name="doc_002dgammainc"></a>
 
-<div class="defun">
-&mdash; Mapping Function:  <b>gammainc</b> (<var>x, a</var>)<var><a name="index-gammainc-1930"></a></var><br>
-&mdash; Mapping Function:  <b>gammainc</b> (<var>x, a, "lower"</var>)<var><a name="index-gammainc-1931"></a></var><br>
-&mdash; Mapping Function:  <b>gammainc</b> (<var>x, a, "upper"</var>)<var><a name="index-gammainc-1932"></a></var><br>
-<blockquote><p>Compute the normalized incomplete gamma function,
+<p><strong>See also:</strong> <a href="#XREFerfc">erfc</a>, <a href="#XREFerfcx">erfcx</a>, <a href="#XREFerfi">erfi</a>, <a href="#XREFdawson">dawson</a>, <a href="#XREFerfinv">erfinv</a>, <a href="#XREFerfcinv">erfcinv</a>.
+</p></dd></dl>
 
-     <pre class="example">                                           x
-                                 1        /
-          gammainc (x, a) = ---------    | exp (-t) t^(a-1) dt
-                             gamma (a)    /
-                                       t=0
-</pre>
-        <p>with the limiting value of 1 as <var>x</var> approaches infinity. 
-The standard notation is P(a,x), e.g., Abramowitz and Stegun (6.5.1).
 
-        <p>If <var>a</var> is scalar, then <code>gammainc (</code><var>x</var><code>, </code><var>a</var><code>)</code> is returned
+<a name="XREFerfc"></a><dl>
+<dt><a name="index-erfc"></a>Mapping Function: <em></em> <strong>erfc</strong> <em>(<var>z</var>)</em></dt>
+<dd><p>Compute the complementary error function,
+<code>1&nbsp;<span class="nolinebreak">-</span>&nbsp;erf&nbsp;(<var>z</var>)</code><!-- /@w -->.
+</p>
+<p><strong>See also:</strong> <a href="#XREFerfcinv">erfcinv</a>, <a href="#XREFerfcx">erfcx</a>, <a href="#XREFerfi">erfi</a>, <a href="#XREFdawson">dawson</a>, <a href="#XREFerf">erf</a>, <a href="#XREFerfinv">erfinv</a>.
+</p></dd></dl>
+
+
+<a name="XREFerfcx"></a><dl>
+<dt><a name="index-erfcx"></a>Mapping Function: <em></em> <strong>erfcx</strong> <em>(<var>z</var>)</em></dt>
+<dd><p>Compute the scaled complementary error function,
+</p>
+<div class="example">
+<pre class="example">exp (z^2) * erfc (z)
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="#XREFerfc">erfc</a>, <a href="#XREFerf">erf</a>, <a href="#XREFerfi">erfi</a>, <a href="#XREFdawson">dawson</a>, <a href="#XREFerfinv">erfinv</a>, <a href="#XREFerfcinv">erfcinv</a>.
+</p></dd></dl>
+
+
+<a name="XREFerfi"></a><dl>
+<dt><a name="index-erfi"></a>Mapping Function: <em></em> <strong>erfi</strong> <em>(<var>z</var>)</em></dt>
+<dd><p>Compute the imaginary error function,
+</p>
+<div class="example">
+<pre class="example">-i * erf (i*z)
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="#XREFerfc">erfc</a>, <a href="#XREFerf">erf</a>, <a href="#XREFerfcx">erfcx</a>, <a href="#XREFdawson">dawson</a>, <a href="#XREFerfinv">erfinv</a>, <a href="#XREFerfcinv">erfcinv</a>.
+</p></dd></dl>
+
+
+<a name="XREFerfinv"></a><dl>
+<dt><a name="index-erfinv"></a>Mapping Function: <em></em> <strong>erfinv</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>Compute the inverse error function, i.e., <var>y</var> such that
+</p>
+<div class="example">
+<pre class="example">erf (<var>y</var>) == <var>x</var>
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFerf">erf</a>, <a href="#XREFerfc">erfc</a>, <a href="#XREFerfcx">erfcx</a>, <a href="#XREFerfi">erfi</a>, <a href="#XREFdawson">dawson</a>, <a href="#XREFerfcinv">erfcinv</a>.
+</p></dd></dl>
+
+
+<a name="XREFerfcinv"></a><dl>
+<dt><a name="index-erfcinv"></a>Mapping Function: <em></em> <strong>erfcinv</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>Compute the inverse complementary error function, i.e., <var>y</var> such that
+</p>
+<div class="example">
+<pre class="example">erfc (<var>y</var>) == <var>x</var>
+</pre></div>
+
+<p><strong>See also:</strong> <a href="#XREFerfc">erfc</a>, <a href="#XREFerf">erf</a>, <a href="#XREFerfcx">erfcx</a>, <a href="#XREFerfi">erfi</a>, <a href="#XREFdawson">dawson</a>, <a href="#XREFerfinv">erfinv</a>.
+</p></dd></dl>
+
+
+<a name="XREFexpint"></a><dl>
+<dt><a name="index-expint"></a>Function File: <em></em> <strong>expint</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>Compute the exponential integral:
+</p>
+<div class="example">
+<pre class="example">           infinity
+          /
+E_1 (x) = | exp (-t)/t dt
+          /
+         x
+</pre></div>
+
+<p>Note: For compatibility, this functions uses the <small>MATLAB</small> definition
+of the exponential integral.  Most other sources refer to this particular
+value as <em>E_1 (x)</em>, and the exponential integral is
+</p>
+<div class="example">
+<pre class="example">            infinity
+           /
+Ei (x) = - | exp (-t)/t dt
+           /
+         -x
+</pre></div>
+
+<p>The two definitions are related, for positive real values of <var>x</var>, by
+<code><span class="nolinebreak">E_1</span>&nbsp;<span class="nolinebreak">(-x)</span>&nbsp;=&nbsp;<span class="nolinebreak">-Ei</span>&nbsp;(x)&nbsp;<span class="nolinebreak">-</span>&nbsp;i*pi</code><!-- /@w -->.
+</p></dd></dl>
+
+
+<a name="XREFgamma"></a><dl>
+<dt><a name="index-gamma"></a>Mapping Function: <em></em> <strong>gamma</strong> <em>(<var>z</var>)</em></dt>
+<dd><p>Compute the Gamma function,
+</p>
+<div class="example">
+<pre class="example">             infinity
+            /
+gamma (z) = | t^(z-1) exp (-t) dt.
+            /
+         t=0
+</pre></div>
+
+
+<p><strong>See also:</strong> <a href="#XREFgammainc">gammainc</a>, <a href="#XREFlgamma">lgamma</a>.
+</p></dd></dl>
+
+
+<a name="XREFgammainc"></a><dl>
+<dt><a name="index-gammainc"></a>Mapping Function: <em></em> <strong>gammainc</strong> <em>(<var>x</var>, <var>a</var>)</em></dt>
+<dt><a name="index-gammainc-1"></a>Mapping Function: <em></em> <strong>gammainc</strong> <em>(<var>x</var>, <var>a</var>, &quot;lower&quot;)</em></dt>
+<dt><a name="index-gammainc-2"></a>Mapping Function: <em></em> <strong>gammainc</strong> <em>(<var>x</var>, <var>a</var>, &quot;upper&quot;)</em></dt>
+<dd><p>Compute the normalized incomplete gamma function,
+</p>
+<div class="example">
+<pre class="example">                                x
+                       1       /
+gammainc (x, a) = ---------    | exp (-t) t^(a-1) dt
+                  gamma (a)    /
+                            t=0
+</pre></div>
+
+<p>with the limiting value of 1 as <var>x</var> approaches infinity.
+The standard notation is <em>P(a,x)</em>, e.g., Abramowitz and Stegun (6.5.1).
+</p>
+<p>If <var>a</var> is scalar, then <code>gammainc (<var>x</var>, <var>a</var>)</code> is returned
 for each element of <var>x</var> and vice versa.
-
-        <p>If neither <var>x</var> nor <var>a</var> is scalar, the sizes of <var>x</var> and
+</p>
+<p>If neither <var>x</var> nor <var>a</var> is scalar, the sizes of <var>x</var> and
 <var>a</var> must agree, and <code>gammainc</code> is applied element-by-element.
+</p>
+<p>By default the incomplete gamma function integrated from 0 to <var>x</var> is
+computed.  If <code>&quot;upper&quot;</code> is given then the complementary function
+integrated from <var>x</var> to infinity is calculated.  It should be noted that
+</p>
+<div class="example">
+<pre class="example">gammainc (<var>x</var>, <var>a</var>) &equiv; 1 - gammainc (<var>x</var>, <var>a</var>, &quot;upper&quot;)
+</pre></div>
 
-        <p>By default the incomplete gamma function integrated from 0 to <var>x</var> is
-computed.  If "upper" is given then the complementary function integrated
-from <var>x</var> to infinity is calculated.  It should be noted that
+<p><strong>See also:</strong> <a href="#XREFgamma">gamma</a>, <a href="#XREFlgamma">lgamma</a>.
+</p></dd></dl>
 
-     <pre class="example">          gammainc (<var>x</var>, <var>a</var>) == 1 - gammainc (<var>x</var>, <var>a</var>, "upper")
-</pre>
-        <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-     <!-- A simple blank line produces the correct behavior. -->
-     <!-- @sp 1 -->
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dgamma.html#doc_002dgamma">gamma</a>, <a href="doc_002dlgamma.html#doc_002dlgamma">lgamma</a>. 
-</p></blockquote></div>
 
-<!-- legendre scripts/specfun/legendre.m -->
-   <p><a name="doc_002dlegendre"></a>
-
-<div class="defun">
-&mdash; Function File: <var>l</var> = <b>legendre</b> (<var>n, x</var>)<var><a name="index-legendre-1933"></a></var><br>
-&mdash; Function File: <var>l</var> = <b>legendre</b> (<var>n, x, normalization</var>)<var><a name="index-legendre-1934"></a></var><br>
-<blockquote><p>Compute the Legendre function of degree <var>n</var> and order
-<var>m</var> = 0 <small class="dots">...</small> N.  The optional argument, <var>normalization</var>,
-may be one of <code>"unnorm"</code>, <code>"sch"</code>, or <code>"norm"</code>. 
-The default is <code>"unnorm"</code>.  The value of <var>n</var> must be a
+<a name="XREFlegendre"></a><dl>
+<dt><a name="index-legendre"></a>Function File: <em><var>l</var> =</em> <strong>legendre</strong> <em>(<var>n</var>, <var>x</var>)</em></dt>
+<dt><a name="index-legendre-1"></a>Function File: <em><var>l</var> =</em> <strong>legendre</strong> <em>(<var>n</var>, <var>x</var>, <var>normalization</var>)</em></dt>
+<dd><p>Compute the Legendre function of degree <var>n</var> and order
+<var>m</var> = 0 &hellip; N.  The optional argument, <var>normalization</var>,
+may be one of <code>&quot;unnorm&quot;</code>, <code>&quot;sch&quot;</code>, or <code>&quot;norm&quot;</code>.
+The default is <code>&quot;unnorm&quot;</code>.  The value of <var>n</var> must be a
 non-negative scalar integer.
-
-        <p>If the optional argument <var>normalization</var> is missing or is
-<code>"unnorm"</code>, compute the Legendre function of degree <var>n</var> and
-order <var>m</var> and return all values for <var>m</var> = 0 <small class="dots">...</small> <var>n</var>. 
+</p>
+<p>If the optional argument <var>normalization</var> is missing or is
+<code>&quot;unnorm&quot;</code>, compute the Legendre function of degree <var>n</var> and
+order <var>m</var> and return all values for <var>m</var> = 0 &hellip; <var>n</var>.
 The return value has one dimension more than <var>x</var>.
+</p>
+<p>The Legendre Function of degree <var>n</var> and order <var>m</var>:
+</p>
 
-        <p>The Legendre Function of degree <var>n</var> and order <var>m</var>:
+<div class="example">
+<pre class="example"> m        m       2  m/2   d^m
+P(x) = (-1) * (1-x  )    * ----  P(x)
+ n                         dx^m   n
+</pre></div>
 
-     <pre class="example">           m        m       2  m/2   d^m
-          P(x) = (-1) * (1-x  )    * ----  P(x)
-           n                         dx^m   n
-</pre>
-        <p class="noindent">with Legendre polynomial of degree <var>n</var>:
 
-     <pre class="example">                    1    d^n   2    n
-          P(x) = ------ [----(x - 1) ]
-           n     2^n n!  dx^n
-</pre>
-        <p class="noindent"><code>legendre (3, [-1.0, -0.9, -0.8])</code> returns the matrix:
+<p>with Legendre polynomial of degree <var>n</var>:
+</p>
 
-     <pre class="example">           x  |   -1.0   |   -0.9   |   -0.8
-          ------------------------------------
-          m=0 | -1.00000 | -0.47250 | -0.08000
-          m=1 |  0.00000 | -1.99420 | -1.98000
-          m=2 |  0.00000 | -2.56500 | -4.32000
-          m=3 |  0.00000 | -1.24229 | -3.24000
-</pre>
-        <p>If the optional argument <code>normalization</code> is <code>"sch"</code>,
-compute the Schmidt semi-normalized associated Legendre function. 
+<div class="example">
+<pre class="example">          1    d^n   2    n
+P(x) = ------ [----(x - 1) ]
+ n     2^n n!  dx^n
+</pre></div>
+
+
+<p><code>legendre (3, [-1.0, -0.9, -0.8])</code> returns the matrix:
+</p>
+<div class="example">
+<pre class="example"> x  |   -1.0   |   -0.9   |   -0.8
+------------------------------------
+m=0 | -1.00000 | -0.47250 | -0.08000
+m=1 |  0.00000 | -1.99420 | -1.98000
+m=2 |  0.00000 | -2.56500 | -4.32000
+m=3 |  0.00000 | -1.24229 | -3.24000
+</pre></div>
+
+<p>If the optional argument <code>normalization</code> is <code>&quot;sch&quot;</code>,
+compute the Schmidt semi-normalized associated Legendre function.
 The Schmidt semi-normalized associated Legendre function is related
 to the unnormalized Legendre functions by the following:
+</p>
+<p>For Legendre functions of degree n and order 0:
+</p>
 
-        <p>For Legendre functions of degree n and order 0:
+<div class="example">
+<pre class="example">  0      0
+SP(x) = P(x)
+  n      n
+</pre></div>
 
-     <pre class="example">            0      0
-          SP(x) = P(x)
-            n      n
-</pre>
-        <p>For Legendre functions of degree n and order m:
 
-     <pre class="example">            m      m         m    2(n-m)! 0.5
-          SP(x) = P(x) * (-1)  * [-------]
-            n      n              (n+m)!
-</pre>
-        <p>If the optional argument <var>normalization</var> is <code>"norm"</code>,
-compute the fully normalized associated Legendre function. 
+<p>For Legendre functions of degree n and order m:
+</p>
+
+<div class="example">
+<pre class="example">  m      m         m    2(n-m)! 0.5
+SP(x) = P(x) * (-1)  * [-------]
+  n      n              (n+m)!
+</pre></div>
+
+
+<p>If the optional argument <var>normalization</var> is <code>&quot;norm&quot;</code>,
+compute the fully normalized associated Legendre function.
 The fully normalized associated Legendre function is related
 to the unnormalized Legendre functions by the following:
+</p>
+<p>For Legendre functions of degree <var>n</var> and order <var>m</var>
+</p>
 
-        <p>For Legendre functions of degree <var>n</var> and order <var>m</var>
+<div class="example">
+<pre class="example">  m      m         m    (n+0.5)(n-m)! 0.5
+NP(x) = P(x) * (-1)  * [-------------]
+  n      n                  (n+m)!
+</pre></div>
 
-     <pre class="example">            m      m         m    (n+0.5)(n-m)! 0.5
-          NP(x) = P(x) * (-1)  * [-------------]
-            n      n                  (n+m)!
-</pre>
-        </blockquote></div>
+</dd></dl>
 
-   <p><a name="doc_002dgammaln"></a><!-- lgamma src/mappers.cc -->
-<a name="doc_002dlgamma"></a>
 
-<div class="defun">
-&mdash; Mapping Function:  <b>lgamma</b> (<var>x</var>)<var><a name="index-lgamma-1935"></a></var><br>
-&mdash; Mapping Function:  <b>gammaln</b> (<var>x</var>)<var><a name="index-gammaln-1936"></a></var><br>
-<blockquote><p>Return the natural logarithm of the gamma function of <var>x</var>. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
+<a name="XREFgammaln"></a><a name="XREFlgamma"></a><dl>
+<dt><a name="index-lgamma"></a>Mapping Function: <em></em> <strong>lgamma</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-gammaln"></a>Mapping Function: <em></em> <strong>gammaln</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>Return the natural logarithm of the gamma function of <var>x</var>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFgamma">gamma</a>, <a href="#XREFgammainc">gammainc</a>.
+</p></dd></dl>
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dgamma.html#doc_002dgamma">gamma</a>, <a href="doc_002dgammainc.html#doc_002dgammainc">gammainc</a>. 
-</p></blockquote></div>
 
-   </body></html>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Rational-Approximations.html#Rational-Approximations" accesskey="n" rel="next">Rational Approximations</a>, Previous: <a href="Utility-Functions.html#Utility-Functions" accesskey="p" rel="prev">Utility Functions</a>, Up: <a href="Arithmetic.html#Arithmetic" accesskey="u" rel="up">Arithmetic</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
 
+
+
+</body>
+</html>

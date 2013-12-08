@@ -1,61 +1,88 @@
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.2, http://www.gnu.org/software/texinfo/ -->
 <head>
-<title>Numeric Input Conversions - GNU Octave</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="GNU Octave">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions" title="C-Style I/O Functions">
-<link rel="prev" href="Table-of-Input-Conversions.html#Table-of-Input-Conversions" title="Table of Input Conversions">
-<link rel="next" href="String-Input-Conversions.html#String-Input-Conversions" title="String Input Conversions">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
-</head>
-<body>
-<div class="node">
-<a name="Numeric-Input-Conversions"></a>
-<p>
-Next:&nbsp;<a rel="next" accesskey="n" href="String-Input-Conversions.html#String-Input-Conversions">String Input Conversions</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="Table-of-Input-Conversions.html#Table-of-Input-Conversions">Table of Input Conversions</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions">C-Style I/O Functions</a>
-<hr>
-</div>
+<title>GNU Octave: Numeric Input Conversions</title>
 
+<meta name="description" content="GNU Octave: Numeric Input Conversions">
+<meta name="keywords" content="GNU Octave: Numeric Input Conversions">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions" rel="up" title="C-Style I/O Functions">
+<link href="String-Input-Conversions.html#String-Input-Conversions" rel="next" title="String Input Conversions">
+<link href="Table-of-Input-Conversions.html#Table-of-Input-Conversions" rel="prev" title="Table of Input Conversions">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+<a name="Numeric-Input-Conversions"></a>
+<div class="header">
+<p>
+Next: <a href="String-Input-Conversions.html#String-Input-Conversions" accesskey="n" rel="next">String Input Conversions</a>, Previous: <a href="Table-of-Input-Conversions.html#Table-of-Input-Conversions" accesskey="p" rel="prev">Table of Input Conversions</a>, Up: <a href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions" accesskey="u" rel="up">C-Style I/O Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Numeric-Input-Conversions-1"></a>
 <h4 class="subsection">14.2.14 Numeric Input Conversions</h4>
 
 <p>This section describes the <code>scanf</code> conversions for reading numeric
 values.
-
-   <p>The &lsquo;<samp><span class="samp">%d</span></samp>&rsquo; conversion matches an optionally signed integer in decimal
+</p>
+<p>The &lsquo;<samp>%d</samp>&rsquo; conversion matches an optionally signed integer in decimal
 radix.
-
-   <p>The &lsquo;<samp><span class="samp">%i</span></samp>&rsquo; conversion matches an optionally signed integer in any of
+</p>
+<p>The &lsquo;<samp>%i</samp>&rsquo; conversion matches an optionally signed integer in any of
 the formats that the C language defines for specifying an integer
 constant.
-
-   <p>For example, any of the strings &lsquo;<samp><span class="samp">10</span></samp>&rsquo;, &lsquo;<samp><span class="samp">0xa</span></samp>&rsquo;, or &lsquo;<samp><span class="samp">012</span></samp>&rsquo;
-could be read in as integers under the &lsquo;<samp><span class="samp">%i</span></samp>&rsquo; conversion.  Each of
+</p>
+<p>For example, any of the strings &lsquo;<samp>10</samp>&rsquo;, &lsquo;<samp>0xa</samp>&rsquo;, or &lsquo;<samp>012</samp>&rsquo;
+could be read in as integers under the &lsquo;<samp>%i</samp>&rsquo; conversion.  Each of
 these specifies a number with decimal value <code>10</code>.
-
-   <p>The &lsquo;<samp><span class="samp">%o</span></samp>&rsquo;, &lsquo;<samp><span class="samp">%u</span></samp>&rsquo;, and &lsquo;<samp><span class="samp">%x</span></samp>&rsquo; conversions match unsigned
+</p>
+<p>The &lsquo;<samp>%o</samp>&rsquo;, &lsquo;<samp>%u</samp>&rsquo;, and &lsquo;<samp>%x</samp>&rsquo; conversions match unsigned
 integers in octal, decimal, and hexadecimal radices, respectively.
-
-   <p>The &lsquo;<samp><span class="samp">%X</span></samp>&rsquo; conversion is identical to the &lsquo;<samp><span class="samp">%x</span></samp>&rsquo; conversion.  They
+</p>
+<p>The &lsquo;<samp>%X</samp>&rsquo; conversion is identical to the &lsquo;<samp>%x</samp>&rsquo; conversion.  They
 both permit either uppercase or lowercase letters to be used as digits.
+</p>
+<p>Unlike the C language <code>scanf</code>, Octave ignores the &lsquo;<samp>h</samp>&rsquo;,
+&lsquo;<samp>l</samp>&rsquo;, and &lsquo;<samp>L</samp>&rsquo; modifiers.
+</p>
 
-   <p>Unlike the C language <code>scanf</code>, Octave ignores the &lsquo;<samp><span class="samp">h</span></samp>&rsquo;,
-&lsquo;<samp><span class="samp">l</span></samp>&rsquo;, and &lsquo;<samp><span class="samp">L</span></samp>&rsquo; modifiers.
 
-   </body></html>
 
+</body>
+</html>

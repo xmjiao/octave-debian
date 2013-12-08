@@ -1,76 +1,105 @@
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.2, http://www.gnu.org/software/texinfo/ -->
 <head>
-<title>Function Precedence - GNU Octave</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="GNU Octave">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="Function-Files.html#Function-Files" title="Function Files">
-<link rel="prev" href="Function-Locking.html#Function-Locking" title="Function Locking">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
-</head>
-<body>
-<div class="node">
-<a name="Function-Precedence"></a>
-<p>
-Previous:&nbsp;<a rel="previous" accesskey="p" href="Function-Locking.html#Function-Locking">Function Locking</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="Function-Files.html#Function-Files">Function Files</a>
-<hr>
-</div>
+<title>GNU Octave: Function Precedence</title>
 
-<h4 class="subsection">11.8.6 Function Precedence</h4>
+<meta name="description" content="GNU Octave: Function Precedence">
+<meta name="keywords" content="GNU Octave: Function Precedence">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Function-Files.html#Function-Files" rel="up" title="Function Files">
+<link href="Script-Files.html#Script-Files" rel="next" title="Script Files">
+<link href="Function-Locking.html#Function-Locking" rel="prev" title="Function Locking">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+<a name="Function-Precedence"></a>
+<div class="header">
+<p>
+Previous: <a href="Function-Locking.html#Function-Locking" accesskey="p" rel="prev">Function Locking</a>, Up: <a href="Function-Files.html#Function-Files" accesskey="u" rel="up">Function Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Function-Precedence-1"></a>
+<h4 class="subsection">11.9.7 Function Precedence</h4>
 
 <p>Given the numerous different ways that Octave can define a function, it
 is possible and even likely that multiple versions of a function, might be
 defined within a particular scope.  The precedence of which function will be
 used within a particular scope is given by
-
-     <ol type=1 start=1>
-<li>Subfunction
+</p>
+<ol>
+<li> Subfunction
 A subfunction with the required function name in the given scope.
 
-     <li>Private function
-A function defined within a private directory of the directory
+</li><li> Private function
+A function defined within a private directory of the directory 
 which contains the current function.
 
-     <li>Class constructor
-A function that constuctors a user class as defined in chapter
+</li><li> Class constructor
+A function that constuctors a user class as defined in chapter 
 <a href="Object-Oriented-Programming.html#Object-Oriented-Programming">Object Oriented Programming</a>.
 
-     <li>Class method
+</li><li> Class method
 An overloaded function of a class as in chapter
 <a href="Object-Oriented-Programming.html#Object-Oriented-Programming">Object Oriented Programming</a>.
 
-     <li>Legacy Dispatch
+</li><li> Legacy Dispatch
 An overloaded function as defined by <code>dispatch</code>.
 
-     <li>Command-line Function
+</li><li> Command-line Function
 A function that has been defined on the command-line.
 
-     <li>Autoload function
-A function that is marked as autoloaded with See <a href="doc_002dautoload.html#doc_002dautoload">doc-autoload</a>.
+</li><li> Autoload function
+A function that is marked as autoloaded with See <a href="Overloading-and-Autoloading.html#XREFautoload">autoload</a>.
 
-     <li>A Function on the Path
+</li><li> A Function on the Path
 A function that can be found on the users load-path.  There can also be
 Oct-file, mex-file or m-file versions of this function and the precedence
 between these versions are in that order.
 
-     <li>Built-in function
+</li><li> Built-in function
 A function that is builtin to Octave itself such as <code>numel</code>,
 <code>size</code>, etc.
-        </ol>
+</li></ol>
 
-   </body></html>
 
+
+
+</body>
+</html>

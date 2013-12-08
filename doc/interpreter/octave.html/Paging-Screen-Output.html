@@ -1,34 +1,62 @@
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.2, http://www.gnu.org/software/texinfo/ -->
 <head>
-<title>Paging Screen Output - GNU Octave</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="GNU Octave">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="Terminal-Output.html#Terminal-Output" title="Terminal Output">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
-</head>
-<body>
-<div class="node">
-<a name="Paging-Screen-Output"></a>
-<p>
-Up:&nbsp;<a rel="up" accesskey="u" href="Terminal-Output.html#Terminal-Output">Terminal Output</a>
-<hr>
-</div>
+<title>GNU Octave: Paging Screen Output</title>
 
-<h5 class="subsubsection">14.1.1.1 Paging Screen Output</h5>
+<meta name="description" content="GNU Octave: Paging Screen Output">
+<meta name="keywords" content="GNU Octave: Paging Screen Output">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Terminal-Output.html#Terminal-Output" rel="up" title="Terminal Output">
+<link href="Terminal-Input.html#Terminal-Input" rel="next" title="Terminal Input">
+<link href="Terminal-Output.html#Terminal-Output" rel="prev" title="Terminal Output">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+<a name="Paging-Screen-Output"></a>
+<div class="header">
+<p>
+Up: <a href="Terminal-Output.html#Terminal-Output" accesskey="u" rel="up">Terminal Output</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Paging-Screen-Output-1"></a>
+<h4 class="subsubsection">14.1.1.1 Paging Screen Output</h4>
 
 <p>When running interactively, Octave normally sends any output intended
 for your terminal that is more than one screen long to a paging program,
@@ -36,133 +64,122 @@ such as <code>less</code> or <code>more</code>.  This avoids the problem of havi
 large volume of output stream by before you can read it.  With
 <code>less</code> (and some versions of <code>more</code>) you can also scan forward
 and backward, and search for specific items.
-
-   <p>Normally, no output is displayed by the pager until just before Octave
+</p>
+<p>Normally, no output is displayed by the pager until just before Octave
 is ready to print the top level prompt, or read from the standard input
-(for example, by using the <code>fscanf</code> or <code>scanf</code> functions). 
+(for example, by using the <code>fscanf</code> or <code>scanf</code> functions).
 This means that there may be some delay before any output appears on
 your screen if you have asked Octave to perform a significant amount of
 work with a single command statement.  The function <code>fflush</code> may be
 used to force output to be sent to the pager (or any other stream)
 immediately.
-
-   <p>You can select the program to run as the pager using the <samp><span class="env">PAGER</span></samp>
+</p>
+<p>You can select the program to run as the pager using the <code>PAGER</code>
 function, and you can turn paging off by using the function
 <code>more</code>.
+</p>
+<a name="XREFmore"></a><dl>
+<dt><a name="index-more"></a>Command: <em></em> <strong>more</strong></dt>
+<dt><a name="index-more-1"></a>Command: <em></em> <strong>more</strong> <em>on</em></dt>
+<dt><a name="index-more-2"></a>Command: <em></em> <strong>more</strong> <em>off</em></dt>
+<dd><p>Turn output pagination on or off.  Without an argument, <code>more</code>
+toggles the current state.
+The current state can be determined via <code>page_screen_output</code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFpage_005fscreen_005foutput">page_screen_output</a>, <a href="#XREFpage_005foutput_005fimmediately">page_output_immediately</a>, <a href="#XREFPAGER">PAGER</a>, <a href="#XREFPAGER_005fFLAGS">PAGER_FLAGS</a>.
+</p></dd></dl>
 
-<!-- more src/pager.cc -->
-   <p><a name="doc_002dmore"></a>
 
-<div class="defun">
-&mdash; Command:  <b>more</b><var><a name="index-more-884"></a></var><br>
-&mdash; Command:  <b>more</b><var> on<a name="index-more-885"></a></var><br>
-&mdash; Command:  <b>more</b><var> off<a name="index-more-886"></a></var><br>
-<blockquote><p>Turn output pagination on or off.  Without an argument, <code>more</code>
-toggles the current state. 
-The current state can be determined via <code>page_screen_output</code>. 
-</p></blockquote></div>
-
-<!-- PAGER src/pager.cc -->
-   <p><a name="doc_002dPAGER"></a>
-
-<div class="defun">
-&mdash; Built-in Function: <var>val</var> = <b>PAGER</b> ()<var><a name="index-PAGER-887"></a></var><br>
-&mdash; Built-in Function: <var>old_val</var> = <b>PAGER</b> (<var>new_val</var>)<var><a name="index-PAGER-888"></a></var><br>
-&mdash; Built-in Function:  <b>PAGER</b> (<var>new_val, "local"</var>)<var><a name="index-PAGER-889"></a></var><br>
-<blockquote><p>Query or set the internal variable that specifies the program to use
+<a name="XREFPAGER"></a><dl>
+<dt><a name="index-PAGER"></a>Built-in Function: <em><var>val</var> =</em> <strong>PAGER</strong> <em>()</em></dt>
+<dt><a name="index-PAGER-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>PAGER</strong> <em>(<var>new_val</var>)</em></dt>
+<dt><a name="index-PAGER-2"></a>Built-in Function: <em></em> <strong>PAGER</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
+<dd><p>Query or set the internal variable that specifies the program to use
 to display terminal output on your system.  The default value is
-normally <code>"less"</code>, <code>"more"</code>, or
-<code>"pg"</code>, depending on what programs are installed on your system. 
+normally <code>&quot;less&quot;</code>, <code>&quot;more&quot;</code>, or
+<code>&quot;pg&quot;</code>, depending on what programs are installed on your system.
 See <a href="Installation.html#Installation">Installation</a>.
+</p>
+<p>When called from inside a function with the <code>&quot;local&quot;</code> option, the
+variable is changed locally for the function and any subroutines it calls.  
+The original variable value is restored when exiting the function.
+</p>
+<p><strong>See also:</strong> <a href="#XREFPAGER_005fFLAGS">PAGER_FLAGS</a>, <a href="#XREFpage_005foutput_005fimmediately">page_output_immediately</a>, <a href="#XREFmore">more</a>, <a href="#XREFpage_005fscreen_005foutput">page_screen_output</a>.
+</p></dd></dl>
 
-        <p>When called from inside a function with the "local" option, the variable is
-changed locally for the function and any subroutines it calls.  The original
-variable value is restored when exiting the function. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dmore.html#doc_002dmore">more</a>, <a href="doc_002dpage_005fscreen_005foutput.html#doc_002dpage_005fscreen_005foutput">page_screen_output</a>, <a href="doc_002dpage_005foutput_005fimmediately.html#doc_002dpage_005foutput_005fimmediately">page_output_immediately</a>, <a href="doc_002dPAGER_005fFLAGS.html#doc_002dPAGER_005fFLAGS">PAGER_FLAGS</a>. 
-</p></blockquote></div>
-
-<!-- PAGER_FLAGS src/pager.cc -->
-   <p><a name="doc_002dPAGER_005fFLAGS"></a>
-
-<div class="defun">
-&mdash; Built-in Function: <var>val</var> = <b>PAGER_FLAGS</b> ()<var><a name="index-PAGER_005fFLAGS-890"></a></var><br>
-&mdash; Built-in Function: <var>old_val</var> = <b>PAGER_FLAGS</b> (<var>new_val</var>)<var><a name="index-PAGER_005fFLAGS-891"></a></var><br>
-&mdash; Built-in Function:  <b>PAGER_FLAGS</b> (<var>new_val, "local"</var>)<var><a name="index-PAGER_005fFLAGS-892"></a></var><br>
-<blockquote><p>Query or set the internal variable that specifies the options to pass
+<a name="XREFPAGER_005fFLAGS"></a><dl>
+<dt><a name="index-PAGER_005fFLAGS"></a>Built-in Function: <em><var>val</var> =</em> <strong>PAGER_FLAGS</strong> <em>()</em></dt>
+<dt><a name="index-PAGER_005fFLAGS-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>PAGER_FLAGS</strong> <em>(<var>new_val</var>)</em></dt>
+<dt><a name="index-PAGER_005fFLAGS-2"></a>Built-in Function: <em></em> <strong>PAGER_FLAGS</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
+<dd><p>Query or set the internal variable that specifies the options to pass
 to the pager.
+</p>
+<p>When called from inside a function with the <code>&quot;local&quot;</code> option, the
+variable is changed locally for the function and any subroutines it calls.  
+The original variable value is restored when exiting the function.
+</p>
+<p><strong>See also:</strong> <a href="#XREFPAGER">PAGER</a>, <a href="#XREFmore">more</a>, <a href="#XREFpage_005fscreen_005foutput">page_screen_output</a>, <a href="#XREFpage_005foutput_005fimmediately">page_output_immediately</a>.
+</p></dd></dl>
 
-        <p>When called from inside a function with the "local" option, the variable is
-changed locally for the function and any subroutines it calls.  The original
-variable value is restored when exiting the function. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dPAGER.html#doc_002dPAGER">PAGER</a>. 
-</p></blockquote></div>
-
-<!-- page_screen_output src/pager.cc -->
-   <p><a name="doc_002dpage_005fscreen_005foutput"></a>
-
-<div class="defun">
-&mdash; Built-in Function: <var>val</var> = <b>page_screen_output</b> ()<var><a name="index-page_005fscreen_005foutput-893"></a></var><br>
-&mdash; Built-in Function: <var>old_val</var> = <b>page_screen_output</b> (<var>new_val</var>)<var><a name="index-page_005fscreen_005foutput-894"></a></var><br>
-&mdash; Built-in Function:  <b>page_screen_output</b> (<var>new_val, "local"</var>)<var><a name="index-page_005fscreen_005foutput-895"></a></var><br>
-<blockquote><p>Query or set the internal variable that controls whether output intended
+<a name="XREFpage_005fscreen_005foutput"></a><dl>
+<dt><a name="index-page_005fscreen_005foutput"></a>Built-in Function: <em><var>val</var> =</em> <strong>page_screen_output</strong> <em>()</em></dt>
+<dt><a name="index-page_005fscreen_005foutput-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>page_screen_output</strong> <em>(<var>new_val</var>)</em></dt>
+<dt><a name="index-page_005fscreen_005foutput-2"></a>Built-in Function: <em></em> <strong>page_screen_output</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
+<dd><p>Query or set the internal variable that controls whether output intended
 for the terminal window that is longer than one page is sent through a
 pager.  This allows you to view one screenful at a time.  Some pagers
 (such as <code>less</code>&mdash;see <a href="Installation.html#Installation">Installation</a>) are also capable of moving
 backward on the output.
+</p>
+<p>When called from inside a function with the <code>&quot;local&quot;</code> option, the
+variable is changed locally for the function and any subroutines it calls.  
+The original variable value is restored when exiting the function.
+</p>
+<p><strong>See also:</strong> <a href="#XREFmore">more</a>, <a href="#XREFpage_005foutput_005fimmediately">page_output_immediately</a>, <a href="#XREFPAGER">PAGER</a>, <a href="#XREFPAGER_005fFLAGS">PAGER_FLAGS</a>.
+</p></dd></dl>
 
-        <p>When called from inside a function with the "local" option, the variable is
-changed locally for the function and any subroutines it calls.  The original
-variable value is restored when exiting the function. 
-</p></blockquote></div>
 
-<!-- page_output_immediately src/pager.cc -->
-   <p><a name="doc_002dpage_005foutput_005fimmediately"></a>
-
-<div class="defun">
-&mdash; Built-in Function: <var>val</var> = <b>page_output_immediately</b> ()<var><a name="index-page_005foutput_005fimmediately-896"></a></var><br>
-&mdash; Built-in Function: <var>old_val</var> = <b>page_output_immediately</b> (<var>new_val</var>)<var><a name="index-page_005foutput_005fimmediately-897"></a></var><br>
-&mdash; Built-in Function:  <b>page_output_immediately</b> (<var>new_val, "local"</var>)<var><a name="index-page_005foutput_005fimmediately-898"></a></var><br>
-<blockquote><p>Query or set the internal variable that controls whether Octave sends
+<a name="XREFpage_005foutput_005fimmediately"></a><dl>
+<dt><a name="index-page_005foutput_005fimmediately"></a>Built-in Function: <em><var>val</var> =</em> <strong>page_output_immediately</strong> <em>()</em></dt>
+<dt><a name="index-page_005foutput_005fimmediately-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>page_output_immediately</strong> <em>(<var>new_val</var>)</em></dt>
+<dt><a name="index-page_005foutput_005fimmediately-2"></a>Built-in Function: <em></em> <strong>page_output_immediately</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
+<dd><p>Query or set the internal variable that controls whether Octave sends
 output to the pager as soon as it is available.  Otherwise, Octave
 buffers its output and waits until just before the prompt is printed to
 flush it to the pager.
+</p>
+<p>When called from inside a function with the <code>&quot;local&quot;</code> option, the
+variable is changed locally for the function and any subroutines it calls.  
+The original variable value is restored when exiting the function.
+</p>
+<p><strong>See also:</strong> <a href="#XREFpage_005fscreen_005foutput">page_screen_output</a>, <a href="#XREFmore">more</a>, <a href="#XREFPAGER">PAGER</a>, <a href="#XREFPAGER_005fFLAGS">PAGER_FLAGS</a>.
+</p></dd></dl>
 
-        <p>When called from inside a function with the "local" option, the variable is
-changed locally for the function and any subroutines it calls.  The original
-variable value is restored when exiting the function. 
-</p></blockquote></div>
 
-<!-- fflush src/file-io.cc -->
-   <p><a name="doc_002dfflush"></a>
-
-<div class="defun">
-&mdash; Built-in Function:  <b>fflush</b> (<var>fid</var>)<var><a name="index-fflush-899"></a></var><br>
-<blockquote><p>Flush output to <var>fid</var>.  This is useful for ensuring that all
-pending output makes it to the screen before some other event occurs. 
+<a name="XREFfflush"></a><dl>
+<dt><a name="index-fflush"></a>Built-in Function: <em></em> <strong>fflush</strong> <em>(<var>fid</var>)</em></dt>
+<dd><p>Flush output to <var>fid</var>.  This is useful for ensuring that all
+pending output makes it to the screen before some other event occurs.
 For example, it is always a good idea to flush the standard output
 stream before calling <code>input</code>.
+</p>
+<p><code>fflush</code> returns 0 on success and an OS dependent error value
+(-1 on Unix) on error.
+</p>
+<p><strong>See also:</strong> <a href="Opening-and-Closing-Files.html#XREFfopen">fopen</a>, <a href="Opening-and-Closing-Files.html#XREFfclose">fclose</a>.
+</p></dd></dl>
 
-        <p><code>fflush</code> returns 0 on success and an OS dependent error value
-(&minus;1 on Unix) on error. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dfopen.html#doc_002dfopen">fopen</a>, <a href="doc_002dfclose.html#doc_002dfclose">fclose</a>. 
-</p></blockquote></div>
 
-<!-- FIXME - maybe this would be a good place to describe the -->
-<!-- following message: -->
-<!-- warning: connection to external pager (pid = 9334) lost - -->
-<!-- warning: pending computations and output may be lost -->
-<!-- warning: broken pipe -->
-   </body></html>
+<hr>
+<div class="header">
+<p>
+Up: <a href="Terminal-Output.html#Terminal-Output" accesskey="u" rel="up">Terminal Output</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
 
+
+
+</body>
+</html>

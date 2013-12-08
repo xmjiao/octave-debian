@@ -1,8 +1,6 @@
-/* -*- buffer-read-only: t -*- vi: set ro: */
-/* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* Make a string describing file modes.
 
-   Copyright (C) 1998-1999, 2003, 2006, 2009-2012 Free Software Foundation,
+   Copyright (C) 1998-1999, 2003, 2006, 2009-2013 Free Software Foundation,
    Inc.
 
    This program is free software: you can redistribute it and/or modify
@@ -25,7 +23,7 @@
 
 /* Get the declaration of strmode.  */
 # if HAVE_DECL_STRMODE
-#  include <string.h> /* MacOS X, FreeBSD, OpenBSD */
+#  include <string.h> /* Mac OS X, FreeBSD, OpenBSD */
 #  include <unistd.h> /* NetBSD */
 # endif
 

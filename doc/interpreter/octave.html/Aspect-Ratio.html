@@ -1,95 +1,134 @@
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.2, http://www.gnu.org/software/texinfo/ -->
 <head>
-<title>Aspect Ratio - GNU Octave</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="GNU Octave">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="Three_002dDimensional-Plots.html#Three_002dDimensional-Plots" title="Three-Dimensional Plots">
-<link rel="next" href="Three_002ddimensional-Function-Plotting.html#Three_002ddimensional-Function-Plotting" title="Three-dimensional Function Plotting">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
-</head>
-<body>
-<div class="node">
-<a name="Aspect-Ratio"></a>
-<p>
-Next:&nbsp;<a rel="next" accesskey="n" href="Three_002ddimensional-Function-Plotting.html#Three_002ddimensional-Function-Plotting">Three-dimensional Function Plotting</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="Three_002dDimensional-Plots.html#Three_002dDimensional-Plots">Three-Dimensional Plots</a>
-<hr>
-</div>
+<title>GNU Octave: Aspect Ratio</title>
 
-<h5 class="subsubsection">15.2.2.1 Aspect Ratio</h5>
+<meta name="description" content="GNU Octave: Aspect Ratio">
+<meta name="keywords" content="GNU Octave: Aspect Ratio">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Three_002dDimensional-Plots.html#Three_002dDimensional-Plots" rel="up" title="Three-Dimensional Plots">
+<link href="Three_002ddimensional-Function-Plotting.html#Three_002ddimensional-Function-Plotting" rel="next" title="Three-dimensional Function Plotting">
+<link href="Three_002dDimensional-Plots.html#Three_002dDimensional-Plots" rel="prev" title="Three-Dimensional Plots">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+<a name="Aspect-Ratio"></a>
+<div class="header">
+<p>
+Next: <a href="Three_002ddimensional-Function-Plotting.html#Three_002ddimensional-Function-Plotting" accesskey="n" rel="next">Three-dimensional Function Plotting</a>, Up: <a href="Three_002dDimensional-Plots.html#Three_002dDimensional-Plots" accesskey="u" rel="up">Three-Dimensional Plots</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Aspect-Ratio-1"></a>
+<h4 class="subsubsection">15.2.2.1 Aspect Ratio</h4>
 
 <p>For three-dimensional plots the aspect ratio can be set for data with
-<code>daspect</code> and for the plot box with <code>pbaspect</code>. 
-See <a href="Axis-Configuration.html#Axis-Configuration">Axis Configuration</a> for controlling the x-, y-, and z-limits for
+<code>daspect</code> and for the plot box with <code>pbaspect</code>.
+See <a href="Axis-Configuration.html#Axis-Configuration">Axis Configuration</a>, for controlling the x-, y-, and z-limits for
 plotting.
+</p>
+<a name="XREFdaspect"></a><dl>
+<dt><a name="index-daspect"></a>Function File: <em><var>data_aspect_ratio</var> =</em> <strong>daspect</strong> <em>()</em></dt>
+<dt><a name="index-daspect-1"></a>Function File: <em></em> <strong>daspect</strong> <em>(<var>data_aspect_ratio</var>)</em></dt>
+<dt><a name="index-daspect-2"></a>Function File: <em></em> <strong>daspect</strong> <em>(<var>mode</var>)</em></dt>
+<dt><a name="index-daspect-3"></a>Function File: <em><var>data_aspect_ratio_mode</var> =</em> <strong>daspect</strong> <em>(&quot;mode&quot;)</em></dt>
+<dt><a name="index-daspect-4"></a>Function File: <em></em> <strong>daspect</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dd><p>Query or set the data aspect ratio of the current axes.
+</p>
+<p>The aspect ratio is a normalized 3-element vector representing the span of
+the x, y, and z-axis limits.
+</p>
+<p><code>daspect (<var>mode</var>)</code>
+</p>
+<p>Set the data aspect ratio mode of the current axes.  <var>mode</var> is
+either <code>&quot;auto&quot;</code> or <code>&quot;manual&quot;</code>.
+</p>
+<p><code>daspect (<code>&quot;mode&quot;</code>)</code>
+</p>
+<p>Return the data aspect ratio mode of the current axes.
+</p>
+<p><code>daspect (<var>hax</var>, &hellip;)</code>
+</p>
+<p>Operate on the axes in handle <var>hax</var> instead of the current axes.
+</p>
 
-<!-- daspect scripts/plot/daspect.m -->
-   <p><a name="doc_002ddaspect"></a>
+<p><strong>See also:</strong> <a href="Axis-Configuration.html#XREFaxis">axis</a>, <a href="#XREFpbaspect">pbaspect</a>, <a href="Axis-Configuration.html#XREFxlim">xlim</a>, <a href="Axis-Configuration.html#XREFylim">ylim</a>, <a href="Axis-Configuration.html#XREFzlim">zlim</a>.
+</p></dd></dl>
 
-<div class="defun">
-&mdash; Function File:  <b>daspect</b> (<var>data_aspect_ratio</var>)<var><a name="index-daspect-1312"></a></var><br>
-<blockquote><p>Set the data aspect ratio of the current axes.  The aspect ratio is
-a normalized 3-element vector representing the span of the x, y, and
-z-axes limits.
 
-   &mdash; Function File: <var>data_aspect_ratio</var> = <b>daspect</b> ( )<var><a name="index-daspect-1313"></a></var><br>
-<blockquote><p>Return the data aspect ratio of the current axes.
+<a name="XREFpbaspect"></a><dl>
+<dt><a name="index-pbaspect"></a>Function File: <em><var>plot_box_aspect_ratio</var> =</em> <strong>pbaspect</strong> <em>( )</em></dt>
+<dt><a name="index-pbaspect-1"></a>Function File: <em></em> <strong>pbaspect</strong> <em>(<var>plot_box_aspect_ratio</var>)</em></dt>
+<dt><a name="index-pbaspect-2"></a>Function File: <em></em> <strong>pbaspect</strong> <em>(<var>mode</var>)</em></dt>
+<dt><a name="index-pbaspect-3"></a>Function File: <em><var>plot_box_aspect_ratio_mode</var> =</em> <strong>pbaspect</strong> <em>(&quot;mode&quot;)</em></dt>
+<dt><a name="index-pbaspect-4"></a>Function File: <em></em> <strong>pbaspect</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dd>
+<p>Query or set the plot box aspect ratio of the current axes.
+</p>
+<p>The aspect ratio is a normalized 3-element vector representing the rendered
+lengths of the x, y, and z axes.
+</p>
+<p><code>pbaspect(<var>mode</var>)</code>
+</p>
+<p>Set the plot box aspect ratio mode of the current axes.  <var>mode</var> is
+either <code>&quot;auto&quot;</code> or <code>&quot;manual&quot;</code>.
+</p>
+<p><code>pbaspect (&quot;mode&quot;)</code>
+</p>
+<p>Return the plot box aspect ratio mode of the current axes.
+</p>
+<p><code>pbaspect (<var>hax</var>, &hellip;)</code>
+</p>
+<p>Operate on the axes in handle <var>hax</var> instead of the current axes.
+</p>
 
-   &mdash; Function File:  <b>daspect</b> (<var>mode</var>)<var><a name="index-daspect-1314"></a></var><br>
-<blockquote><p>Set the data aspect ratio mode of the current axes.
+<p><strong>See also:</strong> <a href="Axis-Configuration.html#XREFaxis">axis</a>, <a href="#XREFdaspect">daspect</a>, <a href="Axis-Configuration.html#XREFxlim">xlim</a>, <a href="Axis-Configuration.html#XREFylim">ylim</a>, <a href="Axis-Configuration.html#XREFzlim">zlim</a>.
+</p></dd></dl>
 
-   &mdash; Function File: <var>data_aspect_ratio_mode</var> = <b>daspect</b> (<var>"mode"</var>)<var><a name="index-daspect-1315"></a></var><br>
-<blockquote><p>Return the data aspect ratio mode of the current axes.
 
-   &mdash; Function File:  <b>daspect</b> (<var>hax, <small class="dots">...</small></var>)<var><a name="index-daspect-1316"></a></var><br>
-<blockquote><p>Use the axes, with handle <var>hax</var>, instead of the current axes.
+<hr>
+<div class="header">
+<p>
+Next: <a href="Three_002ddimensional-Function-Plotting.html#Three_002ddimensional-Function-Plotting" accesskey="n" rel="next">Three-dimensional Function Plotting</a>, Up: <a href="Three_002dDimensional-Plots.html#Three_002dDimensional-Plots" accesskey="u" rel="up">Three-Dimensional Plots</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
 
-     <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-     <!-- A simple blank line produces the correct behavior. -->
-     <!-- @sp 1 -->
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002daxis.html#doc_002daxis">axis</a>, <a href="doc_002dpbaspect.html#doc_002dpbaspect">pbaspect</a>, <a href="doc_002dxlim.html#doc_002dxlim">xlim</a>, <a href="doc_002dylim.html#doc_002dylim">ylim</a>, <a href="doc_002dzlim.html#doc_002dzlim">zlim</a>. 
-</p></blockquote></div>
 
-<!-- pbaspect scripts/plot/pbaspect.m -->
-   <p><a name="doc_002dpbaspect"></a>
 
-<div class="defun">
-&mdash; Function File:  <b>pbaspect</b> (<var>plot_box_aspect_ratio</var>)<var><a name="index-pbaspect-1317"></a></var><br>
-<blockquote><p>Set the plot box aspect ratio of the current axes.  The aspect ratio
-is a normalized 3-element vector representing the rendered lengths of
-the x, y, and z-axes.
-
-   &mdash; Function File: <var>plot_box_aspect_ratio</var> = <b>pbaspect</b> ( )<var><a name="index-pbaspect-1318"></a></var><br>
-<blockquote><p>Return the plot box aspect ratio of the current axes.
-
-   &mdash; Function File:  <b>pbaspect</b> (<var>mode</var>)<var><a name="index-pbaspect-1319"></a></var><br>
-<blockquote><p>Set the plot box aspect ratio mode of the current axes.
-
-   &mdash; Function File: <var>plot_box_aspect_ratio_mode</var> = <b>pbaspect</b> (<var>"mode"</var>)<var><a name="index-pbaspect-1320"></a></var><br>
-<blockquote><p>Return the plot box aspect ratio mode of the current axes.
-
-   &mdash; Function File:  <b>pbaspect</b> (<var>hax, <small class="dots">...</small></var>)<var><a name="index-pbaspect-1321"></a></var><br>
-<blockquote><p>Use the axes, with handle <var>hax</var>, instead of the current axes.
-
-     <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-     <!-- A simple blank line produces the correct behavior. -->
-     <!-- @sp 1 -->
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002daxis.html#doc_002daxis">axis</a>, <a href="doc_002ddaspect.html#doc_002ddaspect">daspect</a>, <a href="doc_002dxlim.html#doc_002dxlim">xlim</a>, <a href="doc_002dylim.html#doc_002dylim">ylim</a>, <a href="doc_002dzlim.html#doc_002dzlim">zlim</a>. 
-</p></blockquote></div>
-
-   </body></html>
-
+</body>
+</html>

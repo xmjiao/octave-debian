@@ -1,49 +1,84 @@
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.2, http://www.gnu.org/software/texinfo/ -->
 <head>
-<title>Structures - GNU Octave</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="GNU Octave">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="Data-Containers.html#Data-Containers" title="Data Containers">
-<link rel="next" href="Cell-Arrays.html#Cell-Arrays" title="Cell Arrays">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
+<title>GNU Octave: Structures</title>
+
+<meta name="description" content="GNU Octave: Structures">
+<meta name="keywords" content="GNU Octave: Structures">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Data-Containers.html#Data-Containers" rel="up" title="Data Containers">
+<link href="Basic-Usage-and-Examples.html#Basic-Usage-and-Examples" rel="next" title="Basic Usage and Examples">
+<link href="Data-Containers.html#Data-Containers" rel="prev" title="Data Containers">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
 </head>
-<body>
-<div class="node">
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
 <a name="Structures"></a>
+<div class="header">
 <p>
-Next:&nbsp;<a rel="next" accesskey="n" href="Cell-Arrays.html#Cell-Arrays">Cell Arrays</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="Data-Containers.html#Data-Containers">Data Containers</a>
-<hr>
+Next: <a href="Cell-Arrays.html#Cell-Arrays" accesskey="n" rel="next">Cell Arrays</a>, Up: <a href="Data-Containers.html#Data-Containers" accesskey="u" rel="up">Data Containers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
 </div>
-
+<hr>
+<a name="Structures-1"></a>
 <h3 class="section">6.1 Structures</h3>
+<a name="index-structures-1"></a>
+<a name="index-data-structures-1"></a>
 
-<p><a name="index-structures-432"></a><a name="index-data-structures-433"></a>
-Octave includes support for organizing data in structures.  The current
+<p>Octave includes support for organizing data in structures.  The current
 implementation uses an associative array with indices limited to
 strings, but the syntax is more like C-style structures.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="Basic-Usage-and-Examples.html#Basic-Usage-and-Examples" accesskey="1">Basic Usage and Examples</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Structure-Arrays.html#Structure-Arrays" accesskey="2">Structure Arrays</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Creating-Structures.html#Creating-Structures" accesskey="3">Creating Structures</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Manipulating-Structures.html#Manipulating-Structures" accesskey="4">Manipulating Structures</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Processing-Data-in-Structures.html#Processing-Data-in-Structures" accesskey="5">Processing Data in Structures</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
 
-<ul class="menu">
-<li><a accesskey="1" href="Basic-Usage-and-Examples.html#Basic-Usage-and-Examples">Basic Usage and Examples</a>
-<li><a accesskey="2" href="Structure-Arrays.html#Structure-Arrays">Structure Arrays</a>
-<li><a accesskey="3" href="Creating-Structures.html#Creating-Structures">Creating Structures</a>
-<li><a accesskey="4" href="Manipulating-Structures.html#Manipulating-Structures">Manipulating Structures</a>
-<li><a accesskey="5" href="Processing-Data-in-Structures.html#Processing-Data-in-Structures">Processing Data in Structures</a>
-</ul>
 
-   </body></html>
 
+
+</body>
+</html>

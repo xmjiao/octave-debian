@@ -1,1225 +1,1245 @@
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.2, http://www.gnu.org/software/texinfo/ -->
 <head>
-<title>Matrix and Vector Operations - Octave C++ Classes</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="Octave C++ Classes">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="prev" href="Arrays.html#Arrays" title="Arrays">
-<link rel="next" href="Matrix-Factorizations.html#Matrix-Factorizations" title="Matrix Factorizations">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
+<title>Octave C++ Classes: Matrix and Vector Operations</title>
+
+<meta name="description" content="Octave C++ Classes: Matrix and Vector Operations">
+<meta name="keywords" content="Octave C++ Classes: Matrix and Vector Operations">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html#Top" rel="up" title="Top">
+<link href="Matrix-Factorizations.html#Matrix-Factorizations" rel="next" title="Matrix Factorizations">
+<link href="Constructors-and-Assignment.html#Constructors-and-Assignment" rel="prev" title="Constructors and Assignment">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
 </head>
-<body>
-<div class="node">
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
 <a name="Matrix-and-Vector-Operations"></a>
+<div class="header">
 <p>
-Next:&nbsp;<a rel="next" accesskey="n" href="Matrix-Factorizations.html#Matrix-Factorizations">Matrix Factorizations</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="Arrays.html#Arrays">Arrays</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="index.html#Top">Top</a>
+Next: <a href="Matrix-Factorizations.html#Matrix-Factorizations" accesskey="n" rel="next">Matrix Factorizations</a>, Previous: <a href="Arrays.html#Arrays" accesskey="p" rel="prev">Arrays</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
 <hr>
+<a name="Matrix-and-Vector-Operations-1"></a>
+<h2 class="chapter">4 Matrix and Vector Operations</h2>
+<a name="index-matrix-manipulations"></a>
+<a name="index-vector-manipulations"></a>
+
+<dl>
+<dt><a name="index-Matrix"></a>: <em></em> <strong>Matrix</strong> <em>(void)</em></dt>
+<dt><a name="index-Matrix-1"></a>: <em></em> <strong>Matrix</strong> <em>(int <var>r</var>, int <var>c</var>)</em></dt>
+<dt><a name="index-Matrix-2"></a>: <em></em> <strong>Matrix</strong> <em>(int <var>r</var>, int <var>c</var>, double <var>val</var>)</em></dt>
+<dt><a name="index-Matrix-3"></a>: <em></em> <strong>Matrix</strong> <em>(const Array2&lt;double&gt; &amp;<var>a</var>)</em></dt>
+<dt><a name="index-Matrix-4"></a>: <em></em> <strong>Matrix</strong> <em>(const Matrix &amp;<var>a</var>)</em></dt>
+<dt><a name="index-Matrix-5"></a>: <em></em> <strong>Matrix</strong> <em>(const DiagArray&lt;double&gt; &amp;<var>a</var>)</em></dt>
+<dt><a name="index-Matrix-6"></a>: <em></em> <strong>Matrix</strong> <em>(const DiagMatrix &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_003d"></a>: <em>Matrix&amp;</em> <strong>operator =</strong> <em>(const Matrix &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_003d_003d"></a>: <em>int</em> <strong>operator ==</strong> <em>(const Matrix &amp;<var>a</var>) const</em></dt>
+<dt><a name="index-operator-_0021_003d"></a>: <em>int</em> <strong>operator !=</strong> <em>(const Matrix &amp;<var>a</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-insert"></a>: <em>Matrix&amp;</em> <strong>insert</strong> <em>(const Matrix &amp;<var>a</var>, int <var>r</var>, int <var>c</var>)</em></dt>
+<dt><a name="index-insert-1"></a>: <em>Matrix&amp;</em> <strong>insert</strong> <em>(const RowVector &amp;<var>a</var>, int <var>r</var>, int <var>c</var>)</em></dt>
+<dt><a name="index-insert-2"></a>: <em>Matrix&amp;</em> <strong>insert</strong> <em>(const ColumnVector &amp;<var>a</var>, int <var>r</var>, int <var>c</var>)</em></dt>
+<dt><a name="index-insert-3"></a>: <em>Matrix&amp;</em> <strong>insert</strong> <em>(const DiagMatrix &amp;<var>a</var>, int <var>r</var>, int <var>c</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-fill"></a>: <em>Matrix&amp;</em> <strong>fill</strong> <em>(double <var>val</var>)</em></dt>
+<dt><a name="index-fill-1"></a>: <em>Matrix&amp;</em> <strong>fill</strong> <em>(double <var>val</var>, int r1, int c1, int r2, int c2)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-append"></a>: <em>Matrix</em> <strong>append</strong> <em>(const Matrix &amp;<var>a</var>) const</em></dt>
+<dt><a name="index-append-1"></a>: <em>Matrix</em> <strong>append</strong> <em>(const RowVector &amp;<var>a</var>) const</em></dt>
+<dt><a name="index-append-2"></a>: <em>Matrix</em> <strong>append</strong> <em>(const ColumnVector &amp;<var>a</var>) const</em></dt>
+<dt><a name="index-append-3"></a>: <em>Matrix</em> <strong>append</strong> <em>(const DiagMatrix &amp;<var>a</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-stack"></a>: <em>Matrix</em> <strong>stack</strong> <em>(const Matrix &amp;<var>a</var>) const</em></dt>
+<dt><a name="index-stack-1"></a>: <em>Matrix</em> <strong>stack</strong> <em>(const RowVector &amp;<var>a</var>) const</em></dt>
+<dt><a name="index-stack-2"></a>: <em>Matrix</em> <strong>stack</strong> <em>(const ColumnVector &amp;<var>a</var>) const</em></dt>
+<dt><a name="index-stack-3"></a>: <em>Matrix</em> <strong>stack</strong> <em>(const DiagMatrix &amp;<var>a</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-transpose"></a>: <em>Matrix</em> <strong>transpose</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-extract"></a>: <em>Matrix</em> <strong>extract</strong> <em>(int r1, int c1, int r2, int c2) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-row"></a>: <em>RowVector</em> <strong>row</strong> <em>(int <var>i</var>) const</em></dt>
+<dt><a name="index-row-1"></a>: <em>RowVector</em> <strong>row</strong> <em>(char *s) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-column"></a>: <em>ColumnVector</em> <strong>column</strong> <em>(int <var>i</var>) const</em></dt>
+<dt><a name="index-column-1"></a>: <em>ColumnVector</em> <strong>column</strong> <em>(char *s) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-inverse"></a>: <em>Matrix</em> <strong>inverse</strong> <em>(void) const</em></dt>
+<dt><a name="index-inverse-1"></a>: <em>Matrix</em> <strong>inverse</strong> <em>(int &amp;<var>info</var>) const</em></dt>
+<dt><a name="index-inverse-2"></a>: <em>Matrix</em> <strong>inverse</strong> <em>(int &amp;<var>info</var>, double &amp;<var>rcond</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-fourier"></a>: <em>ComplexMatrix</em> <strong>fourier</strong> <em>(void) const</em></dt>
+<dt><a name="index-ifourier"></a>: <em>ComplexMatrix</em> <strong>ifourier</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-determinant"></a>: <em>DET</em> <strong>determinant</strong> <em>(void) const</em></dt>
+<dt><a name="index-determinant-1"></a>: <em>DET</em> <strong>determinant</strong> <em>(int &amp;<var>info</var>) const</em></dt>
+<dt><a name="index-determinant-2"></a>: <em>DET</em> <strong>determinant</strong> <em>(int &amp;<var>info</var>, double &amp;<var>rcond</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-solve"></a>: <em>Matrix</em> <strong>solve</strong> <em>(const Matrix &amp;<var>b</var>) const</em></dt>
+<dt><a name="index-solve-1"></a>: <em>Matrix</em> <strong>solve</strong> <em>(const Matrix &amp;<var>b</var>, int &amp;<var>info</var>) const</em></dt>
+<dt><a name="index-solve-2"></a>: <em>Matrix</em> <strong>solve</strong> <em>(const Matrix &amp;<var>b</var>, int &amp;<var>info</var>, double &amp;<var>rcond</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-solve-3"></a>: <em>ComplexMatrix</em> <strong>solve</strong> <em>(const ComplexMatrix &amp;<var>b</var>) const</em></dt>
+<dt><a name="index-solve-4"></a>: <em>ComplexMatrix</em> <strong>solve</strong> <em>(const ComplexMatrix &amp;<var>b</var>, int &amp;<var>info</var>) const</em></dt>
+<dt><a name="index-solve-5"></a>: <em>ComplexMatrix</em> <strong>solve</strong> <em>(const ComplexMatrix &amp;<var>b</var>, int &amp;<var>info</var>, double &amp;<var>rcond</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-solve-6"></a>: <em>ColumnVector</em> <strong>solve</strong> <em>(const ColumnVector &amp;<var>b</var>) const</em></dt>
+<dt><a name="index-solve-7"></a>: <em>ColumnVector</em> <strong>solve</strong> <em>(const ColumnVector &amp;<var>b</var>, int &amp;<var>info</var>) const</em></dt>
+<dt><a name="index-solve-8"></a>: <em>ColumnVector</em> <strong>solve</strong> <em>(const ColumnVector &amp;<var>b</var>, int &amp;<var>info</var>, double &amp;<var>rcond</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-solve-9"></a>: <em>ComplexColumnVector</em> <strong>solve</strong> <em>(const ComplexColumnVector &amp;<var>b</var>) const</em></dt>
+<dt><a name="index-solve-10"></a>: <em>ComplexColumnVector</em> <strong>solve</strong> <em>(const ComplexColumnVector &amp;<var>b</var>, int &amp;<var>info</var>) const</em></dt>
+<dt><a name="index-solve-11"></a>: <em>ComplexColumnVector</em> <strong>solve</strong> <em>(const ComplexColumnVector &amp;<var>b</var>, int &amp;<var>info</var>, double &amp;<var>rcond</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-lssolve"></a>: <em>Matrix</em> <strong>lssolve</strong> <em>(const Matrix &amp;<var>b</var>) const</em></dt>
+<dt><a name="index-lssolve-1"></a>: <em>Matrix</em> <strong>lssolve</strong> <em>(const Matrix &amp;<var>b</var>, int &amp;<var>info</var>) const</em></dt>
+<dt><a name="index-lssolve-2"></a>: <em>Matrix</em> <strong>lssolve</strong> <em>(const Matrix &amp;<var>b</var>, int &amp;<var>info</var>, int &amp;<var>rank</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-lssolve-3"></a>: <em>ComplexMatrix</em> <strong>lssolve</strong> <em>(const ComplexMatrix &amp;<var>b</var>) const</em></dt>
+<dt><a name="index-lssolve-4"></a>: <em>ComplexMatrix</em> <strong>lssolve</strong> <em>(const ComplexMatrix &amp;<var>b</var>, int &amp;<var>info</var>) const</em></dt>
+<dt><a name="index-lssolve-5"></a>: <em>ComplexMatrix</em> <strong>lssolve</strong> <em>(const ComplexMatrix &amp;<var>b</var>, int &amp;<var>info</var>, int &amp;<var>rank</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-lssolve-6"></a>: <em>ColumnVector</em> <strong>lssolve</strong> <em>(const ColumnVector &amp;<var>b</var>) const</em></dt>
+<dt><a name="index-lssolve-7"></a>: <em>ColumnVector</em> <strong>lssolve</strong> <em>(const ColumnVector &amp;<var>b</var>, int &amp;<var>info</var>) const</em></dt>
+<dt><a name="index-lssolve-8"></a>: <em>ColumnVector</em> <strong>lssolve</strong> <em>(const ColumnVector &amp;<var>b</var>, int &amp;<var>info</var>, int &amp;<var>rank</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-lssolve-9"></a>: <em>ComplexColumnVector</em> <strong>lssolve</strong> <em>(const ComplexColumnVector &amp;<var>b</var>) const</em></dt>
+<dt><a name="index-lssolve-10"></a>: <em>ComplexColumnVector</em> <strong>lssolve</strong> <em>(const ComplexColumnVector &amp;<var>b</var>, int &amp;<var>info</var>) const</em></dt>
+<dt><a name="index-lssolve-11"></a>: <em>ComplexColumnVector</em> <strong>lssolve</strong> <em>(const ComplexColumnVector &amp;<var>b</var>, int &amp;<var>info</var>, int &amp;<var>rank</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b_003d"></a>: <em>Matrix&amp;</em> <strong>operator +=</strong> <em>(const Matrix &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002d_003d"></a>: <em>Matrix&amp;</em> <strong>operator -=</strong> <em>(const Matrix &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b_003d-1"></a>: <em>Matrix&amp;</em> <strong>operator +=</strong> <em>(const DiagMatrix &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002d_003d-1"></a>: <em>Matrix&amp;</em> <strong>operator -=</strong> <em>(const DiagMatrix &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_0021"></a>: <em>Matrix</em> <strong>operator !</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b-7"></a>: <em>ComplexMatrix</em> <strong>operator +</strong> <em>(const Matrix &amp;<var>a</var>, const Complex &amp;<var>s</var>)</em></dt>
+<dt><a name="index-operator-_002d-10"></a>: <em>ComplexMatrix</em> <strong>operator -</strong> <em>(const Matrix &amp;<var>a</var>, const Complex &amp;<var>s</var>)</em></dt>
+<dt><a name="index-operator-_002a-6"></a>: <em>ComplexMatrix</em> <strong>operator *</strong> <em>(const Matrix &amp;<var>a</var>, const Complex &amp;<var>s</var>)</em></dt>
+<dt><a name="index-operator-_002f-5"></a>: <em>ComplexMatrix</em> <strong>operator /</strong> <em>(const Matrix &amp;<var>a</var>, const Complex &amp;<var>s</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b-8"></a>: <em>ComplexMatrix</em> <strong>operator +</strong> <em>(const Complex &amp;<var>s</var>, const Matrix &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002d-11"></a>: <em>ComplexMatrix</em> <strong>operator -</strong> <em>(const Complex &amp;<var>s</var>, const Matrix &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002a-7"></a>: <em>ComplexMatrix</em> <strong>operator *</strong> <em>(const Complex &amp;<var>s</var>, const Matrix &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002f-6"></a>: <em>ComplexMatrix</em> <strong>operator /</strong> <em>(const Complex &amp;<var>s</var>, const Matrix &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002a-8"></a>: <em>ColumnVector</em> <strong>operator *</strong> <em>(const Matrix &amp;<var>a</var>, const ColumnVector &amp;<var>b</var>)</em></dt>
+<dt><a name="index-operator-_002a-9"></a>: <em>ComplexColumnVector</em> <strong>operator *</strong> <em>(const Matrix &amp;<var>a</var>, const ComplexColumnVector &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b-9"></a>: <em>Matrix</em> <strong>operator +</strong> <em>(const Matrix &amp;<var>a</var>, const DiagMatrix &amp;<var>b</var>)</em></dt>
+<dt><a name="index-operator-_002d-12"></a>: <em>Matrix</em> <strong>operator -</strong> <em>(const Matrix &amp;<var>a</var>, const DiagMatrix &amp;<var>b</var>)</em></dt>
+<dt><a name="index-operator-_002a-10"></a>: <em>Matrix</em> <strong>operator *</strong> <em>(const Matrix &amp;<var>a</var>, const DiagMatrix &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b-10"></a>: <em>ComplexMatrix</em> <strong>operator +</strong> <em>(const Matrix &amp;<var>a</var>, const ComplexDiagMatrix &amp;<var>b</var>)</em></dt>
+<dt><a name="index-operator-_002d-13"></a>: <em>ComplexMatrix</em> <strong>operator -</strong> <em>(const Matrix &amp;<var>a</var>, const ComplexDiagMatrix &amp;<var>b</var>)</em></dt>
+<dt><a name="index-operator-_002a-11"></a>: <em>ComplexMatrix</em> <strong>operator *</strong> <em>(const Matrix &amp;<var>a</var>, const ComplexDiagMatrix &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002a-12"></a>: <em>Matrix</em> <strong>operator *</strong> <em>(const Matrix &amp;<var>a</var>, const Matrix &amp;<var>b</var>)</em></dt>
+<dt><a name="index-operator-_002a-13"></a>: <em>ComplexMatrix</em> <strong>operator *</strong> <em>(const Matrix &amp;<var>a</var>, const ComplexMatrix &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b-11"></a>: <em>ComplexMatrix</em> <strong>operator +</strong> <em>(const Matrix &amp;<var>a</var>, const ComplexMatrix &amp;<var>b</var>)</em></dt>
+<dt><a name="index-operator-_002d-14"></a>: <em>ComplexMatrix</em> <strong>operator -</strong> <em>(const Matrix &amp;<var>a</var>, const ComplexMatrix &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-product-3"></a>: <em>ComplexMatrix</em> <strong>product</strong> <em>(const Matrix &amp;<var>a</var>, const ComplexMatrix &amp;<var>b</var>)</em></dt>
+<dt><a name="index-quotient-2"></a>: <em>ComplexMatrix</em> <strong>quotient</strong> <em>(const Matrix &amp;<var>a</var>, const ComplexMatrix &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-map"></a>: <em>Matrix</em> <strong>map</strong> <em>(d_d_Mapper <var>f</var>, const Matrix &amp;<var>a</var>)</em></dt>
+<dt><a name="index-map-1"></a>: <em>void</em> <strong>map</strong> <em>(d_d_Mapper <var>f</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-all"></a>: <em>Matrix</em> <strong>all</strong> <em>(void) const</em></dt>
+<dt><a name="index-any"></a>: <em>Matrix</em> <strong>any</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-cumprod"></a>: <em>Matrix</em> <strong>cumprod</strong> <em>(void) const</em></dt>
+<dt><a name="index-cumsum"></a>: <em>Matrix</em> <strong>cumsum</strong> <em>(void) const</em></dt>
+<dt><a name="index-prod"></a>: <em>Matrix</em> <strong>prod</strong> <em>(void) const</em></dt>
+<dt><a name="index-sum"></a>: <em>Matrix</em> <strong>sum</strong> <em>(void) const</em></dt>
+<dt><a name="index-sumsq"></a>: <em>Matrix</em> <strong>sumsq</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-diag"></a>: <em>ColumnVector</em> <strong>diag</strong> <em>(void) const</em></dt>
+<dt><a name="index-diag-1"></a>: <em>ColumnVector</em> <strong>diag</strong> <em>(int <var>k</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-row_005fmin"></a>: <em>ColumnVector</em> <strong>row_min</strong> <em>(void) const</em></dt>
+<dt><a name="index-row_005fmin_005floc"></a>: <em>ColumnVector</em> <strong>row_min_loc</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-row_005fmax"></a>: <em>ColumnVector</em> <strong>row_max</strong> <em>(void) const</em></dt>
+<dt><a name="index-row_005fmax_005floc"></a>: <em>ColumnVector</em> <strong>row_max_loc</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-column_005fmin"></a>: <em>RowVector</em> <strong>column_min</strong> <em>(void) const</em></dt>
+<dt><a name="index-column_005fmin_005floc"></a>: <em>RowVector</em> <strong>column_min_loc</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-column_005fmax"></a>: <em>RowVector</em> <strong>column_max</strong> <em>(void) const</em></dt>
+<dt><a name="index-column_005fmax_005floc"></a>: <em>RowVector</em> <strong>column_max_loc</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_003c_003c"></a>: <em>ostream&amp;</em> <strong>operator &lt;&lt;</strong> <em>(ostream &amp;<var>os</var>, const Matrix &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_003e_003e"></a>: <em>istream&amp;</em> <strong>operator &gt;&gt;</strong> <em>(istream &amp;<var>is</var>, Matrix &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-ColumnVector"></a>: <em></em> <strong>ColumnVector</strong> <em>(void)</em></dt>
+<dt><a name="index-ColumnVector-1"></a>: <em></em> <strong>ColumnVector</strong> <em>(int <var>n</var>)</em></dt>
+<dt><a name="index-ColumnVector-2"></a>: <em></em> <strong>ColumnVector</strong> <em>(int <var>n</var>, double <var>val</var>)</em></dt>
+<dt><a name="index-ColumnVector-3"></a>: <em></em> <strong>ColumnVector</strong> <em>(const Array&lt;double&gt; &amp;<var>a</var>)</em></dt>
+<dt><a name="index-ColumnVector-4"></a>: <em></em> <strong>ColumnVector</strong> <em>(const ColumnVector &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_003d-1"></a>: <em>ColumnVector&amp;</em> <strong>operator =</strong> <em>(const ColumnVector &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_003d_003d-1"></a>: <em>int</em> <strong>operator ==</strong> <em>(const ColumnVector &amp;<var>a</var>) const</em></dt>
+<dt><a name="index-operator-_0021_003d-1"></a>: <em>int</em> <strong>operator !=</strong> <em>(const ColumnVector &amp;<var>a</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-insert-4"></a>: <em>ColumnVector&amp;</em> <strong>insert</strong> <em>(const ColumnVector &amp;<var>a</var>, int <var>r</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-fill-2"></a>: <em>ColumnVector&amp;</em> <strong>fill</strong> <em>(double <var>val</var>)</em></dt>
+<dt><a name="index-fill-3"></a>: <em>ColumnVector&amp;</em> <strong>fill</strong> <em>(double <var>val</var>, int r1, int r2)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-stack-4"></a>: <em>ColumnVector</em> <strong>stack</strong> <em>(const ColumnVector &amp;<var>a</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-transpose-1"></a>: <em>RowVector</em> <strong>transpose</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-extract-1"></a>: <em>ColumnVector</em> <strong>extract</strong> <em>(int r1, int r2) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b_003d-2"></a>: <em>ColumnVector&amp;</em> <strong>operator +=</strong> <em>(const ColumnVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002d_003d-2"></a>: <em>ColumnVector&amp;</em> <strong>operator -=</strong> <em>(const ColumnVector &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b-12"></a>: <em>ComplexColumnVector</em> <strong>operator +</strong> <em>(const ColumnVector &amp;<var>a</var>, const Complex &amp;<var>s</var>)</em></dt>
+<dt><a name="index-operator-_002d-15"></a>: <em>ComplexColumnVector</em> <strong>operator -</strong> <em>(const ColumnVector &amp;<var>a</var>, const Complex &amp;<var>s</var>)</em></dt>
+<dt><a name="index-operator-_002a-14"></a>: <em>ComplexColumnVector</em> <strong>operator *</strong> <em>(const ColumnVector &amp;<var>a</var>, const Complex &amp;<var>s</var>)</em></dt>
+<dt><a name="index-operator-_002f-7"></a>: <em>ComplexColumnVector</em> <strong>operator /</strong> <em>(const ColumnVector &amp;<var>a</var>, const Complex &amp;<var>s</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b-13"></a>: <em>ComplexColumnVector</em> <strong>operator +</strong> <em>(const Complex &amp;<var>s</var>, const ColumnVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002d-16"></a>: <em>ComplexColumnVector</em> <strong>operator -</strong> <em>(const Complex &amp;<var>s</var>, const ColumnVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002a-15"></a>: <em>ComplexColumnVector</em> <strong>operator *</strong> <em>(const Complex &amp;<var>s</var>, const ColumnVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002f-8"></a>: <em>ComplexColumnVector</em> <strong>operator /</strong> <em>(const Complex &amp;<var>s</var>, const ColumnVector &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002a-16"></a>: <em>Matrix</em> <strong>operator *</strong> <em>(const ColumnVector &amp;<var>a</var>, const RowVector &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002a-17"></a>: <em>ComplexMatrix</em> <strong>operator *</strong> <em>(const ColumnVector &amp;<var>a</var>, const ComplexRowVector &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b-14"></a>: <em>ComplexColumnVector</em> <strong>operator +</strong> <em>(const ComplexColumnVector &amp;<var>a</var>, const ComplexColumnVector &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002d-17"></a>: <em>ComplexColumnVector</em> <strong>operator -</strong> <em>(const ComplexColumnVector &amp;<var>a</var>, const ComplexColumnVector &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-product-4"></a>: <em>ComplexColumnVector</em> <strong>product</strong> <em>(const ComplexColumnVector &amp;<var>a</var>, const ComplexColumnVector &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-quotient-3"></a>: <em>ComplexColumnVector</em> <strong>quotient</strong> <em>(const ComplexColumnVector &amp;<var>a</var>, const ComplexColumnVector &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-map-2"></a>: <em>ColumnVector</em> <strong>map</strong> <em>(d_d_Mapper <var>f</var>, const ColumnVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-map-3"></a>: <em>void</em> <strong>map</strong> <em>(d_d_Mapper <var>f</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-min"></a>: <em>double</em> <strong>min</strong> <em>(void) const</em></dt>
+<dt><a name="index-max"></a>: <em>double</em> <strong>max</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_003c_003c-1"></a>: <em>ostream&amp;</em> <strong>operator &lt;&lt;</strong> <em>(ostream &amp;<var>os</var>, const ColumnVector &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-RowVector"></a>: <em></em> <strong>RowVector</strong> <em>(void)</em></dt>
+<dt><a name="index-RowVector-1"></a>: <em></em> <strong>RowVector</strong> <em>(int <var>n</var>)</em></dt>
+<dt><a name="index-RowVector-2"></a>: <em></em> <strong>RowVector</strong> <em>(int <var>n</var>, double <var>val</var>)</em></dt>
+<dt><a name="index-RowVector-3"></a>: <em></em> <strong>RowVector</strong> <em>(const Array&lt;double&gt; &amp;<var>a</var>)</em></dt>
+<dt><a name="index-RowVector-4"></a>: <em></em> <strong>RowVector</strong> <em>(const RowVector &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_003d-2"></a>: <em>RowVector&amp;</em> <strong>operator =</strong> <em>(const RowVector &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_003d_003d-2"></a>: <em>int</em> <strong>operator ==</strong> <em>(const RowVector &amp;<var>a</var>) const</em></dt>
+<dt><a name="index-operator-_0021_003d-2"></a>: <em>int</em> <strong>operator !=</strong> <em>(const RowVector &amp;<var>a</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-insert-5"></a>: <em>RowVector&amp;</em> <strong>insert</strong> <em>(const RowVector &amp;<var>a</var>, int <var>c</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-fill-4"></a>: <em>RowVector&amp;</em> <strong>fill</strong> <em>(double <var>val</var>)</em></dt>
+<dt><a name="index-fill-5"></a>: <em>RowVector&amp;</em> <strong>fill</strong> <em>(double <var>val</var>, int c1, int c2)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-append-4"></a>: <em>RowVector</em> <strong>append</strong> <em>(const RowVector &amp;<var>a</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-transpose-2"></a>: <em>ColumnVector</em> <strong>transpose</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-extract-2"></a>: <em>RowVector</em> <strong>extract</strong> <em>(int c1, int c2) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b_003d-3"></a>: <em>RowVector&amp;</em> <strong>operator +=</strong> <em>(const RowVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002d_003d-3"></a>: <em>RowVector&amp;</em> <strong>operator -=</strong> <em>(const RowVector &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b-15"></a>: <em>ComplexRowVector</em> <strong>operator +</strong> <em>(const RowVector &amp;<var>a</var>, const Complex &amp;<var>s</var>)</em></dt>
+<dt><a name="index-operator-_002d-18"></a>: <em>ComplexRowVector</em> <strong>operator -</strong> <em>(const RowVector &amp;<var>a</var>, const Complex &amp;<var>s</var>)</em></dt>
+<dt><a name="index-operator-_002a-18"></a>: <em>ComplexRowVector</em> <strong>operator *</strong> <em>(const RowVector &amp;<var>a</var>, const Complex &amp;<var>s</var>)</em></dt>
+<dt><a name="index-operator-_002f-9"></a>: <em>ComplexRowVector</em> <strong>operator /</strong> <em>(const RowVector &amp;<var>a</var>, const Complex &amp;<var>s</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b-16"></a>: <em>ComplexRowVector</em> <strong>operator +</strong> <em>(const Complex &amp;<var>s</var>, const RowVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002d-19"></a>: <em>ComplexRowVector</em> <strong>operator -</strong> <em>(const Complex &amp;<var>s</var>, const RowVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002a-19"></a>: <em>ComplexRowVector</em> <strong>operator *</strong> <em>(const Complex &amp;<var>s</var>, const RowVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002f-10"></a>: <em>ComplexRowVector</em> <strong>operator /</strong> <em>(const Complex &amp;<var>s</var>, const RowVector &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002a-20"></a>: <em>double</em> <strong>operator *</strong> <em>(const RowVector &amp;<var>a</var>, ColumnVector &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002a-21"></a>: <em>Complex</em> <strong>operator *</strong> <em>(const RowVector &amp;<var>a</var>, const ComplexColumnVector &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002a-22"></a>: <em>RowVector</em> <strong>operator *</strong> <em>(const RowVector &amp;<var>a</var>, const Matrix &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002a-23"></a>: <em>ComplexRowVector</em> <strong>operator *</strong> <em>(const RowVector &amp;<var>a</var>, const ComplexMatrix &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b-17"></a>: <em>ComplexRowVector</em> <strong>operator +</strong> <em>(const RowVector &amp;<var>a</var>, const ComplexRowVector &amp;<var>b</var>)</em></dt>
+<dt><a name="index-operator-_002d-20"></a>: <em>ComplexRowVector</em> <strong>operator -</strong> <em>(const RowVector &amp;<var>a</var>, const ComplexRowVector &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-product-5"></a>: <em>ComplexRowVector</em> <strong>product</strong> <em>(const RowVector &amp;<var>a</var>, const ComplexRowVector &amp;<var>b</var>)</em></dt>
+<dt><a name="index-quotient-4"></a>: <em>ComplexRowVector</em> <strong>quotient</strong> <em>(const RowVector &amp;<var>a</var>, const ComplexRowVector &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-map-4"></a>: <em>RowVector</em> <strong>map</strong> <em>(d_d_Mapper <var>f</var>, const RowVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-map-5"></a>: <em>void</em> <strong>map</strong> <em>(d_d_Mapper <var>f</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-min-1"></a>: <em>double</em> <strong>min</strong> <em>(void) const</em></dt>
+<dt><a name="index-max-1"></a>: <em>double</em> <strong>max</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_003c_003c-2"></a>: <em>ostream&amp;</em> <strong>operator &lt;&lt;</strong> <em>(ostream &amp;<var>os</var>, const RowVector &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-DiagMatrix"></a>: <em></em> <strong>DiagMatrix</strong> <em>(void)</em></dt>
+<dt><a name="index-DiagMatrix-1"></a>: <em></em> <strong>DiagMatrix</strong> <em>(int <var>n</var>)</em></dt>
+<dt><a name="index-DiagMatrix-2"></a>: <em></em> <strong>DiagMatrix</strong> <em>(int <var>n</var>, double <var>val</var>)</em></dt>
+<dt><a name="index-DiagMatrix-3"></a>: <em></em> <strong>DiagMatrix</strong> <em>(int <var>r</var>, int <var>c</var>)</em></dt>
+<dt><a name="index-DiagMatrix-4"></a>: <em></em> <strong>DiagMatrix</strong> <em>(int <var>r</var>, int <var>c</var>, double <var>val</var>)</em></dt>
+<dt><a name="index-DiagMatrix-5"></a>: <em></em> <strong>DiagMatrix</strong> <em>(const RowVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-DiagMatrix-6"></a>: <em></em> <strong>DiagMatrix</strong> <em>(const ColumnVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-DiagMatrix-7"></a>: <em></em> <strong>DiagMatrix</strong> <em>(const DiagArray&lt;double&gt; &amp;<var>a</var>)</em></dt>
+<dt><a name="index-DiagMatrix-8"></a>: <em></em> <strong>DiagMatrix</strong> <em>(const DiagMatrix &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_003d-3"></a>: <em>DiagMatrix&amp;</em> <strong>operator =</strong> <em>(const DiagMatrix &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_003d_003d-3"></a>: <em>int</em> <strong>operator ==</strong> <em>(const DiagMatrix &amp;<var>a</var>) const</em></dt>
+<dt><a name="index-operator-_0021_003d-3"></a>: <em>int</em> <strong>operator !=</strong> <em>(const DiagMatrix &amp;<var>a</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-fill-6"></a>: <em>DiagMatrix&amp;</em> <strong>fill</strong> <em>(double <var>val</var>)</em></dt>
+<dt><a name="index-fill-7"></a>: <em>DiagMatrix&amp;</em> <strong>fill</strong> <em>(double <var>val</var>, int <var>beg</var>, int <var>end</var>)</em></dt>
+<dt><a name="index-fill-8"></a>: <em>DiagMatrix&amp;</em> <strong>fill</strong> <em>(const ColumnVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-fill-9"></a>: <em>DiagMatrix&amp;</em> <strong>fill</strong> <em>(const RowVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-fill-10"></a>: <em>DiagMatrix&amp;</em> <strong>fill</strong> <em>(const ColumnVector &amp;<var>a</var>, int <var>beg</var>)</em></dt>
+<dt><a name="index-fill-11"></a>: <em>DiagMatrix&amp;</em> <strong>fill</strong> <em>(const RowVector &amp;<var>a</var>, int <var>beg</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-transpose-3"></a>: <em>DiagMatrix</em> <strong>transpose</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-extract-3"></a>: <em>Matrix</em> <strong>extract</strong> <em>(int r1, int c1, int r2, int c2) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-row-2"></a>: <em>RowVector</em> <strong>row</strong> <em>(int <var>i</var>) const</em></dt>
+<dt><a name="index-row-3"></a>: <em>RowVector</em> <strong>row</strong> <em>(char *s) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-column-2"></a>: <em>ColumnVector</em> <strong>column</strong> <em>(int <var>i</var>) const</em></dt>
+<dt><a name="index-column-3"></a>: <em>ColumnVector</em> <strong>column</strong> <em>(char *s) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-inverse-3"></a>: <em>DiagMatrix</em> <strong>inverse</strong> <em>(void) const</em></dt>
+<dt><a name="index-inverse-4"></a>: <em>DiagMatrix</em> <strong>inverse</strong> <em>(int &amp;<var>info</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b_003d-4"></a>: <em>DiagMatrix&amp;</em> <strong>operator +=</strong> <em>(const DiagMatrix &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002d_003d-4"></a>: <em>DiagMatrix&amp;</em> <strong>operator -=</strong> <em>(const DiagMatrix &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b-18"></a>: <em>Matrix</em> <strong>operator +</strong> <em>(const DiagMatrix &amp;<var>a</var>, double <var>s</var>)</em></dt>
+<dt><a name="index-operator-_002d-21"></a>: <em>Matrix</em> <strong>operator -</strong> <em>(const DiagMatrix &amp;<var>a</var>, double <var>s</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b-19"></a>: <em>ComplexMatrix</em> <strong>operator +</strong> <em>(const DiagMatrix &amp;<var>a</var>, const Complex &amp;<var>s</var>)</em></dt>
+<dt><a name="index-operator-_002d-22"></a>: <em>ComplexMatrix</em> <strong>operator -</strong> <em>(const DiagMatrix &amp;<var>a</var>, const Complex &amp;<var>s</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002a-24"></a>: <em>ComplexDiagMatrix</em> <strong>operator *</strong> <em>(const DiagMatrix &amp;<var>a</var>, const Complex &amp;<var>s</var>)</em></dt>
+<dt><a name="index-operator-_002f-11"></a>: <em>ComplexDiagMatrix</em> <strong>operator /</strong> <em>(const DiagMatrix &amp;<var>a</var>, const Complex &amp;<var>s</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b-20"></a>: <em>Matrix</em> <strong>operator +</strong> <em>(double <var>s</var>, const DiagMatrix &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002d-23"></a>: <em>Matrix</em> <strong>operator -</strong> <em>(double <var>s</var>, const DiagMatrix &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b-21"></a>: <em>ComplexMatrix</em> <strong>operator +</strong> <em>(const Complex &amp;<var>s</var>, const DiagMatrix &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002d-24"></a>: <em>ComplexMatrix</em> <strong>operator -</strong> <em>(const Complex &amp;<var>s</var>, const DiagMatrix &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002a-25"></a>: <em>ComplexDiagMatrix</em> <strong>operator *</strong> <em>(const Complex &amp;<var>s</var>, const DiagMatrix &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002a-26"></a>: <em>ColumnVector</em> <strong>operator *</strong> <em>(const DiagMatrix &amp;<var>a</var>, const ColumnVector &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002a-27"></a>: <em>ComplexColumnVector</em> <strong>operator *</strong> <em>(const DiagMatrix &amp;<var>a</var>, const ComplexColumnVector &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b-22"></a>: <em>ComplexDiagMatrix</em> <strong>operator +</strong> <em>(const DiagMatrix &amp;<var>a</var>, const ComplexDiagMatrix &amp;<var>b</var>)</em></dt>
+<dt><a name="index-operator-_002d-25"></a>: <em>ComplexDiagMatrix</em> <strong>operator -</strong> <em>(const DiagMatrix &amp;<var>a</var>, const ComplexDiagMatrix &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-product-6"></a>: <em>ComplexDiagMatrix</em> <strong>product</strong> <em>(const DiagMatrix &amp;<var>a</var>, const ComplexDiagMatrix &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b-23"></a>: <em>Matrix</em> <strong>operator +</strong> <em>(const DiagMatrix &amp;<var>a</var>, const Matrix &amp;<var>b</var>)</em></dt>
+<dt><a name="index-operator-_002d-26"></a>: <em>Matrix</em> <strong>operator -</strong> <em>(const DiagMatrix &amp;<var>a</var>, const Matrix &amp;<var>b</var>)</em></dt>
+<dt><a name="index-operator-_002a-28"></a>: <em>Matrix</em> <strong>operator *</strong> <em>(const DiagMatrix &amp;<var>a</var>, const Matrix &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b-24"></a>: <em>ComplexMatrix</em> <strong>operator +</strong> <em>(const DiagMatrix &amp;<var>a</var>, const ComplexMatrix &amp;<var>b</var>)</em></dt>
+<dt><a name="index-operator-_002d-27"></a>: <em>ComplexMatrix</em> <strong>operator -</strong> <em>(const DiagMatrix &amp;<var>a</var>, const ComplexMatrix &amp;<var>b</var>)</em></dt>
+<dt><a name="index-operator-_002a-29"></a>: <em>ComplexMatrix</em> <strong>operator *</strong> <em>(const DiagMatrix &amp;<var>a</var>, const ComplexMatrix &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-diag-2"></a>: <em>ColumnVector</em> <strong>diag</strong> <em>(void) const</em></dt>
+<dt><a name="index-diag-3"></a>: <em>ColumnVector</em> <strong>diag</strong> <em>(int <var>k</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_003c_003c-3"></a>: <em>ostream&amp;</em> <strong>operator &lt;&lt;</strong> <em>(ostream &amp;<var>os</var>, const DiagMatrix &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-ComplexMatrix"></a>: <em></em> <strong>ComplexMatrix</strong> <em>(void)</em></dt>
+<dt><a name="index-ComplexMatrix-1"></a>: <em></em> <strong>ComplexMatrix</strong> <em>(int <var>r</var>, int <var>c</var>)</em></dt>
+<dt><a name="index-ComplexMatrix-2"></a>: <em></em> <strong>ComplexMatrix</strong> <em>(int <var>r</var>, int <var>c</var>, const Complex &amp;<var>val</var>)</em></dt>
+<dt><a name="index-ComplexMatrix-3"></a>: <em></em> <strong>ComplexMatrix</strong> <em>(const Matrix &amp;<var>a</var>)</em></dt>
+<dt><a name="index-ComplexMatrix-4"></a>: <em></em> <strong>ComplexMatrix</strong> <em>(const Array2&lt;Complex&gt; &amp;<var>a</var>)</em></dt>
+<dt><a name="index-ComplexMatrix-5"></a>: <em></em> <strong>ComplexMatrix</strong> <em>(const ComplexMatrix &amp;<var>a</var>)</em></dt>
+<dt><a name="index-ComplexMatrix-6"></a>: <em></em> <strong>ComplexMatrix</strong> <em>(const DiagMatrix &amp;<var>a</var>)</em></dt>
+<dt><a name="index-ComplexMatrix-7"></a>: <em></em> <strong>ComplexMatrix</strong> <em>(const DiagArray&lt;Complex&gt; &amp;<var>a</var>)</em></dt>
+<dt><a name="index-ComplexMatrix-8"></a>: <em></em> <strong>ComplexMatrix</strong> <em>(const ComplexDiagMatrix &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_003d-4"></a>: <em>ComplexMatrix&amp;</em> <strong>operator =</strong> <em>(const ComplexMatrix &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_003d_003d-4"></a>: <em>int</em> <strong>operator ==</strong> <em>(const ComplexMatrix &amp;<var>a</var>) const</em></dt>
+<dt><a name="index-operator-_0021_003d-4"></a>: <em>int</em> <strong>operator !=</strong> <em>(const ComplexMatrix &amp;<var>a</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-insert-6"></a>: <em>ComplexMatrix&amp;</em> <strong>insert</strong> <em>(const Matrix &amp;<var>a</var>, int <var>r</var>, int <var>c</var>)</em></dt>
+<dt><a name="index-insert-7"></a>: <em>ComplexMatrix&amp;</em> <strong>insert</strong> <em>(const RowVector &amp;<var>a</var>, int <var>r</var>, int <var>c</var>)</em></dt>
+<dt><a name="index-insert-8"></a>: <em>ComplexMatrix&amp;</em> <strong>insert</strong> <em>(const ColumnVector &amp;<var>a</var>, int <var>r</var>, int <var>c</var>)</em></dt>
+<dt><a name="index-insert-9"></a>: <em>ComplexMatrix&amp;</em> <strong>insert</strong> <em>(const DiagMatrix &amp;<var>a</var>, int <var>r</var>, int <var>c</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-insert-10"></a>: <em>ComplexMatrix&amp;</em> <strong>insert</strong> <em>(const ComplexMatrix &amp;<var>a</var>, int <var>r</var>, int <var>c</var>)</em></dt>
+<dt><a name="index-insert-11"></a>: <em>ComplexMatrix&amp;</em> <strong>insert</strong> <em>(const ComplexRowVector &amp;<var>a</var>, int <var>r</var>, int <var>c</var>)</em></dt>
+<dt><a name="index-insert-12"></a>: <em>ComplexMatrix&amp;</em> <strong>insert</strong> <em>(const ComplexColumnVector &amp;<var>a</var>, int <var>r</var>, int <var>c</var>)</em></dt>
+<dt><a name="index-insert-13"></a>: <em>ComplexMatrix&amp;</em> <strong>insert</strong> <em>(const ComplexDiagMatrix &amp;<var>a</var>, int <var>r</var>, int <var>c</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-fill-12"></a>: <em>ComplexMatrix&amp;</em> <strong>fill</strong> <em>(double <var>val</var>)</em></dt>
+<dt><a name="index-fill-13"></a>: <em>ComplexMatrix&amp;</em> <strong>fill</strong> <em>(const Complex &amp;<var>val</var>)</em></dt>
+<dt><a name="index-fill-14"></a>: <em>ComplexMatrix&amp;</em> <strong>fill</strong> <em>(double <var>val</var>, int r1, int c1, int r2, int c2)</em></dt>
+<dt><a name="index-fill-15"></a>: <em>ComplexMatrix&amp;</em> <strong>fill</strong> <em>(const Complex &amp;<var>val</var>, int r1, int c1, int r2, int c2)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-append-5"></a>: <em>ComplexMatrix</em> <strong>append</strong> <em>(const Matrix &amp;<var>a</var>) const</em></dt>
+<dt><a name="index-append-6"></a>: <em>ComplexMatrix</em> <strong>append</strong> <em>(const RowVector &amp;<var>a</var>) const</em></dt>
+<dt><a name="index-append-7"></a>: <em>ComplexMatrix</em> <strong>append</strong> <em>(const ColumnVector &amp;<var>a</var>) const</em></dt>
+<dt><a name="index-append-8"></a>: <em>ComplexMatrix</em> <strong>append</strong> <em>(const DiagMatrix &amp;<var>a</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-append-9"></a>: <em>ComplexMatrix</em> <strong>append</strong> <em>(const ComplexMatrix &amp;<var>a</var>) const</em></dt>
+<dt><a name="index-append-10"></a>: <em>ComplexMatrix</em> <strong>append</strong> <em>(const ComplexRowVector &amp;<var>a</var>) const</em></dt>
+<dt><a name="index-append-11"></a>: <em>ComplexMatrix</em> <strong>append</strong> <em>(const ComplexColumnVector &amp;<var>a</var>) const</em></dt>
+<dt><a name="index-append-12"></a>: <em>ComplexMatrix</em> <strong>append</strong> <em>(const ComplexDiagMatrix &amp;<var>a</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-stack-5"></a>: <em>ComplexMatrix</em> <strong>stack</strong> <em>(const Matrix &amp;<var>a</var>) const</em></dt>
+<dt><a name="index-stack-6"></a>: <em>ComplexMatrix</em> <strong>stack</strong> <em>(const RowVector &amp;<var>a</var>) const</em></dt>
+<dt><a name="index-stack-7"></a>: <em>ComplexMatrix</em> <strong>stack</strong> <em>(const ColumnVector &amp;<var>a</var>) const</em></dt>
+<dt><a name="index-stack-8"></a>: <em>ComplexMatrix</em> <strong>stack</strong> <em>(const DiagMatrix &amp;<var>a</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-stack-9"></a>: <em>ComplexMatrix</em> <strong>stack</strong> <em>(const ComplexMatrix &amp;<var>a</var>) const</em></dt>
+<dt><a name="index-stack-10"></a>: <em>ComplexMatrix</em> <strong>stack</strong> <em>(const ComplexRowVector &amp;<var>a</var>) const</em></dt>
+<dt><a name="index-stack-11"></a>: <em>ComplexMatrix</em> <strong>stack</strong> <em>(const ComplexColumnVector &amp;<var>a</var>) const</em></dt>
+<dt><a name="index-stack-12"></a>: <em>ComplexMatrix</em> <strong>stack</strong> <em>(const ComplexDiagMatrix &amp;<var>a</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-transpose-4"></a>: <em>ComplexMatrix</em> <strong>transpose</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-real"></a>: <em>Matrix</em> <strong>real</strong> <em>(const ComplexMatrix &amp;<var>a</var>)</em></dt>
+<dt><a name="index-imag"></a>: <em>Matrix</em> <strong>imag</strong> <em>(const ComplexMatrix &amp;<var>a</var>)</em></dt>
+<dt><a name="index-conj"></a>: <em>ComplexMatrix</em> <strong>conj</strong> <em>(const ComplexMatrix &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-extract-4"></a>: <em>ComplexMatrix</em> <strong>extract</strong> <em>(int r1, int c1, int r2, int c2) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-row-4"></a>: <em>ComplexRowVector</em> <strong>row</strong> <em>(int <var>i</var>) const</em></dt>
+<dt><a name="index-row-5"></a>: <em>ComplexRowVector</em> <strong>row</strong> <em>(char *s) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-column-4"></a>: <em>ComplexColumnVector</em> <strong>column</strong> <em>(int <var>i</var>) const</em></dt>
+<dt><a name="index-column-5"></a>: <em>ComplexColumnVector</em> <strong>column</strong> <em>(char *s) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-inverse-5"></a>: <em>ComplexMatrix</em> <strong>inverse</strong> <em>(void) const</em></dt>
+<dt><a name="index-inverse-6"></a>: <em>ComplexMatrix</em> <strong>inverse</strong> <em>(int &amp;<var>info</var>) const</em></dt>
+<dt><a name="index-inverse-7"></a>: <em>ComplexMatrix</em> <strong>inverse</strong> <em>(int &amp;<var>info</var>, double &amp;<var>rcond</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-fourier-1"></a>: <em>ComplexMatrix</em> <strong>fourier</strong> <em>(void) const</em></dt>
+<dt><a name="index-ifourier-1"></a>: <em>ComplexMatrix</em> <strong>ifourier</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-determinant-3"></a>: <em>ComplexDET</em> <strong>determinant</strong> <em>(void) const</em></dt>
+<dt><a name="index-determinant-4"></a>: <em>ComplexDET</em> <strong>determinant</strong> <em>(int &amp;<var>info</var>) const</em></dt>
+<dt><a name="index-determinant-5"></a>: <em>ComplexDET</em> <strong>determinant</strong> <em>(int &amp;<var>info</var>, double &amp;<var>rcond</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-solve-12"></a>: <em>ComplexMatrix</em> <strong>solve</strong> <em>(const Matrix &amp;<var>b</var>) const</em></dt>
+<dt><a name="index-solve-13"></a>: <em>ComplexMatrix</em> <strong>solve</strong> <em>(const Matrix &amp;<var>b</var>, int &amp;<var>info</var>) const</em></dt>
+<dt><a name="index-solve-14"></a>: <em>ComplexMatrix</em> <strong>solve</strong> <em>(const Matrix &amp;<var>b</var>, int &amp;<var>info</var>, double &amp;<var>rcond</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-solve-15"></a>: <em>ComplexMatrix</em> <strong>solve</strong> <em>(const ComplexMatrix &amp;<var>b</var>) const</em></dt>
+<dt><a name="index-solve-16"></a>: <em>ComplexMatrix</em> <strong>solve</strong> <em>(const ComplexMatrix &amp;<var>b</var>, int &amp;<var>info</var>) const</em></dt>
+<dt><a name="index-solve-17"></a>: <em>ComplexMatrix</em> <strong>solve</strong> <em>(const ComplexMatrix &amp;<var>b</var>, int &amp;<var>info</var>, double &amp;<var>rcond</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-solve-18"></a>: <em>ComplexColumnVector</em> <strong>solve</strong> <em>(const ComplexColumnVector &amp;<var>b</var>) const</em></dt>
+<dt><a name="index-solve-19"></a>: <em>ComplexColumnVector</em> <strong>solve</strong> <em>(const ComplexColumnVector &amp;<var>b</var>, int &amp;<var>info</var>) const</em></dt>
+<dt><a name="index-solve-20"></a>: <em>ComplexColumnVector</em> <strong>solve</strong> <em>(const ComplexColumnVector &amp;<var>b</var>, int &amp;<var>info</var>, double &amp;<var>rcond</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-lssolve-12"></a>: <em>ComplexMatrix</em> <strong>lssolve</strong> <em>(const ComplexMatrix &amp;<var>b</var>) const</em></dt>
+<dt><a name="index-lssolve-13"></a>: <em>ComplexMatrix</em> <strong>lssolve</strong> <em>(const ComplexMatrix &amp;<var>b</var>, int &amp;<var>info</var>) const</em></dt>
+<dt><a name="index-lssolve-14"></a>: <em>ComplexMatrix</em> <strong>lssolve</strong> <em>(const ComplexMatrix &amp;<var>b</var>, int &amp;<var>info</var>, int &amp;<var>rank</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-lssolve-15"></a>: <em>ComplexColumnVector</em> <strong>lssolve</strong> <em>(const ComplexColumnVector &amp;<var>b</var>) const</em></dt>
+<dt><a name="index-lssolve-16"></a>: <em>ComplexColumnVector</em> <strong>lssolve</strong> <em>(const ComplexColumnVector &amp;<var>b</var>, int &amp;<var>info</var>) const</em></dt>
+<dt><a name="index-lssolve-17"></a>: <em>ComplexColumnVector</em> <strong>lssolve</strong> <em>(const ComplexColumnVector &amp;<var>b</var>, int &amp;<var>info</var>, int &amp;<var>rank</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b_003d-5"></a>: <em>ComplexMatrix&amp;</em> <strong>operator +=</strong> <em>(const DiagMatrix &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002d_003d-5"></a>: <em>ComplexMatrix&amp;</em> <strong>operator -=</strong> <em>(const DiagMatrix &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b_003d-6"></a>: <em>ComplexMatrix&amp;</em> <strong>operator +=</strong> <em>(const ComplexDiagMatrix &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002d_003d-6"></a>: <em>ComplexMatrix&amp;</em> <strong>operator -=</strong> <em>(const ComplexDiagMatrix &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b_003d-7"></a>: <em>ComplexMatrix&amp;</em> <strong>operator +=</strong> <em>(const Matrix &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002d_003d-7"></a>: <em>ComplexMatrix&amp;</em> <strong>operator -=</strong> <em>(const Matrix &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b_003d-8"></a>: <em>ComplexMatrix&amp;</em> <strong>operator +=</strong> <em>(const ComplexMatrix &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002d_003d-8"></a>: <em>ComplexMatrix&amp;</em> <strong>operator -=</strong> <em>(const ComplexMatrix &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_0021-1"></a>: <em>Matrix</em> <strong>operator !</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b-25"></a>: <em>ComplexMatrix</em> <strong>operator +</strong> <em>(const ComplexMatrix &amp;<var>a</var>, double <var>s</var>)</em></dt>
+<dt><a name="index-operator-_002d-28"></a>: <em>ComplexMatrix</em> <strong>operator -</strong> <em>(const ComplexMatrix &amp;<var>a</var>, double <var>s</var>)</em></dt>
+<dt><a name="index-operator-_002a-30"></a>: <em>ComplexMatrix</em> <strong>operator *</strong> <em>(const ComplexMatrix &amp;<var>a</var>, double <var>s</var>)</em></dt>
+<dt><a name="index-operator-_002f-12"></a>: <em>ComplexMatrix</em> <strong>operator /</strong> <em>(const ComplexMatrix &amp;<var>a</var>, double <var>s</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b-26"></a>: <em>ComplexMatrix</em> <strong>operator +</strong> <em>(double <var>s</var>, const ComplexMatrix &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002d-29"></a>: <em>ComplexMatrix</em> <strong>operator -</strong> <em>(double <var>s</var>, const ComplexMatrix &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002a-31"></a>: <em>ComplexMatrix</em> <strong>operator *</strong> <em>(double <var>s</var>, const ComplexMatrix &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002f-13"></a>: <em>ComplexMatrix</em> <strong>operator /</strong> <em>(double <var>s</var>, const ComplexMatrix &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002a-32"></a>: <em>ComplexColumnVector</em> <strong>operator *</strong> <em>(const ComplexMatrix &amp;<var>a</var>, const ColumnVector &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002a-33"></a>: <em>ComplexColumnVector</em> <strong>operator *</strong> <em>(const ComplexMatrix &amp;<var>a</var>, const ComplexColumnVector &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b-27"></a>: <em>ComplexMatrix</em> <strong>operator +</strong> <em>(const ComplexMatrix &amp;<var>a</var>, const DiagMatrix &amp;<var>b</var>)</em></dt>
+<dt><a name="index-operator-_002d-30"></a>: <em>ComplexMatrix</em> <strong>operator -</strong> <em>(const ComplexMatrix &amp;<var>a</var>, const DiagMatrix &amp;<var>b</var>)</em></dt>
+<dt><a name="index-operator-_002a-34"></a>: <em>ComplexMatrix</em> <strong>operator *</strong> <em>(const ComplexMatrix &amp;<var>a</var>, const DiagMatrix &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b-28"></a>: <em>ComplexMatrix</em> <strong>operator +</strong> <em>(const ComplexMatrix &amp;<var>a</var>, const ComplexDiagMatrix &amp;<var>b</var>)</em></dt>
+<dt><a name="index-operator-_002d-31"></a>: <em>ComplexMatrix</em> <strong>operator -</strong> <em>(const ComplexMatrix &amp;<var>a</var>, const ComplexDiagMatrix &amp;<var>b</var>)</em></dt>
+<dt><a name="index-operator-_002a-35"></a>: <em>ComplexMatrix</em> <strong>operator *</strong> <em>(const ComplexMatrix &amp;<var>a</var>, const ComplexDiagMatrix &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b-29"></a>: <em>ComplexMatrix</em> <strong>operator +</strong> <em>(const ComplexMatrix &amp;<var>a</var>, const Matrix &amp;<var>b</var>)</em></dt>
+<dt><a name="index-operator-_002d-32"></a>: <em>ComplexMatrix</em> <strong>operator -</strong> <em>(const ComplexMatrix &amp;<var>a</var>, const Matrix &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002a-36"></a>: <em>ComplexMatrix</em> <strong>operator *</strong> <em>(const ComplexMatrix &amp;<var>a</var>, const Matrix &amp;<var>b</var>)</em></dt>
+<dt><a name="index-operator-_002a-37"></a>: <em>ComplexMatrix</em> <strong>operator *</strong> <em>(const ComplexMatrix &amp;<var>a</var>, const ComplexMatrix &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-product-7"></a>: <em>ComplexMatrix</em> <strong>product</strong> <em>(const ComplexMatrix &amp;<var>a</var>, const Matrix &amp;<var>b</var>)</em></dt>
+<dt><a name="index-quotient-5"></a>: <em>ComplexMatrix</em> <strong>quotient</strong> <em>(const ComplexMatrix &amp;<var>a</var>, const Matrix &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-map-6"></a>: <em>ComplexMatrix</em> <strong>map</strong> <em>(c_c_Mapper <var>f</var>, const ComplexMatrix &amp;<var>a</var>)</em></dt>
+<dt><a name="index-map-7"></a>: <em>Matrix</em> <strong>map</strong> <em>(d_c_Mapper <var>f</var>, const ComplexMatrix &amp;<var>a</var>)</em></dt>
+<dt><a name="index-map-8"></a>: <em>void</em> <strong>map</strong> <em>(c_c_Mapper <var>f</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-all-1"></a>: <em>Matrix</em> <strong>all</strong> <em>(void) const</em></dt>
+<dt><a name="index-any-1"></a>: <em>Matrix</em> <strong>any</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-cumprod-1"></a>: <em>ComplexMatrix</em> <strong>cumprod</strong> <em>(void) const</em></dt>
+<dt><a name="index-cumsum-1"></a>: <em>ComplexMatrix</em> <strong>cumsum</strong> <em>(void) const</em></dt>
+<dt><a name="index-prod-1"></a>: <em>ComplexMatrix</em> <strong>prod</strong> <em>(void) const</em></dt>
+<dt><a name="index-sum-1"></a>: <em>ComplexMatrix</em> <strong>sum</strong> <em>(void) const</em></dt>
+<dt><a name="index-sumsq-1"></a>: <em>ComplexMatrix</em> <strong>sumsq</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-diag-4"></a>: <em>ComplexColumnVector</em> <strong>diag</strong> <em>(void) const</em></dt>
+<dt><a name="index-diag-5"></a>: <em>ComplexColumnVector</em> <strong>diag</strong> <em>(int <var>k</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-row_005fmin-1"></a>: <em>ComplexColumnVector</em> <strong>row_min</strong> <em>(void) const</em></dt>
+<dt><a name="index-row_005fmin_005floc-1"></a>: <em>ComplexColumnVector</em> <strong>row_min_loc</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-row_005fmax-1"></a>: <em>ComplexColumnVector</em> <strong>row_max</strong> <em>(void) const</em></dt>
+<dt><a name="index-row_005fmax_005floc-1"></a>: <em>ComplexColumnVector</em> <strong>row_max_loc</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-column_005fmin-1"></a>: <em>ComplexRowVector</em> <strong>column_min</strong> <em>(void) const</em></dt>
+<dt><a name="index-column_005fmin_005floc-1"></a>: <em>ComplexRowVector</em> <strong>column_min_loc</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-column_005fmax-1"></a>: <em>ComplexRowVector</em> <strong>column_max</strong> <em>(void) const</em></dt>
+<dt><a name="index-column_005fmax_005floc-1"></a>: <em>ComplexRowVector</em> <strong>column_max_loc</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_003c_003c-4"></a>: <em>ostream&amp;</em> <strong>operator &lt;&lt;</strong> <em>(ostream &amp;<var>os</var>, const ComplexMatrix &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_003e_003e-1"></a>: <em>istream&amp;</em> <strong>operator &gt;&gt;</strong> <em>(istream &amp;<var>is</var>, ComplexMatrix &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-ComplexColumnVector"></a>: <em></em> <strong>ComplexColumnVector</strong> <em>(void)</em></dt>
+<dt><a name="index-ComplexColumnVector-1"></a>: <em></em> <strong>ComplexColumnVector</strong> <em>(int <var>n</var>)</em></dt>
+<dt><a name="index-ComplexColumnVector-2"></a>: <em></em> <strong>ComplexColumnVector</strong> <em>(int <var>n</var>, const Complex &amp;<var>val</var>)</em></dt>
+<dt><a name="index-ComplexColumnVector-3"></a>: <em></em> <strong>ComplexColumnVector</strong> <em>(const ColumnVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-ComplexColumnVector-4"></a>: <em></em> <strong>ComplexColumnVector</strong> <em>(const Array&lt;Complex&gt; &amp;<var>a</var>)</em></dt>
+<dt><a name="index-ComplexColumnVector-5"></a>: <em></em> <strong>ComplexColumnVector</strong> <em>(const ComplexColumnVector &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_003d-5"></a>: <em>ComplexColumnVector&amp;</em> <strong>operator =</strong> <em>(const ComplexColumnVector &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_003d_003d-5"></a>: <em>int</em> <strong>operator ==</strong> <em>(const ComplexColumnVector &amp;<var>a</var>) const</em></dt>
+<dt><a name="index-operator-_0021_003d-5"></a>: <em>int</em> <strong>operator !=</strong> <em>(const ComplexColumnVector &amp;<var>a</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-insert-14"></a>: <em>ComplexColumnVector&amp;</em> <strong>insert</strong> <em>(const ColumnVector &amp;<var>a</var>, int <var>r</var>)</em></dt>
+<dt><a name="index-insert-15"></a>: <em>ComplexColumnVector&amp;</em> <strong>insert</strong> <em>(const ComplexColumnVector &amp;<var>a</var>, int <var>r</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-fill-16"></a>: <em>ComplexColumnVector&amp;</em> <strong>fill</strong> <em>(double <var>val</var>)</em></dt>
+<dt><a name="index-fill-17"></a>: <em>ComplexColumnVector&amp;</em> <strong>fill</strong> <em>(const Complex &amp;<var>val</var>)</em></dt>
+<dt><a name="index-fill-18"></a>: <em>ComplexColumnVector&amp;</em> <strong>fill</strong> <em>(double <var>val</var>, int r1, int r2)</em></dt>
+<dt><a name="index-fill-19"></a>: <em>ComplexColumnVector&amp;</em> <strong>fill</strong> <em>(const Complex &amp;<var>val</var>, int r1, int r2)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-stack-13"></a>: <em>ComplexColumnVector</em> <strong>stack</strong> <em>(const ColumnVector &amp;<var>a</var>) const</em></dt>
+<dt><a name="index-stack-14"></a>: <em>ComplexColumnVector</em> <strong>stack</strong> <em>(const ComplexColumnVector &amp;<var>a</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-transpose-5"></a>: <em>ComplexRowVector</em> <strong>transpose</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-real-1"></a>: <em>ColumnVector</em> <strong>real</strong> <em>(const ComplexColumnVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-imag-1"></a>: <em>ColumnVector</em> <strong>imag</strong> <em>(const ComplexColumnVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-conj-1"></a>: <em>ComplexColumnVector</em> <strong>conj</strong> <em>(const ComplexColumnVector &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-extract-5"></a>: <em>ComplexColumnVector</em> <strong>extract</strong> <em>(int r1, int r2) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b_003d-9"></a>: <em>ComplexColumnVector&amp;</em> <strong>operator +=</strong> <em>(const ColumnVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002d_003d-9"></a>: <em>ComplexColumnVector&amp;</em> <strong>operator -=</strong> <em>(const ColumnVector &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b_003d-10"></a>: <em>ComplexColumnVector&amp;</em> <strong>operator +=</strong> <em>(const ComplexColumnVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002d_003d-10"></a>: <em>ComplexColumnVector&amp;</em> <strong>operator -=</strong> <em>(const ComplexColumnVector &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b-30"></a>: <em>ComplexColumnVector</em> <strong>operator +</strong> <em>(const ComplexColumnVector &amp;<var>a</var>, double <var>s</var>)</em></dt>
+<dt><a name="index-operator-_002d-33"></a>: <em>ComplexColumnVector</em> <strong>operator -</strong> <em>(const ComplexColumnVector &amp;<var>a</var>, double <var>s</var>)</em></dt>
+<dt><a name="index-operator-_002a-38"></a>: <em>ComplexColumnVector</em> <strong>operator *</strong> <em>(const ComplexColumnVector &amp;<var>a</var>, double <var>s</var>)</em></dt>
+<dt><a name="index-operator-_002f-14"></a>: <em>ComplexColumnVector</em> <strong>operator /</strong> <em>(const ComplexColumnVector &amp;<var>a</var>, double <var>s</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b-31"></a>: <em>ComplexColumnVector</em> <strong>operator +</strong> <em>(double <var>s</var>, const ComplexColumnVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002d-34"></a>: <em>ComplexColumnVector</em> <strong>operator -</strong> <em>(double <var>s</var>, const ComplexColumnVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002a-39"></a>: <em>ComplexColumnVector</em> <strong>operator *</strong> <em>(double <var>s</var>, const ComplexColumnVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002f-15"></a>: <em>ComplexColumnVector</em> <strong>operator /</strong> <em>(double <var>s</var>, const ComplexColumnVector &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002a-40"></a>: <em>ComplexMatrix</em> <strong>operator *</strong> <em>(const ComplexColumnVector &amp;<var>a</var>, const ComplexRowVector &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b-32"></a>: <em>ComplexColumnVector</em> <strong>operator +</strong> <em>(const ComplexColumnVector &amp;<var>a</var>, const ColumnVector &amp;<var>b</var>)</em></dt>
+<dt><a name="index-operator-_002d-35"></a>: <em>ComplexColumnVector</em> <strong>operator -</strong> <em>(const ComplexColumnVector &amp;<var>a</var>, const ColumnVector &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-product-8"></a>: <em>ComplexColumnVector</em> <strong>product</strong> <em>(const ComplexColumnVector &amp;<var>a</var>, const ColumnVector &amp;<var>b</var>)</em></dt>
+<dt><a name="index-quotient-6"></a>: <em>ComplexColumnVector</em> <strong>quotient</strong> <em>(const ComplexColumnVector &amp;<var>a</var>, const ColumnVector &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-map-9"></a>: <em>ComplexColumnVector</em> <strong>map</strong> <em>(c_c_Mapper <var>f</var>, const ComplexColumnVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-map-10"></a>: <em>ColumnVector</em> <strong>map</strong> <em>(d_c_Mapper <var>f</var>, const ComplexColumnVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-map-11"></a>: <em>void</em> <strong>map</strong> <em>(c_c_Mapper <var>f</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-min-2"></a>: <em>Complex</em> <strong>min</strong> <em>(void) const</em></dt>
+<dt><a name="index-max-2"></a>: <em>Complex</em> <strong>max</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_003c_003c-5"></a>: <em>ostream&amp;</em> <strong>operator &lt;&lt;</strong> <em>(ostream &amp;<var>os</var>, const ComplexColumnVector &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-ComplexRowVector"></a>: <em></em> <strong>ComplexRowVector</strong> <em>(void)</em></dt>
+<dt><a name="index-ComplexRowVector-1"></a>: <em></em> <strong>ComplexRowVector</strong> <em>(int <var>n</var>)</em></dt>
+<dt><a name="index-ComplexRowVector-2"></a>: <em></em> <strong>ComplexRowVector</strong> <em>(int <var>n</var>, const Complex &amp;<var>val</var>)</em></dt>
+<dt><a name="index-ComplexRowVector-3"></a>: <em></em> <strong>ComplexRowVector</strong> <em>(const RowVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-ComplexRowVector-4"></a>: <em></em> <strong>ComplexRowVector</strong> <em>(const Array&lt;Complex&gt; &amp;<var>a</var>)</em></dt>
+<dt><a name="index-ComplexRowVector-5"></a>: <em></em> <strong>ComplexRowVector</strong> <em>(const ComplexRowVector &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_003d-6"></a>: <em>ComplexRowVector&amp;</em> <strong>operator =</strong> <em>(const ComplexRowVector &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_003d_003d-6"></a>: <em>int</em> <strong>operator ==</strong> <em>(const ComplexRowVector &amp;<var>a</var>) const</em></dt>
+<dt><a name="index-operator-_0021_003d-6"></a>: <em>int</em> <strong>operator !=</strong> <em>(const ComplexRowVector &amp;<var>a</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-insert-16"></a>: <em>ComplexRowVector&amp;</em> <strong>insert</strong> <em>(const RowVector &amp;<var>a</var>, int <var>c</var>)</em></dt>
+<dt><a name="index-insert-17"></a>: <em>ComplexRowVector&amp;</em> <strong>insert</strong> <em>(const ComplexRowVector &amp;<var>a</var>, int <var>c</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-fill-20"></a>: <em>ComplexRowVector&amp;</em> <strong>fill</strong> <em>(double <var>val</var>)</em></dt>
+<dt><a name="index-fill-21"></a>: <em>ComplexRowVector&amp;</em> <strong>fill</strong> <em>(const Complex &amp;<var>val</var>)</em></dt>
+<dt><a name="index-fill-22"></a>: <em>ComplexRowVector&amp;</em> <strong>fill</strong> <em>(double <var>val</var>, int c1, int c2)</em></dt>
+<dt><a name="index-fill-23"></a>: <em>ComplexRowVector&amp;</em> <strong>fill</strong> <em>(const Complex &amp;<var>val</var>, int c1, int c2)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-append-13"></a>: <em>ComplexRowVector</em> <strong>append</strong> <em>(const RowVector &amp;<var>a</var>) const</em></dt>
+<dt><a name="index-append-14"></a>: <em>ComplexRowVector</em> <strong>append</strong> <em>(const ComplexRowVector &amp;<var>a</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-transpose-6"></a>: <em>ComplexColumnVector</em> <strong>transpose</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-real-2"></a>: <em>RowVector</em> <strong>real</strong> <em>(const ComplexRowVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-imag-2"></a>: <em>RowVector</em> <strong>imag</strong> <em>(const ComplexRowVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-conj-2"></a>: <em>ComplexRowVector</em> <strong>conj</strong> <em>(const ComplexRowVector &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-extract-6"></a>: <em>ComplexRowVector</em> <strong>extract</strong> <em>(int c1, int c2) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b_003d-11"></a>: <em>ComplexRowVector&amp;</em> <strong>operator +=</strong> <em>(const RowVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002d_003d-11"></a>: <em>ComplexRowVector&amp;</em> <strong>operator -=</strong> <em>(const RowVector &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b_003d-12"></a>: <em>ComplexRowVector&amp;</em> <strong>operator +=</strong> <em>(const ComplexRowVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002d_003d-12"></a>: <em>ComplexRowVector&amp;</em> <strong>operator -=</strong> <em>(const ComplexRowVector &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b-33"></a>: <em>ComplexRowVector</em> <strong>operator +</strong> <em>(const ComplexRowVector &amp;<var>a</var>, double <var>s</var>)</em></dt>
+<dt><a name="index-operator-_002d-36"></a>: <em>ComplexRowVector</em> <strong>operator -</strong> <em>(const ComplexRowVector &amp;<var>a</var>, double <var>s</var>)</em></dt>
+<dt><a name="index-operator-_002a-41"></a>: <em>ComplexRowVector</em> <strong>operator *</strong> <em>(const ComplexRowVector &amp;<var>a</var>, double <var>s</var>)</em></dt>
+<dt><a name="index-operator-_002f-16"></a>: <em>ComplexRowVector</em> <strong>operator /</strong> <em>(const ComplexRowVector &amp;<var>a</var>, double <var>s</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b-34"></a>: <em>ComplexRowVector</em> <strong>operator +</strong> <em>(double <var>s</var>, const ComplexRowVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002d-37"></a>: <em>ComplexRowVector</em> <strong>operator -</strong> <em>(double <var>s</var>, const ComplexRowVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002a-42"></a>: <em>ComplexRowVector</em> <strong>operator *</strong> <em>(double <var>s</var>, const ComplexRowVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002f-17"></a>: <em>ComplexRowVector</em> <strong>operator /</strong> <em>(double <var>s</var>, const ComplexRowVector &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002a-43"></a>: <em>Complex</em> <strong>operator *</strong> <em>(const ComplexRowVector &amp;<var>a</var>, const ColumnVector &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002a-44"></a>: <em>Complex</em> <strong>operator *</strong> <em>(const ComplexRowVector &amp;<var>a</var>, const ComplexColumnVector &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002a-45"></a>: <em>ComplexRowVector</em> <strong>operator *</strong> <em>(const ComplexRowVector &amp;<var>a</var>, const ComplexMatrix &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b-35"></a>: <em>ComplexRowVector</em> <strong>operator +</strong> <em>(const ComplexRowVector &amp;<var>a</var>, const RowVector &amp;<var>b</var>)</em></dt>
+<dt><a name="index-operator-_002d-38"></a>: <em>ComplexRowVector</em> <strong>operator -</strong> <em>(const ComplexRowVector &amp;<var>a</var>, const RowVector &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-product-9"></a>: <em>ComplexRowVector</em> <strong>product</strong> <em>(const ComplexRowVector &amp;<var>a</var>, const RowVector &amp;<var>b</var>)</em></dt>
+<dt><a name="index-quotient-7"></a>: <em>ComplexRowVector</em> <strong>quotient</strong> <em>(const ComplexRowVector &amp;<var>a</var>, const RowVector &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-map-12"></a>: <em>ComplexRowVector</em> <strong>map</strong> <em>(c_c_Mapper <var>f</var>, const ComplexRowVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-map-13"></a>: <em>RowVector</em> <strong>map</strong> <em>(d_c_Mapper <var>f</var>, const ComplexRowVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-map-14"></a>: <em>void</em> <strong>map</strong> <em>(c_c_Mapper <var>f</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-min-3"></a>: <em>Complex</em> <strong>min</strong> <em>(void) const</em></dt>
+<dt><a name="index-max-3"></a>: <em>Complex</em> <strong>max</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_003c_003c-6"></a>: <em>ostream&amp;</em> <strong>operator &lt;&lt;</strong> <em>(ostream &amp;<var>os</var>, const ComplexRowVector &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-ComplexDiagMatrix"></a>: <em></em> <strong>ComplexDiagMatrix</strong> <em>(void)</em></dt>
+<dt><a name="index-ComplexDiagMatrix-1"></a>: <em></em> <strong>ComplexDiagMatrix</strong> <em>(int <var>n</var>)</em></dt>
+<dt><a name="index-ComplexDiagMatrix-2"></a>: <em></em> <strong>ComplexDiagMatrix</strong> <em>(int <var>n</var>, const Complex &amp;<var>val</var>)</em></dt>
+<dt><a name="index-ComplexDiagMatrix-3"></a>: <em></em> <strong>ComplexDiagMatrix</strong> <em>(int <var>r</var>, int <var>c</var>)</em></dt>
+<dt><a name="index-ComplexDiagMatrix-4"></a>: <em></em> <strong>ComplexDiagMatrix</strong> <em>(int <var>r</var>, int <var>c</var>, const Complex &amp;<var>val</var>)</em></dt>
+<dt><a name="index-ComplexDiagMatrix-5"></a>: <em></em> <strong>ComplexDiagMatrix</strong> <em>(const RowVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-ComplexDiagMatrix-6"></a>: <em></em> <strong>ComplexDiagMatrix</strong> <em>(const ComplexRowVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-ComplexDiagMatrix-7"></a>: <em></em> <strong>ComplexDiagMatrix</strong> <em>(const ColumnVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-ComplexDiagMatrix-8"></a>: <em></em> <strong>ComplexDiagMatrix</strong> <em>(const ComplexColumnVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-ComplexDiagMatrix-9"></a>: <em></em> <strong>ComplexDiagMatrix</strong> <em>(const DiagMatrix &amp;<var>a</var>)</em></dt>
+<dt><a name="index-ComplexDiagMatrix-10"></a>: <em></em> <strong>ComplexDiagMatrix</strong> <em>(const DiagArray&lt;Complex&gt; &amp;<var>a</var>)</em></dt>
+<dt><a name="index-ComplexDiagMatrix-11"></a>: <em></em> <strong>ComplexDiagMatrix</strong> <em>(const ComplexDiagMatrix &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_003d-7"></a>: <em>ComplexDiagMatrix&amp;</em> <strong>operator =</strong> <em>(const ComplexDiagMatrix &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_003d_003d-7"></a>: <em>int</em> <strong>operator ==</strong> <em>(const ComplexDiagMatrix &amp;<var>a</var>) const</em></dt>
+<dt><a name="index-operator-_0021_003d-7"></a>: <em>int</em> <strong>operator !=</strong> <em>(const ComplexDiagMatrix &amp;<var>a</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-fill-24"></a>: <em>ComplexDiagMatrix&amp;</em> <strong>fill</strong> <em>(double <var>val</var>)</em></dt>
+<dt><a name="index-fill-25"></a>: <em>ComplexDiagMatrix&amp;</em> <strong>fill</strong> <em>(const Complex &amp;<var>val</var>)</em></dt>
+<dt><a name="index-fill-26"></a>: <em>ComplexDiagMatrix&amp;</em> <strong>fill</strong> <em>(double <var>val</var>, int <var>beg</var>, int <var>end</var>)</em></dt>
+<dt><a name="index-fill-27"></a>: <em>ComplexDiagMatrix&amp;</em> <strong>fill</strong> <em>(const Complex &amp;<var>val</var>, int <var>beg</var>, int <var>end</var>)</em></dt>
+<dt><a name="index-fill-28"></a>: <em>ComplexDiagMatrix&amp;</em> <strong>fill</strong> <em>(const ColumnVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-fill-29"></a>: <em>ComplexDiagMatrix&amp;</em> <strong>fill</strong> <em>(const ComplexColumnVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-fill-30"></a>: <em>ComplexDiagMatrix&amp;</em> <strong>fill</strong> <em>(const RowVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-fill-31"></a>: <em>ComplexDiagMatrix&amp;</em> <strong>fill</strong> <em>(const ComplexRowVector &amp;<var>a</var>)</em></dt>
+<dt><a name="index-fill-32"></a>: <em>ComplexDiagMatrix&amp;</em> <strong>fill</strong> <em>(const ColumnVector &amp;<var>a</var>, int <var>beg</var>)</em></dt>
+<dt><a name="index-fill-33"></a>: <em>ComplexDiagMatrix&amp;</em> <strong>fill</strong> <em>(const ComplexColumnVector &amp;<var>a</var>, int <var>beg</var>)</em></dt>
+<dt><a name="index-fill-34"></a>: <em>ComplexDiagMatrix&amp;</em> <strong>fill</strong> <em>(const RowVector &amp;<var>a</var>, int <var>beg</var>)</em></dt>
+<dt><a name="index-fill-35"></a>: <em>ComplexDiagMatrix&amp;</em> <strong>fill</strong> <em>(const ComplexRowVector &amp;<var>a</var>, int <var>beg</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-transpose-7"></a>: <em>ComplexDiagMatrix</em> <strong>transpose</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-real-3"></a>: <em>DiagMatrix</em> <strong>real</strong> <em>(const ComplexDiagMatrix &amp;<var>a</var>)</em></dt>
+<dt><a name="index-imag-3"></a>: <em>DiagMatrix</em> <strong>imag</strong> <em>(const ComplexDiagMatrix &amp;<var>a</var>)</em></dt>
+<dt><a name="index-conj-3"></a>: <em>ComplexDiagMatrix</em> <strong>conj</strong> <em>(const ComplexDiagMatrix &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-extract-7"></a>: <em>ComplexMatrix</em> <strong>extract</strong> <em>(int r1, int c1, int r2, int c2) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-row-6"></a>: <em>ComplexRowVector</em> <strong>row</strong> <em>(int <var>i</var>) const</em></dt>
+<dt><a name="index-row-7"></a>: <em>ComplexRowVector</em> <strong>row</strong> <em>(char *s) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-column-6"></a>: <em>ComplexColumnVector</em> <strong>column</strong> <em>(int <var>i</var>) const</em></dt>
+<dt><a name="index-column-7"></a>: <em>ComplexColumnVector</em> <strong>column</strong> <em>(char *s) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-inverse-8"></a>: <em>ComplexDiagMatrix</em> <strong>inverse</strong> <em>(int &amp;<var>info</var>) const</em></dt>
+<dt><a name="index-inverse-9"></a>: <em>ComplexDiagMatrix</em> <strong>inverse</strong> <em>(void) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b_003d-13"></a>: <em>ComplexDiagMatrix&amp;</em> <strong>operator +=</strong> <em>(const DiagMatrix &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002d_003d-13"></a>: <em>ComplexDiagMatrix&amp;</em> <strong>operator -=</strong> <em>(const DiagMatrix &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b_003d-14"></a>: <em>ComplexDiagMatrix&amp;</em> <strong>operator +=</strong> <em>(const ComplexDiagMatrix &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002d_003d-14"></a>: <em>ComplexDiagMatrix&amp;</em> <strong>operator -=</strong> <em>(const ComplexDiagMatrix &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b-36"></a>: <em>ComplexMatrix</em> <strong>operator +</strong> <em>(const ComplexDiagMatrix &amp;<var>a</var>, double <var>s</var>)</em></dt>
+<dt><a name="index-operator-_002d-39"></a>: <em>ComplexMatrix</em> <strong>operator -</strong> <em>(const ComplexDiagMatrix &amp;<var>a</var>, double <var>s</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b-37"></a>: <em>ComplexMatrix</em> <strong>operator +</strong> <em>(const ComplexDiagMatrix &amp;<var>a</var>, const Complex &amp;<var>s</var>)</em></dt>
+<dt><a name="index-operator-_002d-40"></a>: <em>ComplexMatrix</em> <strong>operator -</strong> <em>(const ComplexDiagMatrix &amp;<var>a</var>, const Complex &amp;<var>s</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002a-46"></a>: <em>ComplexDiagMatrix</em> <strong>operator *</strong> <em>(const ComplexDiagMatrix &amp;<var>a</var>, double <var>s</var>)</em></dt>
+<dt><a name="index-operator-_002f-18"></a>: <em>ComplexDiagMatrix</em> <strong>operator /</strong> <em>(const ComplexDiagMatrix &amp;<var>a</var>, double <var>s</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b-38"></a>: <em>ComplexMatrix</em> <strong>operator +</strong> <em>(double <var>s</var>, const ComplexDiagMatrix &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002d-41"></a>: <em>ComplexMatrix</em> <strong>operator -</strong> <em>(double <var>s</var>, const ComplexDiagMatrix &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b-39"></a>: <em>ComplexMatrix</em> <strong>operator +</strong> <em>(const Complex &amp;<var>s</var>, const ComplexDiagMatrix &amp;<var>a</var>)</em></dt>
+<dt><a name="index-operator-_002d-42"></a>: <em>ComplexMatrix</em> <strong>operator -</strong> <em>(const Complex &amp;<var>s</var>, const ComplexDiagMatrix &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002a-47"></a>: <em>ComplexDiagMatrix</em> <strong>operator *</strong> <em>(double <var>s</var>, const ComplexDiagMatrix &amp;<var>a</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002a-48"></a>: <em>ComplexColumnVector</em> <strong>operator *</strong> <em>(const ComplexDiagMatrix &amp;<var>a</var>, const ColumnVector &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002a-49"></a>: <em>ComplexColumnVector</em> <strong>operator *</strong> <em>(const ComplexDiagMatrix &amp;<var>a</var>, const ComplexColumnVector &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b-40"></a>: <em>ComplexDiagMatrix</em> <strong>operator +</strong> <em>(const ComplexDiagMatrix &amp;<var>a</var>, const DiagMatrix &amp;<var>b</var>)</em></dt>
+<dt><a name="index-operator-_002d-43"></a>: <em>ComplexDiagMatrix</em> <strong>operator -</strong> <em>(const ComplexDiagMatrix &amp;<var>a</var>, const DiagMatrix &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-product-10"></a>: <em>ComplexDiagMatrix</em> <strong>product</strong> <em>(const ComplexDiagMatrix &amp;<var>a</var>, const DiagMatrix &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b-41"></a>: <em>ComplexMatrix</em> <strong>operator +</strong> <em>(const ComplexDiagMatrix &amp;<var>a</var>, const Matrix &amp;<var>b</var>)</em></dt>
+<dt><a name="index-operator-_002d-44"></a>: <em>ComplexMatrix</em> <strong>operator -</strong> <em>(const ComplexDiagMatrix &amp;<var>a</var>, const Matrix &amp;<var>b</var>)</em></dt>
+<dt><a name="index-operator-_002a-50"></a>: <em>ComplexMatrix</em> <strong>operator *</strong> <em>(const ComplexDiagMatrix &amp;<var>a</var>, const Matrix &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_002b-42"></a>: <em>ComplexMatrix</em> <strong>operator +</strong> <em>(const ComplexDiagMatrix &amp;<var>a</var>, const ComplexMatrix &amp;<var>b</var>)</em></dt>
+<dt><a name="index-operator-_002d-45"></a>: <em>ComplexMatrix</em> <strong>operator -</strong> <em>(const ComplexDiagMatrix &amp;<var>a</var>, const ComplexMatrix &amp;<var>b</var>)</em></dt>
+<dt><a name="index-operator-_002a-51"></a>: <em>ComplexMatrix</em> <strong>operator *</strong> <em>(const ComplexDiagMatrix &amp;<var>a</var>, const ComplexMatrix &amp;<var>b</var>)</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-diag-6"></a>: <em>ComplexColumnVector</em> <strong>diag</strong> <em>(void) const</em></dt>
+<dt><a name="index-diag-7"></a>: <em>ComplexColumnVector</em> <strong>diag</strong> <em>(int <var>k</var>) const</em></dt>
+</dl>
+
+<dl>
+<dt><a name="index-operator-_003c_003c-7"></a>: <em>ostream&amp;</em> <strong>operator &lt;&lt;</strong> <em>(ostream &amp;<var>os</var>, const ComplexDiagMatrix &amp;<var>a</var>)</em></dt>
+</dl>
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Matrix-Factorizations.html#Matrix-Factorizations" accesskey="n" rel="next">Matrix Factorizations</a>, Previous: <a href="Arrays.html#Arrays" accesskey="p" rel="prev">Arrays</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
 </div>
 
-<h2 class="chapter">4 Matrix and Vector Operations</h2>
 
-<p><a name="index-matrix-manipulations-103"></a><a name="index-vector-manipulations-104"></a>
 
-<div class="defun">
-&mdash; :  <b>Matrix</b> (<var>void</var>)<var><a name="index-Matrix-105"></a></var><br>
-&mdash; :  <b>Matrix</b> (<var>int r, int c</var>)<var><a name="index-Matrix-106"></a></var><br>
-&mdash; :  <b>Matrix</b> (<var>int r, int c, double val</var>)<var><a name="index-Matrix-107"></a></var><br>
-&mdash; :  <b>Matrix</b> (<var>const Array2&lt;double&gt; &amp;a</var>)<var><a name="index-Matrix-108"></a></var><br>
-&mdash; :  <b>Matrix</b> (<var>const Matrix &amp;a</var>)<var><a name="index-Matrix-109"></a></var><br>
-&mdash; :  <b>Matrix</b> (<var>const DiagArray&lt;double&gt; &amp;a</var>)<var><a name="index-Matrix-110"></a></var><br>
-&mdash; :  <b>Matrix</b> (<var>const DiagMatrix &amp;a</var>)<var><a name="index-Matrix-111"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : Matrix&amp; <b>operator =</b> (<var>const Matrix &amp;a</var>)<var><a name="index-operator-_003d-112"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : int <b>operator ==</b> (<var>const Matrix &amp;a</var>)<var> const<a name="index-operator-_003d_003d-113"></a></var><br>
-&mdash; : int <b>operator !=</b> (<var>const Matrix &amp;a</var>)<var> const<a name="index-operator-_0021_003d-114"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : Matrix&amp; <b>insert</b> (<var>const Matrix &amp;a, int r, int c</var>)<var><a name="index-insert-115"></a></var><br>
-&mdash; : Matrix&amp; <b>insert</b> (<var>const RowVector &amp;a, int r, int c</var>)<var><a name="index-insert-116"></a></var><br>
-&mdash; : Matrix&amp; <b>insert</b> (<var>const ColumnVector &amp;a, int r, int c</var>)<var><a name="index-insert-117"></a></var><br>
-&mdash; : Matrix&amp; <b>insert</b> (<var>const DiagMatrix &amp;a, int r, int c</var>)<var><a name="index-insert-118"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : Matrix&amp; <b>fill</b> (<var>double val</var>)<var><a name="index-fill-119"></a></var><br>
-&mdash; : Matrix&amp; <b>fill</b> (<var>double val, int r1, int c1, int r2, int c2</var>)<var><a name="index-fill-120"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : Matrix <b>append</b> (<var>const Matrix &amp;a</var>)<var> const<a name="index-append-121"></a></var><br>
-&mdash; : Matrix <b>append</b> (<var>const RowVector &amp;a</var>)<var> const<a name="index-append-122"></a></var><br>
-&mdash; : Matrix <b>append</b> (<var>const ColumnVector &amp;a</var>)<var> const<a name="index-append-123"></a></var><br>
-&mdash; : Matrix <b>append</b> (<var>const DiagMatrix &amp;a</var>)<var> const<a name="index-append-124"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : Matrix <b>stack</b> (<var>const Matrix &amp;a</var>)<var> const<a name="index-stack-125"></a></var><br>
-&mdash; : Matrix <b>stack</b> (<var>const RowVector &amp;a</var>)<var> const<a name="index-stack-126"></a></var><br>
-&mdash; : Matrix <b>stack</b> (<var>const ColumnVector &amp;a</var>)<var> const<a name="index-stack-127"></a></var><br>
-&mdash; : Matrix <b>stack</b> (<var>const DiagMatrix &amp;a</var>)<var> const<a name="index-stack-128"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : Matrix <b>transpose</b> (<var>void</var>)<var> const<a name="index-transpose-129"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : Matrix <b>extract</b> (<var>int r1, int c1, int r2, int c2</var>)<var> const<a name="index-extract-130"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : RowVector <b>row</b> (<var>int i</var>)<var> const<a name="index-row-131"></a></var><br>
-&mdash; : RowVector <b>row</b> (<var>char *s</var>)<var> const<a name="index-row-132"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ColumnVector <b>column</b> (<var>int i</var>)<var> const<a name="index-column-133"></a></var><br>
-&mdash; : ColumnVector <b>column</b> (<var>char *s</var>)<var> const<a name="index-column-134"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : Matrix <b>inverse</b> (<var>void</var>)<var> const<a name="index-inverse-135"></a></var><br>
-&mdash; : Matrix <b>inverse</b> (<var>int &amp;info</var>)<var> const<a name="index-inverse-136"></a></var><br>
-&mdash; : Matrix <b>inverse</b> (<var>int &amp;info, double &amp;rcond</var>)<var> const<a name="index-inverse-137"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>fourier</b> (<var>void</var>)<var> const<a name="index-fourier-138"></a></var><br>
-&mdash; : ComplexMatrix <b>ifourier</b> (<var>void</var>)<var> const<a name="index-ifourier-139"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : DET <b>determinant</b> (<var>void</var>)<var> const<a name="index-determinant-140"></a></var><br>
-&mdash; : DET <b>determinant</b> (<var>int &amp;info</var>)<var> const<a name="index-determinant-141"></a></var><br>
-&mdash; : DET <b>determinant</b> (<var>int &amp;info, double &amp;rcond</var>)<var> const<a name="index-determinant-142"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : Matrix <b>solve</b> (<var>const Matrix &amp;b</var>)<var> const<a name="index-solve-143"></a></var><br>
-&mdash; : Matrix <b>solve</b> (<var>const Matrix &amp;b, int &amp;info</var>)<var> const<a name="index-solve-144"></a></var><br>
-&mdash; : Matrix <b>solve</b> (<var>const Matrix &amp;b, int &amp;info, double &amp;rcond</var>)<var> const<a name="index-solve-145"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>solve</b> (<var>const ComplexMatrix &amp;b</var>)<var> const<a name="index-solve-146"></a></var><br>
-&mdash; : ComplexMatrix <b>solve</b> (<var>const ComplexMatrix &amp;b, int &amp;info</var>)<var> const<a name="index-solve-147"></a></var><br>
-&mdash; : ComplexMatrix <b>solve</b> (<var>const ComplexMatrix &amp;b, int &amp;info, double &amp;rcond</var>)<var> const<a name="index-solve-148"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ColumnVector <b>solve</b> (<var>const ColumnVector &amp;b</var>)<var> const<a name="index-solve-149"></a></var><br>
-&mdash; : ColumnVector <b>solve</b> (<var>const ColumnVector &amp;b, int &amp;info</var>)<var> const<a name="index-solve-150"></a></var><br>
-&mdash; : ColumnVector <b>solve</b> (<var>const ColumnVector &amp;b, int &amp;info, double &amp;rcond</var>)<var> const<a name="index-solve-151"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexColumnVector <b>solve</b> (<var>const ComplexColumnVector &amp;b</var>)<var> const<a name="index-solve-152"></a></var><br>
-&mdash; : ComplexColumnVector <b>solve</b> (<var>const ComplexColumnVector &amp;b, int &amp;info</var>)<var> const<a name="index-solve-153"></a></var><br>
-&mdash; : ComplexColumnVector <b>solve</b> (<var>const ComplexColumnVector &amp;b, int &amp;info, double &amp;rcond</var>)<var> const<a name="index-solve-154"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : Matrix <b>lssolve</b> (<var>const Matrix &amp;b</var>)<var> const<a name="index-lssolve-155"></a></var><br>
-&mdash; : Matrix <b>lssolve</b> (<var>const Matrix &amp;b, int &amp;info</var>)<var> const<a name="index-lssolve-156"></a></var><br>
-&mdash; : Matrix <b>lssolve</b> (<var>const Matrix &amp;b, int &amp;info, int &amp;rank</var>)<var> const<a name="index-lssolve-157"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>lssolve</b> (<var>const ComplexMatrix &amp;b</var>)<var> const<a name="index-lssolve-158"></a></var><br>
-&mdash; : ComplexMatrix <b>lssolve</b> (<var>const ComplexMatrix &amp;b, int &amp;info</var>)<var> const<a name="index-lssolve-159"></a></var><br>
-&mdash; : ComplexMatrix <b>lssolve</b> (<var>const ComplexMatrix &amp;b, int &amp;info, int &amp;rank</var>)<var> const<a name="index-lssolve-160"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ColumnVector <b>lssolve</b> (<var>const ColumnVector &amp;b</var>)<var> const<a name="index-lssolve-161"></a></var><br>
-&mdash; : ColumnVector <b>lssolve</b> (<var>const ColumnVector &amp;b, int &amp;info</var>)<var> const<a name="index-lssolve-162"></a></var><br>
-&mdash; : ColumnVector <b>lssolve</b> (<var>const ColumnVector &amp;b, int &amp;info, int &amp;rank</var>)<var> const<a name="index-lssolve-163"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexColumnVector <b>lssolve</b> (<var>const ComplexColumnVector &amp;b</var>)<var> const<a name="index-lssolve-164"></a></var><br>
-&mdash; : ComplexColumnVector <b>lssolve</b> (<var>const ComplexColumnVector &amp;b, int &amp;info</var>)<var> const<a name="index-lssolve-165"></a></var><br>
-&mdash; : ComplexColumnVector <b>lssolve</b> (<var>const ComplexColumnVector &amp;b, int &amp;info, int &amp;rank</var>)<var> const<a name="index-lssolve-166"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : Matrix&amp; <b>operator +=</b> (<var>const Matrix &amp;a</var>)<var><a name="index-operator-_002b_003d-167"></a></var><br>
-&mdash; : Matrix&amp; <b>operator -=</b> (<var>const Matrix &amp;a</var>)<var><a name="index-operator-_002d_003d-168"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : Matrix&amp; <b>operator +=</b> (<var>const DiagMatrix &amp;a</var>)<var><a name="index-operator-_002b_003d-169"></a></var><br>
-&mdash; : Matrix&amp; <b>operator -=</b> (<var>const DiagMatrix &amp;a</var>)<var><a name="index-operator-_002d_003d-170"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : Matrix <b>operator !</b> (<var>void</var>)<var> const<a name="index-operator-_0021-171"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>operator +</b> (<var>const Matrix &amp;a, const Complex &amp;s</var>)<var><a name="index-operator-_002b-172"></a></var><br>
-&mdash; : ComplexMatrix <b>operator -</b> (<var>const Matrix &amp;a, const Complex &amp;s</var>)<var><a name="index-operator-_002d-173"></a></var><br>
-&mdash; : ComplexMatrix <b>operator *</b> (<var>const Matrix &amp;a, const Complex &amp;s</var>)<var><a name="index-operator-_002a-174"></a></var><br>
-&mdash; : ComplexMatrix <b>operator /</b> (<var>const Matrix &amp;a, const Complex &amp;s</var>)<var><a name="index-operator-_002f-175"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>operator +</b> (<var>const Complex &amp;s, const Matrix &amp;a</var>)<var><a name="index-operator-_002b-176"></a></var><br>
-&mdash; : ComplexMatrix <b>operator -</b> (<var>const Complex &amp;s, const Matrix &amp;a</var>)<var><a name="index-operator-_002d-177"></a></var><br>
-&mdash; : ComplexMatrix <b>operator *</b> (<var>const Complex &amp;s, const Matrix &amp;a</var>)<var><a name="index-operator-_002a-178"></a></var><br>
-&mdash; : ComplexMatrix <b>operator /</b> (<var>const Complex &amp;s, const Matrix &amp;a</var>)<var><a name="index-operator-_002f-179"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ColumnVector <b>operator *</b> (<var>const Matrix &amp;a, const ColumnVector &amp;b</var>)<var><a name="index-operator-_002a-180"></a></var><br>
-&mdash; : ComplexColumnVector <b>operator *</b> (<var>const Matrix &amp;a, const ComplexColumnVector &amp;b</var>)<var><a name="index-operator-_002a-181"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : Matrix <b>operator +</b> (<var>const Matrix &amp;a, const DiagMatrix &amp;b</var>)<var><a name="index-operator-_002b-182"></a></var><br>
-&mdash; : Matrix <b>operator -</b> (<var>const Matrix &amp;a, const DiagMatrix &amp;b</var>)<var><a name="index-operator-_002d-183"></a></var><br>
-&mdash; : Matrix <b>operator *</b> (<var>const Matrix &amp;a, const DiagMatrix &amp;b</var>)<var><a name="index-operator-_002a-184"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>operator +</b> (<var>const Matrix &amp;a, const ComplexDiagMatrix &amp;b</var>)<var><a name="index-operator-_002b-185"></a></var><br>
-&mdash; : ComplexMatrix <b>operator -</b> (<var>const Matrix &amp;a, const ComplexDiagMatrix &amp;b</var>)<var><a name="index-operator-_002d-186"></a></var><br>
-&mdash; : ComplexMatrix <b>operator *</b> (<var>const Matrix &amp;a, const ComplexDiagMatrix &amp;b</var>)<var><a name="index-operator-_002a-187"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : Matrix <b>operator *</b> (<var>const Matrix &amp;a, const Matrix &amp;b</var>)<var><a name="index-operator-_002a-188"></a></var><br>
-&mdash; : ComplexMatrix <b>operator *</b> (<var>const Matrix &amp;a, const ComplexMatrix &amp;b</var>)<var><a name="index-operator-_002a-189"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>operator +</b> (<var>const Matrix &amp;a, const ComplexMatrix &amp;b</var>)<var><a name="index-operator-_002b-190"></a></var><br>
-&mdash; : ComplexMatrix <b>operator -</b> (<var>const Matrix &amp;a, const ComplexMatrix &amp;b</var>)<var><a name="index-operator-_002d-191"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>product</b> (<var>const Matrix &amp;a, const ComplexMatrix &amp;b</var>)<var><a name="index-product-192"></a></var><br>
-&mdash; : ComplexMatrix <b>quotient</b> (<var>const Matrix &amp;a, const ComplexMatrix &amp;b</var>)<var><a name="index-quotient-193"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : Matrix <b>map</b> (<var>d_d_Mapper f, const Matrix &amp;a</var>)<var><a name="index-map-194"></a></var><br>
-&mdash; : void <b>map</b> (<var>d_d_Mapper f</var>)<var><a name="index-map-195"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : Matrix <b>all</b> (<var>void</var>)<var> const<a name="index-all-196"></a></var><br>
-&mdash; : Matrix <b>any</b> (<var>void</var>)<var> const<a name="index-any-197"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : Matrix <b>cumprod</b> (<var>void</var>)<var> const<a name="index-cumprod-198"></a></var><br>
-&mdash; : Matrix <b>cumsum</b> (<var>void</var>)<var> const<a name="index-cumsum-199"></a></var><br>
-&mdash; : Matrix <b>prod</b> (<var>void</var>)<var> const<a name="index-prod-200"></a></var><br>
-&mdash; : Matrix <b>sum</b> (<var>void</var>)<var> const<a name="index-sum-201"></a></var><br>
-&mdash; : Matrix <b>sumsq</b> (<var>void</var>)<var> const<a name="index-sumsq-202"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ColumnVector <b>diag</b> (<var>void</var>)<var> const<a name="index-diag-203"></a></var><br>
-&mdash; : ColumnVector <b>diag</b> (<var>int k</var>)<var> const<a name="index-diag-204"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ColumnVector <b>row_min</b> (<var>void</var>)<var> const<a name="index-row_005fmin-205"></a></var><br>
-&mdash; : ColumnVector <b>row_min_loc</b> (<var>void</var>)<var> const<a name="index-row_005fmin_005floc-206"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ColumnVector <b>row_max</b> (<var>void</var>)<var> const<a name="index-row_005fmax-207"></a></var><br>
-&mdash; : ColumnVector <b>row_max_loc</b> (<var>void</var>)<var> const<a name="index-row_005fmax_005floc-208"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : RowVector <b>column_min</b> (<var>void</var>)<var> const<a name="index-column_005fmin-209"></a></var><br>
-&mdash; : RowVector <b>column_min_loc</b> (<var>void</var>)<var> const<a name="index-column_005fmin_005floc-210"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : RowVector <b>column_max</b> (<var>void</var>)<var> const<a name="index-column_005fmax-211"></a></var><br>
-&mdash; : RowVector <b>column_max_loc</b> (<var>void</var>)<var> const<a name="index-column_005fmax_005floc-212"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ostream&amp; <b>operator &lt;&lt;</b> (<var>ostream &amp;os, const Matrix &amp;a</var>)<var><a name="index-operator-_003c_003c-213"></a></var><br>
-&mdash; : istream&amp; <b>operator &gt;&gt;</b> (<var>istream &amp;is, Matrix &amp;a</var>)<var><a name="index-operator-_003e_003e-214"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; :  <b>ColumnVector</b> (<var>void</var>)<var><a name="index-ColumnVector-215"></a></var><br>
-&mdash; :  <b>ColumnVector</b> (<var>int n</var>)<var><a name="index-ColumnVector-216"></a></var><br>
-&mdash; :  <b>ColumnVector</b> (<var>int n, double val</var>)<var><a name="index-ColumnVector-217"></a></var><br>
-&mdash; :  <b>ColumnVector</b> (<var>const Array&lt;double&gt; &amp;a</var>)<var><a name="index-ColumnVector-218"></a></var><br>
-&mdash; :  <b>ColumnVector</b> (<var>const ColumnVector &amp;a</var>)<var><a name="index-ColumnVector-219"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ColumnVector&amp; <b>operator =</b> (<var>const ColumnVector &amp;a</var>)<var><a name="index-operator-_003d-220"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : int <b>operator ==</b> (<var>const ColumnVector &amp;a</var>)<var> const<a name="index-operator-_003d_003d-221"></a></var><br>
-&mdash; : int <b>operator !=</b> (<var>const ColumnVector &amp;a</var>)<var> const<a name="index-operator-_0021_003d-222"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ColumnVector&amp; <b>insert</b> (<var>const ColumnVector &amp;a, int r</var>)<var><a name="index-insert-223"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ColumnVector&amp; <b>fill</b> (<var>double val</var>)<var><a name="index-fill-224"></a></var><br>
-&mdash; : ColumnVector&amp; <b>fill</b> (<var>double val, int r1, int r2</var>)<var><a name="index-fill-225"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ColumnVector <b>stack</b> (<var>const ColumnVector &amp;a</var>)<var> const<a name="index-stack-226"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : RowVector <b>transpose</b> (<var>void</var>)<var> const<a name="index-transpose-227"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ColumnVector <b>extract</b> (<var>int r1, int r2</var>)<var> const<a name="index-extract-228"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ColumnVector&amp; <b>operator +=</b> (<var>const ColumnVector &amp;a</var>)<var><a name="index-operator-_002b_003d-229"></a></var><br>
-&mdash; : ColumnVector&amp; <b>operator -=</b> (<var>const ColumnVector &amp;a</var>)<var><a name="index-operator-_002d_003d-230"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexColumnVector <b>operator +</b> (<var>const ColumnVector &amp;a, const Complex &amp;s</var>)<var><a name="index-operator-_002b-231"></a></var><br>
-&mdash; : ComplexColumnVector <b>operator -</b> (<var>const ColumnVector &amp;a, const Complex &amp;s</var>)<var><a name="index-operator-_002d-232"></a></var><br>
-&mdash; : ComplexColumnVector <b>operator *</b> (<var>const ColumnVector &amp;a, const Complex &amp;s</var>)<var><a name="index-operator-_002a-233"></a></var><br>
-&mdash; : ComplexColumnVector <b>operator /</b> (<var>const ColumnVector &amp;a, const Complex &amp;s</var>)<var><a name="index-operator-_002f-234"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexColumnVector <b>operator +</b> (<var>const Complex &amp;s, const ColumnVector &amp;a</var>)<var><a name="index-operator-_002b-235"></a></var><br>
-&mdash; : ComplexColumnVector <b>operator -</b> (<var>const Complex &amp;s, const ColumnVector &amp;a</var>)<var><a name="index-operator-_002d-236"></a></var><br>
-&mdash; : ComplexColumnVector <b>operator *</b> (<var>const Complex &amp;s, const ColumnVector &amp;a</var>)<var><a name="index-operator-_002a-237"></a></var><br>
-&mdash; : ComplexColumnVector <b>operator /</b> (<var>const Complex &amp;s, const ColumnVector &amp;a</var>)<var><a name="index-operator-_002f-238"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : Matrix <b>operator *</b> (<var>const ColumnVector &amp;a, const RowVector &amp;a</var>)<var><a name="index-operator-_002a-239"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>operator *</b> (<var>const ColumnVector &amp;a, const ComplexRowVector &amp;b</var>)<var><a name="index-operator-_002a-240"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexColumnVector <b>operator +</b> (<var>const ComplexColumnVector &amp;a, const ComplexColumnVector &amp;b</var>)<var><a name="index-operator-_002b-241"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexColumnVector <b>operator -</b> (<var>const ComplexColumnVector &amp;a, const ComplexColumnVector &amp;b</var>)<var><a name="index-operator-_002d-242"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexColumnVector <b>product</b> (<var>const ComplexColumnVector &amp;a, const ComplexColumnVector &amp;b</var>)<var><a name="index-product-243"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexColumnVector <b>quotient</b> (<var>const ComplexColumnVector &amp;a, const ComplexColumnVector &amp;b</var>)<var><a name="index-quotient-244"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ColumnVector <b>map</b> (<var>d_d_Mapper f, const ColumnVector &amp;a</var>)<var><a name="index-map-245"></a></var><br>
-&mdash; : void <b>map</b> (<var>d_d_Mapper f</var>)<var><a name="index-map-246"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : double <b>min</b> (<var>void</var>)<var> const<a name="index-min-247"></a></var><br>
-&mdash; : double <b>max</b> (<var>void</var>)<var> const<a name="index-max-248"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ostream&amp; <b>operator &lt;&lt;</b> (<var>ostream &amp;os, const ColumnVector &amp;a</var>)<var><a name="index-operator-_003c_003c-249"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; :  <b>RowVector</b> (<var>void</var>)<var><a name="index-RowVector-250"></a></var><br>
-&mdash; :  <b>RowVector</b> (<var>int n</var>)<var><a name="index-RowVector-251"></a></var><br>
-&mdash; :  <b>RowVector</b> (<var>int n, double val</var>)<var><a name="index-RowVector-252"></a></var><br>
-&mdash; :  <b>RowVector</b> (<var>const Array&lt;double&gt; &amp;a</var>)<var><a name="index-RowVector-253"></a></var><br>
-&mdash; :  <b>RowVector</b> (<var>const RowVector &amp;a</var>)<var><a name="index-RowVector-254"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : RowVector&amp; <b>operator =</b> (<var>const RowVector &amp;a</var>)<var><a name="index-operator-_003d-255"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : int <b>operator ==</b> (<var>const RowVector &amp;a</var>)<var> const<a name="index-operator-_003d_003d-256"></a></var><br>
-&mdash; : int <b>operator !=</b> (<var>const RowVector &amp;a</var>)<var> const<a name="index-operator-_0021_003d-257"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : RowVector&amp; <b>insert</b> (<var>const RowVector &amp;a, int c</var>)<var><a name="index-insert-258"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : RowVector&amp; <b>fill</b> (<var>double val</var>)<var><a name="index-fill-259"></a></var><br>
-&mdash; : RowVector&amp; <b>fill</b> (<var>double val, int c1, int c2</var>)<var><a name="index-fill-260"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : RowVector <b>append</b> (<var>const RowVector &amp;a</var>)<var> const<a name="index-append-261"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ColumnVector <b>transpose</b> (<var>void</var>)<var> const<a name="index-transpose-262"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : RowVector <b>extract</b> (<var>int c1, int c2</var>)<var> const<a name="index-extract-263"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : RowVector&amp; <b>operator +=</b> (<var>const RowVector &amp;a</var>)<var><a name="index-operator-_002b_003d-264"></a></var><br>
-&mdash; : RowVector&amp; <b>operator -=</b> (<var>const RowVector &amp;a</var>)<var><a name="index-operator-_002d_003d-265"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexRowVector <b>operator +</b> (<var>const RowVector &amp;a, const Complex &amp;s</var>)<var><a name="index-operator-_002b-266"></a></var><br>
-&mdash; : ComplexRowVector <b>operator -</b> (<var>const RowVector &amp;a, const Complex &amp;s</var>)<var><a name="index-operator-_002d-267"></a></var><br>
-&mdash; : ComplexRowVector <b>operator *</b> (<var>const RowVector &amp;a, const Complex &amp;s</var>)<var><a name="index-operator-_002a-268"></a></var><br>
-&mdash; : ComplexRowVector <b>operator /</b> (<var>const RowVector &amp;a, const Complex &amp;s</var>)<var><a name="index-operator-_002f-269"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexRowVector <b>operator +</b> (<var>const Complex &amp;s, const RowVector &amp;a</var>)<var><a name="index-operator-_002b-270"></a></var><br>
-&mdash; : ComplexRowVector <b>operator -</b> (<var>const Complex &amp;s, const RowVector &amp;a</var>)<var><a name="index-operator-_002d-271"></a></var><br>
-&mdash; : ComplexRowVector <b>operator *</b> (<var>const Complex &amp;s, const RowVector &amp;a</var>)<var><a name="index-operator-_002a-272"></a></var><br>
-&mdash; : ComplexRowVector <b>operator /</b> (<var>const Complex &amp;s, const RowVector &amp;a</var>)<var><a name="index-operator-_002f-273"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : double <b>operator *</b> (<var>const RowVector &amp;a, ColumnVector &amp;b</var>)<var><a name="index-operator-_002a-274"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : Complex <b>operator *</b> (<var>const RowVector &amp;a, const ComplexColumnVector &amp;b</var>)<var><a name="index-operator-_002a-275"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : RowVector <b>operator *</b> (<var>const RowVector &amp;a, const Matrix &amp;b</var>)<var><a name="index-operator-_002a-276"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexRowVector <b>operator *</b> (<var>const RowVector &amp;a, const ComplexMatrix &amp;b</var>)<var><a name="index-operator-_002a-277"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexRowVector <b>operator +</b> (<var>const RowVector &amp;a, const ComplexRowVector &amp;b</var>)<var><a name="index-operator-_002b-278"></a></var><br>
-&mdash; : ComplexRowVector <b>operator -</b> (<var>const RowVector &amp;a, const ComplexRowVector &amp;b</var>)<var><a name="index-operator-_002d-279"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexRowVector <b>product</b> (<var>const RowVector &amp;a, const ComplexRowVector &amp;b</var>)<var><a name="index-product-280"></a></var><br>
-&mdash; : ComplexRowVector <b>quotient</b> (<var>const RowVector &amp;a, const ComplexRowVector &amp;b</var>)<var><a name="index-quotient-281"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : RowVector <b>map</b> (<var>d_d_Mapper f, const RowVector &amp;a</var>)<var><a name="index-map-282"></a></var><br>
-&mdash; : void <b>map</b> (<var>d_d_Mapper f</var>)<var><a name="index-map-283"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : double <b>min</b> (<var>void</var>)<var> const<a name="index-min-284"></a></var><br>
-&mdash; : double <b>max</b> (<var>void</var>)<var> const<a name="index-max-285"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ostream&amp; <b>operator &lt;&lt;</b> (<var>ostream &amp;os, const RowVector &amp;a</var>)<var><a name="index-operator-_003c_003c-286"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; :  <b>DiagMatrix</b> (<var>void</var>)<var><a name="index-DiagMatrix-287"></a></var><br>
-&mdash; :  <b>DiagMatrix</b> (<var>int n</var>)<var><a name="index-DiagMatrix-288"></a></var><br>
-&mdash; :  <b>DiagMatrix</b> (<var>int n, double val</var>)<var><a name="index-DiagMatrix-289"></a></var><br>
-&mdash; :  <b>DiagMatrix</b> (<var>int r, int c</var>)<var><a name="index-DiagMatrix-290"></a></var><br>
-&mdash; :  <b>DiagMatrix</b> (<var>int r, int c, double val</var>)<var><a name="index-DiagMatrix-291"></a></var><br>
-&mdash; :  <b>DiagMatrix</b> (<var>const RowVector &amp;a</var>)<var><a name="index-DiagMatrix-292"></a></var><br>
-&mdash; :  <b>DiagMatrix</b> (<var>const ColumnVector &amp;a</var>)<var><a name="index-DiagMatrix-293"></a></var><br>
-&mdash; :  <b>DiagMatrix</b> (<var>const DiagArray&lt;double&gt; &amp;a</var>)<var><a name="index-DiagMatrix-294"></a></var><br>
-&mdash; :  <b>DiagMatrix</b> (<var>const DiagMatrix &amp;a</var>)<var><a name="index-DiagMatrix-295"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : DiagMatrix&amp; <b>operator =</b> (<var>const DiagMatrix &amp;a</var>)<var><a name="index-operator-_003d-296"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : int <b>operator ==</b> (<var>const DiagMatrix &amp;a</var>)<var> const<a name="index-operator-_003d_003d-297"></a></var><br>
-&mdash; : int <b>operator !=</b> (<var>const DiagMatrix &amp;a</var>)<var> const<a name="index-operator-_0021_003d-298"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : DiagMatrix&amp; <b>fill</b> (<var>double val</var>)<var><a name="index-fill-299"></a></var><br>
-&mdash; : DiagMatrix&amp; <b>fill</b> (<var>double val, int beg, int end</var>)<var><a name="index-fill-300"></a></var><br>
-&mdash; : DiagMatrix&amp; <b>fill</b> (<var>const ColumnVector &amp;a</var>)<var><a name="index-fill-301"></a></var><br>
-&mdash; : DiagMatrix&amp; <b>fill</b> (<var>const RowVector &amp;a</var>)<var><a name="index-fill-302"></a></var><br>
-&mdash; : DiagMatrix&amp; <b>fill</b> (<var>const ColumnVector &amp;a, int beg</var>)<var><a name="index-fill-303"></a></var><br>
-&mdash; : DiagMatrix&amp; <b>fill</b> (<var>const RowVector &amp;a, int beg</var>)<var><a name="index-fill-304"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : DiagMatrix <b>transpose</b> (<var>void</var>)<var> const<a name="index-transpose-305"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : Matrix <b>extract</b> (<var>int r1, int c1, int r2, int c2</var>)<var> const<a name="index-extract-306"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : RowVector <b>row</b> (<var>int i</var>)<var> const<a name="index-row-307"></a></var><br>
-&mdash; : RowVector <b>row</b> (<var>char *s</var>)<var> const<a name="index-row-308"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ColumnVector <b>column</b> (<var>int i</var>)<var> const<a name="index-column-309"></a></var><br>
-&mdash; : ColumnVector <b>column</b> (<var>char *s</var>)<var> const<a name="index-column-310"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : DiagMatrix <b>inverse</b> (<var>void</var>)<var> const<a name="index-inverse-311"></a></var><br>
-&mdash; : DiagMatrix <b>inverse</b> (<var>int &amp;info</var>)<var> const<a name="index-inverse-312"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : DiagMatrix&amp; <b>operator +=</b> (<var>const DiagMatrix &amp;a</var>)<var><a name="index-operator-_002b_003d-313"></a></var><br>
-&mdash; : DiagMatrix&amp; <b>operator -=</b> (<var>const DiagMatrix &amp;a</var>)<var><a name="index-operator-_002d_003d-314"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : Matrix <b>operator +</b> (<var>const DiagMatrix &amp;a, double s</var>)<var><a name="index-operator-_002b-315"></a></var><br>
-&mdash; : Matrix <b>operator -</b> (<var>const DiagMatrix &amp;a, double s</var>)<var><a name="index-operator-_002d-316"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>operator +</b> (<var>const DiagMatrix &amp;a, const Complex &amp;s</var>)<var><a name="index-operator-_002b-317"></a></var><br>
-&mdash; : ComplexMatrix <b>operator -</b> (<var>const DiagMatrix &amp;a, const Complex &amp;s</var>)<var><a name="index-operator-_002d-318"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexDiagMatrix <b>operator *</b> (<var>const DiagMatrix &amp;a, const Complex &amp;s</var>)<var><a name="index-operator-_002a-319"></a></var><br>
-&mdash; : ComplexDiagMatrix <b>operator /</b> (<var>const DiagMatrix &amp;a, const Complex &amp;s</var>)<var><a name="index-operator-_002f-320"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : Matrix <b>operator +</b> (<var>double s, const DiagMatrix &amp;a</var>)<var><a name="index-operator-_002b-321"></a></var><br>
-&mdash; : Matrix <b>operator -</b> (<var>double s, const DiagMatrix &amp;a</var>)<var><a name="index-operator-_002d-322"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>operator +</b> (<var>const Complex &amp;s, const DiagMatrix &amp;a</var>)<var><a name="index-operator-_002b-323"></a></var><br>
-&mdash; : ComplexMatrix <b>operator -</b> (<var>const Complex &amp;s, const DiagMatrix &amp;a</var>)<var><a name="index-operator-_002d-324"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexDiagMatrix <b>operator *</b> (<var>const Complex &amp;s, const DiagMatrix &amp;a</var>)<var><a name="index-operator-_002a-325"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ColumnVector <b>operator *</b> (<var>const DiagMatrix &amp;a, const ColumnVector &amp;b</var>)<var><a name="index-operator-_002a-326"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexColumnVector <b>operator *</b> (<var>const DiagMatrix &amp;a, const ComplexColumnVector &amp;b</var>)<var><a name="index-operator-_002a-327"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexDiagMatrix <b>operator +</b> (<var>const DiagMatrix &amp;a, const ComplexDiagMatrix &amp;b</var>)<var><a name="index-operator-_002b-328"></a></var><br>
-&mdash; : ComplexDiagMatrix <b>operator -</b> (<var>const DiagMatrix &amp;a, const ComplexDiagMatrix &amp;b</var>)<var><a name="index-operator-_002d-329"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexDiagMatrix <b>product</b> (<var>const DiagMatrix &amp;a, const ComplexDiagMatrix &amp;b</var>)<var><a name="index-product-330"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : Matrix <b>operator +</b> (<var>const DiagMatrix &amp;a, const Matrix &amp;b</var>)<var><a name="index-operator-_002b-331"></a></var><br>
-&mdash; : Matrix <b>operator -</b> (<var>const DiagMatrix &amp;a, const Matrix &amp;b</var>)<var><a name="index-operator-_002d-332"></a></var><br>
-&mdash; : Matrix <b>operator *</b> (<var>const DiagMatrix &amp;a, const Matrix &amp;b</var>)<var><a name="index-operator-_002a-333"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>operator +</b> (<var>const DiagMatrix &amp;a, const ComplexMatrix &amp;b</var>)<var><a name="index-operator-_002b-334"></a></var><br>
-&mdash; : ComplexMatrix <b>operator -</b> (<var>const DiagMatrix &amp;a, const ComplexMatrix &amp;b</var>)<var><a name="index-operator-_002d-335"></a></var><br>
-&mdash; : ComplexMatrix <b>operator *</b> (<var>const DiagMatrix &amp;a, const ComplexMatrix &amp;b</var>)<var><a name="index-operator-_002a-336"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ColumnVector <b>diag</b> (<var>void</var>)<var> const<a name="index-diag-337"></a></var><br>
-&mdash; : ColumnVector <b>diag</b> (<var>int k</var>)<var> const<a name="index-diag-338"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ostream&amp; <b>operator &lt;&lt;</b> (<var>ostream &amp;os, const DiagMatrix &amp;a</var>)<var><a name="index-operator-_003c_003c-339"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; :  <b>ComplexMatrix</b> (<var>void</var>)<var><a name="index-ComplexMatrix-340"></a></var><br>
-&mdash; :  <b>ComplexMatrix</b> (<var>int r, int c</var>)<var><a name="index-ComplexMatrix-341"></a></var><br>
-&mdash; :  <b>ComplexMatrix</b> (<var>int r, int c, const Complex &amp;val</var>)<var><a name="index-ComplexMatrix-342"></a></var><br>
-&mdash; :  <b>ComplexMatrix</b> (<var>const Matrix &amp;a</var>)<var><a name="index-ComplexMatrix-343"></a></var><br>
-&mdash; :  <b>ComplexMatrix</b> (<var>const Array2&lt;Complex&gt; &amp;a</var>)<var><a name="index-ComplexMatrix-344"></a></var><br>
-&mdash; :  <b>ComplexMatrix</b> (<var>const ComplexMatrix &amp;a</var>)<var><a name="index-ComplexMatrix-345"></a></var><br>
-&mdash; :  <b>ComplexMatrix</b> (<var>const DiagMatrix &amp;a</var>)<var><a name="index-ComplexMatrix-346"></a></var><br>
-&mdash; :  <b>ComplexMatrix</b> (<var>const DiagArray&lt;Complex&gt; &amp;a</var>)<var><a name="index-ComplexMatrix-347"></a></var><br>
-&mdash; :  <b>ComplexMatrix</b> (<var>const ComplexDiagMatrix &amp;a</var>)<var><a name="index-ComplexMatrix-348"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix&amp; <b>operator =</b> (<var>const ComplexMatrix &amp;a</var>)<var><a name="index-operator-_003d-349"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : int <b>operator ==</b> (<var>const ComplexMatrix &amp;a</var>)<var> const<a name="index-operator-_003d_003d-350"></a></var><br>
-&mdash; : int <b>operator !=</b> (<var>const ComplexMatrix &amp;a</var>)<var> const<a name="index-operator-_0021_003d-351"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix&amp; <b>insert</b> (<var>const Matrix &amp;a, int r, int c</var>)<var><a name="index-insert-352"></a></var><br>
-&mdash; : ComplexMatrix&amp; <b>insert</b> (<var>const RowVector &amp;a, int r, int c</var>)<var><a name="index-insert-353"></a></var><br>
-&mdash; : ComplexMatrix&amp; <b>insert</b> (<var>const ColumnVector &amp;a, int r, int c</var>)<var><a name="index-insert-354"></a></var><br>
-&mdash; : ComplexMatrix&amp; <b>insert</b> (<var>const DiagMatrix &amp;a, int r, int c</var>)<var><a name="index-insert-355"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix&amp; <b>insert</b> (<var>const ComplexMatrix &amp;a, int r, int c</var>)<var><a name="index-insert-356"></a></var><br>
-&mdash; : ComplexMatrix&amp; <b>insert</b> (<var>const ComplexRowVector &amp;a, int r, int c</var>)<var><a name="index-insert-357"></a></var><br>
-&mdash; : ComplexMatrix&amp; <b>insert</b> (<var>const ComplexColumnVector &amp;a, int r, int c</var>)<var><a name="index-insert-358"></a></var><br>
-&mdash; : ComplexMatrix&amp; <b>insert</b> (<var>const ComplexDiagMatrix &amp;a, int r, int c</var>)<var><a name="index-insert-359"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix&amp; <b>fill</b> (<var>double val</var>)<var><a name="index-fill-360"></a></var><br>
-&mdash; : ComplexMatrix&amp; <b>fill</b> (<var>const Complex &amp;val</var>)<var><a name="index-fill-361"></a></var><br>
-&mdash; : ComplexMatrix&amp; <b>fill</b> (<var>double val, int r1, int c1, int r2, int c2</var>)<var><a name="index-fill-362"></a></var><br>
-&mdash; : ComplexMatrix&amp; <b>fill</b> (<var>const Complex &amp;val, int r1, int c1, int r2, int c2</var>)<var><a name="index-fill-363"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>append</b> (<var>const Matrix &amp;a</var>)<var> const<a name="index-append-364"></a></var><br>
-&mdash; : ComplexMatrix <b>append</b> (<var>const RowVector &amp;a</var>)<var> const<a name="index-append-365"></a></var><br>
-&mdash; : ComplexMatrix <b>append</b> (<var>const ColumnVector &amp;a</var>)<var> const<a name="index-append-366"></a></var><br>
-&mdash; : ComplexMatrix <b>append</b> (<var>const DiagMatrix &amp;a</var>)<var> const<a name="index-append-367"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>append</b> (<var>const ComplexMatrix &amp;a</var>)<var> const<a name="index-append-368"></a></var><br>
-&mdash; : ComplexMatrix <b>append</b> (<var>const ComplexRowVector &amp;a</var>)<var> const<a name="index-append-369"></a></var><br>
-&mdash; : ComplexMatrix <b>append</b> (<var>const ComplexColumnVector &amp;a</var>)<var> const<a name="index-append-370"></a></var><br>
-&mdash; : ComplexMatrix <b>append</b> (<var>const ComplexDiagMatrix &amp;a</var>)<var> const<a name="index-append-371"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>stack</b> (<var>const Matrix &amp;a</var>)<var> const<a name="index-stack-372"></a></var><br>
-&mdash; : ComplexMatrix <b>stack</b> (<var>const RowVector &amp;a</var>)<var> const<a name="index-stack-373"></a></var><br>
-&mdash; : ComplexMatrix <b>stack</b> (<var>const ColumnVector &amp;a</var>)<var> const<a name="index-stack-374"></a></var><br>
-&mdash; : ComplexMatrix <b>stack</b> (<var>const DiagMatrix &amp;a</var>)<var> const<a name="index-stack-375"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>stack</b> (<var>const ComplexMatrix &amp;a</var>)<var> const<a name="index-stack-376"></a></var><br>
-&mdash; : ComplexMatrix <b>stack</b> (<var>const ComplexRowVector &amp;a</var>)<var> const<a name="index-stack-377"></a></var><br>
-&mdash; : ComplexMatrix <b>stack</b> (<var>const ComplexColumnVector &amp;a</var>)<var> const<a name="index-stack-378"></a></var><br>
-&mdash; : ComplexMatrix <b>stack</b> (<var>const ComplexDiagMatrix &amp;a</var>)<var> const<a name="index-stack-379"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>transpose</b> (<var>void</var>)<var> const<a name="index-transpose-380"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : Matrix <b>real</b> (<var>const ComplexMatrix &amp;a</var>)<var><a name="index-real-381"></a></var><br>
-&mdash; : Matrix <b>imag</b> (<var>const ComplexMatrix &amp;a</var>)<var><a name="index-imag-382"></a></var><br>
-&mdash; : ComplexMatrix <b>conj</b> (<var>const ComplexMatrix &amp;a</var>)<var><a name="index-conj-383"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>extract</b> (<var>int r1, int c1, int r2, int c2</var>)<var> const<a name="index-extract-384"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexRowVector <b>row</b> (<var>int i</var>)<var> const<a name="index-row-385"></a></var><br>
-&mdash; : ComplexRowVector <b>row</b> (<var>char *s</var>)<var> const<a name="index-row-386"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexColumnVector <b>column</b> (<var>int i</var>)<var> const<a name="index-column-387"></a></var><br>
-&mdash; : ComplexColumnVector <b>column</b> (<var>char *s</var>)<var> const<a name="index-column-388"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>inverse</b> (<var>void</var>)<var> const<a name="index-inverse-389"></a></var><br>
-&mdash; : ComplexMatrix <b>inverse</b> (<var>int &amp;info</var>)<var> const<a name="index-inverse-390"></a></var><br>
-&mdash; : ComplexMatrix <b>inverse</b> (<var>int &amp;info, double &amp;rcond</var>)<var> const<a name="index-inverse-391"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>fourier</b> (<var>void</var>)<var> const<a name="index-fourier-392"></a></var><br>
-&mdash; : ComplexMatrix <b>ifourier</b> (<var>void</var>)<var> const<a name="index-ifourier-393"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexDET <b>determinant</b> (<var>void</var>)<var> const<a name="index-determinant-394"></a></var><br>
-&mdash; : ComplexDET <b>determinant</b> (<var>int &amp;info</var>)<var> const<a name="index-determinant-395"></a></var><br>
-&mdash; : ComplexDET <b>determinant</b> (<var>int &amp;info, double &amp;rcond</var>)<var> const<a name="index-determinant-396"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>solve</b> (<var>const Matrix &amp;b</var>)<var> const<a name="index-solve-397"></a></var><br>
-&mdash; : ComplexMatrix <b>solve</b> (<var>const Matrix &amp;b, int &amp;info</var>)<var> const<a name="index-solve-398"></a></var><br>
-&mdash; : ComplexMatrix <b>solve</b> (<var>const Matrix &amp;b, int &amp;info, double &amp;rcond</var>)<var> const<a name="index-solve-399"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>solve</b> (<var>const ComplexMatrix &amp;b</var>)<var> const<a name="index-solve-400"></a></var><br>
-&mdash; : ComplexMatrix <b>solve</b> (<var>const ComplexMatrix &amp;b, int &amp;info</var>)<var> const<a name="index-solve-401"></a></var><br>
-&mdash; : ComplexMatrix <b>solve</b> (<var>const ComplexMatrix &amp;b, int &amp;info, double &amp;rcond</var>)<var> const<a name="index-solve-402"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexColumnVector <b>solve</b> (<var>const ComplexColumnVector &amp;b</var>)<var> const<a name="index-solve-403"></a></var><br>
-&mdash; : ComplexColumnVector <b>solve</b> (<var>const ComplexColumnVector &amp;b, int &amp;info</var>)<var> const<a name="index-solve-404"></a></var><br>
-&mdash; : ComplexColumnVector <b>solve</b> (<var>const ComplexColumnVector &amp;b, int &amp;info, double &amp;rcond</var>)<var> const<a name="index-solve-405"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>lssolve</b> (<var>const ComplexMatrix &amp;b</var>)<var> const<a name="index-lssolve-406"></a></var><br>
-&mdash; : ComplexMatrix <b>lssolve</b> (<var>const ComplexMatrix &amp;b, int &amp;info</var>)<var> const<a name="index-lssolve-407"></a></var><br>
-&mdash; : ComplexMatrix <b>lssolve</b> (<var>const ComplexMatrix &amp;b, int &amp;info, int &amp;rank</var>)<var> const<a name="index-lssolve-408"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexColumnVector <b>lssolve</b> (<var>const ComplexColumnVector &amp;b</var>)<var> const<a name="index-lssolve-409"></a></var><br>
-&mdash; : ComplexColumnVector <b>lssolve</b> (<var>const ComplexColumnVector &amp;b, int &amp;info</var>)<var> const<a name="index-lssolve-410"></a></var><br>
-&mdash; : ComplexColumnVector <b>lssolve</b> (<var>const ComplexColumnVector &amp;b, int &amp;info, int &amp;rank</var>)<var> const<a name="index-lssolve-411"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix&amp; <b>operator +=</b> (<var>const DiagMatrix &amp;a</var>)<var><a name="index-operator-_002b_003d-412"></a></var><br>
-&mdash; : ComplexMatrix&amp; <b>operator -=</b> (<var>const DiagMatrix &amp;a</var>)<var><a name="index-operator-_002d_003d-413"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix&amp; <b>operator +=</b> (<var>const ComplexDiagMatrix &amp;a</var>)<var><a name="index-operator-_002b_003d-414"></a></var><br>
-&mdash; : ComplexMatrix&amp; <b>operator -=</b> (<var>const ComplexDiagMatrix &amp;a</var>)<var><a name="index-operator-_002d_003d-415"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix&amp; <b>operator +=</b> (<var>const Matrix &amp;a</var>)<var><a name="index-operator-_002b_003d-416"></a></var><br>
-&mdash; : ComplexMatrix&amp; <b>operator -=</b> (<var>const Matrix &amp;a</var>)<var><a name="index-operator-_002d_003d-417"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix&amp; <b>operator +=</b> (<var>const ComplexMatrix &amp;a</var>)<var><a name="index-operator-_002b_003d-418"></a></var><br>
-&mdash; : ComplexMatrix&amp; <b>operator -=</b> (<var>const ComplexMatrix &amp;a</var>)<var><a name="index-operator-_002d_003d-419"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : Matrix <b>operator !</b> (<var>void</var>)<var> const<a name="index-operator-_0021-420"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>operator +</b> (<var>const ComplexMatrix &amp;a, double s</var>)<var><a name="index-operator-_002b-421"></a></var><br>
-&mdash; : ComplexMatrix <b>operator -</b> (<var>const ComplexMatrix &amp;a, double s</var>)<var><a name="index-operator-_002d-422"></a></var><br>
-&mdash; : ComplexMatrix <b>operator *</b> (<var>const ComplexMatrix &amp;a, double s</var>)<var><a name="index-operator-_002a-423"></a></var><br>
-&mdash; : ComplexMatrix <b>operator /</b> (<var>const ComplexMatrix &amp;a, double s</var>)<var><a name="index-operator-_002f-424"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>operator +</b> (<var>double s, const ComplexMatrix &amp;a</var>)<var><a name="index-operator-_002b-425"></a></var><br>
-&mdash; : ComplexMatrix <b>operator -</b> (<var>double s, const ComplexMatrix &amp;a</var>)<var><a name="index-operator-_002d-426"></a></var><br>
-&mdash; : ComplexMatrix <b>operator *</b> (<var>double s, const ComplexMatrix &amp;a</var>)<var><a name="index-operator-_002a-427"></a></var><br>
-&mdash; : ComplexMatrix <b>operator /</b> (<var>double s, const ComplexMatrix &amp;a</var>)<var><a name="index-operator-_002f-428"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexColumnVector <b>operator *</b> (<var>const ComplexMatrix &amp;a, const ColumnVector &amp;b</var>)<var><a name="index-operator-_002a-429"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexColumnVector <b>operator *</b> (<var>const ComplexMatrix &amp;a, const ComplexColumnVector &amp;b</var>)<var><a name="index-operator-_002a-430"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>operator +</b> (<var>const ComplexMatrix &amp;a, const DiagMatrix &amp;b</var>)<var><a name="index-operator-_002b-431"></a></var><br>
-&mdash; : ComplexMatrix <b>operator -</b> (<var>const ComplexMatrix &amp;a, const DiagMatrix &amp;b</var>)<var><a name="index-operator-_002d-432"></a></var><br>
-&mdash; : ComplexMatrix <b>operator *</b> (<var>const ComplexMatrix &amp;a, const DiagMatrix &amp;b</var>)<var><a name="index-operator-_002a-433"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>operator +</b> (<var>const ComplexMatrix &amp;a, const ComplexDiagMatrix &amp;b</var>)<var><a name="index-operator-_002b-434"></a></var><br>
-&mdash; : ComplexMatrix <b>operator -</b> (<var>const ComplexMatrix &amp;a, const ComplexDiagMatrix &amp;b</var>)<var><a name="index-operator-_002d-435"></a></var><br>
-&mdash; : ComplexMatrix <b>operator *</b> (<var>const ComplexMatrix &amp;a, const ComplexDiagMatrix &amp;b</var>)<var><a name="index-operator-_002a-436"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>operator +</b> (<var>const ComplexMatrix &amp;a, const Matrix &amp;b</var>)<var><a name="index-operator-_002b-437"></a></var><br>
-&mdash; : ComplexMatrix <b>operator -</b> (<var>const ComplexMatrix &amp;a, const Matrix &amp;b</var>)<var><a name="index-operator-_002d-438"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>operator *</b> (<var>const ComplexMatrix &amp;a, const Matrix &amp;b</var>)<var><a name="index-operator-_002a-439"></a></var><br>
-&mdash; : ComplexMatrix <b>operator *</b> (<var>const ComplexMatrix &amp;a, const ComplexMatrix &amp;b</var>)<var><a name="index-operator-_002a-440"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>product</b> (<var>const ComplexMatrix &amp;a, const Matrix &amp;b</var>)<var><a name="index-product-441"></a></var><br>
-&mdash; : ComplexMatrix <b>quotient</b> (<var>const ComplexMatrix &amp;a, const Matrix &amp;b</var>)<var><a name="index-quotient-442"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>map</b> (<var>c_c_Mapper f, const ComplexMatrix &amp;a</var>)<var><a name="index-map-443"></a></var><br>
-&mdash; : Matrix <b>map</b> (<var>d_c_Mapper f, const ComplexMatrix &amp;a</var>)<var><a name="index-map-444"></a></var><br>
-&mdash; : void <b>map</b> (<var>c_c_Mapper f</var>)<var><a name="index-map-445"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : Matrix <b>all</b> (<var>void</var>)<var> const<a name="index-all-446"></a></var><br>
-&mdash; : Matrix <b>any</b> (<var>void</var>)<var> const<a name="index-any-447"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>cumprod</b> (<var>void</var>)<var> const<a name="index-cumprod-448"></a></var><br>
-&mdash; : ComplexMatrix <b>cumsum</b> (<var>void</var>)<var> const<a name="index-cumsum-449"></a></var><br>
-&mdash; : ComplexMatrix <b>prod</b> (<var>void</var>)<var> const<a name="index-prod-450"></a></var><br>
-&mdash; : ComplexMatrix <b>sum</b> (<var>void</var>)<var> const<a name="index-sum-451"></a></var><br>
-&mdash; : ComplexMatrix <b>sumsq</b> (<var>void</var>)<var> const<a name="index-sumsq-452"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexColumnVector <b>diag</b> (<var>void</var>)<var> const<a name="index-diag-453"></a></var><br>
-&mdash; : ComplexColumnVector <b>diag</b> (<var>int k</var>)<var> const<a name="index-diag-454"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexColumnVector <b>row_min</b> (<var>void</var>)<var> const<a name="index-row_005fmin-455"></a></var><br>
-&mdash; : ComplexColumnVector <b>row_min_loc</b> (<var>void</var>)<var> const<a name="index-row_005fmin_005floc-456"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexColumnVector <b>row_max</b> (<var>void</var>)<var> const<a name="index-row_005fmax-457"></a></var><br>
-&mdash; : ComplexColumnVector <b>row_max_loc</b> (<var>void</var>)<var> const<a name="index-row_005fmax_005floc-458"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexRowVector <b>column_min</b> (<var>void</var>)<var> const<a name="index-column_005fmin-459"></a></var><br>
-&mdash; : ComplexRowVector <b>column_min_loc</b> (<var>void</var>)<var> const<a name="index-column_005fmin_005floc-460"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexRowVector <b>column_max</b> (<var>void</var>)<var> const<a name="index-column_005fmax-461"></a></var><br>
-&mdash; : ComplexRowVector <b>column_max_loc</b> (<var>void</var>)<var> const<a name="index-column_005fmax_005floc-462"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ostream&amp; <b>operator &lt;&lt;</b> (<var>ostream &amp;os, const ComplexMatrix &amp;a</var>)<var><a name="index-operator-_003c_003c-463"></a></var><br>
-&mdash; : istream&amp; <b>operator &gt;&gt;</b> (<var>istream &amp;is, ComplexMatrix &amp;a</var>)<var><a name="index-operator-_003e_003e-464"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; :  <b>ComplexColumnVector</b> (<var>void</var>)<var><a name="index-ComplexColumnVector-465"></a></var><br>
-&mdash; :  <b>ComplexColumnVector</b> (<var>int n</var>)<var><a name="index-ComplexColumnVector-466"></a></var><br>
-&mdash; :  <b>ComplexColumnVector</b> (<var>int n, const Complex &amp;val</var>)<var><a name="index-ComplexColumnVector-467"></a></var><br>
-&mdash; :  <b>ComplexColumnVector</b> (<var>const ColumnVector &amp;a</var>)<var><a name="index-ComplexColumnVector-468"></a></var><br>
-&mdash; :  <b>ComplexColumnVector</b> (<var>const Array&lt;Complex&gt; &amp;a</var>)<var><a name="index-ComplexColumnVector-469"></a></var><br>
-&mdash; :  <b>ComplexColumnVector</b> (<var>const ComplexColumnVector &amp;a</var>)<var><a name="index-ComplexColumnVector-470"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexColumnVector&amp; <b>operator =</b> (<var>const ComplexColumnVector &amp;a</var>)<var><a name="index-operator-_003d-471"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : int <b>operator ==</b> (<var>const ComplexColumnVector &amp;a</var>)<var> const<a name="index-operator-_003d_003d-472"></a></var><br>
-&mdash; : int <b>operator !=</b> (<var>const ComplexColumnVector &amp;a</var>)<var> const<a name="index-operator-_0021_003d-473"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexColumnVector&amp; <b>insert</b> (<var>const ColumnVector &amp;a, int r</var>)<var><a name="index-insert-474"></a></var><br>
-&mdash; : ComplexColumnVector&amp; <b>insert</b> (<var>const ComplexColumnVector &amp;a, int r</var>)<var><a name="index-insert-475"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexColumnVector&amp; <b>fill</b> (<var>double val</var>)<var><a name="index-fill-476"></a></var><br>
-&mdash; : ComplexColumnVector&amp; <b>fill</b> (<var>const Complex &amp;val</var>)<var><a name="index-fill-477"></a></var><br>
-&mdash; : ComplexColumnVector&amp; <b>fill</b> (<var>double val, int r1, int r2</var>)<var><a name="index-fill-478"></a></var><br>
-&mdash; : ComplexColumnVector&amp; <b>fill</b> (<var>const Complex &amp;val, int r1, int r2</var>)<var><a name="index-fill-479"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexColumnVector <b>stack</b> (<var>const ColumnVector &amp;a</var>)<var> const<a name="index-stack-480"></a></var><br>
-&mdash; : ComplexColumnVector <b>stack</b> (<var>const ComplexColumnVector &amp;a</var>)<var> const<a name="index-stack-481"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexRowVector <b>transpose</b> (<var>void</var>)<var> const<a name="index-transpose-482"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ColumnVector <b>real</b> (<var>const ComplexColumnVector &amp;a</var>)<var><a name="index-real-483"></a></var><br>
-&mdash; : ColumnVector <b>imag</b> (<var>const ComplexColumnVector &amp;a</var>)<var><a name="index-imag-484"></a></var><br>
-&mdash; : ComplexColumnVector <b>conj</b> (<var>const ComplexColumnVector &amp;a</var>)<var><a name="index-conj-485"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexColumnVector <b>extract</b> (<var>int r1, int r2</var>)<var> const<a name="index-extract-486"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexColumnVector&amp; <b>operator +=</b> (<var>const ColumnVector &amp;a</var>)<var><a name="index-operator-_002b_003d-487"></a></var><br>
-&mdash; : ComplexColumnVector&amp; <b>operator -=</b> (<var>const ColumnVector &amp;a</var>)<var><a name="index-operator-_002d_003d-488"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexColumnVector&amp; <b>operator +=</b> (<var>const ComplexColumnVector &amp;a</var>)<var><a name="index-operator-_002b_003d-489"></a></var><br>
-&mdash; : ComplexColumnVector&amp; <b>operator -=</b> (<var>const ComplexColumnVector &amp;a</var>)<var><a name="index-operator-_002d_003d-490"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexColumnVector <b>operator +</b> (<var>const ComplexColumnVector &amp;a, double s</var>)<var><a name="index-operator-_002b-491"></a></var><br>
-&mdash; : ComplexColumnVector <b>operator -</b> (<var>const ComplexColumnVector &amp;a, double s</var>)<var><a name="index-operator-_002d-492"></a></var><br>
-&mdash; : ComplexColumnVector <b>operator *</b> (<var>const ComplexColumnVector &amp;a, double s</var>)<var><a name="index-operator-_002a-493"></a></var><br>
-&mdash; : ComplexColumnVector <b>operator /</b> (<var>const ComplexColumnVector &amp;a, double s</var>)<var><a name="index-operator-_002f-494"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexColumnVector <b>operator +</b> (<var>double s, const ComplexColumnVector &amp;a</var>)<var><a name="index-operator-_002b-495"></a></var><br>
-&mdash; : ComplexColumnVector <b>operator -</b> (<var>double s, const ComplexColumnVector &amp;a</var>)<var><a name="index-operator-_002d-496"></a></var><br>
-&mdash; : ComplexColumnVector <b>operator *</b> (<var>double s, const ComplexColumnVector &amp;a</var>)<var><a name="index-operator-_002a-497"></a></var><br>
-&mdash; : ComplexColumnVector <b>operator /</b> (<var>double s, const ComplexColumnVector &amp;a</var>)<var><a name="index-operator-_002f-498"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>operator *</b> (<var>const ComplexColumnVector &amp;a, const ComplexRowVector &amp;b</var>)<var><a name="index-operator-_002a-499"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexColumnVector <b>operator +</b> (<var>const ComplexColumnVector &amp;a, const ColumnVector &amp;b</var>)<var><a name="index-operator-_002b-500"></a></var><br>
-&mdash; : ComplexColumnVector <b>operator -</b> (<var>const ComplexColumnVector &amp;a, const ColumnVector &amp;b</var>)<var><a name="index-operator-_002d-501"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexColumnVector <b>product</b> (<var>const ComplexColumnVector &amp;a, const ColumnVector &amp;b</var>)<var><a name="index-product-502"></a></var><br>
-&mdash; : ComplexColumnVector <b>quotient</b> (<var>const ComplexColumnVector &amp;a, const ColumnVector &amp;b</var>)<var><a name="index-quotient-503"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexColumnVector <b>map</b> (<var>c_c_Mapper f, const ComplexColumnVector &amp;a</var>)<var><a name="index-map-504"></a></var><br>
-&mdash; : ColumnVector <b>map</b> (<var>d_c_Mapper f, const ComplexColumnVector &amp;a</var>)<var><a name="index-map-505"></a></var><br>
-&mdash; : void <b>map</b> (<var>c_c_Mapper f</var>)<var><a name="index-map-506"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : Complex <b>min</b> (<var>void</var>)<var> const<a name="index-min-507"></a></var><br>
-&mdash; : Complex <b>max</b> (<var>void</var>)<var> const<a name="index-max-508"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ostream&amp; <b>operator &lt;&lt;</b> (<var>ostream &amp;os, const ComplexColumnVector &amp;a</var>)<var><a name="index-operator-_003c_003c-509"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; :  <b>ComplexRowVector</b> (<var>void</var>)<var><a name="index-ComplexRowVector-510"></a></var><br>
-&mdash; :  <b>ComplexRowVector</b> (<var>int n</var>)<var><a name="index-ComplexRowVector-511"></a></var><br>
-&mdash; :  <b>ComplexRowVector</b> (<var>int n, const Complex &amp;val</var>)<var><a name="index-ComplexRowVector-512"></a></var><br>
-&mdash; :  <b>ComplexRowVector</b> (<var>const RowVector &amp;a</var>)<var><a name="index-ComplexRowVector-513"></a></var><br>
-&mdash; :  <b>ComplexRowVector</b> (<var>const Array&lt;Complex&gt; &amp;a</var>)<var><a name="index-ComplexRowVector-514"></a></var><br>
-&mdash; :  <b>ComplexRowVector</b> (<var>const ComplexRowVector &amp;a</var>)<var><a name="index-ComplexRowVector-515"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexRowVector&amp; <b>operator =</b> (<var>const ComplexRowVector &amp;a</var>)<var><a name="index-operator-_003d-516"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : int <b>operator ==</b> (<var>const ComplexRowVector &amp;a</var>)<var> const<a name="index-operator-_003d_003d-517"></a></var><br>
-&mdash; : int <b>operator !=</b> (<var>const ComplexRowVector &amp;a</var>)<var> const<a name="index-operator-_0021_003d-518"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexRowVector&amp; <b>insert</b> (<var>const RowVector &amp;a, int c</var>)<var><a name="index-insert-519"></a></var><br>
-&mdash; : ComplexRowVector&amp; <b>insert</b> (<var>const ComplexRowVector &amp;a, int c</var>)<var><a name="index-insert-520"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexRowVector&amp; <b>fill</b> (<var>double val</var>)<var><a name="index-fill-521"></a></var><br>
-&mdash; : ComplexRowVector&amp; <b>fill</b> (<var>const Complex &amp;val</var>)<var><a name="index-fill-522"></a></var><br>
-&mdash; : ComplexRowVector&amp; <b>fill</b> (<var>double val, int c1, int c2</var>)<var><a name="index-fill-523"></a></var><br>
-&mdash; : ComplexRowVector&amp; <b>fill</b> (<var>const Complex &amp;val, int c1, int c2</var>)<var><a name="index-fill-524"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexRowVector <b>append</b> (<var>const RowVector &amp;a</var>)<var> const<a name="index-append-525"></a></var><br>
-&mdash; : ComplexRowVector <b>append</b> (<var>const ComplexRowVector &amp;a</var>)<var> const<a name="index-append-526"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexColumnVector <b>transpose</b> (<var>void</var>)<var> const<a name="index-transpose-527"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : RowVector <b>real</b> (<var>const ComplexRowVector &amp;a</var>)<var><a name="index-real-528"></a></var><br>
-&mdash; : RowVector <b>imag</b> (<var>const ComplexRowVector &amp;a</var>)<var><a name="index-imag-529"></a></var><br>
-&mdash; : ComplexRowVector <b>conj</b> (<var>const ComplexRowVector &amp;a</var>)<var><a name="index-conj-530"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexRowVector <b>extract</b> (<var>int c1, int c2</var>)<var> const<a name="index-extract-531"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexRowVector&amp; <b>operator +=</b> (<var>const RowVector &amp;a</var>)<var><a name="index-operator-_002b_003d-532"></a></var><br>
-&mdash; : ComplexRowVector&amp; <b>operator -=</b> (<var>const RowVector &amp;a</var>)<var><a name="index-operator-_002d_003d-533"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexRowVector&amp; <b>operator +=</b> (<var>const ComplexRowVector &amp;a</var>)<var><a name="index-operator-_002b_003d-534"></a></var><br>
-&mdash; : ComplexRowVector&amp; <b>operator -=</b> (<var>const ComplexRowVector &amp;a</var>)<var><a name="index-operator-_002d_003d-535"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexRowVector <b>operator +</b> (<var>const ComplexRowVector &amp;a, double s</var>)<var><a name="index-operator-_002b-536"></a></var><br>
-&mdash; : ComplexRowVector <b>operator -</b> (<var>const ComplexRowVector &amp;a, double s</var>)<var><a name="index-operator-_002d-537"></a></var><br>
-&mdash; : ComplexRowVector <b>operator *</b> (<var>const ComplexRowVector &amp;a, double s</var>)<var><a name="index-operator-_002a-538"></a></var><br>
-&mdash; : ComplexRowVector <b>operator /</b> (<var>const ComplexRowVector &amp;a, double s</var>)<var><a name="index-operator-_002f-539"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexRowVector <b>operator +</b> (<var>double s, const ComplexRowVector &amp;a</var>)<var><a name="index-operator-_002b-540"></a></var><br>
-&mdash; : ComplexRowVector <b>operator -</b> (<var>double s, const ComplexRowVector &amp;a</var>)<var><a name="index-operator-_002d-541"></a></var><br>
-&mdash; : ComplexRowVector <b>operator *</b> (<var>double s, const ComplexRowVector &amp;a</var>)<var><a name="index-operator-_002a-542"></a></var><br>
-&mdash; : ComplexRowVector <b>operator /</b> (<var>double s, const ComplexRowVector &amp;a</var>)<var><a name="index-operator-_002f-543"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : Complex <b>operator *</b> (<var>const ComplexRowVector &amp;a, const ColumnVector &amp;b</var>)<var><a name="index-operator-_002a-544"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : Complex <b>operator *</b> (<var>const ComplexRowVector &amp;a, const ComplexColumnVector &amp;b</var>)<var><a name="index-operator-_002a-545"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexRowVector <b>operator *</b> (<var>const ComplexRowVector &amp;a, const ComplexMatrix &amp;b</var>)<var><a name="index-operator-_002a-546"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexRowVector <b>operator +</b> (<var>const ComplexRowVector &amp;a, const RowVector &amp;b</var>)<var><a name="index-operator-_002b-547"></a></var><br>
-&mdash; : ComplexRowVector <b>operator -</b> (<var>const ComplexRowVector &amp;a, const RowVector &amp;b</var>)<var><a name="index-operator-_002d-548"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexRowVector <b>product</b> (<var>const ComplexRowVector &amp;a, const RowVector &amp;b</var>)<var><a name="index-product-549"></a></var><br>
-&mdash; : ComplexRowVector <b>quotient</b> (<var>const ComplexRowVector &amp;a, const RowVector &amp;b</var>)<var><a name="index-quotient-550"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexRowVector <b>map</b> (<var>c_c_Mapper f, const ComplexRowVector &amp;a</var>)<var><a name="index-map-551"></a></var><br>
-&mdash; : RowVector <b>map</b> (<var>d_c_Mapper f, const ComplexRowVector &amp;a</var>)<var><a name="index-map-552"></a></var><br>
-&mdash; : void <b>map</b> (<var>c_c_Mapper f</var>)<var><a name="index-map-553"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : Complex <b>min</b> (<var>void</var>)<var> const<a name="index-min-554"></a></var><br>
-&mdash; : Complex <b>max</b> (<var>void</var>)<var> const<a name="index-max-555"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ostream&amp; <b>operator &lt;&lt;</b> (<var>ostream &amp;os, const ComplexRowVector &amp;a</var>)<var><a name="index-operator-_003c_003c-556"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; :  <b>ComplexDiagMatrix</b> (<var>void</var>)<var><a name="index-ComplexDiagMatrix-557"></a></var><br>
-&mdash; :  <b>ComplexDiagMatrix</b> (<var>int n</var>)<var><a name="index-ComplexDiagMatrix-558"></a></var><br>
-&mdash; :  <b>ComplexDiagMatrix</b> (<var>int n, const Complex &amp;val</var>)<var><a name="index-ComplexDiagMatrix-559"></a></var><br>
-&mdash; :  <b>ComplexDiagMatrix</b> (<var>int r, int c</var>)<var><a name="index-ComplexDiagMatrix-560"></a></var><br>
-&mdash; :  <b>ComplexDiagMatrix</b> (<var>int r, int c, const Complex &amp;val</var>)<var><a name="index-ComplexDiagMatrix-561"></a></var><br>
-&mdash; :  <b>ComplexDiagMatrix</b> (<var>const RowVector &amp;a</var>)<var><a name="index-ComplexDiagMatrix-562"></a></var><br>
-&mdash; :  <b>ComplexDiagMatrix</b> (<var>const ComplexRowVector &amp;a</var>)<var><a name="index-ComplexDiagMatrix-563"></a></var><br>
-&mdash; :  <b>ComplexDiagMatrix</b> (<var>const ColumnVector &amp;a</var>)<var><a name="index-ComplexDiagMatrix-564"></a></var><br>
-&mdash; :  <b>ComplexDiagMatrix</b> (<var>const ComplexColumnVector &amp;a</var>)<var><a name="index-ComplexDiagMatrix-565"></a></var><br>
-&mdash; :  <b>ComplexDiagMatrix</b> (<var>const DiagMatrix &amp;a</var>)<var><a name="index-ComplexDiagMatrix-566"></a></var><br>
-&mdash; :  <b>ComplexDiagMatrix</b> (<var>const DiagArray&lt;Complex&gt; &amp;a</var>)<var><a name="index-ComplexDiagMatrix-567"></a></var><br>
-&mdash; :  <b>ComplexDiagMatrix</b> (<var>const ComplexDiagMatrix &amp;a</var>)<var><a name="index-ComplexDiagMatrix-568"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexDiagMatrix&amp; <b>operator =</b> (<var>const ComplexDiagMatrix &amp;a</var>)<var><a name="index-operator-_003d-569"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : int <b>operator ==</b> (<var>const ComplexDiagMatrix &amp;a</var>)<var> const<a name="index-operator-_003d_003d-570"></a></var><br>
-&mdash; : int <b>operator !=</b> (<var>const ComplexDiagMatrix &amp;a</var>)<var> const<a name="index-operator-_0021_003d-571"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexDiagMatrix&amp; <b>fill</b> (<var>double val</var>)<var><a name="index-fill-572"></a></var><br>
-&mdash; : ComplexDiagMatrix&amp; <b>fill</b> (<var>const Complex &amp;val</var>)<var><a name="index-fill-573"></a></var><br>
-&mdash; : ComplexDiagMatrix&amp; <b>fill</b> (<var>double val, int beg, int end</var>)<var><a name="index-fill-574"></a></var><br>
-&mdash; : ComplexDiagMatrix&amp; <b>fill</b> (<var>const Complex &amp;val, int beg, int end</var>)<var><a name="index-fill-575"></a></var><br>
-&mdash; : ComplexDiagMatrix&amp; <b>fill</b> (<var>const ColumnVector &amp;a</var>)<var><a name="index-fill-576"></a></var><br>
-&mdash; : ComplexDiagMatrix&amp; <b>fill</b> (<var>const ComplexColumnVector &amp;a</var>)<var><a name="index-fill-577"></a></var><br>
-&mdash; : ComplexDiagMatrix&amp; <b>fill</b> (<var>const RowVector &amp;a</var>)<var><a name="index-fill-578"></a></var><br>
-&mdash; : ComplexDiagMatrix&amp; <b>fill</b> (<var>const ComplexRowVector &amp;a</var>)<var><a name="index-fill-579"></a></var><br>
-&mdash; : ComplexDiagMatrix&amp; <b>fill</b> (<var>const ColumnVector &amp;a, int beg</var>)<var><a name="index-fill-580"></a></var><br>
-&mdash; : ComplexDiagMatrix&amp; <b>fill</b> (<var>const ComplexColumnVector &amp;a, int beg</var>)<var><a name="index-fill-581"></a></var><br>
-&mdash; : ComplexDiagMatrix&amp; <b>fill</b> (<var>const RowVector &amp;a, int beg</var>)<var><a name="index-fill-582"></a></var><br>
-&mdash; : ComplexDiagMatrix&amp; <b>fill</b> (<var>const ComplexRowVector &amp;a, int beg</var>)<var><a name="index-fill-583"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexDiagMatrix <b>transpose</b> (<var>void</var>)<var> const<a name="index-transpose-584"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : DiagMatrix <b>real</b> (<var>const ComplexDiagMatrix &amp;a</var>)<var><a name="index-real-585"></a></var><br>
-&mdash; : DiagMatrix <b>imag</b> (<var>const ComplexDiagMatrix &amp;a</var>)<var><a name="index-imag-586"></a></var><br>
-&mdash; : ComplexDiagMatrix <b>conj</b> (<var>const ComplexDiagMatrix &amp;a</var>)<var><a name="index-conj-587"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>extract</b> (<var>int r1, int c1, int r2, int c2</var>)<var> const<a name="index-extract-588"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexRowVector <b>row</b> (<var>int i</var>)<var> const<a name="index-row-589"></a></var><br>
-&mdash; : ComplexRowVector <b>row</b> (<var>char *s</var>)<var> const<a name="index-row-590"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexColumnVector <b>column</b> (<var>int i</var>)<var> const<a name="index-column-591"></a></var><br>
-&mdash; : ComplexColumnVector <b>column</b> (<var>char *s</var>)<var> const<a name="index-column-592"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexDiagMatrix <b>inverse</b> (<var>int &amp;info</var>)<var> const<a name="index-inverse-593"></a></var><br>
-&mdash; : ComplexDiagMatrix <b>inverse</b> (<var>void</var>)<var> const<a name="index-inverse-594"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexDiagMatrix&amp; <b>operator +=</b> (<var>const DiagMatrix &amp;a</var>)<var><a name="index-operator-_002b_003d-595"></a></var><br>
-&mdash; : ComplexDiagMatrix&amp; <b>operator -=</b> (<var>const DiagMatrix &amp;a</var>)<var><a name="index-operator-_002d_003d-596"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexDiagMatrix&amp; <b>operator +=</b> (<var>const ComplexDiagMatrix &amp;a</var>)<var><a name="index-operator-_002b_003d-597"></a></var><br>
-&mdash; : ComplexDiagMatrix&amp; <b>operator -=</b> (<var>const ComplexDiagMatrix &amp;a</var>)<var><a name="index-operator-_002d_003d-598"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>operator +</b> (<var>const ComplexDiagMatrix &amp;a, double s</var>)<var><a name="index-operator-_002b-599"></a></var><br>
-&mdash; : ComplexMatrix <b>operator -</b> (<var>const ComplexDiagMatrix &amp;a, double s</var>)<var><a name="index-operator-_002d-600"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>operator +</b> (<var>const ComplexDiagMatrix &amp;a, const Complex &amp;s</var>)<var><a name="index-operator-_002b-601"></a></var><br>
-&mdash; : ComplexMatrix <b>operator -</b> (<var>const ComplexDiagMatrix &amp;a, const Complex &amp;s</var>)<var><a name="index-operator-_002d-602"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexDiagMatrix <b>operator *</b> (<var>const ComplexDiagMatrix &amp;a, double s</var>)<var><a name="index-operator-_002a-603"></a></var><br>
-&mdash; : ComplexDiagMatrix <b>operator /</b> (<var>const ComplexDiagMatrix &amp;a, double s</var>)<var><a name="index-operator-_002f-604"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>operator +</b> (<var>double s, const ComplexDiagMatrix &amp;a</var>)<var><a name="index-operator-_002b-605"></a></var><br>
-&mdash; : ComplexMatrix <b>operator -</b> (<var>double s, const ComplexDiagMatrix &amp;a</var>)<var><a name="index-operator-_002d-606"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>operator +</b> (<var>const Complex &amp;s, const ComplexDiagMatrix &amp;a</var>)<var><a name="index-operator-_002b-607"></a></var><br>
-&mdash; : ComplexMatrix <b>operator -</b> (<var>const Complex &amp;s, const ComplexDiagMatrix &amp;a</var>)<var><a name="index-operator-_002d-608"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexDiagMatrix <b>operator *</b> (<var>double s, const ComplexDiagMatrix &amp;a</var>)<var><a name="index-operator-_002a-609"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexColumnVector <b>operator *</b> (<var>const ComplexDiagMatrix &amp;a, const ColumnVector &amp;b</var>)<var><a name="index-operator-_002a-610"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexColumnVector <b>operator *</b> (<var>const ComplexDiagMatrix &amp;a, const ComplexColumnVector &amp;b</var>)<var><a name="index-operator-_002a-611"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexDiagMatrix <b>operator +</b> (<var>const ComplexDiagMatrix &amp;a, const DiagMatrix &amp;b</var>)<var><a name="index-operator-_002b-612"></a></var><br>
-&mdash; : ComplexDiagMatrix <b>operator -</b> (<var>const ComplexDiagMatrix &amp;a, const DiagMatrix &amp;b</var>)<var><a name="index-operator-_002d-613"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexDiagMatrix <b>product</b> (<var>const ComplexDiagMatrix &amp;a, const DiagMatrix &amp;b</var>)<var><a name="index-product-614"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>operator +</b> (<var>const ComplexDiagMatrix &amp;a, const Matrix &amp;b</var>)<var><a name="index-operator-_002b-615"></a></var><br>
-&mdash; : ComplexMatrix <b>operator -</b> (<var>const ComplexDiagMatrix &amp;a, const Matrix &amp;b</var>)<var><a name="index-operator-_002d-616"></a></var><br>
-&mdash; : ComplexMatrix <b>operator *</b> (<var>const ComplexDiagMatrix &amp;a, const Matrix &amp;b</var>)<var><a name="index-operator-_002a-617"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexMatrix <b>operator +</b> (<var>const ComplexDiagMatrix &amp;a, const ComplexMatrix &amp;b</var>)<var><a name="index-operator-_002b-618"></a></var><br>
-&mdash; : ComplexMatrix <b>operator -</b> (<var>const ComplexDiagMatrix &amp;a, const ComplexMatrix &amp;b</var>)<var><a name="index-operator-_002d-619"></a></var><br>
-&mdash; : ComplexMatrix <b>operator *</b> (<var>const ComplexDiagMatrix &amp;a, const ComplexMatrix &amp;b</var>)<var><a name="index-operator-_002a-620"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ComplexColumnVector <b>diag</b> (<var>void</var>)<var> const<a name="index-diag-621"></a></var><br>
-&mdash; : ComplexColumnVector <b>diag</b> (<var>int k</var>)<var> const<a name="index-diag-622"></a></var><br>
-        </div>
-
-<div class="defun">
-&mdash; : ostream&amp; <b>operator &lt;&lt;</b> (<var>ostream &amp;os, const ComplexDiagMatrix &amp;a</var>)<var><a name="index-operator-_003c_003c-623"></a></var><br>
-        </div>
-
-<!-- Copyright (C) 1996-2012 John W. Eaton -->
-<!-- This file is part of Octave. -->
-<!-- Octave is free software; you can redistribute it and/or modify it -->
-<!-- under the terms of the GNU General Public License as published by the -->
-<!-- Free Software Foundation; either version 3 of the License, or (at -->
-<!-- your option) any later version. -->
-<!-- Octave is distributed in the hope that it will be useful, but WITHOUT -->
-<!-- ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or -->
-<!-- FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License -->
-<!-- for more details. -->
-<!-- You should have received a copy of the GNU General Public License -->
-<!-- along with Octave; see the file COPYING.  If not, see -->
-<!-- <http://www.gnu.org/licenses/>. -->
-   </body></html>
-
+</body>
+</html>

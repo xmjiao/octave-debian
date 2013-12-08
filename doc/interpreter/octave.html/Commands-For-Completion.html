@@ -1,78 +1,105 @@
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.2, http://www.gnu.org/software/texinfo/ -->
 <head>
-<title>Commands For Completion - GNU Octave</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="GNU Octave">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="Command-Line-Editing.html#Command-Line-Editing" title="Command Line Editing">
-<link rel="prev" href="Commands-For-Text.html#Commands-For-Text" title="Commands For Text">
-<link rel="next" href="Commands-For-History.html#Commands-For-History" title="Commands For History">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
+<title>GNU Octave: Commands For Completion</title>
+
+<meta name="description" content="GNU Octave: Commands For Completion">
+<meta name="keywords" content="GNU Octave: Commands For Completion">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Command-Line-Editing.html#Command-Line-Editing" rel="up" title="Command Line Editing">
+<link href="Commands-For-History.html#Commands-For-History" rel="next" title="Commands For History">
+<link href="Commands-For-Text.html#Commands-For-Text" rel="prev" title="Commands For Text">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
 </head>
-<body>
-<div class="node">
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
 <a name="Commands-For-Completion"></a>
+<div class="header">
 <p>
-Next:&nbsp;<a rel="next" accesskey="n" href="Commands-For-History.html#Commands-For-History">Commands For History</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="Commands-For-Text.html#Commands-For-Text">Commands For Text</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="Command-Line-Editing.html#Command-Line-Editing">Command Line Editing</a>
-<hr>
+Next: <a href="Commands-For-History.html#Commands-For-History" accesskey="n" rel="next">Commands For History</a>, Previous: <a href="Commands-For-Text.html#Commands-For-Text" accesskey="p" rel="prev">Commands For Text</a>, Up: <a href="Command-Line-Editing.html#Command-Line-Editing" accesskey="u" rel="up">Command Line Editing</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
 </div>
-
+<hr>
+<a name="Letting-Readline-Type-For-You"></a>
 <h4 class="subsection">2.4.4 Letting Readline Type For You</h4>
+<a name="index-command-completion"></a>
 
-<p><a name="index-command-completion-124"></a>
-The following commands allow Octave to complete command and variable
+<p>The following commands allow Octave to complete command and variable
 names for you.
-
-     <dl>
-<dt><kbd>&lt;TAB&gt;</kbd><dd>Attempt to do completion on the text before the cursor.  Octave can
+</p>
+<dl compact="compact">
+<dt><kbd><span class="key">TAB</span></kbd></dt>
+<dd><p>Attempt to do completion on the text before the cursor.  Octave can
 complete the names of commands and variables.
-
-     <br><dt><kbd>M-?</kbd><dd>List the possible completions of the text before the cursor. 
+</p>
+</dd>
+<dt><kbd>M-?</kbd></dt>
+<dd><p>List the possible completions of the text before the cursor.
+</p></dd>
 </dl>
 
-<!-- completion_append_char src/input.cc -->
-   <p><a name="doc_002dcompletion_005fappend_005fchar"></a>
-
-<div class="defun">
-&mdash; Built-in Function: <var>val</var> = <b>completion_append_char</b> ()<var><a name="index-completion_005fappend_005fchar-125"></a></var><br>
-&mdash; Built-in Function: <var>old_val</var> = <b>completion_append_char</b> (<var>new_val</var>)<var><a name="index-completion_005fappend_005fchar-126"></a></var><br>
-&mdash; Built-in Function:  <b>completion_append_char</b> (<var>new_val, "local"</var>)<var><a name="index-completion_005fappend_005fchar-127"></a></var><br>
-<blockquote><p>Query or set the internal character variable that is appended to
+<a name="XREFcompletion_005fappend_005fchar"></a><dl>
+<dt><a name="index-completion_005fappend_005fchar"></a>Built-in Function: <em><var>val</var> =</em> <strong>completion_append_char</strong> <em>()</em></dt>
+<dt><a name="index-completion_005fappend_005fchar-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>completion_append_char</strong> <em>(<var>new_val</var>)</em></dt>
+<dt><a name="index-completion_005fappend_005fchar-2"></a>Built-in Function: <em></em> <strong>completion_append_char</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
+<dd><p>Query or set the internal character variable that is appended to
 successful command-line completion attempts.  The default
-value is <code>" "</code> (a single space).
+value is <code>&quot; &quot;</code> (a single space).
+</p>
+<p>When called from inside a function with the <code>&quot;local&quot;</code> option, the
+variable is changed locally for the function and any subroutines it calls.  
+The original variable value is restored when exiting the function.
+</p></dd></dl>
 
-        <p>When called from inside a function with the "local" option, the variable is
-changed locally for the function and any subroutines it calls.  The original
-variable value is restored when exiting the function. 
-</p></blockquote></div>
 
-<!-- completion_matches src/input.cc -->
-   <p><a name="doc_002dcompletion_005fmatches"></a>
-
-<div class="defun">
-&mdash; Built-in Function:  <b>completion_matches</b> (<var>hint</var>)<var><a name="index-completion_005fmatches-128"></a></var><br>
-<blockquote><p>Generate possible completions given <var>hint</var>.
-
-        <p>This function is provided for the benefit of programs like Emacs which
+<a name="XREFcompletion_005fmatches"></a><dl>
+<dt><a name="index-completion_005fmatches"></a>Built-in Function: <em></em> <strong>completion_matches</strong> <em>(<var>hint</var>)</em></dt>
+<dd><p>Generate possible completions given <var>hint</var>.
+</p>
+<p>This function is provided for the benefit of programs like Emacs which
 might be controlling Octave and handling user input.  The current
 command number is not incremented when this function is called.  This is
-a feature, not a bug. 
-</p></blockquote></div>
+a feature, not a bug.
+</p></dd></dl>
 
-   </body></html>
 
+
+
+
+</body>
+</html>

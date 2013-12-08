@@ -1,117 +1,192 @@
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.2, http://www.gnu.org/software/texinfo/ -->
 <head>
-<title>Organization of Functions - GNU Octave</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="GNU Octave">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="Functions-and-Scripts.html#Functions-and-Scripts" title="Functions and Scripts">
-<link rel="prev" href="Commands.html#Commands" title="Commands">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
+<title>GNU Octave: Organization of Functions</title>
+
+<meta name="description" content="GNU Octave: Organization of Functions">
+<meta name="keywords" content="GNU Octave: Organization of Functions">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Functions-and-Scripts.html#Functions-and-Scripts" rel="up" title="Functions and Scripts">
+<link href="Errors-and-Warnings.html#Errors-and-Warnings" rel="next" title="Errors and Warnings">
+<link href="Commands.html#Commands" rel="prev" title="Commands">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
 </head>
-<body>
-<div class="node">
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
 <a name="Organization-of-Functions"></a>
+<div class="header">
 <p>
-Previous:&nbsp;<a rel="previous" accesskey="p" href="Commands.html#Commands">Commands</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="Functions-and-Scripts.html#Functions-and-Scripts">Functions and Scripts</a>
-<hr>
+Previous: <a href="Commands.html#Commands" accesskey="p" rel="prev">Commands</a>, Up: <a href="Functions-and-Scripts.html#Functions-and-Scripts" accesskey="u" rel="up">Functions and Scripts</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
 </div>
+<hr>
+<a name="Organization-of-Functions-Distributed-with-Octave"></a>
+<h3 class="section">11.13 Organization of Functions Distributed with Octave</h3>
 
-<h3 class="section">11.12 Organization of Functions Distributed with Octave</h3>
-
-<p>Many of Octave's standard functions are distributed as function files. 
+<p>Many of Octave&rsquo;s standard functions are distributed as function files.
 They are loosely organized by topic, in subdirectories of
-<samp><var>octave-home</var><span class="file">/lib/octave/</span><var>version</var><span class="file">/m</span></samp>, to make it easier
+<samp><var>octave-home</var>/lib/octave/<var>version</var>/m</samp>, to make it easier
 to find them.
-
-   <p>The following is a list of all the function file subdirectories, and the
+</p>
+<p>The following is a list of all the function file subdirectories, and the
 types of functions you will find there.
-
-     <dl>
-<dt><samp><span class="file">audio</span></samp><dd>Functions for playing and recording sounds.
-
-     <br><dt><samp><span class="file">deprecated</span></samp><dd>Out-of-date functions which will eventually be removed from Octave.
-
-     <br><dt><samp><span class="file">elfun</span></samp><dd>Elementary functions, principally trigonometric.
-
-     <br><dt><samp><span class="file">@ftp</span></samp><dd>Class functions for the FTP object.
-
-     <br><dt><samp><span class="file">general</span></samp><dd>Miscellaneous matrix manipulations, like <code>flipud</code>, <code>rot90</code>,
+</p>
+<dl compact="compact">
+<dt><samp>audio</samp></dt>
+<dd><p>Functions for playing and recording sounds.
+</p>
+</dd>
+<dt><samp>deprecated</samp></dt>
+<dd><p>Out-of-date functions which will eventually be removed from Octave.
+</p>
+</dd>
+<dt><samp>elfun</samp></dt>
+<dd><p>Elementary functions, principally trigonometric.
+</p>
+</dd>
+<dt><samp>@ftp</samp></dt>
+<dd><p>Class functions for the FTP object.
+</p>
+</dd>
+<dt><samp>general</samp></dt>
+<dd><p>Miscellaneous matrix manipulations, like <code>flipud</code>, <code>rot90</code>,
 and <code>triu</code>, as well as other basic functions, like
 <code>ismatrix</code>, <code>nargchk</code>, etc.
-
-     <br><dt><samp><span class="file">geometry</span></samp><dd>Functions related to Delaunay triangulation.
-
-     <br><dt><samp><span class="file">help</span></samp><dd>Functions for Octave's built-in help system.
-
-     <br><dt><samp><span class="file">image</span></samp><dd>Image processing tools.  These functions require the X Window System.
-
-     <br><dt><samp><span class="file">io</span></samp><dd>Input-output functions.
-
-     <br><dt><samp><span class="file">linear-algebra</span></samp><dd>Functions for linear algebra.
-
-     <br><dt><samp><span class="file">miscellaneous</span></samp><dd>Functions that don't really belong anywhere else.
-
-     <br><dt><samp><span class="file">optimization</span></samp><dd>Functions related to minimization, optimization, and root finding.
-
-     <br><dt><samp><span class="file">path</span></samp><dd>Functions to manage the directory path Octave uses to find functions.
-
-     <br><dt><samp><span class="file">pkg</span></samp><dd>Package manager for installing external packages of functions in Octave.
-
-     <br><dt><samp><span class="file">plot</span></samp><dd>Functions for displaying and printing two- and three-dimensional graphs.
-
-     <br><dt><samp><span class="file">polynomial</span></samp><dd>Functions for manipulating polynomials.
-
-     <br><dt><samp><span class="file">prefs</span></samp><dd>Functions implementing user-defined preferences.
-
-     <br><dt><samp><span class="file">set</span></samp><dd>Functions for creating and manipulating sets of unique values.
-
-     <br><dt><samp><span class="file">signal</span></samp><dd>Functions for signal processing applications.
-
-     <br><dt><samp><span class="file">sparse</span></samp><dd>Functions for handling sparse matrices.
-
-     <br><dt><samp><span class="file">specfun</span></samp><dd>Special functions such as <code>bessel</code> or <code>factor</code>.
-
-     <br><dt><samp><span class="file">special-matrix</span></samp><dd>Functions that create special matrix forms such as Hilbert or Vandermonde
+</p>
+</dd>
+<dt><samp>geometry</samp></dt>
+<dd><p>Functions related to Delaunay triangulation.
+</p>
+</dd>
+<dt><samp>help</samp></dt>
+<dd><p>Functions for Octave&rsquo;s built-in help system.
+</p>
+</dd>
+<dt><samp>image</samp></dt>
+<dd><p>Image processing tools.  These functions require the X Window System.
+</p>
+</dd>
+<dt><samp>io</samp></dt>
+<dd><p>Input-output functions.
+</p>
+</dd>
+<dt><samp>linear-algebra</samp></dt>
+<dd><p>Functions for linear algebra.
+</p>
+</dd>
+<dt><samp>miscellaneous</samp></dt>
+<dd><p>Functions that don&rsquo;t really belong anywhere else.
+</p>
+</dd>
+<dt><samp>optimization</samp></dt>
+<dd><p>Functions related to minimization, optimization, and root finding.
+</p>
+</dd>
+<dt><samp>path</samp></dt>
+<dd><p>Functions to manage the directory path Octave uses to find functions.
+</p>
+</dd>
+<dt><samp>pkg</samp></dt>
+<dd><p>Package manager for installing external packages of functions in Octave.
+</p>
+</dd>
+<dt><samp>plot</samp></dt>
+<dd><p>Functions for displaying and printing two- and three-dimensional graphs.
+</p>
+</dd>
+<dt><samp>polynomial</samp></dt>
+<dd><p>Functions for manipulating polynomials.
+</p>
+</dd>
+<dt><samp>prefs</samp></dt>
+<dd><p>Functions implementing user-defined preferences.
+</p>
+</dd>
+<dt><samp>set</samp></dt>
+<dd><p>Functions for creating and manipulating sets of unique values.
+</p>
+</dd>
+<dt><samp>signal</samp></dt>
+<dd><p>Functions for signal processing applications.
+</p>
+</dd>
+<dt><samp>sparse</samp></dt>
+<dd><p>Functions for handling sparse matrices.
+</p>
+</dd>
+<dt><samp>specfun</samp></dt>
+<dd><p>Special functions such as <code>bessel</code> or <code>factor</code>.
+</p>
+</dd>
+<dt><samp>special-matrix</samp></dt>
+<dd><p>Functions that create special matrix forms such as Hilbert or Vandermonde
 matrices.
-
-     <br><dt><samp><span class="file">startup</span></samp><dd>Octave's system-wide startup file.
-
-     <br><dt><samp><span class="file">statistics</span></samp><dd>Statistical functions.
-
-     <br><dt><samp><span class="file">strings</span></samp><dd>Miscellaneous string-handling functions.
-
-     <br><dt><samp><span class="file">testfun</span></samp><dd>Functions for performing unit tests on other functions.
-
-     <br><dt><samp><span class="file">time</span></samp><dd>Functions related to time and date processing. 
+</p>
+</dd>
+<dt><samp>startup</samp></dt>
+<dd><p>Octave&rsquo;s system-wide startup file.
+</p>
+</dd>
+<dt><samp>statistics</samp></dt>
+<dd><p>Statistical functions.
+</p>
+</dd>
+<dt><samp>strings</samp></dt>
+<dd><p>Miscellaneous string-handling functions.
+</p>
+</dd>
+<dt><samp>testfun</samp></dt>
+<dd><p>Functions for performing unit tests on other functions.
+</p>
+</dd>
+<dt><samp>time</samp></dt>
+<dd><p>Functions related to time and date processing.
+</p></dd>
 </dl>
 
-<!-- DO NOT EDIT!  Generated automatically by munge-texi.pl. -->
-<!-- Copyright (C) 1996-2012 John W. Eaton -->
-<!-- This file is part of Octave. -->
-<!-- Octave is free software; you can redistribute it and/or modify it -->
-<!-- under the terms of the GNU General Public License as published by the -->
-<!-- Free Software Foundation; either version 3 of the License, or (at -->
-<!-- your option) any later version. -->
-<!-- Octave is distributed in the hope that it will be useful, but WITHOUT -->
-<!-- ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or -->
-<!-- FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License -->
-<!-- for more details. -->
-<!-- You should have received a copy of the GNU General Public License -->
-<!-- along with Octave; see the file COPYING.  If not, see -->
-<!-- <http://www.gnu.org/licenses/>. -->
-   </body></html>
 
+<hr>
+<div class="header">
+<p>
+Previous: <a href="Commands.html#Commands" accesskey="p" rel="prev">Commands</a>, Up: <a href="Functions-and-Scripts.html#Functions-and-Scripts" accesskey="u" rel="up">Functions and Scripts</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,98 +1,124 @@
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.2, http://www.gnu.org/software/texinfo/ -->
 <head>
-<title>Bounds - Octave C++ Classes</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="Octave C++ Classes">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="Optimization.html#Optimization" title="Optimization">
-<link rel="prev" href="Objective-Functions.html#Objective-Functions" title="Objective Functions">
-<link rel="next" href="Linear-Constraints.html#Linear-Constraints" title="Linear Constraints">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
+<title>Octave C++ Classes: Bounds</title>
+
+<meta name="description" content="Octave C++ Classes: Bounds">
+<meta name="keywords" content="Octave C++ Classes: Bounds">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Optimization.html#Optimization" rel="up" title="Optimization">
+<link href="Linear-Constraints.html#Linear-Constraints" rel="next" title="Linear Constraints">
+<link href="Objective-Functions.html#Objective-Functions" rel="prev" title="Objective Functions">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
 </head>
-<body>
-<div class="node">
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
 <a name="Bounds"></a>
+<div class="header">
 <p>
-Next:&nbsp;<a rel="next" accesskey="n" href="Linear-Constraints.html#Linear-Constraints">Linear Constraints</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="Objective-Functions.html#Objective-Functions">Objective Functions</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="Optimization.html#Optimization">Optimization</a>
-<hr>
+Next: <a href="Linear-Constraints.html#Linear-Constraints" accesskey="n" rel="next">Linear Constraints</a>, Previous: <a href="Objective-Functions.html#Objective-Functions" accesskey="p" rel="prev">Objective Functions</a>, Up: <a href="Optimization.html#Optimization" accesskey="u" rel="up">Optimization</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
 </div>
-
+<hr>
+<a name="Bounds-1"></a>
 <h3 class="section">9.2 Bounds</h3>
+<a name="index-bounds"></a>
 
-<p><a name="index-bounds-831"></a>
+<dl>
+<dt><a name="index-Bounds"></a>: <em></em> <strong>Bounds</strong> <em>(void)</em></dt>
+<dt><a name="index-Bounds-1"></a>: <em></em> <strong>Bounds</strong> <em>(int <var>n</var>)</em></dt>
+<dt><a name="index-Bounds-2"></a>: <em></em> <strong>Bounds</strong> <em>(const ColumnVector <var>lb</var>, const ColumnVector <var>ub</var>)</em></dt>
+<dt><a name="index-Bounds-3"></a>: <em></em> <strong>Bounds</strong> <em>(const Bounds &amp;<var>a</var>)</em></dt>
+</dl>
 
-<div class="defun">
-&mdash; :  <b>Bounds</b> (<var>void</var>)<var><a name="index-Bounds-832"></a></var><br>
-&mdash; :  <b>Bounds</b> (<var>int n</var>)<var><a name="index-Bounds-833"></a></var><br>
-&mdash; :  <b>Bounds</b> (<var>const ColumnVector lb, const ColumnVector ub</var>)<var><a name="index-Bounds-834"></a></var><br>
-&mdash; :  <b>Bounds</b> (<var>const Bounds &amp;a</var>)<var><a name="index-Bounds-835"></a></var><br>
-        </div>
+<dl>
+<dt><a name="index-operator-_003d-30"></a>: <em>Bounds&amp;</em> <strong>operator =</strong> <em>(const Bounds &amp;<var>a</var>)</em></dt>
+</dl>
 
-<div class="defun">
-&mdash; : Bounds&amp; <b>operator =</b> (<var>const Bounds &amp;a</var>)<var><a name="index-operator-_003d-836"></a></var><br>
-        </div>
+<dl>
+<dt><a name="index-resize-1"></a>: <em>Bounds&amp;</em> <strong>resize</strong> <em>(int <var>n</var>)</em></dt>
+</dl>
 
-<div class="defun">
-&mdash; : Bounds&amp; <b>resize</b> (<var>int n</var>)<var><a name="index-resize-837"></a></var><br>
-        </div>
+<dl>
+<dt><a name="index-lower_005fbound"></a>: <em>double</em> <strong>lower_bound</strong> <em>(int <var>index</var>) const;</em></dt>
+<dt><a name="index-upper_005fbound"></a>: <em>double</em> <strong>upper_bound</strong> <em>(int <var>index</var>) const;</em></dt>
+</dl>
 
-<div class="defun">
-&mdash; : double <b>lower_bound</b> (<var>int index</var>)<var> const;<a name="index-lower_005fbound-838"></a></var><br>
-&mdash; : double <b>upper_bound</b> (<var>int index</var>)<var> const;<a name="index-upper_005fbound-839"></a></var><br>
-        </div>
+<dl>
+<dt><a name="index-lower_005fbounds"></a>: <em>ColumnVector</em> <strong>lower_bounds</strong> <em>(void) const;</em></dt>
+<dt><a name="index-upper_005fbounds"></a>: <em>ColumnVector</em> <strong>upper_bounds</strong> <em>(void) const;</em></dt>
+</dl>
 
-<div class="defun">
-&mdash; : ColumnVector <b>lower_bounds</b> (<var>void</var>)<var> const;<a name="index-lower_005fbounds-840"></a></var><br>
-&mdash; : ColumnVector <b>upper_bounds</b> (<var>void</var>)<var> const;<a name="index-upper_005fbounds-841"></a></var><br>
-        </div>
+<dl>
+<dt><a name="index-size-1"></a>: <em>int</em> <strong>size</strong> <em>(void) const;</em></dt>
+</dl>
 
-<div class="defun">
-&mdash; : int <b>size</b> (<var>void</var>)<var> const;<a name="index-size-842"></a></var><br>
-        </div>
+<dl>
+<dt><a name="index-set_005fbound"></a>: <em>Bounds&amp;</em> <strong>set_bound</strong> <em>(int <var>index</var>, double <var>low</var>, double <var>high</var>)</em></dt>
+</dl>
 
-<div class="defun">
-&mdash; : Bounds&amp; <b>set_bound</b> (<var>int index, double low, double high</var>)<var><a name="index-set_005fbound-843"></a></var><br>
-        </div>
+<dl>
+<dt><a name="index-set_005fbounds"></a>: <em>Bounds&amp;</em> <strong>set_bounds</strong> <em>(double <var>low</var>, double <var>high</var>)</em></dt>
+<dt><a name="index-set_005fbounds-1"></a>: <em>Bounds&amp;</em> <strong>set_bounds</strong> <em>(const ColumnVector <var>lb</var>, const ColumnVector <var>ub</var>)</em></dt>
+</dl>
 
-<div class="defun">
-&mdash; : Bounds&amp; <b>set_bounds</b> (<var>double low, double high</var>)<var><a name="index-set_005fbounds-844"></a></var><br>
-&mdash; : Bounds&amp; <b>set_bounds</b> (<var>const ColumnVector lb, const ColumnVector ub</var>)<var><a name="index-set_005fbounds-845"></a></var><br>
-        </div>
+<dl>
+<dt><a name="index-set_005flower_005fbound"></a>: <em>Bounds&amp;</em> <strong>set_lower_bound</strong> <em>(int <var>index</var>, double <var>low</var>)</em></dt>
+<dt><a name="index-set_005fupper_005fbound"></a>: <em>Bounds&amp;</em> <strong>set_upper_bound</strong> <em>(int <var>index</var>, double <var>high</var>)</em></dt>
+</dl>
 
-<div class="defun">
-&mdash; : Bounds&amp; <b>set_lower_bound</b> (<var>int index, double low</var>)<var><a name="index-set_005flower_005fbound-846"></a></var><br>
-&mdash; : Bounds&amp; <b>set_upper_bound</b> (<var>int index, double high</var>)<var><a name="index-set_005fupper_005fbound-847"></a></var><br>
-        </div>
+<dl>
+<dt><a name="index-set_005flower_005fbounds"></a>: <em>Bounds&amp;</em> <strong>set_lower_bounds</strong> <em>(double <var>low</var>)</em></dt>
+<dt><a name="index-set_005fupper_005fbounds"></a>: <em>Bounds&amp;</em> <strong>set_upper_bounds</strong> <em>(double <var>high</var>)</em></dt>
+</dl>
 
-<div class="defun">
-&mdash; : Bounds&amp; <b>set_lower_bounds</b> (<var>double low</var>)<var><a name="index-set_005flower_005fbounds-848"></a></var><br>
-&mdash; : Bounds&amp; <b>set_upper_bounds</b> (<var>double high</var>)<var><a name="index-set_005fupper_005fbounds-849"></a></var><br>
-        </div>
+<dl>
+<dt><a name="index-set_005flower_005fbounds-1"></a>: <em>Bounds&amp;</em> <strong>set_lower_bounds</strong> <em>(const ColumnVector <var>lb</var>)</em></dt>
+<dt><a name="index-set_005fupper_005fbounds-1"></a>: <em>Bounds&amp;</em> <strong>set_upper_bounds</strong> <em>(const ColumnVector <var>ub</var>)</em></dt>
+</dl>
 
-<div class="defun">
-&mdash; : Bounds&amp; <b>set_lower_bounds</b> (<var>const ColumnVector lb</var>)<var><a name="index-set_005flower_005fbounds-850"></a></var><br>
-&mdash; : Bounds&amp; <b>set_upper_bounds</b> (<var>const ColumnVector ub</var>)<var><a name="index-set_005fupper_005fbounds-851"></a></var><br>
-        </div>
+<dl>
+<dt><a name="index-operator-_003c_003c-27"></a>: <em>ostream&amp;</em> <strong>operator &lt;&lt;</strong> <em>(ostream &amp;<var>os</var>, const Bounds &amp;<var>b</var>)</em></dt>
+</dl>
 
-<div class="defun">
-&mdash; : ostream&amp; <b>operator &lt;&lt;</b> (<var>ostream &amp;os, const Bounds &amp;b</var>)<var><a name="index-operator-_003c_003c-852"></a></var><br>
-        </div>
 
-<!--  -->
-   </body></html>
 
+
+
+</body>
+</html>

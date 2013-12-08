@@ -1,106 +1,136 @@
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.2, http://www.gnu.org/software/texinfo/ -->
 <head>
-<title>Customizing Toolkit Behavior - GNU Octave</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="GNU Octave">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="Graphics-Toolkits.html#Graphics-Toolkits" title="Graphics Toolkits">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
+<title>GNU Octave: Customizing Toolkit Behavior</title>
+
+<meta name="description" content="GNU Octave: Customizing Toolkit Behavior">
+<meta name="keywords" content="GNU Octave: Customizing Toolkit Behavior">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Graphics-Toolkits.html#Graphics-Toolkits" rel="up" title="Graphics Toolkits">
+<link href="Matrix-Manipulation.html#Matrix-Manipulation" rel="next" title="Matrix Manipulation">
+<link href="Graphics-Toolkits.html#Graphics-Toolkits" rel="prev" title="Graphics Toolkits">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
 </head>
-<body>
-<div class="node">
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
 <a name="Customizing-Toolkit-Behavior"></a>
+<div class="header">
 <p>
-Up:&nbsp;<a rel="up" accesskey="u" href="Graphics-Toolkits.html#Graphics-Toolkits">Graphics Toolkits</a>
-<hr>
+Up: <a href="Graphics-Toolkits.html#Graphics-Toolkits" accesskey="u" rel="up">Graphics Toolkits</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
 </div>
+<hr>
+<a name="Customizing-Toolkit-Behavior-1"></a>
+<h4 class="subsubsection">15.4.7.1 Customizing Toolkit Behavior</h4>
+<a name="index-toolkit-customization"></a>
 
-<h5 class="subsubsection">15.4.7.1 Customizing Toolkit Behavior</h5>
-
-<p><a name="index-toolkit-customization-1599"></a>
-The specific behavior of the backend toolkit may be modified using the
+<p>The specific behavior of the backend toolkit may be modified using the
 following utility functions.  Note: Not all functions apply to every
 graphics toolkit.
+</p>
+<a name="XREFgnuplot_005fbinary"></a><dl>
+<dt><a name="index-gnuplot_005fbinary"></a>Loadable Function: <em>[<var>prog</var>, <var>args</var>] =</em> <strong>gnuplot_binary</strong> <em>()</em></dt>
+<dt><a name="index-gnuplot_005fbinary-1"></a>Loadable Function: <em>[<var>old_prog</var>, <var>old_args</var>] =</em> <strong>gnuplot_binary</strong> <em>(<var>new_prog</var>, <var>arg1</var>, &hellip;)</em></dt>
+<dd><p>Query or set the name of the program invoked by the plot command
+when the graphics toolkit is set to &quot;gnuplot&quot;.  Additional arguments to
+pass to the external plotting program may also be given.
+The default value is <code>&quot;gnuplot&quot;</code> with no additional arguments.
+See <a href="Installation.html#Installation">Installation</a>.
+</p>
+<p><strong>See also:</strong> <a href="Graphics-Toolkits.html#XREFgraphics_005ftoolkit">graphics_toolkit</a>.
+</p></dd></dl>
 
-<!-- gnuplot_binary scripts/plot/gnuplot_binary.m -->
-   <p><a name="doc_002dgnuplot_005fbinary"></a>
 
-<div class="defun">
-&mdash; Loadable Function: [<var>prog</var>, <var>args</var>] = <b>gnuplot_binary</b> ()<var><a name="index-gnuplot_005fbinary-1600"></a></var><br>
-&mdash; Loadable Function: [<var>old_prog</var>, <var>old_args</var>] = <b>gnuplot_binary</b> (<var>new_prog, arg1, <small class="dots">...</small></var>)<var><a name="index-gnuplot_005fbinary-1601"></a></var><br>
-<blockquote><p>Query or set the name of the program invoked by the plot command
-when the graphics toolkit is set to "gnuplot".  Additional arguments to
-pass to the external plotting program may also be given. 
-The default value is <code>"gnuplot"</code> without additional arguments. 
-See <a href="Installation.html#Installation">Installation</a>. 
-</p></blockquote></div>
-
-<!-- gui_mode src/DLD-FUNCTIONS/__init_fltk__.cc -->
-   <p><a name="doc_002dgui_005fmode"></a>
-
-<div class="defun">
-&mdash; Built-in Function: <var>mode</var> = <b>gui_mode</b> ()<var><a name="index-gui_005fmode-1602"></a></var><br>
-&mdash; Built-in Function:  <b>gui_mode</b> (<var>mode</var>)<var><a name="index-gui_005fmode-1603"></a></var><br>
-<blockquote><p>Query or set the GUI mode for the current graphics toolkit. 
+<a name="XREFgui_005fmode"></a><dl>
+<dt><a name="index-gui_005fmode"></a>Built-in Function: <em><var>mode</var> =</em> <strong>gui_mode</strong> <em>()</em></dt>
+<dt><a name="index-gui_005fmode-1"></a>Built-in Function: <em></em> <strong>gui_mode</strong> <em>(<var>mode</var>)</em></dt>
+<dd><p>Query or set the GUI mode for the current graphics toolkit.
 The <var>mode</var> argument can be one of the following strings:
-          <dl>
-<dt>'2d'<dd>Allows panning and zooming of current axes.
-
-          <br><dt>'3d'<dd>Allows rotating and zooming of current axes.
-
-          <br><dt>'none'<dd>Mouse inputs have no effect. 
+</p>
+<dl compact="compact">
+<dt><code>&quot;2d&quot;</code></dt>
+<dd><p>Allows panning and zooming of current axes.
+</p>
+</dd>
+<dt><code>&quot;3d&quot;</code></dt>
+<dd><p>Allows rotating and zooming of current axes.
+</p>
+</dd>
+<dt><code>&quot;none&quot;</code></dt>
+<dd><p>Mouse inputs have no effect.
+</p></dd>
 </dl>
 
-        <p>This function is currently implemented only for the FLTK graphics toolkit. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
+<p>This function is currently implemented only for the FLTK graphics toolkit.
+</p>
+<p><strong>See also:</strong> <a href="#XREFmouse_005fwheel_005fzoom">mouse_wheel_zoom</a>.
+</p></dd></dl>
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dmouse_005fwheel_005fzoom.html#doc_002dmouse_005fwheel_005fzoom">mouse_wheel_zoom</a>. 
-</p></blockquote></div>
 
-<!-- mouse_wheel_zoom src/DLD-FUNCTIONS/__init_fltk__.cc -->
-   <p><a name="doc_002dmouse_005fwheel_005fzoom"></a>
+<a name="XREFmouse_005fwheel_005fzoom"></a><dl>
+<dt><a name="index-mouse_005fwheel_005fzoom"></a>Loadable Function: <em><var>val</var> =</em> <strong>mouse_wheel_zoom</strong> <em>()</em></dt>
+<dt><a name="index-mouse_005fwheel_005fzoom-1"></a>Loadable Function: <em><var>old_val</var> =</em> <strong>mouse_wheel_zoom</strong> <em>(<var>new_val</var>)</em></dt>
+<dt><a name="index-mouse_005fwheel_005fzoom-2"></a>Loadable Function: <em></em> <strong>mouse_wheel_zoom</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
+<dd><p>Query or set the mouse wheel zoom factor.
+</p>
+<p>The zoom factor is a number in the range (0,1) which is the percentage of the
+current axis limits that will be used when zooming.  For example, if the
+current x-axis limits are [0, 50] and <code>mouse_wheel_zoom</code> is 0.4 (40%),
+then a zoom operation will change the limits by 20.
+</p>
+<p>When called from inside a function with the <code>&quot;local&quot;</code> option, the
+variable is changed locally for the function and any subroutines it calls.  
+The original variable value is restored when exiting the function.
+</p>
+<p>This function is currently implemented only for the FLTK graphics toolkit.
+</p>
+<p><strong>See also:</strong> <a href="#XREFgui_005fmode">gui_mode</a>.
+</p></dd></dl>
 
-<div class="defun">
-&mdash; Built-in Function: <var>speed</var> = <b>mouse_wheel_zoom</b> ()<var><a name="index-mouse_005fwheel_005fzoom-1604"></a></var><br>
-&mdash; Built-in Function:  <b>mouse_wheel_zoom</b> (<var>speed</var>)<var><a name="index-mouse_005fwheel_005fzoom-1605"></a></var><br>
-<blockquote><p>Query or set the mouse wheel zoom factor.
 
-        <p>This function is currently implemented only for the FLTK graphics toolkit. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dgui_005fmode.html#doc_002dgui_005fmode">gui_mode</a>. 
-</p></blockquote></div>
+<hr>
+<div class="header">
+<p>
+Up: <a href="Graphics-Toolkits.html#Graphics-Toolkits" accesskey="u" rel="up">Graphics Toolkits</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
 
-<!-- DO NOT EDIT!  Generated automatically by munge-texi.pl. -->
-<!-- Copyright (C) 1996-2012 John W. Eaton -->
-<!-- This file is part of Octave. -->
-<!-- Octave is free software; you can redistribute it and/or modify it -->
-<!-- under the terms of the GNU General Public License as published by the -->
-<!-- Free Software Foundation; either version 3 of the License, or (at -->
-<!-- your option) any later version. -->
-<!-- Octave is distributed in the hope that it will be useful, but WITHOUT -->
-<!-- ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or -->
-<!-- FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License -->
-<!-- for more details. -->
-<!-- You should have received a copy of the GNU General Public License -->
-<!-- along with Octave; see the file COPYING.  If not, see -->
-<!-- <http://www.gnu.org/licenses/>. -->
-   </body></html>
 
+
+</body>
+</html>

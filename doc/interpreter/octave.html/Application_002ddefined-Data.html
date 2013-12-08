@@ -1,90 +1,111 @@
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.2, http://www.gnu.org/software/texinfo/ -->
 <head>
-<title>Application-defined Data - GNU Octave</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="GNU Octave">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="Advanced-Plotting.html#Advanced-Plotting" title="Advanced Plotting">
-<link rel="prev" href="Callbacks.html#Callbacks" title="Callbacks">
-<link rel="next" href="Object-Groups.html#Object-Groups" title="Object Groups">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
+<title>GNU Octave: Application-defined Data</title>
+
+<meta name="description" content="GNU Octave: Application-defined Data">
+<meta name="keywords" content="GNU Octave: Application-defined Data">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Advanced-Plotting.html#Advanced-Plotting" rel="up" title="Advanced Plotting">
+<link href="Object-Groups.html#Object-Groups" rel="next" title="Object Groups">
+<link href="Callbacks.html#Callbacks" rel="prev" title="Callbacks">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
 </head>
-<body>
-<div class="node">
-<a name="Application-defined-Data"></a>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
 <a name="Application_002ddefined-Data"></a>
+<div class="header">
 <p>
-Next:&nbsp;<a rel="next" accesskey="n" href="Object-Groups.html#Object-Groups">Object Groups</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="Callbacks.html#Callbacks">Callbacks</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="Advanced-Plotting.html#Advanced-Plotting">Advanced Plotting</a>
-<hr>
+Next: <a href="Object-Groups.html#Object-Groups" accesskey="n" rel="next">Object Groups</a>, Previous: <a href="Callbacks.html#Callbacks" accesskey="p" rel="prev">Callbacks</a>, Up: <a href="Advanced-Plotting.html#Advanced-Plotting" accesskey="u" rel="up">Advanced Plotting</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
 </div>
-
+<hr>
+<a name="Application_002ddefined-Data-1"></a>
 <h4 class="subsection">15.4.5 Application-defined Data</h4>
+<a name="index-application_002ddefined-data"></a>
 
-<p><a name="index-application_002ddefined-data-1552"></a>
-Octave has a provision for attaching application-defined data to a graphics
+<p>Octave has a provision for attaching application-defined data to a graphics
 handle.  The data can be anything which is meaningful to the application, and
 will be completely ignored by Octave.
-
-<!-- setappdata scripts/miscellaneous/setappdata.m -->
-   <p><a name="doc_002dsetappdata"></a>
-
-<div class="defun">
-&mdash; Function File:  <b>setappdata</b> (<var>h, name, value</var>)<var><a name="index-setappdata-1553"></a></var><br>
-<blockquote><p>Set the named application data to <var>value</var> for the object(s) with
+</p>
+<a name="XREFsetappdata"></a><dl>
+<dt><a name="index-setappdata"></a>Function File: <em></em> <strong>setappdata</strong> <em>(<var>h</var>, <var>name</var>, <var>value</var>)</em></dt>
+<dd><p>Set the named application data to <var>value</var> for the object(s) with
 handle(s) <var>h</var>.  If the application data with the specified name does
-not exist, it is created. 
-</p></blockquote></div>
+not exist, it is created.
+</p>
+<p><strong>See also:</strong> <a href="#XREFgetappdata">getappdata</a>, <a href="GUI-Utility-Functions.html#XREFguidata">guidata</a>, <a href="Graphics-Objects.html#XREFget">get</a>, <a href="Graphics-Objects.html#XREFset">set</a>, <a href="User_002dDefined-Preferences.html#XREFgetpref">getpref</a>, <a href="User_002dDefined-Preferences.html#XREFsetpref">setpref</a>.
+</p></dd></dl>
 
-<!-- getappdata scripts/miscellaneous/getappdata.m -->
-   <p><a name="doc_002dgetappdata"></a>
 
-<div class="defun">
-&mdash; Function File: <var>value</var> = <b>getappdata</b> (<var>h, name</var>)<var><a name="index-getappdata-1554"></a></var><br>
-<blockquote><p>Return the <var>value</var> for named application data for the object(s) with
+<a name="XREFgetappdata"></a><dl>
+<dt><a name="index-getappdata"></a>Function File: <em><var>value</var> =</em> <strong>getappdata</strong> <em>(<var>h</var>, <var>name</var>)</em></dt>
+<dt><a name="index-getappdata-1"></a>Function File: <em><var>appdata</var> =</em> <strong>getappdata</strong> <em>(<var>h</var>)</em></dt>
+<dd>
+<p>Return the <var>value</var> for named application data for the object(s) with
 handle(s) <var>h</var>.
+</p>
+<p><code>getappdata(<var>h</var>)</code> returns a structure, <var>appdata</var>, whose fields
+correspond to the appdata properties.
+</p>
 
-   &mdash; Function File: <var>appdata</var> = <b>getappdata</b> (<var>h</var>)<var><a name="index-getappdata-1555"></a></var><br>
-<blockquote><p>Return a structure, <var>appdata</var>, whose fields correspond to the appdata
-properties. 
-</p></blockquote></div>
+<p><strong>See also:</strong> <a href="#XREFsetappdata">setappdata</a>, <a href="GUI-Utility-Functions.html#XREFguidata">guidata</a>, <a href="Graphics-Objects.html#XREFget">get</a>, <a href="Graphics-Objects.html#XREFset">set</a>, <a href="User_002dDefined-Preferences.html#XREFgetpref">getpref</a>, <a href="User_002dDefined-Preferences.html#XREFsetpref">setpref</a>.
+</p></dd></dl>
 
-<!-- rmappdata scripts/miscellaneous/rmappdata.m -->
-   <p><a name="doc_002drmappdata"></a>
 
-<div class="defun">
-&mdash; Function File:  <b>rmappdata</b> (<var>h, name</var>)<var><a name="index-rmappdata-1556"></a></var><br>
-<blockquote><p>Delete the named application data for the object(s) with
-handle(s) <var>h</var>. 
-</p></blockquote></div>
+<a name="XREFrmappdata"></a><dl>
+<dt><a name="index-rmappdata"></a>Function File: <em></em> <strong>rmappdata</strong> <em>(<var>h</var>, <var>name</var>)</em></dt>
+<dd><p>Delete the named application data for the object(s) with
+handle(s) <var>h</var>.
+</p></dd></dl>
 
-<!-- isappdata scripts/miscellaneous/isappdata.m -->
-   <p><a name="doc_002disappdata"></a>
 
-<div class="defun">
-&mdash; Function File: <var>V</var> = <b>isappdata</b> (<var>h, name</var>)<var><a name="index-isappdata-1557"></a></var><br>
-<blockquote><p>Return true if the named application data, <var>name</var>, exists for the
-object with handle <var>h</var>. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
+<a name="XREFisappdata"></a><dl>
+<dt><a name="index-isappdata"></a>Function File: <em><var>V</var> =</em> <strong>isappdata</strong> <em>(<var>h</var>, <var>name</var>)</em></dt>
+<dd><p>Return true if the named application data, <var>name</var>, exists for the
+object with handle <var>h</var>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFgetappdata">getappdata</a>, <a href="#XREFsetappdata">setappdata</a>, <a href="#XREFrmappdata">rmappdata</a>.
+</p></dd></dl>
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dgetappdata.html#doc_002dgetappdata">getappdata</a>, <a href="doc_002dsetappdata.html#doc_002dsetappdata">setappdata</a>, <a href="doc_002drmappdata.html#doc_002drmappdata">rmappdata</a>. 
-</p></blockquote></div>
 
-   </body></html>
 
+
+
+</body>
+</html>

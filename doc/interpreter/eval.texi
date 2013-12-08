@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2012 John W. Eaton
+@c Copyright (C) 1996-2013 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -29,8 +29,8 @@ Sometimes, you may find it necessary to evaluate an expression that has
 been computed and stored in a string, which is exactly what the
 @code{eval} function lets you do.
 
-@c eval src/oct-parse.cc
-@anchor{doc-eval}
+@c eval libinterp/parse-tree/oct-parse.cc
+@anchor{XREFeval}
 @deftypefn  {Built-in Function} {} eval (@var{try})
 @deftypefnx {Built-in Function} {} eval (@var{try}, @var{catch})
 Parse the string @var{try} and evaluate it as if it were an Octave
@@ -38,11 +38,11 @@ program.  If that fails, evaluate the optional string @var{catch}.
 The string @var{try} is evaluated in the current context,
 so any results remain available after @code{eval} returns.
 
-The following example makes the variable @var{a} with the approximate
+The following example makes the variable @var{A} with the approximate
 value 3.1416 available.
 
 @example
-eval("a = acos(-1);");
+eval ("A = acos(-1);");
 @end example
 
 If an error occurs during the evaluation of @var{try} the @var{catch}
@@ -60,7 +60,7 @@ eval ('error ("This is a bad example");',
 Consider using try/catch blocks instead if you are only using @code{eval}
 as an error-capturing mechanism rather than for the execution of arbitrary
 code strings.
-@seealso{@ref{doc-evalin,,evalin}}
+@seealso{@ref{XREFevalin,,evalin}}
 @end deftypefn
 
 
@@ -114,15 +114,15 @@ Note that this is only meant to be an example of calling user-supplied
 functions and should not be taken too seriously.  In addition to using a
 more robust algorithm, any serious code would check the number and type
 of all the arguments, ensure that the supplied function really was a
-function, etc.  @xref{Predicates for Numeric Objects}, for example,
-for a list of predicates for numeric objects, and see @ref{Status of
+function, etc.  @xref{Predicates for Numeric Objects},
+for a list of predicates for numeric objects, and @pxref{Status of
 Variables}, for a description of the @code{exist} function.
 
-@c feval src/oct-parse.cc
-@anchor{doc-feval}
+@c feval libinterp/parse-tree/oct-parse.cc
+@anchor{XREFfeval}
 @deftypefn {Built-in Function} {} feval (@var{name}, @dots{})
 Evaluate the function named @var{name}.  Any arguments after the first
-are passed on to the named function.  For example,
+are passed as inputs to the named function.  For example,
 
 @example
 @group
@@ -144,16 +144,17 @@ offer.  For example,
 @group
 @var{f} = @@exp;
 feval (@var{f}, 1)
-     @result{} 2.7183
+    @result{} 2.7183
 @var{f} (1)
-     @result{} 2.7183
+    @result{} 2.7183
 @end group
 @end example
 
 @noindent
 are equivalent ways to call the function referred to by @var{f}.  If it
-cannot be predicted beforehand that @var{f} is a function handle or the
-function name in a string, @code{feval} can be used instead.
+cannot be predicted beforehand whether @var{f} is a function handle,
+function name in a string, or inline function then @code{feval} can be used
+instead.
 @end deftypefn
 
 
@@ -161,15 +162,25 @@ A similar function @code{run} exists for calling user script files, that
 are not necessarily on the user path
 
 @c run scripts/miscellaneous/run.m
-@anchor{doc-run}
+@anchor{XREFrun}
 @deftypefn  {Command} {} run @var{script}
-@deftypefnx {Function File} {} run (@var{script})
-Run scripts in the current workspace that are not necessarily on the
-path.  If @var{script} is the script to run, including its path, then
-@code{run} changes the directory to the directory where @var{script} is
-found.  @code{run} then executes the script, and returns to the original
-directory.
-@seealso{@ref{doc-system,,system}}
+@deftypefnx {Function File} {} run ("@var{script}")
+Run @var{script} in the current workspace.
+
+Scripts which reside in directories specified in Octave's load
+path, and which end with the extension @file{".m"}, can be run simply by
+typing their name.  For scripts not located on the load path, use @code{run}.
+
+The file name @var{script} can be a bare, fully qualified, or relative
+filename and with or without a file extension.  If no extension is specified,
+Octave will first search for a script with the @file{".m"} extension before
+falling back to the script name without an extension.
+
+Implementation Note: If @var{script} includes a path component, then
+@code{run} first changes the directory to the directory where @var{script}
+is found.  @code{run} then executes the script, and returns to the original
+directory. 
+@seealso{@ref{XREFpath,,path}, @ref{XREFaddpath,,addpath}, @ref{XREFsource,,source}}
 @end deftypefn
 
 
@@ -210,15 +221,15 @@ With @code{evalin}, you could write @code{save} as follows:
 @group
 function save (file, name1, name2)
   f = open_save_file (file);
-  save_var(f, name1, evalin ("caller", name1));
-  save_var(f, name2, evalin ("caller", name2));
+  save_var (f, name1, evalin ("caller", name1));
+  save_var (f, name2, evalin ("caller", name2));
 endfunction
 @end group
 @end example
 
 @noindent
 Here, @samp{caller} is the @code{create_data} function and @code{name1}
-is the string @code{"x"}, which evaluates simply as the value of @code{x}.
+is the string @qcode{"x"}, which evaluates simply as the value of @code{x}.
 
 You later want to load the values back from @code{mydata}
 in a different context:
@@ -261,22 +272,22 @@ the given pattern.  Other examples such as @code{save} and @code{load}
 are written in C++ where all Octave variables
 are in the @samp{caller} context and @code{evalin} is not needed.
 
-@c evalin src/oct-parse.cc
-@anchor{doc-evalin}
+@c evalin libinterp/parse-tree/oct-parse.cc
+@anchor{XREFevalin}
 @deftypefn  {Built-in Function} {} evalin (@var{context}, @var{try})
 @deftypefnx {Built-in Function} {} evalin (@var{context}, @var{try}, @var{catch})
 Like @code{eval}, except that the expressions are evaluated in the
-context @var{context}, which may be either @code{"caller"} or
-@code{"base"}.
-@seealso{@ref{doc-eval,,eval}, @ref{doc-assignin,,assignin}}
+context @var{context}, which may be either @qcode{"caller"} or
+@qcode{"base"}.
+@seealso{@ref{XREFeval,,eval}, @ref{XREFassignin,,assignin}}
 @end deftypefn
 
 
-@c assignin src/oct-parse.cc
-@anchor{doc-assignin}
+@c assignin libinterp/parse-tree/oct-parse.cc
+@anchor{XREFassignin}
 @deftypefn {Built-in Function} {} assignin (@var{context}, @var{varname}, @var{value})
 Assign @var{value} to @var{varname} in context @var{context}, which
-may be either @code{"base"} or @code{"caller"}.
-@seealso{@ref{doc-evalin,,evalin}}
+may be either @qcode{"base"} or @qcode{"caller"}.
+@seealso{@ref{XREFevalin,,evalin}}
 @end deftypefn
 
