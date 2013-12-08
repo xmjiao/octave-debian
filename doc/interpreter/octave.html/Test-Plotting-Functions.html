@@ -1,90 +1,135 @@
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.2, http://www.gnu.org/software/texinfo/ -->
 <head>
-<title>Test Plotting Functions - GNU Octave</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="GNU Octave">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="High_002dLevel-Plotting.html#High_002dLevel-Plotting" title="High-Level Plotting">
-<link rel="prev" href="Interacting-with-Plots.html#Interacting-with-Plots" title="Interacting with Plots">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
-</head>
-<body>
-<div class="node">
-<a name="Test-Plotting-Functions"></a>
-<p>
-Previous:&nbsp;<a rel="previous" accesskey="p" href="Interacting-with-Plots.html#Interacting-with-Plots">Interacting with Plots</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="High_002dLevel-Plotting.html#High_002dLevel-Plotting">High-Level Plotting</a>
-<hr>
-</div>
+<title>GNU Octave: Test Plotting Functions</title>
 
-<h4 class="subsection">15.2.11 Test Plotting Functions</h4>
+<meta name="description" content="GNU Octave: Test Plotting Functions">
+<meta name="keywords" content="GNU Octave: Test Plotting Functions">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="High_002dLevel-Plotting.html#High_002dLevel-Plotting" rel="up" title="High-Level Plotting">
+<link href="Graphics-Data-Structures.html#Graphics-Data-Structures" rel="next" title="Graphics Data Structures">
+<link href="Interacting-with-Plots.html#Interacting-with-Plots" rel="prev" title="Interacting with Plots">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+<a name="Test-Plotting-Functions"></a>
+<div class="header">
+<p>
+Previous: <a href="Interacting-with-Plots.html#Interacting-with-Plots" accesskey="p" rel="prev">Interacting with Plots</a>, Up: <a href="High_002dLevel-Plotting.html#High_002dLevel-Plotting" accesskey="u" rel="up">High-Level Plotting</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Test-Plotting-Functions-1"></a>
+<h4 class="subsection">15.2.10 Test Plotting Functions</h4>
 
 <p>The functions <code>sombrero</code> and <code>peaks</code> provide a way to check
 that plotting is working.  Typing either <code>sombrero</code> or <code>peaks</code>
 at the Octave prompt should display a three-dimensional plot.
+</p>
+<a name="XREFsombrero"></a><dl>
+<dt><a name="index-sombrero"></a>Function File: <em></em> <strong>sombrero</strong> <em>()</em></dt>
+<dt><a name="index-sombrero-1"></a>Function File: <em></em> <strong>sombrero</strong> <em>(<var>n</var>)</em></dt>
+<dt><a name="index-sombrero-2"></a>Function File: <em><var>z</var> =</em> <strong>sombrero</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-sombrero-3"></a>Function File: <em>[<var>x</var>, <var>y</var>, <var>z</var>] =</em> <strong>sombrero</strong> <em>(&hellip;)</em></dt>
+<dd><p>Plot the familiar 3-D sombrero function.
+</p>
+<p>The function plotted is
+</p>
+<div class="example">
+<pre class="example">z = sin (sqrt (x^2 + y^2)) / (sqrt (x^2 + y^2))
+</pre></div>
 
-<!-- sombrero scripts/plot/sombrero.m -->
-   <p><a name="doc_002dsombrero"></a>
+<p>Called without a return argument, <code>sombrero</code> plots the surface of the
+above function over the meshgrid [-8,8] using <code>surf</code>.
+</p>
+<p>If <var>n</var> is a scalar the plot is made with <var>n</var> grid lines.
+The default value for <var>n</var> is 41.
+</p>
+<p>When called with output arguments, return the data for the function
+evaluated over the meshgrid.  This can subsequently be plotted with
+<code>surf (<var>x</var>, <var>y</var>, <var>z</var>)</code>.
+</p>
 
-<div class="defun">
-&mdash; Function File:  <b>sombrero</b> (<var>n</var>)<var><a name="index-sombrero-1479"></a></var><br>
-<blockquote><p>Produce the familiar three-dimensional sombrero plot using <var>n</var>
-grid lines.  If <var>n</var> is omitted, a value of 41 is assumed.
+<p><strong>See also:</strong> <a href="#XREFpeaks">peaks</a>, <a href="Three_002dDimensional-Plots.html#XREFmeshgrid">meshgrid</a>, <a href="Three_002dDimensional-Plots.html#XREFmesh">mesh</a>, <a href="Three_002dDimensional-Plots.html#XREFsurf">surf</a>.
+</p></dd></dl>
 
-        <p>The function plotted is
 
-     <pre class="example">          z = sin (sqrt (x^2 + y^2)) / (sqrt (x^2 + y^2))
+<a name="XREFpeaks"></a><dl>
+<dt><a name="index-peaks"></a>Function File: <em></em> <strong>peaks</strong> <em>()</em></dt>
+<dt><a name="index-peaks-1"></a>Function File: <em></em> <strong>peaks</strong> <em>(<var>n</var>)</em></dt>
+<dt><a name="index-peaks-2"></a>Function File: <em></em> <strong>peaks</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-peaks-3"></a>Function File: <em><var>z</var> =</em> <strong>peaks</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-peaks-4"></a>Function File: <em>[<var>x</var>, <var>y</var>, <var>z</var>] =</em> <strong>peaks</strong> <em>(&hellip;)</em></dt>
+<dd><p>Plot a function with lots of local maxima and minima.
+</p>
+<p>The function has the form
+</p>
+<pre class="verbatim">f(x,y) = 3*(1-x)^2*exp(-x^2 - (y+1)^2) ...
+         - 10*(x/5 - x^3 - y^5)*exp(-x^2-y^2) ...
+         - 1/3*exp(-(x+1)^2 - y^2)
 </pre>
-        <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-     <!-- A simple blank line produces the correct behavior. -->
-     <!-- @sp 1 -->
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dsurf.html#doc_002dsurf">surf</a>, <a href="doc_002dmeshgrid.html#doc_002dmeshgrid">meshgrid</a>, <a href="doc_002dmesh.html#doc_002dmesh">mesh</a>. 
-</p></blockquote></div>
+<p>Called without a return argument, <code>peaks</code> plots the surface of the
+above function using <code>surf</code>.
+</p>
+<p>If <var>n</var> is a scalar, <code>peaks</code> plots the value of the above
+function on an <var>n</var>-by-<var>n</var> mesh over the range [-3,3].  The
+default value for <var>n</var> is 49.
+</p>
+<p>If <var>n</var> is a vector, then it represents the grid values over which
+to calculate the function.  If <var>x</var> and <var>y</var> are specified then
+the function value is calculated over the specified grid of vertices.
+</p>
+<p>When called with output arguments, return the data for the function
+evaluated over the meshgrid.  This can subsequently be plotted with
+<code>surf (<var>x</var>, <var>y</var>, <var>z</var>)</code>.
+</p>
 
-<!-- peaks scripts/plot/peaks.m -->
-   <p><a name="doc_002dpeaks"></a>
+<p><strong>See also:</strong> <a href="#XREFsombrero">sombrero</a>, <a href="Three_002dDimensional-Plots.html#XREFmeshgrid">meshgrid</a>, <a href="Three_002dDimensional-Plots.html#XREFmesh">mesh</a>, <a href="Three_002dDimensional-Plots.html#XREFsurf">surf</a>.
+</p></dd></dl>
 
-<div class="defun">
-&mdash; Function File:  <b>peaks</b> ()<var><a name="index-peaks-1480"></a></var><br>
-&mdash; Function File:  <b>peaks</b> (<var>n</var>)<var><a name="index-peaks-1481"></a></var><br>
-&mdash; Function File:  <b>peaks</b> (<var>x, y</var>)<var><a name="index-peaks-1482"></a></var><br>
-&mdash; Function File: <var>z</var> = <b>peaks</b> (<var><small class="dots">...</small></var>)<var><a name="index-peaks-1483"></a></var><br>
-&mdash; Function File: [<var>x</var>, <var>y</var>, <var>z</var>] = <b>peaks</b> (<var><small class="dots">...</small></var>)<var><a name="index-peaks-1484"></a></var><br>
-<blockquote><p>Generate a function with lots of local maxima and minima.  The function
-has the form
+<hr>
+<div class="header">
+<p>
+Previous: <a href="Interacting-with-Plots.html#Interacting-with-Plots" accesskey="p" rel="prev">Interacting with Plots</a>, Up: <a href="High_002dLevel-Plotting.html#High_002dLevel-Plotting" accesskey="u" rel="up">High-Level Plotting</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
 
-     <pre class="verbatim">     f(x,y) = 3*(1-x)^2*exp(-x^2 - (y+1)^2) ...
-              - 10*(x/5 - x^3 - y^5)*exp(-x^2-y^2) ...
-              - 1/3*exp(-(x+1)^2 - y^2)
-</pre>
 
-        <p>Called without a return argument, <code>peaks</code> plots the surface of the
-above function using <code>mesh</code>.  If <var>n</var> is a scalar, the <code>peaks</code>
-returns the values of the above function on a <var>n</var>-by-<var>n</var> mesh over
-the range <code>[-3,3]</code>.  The default value for <var>n</var> is 49.
 
-        <p>If <var>n</var> is a vector, then it represents the <var>x</var> and <var>y</var> values
-of the grid on which to calculate the above function.  The <var>x</var> and
-<var>y</var> values can be specified separately. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
-
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dsurf.html#doc_002dsurf">surf</a>, <a href="doc_002dmesh.html#doc_002dmesh">mesh</a>, <a href="doc_002dmeshgrid.html#doc_002dmeshgrid">meshgrid</a>. 
-</p></blockquote></div>
-
-   </body></html>
-
+</body>
+</html>

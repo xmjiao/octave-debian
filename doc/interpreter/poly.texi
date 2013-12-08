@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2012 John W. Eaton
+@c Copyright (C) 1996-2013 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -56,8 +56,8 @@ at the point @var{x} very easily, as the following example shows:
 
 @example
 @group
-N = length(c)-1;
-val = dot( x.^(N:-1:0), c );
+N = length (c) - 1;
+val = dot (x.^(N:-1:0), c);
 @end group
 @end example
 
@@ -74,28 +74,30 @@ more elegant algorithms perform better.  The @code{polyvalm} function
 provides such an algorithm.
 
 @c polyval scripts/polynomial/polyval.m
-@anchor{doc-polyval}
+@anchor{XREFpolyval}
 @deftypefn  {Function File} {@var{y} =} polyval (@var{p}, @var{x})
 @deftypefnx {Function File} {@var{y} =} polyval (@var{p}, @var{x}, [], @var{mu})
+@deftypefnx {Function File} {[@var{y}, @var{dy}] =} polyval (@var{p}, @var{x}, @var{s})
+@deftypefnx {Function File} {[@var{y}, @var{dy}] =} polyval (@var{p}, @var{x}, @var{s}, @var{mu})
+
 Evaluate the polynomial @var{p} at the specified values of @var{x}.  When
 @var{mu} is present, evaluate the polynomial for
 (@var{x}-@var{mu}(1))/@var{mu}(2).
 If @var{x} is a vector or matrix, the polynomial is evaluated for each of
 the elements of @var{x}.
 
-@deftypefnx {Function File} {[@var{y}, @var{dy}] =} polyval (@var{p}, @var{x}, @var{s})
-@deftypefnx {Function File} {[@var{y}, @var{dy}] =} polyval (@var{p}, @var{x}, @var{s}, @var{mu})
 In addition to evaluating the polynomial, the second output
 represents the prediction interval, @var{y} +/- @var{dy}, which
 contains at least 50% of the future predictions.  To calculate the
 prediction interval, the structured variable @var{s}, originating
 from @code{polyfit}, must be supplied.
-@seealso{@ref{doc-polyvalm,,polyvalm}, @ref{doc-polyaffine,,polyaffine}, @ref{doc-polyfit,,polyfit}, @ref{doc-roots,,roots}, @ref{doc-poly,,poly}}
+
+@seealso{@ref{XREFpolyvalm,,polyvalm}, @ref{XREFpolyaffine,,polyaffine}, @ref{XREFpolyfit,,polyfit}, @ref{XREFroots,,roots}, @ref{XREFpoly,,poly}}
 @end deftypefn
 
 
 @c polyvalm scripts/polynomial/polyvalm.m
-@anchor{doc-polyvalm}
+@anchor{XREFpolyvalm}
 @deftypefn {Function File} {} polyvalm (@var{c}, @var{x})
 Evaluate a polynomial in the matrix sense.
 
@@ -104,7 +106,7 @@ matrix sense, i.e., matrix multiplication is used instead of element by
 element multiplication as used in @code{polyval}.
 
 The argument @var{x} must be a square matrix.
-@seealso{@ref{doc-polyval,,polyval}, @ref{doc-roots,,roots}, @ref{doc-poly,,poly}}
+@seealso{@ref{XREFpolyval,,polyval}, @ref{XREFroots,,roots}, @ref{XREFpoly,,poly}}
 @end deftypefn
 
 
@@ -116,7 +118,7 @@ the companion matrix of the polynomial (see the @code{compan} function
 for a definition), and then finding its eigenvalues.
 
 @c roots scripts/polynomial/roots.m
-@anchor{doc-roots}
+@anchor{XREFroots}
 @deftypefn {Function File} {} roots (@var{v})
 
 For a vector @var{v} with @math{N} components, return
@@ -170,12 +172,31 @@ $\pm 2.2361$.
 @ifnottex
 @math{+/- 2.2361}.
 @end ifnottex
-@seealso{@ref{doc-poly,,poly}, @ref{doc-compan,,compan}, @ref{doc-fzero,,fzero}}
+@seealso{@ref{XREFpoly,,poly}, @ref{XREFcompan,,compan}, @ref{XREFfzero,,fzero}}
+@end deftypefn
+
+
+@c polyeig scripts/polynomial/polyeig.m
+@anchor{XREFpolyeig}
+@deftypefn  {Function File} {@var{z} =} polyeig (@var{C0}, @var{C1}, @dots{}, @var{Cl})
+@deftypefnx {Function File} {[@var{v}, @var{z}] =} polyeig (@var{C0}, @var{C1}, @dots{}, @var{Cl})
+
+Solve the polynomial eigenvalue problem of degree @var{l}.
+
+Given an @var{n*n} matrix polynomial
+@code{@var{C}(s) = @var{C0} + @var{C1} s + @dots{} + @var{Cl} s^l}
+polyeig solves the eigenvalue problem
+@code{(@var{C0} + @var{C1} + @dots{} + @var{Cl})v = 0}.
+Note that the eigenvalues @var{z} are the zeros of the matrix polynomial.
+@var{z} is an @var{lxn} vector and @var{v} is an (@var{n} x @var{n})l matrix
+with columns that correspond to the eigenvectors.
+
+@seealso{@ref{XREFeig,,eig}, @ref{XREFeigs,,eigs}, @ref{XREFcompan,,compan}}
 @end deftypefn
 
 
 @c compan scripts/polynomial/compan.m
-@anchor{doc-compan}
+@anchor{XREFcompan}
 @deftypefn {Function File} {} compan (@var{c})
 Compute the companion matrix corresponding to polynomial coefficient
 vector @var{c}.
@@ -210,12 +231,12 @@ A = |       .            .      .         .             .      |
 @end ifnottex
 The eigenvalues of the companion matrix are equal to the roots of the
 polynomial.
-@seealso{@ref{doc-roots,,roots}, @ref{doc-poly,,poly}, @ref{doc-eig,,eig}}
+@seealso{@ref{XREFroots,,roots}, @ref{XREFpoly,,poly}, @ref{XREFeig,,eig}}
 @end deftypefn
 
 
 @c mpoles scripts/polynomial/mpoles.m
-@anchor{doc-mpoles}
+@anchor{XREFmpoles}
 @deftypefn  {Function File} {[@var{multp}, @var{idxp}] =} mpoles (@var{p})
 @deftypefnx {Function File} {[@var{multp}, @var{idxp}] =} mpoles (@var{p}, @var{tol})
 @deftypefnx {Function File} {[@var{multp}, @var{idxp}] =} mpoles (@var{p}, @var{tol}, @var{reorder})
@@ -244,7 +265,7 @@ p = [2 3 1 1 2];
 @end group
 @end example
 
-@seealso{@ref{doc-residue,,residue}, @ref{doc-poly,,poly}, @ref{doc-roots,,roots}, @ref{doc-conv,,conv}, @ref{doc-deconv,,deconv}}
+@seealso{@ref{XREFresidue,,residue}, @ref{XREFpoly,,poly}, @ref{XREFroots,,roots}, @ref{XREFconv,,conv}, @ref{XREFdeconv,,deconv}}
 @end deftypefn
 
 
@@ -252,7 +273,7 @@ p = [2 3 1 1 2];
 @section Products of Polynomials
 
 @c conv scripts/polynomial/conv.m
-@anchor{doc-conv}
+@anchor{XREFconv}
 @deftypefn  {Function File} {} conv (@var{a}, @var{b})
 @deftypefnx {Function File} {} conv (@var{a}, @var{b}, @var{shape})
 Convolve two vectors @var{a} and @var{b}.
@@ -265,45 +286,45 @@ convolution represents the coefficient vector of the product polynomial.
 The optional @var{shape} argument may be
 
 @table @asis
-@item @var{shape} = "full"
+@item @var{shape} = @qcode{"full"}
 Return the full convolution.  (default)
 
-@item @var{shape} = "same"
+@item @var{shape} = @qcode{"same"}
 Return the central part of the convolution with the same size as @var{a}.
 @end table
 
-@seealso{@ref{doc-deconv,,deconv}, @ref{doc-conv2,,conv2}, @ref{doc-convn,,convn}, @ref{doc-fftconv,,fftconv}}
+@seealso{@ref{XREFdeconv,,deconv}, @ref{XREFconv2,,conv2}, @ref{XREFconvn,,convn}, @ref{XREFfftconv,,fftconv}}
 @end deftypefn
 
 
-@c convn src/DLD-FUNCTIONS/conv2.cc
-@anchor{doc-convn}
-@deftypefn  {Loadable Function} {@var{C} =} convn (@var{A}, @var{B})
-@deftypefnx {Loadable Function} {@var{C} =} convn (@var{A}, @var{B}, @var{shape})
+@c convn libinterp/corefcn/conv2.cc
+@anchor{XREFconvn}
+@deftypefn  {Built-in Function} {@var{C} =} convn (@var{A}, @var{B})
+@deftypefnx {Built-in Function} {@var{C} =} convn (@var{A}, @var{B}, @var{shape})
 Return the n-D convolution of @var{A} and @var{B}.  The size of the result
 is determined by the optional @var{shape} argument which takes the following
 values
 
 @table @asis
-@item @var{shape} = "full"
+@item @var{shape} = @qcode{"full"}
 Return the full convolution.  (default)
 
-@item @var{shape} = "same"
+@item @var{shape} = @qcode{"same"}
 Return central part of the convolution with the same size as @var{A}.
 The central part of the convolution begins at the indices
 @code{floor ([size(@var{B})/2] + 1)}.
 
-@item @var{shape} = "valid"
+@item @var{shape} = @qcode{"valid"}
 Return only the parts which do not include zero-padded edges.
 The size of the result is @code{max (size (A) - size (B) + 1, 0)}.
 @end table
 
-@seealso{@ref{doc-conv2,,conv2}, @ref{doc-conv,,conv}}
+@seealso{@ref{XREFconv2,,conv2}, @ref{XREFconv,,conv}}
 @end deftypefn
 
 
 @c deconv scripts/polynomial/deconv.m
-@anchor{doc-deconv}
+@anchor{XREFdeconv}
 @deftypefn {Function File} {} deconv (@var{y}, @var{a})
 Deconvolve two vectors.
 
@@ -313,29 +334,29 @@ Deconvolve two vectors.
 If @var{y} and @var{a} are polynomial coefficient vectors, @var{b} will
 contain the coefficients of the polynomial quotient and @var{r} will be
 a remainder polynomial of lowest order.
-@seealso{@ref{doc-conv,,conv}, @ref{doc-residue,,residue}}
+@seealso{@ref{XREFconv,,conv}, @ref{XREFresidue,,residue}}
 @end deftypefn
 
 
-@c conv2 src/DLD-FUNCTIONS/conv2.cc
-@anchor{doc-conv2}
-@deftypefn  {Loadable Function} {} conv2 (@var{A}, @var{B})
-@deftypefnx {Loadable Function} {} conv2 (@var{v1}, @var{v2}, @var{m})
-@deftypefnx {Loadable Function} {} conv2 (@dots{}, @var{shape})
+@c conv2 libinterp/corefcn/conv2.cc
+@anchor{XREFconv2}
+@deftypefn  {Built-in Function} {} conv2 (@var{A}, @var{B})
+@deftypefnx {Built-in Function} {} conv2 (@var{v1}, @var{v2}, @var{m})
+@deftypefnx {Built-in Function} {} conv2 (@dots{}, @var{shape})
 Return the 2-D convolution of @var{A} and @var{B}.  The size of the result
 is determined by the optional @var{shape} argument which takes the following
 values
 
 @table @asis
-@item @var{shape} = "full"
+@item @var{shape} = @qcode{"full"}
 Return the full convolution.  (default)
 
-@item @var{shape} = "same"
+@item @var{shape} = @qcode{"same"}
 Return the central part of the convolution with the same size as @var{A}.
 The central part of the convolution begins at the indices
 @code{floor ([size(@var{B})/2] + 1)}.
 
-@item @var{shape} = "valid"
+@item @var{shape} = @qcode{"valid"}
 Return only the parts which do not include zero-padded edges.
 The size of the result is @code{max (size (A) - size (B) + 1, 0)}.
 @end table
@@ -343,19 +364,19 @@ The size of the result is @code{max (size (A) - size (B) + 1, 0)}.
 When the third argument is a matrix, return the convolution of the matrix
 @var{m} by the vector @var{v1} in the column direction and by the vector
 @var{v2} in the row direction.
-@seealso{@ref{doc-conv,,conv}, @ref{doc-convn,,convn}}
+@seealso{@ref{XREFconv,,conv}, @ref{XREFconvn,,convn}}
 @end deftypefn
 
 
 @c polygcd scripts/polynomial/polygcd.m
-@anchor{doc-polygcd}
+@anchor{XREFpolygcd}
 @deftypefn  {Function File} {@var{q} =} polygcd (@var{b}, @var{a})
 @deftypefnx {Function File} {@var{q} =} polygcd (@var{b}, @var{a}, @var{tol})
 
 Find the greatest common divisor of two polynomials.  This is equivalent
 to the polynomial found by multiplying together all the common roots.
 Together with deconv, you can reduce a ratio of two polynomials.
-The tolerance @var{tol} defaults to @code{sqrt(eps)}.
+The tolerance @var{tol} defaults to @code{sqrt (eps)}.
 
 @strong{Caution:} This is a numerically unstable algorithm and should not
 be used on large polynomials.
@@ -366,16 +387,16 @@ Example code:
 @group
 polygcd (poly (1:8), poly (3:12)) - poly (3:8)
 @result{} [ 0, 0, 0, 0, 0, 0, 0 ]
-deconv (poly (1:8), polygcd (poly (1:8), poly (3:12))) - poly(1:2)
+deconv (poly (1:8), polygcd (poly (1:8), poly (3:12))) - poly (1:2)
 @result{} [ 0, 0, 0 ]
 @end group
 @end example
-@seealso{@ref{doc-poly,,poly}, @ref{doc-roots,,roots}, @ref{doc-conv,,conv}, @ref{doc-deconv,,deconv}, @ref{doc-residue,,residue}}
+@seealso{@ref{XREFpoly,,poly}, @ref{XREFroots,,roots}, @ref{XREFconv,,conv}, @ref{XREFdeconv,,deconv}, @ref{XREFresidue,,residue}}
 @end deftypefn
 
 
 @c residue scripts/polynomial/residue.m
-@anchor{doc-residue}
+@anchor{XREFresidue}
 @deftypefn  {Function File} {[@var{r}, @var{p}, @var{k}, @var{e}] =} residue (@var{b}, @var{a})
 @deftypefnx {Function File} {[@var{b}, @var{a}] =} residue (@var{r}, @var{p}, @var{k})
 @deftypefnx {Function File} {[@var{b}, @var{a}] =} residue (@var{r}, @var{p}, @var{k}, @var{e})
@@ -493,7 +514,7 @@ $$
 @end example
 
 @end ifnottex
-@seealso{@ref{doc-mpoles,,mpoles}, @ref{doc-poly,,poly}, @ref{doc-roots,,roots}, @ref{doc-conv,,conv}, @ref{doc-deconv,,deconv}}
+@seealso{@ref{XREFmpoles,,mpoles}, @ref{XREFpoly,,poly}, @ref{XREFroots,,roots}, @ref{XREFconv,,conv}, @ref{XREFdeconv,,deconv}}
 @end deftypefn
 
 
@@ -508,14 +529,14 @@ compute the definite integral of @math{p(x) = x^2 + 1} from 0 to 3.
 @example
 @group
 c = [1, 0, 1];
-integral = polyint(c);
-area = polyval(integral, 3) - polyval(integral, 0)
+integral = polyint (c);
+area = polyval (integral, 3) - polyval (integral, 0)
 @result{} 12
 @end group
 @end example
 
 @c polyder scripts/polynomial/polyder.m
-@anchor{doc-polyder}
+@anchor{XREFpolyder}
 @deftypefn  {Function File} {} polyder (@var{p})
 @deftypefnx {Function File} {[@var{k}] =} polyder (@var{a}, @var{b})
 @deftypefnx {Function File} {[@var{q}, @var{d}] =} polyder (@var{b}, @var{a})
@@ -525,23 +546,23 @@ is given, return the derivative of the product @math{@var{a}*@var{b}}.
 If two inputs and two outputs are given, return the derivative of the
 polynomial quotient @math{@var{b}/@var{a}}.  The quotient numerator is
 in @var{q} and the denominator in @var{d}.
-@seealso{@ref{doc-polyint,,polyint}, @ref{doc-polyval,,polyval}, @ref{doc-polyreduce,,polyreduce}}
+@seealso{@ref{XREFpolyint,,polyint}, @ref{XREFpolyval,,polyval}, @ref{XREFpolyreduce,,polyreduce}}
 @end deftypefn
 
 
 @c polyint scripts/polynomial/polyint.m
-@anchor{doc-polyint}
+@anchor{XREFpolyint}
 @deftypefn  {Function File} {} polyint (@var{p})
 @deftypefnx {Function File} {} polyint (@var{p}, @var{k})
 Return the coefficients of the integral of the polynomial whose
 coefficients are represented by the vector @var{p}.  The variable
 @var{k} is the constant of integration, which by default is set to zero.
-@seealso{@ref{doc-polyder,,polyder}, @ref{doc-polyval,,polyval}}
+@seealso{@ref{XREFpolyder,,polyder}, @ref{XREFpolyval,,polyval}}
 @end deftypefn
 
 
 @c polyaffine scripts/polynomial/polyaffine.m
-@anchor{doc-polyaffine}
+@anchor{XREFpolyaffine}
 @deftypefn {Function File} {} polyaffine (@var{f}, @var{mu})
 Return the coefficients of the polynomial vector @var{f} after an affine
 transformation.  If @var{f} is the vector representing the polynomial f(x),
@@ -552,7 +573,7 @@ representing:
 g(x) = f( (x - @var{mu}(1)) / @var{mu}(2) )
 @end example
 
-@seealso{@ref{doc-polyval,,polyval}, @ref{doc-polyfit,,polyfit}}
+@seealso{@ref{XREFpolyval,,polyval}, @ref{XREFpolyfit,,polyfit}}
 @end deftypefn
 
 
@@ -562,19 +583,22 @@ g(x) = f( (x - @var{mu}(1)) / @var{mu}(2) )
 Octave comes with good support for various kinds of interpolation,
 most of which are described in @ref{Interpolation}.  One simple alternative
 to the functions described in the aforementioned chapter, is to fit
-a single polynomial to some given data points.  To avoid a highly
-fluctuating polynomial, one most often wants to fit a low-order polynomial
-to data.  This usually means that it is necessary to fit the polynomial
-in a least-squares sense, which just is what the @code{polyfit} function does.
+a single polynomial, or a piecewise polynomial (spline) to some given
+data points.  To avoid a highly fluctuating polynomial, one most often
+wants to fit a low-order polynomial to data.  This usually means that it
+is necessary to fit the polynomial in a least-squares sense, which just
+is what the @code{polyfit} function does.
 
 @c polyfit scripts/polynomial/polyfit.m
-@anchor{doc-polyfit}
+@anchor{XREFpolyfit}
 @deftypefn  {Function File} {@var{p} =} polyfit (@var{x}, @var{y}, @var{n})
 @deftypefnx {Function File} {[@var{p}, @var{s}] =} polyfit (@var{x}, @var{y}, @var{n})
 @deftypefnx {Function File} {[@var{p}, @var{s}, @var{mu}] =} polyfit (@var{x}, @var{y}, @var{n})
 Return the coefficients of a polynomial @var{p}(@var{x}) of degree
 @var{n} that minimizes the least-squares-error of the fit to the points
-@code{[@var{x}, @var{y}]}.
+@code{[@var{x}, @var{y}]}.  If @var{n} is a logical vector, it is used
+as a mask to selectively force the corresponding polynomial
+coefficients to be used or ignored.
 
 The polynomial coefficients are returned in a row vector.
 
@@ -587,6 +611,11 @@ Triangular factor R from the QR@tie{}decomposition.
 @item X
 The Vandermonde matrix used to compute the polynomial coefficients.
 
+@item C
+The unscaled covariance matrix, formally equal to the inverse of
+@var{x'}*@var{x}, but computed in a way minimizing roundoff error
+propagation.
+
 @item df
 The degrees of freedom.
 
@@ -598,7 +627,9 @@ The values of the polynomial for each value of @var{x}.
 @end table
 
 The second output may be used by @code{polyval} to calculate the
-statistical error limits of the predicted values.
+statistical error limits of the predicted values.  In particular, the
+standard deviation of @var{p} coefficients is given by @*
+@code{sqrt (diag (s.C)/s.df)*s.normr}.
 
 When the third output, @var{mu}, is present the
 coefficients, @var{p}, are associated with a polynomial in
@@ -606,15 +637,296 @@ coefficients, @var{p}, are associated with a polynomial in
 Where @var{mu}(1) = mean (@var{x}), and @var{mu}(2) = std (@var{x}).
 This linear transformation of @var{x} improves the numerical
 stability of the fit.
-@seealso{@ref{doc-polyval,,polyval}, @ref{doc-polyaffine,,polyaffine}, @ref{doc-roots,,roots}, @ref{doc-vander,,vander}, @ref{doc-zscore,,zscore}}
+@seealso{@ref{XREFpolyval,,polyval}, @ref{XREFpolyaffine,,polyaffine}, @ref{XREFroots,,roots}, @ref{XREFvander,,vander}, @ref{XREFzscore,,zscore}}
 @end deftypefn
 
 
 In situations where a single polynomial isn't good enough, a solution
-is to use several polynomials pieced together.  The function @code{mkpp}
-creates a piecewise polynomial, @code{ppval} evaluates the function 
-created by @code{mkpp}, and @code{unmkpp} returns detailed information
-about the function.
+is to use several polynomials pieced together.  The function
+@code{splinefit} fits a peicewise polynomial (spline) to a set of
+data.
+
+@c splinefit scripts/polynomial/splinefit.m
+@anchor{XREFsplinefit}
+@deftypefn  {Function File} {@var{pp} =} splinefit (@var{x}, @var{y}, @var{breaks})
+@deftypefnx {Function File} {@var{pp} =} splinefit (@var{x}, @var{y}, @var{p})
+@deftypefnx {Function File} {@var{pp} =} splinefit (@dots{}, "periodic", @var{periodic})
+@deftypefnx {Function File} {@var{pp} =} splinefit (@dots{}, "robust", @var{robust})
+@deftypefnx {Function File} {@var{pp} =} splinefit (@dots{}, "beta", @var{beta})
+@deftypefnx {Function File} {@var{pp} =} splinefit (@dots{}, "order", @var{order})
+@deftypefnx {Function File} {@var{pp} =} splinefit (@dots{}, "constraints", @var{constraints})
+
+Fit a piecewise cubic spline with breaks (knots) @var{breaks} to the
+noisy data, @var{x} and @var{y}.  @var{x} is a vector, and @var{y}
+is a vector or N-D array.  If @var{y} is an N-D array, then @var{x}(j)
+is matched to @var{y}(:,@dots{},:,j).
+
+The fitted spline is returned as a piecewise polynomial, @var{pp}, and
+may be evaluated using @code{ppval}.
+
+@var{p} is a positive integer defining the number of intervals along @var{x},
+and @var{p}+1 is the number of breaks.  The number of points in each interval
+differ by no more than 1.
+
+The optional property @var{periodic} is a logical value which specifies
+whether a periodic boundary condition is applied to the spline.  The
+length of the period is @code{max (@var{breaks}) - min (@var{breaks})}.
+The default value is @code{false}.
+
+The optional property @var{robust} is a logical value which specifies
+if robust fitting is to be applied to reduce the influence of outlying
+data points.  Three iterations of weighted least squares are performed.
+Weights are computed from previous residuals.  The sensitivity of outlier
+identification is controlled by the property @var{beta}.  The value of
+@var{beta} is stricted to the range, 0 < @var{beta} < 1.  The default
+value is @var{beta} = 1/2.  Values close to 0 give all data equal
+weighting.  Increasing values of @var{beta} reduce the influence of
+outlying data.  Values close to unity may cause instability or rank
+deficiency.
+
+The splines are constructed of polynomials with degree @var{order}.
+The default is a cubic, @var{order}=3.  A spline with P pieces has
+P+@var{order} degrees of freedom.  With periodic boundary conditions
+the degrees of freedom are reduced to P.
+
+The optional property, @var{constaints}, is a structure specifying
+linear constraints on the fit.  The structure has three fields, @qcode{"xc"},
+@qcode{"yc"}, and @qcode{"cc"}.
+
+@table @asis
+@item @qcode{"xc"}
+Vector of the x-locations of the constraints.
+
+@item @qcode{"yc"}
+Constraining values at the locations @var{xc}.
+The default is an array of zeros.
+
+@item @qcode{"cc"}
+Coefficients (matrix).  The default is an array of ones.  The number of
+rows is limited to the order of the piecewise polynomials, @var{order}.
+@end table
+
+Constraints are linear combinations of derivatives of order 0 to
+@var{order}-1 according to
+
+@example
+@group
+@tex
+$cc(1,j) \cdot y(xc(j)) + cc(2,j) \cdot y\prime(xc(j)) + ... = yc(:,\dots,:,j)$.
+@end tex
+@ifnottex
+cc(1,j) * y(xc(j)) + cc(2,j) * y'(xc(j)) + ... = yc(:,...,:,j).
+@end ifnottex
+@end group
+@end example
+
+@seealso{@ref{XREFinterp1,,interp1}, @ref{XREFunmkpp,,unmkpp}, @ref{XREFppval,,ppval}, @ref{XREFspline,,spline}, @ref{XREFpchip,,pchip}, @ref{XREFppder,,ppder}, @ref{XREFppint,,ppint}, @ref{XREFppjumps,,ppjumps}}
+@end deftypefn
+
+
+The number of @var{breaks} (or knots) used to construct the piecewise
+polynomial is a significant factor in suppressing the noise present in
+the input data, @var{x} and @var{y}.  This is demonstrated by the example
+below.
+
+@example
+@group
+x = 2 * pi * rand (1, 200);
+y = sin (x) + sin (2 * x) + 0.2 * randn (size (x));
+## Uniform breaks
+breaks = linspace (0, 2 * pi, 41); % 41 breaks, 40 pieces
+pp1 = splinefit (x, y, breaks);
+## Breaks interpolated from data
+pp2 = splinefit (x, y, 10);  % 11 breaks, 10 pieces
+## Plot
+xx = linspace (0, 2 * pi, 400);
+y1 = ppval (pp1, xx);
+y2 = ppval (pp2, xx);
+plot (x, y, ".", xx, [y1; y2])
+axis tight
+ylim auto
+legend (@{"data", "41 breaks, 40 pieces", "11 breaks, 10 pieces"@})
+@end group
+@end example
+
+@ifnotinfo
+@noindent
+The result of which can be seen in @ref{fig:splinefit1}.
+
+@float Figure,fig:splinefit1
+@center @image{splinefit1,4in}
+@caption{Comparison of a fitting a piecewise polynomial with 41 breaks to one
+with 11 breaks.  The fit with the large number of breaks exhibits a fast ripple
+that is not present in the underlying function.}
+@end float
+@end ifnotinfo
+
+The piecewise polynomial fit, provided by @code{splinefit}, has
+continuous derivatives up to the @var{order}-1.  For example, a cubic fit
+has continuous first and second derivatives.  This is demonstrated by
+the code
+
+@example
+## Data (200 points)
+x = 2 * pi * rand (1, 200);
+y = sin (x) + sin (2 * x) + 0.1 * randn (size (x));
+## Piecewise constant
+pp1 = splinefit (x, y, 8, "order", 0);
+## Piecewise linear
+pp2 = splinefit (x, y, 8, "order", 1);
+## Piecewise quadratic
+pp3 = splinefit (x, y, 8, "order", 2);
+## Piecewise cubic
+pp4 = splinefit (x, y, 8, "order", 3);
+## Piecewise quartic
+pp5 = splinefit (x, y, 8, "order", 4);
+## Plot
+xx = linspace (0, 2 * pi, 400);
+y1 = ppval (pp1, xx);
+y2 = ppval (pp2, xx);
+y3 = ppval (pp3, xx);
+y4 = ppval (pp4, xx);
+y5 = ppval (pp5, xx);
+plot (x, y, ".", xx, [y1; y2; y3; y4; y5])
+axis tight
+ylim auto
+legend (@{"data", "order 0", "order 1", "order 2", "order 3", "order 4"@})
+@end example
+
+@ifnotinfo
+@noindent
+The result of which can be seen in @ref{fig:splinefit2}.
+
+@float Figure,fig:splinefit2
+@center @image{splinefit2,4in}
+@caption{Comparison of a piecewise constant, linear, quadratic, cubic, and
+quartic polynomials with 8 breaks to noisy data.  The higher order solutions
+more accurately represent the underlying function, but come with the
+expense of computational complexity.}
+@end float
+@end ifnotinfo
+
+When the underlying function to provide a fit to is periodic, @code{splinefit}
+is able to apply the boundary conditions needed to manifest a periodic fit.
+This is demonstrated by the code below.
+
+@example
+@group
+## Data (100 points)
+x = 2 * pi * [0, (rand (1, 98)), 1];
+y = sin (x) - cos (2 * x) + 0.2 * randn (size (x));
+## No constraints
+pp1 = splinefit (x, y, 10, "order", 5);
+## Periodic boundaries
+pp2 = splinefit (x, y, 10, "order", 5, "periodic", true);
+## Plot
+xx = linspace (0, 2 * pi, 400);
+y1 = ppval (pp1, xx);
+y2 = ppval (pp2, xx);
+plot (x, y, ".", xx, [y1; y2])
+axis tight
+ylim auto
+legend (@{"data", "no constraints", "periodic"@})
+@end group
+@end example
+
+@ifnotinfo
+@noindent
+The result of which can be seen in @ref{fig:splinefit3}.
+
+@float Figure,fig:splinefit3
+@center @image{splinefit3,4in}
+@caption{Comparison of piecewise polynomial fits to a noisy periodic
+function with, and without, periodic boundary conditions.}
+@end float
+@end ifnotinfo
+
+More complex constraints may be added as well.  For example, the code below
+illustrates a periodic fit with values that have been clamped at the endpoints,
+and a second periodic fit which is hinged at the endpoints.
+
+@example
+## Data (200 points)
+x = 2 * pi * rand (1, 200);
+y = sin (2 * x) + 0.1 * randn (size (x));
+## Breaks
+breaks = linspace (0, 2 * pi, 10);
+## Clamped endpoints, y = y' = 0
+xc = [0, 0, 2*pi, 2*pi];
+cc = [(eye (2)), (eye (2))];
+con = struct ("xc", xc, "cc", cc);
+pp1 = splinefit (x, y, breaks, "constraints", con);
+## Hinged periodic endpoints, y = 0
+con = struct ("xc", 0);
+pp2 = splinefit (x, y, breaks, "constraints", con, "periodic", true);
+## Plot
+xx = linspace (0, 2 * pi, 400);
+y1 = ppval (pp1, xx);
+y2 = ppval (pp2, xx);
+plot (x, y, ".", xx, [y1; y2])
+axis tight
+ylim auto
+legend (@{"data", "clamped", "hinged periodic"@})
+@end example
+
+@ifnotinfo
+@noindent
+The result of which can be seen in @ref{fig:splinefit4}.
+
+@float Figure,fig:splinefit4
+@center @image{splinefit4,4in}
+@caption{Comparison of two periodic piecewise cubic fits to a noisy periodic
+signal.  One fit has its endpoints clamped and the second has its endpoints
+hinged.}
+@end float
+@end ifnotinfo
+
+The @code{splinefit} function also provides the convenience of a @var{robust}
+fitting, where the effect of outlying data is reduced.  In the example below,
+three different fits are provided.  Two with differing levels of outlier
+suppression and a third illustrating the non-robust solution.
+
+@example
+## Data
+x = linspace (0, 2*pi, 200);
+y = sin (x) + sin (2 * x) + 0.05 * randn (size (x));
+## Add outliers
+x = [x, linspace(0,2*pi,60)];
+y = [y, -ones(1,60)];
+## Fit splines with hinged conditions
+con = struct ("xc", [0, 2*pi]);
+## Robust fitting, beta = 0.25
+pp1 = splinefit (x, y, 8, "constraints", con, "beta", 0.25);
+## Robust fitting, beta = 0.75
+pp2 = splinefit (x, y, 8, "constraints", con, "beta", 0.75);
+## No robust fitting
+pp3 = splinefit (x, y, 8, "constraints", con);
+## Plot
+xx = linspace (0, 2*pi, 400);
+y1 = ppval (pp1, xx);
+y2 = ppval (pp2, xx);
+y3 = ppval (pp3, xx);
+plot (x, y, ".", xx, [y1; y2; y3])
+legend (@{"data with outliers","robust, beta = 0.25", ...
+         "robust, beta = 0.75", "no robust fitting"@})
+axis tight
+ylim auto
+@end example
+
+@ifnotinfo
+@noindent
+The result of which can be seen in @ref{fig:splinefit6}.
+
+@float Figure,fig:splinefit6
+@center @image{splinefit6,4in}
+@caption{Comparison of two different levels of robust fitting (@var{beta} = 0.25 and 0.75) to noisy data combined with outlying data.  A conventional fit, without
+robust fitting (@var{beta} = 0) is also included.}
+@end float
+@end ifnotinfo
+
+The function, @code{ppval}, evaluates the piecewise polynomials, created
+by @code{mkpp} or other means, and @code{unmkpp} returns detailed
+information about the piecewise polynomial.
 
 The following example shows how to combine two linear functions and a
 quadratic into one function.  Each of these functions is expressed
@@ -626,15 +938,15 @@ x = [-2, -1, 1, 2];
 p = [ 0,  1, 0;
       1, -2, 1;
       0, -1, 1 ];
-pp = mkpp(x, p);
-xi = linspace(-2, 2, 50);
-yi = ppval(pp, xi);
-plot(xi, yi);
+pp = mkpp (x, p);
+xi = linspace (-2, 2, 50);
+yi = ppval (pp, xi);
+plot (xi, yi);
 @end group
 @end example
 
 @c mkpp scripts/polynomial/mkpp.m
-@anchor{doc-mkpp}
+@anchor{XREFmkpp}
 @deftypefn  {Function File} {@var{pp} =} mkpp (@var{breaks}, @var{coefs})
 @deftypefnx {Function File} {@var{pp} =} mkpp (@var{breaks}, @var{coefs}, @var{d})
 
@@ -658,12 +970,12 @@ vector @var{d}.  If @var{d} is not given it is set to @code{1}.
 In any case @var{coefs} is reshaped to a 2-D matrix of
 size @code{[@var{ni}*prod(@var{d} @var{m})] }
 
-@seealso{@ref{doc-unmkpp,,unmkpp}, @ref{doc-ppval,,ppval}, @ref{doc-spline,,spline}, @ref{doc-pchip,,pchip}, @ref{doc-ppder,,ppder}, @ref{doc-ppint,,ppint}, @ref{doc-ppjumps,,ppjumps}}
+@seealso{@ref{XREFunmkpp,,unmkpp}, @ref{XREFppval,,ppval}, @ref{XREFspline,,spline}, @ref{XREFpchip,,pchip}, @ref{XREFppder,,ppder}, @ref{XREFppint,,ppint}, @ref{XREFppjumps,,ppjumps}}
 @end deftypefn
 
 
 @c unmkpp scripts/polynomial/unmkpp.m
-@anchor{doc-unmkpp}
+@anchor{XREFunmkpp}
 @deftypefn {Function File} {[@var{x}, @var{p}, @var{n}, @var{k}, @var{d}] =} unmkpp (@var{pp})
 
 Extract the components of a piecewise polynomial structure @var{pp}.
@@ -690,12 +1002,12 @@ Order of the polynomial plus 1.
 Number of polynomials defined for each interval.
 @end table
 
-@seealso{@ref{doc-mkpp,,mkpp}, @ref{doc-ppval,,ppval}, @ref{doc-spline,,spline}, @ref{doc-pchip,,pchip}}
+@seealso{@ref{XREFmkpp,,mkpp}, @ref{XREFppval,,ppval}, @ref{XREFspline,,spline}, @ref{XREFpchip,,pchip}}
 @end deftypefn
 
 
 @c ppval scripts/polynomial/ppval.m
-@anchor{doc-ppval}
+@anchor{XREFppval}
 @deftypefn {Function File} {@var{yi} =} ppval (@var{pp}, @var{xi})
 Evaluate the piecewise polynomial structure @var{pp} at the points @var{xi}.
 If @var{pp} describes a scalar polynomial function, the result is an
@@ -703,37 +1015,37 @@ array of the same shape as @var{xi}.
 Otherwise, the size of the result is @code{[pp.dim, length(@var{xi})]} if
 @var{xi} is a vector, or @code{[pp.dim, size(@var{xi})]} if it is a
 multi-dimensional array.
-@seealso{@ref{doc-mkpp,,mkpp}, @ref{doc-unmkpp,,unmkpp}, @ref{doc-spline,,spline}, @ref{doc-pchip,,pchip}}
+@seealso{@ref{XREFmkpp,,mkpp}, @ref{XREFunmkpp,,unmkpp}, @ref{XREFspline,,spline}, @ref{XREFpchip,,pchip}}
 @end deftypefn
 
 
 @c ppder scripts/polynomial/ppder.m
-@anchor{doc-ppder}
+@anchor{XREFppder}
 @deftypefn  {Function File} {ppd =} ppder (pp)
 @deftypefnx {Function File} {ppd =} ppder (pp, m)
 Compute the piecewise @var{m}-th derivative of a piecewise polynomial
 struct @var{pp}.  If @var{m} is omitted the first derivative is calculated.
-@seealso{@ref{doc-mkpp,,mkpp}, @ref{doc-ppval,,ppval}, @ref{doc-ppint,,ppint}}
+@seealso{@ref{XREFmkpp,,mkpp}, @ref{XREFppval,,ppval}, @ref{XREFppint,,ppint}}
 @end deftypefn
 
 
 @c ppint scripts/polynomial/ppint.m
-@anchor{doc-ppint}
+@anchor{XREFppint}
 @deftypefn  {Function File} {@var{ppi} =} ppint (@var{pp})
 @deftypefnx {Function File} {@var{ppi} =} ppint (@var{pp}, @var{c})
 Compute the integral of the piecewise polynomial struct @var{pp}.
 @var{c}, if given, is the constant of integration.
-@seealso{@ref{doc-mkpp,,mkpp}, @ref{doc-ppval,,ppval}, @ref{doc-ppder,,ppder}}
+@seealso{@ref{XREFmkpp,,mkpp}, @ref{XREFppval,,ppval}, @ref{XREFppder,,ppder}}
 @end deftypefn
 
 
 @c ppjumps scripts/polynomial/ppjumps.m
-@anchor{doc-ppjumps}
+@anchor{XREFppjumps}
 @deftypefn {Function File} {@var{jumps} =} ppjumps (@var{pp})
 Evaluate the boundary jumps of a piecewise polynomial.
 If there are @math{n} intervals, and the dimensionality of @var{pp} is
 @math{d}, the resulting array has dimensions @code{[d, n-1]}.
-@seealso{@ref{doc-mkpp,,mkpp}}
+@seealso{@ref{XREFmkpp,,mkpp}}
 @end deftypefn
 
 
@@ -741,7 +1053,7 @@ If there are @math{n} intervals, and the dimensionality of @var{pp} is
 @section Miscellaneous Functions
 
 @c poly scripts/polynomial/poly.m
-@anchor{doc-poly}
+@anchor{XREFpoly}
 @deftypefn  {Function File} {} poly (@var{A})
 @deftypefnx {Function File} {} poly (@var{x})
 If @var{A} is a square @math{N}-by-@math{N} matrix, @code{poly (@var{A})}
@@ -768,12 +1080,12 @@ coefficients of the polynomial whose roots are the elements of @var{x}.
 That is, if @var{c} is a polynomial, then the elements of @code{@var{d} =
 roots (poly (@var{c}))} are contained in @var{c}.  The vectors @var{c} and
 @var{d} are not identical, however, due to sorting and numerical errors.
-@seealso{@ref{doc-roots,,roots}, @ref{doc-eig,,eig}}
+@seealso{@ref{XREFroots,,roots}, @ref{XREFeig,,eig}}
 @end deftypefn
 
 
 @c polyout scripts/polynomial/polyout.m
-@anchor{doc-polyout}
+@anchor{XREFpolyout}
 @deftypefn  {Function File} {} polyout (@var{c})
 @deftypefnx {Function File} {} polyout (@var{c}, @var{x})
 @deftypefnx {Function File} {@var{str} =} polyout (@dots{})
@@ -789,17 +1101,17 @@ c(x) = c(1) * x^n + @dots{} + c(n) x + c(n+1)
 
 @end ifnottex
 and return it as a string or write it to the screen (if @var{nargout} is
-zero).  @var{x} defaults to the string @code{"s"}.
-@seealso{@ref{doc-polyreduce,,polyreduce}}
+zero).  @var{x} defaults to the string @qcode{"s"}.
+@seealso{@ref{XREFpolyreduce,,polyreduce}}
 @end deftypefn
 
 
 @c polyreduce scripts/polynomial/polyreduce.m
-@anchor{doc-polyreduce}
+@anchor{XREFpolyreduce}
 @deftypefn {Function File} {} polyreduce (@var{c})
 Reduce a polynomial coefficient vector to a minimum number of terms by
 stripping off any leading zeros.
-@seealso{@ref{doc-polyout,,polyout}}
+@seealso{@ref{XREFpolyout,,polyout}}
 @end deftypefn
 
 

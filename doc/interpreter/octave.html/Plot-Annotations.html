@@ -1,303 +1,433 @@
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.2, http://www.gnu.org/software/texinfo/ -->
 <head>
-<title>Plot Annotations - GNU Octave</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="GNU Octave">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="High_002dLevel-Plotting.html#High_002dLevel-Plotting" title="High-Level Plotting">
-<link rel="prev" href="Three_002dDimensional-Plots.html#Three_002dDimensional-Plots" title="Three-Dimensional Plots">
-<link rel="next" href="Multiple-Plots-on-One-Page.html#Multiple-Plots-on-One-Page" title="Multiple Plots on One Page">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
-</head>
-<body>
-<div class="node">
-<a name="Plot-Annotations"></a>
-<p>
-Next:&nbsp;<a rel="next" accesskey="n" href="Multiple-Plots-on-One-Page.html#Multiple-Plots-on-One-Page">Multiple Plots on One Page</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="Three_002dDimensional-Plots.html#Three_002dDimensional-Plots">Three-Dimensional Plots</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="High_002dLevel-Plotting.html#High_002dLevel-Plotting">High-Level Plotting</a>
-<hr>
-</div>
+<title>GNU Octave: Plot Annotations</title>
 
+<meta name="description" content="GNU Octave: Plot Annotations">
+<meta name="keywords" content="GNU Octave: Plot Annotations">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="High_002dLevel-Plotting.html#High_002dLevel-Plotting" rel="up" title="High-Level Plotting">
+<link href="Multiple-Plots-on-One-Page.html#Multiple-Plots-on-One-Page" rel="next" title="Multiple Plots on One Page">
+<link href="Three_002ddimensional-Geometric-Shapes.html#Three_002ddimensional-Geometric-Shapes" rel="prev" title="Three-dimensional Geometric Shapes">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+<a name="Plot-Annotations"></a>
+<div class="header">
+<p>
+Next: <a href="Multiple-Plots-on-One-Page.html#Multiple-Plots-on-One-Page" accesskey="n" rel="next">Multiple Plots on One Page</a>, Previous: <a href="Three_002dDimensional-Plots.html#Three_002dDimensional-Plots" accesskey="p" rel="prev">Three-Dimensional Plots</a>, Up: <a href="High_002dLevel-Plotting.html#High_002dLevel-Plotting" accesskey="u" rel="up">High-Level Plotting</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Plot-Annotations-1"></a>
 <h4 class="subsection">15.2.3 Plot Annotations</h4>
 
 <p>You can add titles, axis labels, legends, and arbitrary text to an
 existing plot.  For example:
+</p>
+<div class="example">
+<pre class="example">x = -10:0.1:10;
+plot (x, sin (x));
+title (&quot;sin(x) for x = -10:0.1:10&quot;);
+xlabel (&quot;x&quot;);
+ylabel (&quot;sin (x)&quot;);
+text (pi, 0.7, &quot;arbitrary text&quot;);
+legend (&quot;sin (x)&quot;);
+</pre></div>
 
-<pre class="example">     x = -10:0.1:10;
-     plot (x, sin (x));
-     title ("sin(x) for x = -10:0.1:10");
-     xlabel ("x");
-     ylabel ("sin (x)");
-     text (pi, 0.7, "arbitrary text");
-     legend ("sin (x)");
-</pre>
-   <p>The functions <code>grid</code> and <code>box</code> may also be used to add grid
+<p>The functions <code>grid</code> and <code>box</code> may also be used to add grid
 and border lines to the plot.  By default, the grid is off and the
 border lines are on.
+</p>
+<a name="XREFtitle"></a><dl>
+<dt><a name="index-title"></a>Function File: <em></em> <strong>title</strong> <em>(<var>string</var>)</em></dt>
+<dt><a name="index-title-1"></a>Function File: <em></em> <strong>title</strong> <em>(<var>string</var>, <var>prop</var>, <var>val</var>, &hellip;)</em></dt>
+<dt><a name="index-title-2"></a>Function File: <em></em> <strong>title</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-title-3"></a>Function File: <em><var>h</var> =</em> <strong>title</strong> <em>(&hellip;)</em></dt>
+<dd><p>Specify the string used as a title for the current axis.
+</p>
+<p>An optional list of <var>property</var>/<var>value</var> pairs can be used to change
+the appearance of the created title text object.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> is a graphics handle to the created text
+object.
+</p>
+<p><strong>See also:</strong> <a href="#XREFxlabel">xlabel</a>, <a href="#XREFylabel">ylabel</a>, <a href="#XREFzlabel">zlabel</a>, <a href="#XREFtext">text</a>.
+</p></dd></dl>
 
-<!-- title scripts/plot/title.m -->
-   <p><a name="doc_002dtitle"></a>
 
-<div class="defun">
-&mdash; Function File:  <b>title</b> (<var>string</var>)<var><a name="index-title-1364"></a></var><br>
-&mdash; Function File:  <b>title</b> (<var>string, p1, v1, <small class="dots">...</small></var>)<var><a name="index-title-1365"></a></var><br>
-&mdash; Function File:  <b>title</b> (<var>h, <small class="dots">...</small></var>)<var><a name="index-title-1366"></a></var><br>
-&mdash; Function File: <var>h</var> = <b>title</b> (<var><small class="dots">...</small></var>)<var><a name="index-title-1367"></a></var><br>
-<blockquote><p>Create a title object for a plot.
-
-        <p>The optional return value <var>h</var> is a graphics handle to the created object. 
-</p></blockquote></div>
-
-<!-- legend scripts/plot/legend.m -->
-   <p><a name="doc_002dlegend"></a>
-
-<div class="defun">
-&mdash; Function File:  <b>legend</b> (<var>str1, str2, <small class="dots">...</small></var>)<var><a name="index-legend-1368"></a></var><br>
-&mdash; Function File:  <b>legend</b> (<var>matstr</var>)<var><a name="index-legend-1369"></a></var><br>
-&mdash; Function File:  <b>legend</b> (<var>cell</var>)<var><a name="index-legend-1370"></a></var><br>
-&mdash; Function File:  <b>legend</b> (<var><small class="dots">...</small>, "location", pos</var>)<var><a name="index-legend-1371"></a></var><br>
-&mdash; Function File:  <b>legend</b> (<var><small class="dots">...</small>, "orientation", orient</var>)<var><a name="index-legend-1372"></a></var><br>
-&mdash; Function File:  <b>legend</b> (<var>hax, <small class="dots">...</small></var>)<var><a name="index-legend-1373"></a></var><br>
-&mdash; Function File:  <b>legend</b> (<var>hobjs, <small class="dots">...</small></var>)<var><a name="index-legend-1374"></a></var><br>
-&mdash; Function File:  <b>legend</b> (<var>hax, hobjs, <small class="dots">...</small></var>)<var><a name="index-legend-1375"></a></var><br>
-&mdash; Function File:  <b>legend</b> (<var>"option"</var>)<var><a name="index-legend-1376"></a></var><br>
-<blockquote>
-        <p>Display a legend for the axes with handle <var>hax</var>, or the current axes,
-using the specified strings as labels.  Legend entries may be specified
-as individual character string arguments, a character array, or a cell
-array of character strings.  If the handles, <var>hobjs</var>, are not specified
-then the legend's strings will be associated with the axes' descendants. 
-Legend works on line graphs, bar graphs, etc. 
-A plot must exist before legend is called.
-
-        <p>The optional parameter <var>pos</var> specifies the location of the legend
+<a name="XREFlegend"></a><dl>
+<dt><a name="index-legend"></a>Function File: <em></em> <strong>legend</strong> <em>(<var>str1</var>, <var>str2</var>, &hellip;)</em></dt>
+<dt><a name="index-legend-1"></a>Function File: <em></em> <strong>legend</strong> <em>(<var>matstr</var>)</em></dt>
+<dt><a name="index-legend-2"></a>Function File: <em></em> <strong>legend</strong> <em>(<var>cellstr</var>)</em></dt>
+<dt><a name="index-legend-3"></a>Function File: <em></em> <strong>legend</strong> <em>(&hellip;, &quot;location&quot;, <var>pos</var>)</em></dt>
+<dt><a name="index-legend-4"></a>Function File: <em></em> <strong>legend</strong> <em>(&hellip;, &quot;orientation&quot;, <var>orient</var>)</em></dt>
+<dt><a name="index-legend-5"></a>Function File: <em></em> <strong>legend</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-legend-6"></a>Function File: <em></em> <strong>legend</strong> <em>(<var>hobjs</var>, &hellip;)</em></dt>
+<dt><a name="index-legend-7"></a>Function File: <em></em> <strong>legend</strong> <em>(<var>hax</var>, <var>hobjs</var>, &hellip;)</em></dt>
+<dt><a name="index-legend-8"></a>Function File: <em></em> <strong>legend</strong> <em>(&quot;<var>option</var>&quot;)</em></dt>
+<dt><a name="index-legend-9"></a>Function File: <em>[<var>hleg</var>, <var>hleg_obj</var>, <var>hplot</var>, <var>labels</var>] =</em> <strong>legend</strong> <em>(&hellip;)</em></dt>
+<dd>
+<p>Display a legend for the current axes using the specified strings as labels.
+</p>
+<p>Legend entries may be specified as individual character string arguments,
+a character array, or a cell array of character strings.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then plot into this axis,
+rather than the current axes returned by <code>gca</code>.  If the handles,
+<var>hobjs</var>, are not specified then the legend&rsquo;s strings will be associated
+with the axes&rsquo; descendants.  <code>legend</code> works on line graphs,
+bar graphs, etc.  A plot must exist before legend is called.
+</p>
+<p>The optional parameter <var>pos</var> specifies the location of the legend
 as follows:
+</p>
+<table>
+<thead><tr><th width="6%"></th><th width="14%">pos</th><th width="80%">location of the legend</th></tr></thead>
+<tr><td width="6%"></td><td width="14%">north</td><td width="80%">center top</td></tr>
+<tr><td width="6%"></td><td width="14%">south</td><td width="80%">center bottom</td></tr>
+<tr><td width="6%"></td><td width="14%">east</td><td width="80%">right center</td></tr>
+<tr><td width="6%"></td><td width="14%">west</td><td width="80%">left center</td></tr>
+<tr><td width="6%"></td><td width="14%">northeast</td><td width="80%">right top (default)</td></tr>
+<tr><td width="6%"></td><td width="14%">northwest</td><td width="80%">left top</td></tr>
+<tr><td width="6%"></td><td width="14%">southeast</td><td width="80%">right bottom</td></tr>
+<tr><td width="6%"></td><td width="14%">southwest</td><td width="80%">left bottom</td></tr>
+<tr><td width="6%"></td></tr>
+<tr><td width="6%"></td><td width="14%">outside</td><td width="80%">can be appended to any location string</td></tr>
+</table>
 
-        <p><table summary="">
-<tr align="left"><th valign="top" width="6%"></th><th valign="top" width="14%"><var>pos</var> </th><th valign="top" width="80%">
-  location of the legend
-
-     <p><br></th></tr><tr align="left"><td valign="top" width="6%"></td><td valign="top" width="14%">north </td><td valign="top" width="80%">
-  center top
-
-     <p><br></td></tr><tr align="left"><td valign="top" width="6%"></td><td valign="top" width="14%">south </td><td valign="top" width="80%">
-  center bottom
-
-     <p><br></td></tr><tr align="left"><td valign="top" width="6%"></td><td valign="top" width="14%">east </td><td valign="top" width="80%">
-  right center
-
-     <p><br></td></tr><tr align="left"><td valign="top" width="6%"></td><td valign="top" width="14%">west </td><td valign="top" width="80%">
-  left center
-
-     <p><br></td></tr><tr align="left"><td valign="top" width="6%"></td><td valign="top" width="14%">northeast </td><td valign="top" width="80%">
-  right top (default)
-
-     <p><br></td></tr><tr align="left"><td valign="top" width="6%"></td><td valign="top" width="14%">northwest </td><td valign="top" width="80%">
-  left top
-
-     <p><br></td></tr><tr align="left"><td valign="top" width="6%"></td><td valign="top" width="14%">southeast </td><td valign="top" width="80%">
-  right bottom
-
-     <p><br></td></tr><tr align="left"><td valign="top" width="6%"></td><td valign="top" width="14%">southwest </td><td valign="top" width="80%">
-  left bottom
-
-     <p><br></td></tr><tr align="left"><td valign="top" width="6%">
-<br></td></tr><tr align="left"><td valign="top" width="6%"></td><td valign="top" width="14%">outside </td><td valign="top" width="80%">
-  can be appended to any location string
-        <br></td></tr></table>
-
-        <p>The optional parameter <var>orient</var> determines if the key elements
-are placed vertically or horizontally.  The allowed values are "vertical"
-or "horizontal" with the default being "vertical".
-
-        <p>The following customizations are available using <var>option</var>:
-
-          <dl>
-<dt>"show"<dd>  Show legend on the plot
-
-          <br><dt>"hide"<dd>  Hide legend on the plot
-
-          <dt>"toggle"<dd>  Toggles between "hide" and "show"
-
-          <br><dt>"boxon"<dd>  Show a box around legend
-
-          <br><dt>"boxoff"<dd>  Hide the box around legend
-
-          <br><dt>"left"<dd>  Place text to the left of the keys
-
-          <br><dt>"right"<dd>  Place text to the right of the keys
-
-          <dt>"off"<dd>  Delete the legend object
+<p>The optional parameter <var>orient</var> determines if the key elements
+are placed vertically or horizontally.  The allowed values are
+<code>&quot;vertical&quot;</code> (default) or <code>&quot;horizontal&quot;</code>.
+</p>
+<p>The following customizations are available using <var>option</var>:
+</p>
+<dl compact="compact">
+<dt><code>&quot;show&quot;</code></dt>
+<dd><p>Show legend on the plot
+</p>
+</dd>
+<dt><code>&quot;hide&quot;</code></dt>
+<dd><p>Hide legend on the plot
+</p>
+</dd>
+<dt><code>&quot;toggle&quot;</code></dt>
+<dd><p>Toggles between <code>&quot;hide&quot;</code> and <code>&quot;show&quot;</code>
+</p>
+</dd>
+<dt><code>&quot;boxon&quot;</code></dt>
+<dd><p>Show a box around legend (default)
+</p>
+</dd>
+<dt><code>&quot;boxoff&quot;</code></dt>
+<dd><p>Hide the box around legend
+</p>
+</dd>
+<dt><code>&quot;right&quot;</code></dt>
+<dd><p>Place label text to the right of the keys (default)
+</p>
+</dd>
+<dt><code>&quot;left&quot;</code></dt>
+<dd><p>Place label text to the left of the keys
+</p>
+</dd>
+<dt><code>&quot;off&quot;</code></dt>
+<dd><p>Delete the legend object
+</p></dd>
 </dl>
-        </p></blockquote></div>
 
-<!-- text scripts/plot/text.m -->
-   <p><a name="doc_002dtext"></a>
+<p>The optional output values are
+</p>
+<dl compact="compact">
+<dt><var>hleg</var></dt>
+<dd><p>The graphics handle of the legend object.
+</p>
+</dd>
+<dt><var>hleg_obj</var></dt>
+<dd><p>Graphics handles to the text and line objects which make up the legend.
+</p>
+</dd>
+<dt><var>hplot</var></dt>
+<dd><p>Graphics handles to the plot objects which were used in making the legend.
+</p>
+</dd>
+<dt><var>labels</var></dt>
+<dd><p>A cell array of strings of the labels in the legend.
+</p></dd>
+</dl>
 
-<div class="defun">
-&mdash; Function File:  <b>text</b> (<var>x, y, label</var>)<var><a name="index-text-1377"></a></var><br>
-&mdash; Function File:  <b>text</b> (<var>x, y, z, label</var>)<var><a name="index-text-1378"></a></var><br>
-&mdash; Function File:  <b>text</b> (<var>x, y, label, p1, v1, <small class="dots">...</small></var>)<var><a name="index-text-1379"></a></var><br>
-&mdash; Function File:  <b>text</b> (<var>x, y, z, label, p1, v1, <small class="dots">...</small></var>)<var><a name="index-text-1380"></a></var><br>
-&mdash; Function File: <var>h</var> = <b>text</b> (<var><small class="dots">...</small></var>)<var><a name="index-text-1381"></a></var><br>
-<blockquote><p>Create a text object with text <var>label</var> at position <var>x</var>,
-<var>y</var>, <var>z</var> on the current axes.  Property-value pairs following
-<var>label</var> may be used to specify the appearance of the text.
+<p>The legend label text is either provided in the call to <code>legend</code> or
+is taken from the DisplayName property of graphics objects.  If no
+labels or DisplayNames are available, then the label text is simply
+<code>&quot;data1&quot;</code>, <code>&quot;data2&quot;</code>, &hellip;, <code>&quot;dataN&quot;</code>.
+</p>
+<p>Implementation Note: A legend is implemented as an additional axes object
+of the current figure with the <code>&quot;tag&quot;</code> set to <code>&quot;legend&quot;</code>.
+Properties of the legend object may be manipulated directly by using
+<code>set</code>.
+</p></dd></dl>
 
-        <p>The optional return value <var>h</var> is a graphics handle to the created text
-object. 
-</p></blockquote></div>
 
-   <p>See <a href="Text-Properties.html#Text-Properties">Text Properties</a> for the properties that you can set.
+<a name="XREFtext"></a><dl>
+<dt><a name="index-text"></a>Function File: <em></em> <strong>text</strong> <em>(<var>x</var>, <var>y</var>, <var>string</var>)</em></dt>
+<dt><a name="index-text-1"></a>Function File: <em></em> <strong>text</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>, <var>string</var>)</em></dt>
+<dt><a name="index-text-2"></a>Function File: <em></em> <strong>text</strong> <em>(&hellip;, <var>prop</var>, <var>val</var>, &hellip;)</em></dt>
+<dt><a name="index-text-3"></a>Function File: <em><var>h</var> =</em> <strong>text</strong> <em>(&hellip;)</em></dt>
+<dd><p>Create a text object with text <var>string</var> at position <var>x</var>, <var>y</var>,
+(<var>z</var>) on the current axes.
+</p>
+<p>Multiple locations can be specified if <var>x</var>, <var>y</var>, (<var>z</var>) are
+vectors.  Multiple strings can be specified with a character matrix or
+a cell array of strings.
+</p>
+<p>Optional property/value pairs may be used to control the appearance of the
+text.
+</p>
+<p>The optional return value <var>h</var> is a vector of graphics handles to the
+created text objects.
+</p>
+<p><strong>See also:</strong> <a href="Interacting-with-Plots.html#XREFgtext">gtext</a>, <a href="#XREFtitle">title</a>, <a href="#XREFxlabel">xlabel</a>, <a href="#XREFylabel">ylabel</a>, <a href="#XREFzlabel">zlabel</a>.
+</p></dd></dl>
 
-   <p><a name="doc_002dylabel"></a><a name="doc_002dzlabel"></a><!-- xlabel scripts/plot/xlabel.m -->
-<a name="doc_002dxlabel"></a>
 
-<div class="defun">
-&mdash; Function File:  <b>xlabel</b> (<var>string</var>)<var><a name="index-xlabel-1382"></a></var><br>
-&mdash; Function File:  <b>xlabel</b> (<var>h, string</var>)<var><a name="index-xlabel-1383"></a></var><br>
-&mdash; Function File: <var>h</var> = <b>xlabel</b> (<var><small class="dots">...</small></var>)<var><a name="index-xlabel-1384"></a></var><br>
-&mdash; Function File:  <b>ylabel</b> (<var><small class="dots">...</small></var>)<var><a name="index-ylabel-1385"></a></var><br>
-&mdash; Function File:  <b>zlabel</b> (<var><small class="dots">...</small></var>)<var><a name="index-zlabel-1386"></a></var><br>
-<blockquote><p>Specify x-, y-, or z-axis labels for the current axis.  If <var>h</var> is
-specified then label the axis defined by <var>h</var>.
+<p>See <a href="Text-Properties.html#Text-Properties">Text Properties</a> for the properties that you can set.
+</p>
+<a name="XREFylabel"></a><a name="XREFzlabel"></a><a name="XREFxlabel"></a><dl>
+<dt><a name="index-xlabel"></a>Function File: <em></em> <strong>xlabel</strong> <em>(<var>string</var>)</em></dt>
+<dt><a name="index-xlabel-1"></a>Function File: <em></em> <strong>xlabel</strong> <em>(<var>string</var>, <var>property</var>, <var>val</var>, &hellip;)</em></dt>
+<dt><a name="index-xlabel-2"></a>Function File: <em></em> <strong>xlabel</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-xlabel-3"></a>Function File: <em><var>h</var> =</em> <strong>xlabel</strong> <em>(&hellip;)</em></dt>
+<dd><p>Specify the string used to label the x-axis of the current axis.
+</p>
+<p>An optional list of <var>property</var>/<var>value</var> pairs can be used to change
+the properties of the created text label.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then operate on
+this axis rather than the current axes returned by <code>gca</code>.
+</p>
+<p>The optional return value <var>h</var> is a graphics handle to the created text
+object.
+</p>
+<p><strong>See also:</strong> <a href="#XREFylabel">ylabel</a>, <a href="#XREFzlabel">zlabel</a>, <a href="Timing-Utilities.html#XREFdatetick">datetick</a>, <a href="#XREFtitle">title</a>, <a href="#XREFtext">text</a>.
+</p></dd></dl>
 
-        <p>The optional return value <var>h</var> is a graphics handle to the created object. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dtitle.html#doc_002dtitle">title</a>, <a href="doc_002dtext.html#doc_002dtext">text</a>. 
-</p></blockquote></div>
+<a name="XREFclabel"></a><dl>
+<dt><a name="index-clabel"></a>Function File: <em></em> <strong>clabel</strong> <em>(<var>c</var>, <var>h</var>)</em></dt>
+<dt><a name="index-clabel-1"></a>Function File: <em></em> <strong>clabel</strong> <em>(<var>c</var>, <var>h</var>, <var>v</var>)</em></dt>
+<dt><a name="index-clabel-2"></a>Function File: <em></em> <strong>clabel</strong> <em>(<var>c</var>, <var>h</var>, &quot;manual&quot;)</em></dt>
+<dt><a name="index-clabel-3"></a>Function File: <em></em> <strong>clabel</strong> <em>(<var>c</var>)</em></dt>
+<dt><a name="index-clabel-4"></a>Function File: <em></em> <strong>clabel</strong> <em>(&hellip;, <var>prop</var>, <var>val</var>, &hellip;)</em></dt>
+<dt><a name="index-clabel-5"></a>Function File: <em><var>h</var> =</em> <strong>clabel</strong> <em>(&hellip;)</em></dt>
+<dd><p>Add labels to the contours of a contour plot.
+</p>
+<p>The contour levels are specified by the contour matrix <var>c</var> which is
+returned by <code>contour</code>, <code>contourc</code>, <code>contourf</code>, and
+<code>contour3</code>.  Contour labels are rotated to match the local line 
+orientation and centered on the line.  The position of labels along the
+contour line is chosen randomly.
+</p>
+<p>If the argument <var>h</var> is a handle to a contour group object, then label
+this plot rather than the one in the current axes returned by <code>gca</code>.
+</p>
+<p>By default, all contours are labeled.  However, the contours to label can be
+specified by the vector <var>v</var>.  If the <code>&quot;manual&quot;</code> argument is
+given then the contours to label can be selected with the mouse.
+</p>
+<p>Additional property/value pairs that are valid properties of text objects
+can be given and are passed to the underlying text objects.  Moreover,
+the contour group property <code>&quot;LabelSpacing&quot;</code> is available which
+determines the spacing between labels on a contour to be specified.  The
+default is 144 points, or 2 inches.
+</p>
+<p>The optional return value <var>h</var> is a vector of graphics handles to
+the text objects representing each label.
+The <code>&quot;userdata&quot;</code> property of the text objects contains the numerical
+value of the contour label.
+</p>
+<p>An example of the use of <code>clabel</code> is
+</p>
+<div class="example">
+<pre class="example">[c, h] = contour (peaks (), -4 : 6);
+clabel (c, h, -4:2:6, &quot;fontsize&quot;, 12);
+</pre></div>
 
-<!-- clabel scripts/plot/clabel.m -->
-   <p><a name="doc_002dclabel"></a>
 
-<div class="defun">
-&mdash; Function File:  <b>clabel</b> (<var>c, h</var>)<var><a name="index-clabel-1387"></a></var><br>
-&mdash; Function File:  <b>clabel</b> (<var>c, h, v</var>)<var><a name="index-clabel-1388"></a></var><br>
-&mdash; Function File:  <b>clabel</b> (<var>c, h, "manual"</var>)<var><a name="index-clabel-1389"></a></var><br>
-&mdash; Function File:  <b>clabel</b> (<var>c</var>)<var><a name="index-clabel-1390"></a></var><br>
-&mdash; Function File:  <b>clabel</b> (<var>c, h</var>)<var><a name="index-clabel-1391"></a></var><br>
-&mdash; Function File:  <b>clabel</b> (<var><small class="dots">...</small>, prop, val, <small class="dots">...</small></var>)<var><a name="index-clabel-1392"></a></var><br>
-&mdash; Function File: <var>h</var> = <b>clabel</b> (<var><small class="dots">...</small></var>)<var><a name="index-clabel-1393"></a></var><br>
-<blockquote><p>Add labels to the contours of a contour plot.  The contour plot is specified
-by the contour matrix <var>c</var> and optionally the contourgroup object <var>h</var>
-that are returned by <code>contour</code>, <code>contourf</code> and <code>contour3</code>. 
-The contour labels are rotated and placed in the contour itself.
+<p><strong>See also:</strong> <a href="Two_002dDimensional-Plots.html#XREFcontour">contour</a>, <a href="Two_002dDimensional-Plots.html#XREFcontourf">contourf</a>, <a href="Two_002dDimensional-Plots.html#XREFcontour3">contour3</a>, <a href="Three_002dDimensional-Plots.html#XREFmeshc">meshc</a>, <a href="Three_002dDimensional-Plots.html#XREFsurfc">surfc</a>, <a href="#XREFtext">text</a>.
+</p></dd></dl>
 
-        <p>By default, all contours are labeled.  However, the contours to label can be
-specified by the vector <var>v</var>.  If the "manual" argument is given then
-the contours to label can be selected with the mouse.
 
-        <p>Additional property/value pairs that are valid properties of text objects
-can be given and are passed to the underlying text objects.  Additionally,
-the property "LabelSpacing" is available allowing the spacing between labels
-on a contour (in points) to be specified.  The default is 144 points, or 2
-inches.
+<a name="XREFbox"></a><dl>
+<dt><a name="index-box"></a>Command: <em></em> <strong>box</strong> <em>on</em></dt>
+<dt><a name="index-box-1"></a>Command: <em></em> <strong>box</strong> <em>off</em></dt>
+<dt><a name="index-box-2"></a>Command: <em></em> <strong>box</strong></dt>
+<dt><a name="index-box-3"></a>Function File: <em></em> <strong>box</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dd><p>Control display of the axis border.
+</p>
+<p>The argument may be either <code>&quot;on&quot;</code> or <code>&quot;off&quot;</code>.  If it is
+omitted, the current box state is toggled.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then operate on
+this axis rather than the current axes returned by <code>gca</code>.
+</p>
+<p><strong>See also:</strong> <a href="Axis-Configuration.html#XREFaxis">axis</a>, <a href="#XREFgrid">grid</a>.
+</p></dd></dl>
 
-        <p>The optional return value <var>h</var> is a vector of graphics handles to
-the text objects representing each label. 
-The "userdata" property of the text objects contains the numerical value of
-the contour label.
 
-        <p>An example of the use of <code>clabel</code> is
-
-     <pre class="example">          [c, h] = contour (peaks (), -4 : 6);
-          clabel (c, h, -4:2:6, "fontsize", 12);
-</pre>
-        <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-     <!-- A simple blank line produces the correct behavior. -->
-     <!-- @sp 1 -->
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dcontour.html#doc_002dcontour">contour</a>, <a href="doc_002dcontourf.html#doc_002dcontourf">contourf</a>, <a href="doc_002dcontour3.html#doc_002dcontour3">contour3</a>, <a href="doc_002dmeshc.html#doc_002dmeshc">meshc</a>, <a href="doc_002dsurfc.html#doc_002dsurfc">surfc</a>, <a href="doc_002dtext.html#doc_002dtext">text</a>. 
-</p></blockquote></div>
-
-<!-- box scripts/plot/box.m -->
-   <p><a name="doc_002dbox"></a>
-
-<div class="defun">
-&mdash; Function File:  <b>box</b> (<var>arg</var>)<var><a name="index-box-1394"></a></var><br>
-&mdash; Function File:  <b>box</b> (<var>h, <small class="dots">...</small></var>)<var><a name="index-box-1395"></a></var><br>
-<blockquote><p>Control the display of a border around the plot. 
-The argument may be either <code>"on"</code> or <code>"off"</code>.  If it is
-omitted, the current box state is toggled. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
-
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dgrid.html#doc_002dgrid">grid</a>. 
-</p></blockquote></div>
-
-<!-- grid scripts/plot/grid.m -->
-   <p><a name="doc_002dgrid"></a>
-
-<div class="defun">
-&mdash; Function File:  <b>grid</b> (<var>arg</var>)<var><a name="index-grid-1396"></a></var><br>
-&mdash; Function File:  <b>grid</b> (<var>"minor", arg2</var>)<var><a name="index-grid-1397"></a></var><br>
-&mdash; Function File:  <b>grid</b> (<var>hax, <small class="dots">...</small></var>)<var><a name="index-grid-1398"></a></var><br>
-<blockquote><p>Force the display of a grid on the plot. 
-The argument may be either <code>"on"</code>, or <code>"off"</code>. 
+<a name="XREFgrid"></a><dl>
+<dt><a name="index-grid"></a>Command: <em></em> <strong>grid</strong></dt>
+<dt><a name="index-grid-1"></a>Command: <em></em> <strong>grid</strong> <em>on</em></dt>
+<dt><a name="index-grid-2"></a>Command: <em></em> <strong>grid</strong> <em>off</em></dt>
+<dt><a name="index-grid-3"></a>Command: <em></em> <strong>grid</strong> <em>minor</em></dt>
+<dt><a name="index-grid-4"></a>Command: <em></em> <strong>grid</strong> <em>minor on</em></dt>
+<dt><a name="index-grid-5"></a>Command: <em></em> <strong>grid</strong> <em>minor off</em></dt>
+<dt><a name="index-grid-6"></a>Function File: <em></em> <strong>grid</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dd><p>Control the display of plot grid lines.
+</p>
+<p>The function state input may be either <code>&quot;on&quot;</code> or <code>&quot;off&quot;</code>.
 If it is omitted, the current grid state is toggled.
+</p>
+<p>When the first argument is <code>&quot;minor&quot;</code> all subsequent commands
+modify the minor grid rather than the major grid.
+</p>
+<p>If the first argument <var>hax</var> is an axes handle, then operate on
+this axis rather than the current axes returned by <code>gca</code>.
+</p>
+<p>To control the grid lines for an individual axis use the <code>set</code>
+function.  For example:
+</p>
+<div class="example">
+<pre class="example">set (gca, &quot;ygrid&quot;, &quot;on&quot;);
+</pre></div>
 
-        <p>If <var>arg</var> is <code>"minor"</code> then the minor grid is toggled.  When
-using a minor grid a second argument <var>arg2</var> is allowed, which can
-be either <code>"on"</code> or <code>"off"</code> to explicitly set the state of
-the minor grid.
+<p><strong>See also:</strong> <a href="Axis-Configuration.html#XREFaxis">axis</a>, <a href="#XREFbox">box</a>.
+</p></dd></dl>
 
-        <p>If the first argument is an axis handle, <var>hax</var>, operate on the
-specified axis object. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dplot.html#doc_002dplot">plot</a>. 
-</p></blockquote></div>
-
-<!-- colorbar scripts/plot/colorbar.m -->
-   <p><a name="doc_002dcolorbar"></a>
-
-<div class="defun">
-&mdash; Function File:  <b>colorbar</b> (<var>s</var>)<var><a name="index-colorbar-1399"></a></var><br>
-&mdash; Function File:  <b>colorbar</b> (<var>"peer", h, <small class="dots">...</small></var>)<var><a name="index-colorbar-1400"></a></var><br>
-<blockquote><p>Add a colorbar to the current axes.  Valid values for <var>s</var> are
-
-          <dl>
-<dt>"EastOutside"<dd>Place the colorbar outside the plot to the right.  This is the default.
-
-          <br><dt>"East"<dd>Place the colorbar inside the plot to the right.
-
-          <br><dt>"WestOutside"<dd>Place the colorbar outside the plot to the left.
-
-          <br><dt>"West"<dd>Place the colorbar inside the plot to the left.
-
-          <br><dt>"NorthOutside"<dd>Place the colorbar above the plot.
-
-          <br><dt>"North"<dd>Place the colorbar at the top of the plot.
-
-          <br><dt>"SouthOutside"<dd>Place the colorbar under the plot.
-
-          <br><dt>"South"<dd>Place the colorbar at the bottom of the plot.
-
-          <br><dt>"Off", "None"<dd>Remove any existing colorbar from the plot. 
+<a name="XREFcolorbar"></a><dl>
+<dt><a name="index-colorbar"></a>Command: <em></em> <strong>colorbar</strong></dt>
+<dt><a name="index-colorbar-1"></a>Function File: <em></em> <strong>colorbar</strong> <em>(<var>loc</var>)</em></dt>
+<dt><a name="index-colorbar-2"></a>Function File: <em></em> <strong>colorbar</strong> <em>(<var>delete_option</var>)</em></dt>
+<dt><a name="index-colorbar-3"></a>Function File: <em></em> <strong>colorbar</strong> <em>(<var>hcb</var>, &hellip;)</em></dt>
+<dt><a name="index-colorbar-4"></a>Function File: <em></em> <strong>colorbar</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-colorbar-5"></a>Function File: <em></em> <strong>colorbar</strong> <em>(&hellip;, &quot;peer&quot;, <var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-colorbar-6"></a>Function File: <em></em> <strong>colorbar</strong> <em>(&hellip;, &quot;location&quot;, <var>loc</var>, &hellip;)</em></dt>
+<dt><a name="index-colorbar-7"></a>Function File: <em></em> <strong>colorbar</strong> <em>(&hellip;, <var>prop</var>, <var>val</var>, &hellip;)</em></dt>
+<dt><a name="index-colorbar-8"></a>Function File: <em><var>h</var> =</em> <strong>colorbar</strong> <em>(&hellip;)</em></dt>
+<dd><p>Add a colorbar to the current axes.
+</p>
+<p>A colorbar displays the current colormap along with numerical rulings
+so that the color scale can be interpreted.
+</p>
+<p>The optional input <var>loc</var> determines the location of the colorbar.
+Valid values for <var>loc</var> are
+</p>
+<dl compact="compact">
+<dt><code>&quot;EastOutside&quot;</code></dt>
+<dd><p>Place the colorbar outside the plot to the right.  This is the default.
+</p>
+</dd>
+<dt><code>&quot;East&quot;</code></dt>
+<dd><p>Place the colorbar inside the plot to the right.
+</p>
+</dd>
+<dt><code>&quot;WestOutside&quot;</code></dt>
+<dd><p>Place the colorbar outside the plot to the left.
+</p>
+</dd>
+<dt><code>&quot;West&quot;</code></dt>
+<dd><p>Place the colorbar inside the plot to the left.
+</p>
+</dd>
+<dt><code>&quot;NorthOutside&quot;</code></dt>
+<dd><p>Place the colorbar above the plot.
+</p>
+</dd>
+<dt><code>&quot;North&quot;</code></dt>
+<dd><p>Place the colorbar at the top of the plot.
+</p>
+</dd>
+<dt><code>&quot;SouthOutside&quot;</code></dt>
+<dd><p>Place the colorbar under the plot.
+</p>
+</dd>
+<dt><code>&quot;South&quot;</code></dt>
+<dd><p>Place the colorbar at the bottom of the plot.
+</p></dd>
 </dl>
 
-        <p>If the argument "peer" is given, then the following argument is treated
-as the axes handle on which to add the colorbar. 
-</p></blockquote></div>
+<p>To remove a colorbar from a plot use any one of the following keywords for
+the <var>delete_option</var>: <code>&quot;delete&quot;</code>, <code>&quot;hide&quot;</code>, <code>&quot;off&quot;</code>.
+</p>
+<p>If the argument <code>&quot;peer&quot;</code> is given, then the following argument is
+treated as the axes handle in which to add the colorbar.  Alternatively,
+If the first argument <var>hax</var> is an axes handle, then the colorbar is
+added to this axis, rather than the current axes returned by <code>gca</code>.
+</p>
+<p>If the first argument <var>hcb</var> is a handle to a colorbar object, then
+operate on this colorbar directly.
+</p>
+<p>Additional property/value pairs are passed directly to the underlying axes
+object.
+</p>
+<p>The optional return value <var>h</var> is a graphics handle to the created
+colorbar object.
+</p>
+<p>Implementation Note: A colorbar is created as an additional axes to the
+current figure with the <code>&quot;tag&quot;</code> property set to <code>&quot;colorbar&quot;</code>. 
+The created axes object has the extra property <code>&quot;location&quot;</code> which
+controls the positioning of the colorbar.
+</p>
+<p><strong>See also:</strong> <a href="Representing-Images.html#XREFcolormap">colormap</a>.
+</p></dd></dl>
 
-   </body></html>
 
+<hr>
+<div class="header">
+<p>
+Next: <a href="Multiple-Plots-on-One-Page.html#Multiple-Plots-on-One-Page" accesskey="n" rel="next">Multiple Plots on One Page</a>, Previous: <a href="Three_002dDimensional-Plots.html#Three_002dDimensional-Plots" accesskey="p" rel="prev">Three-Dimensional Plots</a>, Up: <a href="High_002dLevel-Plotting.html#High_002dLevel-Plotting" accesskey="u" rel="up">High-Level Plotting</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

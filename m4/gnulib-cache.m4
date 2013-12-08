@@ -1,6 +1,4 @@
-# -*- buffer-read-only: t -*- vi: set ro:
-# DO NOT EDIT! GENERATED AUTOMATICALLY!
-# Copyright (C) 2002-2012 Free Software Foundation, Inc.
+# Copyright (C) 2002-2013 Free Software Foundation, Inc.
 #
 # This file is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -29,22 +27,32 @@
 
 
 # Specification in the form of a command-line invocation:
-#   gnulib-tool --import --dir=. --local-dir=gl --lib=libgnu --source-base=libgnu --m4-base=m4 --doc-base=doc --tests-base=tests --aux-dir=build-aux --no-conditional-dependencies --libtool --macro-prefix=gl c-strcase closedir copysign copysignf crypto/md5 fclose fcntl fflush filemode fnmatch fopen fseek ftell getcwd gethostname getopt-gnu gettimeofday glob isatty link lstat mkdir mkfifo mkostemp mkstemp mktime nanosleep nproc opendir pathmax progname readdir readlink rename rewinddir rmdir round roundf sigaction signal sigprocmask sleep stat stdint stdio strftime strptime symlink sys_stat sys_time sys_times time times tmpfile trunc truncf unistd unlink vasprintf
+#   gnulib-tool --import --dir=. --local-dir=gl --lib=libgnu --source-base=libgnu --m4-base=m4 --doc-base=doc --tests-base=tests --aux-dir=build-aux --no-conditional-dependencies --libtool --macro-prefix=gl base64 canonicalize chdir close closedir copysign copysignf crypto/md5 dup2 fclose fcntl fflush filemode float floor floorf fnmatch fopen fpucw frexp frexpf fseek ftell getcwd gethostname getopt-gnu gettimeofday glob isatty largefile link lstat malloc-gnu mbrtowc mkdir mkfifo mkostemp mktime nanosleep nproc open opendir pathmax progname putenv readdir readlink realloc-gnu rename rmdir round roundf select sigaction signal sigprocmask sleep stat stddef stdint stdio strerror strftime strptime symlink sys_stat sys_time sys_times time times tmpfile trunc truncf uname unistd unlink vasprintf
 
 # Specification in the form of a few gnulib-tool.m4 macro invocations:
 gl_LOCAL_DIR([gl])
 gl_MODULES([
-  c-strcase
+  base64
+  canonicalize
+  chdir
+  close
   closedir
   copysign
   copysignf
   crypto/md5
+  dup2
   fclose
   fcntl
   fflush
   filemode
+  float
+  floor
+  floorf
   fnmatch
   fopen
+  fpucw
+  frexp
+  frexpf
   fseek
   ftell
   getcwd
@@ -53,32 +61,39 @@ gl_MODULES([
   gettimeofday
   glob
   isatty
+  largefile
   link
   lstat
+  malloc-gnu
+  mbrtowc
   mkdir
   mkfifo
   mkostemp
-  mkstemp
   mktime
   nanosleep
   nproc
+  open
   opendir
   pathmax
   progname
+  putenv
   readdir
   readlink
+  realloc-gnu
   rename
-  rewinddir
   rmdir
   round
   roundf
+  select
   sigaction
   signal
   sigprocmask
   sleep
   stat
+  stddef
   stdint
   stdio
+  strerror
   strftime
   strptime
   symlink
@@ -90,6 +105,7 @@ gl_MODULES([
   tmpfile
   trunc
   truncf
+  uname
   unistd
   unlink
   vasprintf
@@ -105,4 +121,4 @@ gl_MAKEFILE_NAME([])
 gl_LIBTOOL
 gl_MACRO_PREFIX([gl])
 gl_PO_DOMAIN([])
-gl_WITNESS_C_DOMAIN([])
+gl_WITNESS_C_MACRO([])

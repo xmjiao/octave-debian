@@ -1,10 +1,8 @@
-/* -*- buffer-read-only: t -*- vi: set ro: */
-/* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* Getopt for GNU.
    NOTE: getopt is part of the C library, so if you don't know what
    "Keep this file name-space clean" means, talk to drepper@gnu.org
    before changing it!
-   Copyright (C) 1987-1996, 1998-2004, 2006, 2008-2012 Free Software
+   Copyright (C) 1987-1996, 1998-2004, 2006, 2008-2013 Free Software
    Foundation, Inc.
    This file is part of the GNU C Library.
 

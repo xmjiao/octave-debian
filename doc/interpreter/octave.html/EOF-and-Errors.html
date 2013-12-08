@@ -1,37 +1,61 @@
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.2, http://www.gnu.org/software/texinfo/ -->
 <head>
-<title>EOF and Errors - GNU Octave</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="GNU Octave">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions" title="C-Style I/O Functions">
-<link rel="prev" href="Temporary-Files.html#Temporary-Files" title="Temporary Files">
-<link rel="next" href="File-Positioning.html#File-Positioning" title="File Positioning">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
-</head>
-<body>
-<div class="node">
-<a name="EOF-and-Errors"></a>
-<p>
-Next:&nbsp;<a rel="next" accesskey="n" href="File-Positioning.html#File-Positioning">File Positioning</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="Temporary-Files.html#Temporary-Files">Temporary Files</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions">C-Style I/O Functions</a>
-<hr>
-</div>
+<title>GNU Octave: EOF and Errors</title>
 
+<meta name="description" content="GNU Octave: EOF and Errors">
+<meta name="keywords" content="GNU Octave: EOF and Errors">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions" rel="up" title="C-Style I/O Functions">
+<link href="File-Positioning.html#File-Positioning" rel="next" title="File Positioning">
+<link href="Temporary-Files.html#Temporary-Files" rel="prev" title="Temporary Files">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+<a name="EOF-and-Errors"></a>
+<div class="header">
+<p>
+Next: <a href="File-Positioning.html#File-Positioning" accesskey="n" rel="next">File Positioning</a>, Previous: <a href="Temporary-Files.html#Temporary-Files" accesskey="p" rel="prev">Temporary Files</a>, Up: <a href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions" accesskey="u" rel="up">C-Style I/O Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="End-of-File-and-Errors"></a>
 <h4 class="subsection">14.2.18 End of File and Errors</h4>
 
 <p>Once a file has been opened its status can be acquired.  As an example
@@ -39,75 +63,82 @@ the <code>feof</code> functions determines if the end of the file has been
 reached.  This can be very useful when reading small parts of a file
 at a time.  The following example shows how to read one line at a time
 from a file until the end has been reached.
+</p>
+<div class="example">
+<pre class="example">filename = &quot;myfile.txt&quot;;
+fid = fopen (filename, &quot;r&quot;);
+while (! feof (fid) )
+  text_line = fgetl (fid);
+endwhile
+fclose (fid);
+</pre></div>
 
-<pre class="example">     filename = "myfile.txt";
-     fid = fopen (filename, "r");
-     while (! feof (fid) )
-       text_line = fgetl (fid);
-     endwhile
-     fclose (fid);
-</pre>
-   <p class="noindent">Note that in some situations it is more efficient to read the entire
+<p>Note that in some situations it is more efficient to read the entire
 contents of a file and then process it, than it is to read it line by
 line.  This has the potential advantage of removing the loop in the
 above code.
-
-<!-- feof src/file-io.cc -->
-   <p><a name="doc_002dfeof"></a>
-
-<div class="defun">
-&mdash; Built-in Function:  <b>feof</b> (<var>fid</var>)<var><a name="index-feof-1015"></a></var><br>
-<blockquote><p>Return 1 if an end-of-file condition has been encountered for a given
+</p>
+<a name="XREFfeof"></a><dl>
+<dt><a name="index-feof"></a>Built-in Function: <em></em> <strong>feof</strong> <em>(<var>fid</var>)</em></dt>
+<dd><p>Return 1 if an end-of-file condition has been encountered for a given
 file and 0 otherwise.  Note that it will only return 1 if the end of the
 file has already been encountered, not if the next read operation will
-result in an end-of-file condition. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
+result in an end-of-file condition.
+</p>
+<p><strong>See also:</strong> <a href="Binary-I_002fO.html#XREFfread">fread</a>, <a href="Opening-and-Closing-Files.html#XREFfopen">fopen</a>.
+</p></dd></dl>
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dfread.html#doc_002dfread">fread</a>, <a href="doc_002dfopen.html#doc_002dfopen">fopen</a>, <a href="doc_002dfclose.html#doc_002dfclose">fclose</a>. 
-</p></blockquote></div>
 
-<!-- ferror src/file-io.cc -->
-   <p><a name="doc_002dferror"></a>
-
-<div class="defun">
-&mdash; Built-in Function: [<var>err</var>, <var>msg</var>] = <b>ferror</b> (<var>fid, "clear"</var>)<var><a name="index-ferror-1016"></a></var><br>
-<blockquote><p>Return 1 if an error condition has been encountered for the file ID
+<a name="XREFferror"></a><dl>
+<dt><a name="index-ferror"></a>Built-in Function: <em>[<var>err</var>, <var>msg</var>] =</em> <strong>ferror</strong> <em>(<var>fid</var>)</em></dt>
+<dt><a name="index-ferror-1"></a>Built-in Function: <em>[<var>err</var>, <var>msg</var>] =</em> <strong>ferror</strong> <em>(<var>fid</var>, &quot;clear&quot;)</em></dt>
+<dd><p>Return 1 if an error condition has been encountered for the file ID
 <var>fid</var> and 0 otherwise.  Note that it will only return 1 if an error
 has already been encountered, not if the next operation will result in
 an error condition.
+</p>
+<p>The second argument is optional.  If it is supplied, also clear the
+error condition.
+</p>
+<p><strong>See also:</strong> <a href="#XREFfclear">fclear</a>, <a href="Opening-and-Closing-Files.html#XREFfopen">fopen</a>.
+</p></dd></dl>
 
-        <p>The second argument is optional.  If it is supplied, also clear the
-error condition. 
-</p></blockquote></div>
 
-<!-- fclear src/file-io.cc -->
-   <p><a name="doc_002dfclear"></a>
+<a name="XREFfclear"></a><dl>
+<dt><a name="index-fclear"></a>Built-in Function: <em></em> <strong>fclear</strong> <em>(<var>fid</var>)</em></dt>
+<dd><p>Clear the stream state for the specified file.
+</p>
+<p><strong>See also:</strong> <a href="Opening-and-Closing-Files.html#XREFfopen">fopen</a>.
+</p></dd></dl>
 
-<div class="defun">
-&mdash; Built-in Function:  <b>fclear</b> (<var>fid</var>)<var><a name="index-fclear-1017"></a></var><br>
-<blockquote><p>Clear the stream state for the specified file. 
-</p></blockquote></div>
 
-<!-- freport src/file-io.cc -->
-   <p><a name="doc_002dfreport"></a>
-
-<div class="defun">
-&mdash; Built-in Function:  <b>freport</b> ()<var><a name="index-freport-1018"></a></var><br>
-<blockquote><p>Print a list of which files have been opened, and whether they are open
+<a name="XREFfreport"></a><dl>
+<dt><a name="index-freport"></a>Built-in Function: <em></em> <strong>freport</strong> <em>()</em></dt>
+<dd><p>Print a list of which files have been opened, and whether they are open
 for reading, writing, or both.  For example:
+</p>
+<div class="example">
+<pre class="example">freport ()
 
-     <pre class="example">          freport ()
-          
-               -|  number  mode  name
-               -|
-               -|       0     r  stdin
-               -|       1     w  stdout
-               -|       2     w  stderr
-               -|       3     r  myfile
-</pre>
-        </blockquote></div>
+     -|  number  mode  name
+     -|
+     -|       0     r  stdin
+     -|       1     w  stdout
+     -|       2     w  stderr
+     -|       3     r  myfile
+</pre></div>
 
-   </body></html>
+<p><strong>See also:</strong> <a href="Opening-and-Closing-Files.html#XREFfopen">fopen</a>, <a href="Opening-and-Closing-Files.html#XREFfclose">fclose</a>.
+</p></dd></dl>
 
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="File-Positioning.html#File-Positioning" accesskey="n" rel="next">File Positioning</a>, Previous: <a href="Temporary-Files.html#Temporary-Files" accesskey="p" rel="prev">Temporary Files</a>, Up: <a href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions" accesskey="u" rel="up">C-Style I/O Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

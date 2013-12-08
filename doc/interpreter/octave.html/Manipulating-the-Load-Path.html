@@ -1,36 +1,62 @@
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.2, http://www.gnu.org/software/texinfo/ -->
 <head>
-<title>Manipulating the Load Path - GNU Octave</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="GNU Octave">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="Function-Files.html#Function-Files" title="Function Files">
-<link rel="next" href="Subfunctions.html#Subfunctions" title="Subfunctions">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
-</head>
-<body>
-<div class="node">
-<a name="Manipulating-the-Load-Path"></a>
-<p>
-Next:&nbsp;<a rel="next" accesskey="n" href="Subfunctions.html#Subfunctions">Subfunctions</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="Function-Files.html#Function-Files">Function Files</a>
-<hr>
-</div>
+<title>GNU Octave: Manipulating the Load Path</title>
 
-<h4 class="subsection">11.8.1 Manipulating the Load Path</h4>
+<meta name="description" content="GNU Octave: Manipulating the Load Path">
+<meta name="keywords" content="GNU Octave: Manipulating the Load Path">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Function-Files.html#Function-Files" rel="up" title="Function Files">
+<link href="Subfunctions.html#Subfunctions" rel="next" title="Subfunctions">
+<link href="Function-Files.html#Function-Files" rel="prev" title="Function Files">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+<a name="Manipulating-the-Load-Path"></a>
+<div class="header">
+<p>
+Next: <a href="Subfunctions.html#Subfunctions" accesskey="n" rel="next">Subfunctions</a>, Up: <a href="Function-Files.html#Function-Files" accesskey="u" rel="up">Function Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Manipulating-the-Load-Path-1"></a>
+<h4 class="subsection">11.9.1 Manipulating the Load Path</h4>
 
 <p>When a function is called, Octave searches a list of directories for
 a file that contains the function declaration.  This list of directories
@@ -38,219 +64,189 @@ is known as the load path.  By default the load path contains
 a list of directories distributed with Octave plus the current
 working directory.  To see your current load path call the <code>path</code>
 function without any input or output arguments.
-
-   <p>It is possible to add or remove directories to or from the load path
+</p>
+<p>It is possible to add or remove directories to or from the load path
 using <code>addpath</code> and <code>rmpath</code>.  As an example, the following
-code adds &lsquo;<samp><span class="samp">~/Octave</span></samp>&rsquo; to the load path.
+code adds &lsquo;<samp>~/Octave</samp>&rsquo; to the load path.
+</p>
+<div class="example">
+<pre class="example">addpath (&quot;~/Octave&quot;)
+</pre></div>
 
-<pre class="example">     addpath("~/Octave")
-</pre>
-   <p class="noindent">After this the directory &lsquo;<samp><span class="samp">~/Octave</span></samp>&rsquo; will be searched for functions.
-
-<!-- addpath src/load-path.cc -->
-   <p><a name="doc_002daddpath"></a>
-
-<div class="defun">
-&mdash; Built-in Function:  <b>addpath</b> (<var>dir1, <small class="dots">...</small></var>)<var><a name="index-addpath-762"></a></var><br>
-&mdash; Built-in Function:  <b>addpath</b> (<var>dir1, <small class="dots">...</small>, option</var>)<var><a name="index-addpath-763"></a></var><br>
-<blockquote><p>Add <var>dir1</var>, <small class="dots">...</small> to the current function search path.  If
-<var>option</var> is "-begin" or 0 (the default), prepend the
-directory name to the current path.  If <var>option</var> is "-end"
-or 1, append the directory name to the current path. 
+<p>After this the directory &lsquo;<samp>~/Octave</samp>&rsquo; will be searched for functions.
+</p> 
+<a name="XREFaddpath"></a><dl>
+<dt><a name="index-addpath"></a>Built-in Function: <em></em> <strong>addpath</strong> <em>(<var>dir1</var>, &hellip;)</em></dt>
+<dt><a name="index-addpath-1"></a>Built-in Function: <em></em> <strong>addpath</strong> <em>(<var>dir1</var>, &hellip;, <var>option</var>)</em></dt>
+<dd><p>Add named directories to the function search path.  If
+<var>option</var> is <code>&quot;-begin&quot;</code> or 0 (the default), prepend the
+directory name to the current path.  If <var>option</var> is <code>&quot;-end&quot;</code>
+or 1, append the directory name to the current path.
 Directories added to the path must exist.
-
-        <p>In addition to accepting individual directory arguments, lists of
+</p>
+<p>In addition to accepting individual directory arguments, lists of
 directory names separated by <code>pathsep</code> are also accepted.  For example:
+</p>
+<div class="example">
+<pre class="example">addpath (&quot;dir1:/dir2:~/dir3&quot;)
+</pre></div>
 
-     <pre class="example">          addpath ("dir1:/dir2:~/dir3");
-</pre>
-        <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-     <!-- A simple blank line produces the correct behavior. -->
-     <!-- @sp 1 -->
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dpath.html#doc_002dpath">path</a>, <a href="doc_002drmpath.html#doc_002drmpath">rmpath</a>, <a href="doc_002dgenpath.html#doc_002dgenpath">genpath</a>, <a href="doc_002dpathdef.html#doc_002dpathdef">pathdef</a>, <a href="doc_002dsavepath.html#doc_002dsavepath">savepath</a>, <a href="doc_002dpathsep.html#doc_002dpathsep">pathsep</a>. 
-</p></blockquote></div>
+<p><strong>See also:</strong> <a href="#XREFpath">path</a>, <a href="#XREFrmpath">rmpath</a>, <a href="#XREFgenpath">genpath</a>, <a href="#XREFpathdef">pathdef</a>, <a href="#XREFsavepath">savepath</a>, <a href="#XREFpathsep">pathsep</a>.
+</p></dd></dl>
 
-<!-- genpath src/load-path.cc -->
-   <p><a name="doc_002dgenpath"></a>
 
-<div class="defun">
-&mdash; Built-in Function:  <b>genpath</b> (<var>dir</var>)<var><a name="index-genpath-764"></a></var><br>
-&mdash; Built-in Function:  <b>genpath</b> (<var>dir, skip, <small class="dots">...</small></var>)<var><a name="index-genpath-765"></a></var><br>
-<blockquote><p>Return a path constructed from <var>dir</var> and all its subdirectories. 
+<a name="XREFgenpath"></a><dl>
+<dt><a name="index-genpath"></a>Built-in Function: <em></em> <strong>genpath</strong> <em>(<var>dir</var>)</em></dt>
+<dt><a name="index-genpath-1"></a>Built-in Function: <em></em> <strong>genpath</strong> <em>(<var>dir</var>, <var>skip</var>, &hellip;)</em></dt>
+<dd><p>Return a path constructed from <var>dir</var> and all its subdirectories.
 If additional string parameters are given, the resulting path will
-exclude directories with those names. 
-</p></blockquote></div>
+exclude directories with those names.
+</p></dd></dl>
 
-<!-- rmpath src/load-path.cc -->
-   <p><a name="doc_002drmpath"></a>
 
-<div class="defun">
-&mdash; Built-in Function:  <b>rmpath</b> (<var>dir1, <small class="dots">...</small></var>)<var><a name="index-rmpath-766"></a></var><br>
-<blockquote><p>Remove <var>dir1</var>, <small class="dots">...</small> from the current function search path.
-
-        <p>In addition to accepting individual directory arguments, lists of
+<a name="XREFrmpath"></a><dl>
+<dt><a name="index-rmpath"></a>Built-in Function: <em></em> <strong>rmpath</strong> <em>(<var>dir1</var>, &hellip;)</em></dt>
+<dd><p>Remove <var>dir1</var>, &hellip; from the current function search path.
+</p>
+<p>In addition to accepting individual directory arguments, lists of
 directory names separated by <code>pathsep</code> are also accepted.  For example:
+</p>
+<div class="example">
+<pre class="example">rmpath (&quot;dir1:/dir2:~/dir3&quot;)
+</pre></div>
 
-     <pre class="example">          rmpath ("dir1:/dir2:~/dir3");
-</pre>
-        <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-     <!-- A simple blank line produces the correct behavior. -->
-     <!-- @sp 1 -->
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dpath.html#doc_002dpath">path</a>, <a href="doc_002daddpath.html#doc_002daddpath">addpath</a>, <a href="doc_002dgenpath.html#doc_002dgenpath">genpath</a>, <a href="doc_002dpathdef.html#doc_002dpathdef">pathdef</a>, <a href="doc_002dsavepath.html#doc_002dsavepath">savepath</a>, <a href="doc_002dpathsep.html#doc_002dpathsep">pathsep</a>. 
-</p></blockquote></div>
+<p><strong>See also:</strong> <a href="#XREFpath">path</a>, <a href="#XREFaddpath">addpath</a>, <a href="#XREFgenpath">genpath</a>, <a href="#XREFpathdef">pathdef</a>, <a href="#XREFsavepath">savepath</a>, <a href="#XREFpathsep">pathsep</a>.
+</p></dd></dl>
 
-<!-- savepath scripts/path/savepath.m -->
-   <p><a name="doc_002dsavepath"></a>
 
-<div class="defun">
-&mdash; Function File:  <b>savepath</b> (<var>file</var>)<var><a name="index-savepath-767"></a></var><br>
-<blockquote><p>Save the portion of the current function search path, that is
-not set during Octave's initialization process, to <var>file</var>. 
-If <var>file</var> is omitted, <samp><span class="file">~/.octaverc</span></samp> is used.  If successful,
-<code>savepath</code> returns 0. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
+<a name="XREFsavepath"></a><dl>
+<dt><a name="index-savepath"></a>Function File: <em></em> <strong>savepath</strong> <em>()</em></dt>
+<dt><a name="index-savepath-1"></a>Function File: <em></em> <strong>savepath</strong> <em>(<var>file</var>)</em></dt>
+<dt><a name="index-savepath-2"></a>Function File: <em><var>status</var> =</em> <strong>savepath</strong> <em>(&hellip;)</em></dt>
+<dd><p>Save the unique portion of the current function search path that is
+not set during Octave&rsquo;s initialization process to <var>file</var>.
+If <var>file</var> is omitted, <samp>~/.octaverc</samp> is used.  If successful,
+<code>savepath</code> returns 0.
+</p>
+<p><strong>See also:</strong> <a href="#XREFpath">path</a>, <a href="#XREFaddpath">addpath</a>, <a href="#XREFrmpath">rmpath</a>, <a href="#XREFgenpath">genpath</a>, <a href="#XREFpathdef">pathdef</a>.
+</p></dd></dl>
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dpath.html#doc_002dpath">path</a>, <a href="doc_002daddpath.html#doc_002daddpath">addpath</a>, <a href="doc_002drmpath.html#doc_002drmpath">rmpath</a>, <a href="doc_002dgenpath.html#doc_002dgenpath">genpath</a>, <a href="doc_002dpathdef.html#doc_002dpathdef">pathdef</a>, <a href="doc_002dpathsep.html#doc_002dpathsep">pathsep</a>. 
-</p></blockquote></div>
 
-<!-- path src/load-path.cc -->
-   <p><a name="doc_002dpath"></a>
-
-<div class="defun">
-&mdash; Built-in Function:  <b>path</b> (<var><small class="dots">...</small></var>)<var><a name="index-path-768"></a></var><br>
-<blockquote><p>Modify or display Octave's load path.
-
-        <p>If <var>nargin</var> and <var>nargout</var> are zero, display the elements of
-Octave's load path in an easy to read format.
-
-        <p>If <var>nargin</var> is zero and nargout is greater than zero, return the
+<a name="XREFpath"></a><dl>
+<dt><a name="index-path"></a>Built-in Function: <em></em> <strong>path</strong> <em>(&hellip;)</em></dt>
+<dd><p>Modify or display Octave&rsquo;s load path.
+</p>
+<p>If <var>nargin</var> and <var>nargout</var> are zero, display the elements of
+Octave&rsquo;s load path in an easy to read format.
+</p>
+<p>If <var>nargin</var> is zero and nargout is greater than zero, return the
 current load path.
-
-        <p>If <var>nargin</var> is greater than zero, concatenate the arguments,
+</p>
+<p>If <var>nargin</var> is greater than zero, concatenate the arguments,
 separating them with <code>pathsep</code>.  Set the internal search path
 to the result and return it.
+</p>
+<p>No checks are made for duplicate elements.
+</p>
+<p><strong>See also:</strong> <a href="#XREFaddpath">addpath</a>, <a href="#XREFrmpath">rmpath</a>, <a href="#XREFgenpath">genpath</a>, <a href="#XREFpathdef">pathdef</a>, <a href="#XREFsavepath">savepath</a>, <a href="#XREFpathsep">pathsep</a>.
+</p></dd></dl>
 
-        <p>No checks are made for duplicate elements. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002daddpath.html#doc_002daddpath">addpath</a>, <a href="doc_002drmpath.html#doc_002drmpath">rmpath</a>, <a href="doc_002dgenpath.html#doc_002dgenpath">genpath</a>, <a href="doc_002dpathdef.html#doc_002dpathdef">pathdef</a>, <a href="doc_002dsavepath.html#doc_002dsavepath">savepath</a>, <a href="doc_002dpathsep.html#doc_002dpathsep">pathsep</a>. 
-</p></blockquote></div>
+<a name="XREFpathdef"></a><dl>
+<dt><a name="index-pathdef"></a>Function File: <em><var>val</var> =</em> <strong>pathdef</strong> <em>()</em></dt>
+<dd><p>Return the default path for Octave.
+The path information is extracted from one of three sources.
+The possible sources, in order of preference, are:
+</p>
+<ol>
+<li> <samp>~/.octaverc</samp>
 
-<!-- pathdef scripts/path/pathdef.m -->
-   <p><a name="doc_002dpathdef"></a>
+</li><li> <samp>&lt;octave-home&gt;/&hellip;/&lt;version&gt;/m/startup/octaverc</samp>
 
-<div class="defun">
-&mdash; Function File: <var>val</var> = <b>pathdef</b> ()<var><a name="index-pathdef-769"></a></var><br>
-<blockquote><p>Return the default path for Octave. 
-The path information is extracted from one of three sources. 
-In order of preference, those are;
+</li><li> Octave&rsquo;s path prior to changes by any octaverc.
+</li></ol>
 
-          <ol type=1 start=1>
-<li><samp><span class="file">~/.octaverc</span></samp>
+<p><strong>See also:</strong> <a href="#XREFpath">path</a>, <a href="#XREFaddpath">addpath</a>, <a href="#XREFrmpath">rmpath</a>, <a href="#XREFgenpath">genpath</a>, <a href="#XREFsavepath">savepath</a>.
+</p></dd></dl>
 
-          <li><samp><span class="file">&lt;octave-home&gt;/.../&lt;version&gt;/m/startup/octaverc</span></samp>
 
-          <li>Octave's path prior to changes by any octaverc.
-             </ol>
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
+<a name="XREFpathsep"></a><dl>
+<dt><a name="index-pathsep"></a>Built-in Function: <em><var>val</var> =</em> <strong>pathsep</strong> <em>()</em></dt>
+<dt><a name="index-pathsep-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>pathsep</strong> <em>(<var>new_val</var>)</em></dt>
+<dd><p>Query or set the character used to separate directories in a path.
+</p>
+<p><strong>See also:</strong> <a href="Filesystem-Utilities.html#XREFfilesep">filesep</a>.
+</p></dd></dl>
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dpath.html#doc_002dpath">path</a>, <a href="doc_002daddpath.html#doc_002daddpath">addpath</a>, <a href="doc_002drmpath.html#doc_002drmpath">rmpath</a>, <a href="doc_002dgenpath.html#doc_002dgenpath">genpath</a>, <a href="doc_002dsavepath.html#doc_002dsavepath">savepath</a>, <a href="doc_002dpathsep.html#doc_002dpathsep">pathsep</a>. 
-</p></blockquote></div>
 
-<!-- pathsep src/dirfns.cc -->
-   <p><a name="doc_002dpathsep"></a>
+<a name="XREFrehash"></a><dl>
+<dt><a name="index-rehash"></a>Built-in Function: <em></em> <strong>rehash</strong> <em>()</em></dt>
+<dd><p>Reinitialize Octave&rsquo;s load path directory cache.
+</p></dd></dl>
 
-<div class="defun">
-&mdash; Built-in Function: <var>val</var> = <b>pathsep</b> ()<var><a name="index-pathsep-770"></a></var><br>
-&mdash; Built-in Function: <var>old_val</var> = <b>pathsep</b> (<var>new_val</var>)<var><a name="index-pathsep-771"></a></var><br>
-<blockquote><p>Query or set the character used to separate directories in a path. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dfilesep.html#doc_002dfilesep">filesep</a>. 
-</p></blockquote></div>
-
-<!-- rehash src/load-path.cc -->
-   <p><a name="doc_002drehash"></a>
-
-<div class="defun">
-&mdash; Built-in Function:  <b>rehash</b> ()<var><a name="index-rehash-772"></a></var><br>
-<blockquote><p>Reinitialize Octave's load path directory cache. 
-</p></blockquote></div>
-
-<!-- file_in_loadpath src/utils.cc -->
-   <p><a name="doc_002dfile_005fin_005floadpath"></a>
-
-<div class="defun">
-&mdash; Built-in Function:  <b>file_in_loadpath</b> (<var>file</var>)<var><a name="index-file_005fin_005floadpath-773"></a></var><br>
-&mdash; Built-in Function:  <b>file_in_loadpath</b> (<var>file, "all"</var>)<var><a name="index-file_005fin_005floadpath-774"></a></var><br>
-<blockquote>
-        <p>Return the absolute name of <var>file</var> if it can be found in
-the list of directories specified by <code>path</code>. 
+<a name="XREFfile_005fin_005floadpath"></a><dl>
+<dt><a name="index-file_005fin_005floadpath"></a>Built-in Function: <em></em> <strong>file_in_loadpath</strong> <em>(<var>file</var>)</em></dt>
+<dt><a name="index-file_005fin_005floadpath-1"></a>Built-in Function: <em></em> <strong>file_in_loadpath</strong> <em>(<var>file</var>, &quot;all&quot;)</em></dt>
+<dd>
+<p>Return the absolute name of <var>file</var> if it can be found in
+the list of directories specified by <code>path</code>.
 If no file is found, return an empty character string.
-
-        <p>If the first argument is a cell array of strings, search each
+</p>
+<p>If the first argument is a cell array of strings, search each
 directory of the loadpath for element of the cell array and return
 the first that matches.
-
-        <p>If the second optional argument <code>"all"</code> is supplied, return
+</p>
+<p>If the second optional argument <code>&quot;all&quot;</code> is supplied, return
 a cell array containing the list of all files that have the same
-name in the path.  If no files are found, return an empty cell array. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
+name in the path.  If no files are found, return an empty cell array.
+</p>
+<p><strong>See also:</strong> <a href="Filesystem-Utilities.html#XREFfile_005fin_005fpath">file_in_path</a>, <a href="#XREFfind_005fdir_005fin_005fpath">find_dir_in_path</a>, <a href="#XREFpath">path</a>.
+</p></dd></dl>
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dfile_005fin_005fpath.html#doc_002dfile_005fin_005fpath">file_in_path</a>, <a href="doc_002dpath.html#doc_002dpath">path</a>. 
-</p></blockquote></div>
 
-<!-- restoredefaultpath src/load-path.cc -->
-   <p><a name="doc_002drestoredefaultpath"></a>
+<a name="XREFrestoredefaultpath"></a><dl>
+<dt><a name="index-restoredefaultpath"></a>Built-in Function: <em></em> <strong>restoredefaultpath</strong> <em>(&hellip;)</em></dt>
+<dd><p>Restore Octave&rsquo;s path to its initial state at startup.
+</p>
 
-<div class="defun">
-&mdash; Built-in Function:  <b>restoredefaultpath</b> (<var><small class="dots">...</small></var>)<var><a name="index-restoredefaultpath-775"></a></var><br>
-<blockquote><p>Restore Octave's path to its initial state at startup.
+<p><strong>See also:</strong> <a href="#XREFpath">path</a>, <a href="#XREFaddpath">addpath</a>, <a href="#XREFrmpath">rmpath</a>, <a href="#XREFgenpath">genpath</a>, <a href="#XREFpathdef">pathdef</a>, <a href="#XREFsavepath">savepath</a>, <a href="#XREFpathsep">pathsep</a>.
+</p></dd></dl>
 
-     <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-     <!-- A simple blank line produces the correct behavior. -->
-     <!-- @sp 1 -->
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dpath.html#doc_002dpath">path</a>, <a href="doc_002daddpath.html#doc_002daddpath">addpath</a>, <a href="doc_002drmpath.html#doc_002drmpath">rmpath</a>, <a href="doc_002dgenpath.html#doc_002dgenpath">genpath</a>, <a href="doc_002dpathdef.html#doc_002dpathdef">pathdef</a>, <a href="doc_002dsavepath.html#doc_002dsavepath">savepath</a>, <a href="doc_002dpathsep.html#doc_002dpathsep">pathsep</a>. 
-</p></blockquote></div>
 
-<!-- command_line_path src/load-path.cc -->
-   <p><a name="doc_002dcommand_005fline_005fpath"></a>
+<a name="XREFcommand_005fline_005fpath"></a><dl>
+<dt><a name="index-command_005fline_005fpath"></a>Built-in Function: <em></em> <strong>command_line_path</strong> <em>(&hellip;)</em></dt>
+<dd><p>Return the command line path variable.
+</p>
 
-<div class="defun">
-&mdash; Built-in Function:  <b>command_line_path</b> (<var><small class="dots">...</small></var>)<var><a name="index-command_005fline_005fpath-776"></a></var><br>
-<blockquote><p>Return the command line path variable.
+<p><strong>See also:</strong> <a href="#XREFpath">path</a>, <a href="#XREFaddpath">addpath</a>, <a href="#XREFrmpath">rmpath</a>, <a href="#XREFgenpath">genpath</a>, <a href="#XREFpathdef">pathdef</a>, <a href="#XREFsavepath">savepath</a>, <a href="#XREFpathsep">pathsep</a>.
+</p></dd></dl>
 
-     <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-     <!-- A simple blank line produces the correct behavior. -->
-     <!-- @sp 1 -->
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dpath.html#doc_002dpath">path</a>, <a href="doc_002daddpath.html#doc_002daddpath">addpath</a>, <a href="doc_002drmpath.html#doc_002drmpath">rmpath</a>, <a href="doc_002dgenpath.html#doc_002dgenpath">genpath</a>, <a href="doc_002dpathdef.html#doc_002dpathdef">pathdef</a>, <a href="doc_002dsavepath.html#doc_002dsavepath">savepath</a>, <a href="doc_002dpathsep.html#doc_002dpathsep">pathsep</a>. 
-</p></blockquote></div>
 
-<!-- find_dir_in_path src/utils.cc -->
-   <p><a name="doc_002dfind_005fdir_005fin_005fpath"></a>
-
-<div class="defun">
-&mdash; Built-in Function:  <b>find_dir_in_path</b> (<var>dir</var>)<var><a name="index-find_005fdir_005fin_005fpath-777"></a></var><br>
-&mdash; Built-in Function:  <b>find_dir_in_path</b> (<var>dir, "all"</var>)<var><a name="index-find_005fdir_005fin_005fpath-778"></a></var><br>
-<blockquote><p>Return the full name of the path element matching <var>dir</var>.  The
+<a name="XREFfind_005fdir_005fin_005fpath"></a><dl>
+<dt><a name="index-find_005fdir_005fin_005fpath"></a>Built-in Function: <em></em> <strong>find_dir_in_path</strong> <em>(<var>dir</var>)</em></dt>
+<dt><a name="index-find_005fdir_005fin_005fpath-1"></a>Built-in Function: <em></em> <strong>find_dir_in_path</strong> <em>(<var>dir</var>, &quot;all&quot;)</em></dt>
+<dd><p>Return the full name of the path element matching <var>dir</var>.  The
 match is performed at the end of each path element.  For example, if
-<var>dir</var> is <code>"foo/bar"</code>, it matches the path element
-<code>"/some/dir/foo/bar"</code>, but not <code>"/some/dir/foo/bar/baz"</code>
-or <code>"/some/dir/allfoo/bar"</code>.
+<var>dir</var> is <code>&quot;foo/bar&quot;</code>, it matches the path element
+<code>&quot;/some/dir/foo/bar&quot;</code>, but not
+<code>&quot;/some/dir/foo/bar/baz&quot;</code>
+<code>&quot;/some/dir/allfoo/bar&quot;</code>.
+</p>
+<p>The second argument is optional.  If it is supplied, return a cell array
+containing all name matches rather than just the first.
+</p>
+<p><strong>See also:</strong> <a href="Filesystem-Utilities.html#XREFfile_005fin_005fpath">file_in_path</a>, <a href="#XREFfile_005fin_005floadpath">file_in_loadpath</a>, <a href="#XREFpath">path</a>.
+</p></dd></dl>
 
-        <p>The second argument is optional.  If it is supplied, return a cell array
-containing all name matches rather than just the first. 
-</p></blockquote></div>
 
-   </body></html>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Subfunctions.html#Subfunctions" accesskey="n" rel="next">Subfunctions</a>, Up: <a href="Function-Files.html#Function-Files" accesskey="u" rel="up">Function Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
 
+
+
+</body>
+</html>

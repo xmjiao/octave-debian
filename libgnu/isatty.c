@@ -1,7 +1,5 @@
-/* -*- buffer-read-only: t -*- vi: set ro: */
-/* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* isatty() replacement.
-   Copyright (C) 2012 Free Software Foundation, Inc.
+   Copyright (C) 2012-2013 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -36,10 +34,10 @@
 
 /* Optimized test whether a HANDLE refers to a console.
    See <http://lists.gnu.org/archive/html/bug-gnulib/2009-08/msg00065.html>.  */
-#define IsConsoleHandle(h) (((long) (h) & 3) == 3)
+#define IsConsoleHandle(h) (((intptr_t) (h) & 3) == 3)
 
 #if HAVE_MSVC_INVALID_PARAMETER_HANDLER
-static inline int
+static int
 _isatty_nothrow (int fd)
 {
   int result;
@@ -50,8 +48,7 @@ _isatty_nothrow (int fd)
     }
   CATCH_MSVC_INVAL
     {
-      result = -1;
-      errno = EBADF;
+      result = 0;
     }
   DONE_MSVC_INVAL;
 
@@ -61,15 +58,24 @@ _isatty_nothrow (int fd)
 # define _isatty_nothrow _isatty
 #endif
 
+/* Determine whether FD refers to a console device.  Return 1 if yes.
+   Return 0 and set errno if no. (ptsname_r relies on the errno value.)  */
 int
 isatty (int fd)
 {
-  /* _isatty (fd) tests whether GetFileType of the handle is FILE_TYPE_CHAR.  */
+  HANDLE h = (HANDLE) _get_osfhandle (fd);
+  if (h == INVALID_HANDLE_VALUE)
+    {
+      errno = EBADF;
+      return 0;
+    }
+  /* _isatty (fd) tests whether GetFileType of the handle is FILE_TYPE_CHAR.
+     But it does not set errno when it returns 0.  */
   if (_isatty_nothrow (fd))
     {
-      HANDLE h = (HANDLE) _get_osfhandle (fd);
-      return IsConsoleHandle (h);
+      if (IsConsoleHandle (h))
+        return 1;
     }
-  else
-    return 0;
+  errno = ENOTTY;
+  return 0;
 }

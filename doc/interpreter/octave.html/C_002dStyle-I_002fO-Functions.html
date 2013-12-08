@@ -1,116 +1,153 @@
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.2, http://www.gnu.org/software/texinfo/ -->
 <head>
-<title>C-Style I/O Functions - GNU Octave</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="GNU Octave">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="Input-and-Output.html#Input-and-Output" title="Input and Output">
-<link rel="prev" href="Basic-Input-and-Output.html#Basic-Input-and-Output" title="Basic Input and Output">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
-</head>
-<body>
-<div class="node">
-<a name="C-Style-I%2fO-Functions"></a>
-<a name="C_002dStyle-I_002fO-Functions"></a>
-<p>
-Previous:&nbsp;<a rel="previous" accesskey="p" href="Basic-Input-and-Output.html#Basic-Input-and-Output">Basic Input and Output</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="Input-and-Output.html#Input-and-Output">Input and Output</a>
-<hr>
-</div>
+<title>GNU Octave: C-Style I/O Functions</title>
 
+<meta name="description" content="GNU Octave: C-Style I/O Functions">
+<meta name="keywords" content="GNU Octave: C-Style I/O Functions">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Input-and-Output.html#Input-and-Output" rel="up" title="Input and Output">
+<link href="Opening-and-Closing-Files.html#Opening-and-Closing-Files" rel="next" title="Opening and Closing Files">
+<link href="Saving-Data-on-Unexpected-Exits.html#Saving-Data-on-Unexpected-Exits" rel="prev" title="Saving Data on Unexpected Exits">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+<a name="C_002dStyle-I_002fO-Functions"></a>
+<div class="header">
+<p>
+Previous: <a href="Basic-Input-and-Output.html#Basic-Input-and-Output" accesskey="p" rel="prev">Basic Input and Output</a>, Up: <a href="Input-and-Output.html#Input-and-Output" accesskey="u" rel="up">Input and Output</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="C_002dStyle-I_002fO-Functions-1"></a>
 <h3 class="section">14.2 C-Style I/O Functions</h3>
 
-<p>Octave's C-style input and output functions provide most of the
-functionality of the C programming language's standard I/O library.  The
+<p>Octave&rsquo;s C-style input and output functions provide most of the
+functionality of the C programming language&rsquo;s standard I/O library.  The
 argument lists for some of the input functions are slightly different,
 however, because Octave has no way of passing arguments by reference.
-
-   <p>In the following, <var>file</var> refers to a file name and <code>fid</code> refers
+</p>
+<p>In the following, <var>file</var> refers to a file name and <code>fid</code> refers
 to an integer file number, as returned by <code>fopen</code>.
-
-   <p>There are three files that are always available.  Although these files
+</p>
+<p>There are three files that are always available.  Although these files
 can be accessed using their corresponding numeric file ids, you should
 always use the symbolic names given in the table below, since it will
 make your programs easier to understand.
-
-<!-- stdin src/file-io.cc -->
-   <p><a name="doc_002dstdin"></a>
-
-<div class="defun">
-&mdash; Built-in Function:  <b>stdin</b> ()<var><a name="index-stdin-973"></a></var><br>
-<blockquote><p>Return the numeric value corresponding to the standard input stream. 
+</p>
+<a name="XREFstdin"></a><dl>
+<dt><a name="index-stdin"></a>Built-in Function: <em></em> <strong>stdin</strong> <em>()</em></dt>
+<dd><p>Return the numeric value corresponding to the standard input stream.
 When Octave is used interactively, this is filtered through the command
-line editing functions. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
+line editing functions.
+</p>
+<p><strong>See also:</strong> <a href="#XREFstdout">stdout</a>, <a href="#XREFstderr">stderr</a>.
+</p></dd></dl>
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dstdout.html#doc_002dstdout">stdout</a>, <a href="doc_002dstderr.html#doc_002dstderr">stderr</a>. 
-</p></blockquote></div>
 
-<!-- stdout src/file-io.cc -->
-   <p><a name="doc_002dstdout"></a>
+<a name="XREFstdout"></a><dl>
+<dt><a name="index-stdout"></a>Built-in Function: <em></em> <strong>stdout</strong> <em>()</em></dt>
+<dd><p>Return the numeric value corresponding to the standard output stream.
+Data written to the standard output is normally filtered through the pager.
+</p>
+<p><strong>See also:</strong> <a href="#XREFstdin">stdin</a>, <a href="#XREFstderr">stderr</a>.
+</p></dd></dl>
 
-<div class="defun">
-&mdash; Built-in Function:  <b>stdout</b> ()<var><a name="index-stdout-974"></a></var><br>
-<blockquote><p>Return the numeric value corresponding to the standard output stream. 
-Data written to the standard output is normally filtered through the pager. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dstdin.html#doc_002dstdin">stdin</a>, <a href="doc_002dstderr.html#doc_002dstderr">stderr</a>. 
-</p></blockquote></div>
-
-<!-- stderr src/file-io.cc -->
-   <p><a name="doc_002dstderr"></a>
-
-<div class="defun">
-&mdash; Built-in Function:  <b>stderr</b> ()<var><a name="index-stderr-975"></a></var><br>
-<blockquote><p>Return the numeric value corresponding to the standard error stream. 
+<a name="XREFstderr"></a><dl>
+<dt><a name="index-stderr"></a>Built-in Function: <em></em> <strong>stderr</strong> <em>()</em></dt>
+<dd><p>Return the numeric value corresponding to the standard error stream.
 Even if paging is turned on, the standard error is not sent to the
-pager.  It is useful for error messages and prompts. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
+pager.  It is useful for error messages and prompts.
+</p>
+<p><strong>See also:</strong> <a href="#XREFstdin">stdin</a>, <a href="#XREFstdout">stdout</a>.
+</p></dd></dl>
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dstdin.html#doc_002dstdin">stdin</a>, <a href="doc_002dstdout.html#doc_002dstdout">stdout</a>. 
-</p></blockquote></div>
 
-<ul class="menu">
-<li><a accesskey="1" href="Opening-and-Closing-Files.html#Opening-and-Closing-Files">Opening and Closing Files</a>
-<li><a accesskey="2" href="Simple-Output.html#Simple-Output">Simple Output</a>
-<li><a accesskey="3" href="Line_002dOriented-Input.html#Line_002dOriented-Input">Line-Oriented Input</a>
-<li><a accesskey="4" href="Formatted-Output.html#Formatted-Output">Formatted Output</a>
-<li><a accesskey="5" href="Output-Conversion-for-Matrices.html#Output-Conversion-for-Matrices">Output Conversion for Matrices</a>
-<li><a accesskey="6" href="Output-Conversion-Syntax.html#Output-Conversion-Syntax">Output Conversion Syntax</a>
-<li><a accesskey="7" href="Table-of-Output-Conversions.html#Table-of-Output-Conversions">Table of Output Conversions</a>
-<li><a accesskey="8" href="Integer-Conversions.html#Integer-Conversions">Integer Conversions</a>
-<li><a accesskey="9" href="Floating_002dPoint-Conversions.html#Floating_002dPoint-Conversions">Floating-Point Conversions</a>
-<li><a href="Other-Output-Conversions.html#Other-Output-Conversions">Other Output Conversions</a>
-<li><a href="Formatted-Input.html#Formatted-Input">Formatted Input</a>
-<li><a href="Input-Conversion-Syntax.html#Input-Conversion-Syntax">Input Conversion Syntax</a>
-<li><a href="Table-of-Input-Conversions.html#Table-of-Input-Conversions">Table of Input Conversions</a>
-<li><a href="Numeric-Input-Conversions.html#Numeric-Input-Conversions">Numeric Input Conversions</a>
-<li><a href="String-Input-Conversions.html#String-Input-Conversions">String Input Conversions</a>
-<li><a href="Binary-I_002fO.html#Binary-I_002fO">Binary I/O</a>
-<li><a href="Temporary-Files.html#Temporary-Files">Temporary Files</a>
-<li><a href="EOF-and-Errors.html#EOF-and-Errors">EOF and Errors</a>
-<li><a href="File-Positioning.html#File-Positioning">File Positioning</a>
-</ul>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="Opening-and-Closing-Files.html#Opening-and-Closing-Files" accesskey="1">Opening and Closing Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Simple-Output.html#Simple-Output" accesskey="2">Simple Output</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Line_002dOriented-Input.html#Line_002dOriented-Input" accesskey="3">Line-Oriented Input</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Formatted-Output.html#Formatted-Output" accesskey="4">Formatted Output</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Output-Conversion-for-Matrices.html#Output-Conversion-for-Matrices" accesskey="5">Output Conversion for Matrices</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Output-Conversion-Syntax.html#Output-Conversion-Syntax" accesskey="6">Output Conversion Syntax</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Table-of-Output-Conversions.html#Table-of-Output-Conversions" accesskey="7">Table of Output Conversions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Integer-Conversions.html#Integer-Conversions" accesskey="8">Integer Conversions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Floating_002dPoint-Conversions.html#Floating_002dPoint-Conversions" accesskey="9">Floating-Point Conversions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Other-Output-Conversions.html#Other-Output-Conversions">Other Output Conversions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Formatted-Input.html#Formatted-Input">Formatted Input</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Input-Conversion-Syntax.html#Input-Conversion-Syntax">Input Conversion Syntax</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Table-of-Input-Conversions.html#Table-of-Input-Conversions">Table of Input Conversions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Numeric-Input-Conversions.html#Numeric-Input-Conversions">Numeric Input Conversions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="String-Input-Conversions.html#String-Input-Conversions">String Input Conversions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Binary-I_002fO.html#Binary-I_002fO">Binary I/O</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Temporary-Files.html#Temporary-Files">Temporary Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="EOF-and-Errors.html#EOF-and-Errors">EOF and Errors</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="File-Positioning.html#File-Positioning">File Positioning</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
 
-   </body></html>
+<hr>
+<div class="header">
+<p>
+Previous: <a href="Basic-Input-and-Output.html#Basic-Input-and-Output" accesskey="p" rel="prev">Basic Input and Output</a>, Up: <a href="Input-and-Output.html#Input-and-Output" accesskey="u" rel="up">Input and Output</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
 
+
+
+</body>
+</html>

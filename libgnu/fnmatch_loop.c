@@ -1,6 +1,4 @@
-/* -*- buffer-read-only: t -*- vi: set ro: */
-/* DO NOT EDIT! GENERATED AUTOMATICALLY! */
-/* Copyright (C) 1991-1993, 1996-2006, 2009-2012 Free Software Foundation, Inc.
+/* Copyright (C) 1991-1993, 1996-2006, 2009-2013 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    This program is free software; you can redistribute it and/or modify
@@ -14,8 +12,7 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software Foundation,
-   Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
+   along with this program; if not, see <http://www.gnu.org/licenses/>.  */
 
 /* Match STRING against the file name pattern PATTERN, returning zero if
    it matches, nonzero if not.  */
@@ -230,6 +227,8 @@ FCT (const CHAR *pattern, const CHAR *string, const CHAR *string_end,
             c = *p++;
             for (;;)
               {
+		bool is_range = false;
+
                 if (!(flags & FNM_NOESCAPE) && c == L_('\\'))
                   {
                     if (*p == L_('\0'))
@@ -384,7 +383,7 @@ FCT (const CHAR *pattern, const CHAR *string, const CHAR *string_end,
                           {
                             /* We found a table entry.  Now see whether the
                                character we are currently at has the same
-                               equivalance class value.  */
+                               equivalence class value.  */
                             int len = weights[idx & 0xffffff];
                             int32_t idx2;
                             const UCHAR *np = (const UCHAR *) n;
@@ -423,8 +422,6 @@ FCT (const CHAR *pattern, const CHAR *string, const CHAR *string_end,
                   }
                 else
                   {
-                    bool is_range = false;
-
 #ifdef _LIBC
                     bool is_seqval = false;
 

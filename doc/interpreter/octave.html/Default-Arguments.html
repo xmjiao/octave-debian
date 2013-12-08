@@ -1,75 +1,112 @@
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.2, http://www.gnu.org/software/texinfo/ -->
 <head>
-<title>Default Arguments - GNU Octave</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="GNU Octave">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="Functions-and-Scripts.html#Functions-and-Scripts" title="Functions and Scripts">
-<link rel="prev" href="Returning-from-a-Function.html#Returning-from-a-Function" title="Returning from a Function">
-<link rel="next" href="Function-Files.html#Function-Files" title="Function Files">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
+<title>GNU Octave: Default Arguments</title>
+
+<meta name="description" content="GNU Octave: Default Arguments">
+<meta name="keywords" content="GNU Octave: Default Arguments">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Functions-and-Scripts.html#Functions-and-Scripts" rel="up" title="Functions and Scripts">
+<link href="Function-Files.html#Function-Files" rel="next" title="Function Files">
+<link href="Returning-from-a-Function.html#Returning-from-a-Function" rel="prev" title="Returning from a Function">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
 </head>
-<body>
-<div class="node">
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
 <a name="Default-Arguments"></a>
+<div class="header">
 <p>
-Next:&nbsp;<a rel="next" accesskey="n" href="Function-Files.html#Function-Files">Function Files</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="Returning-from-a-Function.html#Returning-from-a-Function">Returning from a Function</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="Functions-and-Scripts.html#Functions-and-Scripts">Functions and Scripts</a>
-<hr>
+Next: <a href="Function-Files.html#Function-Files" accesskey="n" rel="next">Function Files</a>, Previous: <a href="Returning-from-a-Function.html#Returning-from-a-Function" accesskey="p" rel="prev">Returning from a Function</a>, Up: <a href="Functions-and-Scripts.html#Functions-and-Scripts" accesskey="u" rel="up">Functions and Scripts</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
 </div>
+<hr>
+<a name="Default-Arguments-1"></a>
+<h3 class="section">11.8 Default Arguments</h3>
+<a name="index-default-arguments"></a>
 
-<h3 class="section">11.7 Default Arguments</h3>
-
-<p><a name="index-default-arguments-752"></a>
-Since Octave supports variable number of input arguments, it is very useful
+<p>Since Octave supports variable number of input arguments, it is very useful
 to assign default values to some input arguments.  When an input argument
 is declared in the argument list it is possible to assign a default
 value to the argument like this
+</p>
+<div class="example">
+<pre class="example">function <var>name</var> (<var>arg1</var> = <var>val1</var>, &hellip;)
+  <var>body</var>
+endfunction
+</pre></div>
 
-<pre class="example">     function <var>name</var> (<var>arg1</var> = <var>val1</var>, ...)
-       <var>body</var>
-     endfunction
-</pre>
-   <p class="noindent">If no value is assigned to <var>arg1</var> by the user, it will have the
+<p>If no value is assigned to <var>arg1</var> by the user, it will have the
 value <var>val1</var>.
-
-   <p>As an example, the following function implements a variant of the classic
+</p>
+<p>As an example, the following function implements a variant of the classic
 &ldquo;Hello, World&rdquo; program.
+</p>
+<div class="example">
+<pre class="example">function hello (who = &quot;World&quot;)
+  printf (&quot;Hello, %s!\n&quot;, who);
+endfunction
+</pre></div>
 
-<pre class="example">     function hello (who = "World")
-       printf ("Hello, %s!\n", who);
-     endfunction
-</pre>
-   <p class="noindent">When called without an input argument the function prints the following
+<p>When called without an input argument the function prints the following
+</p>
+<div class="example">
+<pre class="example">hello ();
+     -| Hello, World!
+</pre></div>
 
-<pre class="example">     hello ();
-          -| Hello, World!
-</pre>
-   <p class="noindent">and when it's called with an input argument it prints the following
+<p>and when it&rsquo;s called with an input argument it prints the following
+</p>
+<div class="example">
+<pre class="example">hello (&quot;Beautiful World of Free Software&quot;);
+     -| Hello, Beautiful World of Free Software!
+</pre></div>
 
-<pre class="example">     hello ("Beautiful World of Free Software");
-          -| Hello, Beautiful World of Free Software!
-</pre>
-   <p>Sometimes it is useful to explicitly tell Octave to use the default value
-of an input argument.  This can be done writing a &lsquo;<samp><span class="samp">:</span></samp>&rsquo; as the value
+<p>Sometimes it is useful to explicitly tell Octave to use the default value
+of an input argument.  This can be done writing a &lsquo;<samp>:</samp>&rsquo; as the value
 of the input argument when calling the function.
+</p>
+<div class="example">
+<pre class="example">hello (:);
+     -| Hello, World!
+</pre></div>
 
-<pre class="example">     hello (:);
-          -| Hello, World!
-</pre>
-   </body></html>
 
+
+
+</body>
+</html>

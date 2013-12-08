@@ -1,3 +1,1050 @@
+2013-12-04  John W. Eaton  <jwe@octave.org>
+
+	3.8.0 release candidate 1
+
+	* configure.ac (OCTAVE_VERSION): Bump to 3.8.0-rc1.
+	(OCTAVE_API_VERSION_NUMBER): Set to 49.
+	(OCTAVE_RELEASE_DATE): Set to 2013-12-04.
+
+	Files: configure.ac
+
+	* install.txi: Update 64-bit build info for suitesparse, glpk, and qhull.
+
+	Files: doc/interpreter/install.txi
+
+2013-12-03  John W. Eaton  <jwe@octave.org>
+
+	avoid overflow when passing problem dimensions to qhull with --enable-64
+
+	* __delaunayn__.cc, __voronoi__.cc, convhulln.cc
+	(octave_qhull_dims_ok): New function.  Use it to avoid overflowing
+	the range of integer values used in Qhull when Octave uses 64-bit
+	integer indexing.
+
+	Files: libinterp/dldfcn/__delaunayn__.cc libinterp/dldfcn/__voronoi__.cc
+	libinterp/dldfcn/convhulln.cc
+
+2013-12-04  Rik  <rik@octave.org>
+
+	doc: Periodic spellcheck of documentation
+
+	* aspell-octave.en.pws: Remove WebKit from private dictionary.
+
+	* external.txi: Fix typos and use two spaces for sentence breaks.
+
+	* install.txi: Use @nospell macro around gl2ps.
+
+	* rgb2ind.m: Correct British spelling of colour to American spelling.
+
+	Files: doc/interpreter/doccheck/aspell-octave.en.pws
+	doc/interpreter/external.txi doc/interpreter/install.txi
+	scripts/image/rgb2ind.m
+
+2013-12-03  Rik  <rik@octave.org>
+
+	doc: Small fixes to the octave manual (bug #40557).
+
+	* contrib.txi: Correct missing word "few" in sentence.
+	* install.txi: Add gl2ps to list of external packages.
+	Remove WebKit from list of required Qt modules.
+
+	Files: doc/interpreter/contrib.txi doc/interpreter/install.txi
+
+2013-12-03  Torsten  <ttl@justmail.de>
+
+	language file update: info on experimental gui and qt-internal strings (nl+be)
+
+	Files: libgui/languages/be_BY.ts libgui/languages/en_US.ts
+	libgui/languages/es_ES.ts libgui/languages/fr_FR.ts
+	libgui/languages/nl_NL.ts libgui/languages/pt_BR.ts
+	libgui/languages/pt_PT.ts libgui/languages/ru_RU.ts
+	libgui/languages/uk_UA.ts
+
+2013-12-03  Rik  <rik@octave.org>
+
+	doc: Add seealso links to find_dir_in_path function.
+
+	* utils.cc (Ffile_in_loadpath, Ffile_in_path, Ffind_dir_in_path): Add seealso
+	links between these three functions.
+
+	* variables.cc (Fexist): Add seealso link to find_dir_in_path.
+
+	Files: libinterp/corefcn/utils.cc libinterp/corefcn/variables.cc
+
+2013-12-03  John W. Eaton  <jwe@octave.org>
+
+	make arpack check work with --enable-64
+
+	* acinclude.m4 (OCTAVE_CHECK_LIB_ARPACK_OK): Use octave_idx_type and
+	F77 macros.
+
+	Files: m4/acinclude.m4
+
+2013-12-03  Carnë Draug  <carandraug@octave.org>
+
+	configure.ac: add warning about disabling java to the final summary.
+
+	Files: configure.ac
+
+	configure.ac: add warning on disabling OpenGL printing to the final summary.
+
+	Files: configure.ac
+
+2013-12-03  Valentin Ortega  <arcanos3030@gmail.com>
+
+	es_ES.ts: Update of the translation into spanish language
+
+	Files: libgui/languages/es_ES.ts
+
+2013-12-03  Rik  <rik@octave.org>
+
+	Correct typo in error message when no DISPLAY var set.
+
+	* main.in.cc: Correct typo in error message when no DISPLAY var set.
+
+	Files: src/main.in.cc
+
+2013-12-02  John W. Eaton  <jwe@octave.org>
+
+	update library version numbers for upcoming release
+
+	* liboctave/Makefile.am (liboctave_current): Bump to 2.
+	(liboctave_revision, liboctave_age): Set to 0.
+	* liboctinterp/Makefile.am (liboctinterp_current): Bump to 2.
+	(liboctinterp_revision, liboctinterp_age): Set to 0.
+	* liboctgui/Makefile.am (liboctgui_current, liboctgui_revision,
+	liboctgui_age): Set to 0 for first official release with GUI library.
+
+	Files: libinterp/Makefile.am liboctave/Makefile.am
+
+	don't use period after end of @seealso{...}
+
+	* file-io.cc (FSEEK_CUR, FSEEK_END): Don't use period after @seealso
+	in doc string.
+
+	Files: libinterp/corefcn/file-io.cc
+
+	use "octave" instead of "\\s" in default prompt
+
+	* input.cc (set_default_prompts): Use "octave" instead of "\\s".
+	(FPS1): Fix doc string to match.
+
+	Files: libinterp/corefcn/input.cc
+
+	fix build for systems without QFont::Monospace
+
+	* acinclude.m4 (OCTAVE_CHECK_QFONT_MONOSPACE): New macro.
+	* configure.ac: Use it.
+	* resource-manager.cc (resource_manager::do_reload_settings):
+	Provide fallback for default font family if QFont::Monospace is not
+	available.
+
+	Files: configure.ac libgui/src/resource-manager.cc m4/acinclude.m4
+
+2013-11-30  Rik  <rik@octave.org>
+
+	Correct spelling in cset 482cc05b4f99.
+
+	* NEWS: Correct spelling of belive.
+
+	* main-window.c: Correct spelling of belive.c
+
+	Files: NEWS libgui/src/main-window.cc
+
+2013-11-29  John W. Eaton  <jwe@octave.org>
+
+	update gui info text and corresponding NEWS entry
+
+	* main-window.cc (main_window::show_gui_info): Updat text.
+	* NEWS: Use variation of show_gui_info text for entry about the GUI.
+
+	Files: NEWS libgui/src/main-window.cc
+
+	make hiding of gui warning bar persistent
+
+	* main-window.h, main-window.cc
+	(main_window::construct_gui_info_button): New function.
+	(main_window::hide_warning_bar): Use it to make gui info button.
+	(main_window::construct_warning_bar): Likewise.  Check preferences and
+	display gui info button if warning bar is hidden.
+
+	Files: libgui/src/main-window.cc libgui/src/main-window.h
+
+2013-11-28  Rik  <rik@octave.org>
+
+	configure.ac: Remove unused JAVA_HOME_NATIVE variable.
+
+	* configure.ac: Remove unused JAVA_HOME_NATIVE variable.
+
+	Files: configure.ac
+
+2013-11-28  John W. Eaton  <jwe@octave.org>
+
+	allow GUI warning bar to be hidden
+
+	* main-window.h, main-window.cc (main_window::construct_warning_bar):
+	Add buttons to hide warning bar and show more info about the GUI.
+	(main_window::hide_warning_bar, main_window::show_gui_info):
+	New slots.
+
+	Files: libgui/src/main-window.cc libgui/src/main-window.h
+
+2013-11-27  Rik  <rik@octave.org>
+
+	test: Run test suite tests in compilation order (liboctave, libinterp, scripts).
+
+	* __run_test_suite__.m: Run liboctave tests ahead of libinterp tests.
+
+	* test/fntests.m: Run liboctave tests ahead of libinterp tests.
+
+	Files: scripts/testfun/__run_test_suite__.m test/fntests.m
+
+2013-11-27  Torsten  <ttl@justmail.de>
+
+	install translators before welcome wizard but after loading settings
+
+	* octave-gui.cc (octave_start_gui): if first run: install translators, show
+	  welcome wizard, and load settings; otherwise: load settings and install
+	  translators
+
+	Files: libgui/src/octave-gui.cc
+
+2013-11-27  John W. Eaton  <jwe@octave.org>
+
+	add fallback for theme warning icon
+
+	* icons/warning.png: New file.
+	* libgui/src/module.mk (octave_gui_ICONS): Add it to the list.
+	* libgui/src/resource.qrc: Include warning.png.
+	* main-window.cc (main_window::construct_warning_bar):
+	Use warning.png as fallback for theme "dialog-warning" icon.
+
+	Files: libgui/src/icons/warning.png libgui/src/main-window.cc
+	libgui/src/module.mk libgui/src/resource.qrc
+
+2013-11-26  Rik  <rik@octave.org>
+
+	configure.ac: Check for Xft library before building native graphics.
+
+	* configure.ac: Check for Xft library before building native graphics.
+
+	Files: configure.ac
+
+2013-11-26  John W. Eaton  <jwe@octave.org>
+
+	provide warning about experimental GUI
+
+	* main-window.h, main-window.cc (main_window::construct_warning_bar):
+	New function.
+	(main_window::construct): Call it.
+
+	Files: libgui/src/main-window.cc libgui/src/main-window.h
+
+2013-11-26  Rik  <rik@octave.org>
+
+	maint: Replace tabs with spaces in octave-config input files.
+
+	* octave-config.in.cc, octave-config.in.sh: Replace tabs with spaces in
+	octave-config input files.
+
+	Files: src/octave-config.in.cc src/octave-config.in.sh
+
+	Rewrite failing popen2 test for Windows (bug #40606).
+
+	* syscalls.cc: Rewrite failing popen2 test for Windows (bug #40606).
+
+	Files: libinterp/corefcn/syscalls.cc
+
+2013-11-26  Andreas Weber  <andy.weber.aw@gmail.com>
+
+	de_DE.ts: update of finished german translation
+
+	Files: libgui/languages/de_DE.ts
+
+2013-11-26  Torsten  <ttl@justmail.de>
+
+	load translators before welcome wizard and take system language as default
+
+	* octave-gui.cc (octave_start_gui): install the translators before a possible
+	  welcome wizard (and as a side effect: before settings are available)
+
+	* ressource-manager.cc (config_translators): take actual system language as
+	  default and only try to load the language from the settings if available
+
+	Files: libgui/src/octave-gui.cc libgui/src/resource-manager.cc
+
+2013-11-26  John W. Eaton  <jwe@octave.org>
+
+	additional improvements for int64 ops implemented with long double (bug #40607)
+
+	* oct-inttypes.h, oct-inttypes.cc: Ensure that conversions between
+	64-bit integer and long double are performed when long double rounding
+	rules are in effect.
+
+	Files: liboctave/util/oct-inttypes.cc liboctave/util/oct-inttypes.h
+
+2013-11-25  Rik  <rik@octave.org>
+
+	recursive_nest2.m: Replace tab with space.
+
+	Files: test/nest/recursive_nest2.m
+
+	maint: Replace unnecessary tabs with spaces.
+
+	* doc/interpreter/images.awk, libinterp/dldfcn/config-module.awk,
+	libinterp/octave-value/module.mk, m4/module.mk,
+	scripts/java/org/octave/Matrix.java, scripts/miscellaneous/module.mk,
+	scripts/sparse/module.mk, scripts/startup/main-rcfile,
+	test/build-sparse-tests.sh, test/ctor-vs-method/@parent/parent.m:
+	maint: Replace unnecessary tabs with spaces.
+
+	Files: doc/interpreter/images.awk libinterp/dldfcn/config-module.awk
+	libinterp/octave-value/module.mk m4/module.mk
+	scripts/java/org/octave/Matrix.java scripts/miscellaneous/module.mk
+	scripts/sparse/module.mk scripts/startup/main-rcfile test/build-
+	sparse-tests.sh test/ctor-vs-method/@parent/parent.m
+
+	Pass --force-gui option on to octave executable.
+
+	* main.in.cc (main): Don't swallow '--force-gui' option.
+
+	Files: src/main.in.cc
+
+	edit.m: Use two spaces to mark sentence break in error() message.
+
+	* edit.m: Use two spaces to mark sentence break in error() message.
+
+	Files: scripts/miscellaneous/edit.m
+
+	main.in.cc: Respect --silent option and don't print startup message.
+
+	* main.in.cc (main): Pass "--silent" option and friends on to octave
+	executable rather than filtering it out.
+
+	Files: src/main.in.cc
+
+	maint: Merge default on to stable for 3.8 release
+
+	Files: autogen.sh build-aux/bootstrap build-aux/bootstrap.conf build-
+	aux/mkinstalldirs doc/faq/Makefile.am doc/faq/OctaveFAQ.texi
+	doc/interpreter/dynamic.txi etc/README.devel etc/README.ftp
+	etc/README.mirrors etc/README.snapshots examples/firstmexdemo.c
+	examples/hello.cc libcruft/Makefile.am libcruft/amos/README
+	libcruft/amos/cacai.f libcruft/amos/cacon.f libcruft/amos/cairy.f
+	libcruft/amos/casyi.f libcruft/amos/cbesh.f libcruft/amos/cbesi.f
+	libcruft/amos/cbesj.f libcruft/amos/cbesk.f libcruft/amos/cbesy.f
+	libcruft/amos/cbinu.f libcruft/amos/cbiry.f libcruft/amos/cbknu.f
+	libcruft/amos/cbuni.f libcruft/amos/cbunk.f libcruft/amos/ckscl.f
+	libcruft/amos/cmlri.f libcruft/amos/crati.f libcruft/amos/cs1s2.f
+	libcruft/amos/cseri.f libcruft/amos/cshch.f libcruft/amos/cuchk.f
+	libcruft/amos/cunhj.f libcruft/amos/cuni1.f libcruft/amos/cuni2.f
+	libcruft/amos/cunik.f libcruft/amos/cunk1.f libcruft/amos/cunk2.f
+	libcruft/amos/cuoik.f libcruft/amos/cwrsk.f libcruft/amos/dgamln.f
+	libcruft/amos/gamln.f libcruft/amos/module.mk libcruft/amos/xzabs.f
+	libcruft/amos/xzexp.f libcruft/amos/xzlog.f libcruft/amos/xzsqrt.f
+	libcruft/amos/zacai.f libcruft/amos/zacon.f libcruft/amos/zairy.f
+	libcruft/amos/zasyi.f libcruft/amos/zbesh.f libcruft/amos/zbesi.f
+	libcruft/amos/zbesj.f libcruft/amos/zbesk.f libcruft/amos/zbesy.f
+	libcruft/amos/zbinu.f libcruft/amos/zbiry.f libcruft/amos/zbknu.f
+	libcruft/amos/zbuni.f libcruft/amos/zbunk.f libcruft/amos/zdiv.f
+	libcruft/amos/zkscl.f libcruft/amos/zmlri.f libcruft/amos/zmlt.f
+	libcruft/amos/zrati.f libcruft/amos/zs1s2.f libcruft/amos/zseri.f
+	libcruft/amos/zshch.f libcruft/amos/zuchk.f libcruft/amos/zunhj.f
+	libcruft/amos/zuni1.f libcruft/amos/zuni2.f libcruft/amos/zunik.f
+	libcruft/amos/zunk1.f libcruft/amos/zunk2.f libcruft/amos/zuoik.f
+	libcruft/amos/zwrsk.f libcruft/blas-xtra/cconv2.f libcruft/blas-
+	xtra/cdotc3.f libcruft/blas-xtra/cmatm3.f libcruft/blas-
+	xtra/csconv2.f libcruft/blas-xtra/dconv2.f libcruft/blas-
+	xtra/ddot3.f libcruft/blas-xtra/dmatm3.f libcruft/blas-
+	xtra/module.mk libcruft/blas-xtra/sconv2.f libcruft/blas-
+	xtra/sdot3.f libcruft/blas-xtra/smatm3.f libcruft/blas-xtra/xcdotc.f
+	libcruft/blas-xtra/xcdotu.f libcruft/blas-xtra/xddot.f libcruft
+	/blas-xtra/xdnrm2.f libcruft/blas-xtra/xdznrm2.f libcruft/blas-
+	xtra/xerbla.f libcruft/blas-xtra/xscnrm2.f libcruft/blas-
+	xtra/xsdot.f libcruft/blas-xtra/xsnrm2.f libcruft/blas-xtra/xzdotc.f
+	libcruft/blas-xtra/xzdotu.f libcruft/blas-xtra/zconv2.f libcruft
+	/blas-xtra/zdconv2.f libcruft/blas-xtra/zdotc3.f libcruft/blas-
+	xtra/zmatm3.f libcruft/daspk/datv.f libcruft/daspk/dcnst0.f
+	libcruft/daspk/dcnstr.f libcruft/daspk/ddasic.f
+	libcruft/daspk/ddasid.f libcruft/daspk/ddasik.f
+	libcruft/daspk/ddaspk.f libcruft/daspk/ddstp.f
+	libcruft/daspk/ddwnrm.f libcruft/daspk/dfnrmd.f
+	libcruft/daspk/dfnrmk.f libcruft/daspk/dhels.f
+	libcruft/daspk/dheqr.f libcruft/daspk/dinvwt.f
+	libcruft/daspk/dlinsd.f libcruft/daspk/dlinsk.f
+	libcruft/daspk/dmatd.f libcruft/daspk/dnedd.f libcruft/daspk/dnedk.f
+	libcruft/daspk/dnsd.f libcruft/daspk/dnsid.f libcruft/daspk/dnsik.f
+	libcruft/daspk/dnsk.f libcruft/daspk/dorth.f libcruft/daspk/dslvd.f
+	libcruft/daspk/dslvk.f libcruft/daspk/dspigm.f
+	libcruft/daspk/dyypnw.f libcruft/daspk/module.mk
+	libcruft/dasrt/ddasrt.f libcruft/dasrt/drchek.f
+	libcruft/dasrt/droots.f libcruft/dasrt/module.mk
+	libcruft/dassl/ddaini.f libcruft/dassl/ddajac.f
+	libcruft/dassl/ddanrm.f libcruft/dassl/ddaslv.f
+	libcruft/dassl/ddassl.f libcruft/dassl/ddastp.f
+	libcruft/dassl/ddatrp.f libcruft/dassl/ddawts.f
+	libcruft/dassl/module.mk libcruft/fftpack/cfftb.f
+	libcruft/fftpack/cfftb1.f libcruft/fftpack/cfftf.f
+	libcruft/fftpack/cfftf1.f libcruft/fftpack/cffti.f
+	libcruft/fftpack/cffti1.f libcruft/fftpack/fftpack.doc
+	libcruft/fftpack/module.mk libcruft/fftpack/passb.f
+	libcruft/fftpack/passb2.f libcruft/fftpack/passb3.f
+	libcruft/fftpack/passb4.f libcruft/fftpack/passb5.f
+	libcruft/fftpack/passf.f libcruft/fftpack/passf2.f
+	libcruft/fftpack/passf3.f libcruft/fftpack/passf4.f
+	libcruft/fftpack/passf5.f libcruft/fftpack/zfftb.f
+	libcruft/fftpack/zfftb1.f libcruft/fftpack/zfftf.f
+	libcruft/fftpack/zfftf1.f libcruft/fftpack/zffti.f
+	libcruft/fftpack/zffti1.f libcruft/fftpack/zpassb.f
+	libcruft/fftpack/zpassb2.f libcruft/fftpack/zpassb3.f
+	libcruft/fftpack/zpassb4.f libcruft/fftpack/zpassb5.f
+	libcruft/fftpack/zpassf.f libcruft/fftpack/zpassf2.f
+	libcruft/fftpack/zpassf3.f libcruft/fftpack/zpassf4.f
+	libcruft/fftpack/zpassf5.f libcruft/lapack-xtra/crsf2csf.f libcruft
+	/lapack-xtra/module.mk libcruft/lapack-xtra/xclange.f libcruft
+	/lapack-xtra/xdlamch.f libcruft/lapack-xtra/xdlange.f libcruft
+	/lapack-xtra/xilaenv.f libcruft/lapack-xtra/xslamch.f libcruft
+	/lapack-xtra/xslange.f libcruft/lapack-xtra/xzlange.f libcruft
+	/lapack-xtra/zrsf2csf.f libcruft/link-deps.mk
+	libcruft/misc/blaswrap.c libcruft/misc/cquit.c libcruft/misc/d1mach-
+	tst.for libcruft/misc/d1mach.f libcruft/misc/f77-extern.cc
+	libcruft/misc/f77-fcn.c libcruft/misc/f77-fcn.h
+	libcruft/misc/i1mach.f libcruft/misc/lo-error.c libcruft/misc/lo-
+	error.h libcruft/misc/module.mk libcruft/misc/quit.cc
+	libcruft/misc/quit.h libcruft/misc/r1mach.f libcruft/mkf77def.in
+	libcruft/odepack/cfode.f libcruft/odepack/dlsode.f
+	libcruft/odepack/ewset.f libcruft/odepack/intdy.f
+	libcruft/odepack/module.mk libcruft/odepack/prepj.f
+	libcruft/odepack/scfode.f libcruft/odepack/sewset.f
+	libcruft/odepack/sintdy.f libcruft/odepack/slsode.f
+	libcruft/odepack/solsy.f libcruft/odepack/sprepj.f
+	libcruft/odepack/ssolsy.f libcruft/odepack/sstode.f
+	libcruft/odepack/stode.f libcruft/odepack/svnorm.f
+	libcruft/odepack/vnorm.f libcruft/ordered-qz/README libcruft
+	/ordered-qz/dsubsp.f libcruft/ordered-qz/exchqz.f libcruft/ordered-
+	qz/module.mk libcruft/ordered-qz/sexchqz.f libcruft/ordered-
+	qz/ssubsp.f libcruft/quadpack/dqagi.f libcruft/quadpack/dqagie.f
+	libcruft/quadpack/dqagp.f libcruft/quadpack/dqagpe.f
+	libcruft/quadpack/dqelg.f libcruft/quadpack/dqk15i.f
+	libcruft/quadpack/dqk21.f libcruft/quadpack/dqpsrt.f
+	libcruft/quadpack/module.mk libcruft/quadpack/qagi.f
+	libcruft/quadpack/qagie.f libcruft/quadpack/qagp.f
+	libcruft/quadpack/qagpe.f libcruft/quadpack/qelg.f
+	libcruft/quadpack/qk15i.f libcruft/quadpack/qk21.f
+	libcruft/quadpack/qpsrt.f libcruft/quadpack/xerror.f
+	libcruft/ranlib/Basegen.doc libcruft/ranlib/HOWTOGET
+	libcruft/ranlib/README libcruft/ranlib/advnst.f
+	libcruft/ranlib/genbet.f libcruft/ranlib/genchi.f
+	libcruft/ranlib/genexp.f libcruft/ranlib/genf.f
+	libcruft/ranlib/gengam.f libcruft/ranlib/genmn.f
+	libcruft/ranlib/genmul.f libcruft/ranlib/gennch.f
+	libcruft/ranlib/gennf.f libcruft/ranlib/gennor.f
+	libcruft/ranlib/genprm.f libcruft/ranlib/genunf.f
+	libcruft/ranlib/getcgn.f libcruft/ranlib/getsd.f
+	libcruft/ranlib/ignbin.f libcruft/ranlib/ignlgi.f
+	libcruft/ranlib/ignnbn.f libcruft/ranlib/ignpoi.f
+	libcruft/ranlib/ignuin.f libcruft/ranlib/initgn.f
+	libcruft/ranlib/inrgcm.f libcruft/ranlib/lennob.f
+	libcruft/ranlib/mltmod.f libcruft/ranlib/module.mk
+	libcruft/ranlib/phrtsd.f libcruft/ranlib/qrgnin.f
+	libcruft/ranlib/randlib.chs libcruft/ranlib/randlib.fdoc
+	libcruft/ranlib/ranf.f libcruft/ranlib/setall.f
+	libcruft/ranlib/setant.f libcruft/ranlib/setgmn.f
+	libcruft/ranlib/setsd.f libcruft/ranlib/sexpo.f
+	libcruft/ranlib/sgamma.f libcruft/ranlib/snorm.f
+	libcruft/ranlib/tstbot.for libcruft/ranlib/tstgmn.for
+	libcruft/ranlib/tstmid.for libcruft/ranlib/wrap.f libcruft/slatec-
+	err/fdump.f libcruft/slatec-err/ixsav.f libcruft/slatec-err/j4save.f
+	libcruft/slatec-err/module.mk libcruft/slatec-err/xerclr.f libcruft
+	/slatec-err/xercnt.f libcruft/slatec-err/xerhlt.f libcruft/slatec-
+	err/xermsg.f libcruft/slatec-err/xerprn.f libcruft/slatec-
+	err/xerrwd.f libcruft/slatec-err/xersve.f libcruft/slatec-
+	err/xgetf.f libcruft/slatec-err/xgetua.f libcruft/slatec-err/xsetf.f
+	libcruft/slatec-err/xsetua.f libcruft/slatec-fn/acosh.f libcruft
+	/slatec-fn/albeta.f libcruft/slatec-fn/algams.f libcruft/slatec-
+	fn/alngam.f libcruft/slatec-fn/alnrel.f libcruft/slatec-fn/asinh.f
+	libcruft/slatec-fn/atanh.f libcruft/slatec-fn/betai.f libcruft
+	/slatec-fn/csevl.f libcruft/slatec-fn/d9gmit.f libcruft/slatec-
+	fn/d9lgic.f libcruft/slatec-fn/d9lgit.f libcruft/slatec-fn/d9lgmc.f
+	libcruft/slatec-fn/dacosh.f libcruft/slatec-fn/dasinh.f libcruft
+	/slatec-fn/datanh.f libcruft/slatec-fn/dbetai.f libcruft/slatec-
+	fn/dcsevl.f libcruft/slatec-fn/derf.f libcruft/slatec-fn/derfc.f
+	libcruft/slatec-fn/dgami.f libcruft/slatec-fn/dgamit.f libcruft
+	/slatec-fn/dgamlm.f libcruft/slatec-fn/dgamma.f libcruft/slatec-
+	fn/dgamr.f libcruft/slatec-fn/dlbeta.f libcruft/slatec-fn/dlgams.f
+	libcruft/slatec-fn/dlngam.f libcruft/slatec-fn/dlnrel.f libcruft
+	/slatec-fn/dpchim.f libcruft/slatec-fn/dpchst.f libcruft/slatec-
+	fn/erf.f libcruft/slatec-fn/erfc.f libcruft/slatec-fn/gami.f
+	libcruft/slatec-fn/gamit.f libcruft/slatec-fn/gamlim.f libcruft
+	/slatec-fn/gamma.f libcruft/slatec-fn/gamr.f libcruft/slatec-
+	fn/initds.f libcruft/slatec-fn/inits.f libcruft/slatec-fn/module.mk
+	libcruft/slatec-fn/pchim.f libcruft/slatec-fn/pchst.f libcruft
+	/slatec-fn/r9gmit.f libcruft/slatec-fn/r9lgic.f libcruft/slatec-
+	fn/r9lgit.f libcruft/slatec-fn/r9lgmc.f libcruft/slatec-fn/xacosh.f
+	libcruft/slatec-fn/xasinh.f libcruft/slatec-fn/xatanh.f libcruft
+	/slatec-fn/xbetai.f libcruft/slatec-fn/xdacosh.f libcruft/slatec-
+	fn/xdasinh.f libcruft/slatec-fn/xdatanh.f libcruft/slatec-
+	fn/xdbetai.f libcruft/slatec-fn/xderf.f libcruft/slatec-fn/xderfc.f
+	libcruft/slatec-fn/xdgami.f libcruft/slatec-fn/xdgamit.f libcruft
+	/slatec-fn/xdgamma.f libcruft/slatec-fn/xerf.f libcruft/slatec-
+	fn/xerfc.f libcruft/slatec-fn/xgamma.f libcruft/slatec-fn/xgmainc.f
+	libcruft/slatec-fn/xsgmainc.f libgnu/Makefile.am
+	liboctave/Array-C.cc liboctave/Array-b.cc liboctave/Array-ch.cc
+	liboctave/Array-d.cc liboctave/Array-f.cc liboctave/Array-fC.cc
+	liboctave/Array-i.cc liboctave/Array-idx-vec.cc liboctave/Array-s.cc
+	liboctave/Array-str.cc liboctave/Array-util.cc liboctave/Array-
+	util.h liboctave/Array-voidp.cc liboctave/Array.cc liboctave/Array.h
+	liboctave/Array2.h liboctave/Array3.h liboctave/ArrayN.h
+	liboctave/CColVector.cc liboctave/CColVector.h
+	liboctave/CDiagMatrix.cc liboctave/CDiagMatrix.h
+	liboctave/CMatrix.cc liboctave/CMatrix.h liboctave/CNDArray.cc
+	liboctave/CNDArray.h liboctave/CRowVector.cc liboctave/CRowVector.h
+	liboctave/CSparse.cc liboctave/CSparse.h liboctave/CmplxAEPBAL.cc
+	liboctave/CmplxAEPBAL.h liboctave/CmplxCHOL.cc liboctave/CmplxCHOL.h
+	liboctave/CmplxGEPBAL.cc liboctave/CmplxGEPBAL.h
+	liboctave/CmplxHESS.cc liboctave/CmplxHESS.h liboctave/CmplxLU.cc
+	liboctave/CmplxLU.h liboctave/CmplxQR.cc liboctave/CmplxQR.h
+	liboctave/CmplxQRP.cc liboctave/CmplxQRP.h liboctave/CmplxSCHUR.cc
+	liboctave/CmplxSCHUR.h liboctave/CmplxSVD.cc liboctave/CmplxSVD.h
+	liboctave/CollocWt.cc liboctave/CollocWt.h liboctave/DAE.h
+	liboctave/DAEFunc.h liboctave/DAERT.h liboctave/DAERTFunc.h
+	liboctave/DASPK-opts.in liboctave/DASPK.cc liboctave/DASPK.h
+	liboctave/DASRT-opts.in liboctave/DASRT.cc liboctave/DASRT.h
+	liboctave/DASSL-opts.in liboctave/DASSL.cc liboctave/DASSL.h
+	liboctave/DET.h liboctave/DiagArray2.cc liboctave/DiagArray2.h
+	liboctave/EIG.cc liboctave/EIG.h liboctave/LSODE-opts.in
+	liboctave/LSODE.cc liboctave/LSODE.h liboctave/MArray-C.cc
+	liboctave/MArray-d.cc liboctave/MArray-decl.h liboctave/MArray-
+	defs.h liboctave/MArray-f.cc liboctave/MArray-fC.cc
+	liboctave/MArray-i.cc liboctave/MArray-s.cc liboctave/MArray.cc
+	liboctave/MArray.h liboctave/MArray2.h liboctave/MArrayN.h
+	liboctave/MDiagArray2.cc liboctave/MDiagArray2.h
+	liboctave/MSparse-C.cc liboctave/MSparse-d.cc liboctave/MSparse-
+	defs.h liboctave/MSparse.cc liboctave/MSparse.h liboctave/Matrix.h
+	liboctave/MatrixType.cc liboctave/MatrixType.h liboctave/ODE.h
+	liboctave/ODEFunc.h liboctave/ODES.cc liboctave/ODES.h
+	liboctave/ODESFunc.h liboctave/PermMatrix.cc liboctave/PermMatrix.h
+	liboctave/Quad-opts.in liboctave/Quad.cc liboctave/Quad.h
+	liboctave/Range.cc liboctave/Range.h liboctave/Sparse-C.cc
+	liboctave/Sparse-b.cc liboctave/Sparse-d.cc liboctave/Sparse-diag-
+	op-defs.h liboctave/Sparse-op-defs.h liboctave/Sparse-perm-op-defs.h
+	liboctave/Sparse.cc liboctave/Sparse.h liboctave/SparseCmplxCHOL.cc
+	liboctave/SparseCmplxCHOL.h liboctave/SparseCmplxLU.cc
+	liboctave/SparseCmplxLU.h liboctave/SparseCmplxQR.cc
+	liboctave/SparseCmplxQR.h liboctave/SparseQR.cc liboctave/SparseQR.h
+	liboctave/SparsedbleCHOL.cc liboctave/SparsedbleCHOL.h
+	liboctave/SparsedbleLU.cc liboctave/SparsedbleLU.h liboctave/base-
+	aepbal.h liboctave/base-dae.h liboctave/base-de.h liboctave/base-
+	list.h liboctave/base-lu.cc liboctave/base-lu.h liboctave/base-min.h
+	liboctave/base-qr.cc liboctave/base-qr.h liboctave/boolMatrix.cc
+	liboctave/boolMatrix.h liboctave/boolNDArray.cc
+	liboctave/boolNDArray.h liboctave/boolSparse.cc
+	liboctave/boolSparse.h liboctave/bsxfun-decl.h liboctave/bsxfun-
+	defs.cc liboctave/bsxfun.h liboctave/byte-swap.h liboctave/caseless-
+	str.h liboctave/chMatrix.cc liboctave/chMatrix.h
+	liboctave/chNDArray.cc liboctave/chNDArray.h liboctave/cmd-edit.cc
+	liboctave/cmd-edit.h liboctave/cmd-hist.cc liboctave/cmd-hist.h
+	liboctave/config-ops.sh liboctave/dColVector.cc
+	liboctave/dColVector.h liboctave/dDiagMatrix.cc
+	liboctave/dDiagMatrix.h liboctave/dMatrix.cc liboctave/dMatrix.h
+	liboctave/dNDArray.cc liboctave/dNDArray.h liboctave/dRowVector.cc
+	liboctave/dRowVector.h liboctave/dSparse.cc liboctave/dSparse.h
+	liboctave/data-conv.cc liboctave/data-conv.h liboctave/dbleAEPBAL.cc
+	liboctave/dbleAEPBAL.h liboctave/dbleCHOL.cc liboctave/dbleCHOL.h
+	liboctave/dbleGEPBAL.cc liboctave/dbleGEPBAL.h liboctave/dbleHESS.cc
+	liboctave/dbleHESS.h liboctave/dbleLU.cc liboctave/dbleLU.h
+	liboctave/dbleQR.cc liboctave/dbleQR.h liboctave/dbleQRP.cc
+	liboctave/dbleQRP.h liboctave/dbleSCHUR.cc liboctave/dbleSCHUR.h
+	liboctave/dbleSVD.cc liboctave/dbleSVD.h liboctave/dim-vector.cc
+	liboctave/dim-vector.h liboctave/dir-ops.cc liboctave/dir-ops.h
+	liboctave/eigs-base.cc liboctave/f2c-main.c liboctave/fCColVector.cc
+	liboctave/fCColVector.h liboctave/fCDiagMatrix.cc
+	liboctave/fCDiagMatrix.h liboctave/fCMatrix.cc liboctave/fCMatrix.h
+	liboctave/fCNDArray.cc liboctave/fCNDArray.h
+	liboctave/fCRowVector.cc liboctave/fCRowVector.h
+	liboctave/fCmplxAEPBAL.cc liboctave/fCmplxAEPBAL.h
+	liboctave/fCmplxCHOL.cc liboctave/fCmplxCHOL.h
+	liboctave/fCmplxGEPBAL.cc liboctave/fCmplxGEPBAL.h
+	liboctave/fCmplxHESS.cc liboctave/fCmplxHESS.h liboctave/fCmplxLU.cc
+	liboctave/fCmplxLU.h liboctave/fCmplxQR.cc liboctave/fCmplxQR.h
+	liboctave/fCmplxQRP.cc liboctave/fCmplxQRP.h
+	liboctave/fCmplxSCHUR.cc liboctave/fCmplxSCHUR.h
+	liboctave/fCmplxSVD.cc liboctave/fCmplxSVD.h liboctave/fColVector.cc
+	liboctave/fColVector.h liboctave/fDiagMatrix.cc
+	liboctave/fDiagMatrix.h liboctave/fEIG.cc liboctave/fEIG.h
+	liboctave/fMatrix.cc liboctave/fMatrix.h liboctave/fNDArray.cc
+	liboctave/fNDArray.h liboctave/fRowVector.cc liboctave/fRowVector.h
+	liboctave/file-ops.cc liboctave/file-ops.h liboctave/file-stat.cc
+	liboctave/file-stat.h liboctave/floatAEPBAL.cc
+	liboctave/floatAEPBAL.h liboctave/floatCHOL.cc liboctave/floatCHOL.h
+	liboctave/floatGEPBAL.cc liboctave/floatGEPBAL.h
+	liboctave/floatHESS.cc liboctave/floatHESS.h liboctave/floatLU.cc
+	liboctave/floatLU.h liboctave/floatQR.cc liboctave/floatQR.h
+	liboctave/floatQRP.cc liboctave/floatQRP.h liboctave/floatSCHUR.cc
+	liboctave/floatSCHUR.h liboctave/floatSVD.cc liboctave/floatSVD.h
+	liboctave/functor.h liboctave/glob-match.cc liboctave/glob-match.h
+	liboctave/idx-vector.cc liboctave/idx-vector.h
+	liboctave/int16NDArray.cc liboctave/int16NDArray.h
+	liboctave/int32NDArray.cc liboctave/int32NDArray.h
+	liboctave/int64NDArray.cc liboctave/int64NDArray.h
+	liboctave/int8NDArray.cc liboctave/int8NDArray.h
+	liboctave/intNDArray.cc liboctave/intNDArray.h liboctave/kpse.cc
+	liboctave/lo-array-gripes.cc liboctave/lo-array-gripes.h liboctave
+	/lo-cieee.c liboctave/lo-cutils.c liboctave/lo-cutils.h liboctave
+	/lo-ieee.cc liboctave/lo-ieee.h liboctave/lo-macros.h liboctave/lo-
+	mappers.cc liboctave/lo-mappers.h liboctave/lo-math.h liboctave/lo-
+	specfun.cc liboctave/lo-specfun.h liboctave/lo-sysdep.cc liboctave
+	/lo-sysdep.h liboctave/lo-traits.h liboctave/lo-utils.cc liboctave
+	/lo-utils.h liboctave/mach-info.cc liboctave/mach-info.h liboctave
+	/mk-ops.awk liboctave/mx-base.h liboctave/mx-defs.h liboctave/mx-
+	ext.h liboctave/mx-inlines.cc liboctave/mx-op-decl.h liboctave/mx-
+	op-defs.h liboctave/mx-ops liboctave/oct-alloc.cc liboctave/oct-
+	alloc.h liboctave/oct-binmap.h liboctave/oct-cmplx.h liboctave/oct-
+	convn.cc liboctave/oct-convn.h liboctave/oct-env.cc liboctave/oct-
+	env.h liboctave/oct-fftw.cc liboctave/oct-fftw.h liboctave/oct-
+	glob.cc liboctave/oct-glob.h liboctave/oct-group.cc liboctave/oct-
+	group.h liboctave/oct-inttypes.cc liboctave/oct-inttypes.h liboctave
+	/oct-locbuf.cc liboctave/oct-locbuf.h liboctave/oct-md5.cc liboctave
+	/oct-md5.h liboctave/oct-mem.h liboctave/oct-mutex.cc liboctave/oct-
+	mutex.h liboctave/oct-norm.cc liboctave/oct-norm.h liboctave/oct-
+	openmp.h liboctave/oct-passwd.cc liboctave/oct-passwd.h liboctave
+	/oct-rand.cc liboctave/oct-rand.h liboctave/oct-refcount.h liboctave
+	/oct-rl-edit.c liboctave/oct-rl-edit.h liboctave/oct-rl-hist.c
+	liboctave/oct-rl-hist.h liboctave/oct-shlib.cc liboctave/oct-shlib.h
+	liboctave/oct-sort.cc liboctave/oct-sort.h liboctave/oct-sparse.h
+	liboctave/oct-spparms.cc liboctave/oct-spparms.h liboctave/oct-
+	syscalls.cc liboctave/oct-syscalls.h liboctave/oct-time.cc liboctave
+	/oct-time.h liboctave/oct-uname.cc liboctave/oct-uname.h
+	liboctave/pathlen.h liboctave/pathsearch.cc liboctave/pathsearch.h
+	liboctave/randgamma.c liboctave/randgamma.h liboctave/randmtzig.c
+	liboctave/randmtzig.h liboctave/randpoisson.c
+	liboctave/randpoisson.h liboctave/regexp.cc liboctave/regexp.h
+	liboctave/singleton-cleanup.cc liboctave/singleton-cleanup.h
+	liboctave/sparse-base-chol.cc liboctave/sparse-base-chol.h liboctave
+	/sparse-base-lu.cc liboctave/sparse-base-lu.h liboctave/sparse-
+	dmsolve.cc liboctave/sparse-mk-ops.awk liboctave/sparse-mx-ops
+	liboctave/sparse-sort.cc liboctave/sparse-sort.h liboctave/sparse-
+	util.cc liboctave/sparse-util.h liboctave/statdefs.h liboctave/str-
+	vec.cc liboctave/str-vec.h liboctave/sun-utils.h liboctave/sysdir.h
+	liboctave/syswait.h liboctave/tempnam.c liboctave/tempname.c
+	liboctave/uint16NDArray.cc liboctave/uint16NDArray.h
+	liboctave/uint32NDArray.cc liboctave/uint32NDArray.h
+	liboctave/uint64NDArray.cc liboctave/uint64NDArray.h
+	liboctave/uint8NDArray.cc liboctave/uint8NDArray.h liboctave/vx-ops
+	scripts/deprecated/autocor.m scripts/deprecated/autocov.m
+	scripts/deprecated/betai.m scripts/deprecated/cellidx.m
+	scripts/deprecated/clg.m scripts/deprecated/cquad.m
+	scripts/deprecated/dispatch.m scripts/deprecated/fstat.m
+	scripts/deprecated/gammai.m scripts/deprecated/glpkmex.m
+	scripts/deprecated/intwarning.m
+	scripts/deprecated/is_duplicate_entry.m
+	scripts/deprecated/is_global.m scripts/deprecated/krylovb.m
+	scripts/deprecated/perror.m scripts/deprecated/replot.m
+	scripts/deprecated/saveimage.m scripts/deprecated/setstr.m
+	scripts/deprecated/strerror.m scripts/deprecated/values.m
+	scripts/deprecated/weibcdf.m scripts/deprecated/weibinv.m
+	scripts/deprecated/weibpdf.m scripts/deprecated/weibrnd.m
+	scripts/general/colon.m scripts/general/genvarname.m
+	scripts/general/interp1q.m scripts/general/isequalwithequalnans.m
+	scripts/help/gen_doc_cache.m scripts/help/unimplemented.m
+	scripts/miscellaneous/bincoeff.m scripts/miscellaneous/usejava.m
+	scripts/mkinstalldirs scripts/plot/__gnuplot_drawnow__.m
+	scripts/plot/__plt_get_axis_arg__.m scripts/plot/allchild.m
+	scripts/plot/ancestor.m scripts/plot/area.m scripts/plot/axes.m
+	scripts/plot/axis.m scripts/plot/bar.m scripts/plot/barh.m
+	scripts/plot/box.m scripts/plot/caxis.m scripts/plot/cla.m
+	scripts/plot/clabel.m scripts/plot/clf.m scripts/plot/close.m
+	scripts/plot/closereq.m scripts/plot/colorbar.m
+	scripts/plot/colstyle.m scripts/plot/comet.m scripts/plot/comet3.m
+	scripts/plot/compass.m scripts/plot/contour.m
+	scripts/plot/contour3.m scripts/plot/contourc.m
+	scripts/plot/contourf.m scripts/plot/cylinder.m
+	scripts/plot/daspect.m scripts/plot/diffuse.m
+	scripts/plot/ellipsoid.m scripts/plot/errorbar.m
+	scripts/plot/ezcontour.m scripts/plot/ezcontourf.m
+	scripts/plot/ezmesh.m scripts/plot/ezmeshc.m scripts/plot/ezplot.m
+	scripts/plot/ezplot3.m scripts/plot/ezpolar.m scripts/plot/ezsurf.m
+	scripts/plot/ezsurfc.m scripts/plot/feather.m scripts/plot/figure.m
+	scripts/plot/fill.m scripts/plot/findall.m scripts/plot/findobj.m
+	scripts/plot/fplot.m scripts/plot/gca.m scripts/plot/gcbf.m
+	scripts/plot/gcbo.m scripts/plot/gcf.m scripts/plot/ginput.m
+	scripts/plot/gnuplot_binary.in scripts/plot/graphics_toolkit.m
+	scripts/plot/grid.m scripts/plot/gtext.m scripts/plot/guidata.m
+	scripts/plot/guihandles.m scripts/plot/hggroup.m
+	scripts/plot/hidden.m scripts/plot/hist.m scripts/plot/hold.m
+	scripts/plot/isfigure.m scripts/plot/ishghandle.m
+	scripts/plot/ishold.m scripts/plot/isocolors.m
+	scripts/plot/isonormals.m scripts/plot/isosurface.m
+	scripts/plot/isprop.m scripts/plot/legend.m scripts/plot/line.m
+	scripts/plot/linkprop.m scripts/plot/loglog.m
+	scripts/plot/loglogerr.m scripts/plot/mesh.m scripts/plot/meshc.m
+	scripts/plot/meshgrid.m scripts/plot/meshz.m scripts/plot/ndgrid.m
+	scripts/plot/newplot.m scripts/plot/orient.m scripts/plot/pareto.m
+	scripts/plot/patch.m scripts/plot/pbaspect.m scripts/plot/pcolor.m
+	scripts/plot/peaks.m scripts/plot/pie.m scripts/plot/pie3.m
+	scripts/plot/plot.m scripts/plot/plot3.m scripts/plot/plotmatrix.m
+	scripts/plot/plotyy.m scripts/plot/polar.m scripts/plot/print.m
+	scripts/plot/private/__actual_axis_position__.m
+	scripts/plot/private/__add_datasource__.m
+	scripts/plot/private/__add_default_menu__.m
+	scripts/plot/private/__axes_limits__.m
+	scripts/plot/private/__axis_label__.m scripts/plot/private/__bar__.m
+	scripts/plot/private/__clabel__.m
+	scripts/plot/private/__color_str_rgb__.m
+	scripts/plot/private/__contour__.m
+	scripts/plot/private/__default_plot_options__.m
+	scripts/plot/private/__errcomm__.m
+	scripts/plot/private/__errplot__.m scripts/plot/private/__ezplot__.m
+	scripts/plot/private/__file_filter__.m
+	scripts/plot/private/__fltk_file_filter__.m
+	scripts/plot/private/__fltk_ginput__.m
+	scripts/plot/private/__fltk_print__.m
+	scripts/plot/private/__getlegenddata__.m
+	scripts/plot/private/__ghostscript__.m
+	scripts/plot/private/__gnuplot_get_var__.m
+	scripts/plot/private/__gnuplot_ginput__.m
+	scripts/plot/private/__gnuplot_has_feature__.m
+	scripts/plot/private/__gnuplot_has_terminal__.m
+	scripts/plot/private/__gnuplot_open_stream__.m
+	scripts/plot/private/__gnuplot_print__.m
+	scripts/plot/private/__gnuplot_version__.m
+	scripts/plot/private/__go_draw_axes__.m
+	scripts/plot/private/__go_draw_figure__.m
+	scripts/plot/private/__interp_cube__.m
+	scripts/plot/private/__is_function__.m
+	scripts/plot/private/__line__.m
+	scripts/plot/private/__marching_cube__.m
+	scripts/plot/private/__next_line_color__.m
+	scripts/plot/private/__next_line_style__.m
+	scripts/plot/private/__patch__.m scripts/plot/private/__pie__.m
+	scripts/plot/private/__plt__.m scripts/plot/private/__pltopt__.m
+	scripts/plot/private/__print_parse_opts__.m
+	scripts/plot/private/__quiver__.m scripts/plot/private/__scatter__.m
+	scripts/plot/private/__stem__.m
+	scripts/plot/private/__tight_eps_bbox__.m
+	scripts/plot/private/__uigetdir_fltk__.m
+	scripts/plot/private/__uigetfile_fltk__.m
+	scripts/plot/private/__uiobject_split_args__.m
+	scripts/plot/private/__uiputfile_fltk__.m scripts/plot/quiver.m
+	scripts/plot/quiver3.m scripts/plot/rectangle.m
+	scripts/plot/refresh.m scripts/plot/refreshdata.m
+	scripts/plot/ribbon.m scripts/plot/rose.m scripts/plot/saveas.m
+	scripts/plot/scatter.m scripts/plot/scatter3.m
+	scripts/plot/semilogx.m scripts/plot/semilogxerr.m
+	scripts/plot/semilogy.m scripts/plot/semilogyerr.m
+	scripts/plot/shading.m scripts/plot/shg.m scripts/plot/slice.m
+	scripts/plot/sombrero.m scripts/plot/specular.m
+	scripts/plot/sphere.m scripts/plot/spinmap.m scripts/plot/stairs.m
+	scripts/plot/stem.m scripts/plot/stem3.m scripts/plot/subplot.m
+	scripts/plot/surf.m scripts/plot/surface.m scripts/plot/surfc.m
+	scripts/plot/surfl.m scripts/plot/surfnorm.m scripts/plot/text.m
+	scripts/plot/title.m scripts/plot/trimesh.m scripts/plot/triplot.m
+	scripts/plot/trisurf.m scripts/plot/uicontextmenu.m
+	scripts/plot/uicontrol.m scripts/plot/uigetdir.m
+	scripts/plot/uigetfile.m scripts/plot/uimenu.m
+	scripts/plot/uipanel.m scripts/plot/uipushtool.m
+	scripts/plot/uiputfile.m scripts/plot/uiresume.m
+	scripts/plot/uitoggletool.m scripts/plot/uitoolbar.m
+	scripts/plot/uiwait.m scripts/plot/view.m scripts/plot/waitbar.m
+	scripts/plot/waitforbuttonpress.m scripts/plot/whitebg.m
+	scripts/plot/xlabel.m scripts/plot/xlim.m scripts/plot/ylabel.m
+	scripts/plot/ylim.m scripts/plot/zlabel.m scripts/plot/zlim.m
+	scripts/time/datetick.m src/Cell.cc src/Cell.h src/DLD-
+	FUNCTIONS/__contourc__.cc src/DLD-FUNCTIONS/__delaunayn__.cc src
+	/DLD-FUNCTIONS/__dispatch__.cc src/DLD-FUNCTIONS/__dsearchn__.cc src
+	/DLD-FUNCTIONS/__fltk_uigetfile__.cc src/DLD-FUNCTIONS/__glpk__.cc
+	src/DLD-FUNCTIONS/__init_fltk__.cc src/DLD-
+	FUNCTIONS/__init_gnuplot__.cc src/DLD-FUNCTIONS/__lin_interpn__.cc
+	src/DLD-FUNCTIONS/__magick_read__.cc src/DLD-
+	FUNCTIONS/__pchip_deriv__.cc src/DLD-FUNCTIONS/__qp__.cc src/DLD-
+	FUNCTIONS/__voronoi__.cc src/DLD-FUNCTIONS/amd.cc src/DLD-
+	FUNCTIONS/balance.cc src/DLD-FUNCTIONS/besselj.cc src/DLD-
+	FUNCTIONS/betainc.cc src/DLD-FUNCTIONS/bsxfun.cc src/DLD-
+	FUNCTIONS/ccolamd.cc src/DLD-FUNCTIONS/cellfun.cc src/DLD-
+	FUNCTIONS/chol.cc src/DLD-FUNCTIONS/colamd.cc src/DLD-
+	FUNCTIONS/colloc.cc src/DLD-FUNCTIONS/config-module.awk src/DLD-
+	FUNCTIONS/config-module.sh src/DLD-FUNCTIONS/conv2.cc src/DLD-
+	FUNCTIONS/convhulln.cc src/DLD-FUNCTIONS/daspk.cc src/DLD-
+	FUNCTIONS/dasrt.cc src/DLD-FUNCTIONS/dassl.cc src/DLD-
+	FUNCTIONS/det.cc src/DLD-FUNCTIONS/dlmread.cc src/DLD-
+	FUNCTIONS/dmperm.cc src/DLD-FUNCTIONS/dot.cc src/DLD-
+	FUNCTIONS/eig.cc src/DLD-FUNCTIONS/eigs.cc src/DLD-FUNCTIONS/fft.cc
+	src/DLD-FUNCTIONS/fft2.cc src/DLD-FUNCTIONS/fftn.cc src/DLD-
+	FUNCTIONS/fftw.cc src/DLD-FUNCTIONS/filter.cc src/DLD-
+	FUNCTIONS/find.cc src/DLD-FUNCTIONS/gammainc.cc src/DLD-
+	FUNCTIONS/gcd.cc src/DLD-FUNCTIONS/getgrent.cc src/DLD-
+	FUNCTIONS/getpwent.cc src/DLD-FUNCTIONS/getrusage.cc src/DLD-
+	FUNCTIONS/givens.cc src/DLD-FUNCTIONS/hess.cc src/DLD-
+	FUNCTIONS/hex2num.cc src/DLD-FUNCTIONS/inv.cc src/DLD-
+	FUNCTIONS/kron.cc src/DLD-FUNCTIONS/lookup.cc src/DLD-
+	FUNCTIONS/lsode.cc src/DLD-FUNCTIONS/lu.cc src/DLD-
+	FUNCTIONS/luinc.cc src/DLD-FUNCTIONS/matrix_type.cc src/DLD-
+	FUNCTIONS/max.cc src/DLD-FUNCTIONS/md5sum.cc src/DLD-
+	FUNCTIONS/mgorth.cc src/DLD-FUNCTIONS/module-files src/DLD-
+	FUNCTIONS/nproc.cc src/DLD-FUNCTIONS/oct-qhull.h src/DLD-
+	FUNCTIONS/pinv.cc src/DLD-FUNCTIONS/qr.cc src/DLD-FUNCTIONS/quad.cc
+	src/DLD-FUNCTIONS/quadcc.cc src/DLD-FUNCTIONS/qz.cc src/DLD-
+	FUNCTIONS/rand.cc src/DLD-FUNCTIONS/rcond.cc src/DLD-
+	FUNCTIONS/regexp.cc src/DLD-FUNCTIONS/schur.cc src/DLD-
+	FUNCTIONS/spparms.cc src/DLD-FUNCTIONS/sqrtm.cc src/DLD-
+	FUNCTIONS/str2double.cc src/DLD-FUNCTIONS/strfind.cc src/DLD-
+	FUNCTIONS/sub2ind.cc src/DLD-FUNCTIONS/svd.cc src/DLD-
+	FUNCTIONS/syl.cc src/DLD-FUNCTIONS/symbfact.cc src/DLD-
+	FUNCTIONS/symrcm.cc src/DLD-FUNCTIONS/time.cc src/DLD-
+	FUNCTIONS/tril.cc src/DLD-FUNCTIONS/tsearch.cc src/DLD-
+	FUNCTIONS/typecast.cc src/DLD-FUNCTIONS/urlwrite.cc
+	src/OPERATORS/module.mk src/OPERATORS/op-b-b.cc
+	src/OPERATORS/op-b-bm.cc src/OPERATORS/op-b-sbm.cc src/OPERATORS/op-
+	bm-b.cc src/OPERATORS/op-bm-bm.cc src/OPERATORS/op-bm-sbm.cc
+	src/OPERATORS/op-cdm-cdm.cc src/OPERATORS/op-cdm-cm.cc src/OPERATORS
+	/op-cdm-cs.cc src/OPERATORS/op-cdm-dm.cc src/OPERATORS/op-cdm-m.cc
+	src/OPERATORS/op-cdm-s.cc src/OPERATORS/op-cell.cc src/OPERATORS/op-
+	chm.cc src/OPERATORS/op-class.cc src/OPERATORS/op-cm-cdm.cc
+	src/OPERATORS/op-cm-cm.cc src/OPERATORS/op-cm-cs.cc src/OPERATORS
+	/op-cm-dm.cc src/OPERATORS/op-cm-m.cc src/OPERATORS/op-cm-pm.cc
+	src/OPERATORS/op-cm-s.cc src/OPERATORS/op-cm-scm.cc src/OPERATORS
+	/op-cm-sm.cc src/OPERATORS/op-cs-cm.cc src/OPERATORS/op-cs-cs.cc
+	src/OPERATORS/op-cs-m.cc src/OPERATORS/op-cs-s.cc src/OPERATORS/op-
+	cs-scm.cc src/OPERATORS/op-cs-sm.cc src/OPERATORS/op-dm-cdm.cc
+	src/OPERATORS/op-dm-cm.cc src/OPERATORS/op-dm-cs.cc src/OPERATORS
+	/op-dm-dm.cc src/OPERATORS/op-dm-m.cc src/OPERATORS/op-dm-s.cc
+	src/OPERATORS/op-dm-scm.cc src/OPERATORS/op-dm-sm.cc src/OPERATORS
+	/op-dm-template.cc src/OPERATORS/op-dms-template.cc src/OPERATORS
+	/op-double-conv.cc src/OPERATORS/op-fcdm-fcdm.cc src/OPERATORS/op-
+	fcdm-fcm.cc src/OPERATORS/op-fcdm-fcs.cc src/OPERATORS/op-fcdm-
+	fdm.cc src/OPERATORS/op-fcdm-fm.cc src/OPERATORS/op-fcdm-fs.cc
+	src/OPERATORS/op-fcm-fcdm.cc src/OPERATORS/op-fcm-fcm.cc
+	src/OPERATORS/op-fcm-fcs.cc src/OPERATORS/op-fcm-fdm.cc
+	src/OPERATORS/op-fcm-fm.cc src/OPERATORS/op-fcm-fs.cc src/OPERATORS
+	/op-fcm-pm.cc src/OPERATORS/op-fcn.cc src/OPERATORS/op-fcs-fcm.cc
+	src/OPERATORS/op-fcs-fcs.cc src/OPERATORS/op-fcs-fm.cc src/OPERATORS
+	/op-fcs-fs.cc src/OPERATORS/op-fdm-fcdm.cc src/OPERATORS/op-fdm-
+	fcm.cc src/OPERATORS/op-fdm-fcs.cc src/OPERATORS/op-fdm-fdm.cc
+	src/OPERATORS/op-fdm-fm.cc src/OPERATORS/op-fdm-fs.cc src/OPERATORS
+	/op-float-conv.cc src/OPERATORS/op-fm-fcdm.cc src/OPERATORS/op-fm-
+	fcm.cc src/OPERATORS/op-fm-fcs.cc src/OPERATORS/op-fm-fdm.cc
+	src/OPERATORS/op-fm-fm.cc src/OPERATORS/op-fm-fs.cc src/OPERATORS
+	/op-fm-pm.cc src/OPERATORS/op-fs-fcm.cc src/OPERATORS/op-fs-fcs.cc
+	src/OPERATORS/op-fs-fm.cc src/OPERATORS/op-fs-fs.cc
+	src/OPERATORS/op-i16-i16.cc src/OPERATORS/op-i32-i32.cc
+	src/OPERATORS/op-i64-i64.cc src/OPERATORS/op-i8-i8.cc src/OPERATORS
+	/op-int-concat.cc src/OPERATORS/op-int-conv.cc src/OPERATORS/op-
+	int.h src/OPERATORS/op-m-cdm.cc src/OPERATORS/op-m-cm.cc
+	src/OPERATORS/op-m-cs.cc src/OPERATORS/op-m-dm.cc
+	src/OPERATORS/op-m-m.cc src/OPERATORS/op-m-pm.cc
+	src/OPERATORS/op-m-s.cc src/OPERATORS/op-m-scm.cc
+	src/OPERATORS/op-m-sm.cc src/OPERATORS/op-pm-cm.cc src/OPERATORS/op-
+	pm-fcm.cc src/OPERATORS/op-pm-fm.cc src/OPERATORS/op-pm-m.cc
+	src/OPERATORS/op-pm-pm.cc src/OPERATORS/op-pm-scm.cc src/OPERATORS
+	/op-pm-sm.cc src/OPERATORS/op-pm-template.cc src/OPERATORS/op-
+	range.cc src/OPERATORS/op-s-cm.cc src/OPERATORS/op-s-cs.cc
+	src/OPERATORS/op-s-m.cc src/OPERATORS/op-s-s.cc
+	src/OPERATORS/op-s-scm.cc src/OPERATORS/op-s-sm.cc src/OPERATORS/op-
+	sbm-b.cc src/OPERATORS/op-sbm-bm.cc src/OPERATORS/op-sbm-sbm.cc
+	src/OPERATORS/op-scm-cm.cc src/OPERATORS/op-scm-cs.cc src/OPERATORS
+	/op-scm-m.cc src/OPERATORS/op-scm-s.cc src/OPERATORS/op-scm-scm.cc
+	src/OPERATORS/op-scm-sm.cc src/OPERATORS/op-sm-cm.cc src/OPERATORS
+	/op-sm-cs.cc src/OPERATORS/op-sm-m.cc src/OPERATORS/op-sm-s.cc
+	src/OPERATORS/op-sm-scm.cc src/OPERATORS/op-sm-sm.cc src/OPERATORS
+	/op-str-m.cc src/OPERATORS/op-str-s.cc src/OPERATORS/op-str-str.cc
+	src/OPERATORS/op-struct.cc src/OPERATORS/op-ui16-ui16.cc
+	src/OPERATORS/op-ui32-ui32.cc src/OPERATORS/op-ui64-ui64.cc
+	src/OPERATORS/op-ui8-ui8.cc src/TEMPLATE-INST/Array-os.cc src
+	/TEMPLATE-INST/Array-sym.cc src/TEMPLATE-INST/Array-tc.cc src
+	/TEMPLATE-INST/module.mk src/bitfcns.cc src/builtins.h src/c-file-
+	ptr-stream.cc src/c-file-ptr-stream.h src/comment-list.cc src
+	/comment-list.h src/cutils.c src/cutils.h src/data.cc src/data.h
+	src/debug.cc src/debug.h src/defaults.cc src/defaults.h.in src
+	/defun-dld.h src/defun-int.h src/defun.cc src/defun.h src/dirfns.cc
+	src/dirfns.h src/display.cc src/display.h src/dynamic-ld.cc src
+	/dynamic-ld.h src/error.cc src/error.h src/file-io.cc src/file-io.h
+	src/find-defun-files.sh src/gendoc.pl src/genprops.awk src/gl-
+	render.cc src/gl-render.h src/gl2ps-renderer.cc src/gl2ps-renderer.h
+	src/gl2ps.c src/gl2ps.h src/graphics.cc src/graphics.h.in
+	src/gripes.cc src/gripes.h src/help.cc src/help.h src/input.cc
+	src/input.h src/lex.h src/lex.ll src/link-deps.mk src/load-path.cc
+	src/load-path.h src/load-save.cc src/load-save.h src/ls-ascii-
+	helper.cc src/ls-ascii-helper.h src/ls-hdf5.cc src/ls-hdf5.h src/ls-
+	mat-ascii.cc src/ls-mat-ascii.h src/ls-mat4.cc src/ls-mat4.h src/ls-
+	mat5.cc src/ls-mat5.h src/ls-oct-ascii.cc src/ls-oct-ascii.h src/ls-
+	oct-binary.cc src/ls-oct-binary.h src/ls-utils.cc src/ls-utils.h
+	src/main.c src/mappers.cc src/matherr.c src/mex.cc src/mex.h
+	src/mexproto.h src/mk-errno-list src/mk-pkg-add src/mkbuiltins
+	src/mkdefs src/mkdocs src/mkoctfile.cc.in src/mkoctfile.in src/mkops
+	src/mxarray.h.in src/oct-conf.h.in src/oct-errno.cc.in src/oct-
+	errno.h src/oct-fstrm.cc src/oct-fstrm.h src/oct-hdf5.h src/oct-
+	hist.cc src/oct-hist.h src/oct-iostrm.cc src/oct-iostrm.h src/oct-
+	lvalue.cc src/oct-lvalue.h src/oct-map.cc src/oct-map.h src/oct-
+	obj.cc src/oct-obj.h src/oct-parse.yy src/oct-prcstrm.cc src/oct-
+	prcstrm.h src/oct-procbuf.cc src/oct-procbuf.h src/oct-stdstrm.h src
+	/oct-stream.cc src/oct-stream.h src/oct-strstrm.cc src/oct-strstrm.h
+	src/oct.h src/octave-config.cc.in src/octave-config.in src/octave.cc
+	src/octave.gperf src/octave.h src/ops.h src/ov-base-diag.cc src/ov-
+	base-diag.h src/ov-base-int.cc src/ov-base-int.h src/ov-base-mat.cc
+	src/ov-base-mat.h src/ov-base-scalar.cc src/ov-base-scalar.h src/ov-
+	base-sparse.cc src/ov-base-sparse.h src/ov-base.cc src/ov-base.h src
+	/ov-bool-mat.cc src/ov-bool-mat.h src/ov-bool-sparse.cc src/ov-bool-
+	sparse.h src/ov-bool.cc src/ov-bool.h src/ov-builtin.cc src/ov-
+	builtin.h src/ov-cell.cc src/ov-cell.h src/ov-ch-mat.cc src/ov-ch-
+	mat.h src/ov-class.cc src/ov-class.h src/ov-colon.cc src/ov-colon.h
+	src/ov-complex.cc src/ov-complex.h src/ov-cs-list.cc src/ov-cs-
+	list.h src/ov-cx-diag.cc src/ov-cx-diag.h src/ov-cx-mat.cc src/ov-
+	cx-mat.h src/ov-cx-sparse.cc src/ov-cx-sparse.h src/ov-dld-fcn.cc
+	src/ov-dld-fcn.h src/ov-fcn-handle.cc src/ov-fcn-handle.h src/ov-
+	fcn-inline.cc src/ov-fcn-inline.h src/ov-fcn.cc src/ov-fcn.h src/ov-
+	float.cc src/ov-float.h src/ov-flt-complex.cc src/ov-flt-complex.h
+	src/ov-flt-cx-diag.cc src/ov-flt-cx-diag.h src/ov-flt-cx-mat.cc src
+	/ov-flt-cx-mat.h src/ov-flt-re-diag.cc src/ov-flt-re-diag.h src/ov-
+	flt-re-mat.cc src/ov-flt-re-mat.h src/ov-int-traits.h src/ov-
+	int16.cc src/ov-int16.h src/ov-int32.cc src/ov-int32.h src/ov-
+	int64.cc src/ov-int64.h src/ov-int8.cc src/ov-int8.h src/ov-intx.h
+	src/ov-lazy-idx.cc src/ov-lazy-idx.h src/ov-mex-fcn.cc src/ov-mex-
+	fcn.h src/ov-null-mat.cc src/ov-null-mat.h src/ov-oncleanup.cc src
+	/ov-oncleanup.h src/ov-perm.cc src/ov-perm.h src/ov-range.cc src/ov-
+	range.h src/ov-re-diag.cc src/ov-re-diag.h src/ov-re-mat.cc src/ov-
+	re-mat.h src/ov-re-sparse.cc src/ov-re-sparse.h src/ov-scalar.cc src
+	/ov-scalar.h src/ov-str-mat.cc src/ov-str-mat.h src/ov-struct.cc src
+	/ov-struct.h src/ov-type-conv.h src/ov-typeinfo.cc src/ov-typeinfo.h
+	src/ov-uint16.cc src/ov-uint16.h src/ov-uint32.cc src/ov-uint32.h
+	src/ov-uint64.cc src/ov-uint64.h src/ov-uint8.cc src/ov-uint8.h src
+	/ov-usr-fcn.cc src/ov-usr-fcn.h src/ov.cc src/ov.h src/pager.cc
+	src/pager.h src/parse.h src/pr-output.cc src/pr-output.h
+	src/procstream.cc src/procstream.h src/profiler.cc src/profiler.h
+	src/pt-all.h src/pt-arg-list.cc src/pt-arg-list.h src/pt-assign.cc
+	src/pt-assign.h src/pt-binop.cc src/pt-binop.h src/pt-bp.cc src/pt-
+	bp.h src/pt-cbinop.cc src/pt-cbinop.h src/pt-cell.cc src/pt-cell.h
+	src/pt-check.cc src/pt-check.h src/pt-cmd.cc src/pt-cmd.h src/pt-
+	colon.cc src/pt-colon.h src/pt-const.cc src/pt-const.h src/pt-
+	decl.cc src/pt-decl.h src/pt-eval.cc src/pt-eval.h src/pt-except.cc
+	src/pt-except.h src/pt-exp.cc src/pt-exp.h src/pt-fcn-handle.cc src
+	/pt-fcn-handle.h src/pt-id.cc src/pt-id.h src/pt-idx.cc src/pt-idx.h
+	src/pt-jump.cc src/pt-jump.h src/pt-loop.cc src/pt-loop.h src/pt-
+	mat.cc src/pt-mat.h src/pt-misc.cc src/pt-misc.h src/pt-pr-code.cc
+	src/pt-pr-code.h src/pt-select.cc src/pt-select.h src/pt-stmt.cc src
+	/pt-stmt.h src/pt-unop.cc src/pt-unop.h src/pt-walk.h src/pt.cc
+	src/pt.h src/sighandlers.cc src/sighandlers.h src/siglist.c
+	src/siglist.h src/sparse-xdiv.cc src/sparse-xdiv.h src/sparse-
+	xpow.cc src/sparse-xpow.h src/sparse.cc src/strfns.cc src/symtab.cc
+	src/symtab.h src/syscalls.cc src/sysdep.cc src/sysdep.h src/token.cc
+	src/token.h src/toplev.cc src/toplev.h src/txt-eng-ft.cc src/txt-
+	eng-ft.h src/txt-eng.h src/unwind-prot.cc src/unwind-prot.h
+	src/utils.cc src/utils.h src/variables.cc src/variables.h
+	src/version.h.in src/xdiv.cc src/xdiv.h src/xgl2ps.c src/xnorm.cc
+	src/xnorm.h src/xpow.cc src/xpow.h src/zfstream.cc src/zfstream.h
+	test/bc_overloads_expected test/build_bc_overload_tests.sh
+	test/build_sparse_tests.sh test/class-concat/test_class_concat.m
+	test/classes/test_classes.m test/ctor-vs-
+	method/test_ctor_vs_method.m test/fcn-handle-derived-
+	resolution/test_fcn_handle_derived_resolution.m test/test_args.m
+	test/test_diag_perm.m test/test_error.m test/test_eval-catch.m
+	test/test_for.m test/test_func.m test/test_global.m test/test_if.m
+	test/test_index.m test/test_io.m test/test_line_continue.m
+	test/test_logical_index.m test/test_null_assign.m test/test_parser.m
+	test/test_prefer.m test/test_range.m test/test_recursion.m
+	test/test_return.m test/test_slice.m test/test_struct.m
+	test/test_switch.m test/test_system.m test/test_transpose.m
+	test/test_try.m test/test_unwind.m test/test_while.m
+
+2013-07-30  Jordi Gutiérrez Hermoso  <jordigh@octave.org>
+
+	* Makefile.am (doxyhtml): Restore doxyhtml argument in recursive make call
+
+	Files: Makefile.am
+
+2013-07-29  Jordi Gutiérrez Hermoso  <jordigh@octave.org>
+
+	Remove all-local target from doc/doxyhtml/Makefile.am. It makes Doxygen obligatory
+
+	Files: doc/doxyhtml/Makefile.am
+
+2013-07-28  Jordi Gutiérrez Hermoso  <jordigh@octave.org>
+
+	Write the intro text for the main Doxygen page.
+
+	* main.c: Add text for main Doxygen page
+
+	Files: src/main.c
+
+	Properly incorporate Doxygen into the build system
+
+	* Doxyfile.in: Rename from Doxyfile and move to doc/doxyhtml
+	  directory. Templatise properly with autoconf macros. Configuration
+	  tweaks: expand DEFUN macros, show namespaces, document the GUI
+	  sources, don't strip Doxygen comments from the source, allow dot to
+	  create larger graphs. Also add a a tagline and the Octave logo.
+
+	* doc/doxyhtml/README: New file, grafted from the dev branch.
+
+	* doc/doxyhtml/Makefile.am: New file, handles doxyhtml target.
+
+	* Makefile.am: Add doxyhtml target.
+
+	* configure.ac: Add doxyhtml files to AC_CONFIG_FILES
+
+	Files: Doxyfile Makefile.am configure.ac doc/doxyhtml/Doxyfile.in
+	doc/doxyhtml/Makefile.am doc/doxyhtml/README
+
+2013-05-01  Jordi Gutiérrez Hermoso  <jordigh@octave.org>
+
+	doc: fix some minor sparse documentation oversights
+
+	Files: doc/interpreter/sparse.txi
+
+	doc: remove git from list of build dependencies
+
+	Files: doc/interpreter/contrib.txi
+
+2013-04-11  John W. Eaton  <jwe@octave.org>
+
+	evaluate compound binary and binary expression the same way (bug #38704)
+
+	* pt-cbinop.h, pt-cbinop.cc
+	(tree_compound_binary_expression::rvalue1): Delete.
+
+	Files: src/pt-cbinop.cc src/pt-cbinop.h
+
+2013-04-09  Rik  <rik@octave.org>
+
+	Backport working embedded.cc example for documentation.
+
+	* doc/interpreter/dynamic.txi: Change documented output of embedded.cc to match
+	new output.
+
+	* examples/embedded.cc: Backported from 3.7.2+.  Does not call gcd() with
+	a matrix input which is unsupported.
+
+	Files: doc/interpreter/dynamic.txi examples/embedded.cc
+
+2013-03-07  Jordi Gutiérrez Hermoso  <jordigh@octave.org>
+
+	Doxyfile: miscellaneous tweaks
+
+	Files: Doxyfile
+
+	Doxyfile: new file for generating Doxygen output
+
+	Files: Doxyfile
+
+2013-03-07  Michael Godfrey  <michaeldgodfrey@gmail.com>
+
+	put save functions text after save command
+
+	Files: doc/interpreter/io.txi
+
+2013-03-04  Jordi Gutiérrez Hermoso  <jordigh@octave.org>
+
+	doc: Update 'test' and "fail" documentation
+
+	With thanks to Iain Cunningham <iain.cunningham@eese.co.uk>
+
+	* testfun.txi: Add more examples on how to use fail, assert, error,
+	  and xtest.
+
+	* fail.m: Explain more the kind of input that fail needs and how it
+	  behaves.
+
+	Files: doc/interpreter/testfun.txi scripts/testfun/fail.m
+
 2013-02-21  John W. Eaton  <jwe@octave.org>
 
 	Added tag release-3-6-4 for changeset b29b10fbb744

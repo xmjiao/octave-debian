@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2012 John W. Eaton
+@c Copyright (C) 1996-2013 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -58,11 +58,11 @@ Types}, for more information about creating matrices.
 @menu
 * Escape Sequences in String Constants::
 * Character Arrays::
-* Creating Strings:: 
-* Comparing Strings::           
-* Manipulating Strings::     
-* String Conversions::          
-* Character Class Functions::   
+* Creating Strings::
+* Comparing Strings::
+* Manipulating Strings::
+* String Conversions::
+* Character Class Functions::
 @end menu
 
 @node Escape Sequences in String Constants
@@ -98,7 +98,7 @@ Represents a literal double-quote character, @samp{"}.
 Represents a literal single-quote character, @samp{'}.
 
 @item \0
-Represents the ``nul'' character, control-@@, ASCII code 0.
+Represents the null character, control-@@, ASCII code 0.
 
 @item \a
 Represents the ``alert'' character, control-g, ASCII code 7.
@@ -121,21 +121,17 @@ Represents a horizontal tab, control-i, ASCII code 9.
 @item \v
 Represents a vertical tab, control-k, ASCII code 11.
 
-@c We don't do octal or hex this way yet.
-@c
-@c @item \@var{nnn}
-@c Represents the octal value @var{nnn}, where @var{nnn} are one to three
-@c digits between 0 and 7.  For example, the code for the ASCII ESC
-@c (escape) character is @samp{\033}.@refill
-@c 
-@c @item \x@var{hh}@dots{}
-@c Represents the hexadecimal value @var{hh}, where @var{hh} are hexadecimal
-@c digits (@samp{0} through @samp{9} and either @samp{A} through @samp{F} or
-@c @samp{a} through @samp{f}).  Like the same construct in @sc{ansi} C,
-@c the escape 
-@c sequence continues until the first non-hexadecimal digit is seen.  However,
-@c using more than two hexadecimal digits produces undefined results.  (The
-@c @samp{\x} escape sequence is not allowed in @sc{posix} @code{awk}.)@refill
+@item \@var{nnn}
+Represents the octal value @var{nnn}, where @var{nnn} are one to three
+digits between 0 and 7.  For example, the code for the ASCII ESC
+(escape) character is @samp{\033}.
+
+@item \x@var{hh}@dots{}
+Represents the hexadecimal value @var{hh}, where @var{hh} are hexadecimal
+digits (@samp{0} through @samp{9} and either @samp{A} through @samp{F} or
+@samp{a} through @samp{f}).  Like the same construct in @sc{ansi} C,
+the escape sequence continues until the first non-hexadecimal digit is seen.
+However, using more than two hexadecimal digits produces undefined results.
 @end table
 
 In a single-quoted string there is only one escape sequence: you may insert a
@@ -152,19 +148,19 @@ example,
 In scripts the two different string types can be distinguished if necessary
 by using @code{is_dq_string} and @code{is_sq_string}.
 
-@c is_dq_string src/ov.cc
-@anchor{doc-is_dq_string}
+@c is_dq_string libinterp/octave-value/ov.cc
+@anchor{XREFis_dq_string}
 @deftypefn {Built-in Function} {} is_dq_string (@var{x})
 Return true if @var{x} is a double-quoted character string.
-@seealso{@ref{doc-is_sq_string,,is_sq_string}, @ref{doc-ischar,,ischar}}
+@seealso{@ref{XREFis_sq_string,,is_sq_string}, @ref{XREFischar,,ischar}}
 @end deftypefn
 
 
-@c is_sq_string src/ov.cc
-@anchor{doc-is_sq_string}
+@c is_sq_string libinterp/octave-value/ov.cc
+@anchor{XREFis_sq_string}
 @deftypefn {Built-in Function} {} is_sq_string (@var{x})
 Return true if @var{x} is a single-quoted character string.
-@seealso{@ref{doc-is_dq_string,,is_dq_string}, @ref{doc-ischar,,ischar}}
+@seealso{@ref{XREFis_dq_string,,is_dq_string}, @ref{XREFischar,,ischar}}
 @end deftypefn
 
 
@@ -172,13 +168,13 @@ Return true if @var{x} is a single-quoted character string.
 @section Character Arrays
 
 The string representation used by Octave is an array of characters, so
-internally the string "dddddddddd" is actually a row vector of length 10
-containing the value 100 in all places (100 is the ASCII code of "d").  This
-lends itself to the obvious generalization to character matrices.  Using a
-matrix of characters, it is possible to represent a collection of same-length
-strings in one variable.  The convention used in Octave is that each row in a
-character matrix is a separate string, but letting each column represent a
-string is equally possible.
+internally the string @nospell{@qcode{"dddddddddd"}} is actually a row vector
+of length 10 containing the value 100 in all places (100 is the ASCII code of
+@qcode{"d"}).  This lends itself to the obvious generalization to character
+matrices.  Using a matrix of characters, it is possible to represent a
+collection of same-length strings in one variable.  The convention used in
+Octave is that each row in a character matrix is a separate string, but letting
+each column represent a string is equally possible.
 
 The easiest way to create a character matrix is to put several strings
 together into a matrix.
@@ -193,11 +189,11 @@ This creates a 2-by-9 character matrix.
 The function @code{ischar} can be used to test if an object is a character
 matrix.
 
-@c ischar src/strfns.cc
-@anchor{doc-ischar}
+@c ischar libinterp/corefcn/strfns.cc
+@anchor{XREFischar}
 @deftypefn {Built-in Function} {} ischar (@var{x})
 Return true if @var{x} is a character array.
-@seealso{@ref{doc-isfloat,,isfloat}, @ref{doc-isinteger,,isinteger}, @ref{doc-islogical,,islogical}, @ref{doc-isnumeric,,isnumeric}, @ref{doc-iscellstr,,iscellstr}, @ref{doc-isa,,isa}}
+@seealso{@ref{XREFisfloat,,isfloat}, @ref{XREFisinteger,,isinteger}, @ref{XREFislogical,,islogical}, @ref{XREFisnumeric,,isnumeric}, @ref{XREFiscellstr,,iscellstr}, @ref{XREFisa,,isa}}
 @end deftypefn
 
 
@@ -207,14 +203,14 @@ matrix) you can use the @code{ischar} function in combination with the
 
 @example
 @group
-ischar(collection)
-     @result{} ans = 1
+ischar (collection)
+     @result{} 1
 
-ischar(collection) && isvector(collection)
-     @result{} ans = 0
+ischar (collection) && isvector (collection)
+     @result{} 0
 
-ischar("my string") && isvector("my string")
-     @result{} ans = 1
+ischar ("my string") && isvector ("my string")
+     @result{} 1
 @end group
 @end example
 
@@ -224,28 +220,28 @@ puts blank characters at the end of strings shorter than the longest
 string.  It is possible to use a different character than the
 blank character using the @code{string_fill_char} function.
 
-@c string_fill_char src/pt-mat.cc
-@anchor{doc-string_fill_char}
+@c string_fill_char libinterp/parse-tree/pt-mat.cc
+@anchor{XREFstring_fill_char}
 @deftypefn  {Built-in Function} {@var{val} =} string_fill_char ()
 @deftypefnx {Built-in Function} {@var{old_val} =} string_fill_char (@var{new_val})
 @deftypefnx {Built-in Function} {} string_fill_char (@var{new_val}, "local")
 Query or set the internal variable used to pad all rows of a character
 matrix to the same length.  It must be a single character.  The default
-value is @code{" "} (a single space).  For example:
+value is @qcode{" "} (a single space).  For example:
 
 @example
 @group
 string_fill_char ("X");
 [ "these"; "are"; "strings" ]
-     @result{} "theseXX"
-        "areXXXX"
-        "strings"
+      @result{}  "theseXX"
+          "areXXXX"
+          "strings"
 @end group
 @end example
 
-When called from inside a function with the "local" option, the variable is
-changed locally for the function and any subroutines it calls.  The original
-variable value is restored when exiting the function.
+When called from inside a function with the @qcode{"local"} option, the
+variable is changed locally for the function and any subroutines it calls.  
+The original variable value is restored when exiting the function.
 @end deftypefn
 
 
@@ -263,38 +259,55 @@ function @code{blanks} creates a string of a given length consisting
 only of blank characters (ASCII code 32).
 
 @c blanks scripts/strings/blanks.m
-@anchor{doc-blanks}
+@anchor{XREFblanks}
 @deftypefn {Function File} {} blanks (@var{n})
 Return a string of @var{n} blanks, for example:
 
 @example
 @group
 blanks (10);
-whos ans;
+whos ans
      @result{}
       Attr Name        Size                     Bytes  Class
       ==== ====        ====                     =====  =====
            ans         1x10                        10  char
 @end group
 @end example
-@seealso{@ref{doc-repmat,,repmat}}
+@seealso{@ref{XREFrepmat,,repmat}}
 @end deftypefn
 
 
 @menu
-* Concatenating Strings:: 
-* Conversion of Numerical Data to Strings::
+* Concatenating Strings::
+* Converting Numerical Data to Strings::
 @end menu
 
 @node Concatenating Strings
 @subsection Concatenating Strings
 
-It has been shown above that strings can be concatenated using matrix notation
-(@pxref{Strings}, @ref{Character Arrays}).  Apart from that, there are several
-functions to concatenate string objects: @code{char},
-@code{strvcat}, @code{strcat} and @code{cstrcat}.  In addition, the general
-purpose concatenation functions can be used: see @ref{doc-cat,,cat},
-@ref{doc-horzcat,,horzcat} and @ref{doc-vertcat,,vertcat}.
+Strings can be concatenated using matrix notation
+(@pxref{Strings}, @ref{Character Arrays}) which is often the most natural
+method.  For example:
+
+@example
+@group
+fullname = [fname ".txt"];
+email = ["<" user "@@" domain ">"];
+@end group
+@end example
+
+@noindent
+In each case it is easy to see what the final string will look like.  This
+method is also the most efficient.  When using matrix concatenation the parser
+immediately begins joining the strings without having to process
+the overhead of a function call and the input validation of the associated
+function.
+
+Nevertheless, there are several other functions for concatenating string
+objects which can be useful in specific circumstances: @code{char},
+@code{strvcat}, @code{strcat}, and @code{cstrcat}.  Finally, the general
+purpose concatenation functions can be used: see @ref{XREFcat,,cat},
+@ref{XREFhorzcat,,horzcat}, and @ref{XREFvertcat,,vertcat}.
 
 @itemize @bullet
 @item All string concatenation functions except @code{cstrcat}
@@ -303,9 +316,8 @@ character for each element, as in the following example:
 
 @example
 @group
-char([98, 97, 110, 97, 110, 97])
-     @result{} ans =
-       banana
+char ([98, 97, 110, 97, 110, 97])
+   @result{} banana
 @end group
 @end example
 
@@ -316,16 +328,14 @@ horizontally.  For example:
 
 @example
 @group
-char("an apple", "two pears")
-     @result{} ans =
-       an apple
+char ("an apple", "two pears")
+    @result{} an apple
        two pears
 @end group
 
 @group
-strcat("oc", "tave", " is", " good", " for you")
-     @result{} ans =
-       octave is good for you
+strcat ("oc", "tave", " is", " good", " for you")
+     @result{} octave is good for you
 @end group
 @end example
 
@@ -335,18 +345,16 @@ eliminates empty strings.
 
 @example
 @group
-char("orange", "green", "", "red")
-     @result{} ans =
-       orange
+char ("orange", "green", "", "red")
+    @result{} orange
        green 
-             
-       red   
+
+       red
 @end group
 
 @group
-strvcat("orange", "green", "", "red")
-     @result{} ans =
-       orange
+strvcat ("orange", "green", "", "red")
+    @result{} orange
        green 
        red  
 @end group
@@ -359,21 +367,20 @@ concatenates within the cells of the cell arrays:
 
 @example
 @group
-char(@{"red", "green", "", "blue"@})
-     @result{} ans =
-       red  
-       green
+char (@{"red", "green", "", "blue"@})
+     @result{} red  
+        green
 
-       blue 
+        blue 
 @end group
 
 @group
-strcat(@{"abc"; "ghi"@}, @{"def"; "jkl"@})
-     @result{} ans =
-       @{
-         [1,1] = abcdef
-         [2,1] = ghijkl
-       @}
+strcat (@{"abc"; "ghi"@}, @{"def"; "jkl"@})
+     @result{}
+        @{
+          [1,1] = abcdef
+          [2,1] = ghijkl
+        @}
 @end group
 @end example
 
@@ -383,17 +390,15 @@ kinds of behavior can be useful as can be seen in the examples:
 
 @example
 @group
-strcat(["dir1";"directory2"], ["/";"/"], ["file1";"file2"])
-     @result{} ans =
-       dir1/file1      
-       directory2/file2
+strcat (["dir1";"directory2"], ["/";"/"], ["file1";"file2"])
+     @result{} dir1/file1
+        directory2/file2
 @end group
 @group
 
-cstrcat(["thirteen apples"; "a banana"], [" 5$";" 1$"])
-     @result{} ans =
-       thirteen apples 5$
-       a banana        1$
+cstrcat (["thirteen apples"; "a banana"], [" 5$";" 1$"])
+      @result{} thirteen apples 5$
+         a banana        1$
 @end group
 @end example
 
@@ -402,8 +407,8 @@ from the internal representation of the strings in a string array
 (@pxref{Character Arrays}).
 @end itemize
 
-@c char src/strfns.cc
-@anchor{doc-char}
+@c char libinterp/corefcn/strfns.cc
+@anchor{XREFchar}
 @deftypefn  {Built-in Function} {} char (@var{x})
 @deftypefnx {Built-in Function} {} char (@var{x}, @dots{})
 @deftypefnx {Built-in Function} {} char (@var{s1}, @var{s2}, @dots{})
@@ -426,21 +431,21 @@ For example:
 @example
 @group
 char ([97, 98, 99], "", @{"98", "99", 100@}, "str1", ["ha", "lf"])
-     @result{} ["abc    "
-         "       "
-         "98     "
-         "99     "
-         "d      "
-         "str1   "
-         "half   "]
+   @result{} ["abc    "
+       "       "
+       "98     "
+       "99     "
+       "d      "
+       "str1   "
+       "half   "]
 @end group
 @end example
-@seealso{@ref{doc-strvcat,,strvcat}, @ref{doc-cellstr,,cellstr}}
+@seealso{@ref{XREFstrvcat,,strvcat}, @ref{XREFcellstr,,cellstr}}
 @end deftypefn
 
 
-@c strvcat src/strfns.cc
-@anchor{doc-strvcat}
+@c strvcat libinterp/corefcn/strfns.cc
+@anchor{XREFstrvcat}
 @deftypefn  {Built-in Function} {} strvcat (@var{x})
 @deftypefnx {Built-in Function} {} strvcat (@var{x}, @dots{})
 @deftypefnx {Built-in Function} {} strvcat (@var{s1}, @var{s2}, @dots{})
@@ -463,56 +468,81 @@ For example:
 @example
 @group
 strvcat ([97, 98, 99], "", @{"98", "99", 100@}, "str1", ["ha", "lf"])
-     @result{} ["abc    "
-         "98     "
-         "99     "
-         "d      "
-         "str1   "
-         "half   "]
+      @result{} ["abc    "
+          "98     "
+          "99     "
+          "d      "
+          "str1   "
+          "half   "]
 @end group
 @end example
-@seealso{@ref{doc-char,,char}, @ref{doc-strcat,,strcat}, @ref{doc-cstrcat,,cstrcat}}
+@seealso{@ref{XREFchar,,char}, @ref{XREFstrcat,,strcat}, @ref{XREFcstrcat,,cstrcat}}
 @end deftypefn
 
 
 @c strcat scripts/strings/strcat.m
-@anchor{doc-strcat}
+@anchor{XREFstrcat}
 @deftypefn {Function File} {} strcat (@var{s1}, @var{s2}, @dots{})
 Return a string containing all the arguments concatenated
-horizontally.  If the arguments are cells strings,  @code{strcat}
+horizontally.  If the arguments are cell strings, @code{strcat}
 returns a cell string with the individual cells concatenated.
 For numerical input, each element is converted to the
-corresponding ASCII character.  Trailing white space is eliminated.
+corresponding ASCII character.  Trailing white space for any
+character string input is eliminated before the strings are
+concatenated.  Note that cell string values do @strong{not} have
+whitespace trimmed.
+
 For example:
+
+@example
+@group
+strcat ("|", " leading space is preserved", "|")
+    @result{} | leading space is preserved|
+@end group
+@end example
+
+@example
+@group
+strcat ("|", "trailing space is eliminated ", "|")
+    @result{} |trailing space is eliminated|
+@end group
+@end example
+
+@example
+@group
+strcat ("homogeneous space |", "  ", "| is also eliminated")
+    @result{} homogeneous space || is also eliminated
+@end group
+@end example
 
 @example
 @group
 s = [ "ab"; "cde" ];
 strcat (s, s, s)
     @result{}
-        "ab ab ab "
+        "ababab   "
         "cdecdecde"
 @end group
 @end example
 
 @example
 @group
-s = @{ "ab"; "cde" @};
+s = @{ "ab"; "cd " @};
 strcat (s, s, s)
     @result{}
         @{
           [1,1] = ababab
-          [2,1] = cdecdecde
+          [2,1] = cd cd cd 
         @}
 @end group
 @end example
 
-@seealso{@ref{doc-cstrcat,,cstrcat}, @ref{doc-char,,char}, @ref{doc-strvcat,,strvcat}}
+@seealso{@ref{XREFcstrcat,,cstrcat}, @ref{XREFchar,,char}, @ref{XREFstrvcat,,strvcat}}
 @end deftypefn
 
 
 @c cstrcat scripts/strings/cstrcat.m
-@anchor{doc-cstrcat}
+@anchor{XREFcstrcat}
 @deftypefn {Function File} {} cstrcat (@var{s1}, @var{s2}, @dots{})
 Return a string containing all the arguments concatenated
 horizontally.  Trailing white space is preserved.  For example:
@@ -528,16 +558,16 @@ cstrcat ("ab   ", "cd")
 @group
 s = [ "ab"; "cde" ];
 cstrcat (s, s, s)
-     @result{} "ab ab ab "
-        "cdecdecde"
+      @result{} "ab ab ab "
+         "cdecdecde"
 @end group
 @end example
-@seealso{@ref{doc-strcat,,strcat}, @ref{doc-char,,char}, @ref{doc-strvcat,,strvcat}}
+@seealso{@ref{XREFstrcat,,strcat}, @ref{XREFchar,,char}, @ref{XREFstrvcat,,strvcat}}
 @end deftypefn
 
 
-@node Conversion of Numerical Data to Strings 
-@subsection Conversion of Numerical Data to Strings
+@node Converting Numerical Data to Strings
+@subsection Converting Numerical Data to Strings
 Apart from the string concatenation functions (@pxref{Concatenating Strings})
 which cast numerical data to the corresponding ASCII characters, there are
 several functions that format numerical data as strings.  @code{mat2str} and
@@ -545,10 +575,10 @@ several functions that format numerical data as strings.  @code{mat2str} and
 integer matrices.  @code{int2str} takes the real part of complex values and
 round fractional values to integer.  A more flexible way to format numerical
 data as strings is the @code{sprintf} function (@pxref{Formatted Output},
-@ref{doc-sprintf}).
+@ref{XREFsprintf,,sprintf}).
 
 @c mat2str scripts/strings/mat2str.m
-@anchor{doc-mat2str}
+@anchor{XREFmat2str}
 @deftypefn  {Function File} {@var{s} =} mat2str (@var{x}, @var{n})
 @deftypefnx {Function File} {@var{s} =} mat2str (@var{x}, @var{n}, "class")
 Format real, complex, and logical matrices as strings.  The 
@@ -561,7 +591,7 @@ to the same precision.  Otherwise @code{@var{n}(1)} defines the
 precision of the real part and @code{@var{n}(2)} defines the
 precision of the imaginary part.  The default for @var{n} is 15.
 
-If the argument "class" is given then the class of @var{x} is
+If the argument @qcode{"class"} is given then the class of @var{x} is
 included in the string in such a way that @code{eval} will result in the
 construction of a matrix of the same class.
 
@@ -573,7 +603,7 @@ mat2str ([ -1/3 + i/7; 1/3 - i/7 ], [4 2])
 mat2str ([ -1/3 +i/7; 1/3 -i/7 ], [4 2])
      @result{} "[-0.3333+0i 0+0.14i;0.3333+0i -0-0.14i]"
 
-mat2str (int16([1 -1]), "class")
+mat2str (int16 ([1 -1]), "class")
      @result{} "int16([1 -1])"
 
 mat2str (logical (eye (2)))
@@ -584,12 +614,12 @@ isequal (x, eval (mat2str (x)))
 @end group
 @end example
 
-@seealso{@ref{doc-sprintf,,sprintf}, @ref{doc-num2str,,num2str}, @ref{doc-int2str,,int2str}}
+@seealso{@ref{XREFsprintf,,sprintf}, @ref{XREFnum2str,,num2str}, @ref{XREFint2str,,int2str}}
 @end deftypefn
 
 
 @c num2str scripts/general/num2str.m
-@anchor{doc-num2str}
+@anchor{XREFnum2str}
 @deftypefn  {Function File} {} num2str (@var{x})
 @deftypefnx {Function File} {} num2str (@var{x}, @var{precision})
 @deftypefnx {Function File} {} num2str (@var{x}, @var{format})
@@ -597,8 +627,9 @@ Convert a number (or array) to a string (or a character array).  The
 optional second argument may either give the number of significant
 digits (@var{precision}) to be used in the output or a format
 template string (@var{format}) as in @code{sprintf} (@pxref{Formatted
-Output}).  @code{num2str} can also handle complex numbers.  For
-example:
+Output}).  @code{num2str} can also handle complex numbers.
+
+Examples:
 
 @example
 @group
@@ -623,17 +654,23 @@ num2str (1.234 + 27.3i)
 @end group
 @end example
 
+Notes:
+
+For @sc{matlab} compatibility, leading spaces are stripped before returning
+the string.
+
 The @code{num2str} function is not very flexible.  For better control
 over the results, use @code{sprintf} (@pxref{Formatted Output}).
-Note that for complex @var{x}, the format string may only contain one
-output conversion specification and nothing else.  Otherwise, you
-will get unpredictable results.
-@seealso{@ref{doc-sprintf,,sprintf}, @ref{doc-int2str,,int2str}, @ref{doc-mat2str,,mat2str}}
+
+For complex @var{x}, the format string may only contain one
+output conversion specification and nothing else.  Otherwise, results
+will be unpredictable.
+@seealso{@ref{XREFsprintf,,sprintf}, @ref{XREFint2str,,int2str}, @ref{XREFmat2str,,mat2str}}
 @end deftypefn
 
 
 @c int2str scripts/general/int2str.m
-@anchor{doc-int2str}
+@anchor{XREFint2str}
 @deftypefn {Function File} {} int2str (@var{n})
 Convert an integer (or array of integers) to a string (or a character
 array).
@@ -649,7 +686,7 @@ s = int2str ([1, 2, 3; 4, 5, 6])
         4  5  6
 
 whos s
-     @result{} s =
+     @result{}
       Attr Name        Size                     Bytes  Class
       ==== ====        ====                     =====  =====
            s           2x7                         14  char
@@ -658,7 +695,7 @@ whos s
 
 This function is not very flexible.  For better control over the
 results, use @code{sprintf} (@pxref{Formatted Output}).
-@seealso{@ref{doc-sprintf,,sprintf}, @ref{doc-num2str,,num2str}, @ref{doc-mat2str,,mat2str}}
+@seealso{@ref{XREFsprintf,,sprintf}, @ref{XREFnum2str,,num2str}, @ref{XREFmat2str,,mat2str}}
 @end deftypefn
 
 
@@ -683,8 +720,8 @@ sensitive.  @code{strncmp} compares only the first @code{N} characters (with
 @code{N} given as a parameter).  @code{strcmpi} and @code{strncmpi} are the
 corresponding functions for case-insensitive comparison.
 
-@c strcmp src/strfns.cc
-@anchor{doc-strcmp}
+@c strcmp libinterp/corefcn/strfns.cc
+@anchor{XREFstrcmp}
 @deftypefn {Built-in Function} {} strcmp (@var{s1}, @var{s2})
 Return 1 if the character strings @var{s1} and @var{s2} are the same,
 and 0 otherwise.
@@ -698,12 +735,12 @@ or character string.
 @strong{Caution:} For compatibility with @sc{matlab}, Octave's strcmp
 function returns 1 if the character strings are equal, and 0 otherwise.
 This is just the opposite of the corresponding C library function.
-@seealso{@ref{doc-strcmpi,,strcmpi}, @ref{doc-strncmp,,strncmp}, @ref{doc-strncmpi,,strncmpi}}
+@seealso{@ref{XREFstrcmpi,,strcmpi}, @ref{XREFstrncmp,,strncmp}, @ref{XREFstrncmpi,,strncmpi}}
 @end deftypefn
 
 
-@c strncmp src/strfns.cc
-@anchor{doc-strncmp}
+@c strncmp libinterp/corefcn/strfns.cc
+@anchor{XREFstrncmp}
 @deftypefn {Built-in Function} {} strncmp (@var{s1}, @var{s2}, @var{n})
 Return 1 if the first @var{n} characters of strings @var{s1} and @var{s2} are
 the same, and 0 otherwise.
@@ -711,7 +748,7 @@ the same, and 0 otherwise.
 @example
 @group
 strncmp ("abce", "abcd", 3)
-     @result{} 1
+      @result{} 1
 @end group
 @end example
 
@@ -731,12 +768,12 @@ strncmp ("abce", @{"abcd", "bca", "abc"@}, 3)
 @strong{Caution:} For compatibility with @sc{matlab}, Octave's strncmp
 function returns 1 if the character strings are equal, and 0 otherwise.
 This is just the opposite of the corresponding C library function.
-@seealso{@ref{doc-strncmpi,,strncmpi}, @ref{doc-strcmp,,strcmp}, @ref{doc-strcmpi,,strcmpi}}
+@seealso{@ref{XREFstrncmpi,,strncmpi}, @ref{XREFstrcmp,,strcmp}, @ref{XREFstrcmpi,,strcmpi}}
 @end deftypefn
 
 
-@c strcmpi src/strfns.cc
-@anchor{doc-strcmpi}
+@c strcmpi libinterp/corefcn/strfns.cc
+@anchor{XREFstrcmpi}
 @deftypefn {Built-in Function} {} strcmpi (@var{s1}, @var{s2})
 Return 1 if the character strings @var{s1} and @var{s2} are the same,
 disregarding case of alphabetic characters, and 0 otherwise.
@@ -752,12 +789,12 @@ function returns 1 if the character strings are equal, and 0 otherwise.
 This is just the opposite of the corresponding C library function.
 
 @strong{Caution:} National alphabets are not supported.
-@seealso{@ref{doc-strcmp,,strcmp}, @ref{doc-strncmp,,strncmp}, @ref{doc-strncmpi,,strncmpi}}
+@seealso{@ref{XREFstrcmp,,strcmp}, @ref{XREFstrncmp,,strncmp}, @ref{XREFstrncmpi,,strncmpi}}
 @end deftypefn
 
 
-@c strncmpi src/strfns.cc
-@anchor{doc-strncmpi}
+@c strncmpi libinterp/corefcn/strfns.cc
+@anchor{XREFstrncmpi}
 @deftypefn {Built-in Function} {} strncmpi (@var{s1}, @var{s2}, @var{n})
 Return 1 if the first @var{n} character of @var{s1} and @var{s2} are the
 same, disregarding case of alphabetic characters, and 0 otherwise.
@@ -773,12 +810,12 @@ function returns 1 if the character strings are equal, and 0 otherwise.
 This is just the opposite of the corresponding C library function.
 
 @strong{Caution:} National alphabets are not supported.
-@seealso{@ref{doc-strncmp,,strncmp}, @ref{doc-strcmp,,strcmp}, @ref{doc-strcmpi,,strcmpi}}
+@seealso{@ref{XREFstrncmp,,strncmp}, @ref{XREFstrcmp,,strcmp}, @ref{XREFstrcmpi,,strcmpi}}
 @end deftypefn
 
 
 @c validatestring scripts/strings/validatestring.m
-@anchor{doc-validatestring}
+@anchor{XREFvalidatestring}
 @deftypefn  {Function File} {@var{validstr} =} validatestring (@var{str}, @var{strarray})
 @deftypefnx {Function File} {@var{validstr} =} validatestring (@var{str}, @var{strarray}, @var{funcname})
 @deftypefnx {Function File} {@var{validstr} =} validatestring (@var{str}, @var{strarray}, @var{funcname}, @var{varname})
@@ -790,11 +827,12 @@ When @var{str} is a character string to be tested, and @var{strarray} is a
 cellstr of valid values, then @var{validstr} will be the validated form
 of @var{str} where validation is defined as @var{str} being a member
 or substring of @var{validstr}.  This is useful for both verifying
-and expanding short options, such as "r", to their longer forms, such as
-"red".  If @var{str} is a substring of @var{validstr}, and there are
-multiple matches, the shortest match will be returned if all matches are
-substrings of each other.  Otherwise, an error will be raised because the
-expansion of @var{str} is ambiguous.  All comparisons are case insensitive.
+and expanding short options, such as @qcode{"r"}, to their longer forms,
+such as @qcode{"red"}.  If @var{str} is a substring of @var{validstr}, and
+there are multiple matches, the shortest match will be returned if all
+matches are substrings of each other.  Otherwise, an error will be raised
+because the expansion of @var{str} is ambiguous.  All comparisons are case
+insensitive.
 
 The additional inputs @var{funcname}, @var{varname}, and @var{position}
 are optional and will make any generated validation error message more
@@ -814,7 +852,7 @@ validatestring ("b", @{"red", "green", "blue", "black"@})
 @end group
 @end smallexample
 
-@seealso{@ref{doc-strcmp,,strcmp}, @ref{doc-strcmpi,,strcmpi}}
+@seealso{@ref{XREFstrcmp,,strcmp}, @ref{XREFstrcmpi,,strcmpi}}
 @end deftypefn
 
 
@@ -840,7 +878,7 @@ For more complex manipulations, such as searching, replacing, and
 general regular expressions, the following functions come with Octave.
 
 @c deblank scripts/strings/deblank.m
-@anchor{doc-deblank}
+@anchor{XREFdeblank}
 @deftypefn {Function File} {} deblank (@var{s})
 Remove trailing whitespace and nulls from @var{s}.  If @var{s}
 is a matrix, @var{deblank} trims each row to the length of longest
@@ -858,12 +896,12 @@ deblank ([" abc   "; "   def   "])
      @result{}  [" abc  " ; "   def"]
 @end group
 @end example
-@seealso{@ref{doc-strtrim,,strtrim}}
+@seealso{@ref{XREFstrtrim,,strtrim}}
 @end deftypefn
 
 
 @c strtrim scripts/strings/strtrim.m
-@anchor{doc-strtrim}
+@anchor{XREFstrtrim}
 @deftypefn {Function File} {} strtrim (@var{s})
 Remove leading and trailing whitespace from @var{s}.  If
 @var{s} is a matrix, @var{strtrim} trims each row to the length of
@@ -879,12 +917,12 @@ strtrim ([" abc   "; "   def   "])
      @result{}  ["abc  "  ; "  def"]
 @end group
 @end example
-@seealso{@ref{doc-deblank,,deblank}}
+@seealso{@ref{XREFdeblank,,deblank}}
 @end deftypefn
 
 
 @c strtrunc scripts/strings/strtrunc.m
-@anchor{doc-strtrunc}
+@anchor{XREFstrtrunc}
 @deftypefn {Function File} {} strtrunc (@var{s}, @var{n})
 Truncate the character string @var{s} to length @var{n}.  If @var{s}
 is a character matrix, then the number of columns is adjusted.
@@ -894,7 +932,7 @@ on each cell element and the new cell array is returned.
 
 
 @c findstr scripts/strings/findstr.m
-@anchor{doc-findstr}
+@anchor{XREFfindstr}
 @deftypefn  {Function File} {} findstr (@var{s}, @var{t})
 @deftypefnx {Function File} {} findstr (@var{s}, @var{t}, @var{overlap})
 Return the vector of all positions in the longer of the two strings
@@ -913,12 +951,12 @@ findstr ("abababa", "aba", 0)
 
 @strong{Caution:} @code{findstr} is scheduled for deprecation.  Use
 @code{strfind} in all new code.
-@seealso{@ref{doc-strfind,,strfind}, @ref{doc-strmatch,,strmatch}, @ref{doc-strcmp,,strcmp}, @ref{doc-strncmp,,strncmp}, @ref{doc-strcmpi,,strcmpi}, @ref{doc-strncmpi,,strncmpi}, @ref{doc-find,,find}}
+@seealso{@ref{XREFstrfind,,strfind}, @ref{XREFstrmatch,,strmatch}, @ref{XREFstrcmp,,strcmp}, @ref{XREFstrncmp,,strncmp}, @ref{XREFstrcmpi,,strcmpi}, @ref{XREFstrncmpi,,strncmpi}, @ref{XREFfind,,find}}
 @end deftypefn
 
 
 @c strchr scripts/strings/strchr.m
-@anchor{doc-strchr}
+@anchor{XREFstrchr}
 @deftypefn  {Function File} {@var{idx} =} strchr (@var{str}, @var{chars})
 @deftypefnx {Function File} {@var{idx} =} strchr (@var{str}, @var{chars}, @var{n})
 @deftypefnx {Function File} {@var{idx} =} strchr (@var{str}, @var{chars}, @var{n}, @var{direction})
@@ -929,12 +967,12 @@ the set @var{chars}.  The return value(s), as well as the @var{n} and
 
 This will be faster than using regexp in most cases.
 
-@seealso{@ref{doc-find,,find}}
+@seealso{@ref{XREFfind,,find}}
 @end deftypefn
 
 
 @c index scripts/strings/index.m
-@anchor{doc-index}
+@anchor{XREFindex}
 @deftypefn  {Function File} {} index (@var{s}, @var{t})
 @deftypefnx {Function File} {} index (@var{s}, @var{t}, @var{direction})
 Return the position of the first occurrence of the string @var{t} in the
@@ -946,19 +984,19 @@ For example:
 @example
 @group
 index ("Teststring", "t")
-   @result{} 4
+    @result{} 4
 @end group
 @end example
 
-If @var{direction} is @samp{"first"}, return the first element found.
-If @var{direction} is @samp{"last"}, return the last element found.
+If @var{direction} is @qcode{"first"}, return the first element found.
+If @var{direction} is @qcode{"last"}, return the last element found.
 
-@seealso{@ref{doc-find,,find}, @ref{doc-rindex,,rindex}}
+@seealso{@ref{XREFfind,,find}, @ref{XREFrindex,,rindex}}
 @end deftypefn
 
 
 @c rindex scripts/strings/rindex.m
-@anchor{doc-rindex}
+@anchor{XREFrindex}
 @deftypefn {Function File} {} rindex (@var{s}, @var{t})
 Return the position of the last occurrence of the character string
 @var{t} in the character string @var{s}, or 0 if no occurrence is
@@ -974,32 +1012,41 @@ rindex ("Teststring", "t")
 @end example
 
 The @code{rindex} function is equivalent to @code{index} with
-@var{direction} set to @samp{"last"}.
+@var{direction} set to @qcode{"last"}.
 
-@seealso{@ref{doc-find,,find}, @ref{doc-index,,index}}
+@seealso{@ref{XREFfind,,find}, @ref{XREFindex,,index}}
 @end deftypefn
 
 
-@c strfind src/DLD-FUNCTIONS/strfind.cc
-@anchor{doc-strfind}
-@deftypefn  {Loadable Function} {@var{idx} =} strfind (@var{str}, @var{pattern})
-@deftypefnx {Loadable Function} {@var{idx} =} strfind (@var{cellstr}, @var{pattern})
+@c strfind libinterp/corefcn/strfind.cc
+@anchor{XREFstrfind}
+@deftypefn  {Built-in Function} {@var{idx} =} strfind (@var{str}, @var{pattern})
+@deftypefnx {Built-in Function} {@var{idx} =} strfind (@var{cellstr}, @var{pattern})
+@deftypefnx {Built-in Function} {@var{idx} =} strfind (@dots{}, "overlaps", @var{val})
 Search for @var{pattern} in the string @var{str} and return the
 starting index of every such occurrence in the vector @var{idx}.
+
 If there is no such occurrence, or if @var{pattern} is longer
 than @var{str}, then @var{idx} is the empty array @code{[]}.
+The optional argument @qcode{"overlaps"} determines whether the pattern
+can match at every position in @var{str} (true), or only for unique
+occurrences of the complete pattern (false).  The default is true.
 
 If a cell array of strings @var{cellstr} is specified
-then @var{idx} is a cell array of vectors, as specified
-above.  Examples:
+then @var{idx} is a cell array of vectors, as specified above.
+
+Examples:
 
 @example
 @group
 strfind ("abababa", "aba")
      @result{} [1, 3, 5]
 
+strfind ("abababa", "aba", "overlaps", false)
+     @result{} [1, 5]
+
 strfind (@{"abababa", "bebebe", "ab"@}, "aba")
-     @result{} ans =
+     @result{}
         @{
           [1,1] =
 
@@ -1010,20 +1057,47 @@ strfind (@{"abababa", "bebebe", "ab"@}, "aba")
         @}
 @end group
 @end example
-@seealso{@ref{doc-findstr,,findstr}, @ref{doc-strmatch,,strmatch}, @ref{doc-regexp,,regexp}, @ref{doc-regexpi,,regexpi}, @ref{doc-find,,find}}
+@seealso{@ref{XREFfindstr,,findstr}, @ref{XREFstrmatch,,strmatch}, @ref{XREFregexp,,regexp}, @ref{XREFregexpi,,regexpi}, @ref{XREFfind,,find}}
+@end deftypefn
+
+
+@c strjoin scripts/strings/strjoin.m
+@anchor{XREFstrjoin}
+@deftypefn  {Function File} {@var{str} =} strjoin (@var{cstr})
+@deftypefnx {Function File} {@var{str} =} strjoin (@var{cstr}, @var{delimiter})
+Join the elements of the cell-string array, @var{cstr}, into a single
+string.
+
+If no @var{delimiter} is specified, the elements of @var{cstr}
+separated by a space.
+
+If @var{delimiter} is specified as a string, the cell-string array is
+joined using the string.  Escape sequences are supported.
+
+If @var{delimiter} is a cell-string array whose length is one less
+than @var{cstr}, then the elements of @var{cstr} are joined by
+interleaving the cell-string elements of @var{delimiter}.  Escape
+sequences are not supported.
+
+@example
+@group
+strjoin (@{'Octave','Scilab','Lush','Yorick'@}, '*')
+      @result{} 'Octave*Scilab*Lush*Yorick'
+@end group
+@end example
+@seealso {strsplit}
 @end deftypefn
 
 
 @c strmatch scripts/strings/strmatch.m
-@anchor{doc-strmatch}
+@anchor{XREFstrmatch}
 @deftypefn  {Function File} {} strmatch (@var{s}, @var{A})
 @deftypefnx {Function File} {} strmatch (@var{s}, @var{A}, "exact")
 Return indices of entries of @var{A} which begin with the string @var{s}.
 The second argument @var{A} must be a string, character matrix, or a cell
-array of strings.  If the third argument @code{"exact"} is not given, then
+array of strings.  If the third argument @qcode{"exact"} is not given, then
 @var{s} only needs to match @var{A} up to the length of @var{s}.
 Trailing spaces and nulls in @var{s} and @var{A} are ignored when matching.
-option.
 
 For example:
 
@@ -1041,13 +1115,14 @@ strmatch ("apple", ["apple  "; "apple juice"; "an apple"], "exact")
 @end example
 
 @strong{Caution:} @code{strmatch} is scheduled for deprecation.  Use
-@code{strcmpi} or @code{strncmpi} in all new code.
-@seealso{@ref{doc-strfind,,strfind}, @ref{doc-findstr,,findstr}, @ref{doc-strcmp,,strcmp}, @ref{doc-strncmp,,strncmp}, @ref{doc-strcmpi,,strcmpi}, @ref{doc-strncmpi,,strncmpi}, @ref{doc-find,,find}}
+@code{strncmp} (normal case), or @code{strcmp} (@qcode{"exact"} case), or
+@code{regexp} in all new code.
+@seealso{@ref{XREFstrfind,,strfind}, @ref{XREFfindstr,,findstr}, @ref{XREFstrcmp,,strcmp}, @ref{XREFstrncmp,,strncmp}, @ref{XREFstrcmpi,,strcmpi}, @ref{XREFstrncmpi,,strncmpi}, @ref{XREFfind,,find}}
 @end deftypefn
 
 
 @c strtok scripts/strings/strtok.m
-@anchor{doc-strtok}
+@anchor{XREFstrtok}
 @deftypefn  {Function File} {[@var{tok}, @var{rem}] =} strtok (@var{str})
 @deftypefnx {Function File} {[@var{tok}, @var{rem}] =} strtok (@var{str}, @var{delim})
 
@@ -1072,14 +1147,125 @@ strtok ("this is the life")
         rem = *27+31
 @end group
 @end example
-@seealso{@ref{doc-index,,index}, @ref{doc-strsplit,,strsplit}, @ref{doc-strchr,,strchr}, @ref{doc-isspace,,isspace}}
+@seealso{@ref{XREFindex,,index}, @ref{XREFstrsplit,,strsplit}, @ref{XREFstrchr,,strchr}, @ref{XREFisspace,,isspace}}
 @end deftypefn
 
 
 @c strsplit scripts/strings/strsplit.m
-@anchor{doc-strsplit}
-@deftypefn  {Function File} {[@var{cstr}] =} strsplit (@var{s}, @var{sep})
-@deftypefnx {Function File} {[@var{cstr}] =} strsplit (@var{s}, @var{sep}, @var{strip_empty})
+@anchor{XREFstrsplit}
+@deftypefn  {Function File} {[@var{cstr}] =} strsplit (@var{s})
+@deftypefnx {Function File} {[@var{cstr}] =} strsplit (@var{s}, @var{del})
+@deftypefnx {Function File} {[@var{cstr}] =} strsplit (@dots{}, @var{name}, @var{value})
+@deftypefnx {Function File} {[@var{cstr}, @var{matches}] =} strsplit (@dots{})
+Split the string @var{s} using the delimiters specified by @var{del}
+and return a cell-string array of sub-strings.  If a delimiter is not
+specified the string, @var{s}, is split at whitespace.  The delimiter,
+@var{del} may be a string, a scalar cell-string, or cell-string array.
+@var{del} must be a cell-string array.  By default, consecutive
+delimiters in the input string, @var{s}, are collapsed into one.
+
+The second output, @var{matches}, returns the delmiters which were matched
+in the original string.
+
+Example:
+
+@example
+strsplit ("a b c")
+      @result{}
+          @{
+            [1,1] = a
+            [1,2] = b
+            [1,3] = c
+          @}
+
+strsplit ("a,b,c", ",")
+      @result{}
+          @{
+            [1,1] = a
+            [1,2] = b
+            [1,3] = c
+          @}
+
+strsplit ("a foo b,bar c", @{"\s", "foo", "bar"@})
+      @result{}
+          @{
+            [1,1] = a
+            [1,2] = b
+            [1,3] = c
+          @}
+
+strsplit ("a,,b, c", @{",", " "@}, false)
+      @result{}
+          @{
+            [1,1] = a
+            [1,2] = 
+            [1,3] = b
+            [1,4] = 
+            [1,5] = c
+          @}
+
+@end example
+
+Supported @var{name}/@var{value} pair arguments are;
+
+@itemize
+@item @var{collapsedelimiters} may take the value of @var{true} or
+@var{false} with the default being @var{false}.
+
+@item @var{delimitertype} may take the value of @code{simple} or
+@code{regularexpression}.  The default is @var{delimitertype} is
+@code{simple}.
+@end itemize
+
+Example:
+
+@example
+strsplit ("a foo b,bar c", ",|\\s|foo|bar", "delimitertype", "regularexpression")
+      @result{}
+          @{
+            [1,1] = a
+            [1,2] = b
+            [1,3] = c
+          @}
+
+strsplit ("a,,b, c", "[, ]", false, "delimitertype", "regularexpression")
+      @result{}
+          @{
+            [1,1] = a
+            [1,2] = 
+            [1,3] = b
+            [1,4] = 
+            [1,5] = c
+          @}
+
+strsplit ("a,\t,b, c", @{',', '\s'@}, "delimitertype", "regularexpression")
+      @result{}
+          @{
+            [1,1] = a
+            [1,2] = b
+            [1,3] = c
+          @}
+
+strsplit ("a,\t,b, c", @{',', ' ', '\t'@}, "collapsedelimiters", false)
+      @result{}
+          @{
+            [1,1] = a
+            [1,2] = 
+            [1,3] = 
+            [1,4] = b
+            [1,5] = 
+            [1,6] = c
+          @}
+@end example
+
+@seealso{@ref{XREFostrsplit,,ostrsplit}, @ref{XREFstrjoin,,strjoin}, @ref{XREFstrtok,,strtok}, @ref{XREFregexp,,regexp}}
+@end deftypefn
+
+
+@c ostrsplit scripts/strings/ostrsplit.m
+@anchor{XREFostrsplit}
+@deftypefn  {Function File} {[@var{cstr}] =} ostrsplit (@var{s}, @var{sep})
+@deftypefnx {Function File} {[@var{cstr}] =} ostrsplit (@var{s}, @var{sep}, @var{strip_empty})
 Split the string @var{s} using one or more separators @var{sep} and return
 a cell array of strings.  Consecutive separators and separators at
 boundaries result in empty strings, unless @var{strip_empty} is true.
@@ -1092,7 +1278,7 @@ Example:
 
 @example
 @group
-strsplit ("a,b,c", ",")
+ostrsplit ("a,b,c", ",")
       @result{}
           @{
             [1,1] = a
@@ -1100,7 +1286,7 @@ strsplit ("a,b,c", ",")
             [1,3] = c
           @}
 
-strsplit (["a,b" ; "cde"], ",")
+ostrsplit (["a,b" ; "cde"], ",")
       @result{}
           @{
             [1,1] = a
@@ -1109,12 +1295,12 @@ strsplit (["a,b" ; "cde"], ",")
           @}
 @end group
 @end example
-@seealso{@ref{doc-strtok,,strtok}}
+@seealso{@ref{XREFstrsplit,,strsplit}, @ref{XREFstrtok,,strtok}}
 @end deftypefn
 
 
 @c strread scripts/io/strread.m
-@anchor{doc-strread}
+@anchor{XREFstrread}
 @deftypefn  {Function File} {[@var{a}, @dots{}] =} strread (@var{str})
 @deftypefnx {Function File} {[@var{a}, @dots{}] =} strread (@var{str}, @var{format})
 @deftypefnx {Function File} {[@var{a}, @dots{}] =} strread (@var{str}, @var{format}, @var{format_repeat})
@@ -1136,7 +1322,7 @@ It may contain any combination of the following specifiers:
 @item %s
 The word is parsed as a string.
 
-@itemx %f
+@item  %f
 @itemx %n
 The word is parsed as a number and converted to double.
 
@@ -1196,20 +1382,21 @@ The behavior of @code{strread} can be changed via property-value
 pairs.  The following properties are recognized:
 
 @table @asis
-@item "commentstyle"
+@item @qcode{"commentstyle"}
 Parts of @var{str} are considered comments and will be skipped.
 @var{value} is the comment style and can be any of the following.
+
 @itemize
-@item "shell"
+@item @qcode{"shell"}
 Everything from @code{#} characters to the nearest end-of-line is skipped.
 
-@item "c"
+@item @qcode{"c"}
 Everything between @code{/*} and @code{*/} is skipped.
 
-@item "c++"
+@item @qcode{"c++"}
 Everything from @code{//} characters to the nearest end-of-line is skipped.
 
-@item "matlab"
+@item @qcode{"matlab"}
 Everything from @code{%} characters to the nearest end-of-line is skipped.
 
 @item user-supplied.  Two options:
@@ -1218,64 +1405,86 @@ Everything from @code{%} characters to the nearest end-of-line is skipped.
 is skipped.
 @end itemize
 
-@item "delimiter"
+@item @qcode{"delimiter"}
 Any character in @var{value} will be used to split @var{str} into words
 (default value = any whitespace).
 
-@item "emptyvalue":
+@item @qcode{"emptyvalue"}:
 Value to return for empty numeric values in non-whitespace delimited data.
 The default is NaN@.  When the data type does not support NaN
 (int32 for example), then default is zero.
 
-@item "multipledelimsasone"
+@item @qcode{"multipledelimsasone"}
 Treat a series of consecutive delimiters, without whitespace in between,
 as a single delimiter.  Consecutive delimiter series need not be vertically
-"aligned".
+@qcode{"aligned"}.
 
-@item "treatasempty"
+@item @qcode{"treatasempty"}
 Treat single occurrences (surrounded by delimiters or whitespace) of the
 string(s) in @var{value} as missing values.
 
-@item "returnonerror"
+@item @qcode{"returnonerror"}
 If @var{value} true (1, default), ignore read errors and return normally.
 If false (0), return an error.
 
-@item "whitespace"
+@item @qcode{"whitespace"}
 Any character in @var{value} will be interpreted as whitespace and
 trimmed; the string defining whitespace must be enclosed in double
 quotes for proper processing of special characters like \t.
-The default value for whitespace = " \b\r\n\t" (note the space).
-Unless whitespace is set to '' (empty) AND at least one "%s" format
+The default value for whitespace = @qcode{" \b\r\n\t"} (note the space).
+Unless whitespace is set to '' (empty) AND at least one @qcode{"%s"} format
 conversion specifier is supplied, a space is always part of whitespace.
 
 @end table
 
-@seealso{@ref{doc-textscan,,textscan}, @ref{doc-textread,,textread}, @ref{doc-load,,load}, @ref{doc-dlmread,,dlmread}, @ref{doc-fscanf,,fscanf}}
+When the number of words in @var{str} doesn't match an exact multiple
+of the number of format conversion specifiers, strread's behavior
+depends on the last character of @var{str}:
+
+@table @asis
+@item last character = @qcode{"\n"}
+Data columns are padded with empty fields or Nan so that all columns
+have equal length 
+
+@item last character is not @qcode{"\n"}
+Data columns are not padded; strread returns columns of unequal length
+
+@end table
+
+@seealso{@ref{XREFtextscan,,textscan}, @ref{XREFtextread,,textread}, @ref{XREFload,,load}, @ref{XREFdlmread,,dlmread}, @ref{XREFfscanf,,fscanf}}
 @end deftypefn
 
 
-@c strrep src/DLD-FUNCTIONS/strfind.cc
-@anchor{doc-strrep}
-@deftypefn  {Loadable Function} {} strrep (@var{s}, @var{ptn}, @var{rep})
-@deftypefnx {Loadable Function} {} strrep (@var{s}, @var{ptn}, @var{rep}, "overlaps", @var{o})
-Replace all occurrences of the substring @var{ptn} in the string @var{s}
-with the string @var{rep} and return the result.  For example:
+@c strrep libinterp/corefcn/strfind.cc
+@anchor{XREFstrrep}
+@deftypefn  {Built-in Function} {@var{newstr} =} strrep (@var{str}, @var{ptn}, @var{rep})
+@deftypefnx {Built-in Function} {@var{newstr} =} strrep (@var{cellstr}, @var{ptn}, @var{rep})
+@deftypefnx {Built-in Function} {@var{newstr} =} strrep (@dots{}, "overlaps", @var{val})
+Replace all occurrences of the pattern @var{ptn} in the string @var{str}
+with the string @var{rep} and return the result.
+
+The optional argument @qcode{"overlaps"} determines whether the pattern
+can match at every position in @var{str} (true), or only for unique
+occurrences of the complete pattern (false).  The default is true.
+
+@var{s} may also be a cell array of strings, in which case the replacement is
+done for each element and a cell array is returned.
+
+Example:
 
 @example
 @group
 strrep ("This is a test string", "is", "&%$")
-     @result{} "Th&%$ &%$ a test string"
+    @result{}  "Th&%$ &%$ a test string"
 @end group
 @end example
 
-@var{s} may also be a cell array of strings, in which case the replacement is
-done for each element and a cell array is returned.
-@seealso{@ref{doc-regexprep,,regexprep}, @ref{doc-strfind,,strfind}, @ref{doc-findstr,,findstr}}
+@seealso{@ref{XREFregexprep,,regexprep}, @ref{XREFstrfind,,strfind}, @ref{XREFfindstr,,findstr}}
 @end deftypefn
 
 
 @c substr scripts/strings/substr.m
-@anchor{doc-substr}
+@anchor{XREFsubstr}
 @deftypefn  {Function File} {} substr (@var{s}, @var{offset})
 @deftypefnx {Function File} {} substr (@var{s}, @var{offset}, @var{len})
 Return the substring of @var{s} which starts at character number
@@ -1305,10 +1514,10 @@ This function is patterned after the equivalent function in Perl.
 @end deftypefn
 
 
-@c regexp src/DLD-FUNCTIONS/regexp.cc
-@anchor{doc-regexp}
-@deftypefn  {Loadable Function} {[@var{s}, @var{e}, @var{te}, @var{m}, @var{t}, @var{nm}] =} regexp (@var{str}, @var{pat})
-@deftypefnx {Loadable Function} {[@dots{}] =} regexp (@var{str}, @var{pat}, "@var{opt1}", @dots{})
+@c regexp libinterp/corefcn/regexp.cc
+@anchor{XREFregexp}
+@deftypefn  {Built-in Function} {[@var{s}, @var{e}, @var{te}, @var{m}, @var{t}, @var{nm}, @var{sp}] =} regexp (@var{str}, @var{pat})
+@deftypefnx {Built-in Function} {[@dots{}] =} regexp (@var{str}, @var{pat}, "@var{opt1}", @dots{})
 Regular expression string matching.  Search for @var{pat} in @var{str} and
 return the positions and substrings of any matches, or empty values if there
 are none.
@@ -1322,6 +1531,7 @@ Match any character
 
 @item * + ? @{@}
 Repetition operators, representing
+
 @table @code
 @item *
 Match zero or more times
@@ -1352,8 +1562,8 @@ Escape sequences defined below can also be used inside list
 operators.  For example, a template for a floating point number might be
 @code{[-+.\d]+}.
 
-@item ()
-Grouping operator
+@item () (?:)
+Grouping operator.  The first form, parentheses only, also creates a token.
 
 @item |
 Alternation operator.  Match one of a choice of regular expressions.  The
@@ -1364,17 +1574,21 @@ Anchoring operators.  Requires pattern to occur at the start (@code{^}) or
 end (@code{$}) of the string.
 @end table
 
-In addition, the following escaped characters have special meaning.  Note,
-it is recommended to quote @var{pat} in single quotes, rather than double
-quotes, to avoid the escape sequences being interpreted by Octave before
-being passed to @code{regexp}.
+In addition, the following escaped characters have special meaning.
 
 @table @code
-@item \b
-Match a word boundary
 
-@item \B
-Match within a word
+@item \d
+Match any digit
+
+@item \D
+Match any non-digit
+
+@item \s
+Match any whitespace character
+
+@item \S
+Match any non-whitespace character
 
 @item \w
 Match any word character
@@ -1388,18 +1602,15 @@ Match the beginning of a word
 @item \>
 Match the end of a word
 
-@item \s
-Match any whitespace character
-
-@item \S
-Match any non-whitespace character
-
-@item \d
-Match any digit
-
-@item \D
-Match any non-digit
+@item \B
+Match within a word
 @end table
+
+Implementation Note: For compatibility with @sc{matlab}, ordinary escape
+sequences (e.g., @qcode{"\n"} => newline) are processed in @var{pat}
+regardless of whether @var{pat} has been defined within single quotes.  Use
+a second backslash to stop interpolation of the escape sequence (e.g.,
+"\\n") or use the @code{regexptranslate} function.
 
 The outputs of @code{regexp} default to the order given below
 
@@ -1426,7 +1637,8 @@ being used as the fieldname.  A named token is denoted by
 @code{(?<name>@dots{})}.
 
 @item sp
-A cell array of the text not returned by match.
+A cell array of the text not returned by match, i.e., what remains if you
+split the string based on @var{pat}.
 @end table
 
 Particular output arguments, or the order of the output arguments, can be
@@ -1435,13 +1647,13 @@ correspondence between the output arguments and the optional argument
 are
 
 @multitable @columnfractions 0.2 0.3 0.3 0.2
-@item @tab 'start'        @tab @var{s}  @tab
-@item @tab 'end'          @tab @var{e}  @tab
-@item @tab 'tokenExtents' @tab @var{te} @tab
-@item @tab 'match'        @tab @var{m}  @tab
-@item @tab 'tokens'       @tab @var{t}  @tab
-@item @tab 'names'        @tab @var{nm} @tab
-@item @tab 'split'        @tab @var{sp} @tab
+@item @tab @qcode{'start'}        @tab @var{s}  @tab
+@item @tab @qcode{'end'}          @tab @var{e}  @tab
+@item @tab @qcode{'tokenExtents'} @tab @var{te} @tab
+@item @tab @qcode{'match'}        @tab @var{m}  @tab
+@item @tab @qcode{'tokens'}       @tab @var{t}  @tab
+@item @tab @qcode{'names'}        @tab @var{nm} @tab
+@item @tab @qcode{'split'}        @tab @var{sp} @tab
 @end multitable
 
 Additional arguments are summarized below.
@@ -1494,38 +1706,47 @@ the character @samp{#}.
 
 Alternatively, use (?x) in the pattern.
 
+@item noemptymatch
+Zero-length matches are not returned.  (default)
+
+@item emptymatch
+Return zero-length matches.
+
+@code{regexp ('a', 'b*', 'emptymatch')} returns @code{[1 2]} because there
+are zero or more @qcode{'b'} characters at positions 1 and end-of-string.
+
 @end table
-@seealso{@ref{doc-regexpi,,regexpi}, @ref{doc-strfind,,strfind}, @ref{doc-regexprep,,regexprep}}
+@seealso{@ref{XREFregexpi,,regexpi}, @ref{XREFstrfind,,strfind}, @ref{XREFregexprep,,regexprep}}
 @end deftypefn
 
 
-@c regexpi src/DLD-FUNCTIONS/regexp.cc
-@anchor{doc-regexpi}
-@deftypefn  {Loadable Function} {[@var{s}, @var{e}, @var{te}, @var{m}, @var{t}, @var{nm}] =} regexpi (@var{str}, @var{pat})
-@deftypefnx {Loadable Function} {[@dots{}] =} regexpi (@var{str}, @var{pat}, "@var{opt1}", @dots{})
+@c regexpi libinterp/corefcn/regexp.cc
+@anchor{XREFregexpi}
+@deftypefn  {Built-in Function} {[@var{s}, @var{e}, @var{te}, @var{m}, @var{t}, @var{nm}, @var{sp}] =} regexpi (@var{str}, @var{pat})
+@deftypefnx {Built-in Function} {[@dots{}] =} regexpi (@var{str}, @var{pat}, "@var{opt1}", @dots{})
 
 Case insensitive regular expression string matching.  Search for @var{pat} in
 @var{str} and return the positions and substrings of any matches, or empty
-values if there are none.  @xref{doc-regexp,,regexp}, for details on the
+values if there are none.  @xref{XREFregexp,,regexp}, for details on the
 syntax of the search pattern.
-@seealso{@ref{doc-regexp,,regexp}}
+@seealso{@ref{XREFregexp,,regexp}}
 @end deftypefn
 
 
-@c regexprep src/DLD-FUNCTIONS/regexp.cc
-@anchor{doc-regexprep}
-@deftypefn  {Loadable Function} {@var{outstr} =} regexprep (@var{string}, @var{pat}, @var{repstr})
-@deftypefnx {Loadable Function} {@var{outstr} =} regexprep (@var{string}, @var{pat}, @var{repstr}, "@var{opt1}", @dots{})
+@c regexprep libinterp/corefcn/regexp.cc
+@anchor{XREFregexprep}
+@deftypefn  {Built-in Function} {@var{outstr} =} regexprep (@var{string}, @var{pat}, @var{repstr})
+@deftypefnx {Built-in Function} {@var{outstr} =} regexprep (@var{string}, @var{pat}, @var{repstr}, "@var{opt1}", @dots{})
 Replace occurrences of pattern @var{pat} in @var{string} with @var{repstr}.
 
 The pattern is a regular expression as documented for @code{regexp}.
-@xref{doc-regexp,,regexp}.
+@xref{XREFregexp,,regexp}.
 
 The replacement string may contain @code{$i}, which substitutes
 for the ith set of parentheses in the match string.  For example,
 
 @example
-regexprep("Bill Dunn",'(\w+) (\w+)','$2, $1')
+regexprep ("Bill Dunn", '(\w+) (\w+)', '$2, $1')
 @end example
 
 @noindent
@@ -1542,12 +1763,18 @@ Replace only the first occurrence of @var{pat} in the result.
 This option is present for compatibility but is ignored.
 
 @end table
-@seealso{@ref{doc-regexp,,regexp}, @ref{doc-regexpi,,regexpi}, @ref{doc-strrep,,strrep}}
+
+Implementation Note: For compatibility with @sc{matlab}, ordinary escape
+sequences (e.g., @qcode{"\n"} => newline) are processed in both @var{pat}
+and @var{repstr} regardless of whether they were defined within single
+quotes.  Use a second backslash to stop interpolation of the escape sequence
+(e.g., "\\n") or use the @code{regexptranslate} function.
+@seealso{@ref{XREFregexp,,regexp}, @ref{XREFregexpi,,regexpi}, @ref{XREFstrrep,,strrep}}
 @end deftypefn
 
 
 @c regexptranslate scripts/strings/regexptranslate.m
-@anchor{doc-regexptranslate}
+@anchor{XREFregexptranslate}
 @deftypefn {Function File} {} regexptranslate (@var{op}, @var{s})
 Translate a string for use in a regular expression.  This may
 include either wildcard replacement or special character escaping.
@@ -1555,7 +1782,7 @@ The behavior is controlled by @var{op} which can take the following
 values
 
 @table @asis
-@item "wildcard"
+@item @qcode{"wildcard"}
 The wildcard characters @code{.}, @code{*}, and @code{?} are replaced
 with wildcards that are appropriate for a regular expression.
 For example:
@@ -1567,7 +1794,7 @@ regexptranslate ("wildcard", "*.m")
 @end group
 @end example
 
-@item "escape"
+@item @qcode{"escape"}
 The characters @code{$.?[]}, that have special meaning for regular
 expressions are escaped so that they are treated literally.  For example:
 
@@ -1579,12 +1806,12 @@ regexptranslate ("escape", "12.5")
 @end example
 
 @end table
-@seealso{@ref{doc-regexp,,regexp}, @ref{doc-regexpi,,regexpi}, @ref{doc-regexprep,,regexprep}}
+@seealso{@ref{XREFregexp,,regexp}, @ref{XREFregexpi,,regexpi}, @ref{XREFregexprep,,regexprep}}
 @end deftypefn
 
 
 @c untabify scripts/strings/untabify.m
-@anchor{doc-untabify}
+@anchor{XREFuntabify}
 @deftypefn  {Function File} {} untabify (@var{t})
 @deftypefnx {Function File} {} untabify (@var{t}, @var{tw})
 @deftypefnx {Function File} {} untabify (@var{t}, @var{tw}, @var{deblank})
@@ -1612,7 +1839,7 @@ fclose (fid);
 @end group
 @end example
 
-@seealso{@ref{doc-strjust,,strjust}, @ref{doc-strsplit,,strsplit}, @ref{doc-deblank,,deblank}}
+@seealso{@ref{XREFstrjust,,strjust}, @ref{XREFstrsplit,,strsplit}, @ref{XREFdeblank,,deblank}}
 @end deftypefn
 
 
@@ -1626,12 +1853,12 @@ a hexadecimal number to a floating point number.
 @example
 @group
 hex2dec ("FF")
-     @result{} ans = 255
+      @result{} 255
 @end group
 @end example
 
 @c bin2dec scripts/strings/bin2dec.m
-@anchor{doc-bin2dec}
+@anchor{XREFbin2dec}
 @deftypefn {Function File} {} bin2dec (@var{s})
 Return the decimal number corresponding to the binary number represented
 by the string @var{s}.  For example:
@@ -1658,12 +1885,12 @@ number per row of @var{s}; Invalid rows evaluate to NaN@.
 
 If @var{s} is a cell array of strings, return a column vector with one
 converted number per cell element in @var{s}.
-@seealso{@ref{doc-dec2bin,,dec2bin}, @ref{doc-base2dec,,base2dec}, @ref{doc-hex2dec,,hex2dec}}
+@seealso{@ref{XREFdec2bin,,dec2bin}, @ref{XREFbase2dec,,base2dec}, @ref{XREFhex2dec,,hex2dec}}
 @end deftypefn
 
 
 @c dec2bin scripts/strings/dec2bin.m
-@anchor{doc-dec2bin}
+@anchor{XREFdec2bin}
 @deftypefn {Function File} {} dec2bin (@var{d}, @var{len})
 Return a binary number corresponding to the non-negative integer
 @var{d}, as a string of ones and zeros.  For example:
@@ -1681,12 +1908,12 @@ the largest value.
 
 The optional second argument, @var{len}, specifies the minimum
 number of digits in the result.
-@seealso{@ref{doc-bin2dec,,bin2dec}, @ref{doc-dec2base,,dec2base}, @ref{doc-dec2hex,,dec2hex}}
+@seealso{@ref{XREFbin2dec,,bin2dec}, @ref{XREFdec2base,,dec2base}, @ref{XREFdec2hex,,dec2hex}}
 @end deftypefn
 
 
 @c dec2hex scripts/strings/dec2hex.m
-@anchor{doc-dec2hex}
+@anchor{XREFdec2hex}
 @deftypefn {Function File} {} dec2hex (@var{d}, @var{len})
 Return the hexadecimal string corresponding to the non-negative
 integer @var{d}.  For example:
@@ -1704,12 +1931,12 @@ the largest value.
 
 The optional second argument, @var{len}, specifies the minimum
 number of digits in the result.
-@seealso{@ref{doc-hex2dec,,hex2dec}, @ref{doc-dec2base,,dec2base}, @ref{doc-dec2bin,,dec2bin}}
+@seealso{@ref{XREFhex2dec,,hex2dec}, @ref{XREFdec2base,,dec2base}, @ref{XREFdec2bin,,dec2bin}}
 @end deftypefn
 
 
 @c hex2dec scripts/strings/hex2dec.m
-@anchor{doc-hex2dec}
+@anchor{XREFhex2dec}
 @deftypefn {Function File} {} hex2dec (@var{s})
 Return the integer corresponding to the hexadecimal number represented
 by the string @var{s}.  For example:
@@ -1717,9 +1944,9 @@ by the string @var{s}.  For example:
 @example
 @group
 hex2dec ("12B")
-     @result{} 299
+      @result{} 299
 hex2dec ("12b")
-     @result{} 299
+      @result{} 299
 @end group
 @end example
 
@@ -1729,12 +1956,12 @@ number per row of @var{s}; Invalid rows evaluate to NaN@.
 If @var{s} is a cell array of strings, return a column vector with one
 converted number per cell element in @var{s}.
 
-@seealso{@ref{doc-dec2hex,,dec2hex}, @ref{doc-base2dec,,base2dec}, @ref{doc-bin2dec,,bin2dec}}
+@seealso{@ref{XREFdec2hex,,dec2hex}, @ref{XREFbase2dec,,base2dec}, @ref{XREFbin2dec,,bin2dec}}
 @end deftypefn
 
 
 @c dec2base scripts/strings/dec2base.m
-@anchor{doc-dec2base}
+@anchor{XREFdec2base}
 @deftypefn  {Function File} {} dec2base (@var{d}, @var{base})
 @deftypefnx {Function File} {} dec2base (@var{d}, @var{base}, @var{len})
 Return a string of symbols in base @var{base} corresponding to
@@ -1764,12 +1991,12 @@ dec2base (123, "aei")
 
 The optional third argument, @var{len}, specifies the minimum
 number of digits in the result.
-@seealso{@ref{doc-base2dec,,base2dec}, @ref{doc-dec2bin,,dec2bin}, @ref{doc-dec2hex,,dec2hex}}
+@seealso{@ref{XREFbase2dec,,base2dec}, @ref{XREFdec2bin,,dec2bin}, @ref{XREFdec2hex,,dec2hex}}
 @end deftypefn
 
 
 @c base2dec scripts/strings/base2dec.m
-@anchor{doc-base2dec}
+@anchor{XREFbase2dec}
 @deftypefn {Function File} {} base2dec (@var{s}, @var{base})
 Convert @var{s} from a string of digits in base @var{base} to a decimal
 integer (base 10).
@@ -1783,7 +2010,7 @@ base2dec ("11120", 3)
 
 If @var{s} is a string matrix, return a column vector with one value per
 row of @var{s}.  If a row contains invalid symbols then the
-corresponding value will be NaN@.  
+corresponding value will be NaN@.
 
 If @var{s} is a cell array of strings, return a column vector with one
 value per cell element in @var{s}.
@@ -1798,58 +2025,83 @@ base2dec ("yyyzx", "xyz")
    @result{} 123
 @end group
 @end example
-@seealso{@ref{doc-dec2base,,dec2base}, @ref{doc-bin2dec,,bin2dec}, @ref{doc-hex2dec,,hex2dec}}
+@seealso{@ref{XREFdec2base,,dec2base}, @ref{XREFbin2dec,,bin2dec}, @ref{XREFhex2dec,,hex2dec}}
 @end deftypefn
 
 
-@c num2hex src/DLD-FUNCTIONS/hex2num.cc
-@anchor{doc-num2hex}
-@deftypefn {Loadable Function} {@var{s} =} num2hex (@var{n})
-Typecast a double precision number or vector to a 16 character hexadecimal
-string of the IEEE 754 representation of the number.  For example:
+@c num2hex libinterp/corefcn/hex2num.cc
+@anchor{XREFnum2hex}
+@deftypefn {Built-in Function} {@var{s} =} num2hex (@var{n})
+Typecast a double or single precision number or vector to a 8 or 16
+character hexadecimal string of the IEEE 754 representation of the number.
+For example:
 
 @example
 @group
-num2hex ([-1, 1, e, Inf, NaN, NA]);
+num2hex ([-1, 1, e, Inf])
 @result{} "bff0000000000000
     3ff0000000000000
     4005bf0a8b145769
-    7ff0000000000000
-    fff8000000000000
-    7ff00000000007a2"
+    7ff0000000000000"
 @end group
 @end example
-@seealso{@ref{doc-hex2num,,hex2num}, @ref{doc-hex2dec,,hex2dec}, @ref{doc-dec2hex,,dec2hex}}
+
+If the argument @var{n} is a single precision number or vector, the returned
+string has a length of 8.  For example:
+
+@example
+@group
+num2hex (single ([-1, 1, e, Inf]))
+@result{} "bf800000
+    3f800000
+    402df854
+    7f800000"
+@end group
+@end example
+@seealso{@ref{XREFhex2num,,hex2num}, @ref{XREFhex2dec,,hex2dec}, @ref{XREFdec2hex,,dec2hex}}
 @end deftypefn
 
 
-@c hex2num src/DLD-FUNCTIONS/hex2num.cc
-@anchor{doc-hex2num}
-@deftypefn {Loadable Function} {@var{n} =} hex2num (@var{s})
+@c hex2num libinterp/corefcn/hex2num.cc
+@anchor{XREFhex2num}
+@deftypefn  {Built-in Function} {@var{n} =} hex2num (@var{s})
+@deftypefnx {Built-in Function} {@var{n} =} hex2num (@var{s}, @var{class})
 Typecast the 16 character hexadecimal character string to an IEEE 754
 double precision number.  If fewer than 16 characters are given the
-strings are right padded with '0' characters.
+strings are right padded with @qcode{'0'} characters.
 
 Given a string matrix, @code{hex2num} treats each row as a separate
 number.
 
 @example
 @group
-hex2num (["4005bf0a8b145769";"4024000000000000"])
-@result{} [2.7183; 10.000]
+hex2num (["4005bf0a8b145769"; "4024000000000000"])
+   @result{} [2.7183; 10.000]
 @end group
 @end example
-@seealso{@ref{doc-num2hex,,num2hex}, @ref{doc-hex2dec,,hex2dec}, @ref{doc-dec2hex,,dec2hex}}
+
+The optional argument @var{class} can be passed as the string
+@qcode{"single"} to specify that the given string should be interpreted as
+a single precision number.  In this case, @var{s} should be an 8 character
+hexadecimal string.  For example: 
+
+@example
+@group
+hex2num (["402df854"; "41200000"], "single")
+   @result{} [2.7183; 10.000]
+@end group
+@end example
+@seealso{@ref{XREFnum2hex,,num2hex}, @ref{XREFhex2dec,,hex2dec}, @ref{XREFdec2hex,,dec2hex}}
 @end deftypefn
 
 
-@c str2double src/DLD-FUNCTIONS/str2double.cc
-@anchor{doc-str2double}
+@c str2double libinterp/corefcn/str2double.cc
+@anchor{XREFstr2double}
 @deftypefn {Built-in Function} {} str2double (@var{s})
 Convert a string to a real or complex number.
 
 The string must be in one of the following formats where
-a and b are real numbers and the complex unit is 'i' or 'j':
+a and b are real numbers and the complex unit is @qcode{'i'} or @qcode{'j'}:
 
 @itemize
 @item a + bi
@@ -1866,31 +2118,38 @@ a and b are real numbers and the complex unit is 'i' or 'j':
 @end itemize
 
 If present, a and/or b are of the form @nospell{[+-]d[,.]d[[eE][+-]d]} where
-the brackets indicate optional arguments and 'd' indicates zero or more
-digits.  The special input values @code{Inf}, @code{NaN}, and @code{NA} are
-also accepted.
+the brackets indicate optional arguments and @qcode{'d'} indicates zero or
+more digits.  The special input values @code{Inf}, @code{NaN}, and @code{NA}
+are also accepted.
 
-@var{s} may also be a character matrix, in which case the conversion is
-repeated for each row.  Or @var{s} may be a cell array of strings, in which
-case each element is converted and an array of the same dimensions is
-returned.
+@var{s} may be a character string, character matrix, or cell array.
+For character arrays the conversion is repeated for every row, and
+a double or complex array is returned.  Empty rows in @var{s} are deleted
+and not returned in the numeric array.  For cell arrays each character
+string element is processed and a double or complex array of the same
+dimensions as @var{s} is returned.
 
-@code{str2double} returns NaN for elements of @var{s} which cannot be
-converted.
+For unconvertible scalar or character string input @code{str2double} returns
+a NaN@.  Similarly, for character array input @code{str2double} returns a
+NaN for any row of @var{s} that could not be converted.  For a cell array,
+@code{str2double} returns a NaN for any element of @var{s} for which
+conversion fails.  Note that numeric elements in a mixed string/numeric
+cell array are not strings and the conversion will fail for these elements
+and return NaN.
 
 @code{str2double} can replace @code{str2num}, and it avoids the security
 risk of using @code{eval} on unknown data.
-@seealso{@ref{doc-str2num,,str2num}}
+@seealso{@ref{XREFstr2num,,str2num}}
 @end deftypefn
 
 
 @c strjust scripts/strings/strjust.m
-@anchor{doc-strjust}
+@anchor{XREFstrjust}
 @deftypefn  {Function File} {} strjust (@var{s})
 @deftypefnx {Function File} {} strjust (@var{s}, @var{pos})
 Return the text, @var{s}, justified according to @var{pos}, which may
-be @samp{"left"}, @samp{"center"}, or @samp{"right"}.  If @var{pos}
-is omitted it defaults to @samp{"right"}.
+be @qcode{"left"}, @qcode{"center"}, or @qcode{"right"}.  If @var{pos}
+is omitted it defaults to @qcode{"right"}.
 
 Null characters are replaced by spaces.  All other character
 data are treated as non-white space.
@@ -1907,12 +2166,12 @@ strjust (["a"; "ab"; "abc"; "abcd"])
         "abcd"
 @end group
 @end example
-@seealso{@ref{doc-deblank,,deblank}, @ref{doc-strrep,,strrep}, @ref{doc-strtrim,,strtrim}, @ref{doc-untabify,,untabify}}
+@seealso{@ref{XREFdeblank,,deblank}, @ref{XREFstrrep,,strrep}, @ref{XREFstrtrim,,strtrim}, @ref{XREFuntabify,,untabify}}
 @end deftypefn
 
 
 @c str2num scripts/strings/str2num.m
-@anchor{doc-str2num}
+@anchor{XREFstr2num}
 @deftypefn  {Function File} {@var{x} =} str2num (@var{s})
 @deftypefnx {Function File} {[@var{x}, @var{state}] =} str2num (@var{s})
 Convert the string (or character array) @var{s} to a number (or an
@@ -1938,13 +2197,13 @@ to do the conversion, @code{str2num} will execute any code contained
 in the string @var{s}.  Use @code{str2double} for a safer and faster
 conversion.
 
-For cell array of strings use @code{str2double}.  
-@seealso{@ref{doc-str2double,,str2double}, @ref{doc-eval,,eval}}
+For cell array of strings use @code{str2double}.
+@seealso{@ref{XREFstr2double,,str2double}, @ref{XREFeval,,eval}}
 @end deftypefn
 
 
-@c toascii src/mappers.cc
-@anchor{doc-toascii}
+@c toascii libinterp/corefcn/mappers.cc
+@anchor{XREFtoascii}
 @deftypefn {Mapping Function} {} toascii (@var{s})
 Return ASCII representation of @var{s} in a matrix.  For example:
 
@@ -1955,12 +2214,12 @@ toascii ("ASCII")
 @end group
 
 @end example
-@seealso{@ref{doc-char,,char}}
+@seealso{@ref{XREFchar,,char}}
 @end deftypefn
 
 
-@c tolower src/mappers.cc
-@anchor{doc-tolower}
+@c tolower libinterp/corefcn/mappers.cc
+@anchor{XREFtolower}
 @deftypefn  {Mapping Function} {} tolower (@var{s})
 @deftypefnx {Mapping Function} {} lower (@var{s})
 Return a copy of the string or cell string @var{s}, with each uppercase
@@ -1970,15 +2229,15 @@ characters are left unchanged.  For example:
 @example
 @group
 tolower ("MiXeD cAsE 123")
-     @result{} "mixed case 123"
+      @result{} "mixed case 123"
 @end group
 @end example
-@seealso{@ref{doc-toupper,,toupper}}
+@seealso{@ref{XREFtoupper,,toupper}}
 @end deftypefn
 
 
-@c toupper src/mappers.cc
-@anchor{doc-toupper}
+@c toupper libinterp/corefcn/mappers.cc
+@anchor{XREFtoupper}
 @deftypefn  {Mapping Function} {} toupper (@var{s})
 @deftypefnx {Mapping Function} {} upper (@var{s})
 Return a copy of the string or cell string @var{s}, with each lowercase
@@ -1988,22 +2247,22 @@ characters are left unchanged.  For example:
 @example
 @group
 toupper ("MiXeD cAsE 123")
-     @result{} "MIXED CASE 123"
+      @result{} "MIXED CASE 123"
 @end group
 @end example
-@seealso{@ref{doc-tolower,,tolower}}
+@seealso{@ref{XREFtolower,,tolower}}
 @end deftypefn
 
 
-@c do_string_escapes src/utils.cc
-@anchor{doc-do_string_escapes}
+@c do_string_escapes libinterp/corefcn/utils.cc
+@anchor{XREFdo_string_escapes}
 @deftypefn {Built-in Function} {} do_string_escapes (@var{string})
 Convert special characters in @var{string} to their escaped forms.
 @end deftypefn
 
 
-@c undo_string_escapes src/utils.cc
-@anchor{doc-undo_string_escapes}
+@c undo_string_escapes libinterp/corefcn/utils.cc
+@anchor{XREFundo_string_escapes}
 @deftypefn {Built-in Function} {} undo_string_escapes (@var{s})
 Convert special characters in strings back to their escaped forms.  For
 example, the expression
@@ -2049,122 +2308,122 @@ isalpha ("!Q@@WERT^Y&")
 @end group
 @end example
 
-@c isalnum src/mappers.cc
-@anchor{doc-isalnum}
+@c isalnum libinterp/corefcn/mappers.cc
+@anchor{XREFisalnum}
 @deftypefn {Mapping Function} {} isalnum (@var{s})
 Return a logical array which is true where the elements of @var{s} are
 letters or digits and false where they are not.  This is equivalent to
 (@code{isalpha (@var{s}) | isdigit (@var{s})}).
-@seealso{@ref{doc-isalpha,,isalpha}, @ref{doc-isdigit,,isdigit}, @ref{doc-ispunct,,ispunct}, @ref{doc-isspace,,isspace}, @ref{doc-iscntrl,,iscntrl}}
+@seealso{@ref{XREFisalpha,,isalpha}, @ref{XREFisdigit,,isdigit}, @ref{XREFispunct,,ispunct}, @ref{XREFisspace,,isspace}, @ref{XREFiscntrl,,iscntrl}}
 @end deftypefn
 
 
-@c isalpha src/mappers.cc
-@anchor{doc-isalpha}
+@c isalpha libinterp/corefcn/mappers.cc
+@anchor{XREFisalpha}
 @deftypefn {Mapping Function} {} isalpha (@var{s})
 Return a logical array which is true where the elements of @var{s} are
 letters and false where they are not.  This is equivalent to
 (@code{islower (@var{s}) | isupper (@var{s})}).
-@seealso{@ref{doc-isdigit,,isdigit}, @ref{doc-ispunct,,ispunct}, @ref{doc-isspace,,isspace}, @ref{doc-iscntrl,,iscntrl}, @ref{doc-isalnum,,isalnum}, @ref{doc-islower,,islower}, @ref{doc-isupper,,isupper}}
+@seealso{@ref{XREFisdigit,,isdigit}, @ref{XREFispunct,,ispunct}, @ref{XREFisspace,,isspace}, @ref{XREFiscntrl,,iscntrl}, @ref{XREFisalnum,,isalnum}, @ref{XREFislower,,islower}, @ref{XREFisupper,,isupper}}
 @end deftypefn
 
 
 @c isletter scripts/strings/isletter.m
-@anchor{doc-isletter}
+@anchor{XREFisletter}
 @deftypefn {Function File} {} isletter (@var{s})
 Return a logical array which is true where the elements of @var{s}
 are letters and false where they are not.  This is an alias for
 the @code{isalpha} function.
-@seealso{@ref{doc-isalpha,,isalpha}, @ref{doc-isdigit,,isdigit}, @ref{doc-ispunct,,ispunct}, @ref{doc-isspace,,isspace}, @ref{doc-iscntrl,,iscntrl}, @ref{doc-isalnum,,isalnum}}
+@seealso{@ref{XREFisalpha,,isalpha}, @ref{XREFisdigit,,isdigit}, @ref{XREFispunct,,ispunct}, @ref{XREFisspace,,isspace}, @ref{XREFiscntrl,,iscntrl}, @ref{XREFisalnum,,isalnum}}
 @end deftypefn
 
 
-@c islower src/mappers.cc
-@anchor{doc-islower}
+@c islower libinterp/corefcn/mappers.cc
+@anchor{XREFislower}
 @deftypefn {Mapping Function} {} islower (@var{s})
 Return a logical array which is true where the elements of @var{s} are
 lowercase letters and false where they are not.
-@seealso{@ref{doc-isupper,,isupper}, @ref{doc-isalpha,,isalpha}, @ref{doc-isletter,,isletter}, @ref{doc-isalnum,,isalnum}}
+@seealso{@ref{XREFisupper,,isupper}, @ref{XREFisalpha,,isalpha}, @ref{XREFisletter,,isletter}, @ref{XREFisalnum,,isalnum}}
 @end deftypefn
 
 
-@c isupper src/mappers.cc
-@anchor{doc-isupper}
+@c isupper libinterp/corefcn/mappers.cc
+@anchor{XREFisupper}
 @deftypefn {Mapping Function} {} isupper (@var{s})
 Return a logical array which is true where the elements of @var{s} are
 uppercase letters and false where they are not.
-@seealso{@ref{doc-islower,,islower}, @ref{doc-isalpha,,isalpha}, @ref{doc-isletter,,isletter}, @ref{doc-isalnum,,isalnum}}
+@seealso{@ref{XREFislower,,islower}, @ref{XREFisalpha,,isalpha}, @ref{XREFisletter,,isletter}, @ref{XREFisalnum,,isalnum}}
 @end deftypefn
 
 
-@c isdigit src/mappers.cc
-@anchor{doc-isdigit}
+@c isdigit libinterp/corefcn/mappers.cc
+@anchor{XREFisdigit}
 @deftypefn {Mapping Function} {} isdigit (@var{s})
 Return a logical array which is true where the elements of @var{s} are
 decimal digits (0-9) and false where they are not.
-@seealso{@ref{doc-isxdigit,,isxdigit}, @ref{doc-isalpha,,isalpha}, @ref{doc-isletter,,isletter}, @ref{doc-ispunct,,ispunct}, @ref{doc-isspace,,isspace}, @ref{doc-iscntrl,,iscntrl}}
+@seealso{@ref{XREFisxdigit,,isxdigit}, @ref{XREFisalpha,,isalpha}, @ref{XREFisletter,,isletter}, @ref{XREFispunct,,ispunct}, @ref{XREFisspace,,isspace}, @ref{XREFiscntrl,,iscntrl}}
 @end deftypefn
 
 
-@c isxdigit src/mappers.cc
-@anchor{doc-isxdigit}
+@c isxdigit libinterp/corefcn/mappers.cc
+@anchor{XREFisxdigit}
 @deftypefn {Mapping Function} {} isxdigit (@var{s})
 Return a logical array which is true where the elements of @var{s} are
 hexadecimal digits (0-9 and @nospell{a-fA-F}).
-@seealso{@ref{doc-isdigit,,isdigit}}
+@seealso{@ref{XREFisdigit,,isdigit}}
 @end deftypefn
 
 
-@c ispunct src/mappers.cc
-@anchor{doc-ispunct}
+@c ispunct libinterp/corefcn/mappers.cc
+@anchor{XREFispunct}
 @deftypefn {Mapping Function} {} ispunct (@var{s})
 Return a logical array which is true where the elements of @var{s} are
 punctuation characters and false where they are not.
-@seealso{@ref{doc-isalpha,,isalpha}, @ref{doc-isdigit,,isdigit}, @ref{doc-isspace,,isspace}, @ref{doc-iscntrl,,iscntrl}}
+@seealso{@ref{XREFisalpha,,isalpha}, @ref{XREFisdigit,,isdigit}, @ref{XREFisspace,,isspace}, @ref{XREFiscntrl,,iscntrl}}
 @end deftypefn
 
 
-@c isspace src/mappers.cc
-@anchor{doc-isspace}
+@c isspace libinterp/corefcn/mappers.cc
+@anchor{XREFisspace}
 @deftypefn {Mapping Function} {} isspace (@var{s})
 Return a logical array which is true where the elements of @var{s} are
 whitespace characters (space, formfeed, newline, carriage return, tab, and
 vertical tab) and false where they are not.
-@seealso{@ref{doc-iscntrl,,iscntrl}, @ref{doc-ispunct,,ispunct}, @ref{doc-isalpha,,isalpha}, @ref{doc-isdigit,,isdigit}}
+@seealso{@ref{XREFiscntrl,,iscntrl}, @ref{XREFispunct,,ispunct}, @ref{XREFisalpha,,isalpha}, @ref{XREFisdigit,,isdigit}}
 @end deftypefn
 
 
-@c iscntrl src/mappers.cc
-@anchor{doc-iscntrl}
+@c iscntrl libinterp/corefcn/mappers.cc
+@anchor{XREFiscntrl}
 @deftypefn {Mapping Function} {} iscntrl (@var{s})
 Return a logical array which is true where the elements of @var{s} are
 control characters and false where they are not.
-@seealso{@ref{doc-ispunct,,ispunct}, @ref{doc-isspace,,isspace}, @ref{doc-isalpha,,isalpha}, @ref{doc-isdigit,,isdigit}}
+@seealso{@ref{XREFispunct,,ispunct}, @ref{XREFisspace,,isspace}, @ref{XREFisalpha,,isalpha}, @ref{XREFisdigit,,isdigit}}
 @end deftypefn
 
 
-@c isgraph src/mappers.cc
-@anchor{doc-isgraph}
+@c isgraph libinterp/corefcn/mappers.cc
+@anchor{XREFisgraph}
 @deftypefn {Mapping Function} {} isgraph (@var{s})
 Return a logical array which is true where the elements of @var{s} are
 printable characters (but not the space character) and false where they are
 not.
-@seealso{@ref{doc-isprint,,isprint}}
+@seealso{@ref{XREFisprint,,isprint}}
 @end deftypefn
 
 
-@c isprint src/mappers.cc
-@anchor{doc-isprint}
+@c isprint libinterp/corefcn/mappers.cc
+@anchor{XREFisprint}
 @deftypefn {Mapping Function} {} isprint (@var{s})
 Return a logical array which is true where the elements of @var{s} are
 printable characters (including the space character) and false where they
 are not.
-@seealso{@ref{doc-isgraph,,isgraph}}
+@seealso{@ref{XREFisgraph,,isgraph}}
 @end deftypefn
 
 
-@c isascii src/mappers.cc
-@anchor{doc-isascii}
+@c isascii libinterp/corefcn/mappers.cc
+@anchor{XREFisascii}
 @deftypefn {Mapping Function} {} isascii (@var{s})
 Return a logical array which is true where the elements of @var{s} are
 ASCII characters (in the range 0 to 127 decimal) and false where they are
@@ -2173,7 +2432,7 @@ not.
 
 
 @c isstrprop scripts/strings/isstrprop.m
-@anchor{doc-isstrprop}
+@anchor{XREFisstrprop}
 @deftypefn {Function File} {} isstrprop (@var{str}, @var{prop})
 Test character string properties.  For example:
 
@@ -2192,49 +2451,49 @@ Numeric arrays are converted to character strings.
 The second argument @var{prop} must be one of
 
 @table @asis
-@item "alpha"
+@item @qcode{"alpha"}
 True for characters that are alphabetic (letters).
 
-@item "alnum"
-@itemx "alphanum"
+@item  @qcode{"alnum"}
+@itemx @qcode{"alphanum"}
 True for characters that are alphabetic or digits.
 
-@item "lower"
+@item @qcode{"lower"}
 True for lowercase letters.
 
-@item "upper"
+@item @qcode{"upper"}
 True for uppercase letters.
 
-@item "digit"
+@item @qcode{"digit"}
 True for decimal digits (0-9).
 
-@item "xdigit"
+@item @qcode{"xdigit"}
 True for hexadecimal digits (@nospell{a-fA-F0-9}).
 
-@item "space"
-@itemx "wspace"
+@item  @qcode{"space"}
+@itemx @qcode{"wspace"}
 True for whitespace characters (space, formfeed, newline, carriage
 return, tab, vertical tab).
 
-@item "punct"
+@item @qcode{"punct"}
 True for punctuation characters (printing characters except space
 or letter or digit).
 
-@item "cntrl"
+@item @qcode{"cntrl"}
 True for control characters.
 
-@item "graph"
-@itemx "graphic"
+@item  @qcode{"graph"}
+@itemx @qcode{"graphic"}
 True for printing characters except space.
 
-@item "print"
+@item @qcode{"print"}
 True for printing characters including space.
 
-@item "ascii"
+@item @qcode{"ascii"}
 True for characters that are in the range of ASCII encoding.
 
 @end table
 
-@seealso{@ref{doc-isalpha,,isalpha}, @ref{doc-isalnum,,isalnum}, @ref{doc-islower,,islower}, @ref{doc-isupper,,isupper}, @ref{doc-isdigit,,isdigit}, @ref{doc-isxdigit,,isxdigit}, @ref{doc-isspace,,isspace}, @ref{doc-ispunct,,ispunct}, @ref{doc-iscntrl,,iscntrl}, @ref{doc-isgraph,,isgraph}, @ref{doc-isprint,,isprint}, @ref{doc-isascii,,isascii}}
+@seealso{@ref{XREFisalpha,,isalpha}, @ref{XREFisalnum,,isalnum}, @ref{XREFislower,,islower}, @ref{XREFisupper,,isupper}, @ref{XREFisdigit,,isdigit}, @ref{XREFisxdigit,,isxdigit}, @ref{XREFisspace,,isspace}, @ref{XREFispunct,,ispunct}, @ref{XREFiscntrl,,iscntrl}, @ref{XREFisgraph,,isgraph}, @ref{XREFisprint,,isprint}, @ref{XREFisascii,,isascii}}
 @end deftypefn
 

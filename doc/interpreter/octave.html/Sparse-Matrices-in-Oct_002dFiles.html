@@ -1,72 +1,105 @@
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.2, http://www.gnu.org/software/texinfo/ -->
 <head>
-<title>Sparse Matrices in Oct-Files - GNU Octave</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="GNU Octave">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="Oct_002dFiles.html#Oct_002dFiles" title="Oct-Files">
-<link rel="prev" href="Structures-in-Oct_002dFiles.html#Structures-in-Oct_002dFiles" title="Structures in Oct-Files">
-<link rel="next" href="Accessing-Global-Variables-in-Oct_002dFiles.html#Accessing-Global-Variables-in-Oct_002dFiles" title="Accessing Global Variables in Oct-Files">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
-</head>
-<body>
-<div class="node">
-<a name="Sparse-Matrices-in-Oct-Files"></a>
-<a name="Sparse-Matrices-in-Oct_002dFiles"></a>
-<p>
-Next:&nbsp;<a rel="next" accesskey="n" href="Accessing-Global-Variables-in-Oct_002dFiles.html#Accessing-Global-Variables-in-Oct_002dFiles">Accessing Global Variables in Oct-Files</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="Structures-in-Oct_002dFiles.html#Structures-in-Oct_002dFiles">Structures in Oct-Files</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="Oct_002dFiles.html#Oct_002dFiles">Oct-Files</a>
-<hr>
-</div>
+<title>GNU Octave: Sparse Matrices in Oct-Files</title>
 
+<meta name="description" content="GNU Octave: Sparse Matrices in Oct-Files">
+<meta name="keywords" content="GNU Octave: Sparse Matrices in Oct-Files">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Oct_002dFiles.html#Oct_002dFiles" rel="up" title="Oct-Files">
+<link href="Array-and-Sparse-Class-Differences.html#Array-and-Sparse-Class-Differences" rel="next" title="Array and Sparse Class Differences">
+<link href="Structures-in-Oct_002dFiles.html#Structures-in-Oct_002dFiles" rel="prev" title="Structures in Oct-Files">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+<a name="Sparse-Matrices-in-Oct_002dFiles"></a>
+<div class="header">
+<p>
+Next: <a href="Accessing-Global-Variables-in-Oct_002dFiles.html#Accessing-Global-Variables-in-Oct_002dFiles" accesskey="n" rel="next">Accessing Global Variables in Oct-Files</a>, Previous: <a href="Structures-in-Oct_002dFiles.html#Structures-in-Oct_002dFiles" accesskey="p" rel="prev">Structures in Oct-Files</a>, Up: <a href="Oct_002dFiles.html#Oct_002dFiles" accesskey="u" rel="up">Oct-Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Sparse-Matrices-in-Oct_002dFiles-1"></a>
 <h4 class="subsection">A.1.6 Sparse Matrices in Oct-Files</h4>
 
-<p>There are three classes of sparse objects that are of interest to the
-user.
-
-     <dl>
-<dt><code>SparseMatrix</code><dd>A double precision sparse matrix class
-
-     <br><dt><code>SparseComplexMatrix</code><dd>A complex sparse matrix class
-
-     <br><dt><code>SparseBoolMatrix</code><dd>A boolean sparse matrix class
+<p>There are three classes of sparse objects that are of interest to the user.
+</p>
+<dl compact="compact">
+<dt><code>SparseMatrix</code></dt>
+<dd><p>A double precision sparse matrix class
+</p>
+</dd>
+<dt><code>SparseComplexMatrix</code></dt>
+<dd><p>A complex sparse matrix class
+</p>
+</dd>
+<dt><code>SparseBoolMatrix</code></dt>
+<dd><p>A boolean sparse matrix class
+</p></dd>
 </dl>
 
-   <p>All of these classes inherit from the <code>Sparse&lt;T&gt;</code> template class,
+<p>All of these classes inherit from the <code>Sparse&lt;T&gt;</code> template class,
 and so all have similar capabilities and usage.  The <code>Sparse&lt;T&gt;</code>
-class was based on Octave <code>Array&lt;T&gt;</code> class, and so users familiar
-with Octave's <code>Array</code> classes will be comfortable with the use of
+class was based on Octave&rsquo;s <code>Array&lt;T&gt;</code> class, and so users familiar
+with Octave&rsquo;s <code>Array</code> classes will be comfortable with the use of
 the sparse classes.
-
-   <p>The sparse classes will not be entirely described in this section, due
+</p>
+<p>The sparse classes will not be entirely described in this section, due
 to their similarity with the existing <code>Array</code> classes.  However,
 there are a few differences due the different nature of sparse objects,
-and these will be described.  Firstly, although it is fundamentally
+and these will be described.  First, although it is fundamentally
 possible to have N-dimensional sparse objects, the Octave sparse classes do
-not allow them at this time.  So all operations of the sparse classes
-must be 2-dimensional.  This means that in fact <code>SparseMatrix</code> is
-similar to Octave's <code>Matrix</code> class rather than its
-<code>NDArray</code> class.
+not allow them at this time; All instances of the sparse classes
+must be 2-dimensional.  This means that <code>SparseMatrix</code> is actually
+more similar to Octave&rsquo;s <code>Matrix</code> class than its <code>NDArray</code> class.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="Array-and-Sparse-Class-Differences.html#Array-and-Sparse-Class-Differences" accesskey="1">Array and Sparse Class Differences</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Creating-Sparse-Matrices-in-Oct_002dFiles.html#Creating-Sparse-Matrices-in-Oct_002dFiles" accesskey="2">Creating Sparse Matrices in Oct-Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Using-Sparse-Matrices-in-Oct_002dFiles.html#Using-Sparse-Matrices-in-Oct_002dFiles" accesskey="3">Using Sparse Matrices in Oct-Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
 
-<ul class="menu">
-<li><a accesskey="1" href="Array-and-Sparse-Differences.html#Array-and-Sparse-Differences">Array and Sparse Differences</a>
-<li><a accesskey="2" href="Creating-Sparse-Matrices-in-Oct_002dFiles.html#Creating-Sparse-Matrices-in-Oct_002dFiles">Creating Sparse Matrices in Oct-Files</a>
-<li><a accesskey="3" href="Using-Sparse-Matrices-in-Oct_002dFiles.html#Using-Sparse-Matrices-in-Oct_002dFiles">Using Sparse Matrices in Oct-Files</a>
-</ul>
 
-   </body></html>
 
+
+</body>
+</html>

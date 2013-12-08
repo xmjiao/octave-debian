@@ -1,131 +1,150 @@
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.2, http://www.gnu.org/software/texinfo/ -->
 <head>
-<title>File Positioning - GNU Octave</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="GNU Octave">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions" title="C-Style I/O Functions">
-<link rel="prev" href="EOF-and-Errors.html#EOF-and-Errors" title="EOF and Errors">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
-</head>
-<body>
-<div class="node">
-<a name="File-Positioning"></a>
-<p>
-Previous:&nbsp;<a rel="previous" accesskey="p" href="EOF-and-Errors.html#EOF-and-Errors">EOF and Errors</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions">C-Style I/O Functions</a>
-<hr>
-</div>
+<title>GNU Octave: File Positioning</title>
 
+<meta name="description" content="GNU Octave: File Positioning">
+<meta name="keywords" content="GNU Octave: File Positioning">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions" rel="up" title="C-Style I/O Functions">
+<link href="Plotting.html#Plotting" rel="next" title="Plotting">
+<link href="EOF-and-Errors.html#EOF-and-Errors" rel="prev" title="EOF and Errors">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+<a name="File-Positioning"></a>
+<div class="header">
+<p>
+Previous: <a href="EOF-and-Errors.html#EOF-and-Errors" accesskey="p" rel="prev">EOF and Errors</a>, Up: <a href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions" accesskey="u" rel="up">C-Style I/O Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="File-Positioning-1"></a>
 <h4 class="subsection">14.2.19 File Positioning</h4>
 
 <p>Three functions are available for setting and determining the position of
 the file pointer for a given file.
+</p>
+<a name="XREFftell"></a><dl>
+<dt><a name="index-ftell"></a>Built-in Function: <em></em> <strong>ftell</strong> <em>(<var>fid</var>)</em></dt>
+<dd><p>Return the position of the file pointer as the number of characters
+from the beginning of the file <var>fid</var>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFfseek">fseek</a>, <a href="EOF-and-Errors.html#XREFfeof">feof</a>, <a href="Opening-and-Closing-Files.html#XREFfopen">fopen</a>.
+</p></dd></dl>
 
-<!-- ftell src/file-io.cc -->
-   <p><a name="doc_002dftell"></a>
 
-<div class="defun">
-&mdash; Built-in Function:  <b>ftell</b> (<var>fid</var>)<var><a name="index-ftell-1019"></a></var><br>
-<blockquote><p>Return the position of the file pointer as the number of characters
-from the beginning of the file <var>fid</var>. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
+<a name="XREFfseek"></a><dl>
+<dt><a name="index-fseek"></a>Built-in Function: <em></em> <strong>fseek</strong> <em>(<var>fid</var>, <var>offset</var>)</em></dt>
+<dt><a name="index-fseek-1"></a>Built-in Function: <em></em> <strong>fseek</strong> <em>(<var>fid</var>, <var>offset</var>, <var>origin</var>)</em></dt>
+<dt><a name="index-fseek-2"></a>Built-in Function: <em><var>status</var> =</em> <strong>fseek</strong> <em>(&hellip;)</em></dt>
+<dd><p>Set the file pointer to any location within the file <var>fid</var>.
+</p>
+<p>The pointer is positioned <var>offset</var> characters from the <var>origin</var>,
+which may be one of the predefined variables <code><span class="nolinebreak">SEEK_CUR</span></code><!-- /@w --> (current
+position), <code><span class="nolinebreak">SEEK_SET</span></code><!-- /@w --> (beginning), or <code><span class="nolinebreak">SEEK_END</span></code><!-- /@w --> (end of
+file) or strings <code>&quot;cof&quot;</code>, <code>&quot;bof&quot;</code> or <code>&quot;eof&quot;</code>.  If
+<var>origin</var> is omitted, <code><span class="nolinebreak">SEEK_SET</span></code><!-- /@w --> is assumed.  <var>offset</var> may
+be positive, negative, or zero but not all combinations of <var>origin</var> and
+<var>offset</var> can be realized.
+</p>
+<p>Return 0 on success and -1 on error.
+</p>
+<p><strong>See also:</strong> <a href="Line_002dOriented-Input.html#XREFfskipl">fskipl</a>, <a href="#XREFfrewind">frewind</a>, <a href="#XREFftell">ftell</a>, <a href="Opening-and-Closing-Files.html#XREFfopen">fopen</a>.
+</p></dd></dl>
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dfseek.html#doc_002dfseek">fseek</a>, <a href="doc_002dfopen.html#doc_002dfopen">fopen</a>, <a href="doc_002dfclose.html#doc_002dfclose">fclose</a>. 
-</p></blockquote></div>
 
-<!-- fseek src/file-io.cc -->
-   <p><a name="doc_002dfseek"></a>
-
-<div class="defun">
-&mdash; Built-in Function:  <b>fseek</b> (<var>fid, offset, origin</var>)<var><a name="index-fseek-1020"></a></var><br>
-<blockquote><p>Set the file pointer to any location within the file <var>fid</var>.
-
-        <p>The pointer is positioned <var>offset</var> characters from the <var>origin</var>,
-which may be one of the predefined variables <code>SEEK_CUR</code><!-- /@w --> (current
-position), <code>SEEK_SET</code><!-- /@w --> (beginning), or <code>SEEK_END</code><!-- /@w --> (end of
-file) or strings "cof", "bof" or "eof".  If <var>origin</var> is omitted,
-<code>SEEK_SET</code><!-- /@w --> is assumed.  The offset must be zero, or a value returned
-by <code>ftell</code> (in which case <var>origin</var> must be <code>SEEK_SET</code><!-- /@w -->).
-
-        <p>Return 0 on success and -1 on error. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
-
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dftell.html#doc_002dftell">ftell</a>, <a href="doc_002dfopen.html#doc_002dfopen">fopen</a>, <a href="doc_002dfclose.html#doc_002dfclose">fclose</a>. 
-</p></blockquote></div>
-
-<!-- SEEK_SET src/file-io.cc -->
-   <p><a name="doc_002dSEEK_005fSET"></a>
-
-<div class="defun">
-&mdash; Built-in Function:  <b>SEEK_SET</b> ()<var><a name="index-SEEK_005fSET-1021"></a></var><br>
-&mdash; Built-in Function:  <b>SEEK_CUR</b> ()<var><a name="index-SEEK_005fCUR-1022"></a></var><br>
-&mdash; Built-in Function:  <b>SEEK_END</b> ()<var><a name="index-SEEK_005fEND-1023"></a></var><br>
-<blockquote><p>Return the numerical value to pass to <code>fseek</code> to perform
+<a name="XREFSEEK_005fSET"></a><dl>
+<dt><a name="index-SEEK_005fSET"></a>Built-in Function: <em></em> <strong>SEEK_SET</strong> <em>()</em></dt>
+<dt><a name="index-SEEK_005fCUR"></a>Built-in Function: <em></em> <strong>SEEK_CUR</strong> <em>()</em></dt>
+<dt><a name="index-SEEK_005fEND"></a>Built-in Function: <em></em> <strong>SEEK_END</strong> <em>()</em></dt>
+<dd><p>Return the numerical value to pass to <code>fseek</code> to perform
 one of the following actions:
-          <dl>
-<dt><code>SEEK_SET</code><dd>Position file relative to the beginning.
-
-          <br><dt><code>SEEK_CUR</code><dd>Position file relative to the current position.
-
-          <br><dt><code>SEEK_END</code><dd>Position file relative to the end. 
+</p>
+<dl compact="compact">
+<dt><code>SEEK_SET</code></dt>
+<dd><p>Position file relative to the beginning.
+</p>
+</dd>
+<dt><code>SEEK_CUR</code></dt>
+<dd><p>Position file relative to the current position.
+</p>
+</dd>
+<dt><code>SEEK_END</code></dt>
+<dd><p>Position file relative to the end.
+</p></dd>
 </dl>
-        <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dfseek.html#doc_002dfseek">fseek</a>. 
-</p></blockquote></div>
+<p><strong>See also:</strong> <a href="#XREFfseek">fseek</a>.
+</p></dd></dl>
 
-<!-- frewind src/file-io.cc -->
-   <p><a name="doc_002dfrewind"></a>
 
-<div class="defun">
-&mdash; Built-in Function:  <b>frewind</b> (<var>fid</var>)<var><a name="index-frewind-1024"></a></var><br>
-<blockquote><p>Move the file pointer to the beginning of the file <var>fid</var>, returning
+<a name="XREFfrewind"></a><dl>
+<dt><a name="index-frewind"></a>Built-in Function: <em></em> <strong>frewind</strong> <em>(<var>fid</var>)</em></dt>
+<dd><p>Move the file pointer to the beginning of the file <var>fid</var>, returning
 0 for success, and -1 if an error was encountered.  It is equivalent to
-<code>fseek (</code><var>fid</var><code>, 0, SEEK_SET)</code>. 
-</p></blockquote></div>
+<code>fseek (<var>fid</var>, 0, SEEK_SET)</code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFfseek">fseek</a>, <a href="#XREFftell">ftell</a>, <a href="Opening-and-Closing-Files.html#XREFfopen">fopen</a>.
+</p></dd></dl>
 
-   <p>The following example stores the current file position in the variable
+
+<p>The following example stores the current file position in the variable
 <code>marker</code>, moves the pointer to the beginning of the file, reads
 four characters, and then returns to the original position.
+</p>
+<div class="example">
+<pre class="example">marker = ftell (myfile);
+frewind (myfile);
+fourch = fgets (myfile, 4);
+fseek (myfile, marker, SEEK_SET);
+</pre></div>
 
-<pre class="example">     marker = ftell (myfile);
-     frewind (myfile);
-     fourch = fgets (myfile, 4);
-     fseek (myfile, marker, SEEK_SET);
-</pre>
-   <!-- DO NOT EDIT!  Generated automatically by munge-texi.pl. -->
-<!-- Copyright (C) 1996-2012 John W. Eaton -->
-<!-- This file is part of Octave. -->
-<!-- Octave is free software; you can redistribute it and/or modify it -->
-<!-- under the terms of the GNU General Public License as published by the -->
-<!-- Free Software Foundation; either version 3 of the License, or (at -->
-<!-- your option) any later version. -->
-<!-- Octave is distributed in the hope that it will be useful, but WITHOUT -->
-<!-- ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or -->
-<!-- FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License -->
-<!-- for more details. -->
-<!-- You should have received a copy of the GNU General Public License -->
-<!-- along with Octave; see the file COPYING.  If not, see -->
-<!-- <http://www.gnu.org/licenses/>. -->
-   </body></html>
 
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="EOF-and-Errors.html#EOF-and-Errors" accesskey="p" rel="prev">EOF and Errors</a>, Up: <a href="C_002dStyle-I_002fO-Functions.html#C_002dStyle-I_002fO-Functions" accesskey="u" rel="up">C-Style I/O Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

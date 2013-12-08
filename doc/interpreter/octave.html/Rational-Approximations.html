@@ -1,81 +1,102 @@
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.2, http://www.gnu.org/software/texinfo/ -->
 <head>
-<title>Rational Approximations - GNU Octave</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="GNU Octave">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="Arithmetic.html#Arithmetic" title="Arithmetic">
-<link rel="prev" href="Special-Functions.html#Special-Functions" title="Special Functions">
-<link rel="next" href="Coordinate-Transformations.html#Coordinate-Transformations" title="Coordinate Transformations">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
-</head>
-<body>
-<div class="node">
-<a name="Rational-Approximations"></a>
-<p>
-Next:&nbsp;<a rel="next" accesskey="n" href="Coordinate-Transformations.html#Coordinate-Transformations">Coordinate Transformations</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="Special-Functions.html#Special-Functions">Special Functions</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="Arithmetic.html#Arithmetic">Arithmetic</a>
-<hr>
-</div>
+<title>GNU Octave: Rational Approximations</title>
 
+<meta name="description" content="GNU Octave: Rational Approximations">
+<meta name="keywords" content="GNU Octave: Rational Approximations">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Arithmetic.html#Arithmetic" rel="up" title="Arithmetic">
+<link href="Coordinate-Transformations.html#Coordinate-Transformations" rel="next" title="Coordinate Transformations">
+<link href="Special-Functions.html#Special-Functions" rel="prev" title="Special Functions">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+<a name="Rational-Approximations"></a>
+<div class="header">
+<p>
+Next: <a href="Coordinate-Transformations.html#Coordinate-Transformations" accesskey="n" rel="next">Coordinate Transformations</a>, Previous: <a href="Special-Functions.html#Special-Functions" accesskey="p" rel="prev">Special Functions</a>, Up: <a href="Arithmetic.html#Arithmetic" accesskey="u" rel="up">Arithmetic</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Rational-Approximations-1"></a>
 <h3 class="section">17.7 Rational Approximations</h3>
 
-<!-- rat scripts/general/rat.m -->
-<p><a name="doc_002drat"></a>
-
-<div class="defun">
-&mdash; Function File: <var>s</var> = <b>rat</b> (<var>x, tol</var>)<var><a name="index-rat-1937"></a></var><br>
-&mdash; Function File: [<var>n</var>, <var>d</var>] = <b>rat</b> (<var>x, tol</var>)<var><a name="index-rat-1938"></a></var><br>
-<blockquote>
-        <p>Find a rational approximation to <var>x</var> within the tolerance defined
+<a name="XREFrat"></a><dl>
+<dt><a name="index-rat"></a>Function File: <em><var>s</var> =</em> <strong>rat</strong> <em>(<var>x</var>, <var>tol</var>)</em></dt>
+<dt><a name="index-rat-1"></a>Function File: <em>[<var>n</var>, <var>d</var>] =</em> <strong>rat</strong> <em>(<var>x</var>, <var>tol</var>)</em></dt>
+<dd>
+<p>Find a rational approximation to <var>x</var> within the tolerance defined
 by <var>tol</var> using a continued fraction expansion.  For example:
+</p>
+<div class="example">
+<pre class="example">rat (pi) = 3 + 1/(7 + 1/16) = 355/113
+rat (e) = 3 + 1/(-4 + 1/(2 + 1/(5 + 1/(-2 + 1/(-7)))))
+        = 1457/536
+</pre></div>
 
-     <pre class="example">          rat (pi) = 3 + 1/(7 + 1/16) = 355/113
-          rat (e) = 3 + 1/(-4 + 1/(2 + 1/(5 + 1/(-2 + 1/(-7)))))
-                  = 1457/536
-</pre>
-        <p>Called with two arguments returns the numerator and denominator separately
-as two matrices. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
+<p>Called with two arguments returns the numerator and denominator separately
+as two matrices.
+</p>
+<p><strong>See also:</strong> <a href="#XREFrats">rats</a>.
+</p></dd></dl>
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002drats.html#doc_002drats">rats</a>. 
-</p></blockquote></div>
 
-<!-- rats src/pr-output.cc -->
-   <p><a name="doc_002drats"></a>
-
-<div class="defun">
-&mdash; Built-in Function:  <b>rats</b> (<var>x, len</var>)<var><a name="index-rats-1939"></a></var><br>
-<blockquote><p>Convert <var>x</var> into a rational approximation represented as a string. 
+<a name="XREFrats"></a><dl>
+<dt><a name="index-rats"></a>Built-in Function: <em></em> <strong>rats</strong> <em>(<var>x</var>, <var>len</var>)</em></dt>
+<dd><p>Convert <var>x</var> into a rational approximation represented as a string.
 You can convert the string back into a matrix as follows:
+</p>
+<div class="example">
+<pre class="example">r = rats (hilb (4));
+x = str2num (r)
+</pre></div>
 
-     <pre class="example">             r = rats(hilb(4));
-             x = str2num(r)
-</pre>
-        <p>The optional second argument defines the maximum length of the string
-representing the elements of <var>x</var>.  By default <var>len</var> is 9. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
+<p>The optional second argument defines the maximum length of the string
+representing the elements of <var>x</var>.  By default <var>len</var> is 9.
+</p>
+<p><strong>See also:</strong> <a href="Terminal-Output.html#XREFformat">format</a>, <a href="#XREFrat">rat</a>.
+</p></dd></dl>
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dformat.html#doc_002dformat">format</a>, <a href="doc_002drat.html#doc_002drat">rat</a>. 
-</p></blockquote></div>
 
-   </body></html>
 
+
+
+</body>
+</html>

@@ -1,159 +1,209 @@
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.2, http://www.gnu.org/software/texinfo/ -->
 <head>
-<title>Customizing the Prompt - GNU Octave</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="GNU Octave">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="Command-Line-Editing.html#Command-Line-Editing" title="Command Line Editing">
-<link rel="prev" href="Customizing-readline.html#Customizing-readline" title="Customizing readline">
-<link rel="next" href="Diary-and-Echo-Commands.html#Diary-and-Echo-Commands" title="Diary and Echo Commands">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
+<title>GNU Octave: Customizing the Prompt</title>
+
+<meta name="description" content="GNU Octave: Customizing the Prompt">
+<meta name="keywords" content="GNU Octave: Customizing the Prompt">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Command-Line-Editing.html#Command-Line-Editing" rel="up" title="Command Line Editing">
+<link href="Diary-and-Echo-Commands.html#Diary-and-Echo-Commands" rel="next" title="Diary and Echo Commands">
+<link href="Customizing-readline.html#Customizing-readline" rel="prev" title="Customizing readline">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
 </head>
-<body>
-<div class="node">
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
 <a name="Customizing-the-Prompt"></a>
+<div class="header">
 <p>
-Next:&nbsp;<a rel="next" accesskey="n" href="Diary-and-Echo-Commands.html#Diary-and-Echo-Commands">Diary and Echo Commands</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="Customizing-readline.html#Customizing-readline">Customizing readline</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="Command-Line-Editing.html#Command-Line-Editing">Command Line Editing</a>
-<hr>
+Next: <a href="Diary-and-Echo-Commands.html#Diary-and-Echo-Commands" accesskey="n" rel="next">Diary and Echo Commands</a>, Previous: <a href="Customizing-readline.html#Customizing-readline" accesskey="p" rel="prev">Customizing readline</a>, Up: <a href="Command-Line-Editing.html#Command-Line-Editing" accesskey="u" rel="up">Command Line Editing</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
 </div>
-
+<hr>
+<a name="Customizing-the-Prompt-1"></a>
 <h4 class="subsection">2.4.7 Customizing the Prompt</h4>
+<a name="index-prompt-customization"></a>
+<a name="index-customizing-the-prompt"></a>
 
-<p><a name="index-prompt-customization-155"></a><a name="index-customizing-the-prompt-156"></a>
-The following variables are available for customizing the appearance of
+<p>The following variables are available for customizing the appearance of
 the command-line prompts.  Octave allows the prompt to be customized by
 inserting a number of backslash-escaped special characters that are
 decoded as follows:
-
-     <dl>
-<dt>&lsquo;<samp><span class="samp">\t</span></samp>&rsquo;<dd>The time.
-
-     <br><dt>&lsquo;<samp><span class="samp">\d</span></samp>&rsquo;<dd>The date.
-
-     <br><dt>&lsquo;<samp><span class="samp">\n</span></samp>&rsquo;<dd>Begins a new line by printing the equivalent of a carriage return
+</p>
+<dl compact="compact">
+<dt>&lsquo;<samp>\t</samp>&rsquo;</dt>
+<dd><p>The time.
+</p>
+</dd>
+<dt>&lsquo;<samp>\d</samp>&rsquo;</dt>
+<dd><p>The date.
+</p>
+</dd>
+<dt>&lsquo;<samp>\n</samp>&rsquo;</dt>
+<dd><p>Begins a new line by printing the equivalent of a carriage return
 followed by a line feed.
-
-     <br><dt>&lsquo;<samp><span class="samp">\s</span></samp>&rsquo;<dd>The name of the program (usually just &lsquo;<samp><span class="samp">octave</span></samp>&rsquo;).
-
-     <br><dt>&lsquo;<samp><span class="samp">\w</span></samp>&rsquo;<dd>The current working directory.
-
-     <br><dt>&lsquo;<samp><span class="samp">\W</span></samp>&rsquo;<dd>The basename of the current working directory.
-
-     <br><dt>&lsquo;<samp><span class="samp">\u</span></samp>&rsquo;<dd>The username of the current user.
-
-     <br><dt>&lsquo;<samp><span class="samp">\h</span></samp>&rsquo;<dd>The hostname, up to the first `.'.
-
-     <br><dt>&lsquo;<samp><span class="samp">\H</span></samp>&rsquo;<dd>The hostname.
-
-     <br><dt>&lsquo;<samp><span class="samp">\#</span></samp>&rsquo;<dd>The command number of this command, counting from when Octave starts.
-
-     <br><dt>&lsquo;<samp><span class="samp">\!</span></samp>&rsquo;<dd>The history number of this command.  This differs from &lsquo;<samp><span class="samp">\#</span></samp>&rsquo; by the
+</p>
+</dd>
+<dt>&lsquo;<samp>\s</samp>&rsquo;</dt>
+<dd><p>The name of the program (usually just &lsquo;<samp>octave</samp>&rsquo;).
+</p>
+</dd>
+<dt>&lsquo;<samp>\w</samp>&rsquo;</dt>
+<dd><p>The current working directory.
+</p>
+</dd>
+<dt>&lsquo;<samp>\W</samp>&rsquo;</dt>
+<dd><p>The basename of the current working directory.
+</p>
+</dd>
+<dt>&lsquo;<samp>\u</samp>&rsquo;</dt>
+<dd><p>The username of the current user.
+</p>
+</dd>
+<dt>&lsquo;<samp>\h</samp>&rsquo;</dt>
+<dd><p>The hostname, up to the first &lsquo;.&rsquo;.
+</p>
+</dd>
+<dt>&lsquo;<samp>\H</samp>&rsquo;</dt>
+<dd><p>The hostname.
+</p>
+</dd>
+<dt>&lsquo;<samp>\#</samp>&rsquo;</dt>
+<dd><p>The command number of this command, counting from when Octave starts.
+</p>
+</dd>
+<dt>&lsquo;<samp>\!</samp>&rsquo;</dt>
+<dd><p>The history number of this command.  This differs from &lsquo;<samp>\#</samp>&rsquo; by the
 number of commands in the history list when Octave starts.
-
-     <br><dt>&lsquo;<samp><span class="samp">\$</span></samp>&rsquo;<dd>If the effective UID is 0, a &lsquo;<samp><span class="samp">#</span></samp>&rsquo;, otherwise a &lsquo;<samp><span class="samp">$</span></samp>&rsquo;.
-
-     <br><dt>&lsquo;<samp><span class="samp">\nnn</span></samp>&rsquo;<dd>The character whose character code in octal is <var>nnn</var>.
-
-     <br><dt>&lsquo;<samp><span class="samp">\\</span></samp>&rsquo;<dd>A backslash. 
+</p>
+</dd>
+<dt>&lsquo;<samp>\$</samp>&rsquo;</dt>
+<dd><p>If the effective UID is 0, a &lsquo;<samp>#</samp>&rsquo;, otherwise a &lsquo;<samp>$</samp>&rsquo;.
+</p>
+</dd>
+<dt>&lsquo;<samp>\nnn</samp>&rsquo;</dt>
+<dd><p>The character whose character code in octal is <var>nnn</var>.
+</p>
+</dd>
+<dt>&lsquo;<samp>\\</samp>&rsquo;</dt>
+<dd><p>A backslash.
+</p></dd>
 </dl>
 
-<!-- PS1 src/input.cc -->
-   <p><a name="doc_002dPS1"></a>
-
-<div class="defun">
-&mdash; Built-in Function: <var>val</var> = <b>PS1</b> ()<var><a name="index-PS1-157"></a></var><br>
-&mdash; Built-in Function: <var>old_val</var> = <b>PS1</b> (<var>new_val</var>)<var><a name="index-PS1-158"></a></var><br>
-&mdash; Built-in Function:  <b>PS1</b> (<var>new_val, "local"</var>)<var><a name="index-PS1-159"></a></var><br>
-<blockquote><p>Query or set the primary prompt string.  When executing interactively,
+<a name="XREFPS1"></a><dl>
+<dt><a name="index-PS1"></a>Built-in Function: <em><var>val</var> =</em> <strong>PS1</strong> <em>()</em></dt>
+<dt><a name="index-PS1-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>PS1</strong> <em>(<var>new_val</var>)</em></dt>
+<dt><a name="index-PS1-2"></a>Built-in Function: <em></em> <strong>PS1</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
+<dd><p>Query or set the primary prompt string.  When executing interactively,
 Octave displays the primary prompt when it is ready to read a command.
-
-        <p>The default value of the primary prompt string is <code>"\s:\#&gt; "</code>. 
+</p>
+<p>The default value of the primary prompt string is <code>&quot;octave:\#&gt; &quot;</code>.
 To change it, use a command like
+</p>
+<div class="example">
+<pre class="example">PS1 (&quot;\\u@\\H&gt; &quot;)
+</pre></div>
 
-     <pre class="example">          PS1 ("\\u@\\H&gt; ")
-</pre>
-        <p class="noindent">which will result in the prompt &lsquo;<samp><span class="samp">boris@kremvax&gt; </span></samp>&rsquo; for the user
-&lsquo;<samp><span class="samp">boris</span></samp>&rsquo; logged in on the host &lsquo;<samp><span class="samp">kremvax.kgb.su</span></samp>&rsquo;.  Note that two
+<p>which will result in the prompt &lsquo;<samp>boris@kremvax&gt; </samp>&rsquo; for the user
+&lsquo;<samp>boris</samp>&rsquo; logged in on the host &lsquo;<samp>kremvax.kgb.su</samp>&rsquo;.  Note that two
 backslashes are required to enter a backslash into a double-quoted
 character string.  See <a href="Strings.html#Strings">Strings</a>.
-
-        <p>You can also use ANSI escape sequences if your terminal supports them. 
+</p>
+<p>You can also use ANSI escape sequences if your terminal supports them.
 This can be useful for coloring the prompt.  For example,
+</p>
+<div class="example">
+<pre class="example">PS1 (&quot;\\[\\033[01;31m\\]\\s:\\#&gt; \\[\\033[0m\\]&quot;)
+</pre></div>
 
-     <pre class="example">          PS1 ("\\[\\033[01;31m\\]\\s:\\#&gt; \\[\\033[0m\\]")
-</pre>
-        <p class="noindent">will give the default Octave prompt a red coloring.
+<p>will give the default Octave prompt a red coloring.
+</p>
+<p>When called from inside a function with the <code>&quot;local&quot;</code> option, the
+variable is changed locally for the function and any subroutines it calls.  
+The original variable value is restored when exiting the function.
+</p>
+<p><strong>See also:</strong> <a href="#XREFPS2">PS2</a>, <a href="#XREFPS4">PS4</a>.
+</p></dd></dl>
 
-        <p>When called from inside a function with the "local" option, the variable is
-changed locally for the function and any subroutines it calls.  The original
-variable value is restored when exiting the function. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dPS2.html#doc_002dPS2">PS2</a>, <a href="doc_002dPS4.html#doc_002dPS4">PS4</a>. 
-</p></blockquote></div>
-
-<!-- PS2 src/input.cc -->
-   <p><a name="doc_002dPS2"></a>
-
-<div class="defun">
-&mdash; Built-in Function: <var>val</var> = <b>PS2</b> ()<var><a name="index-PS2-160"></a></var><br>
-&mdash; Built-in Function: <var>old_val</var> = <b>PS2</b> (<var>new_val</var>)<var><a name="index-PS2-161"></a></var><br>
-&mdash; Built-in Function:  <b>PS2</b> (<var>new_val, "local"</var>)<var><a name="index-PS2-162"></a></var><br>
-<blockquote><p>Query or set the secondary prompt string.  The secondary prompt is
+<a name="XREFPS2"></a><dl>
+<dt><a name="index-PS2"></a>Built-in Function: <em><var>val</var> =</em> <strong>PS2</strong> <em>()</em></dt>
+<dt><a name="index-PS2-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>PS2</strong> <em>(<var>new_val</var>)</em></dt>
+<dt><a name="index-PS2-2"></a>Built-in Function: <em></em> <strong>PS2</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
+<dd><p>Query or set the secondary prompt string.  The secondary prompt is
 printed when Octave is expecting additional input to complete a
 command.  For example, if you are typing a <code>for</code> loop that spans several
 lines, Octave will print the secondary prompt at the beginning of
 each line after the first.  The default value of the secondary prompt
-string is <code>"&gt; "</code>.
+string is <code>&quot;&gt; &quot;</code>.
+</p>
+<p>When called from inside a function with the <code>&quot;local&quot;</code> option, the
+variable is changed locally for the function and any subroutines it calls.  
+The original variable value is restored when exiting the function.
+</p>
+<p><strong>See also:</strong> <a href="#XREFPS1">PS1</a>, <a href="#XREFPS4">PS4</a>.
+</p></dd></dl>
 
-        <p>When called from inside a function with the "local" option, the variable is
-changed locally for the function and any subroutines it calls.  The original
-variable value is restored when exiting the function. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dPS1.html#doc_002dPS1">PS1</a>, <a href="doc_002dPS4.html#doc_002dPS4">PS4</a>. 
-</p></blockquote></div>
-
-<!-- PS4 src/input.cc -->
-   <p><a name="doc_002dPS4"></a>
-
-<div class="defun">
-&mdash; Built-in Function: <var>val</var> = <b>PS4</b> ()<var><a name="index-PS4-163"></a></var><br>
-&mdash; Built-in Function: <var>old_val</var> = <b>PS4</b> (<var>new_val</var>)<var><a name="index-PS4-164"></a></var><br>
-&mdash; Built-in Function:  <b>PS4</b> (<var>new_val, "local"</var>)<var><a name="index-PS4-165"></a></var><br>
-<blockquote><p>Query or set the character string used to prefix output produced
-when echoing commands is enabled. 
-The default value is <code>"+ "</code>. 
+<a name="XREFPS4"></a><dl>
+<dt><a name="index-PS4"></a>Built-in Function: <em><var>val</var> =</em> <strong>PS4</strong> <em>()</em></dt>
+<dt><a name="index-PS4-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>PS4</strong> <em>(<var>new_val</var>)</em></dt>
+<dt><a name="index-PS4-2"></a>Built-in Function: <em></em> <strong>PS4</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
+<dd><p>Query or set the character string used to prefix output produced
+when echoing commands is enabled.
+The default value is <code>&quot;+ &quot;</code>.
 See <a href="Diary-and-Echo-Commands.html#Diary-and-Echo-Commands">Diary and Echo Commands</a>, for a description of echoing commands.
+</p>
+<p>When called from inside a function with the <code>&quot;local&quot;</code> option, the
+variable is changed locally for the function and any subroutines it calls.  
+The original variable value is restored when exiting the function.
+</p>
+<p><strong>See also:</strong> <a href="Diary-and-Echo-Commands.html#XREFecho">echo</a>, <a href="Diary-and-Echo-Commands.html#XREFecho_005fexecuting_005fcommands">echo_executing_commands</a>, <a href="#XREFPS1">PS1</a>, <a href="#XREFPS2">PS2</a>.
+</p></dd></dl>
 
-        <p>When called from inside a function with the "local" option, the variable is
-changed locally for the function and any subroutines it calls.  The original
-variable value is restored when exiting the function. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002decho.html#doc_002decho">echo</a>, <a href="doc_002decho_005fexecuting_005fcommands.html#doc_002decho_005fexecuting_005fcommands">echo_executing_commands</a>, <a href="doc_002dPS1.html#doc_002dPS1">PS1</a>, <a href="doc_002dPS2.html#doc_002dPS2">PS2</a>. 
-</p></blockquote></div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Diary-and-Echo-Commands.html#Diary-and-Echo-Commands" accesskey="n" rel="next">Diary and Echo Commands</a>, Previous: <a href="Customizing-readline.html#Customizing-readline" accesskey="p" rel="prev">Customizing readline</a>, Up: <a href="Command-Line-Editing.html#Command-Line-Editing" accesskey="u" rel="up">Command Line Editing</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
 
-   </body></html>
 
+
+</body>
+</html>

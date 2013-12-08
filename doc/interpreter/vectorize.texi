@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 2012 Jordi Gutiérrez Hermoso
+@c Copyright (C) 2012-2013 Jordi Gutiérrez Hermoso
 @c
 @c This file is part of Octave.
 @c
@@ -44,6 +44,7 @@ code.
 * Broadcasting::               Broadcasting operations
 * Function Application::       Applying functions to arrays, cells, and structs
 * Accumulation::               Accumulation functions
+* JIT Compiler::               Just-In-Time Compiler for loops
 * Miscellaneous Techniques::   Other techniques for speeding up code
 * Examples::
 @end menu
@@ -113,7 +114,7 @@ instead of
 @example
 @group
 for i = 1:n
-  if a(i) > 5
+  if (a(i) > 5)
     a(i) -= 20
   endif
 endfor
@@ -135,8 +136,8 @@ Use elementwise vector operators whenever possible to avoid looping
 simple inline functions, the @code{vectorize} function can do this
 automatically.
 
-@c vectorize src/ov-fcn-inline.cc
-@anchor{doc-vectorize}
+@c vectorize libinterp/octave-value/ov-fcn-inline.cc
+@anchor{XREFvectorize}
 @deftypefn {Built-in Function} {} vectorize (@var{fun})
 Create a vectorized version of the inline function @var{fun}
 by replacing all occurrences of @code{*}, @code{/}, etc., with
@@ -154,7 +155,7 @@ quadv (fcn, 0, 3)
    @result{} 6
 @end group
 @end example
-@seealso{@ref{doc-inline,,inline}, @ref{doc-formula,,formula}, @ref{doc-argnames,,argnames}}
+@seealso{@ref{XREFinline,,inline}, @ref{XREFformula,,formula}, @ref{XREFargnames,,argnames}}
 @end deftypefn
 
 
@@ -214,6 +215,7 @@ ifelse / merge
 
 @item
 Repetition
+
 @itemize
 @item
 repmat
@@ -224,6 +226,7 @@ repelems
 
 @item
 Vectorized arithmetic
+
 @itemize
 @item
 sum
@@ -255,6 +258,7 @@ cummin
 
 @item
 Shape of higher dimensional arrays
+
 @itemize
 @item
 reshape
@@ -365,8 +369,8 @@ broadcast into matrices of size @code{[3 3]} before ordinary matrix
 subtraction takes place.
 
 A special case of broadcasting that may be familiar is when all
-dimensions of the array being broadcast are 1, i.e. the array is a
-scalar. Thus for example, operations like @code{x - 42} and @code{max
+dimensions of the array being broadcast are 1, i.e., the array is a
+scalar.  Thus for example, operations like @code{x - 42} and @code{max
 (x, 2)} are basic examples of broadcasting.
 
 For a higher-dimensional example, suppose @code{img} is an RGB image of
@@ -384,9 +388,9 @@ Note the usage of permute to match the dimensions of the
 For functions that are not written with broadcasting semantics,
 @code{bsxfun} can be useful for coercing them to broadcast.
 
-@c bsxfun src/DLD-FUNCTIONS/bsxfun.cc
-@anchor{doc-bsxfun}
-@deftypefn {Loadable Function} {} bsxfun (@var{f}, @var{A}, @var{B})
+@c bsxfun libinterp/corefcn/bsxfun.cc
+@anchor{XREFbsxfun}
+@deftypefn {Built-in Function} {} bsxfun (@var{f}, @var{A}, @var{B})
 The binary singleton expansion function applier performs broadcasting,
 that is, applies a binary function @var{f} element-by-element to two
 array arguments @var{A} and @var{B}, and expands as necessary
@@ -399,7 +403,7 @@ and a scalar.
 The dimensions of @var{A} and @var{B} must be equal or singleton.  The
 singleton dimensions of the arrays will be expanded to the same
 dimensionality as the other array.
-@seealso{@ref{doc-arrayfun,,arrayfun}, @ref{doc-cellfun,,cellfun}}
+@seealso{@ref{XREFarrayfun,,arrayfun}, @ref{XREFcellfun,,cellfun}}
 @end deftypefn
 
 
@@ -493,7 +497,7 @@ end_try_catch
 that may have relied on matrices of different size producing an error.
 Due to how broadcasting changes semantics with older versions of Octave,
 by default Octave warns if a broadcasting operation is performed.  To
-disable this warning, refer to its ID (@pxref{doc-warning_ids}):
+disable this warning, refer to its ID (@pxref{XREFwarning_ids,,warning_ids}):
 
 @example
 warning ("off", "Octave:broadcast");
@@ -524,8 +528,8 @@ difficult or impossible for various reasons.  For those situations,
 Octave provides facilities for applying a function to each element of an
 array, cell, or struct.
 
-@c arrayfun src/DLD-FUNCTIONS/cellfun.cc
-@anchor{doc-arrayfun}
+@c arrayfun libinterp/corefcn/cellfun.cc
+@anchor{XREFarrayfun}
 @deftypefn  {Function File} {} arrayfun (@var{func}, @var{A})
 @deftypefnx {Function File} {@var{x} =} arrayfun (@var{func}, @var{A})
 @deftypefnx {Function File} {@var{x} =} arrayfun (@var{func}, @var{A}, @var{b}, @dots{})
@@ -553,12 +557,12 @@ example:
 @example
 @group
 arrayfun (@@atan2, [1, 0], [0, 1])
-@result{} ans = [1.5708   0.0000]
+     @result{} [ 1.5708   0.0000 ]
 @end group
 @end example
 
 If the parameter @var{val} after a further string input argument
-"UniformOutput" is set @code{true} (the default), then the named
+@qcode{"UniformOutput"} is set @code{true} (the default), then the named
 function @var{func} must return a single element which then will be
 concatenated into the return value and is of type matrix.  Otherwise,
 if that parameter is set to @code{false}, then the outputs are
@@ -567,12 +571,12 @@ concatenated in a cell array.  For example:
 @example
 @group
 arrayfun (@@(x,y) x:y, "abc", "def", "UniformOutput", false)
-@result{} ans =
-    @{
-      [1,1] = abcd
-      [1,2] = bcde
-      [1,3] = cdef
-    @}
+@result{}
+   @{
+     [1,1] = abcd
+     [1,2] = bcde
+     [1,3] = cdef
+   @}
 @end group
 @end example
 
@@ -586,24 +590,24 @@ example:
 @result{}
 A =
 @{
-  [1,1] =  1
-  [2,1] = [](0x0)
+   [1,1] =  1
+   [2,1] = [](0x0)
 @}
 B =
 @{
-  [1,1] =  1
-  [2,1] = [](0x0)
+   [1,1] =  1
+   [2,1] = [](0x0)
 @}
 C =
 @{
-  [1,1] =  10
-  [2,1] = [](0x0)
+   [1,1] =  10
+   [2,1] = [](0x0)
 @}
 @end group
 @end example
 
 If the parameter @var{errfunc} after a further string input argument
-"ErrorHandler" is another string, a function handle, an inline
+@qcode{"ErrorHandler"} is another string, a function handle, an inline
 function, or an anonymous function, then @var{errfunc} defines a
 function to call in the case that @var{func} generates an error.
 The definition of the function must be of the form
@@ -615,50 +619,50 @@ function [@dots{}] = errfunc (@var{s}, @dots{})
 @noindent
 where there is an additional input argument to @var{errfunc}
 relative to @var{func}, given by @var{s}.  This is a structure with
-the elements "identifier", "message", and "index" giving,
-respectively, the error identifier, the error message, and the index of
-the array elements that caused the error.  The size of the output
-argument of @var{errfunc} must have the same size as the output
-argument of @var{func}, otherwise a real error is thrown.  For
+the elements @qcode{"identifier"}, @qcode{"message"}, and
+@qcode{"index"} giving, respectively, the error identifier, the error
+message, and the index of the array elements that caused the error.  The
+size of the output argument of @var{errfunc} must have the same size as the
+output argument of @var{func}, otherwise a real error is thrown.  For
 example:
 
 @example
 @group
 function y = ferr (s, x), y = "MyString"; endfunction
 arrayfun (@@str2num, [1234],
-           "UniformOutput", false, "ErrorHandler", @@ferr)
-@result{} ans =
-    @{
+          "UniformOutput", false, "ErrorHandler", @@ferr)
+@result{}
+   @{
      [1,1] = MyString
-    @}
+   @}
 @end group
 @end example
 
-@seealso{@ref{doc-spfun,,spfun}, @ref{doc-cellfun,,cellfun}, @ref{doc-structfun,,structfun}}
+@seealso{@ref{XREFspfun,,spfun}, @ref{XREFcellfun,,cellfun}, @ref{XREFstructfun,,structfun}}
 @end deftypefn
 
 
 @c spfun scripts/sparse/spfun.m
-@anchor{doc-spfun}
+@anchor{XREFspfun}
 @deftypefn {Function File} {@var{y} =} spfun (@var{f}, @var{S})
 Compute @code{f(@var{S})} for the non-zero values of @var{S}.
 This results in a sparse matrix with the same structure as
 @var{S}.  The function @var{f} can be passed as a string, a
 function handle, or an inline function.
-@seealso{@ref{doc-arrayfun,,arrayfun}, @ref{doc-cellfun,,cellfun}, @ref{doc-structfun,,structfun}}
+@seealso{@ref{XREFarrayfun,,arrayfun}, @ref{XREFcellfun,,cellfun}, @ref{XREFstructfun,,structfun}}
 @end deftypefn
 
 
-@c cellfun src/DLD-FUNCTIONS/cellfun.cc
-@anchor{doc-cellfun}
-@deftypefn  {Loadable Function} {} cellfun (@var{name}, @var{C})
-@deftypefnx {Loadable Function} {} cellfun ("size", @var{C}, @var{k})
-@deftypefnx {Loadable Function} {} cellfun ("isclass", @var{C}, @var{class})
-@deftypefnx {Loadable Function} {} cellfun (@var{func}, @var{C})
-@deftypefnx {Loadable Function} {} cellfun (@var{func}, @var{C}, @var{D})
-@deftypefnx {Loadable Function} {[@var{a}, @dots{}] =} cellfun (@dots{})
-@deftypefnx {Loadable Function} {} cellfun (@dots{}, 'ErrorHandler', @var{errfunc})
-@deftypefnx {Loadable Function} {} cellfun (@dots{}, 'UniformOutput', @var{val})
+@c cellfun libinterp/corefcn/cellfun.cc
+@anchor{XREFcellfun}
+@deftypefn  {Built-in Function} {} cellfun (@var{name}, @var{C})
+@deftypefnx {Built-in Function} {} cellfun ("size", @var{C}, @var{k})
+@deftypefnx {Built-in Function} {} cellfun ("isclass", @var{C}, @var{class})
+@deftypefnx {Built-in Function} {} cellfun (@var{func}, @var{C})
+@deftypefnx {Built-in Function} {} cellfun (@var{func}, @var{C}, @var{D})
+@deftypefnx {Built-in Function} {[@var{a}, @dots{}] =} cellfun (@dots{})
+@deftypefnx {Built-in Function} {} cellfun (@dots{}, "ErrorHandler", @var{errfunc})
+@deftypefnx {Built-in Function} {} cellfun (@dots{}, "UniformOutput", @var{val})
 
 Evaluate the function named @var{name} on the elements of the cell array
 @var{C}.  Elements in @var{C} are passed on to the named function
@@ -671,6 +675,9 @@ Return 1 for empty elements.
 @item islogical
 Return 1 for logical elements.
 
+@item isnumeric
+Return 1 for numeric elements.
+
 @item isreal
 Return 1 for real elements.
 
@@ -680,7 +687,7 @@ Return a vector of the lengths of cell elements.
 @item ndims
 Return the number of dimensions of each element.
 
-@item numel
+@item  numel
 @itemx prodofsize
 Return the number of elements contained within each cell element.  The
 number is the product of the dimensions of the object at each cell element.
@@ -694,16 +701,14 @@ Return 1 for elements of @var{class}.
 
 Additionally, @code{cellfun} accepts an arbitrary function @var{func}
 in the form of an inline function, function handle, or the name of a
-function (in a character string).  In the case of a character string
-argument, the function must accept a single argument named @var{x}, and
-it must return a string value.  The function can take one or more arguments,
+function (in a character string). The function can take one or more arguments,
 with the inputs arguments given by @var{C}, @var{D}, etc.  Equally the
 function can return one or more output arguments.  For example:
 
 @example
 @group
 cellfun ("atan2", @{1, 0@}, @{0, 1@})
-     @result{}ans = [1.57080   0.00000]
+     @result{} [ 1.57080   0.00000 ]
 @end group
 @end example
 
@@ -717,7 +722,7 @@ function [a, b] = twoouts (x)
   a = x;
   b = x*x;
 endfunction
-[aa, bb] = cellfun(@@twoouts, @{1, 2, 3@})
+[aa, bb] = cellfun (@@twoouts, @{1, 2, 3@})
      @result{}
         aa =
            1 2 3
@@ -730,21 +735,22 @@ Note that per default the output argument(s) are arrays of the same size as
 the input arguments.  Input arguments that are singleton (1x1) cells will be
 automatically expanded to the size of the other arguments.
 
-If the parameter 'UniformOutput' is set to true (the default), then the
-function must return scalars which will be concatenated into the return
-array(s).  If 'UniformOutput' is false, the outputs are concatenated into a
-cell array (or cell arrays).  For example:
+If the parameter @qcode{"UniformOutput"} is set to true (the default),
+then the function must return scalars which will be concatenated into the
+return array(s).  If @qcode{"UniformOutput"} is false, the outputs are
+concatenated into a cell array (or cell arrays).  For example:
 
 @example
 @group
 cellfun ("tolower", @{"Foo", "Bar", "FooBar"@},
-         "UniformOutput",false)
-@result{} ans = @{"foo", "bar", "foobar"@}
+         "UniformOutput", false)
+@result{} @{"foo", "bar", "foobar"@}
 @end group
 @end example
 
-Given the parameter 'ErrorHandler', then @var{errfunc} defines a function to
-call in case @var{func} generates an error.  The form of the function is
+Given the parameter @qcode{"ErrorHandler"}, then @var{errfunc} defines a
+function to call in case @var{func} generates an error.  The form of the
+function is
 
 @example
 function [@dots{}] = errfunc (@var{s}, @dots{})
@@ -753,15 +759,15 @@ function [@dots{}] = errfunc (@var{s}, @dots{})
 @noindent
 where there is an additional input argument to @var{errfunc} relative to
 @var{func}, given by @var{s}.  This is a structure with the elements
-'identifier', 'message' and 'index', giving respectively the error
-identifier, the error message, and the index into the input arguments
-of the element that caused the error.  For example:
+@qcode{"identifier"}, @qcode{"message"} and @qcode{"index"}, giving
+respectively the error identifier, the error message, and the index into the
+input arguments of the element that caused the error.  For example:
 
 @example
 @group
 function y = foo (s, x), y = NaN; endfunction
-cellfun ("factorial", @{-1,2@}, 'ErrorHandler', @@foo)
-@result{} ans = [NaN 2]
+cellfun ("factorial", @{-1,2@}, "ErrorHandler", @@foo)
+@result{} [NaN 2]
 @end group
 @end example
 
@@ -775,17 +781,17 @@ interpreter is not involved in the internal loop.  For example:
 @example
 @group
 a = @{@dots{}@}
-v = cellfun (@@(x) det(x), a); # compute determinants
+v = cellfun (@@(x) det (x), a); # compute determinants
 v = cellfun (@@det, a); # faster
 @end group
 @end example
 
-@seealso{@ref{doc-arrayfun,,arrayfun}, @ref{doc-structfun,,structfun}, @ref{doc-spfun,,spfun}}
+@seealso{@ref{XREFarrayfun,,arrayfun}, @ref{XREFstructfun,,structfun}, @ref{XREFspfun,,spfun}}
 @end deftypefn
 
 
 @c structfun scripts/general/structfun.m
-@anchor{doc-structfun}
+@anchor{XREFstructfun}
 @deftypefn  {Function File} {} structfun (@var{func}, @var{S})
 @deftypefnx {Function File} {[@var{A}, @dots{}] =} structfun (@dots{})
 @deftypefnx {Function File} {} structfun (@dots{}, "ErrorHandler", @var{errfunc})
@@ -802,12 +808,11 @@ function must accept a single argument named @var{x}, and it must return
 a string value.  If the function returns more than one argument, they are
 returned as separate output variables.
 
-If the parameter "UniformOutput" is set to true (the default), then the
-function
-must return a single element which will be concatenated into the
-return value.  If "UniformOutput" is false, the outputs are placed into a
-structure
-with the same fieldnames as the input structure.
+If the parameter @qcode{"UniformOutput"} is set to true (the default),
+then the function must return a single element which will be concatenated
+into the return value.  If @qcode{"UniformOutput"} is false, the outputs
+are placed into a structure with the same fieldnames as the input
+structure.
 
 @example
 @group
@@ -823,8 +828,9 @@ structfun (@@(x) regexp (x, '(\w+)$', "matches")@{1@}, s,
 @end group
 @end example
 
-Given the parameter "ErrorHandler", @var{errfunc} defines a function to
-call in case @var{func} generates an error.  The form of the function is
+Given the parameter @qcode{"ErrorHandler"}, @var{errfunc} defines a
+function to call in case @var{func} generates an error.  The form of the
+function is
 
 @example
 function [@dots{}] = errfunc (@var{se}, @dots{})
@@ -832,13 +838,13 @@ function [@dots{}] = errfunc (@var{se}, @dots{})
 
 @noindent
 where there is an additional input argument to @var{errfunc} relative to
-@var{func}, given by @var{se}.  This is a structure with the elements
-"identifier", "message" and "index", giving respectively the error
-identifier, the error message, and the index into the input arguments
-of the element that caused the error.  For an example on how to use
-an error handler, @pxref{doc-cellfun, @code{cellfun}}.
+@var{func}, given by @nospell{@var{se}}.  This is a structure with the
+elements @qcode{"identifier"}, @qcode{"message"} and @qcode{"index"},
+giving respectively the error identifier, the error message, and the index
+into the input arguments of the element that caused the error.  For an
+example on how to use an error handler, @pxref{XREFcellfun,,cellfun}.
 
-@seealso{@ref{doc-cellfun,,cellfun}, @ref{doc-arrayfun,,arrayfun}, @ref{doc-spfun,,spfun}}
+@seealso{@ref{XREFcellfun,,cellfun}, @ref{XREFarrayfun,,arrayfun}, @ref{XREFspfun,,spfun}}
 @end deftypefn
 
 
@@ -850,7 +856,7 @@ of an array when performing a computation, accumulation functions can be
 useful.
 
 @c accumarray scripts/general/accumarray.m
-@anchor{doc-accumarray}
+@anchor{XREFaccumarray}
 @deftypefn  {Function File} {} accumarray (@var{subs}, @var{vals}, @var{sz}, @var{func}, @var{fillval}, @var{issparse})
 @deftypefnx {Function File} {} accumarray (@var{subs}, @var{vals}, @dots{})
 
@@ -894,7 +900,7 @@ The following @code{accumarray} example constructs a frequency table
 that in the first column counts how many occurrences each number in
 the second column has, taken from the vector @var{x}.  Note the usage
 of @code{unique}  for assigning to all repeated elements of @var{x}
-the same index (@pxref{doc-unique}).
+the same index (@pxref{XREFunique,,unique}).
 
 @example
 @group
@@ -925,7 +931,7 @@ accumarray ([1, 1, 1;
 @end example
 
 The sparse option can be used as an alternative to the @code{sparse}
-constructor (@pxref{doc-sparse}). Thus
+constructor (@pxref{XREFsparse,,sparse}).  Thus
 
 @example
 sparse (@var{i}, @var{j}, @var{sv})
@@ -939,7 +945,7 @@ accumarray ([@var{i}, @var{j}], @var{sv}', [], [], 0, true)
 @end example
 
 @noindent
-For repeated indices, @code{sparse} adds the corresponding value. To
+For repeated indices, @code{sparse} adds the corresponding value.  To
 take the minimum instead, use @code{min} as an accumulator function:
 
 @example
@@ -955,12 +961,12 @@ Note that for general reduction function the interpreter overhead can
 play a major part and it may be more efficient to do multiple
 accumarray calls and compute the results in a vectorized manner.
 
-@seealso{@ref{doc-accumdim,,accumdim}, @ref{doc-unique,,unique}, @ref{doc-sparse,,sparse}}
+@seealso{@ref{XREFaccumdim,,accumdim}, @ref{XREFunique,,unique}, @ref{XREFsparse,,sparse}}
 @end deftypefn
 
 
 @c accumdim scripts/general/accumdim.m
-@anchor{doc-accumdim}
+@anchor{XREFaccumdim}
 @deftypefn {Function File} {} accumdim (@var{subs}, @var{vals}, @var{dim}, @var{n}, @var{func}, @var{fillval})
 Create an array by accumulating the slices of an array into the
 positions defined by their subscripts along a specified dimension.
@@ -998,7 +1004,80 @@ accumdim ([1, 2, 1, 2, 1], [ 7, -10,   4;
 @end group
 @end example
 
-@seealso{@ref{doc-accumarray,,accumarray}}
+@seealso{@ref{XREFaccumarray,,accumarray}}
+@end deftypefn
+
+
+@node JIT Compiler
+@section JIT Compiler
+
+Vectorization is the preferred technique for eliminating loops and speeding up
+code.  Nevertheless, it is not always possible to replace every loop.  In such
+situations it may be worth trying Octave's @strong{experimental} Just-In-Time
+(JIT) compiler.
+
+A JIT compiler works by analyzing the body of a loop, translating the Octave
+statements into another language, compiling the new code segment into an
+executable, and then running the executable and collecting any results.  The
+process is not simple and there is a significant amount of work to perform for
+each step.  It can still make sense, however, if the number of loop iterations
+is large.  Because Octave is an interpreted language every time through a
+loop Octave must parse the statements in the loop body before executing them.
+With a JIT compiler this is done just once when the body is translated to
+another language.
+
+The JIT compiler is a very new feature in Octave and not all valid Octave
+statements can currently be accelerated.  However, if no other technique
+is available it may be worth benchmarking the code with JIT enabled.  The
+function @code{jit_enable} is used to turn compilation on or off.  The
+function @code{jit_startcnt} sets the threshold for acceleration.  Loops
+with iteration counts above @code{jit_startcnt} will be accelerated.  The
+function @code{debug_jit} is not likely to be of use to anyone not working
+directly on the implementation of the JIT compiler.
+
+@c jit_enable libinterp/corefcn/pt-jit.cc
+@anchor{XREFjit_enable}
+@deftypefn  {Built-in Function} {@var{val} =} jit_enable ()
+@deftypefnx {Built-in Function} {@var{old_val} =} jit_enable (@var{new_val})
+@deftypefnx {Built-in Function} {} jit_enable (@var{new_val}, "local")
+Query or set the internal variable that enables Octave's JIT compiler.
+
+When called from inside a function with the @qcode{"local"} option, the
+variable is changed locally for the function and any subroutines it calls.  
+The original variable value is restored when exiting the function.
+@seealso{@ref{XREFjit_startcnt,,jit_startcnt}, @ref{XREFdebug_jit,,debug_jit}}
+@end deftypefn
+
+
+@c jit_startcnt libinterp/corefcn/pt-jit.cc
+@anchor{XREFjit_startcnt}
+@deftypefn  {Built-in Function} {@var{val} =} jit_startcnt ()
+@deftypefnx {Built-in Function} {@var{old_val} =} jit_startcnt (@var{new_val})
+@deftypefnx {Built-in Function} {} jit_startcnt (@var{new_val}, "local")
+Query or set the internal variable that determines whether JIT compilation
+will take place for a specific loop.  Because compilation is a costly
+operation it does not make sense to employ JIT when the loop count is low.
+By default only loops with greater than 1000 iterations will be accelerated.
+
+When called from inside a function with the @qcode{"local"} option, the
+variable is changed locally for the function and any subroutines it calls.  
+The original variable value is restored when exiting the function.
+@seealso{@ref{XREFjit_enable,,jit_enable}, @ref{XREFdebug_jit,,debug_jit}}
+@end deftypefn
+
+
+@c debug_jit libinterp/corefcn/pt-jit.cc
+@anchor{XREFdebug_jit}
+@deftypefn  {Built-in Function} {@var{val} =} debug_jit ()
+@deftypefnx {Built-in Function} {@var{old_val} =} debug_jit (@var{new_val})
+@deftypefnx {Built-in Function} {} debug_jit (@var{new_val}, "local")
+Query or set the internal variable that determines whether
+debugging/tracing is enabled for Octave's JIT compiler.
+
+When called from inside a function with the @qcode{"local"} option, the
+variable is changed locally for the function and any subroutines it calls.  
+The original variable value is restored when exiting the function.
+@seealso{@ref{XREFjit_enable,,jit_enable}, @ref{XREFjit_startcnt,,jit_startcnt}}
 @end deftypefn
 
 
@@ -1068,7 +1147,7 @@ cell or struct element, and possibly economizes them.  For example:
 @group
 a = zeros (1000); # create a 1000x1000 matrix
 b = a(:,10:100);  # lazy slice
-a = []; # the original a array is still allocated
+a = []; # the original "a" array is still allocated
 c@{1@} = b; # b is reallocated at this point
 @end group
 @end example
@@ -1136,7 +1215,7 @@ statement instead.  @xref{The try Statement}.
 @item Use @code{ignore_function_time_stamp} when appropriate.
 If you are calling lots of functions, and none of them will need to change
 during your run, set the variable @code{ignore_function_time_stamp} to
-@code{"all"}.  This will stop Octave from checking the time stamp of a function
+@qcode{"all"}.  This will stop Octave from checking the time stamp of a function
 file to see if it has been updated while the program is being run.
 @end itemize
 
@@ -1156,7 +1235,7 @@ For a vector @code{A}, the following loop
 @group
 n = length (A);
 B = zeros (n, 2);
-for i = 1:length(A)
+for i = 1:length (A)
   ## this will be two columns, the first is the difference and
   ## the second the mean of the two elements used for the diff.
   B(i,:) = [A(i+1)-A(i), (A(i+1) + A(i))/2)];

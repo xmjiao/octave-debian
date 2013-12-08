@@ -1,6 +1,4 @@
-/* -*- buffer-read-only: t -*- vi: set ro: */
-/* DO NOT EDIT! GENERATED AUTOMATICALLY! */
-/* Copyright (C) 1991-2012 Free Software Foundation, Inc.
+/* Copyright (C) 1991-2013 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    This program is free software: you can redistribute it and/or modify
@@ -17,12 +15,11 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 #ifndef _LIBC
-# include <config.h>
-#endif
-
 /* Don't use __attribute__ __nonnull__ in this compilation unit.  Otherwise gcc
    optimizes away the pattern == NULL || pglob == NULL tests below.  */
-#define _GL_ARG_NONNULL(params)
+# define _GL_ARG_NONNULL(params)
+# include <config.h>
+#endif
 
 #include <glob.h>
 
@@ -165,7 +162,7 @@
 # define GET_LOGIN_NAME_MAX()   (-1)
 #endif
 
-static const char *next_brace_sub (const char *begin, int flags) __THROW;
+static const char *next_brace_sub (const char *begin, int flags) __THROWNL;
 
 #endif /* !defined _LIBC || !defined GLOB_ONLY_P */
 
@@ -213,8 +210,8 @@ extern int __glob_pattern_type (const char *pattern, int quote)
     attribute_hidden;
 
 #if !defined _LIBC || !defined GLOB_ONLY_P
-static int prefix_array (const char *prefix, char **array, size_t n) __THROW;
-static int collated_compare (const void *, const void *) __THROW;
+static int prefix_array (const char *prefix, char **array, size_t n) __THROWNL;
+static int collated_compare (const void *, const void *) __THROWNL;
 
 
 /* Find the end of the sub-pattern in a brace expression.  */

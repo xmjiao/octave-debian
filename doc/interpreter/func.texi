@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2012 John W. Eaton
+@c Copyright (C) 1996-2013 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -31,19 +31,53 @@ interactive Octave sessions, or in external files, and can be called just
 like built-in functions.
 
 @menu
-* Defining Functions::          
-* Multiple Return Values::      
-* Variable-length Argument Lists::  
-* Ignoring Arguments::  
-* Variable-length Return Lists::  
-* Returning from a Function::   
-* Default Arguments::   
-* Function Files::              
-* Script Files::                
-* Function Handles Inline Functions and Anonymous Functions::
+* Introduction to Function and Script Files::
+* Defining Functions::
+* Multiple Return Values::
+* Variable-length Argument Lists::
+* Ignoring Arguments::
+* Variable-length Return Lists::
+* Returning from a Function::
+* Default Arguments::
+* Function Files::
+* Script Files::
+* Function Handles Anonymous Functions Inline Functions::
 * Commands::
-* Organization of Functions::   
+* Organization of Functions::
 @end menu
+
+@node Introduction to Function and Script Files
+@section Introduction to Function and Script Files
+
+There are seven different things covered in this section.
+@enumerate
+@item
+Typing in a function at the command prompt.
+
+@item
+Storing a group of commands in a file --- called a script file.
+
+@item
+Storing a function in a file---called a function file.
+
+@item
+Subfunctions in function files.
+
+@item
+Multiple functions in one script file.
+
+@item
+Private functions.
+
+@item
+Nested functions.
+@end enumerate
+
+Both function files and script files end with an extension of .m, for
+@sc{matlab} compatibility.  If you want more than one independent
+functions in a file, it must be a script file (@pxref{Script Files}),
+and to use these functions you must execute the script file before you
+can use the functions that are in the script file.
 
 @node Defining Functions
 @section Defining Functions
@@ -82,7 +116,7 @@ endfunction
 @end example
 
 The @code{printf} statement (@pxref{Input and Output}) simply tells
-Octave to print the string @code{"\a"}.  The special character @samp{\a}
+Octave to print the string @qcode{"\a"}.  The special character @samp{\a}
 stands for the alert character (ASCII 7).  @xref{Strings}.
 
 Once this function is defined, you can ask Octave to evaluate it by
@@ -238,29 +272,32 @@ use a variable that has not been given a value will result in an error.
 To avoid such problems and to provide useful messages, we check for both
 possibilities and issue our own error message.
 
-@c nargin src/ov-usr-fcn.cc
-@anchor{doc-nargin}
+@c nargin libinterp/octave-value/ov-usr-fcn.cc
+@anchor{XREFnargin}
 @deftypefn  {Built-in Function} {} nargin ()
-@deftypefnx {Built-in Function} {} nargin (@var{fcn_name})
+@deftypefnx {Built-in Function} {} nargin (@var{fcn})
 Within a function, return the number of arguments passed to the function.
 At the top level, return the number of command line arguments passed to
-Octave.  If called with the optional argument @var{fcn_name}, return the
-maximum number of arguments the named function can accept, or -1 if the
-function accepts a variable number of arguments.
-@seealso{@ref{doc-nargout,,nargout}, @ref{doc-varargin,,varargin}, @ref{doc-isargout,,isargout}, @ref{doc-varargout,,varargout}, @ref{doc-nthargout,,nthargout}}
+Octave.
+
+If called with the optional argument @var{fcn}, a function name or handle,
+return the declared number of arguments that the function can accept.
+If the last argument is @var{varargin} the returned value is negative.
+This feature does not work on builtin functions.
+@seealso{@ref{XREFnargout,,nargout}, @ref{XREFvarargin,,varargin}, @ref{XREFisargout,,isargout}, @ref{XREFvarargout,,varargout}, @ref{XREFnthargout,,nthargout}}
 @end deftypefn
 
 
 @c inputname scripts/miscellaneous/inputname.m
-@anchor{doc-inputname}
+@anchor{XREFinputname}
 @deftypefn {Function File} {} inputname (@var{n})
 Return the name of the @var{n}-th argument to the calling function.
 If the argument is not a simple variable name, return an empty string.
 @end deftypefn
 
 
-@c silent_functions src/pt-eval.cc
-@anchor{doc-silent_functions}
+@c silent_functions libinterp/parse-tree/pt-eval.cc
+@anchor{XREFsilent_functions}
 @deftypefn  {Built-in Function} {@var{val} =} silent_functions ()
 @deftypefnx {Built-in Function} {@var{old_val} =} silent_functions (@var{new_val})
 @deftypefnx {Built-in Function} {} silent_functions (@var{new_val}, "local")
@@ -269,9 +306,9 @@ output from a function is suppressed.  If this option is disabled,
 Octave will display the results produced by evaluating expressions
 within a function body that are not terminated with a semicolon.
 
-When called from inside a function with the "local" option, the variable is
-changed locally for the function and any subroutines it calls.  The original
-variable value is restored when exiting the function.
+When called from inside a function with the @qcode{"local"} option, the
+variable is changed locally for the function and any subroutines it calls.
+The original variable value is restored when exiting the function.
 @end deftypefn
 
 
@@ -324,10 +361,10 @@ values distinct names.
 
 It is possible to use the @code{nthargout} function to obtain only some
 of the return values or several at once in a cell array.
-@ref{Cell Array Objects}
+@xref{Cell Array Objects}.
 
 @c nthargout scripts/general/nthargout.m
-@anchor{doc-nthargout}
+@anchor{XREFnthargout}
 @deftypefn  {Function File} {} nthargout (@var{n}, @var{func}, @dots{})
 @deftypefnx {Function File} {} nthargout (@var{n}, @var{ntot}, @var{func}, @dots{})
 Return the @var{n}th output argument of function given by the
@@ -345,7 +382,7 @@ matrix, the following two compositions of nthargout
 @example
 @group
 @var{m} = magic (5);
-cell2mat (nthargout ([1, 2], @@ind2sub, size(@var{m}),
+cell2mat (nthargout ([1, 2], @@ind2sub, size (@var{m}),
                      nthargout (2, @@max, @var{m}(:))))
 @result{} 5   3
 @end group
@@ -356,7 +393,7 @@ are completely equivalent to the following lines:
 
 @example
 @group
-@var{m} = magic(5);
+@var{m} = magic (5);
 [~, idx] = max (@var{M}(:));
 [i, j] = ind2sub (size (@var{m}), idx);
 [i, j]
@@ -371,7 +408,7 @@ in the following manner:
 @var{USV} = nthargout ([1:3], @@svd, hilb (5));
 @end example
 
-@seealso{@ref{doc-nargin,,nargin}, @ref{doc-nargout,,nargout}, @ref{doc-varargin,,varargin}, @ref{doc-varargout,,varargout}, @ref{doc-isargout,,isargout}}
+@seealso{@ref{XREFnargin,,nargin}, @ref{XREFnargout,,nargout}, @ref{XREFvarargin,,varargin}, @ref{XREFvarargout,,varargout}, @ref{XREFisargout,,isargout}}
 @end deftypefn
 
 
@@ -422,14 +459,15 @@ c = 2
 @noindent
 along with a warning.
 
-@c nargout src/ov-usr-fcn.cc
-@anchor{doc-nargout}
+@c nargout libinterp/octave-value/ov-usr-fcn.cc
+@anchor{XREFnargout}
 @deftypefn  {Built-in Function} {} nargout ()
-@deftypefnx {Built-in Function} {} nargout (@var{fcn_name})
+@deftypefnx {Built-in Function} {} nargout (@var{fcn})
 Within a function, return the number of values the caller expects to
-receive.  If called with the optional argument @var{fcn_name}, return the
-maximum number of values the named function can produce, or -1 if the
-function can produce a variable number of values.
+receive.  If called with the optional argument @var{fcn}, a function
+name or handle, return the number of declared output values that the
+function can produce.  If the final output argument is @var{varargout}
+the returned value is negative.
 
 For example,
 
@@ -448,8 +486,26 @@ will cause @code{nargout} to return 0 inside the function @code{f} and
 will cause @code{nargout} to return 2 inside the function
 @code{f}.
 
-At the top level, @code{nargout} is undefined.
-@seealso{@ref{doc-nargin,,nargin}, @ref{doc-varargin,,varargin}, @ref{doc-isargout,,isargout}, @ref{doc-varargout,,varargout}, @ref{doc-nthargout,,nthargout}}
+In the second usage,
+
+@example
+nargout (@@histc) % or nargout ("histc")
+@end example
+
+@noindent
+will return 2, because @code{histc} has two outputs, whereas
+
+@example
+nargout (@@deal)
+@end example
+
+@noindent
+will return -1, because @code{deal} has a variable number of outputs.
+
+At the top level, @code{nargout} with no argument is undefined.
+@code{nargout} does not work on builtin functions.
+@code{nargout} returns -1 for all anonymous functions.
+@seealso{@ref{XREFnargin,,nargin}, @ref{XREFvarargin,,varargin}, @ref{XREFisargout,,isargout}, @ref{XREFvarargout,,varargout}, @ref{XREFnthargout,,nthargout}}
 @end deftypefn
 
 
@@ -472,7 +528,7 @@ For compatibility with @sc{matlab}, @code{nargchk}, @code{narginchk} and
 @code{nargoutchk} are available which provide similar error checking.
 
 @c nargchk scripts/general/nargchk.m
-@anchor{doc-nargchk}
+@anchor{XREFnargchk}
 @deftypefn  {Function File} {@var{msgstr} =} nargchk (@var{minargs}, @var{maxargs}, @var{nargs})
 @deftypefnx {Function File} {@var{msgstr} =} nargchk (@var{minargs}, @var{maxargs}, @var{nargs}, "string")
 @deftypefnx {Function File} {@var{msgstruct} =} nargchk (@var{minargs}, @var{maxargs}, @var{nargs}, "struct")
@@ -481,12 +537,12 @@ number of inputs requested is invalid.
 
 This is useful for checking to see that the number of input arguments
 supplied to a function is within an acceptable range.
-@seealso{@ref{doc-nargoutchk,,nargoutchk}, @ref{doc-narginchk,,narginchk}, @ref{doc-error,,error}, @ref{doc-nargin,,nargin}, @ref{doc-nargout,,nargout}}
+@seealso{@ref{XREFnargoutchk,,nargoutchk}, @ref{XREFnarginchk,,narginchk}, @ref{XREFerror,,error}, @ref{XREFnargin,,nargin}, @ref{XREFnargout,,nargout}}
 @end deftypefn
 
 
 @c narginchk scripts/general/narginchk.m
-@anchor{doc-narginchk}
+@anchor{XREFnarginchk}
 @deftypefn {Function File} {} narginchk (@var{minargs}, @var{maxargs})
 Check for correct number of arguments or generate an error message if
 the number of arguments in the calling function is outside the range
@@ -498,12 +554,12 @@ values.  Zero, Inf and negative values are all allowed, and
 
 Note that this function evaluates @code{nargin} on the caller.
 
-@seealso{@ref{doc-nargchk,,nargchk}, @ref{doc-nargoutchk,,nargoutchk}, @ref{doc-error,,error}, @ref{doc-nargout,,nargout}, @ref{doc-nargin,,nargin}}
+@seealso{@ref{XREFnargchk,,nargchk}, @ref{XREFnargoutchk,,nargoutchk}, @ref{XREFerror,,error}, @ref{XREFnargout,,nargout}, @ref{XREFnargin,,nargin}}
 @end deftypefn
 
 
 @c nargoutchk scripts/general/nargoutchk.m
-@anchor{doc-nargoutchk}
+@anchor{XREFnargoutchk}
 @deftypefn  {Function File} {} nargoutchk (@var{minargs}, @var{maxargs})
 @deftypefnx {Function File} {@var{msgstr} =} nargoutchk (@var{minargs}, @var{maxargs}, @var{nargs})
 @deftypefnx {Function File} {@var{msgstr} =} nargoutchk (@var{minargs}, @var{maxargs}, @var{nargs}, "string")
@@ -524,11 +580,11 @@ invalid.
 
 This is useful for checking to see that the number of output
 arguments supplied to a function is within an acceptable range.
-@seealso{@ref{doc-nargchk,,nargchk}, @ref{doc-narginchk,,narginchk}, @ref{doc-error,,error}, @ref{doc-nargout,,nargout}, @ref{doc-nargin,,nargin}}
+@seealso{@ref{XREFnargchk,,nargchk}, @ref{XREFnarginchk,,narginchk}, @ref{XREFerror,,error}, @ref{XREFnargout,,nargout}, @ref{XREFnargin,,nargin}}
 @end deftypefn
 
 
-@anchor{doc-varargin} @anchor{doc-varargout}
+@anchor{XREFvarargin} @anchor{XREFvarargout}
 @node Variable-length Argument Lists
 @section Variable-length Argument Lists
 @cindex variable-length argument lists
@@ -622,7 +678,7 @@ print_arguments (1, "two", 3);
 @end example
 
 @c parseparams scripts/miscellaneous/parseparams.m
-@anchor{doc-parseparams}
+@anchor{XREFparseparams}
 @deftypefn  {Function File} {[@var{reg}, @var{prop}] =} parseparams (@var{params})
 @deftypefnx {Function File} {[@var{reg}, @var{var1}, @dots{}] =} parseparams (@var{params}, @var{name1}, @var{default1}, @dots{})
 Return in @var{reg} the cell elements of @var{param} up to the first
@@ -645,8 +701,8 @@ prop =
 @end group
 @end example
 
-The parseparams function may be used to separate 'regular'
-arguments and additional arguments given as property/value pairs of
+The parseparams function may be used to separate regular numeric
+arguments from additional arguments given as property/value pairs of
 the @var{varargin} cell array.
 
 In the second form of the call, available options are specified directly
@@ -657,7 +713,7 @@ When called from an m-file function, the error is prefixed with the
 name of the caller function.
 The matching of options is case-insensitive.
 
-@seealso{@ref{doc-varargin,,varargin}}
+@seealso{@ref{XREFvarargin,,varargin}}
 @end deftypefn
 
 
@@ -696,8 +752,8 @@ endfunction
 @end group
 @end example
 
-@c isargout src/ov-usr-fcn.cc
-@anchor{doc-isargout}
+@c isargout libinterp/octave-value/ov-usr-fcn.cc
+@anchor{XREFisargout}
 @deftypefn {Built-in Function} {} isargout (@var{k})
 Within a function, return a logical value indicating whether the argument
 @var{k} will be assigned on output to a variable.  If the result is false,
@@ -705,11 +761,11 @@ the argument has been ignored during the function call through the use of
 the tilde (~) special output argument.  Functions can use @code{isargout} to
 avoid performing unnecessary calculations for outputs which are unwanted.
 
-If @var{k} is outside the range @code{1:max(nargout)}, the function returns
+If @var{k} is outside the range @code{1:max (nargout)}, the function returns
 false.  @var{k} can also be an array, in which case the function works
 element-by-element and a logical array is returned.  At the top level,
 @code{isargout} returns an error.
-@seealso{@ref{doc-nargout,,nargout}, @ref{doc-nargin,,nargin}, @ref{doc-varargin,,varargin}, @ref{doc-varargout,,varargout}, @ref{doc-nthargout,,nthargout}}
+@seealso{@ref{XREFnargout,,nargout}, @ref{XREFnargin,,nargin}, @ref{XREFvarargin,,varargin}, @ref{XREFvarargout,,varargout}, @ref{XREFnthargout,,nthargout}}
 @end deftypefn
 
 
@@ -755,7 +811,7 @@ element of the input (output) parameter list, then it is not special,
 and is handled the same as any other parameter name.
 
 @c deal scripts/general/deal.m
-@anchor{doc-deal}
+@anchor{XREFdeal}
 @deftypefn  {Function File} {[@var{r1}, @var{r2}, @dots{}, @var{rn}] =} deal (@var{a})
 @deftypefnx {Function File} {[@var{r1}, @var{r2}, @dots{}, @var{rn}] =} deal (@var{a1}, @var{a2}, @dots{}, @var{an})
 
@@ -956,26 +1012,26 @@ If you know that your own function files will not change while you are
 running Octave, you can improve performance by calling
 @code{ignore_function_time_stamp ("all")}, so that Octave will
 ignore the time stamps for all function files.  Passing
-@code{"system"} to this function resets the default behavior.
+@qcode{"system"} to this function resets the default behavior.
 
 @c FIXME -- note about time stamps on files in NFS environments?
 
 @c edit scripts/miscellaneous/edit.m
-@anchor{doc-edit}
+@anchor{XREFedit}
 @deftypefn  {Command} {} edit @var{name}
 @deftypefnx {Command} {} edit @var{field} @var{value}
 @deftypefnx {Command} {@var{value} =} edit get @var{field}
 Edit the named function, or change editor settings.
 
 If @code{edit} is called with the name of a file or function as
-its argument it will be opened in a text editor.
+its argument it will be opened in the text editor defined by @code{EDITOR}.
 
 @itemize @bullet
 @item
 If the function @var{name} is available in a file on your path and
 that file is modifiable, then it will be edited in place.  If it
 is a system function, then it will first be copied to the directory
-@env{HOME} (see further down) and then edited.
+@env{HOME} (see below) and then edited.
 If no file is found, then the m-file
 variant, ending with ".m", will be considered.  If still no file
 is found, then variants with a leading "@@" and then with both a
@@ -987,26 +1043,27 @@ not in an m-file, then an m-file will be created in @env{HOME}
 to contain that function along with its current definition.
 
 @item
-If @code{name.cc} is specified, then it will search for @code{name.cc}
-in the path and try to modify it, otherwise it will create a new
-@file{.cc} file in @env{HOME}.  If @var{name} happens to be an
-m-file or interpreter defined function, then the text of that
+If @code{@var{name}.cc} is specified, then it will search for
+@code{@var{name}.cc} in the path and try to modify it, otherwise it will
+create a new @file{.cc} file in the current directory.  If @var{name} happens
+to be an m-file or interpreter defined function, then the text of that
 function will be inserted into the .cc file as a comment.
 
 @item
-If @var{name.ext} is on your path then it will be edited, otherwise
-the editor will be started with @file{HOME/name.ext} as the
-filename.  If @file{name.ext} is not modifiable, it will be copied to
-@env{HOME} before editing.
+If @file{@var{name}.ext} is on your path then it will be edited, otherwise
+the editor will be started with @file{@var{name}.ext} in the current
+directory as the filename.  If @file{@var{name}.ext} is not modifiable,
+it will be copied to @env{HOME} before editing.
 
-@strong{Warning:} You may need to clear name before the new definition
+@strong{Warning:} You may need to clear @var{name} before the new definition
 is available.  If you are editing a .cc file, you will need
-to mkoctfile @file{name.cc} before the definition will be available.
+to execute @code{mkoctfile @file{@var{name}.cc}} before the definition
+will be available.
 @end itemize
 
 If @code{edit} is called with @var{field} and @var{value} variables,
-the value of the control field @var{field} will be @var{value}.
-If an output argument is requested and the first argument is @code{get}
+the value of the control field @var{field} will be set to @var{value}.
+If an output argument is requested and the first input argument is @code{get}
 then @code{edit} will return the value of the control field @var{field}.
 If the control field does not exist, edit will return a structure
 containing all fields and values.  Thus, @code{edit get all} returns
@@ -1014,47 +1071,22 @@ a complete control structure.
 The following control fields are used:
 
 @table @samp
-@item editor
-This is the editor to use to modify the functions.  By default it uses
-Octave's @env{EDITOR} built-in function, which comes from
-@code{getenv("EDITOR")} and defaults to @code{emacs}.  Use @code{%s}
-In place of the function name.  For example,
-@table @samp
-@item [EDITOR, " %s"]
-Use the editor which Octave uses for @code{edit_history}.
-
-@item "xedit %s &"
-pop up simple X11 editor in a separate window
-
-@item "gnudoit -q \"(find-file \\\"%s\\\")\""
-Send it to current Emacs; must have @code{(gnuserv-start)} in @file{.emacs}.
-@end table
-
-See also field 'mode', which controls how the editor is run by Octave.
-
-On Cygwin, you will need to convert the Cygwin path to a Windows
-path if you are using a native Windows editor.  For example:
-@c Set example in small font to prevent overfull line in TeX
-
-@smallexample
-@exdent '"C:/Program Files/Good Editor/Editor.exe" "$(cygpath -wa %s)"'
-@end smallexample
-
 @item home
-This is the location of user local m-files.  Be be sure it is in your
+This is the location of user local m-files.  Be sure it is in your
 path.  The default is @file{~/octave}.
 
 @item author
 This is the name to put after the "## Author:" field of new functions.
-By default it guesses from the @code{gecos} field of password database.
+By default it guesses from the @code{gecos} field of the password database.
 
 @item email
 This is the e-mail address to list after the name in the author field.
 By default it guesses @code{<$LOGNAME@@$HOSTNAME>}, and if @code{$HOSTNAME}
 is not defined it uses @code{uname -n}.  You probably want to override this.
-Be sure to use @code{<user@@host>} as your format.
+Be sure to use the format @code{<user@@host>}.
 
 @item license
+
 @table @samp
 @item gpl
 GNU General Public License (default).
@@ -1075,8 +1107,9 @@ with "Copyright (C) yyyy Function Author".
 @item mode
 This value determines whether the editor should be started in async mode
 (editor is started in the background and Octave continues) or sync mode
-(Octave waits until the editor exits).  Set it to "sync" to start the editor
-in sync mode.  The default is "async" (see also "system").
+(Octave waits until the editor exits).  Set it to @qcode{"sync"} to start
+the editor in sync mode.  The default is @qcode{"async"}
+(@pxref{XREFsystem,,system}).
 
 @item editinplace
 Determines whether files should be edited in place, without regard to
@@ -1085,33 +1118,33 @@ whether they are modifiable or not.  The default is @code{false}.
 @end deftypefn
 
 
-@c mfilename src/oct-parse.cc
-@anchor{doc-mfilename}
+@c mfilename libinterp/parse-tree/oct-parse.cc
+@anchor{XREFmfilename}
 @deftypefn  {Built-in Function} {} mfilename ()
 @deftypefnx {Built-in Function} {} mfilename ("fullpath")
 @deftypefnx {Built-in Function} {} mfilename ("fullpathext")
 Return the name of the currently executing file.  At the top-level,
-return the empty string.  Given the argument @code{"fullpath"},
+return the empty string.  Given the argument @qcode{"fullpath"},
 include the directory part of the file name, but not the extension.
-Given the argument @code{"fullpathext"}, include the directory part
+Given the argument @qcode{"fullpathext"}, include the directory part
 of the file name and the extension.
 @end deftypefn
 
 
-@c ignore_function_time_stamp src/symtab.cc
-@anchor{doc-ignore_function_time_stamp}
+@c ignore_function_time_stamp libinterp/corefcn/symtab.cc
+@anchor{XREFignore_function_time_stamp}
 @deftypefn  {Built-in Function} {@var{val} =} ignore_function_time_stamp ()
 @deftypefnx {Built-in Function} {@var{old_val} =} ignore_function_time_stamp (@var{new_val})
 Query or set the internal variable that controls whether Octave checks
 the time stamp on files each time it looks up functions defined in
-function files.  If the internal variable is set to @code{"system"},
+function files.  If the internal variable is set to @qcode{"system"},
 Octave will not automatically recompile function files in subdirectories of
 @file{@var{octave-home}/lib/@var{version}} if they have changed since
 they were last compiled, but will recompile other function files in the
-search path if they change.  If set to @code{"all"}, Octave will not
+search path if they change.  If set to @qcode{"all"}, Octave will not
 recompile any function files unless their definitions are removed with
-@code{clear}.  If set to "none", Octave will always check time stamps
-on files to determine whether functions defined in function files
+@code{clear}.  If set to @qcode{"none"}, Octave will always check time
+stamps on files to determine whether functions defined in function files
 need to recompiled.
 @end deftypefn
 
@@ -1120,6 +1153,7 @@ need to recompiled.
 * Manipulating the Load Path::
 * Subfunctions::
 * Private Functions::
+* Nested Functions::
 * Overloading and Autoloading::
 * Function Locking::
 * Function Precedence::
@@ -1140,19 +1174,19 @@ using @code{addpath} and @code{rmpath}.  As an example, the following
 code adds @samp{~/Octave} to the load path.
 
 @example
-addpath("~/Octave")
+addpath ("~/Octave")
 @end example
 
 @noindent
 After this the directory @samp{~/Octave} will be searched for functions.
  
-@c addpath src/load-path.cc
-@anchor{doc-addpath}
+@c addpath libinterp/corefcn/load-path.cc
+@anchor{XREFaddpath}
 @deftypefn  {Built-in Function} {} addpath (@var{dir1}, @dots{})
 @deftypefnx {Built-in Function} {} addpath (@var{dir1}, @dots{}, @var{option})
-Add @var{dir1}, @dots{} to the current function search path.  If
-@var{option} is "-begin" or 0 (the default), prepend the
-directory name to the current path.  If @var{option} is "-end"
+Add named directories to the function search path.  If
+@var{option} is @qcode{"-begin"} or 0 (the default), prepend the
+directory name to the current path.  If @var{option} is @qcode{"-end"}
 or 1, append the directory name to the current path.
 Directories added to the path must exist.
 
@@ -1160,14 +1194,14 @@ In addition to accepting individual directory arguments, lists of
 directory names separated by @code{pathsep} are also accepted.  For example:
 
 @example
-addpath ("dir1:/dir2:~/dir3");
+addpath ("dir1:/dir2:~/dir3")
 @end example
-@seealso{@ref{doc-path,,path}, @ref{doc-rmpath,,rmpath}, @ref{doc-genpath,,genpath}, @ref{doc-pathdef,,pathdef}, @ref{doc-savepath,,savepath}, @ref{doc-pathsep,,pathsep}}
+@seealso{@ref{XREFpath,,path}, @ref{XREFrmpath,,rmpath}, @ref{XREFgenpath,,genpath}, @ref{XREFpathdef,,pathdef}, @ref{XREFsavepath,,savepath}, @ref{XREFpathsep,,pathsep}}
 @end deftypefn
 
 
-@c genpath src/load-path.cc
-@anchor{doc-genpath}
+@c genpath libinterp/corefcn/load-path.cc
+@anchor{XREFgenpath}
 @deftypefn  {Built-in Function} {} genpath (@var{dir})
 @deftypefnx {Built-in Function} {} genpath (@var{dir}, @var{skip}, @dots{})
 Return a path constructed from @var{dir} and all its subdirectories.
@@ -1176,8 +1210,8 @@ exclude directories with those names.
 @end deftypefn
 
 
-@c rmpath src/load-path.cc
-@anchor{doc-rmpath}
+@c rmpath libinterp/corefcn/load-path.cc
+@anchor{XREFrmpath}
 @deftypefn {Built-in Function} {} rmpath (@var{dir1}, @dots{})
 Remove @var{dir1}, @dots{} from the current function search path.
 
@@ -1185,25 +1219,27 @@ In addition to accepting individual directory arguments, lists of
 directory names separated by @code{pathsep} are also accepted.  For example:
 
 @example
-rmpath ("dir1:/dir2:~/dir3");
+rmpath ("dir1:/dir2:~/dir3")
 @end example
-@seealso{@ref{doc-path,,path}, @ref{doc-addpath,,addpath}, @ref{doc-genpath,,genpath}, @ref{doc-pathdef,,pathdef}, @ref{doc-savepath,,savepath}, @ref{doc-pathsep,,pathsep}}
+@seealso{@ref{XREFpath,,path}, @ref{XREFaddpath,,addpath}, @ref{XREFgenpath,,genpath}, @ref{XREFpathdef,,pathdef}, @ref{XREFsavepath,,savepath}, @ref{XREFpathsep,,pathsep}}
 @end deftypefn
 
 
 @c savepath scripts/path/savepath.m
-@anchor{doc-savepath}
-@deftypefn {Function File} {} savepath (@var{file})
-Save the portion of the current function search path, that is
-not set during Octave's initialization process, to @var{file}.
+@anchor{XREFsavepath}
+@deftypefn  {Function File} {} savepath ()
+@deftypefnx {Function File} {} savepath (@var{file})
+@deftypefnx {Function File} {@var{status} =} savepath (@dots{})
+Save the unique portion of the current function search path that is
+not set during Octave's initialization process to @var{file}.
 If @var{file} is omitted, @file{~/.octaverc} is used.  If successful,
 @code{savepath} returns 0.
-@seealso{@ref{doc-path,,path}, @ref{doc-addpath,,addpath}, @ref{doc-rmpath,,rmpath}, @ref{doc-genpath,,genpath}, @ref{doc-pathdef,,pathdef}, @ref{doc-pathsep,,pathsep}}
+@seealso{@ref{XREFpath,,path}, @ref{XREFaddpath,,addpath}, @ref{XREFrmpath,,rmpath}, @ref{XREFgenpath,,genpath}, @ref{XREFpathdef,,pathdef}}
 @end deftypefn
 
 
-@c path src/load-path.cc
-@anchor{doc-path}
+@c path libinterp/corefcn/load-path.cc
+@anchor{XREFpath}
 @deftypefn {Built-in Function} {} path (@dots{})
 Modify or display Octave's load path.
 
@@ -1218,16 +1254,16 @@ separating them with @code{pathsep}.  Set the internal search path
 to the result and return it.
 
 No checks are made for duplicate elements.
-@seealso{@ref{doc-addpath,,addpath}, @ref{doc-rmpath,,rmpath}, @ref{doc-genpath,,genpath}, @ref{doc-pathdef,,pathdef}, @ref{doc-savepath,,savepath}, @ref{doc-pathsep,,pathsep}}
+@seealso{@ref{XREFaddpath,,addpath}, @ref{XREFrmpath,,rmpath}, @ref{XREFgenpath,,genpath}, @ref{XREFpathdef,,pathdef}, @ref{XREFsavepath,,savepath}, @ref{XREFpathsep,,pathsep}}
 @end deftypefn
 
 
 @c pathdef scripts/path/pathdef.m
-@anchor{doc-pathdef}
+@anchor{XREFpathdef}
 @deftypefn {Function File} {@var{val} =} pathdef ()
 Return the default path for Octave.
 The path information is extracted from one of three sources.
-In order of preference, those are;
+The possible sources, in order of preference, are:
 
 @enumerate
 @item @file{~/.octaverc}
@@ -1236,28 +1272,28 @@ In order of preference, those are;
 
 @item Octave's path prior to changes by any octaverc.
 @end enumerate
-@seealso{@ref{doc-path,,path}, @ref{doc-addpath,,addpath}, @ref{doc-rmpath,,rmpath}, @ref{doc-genpath,,genpath}, @ref{doc-savepath,,savepath}, @ref{doc-pathsep,,pathsep}}
+@seealso{@ref{XREFpath,,path}, @ref{XREFaddpath,,addpath}, @ref{XREFrmpath,,rmpath}, @ref{XREFgenpath,,genpath}, @ref{XREFsavepath,,savepath}}
 @end deftypefn
 
 
-@c pathsep src/dirfns.cc
-@anchor{doc-pathsep}
+@c pathsep libinterp/corefcn/dirfns.cc
+@anchor{XREFpathsep}
 @deftypefn  {Built-in Function} {@var{val} =} pathsep ()
 @deftypefnx {Built-in Function} {@var{old_val} =} pathsep (@var{new_val})
 Query or set the character used to separate directories in a path.
-@seealso{@ref{doc-filesep,,filesep}}
+@seealso{@ref{XREFfilesep,,filesep}}
 @end deftypefn
 
 
-@c rehash src/load-path.cc
-@anchor{doc-rehash}
+@c rehash libinterp/corefcn/load-path.cc
+@anchor{XREFrehash}
 @deftypefn {Built-in Function} {} rehash ()
 Reinitialize Octave's load path directory cache.
 @end deftypefn
 
 
-@c file_in_loadpath src/utils.cc
-@anchor{doc-file_in_loadpath}
+@c file_in_loadpath libinterp/corefcn/utils.cc
+@anchor{XREFfile_in_loadpath}
 @deftypefn  {Built-in Function} {} file_in_loadpath (@var{file})
 @deftypefnx {Built-in Function} {} file_in_loadpath (@var{file}, "all")
 
@@ -1269,43 +1305,45 @@ If the first argument is a cell array of strings, search each
 directory of the loadpath for element of the cell array and return
 the first that matches.
 
-If the second optional argument @code{"all"} is supplied, return
+If the second optional argument @qcode{"all"} is supplied, return
 a cell array containing the list of all files that have the same
 name in the path.  If no files are found, return an empty cell array.
-@seealso{@ref{doc-file_in_path,,file_in_path}, @ref{doc-path,,path}}
+@seealso{@ref{XREFfile_in_path,,file_in_path}, @ref{XREFfind_dir_in_path,,find_dir_in_path}, @ref{XREFpath,,path}}
 @end deftypefn
 
 
-@c restoredefaultpath src/load-path.cc
-@anchor{doc-restoredefaultpath}
+@c restoredefaultpath libinterp/corefcn/load-path.cc
+@anchor{XREFrestoredefaultpath}
 @deftypefn {Built-in Function} {} restoredefaultpath (@dots{})
 Restore Octave's path to its initial state at startup.
 
-@seealso{@ref{doc-path,,path}, @ref{doc-addpath,,addpath}, @ref{doc-rmpath,,rmpath}, @ref{doc-genpath,,genpath}, @ref{doc-pathdef,,pathdef}, @ref{doc-savepath,,savepath}, @ref{doc-pathsep,,pathsep}}
+@seealso{@ref{XREFpath,,path}, @ref{XREFaddpath,,addpath}, @ref{XREFrmpath,,rmpath}, @ref{XREFgenpath,,genpath}, @ref{XREFpathdef,,pathdef}, @ref{XREFsavepath,,savepath}, @ref{XREFpathsep,,pathsep}}
 @end deftypefn
 
 
-@c command_line_path src/load-path.cc
-@anchor{doc-command_line_path}
+@c command_line_path libinterp/corefcn/load-path.cc
+@anchor{XREFcommand_line_path}
 @deftypefn {Built-in Function} {} command_line_path (@dots{})
 Return the command line path variable.
 
-@seealso{@ref{doc-path,,path}, @ref{doc-addpath,,addpath}, @ref{doc-rmpath,,rmpath}, @ref{doc-genpath,,genpath}, @ref{doc-pathdef,,pathdef}, @ref{doc-savepath,,savepath}, @ref{doc-pathsep,,pathsep}}
+@seealso{@ref{XREFpath,,path}, @ref{XREFaddpath,,addpath}, @ref{XREFrmpath,,rmpath}, @ref{XREFgenpath,,genpath}, @ref{XREFpathdef,,pathdef}, @ref{XREFsavepath,,savepath}, @ref{XREFpathsep,,pathsep}}
 @end deftypefn
 
 
-@c find_dir_in_path src/utils.cc
-@anchor{doc-find_dir_in_path}
+@c find_dir_in_path libinterp/corefcn/utils.cc
+@anchor{XREFfind_dir_in_path}
 @deftypefn  {Built-in Function} {} find_dir_in_path (@var{dir})
 @deftypefnx {Built-in Function} {} find_dir_in_path (@var{dir}, "all")
 Return the full name of the path element matching @var{dir}.  The
 match is performed at the end of each path element.  For example, if
-@var{dir} is @code{"foo/bar"}, it matches the path element
-@code{"/some/dir/foo/bar"}, but not @code{"/some/dir/foo/bar/baz"}
-or @code{"/some/dir/allfoo/bar"}.
+@var{dir} is @qcode{"foo/bar"}, it matches the path element
+@nospell{@qcode{"/some/dir/foo/bar"}}, but not
+@nospell{@qcode{"/some/dir/foo/bar/baz"}}
+@nospell{@qcode{"/some/dir/allfoo/bar"}}.
 
 The second argument is optional.  If it is supplied, return a cell array
 containing all name matches rather than just the first.
+@seealso{@ref{XREFfile_in_path,,file_in_path}, @ref{XREFfile_in_loadpath,,file_in_loadpath}, @ref{XREFpath,,path}}
 @end deftypefn
 
 
@@ -1367,6 +1405,157 @@ Then if the path to @code{func1} is @code{<directory>/func1.m}, and if
 then @code{func2} is only available for use of the functions, like 
 @code{func1}, that are found in @code{<directory>}.
 
+@node Nested Functions
+@subsection Nested Functions
+
+Nested functions are similar to subfunctions in that only the main function is
+visible outside the file.  However, they also allow for child functions to
+access the local variables in their parent function.  This shared access mimics
+using a global variable to share information --- but a global variable which is
+not visible to the rest of Octave.  As a programming strategy, sharing data
+this way can create code which is difficult to maintain.  It is recommended to
+use subfunctions in place of nested functions when possible.
+
+As a simple example, consider a parent function @code{foo}, that calls a nested
+child function @code{bar}, with a shared variable @var{x}.
+
+@example
+@group
+function y = foo ()
+  x = 10;
+  bar ();
+  y = x;
+
+  function bar ()
+    x = 20;
+  endfunction
+endfunction
+
+foo ()
+ @result{} 20
+@end group
+@end example
+
+@noindent
+Notice that there is no special syntax for sharing @var{x}.  This can lead to
+problems with accidental variable sharing between a parent function and its
+child.  While normally variables are inherited, child function parameters and
+return values are local to the child function.
+
+Now consider the function @code{foobar} that uses variables @var{x} and
+@var{y}.  @code{foobar} calls a nested function @code{foo} which takes
+@var{x} as a parameter and returns @var{y}.  @code{foo} then calls @code{bat}
+which does some computation.
+
+@example
+@group
+function z = foobar ()
+  x = 0;
+  y = 0;
+  z = foo (5);
+  z += x + y;
+
+  function y = foo (x)
+    y = x + bat ();
+
+    function z = bat ()
+      z = x;
+    endfunction
+  endfunction
+endfunction
+
+foobar ()
+    @result{} 10
+@end group
+@end example
+
+@noindent
+It is important to note that the @var{x} and @var{y} in @code{foobar} remain
+zero, as in @code{foo} they are a return value and parameter respectively.  The
+@var{x} in @code{bat} refers to the @var{x} in @code{foo}.
+
+Variable inheritance leads to a problem for @code{eval} and scripts.  If a
+new variable is created in a parent function, it is not clear what should happen
+in nested child functions.  For example, consider a parent function @code{foo}
+with a nested child function @code{bar}:
+
+@example
+@group
+function y = foo (to_eval)
+  bar ();
+  eval (to_eval);
+
+  function bar ()
+    eval ("x = 100;");
+    eval ("y = x;");
+  endfunction
+endfunction
+
+foo ("x = 5;")
+    @result{} error: can not add variable "x" to a static workspace
+
+foo ("y = 10;")
+    @result{} 10
+
+foo ("")
+    @result{} 100
+@end group
+@end example
+
+@noindent
+The parent function @code{foo} is unable to create a new variable
+@var{x}, but the child function @code{bar} was successful.  Furthermore, even
+in an @code{eval} statement @var{y} in @code{bar} is the same @var{y} as in its
+parent function @code{foo}.  The use of @code{eval} in conjunction with nested
+functions is best avoided.
+
+As with subfunctions, only the first nested function in a file may be called
+from the outside.  Inside a function the rules are more complicated.  In
+general a nested function may call:
+
+@enumerate 0
+@item
+Globally visible functions
+
+@item
+Any function that the nested function's parent can call
+
+@item
+Sibling functions (functions that have the same parents)
+
+@item
+Direct children
+
+@end enumerate
+
+As a complex example consider a parent function @code{ex_top} with two
+child functions, @code{ex_a} and @code{ex_b}.  In addition, @code{ex_a} has two
+more child functions, @code{ex_aa} and @code{ex_ab}.  For example:
+
+@example
+function ex_top ()
+  ## Can call: ex_top, ex_a, and ex_b
+  ## Can NOT call: ex_aa and ex_ab
+
+  function ex_a ()
+    ## Call call everything
+
+    function ex_aa ()
+      ## Can call everything
+    endfunction
+
+    function ex_ab ()
+      ## Can call everything
+    endfunction
+  endfunction
+
+  function ex_b ()
+    ## Can call: ex_top, ex_a, and ex_b
+    ## Can NOT call: ex_aa and ex_ab
+  endfunction
+endfunction
+@end example
+
 @node Overloading and Autoloading
 @subsection Overloading and Autoloading
 
@@ -1378,11 +1567,30 @@ functions is through classes and object oriented programming
 user overloading and call the default function associated with a specific
 type.  The @code{builtin} function exists for this purpose.
 
-@c builtin src/oct-parse.cc
-@anchor{doc-builtin}
-@deftypefn {Loadable Function} {[@dots{}]} builtin (@var{f}, @dots{})
+@c builtin libinterp/parse-tree/oct-parse.cc
+@anchor{XREFbuiltin}
+@deftypefn {Loadable Function} {[@dots{}] =} builtin (@var{f}, @dots{})
 Call the base function @var{f} even if @var{f} is overloaded to
 another function for the given type signature.
+
+This is normally useful when doing object-oriented programming and there
+is a requirement to call one of Octave's base functions rather than
+the overloaded one of a new class.
+
+A trivial example which redefines the @code{sin} function to be the
+@code{cos} function shows how @code{builtin} works.
+
+@example
+@group
+sin (0)
+  @result{} 0
+function y = sin (x), y = cos (x); endfunction
+sin (0)
+  @result{} 1
+builtin ("sin", 0)
+  @result{} 0
+@end group
+@end example
 @end deftypefn
 
 
@@ -1400,9 +1608,10 @@ amount of disk space used by Octave.  Instead Octave supplies the
 @code{autoload} function, that permits the user to define in which
 file a certain function will be found.
 
-@c autoload src/oct-parse.cc
-@anchor{doc-autoload}
-@deftypefn {Built-in Function} {} autoload (@var{function}, @var{file})
+@c autoload libinterp/parse-tree/oct-parse.cc
+@anchor{XREFautoload}
+@deftypefn  {Built-in Function} {} autoload (@var{function}, @var{file})
+@deftypefnx {Built-in Function} {} autoload (@dots{}, @asis{"remove"})
 Define @var{function} to autoload from @var{file}.
 
 The second argument, @var{file}, should be an absolute file name or
@@ -1411,7 +1620,7 @@ the autoload command was run.  @var{file} should not depend on the
 Octave load path.
 
 Normally, calls to @code{autoload} appear in PKG_ADD script files that
-are evaluated when a directory is added to the Octave's load path.  To
+are evaluated when a directory is added to Octave's load path.  To
 avoid having to hardcode directory names in @var{file}, if @var{file}
 is in the same directory as the PKG_ADD script then
 
@@ -1421,17 +1630,21 @@ autoload ("foo", "bar.oct");
 
 @noindent
 will load the function @code{foo} from the file @code{bar.oct}.  The above
-when @code{bar.oct} is not in the same directory or uses like
+usage when @code{bar.oct} is not in the same directory or usages such as
 
 @example
 autoload ("foo", file_in_loadpath ("bar.oct"))
 @end example
 
 @noindent
-are strongly discouraged, as their behavior might be unpredictable.
+are strongly discouraged, as their behavior may be unpredictable.
 
 With no arguments, return a structure containing the current autoload map.
-@seealso{@ref{doc-PKG_ADD,,PKG_ADD}}
+
+If a third argument @asis{'remove'} is given, the function is cleared and
+not loaded anymore during the current Octave session.
+
+@seealso{@ref{XREFPKG_ADD,,PKG_ADD}}
 @end deftypefn
 
 
@@ -1472,7 +1685,7 @@ being removed from memory, as the following example shows:
 
 @example
 @group
-function count_calls()
+function count_calls ()
   persistent calls = 0;
   printf ("'count_calls' has been called %d times\n",
           ++calls);
@@ -1508,31 +1721,31 @@ endfunction
 effect in Octave, though a similar effect can be had with the
 @code{ignore_function_time_stamp} function.
 
-@c mlock src/variables.cc
-@anchor{doc-mlock}
+@c mlock libinterp/corefcn/variables.cc
+@anchor{XREFmlock}
 @deftypefn {Built-in Function} {} mlock ()
 Lock the current function into memory so that it can't be cleared.
-@seealso{@ref{doc-munlock,,munlock}, @ref{doc-mislocked,,mislocked}, @ref{doc-persistent,,persistent}}
+@seealso{@ref{XREFmunlock,,munlock}, @ref{XREFmislocked,,mislocked}, @ref{XREFpersistent,,persistent}}
 @end deftypefn
 
 
-@c munlock src/variables.cc
-@anchor{doc-munlock}
+@c munlock libinterp/corefcn/variables.cc
+@anchor{XREFmunlock}
 @deftypefn  {Built-in Function} {} munlock ()
 @deftypefnx {Built-in Function} {} munlock (@var{fcn})
 Unlock the named function @var{fcn}.  If no function is named
 then unlock the current function.
-@seealso{@ref{doc-mlock,,mlock}, @ref{doc-mislocked,,mislocked}, @ref{doc-persistent,,persistent}}
+@seealso{@ref{XREFmlock,,mlock}, @ref{XREFmislocked,,mislocked}, @ref{XREFpersistent,,persistent}}
 @end deftypefn
 
 
-@c mislocked src/variables.cc
-@anchor{doc-mislocked}
+@c mislocked libinterp/corefcn/variables.cc
+@anchor{XREFmislocked}
 @deftypefn  {Built-in Function} {} mislocked ()
 @deftypefnx {Built-in Function} {} mislocked (@var{fcn})
 Return true if the named function @var{fcn} is locked.  If no function is
 named then return true if the current function is locked.
-@seealso{@ref{doc-mlock,,mlock}, @ref{doc-munlock,,munlock}, @ref{doc-persistent,,persistent}}
+@seealso{@ref{XREFmlock,,mlock}, @ref{XREFmunlock,,munlock}, @ref{XREFpersistent,,persistent}}
 @end deftypefn
 
 
@@ -1567,7 +1780,7 @@ An overloaded function as defined by @code{dispatch}.
 A function that has been defined on the command-line.
 
 @item Autoload function
-A function that is marked as autoloaded with @xref{doc-autoload}.
+A function that is marked as autoloaded with @xref{XREFautoload,,autoload}.
 
 @item A Function on the Path
 A function that can be found on the users load-path.  There can also be
@@ -1681,8 +1894,8 @@ Although Octave normally executes commands from script files that have
 the name @file{@var{file}.m}, you can use the function @code{source} to
 execute commands from any file.
 
-@c source src/oct-parse.cc
-@anchor{doc-source}
+@c source libinterp/parse-tree/oct-parse.cc
+@anchor{XREFsource}
 @deftypefn {Built-in Function} {} source (@var{file})
 Parse and execute the contents of @var{file}.  This is equivalent to
 executing commands from a script file, but without requiring the file to
@@ -1690,11 +1903,11 @@ be named @file{@var{file}.m}.
 @end deftypefn
 
 
-@node Function Handles Inline Functions and Anonymous Functions
-@section Function Handles, Inline Functions, and Anonymous Functions
+@node Function Handles Anonymous Functions Inline Functions
+@section Function Handles, Anonymous Functions, Inline Functions
 @cindex handle, function handles
-@cindex inline, inline functions
 @cindex anonymous functions
+@cindex inline, inline functions
 
 It can be very convenient store a function in a variable so that it
 can be passed to a different function.  For example, a function that
@@ -1755,37 +1968,37 @@ f (pi/4)
 @end group
 @end example
 
-@c is_function_handle src/ov-fcn-handle.cc
-@anchor{doc-is_function_handle}
+@c is_function_handle libinterp/octave-value/ov-fcn-handle.cc
+@anchor{XREFis_function_handle}
 @deftypefn {Built-in Function} {} is_function_handle (@var{x})
 Return true if @var{x} is a function handle.
-@seealso{@ref{doc-isa,,isa}, @ref{doc-typeinfo,,typeinfo}, @ref{doc-class,,class}}
+@seealso{@ref{XREFisa,,isa}, @ref{XREFtypeinfo,,typeinfo}, @ref{XREFclass,,class}}
 @end deftypefn
 
 
-@c functions src/ov-fcn-handle.cc
-@anchor{doc-functions}
+@c functions libinterp/octave-value/ov-fcn-handle.cc
+@anchor{XREFfunctions}
 @deftypefn {Built-in Function} {} functions (@var{fcn_handle})
 Return a struct containing information about the function handle
 @var{fcn_handle}.
 @end deftypefn
 
 
-@c func2str src/ov-fcn-handle.cc
-@anchor{doc-func2str}
+@c func2str libinterp/octave-value/ov-fcn-handle.cc
+@anchor{XREFfunc2str}
 @deftypefn {Built-in Function} {} func2str (@var{fcn_handle})
 Return a string containing the name of the function referenced by
 the function handle @var{fcn_handle}.
 @end deftypefn
 
 
-@c str2func src/ov-fcn-handle.cc
-@anchor{doc-str2func}
+@c str2func libinterp/octave-value/ov-fcn-handle.cc
+@anchor{XREFstr2func}
 @deftypefn  {Built-in Function} {} str2func (@var{fcn_name})
 @deftypefnx {Built-in Function} {} str2func (@var{fcn_name}, "global")
 Return a function handle constructed from the string @var{fcn_name}.
-If the optional "global" argument is passed, locally visible functions
-are ignored in the lookup.
+If the optional @qcode{"global"} argument is passed, locally visible
+functions are ignored in the lookup.
 @end deftypefn
 
 
@@ -1850,15 +2063,15 @@ body using the @code{inline} function.  The following code defines the
 function @math{f(x) = x^2 + 2}.
 
 @example
-f = inline("x^2 + 2");
+f = inline ("x^2 + 2");
 @end example
 
 @noindent
 After this it is possible to evaluate @math{f} at any @math{x} by
 writing @code{f(x)}.
 
-@c inline src/ov-fcn-inline.cc
-@anchor{doc-inline}
+@c inline libinterp/octave-value/ov-fcn-inline.cc
+@anchor{XREFinline}
 @deftypefn  {Built-in Function} {} inline (@var{str})
 @deftypefnx {Built-in Function} {} inline (@var{str}, @var{arg1}, @dots{})
 @deftypefnx {Built-in Function} {} inline (@var{str}, @var{n})
@@ -1869,38 +2082,39 @@ function arguments will then be in alphabetical order.  It should
 be noted that i, and j are ignored as arguments due to the
 ambiguity between their use as a variable or their use as an inbuilt
 constant.  All arguments followed by a parenthesis are considered
-to be functions.
+to be functions.  If no arguments are found, a function taking a single
+argument named @code{x} will be created.
 
 If the second and subsequent arguments are character strings,
 they are the names of the arguments of the function.
 
 If the second argument is an integer @var{n}, the arguments are
-@code{"x"}, @code{"P1"}, @dots{}, @code{"P@var{N}"}.
-@seealso{@ref{doc-argnames,,argnames}, @ref{doc-formula,,formula}, @ref{doc-vectorize,,vectorize}}
+@qcode{"x"}, @qcode{"P1"}, @dots{}, @qcode{"P@var{N}"}.
+@seealso{@ref{XREFargnames,,argnames}, @ref{XREFformula,,formula}, @ref{XREFvectorize,,vectorize}}
 @end deftypefn
 
 
-@c argnames src/ov-fcn-inline.cc
-@anchor{doc-argnames}
+@c argnames libinterp/octave-value/ov-fcn-inline.cc
+@anchor{XREFargnames}
 @deftypefn {Built-in Function} {} argnames (@var{fun})
 Return a cell array of character strings containing the names of
 the arguments of the inline function @var{fun}.
-@seealso{@ref{doc-inline,,inline}, @ref{doc-formula,,formula}, @ref{doc-vectorize,,vectorize}}
+@seealso{@ref{XREFinline,,inline}, @ref{XREFformula,,formula}, @ref{XREFvectorize,,vectorize}}
 @end deftypefn
 
 
-@c formula src/ov-fcn-inline.cc
-@anchor{doc-formula}
+@c formula libinterp/octave-value/ov-fcn-inline.cc
+@anchor{XREFformula}
 @deftypefn {Built-in Function} {} formula (@var{fun})
 Return a character string representing the inline function @var{fun}.
 Note that @code{char (@var{fun})} is equivalent to
 @code{formula (@var{fun})}.
-@seealso{@ref{doc-argnames,,argnames}, @ref{doc-inline,,inline}, @ref{doc-vectorize,,vectorize}}
+@seealso{@ref{XREFargnames,,argnames}, @ref{XREFinline,,inline}, @ref{XREFvectorize,,vectorize}}
 @end deftypefn
 
 
 @c symvar scripts/miscellaneous/symvar.m
-@anchor{doc-symvar}
+@anchor{XREFsymvar}
 @deftypefn {Function File} {} symvar (@var{s})
 Identify the argument names in the function defined by a string.
 Common constant names such as @code{pi}, @code{NaN}, @code{Inf},
@@ -1925,7 +2139,7 @@ my_command hello world
 is equivalent to 
 
 @example
-my_command("hello", "world")
+my_command ("hello", "world")
 @end example
 
 @noindent

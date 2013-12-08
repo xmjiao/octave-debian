@@ -1,263 +1,229 @@
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.2, http://www.gnu.org/software/texinfo/ -->
 <head>
-<title>Exponents and Logarithms - GNU Octave</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="GNU Octave">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="Arithmetic.html#Arithmetic" title="Arithmetic">
-<link rel="next" href="Complex-Arithmetic.html#Complex-Arithmetic" title="Complex Arithmetic">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
-</head>
-<body>
-<div class="node">
-<a name="Exponents-and-Logarithms"></a>
-<p>
-Next:&nbsp;<a rel="next" accesskey="n" href="Complex-Arithmetic.html#Complex-Arithmetic">Complex Arithmetic</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="Arithmetic.html#Arithmetic">Arithmetic</a>
-<hr>
-</div>
+<title>GNU Octave: Exponents and Logarithms</title>
 
+<meta name="description" content="GNU Octave: Exponents and Logarithms">
+<meta name="keywords" content="GNU Octave: Exponents and Logarithms">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Arithmetic.html#Arithmetic" rel="up" title="Arithmetic">
+<link href="Complex-Arithmetic.html#Complex-Arithmetic" rel="next" title="Complex Arithmetic">
+<link href="Arithmetic.html#Arithmetic" rel="prev" title="Arithmetic">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+<a name="Exponents-and-Logarithms"></a>
+<div class="header">
+<p>
+Next: <a href="Complex-Arithmetic.html#Complex-Arithmetic" accesskey="n" rel="next">Complex Arithmetic</a>, Up: <a href="Arithmetic.html#Arithmetic" accesskey="u" rel="up">Arithmetic</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Exponents-and-Logarithms-1"></a>
 <h3 class="section">17.1 Exponents and Logarithms</h3>
 
-<!-- exp src/mappers.cc -->
-<p><a name="doc_002dexp"></a>
-
-<div class="defun">
-&mdash; Mapping Function:  <b>exp</b> (<var>x</var>)<var><a name="index-exp-1775"></a></var><br>
-<blockquote><p>Compute
+<a name="XREFexp"></a><dl>
+<dt><a name="index-exp"></a>Mapping Function: <em></em> <strong>exp</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>Compute
 <code>e^x</code>
 for each element of <var>x</var>.  To compute the matrix
-exponential, see <a href="Linear-Algebra.html#Linear-Algebra">Linear Algebra</a>. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
+exponential, see <a href="Linear-Algebra.html#Linear-Algebra">Linear Algebra</a>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFlog">log</a>.
+</p></dd></dl>
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dlog.html#doc_002dlog">log</a>. 
-</p></blockquote></div>
 
-<!-- expm1 src/mappers.cc -->
-   <p><a name="doc_002dexpm1"></a>
+<a name="XREFexpm1"></a><dl>
+<dt><a name="index-expm1"></a>Mapping Function: <em></em> <strong>expm1</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>Compute
+<code>exp (<var>x</var>) - 1</code>
+accurately in the neighborhood of zero.
+</p>
+<p><strong>See also:</strong> <a href="#XREFexp">exp</a>.
+</p></dd></dl>
 
-<div class="defun">
-&mdash; Mapping Function:  <b>expm1</b> (<var>x</var>)<var><a name="index-expm1-1776"></a></var><br>
-<blockquote><p>Compute
-<code>exp (</code><var>x</var><code>) - 1</code>
-accurately in the neighborhood of zero. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dexp.html#doc_002dexp">exp</a>. 
-</p></blockquote></div>
-
-<!-- log src/mappers.cc -->
-   <p><a name="doc_002dlog"></a>
-
-<div class="defun">
-&mdash; Mapping Function:  <b>log</b> (<var>x</var>)<var><a name="index-log-1777"></a></var><br>
-<blockquote><p>Compute the natural logarithm,
-<code>ln (</code><var>x</var><code>)</code>,
+<a name="XREFlog"></a><dl>
+<dt><a name="index-log"></a>Mapping Function: <em></em> <strong>log</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>Compute the natural logarithm,
+<code>ln (<var>x</var>)</code>,
 for each element of <var>x</var>.  To compute the
-matrix logarithm, see <a href="Linear-Algebra.html#Linear-Algebra">Linear Algebra</a>. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
+matrix logarithm, see <a href="Linear-Algebra.html#Linear-Algebra">Linear Algebra</a>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFexp">exp</a>, <a href="#XREFlog1p">log1p</a>, <a href="#XREFlog2">log2</a>, <a href="#XREFlog10">log10</a>, <a href="Special-Utility-Matrices.html#XREFlogspace">logspace</a>.
+</p></dd></dl>
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dexp.html#doc_002dexp">exp</a>, <a href="doc_002dlog1p.html#doc_002dlog1p">log1p</a>, <a href="doc_002dlog2.html#doc_002dlog2">log2</a>, <a href="doc_002dlog10.html#doc_002dlog10">log10</a>, <a href="doc_002dlogspace.html#doc_002dlogspace">logspace</a>. 
-</p></blockquote></div>
 
-<!-- reallog scripts/specfun/reallog.m -->
-   <p><a name="doc_002dreallog"></a>
+<a name="XREFreallog"></a><dl>
+<dt><a name="index-reallog"></a>Function File: <em></em> <strong>reallog</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>Return the real-valued natural logarithm of each element of <var>x</var>.  Report
+an error if any element results in a complex return value.
+</p>
+<p><strong>See also:</strong> <a href="#XREFlog">log</a>, <a href="#XREFrealpow">realpow</a>, <a href="#XREFrealsqrt">realsqrt</a>.
+</p></dd></dl>
 
-<div class="defun">
-&mdash; Function File:  <b>reallog</b> (<var>x</var>)<var><a name="index-reallog-1778"></a></var><br>
-<blockquote><p>Return the real-valued natural logarithm of each element of <var>x</var>.  Report
-an error if any element results in a complex return value. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dlog.html#doc_002dlog">log</a>, <a href="doc_002drealpow.html#doc_002drealpow">realpow</a>, <a href="doc_002drealsqrt.html#doc_002drealsqrt">realsqrt</a>. 
-</p></blockquote></div>
+<a name="XREFlog1p"></a><dl>
+<dt><a name="index-log1p"></a>Mapping Function: <em></em> <strong>log1p</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>Compute
+<code>log (1 + <var>x</var>)</code>
+accurately in the neighborhood of zero.
+</p>
+<p><strong>See also:</strong> <a href="#XREFlog">log</a>, <a href="#XREFexp">exp</a>, <a href="#XREFexpm1">expm1</a>.
+</p></dd></dl>
 
-<!-- log1p src/mappers.cc -->
-   <p><a name="doc_002dlog1p"></a>
 
-<div class="defun">
-&mdash; Mapping Function:  <b>log1p</b> (<var>x</var>)<var><a name="index-log1p-1779"></a></var><br>
-<blockquote><p>Compute
-<code>log (1 + </code><var>x</var><code>)</code>
-accurately in the neighborhood of zero. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
+<a name="XREFlog10"></a><dl>
+<dt><a name="index-log10"></a>Mapping Function: <em></em> <strong>log10</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>Compute the base-10 logarithm of each element of <var>x</var>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFlog">log</a>, <a href="#XREFlog2">log2</a>, <a href="Special-Utility-Matrices.html#XREFlogspace">logspace</a>, <a href="#XREFexp">exp</a>.
+</p></dd></dl>
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dlog.html#doc_002dlog">log</a>, <a href="doc_002dexp.html#doc_002dexp">exp</a>, <a href="doc_002dexpm1.html#doc_002dexpm1">expm1</a>. 
-</p></blockquote></div>
 
-<!-- log10 src/mappers.cc -->
-   <p><a name="doc_002dlog10"></a>
-
-<div class="defun">
-&mdash; Mapping Function:  <b>log10</b> (<var>x</var>)<var><a name="index-log10-1780"></a></var><br>
-<blockquote><p>Compute the base-10 logarithm of each element of <var>x</var>. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
-
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dlog.html#doc_002dlog">log</a>, <a href="doc_002dlog2.html#doc_002dlog2">log2</a>, <a href="doc_002dlogspace.html#doc_002dlogspace">logspace</a>, <a href="doc_002dexp.html#doc_002dexp">exp</a>. 
-</p></blockquote></div>
-
-<!-- log2 src/data.cc -->
-   <p><a name="doc_002dlog2"></a>
-
-<div class="defun">
-&mdash; Mapping Function:  <b>log2</b> (<var>x</var>)<var><a name="index-log2-1781"></a></var><br>
-&mdash; Mapping Function: [<var>f</var>, <var>e</var>] = <b>log2</b> (<var>x</var>)<var><a name="index-log2-1782"></a></var><br>
-<blockquote><p>Compute the base-2 logarithm of each element of <var>x</var>.
-
-        <p>If called with two output arguments, split <var>x</var> into
+<a name="XREFlog2"></a><dl>
+<dt><a name="index-log2"></a>Mapping Function: <em></em> <strong>log2</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-log2-1"></a>Mapping Function: <em>[<var>f</var>, <var>e</var>] =</em> <strong>log2</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>Compute the base-2 logarithm of each element of <var>x</var>.
+</p>
+<p>If called with two output arguments, split <var>x</var> into
 binary mantissa and exponent so that
 <code>1/2 &lt;= abs(f) &lt; 1</code>
 and <var>e</var> is an integer.  If
-<code>x = 0</code>, <code>f = e = 0</code>. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
+<code>x = 0</code>, <code>f = e = 0</code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFpow2">pow2</a>, <a href="#XREFlog">log</a>, <a href="#XREFlog10">log10</a>, <a href="#XREFexp">exp</a>.
+</p></dd></dl>
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dpow2.html#doc_002dpow2">pow2</a>, <a href="doc_002dlog.html#doc_002dlog">log</a>, <a href="doc_002dlog10.html#doc_002dlog10">log10</a>, <a href="doc_002dexp.html#doc_002dexp">exp</a>. 
-</p></blockquote></div>
 
-<!-- pow2 scripts/specfun/pow2.m -->
-   <p><a name="doc_002dpow2"></a>
-
-<div class="defun">
-&mdash; Mapping Function:  <b>pow2</b> (<var>x</var>)<var><a name="index-pow2-1783"></a></var><br>
-&mdash; Mapping Function:  <b>pow2</b> (<var>f, e</var>)<var><a name="index-pow2-1784"></a></var><br>
-<blockquote><p>With one argument, computes
+<a name="XREFpow2"></a><dl>
+<dt><a name="index-pow2"></a>Mapping Function: <em></em> <strong>pow2</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-pow2-1"></a>Mapping Function: <em></em> <strong>pow2</strong> <em>(<var>f</var>, <var>e</var>)</em></dt>
+<dd><p>With one argument, computes
 2 .^ x
 for each element of <var>x</var>.
+</p>
+<p>With two arguments, returns
+f .* (2 .^ e).
+</p>
+<p><strong>See also:</strong> <a href="#XREFlog2">log2</a>, <a href="#XREFnextpow2">nextpow2</a>.
+</p></dd></dl>
 
-        <p>With two arguments, returns
-f .* (2 .^ e). 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dlog2.html#doc_002dlog2">log2</a>, <a href="doc_002dnextpow2.html#doc_002dnextpow2">nextpow2</a>. 
-</p></blockquote></div>
-
-<!-- nextpow2 scripts/general/nextpow2.m -->
-   <p><a name="doc_002dnextpow2"></a>
-
-<div class="defun">
-&mdash; Function File:  <b>nextpow2</b> (<var>x</var>)<var><a name="index-nextpow2-1785"></a></var><br>
-<blockquote><p>If <var>x</var> is a scalar, return the first integer <var>n</var> such that
+<a name="XREFnextpow2"></a><dl>
+<dt><a name="index-nextpow2"></a>Function File: <em></em> <strong>nextpow2</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>If <var>x</var> is a scalar, return the first integer <var>n</var> such that
 2^n &ge; abs (x).
+</p>
+<p>If <var>x</var> is a vector, return <code>nextpow2 (length (<var>x</var>))</code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFpow2">pow2</a>, <a href="#XREFlog2">log2</a>.
+</p></dd></dl>
 
-        <p>If <var>x</var> is a vector, return <code>nextpow2 (length (</code><var>x</var><code>))</code>. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dpow2.html#doc_002dpow2">pow2</a>, <a href="doc_002dlog2.html#doc_002dlog2">log2</a>. 
-</p></blockquote></div>
+<a name="XREFrealpow"></a><dl>
+<dt><a name="index-realpow"></a>Function File: <em></em> <strong>realpow</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dd><p>Compute the real-valued, element-by-element power operator.  This is
+equivalent to <code><var>x</var>&nbsp;.^&nbsp;<var>y</var></code><!-- /@w -->, except that <code>realpow</code>
+reports an error if any return value is complex.
+</p>
+<p><strong>See also:</strong> <a href="#XREFreallog">reallog</a>, <a href="#XREFrealsqrt">realsqrt</a>.
+</p></dd></dl>
 
-<!-- realpow scripts/specfun/realpow.m -->
-   <p><a name="doc_002drealpow"></a>
 
-<div class="defun">
-&mdash; Function File:  <b>realpow</b> (<var>x, y</var>)<var><a name="index-realpow-1786"></a></var><br>
-<blockquote><p>Compute the real-valued, element-by-element power operator.  This is
-equivalent to <var>x</var><code>&nbsp;.^&nbsp;</code><var>y</var><!-- /@w -->, except that <code>realpow</code>
-reports an error if any return value is complex. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
-
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dreallog.html#doc_002dreallog">reallog</a>, <a href="doc_002drealsqrt.html#doc_002drealsqrt">realsqrt</a>. 
-</p></blockquote></div>
-
-<!-- sqrt src/mappers.cc -->
-   <p><a name="doc_002dsqrt"></a>
-
-<div class="defun">
-&mdash; Mapping Function:  <b>sqrt</b> (<var>x</var>)<var><a name="index-sqrt-1787"></a></var><br>
-<blockquote><p>Compute the square root of each element of <var>x</var>.  If <var>x</var> is negative,
+<a name="XREFsqrt"></a><dl>
+<dt><a name="index-sqrt"></a>Mapping Function: <em></em> <strong>sqrt</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>Compute the square root of each element of <var>x</var>.  If <var>x</var> is negative,
 a complex result is returned.  To compute the matrix square root, see
-<a href="Linear-Algebra.html#Linear-Algebra">Linear Algebra</a>. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
+<a href="Linear-Algebra.html#Linear-Algebra">Linear Algebra</a>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFrealsqrt">realsqrt</a>, <a href="#XREFnthroot">nthroot</a>.
+</p></dd></dl>
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002drealsqrt.html#doc_002drealsqrt">realsqrt</a>, <a href="doc_002dnthroot.html#doc_002dnthroot">nthroot</a>. 
-</p></blockquote></div>
 
-<!-- realsqrt scripts/specfun/realsqrt.m -->
-   <p><a name="doc_002drealsqrt"></a>
+<a name="XREFrealsqrt"></a><dl>
+<dt><a name="index-realsqrt"></a>Function File: <em></em> <strong>realsqrt</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>Return the real-valued square root of each element of <var>x</var>.  Report an
+error if any element results in a complex return value.
+</p>
+<p><strong>See also:</strong> <a href="#XREFsqrt">sqrt</a>, <a href="#XREFrealpow">realpow</a>, <a href="#XREFreallog">reallog</a>.
+</p></dd></dl>
 
-<div class="defun">
-&mdash; Function File:  <b>realsqrt</b> (<var>x</var>)<var><a name="index-realsqrt-1788"></a></var><br>
-<blockquote><p>Return the real-valued square root of each element of <var>x</var>.  Report an
-error if any element results in a complex return value. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dsqrt.html#doc_002dsqrt">sqrt</a>, <a href="doc_002drealpow.html#doc_002drealpow">realpow</a>, <a href="doc_002dreallog.html#doc_002dreallog">reallog</a>. 
-</p></blockquote></div>
+<a name="XREFcbrt"></a><dl>
+<dt><a name="index-cbrt"></a>Mapping Function: <em></em> <strong>cbrt</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>Compute the real cube root of each element of <var>x</var>.
+Unlike <code><var>x</var>^(1/3)</code>, the result will be negative if <var>x</var> is
+negative.
+</p>
+<p><strong>See also:</strong> <a href="#XREFnthroot">nthroot</a>.
+</p></dd></dl>
 
-<!-- cbrt src/mappers.cc -->
-   <p><a name="doc_002dcbrt"></a>
 
-<div class="defun">
-&mdash; Mapping Function:  <b>cbrt</b> (<var>x</var>)<var><a name="index-cbrt-1789"></a></var><br>
-<blockquote><p>Compute the real cube root of each element of <var>x</var>. 
-Unlike <var>x</var><code>^(1/3)</code>, the result will be negative if <var>x</var> is
-negative. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
-
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dnthroot.html#doc_002dnthroot">nthroot</a>. 
-</p></blockquote></div>
-
-<!-- nthroot scripts/specfun/nthroot.m -->
-   <p><a name="doc_002dnthroot"></a>
-
-<div class="defun">
-&mdash; Function File:  <b>nthroot</b> (<var>x, n</var>)<var><a name="index-nthroot-1790"></a></var><br>
-<blockquote>
-        <p>Compute the n-th root of <var>x</var>, returning real results for real
+<a name="XREFnthroot"></a><dl>
+<dt><a name="index-nthroot"></a>Function File: <em></em> <strong>nthroot</strong> <em>(<var>x</var>, <var>n</var>)</em></dt>
+<dd>
+<p>Compute the n-th root of <var>x</var>, returning real results for real
 components of <var>x</var>.  For example:
+</p>
+<div class="example">
+<pre class="example">nthroot (-1, 3)
+&rArr; -1
+(-1) ^ (1 / 3)
+&rArr; 0.50000 - 0.86603i
+</pre></div>
 
-     <pre class="example">          nthroot (-1, 3)
-          &rArr; -1
-          (-1) ^ (1 / 3)
-          &rArr; 0.50000 - 0.86603i
-</pre>
-        <p><var>x</var> must have all real entries.  <var>n</var> must be a scalar. 
+<p><var>x</var> must have all real entries.  <var>n</var> must be a scalar.
 If <var>n</var> is an even integer and <var>X</var> has negative entries, an
-error is produced. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
+error is produced.
+</p>
+<p><strong>See also:</strong> <a href="#XREFrealsqrt">realsqrt</a>, <a href="#XREFsqrt">sqrt</a>, <a href="#XREFcbrt">cbrt</a>.
+</p></dd></dl>
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002drealsqrt.html#doc_002drealsqrt">realsqrt</a>, <a href="doc_002dsqrt.html#doc_002dsqrt">sqrt</a>, <a href="doc_002dcbrt.html#doc_002dcbrt">cbrt</a>. 
-</p></blockquote></div>
 
-   </body></html>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Complex-Arithmetic.html#Complex-Arithmetic" accesskey="n" rel="next">Complex Arithmetic</a>, Up: <a href="Arithmetic.html#Arithmetic" accesskey="u" rel="up">Arithmetic</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
 
+
+
+</body>
+</html>

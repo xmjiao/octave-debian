@@ -1,351 +1,380 @@
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.2, http://www.gnu.org/software/texinfo/ -->
 <head>
-<title>Getting Help - GNU Octave</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="GNU Octave">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="Getting-Started.html#Getting-Started" title="Getting Started">
-<link rel="prev" href="Quitting-Octave.html#Quitting-Octave" title="Quitting Octave">
-<link rel="next" href="Command-Line-Editing.html#Command-Line-Editing" title="Command Line Editing">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
+<title>GNU Octave: Getting Help</title>
+
+<meta name="description" content="GNU Octave: Getting Help">
+<meta name="keywords" content="GNU Octave: Getting Help">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Getting-Started.html#Getting-Started" rel="up" title="Getting Started">
+<link href="Command-Line-Editing.html#Command-Line-Editing" rel="next" title="Command Line Editing">
+<link href="Quitting-Octave.html#Quitting-Octave" rel="prev" title="Quitting Octave">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
 </head>
-<body>
-<div class="node">
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
 <a name="Getting-Help"></a>
+<div class="header">
 <p>
-Next:&nbsp;<a rel="next" accesskey="n" href="Command-Line-Editing.html#Command-Line-Editing">Command Line Editing</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="Quitting-Octave.html#Quitting-Octave">Quitting Octave</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="Getting-Started.html#Getting-Started">Getting Started</a>
-<hr>
+Next: <a href="Command-Line-Editing.html#Command-Line-Editing" accesskey="n" rel="next">Command Line Editing</a>, Previous: <a href="Quitting-Octave.html#Quitting-Octave" accesskey="p" rel="prev">Quitting Octave</a>, Up: <a href="Getting-Started.html#Getting-Started" accesskey="u" rel="up">Getting Started</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
 </div>
-
+<hr>
+<a name="Commands-for-Getting-Help"></a>
 <h3 class="section">2.3 Commands for Getting Help</h3>
+<a name="index-online-help"></a>
+<a name="index-help_002c-online"></a>
 
-<p><a name="index-online-help-87"></a><a name="index-help_002c-online-88"></a>
-The entire text of this manual is available from the Octave prompt
+<p>The entire text of this manual is available from the Octave prompt
 via the command <kbd>doc</kbd>.  In addition, the documentation for
 individual user-written functions and variables is also available via
 the <kbd>help</kbd> command.  This section describes the commands used for
 reading the manual and the documentation strings for user-supplied
 functions and variables.  See <a href="Function-Files.html#Function-Files">Function Files</a>, for more information
 about how to document the functions you write.
-
-<!-- help scripts/help/help.m -->
-   <p><a name="doc_002dhelp"></a>
-
-<div class="defun">
-&mdash; Command:  <b>help</b><var> name<a name="index-help-89"></a></var><br>
-&mdash; Command:  <b>help</b> <code>--list</code><var><a name="index-help-90"></a></var><br>
-<blockquote><p>Display the help text for <var>name</var>.   For example, the command
+</p>
+<a name="XREFhelp"></a><dl>
+<dt><a name="index-help"></a>Command: <em></em> <strong>help</strong> <em><var>name</var></em></dt>
+<dt><a name="index-help-1"></a>Command: <em></em> <strong>help</strong> <em><code>--list</code></em></dt>
+<dt><a name="index-help-2"></a>Command: <em></em> <strong>help</strong> <em><code>.</code></em></dt>
+<dd><p>Display the help text for <var>name</var>.  For example, the command
 <kbd>help help</kbd> prints a short message describing the <code>help</code>
 command.
-
-        <p>Given the single argument <code>--list</code>, list all operators,
+</p>
+<p>Given the single argument <code>--list</code>, list all operators,
 keywords, built-in functions, and loadable functions available
 in the current session of Octave.
-
-        <p>If invoked without any arguments, <code>help</code> display instructions
+</p>
+<p>Given the single argument <code>.</code>, list all operators available
+in the current session of Octave.
+</p>
+<p>If invoked without any arguments, <code>help</code> display instructions
 on how to access help from the command line.
-
-        <p>The help command can give you information about operators, but not the
+</p>
+<p>The help command can give you information about operators, but not the
 comma and semicolons that are used as command separators.  To get help
-for those, you must type <kbd>help comma</kbd> or <kbd>help semicolon</kbd>. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
+for those, you must type <kbd>help comma</kbd> or <kbd>help semicolon</kbd>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFdoc">doc</a>, <a href="#XREFlookfor">lookfor</a>, <a href="Status-of-Variables.html#XREFwhich">which</a>.
+</p></dd></dl>
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002ddoc.html#doc_002ddoc">doc</a>, <a href="doc_002dlookfor.html#doc_002dlookfor">lookfor</a>, <a href="doc_002dwhich.html#doc_002dwhich">which</a>. 
-</p></blockquote></div>
 
-<!-- doc scripts/help/doc.m -->
-   <p><a name="doc_002ddoc"></a>
-
-<div class="defun">
-&mdash; Command:  <b>doc</b><var> function_name<a name="index-doc-91"></a></var><br>
-<blockquote><p>Display documentation for the function <var>function_name</var>
+<a name="XREFdoc"></a><dl>
+<dt><a name="index-doc"></a>Command: <em></em> <strong>doc</strong> <em><var>function_name</var></em></dt>
+<dd><p>Display documentation for the function <var>function_name</var>
 directly from an online version of
 the printed manual, using the GNU Info browser.  If invoked without
 any arguments, the manual is shown from the beginning.
-
-        <p>For example, the command <kbd>doc rand</kbd> starts the GNU Info browser
+</p>
+<p>For example, the command <kbd>doc rand</kbd> starts the GNU Info browser
 at the <code>rand</code> node in the online version of the manual.
+</p>
+<p>Once the GNU Info browser is running, help for using it is available
+using the command <kbd>C-h</kbd>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFhelp">help</a>.
+</p></dd></dl>
 
-        <p>Once the GNU Info browser is running, help for using it is available
-using the command <kbd>C-h</kbd>. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dhelp.html#doc_002dhelp">help</a>. 
-</p></blockquote></div>
-
-<!-- lookfor scripts/help/lookfor.m -->
-   <p><a name="doc_002dlookfor"></a>
-
-<div class="defun">
-&mdash; Command:  <b>lookfor</b><var> str<a name="index-lookfor-92"></a></var><br>
-&mdash; Command:  <b>lookfor</b><var> -all str<a name="index-lookfor-93"></a></var><br>
-&mdash; Function File: [<var>func</var>, <var>helpstring</var>] = <b>lookfor</b> (<var>str</var>)<var><a name="index-lookfor-94"></a></var><br>
-&mdash; Function File: [<var>func</var>, <var>helpstring</var>] = <b>lookfor</b> (<var>'-all', str</var>)<var><a name="index-lookfor-95"></a></var><br>
-<blockquote><p>Search for the string <var>str</var> in all functions found in the current
+<a name="XREFlookfor"></a><dl>
+<dt><a name="index-lookfor"></a>Command: <em></em> <strong>lookfor</strong> <em><var>str</var></em></dt>
+<dt><a name="index-lookfor-1"></a>Command: <em></em> <strong>lookfor</strong> <em>-all <var>str</var></em></dt>
+<dt><a name="index-lookfor-2"></a>Function File: <em>[<var>func</var>, <var>helpstring</var>] =</em> <strong>lookfor</strong> <em>(<var>str</var>)</em></dt>
+<dt><a name="index-lookfor-3"></a>Function File: <em>[<var>func</var>, <var>helpstring</var>] =</em> <strong>lookfor</strong> <em>(&quot;-all&quot;, <var>str</var>)</em></dt>
+<dd><p>Search for the string <var>str</var> in all functions found in the current
 function search path.  By default, <code>lookfor</code> searches for <var>str</var>
 in the first sentence of the help string of each function found.  The entire
-help text of each function can be searched if the '-all' argument is
+help text of each function can be searched if the <code>&quot;-all&quot;</code> argument is
 supplied.  All searches are case insensitive.
-
-        <p>Called with no output arguments, <code>lookfor</code> prints the list of
+</p>
+<p>Called with no output arguments, <code>lookfor</code> prints the list of
 matching functions to the terminal.  Otherwise, the output arguments
 <var>func</var> and <var>helpstring</var> define the matching functions and the
 first sentence of each of their help strings.
-
-        <p>The ability of <code>lookfor</code> to correctly identify the first
+</p>
+<p>The ability of <code>lookfor</code> to correctly identify the first
 sentence of the help text is dependent on the format of the
-function's help.  All Octave core functions are correctly
+function&rsquo;s help.  All Octave core functions are correctly
 formatted, but the same can not be guaranteed for external packages and
-user-supplied functions.  Therefore, the use of the '-all' argument may
-be necessary to find related functions that are not a part of Octave. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
+user-supplied functions.  Therefore, the use of the <code>&quot;-all&quot;</code>
+argument may be necessary to find related functions that are not a part of
+Octave.
+</p>
+<p><strong>See also:</strong> <a href="#XREFhelp">help</a>, <a href="#XREFdoc">doc</a>, <a href="Status-of-Variables.html#XREFwhich">which</a>.
+</p></dd></dl>
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dhelp.html#doc_002dhelp">help</a>, <a href="doc_002ddoc.html#doc_002ddoc">doc</a>, <a href="doc_002dwhich.html#doc_002dwhich">which</a>. 
-</p></blockquote></div>
 
-   <p>To see what is new in the current release of Octave, use the <code>news</code>
+<p>To see what is new in the current release of Octave, use the <code>news</code>
 function.
+</p>
+<a name="XREFnews"></a><dl>
+<dt><a name="index-news"></a>Command: <em></em> <strong>news</strong></dt>
+<dt><a name="index-news-1"></a>Command: <em></em> <strong>news</strong> <em><var>package</var></em></dt>
+<dd><p>Display the current NEWS file for Octave or an installed package.
+</p>
+<p>When called without an argument, display the NEWS file for Octave.
+When given a package name <var>package</var>, display the current NEWS file for
+that package.
+</p></dd></dl>
 
-<!-- news scripts/miscellaneous/news.m -->
-   <p><a name="doc_002dnews"></a>
 
-<div class="defun">
-&mdash; Function File:  <b>news</b> (<var>package</var>)<var><a name="index-news-96"></a></var><br>
-<blockquote><p>Display the current NEWS file for Octave or installed package.
+<a name="XREFinfo"></a><dl>
+<dt><a name="index-info"></a>Function File: <em></em> <strong>info</strong> <em>()</em></dt>
+<dd><p>Display contact information for the GNU Octave community.
+</p></dd></dl>
 
-        <p>If <var>package</var> is the name of an installed package, display the current
-NEWS file for that package. 
-</p></blockquote></div>
 
-<!-- info scripts/miscellaneous/info.m -->
-   <p><a name="doc_002dinfo"></a>
+<a name="XREFwarranty"></a><dl>
+<dt><a name="index-warranty-1"></a>Built-in Function: <em></em> <strong>warranty</strong> <em>()</em></dt>
+<dd><p>Describe the conditions for copying and distributing Octave.
+</p></dd></dl>
 
-<div class="defun">
-&mdash; Function File:  <b>info</b> ()<var><a name="index-info-97"></a></var><br>
-<blockquote><p>Display contact information for the GNU Octave community. 
-</p></blockquote></div>
 
-<!-- warranty src/toplev.cc -->
-   <p><a name="doc_002dwarranty"></a>
-
-<div class="defun">
-&mdash; Built-in Function:  <b>warranty</b> ()<var><a name="index-warranty-98"></a></var><br>
-<blockquote><p>Describe the conditions for copying and distributing Octave. 
-</p></blockquote></div>
-
-   <p>The following functions can be used to change which programs are used
+<p>The following functions can be used to change which programs are used
 for displaying the documentation, and where the documentation can be
 found.
-
-<!-- info_file src/help.cc -->
-   <p><a name="doc_002dinfo_005ffile"></a>
-
-<div class="defun">
-&mdash; Built-in Function: <var>val</var> = <b>info_file</b> ()<var><a name="index-info_005ffile-99"></a></var><br>
-&mdash; Built-in Function: <var>old_val</var> = <b>info_file</b> (<var>new_val</var>)<var><a name="index-info_005ffile-100"></a></var><br>
-&mdash; Built-in Function:  <b>info_file</b> (<var>new_val, "local"</var>)<var><a name="index-info_005ffile-101"></a></var><br>
-<blockquote><p>Query or set the internal variable that specifies the name of the
+</p>
+<a name="XREFinfo_005ffile"></a><dl>
+<dt><a name="index-info_005ffile"></a>Built-in Function: <em><var>val</var> =</em> <strong>info_file</strong> <em>()</em></dt>
+<dt><a name="index-info_005ffile-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>info_file</strong> <em>(<var>new_val</var>)</em></dt>
+<dt><a name="index-info_005ffile-2"></a>Built-in Function: <em></em> <strong>info_file</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
+<dd><p>Query or set the internal variable that specifies the name of the
 Octave info file.  The default value is
-<samp><var>octave-home</var><span class="file">/info/octave.info</span></samp>, in
-which <var>octave-home</var> is the root directory of the Octave installation. 
+<samp><var>octave-home</var>/info/octave.info</samp>, in
+which <var>octave-home</var> is the root directory of the Octave installation.
 The default value may be overridden by the environment variable
-<samp><span class="env">OCTAVE_INFO_FILE</span></samp><!-- /@w -->, or the command line argument
-&lsquo;<samp><span class="samp">--info-file NAME</span></samp>&rsquo;.
+<code><span class="nolinebreak">OCTAVE_INFO_FILE</span></code><!-- /@w -->, or the command line argument
+&lsquo;<samp>--info-file FNAME</samp>&rsquo;.
+</p>
+<p>When called from inside a function with the <code>&quot;local&quot;</code> option, the
+variable is changed locally for the function and any subroutines it calls.  
+The original variable value is restored when exiting the function.
+</p>
+<p><strong>See also:</strong> <a href="#XREFinfo_005fprogram">info_program</a>, <a href="#XREFdoc">doc</a>, <a href="#XREFhelp">help</a>, <a href="#XREFmakeinfo_005fprogram">makeinfo_program</a>.
+</p></dd></dl>
 
-        <p>When called from inside a function with the "local" option, the variable is
-changed locally for the function and any subroutines it calls.  The original
-variable value is restored when exiting the function. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dinfo_005fprogram.html#doc_002dinfo_005fprogram">info_program</a>, <a href="doc_002ddoc.html#doc_002ddoc">doc</a>, <a href="doc_002dhelp.html#doc_002dhelp">help</a>, <a href="doc_002dmakeinfo_005fprogram.html#doc_002dmakeinfo_005fprogram">makeinfo_program</a>. 
-</p></blockquote></div>
-
-<!-- info_program src/help.cc -->
-   <p><a name="doc_002dinfo_005fprogram"></a>
-
-<div class="defun">
-&mdash; Built-in Function: <var>val</var> = <b>info_program</b> ()<var><a name="index-info_005fprogram-102"></a></var><br>
-&mdash; Built-in Function: <var>old_val</var> = <b>info_program</b> (<var>new_val</var>)<var><a name="index-info_005fprogram-103"></a></var><br>
-&mdash; Built-in Function:  <b>info_program</b> (<var>new_val, "local"</var>)<var><a name="index-info_005fprogram-104"></a></var><br>
-<blockquote><p>Query or set the internal variable that specifies the name of the
+<a name="XREFinfo_005fprogram"></a><dl>
+<dt><a name="index-info_005fprogram"></a>Built-in Function: <em><var>val</var> =</em> <strong>info_program</strong> <em>()</em></dt>
+<dt><a name="index-info_005fprogram-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>info_program</strong> <em>(<var>new_val</var>)</em></dt>
+<dt><a name="index-info_005fprogram-2"></a>Built-in Function: <em></em> <strong>info_program</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
+<dd><p>Query or set the internal variable that specifies the name of the
 info program to run.  The default value is
-<samp><var>octave-home</var><span class="file">/libexec/octave/</span><var>version</var><span class="file">/exec/</span><var>arch</var><span class="file">/info</span></samp>
+<samp><var>octave-home</var>/libexec/octave/<var>version</var>/exec/<var>arch</var>/info</samp>
 in which <var>octave-home</var> is the root directory of the Octave installation,
 <var>version</var> is the Octave version number, and <var>arch</var>
 is the system type (for example, <code>i686-pc-linux-gnu</code>).  The
 default value may be overridden by the environment variable
-<samp><span class="env">OCTAVE_INFO_PROGRAM</span></samp><!-- /@w -->, or the command line argument
-&lsquo;<samp><span class="samp">--info-program NAME</span></samp>&rsquo;.
+<code><span class="nolinebreak">OCTAVE_INFO_PROGRAM</span></code><!-- /@w -->, or the command line argument
+&lsquo;<samp>--info-program NAME</samp>&rsquo;.
+</p>
+<p>When called from inside a function with the <code>&quot;local&quot;</code> option, the
+variable is changed locally for the function and any subroutines it calls.  
+The original variable value is restored when exiting the function.
+</p>
+<p><strong>See also:</strong> <a href="#XREFinfo_005ffile">info_file</a>, <a href="#XREFdoc">doc</a>, <a href="#XREFhelp">help</a>, <a href="#XREFmakeinfo_005fprogram">makeinfo_program</a>.
+</p></dd></dl>
 
-        <p>When called from inside a function with the "local" option, the variable is
-changed locally for the function and any subroutines it calls.  The original
-variable value is restored when exiting the function. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dinfo_005ffile.html#doc_002dinfo_005ffile">info_file</a>, <a href="doc_002ddoc.html#doc_002ddoc">doc</a>, <a href="doc_002dhelp.html#doc_002dhelp">help</a>, <a href="doc_002dmakeinfo_005fprogram.html#doc_002dmakeinfo_005fprogram">makeinfo_program</a>. 
-</p></blockquote></div>
-
-<!-- makeinfo_program src/help.cc -->
-   <p><a name="doc_002dmakeinfo_005fprogram"></a>
-
-<div class="defun">
-&mdash; Built-in Function: <var>val</var> = <b>makeinfo_program</b> ()<var><a name="index-makeinfo_005fprogram-105"></a></var><br>
-&mdash; Built-in Function: <var>old_val</var> = <b>makeinfo_program</b> (<var>new_val</var>)<var><a name="index-makeinfo_005fprogram-106"></a></var><br>
-&mdash; Built-in Function:  <b>makeinfo_program</b> (<var>new_val, "local"</var>)<var><a name="index-makeinfo_005fprogram-107"></a></var><br>
-<blockquote><p>Query or set the internal variable that specifies the name of the
+<a name="XREFmakeinfo_005fprogram"></a><dl>
+<dt><a name="index-makeinfo_005fprogram"></a>Built-in Function: <em><var>val</var> =</em> <strong>makeinfo_program</strong> <em>()</em></dt>
+<dt><a name="index-makeinfo_005fprogram-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>makeinfo_program</strong> <em>(<var>new_val</var>)</em></dt>
+<dt><a name="index-makeinfo_005fprogram-2"></a>Built-in Function: <em></em> <strong>makeinfo_program</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
+<dd><p>Query or set the internal variable that specifies the name of the
 program that Octave runs to format help text containing
 Texinfo markup commands.  The default value is <code>makeinfo</code>.
+</p>
+<p>When called from inside a function with the <code>&quot;local&quot;</code> option, the
+variable is changed locally for the function and any subroutines it calls.  
+The original variable value is restored when exiting the function.
+</p>
+<p><strong>See also:</strong> <a href="#XREFtexi_005fmacros_005ffile">texi_macros_file</a>, <a href="#XREFinfo_005ffile">info_file</a>, <a href="#XREFinfo_005fprogram">info_program</a>, <a href="#XREFdoc">doc</a>, <a href="#XREFhelp">help</a>.
+</p></dd></dl>
 
-        <p>When called from inside a function with the "local" option, the variable is
-changed locally for the function and any subroutines it calls.  The original
-variable value is restored when exiting the function. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dinfo_005ffile.html#doc_002dinfo_005ffile">info_file</a>, <a href="doc_002dinfo_005fprogram.html#doc_002dinfo_005fprogram">info_program</a>, <a href="doc_002ddoc.html#doc_002ddoc">doc</a>, <a href="doc_002dhelp.html#doc_002dhelp">help</a>. 
-</p></blockquote></div>
-
-<!-- doc_cache_file src/help.cc -->
-   <p><a name="doc_002ddoc_005fcache_005ffile"></a>
-
-<div class="defun">
-&mdash; Built-in Function: <var>val</var> = <b>doc_cache_file</b> ()<var><a name="index-doc_005fcache_005ffile-108"></a></var><br>
-&mdash; Built-in Function: <var>old_val</var> = <b>doc_cache_file</b> (<var>new_val</var>)<var><a name="index-doc_005fcache_005ffile-109"></a></var><br>
-&mdash; Built-in Function:  <b>doc_cache_file</b> (<var>new_val, "local"</var>)<var><a name="index-doc_005fcache_005ffile-110"></a></var><br>
-<blockquote><p>Query or set the internal variable that specifies the name of the
-Octave documentation cache file.  A cache file significantly improves
-the performance of the <code>lookfor</code> command.  The default value is
-<samp><var>octave-home</var><span class="file">/share/octave/</span><var>version</var><span class="file">/etc/doc-cache</span></samp>,
+<a name="XREFtexi_005fmacros_005ffile"></a><dl>
+<dt><a name="index-texi_005fmacros_005ffile"></a>Built-in Function: <em><var>val</var> =</em> <strong>texi_macros_file</strong> <em>()</em></dt>
+<dt><a name="index-texi_005fmacros_005ffile-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>texi_macros_file</strong> <em>(<var>new_val</var>)</em></dt>
+<dt><a name="index-texi_005fmacros_005ffile-2"></a>Built-in Function: <em></em> <strong>texi_macros_file</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
+<dd><p>Query or set the internal variable that specifies the name of the
+file containing Texinfo macros that are prepended to documentation strings
+before they are passed to makeinfo.  The default value is 
+<samp><var>octave-home</var>/share/octave/<var>version</var>/etc/macros.texi</samp>,
 in which <var>octave-home</var> is the root directory of the Octave installation,
-and <var>version</var> is the Octave version number. 
+and <var>version</var> is the Octave version number.
 The default value may be overridden by the environment variable
-<samp><span class="env">OCTAVE_DOC_CACHE_FILE</span></samp><!-- /@w -->, or the command line argument
-&lsquo;<samp><span class="samp">--doc-cache-file NAME</span></samp>&rsquo;.
+<code><span class="nolinebreak">OCTAVE_TEXI_MACROS_FILE</span></code><!-- /@w -->, or the command line argument
+&lsquo;<samp>--texi-macros-file FNAME</samp>&rsquo;.
+</p>
+<p>When called from inside a function with the <code>&quot;local&quot;</code> option, the
+variable is changed locally for the function and any subroutines it calls.  
+The original variable value is restored when exiting the function.
+</p>
+<p><strong>See also:</strong> <a href="#XREFmakeinfo_005fprogram">makeinfo_program</a>.
+</p></dd></dl>
 
-        <p>When called from inside a function with the "local" option, the variable is
-changed locally for the function and any subroutines it calls.  The original
-variable value is restored when exiting the function. 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dlookfor.html#doc_002dlookfor">lookfor</a>, <a href="doc_002dinfo_005fprogram.html#doc_002dinfo_005fprogram">info_program</a>, <a href="doc_002ddoc.html#doc_002ddoc">doc</a>, <a href="doc_002dhelp.html#doc_002dhelp">help</a>, <a href="doc_002dmakeinfo_005fprogram.html#doc_002dmakeinfo_005fprogram">makeinfo_program</a>. 
-</p></blockquote></div>
+<a name="XREFdoc_005fcache_005ffile"></a><dl>
+<dt><a name="index-doc_005fcache_005ffile"></a>Built-in Function: <em><var>val</var> =</em> <strong>doc_cache_file</strong> <em>()</em></dt>
+<dt><a name="index-doc_005fcache_005ffile-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>doc_cache_file</strong> <em>(<var>new_val</var>)</em></dt>
+<dt><a name="index-doc_005fcache_005ffile-2"></a>Built-in Function: <em></em> <strong>doc_cache_file</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
+<dd><p>Query or set the internal variable that specifies the name of the
+Octave documentation cache file.  A cache file significantly improves
+the performance of the <code>lookfor</code> command.  The default value is 
+<samp><var>octave-home</var>/share/octave/<var>version</var>/etc/doc-cache</samp>,
+in which <var>octave-home</var> is the root directory of the Octave installation,
+and <var>version</var> is the Octave version number.
+The default value may be overridden by the environment variable
+<code><span class="nolinebreak">OCTAVE_DOC_CACHE_FILE</span></code><!-- /@w -->, or the command line argument
+&lsquo;<samp>--doc-cache-file FNAME</samp>&rsquo;.
+</p>
+<p>When called from inside a function with the <code>&quot;local&quot;</code> option, the
+variable is changed locally for the function and any subroutines it calls.  
+The original variable value is restored when exiting the function.
+</p>
+<p><strong>See also:</strong> <a href="#XREFdoc_005fcache_005fcreate">doc_cache_create</a>, <a href="#XREFlookfor">lookfor</a>, <a href="#XREFinfo_005fprogram">info_program</a>, <a href="#XREFdoc">doc</a>, <a href="#XREFhelp">help</a>, <a href="#XREFmakeinfo_005fprogram">makeinfo_program</a>.
+</p></dd></dl>
 
-<!-- suppress_verbose_help_message src/help.cc -->
-   <p><a name="doc_002dsuppress_005fverbose_005fhelp_005fmessage"></a>
 
-<div class="defun">
-&mdash; Built-in Function: <var>val</var> = <b>suppress_verbose_help_message</b> ()<var><a name="index-suppress_005fverbose_005fhelp_005fmessage-111"></a></var><br>
-&mdash; Built-in Function: <var>old_val</var> = <b>suppress_verbose_help_message</b> (<var>new_val</var>)<var><a name="index-suppress_005fverbose_005fhelp_005fmessage-112"></a></var><br>
-&mdash; Built-in Function:  <b>suppress_verbose_help_message</b> (<var>new_val, "local"</var>)<var><a name="index-suppress_005fverbose_005fhelp_005fmessage-113"></a></var><br>
-<blockquote><p>Query or set the internal variable that controls whether Octave
+<a name="XREFbuilt_005fin_005fdocstrings_005ffile"></a><dl>
+<dt><a name="index-built_005fin_005fdocstrings_005ffile"></a>Built-in Function: <em><var>val</var> =</em> <strong>built_in_docstrings_file</strong> <em>()</em></dt>
+<dt><a name="index-built_005fin_005fdocstrings_005ffile-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>built_in_docstrings_file</strong> <em>(<var>new_val</var>)</em></dt>
+<dt><a name="index-built_005fin_005fdocstrings_005ffile-2"></a>Built-in Function: <em></em> <strong>built_in_docstrings_file</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
+<dd><p>Query or set the internal variable that specifies the name of the
+file containing docstrings for built-in Octave functions.
+The default value is
+<samp><var>octave-home</var>/share/octave/<var>version</var>/etc/built-in-docstrings</samp>,
+in which <var>octave-home</var> is the root directory of the Octave installation,
+and <var>version</var> is the Octave version number.
+The default value may be overridden by the environment variable
+<code><span class="nolinebreak">OCTAVE_BUILT_IN_DOCSTRINGS_FILE</span></code><!-- /@w -->, or the command line argument
+&lsquo;<samp>--built-in-docstrings-file FNAME</samp>&rsquo;.
+</p>
+<p>Note: This variable is only used when Octave is initializing itself.
+Modifying it during a running session of Octave will have no effect.
+</p></dd></dl>
+
+
+<a name="XREFsuppress_005fverbose_005fhelp_005fmessage"></a><dl>
+<dt><a name="index-suppress_005fverbose_005fhelp_005fmessage"></a>Built-in Function: <em><var>val</var> =</em> <strong>suppress_verbose_help_message</strong> <em>()</em></dt>
+<dt><a name="index-suppress_005fverbose_005fhelp_005fmessage-1"></a>Built-in Function: <em><var>old_val</var> =</em> <strong>suppress_verbose_help_message</strong> <em>(<var>new_val</var>)</em></dt>
+<dt><a name="index-suppress_005fverbose_005fhelp_005fmessage-2"></a>Built-in Function: <em></em> <strong>suppress_verbose_help_message</strong> <em>(<var>new_val</var>, &quot;local&quot;)</em></dt>
+<dd><p>Query or set the internal variable that controls whether Octave
 will add additional help information to the end of the output from
 the <code>help</code> command and usage messages for built-in commands.
+</p>
+<p>When called from inside a function with the <code>&quot;local&quot;</code> option, the
+variable is changed locally for the function and any subroutines it calls.  
+The original variable value is restored when exiting the function.
+</p></dd></dl>
 
-        <p>When called from inside a function with the "local" option, the variable is
-changed locally for the function and any subroutines it calls.  The original
-variable value is restored when exiting the function. 
-</p></blockquote></div>
 
-   <p>The following functions are principally used internally by Octave for
+<p>The following functions are principally used internally by Octave for
 generating the documentation.  They are documented here for completeness
 and because they may occasionally be useful for users.
-
-<!-- gen_doc_cache scripts/help/gen_doc_cache.m -->
-   <p><a name="doc_002dgen_005fdoc_005fcache"></a>
-
-<div class="defun">
-&mdash; Function File:  <b>gen_doc_cache</b> (<var>out_file, directory</var>)<var><a name="index-gen_005fdoc_005fcache-114"></a></var><br>
-<blockquote><p>Generate documentation caches for all functions in a given directory.
-
-        <p>A documentation cache is generated for all functions in <var>directory</var>. 
+</p>
+<a name="XREFdoc_005fcache_005fcreate"></a><dl>
+<dt><a name="index-doc_005fcache_005fcreate"></a>Function File: <em></em> <strong>doc_cache_create</strong> <em>(<var>out_file</var>, <var>directory</var>)</em></dt>
+<dd><p>Generate documentation caches for all functions in a given directory.
+</p>
+<p>A documentation cache is generated for all functions in <var>directory</var>.
 The
-resulting cache is saved in the file <var>out_file</var>. 
+resulting cache is saved in the file <var>out_file</var>.
 The cache is used to speed up <code>lookfor</code>.
-
-        <p>If no directory is given (or it is the empty matrix), a cache for builtin
+</p>
+<p>If no directory is given (or it is the empty matrix), a cache for builtin
 operators, etc. is generated.
+</p>
 
-     <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-     <!-- A simple blank line produces the correct behavior. -->
-     <!-- @sp 1 -->
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002dlookfor.html#doc_002dlookfor">lookfor</a>, <a href="doc_002dpath.html#doc_002dpath">path</a>. 
-</p></blockquote></div>
+<p><strong>See also:</strong> <a href="#XREFdoc_005fcache_005ffile">doc_cache_file</a>, <a href="#XREFlookfor">lookfor</a>, <a href="Manipulating-the-Load-Path.html#XREFpath">path</a>.
+</p></dd></dl>
 
-<!-- get_help_text src/help.cc -->
-   <p><a name="doc_002dget_005fhelp_005ftext"></a>
 
-<div class="defun">
-&mdash; Loadable Function: [<var>text</var>, <var>format</var>] = <b>get_help_text</b> (<var>name</var>)<var><a name="index-get_005fhelp_005ftext-115"></a></var><br>
-<blockquote><p>Return the raw help text of function <var>name</var>.
+<a name="XREFget_005fhelp_005ftext"></a><dl>
+<dt><a name="index-get_005fhelp_005ftext"></a>Built-in Function: <em>[<var>text</var>, <var>format</var>] =</em> <strong>get_help_text</strong> <em>(<var>name</var>)</em></dt>
+<dd><p>Return the raw help text of function <var>name</var>.
+</p>
+<p>The raw help text is returned in <var>text</var> and the format in <var>format</var>
+The format is a string which is one of <code>&quot;texinfo&quot;</code>,
+<code>&quot;html&quot;</code>, or <code>&quot;plain text&quot;</code>.
+</p></dd></dl>
 
-        <p>The raw help text is returned in <var>text</var> and the format in <var>format</var>
-The format is a string which is one of <tt>"texinfo"</tt>, <tt>"html"</tt>, or
-<tt>"plain text"</tt>. 
-</p></blockquote></div>
 
-<!-- get_help_text_from_file src/help.cc -->
-   <p><a name="doc_002dget_005fhelp_005ftext_005ffrom_005ffile"></a>
+<a name="XREFget_005fhelp_005ftext_005ffrom_005ffile"></a><dl>
+<dt><a name="index-get_005fhelp_005ftext_005ffrom_005ffile"></a>Built-in Function: <em>[<var>text</var>, <var>format</var>] =</em> <strong>get_help_text_from_file</strong> <em>(<var>fname</var>)</em></dt>
+<dd><p>Return the raw help text from the file <var>fname</var>.
+</p>
+<p>The raw help text is returned in <var>text</var> and the format in <var>format</var>
+The format is a string which is one of <code>&quot;texinfo&quot;</code>,
+<code>&quot;html&quot;</code>, or <code>&quot;plain text&quot;</code>.
+</p></dd></dl>
 
-<div class="defun">
-&mdash; Loadable Function: [<var>text</var>, <var>format</var>] = <b>get_help_text_from_file</b> (<var>fname</var>)<var><a name="index-get_005fhelp_005ftext_005ffrom_005ffile-116"></a></var><br>
-<blockquote><p>Return the raw help text from the file <var>fname</var>.
 
-        <p>The raw help text is returned in <var>text</var> and the format in <var>format</var>
-The format is a string which is one of <tt>"texinfo"</tt>, <tt>"html"</tt>, or
-<tt>"plain text"</tt>. 
-</p></blockquote></div>
-
-<!-- get_first_help_sentence scripts/help/get_first_help_sentence.m -->
-   <p><a name="doc_002dget_005ffirst_005fhelp_005fsentence"></a>
-
-<div class="defun">
-&mdash; Function File: [<var>text</var>, <var>status</var>] = <b>get_first_help_sentence</b> (<var>name</var>)<var><a name="index-get_005ffirst_005fhelp_005fsentence-117"></a></var><br>
-&mdash; Function File: [<var>text</var>, <var>status</var>] = <b>get_first_help_sentence</b> (<var>name, max_len</var>)<var><a name="index-get_005ffirst_005fhelp_005fsentence-118"></a></var><br>
-<blockquote><p>Return the first sentence of a function's help text.
-
-        <p>The first sentence is defined as the text after the function
-declaration until either the first period (".") or the first appearance of
-two consecutive newlines ("\n\n").  The text is truncated to a maximum
+<a name="XREFget_005ffirst_005fhelp_005fsentence"></a><dl>
+<dt><a name="index-get_005ffirst_005fhelp_005fsentence"></a>Function File: <em>[<var>text</var>, <var>status</var>] =</em> <strong>get_first_help_sentence</strong> <em>(<var>name</var>)</em></dt>
+<dt><a name="index-get_005ffirst_005fhelp_005fsentence-1"></a>Function File: <em>[<var>text</var>, <var>status</var>] =</em> <strong>get_first_help_sentence</strong> <em>(<var>name</var>, <var>max_len</var>)</em></dt>
+<dd><p>Return the first sentence of a function&rsquo;s help text.
+</p>
+<p>The first sentence is defined as the text after the function
+declaration until either the first period (&quot;.&quot;) or the first appearance of
+two consecutive newlines (&quot;\n\n&quot;).  The text is truncated to a maximum
 length of <var>max_len</var>, which defaults to 80.
-
-        <p>The optional output argument <var>status</var> returns the status reported by
+</p>
+<p>The optional output argument <var>status</var> returns the status reported by
 <code>makeinfo</code>.  If only one output argument is requested, and <var>status</var>
 is non-zero, a warning is displayed.
+</p>
+<p>As an example, the first sentence of this help text is
+</p>
+<div class="example">
+<pre class="example">get_first_help_sentence (&quot;get_first_help_sentence&quot;)
+-| ans = Return the first sentence of a function's help text.
+</pre></div>
+</dd></dl>
 
-        <p>As an example, the first sentence of this help text is
 
-     <pre class="example">          get_first_help_sentence ("get_first_help_sentence")
-          -| ans = Return the first sentence of a function's help text.
-</pre>
-        </blockquote></div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Command-Line-Editing.html#Command-Line-Editing" accesskey="n" rel="next">Command Line Editing</a>, Previous: <a href="Quitting-Octave.html#Quitting-Octave" accesskey="p" rel="prev">Quitting Octave</a>, Up: <a href="Getting-Started.html#Getting-Started" accesskey="u" rel="up">Getting Started</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
 
-   </body></html>
 
+
+</body>
+</html>

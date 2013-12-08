@@ -1,92 +1,116 @@
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.2, http://www.gnu.org/software/texinfo/ -->
 <head>
-<title>Missing Data - GNU Octave</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="GNU Octave">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="Built_002din-Data-Types.html#Built_002din-Data-Types" title="Built-in Data Types">
-<link rel="prev" href="Numeric-Objects.html#Numeric-Objects" title="Numeric Objects">
-<link rel="next" href="String-Objects.html#String-Objects" title="String Objects">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
+<title>GNU Octave: Missing Data</title>
+
+<meta name="description" content="GNU Octave: Missing Data">
+<meta name="keywords" content="GNU Octave: Missing Data">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Built_002din-Data-Types.html#Built_002din-Data-Types" rel="up" title="Built-in Data Types">
+<link href="String-Objects.html#String-Objects" rel="next" title="String Objects">
+<link href="Numeric-Objects.html#Numeric-Objects" rel="prev" title="Numeric Objects">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
 </head>
-<body>
-<div class="node">
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
 <a name="Missing-Data"></a>
+<div class="header">
 <p>
-Next:&nbsp;<a rel="next" accesskey="n" href="String-Objects.html#String-Objects">String Objects</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="Numeric-Objects.html#Numeric-Objects">Numeric Objects</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="Built_002din-Data-Types.html#Built_002din-Data-Types">Built-in Data Types</a>
-<hr>
+Next: <a href="String-Objects.html#String-Objects" accesskey="n" rel="next">String Objects</a>, Previous: <a href="Numeric-Objects.html#Numeric-Objects" accesskey="p" rel="prev">Numeric Objects</a>, Up: <a href="Built_002din-Data-Types.html#Built_002din-Data-Types" accesskey="u" rel="up">Built-in Data Types</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
 </div>
-
+<hr>
+<a name="Missing-Data-1"></a>
 <h4 class="subsection">3.1.2 Missing Data</h4>
+<a name="index-missing-data"></a>
 
-<p><a name="index-missing-data-212"></a>
-It is possible to represent missing data explicitly in Octave using
+<p>It is possible to represent missing data explicitly in Octave using
 <code>NA</code> (short for &ldquo;Not Available&rdquo;).  Missing data can only be
 represented when data is represented as floating point numbers.  In this
 case missing data is represented as a special case of the representation
 of <code>NaN</code>.
-
-<!-- NA src/data.cc -->
-   <p><a name="doc_002dNA"></a>
-
-<div class="defun">
-&mdash; Built-in Function:  <b>NA</b><var><a name="index-NA-213"></a></var><br>
-&mdash; Built-in Function:  <b>NA</b> (<var>n</var>)<var><a name="index-NA-214"></a></var><br>
-&mdash; Built-in Function:  <b>NA</b> (<var>n, m</var>)<var><a name="index-NA-215"></a></var><br>
-&mdash; Built-in Function:  <b>NA</b> (<var>n, m, k, <small class="dots">...</small></var>)<var><a name="index-NA-216"></a></var><br>
-&mdash; Built-in Function:  <b>NA</b> (<var><small class="dots">...</small>, class</var>)<var><a name="index-NA-217"></a></var><br>
-<blockquote><p>Return a scalar, matrix, or N-dimensional array whose elements are all equal
+</p>
+<a name="XREFNA"></a><dl>
+<dt><a name="index-NA"></a>Built-in Function: <em></em> <strong>NA</strong></dt>
+<dt><a name="index-NA-1"></a>Built-in Function: <em></em> <strong>NA</strong> <em>(<var>n</var>)</em></dt>
+<dt><a name="index-NA-2"></a>Built-in Function: <em></em> <strong>NA</strong> <em>(<var>n</var>, <var>m</var>)</em></dt>
+<dt><a name="index-NA-3"></a>Built-in Function: <em></em> <strong>NA</strong> <em>(<var>n</var>, <var>m</var>, <var>k</var>, &hellip;)</em></dt>
+<dt><a name="index-NA-4"></a>Built-in Function: <em></em> <strong>NA</strong> <em>(&hellip;, <var>class</var>)</em></dt>
+<dd><p>Return a scalar, matrix, or N-dimensional array whose elements are all equal
 to the special constant used to designate missing values.
-
-        <p>Note that NA always compares not equal to NA (NA != NA). 
+</p>
+<p>Note that NA always compares not equal to NA (NA != NA).
 To find NA values, use the <code>isna</code> function.
-
-        <p>When called with no arguments, return a scalar with the value &lsquo;<samp><span class="samp">NA</span></samp>&rsquo;. 
+</p>
+<p>When called with no arguments, return a scalar with the value &lsquo;<samp>NA</samp>&rsquo;.
 When called with a single argument, return a square matrix with the dimension
 specified.  When called with more than one scalar argument the first two
 arguments are taken as the number of rows and columns and any further
-arguments specify additional matrix dimensions. 
+arguments specify additional matrix dimensions.
 The optional argument <var>class</var> specifies the return type and may be
-either "double" or "single". 
-<!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-<!-- A simple blank line produces the correct behavior. -->
-<!-- @sp 1 -->
+either <code>&quot;double&quot;</code> or <code>&quot;single&quot;</code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFisna">isna</a>.
+</p></dd></dl>
 
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002disna.html#doc_002disna">isna</a>. 
-</p></blockquote></div>
 
-<!-- isna src/mappers.cc -->
-   <p><a name="doc_002disna"></a>
-
-<div class="defun">
-&mdash; Mapping Function:  <b>isna</b> (<var>x</var>)<var><a name="index-isna-218"></a></var><br>
-<blockquote><p>Return a logical array which is true where the elements of <var>x</var> are
-NA (missing) values and false where they are not. 
+<a name="XREFisna"></a><dl>
+<dt><a name="index-isna"></a>Mapping Function: <em></em> <strong>isna</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>Return a logical array which is true where the elements of <var>x</var> are
+NA (missing) values and false where they are not.
 For example:
+</p>
+<div class="example">
+<pre class="example">isna ([13, Inf, NA, NaN])
+     &rArr; [ 0, 0, 1, 0 ]
+</pre></div>
 
-     <pre class="example">          isna ([13, Inf, NA, NaN])
-               &rArr; [ 0, 0, 1, 0 ]
-</pre>
-        <!-- Texinfo @sp should work but in practice produces ugly results for HTML. -->
-     <!-- A simple blank line produces the correct behavior. -->
-     <!-- @sp 1 -->
-     <p class="noindent"><strong>See also:</strong> <a href="doc_002disnan.html#doc_002disnan">isnan</a>, <a href="doc_002disinf.html#doc_002disinf">isinf</a>, <a href="doc_002disfinite.html#doc_002disfinite">isfinite</a>. 
-</p></blockquote></div>
+<p><strong>See also:</strong> <a href="Finding-Elements-and-Checking-Conditions.html#XREFisnan">isnan</a>, <a href="Finding-Elements-and-Checking-Conditions.html#XREFisinf">isinf</a>, <a href="Finding-Elements-and-Checking-Conditions.html#XREFisfinite">isfinite</a>.
+</p></dd></dl>
 
-   </body></html>
 
+<hr>
+<div class="header">
+<p>
+Next: <a href="String-Objects.html#String-Objects" accesskey="n" rel="next">String Objects</a>, Previous: <a href="Numeric-Objects.html#Numeric-Objects" accesskey="p" rel="prev">Numeric Objects</a>, Up: <a href="Built_002din-Data-Types.html#Built_002din-Data-Types" accesskey="u" rel="up">Built-in Data Types</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>
