@@ -5,8 +5,8 @@ Forwarded: not-needed
 Last-Update: 2012-08-18
 ---
 This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
---- a/src/mkoctfile.in
-+++ b/src/mkoctfile.in
+--- a/src/mkoctfile.in.sh
++++ b/src/mkoctfile.in.sh
 @@ -77,7 +77,7 @@
  : ${CXXFLAGS=%OCTAVE_CONF_CXXFLAGS%}
  : ${CXXPICFLAG=%OCTAVE_CONF_CXXPICFLAG%}

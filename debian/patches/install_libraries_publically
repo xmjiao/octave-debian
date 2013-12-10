@@ -5,48 +5,27 @@ Description: Install the Octave libraries publically in /usr/lib/
  in the future.
 Forwarded: not-needed
 Author: Thomas Weber <tweber@debian.org>
---- a/libcruft/Makefile.am
-+++ b/libcruft/Makefile.am
-@@ -27,7 +27,8 @@
- 
- AUTOMAKE_OPTIONS = subdir-objects
- 
--octlib_LTLIBRARIES = libcruft.la
-+lib_LTLIBRARIES = libcruft.la
-+octlib_LTLIBRARIES =
- 
- libcruft_la_SOURCES =
- 
-@@ -59,7 +60,7 @@
-   -bindir $(bindir) \
-   $(LIBCRUFT_LINK_OPTS)
- 
--libcruft_la_DEPENDENCIES = cruft.def
-+libcruft_la_DEPENDENCIES = cruft.def libranlib.la
- 
- noinst_LTLIBRARIES = libranlib.la
- 
 --- a/liboctave/Makefile.am
 +++ b/liboctave/Makefile.am
-@@ -413,7 +413,8 @@
-   uint64NDArray.cc \
-   uint8NDArray.cc
+@@ -38,7 +38,8 @@
+ 
+ AM_CXXFLAGS += $(WARN_CXXFLAGS)
  
 -octlib_LTLIBRARIES = liboctave.la
 +lib_LTLIBRARIES = liboctave.la
 +octlib_LTLIBRARIES =
  
- LIBOCTAVE_CXX_SOURCES = \
-   CollocWt.cc \
---- a/src/Makefile.am
-+++ b/src/Makefile.am
-@@ -30,7 +30,8 @@
+ EXTRA_DIST =
  
- AUTOMAKE_OPTIONS = subdir-objects
+--- a/libinterp/Makefile.am
++++ b/libinterp/Makefile.am
+@@ -38,7 +38,8 @@
+ 
+ AM_CXXFLAGS += $(WARN_CXXFLAGS)
  
 -octlib_LTLIBRARIES = liboctinterp.la
 +lib_LTLIBRARIES = liboctinterp.la
 +octlib_LTLIBRARIES =
  
- if AMCOND_BUILD_COMPILED_AUX_PROGRAMS
- bin_PROGRAMS = \
+ ## Order matters here.  Leave builtins.cc last, because it depends on
+ ## $(DEF_FILES), and building those requires all the sources

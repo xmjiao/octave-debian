@@ -4,12 +4,12 @@ Forwarded: not-needed
 Author: Thomas Weber <tweber@debian.org>
 --- a/src/Makefile.am
 +++ b/src/Makefile.am
-@@ -696,7 +696,7 @@
- 	chmod a+rx $@
- endif
+@@ -159,7 +159,7 @@
+ main.cc: main.in.cc Makefile
+ 	@$(do_subst_default_vals)
  
 -install-exec-hook: make-version-links
 +install-exec-hook: 
  
- install-data-hook: install-oct
+ uninstall-local: remove-version-links
  

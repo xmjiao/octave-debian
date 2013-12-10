@@ -1,9 +1,9 @@
 Description: Allow installation of already extracted packages with pkg.m
 Forwarded: not-needed
 Author: Thomas Weber <tweber@debian.org>
---- a/scripts/pkg/pkg.m
-+++ b/scripts/pkg/pkg.m
-@@ -701,25 +701,32 @@
+--- a/scripts/pkg/private/install.m
++++ b/scripts/pkg/private/install.m
+@@ -75,25 +75,32 @@
          endif
  
          ## Uncompress the package.
