@@ -4,11 +4,5 @@ drop_versioned_binarys
 install_libraries_publically
 no_pdf_in_print.diff
 add_info_dir_categories
-correct_typos
-use_system_gl2ps
 drop_version_from_mkoctfile_function_call
 mkoctfile-mpi.diff
-contourc-stack-overflow.diff
-texinfo5.diff
-gcc-4.8.diff
-glpk-4.49.diff
