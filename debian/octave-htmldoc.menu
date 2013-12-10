@@ -1,17 +1,5 @@
 ?package(octave-htmldoc):needs="X11" \
 	section="Help" \
-        title="Octave FAQ" \
-        longtitle="The GNU Octave FAQ" \
-        description="This document provides answers to Frequently Asked \
-                Questions about Octave, a (mostly Matlab (R) compatible) \
-                high-level language, primarily intended for numerical \
-                computations. Octave provides a convenient command-line \
-                interface for solving linear and nonlinear problems \
-                numerically." \
-        command="/usr/share/doc/octave-htmldoc/faq/index.html"
-
-?package(octave-htmldoc):needs="X11" \
-	section="Help" \
         title="Octave" \
         longtitle="The GNU Octave language for numerical computations"\
         description="Octave is a (mostly Matlab (R) compatible) high-level \
