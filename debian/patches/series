@@ -6,3 +6,4 @@ no_pdf_in_print.diff
 add_info_dir_categories
 drop_version_from_mkoctfile_function_call
 mkoctfile-mpi.diff
+missing-example.diff
