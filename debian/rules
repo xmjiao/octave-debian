@@ -31,6 +31,8 @@ override_dh_auto_install:
 	# Smuggle our configuration file into the installed files
 	mkdir -p debian/tmp/etc && cp debian/octave.conf debian/tmp/etc/
 	dh_auto_install --max-parallel=1
+	# Delete .la files (for liboctgui)
+	find debian/tmp -name '*.la' -delete
 
 # save debug information into the debug package
 override_dh_strip:
