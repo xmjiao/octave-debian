@@ -18,9 +18,8 @@ clean:
 	dh clean --with autoreconf
 
 # override normal dh_auto_configure call to pass OpenMP flag to it (#631831)
-# and while we are at it, disable the rpath (thanks lintian)
 override_dh_auto_configure:
-	dh_auto_configure -- --enable-openmp --disable-rpath
+	dh_auto_configure -- --enable-openmp --with-java-homedir=/usr/lib/jvm/default-java/
 
 # override normal dh_compress call to avoid compressing .pdf files
 override_dh_compress:
