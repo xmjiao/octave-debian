@@ -34,6 +34,16 @@ override_dh_auto_install:
 	# Delete .la files (for liboctgui)
 	find debian/tmp -name '*.la' -delete
 
+# The info files have references to .png images
+# Rename them by prefixing their name with "octave-", adapt the *.info files to
+#  this new name, and ship the images under /usr/share/info
+override_dh_installinfo:
+	dh_installinfo
+	for f in `grep -a src=\".*\" doc/interpreter/*.info* | sed 's/.*src="\([^"]*\)".*/\1/'`; do \
+		cp doc/interpreter/$$f debian/octave-info/usr/share/info/octave-$$f; \
+		sed -i "s/src=\"$$f\"/src=\"octave-$$f\"/g" debian/octave-info/usr/share/info/octave.info*; \
+	done
+
 # save debug information into the debug package
 override_dh_strip:
 	dh_strip -a --dbg-package=octave-dbg
