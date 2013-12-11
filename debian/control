@@ -23,7 +23,7 @@ Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-octave/octave.git
 Package: octave
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, texinfo, octave-common (= ${source:Version}),
-         liboctave1 (= ${binary:Version}), default-jre-headless
+         liboctave2 (= ${binary:Version}), default-jre-headless
 Recommends: gnuplot-x11 | gnuplot-qt, libatlas3-base | libopenblas-base,
  pstoedit
 Suggests: octave-info,
@@ -111,7 +111,7 @@ Description: GNU Info documentation on the GNU Octave language
  octave documentation which is needed for the 'help -i foo' command within
  Octave.
 
-Package: liboctave1
+Package: liboctave2
 Architecture: any
 Pre-Depends: ${misc:Pre-Depends}
 Depends: ${shlibs:Depends}, ${misc:Depends}
@@ -126,7 +126,7 @@ Description: Shared libraries of the GNU Octave language
 
 Package: liboctave-dev
 Architecture: any
-Depends: liboctave1 (= ${binary:Version}), octave (= ${binary:Version}), ${misc:Depends},
+Depends: liboctave2 (= ${binary:Version}), octave (= ${binary:Version}), ${misc:Depends},
  libreadline-dev | libreadline6-dev | libreadline5-dev, libncurses5-dev,
  libhdf5-dev (>= 1.8.8) | libhdf5-openmpi-dev (>= 1.8.8) | libhdf5-mpich2-dev (>= 1.8.8),
  libgl1-mesa-dev | libgl-dev,

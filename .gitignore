@@ -7,7 +7,7 @@
 /debian/autoreconf.after
 /debian/autoreconf.before
 /debian/liboctave-dev
-/debian/liboctave1
+/debian/liboctave2
 /debian/octave-common
 /debian/octave-dbg
 /debian/octave-doc
