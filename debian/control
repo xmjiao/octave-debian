@@ -40,6 +40,7 @@ Description: GNU Octave language for numerical computations
 
 Package: octave-dbg
 Section: debug
+Priority: extra
 Architecture: any
 Depends: octave (=${binary:Version}), ${misc:Depends}
 Description: Debug symbols for octave
