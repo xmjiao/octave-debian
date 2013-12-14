@@ -9,6 +9,7 @@ export DH_OPTIONS
 
 # Needed by octave-common.links
 include /usr/share/dpkg/pkg-info.mk
+DEB_VERSION_UPSTREAM := $(subst ~rc,-rc,$(DEB_VERSION_UPSTREAM))
 export DEB_VERSION_UPSTREAM
 
 %:
