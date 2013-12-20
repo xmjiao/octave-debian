@@ -1,3 +1,51 @@
+octave (3.8.0~rc1-1) experimental; urgency=medium
+
+  [ Sébastien Villemot ]
+  * New upstream release candidate, which fixes the following bugs:
+     - Function pkg.m works correctly when promoting warnings to errors
+       (Closes: #693873)
+     - Sparse matrices A(n,n) behave correctly when n is a multiple of
+       65536=2^16 (Closes: #706376)
+     - Function interpft does not fail when downsampling (Closes: #706640)
+     - Function print correctly handles option -d<device> when no file
+       name is given (Closes: #710423)
+     - Documentation for function triangle_lw (and others) is removed
+       from the manual (Closes: #721802)
+     - Subfunctions are deleted from the table of symbols when deleting
+       the parent function (Closes: #725442)
+  * debian/copyright: reflect upstream changes.
+  * Remove patches applied upstream or no longer needed:
+     + contourc-stack-overflow.diff
+     + correct_typos
+     + gcc-4.8.diff
+     + glpk-4.49.diff
+     + texinfo5.diff
+     + use_system_gl2ps
+  * Refresh other patches.
+  * The Octave FAQ is no longer part of upstream tarball, don't try to ship it.
+  * Add LLVM, QScintilla and the default JDK to build dependencies.
+    Also make octave depend on the default headless JRE.
+  * Bump SONAME of library package to liboctave2.
+    Also stop distributing libcruft, which no longer exists.
+  * missing-example.diff: new patch, adds back a file omitted in upstream
+    tarball.
+  * Ship octave-cli and octave-gui in the octave package.
+  * Add breaks/conflicts + replaces on octave-java and octave-io.
+  * Ship *.png files used in info doc, using an "octave-" prefix for filenames.
+  * debian/watch: add automatic verification of PGP signature.
+  * Merge README.Atlas into README.Debian.
+  * Document the GUI and the JIT in NEWS.Debian.
+
+  [ Rafael Laboissiere ]
+  * Bump to Standards-Version 3.9.5, no changes needed
+  * debian/octave.conf: Do not use obsolete function read_readline_init_file
+  * Add a Debian-specific error handler
+
+  [ Thomas Weber ]
+  * Change priority from 'extra' to 'optional'
+
+ -- Sébastien Villemot <sebastien@debian.org>  Fri, 20 Dec 2013 20:49:52 +0100
+
 octave (3.6.4-4) unstable; urgency=low
 
   [ Rafael Laboissiere ]
