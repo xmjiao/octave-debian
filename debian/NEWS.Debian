@@ -1,0 +1,17 @@
+octave (3.8.0~rc1-1) experimental; urgency=medium
+
+  * Starting with this version, the octave package now contains an
+    experimental graphical user interface (GUI) based on the Qt toolkit.
+    That GUI can be started by running the `octave-gui' executable, or by
+    giving the `--force-gui' option to the octave binary.
+
+  * For those who want to keep the lower memory footprint of a pure text
+    interface, there is the `octave-cli' executable which is not linked
+    against Qt.
+
+  * Starting with this version, Octave incorporates a just-in-time (JIT)
+    compiler, which can offer performance improvements in some situations.
+    Since it is still experimental, the JIT is disabled by default, but
+    you can activate it with the `jit_enable' command.
+
+ -- Sébastien Villemot <sebastien@debian.org>  Fri, 20 Dec 2013 20:47:36 +0100
