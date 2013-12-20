@@ -11,7 +11,18 @@ Further information on Octave, the Octave mailing-lists and the Octave
 source archive can be found at http://www.octave.org
 
 The Debian Octave-related packages are collectively maintained by the Debian
-Octave Group (http://pkg-octave.alioth.debian.org).
+Octave Group (https://wiki.debian.org/Teams/DebianOctaveGroup).
+
+
+Using ATLAS or OpenBLAS libs with GNU Octave
+============================================
+
+In order to speed up Octave's linear algebra operations, you can install the
+ATLAS package (libatlas3-base), or the OpenBLAS package (libopenblas-base).
+Octave should automatically pick up the faster libraries. For more information
+about BLAS and LAPACK in Debian, see:
+
+ https://wiki.debian.org/DebianScience/LinearAlgebraLibraries
 
 
 About Octave-Forge packages
@@ -40,5 +51,5 @@ these packages, so one can use mkoctfile then.
 pkg.m is not part of liboctave-dev as it's used to find already installed
 packages (via /etc/octave.conf).
 
- -- Sébastien Villemot <sebastien@debian.org>, Fri,  1 Jun 2012 14:30:32 +0200
+ -- Sébastien Villemot <sebastien@debian.org>, Fri, 20 Dec 2013 20:39:48 +0100
 
