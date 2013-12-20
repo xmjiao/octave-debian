@@ -1,3 +1,5 @@
+#!/usr/bin/dh-exec
+
 usr/share/octave /usr/share/
 
 # install the configuration file we copied into the built tmp tree
