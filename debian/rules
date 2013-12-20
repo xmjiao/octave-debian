@@ -22,6 +22,10 @@ clean:
 override_dh_auto_configure:
 	dh_auto_configure -- --enable-openmp --with-java-homedir=/usr/lib/jvm/default-java/
 
+# dh_auto_test tries to run "make test", so override it
+override_dh_auto_test:
+	make check
+
 # override normal dh_compress call to avoid compressing .pdf files
 override_dh_compress:
 	dh_compress -O--parallel --exclude=.pdf
