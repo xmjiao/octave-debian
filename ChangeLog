@@ -1,3 +1,201 @@
+2013-12-21  John W. Eaton  <jwe@octave.org>
+
+	3.8.0 release candidate 2
+
+	* configure.ac (OCTAVE_VERSION): Bump to 3.8.0-rc2.
+	(OCTAVE_RELEASE_DATE): Set to 2013-12-21.
+
+	Files: configure.ac
+
+2013-12-20  Mike Miller  <mtmiller@ieee.org>
+
+	intmax, intmin: Fix default integer type in docstrings
+
+	* bitfcns.cc (Fintmax, Fintmin): Fix default integer type in docstrings.
+
+	Files: libinterp/corefcn/bitfcns.cc
+
+2013-12-19  John W. Eaton  <jwe@octave.org>
+
+	invoke versioned binaries from octave driver program (bug #40957)
+
+	* main.in.cc (OCTAVE_VERSION): New macro.
+	(main)  Append OCTAVE_VERSION to exec file name.  Always set
+	new_argv[0] to full name of file that is executed.
+
+	* Makefile.am (octave-cli-$(version), octave-gui-$(version),
+	all-local): New rules.
+	(OCTAVE_VERSION_LINKS): New variable.
+	(CLEANFILES): Include $(OCTAVE_VERSION_LINKS) in the list.
+
+	Files: src/Makefile.am src/main.in.cc
+
+2013-12-18  Carnë Draug  <carandraug@octave.org>
+
+	Do not reduce Magick::ErrorCoder to warning, issue an error like other errors.
+
+	* __magick_read__.cc (read_file): the Magick::ErrorCoder is issued by the
+	different coders and is being caught as a warning without any apparent reason.
+	A simple warning when no image was actually read leads to a segfault when
+	accessing the elements of imvec, which currently happens in F__magick_finfo__
+	An alternative would be to check the size of imvec, but really, an error here
+	should cause an error. GraphicsMagick documentation says that warnings are
+	for `suspected but completed' while errors are for `failed', so if anything
+	is issuing an error but still read the image and we should continue, then it
+	needs to be fixed upstream to throw a Magick::WarningCoder instead.
+
+	Files: libinterp/dldfcn/__magick_read__.cc
+
+2013-12-17  Torsten  <ttl@justmail.de>
+
+	* nl_NL.ts: updated dutch translation by Philip
+
+	Files: libgui/languages/nl_NL.ts
+
+2013-12-17  Carnë Draug  <carandraug@octave.org>
+
+	pt_PT: update language file
+
+	Files: libgui/languages/pt_PT.ts
+
+2013-12-16  Rik  <rik@octave.org>
+
+	configure.ac: Rephrase help message for --enable-float-truncate.
+
+	* configure.ac: Rephrase help message for --enable-float-truncate.
+
+	Files: configure.ac
+
+2013-12-16  Jordi Gutiérrez Hermoso  <jordigh@octave.org>
+
+	acinclude.m4 (OCTAVE_ENABLE_READLINE): correct the help for --disable-readline
+
+	Files: m4/acinclude.m4
+
+2013-12-15  Rik  <rik@octave.org>
+
+	Fix race condition when building in cruft directory (bug #40901).
+
+	* liboctave/cruft/ranlib/module.mk: Create ranlib in build directory if it does
+	not exist.
+
+	* liboctave/cruft/slatec-fn/module.mk: Create slatec-fn in build directory
+	if it does not exist.
+
+	Files: liboctave/cruft/ranlib/module.mk liboctave/cruft/slatec-fn/module.mk
+
+2013-12-15  Torsten  <ttl@justmail.de>
+
+	* be_BY.ts: updated language file from meequz (bug #40695)
+
+	Files: libgui/languages/be_BY.ts
+
+2013-12-14  John Donoghue  <john.donoghue@ieee.org>
+
+	Fix block comments for files with CRLF line endings (bug #40894)
+
+	* libinterp/parse-tree/lex.ll: check for \r when checking for valid block comment
+
+	Files: libinterp/parse-tree/lex.ll
+
+2013-12-11  John W. Eaton  <jwe@octave.org>
+
+	don't error for non-integer ranges used as indices if --traditional
+
+	* octave.cc (maximum_braindamage): Set warning state
+	Octave:noninteger-range-as-index to "on".
+
+	Files: libinterp/corefcn/error.cc libinterp/octave.cc
+
+2013-12-10  John W. Eaton  <jwe@octave.org>
+
+	set default warning state before modifying for --traditional option
+
+	* octave.cc (octave_initialize_interpreter): Call octave
+	initialize_default_warning_state before maximum_braindamage.
+
+	Files: libinterp/octave.cc
+
+2013-12-10  Pantxo Diribarne  <pantxo.diribarne@gmail.com>
+
+	fr_FR.ts: complete french translation.
+
+	Files: libgui/languages/fr_FR.ts
+
+2013-12-10  Sébastien Villemot  <sebastien@debian.org>
+
+	Add standalonebuiltin.cc to distribution files
+
+	* examples/Makefile.am: add standalonebuiltin.cc to EXTRA_DIST.
+
+	Files: examples/Makefile.am
+
+2013-12-09  Andreas Weber  <andy.weber.aw@gmail.com>
+
+	es_ES.ts: update of spanish translations from José Luis García Pallero
+
+	Files: libgui/languages/es_ES.ts
+
+2013-12-09  Torsten  <ttl@justmail.de>
+
+	* de_DE.ts: remove html tag from warning message
+
+	Files: libgui/languages/de_DE.ts
+
+2013-12-08  Andreas Weber  <andy.weber.aw@gmail.com>
+
+	de_DE.ts: update of germans translation and translators list
+
+	Files: libgui/languages/de_DE.ts libgui/languages/translators
+
+2013-12-07  Torsten  <ttl@justmail.de>
+
+	fix minimized main window after resetting window layout (bug #40832)
+
+	* main_window.cc (reset_windows): show normal window after resetting layout
+
+	Files: libgui/src/main-window.cc
+
+2013-12-06  John W. Eaton  <jwe@octave.org>
+
+	also check for xtest in __run_test_suite__
+
+	* __run_test_suite__.m (has_tests): Also return true for files that
+	only contain %!xtest.
+
+	Files: scripts/testfun/__run_test_suite__.m
+
+	fix cut and paste error in Matrix by ComplexMatrix multiplication operator
+
+	* fCMatrix.cc (operator * (const FloatMatrix&, const
+	FloatComplexMatrix&)): Fix cut and paste error.
+
+	Files: liboctave/array/fCMatrix.cc
+
+2013-12-05  Torsten  <ttl@justmail.de>
+
+	push pt_BR translation update from Felipe
+
+	Files: libgui/languages/pt_BR.ts
+
+2013-12-05  Rik  <rik@octave.org>
+
+	build: Don't distribute bootstrap, bootstrap.conf files
+
+	* Makefile.am: Remove bootstrap, bootstrap.conf from EXTRA_DIST.
+
+	Files: Makefile.am
+
+2013-12-05  John W. Eaton  <jwe@octave.org>
+
+	Added tag rc-3-8-0-1 for changeset d734216aa2b1
+
+	Files: .hgtags
+
+	maint: Merge changes for release candidate.
+
+	Files: 
+
 2013-12-04  John W. Eaton  <jwe@octave.org>
 
 	3.8.0 release candidate 1
@@ -7,6 +205,46 @@
 	(OCTAVE_RELEASE_DATE): Set to 2013-12-04.
 
 	Files: configure.ac
+
+2013-12-03  Rik  <rik@octave.org>
+
+	runtests.m: Also runtests for files that only contain %!xtest (bug #40780)
+
+	* runtests.m : Add xtest to regexp searching for test code in m-file.
+
+	Files: scripts/testfun/runtests.m
+
+2013-12-05  John W. Eaton  <jwe@octave.org>
+
+	bug-38236.tst: Use xtest instead of test.
+
+	Files: test/bug-38236/bug-38236.tst
+
+2013-12-05  Torsten  <ttl@justmail.de>
+
+	allow saving an editor file as the current one (bug #40759)
+
+	* file-editor-tab.cc (handle_save_file_as_answer): just save the file if the
+	  selected file name is the same as the current file name
+	  (handle_save_file_as_answer_close): removed the case that the selected file
+	  name is the same as the current one because the latter is not valid here
+	  (message_duplicate_file_name): removed message since not needed anymore
+
+	* file-editor-tab.h: removed message_duplicate_file_name
+
+	Files: libgui/src/m-editor/file-editor-tab.cc libgui/src/m-editor/file-
+	editor-tab.h
+
+2013-12-04  Rik  <rik@octave.org>
+
+	setxor.m: Fix bug when "rows" argument given (bug #40808).
+
+	* setxor.m: When "rows" argument given, use ':' to pick up all columns in find.
+	Add %!test to check behavior.
+
+	Files: scripts/set/setxor.m
+
+2013-12-04  John W. Eaton  <jwe@octave.org>
 
 	* install.txi: Update 64-bit build info for suitesparse, glpk, and qhull.
 

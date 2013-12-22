@@ -1,4 +1,4 @@
-# doc-cache created by Octave 3.8.0-rc1, Wed Dec 04 15:54:15 2013 EST
+# doc-cache created by Octave 3.8.0-rc2, Sat Dec 21 15:13:11 2013 EST
 # name: cache
 # type: cell
 # rows: 3
@@ -40259,7 +40259,7 @@ intmax
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 613
+# length: 612
  -- Built-in Function: intmax (TYPE)
      Return the largest integer that can be represented in an integer
      type.  The variable TYPE can be
@@ -40288,7 +40288,7 @@ intmax
      'uint64'
           unsigned 64-bit integer.
 
-     The default for TYPE is 'uint32'.
+     The default for TYPE is 'int32'.
 
      See also: intmin, flintmax, bitmax.
    
@@ -40312,7 +40312,7 @@ intmin
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 614
+# length: 613
  -- Built-in Function: intmin (TYPE)
      Return the smallest integer that can be represented in an integer
      type.  The variable TYPE can be
@@ -40341,7 +40341,7 @@ intmin
      'uint64'
           unsigned 64-bit integer.
 
-     The default for TYPE is 'uint32'.
+     The default for TYPE is 'int32'.
 
      See also: intmax, flintmax, bitmax.
    
