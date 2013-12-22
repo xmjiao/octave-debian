@@ -1,8 +1,6 @@
-drop_version_from_pkg_function_calls
 enable_dirs_in_pkg
-drop_versioned_binarys
+drop_versioned_binaries.diff
 install_libraries_publically
 no_pdf_in_print.diff
 add_info_dir_categories
-drop_version_from_mkoctfile_function_call
 mkoctfile-mpi.diff

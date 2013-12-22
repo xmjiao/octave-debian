@@ -1,0 +1,73 @@
+Description: Don't install binarys with a version in them
+ We don't need them.
+Forwarded: not-needed
+Author: Thomas Weber <tweber@debian.org>
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -164,7 +164,7 @@
+ main.cc: main.in.cc Makefile
+ 	@$(do_subst_default_vals)
+ 
+-install-exec-hook: make-version-links
++install-exec-hook: 
+ 
+ uninstall-local: remove-version-links
+ 
+--- a/src/main.in.cc
++++ b/src/main.in.cc
+@@ -595,7 +595,7 @@
+   std::string octave_bindir = get_octave_bindir ();
+ 
+   std::string file
+-    = octave_bindir + dir_sep_char + "octave-cli-" OCTAVE_VERSION;;
++    = octave_bindir + dir_sep_char + "octave-cli";;
+ 
+   char **new_argv = new char * [argc + 1];
+ 
+@@ -611,9 +611,9 @@
+           gui_libs = true;
+           file = octave_bindir + dir_sep_char;
+           #if defined (HAVE_OCTAVE_GUI)
+-            file += "octave-gui-" OCTAVE_VERSION;
++            file += "octave-gui";
+           #else
+-            file += "octave-cli-" OCTAVE_VERSION;
++            file += "octave-cli";
+           #endif
+           new_argv[k++] = argv[i];
+         }
+@@ -658,7 +658,7 @@
+           start_gui = false;
+           gui_libs = false;
+ 
+-          file = octave_bindir + dir_sep_char + "octave-cli-" OCTAVE_VERSION;
++          file = octave_bindir + dir_sep_char + "octave-cli";
+ 
+           if (warn_display)
+             {
+--- a/scripts/miscellaneous/mkoctfile.m
++++ b/scripts/miscellaneous/mkoctfile.m
+@@ -145,7 +145,7 @@
+   bindir = octave_config_info ("bindir");
+   ext = octave_config_info ("EXEEXT");
+ 
+-  shell_script = fullfile (bindir, sprintf ("mkoctfile-%s%s", OCTAVE_VERSION, ext));
++  shell_script = fullfile (bindir, "mkoctfile");
+ 
+   if (! exist (shell_script, "file"))
+     __gripe_missing_component__ ("mkoctfile", "mkoctfile");
+--- a/scripts/pkg/private/configure_make.m
++++ b/scripts/pkg/private/configure_make.m
+@@ -29,9 +29,9 @@
+     octave_bindir = octave_config_info ("bindir");
+     ver = version ();
+     ext = octave_config_info ("EXEEXT");
+-    mkoctfile_program = fullfile (octave_bindir, sprintf ("mkoctfile-%s%s", ver, ext));
+-    octave_config_program = fullfile (octave_bindir, sprintf ("octave-config-%s%s", ver, ext));
+-    octave_binary = fullfile (octave_bindir, sprintf ("octave-%s%s", ver, ext));
++    mkoctfile_program = fullfile (octave_bindir, "mkoctfile");
++    octave_config_program = fullfile (octave_bindir, "octave-config");
++    octave_binary = fullfile (octave_bindir, "octave");
+     cenv = {"MKOCTFILE"; mkoctfile_program;
+             "OCTAVE_CONFIG"; octave_config_program;
+             "OCTAVE"; octave_binary;
