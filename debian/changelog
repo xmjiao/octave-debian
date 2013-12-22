@@ -1,3 +1,14 @@
+octave (3.8.0~rc2-1) experimental; urgency=medium
+
+  * Imported Upstream version 3.8.0~rc2
+  * missing-example.diff: drop patch, no longer needed.
+  * debian/rules: fix binary-arch rule.
+  * Consolidate all patches relative to dropping version numbers in binaries.
+    The new consolidated patch is drop_versioned_binaries.diff.
+    Also drops versions numbers in calls from src/main.in.cc.
+
+ -- Sébastien Villemot <sebastien@debian.org>  Sun, 22 Dec 2013 13:33:58 +0100
+
 octave (3.8.0~rc1-1) experimental; urgency=medium
 
   [ Sébastien Villemot ]
