@@ -1774,7 +1774,8 @@ EXTRA_DIST = @polynomial/module.mk @FIRfilter/module.mk $(FCN_FILES) \
 	mex_demo.c mycell.c myfeval.c myfevalf.f myfunc.c myhello.c \
 	mypow2.c myprop.c myset.c mysparse.c mystring.c mystruct.c \
 	oct_demo.cc oregonator.cc oregonator.m paramdemo.cc \
-	standalone.cc stringdemo.cc structdemo.cc unwinddemo.cc
+	standalone.cc standalonebuiltin.cc stringdemo.cc structdemo.cc \
+	unwinddemo.cc
 FCN_FILE_DIRS = @polynomial @FIRfilter
 FCN_FILES = $(at_polynomial_FCN_FILES) $(at_FIRfilter_FCN_FILES)
 at_polynomial_FCN_FILES = \

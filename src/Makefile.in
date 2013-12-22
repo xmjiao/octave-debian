@@ -104,19 +104,20 @@ DIST_COMMON = $(top_srcdir)/build-aux/common.mk \
 	$(top_srcdir)/liboctave/link-deps.mk $(srcdir)/Makefile.in \
 	$(srcdir)/Makefile.am $(top_srcdir)/build-aux/depcomp
 @AMCOND_BUILD_GUI_TRUE@am__append_1 = octave-gui
-@AMCOND_LINK_ALL_DEPS_TRUE@am__append_2 = $(LIBOCTAVE_LINK_DEPS)
-@AMCOND_LINK_ALL_DEPS_TRUE@am__append_3 = $(LIBOCTAVE_LINK_OPTS)
-@AMCOND_LINK_ALL_DEPS_TRUE@am__append_4 = $(LIBOCTINTERP_LINK_DEPS)
-@AMCOND_LINK_ALL_DEPS_TRUE@am__append_5 = $(LIBOCTINTERP_LINK_OPTS)
-@AMCOND_LINK_ALL_DEPS_TRUE@am__append_6 = $(LIBOCTINTERP_LINK_DEPS)
-@AMCOND_LINK_ALL_DEPS_TRUE@am__append_7 = $(LIBOCTINTERP_LINK_OPTS)
+@AMCOND_BUILD_GUI_TRUE@am__append_2 = octave-gui-$(version)
+@AMCOND_LINK_ALL_DEPS_TRUE@am__append_3 = $(LIBOCTAVE_LINK_DEPS)
+@AMCOND_LINK_ALL_DEPS_TRUE@am__append_4 = $(LIBOCTAVE_LINK_OPTS)
+@AMCOND_LINK_ALL_DEPS_TRUE@am__append_5 = $(LIBOCTINTERP_LINK_DEPS)
+@AMCOND_LINK_ALL_DEPS_TRUE@am__append_6 = $(LIBOCTINTERP_LINK_OPTS)
+@AMCOND_LINK_ALL_DEPS_TRUE@am__append_7 = $(LIBOCTINTERP_LINK_DEPS)
+@AMCOND_LINK_ALL_DEPS_TRUE@am__append_8 = $(LIBOCTINTERP_LINK_OPTS)
 @AMCOND_BUILD_COMPILED_AUX_PROGRAMS_FALSE@bin_PROGRAMS =  \
 @AMCOND_BUILD_COMPILED_AUX_PROGRAMS_FALSE@	$(am__EXEEXT_2)
 @AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@bin_PROGRAMS =  \
 @AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@	$(am__EXEEXT_2) \
 @AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@	mkoctfile$(EXEEXT) \
 @AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@	octave-config$(EXEEXT)
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@am__append_8 = mkoctfile.cc octave-config.cc
+@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@am__append_9 = mkoctfile.cc octave-config.cc
 subdir = src
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
@@ -1975,8 +1976,9 @@ EXTRA_DIST = \
   octave-config.in.cc \
   octave-config.in.sh
 
-DISTCLEANFILES = main.cc $(am__append_8)
+DISTCLEANFILES = main.cc $(am__append_9)
 OCTAVE_BINARIES = octave octave-cli $(am__append_1)
+OCTAVE_VERSION_LINKS = octave-cli-$(version) $(am__append_2)
 OCTAVE_CORE_LIBS = \
   $(top_builddir)/libinterp/liboctinterp.la \
   $(top_builddir)/liboctave/liboctave.la
@@ -2031,7 +2033,7 @@ LIBOCTAVE_LINK_OPTS = \
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@	$(GL2PS_LIBS) \
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@	$(LLVM_LIBS) $(JAVA_LIBS) \
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@	$(LAPACK_LIBS) \
-@AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@	$(am__append_2)
+@AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@	$(am__append_3)
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@LIBOCTINTERP_LINK_DEPS =  \
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(FT2_LIBS) $(HDF5_LIBS) \
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(Z_LIBS) $(FFTW_XLIBS) \
@@ -2040,19 +2042,19 @@ LIBOCTAVE_LINK_OPTS = \
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(GL2PS_LIBS) $(LLVM_LIBS) \
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(JAVA_LIBS) \
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(LAPACK_LIBS) \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(am__append_2)
+@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(am__append_3)
 LIBOCTINTERP_LINK_OPTS = $(FT2_LDFLAGS) $(HDF5_LDFLAGS) $(Z_LDFLAGS) \
-	$(FFTW_XLDFLAGS) $(LLVM_LDFLAGS) $(am__append_3)
-OCT_LINK_DEPS = $(am__append_4)
-OCT_LINK_OPTS = $(LDFLAGS) $(am__append_5)
+	$(FFTW_XLDFLAGS) $(LLVM_LDFLAGS) $(am__append_4)
+OCT_LINK_DEPS = $(am__append_5)
+OCT_LINK_OPTS = $(LDFLAGS) $(am__append_6)
 @AMCOND_LINK_ALL_DEPS_TRUE@OCTAVE_LINK_DEPS = $(LIBOCTINTERP_LINK_DEPS)
 @AMCOND_LINK_ALL_DEPS_TRUE@OCTAVE_LINK_OPTS = $(LIBOCTINTERP_LINK_OPTS)
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@LIBOCTGUI_LINK_DEPS =  \
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@	$(DLDFCN_LIBS) @QT_LIBS@ \
-@AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@	$(am__append_6)
+@AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@	$(am__append_7)
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@LIBOCTGUI_LINK_DEPS = @QT_LIBS@ \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(am__append_6)
-LIBOCTGUI_LINK_OPTS = @QT_LDFLAGS@ $(am__append_7)
+@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(am__append_7)
+LIBOCTGUI_LINK_OPTS = @QT_LDFLAGS@ $(am__append_8)
 @AMCOND_LINK_ALL_DEPS_TRUE@OCTAVE_GUI_LINK_DEPS = $(LIBOCTGUI_LINK_DEPS)
 @AMCOND_LINK_ALL_DEPS_TRUE@OCTAVE_GUI_LINK_OPTS = $(LIBOCTGUI_LINK_OPTS)
 nodist_octave_SOURCES = main.cc
@@ -2110,7 +2112,8 @@ octave_gui_LDFLAGS = \
 @AMCOND_BUILD_COMPILED_AUX_PROGRAMS_FALSE@  octave-config
 
 CLEANFILES = \
-  $(bin_SCRIPTS)
+  $(bin_SCRIPTS) \
+  $(OCTAVE_VERSION_LINKS)
 
 all: all-am
 
@@ -2406,7 +2409,7 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(PROGRAMS) $(SCRIPTS)
+all-am: Makefile $(PROGRAMS) $(SCRIPTS) all-local
 installdirs:
 	for dir in "$(DESTDIR)$(bindir)" "$(DESTDIR)$(bindir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
@@ -2517,7 +2520,7 @@ uninstall-am: uninstall-binPROGRAMS uninstall-binSCRIPTS \
 
 .MAKE: install-am install-exec-am install-strip
 
-.PHONY: CTAGS GTAGS TAGS all all-am check check-am clean \
+.PHONY: CTAGS GTAGS TAGS all all-am all-local check check-am clean \
 	clean-binPROGRAMS clean-generic clean-libtool cscopelist-am \
 	ctags ctags-am distclean distclean-compile distclean-generic \
 	distclean-libtool distclean-tags distdir dvi dvi-am html \
@@ -2819,6 +2822,8 @@ endef
 	$(test-file-commands)
   $(OCTAVE_LINK_DEPS)
 
+all-local: $(OCTAVE_VERSION_LINKS)
+
 @AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@octave-config.cc: octave-config.in.cc Makefile
 @AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@	@$(do_subst_default_vals)
 
@@ -2861,6 +2866,14 @@ remove-version-links:
 @AMCOND_BUILD_COMPILED_AUX_PROGRAMS_FALSE@	done
 
 .PHONY: make-version-links remove-version-links
+
+octave-cli-$(version): octave-cli
+	rm -f $@
+	$(LN_S) $< $@
+
+octave-gui-$(version): octave-gui
+	rm -f $@
+	$(LN_S) $< $@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -1817,7 +1817,7 @@ YY_RULE_SETUP
             while (i < len)
               {
                 char c = yytext[i++];
-                if (! (c == ' ' || c == '\t' || c == '\n'))
+                if (! (c == ' ' || c == '\t' || c == '\n' || c == '\r'))
                   {
                     looks_like_block_comment = false;
                     break;

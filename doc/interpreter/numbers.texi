@@ -784,7 +784,7 @@ unsigned 32-bit integer.
 unsigned 64-bit integer.
 @end table
 
-The default for @var{type} is @code{uint32}.
+The default for @var{type} is @code{int32}.
 @seealso{@ref{XREFintmin,,intmin}, @ref{XREFflintmax,,flintmax}, @ref{XREFbitmax,,bitmax}}
 @end deftypefn
 
@@ -821,7 +821,7 @@ unsigned 32-bit integer.
 unsigned 64-bit integer.
 @end table
 
-The default for @var{type} is @code{uint32}.
+The default for @var{type} is @code{int32}.
 @seealso{@ref{XREFintmax,,intmax}, @ref{XREFflintmax,,flintmax}, @ref{XREFbitmax,,bitmax}}
 @end deftypefn
 

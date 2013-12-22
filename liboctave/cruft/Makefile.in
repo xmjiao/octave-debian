@@ -4757,15 +4757,24 @@ endef
 	$(test-file-commands)
 
 ranlib/ranlib.def: $(RANLIB_SRC) mkf77def
+	@-if ! test -d ranlib; then \
+		mkdir ranlib ; \
+	fi
 	chmod a+rx mkf77def
 	./mkf77def $(srcdir) $(RANLIB_SRC) > $@-t
 	mv $@-t $@
 
 slatec-fn/erfc.f: slatec-fn/erfc.in.f Makefile
+	@-if ! test -d slatec-fn; then \
+		mkdir slatec-fn ; \
+	fi
 	$(SED) -e "${F77_ISNAN_MACRO}" < $< > $@-t
 	mv $@-t $@
 
 slatec-fn/derfc.f: slatec-fn/derfc.in.f Makefile
+	@-if ! test -d slatec-fn; then \
+		mkdir slatec-fn ; \
+	fi
 	$(SED) -e "${F77_ISNAN_MACRO}" < $< > $@-t
 	mv $@-t $@
 

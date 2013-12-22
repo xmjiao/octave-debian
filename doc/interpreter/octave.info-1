@@ -28,7 +28,7 @@ GNU Octave
 
 This manual documents how to run, install and port GNU Octave, as well
 as its new features and incompatibilities, and how to report bugs.  It
-corresponds to GNU Octave version 3.8.0-rc1.
+corresponds to GNU Octave version 3.8.0-rc2.
 
 * Menu:
 
@@ -1121,7 +1121,7 @@ manual, *note Copying::.
 run, use, and extend GNU Octave.  Additional chapters describe how to
 report bugs and help contribute code.
 
-   This document corresponds to Octave version 3.8.0-rc1.
+   This document corresponds to Octave version 3.8.0-rc2.
 
 * Menu:
 
@@ -4224,7 +4224,7 @@ when converted.
      'uint64'
           unsigned 64-bit integer.
 
-     The default for TYPE is 'uint32'.
+     The default for TYPE is 'int32'.
 
      See also: *note intmin: XREFintmin, *note flintmax: XREFflintmax,
      *note bitmax: XREFbitmax.
@@ -4257,7 +4257,7 @@ when converted.
      'uint64'
           unsigned 64-bit integer.
 
-     The default for TYPE is 'uint32'.
+     The default for TYPE is 'int32'.
 
      See also: *note intmax: XREFintmax, *note flintmax: XREFflintmax,
      *note bitmax: XREFbitmax.

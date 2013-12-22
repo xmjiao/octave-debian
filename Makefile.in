@@ -1900,11 +1900,11 @@ null =
 ACLOCAL_AMFLAGS = -I m4
 BUILT_DISTFILES = AUTHORS BUGS ChangeLog INSTALL.OCTAVE
 EXTRA_DIST = AUTHORS BUGS COPYING ChangeLog INSTALL INSTALL.OCTAVE \
-	NEWS README CITATION bootstrap bootstrap.conf \
-	build-aux/find-files-with-tests.sh build-aux/mk-opts.pl \
-	build-aux/move-if-change build-aux/OctJavaQry.class \
-	build-aux/stl_algo.h-fixed etc/NEWS.1 etc/NEWS.2 etc/NEWS.3 \
-	etc/OLD-ChangeLogs/ChangeLog etc/OLD-ChangeLogs/ChangeLog.1 \
+	NEWS README CITATION build-aux/find-files-with-tests.sh \
+	build-aux/mk-opts.pl build-aux/move-if-change \
+	build-aux/OctJavaQry.class build-aux/stl_algo.h-fixed \
+	etc/NEWS.1 etc/NEWS.2 etc/NEWS.3 etc/OLD-ChangeLogs/ChangeLog \
+	etc/OLD-ChangeLogs/ChangeLog.1 \
 	etc/OLD-ChangeLogs/doc-ChangeLog \
 	etc/OLD-ChangeLogs/libcruft-ChangeLog \
 	etc/OLD-ChangeLogs/liboctave-ChangeLog \
