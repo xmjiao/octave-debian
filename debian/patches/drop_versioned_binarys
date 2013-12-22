@@ -4,7 +4,7 @@ Forwarded: not-needed
 Author: Thomas Weber <tweber@debian.org>
 --- a/src/Makefile.am
 +++ b/src/Makefile.am
-@@ -159,7 +159,7 @@
+@@ -164,7 +164,7 @@
  main.cc: main.in.cc Makefile
  	@$(do_subst_default_vals)
  
