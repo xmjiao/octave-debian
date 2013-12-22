@@ -42,7 +42,7 @@ override_dh_auto_install:
 # The info files have references to .png images
 # Rename them by prefixing their name with "octave-", adapt the *.info files to
 #  this new name, and ship the images under /usr/share/info
-override_dh_installinfo:
+override_dh_installinfo-indep:
 	dh_installinfo
 	for f in `grep -a src=\".*\" doc/interpreter/*.info* | sed 's/.*src="\([^"]*\)".*/\1/'`; do \
 		cp doc/interpreter/$$f debian/octave-info/usr/share/info/octave-$$f; \
