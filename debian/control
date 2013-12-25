@@ -6,7 +6,7 @@ Uploaders: Thomas Weber <tweber@debian.org>,
            Sébastien Villemot <sebastien@debian.org>
 Build-Depends: gfortran, debhelper (>= 9), automake, dh-autoreconf, texinfo,
  texlive-latex-base, texlive-generic-recommended, epstool, transfig, pstoedit,
- libreadline-dev,
+ libreadline-dev, xvfb,
  libncurses5-dev, gperf, libhdf5-dev (>= 1.8.8),
  libblas-dev (>=1.2-7), liblapack-dev (>= 3.4.1-4), gnuplot-nox, libfftw3-dev,
  less, libpcre3-dev, flex, libglpk-dev (>= 4.15),
