@@ -29,7 +29,7 @@ function msg = debian_missing_handler (name)
     case "info-file"
       msg = "please install the Debian package \"octave-info\" to get the Octave manual";
     case "mkoctfile"
-      msg = "please install the Debian package \"octave-dev\" to get the mkoctfile command";
+      msg = "please install the Debian package \"liboctave-dev\" to get the mkoctfile command";
     otherwise
       msg = [];
   endswitch
