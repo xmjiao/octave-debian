@@ -15,8 +15,8 @@ Author: Thomas Weber <tweber@debian.org>
  
 --- a/src/main.in.cc
 +++ b/src/main.in.cc
-@@ -595,7 +595,7 @@
-   std::string octave_bindir = get_octave_bindir ();
+@@ -614,7 +614,7 @@
+   std::string octave_archlibdir = get_octave_archlibdir ();
  
    std::string file
 -    = octave_bindir + dir_sep_char + "octave-cli-" OCTAVE_VERSION;;
@@ -24,19 +24,16 @@ Author: Thomas Weber <tweber@debian.org>
  
    char **new_argv = new char * [argc + 1];
  
-@@ -611,9 +611,9 @@
-           gui_libs = true;
-           file = octave_bindir + dir_sep_char;
-           #if defined (HAVE_OCTAVE_GUI)
--            file += "octave-gui-" OCTAVE_VERSION;
-+            file += "octave-gui";
-           #else
--            file += "octave-cli-" OCTAVE_VERSION;
-+            file += "octave-cli";
-           #endif
+@@ -635,7 +635,7 @@
+ 
+           file = octave_archlibdir + dir_sep_char + "octave-gui";
+ #else
+-          file = octave_bindir + dir_sep_char + "octave-cli-" OCTAVE_VERSION;
++          file = octave_bindir + dir_sep_char + "octave-cli";
+ #endif
            new_argv[k++] = argv[i];
          }
-@@ -658,7 +658,7 @@
+@@ -680,7 +680,7 @@
            start_gui = false;
            gui_libs = false;
  
