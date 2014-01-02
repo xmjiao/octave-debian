@@ -1,10 +1,10 @@
-Description: Mention the -gui and -cli commands in the manpage for octave
+Description: Mention the octave-cli command in the manpage for octave
 Author: Rafael Laboissiere <rafael@laboissiere.net>
 Last-Update: 2014-01-02
 
 --- octave-3.8.0~rc2.orig/doc/interpreter/octave.1
 +++ octave-3.8.0~rc2/doc/interpreter/octave.1
-@@ -30,10 +30,13 @@
+@@ -30,10 +30,16 @@
  octave \- A high-level interactive language for numerical computations.
  .SH SYNOPSIS
  \fBoctave\fP [\fIoptions\fP]... [\fIfile\fP]
@@ -12,11 +12,13 @@ Last-Update: 2014-01-02
 +\fBoctave-cli\fP [\fIoptions\fP]... [\fIfile\fP]
  .SH DESCRIPTION
  Octave is a high-level language, primarily intended for numerical
--computations.  It provides a convenient command line interface for
+ computations.  It provides a convenient command line interface for
 -solving linear and nonlinear problems numerically.
-+computations.  It provides convenient command line (\fBoctave-cli\fP command)
-+and graphical user (\fBoctave\fP command) interfaces for solving linear and
-+nonlinear problems numerically.
++solving linear and nonlinear problems numerically.  It also provides
++a graphical user interface that can be launched with the command
++\fBoctave --force-gui\fP.  The \fBoctave-cli\fP command is a synonym
++for the \fBoctave\fP command, except for the fact that option
++\fI--force-gui\fP will not work with it.
  .SH OPTIONS
  The complete set of command-line options for \fBoctave\fP is available by
  running the following command from the shell.
