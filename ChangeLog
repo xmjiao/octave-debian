@@ -1,4 +1,57 @@
+2013-12-27  John W. Eaton  <jwe@octave.org>
+
+	Added tag release-3-8-0 for changeset b72bcf5f78cc
+
+	Files: .hgtags
+
+	Version 3.8.0 released.
+
+	* configure.ac (OCTAVE_VERSION): Now 3.8.0.
+	(OCTAVE_RELEASE_DATE): Now 2013-12-27.
+
+	Files: configure.ac
+
+	fix grammar in GUI info window
+
+	* main-window.cc (show_gui_info): Fix grammar in gui_info message.
+
+	Files: libgui/src/main-window.cc
+
+2013-12-24  John W. Eaton  <jwe@octave.org>
+
+	allow run-octave to find octave-gui program
+
+	* run-octave.in: Set OCTAVE_ARCHLIB when executing Octave so that
+	octave-gui will be found.
+
+	Files: run-octave.in
+
+2013-12-23  John W. Eaton  <jwe@octave.org>
+
+	install octave-gui binary in libexec directory
+
+	* src/Makefile.am (archlib_PROGRAMS): New variable.  List octave-gui
+	* here, not in OCTAVE_BINARIES (and, ultimately, bin_PROGRAMS).
+	* src/main.in.cc (OCTAVE_ARCHLIBDIR): New macro.
+	(get_octave_archlibdir): New function.
+	(main): New variable octave_archlibdir.  If HAVE_OCTAVE_GUI, set file
+	to octave-gui in the octave_archlibdir directory.
+
+	Files: src/Makefile.am src/main.in.cc
+
+2013-12-22  John Donoghue  <john.donoghue@ieee.org>
+
+	Add $EXEEXT to octave-XXXX-${version} rules.
+
+	* src/Makefile.am: Add $(EXEEXT) to octave-gui${version} and octave-cli-${version} rules.
+
+	Files: src/Makefile.am
+
 2013-12-21  John W. Eaton  <jwe@octave.org>
+
+	Added tag rc-3-8-0-2 for changeset f1fa148766d6
+
+	Files: .hgtags
 
 	3.8.0 release candidate 2
 
