@@ -4,4 +4,4 @@ install_libraries_publically
 no_pdf_in_print.diff
 add_info_dir_categories
 mkoctfile-mpi.diff
-gui-and-cli-manpages.diff
+octave-cli-manpage.diff
