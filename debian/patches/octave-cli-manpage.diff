@@ -1,5 +1,6 @@
 Description: Mention the octave-cli command in the manpage for octave
 Author: Rafael Laboissiere <rafael@laboissiere.net>
+Forwarded: https://savannah.gnu.org/bugs/index.php?41085
 Last-Update: 2014-01-02
 
 --- octave-3.8.0~rc2.orig/doc/interpreter/octave.1
