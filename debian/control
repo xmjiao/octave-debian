@@ -14,7 +14,8 @@ Build-Depends: gfortran, debhelper (>= 9), automake, dh-autoreconf, texinfo,
  libqhull-dev, desktop-file-utils, libfltk1.3-dev, libgl2ps-dev,
  libgraphicsmagick++1-dev, libftgl-dev, libfontconfig1-dev,
  libqrupdate-dev, libarpack2-dev (>= 2.1+parpack96.dfsg-2), dh-exec,
- dpkg-dev (>= 1.16.1), llvm-dev, default-jdk, libqscintilla2-dev, libxft-dev
+ dpkg-dev (>= 1.16.1), llvm-dev, default-jdk, libqscintilla2-dev, libxft-dev,
+ javahelper
 Standards-Version: 3.9.5
 Homepage: http://www.octave.org/
 Vcs-Git: git://anonscm.debian.org/pkg-octave/octave.git

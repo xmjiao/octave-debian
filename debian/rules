@@ -12,6 +12,10 @@ include /usr/share/dpkg/pkg-info.mk
 DEB_VERSION_UPSTREAM := $(subst ~rc,-rc,$(DEB_VERSION_UPSTREAM))
 export DEB_VERSION_UPSTREAM
 
+# Configure default Java paths using javahelper
+include /usr/share/javahelper/java-vars.mk
+JAVA_LIBDIR := $(firstword $(JVM_CLIENT_DIR) $(JVM_SERVER_DIR))
+
 %:
 	dh $@ --with autoreconf --parallel
 
@@ -20,7 +24,8 @@ clean:
 
 # override normal dh_auto_configure call to pass OpenMP flag to it (#631831)
 override_dh_auto_configure:
-	dh_auto_configure -- --enable-openmp --with-java-homedir=/usr/lib/jvm/default-java/
+	dh_auto_configure -- --enable-openmp --with-java-homedir=$(JAVA_HOME) \
+		--with-java-libdir=$(JAVA_LIBDIR)
 
 # dh_auto_test tries to run "make test", so override it
 override_dh_auto_test:
