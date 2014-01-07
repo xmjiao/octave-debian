@@ -1,0 +1,23 @@
+Description: Set a fallback value for PATH_MAX if not defined
+ Based on kdelibs upstream git commit a8057419.
+Author: Mike Miller <mtmiller@debian.org>
+Forwarded: no
+Last-Updated: 2014-01-07
+
+--- a/libgui/qterminal/libqterminal/unix/kpty.cpp
++++ b/libgui/qterminal/libqterminal/unix/kpty.cpp
+@@ -145,6 +145,14 @@ extern "C" {
+ 
+ #define TTY_GROUP "tty"
+ 
++#ifndef PATH_MAX
++# ifdef MAXPATHLEN
++#  define PATH_MAX MAXPATHLEN
++# else
++#  define PATH_MAX 1024
++# endif
++#endif
++
+ ///////////////////////
+ // private functions //
+ ///////////////////////

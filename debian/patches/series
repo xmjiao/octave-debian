@@ -8,3 +8,4 @@ octave-cli-manpage.diff
 doc-compressed-info.diff
 dblquad-s390x.diff
 kfreebsd_tcgetattr.diff
+hurd_path_max.diff
