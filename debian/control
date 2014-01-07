@@ -32,7 +32,8 @@ Suggests: octave-info,
  octave-htmldoc,
 Conflicts: octave3.2, octave-java
 Replaces: octave3.2, octave-java
-Breaks: octave-io (<< 1.3)
+Breaks: liboctave1,
+        octave-io (<< 1.3)
 Description: GNU Octave language for numerical computations
  Octave is a (mostly Matlab (R) compatible) high-level language, primarily
  intended for numerical computations. It provides a convenient command-line
