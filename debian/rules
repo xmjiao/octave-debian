@@ -16,6 +16,14 @@ export DEB_VERSION_UPSTREAM
 include /usr/share/javahelper/java-vars.mk
 JAVA_LIBDIR := $(firstword $(JVM_CLIENT_DIR) $(JVM_SERVER_DIR))
 
+# Disable the JIT on some archs. This arch list must be kept in sync with the
+# arch list qualifying llvm-dev in debian/control.
+include /usr/share/dpkg/architecture.mk
+NO_JIT_ARCHS := armel armhf mips mipsel powerpc
+ifneq (,$(findstring $(DEB_HOST_ARCH),$(NO_JIT_ARCHS)))
+DISABLE_JIT_FLAG := --disable-jit
+endif
+
 %:
 	dh $@ --with autoreconf --parallel
 
@@ -25,7 +33,7 @@ clean:
 # override normal dh_auto_configure call to pass OpenMP flag to it (#631831)
 override_dh_auto_configure:
 	dh_auto_configure -- --enable-openmp --with-java-homedir=$(JAVA_HOME) \
-		--with-java-libdir=$(JAVA_LIBDIR)
+		--with-java-libdir=$(JAVA_LIBDIR) $(DISABLE_JIT_FLAG)
 
 # dh_auto_test tries to run "make test", so override it
 override_dh_auto_test:
