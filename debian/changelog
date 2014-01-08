@@ -21,11 +21,8 @@ octave (3.8.0-1) experimental; urgency=medium
 
   [ Rafael Laboissiere ]
   * Add Lintian override file for dh-exec-subst-unknown-variable warning
-  * Add manpages for octave-cli and octave-gui.
-    Acutally, no new manpages are created.  Instead, the manpage for
-    octave is changed through the patch gui-and-cli-manpages.diff to
-    mention the command variants, and new symlinks octave-cli.1 and
-    octave-gui.1 are created.
+  * New patch patches/octave-cli-manpage.diff: Add manpage for
+    octave-cli (taken from the upstream SCM repository).
 
  -- Sébastien Villemot <sebastien@debian.org>  Wed, 08 Jan 2014 13:45:32 +0100
 
