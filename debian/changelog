@@ -1,3 +1,34 @@
+octave (3.8.0-1) experimental; urgency=medium
+
+  [ Sébastien Villemot ]
+  * Imported Upstream version 3.8.0
+    + octave-gui is no longer shipped in /usr/bin.
+  * Run testsuite within Xvfb, to avoid failures due to lack of DISPLAY.
+  * dblquad-s390x.diff: new patch, fixes FTBFS on s390x.
+  * Indicate that octave breaks liboctave1.
+    A package compiled against liboctave1 can not be used with the octave 3.8
+    interpreter.
+  * Disable JIT on armel, armhf, mips, mipsel, powerpc. Should fix FTBFS
+    on these archs.
+
+  [ Mike Miller ]
+  * debian_missing_handler.m: Fix liboctave-dev package name.
+  * Build-depend on javahelper, use to configure default Java paths.
+  * doc-compressed-info.diff: Add patch from upstream.
+    Fixes the doc command to work correctly with compressed info files.
+  * kfreebsd_tcgetattr.diff: new patch, fixes FTBFS on kFreeBSD.
+  * hurd_path_max.diff: new patch, fixes FTBFS on Hurd.
+
+  [ Rafael Laboissiere ]
+  * Add Lintian override file for dh-exec-subst-unknown-variable warning
+  * Add manpages for octave-cli and octave-gui.
+    Acutally, no new manpages are created.  Instead, the manpage for
+    octave is changed through the patch gui-and-cli-manpages.diff to
+    mention the command variants, and new symlinks octave-cli.1 and
+    octave-gui.1 are created.
+
+ -- Sébastien Villemot <sebastien@debian.org>  Wed, 08 Jan 2014 13:45:32 +0100
+
 octave (3.8.0~rc2-1) experimental; urgency=medium
 
   * Imported Upstream version 3.8.0~rc2
