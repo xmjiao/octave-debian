@@ -15,7 +15,7 @@ export DEB_VERSION_UPSTREAM
 # Configure default Java paths using javahelper except on some archs.
 # This arch list must be kept in sync with the arch list qualifying
 # default-{jdk,jre} in debian/control.
-NO_JDK_ARCHS := hurd-i386
+NO_JDK_ARCHS := hurd-i386 mipsel
 ifneq (,$(findstring $(DEB_HOST_ARCH),$(NO_JDK_ARCHS)))
 WITH_JAVA_FLAGS := --disable-java
 else

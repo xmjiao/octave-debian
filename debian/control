@@ -15,7 +15,7 @@ Build-Depends: gfortran, debhelper (>= 9), automake, dh-autoreconf, texinfo,
  libgraphicsmagick++1-dev, libftgl-dev, libfontconfig1-dev,
  libqrupdate-dev, libarpack2-dev (>= 2.1+parpack96.dfsg-2), dh-exec,
  dpkg-dev (>= 1.16.1), llvm-dev [!armel !armhf !mips !mipsel !powerpc],
- default-jdk [!hurd-i386], libqscintilla2-dev, libxft-dev, javahelper
+ default-jdk [!hurd-i386 !mipsel], libqscintilla2-dev, libxft-dev, javahelper
 Standards-Version: 3.9.5
 Homepage: http://www.octave.org/
 Vcs-Git: git://anonscm.debian.org/pkg-octave/octave.git
@@ -24,7 +24,7 @@ Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-octave/octave.git
 Package: octave
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, texinfo, octave-common (= ${source:Version}),
-         liboctave2 (= ${binary:Version}), default-jre-headless [!hurd-i386]
+         liboctave2 (= ${binary:Version}), default-jre-headless [!hurd-i386 !mipsel]
 Recommends: gnuplot-x11 | gnuplot-qt, libatlas3-base | libopenblas-base,
  pstoedit
 Suggests: octave-info,
