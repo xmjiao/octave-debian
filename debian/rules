@@ -13,6 +13,8 @@ DEB_VERSION_UPSTREAM := $(subst ~rc,-rc,$(DEB_VERSION_UPSTREAM))
 export DEB_VERSION_UPSTREAM
 
 # Configure default Java paths using javahelper except on some archs.
+# On hurd-i386 octave FTBFS against gcj-4.8, which is default-jdk.
+# On mipsel java unit tests calling openjdk-7 cause a bus error at runtime.
 # This arch list must be kept in sync with the arch list qualifying
 # default-{jdk,jre} in debian/control.
 NO_JDK_ARCHS := hurd-i386 mipsel
@@ -24,8 +26,9 @@ JAVA_LIBDIR := $(firstword $(JVM_CLIENT_DIR) $(JVM_SERVER_DIR))
 WITH_JAVA_FLAGS := --with-java-homedir=$(JAVA_HOME) --with-java-libdir=$(JAVA_LIBDIR)
 endif
 
-# Disable the JIT on some archs. This arch list must be kept in sync with the
-# arch list qualifying llvm-dev in debian/control.
+# Disable the JIT on some archs. JIT unit tests with LLVM currently segfault
+# on all non-x86 archs. This arch list must be kept in sync with the arch
+# list qualifying llvm-dev in debian/control.
 include /usr/share/dpkg/architecture.mk
 NO_JIT_ARCHS := armel armhf mips mipsel powerpc
 ifneq (,$(findstring $(DEB_HOST_ARCH),$(NO_JIT_ARCHS)))
