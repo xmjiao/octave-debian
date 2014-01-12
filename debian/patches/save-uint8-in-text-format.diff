@@ -2,7 +2,6 @@ Description: Fix saving int8 and uint8 in plain text format
 Origin: upstream, http://hg.savannah.gnu.org/hgweb/octave/raw-rev/284e5c87f27b
 Bug: http://savannah.gnu.org/bugs/?40980
 Bug-Debian: http://bugs.debian.org/732659
-Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
 Reviewed-By: Rafael Laboissiere <rafael@laboissiere.net>
 Last-Update: 2014-01-11
 
