@@ -1,8 +1,9 @@
 Description: Detect and use appropriate terminal attribute functions
  Based on kfreebsd_support.diff in the kde4libs Debian package.
 Author: Mike Miller <mtmiller@debian.org>
-Forwarded: no
-Last-Updated: 2014-01-07
+Origin: http://hg.savannah.gnu.org/hgweb/octave/raw-rev/d033b08e9b0e
+Bug: https://savannah.gnu.org/bugs/?41212
+Last-Updated: 2014-01-12
 
 --- a/configure.ac
 +++ b/configure.ac
