@@ -27,7 +27,7 @@ WITH_JAVA_FLAGS := --with-java-homedir=$(JAVA_HOME) --with-java-libdir=$(JAVA_LI
 endif
 
 # Disable the JIT on some archs. JIT unit tests with LLVM currently segfault
-# on all non-x86 archs. This arch list must be kept in sync with the arch
+# on those. This arch list must be kept in sync with the arch
 # list qualifying llvm-dev in debian/control.
 include /usr/share/dpkg/architecture.mk
 NO_JIT_ARCHS := armel armhf mips mipsel powerpc
