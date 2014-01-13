@@ -1,7 +1,7 @@
 Description: Set a fallback value for PATH_MAX if not defined
  Based on kdelibs upstream git commit a8057419.
 Author: Mike Miller <mtmiller@debian.org>
-Origin: http://hg.savannah.gnu.org/hgweb/octave/raw-rev/91805d8ab62f
+Applied-Upstream: http://hg.savannah.gnu.org/hgweb/octave/raw-rev/91805d8ab62f
 Bug: https://savannah.gnu.org/bugs/?41212
 Last-Updated: 2014-01-12
 
