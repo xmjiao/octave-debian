@@ -1,3 +1,18 @@
+octave (3.8.0-2) experimental; urgency=medium
+
+  [ Mike Miller ]
+  * Disable Java on mipsel, using openjdk causes bus error.
+  * Disable Java on hurd-i386.
+
+  [ Rafael Laboissiere ]
+  * save-uint8-in-text-format.diff: new patch, fixes saving int8 and uint8 in
+    plain text format (Closes: #732659)
+  * Make octave break an explicit list of packages instead of liboctave1.
+    Adding a Breaks on liboctave1 breaks upgrades from octave 3.6, because of
+    #671711.
+
+ -- Sébastien Villemot <sebastien@debian.org>  Wed, 15 Jan 2014 20:49:20 +0100
+
 octave (3.8.0-1) experimental; urgency=medium
 
   [ Sébastien Villemot ]
