@@ -72,7 +72,7 @@ Breaks: libsbml5-octave (<= 5.8.0-2),
   octave-struct (<= 1.0.10-1),
   octave-sundials (<= 2.5.0-3),
   octave-symbolic (<= 1.1.0-2),
-  octave-tsa (<= 4.2.4+dfsg-1),
+  octave-tsa (<= 4.2.7-1),
   octave-vlfeat (<= 0.9.17+dfsg0-6),
   sdpam (<= 7.3.9+dfsg-1)
 Description: GNU Octave language for numerical computations
