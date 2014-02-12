@@ -32,12 +32,9 @@ If you want to install packages from the Octave-Forge project
 (http://octave.sourceforge.net/), the recommended way is to use the packages
 distributed by Debian. Most Octave-Forge packages are available in Debian under
 the name octave-<pkgname> (for example, the statistics package from
-Octave-Forge is available as the octave-statistics package in Debian).
-
-The use of the `pkg' command at the Octave prompt is therefore discouraged and
-not supported by Debian. If you still want to install packages using the `pkg'
-command and you know what you are doing, you should comment out the `pkg
-prefix' line in /etc/octave.conf.
+Octave-Forge is available as the octave-statistics package in Debian). The use
+of the `pkg' command at the Octave prompt is therefore discouraged and not
+supported by Debian.
 
 
 Why is mkoctfile not in octave, but in liboctave-dev?
@@ -51,5 +48,5 @@ these packages, so one can use mkoctfile then.
 pkg.m is not part of liboctave-dev as it's used to find already installed
 packages (via /etc/octave.conf).
 
- -- Sébastien Villemot <sebastien@debian.org>, Fri, 20 Dec 2013 20:39:48 +0100
+ -- Sébastien Villemot <sebastien@debian.org>, Wed, 12 Feb 2014 18:52:32 +0100
 
