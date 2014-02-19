@@ -1,3 +1,10 @@
+octave (3.8.0-3) unstable; urgency=medium
+
+  * Upload to unstable.
+  * No longer set pkg prefix in /etc/octave.conf. (Closes: #536839)
+
+ -- Sébastien Villemot <sebastien@debian.org>  Wed, 19 Feb 2014 22:17:24 +0100
+
 octave (3.8.0-2) experimental; urgency=medium
 
   [ Mike Miller ]
