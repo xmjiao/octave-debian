@@ -13,11 +13,12 @@ DEB_VERSION_UPSTREAM := $(subst ~rc,-rc,$(DEB_VERSION_UPSTREAM))
 export DEB_VERSION_UPSTREAM
 
 # Configure default Java paths using javahelper except on some archs.
-# On hurd-i386 octave FTBFS against gcj-4.8, which is default-jdk.
+# hurd-i386, kfreebsd-* and sparc have gcj as default, which cause either
+# a compilation failure (hurd-i386) or a test failure (other archs).
 # On mipsel java unit tests calling openjdk-7 cause a bus error at runtime.
 # This arch list must be kept in sync with the arch list qualifying
 # default-{jdk,jre} in debian/control.
-NO_JDK_ARCHS := hurd-i386 mipsel
+NO_JDK_ARCHS := hurd-i386 kfreebsd-amd64 kfreebsd-i386 mipsel sparc
 ifneq (,$(findstring $(DEB_HOST_ARCH),$(NO_JDK_ARCHS)))
 WITH_JAVA_FLAGS := --disable-java
 else
