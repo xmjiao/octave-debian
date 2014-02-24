@@ -18,8 +18,9 @@ export DEB_VERSION_UPSTREAM
 # On mipsel java unit tests calling openjdk-7 cause a bus error at runtime.
 # This arch list must be kept in sync with the arch list qualifying
 # default-{jdk,jre} in debian/control.
+include /usr/share/dpkg/architecture.mk
 NO_JDK_ARCHS := hurd-i386 kfreebsd-amd64 kfreebsd-i386 mipsel sparc
-ifneq (,$(findstring $(DEB_HOST_ARCH),$(NO_JDK_ARCHS)))
+ifneq (,$(filter $(DEB_HOST_ARCH),$(NO_JDK_ARCHS)))
 WITH_JAVA_FLAGS := --disable-java
 else
 include /usr/share/javahelper/java-vars.mk
@@ -30,9 +31,8 @@ endif
 # Disable the JIT on some archs. JIT unit tests with LLVM currently segfault
 # on those. This arch list must be kept in sync with the arch
 # list qualifying llvm-dev in debian/control.
-include /usr/share/dpkg/architecture.mk
 NO_JIT_ARCHS := armel armhf mips mipsel powerpc
-ifneq (,$(findstring $(DEB_HOST_ARCH),$(NO_JIT_ARCHS)))
+ifneq (,$(filter $(DEB_HOST_ARCH),$(NO_JIT_ARCHS)))
 DISABLE_JIT_FLAG := --disable-jit
 endif
 
