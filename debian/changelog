@@ -1,3 +1,10 @@
+octave (3.8.0-5) unstable; urgency=medium
+
+  * Re-enable java on amd64, i386 and mips (was disabled by mistake).
+  * Ensure that octave-common always contains octave.jar.
+
+ -- Sébastien Villemot <sebastien@debian.org>  Tue, 25 Feb 2014 20:41:26 +0100
+
 octave (3.8.0-4) unstable; urgency=medium
 
   * Disable java on kfreebsd-* and sparc. Fixes FTBFS on those archs.
