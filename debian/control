@@ -58,7 +58,7 @@ Breaks: libsbml5-octave (<= 5.8.0-2),
   octave-octcdf (<= 1.1.6-1),
   octave-octgpr (<= 1.2.0-3),
   octave-odepkg (<= 0.8.4-1),
-  octave-openmpi-ext (<= 1.1.1-1),
+  octave-openmpi-ext (<= 1.1.0-2),
   octave-optim (<= 1.2.2-2),
   octave-optiminterp (<= 0.3.4-1),
   octave-parallel (<= 2.2.0-1),
@@ -76,7 +76,8 @@ Breaks: libsbml5-octave (<= 5.8.0-2),
   octave-symbolic (<= 1.1.0-2),
   octave-tsa (<= 4.2.7-1),
   octave-vlfeat (<= 0.9.17+dfsg0-6),
-  sdpam (<= 7.3.9+dfsg-1)
+  sdpam (<= 7.3.9+dfsg-1),
+  dynare (<= 4.4.1-1)
 Description: GNU Octave language for numerical computations
  Octave is a (mostly Matlab (R) compatible) high-level language, primarily
  intended for numerical computations. It provides a convenient command-line
