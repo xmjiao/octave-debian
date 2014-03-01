@@ -7,9 +7,6 @@ set -e
 #DEBHELPER#
 
 rebuild_pkg_database () {
-    # Workaround for #681064 (can be removed after Wheezy)
-    mkdir -p /usr/share/octave/packages
-
     octave --silent --no-history --no-init-file --no-window-system	\
 	   --eval "pkg ('rebuild');"
 }
