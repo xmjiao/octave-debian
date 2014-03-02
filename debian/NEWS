@@ -2,8 +2,8 @@ octave (3.8.0~rc1-1) experimental; urgency=medium
 
   * Starting with this version, the octave package now contains an
     experimental graphical user interface (GUI) based on the Qt toolkit.
-    That GUI can be started by running the `octave-gui' executable, or by
-    giving the `--force-gui' option to the octave binary.
+    That GUI can be started by giving the `--force-gui' option to the
+    octave binary.
 
   * For those who want to keep the lower memory footprint of a pure text
     interface, there is the `octave-cli' executable which is not linked
