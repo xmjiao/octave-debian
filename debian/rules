@@ -30,10 +30,10 @@ JAVA_LIBDIR := $(firstword $(JVM_CLIENT_DIR) $(JVM_SERVER_DIR))
 WITH_JAVA_FLAGS := --with-java-homedir=$(JAVA_HOME) --with-java-libdir=$(JAVA_LIBDIR)
 endif
 
-# Disable the JIT on some archs. JIT unit tests with LLVM currently segfault
-# on those. This arch list must be kept in sync with the arch
-# list qualifying llvm-dev in debian/control.
-NO_JIT_ARCHS := armel armhf mips mipsel powerpc
+# Disable the JIT on some archs. JIT unit tests with LLVM currently segfault on
+# those (except for hurd-i386 where LLVM is not available). This arch list must
+# be kept in sync with the arch list qualifying llvm-dev in debian/control.
+NO_JIT_ARCHS := armel armhf hurd-i386 mips mipsel powerpc
 ifneq (,$(filter $(DEB_HOST_ARCH),$(NO_JIT_ARCHS)))
 DISABLE_JIT_FLAG := --disable-jit
 endif
