@@ -1226,45 +1226,81 @@ errorbar (x, sin (x), ym, yp);
 </div>
 <div class="float-caption"><p><strong>Figure 15.3: </strong>Errorbar plot.</p></div></div>
 <a name="XREFerrorbar"></a><dl>
-<dt><a name="index-errorbar"></a>Function File: <em></em> <strong>errorbar</strong> <em>(<var>args</var>)</em></dt>
-<dt><a name="index-errorbar-1"></a>Function File: <em></em> <strong>errorbar</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
-<dt><a name="index-errorbar-2"></a>Function File: <em><var>h</var> =</em> <strong>errorbar</strong> <em>(&hellip;)</em></dt>
-<dd><p>Create a 2-D with errorbars.
+<dt><a name="index-errorbar"></a>Function File: <em></em> <strong>errorbar</strong> <em>(<var>y</var>, <var>ey</var>)</em></dt>
+<dt><a name="index-errorbar-1"></a>Function File: <em></em> <strong>errorbar</strong> <em>(<var>y</var>, &hellip;, <var>fmt</var>)</em></dt>
+<dt><a name="index-errorbar-2"></a>Function File: <em></em> <strong>errorbar</strong> <em>(<var>x</var>, <var>y</var>, <var>ey</var>)</em></dt>
+<dt><a name="index-errorbar-3"></a>Function File: <em></em> <strong>errorbar</strong> <em>(<var>x</var>, <var>y</var>, <var>err</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-errorbar-4"></a>Function File: <em></em> <strong>errorbar</strong> <em>(<var>x</var>, <var>y</var>, <var>lerr</var>, <var>uerr</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-errorbar-5"></a>Function File: <em></em> <strong>errorbar</strong> <em>(<var>x</var>, <var>y</var>, <var>ex</var>, <var>ey</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-errorbar-6"></a>Function File: <em></em> <strong>errorbar</strong> <em>(<var>x</var>, <var>y</var>, <var>lx</var>, <var>ux</var>, <var>ly</var>, <var>uy</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-errorbar-7"></a>Function File: <em></em> <strong>errorbar</strong> <em>(<var>x1</var>, <var>y1</var>, &hellip;, <var>fmt</var>, <var>xn</var>, <var>yn</var>, &hellip;)</em></dt>
+<dt><a name="index-errorbar-8"></a>Function File: <em></em> <strong>errorbar</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-errorbar-9"></a>Function File: <em><var>h</var> =</em> <strong>errorbar</strong> <em>(&hellip;)</em></dt>
+<dd><p>Create a 2-D plot with errorbars.
 </p>
-<p>Many different combinations of arguments are possible.  The simplest
-form is
+<p>Many different combinations of arguments are possible.  The simplest form is
 </p>
 <div class="example">
 <pre class="example">errorbar (<var>y</var>, <var>ey</var>)
 </pre></div>
 
-<p>where the first argument is taken as the set of <var>y</var> coordinates
-and the second argument <var>ey</var> is taken as the errors of the
-<var>y</var> values.  <var>x</var> coordinates are taken to be the indices
-of the elements, starting with 1.
+<p>where the first argument is taken as the set of <var>y</var> coordinates, the
+second argument <var>ey</var> are the errors around the <var>y</var> values, and the
+<var>x</var> coordinates are taken to be the indices of the elements
+(<code>1:numel (<var>y</var>)</code>).
 </p>
-<p>If more than two arguments are given, they are interpreted as
+<p>The general form of the function is
 </p>
 <div class="example">
-<pre class="example">errorbar (<var>x</var>, <var>y</var>, &hellip;, <var>fmt</var>, &hellip;)
+<pre class="example">errorbar (<var>x</var>, <var>y</var>, <var>err1</var>, &hellip;, <var>fmt</var>, &hellip;)
 </pre></div>
 
-<p>where after <var>x</var> and <var>y</var> there can be up to four error
-parameters such as <var>ey</var>, <var>ex</var>, <var>ly</var>, <var>uy</var>, etc.,
-depending on the plot type.  Any number of argument sets may appear,
-as long as they are separated with a format string <var>fmt</var>.
+<p>After the <var>x</var> and <var>y</var> arguments there can be 1, 2, or 4
+parameters specifying the error values depending on the nature of the error
+values and the plot format <var>fmt</var>.
 </p>
-<p>If <var>y</var> is a matrix, <var>x</var> and error parameters must also be matrices
-having same dimensions.  The columns of <var>y</var> are plotted versus the
-corresponding columns of <var>x</var> and errorbars are drawn from
-the corresponding columns of error parameters.
+<dl compact="compact">
+<dt><var>err</var> (scalar)</dt>
+<dd><p>When the error is a scalar all points share the same error value.
+The errorbars are symmetric and are drawn from <var>data</var>-<var>err</var> to
+<var>data</var>+<var>err</var>.
+The <var>fmt</var> argument determines whether <var>err</var> is in the x-direction, 
+y-direction (default), or both.
 </p>
-<p>If <var>fmt</var> is missing, yerrorbars (&quot;~&quot;) plot style is assumed.
+</dd>
+<dt><var>err</var> (vector or matrix)</dt>
+<dd><p>Each data point has a particular error value.
+The errorbars are symmetric and are drawn from <var>data</var>(n)-<var>err</var>(n) to
+<var>data</var>(n)+<var>err</var>(n).
 </p>
-<p>If the <var>fmt</var> argument is supplied, it is interpreted as in
-normal plots.  In addition, <var>fmt</var> may include an errorbar style
-which must precede the line and marker format.  The following plot
-styles are supported by errorbar:
+</dd>
+<dt><var>lerr</var>, <var>uerr</var> (scalar)</dt>
+<dd><p>The errors have a single low-side value and a single upper-side value.
+The errorbars are not symmetric and are drawn from <var>data</var>-<var>lerr</var> to
+<var>data</var>+<var>uerr</var>.
+</p>
+</dd>
+<dt><var>lerr</var>, <var>uerr</var> (vector or matrix)</dt>
+<dd><p>Each data point has a low-side error and an upper-side error.
+The errorbars are not symmetric and are drawn from
+<var>data</var>(n)-<var>lerr</var>(n) to <var>data</var>(n)+<var>uerr</var>(n).
+</p></dd>
+</dl>
+
+<p>Any number of data sets (<var>x1</var>,<var>y1</var>, <var>x2</var>,<var>y2</var>, &hellip;) may
+appear as long as they are separated by a format string <var>fmt</var>.
+</p>
+<p>If <var>y</var> is a matrix, <var>x</var> and the error parameters must also be
+matrices having the same dimensions.  The columns of <var>y</var> are plotted
+versus the corresponding columns of <var>x</var> and errorbars are taken from
+the corresponding columns of the error parameters.
+</p>
+<p>If <var>fmt</var> is missing, the yerrorbars (&quot;~&quot;) plot style is assumed.
+</p>
+<p>If the <var>fmt</var> argument is supplied then it is interpreted, as in normal
+plots, to specify the line style, marker, and color.  In addition,
+<var>fmt</var> may include an errorbar style which <strong>must precede</strong> the
+ordinary format codes.  The following errorbar styles are supported:
 </p>
 <dl compact="compact">
 <dt>&lsquo;<samp>~</samp>&rsquo;</dt>
@@ -1279,16 +1315,16 @@ styles are supported by errorbar:
 <dd><p>Set xyerrorbars plot style.
 </p>
 </dd>
-<dt>&lsquo;<samp>#</samp>&rsquo;</dt>
-<dd><p>Set boxes plot style.
+<dt>&lsquo;<samp>#~</samp>&rsquo;</dt>
+<dd><p>Set yboxes plot style.
 </p>
 </dd>
-<dt>&lsquo;<samp>#~</samp>&rsquo;</dt>
-<dd><p>Set boxerrorbars plot style.
+<dt>&lsquo;<samp>#</samp>&rsquo;</dt>
+<dd><p>Set xboxes plot style.
 </p>
 </dd>
 <dt>&lsquo;<samp>#~&gt;</samp>&rsquo;</dt>
-<dd><p>Set boxxyerrorbars plot style.
+<dd><p>Set xyboxes plot style.
 </p></dd>
 </dl>
 
@@ -1298,14 +1334,23 @@ rather than the current axes returned by <code>gca</code>.
 <p>The optional return value <var>h</var> is a handle to the hggroup object
 representing the data plot and errorbars.
 </p>
+<p>Note: For compatibility with <small>MATLAB</small> a line is drawn through all data
+points.  However, most scientific errorbar plots are a scatter plot of
+points with errorbars.  To accomplish this, add a marker style to the
+<var>fmt</var> argument such as <code>&quot;.&quot;</code>.  Alternatively, remove the line
+by modifying the returned graphic handle with
+<code>set (h, &quot;linestyle&quot;, &quot;none&quot;)</code>.
+</p>
 <p>Examples:
 </p>
 <div class="example">
-<pre class="example">errorbar (<var>x</var>, <var>y</var>, <var>ex</var>, &quot;&gt;&quot;)
+<pre class="example">errorbar (<var>x</var>, <var>y</var>, <var>ex</var>, &quot;&gt;.r&quot;)
 </pre></div>
 
 <p>produces an xerrorbar plot of <var>y</var> versus <var>x</var> with <var>x</var>
-errorbars drawn from <var>x</var>-<var>ex</var> to <var>x</var>+<var>ex</var>.
+errorbars drawn from <var>x</var>-<var>ex</var> to <var>x</var>+<var>ex</var>.  The marker
+<code>&quot;.&quot;</code> is used so no connecting line is drawn and the errorbars
+appear in red.
 </p>
 <div class="example">
 <pre class="example">errorbar (<var>x</var>, <var>y1</var>, <var>ey</var>, &quot;~&quot;,
@@ -1331,9 +1376,16 @@ and <var>y</var> errorbars from <var>y</var>-<var>ly</var> to <var>y</var>+<var>
 
 
 <a name="XREFsemilogxerr"></a><dl>
-<dt><a name="index-semilogxerr"></a>Function File: <em></em> <strong>semilogxerr</strong> <em>(<var>args</var>)</em></dt>
-<dt><a name="index-semilogxerr-1"></a>Function File: <em></em> <strong>semilogxerr</strong> <em>(<var>hax</var>, <var>args</var>)</em></dt>
-<dt><a name="index-semilogxerr-2"></a>Function File: <em><var>h</var> =</em> <strong>semilogxerr</strong> <em>(<var>args</var>)</em></dt>
+<dt><a name="index-semilogxerr"></a>Function File: <em></em> <strong>semilogxerr</strong> <em>(<var>y</var>, <var>ey</var>)</em></dt>
+<dt><a name="index-semilogxerr-1"></a>Function File: <em></em> <strong>semilogxerr</strong> <em>(<var>y</var>, &hellip;, <var>fmt</var>)</em></dt>
+<dt><a name="index-semilogxerr-2"></a>Function File: <em></em> <strong>semilogxerr</strong> <em>(<var>x</var>, <var>y</var>, <var>ey</var>)</em></dt>
+<dt><a name="index-semilogxerr-3"></a>Function File: <em></em> <strong>semilogxerr</strong> <em>(<var>x</var>, <var>y</var>, <var>err</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-semilogxerr-4"></a>Function File: <em></em> <strong>semilogxerr</strong> <em>(<var>x</var>, <var>y</var>, <var>lerr</var>, <var>uerr</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-semilogxerr-5"></a>Function File: <em></em> <strong>semilogxerr</strong> <em>(<var>x</var>, <var>y</var>, <var>ex</var>, <var>ey</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-semilogxerr-6"></a>Function File: <em></em> <strong>semilogxerr</strong> <em>(<var>x</var>, <var>y</var>, <var>lx</var>, <var>ux</var>, <var>ly</var>, <var>uy</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-semilogxerr-7"></a>Function File: <em></em> <strong>semilogxerr</strong> <em>(<var>x1</var>, <var>y1</var>, &hellip;, <var>fmt</var>, <var>xn</var>, <var>yn</var>, &hellip;)</em></dt>
+<dt><a name="index-semilogxerr-8"></a>Function File: <em></em> <strong>semilogxerr</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-semilogxerr-9"></a>Function File: <em><var>h</var> =</em> <strong>semilogxerr</strong> <em>(&hellip;)</em></dt>
 <dd><p>Produce 2-D plots using a logarithmic scale for the x-axis and
 errorbars at each data point.
 </p>
@@ -1358,9 +1410,16 @@ rather than the current axes returned by <code>gca</code>.
 
 
 <a name="XREFsemilogyerr"></a><dl>
-<dt><a name="index-semilogyerr"></a>Function File: <em></em> <strong>semilogyerr</strong> <em>(<var>args</var>)</em></dt>
-<dt><a name="index-semilogyerr-1"></a>Function File: <em></em> <strong>semilogyerr</strong> <em>(<var>hax</var>, <var>args</var>)</em></dt>
-<dt><a name="index-semilogyerr-2"></a>Function File: <em><var>h</var> =</em> <strong>semilogyerr</strong> <em>(<var>args</var>)</em></dt>
+<dt><a name="index-semilogyerr"></a>Function File: <em></em> <strong>semilogyerr</strong> <em>(<var>y</var>, <var>ey</var>)</em></dt>
+<dt><a name="index-semilogyerr-1"></a>Function File: <em></em> <strong>semilogyerr</strong> <em>(<var>y</var>, &hellip;, <var>fmt</var>)</em></dt>
+<dt><a name="index-semilogyerr-2"></a>Function File: <em></em> <strong>semilogyerr</strong> <em>(<var>x</var>, <var>y</var>, <var>ey</var>)</em></dt>
+<dt><a name="index-semilogyerr-3"></a>Function File: <em></em> <strong>semilogyerr</strong> <em>(<var>x</var>, <var>y</var>, <var>err</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-semilogyerr-4"></a>Function File: <em></em> <strong>semilogyerr</strong> <em>(<var>x</var>, <var>y</var>, <var>lerr</var>, <var>uerr</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-semilogyerr-5"></a>Function File: <em></em> <strong>semilogyerr</strong> <em>(<var>x</var>, <var>y</var>, <var>ex</var>, <var>ey</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-semilogyerr-6"></a>Function File: <em></em> <strong>semilogyerr</strong> <em>(<var>x</var>, <var>y</var>, <var>lx</var>, <var>ux</var>, <var>ly</var>, <var>uy</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-semilogyerr-7"></a>Function File: <em></em> <strong>semilogyerr</strong> <em>(<var>x1</var>, <var>y1</var>, &hellip;, <var>fmt</var>, <var>xn</var>, <var>yn</var>, &hellip;)</em></dt>
+<dt><a name="index-semilogyerr-8"></a>Function File: <em></em> <strong>semilogyerr</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-semilogyerr-9"></a>Function File: <em><var>h</var> =</em> <strong>semilogyerr</strong> <em>(&hellip;)</em></dt>
 <dd><p>Produce 2-D plots using a logarithmic scale for the y-axis and
 errorbars at each data point.
 </p>
@@ -1385,9 +1444,16 @@ rather than the current axes returned by <code>gca</code>.
 
 
 <a name="XREFloglogerr"></a><dl>
-<dt><a name="index-loglogerr"></a>Function File: <em></em> <strong>loglogerr</strong> <em>(<var>args</var>)</em></dt>
-<dt><a name="index-loglogerr-1"></a>Function File: <em></em> <strong>loglogerr</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
-<dt><a name="index-loglogerr-2"></a>Function File: <em><var>h</var> =</em> <strong>loglogerr</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-loglogerr"></a>Function File: <em></em> <strong>loglogerr</strong> <em>(<var>y</var>, <var>ey</var>)</em></dt>
+<dt><a name="index-loglogerr-1"></a>Function File: <em></em> <strong>loglogerr</strong> <em>(<var>y</var>, &hellip;, <var>fmt</var>)</em></dt>
+<dt><a name="index-loglogerr-2"></a>Function File: <em></em> <strong>loglogerr</strong> <em>(<var>x</var>, <var>y</var>, <var>ey</var>)</em></dt>
+<dt><a name="index-loglogerr-3"></a>Function File: <em></em> <strong>loglogerr</strong> <em>(<var>x</var>, <var>y</var>, <var>err</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-loglogerr-4"></a>Function File: <em></em> <strong>loglogerr</strong> <em>(<var>x</var>, <var>y</var>, <var>lerr</var>, <var>uerr</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-loglogerr-5"></a>Function File: <em></em> <strong>loglogerr</strong> <em>(<var>x</var>, <var>y</var>, <var>ex</var>, <var>ey</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-loglogerr-6"></a>Function File: <em></em> <strong>loglogerr</strong> <em>(<var>x</var>, <var>y</var>, <var>lx</var>, <var>ux</var>, <var>ly</var>, <var>uy</var>, <var>fmt</var>)</em></dt>
+<dt><a name="index-loglogerr-7"></a>Function File: <em></em> <strong>loglogerr</strong> <em>(<var>x1</var>, <var>y1</var>, &hellip;, <var>fmt</var>, <var>xn</var>, <var>yn</var>, &hellip;)</em></dt>
+<dt><a name="index-loglogerr-8"></a>Function File: <em></em> <strong>loglogerr</strong> <em>(<var>hax</var>, &hellip;)</em></dt>
+<dt><a name="index-loglogerr-9"></a>Function File: <em><var>h</var> =</em> <strong>loglogerr</strong> <em>(&hellip;)</em></dt>
 <dd><p>Produce 2-D plots on a double logarithm axis with errorbars.
 </p>
 <p>Many different combinations of arguments are possible.  The most common

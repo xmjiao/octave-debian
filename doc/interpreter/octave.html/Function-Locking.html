@@ -67,16 +67,18 @@ initialization.
 <p>As an example,
 </p>
 <div class="example">
-<pre class="example">mlock (&quot;my_function&quot;);
+<pre class="example">function my_function ()
+  mlock ();
+  &hellip;
 </pre></div>
 
-<p>prevents <code>my_function</code> from being removed from memory, even if
-<code>clear</code> is called.  It is possible to determine if a function is
-locked into memory with the <code>mislocked</code>, and to unlock a function
-with <code>munlock</code>, which the following illustrates.
+<p>prevents <code>my_function</code> from being removed from memory after it is
+called, even if <code>clear</code> is called.  It is possible to determine if
+a function is locked into memory with the <code>mislocked</code>, and to unlock
+a function with <code>munlock</code>, which the following illustrates.
 </p>
 <div class="example">
-<pre class="example">mlock (&quot;my_function&quot;);
+<pre class="example">my_function ();
 mislocked (&quot;my_function&quot;)
 &rArr; ans = 1
 munlock (&quot;my_function&quot;);
@@ -89,11 +91,11 @@ being removed from memory, as the following example shows:
 </p>
 <div class="example">
 <pre class="example">function count_calls ()
+  mlock ();
   persistent calls = 0;
   printf (&quot;'count_calls' has been called %d times\n&quot;,
           ++calls);
 endfunction
-mlock (&quot;count_calls&quot;);
 
 count_calls ();
 -| 'count_calls' has been called 1 times
@@ -101,19 +103,6 @@ count_calls ();
 clear count_calls
 count_calls ();
 -| 'count_calls' has been called 2 times
-</pre></div>
-
-<p>It is, however, often inconvenient to lock a function from the prompt,
-so it is also possible to lock a function from within its body.  This
-is simply done by calling <code>mlock</code> from within the function.
-</p>
-<div class="example">
-<pre class="example">function count_calls ()
-  mlock ();
-  persistent calls = 0;
-  printf (&quot;'count_calls' has been called %d times\n&quot;,
-          ++calls);
-endfunction
 </pre></div>
 
 <p><code>mlock</code> might equally be used to prevent changes to a function from having

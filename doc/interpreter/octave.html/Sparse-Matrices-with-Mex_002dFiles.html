@@ -223,6 +223,16 @@ mexFunction (int nlhs, mxArray *plhs[],
 </pre><pre class="example">
 </pre></div>
 
+<p>A sample usage of <code>mysparse</code> is
+</p>
+<div class="example">
+<pre class="example">sm = sparse ([1, 0; 0, pi]);
+mysparse (sm)
+&rArr;
+Matrix is 2-by-2 real sparse matrix with 2 elements
+last non-zero element (2, 2) = 3.14159
+</pre></div>
+
 <hr>
 <div class="header">
 <p>

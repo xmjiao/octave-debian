@@ -41,6 +41,7 @@ along with Octave; see the file COPYING.  If not, see
 
 #include "octave-link.h"
 #include "utils.h"
+#include "main-window.h"
 
 file_editor::file_editor (QWidget *p)
   : file_editor_interface (p)
@@ -264,6 +265,23 @@ file_editor::call_custom_editor (const QString& file_name, int line)
   return false;
 }
 
+bool
+file_editor::is_editor_console_tabbed ()
+{
+  main_window *w = static_cast<main_window *>(main_win ());
+  QList<QDockWidget *> w_list = w->tabifiedDockWidgets (this);
+  QDockWidget *console =
+    static_cast<QDockWidget *> (w->get_dock_widget_list ().at (0));
+
+  for (int i = 0; i < w_list.count (); i++)
+    {
+      if (w_list.at (i) == console)
+        return true;
+    }
+
+  return false;
+}
+
 void
 file_editor::request_open_file (const QString& openFileName, int line,
                                 bool debug_pointer,
@@ -302,8 +320,11 @@ file_editor::request_open_file (const QString& openFileName, int line,
                 emit fetab_do_breakpoint_marker (insert, tab, line);
             }
 
-          emit fetab_set_focus (tab);
-          set_focus ();
+          if (! ((breakpoint_marker || debug_pointer) && is_editor_console_tabbed ()))
+            {
+              emit fetab_set_focus (tab);
+              set_focus ();
+            }
         }
       else
         {
@@ -369,7 +390,7 @@ file_editor::request_open_file (const QString& openFileName, int line,
                                                     tr ("File\n%1\ndoes not exist. "
                                                         "Do you want to create it?").arg (openFileName),
                                                     QMessageBox::Yes
-                                                    | QMessageBox::No, this);
+                                                    | QMessageBox::No, 0);
 
                           msgBox->setAttribute (Qt::WA_DeleteOnClose);
                           answer = msgBox->exec ();
@@ -402,9 +423,12 @@ file_editor::request_open_file (const QString& openFileName, int line,
                 }
             }
 
-          // really show editor and the current editor tab
-          set_focus ();
-          emit file_loaded_signal ();
+          if (! ((breakpoint_marker || debug_pointer) && is_editor_console_tabbed ()))
+            {
+              // really show editor and the current editor tab
+              set_focus ();
+              emit file_loaded_signal ();
+            }
         }
     }
 }
@@ -471,7 +495,7 @@ file_editor::check_conflict_save (const QString& saveFileName,
       // Create a NonModal message about error.
       QMessageBox *msgBox
         = new QMessageBox (QMessageBox::Critical, tr ("Octave Editor"),
-                           tr ("The associated file editor tab has disappeared.  It was likely closed by some means."),
+                           tr ("The associated file editor tab has disappeared."),
                            QMessageBox::Ok, 0);
 
       msgBox->setWindowModality (Qt::NonModal);
@@ -875,17 +899,17 @@ file_editor::construct (void)
   QAction *new_action = new QAction (QIcon (":/actions/icons/filenew.png"),
                                      tr ("&New File"), _tool_bar);
 
-  QAction *open_action = new QAction (QIcon (":/actions/icons/fileopen.png"),
-                                      tr ("&Open File"), _tool_bar);
+  QAction *open_action = new QAction (QIcon (":/actions/icons/folder_documents.png"),
+                                      tr ("&Open File..."), _tool_bar);
 
   _save_action = new QAction (QIcon (":/actions/icons/filesave.png"),
                               tr ("&Save File"), _tool_bar);
 
   _save_as_action = new QAction (QIcon (":/actions/icons/filesaveas.png"),
-                                 tr ("Save File &As"), _tool_bar);
+                                 tr ("Save File &As..."), _tool_bar);
 
   _print_action = new QAction ( QIcon (":/actions/icons/fileprint.png"),
-                                tr ("Print"), _tool_bar);
+                                tr ("Print..."), _tool_bar);
 
   _undo_action = new QAction (QIcon (":/actions/icons/undo.png"),
                               tr ("&Undo"), _tool_bar);
@@ -933,13 +957,13 @@ file_editor::construct (void)
   _uncomment_selection_action
     = new QAction (tr ("&Uncomment"), _tool_bar);
 
-  _find_action = new QAction (QIcon (":/actions/icons/search.png"),
-                              tr ("&Find and Replace"), _tool_bar);
+  _find_action = new QAction (QIcon (":/actions/icons/find.png"),
+                              tr ("&Find and Replace..."), _tool_bar);
 
   _run_action = new QAction (QIcon (":/actions/icons/artsbuilderexecute.png"),
                              tr ("Save File and Run"), _tool_bar);
 
-  _goto_line_action = new QAction (tr ("Go&to Line"), _tool_bar);
+  _goto_line_action = new QAction (tr ("Go &to Line..."), _tool_bar);
 
   // the mru-list and an empty array of actions
   QSettings *settings = resource_manager::get_settings ();
@@ -999,7 +1023,7 @@ file_editor::construct (void)
     _mru_file_menu->addAction (_mru_file_actions[i]);
 
   fileMenu->addAction (new_action);
-  fileMenu->addAction (QIcon (), tr ("New &Function"),
+  fileMenu->addAction (QIcon (), tr ("New &Function..."),
                       this, SLOT (request_new_function (bool)));
   fileMenu->addAction (open_action);
   fileMenu->addMenu (_mru_file_menu);
@@ -1055,11 +1079,11 @@ file_editor::construct (void)
   editMenu->addSeparator ();
   _preferences_action =
     editMenu->addAction (QIcon (":/actions/icons/configure.png"),
-                         tr ("&Preferences"),
+                         tr ("&Preferences..."),
                          this, SLOT (request_preferences (bool)));
   _styles_preferences_action =
     editMenu->addAction (QIcon (":/actions/icons/configure.png"),
-                         tr ("&Styles Preferences"),
+                         tr ("&Styles Preferences..."),
                          this, SLOT (request_styles_preferences (bool)));
   _menu_bar->addMenu (editMenu);
 

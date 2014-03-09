@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 dnl
-dnl Copyright (C) 1993-2013 John W. Eaton
+dnl Copyright (C) 1993-2014 John W. Eaton
 ### 
 ### This file is part of Octave.
 ### 
@@ -19,19 +19,43 @@ dnl Copyright (C) 1993-2013 John W. Eaton
 ### <http://www.gnu.org/licenses/>.
 
 AC_PREREQ([2.62])
-AC_INIT([GNU Octave], [3.8.0], [http://octave.org/bugs.html], [octave])
+AC_INIT([GNU Octave], [3.8.1], [http://octave.org/bugs.html], [octave])
+
+dnl Note that the version number is duplicated here and in AC_INIT
+dnl because AC_INIT requires it to be static, not computed from
+dnl shell variables.
+OCTAVE_MAJOR_VERSION=3
+OCTAVE_MINOR_VERSION=8
+OCTAVE_PATCH_VERSION=1
 
 dnl PACKAGE_VERSION is set by the AC_INIT VERSION arg
 OCTAVE_VERSION="$PACKAGE_VERSION"
-OCTAVE_API_VERSION_NUMBER="49"
-OCTAVE_API_VERSION="api-v$OCTAVE_API_VERSION_NUMBER+"
-OCTAVE_RELEASE_DATE="2013-12-27"
-OCTAVE_COPYRIGHT="Copyright (C) 2013 John W. Eaton and others."
+
+OCTAVE_COPYRIGHT="Copyright (C) 2014 John W. Eaton and others."
+
+OCTAVE_RELEASE_DATE="2014-03-06"
+
+## The "API version" is used as a way of checking that interfaces in the
+## liboctave and libinterp libraries haven't changed in a backwardly
+## incompatible way when loading .oct files.  A better way to do that is
+## with library versioning, but not all systems support that.
+## NOTE: This macro will be removed in a future version of Octave.  If
+## you insist on checking for features using a version number, use the
+## OCTAVE_MAJOR_VERSION, OCTAVE_MINOR_VERSION, and
+## OCTAVE_PATCH_VERSION macros instead.
+## FIXME: Since we also set libtool versions for liboctave and
+## libinterp, perhaps we should be computing the "api version" from
+## those versions numbers in some way instead of setting it
+## independently here.
+OCTAVE_API_VERSION="api-v49+"
+
+AC_SUBST(OCTAVE_MAJOR_VERSION)
+AC_SUBST(OCTAVE_MINOR_VERSION)
+AC_SUBST(OCTAVE_PATCH_VERSION)
 AC_SUBST(OCTAVE_VERSION)
-AC_SUBST(OCTAVE_API_VERSION_NUMBER)
-AC_SUBST(OCTAVE_API_VERSION)
-AC_SUBST(OCTAVE_RELEASE_DATE)
 AC_SUBST(OCTAVE_COPYRIGHT)
+AC_SUBST(OCTAVE_RELEASE_DATE)
+AC_SUBST(OCTAVE_API_VERSION)
 
 dnl FIXME: We should auto-insert the Mercurial changeset ID into the
 dnl        AC_REVISION field whenever configure.ac is modified.
@@ -159,13 +183,13 @@ case $with_sepchar in
       mingw* | msdosmsvc)
         sepchar=';' ;;
     esac
-    ;;
+  ;;
   no)
     AC_MSG_ERROR([You are required to define a path separation character])
     ;;
   *)
     sepchar=$with_sepchar
-    ;;
+  ;;
 esac
 AC_SUBST(sepchar)
 AC_DEFINE_UNQUOTED(SEPCHAR, ['$sepchar'],
@@ -766,12 +790,12 @@ fi
 
  ### Check for the LLVM library
 
-build_jit=yes
+build_jit=no
 AC_ARG_ENABLE([jit],
   [AS_HELP_STRING([--enable-jit],
     [(EXPERIMENTAL) enable JIT compiler])],
-  [if test "$enableval" = no; then
-     build_jit=no
+  [if test "$enableval" = yes; then
+     build_jit=yes
    fi],
   [])
 
@@ -1512,7 +1536,9 @@ fi
 
 if test -n "$UMFPACK_LIBS"; then
   ## SuiteSparse >= 4.0 needs additional link library for SuiteSparse_time()
+  save_CPPFLAGS="$CPPFLAGS"
   save_LIBS="$LIBS";
+  CPPFLAGS="$UMFPACK_CPPFLAGS $AMD_CPPFLAGS $CPPFLAGS"
   LIBS="$UMFPACK_LIBS $AMD_LDFLAGS $AMD_LIBS $BLAS_LIBS $FLIBS $LIBS"
   xtra_libs=
   OCTAVE_UMFPACK_NEED_SUITESPARSE_TIME
@@ -1535,13 +1561,17 @@ if test -n "$UMFPACK_LIBS"; then
     esac
   fi
   LIBS="$save_LIBS"
+  CPPFLAGS="$save_CPPFLAGS"
 
   ## Check for UMFPACK separately split complex matrix and RHS.
   if test -n "$UMFPACK_LIBS"; then
+    save_CPPFLAGS="$CPPFLAGS"
     save_LIBS="$LIBS";
+    CPPFLAGS="$UMFPACK_CPPFLAGS $AMD_CPPFLAGS $CPPFLAGS"
     LIBS="$UMFPACK_LIBS $CHOLMOD_LDFLAGS $CHOLMOD_LIBS $AMD_LDFLAGS $AMD_LIBS $COLAMD_LDFLAGS $COLAMD_LIBS $LAPACK_LIBS $BLAS_LIBS $FLIBS $LIBS $xtra_libs"
     OCTAVE_UMFPACK_SEPARATE_SPLIT
     LIBS="$save_LIBS"
+    CPPFLAGS="$save_CPPFLAGS"
   fi
 fi
 
@@ -1613,7 +1643,6 @@ OCTGUI_DLL_DEFS=
 OCTGRAPHICS_DLL_DEFS=
 library_path_var=LD_LIBRARY_PATH
 ldpreloadsep=" "
-BUILD_COMPILED_AUX_PROGRAMS=no
 case $canonical_host_type in
   *-*-386bsd* | *-*-netbsd*)
     SH_LD=ld
@@ -1633,7 +1662,7 @@ case $canonical_host_type in
   ;;
   *-*-darwin*)
     DL_LDFLAGS='-bundle -bundle_loader $(top_builddir)/libinterp/octave $(LDFLAGS)'
-    MKOCTFILE_DL_LDFLAGS='-bundle -bundle_loader $$BINDIR/octave-$$OCTAVE_VERSION$$EXEEXT'
+    MKOCTFILE_DL_LDFLAGS='-bundle -bundle_loader $(bindir)/octave-$(version)$(EXEEXT)'
     SH_LDFLAGS='-dynamiclib -single_module $(LDFLAGS)'
     case $canonical_host_type in
       powerpc-*)
@@ -1666,7 +1695,6 @@ case $canonical_host_type in
     ldpreloadsep=":"
   ;;
   *-*-mingw*)
-    BUILD_COMPILED_AUX_PROGRAMS=yes
     if test $have_msvc = yes; then
       DL_LDFLAGS="-shared"
       CPICFLAG=
@@ -1707,7 +1735,6 @@ case $canonical_host_type in
   ;;
 
   *-*-msdosmsvc)
-    BUILD_COMPILED_AUX_PROGRAMS=yes
     DL_LDFLAGS="-shared"
     CPICFLAG=
     CXXPICFLAG=
@@ -1803,9 +1830,6 @@ case $canonical_host_type in
     fi
   ;;
 esac
-
-AM_CONDITIONAL([AMCOND_BUILD_COMPILED_AUX_PROGRAMS],
-  [test $BUILD_COMPILED_AUX_PROGRAMS = yes])
 
 AC_MSG_NOTICE([defining FPICFLAG to be $FPICFLAG])
 AC_MSG_NOTICE([defining CPICFLAG to be $CPICFLAG])
@@ -2162,7 +2186,7 @@ AC_CHECK_FUNCS([lgamma lgammaf lgamma_r lgammaf_r])
 AC_CHECK_FUNCS([log1p log1pf pipe])
 AC_CHECK_FUNCS([realpath resolvepath roundl])
 AC_CHECK_FUNCS([select setgrent setpwent siglongjmp strsignal])
-AC_CHECK_FUNCS([tempnam tgammaf toascii])
+AC_CHECK_FUNCS([tcgetattr tcsetattr tempnam tgammaf toascii])
 AC_CHECK_FUNCS([umask waitpid])
 AC_CHECK_FUNCS([_kbhit])
 
@@ -2280,7 +2304,7 @@ case $host_os in
   msdosmsvc | mingw*)
     AC_CHECK_FUNCS([setvbuf], [],
                    [AC_MSG_ERROR([Missing function required to build Octave])])
-    ;;
+  ;;
 esac
 
 ## Cygwin kluge for getrusage.
@@ -2533,9 +2557,9 @@ do
       JAVA_LIBS=-ladvapi32
       if test $have_msvc = no; then
         if test -n "$JAVA_CPPFLAGS"; then
-          JAVA_CPPFLAGS="-I${JAVA_CPPFLAGS}/include -I${JAVA_CPPFLAGS}/include/win32"
+          JAVA_CPPFLAGS="-I\"${JAVA_CPPFLAGS}\" -I\"${JAVA_CPPFLAGS}/win32\""
         else
-          JAVA_CPPFLAGS="-I${JAVA_HOME}/include -I${JAVA_HOME}/include/win32"
+          JAVA_CPPFLAGS="-I\"${JAVA_HOME}/include\" -I\"${JAVA_HOME}/include/win32\""
         fi
         LDFLAGS="$LDFLAGS -Wl,--export-all-symbols"
       fi
@@ -2633,7 +2657,7 @@ do
     ;;
     *)
       if test -n "$JAVA_CPPFLAGS"; then
-        JAVA_CPPFLAGS="-I${JAVA_CPPFLAGS}/include -I${JAVA_CPPFLAGS}/include/linux"
+        JAVA_CPPFLAGS="-I${JAVA_CPPFLAGS} -I${JAVA_CPPFLAGS}/linux"
       else
         JAVA_CPPFLAGS="-I${JAVA_HOME}/include -I${JAVA_HOME}/include/linux"
       fi
@@ -2698,6 +2722,20 @@ if test $build_gui = yes; then
     QT_CPPFLAGS="`$PKG_CONFIG --cflags-only-I QtCore QtGui QtNetwork`"
     QT_LDFLAGS="`$PKG_CONFIG --libs-only-L QtCore QtGui QtNetwork`"
     QT_LIBS="`$PKG_CONFIG --libs-only-l QtCore QtGui QtNetwork`"
+
+    case $host_os in
+      *darwin*)
+        ## Qt might be installed in framework
+        if test -z "$QT_LIBS"; then
+          QT_LDFLAGS="`$PKG_CONFIG --libs-only-other QtCore QtGui QtNetwork | tr ' ' '\n' | $GREP -e '-F' | uniq | tr '\n' ' '`"
+          QT_LIBS="`$PKG_CONFIG --libs-only-other QtCore QtGui QtNetwork | tr ' ' '\n' | $GREP -v -e '-F' | uniq | tr '\n' ' '`"
+          ## Enabling link_all_deps works around libtool's imperfect handling
+          ## of the -F flag
+          AM_CONDITIONAL([AMCOND_LINK_ALL_DEPS],
+                         [test $link_all_deps = yes || test -n "$QT_LDFLAGS"])
+        fi
+      ;;
+    esac
 
     ## Check for Qt4
     if ! `$PKG_CONFIG --atleast-version=4.0.0 QtCore`; then
@@ -2785,7 +2823,7 @@ if test $build_gui = yes; then
           AC_CHECK_FUNCS([setvbuf], [win32_terminal=yes],
             [warn_gui="setvbuf not found -- disabling GUI"
              build_gui=no])
-          ;;
+        ;;
         *)
           AC_CHECK_HEADERS([pty.h libutil.h util.h])
           AC_SEARCH_LIBS([openpty], [util],
@@ -2793,7 +2831,7 @@ if test $build_gui = yes; then
           AC_CHECK_FUNCS([chmod chown ftruncate mmap munmap], [],
             [AC_MSG_ERROR([At least one of chmod, chown, ftruncate, mmap, and munmap not found -- disabling GUI])
              build_gui=no])
-          ;;
+        ;;
       esac
     fi
   fi

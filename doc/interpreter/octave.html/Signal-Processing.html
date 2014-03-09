@@ -422,15 +422,18 @@ reversed and <var>b</var> rotated 180 degrees.
 
 <a name="XREFfreqz"></a><dl>
 <dt><a name="index-freqz"></a>Function File: <em>[<var>h</var>, <var>w</var>] =</em> <strong>freqz</strong> <em>(<var>b</var>, <var>a</var>, <var>n</var>, &quot;whole&quot;)</em></dt>
-<dt><a name="index-freqz-1"></a>Function File: <em><var>h</var> =</em> <strong>freqz</strong> <em>(<var>b</var>, <var>a</var>, <var>w</var>)</em></dt>
-<dt><a name="index-freqz-2"></a>Function File: <em>[&hellip;] =</em> <strong>freqz</strong> <em>(&hellip;, <var>Fs</var>)</em></dt>
-<dt><a name="index-freqz-3"></a>Function File: <em></em> <strong>freqz</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-freqz-1"></a>Function File: <em>[<var>h</var>, <var>w</var>] =</em> <strong>freqz</strong> <em>(<var>b</var>)</em></dt>
+<dt><a name="index-freqz-2"></a>Function File: <em>[<var>h</var>, <var>w</var>] =</em> <strong>freqz</strong> <em>(<var>b</var>, <var>a</var>)</em></dt>
+<dt><a name="index-freqz-3"></a>Function File: <em>[<var>h</var>, <var>w</var>] =</em> <strong>freqz</strong> <em>(<var>b</var>, <var>a</var>, <var>n</var>)</em></dt>
+<dt><a name="index-freqz-4"></a>Function File: <em><var>h</var> =</em> <strong>freqz</strong> <em>(<var>b</var>, <var>a</var>, <var>w</var>)</em></dt>
+<dt><a name="index-freqz-5"></a>Function File: <em>[&hellip;] =</em> <strong>freqz</strong> <em>(&hellip;, <var>Fs</var>)</em></dt>
+<dt><a name="index-freqz-6"></a>Function File: <em></em> <strong>freqz</strong> <em>(&hellip;)</em></dt>
 <dd>
 <p>Return the complex frequency response <var>h</var> of the rational IIR filter
 whose numerator and denominator coefficients are <var>b</var> and <var>a</var>,
 respectively.  The response is evaluated at <var>n</var> angular frequencies
 between 0 and
- 2*pi.
+2*pi.
 </p>
 <p>The output value <var>w</var> is a vector of the frequencies.
 </p>
@@ -438,13 +441,12 @@ between 0 and
 corresponds to a simple FIR filter).
 </p>
 <p>If <var>n</var> is omitted, a value of 512 is assumed.
-</p>
-<p>For fastest computation, <var>n</var> should factor into a small number of
+For fastest computation, <var>n</var> should factor into a small number of
 small primes.
 </p>
 <p>If the fourth argument, <code>&quot;whole&quot;</code>, is omitted the response is
 evaluated at frequencies between 0 and
- pi.
+pi.
 </p>
 <p><code>freqz (<var>b</var>, <var>a</var>, <var>w</var>)</code>
 </p>
@@ -459,14 +461,23 @@ The values for <var>w</var> are measured in radians.
 </p>
 <p><code>freqz (&hellip;)</code>
 </p>
-<p>Plot the pass band, stop band and phase response of <var>h</var> rather
-than returning them.
+<p>Plot the magnitude and phase response of <var>h</var> rather than returning them.
+</p>
+
+<p><strong>See also:</strong> <a href="#XREFfreqz_005fplot">freqz_plot</a>.
 </p></dd></dl>
 
 
 <a name="XREFfreqz_005fplot"></a><dl>
 <dt><a name="index-freqz_005fplot"></a>Function File: <em></em> <strong>freqz_plot</strong> <em>(<var>w</var>, <var>h</var>)</em></dt>
-<dd><p>Plot the pass band, stop band and phase response of <var>h</var>.
+<dt><a name="index-freqz_005fplot-1"></a>Function File: <em></em> <strong>freqz_plot</strong> <em>(<var>w</var>, <var>h</var>, <var>freq_norm</var>)</em></dt>
+<dd><p>Plot the magnitude and phase response of <var>h</var>.
+</p>
+<p>If the optional <var>freq_norm</var> argument is true, the frequency vector
+<var>w</var> is in units of normalized radians.  If <var>freq_norm</var> is false, or
+not given, then <var>w</var> is measured in Hertz.
+</p>
+<p><strong>See also:</strong> <a href="#XREFfreqz">freqz</a>.
 </p></dd></dl>
 
 

@@ -185,9 +185,11 @@ function limits = __axis__ (ca, ax, varargin)
       ## aspect ratio
     elseif (strcmpi (ax, "image"))
       __axis__ (ca, "equal");
+      set (ca, "plotboxaspectratiomode", "auto");
       __do_tight_option__ (ca);
     elseif (strcmpi (ax, "square"))
-      set (ca, "plotboxaspectratio", [1, 1, 1]);
+      set (ca, "dataaspectratiomode", "auto",
+               "plotboxaspectratio", [1, 1, 1]);
     elseif (strcmp (ax, "equal"))
       if (strcmp (get (get (ca, "parent"), "__graphics_toolkit__"), "gnuplot"))
         ## FIXME - gnuplot applies the aspect ratio activepostionproperty.
@@ -197,10 +199,14 @@ function limits = __axis__ (ca, ax, varargin)
         ## (useful with the x11 gnuplot terminal after a window resize)
         set (ca, "dataaspectratiomode", "auto");
       endif
-      set (ca, "dataaspectratio", [1, 1, 1]);
+      set (ca, "dataaspectratio", [1, 1, 1], "plotboxaspectratio", [5 4 4]);
+      
     elseif (strcmpi (ax, "normal"))
-      set (ca, "plotboxaspectratio", [1, 1, 1]);
-      set (ca, "plotboxaspectratiomode", "auto");
+      ## Set plotboxaspectratio to something obtuse so that switching
+      ## back to "auto" will force a re-calculation.
+      set (ca, "plotboxaspectratio", [3 2 1]);
+      set (ca, "plotboxaspectratiomode", "auto",
+               "dataaspectratiomode", "auto");
 
       ## axis limits
     elseif (len >= 4 && strcmpi (ax(1:4), "auto"))
@@ -326,10 +332,24 @@ function lims = __get_tight_lims__ (ca, ax)
     lims = get (ca, strcat (ax, "lim"));
   else
     data = get (kids, strcat (ax, "data"));
+    types = get (kids, "type");
+    
     scale = get (ca, strcat (ax, "scale"));
     if (! iscell (data))
       data = {data};
     endif
+    
+    ## Extend image data one pixel
+    idx = strcmp (types, "image");
+    if (! isempty (idx) && (ax == "x" || ax == "y"))
+      imdata = data(idx);
+      px = arrayfun (@__image_pixel_size__, kids(idx), "uniformoutput", false);
+      ipx = ifelse (ax == "x", 1, 2);
+      imdata = cellfun (@(x,dx) [(min (x) - dx(ipx)), (max (x) + dx(ipx))],
+                        imdata, px, "uniformoutput", false);
+      data(idx) = imdata;
+    endif
+    
     if (strcmp (scale, "log"))
       tmp = data;
       data = cellfun (@(x) x(x>0), tmp, "uniformoutput", false);

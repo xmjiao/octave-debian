@@ -102,7 +102,10 @@ DIST_COMMON = $(top_srcdir)/build-aux/common.mk \
 	$(srcdir)/../libgui/link-deps.mk \
 	$(top_srcdir)/libinterp/link-deps.mk \
 	$(top_srcdir)/liboctave/link-deps.mk $(srcdir)/Makefile.in \
-	$(srcdir)/Makefile.am $(top_srcdir)/build-aux/depcomp
+	$(srcdir)/Makefile.am $(top_srcdir)/build-aux/depcomp \
+	$(noinst_HEADERS)
+bin_PROGRAMS = mkoctfile$(EXEEXT) octave$(EXEEXT) octave-cli$(EXEEXT) \
+	octave-config$(EXEEXT)
 @AMCOND_BUILD_GUI_TRUE@archlib_PROGRAMS = octave-gui$(EXEEXT)
 @AMCOND_BUILD_GUI_TRUE@am__append_1 = octave-gui-$(version)$(EXEEXT)
 @AMCOND_LINK_ALL_DEPS_TRUE@am__append_2 = $(LIBOCTAVE_LINK_DEPS)
@@ -111,13 +114,6 @@ DIST_COMMON = $(top_srcdir)/build-aux/common.mk \
 @AMCOND_LINK_ALL_DEPS_TRUE@am__append_5 = $(LIBOCTINTERP_LINK_OPTS)
 @AMCOND_LINK_ALL_DEPS_TRUE@am__append_6 = $(LIBOCTINTERP_LINK_DEPS)
 @AMCOND_LINK_ALL_DEPS_TRUE@am__append_7 = $(LIBOCTINTERP_LINK_OPTS)
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_FALSE@bin_PROGRAMS =  \
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_FALSE@	$(am__EXEEXT_1)
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@bin_PROGRAMS =  \
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@	$(am__EXEEXT_1) \
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@	mkoctfile$(EXEEXT) \
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@	octave-config$(EXEEXT)
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@am__append_8 = mkoctfile.cc octave-config.cc
 subdir = src
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
@@ -233,18 +229,15 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-am__installdirs = "$(DESTDIR)$(archlibdir)" "$(DESTDIR)$(bindir)" \
-	"$(DESTDIR)$(bindir)"
-am__EXEEXT_1 = octave$(EXEEXT) octave-cli$(EXEEXT)
+am__installdirs = "$(DESTDIR)$(archlibdir)" "$(DESTDIR)$(bindir)"
 PROGRAMS = $(archlib_PROGRAMS) $(bin_PROGRAMS)
 am_mkoctfile_OBJECTS =
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@nodist_mkoctfile_OBJECTS =  \
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@	mkoctfile.$(OBJEXT)
+nodist_mkoctfile_OBJECTS = mkoctfile.$(OBJEXT)
 mkoctfile_OBJECTS = $(am_mkoctfile_OBJECTS) \
 	$(nodist_mkoctfile_OBJECTS)
 am__DEPENDENCIES_1 =
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@mkoctfile_DEPENDENCIES = $(top_builddir)/libgnu/libgnu.la \
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@	$(am__DEPENDENCIES_1)
+mkoctfile_DEPENDENCIES = $(top_builddir)/libgnu/libgnu.la \
+	$(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
@@ -266,21 +259,6 @@ octave_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
 	$(CXXFLAGS) $(octave_LDFLAGS) $(LDFLAGS) -o $@
 am_octave_cli_OBJECTS = main-cli.$(OBJEXT)
 octave_cli_OBJECTS = $(am_octave_cli_OBJECTS)
-octave_cli_DEPENDENCIES = $(OCTAVE_CORE_LIBS)
-octave_cli_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
-	$(CXXFLAGS) $(octave_cli_LDFLAGS) $(LDFLAGS) -o $@
-am_octave_config_OBJECTS =
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@nodist_octave_config_OBJECTS = octave-config.$(OBJEXT)
-octave_config_OBJECTS = $(am_octave_config_OBJECTS) \
-	$(nodist_octave_config_OBJECTS)
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@octave_config_DEPENDENCIES = $(top_builddir)/libinterp/corefcn/libcorefcn.la \
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@	$(top_builddir)/libgnu/libgnu.la \
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@	$(am__DEPENDENCIES_1)
-am__octave_gui_SOURCES_DIST = main-gui.cc
-@AMCOND_BUILD_GUI_TRUE@am_octave_gui_OBJECTS =  \
-@AMCOND_BUILD_GUI_TRUE@	octave_gui-main-gui.$(OBJEXT)
-octave_gui_OBJECTS = $(am_octave_gui_OBJECTS)
 am__DEPENDENCIES_3 = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am__DEPENDENCIES_4 = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
@@ -322,6 +300,21 @@ am__DEPENDENCIES_5 = $(am__DEPENDENCIES_2) $(am__DEPENDENCIES_1) \
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(am__DEPENDENCIES_1) \
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(am__DEPENDENCIES_6)
 @AMCOND_LINK_ALL_DEPS_TRUE@am__DEPENDENCIES_8 = $(am__DEPENDENCIES_7)
+octave_cli_DEPENDENCIES = $(OCTAVE_CORE_LIBS) $(am__DEPENDENCIES_8)
+octave_cli_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
+	$(CXXFLAGS) $(octave_cli_LDFLAGS) $(LDFLAGS) -o $@
+am_octave_config_OBJECTS =
+nodist_octave_config_OBJECTS = octave-config.$(OBJEXT)
+octave_config_OBJECTS = $(am_octave_config_OBJECTS) \
+	$(nodist_octave_config_OBJECTS)
+octave_config_DEPENDENCIES =  \
+	$(top_builddir)/libinterp/corefcn/libcorefcn.la \
+	$(top_builddir)/libgnu/libgnu.la $(am__DEPENDENCIES_1)
+am__octave_gui_SOURCES_DIST = main-gui.cc
+@AMCOND_BUILD_GUI_TRUE@am_octave_gui_OBJECTS =  \
+@AMCOND_BUILD_GUI_TRUE@	octave_gui-main-gui.$(OBJEXT)
+octave_gui_OBJECTS = $(am_octave_gui_OBJECTS)
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@am__DEPENDENCIES_9 =  \
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@	$(am__DEPENDENCIES_8)
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@am__DEPENDENCIES_9 =  \
@@ -333,34 +326,6 @@ octave_gui_DEPENDENCIES = $(OCTAVE_GUI_LIBS) $(OCTAVE_CORE_LIBS) \
 octave_gui_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
 	$(CXXFLAGS) $(octave_gui_LDFLAGS) $(LDFLAGS) -o $@
-am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
-am__vpath_adj = case $$p in \
-    $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
-    *) f=$$p;; \
-  esac;
-am__strip_dir = f=`echo $$p | sed -e 's|^.*/||'`;
-am__install_max = 40
-am__nobase_strip_setup = \
-  srcdirstrip=`echo "$(srcdir)" | sed 's/[].[^$$\\*|]/\\\\&/g'`
-am__nobase_strip = \
-  for p in $$list; do echo "$$p"; done | sed -e "s|$$srcdirstrip/||"
-am__nobase_list = $(am__nobase_strip_setup); \
-  for p in $$list; do echo "$$p $$p"; done | \
-  sed "s| $$srcdirstrip/| |;"' / .*\//!s/ .*/ ./; s,\( .*\)/[^/]*$$,\1,' | \
-  $(AWK) 'BEGIN { files["."] = "" } { files[$$2] = files[$$2] " " $$1; \
-    if (++n[$$2] == $(am__install_max)) \
-      { print $$2, files[$$2]; n[$$2] = 0; files[$$2] = "" } } \
-    END { for (dir in files) print dir, files[dir] }'
-am__base_list = \
-  sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
-  sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-am__uninstall_files_from_dir = { \
-  test -z "$$files" \
-    || { test ! -d "$$dir" && test ! -f "$$dir" && test ! -r "$$dir"; } \
-    || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
-         $(am__cd) "$$dir" && rm -f $$files; }; \
-  }
-SCRIPTS = $(bin_SCRIPTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -406,6 +371,7 @@ am__can_run_installinfo = \
     n|no|NO) false;; \
     *) (install-info --version) >/dev/null 2>&1;; \
   esac
+HEADERS = $(noinst_HEADERS)
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 # Read a list of newline-separated strings from the standard input,
 # and print each of them once, without duplicates.  Input order is
@@ -1406,10 +1372,12 @@ NO_UNDEFINED_LDFLAG = @NO_UNDEFINED_LDFLAG@
 OBJDUMP = @OBJDUMP@
 OBJEXT = @OBJEXT@
 OCTAVE_API_VERSION = @OCTAVE_API_VERSION@
-OCTAVE_API_VERSION_NUMBER = @OCTAVE_API_VERSION_NUMBER@
 OCTAVE_COPYRIGHT = @OCTAVE_COPYRIGHT@
 OCTAVE_DLL_DEFS = @OCTAVE_DLL_DEFS@
 OCTAVE_IDX_TYPE = @OCTAVE_IDX_TYPE@
+OCTAVE_MAJOR_VERSION = @OCTAVE_MAJOR_VERSION@
+OCTAVE_MINOR_VERSION = @OCTAVE_MINOR_VERSION@
+OCTAVE_PATCH_VERSION = @OCTAVE_PATCH_VERSION@
 OCTAVE_RELEASE_DATE = @OCTAVE_RELEASE_DATE@
 OCTAVE_VERSION = @OCTAVE_VERSION@
 OCTGRAPHICS_DLL_DEFS = @OCTGRAPHICS_DLL_DEFS@
@@ -1972,14 +1940,15 @@ AM_CPPFLAGS = \
 EXTRA_DIST = \
   main.in.cc \
   mkoctfile.in.cc \
-  mkoctfile.in.sh \
-  octave-config.in.cc \
-  octave-config.in.sh
+  octave-config.in.cc
 
-DISTCLEANFILES = main.cc $(am__append_8)
-OCTAVE_BINARIES = \
-  octave \
-  octave-cli
+DISTCLEANFILES = \
+  main.cc \
+  mkoctfile.cc \
+  octave-config.cc
+
+noinst_HEADERS = \
+  shared-fcns.h
 
 OCTAVE_VERSION_LINKS = octave-cli-$(version)$(EXEEXT) $(am__append_1)
 OCTAVE_CORE_LIBS = \
@@ -2078,7 +2047,8 @@ octave_CPPFLAGS = \
 
 octave_cli_SOURCES = main-cli.cc
 octave_cli_LDADD = \
-  $(OCTAVE_CORE_LIBS)
+  $(OCTAVE_CORE_LIBS) \
+  $(OCTAVE_LINK_DEPS)
 
 octave_cli_LDFLAGS = \
   $(NO_UNDEFINED_LDFLAG) \
@@ -2100,22 +2070,17 @@ octave_gui_LDFLAGS = \
   $(NO_UNDEFINED_LDFLAG) \
   $(OCTAVE_GUI_LINK_OPTS)
 
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@mkoctfile_SOURCES = 
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@nodist_mkoctfile_SOURCES = mkoctfile.cc
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@mkoctfile_LDADD = $(top_builddir)/libgnu/libgnu.la $(LIBS)
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@octave_config_SOURCES = 
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@nodist_octave_config_SOURCES = octave-config.cc
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@octave_config_LDADD = \
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@  $(top_builddir)/libinterp/corefcn/libcorefcn.la \
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@  $(top_builddir)/libgnu/libgnu.la \
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@  $(LIBS)
-
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_FALSE@bin_SCRIPTS = \
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_FALSE@  mkoctfile \
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_FALSE@  octave-config
+mkoctfile_SOURCES = 
+nodist_mkoctfile_SOURCES = mkoctfile.cc
+mkoctfile_LDADD = $(top_builddir)/libgnu/libgnu.la $(LIBS)
+octave_config_SOURCES = 
+nodist_octave_config_SOURCES = octave-config.cc
+octave_config_LDADD = \
+  $(top_builddir)/libinterp/corefcn/libcorefcn.la \
+  $(top_builddir)/libgnu/libgnu.la \
+  $(LIBS)
 
 CLEANFILES = \
-  $(bin_SCRIPTS) \
   $(OCTAVE_VERSION_LINKS)
 
 all: all-am
@@ -2252,9 +2217,9 @@ clean-binPROGRAMS:
 	echo " rm -f" $$list; \
 	rm -f $$list
 
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@mkoctfile$(EXEEXT): $(mkoctfile_OBJECTS) $(mkoctfile_DEPENDENCIES) $(EXTRA_mkoctfile_DEPENDENCIES) 
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@	@rm -f mkoctfile$(EXEEXT)
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@	$(AM_V_CXXLD)$(CXXLINK) $(mkoctfile_OBJECTS) $(mkoctfile_LDADD) $(LIBS)
+mkoctfile$(EXEEXT): $(mkoctfile_OBJECTS) $(mkoctfile_DEPENDENCIES) $(EXTRA_mkoctfile_DEPENDENCIES) 
+	@rm -f mkoctfile$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(mkoctfile_OBJECTS) $(mkoctfile_LDADD) $(LIBS)
 
 octave$(EXEEXT): $(octave_OBJECTS) $(octave_DEPENDENCIES) $(EXTRA_octave_DEPENDENCIES) 
 	@rm -f octave$(EXEEXT)
@@ -2264,48 +2229,13 @@ octave-cli$(EXEEXT): $(octave_cli_OBJECTS) $(octave_cli_DEPENDENCIES) $(EXTRA_oc
 	@rm -f octave-cli$(EXEEXT)
 	$(AM_V_CXXLD)$(octave_cli_LINK) $(octave_cli_OBJECTS) $(octave_cli_LDADD) $(LIBS)
 
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@octave-config$(EXEEXT): $(octave_config_OBJECTS) $(octave_config_DEPENDENCIES) $(EXTRA_octave_config_DEPENDENCIES) 
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@	@rm -f octave-config$(EXEEXT)
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@	$(AM_V_CXXLD)$(CXXLINK) $(octave_config_OBJECTS) $(octave_config_LDADD) $(LIBS)
+octave-config$(EXEEXT): $(octave_config_OBJECTS) $(octave_config_DEPENDENCIES) $(EXTRA_octave_config_DEPENDENCIES) 
+	@rm -f octave-config$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(octave_config_OBJECTS) $(octave_config_LDADD) $(LIBS)
 
 octave-gui$(EXEEXT): $(octave_gui_OBJECTS) $(octave_gui_DEPENDENCIES) $(EXTRA_octave_gui_DEPENDENCIES) 
 	@rm -f octave-gui$(EXEEXT)
 	$(AM_V_CXXLD)$(octave_gui_LINK) $(octave_gui_OBJECTS) $(octave_gui_LDADD) $(LIBS)
-install-binSCRIPTS: $(bin_SCRIPTS)
-	@$(NORMAL_INSTALL)
-	@list='$(bin_SCRIPTS)'; test -n "$(bindir)" || list=; \
-	if test -n "$$list"; then \
-	  echo " $(MKDIR_P) '$(DESTDIR)$(bindir)'"; \
-	  $(MKDIR_P) "$(DESTDIR)$(bindir)" || exit 1; \
-	fi; \
-	for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  if test -f "$$d$$p"; then echo "$$d$$p"; echo "$$p"; else :; fi; \
-	done | \
-	sed -e 'p;s,.*/,,;n' \
-	    -e 'h;s|.*|.|' \
-	    -e 'p;x;s,.*/,,;$(transform)' | sed 'N;N;N;s,\n, ,g' | \
-	$(AWK) 'BEGIN { files["."] = ""; dirs["."] = 1; } \
-	  { d=$$3; if (dirs[d] != 1) { print "d", d; dirs[d] = 1 } \
-	    if ($$2 == $$4) { files[d] = files[d] " " $$1; \
-	      if (++n[d] == $(am__install_max)) { \
-		print "f", d, files[d]; n[d] = 0; files[d] = "" } } \
-	    else { print "f", d "/" $$4, $$1 } } \
-	  END { for (d in files) print "f", d, files[d] }' | \
-	while read type dir files; do \
-	     if test "$$dir" = .; then dir=; else dir=/$$dir; fi; \
-	     test -z "$$files" || { \
-	       echo " $(INSTALL_SCRIPT) $$files '$(DESTDIR)$(bindir)$$dir'"; \
-	       $(INSTALL_SCRIPT) $$files "$(DESTDIR)$(bindir)$$dir" || exit $$?; \
-	     } \
-	; done
-
-uninstall-binSCRIPTS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(bin_SCRIPTS)'; test -n "$(bindir)" || exit 0; \
-	files=`for p in $$list; do echo "$$p"; done | \
-	       sed -e 's,.*/,,;$(transform)'`; \
-	dir='$(DESTDIR)$(bindir)'; $(am__uninstall_files_from_dir)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -2461,9 +2391,9 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(PROGRAMS) $(SCRIPTS) all-local
+all-am: Makefile $(PROGRAMS) $(HEADERS) all-local
 installdirs:
-	for dir in "$(DESTDIR)$(archlibdir)" "$(DESTDIR)$(bindir)" "$(DESTDIR)$(bindir)"; do \
+	for dir in "$(DESTDIR)$(archlibdir)" "$(DESTDIR)$(bindir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -2527,7 +2457,7 @@ install-dvi: install-dvi-am
 
 install-dvi-am:
 
-install-exec-am: install-binPROGRAMS install-binSCRIPTS
+install-exec-am: install-binPROGRAMS
 	@$(NORMAL_INSTALL)
 	$(MAKE) $(AM_MAKEFLAGS) install-exec-hook
 install-html: install-html-am
@@ -2569,7 +2499,7 @@ ps: ps-am
 ps-am:
 
 uninstall-am: uninstall-archlibPROGRAMS uninstall-binPROGRAMS \
-	uninstall-binSCRIPTS uninstall-local
+	uninstall-local
 
 .MAKE: install-am install-exec-am install-strip
 
@@ -2579,16 +2509,16 @@ uninstall-am: uninstall-archlibPROGRAMS uninstall-binPROGRAMS \
 	distclean-compile distclean-generic distclean-libtool \
 	distclean-tags distdir dvi dvi-am html html-am info info-am \
 	install install-am install-archlibPROGRAMS install-binPROGRAMS \
-	install-binSCRIPTS install-data install-data-am install-dvi \
-	install-dvi-am install-exec install-exec-am install-exec-hook \
-	install-html install-html-am install-info install-info-am \
-	install-man install-pdf install-pdf-am install-ps \
-	install-ps-am install-strip installcheck installcheck-am \
-	installdirs maintainer-clean maintainer-clean-generic \
-	mostlyclean mostlyclean-compile mostlyclean-generic \
-	mostlyclean-libtool pdf pdf-am ps ps-am tags tags-am uninstall \
-	uninstall-am uninstall-archlibPROGRAMS uninstall-binPROGRAMS \
-	uninstall-binSCRIPTS uninstall-local
+	install-data install-data-am install-dvi install-dvi-am \
+	install-exec install-exec-am install-exec-hook install-html \
+	install-html-am install-info install-info-am install-man \
+	install-pdf install-pdf-am install-ps install-ps-am \
+	install-strip installcheck installcheck-am installdirs \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
+	pdf pdf-am ps ps-am tags tags-am uninstall uninstall-am \
+	uninstall-archlibPROGRAMS uninstall-binPROGRAMS \
+	uninstall-local
 
 export AWK
 export GREP
@@ -2874,23 +2804,14 @@ endef
 
 %.ll-tst : %.ll
 	$(test-file-commands)
-  $(OCTAVE_LINK_DEPS)
 
 all-local: $(OCTAVE_VERSION_LINKS)
 
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@octave-config.cc: octave-config.in.cc Makefile
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@	@$(do_subst_default_vals)
+octave-config.cc: octave-config.in.cc Makefile
+	@$(do_subst_default_vals)
 
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@mkoctfile.cc: mkoctfile.in.cc Makefile
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_TRUE@	@$(do_subst_config_vals)
-
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_FALSE@octave-config: octave-config.in.sh Makefile
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_FALSE@	@$(do_subst_default_vals)
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_FALSE@	chmod a+rx $@
-
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_FALSE@mkoctfile: mkoctfile.in.sh Makefile
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_FALSE@	@$(do_subst_config_vals)
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_FALSE@	chmod a+rx $@
+mkoctfile.cc: mkoctfile.in.cc Makefile
+	@$(do_subst_config_vals)
 
 main.cc: main.in.cc Makefile
 	@$(do_subst_default_vals)
@@ -2905,19 +2826,11 @@ make-version-links:
 	  mv $$f$(EXEEXT) $$f-$(version)$(EXEEXT) && \
 	    $(LN_S) $$f-$(version)$(EXEEXT) $$f$(EXEEXT); \
 	done
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_FALSE@	cd $(DESTDIR)$(bindir) && \
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_FALSE@	for f in $(basename $(bin_SCRIPTS)); do \
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_FALSE@	  mv $$f $$f-$(version) && \
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_FALSE@	    $(LN_S) $$f-$(version) $$f; \
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_FALSE@	done
 
 remove-version-links:
 	for f in $(basename $(bin_PROGRAMS)); do \
 	  rm -f $(DESTDIR)$(bindir)/$$f-$(version)$(EXEEXT); \
 	done
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_FALSE@	for f in $(basename $(bin_SCRIPTS)); do \
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_FALSE@	  rm -f $(DESTDIR)$(bindir)/$$f-$(version); \
-@AMCOND_BUILD_COMPILED_AUX_PROGRAMS_FALSE@	done
 
 .PHONY: make-version-links remove-version-links
 

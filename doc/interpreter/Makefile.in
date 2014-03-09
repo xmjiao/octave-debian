@@ -1287,10 +1287,12 @@ NO_UNDEFINED_LDFLAG = @NO_UNDEFINED_LDFLAG@
 OBJDUMP = @OBJDUMP@
 OBJEXT = @OBJEXT@
 OCTAVE_API_VERSION = @OCTAVE_API_VERSION@
-OCTAVE_API_VERSION_NUMBER = @OCTAVE_API_VERSION_NUMBER@
 OCTAVE_COPYRIGHT = @OCTAVE_COPYRIGHT@
 OCTAVE_DLL_DEFS = @OCTAVE_DLL_DEFS@
 OCTAVE_IDX_TYPE = @OCTAVE_IDX_TYPE@
+OCTAVE_MAJOR_VERSION = @OCTAVE_MAJOR_VERSION@
+OCTAVE_MINOR_VERSION = @OCTAVE_MINOR_VERSION@
+OCTAVE_PATCH_VERSION = @OCTAVE_PATCH_VERSION@
 OCTAVE_RELEASE_DATE = @OCTAVE_RELEASE_DATE@
 OCTAVE_VERSION = @OCTAVE_VERSION@
 OCTGRAPHICS_DLL_DEFS = @OCTGRAPHICS_DLL_DEFS@
@@ -1845,6 +1847,7 @@ TEXINPUTS := "$(PATH_SEPARATOR)$(srcdir)$(PATH_SEPARATOR)$(TEXINPUTS)$(PATH_SEPA
 TEXMFCNF := "..$(PATH_SEPARATOR)$(srcdir)/..$(PATH_SEPARATOR)$(TEXMFCNF)$(PATH_SEPARATOR)"
 dist_man_MANS = \
   mkoctfile.1 \
+  octave-cli.1 \
   octave-config.1 \
   octave.1
 
@@ -1868,8 +1871,8 @@ EXAMPLE_FILES = \
   $(top_srcdir)/examples/addtwomatrices.cc \
   $(top_srcdir)/examples/celldemo.cc \
   $(top_srcdir)/examples/embedded.cc \
-  $(top_srcdir)/examples/fortdemo.cc \
-  $(top_srcdir)/examples/fortsub.f \
+  $(top_srcdir)/examples/fortrandemo.cc \
+  $(top_srcdir)/examples/fortransub.f \
   $(top_srcdir)/examples/funcdemo.cc \
   $(top_srcdir)/examples/globaldemo.cc \
   $(top_srcdir)/examples/helloworld.cc \

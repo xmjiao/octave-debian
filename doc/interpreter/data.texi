@@ -40,8 +40,9 @@ new data type for Octave.
 @deftypefnx {Built-in Function} {} typeinfo (@var{expr})
 
 Return the type of the expression @var{expr}, as a string.  If
-@var{expr} is omitted, return an cell array of strings containing all the
+@var{expr} is omitted, return a cell array of strings containing all the
 currently installed data types.
+@seealso{@ref{XREFclass,,class}, @ref{XREFisa,,isa}}
 @end deftypefn
 
 

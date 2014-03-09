@@ -95,6 +95,19 @@ for n = 1:100
 endfor
 </pre></div>
 
+<p>Alternatively, the output of the <code>lasterror</code> function can be found
+in a variable indicated immediately after the <code>catch</code> keyword, as
+in the example below showing how to redirect an error as a warning:
+</p>
+<div class="example">
+<pre class="example">try
+  &hellip;
+catch err
+  warning(err.identifier, err.message);
+  &hellip;
+end_try_catch
+</pre></div>
+
 <a name="XREFlasterror"></a><dl>
 <dt><a name="index-lasterror"></a>Built-in Function: <em><var>lasterr</var> =</em> <strong>lasterror</strong> <em>()</em></dt>
 <dt><a name="index-lasterror-1"></a>Built-in Function: <em></em> <strong>lasterror</strong> <em>(<var>err</var>)</em></dt>

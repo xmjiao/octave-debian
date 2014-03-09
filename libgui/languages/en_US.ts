@@ -61,6 +61,11 @@
         <source>cursor</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../src/main-window.cc" line="+1900"/>
+        <source>&lt;p&gt;&lt;strong&gt;A Note about Octave&apos;s New GUI&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;One of the biggest new features for Octave 3.8 is a graphical user interface.  It is the one thing that users have requested most often over the last few years and now it is almost ready.  But because it is not quite as polished as we would like, we have decided to wait until the 4.0.x release series before making the GUI the default interface.&lt;/p&gt;&lt;p&gt;Given the length of time and the number of bug fixes and improvements since the last major release, we also decided against delaying the release of all these new improvements any longer just to perfect the GUI.  So please enjoy the 3.8 release of Octave and the preview of the new GUI.  We believe it is working reasonably well, but we also know that there are some obvious rough spots and many things that could be improved.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;We Need Your Help&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;There are many ways that you can help us fix the remaining problems, complete the GUI, and improve the overall user experience for both novices and experts alike (links will open an external browser):&lt;/p&gt;&lt;p&gt;&lt;ul&gt;&lt;li&gt;If you are a skilled software developer, you can help by contributing your time to help &lt;a href=&quot;http://octave.org/get-involved.html&quot;&gt;develop Octave&lt;/a&gt;.&lt;/li&gt;&lt;li&gt;If Octave does not work properly, you are encouraged to &lt;a href=&quot;http://octave.org/bugs.html&quot;&gt;report problems &lt;/a&gt; that you find.&lt;/li&gt;&lt;li&gt;Whether you are a user or developer, you can &lt;a href=&quot;http://octave.org/donate.html&quot;&gt;help to fund the project&lt;/a&gt;.  Octave development takes a lot of time and expertise.  Your contributions help to ensure that Octave will continue to improve.&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;&lt;p&gt;We hope you find Octave to be useful.  Please help us make it even better for the future!&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QTerminal</name>
@@ -83,7 +88,7 @@
 <context>
     <name>QWinTerminalImpl</name>
     <message>
-        <location filename="../qterminal/libqterminal/win32/QWinTerminalImpl.cpp" line="+1528"/>
+        <location filename="../qterminal/libqterminal/win32/QWinTerminalImpl.cpp" line="+1536"/>
         <source>copied selection to clipboard</source>
         <translation type="unfinished"></translation>
     </message>
@@ -136,12 +141,7 @@ is already open in the editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+28"/>
-        <source>The associated file editor tab has disappeared.  It was likely closed by some means.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+227"/>
+        <location line="+255"/>
         <source>&amp;%1 %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -151,23 +151,23 @@ is already open in the editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>&amp;Open File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
+        <location line="+6"/>
         <source>&amp;Save File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Save File &amp;As</source>
+        <location line="-3"/>
+        <source>&amp;Open File...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Save File &amp;As...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>Print</source>
+        <source>Print...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -246,22 +246,27 @@ is already open in the editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+3"/>
+        <source>&amp;Find and Replace...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Save File and Run</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+57"/>
+        <location line="+2"/>
+        <source>Go &amp;to Line...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+55"/>
         <source>&amp;Recent Editor Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>New &amp;Function</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+6"/>
+        <location line="+11"/>
         <source>&amp;Edit Function</source>
         <translation type="unfinished"></translation>
     </message>
@@ -281,7 +286,17 @@ is already open in the editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+51"/>
+        <location line="+31"/>
+        <source>&amp;Preferences...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>&amp;Styles Preferences...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
         <source>Run &amp;Selection</source>
         <translation type="unfinished"></translation>
     </message>
@@ -301,12 +316,7 @@ is already open in the editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-151"/>
-        <source>&amp;Find and Replace</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-590"/>
+        <location line="-741"/>
         <source>Could not open file
 %1
 for read: %2.</source>
@@ -327,32 +337,27 @@ for write: %2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+555"/>
-        <source>Go&amp;to Line</source>
+        <location line="+87"/>
+        <source>The associated file editor tab has disappeared.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+521"/>
         <source>&amp;File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+41"/>
+        <location line="+7"/>
+        <source>New &amp;Function...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+34"/>
         <source>&amp;Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+22"/>
-        <source>&amp;Preferences</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>&amp;Styles Preferences</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+4"/>
+        <location line="+30"/>
         <source>&amp;Debug</source>
         <translation type="unfinished"></translation>
     </message>
@@ -365,7 +370,7 @@ for write: %2.</source>
 <context>
     <name>file_editor_tab</name>
     <message>
-        <location filename="../src/m-editor/file-editor-tab.cc" line="+792"/>
+        <location filename="../src/m-editor/file-editor-tab.cc" line="+803"/>
         <source>Goto line</source>
         <translation type="unfinished"></translation>
     </message>
@@ -393,14 +398,13 @@ for write: %2.</source>
     <message>
         <location line="+10"/>
         <location line="+122"/>
-        <location line="+111"/>
-        <location line="+64"/>
+        <location line="+150"/>
         <location line="+22"/>
         <source>Octave Editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-318"/>
+        <location line="-293"/>
         <source>The file
 %1
 is about to be closed but has been modified.
@@ -413,14 +417,7 @@ is about to be closed but has been modified.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+32"/>
-        <source>File not saved! The selected file name
-%1
-is the same as the current file name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+79"/>
+        <location line="+86"/>
         <source>
 
 Warning: The contents in the editor is modified!</source>
@@ -434,13 +431,13 @@ has been deleted or renamed. Do you want to save it now?%2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-197"/>
+        <location line="-172"/>
         <source>Could not open file %1 for write:
 %2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-966"/>
+        <location line="-975"/>
         <source>Line:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -450,7 +447,7 @@ has been deleted or renamed. Do you want to save it now?%2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1138"/>
+        <location line="+1122"/>
         <source>It seems that &apos;%1&apos; has been modified by another application. Do you want to reload it?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -478,55 +475,22 @@ has been deleted or renamed. Do you want to save it now?%2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>Show octave directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Goto current octave directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <source>Set octave directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Set octave directroy to current browser directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+4"/>
+        <location line="+17"/>
         <source>Actions on current directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Show Home directory</source>
+        <location line="+373"/>
+        <source>Find Files...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Search directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <location line="+354"/>
-        <source>Find Files ...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-350"/>
-        <location line="+363"/>
+        <location line="+13"/>
         <source>New File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-360"/>
-        <location line="+363"/>
+        <location line="+3"/>
         <source>New Directory</source>
         <translation type="unfinished"></translation>
     </message>
@@ -536,7 +500,52 @@ has been deleted or renamed. Do you want to save it now?%2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+236"/>
+        <location line="-79"/>
+        <source>Show Octave directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Go to current Octave directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Set Octave directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Set Octave directroy to current browser directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Show Home Directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Search Directory...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Find Files...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>New File...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>New Directory...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+276"/>
         <source>File size</source>
         <translation type="unfinished"></translation>
     </message>
@@ -643,6 +652,7 @@ has been deleted or renamed. Do you want to save it now?%2</source>
         <location line="+1"/>
         <source>Create file in
 </source>
+        <comment>String ends with \n!</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -654,6 +664,7 @@ has been deleted or renamed. Do you want to save it now?%2</source>
         <location line="+1"/>
         <source>Create folder in
 </source>
+        <comment>String ends with \n!</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -683,7 +694,7 @@ has been deleted or renamed. Do you want to save it now?%2</source>
         <location line="+7"/>
         <source>&lt;html&gt;&lt;body&gt;
 &lt;p&gt;We hope you find Octave to be a useful tool.&lt;/p&gt;
-&lt;p&gt;If you encounter problems, there are a number of ways to get help including commercial support options, a mailing list, a wiki, and other commnity-based support channels.
+&lt;p&gt;If you encounter problems, there are a number of ways to get help, including commercial support options, a mailing list, a wiki, and other commnity-based support channels.
 You can find more information about each of these by visiting &lt;a href=&quot;http://octave.org/support.html&quot;&gt;http://octave.org/support.html&lt;/a&gt; (opens in external browser).&lt;/p&gt;
 &lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
@@ -754,7 +765,7 @@ a:link { text-decoration: underline; color: #0000ff; }
     </message>
     <message>
         <location line="+2"/>
-        <source>&amp;More</source>
+        <source>&amp;More...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1024,7 +1035,7 @@ a:link { text-decoration: underline; color: #0000ff; }
         <source>&lt;html&gt;&lt;body&gt;
 &lt;p&gt;You seem to be using the Octave graphical interface for the first time on this computer.
 Click &apos;Next&apos; to create a configuration file and launch Octave.&lt;/p&gt;
-&lt;p&gt;The configuration file is stored in %1.  If that file exists, you will not see this dialog when Octave starts.&lt;/p&gt;
+&lt;p&gt;The configuration file is stored in&lt;br&gt;%1.&lt;/p&gt;
 &lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1032,13 +1043,12 @@ Click &apos;Next&apos; to create a configuration file and launch Octave.&lt;/p&g
 <context>
     <name>main_window</name>
     <message>
-        <location filename="../src/main-window.cc" line="+201"/>
-        <location line="+1163"/>
+        <location filename="../src/main-window.cc" line="-1696"/>
         <source>Load Workspace</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-522"/>
+        <location line="+645"/>
         <location line="+876"/>
         <source>About Octave</source>
         <translation type="unfinished"></translation>
@@ -1059,12 +1069,7 @@ Click &apos;Next&apos; to create a configuration file and launch Octave.&lt;/p&g
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Function</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+4"/>
+        <location line="+7"/>
         <source>Figure</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1104,13 +1109,12 @@ Click &apos;Next&apos; to create a configuration file and launch Octave.&lt;/p&g
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1261"/>
-        <location line="+1180"/>
+        <location line="-1265"/>
         <source>Save Workspace As</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1056"/>
+        <location line="+124"/>
         <source>The release notes file &apos;%1&apos; is empty.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1125,12 +1129,12 @@ Click &apos;Next&apos; to create a configuration file and launch Octave.&lt;/p&g
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+186"/>
+        <location line="+189"/>
         <source>Octave Community News</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+938"/>
+        <location line="+939"/>
         <source>Clear Clipboard</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1185,12 +1189,32 @@ Click &apos;Next&apos; to create a configuration file and launch Octave.&lt;/p&g
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-94"/>
+        <location line="+194"/>
+        <source>&lt;strong&gt;You are using a release candidate of Octave&apos;s experimental GUI.&lt;/strong&gt;  Octave is under continuous improvement and the GUI will be the default interface for the 4.0 release.  For more information, select the &quot;Release Notes&quot; item in the &quot;News&quot; menu of the GUI, or visit &lt;a href=&quot;http://octave.org&quot;&gt;http://octave.org&lt;/a&gt;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-288"/>
         <source>Step In</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="-151"/>
+        <source>Load Workspace...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Save Workspace As...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+41"/>
+        <source>Function...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+111"/>
         <source>Step Out</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1245,12 +1269,7 @@ Click &apos;Next&apos; to create a configuration file and launch Octave.&lt;/p&g
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+37"/>
-        <source>&lt;strong&gt;You are using a release candidate of Octave&apos;s experimental GUI.&lt;/strong&gt;  Octave is under continuous improvement and the GUI will be the default interface for the 4.0 release.  For more information, select the &quot;Release Notes&quot; item in the &quot;Help&quot; menu of the GUI, or visit &lt;a href=&quot;http://octave.org&quot;&gt;http://octave.org&lt;/a&gt;.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+13"/>
+        <location line="+50"/>
         <source>More Info</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1266,12 +1285,7 @@ Click &apos;Next&apos; to create a configuration file and launch Octave.&lt;/p&g
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-37"/>
-        <source>&lt;p&gt;&lt;strong&gt;A Note about Octave&apos;s New GUI&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;One of the biggest new features for Octave 3.8 is a graphical user interface.  It is the one thing that users have requested most often over the last few years and now it is almost ready.  But because it is not quite as polished as we would like, we have decided to wait until the 4.0.x release series before making the GUI the default interface.&lt;/p&gt;&lt;p&gt;Given the length of time and the number of bug fixes and improvements since the last major release Octave, we also decided against delaying the release of all these new improvements any longer just to perfect the GUI.  So please enjoy the 3.8 release of Octave and the preview of the new GUI.  We believe it is working reasonably well, but we also know that there are some obvious rough spots and many things that could be improved.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;We Need Your Help&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;There are many ways that you can help us fix the remaining problems, complete the GUI, and improve the overall user experience for both novices and experts alike (links will open an external browser):&lt;/p&gt;&lt;p&gt;&lt;ul&gt;&lt;li&gt;If you are a skilled software developer, you can help by contributing your time to help &lt;a href=&quot;http://octave.org/get-involved.html&quot;&gt;develop Octave&lt;/a&gt;.&lt;/li&gt;&lt;li&gt;If Octave does not work properly, you are encouraged to &lt;a href=&quot;http://octave.org/bugs.html&quot;&gt;report problems &lt;/a&gt; that you find.&lt;/li&gt;&lt;li&gt;Whether you are a user or developer, you can &lt;a href=&quot;http://octave.org/donate.html&quot;&gt;help to fund the project&lt;/a&gt;.  Octave development takes a lot of time and expertise.  Your contributions help to ensure that Octave will continue to improve.&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;&lt;p&gt;We hope you find Octave to be useful.  Please help us make it even better for the future!&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+64"/>
+        <location line="+27"/>
         <source>Enter directory name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1361,7 +1375,7 @@ Click &apos;Next&apos; to create a configuration file and launch Octave.&lt;/p&g
 <context>
     <name>news_reader</name>
     <message>
-        <location line="-1281"/>
+        <location line="-1282"/>
         <source>&lt;html&gt;
 &lt;body&gt;
 &lt;p&gt;
@@ -1610,7 +1624,12 @@ Octave GUI must be closed now.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+132"/>
+        <location line="+24"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select font, font size (as a difference from the default size), font style (&lt;b&gt;b&lt;/b&gt;old, &lt;b&gt;i&lt;/b&gt;talic, &lt;b&gt;u&lt;/b&gt;nderline), text color and background color (for the latter, the color pink (255,0,255) is a placeholder for the default background color).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+108"/>
         <source>Terminal Colors</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1675,12 +1694,7 @@ Octave GUI must be closed now.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+36"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select font, font size (as a difference from the default size), font style (bold, italic, underline), text color and background color (for the latter, the color pink (255,0,255) is a placeholder for the default background color)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+31"/>
+        <location line="+67"/>
         <source>Terminal</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1849,16 +1863,19 @@ Octave GUI must be closed now.</source>
     <message>
         <location line="+2"/>
         <source>b</source>
+        <comment>short form for bold</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>i</source>
+        <comment>short form for italic</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <source>u</source>
+        <comment>short form for underlined</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>

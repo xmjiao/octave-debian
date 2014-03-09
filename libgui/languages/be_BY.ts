@@ -474,6 +474,11 @@ Do you want to delete it anyway?</source>
         <source>cursor</source>
         <translation>курсор</translation>
     </message>
+    <message>
+        <location filename="../src/main-window.cc" line="+1900"/>
+        <source>&lt;p&gt;&lt;strong&gt;A Note about Octave&apos;s New GUI&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;One of the biggest new features for Octave 3.8 is a graphical user interface.  It is the one thing that users have requested most often over the last few years and now it is almost ready.  But because it is not quite as polished as we would like, we have decided to wait until the 4.0.x release series before making the GUI the default interface.&lt;/p&gt;&lt;p&gt;Given the length of time and the number of bug fixes and improvements since the last major release, we also decided against delaying the release of all these new improvements any longer just to perfect the GUI.  So please enjoy the 3.8 release of Octave and the preview of the new GUI.  We believe it is working reasonably well, but we also know that there are some obvious rough spots and many things that could be improved.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;We Need Your Help&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;There are many ways that you can help us fix the remaining problems, complete the GUI, and improve the overall user experience for both novices and experts alike (links will open an external browser):&lt;/p&gt;&lt;p&gt;&lt;ul&gt;&lt;li&gt;If you are a skilled software developer, you can help by contributing your time to help &lt;a href=&quot;http://octave.org/get-involved.html&quot;&gt;develop Octave&lt;/a&gt;.&lt;/li&gt;&lt;li&gt;If Octave does not work properly, you are encouraged to &lt;a href=&quot;http://octave.org/bugs.html&quot;&gt;report problems &lt;/a&gt; that you find.&lt;/li&gt;&lt;li&gt;Whether you are a user or developer, you can &lt;a href=&quot;http://octave.org/donate.html&quot;&gt;help to fund the project&lt;/a&gt;.  Octave development takes a lot of time and expertise.  Your contributions help to ensure that Octave will continue to improve.&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;&lt;p&gt;We hope you find Octave to be useful.  Please help us make it even better for the future!&lt;/p&gt;</source>
+        <translation>&lt;p&gt;&lt;strong&gt;Нататка пра новы GUI Octave&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Адна з найбольшых адметнасцяў Octave 3.8 - графічны інтэрфэйс.  Карыстальнікі апошнімі гадамі прасілі яго найбольш часта, і нарэшце ён амаль гатовы.  Але ён пакуль не такі дасканалы, як бы мы жадалі, таму мы вырашылі пачакаць выпуску з серыі 4.0.x перад тым, як рабіць яго стандартным.&lt;/p&gt;&lt;p&gt;Да таго ж, улічваючы час і колькасць выпраўленняў і паляпшэнняў у параўнанні з апошнім буйным выпускам Octave, мы вырашылі затрымліваць новы выпуск толькі дзеля ўдасканалення GUI, не зважаючы на новыя магчымасці.  Таму прыемнага вам карстання выпускам 3.8 і першай версіяй новага інтэрфэйсу.  Нам здаецца, ён працуе даволі добра, але мы ведаем, што ёсць некаторыя відавочныя грубыя недарэчнасці і шмат чаго, што можна палепшыць.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Нам патрабуецца ваша дапамога&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Ёсць шмат спосабаў, якімі вы можаце дапамагчы нам выправіць праблемы, што яшчэ засталіся, скончыць GUI і палепшыць агульнае уражанне як для новых карыстальнікаў, так і для экспертаў (спасылкі адкрыюцца ў знешнім браўзэры):&lt;/p&gt;&lt;p&gt;&lt;ul&gt;&lt;li&gt;Калі вы спрактыкаваны распрацоўнік праграм, то можаце выдаткаваць час, каб дапамагчы ў &lt;a href=&quot;http://octave.org/get-involved.html&quot;&gt;распрацоўцы Octave&lt;/a&gt;.&lt;/li&gt;&lt;li&gt;Калі Octave працуе з памылкамі, вы можаце &lt;a href=&quot;http://octave.org/bugs.html&quot;&gt;паведаміць пра праблемы&lt;/a&gt;, з якімі сутыкнуліся.&lt;/li&gt;&lt;li&gt;Няхай вы хоць карыстальнік, хоць распрацоўнік, вы можаце &lt;a href=&quot;http://octave.org/donate.html&quot;&gt;прафундаваць праект&lt;/a&gt;.  Распрацоўка Octave патрабуе шмат часу і навыкаў.  Ваш удзел дапаможа гарантаваць, што Octave і надалей будзе ўдасканальвацца.&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;&lt;p&gt;Спадзяемся, вы знойдзеце Octave карыснай.  Калі ласка, дапамажыце нам зрабіць яго лепшым для будучыні!&lt;/p&gt;</translation>
+    </message>
 </context>
 <context>
     <name>QPPDOptionsModel</name>
@@ -893,7 +898,7 @@ Do you want to delete it anyway?</source>
     </message>
     <message>
         <location line="+71"/>
-        <source>Print To File ...</source>
+        <source>Print To File...</source>
         <translation>Друк у файл...</translation>
     </message>
     <message>
@@ -958,7 +963,7 @@ Do you want to overwrite it?</source>
 <context>
     <name>QWinTerminalImpl</name>
     <message>
-        <location filename="../qterminal/libqterminal/win32/QWinTerminalImpl.cpp" line="+1528"/>
+        <location filename="../qterminal/libqterminal/win32/QWinTerminalImpl.cpp" line="+1536"/>
         <source>copied selection to clipboard</source>
         <translation>вылучэнне скапіявана ў буфер абмену</translation>
     </message>
@@ -1679,12 +1684,7 @@ is already open in the editor</source>
 ужо адкрыты ў рэдактары</translation>
     </message>
     <message>
-        <location line="+28"/>
-        <source>The associated file editor tab has disappeared.  It was likely closed by some means.</source>
-        <translation>Асацыяваная картка рэдактара знікла.  Выглядае, што яе з нейкай прычыны закрылі.</translation>
-    </message>
-    <message>
-        <location line="+227"/>
+        <location line="+255"/>
         <source>&amp;%1 %2</source>
         <translation>&amp;%1 %2</translation>
     </message>
@@ -1694,24 +1694,24 @@ is already open in the editor</source>
         <translation>&amp;Новы файл</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>&amp;Open File</source>
-        <translation>&amp;Адкрыць файл</translation>
-    </message>
-    <message>
-        <location line="+3"/>
+        <location line="+6"/>
         <source>&amp;Save File</source>
         <translation>&amp;Захаваць файл</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Save File &amp;As</source>
-        <translation>Захаваць файл &amp;як</translation>
+        <location line="-3"/>
+        <source>&amp;Open File...</source>
+        <translation>&amp;Адкрыць файл...</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Save File &amp;As...</source>
+        <translation>Захаваць файл &amp;як...</translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>Print</source>
-        <translation>Друк</translation>
+        <source>Print...</source>
+        <translation>Друк...</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1789,22 +1789,27 @@ is already open in the editor</source>
         <translation>&amp;Раскаментаваць</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+3"/>
+        <source>&amp;Find and Replace...</source>
+        <translation>&amp;Знайсці і замяніць...</translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Save File and Run</source>
         <translation>Захаваць і выканаць файл</translation>
     </message>
     <message>
-        <location line="+57"/>
+        <location line="+2"/>
+        <source>Go &amp;to Line...</source>
+        <translation>П&amp;ерайсці да радка...</translation>
+    </message>
+    <message>
+        <location line="+55"/>
         <source>&amp;Recent Editor Files</source>
         <translation>&amp;Ранейшыя файлы</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>New &amp;Function</source>
-        <translation>Новая &amp;функцыя</translation>
-    </message>
-    <message>
-        <location line="+6"/>
+        <location line="+11"/>
         <source>&amp;Edit Function</source>
         <translation>&amp;Змяніць функцыю</translation>
     </message>
@@ -1824,7 +1829,17 @@ is already open in the editor</source>
         <translation>Закрыць іншыя файлы</translation>
     </message>
     <message>
-        <location line="+51"/>
+        <location line="+31"/>
+        <source>&amp;Preferences...</source>
+        <translation>&amp;Настаўленні...</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>&amp;Styles Preferences...</source>
+        <translation>&amp;Настаўленні выгляду...</translation>
+    </message>
+    <message>
+        <location line="+16"/>
         <source>Run &amp;Selection</source>
         <translation>Выканаць &amp;вылучанае</translation>
     </message>
@@ -1844,12 +1859,7 @@ is already open in the editor</source>
         <translation>&amp;Дакументацыя па ключавым слове</translation>
     </message>
     <message>
-        <location line="-151"/>
-        <source>&amp;Find and Replace</source>
-        <translation>&amp;Знайсці і замяніць</translation>
-    </message>
-    <message>
-        <location line="-590"/>
+        <location line="-741"/>
         <source>Could not open file
 %1
 for read: %2.</source>
@@ -1876,32 +1886,27 @@ for write: %2.</source>
 на запіс: %2.</translation>
     </message>
     <message>
-        <location line="+555"/>
-        <source>Go&amp;to Line</source>
-        <translation>П&amp;ерайсці да радка</translation>
+        <location line="+87"/>
+        <source>The associated file editor tab has disappeared.</source>
+        <translation>Асацыяваная картка рэдактара знікла.</translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+521"/>
         <source>&amp;File</source>
         <translation>&amp;Файл</translation>
     </message>
     <message>
-        <location line="+41"/>
+        <location line="+7"/>
+        <source>New &amp;Function...</source>
+        <translation>Новая &amp;функцыя...</translation>
+    </message>
+    <message>
+        <location line="+34"/>
         <source>&amp;Edit</source>
         <translation>&amp;Змяніць</translation>
     </message>
     <message>
-        <location line="+22"/>
-        <source>&amp;Preferences</source>
-        <translation>&amp;Настаўленні</translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>&amp;Styles Preferences</source>
-        <translation>&amp;Настаўленні выгляду</translation>
-    </message>
-    <message>
-        <location line="+4"/>
+        <location line="+30"/>
         <source>&amp;Debug</source>
         <translation>&amp;Адладка</translation>
     </message>
@@ -1914,7 +1919,7 @@ for write: %2.</source>
 <context>
     <name>file_editor_tab</name>
     <message>
-        <location filename="../src/m-editor/file-editor-tab.cc" line="+792"/>
+        <location filename="../src/m-editor/file-editor-tab.cc" line="+803"/>
         <source>Goto line</source>
         <translation>Перайсці да радка</translation>
     </message>
@@ -1942,14 +1947,13 @@ for write: %2.</source>
     <message>
         <location line="+10"/>
         <location line="+122"/>
-        <location line="+111"/>
-        <location line="+64"/>
+        <location line="+150"/>
         <location line="+22"/>
         <source>Octave Editor</source>
         <translation>Рэдактар Octave</translation>
     </message>
     <message>
-        <location line="-318"/>
+        <location line="-293"/>
         <source>The file
 %1
 is about to be closed but has been modified.
@@ -1965,16 +1969,7 @@ is about to be closed but has been modified.
         <translation>Файлы Octave (*.m);;Усе файлы (*)</translation>
     </message>
     <message>
-        <location line="+32"/>
-        <source>File not saved! The selected file name
-%1
-is the same as the current file name</source>
-        <translation>Файл не захаваны! Пазначаная назва файла
-%1
-супадае з назвай бягучага файла</translation>
-    </message>
-    <message>
-        <location line="+79"/>
+        <location line="+86"/>
         <source>
 
 Warning: The contents in the editor is modified!</source>
@@ -1992,14 +1987,14 @@ has been deleted or renamed. Do you want to save it now?%2</source>
 быў выдалены або пераназваны. Можа, захаваць яго зараз?%2</translation>
     </message>
     <message>
-        <location line="-197"/>
+        <location line="-172"/>
         <source>Could not open file %1 for write:
 %2.</source>
         <translation>Не выйшла адкрыць файл %1 на запіс:
 %2.</translation>
     </message>
     <message>
-        <location line="-966"/>
+        <location line="-975"/>
         <source>Line:</source>
         <translation>Радок:</translation>
     </message>
@@ -2009,7 +2004,7 @@ has been deleted or renamed. Do you want to save it now?%2</source>
         <translation>Слупок:</translation>
     </message>
     <message>
-        <location line="+1138"/>
+        <location line="+1122"/>
         <source>It seems that &apos;%1&apos; has been modified by another application. Do you want to reload it?</source>
         <translation>Выглядае на тое, што &apos;%1&apos; быў зменены іншай праграмай. Перачытаць яго?</translation>
     </message>
@@ -2037,55 +2032,22 @@ has been deleted or renamed. Do you want to save it now?%2</source>
         <translation>Перайсці каталогам вышэй</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>Show octave directory</source>
-        <translation>Перайсці да каталогу Octave</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Goto current octave directory</source>
-        <translation>Перайсці да дзейнага каталога Octave</translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <source>Set octave directory</source>
-        <translation>Задаць каталог Octave</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Set octave directroy to current browser directory</source>
-        <translation>Зрабіць каталогам Octave дзейны каталог аглядніка</translation>
-    </message>
-    <message>
-        <location line="+4"/>
+        <location line="+17"/>
         <source>Actions on current directory</source>
         <translation>Дзеянні з дзейным каталогам</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Show Home directory</source>
-        <translation>Перайсці да хатняга каталогу</translation>
-    </message>
-    <message>
-        <location line="+12"/>
-        <source>Search directory</source>
-        <translation>Шукаць каталог</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <location line="+354"/>
-        <source>Find Files ...</source>
+        <location line="+373"/>
+        <source>Find Files...</source>
         <translation>Шукаць файлы...</translation>
     </message>
     <message>
-        <location line="-350"/>
-        <location line="+363"/>
+        <location line="+13"/>
         <source>New File</source>
         <translation>Новы файл</translation>
     </message>
     <message>
-        <location line="-360"/>
-        <location line="+363"/>
+        <location line="+3"/>
         <source>New Directory</source>
         <translation>Новы каталог</translation>
     </message>
@@ -2095,7 +2057,52 @@ has been deleted or renamed. Do you want to save it now?%2</source>
         <translation>Двойчы пстрыкніце па файле для адкрыцця</translation>
     </message>
     <message>
-        <location line="+236"/>
+        <location line="-79"/>
+        <source>Show Octave directory</source>
+        <translation>Перайсці да каталогу Octave</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Go to current Octave directory</source>
+        <translation>Перайсці да дзейнага каталога Octave</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Set Octave directory</source>
+        <translation>Задаць каталог Octave</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Set Octave directroy to current browser directory</source>
+        <translation>Зрабіць каталогам Octave дзейны каталог аглядніка</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Show Home Directory</source>
+        <translation>Перайсці да хатняга каталогу</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Search Directory...</source>
+        <translation>Шукаць каталог...</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Find Files...</source>
+        <translation>Шукаць файлы...</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>New File...</source>
+        <translation>Новы файл...</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>New Directory...</source>
+        <translation>Новы каталог...</translation>
+    </message>
+    <message>
+        <location line="+276"/>
         <source>File size</source>
         <translation>Памер файла</translation>
     </message>
@@ -2203,7 +2210,9 @@ has been deleted or renamed. Do you want to save it now?%2</source>
         <location line="+1"/>
         <source>Create file in
 </source>
-        <translation>Стварыць файл у</translation>
+        <comment>String ends with \n!</comment>
+        <translation>Стварыць файл у
+</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -2214,7 +2223,9 @@ has been deleted or renamed. Do you want to save it now?%2</source>
         <location line="+1"/>
         <source>Create folder in
 </source>
-        <translation>Стварыць каталог у</translation>
+        <comment>String ends with \n!</comment>
+        <translation>Стварыць каталог у
+</translation>
     </message>
 </context>
 <context>
@@ -2243,7 +2254,7 @@ has been deleted or renamed. Do you want to save it now?%2</source>
         <location line="+7"/>
         <source>&lt;html&gt;&lt;body&gt;
 &lt;p&gt;We hope you find Octave to be a useful tool.&lt;/p&gt;
-&lt;p&gt;If you encounter problems, there are a number of ways to get help including commercial support options, a mailing list, a wiki, and other commnity-based support channels.
+&lt;p&gt;If you encounter problems, there are a number of ways to get help, including commercial support options, a mailing list, a wiki, and other commnity-based support channels.
 You can find more information about each of these by visiting &lt;a href=&quot;http://octave.org/support.html&quot;&gt;http://octave.org/support.html&lt;/a&gt; (opens in external browser).&lt;/p&gt;
 &lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body&gt;
@@ -2329,8 +2340,8 @@ a:link { text-decoration: underline; color: #0000ff; }
     </message>
     <message>
         <location line="+2"/>
-        <source>&amp;More</source>
-        <translation>&amp;Больш параметраў</translation>
+        <source>&amp;More...</source>
+        <translation>&amp;Больш параметраў...</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -2599,25 +2610,24 @@ a:link { text-decoration: underline; color: #0000ff; }
         <source>&lt;html&gt;&lt;body&gt;
 &lt;p&gt;You seem to be using the Octave graphical interface for the first time on this computer.
 Click &apos;Next&apos; to create a configuration file and launch Octave.&lt;/p&gt;
-&lt;p&gt;The configuration file is stored in %1.  If that file exists, you will not see this dialog when Octave starts.&lt;/p&gt;
+&lt;p&gt;The configuration file is stored in&lt;br&gt;%1.&lt;/p&gt;
 &lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body&gt;
 &lt;p&gt;Выглядае, што на гэтым кампутары вы выкарыстоўваеце графічны інтэрфэйс Octave упершыню.
 Націсніце &apos;Далей&apos;, каб запісаць файл канфігурацыі і запусціць Octave.&lt;/p&gt;
-&lt;p&gt;Файл канфігурацыі запісаны ў %1.  Калі файл існуе, вы больш не пабачыце гэтае акенца падчас запуску Octave.&lt;/p&gt;
+&lt;p&gt;Файл канфігурацыі запісаны ў&lt;br&gt;%1.&lt;/p&gt;
 &lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
     <name>main_window</name>
     <message>
-        <location filename="../src/main-window.cc" line="+201"/>
-        <location line="+1163"/>
+        <location filename="../src/main-window.cc" line="-1696"/>
         <source>Load Workspace</source>
         <translation>Загрузіць прастору зменных</translation>
     </message>
     <message>
-        <location line="-522"/>
+        <location line="+645"/>
         <location line="+876"/>
         <source>About Octave</source>
         <translation>Пра Octave</translation>
@@ -2638,12 +2648,7 @@ Click &apos;Next&apos; to create a configuration file and launch Octave.&lt;/p&g
         <translation>Новы сцэнар</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Function</source>
-        <translation>Функцыя</translation>
-    </message>
-    <message>
-        <location line="+4"/>
+        <location line="+7"/>
         <source>Figure</source>
         <translation>Графік</translation>
     </message>
@@ -2683,13 +2688,12 @@ Click &apos;Next&apos; to create a configuration file and launch Octave.&lt;/p&g
         <translation>Уставіць</translation>
     </message>
     <message>
-        <location line="-1261"/>
-        <location line="+1180"/>
+        <location line="-1265"/>
         <source>Save Workspace As</source>
         <translation>Захаваць прастору зменных як</translation>
     </message>
     <message>
-        <location line="-1056"/>
+        <location line="+124"/>
         <source>The release notes file &apos;%1&apos; is empty.</source>
         <translation>Файл заўваг да выпуску &apos;%1&apos; пусты.</translation>
     </message>
@@ -2704,12 +2708,12 @@ Click &apos;Next&apos; to create a configuration file and launch Octave.&lt;/p&g
         <translation>Заўвагі да выпуску Octave</translation>
     </message>
     <message>
-        <location line="+186"/>
+        <location line="+189"/>
         <source>Octave Community News</source>
         <translation>Навіны супольнасці Octave</translation>
     </message>
     <message>
-        <location line="+938"/>
+        <location line="+939"/>
         <source>Clear Clipboard</source>
         <translation>Ачысціць буфер</translation>
     </message>
@@ -2764,12 +2768,32 @@ Click &apos;Next&apos; to create a configuration file and launch Octave.&lt;/p&g
         <translation>Файлавы агляднік</translation>
     </message>
     <message>
-        <location line="-94"/>
+        <location line="+194"/>
+        <source>&lt;strong&gt;You are using a release candidate of Octave&apos;s experimental GUI.&lt;/strong&gt;  Octave is under continuous improvement and the GUI will be the default interface for the 4.0 release.  For more information, select the &quot;Release Notes&quot; item in the &quot;News&quot; menu of the GUI, or visit &lt;a href=&quot;http://octave.org&quot;&gt;http://octave.org&lt;/a&gt;.</source>
+        <translation>&lt;strong&gt;Вы выкарыстоўваеце кандыдат на выпуск эксперыментальнага графічнага (GUI) інтэрфэйсу Octave.&lt;/strong&gt;  Octave пастаянна паляпшаецца, і GUI будзе стандартным інтэрфэйсам з версіі 4.0.  Для дадатковай інфармацыі націсніце &quot;Заўвагі да выпуску&quot; у меню &quot;Навіны&quot;, альбо наведайце &lt;a href=&quot;http://octave.org&quot;&gt;http://octave.org&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <location line="-288"/>
         <source>Step In</source>
         <translation>Крок наперад</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="-151"/>
+        <source>Load Workspace...</source>
+        <translation>Загрузіць прастору зменных...</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Save Workspace As...</source>
+        <translation>Захаваць прастору зменных як...</translation>
+    </message>
+    <message>
+        <location line="+41"/>
+        <source>Function...</source>
+        <translation>Функцыя...</translation>
+    </message>
+    <message>
+        <location line="+111"/>
         <source>Step Out</source>
         <translation>Крок назад</translation>
     </message>
@@ -2824,12 +2848,7 @@ Click &apos;Next&apos; to create a configuration file and launch Octave.&lt;/p&g
         <translation>Навіны супольнасці</translation>
     </message>
     <message>
-        <location line="+37"/>
-        <source>&lt;strong&gt;You are using a release candidate of Octave&apos;s experimental GUI.&lt;/strong&gt;  Octave is under continuous improvement and the GUI will be the default interface for the 4.0 release.  For more information, select the &quot;Release Notes&quot; item in the &quot;Help&quot; menu of the GUI, or visit &lt;a href=&quot;http://octave.org&quot;&gt;http://octave.org&lt;/a&gt;.</source>
-        <translation>&lt;strong&gt;Вы выкарыстоўваеце кандыдат на выпуск эксперыментальнага графічнага (GUI) інтэрфэйсу Octave.&lt;/strong&gt;  Octave пастаянна паляпшаецца, і GUI будзе стандартным інтэрфэйсам з версіі 4.0.  Для дадатковай інфармацыі націсніце &quot;Заўвагі да выпуску&quot; у меню &quot;Навіны&quot;, альбо наведайце &lt;a href=&quot;http://octave.org&quot;&gt;http://octave.org&lt;/a&gt;.</translation>
-    </message>
-    <message>
-        <location line="+13"/>
+        <location line="+50"/>
         <source>More Info</source>
         <translation>Даведацца болей</translation>
     </message>
@@ -2845,12 +2864,7 @@ Click &apos;Next&apos; to create a configuration file and launch Octave.&lt;/p&g
         <translation>Інфармацыя пра эксперыментальны GUI Octave</translation>
     </message>
     <message>
-        <location line="-37"/>
-        <source>&lt;p&gt;&lt;strong&gt;A Note about Octave&apos;s New GUI&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;One of the biggest new features for Octave 3.8 is a graphical user interface.  It is the one thing that users have requested most often over the last few years and now it is almost ready.  But because it is not quite as polished as we would like, we have decided to wait until the 4.0.x release series before making the GUI the default interface.&lt;/p&gt;&lt;p&gt;Given the length of time and the number of bug fixes and improvements since the last major release Octave, we also decided against delaying the release of all these new improvements any longer just to perfect the GUI.  So please enjoy the 3.8 release of Octave and the preview of the new GUI.  We believe it is working reasonably well, but we also know that there are some obvious rough spots and many things that could be improved.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;We Need Your Help&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;There are many ways that you can help us fix the remaining problems, complete the GUI, and improve the overall user experience for both novices and experts alike (links will open an external browser):&lt;/p&gt;&lt;p&gt;&lt;ul&gt;&lt;li&gt;If you are a skilled software developer, you can help by contributing your time to help &lt;a href=&quot;http://octave.org/get-involved.html&quot;&gt;develop Octave&lt;/a&gt;.&lt;/li&gt;&lt;li&gt;If Octave does not work properly, you are encouraged to &lt;a href=&quot;http://octave.org/bugs.html&quot;&gt;report problems &lt;/a&gt; that you find.&lt;/li&gt;&lt;li&gt;Whether you are a user or developer, you can &lt;a href=&quot;http://octave.org/donate.html&quot;&gt;help to fund the project&lt;/a&gt;.  Octave development takes a lot of time and expertise.  Your contributions help to ensure that Octave will continue to improve.&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;&lt;p&gt;We hope you find Octave to be useful.  Please help us make it even better for the future!&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;strong&gt;Нататка пра новы GUI Octave&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Адна з найбольшых адметнасцяў Octave 3.8 - графічны інтэрфэйс.  Карыстальнікі апошнімі гадамі прасілі яго найбольш часта, і нарэшце ён амаль гатовы.  Але ён пакуль не такі дасканалы, як бы мы жадалі, таму мы вырашылі пачакаць выпуску з серыі 4.0.x перад тым, як рабіць яго стандартным.&lt;/p&gt;&lt;p&gt;Да таго ж, улічваючы час і колькасць выпраўленняў і паляпшэнняў у параўнанні з апошнім буйным выпускам Octave, мы вырашылі затрымліваць новы выпуск толькі дзеля ўдасканалення GUI, не зважаючы на новыя магчымасці.  Таму прыемнага вам карстання выпускам 3.8 і першай версіяй новага інтэрфэйсу.  Нам здаецца, ён працуе даволі добра, але мы ведаем, што ёсць некаторыя відавочныя грубыя недарэчнасці і шмат чаго, што можна палепшыць.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Нам патрабуецца ваша дапамога&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Ёсць шмат спосабаў, якімі вы можаце дапамагчы нам выправіць праблемы, што яшчэ засталіся, скончыць GUI і палепшыць агульнае уражанне як для новых карыстальнікаў, так і для экспертаў (спасылкі адкрыюцца ў знешнім браўзэры):&lt;/p&gt;&lt;p&gt;&lt;ul&gt;&lt;li&gt;Калі вы спрактыкаваны распрацоўнік праграм, то можаце выдаткаваць час, каб дапамагчы ў &lt;a href=&quot;http://octave.org/get-involved.html&quot;&gt;распрацоўцы Octave&lt;/a&gt;.&lt;/li&gt;&lt;li&gt;Калі Octave працуе з памылкамі, вы можаце &lt;a href=&quot;http://octave.org/bugs.html&quot;&gt;паведаміць пра праблемы&lt;/a&gt;, з якімі сутыкнуліся.&lt;/li&gt;&lt;li&gt;Няхай вы хоць карыстальнік, хоць распрацоўнік, вы можаце &lt;a href=&quot;http://octave.org/donate.html&quot;&gt;прафундаваць праект&lt;/a&gt;.  Распрацоўка Octave патрабуе шмат часу і навыкаў.  Ваш удзел дапаможа гарантаваць, што Octave і надалей будзе ўдасканальвацца.&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;&lt;p&gt;Спадзяемся, вы знойдзеце Octave карыснай.  Калі ласка, дапамажыце нам зрабіць яго лепшым для будучыні!&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location line="+64"/>
+        <location line="+27"/>
         <source>Enter directory name</source>
         <translation>Пазначце назву каталогу</translation>
     </message>
@@ -2940,7 +2954,7 @@ Click &apos;Next&apos; to create a configuration file and launch Octave.&lt;/p&g
 <context>
     <name>news_reader</name>
     <message>
-        <location line="-1281"/>
+        <location line="-1282"/>
         <source>&lt;html&gt;
 &lt;body&gt;
 &lt;p&gt;
@@ -3223,7 +3237,12 @@ GUI Octave зараз мусіць закрыцца.</translation>
         <translation>Выгляд рэдактара</translation>
     </message>
     <message>
-        <location line="+132"/>
+        <location line="+24"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select font, font size (as a difference from the default size), font style (&lt;b&gt;b&lt;/b&gt;old, &lt;b&gt;i&lt;/b&gt;talic, &lt;b&gt;u&lt;/b&gt;nderline), text color and background color (for the latter, the color pink (255,0,255) is a placeholder for the default background color).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Пазначце шрыфт, ягоны памер (як розніцу ад стандартнага памеру), стыль шрыфту (&lt;b&gt;т&lt;/b&gt;оўсты, &lt;b&gt;к&lt;/b&gt;урсіўны, &lt;b&gt;п&lt;/b&gt;адкрэслены), колер тэксту і колер фону (для фону ружовы (255,0,255) азначае стандартны колер фону).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location line="+108"/>
         <source>Terminal Colors</source>
         <translation>Колеры тэрміналу</translation>
     </message>
@@ -3288,12 +3307,7 @@ GUI Octave зараз мусіць закрыцца.</translation>
         <translation>emacs</translation>
     </message>
     <message>
-        <location line="+36"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select font, font size (as a difference from the default size), font style (bold, italic, underline), text color and background color (for the latter, the color pink (255,0,255) is a placeholder for the default background color)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Пазначце шрыфт, ягоны памер (як розніцу ад стандартнага памеру), стыль шрыфту (тоўсты, курсіўны, падкрэслены), колер тэксту і колер фону (для фону ружовы (255,0,255) азначае стандартны колер фону)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location line="+31"/>
+        <location line="+67"/>
         <source>Terminal</source>
         <translation>Тэрмінал</translation>
     </message>
@@ -3462,16 +3476,19 @@ GUI Octave зараз мусіць закрыцца.</translation>
     <message>
         <location line="+2"/>
         <source>b</source>
+        <comment>short form for bold</comment>
         <translation>т</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>i</source>
+        <comment>short form for italic</comment>
         <translation>к</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>u</source>
+        <comment>short form for underlined</comment>
         <translation>п</translation>
     </message>
 </context>

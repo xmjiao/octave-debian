@@ -318,6 +318,22 @@ endfor
 @end group
 @end example
 
+@noindent
+Alternatively, the output of the @code{lasterror} function can be found
+in a variable indicated immediately after the @code{catch} keyword, as
+in the example below showing how to redirect an error as a warning:
+
+@example
+@group
+try
+  @dots{}
+catch err
+  warning(err.identifier, err.message);
+  @dots{}
+end_try_catch
+@end group
+@end example
+
 @c lasterror libinterp/corefcn/error.cc
 @anchor{XREFlasterror}
 @deftypefn  {Built-in Function} {@var{lasterr} =} lasterror ()
@@ -530,10 +546,10 @@ endfunction  # rand generator state restored by onCleanup
 
 @c onCleanup libinterp/octave-value/ov-oncleanup.cc
 @anchor{XREFonCleanup}
-@deftypefn {Built-in Function} {@var{c} =} onCleanup (@var{action})
+@deftypefn {Built-in Function} {@var{obj} =} onCleanup (@var{function})
 Create a special object that executes a given function upon destruction.
 If the object is copied to multiple variables (or cell or struct array
-elements) or returned from a function, @var{action} will be executed after
+elements) or returned from a function, @var{function} will be executed after
 clearing the last copy of the object.  Note that if multiple local onCleanup
 variables are created, the order in which they are called is unspecified.
 For similar functionality @xref{The unwind_protect Statement}.

@@ -1059,6 +1059,13 @@ covariance [default]
 @item 1:
   normalize with @math{N}, this provides the second moment around the mean
 @end table
+
+@sc{matlab} compatibility: Octave always computes the covariance matrix.
+For two inputs, however, @sc{matlab} will calculate
+@code{cov (@var{x}(:), @var{y}(:))} whenever the number of elements in
+@var{x} and @var{y} are equal.  This will result in a scalar rather than
+a matrix output.  Code relying on this odd definition will need to be
+changed when running in Octave.
 @seealso{@ref{XREFcorr,,corr}}
 @end deftypefn
 
@@ -1782,10 +1789,10 @@ the CDF) at @var{x} of the logistic distribution.
 For each element of @var{x}, compute the probability density function
 (PDF) at @var{x} of the lognormal distribution with parameters
 @var{mu} and @var{sigma}.  If a random variable follows this distribution,
-its logarithm is normally distributed with mean @var{mu}
-and standard deviation @var{sigma}.
+its logarithm is normally distributed with mean @var{mu} and standard
+deviation @var{sigma}.
 
-Default values are @var{mu} = 1, @var{sigma} = 1.
+Default values are @var{mu} = 0, @var{sigma} = 1.
 @end deftypefn
 
 
@@ -1793,13 +1800,13 @@ Default values are @var{mu} = 1, @var{sigma} = 1.
 @anchor{XREFlogncdf}
 @deftypefn  {Function File} {} logncdf (@var{x})
 @deftypefnx {Function File} {} logncdf (@var{x}, @var{mu}, @var{sigma})
-For each element of @var{x}, compute the cumulative distribution
-function (CDF) at @var{x} of the lognormal distribution with
-parameters @var{mu} and @var{sigma}.  If a random variable follows this
-distribution, its logarithm is normally distributed with mean
-@var{mu} and standard deviation @var{sigma}.
+For each element of @var{x}, compute the cumulative distribution function
+(CDF) at @var{x} of the lognormal distribution with parameters
+@var{mu} and @var{sigma}.  If a random variable follows this distribution,
+its logarithm is normally distributed with mean @var{mu} and standard
+deviation @var{sigma}.
 
-Default values are @var{mu} = 1, @var{sigma} = 1.
+Default values are @var{mu} = 0, @var{sigma} = 1.
 @end deftypefn
 
 
@@ -1808,12 +1815,12 @@ Default values are @var{mu} = 1, @var{sigma} = 1.
 @deftypefn  {Function File} {} logninv (@var{x})
 @deftypefnx {Function File} {} logninv (@var{x}, @var{mu}, @var{sigma})
 For each element of @var{x}, compute the quantile (the inverse of the
-CDF) at @var{x} of the lognormal distribution with parameters @var{mu}
-and @var{sigma}.  If a random variable follows this distribution, its
-logarithm is normally distributed with mean @code{log (@var{mu})} and
-variance @var{sigma}.
+CDF) at @var{x} of the lognormal distribution with parameters
+@var{mu} and @var{sigma}.  If a random variable follows this distribution,
+its logarithm is normally distributed with mean @var{mu} and standard
+deviation @var{sigma}.
 
-Default values are @var{mu} = 1, @var{sigma} = 1.
+Default values are @var{mu} = 0, @var{sigma} = 1.
 @end deftypefn
 
 

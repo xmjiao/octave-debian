@@ -86,7 +86,14 @@ The original variable value is restored when exiting the function.
 @c logical libinterp/octave-value/ov-bool-mat.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} logical (@var{x})
-Convert @var{x} to logical type.
+Convert the numeric object @var{x} to logical type.
+
+Any non-zero values will be converted to true (1) while zero values
+will be converted to false (0).  The non-numeric value NaN cannot be
+converted and will produce an error.
+
+Compatibility Note: Octave accepts complex values as input, whereas
+@sc{matlab} issues an error.
 @seealso{double, single, char}
 @end deftypefn
 iscell
@@ -104,10 +111,12 @@ Return true if @var{x} is a cell array object.
 @deftypefnx {Built-in Function} {} cell (@var{m}, @var{n}, @var{k}, @dots{})
 @deftypefnx {Built-in Function} {} cell ([@var{m} @var{n} @dots{}])
 Create a new cell array object.
+
 If invoked with a single scalar integer argument, return a square
 @nospell{NxN} cell array.  If invoked with two or more scalar
 integer arguments, or a vector of integer values, return an array with
 the given dimensions.
+@seealso{cellstr, mat2cell, num2cell, struct2cell}
 @end deftypefn
 iscellstr
 @c iscellstr libinterp/octave-value/ov-cell.cc
@@ -120,18 +129,24 @@ character string.
 cellstr
 @c cellstr libinterp/octave-value/ov-cell.cc
 -*- texinfo -*-
-@deftypefn {Built-in Function} {} cellstr (@var{string})
+@deftypefn {Built-in Function} {@var{cstr} =} cellstr (@var{strmat})
 Create a new cell array object from the elements of the string
-array @var{string}.
+array @var{strmat}.
+
+Each row of @var{strmat} becomes an element of @var{cstr}.  Any trailing
+spaces in a row are deleted before conversion.
+
+To convert back from a cellstr to a character array use @code{char}.
+@seealso{cell, char}
 @end deftypefn
 struct2cell
 @c struct2cell libinterp/octave-value/ov-cell.cc
 -*- texinfo -*-
-@deftypefn {Built-in Function} {} struct2cell (@var{S})
+@deftypefn {Built-in Function} {@var{c} =} struct2cell (@var{s})
 Create a new cell array from the objects stored in the struct object.
 If @var{f} is the number of fields in the structure, the resulting
 cell array will have a dimension vector corresponding to
-@code{[@var{F} size(@var{S})]}.  For example:
+@code{[@var{f} size(@var{s})]}.  For example:
 
 @example
 @group
@@ -195,7 +210,7 @@ Return true if @var{x} is a class object.
 @deftypefn {Built-in Function} {} ismethod (@var{x}, @var{method})
 Return true if @var{x} is a class object and the string @var{method}
 is a method of this class.
-@seealso{isobject}
+@seealso{isprop, isobject}
 @end deftypefn
 __methods__
 @c __methods__ libinterp/octave-value/ov-class.cc
@@ -215,6 +230,7 @@ When called from a class constructor, mark the object currently
 constructed as having a higher precedence than @var{class_name}.
 More that one such class can be specified in a single call.
 This function may only be called from a class constructor.
+@seealso{inferiorto}
 @end deftypefn
 inferiorto
 @c inferiorto libinterp/octave-value/ov-class.cc
@@ -224,13 +240,54 @@ When called from a class constructor, mark the object currently
 constructed as having a lower precedence than @var{class_name}.
 More that one such class can be specified in a single call.
 This function may only be called from a class constructor.
+@seealso{superiorto}
 @end deftypefn
 functions
 @c functions libinterp/octave-value/ov-fcn-handle.cc
 -*- texinfo -*-
-@deftypefn {Built-in Function} {} functions (@var{fcn_handle})
-Return a struct containing information about the function handle
+@deftypefn {Built-in Function} {@var{s} =} functions (@var{fcn_handle})
+Return a structure containing information about the function handle
 @var{fcn_handle}.
+
+The structure @var{s} always contains these 3 fields:
+
+@table @asis
+@item function
+The function name.  For an anonymous function (no name) this will be the
+actual function definition.
+
+@item type
+Type of the function.
+
+@table @asis
+@item anonymous
+The function is anonymous.
+
+@item private
+The function is private.
+
+@item overloaded
+The function overloads an existing function.
+
+@item simple
+The function is a built-in or m-file function.
+
+@item subfunction
+The function is a subfunction within an m-file.
+@end table
+
+@item file
+The m-file that will be called to perform the function.  This field is empty
+for anonymous and built-in functions.
+@end table
+
+In addition, some function types may return more information in additional
+fields.
+
+@strong{Warning:} @code{functions} is provided for debugging purposes only.
+It's behavior may change in the future and programs should not depend on a
+particular output.
+
 @end deftypefn
 func2str
 @c func2str libinterp/octave-value/ov-fcn-handle.cc
@@ -238,6 +295,7 @@ Return a struct containing information about the function handle
 @deftypefn {Built-in Function} {} func2str (@var{fcn_handle})
 Return a string containing the name of the function referenced by
 the function handle @var{fcn_handle}.
+@seealso{str2func, functions}
 @end deftypefn
 str2func
 @c str2func libinterp/octave-value/ov-fcn-handle.cc
@@ -247,13 +305,14 @@ the function handle @var{fcn_handle}.
 Return a function handle constructed from the string @var{fcn_name}.
 If the optional @qcode{"global"} argument is passed, locally visible
 functions are ignored in the lookup.
+@seealso{func2str, inline}
 @end deftypefn
 is_function_handle
 @c is_function_handle libinterp/octave-value/ov-fcn-handle.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} is_function_handle (@var{x})
 Return true if @var{x} is a function handle.
-@seealso{isa, typeinfo, class}
+@seealso{isa, typeinfo, class, functions}
 @end deftypefn
 inline
 @c inline libinterp/octave-value/ov-fcn-inline.cc
@@ -262,6 +321,7 @@ Return true if @var{x} is a function handle.
 @deftypefnx {Built-in Function} {} inline (@var{str}, @var{arg1}, @dots{})
 @deftypefnx {Built-in Function} {} inline (@var{str}, @var{n})
 Create an inline function from the character string @var{str}.
+
 If called with a single argument, the arguments of the generated
 function are extracted from the function itself.  The generated
 function arguments will then be in alphabetical order.  It should
@@ -276,7 +336,12 @@ they are the names of the arguments of the function.
 
 If the second argument is an integer @var{n}, the arguments are
 @qcode{"x"}, @qcode{"P1"}, @dots{}, @qcode{"P@var{N}"}.
-@seealso{argnames, formula, vectorize}
+
+Programming Note: The use of @code{inline} is discouraged and it may be
+removed from a future version of Octave.  The preferred way to create
+functions from strings is through the use of anonymous functions
+(@pxref{Anonymous Functions}) or @code{str2func}.
+@seealso{argnames, formula, vectorize, str2func}
 @end deftypefn
 formula
 @c formula libinterp/octave-value/ov-fcn-inline.cc
@@ -504,10 +569,10 @@ This should give an error if @code{I} is nonempty.
 onCleanup
 @c onCleanup libinterp/octave-value/ov-oncleanup.cc
 -*- texinfo -*-
-@deftypefn {Built-in Function} {@var{c} =} onCleanup (@var{action})
+@deftypefn {Built-in Function} {@var{obj} =} onCleanup (@var{function})
 Create a special object that executes a given function upon destruction.
 If the object is copied to multiple variables (or cell or struct array
-elements) or returned from a function, @var{action} will be executed after
+elements) or returned from a function, @var{function} will be executed after
 clearing the last copy of the object.  Note that if multiple local onCleanup
 variables are created, the order in which they are called is unspecified.
 For similar functionality @xref{The unwind_protect Statement}.
@@ -537,12 +602,14 @@ Convert @var{x} to double precision type.
 struct
 @c struct libinterp/octave-value/ov-struct.cc
 -*- texinfo -*-
-@deftypefn {Built-in Function} {} struct (@var{field1}, @var{value1}, @var{field2}, @var{value2}, @dots{})
+@deftypefn  {Built-in Function} {@var{s} =} struct ()
+@deftypefnx {Built-in Function} {@var{s} =} struct (@var{field1}, @var{value1}, @var{field2}, @var{value2}, @dots{})
+@deftypefnx {Built-in Function} {@var{s} =} struct (@var{obj})
 
 Create a scalar or array structure and initialize its values.  The
-@var{field1}, @var{field2}, @dots{} variables are strings giving the
+@var{field1}, @var{field2}, @dots{} variables are strings specifying the
 names of the fields and the @var{value1}, @var{value2}, @dots{}
-variables can be any type.
+variables can be of any type.
 
 If the values are cell arrays, create a structure array and initialize
 its values.  The dimensions of each cell array of values must match.
@@ -577,7 +644,7 @@ struct ("foo", @{1, 2, 3@})
 @end example
 
 @noindent
-The first case is an ordinary scalar struct, one field, one value.  The
+The first case is an ordinary scalar struct---one field, one value.  The
 second produces an empty struct array with one field and no values, since
 s being passed an empty cell array of struct array values.  When the value is
 a cell array containing a single entry, this becomes a scalar struct with
@@ -586,6 +653,7 @@ to be an empty cell array.
 
 Finally, if the value is a non-scalar cell array, then @code{struct}
 produces a struct @strong{array}.
+@seealso{cell2struct, fieldnames, orderfields, getfield, setfield, rmfield, structfun}
 @end deftypefn
 isstruct
 @c isstruct libinterp/octave-value/ov-struct.cc
@@ -607,21 +675,25 @@ Implements @code{fieldnames()} for structures and Octave objects.
 isfield
 @c isfield libinterp/octave-value/ov-struct.cc
 -*- texinfo -*-
-@deftypefn {Built-in Function} {} isfield (@var{x}, @var{name})
-Return true if the @var{x} is a structure and it
-includes an element named @var{name}.  If @var{name} is a cell
-array of strings then a logical array of equal dimension is returned.
+@deftypefn  {Built-in Function} {} isfield (@var{x}, "@var{name}")
+@deftypefnx {Built-in Function} {} isfield (@var{x}, @var{name})
+Return true if the @var{x} is a structure and it includes an element named
+@var{name}.  If @var{name} is a cell array of strings then a logical array of
+equal dimension is returned.
+@seealso{fieldnames}
 @end deftypefn
 nfields
 @c nfields libinterp/octave-value/ov-struct.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} nfields (@var{s})
 Return the number of fields of the structure @var{s}.
+@seealso{fieldnames}
 @end deftypefn
 cell2struct
 @c cell2struct libinterp/octave-value/ov-struct.cc
 -*- texinfo -*-
-@deftypefn {Built-in Function} {} cell2struct (@var{cell}, @var{fields}, @var{dim})
+@deftypefn  {Built-in Function} {} cell2struct (@var{cell}, @var{fields})
+@deftypefnx {Built-in Function} {} cell2struct (@var{cell}, @var{fields}, @var{dim})
 Convert @var{cell} to a structure.  The number of fields in @var{fields}
 must match the number of elements in @var{cell} along dimension @var{dim},
 that is @code{numel (@var{fields}) == size (@var{cell}, @var{dim})}.
@@ -641,16 +713,17 @@ A(1)
 
 @end group
 @end example
+@seealso{struct2cell, cell2mat, struct}
 @end deftypefn
 rmfield
 @c rmfield libinterp/octave-value/ov-struct.cc
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{s} =} rmfield (@var{s}, "@var{f}")
 @deftypefnx {Built-in Function} {@var{s} =} rmfield (@var{s}, @var{f})
-Return a copy of the structure (array) @var{s} with the field @var{f}
+Return a @emph{copy} of the structure (array) @var{s} with the field @var{f}
 removed.  If @var{f} is a cell array of strings or a character array, remove
 each of the named fields.
-@seealso{cellstr, iscellstr, setfield}
+@seealso{orderfields, fieldnames}
 @end deftypefn
 struct_levels_to_print
 @c struct_levels_to_print libinterp/octave-value/ov-struct.cc
@@ -664,6 +737,7 @@ structure levels to display.
 When called from inside a function with the @qcode{"local"} option, the
 variable is changed locally for the function and any subroutines it calls.  
 The original variable value is restored when exiting the function.
+@seealso{print_struct_array_contents}
 @end deftypefn
 print_struct_array_contents
 @c print_struct_array_contents libinterp/octave-value/ov-struct.cc
@@ -672,14 +746,17 @@ The original variable value is restored when exiting the function.
 @deftypefnx {Built-in Function} {@var{old_val} =} print_struct_array_contents (@var{new_val})
 @deftypefnx {Built-in Function} {} print_struct_array_contents (@var{new_val}, "local")
 Query or set the internal variable that specifies whether to print struct
-array contents.  If true, values of struct array elements are printed.
-This variable does not affect scalar structures.  Their elements
-are always printed.  In both cases, however, printing will be limited to
+array contents.
+
+If true, values of struct array elements are printed.
+This variable does not affect scalar structures whose elements are always
+printed.  In both cases, however, printing will be limited to
 the number of levels specified by @var{struct_levels_to_print}.
 
 When called from inside a function with the @qcode{"local"} option, the
 variable is changed locally for the function and any subroutines it calls.  
 The original variable value is restored when exiting the function.
+@seealso{struct_levels_to_print}
 @end deftypefn
 typeinfo
 @c typeinfo libinterp/octave-value/ov-typeinfo.cc
@@ -688,8 +765,9 @@ The original variable value is restored when exiting the function.
 @deftypefnx {Built-in Function} {} typeinfo (@var{expr})
 
 Return the type of the expression @var{expr}, as a string.  If
-@var{expr} is omitted, return an cell array of strings containing all the
+@var{expr} is omitted, return a cell array of strings containing all the
 currently installed data types.
+@seealso{class, isa}
 @end deftypefn
 nargin
 @c nargin libinterp/octave-value/ov-usr-fcn.cc
@@ -700,10 +778,24 @@ Within a function, return the number of arguments passed to the function.
 At the top level, return the number of command line arguments passed to
 Octave.
 
-If called with the optional argument @var{fcn}, a function name or handle,
+If called with the optional argument @var{fcn}---a function name or handle---
 return the declared number of arguments that the function can accept.
-If the last argument is @var{varargin} the returned value is negative.
-This feature does not work on builtin functions.
+
+If the last argument to @var{fcn} is @var{varargin} the returned value is
+negative.  For example, the function @code{union} for sets is declared as
+
+@example
+@group
+function [y, ia, ib] = union (a, b, varargin)
+
+and
+
+nargin ("union")
+@result{} -3
+@end group
+@end example
+
+Programming Note: @code{nargin} does not work on built-in functions.
 @seealso{nargout, varargin, isargout, varargout, nthargout}
 @end deftypefn
 nargout
@@ -712,8 +804,8 @@ This feature does not work on builtin functions.
 @deftypefn  {Built-in Function} {} nargout ()
 @deftypefnx {Built-in Function} {} nargout (@var{fcn})
 Within a function, return the number of values the caller expects to
-receive.  If called with the optional argument @var{fcn}, a function
-name or handle, return the number of declared output values that the
+receive.  If called with the optional argument @var{fcn}---a function
+name or handle---return the number of declared output values that the
 function can produce.  If the final output argument is @var{varargout}
 the returned value is negative.
 
@@ -731,8 +823,7 @@ will cause @code{nargout} to return 0 inside the function @code{f} and
 @end example
 
 @noindent
-will cause @code{nargout} to return 2 inside the function
-@code{f}.
+will cause @code{nargout} to return 2 inside the function @code{f}.
 
 In the second usage,
 
@@ -744,15 +835,16 @@ nargout (@@histc) % or nargout ("histc")
 will return 2, because @code{histc} has two outputs, whereas
 
 @example
-nargout (@@deal)
+nargout (@@imread)
 @end example
 
 @noindent
-will return -1, because @code{deal} has a variable number of outputs.
+will return -2, because @code{imread} has two outputs and the second is
+@var{varargout}.
 
-At the top level, @code{nargout} with no argument is undefined.
-@code{nargout} does not work on builtin functions.
-@code{nargout} returns -1 for all anonymous functions.
+At the top level, @code{nargout} with no argument is undefined and will
+produce an error.  @code{nargout} does not work for built-in functions and
+returns -1 for all anonymous functions.
 @seealso{nargin, varargin, isargout, varargout, nthargout}
 @end deftypefn
 optimize_subsasgn_calls
@@ -762,8 +854,9 @@ At the top level, @code{nargout} with no argument is undefined.
 @deftypefnx {Built-in Function} {@var{old_val} =} optimize_subsasgn_calls (@var{new_val})
 @deftypefnx {Built-in Function} {} optimize_subsasgn_calls (@var{new_val}, "local")
 Query or set the internal flag for subsasgn method call optimizations.
+
 If true, Octave will attempt to eliminate the redundant copying when calling
-subsasgn method of a user-defined class.
+the subsasgn method of a user-defined class.
 
 When called from inside a function with the @qcode{"local"} option, the
 variable is changed locally for the function and any subroutines it calls.  
@@ -774,7 +867,7 @@ The original variable value is restored when exiting the function.
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} isargout (@var{k})
 Within a function, return a logical value indicating whether the argument
-@var{k} will be assigned on output to a variable.  If the result is false,
+@var{k} will be assigned to a variable on output.  If the result is false,
 the argument has been ignored during the function call through the use of
 the tilde (~) special output argument.  Functions can use @code{isargout} to
 avoid performing unnecessary calculations for outputs which are unwanted.
@@ -805,7 +898,7 @@ are @samp{"()"}, @samp{"@{@}"}, and @samp{"."}.
 The @samp{subs} field may be either @samp{":"} or a cell array
 of index values.
 
-The following example shows how to extract the two first columns of
+The following example shows how to extract the first two columns of
 a matrix
 
 @example
@@ -883,48 +976,56 @@ Return true if @var{x} is a double-quoted character string.
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} int16 (@var{x})
 Convert @var{x} to 16-bit integer type.
+@seealso{int8, uint8, uint16, int32, uint32, int64, uint64}
 @end deftypefn
 int32
 @c int32 libinterp/octave-value/ov-int32.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} int32 (@var{x})
 Convert @var{x} to 32-bit integer type.
+@seealso{int8, uint8, int16, uint16, uint32, int64, uint64}
 @end deftypefn
 int64
 @c int64 libinterp/octave-value/ov-int64.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} int64 (@var{x})
 Convert @var{x} to 64-bit integer type.
+@seealso{int8, uint8, int16, uint16, int32, uint32, uint64}
 @end deftypefn
 int8
 @c int8 libinterp/octave-value/ov-int8.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} int8 (@var{x})
 Convert @var{x} to 8-bit integer type.
+@seealso{uint8, int16, uint16, int32, uint32, int64, uint64}
 @end deftypefn
 uint16
 @c uint16 libinterp/octave-value/ov-uint16.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} uint16 (@var{x})
 Convert @var{x} to unsigned 16-bit integer type.
+@seealso{int8, uint8, int16, int32, uint32, int64, uint64}
 @end deftypefn
 uint32
 @c uint32 libinterp/octave-value/ov-uint32.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} uint32 (@var{x})
 Convert @var{x} to unsigned 32-bit integer type.
+@seealso{int8, uint8, int16, uint16, int32, int64, uint64}
 @end deftypefn
 uint64
 @c uint64 libinterp/octave-value/ov-uint64.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} uint64 (@var{x})
 Convert @var{x} to unsigned 64-bit integer type.
+@seealso{int8, uint8, int16, uint16, int32, uint32, int64}
 @end deftypefn
 uint8
 @c uint8 libinterp/octave-value/ov-uint8.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} uint8 (@var{x})
 Convert @var{x} to unsigned 8-bit integer type.
+@seealso{int8, int16, uint16, int32, uint32, int64, uint64}
 @end deftypefn
 end
 @c end libinterp/parse-tree/pt-arg-list.cc
@@ -1004,7 +1105,7 @@ The original variable value is restored when exiting the function.
 @deftypefnx {Built-in Function} {@var{old_val} =} string_fill_char (@var{new_val})
 @deftypefnx {Built-in Function} {} string_fill_char (@var{new_val}, "local")
 Query or set the internal variable used to pad all rows of a character
-matrix to the same length.  It must be a single character.  The default
+matrix to the same length; It must be a single character.  The default
 value is @qcode{" "} (a single space).  For example:
 
 @example
@@ -1036,18 +1137,23 @@ is omitted, return a list of keywords.
 @deftypefn {Built-in Function} {} __display_tokens__ ()
 Query or set the internal variable that determines whether Octave's
 lexer displays tokens as they are read.
+@seealso{__lexer_debug_flag__, __token_count__}
 @end deftypefn
 __token_count__
 @c __token_count__ libinterp/parse-tree/lex.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} __token_count__ ()
-Number of language tokens processed since Octave startup.
+Return the number of language tokens processed since Octave startup.
+@seealso{__lexer_debug_flag__, __display_tokens__}
 @end deftypefn
 __lexer_debug_flag__
 @c __lexer_debug_flag__ libinterp/parse-tree/lex.cc
 -*- texinfo -*-
-@deftypefn {Built-in Function} {@var{old_val} =} __lexer_debug_flag__ (@var{new_val}))
-Undocumented internal function.
+@deftypefn  {Built-in Function} {@var{val} =} __lexer_debug_flag__ ()
+@deftypefnx {Built-in Function} {@var{old_val} =} __lexer_debug_flag__ (@var{new_val})
+Query or set the internal flag that determines whether Octave's lexer prints
+debug information as it processes an expression.
+@seealso{__display_tokens__, __token_count__, __parse_debug_flag__}
 @end deftypefn
 __contourc__
 @c __contourc__ libinterp/corefcn/__contourc__.cc
@@ -10034,13 +10140,15 @@ to produce a more readable output with less data per page.  (default).
 @deftypefnx {Built-in Function} {@var{old_val} =} fixed_point_format (@var{new_val})
 @deftypefnx {Built-in Function} {} fixed_point_format (@var{new_val}, "local")
 Query or set the internal variable that controls whether Octave will
-use a scaled format to print matrix values such that the largest
-element may be written with a single leading digit with the scaling
-factor is printed on the first line of output.  For example:
+use a scaled format to print matrix values.
+
+The scaled format prints a scaling factor on the first line of output chosen
+such that the largest matrix element can be written with a single leading
+digit.  For example:
 
 @example
 @group
-octave:1> logspace (1, 7, 5)'
+logspace (1, 7, 5)'
 ans =
 
   1.0e+07  *
@@ -10054,9 +10162,9 @@ ans =
 @end example
 
 @noindent
-Notice that first value appears to be zero when it is actually 1.  For
-this reason, you should be careful when setting
-@code{fixed_point_format} to a nonzero value.
+Notice that the first value appears to be 0 when it is actually 1.  Because
+of the possibilty for confusion you should be careful about enabling
+@code{fixed_point_format}.
 
 When called from inside a function with the @qcode{"local"} option, the
 variable is changed locally for the function and any subroutines it calls.  
@@ -10399,8 +10507,8 @@ compatibility with @sc{matlab}.
 @c rand libinterp/corefcn/rand.cc
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {} rand (@var{n})
-@deftypefnx {Built-in Function} {} rand (@var{n}, @var{m}, @dots{})
-@deftypefnx {Built-in Function} {} rand ([@var{n} @var{m} @dots{}])
+@deftypefnx {Built-in Function} {} rand (@var{m}, @var{n}, @dots{})
+@deftypefnx {Built-in Function} {} rand ([@var{m} @var{n} @dots{}])
 @deftypefnx {Built-in Function} {@var{v} =} rand ("state")
 @deftypefnx {Built-in Function} {} rand ("state", @var{v})
 @deftypefnx {Built-in Function} {} rand ("state", "reset")
@@ -10490,8 +10598,8 @@ classes.
 @c randn libinterp/corefcn/rand.cc
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {} randn (@var{n})
-@deftypefnx {Built-in Function} {} randn (@var{n}, @var{m}, @dots{})
-@deftypefnx {Built-in Function} {} randn ([@var{n} @var{m} @dots{}])
+@deftypefnx {Built-in Function} {} randn (@var{m}, @var{n}, @dots{})
+@deftypefnx {Built-in Function} {} randn ([@var{m} @var{n} @dots{}])
 @deftypefnx {Built-in Function} {@var{v} =} randn ("state")
 @deftypefnx {Built-in Function} {} randn ("state", @var{v})
 @deftypefnx {Built-in Function} {} randn ("state", "reset")
@@ -10522,8 +10630,8 @@ J. Statistical Software, vol 5, 2000,
 @c rande libinterp/corefcn/rand.cc
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {} rande (@var{n})
-@deftypefnx {Built-in Function} {} rande (@var{n}, @var{m}, @dots{})
-@deftypefnx {Built-in Function} {} rande ([@var{n} @var{m} @dots{}])
+@deftypefnx {Built-in Function} {} rande (@var{m}, @var{n}, @dots{})
+@deftypefnx {Built-in Function} {} rande ([@var{m} @var{n} @dots{}])
 @deftypefnx {Built-in Function} {@var{v} =} rande ("state")
 @deftypefnx {Built-in Function} {} rande ("state", @var{v})
 @deftypefnx {Built-in Function} {} rande ("state", "reset")
@@ -10553,8 +10661,8 @@ J. Statistical Software, vol 5, 2000,
 @c randg libinterp/corefcn/rand.cc
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {} randg (@var{n})
-@deftypefnx {Built-in Function} {} randg (@var{n}, @var{m}, @dots{})
-@deftypefnx {Built-in Function} {} randg ([@var{n} @var{m} @dots{}])
+@deftypefnx {Built-in Function} {} randg (@var{m}, @var{n}, @dots{})
+@deftypefnx {Built-in Function} {} randg ([@var{m} @var{n} @dots{}])
 @deftypefnx {Built-in Function} {@var{v} =} randg ("state")
 @deftypefnx {Built-in Function} {} randg ("state", @var{v})
 @deftypefnx {Built-in Function} {} randg ("state", "reset")
@@ -10653,8 +10761,8 @@ classes.
 @c randp libinterp/corefcn/rand.cc
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {} randp (@var{l}, @var{n})
-@deftypefnx {Built-in Function} {} randp (@var{l}, @var{n}, @var{m}, @dots{})
-@deftypefnx {Built-in Function} {} randp (@var{l}, [@var{n} @var{m} @dots{}])
+@deftypefnx {Built-in Function} {} randp (@var{l}, @var{m}, @var{n}, @dots{})
+@deftypefnx {Built-in Function} {} randp (@var{l}, [@var{m} @var{n} @dots{}])
 @deftypefnx {Built-in Function} {@var{v} =} randp ("state")
 @deftypefnx {Built-in Function} {} randp ("state", @var{v})
 @deftypefnx {Built-in Function} {} randp ("state", "reset")
@@ -13933,13 +14041,14 @@ The original variable value is restored when exiting the function.
 autoload
 @c autoload libinterp/parse-tree/oct-parse.cc
 -*- texinfo -*-
-@deftypefn  {Built-in Function} {} autoload (@var{function}, @var{file})
-@deftypefnx {Built-in Function} {} autoload (@dots{}, @asis{"remove"})
+@deftypefn  {Built-in Function} {@var{autoload_map} =} autoload ()
+@deftypefnx {Built-in Function} {} autoload (@var{function}, @var{file})
+@deftypefnx {Built-in Function} {} autoload (@dots{}, "remove")
 Define @var{function} to autoload from @var{file}.
 
 The second argument, @var{file}, should be an absolute file name or
 a file name in the same directory as the function or script from which
-the autoload command was run.  @var{file} should not depend on the
+the autoload command was run.  @var{file} @emph{should not} depend on the
 Octave load path.
 
 Normally, calls to @code{autoload} appear in PKG_ADD script files that
@@ -13953,7 +14062,7 @@ autoload ("foo", "bar.oct");
 
 @noindent
 will load the function @code{foo} from the file @code{bar.oct}.  The above
-usage when @code{bar.oct} is not in the same directory or usages such as
+usage when @code{bar.oct} is not in the same directory, or usages such as
 
 @example
 autoload ("foo", file_in_loadpath ("bar.oct"))
@@ -13964,7 +14073,7 @@ are strongly discouraged, as their behavior may be unpredictable.
 
 With no arguments, return a structure containing the current autoload map.
 
-If a third argument @asis{'remove'} is given, the function is cleared and
+If a third argument @qcode{"remove"} is given, the function is cleared and
 not loaded anymore during the current Octave session.
 
 @seealso{PKG_ADD}
@@ -13975,19 +14084,22 @@ not loaded anymore during the current Octave session.
 @deftypefn  {Built-in Function} {} mfilename ()
 @deftypefnx {Built-in Function} {} mfilename ("fullpath")
 @deftypefnx {Built-in Function} {} mfilename ("fullpathext")
-Return the name of the currently executing file.  At the top-level,
-return the empty string.  Given the argument @qcode{"fullpath"},
-include the directory part of the file name, but not the extension.
-Given the argument @qcode{"fullpathext"}, include the directory part
-of the file name and the extension.
+Return the name of the currently executing file.
+
+When called from outside an m-file return the empty string.  Given the
+argument @qcode{"fullpath"}, include the directory part of the file name,
+but not the extension.  Given the argument @qcode{"fullpathext"}, include
+the directory part of the file name and the extension.
 @end deftypefn
 source
 @c source libinterp/parse-tree/oct-parse.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} source (@var{file})
-Parse and execute the contents of @var{file}.  This is equivalent to
-executing commands from a script file, but without requiring the file to
-be named @file{@var{file}.m}.
+Parse and execute the contents of @var{file}.
+
+This is equivalent to executing commands from a script file, but without
+requiring the file to be named @file{@var{file}.m}.
+@seealso{run}
 @end deftypefn
 feval
 @c feval libinterp/parse-tree/oct-parse.cc
@@ -14031,7 +14143,7 @@ instead.
 builtin
 @c builtin libinterp/parse-tree/oct-parse.cc
 -*- texinfo -*-
-@deftypefn {Loadable Function} {[@dots{}] =} builtin (@var{f}, @dots{})
+@deftypefn {Built-in Function} {[@dots{}] =} builtin (@var{f}, @dots{})
 Call the base function @var{f} even if @var{f} is overloaded to
 another function for the given type signature.
 
@@ -14064,14 +14176,14 @@ program.  If that fails, evaluate the optional string @var{catch}.
 The string @var{try} is evaluated in the current context,
 so any results remain available after @code{eval} returns.
 
-The following example makes the variable @var{A} with the approximate
-value 3.1416 available.
+The following example creates the variable @var{A} with the approximate
+value of 3.1416 in the current workspace.
 
 @example
 eval ("A = acos(-1);");
 @end example
 
-If an error occurs during the evaluation of @var{try} the @var{catch}
+If an error occurs during the evaluation of @var{try} then the @var{catch}
 string is evaluated, as the following example shows:
 
 @example
@@ -14083,9 +14195,11 @@ eval ('error ("This is a bad example");',
 @end group
 @end example
 
-Consider using try/catch blocks instead if you are only using @code{eval}
-as an error-capturing mechanism rather than for the execution of arbitrary
-code strings.
+Programming Note: if you are only using @code{eval} as an error-capturing
+mechanism, rather than for the execution of arbitrary code strings,
+Consider using try/catch blocks or unwind_protect/unwind_protect_cleanup
+blocks instead.  These techniques have higher performance and don't introduce
+the security considerations that the evaluation of arbitrary code does.
 @seealso{evalin}
 @end deftypefn
 assignin
@@ -14109,8 +14223,11 @@ context @var{context}, which may be either @qcode{"caller"} or
 __parser_debug_flag__
 @c __parser_debug_flag__ libinterp/parse-tree/oct-parse.cc
 -*- texinfo -*-
-@deftypefn {Built-in Function} {@var{old_val} =} __parser_debug_flag__ (@var{new_val}))
-Undocumented internal function.
+@deftypefn  {Built-in Function} {@var{val} =} __parser_debug_flag__ ()
+@deftypefnx {Built-in Function} {@var{old_val} =} __parser_debug_flag__ (@var{new_val})
+Query or set the internal flag that determines whether Octave's parser prints
+debug information as it processes an expression.
+@seealso{__lexer_debug_flag__}
 @end deftypefn
 __parse_file__
 @c __parse_file__ libinterp/parse-tree/oct-parse.cc
@@ -15031,7 +15148,7 @@ $A$
 $QR = A$ where $Q$ is an orthogonal matrix and $R$ is upper triangular.
 @end tex
 @ifnottex
-@code{@var{Q} * @var{Q} = @var{A}} where @var{Q} is an orthogonal matrix and
+@code{@var{Q} * @var{R} = @var{A}} where @var{Q} is an orthogonal matrix and
 @var{R} is upper triangular.
 @end ifnottex
 

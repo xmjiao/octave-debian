@@ -39,18 +39,22 @@ and @ref{Interpolation on Scattered Data} describe additional methods.
 @deftypefnx {Function File} {@var{yi} =} interp1 (@var{y}, @var{xi})
 @deftypefnx {Function File} {@var{yi} =} interp1 (@dots{}, @var{method})
 @deftypefnx {Function File} {@var{yi} =} interp1 (@dots{}, @var{extrap})
+@deftypefnx {Function File} {@var{yi} =} interp1 (@dots{}, "left")
+@deftypefnx {Function File} {@var{yi} =} interp1 (@dots{}, "right")
 @deftypefnx {Function File} {@var{pp} =} interp1 (@dots{}, "pp")
 
-One-dimensional interpolation.  Interpolates to determine the value of
-@var{yi} at the points, @var{xi}.  If not specified, @var{x} is taken
-to be the indices of @var{y}.  If @var{y} is a matrix or an N-dimensional
-array, the interpolation is performed on each column of @var{y}.
+One-dimensional interpolation.
+
+Interpolate input data to determine the value of @var{yi} at the points
+@var{xi}.  If not specified, @var{x} is taken to be the indices of @var{y}.
+If @var{y} is a matrix or an N-dimensional array, the interpolation is
+performed on each column of @var{y}.
 
 Method is one of:
 
 @table @asis
 @item @qcode{"nearest"}
-Return the nearest neighbor.
+Return the nearest neighbor
 
 @item @qcode{"linear"}
 Linear interpolation from nearest neighbors
@@ -66,18 +70,19 @@ Cubic spline interpolation---smooth first and second derivatives
 throughout the curve
 @end table
 
-Appending '*' to the start of the above method forces @code{interp1}
+Adding '*' to the start of any method above forces @code{interp1}
 to assume that @var{x} is uniformly spaced, and only @code{@var{x}(1)}
 and @code{@var{x}(2)} are referenced.  This is usually faster,
 and is never slower.  The default method is @qcode{"linear"}.
 
 If @var{extrap} is the string @qcode{"extrap"}, then extrapolate values
-beyond the endpoints.  If @var{extrap} is a number, replace values beyond
-the endpoints with that number.  If @var{extrap} is missing, assume NA.
+beyond the endpoints using the current @var{method}.  If @var{extrap} is a
+number, then replace values beyond the endpoints with that number.  When
+unspecified, @var{extrap} defaults to NA.
 
-If the string argument @qcode{"pp"} is specified, then @var{xi} should not be
-supplied and @code{interp1} returns the piecewise polynomial that
-can later be used with @code{ppval} to evaluate the interpolation.
+If the string argument @qcode{"pp"} is specified, then @var{xi} should not
+be supplied and @code{interp1} returns a piecewise polynomial object.  This 
+object can later be used with @code{ppval} to evaluate the interpolation.
 There is an equivalence, such that @code{ppval (interp1 (@var{x},
 @var{y}, @var{method}, @qcode{"pp"}), @var{xi}) == interp1 (@var{x}, @var{y},
 @var{xi}, @var{method}, @qcode{"extrap"})}.
@@ -88,7 +93,7 @@ If @var{x} is increasing, the default discontinuous interpolant is
 right-continuous.  If @var{x} is decreasing, the default discontinuous
 interpolant is left-continuous.
 The continuity condition of the interpolant may be specified by using
-the options, @qcode{"-left"} or @qcode{"-right"}, to select a left-continuous
+the options, @qcode{"left"} or @qcode{"right"}, to select a left-continuous
 or right-continuous interpolant, respectively.
 Discontinuous interpolation is only allowed for @qcode{"nearest"} and
 @qcode{"linear"} methods; in all other cases, the @var{x}-values must be
@@ -112,7 +117,7 @@ legend ("original", "linear", "spline", "cubic", "nearest");
 @end group
 @end example
 
-@seealso{@ref{XREFinterpft,,interpft}}
+@seealso{@ref{XREFinterpft,,interpft}, @ref{XREFinterp2,,interp2}, @ref{XREFinterp3,,interp3}, @ref{XREFinterpn,,interpn}}
 @end deftypefn
 
 

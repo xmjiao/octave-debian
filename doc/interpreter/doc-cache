@@ -1,4 +1,4 @@
-# doc-cache created by Octave 3.8.0, Fri Dec 27 17:12:54 2013 EST
+# doc-cache created by Octave 3.8.1, Thu Mar 06 14:54:53 2014 EST
 # name: cache
 # type: cell
 # rows: 3
@@ -3087,7 +3087,7 @@ fieldnames
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 665
+# length: 696
  -- Function File: NAMES = fieldnames (STRUCT)
  -- Function File: NAMES = fieldnames (OBJ)
  -- Function File: NAMES = fieldnames (JAVAOBJ)
@@ -3105,7 +3105,7 @@ fieldnames
      JCLASSNAME the name are the public data elements of the object or
      class.
 
-     See also: struct, methods.
+     See also: nfields, isfield, orderfields, struct, methods.
    
 
 
@@ -3395,22 +3395,26 @@ interp1
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 2876
+# length: 3061
  -- Function File: YI = interp1 (X, Y, XI)
  -- Function File: YI = interp1 (Y, XI)
  -- Function File: YI = interp1 (..., METHOD)
  -- Function File: YI = interp1 (..., EXTRAP)
+ -- Function File: YI = interp1 (..., "left")
+ -- Function File: YI = interp1 (..., "right")
  -- Function File: PP = interp1 (..., "pp")
 
-     One-dimensional interpolation.  Interpolates to determine the value
-     of YI at the points, XI.  If not specified, X is taken to be the
-     indices of Y.  If Y is a matrix or an N-dimensional array, the
-     interpolation is performed on each column of Y.
+     One-dimensional interpolation.
+
+     Interpolate input data to determine the value of YI at the points
+     XI.  If not specified, X is taken to be the indices of Y.  If Y is
+     a matrix or an N-dimensional array, the interpolation is performed
+     on each column of Y.
 
      Method is one of:
 
      "nearest"
-          Return the nearest neighbor.
+          Return the nearest neighbor
 
      "linear"
           Linear interpolation from nearest neighbors
@@ -3425,28 +3429,29 @@ interp1
           Cubic spline interpolation--smooth first and second
           derivatives throughout the curve
 
-     Appending '*' to the start of the above method forces 'interp1' to
+     Adding '*' to the start of any method above forces 'interp1' to
      assume that X is uniformly spaced, and only 'X(1)' and 'X(2)' are
      referenced.  This is usually faster, and is never slower.  The
      default method is "linear".
 
      If EXTRAP is the string "extrap", then extrapolate values beyond
-     the endpoints.  If EXTRAP is a number, replace values beyond the
-     endpoints with that number.  If EXTRAP is missing, assume NA.
+     the endpoints using the current METHOD.  If EXTRAP is a number,
+     then replace values beyond the endpoints with that number.  When
+     unspecified, EXTRAP defaults to NA.
 
      If the string argument "pp" is specified, then XI should not be
-     supplied and 'interp1' returns the piecewise polynomial that can
-     later be used with 'ppval' to evaluate the interpolation.  There is
-     an equivalence, such that 'ppval (interp1 (X, Y, METHOD, "pp"), XI)
-     == interp1 (X, Y, XI, METHOD, "extrap")'.
+     supplied and 'interp1' returns a piecewise polynomial object.  This
+     object can later be used with 'ppval' to evaluate the
+     interpolation.  There is an equivalence, such that 'ppval (interp1
+     (X, Y, METHOD, "pp"), XI) == interp1 (X, Y, XI, METHOD, "extrap")'.
 
      Duplicate points in X specify a discontinuous interpolant.  There
      may be at most 2 consecutive points with the same value.  If X is
      increasing, the default discontinuous interpolant is
      right-continuous.  If X is decreasing, the default discontinuous
      interpolant is left-continuous.  The continuity condition of the
-     interpolant may be specified by using the options, "-left" or
-     "-right", to select a left-continuous or right-continuous
+     interpolant may be specified by using the options, "left" or
+     "right", to select a left-continuous or right-continuous
      interpolant, respectively.  Discontinuous interpolation is only
      allowed for "nearest" and "linear" methods; in all other cases, the
      X-values must be unique.
@@ -3465,7 +3470,7 @@ interp1
                 xf, cub, "c", xf, near, "m", xp, yp, "r*");
           legend ("original", "linear", "spline", "cubic", "nearest");
 
-     See also: interpft.
+     See also: interpft, interp2, interp3, interpn.
    
 
 
@@ -6982,7 +6987,7 @@ doc_cache_create
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 480
+# length: 481
  -- Function File: doc_cache_create (OUT_FILE, DIRECTORY)
      Generate documentation caches for all functions in a given
      directory.
@@ -6992,7 +6997,7 @@ doc_cache_create
      used to speed up 'lookfor'.
 
      If no directory is given (or it is the empty matrix), a cache for
-     builtin operators, etc.  is generated.
+     built-in operators, etc.  is generated.
 
      See also: doc_cache_file, lookfor, path.
    
@@ -11327,7 +11332,7 @@ debug
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 2099
+# length: 2209
  -- Function File: debug ()
      Summary of debugging commands.  For more information on each
      command and available options use 'help CMD'.
@@ -11348,8 +11353,12 @@ debug
           stopped.
 
      'dbtype'
-          List the function where execution is currently stopped,
-          enumerating the line numbers.
+          Display the code of the function being debugged, enumerating
+          the line numbers.
+
+     'dblist'
+          List 10 lines of code centered around the line number where
+          execution is stopped.
 
      'dbstep'
      'dbnext'
@@ -12032,7 +12041,7 @@ getfield
      syntax is the same as 'setfield', except it omits the final VAL
      argument, returning this value instead of setting it.
 
-     See also: setfield, rmfield, isfield, isstruct, fieldnames, struct.
+     See also: setfield, rmfield, isfield, fieldnames, isstruct, struct.
    
 
 
@@ -12547,9 +12556,9 @@ mkoctfile
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 3852
+# length: 4216
  -- Command: mkoctfile [-options] file ...
- -- Function File: [OUTPUT, STATUS = mkoctfile (...)
+ -- Function File: [OUTPUT, STATUS] = mkoctfile (...)
 
      The 'mkoctfile' function compiles source code written in C, C++, or
      Fortran.  Depending on the options used with 'mkoctfile', the
@@ -12607,30 +12616,33 @@ mkoctfile
           Print the configuration variable VAR.  Recognized variables
           are:
 
-                  ALL_CFLAGS                FFTW3F_LIBS
-                  ALL_CXXFLAGS              FLIBS
-                  ALL_FFLAGS                FPICFLAG
-                  ALL_LDFLAGS               INCFLAGS
-                  BLAS_LIBS                 LAPACK_LIBS
-                  CC                        LDFLAGS
-                  CFLAGS                    LD_CXX
-                  CPICFLAG                  LD_STATIC_FLAG
-                  CPPFLAGS                  LFLAGS
-                  CXX                       LIBOCTAVE
-                  CXXFLAGS                  LIBOCTINTERP
-                  CXXPICFLAG                LIBS
-                  DEPEND_EXTRA_SED_PATTERN  OCTAVE_LIBS
-                  DEPEND_FLAGS              OCTAVE_LINK_DEPS
-                  DL_LD                     OCT_LINK_DEPS
-                  DL_LDFLAGS                RDYNAMIC_FLAG
-                  EXEEXT                    READLINE_LIBS
-                  F77                       SED
-                  F77_INTEGER_8_FLAG        XTRA_CFLAGS
-                  FFLAGS                    XTRA_CXXFLAGS
-                  FFTW3_LDFLAGS
-                  FFTW3_LIBS
-                  FFTW3F_LDFLAGS
-
+                  ALL_CFLAGS                  INCFLAGS
+                  ALL_CXXFLAGS                INCLUDEDIR
+                  ALL_FFLAGS                  LAPACK_LIBS
+                  ALL_LDFLAGS                 LD_CXX
+                  AR                          LDFLAGS
+                  BLAS_LIBS                   LD_STATIC_FLAG
+                  CC                          LFLAGS
+                  CFLAGS                      LIBDIR
+                  CPICFLAG                    LIBOCTAVE
+                  CPPFLAGS                    LIBOCTINTERP
+                  CXX                         LIBS
+                  CXXFLAGS                    OCTAVE_HOME
+                  CXXPICFLAG                  OCTAVE_LIBS
+                  DEPEND_EXTRA_SED_PATTERN    OCTAVE_LINK_DEPS
+                  DEPEND_FLAGS                OCTAVE_LINK_OPTS
+                  DL_LD                       OCTAVE_PREFIX
+                  DL_LDFLAGS                  OCTINCLUDEDIR
+                  F77                         OCTLIBDIR
+                  F77_INTEGER8_FLAG           OCT_LINK_DEPS
+                  FFLAGS                      OCT_LINK_OPTS
+                  FFTW3F_LDFLAGS              RANLIB
+                  FFTW3F_LIBS                 RDYNAMIC_FLAG
+                  FFTW3_LDFLAGS               READLINE_LIBS
+                  FFTW3_LIBS                  SED
+                  FFTW_LIBS                   SPECIAL_MATH_LIB
+                  FLIBS                       XTRA_CFLAGS
+                  FPICFLAG                    XTRA_CXXFLAGS
 
      '--link-stand-alone'
           Link a stand-alone executable file.
@@ -13246,7 +13258,7 @@ setfield
           SA.foo = 1;
           SA(2).bar(3).baz = 6
 
-     See also: getfield, rmfield, isfield, isstruct, fieldnames, struct.
+     See also: getfield, rmfield, isfield, fieldnames, isstruct, struct.
    
 
 
@@ -18520,42 +18532,73 @@ errorbar
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 2576
- -- Function File: errorbar (ARGS)
+# length: 4384
+ -- Function File: errorbar (Y, EY)
+ -- Function File: errorbar (Y, ..., FMT)
+ -- Function File: errorbar (X, Y, EY)
+ -- Function File: errorbar (X, Y, ERR, FMT)
+ -- Function File: errorbar (X, Y, LERR, UERR, FMT)
+ -- Function File: errorbar (X, Y, EX, EY, FMT)
+ -- Function File: errorbar (X, Y, LX, UX, LY, UY, FMT)
+ -- Function File: errorbar (X1, Y1, ..., FMT, XN, YN, ...)
  -- Function File: errorbar (HAX, ...)
  -- Function File: H = errorbar (...)
-     Create a 2-D with errorbars.
+     Create a 2-D plot with errorbars.
 
      Many different combinations of arguments are possible.  The
      simplest form is
 
           errorbar (Y, EY)
 
-     where the first argument is taken as the set of Y coordinates and
-     the second argument EY is taken as the errors of the Y values.  X
-     coordinates are taken to be the indices of the elements, starting
-     with 1.
+     where the first argument is taken as the set of Y coordinates, the
+     second argument EY are the errors around the Y values, and the X
+     coordinates are taken to be the indices of the elements ('1:numel
+     (Y)').
 
-     If more than two arguments are given, they are interpreted as
+     The general form of the function is
 
-          errorbar (X, Y, ..., FMT, ...)
+          errorbar (X, Y, ERR1, ..., FMT, ...)
 
-     where after X and Y there can be up to four error parameters such
-     as EY, EX, LY, UY, etc., depending on the plot type.  Any number of
-     argument sets may appear, as long as they are separated with a
-     format string FMT.
+     After the X and Y arguments there can be 1, 2, or 4 parameters
+     specifying the error values depending on the nature of the error
+     values and the plot format FMT.
 
-     If Y is a matrix, X and error parameters must also be matrices
-     having same dimensions.  The columns of Y are plotted versus the
-     corresponding columns of X and errorbars are drawn from the
-     corresponding columns of error parameters.
+     ERR (scalar)
+          When the error is a scalar all points share the same error
+          value.  The errorbars are symmetric and are drawn from
+          DATA-ERR to DATA+ERR.  The FMT argument determines whether ERR
+          is in the x-direction, y-direction (default), or both.
 
-     If FMT is missing, yerrorbars ("~") plot style is assumed.
+     ERR (vector or matrix)
+          Each data point has a particular error value.  The errorbars
+          are symmetric and are drawn from DATA(n)-ERR(n) to
+          DATA(n)+ERR(n).
 
-     If the FMT argument is supplied, it is interpreted as in normal
-     plots.  In addition, FMT may include an errorbar style which must
-     precede the line and marker format.  The following plot styles are
-     supported by errorbar:
+     LERR, UERR (scalar)
+          The errors have a single low-side value and a single
+          upper-side value.  The errorbars are not symmetric and are
+          drawn from DATA-LERR to DATA+UERR.
+
+     LERR, UERR (vector or matrix)
+          Each data point has a low-side error and an upper-side error.
+          The errorbars are not symmetric and are drawn from
+          DATA(n)-LERR(n) to DATA(n)+UERR(n).
+
+     Any number of data sets (X1,Y1, X2,Y2, ...) may appear as long as
+     they are separated by a format string FMT.
+
+     If Y is a matrix, X and the error parameters must also be matrices
+     having the same dimensions.  The columns of Y are plotted versus
+     the corresponding columns of X and errorbars are taken from the
+     corresponding columns of the error parameters.
+
+     If FMT is missing, the yerrorbars ("~") plot style is assumed.
+
+     If the FMT argument is supplied then it is interpreted, as in
+     normal plots, to specify the line style, marker, and color.  In
+     addition, FMT may include an errorbar style which *must precede*
+     the ordinary format codes.  The following errorbar styles are
+     supported:
 
      '~'
           Set yerrorbars plot style (default).
@@ -18566,14 +18609,14 @@ errorbar
      '~>'
           Set xyerrorbars plot style.
 
-     '#'
-          Set boxes plot style.
-
      '#~'
-          Set boxerrorbars plot style.
+          Set yboxes plot style.
+
+     '#'
+          Set xboxes plot style.
 
      '#~>'
-          Set boxxyerrorbars plot style.
+          Set xyboxes plot style.
 
      If the first argument HAX is an axes handle, then plot into this
      axis, rather than the current axes returned by 'gca'.
@@ -18581,12 +18624,20 @@ errorbar
      The optional return value H is a handle to the hggroup object
      representing the data plot and errorbars.
 
+     Note: For compatibility with MATLAB a line is drawn through all
+     data points.  However, most scientific errorbar plots are a scatter
+     plot of points with errorbars.  To accomplish this, add a marker
+     style to the FMT argument such as ".".  Alternatively, remove the
+     line by modifying the returned graphic handle with 'set (h,
+     "linestyle", "none")'.
+
      Examples:
 
-          errorbar (X, Y, EX, ">")
+          errorbar (X, Y, EX, ">.r")
 
      produces an xerrorbar plot of Y versus X with X errorbars drawn
-     from X-EX to X+EX.
+     from X-EX to X+EX.  The marker "."  is used so no connecting line
+     is drawn and the errorbars appear in red.
 
           errorbar (X, Y1, EY, "~",
                     X, Y2, LY, UY)
@@ -18608,8 +18659,8 @@ errorbar
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 28
-Create a 2-D with errorbars.
+# length: 33
+Create a 2-D plot with errorbars.
 
 
 
@@ -19748,8 +19799,15 @@ loglogerr
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 725
- -- Function File: loglogerr (ARGS)
+# length: 1075
+ -- Function File: loglogerr (Y, EY)
+ -- Function File: loglogerr (Y, ..., FMT)
+ -- Function File: loglogerr (X, Y, EY)
+ -- Function File: loglogerr (X, Y, ERR, FMT)
+ -- Function File: loglogerr (X, Y, LERR, UERR, FMT)
+ -- Function File: loglogerr (X, Y, EX, EY, FMT)
+ -- Function File: loglogerr (X, Y, LX, UX, LY, UY, FMT)
+ -- Function File: loglogerr (X1, Y1, ..., FMT, XN, YN, ...)
  -- Function File: loglogerr (HAX, ...)
  -- Function File: H = loglogerr (...)
      Produce 2-D plots on a double logarithm axis with errorbars.
@@ -21167,10 +21225,17 @@ semilogxerr
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 770
- -- Function File: semilogxerr (ARGS)
- -- Function File: semilogxerr (HAX, ARGS)
- -- Function File: H = semilogxerr (ARGS)
+# length: 1132
+ -- Function File: semilogxerr (Y, EY)
+ -- Function File: semilogxerr (Y, ..., FMT)
+ -- Function File: semilogxerr (X, Y, EY)
+ -- Function File: semilogxerr (X, Y, ERR, FMT)
+ -- Function File: semilogxerr (X, Y, LERR, UERR, FMT)
+ -- Function File: semilogxerr (X, Y, EX, EY, FMT)
+ -- Function File: semilogxerr (X, Y, LX, UX, LY, UY, FMT)
+ -- Function File: semilogxerr (X1, Y1, ..., FMT, XN, YN, ...)
+ -- Function File: semilogxerr (HAX, ...)
+ -- Function File: H = semilogxerr (...)
      Produce 2-D plots using a logarithmic scale for the x-axis and
      errorbars at each data point.
 
@@ -21249,10 +21314,17 @@ semilogyerr
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 770
- -- Function File: semilogyerr (ARGS)
- -- Function File: semilogyerr (HAX, ARGS)
- -- Function File: H = semilogyerr (ARGS)
+# length: 1132
+ -- Function File: semilogyerr (Y, EY)
+ -- Function File: semilogyerr (Y, ..., FMT)
+ -- Function File: semilogyerr (X, Y, EY)
+ -- Function File: semilogyerr (X, Y, ERR, FMT)
+ -- Function File: semilogyerr (X, Y, LERR, UERR, FMT)
+ -- Function File: semilogyerr (X, Y, EX, EY, FMT)
+ -- Function File: semilogyerr (X, Y, LX, UX, LY, UY, FMT)
+ -- Function File: semilogyerr (X1, Y1, ..., FMT, XN, YN, ...)
+ -- Function File: semilogyerr (HAX, ...)
+ -- Function File: H = semilogyerr (...)
      Produce 2-D plots using a logarithmic scale for the y-axis and
      errorbars at each data point.
 
@@ -23455,14 +23527,14 @@ isprop
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 282
+# length: 302
  -- Function File: RES = isprop (H, "PROP")
      Return true if PROP is a property of the object with handle H.
 
      H may also be an array of handles in which case RES will be a
      logical array indicating whether each handle has the property PROP.
 
-     See also: get, set.
+     See also: get, set, ismethod, isobject.
    
 
 
@@ -26517,8 +26589,11 @@ freqz
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 1328
+# length: 1463
  -- Function File: [H, W] = freqz (B, A, N, "whole")
+ -- Function File: [H, W] = freqz (B)
+ -- Function File: [H, W] = freqz (B, A)
+ -- Function File: [H, W] = freqz (B, A, N)
  -- Function File: H = freqz (B, A, W)
  -- Function File: [...] = freqz (..., FS)
  -- Function File: freqz (...)
@@ -26533,10 +26608,8 @@ freqz
      If A is omitted, the denominator is assumed to be 1 (this
      corresponds to a simple FIR filter).
 
-     If N is omitted, a value of 512 is assumed.
-
-     For fastest computation, N should factor into a small number of
-     small primes.
+     If N is omitted, a value of 512 is assumed.  For fastest
+     computation, N should factor into a small number of small primes.
 
      If the fourth argument, "whole", is omitted the response is
      evaluated at frequencies between 0 and pi.
@@ -26555,8 +26628,10 @@ freqz
 
      'freqz (...)'
 
-     Plot the pass band, stop band and phase response of H rather than
-     returning them.
+     Plot the magnitude and phase response of H rather than returning
+     them.
+
+     See also: freqz_plot.
    
 
 
@@ -26578,17 +26653,24 @@ freqz_plot
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 100
+# length: 345
  -- Function File: freqz_plot (W, H)
-     Plot the pass band, stop band and phase response of H.
+ -- Function File: freqz_plot (W, H, FREQ_NORM)
+     Plot the magnitude and phase response of H.
+
+     If the optional FREQ_NORM argument is true, the frequency vector W
+     is in units of normalized radians.  If FREQ_NORM is false, or not
+     given, then W is measured in Hertz.
+
+     See also: freqz.
    
 
 
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 54
-Plot the pass band, stop band and phase response of H.
+# length: 43
+Plot the magnitude and phase response of H.
 
 
 
@@ -30038,7 +30120,7 @@ cov
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 870
+# length: 1228
  -- Function File: cov (X)
  -- Function File: cov (X, OPT)
  -- Function File: cov (X, Y)
@@ -30065,6 +30147,12 @@ cov
      1:
           normalize with N, this provides the second moment around the
           mean
+
+     MATLAB compatibility: Octave always computes the covariance matrix.
+     For two inputs, however, MATLAB will calculate 'cov (X(:), Y(:))'
+     whenever the number of elements in X and Y are equal.  This will
+     result in a scalar rather than a matrix output.  Code relying on
+     this odd definition will need to be changed when running in Octave.
 
      See also: corr.
    
@@ -32857,7 +32945,7 @@ logncdf
      logarithm is normally distributed with mean MU and standard
      deviation SIGMA.
 
-     Default values are MU = 1, SIGMA = 1.
+     Default values are MU = 0, SIGMA = 1.
    
 
 
@@ -32879,16 +32967,16 @@ logninv
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 407
+# length: 409
  -- Function File: logninv (X)
  -- Function File: logninv (X, MU, SIGMA)
      For each element of X, compute the quantile (the inverse of the
      CDF) at X of the lognormal distribution with parameters MU and
      SIGMA.  If a random variable follows this distribution, its
-     logarithm is normally distributed with mean 'log (MU)' and variance
-     SIGMA.
+     logarithm is normally distributed with mean MU and standard
+     deviation SIGMA.
 
-     Default values are MU = 1, SIGMA = 1.
+     Default values are MU = 0, SIGMA = 1.
    
 
 
@@ -32919,7 +33007,7 @@ lognpdf
      logarithm is normally distributed with mean MU and standard
      deviation SIGMA.
 
-     Default values are MU = 1, SIGMA = 1.
+     Default values are MU = 0, SIGMA = 1.
    
 
 
@@ -35964,22 +36052,21 @@ strjoin
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 750
+# length: 745
  -- Function File: STR = strjoin (CSTR)
  -- Function File: STR = strjoin (CSTR, DELIMITER)
-     Join the elements of the cell-string array, CSTR, into a single
+     Join the elements of the cell string array, CSTR, into a single
      string.
 
      If no DELIMITER is specified, the elements of CSTR separated by a
      space.
 
-     If DELIMITER is specified as a string, the cell-string array is
+     If DELIMITER is specified as a string, the cell string array is
      joined using the string.  Escape sequences are supported.
 
-     If DELIMITER is a cell-string array whose length is one less than
-     CSTR, then the elements of CSTR are joined by interleaving the
-     cell-string elements of DELIMITER.  Escape sequences are not
-     supported.
+     If DELIMITER is a cell string array whose length is one less than
+     CSTR, then the elements of CSTR are joined by interleaving the cell
+     string elements of DELIMITER.  Escape sequences are not supported.
 
           strjoin ({'Octave','Scilab','Lush','Yorick'}, '*')
                 => 'Octave*Scilab*Lush*Yorick'
@@ -35992,7 +36079,7 @@ strjoin
 # type: sq_string
 # elements: 1
 # length: 72
-Join the elements of the cell-string array, CSTR, into a single  string.
+Join the elements of the cell string array, CSTR, into a single  string.
 
 
 
@@ -36094,19 +36181,19 @@ strsplit
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 3087
+# length: 3052
  -- Function File: [CSTR] = strsplit (S)
  -- Function File: [CSTR] = strsplit (S, DEL)
  -- Function File: [CSTR] = strsplit (..., NAME, VALUE)
  -- Function File: [CSTR, MATCHES] = strsplit (...)
      Split the string S using the delimiters specified by DEL and return
-     a cell-string array of sub-strings.  If a delimiter is not
-     specified the string, S, is split at whitespace.  The delimiter,
-     DEL may be a string, a scalar cell-string, or cell-string array.
-     DEL must be a cell-string array.  By default, consecutive
-     delimiters in the input string, S, are collapsed into one.
+     a cell string array of substrings.  If a delimiter is not specified
+     the string, S, is split at whitespace.  The delimiter, DEL may be a
+     string, a scalar cell string, or cell string array.  By default,
+     consecutive delimiters in the input string S are collapsed into
+     one.
 
-     The second output, MATCHES, returns the delmiters which were
+     The second output, MATCHES, returns the delimiters which were
      matched in the original string.
 
      Example:
@@ -36201,8 +36288,8 @@ strsplit
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 104
-Split the string S using the delimiters specified by DEL and return  a cell-string array of sub-strings.
+# length: 103
+Split the string S using the delimiters specified by DEL and return  a cell string array of substrings.
 
 
 
@@ -37747,9 +37834,16 @@ logical
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 108
+# length: 420
  -- Built-in Function: logical (X)
-     Convert X to logical type.
+     Convert the numeric object X to logical type.
+
+     Any non-zero values will be converted to true (1) while zero values
+     will be converted to false (0).  The non-numeric value NaN cannot
+     be converted and will produce an error.
+
+     Compatibility Note: Octave accepts complex values as input, whereas
+     MATLAB issues an error.
 
      See also: double, single, char.
    
@@ -37758,8 +37852,8 @@ logical
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 26
-Convert X to logical type.
+# length: 45
+Convert the numeric object X to logical type.
 
 
 
@@ -37799,15 +37893,19 @@ cell
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 417
+# length: 480
  -- Built-in Function: cell (N)
  -- Built-in Function: cell (M, N)
  -- Built-in Function: cell (M, N, K, ...)
  -- Built-in Function: cell ([M N ...])
-     Create a new cell array object.  If invoked with a single scalar
-     integer argument, return a square NxN cell array.  If invoked with
-     two or more scalar integer arguments, or a vector of integer
-     values, return an array with the given dimensions.
+     Create a new cell array object.
+
+     If invoked with a single scalar integer argument, return a square
+     NxN cell array.  If invoked with two or more scalar integer
+     arguments, or a vector of integer values, return an array with the
+     given dimensions.
+
+     See also: cellstr, mat2cell, num2cell, struct2cell.
    
 
 
@@ -37856,10 +37954,17 @@ cellstr
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 130
- -- Built-in Function: cellstr (STRING)
+# length: 354
+ -- Built-in Function: CSTR = cellstr (STRMAT)
      Create a new cell array object from the elements of the string
-     array STRING.
+     array STRMAT.
+
+     Each row of STRMAT becomes an element of CSTR.  Any trailing spaces
+     in a row are deleted before conversion.
+
+     To convert back from a cellstr to a character array use 'char'.
+
+     See also: cell, char.
    
 
 
@@ -37867,7 +37972,7 @@ cellstr
 # type: sq_string
 # elements: 1
 # length: 77
-Create a new cell array object from the elements of the string  array STRING.
+Create a new cell array object from the elements of the string  array STRMAT.
 
 
 
@@ -37881,8 +37986,8 @@ struct2cell
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 826
- -- Built-in Function: struct2cell (S)
+# length: 830
+ -- Built-in Function: C = struct2cell (S)
      Create a new cell array from the objects stored in the struct
      object.  If F is the number of fields in the structure, the
      resulting cell array will have a dimension vector corresponding to
@@ -37985,12 +38090,12 @@ ismethod
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 167
+# length: 175
  -- Built-in Function: ismethod (X, METHOD)
      Return true if X is a class object and the string METHOD is a
      method of this class.
 
-     See also: isobject.
+     See also: isprop, isobject.
    
 
 
@@ -38012,12 +38117,14 @@ superiorto
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 319
+# length: 347
  -- Built-in Function: superiorto (CLASS_NAME, ...)
      When called from a class constructor, mark the object currently
      constructed as having a higher precedence than CLASS_NAME.  More
      that one such class can be specified in a single call.  This
      function may only be called from a class constructor.
+
+     See also: inferiorto.
    
 
 
@@ -38039,12 +38146,14 @@ inferiorto
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 318
+# length: 346
  -- Built-in Function: inferiorto (CLASS_NAME, ...)
      When called from a class constructor, mark the object currently
      constructed as having a lower precedence than CLASS_NAME.  More
      that one such class can be specified in a single call.  This
      function may only be called from a class constructor.
+
+     See also: superiorto.
    
 
 
@@ -38066,18 +38175,54 @@ functions
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 136
- -- Built-in Function: functions (FCN_HANDLE)
-     Return a struct containing information about the function handle
+# length: 1161
+ -- Built-in Function: S = functions (FCN_HANDLE)
+     Return a structure containing information about the function handle
      FCN_HANDLE.
+
+     The structure S always contains these 3 fields:
+
+     function
+          The function name.  For an anonymous function (no name) this
+          will be the actual function definition.
+
+     type
+          Type of the function.
+
+          anonymous
+               The function is anonymous.
+
+          private
+               The function is private.
+
+          overloaded
+               The function overloads an existing function.
+
+          simple
+               The function is a built-in or m-file function.
+
+          subfunction
+               The function is a subfunction within an m-file.
+
+     file
+          The m-file that will be called to perform the function.  This
+          field is empty for anonymous and built-in functions.
+
+     In addition, some function types may return more information in
+     additional fields.
+
+     *Warning:* 'functions' is provided for debugging purposes only.
+     It's behavior may change in the future and programs should not
+     depend on a particular output.
+
    
 
 
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 77
-Return a struct containing information about the function handle  FCN_HANDLE.
+# length: 80
+Return a structure containing information about the function handle  FCN_HANDLE.
 
 
 
@@ -38091,10 +38236,12 @@ func2str
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 156
+# length: 193
  -- Built-in Function: func2str (FCN_HANDLE)
      Return a string containing the name of the function referenced by
      the function handle FCN_HANDLE.
+
+     See also: str2func, functions.
    
 
 
@@ -38116,12 +38263,14 @@ str2func
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 276
+# length: 310
  -- Built-in Function: str2func (FCN_NAME)
  -- Built-in Function: str2func (FCN_NAME, "global")
      Return a function handle constructed from the string FCN_NAME.  If
      the optional "global" argument is passed, locally visible functions
      are ignored in the lookup.
+
+     See also: func2str, inline.
    
 
 
@@ -38143,11 +38292,11 @@ is_function_handle
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 131
+# length: 142
  -- Built-in Function: is_function_handle (X)
      Return true if X is a function handle.
 
-     See also: isa, typeinfo, class.
+     See also: isa, typeinfo, class, functions.
    
 
 
@@ -38169,19 +38318,20 @@ inline
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 987
+# length: 1266
  -- Built-in Function: inline (STR)
  -- Built-in Function: inline (STR, ARG1, ...)
  -- Built-in Function: inline (STR, N)
-     Create an inline function from the character string STR.  If called
-     with a single argument, the arguments of the generated function are
-     extracted from the function itself.  The generated function
-     arguments will then be in alphabetical order.  It should be noted
-     that i, and j are ignored as arguments due to the ambiguity between
-     their use as a variable or their use as an inbuilt constant.  All
-     arguments followed by a parenthesis are considered to be functions.
-     If no arguments are found, a function taking a single argument
-     named 'x' will be created.
+     Create an inline function from the character string STR.
+
+     If called with a single argument, the arguments of the generated
+     function are extracted from the function itself.  The generated
+     function arguments will then be in alphabetical order.  It should
+     be noted that i, and j are ignored as arguments due to the
+     ambiguity between their use as a variable or their use as an
+     inbuilt constant.  All arguments followed by a parenthesis are
+     considered to be functions.  If no arguments are found, a function
+     taking a single argument named 'x' will be created.
 
      If the second and subsequent arguments are character strings, they
      are the names of the arguments of the function.
@@ -38189,7 +38339,12 @@ inline
      If the second argument is an integer N, the arguments are "x",
      "P1", ..., "PN".
 
-     See also: argnames, formula, vectorize.
+     Programming Note: The use of 'inline' is discouraged and it may be
+     removed from a future version of Octave.  The preferred way to
+     create functions from strings is through the use of anonymous
+     functions (*note Anonymous Functions::) or 'str2func'.
+
+     See also: argnames, formula, vectorize, str2func.
    
 
 
@@ -38591,15 +38746,15 @@ onCleanup
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 514
- -- Built-in Function: C = onCleanup (ACTION)
+# length: 520
+ -- Built-in Function: OBJ = onCleanup (FUNCTION)
      Create a special object that executes a given function upon
      destruction.  If the object is copied to multiple variables (or
-     cell or struct array elements) or returned from a function, ACTION
-     will be executed after clearing the last copy of the object.  Note
-     that if multiple local onCleanup variables are created, the order
-     in which they are called is unspecified.  For similar functionality
-     *Note The unwind_protect Statement::.
+     cell or struct array elements) or returned from a function,
+     FUNCTION will be executed after clearing the last copy of the
+     object.  Note that if multiple local onCleanup variables are
+     created, the order in which they are called is unspecified.  For
+     similar functionality *Note The unwind_protect Statement::.
    
 
 
@@ -38684,12 +38839,15 @@ struct
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 1759
- -- Built-in Function: struct (FIELD1, VALUE1, FIELD2, VALUE2, ...)
+# length: 1951
+ -- Built-in Function: S = struct ()
+ -- Built-in Function: S = struct (FIELD1, VALUE1, FIELD2, VALUE2, ...)
+ -- Built-in Function: S = struct (OBJ)
 
      Create a scalar or array structure and initialize its values.  The
-     FIELD1, FIELD2, ... variables are strings giving the names of the
-     fields and the VALUE1, VALUE2, ... variables can be any type.
+     FIELD1, FIELD2, ... variables are strings specifying the names of
+     the fields and the VALUE1, VALUE2, ... variables can be of any
+     type.
 
      If the values are cell arrays, create a structure array and
      initialize its values.  The dimensions of each cell array of values
@@ -38719,7 +38877,7 @@ struct
               foo
 
 
-     The first case is an ordinary scalar struct, one field, one value.
+     The first case is an ordinary scalar struct--one field, one value.
      The second produces an empty struct array with one field and no
      values, since s being passed an empty cell array of struct array
      values.  When the value is a cell array containing a single entry,
@@ -38728,6 +38886,9 @@ struct
 
      Finally, if the value is a non-scalar cell array, then 'struct'
      produces a struct *array*.
+
+     See also: cell2struct, fieldnames, orderfields, getfield, setfield,
+     rmfield, structfun.
    
 
 
@@ -38775,11 +38936,14 @@ isfield
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 223
+# length: 294
+ -- Built-in Function: isfield (X, "NAME")
  -- Built-in Function: isfield (X, NAME)
      Return true if the X is a structure and it includes an element
      named NAME.  If NAME is a cell array of strings then a logical
      array of equal dimension is returned.
+
+     See also: fieldnames.
    
 
 
@@ -38801,9 +38965,11 @@ nfields
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 91
+# length: 119
  -- Built-in Function: nfields (S)
      Return the number of fields of the structure S.
+
+     See also: fieldnames.
    
 
 
@@ -38825,7 +38991,8 @@ cell2struct
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 578
+# length: 675
+ -- Built-in Function: cell2struct (CELL, FIELDS)
  -- Built-in Function: cell2struct (CELL, FIELDS, DIM)
      Convert CELL to a structure.  The number of fields in FIELDS must
      match the number of elements in CELL along dimension DIM, that is
@@ -38842,6 +39009,8 @@ cell2struct
                   Height = 185
                 }
 
+
+     See also: struct2cell, cell2mat, struct.
    
 
 
@@ -38863,22 +39032,22 @@ rmfield
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 304
+# length: 302
  -- Built-in Function: S = rmfield (S, "F")
  -- Built-in Function: S = rmfield (S, F)
-     Return a copy of the structure (array) S with the field F removed.
-     If F is a cell array of strings or a character array, remove each
-     of the named fields.
+     Return a _copy_ of the structure (array) S with the field F
+     removed.  If F is a cell array of strings or a character array,
+     remove each of the named fields.
 
-     See also: cellstr, iscellstr, setfield.
+     See also: orderfields, fieldnames.
    
 
 
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 66
-Return a copy of the structure (array) S with the field F removed.
+# length: 69
+Return a _copy_ of the structure (array) S with the field F  removed.
 
 
 
@@ -38892,7 +39061,7 @@ struct_levels_to_print
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 520
+# length: 565
  -- Built-in Function: VAL = struct_levels_to_print ()
  -- Built-in Function: OLD_VAL = struct_levels_to_print (NEW_VAL)
  -- Built-in Function: struct_levels_to_print (NEW_VAL, "local")
@@ -38903,6 +39072,8 @@ struct_levels_to_print
      variable is changed locally for the function and any subroutines it
      calls.  The original variable value is restored when exiting the
      function.
+
+     See also: print_struct_array_contents.
    
 
 
@@ -38924,21 +39095,24 @@ print_struct_array_contents
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 803
+# length: 842
  -- Built-in Function: VAL = print_struct_array_contents ()
  -- Built-in Function: OLD_VAL = print_struct_array_contents (NEW_VAL)
  -- Built-in Function: print_struct_array_contents (NEW_VAL, "local")
      Query or set the internal variable that specifies whether to print
-     struct array contents.  If true, values of struct array elements
-     are printed.  This variable does not affect scalar structures.
-     Their elements are always printed.  In both cases, however,
-     printing will be limited to the number of levels specified by
-     STRUCT_LEVELS_TO_PRINT.
+     struct array contents.
+
+     If true, values of struct array elements are printed.  This
+     variable does not affect scalar structures whose elements are
+     always printed.  In both cases, however, printing will be limited
+     to the number of levels specified by STRUCT_LEVELS_TO_PRINT.
 
      When called from inside a function with the "local" option, the
      variable is changed locally for the function and any subroutines it
      calls.  The original variable value is restored when exiting the
      function.
+
+     See also: struct_levels_to_print.
    
 
 
@@ -38960,13 +39134,15 @@ typeinfo
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 250
+# length: 277
  -- Built-in Function: typeinfo ()
  -- Built-in Function: typeinfo (EXPR)
 
      Return the type of the expression EXPR, as a string.  If EXPR is
-     omitted, return an cell array of strings containing all the
+     omitted, return a cell array of strings containing all the
      currently installed data types.
+
+     See also: class, isa.
    
 
 
@@ -38988,17 +39164,29 @@ nargin
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 585
+# length: 798
  -- Built-in Function: nargin ()
  -- Built-in Function: nargin (FCN)
      Within a function, return the number of arguments passed to the
      function.  At the top level, return the number of command line
      arguments passed to Octave.
 
-     If called with the optional argument FCN, a function name or
-     handle, return the declared number of arguments that the function
-     can accept.  If the last argument is VARARGIN the returned value is
-     negative.  This feature does not work on builtin functions.
+     If called with the optional argument FCN--a function name or
+     handle-- return the declared number of arguments that the function
+     can accept.
+
+     If the last argument to FCN is VARARGIN the returned value is
+     negative.  For example, the function 'union' for sets is declared
+     as
+
+          function [y, ia, ib] = union (a, b, varargin)
+
+          and
+
+          nargin ("union")
+          => -3
+
+     Programming Note: 'nargin' does not work on built-in functions.
 
      See also: nargout, varargin, isargout, varargout, nthargout.
    
@@ -39022,12 +39210,12 @@ nargout
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 1064
+# length: 1105
  -- Built-in Function: nargout ()
  -- Built-in Function: nargout (FCN)
      Within a function, return the number of values the caller expects
-     to receive.  If called with the optional argument FCN, a function
-     name or handle, return the number of declared output values that
+     to receive.  If called with the optional argument FCN--a function
+     name or handle--return the number of declared output values that
      the function can produce.  If the final output argument is
      VARARGOUT the returned value is negative.
 
@@ -39047,13 +39235,14 @@ nargout
 
      will return 2, because 'histc' has two outputs, whereas
 
-          nargout (@deal)
+          nargout (@imread)
 
-     will return -1, because 'deal' has a variable number of outputs.
+     will return -2, because 'imread' has two outputs and the second is
+     VARARGOUT.
 
-     At the top level, 'nargout' with no argument is undefined.
-     'nargout' does not work on builtin functions.  'nargout' returns -1
-     for all anonymous functions.
+     At the top level, 'nargout' with no argument is undefined and will
+     produce an error.  'nargout' does not work for built-in functions
+     and returns -1 for all anonymous functions.
 
      See also: nargin, varargin, isargout, varargout, nthargout.
    
@@ -39077,14 +39266,15 @@ optimize_subsasgn_calls
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 630
+# length: 634
  -- Built-in Function: VAL = optimize_subsasgn_calls ()
  -- Built-in Function: OLD_VAL = optimize_subsasgn_calls (NEW_VAL)
  -- Built-in Function: optimize_subsasgn_calls (NEW_VAL, "local")
      Query or set the internal flag for subsasgn method call
-     optimizations.  If true, Octave will attempt to eliminate the
-     redundant copying when calling subsasgn method of a user-defined
-     class.
+     optimizations.
+
+     If true, Octave will attempt to eliminate the redundant copying
+     when calling the subsasgn method of a user-defined class.
 
      When called from inside a function with the "local" option, the
      variable is changed locally for the function and any subroutines it
@@ -39114,7 +39304,7 @@ isargout
 # length: 748
  -- Built-in Function: isargout (K)
      Within a function, return a logical value indicating whether the
-     argument K will be assigned on output to a variable.  If the result
+     argument K will be assigned to a variable on output.  If the result
      is false, the argument has been ignored during the function call
      through the use of the tilde (~) special output argument.
      Functions can use 'isargout' to avoid performing unnecessary
@@ -39133,7 +39323,7 @@ isargout
 # type: sq_string
 # elements: 1
 # length: 118
-Within a function, return a logical value indicating whether the  argument K will be assigned on output to a variable.
+Within a function, return a logical value indicating whether the  argument K will be assigned to a variable on output.
 
 
 
@@ -39183,7 +39373,7 @@ subsref
      '"."'.  The 'subs' field may be either '":"' or a cell array of
      index values.
 
-     The following example shows how to extract the two first columns of
+     The following example shows how to extract the first two columns of
      a matrix
 
           val = magic (3)
@@ -39324,9 +39514,11 @@ int16
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 75
+# length: 142
  -- Built-in Function: int16 (X)
      Convert X to 16-bit integer type.
+
+     See also: int8, uint8, uint16, int32, uint32, int64, uint64.
    
 
 
@@ -39348,9 +39540,11 @@ int32
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 75
+# length: 142
  -- Built-in Function: int32 (X)
      Convert X to 32-bit integer type.
+
+     See also: int8, uint8, int16, uint16, uint32, int64, uint64.
    
 
 
@@ -39372,9 +39566,11 @@ int64
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 75
+# length: 142
  -- Built-in Function: int64 (X)
      Convert X to 64-bit integer type.
+
+     See also: int8, uint8, int16, uint16, int32, uint32, uint64.
    
 
 
@@ -39396,9 +39592,11 @@ int8
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 73
+# length: 141
  -- Built-in Function: int8 (X)
      Convert X to 8-bit integer type.
+
+     See also: uint8, int16, uint16, int32, uint32, int64, uint64.
    
 
 
@@ -39420,9 +39618,11 @@ uint16
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 85
+# length: 151
  -- Built-in Function: uint16 (X)
      Convert X to unsigned 16-bit integer type.
+
+     See also: int8, uint8, int16, int32, uint32, int64, uint64.
    
 
 
@@ -39444,9 +39644,11 @@ uint32
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 85
+# length: 151
  -- Built-in Function: uint32 (X)
      Convert X to unsigned 32-bit integer type.
+
+     See also: int8, uint8, int16, uint16, int32, int64, uint64.
    
 
 
@@ -39468,9 +39670,11 @@ uint64
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 85
+# length: 151
  -- Built-in Function: uint64 (X)
      Convert X to unsigned 64-bit integer type.
+
+     See also: int8, uint8, int16, uint16, int32, uint32, int64.
    
 
 
@@ -39492,9 +39696,11 @@ uint8
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 83
+# length: 150
  -- Built-in Function: uint8 (X)
      Convert X to unsigned 8-bit integer type.
+
+     See also: int8, int16, uint16, int32, uint32, int64, uint64.
    
 
 
@@ -39661,14 +39867,13 @@ string_fill_char
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 772
+# length: 765
  -- Built-in Function: VAL = string_fill_char ()
  -- Built-in Function: OLD_VAL = string_fill_char (NEW_VAL)
  -- Built-in Function: string_fill_char (NEW_VAL, "local")
      Query or set the internal variable used to pad all rows of a
-     character matrix to the same length.  It must be a single
-     character.  The default value is " " (a single space).  For
-     example:
+     character matrix to the same length; It must be a single character.
+     The default value is " " (a single space).  For example:
 
           string_fill_char ("X");
           [ "these"; "are"; "strings" ]
@@ -39686,8 +39891,8 @@ string_fill_char
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 98
-Query or set the internal variable used to pad all rows of a  character matrix to the same length.
+# length: 129
+Query or set the internal variable used to pad all rows of a  character matrix to the same length; It must be a single character.
 
 
 
@@ -54494,17 +54699,18 @@ fixed_point_format
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 1116
+# length: 1136
  -- Built-in Function: VAL = fixed_point_format ()
  -- Built-in Function: OLD_VAL = fixed_point_format (NEW_VAL)
  -- Built-in Function: fixed_point_format (NEW_VAL, "local")
      Query or set the internal variable that controls whether Octave
-     will use a scaled format to print matrix values such that the
-     largest element may be written with a single leading digit with the
-     scaling factor is printed on the first line of output.  For
-     example:
+     will use a scaled format to print matrix values.
 
-          octave:1> logspace (1, 7, 5)'
+     The scaled format prints a scaling factor on the first line of
+     output chosen such that the largest matrix element can be written
+     with a single leading digit.  For example:
+
+          logspace (1, 7, 5)'
           ans =
 
             1.0e+07  *
@@ -54515,9 +54721,9 @@ fixed_point_format
             0.03162
             1.00000
 
-     Notice that first value appears to be zero when it is actually 1.
-     For this reason, you should be careful when setting
-     'fixed_point_format' to a nonzero value.
+     Notice that the first value appears to be 0 when it is actually 1.
+     Because of the possibilty for confusion you should be careful about
+     enabling 'fixed_point_format'.
 
      When called from inside a function with the "local" option, the
      variable is changed locally for the function and any subroutines it
@@ -54531,8 +54737,8 @@ fixed_point_format
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 251
-Query or set the internal variable that controls whether Octave  will use a scaled format to print matrix values such that the  largest element may be written with a single leading digit with the  scaling factor is printed on the first line of output.
+# length: 113
+Query or set the internal variable that controls whether Octave  will use a scaled format to print matrix values.
 
 
 
@@ -54977,8 +55183,8 @@ rand
 # elements: 1
 # length: 3321
  -- Built-in Function: rand (N)
- -- Built-in Function: rand (N, M, ...)
- -- Built-in Function: rand ([N M ...])
+ -- Built-in Function: rand (M, N, ...)
+ -- Built-in Function: rand ([M N ...])
  -- Built-in Function: V = rand ("state")
  -- Built-in Function: rand ("state", V)
  -- Built-in Function: rand ("state", "reset")
@@ -55073,8 +55279,8 @@ randn
 # elements: 1
 # length: 1145
  -- Built-in Function: randn (N)
- -- Built-in Function: randn (N, M, ...)
- -- Built-in Function: randn ([N M ...])
+ -- Built-in Function: randn (M, N, ...)
+ -- Built-in Function: randn ([M N ...])
  -- Built-in Function: V = randn ("state")
  -- Built-in Function: randn ("state", V)
  -- Built-in Function: randn ("state", "reset")
@@ -55121,8 +55327,8 @@ rande
 # elements: 1
 # length: 1121
  -- Built-in Function: rande (N)
- -- Built-in Function: rande (N, M, ...)
- -- Built-in Function: rande ([N M ...])
+ -- Built-in Function: rande (M, N, ...)
+ -- Built-in Function: rande ([M N ...])
  -- Built-in Function: V = rande ("state")
  -- Built-in Function: rande ("state", V)
  -- Built-in Function: rande ("state", "reset")
@@ -55169,8 +55375,8 @@ randg
 # elements: 1
 # length: 2037
  -- Built-in Function: randg (N)
- -- Built-in Function: randg (N, M, ...)
- -- Built-in Function: randg ([N M ...])
+ -- Built-in Function: randg (M, N, ...)
+ -- Built-in Function: randg ([M N ...])
  -- Built-in Function: V = randg ("state")
  -- Built-in Function: randg ("state", V)
  -- Built-in Function: randg ("state", "reset")
@@ -55258,8 +55464,8 @@ randp
 # elements: 1
 # length: 1903
  -- Built-in Function: randp (L, N)
- -- Built-in Function: randp (L, N, M, ...)
- -- Built-in Function: randp (L, [N M ...])
+ -- Built-in Function: randp (L, M, N, ...)
+ -- Built-in Function: randp (L, [M N ...])
  -- Built-in Function: V = randp ("state")
  -- Built-in Function: randp ("state", V)
  -- Built-in Function: randp ("state", "reset")
@@ -60843,15 +61049,16 @@ autoload
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 1198
+# length: 1256
+ -- Built-in Function: AUTOLOAD_MAP = autoload ()
  -- Built-in Function: autoload (FUNCTION, FILE)
  -- Built-in Function: autoload (..., "remove")
      Define FUNCTION to autoload from FILE.
 
      The second argument, FILE, should be an absolute file name or a
      file name in the same directory as the function or script from
-     which the autoload command was run.  FILE should not depend on the
-     Octave load path.
+     which the autoload command was run.  FILE _should not_ depend on
+     the Octave load path.
 
      Normally, calls to 'autoload' appear in PKG_ADD script files that
      are evaluated when a directory is added to Octave's load path.  To
@@ -60861,7 +61068,8 @@ autoload
           autoload ("foo", "bar.oct");
 
      will load the function 'foo' from the file 'bar.oct'.  The above
-     usage when 'bar.oct' is not in the same directory or usages such as
+     usage when 'bar.oct' is not in the same directory, or usages such
+     as
 
           autoload ("foo", file_in_loadpath ("bar.oct"))
 
@@ -60870,7 +61078,7 @@ autoload
      With no arguments, return a structure containing the current
      autoload map.
 
-     If a third argument 'remove' is given, the function is cleared and
+     If a third argument "remove" is given, the function is cleared and
      not loaded anymore during the current Octave session.
 
      See also: PKG_ADD.
@@ -60895,15 +61103,16 @@ mfilename
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 450
+# length: 467
  -- Built-in Function: mfilename ()
  -- Built-in Function: mfilename ("fullpath")
  -- Built-in Function: mfilename ("fullpathext")
-     Return the name of the currently executing file.  At the top-level,
-     return the empty string.  Given the argument "fullpath", include
-     the directory part of the file name, but not the extension.  Given
-     the argument "fullpathext", include the directory part of the file
-     name and the extension.
+     Return the name of the currently executing file.
+
+     When called from outside an m-file return the empty string.  Given
+     the argument "fullpath", include the directory part of the file
+     name, but not the extension.  Given the argument "fullpathext",
+     include the directory part of the file name and the extension.
    
 
 
@@ -60925,11 +61134,14 @@ source
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 210
+# length: 231
  -- Built-in Function: source (FILE)
-     Parse and execute the contents of FILE.  This is equivalent to
-     executing commands from a script file, but without requiring the
-     file to be named 'FILE.m'.
+     Parse and execute the contents of FILE.
+
+     This is equivalent to executing commands from a script file, but
+     without requiring the file to be named 'FILE.m'.
+
+     See also: run.
    
 
 
@@ -60999,7 +61211,7 @@ builtin
 # type: sq_string
 # elements: 1
 # length: 642
- -- Loadable Function: [...] = builtin (F, ...)
+ -- Built-in Function: [...] = builtin (F, ...)
      Call the base function F even if F is overloaded to another
      function for the given type signature.
 
@@ -61038,7 +61250,7 @@ eval
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 984
+# length: 1226
  -- Built-in Function: eval (TRY)
  -- Built-in Function: eval (TRY, CATCH)
      Parse the string TRY and evaluate it as if it were an Octave
@@ -61046,22 +61258,25 @@ eval
      string TRY is evaluated in the current context, so any results
      remain available after 'eval' returns.
 
-     The following example makes the variable A with the approximate
-     value 3.1416 available.
+     The following example creates the variable A with the approximate
+     value of 3.1416 in the current workspace.
 
           eval ("A = acos(-1);");
 
-     If an error occurs during the evaluation of TRY the CATCH string is
-     evaluated, as the following example shows:
+     If an error occurs during the evaluation of TRY then the CATCH
+     string is evaluated, as the following example shows:
 
           eval ('error ("This is a bad example");',
                 'printf ("This error occurred:\n%s\n", lasterr ());');
                -| This error occurred:
                   This is a bad example
 
-     Consider using try/catch blocks instead if you are only using
-     'eval' as an error-capturing mechanism rather than for the
-     execution of arbitrary code strings.
+     Programming Note: if you are only using 'eval' as an
+     error-capturing mechanism, rather than for the execution of
+     arbitrary code strings, Consider using try/catch blocks or
+     unwind_protect/unwind_protect_cleanup blocks instead.  These
+     techniques have higher performance and don't introduce the security
+     considerations that the evaluation of arbitrary code does.
 
      See also: evalin.
    
@@ -62178,7 +62393,7 @@ qr
           min norm(A x - b)
 
      for overdetermined systems of equations (i.e., A is a tall, thin
-     matrix).  The QR factorization is 'Q * Q = A' where Q is an
+     matrix).  The QR factorization is 'Q * R = A' where Q is an
      orthogonal matrix and R is upper triangular.
 
      If given a second argument of '0', 'qr' returns an economy-sized
@@ -62568,9 +62783,10 @@ case
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 254
- -- Keyword: case {VALUE}
-     A case statement in an switch.  Octave cases are exclusive and do
+# length: 282
+ -- Keyword: case VALUE
+ -- Keyword: case {VALUE, ...}
+     A case statement in a switch.  Octave cases are exclusive and do
      not fall-through as do C-language cases.  A switch statement must
      have at least one case.  See 'switch' for an example.
 
@@ -62581,8 +62797,8 @@ case
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 30
-A case statement in an switch.
+# length: 29
+A case statement in a switch.
 
 
 
@@ -62596,8 +62812,9 @@ catch
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 93
+# length: 118
  -- Keyword: catch
+ -- Keyword: catch VALUE
      Begin the cleanup part of a try-catch block.
 
      See also: try.
@@ -63037,8 +63254,8 @@ global
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 179
- -- Keyword: global
+# length: 183
+ -- Keyword: global VAR
      Declare variables to have global scope.
 
           global X;
@@ -63221,9 +63438,9 @@ static
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 114
+# length: 117
  -- Keyword: static
-     This function has been deprecated in favor of persistent.
+     This statement has been deprecated in favor of 'persistent'.
 
      See also: persistent.
    
@@ -63232,8 +63449,8 @@ static
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 57
-This function has been deprecated in favor of persistent.
+# length: 60
+This statement has been deprecated in favor of 'persistent'.
 
 
 
@@ -63315,8 +63532,8 @@ until
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 94
- -- Keyword: until
+# length: 101
+ -- Keyword: until (COND)
      End a do-until loop.  See 'do' for an example.
 
      See also: do.

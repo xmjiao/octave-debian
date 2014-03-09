@@ -21,6 +21,304 @@ manual into another language, under the above conditions for modified
 versions.
 
 
+File: octave.info,  Node: Using Sparse Matrices in Oct-Files,  Prev: Creating Sparse Matrices in Oct-Files,  Up: Sparse Matrices in Oct-Files
+
+A.1.6.3 Using Sparse Matrices in Oct-Files
+..........................................
+
+Most of the same operators and functions on sparse matrices that are
+available from the Octave command line are also available within
+oct-files.  The basic means of extracting a sparse matrix from an
+'octave_value' and returning it as an 'octave_value', can be seen in the
+following example.
+
+     octave_value_list retval;
+
+     SparseMatrix sm = args(0).sparse_matrix_value ();
+     SparseComplexMatrix scm =
+         args(1).sparse_complex_matrix_value ();
+     SparseBoolMatrix sbm = args(2).sparse_bool_matrix_value ();
+     ...
+     retval(2) = sbm;
+     retval(1) = scm;
+     retval(0) = sm;
+
+   The conversion to an 'octave_value' is handled by the sparse
+'octave_value' constructors, and so no special care is needed.
+
+
+File: octave.info,  Node: Accessing Global Variables in Oct-Files,  Next: Calling Octave Functions from Oct-Files,  Prev: Sparse Matrices in Oct-Files,  Up: Oct-Files
+
+A.1.7 Accessing Global Variables in Oct-Files
+---------------------------------------------
+
+Global variables allow variables in the global scope to be accessed.
+Global variables can be accessed within oct-files by using the support
+functions 'get_global_value' and 'set_global_value'.  'get_global_value'
+takes two arguments, the first is a string representing the variable
+name to obtain.  The second argument is a boolean argument specifying
+what to do if no global variable of the desired name is found.  An
+example of the use of these two functions is
+
+     #include <octave/oct.h>
+
+     DEFUN_DLD (globaldemo, args, , "Global Demo")
+     {
+       octave_value retval;
+       int nargin = args.length ();
+
+       if (nargin != 1)
+         print_usage ();
+       else
+         {
+           std::string s = args(0).string_value ();
+           if (! error_state)
+             {
+               octave_value tmp = get_global_value (s, true);
+               if (tmp.is_defined ())
+                 retval = tmp;
+               else
+                 retval = "Global variable not found";
+
+               set_global_value ("a", 42.0);
+             }
+         }
+       return retval;
+     }
+
+
+   An example of its use is
+
+     global a b
+     b = 10;
+     globaldemo ("b")
+     => 10
+     globaldemo ("c")
+     => "Global variable not found"
+     num2str (a)
+     => 42
+
+
+File: octave.info,  Node: Calling Octave Functions from Oct-Files,  Next: Calling External Code from Oct-Files,  Prev: Accessing Global Variables in Oct-Files,  Up: Oct-Files
+
+A.1.8 Calling Octave Functions from Oct-Files
+---------------------------------------------
+
+There is often a need to be able to call another Octave function from
+within an oct-file, and there are many examples of such within Octave
+itself.  For example, the 'quad' function is an oct-file that calculates
+the definite integral by quadrature over a user supplied function.
+
+   There are also many ways in which a function might be passed.  It
+might be passed as one of
+
+  1. Function Handle
+
+  2. Anonymous Function Handle
+
+  3. Inline Function
+
+  4. String
+
+   The example below demonstrates an example that accepts all four means
+of passing a function to an oct-file.
+
+     #include <octave/oct.h>
+     #include <octave/parse.h>
+
+     DEFUN_DLD (funcdemo, args, nargout, "Function Demo")
+     {
+       octave_value_list retval;
+       int nargin = args.length ();
+
+       if (nargin < 2)
+         print_usage ();
+       else
+         {
+           octave_value_list newargs;
+           for (octave_idx_type i = nargin - 1; i > 0; i--)
+             newargs(i-1) = args(i);
+           if (args(0).is_function_handle () || args(0).is_inline_function ())
+             {
+               octave_function *fcn = args(0).function_value ();
+               if (! error_state)
+                 retval = feval (fcn, newargs, nargout);
+             }
+           else if (args(0).is_string ())
+             {
+               std::string fcn = args(0).string_value ();
+               if (! error_state)
+                 retval = feval (fcn, newargs, nargout);
+             }
+           else
+             error ("funcdemo: INPUT must be string, inline, or function handle");
+         }
+       return retval;
+     }
+
+
+   The first argument to this demonstration is the user-supplied
+function and the remaining arguments are all passed to the user
+function.
+
+     funcdemo (@sin,1)
+     => 0.84147
+     funcdemo (@(x) sin (x), 1)
+     => 0.84147
+     funcdemo (inline ("sin (x)"), 1)
+     => 0.84147
+     funcdemo ("sin",1)
+     => 0.84147
+     funcdemo (@atan2, 1, 1)
+     => 0.78540
+
+   When the user function is passed as a string the treatment of the
+function is different.  In some cases it is necessary to have the user
+supplied function as an 'octave_function' object.  In that case the
+string argument can be used to create a temporary function as
+demonstrated below.
+
+     std::octave fcn_name = unique_symbol_name ("__fcn__");
+     std::string fcode = "function y = ";
+     fcode.append (fcn_name);
+     fcode.append ("(x) y = ");
+     fcn = extract_function (args(0), "funcdemo", fcn_name,
+                             fcode, "; endfunction");
+     ...
+     if (fcn_name.length ())
+       clear_function (fcn_name);
+
+   There are two important things to know in this case.  First, the
+number of input arguments to the user function is fixed, and in the
+above example is a single argument.  Second, to avoid leaving the
+temporary function in the Octave symbol table it should be cleared after
+use.  Also, by convention internal function names begin and end with the
+character sequence '__'.
+
+
+File: octave.info,  Node: Calling External Code from Oct-Files,  Next: Allocating Local Memory in Oct-Files,  Prev: Calling Octave Functions from Oct-Files,  Up: Oct-Files
+
+A.1.9 Calling External Code from Oct-Files
+------------------------------------------
+
+Linking external C code to Octave is relatively simple, as the C
+functions can easily be called directly from C++.  One possible issue is
+that the declarations of the external C functions may need to be
+explicitly defined as C functions to the compiler.  If the declarations
+of the external C functions are in the header 'foo.h', then the tactic
+to ensure that the C++ compiler treats these declarations as C code is
+
+     #ifdef __cplusplus
+     extern "C"
+     {
+     #endif
+     #include "foo.h"
+     #ifdef __cplusplus
+     }  /* end extern "C" */
+     #endif
+
+   Calling Fortran code, however, can pose more difficulties.  This is
+due to differences in the manner in which compilers treat the linking of
+Fortran code with C or C++ code.  Octave supplies a number of macros
+that allow consistent behavior across a number of compilers.
+
+   The underlying Fortran code should use the 'XSTOPX' function to
+replace the Fortran 'STOP' function.  'XSTOPX' uses the Octave exception
+handler to treat failing cases in the Fortran code explicitly.  Note
+that Octave supplies its own replacement BLAS 'XERBLA' function, which
+uses 'XSTOPX'.
+
+   If the code calls 'XSTOPX', then the 'F77_XFCN' macro should be used
+to call the underlying Fortran function.  The Fortran exception state
+can then be checked with the global variable
+'f77_exception_encountered'.  If 'XSTOPX' will not be called, then the 'F77_FCN'
+macro should be used instead to call the Fortran code.
+
+   There is no great harm in using 'F77_XFCN' in all cases, except that
+for Fortran code that is short running and executes a large number of
+times, there is potentially an overhead in doing so.  However, if 'F77_FCN'
+is used with code that calls 'XSTOP', Octave can generate a segmentation
+fault.
+
+   An example of the inclusion of a Fortran function in an oct-file is
+given in the following example, where the C++ wrapper is
+
+     #include <octave/oct.h>
+     #include <octave/f77-fcn.h>
+
+     extern "C"
+     {
+       F77_RET_T
+       F77_FUNC (fortransub, FORTSUB)
+         (const int&, double*, F77_CHAR_ARG_DECL F77_CHAR_ARG_LEN_DECL);
+     }
+
+     DEFUN_DLD (fortrandemo, args, , "Fortran Demo")
+     {
+       octave_value_list retval;
+       int nargin = args.length ();
+
+       if (nargin != 1)
+         print_usage ();
+       else
+         {
+           NDArray a = args(0).array_value ();
+           if (! error_state)
+             {
+               double *av = a.fortran_vec ();
+               octave_idx_type na = a.numel ();
+               OCTAVE_LOCAL_BUFFER (char, ctmp, 128);
+
+               F77_XFCN (fortransub, FORTSUB,
+                         (na, av, ctmp F77_CHAR_ARG_LEN (128)));
+
+               retval(1) = std::string (ctmp);
+               retval(0) = a;
+             }
+         }
+       return retval;
+     }
+
+
+and the Fortran function is
+
+           subroutine fortransub (n, a, s)
+           implicit none
+           character*(*) s
+           real*8 a(*)
+           integer*4 i, n, ioerr
+           do i = 1, n
+             if (a(i) .eq. 0d0) then
+               call xstopx ('fortransub: divide by zero')
+             else
+               a(i) = 1d0 / a(i)
+             endif
+           enddo
+           write (unit = s, fmt = '(a,i3,a,a)', iostat = ioerr)
+          $       'There are ', n,
+          $       ' values in the input vector', char(0)
+           if (ioerr .ne. 0) then
+             call xstopx ('fortransub: error writing string')
+           endif
+           return
+           end
+
+
+
+   This example demonstrates most of the features needed to link to an
+external Fortran function, including passing arrays and strings, as well
+as exception handling.  Both the Fortran and C++ files need to be
+compiled in order for the example to work.
+
+     mkoctfile fortrandemo.cc fortransub.f
+     [b, s] = fortrandemo (1:3)
+     =>
+       b = 1.00000   0.50000   0.33333
+       s = There are   3 values in the input vector
+     [b, s] = fortrandemo (0:3)
+     error: fortrandemo: fortransub: divide by zero
+
+
 File: octave.info,  Node: Allocating Local Memory in Oct-Files,  Next: Input Parameter Checking in Oct-Files,  Prev: Calling External Code from Oct-Files,  Up: Oct-Files
 
 A.1.10 Allocating Local Memory in Oct-Files
@@ -104,9 +402,9 @@ An example of its use is:
 
      paramdemo ([1, 2, NaN, Inf])
      => Properties of input array:
-           includes Inf or NaN values
-           includes other values than 1 and 0
-           includes only int, Inf or NaN values
+          includes Inf or NaN values
+          includes other values than 1 and 0
+          includes only int, Inf or NaN values
 
 
 File: octave.info,  Node: Exception and Error Handling in Oct-Files,  Next: Documentation and Test of Oct-Files,  Prev: Input Parameter Checking in Oct-Files,  Up: Oct-Files
@@ -555,8 +853,8 @@ use that parallels the demo in 'stringdemo.cc' is given in the file
 An example of its expected output is
 
      mystring (["First String"; "Second String"])
-     => s1 = Second String
-             First String
+     => Second String
+        First String
 
    Other functions in the mex interface for handling character strings
 are 'mxCreateString', 'mxArrayToString', and
@@ -701,32 +999,22 @@ be found in the file 'mystruct.c' shown below.
 
      a(1).f1 = "f11"; a(1).f2 = "f12";
      a(2).f1 = "f21"; a(2).f2 = "f22";
-     b = mystruct (a)
-     => field f1(0) = f11
+     b = mystruct (a);
+     =>  field f1(0) = f11
          field f1(1) = f21
          field f2(0) = f12
          field f2(1) = f22
-         b =
-         {
-           this =
+     b
+     => 2x2 struct array containing the fields:
 
-           (,
-             [1] = this1
-             [2] = this2
-             [3] = this3
-             [4] = this4
-           ,)
+          this
+          that
 
-           that =
+     b(3)
+     => scalar structure containing the fields:
 
-           (,
-             [1] = that1
-             [2] = that2
-             [3] = that3
-             [4] = that4
-           ,)
-
-         }
+          this = this3
+          that = that3
 
 
 File: octave.info,  Node: Sparse Matrices with Mex-Files,  Next: Calling Other Functions in Mex-Files,  Prev: Structures with Mex-Files,  Up: Mex-Files
@@ -893,6 +1181,14 @@ example of the use of sparse matrices in mex-files is given by the file
      }
 
 
+   A sample usage of 'mysparse' is
+
+     sm = sparse ([1, 0; 0, pi]);
+     mysparse (sm)
+     =>
+     Matrix is 2-by-2 real sparse matrix with 2 elements
+     last non-zero element (2, 2) = 3.14159
+
 
 File: octave.info,  Node: Calling Other Functions in Mex-Files,  Prev: Sparse Matrices with Mex-Files,  Up: Mex-Files
 
@@ -911,7 +1207,7 @@ see in the example below.
      {
        char *str;
 
-       mexPrintf ("Hello, World!\n");
+       mexPrintf ("Starting file myfeval.mex\n");
 
        mexPrintf ("I have %d inputs and %d outputs\n", nrhs, nlhs);
 
@@ -922,7 +1218,11 @@ see in the example below.
 
        mexPrintf ("I'm going to call the function %s\n", str);
 
-       mexCallMATLAB (nlhs, plhs, nrhs-1, (mxArray*)prhs+1, str);
+       if (nlhs == 0)
+         nlhs = 1;  // Octave's automatic 'ans' variable
+
+       /* Cast prhs just to get rid of 'const' qualifier and stop compile warning */
+       mexCallMATLAB (nlhs, plhs, nrhs-1, (mxArray**)prhs+1, str);
 
        mxFree (str);
      }
@@ -931,12 +1231,11 @@ see in the example below.
    If this code is in the file 'myfeval.c', and is compiled to
 'myfeval.mex', then an example of its use is
 
-     myfeval ("sin", 1)
      a = myfeval ("sin", 1)
-     => Hello, World!
-         I have 2 inputs and 1 outputs
-         I'm going to call the interpreter function sin
-         a =  0.84147
+     => Starting file myfeval.mex
+        I have 2 inputs and 1 outputs
+        I'm going to call the interpreter function sin
+        a =  0.84147
 
    Note that it is not possible to use function handles or inline
 functions within a mex-file.
@@ -987,7 +1286,7 @@ like
    Note that the application 'standalone' will be dynamically linked
 against the Octave libraries and any Octave support libraries.  The
 above allows the Octave math libraries to be used by an application.  It
-does not, however, allow the script files, oct-files, or builtin
+does not, however, allow the script files, oct-files, or built-in
 functions of Octave to be used by the application.  To do that the
 Octave interpreter needs to be initialized first.  An example of how to
 do this can then be seen in the code
@@ -1036,17 +1335,17 @@ which, as before, is compiled and run as a standalone application with
      GCD of [10, 15] is 5
      $
 
-   It is worth noting that, if only builtin functions are to be called
+   It is worth noting that, if only built-in functions are to be called
 from a C++ standalone program, then it does not need to initialize the
-interpreter to do so.  The general rule is that, for a builtin function
+interpreter to do so.  The general rule is that, for a built-in function
 named 'function_name' in the interpreter, there will be a C++ function
 named 'Ffunction_name' (note the prepended capital 'F') accessible in
-the C++ API.  The declarations for all builtin functions are collected
+the C++ API.  The declarations for all built-in functions are collected
 in the header file 'builtin-defun-decls.h'.  This feature should be used
 with care as the list of built-in functions can change.  No guarantees
 can be made that a function that is currently built in won't be
 implemented as a .m file or as a dynamically linked function in the
-future.  An example of how to call builtin functions from C++ can be
+future.  An example of how to call built-in functions from C++ can be
 seen in the code
 
      #include <iostream>
@@ -1056,7 +1355,6 @@ seen in the code
      int
      main (void)
      {
-
        int n = 2;
        Matrix a_matrix = Matrix (n, n);
 
@@ -1064,10 +1362,8 @@ seen in the code
          for (octave_idx_type j = 0; j < n; j++)
            a_matrix(i,j) = (i + 1) * 10 + (j + 1);
 
-       std::cout << "This is a matrix:"
-                 << std::endl
-                 << a_matrix
-                 << std::endl;
+       std::cout << "This is a matrix:" << std::endl
+                 << a_matrix            << std::endl;
 
        octave_value_list in;
        in(0) = a_matrix;
@@ -1075,10 +1371,8 @@ seen in the code
        octave_value_list out = Fnorm (in, 1);
        double norm_of_the_matrix = out(0).double_value ();
 
-       std::cout << "This is the norm of the matrix:"
-                 << std::endl
-                 << norm_of_the_matrix
-                 << std::endl;
+       std::cout << "This is the norm of the matrix:" << std::endl
+                 << norm_of_the_matrix                << std::endl;
 
        return 0;
      }
@@ -1094,7 +1388,7 @@ which, again, is compiled and run as a standalone application with
 
      This is the norm of the matrix:
      34.4952
-
+     $
 
 
 File: octave.info,  Node: Test and Demo Functions,  Next: Tips and Standards,  Prev: External Code Interface,  Up: Top
@@ -1411,8 +1705,8 @@ Block type summary:
 '%!assert (x, y, tol)'
      shorthand for '%!test assert (x, y, tol)'
 
-   You can also create test scripts for builtins and your own C++
-functions.  To do so put a file with the bare function name (no .m
+   You can also create test scripts for built-in functions and your own
+C++ functions.  To do so, put a file with the bare function name (no .m
 extension) in a directory in the load path and it will be discovered by
 the 'test' function.  Alternatively, you can embed tests directly in
 your C++ code:
@@ -2226,10 +2520,10 @@ File: octave.info,  Node: How to Contribute,  Next: Building the Development Sou
 D.1 How to Contribute
 =====================
 
-The mailing list for Octave development discussion is
+The mailing list for Octave development discussions is
 <maintainers@octave.org>.  Patches should be submitted to Octave's patch
 tracker (https://savannah.gnu.org/patch/?func=additem&group=octave).
-This concerns the development of Octave core, i.e., code that goes to
+This concerns the development of Octave core, i.e., code that goes in to
 Octave directly.  You may consider developing and publishing a package
 instead; a great place for this is the allied Octave-Forge project
 (<http://octave.sourceforge.net>).  Note that the Octave core project is
@@ -2241,7 +2535,7 @@ File: octave.info,  Node: Building the Development Sources,  Next: Basics of Gen
 D.2 Building the Development Sources
 ====================================
 
-The directions for building from the Development sources change from
+The directions for building from the development sources change from
 time to time, so you should read the resources for developers on the web
 or in the development sources archive.  Start here:
 <http://www.octave.org/get-involved.html>.
@@ -2252,16 +2546,16 @@ File: octave.info,  Node: Basics of Generating a Changeset,  Next: General Guide
 D.3 Basics of Generating a Changeset
 ====================================
 
-The preferable form of contribution is creating a Mercurial changeset
-and submit it to the bug (http://savannah.gnu.org/bugs/?group=octave) or
-patch (http://savannah.gnu.org/patch/?func=additem&group=octave)
-trackers(1).  Mercurial is the source code management system currently
-used to develop Octave.  Other forms of contributions (e.g., simple diff
-patches) are also acceptable, but they slow down the review process.  If
-you want to make more contributions, you should really get familiar with
-Mercurial.  A good place to start is
+The best way to contribute is to create a Mercurial changeset and submit
+it to the bug (http://savannah.gnu.org/bugs/?group=octave) or patch
+(http://savannah.gnu.org/patch/?func=additem&group=octave) trackers(1).
+Mercurial is the source code management system currently used to develop
+Octave.  Other forms of contributions (e.g., simple diff patches) are
+also acceptable, but they slow down the review process.  If you want to
+make more contributions, you should really get familiar with Mercurial.
+A good place to start is
 <http://www.selenic.com/mercurial/wiki/index.cgi/Tutorial>.  There you
-will also find help how to install Mercurial.
+will also find help about how to install Mercurial.
 
    A simple contribution sequence could look like this:
 
@@ -2279,9 +2573,9 @@ will also find help how to install Mercurial.
      # attach ../cool.diff to your bug report
 
    You may want to get familiar with Mercurial queues to manage your
-changesets.  For working with queues you have to activate the extension
-mq with the following entry in Mercurial's configuration file '.hgrc'
-(or 'Mercurial.ini' on Windows):
+changesets.  To work with queues you must activate the extension mq with
+the following entry in Mercurial's configuration file '.hgrc' (or
+'Mercurial.ini' on Windows):
 
      [extensions]
      mq=
@@ -2341,8 +2635,8 @@ can be modified by
      status.ignored = black bold
 
    Sometimes a few further improvements for the pager extension are
-necessary.  The following options should not be enabled unless paging
-isn't working correctly:
+necessary.  The following options should not be enabled unless paging is
+not working correctly.
 
      [pager]
      # Some options for the less pager, see less(1) for their meaning.
@@ -2356,8 +2650,8 @@ isn't working correctly:
    Enabling the described extensions should immediately lead to a
 difference when using the command line version of hg.  Of these options,
 the only one that enables a new command is graphlog.  It is recommanded
-that you use the command 'hg glog' instead of 'hg log' for a better feel
-what commits are being based on.
+that to use the command 'hg glog', instead of 'hg log', for a better
+feel about what commits are being based on.
 
    ---------- Footnotes ----------
 
@@ -2371,9 +2665,9 @@ File: octave.info,  Node: General Guidelines,  Next: Octave Sources (m-files),  
 D.4 General Guidelines
 ======================
 
-All Octave's sources are distributed under the General Public License
-(GPL). Currently, Octave uses GPL version 3.  For details about this
-license, see <http://www.gnu.org/licenses/gpl.html>.  Therefore,
+All Octave's sources are distributed under the GNU General Public
+License (GPL). Currently, Octave uses GPL version 3.  For details about
+this license, see <http://www.gnu.org/licenses/gpl.html>.  Therefore,
 whenever you create a new source file, it should have the following
 comment header (use appropriate year, name and comment marks):
 
@@ -2381,33 +2675,31 @@ comment header (use appropriate year, name and comment marks):
      ##
      ## This file is part of Octave.
      ##
-     ## Octave is free software; you can redistribute it and/or
-     ## modify it under the terms of the GNU General Public
-     ## License as published by the Free Software Foundation;
-     ## either version 3 of the License, or (at your option) any
-     ## later version.
+     ## Octave is free software; you can redistribute it and/or modify it
+     ## under the terms of the GNU General Public License as published by
+     ## the Free Software Foundation; either version 3 of the License, or
+     ## (at your option) any later version.
      ##
-     ## Octave is distributed in the hope that it will be useful,
-     ## but WITHOUT ANY WARRANTY; without even the implied
-     ## warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-     ## PURPOSE.  See the GNU General Public License for more
-     ## details.
+     ## Octave is distributed in the hope that it will be useful, but
+     ## WITHOUT ANY WARRANTY; without even the implied warranty of
+     ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     ## GNU General Public License for more details.
      ##
-     ## You should have received a copy of the GNU General Public
-     ## License along with Octave; see the file COPYING.  If not,
+     ## You should have received a copy of the GNU General Public License
+     ## along with Octave; see the file COPYING.  If not,
      ## see <http://www.gnu.org/licenses/>.
 
    Always include commit messages in changesets.  After making your
 source changes, record and briefly describe the changes in your commit
 message.  You should have previously configured your '.hgrc' (or
-'Mercurial.ini' on Windows) with your name and email, which will get
+'Mercurial.ini' on Windows) with your name and email, which will be
 automatically added to your commit message.  Your commit message should
 have a brief one-line explanation of what the commit does.  If you are
 patching a bug, this one-line explanation should mention the bug number
-at the end.  If your change is small and only touches one file, this is
-typically sufficient.  If you are modifying several files or several
+at the end.  If your change is small and only touches one file then this
+is typically sufficient.  If you are modifying several files, or several
 parts of one file, you should enumerate your changes roughly following
-the GNU coding standards on changelogs, like the following example:
+the GNU coding standards for changelogs, as in the following example:
 
      look for methods before constructors
 
@@ -2420,13 +2712,13 @@ the GNU coding standards on changelogs, like the following example:
      * test/Makefile.am: Include ctor-vs-method/module.mk.
      (FCN_FILES): Include test_ctor_vs_method.m in the list.
 
-In this example, the names of files is mentioned, and in parentheses the
-name of the function in that file that was modified.  There is no need
-to mention the function for m-files that only contain one function.  The
-commit message should describe what is changed, not why.  Any
-explanation of why a change is needed should appear as comments in the
-code, particularly if there is something that might not be obvious to
-someone reading it later.
+In this example, the names of the file changed is listed first, and in
+parentheses the name of the function in that file that was modified.
+There is no need to mention the function for m-files that only contain
+one function.  The commit message should describe what was changed, not
+why it was changed.  Any explanation for why a change is needed should
+appear as comments in the code, particularly if there is something that
+might not be obvious to someone reading it later.
 
    When submitting code which addresses a known bug on the Octave bug
 tracker (<http://bugs.octave.org>), please add '(bug #XXXXX)' to the
@@ -2435,7 +2727,7 @@ first line of the commit messages.  For example:
      Fix bug for complex input for gradient (bug #34292).
 
    The preferred comment mark for places that may need further attention
-is FIXME.
+is 'FIXME:'.
 
 
 File: octave.info,  Node: Octave Sources (m-files),  Next: C++ Sources,  Prev: General Guidelines,  Up: Contributing Guidelines
@@ -2445,21 +2737,22 @@ D.5 Octave Sources (m-files)
 
 Don't use tabs.  Tabs cause trouble.  If you are used to them, set up
 your editor so that it converts tabs to spaces.  Indent the bodies of
-the statement blocks.  Recommended indent is 2 spaces.  When calling
+statement blocks.  The recommended indent is 2 spaces.  When calling
 functions, put spaces after commas and before the calling parentheses,
 like this:
 
        x = max (sin (y+3), 2);
 
-An exception are matrix and vector constructors:
+An exception are matrix or cell constructors:
 
        [sin(x), cos(x)]
+       {sin(x), cos(x)}
 
 Here, putting spaces after 'sin', 'cos' would result in a parse error.
-In indexing expression, do not put a space after the identifier (this
-differentiates indexing and function calls nicely).  The space after
-comma is not necessary if index expressions are simple, i.e., you may
-write
+For an indexing expression, do not put a space after the identifier
+(this differentiates indexing and function calls nicely).  The space
+after a comma is not necessary if index expressions are simple, i.e.,
+you may write
 
        A(:,i,j)
 
@@ -2473,10 +2766,10 @@ Function names must be lowercase.  Function names are global, so choose
 them wisely.
 
    Always use a specific end-of-block statement (like 'endif',
-'endswitch') rather than generic 'end'.
+'endswitch') rather than the generic 'end'.
 
-   Enclose the 'if', 'while', 'until' and 'switch' conditions in
-parentheses, like in C:
+   Enclose the 'if', 'while', 'until', and 'switch' conditions in
+parentheses, as in C:
 
      if (isvector (a))
        s = sum (a);
@@ -2508,10 +2801,11 @@ lists should be aligned on the first char after the open parenthesis.
 You should put a space before the left open parenthesis and after
 commas, for both function definitions and function calls.
 
-   Recommended indent is 2 spaces.  When indenting, indent the statement
-after control structures (like 'if', 'while', etc.).  If there is a
-compound statement, indent _both_ the curly braces and the body of the
-statement (so that the body gets indented by _two_ indents).  Example:
+   The recommended indent is 2 spaces.  When indenting, indent the
+statement after control structures (like 'if', 'while', etc.).  If there
+is a compound statement, indent _both_ the curly braces and the body of
+the statement (so that the body gets indented by _two_ indents).
+Example:
 
      if (have_args)
        {
@@ -2533,12 +2827,12 @@ innermost braces enclosing the split.  Example:
                        ? SVD::sigma_only
                        : (nargin == 2) ? SVD::economy : SVD::std);
 
-Consider putting extra braces around a multiline expression to make it
+Consider putting extra braces around a multi-line expression to make it
 more readable, even if they are not necessary.  Also, do not hesitate to
 put extra braces anywhere if it improves clarity.
 
-   Declare variables just before they're needed.  Use local variables of
-blocks--it helps optimization.  Don't write multi-line variable
+   Declare variables just before they are needed.  Use local variables
+of blocks--it helps optimization.  Don't write a multi-line variable
 declaration with a single type specification and multiple variables.  If
 the variables don't fit on single line, repeat the type specification.
 Example:
@@ -3187,6 +3481,18 @@ Libtool
      (<http://www.gnu.org/software/libtool>).  Libtool is required by
      Automake.
 
+gperf
+     Perfect hash function generator
+     (<http://www.gnu.org/software/gperf>).  You will need gperf if you
+     modify the 'octave.gperf' file or if you delete the file that is
+     generated from it.
+
+Texinfo
+     Package for generating online and print documentation
+     (<http://www.gnu.org/software/texinfo>).  You will need Texinfo to
+     build Octave's documentation or if you modify the documentation
+     source files or the docstring of any Octave function.
+
 
 File: octave.info,  Node: External Packages,  Prev: Build Tools,  Up: Build Dependencies
 
@@ -3273,6 +3579,13 @@ HDF5
      Library for manipulating portable data files
      (<http://www.hdfgroup.org/HDF5>).  HDF5 is required for Octave's
      'load' and 'save' commands to read and write HDF data files.
+
+Java Development Kit
+     Java programming language compiler and libraries.  The OpenJDK free
+     software implementation is recommended
+     (<http://openjdk.java.net/>), although other JDK implementations
+     may work.  Java is required to be able to call Java functions from
+     within Octave.
 
 LLVM
      Compiler framework, (<http://www.llvm.org>).  LLVM is required for
@@ -5464,6 +5777,10 @@ Concept Index
 * deprecated functions:                  Obsolete Functions.  (line   6)
 * description format:                    Format of Descriptions.
                                                               (line   6)
+* diagonal and permutation matrices:     Diagonal and Permutation Matrices.
+                                                              (line   6)
+* diagonal matrix expressions:           Expressions Involving Diagonal Matrices.
+                                                              (line   6)
 * dialog, displaying a help dialog:      Dialog Box Functions.
                                                               (line  43)
 * dialog, displaying a list dialog:      Dialog Box Functions.
@@ -5540,7 +5857,7 @@ Concept Index
 * erroneous results:                     Bug Criteria.        (line  12)
 * erroneous results <1>:                 Bug Reporting.       (line  70)
 * error bar series:                      Error Bar Series.    (line   6)
-* error ids:                             Catching Errors.     (line 120)
+* error ids:                             Catching Errors.     (line 131)
 * error message notation:                Error Messages.      (line   6)
 * error messages:                        Errors.              (line   6)
 * error messages, incorrect:             Bug Criteria.        (line  21)
@@ -5622,6 +5939,7 @@ Concept Index
 * graphics object, surface:              Graphics Objects.    (line  35)
 * graphics object, text:                 Graphics Objects.    (line  26)
 * graphics objects:                      Graphics Objects.    (line   6)
+* graphics objects, saving:              Graphics Objects.    (line 459)
 * graphics properties, default:          Managing Default Properties.
                                                               (line   6)
 * graphics toolkits:                     Graphics Toolkits.   (line   6)
@@ -5681,7 +5999,7 @@ Concept Index
 * 'javaclasspath.txt':                   How to make Java classes available?.
                                                               (line   6)
 * Kendall's Tau:                         Correlation and Regression Analysis.
-                                                              (line  70)
+                                                              (line  76)
 * keywords:                              Keywords.            (line   6)
 * known causes of trouble:               Trouble.             (line   6)
 * language definition:                   Grammar and Parser.  (line   6)
@@ -5692,6 +6010,9 @@ Concept Index
 * line properties:                       Line Properties.     (line   6)
 * line series:                           Line Series.         (line   6)
 * line styles, graphics:                 Line Styles.         (line   6)
+* linear algebra:                        Linear Algebra.      (line   6)
+* linear algebra, techniques:            Techniques Used for Linear Algebra.
+                                                              (line   6)
 * loadable function:                     A Sample Function Description.
                                                               (line  51)
 * loading data:                          Simple File I/O.     (line   6)
@@ -5720,9 +6041,21 @@ Concept Index
 * marker styles, graphics:               Marker Styles.       (line   6)
 * matching failure, in 'scanf':          Formatted Input.     (line  99)
 * matrices:                              Matrices.            (line   6)
+* matrices, diagonal and permutation:    Diagonal and Permutation Matrices.
+                                                              (line   6)
+* matrix factorizations:                 Matrix Factorizations.
+                                                              (line   6)
+* matrix functions, basic:               Basic Matrix Functions.
+                                                              (line   6)
 * matrix multiplication:                 Arithmetic Ops.      (line   6)
 * matrix multiplication <1>:             Operator Overloading.
                                                               (line   6)
+* matrix, functions of:                  Functions of a Matrix.
+                                                              (line   6)
+* matrix, permutation functions:         Permutation Matrix Functions.
+                                                              (line   6)
+* matrix, specialized solvers:           Specialized Solvers. (line   6)
+* matrix, zero elements:                 Zeros Treatment.     (line   6)
 * maximum field width ('scanf'):         Input Conversion Syntax.
                                                               (line  42)
 * memory management:                     Miscellaneous Techniques.
@@ -5818,6 +6151,8 @@ Concept Index
                                                               (line 117)
 * path, removing from classpath:         Java Interface Functions.
                                                               (line 127)
+* permutation matrix functions:          Permutation Matrix Functions.
+                                                              (line   6)
 * 'persistent' statement:                Persistent Variables.
                                                               (line   6)
 * persistent variables:                  Persistent Variables.
@@ -5826,6 +6161,19 @@ Concept Index
 * PKG_ADD:                               Creating Packages.   (line  45)
 * PKG_DEL:                               Creating Packages.   (line  63)
 * plotting:                              Plotting.            (line   6)
+* plotting, high-level:                  High-Level Plotting. (line   6)
+* plotting, multiple plot windows:       Multiple Plot Windows.
+                                                              (line   6)
+* plotting, multiple plots per figure:   Multiple Plots on One Page.
+                                                              (line   6)
+* plotting, saving and printing plots:   Printing and Saving Plots.
+                                                              (line   6)
+* plotting, three-dimensional:           Three-Dimensional Plots.
+                                                              (line   6)
+* plotting, two-dimensional functions:   Two-dimensional Function Plotting.
+                                                              (line   6)
+* plotting, window manipulation:         Manipulation of Plot Windows.
+                                                              (line   6)
 * precision ('printf'):                  Output Conversion Syntax.
                                                               (line  47)
 * printing notation:                     Printing Notation.   (line   6)
@@ -5838,6 +6186,10 @@ Concept Index
 * project startup file:                  Startup Files.       (line  36)
 * prompt customization:                  Customizing the Prompt.
                                                               (line   6)
+* pseudoinverse:                         Basic Matrix Functions.
+                                                              (line 353)
+* pseudoinverse <1>:                     Expressions Involving Diagonal Matrices.
+                                                              (line  27)
 * QP:                                    Optimization.        (line  18)
 * QR factorization:                      Matrix Factorizations.
                                                               (line 261)
@@ -5889,7 +6241,7 @@ Concept Index
                                                               (line 555)
 * site startup file:                     Startup Files.       (line  11)
 * Spearman's Rho:                        Correlation and Regression Analysis.
-                                                              (line  55)
+                                                              (line  61)
 * speedups:                              Miscellaneous Techniques.
                                                               (line   6)
 * stair group:                           Stair Group.         (line   6)
@@ -6046,26 +6398,26 @@ Function Index
                                                              (line   11)
 * any <1>:                               Finding Elements and Checking Conditions.
                                                              (line   12)
-* arch_fit:                              Signal Processing.  (line  365)
-* arch_rnd:                              Signal Processing.  (line  386)
-* arch_test:                             Signal Processing.  (line  396)
+* arch_fit:                              Signal Processing.  (line  375)
+* arch_rnd:                              Signal Processing.  (line  396)
+* arch_test:                             Signal Processing.  (line  406)
 * area:                                  Two-Dimensional Plots.
-                                                             (line 1464)
+                                                             (line 1524)
 * area <1>:                              Two-Dimensional Plots.
-                                                             (line 1465)
+                                                             (line 1525)
 * area <2>:                              Two-Dimensional Plots.
-                                                             (line 1466)
+                                                             (line 1526)
 * area <3>:                              Two-Dimensional Plots.
-                                                             (line 1467)
+                                                             (line 1527)
 * area <4>:                              Two-Dimensional Plots.
-                                                             (line 1468)
+                                                             (line 1528)
 * area <5>:                              Two-Dimensional Plots.
-                                                             (line 1469)
+                                                             (line 1529)
 * arg:                                   Complex Arithmetic. (line   17)
-* argnames:                              Inline Functions.   (line   36)
+* argnames:                              Inline Functions.   (line   42)
 * argv:                                  Command Line Options.
                                                              (line  186)
-* arma_rnd:                              Signal Processing.  (line  427)
+* arma_rnd:                              Signal Processing.  (line  437)
 * arrayfun:                              Function Application.
                                                              (line   13)
 * arrayfun <1>:                          Function Application.
@@ -6104,7 +6456,9 @@ Function Index
                                                              (line   47)
 * autoload <1>:                          Overloading and Autoloading.
                                                              (line   48)
-* autoreg_matrix:                        Signal Processing.  (line  441)
+* autoload <2>:                          Overloading and Autoloading.
+                                                             (line   49)
+* autoreg_matrix:                        Signal Processing.  (line  451)
 * autumn:                                Representing Images.
                                                              (line  177)
 * autumn <1>:                            Representing Images.
@@ -6160,7 +6514,7 @@ Function Index
                                                              (line  378)
 * barh <6>:                              Two-Dimensional Plots.
                                                              (line  379)
-* bartlett:                              Signal Processing.  (line  448)
+* bartlett:                              Signal Processing.  (line  458)
 * bartlett_test:                         Tests.              (line   61)
 * base2dec:                              String Conversions. (line  112)
 * base64_decode:                         Base64 and Binary Data Transmission.
@@ -6237,7 +6591,7 @@ Function Index
 * bitunpack:                             Built-in Data Types.
                                                              (line  126)
 * bitxor:                                Bit Manipulations.  (line   92)
-* blackman:                              Signal Processing.  (line  455)
+* blackman:                              Signal Processing.  (line  465)
 * blanks:                                Creating Strings.   (line   12)
 * blkdiag:                               Rearranging Matrices.
                                                              (line  513)
@@ -6351,6 +6705,8 @@ Function Index
                                                              (line   17)
 * cell2struct:                           Processing Data in Cell Arrays.
                                                              (line   26)
+* cell2struct <1>:                       Processing Data in Cell Arrays.
+                                                             (line   27)
 * celldisp:                              Basic Usage of Cell Arrays.
                                                              (line   53)
 * celldisp <1>:                          Basic Usage of Cell Arrays.
@@ -6374,7 +6730,7 @@ Function Index
 * cellindexmat:                          Indexing Cell Arrays.
                                                              (line  113)
 * cellslices:                            Creating Cell Arrays.
-                                                             (line  123)
+                                                             (line  128)
 * cellstr:                               Cell Arrays of Strings.
                                                              (line   25)
 * center:                                Basic Statistical Functions.
@@ -6513,9 +6869,9 @@ Function Index
 * colloc:                                Orthogonal Collocation.
                                                              (line    6)
 * colon:                                 Defining Indexing And Indexed Assignment.
-                                                             (line  195)
-* colon <1>:                             Defining Indexing And Indexed Assignment.
                                                              (line  196)
+* colon <1>:                             Defining Indexing And Indexed Assignment.
+                                                             (line  197)
 * colorbar:                              Plot Annotations.   (line  256)
 * colorbar <1>:                          Plot Annotations.   (line  257)
 * colorbar <2>:                          Plot Annotations.   (line  258)
@@ -6552,21 +6908,21 @@ Function Index
 * colstyle:                              Marker Styles.      (line   27)
 * columns:                               Object Sizes.       (line   22)
 * comet:                                 Two-Dimensional Plots.
-                                                             (line 1500)
+                                                             (line 1560)
 * comet <1>:                             Two-Dimensional Plots.
-                                                             (line 1501)
+                                                             (line 1561)
 * comet <2>:                             Two-Dimensional Plots.
-                                                             (line 1502)
+                                                             (line 1562)
 * comet <3>:                             Two-Dimensional Plots.
-                                                             (line 1503)
+                                                             (line 1563)
 * comet3:                                Two-Dimensional Plots.
-                                                             (line 1517)
+                                                             (line 1577)
 * comet3 <1>:                            Two-Dimensional Plots.
-                                                             (line 1518)
+                                                             (line 1578)
 * comet3 <2>:                            Two-Dimensional Plots.
-                                                             (line 1519)
+                                                             (line 1579)
 * comet3 <3>:                            Two-Dimensional Plots.
-                                                             (line 1520)
+                                                             (line 1580)
 * command_line_path:                     Manipulating the Load Path.
                                                              (line  138)
 * common_size:                           Finding Elements and Checking Conditions.
@@ -6575,15 +6931,15 @@ Function Index
 * compan:                                Finding Roots.      (line   47)
 * compare_versions:                      System Information. (line  152)
 * compass:                               Two-Dimensional Plots.
-                                                             (line 1371)
+                                                             (line 1431)
 * compass <1>:                           Two-Dimensional Plots.
-                                                             (line 1372)
+                                                             (line 1432)
 * compass <2>:                           Two-Dimensional Plots.
-                                                             (line 1373)
+                                                             (line 1433)
 * compass <3>:                           Two-Dimensional Plots.
-                                                             (line 1374)
+                                                             (line 1434)
 * compass <4>:                           Two-Dimensional Plots.
-                                                             (line 1375)
+                                                             (line 1435)
 * completion_append_char:                Commands For Completion.
                                                              (line   16)
 * completion_append_char <1>:            Commands For Completion.
@@ -6705,9 +7061,9 @@ Function Index
 * copyobj:                               Graphics Objects.   (line  501)
 * copyobj <1>:                           Graphics Objects.   (line  502)
 * corr:                                  Correlation and Regression Analysis.
-                                                             (line   36)
+                                                             (line   42)
 * corr <1>:                              Correlation and Regression Analysis.
-                                                             (line   37)
+                                                             (line   43)
 * cor_test:                              Tests.              (line  100)
 * cos:                                   Trigonometry.       (line   35)
 * cosd:                                  Trigonometry.       (line  181)
@@ -6847,12 +7203,12 @@ Function Index
 * datevec <3>:                           Timing Utilities.   (line  594)
 * datevec <4>:                           Timing Utilities.   (line  595)
 * dawson:                                Special Functions.  (line  175)
-* dbclear:                               Breakpoints.        (line   80)
-* dbclear <1>:                           Breakpoints.        (line   81)
-* dbclear <2>:                           Breakpoints.        (line   82)
-* dbcont:                                Leaving Debug Mode. (line    8)
-* dbdown:                                Call Stack.         (line   51)
-* dbdown <1>:                            Call Stack.         (line   52)
+* dbclear:                               Breakpoints.        (line   84)
+* dbclear <1>:                           Breakpoints.        (line   85)
+* dbclear <2>:                           Breakpoints.        (line   86)
+* dbcont:                                Leaving Debug Mode. (line    9)
+* dbdown:                                Call Stack.         (line   59)
+* dbdown <1>:                            Call Stack.         (line   60)
 * dblist:                                Debug Mode.         (line   40)
 * dblist <1>:                            Debug Mode.         (line   41)
 * dblquad:                               Functions of Multiple Variables.
@@ -6864,14 +7220,14 @@ Function Index
 * dblquad <3>:                           Functions of Multiple Variables.
                                                              (line   47)
 * dbnext:                                Debug Mode.         (line   64)
-* dbquit:                                Leaving Debug Mode. (line   17)
-* dbstack:                               Call Stack.         (line    6)
-* dbstack <1>:                           Call Stack.         (line    7)
-* dbstack <2>:                           Call Stack.         (line    8)
-* dbstack <3>:                           Call Stack.         (line    9)
-* dbstatus:                              Breakpoints.        (line   53)
-* dbstatus <1>:                          Breakpoints.        (line   54)
-* dbstatus <2>:                          Breakpoints.        (line   55)
+* dbquit:                                Leaving Debug Mode. (line   18)
+* dbstack:                               Call Stack.         (line   14)
+* dbstack <1>:                           Call Stack.         (line   15)
+* dbstack <2>:                           Call Stack.         (line   16)
+* dbstack <3>:                           Call Stack.         (line   17)
+* dbstatus:                              Breakpoints.        (line   57)
+* dbstatus <1>:                          Breakpoints.        (line   58)
+* dbstatus <2>:                          Breakpoints.        (line   59)
 * dbstep:                                Debug Mode.         (line   60)
 * dbstep <1>:                            Debug Mode.         (line   61)
 * dbstep <2>:                            Debug Mode.         (line   62)
@@ -6887,8 +7243,8 @@ Function Index
 * dbtype <5>:                            Debug Mode.         (line   23)
 * dbtype <6>:                            Debug Mode.         (line   24)
 * dbtype <7>:                            Debug Mode.         (line   25)
-* dbup:                                  Call Stack.         (line   44)
-* dbup <1>:                              Call Stack.         (line   45)
+* dbup:                                  Call Stack.         (line   52)
+* dbup <1>:                              Call Stack.         (line   53)
 * dbwhere:                               Debug Mode.         (line   11)
 * deal:                                  Variable-length Return Lists.
                                                              (line   33)
@@ -6966,7 +7322,7 @@ Function Index
                                                              (line   63)
 * det <1>:                               Basic Matrix Functions.
                                                              (line   64)
-* detrend:                               Signal Processing.  (line  461)
+* detrend:                               Signal Processing.  (line  471)
 * diag:                                  Rearranging Matrices.
                                                              (line  489)
 * diag <1>:                              Rearranging Matrices.
@@ -6991,7 +7347,7 @@ Function Index
                                                              (line   78)
 * diff <2>:                              Finding Elements and Checking Conditions.
                                                              (line   79)
-* diffpara:                              Signal Processing.  (line  477)
+* diffpara:                              Signal Processing.  (line  487)
 * diffuse:                               Three-Dimensional Plots.
                                                              (line  632)
 * dims:                                  Matrices and Arrays in Oct-Files.
@@ -7080,7 +7436,7 @@ Function Index
 * dup2:                                  Controlling Subprocesses.
                                                              (line  237)
 * duplication_matrix:                    Special Functions.  (line  167)
-* durbinlevinson:                        Signal Processing.  (line  493)
+* durbinlevinson:                        Signal Processing.  (line  503)
 * e:                                     Mathematical Constants.
                                                              (line    6)
 * e <1>:                                 Mathematical Constants.
@@ -7210,10 +7566,10 @@ Function Index
 * erfcx:                                 Special Functions.  (line  254)
 * erfi:                                  Special Functions.  (line  263)
 * erfinv:                                Special Functions.  (line  272)
-* errno:                                 Catching Errors.    (line  175)
-* errno <1>:                             Catching Errors.    (line  176)
-* errno <2>:                             Catching Errors.    (line  177)
-* errno_list:                            Catching Errors.    (line  183)
+* errno:                                 Catching Errors.    (line  186)
+* errno <1>:                             Catching Errors.    (line  187)
+* errno <2>:                             Catching Errors.    (line  188)
+* errno_list:                            Catching Errors.    (line  194)
 * error:                                 Raising Errors.     (line   20)
 * error <1>:                             Raising Errors.     (line   21)
 * errorbar:                              Two-Dimensional Plots.
@@ -7222,6 +7578,20 @@ Function Index
                                                              (line 1040)
 * errorbar <2>:                          Two-Dimensional Plots.
                                                              (line 1041)
+* errorbar <3>:                          Two-Dimensional Plots.
+                                                             (line 1042)
+* errorbar <4>:                          Two-Dimensional Plots.
+                                                             (line 1043)
+* errorbar <5>:                          Two-Dimensional Plots.
+                                                             (line 1044)
+* errorbar <6>:                          Two-Dimensional Plots.
+                                                             (line 1045)
+* errorbar <7>:                          Two-Dimensional Plots.
+                                                             (line 1046)
+* errorbar <8>:                          Two-Dimensional Plots.
+                                                             (line 1047)
+* errorbar <9>:                          Two-Dimensional Plots.
+                                                             (line 1048)
 * errordlg:                              Dialog Box Functions.
                                                              (line   28)
 * errordlg <1>:                          Dialog Box Functions.
@@ -7401,9 +7771,9 @@ Function Index
 * fail:                                  Test Functions.     (line  355)
 * fail <1>:                              Test Functions.     (line  356)
 * fail <2>:                              Test Functions.     (line  357)
-* false:                                 Logical Values.     (line   53)
-* false <1>:                             Logical Values.     (line   54)
-* false <2>:                             Logical Values.     (line   55)
+* false:                                 Logical Values.     (line   60)
+* false <1>:                             Logical Values.     (line   61)
+* false <2>:                             Logical Values.     (line   62)
 * fcdf:                                  Distributions.      (line  166)
 * fclear:                                EOF and Errors.     (line   44)
 * fclose:                                Opening and Closing Files.
@@ -7414,15 +7784,15 @@ Function Index
                                                              (line  401)
 * fdisp:                                 Simple File I/O.    (line  308)
 * feather:                               Two-Dimensional Plots.
-                                                             (line 1399)
+                                                             (line 1459)
 * feather <1>:                           Two-Dimensional Plots.
-                                                             (line 1400)
+                                                             (line 1460)
 * feather <2>:                           Two-Dimensional Plots.
-                                                             (line 1401)
+                                                             (line 1461)
 * feather <3>:                           Two-Dimensional Plots.
-                                                             (line 1402)
+                                                             (line 1462)
 * feather <4>:                           Two-Dimensional Plots.
-                                                             (line 1403)
+                                                             (line 1463)
 * feof:                                  EOF and Errors.     (line   24)
 * ferror:                                EOF and Errors.     (line   32)
 * ferror <1>:                            EOF and Errors.     (line   33)
@@ -7441,8 +7811,8 @@ Function Index
 * fftfilt <1>:                           Signal Processing.  (line  229)
 * fftn:                                  Signal Processing.  (line   85)
 * fftn <1>:                              Signal Processing.  (line   86)
-* fftshift:                              Signal Processing.  (line  503)
-* fftshift <1>:                          Signal Processing.  (line  504)
+* fftshift:                              Signal Processing.  (line  513)
+* fftshift <1>:                          Signal Processing.  (line  514)
 * fftw:                                  Signal Processing.  (line  127)
 * fftw <1>:                              Signal Processing.  (line  128)
 * fftw <2>:                              Signal Processing.  (line  129)
@@ -7458,13 +7828,13 @@ Function Index
 * fgets <1>:                             Line-Oriented Input.
                                                              (line   34)
 * fieldnames:                            Manipulating Structures.
-                                                             (line   12)
-* fieldnames <1>:                        Manipulating Structures.
-                                                             (line   13)
-* fieldnames <2>:                        Manipulating Structures.
                                                              (line   14)
-* fieldnames <3>:                        Manipulating Structures.
+* fieldnames <1>:                        Manipulating Structures.
                                                              (line   15)
+* fieldnames <2>:                        Manipulating Structures.
+                                                             (line   16)
+* fieldnames <3>:                        Manipulating Structures.
+                                                             (line   17)
 * figure:                                Multiple Plot Windows.
                                                              (line   17)
 * figure <1>:                            Multiple Plot Windows.
@@ -7571,9 +7941,9 @@ Function Index
                                                              (line  220)
 * flag <1>:                              Representing Images.
                                                              (line  221)
-* flintmax:                              Integer Data Types. (line  128)
-* flintmax <1>:                          Integer Data Types. (line  129)
-* flintmax <2>:                          Integer Data Types. (line  130)
+* flintmax:                              Integer Data Types. (line  160)
+* flintmax <1>:                          Integer Data Types. (line  161)
+* flintmax <2>:                          Integer Data Types. (line  162)
 * flipdim:                               Rearranging Matrices.
                                                              (line   36)
 * flipdim <1>:                           Rearranging Matrices.
@@ -7609,7 +7979,7 @@ Function Index
                                                              (line  195)
 * format:                                Terminal Output.    (line   68)
 * format <1>:                            Terminal Output.    (line   69)
-* formula:                               Inline Functions.   (line   43)
+* formula:                               Inline Functions.   (line   49)
 * fortran_vec:                           Matrices and Arrays in Oct-Files.
                                                              (line  108)
 * fpdf:                                  Distributions.      (line  162)
@@ -7625,14 +7995,18 @@ Function Index
                                                              (line   22)
 * fprintf:                               Formatted Output.   (line   24)
 * fputs:                                 Simple Output.      (line   16)
-* fractdiff:                             Signal Processing.  (line  527)
+* fractdiff:                             Signal Processing.  (line  537)
 * fread:                                 Binary I/O.         (line   12)
 * freport:                               EOF and Errors.     (line   49)
 * freqz:                                 Signal Processing.  (line  309)
 * freqz <1>:                             Signal Processing.  (line  310)
 * freqz <2>:                             Signal Processing.  (line  311)
 * freqz <3>:                             Signal Processing.  (line  312)
-* freqz_plot:                            Signal Processing.  (line  349)
+* freqz <4>:                             Signal Processing.  (line  313)
+* freqz <5>:                             Signal Processing.  (line  314)
+* freqz <6>:                             Signal Processing.  (line  315)
+* freqz_plot:                            Signal Processing.  (line  352)
+* freqz_plot <1>:                        Signal Processing.  (line  353)
 * frewind:                               File Positioning.   (line   52)
 * frnd:                                  Random Number Generation.
                                                              (line  163)
@@ -7662,7 +8036,7 @@ Function Index
                                                              (line  178)
 * fullfile:                              Filesystem Utilities.
                                                              (line  486)
-* func2str:                              Function Handles.   (line   46)
+* func2str:                              Function Handles.   (line   81)
 * functions:                             Function Handles.   (line   42)
 * fwrite:                                Binary I/O.         (line  163)
 * fzero:                                 Solvers.            (line  177)
@@ -7843,9 +8217,9 @@ Function Index
 * geteuid:                               Process ID Information.
                                                              (line   15)
 * getfield:                              Manipulating Structures.
-                                                             (line  100)
+                                                             (line  107)
 * getfield <1>:                          Manipulating Structures.
-                                                             (line  101)
+                                                             (line  108)
 * getgid:                                Process ID Information.
                                                              (line   24)
 * getgrent:                              Group Database Functions.
@@ -7988,10 +8362,10 @@ Function Index
 * gzip <1>:                              File Archiving Utilities.
                                                              (line   15)
 * hadamard:                              Famous Matrices.    (line  288)
-* hamming:                               Signal Processing.  (line  531)
+* hamming:                               Signal Processing.  (line  541)
 * hankel:                                Famous Matrices.    (line  311)
 * hankel <1>:                            Famous Matrices.    (line  312)
-* hanning:                               Signal Processing.  (line  537)
+* hanning:                               Signal Processing.  (line  547)
 * hdl2struct:                            Graphics Objects.   (line  472)
 * help:                                  Getting Help.       (line   14)
 * help <1>:                              Getting Help.       (line   15)
@@ -8097,7 +8471,7 @@ Function Index
                                                              (line  246)
 * hsv2rgb:                               Color Conversion.   (line   25)
 * hsv2rgb <1>:                           Color Conversion.   (line   26)
-* hurst:                                 Signal Processing.  (line  543)
+* hurst:                                 Signal Processing.  (line  553)
 * hygecdf:                               Distributions.      (line  220)
 * hygeinv:                               Distributions.      (line  230)
 * hygepdf:                               Distributions.      (line  210)
@@ -8133,10 +8507,10 @@ Function Index
 * ifft2 <1>:                             Signal Processing.  (line   72)
 * ifftn:                                 Signal Processing.  (line  100)
 * ifftn <1>:                             Signal Processing.  (line  101)
-* ifftshift:                             Signal Processing.  (line  522)
-* ifftshift <1>:                         Signal Processing.  (line  523)
-* ignore_function_time_stamp:            Function Files.     (line  150)
-* ignore_function_time_stamp <1>:        Function Files.     (line  151)
+* ifftshift:                             Signal Processing.  (line  532)
+* ifftshift <1>:                         Signal Processing.  (line  533)
+* ignore_function_time_stamp:            Function Files.     (line  151)
+* ignore_function_time_stamp <1>:        Function Files.     (line  152)
 * imag:                                  Complex Arithmetic. (line   53)
 * image:                                 Displaying Images.  (line   55)
 * image <1>:                             Displaying Images.  (line   56)
@@ -8230,7 +8604,7 @@ Function Index
 * Inf <4>:                               Mathematical Constants.
                                                              (line   72)
 * inferiorto:                            Precedence of Objects.
-                                                             (line   19)
+                                                             (line   21)
 * info:                                  Getting Help.       (line   87)
 * info_file:                             Getting Help.       (line   97)
 * info_file <1>:                         Getting Help.       (line   98)
@@ -8252,12 +8626,12 @@ Function Index
                                                              (line   60)
 * inputdlg <3>:                          Dialog Box Functions.
                                                              (line   61)
-* inputname:                             Defining Functions. (line  160)
-* int16:                                 Integer Data Types. (line   44)
+* inputname:                             Defining Functions. (line  172)
+* int16:                                 Integer Data Types. (line   52)
 * int2str:                               Converting Numerical Data to Strings.
                                                              (line   94)
-* int32:                                 Integer Data Types. (line   50)
-* int64:                                 Integer Data Types. (line   56)
+* int32:                                 Integer Data Types. (line   66)
+* int64:                                 Integer Data Types. (line   80)
 * int8:                                  Integer Data Types. (line   38)
 * interp1:                               One-dimensional Interpolation.
                                                              (line   11)
@@ -8269,6 +8643,10 @@ Function Index
                                                              (line   14)
 * interp1 <4>:                           One-dimensional Interpolation.
                                                              (line   15)
+* interp1 <5>:                           One-dimensional Interpolation.
+                                                             (line   16)
+* interp1 <6>:                           One-dimensional Interpolation.
+                                                             (line   17)
 * interp2:                               Multi-dimensional Interpolation.
                                                              (line   10)
 * interp2 <1>:                           Multi-dimensional Interpolation.
@@ -8292,9 +8670,9 @@ Function Index
 * interp3 <5>:                           Multi-dimensional Interpolation.
                                                              (line   67)
 * interpft:                              One-dimensional Interpolation.
-                                                             (line  113)
+                                                             (line  119)
 * interpft <1>:                          One-dimensional Interpolation.
-                                                             (line  114)
+                                                             (line  120)
 * interpn:                               Multi-dimensional Interpolation.
                                                              (line  108)
 * interpn <1>:                           Multi-dimensional Interpolation.
@@ -8309,8 +8687,8 @@ Function Index
                                                              (line  113)
 * intersect:                             Set Operations.     (line   76)
 * intersect <1>:                         Set Operations.     (line   77)
-* intmax:                                Integer Data Types. (line   62)
-* intmin:                                Integer Data Types. (line   95)
+* intmax:                                Integer Data Types. (line   94)
+* intmin:                                Integer Data Types. (line  127)
 * inv:                                   Basic Matrix Functions.
                                                              (line  111)
 * inv <1>:                               Basic Matrix Functions.
@@ -8339,7 +8717,7 @@ Function Index
 * iscell:                                Basic Usage of Cell Arrays.
                                                              (line   83)
 * iscellstr:                             Cell Arrays of Strings.
-                                                             (line   52)
+                                                             (line   59)
 * ischar:                                Character Arrays.   (line   25)
 * iscntrl:                               Character Class Functions.
                                                              (line   86)
@@ -8363,7 +8741,9 @@ Function Index
 * isequal:                               Comparison Ops.     (line   74)
 * isequaln:                              Comparison Ops.     (line   79)
 * isfield:                               Manipulating Structures.
-                                                             (line   31)
+                                                             (line   35)
+* isfield <1>:                           Manipulating Structures.
+                                                             (line   36)
 * isfigure:                              Graphics Objects.   (line  247)
 * isfinite:                              Finding Elements and Checking Conditions.
                                                              (line  120)
@@ -8485,7 +8865,7 @@ Function Index
 * isstrprop:                             Character Class Functions.
                                                              (line  112)
 * isstruct:                              Creating Structures.
-                                                             (line  151)
+                                                             (line  159)
 * issymmetric:                           Predicates for Numeric Objects.
                                                              (line  102)
 * issymmetric <1>:                       Predicates for Numeric Objects.
@@ -8574,11 +8954,11 @@ Function Index
 * kbhit:                                 Terminal Input.     (line   68)
 * kbhit <1>:                             Terminal Input.     (line   69)
 * kendall:                               Correlation and Regression Analysis.
-                                                             (line   68)
+                                                             (line   74)
 * kendall <1>:                           Correlation and Regression Analysis.
-                                                             (line   69)
-* keyboard:                              Breakpoints.        (line  131)
-* keyboard <1>:                          Breakpoints.        (line  132)
+                                                             (line   75)
+* keyboard:                              Breakpoints.        (line  134)
+* keyboard <1>:                          Breakpoints.        (line  135)
 * kill:                                  Controlling Subprocesses.
                                                              (line  451)
 * kolmogorov_smirnov_cdf:                Distributions.      (line  240)
@@ -8606,12 +8986,12 @@ Function Index
                                                              (line  238)
 * laplace_rnd <2>:                       Random Number Generation.
                                                              (line  239)
-* lasterr:                               Catching Errors.    (line   81)
-* lasterr <1>:                           Catching Errors.    (line   82)
-* lasterr <2>:                           Catching Errors.    (line   83)
-* lasterror:                             Catching Errors.    (line   39)
-* lasterror <1>:                         Catching Errors.    (line   40)
-* lasterror <2>:                         Catching Errors.    (line   41)
+* lasterr:                               Catching Errors.    (line   92)
+* lasterr <1>:                           Catching Errors.    (line   93)
+* lasterr <2>:                           Catching Errors.    (line   94)
+* lasterror:                             Catching Errors.    (line   50)
+* lasterror <1>:                         Catching Errors.    (line   51)
+* lasterror <2>:                         Catching Errors.    (line   52)
 * lastwarn:                              Issuing Warnings.   (line   82)
 * lastwarn <1>:                          Issuing Warnings.   (line   83)
 * lastwarn <2>:                          Issuing Warnings.   (line   84)
@@ -8700,7 +9080,7 @@ Function Index
 * logistic_inv:                          Distributions.      (line  273)
 * logistic_pdf:                          Distributions.      (line  265)
 * logistic_regression:                   Correlation and Regression Analysis.
-                                                             (line   90)
+                                                             (line   96)
 * logistic_rnd:                          Random Number Generation.
                                                              (line  249)
 * logistic_rnd <1>:                      Random Number Generation.
@@ -8722,11 +9102,25 @@ Function Index
 * loglog <5>:                            Two-Dimensional Plots.
                                                              (line  270)
 * loglogerr:                             Two-Dimensional Plots.
-                                                             (line 1167)
+                                                             (line 1220)
 * loglogerr <1>:                         Two-Dimensional Plots.
-                                                             (line 1168)
+                                                             (line 1221)
 * loglogerr <2>:                         Two-Dimensional Plots.
-                                                             (line 1169)
+                                                             (line 1222)
+* loglogerr <3>:                         Two-Dimensional Plots.
+                                                             (line 1223)
+* loglogerr <4>:                         Two-Dimensional Plots.
+                                                             (line 1224)
+* loglogerr <5>:                         Two-Dimensional Plots.
+                                                             (line 1225)
+* loglogerr <6>:                         Two-Dimensional Plots.
+                                                             (line 1226)
+* loglogerr <7>:                         Two-Dimensional Plots.
+                                                             (line 1227)
+* loglogerr <8>:                         Two-Dimensional Plots.
+                                                             (line 1228)
+* loglogerr <9>:                         Two-Dimensional Plots.
+                                                             (line 1229)
 * logm:                                  Functions of a Matrix.
                                                              (line   29)
 * logm <1>:                              Functions of a Matrix.
@@ -8839,11 +9233,11 @@ Function Index
                                                              (line  514)
 * manova:                                Tests.              (line  270)
 * mat2cell:                              Creating Cell Arrays.
-                                                             (line   84)
+                                                             (line   89)
 * mat2cell <1>:                          Creating Cell Arrays.
-                                                             (line   85)
+                                                             (line   90)
 * mat2cell <2>:                          Creating Cell Arrays.
-                                                             (line   86)
+                                                             (line   91)
 * mat2str:                               Converting Numerical Data to Strings.
                                                              (line   15)
 * mat2str <1>:                           Converting Numerical Data to Strings.
@@ -8956,8 +9350,8 @@ Function Index
 * min <3>:                               Utility Functions.  (line   95)
 * min <4>:                               Utility Functions.  (line   96)
 * minus:                                 Arithmetic Ops.     (line  136)
-* mislocked:                             Function Locking.   (line   73)
-* mislocked <1>:                         Function Locking.   (line   74)
+* mislocked:                             Function Locking.   (line   64)
+* mislocked <1>:                         Function Locking.   (line   65)
 * missing_component_hook:                Missing Components. (line   12)
 * missing_component_hook <1>:            Missing Components. (line   13)
 * missing_component_hook <2>:            Missing Components. (line   14)
@@ -8986,7 +9380,7 @@ Function Index
 * mkstemp:                               Temporary Files.    (line   11)
 * mktime:                                Timing Utilities.   (line  139)
 * mldivide:                              Arithmetic Ops.     (line  141)
-* mlock:                                 Function Locking.   (line   59)
+* mlock:                                 Function Locking.   (line   50)
 * mod:                                   Utility Functions.  (line  393)
 * mode:                                  Descriptive Statistics.
                                                              (line   57)
@@ -9039,8 +9433,8 @@ Function Index
 * mtimes:                                Arithmetic Ops.     (line  163)
 * mtimes <1>:                            Arithmetic Ops.     (line  164)
 * mu2lin:                                Audio Processing.   (line   38)
-* munlock:                               Function Locking.   (line   65)
-* munlock <1>:                           Function Locking.   (line   66)
+* munlock:                               Function Locking.   (line   56)
+* munlock <1>:                           Function Locking.   (line   57)
 * NA:                                    Missing Data.       (line   11)
 * NA <1>:                                Missing Data.       (line   12)
 * NA <2>:                                Missing Data.       (line   13)
@@ -9060,27 +9454,27 @@ Function Index
 * NaN <4>:                               Mathematical Constants.
                                                              (line   97)
 * nargchk:                               Multiple Return Values.
-                                                             (line  162)
-* nargchk <1>:                           Multiple Return Values.
                                                              (line  163)
-* nargchk <2>:                           Multiple Return Values.
+* nargchk <1>:                           Multiple Return Values.
                                                              (line  164)
+* nargchk <2>:                           Multiple Return Values.
+                                                             (line  165)
 * nargin:                                Defining Functions. (line  145)
 * nargin <1>:                            Defining Functions. (line  146)
 * narginchk:                             Multiple Return Values.
-                                                             (line  176)
+                                                             (line  177)
 * nargout:                               Multiple Return Values.
                                                              (line  113)
 * nargout <1>:                           Multiple Return Values.
                                                              (line  114)
 * nargoutchk:                            Multiple Return Values.
-                                                             (line  191)
-* nargoutchk <1>:                        Multiple Return Values.
                                                              (line  192)
-* nargoutchk <2>:                        Multiple Return Values.
+* nargoutchk <1>:                        Multiple Return Values.
                                                              (line  193)
+* nargoutchk <2>:                        Multiple Return Values.
+                                                             (line  194)
 * nargoutchk <3>:                        Multiple Return Values.
-                                                             (line  195)
+                                                             (line  196)
 * native_float_format:                   Simple File I/O.    (line  292)
 * nbincdf:                               Distributions.      (line  318)
 * nbininv:                               Distributions.      (line  329)
@@ -9169,9 +9563,9 @@ Function Index
 * null <1>:                              Basic Matrix Functions.
                                                              (line  310)
 * num2cell:                              Creating Cell Arrays.
-                                                             (line   57)
+                                                             (line   62)
 * num2cell <1>:                          Creating Cell Arrays.
-                                                             (line   58)
+                                                             (line   63)
 * num2hex:                               String Conversions. (line  135)
 * num2str:                               Converting Numerical Data to Strings.
                                                              (line   49)
@@ -9254,9 +9648,9 @@ Function Index
 * or <1>:                                Element-by-element Boolean Operators.
                                                              (line   83)
 * orderfields:                           Manipulating Structures.
-                                                             (line  119)
+                                                             (line  126)
 * orderfields <1>:                       Manipulating Structures.
-                                                             (line  120)
+                                                             (line  127)
 * orient:                                Printing and Saving Plots.
                                                              (line  302)
 * orient <1>:                            Printing and Saving Plots.
@@ -9270,9 +9664,9 @@ Function Index
 * orth <1>:                              Basic Matrix Functions.
                                                              (line  322)
 * ostrsplit:                             Manipulating Strings.
-                                                             (line  331)
+                                                             (line  330)
 * ostrsplit <1>:                         Manipulating Strings.
-                                                             (line  332)
+                                                             (line  331)
 * output_max_field_width:                Matrices.           (line  130)
 * output_max_field_width <1>:            Matrices.           (line  131)
 * output_max_field_width <2>:            Matrices.           (line  132)
@@ -9345,18 +9739,18 @@ Function Index
                                                              (line   11)
 * pcg <1>:                               Iterative Techniques.
                                                              (line   12)
-* pchip:                                 Signal Processing.  (line  548)
-* pchip <1>:                             Signal Processing.  (line  549)
+* pchip:                                 Signal Processing.  (line  558)
+* pchip <1>:                             Signal Processing.  (line  559)
 * pclose:                                Controlling Subprocesses.
                                                              (line  129)
 * pcolor:                                Two-Dimensional Plots.
-                                                             (line 1426)
+                                                             (line 1486)
 * pcolor <1>:                            Two-Dimensional Plots.
-                                                             (line 1427)
+                                                             (line 1487)
 * pcolor <2>:                            Two-Dimensional Plots.
-                                                             (line 1428)
+                                                             (line 1488)
 * pcolor <3>:                            Two-Dimensional Plots.
-                                                             (line 1429)
+                                                             (line 1489)
 * pcr:                                   Iterative Techniques.
                                                              (line  157)
 * pcr <1>:                               Iterative Techniques.
@@ -9371,7 +9765,7 @@ Function Index
                                                              (line   36)
 * peaks <4>:                             Test Plotting Functions.
                                                              (line   37)
-* periodogram:                           Signal Processing.  (line  571)
+* periodogram:                           Signal Processing.  (line  581)
 * perl:                                  Controlling Subprocesses.
                                                              (line   82)
 * perl <1>:                              Controlling Subprocesses.
@@ -9393,25 +9787,25 @@ Function Index
 * pi <4>:                                Mathematical Constants.
                                                              (line   30)
 * pie:                                   Two-Dimensional Plots.
-                                                             (line 1223)
+                                                             (line 1283)
 * pie <1>:                               Two-Dimensional Plots.
-                                                             (line 1224)
+                                                             (line 1284)
 * pie <2>:                               Two-Dimensional Plots.
-                                                             (line 1225)
+                                                             (line 1285)
 * pie <3>:                               Two-Dimensional Plots.
-                                                             (line 1226)
+                                                             (line 1286)
 * pie <4>:                               Two-Dimensional Plots.
-                                                             (line 1227)
+                                                             (line 1287)
 * pie3:                                  Two-Dimensional Plots.
-                                                             (line 1256)
+                                                             (line 1316)
 * pie3 <1>:                              Two-Dimensional Plots.
-                                                             (line 1257)
+                                                             (line 1317)
 * pie3 <2>:                              Two-Dimensional Plots.
-                                                             (line 1258)
+                                                             (line 1318)
 * pie3 <3>:                              Two-Dimensional Plots.
-                                                             (line 1259)
+                                                             (line 1319)
 * pie3 <4>:                              Two-Dimensional Plots.
-                                                             (line 1260)
+                                                             (line 1320)
 * pink:                                  Representing Images.
                                                              (line  286)
 * pink <1>:                              Representing Images.
@@ -9503,17 +9897,17 @@ Function Index
 * pol2cart <4>:                          Coordinate Transformations.
                                                              (line   32)
 * polar:                                 Two-Dimensional Plots.
-                                                             (line 1200)
+                                                             (line 1260)
 * polar <1>:                             Two-Dimensional Plots.
-                                                             (line 1201)
+                                                             (line 1261)
 * polar <2>:                             Two-Dimensional Plots.
-                                                             (line 1202)
+                                                             (line 1262)
 * polar <3>:                             Two-Dimensional Plots.
-                                                             (line 1203)
+                                                             (line 1263)
 * polar <4>:                             Two-Dimensional Plots.
-                                                             (line 1204)
+                                                             (line 1264)
 * polar <5>:                             Two-Dimensional Plots.
-                                                             (line 1205)
+                                                             (line 1265)
 * poly:                                  Miscellaneous Functions.
                                                              (line    6)
 * poly <1>:                              Miscellaneous Functions.
@@ -9640,11 +10034,11 @@ Function Index
 * print_empty_dimensions <1>:            Empty Matrices.     (line   30)
 * print_empty_dimensions <2>:            Empty Matrices.     (line   31)
 * print_struct_array_contents:           Basic Usage and Examples.
-                                                             (line  107)
+                                                             (line  110)
 * print_struct_array_contents <1>:       Basic Usage and Examples.
-                                                             (line  108)
+                                                             (line  111)
 * print_struct_array_contents <2>:       Basic Usage and Examples.
-                                                             (line  109)
+                                                             (line  112)
 * print_usage:                           Raising Errors.     (line  126)
 * print_usage <1>:                       Raising Errors.     (line  127)
 * prism:                                 Representing Images.
@@ -9806,33 +10200,33 @@ Function Index
                                                              (line  159)
 * quit:                                  Quitting Octave.    (line    7)
 * quiver:                                Two-Dimensional Plots.
-                                                             (line 1289)
+                                                             (line 1349)
 * quiver <1>:                            Two-Dimensional Plots.
-                                                             (line 1290)
+                                                             (line 1350)
 * quiver <2>:                            Two-Dimensional Plots.
-                                                             (line 1291)
+                                                             (line 1351)
 * quiver <3>:                            Two-Dimensional Plots.
-                                                             (line 1292)
+                                                             (line 1352)
 * quiver <4>:                            Two-Dimensional Plots.
-                                                             (line 1293)
+                                                             (line 1353)
 * quiver <5>:                            Two-Dimensional Plots.
-                                                             (line 1294)
+                                                             (line 1354)
 * quiver <6>:                            Two-Dimensional Plots.
-                                                             (line 1295)
+                                                             (line 1355)
 * quiver3:                               Two-Dimensional Plots.
-                                                             (line 1329)
+                                                             (line 1389)
 * quiver3 <1>:                           Two-Dimensional Plots.
-                                                             (line 1330)
+                                                             (line 1390)
 * quiver3 <2>:                           Two-Dimensional Plots.
-                                                             (line 1331)
+                                                             (line 1391)
 * quiver3 <3>:                           Two-Dimensional Plots.
-                                                             (line 1332)
+                                                             (line 1392)
 * quiver3 <4>:                           Two-Dimensional Plots.
-                                                             (line 1333)
+                                                             (line 1393)
 * quiver3 <5>:                           Two-Dimensional Plots.
-                                                             (line 1334)
+                                                             (line 1394)
 * quiver3 <6>:                           Two-Dimensional Plots.
-                                                             (line 1335)
+                                                             (line 1395)
 * qz:                                    Matrix Factorizations.
                                                              (line  415)
 * qz <1>:                                Matrix Factorizations.
@@ -10056,19 +10450,19 @@ Function Index
 * refreshdata <2>:                       Data Sources in Object Groups.
                                                              (line   13)
 * regexp:                                Manipulating Strings.
-                                                             (line  543)
+                                                             (line  542)
 * regexp <1>:                            Manipulating Strings.
-                                                             (line  544)
+                                                             (line  543)
 * regexpi:                               Manipulating Strings.
-                                                             (line  738)
+                                                             (line  737)
 * regexpi <1>:                           Manipulating Strings.
-                                                             (line  739)
+                                                             (line  738)
 * regexprep:                             Manipulating Strings.
-                                                             (line  748)
+                                                             (line  747)
 * regexprep <1>:                         Manipulating Strings.
-                                                             (line  749)
+                                                             (line  748)
 * regexptranslate:                       Manipulating Strings.
-                                                             (line  780)
+                                                             (line  779)
 * register_graphics_toolkit:             Graphics Toolkits.  (line   38)
 * rehash:                                Manipulating the Load Path.
                                                              (line  109)
@@ -10116,7 +10510,7 @@ Function Index
                                                              (line  103)
 * restoredefaultpath:                    Manipulating the Load Path.
                                                              (line  130)
-* rethrow:                               Catching Errors.    (line  165)
+* rethrow:                               Catching Errors.    (line  176)
 * return:                                Returning from a Function.
                                                              (line   37)
 * rgb2hsv:                               Color Conversion.   (line    9)
@@ -10155,9 +10549,9 @@ Function Index
                                                              (line  118)
 * rmdir <3>:                             FTP Objects.        (line  110)
 * rmfield:                               Manipulating Structures.
-                                                             (line  110)
+                                                             (line  117)
 * rmfield <1>:                           Manipulating Structures.
-                                                             (line  111)
+                                                             (line  118)
 * rmpath:                                Manipulating the Load Path.
                                                              (line   44)
 * rmpref:                                User-Defined Preferences.
@@ -10313,11 +10707,25 @@ Function Index
 * semilogx <5>:                          Two-Dimensional Plots.
                                                              (line  230)
 * semilogxerr:                           Two-Dimensional Plots.
-                                                             (line 1123)
+                                                             (line 1162)
 * semilogxerr <1>:                       Two-Dimensional Plots.
-                                                             (line 1124)
+                                                             (line 1163)
 * semilogxerr <2>:                       Two-Dimensional Plots.
-                                                             (line 1125)
+                                                             (line 1164)
+* semilogxerr <3>:                       Two-Dimensional Plots.
+                                                             (line 1165)
+* semilogxerr <4>:                       Two-Dimensional Plots.
+                                                             (line 1166)
+* semilogxerr <5>:                       Two-Dimensional Plots.
+                                                             (line 1167)
+* semilogxerr <6>:                       Two-Dimensional Plots.
+                                                             (line 1168)
+* semilogxerr <7>:                       Two-Dimensional Plots.
+                                                             (line 1169)
+* semilogxerr <8>:                       Two-Dimensional Plots.
+                                                             (line 1170)
+* semilogxerr <9>:                       Two-Dimensional Plots.
+                                                             (line 1171)
 * semilogy:                              Two-Dimensional Plots.
                                                              (line  245)
 * semilogy <1>:                          Two-Dimensional Plots.
@@ -10331,11 +10739,25 @@ Function Index
 * semilogy <5>:                          Two-Dimensional Plots.
                                                              (line  250)
 * semilogyerr:                           Two-Dimensional Plots.
-                                                             (line 1145)
+                                                             (line 1191)
 * semilogyerr <1>:                       Two-Dimensional Plots.
-                                                             (line 1146)
+                                                             (line 1192)
 * semilogyerr <2>:                       Two-Dimensional Plots.
-                                                             (line 1147)
+                                                             (line 1193)
+* semilogyerr <3>:                       Two-Dimensional Plots.
+                                                             (line 1194)
+* semilogyerr <4>:                       Two-Dimensional Plots.
+                                                             (line 1195)
+* semilogyerr <5>:                       Two-Dimensional Plots.
+                                                             (line 1196)
+* semilogyerr <6>:                       Two-Dimensional Plots.
+                                                             (line 1197)
+* semilogyerr <7>:                       Two-Dimensional Plots.
+                                                             (line 1198)
+* semilogyerr <8>:                       Two-Dimensional Plots.
+                                                             (line 1199)
+* semilogyerr <9>:                       Two-Dimensional Plots.
+                                                             (line 1200)
 * set:                                   Graphics Objects.   (line  391)
 * set <1>:                               Graphics Objects.   (line  392)
 * set <2>:                               Graphics Objects.   (line  393)
@@ -10350,9 +10772,9 @@ Function Index
 * setenv:                                Environment Variables.
                                                              (line   14)
 * setfield:                              Manipulating Structures.
-                                                             (line   36)
+                                                             (line   43)
 * setfield <1>:                          Manipulating Structures.
-                                                             (line   37)
+                                                             (line   44)
 * setgrent:                              Group Database Functions.
                                                              (line   38)
 * setpref:                               User-Defined Preferences.
@@ -10403,14 +10825,14 @@ Function Index
                                                              (line   41)
 * sigterm_dumps_octave_core <2>:         Saving Data on Unexpected Exits.
                                                              (line   42)
-* silent_functions:                      Defining Functions. (line  164)
-* silent_functions <1>:                  Defining Functions. (line  165)
-* silent_functions <2>:                  Defining Functions. (line  166)
+* silent_functions:                      Defining Functions. (line  176)
+* silent_functions <1>:                  Defining Functions. (line  177)
+* silent_functions <2>:                  Defining Functions. (line  178)
 * sin:                                   Trigonometry.       (line   29)
-* sinc:                                  Signal Processing.  (line  352)
+* sinc:                                  Signal Processing.  (line  362)
 * sind:                                  Trigonometry.       (line  175)
-* sinetone:                              Signal Processing.  (line  609)
-* sinewave:                              Signal Processing.  (line  616)
+* sinetone:                              Signal Processing.  (line  619)
+* sinewave:                              Signal Processing.  (line  626)
 * single:                                Single Precision Data Types.
                                                              (line   11)
 * sinh:                                  Trigonometry.       (line   95)
@@ -10492,15 +10914,15 @@ Function Index
 * spdiags <3>:                           Creating Sparse Matrices.
                                                              (line   50)
 * spearman:                              Correlation and Regression Analysis.
-                                                             (line   53)
+                                                             (line   59)
 * spearman <1>:                          Correlation and Regression Analysis.
-                                                             (line   54)
-* spectral_adf:                          Signal Processing.  (line  622)
-* spectral_adf <1>:                      Signal Processing.  (line  623)
-* spectral_adf <2>:                      Signal Processing.  (line  624)
-* spectral_xdf:                          Signal Processing.  (line  636)
-* spectral_xdf <1>:                      Signal Processing.  (line  637)
-* spectral_xdf <2>:                      Signal Processing.  (line  638)
+                                                             (line   60)
+* spectral_adf:                          Signal Processing.  (line  632)
+* spectral_adf <1>:                      Signal Processing.  (line  633)
+* spectral_adf <2>:                      Signal Processing.  (line  634)
+* spectral_xdf:                          Signal Processing.  (line  646)
+* spectral_xdf <1>:                      Signal Processing.  (line  647)
+* spectral_xdf <2>:                      Signal Processing.  (line  648)
 * specular:                              Three-Dimensional Plots.
                                                              (line  642)
 * specular <1>:                          Three-Dimensional Plots.
@@ -10509,7 +10931,7 @@ Function Index
                                                              (line  104)
 * speed <1>:                             Demonstration Functions.
                                                              (line  105)
-* spencer:                               Signal Processing.  (line  650)
+* spencer:                               Signal Processing.  (line  660)
 * speye:                                 Creating Sparse Matrices.
                                                              (line   73)
 * speye <1>:                             Creating Sparse Matrices.
@@ -10541,9 +10963,9 @@ Function Index
 * spinmap <3>:                           Representing Images.
                                                              (line  395)
 * spline:                                One-dimensional Interpolation.
-                                                             (line  148)
+                                                             (line  154)
 * spline <1>:                            One-dimensional Interpolation.
-                                                             (line  149)
+                                                             (line  155)
 * splinefit:                             Polynomial Interpolation.
                                                              (line   68)
 * splinefit <1>:                         Polynomial Interpolation.
@@ -10699,15 +11121,15 @@ Function Index
                                                              (line  470)
 * stemleaf <2>:                          Two-Dimensional Plots.
                                                              (line  471)
-* stft:                                  Signal Processing.  (line  653)
-* stft <1>:                              Signal Processing.  (line  654)
-* stft <2>:                              Signal Processing.  (line  655)
-* stft <3>:                              Signal Processing.  (line  656)
-* stft <4>:                              Signal Processing.  (line  657)
-* stft <5>:                              Signal Processing.  (line  658)
+* stft:                                  Signal Processing.  (line  663)
+* stft <1>:                              Signal Processing.  (line  664)
+* stft <2>:                              Signal Processing.  (line  665)
+* stft <3>:                              Signal Processing.  (line  666)
+* stft <4>:                              Signal Processing.  (line  667)
+* stft <5>:                              Signal Processing.  (line  668)
 * str2double:                            String Conversions. (line  181)
-* str2func:                              Function Handles.   (line   50)
-* str2func <1>:                          Function Handles.   (line   51)
+* str2func:                              Function Handles.   (line   88)
+* str2func <1>:                          Function Handles.   (line   89)
 * str2num:                               String Conversions. (line  245)
 * str2num <1>:                           String Conversions. (line  246)
 * strcat:                                Concatenating Strings.
@@ -10739,46 +11161,50 @@ Function Index
 * strjust:                               String Conversions. (line  224)
 * strjust <1>:                           String Conversions. (line  225)
 * strmatch:                              Manipulating Strings.
-                                                             (line  177)
+                                                             (line  176)
 * strmatch <1>:                          Manipulating Strings.
-                                                             (line  178)
+                                                             (line  177)
 * strncmp:                               Comparing Strings.  (line   37)
 * strncmpi:                              Comparing Strings.  (line   79)
 * strptime:                              Timing Utilities.   (line  306)
 * strread:                               Manipulating Strings.
-                                                             (line  361)
+                                                             (line  360)
 * strread <1>:                           Manipulating Strings.
-                                                             (line  362)
+                                                             (line  361)
 * strread <2>:                           Manipulating Strings.
-                                                             (line  363)
+                                                             (line  362)
 * strread <3>:                           Manipulating Strings.
-                                                             (line  364)
+                                                             (line  363)
 * strread <4>:                           Manipulating Strings.
-                                                             (line  365)
+                                                             (line  364)
 * strrep:                                Manipulating Strings.
-                                                             (line  499)
+                                                             (line  498)
 * strrep <1>:                            Manipulating Strings.
-                                                             (line  500)
+                                                             (line  499)
 * strrep <2>:                            Manipulating Strings.
-                                                             (line  501)
+                                                             (line  500)
 * strsplit:                              Manipulating Strings.
-                                                             (line  229)
+                                                             (line  228)
 * strsplit <1>:                          Manipulating Strings.
-                                                             (line  230)
+                                                             (line  229)
 * strsplit <2>:                          Manipulating Strings.
-                                                             (line  231)
+                                                             (line  230)
 * strsplit <3>:                          Manipulating Strings.
-                                                             (line  232)
+                                                             (line  231)
 * strtok:                                Manipulating Strings.
-                                                             (line  205)
+                                                             (line  204)
 * strtok <1>:                            Manipulating Strings.
-                                                             (line  206)
+                                                             (line  205)
 * strtrim:                               Manipulating Strings.
                                                              (line   35)
 * strtrunc:                              Manipulating Strings.
                                                              (line   49)
 * struct:                                Creating Structures.
                                                              (line  104)
+* struct <1>:                            Creating Structures.
+                                                             (line  105)
+* struct <2>:                            Creating Structures.
+                                                             (line  106)
 * struct2cell:                           Processing Data in Structures.
                                                              (line   14)
 * struct2hdl:                            Graphics Objects.   (line  482)
@@ -10827,17 +11253,17 @@ Function Index
 * subsasgn:                              Defining Indexing And Indexed Assignment.
                                                              (line   92)
 * subsindex:                             Defining Indexing And Indexed Assignment.
-                                                             (line  164)
+                                                             (line  165)
 * subspace:                              Matrix Factorizations.
                                                              (line  548)
 * subsref:                               Defining Indexing And Indexed Assignment.
                                                              (line   14)
 * substr:                                Manipulating Strings.
-                                                             (line  520)
+                                                             (line  519)
 * substr <1>:                            Manipulating Strings.
-                                                             (line  521)
+                                                             (line  520)
 * substruct:                             Manipulating Structures.
-                                                             (line  181)
+                                                             (line  188)
 * sum:                                   Sums and Products.  (line    6)
 * sum <1>:                               Sums and Products.  (line    7)
 * sum <2>:                               Sums and Products.  (line    8)
@@ -10957,8 +11383,8 @@ Function Index
                                                              (line   80)
 * symrcm:                                Mathematical Considerations.
                                                              (line  443)
-* symvar:                                Inline Functions.   (line   50)
-* synthesis:                             Signal Processing.  (line  690)
+* symvar:                                Inline Functions.   (line   56)
+* synthesis:                             Signal Processing.  (line  700)
 * system:                                Controlling Subprocesses.
                                                              (line   16)
 * system <1>:                            Controlling Subprocesses.
@@ -11125,9 +11551,9 @@ Function Index
                                                              (line  344)
 * trnd <3>:                              Random Number Generation.
                                                              (line  345)
-* true:                                  Logical Values.     (line   42)
-* true <1>:                              Logical Values.     (line   43)
-* true <2>:                              Logical Values.     (line   44)
+* true:                                  Logical Values.     (line   49)
+* true <1>:                              Logical Values.     (line   50)
+* true <2>:                              Logical Values.     (line   51)
 * tsearch:                               Identifying Points in Triangulation.
                                                              (line   55)
 * tsearchn:                              Identifying Points in Triangulation.
@@ -11158,10 +11584,10 @@ Function Index
                                                              (line   59)
 * uimenu <1>:                            Interacting with Plots.
                                                              (line   60)
-* uint16:                                Integer Data Types. (line   47)
-* uint32:                                Integer Data Types. (line   53)
-* uint64:                                Integer Data Types. (line   59)
-* uint8:                                 Integer Data Types. (line   41)
+* uint16:                                Integer Data Types. (line   59)
+* uint32:                                Integer Data Types. (line   73)
+* uint64:                                Integer Data Types. (line   87)
+* uint8:                                 Integer Data Types. (line   45)
 * uiputfile:                             I/O Dialogs.        (line   63)
 * uiputfile <1>:                         I/O Dialogs.        (line   64)
 * uiputfile <2>:                         I/O Dialogs.        (line   65)
@@ -11231,18 +11657,18 @@ Function Index
 * unpack <2>:                            File Archiving Utilities.
                                                              (line   79)
 * untabify:                              Manipulating Strings.
-                                                             (line  805)
+                                                             (line  804)
 * untabify <1>:                          Manipulating Strings.
-                                                             (line  806)
+                                                             (line  805)
 * untabify <2>:                          Manipulating Strings.
-                                                             (line  807)
+                                                             (line  806)
 * untar:                                 File Archiving Utilities.
                                                              (line   49)
 * untar <1>:                             File Archiving Utilities.
                                                              (line   50)
-* unwrap:                                Signal Processing.  (line  355)
-* unwrap <1>:                            Signal Processing.  (line  356)
-* unwrap <2>:                            Signal Processing.  (line  357)
+* unwrap:                                Signal Processing.  (line  365)
+* unwrap <1>:                            Signal Processing.  (line  366)
+* unwrap <2>:                            Signal Processing.  (line  367)
 * unzip:                                 File Archiving Utilities.
                                                              (line   68)
 * unzip <1>:                             File Archiving Utilities.
@@ -11472,7 +11898,7 @@ Function Index
                                                              (line   61)
 * yes_or_no:                             Terminal Input.     (line   51)
 * ylim:                                  Axis Configuration. (line  139)
-* yulewalker:                            Signal Processing.  (line  701)
+* yulewalker:                            Signal Processing.  (line  711)
 * zeros:                                 Special Utility Matrices.
                                                              (line   65)
 * zeros <1>:                             Special Utility Matrices.

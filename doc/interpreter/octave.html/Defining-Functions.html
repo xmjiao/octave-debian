@@ -229,10 +229,22 @@ possibilities and issue our own error message.
 At the top level, return the number of command line arguments passed to
 Octave.
 </p>
-<p>If called with the optional argument <var>fcn</var>, a function name or handle,
+<p>If called with the optional argument <var>fcn</var>&mdash;a function name or handle&mdash;
 return the declared number of arguments that the function can accept.
-If the last argument is <var>varargin</var> the returned value is negative.
-This feature does not work on builtin functions.
+</p>
+<p>If the last argument to <var>fcn</var> is <var>varargin</var> the returned value is
+negative.  For example, the function <code>union</code> for sets is declared as
+</p>
+<div class="example">
+<pre class="example">function [y, ia, ib] = union (a, b, varargin)
+
+and
+
+nargin (&quot;union&quot;)
+&rArr; -3
+</pre></div>
+
+<p>Programming Note: <code>nargin</code> does not work on built-in functions.
 </p>
 <p><strong>See also:</strong> <a href="Multiple-Return-Values.html#XREFnargout">nargout</a>, <a href="Multiple-Return-Values.html#XREFvarargin">varargin</a>, <a href="Ignoring-Arguments.html#XREFisargout">isargout</a>, <a href="Multiple-Return-Values.html#XREFvarargout">varargout</a>, <a href="Multiple-Return-Values.html#XREFnthargout">nthargout</a>.
 </p></dd></dl>

@@ -21,6 +21,494 @@ manual into another language, under the above conditions for modified
 versions.
 
 
+File: octave.info,  Node: Special Utility Matrices,  Next: Famous Matrices,  Prev: Rearranging Matrices,  Up: Matrix Manipulation
+
+16.3 Special Utility Matrices
+=============================
+
+ -- Built-in Function: eye (N)
+ -- Built-in Function: eye (M, N)
+ -- Built-in Function: eye ([M N])
+ -- Built-in Function: eye (..., CLASS)
+     Return an identity matrix.  If invoked with a single scalar
+     argument N, return a square NxN identity matrix.  If supplied two
+     scalar arguments (M, N), 'eye' takes them to be the number of rows
+     and columns.  If given a vector with two elements, 'eye' uses the
+     values of the elements as the number of rows and columns,
+     respectively.  For example:
+
+          eye (3)
+           =>  1  0  0
+               0  1  0
+               0  0  1
+
+     The following expressions all produce the same result:
+
+          eye (2)
+          ==
+          eye (2, 2)
+          ==
+          eye (size ([1, 2; 3, 4])
+
+     The optional argument CLASS, allows 'eye' to return an array of the
+     specified type, like
+
+          val = zeros (n,m, "uint8")
+
+     Calling 'eye' with no arguments is equivalent to calling it with an
+     argument of 1.  Any negative dimensions are treated as zero.  These
+     odd definitions are for compatibility with MATLAB.
+
+     See also: *note speye: XREFspeye, *note ones: XREFones, *note
+     zeros: XREFzeros.
+
+ -- Built-in Function: ones (N)
+ -- Built-in Function: ones (M, N)
+ -- Built-in Function: ones (M, N, K, ...)
+ -- Built-in Function: ones ([M N ...])
+ -- Built-in Function: ones (..., CLASS)
+     Return a matrix or N-dimensional array whose elements are all 1.
+     If invoked with a single scalar integer argument N, return a square
+     NxN matrix.  If invoked with two or more scalar integer arguments,
+     or a vector of integer values, return an array with the given
+     dimensions.
+
+     If you need to create a matrix whose values are all the same, you
+     should use an expression like
+
+          val_matrix = val * ones (m, n)
+
+     The optional argument CLASS specifies the class of the return array
+     and defaults to double.  For example:
+
+          val = ones (m,n, "uint8")
+
+     See also: *note zeros: XREFzeros.
+
+ -- Built-in Function: zeros (N)
+ -- Built-in Function: zeros (M, N)
+ -- Built-in Function: zeros (M, N, K, ...)
+ -- Built-in Function: zeros ([M N ...])
+ -- Built-in Function: zeros (..., CLASS)
+     Return a matrix or N-dimensional array whose elements are all 0.
+     If invoked with a single scalar integer argument, return a square
+     NxN matrix.  If invoked with two or more scalar integer arguments,
+     or a vector of integer values, return an array with the given
+     dimensions.
+
+     The optional argument CLASS specifies the class of the return array
+     and defaults to double.  For example:
+
+          val = zeros (m,n, "uint8")
+
+     See also: *note ones: XREFones.
+
+ -- Function File: repmat (A, M)
+ -- Function File: repmat (A, M, N)
+ -- Function File: repmat (A, [M N])
+ -- Function File: repmat (A, [M N P ...])
+     Form a block matrix of size M by N, with a copy of matrix A as each
+     element.  If N is not specified, form an M by M block matrix.  For
+     copying along more than two dimensions, specify the number of times
+     to copy across each dimension M, N, P, ..., in a vector in the
+     second argument.
+
+     See also: *note repelems: XREFrepelems.
+
+ -- Built-in Function: repelems (X, R)
+     Construct a vector of repeated elements from X.  R is a 2xN integer
+     matrix specifying which elements to repeat and how often to repeat
+     each element.
+
+     Entries in the first row, R(1,j), select an element to repeat.  The
+     corresponding entry in the second row, R(2,j), specifies the repeat
+     count.  If X is a matrix then the columns of X are imagined to be
+     stacked on top of each other for purposes of the selection index.
+     A row vector is always returned.
+
+     Conceptually the result is calculated as follows:
+
+          y = [];
+          for i = 1:columns (R)
+            y = [y, X(R(1,i)*ones(1, R(2,i)))];
+          endfor
+
+     See also: *note repmat: XREFrepmat, *note cat: XREFcat.
+
+   The functions 'linspace' and 'logspace' make it very easy to create
+vectors with evenly or logarithmically spaced elements.  *Note Ranges::.
+
+ -- Built-in Function: linspace (BASE, LIMIT)
+ -- Built-in Function: linspace (BASE, LIMIT, N)
+     Return a row vector with N linearly spaced elements between BASE
+     and LIMIT.  If the number of elements is greater than one, then the
+     endpoints BASE and LIMIT are always included in the range.  If BASE
+     is greater than LIMIT, the elements are stored in decreasing order.
+     If the number of points is not specified, a value of 100 is used.
+
+     The 'linspace' function always returns a row vector if both BASE
+     and LIMIT are scalars.  If one, or both, of them are column
+     vectors, 'linspace' returns a matrix.
+
+     For compatibility with MATLAB, return the second argument (LIMIT)
+     if fewer than two values are requested.
+
+     See also: *note logspace: XREFlogspace.
+
+ -- Function File: logspace (A, B)
+ -- Function File: logspace (A, B, N)
+ -- Function File: logspace (A, pi, N)
+     Return a row vector with N elements logarithmically spaced from
+     10^A to 10^B.  If N is unspecified it defaults to 50.
+
+     If B is equal to pi, the points are between 10^A and pi, _not_ 10^A
+     and 10^pi, in order to be compatible with the corresponding MATLAB
+     function.
+
+     Also for compatibility with MATLAB, return the second argument B if
+     fewer than two values are requested.
+
+     See also: *note linspace: XREFlinspace.
+
+ -- Built-in Function: rand (N)
+ -- Built-in Function: rand (M, N, ...)
+ -- Built-in Function: rand ([M N ...])
+ -- Built-in Function: V = rand ("state")
+ -- Built-in Function: rand ("state", V)
+ -- Built-in Function: rand ("state", "reset")
+ -- Built-in Function: V = rand ("seed")
+ -- Built-in Function: rand ("seed", V)
+ -- Built-in Function: rand ("seed", "reset")
+ -- Built-in Function: rand (..., "single")
+ -- Built-in Function: rand (..., "double")
+     Return a matrix with random elements uniformly distributed on the
+     interval (0, 1).  The arguments are handled the same as the
+     arguments for 'eye'.
+
+     You can query the state of the random number generator using the
+     form
+
+          v = rand ("state")
+
+     This returns a column vector V of length 625.  Later, you can
+     restore the random number generator to the state V using the form
+
+          rand ("state", v)
+
+     You may also initialize the state vector from an arbitrary vector
+     of length <= 625 for V.  This new state will be a hash based on the
+     value of V, not V itself.
+
+     By default, the generator is initialized from '/dev/urandom' if it
+     is available, otherwise from CPU time, wall clock time, and the
+     current fraction of a second.  Note that this differs from MATLAB,
+     which always initializes the state to the same state at startup.
+     To obtain behavior comparable to MATLAB, initialize with a
+     deterministic state vector in Octave's startup files (*note Startup
+     Files::).
+
+     To compute the pseudo-random sequence, 'rand' uses the Mersenne
+     Twister with a period of 2^{19937}-1 (See M. Matsumoto and T.
+     Nishimura, 'Mersenne Twister: A 623-dimensionally equidistributed
+     uniform pseudorandom number generator', ACM Trans.  on Modeling and
+     Computer Simulation Vol.  8, No.  1, pp.  3-30, January 1998,
+     <http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/emt.html>).  Do
+     *not* use for cryptography without securely hashing several
+     returned values together, otherwise the generator state can be
+     learned after reading 624 consecutive values.
+
+     Older versions of Octave used a different random number generator.
+     The new generator is used by default as it is significantly faster
+     than the old generator, and produces random numbers with a
+     significantly longer cycle time.  However, in some circumstances it
+     might be desirable to obtain the same random sequences as used by
+     the old generators.  To do this the keyword "seed" is used to
+     specify that the old generators should be use, as in
+
+          rand ("seed", val)
+
+     which sets the seed of the generator to VAL.  The seed of the
+     generator can be queried with
+
+          s = rand ("seed")
+
+     However, it should be noted that querying the seed will not cause
+     'rand' to use the old generators, only setting the seed will.  To
+     cause 'rand' to once again use the new generators, the keyword
+     "state" should be used to reset the state of the 'rand'.
+
+     The state or seed of the generator can be reset to a new random
+     value using the "reset" keyword.
+
+     The class of the value returned can be controlled by a trailing
+     "double" or "single" argument.  These are the only valid classes.
+
+     See also: *note randn: XREFrandn, *note rande: XREFrande, *note
+     randg: XREFrandg, *note randp: XREFrandp.
+
+ -- Function File: randi (IMAX)
+ -- Function File: randi (IMAX, N)
+ -- Function File: randi (IMAX, M, N, ...)
+ -- Function File: randi ([IMIN IMAX], ...)
+ -- Function File: randi (..., "CLASS")
+     Return random integers in the range 1:IMAX.
+
+     Additional arguments determine the shape of the return matrix.
+     When no arguments are specified a single random integer is
+     returned.  If one argument N is specified then a square matrix (N x N)
+     is returned.  Two or more arguments will return a multi-dimensional
+     matrix (M x N x ...).
+
+     The integer range may optionally be described by a two element
+     matrix with a lower and upper bound in which case the returned
+     integers will be on the interval [IMIN, IMAX].
+
+     The optional argument CLASS will return a matrix of the requested
+     type.  The default is "double".
+
+     The following example returns 150 integers in the range 1-10.
+
+          ri = randi (10, 150, 1)
+
+     Implementation Note: 'randi' relies internally on 'rand' which uses
+     class "double" to represent numbers.  This limits the maximum
+     integer (IMAX) and range (IMAX - IMIN) to the value returned by the
+     'bitmax' function.  For IEEE floating point numbers this value is
+     2^{53} - 1.
+
+     See also: *note rand: XREFrand.
+
+ -- Built-in Function: randn (N)
+ -- Built-in Function: randn (M, N, ...)
+ -- Built-in Function: randn ([M N ...])
+ -- Built-in Function: V = randn ("state")
+ -- Built-in Function: randn ("state", V)
+ -- Built-in Function: randn ("state", "reset")
+ -- Built-in Function: V = randn ("seed")
+ -- Built-in Function: randn ("seed", V)
+ -- Built-in Function: randn ("seed", "reset")
+ -- Built-in Function: randn (..., "single")
+ -- Built-in Function: randn (..., "double")
+     Return a matrix with normally distributed random elements having
+     zero mean and variance one.  The arguments are handled the same as
+     the arguments for 'rand'.
+
+     By default, 'randn' uses the Marsaglia and Tsang "Ziggurat
+     technique" to transform from a uniform to a normal distribution.
+
+     The class of the value returned can be controlled by a trailing
+     "double" or "single" argument.  These are the only valid classes.
+
+     Reference: G. Marsaglia and W.W. Tsang, 'Ziggurat Method for
+     Generating Random Variables', J. Statistical Software, vol 5, 2000,
+     <http://www.jstatsoft.org/v05/i08/>)
+
+     See also: *note rand: XREFrand, *note rande: XREFrande, *note
+     randg: XREFrandg, *note randp: XREFrandp.
+
+ -- Built-in Function: rande (N)
+ -- Built-in Function: rande (M, N, ...)
+ -- Built-in Function: rande ([M N ...])
+ -- Built-in Function: V = rande ("state")
+ -- Built-in Function: rande ("state", V)
+ -- Built-in Function: rande ("state", "reset")
+ -- Built-in Function: V = rande ("seed")
+ -- Built-in Function: rande ("seed", V)
+ -- Built-in Function: rande ("seed", "reset")
+ -- Built-in Function: rande (..., "single")
+ -- Built-in Function: rande (..., "double")
+     Return a matrix with exponentially distributed random elements.
+     The arguments are handled the same as the arguments for 'rand'.
+
+     By default, 'randn' uses the Marsaglia and Tsang "Ziggurat
+     technique" to transform from a uniform to an exponential
+     distribution.
+
+     The class of the value returned can be controlled by a trailing
+     "double" or "single" argument.  These are the only valid classes.
+
+     Reference: G. Marsaglia and W.W. Tsang, 'Ziggurat Method for
+     Generating Random Variables', J. Statistical Software, vol 5, 2000,
+     <http://www.jstatsoft.org/v05/i08/>)
+
+     See also: *note rand: XREFrand, *note randn: XREFrandn, *note
+     randg: XREFrandg, *note randp: XREFrandp.
+
+ -- Built-in Function: randp (L, N)
+ -- Built-in Function: randp (L, M, N, ...)
+ -- Built-in Function: randp (L, [M N ...])
+ -- Built-in Function: V = randp ("state")
+ -- Built-in Function: randp ("state", V)
+ -- Built-in Function: randp ("state", "reset")
+ -- Built-in Function: V = randp ("seed")
+ -- Built-in Function: randp ("seed", V)
+ -- Built-in Function: randp ("seed", "reset")
+ -- Built-in Function: randp (..., "single")
+ -- Built-in Function: randp (..., "double")
+     Return a matrix with Poisson distributed random elements with mean
+     value parameter given by the first argument, L.  The arguments are
+     handled the same as the arguments for 'rand', except for the
+     argument L.
+
+     Five different algorithms are used depending on the range of L and
+     whether or not L is a scalar or a matrix.
+
+     For scalar L <= 12, use direct method.
+          W.H. Press, et al., 'Numerical Recipes in C', Cambridge
+          University Press, 1992.
+
+     For scalar L > 12, use rejection method.[1]
+          W.H. Press, et al., 'Numerical Recipes in C', Cambridge
+          University Press, 1992.
+
+     For matrix L <= 10, use inversion method.[2]
+          E. Stadlober, et al., WinRand source code, available via FTP.
+
+     For matrix L > 10, use patchwork rejection method.
+          E. Stadlober, et al., WinRand source code, available via FTP,
+          or H. Zechner, 'Efficient sampling from continuous and
+          discrete unimodal distributions', Doctoral Dissertation,
+          156pp., Technical University Graz, Austria, 1994.
+
+     For L > 1e8, use normal approximation.
+          L. Montanet, et al., 'Review of Particle Properties', Physical
+          Review D 50 p1284, 1994.
+
+     The class of the value returned can be controlled by a trailing
+     "double" or "single" argument.  These are the only valid classes.
+
+     See also: *note rand: XREFrand, *note randn: XREFrandn, *note
+     rande: XREFrande, *note randg: XREFrandg.
+
+ -- Built-in Function: randg (N)
+ -- Built-in Function: randg (M, N, ...)
+ -- Built-in Function: randg ([M N ...])
+ -- Built-in Function: V = randg ("state")
+ -- Built-in Function: randg ("state", V)
+ -- Built-in Function: randg ("state", "reset")
+ -- Built-in Function: V = randg ("seed")
+ -- Built-in Function: randg ("seed", V)
+ -- Built-in Function: randg ("seed", "reset")
+ -- Built-in Function: randg (..., "single")
+ -- Built-in Function: randg (..., "double")
+     Return a matrix with 'gamma (A,1)' distributed random elements.
+     The arguments are handled the same as the arguments for 'rand',
+     except for the argument A.
+
+     This can be used to generate many distributions:
+
+     'gamma (a, b)' for 'a > -1', 'b > 0'
+
+               r = b * randg (a)
+
+     'beta (a, b)' for 'a > -1', 'b > -1'
+
+               r1 = randg (a, 1)
+               r = r1 / (r1 + randg (b, 1))
+
+     'Erlang (a, n)'
+
+               r = a * randg (n)
+
+     'chisq (df)' for 'df > 0'
+
+               r = 2 * randg (df / 2)
+
+     't (df)' for '0 < df < inf' (use randn if df is infinite)
+
+               r = randn () / sqrt (2 * randg (df / 2) / df)
+
+     'F (n1, n2)' for '0 < n1', '0 < n2'
+
+               ## r1 equals 1 if n1 is infinite
+               r1 = 2 * randg (n1 / 2) / n1
+               ## r2 equals 1 if n2 is infinite
+               r2 = 2 * randg (n2 / 2) / n2
+               r = r1 / r2
+
+
+     negative 'binomial (n, p)' for 'n > 0', '0 < p <= 1'
+
+               r = randp ((1 - p) / p * randg (n))
+
+     non-central 'chisq (df, L)', for 'df >= 0' and 'L > 0'
+          (use chisq if 'L = 0')
+
+               r = randp (L / 2)
+               r(r > 0) = 2 * randg (r(r > 0))
+               r(df > 0) += 2 * randg (df(df > 0)/2)
+
+     'Dirichlet (a1, ... ak)'
+
+               r = (randg (a1), ..., randg (ak))
+               r = r / sum (r)
+
+     The class of the value returned can be controlled by a trailing
+     "double" or "single" argument.  These are the only valid classes.
+
+     See also: *note rand: XREFrand, *note randn: XREFrandn, *note
+     rande: XREFrande, *note randp: XREFrandp.
+
+   The generators operate in the new or old style together, it is not
+possible to mix the two.  Initializing any generator with "state" or
+"seed" causes the others to switch to the same style for future calls.
+
+   The state of each generator is independent and calls to different
+generators can be interleaved without affecting the final result.  For
+example,
+
+     rand ("state", [11, 22, 33]);
+     randn ("state", [44, 55, 66]);
+     u = rand (100, 1);
+     n = randn (100, 1);
+
+and
+
+     rand ("state", [11, 22, 33]);
+     randn ("state", [44, 55, 66]);
+     u = zeros (100, 1);
+     n = zeros (100, 1);
+     for i = 1:100
+       u(i) = rand ();
+       n(i) = randn ();
+     end
+
+produce equivalent results.  When the generators are initialized in the
+old style with "seed" only 'rand' and 'randn' are independent, because
+the old 'rande', 'randg' and 'randp' generators make calls to 'rand' and
+'randn'.
+
+   The generators are initialized with random states at start-up, so
+that the sequences of random numbers are not the same each time you run
+Octave.(1)  If you really do need to reproduce a sequence of numbers
+exactly, you can set the state or seed to a specific value.
+
+   If invoked without arguments, 'rand' and 'randn' return a single
+element of a random sequence.
+
+   The original 'rand' and 'randn' functions use Fortran code from
+RANLIB, a library of Fortran routines for random number generation,
+compiled by Barry W. Brown and James Lovato of the Department of
+Biomathematics at The University of Texas, M.D. Anderson Cancer Center,
+Houston, TX 77030.
+
+ -- Built-in Function: randperm (N)
+ -- Built-in Function: randperm (N, M)
+     Return a row vector containing a random permutation of '1:N'.  If M
+     is supplied, return M unique entries, sampled without replacement
+     from '1:N'.  The complexity is O(N) in memory and O(M) in time,
+     unless M < N/5, in which case O(M) memory is used as well.  The
+     randomization is performed using rand().  All permutations are
+     equally likely.
+
+     See also: *note perms: XREFperms.
+
+   ---------- Footnotes ----------
+
+   (1) The old versions of 'rand' and 'randn' obtain their initial seeds
+from the system clock.
+
+
 File: octave.info,  Node: Famous Matrices,  Prev: Special Utility Matrices,  Up: Matrix Manipulation
 
 16.4 Famous Matrices
@@ -2178,10 +2666,18 @@ File: octave.info,  Node: Linear Algebra,  Next: Vectorization and Faster Code E
 18 Linear Algebra
 *****************
 
-This chapter documents the linear algebra functions of Octave.
+This chapter documents the linear algebra functions provided in Octave.
 Reference material for many of these functions may be found in Golub and
 Van Loan, 'Matrix Computations, 2nd Ed.', Johns Hopkins, 1989, and in
-the 'LAPACK Users' Guide', SIAM, 1992.
+the 'LAPACK Users' Guide', SIAM, 1992.  The 'LAPACK Users' Guide' is
+available at: 'http://www.netlib.org/lapack/lug/'
+
+   A common text for engineering courses is G. Strang, 'Linear Algebra
+and Its Applications, 4th Edition'.  It has become a widespread
+reference for linear algebra.  An alternative is P. Lax 'Linear Algebra
+and Its Applications', and also is a good choice.  It claims to be
+suitable for high school students with substantial mathematical
+interests as well as first-year undergraduates.
 
 * Menu:
 
@@ -2197,17 +2693,17 @@ File: octave.info,  Node: Techniques Used for Linear Algebra,  Next: Basic Matri
 18.1 Techniques Used for Linear Algebra
 =======================================
 
-Octave includes a polymorphic solver, that selects an appropriate matrix
+Octave includes a polymorphic solver that selects an appropriate matrix
 factorization depending on the properties of the matrix itself.
 Generally, the cost of determining the matrix type is small relative to
-the cost of factorizing the matrix itself, but in any case the matrix
-type is cached once it is calculated, so that it is not re-determined
-each time it is used in a linear equation.
+the cost of factorizing the matrix itself.  In any case the matrix type
+is cached once it is calculated so that it is not re-determined each
+time it is used in a linear equation.
 
-   The selection tree for how the linear equation is solve or a matrix
-inverse is form is given by
+   The selection tree for how the linear equation is solved or a matrix
+inverse is formed is given by:
 
-  1. If the matrix is upper or lower triangular sparse a forward or
+  1. If the matrix is upper or lower triangular sparse use a forward or
      backward substitution using the LAPACK xTRTRS function, and goto 4.
 
   2. If the matrix is square, Hermitian with a real positive diagonal,
@@ -2228,10 +2724,10 @@ matrix incorrectly will lead to unpredictable results, and so
 'matrix_type' should be used with care.
 
    It should be noted that the test for whether a matrix is a candidate
-for Cholesky factorization, performed above and by the 'matrix_type'
-function, does not give a certainty that the matrix is Hermitian.
-However, the attempt to factorize the matrix will quickly flag a
-non-Hermitian matrix.
+for Cholesky factorization, performed above, and by the 'matrix_type'
+function, does not make certain that the matrix is Hermitian.  However,
+the attempt to factorize the matrix will quickly detect a non-Hermitian
+matrix.
 
 
 File: octave.info,  Node: Basic Matrix Functions,  Next: Matrix Factorizations,  Prev: Techniques Used for Linear Algebra,  Up: Linear Algebra
@@ -2926,7 +3422,7 @@ File: octave.info,  Node: Matrix Factorizations,  Next: Functions of a Matrix,  
           min norm(A x - b)
 
      for overdetermined systems of equations (i.e., A is a tall, thin
-     matrix).  The QR factorization is 'Q * Q = A' where Q is an
+     matrix).  The QR factorization is 'Q * R = A' where Q is an
      orthogonal matrix and R is upper triangular.
 
      If given a second argument of '0', 'qr' returns an economy-sized
@@ -5200,12 +5696,12 @@ its reciprocal.  The matrix division algorithms do, in fact, use
 division rather than multiplication by reciprocals for better numerical
 accuracy; otherwise, they honor the above definition.  Note that a
 diagonal matrix is never truncated due to ill-conditioning; otherwise,
-it would not be much useful for scaling.  This is typically consistent
+it would not be of much use for scaling.  This is typically consistent
 with linear algebra needs.  A full matrix that only happens to be
-diagonal (an is thus not a special object) is of course treated
+diagonal (and is thus not a special object) is of course treated
 normally.
 
-   Multiplication and division by diagonal matrices works efficiently
+   Multiplication and division by diagonal matrices work efficiently
 also when combined with sparse matrices, i.e., 'D*S', where D is a
 diagonal matrix and S is a sparse matrix scales the rows of the sparse
 matrix and returns a sparse matrix.  The expressions 'S*D', 'D\S', 'S/D'
@@ -5370,7 +5866,7 @@ earlier versions of Octave, but slowly.
 
        det (eye (length (p))(p, :))
 
-Finally, here's how you solve a linear system 'A*x = b' with Tikhonov
+Finally, here's how to solve a linear system 'A*x = b' with Tikhonov
 regularization (ridge regression) using SVD (a skeleton only):
 
        m = rows (A); n = columns (A);
@@ -5394,12 +5890,12 @@ File: octave.info,  Node: Zeros Treatment,  Prev: Example Code,  Up: Diagonal an
 Making diagonal and permutation matrices special matrix objects in their
 own right and the consequent usage of smarter algorithms for certain
 operations implies, as a side effect, small differences in treating
-zeros.  The contents of this section applies also to sparse matrices,
-discussed in the following chapter.
+zeros.  The contents of this section apply also to sparse matrices,
+discussed in the following chapter.  (*note Sparse Matrices::)
 
-   The IEEE standard defines the result of the expressions '0*Inf' and
-'0*NaN' as 'NaN', as it has been generally agreed that this is the best
-compromise.  Numerical software dealing with structured and sparse
+   The IEEE floating point standard defines the result of the
+expressions '0*Inf' and '0*NaN' as 'NaN'.  This is widely agreed to be a
+good compromise.  Numerical software dealing with structured and sparse
 matrices (including Octave) however, almost always makes a distinction
 between a "numerical zero" and an "assumed zero".  A "numerical zero" is
 a zero value occurring in a place where any floating-point value could
@@ -7309,332 +7805,4 @@ See also: *note svd: XREFsvd, *note eigs: XREFeigs.
 
    (1) The CHOLMOD, UMFPACK and CXSPARSE packages were written by Tim
 Davis and are available at <http://www.cise.ufl.edu/research/sparse/>
-
-
-File: octave.info,  Node: Iterative Techniques,  Next: Real Life Example,  Prev: Sparse Linear Algebra,  Up: Sparse Matrices
-
-22.3 Iterative Techniques Applied to Sparse Matrices
-====================================================
-
-The left division '\' and right division '/' operators, discussed in the
-previous section, use direct solvers to resolve a linear equation of the
-form 'X = A \ B' or 'X = B / A'.  Octave equally includes a number of
-functions to solve sparse linear equations using iterative techniques.
-
- -- Function File: X = pcg (A, B, TOL, MAXIT, M1, M2, X0, ...)
- -- Function File: [X, FLAG, RELRES, ITER, RESVEC, EIGEST] = pcg (...)
-
-     Solve the linear system of equations 'A * X = B' by means of the
-     Preconditioned Conjugate Gradient iterative method.  The input
-     arguments are
-
-        * A can be either a square (preferably sparse) matrix or a
-          function handle, inline function or string containing the name
-          of a function which computes 'A * X'.  In principle, A should
-          be symmetric and positive definite; if 'pcg' finds A not to be
-          positive definite, a warning is printed and the FLAG output
-          will be set.
-
-        * B is the right-hand side vector.
-
-        * TOL is the required relative tolerance for the residual error,
-          'B - A * X'.  The iteration stops if
-          'norm (B - A * X)' <= TOL * norm (B).  If TOL is omitted or
-          empty then a tolerance of 1e-6 is used.
-
-        * MAXIT is the maximum allowable number of iterations; if MAXIT
-          is omitted or empty then a value of 20 is used.
-
-        * M = M1 * M2 is the (left) preconditioning matrix, so that the
-          iteration is (theoretically) equivalent to solving by 'pcg'
-          'P * X = M \ B', with 'P = M \ A'.  Note that a proper choice
-          of the preconditioner may dramatically improve the overall
-          performance of the method.  Instead of matrices M1 and M2, the
-          user may pass two functions which return the results of
-          applying the inverse of M1 and M2 to a vector (usually this is
-          the preferred way of using the preconditioner).  If M1 is
-          omitted or empty '[]' then no preconditioning is applied.  If
-          M2 is omitted, M = M1 will be used as a preconditioner.
-
-        * X0 is the initial guess.  If X0 is omitted or empty then the
-          function sets X0 to a zero vector by default.
-
-     The arguments which follow X0 are treated as parameters, and passed
-     in a proper way to any of the functions (A or M) which are passed
-     to 'pcg'.  See the examples below for further details.  The output
-     arguments are
-
-        * X is the computed approximation to the solution of
-          'A * X = B'.
-
-        * FLAG reports on the convergence.  A value of 0 means the
-          solution converged and the tolerance criterion given by TOL is
-          satisfied.  A value of 1 means that the MAXIT limit for the
-          iteration count was reached.  A value of 3 indicates that the
-          (preconditioned) matrix was found not to be positive definite.
-
-        * RELRES is the ratio of the final residual to its initial
-          value, measured in the Euclidean norm.
-
-        * ITER is the actual number of iterations performed.
-
-        * RESVEC describes the convergence history of the method.
-          'RESVEC(i,1)' is the Euclidean norm of the residual, and
-          'RESVEC(i,2)' is the preconditioned residual norm, after the
-          (I-1)-th iteration, 'I = 1, 2, ..., ITER+1'.  The
-          preconditioned residual norm is defined as 'norm (R) ^ 2 = R'
-          * (M \ R)' where 'R = B - A * X', see also the description of
-          M.  If EIGEST is not required, only 'RESVEC(:,1)' is returned.
-
-        * EIGEST returns the estimate for the smallest 'EIGEST(1)' and
-          largest 'EIGEST(2)' eigenvalues of the preconditioned matrix
-          'P = M \ A'.  In particular, if no preconditioning is used,
-          the estimates for the extreme eigenvalues of A are returned.
-          'EIGEST(1)' is an overestimate and 'EIGEST(2)' is an
-          underestimate, so that 'EIGEST(2) / EIGEST(1)' is a lower
-          bound for 'cond (P, 2)', which nevertheless in the limit
-          should theoretically be equal to the actual value of the
-          condition number.  The method which computes EIGEST works only
-          for symmetric positive definite A and M, and the user is
-          responsible for verifying this assumption.
-
-     Let us consider a trivial problem with a diagonal matrix (we
-     exploit the sparsity of A)
-
-          n = 10;
-          A = diag (sparse (1:n));
-          b = rand (n, 1);
-          [l, u, p, q] = luinc (A, 1.e-3);
-
-     EXAMPLE 1: Simplest use of 'pcg'
-
-          x = pcg (A, b)
-
-     EXAMPLE 2: 'pcg' with a function which computes 'A * X'
-
-          function y = apply_a (x)
-            y = [1:N]' .* x;
-          endfunction
-
-          x = pcg ("apply_a", b)
-
-     EXAMPLE 3: 'pcg' with a preconditioner: L * U
-
-          x = pcg (A, b, 1.e-6, 500, l*u)
-
-     EXAMPLE 4: 'pcg' with a preconditioner: L * U.  Faster than EXAMPLE
-     3 since lower and upper triangular matrices are easier to invert
-
-          x = pcg (A, b, 1.e-6, 500, l, u)
-
-     EXAMPLE 5: Preconditioned iteration, with full diagnostics.  The
-     preconditioner (quite strange, because even the original matrix A
-     is trivial) is defined as a function
-
-          function y = apply_m (x)
-            k = floor (length (x) - 2);
-            y = x;
-            y(1:k) = x(1:k) ./ [1:k]';
-          endfunction
-
-          [x, flag, relres, iter, resvec, eigest] = ...
-                             pcg (A, b, [], [], "apply_m");
-          semilogy (1:iter+1, resvec);
-
-     EXAMPLE 6: Finally, a preconditioner which depends on a parameter
-     K.
-
-          function y = apply_M (x, varargin)
-            K = varargin{1};
-            y = x;
-            y(1:K) = x(1:K) ./ [1:K]';
-          endfunction
-
-          [x, flag, relres, iter, resvec, eigest] = ...
-               pcg (A, b, [], [], "apply_m", [], [], 3)
-
-     References:
-
-       1. C.T. Kelley, 'Iterative Methods for Linear and Nonlinear
-          Equations', SIAM, 1995.  (the base PCG algorithm)
-
-       2. Y. Saad, 'Iterative Methods for Sparse Linear Systems', PWS
-          1996.  (condition number estimate from PCG) Revised version of
-          this book is available online at
-          <http://www-users.cs.umn.edu/~saad/books.html>
-
-     See also: *note sparse: XREFsparse, *note pcr: XREFpcr.
-
- -- Function File: X = pcr (A, B, TOL, MAXIT, M, X0, ...)
- -- Function File: [X, FLAG, RELRES, ITER, RESVEC] = pcr (...)
-
-     Solve the linear system of equations 'A * X = B' by means of the
-     Preconditioned Conjugate Residuals iterative method.  The input
-     arguments are
-
-        * A can be either a square (preferably sparse) matrix or a
-          function handle, inline function or string containing the name
-          of a function which computes 'A * X'.  In principle A should
-          be symmetric and non-singular; if 'pcr' finds A to be
-          numerically singular, you will get a warning message and the
-          FLAG output parameter will be set.
-
-        * B is the right hand side vector.
-
-        * TOL is the required relative tolerance for the residual error,
-          'B - A * X'.  The iteration stops if 'norm (B - A * X) <= TOL
-          * norm (B - A * X0)'.  If TOL is empty or is omitted, the
-          function sets 'TOL = 1e-6' by default.
-
-        * MAXIT is the maximum allowable number of iterations; if '[]'
-          is supplied for 'maxit', or 'pcr' has less arguments, a
-          default value equal to 20 is used.
-
-        * M is the (left) preconditioning matrix, so that the iteration
-          is (theoretically) equivalent to solving by 'pcr' 'P * X = M \
-          B', with 'P = M \ A'.  Note that a proper choice of the
-          preconditioner may dramatically improve the overall
-          performance of the method.  Instead of matrix M, the user may
-          pass a function which returns the results of applying the
-          inverse of M to a vector (usually this is the preferred way of
-          using the preconditioner).  If '[]' is supplied for M, or M is
-          omitted, no preconditioning is applied.
-
-        * X0 is the initial guess.  If X0 is empty or omitted, the
-          function sets X0 to a zero vector by default.
-
-     The arguments which follow X0 are treated as parameters, and passed
-     in a proper way to any of the functions (A or M) which are passed
-     to 'pcr'.  See the examples below for further details.  The output
-     arguments are
-
-        * X is the computed approximation to the solution of 'A * X =
-          B'.
-
-        * FLAG reports on the convergence.  'FLAG = 0' means the
-          solution converged and the tolerance criterion given by TOL is
-          satisfied.  'FLAG = 1' means that the MAXIT limit for the
-          iteration count was reached.  'FLAG = 3' reports t 'pcr'
-          breakdown, see [1] for details.
-
-        * RELRES is the ratio of the final residual to its initial
-          value, measured in the Euclidean norm.
-
-        * ITER is the actual number of iterations performed.
-
-        * RESVEC describes the convergence history of the method, so
-          that 'RESVEC (i)' contains the Euclidean norms of the residual
-          after the (I-1)-th iteration, 'I = 1,2, ..., ITER+1'.
-
-     Let us consider a trivial problem with a diagonal matrix (we
-     exploit the sparsity of A)
-
-          n = 10;
-          A = sparse (diag (1:n));
-          b = rand (N, 1);
-
-     EXAMPLE 1: Simplest use of 'pcr'
-
-          x = pcr (A, b)
-
-     EXAMPLE 2: 'pcr' with a function which computes 'A * X'.
-
-          function y = apply_a (x)
-            y = [1:10]' .* x;
-          endfunction
-
-          x = pcr ("apply_a", b)
-
-     EXAMPLE 3: Preconditioned iteration, with full diagnostics.  The
-     preconditioner (quite strange, because even the original matrix A
-     is trivial) is defined as a function
-
-          function y = apply_m (x)
-            k = floor (length (x) - 2);
-            y = x;
-            y(1:k) = x(1:k) ./ [1:k]';
-          endfunction
-
-          [x, flag, relres, iter, resvec] = ...
-                             pcr (A, b, [], [], "apply_m")
-          semilogy ([1:iter+1], resvec);
-
-     EXAMPLE 4: Finally, a preconditioner which depends on a parameter
-     K.
-
-          function y = apply_m (x, varargin)
-            k = varargin{1};
-            y = x;
-            y(1:k) = x(1:k) ./ [1:k]';
-          endfunction
-
-          [x, flag, relres, iter, resvec] = ...
-                             pcr (A, b, [], [], "apply_m"', [], 3)
-
-     References:
-
-     [1] W. Hackbusch, 'Iterative Solution of Large Sparse Systems of
-     Equations', section 9.5.4; Springer, 1994
-
-     See also: *note sparse: XREFsparse, *note pcg: XREFpcg.
-
-   The speed with which an iterative solver converges to a solution can
-be accelerated with the use of a pre-conditioning matrix M.  In this
-case the linear equation 'M^-1 * X = M^-1 * A \ B' is solved instead.
-Typical pre-conditioning matrices are partial factorizations of the
-original matrix.
-
- -- Built-in Function: [L, U, P, Q] = luinc (A, '0')
- -- Built-in Function: [L, U, P, Q] = luinc (A, DROPTOL)
- -- Built-in Function: [L, U, P, Q] = luinc (A, OPTS)
-     Produce the incomplete LU factorization of the sparse matrix A.
-     Two types of incomplete factorization are possible, and the type is
-     determined by the second argument to 'luinc'.
-
-     Called with a second argument of '0', the zero-level incomplete
-     LU factorization is produced.  This creates a factorization of A
-     where the position of the non-zero arguments correspond to the same
-     positions as in the matrix A.
-
-     Alternatively, the fill-in of the incomplete LU factorization can
-     be controlled through the variable DROPTOL or the structure OPTS.
-     The UMFPACK multifrontal factorization code by Tim A. Davis is used
-     for the incomplete LU factorization, (availability
-     <http://www.cise.ufl.edu/research/sparse/umfpack/>)
-
-     DROPTOL determines the values below which the values in the LU 
-     factorization are dropped and replaced by zero.  It must be a
-     positive scalar, and any values in the factorization whose absolute
-     value are less than this value are dropped, expect if leaving them
-     increase the sparsity of the matrix.  Setting DROPTOL to zero
-     results in a complete LU factorization which is the default.
-
-     OPTS is a structure containing one or more of the fields
-
-     'droptol'
-          The drop tolerance as above.  If OPTS only contains 'droptol'
-          then this is equivalent to using the variable DROPTOL.
-
-     'milu'
-          A logical variable flagging whether to use the modified
-          incomplete LU  factorization.  In the case that 'milu' is
-          true, the dropped values are subtracted from the diagonal of
-          the matrix U of the factorization.  The default is 'false'.
-
-     'udiag'
-          A logical variable that flags whether zero elements on the
-          diagonal of U should be replaced with DROPTOL to attempt to
-          avoid singular factors.  The default is 'false'.
-
-     'thresh'
-          Defines the pivot threshold in the interval [0,1].  Values
-          outside that range are ignored.
-
-     All other fields in OPTS are ignored.  The outputs from 'luinc' are
-     the same as for 'lu'.
-
-     Given the string argument "vector", 'luinc' returns the values of P
-     Q as vector values.
-
-     See also: *note sparse: XREFsparse, *note lu: XREFlu.
 

@@ -21,6 +21,334 @@ manual into another language, under the above conditions for modified
 versions.
 
 
+File: octave.info,  Node: Iterative Techniques,  Next: Real Life Example,  Prev: Sparse Linear Algebra,  Up: Sparse Matrices
+
+22.3 Iterative Techniques Applied to Sparse Matrices
+====================================================
+
+The left division '\' and right division '/' operators, discussed in the
+previous section, use direct solvers to resolve a linear equation of the
+form 'X = A \ B' or 'X = B / A'.  Octave equally includes a number of
+functions to solve sparse linear equations using iterative techniques.
+
+ -- Function File: X = pcg (A, B, TOL, MAXIT, M1, M2, X0, ...)
+ -- Function File: [X, FLAG, RELRES, ITER, RESVEC, EIGEST] = pcg (...)
+
+     Solve the linear system of equations 'A * X = B' by means of the
+     Preconditioned Conjugate Gradient iterative method.  The input
+     arguments are
+
+        * A can be either a square (preferably sparse) matrix or a
+          function handle, inline function or string containing the name
+          of a function which computes 'A * X'.  In principle, A should
+          be symmetric and positive definite; if 'pcg' finds A not to be
+          positive definite, a warning is printed and the FLAG output
+          will be set.
+
+        * B is the right-hand side vector.
+
+        * TOL is the required relative tolerance for the residual error,
+          'B - A * X'.  The iteration stops if
+          'norm (B - A * X)' <= TOL * norm (B).  If TOL is omitted or
+          empty then a tolerance of 1e-6 is used.
+
+        * MAXIT is the maximum allowable number of iterations; if MAXIT
+          is omitted or empty then a value of 20 is used.
+
+        * M = M1 * M2 is the (left) preconditioning matrix, so that the
+          iteration is (theoretically) equivalent to solving by 'pcg'
+          'P * X = M \ B', with 'P = M \ A'.  Note that a proper choice
+          of the preconditioner may dramatically improve the overall
+          performance of the method.  Instead of matrices M1 and M2, the
+          user may pass two functions which return the results of
+          applying the inverse of M1 and M2 to a vector (usually this is
+          the preferred way of using the preconditioner).  If M1 is
+          omitted or empty '[]' then no preconditioning is applied.  If
+          M2 is omitted, M = M1 will be used as a preconditioner.
+
+        * X0 is the initial guess.  If X0 is omitted or empty then the
+          function sets X0 to a zero vector by default.
+
+     The arguments which follow X0 are treated as parameters, and passed
+     in a proper way to any of the functions (A or M) which are passed
+     to 'pcg'.  See the examples below for further details.  The output
+     arguments are
+
+        * X is the computed approximation to the solution of
+          'A * X = B'.
+
+        * FLAG reports on the convergence.  A value of 0 means the
+          solution converged and the tolerance criterion given by TOL is
+          satisfied.  A value of 1 means that the MAXIT limit for the
+          iteration count was reached.  A value of 3 indicates that the
+          (preconditioned) matrix was found not to be positive definite.
+
+        * RELRES is the ratio of the final residual to its initial
+          value, measured in the Euclidean norm.
+
+        * ITER is the actual number of iterations performed.
+
+        * RESVEC describes the convergence history of the method.
+          'RESVEC(i,1)' is the Euclidean norm of the residual, and
+          'RESVEC(i,2)' is the preconditioned residual norm, after the
+          (I-1)-th iteration, 'I = 1, 2, ..., ITER+1'.  The
+          preconditioned residual norm is defined as 'norm (R) ^ 2 = R'
+          * (M \ R)' where 'R = B - A * X', see also the description of
+          M.  If EIGEST is not required, only 'RESVEC(:,1)' is returned.
+
+        * EIGEST returns the estimate for the smallest 'EIGEST(1)' and
+          largest 'EIGEST(2)' eigenvalues of the preconditioned matrix
+          'P = M \ A'.  In particular, if no preconditioning is used,
+          the estimates for the extreme eigenvalues of A are returned.
+          'EIGEST(1)' is an overestimate and 'EIGEST(2)' is an
+          underestimate, so that 'EIGEST(2) / EIGEST(1)' is a lower
+          bound for 'cond (P, 2)', which nevertheless in the limit
+          should theoretically be equal to the actual value of the
+          condition number.  The method which computes EIGEST works only
+          for symmetric positive definite A and M, and the user is
+          responsible for verifying this assumption.
+
+     Let us consider a trivial problem with a diagonal matrix (we
+     exploit the sparsity of A)
+
+          n = 10;
+          A = diag (sparse (1:n));
+          b = rand (n, 1);
+          [l, u, p, q] = luinc (A, 1.e-3);
+
+     EXAMPLE 1: Simplest use of 'pcg'
+
+          x = pcg (A, b)
+
+     EXAMPLE 2: 'pcg' with a function which computes 'A * X'
+
+          function y = apply_a (x)
+            y = [1:N]' .* x;
+          endfunction
+
+          x = pcg ("apply_a", b)
+
+     EXAMPLE 3: 'pcg' with a preconditioner: L * U
+
+          x = pcg (A, b, 1.e-6, 500, l*u)
+
+     EXAMPLE 4: 'pcg' with a preconditioner: L * U.  Faster than EXAMPLE
+     3 since lower and upper triangular matrices are easier to invert
+
+          x = pcg (A, b, 1.e-6, 500, l, u)
+
+     EXAMPLE 5: Preconditioned iteration, with full diagnostics.  The
+     preconditioner (quite strange, because even the original matrix A
+     is trivial) is defined as a function
+
+          function y = apply_m (x)
+            k = floor (length (x) - 2);
+            y = x;
+            y(1:k) = x(1:k) ./ [1:k]';
+          endfunction
+
+          [x, flag, relres, iter, resvec, eigest] = ...
+                             pcg (A, b, [], [], "apply_m");
+          semilogy (1:iter+1, resvec);
+
+     EXAMPLE 6: Finally, a preconditioner which depends on a parameter
+     K.
+
+          function y = apply_M (x, varargin)
+            K = varargin{1};
+            y = x;
+            y(1:K) = x(1:K) ./ [1:K]';
+          endfunction
+
+          [x, flag, relres, iter, resvec, eigest] = ...
+               pcg (A, b, [], [], "apply_m", [], [], 3)
+
+     References:
+
+       1. C.T. Kelley, 'Iterative Methods for Linear and Nonlinear
+          Equations', SIAM, 1995.  (the base PCG algorithm)
+
+       2. Y. Saad, 'Iterative Methods for Sparse Linear Systems', PWS
+          1996.  (condition number estimate from PCG) Revised version of
+          this book is available online at
+          <http://www-users.cs.umn.edu/~saad/books.html>
+
+     See also: *note sparse: XREFsparse, *note pcr: XREFpcr.
+
+ -- Function File: X = pcr (A, B, TOL, MAXIT, M, X0, ...)
+ -- Function File: [X, FLAG, RELRES, ITER, RESVEC] = pcr (...)
+
+     Solve the linear system of equations 'A * X = B' by means of the
+     Preconditioned Conjugate Residuals iterative method.  The input
+     arguments are
+
+        * A can be either a square (preferably sparse) matrix or a
+          function handle, inline function or string containing the name
+          of a function which computes 'A * X'.  In principle A should
+          be symmetric and non-singular; if 'pcr' finds A to be
+          numerically singular, you will get a warning message and the
+          FLAG output parameter will be set.
+
+        * B is the right hand side vector.
+
+        * TOL is the required relative tolerance for the residual error,
+          'B - A * X'.  The iteration stops if 'norm (B - A * X) <= TOL
+          * norm (B - A * X0)'.  If TOL is empty or is omitted, the
+          function sets 'TOL = 1e-6' by default.
+
+        * MAXIT is the maximum allowable number of iterations; if '[]'
+          is supplied for 'maxit', or 'pcr' has less arguments, a
+          default value equal to 20 is used.
+
+        * M is the (left) preconditioning matrix, so that the iteration
+          is (theoretically) equivalent to solving by 'pcr' 'P * X = M \
+          B', with 'P = M \ A'.  Note that a proper choice of the
+          preconditioner may dramatically improve the overall
+          performance of the method.  Instead of matrix M, the user may
+          pass a function which returns the results of applying the
+          inverse of M to a vector (usually this is the preferred way of
+          using the preconditioner).  If '[]' is supplied for M, or M is
+          omitted, no preconditioning is applied.
+
+        * X0 is the initial guess.  If X0 is empty or omitted, the
+          function sets X0 to a zero vector by default.
+
+     The arguments which follow X0 are treated as parameters, and passed
+     in a proper way to any of the functions (A or M) which are passed
+     to 'pcr'.  See the examples below for further details.  The output
+     arguments are
+
+        * X is the computed approximation to the solution of 'A * X =
+          B'.
+
+        * FLAG reports on the convergence.  'FLAG = 0' means the
+          solution converged and the tolerance criterion given by TOL is
+          satisfied.  'FLAG = 1' means that the MAXIT limit for the
+          iteration count was reached.  'FLAG = 3' reports t 'pcr'
+          breakdown, see [1] for details.
+
+        * RELRES is the ratio of the final residual to its initial
+          value, measured in the Euclidean norm.
+
+        * ITER is the actual number of iterations performed.
+
+        * RESVEC describes the convergence history of the method, so
+          that 'RESVEC (i)' contains the Euclidean norms of the residual
+          after the (I-1)-th iteration, 'I = 1,2, ..., ITER+1'.
+
+     Let us consider a trivial problem with a diagonal matrix (we
+     exploit the sparsity of A)
+
+          n = 10;
+          A = sparse (diag (1:n));
+          b = rand (N, 1);
+
+     EXAMPLE 1: Simplest use of 'pcr'
+
+          x = pcr (A, b)
+
+     EXAMPLE 2: 'pcr' with a function which computes 'A * X'.
+
+          function y = apply_a (x)
+            y = [1:10]' .* x;
+          endfunction
+
+          x = pcr ("apply_a", b)
+
+     EXAMPLE 3: Preconditioned iteration, with full diagnostics.  The
+     preconditioner (quite strange, because even the original matrix A
+     is trivial) is defined as a function
+
+          function y = apply_m (x)
+            k = floor (length (x) - 2);
+            y = x;
+            y(1:k) = x(1:k) ./ [1:k]';
+          endfunction
+
+          [x, flag, relres, iter, resvec] = ...
+                             pcr (A, b, [], [], "apply_m")
+          semilogy ([1:iter+1], resvec);
+
+     EXAMPLE 4: Finally, a preconditioner which depends on a parameter
+     K.
+
+          function y = apply_m (x, varargin)
+            k = varargin{1};
+            y = x;
+            y(1:k) = x(1:k) ./ [1:k]';
+          endfunction
+
+          [x, flag, relres, iter, resvec] = ...
+                             pcr (A, b, [], [], "apply_m"', [], 3)
+
+     References:
+
+     [1] W. Hackbusch, 'Iterative Solution of Large Sparse Systems of
+     Equations', section 9.5.4; Springer, 1994
+
+     See also: *note sparse: XREFsparse, *note pcg: XREFpcg.
+
+   The speed with which an iterative solver converges to a solution can
+be accelerated with the use of a pre-conditioning matrix M.  In this
+case the linear equation 'M^-1 * X = M^-1 * A \ B' is solved instead.
+Typical pre-conditioning matrices are partial factorizations of the
+original matrix.
+
+ -- Built-in Function: [L, U, P, Q] = luinc (A, '0')
+ -- Built-in Function: [L, U, P, Q] = luinc (A, DROPTOL)
+ -- Built-in Function: [L, U, P, Q] = luinc (A, OPTS)
+     Produce the incomplete LU factorization of the sparse matrix A.
+     Two types of incomplete factorization are possible, and the type is
+     determined by the second argument to 'luinc'.
+
+     Called with a second argument of '0', the zero-level incomplete
+     LU factorization is produced.  This creates a factorization of A
+     where the position of the non-zero arguments correspond to the same
+     positions as in the matrix A.
+
+     Alternatively, the fill-in of the incomplete LU factorization can
+     be controlled through the variable DROPTOL or the structure OPTS.
+     The UMFPACK multifrontal factorization code by Tim A. Davis is used
+     for the incomplete LU factorization, (availability
+     <http://www.cise.ufl.edu/research/sparse/umfpack/>)
+
+     DROPTOL determines the values below which the values in the LU 
+     factorization are dropped and replaced by zero.  It must be a
+     positive scalar, and any values in the factorization whose absolute
+     value are less than this value are dropped, expect if leaving them
+     increase the sparsity of the matrix.  Setting DROPTOL to zero
+     results in a complete LU factorization which is the default.
+
+     OPTS is a structure containing one or more of the fields
+
+     'droptol'
+          The drop tolerance as above.  If OPTS only contains 'droptol'
+          then this is equivalent to using the variable DROPTOL.
+
+     'milu'
+          A logical variable flagging whether to use the modified
+          incomplete LU  factorization.  In the case that 'milu' is
+          true, the dropped values are subtracted from the diagonal of
+          the matrix U of the factorization.  The default is 'false'.
+
+     'udiag'
+          A logical variable that flags whether zero elements on the
+          diagonal of U should be replaced with DROPTOL to attempt to
+          avoid singular factors.  The default is 'false'.
+
+     'thresh'
+          Defines the pivot threshold in the interval [0,1].  Values
+          outside that range are ignored.
+
+     All other fields in OPTS are ignored.  The outputs from 'luinc' are
+     the same as for 'lu'.
+
+     Given the string argument "vector", 'luinc' returns the values of P
+     Q as vector values.
+
+     See also: *note sparse: XREFsparse, *note lu: XREFlu.
+
+
 File: octave.info,  Node: Real Life Example,  Prev: Iterative Techniques,  Up: Sparse Matrices
 
 22.4 Real Life Example using Sparse Matrices
@@ -3110,6 +3438,12 @@ File: octave.info,  Node: Correlation and Regression Analysis,  Next: Distributi
           normalize with N, this provides the second moment around the
           mean
 
+     MATLAB compatibility: Octave always computes the covariance matrix.
+     For two inputs, however, MATLAB will calculate 'cov (X(:), Y(:))'
+     whenever the number of elements in X and Y are equal.  This will
+     result in a scalar rather than a matrix output.  Code relying on
+     this odd definition will need to be changed when running in Octave.
+
      See also: *note corr: XREFcorr.
 
  -- Function File: corr (X)
@@ -3494,7 +3828,7 @@ Weibull Distribution   'wblpdf'          'wblcdf'          'wblinv'
      logarithm is normally distributed with mean MU and standard
      deviation SIGMA.
 
-     Default values are MU = 1, SIGMA = 1.
+     Default values are MU = 0, SIGMA = 1.
 
  -- Function File: logncdf (X)
  -- Function File: logncdf (X, MU, SIGMA)
@@ -3504,17 +3838,17 @@ Weibull Distribution   'wblpdf'          'wblcdf'          'wblinv'
      logarithm is normally distributed with mean MU and standard
      deviation SIGMA.
 
-     Default values are MU = 1, SIGMA = 1.
+     Default values are MU = 0, SIGMA = 1.
 
  -- Function File: logninv (X)
  -- Function File: logninv (X, MU, SIGMA)
      For each element of X, compute the quantile (the inverse of the
      CDF) at X of the lognormal distribution with parameters MU and
      SIGMA.  If a random variable follows this distribution, its
-     logarithm is normally distributed with mean 'log (MU)' and variance
-     SIGMA.
+     logarithm is normally distributed with mean MU and standard
+     deviation SIGMA.
 
-     Default values are MU = 1, SIGMA = 1.
+     Default values are MU = 0, SIGMA = 1.
 
  -- Function File: nbinpdf (X, N, P)
      For each element of X, compute the probability density function
@@ -5634,17 +5968,21 @@ additional methods.
  -- Function File: YI = interp1 (Y, XI)
  -- Function File: YI = interp1 (..., METHOD)
  -- Function File: YI = interp1 (..., EXTRAP)
+ -- Function File: YI = interp1 (..., "left")
+ -- Function File: YI = interp1 (..., "right")
  -- Function File: PP = interp1 (..., "pp")
 
-     One-dimensional interpolation.  Interpolates to determine the value
-     of YI at the points, XI.  If not specified, X is taken to be the
-     indices of Y.  If Y is a matrix or an N-dimensional array, the
-     interpolation is performed on each column of Y.
+     One-dimensional interpolation.
+
+     Interpolate input data to determine the value of YI at the points
+     XI.  If not specified, X is taken to be the indices of Y.  If Y is
+     a matrix or an N-dimensional array, the interpolation is performed
+     on each column of Y.
 
      Method is one of:
 
      "nearest"
-          Return the nearest neighbor.
+          Return the nearest neighbor
 
      "linear"
           Linear interpolation from nearest neighbors
@@ -5659,28 +5997,29 @@ additional methods.
           Cubic spline interpolation--smooth first and second
           derivatives throughout the curve
 
-     Appending '*' to the start of the above method forces 'interp1' to
+     Adding '*' to the start of any method above forces 'interp1' to
      assume that X is uniformly spaced, and only 'X(1)' and 'X(2)' are
      referenced.  This is usually faster, and is never slower.  The
      default method is "linear".
 
      If EXTRAP is the string "extrap", then extrapolate values beyond
-     the endpoints.  If EXTRAP is a number, replace values beyond the
-     endpoints with that number.  If EXTRAP is missing, assume NA.
+     the endpoints using the current METHOD.  If EXTRAP is a number,
+     then replace values beyond the endpoints with that number.  When
+     unspecified, EXTRAP defaults to NA.
 
      If the string argument "pp" is specified, then XI should not be
-     supplied and 'interp1' returns the piecewise polynomial that can
-     later be used with 'ppval' to evaluate the interpolation.  There is
-     an equivalence, such that 'ppval (interp1 (X, Y, METHOD, "pp"), XI)
-     == interp1 (X, Y, XI, METHOD, "extrap")'.
+     supplied and 'interp1' returns a piecewise polynomial object.  This
+     object can later be used with 'ppval' to evaluate the
+     interpolation.  There is an equivalence, such that 'ppval (interp1
+     (X, Y, METHOD, "pp"), XI) == interp1 (X, Y, XI, METHOD, "extrap")'.
 
      Duplicate points in X specify a discontinuous interpolant.  There
      may be at most 2 consecutive points with the same value.  If X is
      increasing, the default discontinuous interpolant is
      right-continuous.  If X is decreasing, the default discontinuous
      interpolant is left-continuous.  The continuity condition of the
-     interpolant may be specified by using the options, "-left" or
-     "-right", to select a left-continuous or right-continuous
+     interpolant may be specified by using the options, "left" or
+     "right", to select a left-continuous or right-continuous
      interpolant, respectively.  Discontinuous interpolation is only
      allowed for "nearest" and "linear" methods; in all other cases, the
      X-values must be unique.
@@ -5699,7 +6038,8 @@ additional methods.
                 xf, cub, "c", xf, near, "m", xp, yp, "r*");
           legend ("original", "linear", "spline", "cubic", "nearest");
 
-     See also: *note interpft: XREFinterpft.
+     See also: *note interpft: XREFinterpft, *note interp2: XREFinterp2,
+     *note interp3: XREFinterp3, *note interpn: XREFinterpn.
 
    There are some important differences between the various
 interpolation methods.  The "spline" method enforces that both the first
@@ -7047,6 +7387,9 @@ system-wide wisdom file.
      See also: *note conv2: XREFconv2.
 
  -- Function File: [H, W] = freqz (B, A, N, "whole")
+ -- Function File: [H, W] = freqz (B)
+ -- Function File: [H, W] = freqz (B, A)
+ -- Function File: [H, W] = freqz (B, A, N)
  -- Function File: H = freqz (B, A, W)
  -- Function File: [...] = freqz (..., FS)
  -- Function File: freqz (...)
@@ -7061,10 +7404,8 @@ system-wide wisdom file.
      If A is omitted, the denominator is assumed to be 1 (this
      corresponds to a simple FIR filter).
 
-     If N is omitted, a value of 512 is assumed.
-
-     For fastest computation, N should factor into a small number of
-     small primes.
+     If N is omitted, a value of 512 is assumed.  For fastest
+     computation, N should factor into a small number of small primes.
 
      If the fourth argument, "whole", is omitted the response is
      evaluated at frequencies between 0 and pi.
@@ -7083,11 +7424,20 @@ system-wide wisdom file.
 
      'freqz (...)'
 
-     Plot the pass band, stop band and phase response of H rather than
-     returning them.
+     Plot the magnitude and phase response of H rather than returning
+     them.
+
+     See also: *note freqz_plot: XREFfreqz_plot.
 
  -- Function File: freqz_plot (W, H)
-     Plot the pass band, stop band and phase response of H.
+ -- Function File: freqz_plot (W, H, FREQ_NORM)
+     Plot the magnitude and phase response of H.
+
+     If the optional FREQ_NORM argument is true, the frequency vector W
+     is in units of normalized radians.  If FREQ_NORM is false, or not
+     given, then W is measured in Hertz.
+
+     See also: *note freqz: XREFfreqz.
 
  -- Function File: sinc (X)
      Return sin (pi*x) / (pi*x).
@@ -7443,404 +7793,4 @@ system-wide wisdom file.
      autocovariances '[gamma_0, ..., gamma_p]'.
 
      Returns the AR coefficients, A, and the variance of white noise, V.
-
-
-File: octave.info,  Node: Image Processing,  Next: Audio Processing,  Prev: Signal Processing,  Up: Top
-
-32 Image Processing
-*******************
-
-Since an image is basically a matrix, Octave is a very powerful
-environment for processing and analyzing images.  To illustrate how easy
-it is to do image processing in Octave, the following example will load
-an image, smooth it by a 5-by-5 averaging filter, and compute the
-gradient of the smoothed image.
-
-     I = imread ("myimage.jpg");
-     S = conv2 (I, ones (5, 5) / 25, "same");
-     [Dx, Dy] = gradient (S);
-
-In this example 'S' contains the smoothed image, and 'Dx' and 'Dy'
-contains the partial spatial derivatives of the image.
-
-* Menu:
-
-* Loading and Saving Images::
-* Displaying Images::
-* Representing Images::
-* Plotting on top of Images::
-* Color Conversion::
-
-
-File: octave.info,  Node: Loading and Saving Images,  Next: Displaying Images,  Up: Image Processing
-
-32.1 Loading and Saving Images
-==============================
-
-The first step in most image processing tasks is to load an image into
-Octave which is done with the 'imread' function.  The 'imwrite' function
-is the corresponding function for writing images to the disk.
-
-   In summary, most image processing code will follow the structure of
-this code
-
-     I = imread ("my_input_image.img");
-     J = process_my_image (I);
-     imwrite (J, "my_output_image.img");
-
- -- Function File: [IMG, MAP, ALPHA] = imread (FILENAME)
- -- Function File: [...] = imread (FILENAME, EXT)
- -- Function File: [...] = imread (URL)
- -- Function File: [...] = imread (..., IDX)
- -- Function File: [...] = imread (..., PARAM1, VAL1, ...)
-     Read images from various file formats.
-
-     Reads an image as a matrix from the file FILENAME.  If there is no
-     file FILENAME, and EXT was specified, it will look for a file named
-     FILENAME and extension EXT, i.e., a file named FILENAME.EXT.
-
-     The size and class of the output depends on the format of the
-     image.  A color image is returned as an MxNx3 matrix.  Gray-level
-     and black-and-white images are of size MxN. Multipage images will
-     have an additional 4th dimension.
-
-     The bit depth of the image determines the class of the output:
-     "uint8", "uint16" or "single" for gray and color, and "logical" for
-     black and white.  Note that indexed images always return the
-     indexes for a colormap, independent if MAP is a requested output.
-     To obtain the actual RGB image, use 'ind2rgb'.  When more than one
-     indexed image is being read, MAP is obtained from the first.  In
-     some rare cases this may be incorrect and 'imfinfo' can be used to
-     obtain the colormap of each image.
-
-     See the Octave manual for more information in representing images.
-
-     Some file formats, such as TIFF and GIF, are able to store multiple
-     images in a single file.  IDX can be a scalar or vector specifying
-     the index of the images to read.  By default, Octave will only read
-     the first page.
-
-     Depending on the file format, it is possible to configure the
-     reading of images with PARAM, VAL pairs.  The following options are
-     supported:
-
-     '"Frames" or "Index"'
-          This is an alternative method to specify IDX.  When specifying
-          it in this way, its value can also be the string "all".
-
-     '"Info"'
-          This option exists for MATLAB compatibility and has no effect.
-          For maximum performance while reading multiple images from a
-          single file, use the Index option.
-
-     '"PixelRegion"'
-          Controls the image region that is read.  Takes as value a cell
-          array with two arrays of 3 elements '{ROWS COLS}'.  The
-          elements in the array are the start, increment and end pixel
-          to be read.  If the increment value is omitted, defaults to 1.
-
-     See also: *note imwrite: XREFimwrite, *note imfinfo: XREFimfinfo,
-     *note imformats: XREFimformats.
-
- -- Function File: imwrite (IMG, FILENAME)
- -- Function File: imwrite (IMG, FILENAME, EXT)
- -- Function File: imwrite (IMG, MAP, FILENAME)
- -- Function File: imwrite (..., PARAM1, VAL1, ...)
-     Write images in various file formats.
-
-     The image IMG can be a binary, grayscale, RGB, or multi-dimensional
-     image.  The size and class of IMG should be the same as what should
-     be expected when reading it with 'imread': the 3rd and 4th
-     dimensions reserved for color space, and multiple pages
-     respectively.  If it's an indexed image, the colormap MAP must also
-     be specified.
-
-     If EXT is not supplied, the file extension of FILENAME is used to
-     determine the format.  The actual supported formats are dependent
-     on options made during the build of Octave.  Use 'imformats' to
-     check the support of the different image formats.
-
-     Depending on the file format, it is possible to configure the
-     writing of images with PARAM, VAL pairs.  The following options are
-     supported:
-
-     'Alpha'
-          Alpha (transparency) channel for the image.  This must be a
-          matrix with same class, and number of rows and columns of IMG.
-          In case of a multipage image, the size of the 4th dimension
-          must also match and the third dimension must be a singleton.
-          By default, image will be completely opaque.
-
-     'DelayTime'
-          For formats that accept animations (such as GIF), controls for
-          how long a frame is displayed until it moves to the next one.
-          The value must be scalar (which will applied to all frames in
-          IMG), or a vector of length equal to the number of frames in
-          IM.  The value is in seconds, must be between 0 and 655.35,
-          and defaults to 0.5.
-
-     'DisposalMethod'
-          For formats that accept animations (such as GIF), controls
-          what happens to a frame before drawing the next one.  Its
-          value can be one of the following strings: "doNotSpecify"
-          (default); "leaveInPlace"; "restoreBG"; and "restorePrevious",
-          or a cell array of those string with length equal to the
-          number of frames in IMG.
-
-     'LoopCount'
-          For formats that accept animations (such as GIF), controls how
-          many times the sequence is repeated.  A value of Inf means an
-          infinite loop (default), a value of 0 or 1 that the sequence
-          is played only once (loops zero times), while a value of 2 or
-          above loops that number of times (looping twice means it plays
-          the complete sequence 3 times).  This option is ignored when
-          there is only a single image at the end of writing the file.
-
-     'Quality'
-          Set the quality of the compression.  The value should be an
-          integer between 0 and 100, with larger values indicating
-          higher visual quality and lower compression.  Defaults to 75.
-
-     'WriteMode'
-          Some file formats, such as TIFF and GIF, are able to store
-          multiple images in a single file.  This option specifies if
-          IMG should be appended to the file (if it exists) or if a new
-          file should be created for it (possibly overwriting an
-          existing file).  The value should be the string "Overwrite"
-          (default), or "Append".
-
-          Despite this option, the most efficient method of writing a
-          multipage image is to pass a 4 dimensional IMG to 'imwrite',
-          the same matrix that could be expected when using 'imread'
-          with the option "Index" set to "all".
-
-     See also: *note imread: XREFimread, *note imfinfo: XREFimfinfo,
-     *note imformats: XREFimformats.
-
- -- Built-in Function: VAL = IMAGE_PATH ()
- -- Built-in Function: OLD_VAL = IMAGE_PATH (NEW_VAL)
- -- Built-in Function: IMAGE_PATH (NEW_VAL, "local")
-     Query or set the internal variable that specifies a colon separated
-     list of directories in which to search for image files.
-
-     When called from inside a function with the "local" option, the
-     variable is changed locally for the function and any subroutines it
-     calls.  The original variable value is restored when exiting the
-     function.
-
-     See also: *note EXEC_PATH: XREFEXEC_PATH, *note OCTAVE_HOME:
-     XREFOCTAVE_HOME.
-
-   It is possible to get information about an image file on disk,
-without actually reading it into Octave.  This is done using the
-'imfinfo' function which provides read access to many of the parameters
-stored in the header of the image file.
-
- -- Function File: INFO = imfinfo (FILENAME)
- -- Function File: INFO = imfinfo (FILENAME, EXT)
- -- Function File: INFO = imfinfo (URL)
-     Read image information from a file.
-
-     'imfinfo' returns a structure containing information about the
-     image stored in the file FILENAME.  If there is no file FILENAME,
-     and EXT was specified, it will look for a file named FILENAME and
-     extension EXT, i.e., a file named FILENAME.EXT.
-
-     The output structure INFO contains the following fields:
-
-     'Filename'
-          The full name of the image file.
-
-     'FileModDate'
-          Date of last modification to the file.
-
-     'FileSize'
-          Number of bytes of the image on disk
-
-     'Format'
-          Image format (e.g., "jpeg").
-
-     'Height'
-          Image height in pixels.
-
-     'Width'
-          Image Width in pixels.
-
-     'BitDepth'
-          Number of bits per channel per pixel.
-
-     'ColorType'
-          Image type.  Value is "grayscale", "indexed", "truecolor",
-          "CMYK", or "undefined".
-
-     'XResolution'
-          X resolution of the image.
-
-     'YResolution'
-          Y resolution of the image.
-
-     'ResolutionUnit'
-          Units of image resolution.  Value is "Inch", "Centimeter", or
-          "undefined".
-
-     'DelayTime'
-          Time in 1/100ths of a second (0 to 65535) which must expire
-          before displaying the next image in an animated sequence.
-
-     'LoopCount'
-          Number of iterations to loop an animation.
-
-     'ByteOrder'
-          Endian option for formats that support it.  Value is
-          "little-endian", "big-endian", or "undefined".
-
-     'Gamma'
-          Gamma level of the image.  The same color image displayed on
-          two different workstations may look different due to
-          differences in the display monitor.
-
-     'Quality'
-          JPEG/MIFF/PNG compression level.  Value is an integer in the
-          range [0 100].
-
-     'DisposalMethod'
-          Only valid for GIF images, control how successive frames are
-          rendered (how the preceding frame is disposed of) when
-          creating a GIF animation.  Values can be "doNotSpecify",
-          "leaveInPlace", "restoreBG", or "restorePrevious".  For
-          non-GIF files, value is an empty string.
-
-     'Chromaticities'
-          Value is a 1x8 Matrix with the x,y chromaticity values for
-          white, red, green, and blue points, in that order.
-
-     'Comment'
-          Image comment.
-
-     'Compression'
-          Compression type.  Value can be "none", "bzip", "fax3",
-          "fax4", "jpeg", "lzw", "rle", "deflate", "lzma", "jpeg2000",
-          "jbig2", "jbig2", or "undefined".
-
-     'Colormap'
-          Colormap for each image.
-
-     'Orientation'
-          The orientation of the image with respect to the rows and
-          columns.  Value is an integer between 1 and 8 as defined in
-          the TIFF 6 specifications, and for MATLAB compatibility.
-
-     'Software'
-          Name and version of the software or firmware of the camera or
-          image input device used to generate the image.
-
-     'Make'
-          The manufacturer of the recording equipment.  This is the
-          manufacture of the DSC, scanner, video digitizer or other
-          equipment that generated the image.
-
-     'Model'
-          The model name or model number of the recording equipment as
-          mentioned on the field "Make".
-
-     'DateTime'
-          The date and time of image creation as defined by the Exif
-          standard, i.e., it is the date and time the file was changed.
-
-     'ImageDescription'
-          The title of the image as defined by the Exif standard.
-
-     'Artist'
-          Name of the camera owner, photographer or image creator.
-
-     'Copyright'
-          Copyright notice of the person or organization claiming rights
-          to the image.
-
-     'DigitalCamera'
-          A struct with information retrieved from the Exif tag.
-
-     'GPSInfo'
-          A struct with geotagging information retrieved from the Exif
-          tag.
-
-     See also: *note imread: XREFimread, *note imwrite: XREFimwrite,
-     *note imshow: XREFimshow, *note imformats: XREFimformats.
-
-   By default, Octave's image IO functions ('imread', 'imwrite', and
-'imfinfo') use the 'GraphicsMagick' library for their operations.  This
-means a vast number of image formats is supported but considering the
-large amount of image formats in science and its commonly closed nature,
-it is impossible to have a library capable of reading them all.  Because
-of this, the function 'imformats' keeps a configurable list of available
-formats, their extensions, and what functions should the image IO
-functions use.  This allows to expand Octave's image IO capabilities by
-creating functions aimed at acting on specific file formats.
-
-   While it would be possible to call the extra functions directly,
-properly configuring Octave with 'imformats' allows to keep a consistent
-code that is abstracted from file formats.
-
-   It is important to note that a file format is not actually defined by
-its file extension and that 'GraphicsMagick' is capable to read and
-write more file formats than the ones listed by 'imformats'.  What this
-means is that even with an incorrect or missing extension the image may
-still be read correctly, and that even unlisted formats are not
-necessarily unsupported.
-
- -- Function File: imformats ()
- -- Function File: FORMATS = imformats (EXT)
- -- Function File: FORMATS = imformats (FORMAT)
- -- Function File: FORMATS = imformats ("add", FORMAT)
- -- Function File: FORMATS = imformats ("remove", EXT)
- -- Function File: FORMATS = imformats ("update", EXT, FORMAT)
- -- Function File: FORMATS = imformats ("factory")
-     Manage supported image formats.
-
-     FORMATS is a structure with information about each supported file
-     format, or from a specific format EXT, the value displayed on the
-     field 'ext'.  It contains the following fields:
-
-     ext
-          The name of the file format.  This may match the file
-          extension but Octave will automatically detect the file
-          format.
-
-     description
-          A long description of the file format.
-
-     isa
-          A function handle to confirm if a file is of the specified
-          format.
-
-     write
-          A function handle to write if a file is of the specified
-          format.
-
-     read
-          A function handle to open files the specified format.
-
-     info
-          A function handle to obtain image information of the specified
-          format.
-
-     alpha
-          Logical value if format supports alpha channel (transparency
-          or matte).
-
-     multipage
-          Logical value if format supports multipage (multiple images
-          per file).
-
-     It is possible to change the way Octave manages file formats with
-     the options "add", "remove", and "update", and supplying a
-     structure FORMAT with the required fields.  The option "factory"
-     resets the configuration to the default.
-
-     This can be used by Octave packages to extend the image reading
-     capabilities Octave, through use of the PKG_ADD and PKG_DEL
-     commands.
-
-     See also: *note imfinfo: XREFimfinfo, *note imread: XREFimread,
-     *note imwrite: XREFimwrite.
 

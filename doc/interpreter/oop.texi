@@ -203,7 +203,7 @@ To inquire whether a particular method is available to a user class, the
 @deftypefn {Built-in Function} {} ismethod (@var{x}, @var{method})
 Return true if @var{x} is a class object and the string @var{method}
 is a method of this class.
-@seealso{@ref{XREFisobject,,isobject}}
+@seealso{@ref{XREFisprop,,isprop}, @ref{XREFisobject,,isobject}}
 @end deftypefn
 
 
@@ -472,7 +472,7 @@ are @samp{"()"}, @samp{"@{@}"}, and @samp{"."}.
 The @samp{subs} field may be either @samp{":"} or a cell array
 of index values.
 
-The following example shows how to extract the two first columns of
+The following example shows how to extract the first two columns of
 a matrix
 
 @example
@@ -591,8 +591,9 @@ and @samp{subs}, return @var{rhs}.
 @deftypefnx {Built-in Function} {@var{old_val} =} optimize_subsasgn_calls (@var{new_val})
 @deftypefnx {Built-in Function} {} optimize_subsasgn_calls (@var{new_val}, "local")
 Query or set the internal flag for subsasgn method call optimizations.
+
 If true, Octave will attempt to eliminate the redundant copying when calling
-subsasgn method of a user-defined class.
+the subsasgn method of a user-defined class.
 
 When called from inside a function with the @qcode{"local"} option, the
 variable is changed locally for the function and any subroutines it calls.  
@@ -1044,6 +1045,7 @@ When called from a class constructor, mark the object currently
 constructed as having a higher precedence than @var{class_name}.
 More that one such class can be specified in a single call.
 This function may only be called from a class constructor.
+@seealso{@ref{XREFinferiorto,,inferiorto}}
 @end deftypefn
 
 
@@ -1054,6 +1056,7 @@ When called from a class constructor, mark the object currently
 constructed as having a lower precedence than @var{class_name}.
 More that one such class can be specified in a single call.
 This function may only be called from a class constructor.
+@seealso{@ref{XREFsuperiorto,,superiorto}}
 @end deftypefn
 
 

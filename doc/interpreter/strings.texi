@@ -226,7 +226,7 @@ blank character using the @code{string_fill_char} function.
 @deftypefnx {Built-in Function} {@var{old_val} =} string_fill_char (@var{new_val})
 @deftypefnx {Built-in Function} {} string_fill_char (@var{new_val}, "local")
 Query or set the internal variable used to pad all rows of a character
-matrix to the same length.  It must be a single character.  The default
+matrix to the same length; It must be a single character.  The default
 value is @qcode{" "} (a single space).  For example:
 
 @example
@@ -1065,18 +1065,18 @@ strfind (@{"abababa", "bebebe", "ab"@}, "aba")
 @anchor{XREFstrjoin}
 @deftypefn  {Function File} {@var{str} =} strjoin (@var{cstr})
 @deftypefnx {Function File} {@var{str} =} strjoin (@var{cstr}, @var{delimiter})
-Join the elements of the cell-string array, @var{cstr}, into a single
+Join the elements of the cell string array, @var{cstr}, into a single
 string.
 
 If no @var{delimiter} is specified, the elements of @var{cstr}
 separated by a space.
 
-If @var{delimiter} is specified as a string, the cell-string array is
+If @var{delimiter} is specified as a string, the cell string array is
 joined using the string.  Escape sequences are supported.
 
-If @var{delimiter} is a cell-string array whose length is one less
+If @var{delimiter} is a cell string array whose length is one less
 than @var{cstr}, then the elements of @var{cstr} are joined by
-interleaving the cell-string elements of @var{delimiter}.  Escape
+interleaving the cell string elements of @var{delimiter}.  Escape
 sequences are not supported.
 
 @example
@@ -1158,13 +1158,13 @@ strtok ("this is the life")
 @deftypefnx {Function File} {[@var{cstr}] =} strsplit (@dots{}, @var{name}, @var{value})
 @deftypefnx {Function File} {[@var{cstr}, @var{matches}] =} strsplit (@dots{})
 Split the string @var{s} using the delimiters specified by @var{del}
-and return a cell-string array of sub-strings.  If a delimiter is not
+and return a cell string array of substrings.  If a delimiter is not
 specified the string, @var{s}, is split at whitespace.  The delimiter,
-@var{del} may be a string, a scalar cell-string, or cell-string array.
-@var{del} must be a cell-string array.  By default, consecutive
-delimiters in the input string, @var{s}, are collapsed into one.
+@var{del} may be a string, a scalar cell string, or cell string array.
+By default, consecutive delimiters in the input string @var{s} are
+collapsed into one.
 
-The second output, @var{matches}, returns the delmiters which were matched
+The second output, @var{matches}, returns the delimiters which were matched
 in the original string.
 
 Example:

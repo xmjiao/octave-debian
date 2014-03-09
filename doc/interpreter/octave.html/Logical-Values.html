@@ -93,7 +93,14 @@ or <code>false</code> functions.
 </p>
 <a name="XREFlogical"></a><dl>
 <dt><a name="index-logical"></a>Built-in Function: <em></em> <strong>logical</strong> <em>(<var>x</var>)</em></dt>
-<dd><p>Convert <var>x</var> to logical type.
+<dd><p>Convert the numeric object <var>x</var> to logical type.
+</p>
+<p>Any non-zero values will be converted to true (1) while zero values
+will be converted to false (0).  The non-numeric value NaN cannot be
+converted and will produce an error.
+</p>
+<p>Compatibility Note: Octave accepts complex values as input, whereas
+<small>MATLAB</small> issues an error.
 </p>
 <p><strong>See also:</strong> <a href="Numeric-Data-Types.html#XREFdouble">double</a>, <a href="Single-Precision-Data-Types.html#XREFsingle">single</a>, <a href="Concatenating-Strings.html#XREFchar">char</a>.
 </p></dd></dl>

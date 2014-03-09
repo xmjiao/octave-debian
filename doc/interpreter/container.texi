@@ -180,6 +180,7 @@ structure levels to display.
 When called from inside a function with the @qcode{"local"} option, the
 variable is changed locally for the function and any subroutines it calls.  
 The original variable value is restored when exiting the function.
+@seealso{@ref{XREFprint_struct_array_contents,,print_struct_array_contents}}
 @end deftypefn
 
 
@@ -189,14 +190,17 @@ The original variable value is restored when exiting the function.
 @deftypefnx {Built-in Function} {@var{old_val} =} print_struct_array_contents (@var{new_val})
 @deftypefnx {Built-in Function} {} print_struct_array_contents (@var{new_val}, "local")
 Query or set the internal variable that specifies whether to print struct
-array contents.  If true, values of struct array elements are printed.
-This variable does not affect scalar structures.  Their elements
-are always printed.  In both cases, however, printing will be limited to
+array contents.
+
+If true, values of struct array elements are printed.
+This variable does not affect scalar structures whose elements are always
+printed.  In both cases, however, printing will be limited to
 the number of levels specified by @var{struct_levels_to_print}.
 
 When called from inside a function with the @qcode{"local"} option, the
 variable is changed locally for the function and any subroutines it calls.  
 The original variable value is restored when exiting the function.
+@seealso{@ref{XREFstruct_levels_to_print,,struct_levels_to_print}}
 @end deftypefn
 
 
@@ -526,12 +530,14 @@ struct ("field1", @{@{1, "one"@}@}, "field2", 2)
 
 @c struct libinterp/octave-value/ov-struct.cc
 @anchor{XREFstruct}
-@deftypefn {Built-in Function} {} struct (@var{field1}, @var{value1}, @var{field2}, @var{value2}, @dots{})
+@deftypefn  {Built-in Function} {@var{s} =} struct ()
+@deftypefnx {Built-in Function} {@var{s} =} struct (@var{field1}, @var{value1}, @var{field2}, @var{value2}, @dots{})
+@deftypefnx {Built-in Function} {@var{s} =} struct (@var{obj})
 
 Create a scalar or array structure and initialize its values.  The
-@var{field1}, @var{field2}, @dots{} variables are strings giving the
+@var{field1}, @var{field2}, @dots{} variables are strings specifying the
 names of the fields and the @var{value1}, @var{value2}, @dots{}
-variables can be any type.
+variables can be of any type.
 
 If the values are cell arrays, create a structure array and initialize
 its values.  The dimensions of each cell array of values must match.
@@ -566,7 +572,7 @@ struct ("foo", @{1, 2, 3@})
 @end example
 
 @noindent
-The first case is an ordinary scalar struct, one field, one value.  The
+The first case is an ordinary scalar struct---one field, one value.  The
 second produces an empty struct array with one field and no values, since
 s being passed an empty cell array of struct array values.  When the value is
 a cell array containing a single entry, this becomes a scalar struct with
@@ -575,6 +581,7 @@ to be an empty cell array.
 
 Finally, if the value is a non-scalar cell array, then @code{struct}
 produces a struct @strong{array}.
+@seealso{@ref{XREFcell2struct,,cell2struct}, @ref{XREFfieldnames,,fieldnames}, @ref{XREForderfields,,orderfields}, @ref{XREFgetfield,,getfield}, @ref{XREFsetfield,,setfield}, @ref{XREFrmfield,,rmfield}, @ref{XREFstructfun,,structfun}}
 @end deftypefn
 
 
@@ -598,6 +605,7 @@ Other functions that can manipulate the fields of a structure are given below.
 @anchor{XREFnfields}
 @deftypefn {Built-in Function} {} nfields (@var{s})
 Return the number of fields of the structure @var{s}.
+@seealso{@ref{XREFfieldnames,,fieldnames}}
 @end deftypefn
 
 
@@ -619,16 +627,18 @@ properties of the object.
 When the input is a Java object @var{javaobj} or Java classname
 @var{jclassname} the name are the public data elements of the object or
 class.
-@seealso{@ref{XREFstruct,,struct}, @ref{XREFmethods,,methods}}
+@seealso{@ref{XREFnfields,,nfields}, @ref{XREFisfield,,isfield}, @ref{XREForderfields,,orderfields}, @ref{XREFstruct,,struct}, @ref{XREFmethods,,methods}}
 @end deftypefn
 
 
 @c isfield libinterp/octave-value/ov-struct.cc
 @anchor{XREFisfield}
-@deftypefn {Built-in Function} {} isfield (@var{x}, @var{name})
-Return true if the @var{x} is a structure and it
-includes an element named @var{name}.  If @var{name} is a cell
-array of strings then a logical array of equal dimension is returned.
+@deftypefn  {Built-in Function} {} isfield (@var{x}, "@var{name}")
+@deftypefnx {Built-in Function} {} isfield (@var{x}, @var{name})
+Return true if the @var{x} is a structure and it includes an element named
+@var{name}.  If @var{name} is a cell array of strings then a logical array of
+equal dimension is returned.
+@seealso{@ref{XREFfieldnames,,fieldnames}}
 @end deftypefn
 
 
@@ -711,7 +721,7 @@ Note that the same result as in the above example could be achieved by:
 @var{SA}(2).bar(3).baz = 6
 @end group
 @end example
-@seealso{@ref{XREFgetfield,,getfield}, @ref{XREFrmfield,,rmfield}, @ref{XREFisfield,,isfield}, @ref{XREFisstruct,,isstruct}, @ref{XREFfieldnames,,fieldnames}, @ref{XREFstruct,,struct}}
+@seealso{@ref{XREFgetfield,,getfield}, @ref{XREFrmfield,,rmfield}, @ref{XREFisfield,,isfield}, @ref{XREFfieldnames,,fieldnames}, @ref{XREFisstruct,,isstruct}, @ref{XREFstruct,,struct}}
 @end deftypefn
 
 
@@ -723,7 +733,7 @@ Extract a field from a structure (or a nested structure).  The syntax
 is the same as @code{setfield}, except it omits the final @var{val}
 argument, returning this value instead of setting it.
 
-@seealso{@ref{XREFsetfield,,setfield}, @ref{XREFrmfield,,rmfield}, @ref{XREFisfield,,isfield}, @ref{XREFisstruct,,isstruct}, @ref{XREFfieldnames,,fieldnames}, @ref{XREFstruct,,struct}}
+@seealso{@ref{XREFsetfield,,setfield}, @ref{XREFrmfield,,rmfield}, @ref{XREFisfield,,isfield}, @ref{XREFfieldnames,,fieldnames}, @ref{XREFisstruct,,isstruct}, @ref{XREFstruct,,struct}}
 @end deftypefn
 
 
@@ -731,10 +741,10 @@ argument, returning this value instead of setting it.
 @anchor{XREFrmfield}
 @deftypefn  {Built-in Function} {@var{s} =} rmfield (@var{s}, "@var{f}")
 @deftypefnx {Built-in Function} {@var{s} =} rmfield (@var{s}, @var{f})
-Return a copy of the structure (array) @var{s} with the field @var{f}
+Return a @emph{copy} of the structure (array) @var{s} with the field @var{f}
 removed.  If @var{f} is a cell array of strings or a character array, remove
 each of the named fields.
-@seealso{@ref{XREFcellstr,,cellstr}, @ref{XREFiscellstr,,iscellstr}, @ref{XREFsetfield,,setfield}}
+@seealso{@ref{XREForderfields,,orderfields}, @ref{XREFfieldnames,,fieldnames}}
 @end deftypefn
 
 
@@ -853,11 +863,11 @@ be converted to another type of container before being treated.
 
 @c struct2cell libinterp/octave-value/ov-cell.cc
 @anchor{XREFstruct2cell}
-@deftypefn {Built-in Function} {} struct2cell (@var{S})
+@deftypefn {Built-in Function} {@var{c} =} struct2cell (@var{s})
 Create a new cell array from the objects stored in the struct object.
 If @var{f} is the number of fields in the structure, the resulting
 cell array will have a dimension vector corresponding to
-@code{[@var{F} size(@var{S})]}.  For example:
+@code{[@var{f} size(@var{s})]}.  For example:
 
 @example
 @group
@@ -1077,10 +1087,12 @@ object, such as @ref{XREFlength,,length}, @ref{XREFnumel,, numel},
 @deftypefnx {Built-in Function} {} cell (@var{m}, @var{n}, @var{k}, @dots{})
 @deftypefnx {Built-in Function} {} cell ([@var{m} @var{n} @dots{}])
 Create a new cell array object.
+
 If invoked with a single scalar integer argument, return a square
 @nospell{NxN} cell array.  If invoked with two or more scalar
 integer arguments, or a vector of integer values, return an array with
 the given dimensions.
+@seealso{@ref{XREFcellstr,,cellstr}, @ref{XREFmat2cell,,mat2cell}, @ref{XREFnum2cell,,num2cell}, @ref{XREFstruct2cell,,struct2cell}}
 @end deftypefn
 
 
@@ -1373,9 +1385,15 @@ c = cellstr (a)
 
 @c cellstr libinterp/octave-value/ov-cell.cc
 @anchor{XREFcellstr}
-@deftypefn {Built-in Function} {} cellstr (@var{string})
+@deftypefn {Built-in Function} {@var{cstr} =} cellstr (@var{strmat})
 Create a new cell array object from the elements of the string
-array @var{string}.
+array @var{strmat}.
+
+Each row of @var{strmat} becomes an element of @var{cstr}.  Any trailing
+spaces in a row are deleted before conversion.
+
+To convert back from a cellstr to a character array use @code{char}.
+@seealso{@ref{XREFcell,,cell}, @ref{XREFchar,,char}}
 @end deftypefn
 
 
@@ -1444,7 +1462,8 @@ be numeric, logical, or char matrices; or cell arrays; or structs; and
 
 @c cell2struct libinterp/octave-value/ov-struct.cc
 @anchor{XREFcell2struct}
-@deftypefn {Built-in Function} {} cell2struct (@var{cell}, @var{fields}, @var{dim})
+@deftypefn  {Built-in Function} {} cell2struct (@var{cell}, @var{fields})
+@deftypefnx {Built-in Function} {} cell2struct (@var{cell}, @var{fields}, @var{dim})
 Convert @var{cell} to a structure.  The number of fields in @var{fields}
 must match the number of elements in @var{cell} along dimension @var{dim},
 that is @code{numel (@var{fields}) == size (@var{cell}, @var{dim})}.
@@ -1464,6 +1483,7 @@ A(1)
 
 @end group
 @end example
+@seealso{@ref{XREFstruct2cell,,struct2cell}, @ref{XREFcell2mat,,cell2mat}, @ref{XREFstruct,,struct}}
 @end deftypefn
 
 

@@ -69,7 +69,8 @@ advantages and disadvantages.
 technique
 </p>
 <div class="example">
-<pre class="example">int nz = 4, nr = 3, nc = 4;
+<pre class="example">int nz, nr, nc;
+nz = 4, nr = 3, nc = 4;
 
 ColumnVector ridx (nz);
 ColumnVector cidx (nz);
@@ -102,7 +103,8 @@ number of non-zero elements and then later fill those elements in.
 Sample code:
 </p>
 <div class="example">
-<pre class="example">int nz = 4, nr = 3, nc = 4;
+<pre class="example">int nz, nr, nc;
+nz = 4, nr = 3, nc = 4;
 SparseMatrix sm (nr, nc, nz);
 sm(0,0) = 1; sm(0,1) = 2; sm(1,3) = 3; sm(2,3) = 4;
 </pre></div>
@@ -119,7 +121,8 @@ a sparse matrix.  First, it is possible to create a sparse matrix
 with fewer elements than are actually inserted in the matrix.  Therefore,
 </p>
 <div class="example">
-<pre class="example">int nz = 4, nr = 3, nc = 4;
+<pre class="example">int nr, nc;
+nr = 3, nc = 4;
 SparseMatrix sm (nr, nc, 0);
 sm(0,0) = 1; sm(0,1) = 2; sm(1,3) = 3; sm(2,3) = 4;
 </pre></div>
@@ -145,7 +148,8 @@ if the user does not add the unnecessary zeros in the first place.
 An example of the use of <code>maybe_compress</code> is
 </p>
 <div class="example">
-<pre class="example">int nz = 6, nr = 3, nc = 4;
+<pre class="example">int nz, nr, nc;
+nz = 6, nr = 3, nc = 4;
 
 SparseMatrix sm1 (nr, nc, nz);
 sm1(0,0) = 1; sm1(0,1) = 2; sm1(1,3) = 3; sm1(2,3) = 4;
@@ -167,7 +171,8 @@ be
 <div class="example">
 <pre class="example">octave_value arg;
 &hellip;
-int nz = 6, nr = 3, nc = 4;   // Assume we know the max # nz
+int nz, nr, nc;
+nz = 6, nr = 3, nc = 4;   // Assume we know the max # nz
 SparseMatrix sm (nr, nc, nz);
 Matrix m = arg.matrix_value ();
 
@@ -200,7 +205,8 @@ The above example would then be modified as
 <div class="example">
 <pre class="example">octave_value arg;
 &hellip;
-int nz = 6, nr = 3, nc = 4;   // Assume we know the max # nz
+int nz, nr, nc;
+nz = 6, nr = 3, nc = 4;   // Assume we know the max # nz
 SparseMatrix sm (nr, nc, nz);
 Matrix m = arg.matrix_value ();
 

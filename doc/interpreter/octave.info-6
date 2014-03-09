@@ -21,6 +21,406 @@ manual into another language, under the above conditions for modified
 versions.
 
 
+File: octave.info,  Node: Image Processing,  Next: Audio Processing,  Prev: Signal Processing,  Up: Top
+
+32 Image Processing
+*******************
+
+Since an image is basically a matrix, Octave is a very powerful
+environment for processing and analyzing images.  To illustrate how easy
+it is to do image processing in Octave, the following example will load
+an image, smooth it by a 5-by-5 averaging filter, and compute the
+gradient of the smoothed image.
+
+     I = imread ("myimage.jpg");
+     S = conv2 (I, ones (5, 5) / 25, "same");
+     [Dx, Dy] = gradient (S);
+
+In this example 'S' contains the smoothed image, and 'Dx' and 'Dy'
+contains the partial spatial derivatives of the image.
+
+* Menu:
+
+* Loading and Saving Images::
+* Displaying Images::
+* Representing Images::
+* Plotting on top of Images::
+* Color Conversion::
+
+
+File: octave.info,  Node: Loading and Saving Images,  Next: Displaying Images,  Up: Image Processing
+
+32.1 Loading and Saving Images
+==============================
+
+The first step in most image processing tasks is to load an image into
+Octave which is done with the 'imread' function.  The 'imwrite' function
+is the corresponding function for writing images to the disk.
+
+   In summary, most image processing code will follow the structure of
+this code
+
+     I = imread ("my_input_image.img");
+     J = process_my_image (I);
+     imwrite (J, "my_output_image.img");
+
+ -- Function File: [IMG, MAP, ALPHA] = imread (FILENAME)
+ -- Function File: [...] = imread (FILENAME, EXT)
+ -- Function File: [...] = imread (URL)
+ -- Function File: [...] = imread (..., IDX)
+ -- Function File: [...] = imread (..., PARAM1, VAL1, ...)
+     Read images from various file formats.
+
+     Reads an image as a matrix from the file FILENAME.  If there is no
+     file FILENAME, and EXT was specified, it will look for a file named
+     FILENAME and extension EXT, i.e., a file named FILENAME.EXT.
+
+     The size and class of the output depends on the format of the
+     image.  A color image is returned as an MxNx3 matrix.  Gray-level
+     and black-and-white images are of size MxN. Multipage images will
+     have an additional 4th dimension.
+
+     The bit depth of the image determines the class of the output:
+     "uint8", "uint16" or "single" for gray and color, and "logical" for
+     black and white.  Note that indexed images always return the
+     indexes for a colormap, independent if MAP is a requested output.
+     To obtain the actual RGB image, use 'ind2rgb'.  When more than one
+     indexed image is being read, MAP is obtained from the first.  In
+     some rare cases this may be incorrect and 'imfinfo' can be used to
+     obtain the colormap of each image.
+
+     See the Octave manual for more information in representing images.
+
+     Some file formats, such as TIFF and GIF, are able to store multiple
+     images in a single file.  IDX can be a scalar or vector specifying
+     the index of the images to read.  By default, Octave will only read
+     the first page.
+
+     Depending on the file format, it is possible to configure the
+     reading of images with PARAM, VAL pairs.  The following options are
+     supported:
+
+     '"Frames" or "Index"'
+          This is an alternative method to specify IDX.  When specifying
+          it in this way, its value can also be the string "all".
+
+     '"Info"'
+          This option exists for MATLAB compatibility and has no effect.
+          For maximum performance while reading multiple images from a
+          single file, use the Index option.
+
+     '"PixelRegion"'
+          Controls the image region that is read.  Takes as value a cell
+          array with two arrays of 3 elements '{ROWS COLS}'.  The
+          elements in the array are the start, increment and end pixel
+          to be read.  If the increment value is omitted, defaults to 1.
+
+     See also: *note imwrite: XREFimwrite, *note imfinfo: XREFimfinfo,
+     *note imformats: XREFimformats.
+
+ -- Function File: imwrite (IMG, FILENAME)
+ -- Function File: imwrite (IMG, FILENAME, EXT)
+ -- Function File: imwrite (IMG, MAP, FILENAME)
+ -- Function File: imwrite (..., PARAM1, VAL1, ...)
+     Write images in various file formats.
+
+     The image IMG can be a binary, grayscale, RGB, or multi-dimensional
+     image.  The size and class of IMG should be the same as what should
+     be expected when reading it with 'imread': the 3rd and 4th
+     dimensions reserved for color space, and multiple pages
+     respectively.  If it's an indexed image, the colormap MAP must also
+     be specified.
+
+     If EXT is not supplied, the file extension of FILENAME is used to
+     determine the format.  The actual supported formats are dependent
+     on options made during the build of Octave.  Use 'imformats' to
+     check the support of the different image formats.
+
+     Depending on the file format, it is possible to configure the
+     writing of images with PARAM, VAL pairs.  The following options are
+     supported:
+
+     'Alpha'
+          Alpha (transparency) channel for the image.  This must be a
+          matrix with same class, and number of rows and columns of IMG.
+          In case of a multipage image, the size of the 4th dimension
+          must also match and the third dimension must be a singleton.
+          By default, image will be completely opaque.
+
+     'DelayTime'
+          For formats that accept animations (such as GIF), controls for
+          how long a frame is displayed until it moves to the next one.
+          The value must be scalar (which will applied to all frames in
+          IMG), or a vector of length equal to the number of frames in
+          IM.  The value is in seconds, must be between 0 and 655.35,
+          and defaults to 0.5.
+
+     'DisposalMethod'
+          For formats that accept animations (such as GIF), controls
+          what happens to a frame before drawing the next one.  Its
+          value can be one of the following strings: "doNotSpecify"
+          (default); "leaveInPlace"; "restoreBG"; and "restorePrevious",
+          or a cell array of those string with length equal to the
+          number of frames in IMG.
+
+     'LoopCount'
+          For formats that accept animations (such as GIF), controls how
+          many times the sequence is repeated.  A value of Inf means an
+          infinite loop (default), a value of 0 or 1 that the sequence
+          is played only once (loops zero times), while a value of 2 or
+          above loops that number of times (looping twice means it plays
+          the complete sequence 3 times).  This option is ignored when
+          there is only a single image at the end of writing the file.
+
+     'Quality'
+          Set the quality of the compression.  The value should be an
+          integer between 0 and 100, with larger values indicating
+          higher visual quality and lower compression.  Defaults to 75.
+
+     'WriteMode'
+          Some file formats, such as TIFF and GIF, are able to store
+          multiple images in a single file.  This option specifies if
+          IMG should be appended to the file (if it exists) or if a new
+          file should be created for it (possibly overwriting an
+          existing file).  The value should be the string "Overwrite"
+          (default), or "Append".
+
+          Despite this option, the most efficient method of writing a
+          multipage image is to pass a 4 dimensional IMG to 'imwrite',
+          the same matrix that could be expected when using 'imread'
+          with the option "Index" set to "all".
+
+     See also: *note imread: XREFimread, *note imfinfo: XREFimfinfo,
+     *note imformats: XREFimformats.
+
+ -- Built-in Function: VAL = IMAGE_PATH ()
+ -- Built-in Function: OLD_VAL = IMAGE_PATH (NEW_VAL)
+ -- Built-in Function: IMAGE_PATH (NEW_VAL, "local")
+     Query or set the internal variable that specifies a colon separated
+     list of directories in which to search for image files.
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines it
+     calls.  The original variable value is restored when exiting the
+     function.
+
+     See also: *note EXEC_PATH: XREFEXEC_PATH, *note OCTAVE_HOME:
+     XREFOCTAVE_HOME.
+
+   It is possible to get information about an image file on disk,
+without actually reading it into Octave.  This is done using the
+'imfinfo' function which provides read access to many of the parameters
+stored in the header of the image file.
+
+ -- Function File: INFO = imfinfo (FILENAME)
+ -- Function File: INFO = imfinfo (FILENAME, EXT)
+ -- Function File: INFO = imfinfo (URL)
+     Read image information from a file.
+
+     'imfinfo' returns a structure containing information about the
+     image stored in the file FILENAME.  If there is no file FILENAME,
+     and EXT was specified, it will look for a file named FILENAME and
+     extension EXT, i.e., a file named FILENAME.EXT.
+
+     The output structure INFO contains the following fields:
+
+     'Filename'
+          The full name of the image file.
+
+     'FileModDate'
+          Date of last modification to the file.
+
+     'FileSize'
+          Number of bytes of the image on disk
+
+     'Format'
+          Image format (e.g., "jpeg").
+
+     'Height'
+          Image height in pixels.
+
+     'Width'
+          Image Width in pixels.
+
+     'BitDepth'
+          Number of bits per channel per pixel.
+
+     'ColorType'
+          Image type.  Value is "grayscale", "indexed", "truecolor",
+          "CMYK", or "undefined".
+
+     'XResolution'
+          X resolution of the image.
+
+     'YResolution'
+          Y resolution of the image.
+
+     'ResolutionUnit'
+          Units of image resolution.  Value is "Inch", "Centimeter", or
+          "undefined".
+
+     'DelayTime'
+          Time in 1/100ths of a second (0 to 65535) which must expire
+          before displaying the next image in an animated sequence.
+
+     'LoopCount'
+          Number of iterations to loop an animation.
+
+     'ByteOrder'
+          Endian option for formats that support it.  Value is
+          "little-endian", "big-endian", or "undefined".
+
+     'Gamma'
+          Gamma level of the image.  The same color image displayed on
+          two different workstations may look different due to
+          differences in the display monitor.
+
+     'Quality'
+          JPEG/MIFF/PNG compression level.  Value is an integer in the
+          range [0 100].
+
+     'DisposalMethod'
+          Only valid for GIF images, control how successive frames are
+          rendered (how the preceding frame is disposed of) when
+          creating a GIF animation.  Values can be "doNotSpecify",
+          "leaveInPlace", "restoreBG", or "restorePrevious".  For
+          non-GIF files, value is an empty string.
+
+     'Chromaticities'
+          Value is a 1x8 Matrix with the x,y chromaticity values for
+          white, red, green, and blue points, in that order.
+
+     'Comment'
+          Image comment.
+
+     'Compression'
+          Compression type.  Value can be "none", "bzip", "fax3",
+          "fax4", "jpeg", "lzw", "rle", "deflate", "lzma", "jpeg2000",
+          "jbig2", "jbig2", or "undefined".
+
+     'Colormap'
+          Colormap for each image.
+
+     'Orientation'
+          The orientation of the image with respect to the rows and
+          columns.  Value is an integer between 1 and 8 as defined in
+          the TIFF 6 specifications, and for MATLAB compatibility.
+
+     'Software'
+          Name and version of the software or firmware of the camera or
+          image input device used to generate the image.
+
+     'Make'
+          The manufacturer of the recording equipment.  This is the
+          manufacture of the DSC, scanner, video digitizer or other
+          equipment that generated the image.
+
+     'Model'
+          The model name or model number of the recording equipment as
+          mentioned on the field "Make".
+
+     'DateTime'
+          The date and time of image creation as defined by the Exif
+          standard, i.e., it is the date and time the file was changed.
+
+     'ImageDescription'
+          The title of the image as defined by the Exif standard.
+
+     'Artist'
+          Name of the camera owner, photographer or image creator.
+
+     'Copyright'
+          Copyright notice of the person or organization claiming rights
+          to the image.
+
+     'DigitalCamera'
+          A struct with information retrieved from the Exif tag.
+
+     'GPSInfo'
+          A struct with geotagging information retrieved from the Exif
+          tag.
+
+     See also: *note imread: XREFimread, *note imwrite: XREFimwrite,
+     *note imshow: XREFimshow, *note imformats: XREFimformats.
+
+   By default, Octave's image IO functions ('imread', 'imwrite', and
+'imfinfo') use the 'GraphicsMagick' library for their operations.  This
+means a vast number of image formats is supported but considering the
+large amount of image formats in science and its commonly closed nature,
+it is impossible to have a library capable of reading them all.  Because
+of this, the function 'imformats' keeps a configurable list of available
+formats, their extensions, and what functions should the image IO
+functions use.  This allows to expand Octave's image IO capabilities by
+creating functions aimed at acting on specific file formats.
+
+   While it would be possible to call the extra functions directly,
+properly configuring Octave with 'imformats' allows to keep a consistent
+code that is abstracted from file formats.
+
+   It is important to note that a file format is not actually defined by
+its file extension and that 'GraphicsMagick' is capable to read and
+write more file formats than the ones listed by 'imformats'.  What this
+means is that even with an incorrect or missing extension the image may
+still be read correctly, and that even unlisted formats are not
+necessarily unsupported.
+
+ -- Function File: imformats ()
+ -- Function File: FORMATS = imformats (EXT)
+ -- Function File: FORMATS = imformats (FORMAT)
+ -- Function File: FORMATS = imformats ("add", FORMAT)
+ -- Function File: FORMATS = imformats ("remove", EXT)
+ -- Function File: FORMATS = imformats ("update", EXT, FORMAT)
+ -- Function File: FORMATS = imformats ("factory")
+     Manage supported image formats.
+
+     FORMATS is a structure with information about each supported file
+     format, or from a specific format EXT, the value displayed on the
+     field 'ext'.  It contains the following fields:
+
+     ext
+          The name of the file format.  This may match the file
+          extension but Octave will automatically detect the file
+          format.
+
+     description
+          A long description of the file format.
+
+     isa
+          A function handle to confirm if a file is of the specified
+          format.
+
+     write
+          A function handle to write if a file is of the specified
+          format.
+
+     read
+          A function handle to open files the specified format.
+
+     info
+          A function handle to obtain image information of the specified
+          format.
+
+     alpha
+          Logical value if format supports alpha channel (transparency
+          or matte).
+
+     multipage
+          Logical value if format supports multipage (multiple images
+          per file).
+
+     It is possible to change the way Octave manages file formats with
+     the options "add", "remove", and "update", and supplying a
+     structure FORMAT with the required fields.  The option "factory"
+     resets the configuration to the default.
+
+     This can be used by Octave packages to extend the image reading
+     capabilities Octave, through use of the PKG_ADD and PKG_DEL
+     commands.
+
+     See also: *note imfinfo: XREFimfinfo, *note imread: XREFimread,
+     *note imwrite: XREFimwrite.
+
+
 File: octave.info,  Node: Displaying Images,  Next: Representing Images,  Prev: Loading and Saving Images,  Up: Image Processing
 
 32.2 Displaying Images
@@ -1018,7 +1418,7 @@ To inquire whether a particular method is available to a user class, the
      Return true if X is a class object and the string METHOD is a
      method of this class.
 
-     See also: *note isobject: XREFisobject.
+     See also: *note isprop: XREFisprop, *note isobject: XREFisobject.
 
 For example:
 
@@ -1237,7 +1637,7 @@ at N.  The meaning of this subscripted referencing is determined by the
      '"."'.  The 'subs' field may be either '":"' or a cell array of
      index values.
 
-     The following example shows how to extract the two first columns of
+     The following example shows how to extract the first two columns of
      a matrix
 
           val = magic (3)
@@ -1338,9 +1738,10 @@ look like
  -- Built-in Function: OLD_VAL = optimize_subsasgn_calls (NEW_VAL)
  -- Built-in Function: optimize_subsasgn_calls (NEW_VAL, "local")
      Query or set the internal flag for subsasgn method call
-     optimizations.  If true, Octave will attempt to eliminate the
-     redundant copying when calling subsasgn method of a user-defined
-     class.
+     optimizations.
+
+     If true, Octave will attempt to eliminate the redundant copying
+     when calling the subsasgn method of a user-defined class.
 
      When called from inside a function with the "local" option, the
      variable is changed locally for the function and any subroutines it
@@ -1637,11 +2038,15 @@ and 'inferiorto' functions can be used
      that one such class can be specified in a single call.  This
      function may only be called from a class constructor.
 
+     See also: *note inferiorto: XREFinferiorto.
+
  -- Built-in Function: inferiorto (CLASS_NAME, ...)
      When called from a class constructor, mark the object currently
      constructed as having a lower precedence than CLASS_NAME.  More
      that one such class can be specified in a single call.  This
      function may only be called from a class constructor.
+
+     See also: *note superiorto: XREFsuperiorto.
 
    For example with our polynomial class consider the case
 
@@ -6484,7 +6889,7 @@ oct-files.  The command is available from within Octave or at the shell
 command line.
 
  -- Command: mkoctfile [-options] file ...
- -- Function File: [OUTPUT, STATUS = mkoctfile (...)
+ -- Function File: [OUTPUT, STATUS] = mkoctfile (...)
 
      The 'mkoctfile' function compiles source code written in C, C++, or
      Fortran.  Depending on the options used with 'mkoctfile', the
@@ -6542,30 +6947,33 @@ command line.
           Print the configuration variable VAR.  Recognized variables
           are:
 
-                  ALL_CFLAGS                FFTW3F_LIBS
-                  ALL_CXXFLAGS              FLIBS
-                  ALL_FFLAGS                FPICFLAG
-                  ALL_LDFLAGS               INCFLAGS
-                  BLAS_LIBS                 LAPACK_LIBS
-                  CC                        LDFLAGS
-                  CFLAGS                    LD_CXX
-                  CPICFLAG                  LD_STATIC_FLAG
-                  CPPFLAGS                  LFLAGS
-                  CXX                       LIBOCTAVE
-                  CXXFLAGS                  LIBOCTINTERP
-                  CXXPICFLAG                LIBS
-                  DEPEND_EXTRA_SED_PATTERN  OCTAVE_LIBS
-                  DEPEND_FLAGS              OCTAVE_LINK_DEPS
-                  DL_LD                     OCT_LINK_DEPS
-                  DL_LDFLAGS                RDYNAMIC_FLAG
-                  EXEEXT                    READLINE_LIBS
-                  F77                       SED
-                  F77_INTEGER_8_FLAG        XTRA_CFLAGS
-                  FFLAGS                    XTRA_CXXFLAGS
-                  FFTW3_LDFLAGS
-                  FFTW3_LIBS
-                  FFTW3F_LDFLAGS
-
+                  ALL_CFLAGS                  INCFLAGS
+                  ALL_CXXFLAGS                INCLUDEDIR
+                  ALL_FFLAGS                  LAPACK_LIBS
+                  ALL_LDFLAGS                 LD_CXX
+                  AR                          LDFLAGS
+                  BLAS_LIBS                   LD_STATIC_FLAG
+                  CC                          LFLAGS
+                  CFLAGS                      LIBDIR
+                  CPICFLAG                    LIBOCTAVE
+                  CPPFLAGS                    LIBOCTINTERP
+                  CXX                         LIBS
+                  CXXFLAGS                    OCTAVE_HOME
+                  CXXPICFLAG                  OCTAVE_LIBS
+                  DEPEND_EXTRA_SED_PATTERN    OCTAVE_LINK_DEPS
+                  DEPEND_FLAGS                OCTAVE_LINK_OPTS
+                  DL_LD                       OCTAVE_PREFIX
+                  DL_LDFLAGS                  OCTINCLUDEDIR
+                  F77                         OCTLIBDIR
+                  F77_INTEGER8_FLAG           OCT_LINK_DEPS
+                  FFLAGS                      OCT_LINK_OPTS
+                  FFTW3F_LDFLAGS              RANLIB
+                  FFTW3F_LIBS                 RDYNAMIC_FLAG
+                  FFTW3_LDFLAGS               READLINE_LIBS
+                  FFTW3_LIBS                  SED
+                  FFTW_LIBS                   SPECIAL_MATH_LIB
+                  FLIBS                       XTRA_CFLAGS
+                  FPICFLAG                    XTRA_CXXFLAGS
 
      '--link-stand-alone'
           Link a stand-alone executable file.
@@ -6924,7 +7332,7 @@ predicate tests shown below.
 of string should be specified.  For example:
 
      octave_value_list retval;
-     charNDArray c;
+     charNDArray ch;
      ...
      // Create single quoted string
      retval(1) = octave_value (ch);        // default constructor is sq_string
@@ -7188,7 +7596,8 @@ advantages and disadvantages.
    Below is an example of creating a small sparse matrix using the first
 technique
 
-     int nz = 4, nr = 3, nc = 4;
+     int nz, nr, nc;
+     nz = 4, nr = 3, nc = 4;
 
      ColumnVector ridx (nz);
      ColumnVector cidx (nz);
@@ -7219,7 +7628,8 @@ for creating a sparse matrix.
 number of non-zero elements and then later fill those elements in.
 Sample code:
 
-     int nz = 4, nr = 3, nc = 4;
+     int nz, nr, nc;
+     nz = 4, nr = 3, nc = 4;
      SparseMatrix sm (nr, nc, nz);
      sm(0,0) = 1; sm(0,1) = 2; sm(1,3) = 3; sm(2,3) = 4;
 
@@ -7235,7 +7645,8 @@ be updated.
 a sparse matrix.  First, it is possible to create a sparse matrix with
 fewer elements than are actually inserted in the matrix.  Therefore,
 
-     int nz = 4, nr = 3, nc = 4;
+     int nr, nc;
+     nr = 3, nc = 4;
      SparseMatrix sm (nr, nc, 0);
      sm(0,0) = 1; sm(0,1) = 2; sm(1,3) = 3; sm(2,3) = 4;
 
@@ -7259,7 +7670,8 @@ re-sorting the elements.  If possible, it is better if the user does not
 add the unnecessary zeros in the first place.  An example of the use of
 'maybe_compress' is
 
-     int nz = 6, nr = 3, nc = 4;
+     int nz, nr, nc;
+     nz = 6, nr = 3, nc = 4;
 
      SparseMatrix sm1 (nr, nc, nz);
      sm1(0,0) = 1; sm1(0,1) = 2; sm1(1,3) = 3; sm1(2,3) = 4;
@@ -7279,7 +7691,8 @@ be
 
      octave_value arg;
      ...
-     int nz = 6, nr = 3, nc = 4;   // Assume we know the max # nz
+     int nz, nr, nc;
+     nz = 6, nr = 3, nc = 4;   // Assume we know the max # nz
      SparseMatrix sm (nr, nc, nz);
      Matrix m = arg.matrix_value ();
 
@@ -7310,7 +7723,8 @@ memory.  The above example would then be modified as
 
      octave_value arg;
      ...
-     int nz = 6, nr = 3, nc = 4;   // Assume we know the max # nz
+     int nz, nr, nc;
+     nz = 6, nr = 3, nc = 4;   // Assume we know the max # nz
      SparseMatrix sm (nr, nc, nz);
      Matrix m = arg.matrix_value ();
 
@@ -7342,302 +7756,4 @@ elements in a sparse matrix is expensive as it involves memory
 reallocation.  Also as parts of the matrix, though not its entirety,
 exist as old and new copies at the same time, additional memory is
 needed.  Therefore, if possible this should be avoided.
-
-
-File: octave.info,  Node: Using Sparse Matrices in Oct-Files,  Prev: Creating Sparse Matrices in Oct-Files,  Up: Sparse Matrices in Oct-Files
-
-A.1.6.3 Using Sparse Matrices in Oct-Files
-..........................................
-
-Most of the same operators and functions on sparse matrices that are
-available from the Octave command line are also available within
-oct-files.  The basic means of extracting a sparse matrix from an
-'octave_value' and returning it as an 'octave_value', can be seen in the
-following example.
-
-     octave_value_list retval;
-
-     SparseMatrix sm = args(0).sparse_matrix_value ();
-     SparseComplexMatrix scm =
-         args(1).sparse_complex_matrix_value ();
-     SparseBoolMatrix sbm = args(2).sparse_bool_matrix_value ();
-     ...
-     retval(2) = sbm;
-     retval(1) = scm;
-     retval(0) = sm;
-
-   The conversion to an 'octave_value' is handled by the sparse
-'octave_value' constructors, and so no special care is needed.
-
-
-File: octave.info,  Node: Accessing Global Variables in Oct-Files,  Next: Calling Octave Functions from Oct-Files,  Prev: Sparse Matrices in Oct-Files,  Up: Oct-Files
-
-A.1.7 Accessing Global Variables in Oct-Files
----------------------------------------------
-
-Global variables allow variables in the global scope to be accessed.
-Global variables can be accessed within oct-files by using the support
-functions 'get_global_value' and 'set_global_value'.  'get_global_value'
-takes two arguments, the first is a string representing the variable
-name to obtain.  The second argument is a boolean argument specifying
-what to do if no global variable of the desired name is found.  An
-example of the use of these two functions is
-
-     #include <octave/oct.h>
-
-     DEFUN_DLD (globaldemo, args, , "Global Demo")
-     {
-       octave_value retval;
-       int nargin = args.length ();
-
-       if (nargin != 1)
-         print_usage ();
-       else
-         {
-           std::string s = args(0).string_value ();
-           if (! error_state)
-             {
-               octave_value tmp = get_global_value (s, true);
-               if (tmp.is_defined ())
-                 retval = tmp;
-               else
-                 retval = "Global variable not found";
-
-               set_global_value ("a", 42.0);
-             }
-         }
-       return retval;
-     }
-
-
-   An example of its use is
-
-     global a b
-     b = 10;
-     globaldemo ("b")
-     => 10
-     globaldemo ("c")
-     => "Global variable not found"
-     num2str (a)
-     => 42
-
-
-File: octave.info,  Node: Calling Octave Functions from Oct-Files,  Next: Calling External Code from Oct-Files,  Prev: Accessing Global Variables in Oct-Files,  Up: Oct-Files
-
-A.1.8 Calling Octave Functions from Oct-Files
----------------------------------------------
-
-There is often a need to be able to call another Octave function from
-within an oct-file, and there are many examples of such within Octave
-itself.  For example, the 'quad' function is an oct-file that calculates
-the definite integral by quadrature over a user supplied function.
-
-   There are also many ways in which a function might be passed.  It
-might be passed as one of
-
-  1. Function Handle
-
-  2. Anonymous Function Handle
-
-  3. Inline Function
-
-  4. String
-
-   The example below demonstrates an example that accepts all four means
-of passing a function to an oct-file.
-
-     #include <octave/oct.h>
-     #include <octave/parse.h>
-
-     DEFUN_DLD (funcdemo, args, nargout, "Function Demo")
-     {
-       octave_value_list retval;
-       int nargin = args.length ();
-
-       if (nargin < 2)
-         print_usage ();
-       else
-         {
-           octave_value_list newargs;
-           for (octave_idx_type i = nargin - 1; i > 0; i--)
-             newargs(i-1) = args(i);
-           if (args(0).is_function_handle () || args(0).is_inline_function ())
-             {
-               octave_function *fcn = args(0).function_value ();
-               if (! error_state)
-                 retval = feval (fcn, newargs, nargout);
-             }
-           else if (args(0).is_string ())
-             {
-               std::string fcn = args(0).string_value ();
-               if (! error_state)
-                 retval = feval (fcn, newargs, nargout);
-             }
-           else
-             error ("funcdemo: INPUT must be string, inline, or function handle");
-         }
-       return retval;
-     }
-
-
-   The first argument to this demonstration is the user-supplied
-function and the remaining arguments are all passed to the user
-function.
-
-     funcdemo (@sin,1)
-     => 0.84147
-     funcdemo (@(x) sin (x), 1)
-     => 0.84147
-     funcdemo (inline ("sin (x)"), 1)
-     => 0.84147
-     funcdemo ("sin",1)
-     => 0.84147
-     funcdemo (@atan2, 1, 1)
-     => 0.78540
-
-   When the user function is passed as a string the treatment of the
-function is different.  In some cases it is necessary to have the user
-supplied function as an 'octave_function' object.  In that case the
-string argument can be used to create a temporary function as
-demonstrated below.
-
-     std::octave fcn_name = unique_symbol_name ("__fcn__");
-     std::string fcode = "function y = ";
-     fcode.append (fcn_name);
-     fcode.append ("(x) y = ");
-     fcn = extract_function (args(0), "funcdemo", fcn_name,
-                             fcode, "; endfunction");
-     ...
-     if (fcn_name.length ())
-       clear_function (fcn_name);
-
-   There are two important things to know in this case.  First, the
-number of input arguments to the user function is fixed, and in the
-above example is a single argument.  Second, to avoid leaving the
-temporary function in the Octave symbol table it should be cleared after
-use.  Also, by convention internal function names begin and end with the
-character sequence '__'.
-
-
-File: octave.info,  Node: Calling External Code from Oct-Files,  Next: Allocating Local Memory in Oct-Files,  Prev: Calling Octave Functions from Oct-Files,  Up: Oct-Files
-
-A.1.9 Calling External Code from Oct-Files
-------------------------------------------
-
-Linking external C code to Octave is relatively simple, as the C
-functions can easily be called directly from C++.  One possible issue is
-that the declarations of the external C functions may need to be
-explicitly defined as C functions to the compiler.  If the declarations
-of the external C functions are in the header 'foo.h', then the tactic
-to ensure that the C++ compiler treats these declarations as C code is
-
-     #ifdef __cplusplus
-     extern "C"
-     {
-     #endif
-     #include "foo.h"
-     #ifdef __cplusplus
-     }  /* end extern "C" */
-     #endif
-
-   Calling Fortran code, however, can pose more difficulties.  This is
-due to differences in the manner in which compilers treat the linking of
-Fortran code with C or C++ code.  Octave supplies a number of macros
-that allow consistent behavior across a number of compilers.
-
-   The underlying Fortran code should use the 'XSTOPX' function to
-replace the Fortran 'STOP' function.  'XSTOPX' uses the Octave exception
-handler to treat failing cases in the Fortran code explicitly.  Note
-that Octave supplies its own replacement BLAS 'XERBLA' function, which
-uses 'XSTOPX'.
-
-   If the code calls 'XSTOPX', then the 'F77_XFCN' macro should be used
-to call the underlying Fortran function.  The Fortran exception state
-can then be checked with the global variable
-'f77_exception_encountered'.  If 'XSTOPX' will not be called, then the 'F77_FCN'
-macro should be used instead to call the Fortran code.
-
-   There is no great harm in using 'F77_XFCN' in all cases, except that
-for Fortran code that is short running and executes a large number of
-times, there is potentially an overhead in doing so.  However, if 'F77_FCN'
-is used with code that calls 'XSTOP', Octave can generate a segmentation
-fault.
-
-   An example of the inclusion of a Fortran function in an oct-file is
-given in the following example, where the C++ wrapper is
-
-     #include <octave/oct.h>
-     #include <octave/f77-fcn.h>
-
-     extern "C"
-     {
-       F77_RET_T
-       F77_FUNC (fortsub, FORTSUB)
-         (const int&, double*, F77_CHAR_ARG_DECL F77_CHAR_ARG_LEN_DECL);
-     }
-
-     DEFUN_DLD (fortdemo, args, , "Fortran Demo")
-     {
-       octave_value_list retval;
-       int nargin = args.length ();
-
-       if (nargin != 1)
-         print_usage ();
-       else
-         {
-           NDArray a = args(0).array_value ();
-           if (! error_state)
-             {
-               double *av = a.fortran_vec ();
-               octave_idx_type na = a.numel ();
-               OCTAVE_LOCAL_BUFFER (char, ctmp, 128);
-
-               F77_XFCN (fortsub, FORTSUB,
-                         (na, av, ctmp F77_CHAR_ARG_LEN (128)));
-
-               retval(1) = std::string (ctmp);
-               retval(0) = a;
-             }
-         }
-       return retval;
-     }
-
-
-and the Fortran function is
-
-           subroutine fortsub (n, a, s)
-           implicit none
-           character*(*) s
-           real*8 a(*)
-           integer*4 i, n, ioerr
-           do i = 1, n
-             if (a(i) .eq. 0d0) then
-               call xstopx ('fortsub: divide by zero')
-             else
-               a(i) = 1d0 / a(i)
-             endif
-           enddo
-           write (unit = s, fmt = '(a,i3,a,a)', iostat = ioerr)
-          $       'There are ', n,
-          $       ' values in the input vector', char(0)
-           if (ioerr .ne. 0) then
-             call xstopx ('fortsub: error writing string')
-           endif
-           return
-           end
-
-
-
-   This example demonstrates most of the features needed to link to an
-external Fortran function, including passing arrays and strings, as well
-as exception handling.  Both the Fortran and C++ files need to be
-compiled in order for the example to work.
-
-     mkoctfile fortdemo.cc fortsub.f
-     [b, s] = fortdemo (1:3)
-     =>
-       b = 1.00000   0.50000   0.33333
-       s = There are   3 values in the input vector
-     [b, s] = fortdemo (0:3)
-     error: fortdemo: fortsub: divide by zero
 
