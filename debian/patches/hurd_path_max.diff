@@ -7,9 +7,9 @@ Last-Updated: 2014-01-12
 
 --- a/libgui/qterminal/libqterminal/unix/kpty.cpp
 +++ b/libgui/qterminal/libqterminal/unix/kpty.cpp
-@@ -145,6 +145,14 @@ extern "C" {
- 
- #define TTY_GROUP "tty"
+@@ -153,6 +153,14 @@ extern "C" {
+ # endif
+ #endif
  
 +#ifndef PATH_MAX
 +# ifdef MAXPATHLEN

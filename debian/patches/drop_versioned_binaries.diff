@@ -4,7 +4,7 @@ Forwarded: not-needed
 Author: Thomas Weber <tweber@debian.org>
 --- a/src/Makefile.am
 +++ b/src/Makefile.am
-@@ -164,7 +164,7 @@
+@@ -141,7 +141,7 @@ mkoctfile.cc: mkoctfile.in.cc Makefile
  main.cc: main.in.cc Makefile
  	@$(do_subst_default_vals)
  
@@ -15,7 +15,7 @@ Author: Thomas Weber <tweber@debian.org>
  
 --- a/src/main.in.cc
 +++ b/src/main.in.cc
-@@ -614,7 +614,7 @@
+@@ -500,7 +500,7 @@ main (int argc, char **argv)
    std::string octave_archlibdir = get_octave_archlibdir ();
  
    std::string file
@@ -24,7 +24,7 @@ Author: Thomas Weber <tweber@debian.org>
  
    char **new_argv = new char * [argc + 1];
  
-@@ -635,7 +635,7 @@
+@@ -521,7 +521,7 @@ main (int argc, char **argv)
  
            file = octave_archlibdir + dir_sep_char + "octave-gui";
  #else
@@ -33,7 +33,7 @@ Author: Thomas Weber <tweber@debian.org>
  #endif
            new_argv[k++] = argv[i];
          }
-@@ -680,7 +680,7 @@
+@@ -566,7 +566,7 @@ main (int argc, char **argv)
            start_gui = false;
            gui_libs = false;
  
@@ -44,7 +44,7 @@ Author: Thomas Weber <tweber@debian.org>
              {
 --- a/scripts/miscellaneous/mkoctfile.m
 +++ b/scripts/miscellaneous/mkoctfile.m
-@@ -145,7 +145,7 @@
+@@ -148,7 +148,7 @@ function [output, status] = mkoctfile (v
    bindir = octave_config_info ("bindir");
    ext = octave_config_info ("EXEEXT");
  
@@ -55,7 +55,7 @@ Author: Thomas Weber <tweber@debian.org>
      __gripe_missing_component__ ("mkoctfile", "mkoctfile");
 --- a/scripts/pkg/private/configure_make.m
 +++ b/scripts/pkg/private/configure_make.m
-@@ -29,9 +29,9 @@
+@@ -29,9 +29,9 @@ function configure_make (desc, packdir,
      octave_bindir = octave_config_info ("bindir");
      ver = version ();
      ext = octave_config_info ("EXEEXT");
