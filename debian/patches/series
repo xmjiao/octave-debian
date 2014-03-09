@@ -4,10 +4,6 @@ install_libraries_publically
 no_pdf_in_print.diff
 add_info_dir_categories
 mkoctfile-mpi.diff
-octave-cli-manpage.diff
-doc-compressed-info.diff
 dblquad-s390x.diff
-kfreebsd_tcgetattr.diff
 hurd_path_max.diff
-save-uint8-in-text-format.diff
 always-build-octave-jar.patch
