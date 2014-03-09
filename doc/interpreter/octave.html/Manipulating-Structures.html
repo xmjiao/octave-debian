@@ -63,6 +63,8 @@ Next: <a href="Processing-Data-in-Structures.html#Processing-Data-in-Structures"
 <a name="XREFnfields"></a><dl>
 <dt><a name="index-nfields"></a>Built-in Function: <em></em> <strong>nfields</strong> <em>(<var>s</var>)</em></dt>
 <dd><p>Return the number of fields of the structure <var>s</var>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFfieldnames">fieldnames</a>.
 </p></dd></dl>
 
 
@@ -84,15 +86,18 @@ properties of the object.
 <var>jclassname</var> the name are the public data elements of the object or
 class.
 </p>
-<p><strong>See also:</strong> <a href="Creating-Structures.html#XREFstruct">struct</a>, <a href="Creating-a-Class.html#XREFmethods">methods</a>.
+<p><strong>See also:</strong> <a href="#XREFnfields">nfields</a>, <a href="#XREFisfield">isfield</a>, <a href="#XREForderfields">orderfields</a>, <a href="Creating-Structures.html#XREFstruct">struct</a>, <a href="Creating-a-Class.html#XREFmethods">methods</a>.
 </p></dd></dl>
 
 
 <a name="XREFisfield"></a><dl>
-<dt><a name="index-isfield"></a>Built-in Function: <em></em> <strong>isfield</strong> <em>(<var>x</var>, <var>name</var>)</em></dt>
-<dd><p>Return true if the <var>x</var> is a structure and it
-includes an element named <var>name</var>.  If <var>name</var> is a cell
-array of strings then a logical array of equal dimension is returned.
+<dt><a name="index-isfield"></a>Built-in Function: <em></em> <strong>isfield</strong> <em>(<var>x</var>, &quot;<var>name</var>&quot;)</em></dt>
+<dt><a name="index-isfield-1"></a>Built-in Function: <em></em> <strong>isfield</strong> <em>(<var>x</var>, <var>name</var>)</em></dt>
+<dd><p>Return true if the <var>x</var> is a structure and it includes an element named
+<var>name</var>.  If <var>name</var> is a cell array of strings then a logical array of
+equal dimension is returned.
+</p>
+<p><strong>See also:</strong> <a href="#XREFfieldnames">fieldnames</a>.
 </p></dd></dl>
 
 
@@ -165,7 +170,7 @@ another structure array whose third element is a structure
 <var>SA</var>(2).bar(3).baz = 6
 </pre></div>
 
-<p><strong>See also:</strong> <a href="#XREFgetfield">getfield</a>, <a href="#XREFrmfield">rmfield</a>, <a href="#XREFisfield">isfield</a>, <a href="Creating-Structures.html#XREFisstruct">isstruct</a>, <a href="#XREFfieldnames">fieldnames</a>, <a href="Creating-Structures.html#XREFstruct">struct</a>.
+<p><strong>See also:</strong> <a href="#XREFgetfield">getfield</a>, <a href="#XREFrmfield">rmfield</a>, <a href="#XREFisfield">isfield</a>, <a href="#XREFfieldnames">fieldnames</a>, <a href="Creating-Structures.html#XREFisstruct">isstruct</a>, <a href="Creating-Structures.html#XREFstruct">struct</a>.
 </p></dd></dl>
 
 
@@ -177,18 +182,18 @@ is the same as <code>setfield</code>, except it omits the final <var>val</var>
 argument, returning this value instead of setting it.
 </p>
 
-<p><strong>See also:</strong> <a href="#XREFsetfield">setfield</a>, <a href="#XREFrmfield">rmfield</a>, <a href="#XREFisfield">isfield</a>, <a href="Creating-Structures.html#XREFisstruct">isstruct</a>, <a href="#XREFfieldnames">fieldnames</a>, <a href="Creating-Structures.html#XREFstruct">struct</a>.
+<p><strong>See also:</strong> <a href="#XREFsetfield">setfield</a>, <a href="#XREFrmfield">rmfield</a>, <a href="#XREFisfield">isfield</a>, <a href="#XREFfieldnames">fieldnames</a>, <a href="Creating-Structures.html#XREFisstruct">isstruct</a>, <a href="Creating-Structures.html#XREFstruct">struct</a>.
 </p></dd></dl>
 
 
 <a name="XREFrmfield"></a><dl>
 <dt><a name="index-rmfield"></a>Built-in Function: <em><var>s</var> =</em> <strong>rmfield</strong> <em>(<var>s</var>, &quot;<var>f</var>&quot;)</em></dt>
 <dt><a name="index-rmfield-1"></a>Built-in Function: <em><var>s</var> =</em> <strong>rmfield</strong> <em>(<var>s</var>, <var>f</var>)</em></dt>
-<dd><p>Return a copy of the structure (array) <var>s</var> with the field <var>f</var>
+<dd><p>Return a <em>copy</em> of the structure (array) <var>s</var> with the field <var>f</var>
 removed.  If <var>f</var> is a cell array of strings or a character array, remove
 each of the named fields.
 </p>
-<p><strong>See also:</strong> <a href="Cell-Arrays-of-Strings.html#XREFcellstr">cellstr</a>, <a href="Cell-Arrays-of-Strings.html#XREFiscellstr">iscellstr</a>, <a href="#XREFsetfield">setfield</a>.
+<p><strong>See also:</strong> <a href="#XREForderfields">orderfields</a>, <a href="#XREFfieldnames">fieldnames</a>.
 </p></dd></dl>
 
 

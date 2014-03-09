@@ -88,7 +88,10 @@ main_window::main_window (QWidget *p)
     _clipboard (QApplication::clipboard ()),
     _cmd_queue (new QStringList ()),  // no command pending
     _cmd_processing (1),
-    _cmd_queue_mutex ()
+    _cmd_queue_mutex (),
+    _dbg_queue (new QStringList ()),  // no debug pending
+    _dbg_processing (1),
+    _dbg_queue_mutex ()
 {
   QSettings *settings = resource_manager::get_settings ();
 
@@ -364,11 +367,14 @@ news_reader::process (void)
       std::ostringstream buf;
       url_transfer octave_dot_org (url.toStdString (), buf);
 
-      Array<std::string> param;
-      octave_dot_org.http_get (param);
+      if (octave_dot_org.is_valid ())
+        {
+          Array<std::string> param;
+          octave_dot_org.http_get (param);
 
-      if (octave_dot_org.good ())
-        html_text = QString::fromStdString (buf.str ());
+          if (octave_dot_org.good ())
+            html_text = QString::fromStdString (buf.str ());
+        }
 
       if (html_text.contains ("this-is-the-gnu-octave-community-news-page"))
         {
@@ -428,10 +434,10 @@ news_reader::process (void)
                "when you have a connection to the web (link opens in an external browser).\n"
                "</p>\n"
                "<p>\n"
-               "<small><em>&mdash; The Octave Developers, " OCTAVE_RELEASE_DATE "</em></small>\n"
+               "<small><em>&mdash; The Octave Developers, ") + OCTAVE_RELEASE_DATE + "</em></small>\n"
                "</p>\n"
                "</body>\n"
-               "</html>\n"));
+               "</html>\n");
     }
   else
     html_text = QString
@@ -447,10 +453,10 @@ news_reader::process (void)
            "or enable web connections for news in Octave's network settings dialog.\n"
            "</p>\n"
            "<p>\n"
-           "<small><em>&mdash; The Octave Developers, " OCTAVE_RELEASE_DATE "</em></small>\n"
+           "<small><em>&mdash; The Octave Developers, ") + OCTAVE_RELEASE_DATE + "</em></small>\n"
            "</p>\n"
            "</body>\n"
-           "</html>\n"));
+           "</html>\n");
 
   emit display_news_signal (html_text);
 
@@ -770,31 +776,31 @@ main_window::handle_exit_debugger (void)
 void
 main_window::debug_continue (void)
 {
-  octave_link::post_event (this, &main_window::debug_continue_callback);
+  queue_debug ("cont");
 }
 
 void
 main_window::debug_step_into (void)
 {
-  octave_link::post_event (this, &main_window::debug_step_into_callback);
+  queue_debug ("in");
 }
 
 void
 main_window::debug_step_over (void)
 {
-  octave_link::post_event (this, &main_window::debug_step_over_callback);
+  queue_debug ("step");
 }
 
 void
 main_window::debug_step_out (void)
 {
-  octave_link::post_event (this, &main_window::debug_step_out_callback);
+  queue_debug ("out");
 }
 
 void
 main_window::debug_quit (void)
 {
-  octave_link::post_event (this, &main_window::debug_quit_callback);
+  queue_debug ("quit");
 }
 
 void
@@ -877,7 +883,10 @@ main_window::read_settings (void)
 void
 main_window::set_window_layout (QSettings *settings)
 {
-  QList<octave_dock_widget *> float_and_visible;
+#if ! defined (Q_OS_WIN32)
+  restoreState (settings->value ("MainWindow/windowState").toByteArray ());
+  restoreGeometry (settings->value ("MainWindow/geometry").toByteArray ());
+#endif
 
   // Restore the geometry of all dock-widgets
   foreach (octave_dock_widget *widget, dock_widget_list ())
@@ -891,20 +900,24 @@ main_window::set_window_layout (QSettings *settings)
           bool visible = settings->value
               ("DockWidgets/" + name + "Visible", true).toBool ();
 
-#if defined (Q_OS_WIN32)
           // If floating, make window from widget.
           if (floating)
             widget->make_window ();
           else if (! widget->parent ())  // should not be floating but is
             widget->make_widget (false); // no docking, just reparent
-#else
+#if ! defined (Q_OS_WIN32)
           // restore geometry
           QVariant val = settings->value ("DockWidgets/" + name);
           widget->restoreGeometry (val.toByteArray ());
 #endif
           // make widget visible if desired
           if (floating && visible)              // floating and visible
-            float_and_visible.append (widget);  // not show before main win
+            {
+              if (settings->value ("DockWidgets/" + widget->objectName () + "_minimized").toBool ())
+                widget->showMinimized ();
+              else
+                widget->setVisible (true);
+            }
           else
             {
               widget->make_widget ();
@@ -913,31 +926,12 @@ main_window::set_window_layout (QSettings *settings)
         }
     }
 
-#if ! defined (Q_OS_WIN32)
-  // show main first but minimized to avoid flickering,
-  // otherwise the name of a floating widget is shown in a global menu bar
-  showMinimized ();
-  // hide again, otherwise the geometry is not exactly restored
-  hide ();
-#endif
-  // restore geomoetry of main window
+#if defined (Q_OS_WIN32)
   restoreState (settings->value ("MainWindow/windowState").toByteArray ());
   restoreGeometry (settings->value ("MainWindow/geometry").toByteArray ());
-  // show main window
-  show ();
-
-  // show floating widgets after main win to ensure "Octave" in central menu
-  foreach (octave_dock_widget *widget, float_and_visible)
-    {
-#if ! defined (Q_OS_WIN32)
-      widget->make_window ();
 #endif
-      if (settings->value ("DockWidgets/" + widget->objectName () + "_minimized").toBool ())
-        widget->showMinimized ();
-      else
-        widget->setVisible (true);
-    }
 
+  show ();
 }
 
 void
@@ -1350,7 +1344,7 @@ main_window::construct_file_menu (QMenuBar *p)
   construct_new_menu (file_menu);
 
   _open_action
-    = file_menu->addAction (QIcon (":/actions/icons/fileopen.png"),
+    = file_menu->addAction (QIcon (":/actions/icons/folder_documents.png"),
                             tr ("Open..."));
   _open_action->setShortcutContext (Qt::ApplicationShortcut);
 
@@ -1362,10 +1356,10 @@ main_window::construct_file_menu (QMenuBar *p)
   file_menu->addSeparator ();
 
   QAction *load_workspace_action
-    = file_menu->addAction (tr ("Load Workspace"));
+    = file_menu->addAction (tr ("Load Workspace..."));
 
   QAction *save_workspace_action
-    = file_menu->addAction (tr ("Save Workspace As"));
+    = file_menu->addAction (tr ("Save Workspace As..."));
 
   file_menu->addSeparator ();
 
@@ -1406,7 +1400,7 @@ main_window::construct_new_menu (QMenu *p)
                            tr ("Script"));
   _new_script_action->setShortcutContext (Qt::ApplicationShortcut);
 
-  _new_function_action = new_menu->addAction (tr ("Function"));
+  _new_function_action = new_menu->addAction (tr ("Function..."));
   _new_function_action->setEnabled (true);
   _new_function_action->setShortcutContext (Qt::ApplicationShortcut);
 
@@ -1804,7 +1798,7 @@ main_window::construct_warning_bar (void)
     (tr ("<strong>You are using a release candidate of Octave's experimental GUI.</strong>  "
          "Octave is under continuous improvement and the GUI will be the "
          "default interface for the 4.0 release.  For more information, "
-         "select the \"Release Notes\" item in the \"Help\" menu of the GUI, "
+         "select the \"Release Notes\" item in the \"News\" menu of the GUI, "
          "or visit <a href=\"http://octave.org\">http://octave.org</a>."));
 
   msg->setStyleSheet ("background-color: #ffd97f; color: black; margin 4px;");
@@ -1891,7 +1885,7 @@ void
 main_window::show_gui_info (void)
 {
   QString gui_info
-    (tr ("<p><strong>A Note about Octave's New GUI</strong></p>"
+    ( QObject::tr ("<p><strong>A Note about Octave's New GUI</strong></p>"
          "<p>One of the biggest new features for Octave 3.8 is a graphical "
          "user interface.  It is the one thing that users have requested "
          "most often over the last few years and now it is almost ready.  "
@@ -1970,7 +1964,7 @@ main_window::construct_tool_bar (void)
                               QIcon (":/actions/icons/up.png"),
                               tr ("One directory up"));
   QAction *current_dir_search = _main_tool_bar->addAction (
-                                  QIcon (":/actions/icons/search.png"),
+                                  QIcon (":/actions/icons/folder.png"),
                                   tr ("Browse directories"));
 
   connect (_current_directory_combo_box, SIGNAL (activated (QString)),
@@ -2091,15 +2085,7 @@ main_window::change_directory_callback (const std::string& directory)
   Fcd (ovl (directory));
 }
 
-void
-main_window::debug_continue_callback (void)
-{
-  Fdbcont ();
-
-  command_editor::interrupt (true);
-}
-
-// The next three callbacks are invoked by GUI buttons.  Those buttons
+// The next callbacks are invoked by GUI buttons.  Those buttons
 // should only be active when we are doing debugging, which means that
 // Octave is waiting for input in get_debug_input.  Calling
 // command_editor::interrupt will force readline to return even if it
@@ -2107,35 +2093,46 @@ main_window::debug_continue_callback (void)
 // allowing the evaluator to continue and execute the next statement.
 
 void
-main_window::debug_step_into_callback (void)
+main_window::queue_debug (QString debug_cmd)
 {
-  Fdbstep (ovl ("in"));
+  _dbg_queue_mutex.lock ();
+  _dbg_queue->append (debug_cmd);   // queue command
+  _dbg_queue_mutex.unlock ();
 
-  command_editor::interrupt (true);
+  if (_dbg_processing.tryAcquire ())  // if callback not processing, post event
+    octave_link::post_event (this, &main_window::execute_debug_callback);
 }
 
 void
-main_window::debug_step_over_callback (void)
+main_window::execute_debug_callback ()
 {
-  Fdbstep ();
+  bool repost = false;          // flag for reposting event for this callback
 
-  command_editor::interrupt (true);
-}
+  if (!_dbg_queue->isEmpty ())  // list can not be empty here, just to make sure
+    {
+      _dbg_queue_mutex.lock (); // critical path
+      QString debug = _dbg_queue->takeFirst ();
+      if (_dbg_queue->isEmpty ())
+        _dbg_processing.release ();  // cmd queue empty, processing will stop
+      else
+        repost = true;          // not empty, repost at end
+      _dbg_queue_mutex.unlock ();
 
-void
-main_window::debug_step_out_callback (void)
-{
-  Fdbstep (ovl ("out"));
+      if (debug == "step")
+        Fdbstep ();
+      else if (debug == "cont")
+        Fdbcont ();
+      else if (debug == "quit")
+        Fdbquit ();
+      else
+        Fdbstep (ovl (debug.toStdString ()));
 
-  command_editor::interrupt (true);
-}
+      command_editor::interrupt (true);
+    }
 
-void
-main_window::debug_quit_callback (void)
-{
-  Fdbquit ();
+  if (repost)  // queue not empty, so repost event for further processing
+    octave_link::post_event (this, &main_window::execute_debug_callback);
 
-  command_editor::interrupt (true);
 }
 
 void

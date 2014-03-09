@@ -256,6 +256,7 @@ IDENT   ([_$a-zA-Z][_$a-zA-Z0-9]*)
 EXPON   ([DdEe][+-]?{D}+)
 NUMBER  (({D}+\.?{D}*{EXPON}?)|(\.{D}+{EXPON}?)|(0[xX][0-9a-fA-F]+))
 
+ANY_EXCEPT_NL [^\r\n]
 ANY_INCLUDING_NL (.|{NL})
 
 %%
@@ -537,8 +538,8 @@ ANY_INCLUDING_NL (.|{NL})
 // Body of a block comment.
 %}
 
-<BLOCK_COMMENT_START>.*{NL} {
-    curr_lexer->lexer_debug ("<BLOCK_COMMENT_START>.*{NL}");
+<BLOCK_COMMENT_START>{ANY_EXCEPT_NL}*{NL} {
+    curr_lexer->lexer_debug ("<BLOCK_COMMENT_START>{ANY_EXCEPT_NL}*{NL}");
 
     curr_lexer->input_line_number++;
     curr_lexer->current_input_column = 1;
@@ -549,15 +550,15 @@ ANY_INCLUDING_NL (.|{NL})
 // Full-line or end-of-line comment.
 %}
 
-{S}*{CCHAR}.*{NL} {
-    curr_lexer->lexer_debug ("{S}*{CCHAR}.*{NL}");
+{S}*{CCHAR}{ANY_EXCEPT_NL}*{NL} {
+    curr_lexer->lexer_debug ("{S}*{CCHAR}{ANY_EXCEPT_NL}*{NL}");
 
     curr_lexer->push_start_state (LINE_COMMENT_START);
     yyless (0);
   }
 
-<LINE_COMMENT_START>{S}*{CCHAR}.*{NL} {
-    curr_lexer->lexer_debug ("<LINE_COMMENT_START>{S}*{CCHAR}.*{NL}");
+<LINE_COMMENT_START>{S}*{CCHAR}{ANY_EXCEPT_NL}*{NL} {
+    curr_lexer->lexer_debug ("<LINE_COMMENT_START>{S}*{CCHAR}{ANY_EXCEPT_NL}*{NL}");
 
     bool full_line_comment = curr_lexer->current_input_column == 1;
     curr_lexer->input_line_number++;
@@ -769,9 +770,8 @@ ANY_INCLUDING_NL (.|{NL})
     curr_lexer->string_text += '\v';
   }
 
-<DQ_STRING_START>(\.\.\.){S}*{NL} |
-<DQ_STRING_START>(\.\.\.){S}*{CCHAR}.*{NL} {
-    curr_lexer->lexer_debug ("<DQ_STRING_START>(\\.\\.\\.){S}*{NL}|<DQ_STRING_START>(\\.\\.\\.){S}*{CCHAR}.*{NL}");
+<DQ_STRING_START>(\.\.\.){S}*{NL} {
+    curr_lexer->lexer_debug ("<DQ_STRING_START>(\\.\\.\\.){S}*{NL}");
 
     static const char *msg = "'...' continuations in double-quoted character strings are obsolete and will not be allowed in a future version of Octave; please use '\\' instead";
 
@@ -787,9 +787,8 @@ ANY_INCLUDING_NL (.|{NL})
     HANDLE_STRING_CONTINUATION;
   }
 
-<DQ_STRING_START>\\{S}+{NL} |
-<DQ_STRING_START>\\{S}*{CCHAR}.*{NL} {
-    curr_lexer->lexer_debug ("<DQ_STRING_START>\\\\{S}+{NL}|<DQ_STRING_START>\\\\{S}*{CCHAR}.*{NL}");
+<DQ_STRING_START>\\{S}+{NL} {
+    curr_lexer->lexer_debug ("<DQ_STRING_START>\\\\{S}+{NL}");
 
     static const char *msg = "white space and comments after continuation markers in double-quoted character strings are obsolete and will not be allowed in a future version of Octave";
 
@@ -975,8 +974,8 @@ ANY_INCLUDING_NL (.|{NL})
 // Continuation lines.  Allow arbitrary text after continuations.
 %}
 
-\.\.\..*{NL} {
-    curr_lexer->lexer_debug ("\\.\\.\\..*{NL}");
+\.\.\.{ANY_EXCEPT_NL}*{NL} {
+    curr_lexer->lexer_debug ("\\.\\.\\.{ANY_EXCEPT_NL}*{NL}");
 
     curr_lexer->handle_continuation ();
   }
@@ -986,8 +985,8 @@ ANY_INCLUDING_NL (.|{NL})
 %}
 
 \\{S}*{NL} |
-\\{S}*{CCHAR}.*{NL} {
-    curr_lexer->lexer_debug ("\\\\{S}*{NL}|\\\\{S}*{CCHAR}.*{NL}");
+\\{S}*{CCHAR}{ANY_EXCEPT_NL}*{NL} {
+    curr_lexer->lexer_debug ("\\\\{S}*{NL}|\\\\{S}*{CCHAR}{ANY_EXCEPT_NL}*{NL}");
 
     static const char *msg = "using continuation marker \\ outside of double quoted strings is deprecated and will be removed in a future version of Octave";
 
@@ -1100,6 +1099,8 @@ ANY_INCLUDING_NL (.|{NL})
   }
 
 "@" {
+    curr_lexer->lexer_debug ("@");
+
     if (curr_lexer->previous_token_may_be_command ()
         &&  curr_lexer->space_follows_previous_token ())
       {
@@ -1108,15 +1109,26 @@ ANY_INCLUDING_NL (.|{NL})
       }
     else
       {
-        curr_lexer->lexer_debug ("@");
+        int tok = curr_lexer->previous_token_value ();
 
-        curr_lexer->current_input_column++;
+        if (curr_lexer->whitespace_is_significant ()
+            && curr_lexer->space_follows_previous_token ()
+            && ! (tok == '[' || tok == '{'
+                  || curr_lexer->previous_token_is_binop ()))
+          {
+            yyless (0);
+            unput (',');
+          }
+        else
+          {
+            curr_lexer->current_input_column++;
 
-        curr_lexer->looking_at_function_handle++;
-        curr_lexer->looking_for_object_index = false;
-        curr_lexer->at_beginning_of_statement = false;
+            curr_lexer->looking_at_function_handle++;
+            curr_lexer->looking_for_object_index = false;
+            curr_lexer->at_beginning_of_statement = false;
 
-        return curr_lexer->count_token ('@');
+            return curr_lexer->count_token ('@');
+          }
       }
   }
 
@@ -1769,6 +1781,7 @@ DEFUN (__display_tokens__, args, nargout,
 @deftypefn {Built-in Function} {} __display_tokens__ ()\n\
 Query or set the internal variable that determines whether Octave's\n\
 lexer displays tokens as they are read.\n\
+@seealso{__lexer_debug_flag__, __token_count__}\n\
 @end deftypefn")
 {
   return SET_INTERNAL_VARIABLE (display_tokens);
@@ -1777,7 +1790,8 @@ lexer displays tokens as they are read.\n\
 DEFUN (__token_count__, , ,
   "-*- texinfo -*-\n\
 @deftypefn {Built-in Function} {} __token_count__ ()\n\
-Number of language tokens processed since Octave startup.\n\
+Return the number of language tokens processed since Octave startup.\n\
+@seealso{__lexer_debug_flag__, __display_tokens__}\n\
 @end deftypefn")
 {
   return octave_value (Vtoken_count);
@@ -1785,8 +1799,11 @@ Number of language tokens processed since Octave startup.\n\
 
 DEFUN (__lexer_debug_flag__, args, nargout,
   "-*- texinfo -*-\n\
-@deftypefn {Built-in Function} {@var{old_val} =} __lexer_debug_flag__ (@var{new_val}))\n\
-Undocumented internal function.\n\
+@deftypefn  {Built-in Function} {@var{val} =} __lexer_debug_flag__ ()\n\
+@deftypefnx {Built-in Function} {@var{old_val} =} __lexer_debug_flag__ (@var{new_val})\n\
+Query or set the internal flag that determines whether Octave's lexer prints\n\
+debug information as it processes an expression.\n\
+@seealso{__display_tokens__, __token_count__, __parse_debug_flag__}\n\
 @end deftypefn")
 {
   octave_value retval;
@@ -2207,6 +2224,8 @@ octave_base_lexer::is_keyword_token (const std::string& s)
 
   if (kw)
     {
+      bool previous_at_bos = at_beginning_of_statement;
+
       // May be reset to true for some token types.
       at_beginning_of_statement = false;
 
@@ -2254,7 +2273,10 @@ octave_base_lexer::is_keyword_token (const std::string& s)
                   && (defining_func
                       && ! (looking_at_return_list
                             || parsed_function_name.top ()))))
-            return 0;
+            {
+              at_beginning_of_statement = previous_at_bos;
+              return 0;
+            }
 
           tok_val = new token (end_kw, token::simple_end, l, c);
           at_beginning_of_statement = true;
@@ -2356,7 +2378,10 @@ octave_base_lexer::is_keyword_token (const std::string& s)
           // 'get' and 'set' are keywords in classdef method
           // declarations.
           if (! maybe_classdef_get_set_method)
-            return 0;
+            {
+              at_beginning_of_statement = previous_at_bos;
+              return 0;
+            }
           break;
 
         case enumeration_kw:
@@ -2366,7 +2391,10 @@ octave_base_lexer::is_keyword_token (const std::string& s)
           // 'properties', 'methods' and 'events' are keywords for
           // classdef blocks.
           if (! parsing_classdef)
-            return 0;
+            {
+              at_beginning_of_statement = previous_at_bos;
+              return 0;
+            }
           // fall through ...
 
         case classdef_kw:
@@ -2531,7 +2559,15 @@ octave_base_lexer::handle_continuation (void)
     {
       comment_text = &yytxt[offset];
 
+      // finish_comment sets at_beginning_of_statement to true but
+      // that's not be correct if we are handling a continued
+      // statement.  Preserve the current state.
+
+      bool saved_bos = at_beginning_of_statement;
+
       finish_comment (octave_comment_elt::end_of_line);
+
+      at_beginning_of_statement = saved_bos;
     }
 
   decrement_promptflag ();

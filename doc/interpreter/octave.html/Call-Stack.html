@@ -58,6 +58,13 @@ Next: <a href="Profiling.html#Profiling" accesskey="n" rel="next">Profiling</a>,
 <a name="Call-Stack-1"></a>
 <h3 class="section">13.5 Call Stack</h3>
 
+<p>The function being debugged may be the leaf node of a series of function calls.
+After examining values in the current subroutine it may turn out that the
+problem occurred in earlier pieces of code.  Use <code>dbup</code> and <code>dbdown</code>
+to move up and down through the series of function calls to locate where
+variables first took on the wrong values.  <code>dbstack</code> shows the entire
+series of function calls and at what level debugging is currently taking place.
+</p>
 <a name="XREFdbstack"></a><dl>
 <dt><a name="index-dbstack"></a>Command: <em></em> <strong>dbstack</strong></dt>
 <dt><a name="index-dbstack-1"></a>Command: <em></em> <strong>dbstack</strong> <em><var>n</var></em></dt>
@@ -126,6 +133,11 @@ If <var>n</var> is omitted, move down one frame.
 </p></dd></dl>
 
 
+<hr>
+<div class="header">
+<p>
+Next: <a href="Profiling.html#Profiling" accesskey="n" rel="next">Profiling</a>, Previous: <a href="Debug-Mode.html#Debug-Mode" accesskey="p" rel="prev">Debug Mode</a>, Up: <a href="Debugging.html#Debugging" accesskey="u" rel="up">Debugging</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
 
 
 

@@ -149,7 +149,7 @@ command is available from within Octave or at the shell command line.
 @c mkoctfile scripts/miscellaneous/mkoctfile.m
 @anchor{XREFmkoctfile}
 @deftypefn  {Command} {} mkoctfile [-options] file @dots{}
-@deftypefnx {Function File} {[@var{output}, @var{status} =} mkoctfile (@dots{})
+@deftypefnx {Function File} {[@var{output}, @var{status}] =} mkoctfile (@dots{})
 
 The @code{mkoctfile} function compiles source code written in C,
 C++, or Fortran.  Depending on the options used with @code{mkoctfile}, the
@@ -209,30 +209,33 @@ a stand-alone executable.
 Print the configuration variable VAR@.  Recognized variables are:
 
 @example
-   ALL_CFLAGS                FFTW3F_LIBS
-   ALL_CXXFLAGS              FLIBS
-   ALL_FFLAGS                FPICFLAG
-   ALL_LDFLAGS               INCFLAGS
-   BLAS_LIBS                 LAPACK_LIBS
-   CC                        LDFLAGS
-   CFLAGS                    LD_CXX
-   CPICFLAG                  LD_STATIC_FLAG
-   CPPFLAGS                  LFLAGS
-   CXX                       LIBOCTAVE
-   CXXFLAGS                  LIBOCTINTERP
-   CXXPICFLAG                LIBS
-   DEPEND_EXTRA_SED_PATTERN  OCTAVE_LIBS
-   DEPEND_FLAGS              OCTAVE_LINK_DEPS
-   DL_LD                     OCT_LINK_DEPS
-   DL_LDFLAGS                RDYNAMIC_FLAG
-   EXEEXT                    READLINE_LIBS
-   F77                       SED
-   F77_INTEGER_8_FLAG        XTRA_CFLAGS
-   FFLAGS                    XTRA_CXXFLAGS
-   FFTW3_LDFLAGS
-   FFTW3_LIBS
-   FFTW3F_LDFLAGS
-
+   ALL_CFLAGS                  INCFLAGS
+   ALL_CXXFLAGS                INCLUDEDIR
+   ALL_FFLAGS                  LAPACK_LIBS
+   ALL_LDFLAGS                 LD_CXX
+   AR                          LDFLAGS
+   BLAS_LIBS                   LD_STATIC_FLAG
+   CC                          LFLAGS
+   CFLAGS                      LIBDIR
+   CPICFLAG                    LIBOCTAVE
+   CPPFLAGS                    LIBOCTINTERP
+   CXX                         LIBS
+   CXXFLAGS                    OCTAVE_HOME
+   CXXPICFLAG                  OCTAVE_LIBS
+   DEPEND_EXTRA_SED_PATTERN    OCTAVE_LINK_DEPS
+   DEPEND_FLAGS                OCTAVE_LINK_OPTS
+   DL_LD                       OCTAVE_PREFIX
+   DL_LDFLAGS                  OCTINCLUDEDIR
+   F77                         OCTLIBDIR
+   F77_INTEGER8_FLAG           OCT_LINK_DEPS
+   FFLAGS                      OCT_LINK_OPTS
+   FFTW3F_LDFLAGS              RANLIB
+   FFTW3F_LIBS                 RDYNAMIC_FLAG
+   FFTW3_LDFLAGS               READLINE_LIBS
+   FFTW3_LIBS                  SED
+   FFTW_LIBS                   SPECIAL_MATH_LIB
+   FLIBS                       XTRA_CFLAGS
+   FPICFLAG                    XTRA_CXXFLAGS
 @end example
 
 @item --link-stand-alone
@@ -653,7 +656,7 @@ Note, however, that both types of strings are represented by the
 @example
 @group
 octave_value_list retval;
-charNDArray c;
+charNDArray ch;
 @dots{}
 // Create single quoted string
 retval(1) = octave_value (ch);        // default constructor is sq_string
@@ -939,7 +942,8 @@ technique
 
 @example
 @group
-int nz = 4, nr = 3, nc = 4;
+int nz, nr, nc;
+nz = 4, nr = 3, nc = 4;
 
 ColumnVector ridx (nz);
 ColumnVector cidx (nz);
@@ -975,7 +979,8 @@ Sample code:
 
 @example
 @group
-int nz = 4, nr = 3, nc = 4;
+int nz, nr, nc;
+nz = 4, nr = 3, nc = 4;
 SparseMatrix sm (nr, nc, nz);
 sm(0,0) = 1; sm(0,1) = 2; sm(1,3) = 3; sm(2,3) = 4;
 @end group
@@ -994,7 +999,8 @@ with fewer elements than are actually inserted in the matrix.  Therefore,
 
 @example
 @group
-int nz = 4, nr = 3, nc = 4;
+int nr, nc;
+nr = 3, nc = 4;
 SparseMatrix sm (nr, nc, 0);
 sm(0,0) = 1; sm(0,1) = 2; sm(1,3) = 3; sm(2,3) = 4;
 @end group
@@ -1023,7 +1029,8 @@ An example of the use of @code{maybe_compress} is
 
 @example
 @group
-int nz = 6, nr = 3, nc = 4;
+int nz, nr, nc;
+nz = 6, nr = 3, nc = 4;
 
 SparseMatrix sm1 (nr, nc, nz);
 sm1(0,0) = 1; sm1(0,1) = 2; sm1(1,3) = 3; sm1(2,3) = 4;
@@ -1046,7 +1053,8 @@ be
 @example
 octave_value arg;
 @dots{}
-int nz = 6, nr = 3, nc = 4;   // Assume we know the max # nz
+int nz, nr, nc;
+nz = 6, nr = 3, nc = 4;   // Assume we know the max # nz
 SparseMatrix sm (nr, nc, nz);
 Matrix m = arg.matrix_value ();
 
@@ -1080,7 +1088,8 @@ The above example would then be modified as
 @example
 octave_value arg;
 @dots{}
-int nz = 6, nr = 3, nc = 4;   // Assume we know the max # nz
+int nz, nr, nc;
+nz = 6, nr = 3, nc = 4;   // Assume we know the max # nz
 SparseMatrix sm (nr, nc, nz);
 Matrix m = arg.matrix_value ();
 
@@ -1363,11 +1372,11 @@ given in the following example, where the C++ wrapper is
 extern "C"
 {
   F77_RET_T
-  F77_FUNC (fortsub, FORTSUB)
+  F77_FUNC (fortransub, FORTSUB)
     (const int&, double*, F77_CHAR_ARG_DECL F77_CHAR_ARG_LEN_DECL);
 }
 
-DEFUN_DLD (fortdemo, args, , "Fortran Demo")
+DEFUN_DLD (fortrandemo, args, , "Fortran Demo")
 {
   octave_value_list retval;
   int nargin = args.length ();
@@ -1383,7 +1392,7 @@ DEFUN_DLD (fortdemo, args, , "Fortran Demo")
           octave_idx_type na = a.numel ();
           OCTAVE_LOCAL_BUFFER (char, ctmp, 128);
 
-          F77_XFCN (fortsub, FORTSUB,
+          F77_XFCN (fortransub, FORTSUB,
                     (na, av, ctmp F77_CHAR_ARG_LEN (128)));
 
           retval(1) = std::string (ctmp);
@@ -1401,14 +1410,14 @@ and the Fortran function is
 
 @example
 @verbatim
-      subroutine fortsub (n, a, s)
+      subroutine fortransub (n, a, s)
       implicit none
       character*(*) s
       real*8 a(*)
       integer*4 i, n, ioerr
       do i = 1, n
         if (a(i) .eq. 0d0) then
-          call xstopx ('fortsub: divide by zero')
+          call xstopx ('fortransub: divide by zero')
         else
           a(i) = 1d0 / a(i)
         endif
@@ -1417,7 +1426,7 @@ and the Fortran function is
      $       'There are ', n,
      $       ' values in the input vector', char(0)
       if (ioerr .ne. 0) then
-        call xstopx ('fortsub: error writing string')
+        call xstopx ('fortransub: error writing string')
       endif
       return
       end
@@ -1433,13 +1442,13 @@ in order for the example to work.
 
 @example
 @group
-mkoctfile fortdemo.cc fortsub.f
-[b, s] = fortdemo (1:3)
+mkoctfile fortrandemo.cc fortransub.f
+[b, s] = fortrandemo (1:3)
 @result{}
   b = 1.00000   0.50000   0.33333
   s = There are   3 values in the input vector
-[b, s] = fortdemo (0:3)
-error: fortdemo: fortsub: divide by zero
+[b, s] = fortrandemo (0:3)
+error: fortrandemo: fortransub: divide by zero
 @end group
 @end example
 
@@ -1530,9 +1539,9 @@ An example of its use is:
 @group
 paramdemo ([1, 2, NaN, Inf])
 @result{} Properties of input array:
-      includes Inf or NaN values
-      includes other values than 1 and 0
-      includes only int, Inf or NaN values
+     includes Inf or NaN values
+     includes other values than 1 and 0
+     includes only int, Inf or NaN values
 @end group
 @end example
 
@@ -2055,8 +2064,8 @@ An example of its expected output is
 @example
 @group
 mystring (["First String"; "Second String"])
-@result{} s1 = Second String
-        First String
+@result{} Second String
+   First String
 @end group
 @end example
 
@@ -2224,32 +2233,22 @@ An example of the behavior of this function within Octave is then
 @example
 a(1).f1 = "f11"; a(1).f2 = "f12"; 
 a(2).f1 = "f21"; a(2).f2 = "f22";
-b = mystruct (a)
-@result{} field f1(0) = f11
+b = mystruct (a);
+@result{}  field f1(0) = f11
     field f1(1) = f21
     field f2(0) = f12
     field f2(1) = f22
-    b =
-    @{
-      this =
+b
+@result{} 2x2 struct array containing the fields:
 
-      (,
-        [1] = this1
-        [2] = this2
-        [3] = this3
-        [4] = this4
-      ,)
+     this
+     that
 
-      that =
+b(3)
+@result{} scalar structure containing the fields:
 
-      (,
-        [1] = that1
-        [2] = that2
-        [3] = that3
-        [4] = that4
-      ,)
-
-    @}
+     this = this3
+     that = that3
 @end example
 
 @node Sparse Matrices with Mex-Files
@@ -2428,6 +2427,18 @@ mexFunction (int nlhs, mxArray *plhs[],
 
 @end example
 
+A sample usage of @code{mysparse} is
+
+@example
+@group
+sm = sparse ([1, 0; 0, pi]);
+mysparse (sm)
+@result{}
+Matrix is 2-by-2 real sparse matrix with 2 elements
+last non-zero element (2, 2) = 3.14159
+@end group
+@end example
+
 @node Calling Other Functions in Mex-Files
 @subsection Calling Other Functions in Mex-Files
 
@@ -2445,7 +2456,7 @@ mexFunction (int nlhs, mxArray* plhs[],
 {
   char *str;
 
-  mexPrintf ("Hello, World!\n");
+  mexPrintf ("Starting file myfeval.mex\n");
 
   mexPrintf ("I have %d inputs and %d outputs\n", nrhs, nlhs);
 
@@ -2456,7 +2467,11 @@ mexFunction (int nlhs, mxArray* plhs[],
 
   mexPrintf ("I'm going to call the function %s\n", str);
 
-  mexCallMATLAB (nlhs, plhs, nrhs-1, (mxArray*)prhs+1, str);
+  if (nlhs == 0)
+    nlhs = 1;  // Octave's automatic 'ans' variable
+
+  /* Cast prhs just to get rid of 'const' qualifier and stop compile warning */
+  mexCallMATLAB (nlhs, plhs, nrhs-1, (mxArray**)prhs+1, str);
 
   mxFree (str);
 }
@@ -2469,12 +2484,11 @@ If this code is in the file @file{myfeval.c}, and is compiled to
 
 @example
 @group
-myfeval ("sin", 1)
 a = myfeval ("sin", 1)
-@result{} Hello, World!
-    I have 2 inputs and 1 outputs
-    I'm going to call the interpreter function sin
-    a =  0.84147
+@result{} Starting file myfeval.mex
+   I have 2 inputs and 1 outputs
+   I'm going to call the interpreter function sin
+   a =  0.84147
 @end group
 @end example
 
@@ -2538,7 +2552,7 @@ $
 Note that the application @code{standalone} will be dynamically linked
 against the Octave libraries and any Octave support libraries.  The above
 allows the Octave math libraries to be used by an application.  It does
-not, however, allow the script files, oct-files, or builtin functions of
+not, however, allow the script files, oct-files, or built-in functions of
 Octave to be used by the application.  To do that the Octave interpreter
 needs to be initialized first.  An example of how to do this can then be
 seen in the code
@@ -2596,17 +2610,17 @@ $
 @end group
 @end example
 
-It is worth noting that, if only builtin functions are to be called from 
+It is worth noting that, if only built-in functions are to be called from 
 a C++ standalone program, then it does not need to initialize the 
-interpreter to do so.  The general rule is that, for a builtin 
+interpreter to do so.  The general rule is that, for a built-in 
 function named @code{function_name} in the interpreter, there will be
 a C++ function named @code{Ffunction_name} (note the prepended capital 
-@code{F}) accessible in the C++ API@.  The declarations for all builtin 
+@code{F}) accessible in the C++ API@.  The declarations for all built-in 
 functions are collected in the header file @code{builtin-defun-decls.h}.
 This feature should be used with care as the list of built-in functions can
 change.  No guarantees can be made that a function that is currently built in
 won't be implemented as a .m file or as a dynamically linked function in the
-future.  An example of how to call builtin functions from C++ can be seen in the
+future.  An example of how to call built-in functions from C++ can be seen in the
 code
 
 @example
@@ -2618,7 +2632,6 @@ code
 int
 main (void)
 {
-
   int n = 2;
   Matrix a_matrix = Matrix (n, n);
 
@@ -2626,10 +2639,8 @@ main (void)
     for (octave_idx_type j = 0; j < n; j++)
       a_matrix(i,j) = (i + 1) * 10 + (j + 1);
 
-  std::cout << "This is a matrix:" 
-            << std::endl 
-            << a_matrix
-            << std::endl;
+  std::cout << "This is a matrix:" << std::endl 
+            << a_matrix            << std::endl;
 
   octave_value_list in;
   in(0) = a_matrix;
@@ -2637,10 +2648,8 @@ main (void)
   octave_value_list out = Fnorm (in, 1);
   double norm_of_the_matrix = out(0).double_value ();
 
-  std::cout << "This is the norm of the matrix:" 
-            << std::endl 
-            << norm_of_the_matrix
-            << std::endl;
+  std::cout << "This is the norm of the matrix:" << std::endl 
+            << norm_of_the_matrix                << std::endl;
   
   return 0;
 }
@@ -2661,8 +2670,7 @@ This is a matrix:
 
 This is the norm of the matrix:
 34.4952
-
+$
 @end group
 @end example
-
 

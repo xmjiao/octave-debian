@@ -403,13 +403,15 @@ easily be misinterpreted.
 @deftypefnx {Built-in Function} {@var{old_val} =} fixed_point_format (@var{new_val})
 @deftypefnx {Built-in Function} {} fixed_point_format (@var{new_val}, "local")
 Query or set the internal variable that controls whether Octave will
-use a scaled format to print matrix values such that the largest
-element may be written with a single leading digit with the scaling
-factor is printed on the first line of output.  For example:
+use a scaled format to print matrix values.
+
+The scaled format prints a scaling factor on the first line of output chosen
+such that the largest matrix element can be written with a single leading
+digit.  For example:
 
 @example
 @group
-octave:1> logspace (1, 7, 5)'
+logspace (1, 7, 5)'
 ans =
 
   1.0e+07  *
@@ -423,9 +425,9 @@ ans =
 @end example
 
 @noindent
-Notice that first value appears to be zero when it is actually 1.  For
-this reason, you should be careful when setting
-@code{fixed_point_format} to a nonzero value.
+Notice that the first value appears to be 0 when it is actually 1.  Because
+of the possibilty for confusion you should be careful about enabling
+@code{fixed_point_format}.
 
 When called from inside a function with the @qcode{"local"} option, the
 variable is changed locally for the function and any subroutines it calls.  
@@ -700,6 +702,7 @@ Octave are double precision floating point values.
 @anchor{XREFint8}
 @deftypefn {Built-in Function} {} int8 (@var{x})
 Convert @var{x} to 8-bit integer type.
+@seealso{@ref{XREFuint8,,uint8}, @ref{XREFint16,,int16}, @ref{XREFuint16,,uint16}, @ref{XREFint32,,int32}, @ref{XREFuint32,,uint32}, @ref{XREFint64,,int64}, @ref{XREFuint64,,uint64}}
 @end deftypefn
 
 
@@ -707,6 +710,7 @@ Convert @var{x} to 8-bit integer type.
 @anchor{XREFuint8}
 @deftypefn {Built-in Function} {} uint8 (@var{x})
 Convert @var{x} to unsigned 8-bit integer type.
+@seealso{@ref{XREFint8,,int8}, @ref{XREFint16,,int16}, @ref{XREFuint16,,uint16}, @ref{XREFint32,,int32}, @ref{XREFuint32,,uint32}, @ref{XREFint64,,int64}, @ref{XREFuint64,,uint64}}
 @end deftypefn
 
 
@@ -714,6 +718,7 @@ Convert @var{x} to unsigned 8-bit integer type.
 @anchor{XREFint16}
 @deftypefn {Built-in Function} {} int16 (@var{x})
 Convert @var{x} to 16-bit integer type.
+@seealso{@ref{XREFint8,,int8}, @ref{XREFuint8,,uint8}, @ref{XREFuint16,,uint16}, @ref{XREFint32,,int32}, @ref{XREFuint32,,uint32}, @ref{XREFint64,,int64}, @ref{XREFuint64,,uint64}}
 @end deftypefn
 
 
@@ -721,6 +726,7 @@ Convert @var{x} to 16-bit integer type.
 @anchor{XREFuint16}
 @deftypefn {Built-in Function} {} uint16 (@var{x})
 Convert @var{x} to unsigned 16-bit integer type.
+@seealso{@ref{XREFint8,,int8}, @ref{XREFuint8,,uint8}, @ref{XREFint16,,int16}, @ref{XREFint32,,int32}, @ref{XREFuint32,,uint32}, @ref{XREFint64,,int64}, @ref{XREFuint64,,uint64}}
 @end deftypefn
 
 
@@ -728,6 +734,7 @@ Convert @var{x} to unsigned 16-bit integer type.
 @anchor{XREFint32}
 @deftypefn {Built-in Function} {} int32 (@var{x})
 Convert @var{x} to 32-bit integer type.
+@seealso{@ref{XREFint8,,int8}, @ref{XREFuint8,,uint8}, @ref{XREFint16,,int16}, @ref{XREFuint16,,uint16}, @ref{XREFuint32,,uint32}, @ref{XREFint64,,int64}, @ref{XREFuint64,,uint64}}
 @end deftypefn
 
 
@@ -735,6 +742,7 @@ Convert @var{x} to 32-bit integer type.
 @anchor{XREFuint32}
 @deftypefn {Built-in Function} {} uint32 (@var{x})
 Convert @var{x} to unsigned 32-bit integer type.
+@seealso{@ref{XREFint8,,int8}, @ref{XREFuint8,,uint8}, @ref{XREFint16,,int16}, @ref{XREFuint16,,uint16}, @ref{XREFint32,,int32}, @ref{XREFint64,,int64}, @ref{XREFuint64,,uint64}}
 @end deftypefn
 
 
@@ -742,6 +750,7 @@ Convert @var{x} to unsigned 32-bit integer type.
 @anchor{XREFint64}
 @deftypefn {Built-in Function} {} int64 (@var{x})
 Convert @var{x} to 64-bit integer type.
+@seealso{@ref{XREFint8,,int8}, @ref{XREFuint8,,uint8}, @ref{XREFint16,,int16}, @ref{XREFuint16,,uint16}, @ref{XREFint32,,int32}, @ref{XREFuint32,,uint32}, @ref{XREFuint64,,uint64}}
 @end deftypefn
 
 
@@ -749,6 +758,7 @@ Convert @var{x} to 64-bit integer type.
 @anchor{XREFuint64}
 @deftypefn {Built-in Function} {} uint64 (@var{x})
 Convert @var{x} to unsigned 64-bit integer type.
+@seealso{@ref{XREFint8,,int8}, @ref{XREFuint8,,uint8}, @ref{XREFint16,,int16}, @ref{XREFuint16,,uint16}, @ref{XREFint32,,int32}, @ref{XREFuint32,,uint32}, @ref{XREFint64,,int64}}
 @end deftypefn
 
 
@@ -1154,7 +1164,14 @@ or @code{false} functions.
 @c logical libinterp/octave-value/ov-bool-mat.cc
 @anchor{XREFlogical}
 @deftypefn {Built-in Function} {} logical (@var{x})
-Convert @var{x} to logical type.
+Convert the numeric object @var{x} to logical type.
+
+Any non-zero values will be converted to true (1) while zero values
+will be converted to false (0).  The non-numeric value NaN cannot be
+converted and will produce an error.
+
+Compatibility Note: Octave accepts complex values as input, whereas
+@sc{matlab} issues an error.
 @seealso{@ref{XREFdouble,,double}, @ref{XREFsingle,,single}, @ref{XREFchar,,char}}
 @end deftypefn
 

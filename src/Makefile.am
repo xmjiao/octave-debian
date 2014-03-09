@@ -38,16 +38,21 @@ AM_CXXFLAGS += $(WARN_CXXFLAGS)
 EXTRA_DIST = \
   main.in.cc \
   mkoctfile.in.cc \
-  mkoctfile.in.sh \
-  octave-config.in.cc \
-  octave-config.in.sh
+  octave-config.in.cc
 
 DISTCLEANFILES = \
-  main.cc
+  main.cc \
+  mkoctfile.cc \
+  octave-config.cc
 
-OCTAVE_BINARIES = \
+bin_PROGRAMS = \
+  mkoctfile \
   octave \
-  octave-cli
+  octave-cli \
+  octave-config
+
+noinst_HEADERS = \
+  shared-fcns.h
 
 OCTAVE_VERSION_LINKS = octave-cli-$(version)$(EXEEXT)
 
@@ -85,7 +90,7 @@ octave_CPPFLAGS = \
 octave_cli_SOURCES = main-cli.cc
 
 octave_cli_LDADD = \
-  $(OCTAVE_CORE_LIBS)
+  $(OCTAVE_CORE_LIBS) \
   $(OCTAVE_LINK_DEPS)
 
 octave_cli_LDFLAGS = \
@@ -111,12 +116,6 @@ octave_gui_LDFLAGS = \
   $(NO_UNDEFINED_LDFLAG) \
   $(OCTAVE_GUI_LINK_OPTS)
 
-if AMCOND_BUILD_COMPILED_AUX_PROGRAMS
-bin_PROGRAMS = \
-  $(OCTAVE_BINARIES) \
-  mkoctfile \
-  octave-config
-
 mkoctfile_SOURCES =
 nodist_mkoctfile_SOURCES = mkoctfile.cc
 mkoctfile_LDADD = $(top_builddir)/libgnu/libgnu.la $(LIBS)
@@ -128,35 +127,13 @@ octave_config_LDADD = \
   $(top_builddir)/libgnu/libgnu.la \
   $(LIBS)
 
-DISTCLEANFILES += mkoctfile.cc octave-config.cc
-
-else
-bin_PROGRAMS = \
-  $(OCTAVE_BINARIES)
-
-bin_SCRIPTS = \
-  mkoctfile \
-  octave-config
-endif
-
 all-local: $(OCTAVE_VERSION_LINKS)
 
-if AMCOND_BUILD_COMPILED_AUX_PROGRAMS
 octave-config.cc: octave-config.in.cc Makefile
 	@$(do_subst_default_vals)
 
 mkoctfile.cc: mkoctfile.in.cc Makefile
 	@$(do_subst_config_vals)
-
-else
-octave-config: octave-config.in.sh Makefile
-	@$(do_subst_default_vals)
-	chmod a+rx $@
-
-mkoctfile: mkoctfile.in.sh Makefile
-	@$(do_subst_config_vals)
-	chmod a+rx $@
-endif
 
 ## main.cc must depend on Makefile.  Calling configure may change
 ## default/config values.  However, calling configure will also 
@@ -174,23 +151,11 @@ make-version-links:
 	  mv $$f$(EXEEXT) $$f-$(version)$(EXEEXT) && \
 	    $(LN_S) $$f-$(version)$(EXEEXT) $$f$(EXEEXT); \
 	done
-if ! AMCOND_BUILD_COMPILED_AUX_PROGRAMS
-	cd $(DESTDIR)$(bindir) && \
-	for f in $(basename $(bin_SCRIPTS)); do \
-	  mv $$f $$f-$(version) && \
-	    $(LN_S) $$f-$(version) $$f; \
-	done
-endif
 
 remove-version-links:
 	for f in $(basename $(bin_PROGRAMS)); do \
 	  rm -f $(DESTDIR)$(bindir)/$$f-$(version)$(EXEEXT); \
 	done
-if ! AMCOND_BUILD_COMPILED_AUX_PROGRAMS
-	for f in $(basename $(bin_SCRIPTS)); do \
-	  rm -f $(DESTDIR)$(bindir)/$$f-$(version); \
-	done
-endif
 
 .PHONY: make-version-links remove-version-links
 
@@ -206,5 +171,4 @@ octave-gui-$(version)$(EXEEXT): octave-gui$(EXEEXT)
 	$(LN_S) $< $@
 
 CLEANFILES = \
-  $(bin_SCRIPTS) \
   $(OCTAVE_VERSION_LINKS)

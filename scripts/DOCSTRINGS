@@ -1504,7 +1504,7 @@ properties of the object.
 When the input is a Java object @var{javaobj} or Java classname
 @var{jclassname} the name are the public data elements of the object or
 class.
-@seealso{struct, methods}
+@seealso{nfields, isfield, orderfields, struct, methods}
 @end deftypefn
 flipdim
 @c flipdim scripts/general/flipdim.m
@@ -1696,18 +1696,22 @@ results, use @code{sprintf} (@pxref{Formatted Output}).
 @deftypefnx {Function File} {@var{yi} =} interp1 (@var{y}, @var{xi})
 @deftypefnx {Function File} {@var{yi} =} interp1 (@dots{}, @var{method})
 @deftypefnx {Function File} {@var{yi} =} interp1 (@dots{}, @var{extrap})
+@deftypefnx {Function File} {@var{yi} =} interp1 (@dots{}, "left")
+@deftypefnx {Function File} {@var{yi} =} interp1 (@dots{}, "right")
 @deftypefnx {Function File} {@var{pp} =} interp1 (@dots{}, "pp")
 
-One-dimensional interpolation.  Interpolates to determine the value of
-@var{yi} at the points, @var{xi}.  If not specified, @var{x} is taken
-to be the indices of @var{y}.  If @var{y} is a matrix or an N-dimensional
-array, the interpolation is performed on each column of @var{y}.
+One-dimensional interpolation.
+
+Interpolate input data to determine the value of @var{yi} at the points
+@var{xi}.  If not specified, @var{x} is taken to be the indices of @var{y}.
+If @var{y} is a matrix or an N-dimensional array, the interpolation is
+performed on each column of @var{y}.
 
 Method is one of:
 
 @table @asis
 @item @qcode{"nearest"}
-Return the nearest neighbor.
+Return the nearest neighbor
 
 @item @qcode{"linear"}
 Linear interpolation from nearest neighbors
@@ -1723,18 +1727,19 @@ Cubic spline interpolation---smooth first and second derivatives
 throughout the curve
 @end table
 
-Appending '*' to the start of the above method forces @code{interp1}
+Adding '*' to the start of any method above forces @code{interp1}
 to assume that @var{x} is uniformly spaced, and only @code{@var{x}(1)}
 and @code{@var{x}(2)} are referenced.  This is usually faster,
 and is never slower.  The default method is @qcode{"linear"}.
 
 If @var{extrap} is the string @qcode{"extrap"}, then extrapolate values
-beyond the endpoints.  If @var{extrap} is a number, replace values beyond
-the endpoints with that number.  If @var{extrap} is missing, assume NA.
+beyond the endpoints using the current @var{method}.  If @var{extrap} is a
+number, then replace values beyond the endpoints with that number.  When
+unspecified, @var{extrap} defaults to NA.
 
-If the string argument @qcode{"pp"} is specified, then @var{xi} should not be
-supplied and @code{interp1} returns the piecewise polynomial that
-can later be used with @code{ppval} to evaluate the interpolation.
+If the string argument @qcode{"pp"} is specified, then @var{xi} should not
+be supplied and @code{interp1} returns a piecewise polynomial object.  This 
+object can later be used with @code{ppval} to evaluate the interpolation.
 There is an equivalence, such that @code{ppval (interp1 (@var{x},
 @var{y}, @var{method}, @qcode{"pp"}), @var{xi}) == interp1 (@var{x}, @var{y},
 @var{xi}, @var{method}, @qcode{"extrap"})}.
@@ -1745,7 +1750,7 @@ If @var{x} is increasing, the default discontinuous interpolant is
 right-continuous.  If @var{x} is decreasing, the default discontinuous
 interpolant is left-continuous.
 The continuity condition of the interpolant may be specified by using
-the options, @qcode{"-left"} or @qcode{"-right"}, to select a left-continuous
+the options, @qcode{"left"} or @qcode{"right"}, to select a left-continuous
 or right-continuous interpolant, respectively.
 Discontinuous interpolation is only allowed for @qcode{"nearest"} and
 @qcode{"linear"} methods; in all other cases, the @var{x}-values must be
@@ -1769,7 +1774,7 @@ legend ("original", "linear", "spline", "cubic", "nearest");
 @end group
 @end example
 
-@seealso{interpft}
+@seealso{interpft, interp2, interp3, interpn}
 @end deftypefn
 interp2
 @c interp2 scripts/general/interp2.m
@@ -3945,7 +3950,7 @@ The
 resulting cache is saved in the file @var{out_file}.
 The cache is used to speed up @code{lookfor}.
 
-If no directory is given (or it is the empty matrix), a cache for builtin
+If no directory is given (or it is the empty matrix), a cache for built-in
 operators, etc. is generated.
 
 @seealso{doc_cache_file, lookfor, path}
@@ -6578,8 +6583,12 @@ List all breakpoints.
 Report the current file and line number where execution is stopped.
 
 @item dbtype
-List the function where execution is currently stopped, enumerating
+Display the code of the function being debugged, enumerating
 the line numbers.
+
+@item dblist
+List 10 lines of code centered around the line number where execution is
+stopped.
 
 @item  dbstep
 @itemx dbnext
@@ -7026,7 +7035,7 @@ Extract a field from a structure (or a nested structure).  The syntax
 is the same as @code{setfield}, except it omits the final @var{val}
 argument, returning this value instead of setting it.
 
-@seealso{setfield, rmfield, isfield, isstruct, fieldnames, struct}
+@seealso{setfield, rmfield, isfield, fieldnames, isstruct, struct}
 @end deftypefn
 gunzip
 @c gunzip scripts/miscellaneous/gunzip.m
@@ -7227,7 +7236,7 @@ Return the filename extension used for MEX files.
 @c mkoctfile scripts/miscellaneous/mkoctfile.m
 -*- texinfo -*-
 @deftypefn  {Command} {} mkoctfile [-options] file @dots{}
-@deftypefnx {Function File} {[@var{output}, @var{status} =} mkoctfile (@dots{})
+@deftypefnx {Function File} {[@var{output}, @var{status}] =} mkoctfile (@dots{})
 
 The @code{mkoctfile} function compiles source code written in C,
 C++, or Fortran.  Depending on the options used with @code{mkoctfile}, the
@@ -7287,30 +7296,33 @@ a stand-alone executable.
 Print the configuration variable VAR@.  Recognized variables are:
 
 @example
-   ALL_CFLAGS                FFTW3F_LIBS
-   ALL_CXXFLAGS              FLIBS
-   ALL_FFLAGS                FPICFLAG
-   ALL_LDFLAGS               INCFLAGS
-   BLAS_LIBS                 LAPACK_LIBS
-   CC                        LDFLAGS
-   CFLAGS                    LD_CXX
-   CPICFLAG                  LD_STATIC_FLAG
-   CPPFLAGS                  LFLAGS
-   CXX                       LIBOCTAVE
-   CXXFLAGS                  LIBOCTINTERP
-   CXXPICFLAG                LIBS
-   DEPEND_EXTRA_SED_PATTERN  OCTAVE_LIBS
-   DEPEND_FLAGS              OCTAVE_LINK_DEPS
-   DL_LD                     OCT_LINK_DEPS
-   DL_LDFLAGS                RDYNAMIC_FLAG
-   EXEEXT                    READLINE_LIBS
-   F77                       SED
-   F77_INTEGER_8_FLAG        XTRA_CFLAGS
-   FFLAGS                    XTRA_CXXFLAGS
-   FFTW3_LDFLAGS
-   FFTW3_LIBS
-   FFTW3F_LDFLAGS
-
+   ALL_CFLAGS                  INCFLAGS
+   ALL_CXXFLAGS                INCLUDEDIR
+   ALL_FFLAGS                  LAPACK_LIBS
+   ALL_LDFLAGS                 LD_CXX
+   AR                          LDFLAGS
+   BLAS_LIBS                   LD_STATIC_FLAG
+   CC                          LFLAGS
+   CFLAGS                      LIBDIR
+   CPICFLAG                    LIBOCTAVE
+   CPPFLAGS                    LIBOCTINTERP
+   CXX                         LIBS
+   CXXFLAGS                    OCTAVE_HOME
+   CXXPICFLAG                  OCTAVE_LIBS
+   DEPEND_EXTRA_SED_PATTERN    OCTAVE_LINK_DEPS
+   DEPEND_FLAGS                OCTAVE_LINK_OPTS
+   DL_LD                       OCTAVE_PREFIX
+   DL_LDFLAGS                  OCTINCLUDEDIR
+   F77                         OCTLIBDIR
+   F77_INTEGER8_FLAG           OCT_LINK_DEPS
+   FFLAGS                      OCT_LINK_OPTS
+   FFTW3F_LDFLAGS              RANLIB
+   FFTW3F_LIBS                 RDYNAMIC_FLAG
+   FFTW3_LDFLAGS               READLINE_LIBS
+   FFTW3_LIBS                  SED
+   FFTW_LIBS                   SPECIAL_MATH_LIB
+   FLIBS                       XTRA_CFLAGS
+   FPICFLAG                    XTRA_CXXFLAGS
 @end example
 
 @item --link-stand-alone
@@ -7679,7 +7691,7 @@ Note that the same result as in the above example could be achieved by:
 @var{SA}(2).bar(3).baz = 6
 @end group
 @end example
-@seealso{getfield, rmfield, isfield, isstruct, fieldnames, struct}
+@seealso{getfield, rmfield, isfield, fieldnames, isstruct, struct}
 @end deftypefn
 substruct
 @c substruct scripts/miscellaneous/substruct.m
@@ -11326,47 +11338,79 @@ generates the ellipsoid.
 errorbar
 @c errorbar scripts/plot/draw/errorbar.m
 -*- texinfo -*-
-@deftypefn  {Function File} {} errorbar (@var{args})
+@deftypefn  {Function File} {} errorbar (@var{y}, @var{ey})
+@deftypefnx {Function File} {} errorbar (@var{y}, @dots{}, @var{fmt})
+@deftypefnx {Function File} {} errorbar (@var{x}, @var{y}, @var{ey})
+@deftypefnx {Function File} {} errorbar (@var{x}, @var{y}, @var{err}, @var{fmt})
+@deftypefnx {Function File} {} errorbar (@var{x}, @var{y}, @var{lerr}, @var{uerr}, @var{fmt})
+@deftypefnx {Function File} {} errorbar (@var{x}, @var{y}, @var{ex}, @var{ey}, @var{fmt})
+@deftypefnx {Function File} {} errorbar (@var{x}, @var{y}, @var{lx}, @var{ux}, @var{ly}, @var{uy}, @var{fmt})
+@deftypefnx {Function File} {} errorbar (@var{x1}, @var{y1}, @dots{}, @var{fmt}, @var{xn}, @var{yn}, @dots{})
 @deftypefnx {Function File} {} errorbar (@var{hax}, @dots{})
 @deftypefnx {Function File} {@var{h} =} errorbar (@dots{})
-Create a 2-D with errorbars.
+Create a 2-D plot with errorbars.
 
-Many different combinations of arguments are possible.  The simplest
-form is
+Many different combinations of arguments are possible.  The simplest form is
 
 @example
 errorbar (@var{y}, @var{ey})
 @end example
 
 @noindent
-where the first argument is taken as the set of @var{y} coordinates
-and the second argument @var{ey} is taken as the errors of the
-@var{y} values.  @var{x} coordinates are taken to be the indices
-of the elements, starting with 1.
+where the first argument is taken as the set of @var{y} coordinates, the
+second argument @var{ey} are the errors around the @var{y} values, and the
+@var{x} coordinates are taken to be the indices of the elements
+(@code{1:numel (@var{y})}).
 
-If more than two arguments are given, they are interpreted as
+The general form of the function is
 
 @example
-errorbar (@var{x}, @var{y}, @dots{}, @var{fmt}, @dots{})
+errorbar (@var{x}, @var{y}, @var{err1}, @dots{}, @var{fmt}, @dots{})
 @end example
 
 @noindent
-where after @var{x} and @var{y} there can be up to four error
-parameters such as @var{ey}, @var{ex}, @var{ly}, @var{uy}, etc.,
-depending on the plot type.  Any number of argument sets may appear,
-as long as they are separated with a format string @var{fmt}.
+After the @var{x} and @var{y} arguments there can be 1, 2, or 4
+parameters specifying the error values depending on the nature of the error
+values and the plot format @var{fmt}.
 
-If @var{y} is a matrix, @var{x} and error parameters must also be matrices
-having same dimensions.  The columns of @var{y} are plotted versus the
-corresponding columns of @var{x} and errorbars are drawn from
-the corresponding columns of error parameters.
+@table @asis
+@item @var{err} (scalar)
+When the error is a scalar all points share the same error value.
+The errorbars are symmetric and are drawn from @var{data}-@var{err} to
+@var{data}+@var{err}.
+The @var{fmt} argument determines whether @var{err} is in the x-direction, 
+y-direction (default), or both.
 
-If @var{fmt} is missing, yerrorbars ("~") plot style is assumed.
+@item @var{err} (vector or matrix)
+Each data point has a particular error value.
+The errorbars are symmetric and are drawn from @var{data}(n)-@var{err}(n) to
+@var{data}(n)+@var{err}(n).
 
-If the @var{fmt} argument is supplied, it is interpreted as in
-normal plots.  In addition, @var{fmt} may include an errorbar style
-which must precede the line and marker format.  The following plot
-styles are supported by errorbar:
+@item @var{lerr}, @var{uerr} (scalar)
+The errors have a single low-side value and a single upper-side value.
+The errorbars are not symmetric and are drawn from @var{data}-@var{lerr} to
+@var{data}+@var{uerr}.
+
+@item @var{lerr}, @var{uerr} (vector or matrix)
+Each data point has a low-side error and an upper-side error.
+The errorbars are not symmetric and are drawn from
+@var{data}(n)-@var{lerr}(n) to @var{data}(n)+@var{uerr}(n).
+@end table
+
+Any number of data sets (@var{x1},@var{y1}, @var{x2},@var{y2}, @dots{}) may
+appear as long as they are separated by a format string @var{fmt}.
+
+If @var{y} is a matrix, @var{x} and the error parameters must also be
+matrices having the same dimensions.  The columns of @var{y} are plotted
+versus the corresponding columns of @var{x} and errorbars are taken from
+the corresponding columns of the error parameters.
+
+If @var{fmt} is missing, the yerrorbars ("~") plot style is assumed.
+
+If the @var{fmt} argument is supplied then it is interpreted, as in normal
+plots, to specify the line style, marker, and color.  In addition,
+@var{fmt} may include an errorbar style which @strong{must precede} the
+ordinary format codes.  The following errorbar styles are supported:
 
 @table @samp
 @item ~
@@ -11378,14 +11422,14 @@ Set xerrorbars plot style.
 @item ~>
 Set xyerrorbars plot style.
 
-@item #
-Set boxes plot style.
-
 @item #~
-Set boxerrorbars plot style.
+Set yboxes plot style.
+
+@item #
+Set xboxes plot style.
 
 @item #~>
-Set boxxyerrorbars plot style.
+Set xyboxes plot style.
 @end table
 
 If the first argument @var{hax} is an axes handle, then plot into this axis,
@@ -11394,15 +11438,24 @@ rather than the current axes returned by @code{gca}.
 The optional return value @var{h} is a handle to the hggroup object
 representing the data plot and errorbars.
 
+Note: For compatibility with @sc{matlab} a line is drawn through all data
+points.  However, most scientific errorbar plots are a scatter plot of
+points with errorbars.  To accomplish this, add a marker style to the
+@var{fmt} argument such as @qcode{"."}.  Alternatively, remove the line
+by modifying the returned graphic handle with
+@code{set (h, "linestyle", "none")}.
+
 Examples:
 
 @example
-errorbar (@var{x}, @var{y}, @var{ex}, ">")
+errorbar (@var{x}, @var{y}, @var{ex}, ">.r")
 @end example
 
 @noindent
 produces an xerrorbar plot of @var{y} versus @var{x} with @var{x}
-errorbars drawn from @var{x}-@var{ex} to @var{x}+@var{ex}.
+errorbars drawn from @var{x}-@var{ex} to @var{x}+@var{ex}.  The marker
+@qcode{"."} is used so no connecting line is drawn and the errorbars
+appear in red.
 
 @example
 @group
@@ -12323,7 +12376,14 @@ to the line objects created.
 loglogerr
 @c loglogerr scripts/plot/draw/loglogerr.m
 -*- texinfo -*-
-@deftypefn  {Function File} {} loglogerr (@var{args})
+@deftypefn  {Function File} {} loglogerr (@var{y}, @var{ey})
+@deftypefnx {Function File} {} loglogerr (@var{y}, @dots{}, @var{fmt})
+@deftypefnx {Function File} {} loglogerr (@var{x}, @var{y}, @var{ey})
+@deftypefnx {Function File} {} loglogerr (@var{x}, @var{y}, @var{err}, @var{fmt})
+@deftypefnx {Function File} {} loglogerr (@var{x}, @var{y}, @var{lerr}, @var{uerr}, @var{fmt})
+@deftypefnx {Function File} {} loglogerr (@var{x}, @var{y}, @var{ex}, @var{ey}, @var{fmt})
+@deftypefnx {Function File} {} loglogerr (@var{x}, @var{y}, @var{lx}, @var{ux}, @var{ly}, @var{uy}, @var{fmt})
+@deftypefnx {Function File} {} loglogerr (@var{x1}, @var{y1}, @dots{}, @var{fmt}, @var{xn}, @var{yn}, @dots{})
 @deftypefnx {Function File} {} loglogerr (@var{hax}, @dots{})
 @deftypefnx {Function File} {@var{h} =} loglogerr (@dots{})
 Produce 2-D plots on a double logarithm axis with errorbars.
@@ -13415,9 +13475,16 @@ scatter (x, y, [], sqrt (x.^2 + y.^2));
 semilogxerr
 @c semilogxerr scripts/plot/draw/semilogxerr.m
 -*- texinfo -*-
-@deftypefn  {Function File} {} semilogxerr (@var{args})
-@deftypefnx {Function File} {} semilogxerr (@var{hax}, @var{args})
-@deftypefnx {Function File} {@var{h} =} semilogxerr (@var{args})
+@deftypefn  {Function File} {} semilogxerr (@var{y}, @var{ey})
+@deftypefnx {Function File} {} semilogxerr (@var{y}, @dots{}, @var{fmt})
+@deftypefnx {Function File} {} semilogxerr (@var{x}, @var{y}, @var{ey})
+@deftypefnx {Function File} {} semilogxerr (@var{x}, @var{y}, @var{err}, @var{fmt})
+@deftypefnx {Function File} {} semilogxerr (@var{x}, @var{y}, @var{lerr}, @var{uerr}, @var{fmt})
+@deftypefnx {Function File} {} semilogxerr (@var{x}, @var{y}, @var{ex}, @var{ey}, @var{fmt})
+@deftypefnx {Function File} {} semilogxerr (@var{x}, @var{y}, @var{lx}, @var{ux}, @var{ly}, @var{uy}, @var{fmt})
+@deftypefnx {Function File} {} semilogxerr (@var{x1}, @var{y1}, @dots{}, @var{fmt}, @var{xn}, @var{yn}, @dots{})
+@deftypefnx {Function File} {} semilogxerr (@var{hax}, @dots{})
+@deftypefnx {Function File} {@var{h} =} semilogxerr (@dots{})
 Produce 2-D plots using a logarithmic scale for the x-axis and
 errorbars at each data point.
 
@@ -13462,9 +13529,16 @@ The optional return value @var{h} is a graphics handle to the created plot.
 semilogyerr
 @c semilogyerr scripts/plot/draw/semilogyerr.m
 -*- texinfo -*-
-@deftypefn  {Function File} {} semilogyerr (@var{args})
-@deftypefnx {Function File} {} semilogyerr (@var{hax}, @var{args})
-@deftypefnx {Function File} {@var{h} =} semilogyerr (@var{args})
+@deftypefn  {Function File} {} semilogyerr (@var{y}, @var{ey})
+@deftypefnx {Function File} {} semilogyerr (@var{y}, @dots{}, @var{fmt})
+@deftypefnx {Function File} {} semilogyerr (@var{x}, @var{y}, @var{ey})
+@deftypefnx {Function File} {} semilogyerr (@var{x}, @var{y}, @var{err}, @var{fmt})
+@deftypefnx {Function File} {} semilogyerr (@var{x}, @var{y}, @var{lerr}, @var{uerr}, @var{fmt})
+@deftypefnx {Function File} {} semilogyerr (@var{x}, @var{y}, @var{ex}, @var{ey}, @var{fmt})
+@deftypefnx {Function File} {} semilogyerr (@var{x}, @var{y}, @var{lx}, @var{ux}, @var{ly}, @var{uy}, @var{fmt})
+@deftypefnx {Function File} {} semilogyerr (@var{x1}, @var{y1}, @dots{}, @var{fmt}, @var{xn}, @var{yn}, @dots{})
+@deftypefnx {Function File} {} semilogyerr (@var{hax}, @dots{})
+@deftypefnx {Function File} {@var{h} =} semilogyerr (@dots{})
 Produce 2-D plots using a logarithmic scale for the y-axis and
 errorbars at each data point.
 
@@ -14964,7 +15038,7 @@ Return true if @var{prop} is a property of the object with handle @var{h}.
 
 @var{h} may also be an array of handles in which case @var{res} will be a
 logical array indicating whether each handle has the property @var{prop}.
-@seealso{get, set}
+@seealso{get, set, ismethod, isobject}
 @end deftypefn
 linkprop
 @c linkprop scripts/plot/util/linkprop.m
@@ -17114,6 +17188,9 @@ denotes the lag-operator and @math{d} is greater than -1.
 @c freqz scripts/signal/freqz.m
 -*- texinfo -*-
 @deftypefn  {Function File} {[@var{h}, @var{w}] =} freqz (@var{b}, @var{a}, @var{n}, "whole")
+@deftypefnx {Function File} {[@var{h}, @var{w}] =} freqz (@var{b})
+@deftypefnx {Function File} {[@var{h}, @var{w}] =} freqz (@var{b}, @var{a})
+@deftypefnx {Function File} {[@var{h}, @var{w}] =} freqz (@var{b}, @var{a}, @var{n})
 @deftypefnx {Function File} {@var{h} =} freqz (@var{b}, @var{a}, @var{w})
 @deftypefnx {Function File} {[@dots{}] =} freqz (@dots{}, @var{Fs})
 @deftypefnx {Function File} {} freqz (@dots{})
@@ -17123,10 +17200,10 @@ whose numerator and denominator coefficients are @var{b} and @var{a},
 respectively.  The response is evaluated at @var{n} angular frequencies
 between 0 and
 @ifnottex
- 2*pi.
+2*pi.
 @end ifnottex
 @tex
- $2\pi$.
+$2\pi$.
 @end tex
 
 @noindent
@@ -17136,17 +17213,16 @@ If @var{a} is omitted, the denominator is assumed to be 1 (this
 corresponds to a simple FIR filter).
 
 If @var{n} is omitted, a value of 512 is assumed.
-
 For fastest computation, @var{n} should factor into a small number of
 small primes.
 
 If the fourth argument, @qcode{"whole"}, is omitted the response is
 evaluated at frequencies between 0 and
 @ifnottex
- pi.
+pi.
 @end ifnottex
 @tex
- $\pi$.
+$\pi$.
 @end tex
 
 @code{freqz (@var{b}, @var{a}, @var{w})}
@@ -17162,14 +17238,21 @@ Return frequencies in Hz instead of radians assuming a sampling rate
 
 @code{freqz (@dots{})}
 
-Plot the pass band, stop band and phase response of @var{h} rather
-than returning them.
+Plot the magnitude and phase response of @var{h} rather than returning them.
+
+@seealso{freqz_plot}
 @end deftypefn
 freqz_plot
 @c freqz_plot scripts/signal/freqz_plot.m
 -*- texinfo -*-
-@deftypefn {Function File} {} freqz_plot (@var{w}, @var{h})
-Plot the pass band, stop band and phase response of @var{h}.
+@deftypefn  {Function File} {} freqz_plot (@var{w}, @var{h})
+@deftypefnx {Function File} {} freqz_plot (@var{w}, @var{h}, @var{freq_norm})
+Plot the magnitude and phase response of @var{h}.
+
+If the optional @var{freq_norm} argument is true, the frequency vector
+@var{w} is in units of normalized radians.  If @var{freq_norm} is false, or
+not given, then @var{w} is measured in Hertz.
+@seealso{freqz}
 @end deftypefn
 hamming
 @c hamming scripts/signal/hamming.m
@@ -19845,6 +19928,13 @@ covariance [default]
 @item 1:
   normalize with @math{N}, this provides the second moment around the mean
 @end table
+
+@sc{matlab} compatibility: Octave always computes the covariance matrix.
+For two inputs, however, @sc{matlab} will calculate
+@code{cov (@var{x}(:), @var{y}(:))} whenever the number of elements in
+@var{x} and @var{y} are equal.  This will result in a scalar rather than
+a matrix output.  Code relying on this odd definition will need to be
+changed when running in Octave.
 @seealso{corr}
 @end deftypefn
 gls
@@ -21397,13 +21487,13 @@ be specified with a vector of dimensions @var{sz}.
 -*- texinfo -*-
 @deftypefn  {Function File} {} logncdf (@var{x})
 @deftypefnx {Function File} {} logncdf (@var{x}, @var{mu}, @var{sigma})
-For each element of @var{x}, compute the cumulative distribution
-function (CDF) at @var{x} of the lognormal distribution with
-parameters @var{mu} and @var{sigma}.  If a random variable follows this
-distribution, its logarithm is normally distributed with mean
-@var{mu} and standard deviation @var{sigma}.
+For each element of @var{x}, compute the cumulative distribution function
+(CDF) at @var{x} of the lognormal distribution with parameters
+@var{mu} and @var{sigma}.  If a random variable follows this distribution,
+its logarithm is normally distributed with mean @var{mu} and standard
+deviation @var{sigma}.
 
-Default values are @var{mu} = 1, @var{sigma} = 1.
+Default values are @var{mu} = 0, @var{sigma} = 1.
 @end deftypefn
 logninv
 @c logninv scripts/statistics/distributions/logninv.m
@@ -21411,12 +21501,12 @@ Default values are @var{mu} = 1, @var{sigma} = 1.
 @deftypefn  {Function File} {} logninv (@var{x})
 @deftypefnx {Function File} {} logninv (@var{x}, @var{mu}, @var{sigma})
 For each element of @var{x}, compute the quantile (the inverse of the
-CDF) at @var{x} of the lognormal distribution with parameters @var{mu}
-and @var{sigma}.  If a random variable follows this distribution, its
-logarithm is normally distributed with mean @code{log (@var{mu})} and
-variance @var{sigma}.
+CDF) at @var{x} of the lognormal distribution with parameters
+@var{mu} and @var{sigma}.  If a random variable follows this distribution,
+its logarithm is normally distributed with mean @var{mu} and standard
+deviation @var{sigma}.
 
-Default values are @var{mu} = 1, @var{sigma} = 1.
+Default values are @var{mu} = 0, @var{sigma} = 1.
 @end deftypefn
 lognpdf
 @c lognpdf scripts/statistics/distributions/lognpdf.m
@@ -21426,10 +21516,10 @@ Default values are @var{mu} = 1, @var{sigma} = 1.
 For each element of @var{x}, compute the probability density function
 (PDF) at @var{x} of the lognormal distribution with parameters
 @var{mu} and @var{sigma}.  If a random variable follows this distribution,
-its logarithm is normally distributed with mean @var{mu}
-and standard deviation @var{sigma}.
+its logarithm is normally distributed with mean @var{mu} and standard
+deviation @var{sigma}.
 
-Default values are @var{mu} = 1, @var{sigma} = 1.
+Default values are @var{mu} = 0, @var{sigma} = 1.
 @end deftypefn
 lognrnd
 @c lognrnd scripts/statistics/distributions/lognrnd.m
@@ -23134,18 +23224,18 @@ This will be faster than using regexp in most cases.
 -*- texinfo -*-
 @deftypefn  {Function File} {@var{str} =} strjoin (@var{cstr})
 @deftypefnx {Function File} {@var{str} =} strjoin (@var{cstr}, @var{delimiter})
-Join the elements of the cell-string array, @var{cstr}, into a single
+Join the elements of the cell string array, @var{cstr}, into a single
 string.
 
 If no @var{delimiter} is specified, the elements of @var{cstr}
 separated by a space.
 
-If @var{delimiter} is specified as a string, the cell-string array is
+If @var{delimiter} is specified as a string, the cell string array is
 joined using the string.  Escape sequences are supported.
 
-If @var{delimiter} is a cell-string array whose length is one less
+If @var{delimiter} is a cell string array whose length is one less
 than @var{cstr}, then the elements of @var{cstr} are joined by
-interleaving the cell-string elements of @var{delimiter}.  Escape
+interleaving the cell string elements of @var{delimiter}.  Escape
 sequences are not supported.
 
 @example
@@ -23221,13 +23311,13 @@ strmatch ("apple", ["apple  "; "apple juice"; "an apple"], "exact")
 @deftypefnx {Function File} {[@var{cstr}] =} strsplit (@dots{}, @var{name}, @var{value})
 @deftypefnx {Function File} {[@var{cstr}, @var{matches}] =} strsplit (@dots{})
 Split the string @var{s} using the delimiters specified by @var{del}
-and return a cell-string array of sub-strings.  If a delimiter is not
+and return a cell string array of substrings.  If a delimiter is not
 specified the string, @var{s}, is split at whitespace.  The delimiter,
-@var{del} may be a string, a scalar cell-string, or cell-string array.
-@var{del} must be a cell-string array.  By default, consecutive
-delimiters in the input string, @var{s}, are collapsed into one.
+@var{del} may be a string, a scalar cell string, or cell string array.
+By default, consecutive delimiters in the input string @var{s} are
+collapsed into one.
 
-The second output, @var{matches}, returns the delmiters which were matched
+The second output, @var{matches}, returns the delimiters which were matched
 in the original string.
 
 Example:

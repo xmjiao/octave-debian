@@ -189,8 +189,8 @@ c = 2
 <dt><a name="index-nargout"></a>Built-in Function: <em></em> <strong>nargout</strong> <em>()</em></dt>
 <dt><a name="index-nargout-1"></a>Built-in Function: <em></em> <strong>nargout</strong> <em>(<var>fcn</var>)</em></dt>
 <dd><p>Within a function, return the number of values the caller expects to
-receive.  If called with the optional argument <var>fcn</var>, a function
-name or handle, return the number of declared output values that the
+receive.  If called with the optional argument <var>fcn</var>&mdash;a function
+name or handle&mdash;return the number of declared output values that the
 function can produce.  If the final output argument is <var>varargout</var>
 the returned value is negative.
 </p>
@@ -206,8 +206,7 @@ the returned value is negative.
 <pre class="example">[s, t] = f ()
 </pre></div>
 
-<p>will cause <code>nargout</code> to return 2 inside the function
-<code>f</code>.
+<p>will cause <code>nargout</code> to return 2 inside the function <code>f</code>.
 </p>
 <p>In the second usage,
 </p>
@@ -218,14 +217,15 @@ the returned value is negative.
 <p>will return 2, because <code>histc</code> has two outputs, whereas
 </p>
 <div class="example">
-<pre class="example">nargout (@deal)
+<pre class="example">nargout (@imread)
 </pre></div>
 
-<p>will return -1, because <code>deal</code> has a variable number of outputs.
+<p>will return -2, because <code>imread</code> has two outputs and the second is
+<var>varargout</var>.
 </p>
-<p>At the top level, <code>nargout</code> with no argument is undefined.
-<code>nargout</code> does not work on builtin functions.
-<code>nargout</code> returns -1 for all anonymous functions.
+<p>At the top level, <code>nargout</code> with no argument is undefined and will
+produce an error.  <code>nargout</code> does not work for built-in functions and
+returns -1 for all anonymous functions.
 </p>
 <p><strong>See also:</strong> <a href="Defining-Functions.html#XREFnargin">nargin</a>, <a href="#XREFvarargin">varargin</a>, <a href="Ignoring-Arguments.html#XREFisargout">isargout</a>, <a href="#XREFvarargout">varargout</a>, <a href="#XREFnthargout">nthargout</a>.
 </p></dd></dl>

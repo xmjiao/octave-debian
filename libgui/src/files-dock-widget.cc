@@ -99,23 +99,23 @@ files_dock_widget::files_dock_widget (QWidget *p)
 
   _sync_browser_directory_action
     = new QAction (QIcon (":/actions/icons/reload.png"),
-                   tr ("Show octave directory"), _navigation_tool_bar);
+                   tr ("Show Octave directory"), _navigation_tool_bar);
   _sync_browser_directory_action->setToolTip (
-    tr ("Goto current octave directory"));
+    tr ("Go to current Octave directory"));
   _sync_browser_directory_action->setEnabled ("false");
 
   _sync_octave_directory_action
     = new QAction (QIcon (":/actions/icons/ok.png"),
-                   tr ("Set octave directory"), _navigation_tool_bar);
+                   tr ("Set Octave directory"), _navigation_tool_bar);
   _sync_octave_directory_action->setToolTip (
-    tr ("Set octave directroy to current browser directory"));
+    tr ("Set Octave directroy to current browser directory"));
   _sync_octave_directory_action->setEnabled ("false");
 
   QToolButton * popdown_button = new QToolButton ();
   popdown_button->setToolTip (tr ("Actions on current directory"));
   QMenu * popdown_menu = new QMenu ();
   popdown_menu->addAction (QIcon (":/actions/icons/home.png"),
-                           tr ("Show Home directory"),
+                           tr ("Show Home Directory"),
                            this, SLOT (popdownmenu_home (bool)));
   popdown_menu->addAction (_sync_browser_directory_action);
   popdown_menu->addAction (_sync_octave_directory_action);
@@ -126,18 +126,19 @@ files_dock_widget::files_dock_widget (QWidget *p)
                                       _navigation_tool_bar));
 
   popdown_menu->addSeparator ();
-  popdown_menu->addAction (QIcon (":/actions/icons/search.png"),
-                           tr ("Search directory"),
+  popdown_menu->addAction (QIcon (":/actions/icons/folder.png"),
+                           tr ("Search Directory..."),
                            this, SLOT (popdownmenu_search_dir (bool)));
   popdown_menu->addSeparator ();
-  popdown_menu->addAction ( tr ("Find Files ..."),
-                            this, SLOT (popdownmenu_findfiles (bool)));
+  popdown_menu->addAction (QIcon (":/actions/icons/findf.png"),
+                           tr ("Find Files..."),
+                           this, SLOT (popdownmenu_findfiles (bool)));
   popdown_menu->addSeparator ();
   popdown_menu->addAction (QIcon (":/actions/icons/filenew.png"),
-                           tr ("New File"),
+                           tr ("New File..."),
                            this, SLOT (popdownmenu_newfile (bool)));
   popdown_menu->addAction (QIcon (":/actions/icons/folder_new.png"),
-                           tr ("New Directory"),
+                           tr ("New Directory..."),
                            this, SLOT (popdownmenu_newdir (bool)));
 
   _navigation_tool_bar->addWidget (_current_directory);
@@ -455,12 +456,23 @@ files_dock_widget::contextmenu_requested (const QPoint& mpos)
   QMenu menu (this);
 
   QModelIndex index = _file_tree_view->indexAt (mpos);
-  //QAbstractItemModel *m = _file_tree_view->model ();
 
   if (index.isValid ())
     {
       QFileInfo info = _file_system_model->fileInfo (index);
 
+      QItemSelectionModel *m = _file_tree_view->selectionModel ();
+      QModelIndexList sel = m->selectedRows ();
+
+      // check if item at mouse position is seleccted
+      if (! sel.contains (index))
+        { // is not selected -> clear actual selection and select this item
+          m->setCurrentIndex(index,
+                  QItemSelectionModel::Clear | QItemSelectionModel::Select |
+                  QItemSelectionModel::Rows);
+        }
+
+      // construct the context menu depending on item
       menu.addAction (QIcon (":/actions/icons/fileopen.png"), tr ("Open"),
                       this, SLOT (contextmenu_open (bool)));
 
@@ -484,7 +496,8 @@ files_dock_widget::contextmenu_requested (const QPoint& mpos)
                           tr ("Set Current Directory"),
                           this, SLOT (contextmenu_setcurrentdir (bool)));
           menu.addSeparator ();
-          menu.addAction (tr ("Find Files ..."), this,
+          menu.addAction (QIcon (":/actions/icons/findf.png"),
+                          tr ("Find Files..."), this,
                           SLOT (contextmenu_findfiles (bool)));
         }
 
@@ -504,6 +517,7 @@ files_dock_widget::contextmenu_requested (const QPoint& mpos)
                           this, SLOT (contextmenu_newdir (bool)));
         }
 
+      // show the menu
       menu.exec (_file_tree_view->mapToGlobal (mpos));
 
     }
@@ -518,7 +532,14 @@ files_dock_widget::contextmenu_open (bool)
 
   for ( QModelIndexList::iterator it = rows.begin (); it != rows.end (); it++)
     {
-      item_double_clicked (*it);
+      QFileInfo file = _file_system_model->fileInfo (*it);
+      if (file.exists ())
+        {
+          if (file.isFile ())
+            emit open_file (file.absoluteFilePath ());
+          else
+            set_current_directory (file.absoluteFilePath ());
+        }
     }
 }
 
@@ -814,8 +835,8 @@ files_dock_widget::process_new_file (const QString &parent_dir)
   bool ok;
 
   QString name = QInputDialog::getText (this, tr ("Create File"),
-                                        tr ("Create file in\n") + parent_dir,
-                                        QLineEdit::Normal, "New File.txt", &ok);
+       tr ("Create file in\n","String ends with \\n!") + parent_dir,
+       QLineEdit::Normal, "New File.txt", &ok);
   if (ok && name.length () > 0)
     {
       name = parent_dir + "/" + name;
@@ -832,9 +853,8 @@ files_dock_widget::process_new_dir (const QString &parent_dir)
   bool ok;
 
   QString name = QInputDialog::getText (this, tr ("Create Directory"),
-                                        tr ("Create folder in\n") + parent_dir,
-                                        QLineEdit::Normal, "New Directory",
-                                        &ok);
+                tr ("Create folder in\n","String ends with \\n!") + parent_dir,
+                QLineEdit::Normal, "New Directory", &ok);
   if (ok && name.length () > 0)
     {
       QDir dir (parent_dir);

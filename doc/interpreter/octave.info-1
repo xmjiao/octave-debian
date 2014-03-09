@@ -28,7 +28,7 @@ GNU Octave
 
 This manual documents how to run, install and port GNU Octave, as well
 as its new features and incompatibilities, and how to report bugs.  It
-corresponds to GNU Octave version 3.8.0.
+corresponds to GNU Octave version 3.8.1.
 
 * Menu:
 
@@ -891,7 +891,7 @@ Heikki Junes             Matthias Jüschke        Atsushi Kajita
 Jarkko Kaleva            Mohamed Kamoun           Lute Kamstra
 Fotios Kasolis           Thomas Kasper            Joel Keay
 Mumit Khan               Paul Kienzle             Aaron A. King
-Erik Kjelsson            Arno J. Klaassen         Alexander Klein
+Erik Kjellson            Arno J. Klaassen         Alexander Klein
 Geoffrey Knauth          Heine Kolltveit          Ken Kouno
 Kacper Kowalik           Daniel Kraft             Nir Krakauer
 Aravindh                 Oyvind Kristiansen       Artem Krosheninnikov
@@ -1121,7 +1121,7 @@ manual, *note Copying::.
 run, use, and extend GNU Octave.  Additional chapters describe how to
 report bugs and help contribute code.
 
-   This document corresponds to Octave version 3.8.0.
+   This document corresponds to Octave version 3.8.1.
 
 * Menu:
 
@@ -2193,7 +2193,7 @@ and because they may occasionally be useful for users.
      used to speed up 'lookfor'.
 
      If no directory is given (or it is the empty matrix), a cache for
-     builtin operators, etc.  is generated.
+     built-in operators, etc.  is generated.
 
      See also: *note doc_cache_file: XREFdoc_cache_file, *note lookfor:
      XREFlookfor, *note path: XREFpath.
@@ -3238,8 +3238,10 @@ data type for Octave.
  -- Built-in Function: typeinfo (EXPR)
 
      Return the type of the expression EXPR, as a string.  If EXPR is
-     omitted, return an cell array of strings containing all the
+     omitted, return a cell array of strings containing all the
      currently installed data types.
+
+     See also: *note class: XREFclass, *note isa: XREFisa.
 
 * Menu:
 
@@ -3935,12 +3937,13 @@ that can easily be misinterpreted.
  -- Built-in Function: OLD_VAL = fixed_point_format (NEW_VAL)
  -- Built-in Function: fixed_point_format (NEW_VAL, "local")
      Query or set the internal variable that controls whether Octave
-     will use a scaled format to print matrix values such that the
-     largest element may be written with a single leading digit with the
-     scaling factor is printed on the first line of output.  For
-     example:
+     will use a scaled format to print matrix values.
 
-          octave:1> logspace (1, 7, 5)'
+     The scaled format prints a scaling factor on the first line of
+     output chosen such that the largest matrix element can be written
+     with a single leading digit.  For example:
+
+          logspace (1, 7, 5)'
           ans =
 
             1.0e+07  *
@@ -3951,9 +3954,9 @@ that can easily be misinterpreted.
             0.03162
             1.00000
 
-     Notice that first value appears to be zero when it is actually 1.
-     For this reason, you should be careful when setting
-     'fixed_point_format' to a nonzero value.
+     Notice that the first value appears to be 0 when it is actually 1.
+     Because of the possibilty for confusion you should be careful about
+     enabling 'fixed_point_format'.
 
      When called from inside a function with the "local" option, the
      variable is changed locally for the function and any subroutines it
@@ -4175,26 +4178,58 @@ when converted.
  -- Built-in Function: int8 (X)
      Convert X to 8-bit integer type.
 
+     See also: *note uint8: XREFuint8, *note int16: XREFint16, *note
+     uint16: XREFuint16, *note int32: XREFint32, *note uint32:
+     XREFuint32, *note int64: XREFint64, *note uint64: XREFuint64.
+
  -- Built-in Function: uint8 (X)
      Convert X to unsigned 8-bit integer type.
+
+     See also: *note int8: XREFint8, *note int16: XREFint16, *note
+     uint16: XREFuint16, *note int32: XREFint32, *note uint32:
+     XREFuint32, *note int64: XREFint64, *note uint64: XREFuint64.
 
  -- Built-in Function: int16 (X)
      Convert X to 16-bit integer type.
 
+     See also: *note int8: XREFint8, *note uint8: XREFuint8, *note
+     uint16: XREFuint16, *note int32: XREFint32, *note uint32:
+     XREFuint32, *note int64: XREFint64, *note uint64: XREFuint64.
+
  -- Built-in Function: uint16 (X)
      Convert X to unsigned 16-bit integer type.
+
+     See also: *note int8: XREFint8, *note uint8: XREFuint8, *note
+     int16: XREFint16, *note int32: XREFint32, *note uint32: XREFuint32,
+     *note int64: XREFint64, *note uint64: XREFuint64.
 
  -- Built-in Function: int32 (X)
      Convert X to 32-bit integer type.
 
+     See also: *note int8: XREFint8, *note uint8: XREFuint8, *note
+     int16: XREFint16, *note uint16: XREFuint16, *note uint32:
+     XREFuint32, *note int64: XREFint64, *note uint64: XREFuint64.
+
  -- Built-in Function: uint32 (X)
      Convert X to unsigned 32-bit integer type.
+
+     See also: *note int8: XREFint8, *note uint8: XREFuint8, *note
+     int16: XREFint16, *note uint16: XREFuint16, *note int32: XREFint32,
+     *note int64: XREFint64, *note uint64: XREFuint64.
 
  -- Built-in Function: int64 (X)
      Convert X to 64-bit integer type.
 
+     See also: *note int8: XREFint8, *note uint8: XREFuint8, *note
+     int16: XREFint16, *note uint16: XREFuint16, *note int32: XREFint32,
+     *note uint32: XREFuint32, *note uint64: XREFuint64.
+
  -- Built-in Function: uint64 (X)
      Convert X to unsigned 64-bit integer type.
+
+     See also: *note int8: XREFint8, *note uint8: XREFuint8, *note
+     int16: XREFint16, *note uint16: XREFuint16, *note int32: XREFint32,
+     *note uint32: XREFuint32, *note int64: XREFint64.
 
  -- Built-in Function: intmax (TYPE)
      Return the largest integer that can be represented in an integer
@@ -4535,7 +4570,14 @@ Instead of creating the 'idx' array it is possible to replace
 logical values, or by using the 'true' or 'false' functions.
 
  -- Built-in Function: logical (X)
-     Convert X to logical type.
+     Convert the numeric object X to logical type.
+
+     Any non-zero values will be converted to true (1) while zero values
+     will be converted to false (0).  The non-numeric value NaN cannot
+     be converted and will produce an error.
+
+     Compatibility Note: Octave accepts complex values as input, whereas
+     MATLAB issues an error.
 
      See also: *note double: XREFdouble, *note single: XREFsingle, *note
      char: XREFchar.
@@ -4960,9 +5002,8 @@ character using the 'string_fill_char' function.
  -- Built-in Function: OLD_VAL = string_fill_char (NEW_VAL)
  -- Built-in Function: string_fill_char (NEW_VAL, "local")
      Query or set the internal variable used to pad all rows of a
-     character matrix to the same length.  It must be a single
-     character.  The default value is " " (a single space).  For
-     example:
+     character matrix to the same length; It must be a single character.
+     The default value is " " (a single space).  For example:
 
           string_fill_char ("X");
           [ "these"; "are"; "strings" ]
@@ -5620,19 +5661,18 @@ general regular expressions, the following functions come with Octave.
 
  -- Function File: STR = strjoin (CSTR)
  -- Function File: STR = strjoin (CSTR, DELIMITER)
-     Join the elements of the cell-string array, CSTR, into a single
+     Join the elements of the cell string array, CSTR, into a single
      string.
 
      If no DELIMITER is specified, the elements of CSTR separated by a
      space.
 
-     If DELIMITER is specified as a string, the cell-string array is
+     If DELIMITER is specified as a string, the cell string array is
      joined using the string.  Escape sequences are supported.
 
-     If DELIMITER is a cell-string array whose length is one less than
-     CSTR, then the elements of CSTR are joined by interleaving the
-     cell-string elements of DELIMITER.  Escape sequences are not
-     supported.
+     If DELIMITER is a cell string array whose length is one less than
+     CSTR, then the elements of CSTR are joined by interleaving the cell
+     string elements of DELIMITER.  Escape sequences are not supported.
 
           strjoin ({'Octave','Scilab','Lush','Yorick'}, '*')
                 => 'Octave*Scilab*Lush*Yorick'
@@ -5696,13 +5736,13 @@ general regular expressions, the following functions come with Octave.
  -- Function File: [CSTR] = strsplit (..., NAME, VALUE)
  -- Function File: [CSTR, MATCHES] = strsplit (...)
      Split the string S using the delimiters specified by DEL and return
-     a cell-string array of sub-strings.  If a delimiter is not
-     specified the string, S, is split at whitespace.  The delimiter,
-     DEL may be a string, a scalar cell-string, or cell-string array.
-     DEL must be a cell-string array.  By default, consecutive
-     delimiters in the input string, S, are collapsed into one.
+     a cell string array of substrings.  If a delimiter is not specified
+     the string, S, is split at whitespace.  The delimiter, DEL may be a
+     string, a scalar cell string, or cell string array.  By default,
+     consecutive delimiters in the input string S are collapsed into
+     one.
 
-     The second output, MATCHES, returns the delmiters which were
+     The second output, MATCHES, returns the delimiters which were
      matched in the original string.
 
      Example:
@@ -6932,20 +6972,26 @@ contents of structure arrays.
      calls.  The original variable value is restored when exiting the
      function.
 
+     See also: *note print_struct_array_contents:
+     XREFprint_struct_array_contents.
+
  -- Built-in Function: VAL = print_struct_array_contents ()
  -- Built-in Function: OLD_VAL = print_struct_array_contents (NEW_VAL)
  -- Built-in Function: print_struct_array_contents (NEW_VAL, "local")
      Query or set the internal variable that specifies whether to print
-     struct array contents.  If true, values of struct array elements
-     are printed.  This variable does not affect scalar structures.
-     Their elements are always printed.  In both cases, however,
-     printing will be limited to the number of levels specified by
-     STRUCT_LEVELS_TO_PRINT.
+     struct array contents.
+
+     If true, values of struct array elements are printed.  This
+     variable does not affect scalar structures whose elements are
+     always printed.  In both cases, however, printing will be limited
+     to the number of levels specified by STRUCT_LEVELS_TO_PRINT.
 
      When called from inside a function with the "local" option, the
      variable is changed locally for the function and any subroutines it
      calls.  The original variable value is restored when exiting the
      function.
+
+     See also: *note struct_levels_to_print: XREFstruct_levels_to_print.
 
    Functions can return structures.  For example, the following function
 separates the real and complex parts of a matrix and stores them in two
@@ -7208,11 +7254,14 @@ following example:
                field2 =  2
              }
 
- -- Built-in Function: struct (FIELD1, VALUE1, FIELD2, VALUE2, ...)
+ -- Built-in Function: S = struct ()
+ -- Built-in Function: S = struct (FIELD1, VALUE1, FIELD2, VALUE2, ...)
+ -- Built-in Function: S = struct (OBJ)
 
      Create a scalar or array structure and initialize its values.  The
-     FIELD1, FIELD2, ... variables are strings giving the names of the
-     fields and the VALUE1, VALUE2, ... variables can be any type.
+     FIELD1, FIELD2, ... variables are strings specifying the names of
+     the fields and the VALUE1, VALUE2, ... variables can be of any
+     type.
 
      If the values are cell arrays, create a structure array and
      initialize its values.  The dimensions of each cell array of values
@@ -7242,7 +7291,7 @@ following example:
               foo
 
 
-     The first case is an ordinary scalar struct, one field, one value.
+     The first case is an ordinary scalar struct--one field, one value.
      The second produces an empty struct array with one field and no
      values, since s being passed an empty cell array of struct array
      values.  When the value is a cell array containing a single entry,
@@ -7251,6 +7300,11 @@ following example:
 
      Finally, if the value is a non-scalar cell array, then 'struct'
      produces a struct *array*.
+
+     See also: *note cell2struct: XREFcell2struct, *note fieldnames:
+     XREFfieldnames, *note orderfields: XREForderfields, *note getfield:
+     XREFgetfield, *note setfield: XREFsetfield, *note rmfield:
+     XREFrmfield, *note structfun: XREFstructfun.
 
    The function 'isstruct' can be used to test if an object is a
 structure or a structure array.
@@ -7273,6 +7327,8 @@ below.
  -- Built-in Function: nfields (S)
      Return the number of fields of the structure S.
 
+     See also: *note fieldnames: XREFfieldnames.
+
  -- Function File: NAMES = fieldnames (STRUCT)
  -- Function File: NAMES = fieldnames (OBJ)
  -- Function File: NAMES = fieldnames (JAVAOBJ)
@@ -7290,12 +7346,17 @@ below.
      JCLASSNAME the name are the public data elements of the object or
      class.
 
-     See also: *note struct: XREFstruct, *note methods: XREFmethods.
+     See also: *note nfields: XREFnfields, *note isfield: XREFisfield,
+     *note orderfields: XREForderfields, *note struct: XREFstruct, *note
+     methods: XREFmethods.
 
+ -- Built-in Function: isfield (X, "NAME")
  -- Built-in Function: isfield (X, NAME)
      Return true if the X is a structure and it includes an element
      named NAME.  If NAME is a cell array of strings then a logical
      array of equal dimension is returned.
+
+     See also: *note fieldnames: XREFfieldnames.
 
  -- Function File: S = setfield (S, FIELD, VAL)
  -- Function File: S = setfield (S, IDX1, FIELD1, IDX2, FIELD2, ...,
@@ -7358,8 +7419,8 @@ below.
           SA(2).bar(3).baz = 6
 
      See also: *note getfield: XREFgetfield, *note rmfield: XREFrmfield,
-     *note isfield: XREFisfield, *note isstruct: XREFisstruct, *note
-     fieldnames: XREFfieldnames, *note struct: XREFstruct.
+     *note isfield: XREFisfield, *note fieldnames: XREFfieldnames, *note
+     isstruct: XREFisstruct, *note struct: XREFstruct.
 
  -- Function File: [VAL] = getfield (S, FIELD)
  -- Function File: [VAL] = getfield (S, IDX1, FIELD1, IDX2, FIELD2, ...)
@@ -7368,17 +7429,17 @@ below.
      argument, returning this value instead of setting it.
 
      See also: *note setfield: XREFsetfield, *note rmfield: XREFrmfield,
-     *note isfield: XREFisfield, *note isstruct: XREFisstruct, *note
-     fieldnames: XREFfieldnames, *note struct: XREFstruct.
+     *note isfield: XREFisfield, *note fieldnames: XREFfieldnames, *note
+     isstruct: XREFisstruct, *note struct: XREFstruct.
 
  -- Built-in Function: S = rmfield (S, "F")
  -- Built-in Function: S = rmfield (S, F)
-     Return a copy of the structure (array) S with the field F removed.
-     If F is a cell array of strings or a character array, remove each
-     of the named fields.
+     Return a _copy_ of the structure (array) S with the field F
+     removed.  If F is a cell array of strings or a character array,
+     remove each of the named fields.
 
-     See also: *note cellstr: XREFcellstr, *note iscellstr:
-     XREFiscellstr, *note setfield: XREFsetfield.
+     See also: *note orderfields: XREForderfields, *note fieldnames:
+     XREFfieldnames.
 
  -- Function File: [T, P] = orderfields (S1)
  -- Function File: [T, P] = orderfields (S1, S2)
@@ -7477,7 +7538,7 @@ applied to each field of the structure.  *Note structfun: XREFstructfun.
    Alternatively, to process the data in a structure, the structure
 might be converted to another type of container before being treated.
 
- -- Built-in Function: struct2cell (S)
+ -- Built-in Function: C = struct2cell (S)
      Create a new cell array from the objects stored in the struct
      object.  If F is the number of fields in the structure, the
      resulting cell array will have a dimension vector corresponding to
@@ -7662,10 +7723,15 @@ and *note columns: XREFcolumns.
  -- Built-in Function: cell (M, N)
  -- Built-in Function: cell (M, N, K, ...)
  -- Built-in Function: cell ([M N ...])
-     Create a new cell array object.  If invoked with a single scalar
-     integer argument, return a square NxN cell array.  If invoked with
-     two or more scalar integer arguments, or a vector of integer
-     values, return an array with the given dimensions.
+     Create a new cell array object.
+
+     If invoked with a single scalar integer argument, return a square
+     NxN cell array.  If invoked with two or more scalar integer
+     arguments, or a vector of integer values, return an array with the
+     given dimensions.
+
+     See also: *note cellstr: XREFcellstr, *note mat2cell: XREFmat2cell,
+     *note num2cell: XREFnum2cell, *note struct2cell: XREFstruct2cell.
 
    As an alternative to creating empty cell arrays, and then filling
 them, it is possible to convert numerical arrays into cell arrays using
@@ -7904,9 +7970,16 @@ character array (*note Concatenating Strings::), while the function
                 [2,1] = world
               }
 
- -- Built-in Function: cellstr (STRING)
+ -- Built-in Function: CSTR = cellstr (STRMAT)
      Create a new cell array object from the elements of the string
-     array STRING.
+     array STRMAT.
+
+     Each row of STRMAT becomes an element of CSTR.  Any trailing spaces
+     in a row are deleted before conversion.
+
+     To convert back from a cellstr to a character array use 'char'.
+
+     See also: *note cell: XREFcell, *note char: XREFchar.
 
    One further advantage of using cell arrays to store multiple strings
 is that most functions for string manipulations included with Octave
@@ -7963,6 +8036,7 @@ using the 'cell2mat' and 'cell2struct' functions.
      See also: *note mat2cell: XREFmat2cell, *note num2cell:
      XREFnum2cell.
 
+ -- Built-in Function: cell2struct (CELL, FIELDS)
  -- Built-in Function: cell2struct (CELL, FIELDS, DIM)
      Convert CELL to a structure.  The number of fields in FIELDS must
      match the number of elements in CELL along dimension DIM, that is
@@ -7979,6 +8053,9 @@ using the 'cell2mat' and 'cell2struct' functions.
                   Height = 185
                 }
 
+
+     See also: *note struct2cell: XREFstruct2cell, *note cell2mat:
+     XREFcell2mat, *note struct: XREFstruct.
 
 
 File: octave.info,  Node: Comma Separated Lists,  Prev: Cell Arrays,  Up: Data Containers
@@ -8745,32 +8822,4 @@ only useful during development of programs, and not within a program.
      is requested, the files found are returned in the structure W.
 
      See also: *note which: XREFwhich.
-
-
-File: octave.info,  Node: Expressions,  Next: Evaluation,  Prev: Variables,  Up: Top
-
-8 Expressions
-*************
-
-Expressions are the basic building block of statements in Octave.  An
-expression evaluates to a value, which you can print, test, store in a
-variable, pass to a function, or assign a new value to a variable with
-an assignment operator.
-
-   An expression can serve as a statement on its own.  Most other kinds
-of statements contain one or more expressions which specify data to be
-operated on.  As in other languages, expressions in Octave include
-variables, array references, constants, and function calls, as well as
-combinations of these with various operators.
-
-* Menu:
-
-* Index Expressions::
-* Calling Functions::
-* Arithmetic Ops::
-* Comparison Ops::
-* Boolean Expressions::
-* Assignment Ops::
-* Increment Ops::
-* Operator Precedence::
 

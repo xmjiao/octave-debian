@@ -188,8 +188,8 @@
     <message>
         <location line="-1637"/>
         <location line="+55"/>
-        <source>Save</source>
-        <translation>Bewaar</translation>
+        <source>&amp;Save</source>
+        <translation>&amp;Bewaar</translation>
     </message>
     <message>
         <location line="-52"/>
@@ -413,7 +413,7 @@ Wil je die toch verwijderen?</translation>
     <message>
         <location line="+5"/>
         <source>&lt;p&gt;Qt is a C++ toolkit for cross-platform application development.&lt;/p&gt;&lt;p&gt;Qt provides single-source portability across MS&amp;nbsp;Windows, Mac&amp;nbsp;OS&amp;nbsp;X, Linux, and all major commercial Unix variants. Qt is also available for embedded devices as Qt for Embedded Linux and Qt for Windows CE.&lt;/p&gt;&lt;p&gt;Qt is available under three different licensing options designed to accommodate the needs of our various users.&lt;/p&gt;&lt;p&gt;Qt licensed under our commercial license agreement is appropriate for development of proprietary/commercial software where you do not want to share any source code with third parties or otherwise cannot comply with the terms of the GNU LGPL version 2.1 or GNU GPL version 3.0.&lt;/p&gt;&lt;p&gt;Qt licensed under the GNU LGPL version 2.1 is appropriate for the development of Qt applications (proprietary or open source) provided you can comply with the terms and conditions of the GNU LGPL version 2.1.&lt;/p&gt;&lt;p&gt;Qt licensed under the GNU General Public License version 3.0 is appropriate for the development of Qt applications where you wish to use such applications in combination with software subject to the terms of the GNU GPL version 3.0 or where you are otherwise willing to comply with the terms of the GNU GPL version 3.0.&lt;/p&gt;&lt;p&gt;Please see &lt;a href=&quot;http://qt.digia.com/product/licensing&quot;&gt;qt.digia.com/product/licensing&lt;/a&gt; for an overview of Qt licensing.&lt;/p&gt;&lt;p&gt;Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).&lt;/p&gt;&lt;p&gt;Qt is a Digia product. See &lt;a href=&quot;http://qt.digia.com/&quot;&gt;qt.digia.com&lt;/a&gt; for more information.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Qt is een C++ gereedschapskit voor cross-platform ontwikkeling van applicaties.&lt;/p&gt;&lt;p&gt;Qt biedt enkele-broncode portabiliteit voor MS&amp;nbsp;Windows, Mac&amp;nbsp;OS&amp;nbsp;X, Linux en alle belangrijke commerciële Unix varianten. Qt is ook beschikbaar voor embedded devices, zoals Qt voor Embedded Linux en Qt voor Windows CE.&lt;/p&gt;&lt;p&gt;Qt is beschikbaar met drie verschillende licentie-opties bedoeld om te voorzien in de behoeftes van onze gevarieerde gebruikersgroep.&lt;/p&gt;&lt;p&gt;Qt met een commerciële licentie is past bij ontwikkeling van gesloten/commerciële programmatuur waarbij geen broncode met derden wordt gedeeld of anderzins niet kan worden voldaan aan de eisen van de GNU LGPL versie 2.1 of GNU GPL versie 3.0.&lt;/p&gt;&lt;p&gt;Qt met een GNU LGPL versie 2.1 licentie past bij ontwikkeling van Qt programma's (gesloten of open source) indien je kan voldoen aan de eisen en voorwaarden van de GNU LGPL versie 2.1.&lt;/p&gt;&lt;p&gt;Qt met een GNU General Public License versie 3.0 past bij de ontwikkeling van Qt programma's als je die programma's wenst te gebruiken in combinatie met programma's onderworpen aan de GNU GPL versie 3.0 of als je anderszins beeid bent te voldoen aan de eisen van de GNU GPL versie 3.0.&lt;/p&gt;&lt;p&gt;Kijk op &lt;a href=&quot;http://qt.digia.com/product/licensing&quot;&gt;qt.digia.com/product/licensing&lt;/a&gt; voor een overzicht van Qt licenties.&lt;/p&gt;&lt;p&gt;Copyright (C) 2013 Digia Plc en/of dochteronderneming(-en).&lt;/p&gt;&lt;p&gt;Qt is een Digia product. Kijk op &lt;a href=&quot;http://qt.digia.com/&quot;&gt;qt.digia.com&lt;/a&gt; voor meer informatie.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Qt is een C++ gereedschapskit voor cross-platform ontwikkeling van applicaties.&lt;/p&gt;&lt;p&gt;Qt biedt enkele-broncode portabiliteit voor MS&amp;nbsp;Windows, Mac&amp;nbsp;OS&amp;nbsp;X, Linux en alle belangrijke commerciële Unix varianten. Qt is ook beschikbaar voor embedded devices, zoals Qt voor Embedded Linux en Qt voor Windows CE.&lt;/p&gt;&lt;p&gt;Qt is beschikbaar met drie verschillende licentie-opties bedoeld om te voorzien in de behoeftes van onze gevarieerde gebruikersgroep.&lt;/p&gt;&lt;p&gt;Qt met een commerciële licentie is past bij ontwikkeling van gesloten/commerciële programmatuur waarbij geen broncode met derden wordt gedeeld of anderzins niet kan worden voldaan aan de eisen van de GNU LGPL versie 2.1 of GNU GPL versie 3.0.&lt;/p&gt;&lt;p&gt;Qt met een GNU LGPL versie 2.1 licentie past bij ontwikkeling van Qt programma&apos;s (gesloten of open source) indien je kan voldoen aan de eisen en voorwaarden van de GNU LGPL versie 2.1.&lt;/p&gt;&lt;p&gt;Qt met een GNU General Public License versie 3.0 past bij de ontwikkeling van Qt programma&apos;s als je die programma&apos;s wenst te gebruiken in combinatie met programma&apos;s onderworpen aan de GNU GPL versie 3.0 of als je anderszins beeid bent te voldoen aan de eisen van de GNU GPL versie 3.0.&lt;/p&gt;&lt;p&gt;Kijk op &lt;a href=&quot;http://qt.digia.com/product/licensing&quot;&gt;qt.digia.com/product/licensing&lt;/a&gt; voor een overzicht van Qt licenties.&lt;/p&gt;&lt;p&gt;Copyright (C) 2013 Digia Plc en/of dochteronderneming(-en).&lt;/p&gt;&lt;p&gt;Qt is een Digia product. Kijk op &lt;a href=&quot;http://qt.digia.com/&quot;&gt;qt.digia.com&lt;/a&gt; voor meer informatie.&lt;/p&gt;</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -472,6 +472,11 @@ Wil je die toch verwijderen?</translation>
         <location line="+1"/>
         <source>cursor</source>
         <translation>Aanwijzer</translation>
+    </message>
+    <message>
+        <location filename="../src/main-window.cc" line="+1900"/>
+        <source>&lt;p&gt;&lt;strong&gt;A Note about Octave&apos;s New GUI&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;One of the biggest new features for Octave 3.8 is a graphical user interface.  It is the one thing that users have requested most often over the last few years and now it is almost ready.  But because it is not quite as polished as we would like, we have decided to wait until the 4.0.x release series before making the GUI the default interface.&lt;/p&gt;&lt;p&gt;Given the length of time and the number of bug fixes and improvements since the last major release, we also decided against delaying the release of all these new improvements any longer just to perfect the GUI.  So please enjoy the 3.8 release of Octave and the preview of the new GUI.  We believe it is working reasonably well, but we also know that there are some obvious rough spots and many things that could be improved.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;We Need Your Help&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;There are many ways that you can help us fix the remaining problems, complete the GUI, and improve the overall user experience for both novices and experts alike (links will open an external browser):&lt;/p&gt;&lt;p&gt;&lt;ul&gt;&lt;li&gt;If you are a skilled software developer, you can help by contributing your time to help &lt;a href=&quot;http://octave.org/get-involved.html&quot;&gt;develop Octave&lt;/a&gt;.&lt;/li&gt;&lt;li&gt;If Octave does not work properly, you are encouraged to &lt;a href=&quot;http://octave.org/bugs.html&quot;&gt;report problems &lt;/a&gt; that you find.&lt;/li&gt;&lt;li&gt;Whether you are a user or developer, you can &lt;a href=&quot;http://octave.org/donate.html&quot;&gt;help to fund the project&lt;/a&gt;.  Octave development takes a lot of time and expertise.  Your contributions help to ensure that Octave will continue to improve.&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;&lt;p&gt;We hope you find Octave to be useful.  Please help us make it even better for the future!&lt;/p&gt;</source>
+        <translation>&lt;p&gt;&lt;strong&gt;Een opmerking over Octave&apos;s Nieuwe GUI&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Een van de belangrijkste nieuwe kenmerken van Octave 3.8 is een grafische user interface (GUI).  Dat is waar de gebruikers de afgelopen jaren het meest om gevraagd hebben en hij is bijna af.  Maar omdat hij nog niet zo gepolijst is als we zouden willen hebben we besloten te wachten tot de versie 4.0 serie voordat we hem de standaard interface maken.&lt;/p&gt;&lt;p&gt;Vanwege de lange tijd en het aantal bug fixes en verbeteringen sinds de laatste major release versie hebben we ook besloten om niet langer meer te wachten op de GUI om al die verbeteringen door te voeren.  Dus geniet van Octave versie 3.8 en de preview van de nieuwe GUI.  We denken dat hij redelijk goed werkt, maar natuurlijk weten we dat er nog ruwe kantjes aan zitten en ruimte voor verbeteringen.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;We hebben je hulp nodig&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Er zijn veel manieren waarop je ons kunt helpen de overgebleven problemen te verhelpen, de GUI te completeren, en de gebruikerservaring voor nieuwelingen en experts (de URLs openen een nieuwe browser):&lt;/p&gt;&lt;p&gt;&lt;ul&gt;&lt;li&gt;Als je een bekwame ontwikkelaar bent kun je ons helpen door bij te dragen &lt;a href=&quot;http://octave.org/get-involved.html&quot;&gt;develop Octave&lt;/a&gt;.&lt;/li&gt;&lt;li&gt;Als Octave niet goed wekt raden we je aan om &lt;a href=&quot;http://octave.org/bugs.html&quot;&gt;de problemen te rapporteren &lt;/a&gt; die je tegen komt.&lt;/li&gt;&lt;li&gt;Of je nu gebruiker of ontwikkelaar bent, je kunt ook &lt;a href=&quot;http://octave.org/donate.html&quot;&gt;een bijdrage geven&lt;/a&gt;.  De ontwikkeling van Octave vraagt een hoop tijd en expertise.  Je bijdrage helpt er aan mee dat Octave verbeterd blijft worden.&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;&lt;p&gt;We hopen dat je Octave nuttig vindt.  Help alsjeblieft om het in de toekomst nog beter te maken!&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -712,7 +717,7 @@ Wil je die toch verwijderen?</translation>
     <message>
         <location line="+1"/>
         <source>A5 (148 x 210 mm)</source>
-        <translation>A5 (148 x 210 mm)>A5 (148 x 210 mm)</translation>
+        <translation>A5 (148 x 210 mm)&gt;A5 (148 x 210 mm)</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -892,7 +897,7 @@ Wil je die toch verwijderen?</translation>
     </message>
     <message>
         <location line="+71"/>
-        <source>Print To File ...</source>
+        <source>Print To File...</source>
         <translation>Druk af naar bestand...</translation>
     </message>
     <message>
@@ -957,7 +962,7 @@ Wil je die overschrijven?</translation>
 <context>
     <name>QWinTerminalImpl</name>
     <message>
-        <location filename="../qterminal/libqterminal/win32/QWinTerminalImpl.cpp" line="+1528"/>
+        <location filename="../qterminal/libqterminal/win32/QWinTerminalImpl.cpp" line="+1536"/>
         <source>copied selection to clipboard</source>
         <translation>selectie is naar klembord gekopieerd</translation>
     </message>
@@ -1678,12 +1683,7 @@ is already open in the editor</source>
 is reeds geopend in de editor</translation>
     </message>
     <message>
-        <location line="+28"/>
-        <source>The associated file editor tab has disappeared.  It was likely closed by some means.</source>
-        <translation>Het bijbehorende tabblad in de editor is verdwenen. Het is waarschijnlijk op een of andere manier gesloten.</translation>
-    </message>
-    <message>
-        <location line="+227"/>
+        <location line="+255"/>
         <source>&amp;%1 %2</source>
         <translation></translation>
     </message>
@@ -1693,24 +1693,24 @@ is reeds geopend in de editor</translation>
         <translation>&amp;Nieuw Bestand</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>&amp;Open File</source>
-        <translation>&amp;Openen</translation>
-    </message>
-    <message>
-        <location line="+3"/>
+        <location line="+6"/>
         <source>&amp;Save File</source>
         <translation>Op&amp;slaan</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Save File &amp;As</source>
-        <translation>Opslaan &amp;als</translation>
+        <location line="-3"/>
+        <source>&amp;Open File...</source>
+        <translation>&amp;Openen...</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Save File &amp;As...</source>
+        <translation>Opslaan &amp;als...</translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>Print</source>
-        <translation>Afdrukken</translation>
+        <source>Print...</source>
+        <translation>Afdrukken...</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1788,22 +1788,27 @@ is reeds geopend in de editor</translation>
         <translation>Zet om naar code</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+3"/>
+        <source>&amp;Find and Replace...</source>
+        <translation>Zoek en Vervang...</translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Save File and Run</source>
         <translation>Sla Bestand op en Voer uit</translation>
     </message>
     <message>
-        <location line="+57"/>
+        <location line="+2"/>
+        <source>Go &amp;to Line...</source>
+        <translation>Ga naar regel...</translation>
+    </message>
+    <message>
+        <location line="+55"/>
         <source>&amp;Recent Editor Files</source>
         <translation>&amp;Recent geopend</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>New &amp;Function</source>
-        <translation>Nieuwe &amp;Functie</translation>
-    </message>
-    <message>
-        <location line="+6"/>
+        <location line="+11"/>
         <source>&amp;Edit Function</source>
         <translation>Pas Functie Aan</translation>
     </message>
@@ -1823,7 +1828,17 @@ is reeds geopend in de editor</translation>
         <translation>Andere bestanden sluiten</translation>
     </message>
     <message>
-        <location line="+51"/>
+        <location line="+31"/>
+        <source>&amp;Preferences...</source>
+        <translation>Voorkeuren...</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>&amp;Styles Preferences...</source>
+        <translation>&amp;Stijlvoorkeuren...</translation>
+    </message>
+    <message>
+        <location line="+16"/>
         <source>Run &amp;Selection</source>
         <translation>Geselecteerde tekst uitvoeren</translation>
     </message>
@@ -1843,12 +1858,7 @@ is reeds geopend in de editor</translation>
         <translation>&amp;Documentatie bij sleutelwoord</translation>
     </message>
     <message>
-        <location line="-151"/>
-        <source>&amp;Find and Replace</source>
-        <translation>Zoek en Vervang</translation>
-    </message>
-    <message>
-        <location line="-590"/>
+        <location line="-741"/>
         <source>Could not open file
 %1
 for read: %2.</source>
@@ -1875,32 +1885,27 @@ for write: %2.</source>
 niet openen om te schrijven: %2.</translation>
     </message>
     <message>
-        <location line="+555"/>
-        <source>Go&amp;to Line</source>
-        <translation>Ga naar regel</translation>
+        <location line="+87"/>
+        <source>The associated file editor tab has disappeared.</source>
+        <translation>Het bijbehorende tabblad in de editor is verdwenen.</translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+521"/>
         <source>&amp;File</source>
         <translation>Bestand</translation>
     </message>
     <message>
-        <location line="+41"/>
+        <location line="+7"/>
+        <source>New &amp;Function...</source>
+        <translation>Nieuwe &amp;Functie...</translation>
+    </message>
+    <message>
+        <location line="+34"/>
         <source>&amp;Edit</source>
         <translation>B&amp;ewerken</translation>
     </message>
     <message>
-        <location line="+22"/>
-        <source>&amp;Preferences</source>
-        <translation>Voorkeuren</translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>&amp;Styles Preferences</source>
-        <translation>&amp;Stijlvoorkeuren</translation>
-    </message>
-    <message>
-        <location line="+4"/>
+        <location line="+30"/>
         <source>&amp;Debug</source>
         <translation>&amp;Debuggen</translation>
     </message>
@@ -1913,7 +1918,7 @@ niet openen om te schrijven: %2.</translation>
 <context>
     <name>file_editor_tab</name>
     <message>
-        <location filename="../src/m-editor/file-editor-tab.cc" line="+792"/>
+        <location filename="../src/m-editor/file-editor-tab.cc" line="+803"/>
         <source>Goto line</source>
         <translation>Ga naar regel</translation>
     </message>
@@ -1941,14 +1946,13 @@ niet openen om te schrijven: %2.</translation>
     <message>
         <location line="+10"/>
         <location line="+122"/>
-        <location line="+111"/>
-        <location line="+64"/>
+        <location line="+150"/>
         <location line="+22"/>
         <source>Octave Editor</source>
         <translation></translation>
     </message>
     <message>
-        <location line="-318"/>
+        <location line="-293"/>
         <source>The file
 %1
 is about to be closed but has been modified.
@@ -1964,16 +1968,7 @@ dat gesloten moet worden is gewijzigd.
         <translation>Octave bestanden (*.m);;Alle bestanden (*)</translation>
     </message>
     <message>
-        <location line="+32"/>
-        <source>File not saved! The selected file name
-%1
-is the same as the current file name</source>
-        <translation>Bestand niet opgeslagen! De gekozen bestandsnaam
-%1
-is identiek aan de huidige bestandsnaam</translation>
-    </message>
-    <message>
-        <location line="+79"/>
+        <location line="+86"/>
         <source>
 
 Warning: The contents in the editor is modified!</source>
@@ -1990,14 +1985,14 @@ has been deleted or renamed. Do you want to save it now?%2</source>
 is gewist of hernoemd. Wil je het nu opslaan?%2</translation>
     </message>
     <message>
-        <location line="-197"/>
+        <location line="-172"/>
         <source>Could not open file %1 for write:
 %2.</source>
         <translation>Kon bestand %1 niet openen om te schrijven:
 %2.</translation>
     </message>
     <message>
-        <location line="-966"/>
+        <location line="-975"/>
         <source>Line:</source>
         <translation>Regel:</translation>
     </message>
@@ -2007,7 +2002,7 @@ is gewist of hernoemd. Wil je het nu opslaan?%2</translation>
         <translation>Kolom:</translation>
     </message>
     <message>
-        <location line="+1138"/>
+        <location line="+1122"/>
         <source>It seems that &apos;%1&apos; has been modified by another application. Do you want to reload it?</source>
         <translation>Het lijkt erop dat &apos;%1&apos; is gewijzigd door een ander programma. Wil je het opnieuw laden?</translation>
     </message>
@@ -2035,55 +2030,22 @@ is gewist of hernoemd. Wil je het nu opslaan?%2</translation>
         <translation>Eén mapniveau omhoog</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>Show octave directory</source>
-        <translation>Laat octave map zien</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Goto current octave directory</source>
-        <translation>Ga naar huidige octave map</translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <source>Set octave directory</source>
-        <translation>Stel octave map in</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Set octave directroy to current browser directory</source>
-        <translation>Maak huidige browser map de Octave map</translation>
-    </message>
-    <message>
-        <location line="+4"/>
+        <location line="+17"/>
         <source>Actions on current directory</source>
         <translation>Bewerkingen op huidige map</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Show Home directory</source>
-        <translation>Laat home map zien</translation>
+        <location line="+373"/>
+        <source>Find Files...</source>
+        <translation>Zoek bestanden...</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Search directory</source>
-        <translation>Zoek in map</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <location line="+354"/>
-        <source>Find Files ...</source>
-        <translation>Zoek bestanden ...</translation>
-    </message>
-    <message>
-        <location line="-350"/>
-        <location line="+363"/>
+        <location line="+13"/>
         <source>New File</source>
         <translation>Nieuw bestand</translation>
     </message>
     <message>
-        <location line="-360"/>
-        <location line="+363"/>
+        <location line="+3"/>
         <source>New Directory</source>
         <translation>Nieuwe map</translation>
     </message>
@@ -2093,7 +2055,52 @@ is gewist of hernoemd. Wil je het nu opslaan?%2</translation>
         <translation>Dubbelklik een bestand om te openen</translation>
     </message>
     <message>
-        <location line="+236"/>
+        <location line="-79"/>
+        <source>Show Octave directory</source>
+        <translation>Laat Octave map zien</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Go to current Octave directory</source>
+        <translation>Ga naar huidige Octave map</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Set Octave directory</source>
+        <translation>Stel Octave map in</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Set Octave directroy to current browser directory</source>
+        <translation>Maak huidige browser map de Octave map</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Show Home Directory</source>
+        <translation>Laat home map zien</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Search Directory...</source>
+        <translation>Zoek in map...</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Find Files...</source>
+        <translation>Zoek bestanden...</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>New File...</source>
+        <translation>Nieuw bestand...</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>New Directory...</source>
+        <translation>Nieuwe map...</translation>
+    </message>
+    <message>
+        <location line="+276"/>
         <source>File size</source>
         <translation>Bestandsgrootte</translation>
     </message>
@@ -2203,6 +2210,7 @@ is gewist of hernoemd. Wil je het nu opslaan?%2</translation>
         <location line="+1"/>
         <source>Create file in
 </source>
+        <comment>String ends with \n!</comment>
         <translation>Maak nieuw bestand in
 </translation>
     </message>
@@ -2215,6 +2223,7 @@ is gewist of hernoemd. Wil je het nu opslaan?%2</translation>
         <location line="+1"/>
         <source>Create folder in
 </source>
+        <comment>String ends with \n!</comment>
         <translation>Maak nieuwe map in
 </translation>
     </message>
@@ -2245,7 +2254,7 @@ is gewist of hernoemd. Wil je het nu opslaan?%2</translation>
         <location line="+7"/>
         <source>&lt;html&gt;&lt;body&gt;
 &lt;p&gt;We hope you find Octave to be a useful tool.&lt;/p&gt;
-&lt;p&gt;If you encounter problems, there are a number of ways to get help including commercial support options, a mailing list, a wiki, and other commnity-based support channels.
+&lt;p&gt;If you encounter problems, there are a number of ways to get help, including commercial support options, a mailing list, a wiki, and other commnity-based support channels.
 You can find more information about each of these by visiting &lt;a href=&quot;http://octave.org/support.html&quot;&gt;http://octave.org/support.html&lt;/a&gt; (opens in external browser).&lt;/p&gt;
 &lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body&gt;
@@ -2332,7 +2341,7 @@ a:link { text-decoration: underline; color: #0000ff; }
     </message>
     <message>
         <location line="+2"/>
-        <source>&amp;More</source>
+        <source>&amp;More...</source>
         <translation>&amp;Meer</translation>
     </message>
     <message>
@@ -2416,7 +2425,7 @@ a:link { text-decoration: underline; color: #0000ff; }
     <message>
         <location line="+3"/>
         <source>Browse...</source>
-        <translation>Bladeren ...</translation>
+        <translation>Bladeren...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2602,25 +2611,24 @@ a:link { text-decoration: underline; color: #0000ff; }
         <source>&lt;html&gt;&lt;body&gt;
 &lt;p&gt;You seem to be using the Octave graphical interface for the first time on this computer.
 Click &apos;Next&apos; to create a configuration file and launch Octave.&lt;/p&gt;
-&lt;p&gt;The configuration file is stored in %1.  If that file exists, you will not see this dialog when Octave starts.&lt;/p&gt;
+&lt;p&gt;The configuration file is stored in&lt;br&gt;%1.&lt;/p&gt;
 &lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body&gt;
 &lt;p&gt;Het lijkt erop dat je de grafische interface van Octave voor het eerst gebruikt op deze computer.
 Klik &apos;Volgende&apos; om een configuratiebestand aan te maken en Octave te starten.&lt;/p&gt;
-&lt;p&gt;Het configuratiebestand is opgeslagen in %1. Als dat bestand bestaat, zal je dit dialoogscherm niet zien wanneer Octave start.&lt;/p&gt;
+&lt;p&gt;Het configuratiebestand is opgeslagen in&lt;br&gt;%1.&lt;/p&gt;
 &lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
     <name>main_window</name>
     <message>
-        <location filename="../src/main-window.cc" line="+201"/>
-        <location line="+1163"/>
+        <location filename="../src/main-window.cc" line="-1696"/>
         <source>Load Workspace</source>
         <translation>Werkruimte laden</translation>
     </message>
     <message>
-        <location line="-522"/>
+        <location line="+645"/>
         <location line="+876"/>
         <source>About Octave</source>
         <translation>Over Octave</translation>
@@ -2641,12 +2649,7 @@ Klik &apos;Volgende&apos; om een configuratiebestand aan te maken en Octave te s
         <translation>Script</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Function</source>
-        <translation>Functie</translation>
-    </message>
-    <message>
-        <location line="+4"/>
+        <location line="+7"/>
         <source>Figure</source>
         <translation>Figuur</translation>
     </message>
@@ -2686,13 +2689,12 @@ Klik &apos;Volgende&apos; om een configuratiebestand aan te maken en Octave te s
         <translation>Plakken</translation>
     </message>
     <message>
-        <location line="-1261"/>
-        <location line="+1180"/>
+        <location line="-1265"/>
         <source>Save Workspace As</source>
         <translation>Sla Werkruimte Op Als</translation>
     </message>
     <message>
-        <location line="-1056"/>
+        <location line="+124"/>
         <source>The release notes file &apos;%1&apos; is empty.</source>
         <translation>Bestand met Release Notes &apos;%1&apos; is leeg.</translation>
     </message>
@@ -2707,12 +2709,12 @@ Klik &apos;Volgende&apos; om een configuratiebestand aan te maken en Octave te s
         <translation>Octave Release Notes</translation>
     </message>
     <message>
-        <location line="+186"/>
+        <location line="+189"/>
         <source>Octave Community News</source>
         <translation>Octave Community Nieuws</translation>
     </message>
     <message>
-        <location line="+938"/>
+        <location line="+939"/>
         <source>Clear Clipboard</source>
         <translation>Wis klembord</translation>
     </message>
@@ -2767,12 +2769,32 @@ Klik &apos;Volgende&apos; om een configuratiebestand aan te maken en Octave te s
         <translation>Bestandsbrowser</translation>
     </message>
     <message>
-        <location line="-94"/>
+        <location line="+194"/>
+        <source>&lt;strong&gt;You are using a release candidate of Octave&apos;s experimental GUI.&lt;/strong&gt;  Octave is under continuous improvement and the GUI will be the default interface for the 4.0 release.  For more information, select the &quot;Release Notes&quot; item in the &quot;News&quot; menu of the GUI, or visit &lt;a href=&quot;http://octave.org&quot;&gt;http://octave.org&lt;/a&gt;.</source>
+        <translation>Je gerbuikt een &quot;release candiadate&quot; van Octave&apos;s experimentele GUI.&lt;/strong&gt; Octave wordt continu doorontwikkeld en de GUI zal de standaard interface zijn voor versie 4.0.  Kies Release Notes in het Nieuws menu van de GUI voor meer informatie, of kijk op &lt;a href=&quot;http://octave.org&quot;&gt;http://octave.org&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <location line="-288"/>
         <source>Step In</source>
         <translation>Stap In</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="-151"/>
+        <source>Load Workspace...</source>
+        <translation>Werkruimte laden...</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Save Workspace As...</source>
+        <translation>Sla Werkruimte Op Als...</translation>
+    </message>
+    <message>
+        <location line="+41"/>
+        <source>Function...</source>
+        <translation>Functie...</translation>
+    </message>
+    <message>
+        <location line="+111"/>
         <source>Step Out</source>
         <translation>Stap Uit</translation>
     </message>
@@ -2827,12 +2849,7 @@ Klik &apos;Volgende&apos; om een configuratiebestand aan te maken en Octave te s
         <translation>Community Nieuws</translation>
     </message>
     <message>
-        <location line="+37"/>
-        <source>&lt;strong&gt;You are using a release candidate of Octave&apos;s experimental GUI.&lt;/strong&gt;  Octave is under continuous improvement and the GUI will be the default interface for the 4.0 release.  For more information, select the &quot;Release Notes&quot; item in the &quot;Help&quot; menu of the GUI, or visit &lt;a href=&quot;http://octave.org&quot;&gt;http://octave.org&lt;/a&gt;.</source>
-        <translation>Je gerbuikt een "release candiadate" van Octave&apos;s experimentele GUI.&lt;/strong&gt; Octave wordt continu doorontwikkeld en de GUI zal de standaard interface zijn voor versie 4.0.  Kies Release Notes in het Hulp menu van de GUI voor meer informatie, of kijk op &lt;a href=&quot;http://octave.org&quot;&gt;http://octave.org&lt;/a&gt;.</translation>
-    </message>
-    <message>
-        <location line="+13"/>
+        <location line="+50"/>
         <source>More Info</source>
         <translation>Meer informatie</translation>
     </message>
@@ -2848,12 +2865,7 @@ Klik &apos;Volgende&apos; om een configuratiebestand aan te maken en Octave te s
         <translation>Experimentele GUI Informatie</translation>
     </message>
     <message>
-        <location line="-37"/>
-        <source>&lt;p&gt;&lt;strong&gt;A Note about Octave&apos;s New GUI&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;One of the biggest new features for Octave 3.8 is a graphical user interface.  It is the one thing that users have requested most often over the last few years and now it is almost ready.  But because it is not quite as polished as we would like, we have decided to wait until the 4.0.x release series before making the GUI the default interface.&lt;/p&gt;&lt;p&gt;Given the length of time and the number of bug fixes and improvements since the last major release Octave, we also decided against delaying the release of all these new improvements any longer just to perfect the GUI.  So please enjoy the 3.8 release of Octave and the preview of the new GUI.  We believe it is working reasonably well, but we also know that there are some obvious rough spots and many things that could be improved.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;We Need Your Help&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;There are many ways that you can help us fix the remaining problems, complete the GUI, and improve the overall user experience for both novices and experts alike (links will open an external browser):&lt;/p&gt;&lt;p&gt;&lt;ul&gt;&lt;li&gt;If you are a skilled software developer, you can help by contributing your time to help &lt;a href=&quot;http://octave.org/get-involved.html&quot;&gt;develop Octave&lt;/a&gt;.&lt;/li&gt;&lt;li&gt;If Octave does not work properly, you are encouraged to &lt;a href=&quot;http://octave.org/bugs.html&quot;&gt;report problems &lt;/a&gt; that you find.&lt;/li&gt;&lt;li&gt;Whether you are a user or developer, you can &lt;a href=&quot;http://octave.org/donate.html&quot;&gt;help to fund the project&lt;/a&gt;.  Octave development takes a lot of time and expertise.  Your contributions help to ensure that Octave will continue to improve.&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;&lt;p&gt;We hope you find Octave to be useful.  Please help us make it even better for the future!&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;strong&gt;Een opmerking over Octave&apos;s Nieuwe GUI&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Een van de belangrijkste nieuwe kenmerken van Octave 3.8 is een grafische user interface (GUI).  Dat is waar de gebruikers de afgelopen jaren het meest om gevraagd hebben en hij is bijna af.  Maar omdat hij nog niet zo gepolijst is als we zouden willen hebben we besloten te wachten tot de versie 4.0 serie voordat we hem de standaard interface maken.&lt;/p&gt;&lt;p&gt;Vanwege de lange tijd en het aantal bug fixes en verbeteringen sinds de laatste major release versie hebben we ook besloten om niet langer meer te wachten op de GUI om al die verbeteringen door te voeren.  Dus geniet van Octave versie 3.8 en de preview van de nieuwe GUI.  We denken dat hij redelijk goed werkt, maar natuurlijk weten we dat er nog ruwe kantjes aan zitten en ruimte voor verbeteringen.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;We hebben je hulp nodig&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Er zijn veel manieren waarop je ons kunt helpen de overgebleven problemen te verhelpen, de GUI te completeren, en de gebruikerservaring voor nieuwelingen en experts (de URLs openen een nieuwe browser):&lt;/p&gt;&lt;p&gt;&lt;ul&gt;&lt;li&gt;Als je een bekwame ontwikkelaar bent kun je ons helpen door bij te dragen &lt;a href=&quot;http://octave.org/get-involved.html&quot;&gt;develop Octave&lt;/a&gt;.&lt;/li&gt;&lt;li&gt;Als Octave niet goed wekt raden we je aan om &lt;a href=&quot;http://octave.org/bugs.html&quot;&gt;de problemen te rapporteren &lt;/a&gt; die je tegen komt.&lt;/li&gt;&lt;li&gt;Of je nu gebruiker of ontwikkelaar bent, je kunt ook &lt;a href=&quot;http://octave.org/donate.html&quot;&gt;een bijdrage geven&lt;/a&gt;.  De ontwikkeling van Octave vraagt een hoop tijd en expertise.  Je bijdrage helpt er aan mee dat Octave verbeterd blijft worden.&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;&lt;p&gt;We hopen dat je Octave nuttig vindt.  Help alsjeblieft om het in de toekomst nog beter te maken!&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location line="+64"/>
+        <location line="+27"/>
         <source>Enter directory name</source>
         <translation>Geef mapnaam op</translation>
     </message>
@@ -2943,7 +2955,7 @@ Klik &apos;Volgende&apos; om een configuratiebestand aan te maken en Octave te s
 <context>
     <name>news_reader</name>
     <message>
-        <location line="-1281"/>
+        <location line="-1282"/>
         <source>&lt;html&gt;
 &lt;body&gt;
 &lt;p&gt;
@@ -3228,7 +3240,12 @@ De Octave GUI moet nu gesloten worden.</translation>
         <translation>Editorstijlen</translation>
     </message>
     <message>
-        <location line="+132"/>
+        <location line="+24"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select font, font size (as a difference from the default size), font style (&lt;b&gt;b&lt;/b&gt;old, &lt;b&gt;i&lt;/b&gt;talic, &lt;b&gt;u&lt;/b&gt;nderline), text color and background color (for the latter, the color pink (255,0,255) is a placeholder for the default background color).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selecteer font, font grootte (als een verschil van de standaard grootte), font stijl (&lt;b&gt;d&lt;/b&gt;ik, &lt;b&gt;s&lt;/b&gt;chuin, &lt;b&gt;o&lt;/b&gt;nderstreept), tekstkleur en achtergrondkleur (wat betreft de laatste, de kleur roze (255,0,255) is een plaatsvervanger voor de standaard achtergrondkleur).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location line="+108"/>
         <source>Terminal Colors</source>
         <translation>Terminalkleuren</translation>
     </message>
@@ -3288,12 +3305,7 @@ De Octave GUI moet nu gesloten worden.</translation>
         <translation></translation>
     </message>
     <message>
-        <location line="+36"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select font, font size (as a difference from the default size), font style (bold, italic, underline), text color and background color (for the latter, the color pink (255,0,255) is a placeholder for the default background color)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selecteer font, font grootte (als een verschil van de standaard grootte), font stijl (dik, schuin, onderstreept), tekstkleur en achtergrondkleur (wat betreft de laatste, de kleur roze (255,0,255) is een plaatsvervanger voor de standaard achtergrondkleur)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location line="+31"/>
+        <location line="+67"/>
         <source>Terminal</source>
         <translation>Opdrachtvenster</translation>
     </message>
@@ -3462,17 +3474,20 @@ De Octave GUI moet nu gesloten worden.</translation>
     <message>
         <location line="+2"/>
         <source>b</source>
-        <translation>b</translation>
+        <comment>short form for bold</comment>
+        <translation>d</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>i</source>
-        <translation>i</translation>
+        <comment>short form for italic</comment>
+        <translation>s</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>u</source>
-        <translation>u</translation>
+        <comment>short form for underlined</comment>
+        <translation>o</translation>
     </message>
 </context>
 <context>

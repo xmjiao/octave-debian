@@ -81,9 +81,16 @@ c = cellstr (a)
 </pre></div>
 
 <a name="XREFcellstr"></a><dl>
-<dt><a name="index-cellstr"></a>Built-in Function: <em></em> <strong>cellstr</strong> <em>(<var>string</var>)</em></dt>
+<dt><a name="index-cellstr"></a>Built-in Function: <em><var>cstr</var> =</em> <strong>cellstr</strong> <em>(<var>strmat</var>)</em></dt>
 <dd><p>Create a new cell array object from the elements of the string
-array <var>string</var>.
+array <var>strmat</var>.
+</p>
+<p>Each row of <var>strmat</var> becomes an element of <var>cstr</var>.  Any trailing
+spaces in a row are deleted before conversion.
+</p>
+<p>To convert back from a cellstr to a character array use <code>char</code>.
+</p>
+<p><strong>See also:</strong> <a href="Creating-Cell-Arrays.html#XREFcell">cell</a>, <a href="Concatenating-Strings.html#XREFchar">char</a>.
 </p></dd></dl>
 
 

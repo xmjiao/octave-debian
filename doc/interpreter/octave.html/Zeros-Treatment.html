@@ -57,16 +57,17 @@ Previous: <a href="Example-Code.html#Example-Code" accesskey="p" rel="prev">Exam
 <hr>
 <a name="Differences-in-Treatment-of-Zero-Elements"></a>
 <h3 class="section">21.5 Differences in Treatment of Zero Elements</h3>
+<a name="index-matrix_002c-zero-elements"></a>
 
 <p>Making diagonal and permutation matrices special matrix objects in their own
 right and the consequent usage of smarter algorithms for certain operations
 implies, as a side effect, small differences in treating zeros.
-The contents of this section applies also to sparse matrices, discussed in
-the following chapter.
+The contents of this section apply also to sparse matrices, discussed in
+the following chapter. (see <a href="Sparse-Matrices.html#Sparse-Matrices">Sparse Matrices</a>)
 </p>
-<p>The IEEE standard defines the result of the expressions <code>0*Inf</code> and 
-<code>0*NaN</code> as <code>NaN</code>, as it has been generally agreed that this is the
-best compromise.
+<p>The IEEE floating point standard defines the result of the expressions <code>0*Inf</code> and 
+<code>0*NaN</code> as <code>NaN</code>. This is widely agreed to be a good
+compromise.
 Numerical software dealing with structured and sparse matrices (including
 Octave) however, almost always makes a distinction between a &quot;numerical zero&quot;
 and an &quot;assumed zero&quot;. 

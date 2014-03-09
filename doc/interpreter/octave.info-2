@@ -21,6 +21,34 @@ manual into another language, under the above conditions for modified
 versions.
 
 
+File: octave.info,  Node: Expressions,  Next: Evaluation,  Prev: Variables,  Up: Top
+
+8 Expressions
+*************
+
+Expressions are the basic building block of statements in Octave.  An
+expression evaluates to a value, which you can print, test, store in a
+variable, pass to a function, or assign a new value to a variable with
+an assignment operator.
+
+   An expression can serve as a statement on its own.  Most other kinds
+of statements contain one or more expressions which specify data to be
+operated on.  As in other languages, expressions in Octave include
+variables, array references, constants, and function calls, as well as
+combinations of these with various operators.
+
+* Menu:
+
+* Index Expressions::
+* Calling Functions::
+* Arithmetic Ops::
+* Comparison Ops::
+* Boolean Expressions::
+* Assignment Ops::
+* Increment Ops::
+* Operator Precedence::
+
+
 File: octave.info,  Node: Index Expressions,  Next: Calling Functions,  Up: Expressions
 
 8.1 Index Expressions
@@ -1304,22 +1332,25 @@ has been computed and stored in a string, which is exactly what the
      string TRY is evaluated in the current context, so any results
      remain available after 'eval' returns.
 
-     The following example makes the variable A with the approximate
-     value 3.1416 available.
+     The following example creates the variable A with the approximate
+     value of 3.1416 in the current workspace.
 
           eval ("A = acos(-1);");
 
-     If an error occurs during the evaluation of TRY the CATCH string is
-     evaluated, as the following example shows:
+     If an error occurs during the evaluation of TRY then the CATCH
+     string is evaluated, as the following example shows:
 
           eval ('error ("This is a bad example");',
                 'printf ("This error occurred:\n%s\n", lasterr ());');
                -| This error occurred:
                   This is a bad example
 
-     Consider using try/catch blocks instead if you are only using
-     'eval' as an error-capturing mechanism rather than for the
-     execution of arbitrary code strings.
+     Programming Note: if you are only using 'eval' as an
+     error-capturing mechanism, rather than for the execution of
+     arbitrary code strings, Consider using try/catch blocks or
+     unwind_protect/unwind_protect_cleanup blocks instead.  These
+     techniques have higher performance and don't introduce the security
+     considerations that the evaluation of arbitrary code does.
 
      See also: *note evalin: XREFevalin.
 
@@ -2147,16 +2178,16 @@ restored if an error occurs while evaluating the first part of the
 'unwind_protect' block because evaluation would stop at the point of the
 error and the statement to restore the value would not be executed.
 
+   In addition to unwind_protect, Octave supports another form of
+exception handling, the 'try' block.
+
 
 File: octave.info,  Node: The try Statement,  Next: Continuation Lines,  Prev: The unwind_protect Statement,  Up: Statements
 
 10.9 The try Statement
 ======================
 
-In addition to unwind_protect, Octave supports another limited form of
-exception handling.
-
-   The general form of a 'try' block looks like this:
+The original form of a 'try' block looks like this:
 
      try
        BODY
@@ -2170,11 +2201,19 @@ an error occurs in BODY.
 
    No warnings or error messages are printed while BODY is executing.
 If an error does occur during the execution of BODY, CLEANUP can use the
-function 'lasterr' to access the text of the message that would have
-been printed.  This is the same as 'eval (TRY, CATCH)' but it is more
-efficient since the commands do not need to be parsed each time the TRY
-and CATCH statements are evaluated.  *Note Errors and Warnings::, for
-more information about the 'lasterr' function.
+functions 'lasterr' or 'lasterror' to access the text of the message
+that would have been printed, as well as its identifier.  The
+alternative form,
+
+     try
+       BODY
+     catch ERR
+       CLEANUP
+     end_try_catch
+
+will automatically store the output of 'lasterror' in the structure ERR.
+*Note Errors and Warnings::, for more information about the 'lasterr'
+and 'lasterror' functions.
 
 
 File: octave.info,  Node: Continuation Lines,  Prev: The try Statement,  Up: Statements
@@ -2427,10 +2466,22 @@ possibilities and issue our own error message.
      function.  At the top level, return the number of command line
      arguments passed to Octave.
 
-     If called with the optional argument FCN, a function name or
-     handle, return the declared number of arguments that the function
-     can accept.  If the last argument is VARARGIN the returned value is
-     negative.  This feature does not work on builtin functions.
+     If called with the optional argument FCN--a function name or
+     handle-- return the declared number of arguments that the function
+     can accept.
+
+     If the last argument to FCN is VARARGIN the returned value is
+     negative.  For example, the function 'union' for sets is declared
+     as
+
+          function [y, ia, ib] = union (a, b, varargin)
+
+          and
+
+          nargin ("union")
+          => -3
+
+     Programming Note: 'nargin' does not work on built-in functions.
 
      See also: *note nargout: XREFnargout, *note varargin: XREFvarargin,
      *note isargout: XREFisargout, *note varargout: XREFvarargout, *note
@@ -2569,8 +2620,8 @@ along with a warning.
  -- Built-in Function: nargout ()
  -- Built-in Function: nargout (FCN)
      Within a function, return the number of values the caller expects
-     to receive.  If called with the optional argument FCN, a function
-     name or handle, return the number of declared output values that
+     to receive.  If called with the optional argument FCN--a function
+     name or handle--return the number of declared output values that
      the function can produce.  If the final output argument is
      VARARGOUT the returned value is negative.
 
@@ -2590,13 +2641,14 @@ along with a warning.
 
      will return 2, because 'histc' has two outputs, whereas
 
-          nargout (@deal)
+          nargout (@imread)
 
-     will return -1, because 'deal' has a variable number of outputs.
+     will return -2, because 'imread' has two outputs and the second is
+     VARARGOUT.
 
-     At the top level, 'nargout' with no argument is undefined.
-     'nargout' does not work on builtin functions.  'nargout' returns -1
-     for all anonymous functions.
+     At the top level, 'nargout' with no argument is undefined and will
+     produce an error.  'nargout' does not work for built-in functions
+     and returns -1 for all anonymous functions.
 
      See also: *note nargin: XREFnargin, *note varargin: XREFvarargin,
      *note isargout: XREFisargout, *note varargout: XREFvarargout, *note
@@ -2800,7 +2852,7 @@ whether the output argument is wanted.  For example:
 
  -- Built-in Function: isargout (K)
      Within a function, return a logical value indicating whether the
-     argument K will be assigned on output to a variable.  If the result
+     argument K will be assigned to a variable on output.  If the result
      is false, the argument has been ignored during the function call
      through the use of the tilde (~) special output argument.
      Functions can use 'isargout' to avoid performing unnecessary
@@ -3102,11 +3154,12 @@ resets the default behavior.
  -- Built-in Function: mfilename ()
  -- Built-in Function: mfilename ("fullpath")
  -- Built-in Function: mfilename ("fullpathext")
-     Return the name of the currently executing file.  At the top-level,
-     return the empty string.  Given the argument "fullpath", include
-     the directory part of the file name, but not the extension.  Given
-     the argument "fullpathext", include the directory part of the file
-     name and the extension.
+     Return the name of the currently executing file.
+
+     When called from outside an m-file return the empty string.  Given
+     the argument "fullpath", include the directory part of the file
+     name, but not the extension.  Given the argument "fullpathext",
+     include the directory part of the file name and the extension.
 
  -- Built-in Function: VAL = ignore_function_time_stamp ()
  -- Built-in Function: OLD_VAL = ignore_function_time_stamp (NEW_VAL)
@@ -3490,7 +3543,7 @@ programming (*note Function Overloading::).  Occasionally, however, one
 needs to undo user overloading and call the default function associated
 with a specific type.  The 'builtin' function exists for this purpose.
 
- -- Loadable Function: [...] = builtin (F, ...)
+ -- Built-in Function: [...] = builtin (F, ...)
      Call the base function F even if F is overloaded to another
      function for the given type signature.
 
@@ -3523,14 +3576,15 @@ space used by Octave.  Instead Octave supplies the 'autoload' function,
 that permits the user to define in which file a certain function will be
 found.
 
+ -- Built-in Function: AUTOLOAD_MAP = autoload ()
  -- Built-in Function: autoload (FUNCTION, FILE)
  -- Built-in Function: autoload (..., "remove")
      Define FUNCTION to autoload from FILE.
 
      The second argument, FILE, should be an absolute file name or a
      file name in the same directory as the function or script from
-     which the autoload command was run.  FILE should not depend on the
-     Octave load path.
+     which the autoload command was run.  FILE _should not_ depend on
+     the Octave load path.
 
      Normally, calls to 'autoload' appear in PKG_ADD script files that
      are evaluated when a directory is added to Octave's load path.  To
@@ -3540,7 +3594,8 @@ found.
           autoload ("foo", "bar.oct");
 
      will load the function 'foo' from the file 'bar.oct'.  The above
-     usage when 'bar.oct' is not in the same directory or usages such as
+     usage when 'bar.oct' is not in the same directory, or usages such
+     as
 
           autoload ("foo", file_in_loadpath ("bar.oct"))
 
@@ -3549,7 +3604,7 @@ found.
      With no arguments, return a structure containing the current
      autoload map.
 
-     If a third argument 'remove' is given, the function is cleared and
+     If a third argument "remove" is given, the function is cleared and
      not loaded anymore during the current Octave session.
 
      See also: *note PKG_ADD: XREFPKG_ADD.
@@ -3567,14 +3622,16 @@ desirable that calling 'clear' does not remove this initialization.
 
    As an example,
 
-     mlock ("my_function");
+     function my_function ()
+       mlock ();
+       ...
 
-prevents 'my_function' from being removed from memory, even if 'clear'
-is called.  It is possible to determine if a function is locked into
-memory with the 'mislocked', and to unlock a function with 'munlock',
-which the following illustrates.
+prevents 'my_function' from being removed from memory after it is
+called, even if 'clear' is called.  It is possible to determine if a
+function is locked into memory with the 'mislocked', and to unlock a
+function with 'munlock', which the following illustrates.
 
-     mlock ("my_function");
+     my_function ();
      mislocked ("my_function")
      => ans = 1
      munlock ("my_function");
@@ -3585,11 +3642,11 @@ which the following illustrates.
 removed from memory, as the following example shows:
 
      function count_calls ()
+       mlock ();
        persistent calls = 0;
        printf ("'count_calls' has been called %d times\n",
                ++calls);
      endfunction
-     mlock ("count_calls");
 
      count_calls ();
      -| 'count_calls' has been called 1 times
@@ -3597,17 +3654,6 @@ removed from memory, as the following example shows:
      clear count_calls
      count_calls ();
      -| 'count_calls' has been called 2 times
-
-It is, however, often inconvenient to lock a function from the prompt,
-so it is also possible to lock a function from within its body.  This is
-simply done by calling 'mlock' from within the function.
-
-     function count_calls ()
-       mlock ();
-       persistent calls = 0;
-       printf ("'count_calls' has been called %d times\n",
-               ++calls);
-     endfunction
 
    'mlock' might equally be used to prevent changes to a function from
 having effect in Octave, though a similar effect can be had with the
@@ -3658,21 +3704,19 @@ will be used within a particular scope is given by
   4. Class method An overloaded function of a class as in chapter *note
      Object Oriented Programming::.
 
-  5. Legacy Dispatch An overloaded function as defined by 'dispatch'.
-
-  6. Command-line Function A function that has been defined on the
+  5. Command-line Function A function that has been defined on the
      command-line.
 
-  7. Autoload function A function that is marked as autoloaded with
+  6. Autoload function A function that is marked as autoloaded with
      *Note autoload: XREFautoload.
 
-  8. A Function on the Path A function that can be found on the users
+  7. A Function on the Path A function that can be found on the users
      load-path.  There can also be Oct-file, mex-file or m-file versions
      of this function and the precedence between these versions are in
      that order.
 
-  9. Built-in function A function that is builtin to Octave itself such
-     as 'numel', 'size', etc.
+  8. Built-in function A function that is a part of core Octave such as
+     'numel', 'size', etc.
 
 
 File: octave.info,  Node: Script Files,  Next: Function Handles Anonymous Functions Inline Functions,  Prev: Function Files,  Up: Functions and Scripts
@@ -3765,9 +3809,12 @@ have the name 'FILE.m', you can use the function 'source' to execute
 commands from any file.
 
  -- Built-in Function: source (FILE)
-     Parse and execute the contents of FILE.  This is equivalent to
-     executing commands from a script file, but without requiring the
-     file to be named 'FILE.m'.
+     Parse and execute the contents of FILE.
+
+     This is equivalent to executing commands from a script file, but
+     without requiring the file to be named 'FILE.m'.
+
+     See also: *note run: XREFrun.
 
 
 File: octave.info,  Node: Function Handles Anonymous Functions Inline Functions,  Next: Commands,  Prev: Script Files,  Up: Functions and Scripts
@@ -3826,21 +3873,61 @@ list.  If there are no arguments, you must use an empty argument list
      Return true if X is a function handle.
 
      See also: *note isa: XREFisa, *note typeinfo: XREFtypeinfo, *note
-     class: XREFclass.
+     class: XREFclass, *note functions: XREFfunctions.
 
- -- Built-in Function: functions (FCN_HANDLE)
-     Return a struct containing information about the function handle
+ -- Built-in Function: S = functions (FCN_HANDLE)
+     Return a structure containing information about the function handle
      FCN_HANDLE.
+
+     The structure S always contains these 3 fields:
+
+     function
+          The function name.  For an anonymous function (no name) this
+          will be the actual function definition.
+
+     type
+          Type of the function.
+
+          anonymous
+               The function is anonymous.
+
+          private
+               The function is private.
+
+          overloaded
+               The function overloads an existing function.
+
+          simple
+               The function is a built-in or m-file function.
+
+          subfunction
+               The function is a subfunction within an m-file.
+
+     file
+          The m-file that will be called to perform the function.  This
+          field is empty for anonymous and built-in functions.
+
+     In addition, some function types may return more information in
+     additional fields.
+
+     *Warning:* 'functions' is provided for debugging purposes only.
+     It's behavior may change in the future and programs should not
+     depend on a particular output.
 
  -- Built-in Function: func2str (FCN_HANDLE)
      Return a string containing the name of the function referenced by
      the function handle FCN_HANDLE.
+
+     See also: *note str2func: XREFstr2func, *note functions:
+     XREFfunctions.
 
  -- Built-in Function: str2func (FCN_NAME)
  -- Built-in Function: str2func (FCN_NAME, "global")
      Return a function handle constructed from the string FCN_NAME.  If
      the optional "global" argument is passed, locally visible functions
      are ignored in the lookup.
+
+     See also: *note func2str: XREFfunc2str, *note inline: XREFinline.
 
 
 File: octave.info,  Node: Anonymous Functions,  Next: Inline Functions,  Prev: Function Handles,  Up: Function Handles Anonymous Functions Inline Functions
@@ -3895,15 +3982,16 @@ After this it is possible to evaluate f at any x by writing 'f(x)'.
  -- Built-in Function: inline (STR)
  -- Built-in Function: inline (STR, ARG1, ...)
  -- Built-in Function: inline (STR, N)
-     Create an inline function from the character string STR.  If called
-     with a single argument, the arguments of the generated function are
-     extracted from the function itself.  The generated function
-     arguments will then be in alphabetical order.  It should be noted
-     that i, and j are ignored as arguments due to the ambiguity between
-     their use as a variable or their use as an inbuilt constant.  All
-     arguments followed by a parenthesis are considered to be functions.
-     If no arguments are found, a function taking a single argument
-     named 'x' will be created.
+     Create an inline function from the character string STR.
+
+     If called with a single argument, the arguments of the generated
+     function are extracted from the function itself.  The generated
+     function arguments will then be in alphabetical order.  It should
+     be noted that i, and j are ignored as arguments due to the
+     ambiguity between their use as a variable or their use as an
+     inbuilt constant.  All arguments followed by a parenthesis are
+     considered to be functions.  If no arguments are found, a function
+     taking a single argument named 'x' will be created.
 
      If the second and subsequent arguments are character strings, they
      are the names of the arguments of the function.
@@ -3911,8 +3999,13 @@ After this it is possible to evaluate f at any x by writing 'f(x)'.
      If the second argument is an integer N, the arguments are "x",
      "P1", ..., "PN".
 
+     Programming Note: The use of 'inline' is discouraged and it may be
+     removed from a future version of Octave.  The preferred way to
+     create functions from strings is through the use of anonymous
+     functions (*note Anonymous Functions::) or 'str2func'.
+
      See also: *note argnames: XREFargnames, *note formula: XREFformula,
-     *note vectorize: XREFvectorize.
+     *note vectorize: XREFvectorize, *note str2func: XREFstr2func.
 
  -- Built-in Function: argnames (FUN)
      Return a cell array of character strings containing the names of
@@ -4332,6 +4425,17 @@ number of errors related to the '*' operator.
        end_try_catch
      endfor
 
+Alternatively, the output of the 'lasterror' function can be found in a
+variable indicated immediately after the 'catch' keyword, as in the
+example below showing how to redirect an error as a warning:
+
+     try
+       ...
+     catch err
+       warning(err.identifier, err.message);
+       ...
+     end_try_catch
+
  -- Built-in Function: LASTERR = lasterror ()
  -- Built-in Function: lasterror (ERR)
  -- Built-in Function: lasterror ("reset")
@@ -4507,14 +4611,14 @@ convenient idiom for Octave code.  For example:
        ...
      endfunction  # rand generator state restored by onCleanup
 
- -- Built-in Function: C = onCleanup (ACTION)
+ -- Built-in Function: OBJ = onCleanup (FUNCTION)
      Create a special object that executes a given function upon
      destruction.  If the object is copied to multiple variables (or
-     cell or struct array elements) or returned from a function, ACTION
-     will be executed after clearing the last copy of the object.  Note
-     that if multiple local onCleanup variables are created, the order
-     in which they are called is unspecified.  For similar functionality
-     *Note The unwind_protect Statement::.
+     cell or struct array elements) or returned from a function,
+     FUNCTION will be executed after clearing the last copy of the
+     object.  Note that if multiple local onCleanup variables are
+     created, the order in which they are called is unspecified.  For
+     similar functionality *Note The unwind_protect Statement::.
 
 
 File: octave.info,  Node: Handling Warnings,  Prev: Handling Errors,  Up: Errors and Warnings
@@ -4964,10 +5068,10 @@ File: octave.info,  Node: Entering Debug Mode,  Next: Leaving Debug Mode,  Up: D
 
 There are two basic means of interrupting the execution of an Octave
 script.  These are breakpoints (*note Breakpoints::), discussed in the
-next section and interruption based on some condition.
+next section, and interruption based on some condition.
 
    Octave supports three means to stop execution based on the values set
-in the functions 'debug_on_interrupt', 'debug_on_warning' and
+in the functions 'debug_on_interrupt', 'debug_on_warning', and
 'debug_on_error'.
 
  -- Built-in Function: VAL = debug_on_interrupt ()
@@ -5023,7 +5127,8 @@ File: octave.info,  Node: Leaving Debug Mode,  Next: Breakpoints,  Prev: Enterin
 13.2 Leaving Debug Mode
 =======================
 
-To leave the debug mode, use either 'dbcont' or 'return'.
+Use either 'dbcont' or 'return' to leave the debug mode and continue the
+normal execution of the script.
 
  -- Command: dbcont
      Leave command-line debugging mode and continue code execution
@@ -5031,8 +5136,8 @@ To leave the debug mode, use either 'dbcont' or 'return'.
 
      See also: *note dbstep: XREFdbstep, *note dbquit: XREFdbquit.
 
-   To quit debug mode and return directly to the prompt 'dbquit' should
-be used instead
+   To quit debug mode and return directly to the prompt without
+executing any additional code use 'dbquit'.
 
  -- Command: dbquit
      Quit debugging mode immediately without further code execution and
@@ -5049,7 +5154,7 @@ File: octave.info,  Node: Breakpoints,  Next: Debug Mode,  Prev: Leaving Debug M
 13.3 Breakpoints
 ================
 
-Breakpoints can be set in any Octave function, using the 'dbstop'
+Breakpoints can be set in any m-file function by using the 'dbstop'
 function.
 
  -- Built-in Function: RLINE = dbstop ("FUNC")
@@ -5082,19 +5187,23 @@ function.
      *note debug_on_warning: XREFdebug_on_warning, *note
      debug_on_interrupt: XREFdebug_on_interrupt.
 
-Note that breakpoints cannot be set in built-in functions (e.g., 'sin',
-etc.)  or dynamically loaded function (i.e., oct-files).  To set a
-breakpoint immediately on entering a function, the breakpoint should be
-set to line 1.  The leading comment block will be ignored and the
-breakpoint will be set to the first executable statement in the
-function.  For example:
+Breakpoints in class methods are also supported (e.g., 'dbstop
+("@class/method")').  However, breakpoints cannot be set in built-in
+functions (e.g., 'sin', etc.)  or dynamically loaded functions (i.e.,
+oct-files).
+
+   To set a breakpoint immediately upon entering a function use line
+number 1, or omit the line number entirely and just give the function
+name.  When setting the breakpoint Octave will ignore the leading
+comment block, and the breakpoint will be set on the first executable
+statement in the function.  For example:
 
      dbstop ("asind", 1)
      => 29
 
 Note that the return value of '29' means that the breakpoint was
 effectively set to line 29.  The status of breakpoints in a function can
-be queried with the 'dbstatus' function.
+be queried with 'dbstatus'.
 
  -- Built-in Function: dbstatus ()
  -- Built-in Function: BRK_LIST = dbstatus ()
@@ -5147,11 +5256,6 @@ breakpoints listed can then be cleared with the 'dbclear' function.
      See also: *note dbstop: XREFdbstop, *note dbstatus: XREFdbstatus,
      *note dbwhere: XREFdbwhere.
 
-These functions can be used together to clear all the breakpoints in a
-particular function.  For example:
-
-     dbclear ("asind", dbstatus ("asind"));
-
    A breakpoint may also be set in a subfunction.  For example, if a
 file contains the functions
 
@@ -5168,8 +5272,12 @@ with
      dbstop (["func1", filemarker(), "func2"])
      => 5
 
-   Note that 'filemarker' returns a character that marks the
-subfunctions from the file containing them.
+   Note that 'filemarker' returns the character that marks subfunctions
+from the file containing them.  Unless the default has been changed this
+character is '>'.  Thus, a quicker and more normal way to set the
+breakpoint would be
+
+     dbstop func1>func2
 
    Another simple way of setting a breakpoint in an Octave script is the
 use of the 'keyboard' function.
@@ -5190,9 +5298,9 @@ use of the 'keyboard' function.
 
      See also: *note dbcont: XREFdbcont, *note dbquit: XREFdbquit.
 
-The 'keyboard' function is typically placed in a script at the point
-where the user desires that the execution be stopped.  It automatically
-sets the running script into the debug mode.
+The 'keyboard' function is placed in a script at the point where the
+user desires that the execution be stopped.  It automatically sets the
+running script into the debug mode.
 
 
 File: octave.info,  Node: Debug Mode,  Next: Call Stack,  Prev: Breakpoints,  Up: Debugging
@@ -5200,10 +5308,10 @@ File: octave.info,  Node: Debug Mode,  Next: Call Stack,  Prev: Breakpoints,  Up
 13.4 Debug Mode
 ===============
 
-There are three additional support functions that allow the user to
-interrogate where in the execution of a script Octave entered the debug
-mode and to print the code in the script surrounding the point where
-Octave entered debug mode.
+There are three additional support functions that allow the user to find
+out where in the execution of a script Octave entered the debug mode,
+and to print the code in the script surrounding the point where Octave
+entered debug mode.
 
  -- Command: dbwhere
      In debugging mode, report the current file and line number where
@@ -5272,16 +5380,24 @@ the command 'dbstep'.
 
      See also: *note dbcont: XREFdbcont, *note dbquit: XREFdbquit.
 
-   When in debug mode the <RETURN> will execute the last entered
+   When in debug mode the <RETURN> key will execute the last entered
 command.  This is useful, for example, after hitting a breakpoint and
-entering 'dbstep'.  After that one can advance line by line through the
-code with only a single key stroke.
+entering 'dbstep' once.  After that, one can advance line by line
+through the code with only a single key stroke.
 
 
 File: octave.info,  Node: Call Stack,  Next: Profiling,  Prev: Debug Mode,  Up: Debugging
 
 13.5 Call Stack
 ===============
+
+The function being debugged may be the leaf node of a series of function
+calls.  After examining values in the current subroutine it may turn out
+that the problem occurred in earlier pieces of code.  Use 'dbup' and
+'dbdown' to move up and down through the series of function calls to
+locate where variables first took on the wrong values.  'dbstack' shows
+the entire series of function calls and at what level debugging is
+currently taking place.
 
  -- Command: dbstack
  -- Command: dbstack N
@@ -7930,170 +8046,4 @@ be deleted, so this step need not be executed manually.
 
      See also: *note tmpfile: XREFtmpfile, *note mkstemp: XREFmkstemp,
      *note P_tmpdir: XREFP_tmpdir.
-
-
-File: octave.info,  Node: EOF and Errors,  Next: File Positioning,  Prev: Temporary Files,  Up: C-Style I/O Functions
-
-14.2.18 End of File and Errors
-------------------------------
-
-Once a file has been opened its status can be acquired.  As an example
-the 'feof' functions determines if the end of the file has been reached.
-This can be very useful when reading small parts of a file at a time.
-The following example shows how to read one line at a time from a file
-until the end has been reached.
-
-     filename = "myfile.txt";
-     fid = fopen (filename, "r");
-     while (! feof (fid) )
-       text_line = fgetl (fid);
-     endwhile
-     fclose (fid);
-
-Note that in some situations it is more efficient to read the entire
-contents of a file and then process it, than it is to read it line by
-line.  This has the potential advantage of removing the loop in the
-above code.
-
- -- Built-in Function: feof (FID)
-     Return 1 if an end-of-file condition has been encountered for a
-     given file and 0 otherwise.  Note that it will only return 1 if the
-     end of the file has already been encountered, not if the next read
-     operation will result in an end-of-file condition.
-
-     See also: *note fread: XREFfread, *note fopen: XREFfopen.
-
- -- Built-in Function: [ERR, MSG] = ferror (FID)
- -- Built-in Function: [ERR, MSG] = ferror (FID, "clear")
-     Return 1 if an error condition has been encountered for the file ID
-     FID and 0 otherwise.  Note that it will only return 1 if an error
-     has already been encountered, not if the next operation will result
-     in an error condition.
-
-     The second argument is optional.  If it is supplied, also clear the
-     error condition.
-
-     See also: *note fclear: XREFfclear, *note fopen: XREFfopen.
-
- -- Built-in Function: fclear (FID)
-     Clear the stream state for the specified file.
-
-     See also: *note fopen: XREFfopen.
-
- -- Built-in Function: freport ()
-     Print a list of which files have been opened, and whether they are
-     open for reading, writing, or both.  For example:
-
-          freport ()
-
-               -|  number  mode  name
-               -|
-               -|       0     r  stdin
-               -|       1     w  stdout
-               -|       2     w  stderr
-               -|       3     r  myfile
-
-     See also: *note fopen: XREFfopen, *note fclose: XREFfclose.
-
-
-File: octave.info,  Node: File Positioning,  Prev: EOF and Errors,  Up: C-Style I/O Functions
-
-14.2.19 File Positioning
-------------------------
-
-Three functions are available for setting and determining the position
-of the file pointer for a given file.
-
- -- Built-in Function: ftell (FID)
-     Return the position of the file pointer as the number of characters
-     from the beginning of the file FID.
-
-     See also: *note fseek: XREFfseek, *note feof: XREFfeof, *note
-     fopen: XREFfopen.
-
- -- Built-in Function: fseek (FID, OFFSET)
- -- Built-in Function: fseek (FID, OFFSET, ORIGIN)
- -- Built-in Function: STATUS = fseek (...)
-     Set the file pointer to any location within the file FID.
-
-     The pointer is positioned OFFSET characters from the ORIGIN, which
-     may be one of the predefined variables 'SEEK_CUR' (current
-     position), 'SEEK_SET' (beginning), or 'SEEK_END' (end of file) or
-     strings "cof", "bof" or "eof".  If ORIGIN is omitted, 'SEEK_SET' is
-     assumed.  OFFSET may be positive, negative, or zero but not all
-     combinations of ORIGIN and OFFSET can be realized.
-
-     Return 0 on success and -1 on error.
-
-     See also: *note fskipl: XREFfskipl, *note frewind: XREFfrewind,
-     *note ftell: XREFftell, *note fopen: XREFfopen.
-
- -- Built-in Function: SEEK_SET ()
- -- Built-in Function: SEEK_CUR ()
- -- Built-in Function: SEEK_END ()
-     Return the numerical value to pass to 'fseek' to perform one of the
-     following actions:
-
-     'SEEK_SET'
-          Position file relative to the beginning.
-
-     'SEEK_CUR'
-          Position file relative to the current position.
-
-     'SEEK_END'
-          Position file relative to the end.
-
-     See also: *note fseek: XREFfseek.
-
- -- Built-in Function: frewind (FID)
-     Move the file pointer to the beginning of the file FID, returning 0
-     for success, and -1 if an error was encountered.  It is equivalent
-     to 'fseek (FID, 0, SEEK_SET)'.
-
-     See also: *note fseek: XREFfseek, *note ftell: XREFftell, *note
-     fopen: XREFfopen.
-
-   The following example stores the current file position in the
-variable 'marker', moves the pointer to the beginning of the file, reads
-four characters, and then returns to the original position.
-
-     marker = ftell (myfile);
-     frewind (myfile);
-     fourch = fgets (myfile, 4);
-     fseek (myfile, marker, SEEK_SET);
-
-
-File: octave.info,  Node: Plotting,  Next: Matrix Manipulation,  Prev: Input and Output,  Up: Top
-
-15 Plotting
-***********
-
-* Menu:
-
-* Introduction to Plotting::
-* High-Level Plotting::
-* Graphics Data Structures::
-* Advanced Plotting::
-
-
-File: octave.info,  Node: Introduction to Plotting,  Next: High-Level Plotting,  Up: Plotting
-
-15.1 Introduction to Plotting
-=============================
-
-Earlier versions of Octave provided plotting through the use of gnuplot.
-This capability is still available.  But, a newer plotting capability is
-provided by access to OpenGL.  Which plotting system is used is
-controlled by the 'graphics_toolkit' function.  *Note Graphics
-Toolkits::.
-
-   The function call 'graphics_toolkit ("fltk")' selects the FLTK/OpenGL
-system, and 'graphics_toolkit ("gnuplot")' selects the gnuplot system.
-The two systems may be used selectively through the use of the
-'graphics_toolkit' property of the graphics handle for each figure.
-This is explained in *note Graphics Data Structures::.  *Caution:* The
-FLTK toolkit uses single precision variables internally which limits the
-maximum value that can be displayed to approximately 10^{38}.  If your
-data contains larger values you must use the gnuplot toolkit which
-supports values up to 10^{308}.
 

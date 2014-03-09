@@ -248,18 +248,18 @@ strfind ({&quot;abababa&quot;, &quot;bebebe&quot;, &quot;ab&quot;}, &quot;aba&qu
 <a name="XREFstrjoin"></a><dl>
 <dt><a name="index-strjoin"></a>Function File: <em><var>str</var> =</em> <strong>strjoin</strong> <em>(<var>cstr</var>)</em></dt>
 <dt><a name="index-strjoin-1"></a>Function File: <em><var>str</var> =</em> <strong>strjoin</strong> <em>(<var>cstr</var>, <var>delimiter</var>)</em></dt>
-<dd><p>Join the elements of the cell-string array, <var>cstr</var>, into a single
+<dd><p>Join the elements of the cell string array, <var>cstr</var>, into a single
 string.
 </p>
 <p>If no <var>delimiter</var> is specified, the elements of <var>cstr</var>
 separated by a space.
 </p>
-<p>If <var>delimiter</var> is specified as a string, the cell-string array is
+<p>If <var>delimiter</var> is specified as a string, the cell string array is
 joined using the string.  Escape sequences are supported.
 </p>
-<p>If <var>delimiter</var> is a cell-string array whose length is one less
+<p>If <var>delimiter</var> is a cell string array whose length is one less
 than <var>cstr</var>, then the elements of <var>cstr</var> are joined by
-interleaving the cell-string elements of <var>delimiter</var>.  Escape
+interleaving the cell string elements of <var>delimiter</var>.  Escape
 sequences are not supported.
 </p>
 <div class="example">
@@ -335,13 +335,13 @@ and returns a cell array of tokens and remainders.
 <dt><a name="index-strsplit-2"></a>Function File: <em>[<var>cstr</var>] =</em> <strong>strsplit</strong> <em>(&hellip;, <var>name</var>, <var>value</var>)</em></dt>
 <dt><a name="index-strsplit-3"></a>Function File: <em>[<var>cstr</var>, <var>matches</var>] =</em> <strong>strsplit</strong> <em>(&hellip;)</em></dt>
 <dd><p>Split the string <var>s</var> using the delimiters specified by <var>del</var>
-and return a cell-string array of sub-strings.  If a delimiter is not
+and return a cell string array of substrings.  If a delimiter is not
 specified the string, <var>s</var>, is split at whitespace.  The delimiter,
-<var>del</var> may be a string, a scalar cell-string, or cell-string array.
-<var>del</var> must be a cell-string array.  By default, consecutive
-delimiters in the input string, <var>s</var>, are collapsed into one.
+<var>del</var> may be a string, a scalar cell string, or cell string array.
+By default, consecutive delimiters in the input string <var>s</var> are
+collapsed into one.
 </p>
-<p>The second output, <var>matches</var>, returns the delmiters which were matched
+<p>The second output, <var>matches</var>, returns the delimiters which were matched
 in the original string.
 </p>
 <p>Example:

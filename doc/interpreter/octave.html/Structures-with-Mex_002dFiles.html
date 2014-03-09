@@ -140,32 +140,22 @@ mexFunction (int nlhs, mxArray* plhs[],
 <div class="example">
 <pre class="example">a(1).f1 = &quot;f11&quot;; a(1).f2 = &quot;f12&quot;; 
 a(2).f1 = &quot;f21&quot;; a(2).f2 = &quot;f22&quot;;
-b = mystruct (a)
-&rArr; field f1(0) = f11
+b = mystruct (a);
+&rArr;  field f1(0) = f11
     field f1(1) = f21
     field f2(0) = f12
     field f2(1) = f22
-    b =
-    {
-      this =
+b
+&rArr; 2x2 struct array containing the fields:
 
-      (,
-        [1] = this1
-        [2] = this2
-        [3] = this3
-        [4] = this4
-      ,)
+     this
+     that
 
-      that =
+b(3)
+&rArr; scalar structure containing the fields:
 
-      (,
-        [1] = that1
-        [2] = that2
-        [3] = that3
-        [4] = that4
-      ,)
-
-    }
+     this = this3
+     that = that3
 </pre></div>
 
 <hr>

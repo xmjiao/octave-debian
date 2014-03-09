@@ -169,12 +169,14 @@ the following example:
 </pre></div>
 
 <a name="XREFstruct"></a><dl>
-<dt><a name="index-struct"></a>Built-in Function: <em></em> <strong>struct</strong> <em>(<var>field1</var>, <var>value1</var>, <var>field2</var>, <var>value2</var>, &hellip;)</em></dt>
+<dt><a name="index-struct"></a>Built-in Function: <em><var>s</var> =</em> <strong>struct</strong> <em>()</em></dt>
+<dt><a name="index-struct-1"></a>Built-in Function: <em><var>s</var> =</em> <strong>struct</strong> <em>(<var>field1</var>, <var>value1</var>, <var>field2</var>, <var>value2</var>, &hellip;)</em></dt>
+<dt><a name="index-struct-2"></a>Built-in Function: <em><var>s</var> =</em> <strong>struct</strong> <em>(<var>obj</var>)</em></dt>
 <dd>
 <p>Create a scalar or array structure and initialize its values.  The
-<var>field1</var>, <var>field2</var>, &hellip; variables are strings giving the
+<var>field1</var>, <var>field2</var>, &hellip; variables are strings specifying the
 names of the fields and the <var>value1</var>, <var>value2</var>, &hellip;
-variables can be any type.
+variables can be of any type.
 </p>
 <p>If the values are cell arrays, create a structure array and initialize
 its values.  The dimensions of each cell array of values must match.
@@ -206,7 +208,7 @@ struct (&quot;foo&quot;, {1, 2, 3})
 
 </pre></div>
 
-<p>The first case is an ordinary scalar struct, one field, one value.  The
+<p>The first case is an ordinary scalar struct&mdash;one field, one value.  The
 second produces an empty struct array with one field and no values, since
 s being passed an empty cell array of struct array values.  When the value is
 a cell array containing a single entry, this becomes a scalar struct with
@@ -215,6 +217,8 @@ to be an empty cell array.
 </p>
 <p>Finally, if the value is a non-scalar cell array, then <code>struct</code>
 produces a struct <strong>array</strong>.
+</p>
+<p><strong>See also:</strong> <a href="Processing-Data-in-Cell-Arrays.html#XREFcell2struct">cell2struct</a>, <a href="Manipulating-Structures.html#XREFfieldnames">fieldnames</a>, <a href="Manipulating-Structures.html#XREForderfields">orderfields</a>, <a href="Manipulating-Structures.html#XREFgetfield">getfield</a>, <a href="Manipulating-Structures.html#XREFsetfield">setfield</a>, <a href="Manipulating-Structures.html#XREFrmfield">rmfield</a>, <a href="Function-Application.html#XREFstructfun">structfun</a>.
 </p></dd></dl>
 
 

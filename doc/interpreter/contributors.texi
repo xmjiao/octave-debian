@@ -44,7 +44,7 @@
 @item Jarkko Kaleva @tab Mohamed Kamoun @tab Lute Kamstra
 @item Fotios Kasolis @tab Thomas Kasper @tab Joel Keay
 @item Mumit Khan @tab Paul Kienzle @tab Aaron A. King
-@item Erik Kjelsson @tab Arno J. Klaassen @tab Alexander Klein
+@item Erik Kjellson @tab Arno J. Klaassen @tab Alexander Klein
 @item Geoffrey Knauth @tab Heine Kolltveit @tab Ken Kouno
 @item Kacper Kowalik @tab Daniel Kraft @tab Nir Krakauer
 @item Aravindh Krishnamoorthy @tab Oyvind Kristiansen @tab Artem Krosheninnikov

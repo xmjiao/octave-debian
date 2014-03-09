@@ -74,7 +74,8 @@ writing <code>f(x)</code>.
 <dt><a name="index-inline-1"></a>Built-in Function: <em></em> <strong>inline</strong> <em>(<var>str</var>, <var>arg1</var>, &hellip;)</em></dt>
 <dt><a name="index-inline-2"></a>Built-in Function: <em></em> <strong>inline</strong> <em>(<var>str</var>, <var>n</var>)</em></dt>
 <dd><p>Create an inline function from the character string <var>str</var>.
-If called with a single argument, the arguments of the generated
+</p>
+<p>If called with a single argument, the arguments of the generated
 function are extracted from the function itself.  The generated
 function arguments will then be in alphabetical order.  It should
 be noted that i, and j are ignored as arguments due to the
@@ -89,7 +90,12 @@ they are the names of the arguments of the function.
 <p>If the second argument is an integer <var>n</var>, the arguments are
 <code>&quot;x&quot;</code>, <code>&quot;P1&quot;</code>, &hellip;, <code>&quot;P<var>N</var>&quot;</code>.
 </p>
-<p><strong>See also:</strong> <a href="#XREFargnames">argnames</a>, <a href="#XREFformula">formula</a>, <a href="Basic-Vectorization.html#XREFvectorize">vectorize</a>.
+<p>Programming Note: The use of <code>inline</code> is discouraged and it may be
+removed from a future version of Octave.  The preferred way to create
+functions from strings is through the use of anonymous functions
+(see <a href="Anonymous-Functions.html#Anonymous-Functions">Anonymous Functions</a>) or <code>str2func</code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFargnames">argnames</a>, <a href="#XREFformula">formula</a>, <a href="Basic-Vectorization.html#XREFvectorize">vectorize</a>, <a href="Function-Handles.html#XREFstr2func">str2func</a>.
 </p></dd></dl>
 
 

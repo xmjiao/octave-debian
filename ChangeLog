@@ -1,3 +1,1341 @@
+2014-03-06  John W. Eaton  <jwe@octave.org>
+
+	Added tag release-3-8-1 for changeset 43cc202335dc
+
+	Files: .hgtags
+
+	Version 3.8.1 released.
+
+	* configure.ac (OCTAVE_VERSION): Now 3.8.1.
+	(OCTAVE_MINOR_VERSION): Now 1.
+	(OCTAVE_RELEASE_DATE): Set to 2014-03-06.
+	Update copyright date for startup message.
+
+	Files: configure.ac
+
+	assert.m: allow assertions for function handles
+
+	* assert.m: Allow expected value to be a function handle.
+	New tests.
+
+	Files: scripts/testfun/assert.m
+
+2014-03-05  John W. Eaton  <jwe@octave.org>
+
+	prevent interrupt from causing assert to fail (bug #41756)
+
+	* assert.m: Protect call_depth with unwind_protect block.
+
+	Files: scripts/testfun/assert.m
+
+2014-03-04  Rik  <rik@octave.org>
+
+	imshow.m: Fix bad input validation of ydata (bug #41773).
+
+	* imshow.m: Check that ydata is a vector and issue an error if it isn't.
+
+	Files: scripts/image/imshow.m
+
+2014-03-04  Torsten  <ttl@justmail.de>
+
+	fix flashing while debuggung and editor is tabbed behind console (bug #41757)
+
+	* file-editor.cc (is_editor_console_tabbed): new function returning true
+	  if editor is tabbed together with console;
+	  (request_open_file): do not give focus to editor if debug pointer or
+	  breakpoint marker is added and editor is tabbed with console
+
+	* file-editor.h: new function is_editor_console_tabbed
+
+	* main-window.h: new function get_dock_widget_list () returning the internal
+	  list of all dock widgets
+
+	Files: libgui/src/m-editor/file-editor.cc libgui/src/m-editor/file-editor.h
+	libgui/src/main-window.h
+
+2014-03-04  Carnë Draug  <carandraug@octave.org>
+
+	Fix writing of grayscale images when there is an alpha channel.
+
+	* __magick_read__.cc (encode_uint_image): create Magick::Color object for gray
+	color with Alpha channel correctly, i.e., repeat the gray value 3 times as if
+	it was an RGB image.
+	* imwrite.m: add 4 new tests for writing of single page and multipage, grayscale
+	and RGB images with alpha channel.
+
+	Files: libinterp/dldfcn/__magick_read__.cc scripts/image/imwrite.m
+
+	imwrite.m: simplify test blocks by make use of shared %!function.
+
+	Files: scripts/image/imwrite.m
+
+	Fix writing and reading of multipage images.
+
+	* __magick_read__.cc (encode_uint_image): reset the coordinates for each
+	Magick::Image object so that writing of multipage images (matrices with
+	non-singleton 4th dimension) work properly. Stride over the extra channels
+	at the end of each page, to fix writing of multipage RGB and CMYK images.
+	(read_images): correct stride over each frame for RGB and CMYK images.
+	* imwrite.m: add tests to write and read multipage grayscale and RGB images.
+	Reduce size of test images to speed up comparison.
+
+	Files: libinterp/dldfcn/__magick_read__.cc scripts/image/imwrite.m
+
+2014-03-01  Rik  <rik@octave.org>
+
+	doc: Remove "Legacy Dispatch" from Function Precedence section.
+
+	* func.txi: Remove "Legacy Dispatch" from Function Precedence section.
+	The dispatch function was removed and doesn't exist in 3.8.
+
+	Files: doc/interpreter/func.txi
+
+	doc: Replace "builtin" with "built-in" for consistency and correctness.
+
+	* external.txi, func.txi, testfun.txi, doc_cache_create.m:
+	Replace "builtin" with "built-in" for consistency and correctness.
+
+	Files: doc/interpreter/external.txi doc/interpreter/func.txi
+	doc/interpreter/testfun.txi scripts/help/doc_cache_create.m
+
+	doc: Update documentation for functions in octave-value dir.
+
+	* ov-bool-mat.cc (Flogical): Document that input must be numeric.
+	Document incompatibility with Matlab regarding complex inputs.
+
+	* ov-cell.cc (Fcell): Add seealso references.
+	* ov-cell.cc (Fcellstr): Document that trailing spaces are trimmed.
+	Add seealso references.
+	* ov-cell.cc (Fstruct2cell): Use lowercase names in @var references.
+
+	* ov-class.cc (Fismethod): Add seealso reference to isprop.
+	* ov-class.cc (Fsuperiorto): Add seealso reference to inferiorto.
+	* ov-class.cc (Finferiorto): Add seealso reference to superiorto.
+
+	* ov-fcn-handle.cc (Ffunctions): Add table to documentation describing return
+	values.
+	* ov-fcn-handle.cc (Ffunc2str): Add seealso links to str2func, functions.
+	* ov-fcn-handle.cc (Fstr2func): Add seealso links to func2str, inline.
+	* ov-fcn-handle.cc (Fis_function_handle): Add seealso links to functions.
+
+	* ov-fcn-inline.cc (Finline): Add note that the use of inline is discouraged.
+	Add seealso link to str2func.
+
+	* ov-int16.cc (Fint16): Add seealso links to docstring.
+
+	* ov-int32.cc (Fint32): Add seealso links to docstring.
+
+	* ov-int64.cc (Fint64): Add seealso links to docstring.
+
+	* ov-int8.cc (Fint8): Add seealso links to docstring.
+
+	* ov-oncleanup.cc (FonCleanup): clarify docstring by using "function" rather
+	than "action" for what gets called when onCleanup object is destroyed.
+
+	* ov-struct.cc (Fstruct): Add additional calling forms.  Add seealso links.
+	* ov-struct.cc (Fisfield): Add additional calling forms.  Add seealso link.
+	* ov-struct.cc (Fnfields): Add seealso link.
+	* ov-struct.cc (Fcell2struct): Add additional calling forms.  Add seealso link.
+	* ov-struct.cc (Frmfield): Emphasize that a copy of the struct is returned.
+	Add seealso link.
+	* ov-struct.cc (Fstruct_levels_to_print): Add seealso link to
+	print_struct_array_contents.
+	* ov-struct.cc (Fprint_struct_array_contents): Add seealso link to
+	struct_levels_to_print.
+
+	* ov-typeinfo.cc (Ftypeinfo): Add seealso links to class, isa.
+
+	* ov-uint16.cc (Fuint16): Add seealso links to docstring.
+
+	* ov-uint32.cc (Fuint32): Add seealso links to docstring.
+	* ov-uint64.cc (Fuint64): Add seealso links to docstring.
+	* ov-uint8.cc (Fuint8): Add seealso links to docstring.
+
+	* ov-usr-fcn.cc (Fnargin): Add example based on 'union' function.
+	* ov-usr-fcn.cc (Fnargout): Add example based on 'imread' function.
+	* ov-usr-fcn.cc (Foptimize_subsasgn_calls): Improve docstring.
+
+	* ov.cc (Fsubsref): Rephrase one sentence.
+
+	* fieldnames.m: Add more functions to seealso links.
+
+	* getfield.m: Re-order seealso links.
+
+	* setfield.m: Re-order seealso links.
+
+	* isprop.m Add ismethod, isobject to seealso links.
+
+	Files: libinterp/octave-value/ov-bool-mat.cc libinterp/octave-value/ov-
+	cell.cc libinterp/octave-value/ov-class.cc libinterp/octave-value
+	/ov-fcn-handle.cc libinterp/octave-value/ov-fcn-inline.cc libinterp
+	/octave-value/ov-int16.cc libinterp/octave-value/ov-int32.cc
+	libinterp/octave-value/ov-int64.cc libinterp/octave-value/ov-int8.cc
+	libinterp/octave-value/ov-oncleanup.cc libinterp/octave-value/ov-
+	struct.cc libinterp/octave-value/ov-typeinfo.cc libinterp/octave-
+	value/ov-uint16.cc libinterp/octave-value/ov-uint32.cc libinterp
+	/octave-value/ov-uint64.cc libinterp/octave-value/ov-uint8.cc
+	libinterp/octave-value/ov-usr-fcn.cc libinterp/octave-value/ov.cc
+	scripts/general/fieldnames.m scripts/miscellaneous/getfield.m
+	scripts/miscellaneous/setfield.m scripts/plot/util/isprop.m
+
+2014-02-28  Rik  <rik@octave.org>
+
+	importdata.m: Fix non-compliant PCRE regexp causing problems on Mac.
+
+	* importdata.m: Use '-' as the first character in a character class to
+	prevent it being interpreted as defining a range.
+
+	Files: scripts/io/importdata.m
+
+	doc: Improve documentation strings in parse-tree directory.
+
+	* lex.ll (F__display_tokens__): Add seealso reference.
+	* lex.ll (F__token_count__): Add seealso reference.
+	* lex.ll (F__lexer_debug_flag__): Document function.
+
+	* oct-parse.in.yy (Fautoload): Add additional calling form.  Rephrase
+	several sentences.
+	* oct-parse.in.yy (Fmfilename): Make single sentence description stand
+	apart from the rest of documentation.
+	* oct-parse.in.yy (Fsource): Make single sentence description stand
+	apart from the rest of documentation.  Add seealso link to 'run'.
+	* oct-parse.in.yy (Fbuiltin): Change type to "Built-in Function" from
+	"Loadable Function".
+	* oct-parse.in.yy (Feval): Rephrase several sentences.  Add programming
+	note suggesting the use of alternatives like try/catch or unwind_protect.
+	* oct-parse.in.yy (F__parser_debug_flag__): Document function.
+
+	* pt-mat.cc (Fstring_fill_char): Use semicolon in place of period for
+	stronger idea linkage.
+
+	Files: libinterp/parse-tree/lex.ll libinterp/parse-tree/oct-parse.in.yy
+	libinterp/parse-tree/pt-mat.cc
+
+	contrib.txi: Use correct Texinfo to generate curly braces.
+
+	* contrib.txi: Use correct Texinfo to generate curly braces.
+
+	Files: doc/interpreter/contrib.txi
+
+2014-02-27  Rik  <rik@octave.org>
+
+	contrib.txi: Improve the documentation for Contribution Guidelines.
+
+	* contrib.txi: Improve the documentation for Contribution Guidelines.
+
+	Files: doc/interpreter/contrib.txi
+
+2014-02-27  John W. Eaton  <jwe@octave.org>
+
+	Added tag rc-3-8-1-4 for changeset dd669c2ae76c
+
+	Files: .hgtags
+
+	3.8.1 release candidate 4
+
+	* configure.ac (OCTAVE_VERSION): Bump to 3.8.1-rc4.
+	(OCTAVE_MINOR_VERSION): Bump to 1-rc4.
+	(OCTAVE_RELEASE_DATE): Set to 2014-02-26.
+
+	Files: configure.ac
+
+2014-02-25  Pantxo Diribarne  <pantxo.diribarne@gmail.com>
+
+	axis.m: make 'tight' embrace whole images (bug #36594).
+
+	* axis.m (__get_tight_lims__): extend image data limits by one pixel.
+
+	* image.m: remove duplicate code and call "axis image" when
+	there's no other child in the axes.
+
+	Files: scripts/image/image.m scripts/plot/appearance/axis.m
+
+2014-02-22  Rik  <rik@octave.org>
+
+	io.tst: Remove duplicate test for fread.
+
+	* io.tst: Remove duplicate test for fread.
+
+	Files: test/io.tst
+
+2014-02-22  John W. Eaton  <jwe@octave.org>
+
+	correctly size fread result (bug #41648)
+
+	* oct-stream.cc (octave_base_stream::read): When reading to EOF, don't
+	add extra column to the result matrix if the number of elements found
+	is an exact multiple of the number of rows requested.
+	Avoid mixed signed/unsigned comparisons.
+	* io.tst: New tests.
+
+	Files: libinterp/corefcn/oct-stream.cc test/io.tst
+
+2014-02-21  Rik  <rik@octave.org>
+
+	handle fread skip parameter correctly (bug #41648)
+
+	* oct-stream.cc (octave_stream::read): Decide whether to skip based on
+	current number of elements read, not total.  Correctly handle case of
+	reading partial blocks when there is a repeat cound.  Skip to EOF if
+	the full skip is beyond EOF.
+	* io.tst: New test.
+
+	Files: libinterp/corefcn/oct-stream.cc test/io.tst
+
+2014-01-16  Jordi Gutiérrez Hermoso  <jordigh@octave.org>
+
+	Ensure anti-aliasing in fltk plots (patch #8259)
+
+	fltk's OpenGL window allows an anti-aliasing option. This patch
+	enables it.
+
+	* __init_fltk__.cc (OpenGL_fltk::OpenGL_fltk,
+	  plot_window::plot_window): Add FL_MULTISAMPLE as another OpenGL
+	  ability of the plot window.
+
+	Files: libinterp/dldfcn/__init_fltk__.cc
+
+2014-02-20  Marko Seric  <marko.seric@math.uzh.ch>
+
+	doc: Update docstring for qr (bug #41641).
+
+	Files: libinterp/dldfcn/qr.cc
+
+2014-02-20  Mike Miller  <mtmiller@ieee.org>
+
+	Fix regression, allow space-separated cell array of function handles (bug #41569)
+
+	* lex.ll ("@"): Unput comma before function handle when after whitespace in
+	an array context.
+	* parser.tst: New test case.
+
+	Files: libinterp/parse-tree/lex.ll test/parser.tst
+
+	doc: Update function locking section with correct usage of mlock (bug #41627)
+
+	* func.txi (Function Locking): Update description of function locking to show
+	correct usage of the mlock function.
+
+	Files: doc/interpreter/func.txi
+
+2014-02-18  Mike Miller  <mtmiller@ieee.org>
+
+	Use %!testif HAVE_UMFPACK for sparse lu test added in cset 2a45b6b87bee
+
+	* lu.cc: Use %!testif HAVE_UMFPACK for lu %!test on sparse data that was
+	added in cset 2a45b6b87bee.
+
+	Files: libinterp/corefcn/lu.cc
+
+2014-02-17  John W. Eaton  <jwe@octave.org>
+
+	Added tag rc-3-8-1-3 for changeset 02ce68d63fba
+
+	Files: .hgtags
+
+	fix release date for 3.8.1 and bump release to 3.8.1-rc3
+
+	* configure.ac (OCTAVE_VERSION): Bump to 3.8.1-rc3.
+	(OCTAVE_MINOR_VERSION): Bump to 1-rc3.
+	(OCTAVE_RELEASE_DATE): Set to 2014-02-17.
+
+	Files: configure.ac
+
+	Added tag rc-3-8-1-2 for changeset 85d31344fb23
+
+	Files: .hgtags
+
+	3.8.1 release candidate 2
+
+	* configure.ac (OCTAVE_VERSION): Bump to 3.8.1-rc2.
+	(OCTAVE_MINOR_VERSION): Bump to 1-rc2.
+	(OCTAVE_RELEASE_DATE): Set to 2014-02-14.
+
+	Files: configure.ac
+
+	install config.log in $octetc directory
+
+	* Makefile.am (octetc_DATA): Include config.log in the list.
+
+	Files: Makefile.am
+
+	avoid problems if popen is a macro
+
+	* file-io.cc (Fpopen): Define with DEFUNX instead of DEFUN.
+
+	Files: libinterp/corefcn/file-io.cc
+
+2014-02-16  Rik  <rik@octave.org>
+
+	axis.m: Make "image" and "square" compatible with Matlab (bug #41581).
+
+	* axis.m: Set plotboxaspectratiomode to "auto" when doing "image" format.
+	Set dataaspectratiomode to "auto" when doing "square" format.
+
+	Files: scripts/plot/appearance/axis.m
+
+2014-02-16  Torsten  <ttl@justmail.de>
+
+	fix restoring non-existing file from previous session (bug #41280)
+
+	* file-editor.cc (request_open_file): dialog asking whether to create
+	  non-existing file has no parent for correct handling at startup
+
+	Files: libgui/src/m-editor/file-editor.cc
+
+2014-02-15  Rik  <rik@octave.org>
+
+	axis.m: restore plotbox and data aspect ratios with 'axis normal' (bug #41581).
+	Use manual plotboxaspectratio for 'axis equal' for Matlab compatibility.
+
+	* axis.m: Use a manual plotboxaspectration of [5 4 4] for 'axis equal' for
+	Matlab compatibility.  For 'axis normal', first set an arbitrary
+	plotboxaspectratio and then set plotboxaspectratio and dataaspectratio to
+	"auto" such that a re-calculation is forced.
+
+	Files: scripts/plot/appearance/axis.m
+
+2014-02-13  John W. Eaton  <jwe@octave.org>
+
+	allow sighandlers.cc to compile on 64-bit Windows systems
+
+	* sighandlers.cc
+	(w32_interrupt_manager::do_octave_jump_to_enclosing_context):
+	Avoid code that only works on Windows32 systems.
+
+	Files: libinterp/corefcn/sighandlers.cc
+
+	allow sparse arguments for dimensions in sparse function (bug #41535)
+
+	* sparse.cc (Fsparse): Use get_dimensions to extract dimension args.
+
+	Files: libinterp/corefcn/sparse.cc
+
+2014-02-13  Rik  <rik@octave.org>
+
+	doc: Update docstrings for freqz, freqz_plot.
+
+	* freqz.m: List alternative calling forms.  Eliminate extra space caused
+	by expansion in ifnottex macro.  Remove mention of plotting stop band.
+	Add seealso link to freqz_plot.
+
+	* freqz_plot.m: Use freq_norm as the name for the third input to match the
+	code.  Remove mention of plotting stop band.  Add seealso link to freqz.
+
+	Files: scripts/signal/freqz.m scripts/signal/freqz_plot.m
+
+2014-02-13  Mike Miller  <mtmiller@ieee.org>
+
+	freqz: Make frequency response plot visually compatible with Matlab (bug #41464)
+
+	* freqz_plot.m: Eliminate the extraneous "pass band" subplot for visual
+	compatibility with Matlab. Use y-axis labels instead of legends. Always
+	autoscale the y-axis. Label the frequency axis in units of normalized
+	radians or Hz depending on a new optional argument.
+	* freqz.m: Tell freqz_plot whether the frequency vector is in normalized
+	radians or Hz.
+
+	Files: scripts/signal/freqz.m scripts/signal/freqz_plot.m
+
+2014-02-10  Felipe G. Nievinski  <fgnievinski@gmail.com>
+
+	Fix isequal* parse failure when comparing object to non-object (bug #41531).
+
+	* __isequal__.m: Check varargin is an object before attempting to convert
+	to struct.
+
+	Files: scripts/general/private/__isequal__.m
+
+2014-02-11  Rik  <rik@octave.org>
+
+	doc: Document that default mu is 0 for logn* statistical functions (bug #41547).
+
+	* logncdf.m, logninv.m, lognpdf.m: Document that default mu is 0 (bug #41547).
+
+	Files: scripts/statistics/distributions/logncdf.m
+	scripts/statistics/distributions/logninv.m
+	scripts/statistics/distributions/lognpdf.m
+
+2014-02-10  Rik  <rik@octave.org>
+
+	image.m: Fix axis limit bug when column vectors are used as x,y input (bug #41466).
+
+	* image.m: Guarantee a row vector for axis limit calculations.
+
+	Files: scripts/image/image.m
+
+2014-02-09  Mike Miller  <mtmiller@ieee.org>
+
+	Allow save() to write to the terminal with the filename '-' (bug #41505)
+
+	* load-save.cc (parse_save_options): Treat an argument of '-' as a filename
+	argument instead of an invalid option, restoring the ability to write to
+	the terminal with save().
+
+	Files: libinterp/corefcn/load-save.cc
+
+2014-02-07  Rik  <rik@octave.org>
+
+	doc: Change docstring for rand* functions from [N, M] to [M, N] (bug #41496).
+
+	* rand.cc (Frand,Frandn,Frande,Frandg,Frandp): Change docstring from [N, M] to
+	[M, N] (bug #41496).
+
+	Files: libinterp/corefcn/rand.cc
+
+2014-02-07  Torsten  <ttl@justmail.de>
+
+	fix problems with gui startup (bug #41452) and focus issues (bug #40823)
+
+	* main-window.cc (set_window_layout): restore window geometry and state for non
+	  windows system at the beginning, restore geometry of a dock widget only for
+	  non windows systems, show floating and visible dock widgets immediatly,
+	  restore window geometry and state for windows system at the end
+
+	Files: libgui/src/main-window.cc
+
+2014-02-04  Rik  <rik@octave.org>
+
+	Improve docstring for fixed_point_format().
+
+	* pr-output.cc (Ffixed_point_format): Improve docstring.
+
+	Files: libinterp/corefcn/pr-output.cc
+
+2014-02-04  John W. Eaton  <jwe@octave.org>
+
+	avoid substituting shell variable references in mkoctfile.cc
+
+	* configure.ac: Avoid substituting '$BINDIR', '$OCTAVE_VERSION', and
+	'$EXEEXT' into mkoctfile.cc on OS X systems.
+
+	Files: configure.ac
+
+2014-02-04  Torsten  <ttl@justmail.de>
+
+	improve focus of terminal widget (partial fix of bug #40823)
+
+	* QUnixTerminalImpl.cpp (initialize): set focus policy to strong focus
+
+	* terminal_dock_widget.cc (constructor): set focus policy to strong focus,
+	  set focus proxy to the terminal
+
+	Files: libgui/qterminal/libqterminal/unix/QUnixTerminalImpl.cpp libgui/src
+	/terminal-dock-widget.cc
+
+2014-02-03  Rik  <rik@octave.org>
+
+	ppval.m: Return correctly sized output for scalar polynomial input (bug #41448).
+
+	* ppval.m: Return correctly sized output for scalar polynomial input
+	(bug #41448).
+
+	Files: scripts/polynomial/ppval.m
+
+2014-02-01  Stefan Mahr  <dac922@gmx.de>
+
+	Disallow comments after continuation in double-quoted strings (bug #41415).
+
+	* lex.ll (<DQ_STRING_START>(\.\.\.){S}*{NL},
+	<DQ_STRING_START>\\{S}+{NL}): Allow only whitespace to follow
+	continuation markers.
+
+	Files: libinterp/parse-tree/lex.ll
+
+2014-02-03  Jordi Gutiérrez Hermoso  <jordigh@octave.org>
+
+	maint: whitespace fixes for libinterp/corefcn/lu.cc
+
+	Files: libinterp/corefcn/lu.cc
+
+	maint: Style fixes for tests in libinterp/corefcn/lu.cc
+
+	Files: libinterp/corefcn/lu.cc
+
+2014-02-03  Michael C. Grant  <mcg@cvxr.com>
+
+	correct numerical errors in sparse LU factorization (bug #41116).
+
+	* lu.cc: modified to apply pivots as warranted to L and U.
+	* sparse-base-lu.cc: compute correct matrix size for single-output case.
+
+	Files: libinterp/corefcn/lu.cc liboctave/numeric/sparse-base-lu.cc
+
+2014-01-31  Rik  <rik@octave.org>
+
+	interp1.m: Demote error to warning about multiple discontinuties (bug #41386).
+
+	* interp1.m: Demote error to warning about multiple discontinuties
+	(bug #41386).  Add %!warning test for new behavior.
+
+	Files: scripts/general/interp1.m
+
+	interp1.m: Clean up function
+
+	* interp1.m: Improved docstring.  Add spaces between case statements for
+	readability.  Use "strcmp || strcmp" construct because it is faster than
+	"any strcmp ({...}, arg)" when the number of arguments is less than 3.
+	Correct misspellings in 5th demo and change the axis limits to make it
+	prettier.  Add %!tests for left and right discontinuities.  Improve
+	error validation.
+
+	Files: scripts/general/interp1.m
+
+2013-12-06  Juan Pablo Carbajal  <ajuanpi+dev@gmail.com>
+
+	interp1.m: Fix handling multi-column y-input with jumps (bug #40825).
+
+	* interp1.m: Eliminate jumps from both x AND y before doing
+	linear interpolation.
+
+	Files: scripts/general/interp1.m
+
+2014-01-29  Markus Appel  <masolomaster3000@googlemail.com>
+
+	figure.m: Don't make figure N visible when property explicitly set to 'off' (bug #41396)
+
+	* scripts/plot/util/figure.m: Don't make figure N visible when property explicitly set to 'off'
+	Add test to re-activate existing figure with 'visible' set to 'off'
+
+	Files: scripts/plot/util/figure.m
+
+2014-01-29  John W. Eaton  <jwe@octave.org>
+
+	consistently use '...' without preceding space in GUI messaages
+
+	Files: libgui/languages/be_BY.ts libgui/languages/de_DE.ts
+	libgui/languages/en_US.ts libgui/languages/es_ES.ts
+	libgui/languages/fr_FR.ts libgui/languages/nl_NL.ts
+	libgui/languages/pt_BR.ts libgui/languages/pt_PT.ts
+	libgui/languages/ru_RU.ts libgui/languages/uk_UA.ts libgui/src
+	/files-dock-widget.cc
+
+2014-01-06  Michael Godfrey  <michaeldgodfrey@gmail.com>
+
+	doc: update linear algebra chapter
+
+	Files: doc/interpreter/linalg.txi
+
+2014-01-28  Felipe G. Nievinski  <fgnievinski@gmail.com>
+
+	* pt_BR.ts: restore translations accidently deleted by cset cae24b7cfaf4
+
+	Files: libgui/languages/pt_BR.ts
+
+2014-01-27  Rik  <rik@octave.org>
+
+	__makeinfo__.m: Fix generating HTML output with Texinfo 5.2 (bug #41364).
+
+	* __makeinfo__.m: Add option "--output=-" so that file input will be sent to
+	stdout rather than re-written in-place which is the new default for 5.2.
+
+	Files: scripts/help/__makeinfo__.m
+
+2014-01-26  John Donoghue  <john.donoghue@ieee.org>
+
+	Include tlhelp32.h in shared-fcns.h
+
+	* src/shared-fcns.h: add #include <tlhelp32.h> in WIN32.
+
+	Files: src/shared-fcns.h
+
+2014-01-25  John W. Eaton  <jwe@octave.org>
+
+	allow urlwrite to work again
+
+	* urlwrite.cc (Furlwrite): Reverse sense of test when checking whether
+	url_transfer object is valid.
+
+	Files: libinterp/corefcn/urlwrite.cc
+
+2014-01-25  Torsten  <ttl@justmail.de>
+
+	*de_DE.ts: consistent translation of the two Find Files in the file browser
+
+	Files: libgui/languages/de_DE.ts
+
+	* files-dock-widget.cc (contextmenu_requested): add icon for find files action
+
+	Files: libgui/src/files-dock-widget.cc
+
+	context menu open in the file browser really opens the file
+
+	* file-docks-widget (contextmenu_open): instead of initiating the default
+	  action for the file (via item_double_clicked, e.g. load the file), really
+	  open the file as desired
+
+	Files: libgui/src/files-dock-widget.cc
+
+	apply the context menu of the file browser to the correct item (bug #41430)
+
+	* files-dock-widget.cc (contextmenu_requested): if right-clicked item is not
+	  selected clear the actual selection and select right-clicked item
+
+	Files: libgui/src/files-dock-widget.cc
+
+2014-01-25  Rik  <rik@octave.org>
+
+	doc: Improve the documentation for the debug chapter of the manual.
+
+	* debug.txi: Improve the documentation for the debug chapter of the manual.
+
+	Files: doc/interpreter/debug.txi
+
+2014-01-25  Mike Miller  <mtmiller@ieee.org>
+
+	Use std::ostream::fail instead of unsafe implicit bool conversion (bug #41335)
+
+	* ls-mat4.cc (save_mat_binary_data): Use std::ostream::fail to return stream
+	status instead of unsafe implicit bool conversion.
+	* ov-cell.cc (octave_cell::save_ascii) Likewise.
+	* ov-class.cc (octave_class::save_ascii, octave_class::save_binary) Likewise.
+	* ov-fcn-handle.cc (octave_fcn_handle::save_ascii,
+	octave_fcn_handle::save_binary) Likewise.
+	* ov-struct.cc (octave_struct::save_ascii, octave_struct::save_binary,
+	octave_scalar_struct::save_ascii, octave_scalar_struct::save_binary) Likewise.
+
+	Files: libinterp/corefcn/ls-mat4.cc libinterp/octave-value/ov-cell.cc
+	libinterp/octave-value/ov-class.cc libinterp/octave-value/ov-fcn-
+	handle.cc libinterp/octave-value/ov-struct.cc
+
+2014-01-16  Michael Godfrey  <michaeldgodfrey@gmail.com>
+
+	graphics_toolkit: Check argument against list of available toolkits (bug #41258)
+
+	* graphics_toolkit.m: Check argument against list of available toolkits, better
+	error reporting in case of typo or missing toolkit.
+
+	Files: scripts/plot/util/graphics_toolkit.m
+
+2014-01-24  Michael C. Grant  <mcg@cvxr.com>
+
+	Part 2: Find Qt libs in framework option for Macs (bug #41236)
+
+	* configure.ac: Only look through -F framework option if regular detection has
+	failed.
+
+	Files: configure.ac
+
+2014-01-24  Rik  <rik@octave.org>
+
+	doc: Add dblist to list of commands from 'help debug'.
+
+	* debug.m: Add dblist to list of commands.
+
+	Files: scripts/miscellaneous/debug.m
+
+2014-01-24  Torsten  <ttl@justmail.de>
+
+	update of gui language files (no new strings, only line numbers)
+
+	Files: libgui/languages/be_BY.ts libgui/languages/de_DE.ts
+	libgui/languages/en_US.ts libgui/languages/es_ES.ts
+	libgui/languages/fr_FR.ts libgui/languages/nl_NL.ts
+	libgui/languages/pt_BR.ts libgui/languages/pt_PT.ts
+	libgui/languages/ru_RU.ts libgui/languages/uk_UA.ts
+
+2014-01-24  Rik  <rik@octave.org>
+
+	assert.m: Fix regression and accept more than 3 arguments for certain cases (bug #41332).
+
+	* assert.m: Accept more than 3 arguments when one of the arguments is a format
+	string for error() and the extra arguments are passed on.  Add %!tests to
+	verify this works.
+
+	Files: scripts/testfun/assert.m
+
+	Rename Fortran example files from 'fort' prefix to 'fortran' prefix.
+
+	* examples/fortrandemo.cc, examples/fortransub.f: Renamed files.
+
+	* examples/fortdemo.cc, examples/fortsub.f: Deleted files.
+
+	* examples/Makefile.am, doc/interpreter/Makefile.am: Change build
+	system to use new file names.
+
+	* doc/interpreter/external.txi: Change documentation to reflect new names.
+
+	Files: doc/interpreter/Makefile.am doc/interpreter/external.txi
+	examples/Makefile.am examples/fortdemo.cc examples/fortrandemo.cc
+	examples/fortransub.f examples/fortsub.f
+
+	mex_demo.c: Fix incorrect comments describing how to run example.
+
+	* mex_demo.c: Fix incorrect comments describing how to run example.
+
+	Files: examples/mex_demo.c
+
+	myfeval.c: Fix segfault in mex example code.
+
+	* myfeval.c: Correctly cast away const attribute of prhs[].
+	Also, add code to work with Octave's built-in 'ans' variable.
+
+	* external.txi: Update example in External Code Interface for myfeval.
+
+	Files: doc/interpreter/external.txi examples/myfeval.c
+
+2014-01-24  John W. Eaton  <jwe@octave.org>
+
+	* mkoctfile.in.cc: Use std:: instead of using declarartion.
+
+	Files: src/mkoctfile.in.cc
+
+	* mkoctfile.in.cc: Use gnulib:: tag where appropriate.
+
+	Files: src/mkoctfile.in.cc
+
+	use common code to get OCTAVE_HOME in main, octave-config and mkoctfile
+
+	* src/shared-fcns.h: New file.
+	* src/Makefile.in: Include it in the list of headers to distribute.
+	* main.in.cc, mkoctfile.in.cc, octave-config.in.cc: Use functions from
+	shared-fcns.h to find and substitute OCTAVE_HOME.
+
+	Files: src/Makefile.am src/main.in.cc src/mkoctfile.in.cc src/octave-
+	config.in.cc src/shared-fcns.h
+
+	make mkoctfile.m list of variables consistent with mkoctfile.cc (bug #41296)
+
+	* mkoctfile.m: Update doc string.
+
+	Files: scripts/miscellaneous/mkoctfile.m
+
+2014-01-23  Rik  <rik@octave.org>
+
+	doc: Re-write bits of External Code Interface chapter.
+
+	* external.txi: Re-write bits of External Code Interface chapter.
+
+	* examples/standalonebuiltin.cc: Place std::endl on same line as text
+	to make code sample take up less space in the manual.
+
+	Files: doc/interpreter/external.txi examples/standalonebuiltin.cc
+
+2014-01-24  Mike Miller  <mtmiller@ieee.org>
+
+	octave-config: Rebase dir variables to OCTAVE_HOME only when it is defined
+
+	* octave-config.in.cc (initialize): Only substitute OCTAVE_HOME for
+	PREFIX when it is in the environment. This restores constistency with
+	the removed shell script version.
+
+	Files: src/octave-config.in.cc
+
+2014-01-23  Rik  <rik@octave.org>
+
+	mkoctfile.m: Add missing bracket to @deftypefn declaration.
+
+	* mkoctfile.m: Add missing bracket to @deftypefn declaration.
+
+	Files: scripts/miscellaneous/mkoctfile.m
+
+2014-01-23  Michael C. Grant  <mcg@cvxr.com>
+
+	configure.ac: Find Qt libs in framework option for Macs (bug #41236)
+
+	* configure.ac: On Darwin OS only, look for Qt libraries in Framework
+	directory.
+
+	* src/Makefile.am: Add missing line continuation to octave_cli_LDADD
+	definition list.
+
+	Files: configure.ac src/Makefile.am
+
+2014-01-23  John W. Eaton  <jwe@octave.org>
+
+	make octave-config and mkoctfile consistent with last shell script versions
+
+	* mkoctfile.in.cc, octave-config.in.cc: Update to match latest shell
+	script versions.
+
+	Files: src/mkoctfile.in.cc src/octave-config.in.cc
+
+2014-01-23  Rik  <rik@octave.org>
+
+	doc: Re-write documentation for errorbar family of functions.
+
+	* errorbar.m: Rewrite docstring.
+
+	* loglogerr.m, semilogxerr.m, semilogyerr.m: Update list of forms showing how
+	function can be called.
+
+	Files: scripts/plot/draw/errorbar.m scripts/plot/draw/loglogerr.m
+	scripts/plot/draw/semilogxerr.m scripts/plot/draw/semilogyerr.m
+
+2014-01-21  Mike Miller  <mtmiller@ieee.org>
+
+	Always build mkoctfile and octave-config as executables (bug #41296)
+
+	* src/Makefile.am (bin_PROGRAMS): Add mkoctfile and octave-config
+	unconditionally. (bin_SCRIPTS): Remove all references.
+	(AMCOND_BUILD_COMPILED_AUX_PROGRAMS): Delete conditional sections.
+	* src/mkoctfile.in.cc: Include <unistd.h>.
+	* src/mkoctfile.in.sh, src/octave-config.in.sh: Delete.
+	* configure.ac (AMCOND_BUILD_COMPILED_AUX_PROGRAMS): Delete.
+
+	Files: configure.ac src/Makefile.am src/mkoctfile.in.cc src/mkoctfile.in.sh
+	src/octave-config.in.sh
+
+2014-01-04  Michael Godfrey  <michaeldgodfrey@gmail.com>
+
+	Edits to Manual and indicies
+
+	Files: doc/interpreter/diagperm.txi doc/interpreter/linalg.txi
+	doc/interpreter/plot.txi
+
+2014-01-22  Rik  <rik@octave.org>
+
+	Return all nargout from urlread if requested (bug #41260).
+
+	* urlwrite.cc (Furlread): Assign all outputs to retval when nargout > 0.
+
+	Files: libinterp/corefcn/urlwrite.cc
+
+2014-01-22  John W. Eaton  <jwe@octave.org>
+
+	allow "methods ftp" to work outside of classdef (bug #41227)
+
+	* lex.ll (octave_base_lexer::handle_keyword_token): Don't alter
+	at_beginning_of_statement if something that looks like a keyword is
+	used in a context where it is not.
+
+	Files: libinterp/parse-tree/lex.ll
+
+2014-01-20  John W. Eaton  <jwe@octave.org>
+
+	prevent lexer from matching patterns across CR line endings (bug #41281)
+
+	* lex.ll: Use [^\r\n]*{NL} instead of .*{NL} to avoid matching
+	patterns across lines that use CR only as line endings.
+
+	Files: libinterp/parse-tree/lex.ll
+
+2014-01-15  John W. Eaton  <jwe@octave.org>
+
+	avoid startup crash if curl library is not available (bug #41067)
+
+	* main-window.cc (news_reader::process): Don't attempt to use
+	url_transfer object unless it is valid.
+	* urlwrite.cc (ch_manager::do_make_curl_handle, Furlwrite, Furlread):
+	Likewise.
+	* url-transfer.cc (url_transfer::url_transfer): Don't call
+	disabled_error.
+	(disabled_error): Delete unused function.
+
+	Files: libgui/src/main-window.cc libinterp/corefcn/urlwrite.cc
+	liboctave/util/url-transfer.cc
+
+2014-01-14  Mike Miller  <mtmiller@ieee.org>
+
+	HACKING: Refer to install.txi for the full dependency list (bug #41233)
+
+	* HACKING: Refer to install.txi for the complete list of required and
+	optional dependencies for building Octave.
+
+	Files: etc/HACKING
+
+	doc: Document missing build tools and external packages (bug #41233)
+
+	* install.txi: Document missing build tools gperf and Texinfo and
+	optional dependency on JDK.
+
+	Files: doc/interpreter/install.txi
+
+2014-01-08  Lasse Schuirmann  <lasse@schuirmann.net>
+
+	jit-typeinfo.cc: Fix C++ function ambiguity (bug #41145).
+
+	jit-typeinfo.cc (jit_operation::to_idx): Fix C++ function ambiguity over which
+	version of std::max() to call (bug #41145).
+
+	Files: libinterp/corefcn/jit-typeinfo.cc
+
+2014-01-14  Rik  <rik@octave.org>
+
+	Fix native MinGW builds with spaces in JAVA_HOME (bug #41024).
+
+	* configure.ac: Use quotes around JAVA_HOME, JAVA_CPPFLAGS variables on Windows
+	platforms.
+
+	Files: configure.ac
+
+2014-01-14  Lasse Schuirmann  <lasse@schuirmann.net>
+
+	Fix building JIT with 64-bit indexing (bug #41163).
+
+	jit-typeinfo.cc (jit_typeinfo): Create two constants for the value 1.  One
+	constant (one_idx) is of type index_t and the other (one_int) is of int_t.  Use
+	these constants when comparing to objects of the matching type.
+
+	Files: libinterp/corefcn/jit-typeinfo.cc
+
+2014-01-14  Rik  <rik@octave.org>
+
+	configure.ac: Respect --with-java-includedir argument (bug #41230)
+
+	* configure.ac: Respect --with-java-includedir argument (bug #41230)
+
+	Files: configure.ac
+
+	build: Don't build JIT by default (bug #41213)
+
+	* configure.ac: Don't build JIT by default.  Only explicit --enable-jit
+	will include JIT in Octave.
+
+	Files: configure.ac
+
+2014-01-13  Kyle Guinn  <elyk03@gmail.com>
+
+	configure.ac: Add AMD_CPPFLAGS to UMFPACK tests (bug #41209).
+
+	* configure.ac: Add AMD_CPPFLAGS to UMFPACK tests (bug #41209).
+
+	Files: configure.ac
+
+2014-01-12  Mike Miller  <mtmiller@ieee.org>
+
+	Fix build failure on Unix systems without PATH_MAX (bug #41212)
+
+	* kpty.cpp (PATH_MAX): Define to fallback values on systems that do not
+	provide PATH_MAX. Based on a change made to kdelibs after qterminal was
+	made based on it.
+
+	Files: libgui/qterminal/libqterminal/unix/kpty.cpp
+
+	Detect and use appropriate terminal attribute functions (bug #41212)
+
+	* configure.ac: Add AC_CHECK_FUNCS for tcgetattr and tcsetattr.
+	* kpty.cpp (_tcgetattr, _tcsetattr): Define to the appropriate terminal
+	attribute functions based on system library support, not OS type macros.
+	Fixes build failures on non-Linux GNU-based systems. Based on a Debian
+	patch to the kde4libs package.
+
+	Files: configure.ac libgui/qterminal/libqterminal/unix/kpty.cpp
+
+2014-01-12  Torsten  <ttl@justmail.de>
+
+	update some icnons of the gui
+
+	* files-dock-widget.cc (constructor): new icons for new folder selection and
+	  for searching in/for files
+
+	* file-editor.cc (construct): new icons for file open and find actions
+
+	* find-dialog.cc (constructor): new widget icons
+
+	* main-window.cc (construct_file_menu): new icons for file open action;
+	  (construct_toolbar): new icon for selecting new octave directory
+
+	* libgui/src/module.mk, resource.qrc:
+	  removed icons: chat.png, help_index.png, jabber_protocol.png, question.png,
+	                 star.png, stop.png, terminal.png
+	  new icons:     findf.png, folder_documents.png, folder.png
+
+	* icon_files: update list of icons used from the Crystal Project, update
+	  link to its license, add a list of icons created by the octave developpers
+
+	* chat.png, help_index.png, jabber_protocol.png, question.png,
+	  star.png, stop.png, terminal.png: removed icon files
+
+	* findf.png, folder_documents.png, folder.png: new icon files
+
+	Files: libgui/src/files-dock-widget.cc libgui/src/icons/chat.png
+	libgui/src/icons/findf.png libgui/src/icons/folder.png
+	libgui/src/icons/folder_documents.png
+	libgui/src/icons/folder_new.png libgui/src/icons/gear.png
+	libgui/src/icons/help_index.png libgui/src/icons/icons_license
+	libgui/src/icons/jabber_protocol.png libgui/src/icons/question.png
+	libgui/src/icons/star.png libgui/src/icons/stop.png
+	libgui/src/icons/terminal.png libgui/src/m-editor/file-editor.cc
+	libgui/src/m-editor/find-dialog.cc libgui/src/main-window.cc
+	libgui/src/module.mk libgui/src/resource.qrc
+
+2014-01-11  Torsten  <ttl@justmail.de>
+
+	minor fix of text strings and related translations (part of bug #41201)
+
+	* file-editor.cc: minor changes of text strings
+	* main-window.cc: minor changes of text strings
+	* files-dock-widget.cc: minor changes of text strings
+	* find-dialog.cc: minor changes of text strings
+	* settings-dialog.cc: minor changes of text strings
+	* welcome-wizard.cc: minor changes of text strings
+
+	* libgui/languages/*.ts: update the traanslations accordingly
+
+	Files: libgui/languages/be_BY.ts libgui/languages/de_DE.ts
+	libgui/languages/en_US.ts libgui/languages/es_ES.ts
+	libgui/languages/fr_FR.ts libgui/languages/nl_NL.ts
+	libgui/languages/pt_BR.ts libgui/languages/pt_PT.ts
+	libgui/languages/ru_RU.ts libgui/languages/uk_UA.ts libgui/src
+	/files-dock-widget.cc libgui/src/m-editor/file-editor.cc
+	libgui/src/m-editor/find-dialog.cc libgui/src/main-window.cc
+	libgui/src/settings-dialog.ui libgui/src/welcome-wizard.cc
+
+2013-12-29  Jordi Gutiérrez Hermoso  <jordigh@octave.org>
+
+	Fix saving int8 and uint8 in plain text format (bug #40980)
+
+	* oct-inttypes.h (operator<<): Specialise this operator's
+	  octave_int<T> overloads for T = int8_t and T = uint8_t so that it
+	  calls non-char versions of std::operator<<
+
+	Files: liboctave/util/oct-inttypes.h
+
+2014-01-09  Torsten  <ttl@justmail.de>
+
+	fix some translation issues (bug #41159)
+
+	* main-window.cc (news_reader::process): only use constant strings in tr ()
+
+	* libgui/languages/*.ts: update language files accordingly
+
+	* settings-dialog.cc (read_lexer_settings): added context comments in tr ()
+	  for the use of b, i and u in the editor styles
+
+	* files-dock-widget.cc (process_new_dir): added a context comment for newline
+
+	Files: libgui/languages/be_BY.ts libgui/languages/de_DE.ts
+	libgui/languages/en_US.ts libgui/languages/es_ES.ts
+	libgui/languages/fr_FR.ts libgui/languages/nl_NL.ts
+	libgui/languages/pt_BR.ts libgui/languages/pt_PT.ts
+	libgui/languages/ru_RU.ts libgui/languages/uk_UA.ts libgui/src
+	/files-dock-widget.cc libgui/src/main-window.cc libgui/src/settings-
+	dialog.cc
+
+2014-01-08  Torsten  <ttl@justmail.de>
+
+	synchronize gui's debug actions with the octave core thread (bug #41139)
+
+	* main-window.cc (constructor): initialize new queue with debug commands
+	  (debug_continue, debug_step_into, debug_step_over, debug_step_out,
+	  debug_quit): call queue_debug instead post octave_link-event and remove
+	  the related callback functions
+	  (queue_debug): new functin handling the queue of debug actions and posting
+	  octave_link events;
+	  (execute_debug_callback): common new callback function for debug actions
+
+	* main-window.h: removed functions: debug_continue_callback,
+	  debug_step_into_callback, debug_step_over_callback,
+	  debug_step_out_callback, debug_quit_callback;
+	  new functions: queue_debug, execute_debug_callback;
+	  new variables for handling the debug queue
+
+	Files: libgui/src/main-window.cc libgui/src/main-window.h
+
+2014-01-09  Felipe G. Nievinski  <fgnievinski@gmail.com>
+
+	pt_BR.ts: Update Brazilian Portugese translation.
+
+	* pt_BR.ts: Update Brazilian Portugese translation.
+
+	Files: libgui/languages/pt_BR.ts
+
+2014-01-08  John W. Eaton  <jwe@octave.org>
+
+	fix parsing of single quote after continuation and comment (bug #41048)
+
+	* lex.ll (octave_base_lexer::handle_continuation): Preserve state of
+	at_beginning_of_statement across call to finish_comment.
+	* parser.tst: New test.
+
+	Files: libinterp/parse-tree/lex.ll test/parser.tst
+
+2014-01-07  John W. Eaton  <jwe@octave.org>
+
+	test float rcond using float arithmetic in inv function (bug #41065)
+
+	* inv.cc (Finv): Test float rcond using float arithmetic.  Use correct
+	rcond in warning message.
+
+	Files: libinterp/corefcn/inv.cc
+
+2014-01-07  John Donoghue  <john.donoghue@ieee.org>
+
+	GUI: Use WriteConsoleInput for sending terminal newline (Bug #41123)
+
+	* libgui/qterminal/libqterminal/win32/QWinTerminalImpl.cpp
+	  (QConsolePrivate::sendConsoleText): Use WriteConsoleInput instead of SendMessage to send newline to console.
+
+	Files: libgui/qterminal/libqterminal/win32/QWinTerminalImpl.cpp
+
+2014-01-07  John W. Eaton  <jwe@octave.org>
+
+	allow the gui editor to set breakpoints in class methods (bug #41126)
+
+	* file-editor-tab.h, file-editor-tab.cc (bp_info::bp_info):
+	Construct bp_info struct from file name and line number instead of
+	individual struct components.  Change all uses.  Recognize class name
+	in file names that match /dir/@class/fcn.m.
+
+	Files: libgui/src/m-editor/file-editor-tab.cc libgui/src/m-editor/file-
+	editor-tab.h
+
+	strip .m when setting or clearing breakpoints (bug #41126)
+
+	* debug.cc (get_user_code): If name ends in .m, strip it.
+
+	Files: libinterp/corefcn/debug.cc
+
+	* stmt.txi: Fix missing comma after @xref.
+
+	Files: doc/interpreter/stmt.txi
+
+	provide version number macros (bug #41045)
+
+	* configure.ac (OCTAVE_MAJOR_VERSION, OCTAVE_MINOR_VERSION,
+	OCTAVE_PATCH_VERSION): New variables.
+	* common.mk: Substitute them.
+	* version.in.h: Substitute them.
+	* libinterp/Makefile.am (version.h):
+	Don't substitute OCTAVE_API_VERSION_NUMBER.
+
+	Files: build-aux/common.mk configure.ac libinterp/Makefile.am
+	libinterp/version.in.h
+
+2014-01-05  Felipe G. Nievinski  <fgnievinski@gmail.com>
+
+	doc: Minor updates to help for Octave keywords (bug #41108)
+
+	* help.cc: Minor updates to help for Octave keywords.
+
+	Files: libinterp/corefcn/help.cc
+
+	doc: Update manual for "catch err" syntax (bug #33217)
+
+	Files: doc/interpreter/errors.txi doc/interpreter/stmt.txi
+
+2013-12-22  Erik Kjellson  <erikiiofph7@users.sourceforge.net>
+
+	maint: fix spelling of contributor name Erik Kjellson.
+
+	Files: doc/interpreter/contributors.in
+
+2014-01-03  Olaf Till  <i7tiol@t-online.de>
+
+	Fix installing packages where dependency name contains '-' (bug #41087).
+
+	* scripts/pkg/private/fix_depends.m: Add '-' to list of allowed
+	characters in a name.
+
+	Files: scripts/pkg/private/fix_depends.m
+
+2014-01-03  Rik  <rik@octave.org>
+
+	doc: Add new octave-cli man page (bug #41085).
+
+	* octave-cli.1: New man page.
+
+	* doc/interpreter/Makefile.am: Add octave-cli.1 to build system.
+
+	* mkoctfile.1: Move "SEE ALSO" section to end of man page.
+
+	*octave-config.1: Add "SEE ALSO" section to end of man page.
+
+	Files: doc/interpreter/Makefile.am doc/interpreter/mkoctfile.1
+	doc/interpreter/octave-cli.1 doc/interpreter/octave-config.1
+
+2014-01-03  John W. Eaton  <jwe@octave.org>
+
+	return elements read, not bytes in fread second output (bug #41091)
+
+	* oct-stream.cc (octave_stream::read): Rename char_count arg to be
+	count.  Make char_count a local variable.  Use count instead of
+	elts_read.  Correctly truncate size of result matrix if fewer elements
+	are read than requested.
+
+	Files: libinterp/corefcn/oct-stream.cc test/io.tst
+
+2014-01-03  Torsten  <ttl@justmail.de>
+
+	fix menu name of release notes in warning bar of exp. gui (bug #41078)
+
+	* main-window.cc (construct_warning_bar): fix text of warning bar,
+	  menu for release notes in news menu
+
+	* libgui/languages/*.ts: update language files accordingly
+
+	Files: libgui/languages/be_BY.ts libgui/languages/de_DE.ts
+	libgui/languages/en_US.ts libgui/languages/es_ES.ts
+	libgui/languages/fr_FR.ts libgui/languages/nl_NL.ts
+	libgui/languages/pt_BR.ts libgui/languages/pt_PT.ts
+	libgui/languages/ru_RU.ts libgui/languages/uk_UA.ts libgui/src/main-
+	window.cc
+
+2014-01-03  Rik  <rik@octave.org>
+
+	cov.m: Document intentional Matlab incompatibility (bug #40751).
+
+	cov.m: Document intentional Matlab incompatibility (bug #40751).
+
+	Files: scripts/statistics/base/cov.m
+
+2014-01-03  Torsten  <ttl@justmail.de>
+
+	updating translation files as consequence of bug fix #41081
+
+	Files: libgui/languages/be_BY.ts libgui/languages/de_DE.ts
+	libgui/languages/en_US.ts libgui/languages/es_ES.ts
+	libgui/languages/fr_FR.ts libgui/languages/nl_NL.ts
+	libgui/languages/pt_BR.ts libgui/languages/pt_PT.ts
+	libgui/languages/ru_RU.ts libgui/languages/uk_UA.ts
+
+2014-01-03  Felipe G. Nievinski  <fgnievinski@gmail.com>
+
+	fix translating the info on the experimental gui (bug #41081)
+
+	* main_window.cc (show_gui_info): explicitly use QObject namespace for tr
+
+	Files: libgui/src/main-window.cc
+
+2014-01-02  Philip Nienhuis  <prnienhuis@users.sf.net>
+
+	get_first_help_sentence.m: avoid out-of-bound error (bug #41053)
+
+	* get_first_help_sentence.m: avoid out-of-bound error (bug #41053)
+
+	Files: scripts/help/get_first_help_sentence.m
+
+2014-01-01  Mike Miller  <mtmiller@ieee.org>
+
+	doc.m: Check for existence of compressed info file (bug #41054)
+
+	* doc.m: Check for existence of compressed info file, since info files
+	are commonly gzip-compressed in binary distributions.
+
+	Files: scripts/help/doc.m
+
+2014-01-01  Rik  <rik@octave.org>
+
+	doc: Note that dbstop can be used with class methods as well (bug #40958).
+
+	* debug.txi: Note that dbstop can be used with class methods as well
+	(bug #40958).
+
+	Files: doc/interpreter/debug.txi
+
+	doc: Fix documentation for strsplit (bug #41062).
+
+	* strsplit.m: Remove redundant sentence about delimiter del.
+	Don't use unnecessary hyphen in "cell string array" phrasing.
+	Correct typo of "delmiters".
+
+	* strjoin.m: Don't use unnecessary hyphen in "cell string array" phrasing.
+
+	Files: scripts/strings/strjoin.m scripts/strings/strsplit.m
+
+2013-12-31  John W. Eaton  <jwe@octave.org>
+
+	* octave.texi: Fix date on title page.
+
+	Files: doc/interpreter/octave.texi
+
+2013-12-29  Felipe G. Nievinski  <fgnievinski@gmail.com>
+
+	* es_ES.ts: Spanish translation minor update by Jose Pallero
+
+	Files: libgui/languages/es_ES.ts
+
 2013-12-27  John W. Eaton  <jwe@octave.org>
 
 	Added tag release-3-8-0 for changeset b72bcf5f78cc

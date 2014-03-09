@@ -527,3 +527,68 @@
 %!error <Invalid call to frewind> frewind (1, 2)
 %!error frewind ("foo")
 
+%!test
+%! id = tmpfile ();
+%! fwrite (id, "abcdefg");
+%! frewind (id);
+%! [data, count] = fread (id);
+%! assert (data, [97; 98; 99; 100; 101; 102; 103]);
+%! assert (count, 7);
+%! frewind (id);
+%! [data, count] = fread (id, 'int16');
+%! assert (data, [25185; 25699; 26213]);
+%! assert (count, 3);
+%! frewind (id);
+%! [data, count] = fread (id, [10, 2], 'int16');
+%! assert (data, [25185; 25699; 26213]);
+%! assert (count, 3);
+%! frewind (id);
+%! [data, count] = fread (id, [2, 10], 'int16');
+%! assert (data, [25185, 26213; 25699, 0]);
+%! assert (count, 3);
+%! fclose (id);
+
+%!test
+%! id = tmpfile ();
+%! fwrite (id, char (0:15));
+%! frewind (id);
+%! [data, count] = fread (id, inf, "2*uint8", 2);
+%! assert (data, [0; 1; 4; 5; 8; 9; 12; 13]);
+%! assert (count, 8);
+%! fclose (id);
+
+%!test
+%! id = tmpfile ();
+%! fwrite (id, char (0:15));
+%! frewind (id);
+%! [data, count] = fread (id, 3, "2*uint8", 3);
+%! assert (data, [0; 1; 5]);
+%! assert (count, 3);
+%! [data, count] = fread (id, 3, "2*uint8", 3);
+%! assert (data, [6; 7; 11]);
+%! assert (count, 3);
+%! [data, count] = fread (id, 3, "2*uint8", 3);
+%! assert (data, [12; 13]);
+%! assert (count, 2);
+%! [data, count] = fread (id, 3, "2*uint8", 3);
+%! assert (data, []);
+%! assert (count, 0);
+%! fclose (id);
+
+%!test
+%! id = tmpfile ();
+%! fwrite (id, char (0:15));
+%! frewind (id);
+%! [data, count] = fread (id, [1, Inf], "4*uint16", 3);
+%! assert (data, [256, 770, 1284, 1798, 3083, 3597]);
+%! assert (count, 6);
+%! fclose (id);
+
+%!test
+%! id = tmpfile ();
+%! fwrite (id, char (0:15));
+%! frewind (id);
+%! [data, count] = fread (id, [3, Inf], "4*uint16", 3);
+%! assert (data, [256, 1798; 770, 3083; 1284, 3597]);
+%! assert (count, 6);
+%! fclose (id);

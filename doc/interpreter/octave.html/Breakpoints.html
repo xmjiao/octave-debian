@@ -58,7 +58,7 @@ Next: <a href="Debug-Mode.html#Debug-Mode" accesskey="n" rel="next">Debug Mode</
 <a name="Breakpoints-1"></a>
 <h3 class="section">13.3 Breakpoints</h3>
 
-<p>Breakpoints can be set in any Octave function, using the <code>dbstop</code>
+<p>Breakpoints can be set in any m-file function by using the <code>dbstop</code>
 function.
 </p>
 <a name="XREFdbstop"></a><dl>
@@ -94,12 +94,15 @@ next executable line.
 </p></dd></dl>
 
 
-<p>Note that breakpoints cannot be set in built-in functions
-(e.g., <code>sin</code>, etc.) or dynamically loaded function (i.e., oct-files).  To
-set a breakpoint immediately on entering a function, the breakpoint
-should be set to line 1. The leading comment block will be ignored and
-the breakpoint will be set to the first executable statement in the
-function.  For example:
+<p>Breakpoints in class methods are also supported (e.g.,
+<code>dbstop (&quot;@class/method&quot;)</code>).  However, breakpoints cannot be set in
+built-in functions (e.g., <code>sin</code>, etc.) or dynamically loaded functions
+(i.e., oct-files).
+</p>
+<p>To set a breakpoint immediately upon entering a function use line number 1, or
+omit the line number entirely and just give the function name.  When setting
+the breakpoint Octave will ignore the leading comment block, and the breakpoint
+will be set on the first executable statement in the function.  For example:
 </p>
 <div class="example">
 <pre class="example">dbstop (&quot;asind&quot;, 1)
@@ -108,7 +111,7 @@ function.  For example:
 
 <p>Note that the return value of <code>29</code> means that the breakpoint was
 effectively set to line 29.  The status of breakpoints in a function can
-be queried with the <code>dbstatus</code> function.
+be queried with <code>dbstatus</code>.
 </p>
 <a name="XREFdbstatus"></a><dl>
 <dt><a name="index-dbstatus"></a>Built-in Function: <em></em> <strong>dbstatus</strong> <em>()</em></dt>
@@ -178,12 +181,6 @@ in the named function are cleared.
 </p></dd></dl>
 
 
-<p>These functions can be used together to clear all the breakpoints in a
-particular function.  For example:
-</p>
-<div class="example">
-<pre class="example">dbclear (&quot;asind&quot;, dbstatus (&quot;asind&quot;));
-</pre></div>
 
 <p>A breakpoint may also be set in a subfunction.  For example, if a file contains
 the functions
@@ -197,17 +194,22 @@ function y = func2 (x)
 endfunction
 </pre></div>
 
-<p>then a breakpoint can be set at the start of the subfunction directly
-with
+<p>then a breakpoint can be set at the start of the subfunction directly with
 </p>
 <div class="example">
 <pre class="example">dbstop ([&quot;func1&quot;, filemarker(), &quot;func2&quot;])
 &rArr; 5
 </pre></div>
 
-<p>Note that <code>filemarker</code> returns a character that marks the
-subfunctions from the file containing them.
+<p>Note that <code>filemarker</code> returns the character that marks subfunctions from
+the file containing them.  Unless the default has been changed this character
+is &lsquo;<samp>&gt;</samp>&rsquo;.  Thus, a quicker and more normal way to set the breakpoint would
+be
 </p>
+<div class="example">
+<pre class="example">dbstop func1&gt;func2
+</pre></div>
+
 <p>Another simple way of setting a breakpoint in an Octave script is the
 use of the <code>keyboard</code> function.
 </p>
@@ -229,9 +231,9 @@ The <code>keyboard</code> function does not return an exit status.
 </p></dd></dl>
 
 
-<p>The <code>keyboard</code> function is typically placed in a script at the
-point where the user desires that the execution be stopped.  It
-automatically sets the running script into the debug mode.
+<p>The <code>keyboard</code> function is placed in a script at the point where the user
+desires that the execution be stopped.  It automatically sets the running
+script into the debug mode.
 </p>
 <hr>
 <div class="header">
