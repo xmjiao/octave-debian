@@ -1,3 +1,28 @@
+octave (3.8.1-1) unstable; urgency=medium
+
+  * Imported Upstream version 3.8.1
+    + libgui/src/main-window.cc: Fix problems with gui startup and focus issues
+      (Closes: #738672)
+    + scripts/pkg/private/fix_depends.m: Fix installing packages where
+      dependency name contains '-' (Closes: #740984)
+  * debian/copyright: reflect upstream changes.
+  * octave.postinst: remove workaround for #681064 (package dir re-creation).
+    (Closes: #681461)
+  * Remove patches applied upstream:
+    + doc-compressed-info.diff
+    + kfreebsd_tcgetattr.diff
+    + octave-cli-manpage.diff
+    + save-uint8-in-text-format.diff
+  * mkoctfile is now an executable binary instead of a shell script.
+    + mkoctfile-mpi.diff: adapt for new format of mkoctfile.
+    + d/control: add shlibs:Depends to liboctave-dev.
+  * Fix statement about the GUI in NEWS.Debian.
+  * debian/control: don't mention the FAQ in descriptions, it has been removed.
+  * Adapt to the fact that JIT is now disabled by default in ./configure script.
+  * Disable JIT on hurd-i386, LLVM not available there.
+
+ -- Sébastien Villemot <sebastien@debian.org>  Mon, 10 Mar 2014 17:32:29 +0100
+
 octave (3.8.0-5) unstable; urgency=medium
 
   * Re-enable java on amd64, i386 and mips (was disabled by mistake).
