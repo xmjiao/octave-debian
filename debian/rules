@@ -30,13 +30,10 @@ JAVA_LIBDIR := $(firstword $(JVM_CLIENT_DIR) $(JVM_SERVER_DIR))
 WITH_JAVA_FLAGS := --with-java-homedir=$(JAVA_HOME) --with-java-libdir=$(JAVA_LIBDIR)
 endif
 
-# Enable the JIT on some archs. On other archs, either LLVM is unavailable, or
-# JIT unit tests currently segfault. This arch list must be kept in sync with
-# the arch list qualifying llvm-dev in debian/control.
-JIT_ARCHS := amd64 i386 kfreebsd-amd64 kfreebsd-i386 s390x sparc
-ifneq (,$(filter $(DEB_HOST_ARCH),$(JIT_ARCHS)))
-JIT_FLAG := --enable-jit
-endif
+# Disable the experimental JIT unconditionally for now. The LLVM library
+# interface is unstable. Linking with LLVM may also cause conflicts with other
+# libraries, for example the mesa graphics stack which also uses LLVM.
+JIT_FLAG := --disable-jit
 
 %:
 	dh $@ --with autoreconf --parallel
