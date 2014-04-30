@@ -1,3 +1,17 @@
+octave (3.8.1-2) unstable; urgency=medium
+
+  [ Mike Miller ]
+  * Disable JIT on all archs to fix LLVM library conflicts.
+    (Closes: #743260, #739903)
+
+  [ Sébastien Villemot ]
+  * Mention the disabling of JIT in NEWS.Debian.
+  * Add a Breaks for octave-fixed. The package has been removed from
+    unstable, but people upgrading from Wheezy may still have it.
+    (Closes: #744244)
+
+ -- Sébastien Villemot <sebastien@debian.org>  Wed, 30 Apr 2014 10:48:05 +0200
+
 octave (3.8.1-1) unstable; urgency=medium
 
   * Imported Upstream version 3.8.1
