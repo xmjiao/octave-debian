@@ -1,3 +1,13 @@
+octave (3.8.1-2) unstable; urgency=medium
+
+  * The just-it-time (JIT) compiler has been disabled in this version,
+    because it creates problems with the Gallium llvmpipe Mesa driver.
+    Since the JIT is currently very basic, it is not worth the trouble. It
+    may be re-enabled later when the benefits outweigh the costs. See
+    #743620 for more details.
+
+ -- Sébastien Villemot <sebastien@debian.org>  Wed, 30 Apr 2014 10:46:37 +0200
+
 octave (3.8.0~rc1-1) experimental; urgency=medium
 
   * Starting with this version, the octave package now contains an
