@@ -177,7 +177,8 @@ Depends: ${shlibs:Depends}, ${misc:Depends},
  libreadline-dev | libreadline6-dev | libreadline5-dev, libncurses5-dev,
  libhdf5-dev (>= 1.8.8) | libhdf5-openmpi-dev (>= 1.8.8) | libhdf5-mpich2-dev (>= 1.8.8),
  libgl1-mesa-dev | libgl-dev,
- libblas-dev (>=1.2-7), liblapack-dev (>=3.2.1-7), libfftw3-dev, gfortran, gcc, g++
+ libblas-dev (>=1.2-7), liblapack-dev (>=3.2.1-7) | liblapack.so, libfftw3-dev,
+ gfortran, gcc, g++
 Conflicts: octave3.2-headers
 Replaces: octave3.2-headers
 Section: libdevel
