@@ -420,27 +420,6 @@ variable is changed locally for the function and any subroutines it calls.
  The original variable value is restored when exiting the function.
 @seealso{debug_java, java_convert_matrix, java_unsigned_conversion}
 @end deftypefn
-java_get
-@c java_get scripts/deprecated/java_get.m
--*- texinfo -*-
-@deftypefn {Loadable Function} {@var{val} =} java_get (@var{obj}, @var{name})
-Get the value of the field @var{name} of the Java object @var{obj}.  For
-static fields, @var{obj} can be a string representing the fully qualified
-name of the corresponding class.
-
-When @var{obj} is a regular Java object, structure-like indexing can be
-used as a shortcut syntax.  For instance, the two following statements are
-equivalent
-
-@example
-@group
-  java_get (x, "field1")
-  x.field1
-@end group
-@end example
-
-@seealso{java_set, javaMethod, javaObject}
-@end deftypefn
 java_invoke
 @c java_invoke scripts/deprecated/java_invoke.m
 -*- texinfo -*-
@@ -496,27 +475,6 @@ When called from inside a function with the @qcode{"local"} option, the
 variable is changed locally for the function and any subroutines it calls.
  The original variable value is restored when exiting the function.
 @seealso{java_unsigned_autoconversion, java_convert_matrix, debug_java}
-@end deftypefn
-java_set
-@c java_set scripts/deprecated/java_set.m
--*- texinfo -*-
-@deftypefn {Loadable Function} {@var{obj} =} java_set (@var{obj}, @var{name}, @var{val})
-Set the value of the field @var{name} of the Java object @var{obj} to
-@var{val}.  For static fields, @var{obj} can be a string representing the
-fully qualified named of the corresponding Java class.
-
-When @var{obj} is a regular Java object, structure-like indexing can be
-used as a shortcut syntax.  For instance, the two following statements are
-equivalent
-
-@example
-@group
-  java_set (x, "field1", val)
-  x.field1 = val
-@end group
-@end example
-
-@seealso{java_get, javaMethod, javaObject}
 @end deftypefn
 javafields
 @c javafields scripts/deprecated/javafields.m
@@ -3527,7 +3485,7 @@ endif
 @end group
 @end example
 
-@seealso{errordlg, helpdlg, inputdlg, msgbox, questdlg, warndlg}
+@seealso{menu, errordlg, helpdlg, inputdlg, msgbox, questdlg, warndlg}
 @end deftypefn
 msgbox
 @c msgbox scripts/gui/msgbox.m
@@ -3829,7 +3787,7 @@ of the specific waitbar to modify.
 @c waitforbuttonpress scripts/gui/waitforbuttonpress.m
 -*- texinfo -*-
 @deftypefn  {Function File} {} waitforbuttonpress ()
-@deftypefnx {Function File} {@var{a} =} waitforbuttonpress ()
+@deftypefnx {Function File} {@var{b} =} waitforbuttonpress ()
 Wait for mouse click or key press over the current figure window.
 
 The return value of @var{b} is 0 if a mouse button was pressed or 1 if a
@@ -5549,6 +5507,48 @@ the first data line of the file.  Empty fields are returned as zero values.
 
 @seealso{strread, load, dlmread, fscanf, textscan}
 @end deftypefn
+java_get
+@c java_get scripts/java/java_get.m
+-*- texinfo -*-
+@deftypefn {Function File} {@var{val} =} java_get (@var{obj}, @var{name})
+Get the value of the field @var{name} of the Java object @var{obj}.  For
+static fields, @var{obj} can be a string representing the fully qualified
+name of the corresponding class.
+
+When @var{obj} is a regular Java object, structure-like indexing can be
+used as a shortcut syntax.  For instance, the two following statements are
+equivalent
+
+@example
+@group
+  java_get (x, "field1")
+  x.field1
+@end group
+@end example
+
+@seealso{java_set, javaMethod, javaObject}
+@end deftypefn
+java_set
+@c java_set scripts/java/java_set.m
+-*- texinfo -*-
+@deftypefn {Function File} {@var{obj} =} java_set (@var{obj}, @var{name}, @var{val})
+Set the value of the field @var{name} of the Java object @var{obj} to
+@var{val}.  For static fields, @var{obj} can be a string representing the
+fully qualified named of the corresponding Java class.
+
+When @var{obj} is a regular Java object, structure-like indexing can be
+used as a shortcut syntax.  For instance, the two following statements are
+equivalent
+
+@example
+@group
+  java_set (x, "field1", val)
+  x.field1 = val
+@end group
+@end example
+
+@seealso{java_get, javaMethod, javaObject}
+@end deftypefn
 javaArray
 @c javaArray scripts/java/javaArray.m
 -*- texinfo -*-
@@ -7215,7 +7215,7 @@ option selected by the user.  This function is useful for interactive
 programs.  There is no limit to the number of options that may be passed
 in, but it may be confusing to present more than will fit easily on one
 screen.
-@seealso{disp, printf, input}
+@seealso{input, listdlg}
 @end deftypefn
 mex
 @c mex scripts/miscellaneous/mex.m
@@ -8327,16 +8327,16 @@ fminsearch (inline ("(x(1)-5).^2+(x(2)-8).^4", "x"), [0;0])
 -*- texinfo -*-
 @deftypefn  {Function File} {} fminunc (@var{fcn}, @var{x0})
 @deftypefnx {Function File} {} fminunc (@var{fcn}, @var{x0}, @var{options})
-@deftypefnx {Function File} {[@var{x}, @var{fvec}, @var{info}, @var{output}, @var{grad}, @var{hess}] =} fminunc (@var{fcn}, @dots{})
+@deftypefnx {Function File} {[@var{x}, @var{fval}, @var{info}, @var{output}, @var{grad}, @var{hess}] =} fminunc (@var{fcn}, @dots{})
 Solve an unconstrained optimization problem defined by the function
 @var{fcn}.
 
-@var{fcn} should accepts a vector (array) defining the unknown variables,
+@var{fcn} should accept a vector (array) defining the unknown variables,
 and return the objective function value, optionally with gradient.
-In other words, this function attempts to determine a vector @var{x} such
-that @code{@var{fcn} (@var{x})} is a local minimum.
-@var{x0} determines a starting guess.  The shape of @var{x0} is preserved
-in all calls to @var{fcn}, but otherwise is treated as a column vector.
+@code{fminunc} attempts to determine a vector @var{x} such that
+@code{@var{fcn} (@var{x})} is a local minimum.  @var{x0} determines a
+starting guess.  The shape of @var{x0} is preserved in all calls to
+@var{fcn}, but otherwise is treated as a column vector.
 @var{options} is a structure specifying additional options.
 Currently, @code{fminunc} recognizes these options:
 @qcode{"FunValCheck"}, @qcode{"OutputFcn"}, @qcode{"TolX"},
@@ -8345,42 +8345,46 @@ Currently, @code{fminunc} recognizes these options:
 @qcode{"TypicalX"}, @qcode{"AutoScaling"}.
 
 If @qcode{"GradObj"} is @qcode{"on"}, it specifies that @var{fcn},
-called with 2 output arguments, also returns the Jacobian matrix
-of right-hand sides at the requested point.  @qcode{"TolX"} specifies
-the termination tolerance in the unknown variables, while
-@qcode{"TolFun"} is a tolerance for equations.  Default is @code{1e-7}
-for both @qcode{"TolX"} and @qcode{"TolFun"}.
+when called with 2 output arguments, also returns the Jacobian matrix
+of partial first derivatives at the requested point.
+@code{TolX} specifies the termination tolerance for the unknown variables
+@var{x}, while @code{TolFun} is a tolerance for the objective function
+value @var{fval}.  The default is @code{1e-7} for both options.
 
-For description of the other options, see @code{optimset}.
+For a description of the other options, see @code{optimset}.
 
-On return, @var{fval} contains the value of the function @var{fcn}
-evaluated at @var{x}, and @var{info} may be one of the following values:
+On return, @var{x} is the location of the minimum and @var{fval} contains
+the value of the objective function at @var{x}.  @var{info} may be one of the
+following values:
 
 @table @asis
 @item 1
 Converged to a solution point.  Relative gradient error is less than
-specified
-by TolFun.
+specified by @code{TolFun}.
 
 @item 2
-Last relative step size was less that TolX.
+Last relative step size was less than @code{TolX}.
 
 @item 3
-Last relative decrease in function value was less than TolF.
+Last relative change in function value was less than @code{TolFun}.
 
 @item 0
-Iteration limit exceeded.
+Iteration limit exceeded---either maximum numer of algorithm iterations
+@code{MaxIter} or maximum number of function evaluations @code{MaxFunEvals}.
+
+@item -1
+Alogrithm terminated by @code{OutputFcn}.
 
 @item -3
 The trust region radius became excessively small.
 @end table
 
-Optionally, fminunc can also yield a structure with convergence statistics
-(@var{output}), the output gradient (@var{grad}) and approximate Hessian
-(@var{hess}).
+Optionally, @code{fminunc} can return a structure with convergence statistics
+(@var{output}), the output gradient (@var{grad}) at the solution @var{x},
+and approximate Hessian (@var{hess}) at the solution @var{x}.
 
-Notes: If you only have a single nonlinear equation of one variable then
-using @code{fminbnd} is usually a much better idea.  The algorithm used is a
+Notes: If have only a single nonlinear equation of one variable then using
+@code{fminbnd} is usually a much better idea.  The algorithm used is a
 gradient search which depends on the objective function being differentiable.
 If the function has discontinuities it may be better to use a derivative-free
 algorithm such as @code{fminsearch}.
@@ -14643,7 +14647,7 @@ Undocumented internal function.
 @deftypefnx {Command} {} figure @var{n}
 @deftypefnx {Function File} {} figure (@var{n})
 @deftypefnx {Function File} {} figure (@dots{}, "@var{property}", @var{value}, @dots{})
-@deftypefnx {Function File} {@var{h} =} figure (@var{dots})
+@deftypefnx {Function File} {@var{h} =} figure (@dots{})
 Create a new figure window for plotting.
 
 If no arguments are specified, a new figure with the next available number
@@ -17949,6 +17953,7 @@ and @var{y}.
 -*- texinfo -*-
 @deftypefn {Function File} {} nonzeros (@var{s})
 Return a vector of the non-zero values of the sparse matrix @var{s}.
+@seealso{find, nnz}
 @end deftypefn
 pcg
 @c pcg scripts/sparse/pcg.m
@@ -18304,7 +18309,9 @@ References:
 @c spaugment scripts/sparse/spaugment.m
 -*- texinfo -*-
 @deftypefn {Function File} {@var{s} =} spaugment (@var{A}, @var{c})
-Create the augmented matrix of @var{A}.  This is given by
+Create the augmented matrix of @var{A}.
+
+This is given by
 
 @example
 @group
@@ -18333,7 +18340,7 @@ where @var{r} is the residual error
 As the matrix @var{s} is symmetric indefinite it can be factorized
 with @code{lu}, and the minimum norm solution can therefore be found
 without the need for a @code{qr} factorization.  As the residual
-error will be @code{zeros (@var{m}, @var{m})} for under determined
+error will be @code{zeros (@var{m}, @var{m})} for underdetermined
 problems, and example can be
 
 @example
@@ -18355,17 +18362,20 @@ a minimum norm solution using the @code{spaugment} function.
 
 In general the left division operator is more stable and faster than
 using the @code{spaugment} function.
+@seealso{mldivide}
 @end deftypefn
 spconvert
 @c spconvert scripts/sparse/spconvert.m
 -*- texinfo -*-
 @deftypefn {Function File} {@var{x} =} spconvert (@var{m})
-This function converts for a simple sparse matrix format easily
-produced by other programs into Octave's internal sparse format.  The
-input @var{x} is either a 3 or 4 column real matrix, containing
-the row, column, real and imaginary parts of the elements of the
+Convert a simple sparse matrix format easily generated by other programs
+into Octave's internal sparse format.
+
+The input @var{m} is either a 3 or 4 column real matrix, containing
+the row, column, real, and imaginary parts of the elements of the
 sparse matrix.  An element with a zero real and imaginary part can
 be used to force a particular matrix size.
+@seealso{sparse}
 @end deftypefn
 spdiags
 @c spdiags scripts/sparse/spdiags.m
@@ -18407,17 +18417,18 @@ spdiags (reshape (1:12, 4, 3), [-1 0 1], 5, 4)
 speye
 @c speye scripts/sparse/speye.m
 -*- texinfo -*-
-@deftypefn  {Function File} {@var{y} =} speye (@var{m})
-@deftypefnx {Function File} {@var{y} =} speye (@var{m}, @var{n})
-@deftypefnx {Function File} {@var{y} =} speye (@var{sz})
-Return a sparse identity matrix.  This is significantly more
-efficient than @code{sparse (eye (@var{m}))} as the full matrix
-is not constructed.
+@deftypefn  {Function File} {@var{s} =} speye (@var{m}, @var{n})
+@deftypefnx {Function File} {@var{s} =} speye (@var{m})
+@deftypefnx {Function File} {@var{s} =} speye (@var{sz})
+Return a sparse identity matrix of size @var{m}x@var{n}.
 
-Called with a single argument a square matrix of size @var{m} by
-@var{m} is created.  Otherwise a matrix of @var{m} by @var{n} is
-created.  If called with a single vector argument, this argument
-is taken to be the size of the matrix to create.
+The implementation is significantly more efficient than
+@code{sparse (eye (@var{m}))} as the full matrix is not constructed.
+
+Called with a single argument a square matrix of size
+@var{m}-by-@var{m} is created.  If called with a single vector argument
+@var{sz}, this argument is taken to be the size of the matrix to create.
+@seealso{sparse, spdiags, eye}
 @end deftypefn
 spfun
 @c spfun scripts/sparse/spfun.m
@@ -18435,6 +18446,7 @@ function handle, or an inline function.
 @deftypefn {Function File} {@var{r} =} spones (@var{S})
 Replace the non-zero entries of @var{S} with ones.  This creates a
 sparse matrix with the same structure as @var{S}.
+@seealso{sparse, sprand, sprandn, sprandsym, spfun, spy}
 @end deftypefn
 sprand
 @c sprand scripts/sparse/sprand.m
@@ -18442,13 +18454,13 @@ sparse matrix with the same structure as @var{S}.
 @deftypefn  {Function File} {} sprand (@var{m}, @var{n}, @var{d})
 @deftypefnx {Function File} {} sprand (@var{s})
 Generate a random sparse matrix.  The size of the matrix will be
-@var{m} by @var{n}, with a density of values given by @var{d}.
-@var{d} should be between 0 and 1.  Values will be uniformly
-distributed between 0 and 1.
+@var{m}x@var{n}, with a density of values given by @var{d}.  @var{d} must
+be between 0 and 1 inclusive.  Values will be uniformly distributed between
+0 and 1.
 
 If called with a single matrix argument, a random sparse matrix is
 generated wherever the matrix @var{S} is non-zero.
-@seealso{sprandn, sprandsym}
+@seealso{sprandn, sprandsym, spones, sparse}
 @end deftypefn
 sprandn
 @c sprandn scripts/sparse/sprandn.m
@@ -18456,28 +18468,28 @@ generated wherever the matrix @var{S} is non-zero.
 @deftypefn  {Function File} {} sprandn (@var{m}, @var{n}, @var{d})
 @deftypefnx {Function File} {} sprandn (@var{s})
 Generate a random sparse matrix.  The size of the matrix will be
-@var{m} by @var{n}, with a density of values given by @var{d}.
-@var{d} should be between 0 and 1.  Values will be normally
-distributed with mean of zero and variance 1.
+@var{m}x@var{n}, with a density of values given by @var{d}.  @var{d} must be
+between 0 and 1 inclusive.  Values will be normally distributed with a mean
+of zero and a variance of 1.
 
 If called with a single matrix argument, a random sparse matrix is
 generated wherever the matrix @var{S} is non-zero.
-@seealso{sprand, sprandsym}
+@seealso{sprand, sprandsym, spones, sparse}
 @end deftypefn
 sprandsym
 @c sprandsym scripts/sparse/sprandsym.m
 -*- texinfo -*-
 @deftypefn  {Function File} {} sprandsym (@var{n}, @var{d})
 @deftypefnx {Function File} {} sprandsym (@var{s})
-Generate a symmetric random sparse matrix.  The size of the matrix will be
-@var{n} by @var{n}, with a density of values given by @var{d}.
-@var{d} should be between 0 and 1.  Values will be normally
-distributed with mean of zero and variance 1.
+Generate a symmetric random sparse matrix.
 
-If called with a single matrix argument, a random sparse matrix is
-generated wherever the matrix @var{S} is non-zero in its lower
-triangular part.
-@seealso{sprand, sprandn}
+The size of the matrix will be @var{n}x@var{n}, with a density of values
+given by @var{d}.  @var{d} must be between 0 and 1 inclusive.  Values will
+be normally distributed with a mean of zero and a variance of 1.
+
+If called with a single matrix argument, a random sparse matrix is generated
+wherever the matrix @var{S} is non-zero in its lower triangular part.
+@seealso{sprand, sprandn, spones, sparse}
 @end deftypefn
 spstats
 @c spstats scripts/sparse/spstats.m
@@ -18500,11 +18512,12 @@ this case, bins can contain data values of zero, whereas with
 @deftypefn  {Function File} {} spy (@var{x})
 @deftypefnx {Function File} {} spy (@dots{}, @var{markersize})
 @deftypefnx {Function File} {} spy (@dots{}, @var{line_spec})
-Plot the sparsity pattern of the sparse matrix @var{x}.  If the argument
-@var{markersize} is given as a scalar value, it is used to determine the
-point size in the plot.  If the string @var{line_spec} is given it is
-passed to @code{plot} and determines the appearance of the plot.
-@seealso{plot}
+Plot the sparsity pattern of the sparse matrix @var{x}.
+
+If the argument @var{markersize} is given as a scalar value, it is used to
+determine the point size in the plot.  If the string @var{line_spec} is
+given it is passed to @code{plot} and determines the appearance of the plot.
+@seealso{plot, gplot}
 @end deftypefn
 svds
 @c svds scripts/sparse/svds.m

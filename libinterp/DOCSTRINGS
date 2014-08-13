@@ -2660,11 +2660,11 @@ parameters for @code{dassl}.
 @deftypefn  {Built-in Function} {} all (@var{x})
 @deftypefnx {Built-in Function} {} all (@var{x}, @var{dim})
 For a vector argument, return true (logical 1) if all elements of the vector
-are nonzero.
+are non-zero.
 
 For a matrix argument, return a row vector of logical ones and
 zeros with each element indicating whether all of the elements of the
-corresponding column of the matrix are nonzero.  For example:
+corresponding column of the matrix are non-zero.  For example:
 
 @example
 @group
@@ -2683,11 +2683,11 @@ If the optional argument @var{dim} is supplied, work along dimension
 @deftypefn  {Built-in Function} {} any (@var{x})
 @deftypefnx {Built-in Function} {} any (@var{x}, @var{dim})
 For a vector argument, return true (logical 1) if any element of the vector
-is nonzero.
+is non-zero.
 
 For a matrix argument, return a row vector of logical ones and
 zeros with each element indicating whether any of the elements of the
-corresponding column of the matrix are nonzero.  For example:
+corresponding column of the matrix are non-zero.  For example:
 
 @example
 @group
@@ -3067,19 +3067,19 @@ Called with a single or no argument, size_equal returns true.
 nnz
 @c nnz libinterp/corefcn/data.cc
 -*- texinfo -*-
-@deftypefn {Built-in Function} {@var{scalar} =} nnz (@var{a})
-Return the number of non zero elements in @var{a}.
-@seealso{sparse, nzmax}
+@deftypefn {Built-in Function} {@var{n} =} nnz (@var{a})
+Return the number of non-zero elements in @var{a}.
+@seealso{nzmax, nonzeros, find}
 @end deftypefn
 nzmax
 @c nzmax libinterp/corefcn/data.cc
 -*- texinfo -*-
-@deftypefn {Built-in Function} {@var{scalar} =} nzmax (@var{SM})
+@deftypefn {Built-in Function} {@var{n} =} nzmax (@var{SM})
 Return the amount of storage allocated to the sparse matrix @var{SM}.
+
 Note that Octave tends to crop unused memory at the first opportunity
-for sparse objects.  There are some cases of user created sparse objects
-where the value returned by @dfn{nzmax} will not be the same as @dfn{nnz},
-but in general they will give the same result.
+for sparse objects.  Thus, in general the value of @code{nzmax} will be the
+the same as @code{nnz} except for some cases of user-created sparse objects.
 @seealso{nnz, spalloc, sparse}
 @end deftypefn
 rows
@@ -3760,9 +3760,9 @@ a minimum of two dimensions and row vectors are left unchanged.
 @c full libinterp/corefcn/data.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {@var{FM} =} full (@var{SM})
-Return a full storage matrix from a sparse, diagonal, permutation matrix
+Return a full storage matrix from a sparse, diagonal, permutation matrix,
 or a range.
-@seealso{sparse}
+@seealso{sparse, issparse}
 @end deftypefn
 norm
 @c norm libinterp/corefcn/data.cc
@@ -7283,7 +7283,9 @@ num2hex (single ([-1, 1, e, Inf]))
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{ans} =} input (@var{prompt})
 @deftypefnx {Built-in Function} {@var{ans} =} input (@var{prompt}, "s")
-Print a prompt and wait for user input.  For example,
+Print @var{prompt} and wait for user input.
+
+For example,
 
 @example
 input ("Pick a number, any number! ")
@@ -7313,18 +7315,19 @@ Because there may be output waiting to be displayed by the pager, it is
 a good idea to always call @code{fflush (stdout)} before calling
 @code{input}.  This will ensure that all pending output is written to
 the screen before your prompt.
-@seealso{yes_or_no, kbhit}
+@seealso{yes_or_no, kbhit, pause, menu, listdlg}
 @end deftypefn
 yes_or_no
 @c yes_or_no libinterp/corefcn/input.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {@var{ans} =} yes_or_no ("@var{prompt}")
-Ask the user a yes-or-no question.  Return logical true if the answer is yes
-or false if the answer is no.  Takes one argument, @var{prompt}, which is
-the string to display when asking the question.  @var{prompt} should end in
-a space; @code{yes-or-no} adds the string @samp{(yes or no) } to it.  The
-user must confirm the answer with @key{RET} and can edit it until it has
-been confirmed.
+Ask the user a yes-or-no question.
+
+Return logical true if the answer is yes or false if the answer is no.
+Takes one argument, @var{prompt}, which is the string to display when asking
+the question.  @var{prompt} should end in a space; @code{yes-or-no} adds the
+string @samp{(yes or no) } to it.  The user must confirm the answer with
+@key{RET} and can edit it until it has been confirmed.
 @seealso{input}
 @end deftypefn
 keyboard
@@ -7342,7 +7345,7 @@ The @code{keyboard} function does not return an exit status.
 
 If @code{keyboard} is invoked without arguments, a default prompt of
 @samp{debug> } is used.
-@seealso{dbcont, dbquit}
+@seealso{dbstop, dbcont, dbquit}
 @end deftypefn
 echo
 @c echo libinterp/corefcn/input.cc
@@ -10263,19 +10266,19 @@ The original variable value is restored when exiting the function.
 __profiler_enable__
 @c __profiler_enable__ libinterp/corefcn/profiler.cc
 -*- texinfo -*-
-@deftypefn {Function File} __profiler_enable ()
+@deftypefn {Function File} __profiler_enable__ ()
 Undocumented internal function.
 @end deftypefn
 __profiler_reset__
 @c __profiler_reset__ libinterp/corefcn/profiler.cc
 -*- texinfo -*-
-@deftypefn {Function File} __profiler_reset ()
+@deftypefn {Function File} __profiler_reset__ ()
 Undocumented internal function.
 @end deftypefn
 __profiler_data__
 @c __profiler_data__ libinterp/corefcn/profiler.cc
 -*- texinfo -*-
-@deftypefn {Function File} __profiler_data ()
+@deftypefn {Function File} __profiler_data__ ()
 Undocumented internal function.
 @end deftypefn
 quad_options
@@ -11241,57 +11244,80 @@ Return true if @var{x} is a sparse matrix.
 @c sparse libinterp/corefcn/sparse.cc
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{s} =} sparse (@var{a})
-@deftypefnx {Built-in Function} {@var{s} =} sparse (@var{i}, @var{j}, @var{sv}, @var{m}, @var{n}, @var{nzmax})
+@deftypefnx {Built-in Function} {@var{s} =} sparse (@var{i}, @var{j}, @var{sv}, @var{m}, @var{n})
 @deftypefnx {Built-in Function} {@var{s} =} sparse (@var{i}, @var{j}, @var{sv})
-@deftypefnx {Built-in Function} {@var{s} =} sparse (@var{i}, @var{j}, @var{s}, @var{m}, @var{n}, "unique")
 @deftypefnx {Built-in Function} {@var{s} =} sparse (@var{m}, @var{n})
-Create a sparse matrix from the full matrix or row, column, value triplets.
+@deftypefnx {Built-in Function} {@var{s} =} sparse (@var{i}, @var{j}, @var{s}, @var{m}, @var{n}, "unique")
+@deftypefnx {Built-in Function} {@var{s} =} sparse (@var{i}, @var{j}, @var{sv}, @var{m}, @var{n}, @var{nzmax})
+Create a sparse matrix from a full matrix or row, column, value triplets.
+
 If @var{a} is a full matrix, convert it to a sparse matrix representation,
 removing all zero values in the process.
 
-Given the integer index vectors @var{i} and @var{j}, a 1-by-@code{nnz} vector
-of real of complex values @var{sv}, overall dimensions @var{m} and @var{n}
-of the sparse matrix.  The argument @code{nzmax} is ignored but accepted for
-compatibility with @sc{matlab}.  If @var{m} or @var{n} are not specified
-their values are derived from the maximum index in the vectors @var{i} and
-@var{j} as given by @code{@var{m} = max (@var{i})},
-@code{@var{n} = max (@var{j})}.
+Given the integer index vectors @var{i} and @var{j}, and a 1-by-@code{nnz}
+vector of real or complex values @var{sv}, construct the sparse matrix
+@code{S(@var{i}(@var{k}),@var{j}(@var{k})) = @var{sv}(@var{k})} with overall
+dimensions @var{m} and @var{n}.  If any of @var{sv}, @var{i} or @var{j} are
+scalars, they are expanded to have a common size.
 
-@strong{Note}: if multiple values are specified with the same
-@var{i}, @var{j} indices, the corresponding values in @var{s} will
-be added.  See @code{accumarray} for an example of how to produce different
-behavior, such as taking the minimum instead.
+If @var{m} or @var{n} are not specified their values are derived from the
+maximum index in the vectors @var{i} and @var{j} as given by
+@code{@var{m} = max (@var{i})}, @code{@var{n} = max (@var{j})}.
 
-The following are all equivalent:
+@strong{Note}: if multiple values are specified with the same @var{i},
+@var{j} indices, the corresponding value in @var{s} will be the sum of the
+values at the repeated location.  See @code{accumarray} for an example of how
+to produce different behavior, such as taking the minimum instead.
+
+If the option @qcode{"unique"} is given, and more than one value is
+specified at the same @var{i}, @var{j} indices, then the last specified
+value will be used.
+
+@code{sparse (@var{m}, @var{n})} will create an empty @var{m}x@var{n} sparse
+matrix and is equivalent to @code{sparse ([], [], [], @var{m}, @var{n})}
+
+The argument @code{nzmax} is ignored but accepted for compatibility with
+@sc{matlab}.
+
+Example 1 (sum at repeated indices):
 
 @example
 @group
-s = sparse (i, j, s, m, n)
-s = sparse (i, j, s, m, n, "summation")
-s = sparse (i, j, s, m, n, "sum")
+@var{i} = [1 1 2]; @var{j} = [1 1 2]; @var{sv} = [3 4 5];
+sparse (@var{i}, @var{j}, @var{sv}, 3, 4)
+@result{} 
+Compressed Column Sparse (rows = 3, cols = 4, nnz = 2 [17%])
+
+  (1, 1) ->  7
+  (2, 2) ->  5
 @end group
 @end example
 
-Given the option @qcode{"unique"}, if more than two values are specified
-for the same @var{i}, @var{j} indices, the last specified value will be
-used.
+Example 2 ("unique" option):
 
-@code{sparse (@var{m}, @var{n})} is equivalent to
-@code{sparse ([], [], [], @var{m}, @var{n}, 0)}
+@example
+@group
+@var{i} = [1 1 2]; @var{j} = [1 1 2]; @var{sv} = [3 4 5];
+sparse (@var{i}, @var{j}, @var{sv}, 3, 4, "unique")
+@result{} 
+Compressed Column Sparse (rows = 3, cols = 4, nnz = 2 [17%])
 
-If any of @var{sv}, @var{i} or @var{j} are scalars, they are expanded
-to have a common size.
-@seealso{full, accumarray}
+  (1, 1) ->  4
+  (2, 2) ->  5
+@end group
+@end example
+@seealso{full, accumarray, spalloc, spdiags, speye, spones, sprand, sprandn, sprandsym, spconvert, spfun}
 @end deftypefn
 spalloc
 @c spalloc libinterp/corefcn/sparse.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {@var{s} =} spalloc (@var{m}, @var{n}, @var{nz})
 Create an @var{m}-by-@var{n} sparse matrix with pre-allocated space for at
-most @var{nz} nonzero elements.  This is useful for building the matrix
-incrementally by a sequence of indexed assignments.  Subsequent indexed
-assignments will reuse the pre-allocated memory, provided they are of one of
-the simple forms
+most @var{nz} nonzero elements.
+
+This is useful for building a matrix incrementally by a sequence of indexed
+assignments.  Subsequent indexed assignments after @code{spalloc} will reuse
+the pre-allocated memory, provided they are of one of the simple forms
 
 @itemize
 @item @code{@var{s}(I:J) = @var{x}}
@@ -11312,8 +11338,8 @@ the simple forms
 @end itemize
 
 Partial movement of data may still occur, but in general the assignment will
-be more memory and time-efficient under these circumstances.  In particular,
-it is possible to efficiently build a pre-allocated sparse matrix from
+be more memory and time efficient under these circumstances.  In particular,
+it is possible to efficiently build a pre-allocated sparse matrix from a
 contiguous block of columns.
 
 The amount of pre-allocated memory for a given matrix may be queried using
@@ -11388,6 +11414,7 @@ The default values can be restored with the special keyword
 @qcode{"defaults"}.  The special keyword @qcode{"tight"} can be used to
 set the mmd solvers to attempt a sparser solution at the potential cost of
 longer running time.
+@seealso{chol, colamd, lu, qr, symamd}
 @end deftypefn
 sqrtm
 @c sqrtm libinterp/corefcn/sqrtm.cc
@@ -12700,17 +12727,21 @@ x = kbhit (1);
 @noindent
 is identical to the above example, but doesn't wait for a keypress,
 returning the empty string if no key is available.
-@seealso{input}
+@seealso{input, pause}
 @end deftypefn
 pause
 @c pause libinterp/corefcn/sysdep.cc
 -*- texinfo -*-
-@deftypefn {Built-in Function} {} pause (@var{seconds})
-Suspend the execution of the program.  If invoked without any arguments,
-Octave waits until you type a character.  With a numeric argument, it
-pauses for the given number of seconds.  For example, the following
-statement prints a message and then waits 5 seconds before clearing the
-screen.
+@deftypefn  {Built-in Function} {} pause ()
+@deftypefnx {Built-in Function} {} pause (@var{n})
+Suspend the execution of the program for @var{n} seconds.
+
+@var{n} is a positive real value and may be a fraction of a second.
+If invoked without an input arguments then the program is suspended until a
+character is typed.
+
+The following example prints a message and then waits 5 seconds before
+clearing the screen.
 
 @example
 @group
@@ -12719,12 +12750,14 @@ pause (5);
 clc;
 @end group
 @end example
+@seealso{kbhit, sleep}
 @end deftypefn
 sleep
 @c sleep libinterp/corefcn/sysdep.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} sleep (@var{seconds})
 Suspend the execution of the program for the given number of seconds.
+@seealso{usleep, pause}
 @end deftypefn
 usleep
 @c usleep libinterp/corefcn/sysdep.cc
@@ -12734,6 +12767,7 @@ Suspend the execution of the program for the given number of
 microseconds.  On systems where it is not possible to sleep for periods
 of time less than one second, @code{usleep} will pause the execution for
 @code{round (@var{microseconds} / 1e6)} seconds.
+@seealso{sleep, pause}
 @end deftypefn
 isieee
 @c isieee libinterp/corefcn/sysdep.cc
@@ -12773,8 +12807,8 @@ tilde_expand ("~/bin")
 @c have_window_system libinterp/corefcn/sysdep.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} have_window_system ()
-Return true if Octave a window system is available (X11, Windows,
-or Apple OS X) and false otherwise.
+Return true if a window system is available (X11, Windows, or Apple OS X)
+and false otherwise.
 @end deftypefn
 time
 @c time libinterp/corefcn/time.cc
@@ -14438,7 +14472,7 @@ are ignored by @code{amd} during the calculation of the permutation
 The value of dense must be a positive scalar and its default value is 10.0
 
 @item @var{opts}.aggressive
-If this value is a non zero scalar, then @code{amd} performs aggressive
+If this value is a nonzero scalar, then @code{amd} performs aggressive
 absorption.  The default is not to perform aggressive absorption.
 @end table
 

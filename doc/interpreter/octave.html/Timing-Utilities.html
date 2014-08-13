@@ -567,24 +567,32 @@ doing nothing at all.
 
 
 <a name="XREFpause"></a><dl>
-<dt><a name="index-pause"></a>Built-in Function: <em></em> <strong>pause</strong> <em>(<var>seconds</var>)</em></dt>
-<dd><p>Suspend the execution of the program.  If invoked without any arguments,
-Octave waits until you type a character.  With a numeric argument, it
-pauses for the given number of seconds.  For example, the following
-statement prints a message and then waits 5 seconds before clearing the
-screen.
+<dt><a name="index-pause"></a>Built-in Function: <em></em> <strong>pause</strong> <em>()</em></dt>
+<dt><a name="index-pause-1"></a>Built-in Function: <em></em> <strong>pause</strong> <em>(<var>n</var>)</em></dt>
+<dd><p>Suspend the execution of the program for <var>n</var> seconds.
+</p>
+<p><var>n</var> is a positive real value and may be a fraction of a second.
+If invoked without an input arguments then the program is suspended until a
+character is typed.
+</p>
+<p>The following example prints a message and then waits 5 seconds before
+clearing the screen.
 </p>
 <div class="example">
 <pre class="example">fprintf (stderr, &quot;wait please...\n&quot;);
 pause (5);
 clc;
 </pre></div>
-</dd></dl>
+
+<p><strong>See also:</strong> <a href="Terminal-Input.html#XREFkbhit">kbhit</a>, <a href="#XREFsleep">sleep</a>.
+</p></dd></dl>
 
 
 <a name="XREFsleep"></a><dl>
 <dt><a name="index-sleep"></a>Built-in Function: <em></em> <strong>sleep</strong> <em>(<var>seconds</var>)</em></dt>
 <dd><p>Suspend the execution of the program for the given number of seconds.
+</p>
+<p><strong>See also:</strong> <a href="#XREFusleep">usleep</a>, <a href="#XREFpause">pause</a>.
 </p></dd></dl>
 
 
@@ -594,6 +602,8 @@ clc;
 microseconds.  On systems where it is not possible to sleep for periods
 of time less than one second, <code>usleep</code> will pause the execution for
 <code>round (<var>microseconds</var> / 1e6)</code> seconds.
+</p>
+<p><strong>See also:</strong> <a href="#XREFsleep">sleep</a>, <a href="#XREFpause">pause</a>.
 </p></dd></dl>
 
 

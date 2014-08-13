@@ -307,8 +307,26 @@
 /* Define to 1 when the gnulib module isatty should be tested. */
 #undef GNULIB_TEST_ISATTY
 
+/* Define to 1 when the gnulib module isnand should be tested. */
+#undef GNULIB_TEST_ISNAND
+
+/* Define to 1 when the gnulib module isnanf should be tested. */
+#undef GNULIB_TEST_ISNANF
+
 /* Define to 1 when the gnulib module link should be tested. */
 #undef GNULIB_TEST_LINK
+
+/* Define to 1 when the gnulib module log should be tested. */
+#undef GNULIB_TEST_LOG
+
+/* Define to 1 when the gnulib module log2 should be tested. */
+#undef GNULIB_TEST_LOG2
+
+/* Define to 1 when the gnulib module log2f should be tested. */
+#undef GNULIB_TEST_LOG2F
+
+/* Define to 1 when the gnulib module logf should be tested. */
+#undef GNULIB_TEST_LOGF
 
 /* Define to 1 when the gnulib module lseek should be tested. */
 #undef GNULIB_TEST_LSEEK
@@ -1194,6 +1212,9 @@
 /* Define to 1 if you have the `log2f' function. */
 #undef HAVE_LOG2F
 
+/* Define to 1 if you have the `logf' function. */
+#undef HAVE_LOGF
+
 /* Define to 1 if you support file names longer than 14 characters. */
 #undef HAVE_LONG_FILE_NAMES
 
@@ -1352,6 +1373,9 @@
 /* Define to 1 if Qt has the QAbstractItemModel::beginResetModel() function.
    */
 #undef HAVE_QABSTRACTITEMMODEL_BEGINRESETMODEL
+
+/* Define to 1 if Qt provides QFont::ForceIntegerMetrics. */
+#undef HAVE_QFONT_FORCE_INTEGER_METRICS
 
 /* Define to 1 if Qt provides QFont::Monospace. */
 #undef HAVE_QFONT_MONOSPACE

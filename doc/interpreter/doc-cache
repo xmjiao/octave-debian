@@ -1,4 +1,4 @@
-# doc-cache created by Octave 3.8.1, Thu Mar 06 14:54:53 2014 EST
+# doc-cache created by Octave 3.8.2, Wed Aug 06 15:18:20 2014 EDT
 # name: cache
 # type: cell
 # rows: 3
@@ -999,41 +999,6 @@ Query or set the internal variable that determines whether extra  debugging info
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 8
-java_get
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 505
- -- Loadable Function: VAL = java_get (OBJ, NAME)
-     Get the value of the field NAME of the Java object OBJ.  For static
-     fields, OBJ can be a string representing the fully qualified name
-     of the corresponding class.
-
-     When OBJ is a regular Java object, structure-like indexing can be
-     used as a shortcut syntax.  For instance, the two following
-     statements are equivalent
-
-            java_get (x, "field1")
-            x.field1
-
-     See also: java_set, javaMethod, javaObject.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 55
-Get the value of the field NAME of the Java object OBJ.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
 # length: 11
 java_invoke
 
@@ -1133,41 +1098,6 @@ java_unsigned_conversion
 # elements: 1
 # length: 127
 Query or set the internal variable that controls how integer  classes are converted when Java matrix autoconversion is enabled.
-
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 8
-java_set
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 534
- -- Loadable Function: OBJ = java_set (OBJ, NAME, VAL)
-     Set the value of the field NAME of the Java object OBJ to VAL.  For
-     static fields, OBJ can be a string representing the fully qualified
-     named of the corresponding Java class.
-
-     When OBJ is a regular Java object, structure-like indexing can be
-     used as a shortcut syntax.  For instance, the two following
-     statements are equivalent
-
-            java_set (x, "field1", val)
-            x.field1 = val
-
-     See also: java_get, javaMethod, javaObject.
-   
-
-
-# name: <cell-element>
-# type: sq_string
-# elements: 1
-# length: 62
-Set the value of the field NAME of the Java object OBJ to VAL.
 
 
 
@@ -6242,7 +6172,7 @@ listdlg
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 1710
+# length: 1721
  -- Function File: [SEL, OK] = listdlg (KEY, VALUE, ...)
      Return user inputs from a list dialog box in a vector of selection
      indices SEL and a flag OK indicating how the user closed the dialog
@@ -6294,7 +6224,8 @@ listdlg
             endfor
           endif
 
-     See also: errordlg, helpdlg, inputdlg, msgbox, questdlg, warndlg.
+     See also: menu, errordlg, helpdlg, inputdlg, msgbox, questdlg,
+     warndlg.
    
 
 
@@ -6868,7 +6799,7 @@ waitforbuttonpress
 # elements: 1
 # length: 295
  -- Function File: waitforbuttonpress ()
- -- Function File: A = waitforbuttonpress ()
+ -- Function File: B = waitforbuttonpress ()
      Wait for mouse click or key press over the current figure window.
 
      The return value of B is 0 if a mouse button was pressed or 1 if a
@@ -9759,6 +9690,76 @@ textread
 # name: <cell-element>
 # type: sq_string
 # elements: 1
+# length: 8
+java_get
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 501
+ -- Function File: VAL = java_get (OBJ, NAME)
+     Get the value of the field NAME of the Java object OBJ.  For static
+     fields, OBJ can be a string representing the fully qualified name
+     of the corresponding class.
+
+     When OBJ is a regular Java object, structure-like indexing can be
+     used as a shortcut syntax.  For instance, the two following
+     statements are equivalent
+
+            java_get (x, "field1")
+            x.field1
+
+     See also: java_set, javaMethod, javaObject.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 55
+Get the value of the field NAME of the Java object OBJ.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 8
+java_set
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 530
+ -- Function File: OBJ = java_set (OBJ, NAME, VAL)
+     Set the value of the field NAME of the Java object OBJ to VAL.  For
+     static fields, OBJ can be a string representing the fully qualified
+     named of the corresponding Java class.
+
+     When OBJ is a regular Java object, structure-like indexing can be
+     used as a shortcut syntax.  For instance, the two following
+     statements are equivalent
+
+            java_set (x, "field1", val)
+            x.field1 = val
+
+     See also: java_get, javaMethod, javaObject.
+   
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 62
+Set the value of the field NAME of the Java object OBJ to VAL.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
 # length: 9
 javaArray
 
@@ -12472,7 +12473,7 @@ menu
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 479
+# length: 474
  -- Function File: menu (TITLE, OPT1, ...)
      Print a title string followed by a series of options.  Each option
      will be printed along with a number.  The return value is the
@@ -12481,7 +12482,7 @@ menu
      options that may be passed in, but it may be confusing to present
      more than will fit easily on one screen.
 
-     See also: disp, printf, input.
+     See also: input, listdlg.
    
 
 
@@ -14189,56 +14190,63 @@ fminunc
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 2364
+# length: 2644
  -- Function File: fminunc (FCN, X0)
  -- Function File: fminunc (FCN, X0, OPTIONS)
- -- Function File: [X, FVEC, INFO, OUTPUT, GRAD, HESS] = fminunc (FCN,
+ -- Function File: [X, FVAL, INFO, OUTPUT, GRAD, HESS] = fminunc (FCN,
           ...)
      Solve an unconstrained optimization problem defined by the function
      FCN.
 
-     FCN should accepts a vector (array) defining the unknown variables,
+     FCN should accept a vector (array) defining the unknown variables,
      and return the objective function value, optionally with gradient.
-     In other words, this function attempts to determine a vector X such
-     that 'FCN (X)' is a local minimum.  X0 determines a starting guess.
-     The shape of X0 is preserved in all calls to FCN, but otherwise is
-     treated as a column vector.  OPTIONS is a structure specifying
-     additional options.  Currently, 'fminunc' recognizes these options:
-     "FunValCheck", "OutputFcn", "TolX", "TolFun", "MaxIter",
-     "MaxFunEvals", "GradObj", "FinDiffType", "TypicalX", "AutoScaling".
+     'fminunc' attempts to determine a vector X such that 'FCN (X)' is a
+     local minimum.  X0 determines a starting guess.  The shape of X0 is
+     preserved in all calls to FCN, but otherwise is treated as a column
+     vector.  OPTIONS is a structure specifying additional options.
+     Currently, 'fminunc' recognizes these options: "FunValCheck",
+     "OutputFcn", "TolX", "TolFun", "MaxIter", "MaxFunEvals", "GradObj",
+     "FinDiffType", "TypicalX", "AutoScaling".
 
-     If "GradObj" is "on", it specifies that FCN, called with 2 output
-     arguments, also returns the Jacobian matrix of right-hand sides at
-     the requested point.  "TolX" specifies the termination tolerance in
-     the unknown variables, while "TolFun" is a tolerance for equations.
-     Default is '1e-7' for both "TolX" and "TolFun".
+     If "GradObj" is "on", it specifies that FCN, when called with 2
+     output arguments, also returns the Jacobian matrix of partial first
+     derivatives at the requested point.  'TolX' specifies the
+     termination tolerance for the unknown variables X, while 'TolFun'
+     is a tolerance for the objective function value FVAL.  The default
+     is '1e-7' for both options.
 
-     For description of the other options, see 'optimset'.
+     For a description of the other options, see 'optimset'.
 
-     On return, FVAL contains the value of the function FCN evaluated at
-     X, and INFO may be one of the following values:
+     On return, X is the location of the minimum and FVAL contains the
+     value of the objective function at X.  INFO may be one of the
+     following values:
 
      1
           Converged to a solution point.  Relative gradient error is
-          less than specified by TolFun.
+          less than specified by 'TolFun'.
 
      2
-          Last relative step size was less that TolX.
+          Last relative step size was less than 'TolX'.
 
      3
-          Last relative decrease in function value was less than TolF.
+          Last relative change in function value was less than 'TolFun'.
 
      0
-          Iteration limit exceeded.
+          Iteration limit exceeded--either maximum numer of algorithm
+          iterations 'MaxIter' or maximum number of function evaluations
+          'MaxFunEvals'.
+
+     -1
+          Alogrithm terminated by 'OutputFcn'.
 
      -3
           The trust region radius became excessively small.
 
-     Optionally, fminunc can also yield a structure with convergence
-     statistics (OUTPUT), the output gradient (GRAD) and approximate
-     Hessian (HESS).
+     Optionally, 'fminunc' can return a structure with convergence
+     statistics (OUTPUT), the output gradient (GRAD) at the solution X,
+     and approximate Hessian (HESS) at the solution X.
 
-     Notes: If you only have a single nonlinear equation of one variable
+     Notes: If have only a single nonlinear equation of one variable
      then using 'fminbnd' is usually a much better idea.  The algorithm
      used is a gradient search which depends on the objective function
      being differentiable.  If the function has discontinuities it may
@@ -22811,12 +22819,12 @@ figure
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 794
+# length: 793
  -- Command: figure
  -- Command: figure N
  -- Function File: figure (N)
  -- Function File: figure (..., "PROPERTY", VALUE, ...)
- -- Function File: H = figure (DOTS)
+ -- Function File: H = figure (...)
      Create a new figure window for plotting.
 
      If no arguments are specified, a new figure with the next available
@@ -27805,9 +27813,11 @@ nonzeros
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 103
+# length: 130
  -- Function File: nonzeros (S)
      Return a vector of the non-zero values of the sparse matrix S.
+
+     See also: find, nnz.
    
 
 
@@ -28128,9 +28138,11 @@ spaugment
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 1299
+# length: 1329
  -- Function File: S = spaugment (A, C)
-     Create the augmented matrix of A.  This is given by
+     Create the augmented matrix of A.
+
+     This is given by
 
           [C * eye(M, M), A;
                       A', zeros(N, N)]
@@ -28146,7 +28158,7 @@ spaugment
      As the matrix S is symmetric indefinite it can be factorized with
      'lu', and the minimum norm solution can therefore be found without
      the need for a 'qr' factorization.  As the residual error will be
-     'zeros (M, M)' for under determined problems, and example can be
+     'zeros (M, M)' for underdetermined problems, and example can be
 
           m = 11; n = 10; mn = max (m, n);
           A = spdiags ([ones(mn,1), 10*ones(mn,1), -ones(mn,1)],
@@ -28163,6 +28175,8 @@ spaugment
 
      In general the left division operator is more stable and faster
      than using the 'spaugment' function.
+
+     See also: mldivide.
    
 
 
@@ -28184,22 +28198,25 @@ spconvert
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 436
+# length: 444
  -- Function File: X = spconvert (M)
-     This function converts for a simple sparse matrix format easily
-     produced by other programs into Octave's internal sparse format.
-     The input X is either a 3 or 4 column real matrix, containing the
-     row, column, real and imaginary parts of the elements of the sparse
-     matrix.  An element with a zero real and imaginary part can be used
-     to force a particular matrix size.
+     Convert a simple sparse matrix format easily generated by other
+     programs into Octave's internal sparse format.
+
+     The input M is either a 3 or 4 column real matrix, containing the
+     row, column, real, and imaginary parts of the elements of the
+     sparse matrix.  An element with a zero real and imaginary part can
+     be used to force a particular matrix size.
+
+     See also: sparse.
    
 
 
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 129
-This function converts for a simple sparse matrix format easily  produced by other programs into Octave's internal sparse format.
+# length: 111
+Convert a simple sparse matrix format easily generated by other  programs into Octave's internal sparse format.
 
 
 
@@ -28261,26 +28278,28 @@ speye
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 496
- -- Function File: Y = speye (M)
- -- Function File: Y = speye (M, N)
- -- Function File: Y = speye (SZ)
-     Return a sparse identity matrix.  This is significantly more
-     efficient than 'sparse (eye (M))' as the full matrix is not
-     constructed.
+# length: 516
+ -- Function File: S = speye (M, N)
+ -- Function File: S = speye (M)
+ -- Function File: S = speye (SZ)
+     Return a sparse identity matrix of size MxN.
 
-     Called with a single argument a square matrix of size M by M is
-     created.  Otherwise a matrix of M by N is created.  If called with
-     a single vector argument, this argument is taken to be the size of
-     the matrix to create.
+     The implementation is significantly more efficient than 'sparse
+     (eye (M))' as the full matrix is not constructed.
+
+     Called with a single argument a square matrix of size M-by-M is
+     created.  If called with a single vector argument SZ, this argument
+     is taken to be the size of the matrix to create.
+
+     See also: sparse, spdiags, eye.
    
 
 
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 32
-Return a sparse identity matrix.
+# length: 44
+Return a sparse identity matrix of size MxN.
 
 
 
@@ -28322,10 +28341,12 @@ spones
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 152
+# length: 216
  -- Function File: R = spones (S)
      Replace the non-zero entries of S with ones.  This creates a sparse
      matrix with the same structure as S.
+
+     See also: sparse, sprand, sprandn, sprandsym, spfun, spy.
    
 
 
@@ -28347,17 +28368,17 @@ sprand
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 438
+# length: 459
  -- Function File: sprand (M, N, D)
  -- Function File: sprand (S)
-     Generate a random sparse matrix.  The size of the matrix will be M
-     by N, with a density of values given by D.  D should be between 0
-     and 1.  Values will be uniformly distributed between 0 and 1.
+     Generate a random sparse matrix.  The size of the matrix will be
+     MxN, with a density of values given by D.  D must be between 0 and
+     1 inclusive.  Values will be uniformly distributed between 0 and 1.
 
      If called with a single matrix argument, a random sparse matrix is
      generated wherever the matrix S is non-zero.
 
-     See also: sprandn, sprandsym.
+     See also: sprandn, sprandsym, spones, sparse.
    
 
 
@@ -28379,18 +28400,18 @@ sprandn
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 460
+# length: 488
  -- Function File: sprandn (M, N, D)
  -- Function File: sprandn (S)
-     Generate a random sparse matrix.  The size of the matrix will be M
-     by N, with a density of values given by D.  D should be between 0
-     and 1.  Values will be normally distributed with mean of zero and
-     variance 1.
+     Generate a random sparse matrix.  The size of the matrix will be
+     MxN, with a density of values given by D.  D must be between 0 and
+     1 inclusive.  Values will be normally distributed with a mean of
+     zero and a variance of 1.
 
      If called with a single matrix argument, a random sparse matrix is
      generated wherever the matrix S is non-zero.
 
-     See also: sprand, sprandsym.
+     See also: sprand, sprandsym, spones, sparse.
    
 
 
@@ -28412,19 +28433,20 @@ sprandsym
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 503
+# length: 531
  -- Function File: sprandsym (N, D)
  -- Function File: sprandsym (S)
-     Generate a symmetric random sparse matrix.  The size of the matrix
-     will be N by N, with a density of values given by D.  D should be
-     between 0 and 1.  Values will be normally distributed with mean of
-     zero and variance 1.
+     Generate a symmetric random sparse matrix.
+
+     The size of the matrix will be NxN, with a density of values given
+     by D.  D must be between 0 and 1 inclusive.  Values will be
+     normally distributed with a mean of zero and a variance of 1.
 
      If called with a single matrix argument, a random sparse matrix is
      generated wherever the matrix S is non-zero in its lower triangular
      part.
 
-     See also: sprand, sprandn.
+     See also: sprand, sprandn, spones, sparse.
    
 
 
@@ -28479,16 +28501,18 @@ spy
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 411
+# length: 423
  -- Function File: spy (X)
  -- Function File: spy (..., MARKERSIZE)
  -- Function File: spy (..., LINE_SPEC)
-     Plot the sparsity pattern of the sparse matrix X.  If the argument
-     MARKERSIZE is given as a scalar value, it is used to determine the
-     point size in the plot.  If the string LINE_SPEC is given it is
-     passed to 'plot' and determines the appearance of the plot.
+     Plot the sparsity pattern of the sparse matrix X.
 
-     See also: plot.
+     If the argument MARKERSIZE is given as a scalar value, it is used
+     to determine the point size in the plot.  If the string LINE_SPEC
+     is given it is passed to 'plot' and determines the appearance of
+     the plot.
+
+     See also: plot, gplot.
    
 
 
@@ -41798,15 +41822,15 @@ all
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 533
+# length: 535
  -- Built-in Function: all (X)
  -- Built-in Function: all (X, DIM)
      For a vector argument, return true (logical 1) if all elements of
-     the vector are nonzero.
+     the vector are non-zero.
 
      For a matrix argument, return a row vector of logical ones and
      zeros with each element indicating whether all of the elements of
-     the corresponding column of the matrix are nonzero.  For example:
+     the corresponding column of the matrix are non-zero.  For example:
 
           all ([2, 3; 1, 0]))
               => [ 1, 0 ]
@@ -41820,8 +41844,8 @@ all
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 90
-For a vector argument, return true (logical 1) if all elements of  the vector are nonzero.
+# length: 91
+For a vector argument, return true (logical 1) if all elements of  the vector are non-zero.
 
 
 
@@ -41835,15 +41859,15 @@ any
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 603
+# length: 605
  -- Built-in Function: any (X)
  -- Built-in Function: any (X, DIM)
      For a vector argument, return true (logical 1) if any element of
-     the vector is nonzero.
+     the vector is non-zero.
 
      For a matrix argument, return a row vector of logical ones and
      zeros with each element indicating whether any of the elements of
-     the corresponding column of the matrix are nonzero.  For example:
+     the corresponding column of the matrix are non-zero.  For example:
 
           any (eye (2, 4))
            => [ 1, 1, 0, 0 ]
@@ -41861,8 +41885,8 @@ any
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 88
-For a vector argument, return true (logical 1) if any element of  the vector is nonzero.
+# length: 89
+For a vector argument, return true (logical 1) if any element of  the vector is non-zero.
 
 
 
@@ -42524,11 +42548,11 @@ nnz
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 124
- -- Built-in Function: SCALAR = nnz (A)
-     Return the number of non zero elements in A.
+# length: 127
+ -- Built-in Function: N = nnz (A)
+     Return the number of non-zero elements in A.
 
-     See also: sparse, nzmax.
+     See also: nzmax, nonzeros, find.
    
 
 
@@ -42536,7 +42560,7 @@ nnz
 # type: sq_string
 # elements: 1
 # length: 44
-Return the number of non zero elements in A.
+Return the number of non-zero elements in A.
 
 
 
@@ -42550,14 +42574,14 @@ nzmax
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 435
- -- Built-in Function: SCALAR = nzmax (SM)
+# length: 382
+ -- Built-in Function: N = nzmax (SM)
      Return the amount of storage allocated to the sparse matrix SM.
+
      Note that Octave tends to crop unused memory at the first
-     opportunity for sparse objects.  There are some cases of user
-     created sparse objects where the value returned by "nzmax" will not
-     be the same as "nnz", but in general they will give the same
-     result.
+     opportunity for sparse objects.  Thus, in general the value of
+     'nzmax' will be the the same as 'nnz' except for some cases of
+     user-created sparse objects.
 
      See also: nnz, spalloc, sparse.
    
@@ -43762,20 +43786,20 @@ full
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 160
+# length: 171
  -- Built-in Function: FM = full (SM)
      Return a full storage matrix from a sparse, diagonal, permutation
-     matrix or a range.
+     matrix, or a range.
 
-     See also: sparse.
+     See also: sparse, issparse.
    
 
 
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 85
-Return a full storage matrix from a sparse, diagonal, permutation  matrix or a range.
+# length: 86
+Return a full storage matrix from a sparse, diagonal, permutation  matrix, or a range.
 
 
 
@@ -49889,10 +49913,12 @@ input
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 1142
+# length: 1167
  -- Built-in Function: ANS = input (PROMPT)
  -- Built-in Function: ANS = input (PROMPT, "s")
-     Print a prompt and wait for user input.  For example,
+     Print PROMPT and wait for user input.
+
+     For example,
 
           input ("Pick a number, any number! ")
 
@@ -49917,15 +49943,15 @@ input
      'input'.  This will ensure that all pending output is written to
      the screen before your prompt.
 
-     See also: yes_or_no, kbhit.
+     See also: yes_or_no, kbhit, pause, menu, listdlg.
    
 
 
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 39
-Print a prompt and wait for user input.
+# length: 37
+Print PROMPT and wait for user input.
 
 
 
@@ -49939,14 +49965,16 @@ yes_or_no
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 469
+# length: 475
  -- Built-in Function: ANS = yes_or_no ("PROMPT")
-     Ask the user a yes-or-no question.  Return logical true if the
-     answer is yes or false if the answer is no.  Takes one argument,
-     PROMPT, which is the string to display when asking the question.
-     PROMPT should end in a space; 'yes-or-no' adds the string '(yes or
-     no) ' to it.  The user must confirm the answer with <RET> and can
-     edit it until it has been confirmed.
+     Ask the user a yes-or-no question.
+
+     Return logical true if the answer is yes or false if the answer is
+     no.  Takes one argument, PROMPT, which is the string to display
+     when asking the question.  PROMPT should end in a space;
+     'yes-or-no' adds the string '(yes or no) ' to it.  The user must
+     confirm the answer with <RET> and can edit it until it has been
+     confirmed.
 
      See also: input.
    
@@ -49970,7 +49998,7 @@ keyboard
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 712
+# length: 720
  -- Built-in Function: keyboard ()
  -- Built-in Function: keyboard ("PROMPT")
      This function is normally used for simple debugging.  When the
@@ -49985,7 +50013,7 @@ keyboard
      If 'keyboard' is invoked without arguments, a default prompt of
      'debug> ' is used.
 
-     See also: dbcont, dbquit.
+     See also: dbstop, dbcont, dbquit.
    
 
 
@@ -56134,51 +56162,73 @@ sparse
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 1583
+# length: 2220
  -- Built-in Function: S = sparse (A)
- -- Built-in Function: S = sparse (I, J, SV, M, N, NZMAX)
+ -- Built-in Function: S = sparse (I, J, SV, M, N)
  -- Built-in Function: S = sparse (I, J, SV)
- -- Built-in Function: S = sparse (I, J, S, M, N, "unique")
  -- Built-in Function: S = sparse (M, N)
-     Create a sparse matrix from the full matrix or row, column, value
-     triplets.  If A is a full matrix, convert it to a sparse matrix
+ -- Built-in Function: S = sparse (I, J, S, M, N, "unique")
+ -- Built-in Function: S = sparse (I, J, SV, M, N, NZMAX)
+     Create a sparse matrix from a full matrix or row, column, value
+     triplets.
+
+     If A is a full matrix, convert it to a sparse matrix
      representation, removing all zero values in the process.
 
-     Given the integer index vectors I and J, a 1-by-'nnz' vector of
-     real of complex values SV, overall dimensions M and N of the sparse
-     matrix.  The argument 'nzmax' is ignored but accepted for
-     compatibility with MATLAB.  If M or N are not specified their
-     values are derived from the maximum index in the vectors I and J as
-     given by 'M = max (I)', 'N = max (J)'.
+     Given the integer index vectors I and J, and a 1-by-'nnz' vector of
+     real or complex values SV, construct the sparse matrix
+     'S(I(K),J(K)) = SV(K)' with overall dimensions M and N.  If any of
+     SV, I or J are scalars, they are expanded to have a common size.
+
+     If M or N are not specified their values are derived from the
+     maximum index in the vectors I and J as given by 'M = max (I)', 'N
+     = max (J)'.
 
      *Note*: if multiple values are specified with the same I, J
-     indices, the corresponding values in S will be added.  See
-     'accumarray' for an example of how to produce different behavior,
-     such as taking the minimum instead.
+     indices, the corresponding value in S will be the sum of the values
+     at the repeated location.  See 'accumarray' for an example of how
+     to produce different behavior, such as taking the minimum instead.
 
-     The following are all equivalent:
+     If the option "unique" is given, and more than one value is
+     specified at the same I, J indices, then the last specified value
+     will be used.
 
-          s = sparse (i, j, s, m, n)
-          s = sparse (i, j, s, m, n, "summation")
-          s = sparse (i, j, s, m, n, "sum")
+     'sparse (M, N)' will create an empty MxN sparse matrix and is
+     equivalent to 'sparse ([], [], [], M, N)'
 
-     Given the option "unique", if more than two values are specified
-     for the same I, J indices, the last specified value will be used.
+     The argument 'nzmax' is ignored but accepted for compatibility with
+     MATLAB.
 
-     'sparse (M, N)' is equivalent to 'sparse ([], [], [], M, N, 0)'
+     Example 1 (sum at repeated indices):
 
-     If any of SV, I or J are scalars, they are expanded to have a
-     common size.
+          I = [1 1 2]; J = [1 1 2]; SV = [3 4 5];
+          sparse (I, J, SV, 3, 4)
+          =>
+          Compressed Column Sparse (rows = 3, cols = 4, nnz = 2 [17%])
 
-     See also: full, accumarray.
+            (1, 1) ->  7
+            (2, 2) ->  5
+
+     Example 2 ("unique" option):
+
+          I = [1 1 2]; J = [1 1 2]; SV = [3 4 5];
+          sparse (I, J, SV, 3, 4, "unique")
+          =>
+          Compressed Column Sparse (rows = 3, cols = 4, nnz = 2 [17%])
+
+            (1, 1) ->  4
+            (2, 2) ->  5
+
+     See also: full, accumarray, spalloc, spdiags, speye, spones,
+     sprand, sprandn, sprandsym, spconvert, spfun.
    
 
 
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 76
-Create a sparse matrix from the full matrix or row, column, value  triplets.
+# length: 74
+Create a sparse matrix from a full matrix or row, column, value  triplets.
 
 
 
@@ -56192,13 +56242,15 @@ spalloc
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 1062
+# length: 1083
  -- Built-in Function: S = spalloc (M, N, NZ)
      Create an M-by-N sparse matrix with pre-allocated space for at most
-     NZ nonzero elements.  This is useful for building the matrix
-     incrementally by a sequence of indexed assignments.  Subsequent
-     indexed assignments will reuse the pre-allocated memory, provided
-     they are of one of the simple forms
+     NZ nonzero elements.
+
+     This is useful for building a matrix incrementally by a sequence of
+     indexed assignments.  Subsequent indexed assignments after
+     'spalloc' will reuse the pre-allocated memory, provided they are of
+     one of the simple forms
 
         * 'S(I:J) = X'
 
@@ -56215,9 +56267,9 @@ spalloc
         * no index is out of bounds.
 
      Partial movement of data may still occur, but in general the
-     assignment will be more memory and time-efficient under these
+     assignment will be more memory and time efficient under these
      circumstances.  In particular, it is possible to efficiently build
-     a pre-allocated sparse matrix from contiguous block of columns.
+     a pre-allocated sparse matrix from a contiguous block of columns.
 
      The amount of pre-allocated memory for a given matrix may be
      queried using the function 'nzmax'.
@@ -56244,7 +56296,7 @@ spparms
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 2393
+# length: 2439
  -- Built-in Function: spparms ()
  -- Built-in Function: VALS = spparms ()
  -- Built-in Function: [KEYS, VALS] = spparms ()
@@ -56312,6 +56364,8 @@ spparms
      "defaults".  The special keyword "tight" can be used to set the mmd
      solvers to attempt a sparser solution at the potential cost of
      longer running time.
+
+     See also: chol, colamd, lu, qr, symamd.
    
 
 
@@ -58934,7 +58988,7 @@ kbhit
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 485
+# length: 492
  -- Built-in Function: kbhit ()
  -- Built-in Function: kbhit (1)
      Read a single keystroke from the keyboard.  If called with an
@@ -58950,7 +59004,7 @@ kbhit
      is identical to the above example, but doesn't wait for a keypress,
      returning the empty string if no key is available.
 
-     See also: input.
+     See also: input, pause.
    
 
 
@@ -58972,25 +59026,31 @@ pause
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 443
- -- Built-in Function: pause (SECONDS)
-     Suspend the execution of the program.  If invoked without any
-     arguments, Octave waits until you type a character.  With a numeric
-     argument, it pauses for the given number of seconds.  For example,
-     the following statement prints a message and then waits 5 seconds
+# length: 518
+ -- Built-in Function: pause ()
+ -- Built-in Function: pause (N)
+     Suspend the execution of the program for N seconds.
+
+     N is a positive real value and may be a fraction of a second.  If
+     invoked without an input arguments then the program is suspended
+     until a character is typed.
+
+     The following example prints a message and then waits 5 seconds
      before clearing the screen.
 
           fprintf (stderr, "wait please...\n");
           pause (5);
           clc;
+
+     See also: kbhit, sleep.
    
 
 
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 37
-Suspend the execution of the program.
+# length: 51
+Suspend the execution of the program for N seconds.
 
 
 
@@ -59004,10 +59064,12 @@ sleep
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 122
+# length: 153
  -- Built-in Function: sleep (SECONDS)
      Suspend the execution of the program for the given number of
      seconds.
+
+     See also: usleep, pause.
    
 
 
@@ -59029,12 +59091,14 @@ usleep
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 307
+# length: 337
  -- Built-in Function: usleep (MICROSECONDS)
      Suspend the execution of the program for the given number of
      microseconds.  On systems where it is not possible to sleep for
      periods of time less than one second, 'usleep' will pause the
      execution for 'round (MICROSECONDS / 1e6)' seconds.
+
+     See also: sleep, pause.
    
 
 
@@ -59141,18 +59205,18 @@ have_window_system
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 160
+# length: 153
  -- Built-in Function: have_window_system ()
-     Return true if Octave a window system is available (X11, Windows,
-     or Apple OS X) and false otherwise.
+     Return true if a window system is available (X11, Windows, or Apple
+     OS X) and false otherwise.
    
 
 
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 102
-Return true if Octave a window system is available (X11, Windows,  or Apple OS X) and false otherwise.
+# length: 95
+Return true if a window system is available (X11, Windows, or Apple  OS X) and false otherwise.
 
 
 
@@ -61437,7 +61501,7 @@ amd
 # name: <cell-element>
 # type: sq_string
 # elements: 1
-# length: 1278
+# length: 1277
  -- Loadable Function: P = amd (S)
  -- Loadable Function: P = amd (S, OPTS)
 
@@ -61459,7 +61523,7 @@ amd
           its default value is 10.0
 
      OPTS.aggressive
-          If this value is a non zero scalar, then 'amd' performs
+          If this value is a nonzero scalar, then 'amd' performs
           aggressive absorption.  The default is not to perform
           aggressive absorption.
 

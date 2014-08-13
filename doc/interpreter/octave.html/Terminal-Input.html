@@ -66,7 +66,9 @@ used for managing an interactive dialog with a user, and the
 <a name="XREFinput"></a><dl>
 <dt><a name="index-input"></a>Built-in Function: <em><var>ans</var> =</em> <strong>input</strong> <em>(<var>prompt</var>)</em></dt>
 <dt><a name="index-input-1"></a>Built-in Function: <em><var>ans</var> =</em> <strong>input</strong> <em>(<var>prompt</var>, &quot;s&quot;)</em></dt>
-<dd><p>Print a prompt and wait for user input.  For example,
+<dd><p>Print <var>prompt</var> and wait for user input.
+</p>
+<p>For example,
 </p>
 <div class="example">
 <pre class="example">input (&quot;Pick a number, any number! &quot;)
@@ -95,7 +97,7 @@ a good idea to always call <code>fflush (stdout)</code> before calling
 <code>input</code>.  This will ensure that all pending output is written to
 the screen before your prompt.
 </p>
-<p><strong>See also:</strong> <a href="#XREFyes_005for_005fno">yes_or_no</a>, <a href="#XREFkbhit">kbhit</a>.
+<p><strong>See also:</strong> <a href="#XREFyes_005for_005fno">yes_or_no</a>, <a href="#XREFkbhit">kbhit</a>, <a href="Timing-Utilities.html#XREFpause">pause</a>, <a href="#XREFmenu">menu</a>, <a href="Dialog-Box-Functions.html#XREFlistdlg">listdlg</a>.
 </p></dd></dl>
 
 
@@ -108,18 +110,19 @@ programs.  There is no limit to the number of options that may be passed
 in, but it may be confusing to present more than will fit easily on one
 screen.
 </p>
-<p><strong>See also:</strong> <a href="Terminal-Output.html#XREFdisp">disp</a>, <a href="Formatted-Output.html#XREFprintf">printf</a>, <a href="#XREFinput">input</a>.
+<p><strong>See also:</strong> <a href="#XREFinput">input</a>, <a href="Dialog-Box-Functions.html#XREFlistdlg">listdlg</a>.
 </p></dd></dl>
 
 
 <a name="XREFyes_005for_005fno"></a><dl>
 <dt><a name="index-yes_005for_005fno"></a>Built-in Function: <em><var>ans</var> =</em> <strong>yes_or_no</strong> <em>(&quot;<var>prompt</var>&quot;)</em></dt>
-<dd><p>Ask the user a yes-or-no question.  Return logical true if the answer is yes
-or false if the answer is no.  Takes one argument, <var>prompt</var>, which is
-the string to display when asking the question.  <var>prompt</var> should end in
-a space; <code>yes-or-no</code> adds the string &lsquo;<samp>(yes or no) </samp>&rsquo; to it.  The
-user must confirm the answer with <tt class="key">RET</tt> and can edit it until it has
-been confirmed.
+<dd><p>Ask the user a yes-or-no question.
+</p>
+<p>Return logical true if the answer is yes or false if the answer is no.
+Takes one argument, <var>prompt</var>, which is the string to display when asking
+the question.  <var>prompt</var> should end in a space; <code>yes-or-no</code> adds the
+string &lsquo;<samp>(yes or no) </samp>&rsquo; to it.  The user must confirm the answer with
+<tt class="key">RET</tt> and can edit it until it has been confirmed.
 </p>
 <p><strong>See also:</strong> <a href="#XREFinput">input</a>.
 </p></dd></dl>
@@ -152,7 +155,7 @@ it is typed.
 <p>is identical to the above example, but doesn&rsquo;t wait for a keypress,
 returning the empty string if no key is available.
 </p>
-<p><strong>See also:</strong> <a href="#XREFinput">input</a>.
+<p><strong>See also:</strong> <a href="#XREFinput">input</a>, <a href="Timing-Utilities.html#XREFpause">pause</a>.
 </p></dd></dl>
 
 

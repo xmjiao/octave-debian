@@ -5382,53 +5382,60 @@ simply inverting the objective function ('Fto_max = -Fto_min').
 
  -- Function File: fminunc (FCN, X0)
  -- Function File: fminunc (FCN, X0, OPTIONS)
- -- Function File: [X, FVEC, INFO, OUTPUT, GRAD, HESS] = fminunc (FCN,
+ -- Function File: [X, FVAL, INFO, OUTPUT, GRAD, HESS] = fminunc (FCN,
           ...)
      Solve an unconstrained optimization problem defined by the function
      FCN.
 
-     FCN should accepts a vector (array) defining the unknown variables,
+     FCN should accept a vector (array) defining the unknown variables,
      and return the objective function value, optionally with gradient.
-     In other words, this function attempts to determine a vector X such
-     that 'FCN (X)' is a local minimum.  X0 determines a starting guess.
-     The shape of X0 is preserved in all calls to FCN, but otherwise is
-     treated as a column vector.  OPTIONS is a structure specifying
-     additional options.  Currently, 'fminunc' recognizes these options:
-     "FunValCheck", "OutputFcn", "TolX", "TolFun", "MaxIter",
-     "MaxFunEvals", "GradObj", "FinDiffType", "TypicalX", "AutoScaling".
+     'fminunc' attempts to determine a vector X such that 'FCN (X)' is a
+     local minimum.  X0 determines a starting guess.  The shape of X0 is
+     preserved in all calls to FCN, but otherwise is treated as a column
+     vector.  OPTIONS is a structure specifying additional options.
+     Currently, 'fminunc' recognizes these options: "FunValCheck",
+     "OutputFcn", "TolX", "TolFun", "MaxIter", "MaxFunEvals", "GradObj",
+     "FinDiffType", "TypicalX", "AutoScaling".
 
-     If "GradObj" is "on", it specifies that FCN, called with 2 output
-     arguments, also returns the Jacobian matrix of right-hand sides at
-     the requested point.  "TolX" specifies the termination tolerance in
-     the unknown variables, while "TolFun" is a tolerance for equations.
-     Default is '1e-7' for both "TolX" and "TolFun".
+     If "GradObj" is "on", it specifies that FCN, when called with 2
+     output arguments, also returns the Jacobian matrix of partial first
+     derivatives at the requested point.  'TolX' specifies the
+     termination tolerance for the unknown variables X, while 'TolFun'
+     is a tolerance for the objective function value FVAL.  The default
+     is '1e-7' for both options.
 
-     For description of the other options, see 'optimset'.
+     For a description of the other options, see 'optimset'.
 
-     On return, FVAL contains the value of the function FCN evaluated at
-     X, and INFO may be one of the following values:
+     On return, X is the location of the minimum and FVAL contains the
+     value of the objective function at X.  INFO may be one of the
+     following values:
 
      1
           Converged to a solution point.  Relative gradient error is
-          less than specified by TolFun.
+          less than specified by 'TolFun'.
 
      2
-          Last relative step size was less that TolX.
+          Last relative step size was less than 'TolX'.
 
      3
-          Last relative decrease in function value was less than TolF.
+          Last relative change in function value was less than 'TolFun'.
 
      0
-          Iteration limit exceeded.
+          Iteration limit exceeded--either maximum numer of algorithm
+          iterations 'MaxIter' or maximum number of function evaluations
+          'MaxFunEvals'.
+
+     -1
+          Alogrithm terminated by 'OutputFcn'.
 
      -3
           The trust region radius became excessively small.
 
-     Optionally, fminunc can also yield a structure with convergence
-     statistics (OUTPUT), the output gradient (GRAD) and approximate
-     Hessian (HESS).
+     Optionally, 'fminunc' can return a structure with convergence
+     statistics (OUTPUT), the output gradient (GRAD) at the solution X,
+     and approximate Hessian (HESS) at the solution X.
 
-     Notes: If you only have a single nonlinear equation of one variable
+     Notes: If have only a single nonlinear equation of one variable
      then using 'fminbnd' is usually a much better idea.  The algorithm
      used is a gradient search which depends on the objective function
      being differentiable.  If the function has discontinuities it may
@@ -6002,7 +6009,7 @@ it makes sense to have a special matrix type to handle this class of
 problems where only the non-zero elements of the matrix are stored.  Not
 only does this reduce the amount of memory to store the matrix, but it
 also means that operations on this type of matrix can take advantage of
-the a-priori knowledge of the positions of the non-zero elements to
+the a priori knowledge of the positions of the non-zero elements to
 accelerate their calculations.
 
    A matrix type that stores only the non-zero elements is generally
@@ -6031,7 +6038,7 @@ their own oct-files.
 
    There are many different means of storing sparse matrix data.  What
 all of the methods have in common is that they attempt to reduce the
-complexity and storage given a-priori knowledge of the particular class
+complexity and storage given a priori knowledge of the particular class
 of problems that will be solved.  A good summary of the available
 techniques for storing sparse matrix is given by Saad (1).  With full
 matrices, knowledge of the point of an element of the matrix within the
@@ -6189,58 +6196,68 @@ defined.
                 0  0  3  8
                 0  0  0  4
 
- -- Function File: Y = speye (M)
- -- Function File: Y = speye (M, N)
- -- Function File: Y = speye (SZ)
-     Return a sparse identity matrix.  This is significantly more
-     efficient than 'sparse (eye (M))' as the full matrix is not
-     constructed.
+ -- Function File: S = speye (M, N)
+ -- Function File: S = speye (M)
+ -- Function File: S = speye (SZ)
+     Return a sparse identity matrix of size MxN.
 
-     Called with a single argument a square matrix of size M by M is
-     created.  Otherwise a matrix of M by N is created.  If called with
-     a single vector argument, this argument is taken to be the size of
-     the matrix to create.
+     The implementation is significantly more efficient than 'sparse
+     (eye (M))' as the full matrix is not constructed.
+
+     Called with a single argument a square matrix of size M-by-M is
+     created.  If called with a single vector argument SZ, this argument
+     is taken to be the size of the matrix to create.
+
+     See also: *note sparse: XREFsparse, *note spdiags: XREFspdiags,
+     *note eye: XREFeye.
 
  -- Function File: R = spones (S)
      Replace the non-zero entries of S with ones.  This creates a sparse
      matrix with the same structure as S.
 
+     See also: *note sparse: XREFsparse, *note sprand: XREFsprand, *note
+     sprandn: XREFsprandn, *note sprandsym: XREFsprandsym, *note spfun:
+     XREFspfun, *note spy: XREFspy.
+
  -- Function File: sprand (M, N, D)
  -- Function File: sprand (S)
-     Generate a random sparse matrix.  The size of the matrix will be M
-     by N, with a density of values given by D.  D should be between 0
-     and 1.  Values will be uniformly distributed between 0 and 1.
+     Generate a random sparse matrix.  The size of the matrix will be
+     MxN, with a density of values given by D.  D must be between 0 and
+     1 inclusive.  Values will be uniformly distributed between 0 and 1.
 
      If called with a single matrix argument, a random sparse matrix is
      generated wherever the matrix S is non-zero.
 
      See also: *note sprandn: XREFsprandn, *note sprandsym:
-     XREFsprandsym.
+     XREFsprandsym, *note spones: XREFspones, *note sparse: XREFsparse.
 
  -- Function File: sprandn (M, N, D)
  -- Function File: sprandn (S)
-     Generate a random sparse matrix.  The size of the matrix will be M
-     by N, with a density of values given by D.  D should be between 0
-     and 1.  Values will be normally distributed with mean of zero and
-     variance 1.
+     Generate a random sparse matrix.  The size of the matrix will be
+     MxN, with a density of values given by D.  D must be between 0 and
+     1 inclusive.  Values will be normally distributed with a mean of
+     zero and a variance of 1.
 
      If called with a single matrix argument, a random sparse matrix is
      generated wherever the matrix S is non-zero.
 
-     See also: *note sprand: XREFsprand, *note sprandsym: XREFsprandsym.
+     See also: *note sprand: XREFsprand, *note sprandsym: XREFsprandsym,
+     *note spones: XREFspones, *note sparse: XREFsparse.
 
  -- Function File: sprandsym (N, D)
  -- Function File: sprandsym (S)
-     Generate a symmetric random sparse matrix.  The size of the matrix
-     will be N by N, with a density of values given by D.  D should be
-     between 0 and 1.  Values will be normally distributed with mean of
-     zero and variance 1.
+     Generate a symmetric random sparse matrix.
+
+     The size of the matrix will be NxN, with a density of values given
+     by D.  D must be between 0 and 1 inclusive.  Values will be
+     normally distributed with a mean of zero and a variance of 1.
 
      If called with a single matrix argument, a random sparse matrix is
      generated wherever the matrix S is non-zero in its lower triangular
      part.
 
-     See also: *note sprand: XREFsprand, *note sprandn: XREFsprandn.
+     See also: *note sprand: XREFsprand, *note sprandn: XREFsprandn,
+     *note spones: XREFspones, *note sparse: XREFsparse.
 
    The recommended way for the user to create a sparse matrix, is to
 create two vectors containing the row and column index of the data and a
@@ -6296,16 +6313,18 @@ number of memory allocations.
 
  -- Built-in Function: FM = full (SM)
      Return a full storage matrix from a sparse, diagonal, permutation
-     matrix or a range.
+     matrix, or a range.
 
-     See also: *note sparse: XREFsparse.
+     See also: *note sparse: XREFsparse, *note issparse: XREFissparse.
 
  -- Built-in Function: S = spalloc (M, N, NZ)
      Create an M-by-N sparse matrix with pre-allocated space for at most
-     NZ nonzero elements.  This is useful for building the matrix
-     incrementally by a sequence of indexed assignments.  Subsequent
-     indexed assignments will reuse the pre-allocated memory, provided
-     they are of one of the simple forms
+     NZ nonzero elements.
+
+     This is useful for building a matrix incrementally by a sequence of
+     indexed assignments.  Subsequent indexed assignments after
+     'spalloc' will reuse the pre-allocated memory, provided they are of
+     one of the simple forms
 
         * 'S(I:J) = X'
 
@@ -6322,9 +6341,9 @@ number of memory allocations.
         * no index is out of bounds.
 
      Partial movement of data may still occur, but in general the
-     assignment will be more memory and time-efficient under these
+     assignment will be more memory and time efficient under these
      circumstances.  In particular, it is possible to efficiently build
-     a pre-allocated sparse matrix from contiguous block of columns.
+     a pre-allocated sparse matrix from a contiguous block of columns.
 
      The amount of pre-allocated memory for a given matrix may be
      queried using the function 'nzmax'.
@@ -6332,49 +6351,78 @@ number of memory allocations.
      See also: *note nzmax: XREFnzmax, *note sparse: XREFsparse.
 
  -- Built-in Function: S = sparse (A)
- -- Built-in Function: S = sparse (I, J, SV, M, N, NZMAX)
+ -- Built-in Function: S = sparse (I, J, SV, M, N)
  -- Built-in Function: S = sparse (I, J, SV)
- -- Built-in Function: S = sparse (I, J, S, M, N, "unique")
  -- Built-in Function: S = sparse (M, N)
-     Create a sparse matrix from the full matrix or row, column, value
-     triplets.  If A is a full matrix, convert it to a sparse matrix
+ -- Built-in Function: S = sparse (I, J, S, M, N, "unique")
+ -- Built-in Function: S = sparse (I, J, SV, M, N, NZMAX)
+     Create a sparse matrix from a full matrix or row, column, value
+     triplets.
+
+     If A is a full matrix, convert it to a sparse matrix
      representation, removing all zero values in the process.
 
-     Given the integer index vectors I and J, a 1-by-'nnz' vector of
-     real of complex values SV, overall dimensions M and N of the sparse
-     matrix.  The argument 'nzmax' is ignored but accepted for
-     compatibility with MATLAB.  If M or N are not specified their
-     values are derived from the maximum index in the vectors I and J as
-     given by 'M = max (I)', 'N = max (J)'.
+     Given the integer index vectors I and J, and a 1-by-'nnz' vector of
+     real or complex values SV, construct the sparse matrix
+     'S(I(K),J(K)) = SV(K)' with overall dimensions M and N.  If any of
+     SV, I or J are scalars, they are expanded to have a common size.
+
+     If M or N are not specified their values are derived from the
+     maximum index in the vectors I and J as given by 'M = max (I)', 'N
+     = max (J)'.
 
      *Note*: if multiple values are specified with the same I, J
-     indices, the corresponding values in S will be added.  See
-     'accumarray' for an example of how to produce different behavior,
-     such as taking the minimum instead.
+     indices, the corresponding value in S will be the sum of the values
+     at the repeated location.  See 'accumarray' for an example of how
+     to produce different behavior, such as taking the minimum instead.
 
-     The following are all equivalent:
+     If the option "unique" is given, and more than one value is
+     specified at the same I, J indices, then the last specified value
+     will be used.
 
-          s = sparse (i, j, s, m, n)
-          s = sparse (i, j, s, m, n, "summation")
-          s = sparse (i, j, s, m, n, "sum")
+     'sparse (M, N)' will create an empty MxN sparse matrix and is
+     equivalent to 'sparse ([], [], [], M, N)'
 
-     Given the option "unique", if more than two values are specified
-     for the same I, J indices, the last specified value will be used.
+     The argument 'nzmax' is ignored but accepted for compatibility with
+     MATLAB.
 
-     'sparse (M, N)' is equivalent to 'sparse ([], [], [], M, N, 0)'
+     Example 1 (sum at repeated indices):
 
-     If any of SV, I or J are scalars, they are expanded to have a
-     common size.
+          I = [1 1 2]; J = [1 1 2]; SV = [3 4 5];
+          sparse (I, J, SV, 3, 4)
+          =>
+          Compressed Column Sparse (rows = 3, cols = 4, nnz = 2 [17%])
 
-     See also: *note full: XREFfull, *note accumarray: XREFaccumarray.
+            (1, 1) ->  7
+            (2, 2) ->  5
+
+     Example 2 ("unique" option):
+
+          I = [1 1 2]; J = [1 1 2]; SV = [3 4 5];
+          sparse (I, J, SV, 3, 4, "unique")
+          =>
+          Compressed Column Sparse (rows = 3, cols = 4, nnz = 2 [17%])
+
+            (1, 1) ->  4
+            (2, 2) ->  5
+
+     See also: *note full: XREFfull, *note accumarray: XREFaccumarray,
+     *note spalloc: XREFspalloc, *note spdiags: XREFspdiags, *note
+     speye: XREFspeye, *note spones: XREFspones, *note sprand:
+     XREFsprand, *note sprandn: XREFsprandn, *note sprandsym:
+     XREFsprandsym, *note spconvert: XREFspconvert, *note spfun:
+     XREFspfun.
 
  -- Function File: X = spconvert (M)
-     This function converts for a simple sparse matrix format easily
-     produced by other programs into Octave's internal sparse format.
-     The input X is either a 3 or 4 column real matrix, containing the
-     row, column, real and imaginary parts of the elements of the sparse
-     matrix.  An element with a zero real and imaginary part can be used
-     to force a particular matrix size.
+     Convert a simple sparse matrix format easily generated by other
+     programs into Octave's internal sparse format.
+
+     The input M is either a 3 or 4 column real matrix, containing the
+     row, column, real, and imaginary parts of the elements of the
+     sparse matrix.  An element with a zero real and imaginary part can
+     be used to force a particular matrix size.
+
+     See also: *note sparse: XREFsparse.
 
    The above problem of memory reallocation can be avoided in oct-files.
 However, the construction of a sparse matrix from an oct-file is more
@@ -6408,21 +6456,24 @@ column.
 
      See also: *note ismatrix: XREFismatrix.
 
- -- Built-in Function: SCALAR = nnz (A)
-     Return the number of non zero elements in A.
+ -- Built-in Function: N = nnz (A)
+     Return the number of non-zero elements in A.
 
-     See also: *note sparse: XREFsparse, *note nzmax: XREFnzmax.
+     See also: *note nzmax: XREFnzmax, *note nonzeros: XREFnonzeros,
+     *note find: XREFfind.
 
  -- Function File: nonzeros (S)
      Return a vector of the non-zero values of the sparse matrix S.
 
- -- Built-in Function: SCALAR = nzmax (SM)
+     See also: *note find: XREFfind, *note nnz: XREFnnz.
+
+ -- Built-in Function: N = nzmax (SM)
      Return the amount of storage allocated to the sparse matrix SM.
+
      Note that Octave tends to crop unused memory at the first
-     opportunity for sparse objects.  There are some cases of user
-     created sparse objects where the value returned by "nzmax" will not
-     be the same as "nnz", but in general they will give the same
-     result.
+     opportunity for sparse objects.  Thus, in general the value of
+     'nzmax' will be the the same as 'nnz' except for some cases of
+     user-created sparse objects.
 
      See also: *note nnz: XREFnnz, *note spalloc: XREFspalloc, *note
      sparse: XREFsparse.
@@ -6521,12 +6572,14 @@ command 'treeplot (etree (A))' if 'A' is symmetric or 'treeplot (etree
  -- Function File: spy (X)
  -- Function File: spy (..., MARKERSIZE)
  -- Function File: spy (..., LINE_SPEC)
-     Plot the sparsity pattern of the sparse matrix X.  If the argument
-     MARKERSIZE is given as a scalar value, it is used to determine the
-     point size in the plot.  If the string LINE_SPEC is given it is
-     passed to 'plot' and determines the appearance of the plot.
+     Plot the sparsity pattern of the sparse matrix X.
 
-     See also: *note plot: XREFplot.
+     If the argument MARKERSIZE is given as a scalar value, it is used
+     to determine the point size in the plot.  If the string LINE_SPEC
+     is given it is passed to 'plot' and determines the appearance of
+     the plot.
+
+     See also: *note plot: XREFplot, *note gplot: XREFgplot.
 
  -- Loadable Function: P = etree (S)
  -- Loadable Function: P = etree (S, TYP)
@@ -6733,8 +6786,8 @@ same manner as there full counterparts.  However, there are certain
 differences and especially differences with other products sparse
 implementations.
 
-   Firstly, the "./" and ".^" operators must be used with care.
-Consider what the examples
+   First, the "./" and ".^" operators must be used with care.  Consider
+what the examples
 
        s = speye (4);
        a1 = s .^ 2;
@@ -6913,7 +6966,7 @@ reorder the matrix to maximize performance.
           its default value is 10.0
 
      OPTS.aggressive
-          If this value is a non zero scalar, then 'amd' performs
+          If this value is a nonzero scalar, then 'amd' performs
           aggressive absorption.  The default is not to perform
           aggressive absorption.
 
@@ -7484,6 +7537,9 @@ matrix incorrectly will lead to unpredictable results, and so
      solvers to attempt a sparser solution at the potential cost of
      longer running time.
 
+     See also: *note chol: XREFchol, *note colamd: XREFcolamd, *note lu:
+     XREFlu, *note qr: XREFqr, *note symamd: XREFsymamd.
+
  -- Loadable Function: P = sprank (S)
 
      Calculate the structural rank of the sparse matrix S.  Note that
@@ -7547,7 +7603,9 @@ matrix incorrectly will lead to unpredictable results, and so
 function to find a least squares solution to a linear equation.
 
  -- Function File: S = spaugment (A, C)
-     Create the augmented matrix of A.  This is given by
+     Create the augmented matrix of A.
+
+     This is given by
 
           [C * eye(M, M), A;
                       A', zeros(N, N)]
@@ -7563,7 +7621,7 @@ function to find a least squares solution to a linear equation.
      As the matrix S is symmetric indefinite it can be factorized with
      'lu', and the minimum norm solution can therefore be found without
      the need for a 'qr' factorization.  As the residual error will be
-     'zeros (M, M)' for under determined problems, and example can be
+     'zeros (M, M)' for underdetermined problems, and example can be
 
           m = 11; n = 10; mn = max (m, n);
           A = spdiags ([ones(mn,1), 10*ones(mn,1), -ones(mn,1)],
@@ -7580,6 +7638,8 @@ function to find a least squares solution to a linear equation.
 
      In general the left division operator is more stable and faster
      than using the 'spaugment' function.
+
+     See also: *note mldivide: XREFmldivide.
 
    Finally, the function 'eigs' can be used to calculate a limited
 number of eigenvalues and eigenvectors based on a selection criteria and

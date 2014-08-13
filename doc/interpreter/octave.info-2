@@ -1174,7 +1174,15 @@ is evaluated as
 
      EXPR1 = (EXPR1) OP (EXPR2)
 
-where OP can be either '+', '-', '*', or '/'.  So, the expression
+where OP can be either '+', '-', '*', or '/', as long as EXPR2 is a
+simple expression with no side effects.  If EXPR2 also contains an
+assignment operator, then this expression is evaluated as
+
+     TEMP = EXPR2
+     EXPR1 = (EXPR1) OP TEMP
+
+where TEMP is a placeholder temporary value storing the computed result
+of evaluating EXPR2.  So, the expression
 
      a *= b+1
 
@@ -5296,7 +5304,8 @@ use of the 'keyboard' function.
      If 'keyboard' is invoked without arguments, a default prompt of
      'debug> ' is used.
 
-     See also: *note dbcont: XREFdbcont, *note dbquit: XREFdbquit.
+     See also: *note dbstop: XREFdbstop, *note dbcont: XREFdbcont, *note
+     dbquit: XREFdbquit.
 
 The 'keyboard' function is placed in a script at the point where the
 user desires that the execution be stopped.  It automatically sets the
@@ -6122,7 +6131,9 @@ used for doing simple debugging.
 
  -- Built-in Function: ANS = input (PROMPT)
  -- Built-in Function: ANS = input (PROMPT, "s")
-     Print a prompt and wait for user input.  For example,
+     Print PROMPT and wait for user input.
+
+     For example,
 
           input ("Pick a number, any number! ")
 
@@ -6147,7 +6158,9 @@ used for doing simple debugging.
      'input'.  This will ensure that all pending output is written to
      the screen before your prompt.
 
-     See also: *note yes_or_no: XREFyes_or_no, *note kbhit: XREFkbhit.
+     See also: *note yes_or_no: XREFyes_or_no, *note kbhit: XREFkbhit,
+     *note pause: XREFpause, *note menu: XREFmenu, *note listdlg:
+     XREFlistdlg.
 
  -- Function File: menu (TITLE, OPT1, ...)
      Print a title string followed by a series of options.  Each option
@@ -6157,16 +6170,17 @@ used for doing simple debugging.
      options that may be passed in, but it may be confusing to present
      more than will fit easily on one screen.
 
-     See also: *note disp: XREFdisp, *note printf: XREFprintf, *note
-     input: XREFinput.
+     See also: *note input: XREFinput, *note listdlg: XREFlistdlg.
 
  -- Built-in Function: ANS = yes_or_no ("PROMPT")
-     Ask the user a yes-or-no question.  Return logical true if the
-     answer is yes or false if the answer is no.  Takes one argument,
-     PROMPT, which is the string to display when asking the question.
-     PROMPT should end in a space; 'yes-or-no' adds the string '(yes or
-     no) ' to it.  The user must confirm the answer with <RET> and can
-     edit it until it has been confirmed.
+     Ask the user a yes-or-no question.
+
+     Return logical true if the answer is yes or false if the answer is
+     no.  Takes one argument, PROMPT, which is the string to display
+     when asking the question.  PROMPT should end in a space;
+     'yes-or-no' adds the string '(yes or no) ' to it.  The user must
+     confirm the answer with <RET> and can edit it until it has been
+     confirmed.
 
      See also: *note input: XREFinput.
 
@@ -6192,7 +6206,7 @@ carriage return.
      is identical to the above example, but doesn't wait for a keypress,
      returning the empty string if no key is available.
 
-     See also: *note input: XREFinput.
+     See also: *note input: XREFinput, *note pause: XREFpause.
 
 
 File: octave.info,  Node: Simple File I/O,  Prev: Terminal Input,  Up: Basic Input and Output

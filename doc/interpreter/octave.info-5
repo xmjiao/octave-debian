@@ -6087,8 +6087,8 @@ reconverted to the time domain.
      See also: *note interp1: XREFinterp1.
 
    There are two significant limitations on Fourier interpolation.
-Firstly, the function signal is assumed to be periodic, and so
-non-periodic signals will be poorly represented at the edges.  Secondly,
+First, the function signal is assumed to be periodic, and so
+non-periodic signals will be poorly represented at the edges.  Second,
 both the signal and its interpolation are required to be sampled at
 equispaced points.  An example of the use of 'interpft' is
 

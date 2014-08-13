@@ -3142,26 +3142,36 @@ useful.
 
      See also: *note toc: XREFtoc, *note cputime: XREFcputime.
 
- -- Built-in Function: pause (SECONDS)
-     Suspend the execution of the program.  If invoked without any
-     arguments, Octave waits until you type a character.  With a numeric
-     argument, it pauses for the given number of seconds.  For example,
-     the following statement prints a message and then waits 5 seconds
+ -- Built-in Function: pause ()
+ -- Built-in Function: pause (N)
+     Suspend the execution of the program for N seconds.
+
+     N is a positive real value and may be a fraction of a second.  If
+     invoked without an input arguments then the program is suspended
+     until a character is typed.
+
+     The following example prints a message and then waits 5 seconds
      before clearing the screen.
 
           fprintf (stderr, "wait please...\n");
           pause (5);
           clc;
 
+     See also: *note kbhit: XREFkbhit, *note sleep: XREFsleep.
+
  -- Built-in Function: sleep (SECONDS)
      Suspend the execution of the program for the given number of
      seconds.
+
+     See also: *note usleep: XREFusleep, *note pause: XREFpause.
 
  -- Built-in Function: usleep (MICROSECONDS)
      Suspend the execution of the program for the given number of
      microseconds.  On systems where it is not possible to sleep for
      periods of time less than one second, 'usleep' will pause the
      execution for 'round (MICROSECONDS / 1e6)' seconds.
+
+     See also: *note sleep: XREFsleep, *note pause: XREFpause.
 
  -- Function File: DAYS = datenum (DATEVEC)
  -- Function File: DAYS = datenum (YEAR, MONTH, DAY)
@@ -5393,21 +5403,6 @@ call Java methods which return results to Octave.
      See also: *note javaMethod: XREFjavaMethod, *note javaArray:
      XREFjavaArray.
 
-   *FIXME:* Need documentation on how fieldnames() is overloaded to
-return the methods of a Java object.
-
-   *FIXME:* Need documentation on how to use structure-like indexing to
-get fields from Java object.
-
-   *FIXME:* Need documentation on how to use structure-like indexing to
-set fields from Java object.
-
- -- Built-in Function: isjava (X)
-     Return true if X is a Java object.
-
-     See also: *note class: XREFclass, *note typeinfo: XREFtypeinfo,
-     *note isa: XREFisa, *note javaObject: XREFjavaObject.
-
  -- Function File: JARY = javaArray (CLASSNAME, SZ)
  -- Function File: JARY = javaArray (CLASSNAME, M, N, ...)
 
@@ -5427,6 +5422,102 @@ set fields from Java object.
 
      See also: *note javaObject: XREFjavaObject.
 
+   There are many different variable types in Octave but only ones
+created through 'javaObject' can use Java functions.  Before using Java
+with an unknown object the type can be checked with 'isjava'.
+
+ -- Built-in Function: isjava (X)
+     Return true if X is a Java object.
+
+     See also: *note class: XREFclass, *note typeinfo: XREFtypeinfo,
+     *note isa: XREFisa, *note javaObject: XREFjavaObject.
+
+   Once an object has been created it is natural to find out what fields
+the object has and to read (get) and write (set) them.
+
+   In Octave the 'fieldnames' function for structures has been
+overloaded to return the fields of a Java object.  For example:
+
+     dobj = javaObject ("java.lang.Double", pi);
+     fieldnames (dobj)
+     =>
+     {
+       [1,1] = public static final double java.lang.Double.POSITIVE_INFINITY
+       [1,2] = public static final double java.lang.Double.NEGATIVE_INFINITY
+       [1,3] = public static final double java.lang.Double.NaN
+       [1,4] = public static final double java.lang.Double.MAX_VALUE
+       [1,5] = public static final double java.lang.Double.MIN_NORMAL
+       [1,6] = public static final double java.lang.Double.MIN_VALUE
+       [1,7] = public static final int java.lang.Double.MAX_EXPONENT
+       [1,8] = public static final int java.lang.Double.MIN_EXPONENT
+       [1,9] = public static final int java.lang.Double.SIZE
+       [1,10] = public static final java.lang.Class java.lang.Double.TYPE
+     }
+
+   The analogy of objects with structures is carried over into reading
+and writing object fields.  To read a field the object is indexed with
+the '.' operator from structures.  This is the preferred method for
+reading fields, but Octave also provides a function interface to read
+fields with 'java_get'.  An example of both styles is shown below.
+
+     dobj = javaObject ("java.lang.Double", pi);
+     dobj.MAX_VALUE
+     =>  1.7977e+308
+     java_get ("java.lang.Float", "MAX_VALUE")
+     =>  3.4028e+38
+
+ -- Function File: VAL = java_get (OBJ, NAME)
+     Get the value of the field NAME of the Java object OBJ.  For static
+     fields, OBJ can be a string representing the fully qualified name
+     of the corresponding class.
+
+     When OBJ is a regular Java object, structure-like indexing can be
+     used as a shortcut syntax.  For instance, the two following
+     statements are equivalent
+
+            java_get (x, "field1")
+            x.field1
+
+     See also: *note java_set: XREFjava_set, *note javaMethod:
+     XREFjavaMethod, *note javaObject: XREFjavaObject.
+
+ -- Function File: OBJ = java_set (OBJ, NAME, VAL)
+     Set the value of the field NAME of the Java object OBJ to VAL.  For
+     static fields, OBJ can be a string representing the fully qualified
+     named of the corresponding Java class.
+
+     When OBJ is a regular Java object, structure-like indexing can be
+     used as a shortcut syntax.  For instance, the two following
+     statements are equivalent
+
+            java_set (x, "field1", val)
+            x.field1 = val
+
+     See also: *note java_get: XREFjava_get, *note javaMethod:
+     XREFjavaMethod, *note javaObject: XREFjavaObject.
+
+   To see what functions can be called with an object use 'methods'.
+For example, using the previously created DOBJ:
+
+     methods (dobj)
+     =>
+     Methods for class java.lang.Double:
+     boolean equals(java.lang.Object)
+     java.lang.String toString(double)
+     java.lang.String toString()
+     ...
+
+   To call a method of an object the same structure indexing operator
+'.' is used.  Octave also provides a functional interface to calling the
+methods of an object through 'javaMethod'.  An example showing both
+styles is shown below.
+
+     dobj = javaObject ("java.lang.Double", pi);
+     dobj.equals (3)
+     =>  0
+     javaMethod ("equals", dobj, pi)
+     =>  1
+
  -- Built-in Function: RET = javaMethod (METHODNAME, OBJ)
  -- Built-in Function: RET = javaMethod (METHODNAME, OBJ, ARG1, ...)
      Invoke the method METHODNAME on the Java object OBJ with the
@@ -5443,9 +5534,6 @@ set fields from Java object.
 
      See also: *note methods: XREFmethods, *note javaObject:
      XREFjavaObject.
-
-   *FIXME:* Need documentation on how methods() is overloaded to return
-the methods of a Java object.
 
    The following three functions are used to display and modify the
 class path used by the Java Virtual Machine.  This is entirely separate
@@ -5771,9 +5859,10 @@ of dialog box.
             endfor
           endif
 
-     See also: *note errordlg: XREFerrordlg, *note helpdlg: XREFhelpdlg,
-     *note inputdlg: XREFinputdlg, *note msgbox: XREFmsgbox, *note
-     questdlg: XREFquestdlg, *note warndlg: XREFwarndlg.
+     See also: *note menu: XREFmenu, *note errordlg: XREFerrordlg, *note
+     helpdlg: XREFhelpdlg, *note inputdlg: XREFinputdlg, *note msgbox:
+     XREFmsgbox, *note questdlg: XREFquestdlg, *note warndlg:
+     XREFwarndlg.
 
  -- Function File: BTN = questdlg (MSG)
  -- Function File: BTN = questdlg (MSG, TITLE)
@@ -6473,7 +6562,7 @@ be referred to as 'package' and may contain the following files:
      where the package functions are installed, and whether the package
      is currently loaded.
 
-   Besides the above mentioned files, a package can also contain on or
+   Besides the above mentioned files, a package can also contain one or
 more of the following directories:
 
 'package/inst'
@@ -6551,7 +6640,7 @@ The following is a simple example of a 'DESCRIPTION' file
 
 'Version'
      Version of the package.  A package version must be 3 numbers
-     separated by a dot.
+     separated by dots.
 
 'Date'
      Date of last update.
@@ -6766,7 +6855,7 @@ File: octave.info,  Node: External Code Interface,  Next: Test and Demo Function
 Appendix A External Code Interface
 **********************************
 
-“The sum of human wisdom is not contained in any one language" --Ezra
+"The sum of human wisdom is not contained in any one language" --Ezra
 Pound
 
    Octave is a fantastic language for solving many problems in science
@@ -7579,181 +7668,4 @@ matrices are stored in.  These methods can be used in a manner similar
 to 'elem' to allow the matrix to be accessed or filled.  However, in
 that case it is up to the user to respect the sparse matrix compressed
 column format.
-
-
-File: octave.info,  Node: Creating Sparse Matrices in Oct-Files,  Next: Using Sparse Matrices in Oct-Files,  Prev: Array and Sparse Class Differences,  Up: Sparse Matrices in Oct-Files
-
-A.1.6.2 Creating Sparse Matrices in Oct-Files
-.............................................
-
-There are several useful alternatives for creating a sparse matrix.  The
-first is to create three vectors representing the row index, column
-index, and data values, and from these create the matrix.  The second
-alternative is to create a sparse matrix with the appropriate amount of
-space and then fill in the values.  Both techniques have their
-advantages and disadvantages.
-
-   Below is an example of creating a small sparse matrix using the first
-technique
-
-     int nz, nr, nc;
-     nz = 4, nr = 3, nc = 4;
-
-     ColumnVector ridx (nz);
-     ColumnVector cidx (nz);
-     ColumnVector data (nz);
-
-     ridx(0) = 0; cidx(0) = 0; data(0) = 1;
-     ridx(1) = 0; cidx(1) = 1; data(1) = 2;
-     ridx(2) = 1; cidx(2) = 3; data(2) = 3;
-     ridx(3) = 2; cidx(3) = 3; data(3) = 4;
-     SparseMatrix sm (data, ridx, cidx, nr, nc);
-
-which creates the matrix given in section *note Storage of Sparse
-Matrices::.  Note that the compressed matrix format is not used at the
-time of the creation of the matrix itself, but is used internally.
-
-   As discussed in the chapter on Sparse Matrices, the values of the
-sparse matrix are stored in increasing column-major ordering.  Although
-the data passed by the user need not respect this requirement,
-pre-sorting the data will significantly speed up creation of the sparse
-matrix.
-
-   The disadvantage of this technique for creating a sparse matrix is
-that there is a brief time when two copies of the data exist.  For
-extremely memory constrained problems this may not be the best technique
-for creating a sparse matrix.
-
-   The alternative is to first create a sparse matrix with the desired
-number of non-zero elements and then later fill those elements in.
-Sample code:
-
-     int nz, nr, nc;
-     nz = 4, nr = 3, nc = 4;
-     SparseMatrix sm (nr, nc, nz);
-     sm(0,0) = 1; sm(0,1) = 2; sm(1,3) = 3; sm(2,3) = 4;
-
-   This creates the same matrix as previously.  Again, although not
-strictly necessary, it is significantly faster if the sparse matrix is
-created and the elements are added in column-major ordering.  The reason
-for this is that when elements are inserted at the end of the current
-list of known elements then no element in the matrix needs to be moved
-to allow the new element to be inserted; Only the column indexes need to
-be updated.
-
-   There are a few further points to note about this method of creating
-a sparse matrix.  First, it is possible to create a sparse matrix with
-fewer elements than are actually inserted in the matrix.  Therefore,
-
-     int nr, nc;
-     nr = 3, nc = 4;
-     SparseMatrix sm (nr, nc, 0);
-     sm(0,0) = 1; sm(0,1) = 2; sm(1,3) = 3; sm(2,3) = 4;
-
-is perfectly valid.  However, it is a very bad idea because as each new
-element is added to the sparse matrix the matrix needs to request more
-space and reallocate memory.  This is an expensive operation, that will
-significantly slow this means of creating a sparse matrix.  Furthermore,
-it is possible to create a sparse matrix with too much storage, so
-having NZ greater than 4 is also valid.  The disadvantage is that the
-matrix occupies more memory than strictly needed.
-
-   It is not always possible to know the number of non-zero elements
-prior to filling a matrix.  For this reason the additional unused
-storage of a sparse matrix can be removed after its creation with the
-'maybe_compress' function.  In addition, 'maybe_compress' can deallocate
-the unused storage, but it can also remove zero elements from the
-matrix.  The removal of zero elements from the matrix is controlled by
-setting the argument of the 'maybe_compress' function to be 'true'.
-However, the cost of removing the zeros is high because it implies
-re-sorting the elements.  If possible, it is better if the user does not
-add the unnecessary zeros in the first place.  An example of the use of
-'maybe_compress' is
-
-     int nz, nr, nc;
-     nz = 6, nr = 3, nc = 4;
-
-     SparseMatrix sm1 (nr, nc, nz);
-     sm1(0,0) = 1; sm1(0,1) = 2; sm1(1,3) = 3; sm1(2,3) = 4;
-     sm1.maybe_compress ();  // No zero elements were added
-
-     SparseMatrix sm2 (nr, nc, nz);
-     sm2(0,0) = 1; sm2(0,1) = 2; sm(0,2) = 0; sm(1,2) = 0;
-     sm1(1,3) = 3; sm1(2,3) = 4;
-     sm2.maybe_compress (true);  // Zero elements were added
-
-   The use of the 'maybe_compress' function should be avoided if
-possible as it will slow the creation of the matrix.
-
-   A third means of creating a sparse matrix is to work directly with
-the data in compressed row format.  An example of this technique might
-be
-
-     octave_value arg;
-     ...
-     int nz, nr, nc;
-     nz = 6, nr = 3, nc = 4;   // Assume we know the max # nz
-     SparseMatrix sm (nr, nc, nz);
-     Matrix m = arg.matrix_value ();
-
-     int ii = 0;
-     sm.cidx (0) = 0;
-     for (int j = 1; j < nc; j++)
-       {
-         for (int i = 0; i < nr; i++)
-           {
-             double tmp = foo (m(i,j));
-             if (tmp != 0.)
-               {
-                 sm.data(ii) = tmp;
-                 sm.ridx(ii) = i;
-                 ii++;
-               }
-           }
-         sm.cidx(j+1) = ii;
-      }
-     sm.maybe_compress ();  // If don't know a-priori the final # of nz.
-
-which is probably the most efficient means of creating a sparse matrix.
-
-   Finally, it might sometimes arise that the amount of storage
-initially created is insufficient to completely store the sparse matrix.
-Therefore, the method 'change_capacity' exists to reallocate the sparse
-memory.  The above example would then be modified as
-
-     octave_value arg;
-     ...
-     int nz, nr, nc;
-     nz = 6, nr = 3, nc = 4;   // Assume we know the max # nz
-     SparseMatrix sm (nr, nc, nz);
-     Matrix m = arg.matrix_value ();
-
-     int ii = 0;
-     sm.cidx (0) = 0;
-     for (int j = 1; j < nc; j++)
-       {
-         for (int i = 0; i < nr; i++)
-           {
-             double tmp = foo (m(i,j));
-             if (tmp != 0.)
-               {
-                 if (ii == nz)
-                   {
-                     nz += 2;   // Add 2 more elements
-                     sm.change_capacity (nz);
-                   }
-                 sm.data(ii) = tmp;
-                 sm.ridx(ii) = i;
-                 ii++;
-               }
-           }
-         sm.cidx(j+1) = ii;
-      }
-     sm.maybe_mutate ();  // If don't know a-priori the final # of nz.
-
-   Note that both increasing and decreasing the number of non-zero
-elements in a sparse matrix is expensive as it involves memory
-reallocation.  Also as parts of the matrix, though not its entirety,
-exist as old and new copies at the same time, additional memory is
-needed.  Therefore, if possible this should be avoided.
 

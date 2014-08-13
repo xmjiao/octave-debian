@@ -85,33 +85,11 @@ private:
   int m_result;
 };
 
+// Disable all Qt messages by default.
 
-// Custom message handler for filtering some messages from Qt.
-
-void message_handler (QtMsgType type, const char *msg)
+static void
+message_handler (QtMsgType type, const char *msg)
 {
-  switch (type)
-    {
-    case QtDebugMsg:
-      if (strncmp (msg, "QFileSystemWatcher: skipping native engine",42) != 0)
-        std::cerr << "Debug: " << msg << std::endl;
-      break;
-
-    case QtWarningMsg:
-      std::cerr << "Warning: " << msg << std::endl;
-      break;
-
-    case QtCriticalMsg:
-      std::cerr << "Critical: " << msg << std::endl;
-      break;
-
-    case QtFatalMsg:
-      std::cerr << "Fatal: " << msg << std::endl;
-      abort ();
-
-    default:
-      break;
-    }
 }
 
 // If START_GUI is false, we still set up the QApplication so that we
@@ -122,7 +100,11 @@ octave_start_gui (int argc, char *argv[], bool start_gui)
 {
   octave_thread_manager::block_interrupt_signal ();
 
-  qInstallMsgHandler (message_handler);
+  std::string show_gui_msgs = octave_env::getenv ("OCTAVE_SHOW_GUI_MESSAGES");
+
+  // Installing our handler suppresses the messages.
+  if (show_gui_msgs.empty ())
+    qInstallMsgHandler (message_handler);
 
   if (start_gui)
     {

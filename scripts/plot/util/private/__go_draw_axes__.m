@@ -1604,8 +1604,9 @@ function __go_draw_axes__ (h, plot_stream, enhanced, mono,
     else
       colorspec = get_text_colorspec (textcolors, mono);
     endif
-    fprintf (plot_stream, "set key %s %s;\nset key %s %s %s %s %s;\n",
-             inout, pos, box, reverse, horzvert, fontspec, colorspec);
+    fprintf (plot_stream, "set key %s %s;\nset key %s %s %s %s %s %s;\n",
+             inout, pos, box, reverse, horzvert, fontspec, colorspec,
+             __do_enhanced_option__ (enhanced, hlgnd));
   else
     fputs (plot_stream, "unset key;\n");
   endif
@@ -2114,6 +2115,11 @@ function do_tics_1 (ticmode, tics, mtics, labelmode, labels, color, ax,
                     plot_stream, mirror, mono, axispos, tickdir, ticklength,
                     fontname, fontspec, interpreter, scale, sgn, gnuplot_term)
   persistent warned_latex = false;
+  if (mirror)
+    mirror = "mirror";
+  else
+    mirror = "nomirror";
+  endif
   if (strcmpi (interpreter, "tex"))
     for n = 1 : numel (labels)
       labels{n} = __tex2enhanced__ (labels{n}, fontname, false, false);
@@ -2142,7 +2148,16 @@ function do_tics_1 (ticmode, tics, mtics, labelmode, labels, color, ax,
   if (strcmpi (ticmode, "manual") || strcmpi (labelmode, "manual"))
     if (isempty (tics))
       fprintf (plot_stream, "unset %stics;\nunset m%stics;\n", ax, ax);
-    elseif (strcmpi (labelmode, "manual"))
+      return
+    endif
+    if (strcmpi (ticmode, "manual"))
+      fprintf (plot_stream, "set format %s \"%s\";\n", ax, fmt);
+      fprintf (plot_stream, "set %stics %s %s %s %s (", ax, tickdir,
+               ticklength, axispos, mirror);
+      fprintf (plot_stream, " %.15g,", tics(1:end-1));
+      fprintf (plot_stream, " %.15g) %s;\n", tics(end), fontspec);
+    endif
+    if (strcmpi (labelmode, "manual"))
       if (ischar (labels))
         labels = cellstr (labels);
       endif
@@ -2156,16 +2171,9 @@ function do_tics_1 (ticmode, tics, mtics, labelmode, labels, color, ax,
         k = 1;
         ntics = numel (tics);
         nlabels = numel (labels);
-        fprintf (plot_stream, "set format %s \"%%g\";\n", ax);
-        if (mirror)
-          fprintf (plot_stream, "set %stics %s %s %s mirror (", ax,
-                   tickdir, ticklength, axispos);
-        else
-          fprintf (plot_stream, "set %stics %s %s %s nomirror (", ax,
-                   tickdir, ticklength, axispos);
-        endif
-
-        labels = regexprep (labels, '%', "%%");
+        fprintf (plot_stream, "set %stics add %s %s %s %s (", ax,
+                 tickdir, ticklength, axispos, mirror);
+        labels = strrep (labels, "%", "%%");
         for i = 1:ntics
           fprintf (plot_stream, " \"%s\" %.15g", labels{k++}, tics(i));
           if (i < ntics)
@@ -2176,45 +2184,19 @@ function do_tics_1 (ticmode, tics, mtics, labelmode, labels, color, ax,
           endif
         endfor
         fprintf (plot_stream, ") %s %s;\n", colorspec, fontspec);
-        if (strcmp (mtics, "on"))
-          fprintf (plot_stream, "set m%stics %d;\n", ax, num_mtics);
-        else
-          fprintf (plot_stream, "unset m%stics;\n", ax);
-        endif
       else
         error ("__go_draw_axes__: unsupported type of ticklabel");
-      endif
-    else
-      fprintf (plot_stream, "set format %s \"%s\";\n", ax, fmt);
-      if (mirror)
-        fprintf (plot_stream, "set %stics %s %s %s mirror (", ax, tickdir,
-                 ticklength, axispos);
-      else
-        fprintf (plot_stream, "set %stics %s %s %s nomirror (", ax, tickdir,
-                 ticklength, axispos);
-      endif
-      fprintf (plot_stream, " %.15g,", tics(1:end-1));
-      fprintf (plot_stream, " %.15g) %s;\n", tics(end), fontspec);
-      if (strcmp (mtics, "on"))
-        fprintf (plot_stream, "set m%stics %d;\n", ax, num_mtics);
-      else
-        fprintf (plot_stream, "unset m%stics;\n", ax);
       endif
     endif
   else
     fprintf (plot_stream, "set format %s \"%s\";\n", ax, fmt);
-    if (mirror)
-      fprintf (plot_stream, "set %stics %s %s %s mirror %s %s;\n", ax,
-               axispos, tickdir, ticklength, colorspec, fontspec);
-    else
-      fprintf (plot_stream, "set %stics %s %s %s nomirror %s %s;\n", ax,
-               tickdir, ticklength, axispos, colorspec, fontspec);
-    endif
-    if (strcmp (mtics, "on"))
-      fprintf (plot_stream, "set m%stics %d;\n", ax, num_mtics);
-    else
-      fprintf (plot_stream, "unset m%stics;\n", ax);
-    endif
+    fprintf (plot_stream, "set %stics %s %s %s %s %s %s;\n", ax,
+             tickdir, ticklength, axispos, mirror, colorspec, fontspec);
+  endif
+  if (strcmp (mtics, "on"))
+    fprintf (plot_stream, "set m%stics %d;\n", ax, num_mtics);
+  else
+    fprintf (plot_stream, "unset m%stics;\n", ax);
   endif
 endfunction
 
@@ -2322,35 +2304,7 @@ function [str, f, s] = __maybe_munge_text__ (enhanced, obj, fld)
         warning ("latex markup not supported for text objects");
         warned_latex = true;
       endif
-    elseif (enhanced)
-      str = no_super_sub_scripts (str);
     endif
-  endif
-endfunction
-
-function str = no_super_sub_scripts (str)
-  if (iscellstr (str))
-    labels = str;
-  else
-    labels = cellstr (str);
-  endif
-  for marker = "_^" 
-    for m = 1 : numel (labels)
-      n1 = strfind (labels{m}, sprintf ("\\%s", marker));
-      n2 = strfind (labels{m}, marker);
-      if (! isempty (n1))
-        n1 = n1 + 1;
-        n2 = setdiff (n2, n1);
-      endif
-      for n = numel (n2):-1:1
-        labels{m} = [labels{m}(1:n2(n)-1), "\\", labels{m}(n2(n):end)];
-      endfor
-    endfor
-  endfor
-  if (iscellstr (str))
-    str = labels;
-  else
-    str = char (labels);
   endif
 endfunction
 

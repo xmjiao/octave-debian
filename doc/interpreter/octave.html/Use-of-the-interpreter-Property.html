@@ -58,21 +58,21 @@ Next: <a href="Printing-and-Saving-Plots.html#Printing-and-Saving-Plots" accessk
 <a name="Use-of-the-interpreter-Property-1"></a>
 <h4 class="subsection">15.2.7 Use of the <code>interpreter</code> Property</h4>
 
-<p>All text objects, including titles, labels, legends, and text, include
-the property <code>&quot;interpreter&quot;</code>, this property determines the manner in which
-special control sequences in the text are rendered.  If the interpreter
-is set to <code>&quot;none&quot;</code>, then no rendering occurs.  At this point the
-<code>&quot;latex&quot;</code> option is not implemented and so the <code>&quot;latex&quot;</code>
-interpreter also does not interpret the text.
+<p>All text objects&mdash;such as titles, labels, legends, and text&mdash;include
+the property <code>&quot;interpreter&quot;</code>, this property determines the manner in
+which special control sequences in the text are rendered.  If the interpreter
+is set to <code>&quot;none&quot;</code>, then no rendering occurs.  Currently the
+<code>&quot;latex&quot;</code> interpreter is not implemented and is equivalent to
+<code>&quot;none&quot;</code>.
 </p>
-<p>The <code>&quot;tex&quot;</code> option implements a subset of TeX functionality in the
-rendering of the text.  This allows the insertion of special characters
-such as Greek or mathematical symbols within the text.  The special
-characters are also inserted with a code starting with the backslash
-(\) character, as in the table <a href="#tab_003aextended">Table 15.1</a>.
+<p>The <code>&quot;tex&quot;</code> option implements a subset of TeX functionality when
+rendering text.  This allows the insertion of special glyphs such as Greek
+characters or mathematical symbols.  The special characters are inserted with
+a code following a backslash (\) character, as in the table
+<a href="#tab_003aextended">Table 15.1</a>.
 </p>
 <p>In addition, the formatting of the text can be changed within the string
-with the codes
+by using the codes
 </p>
 <table>
 <tr><td width="20%"></td><td width="20%">\bf</td><td width="60%">Bold font</td><td width="20%"></td></tr>
@@ -81,7 +81,7 @@ with the codes
 <tr><td width="20%"></td><td width="20%">\rm</td><td width="60%">Normal font</td><td width="20%"></td></tr>
 </table>
 
-<p>These are be used in conjunction with the { and } characters to limit
+<p>These may be used in conjunction with the { and } characters to limit
 the change in the font to part of the string.  For example,
 </p>
 <div class="example">
@@ -100,7 +100,7 @@ the strings should be in single quotes.
 use</td><td width="10%"></td></tr>
 </table>
 
-<p>Finally, the superscript and subscripting can be controlled with the <code>'^'</code>
+<p>Finally, superscripting and subscripting can be controlled with the <code>'^'</code>
 and <code>'_'</code> characters.  If the <code>'^'</code> or <code>'_'</code> is followed by a
 { character, then all of the block surrounded by the { } pair is super- or
 sub-scripted.  Without the { } pair, only the character immediately following

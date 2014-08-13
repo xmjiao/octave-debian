@@ -48,11 +48,11 @@ a matrix meet a specified condition.
 @deftypefn  {Built-in Function} {} any (@var{x})
 @deftypefnx {Built-in Function} {} any (@var{x}, @var{dim})
 For a vector argument, return true (logical 1) if any element of the vector
-is nonzero.
+is non-zero.
 
 For a matrix argument, return a row vector of logical ones and
 zeros with each element indicating whether any of the elements of the
-corresponding column of the matrix are nonzero.  For example:
+corresponding column of the matrix are non-zero.  For example:
 
 @example
 @group
@@ -79,11 +79,11 @@ any (eye (2, 4), 2)
 @deftypefn  {Built-in Function} {} all (@var{x})
 @deftypefnx {Built-in Function} {} all (@var{x}, @var{dim})
 For a vector argument, return true (logical 1) if all elements of the vector
-are nonzero.
+are non-zero.
 
 For a matrix argument, return a row vector of logical ones and
 zeros with each element indicating whether all of the elements of the
-corresponding column of the matrix are nonzero.  For example:
+corresponding column of the matrix are non-zero.  For example:
 
 @example
 @group
