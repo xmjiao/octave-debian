@@ -4037,7 +4037,7 @@ second a cosine wave.  Figure numbers must be positive integers.
  -- Command: figure N
  -- Function File: figure (N)
  -- Function File: figure (..., "PROPERTY", VALUE, ...)
- -- Function File: H = figure (DOTS)
+ -- Function File: H = figure (...)
      Create a new figure window for plotting.
 
      If no arguments are specified, a new figure with the next available
@@ -4313,28 +4313,27 @@ File: octave.info,  Node: Use of the 'interpreter' Property,  Next: Printing and
 15.2.7 Use of the 'interpreter' Property
 ----------------------------------------
 
-All text objects, including titles, labels, legends, and text, include
-the property "interpreter", this property determines the manner in which
+All text objects--such as titles, labels, legends, and text--include the
+property "interpreter", this property determines the manner in which
 special control sequences in the text are rendered.  If the interpreter
-is set to "none", then no rendering occurs.  At this point the "latex"
-option is not implemented and so the "latex" interpreter also does not
-interpret the text.
+is set to "none", then no rendering occurs.  Currently the "latex"
+interpreter is not implemented and is equivalent to "none".
 
-   The "tex" option implements a subset of TeX functionality in the
-rendering of the text.  This allows the insertion of special characters
-such as Greek or mathematical symbols within the text.  The special
-characters are also inserted with a code starting with the backslash (\)
-character, as in the table *note Table 15.1: tab:extended.
+   The "tex" option implements a subset of TeX functionality when
+rendering text.  This allows the insertion of special glyphs such as
+Greek characters or mathematical symbols.  The special characters are
+inserted with a code following a backslash (\) character, as in the
+table *note Table 15.1: tab:extended.
 
    In addition, the formatting of the text can be changed within the
-string with the codes
+string by using the codes
 
                \bf            Bold font
                \it            Italic font
                \sl            Oblique Font
                \rm            Normal font
 
-   These are be used in conjunction with the { and } characters to limit
+   These may be used in conjunction with the { and } characters to limit
 the change in the font to part of the string.  For example,
 
      xlabel ('{\bf H} = a {\bf V}')
@@ -4348,7 +4347,7 @@ the strings should be in single quotes.
         \fontname{FONTNAME}           Specify the font to use
         \fontsize{SIZE}               Specify the size of the font to use
 
-   Finally, the superscript and subscripting can be controlled with the
+   Finally, superscripting and subscripting can be controlled with the
 '^' and '_' characters.  If the '^' or '_' is followed by a { character,
 then all of the block surrounded by the { } pair is super- or
 sub-scripted.  Without the { } pair, only the character immediately
@@ -4780,7 +4779,7 @@ populated with specific user commands via the 'uimenu' function.
      XREFwaitforbuttonpress.
 
  -- Function File: waitforbuttonpress ()
- -- Function File: A = waitforbuttonpress ()
+ -- Function File: B = waitforbuttonpress ()
      Wait for mouse click or key press over the current figure window.
 
      The return value of B is 0 if a mouse button was pressed or 1 if a
@@ -8075,11 +8074,11 @@ specified condition.
  -- Built-in Function: any (X)
  -- Built-in Function: any (X, DIM)
      For a vector argument, return true (logical 1) if any element of
-     the vector is nonzero.
+     the vector is non-zero.
 
      For a matrix argument, return a row vector of logical ones and
      zeros with each element indicating whether any of the elements of
-     the corresponding column of the matrix are nonzero.  For example:
+     the corresponding column of the matrix are non-zero.  For example:
 
           any (eye (2, 4))
            => [ 1, 1, 0, 0 ]
@@ -8095,11 +8094,11 @@ specified condition.
  -- Built-in Function: all (X)
  -- Built-in Function: all (X, DIM)
      For a vector argument, return true (logical 1) if all elements of
-     the vector are nonzero.
+     the vector are non-zero.
 
      For a matrix argument, return a row vector of logical ones and
      zeros with each element indicating whether all of the elements of
-     the corresponding column of the matrix are nonzero.  For example:
+     the corresponding column of the matrix are non-zero.  For example:
 
           all ([2, 3; 1, 0]))
               => [ 1, 0 ]

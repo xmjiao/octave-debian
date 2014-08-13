@@ -21,6 +21,183 @@ manual into another language, under the above conditions for modified
 versions.
 
 
+File: octave.info,  Node: Creating Sparse Matrices in Oct-Files,  Next: Using Sparse Matrices in Oct-Files,  Prev: Array and Sparse Class Differences,  Up: Sparse Matrices in Oct-Files
+
+A.1.6.2 Creating Sparse Matrices in Oct-Files
+.............................................
+
+There are several useful alternatives for creating a sparse matrix.  The
+first is to create three vectors representing the row index, column
+index, and data values, and from these create the matrix.  The second
+alternative is to create a sparse matrix with the appropriate amount of
+space and then fill in the values.  Both techniques have their
+advantages and disadvantages.
+
+   Below is an example of creating a small sparse matrix using the first
+technique
+
+     int nz, nr, nc;
+     nz = 4, nr = 3, nc = 4;
+
+     ColumnVector ridx (nz);
+     ColumnVector cidx (nz);
+     ColumnVector data (nz);
+
+     ridx(0) = 1; cidx(0) = 1; data(0) = 1;
+     ridx(1) = 2; cidx(1) = 2; data(1) = 2;
+     ridx(2) = 2; cidx(2) = 4; data(2) = 3;
+     ridx(3) = 3; cidx(3) = 4; data(3) = 4;
+     SparseMatrix sm (data, ridx, cidx, nr, nc);
+
+which creates the matrix given in section *note Storage of Sparse
+Matrices::.  Note that the compressed matrix format is not used at the
+time of the creation of the matrix itself, but is used internally.
+
+   As discussed in the chapter on Sparse Matrices, the values of the
+sparse matrix are stored in increasing column-major ordering.  Although
+the data passed by the user need not respect this requirement,
+pre-sorting the data will significantly speed up creation of the sparse
+matrix.
+
+   The disadvantage of this technique for creating a sparse matrix is
+that there is a brief time when two copies of the data exist.  For
+extremely memory constrained problems this may not be the best technique
+for creating a sparse matrix.
+
+   The alternative is to first create a sparse matrix with the desired
+number of non-zero elements and then later fill those elements in.
+Sample code:
+
+     int nz, nr, nc;
+     nz = 4, nr = 3, nc = 4;
+     SparseMatrix sm (nr, nc, nz);
+     sm(0,0) = 1; sm(0,1) = 2; sm(1,3) = 3; sm(2,3) = 4;
+
+   This creates the same matrix as previously.  Again, although not
+strictly necessary, it is significantly faster if the sparse matrix is
+created and the elements are added in column-major ordering.  The reason
+for this is that when elements are inserted at the end of the current
+list of known elements then no element in the matrix needs to be moved
+to allow the new element to be inserted; Only the column indexes need to
+be updated.
+
+   There are a few further points to note about this method of creating
+a sparse matrix.  First, it is possible to create a sparse matrix with
+fewer elements than are actually inserted in the matrix.  Therefore,
+
+     int nr, nc;
+     nr = 3, nc = 4;
+     SparseMatrix sm (nr, nc, 0);
+     sm(0,0) = 1; sm(0,1) = 2; sm(1,3) = 3; sm(2,3) = 4;
+
+is perfectly valid.  However, it is a very bad idea because as each new
+element is added to the sparse matrix the matrix needs to request more
+space and reallocate memory.  This is an expensive operation, that will
+significantly slow this means of creating a sparse matrix.  Furthermore,
+it is possible to create a sparse matrix with too much storage, so
+having NZ greater than 4 is also valid.  The disadvantage is that the
+matrix occupies more memory than strictly needed.
+
+   It is not always possible to know the number of non-zero elements
+prior to filling a matrix.  For this reason the additional unused
+storage of a sparse matrix can be removed after its creation with the
+'maybe_compress' function.  In addition, 'maybe_compress' can deallocate
+the unused storage, but it can also remove zero elements from the
+matrix.  The removal of zero elements from the matrix is controlled by
+setting the argument of the 'maybe_compress' function to be 'true'.
+However, the cost of removing the zeros is high because it implies
+re-sorting the elements.  If possible, it is better if the user does not
+add the unnecessary zeros in the first place.  An example of the use of
+'maybe_compress' is
+
+     int nz, nr, nc;
+     nz = 6, nr = 3, nc = 4;
+
+     SparseMatrix sm1 (nr, nc, nz);
+     sm1(0,0) = 1; sm1(0,1) = 2; sm1(1,3) = 3; sm1(2,3) = 4;
+     sm1.maybe_compress ();  // No zero elements were added
+
+     SparseMatrix sm2 (nr, nc, nz);
+     sm2(0,0) = 1; sm2(0,1) = 2; sm(0,2) = 0; sm(1,2) = 0;
+     sm1(1,3) = 3; sm1(2,3) = 4;
+     sm2.maybe_compress (true);  // Zero elements were added
+
+   The use of the 'maybe_compress' function should be avoided if
+possible as it will slow the creation of the matrix.
+
+   A third means of creating a sparse matrix is to work directly with
+the data in compressed row format.  An example of this technique might
+be
+
+     octave_value arg;
+     ...
+     int nz, nr, nc;
+     nz = 6, nr = 3, nc = 4;   // Assume we know the max # nz
+     SparseMatrix sm (nr, nc, nz);
+     Matrix m = arg.matrix_value ();
+
+     int ii = 0;
+     sm.cidx (0) = 0;
+     for (int j = 1; j < nc; j++)
+       {
+         for (int i = 0; i < nr; i++)
+           {
+             double tmp = foo (m(i,j));
+             if (tmp != 0.)
+               {
+                 sm.data(ii) = tmp;
+                 sm.ridx(ii) = i;
+                 ii++;
+               }
+           }
+         sm.cidx(j+1) = ii;
+      }
+     sm.maybe_compress ();  // If don't know a priori the final # of nz.
+
+which is probably the most efficient means of creating a sparse matrix.
+
+   Finally, it might sometimes arise that the amount of storage
+initially created is insufficient to completely store the sparse matrix.
+Therefore, the method 'change_capacity' exists to reallocate the sparse
+memory.  The above example would then be modified as
+
+     octave_value arg;
+     ...
+     int nz, nr, nc;
+     nz = 6, nr = 3, nc = 4;   // Assume we know the max # nz
+     SparseMatrix sm (nr, nc, nz);
+     Matrix m = arg.matrix_value ();
+
+     int ii = 0;
+     sm.cidx (0) = 0;
+     for (int j = 1; j < nc; j++)
+       {
+         for (int i = 0; i < nr; i++)
+           {
+             double tmp = foo (m(i,j));
+             if (tmp != 0.)
+               {
+                 if (ii == nz)
+                   {
+                     nz += 2;   // Add 2 more elements
+                     sm.change_capacity (nz);
+                   }
+                 sm.data(ii) = tmp;
+                 sm.ridx(ii) = i;
+                 ii++;
+               }
+           }
+         sm.cidx(j+1) = ii;
+      }
+     sm.maybe_mutate ();  // If don't know a priori the final # of nz.
+
+   Note that both increasing and decreasing the number of non-zero
+elements in a sparse matrix is expensive as it involves memory
+reallocation.  Also as parts of the matrix, though not its entirety,
+exist as old and new copies at the same time, additional memory is
+needed.  Therefore, if possible this should be avoided.
+
+
 File: octave.info,  Node: Using Sparse Matrices in Oct-Files,  Prev: Creating Sparse Matrices in Oct-Files,  Up: Sparse Matrices in Oct-Files
 
 A.1.6.3 Using Sparse Matrices in Oct-Files
@@ -5639,7 +5816,7 @@ Concept Index
 * arithmetic operators <1>:              Operator Overloading.
                                                               (line   6)
 * array, creating a Java array:          Java Interface Functions.
-                                                              (line  39)
+                                                              (line  24)
 * assignment expressions:                Assignment Ops.      (line   6)
 * assignment operators:                  Assignment Ops.      (line   6)
 * axes graphics object:                  Graphics Objects.    (line  19)
@@ -5688,21 +5865,21 @@ Concept Index
 * classes, making available to Octave:   How to make Java classes available?.
                                                               (line   6)
 * classpath, adding new path:            Java Interface Functions.
-                                                              (line 117)
+                                                              (line 195)
 * classpath, difference between static and dynamic: How to make Java classes available?.
                                                               (line   6)
 * classpath, displaying:                 Java Interface Functions.
-                                                              (line  83)
+                                                              (line 161)
 * classpath, dynamic:                    Java Interface Functions.
-                                                              (line  83)
+                                                              (line 161)
 * classpath, dynamic <1>:                Java Interface Functions.
-                                                              (line 117)
+                                                              (line 195)
 * classpath, removing path:              Java Interface Functions.
-                                                              (line 127)
+                                                              (line 205)
 * classpath, setting:                    How to make Java classes available?.
                                                               (line   6)
 * classpath, static:                     Java Interface Functions.
-                                                              (line  83)
+                                                              (line 161)
 * 'classpath.txt':                       How to make Java classes available?.
                                                               (line   6)
 * clearing the screen:                   Cursor Motion.       (line  56)
@@ -5768,7 +5945,7 @@ Concept Index
 * data types, built-in:                  Built-in Data Types. (line   6)
 * data types, user-defined:              User-defined Data Types.
                                                               (line   6)
-* decrement operator:                    Assignment Ops.      (line 162)
+* decrement operator:                    Assignment Ops.      (line 170)
 * default arguments:                     Default Arguments.   (line   6)
 * default graphics properties:           Managing Default Properties.
                                                               (line   6)
@@ -5786,11 +5963,11 @@ Concept Index
 * dialog, displaying a list dialog:      Dialog Box Functions.
                                                               (line 100)
 * dialog, displaying a question dialog:  Dialog Box Functions.
-                                                              (line 155)
+                                                              (line 156)
 * dialog, displaying a warning dialog:   Dialog Box Functions.
                                                               (line   9)
 * dialog, displaying a warning dialog <1>: Dialog Box Functions.
-                                                              (line 186)
+                                                              (line 187)
 * dialog, displaying an error dialog:    Dialog Box Functions.
                                                               (line  28)
 * dialog, displaying an input dialog:    Dialog Box Functions.
@@ -5816,11 +5993,11 @@ Concept Index
 * Dulmage-Mendelsohn decomposition:      Mathematical Considerations.
                                                               (line 364)
 * dynamic classpath:                     Java Interface Functions.
-                                                              (line  83)
+                                                              (line 161)
 * dynamic classpath <1>:                 How to make Java classes available?.
                                                               (line   6)
 * dynamic classpath, adding new path:    Java Interface Functions.
-                                                              (line 117)
+                                                              (line 195)
 * dynamic naming:                        Creating Structures. (line   6)
 * dynamic-linking:                       External Code Interface.
                                                               (line   6)
@@ -5888,11 +6065,11 @@ Concept Index
 * factorial function:                    Recursion.           (line   6)
 * fatal signal:                          Bug Criteria.        (line   9)
 * field, returning value of Java object field: Java Interface Functions.
-                                                              (line  27)
+                                                              (line  75)
 * field, setting value of Java object field: Java Interface Functions.
-                                                              (line  30)
+                                                              (line 102)
 * fields, displaying available fields of a Java object: Java Interface Functions.
-                                                              (line  24)
+                                                              (line  56)
 * figure graphics object:                Graphics Objects.    (line  16)
 * figure properties:                     Figure Properties.   (line   6)
 * finding minimums:                      Minimizers.          (line   6)
@@ -5976,7 +6153,7 @@ Concept Index
 * incorrect output <1>:                  Bug Reporting.       (line  70)
 * incorrect results:                     Bug Criteria.        (line  12)
 * incorrect results <1>:                 Bug Reporting.       (line  70)
-* increment operator:                    Assignment Ops.      (line 162)
+* increment operator:                    Assignment Ops.      (line 170)
 * infinity norm:                         Basic Matrix Functions.
                                                               (line 273)
 * initialization:                        Startup Files.       (line   6)
@@ -6061,14 +6238,14 @@ Concept Index
 * memory management:                     Miscellaneous Techniques.
                                                               (line  16)
 * memory, displaying Java memory status: Java Interface Functions.
-                                                              (line 164)
+                                                              (line 242)
 * memory, limitations:                   How can I handle memory limitations?.
                                                               (line   6)
 * messages, error:                       Errors.              (line   6)
 * method, invoking a method of a Java object: Java Interface Functions.
-                                                              (line  58)
+                                                              (line 139)
 * methods, displaying available methods of a Java object: Java Interface Functions.
-                                                              (line  75)
+                                                              (line 117)
 * mex:                                   Mex-Files.           (line   6)
 * mex-files:                             Mex-Files.           (line   6)
 * minimum field width ('printf'):        Output Conversion Syntax.
@@ -6121,8 +6298,8 @@ Concept Index
 * operators, boolean:                    Boolean Expressions. (line   6)
 * operators, boolean <1>:                Operator Overloading.
                                                               (line   6)
-* operators, decrement:                  Assignment Ops.      (line 161)
-* operators, increment:                  Assignment Ops.      (line 162)
+* operators, decrement:                  Assignment Ops.      (line 169)
+* operators, increment:                  Assignment Ops.      (line 170)
 * operators, logical:                    Boolean Expressions. (line   6)
 * operators, logical <1>:                Operator Overloading.
                                                               (line   6)
@@ -6148,9 +6325,9 @@ Concept Index
 * patch properties:                      Patch Properties.    (line   6)
 * patches, submitting:                   Sending Patches.     (line   6)
 * path, adding to classpath:             Java Interface Functions.
-                                                              (line 117)
+                                                              (line 195)
 * path, removing from classpath:         Java Interface Functions.
-                                                              (line 127)
+                                                              (line 205)
 * permutation matrix functions:          Permutation Matrix Functions.
                                                               (line   6)
 * 'persistent' statement:                Persistent Variables.
@@ -6250,14 +6427,14 @@ Concept Index
 * startup files:                         Startup Files.       (line  10)
 * statements:                            Statements.          (line   6)
 * static classpath:                      Java Interface Functions.
-                                                              (line  83)
+                                                              (line 161)
 * static classpath <1>:                  How to make Java classes available?.
                                                               (line   6)
 * stem series:                           Stem Series.         (line   6)
 * strings:                               String Objects.      (line   6)
 * strings <1>:                           Strings.             (line   6)
 * structural rank:                       Sparse Linear Algebra.
-                                                              (line 250)
+                                                              (line 253)
 * structure elements, looping over:      Looping Over Structure Elements.
                                                               (line   6)
 * structures:                            Data Structure Objects.
@@ -6370,7 +6547,7 @@ Function Index
                                                              (line   45)
 * addproperty:                           Object Groups.      (line   51)
 * addproperty <1>:                       Object Groups.      (line   52)
-* addtodate:                             Timing Utilities.   (line  617)
+* addtodate:                             Timing Utilities.   (line  627)
 * add_input_event_hook:                  Parser.             (line   16)
 * add_input_event_hook <1>:              Parser.             (line   17)
 * airy:                                  Special Functions.  (line    6)
@@ -6627,10 +6804,10 @@ Function Index
                                                              (line   91)
 * bzip2 <1>:                             File Archiving Utilities.
                                                              (line   92)
-* calendar:                              Timing Utilities.   (line  626)
-* calendar <1>:                          Timing Utilities.   (line  627)
-* calendar <2>:                          Timing Utilities.   (line  628)
-* calendar <3>:                          Timing Utilities.   (line  629)
+* calendar:                              Timing Utilities.   (line  636)
+* calendar <1>:                          Timing Utilities.   (line  637)
+* calendar <2>:                          Timing Utilities.   (line  638)
+* calendar <3>:                          Timing Utilities.   (line  639)
 * canonicalize_file_name:                Filesystem Utilities.
                                                              (line  505)
 * cart2pol:                              Coordinate Transformations.
@@ -7180,28 +7357,28 @@ Function Index
 * dassl_options <2>:                     Differential-Algebraic Equations.
                                                              (line  314)
 * date:                                  Timing Utilities.   (line  345)
-* datenum:                               Timing Utilities.   (line  449)
-* datenum <1>:                           Timing Utilities.   (line  450)
-* datenum <2>:                           Timing Utilities.   (line  451)
-* datenum <3>:                           Timing Utilities.   (line  452)
-* datenum <4>:                           Timing Utilities.   (line  453)
-* datenum <5>:                           Timing Utilities.   (line  455)
-* datenum <6>:                           Timing Utilities.   (line  456)
-* datenum <7>:                           Timing Utilities.   (line  457)
-* datestr:                               Timing Utilities.   (line  505)
-* datestr <1>:                           Timing Utilities.   (line  506)
-* datestr <2>:                           Timing Utilities.   (line  507)
-* datetick:                              Timing Utilities.   (line  678)
-* datetick <1>:                          Timing Utilities.   (line  679)
-* datetick <2>:                          Timing Utilities.   (line  680)
-* datetick <3>:                          Timing Utilities.   (line  681)
-* datetick <4>:                          Timing Utilities.   (line  682)
-* datetick <5>:                          Timing Utilities.   (line  683)
-* datevec:                               Timing Utilities.   (line  591)
-* datevec <1>:                           Timing Utilities.   (line  592)
-* datevec <2>:                           Timing Utilities.   (line  593)
-* datevec <3>:                           Timing Utilities.   (line  594)
-* datevec <4>:                           Timing Utilities.   (line  595)
+* datenum:                               Timing Utilities.   (line  459)
+* datenum <1>:                           Timing Utilities.   (line  460)
+* datenum <2>:                           Timing Utilities.   (line  461)
+* datenum <3>:                           Timing Utilities.   (line  462)
+* datenum <4>:                           Timing Utilities.   (line  463)
+* datenum <5>:                           Timing Utilities.   (line  465)
+* datenum <6>:                           Timing Utilities.   (line  466)
+* datenum <7>:                           Timing Utilities.   (line  467)
+* datestr:                               Timing Utilities.   (line  515)
+* datestr <1>:                           Timing Utilities.   (line  516)
+* datestr <2>:                           Timing Utilities.   (line  517)
+* datetick:                              Timing Utilities.   (line  688)
+* datetick <1>:                          Timing Utilities.   (line  689)
+* datetick <2>:                          Timing Utilities.   (line  690)
+* datetick <3>:                          Timing Utilities.   (line  691)
+* datetick <4>:                          Timing Utilities.   (line  692)
+* datetick <5>:                          Timing Utilities.   (line  693)
+* datevec:                               Timing Utilities.   (line  601)
+* datevec <1>:                           Timing Utilities.   (line  602)
+* datevec <2>:                           Timing Utilities.   (line  603)
+* datevec <3>:                           Timing Utilities.   (line  604)
+* datevec <4>:                           Timing Utilities.   (line  605)
 * dawson:                                Special Functions.  (line  175)
 * dbclear:                               Breakpoints.        (line   84)
 * dbclear <1>:                           Breakpoints.        (line   85)
@@ -7253,11 +7430,11 @@ Function Index
 * deblank:                               Manipulating Strings.
                                                              (line   20)
 * debug_java:                            Java Interface Functions.
-                                                             (line  237)
+                                                             (line  315)
 * debug_java <1>:                        Java Interface Functions.
-                                                             (line  238)
+                                                             (line  316)
 * debug_java <2>:                        Java Interface Functions.
-                                                             (line  239)
+                                                             (line  317)
 * debug_jit:                             JIT Compiler.       (line   61)
 * debug_jit <1>:                         JIT Compiler.       (line   62)
 * debug_jit <2>:                         JIT Compiler.       (line   63)
@@ -7479,45 +7656,45 @@ Function Index
 * eig <3>:                               Basic Matrix Functions.
                                                              (line   82)
 * eigs:                                  Sparse Linear Algebra.
-                                                             (line  351)
-* eigs <1>:                              Sparse Linear Algebra.
-                                                             (line  352)
-* eigs <2>:                              Sparse Linear Algebra.
-                                                             (line  353)
-* eigs <3>:                              Sparse Linear Algebra.
-                                                             (line  354)
-* eigs <4>:                              Sparse Linear Algebra.
-                                                             (line  355)
-* eigs <5>:                              Sparse Linear Algebra.
-                                                             (line  356)
-* eigs <6>:                              Sparse Linear Algebra.
-                                                             (line  357)
-* eigs <7>:                              Sparse Linear Algebra.
                                                              (line  358)
-* eigs <8>:                              Sparse Linear Algebra.
+* eigs <1>:                              Sparse Linear Algebra.
                                                              (line  359)
-* eigs <9>:                              Sparse Linear Algebra.
+* eigs <2>:                              Sparse Linear Algebra.
                                                              (line  360)
-* eigs <10>:                             Sparse Linear Algebra.
+* eigs <3>:                              Sparse Linear Algebra.
                                                              (line  361)
-* eigs <11>:                             Sparse Linear Algebra.
+* eigs <4>:                              Sparse Linear Algebra.
                                                              (line  362)
-* eigs <12>:                             Sparse Linear Algebra.
+* eigs <5>:                              Sparse Linear Algebra.
                                                              (line  363)
-* eigs <13>:                             Sparse Linear Algebra.
+* eigs <6>:                              Sparse Linear Algebra.
                                                              (line  364)
-* eigs <14>:                             Sparse Linear Algebra.
+* eigs <7>:                              Sparse Linear Algebra.
                                                              (line  365)
-* eigs <15>:                             Sparse Linear Algebra.
+* eigs <8>:                              Sparse Linear Algebra.
                                                              (line  366)
-* eigs <16>:                             Sparse Linear Algebra.
+* eigs <9>:                              Sparse Linear Algebra.
                                                              (line  367)
-* eigs <17>:                             Sparse Linear Algebra.
+* eigs <10>:                             Sparse Linear Algebra.
                                                              (line  368)
-* eigs <18>:                             Sparse Linear Algebra.
+* eigs <11>:                             Sparse Linear Algebra.
                                                              (line  369)
-* eigs <19>:                             Sparse Linear Algebra.
+* eigs <12>:                             Sparse Linear Algebra.
                                                              (line  370)
+* eigs <13>:                             Sparse Linear Algebra.
+                                                             (line  371)
+* eigs <14>:                             Sparse Linear Algebra.
+                                                             (line  372)
+* eigs <15>:                             Sparse Linear Algebra.
+                                                             (line  373)
+* eigs <16>:                             Sparse Linear Algebra.
+                                                             (line  374)
+* eigs <17>:                             Sparse Linear Algebra.
+                                                             (line  375)
+* eigs <18>:                             Sparse Linear Algebra.
+                                                             (line  376)
+* eigs <19>:                             Sparse Linear Algebra.
+                                                             (line  377)
 * elem:                                  Matrices and Arrays in Oct-Files.
                                                              (line   78)
 * ellipj:                                Special Functions.  (line  184)
@@ -7548,7 +7725,7 @@ Function Index
                                                              (line   41)
 * endpwent:                              Password Database Functions.
                                                              (line   52)
-* eomday:                                Timing Utilities.   (line  671)
+* eomday:                                Timing Utilities.   (line  681)
 * eps:                                   Mathematical Constants.
                                                              (line  119)
 * eps <1>:                               Mathematical Constants.
@@ -7597,11 +7774,11 @@ Function Index
 * errordlg <1>:                          Dialog Box Functions.
                                                              (line   29)
 * etime:                                 Timing Utilities.   (line  357)
-* etree:                                 Information.        (line  131)
-* etree <1>:                             Information.        (line  132)
-* etree <2>:                             Information.        (line  133)
-* etreeplot:                             Information.        (line  144)
-* etreeplot <1>:                         Information.        (line  145)
+* etree:                                 Information.        (line  136)
+* etree <1>:                             Information.        (line  137)
+* etree <2>:                             Information.        (line  138)
+* etreeplot:                             Information.        (line  149)
+* etreeplot <1>:                         Information.        (line  150)
 * eval:                                  Evaluation.         (line   14)
 * eval <1>:                              Evaluation.         (line   15)
 * evalin:                                Evaluation in a Different Context.
@@ -7954,9 +8131,9 @@ Function Index
                                                              (line   21)
 * floor:                                 Utility Functions.  (line   28)
 * fminbnd:                               Minimizers.         (line   19)
-* fminsearch:                            Minimizers.         (line  107)
-* fminsearch <1>:                        Minimizers.         (line  108)
-* fminsearch <2>:                        Minimizers.         (line  109)
+* fminsearch:                            Minimizers.         (line  114)
+* fminsearch <1>:                        Minimizers.         (line  115)
+* fminsearch <2>:                        Minimizers.         (line  116)
 * fminunc:                               Minimizers.         (line   50)
 * fminunc <1>:                           Minimizers.         (line   51)
 * fminunc <2>:                           Minimizers.         (line   52)
@@ -8033,7 +8210,7 @@ Function Index
 * ftp:                                   FTP Objects.        (line   10)
 * ftp <1>:                               FTP Objects.        (line   11)
 * full:                                  Creating Sparse Matrices.
-                                                             (line  178)
+                                                             (line  188)
 * fullfile:                              Filesystem Utilities.
                                                              (line  486)
 * func2str:                              Function Handles.   (line   81)
@@ -8279,9 +8456,9 @@ Function Index
                                                              (line   10)
 * gnuplot_binary <1>:                    Customizing Toolkit Behavior.
                                                              (line   11)
-* gplot:                                 Information.        (line  152)
-* gplot <1>:                             Information.        (line  153)
-* gplot <2>:                             Information.        (line  154)
+* gplot:                                 Information.        (line  157)
+* gplot <1>:                             Information.        (line  158)
+* gplot <2>:                             Information.        (line  159)
 * gradient:                              Utility Functions.  (line  182)
 * gradient <1>:                          Utility Functions.  (line  183)
 * gradient <2>:                          Utility Functions.  (line  184)
@@ -8773,7 +8950,7 @@ Function Index
                                                              (line   99)
 * isinteger:                             Integer Data Types. (line   28)
 * isjava:                                Java Interface Functions.
-                                                             (line   33)
+                                                             (line   47)
 * iskeyword:                             Keywords.           (line   28)
 * iskeyword <1>:                         Keywords.           (line   29)
 * isletter:                              Character Class Functions.
@@ -8896,51 +9073,55 @@ Function Index
 * J:                                     Mathematical Constants.
                                                              (line   45)
 * javaaddpath:                           Java Interface Functions.
-                                                             (line  117)
+                                                             (line  195)
 * javaaddpath <1>:                       Java Interface Functions.
-                                                             (line  117)
+                                                             (line  195)
 * javaaddpath <2>:                       Java Interface Functions.
-                                                             (line  118)
+                                                             (line  196)
 * javaArray:                             Java Interface Functions.
-                                                             (line   39)
+                                                             (line   24)
 * javaArray <1>:                         Java Interface Functions.
-                                                             (line   40)
+                                                             (line   25)
 * javaclasspath:                         Java Interface Functions.
-                                                             (line   83)
+                                                             (line  161)
 * javaclasspath <1>:                     Java Interface Functions.
-                                                             (line   84)
+                                                             (line  162)
 * javaclasspath <2>:                     Java Interface Functions.
-                                                             (line   85)
+                                                             (line  163)
 * javaclasspath <3>:                     Java Interface Functions.
-                                                             (line   86)
-* javamem:                               Java Interface Functions.
                                                              (line  164)
+* javamem:                               Java Interface Functions.
+                                                             (line  242)
 * javamem <1>:                           Java Interface Functions.
-                                                             (line  165)
+                                                             (line  243)
 * javaMethod:                            Java Interface Functions.
-                                                             (line   58)
+                                                             (line  139)
 * javaMethod <1>:                        Java Interface Functions.
-                                                             (line   59)
+                                                             (line  140)
 * javaObject:                            Java Interface Functions.
                                                              (line   10)
 * javaObject <1>:                        Java Interface Functions.
                                                              (line   11)
 * javarmpath:                            Java Interface Functions.
-                                                             (line  127)
-* javarmpath <1>:                        Java Interface Functions.
-                                                             (line  128)
-* java_matrix_autoconversion:            Java Interface Functions.
                                                              (line  205)
-* java_matrix_autoconversion <1>:        Java Interface Functions.
+* javarmpath <1>:                        Java Interface Functions.
                                                              (line  206)
+* java_get:                              Java Interface Functions.
+                                                             (line   87)
+* java_matrix_autoconversion:            Java Interface Functions.
+                                                             (line  283)
+* java_matrix_autoconversion <1>:        Java Interface Functions.
+                                                             (line  284)
 * java_matrix_autoconversion <2>:        Java Interface Functions.
-                                                             (line  207)
+                                                             (line  285)
+* java_set:                              Java Interface Functions.
+                                                             (line  102)
 * java_unsigned_autoconversion:          Java Interface Functions.
-                                                             (line  220)
+                                                             (line  298)
 * java_unsigned_autoconversion <1>:      Java Interface Functions.
-                                                             (line  221)
+                                                             (line  299)
 * java_unsigned_autoconversion <2>:      Java Interface Functions.
-                                                             (line  222)
+                                                             (line  300)
 * jet:                                   Representing Images.
                                                              (line  259)
 * jet <1>:                               Representing Images.
@@ -8951,8 +9132,8 @@ Function Index
 * jit_startcnt:                          JIT Compiler.       (line   44)
 * jit_startcnt <1>:                      JIT Compiler.       (line   45)
 * jit_startcnt <2>:                      JIT Compiler.       (line   46)
-* kbhit:                                 Terminal Input.     (line   68)
-* kbhit <1>:                             Terminal Input.     (line   69)
+* kbhit:                                 Terminal Input.     (line   73)
+* kbhit <1>:                             Terminal Input.     (line   74)
 * kendall:                               Correlation and Regression Analysis.
                                                              (line   74)
 * kendall <1>:                           Correlation and Regression Analysis.
@@ -9282,7 +9463,7 @@ Function Index
                                                              (line   42)
 * median <1>:                            Descriptive Statistics.
                                                              (line   43)
-* menu:                                  Terminal Input.     (line   40)
+* menu:                                  Terminal Input.     (line   44)
 * merge:                                 Short-circuit Boolean Operators.
                                                              (line  104)
 * mesh:                                  Three-Dimensional Plots.
@@ -9514,7 +9695,7 @@ Function Index
 * nfields:                               Manipulating Structures.
                                                              (line    9)
 * nnz:                                   Information.        (line   27)
-* nonzeros:                              Information.        (line   32)
+* nonzeros:                              Information.        (line   33)
 * norm:                                  Basic Matrix Functions.
                                                              (line  258)
 * norm <1>:                              Basic Matrix Functions.
@@ -9575,7 +9756,7 @@ Function Index
                                                              (line   51)
 * numel:                                 Object Sizes.       (line   37)
 * numel <1>:                             Object Sizes.       (line   38)
-* nzmax:                                 Information.        (line   35)
+* nzmax:                                 Information.        (line   38)
 * ocean:                                 Representing Images.
                                                              (line  278)
 * ocean <1>:                             Representing Images.
@@ -9730,6 +9911,7 @@ Function Index
 * pathsep <1>:                           Manipulating the Load Path.
                                                              (line  104)
 * pause:                                 Timing Utilities.   (line  428)
+* pause <1>:                             Timing Utilities.   (line  429)
 * pbaspect:                              Aspect Ratio.       (line   36)
 * pbaspect <1>:                          Aspect Ratio.       (line   37)
 * pbaspect <2>:                          Aspect Ratio.       (line   38)
@@ -10189,15 +10371,15 @@ Function Index
 * quantile <3>:                          Descriptive Statistics.
                                                              (line  298)
 * questdlg:                              Dialog Box Functions.
-                                                             (line  155)
-* questdlg <1>:                          Dialog Box Functions.
                                                              (line  156)
-* questdlg <2>:                          Dialog Box Functions.
+* questdlg <1>:                          Dialog Box Functions.
                                                              (line  157)
-* questdlg <3>:                          Dialog Box Functions.
+* questdlg <2>:                          Dialog Box Functions.
                                                              (line  158)
-* questdlg <4>:                          Dialog Box Functions.
+* questdlg <3>:                          Dialog Box Functions.
                                                              (line  159)
+* questdlg <4>:                          Dialog Box Functions.
+                                                             (line  160)
 * quit:                                  Quitting Octave.    (line    7)
 * quiver:                                Two-Dimensional Plots.
                                                              (line 1349)
@@ -10847,7 +11029,7 @@ Function Index
                                                              (line  191)
 * skewness <2>:                          Descriptive Statistics.
                                                              (line  192)
-* sleep:                                 Timing Utilities.   (line  439)
+* sleep:                                 Timing Utilities.   (line  445)
 * slice:                                 Three-Dimensional Plots.
                                                              (line  800)
 * slice <1>:                             Three-Dimensional Plots.
@@ -10884,17 +11066,19 @@ Function Index
                                                              (line  350)
 * source:                                Script Files.       (line   90)
 * spalloc:                               Creating Sparse Matrices.
-                                                             (line  184)
+                                                             (line  194)
 * sparse:                                Creating Sparse Matrices.
-                                                             (line  215)
+                                                             (line  227)
 * sparse <1>:                            Creating Sparse Matrices.
-                                                             (line  216)
+                                                             (line  228)
 * sparse <2>:                            Creating Sparse Matrices.
-                                                             (line  217)
+                                                             (line  229)
 * sparse <3>:                            Creating Sparse Matrices.
-                                                             (line  218)
+                                                             (line  230)
 * sparse <4>:                            Creating Sparse Matrices.
-                                                             (line  219)
+                                                             (line  231)
+* sparse <5>:                            Creating Sparse Matrices.
+                                                             (line  232)
 * sparse_auto_mutate:                    Return Types of Operators and Functions.
                                                              (line   52)
 * sparse_auto_mutate <1>:                Return Types of Operators and Functions.
@@ -10902,9 +11086,9 @@ Function Index
 * sparse_auto_mutate <2>:                Return Types of Operators and Functions.
                                                              (line   54)
 * spaugment:                             Sparse Linear Algebra.
-                                                             (line  311)
+                                                             (line  314)
 * spconvert:                             Creating Sparse Matrices.
-                                                             (line  252)
+                                                             (line  290)
 * spdiags:                               Creating Sparse Matrices.
                                                              (line   47)
 * spdiags <1>:                           Creating Sparse Matrices.
@@ -10984,7 +11168,7 @@ Function Index
 * split_long_rows <1>:                   Matrices.           (line  166)
 * split_long_rows <2>:                   Matrices.           (line  167)
 * spones:                                Creating Sparse Matrices.
-                                                             (line   85)
+                                                             (line   88)
 * spparms:                               Sparse Linear Algebra.
                                                              (line  181)
 * spparms <1>:                           Sparse Linear Algebra.
@@ -11002,29 +11186,29 @@ Function Index
 * spparms <7>:                           Sparse Linear Algebra.
                                                              (line  188)
 * sprand:                                Creating Sparse Matrices.
-                                                             (line   89)
+                                                             (line   96)
 * sprand <1>:                            Creating Sparse Matrices.
-                                                             (line   90)
+                                                             (line   97)
 * sprandn:                               Creating Sparse Matrices.
-                                                             (line  101)
+                                                             (line  108)
 * sprandn <1>:                           Creating Sparse Matrices.
-                                                             (line  102)
+                                                             (line  109)
 * sprandsym:                             Creating Sparse Matrices.
-                                                             (line  113)
+                                                             (line  121)
 * sprandsym <1>:                         Creating Sparse Matrices.
-                                                             (line  114)
+                                                             (line  122)
 * sprank:                                Sparse Linear Algebra.
-                                                             (line  249)
+                                                             (line  252)
 * spring:                                Representing Images.
                                                              (line  313)
 * spring <1>:                            Representing Images.
                                                              (line  314)
 * sprintf:                               Formatted Output.   (line   33)
-* spstats:                               Information.        (line   46)
-* spstats <1>:                           Information.        (line   47)
-* spy:                                   Information.        (line  121)
-* spy <1>:                               Information.        (line  122)
-* spy <2>:                               Information.        (line  123)
+* spstats:                               Information.        (line   49)
+* spstats <1>:                           Information.        (line   50)
+* spy:                                   Information.        (line  124)
+* spy <1>:                               Information.        (line  125)
+* spy <2>:                               Information.        (line  126)
 * sqp:                                   Nonlinear Programming.
                                                              (line    9)
 * sqp <1>:                               Nonlinear Programming.
@@ -11342,17 +11526,17 @@ Function Index
 * svd <2>:                               Matrix Factorizations.
                                                              (line  554)
 * svds:                                  Sparse Linear Algebra.
-                                                             (line  506)
+                                                             (line  513)
 * svds <1>:                              Sparse Linear Algebra.
-                                                             (line  507)
+                                                             (line  514)
 * svds <2>:                              Sparse Linear Algebra.
-                                                             (line  508)
+                                                             (line  515)
 * svds <3>:                              Sparse Linear Algebra.
-                                                             (line  509)
+                                                             (line  516)
 * svds <4>:                              Sparse Linear Algebra.
-                                                             (line  510)
+                                                             (line  517)
 * svds <5>:                              Sparse Linear Algebra.
-                                                             (line  511)
+                                                             (line  518)
 * svd_driver:                            Matrix Factorizations.
                                                              (line  605)
 * svd_driver <1>:                        Matrix Factorizations.
@@ -11372,11 +11556,11 @@ Function Index
 * symamd <3>:                            Mathematical Considerations.
                                                              (line  383)
 * symbfact:                              Sparse Linear Algebra.
-                                                             (line  260)
+                                                             (line  263)
 * symbfact <1>:                          Sparse Linear Algebra.
-                                                             (line  261)
+                                                             (line  264)
 * symbfact <2>:                          Sparse Linear Algebra.
-                                                             (line  262)
+                                                             (line  265)
 * symlink:                               Filesystem Utilities.
                                                              (line   79)
 * symlink <1>:                           Filesystem Utilities.
@@ -11495,10 +11679,10 @@ Function Index
                                                              (line  439)
 * trapz <2>:                             Functions of One Variable.
                                                              (line  440)
-* treelayout:                            Information.        (line  176)
-* treelayout <1>:                        Information.        (line  177)
-* treeplot:                              Information.        (line  167)
-* treeplot <1>:                          Information.        (line  168)
+* treelayout:                            Information.        (line  181)
+* treelayout <1>:                        Information.        (line  182)
+* treeplot:                              Information.        (line  172)
+* treeplot <1>:                          Information.        (line  173)
 * tril:                                  Rearranging Matrices.
                                                              (line  393)
 * tril <1>:                              Rearranging Matrices.
@@ -11687,8 +11871,8 @@ Function Index
 * USED:                                  GUI Utility Functions.
                                                              (line   10)
 * usejava:                               Java Interface Functions.
-                                                             (line  140)
-* usleep:                                Timing Utilities.   (line  443)
+                                                             (line  218)
+* usleep:                                Timing Utilities.   (line  451)
 * u_test:                                Tests.              (line  403)
 * validatestring:                        Comparing Strings.  (line   99)
 * validatestring <1>:                    Comparing Strings.  (line  100)
@@ -11761,9 +11945,9 @@ Function Index
 * waitpid:                               Controlling Subprocesses.
                                                              (line  244)
 * warndlg:                               Dialog Box Functions.
-                                                             (line  186)
-* warndlg <1>:                           Dialog Box Functions.
                                                              (line  187)
+* warndlg <1>:                           Dialog Box Functions.
+                                                             (line  188)
 * warning:                               Issuing Warnings.   (line   33)
 * warning <1>:                           Issuing Warnings.   (line   34)
 * warning <2>:                           Issuing Warnings.   (line   35)
@@ -11813,8 +11997,8 @@ Function Index
                                                              (line  288)
 * WCOREDUMP:                             Controlling Subprocesses.
                                                              (line  296)
-* weekday:                               Timing Utilities.   (line  643)
-* weekday <1>:                           Timing Utilities.   (line  644)
+* weekday:                               Timing Utilities.   (line  653)
+* weekday <1>:                           Timing Utilities.   (line  654)
 * welch_test:                            Tests.              (line  441)
 * WEXITSTATUS:                           Controlling Subprocesses.
                                                              (line  309)
@@ -11896,7 +12080,7 @@ Function Index
 * xlim <5>:                              Axis Configuration. (line  144)
 * xor:                                   Finding Elements and Checking Conditions.
                                                              (line   61)
-* yes_or_no:                             Terminal Input.     (line   51)
+* yes_or_no:                             Terminal Input.     (line   54)
 * ylim:                                  Axis Configuration. (line  139)
 * yulewalker:                            Signal Processing.  (line  711)
 * zeros:                                 Special Utility Matrices.

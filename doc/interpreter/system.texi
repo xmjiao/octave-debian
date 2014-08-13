@@ -540,12 +540,16 @@ doing nothing at all.
 
 @c pause libinterp/corefcn/sysdep.cc
 @anchor{XREFpause}
-@deftypefn {Built-in Function} {} pause (@var{seconds})
-Suspend the execution of the program.  If invoked without any arguments,
-Octave waits until you type a character.  With a numeric argument, it
-pauses for the given number of seconds.  For example, the following
-statement prints a message and then waits 5 seconds before clearing the
-screen.
+@deftypefn  {Built-in Function} {} pause ()
+@deftypefnx {Built-in Function} {} pause (@var{n})
+Suspend the execution of the program for @var{n} seconds.
+
+@var{n} is a positive real value and may be a fraction of a second.
+If invoked without an input arguments then the program is suspended until a
+character is typed.
+
+The following example prints a message and then waits 5 seconds before
+clearing the screen.
 
 @example
 @group
@@ -554,6 +558,7 @@ pause (5);
 clc;
 @end group
 @end example
+@seealso{@ref{XREFkbhit,,kbhit}, @ref{XREFsleep,,sleep}}
 @end deftypefn
 
 
@@ -561,6 +566,7 @@ clc;
 @anchor{XREFsleep}
 @deftypefn {Built-in Function} {} sleep (@var{seconds})
 Suspend the execution of the program for the given number of seconds.
+@seealso{@ref{XREFusleep,,usleep}, @ref{XREFpause,,pause}}
 @end deftypefn
 
 
@@ -571,6 +577,7 @@ Suspend the execution of the program for the given number of
 microseconds.  On systems where it is not possible to sleep for periods
 of time less than one second, @code{usleep} will pause the execution for
 @code{round (@var{microseconds} / 1e6)} seconds.
+@seealso{@ref{XREFsleep,,sleep}, @ref{XREFpause,,pause}}
 @end deftypefn
 
 

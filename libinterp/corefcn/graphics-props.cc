@@ -1395,7 +1395,7 @@ axes::properties::properties (const graphics_handle& mh, const graphics_handle& 
     plotboxaspectratio ("plotboxaspectratio", mh, Matrix (1, 3, 1.0)),
     plotboxaspectratiomode ("plotboxaspectratiomode", mh, "{auto}|manual"),
     position ("position", mh, default_axes_position ()),
-    projection ("projection", mh, "{orthographic}|perpective"),
+    projection ("projection", mh, "{orthographic}|perspective"),
     tickdir ("tickdir", mh, "{in}|out"),
     tickdirmode ("tickdirmode", mh, "{auto}|manual"),
     ticklength ("ticklength", mh, default_axes_ticklength ()),

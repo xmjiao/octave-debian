@@ -1,19 +1,19 @@
-/* A Bison parser, made by GNU Bison 2.7.12-4996.  */
+/* A Bison parser, made by GNU Bison 3.0.2.  */
 
 /* Bison implementation for Yacc-like parsers in C
-   
-      Copyright (C) 1984, 1989-1990, 2000-2013 Free Software Foundation, Inc.
-   
+
+   Copyright (C) 1984, 1989-1990, 2000-2013 Free Software Foundation, Inc.
+
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
-   
+
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-   
+
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
@@ -26,7 +26,7 @@
    special exception, which will cause the skeleton and the resulting
    Bison output files to be licensed under the GNU General Public
    License without this special exception.
-   
+
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
@@ -44,7 +44,7 @@
 #define YYBISON 1
 
 /* Bison version.  */
-#define YYBISON_VERSION "2.7.12-4996"
+#define YYBISON_VERSION "3.0.2"
 
 /* Skeleton name.  */
 #define YYSKELETON_NAME "yacc.c"
@@ -58,7 +58,8 @@
 /* Pull parsers.  */
 #define YYPULL 1
 
-
+/* Substitute the type names.  */
+#define YYSTYPE         OCTAVE_STYPE
 /* Substitute the variable and function names.  */
 #define yyparse         octave_parse
 #define yypush_parse    octave_push_parse
@@ -68,14 +69,12 @@
 #define yypstate        octave_pstate
 #define yylex           octave_lex
 #define yyerror         octave_error
-#define yylval          octave_lval
-#define yychar          octave_char
 #define yydebug         octave_debug
 #define yynerrs         octave_nerrs
 
+
 /* Copy the first part of user declarations.  */
-/* Line 371 of yacc.c  */
-#line 29 "parse-tree/oct-parse.yy"
+#line 29 "parse-tree/oct-parse.yy" /* yacc.c:339  */
 
 #define YYDEBUG 1
 
@@ -171,14 +170,13 @@ static void yyerror (octave_base_parser& parser, const char *s);
 #define scanner lexer.scanner
 
 
-/* Line 371 of yacc.c  */
-#line 176 "parse-tree/oct-parse.cc"
+#line 174 "parse-tree/oct-parse.cc" /* yacc.c:339  */
 
-# ifndef YY_NULL
+# ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
-#   define YY_NULL nullptr
+#   define YY_NULLPTR nullptr
 #  else
-#   define YY_NULL 0
+#   define YY_NULLPTR 0
 #  endif
 # endif
 
@@ -194,102 +192,109 @@ static void yyerror (octave_base_parser& parser, const char *s);
    by #include "y.tab.h".  */
 #ifndef YY_OCTAVE_PARSE_TREE_OCT_PARSE_H_INCLUDED
 # define YY_OCTAVE_PARSE_TREE_OCT_PARSE_H_INCLUDED
-/* Enabling traces.  */
-#ifndef YYDEBUG
-# define YYDEBUG 0
-#endif
+/* Debug traces.  */
+#ifndef OCTAVE_DEBUG
+# if defined YYDEBUG
 #if YYDEBUG
+#   define OCTAVE_DEBUG 1
+#  else
+#   define OCTAVE_DEBUG 0
+#  endif
+# else /* ! defined YYDEBUG */
+#  define OCTAVE_DEBUG 0
+# endif /* ! defined YYDEBUG */
+#endif  /* ! defined OCTAVE_DEBUG */
+#if OCTAVE_DEBUG
 extern int octave_debug;
 #endif
 
-/* Tokens.  */
-#ifndef YYTOKENTYPE
-# define YYTOKENTYPE
-   /* Put the tokens into the symbol table, so that GDB and other debuggers
-      know about them.  */
-   enum yytokentype {
-     ADD_EQ = 258,
-     SUB_EQ = 259,
-     MUL_EQ = 260,
-     DIV_EQ = 261,
-     LEFTDIV_EQ = 262,
-     POW_EQ = 263,
-     EMUL_EQ = 264,
-     EDIV_EQ = 265,
-     ELEFTDIV_EQ = 266,
-     EPOW_EQ = 267,
-     AND_EQ = 268,
-     OR_EQ = 269,
-     LSHIFT_EQ = 270,
-     RSHIFT_EQ = 271,
-     LSHIFT = 272,
-     RSHIFT = 273,
-     EXPR_AND_AND = 274,
-     EXPR_OR_OR = 275,
-     EXPR_AND = 276,
-     EXPR_OR = 277,
-     EXPR_NOT = 278,
-     EXPR_LT = 279,
-     EXPR_LE = 280,
-     EXPR_EQ = 281,
-     EXPR_NE = 282,
-     EXPR_GE = 283,
-     EXPR_GT = 284,
-     LEFTDIV = 285,
-     EMUL = 286,
-     EDIV = 287,
-     ELEFTDIV = 288,
-     EPLUS = 289,
-     EMINUS = 290,
-     HERMITIAN = 291,
-     TRANSPOSE = 292,
-     PLUS_PLUS = 293,
-     MINUS_MINUS = 294,
-     POW = 295,
-     EPOW = 296,
-     NUM = 297,
-     IMAG_NUM = 298,
-     STRUCT_ELT = 299,
-     NAME = 300,
-     END = 301,
-     DQ_STRING = 302,
-     SQ_STRING = 303,
-     FOR = 304,
-     PARFOR = 305,
-     WHILE = 306,
-     DO = 307,
-     UNTIL = 308,
-     IF = 309,
-     ELSEIF = 310,
-     ELSE = 311,
-     SWITCH = 312,
-     CASE = 313,
-     OTHERWISE = 314,
-     BREAK = 315,
-     CONTINUE = 316,
-     FUNC_RET = 317,
-     UNWIND = 318,
-     CLEANUP = 319,
-     TRY = 320,
-     CATCH = 321,
-     GLOBAL = 322,
-     PERSISTENT = 323,
-     FCN_HANDLE = 324,
-     PROPERTIES = 325,
-     METHODS = 326,
-     EVENTS = 327,
-     ENUMERATION = 328,
-     METAQUERY = 329,
-     SUPERCLASSREF = 330,
-     GET = 331,
-     SET = 332,
-     FCN = 333,
-     END_OF_INPUT = 334,
-     LEXICAL_ERROR = 335,
-     INPUT_FILE = 336,
-     CLASSDEF = 337,
-     UNARY = 338
-   };
+/* Token type.  */
+#ifndef OCTAVE_TOKENTYPE
+# define OCTAVE_TOKENTYPE
+  enum octave_tokentype
+  {
+    ADD_EQ = 258,
+    SUB_EQ = 259,
+    MUL_EQ = 260,
+    DIV_EQ = 261,
+    LEFTDIV_EQ = 262,
+    POW_EQ = 263,
+    EMUL_EQ = 264,
+    EDIV_EQ = 265,
+    ELEFTDIV_EQ = 266,
+    EPOW_EQ = 267,
+    AND_EQ = 268,
+    OR_EQ = 269,
+    LSHIFT_EQ = 270,
+    RSHIFT_EQ = 271,
+    LSHIFT = 272,
+    RSHIFT = 273,
+    EXPR_AND_AND = 274,
+    EXPR_OR_OR = 275,
+    EXPR_AND = 276,
+    EXPR_OR = 277,
+    EXPR_NOT = 278,
+    EXPR_LT = 279,
+    EXPR_LE = 280,
+    EXPR_EQ = 281,
+    EXPR_NE = 282,
+    EXPR_GE = 283,
+    EXPR_GT = 284,
+    LEFTDIV = 285,
+    EMUL = 286,
+    EDIV = 287,
+    ELEFTDIV = 288,
+    EPLUS = 289,
+    EMINUS = 290,
+    HERMITIAN = 291,
+    TRANSPOSE = 292,
+    PLUS_PLUS = 293,
+    MINUS_MINUS = 294,
+    POW = 295,
+    EPOW = 296,
+    NUM = 297,
+    IMAG_NUM = 298,
+    STRUCT_ELT = 299,
+    NAME = 300,
+    END = 301,
+    DQ_STRING = 302,
+    SQ_STRING = 303,
+    FOR = 304,
+    PARFOR = 305,
+    WHILE = 306,
+    DO = 307,
+    UNTIL = 308,
+    IF = 309,
+    ELSEIF = 310,
+    ELSE = 311,
+    SWITCH = 312,
+    CASE = 313,
+    OTHERWISE = 314,
+    BREAK = 315,
+    CONTINUE = 316,
+    FUNC_RET = 317,
+    UNWIND = 318,
+    CLEANUP = 319,
+    TRY = 320,
+    CATCH = 321,
+    GLOBAL = 322,
+    PERSISTENT = 323,
+    FCN_HANDLE = 324,
+    PROPERTIES = 325,
+    METHODS = 326,
+    EVENTS = 327,
+    ENUMERATION = 328,
+    METAQUERY = 329,
+    SUPERCLASSREF = 330,
+    GET = 331,
+    SET = 332,
+    FCN = 333,
+    END_OF_INPUT = 334,
+    LEXICAL_ERROR = 335,
+    INPUT_FILE = 336,
+    CLASSDEF = 337,
+    UNARY = 338
+  };
 #endif
 /* Tokens.  */
 #define ADD_EQ 258
@@ -374,13 +379,12 @@ extern int octave_debug;
 #define CLASSDEF 337
 #define UNARY 338
 
-
-
-#if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef union YYSTYPE
+/* Value type.  */
+#if ! defined OCTAVE_STYPE && ! defined OCTAVE_STYPE_IS_DECLARED
+typedef union OCTAVE_STYPE OCTAVE_STYPE;
+union OCTAVE_STYPE
 {
-/* Line 387 of yacc.c  */
-#line 152 "parse-tree/oct-parse.yy"
+#line 149 "parse-tree/oct-parse.yy" /* yacc.c:355  */
 
   // The type of the basic tokens returned by the lexer.
   token *tok_val;
@@ -417,14 +421,12 @@ typedef union YYSTYPE
   octave_user_function *octave_user_function_type;
   void *dummy_type;
 
-
-/* Line 387 of yacc.c  */
-#line 423 "parse-tree/oct-parse.cc"
-} YYSTYPE;
-# define YYSTYPE_IS_TRIVIAL 1
-# define yystype YYSTYPE /* obsolescent; will be withdrawn */
-# define YYSTYPE_IS_DECLARED 1
+#line 425 "parse-tree/oct-parse.cc" /* yacc.c:355  */
+};
+# define OCTAVE_STYPE_IS_TRIVIAL 1
+# define OCTAVE_STYPE_IS_DECLARED 1
 #endif
+
 
 
 #ifndef YYPUSH_MORE_DEFINED
@@ -434,38 +436,17 @@ enum { YYPUSH_MORE = 4 };
 
 typedef struct octave_pstate octave_pstate;
 
-#if defined __STDC__ || defined __cplusplus
 int octave_parse (octave_base_parser& parser);
-#else
-int octave_parse ();
-#endif
-#if defined __STDC__ || defined __cplusplus
-int octave_push_parse (octave_pstate *ps, int pushed_char, YYSTYPE const *pushed_val, octave_base_parser& parser);
-#else
-int octave_push_parse ();
-#endif
-#if defined __STDC__ || defined __cplusplus
+int octave_push_parse (octave_pstate *ps, int pushed_char, OCTAVE_STYPE const *pushed_val, octave_base_parser& parser);
 int octave_pull_parse (octave_pstate *ps, octave_base_parser& parser);
-#else
-int octave_pull_parse ();
-#endif
-#if defined __STDC__ || defined __cplusplus
 octave_pstate * octave_pstate_new (void);
-#else
-octave_pstate * octave_pstate_new ();
-#endif
-#if defined __STDC__ || defined __cplusplus
 void octave_pstate_delete (octave_pstate *ps);
-#else
-void octave_pstate_delete ();
-#endif
 
 #endif /* !YY_OCTAVE_PARSE_TREE_OCT_PARSE_H_INCLUDED  */
 
 /* Copy the second part of user declarations.  */
 
-/* Line 390 of yacc.c  */
-#line 469 "parse-tree/oct-parse.cc"
+#line 450 "parse-tree/oct-parse.cc" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -479,11 +460,8 @@ typedef unsigned char yytype_uint8;
 
 #ifdef YYTYPE_INT8
 typedef YYTYPE_INT8 yytype_int8;
-#elif (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
-typedef signed char yytype_int8;
 #else
-typedef short int yytype_int8;
+typedef signed char yytype_int8;
 #endif
 
 #ifdef YYTYPE_UINT16
@@ -503,8 +481,7 @@ typedef short int yytype_int16;
 #  define YYSIZE_T __SIZE_TYPE__
 # elif defined size_t
 #  define YYSIZE_T size_t
-# elif ! defined YYSIZE_T && (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
+# elif ! defined YYSIZE_T
 #  include <stddef.h> /* INFRINGES ON USER NAME SPACE */
 #  define YYSIZE_T size_t
 # else
@@ -526,11 +503,30 @@ typedef short int yytype_int16;
 # endif
 #endif
 
-#ifndef __attribute__
-/* This feature is available in gcc versions 2.5 and later.  */
-# if (! defined __GNUC__ || __GNUC__ < 2 \
-      || (__GNUC__ == 2 && __GNUC_MINOR__ < 5))
-#  define __attribute__(Spec) /* empty */
+#ifndef YY_ATTRIBUTE
+# if (defined __GNUC__                                               \
+      && (2 < __GNUC__ || (__GNUC__ == 2 && 96 <= __GNUC_MINOR__)))  \
+     || defined __SUNPRO_C && 0x5110 <= __SUNPRO_C
+#  define YY_ATTRIBUTE(Spec) __attribute__(Spec)
+# else
+#  define YY_ATTRIBUTE(Spec) /* empty */
+# endif
+#endif
+
+#ifndef YY_ATTRIBUTE_PURE
+# define YY_ATTRIBUTE_PURE   YY_ATTRIBUTE ((__pure__))
+#endif
+
+#ifndef YY_ATTRIBUTE_UNUSED
+# define YY_ATTRIBUTE_UNUSED YY_ATTRIBUTE ((__unused__))
+#endif
+
+#if !defined _Noreturn \
+     && (!defined __STDC_VERSION__ || __STDC_VERSION__ < 201112)
+# if defined _MSC_VER && 1200 <= _MSC_VER
+#  define _Noreturn __declspec (noreturn)
+# else
+#  define _Noreturn YY_ATTRIBUTE ((__noreturn__))
 # endif
 #endif
 
@@ -541,32 +537,33 @@ typedef short int yytype_int16;
 # define YYUSE(E) /* empty */
 #endif
 
+#if defined __GNUC__ && 407 <= __GNUC__ * 100 + __GNUC_MINOR__
+/* Suppress an incorrect diagnostic about yylval being uninitialized.  */
+# define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN \
+    _Pragma ("GCC diagnostic push") \
+    _Pragma ("GCC diagnostic ignored \"-Wuninitialized\"")\
+    _Pragma ("GCC diagnostic ignored \"-Wmaybe-uninitialized\"")
+# define YY_IGNORE_MAYBE_UNINITIALIZED_END \
+    _Pragma ("GCC diagnostic pop")
+#else
+# define YY_INITIAL_VALUE(Value) Value
+#endif
+#ifndef YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
+# define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
+# define YY_IGNORE_MAYBE_UNINITIALIZED_END
+#endif
+#ifndef YY_INITIAL_VALUE
+# define YY_INITIAL_VALUE(Value) /* Nothing. */
+#endif
 
-/* Identity function, used to suppress warnings about constant conditions.  */
-#ifndef lint
-# define YYID(N) (N)
-#else
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
-static int
-YYID (int yyi)
-#else
-static int
-YYID (yyi)
-    int yyi;
-#endif
-{
-  return yyi;
-}
-#endif
 
 #if ! defined yyoverflow || YYERROR_VERBOSE
 
 /* The parser invokes alloca or malloc; define the necessary symbols.  */
 
 # ifdef YYSTACK_ALLOC
-   /* Pacify GCC's `empty if-body' warning.  */
-#  define YYSTACK_FREE(Ptr) do { /* empty */; } while (YYID (0))
+   /* Pacify GCC's 'empty if-body' warning.  */
+#  define YYSTACK_FREE(Ptr) do { /* empty */; } while (0)
 #  ifndef YYSTACK_ALLOC_MAXIMUM
     /* The OS might guarantee only one guard page at the bottom of the stack,
        and a page size can be as small as 4096 bytes.  So we cannot safely
@@ -582,7 +579,7 @@ YYID (yyi)
 #  endif
 #  if (defined __cplusplus && ! defined EXIT_SUCCESS \
        && ! ((defined YYMALLOC || defined malloc) \
-	     && (defined YYFREE || defined free)))
+             && (defined YYFREE || defined free)))
 #   include <stdlib.h> /* INFRINGES ON USER NAME SPACE */
 #   ifndef EXIT_SUCCESS
 #    define EXIT_SUCCESS 0
@@ -590,15 +587,13 @@ YYID (yyi)
 #  endif
 #  ifndef YYMALLOC
 #   define YYMALLOC malloc
-#   if ! defined malloc && ! defined EXIT_SUCCESS && (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
+#   if ! defined malloc && ! defined EXIT_SUCCESS
 void *malloc (YYSIZE_T); /* INFRINGES ON USER NAME SPACE */
 #   endif
 #  endif
 #  ifndef YYFREE
 #   define YYFREE free
-#   if ! defined free && ! defined EXIT_SUCCESS && (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
+#   if ! defined free && ! defined EXIT_SUCCESS
 void free (void *); /* INFRINGES ON USER NAME SPACE */
 #   endif
 #  endif
@@ -608,7 +603,7 @@ void free (void *); /* INFRINGES ON USER NAME SPACE */
 
 #if (! defined yyoverflow \
      && (! defined __cplusplus \
-	 || (defined YYSTYPE_IS_TRIVIAL && YYSTYPE_IS_TRIVIAL)))
+         || (defined OCTAVE_STYPE_IS_TRIVIAL && OCTAVE_STYPE_IS_TRIVIAL)))
 
 /* A type that is properly aligned for any stack member.  */
 union yyalloc
@@ -633,16 +628,16 @@ union yyalloc
    elements in the stack, and YYPTR gives the new location of the
    stack.  Advance YYPTR to a properly aligned location for the next
    stack.  */
-# define YYSTACK_RELOCATE(Stack_alloc, Stack)				\
-    do									\
-      {									\
-	YYSIZE_T yynewbytes;						\
-	YYCOPY (&yyptr->Stack_alloc, Stack, yysize);			\
-	Stack = &yyptr->Stack_alloc;					\
-	yynewbytes = yystacksize * sizeof (*Stack) + YYSTACK_GAP_MAXIMUM; \
-	yyptr += yynewbytes / sizeof (*yyptr);				\
-      }									\
-    while (YYID (0))
+# define YYSTACK_RELOCATE(Stack_alloc, Stack)                           \
+    do                                                                  \
+      {                                                                 \
+        YYSIZE_T yynewbytes;                                            \
+        YYCOPY (&yyptr->Stack_alloc, Stack, yysize);                    \
+        Stack = &yyptr->Stack_alloc;                                    \
+        yynewbytes = yystacksize * sizeof (*Stack) + YYSTACK_GAP_MAXIMUM; \
+        yyptr += yynewbytes / sizeof (*yyptr);                          \
+      }                                                                 \
+    while (0)
 
 #endif
 
@@ -661,7 +656,7 @@ union yyalloc
           for (yyi = 0; yyi < (Count); yyi++)   \
             (Dst)[yyi] = (Src)[yyi];            \
         }                                       \
-      while (YYID (0))
+      while (0)
 #  endif
 # endif
 #endif /* !YYCOPY_NEEDED */
@@ -677,17 +672,19 @@ union yyalloc
 #define YYNNTS  104
 /* YYNRULES -- Number of rules.  */
 #define YYNRULES  275
-/* YYNRULES -- Number of states.  */
+/* YYNSTATES -- Number of states.  */
 #define YYNSTATES  514
 
-/* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
+/* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
+   by yylex, with out-of-bounds checking.  */
 #define YYUNDEFTOK  2
 #define YYMAXUTOK   338
 
-#define YYTRANSLATE(YYX)						\
+#define YYTRANSLATE(YYX)                                                \
   ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
 
-/* YYTRANSLATE[YYLEX] -- Bison symbol number corresponding to YYLEX.  */
+/* YYTRANSLATE[TOKEN-NUM] -- Symbol number corresponding to TOKEN-NUM
+   as returned by yylex, without out-of-bounds checking.  */
 static const yytype_uint8 yytranslate[] =
 {
        0,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -726,173 +723,42 @@ static const yytype_uint8 yytranslate[] =
       81,    82,    83,    84,    85,    86,    87,    88,    89
 };
 
-#if YYDEBUG
-/* YYPRHS[YYN] -- Index of the first RHS symbol of rule number YYN in
-   YYRHS.  */
-static const yytype_uint16 yyprhs[] =
-{
-       0,     0,     3,     6,     9,    11,    13,    16,    18,    22,
-      23,    25,    28,    30,    34,    36,    38,    40,    43,    45,
-      48,    50,    52,    54,    56,    58,    60,    62,    64,    68,
-      70,    74,    78,    80,    84,    85,    87,    89,    92,    95,
-      99,   102,   107,   109,   111,   113,   115,   117,   119,   121,
-     125,   127,   129,   131,   133,   135,   139,   143,   147,   149,
-     151,   154,   157,   161,   166,   170,   175,   178,   181,   185,
-     191,   194,   197,   200,   203,   206,   210,   214,   218,   222,
-     226,   230,   234,   238,   242,   246,   250,   254,   256,   259,
-     262,   266,   271,   275,   280,   284,   290,   293,   296,   299,
-     302,   305,   307,   309,   313,   315,   319,   323,   327,   331,
-     335,   339,   343,   347,   351,   355,   359,   363,   365,   369,
-     373,   377,   381,   385,   389,   393,   397,   401,   405,   409,
-     413,   417,   421,   425,   427,   429,   431,   433,   435,   437,
-     439,   441,   443,   445,   447,   450,   453,   455,   458,   459,
-     461,   466,   468,   470,   475,   477,   480,   485,   488,   496,
-     501,   508,   509,   511,   513,   516,   518,   521,   529,   534,
-     542,   549,   559,   570,   580,   593,   595,   597,   599,   609,
-     619,   625,   626,   628,   630,   634,   637,   638,   640,   642,
-     646,   648,   650,   653,   655,   659,   661,   665,   670,   673,
-     677,   683,   685,   689,   693,   696,   701,   705,   707,   709,
-     712,   714,   719,   726,   727,   731,   733,   737,   739,   744,
-     747,   748,   750,   755,   758,   764,   768,   770,   772,   774,
-     776,   780,   784,   788,   792,   795,   802,   804,   808,   810,
-     816,   819,   826,   828,   832,   835,   842,   844,   848,   850,
-     853,   860,   862,   866,   871,   872,   873,   875,   877,   879,
-     881,   884,   887,   888,   890,   891,   893,   895,   898,   900,
-     902,   904,   907,   910,   913,   914
-};
-
-/* YYRHS -- A `-1'-separated list of the rules' RHS.  */
-static const yytype_int16 yyrhs[] =
-{
-     102,     0,    -1,   103,    93,    -1,   103,    85,    -1,   198,
-      -1,   200,    -1,   104,   200,    -1,   108,    -1,   104,   199,
-     108,    -1,    -1,   106,    -1,   107,   204,    -1,   108,    -1,
-     107,   203,   108,    -1,   135,    -1,   136,    -1,   109,    -1,
-     111,   110,    -1,   114,    -1,   110,   114,    -1,    51,    -1,
-      81,    -1,    80,    -1,    53,    -1,    54,    -1,    48,    -1,
-      49,    -1,   114,    -1,    94,   117,    95,    -1,   120,    -1,
-     117,    96,   120,    -1,    92,   119,    97,    -1,   120,    -1,
-     119,    96,   120,    -1,    -1,    98,    -1,   126,    -1,   126,
-      98,    -1,    98,   126,    -1,    98,   126,    98,    -1,    99,
-      75,    -1,    99,   158,   196,   108,    -1,   111,    -1,   115,
-      -1,   121,    -1,   116,    -1,   118,    -1,   113,    -1,   112,
-      -1,    90,   135,   100,    -1,     4,    -1,    29,    -1,   135,
-      -1,   124,    -1,   125,    -1,   126,    98,   124,    -1,   126,
-      98,   125,    -1,   126,    98,   135,    -1,    91,    -1,   123,
-      -1,   128,    44,    -1,   128,    45,    -1,   128,    90,   100,
-      -1,   128,    90,   126,   100,    -1,   128,    92,    97,    -1,
-     128,    92,   126,    97,    -1,   128,    42,    -1,   128,    43,
-      -1,   128,   127,    50,    -1,   128,   127,    90,   135,   100,
-      -1,    44,   128,    -1,    45,   128,    -1,    29,   128,    -1,
-       6,   128,    -1,     5,   128,    -1,   128,    46,   129,    -1,
-     128,    47,   129,    -1,   128,     6,   128,    -1,   128,     5,
-     128,    -1,   128,     7,   128,    -1,   128,     8,   128,    -1,
-     128,    40,   128,    -1,   128,    41,   128,    -1,   128,    37,
-     128,    -1,   128,    38,   128,    -1,   128,    36,   128,    -1,
-     128,    39,   128,    -1,   123,    -1,   129,    44,    -1,   129,
-      45,    -1,   129,    90,   100,    -1,   129,    90,   126,   100,
-      -1,   129,    92,    97,    -1,   129,    92,   126,    97,    -1,
-     129,   127,    50,    -1,   129,   127,    90,   135,   100,    -1,
-      44,   129,    -1,    45,   129,    -1,    29,   129,    -1,     6,
-     129,    -1,     5,   129,    -1,   131,    -1,   128,    -1,   131,
-       4,   128,    -1,   130,    -1,   132,    23,   132,    -1,   132,
-      24,   132,    -1,   132,    30,   132,    -1,   132,    31,   132,
-      -1,   132,    32,   132,    -1,   132,    34,   132,    -1,   132,
-      35,   132,    -1,   132,    33,   132,    -1,   132,    27,   132,
-      -1,   132,    28,   132,    -1,   132,    25,   132,    -1,   132,
-      26,   132,    -1,   132,    -1,   133,     3,   135,    -1,   133,
-       9,   135,    -1,   133,    10,   135,    -1,   133,    11,   135,
-      -1,   133,    12,   135,    -1,   133,    13,   135,    -1,   133,
-      14,   135,    -1,   133,    21,   135,    -1,   133,    22,   135,
-      -1,   133,    15,   135,    -1,   133,    16,   135,    -1,   133,
-      17,   135,    -1,   133,    18,   135,    -1,   133,    19,   135,
-      -1,   133,    20,   135,    -1,   132,    -1,   134,    -1,   122,
-      -1,   137,    -1,   141,    -1,   152,    -1,   153,    -1,   154,
-      -1,   166,    -1,   164,    -1,   174,    -1,    73,   138,    -1,
-      74,   138,    -1,   140,    -1,   138,   140,    -1,    -1,   111,
-      -1,   111,     3,   139,   135,    -1,   142,    -1,   147,    -1,
-      60,   197,   143,    52,    -1,   144,    -1,   144,   146,    -1,
-     135,   196,   204,   105,    -1,   144,   145,    -1,    61,   197,
-     204,   135,   196,   204,   105,    -1,    62,   197,   204,   105,
-      -1,    63,   197,   135,   204,   148,    52,    -1,    -1,   151,
-      -1,   149,    -1,   149,   151,    -1,   150,    -1,   149,   150,
-      -1,    64,   197,   204,   135,   196,   204,   105,    -1,    65,
-     197,   204,   105,    -1,    57,   197,   135,   196,   204,   105,
-      52,    -1,    58,   197,   204,   105,    59,   135,    -1,    55,
-     197,   133,     3,   135,   196,   204,   105,    52,    -1,    55,
-     197,    90,   133,     3,   135,   100,   204,   105,    52,    -1,
-      56,   197,   133,     3,   135,   196,   204,   105,    52,    -1,
-      56,   197,    90,   133,     3,   135,    98,   135,   100,   204,
-     105,    52,    -1,    66,    -1,    67,    -1,    68,    -1,    69,
-     197,   204,   105,    70,   197,   204,   105,    52,    -1,    71,
-     197,   204,   105,    72,   197,   204,   105,    52,    -1,    71,
-     197,   204,   105,    52,    -1,    -1,    90,    -1,   100,    -1,
-     156,   159,   157,    -1,   156,     1,    -1,    -1,   160,    -1,
-     161,    -1,   160,    98,   161,    -1,   140,    -1,   125,    -1,
-      94,    95,    -1,   111,    -1,    94,   163,    95,    -1,   111,
-      -1,   163,    98,   111,    -1,    87,   201,   105,    85,    -1,
-     155,    84,    -1,   165,   197,   168,    -1,   165,   197,   162,
-       3,   168,    -1,   111,    -1,    82,    91,   111,    -1,    83,
-      91,   111,    -1,   167,   169,    -1,   158,   204,   105,   170,
-      -1,   204,   105,   170,    -1,    52,    -1,    85,    -1,    88,
-     197,    -1,    52,    -1,   171,   175,   111,   178,    -1,   173,
-     204,   180,   204,   197,   172,    -1,    -1,    90,   176,   100,
-      -1,   177,    -1,   176,    98,   177,    -1,   111,    -1,   111,
-       3,   139,   135,    -1,    29,   111,    -1,    -1,   179,    -1,
-      30,   111,    91,   111,    -1,    30,   111,    -1,   179,    27,
-     111,    91,   111,    -1,   179,    27,   111,    -1,   182,    -1,
-     186,    -1,   189,    -1,   193,    -1,   180,   204,   182,    -1,
-     180,   204,   186,    -1,   180,   204,   189,    -1,   180,   204,
-     193,    -1,    76,   197,    -1,   181,   175,   204,   183,   204,
-      52,    -1,   184,    -1,   183,   204,   184,    -1,   111,    -1,
-     111,     3,   139,   135,    96,    -1,    77,   197,    -1,   185,
-     175,   204,   187,   204,    52,    -1,   166,    -1,   187,   204,
-     166,    -1,    78,   197,    -1,   188,   175,   204,   190,   204,
-      52,    -1,   191,    -1,   190,   204,   191,    -1,   111,    -1,
-      79,   197,    -1,   192,   175,   204,   194,   204,    52,    -1,
-     195,    -1,   194,   204,   195,    -1,   111,    90,   135,   100,
-      -1,    -1,    -1,    86,    -1,     1,    -1,    98,    -1,    96,
-      -1,   199,    98,    -1,   199,    96,    -1,    -1,   199,    -1,
-      -1,   202,    -1,    93,    -1,   202,    93,    -1,    98,    -1,
-      96,    -1,    93,    -1,   203,    98,    -1,   203,    96,    -1,
-     203,    93,    -1,    -1,   203,    -1
-};
-
-/* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
+#if OCTAVE_DEBUG
+  /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   350,   350,   355,   361,   365,   367,   371,   373,   378,
-     379,   383,   387,   389,   393,   395,   397,   409,   420,   422,
-     433,   441,   445,   449,   451,   455,   457,   459,   463,   467,
-     469,   483,   487,   489,   508,   509,   511,   513,   515,   517,
-     521,   528,   535,   537,   539,   541,   546,   548,   550,   552,
-     556,   563,   569,   571,   573,   575,   580,   585,   592,   596,
-     598,   600,   602,   611,   620,   629,   638,   640,   642,   644,
-     646,   648,   650,   652,   654,   656,   658,   660,   662,   664,
-     666,   668,   670,   672,   674,   676,   678,   682,   684,   686,
-     688,   697,   706,   715,   724,   726,   728,   730,   732,   734,
-     736,   740,   744,   746,   757,   759,   761,   763,   765,   767,
-     769,   771,   773,   775,   777,   779,   781,   785,   799,   801,
-     803,   805,   807,   809,   811,   813,   815,   817,   819,   821,
-     823,   825,   827,   831,   846,   848,   856,   858,   860,   862,
-     864,   866,   868,   870,   878,   883,   890,   892,   900,   902,
-     904,   915,   917,   925,   935,   937,   944,   950,   957,   965,
-     973,   984,   985,   987,   989,   996,   998,  1005,  1009,  1019,
-    1029,  1033,  1042,  1051,  1060,  1075,  1077,  1079,  1087,  1096,
-    1105,  1120,  1147,  1160,  1167,  1174,  1183,  1184,  1200,  1202,
-    1209,  1211,  1219,  1225,  1243,  1260,  1262,  1273,  1303,  1312,
-    1318,  1326,  1335,  1341,  1349,  1359,  1361,  1365,  1374,  1414,
-    1421,  1433,  1437,  1442,  1443,  1447,  1449,  1453,  1455,  1457,
-    1463,  1464,  1468,  1470,  1472,  1474,  1478,  1480,  1482,  1484,
-    1486,  1488,  1490,  1492,  1496,  1501,  1506,  1508,  1512,  1514,
-    1518,  1522,  1526,  1528,  1532,  1536,  1540,  1542,  1546,  1550,
-    1554,  1558,  1560,  1564,  1573,  1577,  1580,  1582,  1585,  1587,
-    1589,  1591,  1596,  1597,  1602,  1603,  1607,  1609,  1613,  1615,
-    1617,  1619,  1621,  1623,  1628,  1629
+       0,   347,   347,   352,   358,   362,   364,   368,   370,   375,
+     376,   380,   384,   386,   390,   392,   394,   406,   417,   419,
+     430,   438,   442,   446,   448,   452,   454,   456,   460,   464,
+     466,   480,   484,   486,   505,   506,   508,   510,   512,   514,
+     518,   525,   532,   534,   536,   538,   543,   545,   547,   549,
+     553,   560,   566,   568,   570,   572,   577,   582,   589,   593,
+     595,   597,   599,   608,   617,   626,   635,   637,   639,   641,
+     643,   645,   647,   649,   651,   653,   655,   657,   659,   661,
+     663,   665,   667,   669,   671,   673,   675,   679,   681,   683,
+     685,   694,   703,   712,   721,   723,   725,   727,   729,   731,
+     733,   737,   741,   743,   754,   756,   758,   760,   762,   764,
+     766,   768,   770,   772,   774,   776,   778,   782,   796,   798,
+     800,   802,   804,   806,   808,   810,   812,   814,   816,   818,
+     820,   822,   824,   828,   843,   845,   853,   855,   857,   859,
+     861,   863,   865,   867,   875,   880,   887,   889,   897,   899,
+     901,   912,   914,   922,   932,   934,   941,   947,   954,   962,
+     970,   981,   982,   984,   986,   993,   995,  1002,  1006,  1016,
+    1026,  1030,  1039,  1048,  1057,  1072,  1074,  1076,  1084,  1093,
+    1102,  1117,  1144,  1157,  1164,  1171,  1180,  1181,  1197,  1199,
+    1206,  1208,  1216,  1222,  1240,  1257,  1259,  1270,  1300,  1309,
+    1315,  1323,  1332,  1338,  1346,  1356,  1358,  1362,  1371,  1411,
+    1418,  1430,  1434,  1439,  1440,  1444,  1446,  1450,  1452,  1454,
+    1460,  1461,  1465,  1467,  1469,  1471,  1475,  1477,  1479,  1481,
+    1483,  1485,  1487,  1489,  1493,  1498,  1503,  1505,  1509,  1511,
+    1515,  1519,  1523,  1525,  1529,  1533,  1537,  1539,  1543,  1547,
+    1551,  1555,  1557,  1561,  1570,  1574,  1577,  1579,  1582,  1584,
+    1586,  1588,  1593,  1594,  1599,  1600,  1604,  1606,  1610,  1612,
+    1614,  1616,  1618,  1620,  1625,  1626
 };
 #endif
 
-#if YYDEBUG || YYERROR_VERBOSE || 0
+#if OCTAVE_DEBUG || YYERROR_VERBOSE || 0
 /* YYTNAME[SYMBOL-NUM] -- String name of the symbol SYMBOL-NUM.
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
@@ -934,13 +800,13 @@ static const char *const yytname[] =
   "events_beg", "events_block", "events_list", "class_event", "enum_beg",
   "enum_block", "enum_list", "class_enum", "stmt_begin", "stash_comment",
   "parse_error", "sep_no_nl", "opt_sep_no_nl", "opt_nl", "nl", "sep",
-  "opt_sep", YY_NULL
+  "opt_sep", YY_NULLPTR
 };
 #endif
 
 # ifdef YYPRINT
-/* YYTOKNUM[YYLEX-NUM] -- Internal token number corresponding to
-   token YYLEX-NUM.  */
+/* YYTOKNUM[NUM] -- (External) token number corresponding to the
+   (internal) symbol number NUM (which must be that of a token).  */
 static const yytype_uint16 yytoknum[] =
 {
        0,   256,   257,    61,    58,    45,    43,    42,    47,   258,
@@ -957,150 +823,18 @@ static const yytype_uint16 yytoknum[] =
 };
 # endif
 
-/* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
-static const yytype_uint8 yyr1[] =
-{
-       0,   101,   102,   102,   102,   103,   103,   104,   104,   105,
-     105,   106,   107,   107,   108,   108,   108,   109,   110,   110,
-     111,   112,   113,   114,   114,   115,   115,   115,   116,   117,
-     117,   118,   119,   119,   120,   120,   120,   120,   120,   120,
-     121,   122,   123,   123,   123,   123,   123,   123,   123,   123,
-     124,   125,   126,   126,   126,   126,   126,   126,   127,   128,
-     128,   128,   128,   128,   128,   128,   128,   128,   128,   128,
-     128,   128,   128,   128,   128,   128,   128,   128,   128,   128,
-     128,   128,   128,   128,   128,   128,   128,   129,   129,   129,
-     129,   129,   129,   129,   129,   129,   129,   129,   129,   129,
-     129,   130,   131,   131,   132,   132,   132,   132,   132,   132,
-     132,   132,   132,   132,   132,   132,   132,   133,   134,   134,
-     134,   134,   134,   134,   134,   134,   134,   134,   134,   134,
-     134,   134,   134,   135,   135,   135,   136,   136,   136,   136,
-     136,   136,   136,   136,   137,   137,   138,   138,   139,   140,
-     140,   141,   141,   142,   143,   143,   144,   144,   145,   146,
-     147,   148,   148,   148,   148,   149,   149,   150,   151,   152,
-     152,   152,   152,   152,   152,   153,   153,   153,   154,   154,
-     154,   155,   156,   157,   158,   158,   159,   159,   160,   160,
-     161,   161,   162,   162,   162,   163,   163,   164,   165,   166,
-     166,   167,   167,   167,   168,   169,   169,   170,   170,   171,
-     172,   173,   174,   175,   175,   176,   176,   177,   177,   177,
-     178,   178,   179,   179,   179,   179,   180,   180,   180,   180,
-     180,   180,   180,   180,   181,   182,   183,   183,   184,   184,
-     185,   186,   187,   187,   188,   189,   190,   190,   191,   192,
-     193,   194,   194,   195,   196,   197,   198,   198,   199,   199,
-     199,   199,   200,   200,   201,   201,   202,   202,   203,   203,
-     203,   203,   203,   203,   204,   204
-};
-
-/* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
-static const yytype_uint8 yyr2[] =
-{
-       0,     2,     2,     2,     1,     1,     2,     1,     3,     0,
-       1,     2,     1,     3,     1,     1,     1,     2,     1,     2,
-       1,     1,     1,     1,     1,     1,     1,     1,     3,     1,
-       3,     3,     1,     3,     0,     1,     1,     2,     2,     3,
-       2,     4,     1,     1,     1,     1,     1,     1,     1,     3,
-       1,     1,     1,     1,     1,     3,     3,     3,     1,     1,
-       2,     2,     3,     4,     3,     4,     2,     2,     3,     5,
-       2,     2,     2,     2,     2,     3,     3,     3,     3,     3,
-       3,     3,     3,     3,     3,     3,     3,     1,     2,     2,
-       3,     4,     3,     4,     3,     5,     2,     2,     2,     2,
-       2,     1,     1,     3,     1,     3,     3,     3,     3,     3,
-       3,     3,     3,     3,     3,     3,     3,     1,     3,     3,
-       3,     3,     3,     3,     3,     3,     3,     3,     3,     3,
-       3,     3,     3,     1,     1,     1,     1,     1,     1,     1,
-       1,     1,     1,     1,     2,     2,     1,     2,     0,     1,
-       4,     1,     1,     4,     1,     2,     4,     2,     7,     4,
-       6,     0,     1,     1,     2,     1,     2,     7,     4,     7,
-       6,     9,    10,     9,    12,     1,     1,     1,     9,     9,
-       5,     0,     1,     1,     3,     2,     0,     1,     1,     3,
-       1,     1,     2,     1,     3,     1,     3,     4,     2,     3,
-       5,     1,     3,     3,     2,     4,     3,     1,     1,     2,
-       1,     4,     6,     0,     3,     1,     3,     1,     4,     2,
-       0,     1,     4,     2,     5,     3,     1,     1,     1,     1,
-       3,     3,     3,     3,     2,     6,     1,     3,     1,     5,
-       2,     6,     1,     3,     2,     6,     1,     3,     1,     2,
-       6,     1,     3,     4,     0,     0,     1,     1,     1,     1,
-       2,     2,     0,     1,     0,     1,     1,     2,     1,     1,
-       1,     2,     2,     2,     0,     1
-};
-
-/* YYDEFACT[STATE-NAME] -- Default reduction number in state STATE-NUM.
-   Performed when YYTABLE doesn't specify something else to do.  Zero
-   means the default is an error.  */
-static const yytype_uint16 yydefact[] =
-{
-       0,   257,     0,     0,     0,     0,     0,    25,    26,    20,
-      23,    24,   255,   255,   255,   255,   255,   255,   175,   176,
-     177,   255,   255,     0,     0,    22,    21,   256,   264,   255,
-       0,    34,    34,   259,   258,     0,     0,     0,   262,     7,
-      16,    42,    48,    47,    27,    43,    45,    46,    44,   135,
-      59,   102,   104,   101,   133,     0,   134,    14,    15,   136,
-     137,   151,   152,   138,   139,   140,     0,   142,   255,   141,
-     213,   274,   143,     4,   263,     5,     0,    42,    74,    73,
-      72,    70,    71,     0,     0,     0,   274,     0,     0,   274,
-     274,   149,   144,   146,   145,   266,     9,   265,   209,     0,
-      50,    51,    35,     0,    32,    53,    54,    36,    52,     0,
-      29,    40,   182,     0,   254,     1,     3,     2,   263,     6,
-      17,    18,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,    66,    67,    60,    61,     0,     0,     0,    58,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-     198,     0,     0,     0,   270,   269,   268,   275,     0,   261,
-     260,     0,   117,     0,     0,     0,   254,     9,   254,     0,
-     154,   274,     9,     9,   148,   147,     0,    10,   274,    12,
-     267,    49,    38,    34,    31,    37,    28,    34,   185,    51,
-     191,   190,     0,   187,   188,   181,     8,    19,    78,    77,
-      79,    80,    85,    83,    84,    86,    81,    82,     0,     0,
-       0,     0,     0,    87,    75,    76,    62,     0,    64,     0,
-      68,     0,   103,   105,   106,   115,   116,   113,   114,   107,
-     108,   109,   112,   110,   111,   118,   119,   120,   121,   122,
-     123,   124,   127,   128,   129,   130,   131,   132,   125,   126,
-       0,     0,     0,   201,     0,   274,   199,     0,   217,     0,
-     215,   220,   273,   272,   271,   255,   255,   255,   255,   274,
-     213,   226,   213,   227,   213,   228,   213,   229,     0,     0,
-       0,     0,   274,     0,   274,   153,   255,   255,   157,   155,
-     161,     0,     0,     0,   197,   275,    11,    39,    33,    55,
-      56,    57,    30,   183,   184,     0,    41,   100,    99,    98,
-      96,    97,    88,    89,     0,     0,     0,     0,    63,    65,
-       0,     0,     0,   192,   195,     0,     0,   274,   204,     9,
-     219,   148,     0,   214,     0,   211,   221,   234,   240,   244,
-     249,   255,   274,   274,   274,   274,     0,   254,     0,   254,
-       9,     0,     9,   274,   274,   255,   255,     0,   163,   165,
-     162,   255,   180,   255,   150,    13,   189,    90,     0,    92,
-       0,    94,     0,    69,   202,   203,   194,     0,   201,   200,
-       9,     0,     0,   216,   223,     0,   230,   231,   232,   233,
-       0,     0,   181,     0,     0,     0,   274,   118,   274,     0,
-     170,   156,     0,     9,   274,   274,   160,   166,   164,   274,
-     274,    91,    93,     0,   196,     0,   207,   208,   206,   218,
-       0,   225,   210,   212,   238,   274,   236,   242,   274,   248,
-     274,   246,     0,   274,   251,   274,     9,     0,     9,   169,
-     254,   159,     0,     9,     9,     9,    95,   205,   222,     0,
-     148,     0,   181,     0,     0,     0,     9,     0,     0,     0,
-     274,   254,   168,     0,     0,   224,     0,   235,   237,   241,
-     243,   245,   247,     0,   250,   252,     0,   171,   274,   173,
-       9,   274,   178,   179,     0,   253,   172,     9,   158,     9,
-     239,     0,   167,   174
-};
-
-/* YYDEFGOTO[NTERM-NUM].  */
-static const yytype_int16 yydefgoto[] =
-{
-      -1,    36,    37,    38,   196,   197,   198,   199,    40,   120,
-      77,    42,    43,    44,    45,    46,   109,    47,   103,   104,
-      48,    49,    50,   105,   106,   107,   141,    51,   234,    52,
-      53,    54,    55,    56,    57,    58,    59,    92,   313,    93,
-      60,    61,   189,   190,   308,   309,    62,   377,   378,   379,
-     380,    63,    64,    65,    66,   113,   324,   114,   212,   213,
-     214,   274,   345,    67,    68,    69,   275,   276,   348,   438,
-      70,   443,    71,    72,   173,   279,   280,   355,   356,   289,
-     290,   291,   445,   446,   292,   293,   448,   294,   295,   450,
-     451,   296,   297,   453,   454,   215,    83,    73,    74,    75,
-      96,    97,   177,   178
-};
-
-/* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
-   STATE-NUM.  */
 #define YYPACT_NINF -400
+
+#define yypact_value_is_default(Yystate) \
+  (!!((Yystate) == (-400)))
+
+#define YYTABLE_NINF -263
+
+#define yytable_value_is_error(Yytable_value) \
+  0
+
+  /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
+     STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
      547,  -400,  1093,  1093,  1093,  1093,  1093,  -400,  -400,  -400,
@@ -1157,7 +891,66 @@ static const yytype_int16 yypact[] =
     -400,   316,  -400,  -400
 };
 
-/* YYPGOTO[NTERM-NUM].  */
+  /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
+     Performed when YYTABLE does not specify something else to do.  Zero
+     means the default is an error.  */
+static const yytype_uint16 yydefact[] =
+{
+       0,   257,     0,     0,     0,     0,     0,    25,    26,    20,
+      23,    24,   255,   255,   255,   255,   255,   255,   175,   176,
+     177,   255,   255,     0,     0,    22,    21,   256,   264,   255,
+       0,    34,    34,   259,   258,     0,     0,     0,   262,     7,
+      16,    42,    48,    47,    27,    43,    45,    46,    44,   135,
+      59,   102,   104,   101,   133,     0,   134,    14,    15,   136,
+     137,   151,   152,   138,   139,   140,     0,   142,   255,   141,
+     213,   274,   143,     4,   263,     5,     0,    42,    74,    73,
+      72,    70,    71,     0,     0,     0,   274,     0,     0,   274,
+     274,   149,   144,   146,   145,   266,     9,   265,   209,     0,
+      50,    51,    35,     0,    32,    53,    54,    36,    52,     0,
+      29,    40,   182,     0,   254,     1,     3,     2,   263,     6,
+      17,    18,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,    66,    67,    60,    61,     0,     0,     0,    58,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+     198,     0,     0,     0,   270,   269,   268,   275,     0,   261,
+     260,     0,   117,     0,     0,     0,   254,     9,   254,     0,
+     154,   274,     9,     9,   148,   147,     0,    10,   274,    12,
+     267,    49,    38,    34,    31,    37,    28,    34,   185,    51,
+     191,   190,     0,   187,   188,   181,     8,    19,    78,    77,
+      79,    80,    85,    83,    84,    86,    81,    82,     0,     0,
+       0,     0,     0,    87,    75,    76,    62,     0,    64,     0,
+      68,     0,   103,   105,   106,   115,   116,   113,   114,   107,
+     108,   109,   112,   110,   111,   118,   119,   120,   121,   122,
+     123,   124,   127,   128,   129,   130,   131,   132,   125,   126,
+       0,     0,     0,   201,     0,   274,   199,     0,   217,     0,
+     215,   220,   273,   272,   271,   255,   255,   255,   255,   274,
+     213,   226,   213,   227,   213,   228,   213,   229,     0,     0,
+       0,     0,   274,     0,   274,   153,   255,   255,   157,   155,
+     161,     0,     0,     0,   197,   275,    11,    39,    33,    55,
+      56,    57,    30,   183,   184,     0,    41,   100,    99,    98,
+      96,    97,    88,    89,     0,     0,     0,     0,    63,    65,
+       0,     0,     0,   192,   195,     0,     0,   274,   204,     9,
+     219,   148,     0,   214,     0,   211,   221,   234,   240,   244,
+     249,   255,   274,   274,   274,   274,     0,   254,     0,   254,
+       9,     0,     9,   274,   274,   255,   255,     0,   163,   165,
+     162,   255,   180,   255,   150,    13,   189,    90,     0,    92,
+       0,    94,     0,    69,   202,   203,   194,     0,   201,   200,
+       9,     0,     0,   216,   223,     0,   230,   231,   232,   233,
+       0,     0,   181,     0,     0,     0,   274,   118,   274,     0,
+     170,   156,     0,     9,   274,   274,   160,   166,   164,   274,
+     274,    91,    93,     0,   196,     0,   207,   208,   206,   218,
+       0,   225,   210,   212,   238,   274,   236,   242,   274,   248,
+     274,   246,     0,   274,   251,   274,     9,     0,     9,   169,
+     254,   159,     0,     9,     9,     9,    95,   205,   222,     0,
+     148,     0,   181,     0,     0,     0,     9,     0,     0,     0,
+     274,   254,   168,     0,     0,   224,     0,   235,   237,   241,
+     243,   245,   247,     0,   250,   252,     0,   171,   274,   173,
+       9,   274,   178,   179,     0,   253,   172,     9,   158,     9,
+     239,     0,   167,   174
+};
+
+  /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int16 yypgoto[] =
 {
     -400,  -400,  -400,  -400,    81,  -400,  -400,     1,  -400,  -400,
@@ -1173,10 +966,25 @@ static const yytype_int16 yypgoto[] =
     -400,  -400,   201,    69
 };
 
-/* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
-   positive, shift that token.  If negative, reduce the rule which
-   number is the opposite.  If YYTABLE_NINF, syntax error.  */
-#define YYTABLE_NINF -263
+  /* YYDEFGOTO[NTERM-NUM].  */
+static const yytype_int16 yydefgoto[] =
+{
+      -1,    36,    37,    38,   196,   197,   198,   199,    40,   120,
+      77,    42,    43,    44,    45,    46,   109,    47,   103,   104,
+      48,    49,    50,   105,   106,   107,   141,    51,   234,    52,
+      53,    54,    55,    56,    57,    58,    59,    92,   313,    93,
+      60,    61,   189,   190,   308,   309,    62,   377,   378,   379,
+     380,    63,    64,    65,    66,   113,   324,   114,   212,   213,
+     214,   274,   345,    67,    68,    69,   275,   276,   348,   438,
+      70,   443,    71,    72,   173,   279,   280,   355,   356,   289,
+     290,   291,   445,   446,   292,   293,   448,   294,   295,   450,
+     451,   296,   297,   453,   454,   215,    83,    73,    74,    75,
+      96,    97,   177,   178
+};
+
+  /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
+     positive, shift that token.  If negative, reduce the rule whose
+     number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int16 yytable[] =
 {
       41,    39,   302,   202,   304,   110,   402,   183,   185,   235,
@@ -1322,12 +1130,6 @@ static const yytype_int16 yytable[] =
      159,   160,   161,   162,   163,   164,   165,   166,   167,   168,
      169
 };
-
-#define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-400)))
-
-#define yytable_value_is_error(Yytable_value) \
-  YYID (0)
 
 static const yytype_int16 yycheck[] =
 {
@@ -1475,8 +1277,8 @@ static const yytype_int16 yycheck[] =
       22
 };
 
-/* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
-   symbol of state STATE-NUM.  */
+  /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
+     symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
        0,     1,     5,     6,    29,    44,    45,    48,    49,    51,
@@ -1533,30 +1335,82 @@ static const yytype_uint8 yystos[] =
       96,   105,   105,    52
 };
 
-#define yyerrok		(yyerrstatus = 0)
-#define yyclearin	(yychar = YYEMPTY)
-#define YYEMPTY		(-2)
-#define YYEOF		0
+  /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
+static const yytype_uint8 yyr1[] =
+{
+       0,   101,   102,   102,   102,   103,   103,   104,   104,   105,
+     105,   106,   107,   107,   108,   108,   108,   109,   110,   110,
+     111,   112,   113,   114,   114,   115,   115,   115,   116,   117,
+     117,   118,   119,   119,   120,   120,   120,   120,   120,   120,
+     121,   122,   123,   123,   123,   123,   123,   123,   123,   123,
+     124,   125,   126,   126,   126,   126,   126,   126,   127,   128,
+     128,   128,   128,   128,   128,   128,   128,   128,   128,   128,
+     128,   128,   128,   128,   128,   128,   128,   128,   128,   128,
+     128,   128,   128,   128,   128,   128,   128,   129,   129,   129,
+     129,   129,   129,   129,   129,   129,   129,   129,   129,   129,
+     129,   130,   131,   131,   132,   132,   132,   132,   132,   132,
+     132,   132,   132,   132,   132,   132,   132,   133,   134,   134,
+     134,   134,   134,   134,   134,   134,   134,   134,   134,   134,
+     134,   134,   134,   135,   135,   135,   136,   136,   136,   136,
+     136,   136,   136,   136,   137,   137,   138,   138,   139,   140,
+     140,   141,   141,   142,   143,   143,   144,   144,   145,   146,
+     147,   148,   148,   148,   148,   149,   149,   150,   151,   152,
+     152,   152,   152,   152,   152,   153,   153,   153,   154,   154,
+     154,   155,   156,   157,   158,   158,   159,   159,   160,   160,
+     161,   161,   162,   162,   162,   163,   163,   164,   165,   166,
+     166,   167,   167,   167,   168,   169,   169,   170,   170,   171,
+     172,   173,   174,   175,   175,   176,   176,   177,   177,   177,
+     178,   178,   179,   179,   179,   179,   180,   180,   180,   180,
+     180,   180,   180,   180,   181,   182,   183,   183,   184,   184,
+     185,   186,   187,   187,   188,   189,   190,   190,   191,   192,
+     193,   194,   194,   195,   196,   197,   198,   198,   199,   199,
+     199,   199,   200,   200,   201,   201,   202,   202,   203,   203,
+     203,   203,   203,   203,   204,   204
+};
 
-#define YYACCEPT	goto yyacceptlab
-#define YYABORT		goto yyabortlab
-#define YYERROR		goto yyerrorlab
+  /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
+static const yytype_uint8 yyr2[] =
+{
+       0,     2,     2,     2,     1,     1,     2,     1,     3,     0,
+       1,     2,     1,     3,     1,     1,     1,     2,     1,     2,
+       1,     1,     1,     1,     1,     1,     1,     1,     3,     1,
+       3,     3,     1,     3,     0,     1,     1,     2,     2,     3,
+       2,     4,     1,     1,     1,     1,     1,     1,     1,     3,
+       1,     1,     1,     1,     1,     3,     3,     3,     1,     1,
+       2,     2,     3,     4,     3,     4,     2,     2,     3,     5,
+       2,     2,     2,     2,     2,     3,     3,     3,     3,     3,
+       3,     3,     3,     3,     3,     3,     3,     1,     2,     2,
+       3,     4,     3,     4,     3,     5,     2,     2,     2,     2,
+       2,     1,     1,     3,     1,     3,     3,     3,     3,     3,
+       3,     3,     3,     3,     3,     3,     3,     1,     3,     3,
+       3,     3,     3,     3,     3,     3,     3,     3,     3,     3,
+       3,     3,     3,     1,     1,     1,     1,     1,     1,     1,
+       1,     1,     1,     1,     2,     2,     1,     2,     0,     1,
+       4,     1,     1,     4,     1,     2,     4,     2,     7,     4,
+       6,     0,     1,     1,     2,     1,     2,     7,     4,     7,
+       6,     9,    10,     9,    12,     1,     1,     1,     9,     9,
+       5,     0,     1,     1,     3,     2,     0,     1,     1,     3,
+       1,     1,     2,     1,     3,     1,     3,     4,     2,     3,
+       5,     1,     3,     3,     2,     4,     3,     1,     1,     2,
+       1,     4,     6,     0,     3,     1,     3,     1,     4,     2,
+       0,     1,     4,     2,     5,     3,     1,     1,     1,     1,
+       3,     3,     3,     3,     2,     6,     1,     3,     1,     5,
+       2,     6,     1,     3,     2,     6,     1,     3,     1,     2,
+       6,     1,     3,     4,     0,     0,     1,     1,     1,     1,
+       2,     2,     0,     1,     0,     1,     1,     2,     1,     1,
+       1,     2,     2,     2,     0,     1
+};
 
 
-/* Like YYERROR except do call yyerror.  This remains here temporarily
-   to ease the transition to the new meaning of YYERROR, for GCC.
-   Once GCC version 2 has supplanted version 1, this can go.  However,
-   YYFAIL appears to be in use.  Nevertheless, it is formally deprecated
-   in Bison 2.4.2's NEWS entry, where a plan to phase it out is
-   discussed.  */
+#define yyerrok         (yyerrstatus = 0)
+#define yyclearin       (yychar = YYEMPTY)
+#define YYEMPTY         (-2)
+#define YYEOF           0
 
-#define YYFAIL		goto yyerrlab
-#if defined YYFAIL
-  /* This is here to suppress warnings from the GCC cpp's
-     -Wunused-macros.  Normally we don't worry about that warning, but
-     some users do, and we want to make it easy for users to remove
-     YYFAIL uses, which will produce warnings from Bison 2.5.  */
-#endif
+#define YYACCEPT        goto yyacceptlab
+#define YYABORT         goto yyabortlab
+#define YYERROR         goto yyerrorlab
+
 
 #define YYRECOVERING()  (!!yyerrstatus)
 
@@ -1573,14 +1427,29 @@ do                                                              \
   else                                                          \
     {                                                           \
       yyerror (parser, YY_("syntax error: cannot back up")); \
-      YYERROR;							\
-    }								\
-while (YYID (0))
+      YYERROR;                                                  \
+    }                                                           \
+while (0)
 
 /* Error token number */
-#define YYTERROR	1
-#define YYERRCODE	256
+#define YYTERROR        1
+#define YYERRCODE       256
 
+
+
+/* Enable debugging if requested.  */
+#if OCTAVE_DEBUG
+
+# ifndef YYFPRINTF
+#  include <stdio.h> /* INFRINGES ON USER NAME SPACE */
+#  define YYFPRINTF fprintf
+# endif
+
+# define YYDPRINTF(Args)                        \
+do {                                            \
+  if (yydebug)                                  \
+    YYFPRINTF Args;                             \
+} while (0)
 
 /* This macro is provided for backward compatibility. */
 #ifndef YY_LOCATION_PRINT
@@ -1588,67 +1457,33 @@ while (YYID (0))
 #endif
 
 
-/* YYLEX -- calling `yylex' with the right arguments.  */
-#ifdef YYLEX_PARAM
-# define YYLEX yylex (&yylval, YYLEX_PARAM)
-#else
-# define YYLEX yylex (&yylval, scanner)
-#endif
-
-/* Enable debugging if requested.  */
-#if YYDEBUG
-
-# ifndef YYFPRINTF
-#  include <stdio.h> /* INFRINGES ON USER NAME SPACE */
-#  define YYFPRINTF fprintf
-# endif
-
-# define YYDPRINTF(Args)			\
-do {						\
-  if (yydebug)					\
-    YYFPRINTF Args;				\
-} while (YYID (0))
-
-# define YY_SYMBOL_PRINT(Title, Type, Value, Location)			  \
-do {									  \
-  if (yydebug)								  \
-    {									  \
-      YYFPRINTF (stderr, "%s ", Title);					  \
-      yy_symbol_print (stderr,						  \
-		  Type, Value, parser); \
-      YYFPRINTF (stderr, "\n");						  \
-    }									  \
-} while (YYID (0))
+# define YY_SYMBOL_PRINT(Title, Type, Value, Location)                    \
+do {                                                                      \
+  if (yydebug)                                                            \
+    {                                                                     \
+      YYFPRINTF (stderr, "%s ", Title);                                   \
+      yy_symbol_print (stderr,                                            \
+                  Type, Value, parser); \
+      YYFPRINTF (stderr, "\n");                                           \
+    }                                                                     \
+} while (0)
 
 
-/*--------------------------------.
-| Print this symbol on YYOUTPUT.  |
-`--------------------------------*/
+/*----------------------------------------.
+| Print this symbol's value on YYOUTPUT.  |
+`----------------------------------------*/
 
-/*ARGSUSED*/
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
 static void
 yy_symbol_value_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, octave_base_parser& parser)
-#else
-static void
-yy_symbol_value_print (yyoutput, yytype, yyvaluep, parser)
-    FILE *yyoutput;
-    int yytype;
-    YYSTYPE const * const yyvaluep;
-    octave_base_parser& parser;
-#endif
 {
   FILE *yyo = yyoutput;
   YYUSE (yyo);
+  YYUSE (parser);
   if (!yyvaluep)
     return;
-  YYUSE (parser);
 # ifdef YYPRINT
   if (yytype < YYNTOKENS)
     YYPRINT (yyoutput, yytoknum[yytype], *yyvaluep);
-# else
-  YYUSE (yyoutput);
 # endif
   YYUSE (yytype);
 }
@@ -1658,23 +1493,11 @@ yy_symbol_value_print (yyoutput, yytype, yyvaluep, parser)
 | Print this symbol on YYOUTPUT.  |
 `--------------------------------*/
 
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
 static void
 yy_symbol_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, octave_base_parser& parser)
-#else
-static void
-yy_symbol_print (yyoutput, yytype, yyvaluep, parser)
-    FILE *yyoutput;
-    int yytype;
-    YYSTYPE const * const yyvaluep;
-    octave_base_parser& parser;
-#endif
 {
-  if (yytype < YYNTOKENS)
-    YYFPRINTF (yyoutput, "token %s (", yytname[yytype]);
-  else
-    YYFPRINTF (yyoutput, "nterm %s (", yytname[yytype]);
+  YYFPRINTF (yyoutput, "%s %s (",
+             yytype < YYNTOKENS ? "token" : "nterm", yytname[yytype]);
 
   yy_symbol_value_print (yyoutput, yytype, yyvaluep, parser);
   YYFPRINTF (yyoutput, ")");
@@ -1685,16 +1508,8 @@ yy_symbol_print (yyoutput, yytype, yyvaluep, parser)
 | TOP (included).                                                   |
 `------------------------------------------------------------------*/
 
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
 static void
 yy_stack_print (yytype_int16 *yybottom, yytype_int16 *yytop)
-#else
-static void
-yy_stack_print (yybottom, yytop)
-    yytype_int16 *yybottom;
-    yytype_int16 *yytop;
-#endif
 {
   YYFPRINTF (stderr, "Stack now");
   for (; yybottom <= yytop; yybottom++)
@@ -1705,64 +1520,56 @@ yy_stack_print (yybottom, yytop)
   YYFPRINTF (stderr, "\n");
 }
 
-# define YY_STACK_PRINT(Bottom, Top)				\
-do {								\
-  if (yydebug)							\
-    yy_stack_print ((Bottom), (Top));				\
-} while (YYID (0))
+# define YY_STACK_PRINT(Bottom, Top)                            \
+do {                                                            \
+  if (yydebug)                                                  \
+    yy_stack_print ((Bottom), (Top));                           \
+} while (0)
 
 
 /*------------------------------------------------.
 | Report that the YYRULE is going to be reduced.  |
 `------------------------------------------------*/
 
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
 static void
-yy_reduce_print (YYSTYPE *yyvsp, int yyrule, octave_base_parser& parser)
-#else
-static void
-yy_reduce_print (yyvsp, yyrule, parser)
-    YYSTYPE *yyvsp;
-    int yyrule;
-    octave_base_parser& parser;
-#endif
+yy_reduce_print (yytype_int16 *yyssp, YYSTYPE *yyvsp, int yyrule, octave_base_parser& parser)
 {
+  unsigned long int yylno = yyrline[yyrule];
   int yynrhs = yyr2[yyrule];
   int yyi;
-  unsigned long int yylno = yyrline[yyrule];
   YYFPRINTF (stderr, "Reducing stack by rule %d (line %lu):\n",
-	     yyrule - 1, yylno);
+             yyrule - 1, yylno);
   /* The symbols being reduced.  */
   for (yyi = 0; yyi < yynrhs; yyi++)
     {
       YYFPRINTF (stderr, "   $%d = ", yyi + 1);
-      yy_symbol_print (stderr, yyrhs[yyprhs[yyrule] + yyi],
-		       &(yyvsp[(yyi + 1) - (yynrhs)])
-		       		       , parser);
+      yy_symbol_print (stderr,
+                       yystos[yyssp[yyi + 1 - yynrhs]],
+                       &(yyvsp[(yyi + 1) - (yynrhs)])
+                                              , parser);
       YYFPRINTF (stderr, "\n");
     }
 }
 
-# define YY_REDUCE_PRINT(Rule)		\
-do {					\
-  if (yydebug)				\
-    yy_reduce_print (yyvsp, Rule, parser); \
-} while (YYID (0))
+# define YY_REDUCE_PRINT(Rule)          \
+do {                                    \
+  if (yydebug)                          \
+    yy_reduce_print (yyssp, yyvsp, Rule, parser); \
+} while (0)
 
 /* Nonzero means print parse trace.  It is left uninitialized so that
    multiple parsers can coexist.  */
 int yydebug;
-#else /* !YYDEBUG */
+#else /* !OCTAVE_DEBUG */
 # define YYDPRINTF(Args)
 # define YY_SYMBOL_PRINT(Title, Type, Value, Location)
 # define YY_STACK_PRINT(Bottom, Top)
 # define YY_REDUCE_PRINT(Rule)
-#endif /* !YYDEBUG */
+#endif /* !OCTAVE_DEBUG */
 
 
 /* YYINITDEPTH -- initial size of the parser's stacks.  */
-#ifndef	YYINITDEPTH
+#ifndef YYINITDEPTH
 # define YYINITDEPTH 200
 #endif
 
@@ -1785,15 +1592,8 @@ int yydebug;
 #   define yystrlen strlen
 #  else
 /* Return the length of YYSTR.  */
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
 static YYSIZE_T
 yystrlen (const char *yystr)
-#else
-static YYSIZE_T
-yystrlen (yystr)
-    const char *yystr;
-#endif
 {
   YYSIZE_T yylen;
   for (yylen = 0; yystr[yylen]; yylen++)
@@ -1809,16 +1609,8 @@ yystrlen (yystr)
 #  else
 /* Copy YYSRC to YYDEST, returning the address of the terminating '\0' in
    YYDEST.  */
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
 static char *
 yystpcpy (char *yydest, const char *yysrc)
-#else
-static char *
-yystpcpy (yydest, yysrc)
-    char *yydest;
-    const char *yysrc;
-#endif
 {
   char *yyd = yydest;
   const char *yys = yysrc;
@@ -1848,27 +1640,27 @@ yytnamerr (char *yyres, const char *yystr)
       char const *yyp = yystr;
 
       for (;;)
-	switch (*++yyp)
-	  {
-	  case '\'':
-	  case ',':
-	    goto do_not_strip_quotes;
+        switch (*++yyp)
+          {
+          case '\'':
+          case ',':
+            goto do_not_strip_quotes;
 
-	  case '\\':
-	    if (*++yyp != '\\')
-	      goto do_not_strip_quotes;
-	    /* Fall through.  */
-	  default:
-	    if (yyres)
-	      yyres[yyn] = *yyp;
-	    yyn++;
-	    break;
+          case '\\':
+            if (*++yyp != '\\')
+              goto do_not_strip_quotes;
+            /* Fall through.  */
+          default:
+            if (yyres)
+              yyres[yyn] = *yyp;
+            yyn++;
+            break;
 
-	  case '"':
-	    if (yyres)
-	      yyres[yyn] = '\0';
-	    return yyn;
-	  }
+          case '"':
+            if (yyres)
+              yyres[yyn] = '\0';
+            return yyn;
+          }
     do_not_strip_quotes: ;
     }
 
@@ -1891,11 +1683,11 @@ static int
 yysyntax_error (YYSIZE_T *yymsg_alloc, char **yymsg,
                 yytype_int16 *yyssp, int yytoken)
 {
-  YYSIZE_T yysize0 = yytnamerr (YY_NULL, yytname[yytoken]);
+  YYSIZE_T yysize0 = yytnamerr (YY_NULLPTR, yytname[yytoken]);
   YYSIZE_T yysize = yysize0;
   enum { YYERROR_VERBOSE_ARGS_MAXIMUM = 5 };
   /* Internationalized format string. */
-  const char *yyformat = YY_NULL;
+  const char *yyformat = YY_NULLPTR;
   /* Arguments of yyformat. */
   char const *yyarg[YYERROR_VERBOSE_ARGS_MAXIMUM];
   /* Number of reported tokens (one for the "unexpected", one per
@@ -1903,10 +1695,6 @@ yysyntax_error (YYSIZE_T *yymsg_alloc, char **yymsg,
   int yycount = 0;
 
   /* There are many possibilities here to consider:
-     - Assume YYFAIL is not used.  It's too flawed to consider.  See
-       <http://lists.gnu.org/archive/html/bison-patches/2009-12/msg00024.html>
-       for details.  YYERROR is fine as it does not invoke this
-       function.
      - If this state is a consistent state with a default action, then
        the only way this function was invoked is if the default action
        is an error action.  In that case, don't check for expected
@@ -1956,7 +1744,7 @@ yysyntax_error (YYSIZE_T *yymsg_alloc, char **yymsg,
                   }
                 yyarg[yycount++] = yytname[yyx];
                 {
-                  YYSIZE_T yysize1 = yysize + yytnamerr (YY_NULL, yytname[yyx]);
+                  YYSIZE_T yysize1 = yysize + yytnamerr (YY_NULLPTR, yytname[yyx]);
                   if (! (yysize <= yysize1
                          && yysize1 <= YYSTACK_ALLOC_MAXIMUM))
                     return 2;
@@ -2023,1440 +1811,1229 @@ yysyntax_error (YYSIZE_T *yymsg_alloc, char **yymsg,
 | Release the memory associated to this symbol.  |
 `-----------------------------------------------*/
 
-/*ARGSUSED*/
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
 static void
 yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, octave_base_parser& parser)
-#else
-static void
-yydestruct (yymsg, yytype, yyvaluep, parser)
-    const char *yymsg;
-    int yytype;
-    YYSTYPE *yyvaluep;
-    octave_base_parser& parser;
-#endif
 {
   YYUSE (yyvaluep);
   YYUSE (parser);
-
   if (!yymsg)
     yymsg = "Deleting";
   YY_SYMBOL_PRINT (yymsg, yytype, yyvaluep, yylocationp);
 
+  YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
   switch (yytype)
     {
-      case 3: /* '=' */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2055 "parse-tree/oct-parse.cc"
-        break;
-      case 4: /* ':' */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2062 "parse-tree/oct-parse.cc"
-        break;
-      case 5: /* '-' */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2069 "parse-tree/oct-parse.cc"
-        break;
-      case 6: /* '+' */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2076 "parse-tree/oct-parse.cc"
-        break;
-      case 7: /* '*' */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2083 "parse-tree/oct-parse.cc"
-        break;
-      case 8: /* '/' */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2090 "parse-tree/oct-parse.cc"
-        break;
-      case 9: /* ADD_EQ */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2097 "parse-tree/oct-parse.cc"
-        break;
-      case 10: /* SUB_EQ */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2104 "parse-tree/oct-parse.cc"
-        break;
-      case 11: /* MUL_EQ */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2111 "parse-tree/oct-parse.cc"
-        break;
-      case 12: /* DIV_EQ */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2118 "parse-tree/oct-parse.cc"
-        break;
-      case 13: /* LEFTDIV_EQ */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2125 "parse-tree/oct-parse.cc"
-        break;
-      case 14: /* POW_EQ */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2132 "parse-tree/oct-parse.cc"
-        break;
-      case 15: /* EMUL_EQ */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2139 "parse-tree/oct-parse.cc"
-        break;
-      case 16: /* EDIV_EQ */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2146 "parse-tree/oct-parse.cc"
-        break;
-      case 17: /* ELEFTDIV_EQ */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2153 "parse-tree/oct-parse.cc"
-        break;
-      case 18: /* EPOW_EQ */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2160 "parse-tree/oct-parse.cc"
-        break;
-      case 19: /* AND_EQ */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2167 "parse-tree/oct-parse.cc"
-        break;
-      case 20: /* OR_EQ */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2174 "parse-tree/oct-parse.cc"
-        break;
-      case 21: /* LSHIFT_EQ */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2181 "parse-tree/oct-parse.cc"
-        break;
-      case 22: /* RSHIFT_EQ */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2188 "parse-tree/oct-parse.cc"
-        break;
-      case 23: /* LSHIFT */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2195 "parse-tree/oct-parse.cc"
-        break;
-      case 24: /* RSHIFT */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2202 "parse-tree/oct-parse.cc"
-        break;
-      case 25: /* EXPR_AND_AND */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2209 "parse-tree/oct-parse.cc"
-        break;
-      case 26: /* EXPR_OR_OR */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2216 "parse-tree/oct-parse.cc"
-        break;
-      case 27: /* EXPR_AND */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2223 "parse-tree/oct-parse.cc"
-        break;
-      case 28: /* EXPR_OR */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2230 "parse-tree/oct-parse.cc"
-        break;
-      case 29: /* EXPR_NOT */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2237 "parse-tree/oct-parse.cc"
-        break;
-      case 30: /* EXPR_LT */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2244 "parse-tree/oct-parse.cc"
-        break;
-      case 31: /* EXPR_LE */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2251 "parse-tree/oct-parse.cc"
-        break;
-      case 32: /* EXPR_EQ */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2258 "parse-tree/oct-parse.cc"
-        break;
-      case 33: /* EXPR_NE */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2265 "parse-tree/oct-parse.cc"
-        break;
-      case 34: /* EXPR_GE */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2272 "parse-tree/oct-parse.cc"
-        break;
-      case 35: /* EXPR_GT */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2279 "parse-tree/oct-parse.cc"
-        break;
-      case 36: /* LEFTDIV */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2286 "parse-tree/oct-parse.cc"
-        break;
-      case 37: /* EMUL */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2293 "parse-tree/oct-parse.cc"
-        break;
-      case 38: /* EDIV */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2300 "parse-tree/oct-parse.cc"
-        break;
-      case 39: /* ELEFTDIV */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2307 "parse-tree/oct-parse.cc"
-        break;
-      case 40: /* EPLUS */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2314 "parse-tree/oct-parse.cc"
-        break;
-      case 41: /* EMINUS */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2321 "parse-tree/oct-parse.cc"
-        break;
-      case 42: /* HERMITIAN */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2328 "parse-tree/oct-parse.cc"
-        break;
-      case 43: /* TRANSPOSE */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2335 "parse-tree/oct-parse.cc"
-        break;
-      case 44: /* PLUS_PLUS */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2342 "parse-tree/oct-parse.cc"
-        break;
-      case 45: /* MINUS_MINUS */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2349 "parse-tree/oct-parse.cc"
-        break;
-      case 46: /* POW */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2356 "parse-tree/oct-parse.cc"
-        break;
-      case 47: /* EPOW */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2363 "parse-tree/oct-parse.cc"
-        break;
-      case 48: /* NUM */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2370 "parse-tree/oct-parse.cc"
-        break;
-      case 49: /* IMAG_NUM */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2377 "parse-tree/oct-parse.cc"
-        break;
-      case 50: /* STRUCT_ELT */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2384 "parse-tree/oct-parse.cc"
-        break;
-      case 51: /* NAME */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2391 "parse-tree/oct-parse.cc"
-        break;
-      case 52: /* END */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2398 "parse-tree/oct-parse.cc"
-        break;
-      case 53: /* DQ_STRING */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2405 "parse-tree/oct-parse.cc"
-        break;
-      case 54: /* SQ_STRING */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2412 "parse-tree/oct-parse.cc"
-        break;
-      case 55: /* FOR */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2419 "parse-tree/oct-parse.cc"
-        break;
-      case 56: /* PARFOR */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2426 "parse-tree/oct-parse.cc"
-        break;
-      case 57: /* WHILE */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2433 "parse-tree/oct-parse.cc"
-        break;
-      case 58: /* DO */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2440 "parse-tree/oct-parse.cc"
-        break;
-      case 59: /* UNTIL */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2447 "parse-tree/oct-parse.cc"
-        break;
-      case 60: /* IF */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2454 "parse-tree/oct-parse.cc"
-        break;
-      case 61: /* ELSEIF */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2461 "parse-tree/oct-parse.cc"
-        break;
-      case 62: /* ELSE */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2468 "parse-tree/oct-parse.cc"
-        break;
-      case 63: /* SWITCH */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2475 "parse-tree/oct-parse.cc"
-        break;
-      case 64: /* CASE */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2482 "parse-tree/oct-parse.cc"
-        break;
-      case 65: /* OTHERWISE */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2489 "parse-tree/oct-parse.cc"
-        break;
-      case 66: /* BREAK */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2496 "parse-tree/oct-parse.cc"
-        break;
-      case 67: /* CONTINUE */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2503 "parse-tree/oct-parse.cc"
-        break;
-      case 68: /* FUNC_RET */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2510 "parse-tree/oct-parse.cc"
-        break;
-      case 69: /* UNWIND */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2517 "parse-tree/oct-parse.cc"
-        break;
-      case 70: /* CLEANUP */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2524 "parse-tree/oct-parse.cc"
-        break;
-      case 71: /* TRY */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2531 "parse-tree/oct-parse.cc"
-        break;
-      case 72: /* CATCH */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2538 "parse-tree/oct-parse.cc"
-        break;
-      case 73: /* GLOBAL */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2545 "parse-tree/oct-parse.cc"
-        break;
-      case 74: /* PERSISTENT */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2552 "parse-tree/oct-parse.cc"
-        break;
-      case 75: /* FCN_HANDLE */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2559 "parse-tree/oct-parse.cc"
-        break;
-      case 76: /* PROPERTIES */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2566 "parse-tree/oct-parse.cc"
-        break;
-      case 77: /* METHODS */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2573 "parse-tree/oct-parse.cc"
-        break;
-      case 78: /* EVENTS */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2580 "parse-tree/oct-parse.cc"
-        break;
-      case 79: /* ENUMERATION */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2587 "parse-tree/oct-parse.cc"
-        break;
-      case 80: /* METAQUERY */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2594 "parse-tree/oct-parse.cc"
-        break;
-      case 81: /* SUPERCLASSREF */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2601 "parse-tree/oct-parse.cc"
-        break;
-      case 82: /* GET */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2608 "parse-tree/oct-parse.cc"
-        break;
-      case 83: /* SET */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2615 "parse-tree/oct-parse.cc"
-        break;
-      case 84: /* FCN */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2622 "parse-tree/oct-parse.cc"
-        break;
-      case 85: /* END_OF_INPUT */
-/* Line 1393 of yacc.c  */
-#line 307 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2629 "parse-tree/oct-parse.cc"
-        break;
-      case 86: /* LEXICAL_ERROR */
-/* Line 1393 of yacc.c  */
-#line 307 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2636 "parse-tree/oct-parse.cc"
-        break;
-      case 87: /* INPUT_FILE */
-/* Line 1393 of yacc.c  */
-#line 307 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2643 "parse-tree/oct-parse.cc"
-        break;
-      case 88: /* CLASSDEF */
-/* Line 1393 of yacc.c  */
-#line 307 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2650 "parse-tree/oct-parse.cc"
-        break;
-      case 89: /* UNARY */
-/* Line 1393 of yacc.c  */
-#line 307 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2657 "parse-tree/oct-parse.cc"
-        break;
-      case 90: /* '(' */
-/* Line 1393 of yacc.c  */
-#line 307 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2664 "parse-tree/oct-parse.cc"
-        break;
-      case 91: /* '.' */
-/* Line 1393 of yacc.c  */
-#line 307 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2671 "parse-tree/oct-parse.cc"
-        break;
-      case 92: /* '{' */
-/* Line 1393 of yacc.c  */
-#line 307 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2678 "parse-tree/oct-parse.cc"
-        break;
-      case 93: /* '\n' */
-/* Line 1393 of yacc.c  */
-#line 307 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2685 "parse-tree/oct-parse.cc"
-        break;
-      case 94: /* '[' */
-/* Line 1393 of yacc.c  */
-#line 307 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2692 "parse-tree/oct-parse.cc"
-        break;
-      case 95: /* ']' */
-/* Line 1393 of yacc.c  */
-#line 307 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2699 "parse-tree/oct-parse.cc"
-        break;
-      case 96: /* ';' */
-/* Line 1393 of yacc.c  */
-#line 307 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2706 "parse-tree/oct-parse.cc"
-        break;
-      case 97: /* '}' */
-/* Line 1393 of yacc.c  */
-#line 307 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2713 "parse-tree/oct-parse.cc"
-        break;
-      case 98: /* ',' */
-/* Line 1393 of yacc.c  */
-#line 307 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2720 "parse-tree/oct-parse.cc"
-        break;
-      case 99: /* '@' */
-/* Line 1393 of yacc.c  */
-#line 307 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2727 "parse-tree/oct-parse.cc"
-        break;
-      case 100: /* ')' */
-/* Line 1393 of yacc.c  */
-#line 307 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2734 "parse-tree/oct-parse.cc"
-        break;
-      case 102: /* input */
-/* Line 1393 of yacc.c  */
-#line 309 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_type); };
-/* Line 1393 of yacc.c  */
-#line 2741 "parse-tree/oct-parse.cc"
-        break;
-      case 103: /* simple_list */
-/* Line 1393 of yacc.c  */
-#line 332 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_statement_list_type); };
-/* Line 1393 of yacc.c  */
-#line 2748 "parse-tree/oct-parse.cc"
-        break;
-      case 104: /* simple_list1 */
-/* Line 1393 of yacc.c  */
-#line 332 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_statement_list_type); };
-/* Line 1393 of yacc.c  */
-#line 2755 "parse-tree/oct-parse.cc"
-        break;
-      case 105: /* opt_list */
-/* Line 1393 of yacc.c  */
-#line 332 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_statement_list_type); };
-/* Line 1393 of yacc.c  */
-#line 2762 "parse-tree/oct-parse.cc"
-        break;
-      case 106: /* list */
-/* Line 1393 of yacc.c  */
-#line 332 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_statement_list_type); };
-/* Line 1393 of yacc.c  */
-#line 2769 "parse-tree/oct-parse.cc"
-        break;
-      case 107: /* list1 */
-/* Line 1393 of yacc.c  */
-#line 332 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_statement_list_type); };
-/* Line 1393 of yacc.c  */
-#line 2776 "parse-tree/oct-parse.cc"
-        break;
-      case 108: /* statement */
-/* Line 1393 of yacc.c  */
-#line 331 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_statement_type); };
-/* Line 1393 of yacc.c  */
-#line 2783 "parse-tree/oct-parse.cc"
-        break;
-      case 109: /* word_list_cmd */
-/* Line 1393 of yacc.c  */
-#line 317 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_index_expression_type); };
-/* Line 1393 of yacc.c  */
-#line 2790 "parse-tree/oct-parse.cc"
-        break;
-      case 110: /* word_list */
-/* Line 1393 of yacc.c  */
-#line 319 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_argument_list_type); };
-/* Line 1393 of yacc.c  */
-#line 2797 "parse-tree/oct-parse.cc"
-        break;
-      case 111: /* identifier */
-/* Line 1393 of yacc.c  */
-#line 316 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_identifier_type); };
-/* Line 1393 of yacc.c  */
-#line 2804 "parse-tree/oct-parse.cc"
-        break;
-      case 112: /* superclass_identifier */
-/* Line 1393 of yacc.c  */
-#line 316 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_identifier_type); };
-/* Line 1393 of yacc.c  */
-#line 2811 "parse-tree/oct-parse.cc"
-        break;
-      case 113: /* meta_identifier */
-/* Line 1393 of yacc.c  */
-#line 316 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_identifier_type); };
-/* Line 1393 of yacc.c  */
-#line 2818 "parse-tree/oct-parse.cc"
-        break;
-      case 114: /* string */
-/* Line 1393 of yacc.c  */
-#line 313 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_constant_type); };
-/* Line 1393 of yacc.c  */
-#line 2825 "parse-tree/oct-parse.cc"
-        break;
-      case 115: /* constant */
-/* Line 1393 of yacc.c  */
-#line 313 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_constant_type); };
-/* Line 1393 of yacc.c  */
-#line 2832 "parse-tree/oct-parse.cc"
-        break;
-      case 116: /* matrix */
-/* Line 1393 of yacc.c  */
-#line 312 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_expression_type); };
-/* Line 1393 of yacc.c  */
-#line 2839 "parse-tree/oct-parse.cc"
-        break;
-      case 117: /* matrix_rows */
-/* Line 1393 of yacc.c  */
-#line 310 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_matrix_type); };
-/* Line 1393 of yacc.c  */
-#line 2846 "parse-tree/oct-parse.cc"
-        break;
-      case 118: /* cell */
-/* Line 1393 of yacc.c  */
-#line 312 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_expression_type); };
-/* Line 1393 of yacc.c  */
-#line 2853 "parse-tree/oct-parse.cc"
-        break;
-      case 119: /* cell_rows */
-/* Line 1393 of yacc.c  */
-#line 311 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_cell_type); };
-/* Line 1393 of yacc.c  */
-#line 2860 "parse-tree/oct-parse.cc"
-        break;
-      case 120: /* cell_or_matrix_row */
-/* Line 1393 of yacc.c  */
-#line 319 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_argument_list_type); };
-/* Line 1393 of yacc.c  */
-#line 2867 "parse-tree/oct-parse.cc"
-        break;
-      case 121: /* fcn_handle */
-/* Line 1393 of yacc.c  */
-#line 314 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_fcn_handle_type); };
-/* Line 1393 of yacc.c  */
-#line 2874 "parse-tree/oct-parse.cc"
-        break;
-      case 122: /* anon_fcn_handle */
-/* Line 1393 of yacc.c  */
-#line 315 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_anon_fcn_handle_type); };
-/* Line 1393 of yacc.c  */
-#line 2881 "parse-tree/oct-parse.cc"
-        break;
-      case 123: /* primary_expr */
-/* Line 1393 of yacc.c  */
-#line 312 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_expression_type); };
-/* Line 1393 of yacc.c  */
-#line 2888 "parse-tree/oct-parse.cc"
-        break;
-      case 124: /* magic_colon */
-/* Line 1393 of yacc.c  */
-#line 313 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_constant_type); };
-/* Line 1393 of yacc.c  */
-#line 2895 "parse-tree/oct-parse.cc"
-        break;
-      case 125: /* magic_tilde */
-/* Line 1393 of yacc.c  */
-#line 316 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_identifier_type); };
-/* Line 1393 of yacc.c  */
-#line 2902 "parse-tree/oct-parse.cc"
-        break;
-      case 126: /* arg_list */
-/* Line 1393 of yacc.c  */
-#line 319 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_argument_list_type); };
-/* Line 1393 of yacc.c  */
-#line 2909 "parse-tree/oct-parse.cc"
-        break;
-      case 127: /* indirect_ref_op */
-/* Line 1393 of yacc.c  */
-#line 307 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 2916 "parse-tree/oct-parse.cc"
-        break;
-      case 128: /* oper_expr */
-/* Line 1393 of yacc.c  */
-#line 312 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_expression_type); };
-/* Line 1393 of yacc.c  */
-#line 2923 "parse-tree/oct-parse.cc"
-        break;
-      case 129: /* power_expr */
-/* Line 1393 of yacc.c  */
-#line 312 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_expression_type); };
-/* Line 1393 of yacc.c  */
-#line 2930 "parse-tree/oct-parse.cc"
-        break;
-      case 130: /* colon_expr */
-/* Line 1393 of yacc.c  */
-#line 312 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_expression_type); };
-/* Line 1393 of yacc.c  */
-#line 2937 "parse-tree/oct-parse.cc"
-        break;
-      case 131: /* colon_expr1 */
-/* Line 1393 of yacc.c  */
-#line 318 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_colon_expression_type); };
-/* Line 1393 of yacc.c  */
-#line 2944 "parse-tree/oct-parse.cc"
-        break;
-      case 132: /* simple_expr */
-/* Line 1393 of yacc.c  */
-#line 312 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_expression_type); };
-/* Line 1393 of yacc.c  */
-#line 2951 "parse-tree/oct-parse.cc"
-        break;
-      case 133: /* assign_lhs */
-/* Line 1393 of yacc.c  */
-#line 319 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_argument_list_type); };
-/* Line 1393 of yacc.c  */
-#line 2958 "parse-tree/oct-parse.cc"
-        break;
-      case 134: /* assign_expr */
-/* Line 1393 of yacc.c  */
-#line 312 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_expression_type); };
-/* Line 1393 of yacc.c  */
-#line 2965 "parse-tree/oct-parse.cc"
-        break;
-      case 135: /* expression */
-/* Line 1393 of yacc.c  */
-#line 312 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_expression_type); };
-/* Line 1393 of yacc.c  */
-#line 2972 "parse-tree/oct-parse.cc"
-        break;
-      case 136: /* command */
-/* Line 1393 of yacc.c  */
-#line 321 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_command_type); };
-/* Line 1393 of yacc.c  */
-#line 2979 "parse-tree/oct-parse.cc"
-        break;
-      case 137: /* declaration */
-/* Line 1393 of yacc.c  */
-#line 330 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_decl_command_type); };
-/* Line 1393 of yacc.c  */
-#line 2986 "parse-tree/oct-parse.cc"
-        break;
-      case 138: /* decl1 */
-/* Line 1393 of yacc.c  */
-#line 329 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_decl_init_list_type); };
-/* Line 1393 of yacc.c  */
-#line 2993 "parse-tree/oct-parse.cc"
-        break;
-      case 139: /* decl_param_init */
-/* Line 1393 of yacc.c  */
-#line 307 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 3000 "parse-tree/oct-parse.cc"
-        break;
-      case 140: /* decl2 */
-/* Line 1393 of yacc.c  */
-#line 328 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_decl_elt_type); };
-/* Line 1393 of yacc.c  */
-#line 3007 "parse-tree/oct-parse.cc"
-        break;
-      case 141: /* select_command */
-/* Line 1393 of yacc.c  */
-#line 321 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_command_type); };
-/* Line 1393 of yacc.c  */
-#line 3014 "parse-tree/oct-parse.cc"
-        break;
-      case 142: /* if_command */
-/* Line 1393 of yacc.c  */
-#line 322 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_if_command_type); };
-/* Line 1393 of yacc.c  */
-#line 3021 "parse-tree/oct-parse.cc"
-        break;
-      case 143: /* if_cmd_list */
-/* Line 1393 of yacc.c  */
-#line 324 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_if_command_list_type); };
-/* Line 1393 of yacc.c  */
-#line 3028 "parse-tree/oct-parse.cc"
-        break;
-      case 144: /* if_cmd_list1 */
-/* Line 1393 of yacc.c  */
-#line 324 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_if_command_list_type); };
-/* Line 1393 of yacc.c  */
-#line 3035 "parse-tree/oct-parse.cc"
-        break;
-      case 145: /* elseif_clause */
-/* Line 1393 of yacc.c  */
-#line 323 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_if_clause_type); };
-/* Line 1393 of yacc.c  */
-#line 3042 "parse-tree/oct-parse.cc"
-        break;
-      case 146: /* else_clause */
-/* Line 1393 of yacc.c  */
-#line 323 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_if_clause_type); };
-/* Line 1393 of yacc.c  */
-#line 3049 "parse-tree/oct-parse.cc"
-        break;
-      case 147: /* switch_command */
-/* Line 1393 of yacc.c  */
-#line 325 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_switch_command_type); };
-/* Line 1393 of yacc.c  */
-#line 3056 "parse-tree/oct-parse.cc"
-        break;
-      case 148: /* case_list */
-/* Line 1393 of yacc.c  */
-#line 327 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_switch_case_list_type); };
-/* Line 1393 of yacc.c  */
-#line 3063 "parse-tree/oct-parse.cc"
-        break;
-      case 149: /* case_list1 */
-/* Line 1393 of yacc.c  */
-#line 327 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_switch_case_list_type); };
-/* Line 1393 of yacc.c  */
-#line 3070 "parse-tree/oct-parse.cc"
-        break;
-      case 150: /* switch_case */
-/* Line 1393 of yacc.c  */
-#line 326 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_switch_case_type); };
-/* Line 1393 of yacc.c  */
-#line 3077 "parse-tree/oct-parse.cc"
-        break;
-      case 151: /* default_case */
-/* Line 1393 of yacc.c  */
-#line 326 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_switch_case_type); };
-/* Line 1393 of yacc.c  */
-#line 3084 "parse-tree/oct-parse.cc"
-        break;
-      case 152: /* loop_command */
-/* Line 1393 of yacc.c  */
-#line 321 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_command_type); };
-/* Line 1393 of yacc.c  */
-#line 3091 "parse-tree/oct-parse.cc"
-        break;
-      case 153: /* jump_command */
-/* Line 1393 of yacc.c  */
-#line 321 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_command_type); };
-/* Line 1393 of yacc.c  */
-#line 3098 "parse-tree/oct-parse.cc"
-        break;
-      case 154: /* except_command */
-/* Line 1393 of yacc.c  */
-#line 321 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_command_type); };
-/* Line 1393 of yacc.c  */
-#line 3105 "parse-tree/oct-parse.cc"
-        break;
-      case 155: /* push_fcn_symtab */
-/* Line 1393 of yacc.c  */
-#line 307 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 3112 "parse-tree/oct-parse.cc"
-        break;
-      case 156: /* param_list_beg */
-/* Line 1393 of yacc.c  */
-#line 307 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 3119 "parse-tree/oct-parse.cc"
-        break;
-      case 157: /* param_list_end */
-/* Line 1393 of yacc.c  */
-#line 307 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 3126 "parse-tree/oct-parse.cc"
-        break;
-      case 158: /* param_list */
-/* Line 1393 of yacc.c  */
-#line 320 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_parameter_list_type); };
-/* Line 1393 of yacc.c  */
-#line 3133 "parse-tree/oct-parse.cc"
-        break;
-      case 159: /* param_list1 */
-/* Line 1393 of yacc.c  */
-#line 320 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_parameter_list_type); };
-/* Line 1393 of yacc.c  */
-#line 3140 "parse-tree/oct-parse.cc"
-        break;
-      case 160: /* param_list2 */
-/* Line 1393 of yacc.c  */
-#line 320 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_parameter_list_type); };
-/* Line 1393 of yacc.c  */
-#line 3147 "parse-tree/oct-parse.cc"
-        break;
-      case 161: /* param_list_elt */
-/* Line 1393 of yacc.c  */
-#line 328 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_decl_elt_type); };
-/* Line 1393 of yacc.c  */
-#line 3154 "parse-tree/oct-parse.cc"
-        break;
-      case 162: /* return_list */
-/* Line 1393 of yacc.c  */
-#line 320 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_parameter_list_type); };
-/* Line 1393 of yacc.c  */
-#line 3161 "parse-tree/oct-parse.cc"
-        break;
-      case 163: /* return_list1 */
-/* Line 1393 of yacc.c  */
-#line 320 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_parameter_list_type); };
-/* Line 1393 of yacc.c  */
-#line 3168 "parse-tree/oct-parse.cc"
-        break;
-      case 164: /* file */
-/* Line 1393 of yacc.c  */
-#line 321 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_command_type); };
-/* Line 1393 of yacc.c  */
-#line 3175 "parse-tree/oct-parse.cc"
-        break;
-      case 165: /* function_beg */
-/* Line 1393 of yacc.c  */
-#line 304 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 3182 "parse-tree/oct-parse.cc"
-        break;
-      case 166: /* function */
-/* Line 1393 of yacc.c  */
-#line 321 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_command_type); };
-/* Line 1393 of yacc.c  */
-#line 3189 "parse-tree/oct-parse.cc"
-        break;
-      case 167: /* fcn_name */
-/* Line 1393 of yacc.c  */
-#line 316 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_identifier_type); };
-/* Line 1393 of yacc.c  */
-#line 3196 "parse-tree/oct-parse.cc"
-        break;
-      case 168: /* function1 */
-/* Line 1393 of yacc.c  */
-#line 333 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).octave_user_function_type); };
-/* Line 1393 of yacc.c  */
-#line 3203 "parse-tree/oct-parse.cc"
-        break;
-      case 169: /* function2 */
-/* Line 1393 of yacc.c  */
-#line 333 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).octave_user_function_type); };
-/* Line 1393 of yacc.c  */
-#line 3210 "parse-tree/oct-parse.cc"
-        break;
-      case 170: /* function_end */
-/* Line 1393 of yacc.c  */
-#line 331 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_statement_type); };
-/* Line 1393 of yacc.c  */
-#line 3217 "parse-tree/oct-parse.cc"
-        break;
-      case 171: /* classdef_beg */
-/* Line 1393 of yacc.c  */
-#line 305 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 3224 "parse-tree/oct-parse.cc"
-        break;
-      case 172: /* classdef_end */
-/* Line 1393 of yacc.c  */
-#line 331 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_statement_type); };
-/* Line 1393 of yacc.c  */
-#line 3231 "parse-tree/oct-parse.cc"
-        break;
-      case 173: /* classdef1 */
-/* Line 1393 of yacc.c  */
-#line 333 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).octave_user_function_type); };
-/* Line 1393 of yacc.c  */
-#line 3238 "parse-tree/oct-parse.cc"
-        break;
-      case 174: /* classdef */
-/* Line 1393 of yacc.c  */
-#line 321 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_command_type); };
-/* Line 1393 of yacc.c  */
-#line 3245 "parse-tree/oct-parse.cc"
-        break;
-      case 175: /* opt_attr_list */
-/* Line 1393 of yacc.c  */
-#line 306 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 3252 "parse-tree/oct-parse.cc"
-        break;
-      case 176: /* attr_list */
-/* Line 1393 of yacc.c  */
-#line 306 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 3259 "parse-tree/oct-parse.cc"
-        break;
-      case 177: /* attr */
-/* Line 1393 of yacc.c  */
-#line 306 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 3266 "parse-tree/oct-parse.cc"
-        break;
-      case 178: /* opt_superclasses */
-/* Line 1393 of yacc.c  */
-#line 320 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_parameter_list_type); };
-/* Line 1393 of yacc.c  */
-#line 3273 "parse-tree/oct-parse.cc"
-        break;
-      case 179: /* superclasses */
-/* Line 1393 of yacc.c  */
-#line 320 "parse-tree/oct-parse.yy"
-        { delete ((*yyvaluep).tree_parameter_list_type); };
-/* Line 1393 of yacc.c  */
-#line 3280 "parse-tree/oct-parse.cc"
-        break;
-      case 180: /* class_body */
-/* Line 1393 of yacc.c  */
-#line 306 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 3287 "parse-tree/oct-parse.cc"
-        break;
-      case 181: /* properties_beg */
-/* Line 1393 of yacc.c  */
-#line 305 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 3294 "parse-tree/oct-parse.cc"
-        break;
-      case 182: /* properties_block */
-/* Line 1393 of yacc.c  */
-#line 306 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 3301 "parse-tree/oct-parse.cc"
-        break;
-      case 183: /* properties_list */
-/* Line 1393 of yacc.c  */
-#line 306 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 3308 "parse-tree/oct-parse.cc"
-        break;
-      case 184: /* class_property */
-/* Line 1393 of yacc.c  */
-#line 306 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 3315 "parse-tree/oct-parse.cc"
-        break;
-      case 185: /* methods_beg */
-/* Line 1393 of yacc.c  */
-#line 305 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 3322 "parse-tree/oct-parse.cc"
-        break;
-      case 186: /* methods_block */
-/* Line 1393 of yacc.c  */
-#line 306 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 3329 "parse-tree/oct-parse.cc"
-        break;
-      case 187: /* methods_list */
-/* Line 1393 of yacc.c  */
-#line 306 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 3336 "parse-tree/oct-parse.cc"
-        break;
-      case 188: /* events_beg */
-/* Line 1393 of yacc.c  */
-#line 305 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 3343 "parse-tree/oct-parse.cc"
-        break;
-      case 189: /* events_block */
-/* Line 1393 of yacc.c  */
-#line 306 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 3350 "parse-tree/oct-parse.cc"
-        break;
-      case 190: /* events_list */
-/* Line 1393 of yacc.c  */
-#line 306 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 3357 "parse-tree/oct-parse.cc"
-        break;
-      case 191: /* class_event */
-/* Line 1393 of yacc.c  */
-#line 306 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 3364 "parse-tree/oct-parse.cc"
-        break;
-      case 192: /* enum_beg */
-/* Line 1393 of yacc.c  */
-#line 305 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 3371 "parse-tree/oct-parse.cc"
-        break;
-      case 193: /* enum_block */
-/* Line 1393 of yacc.c  */
-#line 306 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 3378 "parse-tree/oct-parse.cc"
-        break;
-      case 194: /* enum_list */
-/* Line 1393 of yacc.c  */
-#line 306 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 3385 "parse-tree/oct-parse.cc"
-        break;
-      case 195: /* class_enum */
-/* Line 1393 of yacc.c  */
-#line 306 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 3392 "parse-tree/oct-parse.cc"
-        break;
-      case 196: /* stmt_begin */
-/* Line 1393 of yacc.c  */
-#line 307 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 3399 "parse-tree/oct-parse.cc"
-        break;
-      case 197: /* stash_comment */
-/* Line 1393 of yacc.c  */
-#line 305 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 3406 "parse-tree/oct-parse.cc"
-        break;
-      case 198: /* parse_error */
-/* Line 1393 of yacc.c  */
-#line 307 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 3413 "parse-tree/oct-parse.cc"
-        break;
-      case 199: /* sep_no_nl */
-/* Line 1393 of yacc.c  */
-#line 303 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 3420 "parse-tree/oct-parse.cc"
-        break;
-      case 200: /* opt_sep_no_nl */
-/* Line 1393 of yacc.c  */
-#line 303 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 3427 "parse-tree/oct-parse.cc"
-        break;
-      case 201: /* opt_nl */
-/* Line 1393 of yacc.c  */
-#line 303 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 3434 "parse-tree/oct-parse.cc"
-        break;
-      case 202: /* nl */
-/* Line 1393 of yacc.c  */
-#line 303 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 3441 "parse-tree/oct-parse.cc"
-        break;
-      case 203: /* sep */
-/* Line 1393 of yacc.c  */
-#line 303 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 3448 "parse-tree/oct-parse.cc"
-        break;
-      case 204: /* opt_sep */
-/* Line 1393 of yacc.c  */
-#line 303 "parse-tree/oct-parse.yy"
-        { };
-/* Line 1393 of yacc.c  */
-#line 3455 "parse-tree/oct-parse.cc"
-        break;
+          case 3: /* '='  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 1830 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 4: /* ':'  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 1836 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 5: /* '-'  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 1842 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 6: /* '+'  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 1848 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 7: /* '*'  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 1854 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 8: /* '/'  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 1860 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 9: /* ADD_EQ  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 1866 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 10: /* SUB_EQ  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 1872 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 11: /* MUL_EQ  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 1878 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 12: /* DIV_EQ  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 1884 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 13: /* LEFTDIV_EQ  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 1890 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 14: /* POW_EQ  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 1896 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 15: /* EMUL_EQ  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 1902 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 16: /* EDIV_EQ  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 1908 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 17: /* ELEFTDIV_EQ  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 1914 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 18: /* EPOW_EQ  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 1920 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 19: /* AND_EQ  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 1926 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 20: /* OR_EQ  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 1932 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 21: /* LSHIFT_EQ  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 1938 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 22: /* RSHIFT_EQ  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 1944 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 23: /* LSHIFT  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 1950 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 24: /* RSHIFT  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 1956 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 25: /* EXPR_AND_AND  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 1962 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 26: /* EXPR_OR_OR  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 1968 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 27: /* EXPR_AND  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 1974 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 28: /* EXPR_OR  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 1980 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 29: /* EXPR_NOT  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 1986 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 30: /* EXPR_LT  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 1992 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 31: /* EXPR_LE  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 1998 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 32: /* EXPR_EQ  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2004 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 33: /* EXPR_NE  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2010 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 34: /* EXPR_GE  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2016 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 35: /* EXPR_GT  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2022 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 36: /* LEFTDIV  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2028 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 37: /* EMUL  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2034 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 38: /* EDIV  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2040 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 39: /* ELEFTDIV  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2046 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 40: /* EPLUS  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2052 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 41: /* EMINUS  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2058 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 42: /* HERMITIAN  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2064 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 43: /* TRANSPOSE  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2070 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 44: /* PLUS_PLUS  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2076 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 45: /* MINUS_MINUS  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2082 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 46: /* POW  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2088 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 47: /* EPOW  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2094 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 48: /* NUM  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2100 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 49: /* IMAG_NUM  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2106 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 50: /* STRUCT_ELT  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2112 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 51: /* NAME  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2118 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 52: /* END  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2124 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 53: /* DQ_STRING  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2130 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 54: /* SQ_STRING  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2136 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 55: /* FOR  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2142 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 56: /* PARFOR  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2148 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 57: /* WHILE  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2154 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 58: /* DO  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2160 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 59: /* UNTIL  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2166 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 60: /* IF  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2172 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 61: /* ELSEIF  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2178 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 62: /* ELSE  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2184 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 63: /* SWITCH  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2190 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 64: /* CASE  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2196 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 65: /* OTHERWISE  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2202 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 66: /* BREAK  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2208 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 67: /* CONTINUE  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2214 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 68: /* FUNC_RET  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2220 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 69: /* UNWIND  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2226 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 70: /* CLEANUP  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2232 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 71: /* TRY  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2238 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 72: /* CATCH  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2244 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 73: /* GLOBAL  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2250 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 74: /* PERSISTENT  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2256 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 75: /* FCN_HANDLE  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2262 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 76: /* PROPERTIES  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2268 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 77: /* METHODS  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2274 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 78: /* EVENTS  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2280 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 79: /* ENUMERATION  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2286 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 80: /* METAQUERY  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2292 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 81: /* SUPERCLASSREF  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2298 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 82: /* GET  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2304 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 83: /* SET  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2310 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 84: /* FCN  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2316 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 85: /* END_OF_INPUT  */
+#line 304 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2322 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 86: /* LEXICAL_ERROR  */
+#line 304 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2328 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 87: /* INPUT_FILE  */
+#line 304 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2334 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 88: /* CLASSDEF  */
+#line 304 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2340 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 89: /* UNARY  */
+#line 304 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2346 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 90: /* '('  */
+#line 304 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2352 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 91: /* '.'  */
+#line 304 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2358 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 92: /* '{'  */
+#line 304 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2364 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 93: /* '\n'  */
+#line 304 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2370 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 94: /* '['  */
+#line 304 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2376 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 95: /* ']'  */
+#line 304 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2382 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 96: /* ';'  */
+#line 304 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2388 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 97: /* '}'  */
+#line 304 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2394 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 98: /* ','  */
+#line 304 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2400 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 99: /* '@'  */
+#line 304 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2406 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 100: /* ')'  */
+#line 304 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2412 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 102: /* input  */
+#line 306 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_type); }
+#line 2418 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 103: /* simple_list  */
+#line 329 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_statement_list_type); }
+#line 2424 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 104: /* simple_list1  */
+#line 329 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_statement_list_type); }
+#line 2430 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 105: /* opt_list  */
+#line 329 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_statement_list_type); }
+#line 2436 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 106: /* list  */
+#line 329 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_statement_list_type); }
+#line 2442 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 107: /* list1  */
+#line 329 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_statement_list_type); }
+#line 2448 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 108: /* statement  */
+#line 328 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_statement_type); }
+#line 2454 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 109: /* word_list_cmd  */
+#line 314 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_index_expression_type); }
+#line 2460 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 110: /* word_list  */
+#line 316 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_argument_list_type); }
+#line 2466 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 111: /* identifier  */
+#line 313 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_identifier_type); }
+#line 2472 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 112: /* superclass_identifier  */
+#line 313 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_identifier_type); }
+#line 2478 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 113: /* meta_identifier  */
+#line 313 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_identifier_type); }
+#line 2484 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 114: /* string  */
+#line 310 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_constant_type); }
+#line 2490 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 115: /* constant  */
+#line 310 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_constant_type); }
+#line 2496 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 116: /* matrix  */
+#line 309 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_expression_type); }
+#line 2502 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 117: /* matrix_rows  */
+#line 307 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_matrix_type); }
+#line 2508 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 118: /* cell  */
+#line 309 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_expression_type); }
+#line 2514 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 119: /* cell_rows  */
+#line 308 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_cell_type); }
+#line 2520 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 120: /* cell_or_matrix_row  */
+#line 316 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_argument_list_type); }
+#line 2526 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 121: /* fcn_handle  */
+#line 311 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_fcn_handle_type); }
+#line 2532 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 122: /* anon_fcn_handle  */
+#line 312 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_anon_fcn_handle_type); }
+#line 2538 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 123: /* primary_expr  */
+#line 309 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_expression_type); }
+#line 2544 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 124: /* magic_colon  */
+#line 310 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_constant_type); }
+#line 2550 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 125: /* magic_tilde  */
+#line 313 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_identifier_type); }
+#line 2556 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 126: /* arg_list  */
+#line 316 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_argument_list_type); }
+#line 2562 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 127: /* indirect_ref_op  */
+#line 304 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2568 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 128: /* oper_expr  */
+#line 309 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_expression_type); }
+#line 2574 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 129: /* power_expr  */
+#line 309 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_expression_type); }
+#line 2580 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 130: /* colon_expr  */
+#line 309 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_expression_type); }
+#line 2586 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 131: /* colon_expr1  */
+#line 315 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_colon_expression_type); }
+#line 2592 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 132: /* simple_expr  */
+#line 309 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_expression_type); }
+#line 2598 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 133: /* assign_lhs  */
+#line 316 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_argument_list_type); }
+#line 2604 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 134: /* assign_expr  */
+#line 309 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_expression_type); }
+#line 2610 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 135: /* expression  */
+#line 309 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_expression_type); }
+#line 2616 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 136: /* command  */
+#line 318 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_command_type); }
+#line 2622 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 137: /* declaration  */
+#line 327 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_decl_command_type); }
+#line 2628 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 138: /* decl1  */
+#line 326 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_decl_init_list_type); }
+#line 2634 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 139: /* decl_param_init  */
+#line 304 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2640 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 140: /* decl2  */
+#line 325 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_decl_elt_type); }
+#line 2646 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 141: /* select_command  */
+#line 318 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_command_type); }
+#line 2652 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 142: /* if_command  */
+#line 319 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_if_command_type); }
+#line 2658 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 143: /* if_cmd_list  */
+#line 321 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_if_command_list_type); }
+#line 2664 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 144: /* if_cmd_list1  */
+#line 321 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_if_command_list_type); }
+#line 2670 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 145: /* elseif_clause  */
+#line 320 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_if_clause_type); }
+#line 2676 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 146: /* else_clause  */
+#line 320 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_if_clause_type); }
+#line 2682 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 147: /* switch_command  */
+#line 322 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_switch_command_type); }
+#line 2688 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 148: /* case_list  */
+#line 324 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_switch_case_list_type); }
+#line 2694 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 149: /* case_list1  */
+#line 324 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_switch_case_list_type); }
+#line 2700 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 150: /* switch_case  */
+#line 323 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_switch_case_type); }
+#line 2706 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 151: /* default_case  */
+#line 323 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_switch_case_type); }
+#line 2712 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 152: /* loop_command  */
+#line 318 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_command_type); }
+#line 2718 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 153: /* jump_command  */
+#line 318 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_command_type); }
+#line 2724 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 154: /* except_command  */
+#line 318 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_command_type); }
+#line 2730 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 155: /* push_fcn_symtab  */
+#line 304 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2736 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 156: /* param_list_beg  */
+#line 304 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2742 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 157: /* param_list_end  */
+#line 304 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2748 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 158: /* param_list  */
+#line 317 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_parameter_list_type); }
+#line 2754 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 159: /* param_list1  */
+#line 317 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_parameter_list_type); }
+#line 2760 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 160: /* param_list2  */
+#line 317 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_parameter_list_type); }
+#line 2766 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 161: /* param_list_elt  */
+#line 325 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_decl_elt_type); }
+#line 2772 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 162: /* return_list  */
+#line 317 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_parameter_list_type); }
+#line 2778 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 163: /* return_list1  */
+#line 317 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_parameter_list_type); }
+#line 2784 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 164: /* file  */
+#line 318 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_command_type); }
+#line 2790 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 165: /* function_beg  */
+#line 301 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2796 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 166: /* function  */
+#line 318 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_command_type); }
+#line 2802 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 167: /* fcn_name  */
+#line 313 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_identifier_type); }
+#line 2808 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 168: /* function1  */
+#line 330 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).octave_user_function_type); }
+#line 2814 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 169: /* function2  */
+#line 330 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).octave_user_function_type); }
+#line 2820 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 170: /* function_end  */
+#line 328 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_statement_type); }
+#line 2826 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 171: /* classdef_beg  */
+#line 302 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2832 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 172: /* classdef_end  */
+#line 328 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_statement_type); }
+#line 2838 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 173: /* classdef1  */
+#line 330 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).octave_user_function_type); }
+#line 2844 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 174: /* classdef  */
+#line 318 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_command_type); }
+#line 2850 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 175: /* opt_attr_list  */
+#line 303 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2856 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 176: /* attr_list  */
+#line 303 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2862 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 177: /* attr  */
+#line 303 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2868 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 178: /* opt_superclasses  */
+#line 317 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_parameter_list_type); }
+#line 2874 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 179: /* superclasses  */
+#line 317 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { delete ((*yyvaluep).tree_parameter_list_type); }
+#line 2880 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 180: /* class_body  */
+#line 303 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2886 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 181: /* properties_beg  */
+#line 302 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2892 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 182: /* properties_block  */
+#line 303 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2898 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 183: /* properties_list  */
+#line 303 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2904 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 184: /* class_property  */
+#line 303 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2910 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 185: /* methods_beg  */
+#line 302 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2916 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 186: /* methods_block  */
+#line 303 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2922 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 187: /* methods_list  */
+#line 303 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2928 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 188: /* events_beg  */
+#line 302 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2934 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 189: /* events_block  */
+#line 303 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2940 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 190: /* events_list  */
+#line 303 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2946 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 191: /* class_event  */
+#line 303 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2952 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 192: /* enum_beg  */
+#line 302 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2958 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 193: /* enum_block  */
+#line 303 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2964 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 194: /* enum_list  */
+#line 303 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2970 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 195: /* class_enum  */
+#line 303 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2976 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 196: /* stmt_begin  */
+#line 304 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2982 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 197: /* stash_comment  */
+#line 302 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2988 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 198: /* parse_error  */
+#line 304 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 2994 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 199: /* sep_no_nl  */
+#line 300 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 3000 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 200: /* opt_sep_no_nl  */
+#line 300 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 3006 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 201: /* opt_nl  */
+#line 300 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 3012 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 202: /* nl  */
+#line 300 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 3018 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 203: /* sep  */
+#line 300 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 3024 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
+    case 204: /* opt_sep  */
+#line 300 "parse-tree/oct-parse.yy" /* yacc.c:1257  */
+      { }
+#line 3030 "parse-tree/oct-parse.cc" /* yacc.c:1257  */
+        break;
+
 
       default:
         break;
     }
+  YY_IGNORE_MAYBE_UNINITIALIZED_END
 }
 
 
@@ -3471,8 +3048,8 @@ struct yypstate
     int yyerrstatus;
 
     /* The stacks and their tools:
-       `yyss': related to states.
-       `yyvs': related to semantic values.
+       'yyss': related to states.
+       'yyvs': related to semantic values.
 
        Refer to the stacks through separate pointers, to allow yyoverflow
        to reallocate them elsewhere.  */
@@ -3493,29 +3070,14 @@ struct yypstate
     int yynew;
   };
 
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
 int
 yyparse (octave_base_parser& parser)
-#else
-int
-yyparse (parser)
-    octave_base_parser& parser;
-#endif
 {
-  return yypull_parse (YY_NULL, parser);
+  return yypull_parse (YY_NULLPTR, parser);
 }
 
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
 int
 yypull_parse (yypstate *yyps, octave_base_parser& parser)
-#else
-int
-yypull_parse (yyps, parser)
-    yypstate *yyps;
-    octave_base_parser& parser;
-#endif
 {
   int yystatus;
   yypstate *yyps_local;
@@ -3533,7 +3095,7 @@ yypull_parse (yyps, parser)
         }
     }
   do {
-    yychar = YYLEX;
+    yychar = yylex (&yylval, scanner);
     yystatus =
       yypush_parse (yyps_local, yychar, &yylval, parser);
   } while (yystatus == YYPUSH_MORE);
@@ -3543,33 +3105,19 @@ yypull_parse (yyps, parser)
 }
 
 /* Initialize the parser data structure.  */
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
 yypstate *
 yypstate_new (void)
-#else
-yypstate *
-yypstate_new ()
-
-#endif
 {
   yypstate *yyps;
   yyps = (yypstate *) malloc (sizeof *yyps);
   if (!yyps)
-    return YY_NULL;
+    return YY_NULLPTR;
   yyps->yynew = 1;
   return yyps;
 }
 
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
 void
 yypstate_delete (yypstate *yyps)
-#else
-void
-yypstate_delete (yyps)
-    yypstate *yyps;
-#endif
 {
 #ifndef yyoverflow
   /* If the stack was reallocated but the parse did not complete, then the
@@ -3596,47 +3144,18 @@ yypstate_delete (yyps)
 | yypush_parse.  |
 `---------------*/
 
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
 int
 yypush_parse (yypstate *yyps, int yypushed_char, YYSTYPE const *yypushed_val, octave_base_parser& parser)
-#else
-int
-yypush_parse (yyps, yypushed_char, yypushed_val, parser)
-    yypstate *yyps;
-    int yypushed_char;
-    YYSTYPE const *yypushed_val;
-    octave_base_parser& parser;
-#endif
 {
 /* The lookahead symbol.  */
 int yychar;
 
 
-#if defined __GNUC__ && 407 <= __GNUC__ * 100 + __GNUC_MINOR__
-/* Suppress an incorrect diagnostic about yylval being uninitialized.  */
-# define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN \
-    _Pragma ("GCC diagnostic push") \
-    _Pragma ("GCC diagnostic ignored \"-Wuninitialized\"")\
-    _Pragma ("GCC diagnostic ignored \"-Wmaybe-uninitialized\"")
-# define YY_IGNORE_MAYBE_UNINITIALIZED_END \
-    _Pragma ("GCC diagnostic pop")
-#else
+/* The semantic value of the lookahead symbol.  */
 /* Default value used for initialization, for pacifying older GCCs
    or non-GCC compilers.  */
-static YYSTYPE yyval_default;
-# define YY_INITIAL_VALUE(Value) = Value
-#endif
-#ifndef YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
-# define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
-# define YY_IGNORE_MAYBE_UNINITIALIZED_END
-#endif
-#ifndef YY_INITIAL_VALUE
-# define YY_INITIAL_VALUE(Value) /* Nothing. */
-#endif
-
-/* The semantic value of the lookahead symbol.  */
-YYSTYPE yylval YY_INITIAL_VALUE(yyval_default);
+YY_INITIAL_VALUE (static YYSTYPE yyval_default;)
+YYSTYPE yylval YY_INITIAL_VALUE (= yyval_default);
 
   int yyn;
   int yyresult;
@@ -3695,23 +3214,23 @@ YYSTYPE yylval YY_INITIAL_VALUE(yyval_default);
 
 #ifdef yyoverflow
       {
-	/* Give user a chance to reallocate the stack.  Use copies of
-	   these so that the &'s don't force the real ones into
-	   memory.  */
-	YYSTYPE *yyvs1 = yyvs;
-	yytype_int16 *yyss1 = yyss;
+        /* Give user a chance to reallocate the stack.  Use copies of
+           these so that the &'s don't force the real ones into
+           memory.  */
+        YYSTYPE *yyvs1 = yyvs;
+        yytype_int16 *yyss1 = yyss;
 
-	/* Each stack pointer address is followed by the size of the
-	   data in use in that stack, in bytes.  This used to be a
-	   conditional around just the two extra args, but that might
-	   be undefined if yyoverflow is a macro.  */
-	yyoverflow (YY_("memory exhausted"),
-		    &yyss1, yysize * sizeof (*yyssp),
-		    &yyvs1, yysize * sizeof (*yyvsp),
-		    &yystacksize);
+        /* Each stack pointer address is followed by the size of the
+           data in use in that stack, in bytes.  This used to be a
+           conditional around just the two extra args, but that might
+           be undefined if yyoverflow is a macro.  */
+        yyoverflow (YY_("memory exhausted"),
+                    &yyss1, yysize * sizeof (*yyssp),
+                    &yyvs1, yysize * sizeof (*yyvsp),
+                    &yystacksize);
 
-	yyss = yyss1;
-	yyvs = yyvs1;
+        yyss = yyss1;
+        yyvs = yyvs1;
       }
 #else /* no yyoverflow */
 # ifndef YYSTACK_RELOCATE
@@ -3719,22 +3238,22 @@ YYSTYPE yylval YY_INITIAL_VALUE(yyval_default);
 # else
       /* Extend the stack our own way.  */
       if (YYMAXDEPTH <= yystacksize)
-	goto yyexhaustedlab;
+        goto yyexhaustedlab;
       yystacksize *= 2;
       if (YYMAXDEPTH < yystacksize)
-	yystacksize = YYMAXDEPTH;
+        yystacksize = YYMAXDEPTH;
 
       {
-	yytype_int16 *yyss1 = yyss;
-	union yyalloc *yyptr =
-	  (union yyalloc *) YYSTACK_ALLOC (YYSTACK_BYTES (yystacksize));
-	if (! yyptr)
-	  goto yyexhaustedlab;
-	YYSTACK_RELOCATE (yyss_alloc, yyss);
-	YYSTACK_RELOCATE (yyvs_alloc, yyvs);
+        yytype_int16 *yyss1 = yyss;
+        union yyalloc *yyptr =
+          (union yyalloc *) YYSTACK_ALLOC (YYSTACK_BYTES (yystacksize));
+        if (! yyptr)
+          goto yyexhaustedlab;
+        YYSTACK_RELOCATE (yyss_alloc, yyss);
+        YYSTACK_RELOCATE (yyvs_alloc, yyvs);
 #  undef YYSTACK_RELOCATE
-	if (yyss1 != yyssa)
-	  YYSTACK_FREE (yyss1);
+        if (yyss1 != yyssa)
+          YYSTACK_FREE (yyss1);
       }
 # endif
 #endif /* no yyoverflow */
@@ -3743,10 +3262,10 @@ YYSTYPE yylval YY_INITIAL_VALUE(yyval_default);
       yyvsp = yyvs + yysize - 1;
 
       YYDPRINTF ((stderr, "Stack size increased to %lu\n",
-		  (unsigned long int) yystacksize));
+                  (unsigned long int) yystacksize));
 
       if (yyss + yystacksize - 1 <= yyssp)
-	YYABORT;
+        YYABORT;
     }
 
   YYDPRINTF ((stderr, "Entering state %d\n", yystate));
@@ -3850,7 +3369,7 @@ yyreduce:
   yylen = yyr2[yyn];
 
   /* If YYLEN is nonzero, implement the default value of the action:
-     `$$ = $1'.
+     '$$ = $1'.
 
      Otherwise, the following line sets YYVAL to garbage.
      This behavior is undocumented and Bison
@@ -3864,826 +3383,825 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-/* Line 1787 of yacc.c  */
-#line 351 "parse-tree/oct-parse.yy"
+#line 348 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    parser.stmt_list = (yyvsp[(1) - (2)].tree_statement_list_type);
+                    parser.stmt_list = (yyvsp[-1].tree_statement_list_type);
                     YYACCEPT;
                   }
+#line 3392 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 3:
-/* Line 1787 of yacc.c  */
-#line 356 "parse-tree/oct-parse.yy"
+#line 353 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
                     lexer.end_of_input = true;
-                    parser.stmt_list = (yyvsp[(1) - (2)].tree_statement_list_type);
+                    parser.stmt_list = (yyvsp[-1].tree_statement_list_type);
                     YYACCEPT;
                   }
+#line 3402 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 4:
-/* Line 1787 of yacc.c  */
-#line 362 "parse-tree/oct-parse.yy"
+#line 359 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { ABORT_PARSE; }
+#line 3408 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 5:
-/* Line 1787 of yacc.c  */
-#line 366 "parse-tree/oct-parse.yy"
+#line 363 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.tree_statement_list_type) = 0; }
+#line 3414 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 6:
-/* Line 1787 of yacc.c  */
-#line 368 "parse-tree/oct-parse.yy"
-    { (yyval.tree_statement_list_type) = parser.set_stmt_print_flag ((yyvsp[(1) - (2)].tree_statement_list_type), (yyvsp[(2) - (2)].sep_type), false); }
+#line 365 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_statement_list_type) = parser.set_stmt_print_flag ((yyvsp[-1].tree_statement_list_type), (yyvsp[0].sep_type), false); }
+#line 3420 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 7:
-/* Line 1787 of yacc.c  */
-#line 372 "parse-tree/oct-parse.yy"
-    { (yyval.tree_statement_list_type) = parser.make_statement_list ((yyvsp[(1) - (1)].tree_statement_type)); }
+#line 369 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_statement_list_type) = parser.make_statement_list ((yyvsp[0].tree_statement_type)); }
+#line 3426 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 8:
-/* Line 1787 of yacc.c  */
-#line 374 "parse-tree/oct-parse.yy"
-    { (yyval.tree_statement_list_type) = parser.append_statement_list ((yyvsp[(1) - (3)].tree_statement_list_type), (yyvsp[(2) - (3)].sep_type), (yyvsp[(3) - (3)].tree_statement_type), false); }
+#line 371 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_statement_list_type) = parser.append_statement_list ((yyvsp[-2].tree_statement_list_type), (yyvsp[-1].sep_type), (yyvsp[0].tree_statement_type), false); }
+#line 3432 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 9:
-/* Line 1787 of yacc.c  */
-#line 378 "parse-tree/oct-parse.yy"
+#line 375 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.tree_statement_list_type) = new tree_statement_list (); }
+#line 3438 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 10:
-/* Line 1787 of yacc.c  */
-#line 380 "parse-tree/oct-parse.yy"
-    { (yyval.tree_statement_list_type) = (yyvsp[(1) - (1)].tree_statement_list_type); }
+#line 377 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_statement_list_type) = (yyvsp[0].tree_statement_list_type); }
+#line 3444 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 11:
-/* Line 1787 of yacc.c  */
-#line 384 "parse-tree/oct-parse.yy"
-    { (yyval.tree_statement_list_type) = parser.set_stmt_print_flag ((yyvsp[(1) - (2)].tree_statement_list_type), (yyvsp[(2) - (2)].sep_type), true); }
+#line 381 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_statement_list_type) = parser.set_stmt_print_flag ((yyvsp[-1].tree_statement_list_type), (yyvsp[0].sep_type), true); }
+#line 3450 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 12:
-/* Line 1787 of yacc.c  */
-#line 388 "parse-tree/oct-parse.yy"
-    { (yyval.tree_statement_list_type) = parser.make_statement_list ((yyvsp[(1) - (1)].tree_statement_type)); }
+#line 385 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_statement_list_type) = parser.make_statement_list ((yyvsp[0].tree_statement_type)); }
+#line 3456 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 13:
-/* Line 1787 of yacc.c  */
-#line 390 "parse-tree/oct-parse.yy"
-    { (yyval.tree_statement_list_type) = parser.append_statement_list ((yyvsp[(1) - (3)].tree_statement_list_type), (yyvsp[(2) - (3)].sep_type), (yyvsp[(3) - (3)].tree_statement_type), true); }
+#line 387 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_statement_list_type) = parser.append_statement_list ((yyvsp[-2].tree_statement_list_type), (yyvsp[-1].sep_type), (yyvsp[0].tree_statement_type), true); }
+#line 3462 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 14:
-/* Line 1787 of yacc.c  */
-#line 394 "parse-tree/oct-parse.yy"
-    { (yyval.tree_statement_type) = parser.make_statement ((yyvsp[(1) - (1)].tree_expression_type)); }
+#line 391 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_statement_type) = parser.make_statement ((yyvsp[0].tree_expression_type)); }
+#line 3468 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 15:
-/* Line 1787 of yacc.c  */
-#line 396 "parse-tree/oct-parse.yy"
-    { (yyval.tree_statement_type) = parser.make_statement ((yyvsp[(1) - (1)].tree_command_type)); }
+#line 393 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_statement_type) = parser.make_statement ((yyvsp[0].tree_command_type)); }
+#line 3474 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 16:
-/* Line 1787 of yacc.c  */
-#line 398 "parse-tree/oct-parse.yy"
-    { (yyval.tree_statement_type) = parser.make_statement ((yyvsp[(1) - (1)].tree_index_expression_type)); }
+#line 395 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_statement_type) = parser.make_statement ((yyvsp[0].tree_index_expression_type)); }
+#line 3480 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 17:
-/* Line 1787 of yacc.c  */
-#line 410 "parse-tree/oct-parse.yy"
+#line 407 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    (yyval.tree_index_expression_type) = parser.make_index_expression ((yyvsp[(1) - (2)].tree_identifier_type), (yyvsp[(2) - (2)].tree_argument_list_type), '(');
+                    (yyval.tree_index_expression_type) = parser.make_index_expression ((yyvsp[-1].tree_identifier_type), (yyvsp[0].tree_argument_list_type), '(');
                     if (! (yyval.tree_index_expression_type))
                       {
                         // make_index_expression deleted $1 and $2.
                         ABORT_PARSE;
                       }
                   }
+#line 3493 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 18:
-/* Line 1787 of yacc.c  */
-#line 421 "parse-tree/oct-parse.yy"
-    { (yyval.tree_argument_list_type) = new tree_argument_list ((yyvsp[(1) - (1)].tree_constant_type)); }
+#line 418 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_argument_list_type) = new tree_argument_list ((yyvsp[0].tree_constant_type)); }
+#line 3499 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 19:
-/* Line 1787 of yacc.c  */
-#line 423 "parse-tree/oct-parse.yy"
+#line 420 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    (yyvsp[(1) - (2)].tree_argument_list_type)->append ((yyvsp[(2) - (2)].tree_constant_type));
-                    (yyval.tree_argument_list_type) = (yyvsp[(1) - (2)].tree_argument_list_type);
+                    (yyvsp[-1].tree_argument_list_type)->append ((yyvsp[0].tree_constant_type));
+                    (yyval.tree_argument_list_type) = (yyvsp[-1].tree_argument_list_type);
                   }
+#line 3508 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 20:
-/* Line 1787 of yacc.c  */
-#line 434 "parse-tree/oct-parse.yy"
+#line 431 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    symbol_table::symbol_record *sr = (yyvsp[(1) - (1)].tok_val)->sym_rec ();
-                    (yyval.tree_identifier_type) = new tree_identifier (*sr, (yyvsp[(1) - (1)].tok_val)->line (), (yyvsp[(1) - (1)].tok_val)->column ());
+                    symbol_table::symbol_record *sr = (yyvsp[0].tok_val)->sym_rec ();
+                    (yyval.tree_identifier_type) = new tree_identifier (*sr, (yyvsp[0].tok_val)->line (), (yyvsp[0].tok_val)->column ());
                   }
+#line 3517 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 21:
-/* Line 1787 of yacc.c  */
-#line 442 "parse-tree/oct-parse.yy"
-    { (yyval.tree_identifier_type) = new tree_identifier ((yyvsp[(1) - (1)].tok_val)->line (), (yyvsp[(1) - (1)].tok_val)->column ()); }
+#line 439 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_identifier_type) = new tree_identifier ((yyvsp[0].tok_val)->line (), (yyvsp[0].tok_val)->column ()); }
+#line 3523 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 22:
-/* Line 1787 of yacc.c  */
-#line 446 "parse-tree/oct-parse.yy"
-    { (yyval.tree_identifier_type) = new tree_identifier ((yyvsp[(1) - (1)].tok_val)->line (), (yyvsp[(1) - (1)].tok_val)->column ()); }
+#line 443 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_identifier_type) = new tree_identifier ((yyvsp[0].tok_val)->line (), (yyvsp[0].tok_val)->column ()); }
+#line 3529 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 23:
-/* Line 1787 of yacc.c  */
-#line 450 "parse-tree/oct-parse.yy"
-    { (yyval.tree_constant_type) = parser.make_constant (DQ_STRING, (yyvsp[(1) - (1)].tok_val)); }
+#line 447 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_constant_type) = parser.make_constant (DQ_STRING, (yyvsp[0].tok_val)); }
+#line 3535 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 24:
-/* Line 1787 of yacc.c  */
-#line 452 "parse-tree/oct-parse.yy"
-    { (yyval.tree_constant_type) = parser.make_constant (SQ_STRING, (yyvsp[(1) - (1)].tok_val)); }
+#line 449 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_constant_type) = parser.make_constant (SQ_STRING, (yyvsp[0].tok_val)); }
+#line 3541 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 25:
-/* Line 1787 of yacc.c  */
-#line 456 "parse-tree/oct-parse.yy"
-    { (yyval.tree_constant_type) = parser.make_constant (NUM, (yyvsp[(1) - (1)].tok_val)); }
+#line 453 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_constant_type) = parser.make_constant (NUM, (yyvsp[0].tok_val)); }
+#line 3547 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 26:
-/* Line 1787 of yacc.c  */
-#line 458 "parse-tree/oct-parse.yy"
-    { (yyval.tree_constant_type) = parser.make_constant (IMAG_NUM, (yyvsp[(1) - (1)].tok_val)); }
+#line 455 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_constant_type) = parser.make_constant (IMAG_NUM, (yyvsp[0].tok_val)); }
+#line 3553 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 27:
-/* Line 1787 of yacc.c  */
-#line 460 "parse-tree/oct-parse.yy"
-    { (yyval.tree_constant_type) = (yyvsp[(1) - (1)].tree_constant_type); }
+#line 457 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_constant_type) = (yyvsp[0].tree_constant_type); }
+#line 3559 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 28:
-/* Line 1787 of yacc.c  */
-#line 464 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.finish_matrix ((yyvsp[(2) - (3)].tree_matrix_type)); }
+#line 461 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.finish_matrix ((yyvsp[-1].tree_matrix_type)); }
+#line 3565 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 29:
-/* Line 1787 of yacc.c  */
-#line 468 "parse-tree/oct-parse.yy"
-    { (yyval.tree_matrix_type) = (yyvsp[(1) - (1)].tree_argument_list_type) ? new tree_matrix ((yyvsp[(1) - (1)].tree_argument_list_type)) : 0; }
+#line 465 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_matrix_type) = (yyvsp[0].tree_argument_list_type) ? new tree_matrix ((yyvsp[0].tree_argument_list_type)) : 0; }
+#line 3571 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 30:
-/* Line 1787 of yacc.c  */
-#line 470 "parse-tree/oct-parse.yy"
+#line 467 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    if ((yyvsp[(1) - (3)].tree_matrix_type))
+                    if ((yyvsp[-2].tree_matrix_type))
                       {
-                        if ((yyvsp[(3) - (3)].tree_argument_list_type))
-                          (yyvsp[(1) - (3)].tree_matrix_type)->append ((yyvsp[(3) - (3)].tree_argument_list_type));
+                        if ((yyvsp[0].tree_argument_list_type))
+                          (yyvsp[-2].tree_matrix_type)->append ((yyvsp[0].tree_argument_list_type));
 
-                        (yyval.tree_matrix_type) = (yyvsp[(1) - (3)].tree_matrix_type);
+                        (yyval.tree_matrix_type) = (yyvsp[-2].tree_matrix_type);
                       }
                     else
-                      (yyval.tree_matrix_type) = (yyvsp[(3) - (3)].tree_argument_list_type) ? new tree_matrix ((yyvsp[(3) - (3)].tree_argument_list_type)) : 0;
+                      (yyval.tree_matrix_type) = (yyvsp[0].tree_argument_list_type) ? new tree_matrix ((yyvsp[0].tree_argument_list_type)) : 0;
                   }
+#line 3587 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 31:
-/* Line 1787 of yacc.c  */
-#line 484 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.finish_cell ((yyvsp[(2) - (3)].tree_cell_type)); }
+#line 481 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.finish_cell ((yyvsp[-1].tree_cell_type)); }
+#line 3593 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 32:
-/* Line 1787 of yacc.c  */
-#line 488 "parse-tree/oct-parse.yy"
-    { (yyval.tree_cell_type) = (yyvsp[(1) - (1)].tree_argument_list_type) ? new tree_cell ((yyvsp[(1) - (1)].tree_argument_list_type)) : 0; }
+#line 485 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_cell_type) = (yyvsp[0].tree_argument_list_type) ? new tree_cell ((yyvsp[0].tree_argument_list_type)) : 0; }
+#line 3599 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 33:
-/* Line 1787 of yacc.c  */
-#line 490 "parse-tree/oct-parse.yy"
+#line 487 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    if ((yyvsp[(1) - (3)].tree_cell_type))
+                    if ((yyvsp[-2].tree_cell_type))
                       {
-                        if ((yyvsp[(3) - (3)].tree_argument_list_type))
-                          (yyvsp[(1) - (3)].tree_cell_type)->append ((yyvsp[(3) - (3)].tree_argument_list_type));
+                        if ((yyvsp[0].tree_argument_list_type))
+                          (yyvsp[-2].tree_cell_type)->append ((yyvsp[0].tree_argument_list_type));
 
-                        (yyval.tree_cell_type) = (yyvsp[(1) - (3)].tree_cell_type);
+                        (yyval.tree_cell_type) = (yyvsp[-2].tree_cell_type);
                       }
                     else
-                      (yyval.tree_cell_type) = (yyvsp[(3) - (3)].tree_argument_list_type) ? new tree_cell ((yyvsp[(3) - (3)].tree_argument_list_type)) : 0;
+                      (yyval.tree_cell_type) = (yyvsp[0].tree_argument_list_type) ? new tree_cell ((yyvsp[0].tree_argument_list_type)) : 0;
                   }
+#line 3615 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 34:
-/* Line 1787 of yacc.c  */
-#line 508 "parse-tree/oct-parse.yy"
+#line 505 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.tree_argument_list_type) = 0; }
+#line 3621 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 35:
-/* Line 1787 of yacc.c  */
-#line 510 "parse-tree/oct-parse.yy"
+#line 507 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.tree_argument_list_type) = 0; }
+#line 3627 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 36:
-/* Line 1787 of yacc.c  */
-#line 512 "parse-tree/oct-parse.yy"
-    { (yyval.tree_argument_list_type) = (yyvsp[(1) - (1)].tree_argument_list_type); }
+#line 509 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_argument_list_type) = (yyvsp[0].tree_argument_list_type); }
+#line 3633 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 37:
-/* Line 1787 of yacc.c  */
-#line 514 "parse-tree/oct-parse.yy"
-    { (yyval.tree_argument_list_type) = (yyvsp[(1) - (2)].tree_argument_list_type); }
+#line 511 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_argument_list_type) = (yyvsp[-1].tree_argument_list_type); }
+#line 3639 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 38:
-/* Line 1787 of yacc.c  */
-#line 516 "parse-tree/oct-parse.yy"
-    { (yyval.tree_argument_list_type) = (yyvsp[(2) - (2)].tree_argument_list_type); }
+#line 513 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_argument_list_type) = (yyvsp[0].tree_argument_list_type); }
+#line 3645 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 39:
-/* Line 1787 of yacc.c  */
-#line 518 "parse-tree/oct-parse.yy"
-    { (yyval.tree_argument_list_type) = (yyvsp[(2) - (3)].tree_argument_list_type); }
+#line 515 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_argument_list_type) = (yyvsp[-1].tree_argument_list_type); }
+#line 3651 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 40:
-/* Line 1787 of yacc.c  */
-#line 522 "parse-tree/oct-parse.yy"
+#line 519 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    (yyval.tree_fcn_handle_type) = parser.make_fcn_handle ((yyvsp[(2) - (2)].tok_val));
+                    (yyval.tree_fcn_handle_type) = parser.make_fcn_handle ((yyvsp[0].tok_val));
                     lexer.looking_at_function_handle--;
                   }
+#line 3660 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 41:
-/* Line 1787 of yacc.c  */
-#line 529 "parse-tree/oct-parse.yy"
+#line 526 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    (yyval.tree_anon_fcn_handle_type) = parser.make_anon_fcn_handle ((yyvsp[(2) - (4)].tree_parameter_list_type), (yyvsp[(4) - (4)].tree_statement_type));
+                    (yyval.tree_anon_fcn_handle_type) = parser.make_anon_fcn_handle ((yyvsp[-2].tree_parameter_list_type), (yyvsp[0].tree_statement_type));
                     lexer.nesting_level.remove ();
                   }
+#line 3669 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 42:
-/* Line 1787 of yacc.c  */
-#line 536 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = (yyvsp[(1) - (1)].tree_identifier_type); }
+#line 533 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = (yyvsp[0].tree_identifier_type); }
+#line 3675 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 43:
-/* Line 1787 of yacc.c  */
-#line 538 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = (yyvsp[(1) - (1)].tree_constant_type); }
+#line 535 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = (yyvsp[0].tree_constant_type); }
+#line 3681 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 44:
-/* Line 1787 of yacc.c  */
-#line 540 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = (yyvsp[(1) - (1)].tree_fcn_handle_type); }
+#line 537 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = (yyvsp[0].tree_fcn_handle_type); }
+#line 3687 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 45:
-/* Line 1787 of yacc.c  */
-#line 542 "parse-tree/oct-parse.yy"
+#line 539 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
                     lexer.looking_at_matrix_or_assign_lhs = false;
-                    (yyval.tree_expression_type) = (yyvsp[(1) - (1)].tree_expression_type);
+                    (yyval.tree_expression_type) = (yyvsp[0].tree_expression_type);
                   }
+#line 3696 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 46:
-/* Line 1787 of yacc.c  */
-#line 547 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = (yyvsp[(1) - (1)].tree_expression_type); }
+#line 544 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = (yyvsp[0].tree_expression_type); }
+#line 3702 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 47:
-/* Line 1787 of yacc.c  */
-#line 549 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = (yyvsp[(1) - (1)].tree_identifier_type); }
+#line 546 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = (yyvsp[0].tree_identifier_type); }
+#line 3708 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 48:
-/* Line 1787 of yacc.c  */
-#line 551 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = (yyvsp[(1) - (1)].tree_identifier_type); }
+#line 548 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = (yyvsp[0].tree_identifier_type); }
+#line 3714 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 49:
-/* Line 1787 of yacc.c  */
-#line 553 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = (yyvsp[(2) - (3)].tree_expression_type)->mark_in_parens (); }
+#line 550 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = (yyvsp[-1].tree_expression_type)->mark_in_parens (); }
+#line 3720 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 50:
-/* Line 1787 of yacc.c  */
-#line 557 "parse-tree/oct-parse.yy"
+#line 554 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
                     octave_value tmp (octave_value::magic_colon_t);
                     (yyval.tree_constant_type) = new tree_constant (tmp);
                   }
+#line 3729 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 51:
-/* Line 1787 of yacc.c  */
-#line 564 "parse-tree/oct-parse.yy"
+#line 561 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
                     (yyval.tree_identifier_type) = new tree_black_hole ();
                   }
+#line 3737 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 52:
-/* Line 1787 of yacc.c  */
-#line 570 "parse-tree/oct-parse.yy"
-    { (yyval.tree_argument_list_type) = new tree_argument_list ((yyvsp[(1) - (1)].tree_expression_type)); }
+#line 567 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_argument_list_type) = new tree_argument_list ((yyvsp[0].tree_expression_type)); }
+#line 3743 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 53:
-/* Line 1787 of yacc.c  */
-#line 572 "parse-tree/oct-parse.yy"
-    { (yyval.tree_argument_list_type) = new tree_argument_list ((yyvsp[(1) - (1)].tree_constant_type)); }
+#line 569 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_argument_list_type) = new tree_argument_list ((yyvsp[0].tree_constant_type)); }
+#line 3749 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 54:
-/* Line 1787 of yacc.c  */
-#line 574 "parse-tree/oct-parse.yy"
-    { (yyval.tree_argument_list_type) = new tree_argument_list ((yyvsp[(1) - (1)].tree_identifier_type)); }
+#line 571 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_argument_list_type) = new tree_argument_list ((yyvsp[0].tree_identifier_type)); }
+#line 3755 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 55:
-/* Line 1787 of yacc.c  */
-#line 576 "parse-tree/oct-parse.yy"
+#line 573 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    (yyvsp[(1) - (3)].tree_argument_list_type)->append ((yyvsp[(3) - (3)].tree_constant_type));
-                    (yyval.tree_argument_list_type) = (yyvsp[(1) - (3)].tree_argument_list_type);
+                    (yyvsp[-2].tree_argument_list_type)->append ((yyvsp[0].tree_constant_type));
+                    (yyval.tree_argument_list_type) = (yyvsp[-2].tree_argument_list_type);
                   }
+#line 3764 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 56:
-/* Line 1787 of yacc.c  */
-#line 581 "parse-tree/oct-parse.yy"
+#line 578 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    (yyvsp[(1) - (3)].tree_argument_list_type)->append ((yyvsp[(3) - (3)].tree_identifier_type));
-                    (yyval.tree_argument_list_type) = (yyvsp[(1) - (3)].tree_argument_list_type);
+                    (yyvsp[-2].tree_argument_list_type)->append ((yyvsp[0].tree_identifier_type));
+                    (yyval.tree_argument_list_type) = (yyvsp[-2].tree_argument_list_type);
                   }
+#line 3773 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 57:
-/* Line 1787 of yacc.c  */
-#line 586 "parse-tree/oct-parse.yy"
+#line 583 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    (yyvsp[(1) - (3)].tree_argument_list_type)->append ((yyvsp[(3) - (3)].tree_expression_type));
-                    (yyval.tree_argument_list_type) = (yyvsp[(1) - (3)].tree_argument_list_type);
+                    (yyvsp[-2].tree_argument_list_type)->append ((yyvsp[0].tree_expression_type));
+                    (yyval.tree_argument_list_type) = (yyvsp[-2].tree_argument_list_type);
                   }
+#line 3782 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 58:
-/* Line 1787 of yacc.c  */
-#line 593 "parse-tree/oct-parse.yy"
+#line 590 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { lexer.looking_at_indirect_ref = true; }
+#line 3788 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 59:
-/* Line 1787 of yacc.c  */
-#line 597 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = (yyvsp[(1) - (1)].tree_expression_type); }
+#line 594 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = (yyvsp[0].tree_expression_type); }
+#line 3794 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 60:
-/* Line 1787 of yacc.c  */
-#line 599 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_postfix_op (PLUS_PLUS, (yyvsp[(1) - (2)].tree_expression_type), (yyvsp[(2) - (2)].tok_val)); }
+#line 596 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_postfix_op (PLUS_PLUS, (yyvsp[-1].tree_expression_type), (yyvsp[0].tok_val)); }
+#line 3800 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 61:
-/* Line 1787 of yacc.c  */
-#line 601 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_postfix_op (MINUS_MINUS, (yyvsp[(1) - (2)].tree_expression_type), (yyvsp[(2) - (2)].tok_val)); }
+#line 598 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_postfix_op (MINUS_MINUS, (yyvsp[-1].tree_expression_type), (yyvsp[0].tok_val)); }
+#line 3806 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 62:
-/* Line 1787 of yacc.c  */
-#line 603 "parse-tree/oct-parse.yy"
+#line 600 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    (yyval.tree_expression_type) = parser.make_index_expression ((yyvsp[(1) - (3)].tree_expression_type), 0, '(');
+                    (yyval.tree_expression_type) = parser.make_index_expression ((yyvsp[-2].tree_expression_type), 0, '(');
                     if (! (yyval.tree_expression_type))
                       {
                         // make_index_expression deleted $1.
                         ABORT_PARSE;
                       }
                   }
+#line 3819 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 63:
-/* Line 1787 of yacc.c  */
-#line 612 "parse-tree/oct-parse.yy"
+#line 609 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    (yyval.tree_expression_type) = parser.make_index_expression ((yyvsp[(1) - (4)].tree_expression_type), (yyvsp[(3) - (4)].tree_argument_list_type), '(');
+                    (yyval.tree_expression_type) = parser.make_index_expression ((yyvsp[-3].tree_expression_type), (yyvsp[-1].tree_argument_list_type), '(');
                     if (! (yyval.tree_expression_type))
                       {
                         // make_index_expression deleted $1 and $3.
                         ABORT_PARSE;
                       }
                   }
+#line 3832 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 64:
-/* Line 1787 of yacc.c  */
-#line 621 "parse-tree/oct-parse.yy"
+#line 618 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    (yyval.tree_expression_type) = parser.make_index_expression ((yyvsp[(1) - (3)].tree_expression_type), 0, '{');
+                    (yyval.tree_expression_type) = parser.make_index_expression ((yyvsp[-2].tree_expression_type), 0, '{');
                     if (! (yyval.tree_expression_type))
                       {
                         // make_index_expression deleted $1.
                         ABORT_PARSE;
                       }
                   }
+#line 3845 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 65:
-/* Line 1787 of yacc.c  */
-#line 630 "parse-tree/oct-parse.yy"
+#line 627 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    (yyval.tree_expression_type) = parser.make_index_expression ((yyvsp[(1) - (4)].tree_expression_type), (yyvsp[(3) - (4)].tree_argument_list_type), '{');
+                    (yyval.tree_expression_type) = parser.make_index_expression ((yyvsp[-3].tree_expression_type), (yyvsp[-1].tree_argument_list_type), '{');
                     if (! (yyval.tree_expression_type))
                       {
                         // make_index_expression deleted $1 and $3.
                         ABORT_PARSE;
                       }
                   }
+#line 3858 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 66:
-/* Line 1787 of yacc.c  */
-#line 639 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_postfix_op (HERMITIAN, (yyvsp[(1) - (2)].tree_expression_type), (yyvsp[(2) - (2)].tok_val)); }
+#line 636 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_postfix_op (HERMITIAN, (yyvsp[-1].tree_expression_type), (yyvsp[0].tok_val)); }
+#line 3864 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 67:
-/* Line 1787 of yacc.c  */
-#line 641 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_postfix_op (TRANSPOSE, (yyvsp[(1) - (2)].tree_expression_type), (yyvsp[(2) - (2)].tok_val)); }
+#line 638 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_postfix_op (TRANSPOSE, (yyvsp[-1].tree_expression_type), (yyvsp[0].tok_val)); }
+#line 3870 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 68:
-/* Line 1787 of yacc.c  */
-#line 643 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_indirect_ref ((yyvsp[(1) - (3)].tree_expression_type), (yyvsp[(3) - (3)].tok_val)->text ()); }
+#line 640 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_indirect_ref ((yyvsp[-2].tree_expression_type), (yyvsp[0].tok_val)->text ()); }
+#line 3876 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 69:
-/* Line 1787 of yacc.c  */
-#line 645 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_indirect_ref ((yyvsp[(1) - (5)].tree_expression_type), (yyvsp[(4) - (5)].tree_expression_type)); }
+#line 642 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_indirect_ref ((yyvsp[-4].tree_expression_type), (yyvsp[-1].tree_expression_type)); }
+#line 3882 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 70:
-/* Line 1787 of yacc.c  */
-#line 647 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_prefix_op (PLUS_PLUS, (yyvsp[(2) - (2)].tree_expression_type), (yyvsp[(1) - (2)].tok_val)); }
+#line 644 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_prefix_op (PLUS_PLUS, (yyvsp[0].tree_expression_type), (yyvsp[-1].tok_val)); }
+#line 3888 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 71:
-/* Line 1787 of yacc.c  */
-#line 649 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_prefix_op (MINUS_MINUS, (yyvsp[(2) - (2)].tree_expression_type), (yyvsp[(1) - (2)].tok_val)); }
+#line 646 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_prefix_op (MINUS_MINUS, (yyvsp[0].tree_expression_type), (yyvsp[-1].tok_val)); }
+#line 3894 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 72:
-/* Line 1787 of yacc.c  */
-#line 651 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_prefix_op (EXPR_NOT, (yyvsp[(2) - (2)].tree_expression_type), (yyvsp[(1) - (2)].tok_val)); }
+#line 648 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_prefix_op (EXPR_NOT, (yyvsp[0].tree_expression_type), (yyvsp[-1].tok_val)); }
+#line 3900 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 73:
-/* Line 1787 of yacc.c  */
-#line 653 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_prefix_op ('+', (yyvsp[(2) - (2)].tree_expression_type), (yyvsp[(1) - (2)].tok_val)); }
+#line 650 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_prefix_op ('+', (yyvsp[0].tree_expression_type), (yyvsp[-1].tok_val)); }
+#line 3906 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 74:
-/* Line 1787 of yacc.c  */
-#line 655 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_prefix_op ('-', (yyvsp[(2) - (2)].tree_expression_type), (yyvsp[(1) - (2)].tok_val)); }
+#line 652 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_prefix_op ('-', (yyvsp[0].tree_expression_type), (yyvsp[-1].tok_val)); }
+#line 3912 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 75:
-/* Line 1787 of yacc.c  */
-#line 657 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_binary_op (POW, (yyvsp[(1) - (3)].tree_expression_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 654 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_binary_op (POW, (yyvsp[-2].tree_expression_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 3918 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 76:
-/* Line 1787 of yacc.c  */
-#line 659 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_binary_op (EPOW, (yyvsp[(1) - (3)].tree_expression_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 656 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_binary_op (EPOW, (yyvsp[-2].tree_expression_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 3924 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 77:
-/* Line 1787 of yacc.c  */
-#line 661 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_binary_op ('+', (yyvsp[(1) - (3)].tree_expression_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 658 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_binary_op ('+', (yyvsp[-2].tree_expression_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 3930 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 78:
-/* Line 1787 of yacc.c  */
-#line 663 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_binary_op ('-', (yyvsp[(1) - (3)].tree_expression_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 660 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_binary_op ('-', (yyvsp[-2].tree_expression_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 3936 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 79:
-/* Line 1787 of yacc.c  */
-#line 665 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_binary_op ('*', (yyvsp[(1) - (3)].tree_expression_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 662 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_binary_op ('*', (yyvsp[-2].tree_expression_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 3942 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 80:
-/* Line 1787 of yacc.c  */
-#line 667 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_binary_op ('/', (yyvsp[(1) - (3)].tree_expression_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 664 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_binary_op ('/', (yyvsp[-2].tree_expression_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 3948 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 81:
-/* Line 1787 of yacc.c  */
-#line 669 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_binary_op ('+', (yyvsp[(1) - (3)].tree_expression_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 666 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_binary_op ('+', (yyvsp[-2].tree_expression_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 3954 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 82:
-/* Line 1787 of yacc.c  */
-#line 671 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_binary_op ('-', (yyvsp[(1) - (3)].tree_expression_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 668 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_binary_op ('-', (yyvsp[-2].tree_expression_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 3960 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 83:
-/* Line 1787 of yacc.c  */
-#line 673 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_binary_op (EMUL, (yyvsp[(1) - (3)].tree_expression_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 670 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_binary_op (EMUL, (yyvsp[-2].tree_expression_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 3966 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 84:
-/* Line 1787 of yacc.c  */
-#line 675 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_binary_op (EDIV, (yyvsp[(1) - (3)].tree_expression_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 672 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_binary_op (EDIV, (yyvsp[-2].tree_expression_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 3972 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 85:
-/* Line 1787 of yacc.c  */
-#line 677 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_binary_op (LEFTDIV, (yyvsp[(1) - (3)].tree_expression_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 674 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_binary_op (LEFTDIV, (yyvsp[-2].tree_expression_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 3978 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 86:
-/* Line 1787 of yacc.c  */
-#line 679 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_binary_op (ELEFTDIV, (yyvsp[(1) - (3)].tree_expression_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 676 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_binary_op (ELEFTDIV, (yyvsp[-2].tree_expression_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 3984 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 87:
-/* Line 1787 of yacc.c  */
-#line 683 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = (yyvsp[(1) - (1)].tree_expression_type); }
+#line 680 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = (yyvsp[0].tree_expression_type); }
+#line 3990 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 88:
-/* Line 1787 of yacc.c  */
-#line 685 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_postfix_op (PLUS_PLUS, (yyvsp[(1) - (2)].tree_expression_type), (yyvsp[(2) - (2)].tok_val)); }
+#line 682 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_postfix_op (PLUS_PLUS, (yyvsp[-1].tree_expression_type), (yyvsp[0].tok_val)); }
+#line 3996 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 89:
-/* Line 1787 of yacc.c  */
-#line 687 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_postfix_op (MINUS_MINUS, (yyvsp[(1) - (2)].tree_expression_type), (yyvsp[(2) - (2)].tok_val)); }
+#line 684 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_postfix_op (MINUS_MINUS, (yyvsp[-1].tree_expression_type), (yyvsp[0].tok_val)); }
+#line 4002 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 90:
-/* Line 1787 of yacc.c  */
-#line 689 "parse-tree/oct-parse.yy"
+#line 686 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    (yyval.tree_expression_type) = parser.make_index_expression ((yyvsp[(1) - (3)].tree_expression_type), 0, '(');
+                    (yyval.tree_expression_type) = parser.make_index_expression ((yyvsp[-2].tree_expression_type), 0, '(');
                     if (! (yyval.tree_expression_type))
                       {
                         // make_index_expression deleted $1.
                         ABORT_PARSE;
                       }
                   }
+#line 4015 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 91:
-/* Line 1787 of yacc.c  */
-#line 698 "parse-tree/oct-parse.yy"
+#line 695 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    (yyval.tree_expression_type) = parser.make_index_expression ((yyvsp[(1) - (4)].tree_expression_type), (yyvsp[(3) - (4)].tree_argument_list_type), '(');
+                    (yyval.tree_expression_type) = parser.make_index_expression ((yyvsp[-3].tree_expression_type), (yyvsp[-1].tree_argument_list_type), '(');
                     if (! (yyval.tree_expression_type))
                       {
                         // make_index_expression deleted $1 and $3.
                         ABORT_PARSE;
                       }
                   }
+#line 4028 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 92:
-/* Line 1787 of yacc.c  */
-#line 707 "parse-tree/oct-parse.yy"
+#line 704 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    (yyval.tree_expression_type) = parser.make_index_expression ((yyvsp[(1) - (3)].tree_expression_type), 0, '{');
+                    (yyval.tree_expression_type) = parser.make_index_expression ((yyvsp[-2].tree_expression_type), 0, '{');
                     if (! (yyval.tree_expression_type))
                       {
                         // make_index_expression deleted $1.
                         ABORT_PARSE;
                       }
                   }
+#line 4041 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 93:
-/* Line 1787 of yacc.c  */
-#line 716 "parse-tree/oct-parse.yy"
+#line 713 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    (yyval.tree_expression_type) = parser.make_index_expression ((yyvsp[(1) - (4)].tree_expression_type), (yyvsp[(3) - (4)].tree_argument_list_type), '{');
+                    (yyval.tree_expression_type) = parser.make_index_expression ((yyvsp[-3].tree_expression_type), (yyvsp[-1].tree_argument_list_type), '{');
                     if (! (yyval.tree_expression_type))
                       {
                         // make_index_expression deleted $1 and $3.
                         ABORT_PARSE;
                       }
                   }
+#line 4054 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 94:
-/* Line 1787 of yacc.c  */
-#line 725 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_indirect_ref ((yyvsp[(1) - (3)].tree_expression_type), (yyvsp[(3) - (3)].tok_val)->text ()); }
+#line 722 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_indirect_ref ((yyvsp[-2].tree_expression_type), (yyvsp[0].tok_val)->text ()); }
+#line 4060 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 95:
-/* Line 1787 of yacc.c  */
-#line 727 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_indirect_ref ((yyvsp[(1) - (5)].tree_expression_type), (yyvsp[(4) - (5)].tree_expression_type)); }
+#line 724 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_indirect_ref ((yyvsp[-4].tree_expression_type), (yyvsp[-1].tree_expression_type)); }
+#line 4066 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 96:
-/* Line 1787 of yacc.c  */
-#line 729 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_prefix_op (PLUS_PLUS, (yyvsp[(2) - (2)].tree_expression_type), (yyvsp[(1) - (2)].tok_val)); }
+#line 726 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_prefix_op (PLUS_PLUS, (yyvsp[0].tree_expression_type), (yyvsp[-1].tok_val)); }
+#line 4072 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 97:
-/* Line 1787 of yacc.c  */
-#line 731 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_prefix_op (MINUS_MINUS, (yyvsp[(2) - (2)].tree_expression_type), (yyvsp[(1) - (2)].tok_val)); }
+#line 728 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_prefix_op (MINUS_MINUS, (yyvsp[0].tree_expression_type), (yyvsp[-1].tok_val)); }
+#line 4078 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 98:
-/* Line 1787 of yacc.c  */
-#line 733 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_prefix_op (EXPR_NOT, (yyvsp[(2) - (2)].tree_expression_type), (yyvsp[(1) - (2)].tok_val)); }
+#line 730 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_prefix_op (EXPR_NOT, (yyvsp[0].tree_expression_type), (yyvsp[-1].tok_val)); }
+#line 4084 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 99:
-/* Line 1787 of yacc.c  */
-#line 735 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_prefix_op ('+', (yyvsp[(2) - (2)].tree_expression_type), (yyvsp[(1) - (2)].tok_val)); }
+#line 732 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_prefix_op ('+', (yyvsp[0].tree_expression_type), (yyvsp[-1].tok_val)); }
+#line 4090 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 100:
-/* Line 1787 of yacc.c  */
-#line 737 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_prefix_op ('-', (yyvsp[(2) - (2)].tree_expression_type), (yyvsp[(1) - (2)].tok_val)); }
+#line 734 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_prefix_op ('-', (yyvsp[0].tree_expression_type), (yyvsp[-1].tok_val)); }
+#line 4096 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 101:
-/* Line 1787 of yacc.c  */
-#line 741 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.finish_colon_expression ((yyvsp[(1) - (1)].tree_colon_expression_type)); }
+#line 738 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.finish_colon_expression ((yyvsp[0].tree_colon_expression_type)); }
+#line 4102 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 102:
-/* Line 1787 of yacc.c  */
-#line 745 "parse-tree/oct-parse.yy"
-    { (yyval.tree_colon_expression_type) = new tree_colon_expression ((yyvsp[(1) - (1)].tree_expression_type)); }
+#line 742 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_colon_expression_type) = new tree_colon_expression ((yyvsp[0].tree_expression_type)); }
+#line 4108 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 103:
-/* Line 1787 of yacc.c  */
-#line 747 "parse-tree/oct-parse.yy"
+#line 744 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    if (! ((yyval.tree_colon_expression_type) = (yyvsp[(1) - (3)].tree_colon_expression_type)->append ((yyvsp[(3) - (3)].tree_expression_type))))
+                    if (! ((yyval.tree_colon_expression_type) = (yyvsp[-2].tree_colon_expression_type)->append ((yyvsp[0].tree_expression_type))))
                       {
-                        delete (yyvsp[(1) - (3)].tree_colon_expression_type);
-                        delete (yyvsp[(3) - (3)].tree_expression_type);
+                        delete (yyvsp[-2].tree_colon_expression_type);
+                        delete (yyvsp[0].tree_expression_type);
                         ABORT_PARSE;
                       }
                   }
+#line 4121 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 104:
-/* Line 1787 of yacc.c  */
-#line 758 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = (yyvsp[(1) - (1)].tree_expression_type); }
+#line 755 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = (yyvsp[0].tree_expression_type); }
+#line 4127 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 105:
-/* Line 1787 of yacc.c  */
-#line 760 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_binary_op (LSHIFT, (yyvsp[(1) - (3)].tree_expression_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 757 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_binary_op (LSHIFT, (yyvsp[-2].tree_expression_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 4133 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 106:
-/* Line 1787 of yacc.c  */
-#line 762 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_binary_op (RSHIFT, (yyvsp[(1) - (3)].tree_expression_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 759 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_binary_op (RSHIFT, (yyvsp[-2].tree_expression_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 4139 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 107:
-/* Line 1787 of yacc.c  */
-#line 764 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_binary_op (EXPR_LT, (yyvsp[(1) - (3)].tree_expression_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 761 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_binary_op (EXPR_LT, (yyvsp[-2].tree_expression_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 4145 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 108:
-/* Line 1787 of yacc.c  */
-#line 766 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_binary_op (EXPR_LE, (yyvsp[(1) - (3)].tree_expression_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 763 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_binary_op (EXPR_LE, (yyvsp[-2].tree_expression_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 4151 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 109:
-/* Line 1787 of yacc.c  */
-#line 768 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_binary_op (EXPR_EQ, (yyvsp[(1) - (3)].tree_expression_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 765 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_binary_op (EXPR_EQ, (yyvsp[-2].tree_expression_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 4157 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 110:
-/* Line 1787 of yacc.c  */
-#line 770 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_binary_op (EXPR_GE, (yyvsp[(1) - (3)].tree_expression_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 767 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_binary_op (EXPR_GE, (yyvsp[-2].tree_expression_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 4163 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 111:
-/* Line 1787 of yacc.c  */
-#line 772 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_binary_op (EXPR_GT, (yyvsp[(1) - (3)].tree_expression_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 769 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_binary_op (EXPR_GT, (yyvsp[-2].tree_expression_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 4169 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 112:
-/* Line 1787 of yacc.c  */
-#line 774 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_binary_op (EXPR_NE, (yyvsp[(1) - (3)].tree_expression_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 771 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_binary_op (EXPR_NE, (yyvsp[-2].tree_expression_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 4175 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 113:
-/* Line 1787 of yacc.c  */
-#line 776 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_binary_op (EXPR_AND, (yyvsp[(1) - (3)].tree_expression_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 773 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_binary_op (EXPR_AND, (yyvsp[-2].tree_expression_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 4181 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 114:
-/* Line 1787 of yacc.c  */
-#line 778 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_binary_op (EXPR_OR, (yyvsp[(1) - (3)].tree_expression_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 775 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_binary_op (EXPR_OR, (yyvsp[-2].tree_expression_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 4187 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 115:
-/* Line 1787 of yacc.c  */
-#line 780 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_boolean_op (EXPR_AND_AND, (yyvsp[(1) - (3)].tree_expression_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 777 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_boolean_op (EXPR_AND_AND, (yyvsp[-2].tree_expression_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 4193 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 116:
-/* Line 1787 of yacc.c  */
-#line 782 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_boolean_op (EXPR_OR_OR, (yyvsp[(1) - (3)].tree_expression_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 779 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_boolean_op (EXPR_OR_OR, (yyvsp[-2].tree_expression_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 4199 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 117:
-/* Line 1787 of yacc.c  */
-#line 786 "parse-tree/oct-parse.yy"
+#line 783 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    (yyval.tree_argument_list_type) = parser.validate_matrix_for_assignment ((yyvsp[(1) - (1)].tree_expression_type));
+                    (yyval.tree_argument_list_type) = parser.validate_matrix_for_assignment ((yyvsp[0].tree_expression_type));
 
                     if ((yyval.tree_argument_list_type))
                       { lexer.looking_at_matrix_or_assign_lhs = false; }
@@ -4693,504 +4211,504 @@ yyreduce:
                         ABORT_PARSE;
                       }
                   }
+#line 4215 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 118:
-/* Line 1787 of yacc.c  */
-#line 800 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_assign_op ('=', (yyvsp[(1) - (3)].tree_argument_list_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 797 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_assign_op ('=', (yyvsp[-2].tree_argument_list_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 4221 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 119:
-/* Line 1787 of yacc.c  */
-#line 802 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_assign_op (ADD_EQ, (yyvsp[(1) - (3)].tree_argument_list_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 799 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_assign_op (ADD_EQ, (yyvsp[-2].tree_argument_list_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 4227 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 120:
-/* Line 1787 of yacc.c  */
-#line 804 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_assign_op (SUB_EQ, (yyvsp[(1) - (3)].tree_argument_list_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 801 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_assign_op (SUB_EQ, (yyvsp[-2].tree_argument_list_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 4233 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 121:
-/* Line 1787 of yacc.c  */
-#line 806 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_assign_op (MUL_EQ, (yyvsp[(1) - (3)].tree_argument_list_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 803 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_assign_op (MUL_EQ, (yyvsp[-2].tree_argument_list_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 4239 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 122:
-/* Line 1787 of yacc.c  */
-#line 808 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_assign_op (DIV_EQ, (yyvsp[(1) - (3)].tree_argument_list_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 805 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_assign_op (DIV_EQ, (yyvsp[-2].tree_argument_list_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 4245 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 123:
-/* Line 1787 of yacc.c  */
-#line 810 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_assign_op (LEFTDIV_EQ, (yyvsp[(1) - (3)].tree_argument_list_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 807 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_assign_op (LEFTDIV_EQ, (yyvsp[-2].tree_argument_list_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 4251 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 124:
-/* Line 1787 of yacc.c  */
-#line 812 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_assign_op (POW_EQ, (yyvsp[(1) - (3)].tree_argument_list_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 809 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_assign_op (POW_EQ, (yyvsp[-2].tree_argument_list_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 4257 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 125:
-/* Line 1787 of yacc.c  */
-#line 814 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_assign_op (LSHIFT_EQ, (yyvsp[(1) - (3)].tree_argument_list_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 811 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_assign_op (LSHIFT_EQ, (yyvsp[-2].tree_argument_list_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 4263 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 126:
-/* Line 1787 of yacc.c  */
-#line 816 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_assign_op (RSHIFT_EQ, (yyvsp[(1) - (3)].tree_argument_list_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 813 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_assign_op (RSHIFT_EQ, (yyvsp[-2].tree_argument_list_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 4269 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 127:
-/* Line 1787 of yacc.c  */
-#line 818 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_assign_op (EMUL_EQ, (yyvsp[(1) - (3)].tree_argument_list_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 815 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_assign_op (EMUL_EQ, (yyvsp[-2].tree_argument_list_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 4275 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 128:
-/* Line 1787 of yacc.c  */
-#line 820 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_assign_op (EDIV_EQ, (yyvsp[(1) - (3)].tree_argument_list_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 817 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_assign_op (EDIV_EQ, (yyvsp[-2].tree_argument_list_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 4281 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 129:
-/* Line 1787 of yacc.c  */
-#line 822 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_assign_op (ELEFTDIV_EQ, (yyvsp[(1) - (3)].tree_argument_list_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 819 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_assign_op (ELEFTDIV_EQ, (yyvsp[-2].tree_argument_list_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 4287 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 130:
-/* Line 1787 of yacc.c  */
-#line 824 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_assign_op (EPOW_EQ, (yyvsp[(1) - (3)].tree_argument_list_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 821 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_assign_op (EPOW_EQ, (yyvsp[-2].tree_argument_list_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 4293 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 131:
-/* Line 1787 of yacc.c  */
-#line 826 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_assign_op (AND_EQ, (yyvsp[(1) - (3)].tree_argument_list_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 823 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_assign_op (AND_EQ, (yyvsp[-2].tree_argument_list_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 4299 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 132:
-/* Line 1787 of yacc.c  */
-#line 828 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = parser.make_assign_op (OR_EQ, (yyvsp[(1) - (3)].tree_argument_list_type), (yyvsp[(2) - (3)].tok_val), (yyvsp[(3) - (3)].tree_expression_type)); }
+#line 825 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = parser.make_assign_op (OR_EQ, (yyvsp[-2].tree_argument_list_type), (yyvsp[-1].tok_val), (yyvsp[0].tree_expression_type)); }
+#line 4305 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 133:
-/* Line 1787 of yacc.c  */
-#line 832 "parse-tree/oct-parse.yy"
+#line 829 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    if ((yyvsp[(1) - (1)].tree_expression_type) && ((yyvsp[(1) - (1)].tree_expression_type)->is_matrix () || (yyvsp[(1) - (1)].tree_expression_type)->is_cell ()))
+                    if ((yyvsp[0].tree_expression_type) && ((yyvsp[0].tree_expression_type)->is_matrix () || (yyvsp[0].tree_expression_type)->is_cell ()))
                       {
-                        if (parser.validate_array_list ((yyvsp[(1) - (1)].tree_expression_type)))
-                          (yyval.tree_expression_type) = (yyvsp[(1) - (1)].tree_expression_type);
+                        if (parser.validate_array_list ((yyvsp[0].tree_expression_type)))
+                          (yyval.tree_expression_type) = (yyvsp[0].tree_expression_type);
                         else
                           {
-                            delete (yyvsp[(1) - (1)].tree_expression_type);
+                            delete (yyvsp[0].tree_expression_type);
                             ABORT_PARSE;
                           }
                       }
                     else
-                      (yyval.tree_expression_type) = (yyvsp[(1) - (1)].tree_expression_type);
+                      (yyval.tree_expression_type) = (yyvsp[0].tree_expression_type);
                   }
+#line 4324 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 134:
-/* Line 1787 of yacc.c  */
-#line 847 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = (yyvsp[(1) - (1)].tree_expression_type); }
+#line 844 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = (yyvsp[0].tree_expression_type); }
+#line 4330 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 135:
-/* Line 1787 of yacc.c  */
-#line 849 "parse-tree/oct-parse.yy"
-    { (yyval.tree_expression_type) = (yyvsp[(1) - (1)].tree_anon_fcn_handle_type); }
+#line 846 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_expression_type) = (yyvsp[0].tree_anon_fcn_handle_type); }
+#line 4336 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 136:
-/* Line 1787 of yacc.c  */
-#line 857 "parse-tree/oct-parse.yy"
-    { (yyval.tree_command_type) = (yyvsp[(1) - (1)].tree_decl_command_type); }
+#line 854 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_command_type) = (yyvsp[0].tree_decl_command_type); }
+#line 4342 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 137:
-/* Line 1787 of yacc.c  */
-#line 859 "parse-tree/oct-parse.yy"
-    { (yyval.tree_command_type) = (yyvsp[(1) - (1)].tree_command_type); }
+#line 856 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_command_type) = (yyvsp[0].tree_command_type); }
+#line 4348 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 138:
-/* Line 1787 of yacc.c  */
-#line 861 "parse-tree/oct-parse.yy"
-    { (yyval.tree_command_type) = (yyvsp[(1) - (1)].tree_command_type); }
+#line 858 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_command_type) = (yyvsp[0].tree_command_type); }
+#line 4354 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 139:
-/* Line 1787 of yacc.c  */
-#line 863 "parse-tree/oct-parse.yy"
-    { (yyval.tree_command_type) = (yyvsp[(1) - (1)].tree_command_type); }
+#line 860 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_command_type) = (yyvsp[0].tree_command_type); }
+#line 4360 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 140:
-/* Line 1787 of yacc.c  */
-#line 865 "parse-tree/oct-parse.yy"
-    { (yyval.tree_command_type) = (yyvsp[(1) - (1)].tree_command_type); }
+#line 862 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_command_type) = (yyvsp[0].tree_command_type); }
+#line 4366 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 141:
-/* Line 1787 of yacc.c  */
-#line 867 "parse-tree/oct-parse.yy"
-    { (yyval.tree_command_type) = (yyvsp[(1) - (1)].tree_command_type); }
+#line 864 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_command_type) = (yyvsp[0].tree_command_type); }
+#line 4372 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 142:
-/* Line 1787 of yacc.c  */
-#line 869 "parse-tree/oct-parse.yy"
-    { (yyval.tree_command_type) = (yyvsp[(1) - (1)].tree_command_type); }
+#line 866 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_command_type) = (yyvsp[0].tree_command_type); }
+#line 4378 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 143:
-/* Line 1787 of yacc.c  */
-#line 871 "parse-tree/oct-parse.yy"
-    { (yyval.tree_command_type) = (yyvsp[(1) - (1)].tree_command_type); }
+#line 868 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_command_type) = (yyvsp[0].tree_command_type); }
+#line 4384 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 144:
-/* Line 1787 of yacc.c  */
-#line 879 "parse-tree/oct-parse.yy"
+#line 876 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    (yyval.tree_decl_command_type) = parser.make_decl_command (GLOBAL, (yyvsp[(1) - (2)].tok_val), (yyvsp[(2) - (2)].tree_decl_init_list_type));
+                    (yyval.tree_decl_command_type) = parser.make_decl_command (GLOBAL, (yyvsp[-1].tok_val), (yyvsp[0].tree_decl_init_list_type));
                     lexer.looking_at_decl_list = false;
                   }
+#line 4393 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 145:
-/* Line 1787 of yacc.c  */
-#line 884 "parse-tree/oct-parse.yy"
+#line 881 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    (yyval.tree_decl_command_type) = parser.make_decl_command (PERSISTENT, (yyvsp[(1) - (2)].tok_val), (yyvsp[(2) - (2)].tree_decl_init_list_type));
+                    (yyval.tree_decl_command_type) = parser.make_decl_command (PERSISTENT, (yyvsp[-1].tok_val), (yyvsp[0].tree_decl_init_list_type));
                     lexer.looking_at_decl_list = false;
                   }
+#line 4402 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 146:
-/* Line 1787 of yacc.c  */
-#line 891 "parse-tree/oct-parse.yy"
-    { (yyval.tree_decl_init_list_type) = new tree_decl_init_list ((yyvsp[(1) - (1)].tree_decl_elt_type)); }
+#line 888 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_decl_init_list_type) = new tree_decl_init_list ((yyvsp[0].tree_decl_elt_type)); }
+#line 4408 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 147:
-/* Line 1787 of yacc.c  */
-#line 893 "parse-tree/oct-parse.yy"
+#line 890 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    (yyvsp[(1) - (2)].tree_decl_init_list_type)->append ((yyvsp[(2) - (2)].tree_decl_elt_type));
-                    (yyval.tree_decl_init_list_type) = (yyvsp[(1) - (2)].tree_decl_init_list_type);
+                    (yyvsp[-1].tree_decl_init_list_type)->append ((yyvsp[0].tree_decl_elt_type));
+                    (yyval.tree_decl_init_list_type) = (yyvsp[-1].tree_decl_init_list_type);
                   }
+#line 4417 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 148:
-/* Line 1787 of yacc.c  */
-#line 900 "parse-tree/oct-parse.yy"
+#line 897 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { lexer.looking_at_initializer_expression = true; }
+#line 4423 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 149:
-/* Line 1787 of yacc.c  */
-#line 903 "parse-tree/oct-parse.yy"
-    { (yyval.tree_decl_elt_type) = new tree_decl_elt ((yyvsp[(1) - (1)].tree_identifier_type)); }
+#line 900 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_decl_elt_type) = new tree_decl_elt ((yyvsp[0].tree_identifier_type)); }
+#line 4429 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 150:
-/* Line 1787 of yacc.c  */
-#line 905 "parse-tree/oct-parse.yy"
+#line 902 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
                     lexer.looking_at_initializer_expression = false;
-                    (yyval.tree_decl_elt_type) = new tree_decl_elt ((yyvsp[(1) - (4)].tree_identifier_type), (yyvsp[(4) - (4)].tree_expression_type));
+                    (yyval.tree_decl_elt_type) = new tree_decl_elt ((yyvsp[-3].tree_identifier_type), (yyvsp[0].tree_expression_type));
                   }
+#line 4438 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 151:
-/* Line 1787 of yacc.c  */
-#line 916 "parse-tree/oct-parse.yy"
-    { (yyval.tree_command_type) = (yyvsp[(1) - (1)].tree_if_command_type); }
+#line 913 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_command_type) = (yyvsp[0].tree_if_command_type); }
+#line 4444 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 152:
-/* Line 1787 of yacc.c  */
-#line 918 "parse-tree/oct-parse.yy"
-    { (yyval.tree_command_type) = (yyvsp[(1) - (1)].tree_switch_command_type); }
+#line 915 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_command_type) = (yyvsp[0].tree_switch_command_type); }
+#line 4450 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 153:
-/* Line 1787 of yacc.c  */
-#line 926 "parse-tree/oct-parse.yy"
+#line 923 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    if (! ((yyval.tree_if_command_type) = parser.finish_if_command ((yyvsp[(1) - (4)].tok_val), (yyvsp[(3) - (4)].tree_if_command_list_type), (yyvsp[(4) - (4)].tok_val), (yyvsp[(2) - (4)].comment_type))))
+                    if (! ((yyval.tree_if_command_type) = parser.finish_if_command ((yyvsp[-3].tok_val), (yyvsp[-1].tree_if_command_list_type), (yyvsp[0].tok_val), (yyvsp[-2].comment_type))))
                       {
                         // finish_if_command deleted $3.
                         ABORT_PARSE;
                       }
                   }
+#line 4462 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 154:
-/* Line 1787 of yacc.c  */
-#line 936 "parse-tree/oct-parse.yy"
-    { (yyval.tree_if_command_list_type) = (yyvsp[(1) - (1)].tree_if_command_list_type); }
+#line 933 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_if_command_list_type) = (yyvsp[0].tree_if_command_list_type); }
+#line 4468 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 155:
-/* Line 1787 of yacc.c  */
-#line 938 "parse-tree/oct-parse.yy"
+#line 935 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    (yyvsp[(1) - (2)].tree_if_command_list_type)->append ((yyvsp[(2) - (2)].tree_if_clause_type));
-                    (yyval.tree_if_command_list_type) = (yyvsp[(1) - (2)].tree_if_command_list_type);
+                    (yyvsp[-1].tree_if_command_list_type)->append ((yyvsp[0].tree_if_clause_type));
+                    (yyval.tree_if_command_list_type) = (yyvsp[-1].tree_if_command_list_type);
                   }
+#line 4477 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 156:
-/* Line 1787 of yacc.c  */
-#line 945 "parse-tree/oct-parse.yy"
+#line 942 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    (yyvsp[(1) - (4)].tree_expression_type)->mark_braindead_shortcircuit (lexer.fcn_file_full_name);
+                    (yyvsp[-3].tree_expression_type)->mark_braindead_shortcircuit (lexer.fcn_file_full_name);
 
-                    (yyval.tree_if_command_list_type) = parser.start_if_command ((yyvsp[(1) - (4)].tree_expression_type), (yyvsp[(4) - (4)].tree_statement_list_type));
+                    (yyval.tree_if_command_list_type) = parser.start_if_command ((yyvsp[-3].tree_expression_type), (yyvsp[0].tree_statement_list_type));
                   }
+#line 4487 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 157:
-/* Line 1787 of yacc.c  */
-#line 951 "parse-tree/oct-parse.yy"
+#line 948 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    (yyvsp[(1) - (2)].tree_if_command_list_type)->append ((yyvsp[(2) - (2)].tree_if_clause_type));
-                    (yyval.tree_if_command_list_type) = (yyvsp[(1) - (2)].tree_if_command_list_type);
+                    (yyvsp[-1].tree_if_command_list_type)->append ((yyvsp[0].tree_if_clause_type));
+                    (yyval.tree_if_command_list_type) = (yyvsp[-1].tree_if_command_list_type);
                   }
+#line 4496 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 158:
-/* Line 1787 of yacc.c  */
-#line 958 "parse-tree/oct-parse.yy"
+#line 955 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    (yyvsp[(4) - (7)].tree_expression_type)->mark_braindead_shortcircuit (lexer.fcn_file_full_name);
+                    (yyvsp[-3].tree_expression_type)->mark_braindead_shortcircuit (lexer.fcn_file_full_name);
 
-                    (yyval.tree_if_clause_type) = parser.make_elseif_clause ((yyvsp[(1) - (7)].tok_val), (yyvsp[(4) - (7)].tree_expression_type), (yyvsp[(7) - (7)].tree_statement_list_type), (yyvsp[(2) - (7)].comment_type));
+                    (yyval.tree_if_clause_type) = parser.make_elseif_clause ((yyvsp[-6].tok_val), (yyvsp[-3].tree_expression_type), (yyvsp[0].tree_statement_list_type), (yyvsp[-5].comment_type));
                   }
+#line 4506 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 159:
-/* Line 1787 of yacc.c  */
-#line 966 "parse-tree/oct-parse.yy"
-    { (yyval.tree_if_clause_type) = new tree_if_clause ((yyvsp[(4) - (4)].tree_statement_list_type), (yyvsp[(2) - (4)].comment_type)); }
+#line 963 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_if_clause_type) = new tree_if_clause ((yyvsp[0].tree_statement_list_type), (yyvsp[-2].comment_type)); }
+#line 4512 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 160:
-/* Line 1787 of yacc.c  */
-#line 974 "parse-tree/oct-parse.yy"
+#line 971 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    if (! ((yyval.tree_switch_command_type) = parser.finish_switch_command ((yyvsp[(1) - (6)].tok_val), (yyvsp[(3) - (6)].tree_expression_type), (yyvsp[(5) - (6)].tree_switch_case_list_type), (yyvsp[(6) - (6)].tok_val), (yyvsp[(2) - (6)].comment_type))))
+                    if (! ((yyval.tree_switch_command_type) = parser.finish_switch_command ((yyvsp[-5].tok_val), (yyvsp[-3].tree_expression_type), (yyvsp[-1].tree_switch_case_list_type), (yyvsp[0].tok_val), (yyvsp[-4].comment_type))))
                       {
                         // finish_switch_command deleted $3 adn $5.
                         ABORT_PARSE;
                       }
                   }
+#line 4524 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 161:
-/* Line 1787 of yacc.c  */
-#line 984 "parse-tree/oct-parse.yy"
+#line 981 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.tree_switch_case_list_type) = new tree_switch_case_list (); }
+#line 4530 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 162:
-/* Line 1787 of yacc.c  */
-#line 986 "parse-tree/oct-parse.yy"
-    { (yyval.tree_switch_case_list_type) = new tree_switch_case_list ((yyvsp[(1) - (1)].tree_switch_case_type)); }
+#line 983 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_switch_case_list_type) = new tree_switch_case_list ((yyvsp[0].tree_switch_case_type)); }
+#line 4536 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 163:
-/* Line 1787 of yacc.c  */
-#line 988 "parse-tree/oct-parse.yy"
-    { (yyval.tree_switch_case_list_type) = (yyvsp[(1) - (1)].tree_switch_case_list_type); }
+#line 985 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_switch_case_list_type) = (yyvsp[0].tree_switch_case_list_type); }
+#line 4542 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 164:
-/* Line 1787 of yacc.c  */
-#line 990 "parse-tree/oct-parse.yy"
+#line 987 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    (yyvsp[(1) - (2)].tree_switch_case_list_type)->append ((yyvsp[(2) - (2)].tree_switch_case_type));
-                    (yyval.tree_switch_case_list_type) = (yyvsp[(1) - (2)].tree_switch_case_list_type);
+                    (yyvsp[-1].tree_switch_case_list_type)->append ((yyvsp[0].tree_switch_case_type));
+                    (yyval.tree_switch_case_list_type) = (yyvsp[-1].tree_switch_case_list_type);
                   }
+#line 4551 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 165:
-/* Line 1787 of yacc.c  */
-#line 997 "parse-tree/oct-parse.yy"
-    { (yyval.tree_switch_case_list_type) = new tree_switch_case_list ((yyvsp[(1) - (1)].tree_switch_case_type)); }
+#line 994 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_switch_case_list_type) = new tree_switch_case_list ((yyvsp[0].tree_switch_case_type)); }
+#line 4557 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 166:
-/* Line 1787 of yacc.c  */
-#line 999 "parse-tree/oct-parse.yy"
+#line 996 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    (yyvsp[(1) - (2)].tree_switch_case_list_type)->append ((yyvsp[(2) - (2)].tree_switch_case_type));
-                    (yyval.tree_switch_case_list_type) = (yyvsp[(1) - (2)].tree_switch_case_list_type);
+                    (yyvsp[-1].tree_switch_case_list_type)->append ((yyvsp[0].tree_switch_case_type));
+                    (yyval.tree_switch_case_list_type) = (yyvsp[-1].tree_switch_case_list_type);
                   }
+#line 4566 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 167:
-/* Line 1787 of yacc.c  */
-#line 1006 "parse-tree/oct-parse.yy"
-    { (yyval.tree_switch_case_type) = parser.make_switch_case ((yyvsp[(1) - (7)].tok_val), (yyvsp[(4) - (7)].tree_expression_type), (yyvsp[(7) - (7)].tree_statement_list_type), (yyvsp[(2) - (7)].comment_type)); }
+#line 1003 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_switch_case_type) = parser.make_switch_case ((yyvsp[-6].tok_val), (yyvsp[-3].tree_expression_type), (yyvsp[0].tree_statement_list_type), (yyvsp[-5].comment_type)); }
+#line 4572 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 168:
-/* Line 1787 of yacc.c  */
-#line 1010 "parse-tree/oct-parse.yy"
+#line 1007 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    (yyval.tree_switch_case_type) = new tree_switch_case ((yyvsp[(4) - (4)].tree_statement_list_type), (yyvsp[(2) - (4)].comment_type));
+                    (yyval.tree_switch_case_type) = new tree_switch_case ((yyvsp[0].tree_statement_list_type), (yyvsp[-2].comment_type));
                   }
+#line 4580 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 169:
-/* Line 1787 of yacc.c  */
-#line 1020 "parse-tree/oct-parse.yy"
+#line 1017 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    (yyvsp[(3) - (7)].tree_expression_type)->mark_braindead_shortcircuit (lexer.fcn_file_full_name);
+                    (yyvsp[-4].tree_expression_type)->mark_braindead_shortcircuit (lexer.fcn_file_full_name);
 
-                    if (! ((yyval.tree_command_type) = parser.make_while_command ((yyvsp[(1) - (7)].tok_val), (yyvsp[(3) - (7)].tree_expression_type), (yyvsp[(6) - (7)].tree_statement_list_type), (yyvsp[(7) - (7)].tok_val), (yyvsp[(2) - (7)].comment_type))))
+                    if (! ((yyval.tree_command_type) = parser.make_while_command ((yyvsp[-6].tok_val), (yyvsp[-4].tree_expression_type), (yyvsp[-1].tree_statement_list_type), (yyvsp[0].tok_val), (yyvsp[-5].comment_type))))
                       {
                         // make_while_command deleted $3 and $6.
                         ABORT_PARSE;
                       }
                   }
+#line 4594 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 170:
-/* Line 1787 of yacc.c  */
-#line 1030 "parse-tree/oct-parse.yy"
+#line 1027 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    (yyval.tree_command_type) = parser.make_do_until_command ((yyvsp[(5) - (6)].tok_val), (yyvsp[(4) - (6)].tree_statement_list_type), (yyvsp[(6) - (6)].tree_expression_type), (yyvsp[(2) - (6)].comment_type));
+                    (yyval.tree_command_type) = parser.make_do_until_command ((yyvsp[-1].tok_val), (yyvsp[-2].tree_statement_list_type), (yyvsp[0].tree_expression_type), (yyvsp[-4].comment_type));
                   }
+#line 4602 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 171:
-/* Line 1787 of yacc.c  */
-#line 1034 "parse-tree/oct-parse.yy"
+#line 1031 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    if (! ((yyval.tree_command_type) = parser.make_for_command (FOR, (yyvsp[(1) - (9)].tok_val), (yyvsp[(3) - (9)].tree_argument_list_type), (yyvsp[(5) - (9)].tree_expression_type), 0,
-                                                         (yyvsp[(8) - (9)].tree_statement_list_type), (yyvsp[(9) - (9)].tok_val), (yyvsp[(2) - (9)].comment_type))))
+                    if (! ((yyval.tree_command_type) = parser.make_for_command (FOR, (yyvsp[-8].tok_val), (yyvsp[-6].tree_argument_list_type), (yyvsp[-4].tree_expression_type), 0,
+                                                         (yyvsp[-1].tree_statement_list_type), (yyvsp[0].tok_val), (yyvsp[-7].comment_type))))
                       {
                         // make_for_command deleted $3, $5, and $8.
                         ABORT_PARSE;
                       }
                   }
+#line 4615 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 172:
-/* Line 1787 of yacc.c  */
-#line 1043 "parse-tree/oct-parse.yy"
+#line 1040 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    if (! ((yyval.tree_command_type) = parser.make_for_command (FOR, (yyvsp[(1) - (10)].tok_val), (yyvsp[(4) - (10)].tree_argument_list_type), (yyvsp[(6) - (10)].tree_expression_type), 0,
-                                                         (yyvsp[(9) - (10)].tree_statement_list_type), (yyvsp[(10) - (10)].tok_val), (yyvsp[(2) - (10)].comment_type))))
+                    if (! ((yyval.tree_command_type) = parser.make_for_command (FOR, (yyvsp[-9].tok_val), (yyvsp[-6].tree_argument_list_type), (yyvsp[-4].tree_expression_type), 0,
+                                                         (yyvsp[-1].tree_statement_list_type), (yyvsp[0].tok_val), (yyvsp[-8].comment_type))))
                       {
                         // make_for_command deleted $4, $6, and $9.
                         ABORT_PARSE;
                       }
                   }
+#line 4628 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 173:
-/* Line 1787 of yacc.c  */
-#line 1052 "parse-tree/oct-parse.yy"
+#line 1049 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    if (! ((yyval.tree_command_type) = parser.make_for_command (PARFOR, (yyvsp[(1) - (9)].tok_val), (yyvsp[(3) - (9)].tree_argument_list_type), (yyvsp[(5) - (9)].tree_expression_type),
-                                                         0, (yyvsp[(8) - (9)].tree_statement_list_type), (yyvsp[(9) - (9)].tok_val), (yyvsp[(2) - (9)].comment_type))))
+                    if (! ((yyval.tree_command_type) = parser.make_for_command (PARFOR, (yyvsp[-8].tok_val), (yyvsp[-6].tree_argument_list_type), (yyvsp[-4].tree_expression_type),
+                                                         0, (yyvsp[-1].tree_statement_list_type), (yyvsp[0].tok_val), (yyvsp[-7].comment_type))))
                       {
                         // make_for_command deleted $3, $5, and $8.
                         ABORT_PARSE;
                       }
                   }
+#line 4641 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 174:
-/* Line 1787 of yacc.c  */
-#line 1061 "parse-tree/oct-parse.yy"
+#line 1058 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    if (! ((yyval.tree_command_type) = parser.make_for_command (PARFOR, (yyvsp[(1) - (12)].tok_val), (yyvsp[(4) - (12)].tree_argument_list_type), (yyvsp[(6) - (12)].tree_expression_type),
-                                                         (yyvsp[(8) - (12)].tree_expression_type), (yyvsp[(11) - (12)].tree_statement_list_type), (yyvsp[(12) - (12)].tok_val), (yyvsp[(2) - (12)].comment_type))))
+                    if (! ((yyval.tree_command_type) = parser.make_for_command (PARFOR, (yyvsp[-11].tok_val), (yyvsp[-8].tree_argument_list_type), (yyvsp[-6].tree_expression_type),
+                                                         (yyvsp[-4].tree_expression_type), (yyvsp[-1].tree_statement_list_type), (yyvsp[0].tok_val), (yyvsp[-10].comment_type))))
                       {
                         // make_for_command deleted $4, $6, $8, and $11.
                         ABORT_PARSE;
                       }
                   }
+#line 4654 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 175:
-/* Line 1787 of yacc.c  */
-#line 1076 "parse-tree/oct-parse.yy"
-    { (yyval.tree_command_type) = parser.make_break_command ((yyvsp[(1) - (1)].tok_val)); }
+#line 1073 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_command_type) = parser.make_break_command ((yyvsp[0].tok_val)); }
+#line 4660 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 176:
-/* Line 1787 of yacc.c  */
-#line 1078 "parse-tree/oct-parse.yy"
-    { (yyval.tree_command_type) = parser.make_continue_command ((yyvsp[(1) - (1)].tok_val)); }
+#line 1075 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_command_type) = parser.make_continue_command ((yyvsp[0].tok_val)); }
+#line 4666 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 177:
-/* Line 1787 of yacc.c  */
-#line 1080 "parse-tree/oct-parse.yy"
-    { (yyval.tree_command_type) = parser.make_return_command ((yyvsp[(1) - (1)].tok_val)); }
+#line 1077 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_command_type) = parser.make_return_command ((yyvsp[0].tok_val)); }
+#line 4672 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 178:
-/* Line 1787 of yacc.c  */
-#line 1089 "parse-tree/oct-parse.yy"
+#line 1086 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    if (! ((yyval.tree_command_type) = parser.make_unwind_command ((yyvsp[(1) - (9)].tok_val), (yyvsp[(4) - (9)].tree_statement_list_type), (yyvsp[(8) - (9)].tree_statement_list_type), (yyvsp[(9) - (9)].tok_val), (yyvsp[(2) - (9)].comment_type), (yyvsp[(6) - (9)].comment_type))))
+                    if (! ((yyval.tree_command_type) = parser.make_unwind_command ((yyvsp[-8].tok_val), (yyvsp[-5].tree_statement_list_type), (yyvsp[-1].tree_statement_list_type), (yyvsp[0].tok_val), (yyvsp[-7].comment_type), (yyvsp[-3].comment_type))))
                       {
                         // make_unwind_command deleted $4 and $8.
                         ABORT_PARSE;
                       }
                   }
+#line 4684 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 179:
-/* Line 1787 of yacc.c  */
-#line 1098 "parse-tree/oct-parse.yy"
+#line 1095 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    if (! ((yyval.tree_command_type) = parser.make_try_command ((yyvsp[(1) - (9)].tok_val), (yyvsp[(4) - (9)].tree_statement_list_type), (yyvsp[(7) - (9)].sep_type), (yyvsp[(8) - (9)].tree_statement_list_type), (yyvsp[(9) - (9)].tok_val), (yyvsp[(2) - (9)].comment_type), (yyvsp[(6) - (9)].comment_type))))
+                    if (! ((yyval.tree_command_type) = parser.make_try_command ((yyvsp[-8].tok_val), (yyvsp[-5].tree_statement_list_type), (yyvsp[-2].sep_type), (yyvsp[-1].tree_statement_list_type), (yyvsp[0].tok_val), (yyvsp[-7].comment_type), (yyvsp[-3].comment_type))))
                       {
                         // make_try_command deleted $4 and $8.
                         ABORT_PARSE;
                       }
                   }
+#line 4696 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 180:
-/* Line 1787 of yacc.c  */
-#line 1106 "parse-tree/oct-parse.yy"
+#line 1103 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    if (! ((yyval.tree_command_type) = parser.make_try_command ((yyvsp[(1) - (5)].tok_val), (yyvsp[(4) - (5)].tree_statement_list_type), 0, 0, (yyvsp[(5) - (5)].tok_val), (yyvsp[(2) - (5)].comment_type), 0)))
+                    if (! ((yyval.tree_command_type) = parser.make_try_command ((yyvsp[-4].tok_val), (yyvsp[-1].tree_statement_list_type), 0, 0, (yyvsp[0].tok_val), (yyvsp[-3].comment_type), 0)))
                       {
                         // make_try_command deleted $4.
                         ABORT_PARSE;
                       }
                   }
+#line 4708 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 181:
-/* Line 1787 of yacc.c  */
-#line 1120 "parse-tree/oct-parse.yy"
+#line 1117 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
                     parser.curr_fcn_depth++;
 
@@ -5212,11 +4730,11 @@ yyreduce:
                         && parser.curr_fcn_depth > 1)
                       parser.bison_error ("nested functions not implemented in this context");
                   }
+#line 4734 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 182:
-/* Line 1787 of yacc.c  */
-#line 1148 "parse-tree/oct-parse.yy"
+#line 1145 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
                     lexer.looking_at_parameter_list = true;
 
@@ -5227,106 +4745,106 @@ yyreduce:
                         lexer.looking_at_anon_fcn_args = true;
                       }
                   }
+#line 4749 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 183:
-/* Line 1787 of yacc.c  */
-#line 1161 "parse-tree/oct-parse.yy"
+#line 1158 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
                     lexer.looking_at_parameter_list = false;
                     lexer.looking_for_object_index = false;
                   }
+#line 4758 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 184:
-/* Line 1787 of yacc.c  */
-#line 1168 "parse-tree/oct-parse.yy"
+#line 1165 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    if ((yyvsp[(2) - (3)].tree_parameter_list_type))
-                      lexer.mark_as_variables ((yyvsp[(2) - (3)].tree_parameter_list_type)->variable_names ());
+                    if ((yyvsp[-1].tree_parameter_list_type))
+                      lexer.mark_as_variables ((yyvsp[-1].tree_parameter_list_type)->variable_names ());
 
-                    (yyval.tree_parameter_list_type) = (yyvsp[(2) - (3)].tree_parameter_list_type);
+                    (yyval.tree_parameter_list_type) = (yyvsp[-1].tree_parameter_list_type);
                   }
+#line 4769 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 185:
-/* Line 1787 of yacc.c  */
-#line 1175 "parse-tree/oct-parse.yy"
+#line 1172 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
                     parser.bison_error ("invalid parameter list");
                     (yyval.tree_parameter_list_type) = 0;
                     ABORT_PARSE;
                   }
+#line 4779 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 186:
-/* Line 1787 of yacc.c  */
-#line 1183 "parse-tree/oct-parse.yy"
+#line 1180 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.tree_parameter_list_type) = 0; }
+#line 4785 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 187:
-/* Line 1787 of yacc.c  */
-#line 1185 "parse-tree/oct-parse.yy"
+#line 1182 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    (yyvsp[(1) - (1)].tree_parameter_list_type)->mark_as_formal_parameters ();
-                    if ((yyvsp[(1) - (1)].tree_parameter_list_type)->validate (tree_parameter_list::in))
+                    (yyvsp[0].tree_parameter_list_type)->mark_as_formal_parameters ();
+                    if ((yyvsp[0].tree_parameter_list_type)->validate (tree_parameter_list::in))
                       {
-                        lexer.mark_as_variables ((yyvsp[(1) - (1)].tree_parameter_list_type)->variable_names ());
-                        (yyval.tree_parameter_list_type) = (yyvsp[(1) - (1)].tree_parameter_list_type);
+                        lexer.mark_as_variables ((yyvsp[0].tree_parameter_list_type)->variable_names ());
+                        (yyval.tree_parameter_list_type) = (yyvsp[0].tree_parameter_list_type);
                       }
                     else
                       {
-                        delete (yyvsp[(1) - (1)].tree_parameter_list_type);
+                        delete (yyvsp[0].tree_parameter_list_type);
                         ABORT_PARSE;
                       }
                   }
+#line 4803 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 188:
-/* Line 1787 of yacc.c  */
-#line 1201 "parse-tree/oct-parse.yy"
-    { (yyval.tree_parameter_list_type) = new tree_parameter_list ((yyvsp[(1) - (1)].tree_decl_elt_type)); }
+#line 1198 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_parameter_list_type) = new tree_parameter_list ((yyvsp[0].tree_decl_elt_type)); }
+#line 4809 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 189:
-/* Line 1787 of yacc.c  */
-#line 1203 "parse-tree/oct-parse.yy"
+#line 1200 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    (yyvsp[(1) - (3)].tree_parameter_list_type)->append ((yyvsp[(3) - (3)].tree_decl_elt_type));
-                    (yyval.tree_parameter_list_type) = (yyvsp[(1) - (3)].tree_parameter_list_type);
+                    (yyvsp[-2].tree_parameter_list_type)->append ((yyvsp[0].tree_decl_elt_type));
+                    (yyval.tree_parameter_list_type) = (yyvsp[-2].tree_parameter_list_type);
                   }
+#line 4818 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 190:
-/* Line 1787 of yacc.c  */
-#line 1210 "parse-tree/oct-parse.yy"
-    { (yyval.tree_decl_elt_type) = (yyvsp[(1) - (1)].tree_decl_elt_type); }
+#line 1207 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_decl_elt_type) = (yyvsp[0].tree_decl_elt_type); }
+#line 4824 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 191:
-/* Line 1787 of yacc.c  */
-#line 1212 "parse-tree/oct-parse.yy"
-    { (yyval.tree_decl_elt_type) = new tree_decl_elt ((yyvsp[(1) - (1)].tree_identifier_type)); }
+#line 1209 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_decl_elt_type) = new tree_decl_elt ((yyvsp[0].tree_identifier_type)); }
+#line 4830 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 192:
-/* Line 1787 of yacc.c  */
-#line 1220 "parse-tree/oct-parse.yy"
+#line 1217 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
                     lexer.looking_at_return_list = false;
 
                     (yyval.tree_parameter_list_type) = new tree_parameter_list ();
                   }
+#line 4840 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 193:
-/* Line 1787 of yacc.c  */
-#line 1226 "parse-tree/oct-parse.yy"
+#line 1223 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
                     lexer.looking_at_return_list = false;
 
-                    tree_parameter_list *tmp = new tree_parameter_list ((yyvsp[(1) - (1)].tree_identifier_type));
+                    tree_parameter_list *tmp = new tree_parameter_list ((yyvsp[0].tree_identifier_type));
 
                     // Even though this parameter list can contain only
                     // a single identifier, we still need to validate it
@@ -5340,45 +4858,45 @@ yyreduce:
                         ABORT_PARSE;
                       }
                   }
+#line 4862 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 194:
-/* Line 1787 of yacc.c  */
-#line 1244 "parse-tree/oct-parse.yy"
+#line 1241 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
                     lexer.looking_at_return_list = false;
 
                     // Check for duplicate parameter names, varargin,
                     // or varargout.
 
-                    if ((yyvsp[(2) - (3)].tree_parameter_list_type)->validate (tree_parameter_list::out))
-                      (yyval.tree_parameter_list_type) = (yyvsp[(2) - (3)].tree_parameter_list_type);
+                    if ((yyvsp[-1].tree_parameter_list_type)->validate (tree_parameter_list::out))
+                      (yyval.tree_parameter_list_type) = (yyvsp[-1].tree_parameter_list_type);
                     else
                       {
-                        delete (yyvsp[(2) - (3)].tree_parameter_list_type);
+                        delete (yyvsp[-1].tree_parameter_list_type);
                         ABORT_PARSE;
                       }
                   }
+#line 4881 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 195:
-/* Line 1787 of yacc.c  */
-#line 1261 "parse-tree/oct-parse.yy"
-    { (yyval.tree_parameter_list_type) = new tree_parameter_list (new tree_decl_elt ((yyvsp[(1) - (1)].tree_identifier_type))); }
+#line 1258 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.tree_parameter_list_type) = new tree_parameter_list (new tree_decl_elt ((yyvsp[0].tree_identifier_type))); }
+#line 4887 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 196:
-/* Line 1787 of yacc.c  */
-#line 1263 "parse-tree/oct-parse.yy"
+#line 1260 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    (yyvsp[(1) - (3)].tree_parameter_list_type)->append (new tree_decl_elt ((yyvsp[(3) - (3)].tree_identifier_type)));
-                    (yyval.tree_parameter_list_type) = (yyvsp[(1) - (3)].tree_parameter_list_type);
+                    (yyvsp[-2].tree_parameter_list_type)->append (new tree_decl_elt ((yyvsp[0].tree_identifier_type)));
+                    (yyval.tree_parameter_list_type) = (yyvsp[-2].tree_parameter_list_type);
                   }
+#line 4896 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 197:
-/* Line 1787 of yacc.c  */
-#line 1274 "parse-tree/oct-parse.yy"
+#line 1271 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
                     if (lexer.reading_fcn_file)
                       {
@@ -5388,7 +4906,7 @@ yyreduce:
                         // been stored in the symbol table or in
                         // octave_base_parser::primary_fcn_ptr.
 
-                        delete (yyvsp[(3) - (4)].tree_statement_list_type);
+                        delete (yyvsp[-1].tree_statement_list_type);
                       }
                     else
                       {
@@ -5397,117 +4915,117 @@ yyreduce:
                                              lexer.input_line_number,
                                              lexer.current_input_column);
 
-                        parser.make_script ((yyvsp[(3) - (4)].tree_statement_list_type), end_of_script);
+                        parser.make_script ((yyvsp[-1].tree_statement_list_type), end_of_script);
                       }
 
                     (yyval.tree_command_type) = 0;
                   }
+#line 4924 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 198:
-/* Line 1787 of yacc.c  */
-#line 1304 "parse-tree/oct-parse.yy"
+#line 1301 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    (yyval.tok_val) = (yyvsp[(2) - (2)].tok_val);
+                    (yyval.tok_val) = (yyvsp[0].tok_val);
                     if (lexer.reading_classdef_file
                         || lexer.parsing_classdef)
                       lexer.maybe_classdef_get_set_method = true;
                   }
+#line 4935 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 199:
-/* Line 1787 of yacc.c  */
-#line 1313 "parse-tree/oct-parse.yy"
+#line 1310 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    (yyval.tree_command_type) = parser.finish_function (0, (yyvsp[(3) - (3)].octave_user_function_type), (yyvsp[(2) - (3)].comment_type), (yyvsp[(1) - (3)].tok_val)->line (),
-                                                 (yyvsp[(1) - (3)].tok_val)->column ());
+                    (yyval.tree_command_type) = parser.finish_function (0, (yyvsp[0].octave_user_function_type), (yyvsp[-1].comment_type), (yyvsp[-2].tok_val)->line (),
+                                                 (yyvsp[-2].tok_val)->column ());
                     parser.recover_from_parsing_function ();
                   }
+#line 4945 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 200:
-/* Line 1787 of yacc.c  */
-#line 1319 "parse-tree/oct-parse.yy"
+#line 1316 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    (yyval.tree_command_type) = parser.finish_function ((yyvsp[(3) - (5)].tree_parameter_list_type), (yyvsp[(5) - (5)].octave_user_function_type), (yyvsp[(2) - (5)].comment_type), (yyvsp[(1) - (5)].tok_val)->line (),
-                                                 (yyvsp[(1) - (5)].tok_val)->column ());
+                    (yyval.tree_command_type) = parser.finish_function ((yyvsp[-2].tree_parameter_list_type), (yyvsp[0].octave_user_function_type), (yyvsp[-3].comment_type), (yyvsp[-4].tok_val)->line (),
+                                                 (yyvsp[-4].tok_val)->column ());
                     parser.recover_from_parsing_function ();
                   }
+#line 4955 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 201:
-/* Line 1787 of yacc.c  */
-#line 1327 "parse-tree/oct-parse.yy"
+#line 1324 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    std::string id_name = (yyvsp[(1) - (1)].tree_identifier_type)->name ();
+                    std::string id_name = (yyvsp[0].tree_identifier_type)->name ();
 
                     lexer.parsed_function_name.top () = true;
                     lexer.maybe_classdef_get_set_method = false;
 
-                    (yyval.tree_identifier_type) = (yyvsp[(1) - (1)].tree_identifier_type);
+                    (yyval.tree_identifier_type) = (yyvsp[0].tree_identifier_type);
                   }
+#line 4968 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 202:
-/* Line 1787 of yacc.c  */
-#line 1336 "parse-tree/oct-parse.yy"
+#line 1333 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
                     lexer.parsed_function_name.top () = true;
                     lexer.maybe_classdef_get_set_method = false;
-                    (yyval.tree_identifier_type) = (yyvsp[(3) - (3)].tree_identifier_type);
+                    (yyval.tree_identifier_type) = (yyvsp[0].tree_identifier_type);
                   }
+#line 4978 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 203:
-/* Line 1787 of yacc.c  */
-#line 1342 "parse-tree/oct-parse.yy"
+#line 1339 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
                     lexer.parsed_function_name.top () = true;
                     lexer.maybe_classdef_get_set_method = false;
-                    (yyval.tree_identifier_type) = (yyvsp[(3) - (3)].tree_identifier_type);
+                    (yyval.tree_identifier_type) = (yyvsp[0].tree_identifier_type);
                   }
+#line 4988 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 204:
-/* Line 1787 of yacc.c  */
-#line 1350 "parse-tree/oct-parse.yy"
+#line 1347 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
-                    std::string fname = (yyvsp[(1) - (2)].tree_identifier_type)->name ();
+                    std::string fname = (yyvsp[-1].tree_identifier_type)->name ();
 
-                    delete (yyvsp[(1) - (2)].tree_identifier_type);
+                    delete (yyvsp[-1].tree_identifier_type);
 
-                    (yyval.octave_user_function_type) = parser.frob_function (fname, (yyvsp[(2) - (2)].octave_user_function_type));
+                    (yyval.octave_user_function_type) = parser.frob_function (fname, (yyvsp[0].octave_user_function_type));
                   }
+#line 5000 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 205:
-/* Line 1787 of yacc.c  */
-#line 1360 "parse-tree/oct-parse.yy"
-    { (yyval.octave_user_function_type) = parser.start_function ((yyvsp[(1) - (4)].tree_parameter_list_type), (yyvsp[(3) - (4)].tree_statement_list_type), (yyvsp[(4) - (4)].tree_statement_type)); }
+#line 1357 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.octave_user_function_type) = parser.start_function ((yyvsp[-3].tree_parameter_list_type), (yyvsp[-1].tree_statement_list_type), (yyvsp[0].tree_statement_type)); }
+#line 5006 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 206:
-/* Line 1787 of yacc.c  */
-#line 1362 "parse-tree/oct-parse.yy"
-    { (yyval.octave_user_function_type) = parser.start_function (0, (yyvsp[(2) - (3)].tree_statement_list_type), (yyvsp[(3) - (3)].tree_statement_type)); }
+#line 1359 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.octave_user_function_type) = parser.start_function (0, (yyvsp[-1].tree_statement_list_type), (yyvsp[0].tree_statement_type)); }
+#line 5012 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 207:
-/* Line 1787 of yacc.c  */
-#line 1366 "parse-tree/oct-parse.yy"
+#line 1363 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
                     parser.endfunction_found = true;
-                    if (parser.end_token_ok ((yyvsp[(1) - (1)].tok_val), token::function_end))
+                    if (parser.end_token_ok ((yyvsp[0].tok_val), token::function_end))
                       (yyval.tree_statement_type) = parser.make_end ("endfunction", false,
-                                            (yyvsp[(1) - (1)].tok_val)->line (), (yyvsp[(1) - (1)].tok_val)->column ());
+                                            (yyvsp[0].tok_val)->line (), (yyvsp[0].tok_val)->column ());
                     else
                       ABORT_PARSE;
                   }
+#line 5025 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 208:
-/* Line 1787 of yacc.c  */
-#line 1375 "parse-tree/oct-parse.yy"
+#line 1372 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
 // A lot of tests are based on the assumption that this is OK
 //                  if (lexer.reading_script_file)
@@ -5541,418 +5059,418 @@ yyreduce:
                                           lexer.input_line_number,
                                           lexer.current_input_column);
                   }
+#line 5063 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 209:
-/* Line 1787 of yacc.c  */
-#line 1415 "parse-tree/oct-parse.yy"
+#line 1412 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
                     (yyval.comment_type) = 0;
                     lexer.parsing_classdef = true;
                   }
+#line 5072 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 210:
-/* Line 1787 of yacc.c  */
-#line 1422 "parse-tree/oct-parse.yy"
+#line 1419 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     {
                     lexer.parsing_classdef = false;
 
-                    if (parser.end_token_ok ((yyvsp[(1) - (1)].tok_val), token::classdef_end))
+                    if (parser.end_token_ok ((yyvsp[0].tok_val), token::classdef_end))
                       (yyval.tree_statement_type) = parser.make_end ("endclassdef", false,
-                                            (yyvsp[(1) - (1)].tok_val)->line (), (yyvsp[(1) - (1)].tok_val)->column ());
+                                            (yyvsp[0].tok_val)->line (), (yyvsp[0].tok_val)->column ());
                     else
                       ABORT_PARSE;
                   }
+#line 5086 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 211:
-/* Line 1787 of yacc.c  */
-#line 1434 "parse-tree/oct-parse.yy"
+#line 1431 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.octave_user_function_type) = 0; }
+#line 5092 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 212:
-/* Line 1787 of yacc.c  */
-#line 1438 "parse-tree/oct-parse.yy"
+#line 1435 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.tree_command_type) = 0; }
+#line 5098 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 213:
-/* Line 1787 of yacc.c  */
-#line 1442 "parse-tree/oct-parse.yy"
+#line 1439 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.dummy_type) = 0; }
+#line 5104 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 214:
-/* Line 1787 of yacc.c  */
-#line 1444 "parse-tree/oct-parse.yy"
+#line 1441 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.dummy_type) = 0; }
+#line 5110 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 215:
-/* Line 1787 of yacc.c  */
-#line 1448 "parse-tree/oct-parse.yy"
+#line 1445 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.dummy_type) = 0; }
+#line 5116 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 216:
-/* Line 1787 of yacc.c  */
-#line 1450 "parse-tree/oct-parse.yy"
+#line 1447 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.dummy_type) = 0; }
+#line 5122 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 217:
-/* Line 1787 of yacc.c  */
-#line 1454 "parse-tree/oct-parse.yy"
+#line 1451 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.dummy_type) = 0; }
+#line 5128 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 218:
-/* Line 1787 of yacc.c  */
-#line 1456 "parse-tree/oct-parse.yy"
+#line 1453 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.dummy_type) = 0; }
+#line 5134 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 219:
-/* Line 1787 of yacc.c  */
-#line 1458 "parse-tree/oct-parse.yy"
+#line 1455 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.dummy_type) = 0; }
+#line 5140 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 220:
-/* Line 1787 of yacc.c  */
-#line 1463 "parse-tree/oct-parse.yy"
+#line 1460 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.tree_parameter_list_type) = 0; }
+#line 5146 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 221:
-/* Line 1787 of yacc.c  */
-#line 1465 "parse-tree/oct-parse.yy"
+#line 1462 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.tree_parameter_list_type) = 0; }
+#line 5152 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 222:
-/* Line 1787 of yacc.c  */
-#line 1469 "parse-tree/oct-parse.yy"
+#line 1466 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.tree_parameter_list_type) = 0; }
+#line 5158 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 223:
-/* Line 1787 of yacc.c  */
-#line 1471 "parse-tree/oct-parse.yy"
+#line 1468 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.tree_parameter_list_type) = 0; }
+#line 5164 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 224:
-/* Line 1787 of yacc.c  */
-#line 1473 "parse-tree/oct-parse.yy"
+#line 1470 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.tree_parameter_list_type) = 0; }
+#line 5170 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 225:
-/* Line 1787 of yacc.c  */
-#line 1475 "parse-tree/oct-parse.yy"
+#line 1472 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.tree_parameter_list_type) = 0; }
+#line 5176 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 226:
-/* Line 1787 of yacc.c  */
-#line 1479 "parse-tree/oct-parse.yy"
+#line 1476 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.dummy_type) = 0; }
+#line 5182 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 227:
-/* Line 1787 of yacc.c  */
-#line 1481 "parse-tree/oct-parse.yy"
+#line 1478 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.dummy_type) = 0; }
+#line 5188 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 228:
-/* Line 1787 of yacc.c  */
-#line 1483 "parse-tree/oct-parse.yy"
+#line 1480 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.dummy_type) = 0; }
+#line 5194 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 229:
-/* Line 1787 of yacc.c  */
-#line 1485 "parse-tree/oct-parse.yy"
+#line 1482 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.dummy_type) = 0; }
+#line 5200 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 230:
-/* Line 1787 of yacc.c  */
-#line 1487 "parse-tree/oct-parse.yy"
+#line 1484 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.dummy_type) = 0; }
+#line 5206 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 231:
-/* Line 1787 of yacc.c  */
-#line 1489 "parse-tree/oct-parse.yy"
+#line 1486 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.dummy_type) = 0; }
+#line 5212 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 232:
-/* Line 1787 of yacc.c  */
-#line 1491 "parse-tree/oct-parse.yy"
+#line 1488 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.dummy_type) = 0; }
+#line 5218 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 233:
-/* Line 1787 of yacc.c  */
-#line 1493 "parse-tree/oct-parse.yy"
+#line 1490 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.dummy_type) = 0; }
+#line 5224 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 234:
-/* Line 1787 of yacc.c  */
-#line 1497 "parse-tree/oct-parse.yy"
+#line 1494 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.comment_type) = 0; }
+#line 5230 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 235:
-/* Line 1787 of yacc.c  */
-#line 1502 "parse-tree/oct-parse.yy"
+#line 1499 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.dummy_type) = 0; }
+#line 5236 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 236:
-/* Line 1787 of yacc.c  */
-#line 1507 "parse-tree/oct-parse.yy"
+#line 1504 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.dummy_type) = 0; }
+#line 5242 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 237:
-/* Line 1787 of yacc.c  */
-#line 1509 "parse-tree/oct-parse.yy"
+#line 1506 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.dummy_type) = 0; }
+#line 5248 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 238:
-/* Line 1787 of yacc.c  */
-#line 1513 "parse-tree/oct-parse.yy"
+#line 1510 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.dummy_type) = 0; }
+#line 5254 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 239:
-/* Line 1787 of yacc.c  */
-#line 1515 "parse-tree/oct-parse.yy"
+#line 1512 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.dummy_type) = 0; }
+#line 5260 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 240:
-/* Line 1787 of yacc.c  */
-#line 1519 "parse-tree/oct-parse.yy"
+#line 1516 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.comment_type) = 0; }
+#line 5266 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 241:
-/* Line 1787 of yacc.c  */
-#line 1523 "parse-tree/oct-parse.yy"
+#line 1520 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.dummy_type) = 0; }
+#line 5272 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 242:
-/* Line 1787 of yacc.c  */
-#line 1527 "parse-tree/oct-parse.yy"
+#line 1524 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.dummy_type) = 0; }
+#line 5278 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 243:
-/* Line 1787 of yacc.c  */
-#line 1529 "parse-tree/oct-parse.yy"
+#line 1526 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.dummy_type) = 0; }
+#line 5284 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 244:
-/* Line 1787 of yacc.c  */
-#line 1533 "parse-tree/oct-parse.yy"
+#line 1530 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.comment_type) = 0; }
+#line 5290 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 245:
-/* Line 1787 of yacc.c  */
-#line 1537 "parse-tree/oct-parse.yy"
+#line 1534 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.dummy_type) = 0; }
+#line 5296 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 246:
-/* Line 1787 of yacc.c  */
-#line 1541 "parse-tree/oct-parse.yy"
+#line 1538 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.dummy_type) = 0; }
+#line 5302 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 247:
-/* Line 1787 of yacc.c  */
-#line 1543 "parse-tree/oct-parse.yy"
+#line 1540 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.dummy_type) = 0; }
+#line 5308 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 248:
-/* Line 1787 of yacc.c  */
-#line 1547 "parse-tree/oct-parse.yy"
+#line 1544 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.dummy_type) = 0; }
+#line 5314 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 249:
-/* Line 1787 of yacc.c  */
-#line 1551 "parse-tree/oct-parse.yy"
+#line 1548 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.comment_type) = 0; }
+#line 5320 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 250:
-/* Line 1787 of yacc.c  */
-#line 1555 "parse-tree/oct-parse.yy"
+#line 1552 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.dummy_type) = 0; }
+#line 5326 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 251:
-/* Line 1787 of yacc.c  */
-#line 1559 "parse-tree/oct-parse.yy"
+#line 1556 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.dummy_type) = 0; }
+#line 5332 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 252:
-/* Line 1787 of yacc.c  */
-#line 1561 "parse-tree/oct-parse.yy"
+#line 1558 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.dummy_type) = 0; }
+#line 5338 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 253:
-/* Line 1787 of yacc.c  */
-#line 1565 "parse-tree/oct-parse.yy"
+#line 1562 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.dummy_type) = 0; }
+#line 5344 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 254:
-/* Line 1787 of yacc.c  */
-#line 1573 "parse-tree/oct-parse.yy"
+#line 1570 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { lexer.at_beginning_of_statement = true; }
+#line 5350 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 255:
-/* Line 1787 of yacc.c  */
-#line 1577 "parse-tree/oct-parse.yy"
+#line 1574 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.comment_type) = lexer.get_comment (); }
+#line 5356 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 256:
-/* Line 1787 of yacc.c  */
-#line 1581 "parse-tree/oct-parse.yy"
+#line 1578 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { parser.bison_error ("parse error"); }
+#line 5362 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 258:
-/* Line 1787 of yacc.c  */
-#line 1586 "parse-tree/oct-parse.yy"
+#line 1583 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.sep_type) = ','; }
+#line 5368 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 259:
-/* Line 1787 of yacc.c  */
-#line 1588 "parse-tree/oct-parse.yy"
+#line 1585 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.sep_type) = ';'; }
+#line 5374 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 260:
-/* Line 1787 of yacc.c  */
-#line 1590 "parse-tree/oct-parse.yy"
-    { (yyval.sep_type) = (yyvsp[(1) - (2)].sep_type); }
+#line 1587 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.sep_type) = (yyvsp[-1].sep_type); }
+#line 5380 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 261:
-/* Line 1787 of yacc.c  */
-#line 1592 "parse-tree/oct-parse.yy"
-    { (yyval.sep_type) = (yyvsp[(1) - (2)].sep_type); }
+#line 1589 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.sep_type) = (yyvsp[-1].sep_type); }
+#line 5386 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 262:
-/* Line 1787 of yacc.c  */
-#line 1596 "parse-tree/oct-parse.yy"
+#line 1593 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.sep_type) = 0; }
+#line 5392 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 263:
-/* Line 1787 of yacc.c  */
-#line 1598 "parse-tree/oct-parse.yy"
-    { (yyval.sep_type) = (yyvsp[(1) - (1)].sep_type); }
+#line 1595 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.sep_type) = (yyvsp[0].sep_type); }
+#line 5398 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 264:
-/* Line 1787 of yacc.c  */
-#line 1602 "parse-tree/oct-parse.yy"
+#line 1599 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.sep_type) = 0; }
+#line 5404 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 265:
-/* Line 1787 of yacc.c  */
-#line 1604 "parse-tree/oct-parse.yy"
-    { (yyval.sep_type) = (yyvsp[(1) - (1)].sep_type); }
+#line 1601 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.sep_type) = (yyvsp[0].sep_type); }
+#line 5410 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 266:
-/* Line 1787 of yacc.c  */
-#line 1608 "parse-tree/oct-parse.yy"
+#line 1605 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.sep_type) = '\n'; }
+#line 5416 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 267:
-/* Line 1787 of yacc.c  */
-#line 1610 "parse-tree/oct-parse.yy"
-    { (yyval.sep_type) = (yyvsp[(1) - (2)].sep_type); }
+#line 1607 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.sep_type) = (yyvsp[-1].sep_type); }
+#line 5422 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 268:
-/* Line 1787 of yacc.c  */
-#line 1614 "parse-tree/oct-parse.yy"
+#line 1611 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.sep_type) = ','; }
+#line 5428 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 269:
-/* Line 1787 of yacc.c  */
-#line 1616 "parse-tree/oct-parse.yy"
+#line 1613 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.sep_type) = ';'; }
+#line 5434 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 270:
-/* Line 1787 of yacc.c  */
-#line 1618 "parse-tree/oct-parse.yy"
+#line 1615 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.sep_type) = '\n'; }
+#line 5440 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 271:
-/* Line 1787 of yacc.c  */
-#line 1620 "parse-tree/oct-parse.yy"
-    { (yyval.sep_type) = (yyvsp[(1) - (2)].sep_type); }
+#line 1617 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.sep_type) = (yyvsp[-1].sep_type); }
+#line 5446 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 272:
-/* Line 1787 of yacc.c  */
-#line 1622 "parse-tree/oct-parse.yy"
-    { (yyval.sep_type) = (yyvsp[(1) - (2)].sep_type); }
+#line 1619 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.sep_type) = (yyvsp[-1].sep_type); }
+#line 5452 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 273:
-/* Line 1787 of yacc.c  */
-#line 1624 "parse-tree/oct-parse.yy"
-    { (yyval.sep_type) = (yyvsp[(1) - (2)].sep_type); }
+#line 1621 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.sep_type) = (yyvsp[-1].sep_type); }
+#line 5458 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 274:
-/* Line 1787 of yacc.c  */
-#line 1628 "parse-tree/oct-parse.yy"
+#line 1625 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
     { (yyval.sep_type) = 0; }
+#line 5464 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
   case 275:
-/* Line 1787 of yacc.c  */
-#line 1630 "parse-tree/oct-parse.yy"
-    { (yyval.sep_type) = (yyvsp[(1) - (1)].sep_type); }
+#line 1627 "parse-tree/oct-parse.yy" /* yacc.c:1646  */
+    { (yyval.sep_type) = (yyvsp[0].sep_type); }
+#line 5470 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
     break;
 
 
-/* Line 1787 of yacc.c  */
-#line 5956 "parse-tree/oct-parse.cc"
+#line 5474 "parse-tree/oct-parse.cc" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -5974,7 +5492,7 @@ yyreduce:
 
   *++yyvsp = yyval;
 
-  /* Now `shift' the result of the reduction.  Determine what state
+  /* Now 'shift' the result of the reduction.  Determine what state
      that goes to, based on the state we popped back to and the rule
      number reduced by.  */
 
@@ -5989,9 +5507,9 @@ yyreduce:
   goto yynewstate;
 
 
-/*------------------------------------.
-| yyerrlab -- here on detecting error |
-`------------------------------------*/
+/*--------------------------------------.
+| yyerrlab -- here on detecting error.  |
+`--------------------------------------*/
 yyerrlab:
   /* Make sure we have latest lookahead translation.  See comments at
      user semantic actions for why this is necessary.  */
@@ -6042,20 +5560,20 @@ yyerrlab:
   if (yyerrstatus == 3)
     {
       /* If just tried and failed to reuse lookahead token after an
-	 error, discard it.  */
+         error, discard it.  */
 
       if (yychar <= YYEOF)
-	{
-	  /* Return failure if at end of input.  */
-	  if (yychar == YYEOF)
-	    YYABORT;
-	}
+        {
+          /* Return failure if at end of input.  */
+          if (yychar == YYEOF)
+            YYABORT;
+        }
       else
-	{
-	  yydestruct ("Error: discarding",
-		      yytoken, &yylval, parser);
-	  yychar = YYEMPTY;
-	}
+        {
+          yydestruct ("Error: discarding",
+                      yytoken, &yylval, parser);
+          yychar = YYEMPTY;
+        }
     }
 
   /* Else will try to reuse lookahead token after shifting the error
@@ -6074,7 +5592,7 @@ yyerrorlab:
   if (/*CONSTCOND*/ 0)
      goto yyerrorlab;
 
-  /* Do not reclaim the symbols of the rule which action triggered
+  /* Do not reclaim the symbols of the rule whose action triggered
      this YYERROR.  */
   YYPOPSTACK (yylen);
   yylen = 0;
@@ -6087,29 +5605,29 @@ yyerrorlab:
 | yyerrlab1 -- common code for both syntax error and YYERROR.  |
 `-------------------------------------------------------------*/
 yyerrlab1:
-  yyerrstatus = 3;	/* Each real token shifted decrements this.  */
+  yyerrstatus = 3;      /* Each real token shifted decrements this.  */
 
   for (;;)
     {
       yyn = yypact[yystate];
       if (!yypact_value_is_default (yyn))
-	{
-	  yyn += YYTERROR;
-	  if (0 <= yyn && yyn <= YYLAST && yycheck[yyn] == YYTERROR)
-	    {
-	      yyn = yytable[yyn];
-	      if (0 < yyn)
-		break;
-	    }
-	}
+        {
+          yyn += YYTERROR;
+          if (0 <= yyn && yyn <= YYLAST && yycheck[yyn] == YYTERROR)
+            {
+              yyn = yytable[yyn];
+              if (0 < yyn)
+                break;
+            }
+        }
 
       /* Pop the current state because it cannot handle the error token.  */
       if (yyssp == yyss)
-	YYABORT;
+        YYABORT;
 
 
       yydestruct ("Error: popping",
-		  yystos[yystate], yyvsp, parser);
+                  yystos[yystate], yyvsp, parser);
       YYPOPSTACK (1);
       yystate = *yyssp;
       YY_STACK_PRINT (yyss, yyssp);
@@ -6160,14 +5678,14 @@ yyreturn:
       yydestruct ("Cleanup: discarding lookahead",
                   yytoken, &yylval, parser);
     }
-  /* Do not reclaim the symbols of the rule which action triggered
+  /* Do not reclaim the symbols of the rule whose action triggered
      this YYABORT or YYACCEPT.  */
   YYPOPSTACK (yylen);
   YY_STACK_PRINT (yyss, yyssp);
   while (yyssp != yyss)
     {
       yydestruct ("Cleanup: popping",
-		  yystos[*yyssp], yyvsp, parser);
+                  yystos[*yyssp], yyvsp, parser);
       YYPOPSTACK (1);
     }
 #ifndef yyoverflow
@@ -6181,13 +5699,9 @@ yypushreturn:
   if (yymsg != yymsgbuf)
     YYSTACK_FREE (yymsg);
 #endif
-  /* Make sure YYID is used.  */
-  return YYID (yyresult);
+  return yyresult;
 }
-
-
-/* Line 2050 of yacc.c  */
-#line 1633 "parse-tree/oct-parse.yy"
+#line 1630 "parse-tree/oct-parse.yy" /* yacc.c:1906  */
 
 
 // Generic error messages.

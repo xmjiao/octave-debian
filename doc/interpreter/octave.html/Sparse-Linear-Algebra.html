@@ -340,6 +340,8 @@ The default values can be restored with the special keyword
 <code>&quot;defaults&quot;</code>.  The special keyword <code>&quot;tight&quot;</code> can be used to
 set the mmd solvers to attempt a sparser solution at the potential cost of
 longer running time.
+</p>
+<p><strong>See also:</strong> <a href="Matrix-Factorizations.html#XREFchol">chol</a>, <a href="Mathematical-Considerations.html#XREFcolamd">colamd</a>, <a href="Matrix-Factorizations.html#XREFlu">lu</a>, <a href="Matrix-Factorizations.html#XREFqr">qr</a>, <a href="Mathematical-Considerations.html#XREFsymamd">symamd</a>.
 </p></dd></dl>
 
 
@@ -430,7 +432,9 @@ function to find a least squares solution to a linear equation.
 </p>
 <a name="XREFspaugment"></a><dl>
 <dt><a name="index-spaugment"></a>Function File: <em><var>s</var> =</em> <strong>spaugment</strong> <em>(<var>A</var>, <var>c</var>)</em></dt>
-<dd><p>Create the augmented matrix of <var>A</var>.  This is given by
+<dd><p>Create the augmented matrix of <var>A</var>.
+</p>
+<p>This is given by
 </p>
 <div class="example">
 <pre class="example">[<var>c</var> * eye(<var>m</var>, <var>m</var>), <var>A</var>;
@@ -453,7 +457,7 @@ function to find a least squares solution to a linear equation.
 <p>As the matrix <var>s</var> is symmetric indefinite it can be factorized
 with <code>lu</code>, and the minimum norm solution can therefore be found
 without the need for a <code>qr</code> factorization.  As the residual
-error will be <code>zeros (<var>m</var>, <var>m</var>)</code> for under determined
+error will be <code>zeros (<var>m</var>, <var>m</var>)</code> for underdetermined
 problems, and example can be
 </p>
 <div class="example">
@@ -473,6 +477,8 @@ a minimum norm solution using the <code>spaugment</code> function.
 </p>
 <p>In general the left division operator is more stable and faster than
 using the <code>spaugment</code> function.
+</p>
+<p><strong>See also:</strong> <a href="Arithmetic-Ops.html#XREFmldivide">mldivide</a>.
 </p></dd></dl>
 
 

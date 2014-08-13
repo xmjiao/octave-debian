@@ -445,7 +445,9 @@ used for managing an interactive dialog with a user, and the
 @anchor{XREFinput}
 @deftypefn  {Built-in Function} {@var{ans} =} input (@var{prompt})
 @deftypefnx {Built-in Function} {@var{ans} =} input (@var{prompt}, "s")
-Print a prompt and wait for user input.  For example,
+Print @var{prompt} and wait for user input.
+
+For example,
 
 @example
 input ("Pick a number, any number! ")
@@ -475,7 +477,7 @@ Because there may be output waiting to be displayed by the pager, it is
 a good idea to always call @code{fflush (stdout)} before calling
 @code{input}.  This will ensure that all pending output is written to
 the screen before your prompt.
-@seealso{@ref{XREFyes_or_no,,yes_or_no}, @ref{XREFkbhit,,kbhit}}
+@seealso{@ref{XREFyes_or_no,,yes_or_no}, @ref{XREFkbhit,,kbhit}, @ref{XREFpause,,pause}, @ref{XREFmenu,,menu}, @ref{XREFlistdlg,,listdlg}}
 @end deftypefn
 
 
@@ -488,19 +490,20 @@ option selected by the user.  This function is useful for interactive
 programs.  There is no limit to the number of options that may be passed
 in, but it may be confusing to present more than will fit easily on one
 screen.
-@seealso{@ref{XREFdisp,,disp}, @ref{XREFprintf,,printf}, @ref{XREFinput,,input}}
+@seealso{@ref{XREFinput,,input}, @ref{XREFlistdlg,,listdlg}}
 @end deftypefn
 
 
 @c yes_or_no libinterp/corefcn/input.cc
 @anchor{XREFyes_or_no}
 @deftypefn {Built-in Function} {@var{ans} =} yes_or_no ("@var{prompt}")
-Ask the user a yes-or-no question.  Return logical true if the answer is yes
-or false if the answer is no.  Takes one argument, @var{prompt}, which is
-the string to display when asking the question.  @var{prompt} should end in
-a space; @code{yes-or-no} adds the string @samp{(yes or no) } to it.  The
-user must confirm the answer with @key{RET} and can edit it until it has
-been confirmed.
+Ask the user a yes-or-no question.
+
+Return logical true if the answer is yes or false if the answer is no.
+Takes one argument, @var{prompt}, which is the string to display when asking
+the question.  @var{prompt} should end in a space; @code{yes-or-no} adds the
+string @samp{(yes or no) } to it.  The user must confirm the answer with
+@key{RET} and can edit it until it has been confirmed.
 @seealso{@ref{XREFinput,,input}}
 @end deftypefn
 
@@ -534,7 +537,7 @@ x = kbhit (1);
 @noindent
 is identical to the above example, but doesn't wait for a keypress,
 returning the empty string if no key is available.
-@seealso{@ref{XREFinput,,input}}
+@seealso{@ref{XREFinput,,input}, @ref{XREFpause,,pause}}
 @end deftypefn
 
 

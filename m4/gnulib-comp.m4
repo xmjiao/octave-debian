@@ -121,13 +121,21 @@ AC_DEFUN([gl_EARLY],
   # Code from module include_next:
   # Code from module intprops:
   # Code from module isatty:
+  # Code from module isnand:
   # Code from module isnand-nolibm:
+  # Code from module isnanf:
   # Code from module isnanf-nolibm:
   # Code from module isnanl-nolibm:
   # Code from module largefile:
   AC_REQUIRE([AC_SYS_LARGEFILE])
   # Code from module link:
   # Code from module localcharset:
+  # Code from module log:
+  # Code from module log2:
+  # Code from module log2-ieee:
+  # Code from module log2f:
+  # Code from module log2f-ieee:
+  # Code from module logf:
   # Code from module lseek:
   # Code from module lstat:
   # Code from module malloc-gnu:
@@ -513,11 +521,29 @@ AC_SUBST([LTALLOCA])
     gl_PREREQ_ISATTY
   fi
   gl_UNISTD_MODULE_INDICATOR([isatty])
+  gl_FUNC_ISNAND
+  m4_ifdef([gl_ISNAN], [
+    AC_REQUIRE([gl_ISNAN])
+  ])
+  if test $HAVE_ISNAND = 0 || test $REPLACE_ISNAN = 1; then
+    AC_LIBOBJ([isnand])
+    gl_PREREQ_ISNAND
+  fi
+  gl_MATH_MODULE_INDICATOR([isnand])
   gl_FUNC_ISNAND_NO_LIBM
   if test $gl_func_isnand_no_libm != yes; then
     AC_LIBOBJ([isnand])
     gl_PREREQ_ISNAND
   fi
+  gl_FUNC_ISNANF
+  m4_ifdef([gl_ISNAN], [
+    AC_REQUIRE([gl_ISNAN])
+  ])
+  if test $HAVE_ISNANF = 0 || test $REPLACE_ISNAN = 1; then
+    AC_LIBOBJ([isnanf])
+    gl_PREREQ_ISNANF
+  fi
+  gl_MATH_MODULE_INDICATOR([isnanf])
   gl_FUNC_ISNANF_NO_LIBM
   if test $gl_func_isnanf_no_libm != yes; then
     AC_LIBOBJ([isnanf])
@@ -537,6 +563,28 @@ AC_SUBST([LTALLOCA])
   gl_LOCALCHARSET
   LOCALCHARSET_TESTS_ENVIRONMENT="CHARSETALIASDIR=\"\$(abs_top_builddir)/$gl_source_base\""
   AC_SUBST([LOCALCHARSET_TESTS_ENVIRONMENT])
+  AC_REQUIRE([gl_FUNC_LOG])
+  if test $REPLACE_LOG = 1; then
+    AC_LIBOBJ([log])
+  fi
+  gl_MATH_MODULE_INDICATOR([log])
+  gl_FUNC_LOG2
+  if test $HAVE_LOG2 = 0 || test $REPLACE_LOG2 = 1; then
+    AC_LIBOBJ([log2])
+  fi
+  gl_MATH_MODULE_INDICATOR([log2])
+  gl_FUNC_LOG2_IEEE
+  gl_FUNC_LOG2F
+  if test $HAVE_LOG2F = 0 || test $REPLACE_LOG2F = 1; then
+    AC_LIBOBJ([log2f])
+  fi
+  gl_MATH_MODULE_INDICATOR([log2f])
+  gl_FUNC_LOG2F_IEEE
+  gl_FUNC_LOGF
+  if test $HAVE_LOGF = 0 || test $REPLACE_LOGF = 1; then
+    AC_LIBOBJ([logf])
+  fi
+  gl_MATH_MODULE_INDICATOR([logf])
   gl_FUNC_LSEEK
   if test $REPLACE_LSEEK = 1; then
     AC_LIBOBJ([lseek])
@@ -1145,6 +1193,10 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/link.c
   lib/localcharset.c
   lib/localcharset.h
+  lib/log.c
+  lib/log2.c
+  lib/log2f.c
+  lib/logf.c
   lib/lseek.c
   lib/lstat.c
   lib/malloc.c
@@ -1371,6 +1423,12 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/locale-fr.m4
   m4/locale-ja.m4
   m4/locale-zh.m4
+  m4/log.m4
+  m4/log2-ieee.m4
+  m4/log2.m4
+  m4/log2f-ieee.m4
+  m4/log2f.m4
+  m4/logf.m4
   m4/longlong.m4
   m4/lseek.m4
   m4/lstat.m4

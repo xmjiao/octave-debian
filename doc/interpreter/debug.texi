@@ -306,7 +306,7 @@ The @code{keyboard} function does not return an exit status.
 
 If @code{keyboard} is invoked without arguments, a default prompt of
 @samp{debug> } is used.
-@seealso{@ref{XREFdbcont,,dbcont}, @ref{XREFdbquit,,dbquit}}
+@seealso{@ref{XREFdbstop,,dbstop}, @ref{XREFdbcont,,dbcont}, @ref{XREFdbquit,,dbquit}}
 @end deftypefn
 
 

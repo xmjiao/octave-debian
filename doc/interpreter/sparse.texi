@@ -49,7 +49,7 @@ it makes sense to have a special matrix type to handle this class of
 problems where only the non-zero elements of the matrix are
 stored.  Not only does this reduce the amount of memory to store the
 matrix, but it also means that operations on this type of matrix can
-take advantage of the a-priori knowledge of the positions of the
+take advantage of the a priori knowledge of the positions of the
 non-zero elements to accelerate their calculations.
 
 A matrix type that stores only the non-zero elements is generally called
@@ -75,7 +75,7 @@ create their own oct-files.
 
 There are many different means of storing sparse matrix data.  What all
 of the methods have in common is that they attempt to reduce the complexity
-and storage given a-priori knowledge of the particular class of problems
+and storage given a priori knowledge of the particular class of problems
 that will be solved.  A good summary of the available techniques for storing
 sparse matrix is given by Saad @footnote{Y. Saad "SPARSKIT: A basic toolkit
 for sparse matrix computation", 1994,
@@ -263,17 +263,18 @@ spdiags (reshape (1:12, 4, 3), [-1 0 1], 5, 4)
 
 @c speye scripts/sparse/speye.m
 @anchor{XREFspeye}
-@deftypefn  {Function File} {@var{y} =} speye (@var{m})
-@deftypefnx {Function File} {@var{y} =} speye (@var{m}, @var{n})
-@deftypefnx {Function File} {@var{y} =} speye (@var{sz})
-Return a sparse identity matrix.  This is significantly more
-efficient than @code{sparse (eye (@var{m}))} as the full matrix
-is not constructed.
+@deftypefn  {Function File} {@var{s} =} speye (@var{m}, @var{n})
+@deftypefnx {Function File} {@var{s} =} speye (@var{m})
+@deftypefnx {Function File} {@var{s} =} speye (@var{sz})
+Return a sparse identity matrix of size @var{m}x@var{n}.
 
-Called with a single argument a square matrix of size @var{m} by
-@var{m} is created.  Otherwise a matrix of @var{m} by @var{n} is
-created.  If called with a single vector argument, this argument
-is taken to be the size of the matrix to create.
+The implementation is significantly more efficient than
+@code{sparse (eye (@var{m}))} as the full matrix is not constructed.
+
+Called with a single argument a square matrix of size
+@var{m}-by-@var{m} is created.  If called with a single vector argument
+@var{sz}, this argument is taken to be the size of the matrix to create.
+@seealso{@ref{XREFsparse,,sparse}, @ref{XREFspdiags,,spdiags}, @ref{XREFeye,,eye}}
 @end deftypefn
 
 
@@ -282,6 +283,7 @@ is taken to be the size of the matrix to create.
 @deftypefn {Function File} {@var{r} =} spones (@var{S})
 Replace the non-zero entries of @var{S} with ones.  This creates a
 sparse matrix with the same structure as @var{S}.
+@seealso{@ref{XREFsparse,,sparse}, @ref{XREFsprand,,sprand}, @ref{XREFsprandn,,sprandn}, @ref{XREFsprandsym,,sprandsym}, @ref{XREFspfun,,spfun}, @ref{XREFspy,,spy}}
 @end deftypefn
 
 
@@ -290,13 +292,13 @@ sparse matrix with the same structure as @var{S}.
 @deftypefn  {Function File} {} sprand (@var{m}, @var{n}, @var{d})
 @deftypefnx {Function File} {} sprand (@var{s})
 Generate a random sparse matrix.  The size of the matrix will be
-@var{m} by @var{n}, with a density of values given by @var{d}.
-@var{d} should be between 0 and 1.  Values will be uniformly
-distributed between 0 and 1.
+@var{m}x@var{n}, with a density of values given by @var{d}.  @var{d} must
+be between 0 and 1 inclusive.  Values will be uniformly distributed between
+0 and 1.
 
 If called with a single matrix argument, a random sparse matrix is
 generated wherever the matrix @var{S} is non-zero.
-@seealso{@ref{XREFsprandn,,sprandn}, @ref{XREFsprandsym,,sprandsym}}
+@seealso{@ref{XREFsprandn,,sprandn}, @ref{XREFsprandsym,,sprandsym}, @ref{XREFspones,,spones}, @ref{XREFsparse,,sparse}}
 @end deftypefn
 
 
@@ -305,13 +307,13 @@ generated wherever the matrix @var{S} is non-zero.
 @deftypefn  {Function File} {} sprandn (@var{m}, @var{n}, @var{d})
 @deftypefnx {Function File} {} sprandn (@var{s})
 Generate a random sparse matrix.  The size of the matrix will be
-@var{m} by @var{n}, with a density of values given by @var{d}.
-@var{d} should be between 0 and 1.  Values will be normally
-distributed with mean of zero and variance 1.
+@var{m}x@var{n}, with a density of values given by @var{d}.  @var{d} must be
+between 0 and 1 inclusive.  Values will be normally distributed with a mean
+of zero and a variance of 1.
 
 If called with a single matrix argument, a random sparse matrix is
 generated wherever the matrix @var{S} is non-zero.
-@seealso{@ref{XREFsprand,,sprand}, @ref{XREFsprandsym,,sprandsym}}
+@seealso{@ref{XREFsprand,,sprand}, @ref{XREFsprandsym,,sprandsym}, @ref{XREFspones,,spones}, @ref{XREFsparse,,sparse}}
 @end deftypefn
 
 
@@ -319,15 +321,15 @@ generated wherever the matrix @var{S} is non-zero.
 @anchor{XREFsprandsym}
 @deftypefn  {Function File} {} sprandsym (@var{n}, @var{d})
 @deftypefnx {Function File} {} sprandsym (@var{s})
-Generate a symmetric random sparse matrix.  The size of the matrix will be
-@var{n} by @var{n}, with a density of values given by @var{d}.
-@var{d} should be between 0 and 1.  Values will be normally
-distributed with mean of zero and variance 1.
+Generate a symmetric random sparse matrix.
 
-If called with a single matrix argument, a random sparse matrix is
-generated wherever the matrix @var{S} is non-zero in its lower
-triangular part.
-@seealso{@ref{XREFsprand,,sprand}, @ref{XREFsprandn,,sprandn}}
+The size of the matrix will be @var{n}x@var{n}, with a density of values
+given by @var{d}.  @var{d} must be between 0 and 1 inclusive.  Values will
+be normally distributed with a mean of zero and a variance of 1.
+
+If called with a single matrix argument, a random sparse matrix is generated
+wherever the matrix @var{S} is non-zero in its lower triangular part.
+@seealso{@ref{XREFsprand,,sprand}, @ref{XREFsprandn,,sprandn}, @ref{XREFspones,,spones}, @ref{XREFsparse,,sparse}}
 @end deftypefn
 
 
@@ -398,9 +400,9 @@ number of memory allocations.
 @c full libinterp/corefcn/data.cc
 @anchor{XREFfull}
 @deftypefn {Built-in Function} {@var{FM} =} full (@var{SM})
-Return a full storage matrix from a sparse, diagonal, permutation matrix
+Return a full storage matrix from a sparse, diagonal, permutation matrix,
 or a range.
-@seealso{@ref{XREFsparse,,sparse}}
+@seealso{@ref{XREFsparse,,sparse}, @ref{XREFissparse,,issparse}}
 @end deftypefn
 
 
@@ -408,10 +410,11 @@ or a range.
 @anchor{XREFspalloc}
 @deftypefn {Built-in Function} {@var{s} =} spalloc (@var{m}, @var{n}, @var{nz})
 Create an @var{m}-by-@var{n} sparse matrix with pre-allocated space for at
-most @var{nz} nonzero elements.  This is useful for building the matrix
-incrementally by a sequence of indexed assignments.  Subsequent indexed
-assignments will reuse the pre-allocated memory, provided they are of one of
-the simple forms
+most @var{nz} nonzero elements.
+
+This is useful for building a matrix incrementally by a sequence of indexed
+assignments.  Subsequent indexed assignments after @code{spalloc} will reuse
+the pre-allocated memory, provided they are of one of the simple forms
 
 @itemize
 @item @code{@var{s}(I:J) = @var{x}}
@@ -432,8 +435,8 @@ the simple forms
 @end itemize
 
 Partial movement of data may still occur, but in general the assignment will
-be more memory and time-efficient under these circumstances.  In particular,
-it is possible to efficiently build a pre-allocated sparse matrix from
+be more memory and time efficient under these circumstances.  In particular,
+it is possible to efficiently build a pre-allocated sparse matrix from a
 contiguous block of columns.
 
 The amount of pre-allocated memory for a given matrix may be queried using
@@ -445,59 +448,83 @@ the function @code{nzmax}.
 @c sparse libinterp/corefcn/sparse.cc
 @anchor{XREFsparse}
 @deftypefn  {Built-in Function} {@var{s} =} sparse (@var{a})
-@deftypefnx {Built-in Function} {@var{s} =} sparse (@var{i}, @var{j}, @var{sv}, @var{m}, @var{n}, @var{nzmax})
+@deftypefnx {Built-in Function} {@var{s} =} sparse (@var{i}, @var{j}, @var{sv}, @var{m}, @var{n})
 @deftypefnx {Built-in Function} {@var{s} =} sparse (@var{i}, @var{j}, @var{sv})
-@deftypefnx {Built-in Function} {@var{s} =} sparse (@var{i}, @var{j}, @var{s}, @var{m}, @var{n}, "unique")
 @deftypefnx {Built-in Function} {@var{s} =} sparse (@var{m}, @var{n})
-Create a sparse matrix from the full matrix or row, column, value triplets.
+@deftypefnx {Built-in Function} {@var{s} =} sparse (@var{i}, @var{j}, @var{s}, @var{m}, @var{n}, "unique")
+@deftypefnx {Built-in Function} {@var{s} =} sparse (@var{i}, @var{j}, @var{sv}, @var{m}, @var{n}, @var{nzmax})
+Create a sparse matrix from a full matrix or row, column, value triplets.
+
 If @var{a} is a full matrix, convert it to a sparse matrix representation,
 removing all zero values in the process.
 
-Given the integer index vectors @var{i} and @var{j}, a 1-by-@code{nnz} vector
-of real of complex values @var{sv}, overall dimensions @var{m} and @var{n}
-of the sparse matrix.  The argument @code{nzmax} is ignored but accepted for
-compatibility with @sc{matlab}.  If @var{m} or @var{n} are not specified
-their values are derived from the maximum index in the vectors @var{i} and
-@var{j} as given by @code{@var{m} = max (@var{i})},
-@code{@var{n} = max (@var{j})}.
+Given the integer index vectors @var{i} and @var{j}, and a 1-by-@code{nnz}
+vector of real or complex values @var{sv}, construct the sparse matrix
+@code{S(@var{i}(@var{k}),@var{j}(@var{k})) = @var{sv}(@var{k})} with overall
+dimensions @var{m} and @var{n}.  If any of @var{sv}, @var{i} or @var{j} are
+scalars, they are expanded to have a common size.
 
-@strong{Note}: if multiple values are specified with the same
-@var{i}, @var{j} indices, the corresponding values in @var{s} will
-be added.  See @code{accumarray} for an example of how to produce different
-behavior, such as taking the minimum instead.
+If @var{m} or @var{n} are not specified their values are derived from the
+maximum index in the vectors @var{i} and @var{j} as given by
+@code{@var{m} = max (@var{i})}, @code{@var{n} = max (@var{j})}.
 
-The following are all equivalent:
+@strong{Note}: if multiple values are specified with the same @var{i},
+@var{j} indices, the corresponding value in @var{s} will be the sum of the
+values at the repeated location.  See @code{accumarray} for an example of how
+to produce different behavior, such as taking the minimum instead.
+
+If the option @qcode{"unique"} is given, and more than one value is
+specified at the same @var{i}, @var{j} indices, then the last specified
+value will be used.
+
+@code{sparse (@var{m}, @var{n})} will create an empty @var{m}x@var{n} sparse
+matrix and is equivalent to @code{sparse ([], [], [], @var{m}, @var{n})}
+
+The argument @code{nzmax} is ignored but accepted for compatibility with
+@sc{matlab}.
+
+Example 1 (sum at repeated indices):
 
 @example
 @group
-s = sparse (i, j, s, m, n)
-s = sparse (i, j, s, m, n, "summation")
-s = sparse (i, j, s, m, n, "sum")
+@var{i} = [1 1 2]; @var{j} = [1 1 2]; @var{sv} = [3 4 5];
+sparse (@var{i}, @var{j}, @var{sv}, 3, 4)
+@result{} 
+Compressed Column Sparse (rows = 3, cols = 4, nnz = 2 [17%])
+
+  (1, 1) ->  7
+  (2, 2) ->  5
 @end group
 @end example
 
-Given the option @qcode{"unique"}, if more than two values are specified
-for the same @var{i}, @var{j} indices, the last specified value will be
-used.
+Example 2 ("unique" option):
 
-@code{sparse (@var{m}, @var{n})} is equivalent to
-@code{sparse ([], [], [], @var{m}, @var{n}, 0)}
+@example
+@group
+@var{i} = [1 1 2]; @var{j} = [1 1 2]; @var{sv} = [3 4 5];
+sparse (@var{i}, @var{j}, @var{sv}, 3, 4, "unique")
+@result{} 
+Compressed Column Sparse (rows = 3, cols = 4, nnz = 2 [17%])
 
-If any of @var{sv}, @var{i} or @var{j} are scalars, they are expanded
-to have a common size.
-@seealso{@ref{XREFfull,,full}, @ref{XREFaccumarray,,accumarray}}
+  (1, 1) ->  4
+  (2, 2) ->  5
+@end group
+@end example
+@seealso{@ref{XREFfull,,full}, @ref{XREFaccumarray,,accumarray}, @ref{XREFspalloc,,spalloc}, @ref{XREFspdiags,,spdiags}, @ref{XREFspeye,,speye}, @ref{XREFspones,,spones}, @ref{XREFsprand,,sprand}, @ref{XREFsprandn,,sprandn}, @ref{XREFsprandsym,,sprandsym}, @ref{XREFspconvert,,spconvert}, @ref{XREFspfun,,spfun}}
 @end deftypefn
 
 
 @c spconvert scripts/sparse/spconvert.m
 @anchor{XREFspconvert}
 @deftypefn {Function File} {@var{x} =} spconvert (@var{m})
-This function converts for a simple sparse matrix format easily
-produced by other programs into Octave's internal sparse format.  The
-input @var{x} is either a 3 or 4 column real matrix, containing
-the row, column, real and imaginary parts of the elements of the
+Convert a simple sparse matrix format easily generated by other programs
+into Octave's internal sparse format.
+
+The input @var{m} is either a 3 or 4 column real matrix, containing
+the row, column, real, and imaginary parts of the elements of the
 sparse matrix.  An element with a zero real and imaginary part can
 be used to force a particular matrix size.
+@seealso{@ref{XREFsparse,,sparse}}
 @end deftypefn
 
 
@@ -535,9 +562,9 @@ Return true if @var{x} is a sparse matrix.
 
 @c nnz libinterp/corefcn/data.cc
 @anchor{XREFnnz}
-@deftypefn {Built-in Function} {@var{scalar} =} nnz (@var{a})
-Return the number of non zero elements in @var{a}.
-@seealso{@ref{XREFsparse,,sparse}, @ref{XREFnzmax,,nzmax}}
+@deftypefn {Built-in Function} {@var{n} =} nnz (@var{a})
+Return the number of non-zero elements in @var{a}.
+@seealso{@ref{XREFnzmax,,nzmax}, @ref{XREFnonzeros,,nonzeros}, @ref{XREFfind,,find}}
 @end deftypefn
 
 
@@ -545,17 +572,18 @@ Return the number of non zero elements in @var{a}.
 @anchor{XREFnonzeros}
 @deftypefn {Function File} {} nonzeros (@var{s})
 Return a vector of the non-zero values of the sparse matrix @var{s}.
+@seealso{@ref{XREFfind,,find}, @ref{XREFnnz,,nnz}}
 @end deftypefn
 
 
 @c nzmax libinterp/corefcn/data.cc
 @anchor{XREFnzmax}
-@deftypefn {Built-in Function} {@var{scalar} =} nzmax (@var{SM})
+@deftypefn {Built-in Function} {@var{n} =} nzmax (@var{SM})
 Return the amount of storage allocated to the sparse matrix @var{SM}.
+
 Note that Octave tends to crop unused memory at the first opportunity
-for sparse objects.  There are some cases of user created sparse objects
-where the value returned by @dfn{nzmax} will not be the same as @dfn{nnz},
-but in general they will give the same result.
+for sparse objects.  Thus, in general the value of @code{nzmax} will be the
+the same as @code{nnz} except for some cases of user-created sparse objects.
 @seealso{@ref{XREFnnz,,nnz}, @ref{XREFspalloc,,spalloc}, @ref{XREFsparse,,sparse}}
 @end deftypefn
 
@@ -668,11 +696,12 @@ symmetric or @code{treeplot (etree (A+A'))} otherwise.
 @deftypefn  {Function File} {} spy (@var{x})
 @deftypefnx {Function File} {} spy (@dots{}, @var{markersize})
 @deftypefnx {Function File} {} spy (@dots{}, @var{line_spec})
-Plot the sparsity pattern of the sparse matrix @var{x}.  If the argument
-@var{markersize} is given as a scalar value, it is used to determine the
-point size in the plot.  If the string @var{line_spec} is given it is
-passed to @code{plot} and determines the appearance of the plot.
-@seealso{@ref{XREFplot,,plot}}
+Plot the sparsity pattern of the sparse matrix @var{x}.
+
+If the argument @var{markersize} is given as a scalar value, it is used to
+determine the point size in the plot.  If the string @var{line_spec} is
+given it is passed to @code{plot} and determines the appearance of the plot.
+@seealso{@ref{XREFplot,,plot}, @ref{XREFgplot,,gplot}}
 @end deftypefn
 
 
@@ -912,7 +941,7 @@ The attempt has been made to make sparse matrices behave in exactly the
 same manner as there full counterparts.  However, there are certain differences
 and especially differences with other products sparse implementations.
 
-Firstly, the @qcode{"./"} and @qcode{".^"} operators must be used with care. 
+First, the @qcode{"./"} and @qcode{".^"} operators must be used with care. 
 Consider what the examples
 
 @example
@@ -1081,7 +1110,7 @@ are ignored by @code{amd} during the calculation of the permutation
 The value of dense must be a positive scalar and its default value is 10.0
 
 @item @var{opts}.aggressive
-If this value is a non zero scalar, then @code{amd} performs aggressive
+If this value is a nonzero scalar, then @code{amd} performs aggressive
 absorption.  The default is not to perform aggressive absorption.
 @end table
 
@@ -1718,6 +1747,7 @@ The default values can be restored with the special keyword
 @qcode{"defaults"}.  The special keyword @qcode{"tight"} can be used to
 set the mmd solvers to attempt a sparser solution at the potential cost of
 longer running time.
+@seealso{@ref{XREFchol,,chol}, @ref{XREFcolamd,,colamd}, @ref{XREFlu,,lu}, @ref{XREFqr,,qr}, @ref{XREFsymamd,,symamd}}
 @end deftypefn
 
 
@@ -1799,7 +1829,9 @@ function to find a least squares solution to a linear equation.
 @c spaugment scripts/sparse/spaugment.m
 @anchor{XREFspaugment}
 @deftypefn {Function File} {@var{s} =} spaugment (@var{A}, @var{c})
-Create the augmented matrix of @var{A}.  This is given by
+Create the augmented matrix of @var{A}.
+
+This is given by
 
 @example
 @group
@@ -1828,7 +1860,7 @@ where @var{r} is the residual error
 As the matrix @var{s} is symmetric indefinite it can be factorized
 with @code{lu}, and the minimum norm solution can therefore be found
 without the need for a @code{qr} factorization.  As the residual
-error will be @code{zeros (@var{m}, @var{m})} for under determined
+error will be @code{zeros (@var{m}, @var{m})} for underdetermined
 problems, and example can be
 
 @example
@@ -1850,6 +1882,7 @@ a minimum norm solution using the @code{spaugment} function.
 
 In general the left division operator is more stable and faster than
 using the @code{spaugment} function.
+@seealso{@ref{XREFmldivide,,mldivide}}
 @end deftypefn
 
 

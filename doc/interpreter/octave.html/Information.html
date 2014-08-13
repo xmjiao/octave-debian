@@ -83,26 +83,28 @@ mean and the variance of each column.
 
 
 <a name="XREFnnz"></a><dl>
-<dt><a name="index-nnz"></a>Built-in Function: <em><var>scalar</var> =</em> <strong>nnz</strong> <em>(<var>a</var>)</em></dt>
-<dd><p>Return the number of non zero elements in <var>a</var>.
+<dt><a name="index-nnz"></a>Built-in Function: <em><var>n</var> =</em> <strong>nnz</strong> <em>(<var>a</var>)</em></dt>
+<dd><p>Return the number of non-zero elements in <var>a</var>.
 </p>
-<p><strong>See also:</strong> <a href="Creating-Sparse-Matrices.html#XREFsparse">sparse</a>, <a href="#XREFnzmax">nzmax</a>.
+<p><strong>See also:</strong> <a href="#XREFnzmax">nzmax</a>, <a href="#XREFnonzeros">nonzeros</a>, <a href="Finding-Elements-and-Checking-Conditions.html#XREFfind">find</a>.
 </p></dd></dl>
 
 
 <a name="XREFnonzeros"></a><dl>
 <dt><a name="index-nonzeros"></a>Function File: <em></em> <strong>nonzeros</strong> <em>(<var>s</var>)</em></dt>
 <dd><p>Return a vector of the non-zero values of the sparse matrix <var>s</var>.
+</p>
+<p><strong>See also:</strong> <a href="Finding-Elements-and-Checking-Conditions.html#XREFfind">find</a>, <a href="#XREFnnz">nnz</a>.
 </p></dd></dl>
 
 
 <a name="XREFnzmax"></a><dl>
-<dt><a name="index-nzmax"></a>Built-in Function: <em><var>scalar</var> =</em> <strong>nzmax</strong> <em>(<var>SM</var>)</em></dt>
+<dt><a name="index-nzmax"></a>Built-in Function: <em><var>n</var> =</em> <strong>nzmax</strong> <em>(<var>SM</var>)</em></dt>
 <dd><p>Return the amount of storage allocated to the sparse matrix <var>SM</var>.
-Note that Octave tends to crop unused memory at the first opportunity
-for sparse objects.  There are some cases of user created sparse objects
-where the value returned by <em>nzmax</em> will not be the same as <em>nnz</em>,
-but in general they will give the same result.
+</p>
+<p>Note that Octave tends to crop unused memory at the first opportunity
+for sparse objects.  Thus, in general the value of <code>nzmax</code> will be the
+the same as <code>nnz</code> except for some cases of user-created sparse objects.
 </p>
 <p><strong>See also:</strong> <a href="#XREFnnz">nnz</a>, <a href="Creating-Sparse-Matrices.html#XREFspalloc">spalloc</a>, <a href="Creating-Sparse-Matrices.html#XREFsparse">sparse</a>.
 </p></dd></dl>
@@ -202,12 +204,13 @@ symmetric or <code>treeplot (etree (A+A'))</code> otherwise.
 <dt><a name="index-spy"></a>Function File: <em></em> <strong>spy</strong> <em>(<var>x</var>)</em></dt>
 <dt><a name="index-spy-1"></a>Function File: <em></em> <strong>spy</strong> <em>(&hellip;, <var>markersize</var>)</em></dt>
 <dt><a name="index-spy-2"></a>Function File: <em></em> <strong>spy</strong> <em>(&hellip;, <var>line_spec</var>)</em></dt>
-<dd><p>Plot the sparsity pattern of the sparse matrix <var>x</var>.  If the argument
-<var>markersize</var> is given as a scalar value, it is used to determine the
-point size in the plot.  If the string <var>line_spec</var> is given it is
-passed to <code>plot</code> and determines the appearance of the plot.
+<dd><p>Plot the sparsity pattern of the sparse matrix <var>x</var>.
 </p>
-<p><strong>See also:</strong> <a href="Two_002dDimensional-Plots.html#XREFplot">plot</a>.
+<p>If the argument <var>markersize</var> is given as a scalar value, it is used to
+determine the point size in the plot.  If the string <var>line_spec</var> is
+given it is passed to <code>plot</code> and determines the appearance of the plot.
+</p>
+<p><strong>See also:</strong> <a href="Two_002dDimensional-Plots.html#XREFplot">plot</a>, <a href="#XREFgplot">gplot</a>.
 </p></dd></dl>
 
 
