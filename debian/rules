@@ -36,6 +36,12 @@ endif
 # libraries, for example the mesa graphics stack which also uses LLVM.
 JIT_FLAG := --disable-jit
 
+# HDF5 paths
+ifneq ($(wildcard /usr/lib/$(DEB_HOST_MULTIARCH)/hdf5/serial/libhdf5.so),)
+  HDF5_FLAGS := --with-hdf5-includedir=/usr/include/hdf5/serial \
+	--with-hdf5-libdir=/usr/lib/$(DEB_HOST_MULTIARCH)/hdf5/serial
+endif
+
 %:
 	dh $@ --with autoreconf --parallel
 
@@ -44,7 +50,7 @@ clean:
 
 # override normal dh_auto_configure call to pass OpenMP flag to it (#631831)
 override_dh_auto_configure:
-	dh_auto_configure -- --enable-openmp $(WITH_JAVA_FLAGS) $(JIT_FLAG)
+	dh_auto_configure -- --enable-openmp $(WITH_JAVA_FLAGS) $(JIT_FLAG) $(HDF5_FLAGS)
 
 # dh_auto_test tries to run "make test", so override it
 override_dh_auto_test:
