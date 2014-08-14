@@ -1,3 +1,31 @@
+octave (3.8.2-1) unstable; urgency=medium
+
+  [ Sébastien Villemot ]
+  * Imported Upstream version 3.8.2
+    - statistics() function adapted to new signature of kurtosis() and
+      skewness() functions. (Closes: #755882)
+    - no longer pass -mieee flag to moc-qt4, should fix FTBFS on alpha.
+      (Closes: #746924)
+  * debian/copyright: reflect upstream changes.
+  * Remove Thomas Weber from Uploaders. Thanks Thomas for your work!
+  * Recommend OpenBLAS over ATLAS as the optimized BLAS library.
+    OpenBLAS is a better default because its generic binary is able to
+    dynamically select the kernel specialized for the current CPU, while ATLAS
+    needs to be recompiled. However, OpenBLAS is not present on some
+    architectures, so ATLAS will remain the default on those.
+  * Allow virtual packages liblapack.so and libblas.so to satisfy dependencies
+    of liboctave-dev. (Closes: #757237)
+
+  [ Gilles Filippini ]
+  * Support hdf5 1.8.13 new packaging layout. (Closes: #756689)
+    New patches:
+    - hdf5-flags.patch to fix a couple of makefiles regarding
+      new paths;
+    - hdf5-mkoctfile.patch to fix hdf5 path when building octave
+      modules.
+
+ -- Sébastien Villemot <sebastien@debian.org>  Thu, 14 Aug 2014 12:19:21 +0200
+
 octave (3.8.1-3) unstable; urgency=medium
 
   [ Thomas Weber ]
