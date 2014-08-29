@@ -24,7 +24,7 @@ Package: octave
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, texinfo, octave-common (= ${source:Version}),
          liboctave2 (= ${binary:Version}),
-         default-jre-headless [!armhf !hurd-i386 !kfreebsd-amd64 !kfreebsd-i386 !mipsel !sparc]
+         default-jre-headless [!armhf !hurd-i386 !kfreebsd-amd64 !kfreebsd-i386 !mips !mipsel !sparc]
 Recommends: gnuplot-x11 | gnuplot-qt, libopenblas-base | libatlas3-base,
  pstoedit
 Suggests: octave-info,
