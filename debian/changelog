@@ -1,3 +1,9 @@
+octave (3.8.2-2) unstable; urgency=medium
+
+  * Disable java on mips. (Closes: #759663)
+
+ -- Sébastien Villemot <sebastien@debian.org>  Fri, 29 Aug 2014 22:39:52 +0200
+
 octave (3.8.2-1) unstable; urgency=medium
 
   [ Sébastien Villemot ]
