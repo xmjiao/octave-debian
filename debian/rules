@@ -15,14 +15,15 @@ export DEB_VERSION_UPSTREAM
 # Configure default Java paths using javahelper except on some archs.
 # hurd-i386, kfreebsd-* and sparc have gcj as default, which cause either
 # a compilation failure (hurd-i386) or a test failure (other archs).
-# On mipsel java unit tests calling openjdk-7 cause a bus error at runtime.
+# On mips and mipsel java unit tests calling openjdk-7 cause a bus error at
+# runtime.
 # On armhf, unit tests calling openjdk-7 cause a segmentation fault.
 # This arch list must be kept in sync with the arch list qualifying
 # default-jre in debian/control (note: we always want default-jdk in
 # build deps because it is needed for octave-common, see
 # debian/patches/always-build-octave-jar.patch).
 include /usr/share/dpkg/architecture.mk
-NO_JDK_ARCHS := armhf hurd-i386 kfreebsd-amd64 kfreebsd-i386 mipsel sparc
+NO_JDK_ARCHS := armhf hurd-i386 kfreebsd-amd64 kfreebsd-i386 mips mipsel sparc
 ifneq (,$(filter $(DEB_HOST_ARCH),$(NO_JDK_ARCHS)))
 WITH_JAVA_FLAGS := --disable-java
 else
