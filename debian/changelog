@@ -1,3 +1,18 @@
+octave (3.8.2-3) unstable; urgency=medium
+
+  [ Rafael Laboissiere ]
+  * d/rules: Do not compress info files, avoiding the freeze of Octave GUI
+    (Closes: #762078)
+
+  [ Sébastien Villemot ]
+  * Drop dependency on default-jre-headless on mips.
+  * Bump Standards-Version to 3.9.6, no changes needed.
+  * liboctave-dev: no longer ship Makefiles under examples directory.
+    (Closes: #759427)
+  * Add lintian-overrides for uncompressed info files.
+
+ -- Sébastien Villemot <sebastien@debian.org>  Fri, 10 Oct 2014 21:03:40 +0200
+
 octave (3.8.2-2) unstable; urgency=medium
 
   * Disable java on mips. (Closes: #759663)
