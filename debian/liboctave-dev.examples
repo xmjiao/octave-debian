@@ -1,0 +1,6 @@
+examples/*.cc
+examples/*.m
+examples/*.c
+examples/*.f
+examples/@FIRfilter/
+examples/@polynomial/
