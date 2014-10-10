@@ -1,0 +1,2 @@
+# Workaround for #762078
+octave-info: info-document-not-compressed usr/share/info/*octave.info*
