@@ -1,3 +1,10 @@
+octave (3.8.2-4) unstable; urgency=medium
+
+  * mkoctfile-infinite-loop.patch: fix infinite loop of mkoctfile -M on
+    platforms where char is unsigned. (Closes: #770192)
+
+ -- Sébastien Villemot <sebastien@debian.org>  Mon, 01 Dec 2014 21:25:52 +0100
+
 octave (3.8.2-3) unstable; urgency=medium
 
   [ Rafael Laboissiere ]
