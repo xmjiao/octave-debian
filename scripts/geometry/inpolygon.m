@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2013 Frederick (Rick) A Niles
+## Copyright (C) 2006-2015 Frederick (Rick) A Niles
 ##               and Søren Hauberg
 ##
 ## This file is part of Octave.
@@ -70,14 +70,14 @@ function [in, on] = inpolygon (x, y, xv, yv)
     ##        AND (x,y) on the left of the edge ?
     idx1 = (((yv(i) <= y & y < yv(j)) | (yv(j) <= y & y < yv(i)))
             & 0 < distance.*delta_yv);
-    in (idx1) = !in (idx1);
+    in(idx1) = ! in(idx1);
 
     ## Check if (x,y) are actually on the boundary of the polygon.
     if (do_boundary)
        idx2 = (((yv(i) <= y & y <= yv(j)) | (yv(j) <= y & y <= yv(i)))
                & ((xv(i) <= x & x <= xv(j)) | (xv(j) <= x & x <= xv(i)))
                & (0 == distance | !delta_xv));
-       on (idx2) = true;
+       on(idx2) = true;
     endif
     j = i;
   endfor
@@ -138,7 +138,7 @@ endfunction
 %! assert (in, [false, true]);
 %! assert (on, [true, false]);
 
-%% Test input validation
+## Test input validation
 %!error inpolygon ()
 %!error inpolygon (1, 2)
 %!error inpolygon (1, 2, 3)

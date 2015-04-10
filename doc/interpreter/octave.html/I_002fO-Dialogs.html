@@ -66,9 +66,10 @@ a file name.
 <dt><a name="index-uigetdir"></a>Function File: <em><var>dirname</var> =</em> <strong>uigetdir</strong> <em>()</em></dt>
 <dt><a name="index-uigetdir-1"></a>Function File: <em><var>dirname</var> =</em> <strong>uigetdir</strong> <em>(<var>init_path</var>)</em></dt>
 <dt><a name="index-uigetdir-2"></a>Function File: <em><var>dirname</var> =</em> <strong>uigetdir</strong> <em>(<var>init_path</var>, <var>dialog_name</var>)</em></dt>
-<dd><p>Open a GUI dialog for selecting a directory.  If <var>init_path</var> is not
-given the current working directory is used.  <var>dialog_name</var> may be
-used to customize the dialog title.
+<dd><p>Open a GUI dialog for selecting a directory.
+</p>
+<p>If <var>init_path</var> is not given the current working directory is used.
+<var>dialog_name</var> may be used to customize the dialog title.
 </p>
 <p><strong>See also:</strong> <a href="#XREFuigetfile">uigetfile</a>, <a href="#XREFuiputfile">uiputfile</a>.
 </p></dd></dl>
@@ -84,7 +85,8 @@ used to customize the dialog title.
 <dd>
 <p>Open a GUI dialog for selecting a file and return the filename <var>fname</var>,
 the path to this file <var>fpath</var>, and the filter index <var>fltidx</var>.
-<var>flt</var> contains a (list of) file filter string(s) in one of the following
+</p>
+<p><var>flt</var> contains a (list of) file filter string(s) in one of the following
 formats:
 </p>
 <dl compact="compact">
@@ -130,8 +132,10 @@ cell array containing the files.
 <dt><a name="index-uiputfile-1"></a>Function File: <em>[<var>fname</var>, <var>fpath</var>, <var>fltidx</var>] =</em> <strong>uiputfile</strong> <em>(<var>flt</var>)</em></dt>
 <dt><a name="index-uiputfile-2"></a>Function File: <em>[<var>fname</var>, <var>fpath</var>, <var>fltidx</var>] =</em> <strong>uiputfile</strong> <em>(<var>flt</var>, <var>dialog_name</var>)</em></dt>
 <dt><a name="index-uiputfile-3"></a>Function File: <em>[<var>fname</var>, <var>fpath</var>, <var>fltidx</var>] =</em> <strong>uiputfile</strong> <em>(<var>flt</var>, <var>dialog_name</var>, <var>default_file</var>)</em></dt>
-<dd><p>Open a GUI dialog for selecting a file.  <var>flt</var> contains a (list of) file
-filter string(s) in one of the following formats:
+<dd><p>Open a GUI dialog for selecting a file.
+</p>
+<p><var>flt</var> contains a (list of) file filter string(s) in one of the following
+formats:
 </p>
 <dl compact="compact">
 <dt><code>&quot;/path/to/filename.ext&quot;</code></dt>

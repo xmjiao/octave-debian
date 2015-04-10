@@ -1,4 +1,4 @@
-## Copyright (C) 1993-2013 Shai Ayal
+## Copyright (C) 1993-2015 Shai Ayal
 ##
 ## This file is part of Octave.
 ##
@@ -69,7 +69,7 @@ function [c, h] = contour (varargin)
   endif
   unwind_protect
     hax = newplot (hax);
-    
+
     [ctmp, htmp] = __contour__ (hax, "none", varargin{:});
   unwind_protect_cleanup
     if (! isempty (oldfig))

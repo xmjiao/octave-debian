@@ -1,4 +1,4 @@
-## Copyright (C) 2012-2013 John W. Eaton
+## Copyright (C) 2012-2015 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -64,7 +64,7 @@ function retval = rmpref (group, pref)
       if (! ispref (group))
         error ("rmpref: group <%s> does not exist", group);
       else
-        idx = find (! valid, 1); 
+        idx = find (! valid, 1);
         error ("rmpref: pref <%s> does not exist", (cellstr (pref)){idx} );
       endif
     endif

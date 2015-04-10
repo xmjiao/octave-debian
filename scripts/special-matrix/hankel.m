@@ -1,4 +1,4 @@
-## Copyright (C) 1993-2013 John W. Eaton
+## Copyright (C) 1993-2015 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -65,7 +65,7 @@ function retval = hankel (c, r)
 
   else
 
-    if (! (isvector (c) && isvector (r))) 
+    if (! (isvector (c) && isvector (r)))
       error ("hankel: C and R must be vectors");
     elseif (r(1) != c(end))
       warning ("hankel: column wins anti-diagonal conflict");
@@ -76,7 +76,7 @@ function retval = hankel (c, r)
     data = [c(:) ; r(2:end)(:)];
 
   endif
-   
+
   slices = cellslices (data, 1:nc, nr:1:nc+nr-1);
   retval = horzcat (slices{:});
 

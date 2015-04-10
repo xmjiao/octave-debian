@@ -99,7 +99,7 @@ extremely memory constrained problems this may not be the best
 technique for creating a sparse matrix.
 </p>
 <p>The alternative is to first create a sparse matrix with the desired
-number of non-zero elements and then later fill those elements in.
+number of nonzero elements and then later fill those elements in.
 Sample code:
 </p>
 <div class="example">
@@ -135,8 +135,8 @@ it is possible to create a sparse matrix with too much storage, so having
 <var>nz</var> greater than 4 is also valid.  The disadvantage is that the matrix
 occupies more memory than strictly needed.
 </p>
-<p>It is not always possible to know the number of non-zero elements prior
-to filling a matrix.  For this reason the additional unused storage of 
+<p>It is not always possible to know the number of nonzero elements prior
+to filling a matrix.  For this reason the additional unused storage of
 a sparse matrix can be removed after its creation with the
 <code>maybe_compress</code> function.  In addition, <code>maybe_compress</code> can
 deallocate the unused storage, but it can also remove zero elements
@@ -234,7 +234,7 @@ for (int j = 1; j &lt; nc; j++)
 sm.maybe_mutate ();  // If don't know a priori the final # of nz.
 </pre></div>
 
-<p>Note that both increasing and decreasing the number of non-zero elements in
+<p>Note that both increasing and decreasing the number of nonzero elements in
 a sparse matrix is expensive as it involves memory reallocation.  Also as
 parts of the matrix, though not its entirety, exist as old and new copies
 at the same time, additional memory is needed.  Therefore, if possible this

@@ -61,12 +61,10 @@ Previous: <a href="Convex-Hull.html#Convex-Hull" accesskey="p" rel="prev">Convex
 <p>An important use of the Delaunay tessellation is that it can be used to
 interpolate from scattered data to an arbitrary set of points.  To do
 this the N-simplex of the known set of points is calculated with
-<code>delaunay</code>, <code>delaunay3</code> or <code>delaunayn</code>.  Then the
-simplices in to which the desired points are found are
-identified.  Finally the vertices of the simplices are used to
-interpolate to the desired points.  The functions that perform this
-interpolation are <code>griddata</code>, <code>griddata3</code> and
-<code>griddatan</code>.
+<code>delaunay</code> or <code>delaunayn</code>.  Then the simplices in to which the
+desired points are found are identified.  Finally the vertices of the simplices
+are used to interpolate to the desired points.  The functions that perform this
+interpolation are <code>griddata</code>, <code>griddata3</code> and <code>griddatan</code>.
 </p>
 <a name="XREFgriddata"></a><dl>
 <dt><a name="index-griddata"></a>Function File: <em><var>zi</var> =</em> <strong>griddata</strong> <em>(<var>x</var>, <var>y</var>, <var>z</var>, <var>xi</var>, <var>yi</var>)</em></dt>
@@ -141,8 +139,7 @@ z = sin (2*(x.^2+y.^2));
 griddata (x,y,z,xx,yy);
 </pre></div>
 
-<p>that interpolates from a random scattering of points, to a uniform
-grid. 
+<p>that interpolates from a random scattering of points, to a uniform grid.
 The output of the above can be seen in <a href="#fig_003agriddata">Figure 30.6</a>.
 </p>
 <div class="float"><a name="fig_003agriddata"></a>

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2013 John W. Eaton
+Copyright (C) 1996-2015 John W. Eaton
 
 This file is part of Octave.
 
@@ -26,11 +26,13 @@ along with Octave; see the file COPYING.  If not, see
 
 #include <iostream>
 
+#include "oct-locbuf.h"
 #include "quit.h"
 
 #include "data.h"
 #include "defun.h"
 #include "error.h"
+#include "gripes.h"
 #include "oct-obj.h"
 #include "pt-arg-list.h"
 #include "pt-bp.h"
@@ -386,27 +388,30 @@ tm_row_const::tm_row_const_rep::init (const tree_argument_list& row)
 
   first_elem = true;
 
-  for (iterator p = begin (); p != end (); p++)
+  if (! error_state)
     {
-      octave_quit ();
-
-      octave_value val = *p;
-
-      dim_vector this_elt_dv = val.dims ();
-
-      if (! this_elt_dv.zero_by_zero ())
+      for (iterator p = begin (); p != end (); p++)
         {
-          all_mt = false;
+          octave_quit ();
 
-          if (first_elem)
+          octave_value val = *p;
+
+          dim_vector this_elt_dv = val.dims ();
+
+          if (! this_elt_dv.zero_by_zero ())
             {
-              first_elem = false;
-              dv = this_elt_dv;
-            }
-          else if ((! any_class) && (! dv.hvcat (this_elt_dv, 1)))
-            {
-              eval_error ("horizontal dimensions mismatch", dv, this_elt_dv);
-              break;
+              all_mt = false;
+
+              if (first_elem)
+                {
+                  first_elem = false;
+                  dv = this_elt_dv;
+                }
+              else if ((! any_class) && (! dv.hvcat (this_elt_dv, 1)))
+                {
+                  eval_error ("horizontal dimensions mismatch", dv, this_elt_dv);
+                  break;
+                }
             }
         }
     }
@@ -683,7 +688,8 @@ static void
 single_type_concat (Array<T>& result,
                     tm_const& tmp)
 {
-  octave_idx_type r = 0, c = 0;
+  octave_idx_type r = 0;
+  octave_idx_type c = 0;
 
   for (tm_const::iterator p = tmp.begin (); p != tmp.end (); p++)
     {
@@ -753,7 +759,8 @@ single_type_concat (Array<T>& result,
           return;
         }
 
-      octave_idx_type ncols = row.length (), i = 0;
+      octave_idx_type ncols = row.length ();
+      octave_idx_type i = 0;
       OCTAVE_LOCAL_BUFFER (Array<T>, array_list, ncols);
 
       for (tm_row_const::iterator q = row.begin ();
@@ -791,12 +798,14 @@ single_type_concat (Sparse<T>& result,
   // Sparse matrices require preallocation for efficient indexing; besides,
   // only horizontal concatenation can be efficiently handled by indexing.
   // So we just cat all rows through liboctave, then cat the final column.
-  octave_idx_type nrows = tmp.length (), j = 0;
+  octave_idx_type nrows = tmp.length ();
+  octave_idx_type j = 0;
   OCTAVE_LOCAL_BUFFER (Sparse<T>, sparse_row_list, nrows);
   for (tm_const::iterator p = tmp.begin (); p != tmp.end (); p++)
     {
       tm_row_const row = *p;
-      octave_idx_type ncols = row.length (), i = 0;
+      octave_idx_type ncols = row.length ();
+      octave_idx_type i = 0;
       OCTAVE_LOCAL_BUFFER (Sparse<T>, sparse_list, ncols);
 
       for (tm_row_const::iterator q = row.begin ();
@@ -829,12 +838,14 @@ single_type_concat (octave_map& result,
       return;
     }
 
-  octave_idx_type nrows = tmp.length (), j = 0;
+  octave_idx_type nrows = tmp.length ();
+  octave_idx_type j = 0;
   OCTAVE_LOCAL_BUFFER (octave_map, map_row_list, nrows);
   for (tm_const::iterator p = tmp.begin (); p != tmp.end (); p++)
     {
       tm_row_const row = *p;
-      octave_idx_type ncols = row.length (), i = 0;
+      octave_idx_type ncols = row.length ();
+      octave_idx_type i = 0;
       OCTAVE_LOCAL_BUFFER (MAP, map_list, ncols);
 
       for (tm_row_const::iterator q = row.begin ();
@@ -926,6 +937,7 @@ tree_matrix::rvalue1 (int)
 {
   octave_value retval = Matrix ();
 
+  bool all_strings_p = false;
   bool all_sq_strings_p = false;
   bool all_dq_strings_p = false;
   bool all_empty_p = false;
@@ -939,6 +951,7 @@ tree_matrix::rvalue1 (int)
   if (tmp && ! tmp.empty ())
     {
       dim_vector dv = tmp.dims ();
+      all_strings_p = tmp.all_strings_p ();
       all_sq_strings_p = tmp.all_sq_strings_p ();
       all_dq_strings_p = tmp.all_dq_strings_p ();
       all_empty_p = tmp.all_empty_p ();
@@ -983,7 +996,11 @@ tree_matrix::rvalue1 (int)
         {
           char type = all_dq_strings_p ? '"' : '\'';
 
-          maybe_warn_string_concat (all_dq_strings_p, all_sq_strings_p);
+          if (! all_strings_p)
+            gripe_implicit_conversion ("Octave:num-to-str",
+                                       "numeric", result_type);
+          else
+            maybe_warn_string_concat (all_dq_strings_p, all_sq_strings_p);
 
           charNDArray result (dv, Vstring_fill_char);
 

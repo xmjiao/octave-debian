@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2013 John W. Eaton
+@c Copyright (C) 1996-2015 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -8,12 +8,12 @@
 @c under the terms of the GNU General Public License as published by the
 @c Free Software Foundation; either version 3 of the License, or (at
 @c your option) any later version.
-@c 
+@c
 @c Octave is distributed in the hope that it will be useful, but WITHOUT
 @c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 @c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 @c for more details.
-@c 
+@c
 @c You should have received a copy of the GNU General Public License
 @c along with Octave; see the file COPYING.  If not, see
 @c <http://www.gnu.org/licenses/>.
@@ -23,18 +23,18 @@
 @cindex linear algebra
 
 This chapter documents the linear algebra functions provided in Octave.
-Reference material for many of these functions may be found in Golub and
-Van Loan, @cite{Matrix Computations, 2nd Ed.}, Johns Hopkins, 1989, and
-in the @cite{@sc{lapack} Users' Guide}, SIAM, 1992. The
-@cite{@sc{lapack} Users' Guide} is available at:
+Reference material for many of these functions may be found in
+@nospell{Golub and Van Loan}, @cite{Matrix Computations, 2nd Ed.},
+Johns Hopkins, 1989, and in the @cite{@sc{lapack} Users' Guide}, SIAM, 1992.
+The @cite{@sc{lapack} Users' Guide} is available at:
 @cite{http://www.netlib.org/lapack/lug/}
 
-A common text for engineering courses is G. Strang, @cite{Linear Algebra
-and Its Applications, 4th Edition}. It has become a widespread reference
-for linear algebra. An alternative is P. Lax @cite{Linear Algebra and
-Its Applications}, and also is a good choice. It claims to be suitable
-for high school students with substantial mathematical interests as well
-as first-year undergraduates.
+A common text for engineering courses is @nospell{G. Strang},
+@cite{Linear Algebra and Its Applications, 4th Edition}. It has become a
+widespread reference for linear algebra.  An alternative is P. Lax
+@cite{Linear Algebra and Its Applications}, and also is a good choice.  It
+claims to be suitable for high school students with substantial mathematical
+interests as well as first-year undergraduates.
 
 @menu
 * Techniques Used for Linear Algebra::
@@ -51,7 +51,7 @@ as first-year undergraduates.
 Octave includes a polymorphic solver that selects an appropriate matrix
 factorization depending on the properties of the matrix itself.
 Generally, the cost of determining the matrix type is small relative to
-the cost of factorizing the matrix itself. In any case the matrix type
+the cost of factorizing the matrix itself.  In any case the matrix type
 is cached once it is calculated so that it is not re-determined each
 time it is used in a linear equation.
 
@@ -72,7 +72,7 @@ backward substitution using the @sc{lapack} xTRTRS function, and goto 4.
 attempt Cholesky@tie{}factorization using the @sc{lapack} xPOTRF function.
 
 @item If the Cholesky@tie{}factorization failed or the matrix is not
-Hermitian with a real positive diagonal, and the matrix is square, factorize 
+Hermitian with a real positive diagonal, and the matrix is square, factorize
 using the @sc{lapack} xGETRF function.
 
 @item If the matrix is not square, or any of the previous solvers flags
@@ -118,7 +118,7 @@ In this case, @code{@var{DD} = eye(n)(:,@var{P}) * diag (@var{D})}, where
 
 If four output values are requested, compute @code{@var{AA} =
 @var{CC}*@var{A}*@var{DD}} and @code{@var{BB} = @var{CC}*@var{B}*@var{DD}},
-in which @var{AA} and @var{BB} have non-zero elements of approximately the
+in which @var{AA} and @var{BB} have nonzero elements of approximately the
 same magnitude and @var{CC} and @var{DD} are permuted diagonal matrices as
 in @var{DD} for the algebraic eigenvalue problem.
 
@@ -136,6 +136,24 @@ Algebraic eigenvalue balancing uses standard @sc{lapack} routines.
 
 Generalized eigenvalue problem balancing uses Ward's algorithm
 (SIAM Journal on Scientific and Statistical Computing, 1981).
+@end deftypefn
+
+
+@c bandwidth scripts/linear-algebra/bandwidth.m
+@anchor{XREFbandwidth}
+@deftypefn  {Function File} {@var{bw} =} bandwidth (@var{A}, @var{type})
+@deftypefnx {Function File} {[@var{lower}, @var{upper}] =} bandwidth (@var{A})
+Compute the bandwidth of @var{A}.
+
+The @var{type} argument is the string @qcode{"lower"} for the lower
+bandwidth and @qcode{"upper"} for the upper bandwidth.
+If no @var{type} is specified return both the lower and upper bandwidth
+of @var{A}.
+
+The lower/upper bandwidth of a matrix is the number of
+subdiagonals/superdiagonals with nonzero entries.
+
+@seealso{@ref{XREFisbanded,,isbanded}, @ref{XREFisdiag,,isdiag}, @ref{XREFistril,,istril}, @ref{XREFistriu,,istriu}}
 @end deftypefn
 
 
@@ -206,10 +224,12 @@ The eigenvalues returned by @code{eig} are not ordered.
 
 @c givens libinterp/corefcn/givens.cc
 @anchor{XREFgivens}
-@deftypefn  {Built-in Function} {@var{g} =} givens (@var{x}, @var{y})
+@deftypefn  {Built-in Function} {@var{G} =} givens (@var{x}, @var{y})
 @deftypefnx {Built-in Function} {[@var{c}, @var{s}] =} givens (@var{x}, @var{y})
+Compute the Givens rotation matrix @var{G}.
+
 @tex
-Return a $2\times 2$ orthogonal matrix
+The Givens matrix is a $2\times 2$ orthogonal matrix
 $$
  G = \left[\matrix{c & s\cr -s'& c\cr}\right]
 $$
@@ -220,10 +240,19 @@ $$
 with $x$ and $y$ scalars.
 @end tex
 @ifnottex
-Return a 2 by 2 orthogonal matrix
-@code{@var{g} = [@var{c} @var{s}; -@var{s}' @var{c}]} such that
-@code{@var{g} [@var{x}; @var{y}] = [*; 0]} with @var{x} and @var{y} scalars.
+The Givens matrix is a 2 by 2 orthogonal matrix
+
+@code{@var{g} = [@var{c} @var{s}; -@var{s}' @var{c}]}
+
+such that
+
+@code{@var{g} [@var{x}; @var{y}] = [*; 0]}
+
+with @var{x} and @var{y} scalars.
 @end ifnottex
+
+If two output arguments are requested, return the factors @var{c} and
+@var{s} rather than the Givens rotation matrix.
 
 For example:
 
@@ -234,13 +263,14 @@ givens (1, 1)
        -0.70711   0.70711
 @end group
 @end example
+@seealso{@ref{XREFplanerot,,planerot}}
 @end deftypefn
 
 
 @c planerot scripts/linear-algebra/planerot.m
 @anchor{XREFplanerot}
-@deftypefn {Function File} {[@var{g}, @var{y}] =} planerot (@var{x})
-Given a two-element column vector, returns the
+@deftypefn {Function File} {[@var{G}, @var{y}] =} planerot (@var{x})
+Given a two-element column vector, return the
 @tex
 $2 \times 2$ orthogonal matrix
 @end tex
@@ -701,7 +731,7 @@ upper triangular part is used.
 
 In general the lower triangular factorization is significantly faster for
 sparse matrices.
-@seealso{@ref{XREFhess,,hess}, @ref{XREFlu,,lu}, @ref{XREFqr,,qr}, @ref{XREFqz,,qz}, @ref{XREFschur,,schur}, @ref{XREFsvd,,svd}, @ref{XREFcholinv,,cholinv}, @ref{XREFchol2inv,,chol2inv}, @ref{XREFcholupdate,,cholupdate}, @ref{XREFcholinsert,,cholinsert}, @ref{XREFcholdelete,,choldelete}, @ref{XREFcholshift,,cholshift}}
+@seealso{@ref{XREFhess,,hess}, @ref{XREFlu,,lu}, @ref{XREFqr,,qr}, @ref{XREFqz,,qz}, @ref{XREFschur,,schur}, @ref{XREFsvd,,svd}, @ref{XREFichol,,ichol}, @ref{XREFcholinv,,cholinv}, @ref{XREFchol2inv,,chol2inv}, @ref{XREFcholupdate,,cholupdate}, @ref{XREFcholinsert,,cholinsert}, @ref{XREFcholdelete,,choldelete}, @ref{XREFcholshift,,cholshift}}
 @end deftypefn
 
 
@@ -831,8 +861,9 @@ transposition) and @var{H} is upper Hessenberg
 @end ifnottex
 
 The Hessenberg decomposition is usually used as the first step in an
-eigenvalue computation, but has other applications as well (see Golub,
-Nash, and Van Loan, IEEE Transactions on Automatic Control, 1979).
+eigenvalue computation, but has other applications as well
+(see @nospell{Golub, Nash, and Van Loan},
+IEEE Transactions on Automatic Control, 1979).
 @seealso{@ref{XREFeig,,eig}, @ref{XREFchol,,chol}, @ref{XREFlu,,lu}, @ref{XREFqr,,qr}, @ref{XREFqz,,qz}, @ref{XREFschur,,schur}, @ref{XREFsvd,,svd}}
 @end deftypefn
 
@@ -913,7 +944,7 @@ routines is returned.  If the input matrix is sparse then the matrix @var{L}
 is embedded into @var{U} to give a return value similar to the full case.
 For both full and sparse matrices, @code{lu} loses the permutation
 information.
-@seealso{@ref{XREFluupdate,,luupdate}, @ref{XREFchol,,chol}, @ref{XREFhess,,hess}, @ref{XREFqr,,qr}, @ref{XREFqz,,qz}, @ref{XREFschur,,schur}, @ref{XREFsvd,,svd}}
+@seealso{@ref{XREFluupdate,,luupdate}, @ref{XREFilu,,ilu}, @ref{XREFchol,,chol}, @ref{XREFhess,,hess}, @ref{XREFqr,,qr}, @ref{XREFqz,,qz}, @ref{XREFschur,,schur}, @ref{XREFsvd,,svd}}
 @end deftypefn
 
 
@@ -1286,9 +1317,9 @@ orthogonal.  For example:
 @end example
 
 The Hessenberg-triangular decomposition is the first step in
-Moler and Stewart's QZ@tie{}decomposition algorithm.
+@nospell{Moler and Stewart's} QZ@tie{}decomposition algorithm.
 
-Algorithm taken from Golub and Van Loan,
+Algorithm taken from @nospell{Golub and Van Loan},
 @cite{Matrix Computations, 2nd edition}.
 
 @seealso{@ref{XREFlu,,lu}, @ref{XREFchol,,chol}, @ref{XREFhess,,hess}, @ref{XREFqr,,qr}, @ref{XREFqz,,qz}, @ref{XREFschur,,schur}, @ref{XREFsvd,,svd}}
@@ -1301,7 +1332,7 @@ Algorithm taken from Golub and Van Loan,
 @deftypefnx {Built-in Function} {@var{S} =} schur (@var{A}, "real")
 @deftypefnx {Built-in Function} {@var{S} =} schur (@var{A}, "complex")
 @deftypefnx {Built-in Function} {@var{S} =} schur (@var{A}, @var{opt})
-@deftypefnx {Built-in Function} {[@var{U}, @var{S}] =} schur (@var{A}, @dots{})
+@deftypefnx {Built-in Function} {[@var{U}, @var{S}] =} schur (@dots{})
 @cindex Schur decomposition
 Compute the Schur@tie{}decomposition of @var{A}
 @tex
@@ -1362,7 +1393,7 @@ subspace corresponding to the @var{k} leading eigenvalues of @var{S}.
 The Schur@tie{}decomposition is used to compute eigenvalues of a
 square matrix, and has applications in the solution of algebraic
 Riccati equations in control (see @code{are} and @code{dare}).
-@seealso{@ref{XREFrsf2csf,,rsf2csf}, @ref{XREFlu,,lu}, @ref{XREFchol,,chol}, @ref{XREFhess,,hess}, @ref{XREFqr,,qr}, @ref{XREFqz,,qz}, @ref{XREFsvd,,svd}}
+@seealso{@ref{XREFrsf2csf,,rsf2csf}, @ref{XREFordschur,,ordschur}, @ref{XREFlu,,lu}, @ref{XREFchol,,chol}, @ref{XREFhess,,hess}, @ref{XREFqr,,qr}, @ref{XREFqz,,qz}, @ref{XREFsvd,,svd}}
 @end deftypefn
 
 
@@ -1384,6 +1415,51 @@ $U^{\dagger} U$ is the identity matrix I.
 @end ifnottex
 
 Note also that @var{U} and @var{T} are not unique.
+@seealso{@ref{XREFschur,,schur}}
+@end deftypefn
+
+
+@c ordschur libinterp/corefcn/ordschur.cc
+@anchor{XREFordschur}
+@deftypefn {Loadable Function} {[@var{UR}, @var{SR}] =} ordschur (@var{U}, @var{S}, @var{select})
+Reorders the real Schur factorization (@var{U},@var{S}) obtained with the
+@code{schur} function, so that selected eigenvalues appear in the upper left
+diagonal blocks of the quasi triangular Schur matrix.
+The logical vector @var{select} specifies the selected eigenvalues as they
+appear along @var{S}'s diagonal.
+
+For example, given the matrix @code{@var{A} = [1, 2; 3, 4]}, and its Schur
+decomposition
+
+@example
+[@var{U}, @var{S}] = schur (@var{A})
+@end example
+
+@noindent
+which returns
+
+@example
+@group
+@var{U} =
+
+  -0.82456  -0.56577
+   0.56577  -0.82456
+
+@var{S} =
+
+  -0.37228  -1.00000
+   0.00000   5.37228
+
+@end group
+@end example
+
+It is possible to reorder the decomposition so that the positive eigenvalue
+is in the upper left corner, by doing:
+
+@example
+[@var{U}, @var{S}] = ordschur (@var{U}, @var{S}, [0,1])
+@end example
+
 @seealso{@ref{XREFschur,,schur}}
 @end deftypefn
 
@@ -1528,7 +1604,7 @@ threshold for zero  (usually should be the number 0)
 @end table
 
 @noindent
-Outputs (see Golub and Van Loan):
+Outputs (see @nospell{Golub and Van Loan}):
 
 @table @var
 @item beta
@@ -1574,9 +1650,9 @@ default value is 1e-12.
 If the optional parameter @var{pflg} is nonzero, row pivoting is used
 to improve numerical behavior.  The default value is 0.
 
-Reference: A. Hodel, P. Misra, @cite{Partial Pivoting in the Computation of
-Krylov Subspaces of Large Sparse Systems}, Proceedings of the 42nd IEEE
-Conference on Decision and Control, December 2003.
+Reference: @nospell{A. Hodel, P. Misra}, @cite{Partial Pivoting in the
+Computation of Krylov Subspaces of Large Sparse Systems}, Proceedings of
+the 42nd IEEE Conference on Decision and Control, December 2003.
 @end deftypefn
 
 
@@ -1602,8 +1678,8 @@ expm (A) = I + A + A^2/2! + A^3/3! + @dots{}
 
 @end ifnottex
 The Taylor series is @emph{not} the way to compute the matrix
-exponential; see Moler and Van Loan, @cite{Nineteen Dubious Ways to
-Compute the Exponential of a Matrix}, SIAM Review, 1978.  This routine
+exponential; see @nospell{Moler and Van Loan}, @cite{Nineteen Dubious Ways
+to Compute the Exponential of a Matrix}, SIAM Review, 1978.  This routine
 uses Ward's diagonal Pad@'e approximation method with three step
 preconditioning (SIAM Journal on Numerical Analysis, 1977).  Diagonal
 Pad@'e approximations are rational polynomials of matrices
@@ -1666,7 +1742,7 @@ number of square roots actually computed.
 @deftypefnx {Built-in Function} {[@var{s}, @var{error_estimate}] =} sqrtm (@var{A})
 Compute the matrix square root of the square matrix @var{A}.
 
-Ref: N.J. Higham.  @cite{A New sqrtm for @sc{matlab}}.  Numerical
+Ref: @nospell{N.J. Higham}.  @cite{A New sqrtm for @sc{matlab}}.  Numerical
 Analysis Report No. 336, Manchester @nospell{Centre} for Computational
 Mathematics, Manchester, England, January 1999.
 @seealso{@ref{XREFexpm,,expm}, @ref{XREFlogm,,logm}}
@@ -1726,28 +1802,30 @@ endfor
 @end deftypefn
 
 
-@c syl libinterp/corefcn/syl.cc
-@anchor{XREFsyl}
-@deftypefn {Built-in Function} {@var{x} =} syl (@var{A}, @var{B}, @var{C})
+@c sylvester libinterp/corefcn/sylvester.cc
+@anchor{XREFsylvester}
+@deftypefn {Built-in Function} {@var{X} =} syl (@var{A}, @var{B}, @var{C})
 Solve the Sylvester equation
 @tex
 $$
- A X + X B + C = 0
+ A X + X B = C
 $$
 @end tex
 @ifnottex
 
 @example
-A X + X B + C = 0
+A X + X B = C
 @end example
 
 @end ifnottex
-using standard @sc{lapack} subroutines.  For example:
+using standard @sc{lapack} subroutines.
+
+For example:
 
 @example
 @group
-syl ([1, 2; 3, 4], [5, 6; 7, 8], [9, 10; 11, 12])
-   @result{} [ -0.50000, -0.66667; -0.66667, -0.50000 ]
+sylvester ([1, 2; 3, 4], [5, 6; 7, 8], [9, 10; 11, 12])
+   @result{} [ 0.50000, 0.66667; 0.66667, 0.50000 ]
 @end group
 @end example
 @end deftypefn
@@ -1805,10 +1883,11 @@ If called with more than one output parameter
 
 @item @var{iter} is the number of iterations performed.
 
-@item @var{resvec} is a vector containing the relative residual at each iteration.
+@item @var{resvec} is a vector containing the relative residual at each
+iteration.
 @end itemize
 
-@seealso{@ref{XREFbicgstab,,bicgstab}, @ref{XREFcgs,,cgs}, @ref{XREFgmres,,gmres}, @ref{XREFpcg,,pcg}}
+@seealso{@ref{XREFbicgstab,,bicgstab}, @ref{XREFcgs,,cgs}, @ref{XREFgmres,,gmres}, @ref{XREFpcg,,pcg}, @ref{XREFqmr,,qmr}}
 
 @end deftypefn
 
@@ -1860,10 +1939,11 @@ If called with more than one output parameter
 
 @item @var{iter} is the number of iterations performed.
 
-@item @var{resvec} is a vector containing the relative residual at each iteration.
+@item @var{resvec} is a vector containing the relative residual at each
+iteration.
 @end itemize
 
-@seealso{@ref{XREFbicg,,bicg}, @ref{XREFcgs,,cgs}, @ref{XREFgmres,,gmres}, @ref{XREFpcg,,pcg}}
+@seealso{@ref{XREFbicg,,bicg}, @ref{XREFcgs,,cgs}, @ref{XREFgmres,,gmres}, @ref{XREFpcg,,pcg}, @ref{XREFqmr,,qmr}}
 
 @end deftypefn
 
@@ -1919,7 +1999,7 @@ If called with more than one output parameter
 each iteration.
 @end itemize
 
-@seealso{@ref{XREFpcg,,pcg}, @ref{XREFbicgstab,,bicgstab}, @ref{XREFbicg,,bicg}, @ref{XREFgmres,,gmres}}
+@seealso{@ref{XREFpcg,,pcg}, @ref{XREFbicgstab,,bicgstab}, @ref{XREFbicg,,bicg}, @ref{XREFgmres,,gmres}, @ref{XREFqmr,,qmr}}
 @end deftypefn
 
 
@@ -1977,6 +2057,79 @@ total iterations performed.
 iteration.
 @end itemize
 
-@seealso{@ref{XREFbicg,,bicg}, @ref{XREFbicgstab,,bicgstab}, @ref{XREFcgs,,cgs}, @ref{XREFpcg,,pcg}}
+@seealso{@ref{XREFbicg,,bicg}, @ref{XREFbicgstab,,bicgstab}, @ref{XREFcgs,,cgs}, @ref{XREFpcg,,pcg}, @ref{XREFpcr,,pcr}, @ref{XREFqmr,,qmr}}
 @end deftypefn
+
+
+@c qmr scripts/sparse/qmr.m
+@anchor{XREFqmr}
+@deftypefn  {Function File} {@var{x} =} qmr (@var{A}, @var{b}, @var{rtol}, @var{maxit}, @var{M1}, @var{M2}, @var{x0})
+@deftypefnx {Function File} {@var{x} =} qmr (@var{A}, @var{b}, @var{rtol}, @var{maxit}, @var{P})
+@deftypefnx {Function File} {[@var{x}, @var{flag}, @var{relres}, @var{iter}, @var{resvec}] =} qmr (@var{A}, @var{b}, @dots{})
+Solve @code{A x = b} using the Quasi-Minimal Residual iterative
+method (without look-ahead).
+
+@itemize @minus
+@item @var{rtol} is the relative tolerance, if not given
+or set to [] the default value 1e-6 is used.
+
+@item @var{maxit} the maximum number of outer iterations,
+if not given or set to [] the default value
+@code{min (20, numel (b))} is used.
+
+@item @var{x0} the initial guess, if not given or set to []
+the default value @code{zeros (size (b))} is used.
+@end itemize
+
+@var{A} can be passed as a matrix or as a function handle or
+inline function @code{f} such that @code{f(x, "notransp") = A*x}
+and @code{f(x, "transp") = A'*x}.
+
+The preconditioner @var{P} is given as @code{P = M1 * M2}.
+Both @var{M1} and @var{M2} can be passed as a matrix or as
+a function handle or inline function @code{g} such that
+@code{g(x, "notransp") = M1 \ x} or @code{g(x, "notransp") = M2 \ x} and
+@code{g(x, "transp") = M1' \ x} or @code{g(x, "transp") = M2' \ x}.
+
+If called with more than one output parameter
+
+@itemize @minus
+@item @var{flag} indicates the exit status:
+
+@itemize @minus
+@item 0: iteration converged to the within the chosen tolerance
+
+@item 1: the maximum number of iterations was reached before convergence
+
+@item 3: the algorithm reached stagnation
+@end itemize
+
+(the value 2 is unused but skipped for compatibility).
+
+@item @var{relres} is the final value of the relative residual.
+
+@item @var{iter} is the number of iterations performed.
+
+@item @var{resvec} is a vector containing the residual norms at each
+      iteration.
+@end itemize
+
+References:
+
+@enumerate
+@item
+R. Freund and N. Nachtigal, @cite{QMR: a quasi-minimal residual
+method for non-Hermitian linear systems}, Numerische Mathematik,
+1991, 60, pp. 315-339.
+
+@item
+R. Barrett, M. Berry, T. Chan, J. Demmel, J. Donato, J. Dongarra,
+V. Eijkhour, R. Pozo, C. Romine, and H. van der Vorst,
+@cite{Templates for the solution of linear systems: Building blocks
+for iterative methods}, SIAM, 2nd ed., 1994.
+@end enumerate
+
+@seealso{@ref{XREFbicg,,bicg}, @ref{XREFbicgstab,,bicgstab}, @ref{XREFcgs,,cgs}, @ref{XREFgmres,,gmres}, @ref{XREFpcg,,pcg}}
+@end deftypefn
+
 

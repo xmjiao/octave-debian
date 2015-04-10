@@ -121,13 +121,16 @@ command shell that is started to run the command.
 <dt><a name="index-unix-1"></a>Function File: <em><var>status</var> =</em> <strong>unix</strong> <em>(&quot;<var>command</var>&quot;)</em></dt>
 <dt><a name="index-unix-2"></a>Function File: <em>[<var>status</var>, <var>text</var>] =</em> <strong>unix</strong> <em>(&quot;<var>command</var>&quot;)</em></dt>
 <dt><a name="index-unix-3"></a>Function File: <em>[&hellip;] =</em> <strong>unix</strong> <em>(&quot;<var>command</var>&quot;, &quot;-echo&quot;)</em></dt>
-<dd><p>Execute a system command if running under a Unix-like operating
-system, otherwise do nothing.  Return the exit status of the program
-in <var>status</var> and any output from the command in <var>text</var>.
-When called with no output argument, or the <code>&quot;-echo&quot;</code> argument is
+<dd><p>Execute a system command if running under a Unix-like operating system,
+otherwise do nothing.
+</p>
+<p>Octave waits for the external command to finish before returning the exit
+status of the program in <var>status</var> and any output in <var>text</var>.
+</p>
+<p>When called with no output argument, or the <code>&quot;-echo&quot;</code> argument is
 given, then <var>text</var> is also sent to standard output.
 </p>
-<p><strong>See also:</strong> <a href="#XREFdos">dos</a>, <a href="#XREFsystem">system</a>, <a href="System-Information.html#XREFisunix">isunix</a>, <a href="System-Information.html#XREFispc">ispc</a>.
+<p><strong>See also:</strong> <a href="#XREFdos">dos</a>, <a href="#XREFsystem">system</a>, <a href="System-Information.html#XREFisunix">isunix</a>, <a href="System-Information.html#XREFismac">ismac</a>, <a href="System-Information.html#XREFispc">ispc</a>.
 </p></dd></dl>
 
 
@@ -136,13 +139,42 @@ given, then <var>text</var> is also sent to standard output.
 <dt><a name="index-dos-1"></a>Function File: <em><var>status</var> =</em> <strong>dos</strong> <em>(&quot;<var>command</var>&quot;)</em></dt>
 <dt><a name="index-dos-2"></a>Function File: <em>[<var>status</var>, <var>text</var>] =</em> <strong>dos</strong> <em>(&quot;<var>command&quot;</var>)</em></dt>
 <dt><a name="index-dos-3"></a>Function File: <em>[&hellip;] =</em> <strong>dos</strong> <em>(&quot;<var>command</var>&quot;, &quot;-echo&quot;)</em></dt>
-<dd><p>Execute a system command if running under a Windows-like operating
-system, otherwise do nothing.  Return the exit status of the program
-in <var>status</var> and any output from the command in <var>text</var>.
-When called with no output argument, or the <code>&quot;-echo&quot;</code> argument is
+<dd><p>Execute a system command if running under a Windows-like operating system,
+otherwise do nothing.
+</p>
+<p>Octave waits for the external command to finish before returning the exit
+status of the program in <var>status</var> and any output in <var>text</var>.
+</p>
+<p>When called with no output argument, or the <code>&quot;-echo&quot;</code> argument is
 given, then <var>text</var> is also sent to standard output.
 </p>
-<p><strong>See also:</strong> <a href="#XREFunix">unix</a>, <a href="#XREFsystem">system</a>, <a href="System-Information.html#XREFisunix">isunix</a>, <a href="System-Information.html#XREFispc">ispc</a>.
+<p><strong>See also:</strong> <a href="#XREFunix">unix</a>, <a href="#XREFsystem">system</a>, <a href="System-Information.html#XREFisunix">isunix</a>, <a href="System-Information.html#XREFismac">ismac</a>, <a href="System-Information.html#XREFispc">ispc</a>.
+</p></dd></dl>
+
+
+<a name="XREFopen"></a><dl>
+<dt><a name="index-open"></a>Function File: <em><var>output</var> =</em> <strong>open</strong> <em><var>file</var></em></dt>
+<dt><a name="index-open-1"></a>Function File: <em><var>output</var> =</em> <strong>open</strong> <em>(<var>file</var>)</em></dt>
+<dd><p>Open the file <var>file</var> in Octave or in an external application
+based on the file type as determined by the file name extension.
+</p>
+<p>Recognized file types are
+</p>
+<dl compact="compact">
+<dt><code>.m</code></dt>
+<dd><p>Open file in the editor.
+</p>
+</dd>
+<dt><code>.mat</code></dt>
+<dd><p>Load the file in the base workspace.
+</p>
+</dd>
+<dt><code>.exe</code></dt>
+<dd><p>Execute the program (on Windows systems only).
+</p></dd>
+</dl>
+
+<p>Other file types are opened in the appropriate external application.
 </p></dd></dl>
 
 
@@ -151,9 +183,11 @@ given, then <var>text</var> is also sent to standard output.
 <dt><a name="index-perl-1"></a>Function File: <em><var>output</var> =</em> <strong>perl</strong> <em>(<var>scriptfile</var>, <var>argument1</var>, <var>argument2</var>, &hellip;)</em></dt>
 <dt><a name="index-perl-2"></a>Function File: <em>[<var>output</var>, <var>status</var>] =</em> <strong>perl</strong> <em>(&hellip;)</em></dt>
 <dd><p>Invoke Perl script <var>scriptfile</var>, possibly with a list of command line
-arguments.  Return output in <var>output</var> and optional status in
-<var>status</var>.  If <var>scriptfile</var> is not an absolute file name it is
-is searched for in the current directory and then in the Octave loadpath.
+arguments.
+</p>
+<p>Return output in <var>output</var> and optional status in <var>status</var>.  If
+<var>scriptfile</var> is not an absolute file name it is searched for in the
+current directory and then in the Octave loadpath.
 </p>
 <p><strong>See also:</strong> <a href="#XREFsystem">system</a>, <a href="#XREFpython">python</a>.
 </p></dd></dl>
@@ -164,9 +198,11 @@ is searched for in the current directory and then in the Octave loadpath.
 <dt><a name="index-python-1"></a>Function File: <em><var>output</var> =</em> <strong>python</strong> <em>(<var>scriptfile</var>, <var>argument1</var>, <var>argument2</var>, &hellip;)</em></dt>
 <dt><a name="index-python-2"></a>Function File: <em>[<var>output</var>, <var>status</var>] =</em> <strong>python</strong> <em>(&hellip;)</em></dt>
 <dd><p>Invoke Python script <var>scriptfile</var>, possibly with a list of command line
-arguments.  Return output in <var>output</var> and optional status in
-<var>status</var>.  If <var>scriptfile</var> is not an absolute file name it is
-is searched for in the current directory and then in the Octave loadpath.
+arguments.
+</p>
+<p>Return output in <var>output</var> and optional status in <var>status</var>.  If
+<var>scriptfile</var> is not an absolute file name it is searched for in the
+current directory and then in the Octave loadpath.
 </p>
 <p><strong>See also:</strong> <a href="#XREFsystem">system</a>, <a href="#XREFperl">perl</a>.
 </p></dd></dl>
@@ -203,13 +239,18 @@ endwhile
    -| drwxr-xr-x   3 root  root  1024 Feb 15 13:28 lib
    -| drwxrwxrwt  15 root  root  2048 Feb 17 14:53 tmp
 </pre></div>
-</dd></dl>
+
+<p><strong>See also:</strong> <a href="#XREFpopen2">popen2</a>.
+</p></dd></dl>
 
 
 <a name="XREFpclose"></a><dl>
 <dt><a name="index-pclose"></a>Built-in Function: <em></em> <strong>pclose</strong> <em>(<var>fid</var>)</em></dt>
-<dd><p>Close a file identifier that was opened by <code>popen</code>.  You may also
-use <code>fclose</code> for the same purpose.
+<dd><p>Close a file identifier that was opened by <code>popen</code>.
+</p>
+<p>The function <code>fclose</code> may also be used for the same purpose.
+</p>
+<p><strong>See also:</strong> <a href="Opening-and-Closing-Files.html#XREFfclose">fclose</a>, <a href="#XREFpopen">popen</a>.
 </p></dd></dl>
 
 
@@ -346,6 +387,8 @@ system-dependent error message.
 <p>If successful, <var>fid</var> is greater than zero and contains the new file
 ID.  Otherwise, <var>fid</var> is negative and <var>msg</var> contains a
 system-dependent error message.
+</p>
+<p><strong>See also:</strong> <a href="Opening-and-Closing-Files.html#XREFfopen">fopen</a>, <a href="Opening-and-Closing-Files.html#XREFfclose">fclose</a>, <a href="#XREFfcntl">fcntl</a>.
 </p></dd></dl>
 
 
@@ -443,7 +486,7 @@ child process was resumed by delivery of <code>SIGCONT</code>.
 <p><strong>See also:</strong> <a href="#XREFwaitpid">waitpid</a>, <a href="#XREFWIFEXITED">WIFEXITED</a>, <a href="#XREFWEXITSTATUS">WEXITSTATUS</a>, <a href="#XREFWIFSIGNALED">WIFSIGNALED</a>, <a href="#XREFWTERMSIG">WTERMSIG</a>, <a href="#XREFWCOREDUMP">WCOREDUMP</a>, <a href="#XREFWIFSTOPPED">WIFSTOPPED</a>, <a href="#XREFWSTOPSIG">WSTOPSIG</a>.
 </p></dd></dl>
 
- 
+
 <a name="XREFWIFSIGNALED"></a><dl>
 <dt><a name="index-WIFSIGNALED"></a>Built-in Function: <em></em> <strong>WIFSIGNALED</strong> <em>(<var>status</var>)</em></dt>
 <dd><p>Given <var>status</var> from a call to <code>waitpid</code>, return true if the
@@ -492,7 +535,7 @@ be employed if <code>WIFSTOPPED</code> returned true.
 <p><strong>See also:</strong> <a href="#XREFwaitpid">waitpid</a>, <a href="#XREFWIFEXITED">WIFEXITED</a>, <a href="#XREFWEXITSTATUS">WEXITSTATUS</a>, <a href="#XREFWIFSIGNALED">WIFSIGNALED</a>, <a href="#XREFWTERMSIG">WTERMSIG</a>, <a href="#XREFWCOREDUMP">WCOREDUMP</a>, <a href="#XREFWIFSTOPPED">WIFSTOPPED</a>, <a href="#XREFWIFCONTINUED">WIFCONTINUED</a>.
 </p></dd></dl>
 
- 
+
 <a name="XREFWTERMSIG"></a><dl>
 <dt><a name="index-WTERMSIG"></a>Built-in Function: <em></em> <strong>WTERMSIG</strong> <em>(<var>status</var>)</em></dt>
 <dd><p>Given <var>status</var> from a call to <code>waitpid</code>, return the number of
@@ -516,8 +559,9 @@ if the child process has stopped but is not traced via the
 
 <a name="XREFfcntl"></a><dl>
 <dt><a name="index-fcntl"></a>Built-in Function: <em>[<var>err</var>, <var>msg</var>] =</em> <strong>fcntl</strong> <em>(<var>fid</var>, <var>request</var>, <var>arg</var>)</em></dt>
-<dd><p>Change the properties of the open file <var>fid</var>.  The following values
-may be passed as <var>request</var>:
+<dd><p>Change the properties of the open file <var>fid</var>.
+</p>
+<p>The following values may be passed as <var>request</var>:
 </p>
 <dl compact="compact">
 <dt><code>F_DUPFD</code>
@@ -607,6 +651,8 @@ returned (some of the flags may be undefined on some systems).
 <p>If successful, <var>err</var> is 0 and <var>msg</var> is an empty string.
 Otherwise, <var>err</var> is nonzero and <var>msg</var> contains a
 system-dependent error message.
+</p>
+<p><strong>See also:</strong> <a href="Opening-and-Closing-Files.html#XREFfopen">fopen</a>, <a href="#XREFdup2">dup2</a>.
 </p></dd></dl>
 
 

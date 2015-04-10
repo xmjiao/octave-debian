@@ -1,4 +1,4 @@
-## Copyright (C) 2005-2013 Paul Kienzle
+## Copyright (C) 2005-2015 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -116,8 +116,8 @@ function [X, Y] = fplot (varargin)
     endif
   endfor
 
-  if (n != 5) 
-    ## n was specified 
+  if (n != 5)
+    ## n was specified
     x0 = linspace (limits(1), limits(2), n/2 + 1)';
     y0 = feval (fn, x0);
     x = linspace (limits(1), limits(2), n)';
@@ -138,7 +138,7 @@ function [X, Y] = fplot (varargin)
 
   err0 = Inf;
 
-  ## FIXME: This algorithm should really use adaptive scaling as the 
+  ## FIXME: This algorithm should really use adaptive scaling as the
   ##        the numerical quadrature algorithms do so that extra points are
   ##        used where they are needed and not spread evenly over the entire
   ##        x-range.  Try any function with a discontinuity, such as
@@ -208,7 +208,7 @@ endfunction
 %! assert (rows (x) == rows (y));
 %! assert (y, [cos(x), sin(x)], -2e-3);
 
-%% Test input validation
+## Test input validation
 %!error fplot (1)
 %!error fplot (1,2,3,4,5,6)
 %!error <FN must be a function handle> fplot (1, [0 1])

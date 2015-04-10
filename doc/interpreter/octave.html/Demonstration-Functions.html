@@ -67,59 +67,65 @@ Previous: <a href="Test-Functions.html#Test-Functions" accesskey="p" rel="prev">
 <p>Run example code block <var>n</var> associated with the function <var>name</var>.
 If <var>n</var> is not specified, all examples are run.
 </p>
-<p>Examples are stored in the script file, or in a file with the same
-name but no extension located on Octave&rsquo;s load path.  To keep examples
-separate from regular script code, all lines are prefixed by <code>%!</code>.  Each
-example must also be introduced by the keyword <code>&quot;demo&quot;</code> flush left
-to the prefix with no intervening spaces.  The remainder of the example
-can contain arbitrary Octave code.  For example:
+<p>The preferred location for example code blocks is embedded within the script
+m-file immediately following the code that it exercises.  Alternatively,
+the examples may be stored in a file with the same name but no extension
+located on Octave&rsquo;s load path.  To separate examples from regular script
+code all lines are prefixed by <code>%!</code>.  Each example must also be
+introduced by the keyword <code>&quot;demo&quot;</code> flush left to the prefix with no
+intervening spaces.  The remainder of the example can contain arbitrary
+Octave code.  For example:
 </p>
 <div class="example">
 <pre class="example">%!demo
 %! t = 0:0.01:2*pi;
 %! x = sin (t);
 %! plot (t, x);
-%! %-------------------------------------------------
-%! % the figure window shows one cycle of a sine wave
+%! title (&quot;one cycle of a sine wave&quot;);
+%! #-------------------------------------------------
+%! # the figure window shows one cycle of a sine wave
 </pre></div>
 
-<p>Note that the code is displayed before it is executed, so a simple
-comment at the end suffices for labeling what is being shown.  It is
-generally not necessary to use <code>disp</code> or <code>printf</code> within the demo.
+<p>Note that the code is displayed before it is executed so that a simple
+comment at the end suffices for labeling what is being shown.  For plots,
+labeling can also be done with <code>title</code> or <code>text</code>.  It is generally
+<strong>not</strong> necessary to use <code>disp</code> or <code>printf</code> within the demo.
 </p>
-<p>Demos are run in a function environment with no access to external
-variables.  This means that every demo must have separate initialization
-code.  Alternatively, all demos can be combined into a single large demo
-with the code
+<p>Demos are run in a stand-alone function environment with no access to
+external variables.  This means that every demo must have separate
+initialization code.  Alternatively, all demos can be combined into a single
+large demo with the code
 </p>
 <div class="example">
-<pre class="example">%! input(&quot;Press &lt;enter&gt; to continue: &quot;,&quot;s&quot;);
+<pre class="example">%! input (&quot;Press &lt;enter&gt; to continue: &quot;, &quot;s&quot;);
 </pre></div>
 
-<p>between the sections, but this is discouraged.  Other techniques
+<p>between the sections, but this usage is discouraged.  Other techniques
 to avoid multiple initialization blocks include using multiple plots
 with a new <code>figure</code> command between each plot, or using <code>subplot</code>
 to put multiple plots in the same window.
 </p>
-<p>Also, because demo evaluates within a function context, you cannot
-define new functions inside a demo.  If you must have function blocks,
-rather than just anonymous functions or inline functions, you will have to
-use <code>eval (example (&quot;function&quot;,n))</code> to see them.  Because eval only
-evaluates one line, or one statement if the statement crosses
-multiple lines, you must wrap your demo in <code>&quot;if 1 &lt;demo stuff&gt; endif&quot;</code>
-with the <code>&quot;if&quot;</code> on the same line as <code>&quot;demo&quot;</code>.  For example:
+<p>Finally, because <code>demo</code> evaluates within a function context it is
+not possible to define new functions within the code.  Anonymous functions
+make a good substitute in most instances.  If function blocks
+<strong>must</strong> be used then the code <code>eval (example (&quot;function&quot;, n))</code>
+will allow Octave to see them.  This has its own problems, however, as
+<code>eval</code> only evaluates one line or statement at a time.  In this case
+the function declaration must be wrapped with
+<code>&quot;if 1 &lt;demo stuff&gt; endif&quot;</code> where <code>&quot;if&quot;</code> is on the same line
+as <code>&quot;demo&quot;</code>.  For example:
 </p>
 <div class="example">
 <pre class="example">%!demo if 1
-%!  function y=f(x)
-%!    y=x;
+%!  function y = f(x)
+%!    y = x;
 %!  endfunction
 %!  f(3)
 %! endif
 </pre></div>
 
 
-<p><strong>See also:</strong> <a href="Test-Functions.html#XREFtest">test</a>, <a href="#XREFexample">example</a>.
+<p><strong>See also:</strong> <a href="#XREFrundemos">rundemos</a>, <a href="#XREFexample">example</a>, <a href="Test-Functions.html#XREFtest">test</a>.
 </p></dd></dl>
 
 
@@ -147,28 +153,30 @@ various examples.
 <a name="XREFrundemos"></a><dl>
 <dt><a name="index-rundemos"></a>Function File: <em></em> <strong>rundemos</strong> <em>()</em></dt>
 <dt><a name="index-rundemos-1"></a>Function File: <em></em> <strong>rundemos</strong> <em>(<var>directory</var>)</em></dt>
-<dd><p>Execute built-in demos for all function files in the specified directory.
-Also executes demos in any C++ source files found in the directory, for
-use with dynamically linked functions.
+<dd><p>Execute built-in demos for all m-files in the specified <var>directory</var>.
+</p>
+<p>Demo blocks in any C++ source files (<samp>*.cc</samp>) will also be executed
+for use with dynamically linked oct-file functions.
 </p>
 <p>If no directory is specified, operate on all directories in Octave&rsquo;s
 search path for functions.
 </p>
-<p><strong>See also:</strong> <a href="#XREFruntests">runtests</a>, <a href="Manipulating-the-Load-Path.html#XREFpath">path</a>.
+<p><strong>See also:</strong> <a href="#XREFdemo">demo</a>, <a href="#XREFruntests">runtests</a>, <a href="Manipulating-the-Load-Path.html#XREFpath">path</a>.
 </p></dd></dl>
 
 
 <a name="XREFruntests"></a><dl>
 <dt><a name="index-runtests"></a>Function File: <em></em> <strong>runtests</strong> <em>()</em></dt>
 <dt><a name="index-runtests-1"></a>Function File: <em></em> <strong>runtests</strong> <em>(<var>directory</var>)</em></dt>
-<dd><p>Execute built-in tests for all function files in the specified directory.
-Also executes tests in any C++ source files found in the directory, for
-use with dynamically linked functions.
+<dd><p>Execute built-in tests for all m-files in the specified <var>directory</var>.
+</p>
+<p>Test blocks in any C++ source files (<samp>*.cc</samp>) will also be executed
+for use with dynamically linked oct-file functions.
 </p>
 <p>If no directory is specified, operate on all directories in Octave&rsquo;s
 search path for functions.
 </p>
-<p><strong>See also:</strong> <a href="#XREFrundemos">rundemos</a>, <a href="Manipulating-the-Load-Path.html#XREFpath">path</a>.
+<p><strong>See also:</strong> <a href="#XREFrundemos">rundemos</a>, <a href="Test-Functions.html#XREFtest">test</a>, <a href="Manipulating-the-Load-Path.html#XREFpath">path</a>.
 </p></dd></dl>
 
 
@@ -300,7 +308,7 @@ the comparison <code>100*eps</code>.  In this case, the comparison should be
 computed relatively, as <code>abs ((<var>x</var> - <var>y</var>) ./ <var>y</var>)</code> rather
 than absolutely as <code>abs (<var>x</var> - <var>y</var>)</code>.
 </p>
-<p>Type <kbd>example (&quot;speed&quot;)</kbd> to see some real examples or 
+<p>Type <kbd>example (&quot;speed&quot;)</kbd> to see some real examples or
 <kbd>demo (&quot;speed&quot;)</kbd> to run them.
 </p></dd></dl>
 

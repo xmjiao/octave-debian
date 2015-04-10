@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2013 John W. Eaton
+@c Copyright (C) 1996-2015 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -8,12 +8,12 @@
 @c under the terms of the GNU General Public License as published by the
 @c Free Software Foundation; either version 3 of the License, or (at
 @c your option) any later version.
-@c 
+@c
 @c Octave is distributed in the hope that it will be useful, but WITHOUT
 @c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 @c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 @c for more details.
-@c 
+@c
 @c You should have received a copy of the GNU General Public License
 @c along with Octave; see the file COPYING.  If not, see
 @c <http://www.gnu.org/licenses/>.
@@ -80,12 +80,12 @@ derived.
 @end deftypefn
 
 
-@c isa scripts/general/isa.m
+@c isa libinterp/octave-value/ov-class.cc
 @anchor{XREFisa}
 @deftypefn {Function File} {} isa (@var{obj}, @var{classname})
 Return true if @var{obj} is an object from the class @var{classname}.
 
-@var{classname} may also be one of the following class categories: 
+@var{classname} may also be one of the following class categories:
 
 @table @asis
 @item @qcode{"float"}
@@ -98,24 +98,64 @@ Integer value comprising classes (u)int8, (u)int16, (u)int32, (u)int64.
 @item @qcode{"numeric"}
 Numeric value comprising either a floating point or integer value.
 @end table
+
+If @var{classname} is a cell array of string, a logical array of the same
+size is returned, containing true for each class to which @var{obj}
+belongs to.
+
 @seealso{@ref{XREFclass,,class}, @ref{XREFtypeinfo,,typeinfo}}
 @end deftypefn
 
 
 @c cast scripts/miscellaneous/cast.m
 @anchor{XREFcast}
-@deftypefn {Function File} {} cast (@var{val}, @var{type})
+@deftypefn {Function File} {} cast (@var{val}, "@var{type}")
 Convert @var{val} to data type @var{type}.
-@seealso{@ref{XREFint8,,int8}, @ref{XREFuint8,,uint8}, @ref{XREFint16,,int16}, @ref{XREFuint16,,uint16}, @ref{XREFint32,,int32}, @ref{XREFuint32,,uint32}, @ref{XREFint64,,int64}, @ref{XREFuint64,,uint64}, @ref{XREFdouble,,double}}
+
+@var{val} must be one of the numeric classes:
+
+@example
+@group
+"double"
+"single"
+"logical"
+"char"
+"int8"
+"int16"
+"int32"
+"int64"
+"uint8"
+"uint16"
+"uint32"
+"uint64"
+@end group
+@end example
+
+The value @var{val} may be modified to fit within the range of the new type.
+
+Examples:
+
+@example
+@group
+cast (-5, "uint8")
+   @result{} 0
+cast (300, "int8")
+   @result{} 127
+@end group
+@end example
+
+@seealso{@ref{XREFtypecast,,typecast}, @ref{XREFint8,,int8}, @ref{XREFuint8,,uint8}, @ref{XREFint16,,int16}, @ref{XREFuint16,,uint16}, @ref{XREFint32,,int32}, @ref{XREFuint32,,uint32}, @ref{XREFint64,,int64}, @ref{XREFuint64,,uint64}, @ref{XREFdouble,,double}, @ref{XREFsingle,,single}, @ref{XREFlogical,,logical}, @ref{XREFchar,,char}, @ref{XREFclass,,class}, @ref{XREFtypeinfo,,typeinfo}}
 @end deftypefn
 
 
 @c typecast libinterp/corefcn/typecast.cc
 @anchor{XREFtypecast}
-@deftypefn {Built-in Function} {} typecast (@var{x}, @var{class})
+@deftypefn {Built-in Function} {@var{y} =} typecast (@var{x}, "@var{class}")
 Return a new array @var{y} resulting from interpreting the data of
-@var{x} in memory as data of the numeric class @var{class}.  Both the class
-of @var{x} and @var{class} must be one of the built-in numeric classes:
+@var{x} in memory as data of the numeric class @var{class}.
+
+Both the class of @var{x} and @var{class} must be one of the built-in
+numeric classes:
 
 @example
 @group
@@ -142,7 +182,7 @@ complex-valued result is requested.  Complex arrays are stored in memory as
 consecutive pairs of real numbers.  The sizes of integer types are given by
 their bit counts.  Both logical and char are typically one byte wide;
 however, this is not guaranteed by C++.  If your system is IEEE conformant,
-single and double should be 4 bytes and 8 bytes wide, respectively.
+single and double will be 4 bytes and 8 bytes wide, respectively.
 @qcode{"logical"} is not allowed for @var{class}.  If the input is a row
 vector, the return value is a row vector, otherwise it is a column vector.  
 If the bit length of @var{x} is not divisible by that of @var{class}, an
@@ -157,7 +197,7 @@ typecast (@var{x}, "uint8")
 @result{} [   1,   0, 255, 255]
 @end group
 @end example
-@seealso{@ref{XREFcast,,cast}, @ref{XREFbitunpack,,bitunpack}, @ref{XREFbitpack,,bitpack}, @ref{XREFswapbytes,,swapbytes}}
+@seealso{@ref{XREFcast,,cast}, @ref{XREFbitpack,,bitpack}, @ref{XREFbitunpack,,bitunpack}, @ref{XREFswapbytes,,swapbytes}}
 @end deftypefn
 
 
@@ -165,7 +205,9 @@ typecast (@var{x}, "uint8")
 @anchor{XREFswapbytes}
 @deftypefn {Function File} {} swapbytes (@var{x})
 Swap the byte order on values, converting from little endian to big
-endian and vice versa.  For example:
+endian and vice versa.
+
+For example:
 
 @example
 @group
@@ -181,12 +223,17 @@ swapbytes (uint16 (1:4))
 @c bitpack libinterp/corefcn/typecast.cc
 @anchor{XREFbitpack}
 @deftypefn {Built-in Function} {@var{y} =} bitpack (@var{x}, @var{class})
-Return a new array @var{y} resulting from interpreting an array
+Return a new array @var{y} resulting from interpreting the logical array
 @var{x} as raw bit patterns for data of the numeric class @var{class}.
+
 @var{class} must be one of the built-in numeric classes:
 
 @example
 @group
+"double"
+"single"
+"double complex"
+"single complex"
 "char"
 "int8"
 "int16"
@@ -196,8 +243,6 @@ Return a new array @var{y} resulting from interpreting an array
 "uint16"
 "uint32"
 "uint64"
-"double"
-"single"
 @end group
 @end example
 
@@ -213,11 +258,15 @@ it is a column vector.
 @c bitunpack libinterp/corefcn/typecast.cc
 @anchor{XREFbitunpack}
 @deftypefn {Built-in Function} {@var{y} =} bitunpack (@var{x})
-Return an array @var{y} corresponding to the raw bit patterns of
-@var{x}.  @var{x} must belong to one of the built-in numeric classes:
+Return a logical array @var{y} corresponding to the raw bit patterns of
+@var{x}.
+
+@var{x} must belong to one of the built-in numeric classes:
 
 @example
 @group
+"double"
+"single"
 "char"
 "int8"
 "int16"
@@ -227,8 +276,6 @@ Return an array @var{y} corresponding to the raw bit patterns of
 "uint16"
 "uint32"
 "uint64"
-"double"
-"single"
 @end group
 @end example
 

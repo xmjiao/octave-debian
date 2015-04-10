@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2013 Daniel Calvelo
+## Copyright (C) 2000-2015 Daniel Calvelo
 ##
 ## This file is part of Octave.
 ##
@@ -30,7 +30,7 @@
 ## @end example
 ##
 ## If @var{d} is a matrix or cell array, return a string matrix with one
-## row per element in @var{d}, padded with leading zeros to the width of 
+## row per element in @var{d}, padded with leading zeros to the width of
 ## the largest value.
 ##
 ## If @var{base} is a string then the characters of @var{base} are used as
@@ -66,7 +66,7 @@ function retval = dec2base (d, base, len)
   if (! iscolumn (d))
     d = d(:);
   endif
-  
+
   ## Treat logical as numeric for compatibility with ML
   if (islogical (d))
     d = double (d);
@@ -158,7 +158,7 @@ endfunction
 %! a = 0:3;
 %! assert (dec2base (!a, 2, 1), ["1"; "0"; "0"; "0"])
 
-%%Test input validation
+## Test input validation
 %!error dec2base ()
 %!error dec2base (1)
 %!error dec2base (1, 2, 3, 4)

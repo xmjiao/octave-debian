@@ -175,7 +175,7 @@ arrayfun (@str2num, [1234],
 
 <a name="XREFspfun"></a><dl>
 <dt><a name="index-spfun"></a>Function File: <em><var>y</var> =</em> <strong>spfun</strong> <em>(<var>f</var>, <var>S</var>)</em></dt>
-<dd><p>Compute <code>f(<var>S</var>)</code> for the non-zero values of <var>S</var>.
+<dd><p>Compute <code>f(<var>S</var>)</code> for the nonzero values of <var>S</var>.
 This results in a sparse matrix with the same structure as
 <var>S</var>.  The function <var>f</var> can be passed as a string, a
 function handle, or an inline function.
@@ -240,9 +240,9 @@ number is the product of the dimensions of the object at each cell element.
 
 <p>Additionally, <code>cellfun</code> accepts an arbitrary function <var>func</var>
 in the form of an inline function, function handle, or the name of a
-function (in a character string). The function can take one or more arguments,
-with the inputs arguments given by <var>C</var>, <var>D</var>, etc.  Equally the
-function can return one or more output arguments.  For example:
+function (in a character string).  The function can take one or more
+arguments, with the inputs arguments given by <var>C</var>, <var>D</var>, etc.  
+Equally the function can return one or more output arguments.  For example:
 </p>
 <div class="example">
 <pre class="example">cellfun (&quot;atan2&quot;, {1, 0}, {0, 1})
@@ -374,6 +374,15 @@ example on how to use an error handler, see <a href="#XREFcellfun">cellfun</a>.
 </p></dd></dl>
 
 
+<p>Consistent with earlier advice, seek to use Octave built-in functions whenever
+possible for the best performance.  This advice applies especially to the four
+functions above.  For example, when adding two arrays together
+element-by-element one could use a handle to the built-in addition function
+<code>@plus</code> or define an anonymous function <code>@(x,y) x + y</code>.  But, the
+anonymous function is 60% slower than the first method.
+See <a href="Operator-Overloading.html#Operator-Overloading">Operator Overloading</a>, for a list of basic functions which might be used
+in place of anonymous ones.
+</p>
 <hr>
 <div class="header">
 <p>

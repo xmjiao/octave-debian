@@ -1,4 +1,4 @@
-## Copyright (C) 1996-2013 John W. Eaton
+## Copyright (C) 1996-2015 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -33,7 +33,7 @@
 ## @code{@var{x} = 1:columns (@var{z}), @var{y} = 1:rows (@var{z})}.
 ## Thus, columns of @var{z} correspond to different @var{x} values and rows
 ## of @var{z} correspond to different @var{y} values.
-## 
+##
 ## The color of the mesh is computed by linearly scaling the @var{z} values
 ## to fit the range of the current colormap.  Use @code{caxis} and/or
 ## change the colormap to control the appearance.
@@ -68,13 +68,18 @@ function h = meshc (varargin)
   unwind_protect
     hax = newplot (hax);
 
-    htmp = surface (varargin{:});
+    ## FIXME: gnuplot does not support a filled surface and a
+    ##        non-filled contour.  3D filled patches are also not supported.
+    ##        Thus, the facecolor will be transparent for the gnuplot backend.
+    mesh_props = {"facecolor", "w", "edgecolor", "flat"};
+    chararg = find (cellfun ("isclass", varargin, "char"), 1);
+    if (isempty (chararg))
+      htmp = surface (varargin{:}, mesh_props{:});
+    else
+      htmp = surface (varargin{1:chararg-1}, mesh_props{:},
+                      varargin{chararg:end});
+    endif
 
-    ## FIXME - gnuplot does not support a filled surface and a
-    ## non-filled contour.  3D filled patches are also not supported.
-    ## Thus, the facecolor will be transparent for the gnuplot backend.
-    set (htmp, "facecolor", "w");
-    set (htmp, "edgecolor", "flat");
     if (! ishold ())
       set (hax, "view", [-37.5, 30],
                 "xgrid", "on", "ygrid", "on", "zgrid", "on",

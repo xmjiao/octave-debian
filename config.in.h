@@ -186,6 +186,10 @@
    whether the gnulib module openat shall be considered present. */
 #undef GNULIB_OPENAT
 
+/* Define to 1 if printf and friends should be labeled with attribute
+   "__gnu_printf__" instead of "__printf__" */
+#undef GNULIB_PRINTF_ATTRIBUTE_FLAVOR_GNU
+
 /* Define to a C preprocessor expression that evaluates to 1 or 0, depending
    whether the gnulib module realloc-gnu shall be considered present. */
 #undef GNULIB_REALLOC_GNU
@@ -463,6 +467,9 @@
 /* Define to 1 when the gnulib module unlink should be tested. */
 #undef GNULIB_TEST_UNLINK
 
+/* Define to 1 when the gnulib module unsetenv should be tested. */
+#undef GNULIB_TEST_UNSETENV
+
 /* Define to 1 when the gnulib module vasprintf should be tested. */
 #undef GNULIB_TEST_VASPRINTF
 
@@ -582,6 +589,12 @@
 /* Define to 1 if <cmath> provides float variant of isnan. */
 #undef HAVE_CMATH_ISNANF
 
+/* Define to 1 if <cmath> provides signbit. */
+#undef HAVE_CMATH_SIGNBIT
+
+/* Define to 1 if <cmath> provides float variant of signbit. */
+#undef HAVE_CMATH_SIGNBITF
+
 /* Define to 1 if COLAMD is available. */
 #undef HAVE_COLAMD
 
@@ -698,6 +711,10 @@
    don't. */
 #undef HAVE_DECL_GETC_UNLOCKED
 
+/* Define to 1 if you have the declaration of `getdtablesize', and to 0 if you
+   don't. */
+#undef HAVE_DECL_GETDTABLESIZE
+
 /* Define to 1 if you have the declaration of `getenv', and to 0 if you don't.
    */
 #undef HAVE_DECL_GETENV
@@ -805,6 +822,10 @@
 /* Define to 1 if you have the declaration of `tzname', and to 0 if you don't.
    */
 #undef HAVE_DECL_TZNAME
+
+/* Define to 1 if you have the declaration of `unsetenv', and to 0 if you
+   don't. */
+#undef HAVE_DECL_UNSETENV
 
 /* Define to 1 if you have the declaration of `_putenv', and to 0 if you
    don't. */
@@ -965,6 +986,10 @@
 /* Define to 1 if you have the `getcwd' function. */
 #undef HAVE_GETCWD
 
+/* Define to 1 if getcwd works, but with shorter paths than is generally
+   tested with the replacement. */
+#undef HAVE_GETCWD_SHORTER
+
 /* Define to 1 if you have the `getdtablesize' function. */
 #undef HAVE_GETDTABLESIZE
 
@@ -1049,11 +1074,17 @@
 /* Define to 1 if gluTessCallback is called with (...). */
 #undef HAVE_GLUTESSCALLBACK_THREEDOTS
 
+/* Define to 1 if you have the <GL/glext.h> header file. */
+#undef HAVE_GL_GLEXT_H
+
 /* Define to 1 if you have the <GL/glu.h> header file. */
 #undef HAVE_GL_GLU_H
 
 /* Define to 1 if you have the <GL/gl.h> header file. */
 #undef HAVE_GL_GL_H
+
+/* Define to 1 if you have the <GL/osmesa.h> header file. */
+#undef HAVE_GL_OSMESA_H
 
 /* Define to 1 if you have the <grp.h> header file. */
 #undef HAVE_GRP_H
@@ -1185,6 +1216,9 @@
 /* Define to 1 if you have the <llvm/IR/IRBuilder.h> header file. */
 #undef HAVE_LLVM_IR_IRBUILDER_H
 
+/* Define to 1 if you have the <llvm/IR/Verifier.h> header file. */
+#undef HAVE_LLVM_IR_VERIFIER_H
+
 /* Define to 1 if you have the <llvm/Support/IRBuilder.h> header file. */
 #undef HAVE_LLVM_SUPPORT_IRBUILDER_H
 
@@ -1309,17 +1343,29 @@
 /* Define to 1 if OpenGL is available. */
 #undef HAVE_OPENGL
 
+/* Define to 1 if you have the <OpenGL/glext.h> header file. */
+#undef HAVE_OPENGL_GLEXT_H
+
 /* Define to 1 if you have the <OpenGL/glu.h> header file. */
 #undef HAVE_OPENGL_GLU_H
 
 /* Define to 1 if you have the <OpenGL/gl.h> header file. */
 #undef HAVE_OPENGL_GL_H
 
-/* Define to 1 if compiler supports OpenMP. */
+/* Define if OpenMP is enabled */
 #undef HAVE_OPENMP
 
 /* Define whether openpty exists */
 #undef HAVE_OPENPTY
+
+/* Define to 1 if libcrypto is used for MD5. */
+#undef HAVE_OPENSSL_MD5
+
+/* Define to 1 if OSMesa is available. */
+#undef HAVE_OSMESA
+
+/* Define to 1 if you have the <osmesa.h> header file. */
+#undef HAVE_OSMESA_H
 
 /* Define to 1 if getcwd works, except it sometimes fails when it shouldn't,
    setting errno to ERANGE, ENAMETOOLONG, or ENOENT. */
@@ -1345,6 +1391,9 @@
 
 /* Define to 1 if you have the <poll.h> header file. */
 #undef HAVE_POLL_H
+
+/* Define to 1 if PortAudio is available. */
+#undef HAVE_PORTAUDIO
 
 /* Define to 1 if you have the `pow' function. */
 #undef HAVE_POW
@@ -1401,6 +1450,10 @@
 /* Define to 1 if the QScintilla library and header files are available */
 #undef HAVE_QSCINTILLA
 
+/* Define to 1 if Qsci has the QsciScintilla::findFirstInSelection ()
+   function. */
+#undef HAVE_QSCI_FINDSELECTION
+
 /* Define to 1 if you have the <Qsci/qscilexermatlab.h> header file. */
 #undef HAVE_QSCI_QSCILEXERMATLAB_H
 
@@ -1413,6 +1466,9 @@
 /* Define to 1 if Qt is available (libraries, developer header files, utility
    programs (moc, uic, rcc, and lrelease)) */
 #undef HAVE_QT
+
+/* Define to 1 if Qt has the QTabWidget::setMovable() function. */
+#undef HAVE_QTABWIDGET_SETMOVABLE
 
 /* Define to 1 if you have the `raise' function. */
 #undef HAVE_RAISE
@@ -2401,6 +2457,9 @@
 /* Define to 1 if you have the `sleep' function. */
 #undef HAVE_SLEEP
 
+/* Define to 1 if sndfile is available. */
+#undef HAVE_SNDFILE
+
 /* Define to 1 if you have the `snprintf' function. */
 #undef HAVE_SNPRINTF
 
@@ -2605,9 +2664,6 @@
 /* Define to 1 if you have the `tcsetattr' function. */
 #undef HAVE_TCSETATTR
 
-/* Define to 1 if you have the `tempnam' function. */
-#undef HAVE_TEMPNAM
-
 /* Define to 1 if you have the <termcap.h> header file. */
 #undef HAVE_TERMCAP_H
 
@@ -2690,6 +2746,9 @@
 
 /* Define to 1 if you have the <unordered_map> header file. */
 #undef HAVE_UNORDERED_MAP
+
+/* Define to 1 if you have the `unsetenv' function. */
+#undef HAVE_UNSETENV
 
 /* Define to 1 if the system has the type 'unsigned long long int'. */
 #undef HAVE_UNSIGNED_LONG_LONG_INT
@@ -2829,6 +2888,9 @@
 /* Define as the word index where to find the sign of 'long double'. */
 #undef LDBL_SIGNBIT_WORD
 
+/* Define to 1 if LLVM::legacy::PassManager exists. */
+#undef LEGACY_PASSMANAGER
+
 /* Define to 1 if lseek does not detect pipes. */
 #undef LSEEK_PIPE_BROKEN
 
@@ -2845,6 +2907,10 @@
 
 /* Define to a substitute value for mmap()'s MAP_ANONYMOUS flag. */
 #undef MAP_ANONYMOUS
+
+/* Define if the mbrtowc function does not return (size_t) -2 for empty input.
+   */
+#undef MBRTOWC_EMPTY_INPUT_BUG
 
 /* Define if the mbrtowc function has the NULL pwc argument bug. */
 #undef MBRTOWC_NULL_ARG1_BUG
@@ -2909,6 +2975,9 @@
 /* Define to l, ll, u, ul, ull, etc., as suitable for constants of type
    'ptrdiff_t'. */
 #undef PTRDIFF_T_SUFFIX
+
+/* Define to 1 if LLVM::raw_fd_ostream arg type is llvm::sys:fs. */
+#undef RAW_FD_OSTREAM_ARG_IS_LLVM_SYS_FS
 
 /* Define to 1 if readlink fails to recognize a trailing slash. */
 #undef READLINK_TRAILING_SLASH_BUG
@@ -3035,9 +3104,6 @@
    64-bit OSX only). */
 #undef USE_BLASWRAP
 
-/* Define to 1 to use octave_allocator class. */
-#undef USE_OCTAVE_ALLOCATOR
-
 /* Define to 1 to use the readline library. */
 #undef USE_READLINE
 
@@ -3052,6 +3118,10 @@
 /* Enable GNU extensions on systems that have them.  */
 #ifndef _GNU_SOURCE
 # undef _GNU_SOURCE
+#endif
+/* Use GNU style printf and scanf.  */
+#ifndef __USE_MINGW_ANSI_STDIO
+# undef __USE_MINGW_ANSI_STDIO
 #endif
 /* Enable threading extensions on Solaris.  */
 #ifndef _POSIX_PTHREAD_SEMANTICS
@@ -3078,6 +3148,9 @@
 
 /* Version number of package */
 #undef VERSION
+
+/* Define to 1 if unsetenv returns void instead of int. */
+#undef VOID_UNSETENV
 
 /* Define to l, ll, u, ul, ull, etc., as suitable for constants of type
    'wchar_t'. */
@@ -3205,28 +3278,48 @@ double tgamma (double);
    'reference to static identifier "f" in extern inline function'.
    This bug was observed with Sun C 5.12 SunOS_i386 2011/11/16.
 
-   Suppress the use of extern inline on problematic Apple configurations, as
-   Libc at least through Libc-825.26 (2013-04-09) mishandles it; see, e.g.,
-   <http://lists.gnu.org/archive/html/bug-gnulib/2012-12/msg00023.html>.
-   Perhaps Apple will fix this some day.  */
-#if (defined __APPLE__ \
-     && ((! defined _DONT_USE_CTYPE_INLINE_ \
-          && (defined __GNUC__ || defined __cplusplus)) \
-         || (defined _FORTIFY_SOURCE && 0 < _FORTIFY_SOURCE \
-             && defined __GNUC__ && ! defined __cplusplus)))
-# define _GL_EXTERN_INLINE_APPLE_BUG
+   Suppress extern inline (with or without __attribute__ ((__gnu_inline__)))
+   on configurations that mistakenly use 'static inline' to implement
+   functions or macros in standard C headers like <ctype.h>.  For example,
+   if isdigit is mistakenly implemented via a static inline function,
+   a program containing an extern inline function that calls isdigit
+   may not work since the C standard prohibits extern inline functions
+   from calling static functions.  This bug is known to occur on:
+
+     OS X 10.8 and earlier; see:
+     http://lists.gnu.org/archive/html/bug-gnulib/2012-12/msg00023.html
+
+     DragonFly; see
+     http://muscles.dragonflybsd.org/bulk/bleeding-edge-potential/latest-per-pkg/ah-tty-0.3.12.log
+
+     FreeBSD; see:
+     http://lists.gnu.org/archive/html/bug-gnulib/2014-07/msg00104.html
+
+   OS X 10.9 has a macro __header_inline indicating the bug is fixed for C and
+   for clang but remains for g++; see <http://trac.macports.org/ticket/41033>.
+   Assume DragonFly and FreeBSD will be similar.  */
+#if (((defined __APPLE__ && defined __MACH__) \
+      || defined __DragonFly__ || defined __FreeBSD__) \
+     && (defined __header_inline \
+         ? (defined __cplusplus && defined __GNUC_STDC_INLINE__ \
+            && ! defined __clang__) \
+         : ((! defined _DONT_USE_CTYPE_INLINE_ \
+             && (defined __GNUC__ || defined __cplusplus)) \
+            || (defined _FORTIFY_SOURCE && 0 < _FORTIFY_SOURCE \
+                && defined __GNUC__ && ! defined __cplusplus))))
+# define _GL_EXTERN_INLINE_STDHEADER_BUG
 #endif
 #if ((__GNUC__ \
       ? defined __GNUC_STDC_INLINE__ && __GNUC_STDC_INLINE__ \
       : (199901L <= __STDC_VERSION__ \
          && !defined __HP_cc \
          && !(defined __SUNPRO_C && __STDC__))) \
-     && !defined _GL_EXTERN_INLINE_APPLE_BUG)
+     && !defined _GL_EXTERN_INLINE_STDHEADER_BUG)
 # define _GL_INLINE inline
 # define _GL_EXTERN_INLINE extern inline
 # define _GL_EXTERN_INLINE_IN_USE
 #elif (2 < __GNUC__ + (7 <= __GNUC_MINOR__) && !defined __STRICT_ANSI__ \
-       && !defined _GL_EXTERN_INLINE_APPLE_BUG)
+       && !defined _GL_EXTERN_INLINE_STDHEADER_BUG)
 # if defined __GNUC_GNU_INLINE__ && __GNUC_GNU_INLINE__
    /* __gnu_inline__ suppresses a GCC 4.2 diagnostic.  */
 #  define _GL_INLINE extern inline __attribute__ ((__gnu_inline__))
@@ -3240,6 +3333,11 @@ double tgamma (double);
 # define _GL_EXTERN_INLINE static _GL_UNUSED
 #endif
 
+/* In GCC, suppress bogus "no previous prototype for 'FOO'"
+   and "no previous declaration for 'FOO'" diagnostics,
+   when FOO is an inline function in the header; see
+   <https://gcc.gnu.org/bugzilla/show_bug.cgi?id=54113> and
+   <https://gcc.gnu.org/bugzilla/show_bug.cgi?id=63877>.  */
 #if 4 < __GNUC__ + (6 <= __GNUC_MINOR__)
 # if defined __GNUC_STDC_INLINE__ && __GNUC_STDC_INLINE__
 #  define _GL_INLINE_HEADER_CONST_PRAGMA
@@ -3247,10 +3345,6 @@ double tgamma (double);
 #  define _GL_INLINE_HEADER_CONST_PRAGMA \
      _Pragma ("GCC diagnostic ignored \"-Wsuggest-attribute=const\"")
 # endif
-  /* Suppress GCC's bogus "no previous prototype for 'FOO'"
-     and "no previous declaration for 'FOO'"  diagnostics,
-     when FOO is an inline function in the header; see
-     <http://gcc.gnu.org/bugzilla/show_bug.cgi?id=54113>.  */
 # define _GL_INLINE_HEADER_BEGIN \
     _Pragma ("GCC diagnostic push") \
     _Pragma ("GCC diagnostic ignored \"-Wmissing-prototypes\"") \
@@ -3268,9 +3362,6 @@ double tgamma (double);
 
 /* Define to `int' if <sys/types.h> doesn't define. */
 #undef gid_t
-
-/* Define to rpl_gmtime if the replacement function should be used. */
-#undef gmtime
 
 /* Define to `__inline__' or `__inline' if that's what the C compiler
    calls it, or to nothing if 'inline' is not supported under any name.  */
@@ -3294,9 +3385,6 @@ double tgamma (double);
 #if defined __APPLE__ && defined __MACH__ && __APPLE_CC__ >= 5465 && !defined __cplusplus && __STDC_VERSION__ >= 199901L && !defined __GNUC_STDC_INLINE__
 # define __GNUC_STDC_INLINE__ 1
 #endif
-
-/* Define to rpl_localtime if the replacement function should be used. */
-#undef localtime
 
 /* Define to a type if <wchar.h> does not define. */
 #undef mbstate_t
@@ -3361,6 +3449,16 @@ double tgamma (double);
 /* The name _UNUSED_PARAMETER_ is an earlier spelling, although the name
    is a misnomer outside of parameter lists.  */
 #define _UNUSED_PARAMETER_ _GL_UNUSED
+
+/* gcc supports the "unused" attribute on possibly unused labels, and
+   g++ has since version 4.5.  Note to support C++ as well as C,
+   _GL_UNUSED_LABEL should be used with a trailing ;  */
+#if !defined __cplusplus || __GNUC__ > 4 \
+    || (__GNUC__ == 4 && __GNUC_MINOR__ >= 5)
+# define _GL_UNUSED_LABEL _GL_UNUSED
+#else
+# define _GL_UNUSED_LABEL
+#endif
 
 /* The __pure__ attribute was added in gcc 2.96.  */
 #if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)

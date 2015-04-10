@@ -16,7 +16,7 @@
 
 # Makefile for Octave's libinterp directory
 #
-# Copyright (C) 1993-2013 John W. Eaton
+# Copyright (C) 1993-2015 John W. Eaton
 #
 # This file is part of Octave.
 #
@@ -118,14 +118,15 @@ DIST_COMMON = $(top_srcdir)/build-aux/common.mk \
 subdir = libinterp
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
+	$(top_srcdir)/m4/absolute-header.m4 \
 	$(top_srcdir)/m4/acinclude.m4 $(top_srcdir)/m4/alloca.m4 \
 	$(top_srcdir)/m4/ax_blas.m4 \
 	$(top_srcdir)/m4/ax_blas_f77_func.m4 \
 	$(top_srcdir)/m4/ax_compare_version.m4 \
-	$(top_srcdir)/m4/ax_lapack.m4 $(top_srcdir)/m4/ax_pthread.m4 \
-	$(top_srcdir)/m4/base64.m4 $(top_srcdir)/m4/canonicalize.m4 \
-	$(top_srcdir)/m4/ceil.m4 $(top_srcdir)/m4/ceilf.m4 \
-	$(top_srcdir)/m4/chdir-long.m4 \
+	$(top_srcdir)/m4/ax_lapack.m4 $(top_srcdir)/m4/ax_openmp.m4 \
+	$(top_srcdir)/m4/ax_pthread.m4 $(top_srcdir)/m4/base64.m4 \
+	$(top_srcdir)/m4/canonicalize.m4 $(top_srcdir)/m4/ceil.m4 \
+	$(top_srcdir)/m4/ceilf.m4 $(top_srcdir)/m4/chdir-long.m4 \
 	$(top_srcdir)/m4/check-math-lib.m4 $(top_srcdir)/m4/close.m4 \
 	$(top_srcdir)/m4/closedir.m4 $(top_srcdir)/m4/codeset.m4 \
 	$(top_srcdir)/m4/configmake.m4 $(top_srcdir)/m4/copysign.m4 \
@@ -156,8 +157,8 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
 	$(top_srcdir)/m4/getdtablesize.m4 \
 	$(top_srcdir)/m4/gethostname.m4 $(top_srcdir)/m4/getlogin_r.m4 \
 	$(top_srcdir)/m4/getopt.m4 $(top_srcdir)/m4/gettimeofday.m4 \
-	$(top_srcdir)/m4/glibc21.m4 $(top_srcdir)/m4/glob.m4 \
-	$(top_srcdir)/m4/gnulib-common.m4 \
+	$(top_srcdir)/m4/gl-openssl.m4 $(top_srcdir)/m4/glibc21.m4 \
+	$(top_srcdir)/m4/glob.m4 $(top_srcdir)/m4/gnulib-common.m4 \
 	$(top_srcdir)/m4/gnulib-comp.m4 \
 	$(top_srcdir)/m4/include_next.m4 $(top_srcdir)/m4/intmax_t.m4 \
 	$(top_srcdir)/m4/inttypes_h.m4 $(top_srcdir)/m4/isatty.m4 \
@@ -195,7 +196,8 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
 	$(top_srcdir)/m4/round.m4 $(top_srcdir)/m4/roundf.m4 \
 	$(top_srcdir)/m4/same.m4 $(top_srcdir)/m4/save-cwd.m4 \
 	$(top_srcdir)/m4/secure_getenv.m4 $(top_srcdir)/m4/select.m4 \
-	$(top_srcdir)/m4/sigaction.m4 $(top_srcdir)/m4/signal_h.m4 \
+	$(top_srcdir)/m4/setenv.m4 $(top_srcdir)/m4/sigaction.m4 \
+	$(top_srcdir)/m4/signal_h.m4 \
 	$(top_srcdir)/m4/signalblocking.m4 $(top_srcdir)/m4/signbit.m4 \
 	$(top_srcdir)/m4/size_max.m4 $(top_srcdir)/m4/sleep.m4 \
 	$(top_srcdir)/m4/socketlib.m4 $(top_srcdir)/m4/sockets.m4 \
@@ -276,6 +278,9 @@ am__objects_2 = corefcn/corefcn_libcorefcn_la-cutils.lo \
 am__objects_3 = corefcn/corefcn_libcorefcn_la-Cell.lo \
 	corefcn/corefcn_libcorefcn_la-__contourc__.lo \
 	corefcn/corefcn_libcorefcn_la-__dispatch__.lo \
+	corefcn/corefcn_libcorefcn_la-__dsearchn__.lo \
+	corefcn/corefcn_libcorefcn_la-__ichol__.lo \
+	corefcn/corefcn_libcorefcn_la-__ilu__.lo \
 	corefcn/corefcn_libcorefcn_la-__lin_interpn__.lo \
 	corefcn/corefcn_libcorefcn_la-__pchip_deriv__.lo \
 	corefcn/corefcn_libcorefcn_la-__qp__.lo \
@@ -285,6 +290,7 @@ am__objects_3 = corefcn/corefcn_libcorefcn_la-Cell.lo \
 	corefcn/corefcn_libcorefcn_la-bitfcns.lo \
 	corefcn/corefcn_libcorefcn_la-bsxfun.lo \
 	corefcn/corefcn_libcorefcn_la-c-file-ptr-stream.lo \
+	corefcn/corefcn_libcorefcn_la-cdisplay.lo \
 	corefcn/corefcn_libcorefcn_la-cellfun.lo \
 	corefcn/corefcn_libcorefcn_la-colloc.lo \
 	corefcn/corefcn_libcorefcn_la-comment-list.lo \
@@ -350,6 +356,7 @@ am__objects_3 = corefcn/corefcn_libcorefcn_la-Cell.lo \
 	corefcn/corefcn_libcorefcn_la-mgorth.lo \
 	corefcn/corefcn_libcorefcn_la-nproc.lo \
 	corefcn/corefcn_libcorefcn_la-oct-fstrm.lo \
+	corefcn/corefcn_libcorefcn_la-oct-hdf5-id.lo \
 	corefcn/corefcn_libcorefcn_la-oct-hist.lo \
 	corefcn/corefcn_libcorefcn_la-oct-iostrm.lo \
 	corefcn/corefcn_libcorefcn_la-oct-lvalue.lo \
@@ -360,6 +367,7 @@ am__objects_3 = corefcn/corefcn_libcorefcn_la-Cell.lo \
 	corefcn/corefcn_libcorefcn_la-oct-stream.lo \
 	corefcn/corefcn_libcorefcn_la-oct-strstrm.lo \
 	corefcn/corefcn_libcorefcn_la-octave-link.lo \
+	corefcn/corefcn_libcorefcn_la-ordschur.lo \
 	corefcn/corefcn_libcorefcn_la-pager.lo \
 	corefcn/corefcn_libcorefcn_la-pinv.lo \
 	corefcn/corefcn_libcorefcn_la-pr-output.lo \
@@ -383,15 +391,16 @@ am__objects_3 = corefcn/corefcn_libcorefcn_la-Cell.lo \
 	corefcn/corefcn_libcorefcn_la-strfns.lo \
 	corefcn/corefcn_libcorefcn_la-sub2ind.lo \
 	corefcn/corefcn_libcorefcn_la-svd.lo \
-	corefcn/corefcn_libcorefcn_la-syl.lo \
+	corefcn/corefcn_libcorefcn_la-sylvester.lo \
 	corefcn/corefcn_libcorefcn_la-symtab.lo \
 	corefcn/corefcn_libcorefcn_la-syscalls.lo \
 	corefcn/corefcn_libcorefcn_la-sysdep.lo \
 	corefcn/corefcn_libcorefcn_la-time.lo \
 	corefcn/corefcn_libcorefcn_la-toplev.lo \
 	corefcn/corefcn_libcorefcn_la-tril.lo \
-	corefcn/corefcn_libcorefcn_la-txt-eng.lo \
+	corefcn/corefcn_libcorefcn_la-tsearch.lo \
 	corefcn/corefcn_libcorefcn_la-txt-eng-ft.lo \
+	corefcn/corefcn_libcorefcn_la-txt-eng.lo \
 	corefcn/corefcn_libcorefcn_la-typecast.lo \
 	corefcn/corefcn_libcorefcn_la-urlwrite.lo \
 	corefcn/corefcn_libcorefcn_la-utils.lo \
@@ -424,14 +433,15 @@ corefcn_libtex_parser_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@am__DEPENDENCIES_1 =  \
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	liboctinterp.la
 am__DEPENDENCIES_2 =
-am__DEPENDENCIES_3 = dldfcn/__delaunayn__.la dldfcn/__dsearchn__.la \
-	dldfcn/__eigs__.la dldfcn/__fltk_uigetfile__.la \
-	dldfcn/__glpk__.la dldfcn/__init_fltk__.la \
-	dldfcn/__init_gnuplot__.la dldfcn/__magick_read__.la \
+am__DEPENDENCIES_3 = dldfcn/__delaunayn__.la dldfcn/__eigs__.la \
+	dldfcn/__fltk_uigetfile__.la dldfcn/__glpk__.la \
+	dldfcn/__init_fltk__.la dldfcn/__init_gnuplot__.la \
+	dldfcn/__magick_read__.la dldfcn/__osmesa_print__.la \
 	dldfcn/__voronoi__.la dldfcn/amd.la dldfcn/ccolamd.la \
 	dldfcn/chol.la dldfcn/colamd.la dldfcn/convhulln.la \
 	dldfcn/dmperm.la dldfcn/fftw.la dldfcn/qr.la \
-	dldfcn/symbfact.la dldfcn/symrcm.la dldfcn/tsearch.la
+	dldfcn/symbfact.la dldfcn/symrcm.la dldfcn/audioread.la \
+	dldfcn/audiodevinfo.la
 am__DEPENDENCIES_4 = $(am__DEPENDENCIES_3)
 am__DEPENDENCIES_5 = $(am__DEPENDENCIES_2) $(am__DEPENDENCIES_2)
 am__DEPENDENCIES_6 = $(am__DEPENDENCIES_2) $(am__DEPENDENCIES_2) \
@@ -497,17 +507,6 @@ dldfcn___delaunayn___la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
 	$(LDFLAGS) -o $@
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@am_dldfcn___delaunayn___la_rpath =
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@am_dldfcn___delaunayn___la_rpath =  \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	-rpath $(octlibdir)
-dldfcn___dsearchn___la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	../liboctave/liboctave.la $(am__DEPENDENCIES_12)
-am_dldfcn___dsearchn___la_OBJECTS = dldfcn/__dsearchn__.lo
-dldfcn___dsearchn___la_OBJECTS = $(am_dldfcn___dsearchn___la_OBJECTS)
-dldfcn___dsearchn___la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
-	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXXLD) \
-	$(AM_CXXFLAGS) $(CXXFLAGS) $(dldfcn___dsearchn___la_LDFLAGS) \
-	$(LDFLAGS) -o $@
-@AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@am_dldfcn___dsearchn___la_rpath =
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@am_dldfcn___dsearchn___la_rpath =  \
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	-rpath $(octlibdir)
 dldfcn___eigs___la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	../liboctave/liboctave.la $(am__DEPENDENCIES_2) \
@@ -590,6 +589,20 @@ dldfcn___magick_read___la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@am_dldfcn___magick_read___la_rpath =
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@am_dldfcn___magick_read___la_rpath =  \
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	-rpath $(octlibdir)
+dldfcn___osmesa_print___la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
+	../liboctave/liboctave.la $(am__DEPENDENCIES_2) \
+	$(am__DEPENDENCIES_12)
+am_dldfcn___osmesa_print___la_OBJECTS =  \
+	dldfcn/dldfcn___osmesa_print___la-__osmesa_print__.lo
+dldfcn___osmesa_print___la_OBJECTS =  \
+	$(am_dldfcn___osmesa_print___la_OBJECTS)
+dldfcn___osmesa_print___la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXXLD) \
+	$(AM_CXXFLAGS) $(CXXFLAGS) \
+	$(dldfcn___osmesa_print___la_LDFLAGS) $(LDFLAGS) -o $@
+@AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@am_dldfcn___osmesa_print___la_rpath =
+@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@am_dldfcn___osmesa_print___la_rpath =  \
+@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	-rpath $(octlibdir)
 dldfcn___voronoi___la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	../liboctave/liboctave.la $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_12)
@@ -615,6 +628,32 @@ dldfcn_amd_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@am_dldfcn_amd_la_rpath =
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@am_dldfcn_amd_la_rpath = -rpath \
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(octlibdir)
+dldfcn_audiodevinfo_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
+	../liboctave/liboctave.la $(am__DEPENDENCIES_2) \
+	$(am__DEPENDENCIES_12)
+am_dldfcn_audiodevinfo_la_OBJECTS =  \
+	dldfcn/dldfcn_audiodevinfo_la-audiodevinfo.lo
+dldfcn_audiodevinfo_la_OBJECTS = $(am_dldfcn_audiodevinfo_la_OBJECTS)
+dldfcn_audiodevinfo_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXXLD) \
+	$(AM_CXXFLAGS) $(CXXFLAGS) $(dldfcn_audiodevinfo_la_LDFLAGS) \
+	$(LDFLAGS) -o $@
+@AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@am_dldfcn_audiodevinfo_la_rpath =
+@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@am_dldfcn_audiodevinfo_la_rpath =  \
+@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	-rpath $(octlibdir)
+dldfcn_audioread_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
+	../liboctave/liboctave.la $(am__DEPENDENCIES_2) \
+	$(am__DEPENDENCIES_12)
+am_dldfcn_audioread_la_OBJECTS =  \
+	dldfcn/dldfcn_audioread_la-audioread.lo
+dldfcn_audioread_la_OBJECTS = $(am_dldfcn_audioread_la_OBJECTS)
+dldfcn_audioread_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXXLD) \
+	$(AM_CXXFLAGS) $(CXXFLAGS) $(dldfcn_audioread_la_LDFLAGS) \
+	$(LDFLAGS) -o $@
+@AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@am_dldfcn_audioread_la_rpath =
+@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@am_dldfcn_audioread_la_rpath =  \
+@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	-rpath $(octlibdir)
 dldfcn_ccolamd_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	../liboctave/liboctave.la $(am__DEPENDENCIES_7) \
 	$(am__DEPENDENCIES_12)
@@ -722,17 +761,6 @@ dldfcn_symrcm_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
 	$(LDFLAGS) -o $@
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@am_dldfcn_symrcm_la_rpath =
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@am_dldfcn_symrcm_la_rpath =  \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	-rpath $(octlibdir)
-dldfcn_tsearch_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	../liboctave/liboctave.la $(am__DEPENDENCIES_12)
-am_dldfcn_tsearch_la_OBJECTS = dldfcn/tsearch.lo
-dldfcn_tsearch_la_OBJECTS = $(am_dldfcn_tsearch_la_OBJECTS)
-dldfcn_tsearch_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
-	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXXLD) \
-	$(AM_CXXFLAGS) $(CXXFLAGS) $(dldfcn_tsearch_la_LDFLAGS) \
-	$(LDFLAGS) -o $@
-@AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@am_dldfcn_tsearch_la_rpath =
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@am_dldfcn_tsearch_la_rpath =  \
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	-rpath $(octlibdir)
 liboctinterp_la_DEPENDENCIES = octave-value/liboctave-value.la \
 	parse-tree/libparse-tree.la parse-tree/libparser.la \
@@ -902,6 +930,7 @@ am__objects_10 =  \
 	octave-value/octave_value_liboctave_value_la-ov-cell.lo \
 	octave-value/octave_value_liboctave_value_la-ov-ch-mat.lo \
 	octave-value/octave_value_liboctave_value_la-ov-class.lo \
+	octave-value/octave_value_liboctave_value_la-ov-classdef.lo \
 	octave-value/octave_value_liboctave_value_la-ov-colon.lo \
 	octave-value/octave_value_liboctave_value_la-ov-complex.lo \
 	octave-value/octave_value_liboctave_value_la-ov-cs-list.lo \
@@ -946,6 +975,7 @@ am__objects_11 =  \
 	parse-tree/parse_tree_libparse_tree_la-pt-cbinop.lo \
 	parse-tree/parse_tree_libparse_tree_la-pt-cell.lo \
 	parse-tree/parse_tree_libparse_tree_la-pt-check.lo \
+	parse-tree/parse_tree_libparse_tree_la-pt-classdef.lo \
 	parse-tree/parse_tree_libparse_tree_la-pt-cmd.lo \
 	parse-tree/parse_tree_libparse_tree_la-pt-colon.lo \
 	parse-tree/parse_tree_libparse_tree_la-pt-const.lo \
@@ -954,6 +984,7 @@ am__objects_11 =  \
 	parse-tree/parse_tree_libparse_tree_la-pt-except.lo \
 	parse-tree/parse_tree_libparse_tree_la-pt-exp.lo \
 	parse-tree/parse_tree_libparse_tree_la-pt-fcn-handle.lo \
+	parse-tree/parse_tree_libparse_tree_la-pt-funcall.lo \
 	parse-tree/parse_tree_libparse_tree_la-pt-id.lo \
 	parse-tree/parse_tree_libparse_tree_la-pt-idx.lo \
 	parse-tree/parse_tree_libparse_tree_la-pt-jump.lo \
@@ -1051,19 +1082,20 @@ am__v_YACC_1 =
 SOURCES = $(corefcn_libcorefcn_la_SOURCES) \
 	$(corefcn_libtex_parser_la_SOURCES) \
 	$(dldfcn___delaunayn___la_SOURCES) \
-	$(dldfcn___dsearchn___la_SOURCES) \
 	$(dldfcn___eigs___la_SOURCES) \
 	$(dldfcn___fltk_uigetfile___la_SOURCES) \
 	$(dldfcn___glpk___la_SOURCES) \
 	$(dldfcn___init_fltk___la_SOURCES) \
 	$(dldfcn___init_gnuplot___la_SOURCES) \
 	$(dldfcn___magick_read___la_SOURCES) \
+	$(dldfcn___osmesa_print___la_SOURCES) \
 	$(dldfcn___voronoi___la_SOURCES) $(dldfcn_amd_la_SOURCES) \
-	$(dldfcn_ccolamd_la_SOURCES) $(dldfcn_chol_la_SOURCES) \
-	$(dldfcn_colamd_la_SOURCES) $(dldfcn_convhulln_la_SOURCES) \
-	$(dldfcn_dmperm_la_SOURCES) $(dldfcn_fftw_la_SOURCES) \
-	$(dldfcn_qr_la_SOURCES) $(dldfcn_symbfact_la_SOURCES) \
-	$(dldfcn_symrcm_la_SOURCES) $(dldfcn_tsearch_la_SOURCES) \
+	$(dldfcn_audiodevinfo_la_SOURCES) \
+	$(dldfcn_audioread_la_SOURCES) $(dldfcn_ccolamd_la_SOURCES) \
+	$(dldfcn_chol_la_SOURCES) $(dldfcn_colamd_la_SOURCES) \
+	$(dldfcn_convhulln_la_SOURCES) $(dldfcn_dmperm_la_SOURCES) \
+	$(dldfcn_fftw_la_SOURCES) $(dldfcn_qr_la_SOURCES) \
+	$(dldfcn_symbfact_la_SOURCES) $(dldfcn_symrcm_la_SOURCES) \
 	$(liboctinterp_la_SOURCES) $(nodist_liboctinterp_la_SOURCES) \
 	$(octave_value_liboctave_value_la_SOURCES) \
 	$(parse_tree_libparse_tree_la_SOURCES) \
@@ -1071,19 +1103,20 @@ SOURCES = $(corefcn_libcorefcn_la_SOURCES) \
 DIST_SOURCES = $(corefcn_libcorefcn_la_SOURCES) \
 	$(corefcn_libtex_parser_la_SOURCES) \
 	$(dldfcn___delaunayn___la_SOURCES) \
-	$(dldfcn___dsearchn___la_SOURCES) \
 	$(dldfcn___eigs___la_SOURCES) \
 	$(dldfcn___fltk_uigetfile___la_SOURCES) \
 	$(dldfcn___glpk___la_SOURCES) \
 	$(dldfcn___init_fltk___la_SOURCES) \
 	$(dldfcn___init_gnuplot___la_SOURCES) \
 	$(dldfcn___magick_read___la_SOURCES) \
+	$(dldfcn___osmesa_print___la_SOURCES) \
 	$(dldfcn___voronoi___la_SOURCES) $(dldfcn_amd_la_SOURCES) \
-	$(dldfcn_ccolamd_la_SOURCES) $(dldfcn_chol_la_SOURCES) \
-	$(dldfcn_colamd_la_SOURCES) $(dldfcn_convhulln_la_SOURCES) \
-	$(dldfcn_dmperm_la_SOURCES) $(dldfcn_fftw_la_SOURCES) \
-	$(dldfcn_qr_la_SOURCES) $(dldfcn_symbfact_la_SOURCES) \
-	$(dldfcn_symrcm_la_SOURCES) $(dldfcn_tsearch_la_SOURCES) \
+	$(dldfcn_audiodevinfo_la_SOURCES) \
+	$(dldfcn_audioread_la_SOURCES) $(dldfcn_ccolamd_la_SOURCES) \
+	$(dldfcn_chol_la_SOURCES) $(dldfcn_colamd_la_SOURCES) \
+	$(dldfcn_convhulln_la_SOURCES) $(dldfcn_dmperm_la_SOURCES) \
+	$(dldfcn_fftw_la_SOURCES) $(dldfcn_qr_la_SOURCES) \
+	$(dldfcn_symbfact_la_SOURCES) $(dldfcn_symrcm_la_SOURCES) \
 	$(liboctinterp_la_SOURCES) \
 	$(octave_value_liboctave_value_la_SOURCES) \
 	$(parse_tree_libparse_tree_la_SOURCES) \
@@ -1126,7 +1159,7 @@ AMTAR = @AMTAR@
 AM_DEFAULT_VERBOSITY = @AM_DEFAULT_VERBOSITY@
 APPLE_UNIVERSAL_BUILD = @APPLE_UNIVERSAL_BUILD@
 AR = @AR@
-ARFLAGS = @ARFLAGS@ 
+ARFLAGS = @ARFLAGS@
 ARPACK_CPPFLAGS = @ARPACK_CPPFLAGS@
 ARPACK_LDFLAGS = @ARPACK_LDFLAGS@
 ARPACK_LIBS = @ARPACK_LIBS@
@@ -1161,7 +1194,6 @@ CCDEPMODE = @CCDEPMODE@
 CCOLAMD_CPPFLAGS = @CCOLAMD_CPPFLAGS@
 CCOLAMD_LDFLAGS = @CCOLAMD_LDFLAGS@
 CCOLAMD_LIBS = @CCOLAMD_LIBS@
-CC_VERSION = @CC_VERSION@
 CFLAGS = @CFLAGS@
 CHOLMOD_CPPFLAGS = @CHOLMOD_CPPFLAGS@
 CHOLMOD_LDFLAGS = @CHOLMOD_LDFLAGS@
@@ -1189,7 +1221,6 @@ CXXCPP = @CXXCPP@
 CXXDEPMODE = @CXXDEPMODE@
 CXXFLAGS = @CXXFLAGS@
 CXXPICFLAG = @CXXPICFLAG@
-CXX_VERSION = @CXX_VERSION@
 CYGPATH_W = @CYGPATH_W@
 DEFAULT_PAGER = @DEFAULT_PAGER@
 DEFAULT_TERMINAL_FONT = @DEFAULT_TERMINAL_FONT@
@@ -1224,6 +1255,8 @@ ERRNO_H = @ERRNO_H@
 
 #### Start of system configuration section. ####
 EXEEXT = @EXEEXT@
+
+# Fortran compiler flags.
 F77 = @F77@
 F77_APPEND_EXTRA_UNDERSCORE = @F77_TOLOWER@
 F77_APPEND_UNDERSCORE = @F77_TOLOWER@
@@ -1231,9 +1264,6 @@ F77_FLOAT_STORE_FLAG = @F77_FLOAT_STORE_FLAG@
 F77_INTEGER_8_FLAG = @F77_INTEGER_8_FLAG@
 F77_ISNAN_MACRO = @F77_ISNAN_MACRO@
 F77_TOLOWER = @F77_TOLOWER@
-
-# Fortran compiler flags.
-FC = @FC@
 FFLAGS = @FFLAGS@
 FFTW3F_CPPFLAGS = @FFTW3F_CPPFLAGS@
 FFTW3F_LDFLAGS = @FFTW3F_LDFLAGS@
@@ -1249,6 +1279,9 @@ FLOAT_H = @FLOAT_H@
 FLOORF_LIBM = @FLOORF_LIBM@
 FLOOR_LIBM = @FLOOR_LIBM@
 FLTK_CONFIG = @FLTK_CONFIG@
+FLTK_CPPFLAGS = @FLTK_CPPFLAGS@
+FLTK_LDFLAGS = @FLTK_LDFLAGS@
+FLTK_LIBS = @FLTK_LIBS@
 FNMATCH_H = @FNMATCH_H@
 FONTCONFIG_CFLAGS = @FONTCONFIG_CFLAGS@
 FONTCONFIG_LIBS = @FONTCONFIG_LIBS@
@@ -1488,6 +1521,7 @@ GNULIB_PUTCHAR = @GNULIB_PUTCHAR@
 GNULIB_PUTENV = @GNULIB_PUTENV@
 GNULIB_PUTS = @GNULIB_PUTS@
 GNULIB_PWRITE = @GNULIB_PWRITE@
+GNULIB_QSORT_R = @GNULIB_QSORT_R@
 GNULIB_RAISE = @GNULIB_RAISE@
 GNULIB_RANDOM = @GNULIB_RANDOM@
 GNULIB_RANDOM_R = @GNULIB_RANDOM_R@
@@ -1635,8 +1669,6 @@ GNULIB_WRITE = @GNULIB_WRITE@
 GNULIB__EXIT = @GNULIB__EXIT@
 GNUPLOT = @GNUPLOT@
 GPERF = @GPERF@
-GRAPHICS_CFLAGS = @GRAPHICS_CFLAGS@
-GRAPHICS_LIBS = @GRAPHICS_LIBS@
 GREP = @GREP@
 GXX_VERSION = @GXX_VERSION@
 HAVE_ACCEPT4 = @HAVE_ACCEPT4@
@@ -1802,6 +1834,7 @@ HAVE_LOGF = @HAVE_LOGF@
 HAVE_LOGL = @HAVE_LOGL@
 HAVE_LONG_LONG_INT = @HAVE_LONG_LONG_INT@
 HAVE_LSTAT = @HAVE_LSTAT@
+HAVE_MAX_ALIGN_T = @HAVE_MAX_ALIGN_T@
 HAVE_MBRLEN = @HAVE_MBRLEN@
 HAVE_MBRTOWC = @HAVE_MBRTOWC@
 HAVE_MBSINIT = @HAVE_MBSINIT@
@@ -1970,6 +2003,7 @@ HAVE__EXIT = @HAVE__EXIT@
 HDF5_CPPFLAGS = @HDF5_CPPFLAGS@
 HDF5_LDFLAGS = @HDF5_LDFLAGS@
 HDF5_LIBS = @HDF5_LIBS@
+ICOTOOL = @ICOTOOL@
 INCLUDE_DEPS = @INCLUDE_DEPS@
 INCLUDE_NEXT = @INCLUDE_NEXT@
 INCLUDE_NEXT_AS_FIRST_DIRECTIVE = @INCLUDE_NEXT_AS_FIRST_DIRECTIVE@
@@ -2007,6 +2041,7 @@ LIBPRE = @LIBPRE@
 LIBS = @LIBS@
 LIBSOCKET = @LIBSOCKET@
 LIBTOOL = @LIBTOOL@
+LIB_CRYPTO = @LIB_CRYPTO@
 LIB_NANOSLEEP = @LIB_NANOSLEEP@
 LIB_SELECT = @LIB_SELECT@
 LIPO = @LIPO@
@@ -2114,6 +2149,9 @@ OCTGRAPHICS_DLL_DEFS = @OCTGRAPHICS_DLL_DEFS@
 OCTGUI_DLL_DEFS = @OCTGUI_DLL_DEFS@
 OCTINTERP_DLL_DEFS = @OCTINTERP_DLL_DEFS@
 OPENGL_LIBS = @OPENGL_LIBS@
+OSMESA_CPPFLAGS = @OSMESA_CPPFLAGS@
+OSMESA_LDFLAGS = @OSMESA_LDFLAGS@
+OSMESA_LIBS = @OSMESA_LIBS@
 OTOOL = @OTOOL@
 OTOOL64 = @OTOOL64@
 PACKAGE = @PACKAGE@
@@ -2128,6 +2166,9 @@ PCRE_CPPFLAGS = @PCRE_CPPFLAGS@
 PCRE_LIBS = @PCRE_LIBS@
 PERL = @PERL@
 PKG_CONFIG = @PKG_CONFIG@
+PORTAUDIO_CPPFLAGS = @PORTAUDIO_CPPFLAGS@
+PORTAUDIO_LDFLAGS = @PORTAUDIO_LDFLAGS@
+PORTAUDIO_LIBS = @PORTAUDIO_LIBS@
 POW_LIBM = @POW_LIBM@
 PRAGMA_COLUMNS = @PRAGMA_COLUMNS@
 PRAGMA_SYSTEM_HEADER = @PRAGMA_SYSTEM_HEADER@
@@ -2210,6 +2251,7 @@ REPLACE_GETLINE = @REPLACE_GETLINE@
 REPLACE_GETLOGIN_R = @REPLACE_GETLOGIN_R@
 REPLACE_GETPAGESIZE = @REPLACE_GETPAGESIZE@
 REPLACE_GETTIMEOFDAY = @REPLACE_GETTIMEOFDAY@
+REPLACE_GMTIME = @REPLACE_GMTIME@
 REPLACE_HUGE_VAL = @REPLACE_HUGE_VAL@
 REPLACE_HYPOT = @REPLACE_HYPOT@
 REPLACE_HYPOTF = @REPLACE_HYPOTF@
@@ -2227,6 +2269,7 @@ REPLACE_LCHOWN = @REPLACE_LCHOWN@
 REPLACE_LDEXPL = @REPLACE_LDEXPL@
 REPLACE_LINK = @REPLACE_LINK@
 REPLACE_LINKAT = @REPLACE_LINKAT@
+REPLACE_LOCALTIME = @REPLACE_LOCALTIME@
 REPLACE_LOCALTIME_R = @REPLACE_LOCALTIME_R@
 REPLACE_LOG = @REPLACE_LOG@
 REPLACE_LOG10 = @REPLACE_LOG10@
@@ -2280,10 +2323,12 @@ REPLACE_PTSNAME = @REPLACE_PTSNAME@
 REPLACE_PTSNAME_R = @REPLACE_PTSNAME_R@
 REPLACE_PUTENV = @REPLACE_PUTENV@
 REPLACE_PWRITE = @REPLACE_PWRITE@
+REPLACE_QSORT_R = @REPLACE_QSORT_R@
 REPLACE_RAISE = @REPLACE_RAISE@
 REPLACE_RANDOM_R = @REPLACE_RANDOM_R@
 REPLACE_READ = @REPLACE_READ@
 REPLACE_READLINK = @REPLACE_READLINK@
+REPLACE_READLINKAT = @REPLACE_READLINKAT@
 REPLACE_REALLOC = @REPLACE_REALLOC@
 REPLACE_REALPATH = @REPLACE_REALPATH@
 REPLACE_REMAINDER = @REPLACE_REMAINDER@
@@ -2322,6 +2367,7 @@ REPLACE_STRTOD = @REPLACE_STRTOD@
 REPLACE_STRTOK_R = @REPLACE_STRTOK_R@
 REPLACE_STRUCT_TIMEVAL = @REPLACE_STRUCT_TIMEVAL@
 REPLACE_SYMLINK = @REPLACE_SYMLINK@
+REPLACE_SYMLINKAT = @REPLACE_SYMLINKAT@
 REPLACE_TIMEGM = @REPLACE_TIMEGM@
 REPLACE_TMPFILE = @REPLACE_TMPFILE@
 REPLACE_TOWLOWER = @REPLACE_TOWLOWER@
@@ -2350,6 +2396,7 @@ REPLACE_WCWIDTH = @REPLACE_WCWIDTH@
 REPLACE_WRITE = @REPLACE_WRITE@
 ROUNDF_LIBM = @ROUNDF_LIBM@
 ROUND_LIBM = @ROUND_LIBM@
+RSVG_CONVERT = @RSVG_CONVERT@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -2367,6 +2414,9 @@ SH_LD = @SH_LD@
 SH_LDFLAGS = @SH_LDFLAGS@
 SIG_ATOMIC_T_SUFFIX = @SIG_ATOMIC_T_SUFFIX@
 SIZE_T_SUFFIX = @SIZE_T_SUFFIX@
+SNDFILE_CPPFLAGS = @SNDFILE_CPPFLAGS@
+SNDFILE_LDFLAGS = @SNDFILE_LDFLAGS@
+SNDFILE_LIBS = @SNDFILE_LIBS@
 SONAME_FLAGS = @SONAME_FLAGS@
 STDALIGN_H = @STDALIGN_H@
 STDBOOL_H = @STDBOOL_H@
@@ -2379,22 +2429,6 @@ TEMPLATE_ARFLAGS = @TEMPLATE_ARFLAGS@
 TERM_LIBS = @TERM_LIBS@
 TEXI2DVI = @TEXI2DVI@
 TEXI2PDF = @TEXI2PDF@
-TEXINFO_AMD = @TEXINFO_AMD@
-TEXINFO_ARPACK = @TEXINFO_ARPACK@
-TEXINFO_CAMD = @TEXINFO_CAMD@
-TEXINFO_CCOLAMD = @TEXINFO_CCOLAMD@
-TEXINFO_CHOLMOD = @TEXINFO_CHOLMOD@
-TEXINFO_COLAMD = @TEXINFO_COLAMD@
-TEXINFO_CURL = @TEXINFO_CURL@
-TEXINFO_CXSPARSE = @TEXINFO_CXSPARSE@
-TEXINFO_FFTW3 = @TEXINFO_FFTW3@
-TEXINFO_FFTW3F = @TEXINFO_FFTW3F@
-TEXINFO_GLPK = @TEXINFO_GLPK@
-TEXINFO_HDF5 = @TEXINFO_HDF5@
-TEXINFO_QHULL = @TEXINFO_QHULL@
-TEXINFO_QRUPDATE = @TEXINFO_QRUPDATE@
-TEXINFO_UMFPACK = @TEXINFO_UMFPACK@
-TEXINFO_Z = @TEXINFO_Z@
 TIME_H_DEFINES_STRUCT_TIMESPEC = @TIME_H_DEFINES_STRUCT_TIMESPEC@
 TRUNCF_LIBM = @TRUNCF_LIBM@
 TRUNC_LIBM = @TRUNC_LIBM@
@@ -2403,6 +2437,7 @@ UMFPACK_CPPFLAGS = @UMFPACK_CPPFLAGS@
 UMFPACK_LDFLAGS = @UMFPACK_LDFLAGS@
 UMFPACK_LIBS = @UMFPACK_LIBS@
 UNDEFINE_STRTOK_R = @UNDEFINE_STRTOK_R@
+UNISTD_H_DEFINES_STRUCT_TIMESPEC = @UNISTD_H_DEFINES_STRUCT_TIMESPEC@
 UNISTD_H_HAVE_WINSOCK2_H = @UNISTD_H_HAVE_WINSOCK2_H@
 UNISTD_H_HAVE_WINSOCK2_H_AND_USE_SOCKETS = @UNISTD_H_HAVE_WINSOCK2_H_AND_USE_SOCKETS@
 
@@ -2560,13 +2595,16 @@ man1ext = @man1ext@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
 
+# Where Octave will search for example data files shipped with distribution.
+octdatadir = @octdatadir@
+
 # Where to install and expect extra files like NEWS and doc-cache.
 octetcdir = @octetcdir@
 
 # Where to put object files that will by dynamically loaded.
 # This path usually includes the Octave version and configuration
 # name, so that multiple configurations for multiple versions of
-# Octave may be installed at once. 
+# Octave may be installed at once.
 octfiledir = @octfiledir@
 
 # Where to install Octave's include files.  The default is
@@ -2623,7 +2661,6 @@ LIBEXT = a
 AM_FFLAGS = @FFLAGS@
 ALL_FFLAGS = $(FFLAGS)
 AM_CFLAGS = $(XTRA_CFLAGS) $(WARN_CFLAGS)
-ALL_CPPFLAGS = $(CPPFLAGS) $(HDF5_CPPFLAGS) $(Z_CPPFLAGS) $(LLVM_CPPFLAGS)
 AM_CXXFLAGS = $(XTRA_CXXFLAGS) $(WARN_CXXFLAGS)
 LIBFLAGS = -L$(top_builddir)
 FFTW_XCPPFLAGS = $(FFTW3_CPPFLAGS) $(FFTW3F_CPPFLAGS)
@@ -2669,35 +2706,49 @@ AM_CPPFLAGS = \
   -I$(srcdir)/operators \
   -Iparse-tree -I$(srcdir)/parse-tree \
   -Icorefcn -I$(srcdir)/corefcn \
-  -I$(top_builddir)/libgnu -I$(top_srcdir)/libgnu
+  -I$(top_builddir)/libgnu -I$(top_srcdir)/libgnu \
+  $(HDF5_CPPFLAGS)
 
 octlib_LTLIBRARIES = liboctinterp.la $(am__append_1)
-BUILT_SOURCES = \
-  corefcn/mxarray.h \
-  corefcn/oct-errno.cc \
+GENERATED_MAKE_BUILTINS_INCS = \
   corefcn/defaults.h \
   corefcn/graphics-props.cc \
   corefcn/graphics.h \
+  corefcn/mxarray.h \
+  oct-conf-features.h \
+  oct-conf.h \
+  parse-tree/oct-gperf.h \
+  parse-tree/oct-parse.h \
+  version.h
+
+BUILT_SOURCES = \
+  $(GENERATED_MAKE_BUILTINS_INCS) \
+  builtin-defun-decls.h \
+  builtins.cc \
+  corefcn/oct-errno.cc \
   corefcn/oct-tex-lexer.cc \
   corefcn/oct-tex-parser.cc \
   corefcn/oct-tex-symbols.cc \
   operators/ops.cc \
   parse-tree/lex.cc \
-  parse-tree/oct-gperf.h \
-  parse-tree/oct-parse.cc \
-  oct-conf.h \
-  oct-conf-features.h \
-  version.h \
-  builtin-defun-decls.h \
-  builtins.cc
+  parse-tree/oct-parse.cc
+
+ULT_PARSER_SRC := \
+  corefcn/oct-tex-lexer.in.ll \
+  corefcn/oct-tex-parser.in.yy \
+  parse-tree/oct-parse.in.yy
+
+GENERATED_PARSER_FILES := \
+  corefcn/oct-tex-lexer.ll \
+  corefcn/oct-tex-parser.yy \
+  parse-tree/oct-parse.yy
 
 BUILT_DISTFILES = \
-  corefcn/oct-tex-lexer.ll \
+  $(GENERATED_PARSER_FILES) \
   corefcn/oct-tex-parser.h \
   corefcn/oct-tex-symbols.cc \
   parse-tree/oct-gperf.h \
-  parse-tree/oct-parse.h \
-  parse-tree/oct-parse.yy
+  parse-tree/oct-parse.h
 
 BUILT_NODISTFILES = \
   corefcn/mxarray.h \
@@ -2723,9 +2774,10 @@ EXTRA_DIST = Makefile.in DOCSTRINGS config-features.sh \
 	template-inst/module.mk corefcn/module.mk \
 	corefcn/defaults.in.h corefcn/graphics.in.h \
 	corefcn/mxarray.in.h corefcn/oct-errno.in.cc \
-	corefcn/oct-tex-lexer.in.ll corefcn/oct-tex-symbols.in \
-	dldfcn/config-module.sh dldfcn/config-module.awk \
-	dldfcn/module-files dldfcn/oct-qhull.h
+	corefcn/oct-tex-lexer.in.ll corefcn/oct-tex-parser.in.yy \
+	corefcn/oct-tex-symbols.in dldfcn/config-module.sh \
+	dldfcn/config-module.awk dldfcn/module-files \
+	dldfcn/oct-qhull.h
 octinclude_HEADERS = \
   corefcn/graphics-props.cc \
   parse-tree/oct-gperf.h \
@@ -2776,6 +2828,7 @@ PARSE_TREE_INC = \
   parse-tree/pt-cbinop.h \
   parse-tree/pt-cell.h \
   parse-tree/pt-check.h \
+  parse-tree/pt-classdef.h \
   parse-tree/pt-cmd.h \
   parse-tree/pt-colon.h \
   parse-tree/pt-const.h \
@@ -2784,6 +2837,7 @@ PARSE_TREE_INC = \
   parse-tree/pt-except.h \
   parse-tree/pt-exp.h \
   parse-tree/pt-fcn-handle.h \
+  parse-tree/pt-funcall.h \
   parse-tree/pt-id.h \
   parse-tree/pt-idx.h \
   parse-tree/pt-jump.h \
@@ -2807,6 +2861,7 @@ PARSE_TREE_SRC = \
   parse-tree/pt-cbinop.cc \
   parse-tree/pt-cell.cc \
   parse-tree/pt-check.cc \
+  parse-tree/pt-classdef.cc \
   parse-tree/pt-cmd.cc \
   parse-tree/pt-colon.cc \
   parse-tree/pt-const.cc \
@@ -2815,6 +2870,7 @@ PARSE_TREE_SRC = \
   parse-tree/pt-except.cc \
   parse-tree/pt-exp.cc \
   parse-tree/pt-fcn-handle.cc \
+  parse-tree/pt-funcall.cc \
   parse-tree/pt-id.cc \
   parse-tree/pt-idx.cc \
   parse-tree/pt-jump.cc \
@@ -2870,6 +2926,7 @@ OCTAVE_VALUE_INC = \
   octave-value/ov-cell.h \
   octave-value/ov-ch-mat.h \
   octave-value/ov-class.h \
+  octave-value/ov-classdef.h \
   octave-value/ov-colon.h \
   octave-value/ov-complex.h \
   octave-value/ov-cs-list.h \
@@ -2928,6 +2985,7 @@ OCTAVE_VALUE_SRC = \
   octave-value/ov-cell.cc \
   octave-value/ov-ch-mat.cc \
   octave-value/ov-class.cc \
+  octave-value/ov-classdef.cc \
   octave-value/ov-colon.cc \
   octave-value/ov-complex.cc \
   octave-value/ov-cs-list.cc \
@@ -3141,6 +3199,7 @@ TEX_PARSER_INC = \
 COREFCN_INC = \
   corefcn/Cell.h \
   corefcn/c-file-ptr-stream.h \
+  corefcn/cdisplay.h \
   corefcn/comment-list.h \
   corefcn/cutils.h \
   corefcn/data.h \
@@ -3172,11 +3231,11 @@ COREFCN_INC = \
   corefcn/ls-utils.h \
   corefcn/mex.h \
   corefcn/mexproto.h \
-  corefcn/mxarray.in.h \
   corefcn/oct-errno.h \
   corefcn/oct-fstrm.h \
   corefcn/oct-handle.h \
   corefcn/oct-hdf5.h \
+  corefcn/oct-hdf5-id.h \
   corefcn/oct-hist.h \
   corefcn/oct-iostrm.h \
   corefcn/oct-lvalue.h \
@@ -3188,6 +3247,7 @@ COREFCN_INC = \
   corefcn/oct-stream.h \
   corefcn/oct-strstrm.h \
   corefcn/oct.h \
+  corefcn/octave-default-image.h \
   corefcn/octave-link.h \
   corefcn/pager.h \
   corefcn/pr-output.h \
@@ -3231,6 +3291,9 @@ COREFCN_SRC = \
   corefcn/Cell.cc \
   corefcn/__contourc__.cc \
   corefcn/__dispatch__.cc \
+  corefcn/__dsearchn__.cc \
+  corefcn/__ichol__.cc \
+  corefcn/__ilu__.cc \
   corefcn/__lin_interpn__.cc \
   corefcn/__pchip_deriv__.cc \
   corefcn/__qp__.cc \
@@ -3240,6 +3303,7 @@ COREFCN_SRC = \
   corefcn/bitfcns.cc \
   corefcn/bsxfun.cc \
   corefcn/c-file-ptr-stream.cc \
+  corefcn/cdisplay.c \
   corefcn/cellfun.cc \
   corefcn/colloc.cc \
   corefcn/comment-list.cc \
@@ -3305,6 +3369,7 @@ COREFCN_SRC = \
   corefcn/mgorth.cc \
   corefcn/nproc.cc \
   corefcn/oct-fstrm.cc \
+  corefcn/oct-hdf5-id.cc \
   corefcn/oct-hist.cc \
   corefcn/oct-iostrm.cc \
   corefcn/oct-lvalue.cc \
@@ -3315,6 +3380,7 @@ COREFCN_SRC = \
   corefcn/oct-stream.cc \
   corefcn/oct-strstrm.cc \
   corefcn/octave-link.cc \
+  corefcn/ordschur.cc \
   corefcn/pager.cc \
   corefcn/pinv.cc \
   corefcn/pr-output.cc \
@@ -3338,15 +3404,16 @@ COREFCN_SRC = \
   corefcn/strfns.cc \
   corefcn/sub2ind.cc \
   corefcn/svd.cc \
-  corefcn/syl.cc \
+  corefcn/sylvester.cc \
   corefcn/symtab.cc \
   corefcn/syscalls.cc \
   corefcn/sysdep.cc \
   corefcn/time.cc \
   corefcn/toplev.cc \
   corefcn/tril.cc \
-  corefcn/txt-eng.cc \
+  corefcn/tsearch.cc \
   corefcn/txt-eng-ft.cc \
+  corefcn/txt-eng.cc \
   corefcn/typecast.cc \
   corefcn/urlwrite.cc \
   corefcn/utils.cc \
@@ -3370,7 +3437,8 @@ corefcn_libcorefcn_la_CPPFLAGS = $(liboctinterp_la_CPPFLAGS) \
                                  $(FONTCONFIG_CPPFLAGS) \
                                  $(FT2_CPPFLAGS) \
                                  $(HDF5_CPPFLAGS) \
-                                 $(LLVM_CPPFLAGS)
+                                 $(LLVM_CPPFLAGS) \
+                                 $(Z_CPPFLAGS)
 
 corefcn_libcorefcn_la_CXXFLAGS = $(AM_CXXFLAGS) $(LLVM_CXXFLAGS)
 corefcn_libtex_parser_la_SOURCES = $(TEX_PARSER_SRC)
@@ -3380,13 +3448,13 @@ corefcn_libtex_parser_la_CXXFLAGS = \
 
 DLDFCN_SRC = \
   dldfcn/__delaunayn__.cc \
-  dldfcn/__dsearchn__.cc \
   dldfcn/__eigs__.cc \
   dldfcn/__fltk_uigetfile__.cc \
   dldfcn/__glpk__.cc \
   dldfcn/__init_fltk__.cc \
   dldfcn/__init_gnuplot__.cc \
   dldfcn/__magick_read__.cc \
+  dldfcn/__osmesa_print__.cc \
   dldfcn/__voronoi__.cc \
   dldfcn/amd.cc \
   dldfcn/ccolamd.cc \
@@ -3398,91 +3466,96 @@ DLDFCN_SRC = \
   dldfcn/qr.cc \
   dldfcn/symbfact.cc \
   dldfcn/symrcm.cc \
-  dldfcn/tsearch.cc
+  dldfcn/audioread.cc \
+  dldfcn/audiodevinfo.cc
 
 DLDFCN_LIBS = $(DLDFCN_SRC:.cc=.la)
 dldfcn___delaunayn___la_SOURCES = dldfcn/__delaunayn__.cc
-dldfcn___delaunayn___la_CPPFLAGS = $(QHULL_CPPFLAGS) $(AM_CPPFLAGS)
+dldfcn___delaunayn___la_CPPFLAGS = $(AM_CPPFLAGS) $(QHULL_CPPFLAGS)
 dldfcn___delaunayn___la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(QHULL_LDFLAGS) $(OCT_LINK_OPTS)
 dldfcn___delaunayn___la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) ../liboctave/liboctave.la $(QHULL_LIBS) $(OCT_LINK_DEPS)
-dldfcn___dsearchn___la_SOURCES = dldfcn/__dsearchn__.cc
-dldfcn___dsearchn___la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
-dldfcn___dsearchn___la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) ../liboctave/liboctave.la  $(OCT_LINK_DEPS)
 dldfcn___eigs___la_SOURCES = dldfcn/__eigs__.cc
-dldfcn___eigs___la_CPPFLAGS = $(ARPACK_CPPFLAGS) $(SPARSE_XCPPFLAGS) $(AM_CPPFLAGS)
+dldfcn___eigs___la_CPPFLAGS = $(AM_CPPFLAGS) $(ARPACK_CPPFLAGS) $(SPARSE_XCPPFLAGS)
 dldfcn___eigs___la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(ARPACK_LDFLAGS) $(SPARSE_XLDFLAGS) $(OCT_LINK_OPTS)
 dldfcn___eigs___la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) ../liboctave/liboctave.la $(ARPACK_LIBS) $(SPARSE_XLIBS) $(LAPACK_LIBS) $(BLAS_LIBS) $(OCT_LINK_DEPS)
 dldfcn___fltk_uigetfile___la_SOURCES = dldfcn/__fltk_uigetfile__.cc
-dldfcn___fltk_uigetfile___la_CPPFLAGS = $(GRAPHICS_CFLAGS) $(FT2_CPPFLAGS) $(AM_CPPFLAGS)
-dldfcn___fltk_uigetfile___la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(GRAPHICS_LDFLAGS) $(FT2_LDFLAGS) $(OCT_LINK_OPTS)
-dldfcn___fltk_uigetfile___la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) ../liboctave/liboctave.la $(GRAPHICS_LIBS) $(FT2_LIBS) $(OCT_LINK_DEPS)
+dldfcn___fltk_uigetfile___la_CPPFLAGS = $(AM_CPPFLAGS) $(FLTK_CPPFLAGS) $(FT2_CPPFLAGS)
+dldfcn___fltk_uigetfile___la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(FLTK_LDFLAGS) $(FT2_LDFLAGS) $(OCT_LINK_OPTS)
+dldfcn___fltk_uigetfile___la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) ../liboctave/liboctave.la $(FLTK_LIBS) $(FT2_LIBS) $(OCT_LINK_DEPS)
 dldfcn___glpk___la_SOURCES = dldfcn/__glpk__.cc
-dldfcn___glpk___la_CPPFLAGS = $(GLPK_CPPFLAGS) $(AM_CPPFLAGS)
+dldfcn___glpk___la_CPPFLAGS = $(AM_CPPFLAGS) $(GLPK_CPPFLAGS)
 dldfcn___glpk___la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(GLPK_LDFLAGS) $(OCT_LINK_OPTS)
 dldfcn___glpk___la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) ../liboctave/liboctave.la $(GLPK_LIBS) $(OCT_LINK_DEPS)
 dldfcn___init_fltk___la_SOURCES = dldfcn/__init_fltk__.cc
-dldfcn___init_fltk___la_CPPFLAGS = $(GRAPHICS_CFLAGS) $(FT2_CPPFLAGS) $(FONTCONFIG_CPPFLAGS) $(AM_CPPFLAGS)
-dldfcn___init_fltk___la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(GRAPHICS_LDFLAGS) $(FT2_LDFLAGS) $(OCT_LINK_OPTS)
-dldfcn___init_fltk___la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) ../liboctave/liboctave.la $(GRAPHICS_LIBS) $(FT2_LIBS) $(OPENGL_LIBS) $(OCT_LINK_DEPS)
+dldfcn___init_fltk___la_CPPFLAGS = $(AM_CPPFLAGS) $(FLTK_CPPFLAGS) $(FT2_CPPFLAGS) $(FONTCONFIG_CPPFLAGS)
+dldfcn___init_fltk___la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(FLTK_LDFLAGS) $(FT2_LDFLAGS) $(OCT_LINK_OPTS)
+dldfcn___init_fltk___la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) ../liboctave/liboctave.la $(FLTK_LIBS) $(FT2_LIBS) $(OPENGL_LIBS) $(OCT_LINK_DEPS)
 dldfcn___init_gnuplot___la_SOURCES = dldfcn/__init_gnuplot__.cc
-dldfcn___init_gnuplot___la_CPPFLAGS = $(FT2_CPPFLAGS) $(FONTCONFIG_CPPFLAGS) $(AM_CPPFLAGS)
+dldfcn___init_gnuplot___la_CPPFLAGS = $(AM_CPPFLAGS) $(FT2_CPPFLAGS) $(FONTCONFIG_CPPFLAGS)
 dldfcn___init_gnuplot___la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
 dldfcn___init_gnuplot___la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) ../liboctave/liboctave.la  $(OCT_LINK_DEPS)
 dldfcn___magick_read___la_SOURCES = dldfcn/__magick_read__.cc
-dldfcn___magick_read___la_CPPFLAGS = $(MAGICK_CPPFLAGS) $(AM_CPPFLAGS)
+dldfcn___magick_read___la_CPPFLAGS = $(AM_CPPFLAGS) $(MAGICK_CPPFLAGS)
 dldfcn___magick_read___la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(MAGICK_LDFLAGS) $(OCT_LINK_OPTS)
 dldfcn___magick_read___la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) ../liboctave/liboctave.la $(MAGICK_LIBS) $(OCT_LINK_DEPS)
+dldfcn___osmesa_print___la_SOURCES = dldfcn/__osmesa_print__.cc
+dldfcn___osmesa_print___la_CPPFLAGS = $(AM_CPPFLAGS) $(OSMESA_CPPFLAGS) $(FT2_CPPFLAGS)
+dldfcn___osmesa_print___la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(OSMESA_LDFLAGS) $(OCT_LINK_OPTS)
+dldfcn___osmesa_print___la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) ../liboctave/liboctave.la $(OSMESA_LIBS) $(OCT_LINK_DEPS)
 dldfcn___voronoi___la_SOURCES = dldfcn/__voronoi__.cc
-dldfcn___voronoi___la_CPPFLAGS = $(QHULL_CPPFLAGS) $(AM_CPPFLAGS)
+dldfcn___voronoi___la_CPPFLAGS = $(AM_CPPFLAGS) $(QHULL_CPPFLAGS)
 dldfcn___voronoi___la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(QHULL_LDFLAGS) $(OCT_LINK_OPTS)
 dldfcn___voronoi___la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) ../liboctave/liboctave.la $(QHULL_LIBS) $(OCT_LINK_DEPS)
 dldfcn_amd_la_SOURCES = dldfcn/amd.cc
-dldfcn_amd_la_CPPFLAGS = $(SPARSE_XCPPFLAGS) $(AM_CPPFLAGS)
+dldfcn_amd_la_CPPFLAGS = $(AM_CPPFLAGS) $(SPARSE_XCPPFLAGS)
 dldfcn_amd_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(SPARSE_XLDFLAGS) $(OCT_LINK_OPTS)
 dldfcn_amd_la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) ../liboctave/liboctave.la $(SPARSE_XLIBS) $(OCT_LINK_DEPS)
 dldfcn_ccolamd_la_SOURCES = dldfcn/ccolamd.cc
-dldfcn_ccolamd_la_CPPFLAGS = $(SPARSE_XCPPFLAGS) $(AM_CPPFLAGS)
+dldfcn_ccolamd_la_CPPFLAGS = $(AM_CPPFLAGS) $(SPARSE_XCPPFLAGS)
 dldfcn_ccolamd_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(SPARSE_XLDFLAGS) $(OCT_LINK_OPTS)
 dldfcn_ccolamd_la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) ../liboctave/liboctave.la $(SPARSE_XLIBS) $(OCT_LINK_DEPS)
 dldfcn_chol_la_SOURCES = dldfcn/chol.cc
-dldfcn_chol_la_CPPFLAGS = $(SPARSE_XCPPFLAGS) $(AM_CPPFLAGS)
+dldfcn_chol_la_CPPFLAGS = $(AM_CPPFLAGS) $(SPARSE_XCPPFLAGS)
 dldfcn_chol_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(SPARSE_XLDFLAGS) $(OCT_LINK_OPTS)
 dldfcn_chol_la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) ../liboctave/liboctave.la $(SPARSE_XLIBS) $(OCT_LINK_DEPS)
 dldfcn_colamd_la_SOURCES = dldfcn/colamd.cc
-dldfcn_colamd_la_CPPFLAGS = $(SPARSE_XCPPFLAGS) $(AM_CPPFLAGS)
+dldfcn_colamd_la_CPPFLAGS = $(AM_CPPFLAGS) $(SPARSE_XCPPFLAGS)
 dldfcn_colamd_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(SPARSE_XLDFLAGS) $(OCT_LINK_OPTS)
 dldfcn_colamd_la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) ../liboctave/liboctave.la $(SPARSE_XLIBS) $(OCT_LINK_DEPS)
 dldfcn_convhulln_la_SOURCES = dldfcn/convhulln.cc
-dldfcn_convhulln_la_CPPFLAGS = $(QHULL_CPPFLAGS) $(AM_CPPFLAGS)
+dldfcn_convhulln_la_CPPFLAGS = $(AM_CPPFLAGS) $(QHULL_CPPFLAGS)
 dldfcn_convhulln_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(QHULL_LDFLAGS) $(OCT_LINK_OPTS)
 dldfcn_convhulln_la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) ../liboctave/liboctave.la $(QHULL_LIBS) $(OCT_LINK_DEPS)
 dldfcn_dmperm_la_SOURCES = dldfcn/dmperm.cc
-dldfcn_dmperm_la_CPPFLAGS = $(SPARSE_XCPPFLAGS) $(AM_CPPFLAGS)
+dldfcn_dmperm_la_CPPFLAGS = $(AM_CPPFLAGS) $(SPARSE_XCPPFLAGS)
 dldfcn_dmperm_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(SPARSE_XLDFLAGS) $(OCT_LINK_OPTS)
 dldfcn_dmperm_la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) ../liboctave/liboctave.la $(SPARSE_XLIBS) $(OCT_LINK_DEPS)
 dldfcn_fftw_la_SOURCES = dldfcn/fftw.cc
-dldfcn_fftw_la_CPPFLAGS = $(FFTW_XCPPFLAGS) $(AM_CPPFLAGS)
+dldfcn_fftw_la_CPPFLAGS = $(AM_CPPFLAGS) $(FFTW_XCPPFLAGS)
 dldfcn_fftw_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(FFTW_XLDFLAGS) $(OCT_LINK_OPTS)
 dldfcn_fftw_la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) ../liboctave/liboctave.la $(FFTW_XLIBS) $(OCT_LINK_DEPS)
 dldfcn_qr_la_SOURCES = dldfcn/qr.cc
-dldfcn_qr_la_CPPFLAGS = $(QRUPDATE_CPPFLAGS) $(SPARSE_XCPPFLAGS) $(AM_CPPFLAGS)
+dldfcn_qr_la_CPPFLAGS = $(AM_CPPFLAGS) $(QRUPDATE_CPPFLAGS) $(SPARSE_XCPPFLAGS)
 dldfcn_qr_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(QRUPDATE_LDFLAGS) $(SPARSE_XLDFLAGS) $(OCT_LINK_OPTS)
 dldfcn_qr_la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) ../liboctave/liboctave.la $(QRUPDATE_LIBS) $(SPARSE_XLIBS) $(OCT_LINK_DEPS)
 dldfcn_symbfact_la_SOURCES = dldfcn/symbfact.cc
-dldfcn_symbfact_la_CPPFLAGS = $(SPARSE_XCPPFLAGS) $(AM_CPPFLAGS)
+dldfcn_symbfact_la_CPPFLAGS = $(AM_CPPFLAGS) $(SPARSE_XCPPFLAGS)
 dldfcn_symbfact_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(SPARSE_XLDFLAGS) $(OCT_LINK_OPTS)
 dldfcn_symbfact_la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) ../liboctave/liboctave.la $(SPARSE_XLIBS) $(OCT_LINK_DEPS)
 dldfcn_symrcm_la_SOURCES = dldfcn/symrcm.cc
-dldfcn_symrcm_la_CPPFLAGS = $(SPARSE_XCPPFLAGS) $(AM_CPPFLAGS)
+dldfcn_symrcm_la_CPPFLAGS = $(AM_CPPFLAGS) $(SPARSE_XCPPFLAGS)
 dldfcn_symrcm_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(SPARSE_XLDFLAGS) $(OCT_LINK_OPTS)
 dldfcn_symrcm_la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) ../liboctave/liboctave.la $(SPARSE_XLIBS) $(OCT_LINK_DEPS)
-dldfcn_tsearch_la_SOURCES = dldfcn/tsearch.cc
-dldfcn_tsearch_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG)  $(OCT_LINK_OPTS)
-dldfcn_tsearch_la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) ../liboctave/liboctave.la  $(OCT_LINK_DEPS)
+dldfcn_audioread_la_SOURCES = dldfcn/audioread.cc
+dldfcn_audioread_la_CPPFLAGS = $(AM_CPPFLAGS) $(SNDFILE_CPPFLAGS)
+dldfcn_audioread_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(SNDFILE_LDFLAGS) $(OCT_LINK_OPTS)
+dldfcn_audioread_la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) ../liboctave/liboctave.la $(SNDFILE_LIBS) $(OCT_LINK_DEPS)
+dldfcn_audiodevinfo_la_SOURCES = dldfcn/audiodevinfo.cc
+dldfcn_audiodevinfo_la_CPPFLAGS = $(AM_CPPFLAGS) $(PORTAUDIO_CPPFLAGS)
+dldfcn_audiodevinfo_la_LDFLAGS = -avoid-version -module $(NO_UNDEFINED_LDFLAG) $(PORTAUDIO_LDFLAGS) $(OCT_LINK_OPTS)
+dldfcn_audiodevinfo_la_LIBADD = $(DLD_LIBOCTINTERP_LIBADD) ../liboctave/liboctave.la $(PORTAUDIO_LIBS) $(OCT_LINK_DEPS)
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@OCT_FILES = 
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@OCT_FILES = $(DLDFCN_LIBS:.la=.oct)
-@AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@OCT_STAMP_FILES = 
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@OCT_STAMP_FILES = $(subst dldfcn/,dldfcn/$(am__leading_dot),$(DLDFCN_LIBS:.la=.oct-stamp))
 @AMCOND_ENABLE_DYNAMIC_LINKING_FALSE@DLD_LIBOCTINTERP_LIBADD = 
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@DLD_LIBOCTINTERP_LIBADD = liboctinterp.la
 liboctinterp_la_SOURCES = \
@@ -3593,7 +3666,7 @@ liboctinterp_la_LDFLAGS = \
   $(LIBOCTINTERP_LINK_OPTS)
 
 ULT_DIST_SRC := \
-  $(filter-out corefcn/oct-tex-lexer.ll parse-tree/oct-parse.yy, $(DIST_SRC)) corefcn/oct-tex-lexer.in.ll parse-tree/oct-parse.in.yy
+  $(filter-out $(GENERATED_PARSER_FILES), $(DIST_SRC)) $(ULT_PARSER_SRC)
 
 SRC_DEF_FILES := $(shell $(srcdir)/find-defun-files.sh "$(srcdir)" $(ULT_DIST_SRC))
 DLDFCN_DEF_FILES = $(DLDFCN_SRC:.cc=.df)
@@ -3618,7 +3691,6 @@ DISTCLEANFILES = \
   DOCSTRINGS \
   $(BUILT_NODISTFILES) \
   $(OCT_FILES) \
-  $(OCT_STAMP_FILES) \
   $(TST_FILES)
 
 MAINTAINERCLEANFILES = \
@@ -3718,6 +3790,12 @@ corefcn/corefcn_libcorefcn_la-__contourc__.lo:  \
 	corefcn/$(am__dirstamp) corefcn/$(DEPDIR)/$(am__dirstamp)
 corefcn/corefcn_libcorefcn_la-__dispatch__.lo:  \
 	corefcn/$(am__dirstamp) corefcn/$(DEPDIR)/$(am__dirstamp)
+corefcn/corefcn_libcorefcn_la-__dsearchn__.lo:  \
+	corefcn/$(am__dirstamp) corefcn/$(DEPDIR)/$(am__dirstamp)
+corefcn/corefcn_libcorefcn_la-__ichol__.lo: corefcn/$(am__dirstamp) \
+	corefcn/$(DEPDIR)/$(am__dirstamp)
+corefcn/corefcn_libcorefcn_la-__ilu__.lo: corefcn/$(am__dirstamp) \
+	corefcn/$(DEPDIR)/$(am__dirstamp)
 corefcn/corefcn_libcorefcn_la-__lin_interpn__.lo:  \
 	corefcn/$(am__dirstamp) corefcn/$(DEPDIR)/$(am__dirstamp)
 corefcn/corefcn_libcorefcn_la-__pchip_deriv__.lo:  \
@@ -3736,6 +3814,8 @@ corefcn/corefcn_libcorefcn_la-bsxfun.lo: corefcn/$(am__dirstamp) \
 	corefcn/$(DEPDIR)/$(am__dirstamp)
 corefcn/corefcn_libcorefcn_la-c-file-ptr-stream.lo:  \
 	corefcn/$(am__dirstamp) corefcn/$(DEPDIR)/$(am__dirstamp)
+corefcn/corefcn_libcorefcn_la-cdisplay.lo: corefcn/$(am__dirstamp) \
+	corefcn/$(DEPDIR)/$(am__dirstamp)
 corefcn/corefcn_libcorefcn_la-cellfun.lo: corefcn/$(am__dirstamp) \
 	corefcn/$(DEPDIR)/$(am__dirstamp)
 corefcn/corefcn_libcorefcn_la-colloc.lo: corefcn/$(am__dirstamp) \
@@ -3866,6 +3946,8 @@ corefcn/corefcn_libcorefcn_la-nproc.lo: corefcn/$(am__dirstamp) \
 	corefcn/$(DEPDIR)/$(am__dirstamp)
 corefcn/corefcn_libcorefcn_la-oct-fstrm.lo: corefcn/$(am__dirstamp) \
 	corefcn/$(DEPDIR)/$(am__dirstamp)
+corefcn/corefcn_libcorefcn_la-oct-hdf5-id.lo: corefcn/$(am__dirstamp) \
+	corefcn/$(DEPDIR)/$(am__dirstamp)
 corefcn/corefcn_libcorefcn_la-oct-hist.lo: corefcn/$(am__dirstamp) \
 	corefcn/$(DEPDIR)/$(am__dirstamp)
 corefcn/corefcn_libcorefcn_la-oct-iostrm.lo: corefcn/$(am__dirstamp) \
@@ -3885,6 +3967,8 @@ corefcn/corefcn_libcorefcn_la-oct-stream.lo: corefcn/$(am__dirstamp) \
 corefcn/corefcn_libcorefcn_la-oct-strstrm.lo: corefcn/$(am__dirstamp) \
 	corefcn/$(DEPDIR)/$(am__dirstamp)
 corefcn/corefcn_libcorefcn_la-octave-link.lo: corefcn/$(am__dirstamp) \
+	corefcn/$(DEPDIR)/$(am__dirstamp)
+corefcn/corefcn_libcorefcn_la-ordschur.lo: corefcn/$(am__dirstamp) \
 	corefcn/$(DEPDIR)/$(am__dirstamp)
 corefcn/corefcn_libcorefcn_la-pager.lo: corefcn/$(am__dirstamp) \
 	corefcn/$(DEPDIR)/$(am__dirstamp)
@@ -3932,7 +4016,7 @@ corefcn/corefcn_libcorefcn_la-sub2ind.lo: corefcn/$(am__dirstamp) \
 	corefcn/$(DEPDIR)/$(am__dirstamp)
 corefcn/corefcn_libcorefcn_la-svd.lo: corefcn/$(am__dirstamp) \
 	corefcn/$(DEPDIR)/$(am__dirstamp)
-corefcn/corefcn_libcorefcn_la-syl.lo: corefcn/$(am__dirstamp) \
+corefcn/corefcn_libcorefcn_la-sylvester.lo: corefcn/$(am__dirstamp) \
 	corefcn/$(DEPDIR)/$(am__dirstamp)
 corefcn/corefcn_libcorefcn_la-symtab.lo: corefcn/$(am__dirstamp) \
 	corefcn/$(DEPDIR)/$(am__dirstamp)
@@ -3946,9 +4030,11 @@ corefcn/corefcn_libcorefcn_la-toplev.lo: corefcn/$(am__dirstamp) \
 	corefcn/$(DEPDIR)/$(am__dirstamp)
 corefcn/corefcn_libcorefcn_la-tril.lo: corefcn/$(am__dirstamp) \
 	corefcn/$(DEPDIR)/$(am__dirstamp)
-corefcn/corefcn_libcorefcn_la-txt-eng.lo: corefcn/$(am__dirstamp) \
+corefcn/corefcn_libcorefcn_la-tsearch.lo: corefcn/$(am__dirstamp) \
 	corefcn/$(DEPDIR)/$(am__dirstamp)
 corefcn/corefcn_libcorefcn_la-txt-eng-ft.lo: corefcn/$(am__dirstamp) \
+	corefcn/$(DEPDIR)/$(am__dirstamp)
+corefcn/corefcn_libcorefcn_la-txt-eng.lo: corefcn/$(am__dirstamp) \
 	corefcn/$(DEPDIR)/$(am__dirstamp)
 corefcn/corefcn_libcorefcn_la-typecast.lo: corefcn/$(am__dirstamp) \
 	corefcn/$(DEPDIR)/$(am__dirstamp)
@@ -4001,11 +4087,6 @@ dldfcn/dldfcn___delaunayn___la-__delaunayn__.lo:  \
 
 dldfcn/__delaunayn__.la: $(dldfcn___delaunayn___la_OBJECTS) $(dldfcn___delaunayn___la_DEPENDENCIES) $(EXTRA_dldfcn___delaunayn___la_DEPENDENCIES) dldfcn/$(am__dirstamp)
 	$(AM_V_CXXLD)$(dldfcn___delaunayn___la_LINK) $(am_dldfcn___delaunayn___la_rpath) $(dldfcn___delaunayn___la_OBJECTS) $(dldfcn___delaunayn___la_LIBADD) $(LIBS)
-dldfcn/__dsearchn__.lo: dldfcn/$(am__dirstamp) \
-	dldfcn/$(DEPDIR)/$(am__dirstamp)
-
-dldfcn/__dsearchn__.la: $(dldfcn___dsearchn___la_OBJECTS) $(dldfcn___dsearchn___la_DEPENDENCIES) $(EXTRA_dldfcn___dsearchn___la_DEPENDENCIES) dldfcn/$(am__dirstamp)
-	$(AM_V_CXXLD)$(dldfcn___dsearchn___la_LINK) $(am_dldfcn___dsearchn___la_rpath) $(dldfcn___dsearchn___la_OBJECTS) $(dldfcn___dsearchn___la_LIBADD) $(LIBS)
 dldfcn/dldfcn___eigs___la-__eigs__.lo: dldfcn/$(am__dirstamp) \
 	dldfcn/$(DEPDIR)/$(am__dirstamp)
 
@@ -4036,6 +4117,11 @@ dldfcn/dldfcn___magick_read___la-__magick_read__.lo:  \
 
 dldfcn/__magick_read__.la: $(dldfcn___magick_read___la_OBJECTS) $(dldfcn___magick_read___la_DEPENDENCIES) $(EXTRA_dldfcn___magick_read___la_DEPENDENCIES) dldfcn/$(am__dirstamp)
 	$(AM_V_CXXLD)$(dldfcn___magick_read___la_LINK) $(am_dldfcn___magick_read___la_rpath) $(dldfcn___magick_read___la_OBJECTS) $(dldfcn___magick_read___la_LIBADD) $(LIBS)
+dldfcn/dldfcn___osmesa_print___la-__osmesa_print__.lo:  \
+	dldfcn/$(am__dirstamp) dldfcn/$(DEPDIR)/$(am__dirstamp)
+
+dldfcn/__osmesa_print__.la: $(dldfcn___osmesa_print___la_OBJECTS) $(dldfcn___osmesa_print___la_DEPENDENCIES) $(EXTRA_dldfcn___osmesa_print___la_DEPENDENCIES) dldfcn/$(am__dirstamp)
+	$(AM_V_CXXLD)$(dldfcn___osmesa_print___la_LINK) $(am_dldfcn___osmesa_print___la_rpath) $(dldfcn___osmesa_print___la_OBJECTS) $(dldfcn___osmesa_print___la_LIBADD) $(LIBS)
 dldfcn/dldfcn___voronoi___la-__voronoi__.lo: dldfcn/$(am__dirstamp) \
 	dldfcn/$(DEPDIR)/$(am__dirstamp)
 
@@ -4046,6 +4132,16 @@ dldfcn/dldfcn_amd_la-amd.lo: dldfcn/$(am__dirstamp) \
 
 dldfcn/amd.la: $(dldfcn_amd_la_OBJECTS) $(dldfcn_amd_la_DEPENDENCIES) $(EXTRA_dldfcn_amd_la_DEPENDENCIES) dldfcn/$(am__dirstamp)
 	$(AM_V_CXXLD)$(dldfcn_amd_la_LINK) $(am_dldfcn_amd_la_rpath) $(dldfcn_amd_la_OBJECTS) $(dldfcn_amd_la_LIBADD) $(LIBS)
+dldfcn/dldfcn_audiodevinfo_la-audiodevinfo.lo: dldfcn/$(am__dirstamp) \
+	dldfcn/$(DEPDIR)/$(am__dirstamp)
+
+dldfcn/audiodevinfo.la: $(dldfcn_audiodevinfo_la_OBJECTS) $(dldfcn_audiodevinfo_la_DEPENDENCIES) $(EXTRA_dldfcn_audiodevinfo_la_DEPENDENCIES) dldfcn/$(am__dirstamp)
+	$(AM_V_CXXLD)$(dldfcn_audiodevinfo_la_LINK) $(am_dldfcn_audiodevinfo_la_rpath) $(dldfcn_audiodevinfo_la_OBJECTS) $(dldfcn_audiodevinfo_la_LIBADD) $(LIBS)
+dldfcn/dldfcn_audioread_la-audioread.lo: dldfcn/$(am__dirstamp) \
+	dldfcn/$(DEPDIR)/$(am__dirstamp)
+
+dldfcn/audioread.la: $(dldfcn_audioread_la_OBJECTS) $(dldfcn_audioread_la_DEPENDENCIES) $(EXTRA_dldfcn_audioread_la_DEPENDENCIES) dldfcn/$(am__dirstamp)
+	$(AM_V_CXXLD)$(dldfcn_audioread_la_LINK) $(am_dldfcn_audioread_la_rpath) $(dldfcn_audioread_la_OBJECTS) $(dldfcn_audioread_la_LIBADD) $(LIBS)
 dldfcn/dldfcn_ccolamd_la-ccolamd.lo: dldfcn/$(am__dirstamp) \
 	dldfcn/$(DEPDIR)/$(am__dirstamp)
 
@@ -4091,11 +4187,6 @@ dldfcn/dldfcn_symrcm_la-symrcm.lo: dldfcn/$(am__dirstamp) \
 
 dldfcn/symrcm.la: $(dldfcn_symrcm_la_OBJECTS) $(dldfcn_symrcm_la_DEPENDENCIES) $(EXTRA_dldfcn_symrcm_la_DEPENDENCIES) dldfcn/$(am__dirstamp)
 	$(AM_V_CXXLD)$(dldfcn_symrcm_la_LINK) $(am_dldfcn_symrcm_la_rpath) $(dldfcn_symrcm_la_OBJECTS) $(dldfcn_symrcm_la_LIBADD) $(LIBS)
-dldfcn/tsearch.lo: dldfcn/$(am__dirstamp) \
-	dldfcn/$(DEPDIR)/$(am__dirstamp)
-
-dldfcn/tsearch.la: $(dldfcn_tsearch_la_OBJECTS) $(dldfcn_tsearch_la_DEPENDENCIES) $(EXTRA_dldfcn_tsearch_la_DEPENDENCIES) dldfcn/$(am__dirstamp)
-	$(AM_V_CXXLD)$(dldfcn_tsearch_la_LINK) $(am_dldfcn_tsearch_la_rpath) $(dldfcn_tsearch_la_OBJECTS) $(dldfcn_tsearch_la_LIBADD) $(LIBS)
 operators/$(am__dirstamp):
 	@$(MKDIR_P) operators
 	@: > operators/$(am__dirstamp)
@@ -4405,6 +4496,9 @@ octave-value/octave_value_liboctave_value_la-ov-ch-mat.lo:  \
 octave-value/octave_value_liboctave_value_la-ov-class.lo:  \
 	octave-value/$(am__dirstamp) \
 	octave-value/$(DEPDIR)/$(am__dirstamp)
+octave-value/octave_value_liboctave_value_la-ov-classdef.lo:  \
+	octave-value/$(am__dirstamp) \
+	octave-value/$(DEPDIR)/$(am__dirstamp)
 octave-value/octave_value_liboctave_value_la-ov-colon.lo:  \
 	octave-value/$(am__dirstamp) \
 	octave-value/$(DEPDIR)/$(am__dirstamp)
@@ -4564,6 +4658,9 @@ parse-tree/parse_tree_libparse_tree_la-pt-cell.lo:  \
 parse-tree/parse_tree_libparse_tree_la-pt-check.lo:  \
 	parse-tree/$(am__dirstamp) \
 	parse-tree/$(DEPDIR)/$(am__dirstamp)
+parse-tree/parse_tree_libparse_tree_la-pt-classdef.lo:  \
+	parse-tree/$(am__dirstamp) \
+	parse-tree/$(DEPDIR)/$(am__dirstamp)
 parse-tree/parse_tree_libparse_tree_la-pt-cmd.lo:  \
 	parse-tree/$(am__dirstamp) \
 	parse-tree/$(DEPDIR)/$(am__dirstamp)
@@ -4586,6 +4683,9 @@ parse-tree/parse_tree_libparse_tree_la-pt-exp.lo:  \
 	parse-tree/$(am__dirstamp) \
 	parse-tree/$(DEPDIR)/$(am__dirstamp)
 parse-tree/parse_tree_libparse_tree_la-pt-fcn-handle.lo:  \
+	parse-tree/$(am__dirstamp) \
+	parse-tree/$(DEPDIR)/$(am__dirstamp)
+parse-tree/parse_tree_libparse_tree_la-pt-funcall.lo:  \
 	parse-tree/$(am__dirstamp) \
 	parse-tree/$(DEPDIR)/$(am__dirstamp)
 parse-tree/parse_tree_libparse_tree_la-pt-id.lo:  \
@@ -4660,6 +4760,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-Cell.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-__contourc__.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-__dispatch__.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-__dsearchn__.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-__ichol__.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-__ilu__.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-__lin_interpn__.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-__pchip_deriv__.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-__qp__.Plo@am__quote@
@@ -4669,6 +4772,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-bitfcns.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-bsxfun.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-c-file-ptr-stream.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-cdisplay.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-cellfun.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-colloc.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-comment-list.Plo@am__quote@
@@ -4739,6 +4843,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-mgorth.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-nproc.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-oct-fstrm.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-oct-hdf5-id.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-oct-hist.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-oct-iostrm.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-oct-lvalue.Plo@am__quote@
@@ -4749,6 +4854,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-oct-stream.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-oct-strstrm.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-octave-link.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-ordschur.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-pager.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-pinv.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-pr-output.Plo@am__quote@
@@ -4774,13 +4880,14 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-strfns.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-sub2ind.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-svd.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-syl.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-sylvester.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-symtab.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-syscalls.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-sysdep.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-time.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-toplev.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-tril.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-tsearch.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-txt-eng-ft.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-txt-eng.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libcorefcn_la-typecast.Plo@am__quote@
@@ -4794,7 +4901,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libtex_parser_la-oct-tex-lexer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/corefcn_libtex_parser_la-oct-tex-parser.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@corefcn/$(DEPDIR)/liboctinterp_la-oct-errno.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@dldfcn/$(DEPDIR)/__dsearchn__.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@dldfcn/$(DEPDIR)/dldfcn___delaunayn___la-__delaunayn__.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@dldfcn/$(DEPDIR)/dldfcn___eigs___la-__eigs__.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@dldfcn/$(DEPDIR)/dldfcn___fltk_uigetfile___la-__fltk_uigetfile__.Plo@am__quote@
@@ -4802,8 +4908,11 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@dldfcn/$(DEPDIR)/dldfcn___init_fltk___la-__init_fltk__.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@dldfcn/$(DEPDIR)/dldfcn___init_gnuplot___la-__init_gnuplot__.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@dldfcn/$(DEPDIR)/dldfcn___magick_read___la-__magick_read__.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@dldfcn/$(DEPDIR)/dldfcn___osmesa_print___la-__osmesa_print__.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@dldfcn/$(DEPDIR)/dldfcn___voronoi___la-__voronoi__.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@dldfcn/$(DEPDIR)/dldfcn_amd_la-amd.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@dldfcn/$(DEPDIR)/dldfcn_audiodevinfo_la-audiodevinfo.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@dldfcn/$(DEPDIR)/dldfcn_audioread_la-audioread.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@dldfcn/$(DEPDIR)/dldfcn_ccolamd_la-ccolamd.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@dldfcn/$(DEPDIR)/dldfcn_chol_la-chol.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@dldfcn/$(DEPDIR)/dldfcn_colamd_la-colamd.Plo@am__quote@
@@ -4813,7 +4922,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@dldfcn/$(DEPDIR)/dldfcn_qr_la-qr.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@dldfcn/$(DEPDIR)/dldfcn_symbfact_la-symbfact.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@dldfcn/$(DEPDIR)/dldfcn_symrcm_la-symrcm.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@dldfcn/$(DEPDIR)/tsearch.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@octave-value/$(DEPDIR)/octave_value_liboctave_value_la-ov-base-sparse.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@octave-value/$(DEPDIR)/octave_value_liboctave_value_la-ov-base.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@octave-value/$(DEPDIR)/octave_value_liboctave_value_la-ov-bool-mat.Plo@am__quote@
@@ -4823,6 +4931,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@octave-value/$(DEPDIR)/octave_value_liboctave_value_la-ov-cell.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@octave-value/$(DEPDIR)/octave_value_liboctave_value_la-ov-ch-mat.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@octave-value/$(DEPDIR)/octave_value_liboctave_value_la-ov-class.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@octave-value/$(DEPDIR)/octave_value_liboctave_value_la-ov-classdef.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@octave-value/$(DEPDIR)/octave_value_liboctave_value_la-ov-colon.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@octave-value/$(DEPDIR)/octave_value_liboctave_value_la-ov-complex.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@octave-value/$(DEPDIR)/octave_value_liboctave_value_la-ov-cs-list.Plo@am__quote@
@@ -4999,6 +5108,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@parse-tree/$(DEPDIR)/parse_tree_libparse_tree_la-pt-cbinop.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@parse-tree/$(DEPDIR)/parse_tree_libparse_tree_la-pt-cell.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@parse-tree/$(DEPDIR)/parse_tree_libparse_tree_la-pt-check.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@parse-tree/$(DEPDIR)/parse_tree_libparse_tree_la-pt-classdef.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@parse-tree/$(DEPDIR)/parse_tree_libparse_tree_la-pt-cmd.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@parse-tree/$(DEPDIR)/parse_tree_libparse_tree_la-pt-colon.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@parse-tree/$(DEPDIR)/parse_tree_libparse_tree_la-pt-const.Plo@am__quote@
@@ -5007,6 +5117,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@parse-tree/$(DEPDIR)/parse_tree_libparse_tree_la-pt-except.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@parse-tree/$(DEPDIR)/parse_tree_libparse_tree_la-pt-exp.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@parse-tree/$(DEPDIR)/parse_tree_libparse_tree_la-pt-fcn-handle.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@parse-tree/$(DEPDIR)/parse_tree_libparse_tree_la-pt-funcall.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@parse-tree/$(DEPDIR)/parse_tree_libparse_tree_la-pt-id.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@parse-tree/$(DEPDIR)/parse_tree_libparse_tree_la-pt-idx.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@parse-tree/$(DEPDIR)/parse_tree_libparse_tree_la-pt-jump.Plo@am__quote@
@@ -5048,6 +5159,13 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LTCOMPILE) -c -o $@ $<
+
+corefcn/corefcn_libcorefcn_la-cdisplay.lo: corefcn/cdisplay.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT corefcn/corefcn_libcorefcn_la-cdisplay.lo -MD -MP -MF corefcn/$(DEPDIR)/corefcn_libcorefcn_la-cdisplay.Tpo -c -o corefcn/corefcn_libcorefcn_la-cdisplay.lo `test -f 'corefcn/cdisplay.c' || echo '$(srcdir)/'`corefcn/cdisplay.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) corefcn/$(DEPDIR)/corefcn_libcorefcn_la-cdisplay.Tpo corefcn/$(DEPDIR)/corefcn_libcorefcn_la-cdisplay.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='corefcn/cdisplay.c' object='corefcn/corefcn_libcorefcn_la-cdisplay.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o corefcn/corefcn_libcorefcn_la-cdisplay.lo `test -f 'corefcn/cdisplay.c' || echo '$(srcdir)/'`corefcn/cdisplay.c
 
 corefcn/corefcn_libcorefcn_la-cutils.lo: corefcn/cutils.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT corefcn/corefcn_libcorefcn_la-cutils.lo -MD -MP -MF corefcn/$(DEPDIR)/corefcn_libcorefcn_la-cutils.Tpo -c -o corefcn/corefcn_libcorefcn_la-cutils.lo `test -f 'corefcn/cutils.c' || echo '$(srcdir)/'`corefcn/cutils.c
@@ -5114,6 +5232,27 @@ corefcn/corefcn_libcorefcn_la-__dispatch__.lo: corefcn/__dispatch__.cc
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='corefcn/__dispatch__.cc' object='corefcn/corefcn_libcorefcn_la-__dispatch__.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -c -o corefcn/corefcn_libcorefcn_la-__dispatch__.lo `test -f 'corefcn/__dispatch__.cc' || echo '$(srcdir)/'`corefcn/__dispatch__.cc
+
+corefcn/corefcn_libcorefcn_la-__dsearchn__.lo: corefcn/__dsearchn__.cc
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -MT corefcn/corefcn_libcorefcn_la-__dsearchn__.lo -MD -MP -MF corefcn/$(DEPDIR)/corefcn_libcorefcn_la-__dsearchn__.Tpo -c -o corefcn/corefcn_libcorefcn_la-__dsearchn__.lo `test -f 'corefcn/__dsearchn__.cc' || echo '$(srcdir)/'`corefcn/__dsearchn__.cc
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) corefcn/$(DEPDIR)/corefcn_libcorefcn_la-__dsearchn__.Tpo corefcn/$(DEPDIR)/corefcn_libcorefcn_la-__dsearchn__.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='corefcn/__dsearchn__.cc' object='corefcn/corefcn_libcorefcn_la-__dsearchn__.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -c -o corefcn/corefcn_libcorefcn_la-__dsearchn__.lo `test -f 'corefcn/__dsearchn__.cc' || echo '$(srcdir)/'`corefcn/__dsearchn__.cc
+
+corefcn/corefcn_libcorefcn_la-__ichol__.lo: corefcn/__ichol__.cc
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -MT corefcn/corefcn_libcorefcn_la-__ichol__.lo -MD -MP -MF corefcn/$(DEPDIR)/corefcn_libcorefcn_la-__ichol__.Tpo -c -o corefcn/corefcn_libcorefcn_la-__ichol__.lo `test -f 'corefcn/__ichol__.cc' || echo '$(srcdir)/'`corefcn/__ichol__.cc
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) corefcn/$(DEPDIR)/corefcn_libcorefcn_la-__ichol__.Tpo corefcn/$(DEPDIR)/corefcn_libcorefcn_la-__ichol__.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='corefcn/__ichol__.cc' object='corefcn/corefcn_libcorefcn_la-__ichol__.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -c -o corefcn/corefcn_libcorefcn_la-__ichol__.lo `test -f 'corefcn/__ichol__.cc' || echo '$(srcdir)/'`corefcn/__ichol__.cc
+
+corefcn/corefcn_libcorefcn_la-__ilu__.lo: corefcn/__ilu__.cc
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -MT corefcn/corefcn_libcorefcn_la-__ilu__.lo -MD -MP -MF corefcn/$(DEPDIR)/corefcn_libcorefcn_la-__ilu__.Tpo -c -o corefcn/corefcn_libcorefcn_la-__ilu__.lo `test -f 'corefcn/__ilu__.cc' || echo '$(srcdir)/'`corefcn/__ilu__.cc
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) corefcn/$(DEPDIR)/corefcn_libcorefcn_la-__ilu__.Tpo corefcn/$(DEPDIR)/corefcn_libcorefcn_la-__ilu__.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='corefcn/__ilu__.cc' object='corefcn/corefcn_libcorefcn_la-__ilu__.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -c -o corefcn/corefcn_libcorefcn_la-__ilu__.lo `test -f 'corefcn/__ilu__.cc' || echo '$(srcdir)/'`corefcn/__ilu__.cc
 
 corefcn/corefcn_libcorefcn_la-__lin_interpn__.lo: corefcn/__lin_interpn__.cc
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -MT corefcn/corefcn_libcorefcn_la-__lin_interpn__.lo -MD -MP -MF corefcn/$(DEPDIR)/corefcn_libcorefcn_la-__lin_interpn__.Tpo -c -o corefcn/corefcn_libcorefcn_la-__lin_interpn__.lo `test -f 'corefcn/__lin_interpn__.cc' || echo '$(srcdir)/'`corefcn/__lin_interpn__.cc
@@ -5633,6 +5772,13 @@ corefcn/corefcn_libcorefcn_la-oct-fstrm.lo: corefcn/oct-fstrm.cc
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -c -o corefcn/corefcn_libcorefcn_la-oct-fstrm.lo `test -f 'corefcn/oct-fstrm.cc' || echo '$(srcdir)/'`corefcn/oct-fstrm.cc
 
+corefcn/corefcn_libcorefcn_la-oct-hdf5-id.lo: corefcn/oct-hdf5-id.cc
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -MT corefcn/corefcn_libcorefcn_la-oct-hdf5-id.lo -MD -MP -MF corefcn/$(DEPDIR)/corefcn_libcorefcn_la-oct-hdf5-id.Tpo -c -o corefcn/corefcn_libcorefcn_la-oct-hdf5-id.lo `test -f 'corefcn/oct-hdf5-id.cc' || echo '$(srcdir)/'`corefcn/oct-hdf5-id.cc
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) corefcn/$(DEPDIR)/corefcn_libcorefcn_la-oct-hdf5-id.Tpo corefcn/$(DEPDIR)/corefcn_libcorefcn_la-oct-hdf5-id.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='corefcn/oct-hdf5-id.cc' object='corefcn/corefcn_libcorefcn_la-oct-hdf5-id.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -c -o corefcn/corefcn_libcorefcn_la-oct-hdf5-id.lo `test -f 'corefcn/oct-hdf5-id.cc' || echo '$(srcdir)/'`corefcn/oct-hdf5-id.cc
+
 corefcn/corefcn_libcorefcn_la-oct-hist.lo: corefcn/oct-hist.cc
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -MT corefcn/corefcn_libcorefcn_la-oct-hist.lo -MD -MP -MF corefcn/$(DEPDIR)/corefcn_libcorefcn_la-oct-hist.Tpo -c -o corefcn/corefcn_libcorefcn_la-oct-hist.lo `test -f 'corefcn/oct-hist.cc' || echo '$(srcdir)/'`corefcn/oct-hist.cc
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) corefcn/$(DEPDIR)/corefcn_libcorefcn_la-oct-hist.Tpo corefcn/$(DEPDIR)/corefcn_libcorefcn_la-oct-hist.Plo
@@ -5702,6 +5848,13 @@ corefcn/corefcn_libcorefcn_la-octave-link.lo: corefcn/octave-link.cc
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='corefcn/octave-link.cc' object='corefcn/corefcn_libcorefcn_la-octave-link.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -c -o corefcn/corefcn_libcorefcn_la-octave-link.lo `test -f 'corefcn/octave-link.cc' || echo '$(srcdir)/'`corefcn/octave-link.cc
+
+corefcn/corefcn_libcorefcn_la-ordschur.lo: corefcn/ordschur.cc
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -MT corefcn/corefcn_libcorefcn_la-ordschur.lo -MD -MP -MF corefcn/$(DEPDIR)/corefcn_libcorefcn_la-ordschur.Tpo -c -o corefcn/corefcn_libcorefcn_la-ordschur.lo `test -f 'corefcn/ordschur.cc' || echo '$(srcdir)/'`corefcn/ordschur.cc
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) corefcn/$(DEPDIR)/corefcn_libcorefcn_la-ordschur.Tpo corefcn/$(DEPDIR)/corefcn_libcorefcn_la-ordschur.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='corefcn/ordschur.cc' object='corefcn/corefcn_libcorefcn_la-ordschur.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -c -o corefcn/corefcn_libcorefcn_la-ordschur.lo `test -f 'corefcn/ordschur.cc' || echo '$(srcdir)/'`corefcn/ordschur.cc
 
 corefcn/corefcn_libcorefcn_la-pager.lo: corefcn/pager.cc
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -MT corefcn/corefcn_libcorefcn_la-pager.lo -MD -MP -MF corefcn/$(DEPDIR)/corefcn_libcorefcn_la-pager.Tpo -c -o corefcn/corefcn_libcorefcn_la-pager.lo `test -f 'corefcn/pager.cc' || echo '$(srcdir)/'`corefcn/pager.cc
@@ -5864,12 +6017,12 @@ corefcn/corefcn_libcorefcn_la-svd.lo: corefcn/svd.cc
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -c -o corefcn/corefcn_libcorefcn_la-svd.lo `test -f 'corefcn/svd.cc' || echo '$(srcdir)/'`corefcn/svd.cc
 
-corefcn/corefcn_libcorefcn_la-syl.lo: corefcn/syl.cc
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -MT corefcn/corefcn_libcorefcn_la-syl.lo -MD -MP -MF corefcn/$(DEPDIR)/corefcn_libcorefcn_la-syl.Tpo -c -o corefcn/corefcn_libcorefcn_la-syl.lo `test -f 'corefcn/syl.cc' || echo '$(srcdir)/'`corefcn/syl.cc
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) corefcn/$(DEPDIR)/corefcn_libcorefcn_la-syl.Tpo corefcn/$(DEPDIR)/corefcn_libcorefcn_la-syl.Plo
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='corefcn/syl.cc' object='corefcn/corefcn_libcorefcn_la-syl.lo' libtool=yes @AMDEPBACKSLASH@
+corefcn/corefcn_libcorefcn_la-sylvester.lo: corefcn/sylvester.cc
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -MT corefcn/corefcn_libcorefcn_la-sylvester.lo -MD -MP -MF corefcn/$(DEPDIR)/corefcn_libcorefcn_la-sylvester.Tpo -c -o corefcn/corefcn_libcorefcn_la-sylvester.lo `test -f 'corefcn/sylvester.cc' || echo '$(srcdir)/'`corefcn/sylvester.cc
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) corefcn/$(DEPDIR)/corefcn_libcorefcn_la-sylvester.Tpo corefcn/$(DEPDIR)/corefcn_libcorefcn_la-sylvester.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='corefcn/sylvester.cc' object='corefcn/corefcn_libcorefcn_la-sylvester.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -c -o corefcn/corefcn_libcorefcn_la-syl.lo `test -f 'corefcn/syl.cc' || echo '$(srcdir)/'`corefcn/syl.cc
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -c -o corefcn/corefcn_libcorefcn_la-sylvester.lo `test -f 'corefcn/sylvester.cc' || echo '$(srcdir)/'`corefcn/sylvester.cc
 
 corefcn/corefcn_libcorefcn_la-symtab.lo: corefcn/symtab.cc
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -MT corefcn/corefcn_libcorefcn_la-symtab.lo -MD -MP -MF corefcn/$(DEPDIR)/corefcn_libcorefcn_la-symtab.Tpo -c -o corefcn/corefcn_libcorefcn_la-symtab.lo `test -f 'corefcn/symtab.cc' || echo '$(srcdir)/'`corefcn/symtab.cc
@@ -5913,12 +6066,12 @@ corefcn/corefcn_libcorefcn_la-tril.lo: corefcn/tril.cc
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -c -o corefcn/corefcn_libcorefcn_la-tril.lo `test -f 'corefcn/tril.cc' || echo '$(srcdir)/'`corefcn/tril.cc
 
-corefcn/corefcn_libcorefcn_la-txt-eng.lo: corefcn/txt-eng.cc
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -MT corefcn/corefcn_libcorefcn_la-txt-eng.lo -MD -MP -MF corefcn/$(DEPDIR)/corefcn_libcorefcn_la-txt-eng.Tpo -c -o corefcn/corefcn_libcorefcn_la-txt-eng.lo `test -f 'corefcn/txt-eng.cc' || echo '$(srcdir)/'`corefcn/txt-eng.cc
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) corefcn/$(DEPDIR)/corefcn_libcorefcn_la-txt-eng.Tpo corefcn/$(DEPDIR)/corefcn_libcorefcn_la-txt-eng.Plo
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='corefcn/txt-eng.cc' object='corefcn/corefcn_libcorefcn_la-txt-eng.lo' libtool=yes @AMDEPBACKSLASH@
+corefcn/corefcn_libcorefcn_la-tsearch.lo: corefcn/tsearch.cc
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -MT corefcn/corefcn_libcorefcn_la-tsearch.lo -MD -MP -MF corefcn/$(DEPDIR)/corefcn_libcorefcn_la-tsearch.Tpo -c -o corefcn/corefcn_libcorefcn_la-tsearch.lo `test -f 'corefcn/tsearch.cc' || echo '$(srcdir)/'`corefcn/tsearch.cc
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) corefcn/$(DEPDIR)/corefcn_libcorefcn_la-tsearch.Tpo corefcn/$(DEPDIR)/corefcn_libcorefcn_la-tsearch.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='corefcn/tsearch.cc' object='corefcn/corefcn_libcorefcn_la-tsearch.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -c -o corefcn/corefcn_libcorefcn_la-txt-eng.lo `test -f 'corefcn/txt-eng.cc' || echo '$(srcdir)/'`corefcn/txt-eng.cc
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -c -o corefcn/corefcn_libcorefcn_la-tsearch.lo `test -f 'corefcn/tsearch.cc' || echo '$(srcdir)/'`corefcn/tsearch.cc
 
 corefcn/corefcn_libcorefcn_la-txt-eng-ft.lo: corefcn/txt-eng-ft.cc
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -MT corefcn/corefcn_libcorefcn_la-txt-eng-ft.lo -MD -MP -MF corefcn/$(DEPDIR)/corefcn_libcorefcn_la-txt-eng-ft.Tpo -c -o corefcn/corefcn_libcorefcn_la-txt-eng-ft.lo `test -f 'corefcn/txt-eng-ft.cc' || echo '$(srcdir)/'`corefcn/txt-eng-ft.cc
@@ -5926,6 +6079,13 @@ corefcn/corefcn_libcorefcn_la-txt-eng-ft.lo: corefcn/txt-eng-ft.cc
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='corefcn/txt-eng-ft.cc' object='corefcn/corefcn_libcorefcn_la-txt-eng-ft.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -c -o corefcn/corefcn_libcorefcn_la-txt-eng-ft.lo `test -f 'corefcn/txt-eng-ft.cc' || echo '$(srcdir)/'`corefcn/txt-eng-ft.cc
+
+corefcn/corefcn_libcorefcn_la-txt-eng.lo: corefcn/txt-eng.cc
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -MT corefcn/corefcn_libcorefcn_la-txt-eng.lo -MD -MP -MF corefcn/$(DEPDIR)/corefcn_libcorefcn_la-txt-eng.Tpo -c -o corefcn/corefcn_libcorefcn_la-txt-eng.lo `test -f 'corefcn/txt-eng.cc' || echo '$(srcdir)/'`corefcn/txt-eng.cc
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) corefcn/$(DEPDIR)/corefcn_libcorefcn_la-txt-eng.Tpo corefcn/$(DEPDIR)/corefcn_libcorefcn_la-txt-eng.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='corefcn/txt-eng.cc' object='corefcn/corefcn_libcorefcn_la-txt-eng.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -c -o corefcn/corefcn_libcorefcn_la-txt-eng.lo `test -f 'corefcn/txt-eng.cc' || echo '$(srcdir)/'`corefcn/txt-eng.cc
 
 corefcn/corefcn_libcorefcn_la-typecast.lo: corefcn/typecast.cc
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(corefcn_libcorefcn_la_CPPFLAGS) $(CPPFLAGS) $(corefcn_libcorefcn_la_CXXFLAGS) $(CXXFLAGS) -MT corefcn/corefcn_libcorefcn_la-typecast.lo -MD -MP -MF corefcn/$(DEPDIR)/corefcn_libcorefcn_la-typecast.Tpo -c -o corefcn/corefcn_libcorefcn_la-typecast.lo `test -f 'corefcn/typecast.cc' || echo '$(srcdir)/'`corefcn/typecast.cc
@@ -6074,6 +6234,13 @@ dldfcn/dldfcn___magick_read___la-__magick_read__.lo: dldfcn/__magick_read__.cc
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(dldfcn___magick_read___la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o dldfcn/dldfcn___magick_read___la-__magick_read__.lo `test -f 'dldfcn/__magick_read__.cc' || echo '$(srcdir)/'`dldfcn/__magick_read__.cc
 
+dldfcn/dldfcn___osmesa_print___la-__osmesa_print__.lo: dldfcn/__osmesa_print__.cc
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(dldfcn___osmesa_print___la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT dldfcn/dldfcn___osmesa_print___la-__osmesa_print__.lo -MD -MP -MF dldfcn/$(DEPDIR)/dldfcn___osmesa_print___la-__osmesa_print__.Tpo -c -o dldfcn/dldfcn___osmesa_print___la-__osmesa_print__.lo `test -f 'dldfcn/__osmesa_print__.cc' || echo '$(srcdir)/'`dldfcn/__osmesa_print__.cc
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) dldfcn/$(DEPDIR)/dldfcn___osmesa_print___la-__osmesa_print__.Tpo dldfcn/$(DEPDIR)/dldfcn___osmesa_print___la-__osmesa_print__.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='dldfcn/__osmesa_print__.cc' object='dldfcn/dldfcn___osmesa_print___la-__osmesa_print__.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(dldfcn___osmesa_print___la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o dldfcn/dldfcn___osmesa_print___la-__osmesa_print__.lo `test -f 'dldfcn/__osmesa_print__.cc' || echo '$(srcdir)/'`dldfcn/__osmesa_print__.cc
+
 dldfcn/dldfcn___voronoi___la-__voronoi__.lo: dldfcn/__voronoi__.cc
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(dldfcn___voronoi___la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT dldfcn/dldfcn___voronoi___la-__voronoi__.lo -MD -MP -MF dldfcn/$(DEPDIR)/dldfcn___voronoi___la-__voronoi__.Tpo -c -o dldfcn/dldfcn___voronoi___la-__voronoi__.lo `test -f 'dldfcn/__voronoi__.cc' || echo '$(srcdir)/'`dldfcn/__voronoi__.cc
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) dldfcn/$(DEPDIR)/dldfcn___voronoi___la-__voronoi__.Tpo dldfcn/$(DEPDIR)/dldfcn___voronoi___la-__voronoi__.Plo
@@ -6087,6 +6254,20 @@ dldfcn/dldfcn_amd_la-amd.lo: dldfcn/amd.cc
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='dldfcn/amd.cc' object='dldfcn/dldfcn_amd_la-amd.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(dldfcn_amd_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o dldfcn/dldfcn_amd_la-amd.lo `test -f 'dldfcn/amd.cc' || echo '$(srcdir)/'`dldfcn/amd.cc
+
+dldfcn/dldfcn_audiodevinfo_la-audiodevinfo.lo: dldfcn/audiodevinfo.cc
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(dldfcn_audiodevinfo_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT dldfcn/dldfcn_audiodevinfo_la-audiodevinfo.lo -MD -MP -MF dldfcn/$(DEPDIR)/dldfcn_audiodevinfo_la-audiodevinfo.Tpo -c -o dldfcn/dldfcn_audiodevinfo_la-audiodevinfo.lo `test -f 'dldfcn/audiodevinfo.cc' || echo '$(srcdir)/'`dldfcn/audiodevinfo.cc
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) dldfcn/$(DEPDIR)/dldfcn_audiodevinfo_la-audiodevinfo.Tpo dldfcn/$(DEPDIR)/dldfcn_audiodevinfo_la-audiodevinfo.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='dldfcn/audiodevinfo.cc' object='dldfcn/dldfcn_audiodevinfo_la-audiodevinfo.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(dldfcn_audiodevinfo_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o dldfcn/dldfcn_audiodevinfo_la-audiodevinfo.lo `test -f 'dldfcn/audiodevinfo.cc' || echo '$(srcdir)/'`dldfcn/audiodevinfo.cc
+
+dldfcn/dldfcn_audioread_la-audioread.lo: dldfcn/audioread.cc
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(dldfcn_audioread_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT dldfcn/dldfcn_audioread_la-audioread.lo -MD -MP -MF dldfcn/$(DEPDIR)/dldfcn_audioread_la-audioread.Tpo -c -o dldfcn/dldfcn_audioread_la-audioread.lo `test -f 'dldfcn/audioread.cc' || echo '$(srcdir)/'`dldfcn/audioread.cc
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) dldfcn/$(DEPDIR)/dldfcn_audioread_la-audioread.Tpo dldfcn/$(DEPDIR)/dldfcn_audioread_la-audioread.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='dldfcn/audioread.cc' object='dldfcn/dldfcn_audioread_la-audioread.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(dldfcn_audioread_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o dldfcn/dldfcn_audioread_la-audioread.lo `test -f 'dldfcn/audioread.cc' || echo '$(srcdir)/'`dldfcn/audioread.cc
 
 dldfcn/dldfcn_ccolamd_la-ccolamd.lo: dldfcn/ccolamd.cc
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(dldfcn_ccolamd_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT dldfcn/dldfcn_ccolamd_la-ccolamd.lo -MD -MP -MF dldfcn/$(DEPDIR)/dldfcn_ccolamd_la-ccolamd.Tpo -c -o dldfcn/dldfcn_ccolamd_la-ccolamd.lo `test -f 'dldfcn/ccolamd.cc' || echo '$(srcdir)/'`dldfcn/ccolamd.cc
@@ -7145,6 +7326,13 @@ octave-value/octave_value_liboctave_value_la-ov-class.lo: octave-value/ov-class.
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(octave_value_liboctave_value_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o octave-value/octave_value_liboctave_value_la-ov-class.lo `test -f 'octave-value/ov-class.cc' || echo '$(srcdir)/'`octave-value/ov-class.cc
 
+octave-value/octave_value_liboctave_value_la-ov-classdef.lo: octave-value/ov-classdef.cc
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(octave_value_liboctave_value_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT octave-value/octave_value_liboctave_value_la-ov-classdef.lo -MD -MP -MF octave-value/$(DEPDIR)/octave_value_liboctave_value_la-ov-classdef.Tpo -c -o octave-value/octave_value_liboctave_value_la-ov-classdef.lo `test -f 'octave-value/ov-classdef.cc' || echo '$(srcdir)/'`octave-value/ov-classdef.cc
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) octave-value/$(DEPDIR)/octave_value_liboctave_value_la-ov-classdef.Tpo octave-value/$(DEPDIR)/octave_value_liboctave_value_la-ov-classdef.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='octave-value/ov-classdef.cc' object='octave-value/octave_value_liboctave_value_la-ov-classdef.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(octave_value_liboctave_value_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o octave-value/octave_value_liboctave_value_la-ov-classdef.lo `test -f 'octave-value/ov-classdef.cc' || echo '$(srcdir)/'`octave-value/ov-classdef.cc
+
 octave-value/octave_value_liboctave_value_la-ov-colon.lo: octave-value/ov-colon.cc
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(octave_value_liboctave_value_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT octave-value/octave_value_liboctave_value_la-ov-colon.lo -MD -MP -MF octave-value/$(DEPDIR)/octave_value_liboctave_value_la-ov-colon.Tpo -c -o octave-value/octave_value_liboctave_value_la-ov-colon.lo `test -f 'octave-value/ov-colon.cc' || echo '$(srcdir)/'`octave-value/ov-colon.cc
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) octave-value/$(DEPDIR)/octave_value_liboctave_value_la-ov-colon.Tpo octave-value/$(DEPDIR)/octave_value_liboctave_value_la-ov-colon.Plo
@@ -7495,6 +7683,13 @@ parse-tree/parse_tree_libparse_tree_la-pt-check.lo: parse-tree/pt-check.cc
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(parse_tree_libparse_tree_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o parse-tree/parse_tree_libparse_tree_la-pt-check.lo `test -f 'parse-tree/pt-check.cc' || echo '$(srcdir)/'`parse-tree/pt-check.cc
 
+parse-tree/parse_tree_libparse_tree_la-pt-classdef.lo: parse-tree/pt-classdef.cc
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(parse_tree_libparse_tree_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT parse-tree/parse_tree_libparse_tree_la-pt-classdef.lo -MD -MP -MF parse-tree/$(DEPDIR)/parse_tree_libparse_tree_la-pt-classdef.Tpo -c -o parse-tree/parse_tree_libparse_tree_la-pt-classdef.lo `test -f 'parse-tree/pt-classdef.cc' || echo '$(srcdir)/'`parse-tree/pt-classdef.cc
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) parse-tree/$(DEPDIR)/parse_tree_libparse_tree_la-pt-classdef.Tpo parse-tree/$(DEPDIR)/parse_tree_libparse_tree_la-pt-classdef.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='parse-tree/pt-classdef.cc' object='parse-tree/parse_tree_libparse_tree_la-pt-classdef.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(parse_tree_libparse_tree_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o parse-tree/parse_tree_libparse_tree_la-pt-classdef.lo `test -f 'parse-tree/pt-classdef.cc' || echo '$(srcdir)/'`parse-tree/pt-classdef.cc
+
 parse-tree/parse_tree_libparse_tree_la-pt-cmd.lo: parse-tree/pt-cmd.cc
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(parse_tree_libparse_tree_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT parse-tree/parse_tree_libparse_tree_la-pt-cmd.lo -MD -MP -MF parse-tree/$(DEPDIR)/parse_tree_libparse_tree_la-pt-cmd.Tpo -c -o parse-tree/parse_tree_libparse_tree_la-pt-cmd.lo `test -f 'parse-tree/pt-cmd.cc' || echo '$(srcdir)/'`parse-tree/pt-cmd.cc
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) parse-tree/$(DEPDIR)/parse_tree_libparse_tree_la-pt-cmd.Tpo parse-tree/$(DEPDIR)/parse_tree_libparse_tree_la-pt-cmd.Plo
@@ -7550,6 +7745,13 @@ parse-tree/parse_tree_libparse_tree_la-pt-fcn-handle.lo: parse-tree/pt-fcn-handl
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='parse-tree/pt-fcn-handle.cc' object='parse-tree/parse_tree_libparse_tree_la-pt-fcn-handle.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(parse_tree_libparse_tree_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o parse-tree/parse_tree_libparse_tree_la-pt-fcn-handle.lo `test -f 'parse-tree/pt-fcn-handle.cc' || echo '$(srcdir)/'`parse-tree/pt-fcn-handle.cc
+
+parse-tree/parse_tree_libparse_tree_la-pt-funcall.lo: parse-tree/pt-funcall.cc
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(parse_tree_libparse_tree_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT parse-tree/parse_tree_libparse_tree_la-pt-funcall.lo -MD -MP -MF parse-tree/$(DEPDIR)/parse_tree_libparse_tree_la-pt-funcall.Tpo -c -o parse-tree/parse_tree_libparse_tree_la-pt-funcall.lo `test -f 'parse-tree/pt-funcall.cc' || echo '$(srcdir)/'`parse-tree/pt-funcall.cc
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) parse-tree/$(DEPDIR)/parse_tree_libparse_tree_la-pt-funcall.Tpo parse-tree/$(DEPDIR)/parse_tree_libparse_tree_la-pt-funcall.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='parse-tree/pt-funcall.cc' object='parse-tree/parse_tree_libparse_tree_la-pt-funcall.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(parse_tree_libparse_tree_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o parse-tree/parse_tree_libparse_tree_la-pt-funcall.lo `test -f 'parse-tree/pt-funcall.cc' || echo '$(srcdir)/'`parse-tree/pt-funcall.cc
 
 parse-tree/parse_tree_libparse_tree_la-pt-id.lo: parse-tree/pt-id.cc
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(parse_tree_libparse_tree_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT parse-tree/parse_tree_libparse_tree_la-pt-id.lo -MD -MP -MF parse-tree/$(DEPDIR)/parse_tree_libparse_tree_la-pt-id.Tpo -c -o parse-tree/parse_tree_libparse_tree_la-pt-id.lo `test -f 'parse-tree/pt-id.cc' || echo '$(srcdir)/'`parse-tree/pt-id.cc
@@ -7981,538 +8183,590 @@ export PERL
 # GNU make.  If you don't have it, get it!
 
 define simple_move_if_change_rule
-if [ -s $@-t ]; then \
-  $(top_srcdir)/build-aux/move-if-change $@-t $@; \
-else \
-  echo "$@-t is empty!" 1>&2; \
-  rm -f $@-t; \
-  exit 1; \
-fi
+  if [ -s $@-t ]; then \
+    $(top_srcdir)/build-aux/move-if-change $@-t $@; \
+  else \
+    echo "$@-t is empty!" 1>&2; \
+    rm -f $@-t; \
+    exit 1; \
+  fi
 endef
 
 define cp_update_rule
-if [ "x$(srcdir)" != "x." ] && [ -f $(srcdir)/$@ ] && [ ! -f $@ ]; then \
-  cp $(srcdir)/$@ $@; \
-  touch -r $(srcdir)/$@ $@; \
-fi
+  if [ "x$(srcdir)" != "x." ] && [ -f $(srcdir)/$@ ] && [ ! -f $@ ]; then \
+    cp $(srcdir)/$@ $@; \
+    touch -r $(srcdir)/$@ $@; \
+  fi
 endef
 
 define do_subst_config_vals
-echo "making $@ from $<"
-$(SED) < $< \
-  -e "s|%NO_EDIT_WARNING%|DO NOT EDIT!  Generated automatically from $(<F) by Make.|" \
-  -e "s|%NO_OCT_FILE_STRIP%|${NO_OCT_FILE_STRIP}|" \
-  -e "s|%OCTAVE_BINDIR%|\"${bindir}\"|" \
-  -e "s|%OCTAVE_CONF_ALL_CFLAGS%|\"${ALL_CFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_ALL_CXXFLAGS%|\"${ALL_CXXFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_ALL_FFLAGS%|\"${ALL_FFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_ALL_LDFLAGS%|\"${ALL_LDFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_AMD_CPPFLAGS%|\"${AMD_CPPFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_AMD_LDFLAGS%|\"${AMD_LDFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_AMD_LIBS%|\"${AMD_LIBS}\"|" \
-  -e "s|%OCTAVE_CONF_AR%|\"${AR}\"|" \
-  -e "s|%OCTAVE_CONF_ARFLAGS%|\"${ARFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_ARPACK_CPPFLAGS%|\"${ARPACK_CPPFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_ARPACK_LDFLAGS%|\"${ARPACK_LDFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_ARPACK_LIBS%|\"${ARPACK_LIBS}\"|" \
-  -e "s|%OCTAVE_CONF_BLAS_LIBS%|\"${BLAS_LIBS}\"|" \
-  -e "s|%OCTAVE_CONF_CAMD_CPPFLAGS%|\"${CAMD_CPPFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_CAMD_LDFLAGS%|\"${CAMD_LDFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_CAMD_LIBS%|\"${CAMD_LIBS}\"|" \
-  -e "s|%OCTAVE_CONF_CANONICAL_HOST_TYPE%|\"${canonical_host_type}\"|" \
-  -e "s|%OCTAVE_CONF_CARBON_LIBS%|\"${CARBON_LIBS}\"|" \
-  -e "s|%OCTAVE_CONF_CC%|\"${CC}\"|" \
-  -e "s|%OCTAVE_CONF_CC_VERSION%|\"${CC_VERSION}\"|" \
-  -e "s|%OCTAVE_CONF_CCOLAMD_CPPFLAGS%|\"${CCOLAMD_CPPFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_CCOLAMD_LDFLAGS%|\"${CCOLAMD_LDFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_CCOLAMD_LIBS%|\"${CCOLAMD_LIBS}\"|" \
-  -e "s|%OCTAVE_CONF_CFLAGS%|\"${CFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_CHOLMOD_CPPFLAGS%|\"${CHOLMOD_CPPFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_CHOLMOD_LDFLAGS%|\"${CHOLMOD_LDFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_CHOLMOD_LIBS%|\"${CHOLMOD_LIBS}\"|" \
-  -e "s|%OCTAVE_CONF_COLAMD_CPPFLAGS%|\"${COLAMD_CPPFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_COLAMD_LDFLAGS%|\"${COLAMD_LDFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_COLAMD_LIBS%|\"${COLAMD_LIBS}\"|" \
-  -e "s|%OCTAVE_CONF_CPICFLAG%|\"${CPICFLAG}\"|" \
-  -e "s|%OCTAVE_CONF_CPPFLAGS%|\"${CPPFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_CURL_CPPFLAGS%|\"${CURL_CPPFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_CURL_LDFLAGS%|\"${CURL_LDFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_CURL_LIBS%|\"${CURL_LIBS}\"|" \
-  -e "s|%OCTAVE_CONF_CXSPARSE_CPPFLAGS%|\"${CXSPARSE_CPPFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_CXSPARSE_LDFLAGS%|\"${CXSPARSE_LDFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_CXSPARSE_LIBS%|\"${CXSPARSE_LIBS}\"|" \
-  -e "s|%OCTAVE_CONF_CXX%|\"${CXX}\"|" \
-  -e "s|%OCTAVE_CONF_CXXCPP%|\"${CXXCPP}\"|" \
-  -e "s|%OCTAVE_CONF_CXXFLAGS%|\"${CXXFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_CXXPICFLAG%|\"${CXXPICFLAG}\"|" \
-  -e "s|%OCTAVE_CONF_CXX_VERSION%|\"${CXX_VERSION}\"|" \
-  -e "s|%OCTAVE_CONF_DEFAULT_PAGER%|\"${DEFAULT_PAGER}\"|" \
-  -e "s|%OCTAVE_CONF_DEFS%|\"${DEFS}\"|" \
-  -e "s|%OCTAVE_CONF_DEPEND_FLAGS%|\"${DEPEND_FLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_DEPEND_EXTRA_SED_PATTERN%|\"${DEPEND_EXTRA_SED_PATTERN}\"|" \
-  -e "s|%OCTAVE_CONF_DL_LD%|\"${DL_LD}\"|" \
-  -e "s|%OCTAVE_CONF_DL_LDFLAGS%|\"${DL_LDFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_DL_LIBS%|\"${DL_LIBS}\"|" \
-  -e "s|%OCTAVE_CONF_ENABLE_DYNAMIC_LINKING%|\"${ENABLE_DYNAMIC_LINKING}\"|" \
-  -e "s|%OCTAVE_CONF_EXEEXT%|\"${EXEEXT}\"|" \
-  -e "s|%OCTAVE_CONF_GCC_VERSION%|\"${GCC_VERSION}\"|" \
-  -e "s|%OCTAVE_CONF_GXX_VERSION%|\"${GXX_VERSION}\"|" \
-  -e "s|%OCTAVE_CONF_F77%|\"${F77}\"|" \
-  -e "s|%OCTAVE_CONF_F77_FLOAT_STORE_FLAG%|\"${F77_FLOAT_STORE_FLAG}\"|" \
-  -e "s|%OCTAVE_CONF_F77_INTEGER_8_FLAG%|\"${F77_INTEGER_8_FLAG}\"|" \
-  -e "s|%OCTAVE_CONF_FC%|\"${FC}\"|" \
-  -e "s|%OCTAVE_CONF_FFLAGS%|\"${FFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_FFTW3_CPPFLAGS%|\"${FFTW3_CPPFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_FFTW3_LDFLAGS%|\"${FFTW3_LDFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_FFTW3_LIBS%|\"${FFTW3_LIBS}\"|" \
-  -e "s|%OCTAVE_CONF_FFTW3F_CPPFLAGS%|\"${FFTW3F_CPPFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_FFTW3F_LDFLAGS%|\"${FFTW3F_LDFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_FFTW3F_LIBS%|\"${FFTW3F_LIBS}\"|" \
-  -e "s|%OCTAVE_CONF_FLIBS%|\"${FLIBS}\"|" \
-  -e "s|%OCTAVE_CONF_FONTCONFIG_CFLAGS%|\"${FONTCONFIG_CFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_FPICFLAG%|\"${FPICFLAG}\"|" \
-  -e "s|%OCTAVE_CONF_FT2_CFLAGS%|\"${FT2_CFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_FT2_LIBS%|\"${FT2_LIBS}\"|" \
-  -e "s|%OCTAVE_CONF_GLPK_CPPFLAGS%|\"${GLPK_CPPFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_GLPK_LDFLAGS%|\"${GLPK_LDFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_GLPK_LIBS%|\"${GLPK_LIBS}\"|" \
-  -e "s|%OCTAVE_CONF_GNUPLOT%|\"${GNUPLOT}\"|" \
-  -e "s|%OCTAVE_CONF_GRAPHICS_CFLAGS%|\"${GRAPHICS_CFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_GRAPHICS_LIBS%|\"${GRAPHICS_LIBS}\"|" \
-  -e "s|%OCTAVE_CONF_HDF5_CPPFLAGS%|\"${HDF5_CPPFLAGS}\"|" | \
-  $(SED) -e "s|%OCTAVE_CONF_HDF5_LDFLAGS%|\"${HDF5_LDFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_HDF5_LIBS%|\"${HDF5_LIBS}\"|" \
-  -e "s|%OCTAVE_CONF_INCLUDEDIR%|\"${includedir}\"|" \
-  -e "s|%OCTAVE_CONF_LAPACK_LIBS%|\"${LAPACK_LIBS}\"|" \
-  -e "s|%OCTAVE_CONF_LD_CXX%|\"${LD_CXX}\"|" \
-  -e "s|%OCTAVE_CONF_LDFLAGS%|\"${LDFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_LD_STATIC_FLAG%|\"${LD_STATIC_FLAG}\"|" \
-  -e "s|%OCTAVE_CONF_LEX%|\"${LEX}\"|" \
-  -e "s|%OCTAVE_CONF_LEXLIB%|\"${LEXLIB}\"|" \
-  -e "s|%OCTAVE_CONF_LFLAGS%|\"${LFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_LIBDIR%|\"${libdir}\"|" \
-  -e "s|%OCTAVE_CONF_LIBEXT%|\"${LIBEXT}\"|" \
-  -e "s|%OCTAVE_CONF_LIBFLAGS%|\"${LIBFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_LIBOCTAVE%|\"${LIBOCTAVE}\"|" \
-  -e "s|%OCTAVE_CONF_LIBOCTINTERP%|\"${LIBOCTINTERP}\"|" \
-  -e "s|%OCTAVE_CONF_LIBS%|\"${LIBS}\"|" \
-  -e "s|%OCTAVE_CONF_LLVM_CPPFLAGS%|\"${LLVM_CPPFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_LLVM_LDFLAGS%|\"${LLVM_LDFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_LLVM_LIBS%|\"${LLVM_LIBS}\"|" \
-  -e "s|%OCTAVE_CONF_LN_S%|\"${LN_S}\"|" \
-  -e "s|%OCTAVE_CONF_MAGICK_CPPFLAGS%|\"${MAGICK_CPPFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_MAGICK_LDFLAGS%|\"${MAGICK_LDFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_MAGICK_LIBS%|\"${MAGICK_LIBS}\"|" \
-  -e 's|%OCTAVE_CONF_MKOCTFILE_AR%|\"${MKOCTFILE_AR}\"|' \
-  -e 's|%OCTAVE_CONF_MKOCTFILE_CC%|\"${MKOCTFILE_CC}\"|' \
-  -e 's|%OCTAVE_CONF_MKOCTFILE_CXX%|\"${MKOCTFILE_CXX}\"|' \
-  -e 's|%OCTAVE_CONF_MKOCTFILE_DL_LD%|\"${MKOCTFILE_DL_LD}\"|' \
-  -e 's|%OCTAVE_CONF_MKOCTFILE_DL_LDFLAGS%|\"${MKOCTFILE_DL_LDFLAGS}\"|' \
-  -e 's|%OCTAVE_CONF_MKOCTFILE_F77%|\"${MKOCTFILE_F77}\"|' \
-  -e 's|%OCTAVE_CONF_MKOCTFILE_LD_CXX%|\"${MKOCTFILE_LD_CXX}\"|' \
-  -e 's|%OCTAVE_CONF_MKOCTFILE_RANLIB%|\"${MKOCTFILE_RANLIB}\"|' \
-  -e "s|%OCTAVE_CONF_OCTAVE_LINK_DEPS%|\"${OCTAVE_LINK_DEPS}\"|" \
-  -e "s|%OCTAVE_CONF_OCTAVE_LINK_OPTS%|\"${OCTAVE_LINK_OPTS}\"|" \
-  -e "s|%OCTAVE_CONF_OCTINCLUDEDIR%|\"${octincludedir}\"|" \
-  -e "s|%OCTAVE_CONF_OCTLIBDIR%|\"${octlibdir}\"|" \
-  -e "s|%OCTAVE_CONF_OCT_LINK_DEPS%|\"${OCT_LINK_DEPS}\"|" \
-  -e "s|%OCTAVE_CONF_OCT_LINK_OPTS%|\"${OCT_LINK_OPTS}\"|" \
-  -e "s|%OCTAVE_CONF_OPENGL_LIBS%|\"${OPENGL_LIBS}\"|" \
-  -e "s|%OCTAVE_CONF_PCRE_CPPFLAGS%|\"${PCRE_CPPFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_PCRE_LIBS%|\"${PCRE_LIBS}\"|" \
-  -e "s|%OCTAVE_CONF_PREFIX%|\"${prefix}\"|" \
-  -e "s|%OCTAVE_CONF_PTHREAD_CFLAGS%|\"${PTHREAD_CFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_PTHREAD_LIBS%|\"${PTHREAD_LIBS}\"|" \
-  -e "s|%OCTAVE_CONF_QHULL_CPPFLAGS%|\"${QHULL_CPPFLAGSS}\"|" \
-  -e "s|%OCTAVE_CONF_QHULL_LDFLAGS%|\"${QHULL_LDFLAGSS}\"|" \
-  -e "s|%OCTAVE_CONF_QHULL_LIBS%|\"${QHULL_LIBS}\"|" \
-  -e "s|%OCTAVE_CONF_QRUPDATE_CPPFLAGS%|\"${QRUPDATE_CPPFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_QRUPDATE_LDFLAGS%|\"${QRUPDATE_LDFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_QRUPDATE_LIBS%|\"${QRUPDATE_LIBS}\"|" \
-  -e "s|%OCTAVE_CONF_QT_CPPFLAGS%|\"${QT_CPPFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_QT_LDFLAGS%|\"${QT_LDFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_QT_LIBS%|\"${QT_LIBS}\"|" \
-  -e "s|%OCTAVE_CONF_RANLIB%|\"${RANLIB}\"|" \
-  -e "s|%OCTAVE_CONF_RDYNAMIC_FLAG%|\"${RDYNAMIC_FLAG}\"|" \
-  -e "s|%OCTAVE_CONF_READLINE_LIBS%|\"${READLINE_LIBS}\"|" \
-  -e "s|%OCTAVE_CONF_SED%|\"${SED}\"|" \
-  -e "s|%OCTAVE_CONF_SHARED_LIBS%|\"${SHARED_LIBS}\"|" \
-  -e "s|%OCTAVE_CONF_SHLEXT%|\"${SHLEXT}\"|" \
-  -e "s|%OCTAVE_CONF_SHLLINKEXT%|\"${SHLLINKEXT}\"|" \
-  -e "s|%OCTAVE_CONF_SHLEXT_VER%|\"${SHLEXT_VER}\"|" \
-  -e "s|%OCTAVE_CONF_SH_LD%|\"${SH_LD}\"|" \
-  -e "s|%OCTAVE_CONF_SH_LDFLAGS%|\"${SH_LDFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_SONAME_FLAGS%|\"${SONAME_FLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_STATIC_LIBS%|\"${STATIC_LIBS}\"|" \
-  -e "s|%OCTAVE_CONF_TERM_LIBS%|\"${TERM_LIBS}\"|" \
-  -e "s|%OCTAVE_CONF_UMFPACK_CPPFLAGS%|\"${UMFPACK_CPPFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_UMFPACK_LDFLAGS%|\"${UMFPACK_LDFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_UMFPACK_LIBS%|\"${UMFPACK_LIBS}\"|" \
-  -e "s|%OCTAVE_CONF_USE_64_BIT_IDX_T%|\"${USE_64_BIT_IDX_T}\"|" \
-  -e "s|%OCTAVE_CONF_VERSION%|\"${version}\"|" \
-  -e "s|%OCTAVE_CONF_WARN_CFLAGS%|\"${WARN_CFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_WARN_CXXFLAGS%|\"${WARN_CXXFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_X11_INCFLAGS%|\"${X11_INCFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_X11_LIBS%|\"${X11_LIBS}\"|" \
-  -e "s|%OCTAVE_CONF_XTRA_CFLAGS%|\"${XTRA_CFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_XTRA_CXXFLAGS%|\"${XTRA_CXXFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_YACC%|\"${YACC}\"|" \
-  -e "s|%OCTAVE_CONF_YFLAGS%|\"${YFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_Z_CPPFLAGS%|\"${Z_CPPFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_Z_LDFLAGS%|\"${Z_LDFLAGS}\"|" \
-  -e "s|%OCTAVE_CONF_Z_LIBS%|\"${Z_LIBS}\"|" \
-  -e "s|%OCTAVE_CONF_config_opts%|\"${config_opts}\"|" > $@-t
-$(simple_move_if_change_rule)
+  $(SED) < $< \
+    -e "s|%NO_EDIT_WARNING%|DO NOT EDIT!  Generated automatically from $(<F) by Make.|" \
+    -e "s|%NO_OCT_FILE_STRIP%|${NO_OCT_FILE_STRIP}|" \
+    -e "s|%OCTAVE_BINDIR%|\"${bindir}\"|" \
+    -e "s|%OCTAVE_CONF_ALL_CFLAGS%|\"${ALL_CFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_ALL_CXXFLAGS%|\"${ALL_CXXFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_ALL_FFLAGS%|\"${ALL_FFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_ALL_LDFLAGS%|\"${ALL_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_AMD_CPPFLAGS%|\"${AMD_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_AMD_LDFLAGS%|\"${AMD_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_AMD_LIBS%|\"${AMD_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_AR%|\"${AR}\"|" \
+    -e "s|%OCTAVE_CONF_ARFLAGS%|\"${ARFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_ARPACK_CPPFLAGS%|\"${ARPACK_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_ARPACK_LDFLAGS%|\"${ARPACK_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_ARPACK_LIBS%|\"${ARPACK_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_BLAS_LIBS%|\"${BLAS_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_CAMD_CPPFLAGS%|\"${CAMD_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_CAMD_LDFLAGS%|\"${CAMD_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_CAMD_LIBS%|\"${CAMD_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_CANONICAL_HOST_TYPE%|\"${canonical_host_type}\"|" \
+    -e "s|%OCTAVE_CONF_CARBON_LIBS%|\"${CARBON_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_CC%|\"${CC}\"|" \
+    -e "s|%OCTAVE_CONF_CCOLAMD_CPPFLAGS%|\"${CCOLAMD_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_CCOLAMD_LDFLAGS%|\"${CCOLAMD_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_CCOLAMD_LIBS%|\"${CCOLAMD_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_CFLAGS%|\"${CFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_CHOLMOD_CPPFLAGS%|\"${CHOLMOD_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_CHOLMOD_LDFLAGS%|\"${CHOLMOD_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_CHOLMOD_LIBS%|\"${CHOLMOD_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_COLAMD_CPPFLAGS%|\"${COLAMD_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_COLAMD_LDFLAGS%|\"${COLAMD_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_COLAMD_LIBS%|\"${COLAMD_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_CPICFLAG%|\"${CPICFLAG}\"|" \
+    -e "s|%OCTAVE_CONF_CPPFLAGS%|\"${CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_CURL_CPPFLAGS%|\"${CURL_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_CURL_LDFLAGS%|\"${CURL_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_CURL_LIBS%|\"${CURL_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_CXSPARSE_CPPFLAGS%|\"${CXSPARSE_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_CXSPARSE_LDFLAGS%|\"${CXSPARSE_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_CXSPARSE_LIBS%|\"${CXSPARSE_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_CXX%|\"${CXX}\"|" \
+    -e "s|%OCTAVE_CONF_CXXCPP%|\"${CXXCPP}\"|" \
+    -e "s|%OCTAVE_CONF_CXXFLAGS%|\"${CXXFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_CXXPICFLAG%|\"${CXXPICFLAG}\"|" \
+    -e "s|%OCTAVE_CONF_CXX_VERSION%|\"${CXX_VERSION}\"|" \
+    -e "s|%OCTAVE_CONF_DEFAULT_PAGER%|\"${DEFAULT_PAGER}\"|" \
+    -e "s|%OCTAVE_CONF_DEFS%|\"${DEFS}\"|" \
+    -e "s|%OCTAVE_CONF_DEPEND_FLAGS%|\"${DEPEND_FLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_DEPEND_EXTRA_SED_PATTERN%|\"${DEPEND_EXTRA_SED_PATTERN}\"|" \
+    -e "s|%OCTAVE_CONF_DL_LD%|\"${DL_LD}\"|" \
+    -e "s|%OCTAVE_CONF_DL_LDFLAGS%|\"${DL_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_DL_LIBS%|\"${DL_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_ENABLE_DYNAMIC_LINKING%|\"${ENABLE_DYNAMIC_LINKING}\"|" \
+    -e "s|%OCTAVE_CONF_EXEEXT%|\"${EXEEXT}\"|" \
+    -e "s|%OCTAVE_CONF_GCC_VERSION%|\"${GCC_VERSION}\"|" \
+    -e "s|%OCTAVE_CONF_GXX_VERSION%|\"${GXX_VERSION}\"|" \
+    -e "s|%OCTAVE_CONF_F77%|\"${F77}\"|" \
+    -e "s|%OCTAVE_CONF_F77_FLOAT_STORE_FLAG%|\"${F77_FLOAT_STORE_FLAG}\"|" \
+    -e "s|%OCTAVE_CONF_F77_INTEGER_8_FLAG%|\"${F77_INTEGER_8_FLAG}\"|" \
+    -e "s|%OCTAVE_CONF_FFLAGS%|\"${FFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_FFTW3_CPPFLAGS%|\"${FFTW3_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_FFTW3_LDFLAGS%|\"${FFTW3_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_FFTW3_LIBS%|\"${FFTW3_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_FFTW3F_CPPFLAGS%|\"${FFTW3F_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_FFTW3F_LDFLAGS%|\"${FFTW3F_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_FFTW3F_LIBS%|\"${FFTW3F_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_FLIBS%|\"${FLIBS}\"|" \
+    -e "s|%OCTAVE_CONF_FLTK_CPPFLAGS%|\"${FLTK_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_FLTK_LDFLAGS%|\"${FLTK_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_FLTK_LIBS%|\"${FLTK_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_FONTCONFIG_CPPFLAGS%|\"${FONTCONFIG_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_FONTCONFIG_LIBS%|\"${FONTCONFIG_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_FPICFLAG%|\"${FPICFLAG}\"|" \
+    -e "s|%OCTAVE_CONF_FT2_CPPFLAGS%|\"${FT2_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_FT2_LIBS%|\"${FT2_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_GLPK_CPPFLAGS%|\"${GLPK_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_GLPK_LDFLAGS%|\"${GLPK_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_GLPK_LIBS%|\"${GLPK_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_GNUPLOT%|\"${GNUPLOT}\"|" \
+    -e "s|%OCTAVE_CONF_HDF5_CPPFLAGS%|\"${HDF5_CPPFLAGS}\"|" | \
+    $(SED) -e "s|%OCTAVE_CONF_HDF5_LDFLAGS%|\"${HDF5_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_HDF5_LIBS%|\"${HDF5_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_INCLUDEDIR%|\"${includedir}\"|" \
+    -e "s|%OCTAVE_CONF_LAPACK_LIBS%|\"${LAPACK_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_LD_CXX%|\"${LD_CXX}\"|" \
+    -e "s|%OCTAVE_CONF_LDFLAGS%|\"${LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_LD_STATIC_FLAG%|\"${LD_STATIC_FLAG}\"|" \
+    -e "s|%OCTAVE_CONF_LEX%|\"${LEX}\"|" \
+    -e "s|%OCTAVE_CONF_LEXLIB%|\"${LEXLIB}\"|" \
+    -e "s|%OCTAVE_CONF_LFLAGS%|\"${LFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_LIBDIR%|\"${libdir}\"|" \
+    -e "s|%OCTAVE_CONF_LIBEXT%|\"${LIBEXT}\"|" \
+    -e "s|%OCTAVE_CONF_LIBFLAGS%|\"${LIBFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_LIBOCTAVE%|\"${LIBOCTAVE}\"|" \
+    -e "s|%OCTAVE_CONF_LIBOCTINTERP%|\"${LIBOCTINTERP}\"|" \
+    -e "s|%OCTAVE_CONF_LIBS%|\"${LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_LLVM_CPPFLAGS%|\"${LLVM_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_LLVM_LDFLAGS%|\"${LLVM_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_LLVM_LIBS%|\"${LLVM_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_LN_S%|\"${LN_S}\"|" \
+    -e "s|%OCTAVE_CONF_MAGICK_CPPFLAGS%|\"${MAGICK_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_MAGICK_LDFLAGS%|\"${MAGICK_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_MAGICK_LIBS%|\"${MAGICK_LIBS}\"|" \
+    -e 's|%OCTAVE_CONF_MKOCTFILE_AR%|\"${MKOCTFILE_AR}\"|' \
+    -e 's|%OCTAVE_CONF_MKOCTFILE_CC%|\"${MKOCTFILE_CC}\"|' \
+    -e 's|%OCTAVE_CONF_MKOCTFILE_CXX%|\"${MKOCTFILE_CXX}\"|' \
+    -e 's|%OCTAVE_CONF_MKOCTFILE_DL_LD%|\"${MKOCTFILE_DL_LD}\"|' \
+    -e 's|%OCTAVE_CONF_MKOCTFILE_DL_LDFLAGS%|\"${MKOCTFILE_DL_LDFLAGS}\"|' \
+    -e 's|%OCTAVE_CONF_MKOCTFILE_F77%|\"${MKOCTFILE_F77}\"|' \
+    -e 's|%OCTAVE_CONF_MKOCTFILE_LD_CXX%|\"${MKOCTFILE_LD_CXX}\"|' \
+    -e 's|%OCTAVE_CONF_MKOCTFILE_RANLIB%|\"${MKOCTFILE_RANLIB}\"|' \
+    -e "s|%OCTAVE_CONF_OCTAVE_LINK_DEPS%|\"${OCTAVE_LINK_DEPS}\"|" \
+    -e "s|%OCTAVE_CONF_OCTAVE_LINK_OPTS%|\"${OCTAVE_LINK_OPTS}\"|" \
+    -e "s|%OCTAVE_CONF_OCTINCLUDEDIR%|\"${octincludedir}\"|" \
+    -e "s|%OCTAVE_CONF_OCTLIBDIR%|\"${octlibdir}\"|" \
+    -e "s|%OCTAVE_CONF_OCT_LINK_DEPS%|\"${OCT_LINK_DEPS}\"|" \
+    -e "s|%OCTAVE_CONF_OCT_LINK_OPTS%|\"${OCT_LINK_OPTS}\"|" \
+    -e "s|%OCTAVE_CONF_OPENGL_LIBS%|\"${OPENGL_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_OSMESA_CPPFLAGS%|\"${OSMESA_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_OSMESA_LDFLAGS%|\"${OSMESA_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_OSMESA_LIBS%|\"${OSMESA_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_PCRE_CPPFLAGS%|\"${PCRE_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_PCRE_LIBS%|\"${PCRE_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_PREFIX%|\"${prefix}\"|" \
+    -e "s|%OCTAVE_CONF_PTHREAD_CFLAGS%|\"${PTHREAD_CFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_PTHREAD_LIBS%|\"${PTHREAD_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_QHULL_CPPFLAGS%|\"${QHULL_CPPFLAGSS}\"|" \
+    -e "s|%OCTAVE_CONF_QHULL_LDFLAGS%|\"${QHULL_LDFLAGSS}\"|" \
+    -e "s|%OCTAVE_CONF_QHULL_LIBS%|\"${QHULL_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_QRUPDATE_CPPFLAGS%|\"${QRUPDATE_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_QRUPDATE_LDFLAGS%|\"${QRUPDATE_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_QRUPDATE_LIBS%|\"${QRUPDATE_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_QT_CPPFLAGS%|\"${QT_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_QT_LDFLAGS%|\"${QT_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_QT_LIBS%|\"${QT_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_RANLIB%|\"${RANLIB}\"|" \
+    -e "s|%OCTAVE_CONF_RDYNAMIC_FLAG%|\"${RDYNAMIC_FLAG}\"|" \
+    -e "s|%OCTAVE_CONF_READLINE_LIBS%|\"${READLINE_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_SED%|\"${SED}\"|" \
+    -e "s|%OCTAVE_CONF_SHARED_LIBS%|\"${SHARED_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_SHLEXT%|\"${SHLEXT}\"|" \
+    -e "s|%OCTAVE_CONF_SHLLINKEXT%|\"${SHLLINKEXT}\"|" \
+    -e "s|%OCTAVE_CONF_SHLEXT_VER%|\"${SHLEXT_VER}\"|" \
+    -e "s|%OCTAVE_CONF_SH_LD%|\"${SH_LD}\"|" \
+    -e "s|%OCTAVE_CONF_SH_LDFLAGS%|\"${SH_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_SONAME_FLAGS%|\"${SONAME_FLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_STATIC_LIBS%|\"${STATIC_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_TERM_LIBS%|\"${TERM_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_UMFPACK_CPPFLAGS%|\"${UMFPACK_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_UMFPACK_LDFLAGS%|\"${UMFPACK_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_UMFPACK_LIBS%|\"${UMFPACK_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_USE_64_BIT_IDX_T%|\"${USE_64_BIT_IDX_T}\"|" \
+    -e "s|%OCTAVE_CONF_VERSION%|\"${version}\"|" \
+    -e "s|%OCTAVE_CONF_WARN_CFLAGS%|\"${WARN_CFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_WARN_CXXFLAGS%|\"${WARN_CXXFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_X11_INCFLAGS%|\"${X11_INCFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_X11_LIBS%|\"${X11_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_XTRA_CFLAGS%|\"${XTRA_CFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_XTRA_CXXFLAGS%|\"${XTRA_CXXFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_YACC%|\"${YACC}\"|" \
+    -e "s|%OCTAVE_CONF_YFLAGS%|\"${YFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_Z_CPPFLAGS%|\"${Z_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_Z_LDFLAGS%|\"${Z_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_Z_LIBS%|\"${Z_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_config_opts%|\"${config_opts}\"|" > $@-t && \
+  $(simple_move_if_change_rule)
+endef
+
+define do_subst_cross_config_vals
+  $(SED) < $< \
+    -e "s|%NO_EDIT_WARNING%|DO NOT EDIT!  Generated automatically from $(<F) by Make.|" \
+    -e "s|%NO_OCT_FILE_STRIP%|${NO_OCT_FILE_STRIP}|" \
+    -e "s|%OCTAVE_BINDIR%|\"${bindir}\"|" \
+    -e "s|%OCTAVE_CONF_ALL_CFLAGS%|\"${ALL_CFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_ALL_CXXFLAGS%|\"${ALL_CXXFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_ALL_FFLAGS%|\"${ALL_FFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_ALL_LDFLAGS%|\"${ALL_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_AMD_CPPFLAGS%|\"${AMD_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_AMD_LDFLAGS%|\"${AMD_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_AMD_LIBS%|\"${AMD_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_AR%|\"${AR}\"|" \
+    -e "s|%OCTAVE_CONF_ARFLAGS%|\"${ARFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_ARPACK_CPPFLAGS%|\"${ARPACK_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_ARPACK_LDFLAGS%|\"${ARPACK_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_ARPACK_LIBS%|\"${ARPACK_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_BLAS_LIBS%|\"${BLAS_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_CAMD_CPPFLAGS%|\"${CAMD_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_CAMD_LDFLAGS%|\"${CAMD_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_CAMD_LIBS%|\"${CAMD_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_CANONICAL_HOST_TYPE%|\"${canonical_host_type}\"|" \
+    -e "s|%OCTAVE_CONF_CARBON_LIBS%|\"${CARBON_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_CC%|\"${CC}\"|" \
+    -e "s|%OCTAVE_CONF_CCOLAMD_CPPFLAGS%|\"${CCOLAMD_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_CCOLAMD_LDFLAGS%|\"${CCOLAMD_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_CCOLAMD_LIBS%|\"${CCOLAMD_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_CFLAGS%|\"${CFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_CHOLMOD_CPPFLAGS%|\"${CHOLMOD_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_CHOLMOD_LDFLAGS%|\"${CHOLMOD_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_CHOLMOD_LIBS%|\"${CHOLMOD_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_COLAMD_CPPFLAGS%|\"${COLAMD_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_COLAMD_LDFLAGS%|\"${COLAMD_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_COLAMD_LIBS%|\"${COLAMD_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_CPICFLAG%|\"${CPICFLAG}\"|" \
+    -e "s|%OCTAVE_CONF_CPPFLAGS%|\"${CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_CURL_CPPFLAGS%|\"${CURL_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_CURL_LDFLAGS%|\"${CURL_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_CURL_LIBS%|\"${CURL_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_CXSPARSE_CPPFLAGS%|\"${CXSPARSE_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_CXSPARSE_LDFLAGS%|\"${CXSPARSE_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_CXSPARSE_LIBS%|\"${CXSPARSE_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_CXX%|\"${CXX}\"|" \
+    -e "s|%OCTAVE_CONF_CXXCPP%|\"${CXXCPP}\"|" \
+    -e "s|%OCTAVE_CONF_CXXFLAGS%|\"${CXXFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_CXXPICFLAG%|\"${CXXPICFLAG}\"|" \
+    -e "s|%OCTAVE_CONF_CXX_VERSION%|\"${CXX_VERSION}\"|" \
+    -e "s|%OCTAVE_CONF_DEFAULT_PAGER%|\"${DEFAULT_PAGER}\"|" \
+    -e "s|%OCTAVE_CONF_DEFS%|\"${DEFS}\"|" \
+    -e "s|%OCTAVE_CONF_DEPEND_FLAGS%|\"${DEPEND_FLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_DEPEND_EXTRA_SED_PATTERN%|\"${DEPEND_EXTRA_SED_PATTERN}\"|" \
+    -e "s|%OCTAVE_CONF_DL_LD%|\"${DL_LD}\"|" \
+    -e "s|%OCTAVE_CONF_DL_LDFLAGS%|\"${DL_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_DL_LIBS%|\"${DL_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_ENABLE_DYNAMIC_LINKING%|\"${ENABLE_DYNAMIC_LINKING}\"|" \
+    -e "s|%OCTAVE_CONF_EXEEXT%|\"${EXEEXT}\"|" \
+    -e "s|%OCTAVE_CONF_GCC_VERSION%|\"${GCC_VERSION}\"|" \
+    -e "s|%OCTAVE_CONF_GXX_VERSION%|\"${GXX_VERSION}\"|" \
+    -e "s|%OCTAVE_CONF_F77%|\"${F77}\"|" \
+    -e "s|%OCTAVE_CONF_F77_FLOAT_STORE_FLAG%|\"${F77_FLOAT_STORE_FLAG}\"|" \
+    -e "s|%OCTAVE_CONF_F77_INTEGER_8_FLAG%|\"${F77_INTEGER_8_FLAG}\"|" \
+    -e "s|%OCTAVE_CONF_FFLAGS%|\"${FFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_FFTW3_CPPFLAGS%|\"${FFTW3_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_FFTW3_LDFLAGS%|\"${FFTW3_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_FFTW3_LIBS%|\"${FFTW3_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_FFTW3F_CPPFLAGS%|\"${FFTW3F_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_FFTW3F_LDFLAGS%|\"${FFTW3F_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_FFTW3F_LIBS%|\"${FFTW3F_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_FLIBS%|\"${FLIBS}\"|" \
+    -e "s|%OCTAVE_CONF_FLTK_CPPFLAGS%|\"${FLTK_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_FLTK_LDFLAGS%|\"${FLTK_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_FLTK_LIBS%|\"${FLTK_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_FONTCONFIG_CPPFLAGS%|\"${FONTCONFIG_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_FONTCONFIG_LIBS%|\"${FONTCONFIG_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_FPICFLAG%|\"${FPICFLAG}\"|" \
+    -e "s|%OCTAVE_CONF_FT2_CPPFLAGS%|\"${FT2_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_FT2_LIBS%|\"${FT2_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_GLPK_CPPFLAGS%|\"${GLPK_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_GLPK_LDFLAGS%|\"${GLPK_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_GLPK_LIBS%|\"${GLPK_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_GNUPLOT%|\"${GNUPLOT}\"|" \
+    -e "s|%OCTAVE_CONF_HDF5_CPPFLAGS%|\"${HDF5_CPPFLAGS}\"|" | \
+    $(SED) -e "s|%OCTAVE_CONF_HDF5_LDFLAGS%|\"${HDF5_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_HDF5_LIBS%|\"${HDF5_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_INCLUDEDIR%|\"${includedir}\"|" \
+    -e "s|%OCTAVE_CONF_LAPACK_LIBS%|\"${LAPACK_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_LD_CXX%|\"${LD_CXX}\"|" \
+    -e "s|%OCTAVE_CONF_LDFLAGS%|\"${LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_LD_STATIC_FLAG%|\"${LD_STATIC_FLAG}\"|" \
+    -e "s|%OCTAVE_CONF_LEX%|\"${LEX}\"|" \
+    -e "s|%OCTAVE_CONF_LEXLIB%|\"${LEXLIB}\"|" \
+    -e "s|%OCTAVE_CONF_LFLAGS%|\"${LFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_LIBDIR%|\"${libdir}\"|" \
+    -e "s|%OCTAVE_CONF_LIBEXT%|\"${LIBEXT}\"|" \
+    -e "s|%OCTAVE_CONF_LIBFLAGS%|\"${LIBFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_LIBOCTAVE%|\"${LIBOCTAVE}\"|" \
+    -e "s|%OCTAVE_CONF_LIBOCTINTERP%|\"${LIBOCTINTERP}\"|" \
+    -e "s|%OCTAVE_CONF_LIBS%|\"${LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_LLVM_CPPFLAGS%|\"${LLVM_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_LLVM_LDFLAGS%|\"${LLVM_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_LLVM_LIBS%|\"${LLVM_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_LN_S%|\"${LN_S}\"|" \
+    -e "s|%OCTAVE_CONF_MAGICK_CPPFLAGS%|\"${MAGICK_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_MAGICK_LDFLAGS%|\"${MAGICK_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_MAGICK_LIBS%|\"${MAGICK_LIBS}\"|" \
+    -e 's|%OCTAVE_CONF_MKOCTFILE_AR%|\"${AR}\"|' \
+    -e 's|%OCTAVE_CONF_MKOCTFILE_CC%|\"${CC}\"|' \
+    -e 's|%OCTAVE_CONF_MKOCTFILE_CXX%|\"${CXX}\"|' \
+    -e 's|%OCTAVE_CONF_MKOCTFILE_DL_LD%|\"${DL_LD}\"|' \
+    -e 's|%OCTAVE_CONF_MKOCTFILE_DL_LDFLAGS%|\"${DL_LDFLAGS}\"|' \
+    -e 's|%OCTAVE_CONF_MKOCTFILE_F77%|\"${F77}\"|' \
+    -e 's|%OCTAVE_CONF_MKOCTFILE_LD_CXX%|\"${LD_CXX}\"|' \
+    -e 's|%OCTAVE_CONF_MKOCTFILE_RANLIB%|\"${RANLIB}\"|' \
+    -e "s|%OCTAVE_CONF_OCTAVE_LINK_DEPS%|\"${OCTAVE_LINK_DEPS}\"|" \
+    -e "s|%OCTAVE_CONF_OCTAVE_LINK_OPTS%|\"${OCTAVE_LINK_OPTS}\"|" \
+    -e "s|%OCTAVE_CONF_OCTINCLUDEDIR%|\"${octincludedir}\"|" \
+    -e "s|%OCTAVE_CONF_OCTLIBDIR%|\"${octlibdir}\"|" \
+    -e "s|%OCTAVE_CONF_OCT_LINK_DEPS%|\"${OCT_LINK_DEPS}\"|" \
+    -e "s|%OCTAVE_CONF_OCT_LINK_OPTS%|\"${OCT_LINK_OPTS}\"|" \
+    -e "s|%OCTAVE_CONF_OPENGL_LIBS%|\"${OPENGL_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_OSMESA_CPPFLAGS%|\"${OSMESA_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_OSMESA_LDFLAGS%|\"${OSMESA_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_OSMESA_LIBS%|\"${OSMESA_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_PCRE_CPPFLAGS%|\"${PCRE_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_PCRE_LIBS%|\"${PCRE_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_PREFIX%|\"${prefix}\"|" \
+    -e "s|%OCTAVE_CONF_PTHREAD_CFLAGS%|\"${PTHREAD_CFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_PTHREAD_LIBS%|\"${PTHREAD_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_QHULL_CPPFLAGS%|\"${QHULL_CPPFLAGSS}\"|" \
+    -e "s|%OCTAVE_CONF_QHULL_LDFLAGS%|\"${QHULL_LDFLAGSS}\"|" \
+    -e "s|%OCTAVE_CONF_QHULL_LIBS%|\"${QHULL_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_QRUPDATE_CPPFLAGS%|\"${QRUPDATE_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_QRUPDATE_LDFLAGS%|\"${QRUPDATE_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_QRUPDATE_LIBS%|\"${QRUPDATE_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_QT_CPPFLAGS%|\"${QT_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_QT_LDFLAGS%|\"${QT_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_QT_LIBS%|\"${QT_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_RANLIB%|\"${RANLIB}\"|" \
+    -e "s|%OCTAVE_CONF_RDYNAMIC_FLAG%|\"${RDYNAMIC_FLAG}\"|" \
+    -e "s|%OCTAVE_CONF_READLINE_LIBS%|\"${READLINE_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_SED%|\"${SED}\"|" \
+    -e "s|%OCTAVE_CONF_SHARED_LIBS%|\"${SHARED_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_SHLEXT%|\"${SHLEXT}\"|" \
+    -e "s|%OCTAVE_CONF_SHLLINKEXT%|\"${SHLLINKEXT}\"|" \
+    -e "s|%OCTAVE_CONF_SHLEXT_VER%|\"${SHLEXT_VER}\"|" \
+    -e "s|%OCTAVE_CONF_SH_LD%|\"${SH_LD}\"|" \
+    -e "s|%OCTAVE_CONF_SH_LDFLAGS%|\"${SH_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_SONAME_FLAGS%|\"${SONAME_FLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_STATIC_LIBS%|\"${STATIC_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_TERM_LIBS%|\"${TERM_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_UMFPACK_CPPFLAGS%|\"${UMFPACK_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_UMFPACK_LDFLAGS%|\"${UMFPACK_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_UMFPACK_LIBS%|\"${UMFPACK_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_USE_64_BIT_IDX_T%|\"${USE_64_BIT_IDX_T}\"|" \
+    -e "s|%OCTAVE_CONF_VERSION%|\"${version}\"|" \
+    -e "s|%OCTAVE_CONF_WARN_CFLAGS%|\"${WARN_CFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_WARN_CXXFLAGS%|\"${WARN_CXXFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_X11_INCFLAGS%|\"${X11_INCFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_X11_LIBS%|\"${X11_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_XTRA_CFLAGS%|\"${XTRA_CFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_XTRA_CXXFLAGS%|\"${XTRA_CXXFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_YACC%|\"${YACC}\"|" \
+    -e "s|%OCTAVE_CONF_YFLAGS%|\"${YFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_Z_CPPFLAGS%|\"${Z_CPPFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_Z_LDFLAGS%|\"${Z_LDFLAGS}\"|" \
+    -e "s|%OCTAVE_CONF_Z_LIBS%|\"${Z_LIBS}\"|" \
+    -e "s|%OCTAVE_CONF_config_opts%|\"${config_opts}\"|" > $@-t && \
+  $(simple_move_if_change_rule)
 endef
 
 define do_subst_default_vals
-echo "making $@ from $<"
-$(SED) < $< > $@-t \
-  -e "s|%NO_EDIT_WARNING%|DO NOT EDIT!  Generated automatically from $(<F) by Make.|" \
-  -e "s|%OCTAVE_ARCHLIBDIR%|\"${archlibdir}\"|" \
-  -e "s|%OCTAVE_BINDIR%|\"${bindir}\"|" \
-  -e "s|%OCTAVE_CANONICAL_HOST_TYPE%|\"${canonical_host_type}\"|" \
-  -e "s|%OCTAVE_DATADIR%|\"${datadir}\"|" \
-  -e "s|%OCTAVE_DATAROOTDIR%|\"${datarootdir}\"|" \
-  -e "s|%OCTAVE_DEFAULT_PAGER%|\"${DEFAULT_PAGER}\"|" \
-  -e "s|%OCTAVE_DOC_CACHE_FILE%|\"${doc_cache_file}\"|" \
-  -e "s|%OCTAVE_EXEC_PREFIX%|\"${exec_prefix}\"|" \
-  -e "s|%OCTAVE_FCNFILEDIR%|\"${fcnfiledir}\"|" \
-  -e "s|%OCTAVE_IMAGEDIR%|\"${imagedir}\"|" \
-  -e "s|%OCTAVE_INCLUDEDIR%|\"${includedir}\"|" \
-  -e "s|%OCTAVE_INFODIR%|\"${infodir}\"|" \
-  -e "s|%OCTAVE_INFOFILE%|\"${infofile}\"|" \
-  -e "s|%OCTAVE_LIBDIR%|\"${libdir}\"|" \
-  -e "s|%OCTAVE_LIBEXECDIR%|\"${libexecdir}\"|" \
-  -e "s|%OCTAVE_LOCALAPIFCNFILEDIR%|\"${localapifcnfiledir}\"|" \
-  -e "s|%OCTAVE_LOCALAPIOCTFILEDIR%|\"${localapioctfiledir}\"|" \
-  -e "s|%OCTAVE_LOCALARCHLIBDIR%|\"${localarchlibdir}\"|" \
-  -e "s|%OCTAVE_LOCALFCNFILEDIR%|\"${localfcnfiledir}\"|" \
-  -e "s|%OCTAVE_LOCALOCTFILEDIR%|\"${localoctfiledir}\"|" \
-  -e "s|%OCTAVE_LOCALSTARTUPFILEDIR%|\"${localstartupfiledir}\"|" \
-  -e "s|%OCTAVE_LOCALAPIARCHLIBDIR%|\"${localapiarchlibdir}\"|" \
-  -e "s|%OCTAVE_LOCALVERARCHLIBDIR%|\"${localverarchlibdir}\"|" \
-  -e "s|%OCTAVE_LOCALVERFCNFILEDIR%|\"${localverfcnfiledir}\"|" \
-  -e "s|%OCTAVE_LOCALVEROCTFILEDIR%|\"${localveroctfiledir}\"|" \
-  -e "s|%OCTAVE_MAN1DIR%|\"${man1dir}\"|" \
-  -e "s|%OCTAVE_MAN1EXT%|\"${man1ext}\"|" \
-  -e "s|%OCTAVE_MANDIR%|\"${mandir}\"|" \
-  -e "s|%OCTAVE_OCTFILEDIR%|\"${octfiledir}\"|" \
-  -e "s|%OCTAVE_OCTETCDIR%|\"${octetcdir}\"|" \
-  -e "s|%OCTAVE_OCTINCLUDEDIR%|\"${octincludedir}\"|" \
-  -e "s|%OCTAVE_OCTLIBDIR%|\"${octlibdir}\"|" \
-  -e "s|%OCTAVE_OCTLOCALEDIR%|\"${octlocaledir}\"|" \
-  -e "s|%OCTAVE_OCTTESTSDIR%|\"${octtestsdir}\"|" \
-  -e "s|%OCTAVE_STARTUPFILEDIR%|\"${startupfiledir}\"|" \
-  -e "s|%OCTAVE_PREFIX%|\"${prefix}\"|" \
-  -e "s|%OCTAVE_API_VERSION%|\"${api_version}\"|" \
-  -e "s|%OCTAVE_RELEASE%|\"${OCTAVE_RELEASE}\"|" \
-  -e "s|%OCTAVE_TEXI_MACROS_FILE%|\"${texi_macros_file}\"|" \
-  -e "s|%OCTAVE_VERSION%|\"${version}\"|"
-$(simple_move_if_change_rule)
+  $(SED) < $< > $@-t \
+    -e "s|%NO_EDIT_WARNING%|DO NOT EDIT!  Generated automatically from $(<F) by Make.|" \
+    -e "s|%OCTAVE_ARCHLIBDIR%|\"${archlibdir}\"|" \
+    -e "s|%OCTAVE_BINDIR%|\"${bindir}\"|" \
+    -e "s|%OCTAVE_CANONICAL_HOST_TYPE%|\"${canonical_host_type}\"|" \
+    -e "s|%OCTAVE_DATADIR%|\"${datadir}\"|" \
+    -e "s|%OCTAVE_DATAROOTDIR%|\"${datarootdir}\"|" \
+    -e "s|%OCTAVE_DEFAULT_PAGER%|\"${DEFAULT_PAGER}\"|" \
+    -e "s|%OCTAVE_DOC_CACHE_FILE%|\"${doc_cache_file}\"|" \
+    -e "s|%OCTAVE_EXEC_PREFIX%|\"${exec_prefix}\"|" \
+    -e "s|%OCTAVE_FCNFILEDIR%|\"${fcnfiledir}\"|" \
+    -e "s|%OCTAVE_IMAGEDIR%|\"${imagedir}\"|" \
+    -e "s|%OCTAVE_INCLUDEDIR%|\"${includedir}\"|" \
+    -e "s|%OCTAVE_INFODIR%|\"${infodir}\"|" \
+    -e "s|%OCTAVE_INFOFILE%|\"${infofile}\"|" \
+    -e "s|%OCTAVE_LIBDIR%|\"${libdir}\"|" \
+    -e "s|%OCTAVE_LIBEXECDIR%|\"${libexecdir}\"|" \
+    -e "s|%OCTAVE_LOCALAPIFCNFILEDIR%|\"${localapifcnfiledir}\"|" \
+    -e "s|%OCTAVE_LOCALAPIOCTFILEDIR%|\"${localapioctfiledir}\"|" \
+    -e "s|%OCTAVE_LOCALARCHLIBDIR%|\"${localarchlibdir}\"|" \
+    -e "s|%OCTAVE_LOCALFCNFILEDIR%|\"${localfcnfiledir}\"|" \
+    -e "s|%OCTAVE_LOCALOCTFILEDIR%|\"${localoctfiledir}\"|" \
+    -e "s|%OCTAVE_LOCALSTARTUPFILEDIR%|\"${localstartupfiledir}\"|" \
+    -e "s|%OCTAVE_LOCALAPIARCHLIBDIR%|\"${localapiarchlibdir}\"|" \
+    -e "s|%OCTAVE_LOCALVERARCHLIBDIR%|\"${localverarchlibdir}\"|" \
+    -e "s|%OCTAVE_LOCALVERFCNFILEDIR%|\"${localverfcnfiledir}\"|" \
+    -e "s|%OCTAVE_LOCALVEROCTFILEDIR%|\"${localveroctfiledir}\"|" \
+    -e "s|%OCTAVE_MAN1DIR%|\"${man1dir}\"|" \
+    -e "s|%OCTAVE_MAN1EXT%|\"${man1ext}\"|" \
+    -e "s|%OCTAVE_MANDIR%|\"${mandir}\"|" \
+    -e "s|%OCTAVE_OCTDATADIR%|\"${octdatadir}\"|" \
+    -e "s|%OCTAVE_OCTFILEDIR%|\"${octfiledir}\"|" \
+    -e "s|%OCTAVE_OCTETCDIR%|\"${octetcdir}\"|" \
+    -e "s|%OCTAVE_OCTINCLUDEDIR%|\"${octincludedir}\"|" \
+    -e "s|%OCTAVE_OCTLIBDIR%|\"${octlibdir}\"|" \
+    -e "s|%OCTAVE_OCTLOCALEDIR%|\"${octlocaledir}\"|" \
+    -e "s|%OCTAVE_OCTTESTSDIR%|\"${octtestsdir}\"|" \
+    -e "s|%OCTAVE_STARTUPFILEDIR%|\"${startupfiledir}\"|" \
+    -e "s|%OCTAVE_PREFIX%|\"${prefix}\"|" \
+    -e "s|%OCTAVE_API_VERSION%|\"${api_version}\"|" \
+    -e "s|%OCTAVE_RELEASE%|\"${OCTAVE_RELEASE}\"|" \
+    -e "s|%OCTAVE_TEXI_MACROS_FILE%|\"${texi_macros_file}\"|" \
+    -e "s|%OCTAVE_VERSION%|\"${version}\"|" && \
+  $(simple_move_if_change_rule)
 endef
 
 define do_subst_script_vals
-echo "making $@ from $<"
-$(SED) < $< \
-  -e "s|%AWK%|${AWK}|g" \
-  -e "s|%FIND%|${FIND}|g" \
-  -e "s|%SED%|${SED}|g" \
-  -e "s|%abs_top_srcdir%|${abs_top_srcdir}|" \
-  -e "s|%builddir%|$(shell pwd)|" > $@-t
-$(simple_move_if_change_rule)
+  $(SED) < $< \
+    -e "s|%AWK%|${AWK}|g" \
+    -e "s|%FIND%|${FIND}|g" \
+    -e "s|%SED%|${SED}|g" \
+    -e "s|%abs_top_srcdir%|${abs_top_srcdir}|" \
+    -e "s|%builddir%|$(shell pwd)|" > $@-t && \
+  $(simple_move_if_change_rule)
 endef
 
 define do_subst_qt_settings
-echo "making $@ from $<"
-$(SED) < $< \
-  -e "s|%DEFAULT_TERMINAL_FONT%|${DEFAULT_TERMINAL_FONT}|" \
-  -e "s|%DEFAULT_TERMINAL_FONT_SIZE%|${DEFAULT_TERMINAL_FONT_SIZE}|" > $@-t
-$(simple_move_if_change_rule)
+  $(SED) < $< \
+    -e "s|%DEFAULT_TERMINAL_FONT%|${DEFAULT_TERMINAL_FONT}|" \
+    -e "s|%DEFAULT_TERMINAL_FONT_SIZE%|${DEFAULT_TERMINAL_FONT_SIZE}|" > $@-t && \
+  $(simple_move_if_change_rule)
 endef
 
-define test-file-commands
-( echo "## DO NOT EDIT!  Generated automatically from $(<F) by Make."; $(GREP) '^%!' $< ) > $@-t
-mv $@-t $@
+define subst-bison-api-decls
+  case "$(BISON_API_PREFIX_DECL_STYLE)" in \
+    *api*) \
+      case "$(BISON_API_PREFIX_DECL_STYLE)" in \
+       *brace*) \
+         api_prefix_decl='%define api.prefix {$(1)}'; ;; \
+       *) \
+         api_prefix_decl='%define api.prefix "$(1)"'; ;; \
+       esac; \
+      ;; \
+    *name*) \
+      case "$(BISON_API_PREFIX_DECL_STYLE)" in \
+        *brace*) \
+          api_prefix_decl='%name-prefix {$(1)}'; ;; \
+        *) \
+          api_prefix_decl='%name-prefix="$(1)"'; ;; \
+      esac; \
+    ;; \
+  esac; \
+  case "$(BISON_PUSH_PULL_DECL_STYLE)" in \
+    *quote*) quote='"' ;; \
+    *) quote="" ;; \
+  esac; \
+  case "$(BISON_PUSH_PULL_DECL_STYLE)" in \
+    *dash*) push_pull_decl="%define api.push-pull $${quote}both$${quote}"; ;; \
+    *underscore*) push_pull_decl="%define api.push_pull $${quote}both$${quote}"; ;; \
+  esac; \
+  $(SED) -e "s/%PUSH_PULL_DECL%/$$push_pull_decl/" \
+         -e "s/%API_PREFIX_DECL%/$$api_prefix_decl/" $< > $@-t && \
+  mv $@-t $@
 endef
 
 define gdbinit_install_rule
-if [ -f .gdbinit ]; then \
-  echo "refusing to overwrite .gdbinit with newer version from $<" 1>&2; \
-else \
-  echo "Installing .gdbinit from version at $<" ; \
-  cp $< $@; \
-fi
+  if [ -f .gdbinit ]; then \
+    echo "refusing to overwrite .gdbinit with newer version from $<" 1>&2; \
+  else \
+    echo "Installing .gdbinit from version at $<" ; \
+    cp $< $@; \
+  fi
+endef
+
+define test-file-commands
+  rm -f $@-t $@ && \
+  ( echo "## DO NOT EDIT!  Generated automatically from $(<F) by Make."; \
+    $(GREP) '^%!' $< \
+  ) > $@-t && \
+  mv $@-t $@
 endef
 
 %.cc-tst : %.cc
-	$(test-file-commands)
+	$(AM_V_GEN)$(test-file-commands)
 
 %.yy-tst : %.yy
-	$(test-file-commands)
+	$(AM_V_GEN)$(test-file-commands)
 
 %.ll-tst : %.ll
-	$(test-file-commands)
+	$(AM_V_GEN)$(test-file-commands)
 
 parse-tree/oct-gperf.h: parse-tree/octave.gperf
-	$(GPERF) -t -C -D -G -L C++ -Z octave_kw_hash $< > $@-t1
-	$(SED) 's,lookup\[,gperf_lookup[,' < $@-t1 > $@-t
-	mv $@-t $@
+	$(AM_V_GEN)rm -f $@-t $@t1 $@ && \
+	$(GPERF) -t -C -D -G -L C++ -Z octave_kw_hash $< > $@-t1 && \
+	$(SED) 's,lookup\[,gperf_lookup[,' < $@-t1 > $@-t && \
+	mv $@-t $@ && \
 	rm -f $@-t1
 
-parse-tree/oct-parse.yy: parse-tree/oct-parse.in.yy
-	case "$(BISON_API_PREFIX_DECL_STYLE)" in \
-	  *api*) api_prefix_decl='%define api.prefix "octave_"'; ;; \
-	  *name*) api_prefix_decl='%name-prefix="octave_"'; ;; \
-	esac; \
-	case "$(BISON_PUSH_PULL_DECL_STYLE)" in \
-	  *quote*) quote='"' ;; \
-	  *) quote="" ;; \
-	esac; \
-	case "$(BISON_PUSH_PULL_DECL_STYLE)" in \
-	  *dash*) push_pull_decl="%define api.push-pull $${quote}both$${quote}"; ;; \
-	  *underscore*) push_pull_decl="%define api.push_pull $${quote}both$${quote}"; ;; \
-	esac; \
-	$(SED) -e "s/%PUSH_PULL_DECL%/$$push_pull_decl/" \
-	       -e "s/%API_PREFIX_DECL%/$$api_prefix_decl/" $< > $@-t
-	mv $@-t $@
+parse-tree/oct-parse.h: parse-tree/oct-parse.cc
 
-$(OV_JAVA_DF) : octave-value/%.df : octave-value/%.cc
+parse-tree/oct-parse.yy: parse-tree/oct-parse.in.yy
+	$(AM_V_GEN)$(call subst-bison-api-decls,octave_)
+
+$(OV_JAVA_DF) : octave-value/%.df : octave-value/%.cc $(GENERATED_MAKE_BUILTINS_INCS)
+	$(AM_V_GEN)rm -f $@-t $@-t1 $@ && \
 	$(CXXCPP) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	  $(AM_CPPFLAGS) $(JAVA_CPPFLAGS) $(CPPFLAGS) \
 	  $(AM_CXXFLAGS) $(CXXFLAGS) \
-	  -DMAKE_BUILTINS $< > $@-t
-	$(srcdir)/mkdefs $(srcdir) $< < $@-t > $@
-	rm $@-t
+	  -DMAKE_BUILTINS $< > $@-t1 && \
+	$(srcdir)/mkdefs $(srcdir) $< < $@-t1 > $@-t && \
+	mv $@-t $@ && \
+	rm -f $@-t1
 
 operators/ops.cc: $(OPERATORS_SRC) mkops
-	$(srcdir)/mkops $(OPERATORS_SRC) > $@-t
+	$(AM_V_GEN)rm -f $@-t $@ && \
+	$(srcdir)/mkops $(OPERATORS_SRC) > $@-t && \
 	mv $@-t $@
 
 $(OPT_HANDLERS): corefcn/%.cc : $(top_builddir)/liboctave/numeric/%.in
-	$(PERL) $(top_srcdir)/build-aux/mk-opts.pl --opt-handler-fcns $< > $@-t
+	$(AM_V_GEN)rm -f $@-t $@ && \
+	$(PERL) $(top_srcdir)/build-aux/mk-opts.pl --opt-handler-fcns $< > $@-t && \
 	mv $@-t $@
 
 $(OPT_HANDLERS): $(top_srcdir)/build-aux/mk-opts.pl
 
 $(OPT_INC) : %.h : %.in
-	$(MAKE) -C $(top_builddir)/liboctave/numeric $(@F)
+	$(AM_V_GEN)$(MAKE) -C $(top_builddir)/liboctave/numeric $(@F)
 
 #display.df display.lo: CPPFLAGS += $(X11_FLAGS)
 
-$(COREFCN_FT2_DF) : corefcn/%.df : corefcn/%.cc
+$(COREFCN_FT2_DF) : corefcn/%.df : corefcn/%.cc $(GENERATED_MAKE_BUILTINS_INCS)
+	$(AM_V_GEN)rm -f $@-t $@ && \
 	$(CXXCPP) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	  $(AM_CPPFLAGS) $(FONTCONFIG_CPPFLAGS) $(FT2_CPPFLAGS) $(CPPFLAGS) \
 	  $(AM_CXXFLAGS) $(CXXFLAGS) \
-	  -DMAKE_BUILTINS $< > $@-t
-	$(srcdir)/mkdefs $(srcdir) $< < $@-t > $@
+	  -DMAKE_BUILTINS $< > $@-t && \
+	$(srcdir)/mkdefs $(srcdir) $< < $@-t > $@ && \
 	rm $@-t
 
 corefcn/defaults.h: corefcn/defaults.in.h Makefile
-	@$(do_subst_default_vals)
+	$(AM_V_GEN)$(do_subst_default_vals)
 
 corefcn/graphics.h: corefcn/graphics.in.h genprops.awk Makefile
-	$(AWK) -f $(srcdir)/genprops.awk $< > $@-t
+	$(AM_V_GEN)rm -f $@-t $@ && \
+	$(AWK) -f $(srcdir)/genprops.awk $< > $@-t && \
 	mv $@-t $@
 
 corefcn/graphics-props.cc: corefcn/graphics.in.h genprops.awk Makefile
-	$(AWK) -v emit_graphics_props=1 -f $(srcdir)/genprops.awk $< > $@-t
+	$(AM_V_GEN)rm -f $@-t $@ && \
+	$(AWK) -v emit_graphics_props=1 -f $(srcdir)/genprops.awk $< > $@-t && \
 	mv $@-t $@
 
 corefcn/oct-errno.cc: corefcn/oct-errno.in.cc Makefile
+	$(AM_V_GEN)rm -f $@-t $@ && \
 	if test -n "$(PERL)"; then \
 	  $(srcdir)/mk-errno-list --perl "$(PERL)" < $< > $@-t; \
 	elif test -n "$(PYTHON)"; then \
 	  $(srcdir)/mk-errno-list --python "$(PYTHON)" < $< > $@-t; \
 	else \
 	  $(SED) '/@SYSDEP_ERRNO_LIST@/D' $< > $@-t; \
-	fi
+	fi && \
 	mv $@-t $@
 
 corefcn/mxarray.h: corefcn/mxarray.in.h Makefile
+	$(AM_V_GEN)rm -f $@-t $@ && \
 	$(SED) < $< \
 	  -e "s|%NO_EDIT_WARNING%|DO NOT EDIT!  Generated automatically from $(<F) by Make.|" \
-	  -e "s|%OCTAVE_IDX_TYPE%|${OCTAVE_IDX_TYPE}|" > $@-t
+	  -e "s|%OCTAVE_IDX_TYPE%|${OCTAVE_IDX_TYPE}|" > $@-t && \
 	mv $@-t $@
 
 corefcn/oct-tex-lexer.ll: corefcn/oct-tex-lexer.in.ll corefcn/oct-tex-symbols.in Makefile.am
-	$(AWK) 'BEGIN { print "/* DO NOT EDIT. AUTOMATICALLY GENERATED FROM oct-tex-lexer.in.ll and oct-tex-symbols.in. */"; } /^@SYMBOL_RULES@$$/ { count = 0; while (getline < "$(srcdir)/corefcn/oct-tex-symbols.in") { if ($$0 !~ /^#.*/ && NF == 3) { printf("\"\\\\%s\" { yylval->sym = %d; return SYM; }\n", $$1, count); count++; } } getline } ! /^@SYMBOL_RULES@$$/ { print }' $< > $@-t
+	$(AM_V_GEN)rm -f $@-t $@ && \
+	$(AWK) 'BEGIN { print "/* DO NOT EDIT. AUTOMATICALLY GENERATED FROM oct-tex-lexer.in.ll and oct-tex-symbols.in. */"; } /^@SYMBOL_RULES@$$/ { count = 0; while (getline < "$(srcdir)/corefcn/oct-tex-symbols.in") { if ($$0 !~ /^#.*/ && NF == 3) { printf("\"\\\\%s\" { yylval->sym = %d; return SYM; }\n", $$1, count); count++; } } getline } ! /^@SYMBOL_RULES@$$/ { print }' $< > $@-t && \
 	mv $@-t $@
 
 corefcn/oct-tex-symbols.cc: corefcn/oct-tex-symbols.in Makefile.am
-	$(AWK) 'BEGIN { print "// DO NOT EDIT. AUTOMATICALLY GENERATED FROM oct-tex-symbols.in."; print "static uint32_t symbol_codes[][2] = {"; count = 0; } END { print "};"; printf("static int num_symbol_codes = %d;\n", count); } /^#/ { } { if (NF == 3) { printf("  { %s, %s },\n", $$2, $$3); count++; } }' $< > $@-t
+	$(AM_V_GEN)rm -f $@-t $@ && \
+	$(AWK) 'BEGIN { print "// DO NOT EDIT. AUTOMATICALLY GENERATED FROM oct-tex-symbols.in."; print "static uint32_t symbol_codes[][2] = {"; count = 0; } END { print "};"; printf("static int num_symbol_codes = %d;\n", count); } !/^#/ && (NF == 3) { printf("  { %s, %s },\n", $$2, $$3); count++; }' $< > $@-t && \
 	mv $@-t $@
 
 corefcn/txt-eng.cc: corefcn/oct-tex-symbols.cc
 corefcn/oct-tex-lexer.cc: LEX_OUTPUT_ROOT := lex.octave_tex_
 corefcn/oct-tex-parser.h: corefcn/oct-tex-parser.yy
 
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@dldfcn/$(am__leading_dot)__delaunayn__.oct-stamp: dldfcn/__delaunayn__.la
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	rm -f $(<:.la=.oct)
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	la=$(<F) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  of=$(<F:.la=.oct) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  cd dldfcn && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  $(LN_S) .libs/`$(SED) -n -e "s/dlname='\([^']*\)'/\1/p" < $$la` $$of && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  touch $(@F)
+corefcn/oct-tex-parser.yy: corefcn/oct-tex-parser.in.yy
+	$(AM_V_GEN)$(call subst-bison-api-decls,octave_tex_)
 
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@dldfcn/$(am__leading_dot)__dsearchn__.oct-stamp: dldfcn/__dsearchn__.la
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	rm -f $(<:.la=.oct)
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	la=$(<F) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  of=$(<F:.la=.oct) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  cd dldfcn && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  $(LN_S) .libs/`$(SED) -n -e "s/dlname='\([^']*\)'/\1/p" < $$la` $$of && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  touch $(@F)
-
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@dldfcn/$(am__leading_dot)__eigs__.oct-stamp: dldfcn/__eigs__.la
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	rm -f $(<:.la=.oct)
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	la=$(<F) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  of=$(<F:.la=.oct) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  cd dldfcn && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  $(LN_S) .libs/`$(SED) -n -e "s/dlname='\([^']*\)'/\1/p" < $$la` $$of && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  touch $(@F)
-
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@dldfcn/$(am__leading_dot)__fltk_uigetfile__.oct-stamp: dldfcn/__fltk_uigetfile__.la
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	rm -f $(<:.la=.oct)
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	la=$(<F) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  of=$(<F:.la=.oct) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  cd dldfcn && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  $(LN_S) .libs/`$(SED) -n -e "s/dlname='\([^']*\)'/\1/p" < $$la` $$of && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  touch $(@F)
-
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@dldfcn/$(am__leading_dot)__glpk__.oct-stamp: dldfcn/__glpk__.la
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	rm -f $(<:.la=.oct)
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	la=$(<F) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  of=$(<F:.la=.oct) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  cd dldfcn && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  $(LN_S) .libs/`$(SED) -n -e "s/dlname='\([^']*\)'/\1/p" < $$la` $$of && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  touch $(@F)
-
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@dldfcn/$(am__leading_dot)__init_fltk__.oct-stamp: dldfcn/__init_fltk__.la
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	rm -f $(<:.la=.oct)
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	la=$(<F) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  of=$(<F:.la=.oct) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  cd dldfcn && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  $(LN_S) .libs/`$(SED) -n -e "s/dlname='\([^']*\)'/\1/p" < $$la` $$of && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  touch $(@F)
-
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@dldfcn/$(am__leading_dot)__init_gnuplot__.oct-stamp: dldfcn/__init_gnuplot__.la
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	rm -f $(<:.la=.oct)
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	la=$(<F) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  of=$(<F:.la=.oct) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  cd dldfcn && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  $(LN_S) .libs/`$(SED) -n -e "s/dlname='\([^']*\)'/\1/p" < $$la` $$of && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  touch $(@F)
-
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@dldfcn/$(am__leading_dot)__magick_read__.oct-stamp: dldfcn/__magick_read__.la
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	rm -f $(<:.la=.oct)
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	la=$(<F) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  of=$(<F:.la=.oct) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  cd dldfcn && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  $(LN_S) .libs/`$(SED) -n -e "s/dlname='\([^']*\)'/\1/p" < $$la` $$of && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  touch $(@F)
-
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@dldfcn/$(am__leading_dot)__voronoi__.oct-stamp: dldfcn/__voronoi__.la
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	rm -f $(<:.la=.oct)
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	la=$(<F) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  of=$(<F:.la=.oct) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  cd dldfcn && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  $(LN_S) .libs/`$(SED) -n -e "s/dlname='\([^']*\)'/\1/p" < $$la` $$of && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  touch $(@F)
-
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@dldfcn/$(am__leading_dot)amd.oct-stamp: dldfcn/amd.la
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	rm -f $(<:.la=.oct)
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	la=$(<F) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  of=$(<F:.la=.oct) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  cd dldfcn && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  $(LN_S) .libs/`$(SED) -n -e "s/dlname='\([^']*\)'/\1/p" < $$la` $$of && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  touch $(@F)
-
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@dldfcn/$(am__leading_dot)ccolamd.oct-stamp: dldfcn/ccolamd.la
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	rm -f $(<:.la=.oct)
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	la=$(<F) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  of=$(<F:.la=.oct) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  cd dldfcn && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  $(LN_S) .libs/`$(SED) -n -e "s/dlname='\([^']*\)'/\1/p" < $$la` $$of && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  touch $(@F)
-
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@dldfcn/$(am__leading_dot)chol.oct-stamp: dldfcn/chol.la
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	rm -f $(<:.la=.oct)
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	la=$(<F) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  of=$(<F:.la=.oct) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  cd dldfcn && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  $(LN_S) .libs/`$(SED) -n -e "s/dlname='\([^']*\)'/\1/p" < $$la` $$of && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  touch $(@F)
-
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@dldfcn/$(am__leading_dot)colamd.oct-stamp: dldfcn/colamd.la
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	rm -f $(<:.la=.oct)
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	la=$(<F) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  of=$(<F:.la=.oct) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  cd dldfcn && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  $(LN_S) .libs/`$(SED) -n -e "s/dlname='\([^']*\)'/\1/p" < $$la` $$of && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  touch $(@F)
-
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@dldfcn/$(am__leading_dot)convhulln.oct-stamp: dldfcn/convhulln.la
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	rm -f $(<:.la=.oct)
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	la=$(<F) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  of=$(<F:.la=.oct) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  cd dldfcn && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  $(LN_S) .libs/`$(SED) -n -e "s/dlname='\([^']*\)'/\1/p" < $$la` $$of && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  touch $(@F)
-
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@dldfcn/$(am__leading_dot)dmperm.oct-stamp: dldfcn/dmperm.la
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	rm -f $(<:.la=.oct)
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	la=$(<F) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  of=$(<F:.la=.oct) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  cd dldfcn && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  $(LN_S) .libs/`$(SED) -n -e "s/dlname='\([^']*\)'/\1/p" < $$la` $$of && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  touch $(@F)
-
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@dldfcn/$(am__leading_dot)fftw.oct-stamp: dldfcn/fftw.la
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	rm -f $(<:.la=.oct)
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	la=$(<F) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  of=$(<F:.la=.oct) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  cd dldfcn && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  $(LN_S) .libs/`$(SED) -n -e "s/dlname='\([^']*\)'/\1/p" < $$la` $$of && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  touch $(@F)
-
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@dldfcn/$(am__leading_dot)qr.oct-stamp: dldfcn/qr.la
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	rm -f $(<:.la=.oct)
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	la=$(<F) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  of=$(<F:.la=.oct) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  cd dldfcn && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  $(LN_S) .libs/`$(SED) -n -e "s/dlname='\([^']*\)'/\1/p" < $$la` $$of && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  touch $(@F)
-
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@dldfcn/$(am__leading_dot)symbfact.oct-stamp: dldfcn/symbfact.la
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	rm -f $(<:.la=.oct)
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	la=$(<F) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  of=$(<F:.la=.oct) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  cd dldfcn && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  $(LN_S) .libs/`$(SED) -n -e "s/dlname='\([^']*\)'/\1/p" < $$la` $$of && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  touch $(@F)
-
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@dldfcn/$(am__leading_dot)symrcm.oct-stamp: dldfcn/symrcm.la
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	rm -f $(<:.la=.oct)
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	la=$(<F) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  of=$(<F:.la=.oct) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  cd dldfcn && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  $(LN_S) .libs/`$(SED) -n -e "s/dlname='\([^']*\)'/\1/p" < $$la` $$of && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  touch $(@F)
-
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@dldfcn/$(am__leading_dot)tsearch.oct-stamp: dldfcn/tsearch.la
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	rm -f $(<:.la=.oct)
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	la=$(<F) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  of=$(<F:.la=.oct) && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  cd dldfcn && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  $(LN_S) .libs/`$(SED) -n -e "s/dlname='\([^']*\)'/\1/p" < $$la` $$of && \
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	  touch $(@F)
+@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@%.oct : %.la
+@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(AM_V_GEN)$(INSTALL_PROGRAM) dldfcn/.libs/$(shell $(SED) -n -e "s/dlname='\([^']*\)'/\1/p" < $<) $@
 dldfcn/__delaunayn__.df: CPPFLAGS += $(QHULL_CPPFLAGS)
 dldfcn/__eigs__.df: CPPFLAGS += $(ARPACK_CPPFLAGS) $(SPARSE_XCPPFLAGS)
-dldfcn/__fltk_uigetfile__.df: CPPFLAGS += $(GRAPHICS_CFLAGS) $(FT2_CPPFLAGS)
+dldfcn/__fltk_uigetfile__.df: CPPFLAGS += $(FLTK_CPPFLAGS) $(FT2_CPPFLAGS)
 dldfcn/__glpk__.df: CPPFLAGS += $(GLPK_CPPFLAGS)
-dldfcn/__init_fltk__.df: CPPFLAGS += $(GRAPHICS_CFLAGS) $(FT2_CPPFLAGS) $(FONTCONFIG_CPPFLAGS)
+dldfcn/__init_fltk__.df: CPPFLAGS += $(FLTK_CPPFLAGS) $(FT2_CPPFLAGS) $(FONTCONFIG_CPPFLAGS)
 dldfcn/__init_gnuplot__.df: CPPFLAGS += $(FT2_CPPFLAGS) $(FONTCONFIG_CPPFLAGS)
 dldfcn/__magick_read__.df: CPPFLAGS += $(MAGICK_CPPFLAGS)
+dldfcn/__osmesa_print__.df: CPPFLAGS += $(OSMESA_CPPFLAGS) $(FT2_CPPFLAGS)
 dldfcn/__voronoi__.df: CPPFLAGS += $(QHULL_CPPFLAGS)
 dldfcn/amd.df: CPPFLAGS += $(SPARSE_XCPPFLAGS)
 dldfcn/ccolamd.df: CPPFLAGS += $(SPARSE_XCPPFLAGS)
@@ -8524,6 +8778,8 @@ dldfcn/fftw.df: CPPFLAGS += $(FFTW_XCPPFLAGS)
 dldfcn/qr.df: CPPFLAGS += $(QRUPDATE_CPPFLAGS) $(SPARSE_XCPPFLAGS)
 dldfcn/symbfact.df: CPPFLAGS += $(SPARSE_XCPPFLAGS)
 dldfcn/symrcm.df: CPPFLAGS += $(SPARSE_XCPPFLAGS)
+dldfcn/audioread.df: CPPFLAGS += $(SNDFILE_CPPFLAGS)
+dldfcn/audiodevinfo.df: CPPFLAGS += $(PORTAUDIO_CPPFLAGS)
 
 $(srcdir)/dldfcn/module.mk: $(srcdir)/dldfcn/config-module.sh $(srcdir)/dldfcn/config-module.awk $(srcdir)/dldfcn/module-files
 	$(srcdir)/dldfcn/config-module.sh $(top_srcdir)
@@ -8532,25 +8788,29 @@ $(SRC_DEF_FILES): mkdefs Makefile
 
 $(DEF_FILES): $(OPT_HANDLERS) $(OPT_INC)
 
-%.df: %.cc
+%.df: %.cc $(GENERATED_MAKE_BUILTINS_INCS)
+	$(AM_V_GEN)rm -f $@-t $@-t1 $@ && \
 	$(CXXCPP) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	  $(AM_CPPFLAGS) $(LLVM_CPPFLAGS) $(CPPFLAGS) \
 	  $(AM_CXXFLAGS) $(CXXFLAGS) \
-	  -DMAKE_BUILTINS $< > $@-t
-	$(srcdir)/mkdefs $(srcdir) $< < $@-t > $@
-	rm $@-t
+	  -DMAKE_BUILTINS $< > $@-t1 && \
+	$(srcdir)/mkdefs $(srcdir) $< < $@-t1 > $@-t && \
+	mv $@-t $@ && \
+	rm -f $@-t1
 
 .yy.cc:
 	$(AM_V_YACC)$(am__skipyacc) $(SHELL) $(YLWRAP) $< y.tab.c $@ y.tab.h $*.h y.output $*.output -- $(YACCCOMPILE)
 
 oct-conf.h: oct-conf.in.h Makefile
-	@$(do_subst_config_vals)
+	$(AM_V_GEN)$(do_subst_config_vals)
 
 oct-conf-features.h: $(top_builddir)/config.h config-features.sh
-	$(srcdir)/config-features.sh $< > $@-t
+	$(AM_V_GEN)rm -f $@-t $@ && \
+	$(srcdir)/config-features.sh $< > $@-t && \
 	mv $@-t $@
 
 version.h: version.in.h Makefile
+	$(AM_V_GEN)rm -f $@-t $@ && \
 	$(SED) < $< \
 	  -e "s|%NO_EDIT_WARNING%|DO NOT EDIT!  Generated automatically from $(<F) by Make.|" \
 	  -e "s|%OCTAVE_API_VERSION%|\"${OCTAVE_API_VERSION}\"|" \
@@ -8559,33 +8819,37 @@ version.h: version.in.h Makefile
           -e "s|%OCTAVE_MINOR_VERSION%|${OCTAVE_MINOR_VERSION}|" \
           -e "s|%OCTAVE_PATCH_VERSION%|${OCTAVE_PATCH_VERSION}|" \
 	  -e "s|%OCTAVE_RELEASE_DATE%|\"${OCTAVE_RELEASE_DATE}\"|" \
-	  -e "s|%OCTAVE_VERSION%|\"${OCTAVE_VERSION}\"|" > $@-t
+	  -e "s|%OCTAVE_VERSION%|\"${OCTAVE_VERSION}\"|" > $@-t && \
 	mv $@-t $@
 
 builtins.cc: $(DEF_FILES) mkbuiltins
-	$(srcdir)/mkbuiltins --source $(DEF_FILES) > $@-t
+	$(AM_V_GEN)rm -f $@-t $@ && \
+	$(srcdir)/mkbuiltins --source $(DEF_FILES) > $@-t && \
 	mv $@-t $@
 
 builtin-defun-decls.h: $(SRC_DEF_FILES) mkbuiltins
-	$(srcdir)/mkbuiltins --header $(SRC_DEF_FILES) > $@-t
+	$(AM_V_GEN)rm -f $@-t $@ && \
+	$(srcdir)/mkbuiltins --header $(SRC_DEF_FILES) > $@-t && \
 	mv $@-t $@
 
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@dldfcn/PKG_ADD: $(DLDFCN_DEF_FILES) mk-pkg-add
-@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(srcdir)/mk-pkg-add $(DLDFCN_DEF_FILES) > $@-t
+@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(AM_V_GEN)rm -f $@-t $@ && \
+@AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	$(srcdir)/mk-pkg-add $(DLDFCN_DEF_FILES) > $@-t && \
 @AMCOND_ENABLE_DYNAMIC_LINKING_TRUE@	mv $@-t $@
 
 @AMCOND_BUILD_DOCS_TRUE@.DOCSTRINGS: $(ALL_DEF_FILES) gendoc.pl
+@AMCOND_BUILD_DOCS_TRUE@	$(AM_V_GEN)rm -f $@-t $@ && \
 @AMCOND_BUILD_DOCS_TRUE@	if [ "x$(srcdir)" != "x." ] && [ -f $(srcdir)/DOCSTRINGS ] && [ ! -f DOCSTRINGS ]; then \
 @AMCOND_BUILD_DOCS_TRUE@		cp $(srcdir)/DOCSTRINGS DOCSTRINGS; \
 @AMCOND_BUILD_DOCS_TRUE@		touch -r $(srcdir)/DOCSTRINGS DOCSTRINGS; \
-@AMCOND_BUILD_DOCS_TRUE@	fi
-@AMCOND_BUILD_DOCS_TRUE@	@echo "creating .DOCSTRINGS from .cc source files"
-@AMCOND_BUILD_DOCS_TRUE@	@$(PERL) $(srcdir)/gendoc.pl $(ALL_DEF_FILES) > $@
-@AMCOND_BUILD_DOCS_TRUE@	$(top_srcdir)/build-aux/move-if-change $@ DOCSTRINGS
+@AMCOND_BUILD_DOCS_TRUE@	fi && \
+@AMCOND_BUILD_DOCS_TRUE@	$(PERL) $(srcdir)/gendoc.pl $(ALL_DEF_FILES) > $@-t && \
+@AMCOND_BUILD_DOCS_TRUE@	mv $@-t $@ && \
+@AMCOND_BUILD_DOCS_TRUE@	$(top_srcdir)/build-aux/move-if-change $@ DOCSTRINGS && \
 @AMCOND_BUILD_DOCS_TRUE@	touch $@
 
-@AMCOND_BUILD_DOCS_TRUE@all-local: $(OCT_STAMP_FILES) $(DLDFCN_PKG_ADD_FILE) .DOCSTRINGS
-@AMCOND_BUILD_DOCS_FALSE@all-local: $(OCT_STAMP_FILES) $(DLDFCN_PKG_ADD_FILE)
+@AMCOND_BUILD_DOCS_TRUE@all-local: $(OCT_FILES) $(DLDFCN_PKG_ADD_FILE) .DOCSTRINGS
+@AMCOND_BUILD_DOCS_FALSE@all-local: $(OCT_FILES) $(DLDFCN_PKG_ADD_FILE)
 
 @AMCOND_BUILD_DOCS_TRUE@install-data-hook: install-oct install-built-in-docstrings
 @AMCOND_BUILD_DOCS_FALSE@install-data-hook: install-oct uninstall-built-in-docstrings

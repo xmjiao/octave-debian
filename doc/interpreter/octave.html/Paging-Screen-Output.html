@@ -160,13 +160,15 @@ The original variable value is restored when exiting the function.
 
 <a name="XREFfflush"></a><dl>
 <dt><a name="index-fflush"></a>Built-in Function: <em></em> <strong>fflush</strong> <em>(<var>fid</var>)</em></dt>
-<dd><p>Flush output to <var>fid</var>.  This is useful for ensuring that all
-pending output makes it to the screen before some other event occurs.
-For example, it is always a good idea to flush the standard output
-stream before calling <code>input</code>.
+<dd><p>Flush output to file descriptor <var>fid</var>.
 </p>
 <p><code>fflush</code> returns 0 on success and an OS dependent error value
 (-1 on Unix) on error.
+</p>
+<p>Programming Note: Flushing is useful for ensuring that all pending output
+makes it to the screen before some other event occurs.  For example, it is
+always a good idea to flush the standard output stream before calling
+<code>input</code>.
 </p>
 <p><strong>See also:</strong> <a href="Opening-and-Closing-Files.html#XREFfopen">fopen</a>, <a href="Opening-and-Closing-Files.html#XREFfclose">fclose</a>.
 </p></dd></dl>

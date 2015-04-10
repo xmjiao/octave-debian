@@ -149,7 +149,7 @@ public:
 
   dim_vector dims (void) const;
 
-  void print (std::ostream& os, bool pr_as_read_syntax = false) const;
+  void print (std::ostream& os, bool pr_as_read_syntax = false);
 
   void print_raw (std::ostream& os, bool pr_as_read_syntax = false) const;
 
@@ -294,7 +294,6 @@ private:
 
   std::string java_classname;
 
-  DECLARE_OCTAVE_ALLOCATOR
 
 public:
   int type_id (void) const { return t_id; }

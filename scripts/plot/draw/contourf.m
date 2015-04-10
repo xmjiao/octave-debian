@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2013 Kai Habel
+## Copyright (C) 2007-2015 Kai Habel
 ## Copyright (C) 2003 Shai Ayal
 ##
 ## This file is part of Octave.
@@ -70,7 +70,7 @@ function [c, h] = contourf (varargin)
   endif
   unwind_protect
     hax = newplot (hax);
-    
+
     [ctmp, htmp] = __contour__ (hax, "none", "fill", "on",
                                      "linecolor", "black", varargin{:});
   unwind_protect_cleanup

@@ -1,5 +1,5 @@
 ## Copyright (C) 2012 Rik Wehbring
-## Copyright (C) 1996-2013 Kurt Hornik
+## Copyright (C) 1996-2015 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -30,7 +30,7 @@
 ## first two arguments are taken as the number of rows and columns and any
 ## further arguments specify additional matrix dimensions.  The size may also
 ## be specified with a vector of dimensions @var{sz}.
-## 
+##
 ## If no size arguments are given then the result matrix is a random ordering
 ## of the sample @var{data}.
 ## @end deftypefn
@@ -57,13 +57,12 @@ endfunction
 %!assert (size (empirical_rnd (1:2, [4 1])), [4, 1])
 %!assert (size (empirical_rnd (1:2, 4, 1)), [4, 1])
 
-%% Test class of input preserved
+## Test class of input preserved
 %!assert (class (empirical_rnd (1:2, 1)), "double")
 %!assert (class (empirical_rnd (single (1:2), 1)), "single")
 
-%% Test input validation
+## Test input validation
 %!error empirical_rnd ()
 %!error empirical_rnd (ones (2), 1)
-%% test data verification
 %!error empirical_rnd (ones (2), 1, 1)
 

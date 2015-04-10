@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2005-2013 Ludwig Schwardt, Kevin Ruland
+Copyright (C) 2005-2015 Ludwig Schwardt, Kevin Ruland
 
 
 This file is part of Octave.
@@ -405,7 +405,7 @@ gzfilebuf::enable_buffer ()
           this->setg (buffer, buffer, buffer);
           // Setup entire internal buffer as put area.
           // The one-past-end pointer actually points to the last element of
-          // the buffer, so that overflow(c) can safely add the extra character 
+          // the buffer, so that overflow(c) can safely add the extra character
           // c to the sequence.  These pointers remain in place for the
           // duration of the buffer
           this->setp (buffer, buffer + buffer_size - 1);

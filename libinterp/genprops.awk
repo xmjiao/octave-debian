@@ -1,17 +1,17 @@
-## Copyright (C) 2007-2013 John W. Eaton
+## Copyright (C) 2007-2015 John W. Eaton
 ##
 ## This file is part of Octave.
-## 
+##
 ## Octave is free software; you can redistribute it and/or modify it
 ## under the terms of the GNU General Public License as published by the
 ## Free Software Foundation; either version 3 of the License, or (at
 ## your option) any later version.
-## 
+##
 ## Octave is distributed in the hope that it will be useful, but WITHOUT
 ## ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 ## FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 ## for more details.
-## 
+##
 ## You should have received a copy of the GNU General Public License
 ## along with Octave; see the file COPYING.  If not, see
 ## <http://www.gnu.org/licenses/>.
@@ -73,7 +73,7 @@
 ################################################################################
 ##   'o','O','a' are currently not processed.  They are commented out in code.
 ################################################################################
-##    
+##
 ##   o:  There is a custom inline definition for the octave_value version
 ##       of the set function, so we don't emit one.
 ##
@@ -144,7 +144,7 @@
 function emit_get_accessor (i, rtype, faccess)
 {
   printf ("  %s get_%s (void) const", rtype, name[i]);
-  
+
   if (emit_get[i] == "definition")
     printf (" { return %s.%s (); }\n", name[i], faccess);
   else
@@ -156,7 +156,7 @@ function emit_get_accessor (i, rtype, faccess)
 function emit_get_bool (i)
 {
   printf ("  bool is_%s (void) const", name[i]);
-  
+
   if (emit_get[i] == "definition")
     printf (" { return %s.is_on (); }\n", name[i]);
   else
@@ -170,7 +170,7 @@ function emit_get_bool (i)
 function emit_get_radio (i)
 {
   printf ("  bool %s_is (const std::string& v) const", name[i]);
-  
+
   if (emit_get[i] == "definition")
     printf (" { return %s.is (v); }\n", name[i]);
   else
@@ -186,14 +186,14 @@ function emit_get_color (i)
   printf ("  bool %s_is_rgb (void) const { return %s.is_rgb (); }\n", name[i], name[i]);
 
   printf ("  bool %s_is (const std::string& v) const", name[i]);
-  
+
   if (emit_get[i] == "definition")
     printf (" { return %s.is (v); }\n", name[i]);
   else
     printf (";\n");
-  
+
   printf ("  Matrix get_%s_rgb (void) const", name[i]);
-  
+
   if (emit_get[i] == "definition")
     printf (" { return (%s.is_rgb () ? %s.rgb () : Matrix ()); }\n", name[i], name[i]);
   else
@@ -209,14 +209,14 @@ function emit_get_double_radio (i)
   printf ("  bool %s_is_double (void) const { return %s.is_double (); }\n", name[i], name[i]);
 
   printf ("  bool %s_is (const std::string& v) const", name[i]);
-  
+
   if (emit_get[i] == "definition")
     printf (" { return %s.is (v); }\n", name[i]);
   else
     printf (";\n");
-  
+
   printf ("  double get_%s_double (void) const", name[i]);
-  
+
   if (emit_get[i] == "definition")
     printf (" { return (%s.is_double () ? %s.double_value () : 0); }\n", name[i], name[i]);
   else
@@ -230,7 +230,7 @@ function emit_get_double_radio (i)
 function emit_get_callback (i)
 {
   printf ("  void execute_%s (const octave_value& data = octave_value ()) const", name[i]);
-  
+
   if (emit_get[i] == "definition")
     printf (" { %s.execute (data); }\n", name[i]);
   else
@@ -290,7 +290,7 @@ function emit_declarations ()
   if (class_name && ! base)
     emit_common_declarations();
 
-  printf ("public:\n\n\n  static std::set<std::string> core_property_names (void);\n\n  static bool has_core_property (const caseless_str& pname);\n\n  std::set<std::string> all_property_names (void) const;\n\n");
+  printf ("public:\n\n\n  static std::set<std::string> core_property_names (void);\n\n  static std::set<std::string> readonly_property_names (void);\n\n  static bool has_core_property (const caseless_str& pname);\n\n  static bool has_readonly_property (const caseless_str& pname);\n\n  std::set<std::string> all_property_names (void) const;\n\n");
 
   if (! base)
     printf ("  bool has_property (const caseless_str& pname) const;\n\n");
@@ -303,7 +303,7 @@ function emit_declarations ()
 
   if (idx > 0)
     print "\npublic:\n";
-  
+
   if (idx > 0)
   {
     printf ("  enum\n  {");
@@ -470,7 +470,7 @@ function emit_source ()
               class_name);
 
     if (! base)
-      printf ("  const std::set<std::string>& pnames = all_property_names ();\n\n  caseless_str pname = validate_property_name (\"get\", go_name, pnames, pname_arg);\n\n  if (error_state)\n    return;\n\n");
+        printf ("  const std::set<std::string>& pnames = all_property_names ();\n\n  caseless_str pname = validate_property_name (\"set\", go_name, pnames, pname_arg);\n\n  if (error_state)\n    return;\n  else if (has_readonly_property (pname))\n    {\n      error (\"set: \\\"%%s\\\" is read-only\", pname.c_str ());\n      return;\n    }\n\n");
 
     first = 1;
 
@@ -611,6 +611,7 @@ function emit_source ()
       printf ("std::string %s::properties::go_name (\"%s\");\n\n",
               class_name, object_name);
 
+    ## core_property_names
     printf ("std::set<std::string>\n");
     if (base)
       printf ("base_properties");
@@ -622,7 +623,7 @@ function emit_source ()
     if (! base)
       printf ("\n      std::set<std::string> base_pnames = base_properties::core_property_names ();\n      all_pnames.insert (base_pnames.begin (), base_pnames.end ());\n");
     printf ("\n      initialized = true;\n    }\n\n  return all_pnames;\n}\n\n");
-
+    ## has_core_property
     printf ("bool\n");
     if (base)
       printf ("base_properties");
@@ -630,6 +631,30 @@ function emit_source ()
       printf ("%s::properties", class_name);
     printf ("::has_core_property (const caseless_str& pname)\n{\n  std::set<std::string> pnames = core_property_names ();\n\n  return pnames.find (pname) != pnames.end ();\n}\n\n", class_name);
 
+    ## readonly_property_names
+    printf ("std::set<std::string>\n");
+    if (base)
+      printf ("base_properties");
+    else
+      printf ("%s::properties", class_name);
+    printf ("::readonly_property_names (void)\n{\n  static std::set<std::string> all_pnames;\n\n  static bool initialized = false;\n\n  if (! initialized)\n    {\n");
+    for (i = 1; i <= idx; i++)
+        if (readonly[i])
+        {
+            printf ("      all_pnames.insert (\"%s\");\n", name[i]);
+        }
+    if (! base)
+      printf ("\n      std::set<std::string> base_pnames = base_properties::readonly_property_names ();\n      all_pnames.insert (base_pnames.begin (), base_pnames.end ());\n");
+    printf ("\n      initialized = true;\n    }\n\n  return all_pnames;\n}\n\n");
+    ## has_readonly_property
+    printf ("bool\n");
+    if (base)
+      printf ("base_properties");
+    else
+      printf ("%s::properties", class_name);
+    printf ("::has_readonly_property (const caseless_str& pname)\n{\n  std::set<std::string> pnames = readonly_property_names ();\n\n  return pnames.find (pname) != pnames.end ();\n}\n\n", class_name);
+
+    ## all_property_names
     printf ("std::set<std::string>\n");
     if (base)
         printf ("base_properties");
@@ -763,7 +788,7 @@ BEGIN {
         ## but we still emit the declaration.
         if (index (quals, "S"))
           emit_set[idx] = "declaration";
-        
+
         ## The property is hidden
         if (index (quals, "h"))
           hidden[idx] = 1;
@@ -776,7 +801,7 @@ BEGIN {
         ## from the set method
         if (index (quals, "u"))
           updater[idx] = "inline";
-        
+
         ## There is an extern updater method that should be called
         ## from the set method
         if (index (quals, "U"))

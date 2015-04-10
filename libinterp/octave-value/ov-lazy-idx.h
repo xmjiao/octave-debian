@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2010-2013 VZLU Prague
+Copyright (C) 2010-2015 VZLU Prague
 
 This file is part of Octave.
 
@@ -59,8 +59,7 @@ public:
 
   octave_value full_value (void) const { return make_value (); }
 
-  idx_vector index_vector (void) const
-  { return index; }
+  idx_vector index_vector (bool /* require_integers */ = false) const { return index; }
 
   builtin_type_t builtin_type (void) const { return btyp_double; }
 
@@ -129,7 +128,7 @@ public:
   bool print_as_scalar (void) const
   { return make_value ().print_as_scalar (); }
 
-  void print (std::ostream& os, bool pr_as_read_syntax = false) const
+  void print (std::ostream& os, bool pr_as_read_syntax = false)
   { make_value ().print (os, pr_as_read_syntax); }
 
   void print_info (std::ostream& os, const std::string& prefix) const
@@ -204,7 +203,6 @@ public:
   bool load_binary (std::istream& is, bool swap,
                     oct_mach_info::float_format fmt);
 
-  // HDF5 functions not defined.
 
   int write (octave_stream& os, int block_size,
              oct_data_conv::data_type output_type, int skip,
@@ -249,4 +247,3 @@ private:
 };
 
 #endif
-

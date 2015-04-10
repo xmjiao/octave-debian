@@ -67,11 +67,11 @@ a matrix meet a specified condition.
 <dt><a name="index-any"></a>Built-in Function: <em></em> <strong>any</strong> <em>(<var>x</var>)</em></dt>
 <dt><a name="index-any-1"></a>Built-in Function: <em></em> <strong>any</strong> <em>(<var>x</var>, <var>dim</var>)</em></dt>
 <dd><p>For a vector argument, return true (logical 1) if any element of the vector
-is non-zero.
+is nonzero.
 </p>
 <p>For a matrix argument, return a row vector of logical ones and
 zeros with each element indicating whether any of the elements of the
-corresponding column of the matrix are non-zero.  For example:
+corresponding column of the matrix are nonzero.  For example:
 </p>
 <div class="example">
 <pre class="example">any (eye (2, 4))
@@ -94,14 +94,14 @@ corresponding column of the matrix are non-zero.  For example:
 <dt><a name="index-all"></a>Built-in Function: <em></em> <strong>all</strong> <em>(<var>x</var>)</em></dt>
 <dt><a name="index-all-1"></a>Built-in Function: <em></em> <strong>all</strong> <em>(<var>x</var>, <var>dim</var>)</em></dt>
 <dd><p>For a vector argument, return true (logical 1) if all elements of the vector
-are non-zero.
+are nonzero.
 </p>
 <p>For a matrix argument, return a row vector of logical ones and
 zeros with each element indicating whether all of the elements of the
-corresponding column of the matrix are non-zero.  For example:
+corresponding column of the matrix are nonzero.  For example:
 </p>
 <div class="example">
-<pre class="example">all ([2, 3; 1, 0]))
+<pre class="example">all ([2, 3; 1, 0])
     &rArr; [ 1, 0 ]
 </pre></div>
 
@@ -129,22 +129,32 @@ than 0.9.
 <code>all (all (condition))</code>.
 </p>
 <a name="XREFxor"></a><dl>
-<dt><a name="index-xor"></a>Mapping Function: <em><var>z</var> =</em> <strong>xor</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
-<dd><p>Return the <em>exclusive or</em> of the entries of <var>x</var> and <var>y</var>.
-For boolean expressions <var>x</var> and <var>y</var>,
+<dt><a name="index-xor"></a>Function File: <em><var>z</var> =</em> <strong>xor</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-xor-1"></a>Function File: <em><var>z</var> =</em> <strong>xor</strong> <em>(<var>x1</var>, <var>x2</var>, &hellip;)</em></dt>
+<dd><p>Return the <em>exclusive or</em> of <var>x</var> and <var>y</var>.
+</p>
+<p>For boolean expressions <var>x</var> and <var>y</var>,
 <code>xor (<var>x</var>, <var>y</var>)</code> is true if and only if one of <var>x</var> or
-<var>y</var> is true.  Otherwise, for <var>x</var> and <var>y</var> both true or both
+<var>y</var> is true.  Otherwise, if <var>x</var> and <var>y</var> are both true or both
 false, <code>xor</code> returns false.
 </p>
 <p>The truth table for the xor operation is
 </p>
 <table>
 <tr><td width="44%"></td><td width="3%"><var>x</var></td><td width="5%"><var>y</var></td><td width="3%"><var>z</var></td><td width="44%"></td></tr>
+<tr><td width="44%"></td><td width="3%">-</td><td width="5%">-</td><td width="3%">-</td><td width="44%"></td></tr>
 <tr><td width="44%"></td><td width="3%">0</td><td width="5%">0</td><td width="3%">0</td><td width="44%"></td></tr>
 <tr><td width="44%"></td><td width="3%">1</td><td width="5%">0</td><td width="3%">1</td><td width="44%"></td></tr>
 <tr><td width="44%"></td><td width="3%">0</td><td width="5%">1</td><td width="3%">1</td><td width="44%"></td></tr>
 <tr><td width="44%"></td><td width="3%">1</td><td width="5%">1</td><td width="3%">0</td><td width="44%"></td></tr>
 </table>
+
+<p>If more than two arguments are given the xor operation is applied
+cumulatively from left to right:
+</p>
+<div class="example">
+<pre class="example">(&hellip;((x1 XOR x2) XOR x3) XOR &hellip;)
+</pre></div>
 
 
 <p><strong>See also:</strong> <a href="Element_002dby_002delement-Boolean-Operators.html#XREFand">and</a>, <a href="Element_002dby_002delement-Boolean-Operators.html#XREFor">or</a>, <a href="Element_002dby_002delement-Boolean-Operators.html#XREFnot">not</a>.
@@ -211,13 +221,13 @@ NA values are also considered NaN values.  For example:
 
 <a name="XREFisfinite"></a><dl>
 <dt><a name="index-isfinite"></a>Mapping Function: <em></em> <strong>isfinite</strong> <em>(<var>x</var>)</em></dt>
-<dt><a name="index-finite"></a>Mapping Function: <em></em> <strong>finite</strong> <em>(<var>x</var>)</em></dt>
 <dd><p>Return a logical array which is true where the elements of <var>x</var> are
 finite values and false where they are not.
-For example:
+</p>
+<p>For example:
 </p>
 <div class="example">
-<pre class="example">finite ([13, Inf, NA, NaN])
+<pre class="example">isfinite ([13, Inf, NA, NaN])
      &rArr; [ 1, 0, 0, 0 ]
 </pre></div>
 
@@ -289,7 +299,7 @@ elements to find from the beginning of the matrix or vector.
 ascending order.
 </p>
 <p>Note that this function is particularly useful for sparse matrices, as
-it extracts the non-zero elements as vectors, which can then be used to
+it extracts the nonzero elements as vectors, which can then be used to
 create the original matrix.  For example:
 </p>
 <div class="example">

@@ -5,7 +5,7 @@ START-INFO-DIR-ENTRY
 * liboctave: (liboctave). Octave C++ Classes
 END-INFO-DIR-ENTRY
 
-   Copyright (C) 1996-2013 John W. Eaton.
+   Copyright (C) 1996-2015 John W. Eaton.
 
    Permission is granted to make and distribute verbatim copies of this
 manual provided the copyright notice and this permission notice are
@@ -28,28 +28,28 @@ Octave C++ Classes
 
 This manual documents how to use, install and port Octave's C++ class
 library, and how to report bugs.  It corresponds to Octave version
-3.8.2.
+4.0.0-rc2.
 
 * Menu:
 
-* Acknowledgements::            
-* Copying::                     
-* Introduction::                
-* Arrays::                      
-* Matrix and Vector Operations::  
-* Matrix Factorizations::       
-* Ranges::                      
-* Nonlinear Functions::         
-* Nonlinear Equations::         
-* Optimization::                
-* Quadrature::                  
-* Ordinary Differential Equations::  
-* Differential Algebraic Equations::  
-* Error Handling::              
-* Installation::                
-* Bugs::                        
-* Concept Index::               
-* Function Index::              
+* Acknowledgements::
+* Copying::
+* Introduction::
+* Arrays::
+* Matrix and Vector Operations::
+* Matrix Factorizations::
+* Ranges::
+* Nonlinear Functions::
+* Nonlinear Equations::
+* Optimization::
+* Quadrature::
+* Ordinary Differential Equations::
+* Differential Algebraic Equations::
+* Error Handling::
+* Installation::
+* Bugs::
+* Concept Index::
+* Function Index::
 
  -- The Detailed Node Listing --
 
@@ -59,20 +59,20 @@ Acknowledgements
 
 Arrays
 
-* Constructors and Assignment::  
+* Constructors and Assignment::
 
 Optimization
 
-* Objective Functions::         
-* Bounds::                      
-* Linear Constraints::          
-* Nonlinear Constraints::       
-* Quadratic Programming::       
-* Nonlinear Programming::       
+* Objective Functions::
+* Bounds::
+* Linear Constraints::
+* Nonlinear Constraints::
+* Quadratic Programming::
+* Nonlinear Programming::
 
 Quadrature
 
-* Collocation Weights::         
+* Collocation Weights::
 
 
 File: liboctave.info,  Node: Acknowledgements,  Next: Copying,  Prev: Top,  Up: Top
@@ -827,7 +827,7 @@ File: liboctave.info,  Node: Arrays,  Next: Matrix and Vector Operations,  Prev:
 
 * Menu:
 
-* Constructors and Assignment::  
+* Constructors and Assignment::
 
 
 File: liboctave.info,  Node: Constructors and Assignment,  Prev: Arrays,  Up: Arrays
@@ -2214,12 +2214,12 @@ File: liboctave.info,  Node: Optimization,  Next: Quadrature,  Prev: Nonlinear E
 
 * Menu:
 
-* Objective Functions::         
-* Bounds::                      
-* Linear Constraints::          
-* Nonlinear Constraints::       
-* Quadratic Programming::       
-* Nonlinear Programming::       
+* Objective Functions::
+* Bounds::
+* Linear Constraints::
+* Nonlinear Constraints::
+* Quadratic Programming::
+* Nonlinear Programming::
 
 
 File: liboctave.info,  Node: Objective Functions,  Next: Bounds,  Prev: Optimization,  Up: Optimization
@@ -2455,7 +2455,7 @@ File: liboctave.info,  Node: Quadrature,  Next: Ordinary Differential Equations,
 
 * Menu:
 
-* Collocation Weights::         
+* Collocation Weights::
 
 
 File: liboctave.info,  Node: Collocation Weights,  Prev: Quadrature,  Up: Quadrature
@@ -4509,32 +4509,32 @@ Function Index
 
 Tag Table:
 Node: Top774
-Node: Acknowledgements2097
-Node: Contributors2313
-Node: Copying2613
-Node: Introduction40147
-Node: Arrays40398
-Node: Constructors and Assignment40568
-Node: Matrix and Vector Operations48913
-Node: Matrix Factorizations80400
-Node: Ranges86706
-Node: Nonlinear Functions87400
-Node: Nonlinear Equations87944
-Node: Optimization88874
-Node: Objective Functions89215
-Node: Bounds89808
-Node: Linear Constraints90919
-Node: Nonlinear Constraints91906
-Node: Quadratic Programming92299
-Node: Nonlinear Programming93892
-Node: Quadrature95411
-Node: Collocation Weights97112
-Node: Ordinary Differential Equations98405
-Node: Differential Algebraic Equations99941
-Node: Error Handling100743
-Node: Installation100899
-Node: Bugs101023
-Node: Concept Index101130
-Node: Function Index104494
+Node: Acknowledgements1787
+Node: Contributors2003
+Node: Copying2303
+Node: Introduction39837
+Node: Arrays40088
+Node: Constructors and Assignment40256
+Node: Matrix and Vector Operations48601
+Node: Matrix Factorizations80088
+Node: Ranges86394
+Node: Nonlinear Functions87088
+Node: Nonlinear Equations87632
+Node: Optimization88562
+Node: Objective Functions88841
+Node: Bounds89434
+Node: Linear Constraints90545
+Node: Nonlinear Constraints91532
+Node: Quadratic Programming91925
+Node: Nonlinear Programming93518
+Node: Quadrature95037
+Node: Collocation Weights96729
+Node: Ordinary Differential Equations98022
+Node: Differential Algebraic Equations99558
+Node: Error Handling100360
+Node: Installation100516
+Node: Bugs100640
+Node: Concept Index100747
+Node: Function Index104111
 
 End Tag Table

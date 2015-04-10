@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2013 Kurt Hornik
+## Copyright (C) 1995-2015 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -62,7 +62,7 @@ function [qout, sout] = qqplot (x, dist, varargin)
     print_usage ();
   endif
 
-  if (!(isnumeric (x) && isvector (x)))
+  if (! (isnumeric (x) && isvector (x)))
     error ("qqplot: X must be a numeric vector");
   endif
 
@@ -92,12 +92,12 @@ function [qout, sout] = qqplot (x, dist, varargin)
     else
       q_label = sprintf ("%s with parameters %g", func2str (f), varargin{1});
       param_str = sprintf (", %g", varargin{2:end});
-      q_label = [q_label param_str]; 
+      q_label = [q_label param_str];
     endif
   endif
 
   if (nargout == 0)
-    plot (q, s);
+    plot (q, s, "-x");
     q_label = strrep (q_label, '_inv', '\_inv');
     if (q_label(1) == '@')
       q_label = q_label(6:end);  # Strip "@(y) " from anon. function
@@ -110,5 +110,4 @@ function [qout, sout] = qqplot (x, dist, varargin)
   endif
 
 endfunction
-
 

@@ -1,4 +1,4 @@
-## Copyright (C) 1994-2013 John W. Eaton
+## Copyright (C) 1994-2015 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -80,7 +80,7 @@ function [nn, xx] = hist (varargin)
   if (nargin < 1)
     print_usage ();
   endif
-  
+
   y = varargin{1};
   varargin = varargin(2:end);
 
@@ -161,9 +161,9 @@ function [nn, xx] = hist (varargin)
   endif
 
   if (nargout > 0)
-    if (arg_is_vector)  
+    if (arg_is_vector)
       ## Matlab compatibility requires a row vector return
-      nn = freq';  
+      nn = freq';
       xx = x';
     else
       nn = freq;

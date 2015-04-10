@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2013 John W. Eaton
+@c Copyright (C) 1996-2015 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -8,12 +8,12 @@
 @c under the terms of the GNU General Public License as published by the
 @c Free Software Foundation; either version 3 of the License, or (at
 @c your option) any later version.
-@c 
+@c
 @c Octave is distributed in the hope that it will be useful, but WITHOUT
 @c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 @c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 @c for more details.
-@c 
+@c
 @c You should have received a copy of the GNU General Public License
 @c along with Octave; see the file COPYING.  If not, see
 @c <http://www.gnu.org/licenses/>.
@@ -210,7 +210,7 @@ mktime (localtime (time ()))
 @c asctime scripts/time/asctime.m
 @anchor{XREFasctime}
 @deftypefn {Function File} {} asctime (@var{tm_struct})
-Convert a time structure to a string using the following 
+Convert a time structure to a string using the following
 format: @qcode{"ddd mmm mm HH:MM:SS yyyy"}.  For example:
 
 @example
@@ -589,6 +589,7 @@ of time less than one second, @code{usleep} will pause the execution for
 @deftypefnx {Function File} {@var{days} =} datenum (@var{year}, @var{month}, @var{day}, @var{hour}, @var{minute})
 @deftypefnx {Function File} {@var{days} =} datenum (@var{year}, @var{month}, @var{day}, @var{hour}, @var{minute}, @var{second})
 @deftypefnx {Function File} {@var{days} =} datenum ("datestr")
+@deftypefnx {Function File} {@var{days} =} datenum ("datestr", @var{f})
 @deftypefnx {Function File} {@var{days} =} datenum ("datestr", @var{p})
 @deftypefnx {Function File} {[@var{days}, @var{secs}] =} datenum (@dots{})
 Return the date/time input as a serial day number, with Jan 1, 0000
@@ -600,12 +601,20 @@ complete days in the date input.
 The fractional part, @code{rem (@var{days}, 1)} corresponds to the time
 on the given day.
 
-The input may be a date vector (see @code{datevec}), 
+The input may be a date vector (see @code{datevec}),
 datestr (see @code{datestr}), or directly specified as input.
 
-When processing input datestrings, @var{p} is the year at the start of the
-century to which two-digit years will be referenced.  If not specified, it
-defaults to the current year minus 50.
+When processing input datestrings, @var{f} is the format string used to
+interpret date strings (see @code{datestr}).  If no format @var{f} is
+specified, then a relatively slow search is performed through various
+formats.  It is always preferable to specify the format string @var{f} if
+it is known.  Formats which do not specify a particular time component
+will have the value set to zero.  Formats which do not specify a date
+will default to January 1st of the current year.
+
+@var{p} is the year at the start of the century to which two-digit years
+will be referenced.  If not specified, it defaults to the current year
+minus 50.
 
 The optional output @var{secs} holds the time on the specified day with
 greater precision than @var{days}.
@@ -667,16 +676,16 @@ formatted as follows:
 
 @multitable @columnfractions 0.1 0.45 0.35
 @headitem Code @tab Format @tab Example
-@item 0 @tab dd-mmm-yyyy HH:MM:SS   @tab 07-Sep-2000 15:38:09
-@item 1 @tab dd-mmm-yyyy            @tab 07-Sep-2000
-@item 2 @tab mm/dd/yy               @tab 09/07/00
-@item 3 @tab mmm                    @tab Sep
-@item 4 @tab m                      @tab S
-@item 5 @tab mm                     @tab 09
-@item 6 @tab mm/dd                  @tab 09/07
-@item 7 @tab dd                     @tab 07
-@item 8 @tab ddd                    @tab Thu
-@item 9 @tab d                      @tab T
+@item 0 @tab dd-mmm-yyyy HH:MM:SS    @tab 07-Sep-2000 15:38:09
+@item 1 @tab dd-mmm-yyyy             @tab 07-Sep-2000
+@item 2 @tab mm/dd/yy                @tab 09/07/00
+@item 3 @tab mmm                     @tab Sep
+@item 4 @tab m                       @tab S
+@item 5 @tab mm                      @tab 09
+@item 6 @tab mm/dd                   @tab 09/07
+@item 7 @tab dd                      @tab 07
+@item 8 @tab ddd                     @tab Thu
+@item 9 @tab d                       @tab T
 @item 10 @tab yyyy                   @tab 2000
 @item 11 @tab yy                     @tab 00
 @item 12 @tab mmmyy                  @tab Sep00
@@ -866,12 +875,13 @@ status information on files; and for manipulating file and path names.
 @deftypefnx {Function File} {} movefile (@var{f1}, @var{f2})
 @deftypefnx {Function File} {} movefile (@var{f1}, @var{f2}, 'f')
 @deftypefnx {Function File} {[@var{status}, @var{msg}, @var{msgid}] =} movefile (@dots{})
-Move the file @var{f1} to the destination @var{f2}.
+Move the source files or directories @var{f1} to the destination @var{f2}.
 
 The name @var{f1} may contain globbing patterns.  If @var{f1} expands to
 multiple file names, @var{f2} must be a directory.  If no destination
 @var{f2} is specified then the destination is the present working directory.
 If @var{f2} is a file name then @var{f1} is renamed to @var{f2}.
+
 When the force flag @qcode{'f'} is given any existing files will be
 overwritten without prompting.
 
@@ -901,11 +911,12 @@ system-dependent error message.
 @anchor{XREFcopyfile}
 @deftypefn  {Function File} {[@var{status}, @var{msg}, @var{msgid}] =} copyfile (@var{f1}, @var{f2})
 @deftypefnx {Function File} {[@var{status}, @var{msg}, @var{msgid}] =} copyfile (@var{f1}, @var{f2}, 'f')
-Copy the file @var{f1} to the destination @var{f2}.
+Copy the source files or directories @var{f1} to the destination @var{f2}.
 
 The name @var{f1} may contain globbing patterns.  If @var{f1} expands to
 multiple file names, @var{f2} must be a directory.
-when the force flag @qcode{'f'} is given any existing files will be
+
+When the force flag @qcode{'f'} is given any existing files will be
 overwritten without prompting.
 
 If successful, @var{status} is 1, and @var{msg}, @var{msgid} are empty
@@ -1035,10 +1046,12 @@ system-dependent error message.
 @c umask libinterp/corefcn/file-io.cc
 @anchor{XREFumask}
 @deftypefn {Built-in Function} {} umask (@var{mask})
-Set the permission mask for file creation.  The parameter @var{mask}
-is an integer, interpreted as an octal number.  If successful,
-returns the previous value of the mask (as an integer to be
+Set the permission mask for file creation.
+
+The parameter @var{mask} is an integer, interpreted as an octal number.  If
+successful, returns the previous value of the mask (as an integer to be
 interpreted as an octal number); otherwise an error message is printed.
+@seealso{@ref{XREFfopen,,fopen}, @ref{XREFmkdir,,mkdir}}
 @end deftypefn
 
 
@@ -1333,24 +1346,7 @@ glob ("file[12]")
         [2,1] = file2
       @}
 @end example
-@seealso{@ref{XREFls,,ls}, @ref{XREFdir,,dir}, @ref{XREFreaddir,,readdir}, @ref{XREFwhat,,what}, @ref{XREFfnmatch,,fnmatch}}
-@end deftypefn
-
-
-@c fnmatch libinterp/corefcn/dirfns.cc
-@anchor{XREFfnmatch}
-@deftypefn {Built-in Function} {} fnmatch (@var{pattern}, @var{string})
-Return true or false for each element of @var{string} that matches any of
-the elements of the string array @var{pattern}, using the rules of
-filename pattern matching.  For example:
-
-@example
-@group
-fnmatch ("a*b", @{"ab"; "axyzb"; "xyzab"@})
-     @result{} [ 1; 1; 0 ]
-@end group
-@end example
-@seealso{@ref{XREFglob,,glob}, @ref{XREFregexp,,regexp}}
+@seealso{@ref{XREFls,,ls}, @ref{XREFdir,,dir}, @ref{XREFreaddir,,readdir}, @ref{XREFwhat,,what}}
 @end deftypefn
 
 
@@ -1377,7 +1373,7 @@ the first that matches.
 If the third optional argument @qcode{"all"} is supplied, return
 a cell array containing the list of all files that have the same
 name in the path.  If no files are found, return an empty cell array.
-@seealso{@ref{XREFfile_in_loadpath,,file_in_loadpath}, @ref{XREFfind_dir_in_path,,find_dir_in_path}, @ref{XREFpath,,path}}
+@seealso{@ref{XREFfile_in_loadpath,,file_in_loadpath}, @ref{XREFdir_in_loadpath,,dir_in_loadpath}, @ref{XREFpath,,path}}
 @end deftypefn
 
 
@@ -1398,11 +1394,12 @@ It is @samp{/} (forward slash) under UNIX or @w{Mac OS X}, @samp{/} and
 @c filemarker libinterp/corefcn/input.cc
 @anchor{XREFfilemarker}
 @deftypefn  {Built-in Function} {@var{val} =} filemarker ()
-@deftypefnx {Built-in Function} {} filemarker (@var{new_val})
+@deftypefnx {Built-in Function} {@var{old_val} =} filemarker (@var{new_val})
 @deftypefnx {Built-in Function} {} filemarker (@var{new_val}, "local")
-Query or set the character used to separate filename from the
-the subfunction names contained within the file.  This can be used in
-a generic manner to interact with subfunctions.  For example,
+Query or set the character used to separate the filename from the subfunction
+names contained within the file.  By default this is the character @samp{>}.
+This can be used in a generic manner to interact with subfunctions.
+For example,
 
 @example
 help (["myfunc", filemarker, "mysubfunc"])
@@ -1410,8 +1407,10 @@ help (["myfunc", filemarker, "mysubfunc"])
 
 @noindent
 returns the help string associated with the subfunction @code{mysubfunc}
-of the function @code{myfunc}.  Another use of @code{filemarker} is when
-debugging it allows easier placement of breakpoints within subfunctions.
+located in the file @file{myfunc.m}.
+
+@code{filemarker} is also useful during debugging for placing breakpoints
+within subfunctions or nested functions.
 For example,
 
 @example
@@ -1422,25 +1421,50 @@ dbstop (["myfunc", filemarker, "mysubfunc"])
 will set a breakpoint at the first line of the subfunction @code{mysubfunc}.
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @end deftypefn
 
 
 @c fileparts scripts/miscellaneous/fileparts.m
 @anchor{XREFfileparts}
-@deftypefn {Function File} {[@var{dir}, @var{name}, @var{ext}, @var{ver}] =} fileparts (@var{filename})
-Return the directory, name, extension, and version components of
-@var{filename}.
-@seealso{@ref{XREFfullfile,,fullfile}}
+@deftypefn {Function File} {[@var{dir}, @var{name}, @var{ext}] =} fileparts (@var{filename})
+Return the directory, name, and extension components of @var{filename}.
+
+The input @var{filename} is a string which is parsed.  There is no attempt
+to check whether the filename or directory specified actually exists.
+@seealso{@ref{XREFfullfile,,fullfile}, @ref{XREFfilesep,,filesep}}
 @end deftypefn
 
 
 @c fullfile scripts/miscellaneous/fullfile.m
 @anchor{XREFfullfile}
-@deftypefn {Function File} {@var{filename} =} fullfile (@var{dir1}, @var{dir2}, @dots{}, @var{file})
-Return a complete filename constructed from the given components.
-@seealso{@ref{XREFfileparts,,fileparts}}
+@deftypefn  {Function File} {@var{filename} =} fullfile (@var{dir1}, @var{dir2}, @dots{}, @var{file})
+@deftypefnx {Function File} {@var{filenames} =} fullfile (@dots{}, @var{files})
+Build complete filename from separate parts.
+
+Joins any number of path components intelligently.  The return value
+is the concatenation of each component with exactly one file separator
+between each non empty part and at most one leading and/or trailing file
+separator.
+
+If the last component part is a cell array, returns a cell array of
+filepaths, one for each element in the last component, e.g.:
+
+@example
+@group
+fullfile ("/home/username", "data", @{"f1.csv", "f2.csv", "f3.csv"@})
+@result{}  /home/username/data/f1.csv
+    /home/username/data/f2.csv
+    /home/username/data/f3.csv
+@end group
+@end example
+
+On Windows systems, while forward slash file separators do work, they
+are replaced by backslashes; in addition drive letters are stripped of
+leading file separators to obtain a valid file path.
+
+@seealso{@ref{XREFfileparts,,fileparts}, @ref{XREFfilesep,,filesep}}
 @end deftypefn
 
 
@@ -1500,41 +1524,21 @@ Return true if @var{file} is a rooted-relative filename.
 @end deftypefn
 
 
-@c P_tmpdir libinterp/corefcn/file-io.cc
-@anchor{XREFP_tmpdir}
-@deftypefn {Built-in Function} {} P_tmpdir ()
-Return the default name of the directory for temporary files on
-this system.  The name of this directory is system dependent.
-@end deftypefn
-
-
-@c tempdir scripts/miscellaneous/tempdir.m
-@anchor{XREFtempdir}
-@deftypefn {Function File} {@var{dir} =} tempdir ()
-Return the name of the system's directory for temporary files.
-@end deftypefn
-
-
-@c tempname scripts/miscellaneous/tempname.m
-@anchor{XREFtempname}
-@deftypefn  {Function File} {} tempname ()
-@deftypefnx {Function File} {} tempname (@var{dir})
-@deftypefnx {Function File} {} tempname (@var{dir}, @var{prefix})
-This function is an alias for @code{tmpnam}.
-@seealso{@ref{XREFtmpnam,,tmpnam}}
-@end deftypefn
-
-
 @c recycle scripts/miscellaneous/recycle.m
 @anchor{XREFrecycle}
 @deftypefn  {Function File} {@var{current_state} =} recycle ()
 @deftypefnx {Function File} {@var{old_state} =} recycle (@var{new_state})
 Query or set the preference for recycling deleted files.
 
-Recycling files, instead of permanently deleting them, is not currently
-implemented in Octave.  To help avoid accidental data loss an error
-will be raised if an attempt is made to enable file recycling.
-@seealso{@ref{XREFdelete,,delete}}
+When recycling is enabled, commands which would permanently erase files
+instead move them to a temporary location (such as the directory labeled
+Trash).
+
+Programming Note: This function is provided for @sc{matlab} compatibility,
+but recycling is not implemented in Octave.  To help avoid accidental data
+loss an error will be raised if an attempt is made to enable file
+recycling.
+@seealso{@ref{XREFdelete,,delete}, @ref{XREFrmdir,,rmdir}}
 @end deftypefn
 
 
@@ -1543,51 +1547,76 @@ will be raised if an attempt is made to enable file recycling.
 
 @c bunzip2 scripts/miscellaneous/bunzip2.m
 @anchor{XREFbunzip2}
-@deftypefn  {Function File} {} bunzip2 (@var{bzfile})
-@deftypefnx {Function File} {} bunzip2 (@var{bzfile}, @var{dir})
-Unpack the bzip2 archive @var{bzfile} to the directory @var{dir}.  If
-@var{dir} is not specified, it defaults to the current directory.
+@deftypefn  {Function File} {@var{filelist} =} bunzip2 (@var{bzfile})
+@deftypefnx {Function File} {@var{filelist} =} bunzip2 (@var{bzfile}, @var{dir})
+Unpack the bzip2 archive @var{bzfile}.
+
+If @var{dir} is specified the files are unpacked in this directory rather
+than the one where @var{bzfile} is located.
+
+The optional output @var{filelist} is a list of the uncompressed files.
 @seealso{@ref{XREFbzip2,,bzip2}, @ref{XREFunpack,,unpack}, @ref{XREFgunzip,,gunzip}, @ref{XREFunzip,,unzip}, @ref{XREFuntar,,untar}}
 @end deftypefn
 
 
 @c gzip scripts/miscellaneous/gzip.m
 @anchor{XREFgzip}
-@deftypefn  {Function File} {@var{entries} =} gzip (@var{files})
-@deftypefnx {Function File} {@var{entries} =} gzip (@var{files}, @var{outdir})
-Compress the list of files and/or directories specified in @var{files}.
-Each file is compressed separately and a new file with a @file{".gz"}
-extension is created.  The original files are not modified.  Existing
-compressed files are silently overwritten.  If @var{outdir} is defined the
-compressed files are placed in this directory.
-@seealso{@ref{XREFgunzip,,gunzip}, @ref{XREFbzip2,,bzip2}, @ref{XREFzip,,zip}, @ref{XREFtar,,tar}}
+@deftypefn  {Function File} {@var{filelist} =} gzip (@var{files})
+@deftypefnx {Function File} {@var{filelist} =} gzip (@var{files}, @var{dir})
+Compress the list of files and directories specified in @var{files}.
+
+@var{files} is a character array or cell array of strings.  Shell
+wildcards in the filename such as @samp{*} or @samp{?} are accepted and
+expanded.  Each file is compressed separately and a new file with a
+@file{".gz"} extension is created.  The original files are not modified,
+but existing compressed files will be silently overwritten.  If a directory
+is specified then @code{gzip} recursively compresses all files in the
+directory.
+
+If @var{dir} is defined the compressed files are placed in this directory,
+rather than the original directory where the uncompressed file resides.
+If @var{dir} does not exist it is created.
+
+The optional output @var{filelist} is a list of the compressed files.
+@seealso{@ref{XREFgunzip,,gunzip}, @ref{XREFunpack,,unpack}, @ref{XREFbzip2,,bzip2}, @ref{XREFzip,,zip}, @ref{XREFtar,,tar}}
 @end deftypefn
 
 
 @c gunzip scripts/miscellaneous/gunzip.m
 @anchor{XREFgunzip}
-@deftypefn {Function File} {} gunzip (@var{gzfile}, @var{dir})
-Unpack the gzip archive @var{gzfile} to the directory @var{dir}.  If
-@var{dir} is not specified, it defaults to the current directory.  If
-@var{gzfile} is a directory, all gzfiles in the directory will be
-recursively gunzipped.
+@deftypefn  {Function File} {@var{filelist} =} gunzip (@var{gzfile})
+@deftypefnx {Function File} {@var{filelist} =} gunzip (@var{gzfile}, @var{dir})
+Unpack the gzip archive @var{gzfile}.
+
+If @var{gzfile} is a directory, all gzfiles in the directory will be
+recursively unpacked.
+
+If @var{dir} is specified the files are unpacked in this directory rather
+than the one where @var{gzfile} is located.
+
+The optional output @var{filelist} is a list of the uncompressed files.
 @seealso{@ref{XREFgzip,,gzip}, @ref{XREFunpack,,unpack}, @ref{XREFbunzip2,,bunzip2}, @ref{XREFunzip,,unzip}, @ref{XREFuntar,,untar}}
 @end deftypefn
 
 
 @c tar scripts/miscellaneous/tar.m
 @anchor{XREFtar}
-@deftypefn  {Function File} {@var{entries} =} tar (@var{tarfile}, @var{files})
-@deftypefnx {Function File} {@var{entries} =} tar (@var{tarfile}, @var{files}, @var{root})
-Pack @var{files} @var{files} into the TAR archive @var{tarfile}.  The
-list of files must be a string or a cell array of strings.
+@deftypefn  {Function File} {@var{filelist} =} tar (@var{tarfile}, @var{files})
+@deftypefnx {Function File} {@var{filelist} =} tar (@var{tarfile}, @var{files}, @var{rootdir})
+Pack the list of files and directories specified in @var{files} into the
+TAR archive @var{tarfile}.
 
-The optional argument @var{root} changes the relative path of @var{files}
-from the current directory.
+@var{files} is a character array or cell array of strings.  Shell
+wildcards in the filename such as @samp{*} or @samp{?} are accepted and
+expanded.  Directories are recursively traversed and all files are added to
+the archive.
 
-If an output argument is requested the entries in the archive are
-returned in a cell array.
-@seealso{@ref{XREFuntar,,untar}, @ref{XREFbzip2,,bzip2}, @ref{XREFgzip,,gzip}, @ref{XREFzip,,zip}}
+If @var{rootdir} is defined then any files without absolute pathnames are
+located relative to @var{rootdir} rather than the current directory.
+
+The optional output @var{filelist} is a list of the files that were included
+in the archive.
+@seealso{@ref{XREFuntar,,untar}, @ref{XREFunpack,,unpack}, @ref{XREFbzip2,,bzip2}, @ref{XREFgzip,,gzip}, @ref{XREFzip,,zip}}
 @end deftypefn
 
 
@@ -1595,30 +1624,47 @@ returned in a cell array.
 @anchor{XREFuntar}
 @deftypefn  {Function File} {} untar (@var{tarfile})
 @deftypefnx {Function File} {} untar (@var{tarfile}, @var{dir})
-Unpack the TAR archive @var{tarfile} to the directory @var{dir}.
-If @var{dir} is not specified, it defaults to the current directory.
+Unpack the TAR archive @var{tarfile}.
+
+If @var{dir} is specified the files are unpacked in this directory rather
+than the one where @var{tarfile} is located.
+
+The optional output @var{filelist} is a list of the uncompressed files.
 @seealso{@ref{XREFtar,,tar}, @ref{XREFunpack,,unpack}, @ref{XREFbunzip2,,bunzip2}, @ref{XREFgunzip,,gunzip}, @ref{XREFunzip,,unzip}}
 @end deftypefn
 
 
 @c zip scripts/miscellaneous/zip.m
 @anchor{XREFzip}
-@deftypefn  {Function File} {@var{entries} =} zip (@var{zipfile}, @var{files})
-@deftypefnx {Function File} {@var{entries} =} zip (@var{zipfile}, @var{files}, @var{rootdir})
-Compress the list of files and/or directories specified in @var{files}
-into the archive @var{zipfile} in the same directory.  If @var{rootdir}
-is defined the @var{files} are located relative to @var{rootdir} rather
-than the current directory.
-@seealso{@ref{XREFunzip,,unzip}, @ref{XREFbzip2,,bzip2}, @ref{XREFgzip,,gzip}, @ref{XREFtar,,tar}}
+@deftypefn  {Function File} {@var{filelist} =} zip (@var{zipfile}, @var{files})
+@deftypefnx {Function File} {@var{filelist} =} zip (@var{zipfile}, @var{files}, @var{rootdir})
+Compress the list of files and directories specified in @var{files} into the
+ZIP archive @var{zipfile}.
+
+@var{files} is a character array or cell array of strings.  Shell
+wildcards in the filename such as @samp{*} or @samp{?} are accepted and
+expanded.  Directories are recursively traversed and all files are
+compressed and added to the archive.
+
+If @var{rootdir} is defined then any files without absolute pathnames are
+located relative to @var{rootdir} rather than the current directory.
+
+The optional output @var{filelist} is a list of the files that were included
+in the archive.
+@seealso{@ref{XREFunzip,,unzip}, @ref{XREFunpack,,unpack}, @ref{XREFbzip2,,bzip2}, @ref{XREFgzip,,gzip}, @ref{XREFtar,,tar}}
 @end deftypefn
 
 
 @c unzip scripts/miscellaneous/unzip.m
 @anchor{XREFunzip}
-@deftypefn  {Function File} {} unzip (@var{zipfile})
-@deftypefnx {Function File} {} unzip (@var{zipfile}, @var{dir})
-Unpack the ZIP archive @var{zipfile} to the directory @var{dir}.
-If @var{dir} is not specified, it defaults to the current directory.
+@deftypefn  {Function File} {@var{filelist} =} unzip (@var{zipfile})
+@deftypefnx {Function File} {@var{filelist} =} unzip (@var{zipfile}, @var{dir})
+Unpack the ZIP archive @var{zipfile}.
+
+If @var{dir} is specified the files are unpacked in this directory rather
+than the one where @var{zipfile} is located.
+
+The optional output @var{filelist} is a list of the uncompressed files.
 @seealso{@ref{XREFzip,,zip}, @ref{XREFunpack,,unpack}, @ref{XREFbunzip2,,bunzip2}, @ref{XREFgunzip,,gunzip}, @ref{XREFuntar,,untar}}
 @end deftypefn
 
@@ -1629,26 +1675,73 @@ If @var{dir} is not specified, it defaults to the current directory.
 @deftypefnx {Function File} {@var{files} =} unpack (@var{file}, @var{dir})
 @deftypefnx {Function File} {@var{files} =} unpack (@var{file}, @var{dir}, @var{filetype})
 Unpack the archive @var{file} based on its extension to the directory
-@var{dir}.  If @var{file} is a list of strings, then each file is
-unpacked individually.  If @var{dir} is not specified, it defaults to
-the current directory.  If a directory is in the file list, then the
-@var{filetype} must also be specified.
+@var{dir}.
+
+If @var{file} is a list of strings, then each file is unpacked
+individually.  Shell wildcards in the filename such as @samp{*} or @samp{?}
+are accepted and expanded.
+
+If @var{dir} is not specified or is empty (@code{[]}), it defaults to the
+current directory.  If a directory is in the file list, then @var{filetype}
+must also be specified.
+
+The specific archive filetype is inferred from the extension of the file.
+The @var{filetype} may also be specified directly using a string which
+corresponds to a known extension.
+
+Valid filetype extensions:
+
+@table @code
+@item  bz
+@itemx bz2
+bzip archive
+
+@item gz
+gzip archive
+
+@item tar
+tar archive
+
+@item  tarbz
+@itemx tarbz2
+@itemx tbz
+@itemx tbz2
+tar + bzip archive
+
+@item  targz
+@itemx tgz
+tar + gzip archive
+
+@item z
+compress archive
+
+@item zip
+zip archive
+@end table
 
 The optional return value is a list of @var{files} unpacked.
-@seealso{@ref{XREFbzip2,,bzip2}, @ref{XREFgzip,,gzip}, @ref{XREFzip,,zip}, @ref{XREFtar,,tar}}
+@seealso{@ref{XREFbunzip2,,bunzip2}, @ref{XREFgunzip,,gunzip}, @ref{XREFunzip,,unzip}, @ref{XREFuntar,,untar}, @ref{XREFbzip2,,bzip2}, @ref{XREFgzip,,gzip}, @ref{XREFzip,,zip}, @ref{XREFtar,,tar}}
 @end deftypefn
 
 
 @c bzip2 scripts/miscellaneous/bzip2.m
 @anchor{XREFbzip2}
-@deftypefn  {Function File} {@var{entries} =} bzip2 (@var{files})
-@deftypefnx {Function File} {@var{entries} =} bzip2 (@var{files}, @var{outdir})
+@deftypefn  {Function File} {@var{filelist} =} bzip2 (@var{files})
+@deftypefnx {Function File} {@var{filelist} =} bzip2 (@var{files}, @var{dir})
 Compress the list of files specified in @var{files}.
-Each file is compressed separately and a new file with a @file{".bz2"}
-extension is created.  The original files are not modified.  Existing
-compressed files are silently overwritten.  If @var{outdir} is defined the
-compressed files are placed in this directory.
-@seealso{@ref{XREFbunzip2,,bunzip2}, @ref{XREFgzip,,gzip}, @ref{XREFzip,,zip}, @ref{XREFtar,,tar}}
+
+@var{files} is a character array or cell array of strings.  Shell
+wildcards in the filename such as @samp{*} or @samp{?} are accepted and
+expanded.  Each file is compressed separately and a new file with a
+@file{".bz2"} extension is created.  The original files are not modified,
+but existing compressed files will be silently overwritten.
+
+If @var{dir} is defined the compressed files are placed in this directory,
+rather than the original directory where the uncompressed file resides.
+If @var{dir} does not exist it is created.
+
+The optional output @var{filelist} is a list of the compressed files.
+@seealso{@ref{XREFbunzip2,,bunzip2}, @ref{XREFunpack,,unpack}, @ref{XREFgzip,,gzip}, @ref{XREFzip,,zip}, @ref{XREFtar,,tar}}
 @end deftypefn
 
 
@@ -1691,10 +1784,10 @@ require an FTP object as the first argument.
 @headitem Method @tab Description
 @item ascii @tab Set transfer type to ascii
 @item binary @tab Set transfer type to binary
-@item cd @tab Change remote working directory 
+@item cd @tab Change remote working directory
 @item close @tab Close FTP connection
-@item delete @tab Delete remote file 
-@item dir @tab List remote directory contents 
+@item delete @tab Delete remote file
+@item dir @tab List remote directory contents
 @item mget @tab Download remote files
 @item mkdir @tab Create remote directory
 @item mput @tab Upload local files
@@ -1844,7 +1937,7 @@ Download a remote file specified by its @var{url} and return its content
 in string @var{s}.  For example:
 
 @example
-s = urlread ("ftp://ftp.octave.org/pub/octave/README");
+s = urlread ("ftp://ftp.octave.org/pub/README");
 @end example
 
 The variable @var{success} is 1 if the download was successful,
@@ -1886,7 +1979,7 @@ Download a remote file specified by its @var{url} and save it as
 
 @example
 @group
-urlwrite ("ftp://ftp.octave.org/pub/octave/README",
+urlwrite ("ftp://ftp.octave.org/pub/README",
           "README.txt");
 @end group
 @end example
@@ -2022,12 +2115,15 @@ command shell that is started to run the command.
 @deftypefnx {Function File} {@var{status} =} unix ("@var{command}")
 @deftypefnx {Function File} {[@var{status}, @var{text}] =} unix ("@var{command}")
 @deftypefnx {Function File} {[@dots{}] =} unix ("@var{command}", "-echo")
-Execute a system command if running under a Unix-like operating
-system, otherwise do nothing.  Return the exit status of the program
-in @var{status} and any output from the command in @var{text}.
+Execute a system command if running under a Unix-like operating system,
+otherwise do nothing.
+
+Octave waits for the external command to finish before returning the exit
+status of the program in @var{status} and any output in @var{text}.
+
 When called with no output argument, or the @qcode{"-echo"} argument is
 given, then @var{text} is also sent to standard output.
-@seealso{@ref{XREFdos,,dos}, @ref{XREFsystem,,system}, @ref{XREFisunix,,isunix}, @ref{XREFispc,,ispc}}
+@seealso{@ref{XREFdos,,dos}, @ref{XREFsystem,,system}, @ref{XREFisunix,,isunix}, @ref{XREFismac,,ismac}, @ref{XREFispc,,ispc}}
 @end deftypefn
 
 
@@ -2037,12 +2133,39 @@ given, then @var{text} is also sent to standard output.
 @deftypefnx {Function File} {@var{status} =} dos ("@var{command}")
 @deftypefnx {Function File} {[@var{status}, @var{text}] =} dos ("@var{command"})
 @deftypefnx {Function File} {[@dots{}] =} dos ("@var{command}", "-echo")
-Execute a system command if running under a Windows-like operating
-system, otherwise do nothing.  Return the exit status of the program
-in @var{status} and any output from the command in @var{text}.
+Execute a system command if running under a Windows-like operating system,
+otherwise do nothing.
+
+Octave waits for the external command to finish before returning the exit
+status of the program in @var{status} and any output in @var{text}.
+
 When called with no output argument, or the @qcode{"-echo"} argument is
 given, then @var{text} is also sent to standard output.
-@seealso{@ref{XREFunix,,unix}, @ref{XREFsystem,,system}, @ref{XREFisunix,,isunix}, @ref{XREFispc,,ispc}}
+@seealso{@ref{XREFunix,,unix}, @ref{XREFsystem,,system}, @ref{XREFisunix,,isunix}, @ref{XREFismac,,ismac}, @ref{XREFispc,,ispc}}
+@end deftypefn
+
+
+@c open scripts/miscellaneous/open.m
+@anchor{XREFopen}
+@deftypefn  {Function File} {@var{output} =} open @var{file}
+@deftypefnx {Function File} {@var{output} =} open (@var{file})
+Open the file @var{file} in Octave or in an external application
+based on the file type as determined by the file name extension.
+
+Recognized file types are
+
+@table @code
+@item .m
+Open file in the editor.
+
+@item .mat
+Load the file in the base workspace.
+
+@item .exe
+Execute the program (on Windows systems only).
+@end table
+
+Other file types are opened in the appropriate external application.
 @end deftypefn
 
 
@@ -2052,9 +2175,11 @@ given, then @var{text} is also sent to standard output.
 @deftypefnx {Function File} {@var{output} =} perl (@var{scriptfile}, @var{argument1}, @var{argument2}, @dots{})
 @deftypefnx {Function File} {[@var{output}, @var{status}] =} perl (@dots{})
 Invoke Perl script @var{scriptfile}, possibly with a list of command line
-arguments.  Return output in @var{output} and optional status in
-@var{status}.  If @var{scriptfile} is not an absolute file name it is
-is searched for in the current directory and then in the Octave loadpath.
+arguments.
+
+Return output in @var{output} and optional status in @var{status}.  If
+@var{scriptfile} is not an absolute file name it is searched for in the
+current directory and then in the Octave loadpath.
 @seealso{@ref{XREFsystem,,system}, @ref{XREFpython,,python}}
 @end deftypefn
 
@@ -2065,9 +2190,11 @@ is searched for in the current directory and then in the Octave loadpath.
 @deftypefnx {Function File} {@var{output} =} python (@var{scriptfile}, @var{argument1}, @var{argument2}, @dots{})
 @deftypefnx {Function File} {[@var{output}, @var{status}] =} python (@dots{})
 Invoke Python script @var{scriptfile}, possibly with a list of command line
-arguments.  Return output in @var{output} and optional status in
-@var{status}.  If @var{scriptfile} is not an absolute file name it is
-is searched for in the current directory and then in the Octave loadpath.
+arguments.
+
+Return output in @var{output} and optional status in @var{status}.  If
+@var{scriptfile} is not an absolute file name it is searched for in the
+current directory and then in the Octave loadpath.
 @seealso{@ref{XREFsystem,,system}, @ref{XREFperl,,perl}}
 @end deftypefn
 
@@ -2104,14 +2231,17 @@ endwhile
    @print{} drwxrwxrwt  15 root  root  2048 Feb 17 14:53 tmp
 @end group
 @end example
+@seealso{@ref{XREFpopen2,,popen2}}
 @end deftypefn
 
 
 @c pclose libinterp/corefcn/file-io.cc
 @anchor{XREFpclose}
 @deftypefn {Built-in Function} {} pclose (@var{fid})
-Close a file identifier that was opened by @code{popen}.  You may also
-use @code{fclose} for the same purpose.
+Close a file identifier that was opened by @code{popen}.
+
+The function @code{fclose} may also be used for the same purpose.
+@seealso{@ref{XREFfclose,,fclose}, @ref{XREFpopen,,popen}}
 @end deftypefn
 
 
@@ -2249,6 +2379,7 @@ Duplicate a file descriptor.
 If successful, @var{fid} is greater than zero and contains the new file
 ID@.  Otherwise, @var{fid} is negative and @var{msg} contains a
 system-dependent error message.
+@seealso{@ref{XREFfopen,,fopen}, @ref{XREFfclose,,fclose}, @ref{XREFfcntl,,fcntl}}
 @end deftypefn
 
 
@@ -2339,7 +2470,7 @@ child process was resumed by delivery of @code{SIGCONT}.
 @seealso{@ref{XREFwaitpid,,waitpid}, @ref{XREFWIFEXITED,,WIFEXITED}, @ref{XREFWEXITSTATUS,,WEXITSTATUS}, @ref{XREFWIFSIGNALED,,WIFSIGNALED}, @ref{XREFWTERMSIG,,WTERMSIG}, @ref{XREFWCOREDUMP,,WCOREDUMP}, @ref{XREFWIFSTOPPED,,WIFSTOPPED}, @ref{XREFWSTOPSIG,,WSTOPSIG}}
 @end deftypefn
 
- 
+
 @c WIFSIGNALED libinterp/corefcn/syscalls.cc
 @anchor{XREFWIFSIGNALED}
 @deftypefn {Built-in Function} {} WIFSIGNALED (@var{status})
@@ -2388,7 +2519,7 @@ be employed if @code{WIFSTOPPED} returned true.
 @seealso{@ref{XREFwaitpid,,waitpid}, @ref{XREFWIFEXITED,,WIFEXITED}, @ref{XREFWEXITSTATUS,,WEXITSTATUS}, @ref{XREFWIFSIGNALED,,WIFSIGNALED}, @ref{XREFWTERMSIG,,WTERMSIG}, @ref{XREFWCOREDUMP,,WCOREDUMP}, @ref{XREFWIFSTOPPED,,WIFSTOPPED}, @ref{XREFWIFCONTINUED,,WIFCONTINUED}}
 @end deftypefn
 
- 
+
 @c WTERMSIG libinterp/corefcn/syscalls.cc
 @anchor{XREFWTERMSIG}
 @deftypefn {Built-in Function} {} WTERMSIG (@var{status})
@@ -2413,8 +2544,9 @@ if the child process has stopped but is not traced via the
 @c fcntl libinterp/corefcn/syscalls.cc
 @anchor{XREFfcntl}
 @deftypefn {Built-in Function} {[@var{err}, @var{msg}] =} fcntl (@var{fid}, @var{request}, @var{arg})
-Change the properties of the open file @var{fid}.  The following values
-may be passed as @var{request}:
+Change the properties of the open file @var{fid}.
+
+The following values may be passed as @var{request}:
 
 @vtable @code
 @item F_DUPFD
@@ -2465,6 +2597,7 @@ Set the file status flags for @var{fid} to the value specified by
 If successful, @var{err} is 0 and @var{msg} is an empty string.
 Otherwise, @var{err} is nonzero and @var{msg} contains a
 system-dependent error message.
+@seealso{@ref{XREFfopen,,fopen}, @ref{XREFdup2,,dup2}}
 @end deftypefn
 
 
@@ -2564,14 +2697,31 @@ getenv ("PATH")
 
 @noindent
 returns a string containing the value of your path.
+@seealso{@ref{XREFsetenv,,setenv}, @ref{XREFunsetenv,,unsetenv}}
 @end deftypefn
 
 
-@c putenv libinterp/corefcn/sysdep.cc
-@anchor{XREFputenv}
-@deftypefn  {Built-in Function} {} putenv (@var{var}, @var{value})
-@deftypefnx {Built-in Function} {} setenv (@var{var}, @var{value})
+@c setenv libinterp/corefcn/sysdep.cc
+@anchor{XREFsetenv}
+@deftypefn  {Built-in Function} {} setenv (@var{var}, @var{value})
+@deftypefnx {Built-in Function} {} setenv (@var{var})
+@deftypefnx {Built-in Function} {} putenv (@dots{})
 Set the value of the environment variable @var{var} to @var{value}.
+
+If no @var{value} is specified then the variable will be assigned the null
+string.
+@seealso{@ref{XREFunsetenv,,unsetenv}, @ref{XREFgetenv,,getenv}}
+@end deftypefn
+
+
+@c unsetenv libinterp/corefcn/sysdep.cc
+@anchor{XREFunsetenv}
+@deftypefn {Built-in Function} {@var{status} =} unsetenv (@var{var})
+Delete the environment variable @var{var}.
+
+Return 0 if the variable was deleted, or did not exist, and -1 if an error
+occurred.
+@seealso{@ref{XREFsetenv,,setenv}, @ref{XREFgetenv,,getenv}}
 @end deftypefn
 
 
@@ -2612,10 +2762,26 @@ present working directory rather than changing to the user's home directory.
 @c ls scripts/miscellaneous/ls.m
 @anchor{XREFls}
 @deftypefn  {Command} {} ls
-@deftypefnx {Command} {} ls filenames
-@deftypefnx {Command} {} ls options
-@deftypefnx {Command} {} ls options filenames
-List directory contents.  For example:
+@deftypefnx {Command} {} ls @var{filenames}
+@deftypefnx {Command} {} ls @var{options}
+@deftypefnx {Command} {} ls @var{options} @var{filenames}
+@deftypefnx {Function File} {@var{list} =} ls (@dots{})
+
+List directory contents.
+
+The @code{ls} command is implemented by calling the native operating
+system's directory listing command---available @var{options} will vary from
+system to system.
+
+Filenames are subject to shell expansion if they contain any wildcard
+characters @samp{*}, @samp{?}, @samp{[]}.  To find a literal example of a
+wildcard character the wildcard must be escaped using the backslash operator
+@samp{\}.
+
+If the optional output @var{list} is requested then @code{ls} returns a
+character array with one row for each file/directory name.
+
+Example usage on a UNIX-like system:
 
 @example
 @group
@@ -2626,14 +2792,6 @@ ls -l
 @end group
 @end example
 
-The @code{dir} and @code{ls} commands are implemented by calling your
-system's directory listing command, so the available options will vary
-from system to system.
-
-Filenames are subject to shell expansion if they contain any wildcard
-characters @samp{*}, @samp{?}, @samp{[]}.  If you want to find a
-literal example of a wildcard character you must escape it using the
-backslash operator @samp{\}.
 @seealso{@ref{XREFdir,,dir}, @ref{XREFreaddir,,readdir}, @ref{XREFglob,,glob}, @ref{XREFwhat,,what}, @ref{XREFstat,,stat}, @ref{XREFfilesep,,filesep}, @ref{XREFls_command,,ls_command}}
 @end deftypefn
 
@@ -2660,7 +2818,7 @@ If a return value is requested, return a structure array with the fields
 
 @table @asis
 @item name
-File or directory name. 
+File or directory name.
 
 @item date
 Timestamp of file modification (string value).
@@ -2669,7 +2827,7 @@ Timestamp of file modification (string value).
 File size in bytes.
 
 @item isdir
-True if name is a directory. 
+True if name is a directory.
 
 @item datenum
 Timestamp of file modification as serial date number (double).
@@ -2683,15 +2841,15 @@ information about the named file.  @var{directory} may also be a list rather
 than a single directory or file.
 
 @var{directory} is subject to shell expansion if it contains any wildcard
-characters @samp{*}, @samp{?}, @samp{[]}.  If you want to find a
-literal example of a wildcard character you must escape it using the
-backslash operator @samp{\}.
+characters @samp{*}, @samp{?}, @samp{[]}.  To find a literal example of a
+wildcard character the wildcard must be escaped using the backslash operator
+@samp{\}.
 
 Note that for symbolic links, @code{dir} returns information about
 the file that the symbolic link points to rather than the link itself.
 However, if the link points to a nonexistent file, @code{dir} returns
 information about the link.
-@seealso{@ref{XREFls,,ls}, @ref{XREFreaddir,,readdir}, @ref{XREFglob,,glob}, @ref{XREFwhat,,what}, @ref{XREFstat,,stat}}
+@seealso{@ref{XREFls,,ls}, @ref{XREFreaddir,,readdir}, @ref{XREFglob,,glob}, @ref{XREFwhat,,what}, @ref{XREFstat,,stat}, @ref{XREFlstat,,lstat}}
 @end deftypefn
 
 
@@ -2845,33 +3003,38 @@ Close the group database.
 
 @c computer scripts/miscellaneous/computer.m
 @anchor{XREFcomputer}
-@deftypefn  {Function File} {[@var{c}, @var{maxsize}, @var{endian}] =} computer ()
+@deftypefn  {Function File} {} computer ()
+@deftypefnx {Function File} {@var{c} =} computer ()
+@deftypefnx {Function File} {[@var{c}, @var{maxsize}] =} computer ()
+@deftypefnx {Function File} {[@var{c}, @var{maxsize}, @var{endian}] =} computer ()
 @deftypefnx {Function File} {@var{arch} =} computer ("arch")
 Print or return a string of the form @var{cpu}-@var{vendor}-@var{os}
-that identifies the kind of computer Octave is running on.  If invoked
-with an output argument, the value is returned instead of printed.  For
-example:
+that identifies the type of computer that Octave is running on.
+
+If invoked with an output argument, the value is returned instead of
+printed.  For example:
 
 @example
 @group
 computer ()
    @print{} i586-pc-linux-gnu
 
-x = computer ()
-   @result{} x = "i586-pc-linux-gnu"
+mycomp = computer ()
+   @result{} mycomp = "i586-pc-linux-gnu"
 @end group
 @end example
 
 If two output arguments are requested, also return the maximum number
-of elements for an array.
+of elements for an array.  This will depend on whether Octave has been
+compiled with 32-bit or 64-bit index vectors.
 
 If three output arguments are requested, also return the byte order
 of the current system as a character (@qcode{"B"} for big-endian or
 @qcode{"L"} for little-endian).
 
-If the argument @qcode{"arch"} is specified, return a string
-indicating the architecture of the computer on which Octave is
-running.
+If the argument @qcode{"arch"} is specified, return a string indicating the
+architecture of the computer on which Octave is running.
+@seealso{@ref{XREFisunix,,isunix}, @ref{XREFismac,,ismac}, @ref{XREFispc,,ispc}}
 @end deftypefn
 
 
@@ -2959,8 +3122,20 @@ for floating point calculations.  No actual tests are performed.
 @deftypefn {Function File} {} isdeployed ()
 Return true if the current program has been compiled and is running
 separately from the Octave interpreter and false if it is running in
-the Octave interpreter.  Currently, this function always returns
-false in Octave.
+the Octave interpreter.
+
+Currently, this function always returns false in Octave.
+@end deftypefn
+
+
+@c isstudent libinterp/corefcn/utils.cc
+@anchor{XREFisstudent}
+@deftypefn {Built-in Function} {} isstudent ()
+Return true if running in the student edition of @sc{matlab}.
+
+@code{isstudent} always returns false in Octave.
+
+@seealso{@ref{XREFfalse,,false}}
 @end deftypefn
 
 
@@ -2987,36 +3162,39 @@ for compatibility.
 @c OCTAVE_VERSION libinterp/corefcn/defaults.cc
 @anchor{XREFOCTAVE_VERSION}
 @deftypefn {Built-in Function} {} OCTAVE_VERSION ()
-Return the version number of Octave, as a string.
+Return the version number of Octave as a string.
+@seealso{@ref{XREFver,,ver}, @ref{XREFversion,,version}}
 @end deftypefn
 
 
 @c version scripts/miscellaneous/version.m
 @anchor{XREFversion}
 @deftypefn {Function File} {} version ()
-Return the version number of Octave, as a string.
+Return the version number of Octave as a string.
 
 This is an alias for the function @w{@env{OCTAVE_VERSION}} provided for
 compatibility.
-@seealso{@ref{XREFOCTAVE_VERSION,,OCTAVE_VERSION}}
+@seealso{@ref{XREFOCTAVE_VERSION,,OCTAVE_VERSION}, @ref{XREFver,,ver}}
 @end deftypefn
 
 
 @c ver scripts/miscellaneous/ver.m
 @anchor{XREFver}
-@deftypefn  {Function File} {} ver ()
-@deftypefnx {Function File} {v =} ver ()
-@deftypefnx {Function File} {v =} ver ("Octave")
-@deftypefnx {Function File} {v =} ver (@var{package})
+@deftypefn  {Function File} {} ver
+@deftypefnx {Function File} {} ver Octave
+@deftypefnx {Function File} {} ver @var{package}
+@deftypefnx {Function File} {v =} ver (@dots{})
 
 Display a header containing the current Octave version number, license
-string, and operating system followed by a list of installed packages,
-versions, and installation directories.
+string, and operating system.  The header is followed by a list of installed
+packages, versions, and installation directories.
 
-@code{v = ver ()}
+Use the package name @var{package} or Octave to limit the listing to a
+desired component.
 
-Return a vector of structures describing Octave and each installed package.
-The structure includes the following fields.
+When called with an output argument, return a vector of structures
+describing Octave and each installed package.  The structure includes the
+following fields.
 
 @table @code
 @item Name
@@ -3032,15 +3210,7 @@ Revision of the package.
 Date of the version/revision.
 @end table
 
-@code{v = ver ("Octave")}
-
-Return version information for Octave only.
-
-@code{v = ver (@var{package})}
-
-Return version information for @var{package}.
-
-@seealso{@ref{XREFversion,,version}, @ref{XREFoctave_config_info,,octave_config_info}}
+@seealso{@ref{XREFversion,,version}, @ref{XREFoctave_config_info,,octave_config_info}, @ref{XREFusejava,,usejava}, @ref{XREFpkg,,pkg}}
 @end deftypefn
 
 
@@ -3103,49 +3273,45 @@ starts with a numeric part even though @code{double ("a")} is greater than
 @c license scripts/miscellaneous/license.m
 @anchor{XREFlicense}
 @deftypefn  {Command} {} license
+@deftypefnx {Command} {} license inuse
+@deftypefnx {Command} {} license inuse @var{feature}
 @deftypefnx {Function File} {} license ("inuse")
 @deftypefnx {Function File} {@var{retval} =} license ("inuse")
 @deftypefnx {Function File} {@var{retval} =} license ("test", @var{feature})
-@deftypefnx {Function File} {} license ("test", @var{feature}, @var{toggle})
 @deftypefnx {Function File} {@var{retval} =} license ("checkout", @var{feature})
+@deftypefnx {Function File} {[@var{retval}, @var{errmsg}] =} license ("checkout", @var{feature})
+Get license information for Octave and Octave packages.
 
-Display the license of Octave.
+GNU Octave is free software distributed under the GNU General Public
+License (GPL), and a license manager makes no sense.  This function is
+provided only for @sc{matlab} compatibility.
 
-@code{license ("inuse")}
-
-Display a list of packages currently being used.
-
-@code{@var{retval} = license ("inuse")}
-
-Return a structure containing the fields @code{feature} and @code{user}.
-
-@code{@var{retval} = license ("test", @var{feature})}
-
-Return 1 if a license exists for the product identified by the string
-@var{feature} and 0 otherwise.  The argument @var{feature} is case
-insensitive and only the first 27 characters are checked.
-
-@code{license ("test", @var{feature}, @var{toggle})}
-
-Enable or disable license testing for @var{feature}, depending on
-@var{toggle}, which may be one of:
+When called with no extra input arguments, it returns the Octave license,
+otherwise the first input defines the operation mode and must be one of
+the following strings: @code{inuse}, @code{test}, and @code{checkout}.
+The optional @var{feature} argument can either be @qcode{"octave"} (core),
+or an Octave package.
 
 @table @asis
-@item @qcode{"enable"}
-Future tests for the specified license of @var{feature} are conducted
-as usual.
+@item @qcode{"inuse"}
+Returns a list of loaded features, i.e., octave and the list of loaded
+packages.  If an output is requested, it returns a struct array with
+the fields @qcode{"feature"}, and @qcode{"user"}.
 
-@item @qcode{"disable"}
-Future tests for the specified license of @var{feature} return 0.
+@item @qcode{"test"}
+Return true if the specified @var{feature} is installed, false otherwise.
+
+An optional third argument @qcode{"enable"} or @qcode{"disable"} is
+accepted but ignored.
+
+@item @qcode{"checkout"}
+Return true if the specified @var{feature} is installed, false otherwise.
+An optional second output will have an error message if a package is not
+installed.
+
 @end table
 
-@code{@var{retval} = license ("checkout", @var{feature})}
-
-Check out a license for @var{feature}, returning 1 on success and 0
-on failure.
-
-This function is provided for compatibility with @sc{matlab}.
-@seealso{@ref{XREFver,,ver}, @ref{XREFversion,,version}}
+@seealso{@ref{XREFpkg,,pkg}, @ref{XREFver,,ver}, @ref{XREFversion,,version}}
 @end deftypefn
 
 
@@ -3153,12 +3319,13 @@ This function is provided for compatibility with @sc{matlab}.
 @anchor{XREFoctave_config_info}
 @deftypefn  {Built-in Function} {} octave_config_info ()
 @deftypefnx {Built-in Function} {} octave_config_info (@var{option})
-Return a structure containing configuration and installation
-information for Octave.
+Return a structure containing configuration and installation information for
+Octave.
 
 If @var{option} is a string, return the configuration information for the
 specified option.
 
+@seealso{@ref{XREFcomputer,,computer}}
 @end deftypefn
 
 

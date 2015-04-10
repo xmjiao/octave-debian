@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2013 Michael Goffioul
+## Copyright (C) 2007-2015 Michael Goffioul
 ## Copyright (C) 2007-2009 David Bateman
 ##
 ## This file is part of Octave.
@@ -49,7 +49,7 @@
 ## @example
 ## @group
 ## t = linspace (0, 2*pi, 100)';
-## y = [sin(t).^2, cos(t).^2)];
+## y = [sin(t).^2, cos(t).^2];
 ## area (t, y);
 ## legend ("sin^2", "cos^2", "location", "NorthEastOutside");
 ## @end group
@@ -70,14 +70,14 @@ function h = area (varargin)
 
   num_numeric = find (cellfun ("isclass", varargin, "char"), 1) - 1;
   if (isempty (num_numeric))
-    num_numeric = nargin;     
+    num_numeric = nargin;
   endif
 
   switch (num_numeric)
     case 1
       y = varargin{1};
     case 2
-      if (isscalar (varargin{2})) 
+      if (isscalar (varargin{2}))
         y = varargin{1};
         bv = varargin{2};
       else
@@ -247,7 +247,7 @@ endfunction
 %! y = [sin(t).^2, cos(t).^2];
 %! area (t, y);
 %! axis tight
-%! legend ('sin^2', 'cos^2', 'location', 'NorthEastOutside');  
+%! legend ('sin^2', 'cos^2', 'location', 'NorthEastOutside');
 %! title ('area() plot');
 
 %!demo
@@ -271,7 +271,7 @@ endfunction
 %! set (h, 'ydata', sort (get (h, 'ydata')))
 %! title ('area() plot of sorted data');
 
-%% Test input validation
+## Test input validation
 %!error area ()
 %!error area (1,2,3,4)
 %!error <X and Y must be real vectors or matrices> area ({1})

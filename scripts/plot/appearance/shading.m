@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2013 Kai Habel
+## Copyright (C) 2006-2015 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -69,7 +69,7 @@ function shading (varargin)
     for i = 1 : numel (hglist)
       props = get (hglist(i));
       if (! isfield (props, "levelstep"))
-        parents(end+1) = hglist(i); 
+        parents(end+1) = hglist(i);
       endif
     endfor
     kids = get (parents, "children");

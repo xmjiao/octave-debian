@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 2012-2013 Jordi Gutiérrez Hermoso
+@c Copyright (C) 2012-2015 Jordi Gutiérrez Hermoso
 @c
 @c This file is part of Octave.
 @c
@@ -645,7 +645,7 @@ arrayfun (@@str2num, [1234],
 @c spfun scripts/sparse/spfun.m
 @anchor{XREFspfun}
 @deftypefn {Function File} {@var{y} =} spfun (@var{f}, @var{S})
-Compute @code{f(@var{S})} for the non-zero values of @var{S}.
+Compute @code{f(@var{S})} for the nonzero values of @var{S}.
 This results in a sparse matrix with the same structure as
 @var{S}.  The function @var{f} can be passed as a string, a
 function handle, or an inline function.
@@ -701,9 +701,9 @@ Return 1 for elements of @var{class}.
 
 Additionally, @code{cellfun} accepts an arbitrary function @var{func}
 in the form of an inline function, function handle, or the name of a
-function (in a character string). The function can take one or more arguments,
-with the inputs arguments given by @var{C}, @var{D}, etc.  Equally the
-function can return one or more output arguments.  For example:
+function (in a character string).  The function can take one or more
+arguments, with the inputs arguments given by @var{C}, @var{D}, etc.  
+Equally the function can return one or more output arguments.  For example:
 
 @example
 @group
@@ -847,6 +847,15 @@ example on how to use an error handler, @pxref{XREFcellfun,,cellfun}.
 @seealso{@ref{XREFcellfun,,cellfun}, @ref{XREFarrayfun,,arrayfun}, @ref{XREFspfun,,spfun}}
 @end deftypefn
 
+
+Consistent with earlier advice, seek to use Octave built-in functions whenever
+possible for the best performance.  This advice applies especially to the four
+functions above.  For example, when adding two arrays together
+element-by-element one could use a handle to the built-in addition function
+@code{@@plus} or define an anonymous function @code{@@(x,y) x + y}.  But, the
+anonymous function is 60% slower than the first method.
+@xref{Operator Overloading}, for a list of basic functions which might be used
+in place of anonymous ones.
 
 @node Accumulation
 @section Accumulation
@@ -1032,8 +1041,8 @@ is available it may be worth benchmarking the code with JIT enabled.  The
 function @code{jit_enable} is used to turn compilation on or off.  The
 function @code{jit_startcnt} sets the threshold for acceleration.  Loops
 with iteration counts above @code{jit_startcnt} will be accelerated.  The
-function @code{debug_jit} is not likely to be of use to anyone not working
-directly on the implementation of the JIT compiler.
+functions @code{jit_failcnt} and @code{debug_jit} are not likely to be of use
+to anyone not working directly on the implementation of the JIT compiler.
 
 @c jit_enable libinterp/corefcn/pt-jit.cc
 @anchor{XREFjit_enable}
@@ -1063,6 +1072,21 @@ When called from inside a function with the @qcode{"local"} option, the
 variable is changed locally for the function and any subroutines it calls.  
 The original variable value is restored when exiting the function.
 @seealso{@ref{XREFjit_enable,,jit_enable}, @ref{XREFdebug_jit,,debug_jit}}
+@end deftypefn
+
+
+@c jit_failcnt libinterp/corefcn/pt-jit.cc
+@anchor{XREFjit_failcnt}
+@deftypefn  {Built-in Function} {@var{val} =} jit_failcnt ()
+@deftypefnx {Built-in Function} {@var{old_val} =} jit_failcnt (@var{new_val})
+@deftypefnx {Built-in Function} {} jit_failcnt (@var{new_val}, "local")
+Query or set the internal variable that counts the number of
+JIT fail exceptions for Octave's JIT compiler.
+
+When called from inside a function with the @qcode{"local"} option, the
+variable is changed locally for the function and any subroutines it calls.  
+The original variable value is restored when exiting the function.
+@seealso{@ref{XREFjit_enable,,jit_enable}, @ref{XREFjit_startcnt,,jit_startcnt}, @ref{XREFdebug_jit,,debug_jit}}
 @end deftypefn
 
 
@@ -1098,7 +1122,7 @@ internal computation results are cached for variables.  For instance, if
 a matrix variable is used multiple times as an index, checking the
 indices (and internal conversion to integers) is only done once.
 
-@item Be aware of lazy copies (copy-on-write).  
+@item Be aware of lazy copies (copy-on-write).
 @cindex copy-on-write
 @cindex COW
 @cindex memory management
@@ -1238,7 +1262,7 @@ B = zeros (n, 2);
 for i = 1:length (A)
   ## this will be two columns, the first is the difference and
   ## the second the mean of the two elements used for the diff.
-  B(i,:) = [A(i+1)-A(i), (A(i+1) + A(i))/2)];
+  B(i,:) = [A(i+1)-A(i), (A(i+1) + A(i))/2];
 endfor
 @end group
 @end example
@@ -1254,3 +1278,4 @@ Note the usage of colon indexing to flatten an intermediate result into
 a column vector.  This is a common vectorization trick.
 
 @end itemize
+

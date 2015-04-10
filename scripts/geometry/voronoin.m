@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2013 Kai Habel
+## Copyright (C) 2000-2015 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -38,8 +38,8 @@
 ## @end itemize
 ##
 ## If @var{options} is not present or @code{[]} then the default arguments are
-## used.  Otherwise, @var{options} replaces the default argument list. 
-## To append user options to the defaults it is necessary to repeat the 
+## used.  Otherwise, @var{options} replaces the default argument list.
+## To append user options to the defaults it is necessary to repeat the
 ## default arguments in @var{options}.  Use a null string to pass no arguments.
 ##
 ## @seealso{voronoi, convhulln, delaunayn}
@@ -75,7 +75,7 @@ function [C, F] = voronoin (pts, options)
 endfunction
 
 
-%% FIXME: Need functional tests
+## FIXME: Need functional tests
 
 %!error voronoin ()
 %!error voronoin (1,2,3)

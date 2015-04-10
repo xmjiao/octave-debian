@@ -224,7 +224,7 @@ of seconds since the epoch.  For example:
 
 <a name="XREFasctime"></a><dl>
 <dt><a name="index-asctime"></a>Function File: <em></em> <strong>asctime</strong> <em>(<var>tm_struct</var>)</em></dt>
-<dd><p>Convert a time structure to a string using the following 
+<dd><p>Convert a time structure to a string using the following
 format: <code>&quot;ddd mmm mm HH:MM:SS yyyy&quot;</code>.  For example:
 </p>
 <div class="example">
@@ -567,8 +567,8 @@ doing nothing at all.
 
 
 <a name="XREFpause"></a><dl>
-<dt><a name="index-pause"></a>Built-in Function: <em></em> <strong>pause</strong> <em>()</em></dt>
-<dt><a name="index-pause-1"></a>Built-in Function: <em></em> <strong>pause</strong> <em>(<var>n</var>)</em></dt>
+<dt><a name="index-pause-2"></a>Built-in Function: <em></em> <strong>pause</strong> <em>()</em></dt>
+<dt><a name="index-pause-3"></a>Built-in Function: <em></em> <strong>pause</strong> <em>(<var>n</var>)</em></dt>
 <dd><p>Suspend the execution of the program for <var>n</var> seconds.
 </p>
 <p><var>n</var> is a positive real value and may be a fraction of a second.
@@ -614,8 +614,9 @@ of time less than one second, <code>usleep</code> will pause the execution for
 <dt><a name="index-datenum-3"></a>Function File: <em><var>days</var> =</em> <strong>datenum</strong> <em>(<var>year</var>, <var>month</var>, <var>day</var>, <var>hour</var>, <var>minute</var>)</em></dt>
 <dt><a name="index-datenum-4"></a>Function File: <em><var>days</var> =</em> <strong>datenum</strong> <em>(<var>year</var>, <var>month</var>, <var>day</var>, <var>hour</var>, <var>minute</var>, <var>second</var>)</em></dt>
 <dt><a name="index-datenum-5"></a>Function File: <em><var>days</var> =</em> <strong>datenum</strong> <em>(&quot;datestr&quot;)</em></dt>
-<dt><a name="index-datenum-6"></a>Function File: <em><var>days</var> =</em> <strong>datenum</strong> <em>(&quot;datestr&quot;, <var>p</var>)</em></dt>
-<dt><a name="index-datenum-7"></a>Function File: <em>[<var>days</var>, <var>secs</var>] =</em> <strong>datenum</strong> <em>(&hellip;)</em></dt>
+<dt><a name="index-datenum-6"></a>Function File: <em><var>days</var> =</em> <strong>datenum</strong> <em>(&quot;datestr&quot;, <var>f</var>)</em></dt>
+<dt><a name="index-datenum-7"></a>Function File: <em><var>days</var> =</em> <strong>datenum</strong> <em>(&quot;datestr&quot;, <var>p</var>)</em></dt>
+<dt><a name="index-datenum-8"></a>Function File: <em>[<var>days</var>, <var>secs</var>] =</em> <strong>datenum</strong> <em>(&hellip;)</em></dt>
 <dd><p>Return the date/time input as a serial day number, with Jan 1, 0000
 defined as day 1.
 </p>
@@ -625,12 +626,20 @@ complete days in the date input.
 <p>The fractional part, <code>rem (<var>days</var>, 1)</code> corresponds to the time
 on the given day.
 </p>
-<p>The input may be a date vector (see <code>datevec</code>), 
+<p>The input may be a date vector (see <code>datevec</code>),
 datestr (see <code>datestr</code>), or directly specified as input.
 </p>
-<p>When processing input datestrings, <var>p</var> is the year at the start of the
-century to which two-digit years will be referenced.  If not specified, it
-defaults to the current year minus 50.
+<p>When processing input datestrings, <var>f</var> is the format string used to
+interpret date strings (see <code>datestr</code>).  If no format <var>f</var> is
+specified, then a relatively slow search is performed through various
+formats.  It is always preferable to specify the format string <var>f</var> if
+it is known.  Formats which do not specify a particular time component
+will have the value set to zero.  Formats which do not specify a date
+will default to January 1st of the current year.
+</p>
+<p><var>p</var> is the year at the start of the century to which two-digit years
+will be referenced.  If not specified, it defaults to the current year
+minus 50.
 </p>
 <p>The optional output <var>secs</var> holds the time on the specified day with
 greater precision than <var>days</var>.

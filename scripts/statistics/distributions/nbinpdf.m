@@ -1,5 +1,5 @@
 ## Copyright (C) 2012 Rik Wehbring
-## Copyright (C) 1995-2013 Kurt Hornik
+## Copyright (C) 1995-2015 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -25,7 +25,7 @@
 ##
 ## When @var{n} is integer this is the Pascal distribution.  When
 ## @var{n} is extended to real numbers this is the Polya distribution.
-## 
+##
 ## The number of failures in a Bernoulli experiment with success
 ## probability @var{p} before the @var{n}-th success follows this
 ## distribution.
@@ -40,7 +40,7 @@ function pdf = nbinpdf (x, n, p)
     print_usage ();
   endif
 
-  if (!isscalar (n) || !isscalar (p))
+  if (! isscalar (n) || ! isscalar (p))
     [retval, x, n, p] = common_size (x, n, p);
     if (retval > 0)
       error ("nbinpdf: X, N, and P must be of common size or scalars");
@@ -68,7 +68,7 @@ function pdf = nbinpdf (x, n, p)
   else
     pdf(k) = bincoeff (-n(k), x(k)) .* (p(k) .^ n(k)) .* ((p(k) - 1) .^ x(k));
   endif
-  
+
 
 endfunction
 
@@ -83,12 +83,12 @@ endfunction
 %!assert (nbinpdf (x, 1, 0.5*[-1 NaN 4 1 1]), [NaN NaN NaN y(4:5)])
 %!assert (nbinpdf ([x, NaN], 1, 0.5), [y, NaN])
 
-%% Test class of input preserved
+## Test class of input preserved
 %!assert (nbinpdf (single ([x, NaN]), 1, 0.5), single ([y, NaN]))
 %!assert (nbinpdf ([x, NaN], single (1), 0.5), single ([y, NaN]))
 %!assert (nbinpdf ([x, NaN], 1, single (0.5)), single ([y, NaN]))
 
-%% Test input validation
+## Test input validation
 %!error nbinpdf ()
 %!error nbinpdf (1)
 %!error nbinpdf (1,2)

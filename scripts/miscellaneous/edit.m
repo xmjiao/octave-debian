@@ -1,4 +1,4 @@
-## Copyright (C) 2001-2013 Paul Kienzle
+## Copyright (C) 2001-2015 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -23,7 +23,7 @@
 ## Edit the named function, or change editor settings.
 ##
 ## If @code{edit} is called with the name of a file or function as
-## its argument it will be opened in the text editor defined by @code{EDITOR}.
+## its argument it will be opened in the text editor defined by @env{EDITOR}.
 ##
 ## @itemize @bullet
 ## @item
@@ -141,7 +141,7 @@ function ret = edit (varargin)
     ## User has supplied one arg, this can be a single file name
     ## or a cell array of strings containing multiple files to be opened
     if (iscellstr (varargin{1}))
-      ## If first arg is a cell array of strings, 
+      ## If first arg is a cell array of strings,
       ## it becomes the list of files to be edited
       editfilelist = varargin{1};
     elseif (ischar (varargin{1}))
@@ -221,10 +221,10 @@ function ret = edit (varargin)
     if (exist (FUNCTION.HOME, "dir") == 7)
       curr_dir = pwd ();
       unwind_protect
-        chdir (FUNCTION.HOME);
+        cd (FUNCTION.HOME);
         do_edit (FUNCTION.EDITOR, "", FUNCTION.MODE);
       unwind_protect_cleanup
-        chdir (curr_dir);
+        cd (curr_dir);
       end_unwind_protect
     else
       do_edit (FUNCTION.EDITOR, "", FUNCTION.MODE);
@@ -240,7 +240,7 @@ function ret = edit (varargin)
     endfor
 
   else
-  
+
     ## Only one file name was supplied, get it from the cell array
     file = tilde_expand (editfilelist{1});
 
@@ -284,7 +284,7 @@ function ret = edit (varargin)
     endif
 
     ## If the file includes a path, it may be an overloaded function.
-    if (! index (file, "@") && index (file, filesep))
+    if (! index (file, "@") && strchr (file, '/\'))
       ## No "@" at the beginning of the file, add to the list.
       numfiles = numel (filelist);
       for n = 1:numfiles
@@ -330,7 +330,7 @@ function ret = edit (varargin)
 
     ## If editing a new file, prompt for creation if gui is running
     if (isguirunning ())
-      if (! __octave_link_edit_file__ (file,"prompt"));
+      if (! __octave_link_edit_file__ (file, "prompt"));
         return;
       endif
     endif
@@ -340,12 +340,22 @@ function ret = edit (varargin)
     ## If in gui-mode, create it before or editor would prompt again.
     fileandpath = file;
     idx = rindex (file, ".");
-    name = file(1:idx-1);
-    ext = file(idx+1:end);
+    if (idx)
+      name = file(1:idx-1);
+      ext = file(idx+1:end);
+    else
+      name = file;
+      ext = "";
+    endif
     if (! any (strcmp (ext, {"cc", "m"})))
       ## Some unknown file.  Create and open it or just open it.
+      if (isempty (ext))
+        fileandpath = [fileandpath ".m"];  # Add .m extension per default
+      endif
       if (isguirunning ())
         ## Write the initial file (if there is anything to write)
+        ## Give user the opportunity to change the file extension
+        fileandpath = uiputfile (fileandpath);
         fid = fopen (fileandpath, "wt");
         if (fid < 0)
           error ("edit: could not create %s", fileandpath);
@@ -502,7 +512,7 @@ SUCH DAMAGE.\
     fclose (fid);
 
     do_edit (FUNCTION.EDITOR, fileandpath, FUNCTION.MODE);
-            
+
   endif
 
 endfunction
@@ -572,7 +582,7 @@ endfunction
 %! edit author none
 %! edit email none
 %! edit license none
-%! edit ("editinplace", !s.editinplace)
+%! edit ("editinplace", ! s.editinplace)
 %! if (s.mode(1) == "a")
 %!   edit mode sync
 %! else

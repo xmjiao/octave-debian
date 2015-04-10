@@ -1,4 +1,4 @@
-## Copyright (C) 2001-2013 Paul Kienzle
+## Copyright (C) 2001-2015 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -94,7 +94,7 @@ function retval = orient (varargin)
           ## FIXME: Should use "default" here, but Octave complains
           ##        that "paperposition" is not a default property.
           set (cf, "paperposition", "factory");
-        else 
+        else
           ## landscape also sets the plot to occupy the entire page
           papersize = get (cf, "papersize");
           set (cf, "paperposition", [0.25, 0.25, (papersize - 0.5)]);
@@ -156,7 +156,7 @@ endfunction
 %! assert (get (hfig, "papersize"), papersize);
 %! assert (get (hfig, "paperposition"), paperposition);
 
-%% Test input validation
+## Test input validation
 %!error orient (1.73, 2.5)
 %!error <unknown ORIENTATION> orient ("nobody")
 

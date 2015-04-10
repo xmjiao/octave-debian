@@ -1,4 +1,4 @@
-## Copyright (C) 1993-2013 John W. Eaton
+## Copyright (C) 1993-2015 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -29,7 +29,7 @@
 ## The arguments @var{x} and @var{y} may be vectors or matrices.
 ## If only one argument is given, it is taken as a vector of Y values
 ## and the X coordinates are taken to be the indices of the elements.
-## 
+##
 ## The style to use for the plot can be defined with a line style @var{style}
 ## of the same format as the @code{plot} command.
 ##
@@ -99,7 +99,7 @@ function [h, xs, ys] = __stairs__ (doplot, varargin)
   if (nargin == 2 || ischar (varargin{2}))
     y = varargin{1};
     varargin(1) = [];
-    if (! ismatrix (y) || ndims (y) > 2)
+    if (! isnumeric (y) || ndims (y) > 2)
       error ("stairs: Y must be a numeric 2-D vector or matrix");
     endif
     if (isvector (y))
@@ -110,7 +110,7 @@ function [h, xs, ys] = __stairs__ (doplot, varargin)
     x = varargin{1};
     y = varargin{2};
     varargin(1:2) = [];
-    if (! ismatrix (x) || ! ismatrix (y) || ndims (x) > 2 || ndims (y) > 2)
+    if (! isnumeric (x) || ! isnumeric (y) || ndims (x) > 2 || ndims (y) > 2)
       error ("stairs: X and Y must be numeric 2-D vectors or matrices");
     endif
   endif
@@ -122,7 +122,7 @@ function [h, xs, ys] = __stairs__ (doplot, varargin)
 
   if (isvector (y))
     y = y(:);
-  elseif (ismatrix (y) && vec_x)
+  elseif (isnumeric (y) && vec_x)
     x = repmat (x, [1, columns(y)]);
   endif
 

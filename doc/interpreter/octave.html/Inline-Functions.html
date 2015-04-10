@@ -69,6 +69,11 @@ function <em>f(x) = x^2 + 2</em>.
 <p>After this it is possible to evaluate <em>f</em> at any <em>x</em> by
 writing <code>f(x)</code>.
 </p>
+<p><strong>Caution</strong>: <small>MATLAB</small> has begun the process of deprecating inline
+functions.  At some point in the future support will be dropped and eventually
+Octave will follow <small>MATLAB</small> and also remove inline functions.  Use anonymous
+functions in all new code.
+</p>
 <a name="XREFinline"></a><dl>
 <dt><a name="index-inline"></a>Built-in Function: <em></em> <strong>inline</strong> <em>(<var>str</var>)</em></dt>
 <dt><a name="index-inline-1"></a>Built-in Function: <em></em> <strong>inline</strong> <em>(<var>str</var>, <var>arg1</var>, &hellip;)</em></dt>
@@ -111,21 +116,34 @@ the arguments of the inline function <var>fun</var>.
 <a name="XREFformula"></a><dl>
 <dt><a name="index-formula"></a>Built-in Function: <em></em> <strong>formula</strong> <em>(<var>fun</var>)</em></dt>
 <dd><p>Return a character string representing the inline function <var>fun</var>.
-Note that <code>char (<var>fun</var>)</code> is equivalent to
+</p>
+<p>Note that <code>char (<var>fun</var>)</code> is equivalent to
 <code>formula (<var>fun</var>)</code>.
 </p>
-<p><strong>See also:</strong> <a href="#XREFargnames">argnames</a>, <a href="#XREFinline">inline</a>, <a href="Basic-Vectorization.html#XREFvectorize">vectorize</a>.
+<p><strong>See also:</strong> <a href="Concatenating-Strings.html#XREFchar">char</a>, <a href="#XREFargnames">argnames</a>, <a href="#XREFinline">inline</a>, <a href="Basic-Vectorization.html#XREFvectorize">vectorize</a>.
 </p></dd></dl>
 
 
 <a name="XREFsymvar"></a><dl>
-<dt><a name="index-symvar"></a>Function File: <em></em> <strong>symvar</strong> <em>(<var>s</var>)</em></dt>
-<dd><p>Identify the argument names in the function defined by a string.
-Common constant names such as <code>pi</code>, <code>NaN</code>, <code>Inf</code>,
-<code>eps</code>, <code>i</code> or <code>j</code> are ignored.  The arguments that are
-found are returned in a cell array of strings.  If no variables are
-found then the returned cell array is empty.
-</p></dd></dl>
+<dt><a name="index-symvar"></a>Function File: <em><var>vars</var> =</em> <strong>symvar</strong> <em>(<var>str</var>)</em></dt>
+<dd><p>Identify the symbolic variable names in the string <var>str</var>.
+</p>
+<p>Common constant names such as <code>i</code>, <code>j</code>, <code>pi</code>, <code>Inf</code> and
+Octave functions such as <code>sin</code> or <code>plot</code> are ignored.
+</p>
+<p>Any names identified are returned in a cell array of strings.  The array is
+empty if no variables were found.
+</p>
+<p>Example:
+</p>
+<div class="example">
+<pre class="example">symvar (&quot;x^2 + y^2 == 4&quot;)
+&rArr; {
+     [1,1] = x
+     [2,1] = y
+   }
+</pre></div>
+</dd></dl>
 
 
 <hr>

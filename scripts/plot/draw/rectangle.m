@@ -1,4 +1,4 @@
-## Copyright (C) 2012-2013 David Bateman
+## Copyright (C) 2012-2015 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -25,7 +25,7 @@
 ## @deftypefnx {Function File} {} rectangle (@var{hax}, @dots{})
 ## @deftypefnx {Function File} {@var{h} =} rectangle (@dots{})
 ## Draw a rectangular patch defined by @var{pos} and @var{curv}.
-## 
+##
 ## The variable @code{@var{pos}(1:2)} defines the lower left-hand corner of
 ## the patch and @code{@var{pos}(3:4)} defines its width and height.  By
 ## default, the value of @var{pos} is @code{[0, 0, 1, 1]}.
@@ -45,8 +45,8 @@
 ## min (pos(1:2)) / max (pos(1:2)) * curv
 ## @end example
 ##
-## Additional property/value pairs are passed to the underlying patch command. 
-## 
+## Additional property/value pairs are passed to the underlying patch command.
+##
 ## If the first argument @var{hax} is an axes handle, then plot into this axis,
 ## rather than the current axes returned by @code{gca}.
 ##
@@ -103,7 +103,7 @@ function hg = __rectangle__ (hax, varargin)
       elseif (strcmpi (arg, "curvature"))
         curv2 = varargin{iarg+1};
         varargin(iarg:iarg+1) = [];
-        if (!isnumeric (curv2) || (numel (curv2) != 1 && numel (curv2) != 2))
+        if (! isnumeric (curv2) || (numel (curv2) != 1 && numel (curv2) != 2))
           error ("rectangle: curvature must be a 2-element vector or a scalar");
         endif
         if (any (curv2 < 0) || any (curv2 > 1))
@@ -227,7 +227,7 @@ function update_props (h, ~)
   kids = get (h, "children");
   set (kids, {"edgecolor", "linewidth", "linestyle", "facecolor"},
      get (h, {"edgecolor", "linewidth", "linestyle", "facecolor"}));
-  
+
 endfunction
 
 

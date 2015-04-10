@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 2007-2013 John W. Eaton and David Bateman
+@c Copyright (C) 2007-2015 John W. Eaton and David Bateman
 @c
 @c This file is part of Octave.
 @c
@@ -8,12 +8,12 @@
 @c under the terms of the GNU General Public License as published by the
 @c Free Software Foundation; either version 3 of the License, or (at
 @c your option) any later version.
-@c 
+@c
 @c Octave is distributed in the hope that it will be useful, but WITHOUT
 @c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 @c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 @c for more details.
-@c 
+@c
 @c You should have received a copy of the GNU General Public License
 @c along with Octave; see the file COPYING.  If not, see
 @c <http://www.gnu.org/licenses/>.
@@ -21,12 +21,12 @@
 @node Geometry
 @chapter Geometry
 
-Much of the geometry code in Octave is based on the Qhull 
-library@footnote{Barber, C.B., Dobkin, D.P., and Huhdanpaa, H.T., 
-@cite{The Quickhull Algorithm for Convex Hulls}, ACM Trans. on Mathematical 
-Software, 22(4):469--483, Dec 1996, @url{http://www.qhull.org}}.  
-Some of the documentation for Qhull, particularly for the options that 
-can be passed to @code{delaunay}, @code{voronoi} and @code{convhull}, 
+Much of the geometry code in Octave is based on the Qhull
+library@footnote{@nospell{Barber, C.B., Dobkin, D.P., and Huhdanpaa, H.T.},
+@cite{The Quickhull Algorithm for Convex Hulls}, ACM Trans. on Mathematical
+Software, 22(4):469--483, Dec 1996, @url{http://www.qhull.org}}.
+Some of the documentation for Qhull, particularly for the options that
+can be passed to @code{delaunay}, @code{voronoi} and @code{convhull},
 etc., is relevant to Octave users.
 
 @menu
@@ -48,26 +48,36 @@ points falls within any of the circum-circles.
 In general there are only three points on the circumference of any
 circum-circle.  However, in some cases, and in particular for the
 case of a regular grid, 4 or more points can be on a single
-circum-circle.  In this case the Delaunay triangulation is not unique. 
+circum-circle.  In this case the Delaunay triangulation is not unique.
 
 @c delaunay scripts/geometry/delaunay.m
 @anchor{XREFdelaunay}
-@deftypefn  {Function File} {} delaunay (@var{x}, @var{y})
-@deftypefnx {Function File} {} delaunay (@var{x})
-@deftypefnx {Function File} {} delaunay (@dots{}, @var{options})
-@deftypefnx {Function File} {@var{tri} =} delaunay (@dots{})
-Compute the Delaunay triangulation for a 2-D set of points.
-The return value @var{tri} is a set of triangles which satisfies the
-Delaunay circum-circle criterion, i.e., only a single data point from
-[@var{x}, @var{y}] is within the circum-circle of the defining triangle.
-The input @var{x} may also be a matrix with two columns where the first
-column contains x-data and the second y-data.
+@deftypefn  {Function File} {@var{tri} =} delaunay (@var{x}, @var{y})
+@deftypefnx {Function File} {@var{tetr} =} delaunay (@var{x}, @var{y}, @var{z})
+@deftypefnx {Function File} {@var{tri} =} delaunay (@var{x})
+@deftypefnx {Function File} {@var{tri} =} delaunay (@dots{}, @var{options})
+Compute the Delaunay triangulation for a 2-D or 3-D set of points.
 
-The set of triangles @var{tri} is a matrix of size [n, 3].  Each
-row defines a triangle and the three columns are the three vertices
-of the triangle.  The value of @code{@var{tri}(i,j)} is an index into
-@var{x} and @var{y} for the location of the j-th vertex of the i-th
-triangle.
+For 2-D sets, the return value @var{tri} is a set of triangles which
+satisfies the Delaunay circum-circle criterion, i.e., only a single data
+point from [@var{x}, @var{y}] is within the circum-circle of the defining
+triangle.  The set of triangles @var{tri} is a matrix of size [n, 3].  Each
+row defines a triangle and the three columns are the three vertices of the
+triangle.  The value of @code{@var{tri}(i,j)} is an index into @var{x} and
+@var{y} for the location of the j-th vertex of the i-th triangle.
+
+For 3-D sets, the return value @var{tetr} is a set of tetrahedrons which
+satisfies the Delaunay circum-circle criterion, i.e., only a single data
+point from [@var{x}, @var{y}, @var{z}] is within the circum-circle of the
+defining tetrahedron.  The set of tetrahedrons is a matrix of size [n, 4].
+Each row defines a tetrahedron and the four columns are the four vertices of
+the tetrahedron.  The value of @code{@var{tetr}(i,j)} is an index into
+@var{x}, @var{y}, @var{z} for the location of the j-th vertex of the i-th
+tetrahedron.
+
+The input @var{x} may also be a matrix with two or three columns where the
+first column contains x-data, the second y-data, and the optional third
+column contains z-data.
 
 The optional last argument, which must be a string or cell array of strings,
 contains options passed to the underlying qhull command.
@@ -76,65 +86,29 @@ See the documentation for the Qhull library for details
 The default options are @code{@{"Qt", "Qbb", "Qc", "Qz"@}}.
 
 If @var{options} is not present or @code{[]} then the default arguments are
-used.  Otherwise, @var{options} replaces the default argument list. 
-To append user options to the defaults it is necessary to repeat the 
+used.  Otherwise, @var{options} replaces the default argument list.
+To append user options to the defaults it is necessary to repeat the
 default arguments in @var{options}.  Use a null string to pass no arguments.
-
-If no output argument is specified the resulting Delaunay triangulation 
-is plotted along with the original set of points.
 
 @example
 @group
 x = rand (1, 10);
 y = rand (1, 10);
-T = delaunay (x, y);
-VX = [ x(T(:,1)); x(T(:,2)); x(T(:,3)); x(T(:,1)) ];
-VY = [ y(T(:,1)); y(T(:,2)); y(T(:,3)); y(T(:,1)) ];
+tri = delaunay (x, y);
+triplot (tri, x, y);
+hold on;
+plot (x, y, "r*");
 axis ([0,1,0,1]);
-plot (VX, VY, "b", x, y, "r*");
 @end group
 @end example
-@seealso{@ref{XREFdelaunay3,,delaunay3}, @ref{XREFdelaunayn,,delaunayn}, @ref{XREFconvhull,,convhull}, @ref{XREFvoronoi,,voronoi}, @ref{XREFtriplot,,triplot}, @ref{XREFtrimesh,,trimesh}, @ref{XREFtrisurf,,trisurf}}
+@seealso{@ref{XREFdelaunayn,,delaunayn}, @ref{XREFconvhull,,convhull}, @ref{XREFvoronoi,,voronoi}, @ref{XREFtriplot,,triplot}, @ref{XREFtrimesh,,trimesh}, @ref{XREFtetramesh,,tetramesh}, @ref{XREFtrisurf,,trisurf}}
 @end deftypefn
 
 
-The 3- and N-dimensional extension of the Delaunay triangulation are
-given by @code{delaunay3} and @code{delaunayn} respectively.  
-@code{delaunay3} returns a set of tetrahedra that satisfy the
+For 3-D inputs @code{delaunay} returns a set of tetrahedra that satisfy the
 Delaunay circum-circle criteria.  Similarly, @code{delaunayn} returns the
-N-dimensional simplex satisfying the Delaunay circum-circle criteria.  
+N-dimensional simplex satisfying the Delaunay circum-circle criteria.
 The N-dimensional extension of a triangulation is called a tessellation.
-
-@c delaunay3 scripts/geometry/delaunay3.m
-@anchor{XREFdelaunay3}
-@deftypefn  {Function File} {@var{tetr} =} delaunay3 (@var{x}, @var{y}, @var{z})
-@deftypefnx {Function File} {@var{tetr} =} delaunay3 (@var{x}, @var{y}, @var{z}, @var{options})
-Compute the Delaunay triangulation for a 3-D set of points.
-The return value @var{tetr} is a set of tetrahedrons which satisfies the
-Delaunay circum-circle criterion, i.e., only a single data point from
-[@var{x}, @var{y}, @var{z}] is within the circum-circle of the defining
-tetrahedron.
-
-The set of tetrahedrons @var{tetr} is a matrix of size [n, 4].  Each
-row defines a tetrahedron and the four columns are the four vertices
-of the tetrahedron.  The value of @code{@var{tetr}(i,j)} is an index into
-@var{x}, @var{y}, @var{z} for the location of the j-th vertex of the i-th
-tetrahedron.
-
-An optional fourth argument, which must be a string or cell array of strings,
-contains options passed to the underlying qhull command.
-See the documentation for the Qhull library for details
-@url{http://www.qhull.org/html/qh-quick.htm#options}.
-The default options are @code{@{"Qt", "Qbb", "Qc", "Qz"@}}.
-
-If @var{options} is not present or @code{[]} then the default arguments are
-used.  Otherwise, @var{options} replaces the default argument list. 
-To append user options to the defaults it is necessary to repeat the 
-default arguments in @var{options}.  Use a null string to pass no arguments.
-
-@seealso{@ref{XREFdelaunay,,delaunay}, @ref{XREFdelaunayn,,delaunayn}, @ref{XREFconvhull,,convhull}, @ref{XREFvoronoi,,voronoi}, @ref{XREFtetramesh,,tetramesh}}
-@end deftypefn
-
 
 @c delaunayn scripts/geometry/delaunayn.m
 @anchor{XREFdelaunayn}
@@ -164,11 +138,11 @@ The default options depend on the dimension of the input:
 @end itemize
 
 If @var{options} is not present or @code{[]} then the default arguments are
-used.  Otherwise, @var{options} replaces the default argument list. 
-To append user options to the defaults it is necessary to repeat the 
+used.  Otherwise, @var{options} replaces the default argument list.
+To append user options to the defaults it is necessary to repeat the
 default arguments in @var{options}.  Use a null string to pass no arguments.
 
-@seealso{@ref{XREFdelaunay,,delaunay}, @ref{XREFdelaunay3,,delaunay3}, @ref{XREFconvhulln,,convhulln}, @ref{XREFvoronoin,,voronoin}, @ref{XREFtrimesh,,trimesh}, @ref{XREFtetramesh,,tetramesh}}
+@seealso{@ref{XREFdelaunay,,delaunay}, @ref{XREFconvhulln,,convhulln}, @ref{XREFvoronoin,,voronoin}, @ref{XREFtrimesh,,trimesh}, @ref{XREFtetramesh,,tetramesh}}
 @end deftypefn
 
 
@@ -311,7 +285,7 @@ Display the tetrahedrons defined in the m-by-4 matrix @var{T} as 3-D patches.
 @var{T} is typically the output of a Delaunay triangulation
 of a 3-D set of points.  Every row of @var{T} contains four indices into
 the n-by-3 matrix @var{X} of the vertices of a tetrahedron.  Every row in
-@var{X} represents one point in 3-D space. 
+@var{X} represents one point in 3-D space.
 
 The vector @var{C} specifies the color of each tetrahedron as an index
 into the current colormap.  The default value is 1:m where m is the number
@@ -323,12 +297,12 @@ Calling @code{tetramesh (@dots{}, "property", "value", @dots{})} passes all
 property/value pairs directly to the patch function as additional arguments.
 
 The optional return value @var{h} is a vector of patch handles where each
-handle represents one tetrahedron in the order given by @var{T}. 
+handle represents one tetrahedron in the order given by @var{T}.
 A typical use case for @var{h} is to turn the respective patch
 @qcode{"visible"} property @qcode{"on"} or @qcode{"off"}.
 
 Type @code{demo tetramesh} to see examples on using @code{tetramesh}.
-@seealso{@ref{XREFtrimesh,,trimesh}, @ref{XREFdelaunay3,,delaunay3}, @ref{XREFdelaunayn,,delaunayn}, @ref{XREFpatch,,patch}}
+@seealso{@ref{XREFtrimesh,,trimesh}, @ref{XREFdelaunay,,delaunay}, @ref{XREFdelaunayn,,delaunayn}, @ref{XREFpatch,,patch}}
 @end deftypefn
 
 
@@ -431,9 +405,9 @@ of each of the simplices of the N-simplex and test the values of
 @code{tsearchn}.  @code{tsearch} is optimized for 2-dimensions and the
 Barycentric coordinates are not explicitly formed.
 
-@c tsearch libinterp/dldfcn/tsearch.cc
+@c tsearch libinterp/corefcn/tsearch.cc
 @anchor{XREFtsearch}
-@deftypefn {Loadable Function} {@var{idx} =} tsearch (@var{x}, @var{y}, @var{t}, @var{xi}, @var{yi})
+@deftypefn {Built-in Function} {@var{idx} =} tsearch (@var{x}, @var{y}, @var{t}, @var{xi}, @var{yi})
 Search for the enclosing Delaunay convex hull.  For @code{@var{t} =
 delaunay (@var{x}, @var{y})}, finds the index in @var{t} containing the
 points @code{(@var{xi}, @var{yi})}.  For points outside the convex hull,
@@ -555,7 +529,7 @@ tessellation where @var{p} is a member of @var{s}, are closer to @var{p}
 than any other point in @var{s}.  The Voronoi diagram is related to the
 Delaunay triangulation of a set of points, in that the vertexes of the
 Voronoi tessellation are the centers of the circum-circles of the
-simplices of the Delaunay tessellation. 
+simplices of the Delaunay tessellation.
 
 @c voronoi scripts/geometry/voronoi.m
 @anchor{XREFvoronoi}
@@ -621,8 +595,8 @@ The default options depend on the dimension of the input:
 @end itemize
 
 If @var{options} is not present or @code{[]} then the default arguments are
-used.  Otherwise, @var{options} replaces the default argument list. 
-To append user options to the defaults it is necessary to repeat the 
+used.  Otherwise, @var{options} replaces the default argument list.
+To append user options to the defaults it is necessary to repeat the
 default arguments in @var{options}.  Use a null string to pass no arguments.
 
 @seealso{@ref{XREFvoronoi,,voronoi}, @ref{XREFconvhulln,,convhulln}, @ref{XREFdelaunayn,,delaunayn}}
@@ -678,7 +652,7 @@ works along this dimension of the arrays @var{x} and @var{y}.
 @end deftypefn
 
 
-An example of the use of @code{polyarea} might be 
+An example of the use of @code{polyarea} might be
 
 @example
 @group
@@ -775,8 +749,8 @@ See the documentation for the Qhull library for details
 The default option is @code{@{"Qt"@}}.
 
 If @var{options} is not present or @code{[]} then the default arguments are
-used.  Otherwise, @var{options} replaces the default argument list. 
-To append user options to the defaults it is necessary to repeat the 
+used.  Otherwise, @var{options} replaces the default argument list.
+To append user options to the defaults it is necessary to repeat the
 default arguments in @var{options}.  Use a null string to pass no arguments.
 
 @seealso{@ref{XREFconvhulln,,convhulln}, @ref{XREFdelaunay,,delaunay}, @ref{XREFvoronoi,,voronoi}}
@@ -845,12 +819,10 @@ The output of the above can be seen in @ref{fig:convhull}.
 An important use of the Delaunay tessellation is that it can be used to
 interpolate from scattered data to an arbitrary set of points.  To do
 this the N-simplex of the known set of points is calculated with
-@code{delaunay}, @code{delaunay3} or @code{delaunayn}.  Then the
-simplices in to which the desired points are found are
-identified.  Finally the vertices of the simplices are used to
-interpolate to the desired points.  The functions that perform this
-interpolation are @code{griddata}, @code{griddata3} and
-@code{griddatan}.
+@code{delaunay} or @code{delaunayn}.  Then the simplices in to which the
+desired points are found are identified.  Finally the vertices of the simplices
+are used to interpolate to the desired points.  The functions that perform this
+interpolation are @code{griddata}, @code{griddata3} and @code{griddatan}.
 
 @c griddata scripts/geometry/griddata.m
 @anchor{XREFgriddata}
@@ -928,8 +900,7 @@ griddata (x,y,z,xx,yy);
 @end example
 
 @noindent
-that interpolates from a random scattering of points, to a uniform
-grid. 
+that interpolates from a random scattering of points, to a uniform grid.
 @ifnotinfo
 The output of the above can be seen in @ref{fig:griddata}.
 

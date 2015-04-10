@@ -1,4 +1,4 @@
-## Copyright (C) 1998-2013 Andy Adler
+## Copyright (C) 1998-2015 Andy Adler
 ##
 ## This file is part of Octave.
 ##
@@ -21,7 +21,7 @@
 ## @deftypefnx {Function File} {} spy (@dots{}, @var{markersize})
 ## @deftypefnx {Function File} {} spy (@dots{}, @var{line_spec})
 ## Plot the sparsity pattern of the sparse matrix @var{x}.
-## 
+##
 ## If the argument @var{markersize} is given as a scalar value, it is used to
 ## determine the point size in the plot.  If the string @var{line_spec} is
 ## given it is passed to @code{plot} and determines the appearance of the plot.
@@ -72,6 +72,6 @@ endfunction
 %! clf;
 %! spy (sprand (10,10, 0.2));
 
-%% Mark graphical function as tested by demo block
+## Mark graphical function as tested by demo block
 %!assert (1)
 

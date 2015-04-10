@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2013 Paul Kienzle
+## Copyright (C) 2007-2015 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -27,7 +27,7 @@
 ## The function has the form
 ##
 ## @tex
-## $$f(x,y) = 3 (1 - x) ^ 2 e ^ {\left(-x^2 - (y+1)^2\right)} - 10 \left({x \over 5} - x^3 - y^5)\right) - {1 \over 3} e^{\left(-(x+1)^2 - y^2\right)}$$
+## $$f(x,y) = 3 (1 - x) ^ 2 e ^ {\left(-x^2 - (y+1)^2\right)} - 10 \left({x \over 5} - x^3 - y^5\right) - {1 \over 3} e^{\left(-(x+1)^2 - y^2\right)}$$
 ## @end tex
 ## @ifnottex
 ## @verbatim
@@ -39,7 +39,7 @@
 ##
 ## Called without a return argument, @code{peaks} plots the surface of the
 ## above function using @code{surf}.
-## 
+##
 ## If @var{n} is a scalar, @code{peaks} plots the value of the above
 ## function on an @var{n}-by-@var{n} mesh over the range [-3,3].  The
 ## default value for @var{n} is 49.
@@ -51,7 +51,7 @@
 ## When called with output arguments, return the data for the function
 ## evaluated over the meshgrid.  This can subsequently be plotted with
 ## @code{surf (@var{x}, @var{y}, @var{z})}.
-## 
+##
 ## @seealso{sombrero, meshgrid, mesh, surf}
 ## @end deftypefn
 
@@ -83,6 +83,9 @@ function [X_out, Y_out, Z_out] = peaks (x, y)
 
   if (nargout == 0)
     surf (x, y, Z);
+    Z_max = max (Z(:));
+    Z_min = min (Z(:));
+    axis ([-3, 3, -3, 3, Z_min, Z_max]);
   elseif (nargout == 1)
     X_out = Z;
   else

@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2013 John W. Eaton
+@c Copyright (C) 1996-2015 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -8,12 +8,12 @@
 @c under the terms of the GNU General Public License as published by the
 @c Free Software Foundation; either version 3 of the License, or (at
 @c your option) any later version.
-@c 
+@c
 @c Octave is distributed in the hope that it will be useful, but WITHOUT
 @c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 @c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 @c for more details.
-@c 
+@c
 @c You should have received a copy of the GNU General Public License
 @c along with Octave; see the file COPYING.  If not, see
 @c <http://www.gnu.org/licenses/>.
@@ -56,7 +56,7 @@ dt
 @end ifnottex
 
 @noindent
-using Hindmarsh's ODE solver @sc{lsode}.
+using @nospell{Hindmarsh's} ODE solver @sc{lsode}.
 
 
 
@@ -291,9 +291,10 @@ t = [0, logspace(-1, log10(303), 150), \
 @end group
 @end example
 
-See Alan C. Hindmarsh, @cite{ODEPACK, A Systematized Collection of ODE
-Solvers}, in Scientific Computing, R. S. Stepleman, editor, (1983) for
-more information about the inner workings of @code{lsode}.
+See @nospell{Alan C. Hindmarsh},
+@cite{ODEPACK, A Systematized Collection of ODE Solvers},
+in Scientific Computing, @nospell{R. S. Stepleman}, editor, (1983)
+for more information about the inner workings of @code{lsode}.
 
 An m-file for the differential equation used above is included with the
 Octave distribution in the examples directory under the name
@@ -324,8 +325,8 @@ $\dot{x} = {dx \over dt}$
 @ifnottex
 @math{x-dot}
 @end ifnottex
-is the derivative of @math{x}.  The equation is solved using Petzold's
-DAE solver @sc{daspk}.
+is the derivative of @math{x}.  The equation is solved using
+@nospell{Petzold's} DAE solver @sc{daspk}.
 
 @c daspk libinterp/corefcn/daspk.cc
 @anchor{XREFdaspk}
@@ -538,10 +539,10 @@ declare which variables in the problem are algebraic (default is 0).
 A vector of the same length as the state vector.  A nonzero element
 indicates that the corresponding element of the state vector is an
 algebraic variable (i.e., its derivative does not appear explicitly
-in the equation set.
+in the equation set).
 
 This option is required by the
-@qcode{compute consistent initial condition"} and
+@qcode{"compute consistent initial condition"} and
 @qcode{"exclude algebraic variables from error test"} options.
 
 @item @qcode{"enforce inequality constraints"}
@@ -972,6 +973,6 @@ underlying Fortran code.
 @end deftypefn
 
 
-See K. E. Brenan, et al., @cite{Numerical Solution of Initial-Value
+See @nospell{K. E. Brenan}, et al., @cite{Numerical Solution of Initial-Value
 Problems in Differential-Algebraic Equations}, North-Holland (1989) for
 more information about the implementation of @sc{dassl}.

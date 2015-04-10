@@ -1,4 +1,4 @@
-## Copyright (C) 1994-2013 John W. Eaton
+## Copyright (C) 1994-2015 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -47,7 +47,7 @@ function I = ind2gray (x, map)
   endif
   [x, map] = ind2x ("ind2gray", x, map);
 
-  ## Convert colormap to luminance intensity values 
+  ## Convert colormap to luminance intensity values
   map *= [0.29894; 0.58704; 0.11402];
 
   ## Convert colormap to same class as that of input so that reshape
@@ -69,22 +69,27 @@ endfunction
 
 %!shared i2g
 %! i2g = ind2gray (1:100, gray (100));
-%!assert (i2g, 0:1/99:1, eps);
-%!assert (gray2ind (i2g, 100), uint8 (0:99));
+%!
+%!assert (i2g, 0:1/99:1, eps)
+%!assert (gray2ind (i2g, 100), uint8 (0:99))
 
-%% Test input validation
+## Test input validation
 %!error ind2gray ()
 %!error ind2gray (1)
 %!error ind2gray (1,2,3)
-%!error <X must be an indexed image> ind2gray ({1}, jet (64))
+%!error <X must be an indexed image> ind2gray (ones (3,3,3), jet (64))
 %!error <X must be an indexed image> ind2gray (1+i, jet (64))
 %!error <X must be an indexed image> ind2gray (sparse (1), jet (64))
-%!error <X must be an indexed image> ind2gray (0, jet (64))
 %!error <X must be an indexed image> ind2gray (1.1, jet (64))
+%!error <X must be an indexed image> ind2gray ({1}, jet (64))
 %!error <MAP must be a valid colormap> ind2gray (1, {1})
 %!error <MAP must be a valid colormap> ind2gray (1, 1+i)
 %!error <MAP must be a valid colormap> ind2gray (1, ones (2,2,2))
 %!error <MAP must be a valid colormap> ind2gray (1, ones (2,4))
 %!error <MAP must be a valid colormap> ind2gray (1, [-1])
 %!error <MAP must be a valid colormap> ind2gray (1, [2])
+
+%!warning <contains colors outside of colormap> ind2gray ([0 1 2], gray (5));
+%!warning <contains colors outside of colormap> ind2gray ([1 2 6], gray (5));
+%!warning <contains colors outside of colormap> ind2gray (uint8 ([1 2 5]), gray (5));
 

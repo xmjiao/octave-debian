@@ -1,4 +1,4 @@
-## Copyright (C) 2012-2013 Rik Wehbring
+## Copyright (C) 2012-2015 Rik Wehbring
 ##
 ## This file is part of Octave.
 ##
@@ -21,14 +21,14 @@
 ## @deftypefnx {Loadable Function} {@var{obj} =} java_new (@var{name}, @var{arg1}, @dots{})
 ## Create a Java object of class @var{name}, by calling the class constructor
 ## with the arguments @var{arg1}, @dots{}
-## 
+##
 ## @example
 ## @group
 ##   x = java_new ("java.lang.StringBuffer")
 ##   x = java_new ("java.lang.StringBuffer", "Initial string")
 ## @end group
 ## @end example
-## 
+##
 ## @seealso{javaObject, javaMethod}
 ## @end deftypefn
 

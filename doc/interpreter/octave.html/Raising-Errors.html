@@ -87,7 +87,7 @@ string &lsquo;<samp>error: </samp>&rsquo;.
 control will return to the top level without evaluating any more
 commands.  This is useful for aborting from functions or scripts.
 </p>
-<p>If the error message does not end with a new line character, Octave will
+<p>If the error message does not end with a newline character, Octave will
 print a traceback of all the function calls leading to the error.  For
 example, given the following function definitions:
 </p>
@@ -110,10 +110,10 @@ error:   g at line 1, column 15
 error:   f at line 1, column 15
 </pre></div>
 
-<p>If the error message ends in a new line character, Octave will print the
+<p>If the error message ends in a newline character, Octave will print the
 message but will not display any traceback messages as it returns
 control to the top level.  For example, modifying the error message
-in the previous example to end in a new line causes Octave to only print
+in the previous example to end in a newline causes Octave to only print
 a single message:
 </p>
 <div class="example">
@@ -141,7 +141,7 @@ error (err_msg);
 <p>which will only stop execution if an error has been found.
 </p>
 <p>Implementation Note: For compatibility with <small>MATLAB</small>, escape
-sequences (e.g., <code>&quot;\n&quot;</code> =&gt; newline) are processed in <var>template</var>
+sequences (e.g., &quot;\n&quot; =&gt; newline) are processed in <var>template</var>
 regardless of whether <var>template</var> has been defined within single quotes
 as long as there are two or more input arguments.
 Use a second backslash to stop interpolation of the escape sequence (e.g.,
@@ -182,14 +182,14 @@ error.
 <pre class="example">f ()
 
 -|  error: Invalid call to f.  Correct usage is:
--|  
+-|
 -|   -- Function File: f (ARG1)
--|  
--|  
+-|
+-|
 -|  Additional help for built-in functions and operators is
 -|  available in the online version of the manual.  Use the command
 -|  `doc &lt;topic&gt;' to search the manual index.
--|  
+-|
 -|  Help and information about Octave is also available on the WWW
 -|  at http://www.octave.org and via the help@octave.org
 -|  mailing list.
@@ -203,32 +203,6 @@ the <code>print_usage</code> function displays the usage message of the currentl
 executing function.
 </p>
 <p><strong>See also:</strong> <a href="Getting-Help.html#XREFhelp">help</a>.
-</p></dd></dl>
-
-
-<a name="XREFusage"></a><dl>
-<dt><a name="index-usage"></a>Built-in Function: <em></em> <strong>usage</strong> <em>(<var>msg</var>)</em></dt>
-<dd><p>Print the message <var>msg</var>, prefixed by the string &lsquo;<samp>usage: </samp>&rsquo;, and
-set Octave&rsquo;s internal error state such that control will return to the
-top level without evaluating any more commands.  This is useful for
-aborting from functions.
-</p>
-<p>After <code>usage</code> is evaluated, Octave will print a traceback of all
-the function calls leading to the usage message.
-</p>
-<p>You should use this function for reporting problems errors that result
-from an improper call to a function, such as calling a function with an
-incorrect number of arguments, or with arguments of the wrong type.  For
-example, most functions distributed with Octave begin with code like
-this
-</p>
-<div class="example">
-<pre class="example">if (nargin != 2)
-  usage (&quot;foo (a, b)&quot;);
-endif
-</pre></div>
-
-<p>to check for the proper number of arguments.
 </p></dd></dl>
 
 

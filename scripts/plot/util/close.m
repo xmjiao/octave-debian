@@ -1,4 +1,4 @@
-## Copyright (C) 2002-2013 John W. Eaton
+## Copyright (C) 2002-2015 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -105,5 +105,4 @@ endfunction
 %!error <first argument must be "all" or a figure> close ({"all"})
 %!error <first argument must be "all" or a figure> close ("all_and_more")
 %!error <first argument must be "all" or a figure> close (-1)
-%!error <expecting argument to be "all hidden"> close "all" hid"
-
+%!error <expecting argument to be "all hidden"> close all hid

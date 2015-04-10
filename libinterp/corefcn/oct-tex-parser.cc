@@ -58,7 +58,8 @@
 /* Pull parsers.  */
 #define YYPULL 1
 
-
+/* Substitute the type names.  */
+#define YYSTYPE         OCTAVE_TEX_STYPE
 /* Substitute the variable and function names.  */
 #define yyparse         octave_tex_parse
 #define yylex           octave_tex_lex
@@ -68,7 +69,7 @@
 
 
 /* Copy the first part of user declarations.  */
-#line 23 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:339  */
+#line 23 "corefcn/oct-tex-parser.yy" /* yacc.c:339  */
 
 #define YYDEBUG 1
 
@@ -93,7 +94,7 @@ static void yyerror (text_parser_tex& parser, const char *s);
 
 #define scanner parser.get_scanner ()
 
-#line 97 "corefcn/oct-tex-parser.cc" /* yacc.c:339  */
+#line 98 "corefcn/oct-tex-parser.cc" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -116,22 +117,30 @@ static void yyerror (text_parser_tex& parser, const char *s);
 #ifndef YY_OCTAVE_TEX_COREFCN_OCT_TEX_PARSER_H_INCLUDED
 # define YY_OCTAVE_TEX_COREFCN_OCT_TEX_PARSER_H_INCLUDED
 /* Debug traces.  */
-#ifndef YYDEBUG
-# define YYDEBUG 0
-#endif
+#ifndef OCTAVE_TEX_DEBUG
+# if defined YYDEBUG
 #if YYDEBUG
+#   define OCTAVE_TEX_DEBUG 1
+#  else
+#   define OCTAVE_TEX_DEBUG 0
+#  endif
+# else /* ! defined YYDEBUG */
+#  define OCTAVE_TEX_DEBUG 0
+# endif /* ! defined YYDEBUG */
+#endif  /* ! defined OCTAVE_TEX_DEBUG */
+#if OCTAVE_TEX_DEBUG
 extern int octave_tex_debug;
 #endif
 /* "%code requires" blocks.  */
-#line 53 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:355  */
+#line 54 "corefcn/oct-tex-parser.yy" /* yacc.c:355  */
 #include <string>
 
-#line 130 "corefcn/oct-tex-parser.cc" /* yacc.c:355  */
+#line 139 "corefcn/oct-tex-parser.cc" /* yacc.c:355  */
 
 /* Token type.  */
-#ifndef YYTOKENTYPE
-# define YYTOKENTYPE
-  enum yytokentype
+#ifndef OCTAVE_TEX_TOKENTYPE
+# define OCTAVE_TEX_TOKENTYPE
+  enum octave_tex_tokentype
   {
     BF = 258,
     IT = 259,
@@ -172,11 +181,11 @@ extern int octave_tex_debug;
 #define STR 274
 
 /* Value type.  */
-#if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef union YYSTYPE YYSTYPE;
-union YYSTYPE
+#if ! defined OCTAVE_TEX_STYPE && ! defined OCTAVE_TEX_STYPE_IS_DECLARED
+typedef union OCTAVE_TEX_STYPE OCTAVE_TEX_STYPE;
+union OCTAVE_TEX_STYPE
 {
-#line 55 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:355  */
+#line 56 "corefcn/oct-tex-parser.yy" /* yacc.c:355  */
 
   /* Leaf symbols produced by the scanner */
   char                       ch;
@@ -190,10 +199,10 @@ union YYSTYPE
   text_element*              e_base;
   text_element_list*         e_list;
 
-#line 194 "corefcn/oct-tex-parser.cc" /* yacc.c:355  */
+#line 203 "corefcn/oct-tex-parser.cc" /* yacc.c:355  */
 };
-# define YYSTYPE_IS_TRIVIAL 1
-# define YYSTYPE_IS_DECLARED 1
+# define OCTAVE_TEX_STYPE_IS_TRIVIAL 1
+# define OCTAVE_TEX_STYPE_IS_DECLARED 1
 #endif
 
 
@@ -204,7 +213,7 @@ int octave_tex_parse (text_parser_tex& parser);
 
 /* Copy the second part of user declarations.  */
 
-#line 208 "corefcn/oct-tex-parser.cc" /* yacc.c:358  */
+#line 217 "corefcn/oct-tex-parser.cc" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -385,7 +394,7 @@ void free (void *); /* INFRINGES ON USER NAME SPACE */
 
 #if (! defined yyoverflow \
      && (! defined __cplusplus \
-         || (defined YYSTYPE_IS_TRIVIAL && YYSTYPE_IS_TRIVIAL)))
+         || (defined OCTAVE_TEX_STYPE_IS_TRIVIAL && OCTAVE_TEX_STYPE_IS_TRIVIAL)))
 
 /* A type that is properly aligned for any stack member.  */
 union yyalloc
@@ -499,18 +508,18 @@ static const yytype_uint8 yytranslate[] =
       15,    16,    17,    18,    19
 };
 
-#if YYDEBUG
+#if OCTAVE_TEX_DEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    97,    97,    99,   103,   107,   109,   111,   113,   117,
-     121,   128,   133,   139,   144,   147,   148,   149,   150,   151,
-     152,   153,   154,   157,   159,   161,   165,   167,   169,   173,
-     175,   179,   181,   185,   187,   192,   193
+       0,    98,    98,   100,   104,   108,   110,   112,   114,   118,
+     122,   129,   134,   140,   145,   148,   149,   150,   151,   152,
+     153,   154,   155,   158,   160,   162,   166,   168,   170,   174,
+     176,   180,   182,   186,   188,   193,   194
 };
 #endif
 
-#if YYDEBUG || YYERROR_VERBOSE || 0
+#if OCTAVE_TEX_DEBUG || YYERROR_VERBOSE || 0
 /* YYTNAME[SYMBOL-NUM] -- String name of the symbol SYMBOL-NUM.
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
@@ -680,7 +689,7 @@ while (0)
 
 
 /* Enable debugging if requested.  */
-#if YYDEBUG
+#if OCTAVE_TEX_DEBUG
 
 # ifndef YYFPRINTF
 #  include <stdio.h> /* INFRINGES ON USER NAME SPACE */
@@ -802,12 +811,12 @@ do {                                    \
 /* Nonzero means print parse trace.  It is left uninitialized so that
    multiple parsers can coexist.  */
 int yydebug;
-#else /* !YYDEBUG */
+#else /* !OCTAVE_TEX_DEBUG */
 # define YYDPRINTF(Args)
 # define YY_SYMBOL_PRINT(Title, Type, Value, Location)
 # define YY_STACK_PRINT(Bottom, Top)
 # define YY_REDUCE_PRINT(Rule)
-#endif /* !YYDEBUG */
+#endif /* !OCTAVE_TEX_DEBUG */
 
 
 /* YYINITDEPTH -- initial size of the parser's stacks.  */
@@ -1066,93 +1075,93 @@ yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, text_parser_tex& p
   switch (yytype)
     {
           case 15: /* CH  */
-#line 84 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1257  */
+#line 85 "corefcn/oct-tex-parser.yy" /* yacc.c:1257  */
       { }
-#line 1072 "corefcn/oct-tex-parser.cc" /* yacc.c:1257  */
+#line 1081 "corefcn/oct-tex-parser.cc" /* yacc.c:1257  */
         break;
 
     case 16: /* NUM  */
-#line 84 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1257  */
+#line 85 "corefcn/oct-tex-parser.yy" /* yacc.c:1257  */
       { }
-#line 1078 "corefcn/oct-tex-parser.cc" /* yacc.c:1257  */
+#line 1087 "corefcn/oct-tex-parser.cc" /* yacc.c:1257  */
         break;
 
     case 17: /* SYM  */
-#line 84 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1257  */
+#line 85 "corefcn/oct-tex-parser.yy" /* yacc.c:1257  */
       { }
-#line 1084 "corefcn/oct-tex-parser.cc" /* yacc.c:1257  */
+#line 1093 "corefcn/oct-tex-parser.cc" /* yacc.c:1257  */
         break;
 
     case 21: /* simple_string  */
-#line 85 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1257  */
+#line 86 "corefcn/oct-tex-parser.yy" /* yacc.c:1257  */
       { delete ((*yyvaluep).str); }
-#line 1090 "corefcn/oct-tex-parser.cc" /* yacc.c:1257  */
+#line 1099 "corefcn/oct-tex-parser.cc" /* yacc.c:1257  */
         break;
 
     case 22: /* symbol_element  */
-#line 85 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1257  */
+#line 86 "corefcn/oct-tex-parser.yy" /* yacc.c:1257  */
       { delete ((*yyvaluep).e_base); }
-#line 1096 "corefcn/oct-tex-parser.cc" /* yacc.c:1257  */
+#line 1105 "corefcn/oct-tex-parser.cc" /* yacc.c:1257  */
         break;
 
     case 23: /* font_modifier_element  */
-#line 85 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1257  */
+#line 86 "corefcn/oct-tex-parser.yy" /* yacc.c:1257  */
       { delete ((*yyvaluep).e_base); }
-#line 1102 "corefcn/oct-tex-parser.cc" /* yacc.c:1257  */
+#line 1111 "corefcn/oct-tex-parser.cc" /* yacc.c:1257  */
         break;
 
     case 24: /* fontsize_element  */
-#line 85 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1257  */
+#line 86 "corefcn/oct-tex-parser.yy" /* yacc.c:1257  */
       { delete ((*yyvaluep).e_base); }
-#line 1108 "corefcn/oct-tex-parser.cc" /* yacc.c:1257  */
+#line 1117 "corefcn/oct-tex-parser.cc" /* yacc.c:1257  */
         break;
 
     case 25: /* fontname_element  */
-#line 85 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1257  */
+#line 86 "corefcn/oct-tex-parser.yy" /* yacc.c:1257  */
       { delete ((*yyvaluep).e_base); }
-#line 1114 "corefcn/oct-tex-parser.cc" /* yacc.c:1257  */
+#line 1123 "corefcn/oct-tex-parser.cc" /* yacc.c:1257  */
         break;
 
     case 26: /* color_element  */
-#line 85 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1257  */
+#line 86 "corefcn/oct-tex-parser.yy" /* yacc.c:1257  */
       { delete ((*yyvaluep).e_base); }
-#line 1120 "corefcn/oct-tex-parser.cc" /* yacc.c:1257  */
+#line 1129 "corefcn/oct-tex-parser.cc" /* yacc.c:1257  */
         break;
 
     case 27: /* string_element  */
-#line 85 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1257  */
+#line 86 "corefcn/oct-tex-parser.yy" /* yacc.c:1257  */
       { delete ((*yyvaluep).e_base); }
-#line 1126 "corefcn/oct-tex-parser.cc" /* yacc.c:1257  */
+#line 1135 "corefcn/oct-tex-parser.cc" /* yacc.c:1257  */
         break;
 
     case 28: /* superscript_element  */
-#line 85 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1257  */
+#line 86 "corefcn/oct-tex-parser.yy" /* yacc.c:1257  */
       { delete ((*yyvaluep).e_base); }
-#line 1132 "corefcn/oct-tex-parser.cc" /* yacc.c:1257  */
+#line 1141 "corefcn/oct-tex-parser.cc" /* yacc.c:1257  */
         break;
 
     case 29: /* subscript_element  */
-#line 85 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1257  */
+#line 86 "corefcn/oct-tex-parser.yy" /* yacc.c:1257  */
       { delete ((*yyvaluep).e_base); }
-#line 1138 "corefcn/oct-tex-parser.cc" /* yacc.c:1257  */
+#line 1147 "corefcn/oct-tex-parser.cc" /* yacc.c:1257  */
         break;
 
     case 30: /* combined_script_element  */
-#line 85 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1257  */
+#line 86 "corefcn/oct-tex-parser.yy" /* yacc.c:1257  */
       { delete ((*yyvaluep).e_base); }
-#line 1144 "corefcn/oct-tex-parser.cc" /* yacc.c:1257  */
+#line 1153 "corefcn/oct-tex-parser.cc" /* yacc.c:1257  */
         break;
 
     case 31: /* string_element_list  */
-#line 85 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1257  */
+#line 86 "corefcn/oct-tex-parser.yy" /* yacc.c:1257  */
       { delete ((*yyvaluep).e_list); }
-#line 1150 "corefcn/oct-tex-parser.cc" /* yacc.c:1257  */
+#line 1159 "corefcn/oct-tex-parser.cc" /* yacc.c:1257  */
         break;
 
     case 32: /* scoped_string_element_list  */
-#line 85 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1257  */
+#line 86 "corefcn/oct-tex-parser.yy" /* yacc.c:1257  */
       { delete ((*yyvaluep).e_list); }
-#line 1156 "corefcn/oct-tex-parser.cc" /* yacc.c:1257  */
+#line 1165 "corefcn/oct-tex-parser.cc" /* yacc.c:1257  */
         break;
 
 
@@ -1418,180 +1427,180 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 98 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
+#line 99 "corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
     { (yyval.str) = new std::string (1, (yyvsp[0].ch)); }
-#line 1424 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
+#line 1433 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 100 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
+#line 101 "corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
     { (yyvsp[-1].str)->append (1, (yyvsp[0].ch)); (yyval.str) = (yyvsp[-1].str); }
-#line 1430 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
+#line 1439 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 104 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
+#line 105 "corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
     { (yyval.e_base) = new text_element_symbol ((yyvsp[0].sym)); }
-#line 1436 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
+#line 1445 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 108 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
+#line 109 "corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
     { (yyval.e_base) = new text_element_fontstyle (text_element_fontstyle::bold); }
-#line 1442 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
+#line 1451 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 110 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
+#line 111 "corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
     { (yyval.e_base) = new text_element_fontstyle (text_element_fontstyle::italic); }
-#line 1448 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
+#line 1457 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 112 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
+#line 113 "corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
     { (yyval.e_base) = new text_element_fontstyle (text_element_fontstyle::oblique); }
-#line 1454 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
+#line 1463 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 114 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
+#line 115 "corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
     { (yyval.e_base) = new text_element_fontstyle (text_element_fontstyle::normal); }
-#line 1460 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
+#line 1469 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 118 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
+#line 119 "corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
     { (yyval.e_base) = new text_element_fontsize ((yyvsp[-1].num)); }
-#line 1466 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
-    break;
-
-  case 10:
-#line 122 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
-    {
-				    (yyval.e_base) = new text_element_fontname (*(yyvsp[-1].str));
-				    delete (yyvsp[-1].str);
-				  }
 #line 1475 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
     break;
 
-  case 11:
-#line 129 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
+  case 10:
+#line 123 "corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
     {
-				    (yyval.e_base) = new text_element_color (*(yyvsp[-1].str));
+				    (yyval.e_base) = new text_element_fontname (*(yyvsp[-1].str));
 				    delete (yyvsp[-1].str);
 				  }
 #line 1484 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
     break;
 
-  case 12:
-#line 134 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
+  case 11:
+#line 130 "corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
     {
-				    (yyval.e_base) = new text_element_color ((yyvsp[-3].num), (yyvsp[-2].num), (yyvsp[-1].num));
+				    (yyval.e_base) = new text_element_color (*(yyvsp[-1].str));
+				    delete (yyvsp[-1].str);
 				  }
-#line 1492 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
+#line 1493 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
     break;
 
-  case 13:
-#line 140 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
+  case 12:
+#line 135 "corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
     {
-				    (yyval.e_base) = new text_element_string (*(yyvsp[0].str));
-				    delete (yyvsp[0].str);
+				    (yyval.e_base) = new text_element_color ((yyvsp[-3].num), (yyvsp[-2].num), (yyvsp[-1].num));
 				  }
 #line 1501 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
     break;
 
+  case 13:
+#line 141 "corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
+    {
+				    (yyval.e_base) = new text_element_string (*(yyvsp[0].str));
+				    delete (yyvsp[0].str);
+				  }
+#line 1510 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
+    break;
+
   case 14:
-#line 146 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
+#line 147 "corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
     { (yyval.e_base) = (yyvsp[0].e_list); }
-#line 1507 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
+#line 1516 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 158 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
+#line 159 "corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
     { (yyval.e_base) = new text_element_superscript ((yyvsp[0].ch)); }
-#line 1513 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
+#line 1522 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 160 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
+#line 161 "corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
     { (yyval.e_base) = new text_element_superscript ((yyvsp[0].e_list)); }
-#line 1519 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
+#line 1528 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 162 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
+#line 163 "corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
     { (yyval.e_base) = new text_element_superscript ((yyvsp[0].e_base)); }
-#line 1525 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
+#line 1534 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 166 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
+#line 167 "corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
     { (yyval.e_base) = new text_element_subscript ((yyvsp[0].ch)); }
-#line 1531 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
+#line 1540 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 168 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
+#line 169 "corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
     { (yyval.e_base) = new text_element_subscript ((yyvsp[0].e_list)); }
-#line 1537 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
+#line 1546 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 170 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
+#line 171 "corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
     { (yyval.e_base) = new text_element_subscript ((yyvsp[0].e_base)); }
-#line 1543 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
+#line 1552 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 174 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
+#line 175 "corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
     { (yyval.e_base) = new text_element_combined ((yyvsp[-1].e_base), (yyvsp[0].e_base)); }
-#line 1549 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
+#line 1558 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 176 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
+#line 177 "corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
     { (yyval.e_base) = new text_element_combined ((yyvsp[-1].e_base), (yyvsp[0].e_base)); }
-#line 1555 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
+#line 1564 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 180 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
+#line 181 "corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
     { (yyval.e_list) = new text_element_list ((yyvsp[0].e_base)); }
-#line 1561 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
+#line 1570 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 182 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
+#line 183 "corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
     { (yyvsp[-1].e_list)->push_back ((yyvsp[0].e_base)); (yyval.e_list) = (yyvsp[-1].e_list); }
-#line 1567 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
+#line 1576 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 186 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
+#line 187 "corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
     { (yyval.e_list) = (yyvsp[-1].e_list); }
-#line 1573 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
+#line 1582 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 188 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
+#line 189 "corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
     { (yyval.e_list) = new text_element_list (); }
-#line 1579 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
+#line 1588 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 192 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
+#line 193 "corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
     { parser.set_parse_result (new text_element_string ("")); }
-#line 1585 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
+#line 1594 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 194 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
+#line 195 "corefcn/oct-tex-parser.yy" /* yacc.c:1646  */
     { parser.set_parse_result ((yyvsp[0].e_list)); }
-#line 1591 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
+#line 1600 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
     break;
 
 
-#line 1595 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
+#line 1604 "corefcn/oct-tex-parser.cc" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1819,7 +1828,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 197 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1906  */
+#line 198 "corefcn/oct-tex-parser.yy" /* yacc.c:1906  */
 
 
 text_element*

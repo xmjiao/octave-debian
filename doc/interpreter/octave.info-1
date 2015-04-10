@@ -28,7 +28,7 @@ GNU Octave
 
 This manual documents how to run, install and port GNU Octave, as well
 as its new features and incompatibilities, and how to report bugs.  It
-corresponds to GNU Octave version 3.8.2.
+corresponds to GNU Octave version 4.0.0-rc2.
 
 * Menu:
 
@@ -69,8 +69,8 @@ corresponds to GNU Octave version 3.8.2.
 * Object Oriented Programming::
 * GUI Development::
 * System Utilities::
-* Java Interface:: 
-* Packages:: 
+* Java Interface::
+* Packages::
 * External Code Interface::
 * Test and Demo Functions::
 * Tips and Standards::
@@ -390,6 +390,7 @@ High-Level Plotting
 * Plot Annotations::
 * Multiple Plots on One Page::
 * Multiple Plot Windows::
+* Manipulation of Plot Objects::
 * Manipulation of Plot Windows::
 * Use of the 'interpreter' Property::
 * Printing and Saving Plots::
@@ -607,6 +608,25 @@ Image Processing
 * Plotting on top of Images::
 * Color Conversion::
 
+Audio Processing
+
+* Audio File Utilities::
+* Audio Device Information::
+* Audio Player::
+* Audio Recorder::
+* Audio Data Processing::
+
+Audio Player
+
+* Playback::
+* Player Properties::
+
+Audio Recorder
+
+* Recording::
+* Data Retrieval::
+* Recorder Properties::
+
 Object Oriented Programming
 
 * Creating a Class::
@@ -630,6 +650,7 @@ GUI Development
 
 * I/O Dialogs::
 * Progress Bar::
+* UI Elements::
 * GUI Utility Functions::
 * User-Defined Preferences::
 
@@ -780,7 +801,6 @@ Grammar and Parser
 * Keywords::
 * Parser::
 
-
 
 File: octave.info,  Node: Preface,  Next: Introduction,  Prev: Top,  Up: Top
 
@@ -843,12 +863,14 @@ Many people have contributed to Octave's development.  The following
 people have helped code parts of Octave or aided in various other ways
 (listed alphabetically).
 
-Ben Abbott               Andy Adler               Adam H. Aitkenhead
-Giles Anderson           Joel Andersson           Muthiah Annamalai
-Markus Appel             Branden Archer           Marco Atzeri
-Shai Ayal                Roger Banks              Ben Barrowes
-Alexander Barth          David Bateman            Heinz Bauschke
-Julien Bect              Roman Belov              Karl Berry
+Ben Abbott               Drew Abbot               Andy Adler
+Adam H. Aitkenhead       Giles Anderson           Joel Andersson
+Lachlan Andrew           Pedro Angelo             Muthiah Annamalai
+Markus Appel             Branden Archer           Willem Atsma
+Marco Atzeri             Shai Ayal                Roger Banks
+Ben Barrowes             Alexander Barth          David Bateman
+Heinz Bauschke           Julien Bect              Stefan Beller
+Roman Belov              Markus Bergholz          Karl Berry
 David Billinghurst       Don Bindner              Jakub Bogusz
 Moritz Borgmann          Paul Boven               Richard Bovey
 John Bradshaw            Marcus Brinkmann         Max Brister
@@ -866,15 +888,17 @@ Pantxo Diribarne         Vivek Dogra              John Donoghue
 David M. Doolin          Carnë Draug             Pascal A. Dupuis
 John W. Eaton            Dirk Eddelbuettel        Pieter Eendebak
 Paul Eggert              Stephen Eglen            Peter Ekberg
-Rolf Fabian              Gunnar Farnebäck        Stephen Fegan
-Ramon Garcia Fernandez   Torsten Finke            Jose Daniel Munoz
+Edmund Grimley Evans     Rolf Fabian              Gunnar Farnebäck
+Massimiliano Fasi        Stephen Fegan            Ramon Garcia Fernandez
+Torsten Finke            Colin Foster             Jose Daniel Munoz
                                                   Frias
 Brad Froehle             Castor Fu                Eduardo Gallestey
 Walter Gautschi          Klaus Gebhardt           Driss Ghaddab
-Nicolo Giorgetti         Arun Giridhar            Michael D. Godfrey
-Michael Goffioul         Glenn Golden             Tomislav Goles
-Keith Goodman            Brian Gough              Steffen Groot
-Etienne Grossmann        David Grundberg          Kyle Guinn
+Eugenio Gianniti         Nicolo Giorgetti         Arun Giridhar
+Michael D. Godfrey       Michael Goffioul         Glenn Golden
+Tomislav Goles           Keith Goodman            Brian Gough
+Michael C. Grant         Steffen Groot            Etienne Grossmann
+David Grundberg          Kyle Guinn               Vaibhav Gupta
 Peter Gustafson          Kai Habel                Patrick Häcker
 William P. Y.            Jaroslav Hajek           Benjamin Hall
 Hadisoeseno
@@ -886,9 +910,10 @@ Ryan Hinton              Roman Hodek              A. Scottedward Hodel
 Richard Allan Holcombe   Tom Holroyd              David Hoover
 Kurt Hornik              Christopher Hulbert      Cyril Humbert
 John Hunt                Teemu Ikonen             Alan W. Irwin
-Geoff Jacobsen           Mats Jansson             Cai Jianming
-Steven G. Johnson        Heikki Junes             Matthias Jüschke
-Atsushi Kajita           Jarkko Kaleva            Mohamed Kamoun
+Allan Jacobs             Geoff Jacobsen           Vytautas Jančauskas
+Mats Jansson             Cai Jianming             Steven G. Johnson
+Heikki Junes             Matthias Jüschke        Atsushi Kajita
+Jarkko Kaleva            Avinoam Kalma            Mohamed Kamoun
 Lute Kamstra             Fotios Kasolis           Thomas Kasper
 Joel Keay                Mumit Khan               Paul Kienzle
 Aaron A. King            Erik Kjellson            Arno J. Klaassen
@@ -897,69 +922,78 @@ Ken Kouno                Kacper Kowalik           Daniel Kraft
 Nir Krakauer             Aravindh                 Oyvind Kristiansen
                          Krishnamoorthy
 Artem Krosheninnikov     Piotr Krzyzanowski       Volker Kuhlmann
-Tetsuro Kurita           Philipp Kutin            Miroslaw Kwasniak
-Rafael Laboissiere       Kai Labusch              Claude Lacoursiere
-Walter Landry            Bill Lash                Dirk Laurie
-Maurice LeBrun           Friedrich Leisch         Thorsten Liebig
-Jyh-miin Lin             Timo Lindfors            Benjamin Lindner
-Ross Lippert             David Livings            Sebastien Loisel
-Erik de Castro Lopo      Massimo Lorenzin         Emil Lucretiu
+Ilya Kurdyukov           Tetsuro Kurita           Philipp Kutin
+Miroslaw Kwasniak        Rafael Laboissiere       Kai Labusch
+Claude Lacoursiere       Walter Landry            Bill Lash
+Dirk Laurie              Maurice LeBrun           Friedrich Leisch
+Johannes Leuschner       Thorsten Liebig          Jyh-miin Lin
+Timo Lindfors            Benjamin Lindner         Ross Lippert
+David Livings            Sebastien Loisel         Erik de Castro Lopo
+Massimo Lorenzin         Emil Lucretiu            Yi-Hong Lyu
 Hoxide Ma                Colin Macdonald          James Macnicol
-Jens-Uwe Mager           Rob Mahurin              Alexander Mamonov
-Ricardo Marranita        Orestes Mas              Axel Mathéi
-Makoto Matsumoto         Tatsuro Matsuoka         Christoph Mayer
-Laurent Mazet            G. D. McBain             Ronald van der Meer
-Júlio Hoffimann         Ed Meyer                 Thorsten Meyer
-Mendes
-Petr Mikulik             Mike Miller              Stefan Monnier
+Jens-Uwe Mager           Stefan Mahr              Rob Mahurin
+Alexander Mamonov        Ricardo Marranita        Orestes Mas
+Axel Mathéi             Makoto Matsumoto         Tatsuro Matsuoka
+Christoph Mayer          Laurent Mazet            G. D. McBain
+Ronald van der Meer      Júlio Hoffimann         Ed Meyer
+                         Mendes
+Thorsten Meyer           Stefan Miereis           Petr Mikulik
+Mike Miller              Serviscope Minor         Stefan Monnier
 Antoine Moreau           Kai P. Mueller           Hannes Müller
-Victor Munoz             Iain Murray              Carmen Navarrete
-Todd Neal                Philip Nienhuis          Al Niessner
-Felipe G. Nievinski      Rick Niles               Takuji Nishimura
-Kai Noda                 Patrick Noffke           Eric Norum
-Krzesimir Nowak          Michael O'Brien          Peter O'Gorman
-Thorsten Ohl             Arno Onken               Valentin
-                                                  Ortega-Clavero
-Luis F. Ortiz            Carl Osterwisch          Janne Olavi
-                                                  Paanajärvi
-Scott Pakin              Gabriele Pannocchia      Sylvain Pelissier
-Per Persson              Primozz Peterlin         Jim Peterson
-Danilo Piazzalunga       Nicholas Piper           Elias Pipping
-Robert Platt             Hans Ekkehard Plesser    Tom Poage
+Victor Munoz             PrasannaKumar            Iain Murray
+                         Muralidharan
+Carmen Navarrete         Todd Neal                Philip Nienhuis
+Al Niessner              Felipe G. Nievinski      Rick Niles
+Takuji Nishimura         Kai Noda                 Patrick Noffke
+Eric Norum               Krzesimir Nowak          Michael O'Brien
+Peter O'Gorman           Thorsten Ohl             Kai T. Ohlhus
+Arno Onken               Valentin                 Luis F. Ortiz
+                         Ortega-Clavero
+Carl Osterwisch          Janne Olavi              Scott Pakin
+                         Paanajärvi
+Jason Alan Palmer        Gabriele Pannocchia      Sylvain Pelissier
+Rolando Pereira          Per Persson              Primozz Peterlin
+Jim Peterson             Danilo Piazzalunga       Nicholas Piper
+Elias Pipping            Robert Platt             Hans Ekkehard Plesser
+Sergey Plotnikov         Tom Poage                Nathan Podlich
 Orion Poplawski          Ondrej Popp              Jef Poskanzer
 Francesco Potortì       Konstantinos Poulios     Jarno Rajahalme
-James B. Rawlings        Eric S. Raymond          Balint Reczey
-Joshua Redstone          Lukas Reichlin           Michael Reifenberger
-Jens Restemeier          Anthony Richardson       Jason Riedy
-E. Joshua Rigler         Sander van Rijn          Petter Risholm
-Matthew W. Roberts       Peter Rosin              Andrew Ross
-Fabio Rossi              Mark van Rossum          Joe Rothweiler
-Kevin Ruland             Kristian Rumberg         Ryan Rusaw
-Olli Saarela             Toni Saarela             Juhani Saastamoinen
-Radek Salac              Ben Sapp                 Aleksej Saushev
+Eduardo Ramos            Pooja Rao                James B. Rawlings
+Eric S. Raymond          Balint Reczey            Joshua Redstone
+Lukas Reichlin           Michael Reifenberger     Jens Restemeier
+Anthony Richardson       Jason Riedy              E. Joshua Rigler
+Sander van Rijn          Petter Risholm           Matthew W. Roberts
+Peter Rosin              Andrew Ross              Fabio Rossi
+Mark van Rossum          Joe Rothweiler           Kevin Ruland
+Kristian Rumberg         Ryan Rusaw               Olli Saarela
+Toni Saarela             Juhani Saastamoinen      Radek Salac
+Mike Sander              Ben Sapp                 Aleksej Saushev
 Alois Schlögl           Michel D. Schmid         Julian Schnidder
-Nicol N. Schraudolph     Sebastian Schubert       Ludwig Schwardt
-Thomas L. Scofield       Daniel J. Sebald         Dmitri A. Sergatskov
-Vanya Sergeev            Baylis Shanks            Andriy Shinkarchuck
-Robert T. Short          Joseph P. Skudlarek      John Smith
-Julius Smith             Shan G. Smith            Peter L. Sondergaard
-Joerg Specht             Quentin H. Spencer       Christoph Spiel
-Richard Stallman         Russell Standish         Brett Stewart
-Doug Stewart             Jonathan Stickel         Judd Storrs
-Thomas Stuart            Ivan Sutoris             John Swensen
-Daisuke Takago           Ariel Tankus             Falk Tannhäuser
-Duncan Temple Lang       Matthew Tenny            Kris Thielemans
-Georg Thimm              Corey Thomasson          Olaf Till
-Christophe Tournery      Thomas Treichl           Karsten Trulsen
-David Turner             Frederick Umminger       Utkarsh Upadhyay
-Stefan van der Walt      Peter Van Wieren         James R. Van Zandt
-Risto Vanhanen           Gregory Vanuxem          Mihas Varantsou
-Ivana Varekova           Sébastien Villemot      Daniel Wagenaar
+Sebastian Schoeps        Nicol N. Schraudolph     Sebastian Schubert
+Lasse Schuirmann         Ludwig Schwardt          Thomas L. Scofield
+Daniel J. Sebald         Dmitri A. Sergatskov     Vanya Sergeev
+Marko Seric              Ahsan Ali Shahid         Baylis Shanks
+Andriy Shinkarchuck      Robert T. Short          Joseph P. Skudlarek
+John Smith               Julius Smith             Shan G. Smith
+Peter L. Sondergaard     Joerg Specht             Quentin H. Spencer
+Christoph Spiel          David Spies              Richard Stallman
+Russell Standish         Brett Stewart            Doug Stewart
+Jonathan Stickel         Judd Storrs              Thomas Stuart
+Ivan Sutoris             John Swensen             Daisuke Takago
+Ariel Tankus             Falk Tannhäuser         Duncan Temple Lang
+Matthew Tenny            Kris Thielemans          Georg Thimm
+Corey Thomasson          Olaf Till                Christophe Tournery
+Thomas Treichl           Karsten Trulsen          David Turner
+Frederick Umminger       Utkarsh Upadhyay         Stefan van der Walt
+Peter Van Wieren         James R. Van Zandt       Risto Vanhanen
+Gregory Vanuxem          Mihas Varantsou          Ivana Varekova
+Sébastien Villemot      Marco Vitetta            Daniel Wagenaar
 Thomas Walter            Andreas Weber            Olaf Weber
 Thomas Weber             Rik Wehbring             Bob Weigel
 Andreas Weingessel       Martin Weiser            Michael Weitzel
-David Wells              Fook Fah Yap             Sean Young
-Michael Zeising          Federico Zenith          Alex Zvoleff
+David Wells              Joachim Wiesemann        Fook Fah Yap
+Sean Young               Johannes Zarl            Michael Zeising
+Federico Zenith          Alex Zvoleff
 
    Special thanks to the following people and organizations for
 supporting the development of Octave:
@@ -1121,7 +1155,7 @@ manual, *note Copying::.
 run, use, and extend GNU Octave.  Additional chapters describe how to
 report bugs and help contribute code.
 
-   This document corresponds to Octave version 3.8.2.
+   This document corresponds to Octave version 4.0.0-rc2.
 
 * Menu:
 
@@ -1778,16 +1812,18 @@ Here is a complete list of the command line options that Octave accepts.
 
           PS1                             = ">> "
           PS2                             = ""
-          allow_noninteger_range_as_index = true
           beep_on_error                   = true
           confirm_recursive_rmdir         = false
           crash_dumps_octave_core         = false
-          save_default_options            = "-mat-binary"
-          do_braindead_shortcircuit_evaluation = true
+          disable_diagonal_matrix         = true
+          disable_permutation_matrix      = true
+          disable_range                   = true
           fixed_point_format              = true
           history_timestamp_format_string = "%%-- %D %I:%M %p --%%"
           page_screen_output              = false
           print_empty_dimensions          = false
+          save_default_options            = "-mat-binary"
+          struct_levels_to_print          = 0
 
      and disable the following warnings
 
@@ -1795,8 +1831,9 @@ Here is a complete list of the command line options that Octave accepts.
           Octave:fopen-file-in-path
           Octave:function-name-clash
           Octave:load-file-in-path
+          Octave:possible-matlab-short-circuit-operator
 
-     Note that this does not enable the 'Octave:matlab-incompatible'
+     Note that this does not enable the 'Octave:language-extension'
      warning, which you might want if you want to be told about writing
      code that works in Octave but not MATLAB (*note warning:
      XREFwarning, *note warning_ids: XREFwarning_ids.).
@@ -1818,8 +1855,9 @@ the command line, including the number of arguments and all of the
 options.
 
  -- Built-in Function: argv ()
-     Return the command line arguments passed to Octave.  For example,
-     if you invoked Octave using the command
+     Return the command line arguments passed to Octave.
+
+     For example, if you invoked Octave using the command
 
           octave --no-line-editing --silent
 
@@ -1910,31 +1948,42 @@ including function definitions.
 you invoke Octave with the '--verbose' option but without the '--silent'
 option.
 
-   The 'dump_prefs' function is useful for determining what
-customizations to Octave are possible and which are in effect.
-
- -- Function File: dump_prefs ()
- -- Function File: dump_prefs (FID)
-     Dump all of the current user preference variables in a format that
-     can be parsed by Octave later.  FID is a file descriptor as
-     returned by 'fopen'.  If FILE is omitted, the listing is printed to
-     stdout.
-
 
 File: octave.info,  Node: Quitting Octave,  Next: Getting Help,  Prev: Invoking Octave from the Command Line,  Up: Getting Started
 
 2.2 Quitting Octave
 ===================
 
+Shutdown is initiated with the 'exit' or 'quit' commands (they are
+equivalent).  Similar to startup, Octave has a shutdown process that can
+be customized by user script files.  During shutdown Octave will search
+for the script file 'finish.m' in the function load path.  Commands to
+save all workspace variables or cleanup temporary files may be placed
+there.  Additional functions to execute on shutdown may be registered
+with 'atexit'.
+
+ -- Built-in Function: exit
  -- Built-in Function: exit (STATUS)
+ -- Built-in Function: quit
  -- Built-in Function: quit (STATUS)
-     Exit the current Octave session.  If the optional integer value
-     STATUS is supplied, pass that value to the operating system as the
-     Octave's exit status.  The default value is zero.
+     Exit the current Octave session.
+
+     If the optional integer value STATUS is supplied, pass that value
+     to the operating system as Octave's exit status.  The default value
+     is zero.
+
+     When exiting, Octave will attempt to run the m-file 'finish.m' if
+     it exists.  User commands to save the workspace or clean up
+     temporary files may be placed in that file.  Alternatively, another
+     m-file may be scheduled to run using 'atexit'.
+
+     See also: *note atexit: XREFatexit.
 
  -- Built-in Function: atexit (FCN)
  -- Built-in Function: atexit (FCN, FLAG)
-     Register a function to be called when Octave exits.  For example,
+     Register a function to be called when Octave exits.
+
+     For example,
 
           function last_words ()
             disp ("Bye bye");
@@ -1959,6 +2008,8 @@ File: octave.info,  Node: Quitting Octave,  Next: Getting Help,  Prev: Invoking 
      times with 'atexit', it must also be removed from the list multiple
      times.
 
+     See also: *note quit: XREFquit.
+
 
 File: octave.info,  Node: Getting Help,  Next: Command Line Editing,  Prev: Quitting Octave,  Up: Getting Started
 
@@ -1976,8 +2027,11 @@ document the functions you write.
  -- Command: help NAME
  -- Command: help '--list'
  -- Command: help '.'
-     Display the help text for NAME.  For example, the command 'help
-     help' prints a short message describing the 'help' command.
+ -- Command: help
+     Display the help text for NAME.
+
+     For example, the command 'help help' prints a short message
+     describing the 'help' command.
 
      Given the single argument '--list', list all operators, keywords,
      built-in functions, and loadable functions available in the current
@@ -1989,12 +2043,13 @@ document the functions you write.
      If invoked without any arguments, 'help' display instructions on
      how to access help from the command line.
 
-     The help command can give you information about operators, but not
-     the comma and semicolons that are used as command separators.  To
-     get help for those, you must type 'help comma' or 'help semicolon'.
+     The help command can provide information about most operators, for
+     example 'help +', but not the comma and semicolon characters which
+     are used by the Octave interpreter as command separators.  For help
+     on either of these type 'help comma' or 'help semicolon'.
 
      See also: *note doc: XREFdoc, *note lookfor: XREFlookfor, *note
-     which: XREFwhich.
+     which: XREFwhich, *note info: XREFinfo.
 
  -- Command: doc FUNCTION_NAME
      Display documentation for the function FUNCTION_NAME directly from
@@ -2045,6 +2100,8 @@ function.
      When called without an argument, display the NEWS file for Octave.
      When given a package name PACKAGE, display the current NEWS file
      for that package.
+
+     See also: *note ver: XREFver, *note pkg: XREFpkg.
 
  -- Function File: info ()
      Display contact information for the GNU Octave community.
@@ -2224,7 +2281,7 @@ and because they may occasionally be useful for users.
 
      The optional output argument STATUS returns the status reported by
      'makeinfo'.  If only one output argument is requested, and STATUS
-     is non-zero, a warning is displayed.
+     is nonzero, a warning is displayed.
 
      As an example, the first sentence of this help text is
 
@@ -3290,20 +3347,53 @@ use of the following functions.
           Numeric value comprising either a floating point or integer
           value.
 
+     If CLASSNAME is a cell array of string, a logical array of the same
+     size is returned, containing true for each class to which OBJ
+     belongs to.
+
      See also: *note class: XREFclass, *note typeinfo: XREFtypeinfo.
 
- -- Function File: cast (VAL, TYPE)
+ -- Function File: cast (VAL, "TYPE")
      Convert VAL to data type TYPE.
 
-     See also: *note int8: XREFint8, *note uint8: XREFuint8, *note
-     int16: XREFint16, *note uint16: XREFuint16, *note int32: XREFint32,
-     *note uint32: XREFuint32, *note int64: XREFint64, *note uint64:
-     XREFuint64, *note double: XREFdouble.
+     VAL must be one of the numeric classes:
 
- -- Built-in Function: typecast (X, CLASS)
+          "double"
+          "single"
+          "logical"
+          "char"
+          "int8"
+          "int16"
+          "int32"
+          "int64"
+          "uint8"
+          "uint16"
+          "uint32"
+          "uint64"
+
+     The value VAL may be modified to fit within the range of the new
+     type.
+
+     Examples:
+
+          cast (-5, "uint8")
+             => 0
+          cast (300, "int8")
+             => 127
+
+     See also: *note typecast: XREFtypecast, *note int8: XREFint8, *note
+     uint8: XREFuint8, *note int16: XREFint16, *note uint16: XREFuint16,
+     *note int32: XREFint32, *note uint32: XREFuint32, *note int64:
+     XREFint64, *note uint64: XREFuint64, *note double: XREFdouble,
+     *note single: XREFsingle, *note logical: XREFlogical, *note char:
+     XREFchar, *note class: XREFclass, *note typeinfo: XREFtypeinfo.
+
+ -- Built-in Function: Y = typecast (X, "CLASS")
      Return a new array Y resulting from interpreting the data of X in
-     memory as data of the numeric class CLASS.  Both the class of X and
-     CLASS must be one of the built-in numeric classes:
+     memory as data of the numeric class CLASS.
+
+     Both the class of X and CLASS must be one of the built-in numeric
+     classes:
 
           "logical"
           "char"
@@ -3325,7 +3415,7 @@ use of the following functions.
      memory as consecutive pairs of real numbers.  The sizes of integer
      types are given by their bit counts.  Both logical and char are
      typically one byte wide; however, this is not guaranteed by C++.
-     If your system is IEEE conformant, single and double should be 4
+     If your system is IEEE conformant, single and double will be 4
      bytes and 8 bytes wide, respectively.  "logical" is not allowed for
      CLASS.  If the input is a row vector, the return value is a row
      vector, otherwise it is a column vector.  If the bit length of X is
@@ -3337,12 +3427,14 @@ use of the following functions.
           typecast (X, "uint8")
           => [   1,   0, 255, 255]
 
-     See also: *note cast: XREFcast, *note bitunpack: XREFbitunpack,
-     *note bitpack: XREFbitpack, *note swapbytes: XREFswapbytes.
+     See also: *note cast: XREFcast, *note bitpack: XREFbitpack, *note
+     bitunpack: XREFbitunpack, *note swapbytes: XREFswapbytes.
 
  -- Function File: swapbytes (X)
      Swap the byte order on values, converting from little endian to big
-     endian and vice versa.  For example:
+     endian and vice versa.
+
+     For example:
 
           swapbytes (uint16 (1:4))
           => [   256   512   768  1024]
@@ -3350,10 +3442,15 @@ use of the following functions.
      See also: *note typecast: XREFtypecast, *note cast: XREFcast.
 
  -- Built-in Function: Y = bitpack (X, CLASS)
-     Return a new array Y resulting from interpreting an array X as raw
-     bit patterns for data of the numeric class CLASS.  CLASS must be
-     one of the built-in numeric classes:
+     Return a new array Y resulting from interpreting the logical array
+     X as raw bit patterns for data of the numeric class CLASS.
 
+     CLASS must be one of the built-in numeric classes:
+
+          "double"
+          "single"
+          "double complex"
+          "single complex"
           "char"
           "int8"
           "int16"
@@ -3363,8 +3460,6 @@ use of the following functions.
           "uint16"
           "uint32"
           "uint64"
-          "double"
-          "single"
 
      The number of elements of X should be divisible by the bit length
      of CLASS.  If it is not, excess bits are discarded.  Bits come in
@@ -3376,9 +3471,13 @@ use of the following functions.
      XREFtypecast.
 
  -- Built-in Function: Y = bitunpack (X)
-     Return an array Y corresponding to the raw bit patterns of X.  X
-     must belong to one of the built-in numeric classes:
+     Return a logical array Y corresponding to the raw bit patterns of
+     X.
 
+     X must belong to one of the built-in numeric classes:
+
+          "double"
+          "single"
           "char"
           "int8"
           "int16"
@@ -3388,8 +3487,6 @@ use of the following functions.
           "uint16"
           "uint32"
           "uint64"
-          "double"
-          "single"
 
      The result is a row vector if X is a row vector; otherwise, it is a
      column vector.
@@ -3955,8 +4052,8 @@ that can easily be misinterpreted.
             1.00000
 
      Notice that the first value appears to be 0 when it is actually 1.
-     Because of the possibilty for confusion you should be careful about
-     enabling 'fixed_point_format'.
+     Because of the possibility for confusion you should be careful
+     about enabling 'fixed_point_format'.
 
      When called from inside a function with the "local" option, the
      variable is changed locally for the function and any subroutines it
@@ -4052,8 +4149,8 @@ defines the set of values '[ 1, 2, 3, 4, 5 ]', and the range
 defines the set of values '[ 1, 4 ]'.
 
    Although a range constant specifies a row vector, Octave does _not_
-convert range constants to vectors unless it is necessary to do so.
-This allows you to write a constant like '1 : 10000' without using
+normally convert range constants to vectors unless it is necessary to do
+so.  This allows you to write a constant like '1 : 10000' without using
 80,000 bytes of storage on a typical 32-bit workstation.
 
    A common example of when it does become necessary to convert ranges
@@ -4068,6 +4165,26 @@ memory, the expression
      y = [ 0 : 0.1 : 1];
 
 defines Y to be of type 'matrix' and occupies 88 bytes of memory.
+
+   This space saving optimization may be disabled using the function
+"disable_range".
+
+ -- Built-in Function: VAL = disable_range ()
+ -- Built-in Function: OLD_VAL = disable_range (NEW_VAL)
+ -- Built-in Function: disable_range (NEW_VAL, "local")
+     Query or set the internal variable that controls whether ranges are
+     stored in a special space-efficient format.  The default value is
+     true.  If this option is disabled Octave will store ranges as full
+     matrices.
+
+     When called from inside a function with the "local" option, the
+     variable is changed locally for the function and any subroutines it
+     calls.  The original variable value is restored when exiting the
+     function.
+
+     See also: *note disable_diagonal_matrix:
+     XREFdisable_diagonal_matrix, *note disable_permutation_matrix:
+     XREFdisable_permutation_matrix.
 
    Note that the upper (or lower, if the increment is negative) bound on
 the range is not always included in the set of values, and that ranges
@@ -4572,7 +4689,7 @@ logical values, or by using the 'true' or 'false' functions.
  -- Built-in Function: logical (X)
      Convert the numeric object X to logical type.
 
-     Any non-zero values will be converted to true (1) while zero values
+     Any nonzero values will be converted to true (1) while zero values
      will be converted to false (0).  The non-numeric value NaN cannot
      be converted and will produce an error.
 
@@ -4699,6 +4816,14 @@ variable.
      XREFischar, *note iscell: XREFiscell, *note isstruct: XREFisstruct,
      *note isa: XREFisa.
 
+ -- Built-in Function: islogical (X)
+ -- Built-in Function: isbool (X)
+     Return true if X is a logical object.
+
+     See also: *note isfloat: XREFisfloat, *note isinteger:
+     XREFisinteger, *note ischar: XREFischar, *note isnumeric:
+     XREFisnumeric, *note isa: XREFisa.
+
  -- Built-in Function: isfloat (X)
      Return true if X is a floating-point numeric object.  Objects of
      class double or single are floating-point objects.
@@ -4723,38 +4848,36 @@ variable.
      isfloat: XREFisfloat, *note isa: XREFisa.
 
  -- Built-in Function: ismatrix (A)
-     Return true if A is a numeric, logical, or character matrix.
-     Scalars (1x1 matrices) and vectors (1xN or Nx1 matrices) are
-     subsets of the more general N-dimensional matrix and 'ismatrix'
-     will return true for these objects as well.
+     Return true if A is a 2-D array.
 
      See also: *note isscalar: XREFisscalar, *note isvector:
      XREFisvector, *note iscell: XREFiscell, *note isstruct:
      XREFisstruct, *note issparse: XREFissparse, *note isa: XREFisa.
 
  -- Function File: isvector (X)
-     Return true if X is a vector.  A vector is a 2-D array where one of
-     the dimensions is equal to 1.  As a consequence a 1x1 array, or
-     scalar, is also a vector.
+     Return true if X is a vector.
+
+     A vector is a 2-D array where one of the dimensions is equal to 1.
+     As a consequence a 1x1 array, or scalar, is also a vector.
 
      See also: *note isscalar: XREFisscalar, *note ismatrix:
      XREFismatrix, *note size: XREFsize, *note rows: XREFrows, *note
      columns: XREFcolumns, *note length: XREFlength.
 
  -- Function File: isrow (X)
-     Return true if X is a row vector.
+     Return true if X is a row vector 1xN with non-negative N.
 
      See also: *note iscolumn: XREFiscolumn, *note isscalar:
      XREFisscalar, *note isvector: XREFisvector, *note ismatrix:
      XREFismatrix.
 
  -- Function File: iscolumn (X)
-     Return true if X is a column vector.
+     Return true if X is a column vector Nx1 with non-negative N.
 
      See also: *note isrow: XREFisrow, *note isscalar: XREFisscalar,
      *note isvector: XREFisvector, *note ismatrix: XREFismatrix.
 
- -- Function File: isscalar (X)
+ -- Built-in Function: isscalar (X)
      Return true if X is a scalar.
 
      See also: *note isvector: XREFisvector, *note ismatrix:
@@ -4766,53 +4889,111 @@ variable.
      See also: *note isscalar: XREFisscalar, *note isvector:
      XREFisvector, *note ismatrix: XREFismatrix, *note size: XREFsize.
 
- -- Function File: issymmetric (X)
- -- Function File: issymmetric (X, TOL)
-     Return true if X is a symmetric matrix within the tolerance
-     specified by TOL.  The default tolerance is zero (uses faster
-     code).  Matrix X is considered symmetric if 'norm (X - X.', Inf) /
-     norm (X, Inf) < TOL'.
+ -- Function File: issymmetric (A)
+ -- Function File: issymmetric (A, TOL)
+     Return true if A is a symmetric matrix within the tolerance
+     specified by TOL.
+
+     The default tolerance is zero (uses faster code).  Matrix A is
+     considered symmetric if 'norm (A - A.', Inf) / norm (A, Inf) <
+     TOL'.
 
      See also: *note ishermitian: XREFishermitian, *note isdefinite:
      XREFisdefinite.
 
- -- Function File: ishermitian (X)
- -- Function File: ishermitian (X, TOL)
-     Return true if X is Hermitian within the tolerance specified by
-     TOL.  The default tolerance is zero (uses faster code).  Matrix X
-     is considered symmetric if 'norm (X - X', Inf) / norm (X, Inf) <
-     TOL'.
+ -- Function File: ishermitian (A)
+ -- Function File: ishermitian (A, TOL)
+     Return true if A is Hermitian within the tolerance specified by
+     TOL.
+
+     The default tolerance is zero (uses faster code).  Matrix A is
+     considered symmetric if 'norm (A - A', Inf) / norm (A, Inf) < TOL'.
 
      See also: *note issymmetric: XREFissymmetric, *note isdefinite:
      XREFisdefinite.
 
- -- Function File: isdefinite (X)
- -- Function File: isdefinite (X, TOL)
-     Return 1 if X is symmetric positive definite within the tolerance
-     specified by TOL or 0 if X is symmetric positive semidefinite.
+ -- Function File: isdefinite (A)
+ -- Function File: isdefinite (A, TOL)
+     Return 1 if A is symmetric positive definite within the tolerance
+     specified by TOL or 0 if A is symmetric positive semidefinite.
      Otherwise, return -1.  If TOL is omitted, use a tolerance of '100 *
-     eps * norm (X, "fro")'
+     eps * norm (A, "fro")'
 
      See also: *note issymmetric: XREFissymmetric, *note ishermitian:
      XREFishermitian.
 
- -- Built-in Function: islogical (X)
- -- Built-in Function: isbool (X)
-     Return true if X is a logical object.
+ -- Function File: isbanded (A, LOWER, UPPER)
+     Return true if A is a matrix with entries confined between LOWER
+     diagonals below the main diagonal and UPPER diagonals above the
+     main diagonal.
 
-     See also: *note isfloat: XREFisfloat, *note isinteger:
-     XREFisinteger, *note ischar: XREFischar, *note isnumeric:
-     XREFisnumeric, *note isa: XREFisa.
+     LOWER and UPPER must be non-negative integers.
+
+     See also: *note isdiag: XREFisdiag, *note istril: XREFistril, *note
+     istriu: XREFistriu, *note bandwidth: XREFbandwidth.
+
+ -- Function File: isdiag (A)
+     Return true if A is a diagonal matrix.
+
+     See also: *note isbanded: XREFisbanded, *note istril: XREFistril,
+     *note istriu: XREFistriu, *note diag: XREFdiag, *note bandwidth:
+     XREFbandwidth.
+
+ -- Function File: istril (A)
+     Return true if A is a lower triangular matrix.
+
+     A lower triangular matrix has nonzero entries only on the main
+     diagonal and below.
+
+     See also: *note istriu: XREFistriu, *note isbanded: XREFisbanded,
+     *note isdiag: XREFisdiag, *note tril: XREFtril, *note bandwidth:
+     XREFbandwidth.
+
+ -- Function File: istriu (A)
+     Return true if A is an upper triangular matrix.
+
+     An upper triangular matrix has nonzero entries only on the main
+     diagonal and above.
+
+     See also: *note isdiag: XREFisdiag, *note isbanded: XREFisbanded,
+     *note istril: XREFistril, *note triu: XREFtriu, *note bandwidth:
+     XREFbandwidth.
 
  -- Function File: isprime (X)
      Return a logical array which is true where the elements of X are
      prime numbers and false where they are not.
 
-     If the maximum value in X is very large, then you should be using
-     special purpose factorization code.
+     A prime number is conventionally defined as a positive integer
+     greater than 1 (e.g., 2, 3, ...) which is divisible only by itself
+     and 1.  Octave extends this definition to include both negative
+     integers and complex values.  A negative integer is prime if its
+     positive counterpart is prime.  This is equivalent to 'isprime (abs
+     (x))'.
+
+     If 'class (X)' is complex, then primality is tested in the domain
+     of Gaussian integers
+     (<http://en.wikipedia.org/wiki/Gaussian_integer>).  Some
+     non-complex integers are prime in the ordinary sense, but not in
+     the domain of Gaussian integers.  For example, 5 = (1+2i)*(1-2i)
+     shows that 5 is not prime because it has a factor other than itself
+     and 1.  Exercise caution when testing complex and real values
+     together in the same matrix.
+
+     Examples:
 
           isprime (1:6)
               => [0, 1, 1, 0, 1, 0]
+
+          isprime ([i, 2, 3, 5])
+              => [0, 0, 1, 0]
+
+     Programming Note: 'isprime' is appropriate if the maximum value in
+     X is not too large (< 1e15).  For larger values special purpose
+     factorization code should be used.
+
+     Compatibility Note: MATLAB does not extend the definition of prime
+     numbers and will produce an error if given negative or complex
+     inputs.
 
      See also: *note primes: XREFprimes, *note factor: XREFfactor, *note
      gcd: XREFgcd, *note lcm: XREFlcm.
@@ -5470,39 +5651,6 @@ for case-insensitive comparison.
      See also: *note strncmp: XREFstrncmp, *note strcmp: XREFstrcmp,
      *note strcmpi: XREFstrcmpi.
 
- -- Function File: VALIDSTR = validatestring (STR, STRARRAY)
- -- Function File: VALIDSTR = validatestring (STR, STRARRAY, FUNCNAME)
- -- Function File: VALIDSTR = validatestring (STR, STRARRAY, FUNCNAME,
-          VARNAME)
- -- Function File: VALIDSTR = validatestring (..., POSITION)
-     Verify that STR is an element, or substring of an element, in
-     STRARRAY.
-
-     When STR is a character string to be tested, and STRARRAY is a
-     cellstr of valid values, then VALIDSTR will be the validated form
-     of STR where validation is defined as STR being a member or
-     substring of VALIDSTR.  This is useful for both verifying and
-     expanding short options, such as "r", to their longer forms, such
-     as "red".  If STR is a substring of VALIDSTR, and there are
-     multiple matches, the shortest match will be returned if all
-     matches are substrings of each other.  Otherwise, an error will be
-     raised because the expansion of STR is ambiguous.  All comparisons
-     are case insensitive.
-
-     The additional inputs FUNCNAME, VARNAME, and POSITION are optional
-     and will make any generated validation error message more specific.
-
-     Examples:
-
-          validatestring ("r", {"red", "green", "blue"})
-          => "red"
-
-          validatestring ("b", {"red", "green", "blue", "black"})
-          => error: validatestring: multiple unique matches were found for 'b':
-             blue, black
-
-     See also: *note strcmp: XREFstrcmp, *note strcmpi: XREFstrcmpi.
-
 
 File: octave.info,  Node: Manipulating Strings,  Next: String Conversions,  Prev: Comparing Strings,  Up: Strings
 
@@ -5628,10 +5776,10 @@ general regular expressions, the following functions come with Octave.
      of every such occurrence in the vector IDX.
 
      If there is no such occurrence, or if PATTERN is longer than STR,
-     then IDX is the empty array '[]'.  The optional argument "overlaps"
-     determines whether the pattern can match at every position in STR
-     (true), or only for unique occurrences of the complete pattern
-     (false).  The default is true.
+     or if PATTERN itself is empty, then IDX is the empty array '[]'.
+     The optional argument "overlaps" determines whether the pattern can
+     match at every position in STR (true), or only for unique
+     occurrences of the complete pattern (false).  The default is true.
 
      If a cell array of strings CELLSTR is specified then IDX is a cell
      array of vectors, as specified above.
@@ -5677,7 +5825,7 @@ general regular expressions, the following functions come with Octave.
           strjoin ({'Octave','Scilab','Lush','Yorick'}, '*')
                 => 'Octave*Scilab*Lush*Yorick'
 
-     See also: strsplit.
+     See also: *note strsplit: XREFstrsplit.
 
  -- Function File: strmatch (S, A)
  -- Function File: strmatch (S, A, "exact")
@@ -5794,41 +5942,41 @@ general regular expressions, the following functions come with Octave.
      Example:
 
           strsplit ("a foo b,bar c", ",|\\s|foo|bar", "delimitertype", "regularexpression")
-                =>
-                    {
+          =>
+          {
                       [1,1] = a
                       [1,2] = b
                       [1,3] = c
-                    }
+          }
 
           strsplit ("a,,b, c", "[, ]", false, "delimitertype", "regularexpression")
-                =>
-                    {
+          =>
+          {
                       [1,1] = a
                       [1,2] =
                       [1,3] = b
                       [1,4] =
                       [1,5] = c
-                    }
+          }
 
           strsplit ("a,\t,b, c", {',', '\s'}, "delimitertype", "regularexpression")
-                =>
-                    {
+          =>
+          {
                       [1,1] = a
                       [1,2] = b
                       [1,3] = c
-                    }
+          }
 
           strsplit ("a,\t,b, c", {',', ' ', '\t'}, "collapsedelimiters", false)
-                =>
-                    {
+          =>
+          {
                       [1,1] = a
                       [1,2] =
                       [1,3] =
                       [1,4] = b
                       [1,5] =
                       [1,6] = c
-                    }
+          }
 
      See also: *note ostrsplit: XREFostrsplit, *note strjoin:
      XREFstrjoin, *note strtok: XREFstrtok, *note regexp: XREFregexp.
@@ -7183,7 +7331,7 @@ valid Octave identifiers (note that this does not work on MATLAB):
                long field with spaces (and funny char$) =  2
              }
 
-The warning id 'Octave:matlab-incompatible' can be enabled to warn about
+The warning id 'Octave:language-extension' can be enabled to warn about
 this usage.  *Note warning_ids: XREFwarning_ids.
 
    More realistically, all of the functions that operate on strings can
@@ -7302,9 +7450,10 @@ following example:
      produces a struct *array*.
 
      See also: *note cell2struct: XREFcell2struct, *note fieldnames:
-     XREFfieldnames, *note orderfields: XREForderfields, *note getfield:
-     XREFgetfield, *note setfield: XREFsetfield, *note rmfield:
-     XREFrmfield, *note structfun: XREFstructfun.
+     XREFfieldnames, *note getfield: XREFgetfield, *note setfield:
+     XREFsetfield, *note rmfield: XREFrmfield, *note isfield:
+     XREFisfield, *note orderfields: XREForderfields, *note isstruct:
+     XREFisstruct, *note structfun: XREFstructfun.
 
    The function 'isstruct' can be used to test if an object is a
 structure or a structure array.
@@ -7324,7 +7473,7 @@ File: octave.info,  Node: Manipulating Structures,  Next: Processing Data in Str
 Other functions that can manipulate the fields of a structure are given
 below.
 
- -- Built-in Function: nfields (S)
+ -- Built-in Function: numfields (S)
      Return the number of fields of the structure S.
 
      See also: *note fieldnames: XREFfieldnames.
@@ -7346,24 +7495,28 @@ below.
      JCLASSNAME the name are the public data elements of the object or
      class.
 
-     See also: *note nfields: XREFnfields, *note isfield: XREFisfield,
-     *note orderfields: XREForderfields, *note struct: XREFstruct, *note
-     methods: XREFmethods.
+     See also: *note numfields: XREFnumfields, *note isfield:
+     XREFisfield, *note orderfields: XREForderfields, *note struct:
+     XREFstruct, *note methods: XREFmethods.
 
  -- Built-in Function: isfield (X, "NAME")
  -- Built-in Function: isfield (X, NAME)
      Return true if the X is a structure and it includes an element
-     named NAME.  If NAME is a cell array of strings then a logical
-     array of equal dimension is returned.
+     named NAME.
+
+     If NAME is a cell array of strings then a logical array of equal
+     dimension is returned.
 
      See also: *note fieldnames: XREFfieldnames.
 
- -- Function File: S = setfield (S, FIELD, VAL)
- -- Function File: S = setfield (S, IDX1, FIELD1, IDX2, FIELD2, ...,
-          VAL)
+ -- Function File: SOUT = setfield (S, FIELD, VAL)
+ -- Function File: SOUT = setfield (S, SIDX1, FIELD1, FIDX1, SIDX2,
+          FIELD2, FIDX2, ..., VAL)
 
-     Set a field member FIELD in a structure S equal to VAL.  For
-     example:
+     Return a _copy_ of the structure S with the field member FIELD set
+     to the value VAL.
+
+     For example:
 
           S = struct ();
           S = setfield (S, "foo bar", 42);
@@ -7373,89 +7526,109 @@ below.
           S.("foo bar") = 42;
 
      Note that ordinary structure syntax 'S.foo bar = 42' cannot be used
-     here, as the field name is not a valid Octave identifier.  Using
-     arbitrary strings for field name is incompatible with MATLAB, so
-     this usage will warn if the 'Octave:matlab-incompatible' warning is
-     set.  *Note XREFwarning_ids::.
+     here, as the field name is not a valid Octave identifier because of
+     the space character.  Using arbitrary strings for field names is
+     incompatible with MATLAB, and this usage will emit a warning if the
+     warning ID 'Octave:language-extension' is enabled.  *Note
+     XREFwarning_ids::.
 
-     With the second calling form, set a field on a structure array,
-     possibly nested, with successive nested indices IDX1, IDX2, ... and
-     fields FIELD1, FIELD2, ... The indices must be cells containing the
-     desired index at this nesting depth.
+     With the second calling form, set a field of a structure array.
+     The input SIDX selects an element of the structure array, FIELD
+     specifies the field name of the selected element, and FIDX selects
+     which element of the field (in the case of an array or cell array).
+     The SIDX, FIELD, and FIDX inputs can be repeated to address nested
+     structure array elements.  The structure array index and field
+     element index must be cell arrays while the field name must be a
+     string.
 
-     Thus consider instead,
+     For example:
 
           S = struct ("baz", 42);
-          setfield (S, {1}, "foo", {1}, "bar", 5)
-              => ans =
+          setfield (S, {1}, "foo", {1}, "bar", 54)
+          =>
+            ans =
               scalar structure containing the fields:
                 baz =  42
                 foo =
                   scalar structure containing the fields:
                     bar =  54
 
-     Here we first have an ordinary structure array with one field 'baz'
-     set to 42.  Then we set another field in a nested scalar structure
-     indexing with two single cells containing the unique desired
-     indices.
+     The example begins with an ordinary scalar structure to which a
+     nested scalar structure is added.  In all cases, if the structure
+     index SIDX is not specified it defaults to 1 (scalar structure).
+     Thus, the example above could be written more concisely as
+     'setfield (S, "foo", "bar", 54)'
 
-     Finally an example with nested structure arrays,
+     Finally, an example with nested structure arrays:
 
           SA.foo = 1;
-          SA = setfield (SA, {2}, "bar", {3}, "baz", 6);
+          SA = setfield (SA, {2}, "bar", {3}, "baz", {1, 4}, 5);
           SA(2).bar(3)
-               => ans =
-               scalar structure containing the fields:
-                 baz =  6
+          =>
+            ans =
+              scalar structure containing the fields:
+                baz =  0   0   0   5
 
-     Here SA is a structure array whose field 'fd' at elements 1 and 2
-     field is in turn another structure array whose third element is a
-     structure
+     Here SA is a structure array whose field at elements 1 and 2 is in
+     turn another structure array whose third element is a simple scalar
+     structure.  The terminal scalar structure has a field which
+     contains a matrix value.
 
      Note that the same result as in the above example could be achieved
      by:
 
           SA.foo = 1;
-          SA(2).bar(3).baz = 6
+          SA(2).bar(3).baz(1,4) = 5
 
      See also: *note getfield: XREFgetfield, *note rmfield: XREFrmfield,
-     *note isfield: XREFisfield, *note fieldnames: XREFfieldnames, *note
-     isstruct: XREFisstruct, *note struct: XREFstruct.
+     *note orderfields: XREForderfields, *note isfield: XREFisfield,
+     *note fieldnames: XREFfieldnames, *note isstruct: XREFisstruct,
+     *note struct: XREFstruct.
 
- -- Function File: [VAL] = getfield (S, FIELD)
- -- Function File: [VAL] = getfield (S, IDX1, FIELD1, IDX2, FIELD2, ...)
-     Extract a field from a structure (or a nested structure).  The
-     syntax is the same as 'setfield', except it omits the final VAL
-     argument, returning this value instead of setting it.
+ -- Function File: VAL = getfield (S, FIELD)
+ -- Function File: VAL = getfield (S, SIDX1, FIELD1, FIDX1, ...)
+     Get the value of the field named FIELD from a structure or nested
+     structure S.
+
+     If S is a structure array then SIDX selects an element of the
+     structure array, FIELD specifies the field name of the selected
+     element, and FIDX selects which element of the field (in the case
+     of an array or cell array).  See 'setfield' for a more complete
+     description of the syntax.
 
      See also: *note setfield: XREFsetfield, *note rmfield: XREFrmfield,
-     *note isfield: XREFisfield, *note fieldnames: XREFfieldnames, *note
-     isstruct: XREFisstruct, *note struct: XREFstruct.
+     *note orderfields: XREForderfields, *note isfield: XREFisfield,
+     *note fieldnames: XREFfieldnames, *note isstruct: XREFisstruct,
+     *note struct: XREFstruct.
 
- -- Built-in Function: S = rmfield (S, "F")
- -- Built-in Function: S = rmfield (S, F)
+ -- Built-in Function: SOUT = rmfield (S, "F")
+ -- Built-in Function: SOUT = rmfield (S, F)
      Return a _copy_ of the structure (array) S with the field F
-     removed.  If F is a cell array of strings or a character array,
-     remove each of the named fields.
+     removed.
+
+     If F is a cell array of strings or a character array, remove each
+     of the named fields.
 
      See also: *note orderfields: XREForderfields, *note fieldnames:
-     XREFfieldnames.
+     XREFfieldnames, *note isfield: XREFisfield.
 
- -- Function File: [T, P] = orderfields (S1)
- -- Function File: [T, P] = orderfields (S1, S2)
-     Return a copy of S1 with fields arranged alphabetically or as
-     specified by S2.
+ -- Function File: SOUT] = orderfields (S1)
+ -- Function File: SOUT] = orderfields (S1, S2)
+ -- Function File: SOUT] = orderfields (S1, {CELLSTR})
+ -- Function File: SOUT] = orderfields (S1, P)
+ -- Function File: [SOUT, P] = orderfields (...)
+     Return a _copy_ of S1 with fields arranged alphabetically, or as
+     specified by the second input.
 
-     Given one struct, arrange field names in S1 alphabetically.
+     Given one input struct S1, arrange field names alphabetically.
 
-     If the second argument is a struct, arrange field names in S1 as
+     If a second struct argument is given, arrange field names in S1 as
      they appear in S2.  The second argument may also specify the order
-     in a permutation vector or a cell array of strings containing the
-     fieldnames of S1 in the desired order.
+     in a cell array of strings CELLSTR.  The second argument may also
+     be a permutation vector.
 
-     The optional second output argument P is assigned the permutation
-     vector which converts the original name order into the new name
-     order.
+     The optional second output argument P is the permutation vector
+     which converts the original name order to the new name order.
 
      Examples:
 
@@ -7499,12 +7672,14 @@ below.
                      2
                      3
 
-     See also: *note getfield: XREFgetfield, *note rmfield: XREFrmfield,
-     *note isfield: XREFisfield, *note isstruct: XREFisstruct, *note
-     fieldnames: XREFfieldnames, *note struct: XREFstruct.
+     See also: *note fieldnames: XREFfieldnames, *note getfield:
+     XREFgetfield, *note setfield: XREFsetfield, *note rmfield:
+     XREFrmfield, *note isfield: XREFisfield, *note isstruct:
+     XREFisstruct, *note struct: XREFstruct.
 
  -- Function File: substruct (TYPE, SUBS, ...)
      Create a subscript structure for use with 'subsref' or 'subsasgn'.
+
      For example:
 
           idx = substruct ("()", {3, ":"})
@@ -7518,7 +7693,9 @@ below.
                      [1,2] = :
                    }
                  }
-          x = [1, 2, 3; 4, 5, 6; 7, 8, 9];
+          x = [1, 2, 3;
+               4, 5, 6;
+               7, 8, 9];
           subsref (x, idx)
              => 7  8  9
 
@@ -8229,7 +8406,9 @@ used before they have been given a value.  Doing so results in an error.
 
  -- Automatic Variable: ans
      The most recently computed result that was not explicitly assigned
-     to a variable.  For example, after the expression
+     to a variable.
+
+     For example, after the expression
 
           3^2 + 4^2
 
@@ -8243,19 +8422,10 @@ used before they have been given a value.  Doing so results in an error.
 
  -- Function File: VARNAME = genvarname (STR)
  -- Function File: VARNAME = genvarname (STR, EXCLUSIONS)
-     Create unique variable(s) from STR.  If EXCLUSIONS is given, then
-     the variable(s) will be unique to each other and to EXCLUSIONS
-     (EXCLUSIONS may be either a string or a cellstr).
+     Create valid unique variable name(s) from STR.
 
      If STR is a cellstr, then a unique variable is created for each
      cell in STR.
-
-          x = 3.141;
-          genvarname ("x", who ())
-            => x1
-
-     If WANTED is a cell array, genvarname will make sure the returned
-     strings are distinct:
 
           genvarname ({"foo", "foo"})
             =>
@@ -8264,15 +8434,23 @@ used before they have been given a value.  Doing so results in an error.
                  [1,2] = foo1
                }
 
-     Note that the result is a char array/cell array of strings, not the
-     variables themselves.  To define a variable, 'eval()' can be used.
-     The following trivial example sets 'x' to '42'.
+     If EXCLUSIONS is given, then the variable(s) will be unique to each
+     other and to EXCLUSIONS (EXCLUSIONS may be either a string or a
+     cellstr).
+
+          x = 3.141;
+          genvarname ("x", who ())
+            => x1
+
+     Note that the result is a char array or cell array of strings, not
+     the variables themselves.  To define a variable, 'eval()' can be
+     used.  The following trivial example sets 'x' to '42'.
 
           name = genvarname ("x");
           eval ([name " = 42"]);
             => x =  42
 
-     Also, this can be useful for creating unique struct field names.
+     This can be useful for creating unique struct field names.
 
           x = struct ();
           for i = 1:3
@@ -8285,32 +8463,33 @@ used before they have been given a value.  Doing so results in an error.
                  a2 =  3
                }
 
-     Since variable names may only contain letters, digits and
-     underscores, genvarname replaces any sequence of disallowed
+     Since variable names may only contain letters, digits, and
+     underscores, 'genvarname' will replace any sequence of disallowed
      characters with an underscore.  Also, variables may not begin with
-     a digit; in this case an underscore is added before the variable
-     name.
+     a digit; in this case an 'x' is added before the variable name.
 
      Variable names beginning and ending with two underscores "__" are
-     valid but they are used internally by octave and should generally
-     be avoided, therefore genvarname will not generate such names.
+     valid, but they are used internally by Octave and should generally
+     be avoided; therefore, 'genvarname' will not generate such names.
 
-     genvarname will also make sure that returned names do not clash
-     with keywords such as "for" and "if".  A number will be appended if
+     'genvarname' will also ensure that returned names do not clash with
+     keywords such as "for" and "if".  A number will be appended if
      necessary.  Note, however, that this does *not* include function
-     names, such as "sin".  Such names should be included in AVOID if
-     necessary.
+     names such as "sin".  Such names should be included in EXCLUSIONS
+     if necessary.
 
-     See also: *note isvarname: XREFisvarname, *note exist: XREFexist,
-     *note tmpnam: XREFtmpnam, *note eval: XREFeval.
+     See also: *note isvarname: XREFisvarname, *note iskeyword:
+     XREFiskeyword, *note exist: XREFexist, *note who: XREFwho, *note
+     tempname: XREFtempname, *note eval: XREFeval.
 
  -- Function File: namelengthmax ()
-     Return the MATLAB compatible maximum variable name length.  Octave
-     is capable of storing strings up to 2^{31} - 1 in length.  However
-     for MATLAB compatibility all variable, function, and structure
-     field names should be shorter than the length supplied by
-     'namelengthmax'.  In particular variables stored to a MATLAB file
-     format will have their names truncated to this length.
+     Return the MATLAB compatible maximum variable name length.
+
+     Octave is capable of storing strings up to 2^{31} - 1 in length.
+     However for MATLAB compatibility all variable, function, and
+     structure field names should be shorter than the length returned by
+     'namelengthmax'.  In particular, variables stored to a MATLAB file
+     format ('*.mat') will have their names truncated to this length.
 
 * Menu:
 
@@ -8430,8 +8609,7 @@ persistent declarations.
      persistent d = 3 e f = 5
 
    The behavior of persistent variables is equivalent to the behavior of
-static variables in C.  The command 'static' in Octave is also
-recognized and is equivalent to 'persistent'.
+static variables in C.
 
    Like global variables, a persistent variable may only be initialized
 once.  For example, after executing the following code
@@ -8678,21 +8856,36 @@ variable.  The following example illustrates this.
        disp ("The program has no 'meaning'");
      endif
 
- -- Built-in Function: exist (NAME, TYPE)
-     Return 1 if the name exists as a variable, 2 if the name is an
-     absolute file name, an ordinary file in Octave's 'path', or (after
-     appending '.m') a function file in Octave's 'path', 3 if the name
-     is a '.oct' or '.mex' file in Octave's 'path', 5 if the name is a
-     built-in function, 7 if the name is a directory, or 103 if the name
-     is a function not associated with a file (entered on the command
-     line).
+ -- Built-in Function: C = exist (NAME)
+ -- Built-in Function: C = exist (NAME, TYPE)
+     Check for the existence of NAME as a variable, function, file,
+     directory, or class.
 
-     Otherwise, return 0.
+     The return code C is one of
 
-     This function also returns 2 if a regular file called NAME exists
-     in Octave's search path.  If you want information about other types
-     of files, you should use some combination of the functions
-     'file_in_path' and 'stat' instead.
+     1
+          NAME is a variable.
+
+     2
+          NAME is an absolute file name, an ordinary file in Octave's
+          'path', or (after appending '.m') a function file in Octave's
+          'path'.
+
+     3
+          NAME is a '.oct' or '.mex' file in Octave's 'path'.
+
+     5
+          NAME is a built-in function.
+
+     7
+          NAME is a directory.
+
+     103
+          NAME is a function not associated with a file (entered on the
+          command line).
+
+     0
+          NAME does not exist.
 
      If the optional argument TYPE is supplied, check only for symbols
      of the specified type.  Valid types are
@@ -8703,15 +8896,29 @@ variable.  The following example illustrates this.
      "builtin"
           Check only for built-in functions.
 
-     "file"
-          Check only for files and directories.
-
      "dir"
           Check only for directories.
 
+     "file"
+          Check only for files and directories.
+
+     "class"
+          Check only for classes.  (Note: This option is accepted, but
+          not currently implemented)
+
+     If no type is given, and there are multiple possible matches for
+     name, 'exist' will return a code according to the following
+     priority list: variable, built-in function, oct-file, directory,
+     file, class.
+
+     'exist' returns 2 if a regular file called NAME is present in
+     Octave's search path.  If you want information about other types of
+     files not on the search path you should use some combination of the
+     functions 'file_in_path' and 'stat' instead.
+
      See also: *note file_in_loadpath: XREFfile_in_loadpath, *note
-     file_in_path: XREFfile_in_path, *note find_dir_in_path:
-     XREFfind_dir_in_path, *note stat: XREFstat.
+     file_in_path: XREFfile_in_path, *note dir_in_loadpath:
+     XREFdir_in_loadpath, *note stat: XREFstat.
 
    Usually Octave will manage the memory, but sometimes it can be
 practical to remove variables from memory manually.  This is usually
@@ -8787,8 +8994,12 @@ function allows this.
      without the dash as well.
 
  -- Function File: pack ()
-     Consolidate workspace memory in MATLAB.  This function is provided
-     for compatibility, but does nothing in Octave.
+     Consolidate workspace memory in MATLAB.
+
+     This function is provided for compatibility, but does nothing in
+     Octave.
+
+     See also: *note clear: XREFclear.
 
    Information about a function or variable such as its location in the
 file system can also be acquired from within Octave.  This is usually
@@ -8817,9 +9028,47 @@ only useful during development of programs, and not within a program.
  -- Command: what
  -- Command: what DIR
  -- Function File: w = what (DIR)
-     List the Octave specific files in directory DIR.  If DIR is not
-     specified then the current directory is used.  If a return argument
-     is requested, the files found are returned in the structure W.
+     List the Octave specific files in directory DIR.
 
-     See also: *note which: XREFwhich.
+     If DIR is not specified then the current directory is used.
+
+     If a return argument is requested, the files found are returned in
+     the structure W.  The structure contains the following fields:
+
+     path
+          Full path to directory DIR
+
+     m
+          Cell array of m-files
+
+     mat
+          Cell array of mat files
+
+     mex
+          Cell array of mex files
+
+     oct
+          Cell array of oct files
+
+     mdl
+          Cell array of mdl files
+
+     slx
+          Cell array of slx files
+
+     p
+          Cell array of p-files
+
+     classes
+          Cell array of class directories ('@CLASSNAME/')
+
+     packages
+          Cell array of package directories ('+PKGNAME/')
+
+     Compatibility Note: Octave does not support mdl, slx, and p files;
+     nor does it support package directories.  'what' will always return
+     an empty list for these categories.
+
+     See also: *note which: XREFwhich, *note ls: XREFls, *note exist:
+     XREFexist.
 

@@ -1,4 +1,4 @@
-## Copyright (C) 1995-2013 Kurt Hornik
+## Copyright (C) 1995-2015 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -51,7 +51,7 @@
 ##   normalizes with @math{N}, this provides the second moment around the mean
 ## @end table
 ##
-## If @math{N==1} the value of @var{opt} is ignored and normalization 
+## If @math{N==1} the value of @var{opt} is ignored and normalization
 ## by @math{N} is used.
 ##
 ## If the optional argument @var{dim} is given, operate along this dimension.
@@ -112,7 +112,7 @@ endfunction
 %!assert (var ([1,2,3], 1), 2/3, eps)
 %!assert (var ([1,2,3], [], 1), [0,0,0])
 
-%% Test input validation
+## Test input validation
 %!error var ()
 %!error var (1,2,3,4)
 %!error var (['A'; 'B'])

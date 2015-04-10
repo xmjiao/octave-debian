@@ -1,4 +1,4 @@
-## Copyright (C) 1996-2013 John W. Eaton
+## Copyright (C) 1996-2015 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -39,7 +39,7 @@
 ## @group
 ## f = @@(x,y) sin (sqrt (x.^2 + y.^2)) ./ sqrt (x.^2 + y.^2);
 ## range = linspace (-8, 8, 41);
-## [@var{X}, @var{Y}] = meshgrid (range, range);  
+## [@var{X}, @var{Y}] = meshgrid (range, range);
 ## Z = f (X, Y);
 ## surf (X, Y, Z);
 ## @end group
@@ -126,7 +126,7 @@ endfunction
 %! assert (XX1, XX2);
 %! assert (YY1, YY2);
 
-%% Test input validation
+## Test input validation
 %!error meshgrid ()
 %!error meshgrid (1,2,3,4)
 %!error <X and Y must be vectors> meshgrid (ones (2,2), 1:3)

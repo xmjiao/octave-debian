@@ -56,7 +56,7 @@ Next: <a href="Interacting-with-Plots.html#Interacting-with-Plots" accesskey="n"
 </div>
 <hr>
 <a name="Printing-and-Saving-Plots-1"></a>
-<h4 class="subsection">15.2.8 Printing and Saving Plots</h4>
+<h4 class="subsection">15.2.9 Printing and Saving Plots</h4>
 <a name="index-plotting_002c-saving-and-printing-plots"></a>
 <a name="index-printing-plots"></a>
 <a name="index-saving-plots"></a>
@@ -76,6 +76,13 @@ to save plots in a variety of formats.  For example,
 
 <p>saves the current figure to an encapsulated PostScript file called
 <samp>foo.eps</samp>.
+</p>
+<p>The different graphic toolkits have different print capabilities.  In
+particular, the OpenGL based toolkits such as <code>fltk</code> do not support
+the <code>&quot;interpreter&quot;</code> property of text objects.  This means special
+symbols drawn with the <code>&quot;tex&quot;</code> interpreter will appear correctly
+on-screen but will be rendered with interpreter <code>&quot;none&quot;</code> when printing.
+Switch graphics toolkits for printing if this is a concern.
 </p>
 <a name="XREFprint"></a><dl>
 <dt><a name="index-print"></a>Function File: <em></em> <strong>print</strong> <em>()</em></dt>
@@ -173,18 +180,29 @@ toolkit generates PostScript level 3.0.
 graphic toolkit generates PostScript level 3.0.
 </p>
 </dd>
-<dt><code>tex</code></dt>
-<dt><code>epslatex</code></dt>
-<dt><code>epslatexstandalone</code></dt>
-<dt><code>pstex</code></dt>
 <dt><code>pslatex</code></dt>
+<dt><code>epslatex</code></dt>
 <dt><code>pdflatex</code></dt>
-<dd><p>Generate a LaTeX (or TeX) file for labels and eps/ps/pdf
-for graphics.  The file produced by <code>epslatexstandalone</code> can be
-processed directly by LaTeX.  The other formats are intended to
-be included in a LaTeX (or TeX) document.  The <code>tex</code> device
-is the same as the <code>epslatex</code> device.  The <code>pdflatex</code> device
-is only available for the FLTK graphics toolkit.
+<dt><code>pslatexstandalone</code></dt>
+<dt><code>epslatexstandalone</code></dt>
+<dt><code>pdflatexstandalone</code></dt>
+<dd><p>Generate a LaTeX file <samp><var>filename</var>.tex</samp> for the text
+portions of a plot and a file <samp><var>filename</var>.(ps|eps|pdf)</samp> for the
+remaining graphics.  The graphics file suffix .ps|eps|pdf is determined
+by the specified device type.  The LaTeX file produced by the
+&lsquo;<samp>standalone</samp>&rsquo; option can be processed directly by LaTeX.  The file
+generated without the &lsquo;<samp>standalone</samp>&rsquo; option is intended to be included
+from another LaTeX document.  In either case, the LaTeX file
+contains an <code>\includegraphics</code> command so that the generated graphics
+file is automatically included when the LaTeX file is processed.  The
+text that is written to the LaTeX file contains the strings
+<strong>exactly</strong> as they were specified in the plot.  If any special
+characters of the TeX mode interpreter were used, the file must be
+edited before LaTeX processing.  Specifically, the special characters
+must be enclosed with dollar signs (<code>$ &hellip; $</code>), and other
+characters that are recognized by LaTeX may also need editing (.e.g.,
+braces).  The &lsquo;<samp>pdflatex</samp>&rsquo; device, and any of the &lsquo;<samp>standalone</samp>&rsquo;
+formats, are not available with the Gnuplot toolkit.
 </p>
 </dd>
 <dt><code>tikz</code></dt>
@@ -261,24 +279,12 @@ or if there is no filename it is sent to the printer as PostScript.
 Some examples are;
 </p>
 <dl compact="compact">
+<dt><code>pdfwrite</code></dt>
+<dd><p>Produces pdf output from eps
+</p>
+</dd>
 <dt><code>ljet2p</code></dt>
 <dd><p>HP LaserJet IIP
-</p>
-</dd>
-<dt><code>ljet3</code></dt>
-<dd><p>HP LaserJet III
-</p>
-</dd>
-<dt><code>deskjet</code></dt>
-<dd><p>HP DeskJet and DeskJet Plus
-</p>
-</dd>
-<dt><code>cdj550</code></dt>
-<dd><p>HP DeskJet 550C
-</p>
-</dd>
-<dt><code>paintjet</code></dt>
-<dd><p>HP PointJet
 </p>
 </dd>
 <dt><code>pcx24b</code></dt>
@@ -287,10 +293,6 @@ Some examples are;
 </dd>
 <dt><code>ppm</code></dt>
 <dd><p>Portable Pixel Map file format
-</p>
-</dd>
-<dt><code>pdfwrite</code></dt>
-<dd><p>Produces pdf output from eps
 </p></dd>
 </dl>
 
@@ -326,7 +328,7 @@ To specify screen resolution, use <code>&quot;-r0&quot;</code>.
 <dd><p>Provide an interchange preview.
 </p>
 </dd>
-<dt><code>-metalfile</code></dt>
+<dt><code>-metafile</code></dt>
 <dd><p>Provide a metafile preview.
 </p>
 </dd>
@@ -359,25 +361,33 @@ command form of the print function you must quote the
 
 <p>The filename and options can be given in any order.
 </p>
-<p>Example: Print to a file using the svg device.
+<p>Example: Print to a file using the pdf device.
 </p>
 <div class="example">
 <pre class="example">figure (1);
 clf ();
 surf (peaks);
-print -dsvg figure1.svg
+print figure1.pdf
 </pre></div>
 
-<p>Example: Print to an HP DeskJet 550C.
+<p>Example: Print to a file using jpg device.
 </p>
 <div class="example">
 <pre class="example">clf ();
 surf (peaks);
-print -dcdj550
+print -djpg figure2.jpg
+</pre></div>
+
+<p>Example: Print to printer named PS_printer using ps format.
+</p>
+<div class="example">
+<pre class="example">clf ();
+surf (peaks);
+print -dpswrite -PPS_printer
 </pre></div>
 
 
-<p><strong>See also:</strong> <a href="#XREFsaveas">saveas</a>, <a href="#XREForient">orient</a>, <a href="Multiple-Plot-Windows.html#XREFfigure">figure</a>.
+<p><strong>See also:</strong> <a href="#XREFsaveas">saveas</a>, <a href="#XREFhgsave">hgsave</a>, <a href="#XREForient">orient</a>, <a href="Multiple-Plot-Windows.html#XREFfigure">figure</a>.
 </p></dd></dl>
 
 
@@ -426,7 +436,7 @@ saveas (1, &quot;figure1.png&quot;);
 </pre></div>
 
 
-<p><strong>See also:</strong> <a href="#XREFprint">print</a>, <a href="#XREForient">orient</a>.
+<p><strong>See also:</strong> <a href="#XREFprint">print</a>, <a href="#XREFhgsave">hgsave</a>, <a href="#XREForient">orient</a>.
 </p></dd></dl>
 
 
@@ -457,6 +467,58 @@ height is larger than the plot width.  It also restores the default
 returned by <code>gcf</code>.
 </p>
 <p><strong>See also:</strong> <a href="#XREFprint">print</a>, <a href="#XREFsaveas">saveas</a>.
+</p></dd></dl>
+
+
+<p><code>print</code> and <code>saveas</code> are used when work on a plot has finished
+and the output must be in a publication-ready format.  During intermediate
+stages it is often better to save the graphics object and all of its
+associated information so that changes&mdash;to colors, axis limits, marker styles,
+etc.&mdash;can be made easily from within Octave.  The <code>hgsave</code>/<code>hgload</code>
+commands can be used to save and re-create a graphics object.
+</p>
+<a name="XREFhgsave"></a><dl>
+<dt><a name="index-hgsave"></a>Function File: <em></em> <strong>hgsave</strong> <em>(<var>filename</var>)</em></dt>
+<dt><a name="index-hgsave-1"></a>Function File: <em></em> <strong>hgsave</strong> <em>(<var>h</var>, <var>filename</var>)</em></dt>
+<dt><a name="index-hgsave-2"></a>Function File: <em></em> <strong>hgsave</strong> <em>(<var>h</var>, <var>filename</var>, <var>fmt</var>)</em></dt>
+<dd><p>Save the graphics handle <var>h</var> to the file <var>filename</var> in the format
+<var>fmt</var>.
+</p>
+<p>If unspecified, <var>h</var> is the current figure as returned by <code>gcf</code>.
+When <var>filename</var> does not have an extension the default filename
+extension <samp>.ofig</samp> will be appended.  If present, <var>fmt</var> should
+should be one of the following:
+</p>
+<ul>
+<li> <samp>-binary</samp>, <samp>-float-binary</samp>
+
+</li><li> <samp>-hdf5</samp>, <samp>-float-hdf5</samp>
+
+</li><li> <samp>-V7</samp>, <samp>-v7</samp>, <code>-7</code>, <samp>-mat7-binary</samp>
+
+</li><li> <samp>-V6</samp>, <samp>-v6</samp>, <code>-6</code>, <samp>-mat6-binary</samp>
+
+</li><li> <samp>-text</samp>
+
+</li><li> <samp>-zip</samp>, <samp>-z</samp>
+</li></ul>
+
+<p>When producing graphics for final publication use <code>print</code> or
+<code>saveas</code>.  When it is important to be able to continue to edit a
+figure as an Octave object, use <code>hgsave</code>/<code>hgload</code>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFhgload">hgload</a>, <a href="Graphics-Objects.html#XREFhdl2struct">hdl2struct</a>, <a href="#XREFsaveas">saveas</a>, <a href="#XREFprint">print</a>.
+</p></dd></dl>
+
+
+<a name="XREFhgload"></a><dl>
+<dt><a name="index-hgload"></a>Function File: <em><var>h</var> =</em> <strong>hgload</strong> <em>(<var>filename</var>)</em></dt>
+<dd><p>Load the graphics object in <var>filename</var> into the graphics handle <var>h</var>.
+</p>
+<p>If <var>filename</var> has no extension, Octave will try to find the file with
+and without the standard extension of <samp>.ofig</samp>.
+</p>
+<p><strong>See also:</strong> <a href="#XREFhgsave">hgsave</a>, <a href="Graphics-Objects.html#XREFstruct2hdl">struct2hdl</a>.
 </p></dd></dl>
 
 

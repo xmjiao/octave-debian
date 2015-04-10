@@ -1,5 +1,5 @@
 ## Copyright (C) 2007 Muthiah Annamalai
-## Copyright (C) 2013 Ben Abbott
+## Copyright (C) 2013-2015 Ben Abbott
 ##
 ## This file is part of Octave.
 ##
@@ -40,7 +40,7 @@
 ##       @result{} 'Octave*Scilab*Lush*Yorick'
 ## @end group
 ## @end example
-## @seealso {strsplit}
+## @seealso{strsplit}
 ## @end deftypefn
 
 ## Author: Muthiah Annamalai <muthiah.annamalai@uta.edu>
@@ -65,8 +65,8 @@ function rval = strjoin (cstr, delimiter)
     delimiter = do_string_escapes (delimiter);
     delimiter = {delimiter};
   endif
- 
-  num = numel (cstr); 
+
+  num = numel (cstr);
   if (numel (delimiter) == 1 && num > 1)
     delimiter = repmat (delimiter, 1, num);
     delimiter(end) = {""};

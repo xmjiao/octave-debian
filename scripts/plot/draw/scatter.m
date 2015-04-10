@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2013 David Bateman
+## Copyright (C) 2007-2015 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -54,7 +54,7 @@
 ##
 ## The optional return value @var{h} is a graphics handle to the created patch
 ## object.
-## 
+##
 ## Example:
 ##
 ## @example
@@ -82,7 +82,7 @@ function retval = scatter (varargin)
   endif
   unwind_protect
     hax = newplot (hax);
-    
+
     htmp = __scatter__ (hax, 2, "scatter", varargin{:});
   unwind_protect_cleanup
     if (! isempty (oldfig))

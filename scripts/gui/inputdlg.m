@@ -29,7 +29,7 @@
 ##
 ## @table @var
 ## @item prompt
-## A cell array with strings labeling each text field.  This input is required. 
+## A cell array with strings labeling each text field.  This input is required.
 ##
 ## @item title
 ## String to use for the caption of the dialog.  The default is @qcode{"Input
@@ -43,7 +43,7 @@
 ## text field.
 ##
 ## @item a vector which defines the individual number of rows
-## used for each text field. 
+## used for each text field.
 ##
 ## @item a matrix which defines the individual number of rows and
 ## columns used for each text field.  In the matrix each row describes
@@ -91,7 +91,7 @@ function cstr = inputdlg (prompt, title = "Input Dialog", varargin)
       defaults = varargin{2};
   endswitch
 
-  ## specification of text field sizes as in Matlab 
+  ## specification of text field sizes as in Matlab
   ## Matlab requires a matrix for linespec, not a cell array...
   ## rc = [1,10; 2,20; 3,30];
   ##     c1  c2
@@ -100,16 +100,20 @@ function cstr = inputdlg (prompt, title = "Input Dialog", varargin)
   ## r3  3   30   third  text field is 3x30
   if (isscalar (linespec))
     ## only scalar value in lineTo, copy from linespec and add defaults
-    rowscols = zeros (columns (prompt), 2);
+    rowscols = zeros (numel (prompt), 2);
     ## cols
     rowscols(:,2) = 25;
     rowscols(:,1) = linespec;
   elseif (isvector (linespec))
+    if (numel (linespec) == numel (prompt))
       ## only one column in lineTo, copy from vector linespec and add defaults
-      rowscols = zeros (columns (prompt), 2);
+      rowscols = zeros (numel (prompt), 2);
       ## rows from colum vector linespec, columns are set to default
       rowscols(:,2) = 25;
       rowscols(:,1) = linespec(:);
+    else
+      error ("inputdlg: ROWSCOLS vector does not match size of PROMPT");
+    endif
   elseif (ismatrix (linespec))
     if (rows (linespec) == columns (prompt) && columns (linespec) == 2)
       ## (rows x columns) match, copy array linespec
@@ -122,7 +126,7 @@ function cstr = inputdlg (prompt, title = "Input Dialog", varargin)
     error ("inputdlg: unknown form of ROWSCOLS argument");
   endif
   rowscols = ceil (rowscols);
-  
+
   ## convert numeric values in defaults cell array to strings
   defs = cellfun (@num2str, defaults, "UniformOutput", false);
   rc = arrayfun (@num2str, rowscols, "UniformOutput", false);
@@ -131,7 +135,7 @@ function cstr = inputdlg (prompt, title = "Input Dialog", varargin)
     cstr = __octave_link_input_dialog__ (prompt, title, rowscols, defs);
   elseif (__have_feature__ ("JAVA"))
     user_inputs = javaMethod ("inputdlg", "org.octave.JDialogBox",
-                              prompt, title, rc, defs);  
+                              prompt, title, rc, defs);
     if (isempty (user_inputs))
       cstr = {};
     else

@@ -60,7 +60,9 @@ Next: <a href="Special-Utility-Matrices.html#Special-Utility-Matrices" accesskey
 
 <a name="XREFfliplr"></a><dl>
 <dt><a name="index-fliplr"></a>Function File: <em></em> <strong>fliplr</strong> <em>(<var>x</var>)</em></dt>
-<dd><p>Return a copy of <var>x</var> with the order of the columns reversed.  In
+<dd><p>Flip array left to right.
+</p>
+<p>Return a copy of <var>x</var> with the order of the columns reversed.  In
 other words, <var>x</var> is flipped left-to-right about a vertical axis.  For
 example:
 </p>
@@ -70,16 +72,16 @@ example:
          4  3
 </pre></div>
 
-<p>Note that <code>fliplr</code> only works with 2-D arrays.  To flip N-D arrays
-use <code>flipdim</code> instead.
-</p>
-<p><strong>See also:</strong> <a href="#XREFflipud">flipud</a>, <a href="#XREFflipdim">flipdim</a>, <a href="#XREFrot90">rot90</a>, <a href="#XREFrotdim">rotdim</a>.
+
+<p><strong>See also:</strong> <a href="#XREFflipud">flipud</a>, <a href="#XREFflip">flip</a>, <a href="#XREFrot90">rot90</a>, <a href="#XREFrotdim">rotdim</a>.
 </p></dd></dl>
 
 
 <a name="XREFflipud"></a><dl>
 <dt><a name="index-flipud"></a>Function File: <em></em> <strong>flipud</strong> <em>(<var>x</var>)</em></dt>
-<dd><p>Return a copy of <var>x</var> with the order of the rows reversed.  In
+<dd><p>Flip array upside down.
+</p>
+<p>Return a copy of <var>x</var> with the order of the rows reversed.  In
 other words, <var>x</var> is flipped upside-down about a horizontal axis.  For
 example:
 </p>
@@ -89,34 +91,50 @@ example:
          1  2
 </pre></div>
 
-<p>Note that <code>flipud</code> only works with 2-D arrays.  To flip N-D arrays
-use <code>flipdim</code> instead.
-</p>
-<p><strong>See also:</strong> <a href="#XREFfliplr">fliplr</a>, <a href="#XREFflipdim">flipdim</a>, <a href="#XREFrot90">rot90</a>, <a href="#XREFrotdim">rotdim</a>.
+
+<p><strong>See also:</strong> <a href="#XREFfliplr">fliplr</a>, <a href="#XREFflip">flip</a>, <a href="#XREFrot90">rot90</a>, <a href="#XREFrotdim">rotdim</a>.
 </p></dd></dl>
 
 
-<a name="XREFflipdim"></a><dl>
-<dt><a name="index-flipdim"></a>Function File: <em></em> <strong>flipdim</strong> <em>(<var>x</var>)</em></dt>
-<dt><a name="index-flipdim-1"></a>Function File: <em></em> <strong>flipdim</strong> <em>(<var>x</var>, <var>dim</var>)</em></dt>
-<dd><p>Return a copy of <var>x</var> flipped about the dimension <var>dim</var>.
+<a name="XREFflip"></a><dl>
+<dt><a name="index-flip"></a>Function File: <em></em> <strong>flip</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-flip-1"></a>Function File: <em></em> <strong>flip</strong> <em>(<var>x</var>, <var>dim</var>)</em></dt>
+<dd><p>Flip array across specific dimension.
+</p>
+<p>Return a copy of <var>x</var> flipped about the dimension <var>dim</var>.
 <var>dim</var> defaults to the first non-singleton dimension.
 For example:
 </p>
 <div class="example">
-<pre class="example">flipdim ([1, 2; 3, 4], 2)
+<pre class="example">flip ([1  2  3  4])
+      &rArr;  4  3  2  1
+
+flip ([1; 2; 3; 4])
+      &rArr;  4
+          3
+          2
+          1
+
+flip ([1 2; 3 4])
+      &rArr;  3  4
+          1  2
+
+flip ([1 2; 3 4], 2)
       &rArr;  2  1
           4  3
 </pre></div>
 
-<p><strong>See also:</strong> <a href="#XREFfliplr">fliplr</a>, <a href="#XREFflipud">flipud</a>, <a href="#XREFrot90">rot90</a>, <a href="#XREFrotdim">rotdim</a>.
+
+<p><strong>See also:</strong> <a href="#XREFfliplr">fliplr</a>, <a href="#XREFflipud">flipud</a>, <a href="#XREFrot90">rot90</a>, <a href="#XREFrotdim">rotdim</a>, <a href="#XREFpermute">permute</a>, <a href="Arithmetic-Ops.html#XREFtranspose">transpose</a>.
 </p></dd></dl>
 
 
 <a name="XREFrot90"></a><dl>
 <dt><a name="index-rot90"></a>Function File: <em></em> <strong>rot90</strong> <em>(<var>A</var>)</em></dt>
 <dt><a name="index-rot90-1"></a>Function File: <em></em> <strong>rot90</strong> <em>(<var>A</var>, <var>k</var>)</em></dt>
-<dd><p>Return a copy of <var>A</var> with the elements rotated counterclockwise in
+<dd><p>Rotate array by 90 degree increments.
+</p>
+<p>Return a copy of <var>A</var> with the elements rotated counterclockwise in
 90-degree increments.  The second argument is optional, and specifies
 how many 90-degree rotations are to be applied (the default value is 1).
 Negative values of <var>k</var> rotate the matrix in a clockwise direction.
@@ -137,10 +155,12 @@ rot90 ([1, 2; 3, 4], 3)
 rot90 ([1, 2; 3, 4], 7)
 </pre></div>
 
-<p>Note that <code>rot90</code> only works with 2-D arrays.  To rotate N-D arrays
-use <code>rotdim</code> instead.
+<p>The rotation is always performed on the plane of the first two dimensions,
+i.e., rows and columns.  To perform a rotation on any other plane, use
+<code>rotdim</code>.
 </p>
-<p><strong>See also:</strong> <a href="#XREFrotdim">rotdim</a>, <a href="#XREFflipud">flipud</a>, <a href="#XREFfliplr">fliplr</a>, <a href="#XREFflipdim">flipdim</a>.
+
+<p><strong>See also:</strong> <a href="#XREFrotdim">rotdim</a>, <a href="#XREFfliplr">fliplr</a>, <a href="#XREFflipud">flipud</a>, <a href="#XREFflip">flip</a>.
 </p></dd></dl>
 
 
@@ -175,7 +195,7 @@ rotdim ([1, 2; 3, 4], 3, [1, 2])
 rotdim ([1, 2; 3, 4], 7, [1, 2])
 </pre></div>
 
-<p><strong>See also:</strong> <a href="#XREFrot90">rot90</a>, <a href="#XREFflipud">flipud</a>, <a href="#XREFfliplr">fliplr</a>, <a href="#XREFflipdim">flipdim</a>.
+<p><strong>See also:</strong> <a href="#XREFrot90">rot90</a>, <a href="#XREFfliplr">fliplr</a>, <a href="#XREFflipud">flipud</a>, <a href="#XREFflip">flip</a>.
 </p></dd></dl>
 
 
@@ -258,6 +278,25 @@ new matrices.  For example:
 The permutation vector <var>perm</var> must contain the elements
 <code>1:ndims (A)</code> (in any order, but each element must appear only once).
 </p>
+<p>The <var>N</var>th dimension of <var>A</var> gets remapped to dimension 
+<code><var>PERM</var>(<var>N</var>)</code>.  For example:
+</p>
+<div class="example">
+<pre class="example"><var>x</var> = zeros ([2, 3, 5, 7]);
+size (<var>x</var>)
+   &rArr;  2   3   5   7
+
+size (permute (<var>x</var>, [2, 1, 3, 4]))
+   &rArr;  3   2   5   7
+
+size (permute (<var>x</var>, [1, 3, 4, 2]))
+   &rArr;  2   5   7   3
+
+## The identity permutation
+size (permute (<var>x</var>, [1, 2, 3, 4]))
+   &rArr;  2   3   5   7
+</pre></div>
+
 <p><strong>See also:</strong> <a href="#XREFipermute">ipermute</a>.
 </p></dd></dl>
 
@@ -375,7 +414,7 @@ circshift (x, [0,1])
     9, 7, 8
 </pre></div>
 
-<p><strong>See also:</strong> permute, ipermute, shiftdim.
+<p><strong>See also:</strong> <a href="#XREFpermute">permute</a>, <a href="#XREFipermute">ipermute</a>, <a href="#XREFshiftdim">shiftdim</a>.
 </p></dd></dl>
 
 
@@ -418,7 +457,7 @@ size (shiftdim (x, 1))
    &rArr; ns = 1
 </pre></div>
 
-<p><strong>See also:</strong> reshape, permute, ipermute, circshift, squeeze.
+<p><strong>See also:</strong> <a href="#XREFreshape">reshape</a>, <a href="#XREFpermute">permute</a>, <a href="#XREFipermute">ipermute</a>, <a href="#XREFcircshift">circshift</a>, <a href="Object-Sizes.html#XREFsqueeze">squeeze</a>.
 </p></dd></dl>
 
 
@@ -562,7 +601,7 @@ starts at an offset of <var>k</var> diagonals above or below the main
 diagonal; above for positive <var>k</var> and below for negative <var>k</var>.
 </p>
 <p>The absolute value of <var>k</var> must not be greater than the number of
-sub-diagonals or super-diagonals.
+subdiagonals or superdiagonals.
 </p>
 <p>For example:
 </p>
@@ -605,7 +644,7 @@ This is equivalent to <code>shiftdim (<var>x</var>(:), 1-<var>dim</var>)</code>.
 
 <a name="XREFvech"></a><dl>
 <dt><a name="index-vech"></a>Function File: <em></em> <strong>vech</strong> <em>(<var>x</var>)</em></dt>
-<dd><p>Return the vector obtained by eliminating all supradiagonal elements of
+<dd><p>Return the vector obtained by eliminating all superdiagonal elements of
 the square matrix <var>x</var> and stacking the result one column above the
 other.  This has uses in matrix calculus where the underlying matrix
 is symmetric and it would be pointless to keep values above the main
@@ -630,6 +669,9 @@ diagonal.
 <p>If the optional argument <var>dim</var> is given, operate along this
 dimension.
 </p>
+<p>If <var>dim</var> is larger than the dimensions of <var>x</var>, the result will
+have <var>dim</var> dimensions.
+</p>
 <p><strong>See also:</strong> <a href="#XREFpostpad">postpad</a>, <a href="#XREFcat">cat</a>, <a href="#XREFresize">resize</a>.
 </p></dd></dl>
 
@@ -649,6 +691,9 @@ dimension.
 <p>If the optional argument <var>dim</var> is given, operate along this
 dimension.
 </p>
+<p>If <var>dim</var> is larger than the dimensions of <var>x</var>, the result will
+have <var>dim</var> dimensions.
+</p>
 <p><strong>See also:</strong> <a href="#XREFprepad">prepad</a>, <a href="#XREFcat">cat</a>, <a href="#XREFresize">resize</a>.
 </p></dd></dl>
 
@@ -661,8 +706,8 @@ dimension.
 <dt><a name="index-diag-4"></a>Built-in Function: <em><var>v</var> =</em> <strong>diag</strong> <em>(<var>M</var>, <var>k</var>)</em></dt>
 <dd><p>Return a diagonal matrix with vector <var>v</var> on diagonal <var>k</var>.  The
 second argument is optional.  If it is positive, the vector is placed on
-the <var>k</var>-th super-diagonal.  If it is negative, it is placed on the
-<var>-k</var>-th sub-diagonal.  The default value of <var>k</var> is 0, and the
+the <var>k</var>-th superdiagonal.  If it is negative, it is placed on the
+<var>-k</var>-th subdiagonal.  The default value of <var>k</var> is 0, and the
 vector is placed on the main diagonal.  For example:
 </p>
 <div class="example">

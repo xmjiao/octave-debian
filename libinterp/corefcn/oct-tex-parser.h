@@ -33,22 +33,30 @@
 #ifndef YY_OCTAVE_TEX_COREFCN_OCT_TEX_PARSER_H_INCLUDED
 # define YY_OCTAVE_TEX_COREFCN_OCT_TEX_PARSER_H_INCLUDED
 /* Debug traces.  */
-#ifndef YYDEBUG
-# define YYDEBUG 0
-#endif
+#ifndef OCTAVE_TEX_DEBUG
+# if defined YYDEBUG
 #if YYDEBUG
+#   define OCTAVE_TEX_DEBUG 1
+#  else
+#   define OCTAVE_TEX_DEBUG 0
+#  endif
+# else /* ! defined YYDEBUG */
+#  define OCTAVE_TEX_DEBUG 0
+# endif /* ! defined YYDEBUG */
+#endif  /* ! defined OCTAVE_TEX_DEBUG */
+#if OCTAVE_TEX_DEBUG
 extern int octave_tex_debug;
 #endif
 /* "%code requires" blocks.  */
-#line 53 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1909  */
+#line 54 "corefcn/oct-tex-parser.yy" /* yacc.c:1909  */
 #include <string>
 
-#line 47 "corefcn/oct-tex-parser.h" /* yacc.c:1909  */
+#line 55 "corefcn/oct-tex-parser.h" /* yacc.c:1909  */
 
 /* Token type.  */
-#ifndef YYTOKENTYPE
-# define YYTOKENTYPE
-  enum yytokentype
+#ifndef OCTAVE_TEX_TOKENTYPE
+# define OCTAVE_TEX_TOKENTYPE
+  enum octave_tex_tokentype
   {
     BF = 258,
     IT = 259,
@@ -89,11 +97,11 @@ extern int octave_tex_debug;
 #define STR 274
 
 /* Value type.  */
-#if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef union YYSTYPE YYSTYPE;
-union YYSTYPE
+#if ! defined OCTAVE_TEX_STYPE && ! defined OCTAVE_TEX_STYPE_IS_DECLARED
+typedef union OCTAVE_TEX_STYPE OCTAVE_TEX_STYPE;
+union OCTAVE_TEX_STYPE
 {
-#line 55 "../../libinterp/corefcn/oct-tex-parser.yy" /* yacc.c:1909  */
+#line 56 "corefcn/oct-tex-parser.yy" /* yacc.c:1909  */
 
   /* Leaf symbols produced by the scanner */
   char                       ch;
@@ -107,10 +115,10 @@ union YYSTYPE
   text_element*              e_base;
   text_element_list*         e_list;
 
-#line 111 "corefcn/oct-tex-parser.h" /* yacc.c:1909  */
+#line 119 "corefcn/oct-tex-parser.h" /* yacc.c:1909  */
 };
-# define YYSTYPE_IS_TRIVIAL 1
-# define YYSTYPE_IS_DECLARED 1
+# define OCTAVE_TEX_STYPE_IS_TRIVIAL 1
+# define OCTAVE_TEX_STYPE_IS_DECLARED 1
 #endif
 
 

@@ -1,4 +1,4 @@
-## Copyright (C) 2009-2013 Kai Habel
+## Copyright (C) 2009-2015 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -129,7 +129,7 @@ function h = surfl (varargin)
       varargin(end) = [];
       have_lv = true;
     elseif (len == 2)
-      [lv(1), lv(2), lv(3)] = sph2cart ((lastarg(1) - 90) * pi/180, 
+      [lv(1), lv(2), lv(3)] = sph2cart ((lastarg(1) - 90) * pi/180,
                                          lastarg(2) * pi/180,
                                          1.0);
       varargin(end) = [];
@@ -164,7 +164,7 @@ function h = surfl (varargin)
     endif
 
     vn = get (htmp, "vertexnormals");
-    dar = get (hax, "plotboxaspectratio");
+    dar = get (hax, "dataaspectratio");
     vn(:,:,1) *= dar(1);
     vn(:,:,2) *= dar(2);
     vn(:,:,3) *= dar(3);
@@ -206,8 +206,7 @@ endfunction
 %! clf;
 %! [X,Y,Z] = sombrero ();
 %! colormap (copper (64));
-%! [az, el] = view ();
-%! surfl (X,Y,Z, [az+225,el], [0.2 0.6 0.4 25]);
+%! surfl (X,Y,Z, [62.50,30], [0.2 0.6 0.4 25]);
 %! shading interp;
 %! title ('surfl() with lighting vector and material properties');
 

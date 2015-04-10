@@ -1,5 +1,5 @@
 ## Copyright (C) 2012 Rik Wehbring
-## Copyright (C) 1995-2013 Kurt Hornik
+## Copyright (C) 1995-2015 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -19,7 +19,7 @@
 
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} kolmogorov_smirnov_cdf (@var{x}, @var{tol})
-## Return the cumulative distribution function (CDF) at @var{x} of the 
+## Return the cumulative distribution function (CDF) at @var{x} of the
 ## Kolmogorov-Smirnov distribution,
 ## @tex
 ## $$ Q(x) = \sum_{k=-\infty}^\infty (-1)^k \exp (-2 k^2 x^2) $$
@@ -87,7 +87,7 @@ function cdf = kolmogorov_smirnov_cdf (x, tol)
 endfunction
 
 
-%% Test input validation
+## Test input validation
 %!error kolmogorov_smirnov_cdf ()
 %!error kolmogorov_smirnov_cdf (1,2,3)
 %!error kolmogorov_smirnov_cdf (1, ones (2))

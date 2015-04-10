@@ -1,4 +1,4 @@
-## Copyright (C) 2012-2013 Michael Goffioul
+## Copyright (C) 2012-2015 Michael Goffioul
 ##
 ## This file is part of Octave.
 ##
@@ -21,7 +21,7 @@
 ## @deftypefnx {Function File} {@var{hdata} =} guihandles
 ## Return a structure of object handles for the figure associated with
 ## handle @var{h}.
-## 
+##
 ## If no handle is specified the current figure returned by @code{gcf} is used.
 ##
 ## The fieldname for each entry of @var{hdata} is taken from the @qcode{"tag"}

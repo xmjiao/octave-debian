@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2013 John W. Eaton
+Copyright (C) 1996-2015 John W. Eaton
 Copyright (C) 2010 Jaroslav Hajek
 Copyright (C) 2010 VZLU Prague
 
@@ -366,12 +366,15 @@ xgamma (double x)
 {
   double result;
 
-  if (xisnan (x) || (x < 0 && (xisinf (x) || D_NINT (x) == x)))
-    result = octave_NaN;
-  else if (x == 0 && xnegative_sign (x))
-    result = -octave_Inf;
-  else if (x == 0 || xisinf (x))
+  // Special cases for (near) compatibility with Matlab instead of
+  // tgamma.  Matlab does not have -0.
+
+  if (x == 0)
+    result = xnegative_sign (x) ? -octave_Inf : octave_Inf;
+  else if ((x < 0 && D_NINT (x) == x) || xisinf (x))
     result = octave_Inf;
+  else if (xisnan (x))
+    result = octave_NaN;
   else
     {
 #if defined (HAVE_TGAMMA)
@@ -379,8 +382,6 @@ xgamma (double x)
 #else
       F77_XFCN (xdgamma, XDGAMMA, (x, result));
 #endif
-      if (xisinf (result) && (static_cast<int> (gnulib::floor (x)) % 2))
-        result = -octave_Inf;
     }
 
   return result;
@@ -437,12 +438,15 @@ xgamma (float x)
 {
   float result;
 
-  if (xisnan (x) || (x < 0 && (xisinf (x) || D_NINT (x) == x)))
-    result = octave_Float_NaN;
-  else if (x == 0 && xnegative_sign (x))
-    result = -octave_Float_Inf;
-  else if (x == 0 || xisinf (x))
+  // Special cases for (near) compatibility with Matlab instead of
+  // tgamma.  Matlab does not have -0.
+
+  if (x == 0)
+    result = xnegative_sign (x) ? -octave_Float_Inf : octave_Float_Inf;
+  else if ((x < 0 && D_NINT (x) == x) || xisinf (x))
     result = octave_Float_Inf;
+  else if (xisnan (x))
+    result = octave_Float_NaN;
   else
     {
 #if defined (HAVE_TGAMMA)
@@ -450,8 +454,6 @@ xgamma (float x)
 #else
       F77_XFCN (xgamma, XGAMMA, (x, result));
 #endif
-      if (xisinf (result) && (static_cast<int> (gnulib::floor (x)) % 2))
-        result = -octave_Float_Inf;
     }
 
   return result;
@@ -631,7 +633,7 @@ log1p (double x)
       retval = 2 * (s + 1) * u;
     }
   else
-    retval = log (1 + x);
+    retval = gnulib::log (1 + x);
 
   return retval;
 }
@@ -683,14 +685,14 @@ log1pf (float x)
   if (ax < 0.2)
     {
       // approximation log (1+x) ~ 2*sum ((x/(2+x)).^ii ./ ii), ii = 1:2:2n+1
-      float u = x / (2 + x), t = 1, s = 0;
+      float u = x / (2 + x), t = 1.0f, s = 0;
       for (int i = 2; i < 12; i += 2)
         s += (t *= u*u) / (i+1);
 
-      retval = 2 * (s + 1) * u;
+      retval = 2 * (s + 1.0f) * u;
     }
   else
-    retval = log (1 + x);
+    retval = gnulib::logf (1.0f + x);
 
   return retval;
 }
@@ -816,7 +818,7 @@ zbesj (const Complex& z, double alpha, int kode, octave_idx_type& ierr)
       // zbesy can overflow as z->0, and cause troubles for generic case below
       alpha = -alpha;
       Complex tmp = zbesj (z, alpha, kode, ierr);
-      if ((static_cast <long> (alpha)) & 1)
+      if ((static_cast<long> (alpha)) & 1)
         tmp = - tmp;
       retval = bessel_return_value (tmp, ierr);
     }
@@ -886,7 +888,7 @@ zbesy (const Complex& z, double alpha, int kode, octave_idx_type& ierr)
       // zbesy can overflow as z->0, and cause troubles for generic case below
       alpha = -alpha;
       Complex tmp = zbesj (z, alpha, kode, ierr);
-      if ((static_cast <long> (alpha - 0.5)) & 1)
+      if ((static_cast<long> (alpha - 0.5)) & 1)
         tmp = - tmp;
       retval = bessel_return_value (tmp, ierr);
     }
@@ -1448,7 +1450,7 @@ cbesj (const FloatComplex& z, float alpha, int kode, octave_idx_type& ierr)
       // zbesy can overflow as z->0, and cause troubles for generic case below
       alpha = -alpha;
       FloatComplex tmp = cbesj (z, alpha, kode, ierr);
-      if ((static_cast <long> (alpha)) & 1)
+      if ((static_cast<long> (alpha)) & 1)
         tmp = - tmp;
       retval = bessel_return_value (tmp, ierr);
     }
@@ -1513,7 +1515,7 @@ cbesy (const FloatComplex& z, float alpha, int kode, octave_idx_type& ierr)
       // zbesy can overflow as z->0, and cause troubles for generic case below
       alpha = -alpha;
       FloatComplex tmp = cbesj (z, alpha, kode, ierr);
-      if ((static_cast <long> (alpha - 0.5)) & 1)
+      if ((static_cast<long> (alpha - 0.5)) & 1)
         tmp = - tmp;
       retval = bessel_return_value (tmp, ierr);
     }
@@ -2128,7 +2130,7 @@ airy (const FloatComplex& z, bool deriv, bool scaled, octave_idx_type& ierr)
 
   if (! scaled)
     {
-      FloatComplex expz = exp (- static_cast<float> (2.0 / 3.0) * z * sqrt (z));
+      FloatComplex expz = exp (- 2.0f / 3.0f * z * sqrt (z));
 
       float rexpz = real (expz);
       float iexpz = imag (expz);
@@ -2160,8 +2162,7 @@ biry (const FloatComplex& z, bool deriv, bool scaled, octave_idx_type& ierr)
 
   if (! scaled)
     {
-      FloatComplex expz = exp (std::abs (real (static_cast<float> (2.0 / 3.0)
-                          * z * sqrt (z))));
+      FloatComplex expz = exp (std::abs (real (2.0f / 3.0f * z * sqrt (z))));
 
       float rexpz = real (expz);
       float iexpz = imag (expz);
@@ -2578,12 +2579,8 @@ gammainc (double x, double a, bool& err)
   err = false;
 
   if (a < 0.0 || x < 0.0)
-    {
-      (*current_liboctave_error_handler)
-        ("gammainc: A and X must be non-negative");
-
-      err = true;
-    }
+    (*current_liboctave_error_handler)
+      ("gammainc: A and X must be non-negative");
   else
     F77_XFCN (xgammainc, XGAMMAINC, (a, x, retval));
 
@@ -2696,7 +2693,7 @@ gammainc (double x, const NDArray& a)
 
   for (octave_idx_type i = 0; i < nel; i++)
     {
-      result (i) = gammainc (x, a(i), err);
+      result(i) = gammainc (x, a(i), err);
 
       if (err)
         goto done;
@@ -2722,7 +2719,7 @@ gammainc (const NDArray& x, double a)
 
   for (octave_idx_type i = 0; i < nel; i++)
     {
-      result (i) = gammainc (x(i), a, err);
+      result(i) = gammainc (x(i), a, err);
 
       if (err)
         goto done;
@@ -2752,7 +2749,7 @@ gammainc (const NDArray& x, const NDArray& a)
 
       for (octave_idx_type i = 0; i < nel; i++)
         {
-          result (i) = gammainc (x(i), a(i), err);
+          result(i) = gammainc (x(i), a(i), err);
 
           if (err)
             goto done;
@@ -2783,12 +2780,8 @@ gammainc (float x, float a, bool& err)
   err = false;
 
   if (a < 0.0 || x < 0.0)
-    {
-      (*current_liboctave_error_handler)
-        ("gammainc: A and X must be non-negative");
-
-      err = true;
-    }
+    (*current_liboctave_error_handler)
+      ("gammainc: A and X must be non-negative");
   else
     F77_XFCN (xsgammainc, XSGAMMAINC, (a, x, retval));
 
@@ -2901,7 +2894,7 @@ gammainc (float x, const FloatNDArray& a)
 
   for (octave_idx_type i = 0; i < nel; i++)
     {
-      result (i) = gammainc (x, a(i), err);
+      result(i) = gammainc (x, a(i), err);
 
       if (err)
         goto done;
@@ -2927,7 +2920,7 @@ gammainc (const FloatNDArray& x, float a)
 
   for (octave_idx_type i = 0; i < nel; i++)
     {
-      result (i) = gammainc (x(i), a, err);
+      result(i) = gammainc (x(i), a, err);
 
       if (err)
         goto done;
@@ -2957,7 +2950,7 @@ gammainc (const FloatNDArray& x, const FloatNDArray& a)
 
       for (octave_idx_type i = 0; i < nel; i++)
         {
-          result (i) = gammainc (x(i), a(i), err);
+          result(i) = gammainc (x(i), a(i), err);
 
           if (err)
             goto done;
@@ -2984,14 +2977,17 @@ done:
 Complex rc_log1p (double x)
 {
   const double pi = 3.14159265358979323846;
-  return x < -1.0 ? Complex (log (-(1.0 + x)), pi) : Complex (log1p (x));
+  return (x < -1.0
+          ? Complex (gnulib::log (-(1.0 + x)), pi)
+          : Complex (log1p (x)));
 }
 
 FloatComplex rc_log1p (float x)
 {
   const float pi = 3.14159265358979323846f;
-  return x < -1.0f ? FloatComplex (logf (-(1.0f + x)), pi)
-                   : FloatComplex (log1pf (x));
+  return (x < -1.0f
+          ? FloatComplex (gnulib::logf (-(1.0f + x)), pi)
+          : FloatComplex (log1pf (x)));
 }
 
 // This algorithm is due to P. J. Acklam.
@@ -3044,7 +3040,7 @@ static double do_erfinv (double x, bool refine)
   else if (ax < 1.0)
     {
       // Tail region.
-      const double q = sqrt (-2*log (0.5*(1-ax)));
+      const double q = sqrt (-2*gnulib::log (0.5*(1-ax)));
       const double yn = ((((c[0]*q + c[1])*q + c[2])*q + c[3])*q + c[4])*q + c[5];
       const double yd = (((d[0]*q + d[1])*q + d[2])*q + d[3])*q + 1.0;
       y = yn / yd * signum (-x);
@@ -3122,10 +3118,16 @@ static double do_erfcinv (double x, bool refine)
   else if (x > 0.0 && x < 2.0)
     {
       // Tail region.
-      const double q = x < 1 ? sqrt (-2*log (0.5*x)) : sqrt (-2*log (0.5*(2-x)));
+      const double q = (x < 1
+                        ? sqrt (-2*gnulib::log (0.5*x))
+                        : sqrt (-2*gnulib::log (0.5*(2-x))));
+
       const double yn = ((((c[0]*q + c[1])*q + c[2])*q + c[3])*q + c[4])*q + c[5];
+
       const double yd = (((d[0]*q + d[1])*q + d[2])*q + d[3])*q + 1.0;
+
       y = yn / yd;
+
       if (x < pbreak_lo)
         y = -y;
     }
@@ -3241,8 +3243,8 @@ betain (double x, double p, double q, double beta, bool& err)
 
       if (temp <= acu && temp <= acu * value)
         {
-          value = value * exp (pp * log (xx)
-                               + (qq - 1.0) * log (cx) - beta) / pp;
+          value = value * exp (pp * gnulib::log (xx)
+                               + (qq - 1.0) * gnulib::log (cx) - beta) / pp;
 
           if (indx)
             {
@@ -3340,7 +3342,7 @@ betaincinv (double y, double p, double q)
 
   //  Calculate the initial approximation.
 
-  r = sqrt (- log (a * a));
+  r = sqrt (- gnulib::log (a * a));
 
   ycur = r - (2.30753 + 0.27061 * r) / (1.0 + (0.99229 + 0.04481 * r) * r);
 
@@ -3361,7 +3363,7 @@ betaincinv (double y, double p, double q)
 
       if (t <= 0.0)
         {
-          value = 1.0 - exp ((log ((1.0 - a) * qq) + beta) / qq);
+          value = 1.0 - exp ((gnulib::log ((1.0 - a) * qq) + beta) / qq);
         }
       else
         {
@@ -3369,7 +3371,7 @@ betaincinv (double y, double p, double q)
 
           if (t <= 1.0)
             {
-              value = exp ((log (a * pp) + beta) / pp);
+              value = exp ((gnulib::log (a * pp) + beta) / pp);
             }
           else
             {
@@ -3411,7 +3413,8 @@ betaincinv (double y, double p, double q)
         }
 
       xin = value;
-      ycur = (ycur - a) * exp (beta + r * log (xin) + t * log (1.0 - xin));
+      ycur = (ycur - a) * exp (beta + r * gnulib::log (xin)
+                               + t * gnulib::log (1.0 - xin));
 
       if (ycur * yprev <= 0.0)
         {
@@ -3632,16 +3635,18 @@ ellipj (double u, double m, double& sn, double& cn, double& dn, double& err)
 
   if (m < 0 || m > 1)
     {
-      (*current_liboctave_warning_handler)
-        ("ellipj: expecting 0 <= M <= 1");
+      (*current_liboctave_warning_with_id_handler)
+        ("Octave:ellipj-invalid-m", "ellipj: expecting 0 <= M <= 1");
+
       sn = cn = dn = lo_ieee_nan_value ();
+
       return;
     }
 
   double sqrt_eps = sqrt (std::numeric_limits<double>::epsilon ());
   if (m < sqrt_eps)
     {
-      // For small m, ( Abramowitz and Stegun, Section 16.13 )
+      // For small m, (Abramowitz and Stegun, Section 16.13)
       si_u = sin (u);
       co_u = cos (u);
       t = 0.25*m*(u - si_u*co_u);
@@ -3651,7 +3656,7 @@ ellipj (double u, double m, double& sn, double& cn, double& dn, double& err)
     }
   else if ((1 - m) < sqrt_eps)
     {
-      // For m1 = (1-m) small ( Abramowitz and Stegun, Section 16.15 )
+      // For m1 = (1-m) small (Abramowitz and Stegun, Section 16.15)
       m1 = 1 - m;
       si_u = sinh (u);
       co_u = cosh (u);
@@ -3663,8 +3668,8 @@ ellipj (double u, double m, double& sn, double& cn, double& dn, double& err)
     }
   else
     {
-      //  Arithmetic-Geometric Mean (AGM) algorithm
-      //    ( Abramowitz and Stegun, Section 16.4 )
+      // Arithmetic-Geometric Mean (AGM) algorithm
+      //   (Abramowitz and Stegun, Section 16.4)
       a[0] = 1;
       b    = sqrt (1 - m);
       c[0] = sqrt (m);
@@ -3685,12 +3690,11 @@ ellipj (double u, double m, double& sn, double& cn, double& dn, double& err)
       phi = ii*a[Nn]*u;
       for (n = Nn; n > 0; --n)
         {
-          t = phi;
           phi = (asin ((c[n]/a[n])* sin (phi)) + phi)/2;
         }
       sn = sin (phi);
       cn = cos (phi);
-      dn = cn/cos (t - phi);
+      dn = sqrt (1 - m*sn*sn);
     }
 }
 

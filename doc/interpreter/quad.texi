@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2013 John W. Eaton
+@c Copyright (C) 1996-2015 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -8,12 +8,12 @@
 @c under the terms of the GNU General Public License as published by the
 @c Free Software Foundation; either version 3 of the License, or (at
 @c your option) any later version.
-@c 
+@c
 @c Octave is distributed in the hope that it will be useful, but WITHOUT
 @c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 @c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 @c for more details.
-@c 
+@c
 @c You should have received a copy of the GNU General Public License
 @c along with Octave; see the file COPYING.  If not, see
 @c <http://www.gnu.org/licenses/>.
@@ -57,7 +57,7 @@ Numerical integration using an adaptive Lobatto rule.
 Numerical integration using an adaptive Gauss-Konrod rule.
 
 @item quadcc
-Numerical integration using adaptive Clenshaw-Curtis rules.
+Numerical integration using adaptive @nospell{Clenshaw-Curtis} rules.
 
 @item trapz, cumtrapz
 Numerical integration of data using the trapezoidal method.
@@ -305,7 +305,7 @@ Additional arguments @var{p1}, etc., are passed directly to the function
 @var{f}.  To use default values for @var{tol} and @var{trace}, one may pass
 empty matrices ([]).
 
-Reference: W. Gander and W. Gautschi, @cite{Adaptive Quadrature -
+Reference: @nospell{W. Gander and W. Gautschi}, @cite{Adaptive Quadrature -
 Revisited}, BIT Vol. 40, No. 1, March 2000, pp. 84--101.
 @url{http://www.inf.ethz.ch/personal/gander/}
 @seealso{@ref{XREFquad,,quad}, @ref{XREFquadv,,quadv}, @ref{XREFquadgk,,quadgk}, @ref{XREFquadcc,,quadcc}, @ref{XREFtrapz,,trapz}, @ref{XREFdblquad,,dblquad}, @ref{XREFtriplequad,,triplequad}}
@@ -324,7 +324,7 @@ Numerically evaluate the integral of @var{f} from @var{a} to @var{b}
 using adaptive Gauss-Konrod quadrature.
 @var{f} is a function handle, inline function, or string
 containing the name of the function to evaluate.
-The formulation is based on a proposal by L.F. Shampine,
+The formulation is based on a proposal by @nospell{L.F. Shampine},
 @cite{"Vectorized adaptive quadrature in @sc{matlab}", Journal of
 Computational and Applied Mathematics, pp131-140, Vol 211, Issue 2,
 Feb 2008} where all function evaluations at an iteration are
@@ -429,9 +429,9 @@ integral.
 @deftypefnx {Function File} {@var{q} =} quadcc (@var{f}, @var{a}, @var{b}, @var{tol}, @var{sing})
 @deftypefnx {Function File} {[@var{q}, @var{err}, @var{nr_points}] =} quadcc (@dots{})
 Numerically evaluate the integral of @var{f} from @var{a} to @var{b}
-using the doubly-adaptive Clenshaw-Curtis quadrature described by P. Gonnet
-in @cite{Increasing the Reliability of Adaptive Quadrature Using Explicit
-Interpolants}.
+using the doubly-adaptive @nospell{Clenshaw-Curtis} quadrature described by
+@nospell{P. Gonnet} in @cite{Increasing the Reliability of Adaptive
+Quadrature Using Explicit Interpolants}.
 @var{f} is a function handle, inline function, or string
 containing the name of the function to evaluate.
 The function @var{f} must be vectorized and must return a vector of output
@@ -477,14 +477,14 @@ Note: @code{quadcc} is a general purpose quadrature algorithm
 and, as such, may be less efficient for a smooth or otherwise
 well-behaved integrand than other methods such as @code{quadgk}.
 
-The algorithm uses Clenshaw-Curtis quadrature rules of increasing
+The algorithm uses @nospell{Clenshaw-Curtis} quadrature rules of increasing
 degree in each interval and bisects the interval if either the
 function does not appear to be smooth or a rule of maximum
 degree has been reached.  The error estimate is computed from the
 L2-norm of the difference between two successive interpolations
 of the integrand over the nodes of the respective quadrature rules.
 
-Reference: P. Gonnet, @cite{Increasing the Reliability of Adaptive
+Reference: @nospell{P. Gonnet}, @cite{Increasing the Reliability of Adaptive
 Quadrature Using Explicit Interpolants}, ACM Transactions on
 Mathematical Software, Vol. 37, Issue 3, Article No. 3, 2010.
 @seealso{@ref{XREFquad,,quad}, @ref{XREFquadv,,quadv}, @ref{XREFquadl,,quadl}, @ref{XREFquadgk,,quadgk}, @ref{XREFtrapz,,trapz}, @ref{XREFdblquad,,dblquad}, @ref{XREFtriplequad,,triplequad}}
@@ -495,7 +495,7 @@ Sometimes one does not have the function, but only the raw (x, y) points from
 which to perform an integration.  This can occur when collecting data in an
 experiment.  The @code{trapz} function can integrate these values as shown in
 the following example where "data" has been collected on the cosine function
-over the range [0, pi/2). 
+over the range [0, pi/2).
 
 @example
 @group
@@ -507,7 +507,7 @@ trapz (x, y)
 @end example
 
 The answer is reasonably close to the exact value of 1.  Ordinary quadrature
-is sensitive to the characteristics of the integrand.  Empirical integration 
+is sensitive to the characteristics of the integrand.  Empirical integration
 depends not just on the integrand, but also on the particular points chosen to
 represent the function.  Repeating the example above with the sine function
 over the range [0, pi/2) produces far inferior results.
@@ -610,8 +610,8 @@ value (deltaX).
 @anchor{XREFcolloc}
 @deftypefn {Built-in Function} {[@var{r}, @var{amat}, @var{bmat}, @var{q}] =} colloc (@var{n}, "left", "right")
 Compute derivative and integral weight matrices for orthogonal
-collocation using the subroutines given in J. Villadsen and
-M. L. Michelsen, @cite{Solution of Differential Equation Models by
+collocation using the subroutines given in @nospell{J. Villadsen} and
+@nospell{M. L. Michelsen}, @cite{Solution of Differential Equation Models by
 Polynomial Approximation}.
 @end deftypefn
 

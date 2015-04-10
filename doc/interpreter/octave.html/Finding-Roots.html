@@ -107,9 +107,11 @@ which is roughly
 <code><var>C</var>(s) = <var>C0</var> + <var>C1</var> s + &hellip; + <var>Cl</var> s^l</code>
 polyeig solves the eigenvalue problem
 <code>(<var>C0</var> + <var>C1</var> + &hellip; + <var>Cl</var>)v = 0</code>.
-Note that the eigenvalues <var>z</var> are the zeros of the matrix polynomial.
-<var>z</var> is an <var>lxn</var> vector and <var>v</var> is an (<var>n</var> x <var>n</var>)l matrix
-with columns that correspond to the eigenvectors.
+</p>
+<p>Note that the eigenvalues <var>z</var> are the zeros of the matrix polynomial.
+<var>z</var> is a row vector with <var>n*l</var> elements.  <var>v</var> is a matrix
+(<var>n</var> x <var>n</var>*<var>l</var>) with columns that correspond to the
+eigenvectors.
 </p>
 
 <p><strong>See also:</strong> <a href="Basic-Matrix-Functions.html#XREFeig">eig</a>, <a href="Sparse-Linear-Algebra.html#XREFeigs">eigs</a>, <a href="#XREFcompan">compan</a>.

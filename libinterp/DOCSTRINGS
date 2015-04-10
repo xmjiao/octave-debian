@@ -14,13 +14,15 @@ Undocumented internal function.
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} isguirunning ()
 Return true if Octave is running in GUI mode and false otherwise.
+@seealso{have_window_system}
 @end deftypefn
 argv
 @c argv libinterp/octave.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} argv ()
-Return the command line arguments passed to Octave.  For example,
-if you invoked Octave using the command
+Return the command line arguments passed to Octave.
+
+For example, if you invoked Octave using the command
 
 @example
 octave --no-line-editing --silent
@@ -30,9 +32,9 @@ octave --no-line-editing --silent
 @code{argv} would return a cell array of strings with the elements
 @option{--no-line-editing} and @option{--silent}.
 
-If you write an executable Octave script, @code{argv} will return the
-list of arguments passed to the script.  @xref{Executable Octave Programs},
-for an example of how to create an executable Octave script.
+If you write an executable Octave script, @code{argv} will return the list
+of arguments passed to the script.  @xref{Executable Octave Programs}, for
+an example of how to create an executable Octave script.
 @end deftypefn
 program_invocation_name
 @c program_invocation_name libinterp/octave.cc
@@ -88,7 +90,7 @@ The original variable value is restored when exiting the function.
 @deftypefn {Built-in Function} {} logical (@var{x})
 Convert the numeric object @var{x} to logical type.
 
-Any non-zero values will be converted to true (1) while zero values
+Any nonzero values will be converted to true (1) while zero values
 will be converted to false (0).  The non-numeric value NaN cannot be
 converted and will produce an error.
 
@@ -185,11 +187,31 @@ arguments name a list of parent classes from which the new class is
 derived.
 @seealso{typeinfo, isa}
 @end deftypefn
-__isa_parent__
-@c __isa_parent__ libinterp/octave-value/ov-class.cc
+isa
+@c isa libinterp/octave-value/ov-class.cc
 -*- texinfo -*-
-@deftypefn {Built-in Function} {} __isa_parent__ (@var{class}, @var{name})
-Undocumented internal function.
+@deftypefn {Function File} {} isa (@var{obj}, @var{classname})
+Return true if @var{obj} is an object from the class @var{classname}.
+
+@var{classname} may also be one of the following class categories:
+
+@table @asis
+@item @qcode{"float"}
+Floating point value comprising classes @qcode{"double"} and
+@qcode{"single"}.
+
+@item @qcode{"integer"}
+Integer value comprising classes (u)int8, (u)int16, (u)int32, (u)int64.
+
+@item @qcode{"numeric"}
+Numeric value comprising either a floating point or integer value.
+@end table
+
+If @var{classname} is a cell array of string, a logical array of the same
+size is returned, containing true for each class to which @var{obj}
+belongs to.
+
+@seealso{class, typeinfo}
 @end deftypefn
 __parent_classes__
 @c __parent_classes__ libinterp/octave-value/ov-class.cc
@@ -202,13 +224,13 @@ Undocumented internal function.
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} isobject (@var{x})
 Return true if @var{x} is a class object.
-@seealso{class, typeinfo, isa, ismethod}
+@seealso{class, typeinfo, isa, ismethod, isprop}
 @end deftypefn
 ismethod
 @c ismethod libinterp/octave-value/ov-class.cc
 -*- texinfo -*-
-@deftypefn {Built-in Function} {} ismethod (@var{x}, @var{method})
-Return true if @var{x} is a class object and the string @var{method}
+@deftypefn {Built-in Function} {} ismethod (@var{obj}, @var{method})
+Return true if @var{obj} is a class object and the string @var{method}
 is a method of this class.
 @seealso{isprop, isobject}
 @end deftypefn
@@ -241,6 +263,27 @@ constructed as having a lower precedence than @var{class_name}.
 More that one such class can be specified in a single call.
 This function may only be called from a class constructor.
 @seealso{superiorto}
+@end deftypefn
+__meta_get_package__
+@c __meta_get_package__ libinterp/octave-value/ov-classdef.cc
+
+__superclass_reference__
+@c __superclass_reference__ libinterp/octave-value/ov-classdef.cc
+-*- texinfo -*-
+@deftypefn {Built-in Function} {} __superclass_reference__ ()
+Undocumented internal function.
+@end deftypefn
+__meta_class_query__
+@c __meta_class_query__ libinterp/octave-value/ov-classdef.cc
+-*- texinfo -*-
+@deftypefn {Built-in Function} {} __meta_class_query__ ()
+Undocumented internal function.
+@end deftypefn
+metaclass
+@c metaclass libinterp/octave-value/ov-classdef.cc
+-*- texinfo -*-
+@deftypefn {Built-in Function} {} metaclass (obj)
+Returns the meta.class object corresponding to the class of @var{obj}.
 @end deftypefn
 functions
 @c functions libinterp/octave-value/ov-fcn-handle.cc
@@ -348,9 +391,10 @@ functions from strings is through the use of anonymous functions
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} formula (@var{fun})
 Return a character string representing the inline function @var{fun}.
+
 Note that @code{char (@var{fun})} is equivalent to
 @code{formula (@var{fun})}.
-@seealso{argnames, inline, vectorize}
+@seealso{char, argnames, inline, vectorize}
 @end deftypefn
 argnames
 @c argnames libinterp/octave-value/ov-fcn-inline.cc
@@ -653,7 +697,7 @@ to be an empty cell array.
 
 Finally, if the value is a non-scalar cell array, then @code{struct}
 produces a struct @strong{array}.
-@seealso{cell2struct, fieldnames, orderfields, getfield, setfield, rmfield, structfun}
+@seealso{cell2struct, fieldnames, getfield, setfield, rmfield, isfield, orderfields, isstruct, structfun}
 @end deftypefn
 isstruct
 @c isstruct libinterp/octave-value/ov-struct.cc
@@ -678,14 +722,16 @@ Implements @code{fieldnames()} for structures and Octave objects.
 @deftypefn  {Built-in Function} {} isfield (@var{x}, "@var{name}")
 @deftypefnx {Built-in Function} {} isfield (@var{x}, @var{name})
 Return true if the @var{x} is a structure and it includes an element named
-@var{name}.  If @var{name} is a cell array of strings then a logical array of
-equal dimension is returned.
+@var{name}.
+
+If @var{name} is a cell array of strings then a logical array of equal
+dimension is returned.
 @seealso{fieldnames}
 @end deftypefn
-nfields
-@c nfields libinterp/octave-value/ov-struct.cc
+numfields
+@c numfields libinterp/octave-value/ov-struct.cc
 -*- texinfo -*-
-@deftypefn {Built-in Function} {} nfields (@var{s})
+@deftypefn {Built-in Function} {} numfields (@var{s})
 Return the number of fields of the structure @var{s}.
 @seealso{fieldnames}
 @end deftypefn
@@ -718,12 +764,14 @@ A(1)
 rmfield
 @c rmfield libinterp/octave-value/ov-struct.cc
 -*- texinfo -*-
-@deftypefn  {Built-in Function} {@var{s} =} rmfield (@var{s}, "@var{f}")
-@deftypefnx {Built-in Function} {@var{s} =} rmfield (@var{s}, @var{f})
+@deftypefn  {Built-in Function} {@var{sout} =} rmfield (@var{s}, "@var{f}")
+@deftypefnx {Built-in Function} {@var{sout} =} rmfield (@var{s}, @var{f})
 Return a @emph{copy} of the structure (array) @var{s} with the field @var{f}
-removed.  If @var{f} is a cell array of strings or a character array, remove
-each of the named fields.
-@seealso{orderfields, fieldnames}
+removed.
+
+If @var{f} is a cell array of strings or a character array, remove each of
+the named fields.
+@seealso{orderfields, fieldnames, isfield}
 @end deftypefn
 struct_levels_to_print
 @c struct_levels_to_print libinterp/octave-value/ov-struct.cc
@@ -774,9 +822,11 @@ currently installed data types.
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {} nargin ()
 @deftypefnx {Built-in Function} {} nargin (@var{fcn})
-Within a function, return the number of arguments passed to the function.
-At the top level, return the number of command line arguments passed to
-Octave.
+Report the number of input arguments to a function.
+
+Called from within a function, return the number of arguments passed to the
+function.  At the top level, return the number of command line arguments
+passed to Octave.
 
 If called with the optional argument @var{fcn}---a function name or handle---
 return the declared number of arguments that the function can accept.
@@ -796,18 +846,25 @@ nargin ("union")
 @end example
 
 Programming Note: @code{nargin} does not work on built-in functions.
-@seealso{nargout, varargin, isargout, varargout, nthargout}
+@seealso{nargout, narginchk, varargin, inputname}
 @end deftypefn
 nargout
 @c nargout libinterp/octave-value/ov-usr-fcn.cc
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {} nargout ()
 @deftypefnx {Built-in Function} {} nargout (@var{fcn})
-Within a function, return the number of values the caller expects to
-receive.  If called with the optional argument @var{fcn}---a function
-name or handle---return the number of declared output values that the
-function can produce.  If the final output argument is @var{varargout}
-the returned value is negative.
+Report the number of output arguments from a function.
+
+Called from within a function, return the number of values the caller expects
+to receive.  At the top level, @code{nargout} with no argument is undefined
+and will produce an error.
+
+If called with the optional argument @var{fcn}---a function name or
+handle---return the number of declared output values that the function can
+produce.
+
+If the final output argument is @var{varargout} the returned value is
+negative.
 
 For example,
 
@@ -842,10 +899,9 @@ nargout (@@imread)
 will return -2, because @code{imread} has two outputs and the second is
 @var{varargout}.
 
-At the top level, @code{nargout} with no argument is undefined and will
-produce an error.  @code{nargout} does not work for built-in functions and
+Programming Note.  @code{nargout} does not work for built-in functions and
 returns -1 for all anonymous functions.
-@seealso{nargin, varargin, isargout, varargout, nthargout}
+@seealso{nargin, varargout, isargout, nthargout}
 @end deftypefn
 optimize_subsasgn_calls
 @c optimize_subsasgn_calls libinterp/octave-value/ov-usr-fcn.cc
@@ -867,16 +923,18 @@ The original variable value is restored when exiting the function.
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} isargout (@var{k})
 Within a function, return a logical value indicating whether the argument
-@var{k} will be assigned to a variable on output.  If the result is false,
-the argument has been ignored during the function call through the use of
-the tilde (~) special output argument.  Functions can use @code{isargout} to
-avoid performing unnecessary calculations for outputs which are unwanted.
+@var{k} will be assigned to a variable on output.
+
+If the result is false, the argument has been ignored during the function
+call through the use of the tilde (~) special output argument.  Functions
+can use @code{isargout} to avoid performing unnecessary calculations for
+outputs which are unwanted.
 
 If @var{k} is outside the range @code{1:max (nargout)}, the function returns
 false.  @var{k} can also be an array, in which case the function works
 element-by-element and a logical array is returned.  At the top level,
 @code{isargout} returns an error.
-@seealso{nargout, nargin, varargin, varargout, nthargout}
+@seealso{nargout, varargout, nthargout}
 @end deftypefn
 sizeof
 @c sizeof libinterp/octave-value/ov.cc
@@ -970,6 +1028,53 @@ Return true if @var{x} is a single-quoted character string.
 @deftypefn {Built-in Function} {} is_dq_string (@var{x})
 Return true if @var{x} is a double-quoted character string.
 @seealso{is_sq_string, ischar}
+@end deftypefn
+disable_permutation_matrix
+@c disable_permutation_matrix libinterp/octave-value/ov.cc
+-*- texinfo -*-
+@deftypefn  {Built-in Function} {@var{val} =} disable_permutation_matrix ()
+@deftypefnx {Built-in Function} {@var{old_val} =} disable_permutation_matrix (@var{new_val})
+@deftypefnx {Built-in Function} {} disable_permutation_matrix (@var{new_val}, "local")
+Query or set the internal variable that controls whether permutation
+matrices are stored in a special space-efficient format.  The default
+value is true.  If this option is disabled Octave will store permutation
+matrices as full matrices.
+
+When called from inside a function with the @qcode{"local"} option, the
+variable is changed locally for the function and any subroutines it calls.
+The original variable value is restored when exiting the function.
+@seealso{disable_range, disable_diagonal_matrix}
+@end deftypefn
+disable_diagonal_matrix
+@c disable_diagonal_matrix libinterp/octave-value/ov.cc
+-*- texinfo -*-
+@deftypefn  {Built-in Function} {@var{val} =} disable_diagonal_matrix ()
+@deftypefnx {Built-in Function} {@var{old_val} =} disable_diagonal_matrix (@var{new_val})
+@deftypefnx {Built-in Function} {} disable_diagonal_matrix (@var{new_val}, "local")
+Query or set the internal variable that controls whether diagonal
+matrices are stored in a special space-efficient format.  The default
+value is true.  If this option is disabled Octave will store diagonal
+matrices as full matrices.
+
+When called from inside a function with the @qcode{"local"} option, the
+variable is changed locally for the function and any subroutines it calls.
+The original variable value is restored when exiting the function.
+@seealso{disable_range, disable_permutation_matrix}
+@end deftypefn
+disable_range
+@c disable_range libinterp/octave-value/ov.cc
+-*- texinfo -*-
+@deftypefn  {Built-in Function} {@var{val} =} disable_range ()
+@deftypefnx {Built-in Function} {@var{old_val} =} disable_range (@var{new_val})
+@deftypefnx {Built-in Function} {} disable_range (@var{new_val}, "local")
+Query or set the internal variable that controls whether ranges are stored
+in a special space-efficient format.  The default value is true.  If this
+option is disabled Octave will store ranges as full matrices.
+
+When called from inside a function with the @qcode{"local"} option, the
+variable is changed locally for the function and any subroutines it calls.
+The original variable value is restored when exiting the function.
+@seealso{disable_diagonal_matrix, disable_permutation_matrix}
 @end deftypefn
 int16
 @c int16 libinterp/octave-value/ov-int16.cc
@@ -1164,6 +1269,55 @@ Undocumented internal function.
 __dispatch__
 @c __dispatch__ libinterp/corefcn/__dispatch__.cc
 Undocumented internal function
+__dsearchn__
+@c __dsearchn__ libinterp/corefcn/__dsearchn__.cc
+-*- texinfo -*-
+@deftypefn {Built-in Function} {[@var{idx}, @var{d}] =} dsearch (@var{x}, @var{xi})
+Undocumented internal function.
+@end deftypefn
+__ichol0__
+@c __ichol0__ libinterp/corefcn/__ichol__.cc
+-*- texinfo -*-
+@deftypefn  {Built-in Function} {@var{L} =} __ichol0__ (@var{A})
+@deftypefnx {Built-in Function} {@var{L} =} __ichol0__ (@var{A}, @var{michol})
+Undocumented internal function.
+@end deftypefn
+__icholt__
+@c __icholt__ libinterp/corefcn/__ichol__.cc
+-*- texinfo -*-
+@deftypefn  {Built-in Function} {@var{L} =} __icholt__ (@var{A})
+@deftypefnx {Built-in Function} {@var{L} =} __icholt__ (@var{A}, @var{droptol})
+@deftypefnx {Built-in Function} {@var{L} =} __icholt__ (@var{A}, @var{droptol}, @var{michol})
+Undocumented internal function.
+@end deftypefn
+__ilu0__
+@c __ilu0__ libinterp/corefcn/__ilu__.cc
+-*- texinfo -*-
+@deftypefn  {Built-in Function} {[@var{L}, @var{U}] =} __ilu0__ (@var{A})
+@deftypefnx {Built-in Function} {[@var{L}, @var{U}] =} __ilu0__ (@var{A}, @var{milu})
+@deftypefnx {Built-in Function} {[@var{L}, @var{U}, @var{P}] =} __ilu0__ (@var{A}, @dots{})
+Undocumented internal function.
+@end deftypefn
+__iluc__
+@c __iluc__ libinterp/corefcn/__ilu__.cc
+-*- texinfo -*-
+@deftypefn  {Built-in Function} {[@var{L}, @var{U}] =} __iluc__ (@var{A})
+@deftypefnx {Built-in Function} {[@var{L}, @var{U}] =} __iluc__ (@var{A}, @var{droptol}) 
+@deftypefnx {Built-in Function} {[@var{L}, @var{U}] =} __iluc__ (@var{A}, @var{droptol}, @var{milu})
+@deftypefnx {Built-in Function} {[@var{L}, @var{U}, @var{P}] =} __iluc__ (@var{A}, @dots{})
+Undocumented internal function.
+@end deftypefn
+__ilutp__
+@c __ilutp__ libinterp/corefcn/__ilu__.cc
+-*- texinfo -*-
+@deftypefn  {Built-in Function} {[@var{L}, @var{U}] =} __ilutp__ (@var{A})
+@deftypefnx {Built-in Function} {[@var{L}, @var{U}] =} __ilutp__ (@var{A}, @var{droptol})
+@deftypefnx {Built-in Function} {[@var{L}, @var{U}] =} __ilutp__ (@var{A}, @var{droptol}, @var{thresh})
+@deftypefnx {Built-in Function} {[@var{L}, @var{U}] =} __ilutp__ (@var{A}, @var{droptol}, @var{thresh}, @var{milu})
+@deftypefnx {Built-in Function} {[@var{L}, @var{U}] =} __ilutp__ (@var{A}, @var{droptol}, @var{thresh}, @var{milu}, @var{udiag})
+@deftypefnx {Built-in Function} {[@var{L}, @var{U}, @var{P}] =} __ilutp__ (@var{A}, @dots{})
+Undocumented internal function.
+@end deftypefn
 __lin_interpn__
 @c __lin_interpn__ libinterp/corefcn/__lin_interpn__.cc
 -*- texinfo -*-
@@ -1205,7 +1359,7 @@ In this case, @code{@var{DD} = eye(n)(:,@var{P}) * diag (@var{D})}, where
 
 If four output values are requested, compute @code{@var{AA} =
 @var{CC}*@var{A}*@var{DD}} and @code{@var{BB} = @var{CC}*@var{B}*@var{DD}},
-in which @var{AA} and @var{BB} have non-zero elements of approximately the
+in which @var{AA} and @var{BB} have nonzero elements of approximately the
 same magnitude and @var{CC} and @var{DD} are permuted diagonal matrices as
 in @var{DD} for the algebraic eigenvalue problem.
 
@@ -1640,9 +1794,9 @@ Return 1 for elements of @var{class}.
 
 Additionally, @code{cellfun} accepts an arbitrary function @var{func}
 in the form of an inline function, function handle, or the name of a
-function (in a character string). The function can take one or more arguments,
-with the inputs arguments given by @var{C}, @var{D}, etc.  Equally the
-function can return one or more output arguments.  For example:
+function (in a character string).  The function can take one or more
+arguments, with the inputs arguments given by @var{C}, @var{D}, etc.  
+Equally the function can return one or more output arguments.  For example:
 
 @example
 @group
@@ -1961,8 +2115,8 @@ endfor
 -*- texinfo -*-
 @deftypefn {Built-in Function} {[@var{r}, @var{amat}, @var{bmat}, @var{q}] =} colloc (@var{n}, "left", "right")
 Compute derivative and integral weight matrices for orthogonal
-collocation using the subroutines given in J. Villadsen and
-M. L. Michelsen, @cite{Solution of Differential Equation Models by
+collocation using the subroutines given in @nospell{J. Villadsen} and
+@nospell{M. L. Michelsen}, @cite{Solution of Differential Equation Models by
 Polynomial Approximation}.
 @end deftypefn
 conv2
@@ -2129,10 +2283,10 @@ declare which variables in the problem are algebraic (default is 0).
 A vector of the same length as the state vector.  A nonzero element
 indicates that the corresponding element of the state vector is an
 algebraic variable (i.e., its derivative does not appear explicitly
-in the equation set.
+in the equation set).
 
 This option is required by the
-@qcode{compute consistent initial condition"} and
+@qcode{"compute consistent initial condition"} and
 @qcode{"exclude algebraic variables from error test"} options.
 
 @item @qcode{"enforce inequality constraints"}
@@ -2660,15 +2814,15 @@ parameters for @code{dassl}.
 @deftypefn  {Built-in Function} {} all (@var{x})
 @deftypefnx {Built-in Function} {} all (@var{x}, @var{dim})
 For a vector argument, return true (logical 1) if all elements of the vector
-are non-zero.
+are nonzero.
 
 For a matrix argument, return a row vector of logical ones and
 zeros with each element indicating whether all of the elements of the
-corresponding column of the matrix are non-zero.  For example:
+corresponding column of the matrix are nonzero.  For example:
 
 @example
 @group
-all ([2, 3; 1, 0]))
+all ([2, 3; 1, 0])
     @result{} [ 1, 0 ]
 @end group
 @end example
@@ -2683,11 +2837,11 @@ If the optional argument @var{dim} is supplied, work along dimension
 @deftypefn  {Built-in Function} {} any (@var{x})
 @deftypefnx {Built-in Function} {} any (@var{x}, @var{dim})
 For a vector argument, return true (logical 1) if any element of the vector
-is non-zero.
+is nonzero.
 
 For a matrix argument, return a row vector of logical ones and
 zeros with each element indicating whether any of the elements of the
-corresponding column of the matrix are non-zero.  For example:
+corresponding column of the matrix are nonzero.  For example:
 
 @example
 @group
@@ -2762,8 +2916,7 @@ $x = 0$, $f = e = 0$.
 rem
 @c rem libinterp/corefcn/data.cc
 -*- texinfo -*-
-@deftypefn  {Mapping Function} {} rem (@var{x}, @var{y})
-@deftypefnx {Mapping Function} {} fmod (@var{x}, @var{y})
+@deftypefn {Mapping Function} {} rem (@var{x}, @var{y})
 Return the remainder of the division @code{@var{x} / @var{y}}, computed
 using the expression
 
@@ -2830,8 +2983,8 @@ See @code{sum} for an explanation of the optional parameters
 @deftypefnx {Built-in Function} {@var{v} =} diag (@var{M}, @var{k})
 Return a diagonal matrix with vector @var{v} on diagonal @var{k}.  The
 second argument is optional.  If it is positive, the vector is placed on
-the @var{k}-th super-diagonal.  If it is negative, it is placed on the
-@var{-k}-th sub-diagonal.  The default value of @var{k} is 0, and the
+the @var{k}-th superdiagonal.  If it is negative, it is placed on the
+@var{-k}-th subdiagonal.  The default value of @var{k} is 0, and the
 vector is placed on the main diagonal.  For example:
 
 @example
@@ -2857,8 +3010,30 @@ Given a matrix argument, instead of a vector, @code{diag} extracts the
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {} prod (@var{x})
 @deftypefnx {Built-in Function} {} prod (@var{x}, @var{dim})
-Product of elements along dimension @var{dim}.  If @var{dim} is
-omitted, it defaults to the first non-singleton dimension.
+@deftypefnx {Built-in Function} {} prod (@dots{}, "native")
+@deftypefnx {Built-in Function} {} prod (@dots{}, "double")
+Product of elements along dimension @var{dim}.
+
+If @var{dim} is omitted, it defaults to the first non-singleton dimension.
+
+The optional @qcode{"type"} input determines the class of the variable
+used for calculations.  If the argument @qcode{"native"} is given, then
+the operation is performed in the same type as the original argument, rather
+than the default double type.
+
+For example:
+
+@example
+@group
+prod ([true, true])
+   @result{} 1
+prod ([true, true], "native")
+   @result{} true
+@end group
+@end example
+
+On the contrary, if @qcode{"double"} is given, the operation is performed
+in double precision even for single precision inputs.
 @seealso{cumprod, sum}
 @end deftypefn
 horzcat
@@ -2944,6 +3119,27 @@ cat (4, ones (2, 2), zeros (2, 2))
 Return the generalized transpose for an N-D array object @var{A}.
 The permutation vector @var{perm} must contain the elements
 @code{1:ndims (A)} (in any order, but each element must appear only once).
+
+The @var{N}th dimension of @var{A} gets remapped to dimension 
+@code{@var{PERM}(@var{N})}.  For example:
+
+@example
+@group
+@var{x} = zeros ([2, 3, 5, 7]);
+size (@var{x})
+   @result{}  2   3   5   7
+
+size (permute (@var{x}, [2, 1, 3, 4]))
+   @result{}  3   2   5   7
+
+size (permute (@var{x}, [1, 3, 4, 2]))
+   @result{}  2   5   7   3
+
+## The identity permutation
+size (permute (@var{x}, [1, 2, 3, 4]))
+   @result{}  2   3   5   7
+@end group
+@end example
 @seealso{ipermute}
 @end deftypefn
 ipermute
@@ -3068,7 +3264,7 @@ Called with a single or no argument, size_equal returns true.
 @c nnz libinterp/corefcn/data.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {@var{n} =} nnz (@var{a})
-Return the number of non-zero elements in @var{a}.
+Return the number of nonzero elements in @var{a}.
 @seealso{nzmax, nonzeros, find}
 @end deftypefn
 nzmax
@@ -3104,12 +3300,16 @@ Return the number of columns of @var{a}.
 @deftypefnx {Built-in Function} {} sum (@dots{}, "native")
 @deftypefnx {Built-in Function} {} sum (@dots{}, "double")
 @deftypefnx {Built-in Function} {} sum (@dots{}, "extra")
-Sum of elements along dimension @var{dim}.  If @var{dim} is
-omitted, it defaults to the first non-singleton dimension.
+Sum of elements along dimension @var{dim}.
 
-If the optional argument @qcode{"native"} is given, then the sum is
-performed in the same type as the original argument, rather than in the
-default double type.  For example:
+If @var{dim} is omitted, it defaults to the first non-singleton dimension.
+
+The optional @qcode{"type"} input determines the class of the variable
+used for calculations.  If the argument @qcode{"native"} is given, then
+the operation is performed in the same type as the original argument, rather
+than the default double type.
+
+For example:
 
 @example
 @group
@@ -3123,8 +3323,8 @@ sum ([true, true], "native")
 On the contrary, if @qcode{"double"} is given, the sum is performed in
 double precision even for single precision inputs.
 
-For double precision inputs, @qcode{"extra"} indicates that a more accurate
-algorithm than straightforward summation is to be used.  For single precision
+For double precision inputs, the @qcode{"extra"} option will use a more
+accurate algorithm than straightforward summation.  For single precision
 inputs, @qcode{"extra"} is the same as @qcode{"double"}.  Otherwise,
 @qcode{"extra"} has no effect.
 @seealso{cumsum, sumsq, prod}
@@ -3224,15 +3424,50 @@ complex array.  Logical and character arrays are not considered to be
 numeric.
 @seealso{isinteger, isfloat, isreal, iscomplex, islogical, ischar, iscell, isstruct, isa}
 @end deftypefn
+isscalar
+@c isscalar libinterp/corefcn/data.cc
+-*- texinfo -*-
+@deftypefn {Built-in Function} {} isscalar (@var{x})
+Return true if @var{x} is a scalar.
+@seealso{isvector, ismatrix}
+@end deftypefn
+isvector
+@c isvector libinterp/corefcn/data.cc
+-*- texinfo -*-
+@deftypefn {Function File} {} isvector (@var{x})
+Return true if @var{x} is a vector.
+
+A vector is a 2-D array where one of the dimensions is equal to 1.  As a
+consequence a 1x1 array, or scalar, is also a vector.
+@seealso{isscalar, ismatrix, size, rows, columns, length}
+@end deftypefn
+isrow
+@c isrow libinterp/corefcn/data.cc
+-*- texinfo -*-
+@deftypefn {Function File} {} isrow (@var{x})
+Return true if @var{x} is a row vector 1xN with non-negative N.
+@seealso{iscolumn, isscalar, isvector, ismatrix}
+@end deftypefn
+iscolumn
+@c iscolumn libinterp/corefcn/data.cc
+-*- texinfo -*-
+@deftypefn {Function File} {} iscolumn (@var{x})
+Return true if @var{x} is a column vector Nx1 with non-negative N.
+@seealso{isrow, isscalar, isvector, ismatrix}
+@end deftypefn
 ismatrix
 @c ismatrix libinterp/corefcn/data.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} ismatrix (@var{a})
-Return true if @var{a} is a numeric, logical, or character matrix.
-Scalars (1x1 matrices) and vectors (@nospell{1xN} or @nospell{Nx1} matrices)
-are subsets of the more general N-dimensional matrix and @code{ismatrix}
-will return true for these objects as well.
+Return true if @var{a} is a 2-D array.
 @seealso{isscalar, isvector, iscell, isstruct, issparse, isa}
+@end deftypefn
+issquare
+@c issquare libinterp/corefcn/data.cc
+-*- texinfo -*-
+@deftypefn {Function File} {} issquare (@var{x})
+Return true if @var{x} is a square matrix.
+@seealso{isscalar, isvector, ismatrix, size}
 @end deftypefn
 ones
 @c ones libinterp/corefcn/data.cc
@@ -3620,7 +3855,7 @@ eye (2)
 @equiv{}
 eye (2, 2)
 @equiv{}
-eye (size ([1, 2; 3, 4])
+eye (size ([1, 2; 3, 4]))
 @end group
 @end example
 
@@ -3826,9 +4061,10 @@ compute the norms of each column and return a row vector.
 not
 @c not libinterp/corefcn/data.cc
 -*- texinfo -*-
-@deftypefn {Built-in Function} {} not (@var{x})
-Return the logical NOT of @var{x}.  This function is equivalent to
-@code{! x}.
+@deftypefn {Built-in Function} {@var{z} =} not (@var{x})
+Return the logical NOT of @var{x}.
+
+This function is equivalent to the operator syntax @w{@code{! x}}.
 @seealso{and, or, xor}
 @end deftypefn
 uplus
@@ -4018,12 +4254,13 @@ This function and @w{@tcode{x .@xbackslashchar{} y}} are equivalent.
 and
 @c and libinterp/corefcn/data.cc
 -*- texinfo -*-
-@deftypefn  {Built-in Function} {} and (@var{x}, @var{y})
-@deftypefnx {Built-in Function} {} and (@var{x1}, @var{x2}, @dots{})
+@deftypefn  {Built-in Function} {@var{z} =} and (@var{x}, @var{y})
+@deftypefnx {Built-in Function} {@var{z} =} and (@var{x1}, @var{x2}, @dots{})
 Return the logical AND of @var{x} and @var{y}.
-This function is equivalent to @w{@code{x & y}}.
-If more arguments are given, the logical and is applied
-cumulatively from left to right:
+
+This function is equivalent to the operator syntax @w{@code{x & y}}.  If
+more than two arguments are given, the logical AND is applied cumulatively
+from left to right:
 
 @example
 (@dots{}((x1 & x2) & x3) & @dots{})
@@ -4035,12 +4272,13 @@ At least one argument is required.
 or
 @c or libinterp/corefcn/data.cc
 -*- texinfo -*-
-@deftypefn  {Built-in Function} {} or (@var{x}, @var{y})
-@deftypefnx {Built-in Function} {} or (@var{x1}, @var{x2}, @dots{})
+@deftypefn  {Built-in Function} {@var{z} =} or (@var{x}, @var{y})
+@deftypefnx {Built-in Function} {@var{z} =} or (@var{x1}, @var{x2}, @dots{})
 Return the logical OR of @var{x} and @var{y}.
-This function is equivalent to @w{@code{x | y}}.
-If more arguments are given, the logical or is applied
-cumulatively from left to right:
+
+This function is equivalent to the operator syntax @w{@code{x | y}}.  If
+more than two arguments are given, the logical OR is applied cumulatively
+from left to right:
 
 @example
 (@dots{}((x1 | x2) | x3) | @dots{})
@@ -4048,6 +4286,17 @@ cumulatively from left to right:
 
 At least one argument is required.
 @seealso{and, not, xor}
+@end deftypefn
+colon
+@c colon libinterp/corefcn/data.cc
+-*- texinfo -*-
+@deftypefn  {Built-in Function} {@var{r} =} colon (@var{base}, @var{limit})
+@deftypefnx {Built-in Function} {@var{r} =} colon (@var{base}, @var{increment}, @var{limit})
+Return the result of the colon expression corresponding to @var{base},
+@var{limit}, and optionally, @var{increment}.
+
+This function is equivalent to the operator syntax @w{@code{base : limit}}
+or @w{@code{base : increment : limit}}.
 @end deftypefn
 tic
 @c tic libinterp/corefcn/data.cc
@@ -4363,58 +4612,73 @@ containing the dimensions of the decoded array.
 dbstop
 @c dbstop libinterp/corefcn/debug.cc
 -*- texinfo -*-
-@deftypefn  {Built-in Function} {@var{rline} =} dbstop ("@var{func}")
+@deftypefn  {Command} {} dbstop @var{func}
+@deftypefnx {Command} {} dbstop @var{func} @var{line}
+@deftypefnx {Command} {} dbstop @var{func} @var{line1} @var{line2} @dots{}
+@deftypefnx {Command} {} dbstop @var{line} @dots{}
+@deftypefnx {Built-in Function} {@var{rline} =} dbstop ("@var{func}")
 @deftypefnx {Built-in Function} {@var{rline} =} dbstop ("@var{func}", @var{line})
 @deftypefnx {Built-in Function} {@var{rline} =} dbstop ("@var{func}", @var{line1}, @var{line2}, @dots{})
-Set a breakpoint in function @var{func}.
+@deftypefnx {Built-in Function} {} dbstop ("@var{func}", [@var{line1}, @dots{}])
+@deftypefnx {Built-in Function} {} dbstop (@var{line}, @dots{})
+Set a breakpoint at line number @var{line} in function @var{func}.
 
 Arguments are
 
 @table @var
 @item func
-Function name as a string variable.  When already in debug
-mode this should be left out and only the line should be given.
+Function name as a string variable.  When already in debug mode this argument
+can be omitted and the current function will be used.
 
 @item line
-Line number where the breakpoint should be set.  Multiple
-lines may be given as separate arguments or as a vector.
+Line number where the breakpoint should be set.  Multiple lines may be given
+as separate arguments or as a vector.
 @end table
 
-When called with a single argument @var{func}, the breakpoint
-is set at the first executable line in the named function.
+When called with a single argument @var{func}, the breakpoint is set at the
+first executable line in the named function.
 
-The optional output @var{rline} is the real line number where the
-breakpoint was set.  This can differ from specified line if
-the line is not executable.  For example, if a breakpoint attempted on a
-blank line then Octave will set the real breakpoint at the
-next executable line.
+The optional output @var{rline} is the real line number where the breakpoint
+was set.  This can differ from the specified line if the line is not
+executable.  For example, if a breakpoint attempted on a blank line then
+Octave will set the real breakpoint at the next executable line.
 @seealso{dbclear, dbstatus, dbstep, debug_on_error, debug_on_warning, debug_on_interrupt}
 @end deftypefn
 dbclear
 @c dbclear libinterp/corefcn/debug.cc
 -*- texinfo -*-
-@deftypefn  {Built-in Function} {} dbclear ("@var{func}")
-@deftypefnx {Built-in Function} {} dbclear ("@var{func}", @var{line}, @dots{})
+@deftypefn  {Command} {} dbclear @var{func}
+@deftypefnx {Command} {} dbclear @var{func} @var{line}
+@deftypefnx {Command} {} dbclear @var{func} @var{line1} @var{line2} @dots{}
+@deftypefnx {Command} {} dbclear @var{line} @dots{}
+@deftypefnx {Command} {} dbclear all
+@deftypefnx {Built-in Function} {} dbclear ("@var{func}")
+@deftypefnx {Built-in Function} {} dbclear ("@var{func}", @var{line})
+@deftypefnx {Built-in Function} {} dbclear ("@var{func}", @var{line1}, @var{line2}, @dots{})
+@deftypefnx {Built-in Function} {} dbclear ("@var{func}", [@var{line1}, @dots{}])
 @deftypefnx {Built-in Function} {} dbclear (@var{line}, @dots{})
-Delete a breakpoint in the function @var{func}.
+@deftypefnx {Built-in Function} {} dbclear ("all")
+Delete a breakpoint at line number @var{line} in the function @var{func}.
 
 Arguments are
 
 @table @var
 @item func
-Function name as a string variable.  When already in debug
-mode this argument should be omitted and only the line number should be
-given.
+Function name as a string variable.  When already in debug mode this argument
+can be omitted and the current function will be used.
 
 @item line
-Line number from which to remove a breakpoint.  Multiple
-lines may be given as separate arguments or as a vector.
+Line number from which to remove a breakpoint.  Multiple lines may be given
+as separate arguments or as a vector.
 @end table
 
-When called without a line number specification all breakpoints
-in the named function are cleared.
+When called without a line number specification all breakpoints in the named
+function are cleared.
 
 If the requested line is not a breakpoint no action is performed.
+
+The special keyword @qcode{"all"} will clear all breakpoints from all
+files.
 @seealso{dbstop, dbstatus, dbwhere}
 @end deftypefn
 dbstatus
@@ -4445,6 +4709,9 @@ The name of the m-file where the function code is located.
 A line number, or vector of line numbers, with a breakpoint.
 @end table
 
+Note: When @code{dbstatus} is called from the debug prompt within a function,
+the list of breakpoints is automatically trimmed to the breakpoints in the
+current function.
 @seealso{dbclear, dbwhere}
 @end deftypefn
 dbwhere
@@ -4531,8 +4798,8 @@ struct array is currently active.
 dbup
 @c dbup libinterp/corefcn/debug.cc
 -*- texinfo -*-
-@deftypefn  {Built-in Function} {} dbup
-@deftypefnx {Built-in Function} {} dbup (@var{n})
+@deftypefn  {Command} {} dbup
+@deftypefnx {Command} {} dbup @var{n}
 In debugging mode, move up the execution stack @var{n} frames.
 If @var{n} is omitted, move up one frame.
 @seealso{dbstack, dbdown}
@@ -4540,8 +4807,8 @@ If @var{n} is omitted, move up one frame.
 dbdown
 @c dbdown libinterp/corefcn/debug.cc
 -*- texinfo -*-
-@deftypefn  {Built-in Function} {} dbdown
-@deftypefnx {Built-in Function} {} dbdown (@var{n})
+@deftypefn  {Command} {} dbdown
+@deftypefnx {Command} {} dbdown @var{n}
 In debugging mode, move down the execution stack @var{n} frames.
 If @var{n} is omitted, move down one frame.
 @seealso{dbstack, dbup}
@@ -4587,6 +4854,15 @@ return to the Octave prompt.
 @deftypefn {Built-in Function} {} isdebugmode ()
 Return true if in debugging mode, otherwise false.
 @seealso{dbwhere, dbstack, dbstatus}
+@end deftypefn
+__db_next_breakpoint_quiet__
+@c __db_next_breakpoint_quiet__ libinterp/corefcn/debug.cc
+-*- texinfo -*-
+@deftypefn  {Built-in Function} {} __db_next_breakpoint_quiet__ ()
+@deftypefnx {Built-in Function} {} __db_next_breakpoint_quiet__ (@var{flag})
+Disable line info printing at the next breakpoint.
+
+With a logical argument @var{flag}, set the state on or off.
 @end deftypefn
 EDITOR
 @c EDITOR libinterp/corefcn/defaults.cc
@@ -4652,7 +4928,8 @@ Return the name of the top-level Octave installation directory.
 @c OCTAVE_VERSION libinterp/corefcn/defaults.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} OCTAVE_VERSION ()
-Return the version number of Octave, as a string.
+Return the version number of Octave as a string.
+@seealso{ver, version}
 @end deftypefn
 det
 @c det libinterp/corefcn/det.cc
@@ -4852,10 +5129,10 @@ glob ("file[12]")
         [2,1] = file2
       @}
 @end example
-@seealso{ls, dir, readdir, what, fnmatch}
+@seealso{ls, dir, readdir, what}
 @end deftypefn
-fnmatch
-@c fnmatch libinterp/corefcn/dirfns.cc
+__fnmatch__
+@c __fnmatch__ libinterp/corefcn/dirfns.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} fnmatch (@var{pattern}, @var{string})
 Return true or false for each element of @var{string} that matches any of
@@ -5020,7 +5297,7 @@ Error---no computation, algorithm termination condition not met,
 return @code{NaN}.
 @end enumerate
 
-Reference: Milton Abramowitz and Irene A Stegun,
+Reference: Milton @nospell{Abramowitz} and Irene A @nospell{Stegun},
 @cite{Handbook of Mathematical Functions}, Chapter 16 (Sections 16.4, 16.13,
 and 16.15), Dover, 1965.
 
@@ -5052,7 +5329,7 @@ Calling @code{error} also sets Octave's internal error state such that
 control will return to the top level without evaluating any more
 commands.  This is useful for aborting from functions or scripts.
 
-If the error message does not end with a new line character, Octave will
+If the error message does not end with a newline character, Octave will
 print a traceback of all the function calls leading to the error.  For
 example, given the following function definitions:
 
@@ -5080,10 +5357,10 @@ error:   f at line 1, column 15
 @end group
 @end example
 
-If the error message ends in a new line character, Octave will print the
+If the error message ends in a newline character, Octave will print the
 message but will not display any traceback messages as it returns
 control to the top level.  For example, modifying the error message
-in the previous example to end in a new line causes Octave to only print
+in the previous example to end in a newline causes Octave to only print
 a single message:
 
 @example
@@ -5116,7 +5393,7 @@ error (err_msg);
 which will only stop execution if an error has been found.
 
 Implementation Note: For compatibility with @sc{matlab}, escape
-sequences (e.g., @qcode{"\n"} => newline) are processed in @var{template}
+sequences (e.g., "\n" => newline) are processed in @var{template}
 regardless of whether @var{template} has been defined within single quotes
 as long as there are two or more input arguments.
 Use a second backslash to stop interpolation of the escape sequence (e.g.,
@@ -5132,6 +5409,7 @@ Use a second backslash to stop interpolation of the escape sequence (e.g.,
 @deftypefnx {Built-in Function} {} warning ("off", @var{id})
 @deftypefnx {Built-in Function} {} warning ("query", @var{id})
 @deftypefnx {Built-in Function} {} warning ("error", @var{id})
+@deftypefnx {Built-in Function} {} warning (@var{state}, "backtrace")
 @deftypefnx {Built-in Function} {} warning (@var{state}, @var{id}, "local")
 Format the optional arguments under the control of the template string
 @var{template} using the same rules as the @code{printf} family of
@@ -5162,6 +5440,11 @@ warning ("error");
 @end group
 @end example
 
+If the state is @qcode{"on"} or @qcode{"off"} and the third argument
+is @qcode{"backtrace"}, then a stack trace is printed along with the
+warning message when warnings occur inside function calls.  This option
+is enabled by default.
+
 If the state is @qcode{"on"}, @qcode{"off"}, or @qcode{"error"}
 and the third argument is @qcode{"local"}, then the warning state
 will be set temporarily, until the end of the current function.
@@ -5172,7 +5455,7 @@ function.  The @qcode{"local"} option is ignored if used in the top-level
 workspace.
 
 Implementation Note: For compatibility with @sc{matlab}, escape
-sequences (e.g., @qcode{"\n"} => newline) are processed in @var{template}
+sequences (e.g., "\n" => newline) are processed in @var{template}
 regardless of whether @var{template} has been defined within single quotes
 as long as there are two or more input arguments.
 Use a second backslash to stop interpolation of the escape sequence (e.g.,
@@ -5248,8 +5531,8 @@ argument, set the last warning message to @var{msg}.  With two arguments,
 also set the last message identifier.
 @seealso{warning, lasterror, lasterr}
 @end deftypefn
-usage
-@c usage libinterp/corefcn/error.cc
+__usage__
+@c __usage__ libinterp/corefcn/error.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} usage (@var{msg})
 Print the message @var{msg}, prefixed by the string @samp{usage: }, and
@@ -5441,29 +5724,39 @@ is resized and padded with zeros.
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {} fclose (@var{fid})
 @deftypefnx {Built-in Function} {} fclose ("all")
-Close the specified file.  If successful, @code{fclose} returns 0,
-otherwise, it returns -1.  The second form of the @code{fclose} call closes
-all open files except @code{stdout}, @code{stderr}, and @code{stdin}.
-@seealso{fopen, freport}
+@deftypefnx {Built-in Function} {@var{status} =} fclose ("all")
+Close the file specified by the file descriptor @var{fid}.
+
+If successful, @code{fclose} returns 0, otherwise, it returns -1.  The
+second form of the @code{fclose} call closes all open files except
+@code{stdout}, @code{stderr}, and @code{stdin}.
+
+Programming Note: When using @qcode{"all"} the file descriptors associated
+with gnuplot will also be closed.  This will prevent further plotting with
+gnuplot until Octave is closed and restarted.
+@seealso{fopen, fflush, freport}
 @end deftypefn
 fclear
 @c fclear libinterp/corefcn/file-io.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} fclear (@var{fid})
-Clear the stream state for the specified file.
-@seealso{fopen}
+Clear the stream state for the file specified by the file descriptor
+@var{fid}.
+@seealso{ferror, fopen}
 @end deftypefn
 fflush
 @c fflush libinterp/corefcn/file-io.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} fflush (@var{fid})
-Flush output to @var{fid}.  This is useful for ensuring that all
-pending output makes it to the screen before some other event occurs.
-For example, it is always a good idea to flush the standard output
-stream before calling @code{input}.
+Flush output to file descriptor @var{fid}.
 
 @code{fflush} returns 0 on success and an OS dependent error value
 (@minus{}1 on Unix) on error.
+
+Programming Note: Flushing is useful for ensuring that all pending output
+makes it to the screen before some other event occurs.  For example, it is
+always a good idea to flush the standard output stream before calling
+@code{input}.
 @seealso{fopen, fclose}
 @end deftypefn
 fgetl
@@ -5475,8 +5768,7 @@ Read characters from a file, stopping after a newline, or EOF,
 or @var{len} characters have been read.  The characters read, excluding
 the possible trailing newline, are returned as a string.
 
-If @var{len} is omitted, @code{fgetl} reads until the next newline
-character.
+If @var{len} is omitted, @code{fgetl} reads until the next newline character.
 
 If there are no more characters to read, @code{fgetl} returns @minus{}1.
 
@@ -5492,8 +5784,7 @@ Read characters from a file, stopping after a newline, or EOF,
 or @var{len} characters have been read.  The characters read, including
 the possible trailing newline, are returned as a string.
 
-If @var{len} is omitted, @code{fgets} reads until the next newline
-character.
+If @var{len} is omitted, @code{fgets} reads until the next newline character.
 
 If there are no more characters to read, @code{fgets} returns @minus{}1.
 
@@ -5506,7 +5797,9 @@ To read a line and discard the terminating newline see @code{fgetl}.
 @deftypefn  {Built-in Function} {@var{nlines} =} fskipl (@var{fid})
 @deftypefnx {Built-in Function} {@var{nlines} =} fskipl (@var{fid}, @var{count})
 @deftypefnx {Built-in Function} {@var{nlines} =} fskipl (@var{fid}, Inf)
-Read and skip @var{count} lines from the file descriptor @var{fid}.
+Read and skip @var{count} lines from the file specified by the file
+descriptor @var{fid}.
+
 @code{fskipl} discards characters until an end-of-line is encountered exactly
 @var{count}-times, or until the end-of-file marker is found.
 
@@ -5520,7 +5813,10 @@ Returns the number of lines skipped (end-of-line sequences encountered).
 fopen
 @c fopen libinterp/corefcn/file-io.cc
 -*- texinfo -*-
-@deftypefn  {Built-in Function} {[@var{fid}, @var{msg}] =} fopen (@var{name}, @var{mode}, @var{arch})
+@deftypefn  {Built-in Function} {@var{fid} =} fopen (@var{name})
+@deftypefnx {Built-in Function} {@var{fid} =} fopen (@var{name}, @var{mode})
+@deftypefnx {Built-in Function} {@var{fid} =} fopen (@var{name}, @var{mode}, @var{arch})
+@deftypefnx {Built-in Function} {[@var{fid}, @var{msg}] =} fopen (@dots{})
 @deftypefnx {Built-in Function} {@var{fid_list} =} fopen ("all")
 @deftypefnx {Built-in Function} {[@var{file}, @var{mode}, @var{arch}] =} fopen (@var{fid})
 The first form of the @code{fopen} function opens the named file with
@@ -5559,7 +5855,7 @@ produce unexpected results.
 The possible values @samp{mode} may have are
 
 @table @asis
-@item @samp{r}
+@item @samp{r} (default)
 Open a file for reading.
 
 @item @samp{w}
@@ -5584,7 +5880,7 @@ Append a @qcode{"t"} to the mode string to open the file in text mode or a
 @qcode{"b"} to open in binary mode.  On Windows and Macintosh systems, text
 mode reading and writing automatically converts linefeeds to the
 appropriate line end character for the system (carriage-return linefeed
-on Windows, carriage-return on Macintosh).  The default if no mode is
+on Windows, carriage-return on Macintosh).  The default when no mode is
 specified is binary mode.
 
 Additionally, you may append a @qcode{"z"} to the mode string to open a
@@ -5595,8 +5891,8 @@ The parameter @var{arch} is a string specifying the default data format
 for the file.  Valid values for @var{arch} are:
 
 @table @samp
-@item native
-The format of the current machine (this is the default).
+@item native (default)
+The format of the current machine.
 
 @item ieee-be
 IEEE big endian format.
@@ -5621,23 +5917,26 @@ for reading, writing, or both.  For example:
 @group
 freport ()
 
-     @print{}  number  mode  name
-     @print{}
-     @print{}       0     r  stdin
-     @print{}       1     w  stdout
-     @print{}       2     w  stderr
-     @print{}       3     r  myfile
+     @print{}  number  mode  arch       name
+     @print{}  ------  ----  ----       ----
+     @print{}     0     r    ieee-le    stdin
+     @print{}     1     w    ieee-le    stdout
+     @print{}     2     w    ieee-le    stderr
+     @print{}     3     r    ieee-le    myfile
 @end group
 @end example
-@seealso{fopen, fclose}
+@seealso{fopen, fclose, is_valid_file_id}
 @end deftypefn
 frewind
 @c frewind libinterp/corefcn/file-io.cc
 -*- texinfo -*-
-@deftypefn {Built-in Function} {} frewind (@var{fid})
-Move the file pointer to the beginning of the file @var{fid}, returning
-0 for success, and -1 if an error was encountered.  It is equivalent to
-@code{fseek (@var{fid}, 0, SEEK_SET)}.
+@deftypefn  {Built-in Function} {} frewind (@var{fid})
+@deftypefnx {Built-in Function} {@var{status} =} frewind (@var{fid})
+Move the file pointer to the beginning of the file specified by file
+descriptor @var{fid}.
+
+@code{frewind} returns 0 for success, and -1 if an error is encountered.  It
+is equivalent to @code{fseek (@var{fid}, 0, SEEK_SET)}.
 @seealso{fseek, ftell, fopen}
 @end deftypefn
 fseek
@@ -5646,7 +5945,7 @@ Move the file pointer to the beginning of the file @var{fid}, returning
 @deftypefn  {Built-in Function} {} fseek (@var{fid}, @var{offset})
 @deftypefnx {Built-in Function} {} fseek (@var{fid}, @var{offset}, @var{origin})
 @deftypefnx {Built-in Function} {@var{status} =} fseek (@dots{})
-Set the file pointer to any location within the file @var{fid}.
+Set the file pointer to the location @var{offset} within the file @var{fid}.
 
 The pointer is positioned @var{offset} characters from the @var{origin},
 which may be one of the predefined variables @w{@code{SEEK_CUR}} (current
@@ -5656,24 +5955,30 @@ file) or strings @qcode{"cof"}, @qcode{"bof"} or @qcode{"eof"}.  If
 be positive, negative, or zero but not all combinations of @var{origin} and
 @var{offset} can be realized.
 
-Return 0 on success and -1 on error.
+@code{fseek} returns 0 on success and -1 on error.
 @seealso{fskipl, frewind, ftell, fopen}
 @end deftypefn
 ftell
 @c ftell libinterp/corefcn/file-io.cc
 -*- texinfo -*-
-@deftypefn {Built-in Function} {} ftell (@var{fid})
-Return the position of the file pointer as the number of characters
-from the beginning of the file @var{fid}.
-@seealso{fseek, feof, fopen}
+@deftypefn {Built-in Function} {@var{pos} =} ftell (@var{fid})
+Return the position of the file pointer as the number of characters from the
+beginning of the file specified by file descriptor @var{fid}.
+@seealso{fseek, frewind, feof, fopen}
 @end deftypefn
 fprintf
 @c fprintf libinterp/corefcn/file-io.cc
 -*- texinfo -*-
-@deftypefn {Built-in Function} {} fprintf (@var{fid}, @var{template}, @dots{})
-This function is just like @code{printf}, except that the output is
-written to the stream @var{fid} instead of @code{stdout}.
-If @var{fid} is omitted, the output is written to @code{stdout}.
+@deftypefn  {Built-in Function} {} fprintf (@var{fid}, @var{template}, @dots{})
+@deftypefnx {Built-in Function} {} fprintf (@var{template}, @dots{})
+@deftypefnx {Built-in Function} {@var{numbytes} =} fprintf (@dots{})
+This function is equivalent to @code{printf}, except that the output is
+written to the file descriptor @var{fid} instead of @code{stdout}.
+
+If @var{fid} is omitted, the output is written to @code{stdout} making the
+function exactly equivalent to @code{printf}.
+
+The optional output returns the number of bytes written to the file.
 @seealso{fputs, fdisp, fwrite, fscanf, printf, sprintf, fopen}
 @end deftypefn
 printf
@@ -5693,17 +5998,26 @@ complete description of the syntax of the template string.
 fputs
 @c fputs libinterp/corefcn/file-io.cc
 -*- texinfo -*-
-@deftypefn {Built-in Function} {} fputs (@var{fid}, @var{string})
-Write a string to a file with no formatting.
+@deftypefn  {Built-in Function} {} fputs (@var{fid}, @var{string})
+@deftypefnx {Built-in Function} {@var{status} =} fputs (@var{fid}, @var{string})
+Write the string @var{string} to the file with file descriptor @var{fid}.
 
-Return a non-negative number on success and EOF on error.
+The string is written to the file with no additional formatting.  Use
+@code{fdisp} instead to automatically append a newline character appropriate
+for the local machine.
+
+Return a non-negative number on success or EOF on error.
 @seealso{fdisp, fprintf, fwrite, fopen}
 @end deftypefn
 puts
 @c puts libinterp/corefcn/file-io.cc
 -*- texinfo -*-
-@deftypefn {Built-in Function} {} puts (@var{string})
+@deftypefn  {Built-in Function} {} puts (@var{string})
+@deftypefnx {Built-in Function} {@var{status} =} puts (@var{string})
 Write a string to the standard output with no formatting.
+
+The string is written verbatim to the standard output.  Use @code{disp} to
+automatically append a newline character appropriate for the local machine.
 
 Return a non-negative number on success and EOF on error.
 @seealso{fputs, disp}
@@ -5789,16 +6103,19 @@ is returned in @var{pos}.
 @deftypefnx {Built-in Function} {[@var{v1}, @var{v2}, @dots{}, @var{count}, @var{errmsg}]] =} scanf (@var{template}, "C")
 This is equivalent to calling @code{fscanf} with @var{fid} = @code{stdin}.
 
-It is currently not useful to call @code{scanf} in interactive
-programs.
+It is currently not useful to call @code{scanf} in interactive programs.
 @seealso{fscanf, sscanf, printf}
 @end deftypefn
 fread
 @c fread libinterp/corefcn/file-io.cc
 -*- texinfo -*-
-@deftypefn {Built-in Function} {[@var{val}, @var{count}] =} fread (@var{fid}, @var{size}, @var{precision}, @var{skip}, @var{arch})
-Read binary data of type @var{precision} from the specified file ID
-@var{fid}.
+@deftypefn  {Built-in Function} {@var{val} =} fread (@var{fid})
+@deftypefnx {Built-in Function} {@var{val} =} fread (@var{fid}, @var{size})
+@deftypefnx {Built-in Function} {@var{val} =} fread (@var{fid}, @var{size}, @var{precision})
+@deftypefnx {Built-in Function} {@var{val} =} fread (@var{fid}, @var{size}, @var{precision}, @var{skip})
+@deftypefnx {Built-in Function} {@var{val} =} fread (@var{fid}, @var{size}, @var{precision}, @var{skip}, @var{arch})
+@deftypefnx {Built-in Function} {[@var{val}, @var{count}] =} fread (@dots{})
+Read binary data from the file specified by the file descriptor @var{fid}.
 
 The optional argument @var{size} specifies the amount of data to read
 and may be one of
@@ -5940,28 +6257,32 @@ a complete block of 3 values.
 The optional argument @var{arch} is a string specifying the data format
 for the file.  Valid values are
 
-@table @code
+@table @asis
 @item @qcode{"native"}
 The format of the current machine.
 
-@item "ieee-be"
+@item @qcode{"ieee-be"}
 IEEE big endian.
 
-@item "ieee-le"
+@item @qcode{"ieee-le"}
 IEEE little endian.
 @end table
 
-The data read from the file is returned in @var{val}, and the number of
-values read is returned in @code{count}
+The output argument @var{val} contains the data read from the file.
+The optional return value @var{count} contains the number of elements read.
 @seealso{fwrite, fgets, fgetl, fscanf, fopen}
 @end deftypefn
 fwrite
 @c fwrite libinterp/corefcn/file-io.cc
 -*- texinfo -*-
-@deftypefn {Built-in Function} {@var{count} =} fwrite (@var{fid}, @var{data}, @var{precision}, @var{skip}, @var{arch})
-Write data in binary form of type @var{precision} to the specified file
-ID @var{fid}, returning the number of values successfully written to the
-file.
+@deftypefn  {Built-in Function} {} fwrite (@var{fid}, @var{data})
+@deftypefnx {Built-in Function} {} fwrite (@var{fid}, @var{data}, @var{precision})
+@deftypefnx {Built-in Function} {} fwrite (@var{fid}, @var{data}, @var{precision}, @var{skip})
+@deftypefnx {Built-in Function} {} fwrite (@var{fid}, @var{data}, @var{precision}, @var{skip}, @var{arch})
+@deftypefnx {Built-in Function} {@var{count} =} fwrite (@dots{})
+Write data in binary form to the file specified by the file descriptor
+@var{fid}, returning the number of values @var{count} successfully written
+to the file.
 
 The argument @var{data} is a matrix of values that are to be written to
 the file.  The values are extracted in column-major order.
@@ -5976,25 +6297,34 @@ are too large to fit in the specified precision.
 feof
 @c feof libinterp/corefcn/file-io.cc
 -*- texinfo -*-
-@deftypefn {Built-in Function} {} feof (@var{fid})
-Return 1 if an end-of-file condition has been encountered for a given
-file and 0 otherwise.  Note that it will only return 1 if the end of the
-file has already been encountered, not if the next read operation will
-result in an end-of-file condition.
-@seealso{fread, fopen}
+@deftypefn {Built-in Function} {@var{status} =} feof (@var{fid})
+Return 1 if an end-of-file condition has been encountered for the file
+specified by file descriptor @var{fid} and 0 otherwise.
+
+Note that @code{feof} will only return 1 if the end of the file has already
+been encountered, not if the next read operation will result in an
+end-of-file condition.
+@seealso{fread, frewind, fseek, fclear, fopen}
 @end deftypefn
 ferror
 @c ferror libinterp/corefcn/file-io.cc
 -*- texinfo -*-
-@deftypefn  {Built-in Function} {[@var{err}, @var{msg}] =} ferror (@var{fid})
-@deftypefnx {Built-in Function} {[@var{err}, @var{msg}] =} ferror (@var{fid}, "clear")
-Return 1 if an error condition has been encountered for the file ID
-@var{fid} and 0 otherwise.  Note that it will only return 1 if an error
-has already been encountered, not if the next operation will result in
-an error condition.
+@deftypefn  {Built-in Function} {@var{msg} =} ferror (@var{fid})
+@deftypefnx {Built-in Function} {[@var{msg}, @var{err}] =} ferror (@var{fid})
+@deftypefnx {Built-in Function} {[@var{dots}] =} ferror (@var{fid}, "clear")
+Query the error status of the stream specified by file descriptor @var{fid}
 
-The second argument is optional.  If it is supplied, also clear the
-error condition.
+If an error condition exists then return a string @var{msg} describing the
+error.  Otherwise, return an empty string @qcode{""}.
+
+The optional second output is a numeric indication of the error status.
+@var{err} is 1 if an error condition has been encountered and 0 otherwise.
+
+Note that @code{ferror} indicates if an error has already occurred, not
+whether the next operation will result in an error condition.
+
+The second input @qcode{"clear"} is optional.  If supplied, the error
+state on the stream will be cleared.
 @seealso{fclear, fopen}
 @end deftypefn
 popen
@@ -6030,83 +6360,97 @@ endwhile
    @print{} drwxrwxrwt  15 root  root  2048 Feb 17 14:53 tmp
 @end group
 @end example
+@seealso{popen2}
 @end deftypefn
 pclose
 @c pclose libinterp/corefcn/file-io.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} pclose (@var{fid})
-Close a file identifier that was opened by @code{popen}.  You may also
-use @code{fclose} for the same purpose.
-@end deftypefn
-tmpnam
-@c tmpnam libinterp/corefcn/file-io.cc
--*- texinfo -*-
-@c List other forms of function in documentation index
-@findex octave_tmp_file_name
+Close a file identifier that was opened by @code{popen}.
 
-@deftypefn  {Built-in Function} {} tmpnam ()
-@deftypefnx {Built-in Function} {} tmpnam (@var{dir})
-@deftypefnx {Built-in Function} {} tmpnam (@var{dir}, @var{prefix})
+The function @code{fclose} may also be used for the same purpose.
+@seealso{fclose, popen}
+@end deftypefn
+tempname
+@c tempname libinterp/corefcn/file-io.cc
+-*- texinfo -*-
+@deftypefn  {Built-in Function} {@var{fname} =} tempname ()
+@deftypefnx {Built-in Function} {@var{fname} =} tempname (@var{dir})
+@deftypefnx {Built-in Function} {@var{fname} =} tempname (@var{dir}, @var{prefix})
 Return a unique temporary file name as a string.
 
 If @var{prefix} is omitted, a value of @qcode{"oct-"} is used.
 If @var{dir} is also omitted, the default directory for temporary files
-is used.  If @var{dir} is provided, it must exist, otherwise the default
-directory for temporary files is used.  Since the named file is not
-opened, by @code{tmpnam}, it is possible (though relatively unlikely)
-that it will not be available by the time your program attempts to open it.
-@seealso{tmpfile, mkstemp, P_tmpdir}
+(@code{P_tmpdir}) is used.  If @var{dir} is provided, it must exist,
+otherwise the default directory for temporary files is used.
+
+Programming Note: Because the named file is not opened by @code{tempname},
+it is possible, though relatively unlikely, that it will not be available
+by the time your program attempts to open it.  If this is a concern,
+see @code{tmpfile}.
+@seealso{mkstemp, tempdir, P_tmpdir, tmpfile}
 @end deftypefn
 tmpfile
 @c tmpfile libinterp/corefcn/file-io.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {[@var{fid}, @var{msg}] =} tmpfile ()
 Return the file ID corresponding to a new temporary file with a unique
-name.  The file is opened in binary read/write (@qcode{"w+b"}) mode.
-The file will be deleted automatically when it is closed or when Octave
-exits.
+name.
+
+The file is opened in binary read/write (@qcode{"w+b"}) mode and will be
+deleted automatically when it is closed or when Octave exits.
 
 If successful, @var{fid} is a valid file ID and @var{msg} is an empty
 string.  Otherwise, @var{fid} is -1 and @var{msg} contains a
 system-dependent error message.
-@seealso{tmpnam, mkstemp, P_tmpdir}
+@seealso{tempname, mkstemp, tempdir, P_tmpdir}
 @end deftypefn
 mkstemp
 @c mkstemp libinterp/corefcn/file-io.cc
 -*- texinfo -*-
-@deftypefn {Built-in Function} {[@var{fid}, @var{name}, @var{msg}] =} mkstemp (@var{template}, @var{delete})
-Return the file ID corresponding to a new temporary file with a unique
-name created from @var{template}.  The last six characters of @var{template}
-must be @code{XXXXXX} and these are replaced with a string that makes the
-filename unique.  The file is then created with mode read/write and
-permissions that are system dependent (on GNU/Linux systems, the permissions
-will be 0600 for versions of glibc 2.0.7 and later).  The file is opened
-in binary mode and with the @w{@code{O_EXCL}} flag.
+@deftypefn  {Built-in Function} {[@var{fid}, @var{name}, @var{msg}] =} mkstemp ("@var{template}")
+@deftypefnx {Built-in Function} {[@var{fid}, @var{name}, @var{msg}] =} mkstemp ("@var{template}", @var{delete})
+Return the file descriptor @var{fid} corresponding to a new temporary file
+with a unique name created from @var{template}.
 
-If the optional argument @var{delete} is supplied and is true,
-the file will be deleted automatically when Octave exits.
+The last six characters of @var{template} must be @qcode{"XXXXXX"} and
+these are replaced with a string that makes the filename unique.  The file
+is then created with mode read/write and permissions that are system
+dependent (on GNU/Linux systems, the permissions will be 0600 for versions of
+glibc 2.0.7 and later).  The file is opened in binary mode and with the
+@w{@code{O_EXCL}} flag.
 
-If successful, @var{fid} is a valid file ID, @var{name} is the name of
-the file, and @var{msg} is an empty string.  Otherwise, @var{fid}
-is -1, @var{name} is empty, and @var{msg} contains a system-dependent
-error message.
-@seealso{tmpfile, tmpnam, P_tmpdir}
+If the optional argument @var{delete} is supplied and is true, the file will
+be deleted automatically when Octave exits.
+
+If successful, @var{fid} is a valid file ID, @var{name} is the name of the
+file, and @var{msg} is an empty string.  Otherwise, @var{fid} is -1,
+@var{name} is empty, and @var{msg} contains a system-dependent error message.
+@seealso{tempname, tempdir, P_tmpdir, tmpfile, fopen}
 @end deftypefn
 umask
 @c umask libinterp/corefcn/file-io.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} umask (@var{mask})
-Set the permission mask for file creation.  The parameter @var{mask}
-is an integer, interpreted as an octal number.  If successful,
-returns the previous value of the mask (as an integer to be
+Set the permission mask for file creation.
+
+The parameter @var{mask} is an integer, interpreted as an octal number.  If
+successful, returns the previous value of the mask (as an integer to be
 interpreted as an octal number); otherwise an error message is printed.
+@seealso{fopen, mkdir}
 @end deftypefn
 P_tmpdir
 @c P_tmpdir libinterp/corefcn/file-io.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} P_tmpdir ()
-Return the default name of the directory for temporary files on
-this system.  The name of this directory is system dependent.
+Return the name of the host system's @strong{default} directory for
+temporary files.
+
+Programming Note: The value returned by @code{P_tmpdir} is always the
+default location.  This value may not agree with that returned from
+@code{tempdir} if the user has overriden the default with the @env{TMPDIR}
+environment variable.
+@seealso{tempdir, tempname, mkstemp, tmpfile}
 @end deftypefn
 SEEK_SET
 @c SEEK_SET libinterp/corefcn/file-io.cc
@@ -6114,8 +6458,8 @@ this system.  The name of this directory is system dependent.
 @deftypefn  {Built-in Function} {} SEEK_SET ()
 @deftypefnx {Built-in Function} {} SEEK_CUR ()
 @deftypefnx {Built-in Function} {} SEEK_END ()
-Return the numerical value to pass to @code{fseek} to perform
-one of the following actions:
+Return the numerical value to pass to @code{fseek} to perform one of the
+following actions:
 
 @table @code
 @item SEEK_SET
@@ -6150,7 +6494,8 @@ position the file pointer relative to the end of the file.
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} stdin ()
 Return the numeric value corresponding to the standard input stream.
-When Octave is used interactively, this is filtered through the command
+
+When Octave is used interactively, stdin is filtered through the command
 line editing functions.
 @seealso{stdout, stderr}
 @end deftypefn
@@ -6159,6 +6504,7 @@ line editing functions.
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} stdout ()
 Return the numeric value corresponding to the standard output stream.
+
 Data written to the standard output is normally filtered through the pager.
 @seealso{stdin, stderr}
 @end deftypefn
@@ -6167,8 +6513,9 @@ Data written to the standard output is normally filtered through the pager.
 -*- texinfo -*-
 @deftypefn {Built-in Function} {} stderr ()
 Return the numeric value corresponding to the standard error stream.
-Even if paging is turned on, the standard error is not sent to the
-pager.  It is useful for error messages and prompts.
+
+Even if paging is turned on, the standard error is not sent to the pager.
+It is useful for error messages and prompts.
 @seealso{stdin, stdout}
 @end deftypefn
 filter
@@ -6324,7 +6671,7 @@ If three inputs are given, @var{direction} should be one of
 ascending order.
 
 Note that this function is particularly useful for sparse matrices, as
-it extracts the non-zero elements as vectors, which can then be used to
+it extracts the nonzero elements as vectors, which can then be used to
 create the original matrix.  For example:
 
 @example
@@ -6362,7 +6709,8 @@ gammainc (x, a) = ---------    | exp (-t) t^(a-1) dt
 
 @end ifnottex
 with the limiting value of 1 as @var{x} approaches infinity.
-The standard notation is @math{P(a,x)}, e.g., Abramowitz and Stegun (6.5.1).
+The standard notation is @math{P(a,x)}, e.g., @nospell{Abramowitz} and
+@nospell{Stegun} (6.5.1).
 
 If @var{a} is scalar, then @code{gammainc (@var{x}, @var{a})} is returned
 for each element of @var{x} and vice versa.
@@ -6377,32 +6725,23 @@ integrated from @var{x} to infinity is calculated.  It should be noted that
 @example
 gammainc (@var{x}, @var{a}) @equiv{} 1 - gammainc (@var{x}, @var{a}, "upper")
 @end example
-@seealso{gamma, lgamma}
+@seealso{gamma, gammaln}
 @end deftypefn
 gcd
 @c gcd libinterp/corefcn/gcd.cc
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{g} =} gcd (@var{a1}, @var{a2}, @dots{})
 @deftypefnx {Built-in Function} {[@var{g}, @var{v1}, @dots{}] =} gcd (@var{a1}, @var{a2}, @dots{})
+Compute the greatest common divisor of @var{a1}, @var{a2}, @dots{}.
 
-Compute the greatest common divisor of @var{a1}, @var{a2}, @dots{}.  If more
-than one argument is given all arguments must be the same size or scalar.
-In this case the greatest common divisor is calculated for each element
-individually.  All elements must be ordinary or Gaussian (complex)
-integers.  Note that for Gaussian integers, the gcd is not unique up to
-units (multiplication by 1, -1, @var{i} or -@var{i}), so an arbitrary
-greatest common divisor amongst four possible is returned.
+If more than one argument is given then all arguments must be the same size
+or scalar.  In this case the greatest common divisor is calculated for each
+element individually.  All elements must be ordinary or Gaussian (complex)
+integers.  Note that for Gaussian integers, the gcd is only unique up to a
+phase factor (multiplication by 1, -1, i, or -i), so an arbitrary greatest
+common divisor amongst four possible is returned.
 
-Example code:
-
-@example
-@group
-gcd ([15, 9], [20, 18])
-   @result{}  5  9
-@end group
-@end example
-
-Optional return arguments @var{v1}, etc., contain integer vectors such
+Optional return arguments @var{v1}, @dots{}, contain integer vectors such
 that,
 
 @tex
@@ -6416,7 +6755,16 @@ $g = v_1 a_1 + v_2 a_2 + \cdots$
 
 @end ifnottex
 
-@seealso{lcm, factor}
+Example code:
+
+@example
+@group
+gcd ([15, 9], [20, 18])
+   @result{}  5  9
+@end group
+@end example
+
+@seealso{lcm, factor, isprime}
 @end deftypefn
 getgrent
 @c getgrent libinterp/corefcn/getgrent.cc
@@ -6554,10 +6902,12 @@ elements @code{sec} (seconds) @code{usec} (microseconds).
 givens
 @c givens libinterp/corefcn/givens.cc
 -*- texinfo -*-
-@deftypefn  {Built-in Function} {@var{g} =} givens (@var{x}, @var{y})
+@deftypefn  {Built-in Function} {@var{G} =} givens (@var{x}, @var{y})
 @deftypefnx {Built-in Function} {[@var{c}, @var{s}] =} givens (@var{x}, @var{y})
+Compute the Givens rotation matrix @var{G}.
+
 @tex
-Return a $2\times 2$ orthogonal matrix
+The Givens matrix is a $2\times 2$ orthogonal matrix
 $$
  G = \left[\matrix{c & s\cr -s'& c\cr}\right]
 $$
@@ -6568,10 +6918,19 @@ $$
 with $x$ and $y$ scalars.
 @end tex
 @ifnottex
-Return a 2 by 2 orthogonal matrix
-@code{@var{g} = [@var{c} @var{s}; -@var{s}' @var{c}]} such that
-@code{@var{g} [@var{x}; @var{y}] = [*; 0]} with @var{x} and @var{y} scalars.
+The Givens matrix is a 2 by 2 orthogonal matrix
+
+@code{@var{g} = [@var{c} @var{s}; -@var{s}' @var{c}]}
+
+such that
+
+@code{@var{g} [@var{x}; @var{y}] = [*; 0]}
+
+with @var{x} and @var{y} scalars.
 @end ifnottex
+
+If two output arguments are requested, return the factors @var{c} and
+@var{s} rather than the Givens rotation matrix.
 
 For example:
 
@@ -6582,6 +6941,7 @@ givens (1, 1)
        -0.70711   0.70711
 @end group
 @end example
+@seealso{planerot}
 @end deftypefn
 ishandle
 @c ishandle libinterp/corefcn/graphics.cc
@@ -6597,18 +6957,23 @@ graphics handles and false where they are not.
 __is_handle_visible__
 @c __is_handle_visible__ libinterp/corefcn/graphics.cc
 -*- texinfo -*-
-@deftypefn {Built-in Function} __is_handle_visible__ (@var{h})
+@deftypefn {Built-in Function} {} __is_handle_visible__ (@var{h})
 Undocumented internal function.
 @end deftypefn
 reset
 @c reset libinterp/corefcn/graphics.cc
 -*- texinfo -*-
-@deftypefn {Built-in Function} {} reset (@var{h}, @var{property})
-Remove any defaults set for the handle @var{h}.  The default figure
-properties of @qcode{"position"}, @qcode{"units"},
-@qcode{"windowstyle"} and @qcode{"paperunits"} and the default axes
-properties of @qcode{"position"} and @qcode{"units"} are not reset.
-@seealso{cla, clf}
+@deftypefn {Built-in Function} {} reset (@var{h})
+Reset the properties of the graphic object @var{h} to their default values.
+
+For figures, the properties @qcode{"position"}, @qcode{"units"},
+@qcode{"windowstyle"}, and @qcode{"paperunits"} are not affected.
+For axes, the properties @qcode{"position"} and @qcode{"units"} are
+not affected.
+
+The input @var{h} may also be a vector of graphic handles in which case
+each individual object will be reset.
+@seealso{cla, clf, newplot}
 @end deftypefn
 set
 @c set libinterp/corefcn/graphics.cc
@@ -6616,9 +6981,11 @@ properties of @qcode{"position"} and @qcode{"units"} are not reset.
 @deftypefn  {Built-in Function} {} set (@var{h}, @var{property}, @var{value}, @dots{})
 @deftypefnx {Built-in Function} {} set (@var{h}, @var{properties}, @var{values})
 @deftypefnx {Built-in Function} {} set (@var{h}, @var{pv})
+@deftypefnx {Built-in Function} {@var{value_list} =} set (@var{h}, @var{property})
+@deftypefnx {Built-in Function} {@var{all_value_list} =} set (@var{h})
 Set named property values for the graphics handle (or vector of graphics
 handles) @var{h}.
-There are three ways how to give the property names and values:
+There are three ways to give the property names and values:
 
 @itemize
 @item as a comma separated list of @var{property}, @var{value} pairs
@@ -6644,6 +7011,32 @@ values give the property values.  In contrast to the previous case, all
 elements of @var{pv} will be set in all handles in @var{h} independent of
 the dimensions of @var{pv}.
 @end itemize
+
+@code{set} is also used to query the list of values a named property will
+take.  @code{@var{clist} = set (@var{h}, "property")} will return the list
+of possible values for @qcode{"property"} in the cell list @var{clist}.
+If no output variable is used then the list is formatted and printed to the
+screen.
+
+If no property is specified (@code{@var{slist} = set (@var{h})}) then a
+structure @var{slist} is returned where the fieldnames are the properties of
+the object @var{h} and the fields are the list of possible values for each
+property.  If no output variable is used then the list is formatted and
+printed to the screen.
+
+For example,
+
+@example
+@group
+hf = figure ();
+set (hf, "paperorientation")
+@result{}  paperorientation:  [ landscape | @{portrait@} | rotated ]
+@end group
+@end example
+
+@noindent
+shows the paperorientation property can take three values with the default
+being @qcode{"portrait"}.
 @seealso{get}
 @end deftypefn
 get
@@ -7005,6 +7398,14 @@ To define a condition on a property named @code{timeout}, use the string
 In all cases, typing CTRL-C stops program execution immediately.
 @seealso{waitforbuttonpress, isequal}
 @end deftypefn
+__zoom__
+@c __zoom__ libinterp/corefcn/graphics.cc
+-*- texinfo -*-
+@deftypefn  {Built-in Function} {} __zoom__ (@var{axes}, @var{mode}, @var{factor})
+@deftypefnx {Built-in Function} {} __zoom__ (@var{axes}, "out")
+@deftypefnx {Built-in Function} {} __zoom__ (@var{axes}, "reset")
+Undocumented internal function.
+@end deftypefn
 built_in_docstrings_file
 @c built_in_docstrings_file libinterp/corefcn/help.cc
 -*- texinfo -*-
@@ -7047,19 +7448,19 @@ The format is a string which is one of @qcode{"texinfo"},
 __operators__
 @c __operators__ libinterp/corefcn/help.cc
 -*- texinfo -*-
-@deftypefn {Function File} __operators__ ()
+@deftypefn {Function File} {} __operators__ ()
 Undocumented internal function.
 @end deftypefn
 __keywords__
 @c __keywords__ libinterp/corefcn/help.cc
 -*- texinfo -*-
-@deftypefn {Function File} __keywords__ ()
+@deftypefn {Function File} {} __keywords__ ()
 Undocumented internal function.
 @end deftypefn
 __builtins__
 @c __builtins__ libinterp/corefcn/help.cc
 -*- texinfo -*-
-@deftypefn {Function File} __builtins__ ()
+@deftypefn {Function File} {} __builtins__ ()
 Undocumented internal function.
 @end deftypefn
 __which__
@@ -7210,8 +7611,9 @@ transposition) and @var{H} is upper Hessenberg
 @end ifnottex
 
 The Hessenberg decomposition is usually used as the first step in an
-eigenvalue computation, but has other applications as well (see Golub,
-Nash, and Van Loan, IEEE Transactions on Automatic Control, 1979).
+eigenvalue computation, but has other applications as well
+(see @nospell{Golub, Nash, and Van Loan},
+IEEE Transactions on Automatic Control, 1979).
 @seealso{eig, chol, lu, qr, qz, schur, svd}
 @end deftypefn
 hex2num
@@ -7301,10 +7703,10 @@ Pick a number, any number!
 @noindent
 and waits for the user to enter a value.  The string entered by the user
 is evaluated as an expression, so it may be a literal constant, a
-variable name, or any other valid expression.
+variable name, or any other valid Octave code.
 
-Currently, @code{input} only returns one value, regardless of the number
-of values produced by the evaluation of the expression.
+The number of return arguments, their size, and their class depend on the
+expression entered.
 
 If you are only interested in getting a literal string value, you can
 call @code{input} with the character string @qcode{"s"} as the second
@@ -7372,6 +7774,12 @@ functions.
 
 @noindent
 With no arguments, @code{echo} toggles the current echo state.
+@end deftypefn
+__echostate__
+@c __echostate__ libinterp/corefcn/input.cc
+-*- texinfo -*-
+@deftypefn {Built-in Function} {@var{state} =} __echostate__ ()
+Undocumented internal function
 @end deftypefn
 completion_matches
 @c completion_matches libinterp/corefcn/input.cc
@@ -7567,11 +7975,12 @@ Undocumented internal function.
 @c filemarker libinterp/corefcn/input.cc
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {@var{val} =} filemarker ()
-@deftypefnx {Built-in Function} {} filemarker (@var{new_val})
+@deftypefnx {Built-in Function} {@var{old_val} =} filemarker (@var{new_val})
 @deftypefnx {Built-in Function} {} filemarker (@var{new_val}, "local")
-Query or set the character used to separate filename from the
-the subfunction names contained within the file.  This can be used in
-a generic manner to interact with subfunctions.  For example,
+Query or set the character used to separate the filename from the subfunction
+names contained within the file.  By default this is the character @samp{>}.
+This can be used in a generic manner to interact with subfunctions.
+For example,
 
 @example
 help (["myfunc", filemarker, "mysubfunc"])
@@ -7579,8 +7988,10 @@ help (["myfunc", filemarker, "mysubfunc"])
 
 @noindent
 returns the help string associated with the subfunction @code{mysubfunc}
-of the function @code{myfunc}.  Another use of @code{filemarker} is when
-debugging it allows easier placement of breakpoints within subfunctions.
+located in the file @file{myfunc.m}.
+
+@code{filemarker} is also useful during debugging for placing breakpoints
+within subfunctions or nested functions.
 For example,
 
 @example
@@ -7591,7 +8002,7 @@ dbstop (["myfunc", filemarker, "mysubfunc"])
 will set a breakpoint at the first line of the subfunction @code{mysubfunc}.
 
 When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
+variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @end deftypefn
 inv
@@ -7746,6 +8157,9 @@ rmpath ("dir1:/dir2:~/dir3")
 @end example
 @seealso{path, addpath, genpath, pathdef, savepath, pathsep}
 @end deftypefn
+__dump_load_path__
+@c __dump_load_path__ libinterp/corefcn/load-path.cc
+
 load
 @c load libinterp/corefcn/load-save.cc
 -*- texinfo -*-
@@ -7850,17 +8264,18 @@ Force Octave to assume the file is in Octave's text format.
 @deftypefnx {Command} {} save options file
 @deftypefnx {Command} {} save options file @var{v1} @var{v2} @dots{}
 @deftypefnx {Command} {} save options file -struct @var{STRUCT} @var{f1} @var{f2} @dots{}
+@deftypefnx {Command} {} save @code{"-"} @var{v1} @var{v2} @dots{}
+@deftypefnx {Built-in Function} {@var{s} =} save (@code{"-"} @var{v1} @var{v2} @dots{})
 Save the named variables @var{v1}, @var{v2}, @dots{}, in the file
-@var{file}.  The special filename @samp{-} may be used to write
-output to the terminal.  If no variable names are listed, Octave saves
-all the variables in the current scope.  Otherwise, full variable names or
-pattern syntax can be used to specify the variables to save.
-If the @option{-struct} modifier is used, fields @var{f1} @var{f2} @dots{}
-of the scalar structure @var{STRUCT} are saved as if they were variables
-with corresponding names.
-Valid options for the @code{save} command are listed in the following table.
-Options that modify the output format override the format specified by
-@code{save_default_options}.
+@var{file}.  The special filename @samp{-} may be used to return the
+content of the variables as a string.  If no variable names are listed,
+Octave saves all the variables in the current scope.  Otherwise, full
+variable names or pattern syntax can be used to specify the variables to
+save.  If the @option{-struct} modifier is used, fields @var{f1} @var{f2}
+@dots{} of the scalar structure @var{STRUCT} are saved as if they were
+variables with corresponding names.  Valid options for the @code{save}
+command are listed in the following table.  Options that modify the output
+format override the format specified by @code{save_default_options}.
 
 If save is invoked using the functional form
 
@@ -7871,6 +8286,9 @@ save ("-option1", @dots{}, "file", "v1", @dots{})
 @noindent
 then the @var{options}, @var{file}, and variable name arguments
 (@var{v1}, @dots{}) must be specified as character strings.
+
+If called with a filename of @qcode{"-"}, write the output to stdout
+if nargout is 0, otherwise return the output in a character string.
 
 @table @code
 @item -append
@@ -8401,7 +8819,7 @@ routines is returned.  If the input matrix is sparse then the matrix @var{L}
 is embedded into @var{U} to give a return value similar to the full case.
 For both full and sparse matrices, @code{lu} loses the permutation
 information.
-@seealso{luupdate, chol, hess, qr, qz, schur, svd}
+@seealso{luupdate, ilu, chol, hess, qr, qz, schur, svd}
 @end deftypefn
 luupdate
 @c luupdate libinterp/corefcn/lu.cc
@@ -8448,8 +8866,8 @@ thus, for large enough k, it will be both faster and more accurate to
 recompute the factorization from scratch.
 @seealso{lu, cholupdate, qrupdate}
 @end deftypefn
-luinc
-@c luinc libinterp/corefcn/luinc.cc
+__luinc__
+@c __luinc__ libinterp/corefcn/luinc.cc
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {[@var{L}, @var{U}, @var{P}, @var{Q}] =} luinc (@var{A}, '0')
 @deftypefnx {Built-in Function} {[@var{L}, @var{U}, @var{P}, @var{Q}] =} luinc (@var{A}, @var{droptol})
@@ -8461,7 +8879,7 @@ is determined by the second argument to @code{luinc}.
 
 Called with a second argument of @qcode{'0'}, the zero-level incomplete
 LU@tie{}factorization is produced.  This creates a factorization of @var{A}
-where the position of the non-zero arguments correspond to the same
+where the position of the nonzero arguments correspond to the same
 positions as in the matrix @var{A}.
 
 Alternatively, the fill-in of the incomplete LU@tie{}factorization can
@@ -8505,7 +8923,7 @@ are the same as for @code{lu}.
 
 Given the string argument @qcode{"vector"}, @code{luinc} returns the
 values of @var{p} @var{q} as vector values.
-@seealso{sparse, lu}
+@seealso{sparse, lu, ilu, ichol}
 @end deftypefn
 abs
 @c abs libinterp/corefcn/mappers.cc
@@ -8800,15 +9218,15 @@ accurately in the neighborhood of zero.
 isfinite
 @c isfinite libinterp/corefcn/mappers.cc
 -*- texinfo -*-
-@deftypefn  {Mapping Function} {} isfinite (@var{x})
-@deftypefnx {Mapping Function} {} finite (@var{x})
+@deftypefn {Mapping Function} {} isfinite (@var{x})
 Return a logical array which is true where the elements of @var{x} are
 finite values and false where they are not.
+
 For example:
 
 @example
 @group
-finite ([13, Inf, NA, NaN])
+isfinite ([13, Inf, NA, NaN])
      @result{} [ 1, 0, 0, 0 ]
 @end group
 @end example
@@ -8869,7 +9287,13 @@ gamma (z) = | t^(z-1) exp (-t) dt.
 @end example
 
 @end ifnottex
-@seealso{gammainc, lgamma}
+
+Programming Note: The gamma function can grow quite large even for small
+input values.  In many cases it may be preferable to use the natural
+logarithm of the gamma function (@code{gammaln}) in calculations to minimize
+loss of precision.  The final result is then
+@code{exp (@var{result_using_gammaln}).}
+@seealso{gammainc, gammaln, factorial}
 @end deftypefn
 imag
 @c imag libinterp/corefcn/mappers.cc
@@ -9030,8 +9454,8 @@ hexadecimal digits (0-9 and @nospell{a-fA-F}).
 lgamma
 @c lgamma libinterp/corefcn/mappers.cc
 -*- texinfo -*-
-@deftypefn  {Mapping Function} {} lgamma (@var{x})
-@deftypefnx {Mapping Function} {} gammaln (@var{x})
+@deftypefn  {Mapping Function} {} gammaln (@var{x})
+@deftypefnx {Mapping Function} {} lgamma (@var{x})
 Return the natural logarithm of the gamma function of @var{x}.
 @seealso{gamma, gammainc}
 @end deftypefn
@@ -9140,7 +9564,7 @@ whether zero is signed, use the @code{signbit} function.
 Return logical true if the value of @var{x} has its sign bit set.
 Otherwise return logical false.  This behavior is consistent with the other
 logical functions.  See@ref{Logical Values}.  The behavior differs from the
-C language function which returns non-zero if the sign bit is set.
+C language function which returns nonzero if the sign bit is set.
 
 This is not the same as @code{x < 0.0}, because IEEE 754 floating point
 allows zero to be signed.  The comparison @code{-0.0 < 0.0} is false,
@@ -9315,15 +9739,23 @@ LU@tie{}factorization.  Once the matrix has been factorized,
 @c min libinterp/corefcn/max.cc
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {} min (@var{x})
-@deftypefnx {Built-in Function} {} min (@var{x}, @var{y})
 @deftypefnx {Built-in Function} {} min (@var{x}, [], @var{dim})
-@deftypefnx {Built-in Function} {} min (@var{x}, @var{y}, @var{dim})
 @deftypefnx {Built-in Function} {[@var{w}, @var{iw}] =} min (@var{x})
-For a vector argument, return the minimum value.  For a matrix
-argument, return the minimum value from each column, as a row
-vector, or over the dimension @var{dim} if defined, in which case @var{y} 
-should be set to the empty matrix (it's ignored otherwise).  For two matrices
-(or a matrix and scalar), return the pair-wise minimum.
+@deftypefnx {Built-in Function} {} min (@var{x}, @var{y})
+Find minimum values in the array @var{x}.
+
+For a vector argument, return the minimum value.
+For a matrix argument, return a row vector with the minimum value of each
+column.
+For a multi-dimensional array, @code{min} operates along the first
+non-singleton dimension.
+
+If the optional third argument @var{dim} is present then operate along
+this dimension.  In this case the second argument is ignored and should be
+set to the empty matrix.
+
+For two matrices (or a matrix and a scalar), return the pairwise minimum.
+
 Thus,
 
 @example
@@ -9331,7 +9763,7 @@ min (min (@var{x}))
 @end example
 
 @noindent
-returns the smallest element of @var{x}, and
+returns the smallest element of the 2-D matrix @var{x}, and
 
 @example
 @group
@@ -9345,7 +9777,19 @@ compares each element of the range @code{2:5} with @code{pi}, and
 returns a row vector of the minimum values.
 
 For complex arguments, the magnitude of the elements are used for
-comparison.
+comparison.  If the magnitudes are identical, then the results are ordered
+by phase angle in the range (-pi, pi].  Hence,
+
+@example
+@group
+min ([-1 i 1 -i])
+    @result{} -i
+@end group
+@end example
+
+@noindent
+because all entries have magnitude 1, but -i has the smallest phase angle
+with value -pi/2.
 
 If called with one input and two output arguments,
 @code{min} also returns the first index of the
@@ -9364,15 +9808,23 @@ minimum value(s).  Thus,
 @c max libinterp/corefcn/max.cc
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {} max (@var{x})
-@deftypefnx {Built-in Function} {} max (@var{x}, @var{y})
 @deftypefnx {Built-in Function} {} max (@var{x}, [], @var{dim})
-@deftypefnx {Built-in Function} {} max (@var{x}, @var{y}, @var{dim})
 @deftypefnx {Built-in Function} {[@var{w}, @var{iw}] =} max (@var{x})
-For a vector argument, return the maximum value.  For a matrix
-argument, return the maximum value from each column, as a row
-vector, or over the dimension @var{dim} if defined, in which case @var{y} 
-should be set to the empty matrix (it's ignored otherwise).  For two matrices
-(or a matrix and scalar), return the pair-wise maximum.
+@deftypefnx {Built-in Function} {} max (@var{x}, @var{y})
+Find maximum values in the array @var{x}.
+
+For a vector argument, return the maximum value.
+For a matrix argument, return a row vector with the maximum value of each
+column.
+For a multi-dimensional array, @code{max} operates along the first
+non-singleton dimension.
+
+If the optional third argument @var{dim} is present then operate along
+this dimension.  In this case the second argument is ignored and should be
+set to the empty matrix.
+
+For two matrices (or a matrix and a scalar), return the pairwise maximum.
+
 Thus,
 
 @example
@@ -9380,7 +9832,7 @@ max (max (@var{x}))
 @end example
 
 @noindent
-returns the largest element of the matrix @var{x}, and
+returns the largest element of the 2-D matrix @var{x}, and
 
 @example
 @group
@@ -9390,11 +9842,23 @@ max (2:5, pi)
 @end example
 
 @noindent
-compares each element of the range @code{2:5} with @code{pi}, and
-returns a row vector of the maximum values.
+compares each element of the range @code{2:5} with @code{pi}, and returns a
+row vector of the maximum values.
 
 For complex arguments, the magnitude of the elements are used for
-comparison.
+comparison.  If the magnitudes are identical, then the results are ordered
+by phase angle in the range (-pi, pi].  Hence,
+
+@example
+@group
+max ([-1 i 1 -i])
+    @result{} -1
+@end group
+@end example
+
+@noindent
+because all entries have magnitude 1, but -1 has the largest phase angle
+with value pi.
 
 If called with one input and two output arguments,
 @code{max} also returns the first index of the
@@ -9777,8 +10241,52 @@ Undocumented internal function.
 __octave_link_show_doc__
 @c __octave_link_show_doc__ libinterp/corefcn/octave-link.cc
 -*- texinfo -*-
-@deftypefn {Built-in Function} {} __octave_link_show_doc__ ( @var{filename} )
+@deftypefn {Built-in Function} {} __octave_link_show_doc__ (@var{filename})
 Undocumented internal function.
+@end deftypefn
+ordschur
+@c ordschur libinterp/corefcn/ordschur.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {[@var{UR}, @var{SR}] =} ordschur (@var{U}, @var{S}, @var{select})
+Reorders the real Schur factorization (@var{U},@var{S}) obtained with the
+@code{schur} function, so that selected eigenvalues appear in the upper left
+diagonal blocks of the quasi triangular Schur matrix.
+The logical vector @var{select} specifies the selected eigenvalues as they
+appear along @var{S}'s diagonal.
+
+For example, given the matrix @code{@var{A} = [1, 2; 3, 4]}, and its Schur
+decomposition
+
+@example
+[@var{U}, @var{S}] = schur (@var{A})
+@end example
+
+@noindent
+which returns
+
+@example
+@group
+@var{U} =
+
+  -0.82456  -0.56577
+   0.56577  -0.82456
+
+@var{S} =
+
+  -0.37228  -1.00000
+   0.00000   5.37228
+
+@end group
+@end example
+
+It is possible to reorder the decomposition so that the positive eigenvalue
+is in the upper left corner, by doing:
+
+@example
+[@var{U}, @var{S}] = ordschur (@var{U}, @var{S}, [0,1])
+@end example
+
+@seealso{schur}
 @end deftypefn
 diary
 @c diary libinterp/corefcn/pager.cc
@@ -9806,6 +10314,18 @@ Record the session in the file named @var{filename}.
 
 With no arguments, @code{diary} toggles the current diary state.
 @seealso{history}
+@end deftypefn
+__diaryfile__
+@c __diaryfile__ libinterp/corefcn/pager.cc
+-*- texinfo -*-
+@deftypefn {Built-in Function} {@var{fname} =} __diaryfile__ ()
+Undocumented internal function
+@end deftypefn
+__diarystate__
+@c __diarystate__ libinterp/corefcn/pager.cc
+-*- texinfo -*-
+@deftypefn {Built-in Function} {@var{state} =} __diarystate__ ()
+Undocumented internal function
 @end deftypefn
 more
 @c more libinterp/corefcn/pager.cc
@@ -9923,6 +10443,9 @@ x = str2num (r)
 
 The optional second argument defines the maximum length of the string
 representing the elements of @var{x}.  By default @var{len} is 9.
+
+If the length of the smallest possible rational approximation exceeds
+@var{len}, an asterisk (*) padded with spaces will be returned instead.
 @seealso{format, rat}
 @end deftypefn
 disp
@@ -10060,18 +10583,19 @@ The following formats affect all numeric output (floating point and
 integer types).
 
 @table @code
-@item  +
-@itemx + @var{chars}
+@item  "+"
+@itemx "+" @var{chars}
 @itemx plus
 @itemx plus @var{chars}
-Print a @samp{+} symbol for nonzero matrix elements and a space for zero
-matrix elements.  This format can be very useful for examining the
-structure of a large sparse matrix.
+Print a @samp{+} symbol for matrix elements greater than zero, a
+@samp{-} symbol for elements less than zero and a space for zero matrix
+elements.  This format can be very useful for examining the structure
+of a large sparse matrix.
 
 The optional argument @var{chars} specifies a list of 3 characters to use
 for printing values greater than zero, less than zero and equal to zero.
-For example, with the @samp{+ "+-."} format, @code{[1, 0, -1; -1, 0, 1]}
-is displayed as
+For example, with the @samp{"+" "+-."} format,
+@code{[1, 0, -1; -1, 0, 1]} is displayed as
 
 @example
 @group
@@ -10136,6 +10660,19 @@ to produce a more readable output with less data per page.  (default).
 @end table
 @seealso{fixed_point_format, output_max_field_width, output_precision, split_long_rows, rats}
 @end deftypefn
+__compactformat__
+@c __compactformat__ libinterp/corefcn/pr-output.cc
+-*- texinfo -*-
+@deftypefn  {Built-in Function} {@var{val} =} __compactformat__ ()
+@deftypefnx {Built-in Function} {} __compactformat__ (@var{TRUE|FALSE})
+Undocumented internal function
+@end deftypefn
+__formatstring__
+@c __formatstring__ libinterp/corefcn/pr-output.cc
+-*- texinfo -*-
+@deftypefn {Built-in Function} {@var{val} =} __formatstring__ ()
+Undocumented internal function
+@end deftypefn
 fixed_point_format
 @c fixed_point_format libinterp/corefcn/pr-output.cc
 -*- texinfo -*-
@@ -10166,7 +10703,7 @@ ans =
 
 @noindent
 Notice that the first value appears to be 0 when it is actually 1.  Because
-of the possibilty for confusion you should be careful about enabling
+of the possibility for confusion you should be careful about enabling
 @code{fixed_point_format}.
 
 When called from inside a function with the @qcode{"local"} option, the
@@ -10266,19 +10803,19 @@ The original variable value is restored when exiting the function.
 __profiler_enable__
 @c __profiler_enable__ libinterp/corefcn/profiler.cc
 -*- texinfo -*-
-@deftypefn {Function File} __profiler_enable__ ()
+@deftypefn {Function File} {} __profiler_enable__ ()
 Undocumented internal function.
 @end deftypefn
 __profiler_reset__
 @c __profiler_reset__ libinterp/corefcn/profiler.cc
 -*- texinfo -*-
-@deftypefn {Function File} __profiler_reset__ ()
+@deftypefn {Function File} {} __profiler_reset__ ()
 Undocumented internal function.
 @end deftypefn
 __profiler_data__
 @c __profiler_data__ libinterp/corefcn/profiler.cc
 -*- texinfo -*-
-@deftypefn {Function File} __profiler_data__ ()
+@deftypefn {Function File} {} __profiler_data__ ()
 Undocumented internal function.
 @end deftypefn
 quad_options
@@ -10364,9 +10901,9 @@ variable by routines @code{dblquad} and @code{triplequad}.
 @deftypefnx {Function File} {@var{q} =} quadcc (@var{f}, @var{a}, @var{b}, @var{tol}, @var{sing})
 @deftypefnx {Function File} {[@var{q}, @var{err}, @var{nr_points}] =} quadcc (@dots{})
 Numerically evaluate the integral of @var{f} from @var{a} to @var{b}
-using the doubly-adaptive Clenshaw-Curtis quadrature described by P. Gonnet
-in @cite{Increasing the Reliability of Adaptive Quadrature Using Explicit
-Interpolants}.
+using the doubly-adaptive @nospell{Clenshaw-Curtis} quadrature described by
+@nospell{P. Gonnet} in @cite{Increasing the Reliability of Adaptive
+Quadrature Using Explicit Interpolants}.
 @var{f} is a function handle, inline function, or string
 containing the name of the function to evaluate.
 The function @var{f} must be vectorized and must return a vector of output
@@ -10412,14 +10949,14 @@ Note: @code{quadcc} is a general purpose quadrature algorithm
 and, as such, may be less efficient for a smooth or otherwise
 well-behaved integrand than other methods such as @code{quadgk}.
 
-The algorithm uses Clenshaw-Curtis quadrature rules of increasing
+The algorithm uses @nospell{Clenshaw-Curtis} quadrature rules of increasing
 degree in each interval and bisects the interval if either the
 function does not appear to be smooth or a rule of maximum
 degree has been reached.  The error estimate is computed from the
 L2-norm of the difference between two successive interpolations
 of the integrand over the nodes of the respective quadrature rules.
 
-Reference: P. Gonnet, @cite{Increasing the Reliability of Adaptive
+Reference: @nospell{P. Gonnet}, @cite{Increasing the Reliability of Adaptive
 Quadrature Using Explicit Interpolants}, ACM Transactions on
 Mathematical Software, Vol. 37, Issue 3, Article No. 3, 2010.
 @seealso{quad, quadv, quadl, quadgk, trapz, dblquad, triplequad}
@@ -10552,8 +11089,8 @@ behavior comparable to @sc{matlab}, initialize with a deterministic state
 vector in Octave's startup files (@pxref{Startup Files}).
 
 To compute the pseudo-random sequence, @code{rand} uses the Mersenne
-Twister with a period of @math{2^{19937}-1} (See M. Matsumoto and
-T. Nishimura,
+Twister with a period of @math{2^{19937}-1} (See
+@nospell{M. Matsumoto and T. Nishimura},
 @cite{Mersenne Twister: A 623-dimensionally equidistributed uniform
 pseudorandom number generator}, ACM Trans. on
 Modeling and Computer Simulation Vol. 8, No. 1, pp. 3-30, January 1998,
@@ -10615,17 +11152,17 @@ Return a matrix with normally distributed random
 elements having zero mean and variance one.  The arguments are
 handled the same as the arguments for @code{rand}.
 
-By default, @code{randn} uses the Marsaglia and Tsang ``Ziggurat technique''
-to transform from a uniform to a normal distribution.
+By default, @code{randn} uses the @nospell{Marsaglia and Tsang}
+``Ziggurat technique'' to transform from a uniform to a normal distribution.
 
 The class of the value returned can be controlled by a trailing
 @qcode{"double"} or @qcode{"single"} argument.  These are the only valid
 classes.
 
-Reference: G. Marsaglia and W.W. Tsang,
+Reference: @nospell{G. Marsaglia and W.W. Tsang},
 @cite{Ziggurat Method for Generating Random Variables},
 J. Statistical Software, vol 5, 2000,
-@url{http://www.jstatsoft.org/v05/i08/})
+@url{http://www.jstatsoft.org/v05/i08/}
 
 @seealso{rand, rande, randg, randp}
 @end deftypefn
@@ -10646,17 +11183,17 @@ J. Statistical Software, vol 5, 2000,
 Return a matrix with exponentially distributed random elements.  The
 arguments are handled the same as the arguments for @code{rand}.
 
-By default, @code{randn} uses the Marsaglia and Tsang ``Ziggurat technique''
-to transform from a uniform to an exponential distribution.
+By default, @code{randn} uses the @nospell{Marsaglia and Tsang}
+``Ziggurat technique'' to transform from a uniform to a normal distribution.
 
 The class of the value returned can be controlled by a trailing
 @qcode{"double"} or @qcode{"single"} argument.  These are the only valid
 classes.
 
-Reference: G. Marsaglia and W.W. Tsang,
+Reference: @nospell{G. Marsaglia and W.W. Tsang},
 @cite{Ziggurat Method for Generating Random Variables},
 J. Statistical Software, vol 5, 2000,
-@url{http://www.jstatsoft.org/v05/i08/})
+@url{http://www.jstatsoft.org/v05/i08/}
 
 @seealso{rand, randn, randg, randp}
 @end deftypefn
@@ -10792,17 +11329,17 @@ W.H. Press, et al., @cite{Numerical Recipes in C},
 Cambridge University Press, 1992.
 
 @item For matrix @var{l} @leq{} 10, use inversion method.[2]
-E. Stadlober, et al., WinRand source code, available via FTP.
+@nospell{E. Stadlober, et al., WinRand source code}, available via FTP.
 
 @item For matrix @var{l} > 10, use patchwork rejection method.
-E. Stadlober, et al., WinRand source code, available via FTP, or
-H. Zechner, @cite{Efficient sampling from continuous and discrete
+@nospell{E. Stadlober, et al., WinRand source code}, available via FTP, or
+@nospell{H. Zechner}, @cite{Efficient sampling from continuous and discrete
 unimodal distributions}, Doctoral Dissertation, 156pp., Technical
-University Graz, Austria, 1994.
+University @nospell{Graz}, Austria, 1994.
 
 @item For @var{l} > 1e8, use normal approximation.
-L. Montanet, et al., @cite{Review of Particle Properties}, Physical Review
-D 50 p1284, 1994.
+@nospell{L. Montanet}, et al., @cite{Review of Particle Properties},
+Physical Review D 50 p1284, 1994.
 @end table
 
 The class of the value returned can be controlled by a trailing
@@ -11099,7 +11636,7 @@ quotes.  Use a second backslash to stop interpolation of the escape sequence
 @deftypefnx {Built-in Function} {@var{S} =} schur (@var{A}, "real")
 @deftypefnx {Built-in Function} {@var{S} =} schur (@var{A}, "complex")
 @deftypefnx {Built-in Function} {@var{S} =} schur (@var{A}, @var{opt})
-@deftypefnx {Built-in Function} {[@var{U}, @var{S}] =} schur (@var{A}, @dots{})
+@deftypefnx {Built-in Function} {[@var{U}, @var{S}] =} schur (@dots{})
 @cindex Schur decomposition
 Compute the Schur@tie{}decomposition of @var{A}
 @tex
@@ -11160,7 +11697,7 @@ subspace corresponding to the @var{k} leading eigenvalues of @var{S}.
 The Schur@tie{}decomposition is used to compute eigenvalues of a
 square matrix, and has applications in the solution of algebraic
 Riccati equations in control (see @code{are} and @code{dare}).
-@seealso{rsf2csf, lu, chol, hess, qr, qz, svd}
+@seealso{rsf2csf, ordschur, lu, chol, hess, qr, qz, svd}
 @end deftypefn
 rsf2csf
 @c rsf2csf libinterp/corefcn/schur.cc
@@ -11354,7 +11891,7 @@ the function @code{nzmax}.
 @deftypefnx {Built-in Function} {[@var{keys}, @var{vals}] =} spparms ()
 @deftypefnx {Built-in Function} {@var{val} =} spparms (@var{key})
 @deftypefnx {Built-in Function} { } spparms (@var{vals})
-@deftypefnx {Built-in Function} { } spparms ("defaults")
+@deftypefnx {Built-in Function} { } spparms ("default")
 @deftypefnx {Built-in Function} { } spparms ("tight")
 @deftypefnx {Built-in Function} { } spparms (@var{key}, @var{val})
 Query or set the parameters used by the sparse solvers and factorization
@@ -11400,7 +11937,7 @@ The pivot tolerance of the @sc{umfpack} solvers (default 0.1)
 The pivot tolerance of the @sc{umfpack} symmetric solvers (default 0.001)
 
 @item bandden
-The density of non-zero elements in a banded matrix before it is treated
+The density of nonzero elements in a banded matrix before it is treated
 by the @sc{lapack} banded solvers (default 0.5)
 
 @item umfpack
@@ -11411,7 +11948,7 @@ Flag whether the @sc{umfpack} or mmd solvers are used for the LU, '\' and
 The value of individual keys can be set with
 @code{spparms (@var{key}, @var{val})}.
 The default values can be restored with the special keyword
-@qcode{"defaults"}.  The special keyword @qcode{"tight"} can be used to
+@qcode{"default"}.  The special keyword @qcode{"tight"} can be used to
 set the mmd solvers to attempt a sparser solution at the potential cost of
 longer running time.
 @seealso{chol, colamd, lu, qr, symamd}
@@ -11423,7 +11960,7 @@ longer running time.
 @deftypefnx {Built-in Function} {[@var{s}, @var{error_estimate}] =} sqrtm (@var{A})
 Compute the matrix square root of the square matrix @var{A}.
 
-Ref: N.J. Higham.  @cite{A New sqrtm for @sc{matlab}}.  Numerical
+Ref: @nospell{N.J. Higham}.  @cite{A New sqrtm for @sc{matlab}}.  Numerical
 Analysis Report No. 336, Manchester @nospell{Centre} for Computational
 Mathematics, Manchester, England, January 1999.
 @seealso{expm, logm}
@@ -11485,7 +12022,8 @@ Search for @var{pattern} in the string @var{str} and return the
 starting index of every such occurrence in the vector @var{idx}.
 
 If there is no such occurrence, or if @var{pattern} is longer
-than @var{str}, then @var{idx} is the empty array @code{[]}.
+than @var{str}, or if @var{pattern} itself is empty, then @var{idx} is the
+empty array @code{[]}.
 The optional argument @qcode{"overlaps"} determines whether the pattern
 can match at every position in @var{str} (true), or only for unique
 occurrences of the complete pattern (false).  The default is true.
@@ -11886,29 +12424,31 @@ variable is changed locally for the function and any subroutines it calls.
 The original variable value is restored when exiting the function.
 @seealso{svd}
 @end deftypefn
-syl
-@c syl libinterp/corefcn/syl.cc
+sylvester
+@c sylvester libinterp/corefcn/sylvester.cc
 -*- texinfo -*-
-@deftypefn {Built-in Function} {@var{x} =} syl (@var{A}, @var{B}, @var{C})
+@deftypefn {Built-in Function} {@var{X} =} syl (@var{A}, @var{B}, @var{C})
 Solve the Sylvester equation
 @tex
 $$
- A X + X B + C = 0
+ A X + X B = C
 $$
 @end tex
 @ifnottex
 
 @example
-A X + X B + C = 0
+A X + X B = C
 @end example
 
 @end ifnottex
-using standard @sc{lapack} subroutines.  For example:
+using standard @sc{lapack} subroutines.
+
+For example:
 
 @example
 @group
-syl ([1, 2; 3, 4], [5, 6; 7, 8], [9, 10; 11, 12])
-   @result{} [ -0.50000, -0.66667; -0.66667, -0.50000 ]
+sylvester ([1, 2; 3, 4], [5, 6; 7, 8], [9, 10; 11, 12])
+   @result{} [ 0.50000, 0.66667; 0.66667, 0.50000 ]
 @end group
 @end example
 @end deftypefn
@@ -11953,6 +12493,7 @@ Duplicate a file descriptor.
 If successful, @var{fid} is greater than zero and contains the new file
 ID@.  Otherwise, @var{fid} is negative and @var{msg} contains a
 system-dependent error message.
+@seealso{fopen, fclose, fcntl}
 @end deftypefn
 exec
 @c exec libinterp/corefcn/syscalls.cc
@@ -12022,8 +12563,9 @@ exit status, it will linger until Octave exits.
 @c fcntl libinterp/corefcn/syscalls.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {[@var{err}, @var{msg}] =} fcntl (@var{fid}, @var{request}, @var{arg})
-Change the properties of the open file @var{fid}.  The following values
-may be passed as @var{request}:
+Change the properties of the open file @var{fid}.
+
+The following values may be passed as @var{request}:
 
 @vtable @code
 @item F_DUPFD
@@ -12074,6 +12616,7 @@ Set the file status flags for @var{fid} to the value specified by
 If successful, @var{err} is 0 and @var{msg} is an empty string.
 Otherwise, @var{err} is nonzero and @var{msg} contains a
 system-dependent error message.
+@seealso{fopen, dup2}
 @end deftypefn
 fork
 @c fork libinterp/corefcn/syscalls.cc
@@ -12633,7 +13176,7 @@ synchronous I/O.
 O_TRUNC
 @c O_TRUNC libinterp/corefcn/syscalls.cc
 -*- texinfo -*-
-@deftypefn {Built-in Function} O_TRUNC ()
+@deftypefn {Built-in Function} {} O_TRUNC ()
 Return the numerical value of the file status flag that may be
 returned by @code{fcntl} to indicate that if file exists, it should
 be truncated when writing.
@@ -12677,6 +13220,12 @@ if a stopped child has been resumed by delivery of a @code{SIGCONT}
 signal.
 @seealso{waitpid, WNOHANG, WUNTRACED}
 @end deftypefn
+__open_with_system_app__
+@c __open_with_system_app__ libinterp/corefcn/sysdep.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {} __open_with_system_app__ (@var{file})
+Undocumented internal function.
+@end deftypefn
 clc
 @c clc libinterp/corefcn/sysdep.cc
 -*- texinfo -*-
@@ -12696,13 +13245,29 @@ getenv ("PATH")
 
 @noindent
 returns a string containing the value of your path.
+@seealso{setenv, unsetenv}
 @end deftypefn
-putenv
-@c putenv libinterp/corefcn/sysdep.cc
+setenv
+@c setenv libinterp/corefcn/sysdep.cc
 -*- texinfo -*-
-@deftypefn  {Built-in Function} {} putenv (@var{var}, @var{value})
-@deftypefnx {Built-in Function} {} setenv (@var{var}, @var{value})
+@deftypefn  {Built-in Function} {} setenv (@var{var}, @var{value})
+@deftypefnx {Built-in Function} {} setenv (@var{var})
+@deftypefnx {Built-in Function} {} putenv (@dots{})
 Set the value of the environment variable @var{var} to @var{value}.
+
+If no @var{value} is specified then the variable will be assigned the null
+string.
+@seealso{unsetenv, getenv}
+@end deftypefn
+unsetenv
+@c unsetenv libinterp/corefcn/sysdep.cc
+-*- texinfo -*-
+@deftypefn {Built-in Function} {@var{status} =} unsetenv (@var{var})
+Delete the environment variable @var{var}.
+
+Return 0 if the variable was deleted, or did not exist, and -1 if an error
+occurred.
+@seealso{setenv, getenv}
 @end deftypefn
 kbhit
 @c kbhit libinterp/corefcn/sysdep.cc
@@ -12809,6 +13374,7 @@ tilde_expand ("~/bin")
 @deftypefn {Built-in Function} {} have_window_system ()
 Return true if a window system is available (X11, Windows, or Apple OS X)
 and false otherwise.
+@seealso{isguirunning}
 @end deftypefn
 time
 @c time libinterp/corefcn/time.cc
@@ -13058,11 +13624,20 @@ you're absolutely sure the date string will be parsed correctly.
 quit
 @c quit libinterp/corefcn/toplev.cc
 -*- texinfo -*-
-@deftypefn  {Built-in Function} {} exit (@var{status})
+@deftypefn  {Built-in Function} {} exit
+@deftypefnx {Built-in Function} {} exit (@var{status})
+@deftypefnx {Built-in Function} {} quit
 @deftypefnx {Built-in Function} {} quit (@var{status})
-Exit the current Octave session.  If the optional integer value
-@var{status} is supplied, pass that value to the operating system as the
-Octave's exit status.  The default value is zero.
+Exit the current Octave session.
+
+If the optional integer value @var{status} is supplied, pass that value to
+the operating system as Octave's exit status.  The default value is zero.
+
+When exiting, Octave will attempt to run the m-file @file{finish.m} if it
+exists.  User commands to save the workspace or clean up temporary files
+may be placed in that file.  Alternatively, another m-file may be scheduled
+to run using @code{atexit}.
+@seealso{atexit}
 @end deftypefn
 warranty
 @c warranty libinterp/corefcn/toplev.cc
@@ -13126,7 +13701,9 @@ command shell that is started to run the command.
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {} atexit (@var{fcn})
 @deftypefnx {Built-in Function} {} atexit (@var{fcn}, @var{flag})
-Register a function to be called when Octave exits.  For example,
+Register a function to be called when Octave exits.
+
+For example,
 
 @example
 @group
@@ -13158,18 +13735,20 @@ Note that @code{atexit} only removes the first occurrence of a function
 from the list, so if a function was placed in the list multiple
 times with @code{atexit}, it must also be removed from the list
 multiple times.
+@seealso{quit}
 @end deftypefn
 octave_config_info
 @c octave_config_info libinterp/corefcn/toplev.cc
 -*- texinfo -*-
 @deftypefn  {Built-in Function} {} octave_config_info ()
 @deftypefnx {Built-in Function} {} octave_config_info (@var{option})
-Return a structure containing configuration and installation
-information for Octave.
+Return a structure containing configuration and installation information for
+Octave.
 
 If @var{option} is a string, return the configuration information for the
 specified option.
 
+@seealso{computer}
 @end deftypefn
 tril
 @c tril libinterp/corefcn/tril.cc
@@ -13194,7 +13773,7 @@ starts at an offset of @var{k} diagonals above or below the main
 diagonal; above for positive @var{k} and below for negative @var{k}.
 
 The absolute value of @var{k} must not be greater than the number of
-sub-diagonals or super-diagonals.
+subdiagonals or superdiagonals.
 
 For example:
 
@@ -13232,13 +13811,25 @@ above other.
 @deftypefnx {Function File} {} triu (@var{A}, @var{k}, @var{pack})
 See the documentation for the @code{tril} function (@pxref{tril}).
 @end deftypefn
+tsearch
+@c tsearch libinterp/corefcn/tsearch.cc
+-*- texinfo -*-
+@deftypefn {Built-in Function} {@var{idx} =} tsearch (@var{x}, @var{y}, @var{t}, @var{xi}, @var{yi})
+Search for the enclosing Delaunay convex hull.  For @code{@var{t} =
+delaunay (@var{x}, @var{y})}, finds the index in @var{t} containing the
+points @code{(@var{xi}, @var{yi})}.  For points outside the convex hull,
+@var{idx} is NaN.
+@seealso{delaunay, delaunayn}
+@end deftypefn
 typecast
 @c typecast libinterp/corefcn/typecast.cc
 -*- texinfo -*-
-@deftypefn {Built-in Function} {} typecast (@var{x}, @var{class})
+@deftypefn {Built-in Function} {@var{y} =} typecast (@var{x}, "@var{class}")
 Return a new array @var{y} resulting from interpreting the data of
-@var{x} in memory as data of the numeric class @var{class}.  Both the class
-of @var{x} and @var{class} must be one of the built-in numeric classes:
+@var{x} in memory as data of the numeric class @var{class}.
+
+Both the class of @var{x} and @var{class} must be one of the built-in
+numeric classes:
 
 @example
 @group
@@ -13265,7 +13856,7 @@ complex-valued result is requested.  Complex arrays are stored in memory as
 consecutive pairs of real numbers.  The sizes of integer types are given by
 their bit counts.  Both logical and char are typically one byte wide;
 however, this is not guaranteed by C++.  If your system is IEEE conformant,
-single and double should be 4 bytes and 8 bytes wide, respectively.
+single and double will be 4 bytes and 8 bytes wide, respectively.
 @qcode{"logical"} is not allowed for @var{class}.  If the input is a row
 vector, the return value is a row vector, otherwise it is a column vector.  
 If the bit length of @var{x} is not divisible by that of @var{class}, an
@@ -13280,18 +13871,23 @@ typecast (@var{x}, "uint8")
 @result{} [   1,   0, 255, 255]
 @end group
 @end example
-@seealso{cast, bitunpack, bitpack, swapbytes}
+@seealso{cast, bitpack, bitunpack, swapbytes}
 @end deftypefn
 bitpack
 @c bitpack libinterp/corefcn/typecast.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {@var{y} =} bitpack (@var{x}, @var{class})
-Return a new array @var{y} resulting from interpreting an array
+Return a new array @var{y} resulting from interpreting the logical array
 @var{x} as raw bit patterns for data of the numeric class @var{class}.
+
 @var{class} must be one of the built-in numeric classes:
 
 @example
 @group
+"double"
+"single"
+"double complex"
+"single complex"
 "char"
 "int8"
 "int16"
@@ -13301,8 +13897,6 @@ Return a new array @var{y} resulting from interpreting an array
 "uint16"
 "uint32"
 "uint64"
-"double"
-"single"
 @end group
 @end example
 
@@ -13317,11 +13911,15 @@ it is a column vector.
 @c bitunpack libinterp/corefcn/typecast.cc
 -*- texinfo -*-
 @deftypefn {Built-in Function} {@var{y} =} bitunpack (@var{x})
-Return an array @var{y} corresponding to the raw bit patterns of
-@var{x}.  @var{x} must belong to one of the built-in numeric classes:
+Return a logical array @var{y} corresponding to the raw bit patterns of
+@var{x}.
+
+@var{x} must belong to one of the built-in numeric classes:
 
 @example
 @group
+"double"
+"single"
 "char"
 "int8"
 "int16"
@@ -13331,8 +13929,6 @@ Return an array @var{y} corresponding to the raw bit patterns of
 "uint16"
 "uint32"
 "uint64"
-"double"
-"single"
 @end group
 @end example
 
@@ -13352,7 +13948,7 @@ Download a remote file specified by its @var{url} and save it as
 
 @example
 @group
-urlwrite ("ftp://ftp.octave.org/pub/octave/README",
+urlwrite ("ftp://ftp.octave.org/pub/README",
           "README.txt");
 @end group
 @end example
@@ -13398,7 +13994,7 @@ Download a remote file specified by its @var{url} and return its content
 in string @var{s}.  For example:
 
 @example
-s = urlread ("ftp://ftp.octave.org/pub/octave/README");
+s = urlread ("ftp://ftp.octave.org/pub/README");
 @end example
 
 The variable @var{success} is 1 if the download was successful,
@@ -13536,7 +14132,7 @@ the first that matches.
 If the second optional argument @qcode{"all"} is supplied, return
 a cell array containing the list of all files that have the same
 name in the path.  If no files are found, return an empty cell array.
-@seealso{file_in_path, find_dir_in_path, path}
+@seealso{file_in_path, dir_in_loadpath, path}
 @end deftypefn
 file_in_path
 @c file_in_path libinterp/corefcn/utils.cc
@@ -13562,7 +14158,7 @@ the first that matches.
 If the third optional argument @qcode{"all"} is supplied, return
 a cell array containing the list of all files that have the same
 name in the path.  If no files are found, return an empty cell array.
-@seealso{file_in_loadpath, find_dir_in_path, path}
+@seealso{file_in_loadpath, dir_in_loadpath, path}
 @end deftypefn
 do_string_escapes
 @c do_string_escapes libinterp/corefcn/utils.cc
@@ -13622,11 +14218,11 @@ Return the full name of @var{file} beginning from the root of the file
 system.  No check is done for the existence of @var{file}.
 @seealso{canonicalize_file_name, is_absolute_filename, is_rooted_relative_filename, isdir}
 @end deftypefn
-find_dir_in_path
-@c find_dir_in_path libinterp/corefcn/utils.cc
+dir_in_loadpath
+@c dir_in_loadpath libinterp/corefcn/utils.cc
 -*- texinfo -*-
-@deftypefn  {Built-in Function} {} find_dir_in_path (@var{dir})
-@deftypefnx {Built-in Function} {} find_dir_in_path (@var{dir}, "all")
+@deftypefn  {Built-in Function} {} dir_in_loadpath (@var{dir})
+@deftypefnx {Built-in Function} {} dir_in_loadpath (@var{dir}, "all")
 Return the full name of the path element matching @var{dir}.  The
 match is performed at the end of each path element.  For example, if
 @var{dir} is @qcode{"foo/bar"}, it matches the path element
@@ -13666,6 +14262,16 @@ arrays.  If present, @var{n} specifies the maximum extent of the dimension
 to be indexed.  When possible the internal result is cached so that
 subsequent indexing using @var{ind} will not perform the check again.
 @end deftypefn
+isstudent
+@c isstudent libinterp/corefcn/utils.cc
+-*- texinfo -*-
+@deftypefn {Built-in Function} {} isstudent ()
+Return true if running in the student edition of @sc{matlab}.
+
+@code{isstudent} always returns false in Octave.
+
+@seealso{false}
+@end deftypefn
 isglobal
 @c isglobal libinterp/corefcn/variables.cc
 -*- texinfo -*-
@@ -13685,21 +14291,38 @@ isglobal ("x")
 exist
 @c exist libinterp/corefcn/variables.cc
 -*- texinfo -*-
-@deftypefn {Built-in Function} {} exist (@var{name}, @var{type})
-Return 1 if the name exists as a variable, 2 if the name is an
-absolute file name, an ordinary file in Octave's @code{path}, or (after
-appending @samp{.m}) a function file in Octave's @code{path}, 3 if the
-name is a @samp{.oct} or @samp{.mex} file in Octave's @code{path},
-5 if the name is a built-in function, 7 if the name is a directory, or 103
-if the name is a function not associated with a file (entered on
-the command line).
+@deftypefn  {Built-in Function} {@var{c} =} exist (@var{name})
+@deftypefnx {Built-in Function} {@var{c} =} exist (@var{name}, @var{type})
+Check for the existence of @var{name} as a variable, function, file,
+directory, or class.
 
-Otherwise, return 0.
+The return code @var{c} is one of
 
-This function also returns 2 if a regular file called @var{name}
-exists in Octave's search path.  If you want information about
-other types of files, you should use some combination of the functions
-@code{file_in_path} and @code{stat} instead.
+@table @asis
+@item 1
+@var{name} is a variable.
+
+@item 2
+@var{name} is an absolute file name, an ordinary file in Octave's
+@code{path}, or (after appending @samp{.m}) a function file in Octave's
+@code{path}.
+
+@item 3
+@var{name} is a @samp{.oct} or @samp{.mex} file in Octave's @code{path}.
+
+@item 5
+@var{name} is a built-in function.
+
+@item 7
+@var{name} is a directory.
+
+@item 103
+@var{name} is a function not associated with a file (entered on the command
+line).
+
+@item 0
+@var{name} does not exist.
+@end table
 
 If the optional argument @var{type} is supplied, check only for
 symbols of the specified type.  Valid types are
@@ -13711,14 +14334,27 @@ Check only for variables.
 @item @qcode{"builtin"}
 Check only for built-in functions.
 
+@item @qcode{"dir"}
+Check only for directories.
+
 @item @qcode{"file"}
 Check only for files and directories.
 
-@item @qcode{"dir"}
-Check only for directories.
+@item @qcode{"class"}
+Check only for classes.  (Note: This option is accepted, but not currently
+implemented)
 @end table
 
-@seealso{file_in_loadpath, file_in_path, find_dir_in_path, stat}
+If no type is given, and there are multiple possible matches for name,
+@code{exist} will return a code according to the following priority list:
+variable, built-in function, oct-file, directory, file, class. 
+
+@code{exist} returns 2 if a regular file called @var{name} is present in
+Octave's search path.  If you want information about other types of files
+not on the search path you should use some combination of the functions
+@code{file_in_path} and @code{stat} instead.
+
+@seealso{file_in_loadpath, file_in_path, dir_in_loadpath, stat}
 @end deftypefn
 who
 @c who libinterp/corefcn/variables.cc
@@ -14029,6 +14665,20 @@ component and a string describing the missing component.  The hook function
 should return an error message to be displayed.
 @seealso{missing_function_hook}
 @end deftypefn
+jit_failcnt
+@c jit_failcnt libinterp/corefcn/pt-jit.cc
+-*- texinfo -*-
+@deftypefn  {Built-in Function} {@var{val} =} jit_failcnt ()
+@deftypefnx {Built-in Function} {@var{old_val} =} jit_failcnt (@var{new_val})
+@deftypefnx {Built-in Function} {} jit_failcnt (@var{new_val}, "local")
+Query or set the internal variable that counts the number of
+JIT fail exceptions for Octave's JIT compiler.
+
+When called from inside a function with the @qcode{"local"} option, the
+variable is changed locally for the function and any subroutines it calls.  
+The original variable value is restored when exiting the function.
+@seealso{jit_enable, jit_startcnt, debug_jit}
+@end deftypefn
 debug_jit
 @c debug_jit libinterp/corefcn/pt-jit.cc
 -*- texinfo -*-
@@ -14276,12 +14926,6 @@ Undocumented internal function.
 @deftypefnx {Loadable Function} {@var{T} =} __delaunayn__ (@var{pts}, @var{options})
 Undocumented internal function.
 @end deftypefn
-__dsearchn__
-@c __dsearchn__ libinterp/dldfcn/__dsearchn__.cc
--*- texinfo -*-
-@deftypefn {Loadable Function} {[@var{idx}, @var{d}] =} dsearch (@var{x}, @var{xi})
-Undocumented internal function.
-@end deftypefn
 __eigs__
 @c __eigs__ libinterp/dldfcn/__eigs__.cc
 -*- texinfo -*-
@@ -14319,23 +14963,16 @@ Undocumented internal function.
 @deftypefn {Loadable Function} {[@var{values}] =} __glpk__ (@var{args})
 Undocumented internal function.
 @end deftypefn
-__fltk_redraw__
-@c __fltk_redraw__ libinterp/dldfcn/__init_fltk__.cc
+__fltk_check__
+@c __fltk_check__ libinterp/dldfcn/__init_fltk__.cc
 -*- texinfo -*-
-@deftypefn {Loadable Function} {} __fltk_redraw__ ()
-Undocumented internal function.
+@deftypefn {Loadable Function} {} __fltk_check__ ()
+Undocumented internal function.  Calls Fl::check ()
 @end deftypefn
 __init_fltk__
 @c __init_fltk__ libinterp/dldfcn/__init_fltk__.cc
 -*- texinfo -*-
 @deftypefn {Loadable Function} {} __init_fltk__ ()
-Undocumented internal function.
-@end deftypefn
-__fltk_maxtime__
-@c __fltk_maxtime__ libinterp/dldfcn/__init_fltk__.cc
--*- texinfo -*-
-@deftypefn  {Loadable Function} {@var{maxtime} =} __fltk_maxtime__ ()
-@deftypefnx {Loadable Function} {} __fltk_maxtime__ (@var{maxtime})
 Undocumented internal function.
 @end deftypefn
 __have_fltk__
@@ -14344,51 +14981,15 @@ Undocumented internal function.
 @deftypefn {Loadable Function} {@var{FLTK_available} =} __have_fltk__ ()
 Undocumented internal function.
 @end deftypefn
-mouse_wheel_zoom
-@c mouse_wheel_zoom libinterp/dldfcn/__init_fltk__.cc
--*- texinfo -*-
-@deftypefn  {Loadable Function} {@var{val} =} mouse_wheel_zoom ()
-@deftypefnx {Loadable Function} {@var{old_val} =} mouse_wheel_zoom (@var{new_val})
-@deftypefnx {Loadable Function} {} mouse_wheel_zoom (@var{new_val}, "local")
-Query or set the mouse wheel zoom factor.
-
-The zoom factor is a number in the range (0,1) which is the percentage of the
-current axis limits that will be used when zooming.  For example, if the
-current x-axis limits are [0, 50] and @code{mouse_wheel_zoom} is 0.4 (40%),
-then a zoom operation will change the limits by 20.
-
-When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
-The original variable value is restored when exiting the function.
-
-This function is currently implemented only for the FLTK graphics toolkit.
-@seealso{gui_mode}
-@end deftypefn
-gui_mode
-@c gui_mode libinterp/dldfcn/__init_fltk__.cc
--*- texinfo -*-
-@deftypefn  {Built-in Function} {@var{mode} =} gui_mode ()
-@deftypefnx {Built-in Function} {} gui_mode (@var{mode})
-Query or set the GUI mode for the current graphics toolkit.
-The @var{mode} argument can be one of the following strings:
-
-@table @asis
-@item @qcode{"2d"}
-Allows panning and zooming of current axes.
-
-@item @qcode{"3d"}
-Allows rotating and zooming of current axes.
-
-@item @qcode{"none"}
-Mouse inputs have no effect.
-@end table
-
-This function is currently implemented only for the FLTK graphics toolkit.
-@seealso{mouse_wheel_zoom}
-@end deftypefn
 __init_gnuplot__
 @c __init_gnuplot__ libinterp/dldfcn/__init_gnuplot__.cc
 
+__have_gnuplot__
+@c __have_gnuplot__ libinterp/dldfcn/__init_gnuplot__.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{gnuplot_available} =} __have_gnuplot__ ()
+Undocumented internal function.
+@end deftypefn
 __magick_read__
 @c __magick_read__ libinterp/dldfcn/__magick_read__.cc
 -*- texinfo -*-
@@ -14440,6 +15041,37 @@ Fill formats info with GraphicsMagick CoderInfo.
 
 @seealso{imfinfo, imformats, imread, imwrite}
 @end deftypefn
+__osmesa_print__
+@c __osmesa_print__ libinterp/dldfcn/__osmesa_print__.cc
+-*- texinfo -*-
+@deftypefn  {Loadable Function} {} __osmesa_print__ (@var{h}, @var{file}, @var{term})
+@deftypefnx {Loadable Function} {@var{img} =} __osmesa_print__ (@var{h})
+Print figure @var{h} using OSMesa and gl2ps for vector formats.
+
+This is a private internal function.
+
+The first method calls gl2ps with the appropriate @var{term} and writes
+the output of gl2ps to @var{file}.  If the first character of @var{file}
+is @qcode{|}, then a process is started and the output of gl2ps is piped
+to it.
+
+Valid options for @var{term}, which can be concatenated in one string, are:
+
+@table @asis
+@item @qcode{eps}, @qcode{pdf}, @qcode{ps}, @qcode{svg}, @qcode{pgf}, @qcode{tex}
+Select output format.
+
+@item @qcode{is2D}
+Use GL2PS_SIMPLE_SORT instead of GL2PS_BSP_SORT as Z-depth sorting algorithm.
+
+@item @qcode{notext}
+Don't render text.
+@end table
+
+The second method doesn't use gl2ps and returns a RGB image in @var{img}
+instead.
+
+@end deftypefn
 __voronoi__
 @c __voronoi__ libinterp/dldfcn/__voronoi__.cc
 -*- texinfo -*-
@@ -14466,8 +15098,8 @@ behavior of @code{amd}.  The fields of the structure are
 @table @asis
 @item @var{opts}.dense
 Determines what @code{amd} considers to be a dense row or column of the
-input matrix.  Rows or columns with more than @code{max(16, (dense *
-sqrt (@var{n})} entries, where @var{n} is the order of the matrix @var{S},
+input matrix.  Rows or columns with more than @code{max (16, (dense *
+sqrt (@var{n})))} entries, where @var{n} is the order of the matrix @var{S},
 are ignored by @code{amd} during the calculation of the permutation
 The value of dense must be a positive scalar and its default value is 10.0
 
@@ -14531,10 +15163,9 @@ if nonzero, statistics and knobs are printed.
 @var{cmember} is an optional vector of length @math{n}.  It defines the
 constraints on the column ordering.  If @code{@var{cmember}(j) = @var{c}},
 then column @var{j} is in constraint set @var{c} (@var{c} must be in the
-range 1 to
-n).  In the output permutation @var{p}, all columns in set 1 appear
-first, followed by all columns in set 2, and so on.  @code{@var{cmember} =
-ones (1,n)} if not present or empty.
+range 1 to n).  In the output permutation @var{p}, all columns in set 1
+appear first, followed by all columns in set 2, and so on.
+@code{@var{cmember} = ones (1,n)} if not present or empty.
 @code{ccolamd (@var{S}, [], 1 : n)} returns @code{1 : n}
 
 @code{@var{p} = ccolamd (@var{S})} is about the same as
@@ -14564,11 +15195,12 @@ such row index exists.  @code{@var{stats}(7)} is the number of duplicate
 or out-of-order row indices.  @code{@var{stats}(8 : 20)} is always zero in
 the current version of @sc{ccolamd} (reserved for future use).
 
-The authors of the code itself are S. Larimore, T. Davis (Univ. of Florida)
-and S. Rajamanickam in collaboration with J. Bilbert and E. Ng.  Supported
-by the National Science Foundation
-@nospell{(DMS-9504974, DMS-9803599, CCR-0203270)}, and a grant from Sandia
-National Lab.  See @url{http://www.cise.ufl.edu/research/sparse} for
+The authors of the code itself are @nospell{S. Larimore, T. Davis}
+(Univ. of Florida) and @nospell{S. Rajamanickam} in collaboration with
+@nospell{J. Bilbert and E. Ng}.  Supported by the National Science Foundation
+@nospell{(DMS-9504974, DMS-9803599, CCR-0203270)}, and a grant from
+@nospell{Sandia} National Lab.
+See @url{http://www.cise.ufl.edu/research/sparse} for
 ccolamd, csymamd, amd, colamd, symamd, and other related orderings.
 @seealso{colamd, csymamd}
 @end deftypefn
@@ -14626,11 +15258,12 @@ such row index exists.  @code{@var{stats}(7)} is the number of duplicate
 or out-of-order row indices.  @code{@var{stats}(8:20)} is always zero in
 the current version of @sc{ccolamd} (reserved for future use).
 
-The authors of the code itself are S. Larimore, T. Davis (Uni of Florida)
-and S. Rajamanickam in collaboration with J. Bilbert and E. Ng.  Supported
-by the National Science Foundation
-@nospell{(DMS-9504974, DMS-9803599, CCR-0203270)}, and a grant from Sandia
-National Lab.  See @url{http://www.cise.ufl.edu/research/sparse} for
+The authors of the code itself are @nospell{S. Larimore, T. Davis}
+(Univ. of Florida) and @nospell{S. Rajamanickam} in collaboration with
+@nospell{J. Bilbert and E. Ng}.  Supported by the National Science Foundation
+@nospell{(DMS-9504974, DMS-9803599, CCR-0203270)}, and a grant from
+@nospell{Sandia} National Lab.
+See @url{http://www.cise.ufl.edu/research/sparse} for
 ccolamd, csymamd, amd, colamd, symamd, and other related orderings.
 @seealso{symamd, ccolamd}
 @end deftypefn
@@ -14710,7 +15343,7 @@ upper triangular part is used.
 
 In general the lower triangular factorization is significantly faster for
 sparse matrices.
-@seealso{hess, lu, qr, qz, schur, svd, cholinv, chol2inv, cholupdate, cholinsert, choldelete, cholshift}
+@seealso{hess, lu, qr, qz, schur, svd, ichol, cholinv, chol2inv, cholupdate, cholinsert, choldelete, cholshift}
 @end deftypefn
 cholinv
 @c cholinv libinterp/dldfcn/chol.cc
@@ -14871,10 +15504,9 @@ the current version of @sc{colamd} (reserved for future use).
 
 The ordering is followed by a column elimination tree post-ordering.
 
-The authors of the code itself are Stefan I. Larimore and Timothy A.
-Davis @email{davis@@cise.ufl.edu}, University of Florida.  The algorithm was
-developed in collaboration with John Gilbert, Xerox PARC, and Esmond
-Ng, Oak Ridge National Laboratory.  (see
+The authors of the code itself are @nospell{Stefan I. Larimore} and
+@nospell{Timothy A. Davis @email{davis@@cise.ufl.edu}}, University of Florida.  The algorithm was developed in collaboration with @nospell{John Gilbert},
+Xerox PARC, and @nospell{Esmond Ng}, Oak Ridge National Laboratory.  (see
 @url{http://www.cise.ufl.edu/research/sparse/colamd})
 @seealso{colperm, symamd, ccolamd}
 @end deftypefn
@@ -14935,10 +15567,9 @@ always zero in the current version of SYMAMD (reserved for future use).
 
 The ordering is followed by a column elimination tree post-ordering.
 
-The authors of the code itself are Stefan I. Larimore and Timothy A.
-Davis @email{davis@@cise.ufl.edu}, University of Florida.  The algorithm was
-developed in collaboration with John Gilbert, Xerox PARC, and Esmond
-Ng, Oak Ridge National Laboratory.  (see
+The authors of the code itself are @nospell{Stefan I. Larimore} and
+@nospell{Timothy A. Davis @email{davis@@cise.ufl.edu}}, University of Florida.  The algorithm was developed in collaboration with @nospell{John Gilbert},
+Xerox PARC, and @nospell{Esmond Ng}, Oak Ridge National Laboratory.  (see
 @url{http://www.cise.ufl.edu/research/sparse/colamd})
 @seealso{colperm, colamd}
 @end deftypefn
@@ -14998,8 +15629,10 @@ convex hull is calculated.
 @deftypefn  {Loadable Function} {@var{p} =} dmperm (@var{S})
 @deftypefnx {Loadable Function} {[@var{p}, @var{q}, @var{r}, @var{S}] =} dmperm (@var{S})
 
-@cindex Dulmage-Mendelsohn decomposition
-Perform a Dulmage-Mendelsohn permutation of the sparse matrix @var{S}.
+@cindex @nospell{Dulmage-Mendelsohn} decomposition
+Perform a @nospell{Dulmage-Mendelsohn} permutation of the sparse matrix
+@var{S}.
+
 With a single output argument @code{dmperm} performs the row permutations
 @var{p} such that @code{@var{S}(@var{p},:)} has no zero elements on the
 diagonal.
@@ -15009,9 +15642,9 @@ permutations, such that @code{@var{S}(@var{p}, @var{q})} is in block
 triangular form.  The values of @var{r} and @var{S} define the boundaries
 of the blocks.  If @var{S} is square then @code{@var{r} == @var{S}}.
 
-The method used is described in: A. Pothen & C.-J. Fan. @cite{Computing the
-Block Triangular Form of a Sparse Matrix}. ACM Trans. Math. Software,
-16(4):303-324, 1990.
+The method used is described in: @nospell{A. Pothen & C.-J. Fan.}
+@cite{Computing the Block Triangular Form of a Sparse Matrix}.
+ACM Trans. Math. Software, 16(4):303-324, 1990.
 @seealso{colamd, ccolamd}
 @end deftypefn
 sprank
@@ -15022,8 +15655,8 @@ Block Triangular Form of a Sparse Matrix}. ACM Trans. Math. Software,
 
 Calculate the structural rank of the sparse matrix @var{S}.  Note that
 only the structure of the matrix is used in this calculation based on
-a Dulmage-Mendelsohn permutation to block triangular form.  As such the
-numerical rank of the matrix @var{S} is bounded by
+a @nospell{Dulmage-Mendelsohn} permutation to block triangular form.  As
+such the numerical rank of the matrix @var{S} is bounded by
 @code{sprank (@var{S}) >= rank (@var{S})}.  Ignoring floating point errors
 @code{sprank (@var{S}) == rank (@var{S})}.
 @seealso{dmperm}
@@ -15399,7 +16032,7 @@ factorization as determined by @var{typ}.
 @c symrcm libinterp/dldfcn/symrcm.cc
 -*- texinfo -*-
 @deftypefn {Loadable Function} {@var{p} =} symrcm (@var{S})
-Return the symmetric reverse Cuthill-McKee permutation of @var{S}.
+Return the symmetric reverse @nospell{Cuthill-McKee} permutation of @var{S}.
 @var{p} is a permutation vector such that
 @code{@var{S}(@var{p}, @var{p})} tends to have its diagonal elements
 closer to the diagonal than @var{S}.  This is a good preordering for LU
@@ -15410,23 +16043,338 @@ The algorithm represents a heuristic approach to the NP-complete
 bandwidth minimization problem.  The implementation is based in the
 descriptions found in
 
-E. Cuthill, J. McKee. @cite{Reducing the Bandwidth of Sparse Symmetric
-Matrices}. Proceedings of the 24th ACM National Conference, 157--172
-1969, Brandon Press, New Jersey.
+@nospell{E. Cuthill, J. McKee}. @cite{Reducing the Bandwidth of Sparse
+Symmetric Matrices}. Proceedings of the 24th ACM National Conference,
+157--172 1969, Brandon Press, New Jersey.
 
-A. George, J.W.H. Liu. @cite{Computer Solution of Large Sparse
+@nospell{A. George, J.W.H. Liu}. @cite{Computer Solution of Large Sparse
 Positive Definite Systems}, Prentice Hall Series in Computational
 Mathematics, ISBN 0-13-165274-5, 1981.
 
 @seealso{colperm, colamd, symamd}
 @end deftypefn
-tsearch
-@c tsearch libinterp/dldfcn/tsearch.cc
+audioread
+@c audioread libinterp/dldfcn/audioread.cc
 -*- texinfo -*-
-@deftypefn {Loadable Function} {@var{idx} =} tsearch (@var{x}, @var{y}, @var{t}, @var{xi}, @var{yi})
-Search for the enclosing Delaunay convex hull.  For @code{@var{t} =
-delaunay (@var{x}, @var{y})}, finds the index in @var{t} containing the
-points @code{(@var{xi}, @var{yi})}.  For points outside the convex hull,
-@var{idx} is NaN.
-@seealso{delaunay, delaunayn}
+@deftypefn  {Loadable Function} {[@var{y}, @var{fs}] =} audioread (@var{filename})
+@deftypefnx {Loadable Function} {[@var{y}, @var{fs}] =} audioread (@var{filename}, @var{samples})
+
+@deftypefnx {Loadable Function} {[@var{y}, @var{fs}] =} audioread (@var{filename}, @var{datatype})
+@deftypefnx {Loadable Function} {[@var{y}, @var{fs}] =} audioread (@var{filename}, @var{samples}, @var{datatype})
+Read the audio file @var{filename} and return the audio data and sampling
+rate.  The audio data is stored as matrix with rows corresponding
+to audio frames and columns corresponding to channels.
+
+The optional two-element vector argument @var{samples} specifies starting
+and ending frames.
+
+The optional argument @var{datatype} specifies the datatype to return.
+If it is @qcode{"native"}, then the type of data depends on how the
+data is stored in the audio file.
+
+Read a file and return a specified range of frames in an array of specified
+type.
+
+@end deftypefn
+audiowrite
+@c audiowrite libinterp/dldfcn/audioread.cc
+-*- texinfo -*-
+@deftypefn  {Loadable Function} {} audiowrite (@var{filename}, @var{y}, @var{fs})
+@deftypefnx {Loadable Function} {} audiowrite (@var{filename}, @var{y}, @var{fs}, @var{name}, @var{value}, @dots{})
+
+Write audio data from the matrix @var{y} to @var{filename} with the file
+format determined by the file extension.
+
+Additional name and value argument pairs may be used to specify the
+following options:
+
+@table @samp
+@item BitsPerSample
+Number of bits per sample, valid values are 8, 16, 24 and 32.  Default is 16.
+
+@item BitRate
+Valid argument name, but ignored.  Left for compatibility with @sc{matlab}.
+
+@item Quality
+Quality setting for the Ogg Vorbis compressor.  Values can range between 0
+and 100 with 100 being the highest quality setting.  Default is 75.
+
+@item Title
+Title for the audio file.
+
+@item Artist
+Artist name.
+
+@item Comment
+Comment.
+@end table
+@end deftypefn
+audioinfo
+@c audioinfo libinterp/dldfcn/audioread.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{info} =} audioinfo (@var{filename})
+Return information about an audio file specified by @var{filename}.
+@end deftypefn
+audiodevinfo
+@c audiodevinfo libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{devinfo} =} audiodevinfo ()
+
+@deftypefnx {Loadable Function} {@var{devs} =} audiodevinfo (@var{io})
+@deftypefnx {Loadable Function} {@var{name} =} audiodevinfo (@var{io}, @var{id})
+@deftypefnx {Loadable Function} {@var{id} =} audiodevinfo (@var{io}, @var{name})
+@deftypefnx {Loadable Function} {@var{id} =} audiodevinfo (@var{io}, @var{rate}, @var{bits}, @var{chans})
+
+@deftypefnx {Loadable Function} {@var{supports} =} audiodevinfo (@var{io}, @var{id}, @var{rate}, @var{bits}, @var{chans})
+
+Return a structure with fields "input" and "output".
+The value of each field is a structure array with fields
+"Name", @nospell{"DriverVersion"} and "ID" describing an audio device.
+
+If the optional argument @var{io} is 1, return information about input
+devices only.  If it is 0, return information about output devices only.
+
+If the optional argument @var{id} is provided, return information about
+corresponding device.
+
+If the optional argument @var{name} is provided, return the id of the
+named device.
+
+Given a sampling rate, bits per sample, and number of channels for
+an input or output device, return the ID of the first device that
+supports playback or recording using the specified parameters.
+
+If also given a device ID, return true if the device supports playback
+or recording using those parameters.
+@end deftypefn
+__recorder_audiorecorder__
+@c __recorder_audiorecorder__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn  {Loadable Function} {@var{recorder} =} __recorder_audiorecorder__ (@var{fs}, @var{nbits}, @var{channels})
+@deftypefnx {Loadable Function} {@var{recorder} =} __recorder_audiorecorder__ (@var{fs}, @var{nbits}, @var{channels}, @var{id})
+@deftypefnx {Loadable Function} {@var{recorder} =} __recorder_audiorecorder__ (@var{fcn}, @dots{})
+Undocumented internal function.
+@end deftypefn
+__recorder_getaudiodata__
+@c __recorder_getaudiodata__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{data}} __recorder_getaudiodata__ (@var{recorder})
+Undocumented internal function.
+@end deftypefn
+__recorder_get_channels__
+@c __recorder_get_channels__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{n} =} __recorder_get_channels__ (@var{recorder})
+Undocumented internal function.
+@end deftypefn
+__recorder_get_fs__
+@c __recorder_get_fs__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{fs} =} __recorder_get_fs__ (@var{recorder})
+Undocumented internal function.
+@end deftypefn
+__recorder_get_id__
+@c __recorder_get_id__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{id} =} __recorder_get_id__ (@var{recorder})
+Undocumented internal function.
+@end deftypefn
+__recorder_get_nbits__
+@c __recorder_get_nbits__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{nbits} =} __recorder_get_nbits__ (@var{recorder})
+Undocumented internal function.
+@end deftypefn
+__recorder_get_sample_number__
+@c __recorder_get_sample_number__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{n} =} __recorder_get_sample_number__ (@var{recorder})
+Undocumented internal function.
+@end deftypefn
+__recorder_get_tag__
+@c __recorder_get_tag__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{tag} =} __recorder_get_tag__ (@var{recorder})
+Undocumented internal function.
+@end deftypefn
+__recorder_get_total_samples__
+@c __recorder_get_total_samples__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{n} =} __recorder_get_total_samples__ (@var{recorder})
+Undocumented internal function.
+@end deftypefn
+__recorder_get_userdata__
+@c __recorder_get_userdata__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{data} =} __recorder_get_userdata__ (@var{recorder})
+Undocumented internal function.
+@end deftypefn
+__recorder_isrecording__
+@c __recorder_isrecording__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {} __recorder_isrecording__ (@var{recorder})
+Undocumented internal function.
+@end deftypefn
+__recorder_pause__
+@c __recorder_pause__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {} __recorder_pause__ (@var{recorder})
+Undocumented internal function.
+@end deftypefn
+__recorder_recordblocking__
+@c __recorder_recordblocking__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {} __recorder_recordblocking__ (@var{recorder}, @var{seconds})
+Undocumented internal function.
+@end deftypefn
+__recorder_record__
+@c __recorder_record__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn  {Loadable Function} {} __recorder_record__ (@var{recorder})
+@deftypefnx {Loadable Function} {} __recorder_record__ (@var{recorder}, @var{seconds})
+Undocumented internal function.
+@end deftypefn
+__recorder_resume__
+@c __recorder_resume__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {} __recorder_resume__ (@var{recorder})
+Undocumented internal function.
+@end deftypefn
+__recorder_set_fs__
+@c __recorder_set_fs__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {} __recorder_set_fs__ (@var{recorder}, @var{fs})
+Undocumented internal function.
+@end deftypefn
+__recorder_set_tag__
+@c __recorder_set_tag__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {} __recorder_set_tag__ (@var{recorder}, @var{tag})
+Undocumented internal function.
+@end deftypefn
+__recorder_set_userdata__
+@c __recorder_set_userdata__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {} __recorder_set_userdata__ (@var{recorder}, @var{data})
+Undocumented internal function.
+@end deftypefn
+__recorder_stop__
+@c __recorder_stop__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {} __recorder_stop__ (@var{recorder})
+Undocumented internal function.
+@end deftypefn
+__player_audioplayer__
+@c __player_audioplayer__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn  {Loadable Function} {@var{player} =} __player_audioplayer__ (@var{y}, @var{fs})
+@deftypefnx {Loadable Function} {@var{player} =} __player_audioplayer__ (@var{y}, @var{fs}, @var{nbits})
+@deftypefnx {Loadable Function} {@var{player} =} __player_audioplayer__ (@var{y}, @var{fs}, @var{nbits}, @var{id})
+Undocumented internal function.
+@end deftypefn
+__player_get_channels__
+@c __player_get_channels__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{n} =} __player_get_channels__ (@var{player})
+Undocumented internal function.
+@end deftypefn
+__player_get_fs__
+@c __player_get_fs__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{fs} =} __player_get_fs__ (@var{player})
+Undocumented internal function.
+@end deftypefn
+__player_get_id__
+@c __player_get_id__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{id} =} __player_get_id__ (@var{player})
+Undocumented internal function.
+@end deftypefn
+__player_get_nbits__
+@c __player_get_nbits__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{nbits} =} __player_get_nbits__ (@var{player})
+Undocumented internal function.
+@end deftypefn
+__player_get_sample_number__
+@c __player_get_sample_number__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{n} =} __player_get_sample_number__ (@var{player})
+Undocumented internal function.
+@end deftypefn
+__player_get_tag__
+@c __player_get_tag__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{tag} =} __player_get_tag__ (@var{player})
+Undocumented internal function.
+@end deftypefn
+__player_get_total_samples__
+@c __player_get_total_samples__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{n} =} __player_get_total_samples__ (@var{player})
+Undocumented internal function.
+@end deftypefn
+__player_get_userdata__
+@c __player_get_userdata__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {@var{data} =} __player_get_userdata__ (@var{player})
+Undocumented internal function.
+@end deftypefn
+__player_isplaying__
+@c __player_isplaying__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {} __player_isplaying__ (@var{player})
+Undocumented internal function.
+@end deftypefn
+__player_pause__
+@c __player_pause__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {} __player_pause__ (@var{player})
+Undocumented internal function.
+@end deftypefn
+__player_playblocking__
+@c __player_playblocking__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn  {Loadable Function} {} __player_playblocking__ (@var{player})
+@deftypefnx {Loadable Function} {} __player_playblocking__ (@var{player}, @var{start})
+@deftypefnx {Loadable Function} {} __player_playblocking__ (@var{player}, [@var{start}, @var{end}])
+Undocumented internal function.
+@end deftypefn
+__player_play__
+@c __player_play__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn  {Loadable Function} {} __player_play__ (@var{player})
+@deftypefnx {Loadable Function} {} __player_play__ (@var{player}, @var{start})
+@deftypefnx {Loadable Function} {} __player_play__ (@var{player}, [@var{start}, @var{end}])
+Undocumented internal function.
+@end deftypefn
+__player_resume__
+@c __player_resume__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {} __player_resume__ (@var{player})
+Undocumented internal function.
+@end deftypefn
+__player_set_fs__
+@c __player_set_fs__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {} __player_set_fs__ (@var{player}, @var{fs})
+Undocumented internal function.
+@end deftypefn
+__player_set_tag__
+@c __player_set_tag__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {} __player_set_tag__ (@var{player}, @var{tag})
+Undocumented internal function.
+@end deftypefn
+__player_set_userdata__
+@c __player_set_userdata__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {} __player_set_userdata__ (@var{player}, @var{data})
+Undocumented internal function.
+@end deftypefn
+__player_stop__
+@c __player_stop__ libinterp/dldfcn/audiodevinfo.cc
+-*- texinfo -*-
+@deftypefn {Loadable Function} {} __player_stop__ (@var{player})
+Undocumented internal function.
 @end deftypefn

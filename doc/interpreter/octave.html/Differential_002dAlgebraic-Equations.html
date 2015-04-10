@@ -67,8 +67,8 @@ Previous: <a href="Ordinary-Differential-Equations.html#Ordinary-Differential-Eq
 
 <p>where
 <em>x-dot</em>
-is the derivative of <em>x</em>.  The equation is solved using Petzold&rsquo;s
-DAE solver <small>DASPK</small>.
+is the derivative of <em>x</em>.  The equation is solved using
+Petzold&rsquo;s DAE solver <small>DASPK</small>.
 </p>
 <a name="XREFdaspk"></a><dl>
 <dt><a name="index-daspk"></a>Built-in Function: <em>[<var>x</var>, <var>xdot</var>, <var>istate</var>, <var>msg</var>] =</em> <strong>daspk</strong> <em>(<var>fcn</var>, <var>x_0</var>, <var>xdot_0</var>, <var>t</var>, <var>t_crit</var>)</em></dt>
@@ -270,10 +270,10 @@ declare which variables in the problem are algebraic (default is 0).
 <dd><p>A vector of the same length as the state vector.  A nonzero element
 indicates that the corresponding element of the state vector is an
 algebraic variable (i.e., its derivative does not appear explicitly
-in the equation set.
+in the equation set).
 </p>
 <p>This option is required by the
-<code>compute consistent initial condition&quot;</code> and
+<code>&quot;compute consistent initial condition&quot;</code> and
 <code>&quot;exclude algebraic variables from error test&quot;</code> options.
 </p>
 </dd>

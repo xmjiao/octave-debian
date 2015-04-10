@@ -1,4 +1,4 @@
-## Copyright (C) 1996-2013 John W. Eaton
+## Copyright (C) 1996-2015 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -75,7 +75,7 @@ function varargout = __bar__ (vertical, func, varargin)
       idx++;
     elseif (ischar (varargin{idx}) && strcmpi (varargin{idx}, "histc"))
       group = true;
-      histc = true; 
+      histc = true;
       idx++;
     elseif (ischar (varargin{idx}) && strcmpi (varargin{idx}, "hist"))
       group = true;
@@ -147,7 +147,7 @@ function varargout = __bar__ (vertical, func, varargin)
     cutoff = 1;
   endif
   if (group)
-    gdelta = cutoff * gwidth / nbars; 
+    gdelta = cutoff * gwidth / nbars;
     cdelta = repmat ((1 - ((1 - cwidth) / 2)) * gdelta, size (x));
   else
     cdelta = repmat (cutoff * gwidth, size (x));
@@ -373,7 +373,7 @@ endfunction
 
 function show_baseline (h, ~, prop = "")
   persistent recursion = false;
-  
+
   ## Don't allow recursion
   if (! recursion)
     unwind_protect
@@ -437,6 +437,8 @@ function update_data (h, ~)
       ydat = get (hlist, "ydata");
       if (iscell (ydat))
         y = cell2mat (ydat.');
+      elseif (isvector (ydat))
+        y = ydat(:);
       else
         y = ydat;
       endif

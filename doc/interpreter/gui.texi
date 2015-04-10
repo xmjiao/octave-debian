@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 2012-2013 Rik Wehbring
+@c Copyright (C) 2012-2015 Rik Wehbring
 @c
 @c This file is part of Octave.
 @c
@@ -8,12 +8,12 @@
 @c under the terms of the GNU General Public License as published by the
 @c Free Software Foundation; either version 3 of the License, or (at
 @c your option) any later version.
-@c 
+@c
 @c Octave is distributed in the hope that it will be useful, but WITHOUT
 @c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 @c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 @c for more details.
-@c 
+@c
 @c You should have received a copy of the GNU General Public License
 @c along with Octave; see the file COPYING.  If not, see
 @c <http://www.gnu.org/licenses/>.
@@ -22,13 +22,15 @@
 @chapter GUI Development
 
 Octave is principally a batch or command-line language.  However, it does
-offer some limited features for constructing graphical interfaces for
-interacting with users.
+offer some features for constructing graphical interfaces that interact with
+users.
 
-The GUI elements available are I/O dialogs and a progress bar.  For example,
-rather than hardcoding a filename for output results a script can open a dialog
-box and allow the user to choose a file.  Similarly, if a calculation is
-expected to take a long time a script can display a progress bar.
+The GUI elements available are I/O dialogs, a progress bar, and UI elements
+for plot windows.  For example, rather than hardcoding a filename for output
+results a script can open a dialog box and allow the user to choose a file.
+Similarly, if a calculation is expected to take a long time a script can
+display a progress bar.  The various UI elements can be used to fully customize
+the plot window with menubars, context menus, 
 
 Several utility functions make it possible to store private data for use with
 a GUI which will not pollute the user's variable space.
@@ -40,6 +42,7 @@ preferences.
 @menu
 * I/O Dialogs::
 * Progress Bar::
+* UI Elements::
 * GUI Utility Functions::
 * User-Defined Preferences::
 @end menu
@@ -56,9 +59,10 @@ a file name.
 @deftypefn  {Function File} {@var{dirname} =} uigetdir ()
 @deftypefnx {Function File} {@var{dirname} =} uigetdir (@var{init_path})
 @deftypefnx {Function File} {@var{dirname} =} uigetdir (@var{init_path}, @var{dialog_name})
-Open a GUI dialog for selecting a directory.  If @var{init_path} is not
-given the current working directory is used.  @var{dialog_name} may be
-used to customize the dialog title.
+Open a GUI dialog for selecting a directory.
+
+If @var{init_path} is not given the current working directory is used.
+@var{dialog_name} may be used to customize the dialog title.
 @seealso{@ref{XREFuigetfile,,uigetfile}, @ref{XREFuiputfile,,uiputfile}}
 @end deftypefn
 
@@ -74,6 +78,7 @@ used to customize the dialog title.
 
 Open a GUI dialog for selecting a file and return the filename @var{fname},
 the path to this file @var{fpath}, and the filter index @var{fltidx}.
+
 @var{flt} contains a (list of) file filter string(s) in one of the following
 formats:
 
@@ -117,8 +122,10 @@ cell array containing the files.
 @deftypefnx {Function File} {[@var{fname}, @var{fpath}, @var{fltidx}] =} uiputfile (@var{flt})
 @deftypefnx {Function File} {[@var{fname}, @var{fpath}, @var{fltidx}] =} uiputfile (@var{flt}, @var{dialog_name})
 @deftypefnx {Function File} {[@var{fname}, @var{fpath}, @var{fltidx}] =} uiputfile (@var{flt}, @var{dialog_name}, @var{default_file})
-Open a GUI dialog for selecting a file.  @var{flt} contains a (list of) file
-filter string(s) in one of the following formats:
+Open a GUI dialog for selecting a file.
+
+@var{flt} contains a (list of) file filter string(s) in one of the following
+formats:
 
 @table @asis
 @item @qcode{"/path/to/filename.ext"}
@@ -175,16 +182,65 @@ of the specific waitbar to modify.
 @end deftypefn
 
 
+@node UI Elements
+@section UI Elements
+
+The ui* series of functions work best with the @code{qt} graphics toolkit,
+although some functionality is available with the @code{fltk} toolkit.  There
+is no support for the @code{gnuplot} toolkit.
+
+@c uicontextmenu scripts/gui/uicontextmenu.m
+@anchor{XREFuicontextmenu}
+@deftypefn {Function File} {@var{hui} =} uicontextmenu ("Name", value, @dots{})
+@end deftypefn
+
+
+@c uicontrol scripts/gui/uicontrol.m
+@anchor{XREFuicontrol}
+@deftypefn  {Function File} {@var{hui} =} uicontrol ("Name", value, @dots{})
+@deftypefnx {Function File} {@var{hui} =} uicontrol (@var{parent}, "Name", value, @dots{})
+@deftypefnx {Function File} {} uicontrol (@var{h})
+@end deftypefn
+
+
+@c uipanel scripts/gui/uipanel.m
+@anchor{XREFuipanel}
+@deftypefn  {Function File} {@var{hui} =} uipanel ("Name", value, @dots{})
+@deftypefnx {Function File} {@var{hui} =} uipanel (@var{parent}, "Name", value, @dots{})
+@end deftypefn
+
+
+@c uipushtool scripts/gui/uipushtool.m
+@anchor{XREFuipushtool}
+@deftypefn  {Function File} {@var{hui} =} uipushtool ("Name", value, @dots{})
+@deftypefnx {Function File} {@var{hui} =} uipushtool (@var{parent}, "Name", value, @dots{})
+@end deftypefn
+
+
+@c uitoggletool scripts/gui/uitoggletool.m
+@anchor{XREFuitoggletool}
+@deftypefn  {Function File} {@var{hui} =} uitoggletool ("Name", value, @dots{})
+@deftypefnx {Function File} {@var{hui} =} uitoggletool (@var{parent}, "Name", value, @dots{})
+@end deftypefn
+
+
+@c uitoolbar scripts/gui/uitoolbar.m
+@anchor{XREFuitoolbar}
+@deftypefn  {Function File} {@var{hui} =} uitoolbar ("Name", value, @dots{})
+@deftypefnx {Function File} {@var{hui} =} uitoolbar (@var{parent}, "Name", value, @dots{})
+@end deftypefn
+
+
 @node GUI Utility Functions
 @section GUI Utility Functions
 
 These functions do not implement a GUI element but are useful when developing
-programs that do.  @strong{Warning:} The functions @code{uiwait},
-@code{uiresume}, and @code{waitfor} are only available for the FLTK tooolkit.
+programs that do.  The functions @code{uiwait}, @code{uiresume}, and
+@code{waitfor} are only available with the @code{qt} or @code{fltk} toolkits.
 
 @c desktop scripts/miscellaneous/desktop.m
 @anchor{XREFdesktop}
-@deftypefn {Function File} {} @var{used} = desktop ("-inuse")
+@deftypefn {Function File} {@var{used} =} desktop ("-inuse")
 Return true if the desktop (GUI) is currently in use.
 @seealso{@ref{XREFisguirunning,,isguirunning}}
 @end deftypefn
@@ -226,10 +282,20 @@ which @qcode{"HandleVisibility"} is @qcode{"off"}.
 @end deftypefn
 
 
+@c have_window_system libinterp/corefcn/sysdep.cc
+@anchor{XREFhave_window_system}
+@deftypefn {Built-in Function} {} have_window_system ()
+Return true if a window system is available (X11, Windows, or Apple OS X)
+and false otherwise.
+@seealso{@ref{XREFisguirunning,,isguirunning}}
+@end deftypefn
+
+
 @c isguirunning libinterp/octave.cc
 @anchor{XREFisguirunning}
 @deftypefn {Built-in Function} {} isguirunning ()
 Return true if Octave is running in GUI mode and false otherwise.
+@seealso{@ref{XREFhave_window_system,,have_window_system}}
 @end deftypefn
 
 
@@ -239,9 +305,9 @@ Return true if Octave is running in GUI mode and false otherwise.
 @deftypefnx {Function File} {} uiwait (@var{h})
 @deftypefnx {Function File} {} uiwait (@var{h}, @var{timeout})
 Suspend program execution until the figure with handle @var{h} is
-deleted or @code{uiresume} is called.  When no figure handle is specified,
-this function uses the current figure.
+deleted or @code{uiresume} is called.
 
+When no figure handle is specified this function uses the current figure.
 If the figure handle is invalid or there is no current figure, this
 functions returns immediately.
 
@@ -258,10 +324,11 @@ the program execution is suspended indefinitely.
 @c uiresume scripts/gui/uiresume.m
 @anchor{XREFuiresume}
 @deftypefn {Function File} {} uiresume (@var{h})
-Resume program execution suspended with @code{uiwait}.  The handle @var{h}
-must be the same as the on specified in @code{uiwait}.  If the handle
-is invalid or there is no @code{uiwait} call pending for the figure
-with handle @var{h}, this function does nothing.
+Resume program execution suspended with @code{uiwait}.
+
+The handle @var{h} must be the same as the on specified in @code{uiwait}.
+If the handle is invalid or there is no @code{uiwait} call pending for the
+figure with handle @var{h}, this function does nothing.
 @seealso{@ref{XREFuiwait,,uiwait}}
 @end deftypefn
 
@@ -411,8 +478,8 @@ group @var{group} exists.
 
 @c prefdir scripts/prefs/prefdir.m
 @anchor{XREFprefdir}
-@deftypefn  {Command} {} prefdir 
-@deftypefnx {Command} {@var{dir} =} prefdir 
+@deftypefn  {Command} {} prefdir
+@deftypefnx {Command} {@var{dir} =} prefdir
 Return the directory that contains the preferences for Octave.
 
 Examples:
@@ -434,7 +501,7 @@ cd (prefdir)
 
 @c preferences scripts/prefs/preferences.m
 @anchor{XREFpreferences}
-@deftypefn {Command} {} preferences 
+@deftypefn {Command} {} preferences
 Display the GUI preferences dialog window for Octave.
 @end deftypefn
 

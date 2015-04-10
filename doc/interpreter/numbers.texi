@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2013 John W. Eaton
+@c Copyright (C) 1996-2015 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -8,12 +8,12 @@
 @c under the terms of the GNU General Public License as published by the
 @c Free Software Foundation; either version 3 of the License, or (at
 @c your option) any later version.
-@c 
+@c
 @c Octave is distributed in the hope that it will be useful, but WITHOUT
 @c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 @c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 @c for more details.
-@c 
+@c
 @c You should have received a copy of the GNU General Public License
 @c along with Octave; see the file COPYING.  If not, see
 @c <http://www.gnu.org/licenses/>.
@@ -426,7 +426,7 @@ ans =
 
 @noindent
 Notice that the first value appears to be 0 when it is actually 1.  Because
-of the possibilty for confusion you should be careful about enabling
+of the possibility for confusion you should be careful about enabling
 @code{fixed_point_format}.
 
 When called from inside a function with the @qcode{"local"} option, the
@@ -444,11 +444,11 @@ The original variable value is restored when exiting the function.
 @subsection Empty Matrices
 
 A matrix may have one or both dimensions zero, and operations on empty
-matrices are handled as described by Carl @nospell{de} Boor in @cite{An Empty
-Exercise}, SIGNUM, Volume 25, pages 2-6, 1990 and C. N. Nett and W. M.
-Haddad, in @cite{A System-Theoretic Appropriate Realization of the Empty
-Matrix Concept}, IEEE Transactions on Automatic Control, Volume 38,
-Number 5, May 1993.
+matrices are handled as described by @nospell{Carl de Boor} in
+@cite{An Empty Exercise}, SIGNUM, Volume 25, pages 2-6, 1990 and
+@nospell{C. N. Nett and W. M. Haddad}, in
+@cite{A System-Theoretic Appropriate Realization of the Empty Matrix Concept},
+IEEE Transactions on Automatic Control, Volume 38, Number 5, May 1993.
 @tex
 Briefly, given a scalar $s$, an $m\times n$ matrix $M_{m\times n}$,
 and an $m\times n$ empty matrix $[\,]_{m\times n}$ (with either one or
@@ -554,7 +554,7 @@ defines the set of values @samp{[ 1, 2, 3, 4, 5 ]}, and the range
 defines the set of values @samp{[ 1, 4 ]}.
 
 Although a range constant specifies a row vector, Octave does @emph{not}
-convert range constants to vectors unless it is necessary to do so.
+normally convert range constants to vectors unless it is necessary to do so.
 This allows you to write a constant like @samp{1 : 10000} without using
 80,000 bytes of storage on a typical 32-bit workstation.
 
@@ -577,6 +577,25 @@ y = [ 0 : 0.1 : 1];
 @noindent
 defines @var{y} to be of type @code{matrix} and occupies 88 bytes of
 memory.
+
+This space saving optimization may be disabled using the function
+@dfn{disable_range}.
+
+@c disable_range libinterp/octave-value/ov.cc
+@anchor{XREFdisable_range}
+@deftypefn  {Built-in Function} {@var{val} =} disable_range ()
+@deftypefnx {Built-in Function} {@var{old_val} =} disable_range (@var{new_val})
+@deftypefnx {Built-in Function} {} disable_range (@var{new_val}, "local")
+Query or set the internal variable that controls whether ranges are stored
+in a special space-efficient format.  The default value is true.  If this
+option is disabled Octave will store ranges as full matrices.
+
+When called from inside a function with the @qcode{"local"} option, the
+variable is changed locally for the function and any subroutines it calls.
+The original variable value is restored when exiting the function.
+@seealso{@ref{XREFdisable_diagonal_matrix,,disable_diagonal_matrix}, @ref{XREFdisable_permutation_matrix,,disable_permutation_matrix}}
+@end deftypefn
+
 
 Note that the upper (or lower, if the increment is negative) bound on
 the range is not always included in the set of values, and that ranges
@@ -632,7 +651,7 @@ for example:
 @example
 @group
 sngl = single (rand (2, 2))
-     @result{} sngl = 
+     @result{} sngl =
         0.37569   0.92982
         0.11962   0.50876
 class (sngl)
@@ -1066,6 +1085,7 @@ dec2bin (bitcmp (11, 6))
   @result{} 110100
 @end group
 @end example
+
 @seealso{@ref{XREFbitand,,bitand}, @ref{XREFbitor,,bitor}, @ref{XREFbitxor,,bitxor}, @ref{XREFbitset,,bitset}, @ref{XREFbitget,,bitget}, @ref{XREFbitcmp,,bitcmp}, @ref{XREFbitshift,,bitshift}, @ref{XREFbitmax,,bitmax}}
 @end deftypefn
 
@@ -1166,7 +1186,7 @@ or @code{false} functions.
 @deftypefn {Built-in Function} {} logical (@var{x})
 Convert the numeric object @var{x} to logical type.
 
-Any non-zero values will be converted to true (1) while zero values
+Any nonzero values will be converted to true (1) while zero values
 will be converted to false (0).  The non-numeric value NaN cannot be
 converted and will produce an error.
 
@@ -1248,7 +1268,7 @@ returns a single precision value.  The mixed operations that are valid
 and their returned data types are
 
 @multitable @columnfractions .2 .3 .3 .2
-@headitem @tab Mixed Operation @tab Result @tab 
+@headitem @tab Mixed Operation @tab Result @tab
 @item @tab double OP single @tab single @tab
 @item @tab double OP integer @tab integer @tab
 @item @tab double OP char @tab double @tab
@@ -1283,7 +1303,7 @@ x(1, 1) = single (2)
 @end example
 
 @noindent
-where @code{x} remains of the double precision type. 
+where @code{x} remains of the double precision type.
 
 @node Predicates for Numeric Objects
 @section Predicates for Numeric Objects
@@ -1320,6 +1340,15 @@ numeric.
 @end deftypefn
 
 
+@c islogical libinterp/corefcn/data.cc
+@anchor{XREFislogical}
+@deftypefn  {Built-in Function} {} islogical (@var{x})
+@deftypefnx {Built-in Function} {} isbool (@var{x})
+Return true if @var{x} is a logical object.
+@seealso{@ref{XREFisfloat,,isfloat}, @ref{XREFisinteger,,isinteger}, @ref{XREFischar,,ischar}, @ref{XREFisnumeric,,isnumeric}, @ref{XREFisa,,isa}}
+@end deftypefn
+
+
 @c isfloat libinterp/corefcn/data.cc
 @anchor{XREFisfloat}
 @deftypefn {Built-in Function} {} isfloat (@var{x})
@@ -1350,49 +1379,47 @@ Return true if @var{x} is a complex-valued numeric object.
 @c ismatrix libinterp/corefcn/data.cc
 @anchor{XREFismatrix}
 @deftypefn {Built-in Function} {} ismatrix (@var{a})
-Return true if @var{a} is a numeric, logical, or character matrix.
-Scalars (1x1 matrices) and vectors (@nospell{1xN} or @nospell{Nx1} matrices)
-are subsets of the more general N-dimensional matrix and @code{ismatrix}
-will return true for these objects as well.
+Return true if @var{a} is a 2-D array.
 @seealso{@ref{XREFisscalar,,isscalar}, @ref{XREFisvector,,isvector}, @ref{XREFiscell,,iscell}, @ref{XREFisstruct,,isstruct}, @ref{XREFissparse,,issparse}, @ref{XREFisa,,isa}}
 @end deftypefn
 
 
-@c isvector scripts/general/isvector.m
+@c isvector libinterp/corefcn/data.cc
 @anchor{XREFisvector}
 @deftypefn {Function File} {} isvector (@var{x})
-Return true if @var{x} is a vector.  A vector is a 2-D array
-where one of the dimensions is equal to 1.  As a consequence a
-1x1 array, or scalar, is also a vector.
+Return true if @var{x} is a vector.
+
+A vector is a 2-D array where one of the dimensions is equal to 1.  As a
+consequence a 1x1 array, or scalar, is also a vector.
 @seealso{@ref{XREFisscalar,,isscalar}, @ref{XREFismatrix,,ismatrix}, @ref{XREFsize,,size}, @ref{XREFrows,,rows}, @ref{XREFcolumns,,columns}, @ref{XREFlength,,length}}
 @end deftypefn
 
 
-@c isrow scripts/general/isrow.m
+@c isrow libinterp/corefcn/data.cc
 @anchor{XREFisrow}
 @deftypefn {Function File} {} isrow (@var{x})
-Return true if @var{x} is a row vector.
+Return true if @var{x} is a row vector 1xN with non-negative N.
 @seealso{@ref{XREFiscolumn,,iscolumn}, @ref{XREFisscalar,,isscalar}, @ref{XREFisvector,,isvector}, @ref{XREFismatrix,,ismatrix}}
 @end deftypefn
 
 
-@c iscolumn scripts/general/iscolumn.m
+@c iscolumn libinterp/corefcn/data.cc
 @anchor{XREFiscolumn}
 @deftypefn {Function File} {} iscolumn (@var{x})
-Return true if @var{x} is a column vector.
+Return true if @var{x} is a column vector Nx1 with non-negative N.
 @seealso{@ref{XREFisrow,,isrow}, @ref{XREFisscalar,,isscalar}, @ref{XREFisvector,,isvector}, @ref{XREFismatrix,,ismatrix}}
 @end deftypefn
 
 
-@c isscalar scripts/general/isscalar.m
+@c isscalar libinterp/corefcn/data.cc
 @anchor{XREFisscalar}
-@deftypefn {Function File} {} isscalar (@var{x})
+@deftypefn {Built-in Function} {} isscalar (@var{x})
 Return true if @var{x} is a scalar.
 @seealso{@ref{XREFisvector,,isvector}, @ref{XREFismatrix,,ismatrix}}
 @end deftypefn
 
 
-@c issquare scripts/general/issquare.m
+@c issquare libinterp/corefcn/data.cc
 @anchor{XREFissquare}
 @deftypefn {Function File} {} issquare (@var{x})
 Return true if @var{x} is a square matrix.
@@ -1402,48 +1429,84 @@ Return true if @var{x} is a square matrix.
 
 @c issymmetric scripts/linear-algebra/issymmetric.m
 @anchor{XREFissymmetric}
-@deftypefn  {Function File} {} issymmetric (@var{x})
-@deftypefnx {Function File} {} issymmetric (@var{x}, @var{tol})
-Return true if @var{x} is a symmetric matrix within the tolerance specified
-by @var{tol}.  The default tolerance is zero (uses faster code).
-Matrix @var{x} is considered symmetric if
-@code{norm (@var{x} - @var{x}.', Inf) / norm (@var{x}, Inf) < @var{tol}}.
+@deftypefn  {Function File} {} issymmetric (@var{A})
+@deftypefnx {Function File} {} issymmetric (@var{A}, @var{tol})
+Return true if @var{A} is a symmetric matrix within the tolerance specified
+by @var{tol}.
+
+The default tolerance is zero (uses faster code).
+Matrix @var{A} is considered symmetric if
+@code{norm (@var{A} - @var{A}.', Inf) / norm (@var{A}, Inf) < @var{tol}}.
 @seealso{@ref{XREFishermitian,,ishermitian}, @ref{XREFisdefinite,,isdefinite}}
 @end deftypefn
 
 
 @c ishermitian scripts/linear-algebra/ishermitian.m
 @anchor{XREFishermitian}
-@deftypefn  {Function File} {} ishermitian (@var{x})
-@deftypefnx {Function File} {} ishermitian (@var{x}, @var{tol})
-Return true if @var{x} is Hermitian within the tolerance specified by
+@deftypefn  {Function File} {} ishermitian (@var{A})
+@deftypefnx {Function File} {} ishermitian (@var{A}, @var{tol})
+Return true if @var{A} is Hermitian within the tolerance specified by
 @var{tol}.
+
 The default tolerance is zero (uses faster code).
-Matrix @var{x} is considered symmetric if
-@code{norm (@var{x} - @var{x}', Inf) / norm (@var{x}, Inf) < @var{tol}}.
+Matrix @var{A} is considered symmetric if
+@code{norm (@var{A} - @var{A}', Inf) / norm (@var{A}, Inf) < @var{tol}}.
 @seealso{@ref{XREFissymmetric,,issymmetric}, @ref{XREFisdefinite,,isdefinite}}
 @end deftypefn
 
 
 @c isdefinite scripts/linear-algebra/isdefinite.m
 @anchor{XREFisdefinite}
-@deftypefn  {Function File} {} isdefinite (@var{x})
-@deftypefnx {Function File} {} isdefinite (@var{x}, @var{tol})
-Return 1 if @var{x} is symmetric positive definite within the
-tolerance specified by @var{tol} or 0 if @var{x} is symmetric
+@deftypefn  {Function File} {} isdefinite (@var{A})
+@deftypefnx {Function File} {} isdefinite (@var{A}, @var{tol})
+Return 1 if @var{A} is symmetric positive definite within the
+tolerance specified by @var{tol} or 0 if @var{A} is symmetric
 positive semidefinite.  Otherwise, return -1.  If @var{tol}
 is omitted, use a tolerance of
-@code{100 * eps * norm (@var{x}, "fro")}
+@code{100 * eps * norm (@var{A}, "fro")}
 @seealso{@ref{XREFissymmetric,,issymmetric}, @ref{XREFishermitian,,ishermitian}}
 @end deftypefn
 
 
-@c islogical libinterp/corefcn/data.cc
-@anchor{XREFislogical}
-@deftypefn  {Built-in Function} {} islogical (@var{x})
-@deftypefnx {Built-in Function} {} isbool (@var{x})
-Return true if @var{x} is a logical object.
-@seealso{@ref{XREFisfloat,,isfloat}, @ref{XREFisinteger,,isinteger}, @ref{XREFischar,,ischar}, @ref{XREFisnumeric,,isnumeric}, @ref{XREFisa,,isa}}
+@c isbanded scripts/linear-algebra/isbanded.m
+@anchor{XREFisbanded}
+@deftypefn {Function File} {} isbanded (@var{A}, @var{lower}, @var{upper})
+Return true if @var{A} is a matrix with entries confined between
+@var{lower} diagonals below the main diagonal and @var{upper} diagonals
+above the main diagonal.
+
+@var{lower} and @var{upper} must be non-negative integers.
+@seealso{@ref{XREFisdiag,,isdiag}, @ref{XREFistril,,istril}, @ref{XREFistriu,,istriu}, @ref{XREFbandwidth,,bandwidth}}
+@end deftypefn
+
+
+@c isdiag scripts/linear-algebra/isdiag.m
+@anchor{XREFisdiag}
+@deftypefn {Function File} {} isdiag (@var{A})
+Return true if @var{A} is a diagonal matrix.
+@seealso{@ref{XREFisbanded,,isbanded}, @ref{XREFistril,,istril}, @ref{XREFistriu,,istriu}, @ref{XREFdiag,,diag}, @ref{XREFbandwidth,,bandwidth}}
+@end deftypefn
+
+
+@c istril scripts/linear-algebra/istril.m
+@anchor{XREFistril}
+@deftypefn {Function File} {} istril (@var{A})
+Return true if @var{A} is a lower triangular matrix.
+
+A lower triangular matrix has nonzero entries only on the main diagonal
+and below.
+@seealso{@ref{XREFistriu,,istriu}, @ref{XREFisbanded,,isbanded}, @ref{XREFisdiag,,isdiag}, @ref{XREFtril,,tril}, @ref{XREFbandwidth,,bandwidth}}
+@end deftypefn
+
+
+@c istriu scripts/linear-algebra/istriu.m
+@anchor{XREFistriu}
+@deftypefn {Function File} {} istriu (@var{A})
+Return true if @var{A} is an upper triangular matrix.
+
+An upper triangular matrix has nonzero entries only on the main diagonal
+and above.
+@seealso{@ref{XREFisdiag,,isdiag}, @ref{XREFisbanded,,isbanded}, @ref{XREFistril,,istril}, @ref{XREFtriu,,triu}, @ref{XREFbandwidth,,bandwidth}}
 @end deftypefn
 
 
@@ -1453,8 +1516,21 @@ Return true if @var{x} is a logical object.
 Return a logical array which is true where the elements of @var{x} are
 prime numbers and false where they are not.
 
-If the maximum value in @var{x} is very large, then you should be using
-special purpose factorization code.
+A prime number is conventionally defined as a positive integer greater than
+1 (e.g., 2, 3, @dots{}) which is divisible only by itself and 1.  Octave
+extends this definition to include both negative integers and complex
+values.  A negative integer is prime if its positive counterpart is prime.
+This is equivalent to @code{isprime (abs (x))}.
+
+If @code{class (@var{x})} is complex, then primality is tested in the domain
+of Gaussian integers (@url{http://en.wikipedia.org/wiki/Gaussian_integer}).
+Some non-complex integers are prime in the ordinary sense, but not in the
+domain of Gaussian integers.  For example, @math{5 = (1+2i)*(1-2i)} shows
+that 5 is not prime because it has a factor other than itself and 1.
+Exercise caution when testing complex and real values together in the same
+matrix.
+
+Examples:
 
 @example
 @group
@@ -1462,6 +1538,20 @@ isprime (1:6)
     @result{} [0, 1, 1, 0, 1, 0]
 @end group
 @end example
+
+@example
+@group
+isprime ([i, 2, 3, 5])
+    @result{} [0, 0, 1, 0]
+@end group
+@end example
+
+Programming Note: @code{isprime} is appropriate if the maximum value in
+@var{x} is not too large (< 1e15).  For larger values special purpose
+factorization code should be used.
+
+Compatibility Note: @var{matlab} does not extend the definition of prime
+numbers and will produce an error if given negative or complex inputs.
 @seealso{@ref{XREFprimes,,primes}, @ref{XREFfactor,,factor}, @ref{XREFgcd,,gcd}, @ref{XREFlcm,,lcm}}
 @end deftypefn
 

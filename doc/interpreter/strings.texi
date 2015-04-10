@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2013 John W. Eaton
+@c Copyright (C) 1996-2015 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -8,12 +8,12 @@
 @c under the terms of the GNU General Public License as published by the
 @c Free Software Foundation; either version 3 of the License, or (at
 @c your option) any later version.
-@c 
+@c
 @c Octave is distributed in the hope that it will be useful, but WITHOUT
 @c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 @c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 @c for more details.
-@c 
+@c
 @c You should have received a copy of the GNU General Public License
 @c along with Octave; see the file COPYING.  If not, see
 @c <http://www.gnu.org/licenses/>.
@@ -45,8 +45,8 @@ Since the single-quote mark is also used for the transpose operator
 it is best to use double-quote marks to denote strings.
 
 Strings can be concatenated using the notation for defining matrices.  For
-example, the expression 
- 
+example, the expression
+
 @example
 [ "foo" , "bar" , "baz" ]
 @end example
@@ -84,7 +84,7 @@ toascii ('\n')
 @end example
 
 Here is a table of all the escape sequences used in Octave (within
-double quoted strings).  They are the same as those used in the C 
+double quoted strings).  They are the same as those used in the C
 programming language.
 
 @table @code
@@ -347,7 +347,7 @@ eliminates empty strings.
 @group
 char ("orange", "green", "", "red")
     @result{} orange
-       green 
+       green
 
        red
 @end group
@@ -355,8 +355,8 @@ char ("orange", "green", "", "red")
 @group
 strvcat ("orange", "green", "", "red")
     @result{} orange
-       green 
-       red  
+       green
+       red
 @end group
 @end example
 
@@ -368,10 +368,10 @@ concatenates within the cells of the cell arrays:
 @example
 @group
 char (@{"red", "green", "", "blue"@})
-     @result{} red  
+     @result{} red
         green
 
-        blue 
+        blue
 @end group
 
 @group
@@ -532,7 +532,7 @@ strcat (s, s, s)
     @result{}
         @{
           [1,1] = ababab
-          [2,1] = cd cd cd 
+          [2,1] = cd cd cd
         @}
 @end group
 @end example
@@ -581,7 +581,7 @@ data as strings is the @code{sprintf} function (@pxref{Formatted Output},
 @anchor{XREFmat2str}
 @deftypefn  {Function File} {@var{s} =} mat2str (@var{x}, @var{n})
 @deftypefnx {Function File} {@var{s} =} mat2str (@var{x}, @var{n}, "class")
-Format real, complex, and logical matrices as strings.  The 
+Format real, complex, and logical matrices as strings.  The
 returned string may be used to reconstruct the original matrix by using
 the @code{eval} function.
 
@@ -814,48 +814,6 @@ This is just the opposite of the corresponding C library function.
 @end deftypefn
 
 
-@c validatestring scripts/strings/validatestring.m
-@anchor{XREFvalidatestring}
-@deftypefn  {Function File} {@var{validstr} =} validatestring (@var{str}, @var{strarray})
-@deftypefnx {Function File} {@var{validstr} =} validatestring (@var{str}, @var{strarray}, @var{funcname})
-@deftypefnx {Function File} {@var{validstr} =} validatestring (@var{str}, @var{strarray}, @var{funcname}, @var{varname})
-@deftypefnx {Function File} {@var{validstr} =} validatestring (@dots{}, @var{position})
-Verify that @var{str} is an element, or substring of an element, in
-@var{strarray}.
-
-When @var{str} is a character string to be tested, and @var{strarray} is a
-cellstr of valid values, then @var{validstr} will be the validated form
-of @var{str} where validation is defined as @var{str} being a member
-or substring of @var{validstr}.  This is useful for both verifying
-and expanding short options, such as @qcode{"r"}, to their longer forms,
-such as @qcode{"red"}.  If @var{str} is a substring of @var{validstr}, and
-there are multiple matches, the shortest match will be returned if all
-matches are substrings of each other.  Otherwise, an error will be raised
-because the expansion of @var{str} is ambiguous.  All comparisons are case
-insensitive.
-
-The additional inputs @var{funcname}, @var{varname}, and @var{position}
-are optional and will make any generated validation error message more
-specific.
-
-Examples:
-@c Set example in small font to prevent overfull line
-
-@smallexample
-@group
-validatestring ("r", @{"red", "green", "blue"@})
-@result{} "red"
-
-validatestring ("b", @{"red", "green", "blue", "black"@})
-@result{} error: validatestring: multiple unique matches were found for 'b':
-   blue, black
-@end group
-@end smallexample
-
-@seealso{@ref{XREFstrcmp,,strcmp}, @ref{XREFstrcmpi,,strcmpi}}
-@end deftypefn
-
-
 @node Manipulating Strings
 @section Manipulating Strings
 
@@ -869,7 +827,7 @@ all blank characters with underscores.
 quote = ...
   "First things first, but not necessarily in that order";
 quote( quote == " " ) = "_"
-@result{} quote = 
+@result{} quote =
     First_things_first,_but_not_necessarily_in_that_order
 @end group
 @end example
@@ -1027,7 +985,8 @@ Search for @var{pattern} in the string @var{str} and return the
 starting index of every such occurrence in the vector @var{idx}.
 
 If there is no such occurrence, or if @var{pattern} is longer
-than @var{str}, then @var{idx} is the empty array @code{[]}.
+than @var{str}, or if @var{pattern} itself is empty, then @var{idx} is the
+empty array @code{[]}.
 The optional argument @qcode{"overlaps"} determines whether the pattern
 can match at every position in @var{str} (true), or only for unique
 occurrences of the complete pattern (false).  The default is true.
@@ -1085,7 +1044,7 @@ strjoin (@{'Octave','Scilab','Lush','Yorick'@}, '*')
       @result{} 'Octave*Scilab*Lush*Yorick'
 @end group
 @end example
-@seealso {strsplit}
+@seealso{@ref{XREFstrsplit,,strsplit}}
 @end deftypefn
 
 
@@ -1126,7 +1085,7 @@ strmatch ("apple", ["apple  "; "apple juice"; "an apple"], "exact")
 @deftypefn  {Function File} {[@var{tok}, @var{rem}] =} strtok (@var{str})
 @deftypefnx {Function File} {[@var{tok}, @var{rem}] =} strtok (@var{str}, @var{delim})
 
-Find all characters in the string @var{str} up to, but not including, the 
+Find all characters in the string @var{str} up to, but not including, the
 first character which is in the string @var{delim}.  If @var{rem} is
 requested, it contains the remainder of the string, starting at the first
 delimiter.  Leading delimiters are ignored.  If @var{delim} is not
@@ -1198,9 +1157,9 @@ strsplit ("a,,b, c", @{",", " "@}, false)
       @result{}
           @{
             [1,1] = a
-            [1,2] = 
+            [1,2] =
             [1,3] = b
-            [1,4] = 
+            [1,4] =
             [1,5] = c
           @}
 
@@ -1219,44 +1178,44 @@ Supported @var{name}/@var{value} pair arguments are;
 
 Example:
 
-@example
+@smallexample
 strsplit ("a foo b,bar c", ",|\\s|foo|bar", "delimitertype", "regularexpression")
-      @result{}
-          @{
+@result{}
+@{
             [1,1] = a
             [1,2] = b
             [1,3] = c
-          @}
+@}
 
 strsplit ("a,,b, c", "[, ]", false, "delimitertype", "regularexpression")
-      @result{}
-          @{
+@result{}
+@{
             [1,1] = a
-            [1,2] = 
+            [1,2] =
             [1,3] = b
-            [1,4] = 
+            [1,4] =
             [1,5] = c
-          @}
+@}
 
 strsplit ("a,\t,b, c", @{',', '\s'@}, "delimitertype", "regularexpression")
-      @result{}
-          @{
+@result{}
+@{
             [1,1] = a
             [1,2] = b
             [1,3] = c
-          @}
+@}
 
 strsplit ("a,\t,b, c", @{',', ' ', '\t'@}, "collapsedelimiters", false)
-      @result{}
-          @{
+@result{}
+@{
             [1,1] = a
-            [1,2] = 
-            [1,3] = 
+            [1,2] =
+            [1,3] =
             [1,4] = b
-            [1,5] = 
+            [1,5] =
             [1,6] = c
-          @}
-@end example
+@}
+@end smallexample
 
 @seealso{@ref{XREFostrsplit,,ostrsplit}, @ref{XREFstrjoin,,strjoin}, @ref{XREFstrtok,,strtok}, @ref{XREFregexp,,regexp}}
 @end deftypefn
@@ -1444,7 +1403,7 @@ depends on the last character of @var{str}:
 @table @asis
 @item last character = @qcode{"\n"}
 Data columns are padded with empty fields or Nan so that all columns
-have equal length 
+have equal length
 
 @item last character is not @qcode{"\n"}
 Data columns are not padded; strread returns columns of unequal length
@@ -1903,7 +1862,7 @@ dec2bin (14)
 @end example
 
 If @var{d} is a matrix or cell array, return a string matrix with one
-row per element in @var{d}, padded with leading zeros to the width of 
+row per element in @var{d}, padded with leading zeros to the width of
 the largest value.
 
 The optional second argument, @var{len}, specifies the minimum
@@ -1926,7 +1885,7 @@ dec2hex (2748)
 @end example
 
 If @var{d} is a matrix or cell array, return a string matrix with one
-row per element in @var{d}, padded with leading zeros to the width of 
+row per element in @var{d}, padded with leading zeros to the width of
 the largest value.
 
 The optional second argument, @var{len}, specifies the minimum
@@ -1975,7 +1934,7 @@ dec2base (123, 3)
 @end example
 
 If @var{d} is a matrix or cell array, return a string matrix with one
-row per element in @var{d}, padded with leading zeros to the width of 
+row per element in @var{d}, padded with leading zeros to the width of
 the largest value.
 
 If @var{base} is a string then the characters of @var{base} are used as

@@ -1,4 +1,4 @@
-## Copyright (C) 1993-2013 John W. Eaton
+## Copyright (C) 1993-2015 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -39,9 +39,9 @@
 ## argument which can take the following values:
 ##
 ## @table @asis
-## @item @qcode{"grouped"} (default) 
+## @item @qcode{"grouped"} (default)
 ## Side-by-side bars with a gap between bars and centered over the X-coordinate.
-## 
+##
 ## @item  @qcode{"stacked"}
 ## Bars are stacked so that each X value has a single bar composed of
 ## multiple segments.

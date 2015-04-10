@@ -1,8 +1,8 @@
 /*
 
-Copyright (C) 2013 John W. Eaton
-Copyright (C) 2011-2013 Jacob Dawid
-Copyright (C) 2011-2013 John P. Swensen
+Copyright (C) 2013-2015 John W. Eaton
+Copyright (C) 2011-2015 Jacob Dawid
+Copyright (C) 2011-2015 John P. Swensen
 
 This file is part of Octave.
 
@@ -43,12 +43,15 @@ along with Octave; see the file COPYING.  If not, see
 
 #include "resource-manager.h"
 
-octave_qt_link::octave_qt_link (void)
+octave_qt_link::octave_qt_link (QWidget *p)
   : octave_link (), main_thread (new QThread ()),
     command_interpreter (new octave_interpreter ())
 {
   connect (this, SIGNAL (execute_interpreter_signal (void)),
            command_interpreter, SLOT (execute (void)));
+
+  connect (command_interpreter, SIGNAL (octave_ready_signal ()),
+           p, SLOT (handle_octave_ready ()));
 
   command_interpreter->moveToThread (main_thread);
 
@@ -64,10 +67,24 @@ octave_qt_link::execute_interpreter (void)
 }
 
 bool
+octave_qt_link::do_confirm_shutdown (void)
+{
+  emit confirm_shutdown_signal ();
+
+  // Wait while the GUI shuts down.
+  waitcondition.wait (&mutex);
+
+  // The GUI has sent a signal and the process has been awakened.
+  return _shutdown_confirm_result;
+}
+
+bool
 octave_qt_link::do_exit (int status)
 {
-  emit exit_signal (status);
+  emit exit_app_signal (status);
 
+  // Could wait for a while and then timeout, but for now just
+  // assume the GUI application exit will be without problems.
   return true;
 }
 
@@ -90,21 +107,21 @@ octave_qt_link::do_prompt_new_edit_file (const std::string& file)
   QFileInfo file_info (QString::fromStdString (file));
   QStringList btn;
   QStringList role;
-  role << "AcceptRole" << "AcceptRole";
-  btn << tr ("Yes") << tr ("No");
+  role << "YesRole" << "RejectRole";
+  btn << tr ("Create") << tr ("Cancel");
 
   uiwidget_creator.signal_dialog (
     tr ("File\n%1\ndoes not exist. Do you want to create it?").
     arg (QDir::currentPath () + QDir::separator ()
          + QString::fromStdString (file)),
-    tr ("Octave Editor"), "quest", btn, tr ("Yes"), role );
+    tr ("Octave Editor"), "quest", btn, tr ("Create"), role );
 
   // Wait while the user is responding to message box.
   uiwidget_creator.wait ();
   // The GUI has sent a signal and the process has been awakened.
   QString answer = uiwidget_creator.get_dialog_button ();
 
-  return (answer == tr ("Yes"));
+  return (answer == tr ("Create"));
 }
 
 int
@@ -308,8 +325,8 @@ octave_qt_link::do_debug_cd_or_addpath_error (const std::string& file,
 
   QString msg
     = (addpath_option
-       ? tr ("The file %1 does not exist in the load path.  To debug the function you are editing, you must either change to the directory %2 or add that directory to the load path.").arg (qfile).arg (qdir)
-       : tr ("The file %1 is shadowed by a file with the same name in the load path.  To debug the function you are editing, change to the directory %2.").arg (qfile).arg (qdir));
+       ? tr ("The file %1 does not exist in the load path.  To run or debug the function you are editing, you must either change to the directory %2 or add that directory to the load path.").arg (qfile).arg (qdir)
+       : tr ("The file %1 is shadowed by a file with the same name in the load path. To run or debug the function you are editing, change to the directory %2.").arg (qfile).arg (qdir));
 
   QString title = tr ("Change Directory or Add Directory to Load Path");
 
@@ -357,9 +374,12 @@ octave_qt_link::do_execute_command_in_terminal (const std::string& command)
 }
 
 void
-octave_qt_link::do_set_workspace (bool top_level,
+octave_qt_link::do_set_workspace (bool top_level, bool debug, 
                                   const std::list<workspace_element>& ws)
 {
+  if (! top_level && ! debug)
+    return;
+
   QString scopes;
   QStringList symbols;
   QStringList class_names;
@@ -378,7 +398,7 @@ octave_qt_link::do_set_workspace (bool top_level,
       complex_flags.append (it->complex_flag ());
     }
 
-  emit set_workspace_signal (top_level, scopes, symbols, class_names,
+  emit set_workspace_signal (top_level, debug, scopes, symbols, class_names,
                              dimensions, values, complex_flags);
 }
 
@@ -551,5 +571,5 @@ octave_qt_link::do_show_doc (const std::string& file)
 void
 octave_qt_link::terminal_interrupt (void)
 {
-  command_interpreter->interrupt ();  
+  command_interpreter->interrupt ();
 }

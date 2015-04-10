@@ -1,4 +1,4 @@
-## Copyright (C) 1993-2013 John W. Eaton
+## Copyright (C) 1993-2015 John W. Eaton
 ## Copyright (C) 2009 VZLU Prague
 ##
 ## This file is part of Octave.
@@ -71,7 +71,7 @@ function retval = toeplitz (c, r)
     nr = length (c);
     nc = nr;
   else
-    if (! (isvector (c) && isvector (r))) 
+    if (! (isvector (c) && isvector (r)))
       error ("toeplitz: C and R must be vectors");
     elseif (r(1) != c(1))
       warning ("toeplitz: column wins diagonal conflict");
@@ -125,7 +125,7 @@ endfunction
 %!assert (toeplitz ([1, 2, 3], [1; -3; -5]), [1, -3, -5; 2, 1, -3; 3, 2, 1])
 %!assert (toeplitz ([1, 2, 3], [1; -3i; -5i]), [1, -3i, -5i; 2, 1, -3i; 3, 2, 1])
 
-%% Test input validation
+## Test input validation
 %!error toeplitz ()
 %!error toeplitz (1, 2, 3)
 %!error <C must be a vector> toeplitz ([1, 2; 3, 4])
