@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2013 David BAteman
+## Copyright (C) 2007-2015 David BAteman
 ##
 ## This file is part of Octave.
 ##
@@ -71,7 +71,7 @@ function [c, h] = contour3 (varargin)
   endif
   unwind_protect
     hax = newplot (hax);
-    
+
     [ctmp, htmp] = __contour__ (hax, "auto", varargin{:});
   unwind_protect_cleanup
     if (! isempty (oldfig))

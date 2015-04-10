@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2013 David Bateman
+## Copyright (C) 2007-2015 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -24,7 +24,7 @@
 ## @deftypefnx {Function File} {@var{h} =} ezcontour (@dots{})
 ##
 ## Plot the contour lines of a function.
-## 
+##
 ## @var{f} is a string, inline function, or function handle with two arguments
 ## defining the function.  By default the plot is over the meshed domain
 ## @code{-2*pi <= @var{x} | @var{y} <= 2*pi} with 60 points in each dimension.

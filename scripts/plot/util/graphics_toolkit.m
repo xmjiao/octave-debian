@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2013 Michael Goffioul
+## Copyright (C) 2008-2015 Michael Goffioul
 ##
 ## This file is part of Octave.
 ##
@@ -22,17 +22,17 @@
 ## @deftypefnx {Function File} {} graphics_toolkit (@var{name})
 ## @deftypefnx {Function File} {} graphics_toolkit (@var{hlist}, @var{name})
 ## Query or set the default graphics toolkit which is assigned to new figures.
-## 
+##
 ## With no inputs, return the current default graphics toolkit.  If the input
 ## is a list of figure graphic handles, @var{hlist}, then return the name
 ## of the graphics toolkit in use for each figure.
-## 
+##
 ## When called with a single input @var{name} set the default graphics toolkit
 ## to @var{name}.  If the toolkit is not already loaded, it is initialized by
 ## calling the function @code{__init_@var{name}__}.  If the first input
 ## is a list of figure handles, @var{hlist}, then the graphics toolkit is set
 ## to @var{name} for these figures only.
-## 
+##
 ## @seealso{available_graphics_toolkits}
 ## @end deftypefn
 
@@ -44,6 +44,17 @@ function retval = graphics_toolkit (name, hlist = [])
 
   if (nargout > 0 || nargin == 0)
     retval = get (0, "defaultfigure__graphics_toolkit__");
+    ## Handle case where graphics_toolkit has been called before any plotting
+    if (isempty (retval))
+      toolkits = available_graphics_toolkits ();
+      if (any (strcmp ("qt", toolkits)))
+        retval = "qt";
+      elseif (any (strcmp ("fltk", toolkits)))
+        retval = "fltk";
+      elseif (! isempty (toolkits))
+        retval = toolkits{1};
+      endif
+    endif
   endif
 
   if (nargin == 0)

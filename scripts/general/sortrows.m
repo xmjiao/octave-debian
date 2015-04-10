@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2013 Daniel Calvelo
+## Copyright (C) 2000-2015 Daniel Calvelo
 ## Copyright (C) 2009 Jaroslav Hajek
 ##
 ## This file is part of Octave.
@@ -38,7 +38,7 @@ function [s, i] = sortrows (A, c)
   endif
 
   if (nargin == 2)
-    if (! (isnumeric (c) && isvector (c))) 
+    if (! (isnumeric (c) && isvector (c)))
       error ("sortrows: C must be a numeric vector");
     elseif (any (c == 0) || any (abs (c) > columns (A)))
       error ("sortrows: all elements of C must be in the range [1, columns (A)]");
@@ -127,7 +127,7 @@ endfunction
 %! assert (x, full (sx));
 %! assert (idx, sidx);
 
-%% Test input validation
+## Test input validation
 %!error sortrows ()
 %!error sortrows (1, 2, 3)
 %!error sortrows (1, "ascend")

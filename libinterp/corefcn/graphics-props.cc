@@ -285,6 +285,32 @@ base_properties::has_core_property (const caseless_str& pname)
 }
 
 std::set<std::string>
+base_properties::readonly_property_names (void)
+{
+  static std::set<std::string> all_pnames;
+
+  static bool initialized = false;
+
+  if (! initialized)
+    {
+      all_pnames.insert ("type");
+      all_pnames.insert ("__myhandle__");
+
+      initialized = true;
+    }
+
+  return all_pnames;
+}
+
+bool
+base_properties::has_readonly_property (const caseless_str& pname)
+{
+  std::set<std::string> pnames = readonly_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+std::set<std::string>
 base_properties::all_property_names (void) const
 {
   static std::set<std::string> all_pnames = core_property_names ();
@@ -311,7 +337,7 @@ root_figure::properties::properties (const graphics_handle& mh, const graphics_h
     echo ("echo", mh, "off"),
     errormessage ("errormessage", mh, ""),
     fixedwidthfontname ("fixedwidthfontname", mh, "Courier"),
-    format ("format", mh, "+|bank|bit|hex|long|longe|longeng|longg|native-bit|native-hex|none|rational|{short}|shorte|shorteng|shortg"),
+    format ("format", mh, "+|bank|bit|hex|long|longe|longeng|longg|native-bit|native-hex|none|rat|{short}|shorte|shorteng|shortg"),
     formatspacing ("formatspacing", mh, "compact|{loose}"),
     language ("language", mh, "ascii"),
     monitorpositions ("monitorpositions", mh, Matrix (1, 4, 0)),
@@ -352,10 +378,15 @@ root_figure::properties::set (const caseless_str& pname_arg, const octave_value&
 {
   const std::set<std::string>& pnames = all_property_names ();
 
-  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+  caseless_str pname = validate_property_name ("set", go_name, pnames, pname_arg);
 
   if (error_state)
     return;
+  else if (has_readonly_property (pname))
+    {
+      error ("set: \"%s\" is read-only", pname.c_str ());
+      return;
+    }
 
   if (pname.compare ("currentfigure"))
     set_currentfigure (val);
@@ -365,8 +396,6 @@ root_figure::properties::set (const caseless_str& pname_arg, const octave_value&
     set_diaryfile (val);
   else if (pname.compare ("echo"))
     set_echo (val);
-  else if (pname.compare ("errormessage"))
-    set_errormessage (val);
   else if (pname.compare ("fixedwidthfontname"))
     set_fixedwidthfontname (val);
   else if (pname.compare ("format"))
@@ -609,6 +638,40 @@ root_figure::properties::has_core_property (const caseless_str& pname)
 }
 
 std::set<std::string>
+root_figure::properties::readonly_property_names (void)
+{
+  static std::set<std::string> all_pnames;
+
+  static bool initialized = false;
+
+  if (! initialized)
+    {
+      all_pnames.insert ("callbackobject");
+      all_pnames.insert ("commandwindowsize");
+      all_pnames.insert ("errormessage");
+      all_pnames.insert ("pointerwindow");
+      all_pnames.insert ("screendepth");
+      all_pnames.insert ("screenpixelsperinch");
+      all_pnames.insert ("screensize");
+
+      std::set<std::string> base_pnames = base_properties::readonly_property_names ();
+      all_pnames.insert (base_pnames.begin (), base_pnames.end ());
+
+      initialized = true;
+    }
+
+  return all_pnames;
+}
+
+bool
+root_figure::properties::has_readonly_property (const caseless_str& pname)
+{
+  std::set<std::string> pnames = readonly_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+std::set<std::string>
 root_figure::properties::all_property_names (void) const
 {
   static std::set<std::string> all_pnames = core_property_names ();
@@ -683,6 +746,10 @@ figure::properties::properties (const graphics_handle& mh, const graphics_handle
     xdisplay ("xdisplay", mh, ""),
     xvisual ("xvisual", mh, ""),
     xvisualmode ("xvisualmode", mh, "{auto}|manual"),
+    __mouse_mode__ ("__mouse_mode__", mh, "{none}|pan|rotate|select|text|zoom"),
+    __pan_mode__ ("__pan_mode__", mh, Matrix ()),
+    __rotate_mode__ ("__rotate_mode__", mh, Matrix ()),
+    __zoom_mode__ ("__zoom_mode__", mh, Matrix ()),
     __enhanced__ ("__enhanced__", mh, "on"),
     __graphics_toolkit__ ("__graphics_toolkit__", mh, gtk_manager::default_toolkit ()),
     __guidata__ ("__guidata__", mh, Matrix ()),
@@ -739,9 +806,18 @@ figure::properties::properties (const graphics_handle& mh, const graphics_handle
   xdisplay.set_id (ID_XDISPLAY);
   xvisual.set_id (ID_XVISUAL);
   xvisualmode.set_id (ID_XVISUALMODE);
+  __mouse_mode__.set_id (ID___MOUSE_MODE__);
+  __mouse_mode__.set_hidden (true);
+  __pan_mode__.set_id (ID___PAN_MODE__);
+  __pan_mode__.set_hidden (true);
+  __rotate_mode__.set_id (ID___ROTATE_MODE__);
+  __rotate_mode__.set_hidden (true);
+  __zoom_mode__.set_id (ID___ZOOM_MODE__);
+  __zoom_mode__.set_hidden (true);
   __enhanced__.set_id (ID___ENHANCED__);
   __enhanced__.set_hidden (true);
   __graphics_toolkit__.set_id (ID___GRAPHICS_TOOLKIT__);
+  __graphics_toolkit__.set_hidden (true);
   __guidata__.set_id (ID___GUIDATA__);
   __guidata__.set_hidden (true);
   __plot_stream__.set_id (ID___PLOT_STREAM__);
@@ -754,10 +830,15 @@ figure::properties::set (const caseless_str& pname_arg, const octave_value& val)
 {
   const std::set<std::string>& pnames = all_property_names ();
 
-  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+  caseless_str pname = validate_property_name ("set", go_name, pnames, pname_arg);
 
   if (error_state)
     return;
+  else if (has_readonly_property (pname))
+    {
+      error ("set: \"%s\" is read-only", pname.c_str ());
+      return;
+    }
 
   if (pname.compare ("alphamap"))
     set_alphamap (val);
@@ -855,6 +936,14 @@ figure::properties::set (const caseless_str& pname_arg, const octave_value& val)
     set_xvisual (val);
   else if (pname.compare ("xvisualmode"))
     set_xvisualmode (val);
+  else if (pname.compare ("__mouse_mode__"))
+    set___mouse_mode__ (val);
+  else if (pname.compare ("__pan_mode__"))
+    set___pan_mode__ (val);
+  else if (pname.compare ("__rotate_mode__"))
+    set___rotate_mode__ (val);
+  else if (pname.compare ("__zoom_mode__"))
+    set___zoom_mode__ (val);
   else if (pname.compare ("__enhanced__"))
     set___enhanced__ (val);
   else if (pname.compare ("__graphics_toolkit__"))
@@ -924,8 +1013,17 @@ figure::properties::get (bool all) const
   m.assign ("xvisual", octave_value (get_xvisual ()));
   m.assign ("xvisualmode", octave_value (get_xvisualmode ()));
   if (all)
+    m.assign ("__mouse_mode__", octave_value (get___mouse_mode__ ()));
+  if (all)
+    m.assign ("__pan_mode__", octave_value (get___pan_mode__ ()));
+  if (all)
+    m.assign ("__rotate_mode__", octave_value (get___rotate_mode__ ()));
+  if (all)
+    m.assign ("__zoom_mode__", octave_value (get___zoom_mode__ ()));
+  if (all)
     m.assign ("__enhanced__", octave_value (get___enhanced__ ()));
-  m.assign ("__graphics_toolkit__", octave_value (get___graphics_toolkit__ ()));
+  if (all)
+    m.assign ("__graphics_toolkit__", octave_value (get___graphics_toolkit__ ()));
   if (all)
     m.assign ("__guidata__", octave_value (get___guidata__ ()));
   if (all)
@@ -1048,6 +1146,14 @@ figure::properties::get (const caseless_str& pname_arg) const
     retval = get_xvisual ();
   else if (pname.compare ("xvisualmode"))
     retval = get_xvisualmode ();
+  else if (pname.compare ("__mouse_mode__"))
+    retval = get___mouse_mode__ ();
+  else if (pname.compare ("__pan_mode__"))
+    retval = get___pan_mode__ ();
+  else if (pname.compare ("__rotate_mode__"))
+    retval = get___rotate_mode__ ();
+  else if (pname.compare ("__zoom_mode__"))
+    retval = get___zoom_mode__ ();
   else if (pname.compare ("__enhanced__"))
     retval = get___enhanced__ ();
   else if (pname.compare ("__graphics_toolkit__"))
@@ -1174,6 +1280,14 @@ figure::properties::get_property (const caseless_str& pname_arg)
     return property (&xvisual, true);
   else if (pname.compare ("xvisualmode"))
     return property (&xvisualmode, true);
+  else if (pname.compare ("__mouse_mode__"))
+    return property (&__mouse_mode__, true);
+  else if (pname.compare ("__pan_mode__"))
+    return property (&__pan_mode__, true);
+  else if (pname.compare ("__rotate_mode__"))
+    return property (&__rotate_mode__, true);
+  else if (pname.compare ("__zoom_mode__"))
+    return property (&__zoom_mode__, true);
   else if (pname.compare ("__enhanced__"))
     return property (&__enhanced__, true);
   else if (pname.compare ("__graphics_toolkit__"))
@@ -1242,6 +1356,10 @@ figure::properties::factory_defaults (void)
   m["xdisplay"] = "";
   m["xvisual"] = "";
   m["xvisualmode"] = "auto";
+  m["__mouse_mode__"] = "none";
+  m["__pan_mode__"] = Matrix ();
+  m["__rotate_mode__"] = Matrix ();
+  m["__zoom_mode__"] = Matrix ();
   m["__enhanced__"] = "on";
   m["__graphics_toolkit__"] = gtk_manager::default_toolkit ();
   m["__guidata__"] = Matrix ();
@@ -1312,6 +1430,10 @@ figure::properties::core_property_names (void)
       all_pnames.insert ("xdisplay");
       all_pnames.insert ("xvisual");
       all_pnames.insert ("xvisualmode");
+      all_pnames.insert ("__mouse_mode__");
+      all_pnames.insert ("__pan_mode__");
+      all_pnames.insert ("__rotate_mode__");
+      all_pnames.insert ("__zoom_mode__");
       all_pnames.insert ("__enhanced__");
       all_pnames.insert ("__graphics_toolkit__");
       all_pnames.insert ("__guidata__");
@@ -1330,6 +1452,36 @@ bool
 figure::properties::has_core_property (const caseless_str& pname)
 {
   std::set<std::string> pnames = core_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+std::set<std::string>
+figure::properties::readonly_property_names (void)
+{
+  static std::set<std::string> all_pnames;
+
+  static bool initialized = false;
+
+  if (! initialized)
+    {
+      all_pnames.insert ("currentcharacter");
+      all_pnames.insert ("currentobject");
+      all_pnames.insert ("currentpoint");
+
+      std::set<std::string> base_pnames = base_properties::readonly_property_names ();
+      all_pnames.insert (base_pnames.begin (), base_pnames.end ());
+
+      initialized = true;
+    }
+
+  return all_pnames;
+}
+
+bool
+figure::properties::has_readonly_property (const caseless_str& pname)
+{
+  std::set<std::string> pnames = readonly_property_names ();
 
   return pnames.find (pname) != pnames.end ();
 }
@@ -1367,7 +1519,7 @@ axes::properties::properties (const graphics_handle& mh, const graphics_handle& 
     camerapositionmode ("camerapositionmode", mh, "{auto}|manual"),
     cameratarget ("cameratarget", mh, Matrix (1, 3, 0.0)),
     cameratargetmode ("cameratargetmode", mh, "{auto}|manual"),
-    cameraupvector ("cameraupvector", mh, Matrix ()),
+    cameraupvector ("cameraupvector", mh, Matrix (1, 3, 0.0)),
     cameraupvectormode ("cameraupvectormode", mh, "{auto}|manual"),
     cameraviewangle ("cameraviewangle", mh, 10.0),
     cameraviewanglemode ("cameraviewanglemode", mh, "{auto}|manual"),
@@ -1390,6 +1542,7 @@ axes::properties::properties (const graphics_handle& mh, const graphics_handle& 
     linestyleorder ("linestyleorder", mh, "-"),
     linewidth ("linewidth", mh, 0.5),
     minorgridlinestyle ("minorgridlinestyle", mh, "-|--|{:}|-.|none"),
+    mousewheelzoom ("mousewheelzoom", mh, 0.5),
     nextplot ("nextplot", mh, "add|replacechildren|{replace}"),
     outerposition ("outerposition", mh, default_axes_outerposition ()),
     plotboxaspectratio ("plotboxaspectratio", mh, Matrix (1, 3, 1.0)),
@@ -1402,7 +1555,7 @@ axes::properties::properties (const graphics_handle& mh, const graphics_handle& 
     tightinset ("tightinset", mh, Matrix (1, 4, 0.0)),
     title ("title", mh, gh_manager::make_graphics_handle ("text", __myhandle__, false, false, false)),
     units ("units", mh, "{normalized}|inches|centimeters|points|pixels|characters"),
-    view ("view", mh, Matrix ()),
+    view ("view", mh, default_axes_view ()),
     xaxislocation ("xaxislocation", mh, "{bottom}|top|zero"),
     xcolor ("xcolor", mh, color_values (0, 0, 0)),
     xdir ("xdir", mh, "{normal}|reverse"),
@@ -1454,7 +1607,8 @@ axes::properties::properties (const graphics_handle& mh, const graphics_handle& 
     x_rendertransform ("x_rendertransform", mh, Matrix (4, 4, 0.0)),
     xmtick ("xmtick", mh, Matrix ()),
     ymtick ("ymtick", mh, Matrix ()),
-    zmtick ("zmtick", mh, Matrix ())
+    zmtick ("zmtick", mh, Matrix ()),
+    fontsize_points ("fontsize_points", mh, 0)
 {
   activepositionproperty.set_id (ID_ACTIVEPOSITIONPROPERTY);
   alim.set_id (ID_ALIM);
@@ -1488,6 +1642,7 @@ axes::properties::properties (const graphics_handle& mh, const graphics_handle& 
   linestyleorder.set_id (ID_LINESTYLEORDER);
   linewidth.set_id (ID_LINEWIDTH);
   minorgridlinestyle.set_id (ID_MINORGRIDLINESTYLE);
+  mousewheelzoom.set_id (ID_MOUSEWHEELZOOM);
   nextplot.set_id (ID_NEXTPLOT);
   outerposition.set_id (ID_OUTERPOSITION);
   plotboxaspectratio.set_id (ID_PLOTBOXASPECTRATIO);
@@ -1564,6 +1719,8 @@ axes::properties::properties (const graphics_handle& mh, const graphics_handle& 
   ymtick.set_hidden (true);
   zmtick.set_id (ID_ZMTICK);
   zmtick.set_hidden (true);
+  fontsize_points.set_id (ID_FONTSIZE_POINTS);
+  fontsize_points.set_hidden (true);
   init ();
 }
 
@@ -1572,10 +1729,15 @@ axes::properties::set (const caseless_str& pname_arg, const octave_value& val)
 {
   const std::set<std::string>& pnames = all_property_names ();
 
-  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+  caseless_str pname = validate_property_name ("set", go_name, pnames, pname_arg);
 
   if (error_state)
     return;
+  else if (has_readonly_property (pname))
+    {
+      error ("set: \"%s\" is read-only", pname.c_str ());
+      return;
+    }
 
   if (pname.compare ("activepositionproperty"))
     set_activepositionproperty (val);
@@ -1641,6 +1803,8 @@ axes::properties::set (const caseless_str& pname_arg, const octave_value& val)
     set_linewidth (val);
   else if (pname.compare ("minorgridlinestyle"))
     set_minorgridlinestyle (val);
+  else if (pname.compare ("mousewheelzoom"))
+    set_mousewheelzoom (val);
   else if (pname.compare ("nextplot"))
     set_nextplot (val);
   else if (pname.compare ("outerposition"))
@@ -1810,6 +1974,7 @@ axes::properties::get (bool all) const
   m.assign ("linestyleorder", octave_value (get_linestyleorder ()));
   m.assign ("linewidth", octave_value (get_linewidth ()));
   m.assign ("minorgridlinestyle", octave_value (get_minorgridlinestyle ()));
+  m.assign ("mousewheelzoom", octave_value (get_mousewheelzoom ()));
   m.assign ("nextplot", octave_value (get_nextplot ()));
   m.assign ("outerposition", octave_value (get_outerposition ()));
   m.assign ("plotboxaspectratio", octave_value (get_plotboxaspectratio ()));
@@ -1886,6 +2051,8 @@ axes::properties::get (bool all) const
     m.assign ("ymtick", octave_value (get_ymtick ()));
   if (all)
     m.assign ("zmtick", octave_value (get_zmtick ()));
+  if (all)
+    m.assign ("fontsize_points", octave_value (get_fontsize_points ()));
 
   return m;
 }
@@ -1966,6 +2133,8 @@ axes::properties::get (const caseless_str& pname_arg) const
     retval = get_linewidth ();
   else if (pname.compare ("minorgridlinestyle"))
     retval = get_minorgridlinestyle ();
+  else if (pname.compare ("mousewheelzoom"))
+    retval = get_mousewheelzoom ();
   else if (pname.compare ("nextplot"))
     retval = get_nextplot ();
   else if (pname.compare ("outerposition"))
@@ -2096,6 +2265,8 @@ axes::properties::get (const caseless_str& pname_arg) const
     retval = get_ymtick ();
   else if (pname.compare ("zmtick"))
     retval = get_zmtick ();
+  else if (pname.compare ("fontsize_points"))
+    retval = get_fontsize_points ();
   else
     retval = base_properties::get (pname);
 
@@ -2176,6 +2347,8 @@ axes::properties::get_property (const caseless_str& pname_arg)
     return property (&linewidth, true);
   else if (pname.compare ("minorgridlinestyle"))
     return property (&minorgridlinestyle, true);
+  else if (pname.compare ("mousewheelzoom"))
+    return property (&mousewheelzoom, true);
   else if (pname.compare ("nextplot"))
     return property (&nextplot, true);
   else if (pname.compare ("outerposition"))
@@ -2306,6 +2479,8 @@ axes::properties::get_property (const caseless_str& pname_arg)
     return property (&ymtick, true);
   else if (pname.compare ("zmtick"))
     return property (&zmtick, true);
+  else if (pname.compare ("fontsize_points"))
+    return property (&fontsize_points, true);
   else
     return base_properties::get_property (pname);
 }
@@ -2324,7 +2499,7 @@ axes::properties::factory_defaults (void)
   m["camerapositionmode"] = "auto";
   m["cameratarget"] = Matrix (1, 3, 0.0);
   m["cameratargetmode"] = "auto";
-  m["cameraupvector"] = Matrix ();
+  m["cameraupvector"] = Matrix (1, 3, 0.0);
   m["cameraupvectormode"] = "auto";
   m["cameraviewangle"] = 10.0;
   m["cameraviewanglemode"] = "auto";
@@ -2347,6 +2522,7 @@ axes::properties::factory_defaults (void)
   m["linestyleorder"] = "-";
   m["linewidth"] = 0.5;
   m["minorgridlinestyle"] = ":";
+  m["mousewheelzoom"] = 0.5;
   m["nextplot"] = "replace";
   m["outerposition"] = default_axes_outerposition ();
   m["plotboxaspectratio"] = Matrix (1, 3, 1.0);
@@ -2358,7 +2534,7 @@ axes::properties::factory_defaults (void)
   m["ticklength"] = default_axes_ticklength ();
   m["tightinset"] = Matrix (1, 4, 0.0);
   m["units"] = "normalized";
-  m["view"] = Matrix ();
+  m["view"] = default_axes_view ();
   m["xaxislocation"] = "bottom";
   m["xcolor"] = color_values (0, 0, 0);
   m["xdir"] = "normal";
@@ -2408,6 +2584,7 @@ axes::properties::factory_defaults (void)
   m["xmtick"] = Matrix ();
   m["ymtick"] = Matrix ();
   m["zmtick"] = Matrix ();
+  m["fontsize_points"] = 0;
 
   return m;
 }
@@ -2455,6 +2632,7 @@ axes::properties::core_property_names (void)
       all_pnames.insert ("linestyleorder");
       all_pnames.insert ("linewidth");
       all_pnames.insert ("minorgridlinestyle");
+      all_pnames.insert ("mousewheelzoom");
       all_pnames.insert ("nextplot");
       all_pnames.insert ("outerposition");
       all_pnames.insert ("plotboxaspectratio");
@@ -2520,6 +2698,7 @@ axes::properties::core_property_names (void)
       all_pnames.insert ("xmtick");
       all_pnames.insert ("ymtick");
       all_pnames.insert ("zmtick");
+      all_pnames.insert ("fontsize_points");
 
       std::set<std::string> base_pnames = base_properties::core_property_names ();
       all_pnames.insert (base_pnames.begin (), base_pnames.end ());
@@ -2534,6 +2713,35 @@ bool
 axes::properties::has_core_property (const caseless_str& pname)
 {
   std::set<std::string> pnames = core_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+std::set<std::string>
+axes::properties::readonly_property_names (void)
+{
+  static std::set<std::string> all_pnames;
+
+  static bool initialized = false;
+
+  if (! initialized)
+    {
+      all_pnames.insert ("tightinset");
+      all_pnames.insert ("fontsize_points");
+
+      std::set<std::string> base_pnames = base_properties::readonly_property_names ();
+      all_pnames.insert (base_pnames.begin (), base_pnames.end ());
+
+      initialized = true;
+    }
+
+  return all_pnames;
+}
+
+bool
+axes::properties::has_readonly_property (const caseless_str& pname)
+{
+  std::set<std::string> pnames = readonly_property_names ();
 
   return pnames.find (pname) != pnames.end ();
 }
@@ -2621,10 +2829,15 @@ line::properties::set (const caseless_str& pname_arg, const octave_value& val)
 {
   const std::set<std::string>& pnames = all_property_names ();
 
-  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+  caseless_str pname = validate_property_name ("set", go_name, pnames, pname_arg);
 
   if (error_state)
     return;
+  else if (has_readonly_property (pname))
+    {
+      error ("set: \"%s\" is read-only", pname.c_str ());
+      return;
+    }
 
   if (pname.compare ("color"))
     set_color (val);
@@ -2908,6 +3121,36 @@ line::properties::has_core_property (const caseless_str& pname)
 }
 
 std::set<std::string>
+line::properties::readonly_property_names (void)
+{
+  static std::set<std::string> all_pnames;
+
+  static bool initialized = false;
+
+  if (! initialized)
+    {
+      all_pnames.insert ("xlim");
+      all_pnames.insert ("ylim");
+      all_pnames.insert ("zlim");
+
+      std::set<std::string> base_pnames = base_properties::readonly_property_names ();
+      all_pnames.insert (base_pnames.begin (), base_pnames.end ());
+
+      initialized = true;
+    }
+
+  return all_pnames;
+}
+
+bool
+line::properties::has_readonly_property (const caseless_str& pname)
+{
+  std::set<std::string> pnames = readonly_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+std::set<std::string>
 line::properties::all_property_names (void) const
 {
   static std::set<std::string> all_pnames = core_property_names ();
@@ -2947,7 +3190,7 @@ text::properties::properties (const graphics_handle& mh, const graphics_handle& 
     interpreter ("interpreter", mh, "{tex}|none|latex"),
     linestyle ("linestyle", mh, "{-}|--|:|-.|none"),
     linewidth ("linewidth", mh, 0.5),
-    margin ("margin", mh, 1),
+    margin ("margin", mh, 2),
     position ("position", mh, Matrix (1, 3, 0.0)),
     rotation ("rotation", mh, 0),
     string ("string", mh, ""),
@@ -2963,7 +3206,8 @@ text::properties::properties (const graphics_handle& mh, const graphics_handle& 
     rotationmode ("rotationmode", mh, "{auto}|manual"),
     horizontalalignmentmode ("horizontalalignmentmode", mh, "{auto}|manual"),
     verticalalignmentmode ("verticalalignmentmode", mh, "{auto}|manual"),
-    autopos_tag ("autopos_tag", mh, "{none}|xlabel|ylabel|zlabel|title")
+    autopos_tag ("autopos_tag", mh, "{none}|xlabel|ylabel|zlabel|title"),
+    fontsize_points ("fontsize_points", mh, 0)
 {
   backgroundcolor.set_id (ID_BACKGROUNDCOLOR);
   color.set_id (ID_COLOR);
@@ -3009,6 +3253,8 @@ text::properties::properties (const graphics_handle& mh, const graphics_handle& 
   verticalalignmentmode.set_hidden (true);
   autopos_tag.set_id (ID_AUTOPOS_TAG);
   autopos_tag.set_hidden (true);
+  fontsize_points.set_id (ID_FONTSIZE_POINTS);
+  fontsize_points.set_hidden (true);
   init ();
 }
 
@@ -3017,10 +3263,15 @@ text::properties::set (const caseless_str& pname_arg, const octave_value& val)
 {
   const std::set<std::string>& pnames = all_property_names ();
 
-  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+  caseless_str pname = validate_property_name ("set", go_name, pnames, pname_arg);
 
   if (error_state)
     return;
+  else if (has_readonly_property (pname))
+    {
+      error ("set: \"%s\" is read-only", pname.c_str ());
+      return;
+    }
 
   if (pname.compare ("backgroundcolor"))
     set_backgroundcolor (val);
@@ -3133,6 +3384,8 @@ text::properties::get (bool all) const
     m.assign ("verticalalignmentmode", octave_value (get_verticalalignmentmode ()));
   if (all)
     m.assign ("autopos_tag", octave_value (get_autopos_tag ()));
+  if (all)
+    m.assign ("fontsize_points", octave_value (get_fontsize_points ()));
 
   return m;
 }
@@ -3215,6 +3468,8 @@ text::properties::get (const caseless_str& pname_arg) const
     retval = get_verticalalignmentmode ();
   else if (pname.compare ("autopos_tag"))
     retval = get_autopos_tag ();
+  else if (pname.compare ("fontsize_points"))
+    retval = get_fontsize_points ();
   else
     retval = base_properties::get (pname);
 
@@ -3297,6 +3552,8 @@ text::properties::get_property (const caseless_str& pname_arg)
     return property (&verticalalignmentmode, true);
   else if (pname.compare ("autopos_tag"))
     return property (&autopos_tag, true);
+  else if (pname.compare ("fontsize_points"))
+    return property (&fontsize_points, true);
   else
     return base_properties::get_property (pname);
 }
@@ -3322,7 +3579,7 @@ text::properties::factory_defaults (void)
   m["interpreter"] = "tex";
   m["linestyle"] = "-";
   m["linewidth"] = 0.5;
-  m["margin"] = 1;
+  m["margin"] = 2;
   m["position"] = Matrix (1, 3, 0.0);
   m["rotation"] = 0;
   m["string"] = "";
@@ -3339,6 +3596,7 @@ text::properties::factory_defaults (void)
   m["horizontalalignmentmode"] = "auto";
   m["verticalalignmentmode"] = "auto";
   m["autopos_tag"] = "none";
+  m["fontsize_points"] = 0;
 
   return m;
 }
@@ -3387,6 +3645,7 @@ text::properties::core_property_names (void)
       all_pnames.insert ("horizontalalignmentmode");
       all_pnames.insert ("verticalalignmentmode");
       all_pnames.insert ("autopos_tag");
+      all_pnames.insert ("fontsize_points");
 
       std::set<std::string> base_pnames = base_properties::core_property_names ();
       all_pnames.insert (base_pnames.begin (), base_pnames.end ());
@@ -3401,6 +3660,38 @@ bool
 text::properties::has_core_property (const caseless_str& pname)
 {
   std::set<std::string> pnames = core_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+std::set<std::string>
+text::properties::readonly_property_names (void)
+{
+  static std::set<std::string> all_pnames;
+
+  static bool initialized = false;
+
+  if (! initialized)
+    {
+      all_pnames.insert ("extent");
+      all_pnames.insert ("xlim");
+      all_pnames.insert ("ylim");
+      all_pnames.insert ("zlim");
+      all_pnames.insert ("fontsize_points");
+
+      std::set<std::string> base_pnames = base_properties::readonly_property_names ();
+      all_pnames.insert (base_pnames.begin (), base_pnames.end ());
+
+      initialized = true;
+    }
+
+  return all_pnames;
+}
+
+bool
+text::properties::has_readonly_property (const caseless_str& pname)
+{
+  std::set<std::string> pnames = readonly_property_names ();
 
   return pnames.find (pname) != pnames.end ();
 }
@@ -3429,10 +3720,11 @@ text::properties::has_property (const caseless_str& pname) const
 
 image::properties::properties (const graphics_handle& mh, const graphics_handle& p)
   : base_properties (go_name, mh, p),
-    alphadata ("alphadata", mh, Matrix ()),
-    alphadatamapping ("alphadatamapping", mh, "none|direct|{scaled}"),
-    cdata ("cdata", mh, Matrix ()),
+    alphadata ("alphadata", mh, Matrix (1, 1, 1.0)),
+    alphadatamapping ("alphadatamapping", mh, "{none}|direct|scaled"),
+    cdata ("cdata", mh, default_image_cdata ()),
     cdatamapping ("cdatamapping", mh, "scaled|{direct}"),
+    displayname ("displayname", mh, ""),
     erasemode ("erasemode", mh, "{normal}|none|xor|background"),
     xdata ("xdata", mh, Matrix ()),
     ydata ("ydata", mh, Matrix ()),
@@ -3443,12 +3735,15 @@ image::properties::properties (const graphics_handle& mh, const graphics_handle&
     aliminclude ("aliminclude", mh, "on"),
     climinclude ("climinclude", mh, "on"),
     xliminclude ("xliminclude", mh, "on"),
-    yliminclude ("yliminclude", mh, "on")
+    yliminclude ("yliminclude", mh, "on"),
+    xdatamode ("xdatamode", mh, "{auto}|manual"),
+    ydatamode ("ydatamode", mh, "{auto}|manual")
 {
   alphadata.set_id (ID_ALPHADATA);
   alphadatamapping.set_id (ID_ALPHADATAMAPPING);
   cdata.set_id (ID_CDATA);
   cdatamapping.set_id (ID_CDATAMAPPING);
+  displayname.set_id (ID_DISPLAYNAME);
   erasemode.set_id (ID_ERASEMODE);
   xdata.set_id (ID_XDATA);
   ydata.set_id (ID_YDATA);
@@ -3468,6 +3763,10 @@ image::properties::properties (const graphics_handle& mh, const graphics_handle&
   xliminclude.set_hidden (true);
   yliminclude.set_id (ID_YLIMINCLUDE);
   yliminclude.set_hidden (true);
+  xdatamode.set_id (ID_XDATAMODE);
+  xdatamode.set_hidden (true);
+  ydatamode.set_id (ID_YDATAMODE);
+  ydatamode.set_hidden (true);
   init ();
 }
 
@@ -3476,10 +3775,15 @@ image::properties::set (const caseless_str& pname_arg, const octave_value& val)
 {
   const std::set<std::string>& pnames = all_property_names ();
 
-  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+  caseless_str pname = validate_property_name ("set", go_name, pnames, pname_arg);
 
   if (error_state)
     return;
+  else if (has_readonly_property (pname))
+    {
+      error ("set: \"%s\" is read-only", pname.c_str ());
+      return;
+    }
 
   if (pname.compare ("alphadata"))
     set_alphadata (val);
@@ -3489,6 +3793,8 @@ image::properties::set (const caseless_str& pname_arg, const octave_value& val)
     set_cdata (val);
   else if (pname.compare ("cdatamapping"))
     set_cdatamapping (val);
+  else if (pname.compare ("displayname"))
+    set_displayname (val);
   else if (pname.compare ("erasemode"))
     set_erasemode (val);
   else if (pname.compare ("xdata"))
@@ -3503,6 +3809,10 @@ image::properties::set (const caseless_str& pname_arg, const octave_value& val)
     set_xliminclude (val);
   else if (pname.compare ("yliminclude"))
     set_yliminclude (val);
+  else if (pname.compare ("xdatamode"))
+    set_xdatamode (val);
+  else if (pname.compare ("ydatamode"))
+    set_ydatamode (val);
   else
     base_properties::set (pname, val);
 }
@@ -3516,6 +3826,7 @@ image::properties::get (bool all) const
   m.assign ("alphadatamapping", octave_value (get_alphadatamapping ()));
   m.assign ("cdata", octave_value (get_cdata ()));
   m.assign ("cdatamapping", octave_value (get_cdatamapping ()));
+  m.assign ("displayname", octave_value (get_displayname ()));
   m.assign ("erasemode", octave_value (get_erasemode ()));
   m.assign ("xdata", octave_value (get_xdata ()));
   m.assign ("ydata", octave_value (get_ydata ()));
@@ -3535,6 +3846,10 @@ image::properties::get (bool all) const
     m.assign ("xliminclude", octave_value (get_xliminclude ()));
   if (all)
     m.assign ("yliminclude", octave_value (get_yliminclude ()));
+  if (all)
+    m.assign ("xdatamode", octave_value (get_xdatamode ()));
+  if (all)
+    m.assign ("ydatamode", octave_value (get_ydatamode ()));
 
   return m;
 }
@@ -3559,6 +3874,8 @@ image::properties::get (const caseless_str& pname_arg) const
     retval = get_cdata ();
   else if (pname.compare ("cdatamapping"))
     retval = get_cdatamapping ();
+  else if (pname.compare ("displayname"))
+    retval = get_displayname ();
   else if (pname.compare ("erasemode"))
     retval = get_erasemode ();
   else if (pname.compare ("xdata"))
@@ -3581,6 +3898,10 @@ image::properties::get (const caseless_str& pname_arg) const
     retval = get_xliminclude ();
   else if (pname.compare ("yliminclude"))
     retval = get_yliminclude ();
+  else if (pname.compare ("xdatamode"))
+    retval = get_xdatamode ();
+  else if (pname.compare ("ydatamode"))
+    retval = get_ydatamode ();
   else
     retval = base_properties::get (pname);
 
@@ -3605,6 +3926,8 @@ image::properties::get_property (const caseless_str& pname_arg)
     return property (&cdata, true);
   else if (pname.compare ("cdatamapping"))
     return property (&cdatamapping, true);
+  else if (pname.compare ("displayname"))
+    return property (&displayname, true);
   else if (pname.compare ("erasemode"))
     return property (&erasemode, true);
   else if (pname.compare ("xdata"))
@@ -3627,6 +3950,10 @@ image::properties::get_property (const caseless_str& pname_arg)
     return property (&xliminclude, true);
   else if (pname.compare ("yliminclude"))
     return property (&yliminclude, true);
+  else if (pname.compare ("xdatamode"))
+    return property (&xdatamode, true);
+  else if (pname.compare ("ydatamode"))
+    return property (&ydatamode, true);
   else
     return base_properties::get_property (pname);
 }
@@ -3636,10 +3963,11 @@ image::properties::factory_defaults (void)
 {
   property_list::pval_map_type m = base_properties::factory_defaults ();
 
-  m["alphadata"] = Matrix ();
-  m["alphadatamapping"] = "scaled";
-  m["cdata"] = Matrix ();
+  m["alphadata"] = Matrix (1, 1, 1.0);
+  m["alphadatamapping"] = "none";
+  m["cdata"] = default_image_cdata ();
   m["cdatamapping"] = "direct";
+  m["displayname"] = "";
   m["erasemode"] = "normal";
   m["xdata"] = Matrix ();
   m["ydata"] = Matrix ();
@@ -3651,6 +3979,8 @@ image::properties::factory_defaults (void)
   m["climinclude"] = "on";
   m["xliminclude"] = "on";
   m["yliminclude"] = "on";
+  m["xdatamode"] = "auto";
+  m["ydatamode"] = "auto";
 
   return m;
 }
@@ -3670,6 +4000,7 @@ image::properties::core_property_names (void)
       all_pnames.insert ("alphadatamapping");
       all_pnames.insert ("cdata");
       all_pnames.insert ("cdatamapping");
+      all_pnames.insert ("displayname");
       all_pnames.insert ("erasemode");
       all_pnames.insert ("xdata");
       all_pnames.insert ("ydata");
@@ -3681,6 +4012,8 @@ image::properties::core_property_names (void)
       all_pnames.insert ("climinclude");
       all_pnames.insert ("xliminclude");
       all_pnames.insert ("yliminclude");
+      all_pnames.insert ("xdatamode");
+      all_pnames.insert ("ydatamode");
 
       std::set<std::string> base_pnames = base_properties::core_property_names ();
       all_pnames.insert (base_pnames.begin (), base_pnames.end ());
@@ -3695,6 +4028,37 @@ bool
 image::properties::has_core_property (const caseless_str& pname)
 {
   std::set<std::string> pnames = core_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+std::set<std::string>
+image::properties::readonly_property_names (void)
+{
+  static std::set<std::string> all_pnames;
+
+  static bool initialized = false;
+
+  if (! initialized)
+    {
+      all_pnames.insert ("alim");
+      all_pnames.insert ("clim");
+      all_pnames.insert ("xlim");
+      all_pnames.insert ("ylim");
+
+      std::set<std::string> base_pnames = base_properties::readonly_property_names ();
+      all_pnames.insert (base_pnames.begin (), base_pnames.end ());
+
+      initialized = true;
+    }
+
+  return all_pnames;
+}
+
+bool
+image::properties::has_readonly_property (const caseless_str& pname)
+{
+  std::set<std::string> pnames = readonly_property_names ();
 
   return pnames.find (pname) != pnames.end ();
 }
@@ -3737,7 +4101,7 @@ patch::properties::properties (const graphics_handle& mh, const graphics_handle&
     facealpha ("facealpha", mh, double_radio_property (1.0, radio_values ("flat|interp"))),
     facecolor ("facecolor", mh, color_property (color_values (0, 0, 0), radio_values ("none|flat|interp"))),
     facelighting ("facelighting", mh, "{none}|flat|gouraud|phong"),
-    faces ("faces", mh, Matrix ()),
+    faces ("faces", mh, default_patch_faces ()),
     facevertexalphadata ("facevertexalphadata", mh, Matrix ()),
     facevertexcdata ("facevertexcdata", mh, Matrix ()),
     interpreter ("interpreter", mh, "{tex}|none|latex"),
@@ -3750,11 +4114,11 @@ patch::properties::properties (const graphics_handle& mh, const graphics_handle&
     normalmode ("normalmode", mh, "{auto}|manual"),
     specularcolorreflectance ("specularcolorreflectance", mh, 1.0),
     specularexponent ("specularexponent", mh, 10.0),
-    specularstrength ("specularstrength", mh, 0.6),
+    specularstrength ("specularstrength", mh, 0.9),
     vertexnormals ("vertexnormals", mh, Matrix ()),
-    vertices ("vertices", mh, Matrix ()),
-    xdata ("xdata", mh, Matrix ()),
-    ydata ("ydata", mh, Matrix ()),
+    vertices ("vertices", mh, default_patch_vertices ()),
+    xdata ("xdata", mh, default_patch_xdata ()),
+    ydata ("ydata", mh, default_patch_ydata ()),
     zdata ("zdata", mh, Matrix ()),
     alim ("alim", mh, Matrix ()),
     clim ("clim", mh, Matrix ()),
@@ -3828,10 +4192,15 @@ patch::properties::set (const caseless_str& pname_arg, const octave_value& val)
 {
   const std::set<std::string>& pnames = all_property_names ();
 
-  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+  caseless_str pname = validate_property_name ("set", go_name, pnames, pname_arg);
 
   if (error_state)
     return;
+  else if (has_readonly_property (pname))
+    {
+      error ("set: \"%s\" is read-only", pname.c_str ());
+      return;
+    }
 
   if (pname.compare ("alphadatamapping"))
     set_alphadatamapping (val);
@@ -4198,7 +4567,7 @@ patch::properties::factory_defaults (void)
   m["facealpha"] = double_radio_property (1.0, radio_values ("flat|interp"));
   m["facecolor"] = color_property (color_values (0, 0, 0), radio_values ("none|flat|interp"));
   m["facelighting"] = "none";
-  m["faces"] = Matrix ();
+  m["faces"] = default_patch_faces ();
   m["facevertexalphadata"] = Matrix ();
   m["facevertexcdata"] = Matrix ();
   m["interpreter"] = "tex";
@@ -4211,11 +4580,11 @@ patch::properties::factory_defaults (void)
   m["normalmode"] = "auto";
   m["specularcolorreflectance"] = 1.0;
   m["specularexponent"] = 10.0;
-  m["specularstrength"] = 0.6;
+  m["specularstrength"] = 0.9;
   m["vertexnormals"] = Matrix ();
-  m["vertices"] = Matrix ();
-  m["xdata"] = Matrix ();
-  m["ydata"] = Matrix ();
+  m["vertices"] = default_patch_vertices ();
+  m["xdata"] = default_patch_xdata ();
+  m["ydata"] = default_patch_ydata ();
   m["zdata"] = Matrix ();
   m["alim"] = Matrix ();
   m["clim"] = Matrix ();
@@ -4304,6 +4673,38 @@ patch::properties::has_core_property (const caseless_str& pname)
 }
 
 std::set<std::string>
+patch::properties::readonly_property_names (void)
+{
+  static std::set<std::string> all_pnames;
+
+  static bool initialized = false;
+
+  if (! initialized)
+    {
+      all_pnames.insert ("alim");
+      all_pnames.insert ("clim");
+      all_pnames.insert ("xlim");
+      all_pnames.insert ("ylim");
+      all_pnames.insert ("zlim");
+
+      std::set<std::string> base_pnames = base_properties::readonly_property_names ();
+      all_pnames.insert (base_pnames.begin (), base_pnames.end ());
+
+      initialized = true;
+    }
+
+  return all_pnames;
+}
+
+bool
+patch::properties::has_readonly_property (const caseless_str& pname)
+{
+  std::set<std::string> pnames = readonly_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+std::set<std::string>
 patch::properties::all_property_names (void) const
 {
   static std::set<std::string> all_pnames = core_property_names ();
@@ -4327,11 +4728,11 @@ patch::properties::has_property (const caseless_str& pname) const
 
 surface::properties::properties (const graphics_handle& mh, const graphics_handle& p)
   : base_properties (go_name, mh, p),
-    alphadata ("alphadata", mh, Matrix ()),
+    alphadata ("alphadata", mh, Matrix (1, 1, 1.0)),
     alphadatamapping ("alphadatamapping", mh, "none|direct|{scaled}"),
     ambientstrength ("ambientstrength", mh, 0.3),
     backfacelighting ("backfacelighting", mh, "unlit|lit|{reverselit}"),
-    cdata ("cdata", mh, Matrix ()),
+    cdata ("cdata", mh, default_surface_cdata ()),
     cdatamapping ("cdatamapping", mh, "{scaled}|direct"),
     cdatasource ("cdatasource", mh, ""),
     diffusestrength ("diffusestrength", mh, 0.6),
@@ -4356,11 +4757,11 @@ surface::properties::properties (const graphics_handle& mh, const graphics_handl
     specularexponent ("specularexponent", mh, 10),
     specularstrength ("specularstrength", mh, 0.9),
     vertexnormals ("vertexnormals", mh, Matrix ()),
-    xdata ("xdata", mh, Matrix ()),
+    xdata ("xdata", mh, default_surface_xdata ()),
     xdatasource ("xdatasource", mh, ""),
-    ydata ("ydata", mh, Matrix ()),
+    ydata ("ydata", mh, default_surface_ydata ()),
     ydatasource ("ydatasource", mh, ""),
-    zdata ("zdata", mh, Matrix ()),
+    zdata ("zdata", mh, default_surface_zdata ()),
     zdatasource ("zdatasource", mh, ""),
     alim ("alim", mh, Matrix ()),
     clim ("clim", mh, Matrix ()),
@@ -4436,10 +4837,15 @@ surface::properties::set (const caseless_str& pname_arg, const octave_value& val
 {
   const std::set<std::string>& pnames = all_property_names ();
 
-  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+  caseless_str pname = validate_property_name ("set", go_name, pnames, pname_arg);
 
   if (error_state)
     return;
+  else if (has_readonly_property (pname))
+    {
+      error ("set: \"%s\" is read-only", pname.c_str ());
+      return;
+    }
 
   if (pname.compare ("alphadata"))
     set_alphadata (val);
@@ -4806,11 +5212,11 @@ surface::properties::factory_defaults (void)
 {
   property_list::pval_map_type m = base_properties::factory_defaults ();
 
-  m["alphadata"] = Matrix ();
+  m["alphadata"] = Matrix (1, 1, 1.0);
   m["alphadatamapping"] = "scaled";
   m["ambientstrength"] = 0.3;
   m["backfacelighting"] = "reverselit";
-  m["cdata"] = Matrix ();
+  m["cdata"] = default_surface_cdata ();
   m["cdatamapping"] = "scaled";
   m["cdatasource"] = "";
   m["diffusestrength"] = 0.6;
@@ -4835,11 +5241,11 @@ surface::properties::factory_defaults (void)
   m["specularexponent"] = 10;
   m["specularstrength"] = 0.9;
   m["vertexnormals"] = Matrix ();
-  m["xdata"] = Matrix ();
+  m["xdata"] = default_surface_xdata ();
   m["xdatasource"] = "";
-  m["ydata"] = Matrix ();
+  m["ydata"] = default_surface_ydata ();
   m["ydatasource"] = "";
-  m["zdata"] = Matrix ();
+  m["zdata"] = default_surface_zdata ();
   m["zdatasource"] = "";
   m["alim"] = Matrix ();
   m["clim"] = Matrix ();
@@ -4930,6 +5336,38 @@ surface::properties::has_core_property (const caseless_str& pname)
 }
 
 std::set<std::string>
+surface::properties::readonly_property_names (void)
+{
+  static std::set<std::string> all_pnames;
+
+  static bool initialized = false;
+
+  if (! initialized)
+    {
+      all_pnames.insert ("alim");
+      all_pnames.insert ("clim");
+      all_pnames.insert ("xlim");
+      all_pnames.insert ("ylim");
+      all_pnames.insert ("zlim");
+
+      std::set<std::string> base_pnames = base_properties::readonly_property_names ();
+      all_pnames.insert (base_pnames.begin (), base_pnames.end ());
+
+      initialized = true;
+    }
+
+  return all_pnames;
+}
+
+bool
+surface::properties::has_readonly_property (const caseless_str& pname)
+{
+  std::set<std::string> pnames = readonly_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+std::set<std::string>
 surface::properties::all_property_names (void) const
 {
   static std::set<std::string> all_pnames = core_property_names ();
@@ -4996,10 +5434,15 @@ hggroup::properties::set (const caseless_str& pname_arg, const octave_value& val
 {
   const std::set<std::string>& pnames = all_property_names ();
 
-  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+  caseless_str pname = validate_property_name ("set", go_name, pnames, pname_arg);
 
   if (error_state)
     return;
+  else if (has_readonly_property (pname))
+    {
+      error ("set: \"%s\" is read-only", pname.c_str ());
+      return;
+    }
 
   if (pname.compare ("displayname"))
     set_displayname (val);
@@ -5193,6 +5636,38 @@ hggroup::properties::has_core_property (const caseless_str& pname)
 }
 
 std::set<std::string>
+hggroup::properties::readonly_property_names (void)
+{
+  static std::set<std::string> all_pnames;
+
+  static bool initialized = false;
+
+  if (! initialized)
+    {
+      all_pnames.insert ("alim");
+      all_pnames.insert ("clim");
+      all_pnames.insert ("xlim");
+      all_pnames.insert ("ylim");
+      all_pnames.insert ("zlim");
+
+      std::set<std::string> base_pnames = base_properties::readonly_property_names ();
+      all_pnames.insert (base_pnames.begin (), base_pnames.end ());
+
+      initialized = true;
+    }
+
+  return all_pnames;
+}
+
+bool
+hggroup::properties::has_readonly_property (const caseless_str& pname)
+{
+  std::set<std::string> pnames = readonly_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+std::set<std::string>
 hggroup::properties::all_property_names (void) const
 {
   static std::set<std::string> all_pnames = core_property_names ();
@@ -5246,10 +5721,15 @@ uimenu::properties::set (const caseless_str& pname_arg, const octave_value& val)
 {
   const std::set<std::string>& pnames = all_property_names ();
 
-  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+  caseless_str pname = validate_property_name ("set", go_name, pnames, pname_arg);
 
   if (error_state)
     return;
+  else if (has_readonly_property (pname))
+    {
+      error ("set: \"%s\" is read-only", pname.c_str ());
+      return;
+    }
 
   if (pname.compare ("__object__"))
     set___object__ (val);
@@ -5426,6 +5906,33 @@ uimenu::properties::has_core_property (const caseless_str& pname)
 }
 
 std::set<std::string>
+uimenu::properties::readonly_property_names (void)
+{
+  static std::set<std::string> all_pnames;
+
+  static bool initialized = false;
+
+  if (! initialized)
+    {
+
+      std::set<std::string> base_pnames = base_properties::readonly_property_names ();
+      all_pnames.insert (base_pnames.begin (), base_pnames.end ());
+
+      initialized = true;
+    }
+
+  return all_pnames;
+}
+
+bool
+uimenu::properties::has_readonly_property (const caseless_str& pname)
+{
+  std::set<std::string> pnames = readonly_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+std::set<std::string>
 uimenu::properties::all_property_names (void) const
 {
   static std::set<std::string> all_pnames = core_property_names ();
@@ -5464,10 +5971,15 @@ uicontextmenu::properties::set (const caseless_str& pname_arg, const octave_valu
 {
   const std::set<std::string>& pnames = all_property_names ();
 
-  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+  caseless_str pname = validate_property_name ("set", go_name, pnames, pname_arg);
 
   if (error_state)
     return;
+  else if (has_readonly_property (pname))
+    {
+      error ("set: \"%s\" is read-only", pname.c_str ());
+      return;
+    }
 
   if (pname.compare ("__object__"))
     set___object__ (val);
@@ -5580,6 +6092,33 @@ uicontextmenu::properties::has_core_property (const caseless_str& pname)
 }
 
 std::set<std::string>
+uicontextmenu::properties::readonly_property_names (void)
+{
+  static std::set<std::string> all_pnames;
+
+  static bool initialized = false;
+
+  if (! initialized)
+    {
+
+      std::set<std::string> base_pnames = base_properties::readonly_property_names ();
+      all_pnames.insert (base_pnames.begin (), base_pnames.end ());
+
+      initialized = true;
+    }
+
+  return all_pnames;
+}
+
+bool
+uicontextmenu::properties::has_readonly_property (const caseless_str& pname)
+{
+  std::set<std::string> pnames = readonly_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+std::set<std::string>
 uicontextmenu::properties::all_property_names (void) const
 {
   static std::set<std::string> all_pnames = core_property_names ();
@@ -5664,10 +6203,15 @@ uicontrol::properties::set (const caseless_str& pname_arg, const octave_value& v
 {
   const std::set<std::string>& pnames = all_property_names ();
 
-  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+  caseless_str pname = validate_property_name ("set", go_name, pnames, pname_arg);
 
   if (error_state)
     return;
+  else if (has_readonly_property (pname))
+    {
+      error ("set: \"%s\" is read-only", pname.c_str ());
+      return;
+    }
 
   if (pname.compare ("__object__"))
     set___object__ (val);
@@ -5985,6 +6529,34 @@ uicontrol::properties::has_core_property (const caseless_str& pname)
 }
 
 std::set<std::string>
+uicontrol::properties::readonly_property_names (void)
+{
+  static std::set<std::string> all_pnames;
+
+  static bool initialized = false;
+
+  if (! initialized)
+    {
+      all_pnames.insert ("extent");
+
+      std::set<std::string> base_pnames = base_properties::readonly_property_names ();
+      all_pnames.insert (base_pnames.begin (), base_pnames.end ());
+
+      initialized = true;
+    }
+
+  return all_pnames;
+}
+
+bool
+uicontrol::properties::has_readonly_property (const caseless_str& pname)
+{
+  std::set<std::string> pnames = readonly_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+std::set<std::string>
 uicontrol::properties::all_property_names (void) const
 {
   static std::set<std::string> all_pnames = core_property_names ();
@@ -6051,10 +6623,15 @@ uipanel::properties::set (const caseless_str& pname_arg, const octave_value& val
 {
   const std::set<std::string>& pnames = all_property_names ();
 
-  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+  caseless_str pname = validate_property_name ("set", go_name, pnames, pname_arg);
 
   if (error_state)
     return;
+  else if (has_readonly_property (pname))
+    {
+      error ("set: \"%s\" is read-only", pname.c_str ());
+      return;
+    }
 
   if (pname.compare ("__object__"))
     set___object__ (val);
@@ -6293,6 +6870,33 @@ uipanel::properties::has_core_property (const caseless_str& pname)
 }
 
 std::set<std::string>
+uipanel::properties::readonly_property_names (void)
+{
+  static std::set<std::string> all_pnames;
+
+  static bool initialized = false;
+
+  if (! initialized)
+    {
+
+      std::set<std::string> base_pnames = base_properties::readonly_property_names ();
+      all_pnames.insert (base_pnames.begin (), base_pnames.end ());
+
+      initialized = true;
+    }
+
+  return all_pnames;
+}
+
+bool
+uipanel::properties::has_readonly_property (const caseless_str& pname)
+{
+  std::set<std::string> pnames = readonly_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+std::set<std::string>
 uipanel::properties::all_property_names (void) const
 {
   static std::set<std::string> all_pnames = core_property_names ();
@@ -6327,10 +6931,15 @@ uitoolbar::properties::set (const caseless_str& pname_arg, const octave_value& v
 {
   const std::set<std::string>& pnames = all_property_names ();
 
-  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+  caseless_str pname = validate_property_name ("set", go_name, pnames, pname_arg);
 
   if (error_state)
     return;
+  else if (has_readonly_property (pname))
+    {
+      error ("set: \"%s\" is read-only", pname.c_str ());
+      return;
+    }
 
   if (pname.compare ("__object__"))
     set___object__ (val);
@@ -6425,6 +7034,33 @@ uitoolbar::properties::has_core_property (const caseless_str& pname)
 }
 
 std::set<std::string>
+uitoolbar::properties::readonly_property_names (void)
+{
+  static std::set<std::string> all_pnames;
+
+  static bool initialized = false;
+
+  if (! initialized)
+    {
+
+      std::set<std::string> base_pnames = base_properties::readonly_property_names ();
+      all_pnames.insert (base_pnames.begin (), base_pnames.end ());
+
+      initialized = true;
+    }
+
+  return all_pnames;
+}
+
+bool
+uitoolbar::properties::has_readonly_property (const caseless_str& pname)
+{
+  std::set<std::string> pnames = readonly_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+std::set<std::string>
 uitoolbar::properties::all_property_names (void) const
 {
   static std::set<std::string> all_pnames = core_property_names ();
@@ -6469,10 +7105,15 @@ uipushtool::properties::set (const caseless_str& pname_arg, const octave_value& 
 {
   const std::set<std::string>& pnames = all_property_names ();
 
-  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+  caseless_str pname = validate_property_name ("set", go_name, pnames, pname_arg);
 
   if (error_state)
     return;
+  else if (has_readonly_property (pname))
+    {
+      error ("set: \"%s\" is read-only", pname.c_str ());
+      return;
+    }
 
   if (pname.compare ("__object__"))
     set___object__ (val);
@@ -6612,6 +7253,33 @@ uipushtool::properties::has_core_property (const caseless_str& pname)
 }
 
 std::set<std::string>
+uipushtool::properties::readonly_property_names (void)
+{
+  static std::set<std::string> all_pnames;
+
+  static bool initialized = false;
+
+  if (! initialized)
+    {
+
+      std::set<std::string> base_pnames = base_properties::readonly_property_names ();
+      all_pnames.insert (base_pnames.begin (), base_pnames.end ());
+
+      initialized = true;
+    }
+
+  return all_pnames;
+}
+
+bool
+uipushtool::properties::has_readonly_property (const caseless_str& pname)
+{
+  std::set<std::string> pnames = readonly_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+std::set<std::string>
 uipushtool::properties::all_property_names (void) const
 {
   static std::set<std::string> all_pnames = core_property_names ();
@@ -6662,10 +7330,15 @@ uitoggletool::properties::set (const caseless_str& pname_arg, const octave_value
 {
   const std::set<std::string>& pnames = all_property_names ();
 
-  caseless_str pname = validate_property_name ("get", go_name, pnames, pname_arg);
+  caseless_str pname = validate_property_name ("set", go_name, pnames, pname_arg);
 
   if (error_state)
     return;
+  else if (has_readonly_property (pname))
+    {
+      error ("set: \"%s\" is read-only", pname.c_str ());
+      return;
+    }
 
   if (pname.compare ("__object__"))
     set___object__ (val);
@@ -6827,6 +7500,33 @@ bool
 uitoggletool::properties::has_core_property (const caseless_str& pname)
 {
   std::set<std::string> pnames = core_property_names ();
+
+  return pnames.find (pname) != pnames.end ();
+}
+
+std::set<std::string>
+uitoggletool::properties::readonly_property_names (void)
+{
+  static std::set<std::string> all_pnames;
+
+  static bool initialized = false;
+
+  if (! initialized)
+    {
+
+      std::set<std::string> base_pnames = base_properties::readonly_property_names ();
+      all_pnames.insert (base_pnames.begin (), base_pnames.end ());
+
+      initialized = true;
+    }
+
+  return all_pnames;
+}
+
+bool
+uitoggletool::properties::has_readonly_property (const caseless_str& pname)
+{
+  std::set<std::string> pnames = readonly_property_names ();
 
   return pnames.find (pname) != pnames.end ();
 }

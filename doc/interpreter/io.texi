@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2013 John W. Eaton
+@c Copyright (C) 1996-2015 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -8,12 +8,12 @@
 @c under the terms of the GNU General Public License as published by the
 @c Free Software Foundation; either version 3 of the License, or (at
 @c your option) any later version.
-@c 
+@c
 @c Octave is distributed in the hope that it will be useful, but WITHOUT
 @c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 @c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 @c for more details.
-@c 
+@c
 @c You should have received a copy of the GNU General Public License
 @c along with Octave; see the file COPYING.  If not, see
 @c <http://www.gnu.org/licenses/>.
@@ -227,18 +227,19 @@ The following formats affect all numeric output (floating point and
 integer types).
 
 @table @code
-@item  +
-@itemx + @var{chars}
+@item  "+"
+@itemx "+" @var{chars}
 @itemx plus
 @itemx plus @var{chars}
-Print a @samp{+} symbol for nonzero matrix elements and a space for zero
-matrix elements.  This format can be very useful for examining the
-structure of a large sparse matrix.
+Print a @samp{+} symbol for matrix elements greater than zero, a
+@samp{-} symbol for elements less than zero and a space for zero matrix
+elements.  This format can be very useful for examining the structure
+of a large sparse matrix.
 
 The optional argument @var{chars} specifies a list of 3 characters to use
 for printing values greater than zero, less than zero and equal to zero.
-For example, with the @samp{+ "+-."} format, @code{[1, 0, -1; -1, 0, 1]}
-is displayed as
+For example, with the @samp{"+" "+-."} format,
+@code{[1, 0, -1; -1, 0, 1]} is displayed as
 
 @example
 @group
@@ -415,13 +416,15 @@ The original variable value is restored when exiting the function.
 @c fflush libinterp/corefcn/file-io.cc
 @anchor{XREFfflush}
 @deftypefn {Built-in Function} {} fflush (@var{fid})
-Flush output to @var{fid}.  This is useful for ensuring that all
-pending output makes it to the screen before some other event occurs.
-For example, it is always a good idea to flush the standard output
-stream before calling @code{input}.
+Flush output to file descriptor @var{fid}.
 
 @code{fflush} returns 0 on success and an OS dependent error value
 (@minus{}1 on Unix) on error.
+
+Programming Note: Flushing is useful for ensuring that all pending output
+makes it to the screen before some other event occurs.  For example, it is
+always a good idea to flush the standard output stream before calling
+@code{input}.
 @seealso{@ref{XREFfopen,,fopen}, @ref{XREFfclose,,fclose}}
 @end deftypefn
 
@@ -463,10 +466,10 @@ Pick a number, any number!
 @noindent
 and waits for the user to enter a value.  The string entered by the user
 is evaluated as an expression, so it may be a literal constant, a
-variable name, or any other valid expression.
+variable name, or any other valid Octave code.
 
-Currently, @code{input} only returns one value, regardless of the number
-of values produced by the evaluation of the expression.
+The number of return arguments, their size, and their class depend on the
+expression entered.
 
 If you are only interested in getting a literal string value, you can
 call @code{input} with the character string @qcode{"s"} as the second
@@ -483,13 +486,24 @@ the screen before your prompt.
 
 @c menu scripts/miscellaneous/menu.m
 @anchor{XREFmenu}
-@deftypefn {Function File} {} menu (@var{title}, @var{opt1}, @dots{})
-Print a title string followed by a series of options.  Each option will
-be printed along with a number.  The return value is the number of the
-option selected by the user.  This function is useful for interactive
-programs.  There is no limit to the number of options that may be passed
-in, but it may be confusing to present more than will fit easily on one
-screen.
+@deftypefn  {Function File} {@var{choice} =} menu (@var{title}, @var{opt1}, @dots{})
+@deftypefnx {Function File} {@var{choice} =} menu (@var{title}, @{@var{opt1}, @dots{}@})
+Display a menu with heading @var{title} and options @var{opt1}, @dots{},
+and wait for user input.
+
+If the GUI is running, or Java is available, the menu is displayed
+graphically using @code{listdlg}.  Otherwise, the title and menu options
+are printed on the console.
+
+@var{title} is a string and the options may be input as individual strings
+or as a cell array of strings.
+
+The return value @var{choice} is the number of the option selected by the
+user counting from 1.
+
+This function is useful for interactive programs.  There is no limit to the
+number of options that may be passed in, but it may be confusing to present
+more than will fit easily on one screen.
 @seealso{@ref{XREFinput,,input}, @ref{XREFlistdlg,,listdlg}}
 @end deftypefn
 
@@ -569,7 +583,7 @@ read into memory using the @code{load} command.
 load myfile.mat
 A
      @print{} A =
-     @print{} 
+     @print{}
      @print{}    1   2   3
      @print{}    4   5   6
      @print{}    7   8   9
@@ -582,17 +596,18 @@ A
 @deftypefnx {Command} {} save options file
 @deftypefnx {Command} {} save options file @var{v1} @var{v2} @dots{}
 @deftypefnx {Command} {} save options file -struct @var{STRUCT} @var{f1} @var{f2} @dots{}
+@deftypefnx {Command} {} save @code{"-"} @var{v1} @var{v2} @dots{}
+@deftypefnx {Built-in Function} {@var{s} =} save (@code{"-"} @var{v1} @var{v2} @dots{})
 Save the named variables @var{v1}, @var{v2}, @dots{}, in the file
-@var{file}.  The special filename @samp{-} may be used to write
-output to the terminal.  If no variable names are listed, Octave saves
-all the variables in the current scope.  Otherwise, full variable names or
-pattern syntax can be used to specify the variables to save.
-If the @option{-struct} modifier is used, fields @var{f1} @var{f2} @dots{}
-of the scalar structure @var{STRUCT} are saved as if they were variables
-with corresponding names.
-Valid options for the @code{save} command are listed in the following table.
-Options that modify the output format override the format specified by
-@code{save_default_options}.
+@var{file}.  The special filename @samp{-} may be used to return the
+content of the variables as a string.  If no variable names are listed,
+Octave saves all the variables in the current scope.  Otherwise, full
+variable names or pattern syntax can be used to specify the variables to
+save.  If the @option{-struct} modifier is used, fields @var{f1} @var{f2}
+@dots{} of the scalar structure @var{STRUCT} are saved as if they were
+variables with corresponding names.  Valid options for the @code{save}
+command are listed in the following table.  Options that modify the output
+format override the format specified by @code{save_default_options}.
 
 If save is invoked using the functional form
 
@@ -603,6 +618,9 @@ save ("-option1", @dots{}, "file", "v1", @dots{})
 @noindent
 then the @var{options}, @var{file}, and variable name arguments
 (@var{v1}, @dots{}) must be specified as character strings.
+
+If called with a filename of @qcode{"-"}, write the output to stdout
+if nargout is 0, otherwise return the output in a character string.
 
 @table @code
 @item -append
@@ -1328,7 +1346,8 @@ make your programs easier to understand.
 @anchor{XREFstdin}
 @deftypefn {Built-in Function} {} stdin ()
 Return the numeric value corresponding to the standard input stream.
-When Octave is used interactively, this is filtered through the command
+
+When Octave is used interactively, stdin is filtered through the command
 line editing functions.
 @seealso{@ref{XREFstdout,,stdout}, @ref{XREFstderr,,stderr}}
 @end deftypefn
@@ -1338,6 +1357,7 @@ line editing functions.
 @anchor{XREFstdout}
 @deftypefn {Built-in Function} {} stdout ()
 Return the numeric value corresponding to the standard output stream.
+
 Data written to the standard output is normally filtered through the pager.
 @seealso{@ref{XREFstdin,,stdin}, @ref{XREFstderr,,stderr}}
 @end deftypefn
@@ -1347,8 +1367,9 @@ Data written to the standard output is normally filtered through the pager.
 @anchor{XREFstderr}
 @deftypefn {Built-in Function} {} stderr ()
 Return the numeric value corresponding to the standard error stream.
-Even if paging is turned on, the standard error is not sent to the
-pager.  It is useful for error messages and prompts.
+
+Even if paging is turned on, the standard error is not sent to the pager.
+It is useful for error messages and prompts.
 @seealso{@ref{XREFstdin,,stdin}, @ref{XREFstdout,,stdout}}
 @end deftypefn
 
@@ -1397,7 +1418,10 @@ fclose (fid);
 
 @c fopen libinterp/corefcn/file-io.cc
 @anchor{XREFfopen}
-@deftypefn  {Built-in Function} {[@var{fid}, @var{msg}] =} fopen (@var{name}, @var{mode}, @var{arch})
+@deftypefn  {Built-in Function} {@var{fid} =} fopen (@var{name})
+@deftypefnx {Built-in Function} {@var{fid} =} fopen (@var{name}, @var{mode})
+@deftypefnx {Built-in Function} {@var{fid} =} fopen (@var{name}, @var{mode}, @var{arch})
+@deftypefnx {Built-in Function} {[@var{fid}, @var{msg}] =} fopen (@dots{})
 @deftypefnx {Built-in Function} {@var{fid_list} =} fopen ("all")
 @deftypefnx {Built-in Function} {[@var{file}, @var{mode}, @var{arch}] =} fopen (@var{fid})
 The first form of the @code{fopen} function opens the named file with
@@ -1436,7 +1460,7 @@ produce unexpected results.
 The possible values @samp{mode} may have are
 
 @table @asis
-@item @samp{r}
+@item @samp{r} (default)
 Open a file for reading.
 
 @item @samp{w}
@@ -1461,7 +1485,7 @@ Append a @qcode{"t"} to the mode string to open the file in text mode or a
 @qcode{"b"} to open in binary mode.  On Windows and Macintosh systems, text
 mode reading and writing automatically converts linefeeds to the
 appropriate line end character for the system (carriage-return linefeed
-on Windows, carriage-return on Macintosh).  The default if no mode is
+on Windows, carriage-return on Macintosh).  The default when no mode is
 specified is binary mode.
 
 Additionally, you may append a @qcode{"z"} to the mode string to open a
@@ -1472,8 +1496,8 @@ The parameter @var{arch} is a string specifying the default data format
 for the file.  Valid values for @var{arch} are:
 
 @table @samp
-@item native
-The format of the current machine (this is the default).
+@item native (default)
+The format of the current machine.
 
 @item ieee-be
 IEEE big endian format.
@@ -1493,10 +1517,17 @@ however, conversions are currently only supported for @samp{native}
 @anchor{XREFfclose}
 @deftypefn  {Built-in Function} {} fclose (@var{fid})
 @deftypefnx {Built-in Function} {} fclose ("all")
-Close the specified file.  If successful, @code{fclose} returns 0,
-otherwise, it returns -1.  The second form of the @code{fclose} call closes
-all open files except @code{stdout}, @code{stderr}, and @code{stdin}.
-@seealso{@ref{XREFfopen,,fopen}, @ref{XREFfreport,,freport}}
+@deftypefnx {Built-in Function} {@var{status} =} fclose ("all")
+Close the file specified by the file descriptor @var{fid}.
+
+If successful, @code{fclose} returns 0, otherwise, it returns -1.  The
+second form of the @code{fclose} call closes all open files except
+@code{stdout}, @code{stderr}, and @code{stdin}.
+
+Programming Note: When using @qcode{"all"} the file descriptors associated
+with gnuplot will also be closed.  This will prevent further plotting with
+gnuplot until Octave is closed and restarted.
+@seealso{@ref{XREFfopen,,fopen}, @ref{XREFfflush,,fflush}, @ref{XREFfreport,,freport}}
 @end deftypefn
 
 
@@ -1504,7 +1535,7 @@ all open files except @code{stdout}, @code{stderr}, and @code{stdin}.
 @anchor{XREFis_valid_file_id}
 @deftypefn {Function File} {} is_valid_file_id (@var{fid})
 Return true if @var{fid} refers to an open file.
-@seealso{@ref{XREFfopen,,fopen}}
+@seealso{@ref{XREFfreport,,freport}, @ref{XREFfopen,,fopen}}
 @end deftypefn
 
 
@@ -1527,10 +1558,15 @@ fclose (fid);
 
 @c fputs libinterp/corefcn/file-io.cc
 @anchor{XREFfputs}
-@deftypefn {Built-in Function} {} fputs (@var{fid}, @var{string})
-Write a string to a file with no formatting.
+@deftypefn  {Built-in Function} {} fputs (@var{fid}, @var{string})
+@deftypefnx {Built-in Function} {@var{status} =} fputs (@var{fid}, @var{string})
+Write the string @var{string} to the file with file descriptor @var{fid}.
 
-Return a non-negative number on success and EOF on error.
+The string is written to the file with no additional formatting.  Use
+@code{fdisp} instead to automatically append a newline character appropriate
+for the local machine.
+
+Return a non-negative number on success or EOF on error.
 @seealso{@ref{XREFfdisp,,fdisp}, @ref{XREFfprintf,,fprintf}, @ref{XREFfwrite,,fwrite}, @ref{XREFfopen,,fopen}}
 @end deftypefn
 
@@ -1541,8 +1577,12 @@ except it doesn't take a file pointer as its input.
 
 @c puts libinterp/corefcn/file-io.cc
 @anchor{XREFputs}
-@deftypefn {Built-in Function} {} puts (@var{string})
+@deftypefn  {Built-in Function} {} puts (@var{string})
+@deftypefnx {Built-in Function} {@var{status} =} puts (@var{string})
 Write a string to the standard output with no formatting.
+
+The string is written verbatim to the standard output.  Use @code{disp} to
+automatically append a newline character appropriate for the local machine.
 
 Return a non-negative number on success and EOF on error.
 @seealso{@ref{XREFfputs,,fputs}, @ref{XREFdisp,,disp}}
@@ -1577,8 +1617,7 @@ Read characters from a file, stopping after a newline, or EOF,
 or @var{len} characters have been read.  The characters read, excluding
 the possible trailing newline, are returned as a string.
 
-If @var{len} is omitted, @code{fgetl} reads until the next newline
-character.
+If @var{len} is omitted, @code{fgetl} reads until the next newline character.
 
 If there are no more characters to read, @code{fgetl} returns @minus{}1.
 
@@ -1595,8 +1634,7 @@ Read characters from a file, stopping after a newline, or EOF,
 or @var{len} characters have been read.  The characters read, including
 the possible trailing newline, are returned as a string.
 
-If @var{len} is omitted, @code{fgets} reads until the next newline
-character.
+If @var{len} is omitted, @code{fgets} reads until the next newline character.
 
 If there are no more characters to read, @code{fgets} returns @minus{}1.
 
@@ -1610,7 +1648,9 @@ To read a line and discard the terminating newline see @code{fgetl}.
 @deftypefn  {Built-in Function} {@var{nlines} =} fskipl (@var{fid})
 @deftypefnx {Built-in Function} {@var{nlines} =} fskipl (@var{fid}, @var{count})
 @deftypefnx {Built-in Function} {@var{nlines} =} fskipl (@var{fid}, Inf)
-Read and skip @var{count} lines from the file descriptor @var{fid}.
+Read and skip @var{count} lines from the file specified by the file
+descriptor @var{fid}.
+
 @code{fskipl} discards characters until an end-of-line is encountered exactly
 @var{count}-times, or until the end-of-file marker is found.
 
@@ -1650,10 +1690,16 @@ complete description of the syntax of the template string.
 
 @c fprintf libinterp/corefcn/file-io.cc
 @anchor{XREFfprintf}
-@deftypefn {Built-in Function} {} fprintf (@var{fid}, @var{template}, @dots{})
-This function is just like @code{printf}, except that the output is
-written to the stream @var{fid} instead of @code{stdout}.
-If @var{fid} is omitted, the output is written to @code{stdout}.
+@deftypefn  {Built-in Function} {} fprintf (@var{fid}, @var{template}, @dots{})
+@deftypefnx {Built-in Function} {} fprintf (@var{template}, @dots{})
+@deftypefnx {Built-in Function} {@var{numbytes} =} fprintf (@dots{})
+This function is equivalent to @code{printf}, except that the output is
+written to the file descriptor @var{fid} instead of @code{stdout}.
+
+If @var{fid} is omitted, the output is written to @code{stdout} making the
+function exactly equivalent to @code{printf}.
+
+The optional output returns the number of bytes written to the file.
 @seealso{@ref{XREFfputs,,fputs}, @ref{XREFfdisp,,fdisp}, @ref{XREFfwrite,,fwrite}, @ref{XREFfscanf,,fscanf}, @ref{XREFprintf,,printf}, @ref{XREFsprintf,,sprintf}, @ref{XREFfopen,,fopen}}
 @end deftypefn
 
@@ -1789,12 +1835,12 @@ In more detail, output conversion specifications consist of an
 initial @samp{%} character followed in sequence by:
 
 @itemize @bullet
-@item 
+@item
 Zero or more @dfn{flag characters} that modify the normal behavior of
 the conversion specification.
 @cindex flag character (@code{printf})
 
-@item 
+@item
 An optional decimal integer specifying the @dfn{minimum field width}.
 If the normal conversion produces fewer characters than this, the field
 is padded with spaces to the specified width.  This is a @emph{minimum}
@@ -1810,7 +1856,7 @@ nearest integer.  If the value is negative, this means to set the
 @samp{-} flag (see below) and to use the absolute value as the field
 width.
 
-@item 
+@item
 An optional @dfn{precision} to specify the number of digits to be
 written for the numeric conversions.  If the precision is specified, it
 consists of a period (@samp{.}) followed optionally by a decimal integer
@@ -1831,7 +1877,7 @@ compatibility with the C language @code{printf}.
 A character that specifies the conversion to be applied.
 @end itemize
 
-The exact options that are permitted and how they are interpreted vary 
+The exact options that are permitted and how they are interpreted vary
 between the different conversion specifiers.  See the descriptions of the
 individual conversions for information about the particular options that
 they use.
@@ -1888,10 +1934,26 @@ Print a literal @samp{%} character.  @xref{Other Output Conversions}.
 @end table
 
 If the syntax of a conversion specification is invalid, unpredictable
-things will happen, so don't do this.  If there aren't enough function
-arguments provided to supply values for all the conversion
-specifications in the template string, or if the arguments are not of
-the correct types, the results are unpredictable.  If you supply more
+things will happen, so don't do this.  In particular, @sc{matlab} allows
+a bare percentage sign @samp{%} with no subsequent conversion character.
+Octave will emit an error and stop if it sees such code.  When the string
+variable to be processed cannot be guaranteed to be free of potential format
+codes it is better to use the two argument form of any of the @code{printf}
+functions and set the format string to @code{%s}.  Alternatively, for code
+which is not required to be backwards-compatible with @sc{matlab} the
+Octave function @code{puts} or @code{disp} can be used.
+
+@example
+@group
+printf (strvar);        # Unsafe if strvar contains format codes
+printf ("%s", strvar);  # Safe
+puts (strvar);          # Safe
+@end group
+@end example
+
+If there aren't enough function arguments provided to supply values for all
+the conversion specifications in the template string, or if the arguments are
+not of the correct types, the results are unpredictable.  If you supply more
 arguments than conversion specifications, the extra argument values are
 simply ignored; this is sometimes useful.
 
@@ -2018,7 +2080,7 @@ the value is rounded to the nearest number that fits.
 
 This section describes miscellaneous conversions for @code{printf}.
 
-The @samp{%c} conversion prints a single character.  The @samp{-} 
+The @samp{%c} conversion prints a single character.  The @samp{-}
 flag can be used to specify left-justification in the field, but no
 other flags are defined, and no precision or type modifier can be given.
 For example:
@@ -2111,8 +2173,7 @@ complete description of the syntax of the template string.
 @deftypefnx {Built-in Function} {[@var{v1}, @var{v2}, @dots{}, @var{count}, @var{errmsg}]] =} scanf (@var{template}, "C")
 This is equivalent to calling @code{fscanf} with @var{fid} = @code{stdin}.
 
-It is currently not useful to call @code{scanf} in interactive
-programs.
+It is currently not useful to call @code{scanf} in interactive programs.
 @seealso{@ref{XREFfscanf,,fscanf}, @ref{XREFsscanf,,sscanf}, @ref{XREFprintf,,printf}}
 @end deftypefn
 
@@ -2212,7 +2273,7 @@ compatibility with the C language @code{scanf}.
 A character that specifies the conversion to be applied.
 @end itemize
 
-The exact options that are permitted and how they are interpreted vary 
+The exact options that are permitted and how they are interpreted vary
 between the different conversion specifiers.  See the descriptions of the
 individual conversions for information about the particular options that
 they allow.
@@ -2300,7 +2361,7 @@ Unlike the C language @code{scanf}, Octave ignores the @samp{h},
 @subsection String Input Conversions
 
 This section describes the @code{scanf} input conversions for reading
-string and character values: @samp{%s} and @samp{%c}.  
+string and character values: @samp{%s} and @samp{%c}.
 
 The @samp{%c} conversion is the simplest: it matches a fixed number of
 characters, always.  The maximum field with says how many characters to
@@ -2335,9 +2396,13 @@ as the data are read.
 
 @c fread libinterp/corefcn/file-io.cc
 @anchor{XREFfread}
-@deftypefn {Built-in Function} {[@var{val}, @var{count}] =} fread (@var{fid}, @var{size}, @var{precision}, @var{skip}, @var{arch})
-Read binary data of type @var{precision} from the specified file ID
-@var{fid}.
+@deftypefn  {Built-in Function} {@var{val} =} fread (@var{fid})
+@deftypefnx {Built-in Function} {@var{val} =} fread (@var{fid}, @var{size})
+@deftypefnx {Built-in Function} {@var{val} =} fread (@var{fid}, @var{size}, @var{precision})
+@deftypefnx {Built-in Function} {@var{val} =} fread (@var{fid}, @var{size}, @var{precision}, @var{skip})
+@deftypefnx {Built-in Function} {@var{val} =} fread (@var{fid}, @var{size}, @var{precision}, @var{skip}, @var{arch})
+@deftypefnx {Built-in Function} {[@var{val}, @var{count}] =} fread (@dots{})
+Read binary data from the file specified by the file descriptor @var{fid}.
 
 The optional argument @var{size} specifies the amount of data to read
 and may be one of
@@ -2479,29 +2544,33 @@ a complete block of 3 values.
 The optional argument @var{arch} is a string specifying the data format
 for the file.  Valid values are
 
-@table @code
+@table @asis
 @item @qcode{"native"}
 The format of the current machine.
 
-@item "ieee-be"
+@item @qcode{"ieee-be"}
 IEEE big endian.
 
-@item "ieee-le"
+@item @qcode{"ieee-le"}
 IEEE little endian.
 @end table
 
-The data read from the file is returned in @var{val}, and the number of
-values read is returned in @code{count}
+The output argument @var{val} contains the data read from the file.
+The optional return value @var{count} contains the number of elements read.
 @seealso{@ref{XREFfwrite,,fwrite}, @ref{XREFfgets,,fgets}, @ref{XREFfgetl,,fgetl}, @ref{XREFfscanf,,fscanf}, @ref{XREFfopen,,fopen}}
 @end deftypefn
 
 
 @c fwrite libinterp/corefcn/file-io.cc
 @anchor{XREFfwrite}
-@deftypefn {Built-in Function} {@var{count} =} fwrite (@var{fid}, @var{data}, @var{precision}, @var{skip}, @var{arch})
-Write data in binary form of type @var{precision} to the specified file
-ID @var{fid}, returning the number of values successfully written to the
-file.
+@deftypefn  {Built-in Function} {} fwrite (@var{fid}, @var{data})
+@deftypefnx {Built-in Function} {} fwrite (@var{fid}, @var{data}, @var{precision})
+@deftypefnx {Built-in Function} {} fwrite (@var{fid}, @var{data}, @var{precision}, @var{skip})
+@deftypefnx {Built-in Function} {} fwrite (@var{fid}, @var{data}, @var{precision}, @var{skip}, @var{arch})
+@deftypefnx {Built-in Function} {@var{count} =} fwrite (@dots{})
+Write data in binary form to the file specified by the file descriptor
+@var{fid}, returning the number of values @var{count} successfully written
+to the file.
 
 The argument @var{data} is a matrix of values that are to be written to
 the file.  The values are extracted in column-major order.
@@ -2525,23 +2594,25 @@ files will be deleted, so this step need not be executed manually.
 
 @c mkstemp libinterp/corefcn/file-io.cc
 @anchor{XREFmkstemp}
-@deftypefn {Built-in Function} {[@var{fid}, @var{name}, @var{msg}] =} mkstemp (@var{template}, @var{delete})
-Return the file ID corresponding to a new temporary file with a unique
-name created from @var{template}.  The last six characters of @var{template}
-must be @code{XXXXXX} and these are replaced with a string that makes the
-filename unique.  The file is then created with mode read/write and
-permissions that are system dependent (on GNU/Linux systems, the permissions
-will be 0600 for versions of glibc 2.0.7 and later).  The file is opened
-in binary mode and with the @w{@code{O_EXCL}} flag.
+@deftypefn  {Built-in Function} {[@var{fid}, @var{name}, @var{msg}] =} mkstemp ("@var{template}")
+@deftypefnx {Built-in Function} {[@var{fid}, @var{name}, @var{msg}] =} mkstemp ("@var{template}", @var{delete})
+Return the file descriptor @var{fid} corresponding to a new temporary file
+with a unique name created from @var{template}.
 
-If the optional argument @var{delete} is supplied and is true,
-the file will be deleted automatically when Octave exits.
+The last six characters of @var{template} must be @qcode{"XXXXXX"} and
+these are replaced with a string that makes the filename unique.  The file
+is then created with mode read/write and permissions that are system
+dependent (on GNU/Linux systems, the permissions will be 0600 for versions of
+glibc 2.0.7 and later).  The file is opened in binary mode and with the
+@w{@code{O_EXCL}} flag.
 
-If successful, @var{fid} is a valid file ID, @var{name} is the name of
-the file, and @var{msg} is an empty string.  Otherwise, @var{fid}
-is -1, @var{name} is empty, and @var{msg} contains a system-dependent
-error message.
-@seealso{@ref{XREFtmpfile,,tmpfile}, @ref{XREFtmpnam,,tmpnam}, @ref{XREFP_tmpdir,,P_tmpdir}}
+If the optional argument @var{delete} is supplied and is true, the file will
+be deleted automatically when Octave exits.
+
+If successful, @var{fid} is a valid file ID, @var{name} is the name of the
+file, and @var{msg} is an empty string.  Otherwise, @var{fid} is -1,
+@var{name} is empty, and @var{msg} contains a system-dependent error message.
+@seealso{@ref{XREFtempname,,tempname}, @ref{XREFtempdir,,tempdir}, @ref{XREFP_tmpdir,,P_tmpdir}, @ref{XREFtmpfile,,tmpfile}, @ref{XREFfopen,,fopen}}
 @end deftypefn
 
 
@@ -2549,34 +2620,61 @@ error message.
 @anchor{XREFtmpfile}
 @deftypefn {Built-in Function} {[@var{fid}, @var{msg}] =} tmpfile ()
 Return the file ID corresponding to a new temporary file with a unique
-name.  The file is opened in binary read/write (@qcode{"w+b"}) mode.
-The file will be deleted automatically when it is closed or when Octave
-exits.
+name.
+
+The file is opened in binary read/write (@qcode{"w+b"}) mode and will be
+deleted automatically when it is closed or when Octave exits.
 
 If successful, @var{fid} is a valid file ID and @var{msg} is an empty
 string.  Otherwise, @var{fid} is -1 and @var{msg} contains a
 system-dependent error message.
-@seealso{@ref{XREFtmpnam,,tmpnam}, @ref{XREFmkstemp,,mkstemp}, @ref{XREFP_tmpdir,,P_tmpdir}}
+@seealso{@ref{XREFtempname,,tempname}, @ref{XREFmkstemp,,mkstemp}, @ref{XREFtempdir,,tempdir}, @ref{XREFP_tmpdir,,P_tmpdir}}
 @end deftypefn
 
 
-@c tmpnam libinterp/corefcn/file-io.cc
-@anchor{XREFtmpnam}
-@c List other forms of function in documentation index
-@findex octave_tmp_file_name
-
-@deftypefn  {Built-in Function} {} tmpnam ()
-@deftypefnx {Built-in Function} {} tmpnam (@var{dir})
-@deftypefnx {Built-in Function} {} tmpnam (@var{dir}, @var{prefix})
+@c tempname libinterp/corefcn/file-io.cc
+@anchor{XREFtempname}
+@deftypefn  {Built-in Function} {@var{fname} =} tempname ()
+@deftypefnx {Built-in Function} {@var{fname} =} tempname (@var{dir})
+@deftypefnx {Built-in Function} {@var{fname} =} tempname (@var{dir}, @var{prefix})
 Return a unique temporary file name as a string.
 
 If @var{prefix} is omitted, a value of @qcode{"oct-"} is used.
 If @var{dir} is also omitted, the default directory for temporary files
-is used.  If @var{dir} is provided, it must exist, otherwise the default
-directory for temporary files is used.  Since the named file is not
-opened, by @code{tmpnam}, it is possible (though relatively unlikely)
-that it will not be available by the time your program attempts to open it.
-@seealso{@ref{XREFtmpfile,,tmpfile}, @ref{XREFmkstemp,,mkstemp}, @ref{XREFP_tmpdir,,P_tmpdir}}
+(@code{P_tmpdir}) is used.  If @var{dir} is provided, it must exist,
+otherwise the default directory for temporary files is used.
+
+Programming Note: Because the named file is not opened by @code{tempname},
+it is possible, though relatively unlikely, that it will not be available
+by the time your program attempts to open it.  If this is a concern,
+see @code{tmpfile}.
+@seealso{@ref{XREFmkstemp,,mkstemp}, @ref{XREFtempdir,,tempdir}, @ref{XREFP_tmpdir,,P_tmpdir}, @ref{XREFtmpfile,,tmpfile}}
+@end deftypefn
+
+
+@c tempdir scripts/miscellaneous/tempdir.m
+@anchor{XREFtempdir}
+@deftypefn {Function File} {@var{dir} =} tempdir ()
+Return the name of the host system's directory for temporary files.
+
+The directory name is taken first from the environment variable
+@env{TMPDIR}.  If that does not exist the system default returned by
+@code{P_tmpdir} is used.
+@seealso{@ref{XREFP_tmpdir,,P_tmpdir}, @ref{XREFtempname,,tempname}, @ref{XREFmkstemp,,mkstemp}, @ref{XREFtmpfile,,tmpfile}}
+@end deftypefn
+
+
+@c P_tmpdir libinterp/corefcn/file-io.cc
+@anchor{XREFP_tmpdir}
+@deftypefn {Built-in Function} {} P_tmpdir ()
+Return the name of the host system's @strong{default} directory for
+temporary files.
+
+Programming Note: The value returned by @code{P_tmpdir} is always the
+default location.  This value may not agree with that returned from
+@code{tempdir} if the user has overriden the default with the @env{TMPDIR}
+environment variable.
+@seealso{@ref{XREFtempdir,,tempdir}, @ref{XREFtempname,,tempname}, @ref{XREFmkstemp,,mkstemp}, @ref{XREFtmpfile,,tmpfile}}
 @end deftypefn
 
 
@@ -2608,26 +2706,35 @@ above code.
 
 @c feof libinterp/corefcn/file-io.cc
 @anchor{XREFfeof}
-@deftypefn {Built-in Function} {} feof (@var{fid})
-Return 1 if an end-of-file condition has been encountered for a given
-file and 0 otherwise.  Note that it will only return 1 if the end of the
-file has already been encountered, not if the next read operation will
-result in an end-of-file condition.
-@seealso{@ref{XREFfread,,fread}, @ref{XREFfopen,,fopen}}
+@deftypefn {Built-in Function} {@var{status} =} feof (@var{fid})
+Return 1 if an end-of-file condition has been encountered for the file
+specified by file descriptor @var{fid} and 0 otherwise.
+
+Note that @code{feof} will only return 1 if the end of the file has already
+been encountered, not if the next read operation will result in an
+end-of-file condition.
+@seealso{@ref{XREFfread,,fread}, @ref{XREFfrewind,,frewind}, @ref{XREFfseek,,fseek}, @ref{XREFfclear,,fclear}, @ref{XREFfopen,,fopen}}
 @end deftypefn
 
 
 @c ferror libinterp/corefcn/file-io.cc
 @anchor{XREFferror}
-@deftypefn  {Built-in Function} {[@var{err}, @var{msg}] =} ferror (@var{fid})
-@deftypefnx {Built-in Function} {[@var{err}, @var{msg}] =} ferror (@var{fid}, "clear")
-Return 1 if an error condition has been encountered for the file ID
-@var{fid} and 0 otherwise.  Note that it will only return 1 if an error
-has already been encountered, not if the next operation will result in
-an error condition.
+@deftypefn  {Built-in Function} {@var{msg} =} ferror (@var{fid})
+@deftypefnx {Built-in Function} {[@var{msg}, @var{err}] =} ferror (@var{fid})
+@deftypefnx {Built-in Function} {[@var{dots}] =} ferror (@var{fid}, "clear")
+Query the error status of the stream specified by file descriptor @var{fid}
 
-The second argument is optional.  If it is supplied, also clear the
-error condition.
+If an error condition exists then return a string @var{msg} describing the
+error.  Otherwise, return an empty string @qcode{""}.
+
+The optional second output is a numeric indication of the error status.
+@var{err} is 1 if an error condition has been encountered and 0 otherwise.
+
+Note that @code{ferror} indicates if an error has already occurred, not
+whether the next operation will result in an error condition.
+
+The second input @qcode{"clear"} is optional.  If supplied, the error
+state on the stream will be cleared.
 @seealso{@ref{XREFfclear,,fclear}, @ref{XREFfopen,,fopen}}
 @end deftypefn
 
@@ -2635,8 +2742,9 @@ error condition.
 @c fclear libinterp/corefcn/file-io.cc
 @anchor{XREFfclear}
 @deftypefn {Built-in Function} {} fclear (@var{fid})
-Clear the stream state for the specified file.
-@seealso{@ref{XREFfopen,,fopen}}
+Clear the stream state for the file specified by the file descriptor
+@var{fid}.
+@seealso{@ref{XREFferror,,ferror}, @ref{XREFfopen,,fopen}}
 @end deftypefn
 
 
@@ -2650,15 +2758,15 @@ for reading, writing, or both.  For example:
 @group
 freport ()
 
-     @print{}  number  mode  name
-     @print{}
-     @print{}       0     r  stdin
-     @print{}       1     w  stdout
-     @print{}       2     w  stderr
-     @print{}       3     r  myfile
+     @print{}  number  mode  arch       name
+     @print{}  ------  ----  ----       ----
+     @print{}     0     r    ieee-le    stdin
+     @print{}     1     w    ieee-le    stdout
+     @print{}     2     w    ieee-le    stderr
+     @print{}     3     r    ieee-le    myfile
 @end group
 @end example
-@seealso{@ref{XREFfopen,,fopen}, @ref{XREFfclose,,fclose}}
+@seealso{@ref{XREFfopen,,fopen}, @ref{XREFfclose,,fclose}, @ref{XREFis_valid_file_id,,is_valid_file_id}}
 @end deftypefn
 
 
@@ -2670,10 +2778,10 @@ the file pointer for a given file.
 
 @c ftell libinterp/corefcn/file-io.cc
 @anchor{XREFftell}
-@deftypefn {Built-in Function} {} ftell (@var{fid})
-Return the position of the file pointer as the number of characters
-from the beginning of the file @var{fid}.
-@seealso{@ref{XREFfseek,,fseek}, @ref{XREFfeof,,feof}, @ref{XREFfopen,,fopen}}
+@deftypefn {Built-in Function} {@var{pos} =} ftell (@var{fid})
+Return the position of the file pointer as the number of characters from the
+beginning of the file specified by file descriptor @var{fid}.
+@seealso{@ref{XREFfseek,,fseek}, @ref{XREFfrewind,,frewind}, @ref{XREFfeof,,feof}, @ref{XREFfopen,,fopen}}
 @end deftypefn
 
 
@@ -2682,7 +2790,7 @@ from the beginning of the file @var{fid}.
 @deftypefn  {Built-in Function} {} fseek (@var{fid}, @var{offset})
 @deftypefnx {Built-in Function} {} fseek (@var{fid}, @var{offset}, @var{origin})
 @deftypefnx {Built-in Function} {@var{status} =} fseek (@dots{})
-Set the file pointer to any location within the file @var{fid}.
+Set the file pointer to the location @var{offset} within the file @var{fid}.
 
 The pointer is positioned @var{offset} characters from the @var{origin},
 which may be one of the predefined variables @w{@code{SEEK_CUR}} (current
@@ -2692,7 +2800,7 @@ file) or strings @qcode{"cof"}, @qcode{"bof"} or @qcode{"eof"}.  If
 be positive, negative, or zero but not all combinations of @var{origin} and
 @var{offset} can be realized.
 
-Return 0 on success and -1 on error.
+@code{fseek} returns 0 on success and -1 on error.
 @seealso{@ref{XREFfskipl,,fskipl}, @ref{XREFfrewind,,frewind}, @ref{XREFftell,,ftell}, @ref{XREFfopen,,fopen}}
 @end deftypefn
 
@@ -2702,8 +2810,8 @@ Return 0 on success and -1 on error.
 @deftypefn  {Built-in Function} {} SEEK_SET ()
 @deftypefnx {Built-in Function} {} SEEK_CUR ()
 @deftypefnx {Built-in Function} {} SEEK_END ()
-Return the numerical value to pass to @code{fseek} to perform
-one of the following actions:
+Return the numerical value to pass to @code{fseek} to perform one of the
+following actions:
 
 @table @code
 @item SEEK_SET
@@ -2721,10 +2829,13 @@ Position file relative to the end.
 
 @c frewind libinterp/corefcn/file-io.cc
 @anchor{XREFfrewind}
-@deftypefn {Built-in Function} {} frewind (@var{fid})
-Move the file pointer to the beginning of the file @var{fid}, returning
-0 for success, and -1 if an error was encountered.  It is equivalent to
-@code{fseek (@var{fid}, 0, SEEK_SET)}.
+@deftypefn  {Built-in Function} {} frewind (@var{fid})
+@deftypefnx {Built-in Function} {@var{status} =} frewind (@var{fid})
+Move the file pointer to the beginning of the file specified by file
+descriptor @var{fid}.
+
+@code{frewind} returns 0 for success, and -1 if an error is encountered.  It
+is equivalent to @code{fseek (@var{fid}, 0, SEEK_SET)}.
 @seealso{@ref{XREFfseek,,fseek}, @ref{XREFftell,,ftell}, @ref{XREFfopen,,fopen}}
 @end deftypefn
 

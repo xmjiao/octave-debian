@@ -1,4 +1,4 @@
-## Copyright (C) 1996-2013 Kurt Hornik
+## Copyright (C) 1996-2015 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -24,7 +24,7 @@
 ##
 ## Position numbering for offsets begins with 1.  If @var{offset} is negative,
 ## extraction starts that far from the end of the string.
-## 
+##
 ## If @var{len} is omitted, the substring extends to the end of @var{S}.  A
 ## negative value for @var{len} extracts to within @var{len} characters of
 ## the end of the string
@@ -99,7 +99,7 @@ endfunction
 %!assert (substr ("This is a test string", 1, -7), "This is a test")
 %!assert (isempty (substr ("This is a test string", 1, 0)))
 
-%% Test input validation
+## Test input validation
 %!error substr ()
 %!error substr ("foo", 2, 3, 4)
 %!error substr (ones (5, 1), 1, 1)

@@ -1,4 +1,4 @@
-## Copyright (C) 2009-2013 Jaroslav Hajek
+## Copyright (C) 2009-2015 Jaroslav Hajek
 ##
 ## This file is part of Octave.
 ##
@@ -62,9 +62,9 @@
 ##       @result{}
 ##           @{
 ##             [1,1] = a
-##             [1,2] = 
+##             [1,2] =
 ##             [1,3] = b
-##             [1,4] = 
+##             [1,4] =
 ##             [1,5] = c
 ##           @}
 ##
@@ -80,10 +80,10 @@
 ## @code{regularexpression}.  The default is @var{delimitertype} is
 ## @code{simple}.
 ## @end itemize
-## 
+##
 ## Example:
 ##
-## @example
+## @smallexample
 ## strsplit ("a foo b,bar c", ",|\\s|foo|bar", "delimitertype", "regularexpression")
 ##       @result{}
 ##           @{
@@ -91,17 +91,17 @@
 ##             [1,2] = b
 ##             [1,3] = c
 ##           @}
-## 
+##
 ## strsplit ("a,,b, c", "[, ]", false, "delimitertype", "regularexpression")
 ##       @result{}
 ##           @{
 ##             [1,1] = a
-##             [1,2] = 
+##             [1,2] =
 ##             [1,3] = b
-##             [1,4] = 
+##             [1,4] =
 ##             [1,5] = c
 ##           @}
-## 
+##
 ## strsplit ("a,\t,b, c", @{',', '\s'@}, "delimitertype", "regularexpression")
 ##       @result{}
 ##           @{
@@ -109,19 +109,19 @@
 ##             [1,2] = b
 ##             [1,3] = c
 ##           @}
-## 
+##
 ## strsplit ("a,\t,b, c", @{',', ' ', '\t'@}, "collapsedelimiters", false)
 ##       @result{}
 ##           @{
 ##             [1,1] = a
-##             [1,2] = 
-##             [1,3] = 
+##             [1,2] =
+##             [1,3] =
 ##             [1,4] = b
-##             [1,5] = 
+##             [1,5] =
 ##             [1,6] = c
 ##           @}
-## @end example
-## 
+## @end smallexample
+##
 ## @seealso{ostrsplit, strjoin, strtok, regexp}
 ## @end deftypefn
 
@@ -280,13 +280,13 @@ endfunction
 %! assert (s, {"hello", "world"});
 %! assert (m, {" \t "});
 
-%% Compatibility
+## Compatibility
 %! assert (strsplit ("", "a"), {""})
 %! assert (strsplit ("a", "a"), {"", ""})
 %! assert (strsplit ("aa", "a"), {"", ""})
 %! assert (strsplit ("aaa", "a"), {"", ""})
 
-%% Test input validation
+## Test input validation
 %!error strsplit ()
 %!error strsplit ("abc", "b", true, 4)
 %!error <S and DEL must be string values> strsplit (123, "b")

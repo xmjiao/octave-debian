@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2013 John W. Eaton
+@c Copyright (C) 1996-2015 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -8,12 +8,12 @@
 @c under the terms of the GNU General Public License as published by the
 @c Free Software Foundation; either version 3 of the License, or (at
 @c your option) any later version.
-@c 
+@c
 @c Octave is distributed in the hope that it will be useful, but WITHOUT
 @c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 @c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 @c for more details.
-@c 
+@c
 @c You should have received a copy of the GNU General Public License
 @c along with Octave; see the file COPYING.  If not, see
 @c <http://www.gnu.org/licenses/>.
@@ -177,7 +177,7 @@ An inequality with a lower bound (@code{A(i,:)*x >= b(i)}).
 
 @item @qcode{"D"}
 An inequality constraint with both upper and lower bounds
-(@code{A(i,:)*x >= -b(i)} @emph{and} (@code{A(i,:)*x <= b(i)}).
+(@code{A(i,:)*x >= -b(i)}) @emph{and} (@code{A(i,:)*x <= b(i)}).
 @end table
 
 @item vartype
@@ -292,7 +292,7 @@ Last fractional variable.
 Most fractional variable.
 
 @item 4 (@w{@code{GLP_BR_DTH}})
-Heuristic by Driebeck and Tomlin.
+Heuristic by @nospell{Driebeck and Tomlin}.
 
 @item 5 (@w{@code{GLP_BR_PCH}})
 Hybrid @nospell{pseudocost} heuristic.
@@ -826,7 +826,16 @@ The value returned in @var{info} may be one of the following:
 @table @asis
 @item 101
 The algorithm terminated normally.
-Either all constraints meet the requested tolerance, or the stepsize,
+All constraints meet the specified tolerance.
+
+@item 102
+The BFGS update failed.
+
+@item 103
+The maximum number of iterations was reached.
+
+@item 104
+The stepsize has become too small, i.e.,
 @tex
 $\Delta x,$
 @end tex
@@ -834,12 +843,6 @@ $\Delta x,$
 delta @var{x},
 @end ifnottex
 is less than @code{@var{tol} * norm (x)}.
-
-@item 102
-The BFGS update failed.
-
-@item 103
-The maximum number of iterations was reached.
 @end table
 
 An example of calling @code{sqp}:
@@ -1054,17 +1057,68 @@ A structure with two fields:
 
 Not implemented.
 @end itemize
-@seealso{@ref{XREFoptimset,,optimset}, @ref{XREFpqpnonneg,,pqpnonneg}}
+@seealso{@ref{XREFoptimset,,optimset}, @ref{XREFpqpnonneg,,pqpnonneg}, @ref{XREFlscov,,lscov}}
 @end deftypefn
+
+
+@c lscov scripts/statistics/base/lscov.m
+@anchor{XREFlscov}
+@deftypefn  {Function File} {@var{x} =} lscov (@var{A}, @var{b})
+@deftypefnx {Function File} {@var{x} =} lscov (@var{A}, @var{b}, @var{V})
+@deftypefnx {Function File} {@var{x} =} lscov (@var{A}, @var{b}, @var{V}, @var{alg})
+@deftypefnx {Function File} {[@var{x}, @var{stdx}, @var{mse}, @var{S}] =} lscov (@dots{})
+
+Compute a generalized linear least squares fit.
+Estimate @var{x} under the model @var{b} = @var{A}@var{x} + @var{w},
+where the noise @var{w} is assumed to follow a normal distribution
+with covariance matrix @math{{\sigma^2} V}.
+
+If the size of the coefficient matrix @var{A} is n-by-p, the
+size of the vector/array of constant terms @var{b} must be n-by-k.
+
+The optional input argument @var{V} may be a n-by-1 vector of positive
+weights (inverse variances), or a n-by-n symmetric positive
+semidefinite matrix representing the covariance of @var{b}.  If
+@var{V} is not supplied, the ordinary least squares solution is
+returned.
+
+The @var{alg} input argument, a guidance on solution method to use,
+is currently ignored.
+
+Besides the least-squares estimate matrix @var{x} (p-by-k), the
+function also returns @var{stdx} (p-by-k), the error standard
+deviation of estimated @var{x}; @var{mse} (k-by-1), the estimated
+data error covariance scale factors (@math{\sigma^2}); and @var{S}
+(p-by-p, or p-by-p-by-k if k > 1), the error covariance of @var{x}.
+
+Reference: @nospell{Golub and Van Loan} (1996),
+Matrix Computations (3rd Ed.), Johns Hopkins, Section 5.6.3
+
+@end deftypefn
+@seealso{@ref{XREFols,,ols}, @ref{XREFgls,,gls}, @ref{XREFlsqnonneg,,lsqnonneg}}
 
 
 @c optimset scripts/optimization/optimset.m
 @anchor{XREFoptimset}
 @deftypefn  {Function File} {} optimset ()
-@deftypefnx {Function File} {} optimset (@var{par}, @var{val}, @dots{})
-@deftypefnx {Function File} {} optimset (@var{old}, @var{par}, @var{val}, @dots{})
-@deftypefnx {Function File} {} optimset (@var{old}, @var{new})
-Create options struct for optimization functions.
+@deftypefnx {Function File} {@var{options} =} optimset ()
+@deftypefnx {Function File} {@var{options} =} optimset (@var{par}, @var{val}, @dots{})
+@deftypefnx {Function File} {@var{options} =} optimset (@var{old}, @var{par}, @var{val}, @dots{})
+@deftypefnx {Function File} {@var{options} =} optimset (@var{old}, @var{new})
+Create options structure for optimization functions.
+
+When called without any input or output arguments, @code{optimset} prints
+a list of all valid optimization parameters.
+
+When called with one output and no inputs, return an options structure with
+all valid option parameters initialized to @code{[]}.
+
+When called with a list of parameter/value pairs, return an options
+structure with only the named parameters initialized.
+
+When the first input is an existing options structure @var{old}, the values
+are updated from either the @var{par}/@var{val} list or from the options
+structure @var{new}.
 
 Valid parameters are:
 
@@ -1098,7 +1152,7 @@ When enabled, display an error if the objective function returns an invalid
 value (a complex number, NaN, or Inf).  Must be set to @qcode{"on"} or
 @qcode{"off"} [default].  Note: the functions @code{fzero} and
 @code{fminbnd} correctly handle Inf values and only complex values or NaN
-will cause an error in this case. 
+will cause an error in this case.
 
 @item GradObj
 When set to @qcode{"on"}, the function to be minimized must return a
@@ -1138,6 +1192,7 @@ less than @code{TolX} the optimization stops.  Must be a positive scalar.
 
 @item Updating
 @end table
+@seealso{@ref{XREFoptimget,,optimget}}
 @end deftypefn
 
 
@@ -1145,9 +1200,11 @@ less than @code{TolX} the optimization stops.  Must be a positive scalar.
 @anchor{XREFoptimget}
 @deftypefn  {Function File} {} optimget (@var{options}, @var{parname})
 @deftypefnx {Function File} {} optimget (@var{options}, @var{parname}, @var{default})
-Return a specific option from a structure created by
-@code{optimset}.  If @var{parname} is not a field of the @var{options}
-structure, return @var{default} if supplied, otherwise return an
-empty matrix.
+Return the specific option @var{parname} from the optimization options
+structure @var{options} created by @code{optimset}.
+
+If @var{parname} is not defined then return @var{default} if supplied,
+otherwise return an empty matrix.
+@seealso{@ref{XREFoptimset,,optimset}}
 @end deftypefn
 

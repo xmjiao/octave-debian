@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2013 John W. Eaton
+@c Copyright (C) 1996-2015 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -8,12 +8,12 @@
 @c under the terms of the GNU General Public License as published by the
 @c Free Software Foundation; either version 3 of the License, or (at
 @c your option) any later version.
-@c 
+@c
 @c Octave is distributed in the hope that it will be useful, but WITHOUT
 @c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 @c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 @c for more details.
-@c 
+@c
 @c You should have received a copy of the GNU General Public License
 @c along with Octave; see the file COPYING.  If not, see
 @c <http://www.gnu.org/licenses/>.
@@ -121,8 +121,8 @@ For example:
 a = [1, 2, 3, 4];
 
 a(1:end/2)        # first half of a => [1, 2]
-a(end + 1) = 5;   # append element 
-a(end) = [];      # delete element 
+a(end + 1) = 5;   # append element
+a(end) = [];      # delete element
 a(1:2:end)        # odd elements of a => [1, 3]
 a(2:2:end)        # even elements of a => [2, 4]
 a(end:-1:1)       # reversal of a => [4, 3, 2 , 1]
@@ -974,7 +974,7 @@ if and only if
 
 @example
 @group
-  abs (@var{z1}) < abs (@var{z2}) 
+  abs (@var{z1}) < abs (@var{z2})
   || (abs (@var{z1}) == abs (@var{z2}) && arg (@var{z1}) < arg (@var{z2}))
 @end group
 @end example
@@ -1159,12 +1159,13 @@ described for matrix-valued operands.
 @opindex &
 @c and libinterp/corefcn/data.cc
 @anchor{XREFand}
-@deftypefn  {Built-in Function} {} and (@var{x}, @var{y})
-@deftypefnx {Built-in Function} {} and (@var{x1}, @var{x2}, @dots{})
+@deftypefn  {Built-in Function} {@var{z} =} and (@var{x}, @var{y})
+@deftypefnx {Built-in Function} {@var{z} =} and (@var{x1}, @var{x2}, @dots{})
 Return the logical AND of @var{x} and @var{y}.
-This function is equivalent to @w{@code{x & y}}.
-If more arguments are given, the logical and is applied
-cumulatively from left to right:
+
+This function is equivalent to the operator syntax @w{@code{x & y}}.  If
+more than two arguments are given, the logical AND is applied cumulatively
+from left to right:
 
 @example
 (@dots{}((x1 & x2) & x3) & @dots{})
@@ -1179,9 +1180,10 @@ At least one argument is required.
 @opindex !
 @c not libinterp/corefcn/data.cc
 @anchor{XREFnot}
-@deftypefn {Built-in Function} {} not (@var{x})
-Return the logical NOT of @var{x}.  This function is equivalent to
-@code{! x}.
+@deftypefn {Built-in Function} {@var{z} =} not (@var{x})
+Return the logical NOT of @var{x}.
+
+This function is equivalent to the operator syntax @w{@code{! x}}.
 @seealso{@ref{XREFand,,and}, @ref{XREFor,,or}, @ref{XREFxor,,xor}}
 @end deftypefn
 
@@ -1189,12 +1191,13 @@ Return the logical NOT of @var{x}.  This function is equivalent to
 @opindex |
 @c or libinterp/corefcn/data.cc
 @anchor{XREFor}
-@deftypefn  {Built-in Function} {} or (@var{x}, @var{y})
-@deftypefnx {Built-in Function} {} or (@var{x1}, @var{x2}, @dots{})
+@deftypefn  {Built-in Function} {@var{z} =} or (@var{x}, @var{y})
+@deftypefnx {Built-in Function} {@var{z} =} or (@var{x1}, @var{x2}, @dots{})
 Return the logical OR of @var{x} and @var{y}.
-This function is equivalent to @w{@code{x | y}}.
-If more arguments are given, the logical or is applied
-cumulatively from left to right:
+
+This function is equivalent to the operator syntax @w{@code{x | y}}.  If
+more than two arguments are given, the logical OR is applied cumulatively
+from left to right:
 
 @example
 (@dots{}((x1 | x2) | x3) | @dots{})
@@ -1301,30 +1304,11 @@ arguments because Octave would be forced to try to evaluate both of the
 operands for the operator @samp{&}.
 
 @sc{matlab} has special behavior that allows the operators @samp{&} and
-@samp{|} to short-circuit when used in the truth expression for @code{if} and 
-@code{while} statements.  The Octave parser may be instructed to behave in the
-same manner, but its use is strongly discouraged.
-
-@c do_braindead_shortcircuit_evaluation libinterp/parse-tree/pt-binop.cc
-@anchor{XREFdo_braindead_shortcircuit_evaluation}
-@deftypefn  {Built-in Function} {@var{val} =} do_braindead_shortcircuit_evaluation ()
-@deftypefnx {Built-in Function} {@var{old_val} =} do_braindead_shortcircuit_evaluation (@var{new_val})
-@deftypefnx {Built-in Function} {} do_braindead_shortcircuit_evaluation (@var{new_val}, "local")
-Query or set the internal variable that controls whether Octave will
-do short-circuit evaluation of @samp{|} and @samp{&} operators inside the
-conditions of if or while statements.
-
-This feature is only provided for compatibility with @sc{matlab} and should
-not be used unless you are porting old code that relies on this feature.
-
-To obtain short-circuit behavior for logical expressions in new programs,
-you should always use the @samp{&&} and @samp{||} operators.
-
-When called from inside a function with the @qcode{"local"} option, the
-variable is changed locally for the function and any subroutines it calls.  
-The original variable value is restored when exiting the function.
-@end deftypefn
-
+@samp{|} to short-circuit when used in the truth expression for @code{if} and
+@code{while} statements.  Octave also behaves the same way by default,
+though the use of the @samp{&} and @samp{|} operators in this way is
+strongly discouraged.  Instead, you should use the @samp{&&} and @samp{||}
+operators that always have short-circuit behavior.
 
 Finally, the ternary operator (?:) is not supported in Octave.  If
 short-circuiting is not important, it can be replaced by the @code{ifelse}
@@ -1502,7 +1486,7 @@ expression need not match.  For example, the expression
 @end example
 
 @noindent
-is equivalent to 
+is equivalent to
 
 @example
 @group
@@ -1581,8 +1565,10 @@ as long as @var{expr2} is a simple expression with no side effects.  If
 is evaluated as
 
 @example
+@group
 @var{temp} = @var{expr2}
 @var{expr1} = (@var{expr1}) @var{op} @var{temp}
+@end group
 @end example
 
 @noindent

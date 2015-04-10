@@ -20,8 +20,8 @@ You have another version of autoconf.  It may work, but is not guaranteed to.
 If you have problems, you may need to regenerate the build system entirely.
 To do so, use the procedure documented by the package, typically 'autoreconf'.])])
 
-# po.m4 serial 21 (gettext-0.18.3)
-dnl Copyright (C) 1995-2013 Free Software Foundation, Inc.
+# po.m4 serial 22 (gettext-0.19)
+dnl Copyright (C) 1995-2014 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
 dnl with or without modifications, as long as this notice is preserved.
@@ -52,7 +52,7 @@ AC_DEFUN([AM_PO_SUBDIRS],
 
   dnl Release version of the gettext macros. This is used to ensure that
   dnl the gettext macros and po/Makefile.in.in are in sync.
-  AC_SUBST([GETTEXT_MACRO_VERSION], [0.18])
+  AC_SUBST([GETTEXT_MACRO_VERSION], [0.19])
 
   dnl Perform the following tests also if --disable-nls has been given,
   dnl because they are needed for "make dist" to work.
@@ -557,10 +557,9 @@ _AM_AUTOCONF_VERSION(m4_defn([AC_AUTOCONF_VERSION]))])
 # configured tree to be moved without reconfiguration.
 
 AC_DEFUN([AM_AUX_DIR_EXPAND],
-[dnl Rely on autoconf to set up CDPATH properly.
-AC_PREREQ([2.50])dnl
-# expand $ac_aux_dir to an absolute path
-am_aux_dir=`cd $ac_aux_dir && pwd`
+[AC_REQUIRE([AC_CONFIG_AUX_DIR_DEFAULT])dnl
+# Expand $ac_aux_dir to an absolute path.
+am_aux_dir=`cd "$ac_aux_dir" && pwd`
 ])
 
 # AM_CONDITIONAL                                            -*- Autoconf -*-
@@ -1603,12 +1602,14 @@ AC_SUBST([am__untar])
 ]) # _AM_PROG_TAR
 
 m4_include([m4/00gnulib.m4])
+m4_include([m4/absolute-header.m4])
 m4_include([m4/acinclude.m4])
 m4_include([m4/alloca.m4])
 m4_include([m4/ax_blas.m4])
 m4_include([m4/ax_blas_f77_func.m4])
 m4_include([m4/ax_compare_version.m4])
 m4_include([m4/ax_lapack.m4])
+m4_include([m4/ax_openmp.m4])
 m4_include([m4/ax_pthread.m4])
 m4_include([m4/base64.m4])
 m4_include([m4/canonicalize.m4])
@@ -1672,6 +1673,7 @@ m4_include([m4/gethostname.m4])
 m4_include([m4/getlogin_r.m4])
 m4_include([m4/getopt.m4])
 m4_include([m4/gettimeofday.m4])
+m4_include([m4/gl-openssl.m4])
 m4_include([m4/glibc21.m4])
 m4_include([m4/glob.m4])
 m4_include([m4/gnulib-common.m4])
@@ -1748,6 +1750,7 @@ m4_include([m4/same.m4])
 m4_include([m4/save-cwd.m4])
 m4_include([m4/secure_getenv.m4])
 m4_include([m4/select.m4])
+m4_include([m4/setenv.m4])
 m4_include([m4/sigaction.m4])
 m4_include([m4/signal_h.m4])
 m4_include([m4/signalblocking.m4])

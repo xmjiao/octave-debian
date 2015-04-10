@@ -58,7 +58,7 @@ Next: <a href="Iterative-Techniques.html#Iterative-Techniques" accesskey="n" rel
 <a name="Linear-Algebra-on-Sparse-Matrices"></a>
 <h3 class="section">22.2 Linear Algebra on Sparse Matrices</h3>
 
-<p>Octave includes a polymorphic solver for sparse matrices, where 
+<p>Octave includes a polymorphic solver for sparse matrices, where
 the exact solver used to factorize the matrix, depends on the properties
 of the sparse matrix itself.  Generally, the cost of determining the matrix type
 is small relative to the cost of factorizing the matrix itself, but in any
@@ -77,7 +77,7 @@ account the permutations.  Goto 8
 than that given by <code>spparms (&quot;bandden&quot;)</code> continue, else goto 4.
 
 <ol>
-<li> If the matrix is tridiagonal and the right-hand side is not sparse 
+<li> If the matrix is tridiagonal and the right-hand side is not sparse
 continue, else goto 3b.
 
 <ol>
@@ -85,7 +85,7 @@ continue, else goto 3b.
       Cholesky&nbsp;factorization using <small>LAPACK</small> xPTSV.
 
 </li><li> If the above failed or the matrix is not Hermitian with a positive
-      real diagonal use Gaussian elimination with pivoting using 
+      real diagonal use Gaussian elimination with pivoting using
       <small>LAPACK</small> xGTSV, and goto 8.
 </li></ol>
 
@@ -93,7 +93,7 @@ continue, else goto 3b.
       Cholesky&nbsp;factorization using <small>LAPACK</small> xPBTRF.
 
 </li><li> if the above failed or the matrix is not Hermitian with a positive
-      real diagonal use Gaussian elimination with pivoting using 
+      real diagonal use Gaussian elimination with pivoting using
       <small>LAPACK</small> xGBTRF, and goto 8.
 </li></ol>
 
@@ -101,14 +101,14 @@ continue, else goto 3b.
 or backward substitution, and goto 8
 
 </li><li> If the matrix is an upper triangular matrix with column permutations
-or lower triangular matrix with row permutations, perform a sparse forward 
+or lower triangular matrix with row permutations, perform a sparse forward
 or backward substitution, and goto 8
 
 </li><li> If the matrix is square, Hermitian with a real positive diagonal, attempt
 sparse Cholesky&nbsp;factorization using <small>CHOLMOD</small>.
 
 </li><li> If the sparse Cholesky&nbsp;factorization failed or the matrix is not
-Hermitian with a real positive diagonal, and the matrix is square, factorize 
+Hermitian with a real positive diagonal, and the matrix is square, factorize
 using <small>UMFPACK</small>.
 
 </li><li> If the matrix is not square, or any of the previous solvers flags
@@ -116,7 +116,7 @@ a singular or near singular matrix, find a minimum norm solution using
 <small>CXSPARSE</small><a name="DOCF10" href="#FOOT10"><sup>10</sup></a>.
 </li></ol>
 
-<p>The band density is defined as the number of non-zero values in the band
+<p>The band density is defined as the number of nonzero values in the band
 divided by the total number of values in the full band.  The banded
 matrix solvers can be entirely disabled by using <em>spparms</em> to set
 <code>bandden</code> to 1 (i.e., <code>spparms (&quot;bandden&quot;, 1)</code>).
@@ -267,7 +267,7 @@ Pseudospectra</cite>. <a href="http://citeseer.ist.psu.edu/223007.html">http://c
 <dt><a name="index-spparms-2"></a>Built-in Function: <em>[<var>keys</var>, <var>vals</var>] =</em> <strong>spparms</strong> <em>()</em></dt>
 <dt><a name="index-spparms-3"></a>Built-in Function: <em><var>val</var> =</em> <strong>spparms</strong> <em>(<var>key</var>)</em></dt>
 <dt><a name="index-spparms-4"></a>Built-in Function: <em></em> <strong>spparms</strong> <em>(<var>vals</var>)</em></dt>
-<dt><a name="index-spparms-5"></a>Built-in Function: <em></em> <strong>spparms</strong> <em>(&quot;defaults&quot;)</em></dt>
+<dt><a name="index-spparms-5"></a>Built-in Function: <em></em> <strong>spparms</strong> <em>(&quot;default&quot;)</em></dt>
 <dt><a name="index-spparms-6"></a>Built-in Function: <em></em> <strong>spparms</strong> <em>(&quot;tight&quot;)</em></dt>
 <dt><a name="index-spparms-7"></a>Built-in Function: <em></em> <strong>spparms</strong> <em>(<var>key</var>, <var>val</var>)</em></dt>
 <dd><p>Query or set the parameters used by the sparse solvers and factorization
@@ -324,7 +324,7 @@ use the sparsity preserving amd functions (default 1)
 </p>
 </dd>
 <dt>&lsquo;<samp>bandden</samp>&rsquo;</dt>
-<dd><p>The density of non-zero elements in a banded matrix before it is treated
+<dd><p>The density of nonzero elements in a banded matrix before it is treated
 by the <small>LAPACK</small> banded solvers (default 0.5)
 </p>
 </dd>
@@ -337,7 +337,7 @@ by the <small>LAPACK</small> banded solvers (default 0.5)
 <p>The value of individual keys can be set with
 <code>spparms (<var>key</var>, <var>val</var>)</code>.
 The default values can be restored with the special keyword
-<code>&quot;defaults&quot;</code>.  The special keyword <code>&quot;tight&quot;</code> can be used to
+<code>&quot;default&quot;</code>.  The special keyword <code>&quot;tight&quot;</code> can be used to
 set the mmd solvers to attempt a sparser solution at the potential cost of
 longer running time.
 </p>
@@ -351,8 +351,8 @@ longer running time.
 
 <p>Calculate the structural rank of the sparse matrix <var>S</var>.  Note that
 only the structure of the matrix is used in this calculation based on
-a Dulmage-Mendelsohn permutation to block triangular form.  As such the
-numerical rank of the matrix <var>S</var> is bounded by
+a Dulmage-Mendelsohn permutation to block triangular form.  As
+such the numerical rank of the matrix <var>S</var> is bounded by
 <code>sprank (<var>S</var>) &gt;= rank (<var>S</var>)</code>.  Ignoring floating point errors
 <code>sprank (<var>S</var>) == rank (<var>S</var>)</code>.
 </p>
@@ -658,9 +658,9 @@ eigenvalues.
 of the convergence.  If <var>flag</var> is 0 then all eigenvalues have converged.
 Any other value indicates a failure to converge.
 </p>
-<p>This function is based on the <small>ARPACK</small> package, written by R. Lehoucq,
-K. Maschhoff, D. Sorensen, and C. Yang.  For more information see
-<a href="http://www.caam.rice.edu/software/ARPACK/">http://www.caam.rice.edu/software/ARPACK/</a>.
+<p>This function is based on the <small>ARPACK</small> package, written by
+R. Lehoucq, K. Maschhoff, D. Sorensen, and C. Yang.  For more
+information see <a href="http://www.caam.rice.edu/software/ARPACK/">http://www.caam.rice.edu/software/ARPACK/</a>.
 </p>
 
 <p><strong>See also:</strong> <a href="Basic-Matrix-Functions.html#XREFeig">eig</a>, <a href="#XREFsvds">svds</a>.
@@ -746,8 +746,8 @@ efficient.
 <h4 class="footnotes-heading">Footnotes</h4>
 
 <h3><a name="FOOT10" href="#DOCF10">(10)</a></h3>
-<p>The <small>CHOLMOD</small>, <small>UMFPACK</small> and <small>CXSPARSE</small> packages were
-written by Tim Davis and are available at
+<p>The <small>CHOLMOD</small>, <small>UMFPACK</small> and <small>CXSPARSE</small>
+packages were written by Tim Davis and are available at
 <a href="http://www.cise.ufl.edu/research/sparse/">http://www.cise.ufl.edu/research/sparse/</a></p>
 </div>
 <hr>

@@ -58,9 +58,9 @@ Next: <a href="Basic-Statistical-Functions.html#Basic-Statistical-Functions" acc
 <a name="Descriptive-Statistics-1"></a>
 <h3 class="section">26.1 Descriptive Statistics</h3>
 
-<p>One principal goal of descriptive statistics is to represent the essence of a 
+<p>One principal goal of descriptive statistics is to represent the essence of a
 large data set concisely.  Octave provides the mean, median, and mode functions
-which all summarize a data set with just a single number corresponding to 
+which all summarize a data set with just a single number corresponding to
 the central tendency of the data.
 </p>
 <a name="XREFmean"></a><dl>
@@ -187,7 +187,7 @@ outliers than either <code>range</code> or <code>std</code>.
 <dd><p>Compute the mean square of the elements of the vector <var>x</var>.
 </p>
 <div class="example">
-<pre class="example">std (x) = 1/N SUM_i x(i)^2
+<pre class="example">meansq (x) = 1/N SUM_i x(i)^2
 </pre></div>
 
 <p>For matrix arguments, return a row vector containing the mean square
@@ -268,7 +268,7 @@ variance [default]
 </p></dd>
 </dl>
 
-<p>If <em>N==1</em> the value of <var>opt</var> is ignored and normalization 
+<p>If <em>N==1</em> the value of <var>opt</var> is ignored and normalization
 by <em>N</em> is used.
 </p>
 <p>If the optional argument <var>dim</var> is given, operate along this dimension.
@@ -372,7 +372,7 @@ Valid options are:
 </p>
 <dl compact="compact">
 <dt><code>&quot;c&quot;</code></dt>
-<dd><p>Central Moment (default). 
+<dd><p>Central Moment (default).
 </p>
 </dd>
 <dt><code>&quot;a&quot;</code></dt>
@@ -387,7 +387,7 @@ defined as
 
 </dd>
 <dt><code>&quot;r&quot;</code></dt>
-<dd><p>Raw Moment.  The moment about zero defined as 
+<dd><p>Raw Moment.  The moment about zero defined as
 </p>
 
 <div class="example">
@@ -405,6 +405,7 @@ defined as
 
 </dd>
 </dl>
+
 <p>If the optional argument <var>dim</var> is given, operate along this dimension.
 </p>
 <p>If both <var>type</var> and <var>dim</var> are given they may appear in any order.
@@ -429,10 +430,8 @@ the <var>p</var>(i)th quantiles of each column of <var>x</var>.
 <p>If <var>p</var> is unspecified, return the quantiles for
 <code>[0.00 0.25 0.50 0.75 1.00]</code>.
 The optional argument <var>dim</var> determines the dimension along which
-the quantiles are calculated.  If <var>dim</var> is omitted, and <var>x</var> is
-a vector or matrix, it defaults to 1 (column-wise quantiles).  If
-<var>x</var> is an N-D array, <var>dim</var> defaults to the first non-singleton
-dimension.
+the quantiles are calculated.  If <var>dim</var> is omitted it defaults to
+the first non-singleton dimension.
 </p>
 <p>The methods available to calculate sample quantiles are the nine methods
 used by R (<a href="http://www.r-project.org/">http://www.r-project.org/</a>).  The default value is
@@ -479,8 +478,8 @@ use method 6.  <small>MATLAB</small> uses method 5.
 <p>References:
 </p>
 <ul>
-<li> Becker, R. A., Chambers, J. M. and Wilks, A. R. (1988) The New
-S Language.  Wadsworth &amp; Brooks/Cole.
+<li> Becker, R. A., Chambers, J. M. and Wilks, A. R. (1988)
+The New S Language.  Wadsworth &amp; Brooks/Cole.
 
 </li><li> Hyndman, R. J. and Fan, Y. (1996) Sample quantiles in
 statistical packages, American Statistician, 50, 361&ndash;365.
@@ -515,10 +514,8 @@ return them in a matrix, such that the i-th row of <var>y</var> contains the
 </p>
 <p>If <var>p</var> is unspecified, return the quantiles for <code>[0 25 50 75 100]</code>.
 The optional argument <var>dim</var> determines the dimension along which
-the percentiles are calculated.  If <var>dim</var> is omitted, and <var>x</var> is
-a vector or matrix, it defaults to 1 (column-wise quantiles).  When
-<var>x</var> is an N-D array, <var>dim</var> defaults to the first non-singleton
-dimension.
+the percentiles are calculated.  If <var>dim</var> is omitted it defaults to the
+the first non-singleton dimension.
 </p>
 <p><strong>See also:</strong> <a href="#XREFquantile">quantile</a>.
 </p></dd></dl>

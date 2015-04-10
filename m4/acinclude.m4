@@ -1,6 +1,6 @@
 dnl aclocal.m4 -- extra macros for configuring Octave
 dnl
-dnl Copyright (C) 1995-2013 John W. Eaton
+dnl Copyright (C) 1995-2015 John W. Eaton
 dnl
 dnl This file is part of Octave.
 dnl
@@ -478,6 +478,69 @@ AC_DEFUN([OCTAVE_CHECK_FUNC_QABSTRACTITEMMODEL_BEGINRESETMODEL], [
   fi
 ])
 dnl
+dnl Check whether the Qt QTabWidget::setMovable() function exists.
+dnl This function was added in Qt 4.5.
+dnl
+AC_DEFUN([OCTAVE_CHECK_FUNC_QTABWIDGET_SETMOVABLE], [
+  AC_CACHE_CHECK([whether Qt has the QTabWidget::setMovable() function],
+    [octave_cv_func_qtabwidget_setmovable],
+    [AC_LANG_PUSH(C++)
+    ac_octave_save_CPPFLAGS="$CPPFLAGS"
+    CPPFLAGS="$QT_CPPFLAGS $CPPFLAGS"
+    AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+        #include <QTabWidget>
+        class tab_widget : public QTabWidget
+        {
+        public:
+          tab_widget (QWidget *parent = 0) : QTabWidget (parent) { this->setMovable (true); }
+          ~tab_widget () {}
+        };
+        ]], [[
+        tab_widget tw;
+        ]])],
+      octave_cv_func_qtabwidget_setmovable=yes,
+      octave_cv_func_qtabwidget_setmovable=no)
+    CPPFLAGS="$ac_octave_save_CPPFLAGS"
+    AC_LANG_POP(C++)
+  ])
+  if test $octave_cv_func_qtabwidget_setmovable = yes; then
+    AC_DEFINE(HAVE_QTABWIDGET_SETMOVABLE, 1,
+      [Define to 1 if Qt has the QTabWidget::setMovable() function.])
+  fi
+])
+dnl
+dnl Check whether the QsciScintilla::findFirstInSelection () function exists.
+dnl This function was added in QScintilla 2.7.
+dnl
+AC_DEFUN([OCTAVE_CHECK_FUNC_QSCI_FINDSELECTION], [
+  AC_CACHE_CHECK([whether QSci has the QsciScintilla::findFirstInSelection () function],
+    [octave_cv_func_qsci_findfirstinselection],
+    [AC_LANG_PUSH(C++)
+    ac_octave_save_CPPFLAGS="$CPPFLAGS"
+    CPPFLAGS="$QT_CPPFLAGS $CPPFLAGS"
+    AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+        #include <Qsci/qsciscintilla.h>
+        class qsci : public QsciScintilla
+        {
+        public:
+          qsci (QWidget *parent = 0) : QsciScintilla (parent)
+          { this->findFirstInSelection (QString ("x"),true,true,true,true,true); }
+          ~qsci () {}
+        };
+        ]], [[
+        qsci edit;
+        ]])],
+      octave_cv_func_qsci_findfirstinselection=yes,
+      octave_cv_func_qsci_findfirstinselection=no)
+    CPPFLAGS="$ac_octave_save_CPPFLAGS"
+    AC_LANG_POP(C++)
+  ])
+  if test $octave_cv_func_qsci_findfirstinselection = yes; then
+    AC_DEFINE(HAVE_QSCI_FINDSELECTION, 1,
+      [Define to 1 if Qsci has the QsciScintilla::findFirstInSelection () function.])
+  fi
+])
+dnl
 dnl Check whether HDF5 library has version 1.6 API functions.
 dnl
 AC_DEFUN([OCTAVE_CHECK_HDF5_HAS_VER_16_API], [
@@ -535,7 +598,6 @@ AC_DEFUN([OCTAVE_CHECK_LIB], [
     ;;
   esac
 
-  [TEXINFO_]m4_toupper([$1])=
   warn_$1="$3"
   m4_set_add([summary_warning_list], [warn_$1])
 
@@ -560,8 +622,7 @@ AC_DEFUN([OCTAVE_CHECK_LIB], [
         m4_ifblank([$8], [
           warn_$1=
           AC_DEFINE([HAVE_]m4_toupper([$1]), 1,
-            [Define to 1 if $2 is available.])
-          [TEXINFO_]m4_toupper([$1])="@set [HAVE_]m4_toupper([$1])"], [$8])
+            [Define to 1 if $2 is available.])], [$8])
       fi
     fi
     m4_ifnblank([$6], [AC_LANG_POP($6)])
@@ -571,7 +632,6 @@ AC_DEFUN([OCTAVE_CHECK_LIB], [
   fi
 
   AC_SUBST(m4_toupper([$1])_LIBS)
-  AC_SUBST([TEXINFO_]m4_toupper([$1]))
   if test -n "$warn_$1"; then
     AC_MSG_WARN([$warn_$1])
     m4_toupper([$1])_LIBS=
@@ -898,6 +958,16 @@ AC_DEFUN([OCTAVE_CHECK_LIB_OPENGL], [
     ])
 
     if test $have_opengl_incs = yes; then
+      AC_CHECK_HEADERS([GL/glext.h OpenGL/glext.h], [], [], [
+#ifdef HAVE_WINDOWS_H
+# include <windows.h>
+#endif
+#if defined (HAVE_GL_GL_H)
+# include <GL/gl.h>
+#elif defined (HAVE_OPENGL_GL_H)
+# include <OpenGL/gl.h>
+#endif
+      ])
       case $canonical_host_type in
         *-*-mingw32* | *-*-msdosmsvc)
           save_LIBS="$LIBS"
@@ -1019,37 +1089,6 @@ dnl      break])
 dnl  done
 
   AC_SUBST(TERM_LIBS)
-])
-dnl
-dnl Check for support of OpenMP with a given compiler flag.
-dnl If found define HAVE_OPENMP and add the compile flag
-dnl to CFLAGS and CXXFLAGS.
-dnl
-AC_DEFUN([OCTAVE_CHECK_OPENMP], [
-  AC_MSG_CHECKING([for support of OpenMP])
-  ac_octave_save_CFLAGS="$CFLAGS"
-  CFLAGS="$CFLAGS $1"
-  AC_CACHE_VAL([octave_cv_check_openmp],
-    [AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-        #include <omp.h>
-        #include <stdio.h>
-        ]], [[
-        int main(int argc, char* argv[])
-        {
-          _Pragma("omp parallel")
-          printf("Hello, world.\n");
-          return 0;
-        }
-      ]])],
-      octave_cv_openmp=yes, octave_cv_openmmp=no, octave_cv_openmp=no)
-  ])
-  AC_MSG_RESULT([$octave_cv_openmp])
-  if test $octave_cv_openmp = yes; then
-    AC_DEFINE(HAVE_OPENMP, 1, [Define to 1 if compiler supports OpenMP.])
-    CXXFLAGS="$CXXFLAGS $1"
-  else
-    CFLAGS="$ac_octave_save_CFLAGS"
-  fi
 ])
 dnl
 dnl Check for the Qhull version.
@@ -1737,6 +1776,58 @@ AC_DEFUN([OCTAVE_LLVM_FUNCTION_ADDFNATTR_API], [
   fi
 ])
 dnl
+dnl Check for raw_fd_ostream API
+dnl
+AC_DEFUN([OCTAVE_LLVM_RAW_FD_OSTREAM_API], [
+  AC_CACHE_CHECK([check LLVM::raw_fd_ostream arg type is llvm::sys:fs],
+    [octave_cv_raw_fd_ostream_arg_is_llvm_sys_fs],
+    [AC_LANG_PUSH(C++)
+      AC_COMPILE_IFELSE(
+        [AC_LANG_PROGRAM([[
+          #include <llvm/Support/raw_os_ostream.h>
+          ]], [[
+          std::string str;
+          llvm::raw_fd_ostream fout ("", str, llvm::sys::fs::F_Binary);
+        ]])],
+        octave_cv_raw_fd_ostream_arg_is_llvm_sys_fs=yes,
+        octave_cv_raw_fd_ostream_arg_is_llvm_sys_fs=no)
+    AC_LANG_POP(C++)
+  ])
+  if test $octave_cv_raw_fd_ostream_arg_is_llvm_sys_fs = yes; then
+    AC_DEFINE(RAW_FD_OSTREAM_ARG_IS_LLVM_SYS_FS, 1,
+      [Define to 1 if LLVM::raw_fd_ostream arg type is llvm::sys:fs.])
+  fi
+])
+dnl
+dnl Check for legacy::PassManager API
+dnl
+AC_DEFUN([OCTAVE_LLVM_LEGACY_PASSMANAGER_API], [
+  AC_CACHE_CHECK([check for LLVM::legacy::PassManager],
+    [octave_cv_legacy_passmanager],
+    [AC_LANG_PUSH(C++)
+      save_LIBS="$LIBS"
+      LIBS="$LLVM_LIBS $LIBS"
+      AC_LINK_IFELSE(
+        [AC_LANG_PROGRAM([[
+          #include <llvm/IR/LegacyPassManager.h>
+          ]], [[
+          llvm::Module *module;
+          llvm::legacy::PassManager *module_pass_manager;
+          llvm::legacy::FunctionPassManager *pass_manager;
+          module_pass_manager = new llvm::legacy::PassManager ();
+          pass_manager = new llvm::legacy::FunctionPassManager (module);
+        ]])],
+        octave_cv_legacy_passmanager=yes,
+        octave_cv_legacy_passmanager=no)
+      LIBS="$save_LIBS"
+    AC_LANG_POP(C++)
+  ])
+  if test $octave_cv_legacy_passmanager = yes; then
+    AC_DEFINE(LEGACY_PASSMANAGER, 1,
+      [Define to 1 if LLVM::legacy::PassManager exists.])
+  fi
+])
+dnl
 dnl Check for ar.
 dnl
 AC_DEFUN([OCTAVE_PROG_AR], [
@@ -1765,26 +1856,38 @@ AC_DEFUN([OCTAVE_PROG_BISON], [
     AC_CACHE_CHECK([syntax of bison api.prefix (or name-prefix) declaration],
                    [octave_cv_bison_api_prefix_decl_style], [
       style="api name"
+      quote="quote brace"
       for s in $style; do
-        if test $s = "api"; then
-          def='%define api.prefix "foo_"'
-        else
-          def='%name-prefix="foo_"'
-        fi
-        cat << EOF > conftest.yy
+        for q in $quote; do
+          if test $s = "api"; then
+            if test $q = "quote"; then
+              def='%define api.prefix "foo_"'
+            else
+              def='%define api.prefix {foo_}'
+            fi
+          else
+            if test $q = "quote"; then
+              def='%name-prefix="foo_"'
+            else
+              def='%name-prefix {foo_}'
+            fi
+          fi
+          cat << EOF > conftest.yy
 $def
 %start input
 %%
 input:;
 %%
 EOF
-        $YACC conftest.yy > /dev/null 2>&1
-        ac_status=$?
-        if test $ac_status -eq 0; then
-          octave_cv_bison_api_prefix_decl_style="$s"
-          break
-        fi
-        if test $ac_status -eq 0; then
+          ## Older versions of bison only warn and exit with success.
+          octave_bison_output=`$YACC conftest.yy 2>&1`
+          ac_status=$?
+          if test $ac_status -eq 0 && test -z "$octave_bison_output"; then
+            octave_cv_bison_api_prefix_decl_style="$s $q"
+            break
+          fi
+        done
+        if test -n "$octave_cv_bison_api_prefix_decl_style"; then
           break
         fi
       done
@@ -1795,7 +1898,7 @@ EOF
   AC_SUBST(BISON_API_PREFIX_DECL_STYLE, $octave_cv_bison_api_prefix_decl_style)
 
   if test -z "$octave_cv_bison_api_prefix_decl_style"; then
-    YACC=
+    tmp_have_bison=no
     warn_bison_api_prefix_decl_style="
 
 I wasn't able to find a suitable style for declaring the api prefix
@@ -1828,9 +1931,9 @@ $def
 input:;
 %%
 EOF
-          $YACC conftest.yy > /dev/null 2>&1
+          octave_bison_output=`$YACC conftest.yy 2>&1`
           ac_status=$?
-          if test $ac_status -eq 0; then
+          if test $ac_status -eq 0 && test -z "$octave_bison_output"; then
             if test $q = noquote; then
               q=
             fi
@@ -1838,7 +1941,7 @@ EOF
             break
           fi
         done
-        if test $ac_status -eq 0; then
+        if test -n "$octave_cv_bison_push_pull_decl_style"; then
           break
         fi
       done
@@ -1849,7 +1952,7 @@ EOF
   AC_SUBST(BISON_PUSH_PULL_DECL_STYLE, $octave_cv_bison_push_pull_decl_style)
 
   if test -z "$octave_cv_bison_push_pull_decl_style"; then
-    YACC=
+    tmp_have_bison=no
     warn_bison_push_pull_decl_style="
 
 I wasn't able to find a suitable style for declaring a push-pull
@@ -1862,9 +1965,10 @@ parser in a bison input file so I'm disabling bison.
     YACC='$(top_srcdir)/build-aux/missing bison'
     warn_bison="
 
-I didn't find bison, but it's only a problem if you need to
-reconstruct parse.cc, which is the case if you're building from VCS
-sources.
+I didn't find bison, or the version of bison that I found does not
+support all the features that are required, but it's only a problem
+if you need to reconstruct parse.cc, which is the case if you're
+building from VCS sources.
 "
     OCTAVE_CONFIGURE_WARNING([warn_bison])
   fi
@@ -1981,6 +2085,23 @@ reconstruct oct-gperf.h
   AC_SUBST(GPERF)
 ])
 dnl
+dnl Find icotool program.
+dnl
+AC_DEFUN([OCTAVE_PROG_ICOTOOL], [
+  AC_CHECK_PROG(ICOTOOL, icotool, icotool, [])
+  if test -z "$ICOTOOL"; then
+    ICOTOOL='$(top_srcdir)/build-aux/missing icotool'
+    warn_icotool="
+
+I didn't find icotool, but it's only a problem if you need to
+reconstruct octave-logo.ico, which is the case if you're building from
+VCS sources.
+"
+    OCTAVE_CONFIGURE_WARNING([warn_icotool])
+  fi
+  AC_SUBST(ICOTOOL)
+])
+dnl
 dnl Check for makeinfo.
 dnl
 AC_DEFUN([OCTAVE_PROG_MAKEINFO], [
@@ -2033,6 +2154,23 @@ dnl
 AC_DEFUN([OCTAVE_PROG_PYTHON], [
   AC_CHECK_PROG(PYTHON, python, python, [])
   AC_SUBST(PYTHON)
+])
+dnl
+dnl Find rsvg-convert program.
+dnl
+AC_DEFUN([OCTAVE_PROG_RSVG_CONVERT], [
+  AC_CHECK_PROG(RSVG_CONVERT, rsvg-convert, rsvg-convert, [])
+  if test -z "$RSVG_CONVERT"; then
+    RSVG_CONVERT='$(top_srcdir)/build-aux/missing rsvg-convert'
+    warn_rsvg_convert="
+
+I didn't find rsvg-convert, but it's only a problem if you need to
+reconstruct octave-logo-*.png, which is the case if you're building
+from VCS sources.
+"
+    OCTAVE_CONFIGURE_WARNING([warn_rsvg_convert])
+  fi
+  AC_SUBST(RSVG_CONVERT)
 ])
 dnl
 dnl Find sed program.

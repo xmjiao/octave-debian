@@ -84,7 +84,7 @@ respectively.  For example:
 &equiv;
 eye (2, 2)
 &equiv;
-eye (size ([1, 2; 3, 4])
+eye (size ([1, 2; 3, 4]))
 </pre></div>
 
 <p>The optional argument <var>class</var>, allows <code>eye</code> to return an array of
@@ -158,8 +158,9 @@ and defaults to double.  For example:
 <a name="XREFrepmat"></a><dl>
 <dt><a name="index-repmat"></a>Function File: <em></em> <strong>repmat</strong> <em>(<var>A</var>, <var>m</var>)</em></dt>
 <dt><a name="index-repmat-1"></a>Function File: <em></em> <strong>repmat</strong> <em>(<var>A</var>, <var>m</var>, <var>n</var>)</em></dt>
-<dt><a name="index-repmat-2"></a>Function File: <em></em> <strong>repmat</strong> <em>(<var>A</var>, [<var>m</var> <var>n</var>])</em></dt>
-<dt><a name="index-repmat-3"></a>Function File: <em></em> <strong>repmat</strong> <em>(<var>A</var>, [<var>m</var> <var>n</var> <var>p</var> &hellip;])</em></dt>
+<dt><a name="index-repmat-2"></a>Function File: <em></em> <strong>repmat</strong> <em>(<var>A</var>, <var>m</var>, <var>n</var>, <var>p</var> &hellip;)</em></dt>
+<dt><a name="index-repmat-3"></a>Function File: <em></em> <strong>repmat</strong> <em>(<var>A</var>, [<var>m</var> <var>n</var>])</em></dt>
+<dt><a name="index-repmat-4"></a>Function File: <em></em> <strong>repmat</strong> <em>(<var>A</var>, [<var>m</var> <var>n</var> <var>p</var> &hellip;])</em></dt>
 <dd><p>Form a block matrix of size <var>m</var> by <var>n</var>, with a copy of matrix
 <var>A</var> as each element.  If <var>n</var> is not specified, form an
 <var>m</var> by <var>m</var> block matrix.  For copying along more than two
@@ -286,8 +287,8 @@ behavior comparable to <small>MATLAB</small>, initialize with a deterministic st
 vector in Octave&rsquo;s startup files (see <a href="Startup-Files.html#Startup-Files">Startup Files</a>).
 </p>
 <p>To compute the pseudo-random sequence, <code>rand</code> uses the Mersenne
-Twister with a period of <em>2^{19937}-1</em> (See M. Matsumoto and
-T. Nishimura,
+Twister with a period of <em>2^{19937}-1</em> (See
+M. Matsumoto and T. Nishimura,
 <cite>Mersenne Twister: A 623-dimensionally equidistributed uniform
 pseudorandom number generator</cite>, ACM Trans. on
 Modeling and Computer Simulation Vol. 8, No. 1, pp. 3-30, January 1998,
@@ -387,8 +388,8 @@ this value is <em>2^{53} - 1</em><!-- /@w -->.
 elements having zero mean and variance one.  The arguments are
 handled the same as the arguments for <code>rand</code>.
 </p>
-<p>By default, <code>randn</code> uses the Marsaglia and Tsang &ldquo;Ziggurat technique&rdquo;
-to transform from a uniform to a normal distribution.
+<p>By default, <code>randn</code> uses the Marsaglia and Tsang
+&ldquo;Ziggurat technique&rdquo; to transform from a uniform to a normal distribution.
 </p>
 <p>The class of the value returned can be controlled by a trailing
 <code>&quot;double&quot;</code> or <code>&quot;single&quot;</code> argument.  These are the only valid
@@ -397,7 +398,7 @@ classes.
 <p>Reference: G. Marsaglia and W.W. Tsang,
 <cite>Ziggurat Method for Generating Random Variables</cite>,
 J. Statistical Software, vol 5, 2000,
-<a href="http://www.jstatsoft.org/v05/i08/">http://www.jstatsoft.org/v05/i08/</a>)
+<a href="http://www.jstatsoft.org/v05/i08/">http://www.jstatsoft.org/v05/i08/</a>
 </p>
 
 <p><strong>See also:</strong> <a href="#XREFrand">rand</a>, <a href="#XREFrande">rande</a>, <a href="#XREFrandg">randg</a>, <a href="#XREFrandp">randp</a>.
@@ -419,8 +420,8 @@ J. Statistical Software, vol 5, 2000,
 <dd><p>Return a matrix with exponentially distributed random elements.  The
 arguments are handled the same as the arguments for <code>rand</code>.
 </p>
-<p>By default, <code>randn</code> uses the Marsaglia and Tsang &ldquo;Ziggurat technique&rdquo;
-to transform from a uniform to an exponential distribution.
+<p>By default, <code>randn</code> uses the Marsaglia and Tsang
+&ldquo;Ziggurat technique&rdquo; to transform from a uniform to a normal distribution.
 </p>
 <p>The class of the value returned can be controlled by a trailing
 <code>&quot;double&quot;</code> or <code>&quot;single&quot;</code> argument.  These are the only valid
@@ -429,7 +430,7 @@ classes.
 <p>Reference: G. Marsaglia and W.W. Tsang,
 <cite>Ziggurat Method for Generating Random Variables</cite>,
 J. Statistical Software, vol 5, 2000,
-<a href="http://www.jstatsoft.org/v05/i08/">http://www.jstatsoft.org/v05/i08/</a>)
+<a href="http://www.jstatsoft.org/v05/i08/">http://www.jstatsoft.org/v05/i08/</a>
 </p>
 
 <p><strong>See also:</strong> <a href="#XREFrand">rand</a>, <a href="#XREFrandn">randn</a>, <a href="#XREFrandg">randg</a>, <a href="#XREFrandp">randp</a>.
@@ -479,8 +480,8 @@ University Graz, Austria, 1994.
 </p>
 </dd>
 <dt>For <var>l</var> &gt; 1e8, use normal approximation.</dt>
-<dd><p>L. Montanet, et al., <cite>Review of Particle Properties</cite>, Physical Review
-D 50 p1284, 1994.
+<dd><p>L. Montanet, et al., <cite>Review of Particle Properties</cite>,
+Physical Review D 50 p1284, 1994.
 </p></dd>
 </dl>
 

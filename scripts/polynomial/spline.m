@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2013 Kai Habel
+## Copyright (C) 2000-2015 Kai Habel
 ## Copyright (C) 2006 David Bateman
 ##
 ## This file is part of Octave.
@@ -21,7 +21,7 @@
 ## @deftypefn  {Function File} {@var{pp} =} spline (@var{x}, @var{y})
 ## @deftypefnx {Function File} {@var{yi} =} spline (@var{x}, @var{y}, @var{xi})
 ## Return the cubic spline interpolant of points @var{x} and @var{y}.
-## 
+##
 ## When called with two arguments, return the piecewise polynomial @var{pp}
 ## that may be used with @code{ppval} to evaluate the polynomial at specific
 ## points.  When called with a third input argument, @code{spline} evaluates

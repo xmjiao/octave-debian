@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2013 David Bateman
+## Copyright (C) 2007-2015 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -23,7 +23,7 @@
 ## @deftypefnx {Function File} {} trimesh (@dots{}, @var{prop}, @var{val}, @dots{})
 ## @deftypefnx {Function File} {@var{h} =} trimesh (@dots{})
 ## Plot a 3-D triangular wireframe mesh.
-## 
+##
 ## In contrast to @code{mesh}, which plots a mesh using rectangles,
 ## @code{trimesh} plots the mesh using triangles.
 ##
@@ -33,7 +33,7 @@
 ## vertices of the triangles in the x-y plane.  @var{z} determines the
 ## height above the plane of each vertex.  If no @var{z} input is given then
 ## the triangles are plotted as a 2-D figure.
-## 
+##
 ## The color of the trimesh is computed by linearly scaling the @var{z} values
 ## to fit the range of the current colormap.  Use @code{caxis} and/or
 ## change the colormap to control the appearance.
@@ -109,7 +109,7 @@ endfunction
 %! tri = delaunay (x(:), y(:));
 %! trimesh (tri, x(:), y(:), z(:));
 
-%% Test input validation
+## Test input validation
 %!error trimesh ()
 %!error trimesh (1)
 %!error trimesh (1,2)

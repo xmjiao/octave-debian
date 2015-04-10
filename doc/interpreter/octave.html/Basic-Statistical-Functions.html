@@ -59,7 +59,7 @@ Next: <a href="Statistical-Plots.html#Statistical-Plots" accesskey="n" rel="next
 <h3 class="section">26.2 Basic Statistical Functions</h3>
 
 <p>Octave supports various helpful statistical functions.  Many are useful as
-initial steps to prepare a data set for further analysis.  Others provide 
+initial steps to prepare a data set for further analysis.  Others provide
 different measures from those of the basic descriptive statistics.
 </p>
 <a name="XREFcenter"></a><dl>
@@ -127,7 +127,8 @@ of <var>x</var> was counted.
 <dt><a name="index-nchoosek"></a>Function File: <em><var>c</var> =</em> <strong>nchoosek</strong> <em>(<var>n</var>, <var>k</var>)</em></dt>
 <dt><a name="index-nchoosek-1"></a>Function File: <em><var>c</var> =</em> <strong>nchoosek</strong> <em>(<var>set</var>, <var>k</var>)</em></dt>
 <dd>
-<p>Compute the binomial coefficient or all combinations of a set of items.
+<p>Compute the binomial coefficient of <var>n</var> or list all possible
+combinations of a <var>set</var> of items.
 </p>
 <p>If <var>n</var> is a scalar then calculate the binomial coefficient
 of <var>n</var> and <var>k</var> which is defined as
@@ -166,10 +167,10 @@ one row per combination.  The result <var>c</var> has <var>k</var> columns and
        2   3
 </pre></div>
 
-<p><code>nchoosek</code> works only for non-negative, integer arguments.  Use
-<code>bincoeff</code> for non-integer and negative scalar arguments, or for
-computing many binomial coefficients at once with vector inputs
-for <var>n</var> or <var>k</var>.
+<p>Programming Note: When calculating the binomial coefficient <code>nchoosek</code>
+works only for non-negative, integer arguments.  Use <code>bincoeff</code> for
+non-integer and negative scalar arguments, or for computing many binomial
+coefficients at once with vector inputs for <var>n</var> or <var>k</var>.
 </p>
 
 <p><strong>See also:</strong> <a href="Special-Functions.html#XREFbincoeff">bincoeff</a>, <a href="#XREFperms">perms</a>.
@@ -178,22 +179,29 @@ for <var>n</var> or <var>k</var>.
 
 <a name="XREFperms"></a><dl>
 <dt><a name="index-perms"></a>Function File: <em></em> <strong>perms</strong> <em>(<var>v</var>)</em></dt>
-<dd>
-<p>Generate all permutations of <var>v</var>, one row per permutation.  The
-result has size <code>factorial (<var>n</var>) * <var>n</var></code>, where <var>n</var>
+<dd><p>Generate all permutations of <var>v</var> with one row per permutation.
+</p>
+<p>The result has size <code>factorial (<var>n</var>) * <var>n</var></code>, where <var>n</var>
 is the length of <var>v</var>.
 </p>
-<p>As an example, <code>perms ([1, 2, 3])</code> returns the matrix
+<p>Example
 </p>
 <div class="example">
-<pre class="example">  1   2   3
+<pre class="example">perms ([1, 2, 3])
+&rArr;
+  1   2   3
   2   1   3
   1   3   2
   2   3   1
   3   1   2
   3   2   1
 </pre></div>
-</dd></dl>
+
+<p>Programming Note: The maximum length of <var>v</var> should be less than or
+equal to 10 to limit memory consumption.
+</p>
+<p><strong>See also:</strong> <a href="Rearranging-Matrices.html#XREFpermute">permute</a>, <a href="Special-Utility-Matrices.html#XREFrandperm">randperm</a>, <a href="#XREFnchoosek">nchoosek</a>.
+</p></dd></dl>
 
 
 <a name="XREFranks"></a><dl>

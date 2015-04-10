@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2013 John W. Eaton
+@c Copyright (C) 1996-2015 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -8,12 +8,12 @@
 @c under the terms of the GNU General Public License as published by the
 @c Free Software Foundation; either version 3 of the License, or (at
 @c your option) any later version.
-@c 
+@c
 @c Octave is distributed in the hope that it will be useful, but WITHOUT
 @c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 @c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 @c for more details.
-@c 
+@c
 @c You should have received a copy of the GNU General Public License
 @c along with Octave; see the file COPYING.  If not, see
 @c <http://www.gnu.org/licenses/>.
@@ -225,7 +225,7 @@ A value of @code{info = 1} indicates that the solution has converged.
 
 When no Jacobian is supplied (as in the example above) it is approximated
 numerically.  This requires more function evaluations, and hence is
-less efficient.  In the example above we could compute the Jacobian 
+less efficient.  In the example above we could compute the Jacobian
 analytically as
 
 @iftex
@@ -441,11 +441,11 @@ Last relative step size was less than @code{TolX}.
 Last relative change in function value was less than @code{TolFun}.
 
 @item 0
-Iteration limit exceeded---either maximum numer of algorithm iterations
+Iteration limit exceeded---either maximum number of algorithm iterations
 @code{MaxIter} or maximum number of function evaluations @code{MaxFunEvals}.
 
 @item -1
-Alogrithm terminated by @code{OutputFcn}.
+Algorithm terminated by @code{OutputFcn}.
 
 @item -3
 The trust region radius became excessively small.
@@ -472,11 +472,11 @@ algorithm such as @code{fminsearch}.
 
 Find a value of @var{x} which minimizes the function @var{fun}.
 The search begins at the point @var{x0} and iterates using the
-Nelder & Mead Simplex algorithm (a derivative-free method).  This algorithm
-is better-suited to functions which have discontinuities or for which
-a gradient-based search such as @code{fminunc} fails.
+@nospell{Nelder & Mead} Simplex algorithm (a derivative-free method).  This
+algorithm is better-suited to functions which have discontinuities or for
+which a gradient-based search such as @code{fminunc} fails.
 
-Options for the search are provided in the parameter @var{options} using 
+Options for the search are provided in the parameter @var{options} using
 the function @code{optimset}.  Currently, @code{fminsearch} accepts the
 options: @qcode{"TolX"}, @qcode{"MaxFunEvals"}, @qcode{"MaxIter"},
 @qcode{"Display"}.  For a description of these options, see

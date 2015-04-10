@@ -82,10 +82,10 @@ used for managing an interactive dialog with a user, and the
 
 <p>and waits for the user to enter a value.  The string entered by the user
 is evaluated as an expression, so it may be a literal constant, a
-variable name, or any other valid expression.
+variable name, or any other valid Octave code.
 </p>
-<p>Currently, <code>input</code> only returns one value, regardless of the number
-of values produced by the evaluation of the expression.
+<p>The number of return arguments, their size, and their class depend on the
+expression entered.
 </p>
 <p>If you are only interested in getting a literal string value, you can
 call <code>input</code> with the character string <code>&quot;s&quot;</code> as the second
@@ -102,13 +102,24 @@ the screen before your prompt.
 
 
 <a name="XREFmenu"></a><dl>
-<dt><a name="index-menu"></a>Function File: <em></em> <strong>menu</strong> <em>(<var>title</var>, <var>opt1</var>, &hellip;)</em></dt>
-<dd><p>Print a title string followed by a series of options.  Each option will
-be printed along with a number.  The return value is the number of the
-option selected by the user.  This function is useful for interactive
-programs.  There is no limit to the number of options that may be passed
-in, but it may be confusing to present more than will fit easily on one
-screen.
+<dt><a name="index-menu"></a>Function File: <em><var>choice</var> =</em> <strong>menu</strong> <em>(<var>title</var>, <var>opt1</var>, &hellip;)</em></dt>
+<dt><a name="index-menu-1"></a>Function File: <em><var>choice</var> =</em> <strong>menu</strong> <em>(<var>title</var>, {<var>opt1</var>, &hellip;})</em></dt>
+<dd><p>Display a menu with heading <var>title</var> and options <var>opt1</var>, &hellip;,
+and wait for user input.
+</p>
+<p>If the GUI is running, or Java is available, the menu is displayed
+graphically using <code>listdlg</code>.  Otherwise, the title and menu options
+are printed on the console.
+</p>
+<p><var>title</var> is a string and the options may be input as individual strings
+or as a cell array of strings.
+</p>
+<p>The return value <var>choice</var> is the number of the option selected by the
+user counting from 1.
+</p>
+<p>This function is useful for interactive programs.  There is no limit to the
+number of options that may be passed in, but it may be confusing to present
+more than will fit easily on one screen.
 </p>
 <p><strong>See also:</strong> <a href="#XREFinput">input</a>, <a href="Dialog-Box-Functions.html#XREFlistdlg">listdlg</a>.
 </p></dd></dl>

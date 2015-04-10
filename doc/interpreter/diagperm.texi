@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 2009-2013 Jaroslav Hajek
+@c Copyright (C) 2009-2015 Jaroslav Hajek
 @c
 @c This file is part of Octave.
 @c
@@ -8,12 +8,12 @@
 @c under the terms of the GNU General Public License as published by the
 @c Free Software Foundation; either version 3 of the License, or (at
 @c your option) any later version.
-@c 
+@c
 @c Octave is distributed in the hope that it will be useful, but WITHOUT
 @c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 @c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 @c for more details.
-@c 
+@c
 @c You should have received a copy of the GNU General Public License
 @c along with Octave; see the file COPYING.  If not, see
 @c <http://www.gnu.org/licenses/>.
@@ -35,7 +35,7 @@
 @section Creating and Manipulating Diagonal/Permutation Matrices
 
 A diagonal matrix is defined as a matrix that has zero entries outside the main
-diagonal; that is, 
+diagonal; that is,
 @tex
 $D_{ij} = 0$ if $i \neq j$
 @end tex
@@ -48,20 +48,69 @@ rectangular diagonal matrix.
 
 A permutation matrix is defined as a square matrix that has a single element
 equal to unity in each row and each column; all other elements are zero.  That
-is, there exists a permutation (vector) 
+is, there exists a permutation (vector)
 @tex
 $p$ such that $P_{ij}=1$ if $j = p_i$ and
-$P_{ij}=0$ otherwise.  
+$P_{ij}=0$ otherwise.
 @end tex
 @ifnottex
-@code{p} such that @code{P(i,j) == 1} if @code{j == p(i)} and 
-@code{P(i,j) == 0} otherwise.  
+@code{p} such that @code{P(i,j) == 1} if @code{j == p(i)} and
+@code{P(i,j) == 0} otherwise.
 @end ifnottex
 
 Octave provides special treatment of real and complex rectangular diagonal
 matrices, as well as permutation matrices.  They are stored as special objects,
 using efficient storage and algorithms, facilitating writing both readable and
-efficient matrix algebra expressions in the Octave language.
+efficient matrix algebra expressions in the Octave language.  The special
+treatment may be disabled by using the functions @dfn{disable_diagonal_matrix}
+and @dfn{disable_permutation_matrix}.
+
+@c disable_diagonal_matrix libinterp/octave-value/ov.cc
+@anchor{XREFdisable_diagonal_matrix}
+@deftypefn  {Built-in Function} {@var{val} =} disable_diagonal_matrix ()
+@deftypefnx {Built-in Function} {@var{old_val} =} disable_diagonal_matrix (@var{new_val})
+@deftypefnx {Built-in Function} {} disable_diagonal_matrix (@var{new_val}, "local")
+Query or set the internal variable that controls whether diagonal
+matrices are stored in a special space-efficient format.  The default
+value is true.  If this option is disabled Octave will store diagonal
+matrices as full matrices.
+
+When called from inside a function with the @qcode{"local"} option, the
+variable is changed locally for the function and any subroutines it calls.
+The original variable value is restored when exiting the function.
+@seealso{@ref{XREFdisable_range,,disable_range}, @ref{XREFdisable_permutation_matrix,,disable_permutation_matrix}}
+@end deftypefn
+
+
+@c disable_permutation_matrix libinterp/octave-value/ov.cc
+@anchor{XREFdisable_permutation_matrix}
+@deftypefn  {Built-in Function} {@var{val} =} disable_permutation_matrix ()
+@deftypefnx {Built-in Function} {@var{old_val} =} disable_permutation_matrix (@var{new_val})
+@deftypefnx {Built-in Function} {} disable_permutation_matrix (@var{new_val}, "local")
+Query or set the internal variable that controls whether permutation
+matrices are stored in a special space-efficient format.  The default
+value is true.  If this option is disabled Octave will store permutation
+matrices as full matrices.
+
+When called from inside a function with the @qcode{"local"} option, the
+variable is changed locally for the function and any subroutines it calls.
+The original variable value is restored when exiting the function.
+@seealso{@ref{XREFdisable_range,,disable_range}, @ref{XREFdisable_diagonal_matrix,,disable_diagonal_matrix}}
+@end deftypefn
+
+
+The space savings are significant as demonstrated by the following code.
+
+@example
+@group
+x = diag (rand (10, 1));
+xf = full (x);
+sizeof (x)
+@result{} 80
+sizeof (xf)
+@result{} 800
+@end group
+@end example
 
 @menu
 * Creating Diagonal Matrices::
@@ -107,7 +156,7 @@ Diagonal Matrix
    0   0   3
    0   0   0
    0   0   0
-@end example  
+@end example
 
 @node Creating Permutation Matrices
 @subsection Creating Permutation Matrices
@@ -125,11 +174,11 @@ That is, if @var{q} is a permutation vector of length @var{n}, the expression
 will create a permutation matrix - a special matrix object.
 
 @example
-eye (n) (q, :) 
+eye (n) (q, :)
 @end example
 
 @noindent
-will also work (and create a row permutation matrix), as well as 
+will also work (and create a row permutation matrix), as well as
 
 @example
 eye (n) (q1, q2).
@@ -233,7 +282,7 @@ are treated specially when performed on these special matrix objects.
 Assume @var{D} is a diagonal matrix.  If @var{M} is a full matrix,
 then @code{D*M} will scale the rows of @var{M}.  That means,
 if @code{S = D*M}, then for each pair of indices
-i,j it holds 
+i,j it holds
 @tex
 $$S_{ij} = D_{ii} M_{ij}$$
 @end tex
@@ -254,8 +303,8 @@ D(:,1:m) * M(1:m,:),
 @end example
 
 @noindent
-i.e., trailing @code{n-m} rows of @var{M} are ignored.  If @code{m > n}, 
-then @code{D*M} is equivalent to 
+i.e., trailing @code{n-m} rows of @var{M} are ignored.  If @code{m > n},
+then @code{D*M} is equivalent to
 
 @example
 [D(1:n,n) * M; zeros(m-n, columns (M))],
@@ -273,7 +322,7 @@ equivalent to multiplying by a pseudoinverse.  The pseudoinverse of
 a rectangular diagonal matrix is again a rectangular diagonal matrix
 with swapped dimensions, where each nonzero diagonal element is replaced
 by its reciprocal.
-The matrix division algorithms do, in fact, use division rather than 
+The matrix division algorithms do, in fact, use division rather than
 multiplication by reciprocals for better numerical accuracy; otherwise, they
 honor the above definition.  Note that a diagonal matrix is never truncated due
 to ill-conditioning; otherwise, it would not be of much use for scaling.  This
@@ -292,9 +341,9 @@ If @var{D1} and @var{D2} are both diagonal matrices, then the expressions
 @example
 @group
 D1 + D2
-D1 - D2 
-D1 * D2 
-D1 / D2 
+D1 - D2
+D1 * D2
+D1 / D2
 D1 \ D2
 @end group
 @end example
@@ -306,7 +355,7 @@ above.
 
 Also, a diagonal matrix @var{D} can be multiplied or divided by a scalar, or
 raised to a scalar power if it is square, producing diagonal matrix result in
-all cases. 
+all cases.
 
 A diagonal matrix can also be transposed or conjugate-transposed, giving the
 expected result.  Extracting a leading submatrix of a diagonal matrix, i.e.,
@@ -334,7 +383,7 @@ better consistency with @sc{matlab}.
 
 If @var{P} is a permutation matrix and @var{M} a matrix, the expression
 @code{P*M} will permute the rows of @var{M}.  Similarly, @code{M*P} will
-yield a column permutation. 
+yield a column permutation.
 Matrix division @code{P\M} and @code{M/P} can be used to do inverse permutation.
 
 The previously described syntax for creating permutation matrices can actually
@@ -397,7 +446,7 @@ a diagonal matrix.  @dfn{det} will use an efficient straightforward calculation
 when given a diagonal matrix, as well as @dfn{cond}.
 The following mapper functions can be applied to a diagonal matrix
 without converting it to a full one:
-@dfn{abs}, @dfn{real}, @dfn{imag}, @dfn{conj}, @dfn{sqrt}. 
+@dfn{abs}, @dfn{real}, @dfn{imag}, @dfn{conj}, @dfn{sqrt}.
 A diagonal matrix can also be returned from the @dfn{balance}
 and @dfn{svd} functions.
 The @dfn{sparse} function will convert a diagonal matrix efficiently to a
@@ -464,7 +513,8 @@ in earlier versions of Octave, but slowly.
 
 @noindent
 Finally, here's how to solve a linear system @code{A*x = b}
-with Tikhonov regularization (ridge regression) using SVD (a skeleton only):
+with @nospell{Tikhonov} regularization (ridge regression) using SVD (a skeleton
+only):
 
 @example
 @group
@@ -491,23 +541,20 @@ Making diagonal and permutation matrices special matrix objects in their own
 right and the consequent usage of smarter algorithms for certain operations
 implies, as a side effect, small differences in treating zeros.
 The contents of this section apply also to sparse matrices, discussed in
-the following chapter. (@pxref{Sparse Matrices})
+the following chapter.  (@pxref{Sparse Matrices})
 
-The IEEE floating point standard defines the result of the expressions @code{0*Inf} and 
-@code{0*NaN} as @code{NaN}. This is widely agreed to be a good
-compromise.
-Numerical software dealing with structured and sparse matrices (including
-Octave) however, almost always makes a distinction between a "numerical zero"
-and an "assumed zero". 
-A "numerical zero" is a zero value occurring in a place where any floating-point
-value could occur.  It is normally stored somewhere in memory as an explicit
-value. 
-An "assumed zero", on the contrary, is a zero matrix element implied by the
-matrix structure (diagonal, triangular) or a sparsity pattern; its value is
-usually not stored explicitly anywhere, but is implied by the underlying
-data structure.
+The IEEE floating point standard defines the result of the expressions
+@code{0*Inf} and @code{0*NaN} as @code{NaN}.  This is widely agreed to be a
+good compromise.  Numerical software dealing with structured and sparse matrices
+(including Octave) however, almost always makes a distinction between a
+"numerical zero" and an "assumed zero".  A "numerical zero" is a zero value
+occurring in a place where any floating-point value could occur.  It is
+normally stored somewhere in memory as an explicit value.  An "assumed zero", on
+the contrary, is a zero matrix element implied by the matrix structure
+(diagonal, triangular) or a sparsity pattern; its value is usually not stored
+explicitly anywhere, but is implied by the underlying data structure.
 
-The primary distinction is that an assumed zero, when multiplied 
+The primary distinction is that an assumed zero, when multiplied
 by any number, or divided by any nonzero number,
 yields *always* a zero, even when, e.g., multiplied by @code{Inf}
 or divided by @code{NaN}.

@@ -1,4 +1,4 @@
-## Copyright (C) 2013 John Donoghue
+## Copyright (C) 2013-2015 John Donoghue
 ##
 ## This file is part of Octave.
 ##
@@ -17,7 +17,7 @@
 ## <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Command} {} preferences 
+## @deftypefn {Command} {} preferences
 ## Display the GUI preferences dialog window for Octave.
 ## @end deftypefn
 

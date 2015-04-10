@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2013 David Bateman
+## Copyright (C) 2007-2015 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -74,7 +74,7 @@ function interpimages (nm, typ)
     legend ("spline", "pchip");
     print ([nm "." typ], d_typ);
   endif
-  hide_output ();  
+  hide_output ();
 endfunction
 
 function set_print_size ()

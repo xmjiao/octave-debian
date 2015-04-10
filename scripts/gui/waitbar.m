@@ -1,4 +1,4 @@
-## Copyright (C) 2012-2013 John W. Eaton
+## Copyright (C) 2012-2015 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -29,7 +29,7 @@
 ## [0, 1].  The optional message @var{msg} is centered and displayed above the
 ## waitbar.  The appearance of the waitbar figure window can be configured by
 ## passing property/value pairs to the function.
-## 
+##
 ## When called with a single input the current waitbar, if it exists, is
 ## updated to the new value @var{frac}.  If there are multiple outstanding
 ## waitbars they can be updated individually by passing the handle @var{hwbar}
@@ -95,7 +95,7 @@ function h = waitbar (varargin)
       curr_msg = get (th, "string");
       ## graphics handles always store data as column vectors
       if (iscellstr (msg))
-        msg = msg(:);  
+        msg = msg(:);
       endif
       cmp = strcmp (msg, curr_msg);
       if (! all (cmp(:)))
@@ -106,7 +106,8 @@ function h = waitbar (varargin)
     ## Save and restore current figure
     cf = get (0, "currentfigure");
 
-    hf = figure ("position", [250, 500, 400, 100],
+    hf = figure ("units", "pixels",
+                 "position", [250, 500, 400, 100],
                  "numbertitle", "off",
                  "menubar", "none", "toolbar", "none",
                  "integerhandle", "off",
@@ -189,7 +190,7 @@ endfunction
 %! close (h1);
 %! close (h2);
 
-%% Test input validation
+## Test input validation
 %!error <FRAC must be between 0 and 1> waitbar (-0.5)
 %!error <FRAC must be between 0 and 1> waitbar (1.5)
 %!error <MSG must be a character string> waitbar (0.5, struct ())

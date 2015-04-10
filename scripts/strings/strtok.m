@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2013 Paul Kienzle
+## Copyright (C) 2000-2015 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -20,7 +20,7 @@
 ## @deftypefn  {Function File} {[@var{tok}, @var{rem}] =} strtok (@var{str})
 ## @deftypefnx {Function File} {[@var{tok}, @var{rem}] =} strtok (@var{str}, @var{delim})
 ##
-## Find all characters in the string @var{str} up to, but not including, the 
+## Find all characters in the string @var{str} up to, but not including, the
 ## first character which is in the string @var{delim}.  If @var{rem} is
 ## requested, it contains the remainder of the string, starting at the first
 ## delimiter.  Leading delimiters are ignored.  If @var{delim} is not
@@ -68,7 +68,7 @@ function [tok, rem] = strtok (str, delim)
     elseif (length (delim) <= 7)
       ## Build index of delimiters incrementally for low N.
       idx = str == delim(1);
-      for i = 2:length (delim) 
+      for i = 2:length (delim)
         idx |= str == delim(i);
       endfor
     else
@@ -90,12 +90,12 @@ function [tok, rem] = strtok (str, delim)
       tok = str;
       rem = "";
     elseif (idx_dlim > idx_nodlim)
-      ## Normal case.  No leading delimiters and at least 1 delimiter in STR. 
+      ## Normal case.  No leading delimiters and at least 1 delimiter in STR.
       tok = str(1:idx_dlim-1);
       rem = str(idx_dlim:end);
     else
       ## Leading delimiter found.
-      idx_dlim = find (idx(idx_nodlim+1:end), 1); 
+      idx_dlim = find (idx(idx_nodlim+1:end), 1);
       if (isempty (idx_dlim))
         ## No further delimiters.  Return STR stripped of delimiter prefix.
         tok = str(idx_nodlim:end);
@@ -152,7 +152,7 @@ endfunction
 %! % a variety of delimiters.  Tokens and delimiters are
 %! % printed one after another in angle brackets.
 
-%% Test the tokens for all cases
+## Test the tokens for all cases
 %!assert (strtok (""), "");             # no string
 %!assert (strtok ("this"), "this");     # no delimiter in string
 %!assert (strtok ("this "), "this");    # delimiter at end
@@ -161,7 +161,7 @@ endfunction
 %!assert (strtok (" this "), "this");   # delimiter at start and end
 %!assert (strtok (" "), ""(1:0));       # delimiter only
 
-%% Test the remainder for all cases
+## Test the remainder for all cases
 %!test [t,r] = strtok (""); assert (r, "");
 %!test [t,r] = strtok ("this"); assert (r, "");
 %!test [t,r] = strtok ("this "); assert (r, " ");
@@ -170,7 +170,7 @@ endfunction
 %!test [t,r] = strtok (" this "); assert (r, " ");
 %!test [t,r] = strtok (" "); assert (r, "");
 
-%% Test all tokens and remainders with cell array input
+## Test all tokens and remainders with cell array input
 %!test
 %! str = {"", "this", "this ", "this is", " this", " this ", " "};
 %! [t, r] = strtok (str);
@@ -189,12 +189,12 @@ endfunction
 %! assert (t{7}, "");
 %! assert (r{7}, "");
 
-%% Simple check for 2, 3, and 4 delimeters
+## Simple check for 2, 3, and 4 delimeters
 %!assert (strtok ("this is", "i "), "th")
 %!assert (strtok ("this is", "ij "), "th")
 %!assert (strtok ("this is", "ijk "), "th")
 
-%% Test all cases for 8 delimiters since a different
+## Test all cases for 8 delimiters since a different
 %!# algorithm is used when more than 7 delimiters
 %!assert (strtok ("","jklmnop "), "")
 %!assert (strtok ("this","jklmnop "), "this")
@@ -204,11 +204,11 @@ endfunction
 %!assert (strtok (" this ","jklmnop "), "this")
 %!assert (strtok (" ","jklmnop "), ""(1:0))
 
-%% Test 'bad' string orientations
+## Test 'bad' string orientations
 %!assert (strtok (" this ".'), "this".');   # delimiter at start and end
 %!assert (strtok (" this ".',"jkl "), "this".');
 
-%% Test with TAB, LF, VT, FF, and CR
+## Test with TAB, LF, VT, FF, and CR
 %!test
 %! for ch = "\t\n\v\f\r"
 %!   [t, r] = strtok (["beg", ch, "end"]);
@@ -216,7 +216,7 @@ endfunction
 %!   assert (r, [ch, "end"]);
 %! endfor
 
-%% Test input validation
+## Test input validation
 %!error strtok ()
 %!error strtok ("a", "b", "c")
 %!error <STR must be a string> strtok (1, "b")

@@ -80,7 +80,7 @@ In this case, <code><var>DD</var> = eye(n)(:,<var>P</var>) * diag (<var>D</var>)
 </p>
 <p>If four output values are requested, compute <code><var>AA</var> =
 <var>CC</var>*<var>A</var>*<var>DD</var></code> and <code><var>BB</var> = <var>CC</var>*<var>B</var>*<var>DD</var></code>,
-in which <var>AA</var> and <var>BB</var> have non-zero elements of approximately the
+in which <var>AA</var> and <var>BB</var> have nonzero elements of approximately the
 same magnitude and <var>CC</var> and <var>DD</var> are permuted diagonal matrices as
 in <var>DD</var> for the algebraic eigenvalue problem.
 </p>
@@ -100,6 +100,24 @@ in <var>DD</var> for the algebraic eigenvalue problem.
 </p>
 <p>Generalized eigenvalue problem balancing uses Ward&rsquo;s algorithm
 (SIAM Journal on Scientific and Statistical Computing, 1981).
+</p></dd></dl>
+
+
+<a name="XREFbandwidth"></a><dl>
+<dt><a name="index-bandwidth"></a>Function File: <em><var>bw</var> =</em> <strong>bandwidth</strong> <em>(<var>A</var>, <var>type</var>)</em></dt>
+<dt><a name="index-bandwidth-1"></a>Function File: <em>[<var>lower</var>, <var>upper</var>] =</em> <strong>bandwidth</strong> <em>(<var>A</var>)</em></dt>
+<dd><p>Compute the bandwidth of <var>A</var>.
+</p>
+<p>The <var>type</var> argument is the string <code>&quot;lower&quot;</code> for the lower
+bandwidth and <code>&quot;upper&quot;</code> for the upper bandwidth.
+If no <var>type</var> is specified return both the lower and upper bandwidth
+of <var>A</var>.
+</p>
+<p>The lower/upper bandwidth of a matrix is the number of
+subdiagonals/superdiagonals with nonzero entries.
+</p>
+
+<p><strong>See also:</strong> <a href="Predicates-for-Numeric-Objects.html#XREFisbanded">isbanded</a>, <a href="Predicates-for-Numeric-Objects.html#XREFisdiag">isdiag</a>, <a href="Predicates-for-Numeric-Objects.html#XREFistril">istril</a>, <a href="Predicates-for-Numeric-Objects.html#XREFistriu">istriu</a>.
 </p></dd></dl>
 
 
@@ -164,11 +182,22 @@ matrices, if they are real or complex and if they are symmetric
 
 
 <a name="XREFgivens"></a><dl>
-<dt><a name="index-givens"></a>Built-in Function: <em><var>g</var> =</em> <strong>givens</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
+<dt><a name="index-givens"></a>Built-in Function: <em><var>G</var> =</em> <strong>givens</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
 <dt><a name="index-givens-1"></a>Built-in Function: <em>[<var>c</var>, <var>s</var>] =</em> <strong>givens</strong> <em>(<var>x</var>, <var>y</var>)</em></dt>
-<dd><p>Return a 2 by 2 orthogonal matrix
-<code><var>g</var> = [<var>c</var> <var>s</var>; -<var>s</var>' <var>c</var>]</code> such that
-<code><var>g</var> [<var>x</var>; <var>y</var>] = [*; 0]</code> with <var>x</var> and <var>y</var> scalars.
+<dd><p>Compute the Givens rotation matrix <var>G</var>.
+</p>
+<p>The Givens matrix is a 2 by 2 orthogonal matrix
+</p>
+<p><code><var>g</var> = [<var>c</var> <var>s</var>; -<var>s</var>' <var>c</var>]</code>
+</p>
+<p>such that
+</p>
+<p><code><var>g</var> [<var>x</var>; <var>y</var>] = [*; 0]</code>
+</p>
+<p>with <var>x</var> and <var>y</var> scalars.
+</p>
+<p>If two output arguments are requested, return the factors <var>c</var> and
+<var>s</var> rather than the Givens rotation matrix.
 </p>
 <p>For example:
 </p>
@@ -177,12 +206,14 @@ matrices, if they are real or complex and if they are symmetric
    &rArr;   0.70711   0.70711
        -0.70711   0.70711
 </pre></div>
-</dd></dl>
+
+<p><strong>See also:</strong> <a href="#XREFplanerot">planerot</a>.
+</p></dd></dl>
 
 
 <a name="XREFplanerot"></a><dl>
-<dt><a name="index-planerot"></a>Function File: <em>[<var>g</var>, <var>y</var>] =</em> <strong>planerot</strong> <em>(<var>x</var>)</em></dt>
-<dd><p>Given a two-element column vector, returns the
+<dt><a name="index-planerot"></a>Function File: <em>[<var>G</var>, <var>y</var>] =</em> <strong>planerot</strong> <em>(<var>x</var>)</em></dt>
+<dd><p>Given a two-element column vector, return the
 2 by 2 orthogonal matrix
 <var>G</var> such that
 <code><var>y</var> = <var>g</var> * <var>x</var></code> and <code><var>y</var>(2) = 0</code>.

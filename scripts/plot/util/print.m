@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2013 David Bateman
+## Copyright (C) 2008-2015 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -103,18 +103,29 @@
 ##     Encapsulated PostScript (level 1 and 2, mono and color).  The FLTK
 ## graphic toolkit generates PostScript level 3.0.
 ##
-##   @item  tex
+##   @item  pslatex
 ##   @itemx epslatex
-##   @itemx epslatexstandalone
-##   @itemx pstex
-##   @itemx pslatex
 ##   @itemx pdflatex
-##     Generate a @LaTeX{} (or @TeX{}) file for labels and eps/ps/pdf
-## for graphics.  The file produced by @code{epslatexstandalone} can be
-## processed directly by @LaTeX{}.  The other formats are intended to
-## be included in a @LaTeX{} (or @TeX{}) document.  The @code{tex} device
-## is the same as the @code{epslatex} device.  The @code{pdflatex} device
-## is only available for the FLTK graphics toolkit.
+##   @itemx pslatexstandalone
+##   @itemx epslatexstandalone
+##   @itemx pdflatexstandalone
+##     Generate a @LaTeX{} file @file{@var{filename}.tex} for the text
+## portions of a plot and a file @file{@var{filename}.(ps|eps|pdf)} for the
+## remaining graphics.  The graphics file suffix .ps|eps|pdf is determined
+## by the specified device type.  The @LaTeX{} file produced by the
+## @samp{standalone} option can be processed directly by @LaTeX{}.  The file
+## generated without the @samp{standalone} option is intended to be included
+## from another @LaTeX{} document.  In either case, the @LaTeX{} file
+## contains an @code{\includegraphics} command so that the generated graphics
+## file is automatically included when the @LaTeX{} file is processed.  The
+## text that is written to the @LaTeX{} file contains the strings
+## @strong{exactly} as they were specified in the plot.  If any special
+## characters of the @TeX{} mode interpreter were used, the file must be
+## edited before @LaTeX{} processing.  Specifically, the special characters
+## must be enclosed with dollar signs (@code{$ @dots{} $}), and other
+## characters that are recognized by @LaTeX{} may also need editing (.e.g.,
+## braces).  The @samp{pdflatex} device, and any of the @samp{standalone}
+## formats, are not available with the Gnuplot toolkit.
 ##
 ##   @item tikz
 ##     Generate a @LaTeX{} file using PGF/TikZ@.  For the FLTK toolkit
@@ -175,29 +186,17 @@
 ## Some examples are;
 ##
 ##   @table @code
+##   @item pdfwrite
+##     Produces pdf output from eps
+##
 ##   @item ljet2p
 ##     HP LaserJet @nospell{IIP}
-##
-##   @item ljet3
-##     HP LaserJet III
-##
-##   @item deskjet
-##     HP DeskJet and DeskJet Plus
-##
-##   @item cdj550
-##     HP DeskJet 550C
-##
-##   @item paintjet
-##     HP PointJet
 ##
 ##   @item pcx24b
 ##     24-bit color PCX file format
 ##
 ##   @item ppm
 ##     Portable Pixel Map file format
-##
-##   @item pdfwrite
-##     Produces pdf output from eps
 ##   @end table
 ##
 ##   For a complete list, type @code{system ("gs -h")} to see what formats
@@ -227,7 +226,7 @@
 ##   @item -interchange
 ##     Provide an interchange preview.
 ##
-##   @item -metalfile
+##   @item -metafile
 ##     Provide a metafile preview.
 ##
 ##   @item -pict
@@ -254,28 +253,38 @@
 ##
 ## The filename and options can be given in any order.
 ##
-## Example: Print to a file using the svg device.
+## Example: Print to a file using the pdf device.
 ##
 ## @example
 ## @group
 ## figure (1);
 ## clf ();
 ## surf (peaks);
-## print -dsvg figure1.svg
+## print figure1.pdf
 ## @end group
 ## @end example
 ##
-## Example: Print to an HP DeskJet 550C.
+## Example: Print to a file using jpg device.
 ##
 ## @example
 ## @group
 ## clf ();
 ## surf (peaks);
-## print -dcdj550
+## print -djpg figure2.jpg
 ## @end group
 ## @end example
 ##
-## @seealso{saveas, orient, figure}
+## Example: Print to printer named PS_printer using ps format.
+##
+## @example
+## @group
+## clf ();
+## surf (peaks);
+## print -dpswrite -PPS_printer
+## @end group
+## @end example
+##
+## @seealso{saveas, hgsave, orient, figure}
 ## @end deftypefn
 
 function print (varargin)
@@ -288,7 +297,7 @@ function print (varargin)
   opts.lpr_cmd = @lpr;
   opts.epstool_cmd = @epstool;
 
-  if (! isfigure (opts.figure))
+  if (isempty (opts.figure) || ! isfigure (opts.figure))
     error ("print: no figure to print");
   endif
 
@@ -297,7 +306,7 @@ function print (varargin)
 
   if (opts.append_to_file)
     [~, ~, ext] = fileparts (opts.ghostscript.output);
-    opts.ghostscript.prepend = strcat (tmpnam (), ext);
+    opts.ghostscript.prepend = [tempname() ext];
     copyfile (opts.ghostscript.output, opts.ghostscript.prepend);
   endif
 
@@ -414,12 +423,12 @@ function print (varargin)
       endif
     endif
 
-    ## call the graphcis toolkit print script
+    ## call the graphics toolkit print script
     switch (get (opts.figure, "__graphics_toolkit__"))
       case "gnuplot"
         opts = __gnuplot_print__ (opts);
       otherwise
-        opts = __fltk_print__ (opts);
+        opts = __opengl_print__ (opts);
     endswitch
 
   unwind_protect_cleanup
@@ -464,6 +473,17 @@ function cmd = epstool (opts, filein, fileout)
   ## Unix Shell;
   ##   cat > <filein> ; epstool -bbox -preview-tiff <filein> <fileout> ; rm <filein>
 
+  ## HACK: Keep track of whether ghostscript supports epswrite or eps2write.
+  persistent epsdevice;
+  if (isempty (epsdevice))
+    [status, devlist] = system (sprintf ("%s -h", opts.ghostscript.binary));
+    if (isempty (strfind (devlist, "eps2write")))
+      epsdevice = "epswrite";
+    else
+      epsdevice = "eps2write";
+    endif
+  endif
+
   dos_shell = (ispc () && ! isunix ());
 
   cleanup = "";
@@ -475,7 +495,7 @@ function cmd = epstool (opts, filein, fileout)
 
   if (nargin < 2 || strcmp (filein, "-") || isempty (filein))
     pipein = true;
-    filein = strcat (tmpnam (), ".eps");
+    filein = [tempname() ".eps"];
     if (dos_shell)
       cleanup = sprintf ("& del %s ", strrep (filein, '/', '\'));
     else
@@ -487,11 +507,11 @@ function cmd = epstool (opts, filein, fileout)
   endif
   if (strcmp (fileout, "-"))
     pipeout = true;
-    fileout = strcat (tmpnam (), ".eps");
+    fileout = [tempname() ".eps"];
     if (dos_shell)
-      cleanup = horzcat (cleanup, sprintf ("& del %s ", strrep (fileout, '/', '\')));
+      cleanup = [cleanup, sprintf("& del %s ", strrep (fileout, '/', '\'))];
     else
-      cleanup = horzcat (cleanup, sprintf ("; rm %s ", fileout));
+      cleanup = [cleanup, sprintf("; rm %s ", fileout)];
     endif
   else
     pipeout = false;
@@ -522,7 +542,7 @@ function cmd = epstool (opts, filein, fileout)
                    opts.preview);
         endswitch
         if (! isempty (opts.ghostscript.resolution))
-          cmd = sprintf ("%s --dpi %d", cmd, opts.ghostscript.resolution);
+          cmd = sprintf ("%s --dpi %d", cmd, fix (opts.ghostscript.resolution));
         endif
       else
         cmd = "";
@@ -535,7 +555,7 @@ function cmd = epstool (opts, filein, fileout)
         if (dos_shell)
           filein(filein=="'") = "\"";
           gs_cmd = __ghostscript__ ("binary", opts.ghostscript.binary,
-                                    "device", "epswrite",
+                                    "device", epsdevice,
                                     "source", "-",
                                     "output", filein);
           cmd = sprintf ("%s %s & %s", gs_cmd, filein, cmd);
@@ -567,7 +587,7 @@ function cmd = epstool (opts, filein, fileout)
     if (pipein && pipeout)
       if (dos_shell)
         cmd = __ghostscript__ ("binary", opts.ghostscript.binary,
-                               "device", "epswrite",
+                               "device", epsdevice,
                                "source", "-",
                                "output", "-");
       else
@@ -578,7 +598,7 @@ function cmd = epstool (opts, filein, fileout)
         ## ghostscript expects double, not single, quotes
         fileout(fileout=="'") = "\"";
         cmd = __ghostscript__ ("binary", opts.ghostscript.binary,
-                               "device", "epswrite",
+                               "device", epsdevice,
                                "source", "-",
                                "output", fileout);
       else
@@ -605,12 +625,12 @@ endfunction
 
 function cmd = fig2dev (opts, devopt)
   if (nargin < 2)
-    devopt =  opts.devopt;
+    devopt = opts.devopt;
   endif
   dos_shell = (ispc () && ! isunix ());
   if (! isempty (opts.fig2dev_binary))
     if (dos_shell)
-      ## FIXME - is this the right thing to do for DOS?
+      ## FIXME: Is this the right thing to do for DOS?
       cmd = sprintf ("%s -L %s 2> NUL", opts.fig2dev_binary, devopt);
     else
       cmd = sprintf ("%s -L %s 2> /dev/null", opts.fig2dev_binary, devopt);
@@ -641,7 +661,7 @@ function latex_standalone (opts)
       graphicsfile = strcat (opts.name, "-inc.eps");
   endswitch
   papersize = sprintf ("\\usepackage[papersize={%.2fbp,%.2fbp},text={%.2fbp,%.2fbp}]{geometry}",
-                       opts.canvas_size, opts.canvas_size);
+                       fix (opts.canvas_size), fix (opts.canvas_size));
   prepend = {"\\documentclass{minimal}";
              packages;
              papersize;
@@ -681,7 +701,7 @@ endfunction
 
 function cmd = lpr (opts)
   if (nargin < 2)
-    devopt =  opts.devopt;
+    devopt = opts.devopt;
   endif
   if (! isempty (opts.lpr_binary))
     cmd = opts.lpr_binary;
@@ -689,7 +709,7 @@ function cmd = lpr (opts)
       cmd = sprintf ("%s %s", cmd, opts.lpr_options);
     endif
     if (! isempty (opts.printer))
-      cmd = sprintf ("%s -P %s", cmd, opts.printer);
+      cmd = sprintf ("%s %s", cmd, opts.printer);
     endif
   elseif (isempty (opts.lpr_binary))
     error ("print:nolpr", "print.m: 'lpr' not found in PATH");
@@ -701,14 +721,14 @@ endfunction
 
 function cmd = pstoedit (opts, devopt)
   if (nargin < 2)
-    devopt =  opts.devopt;
+    devopt = opts.devopt;
   endif
   dos_shell = (ispc () && ! isunix ());
   if (! isempty (opts.pstoedit_binary))
     if (dos_shell)
       cmd = sprintf ("%s -f %s 2> NUL", opts.pstoedit_binary, devopt);
     else
-      ## FIXME - is this the right thing to do for DOS?
+      ## FIXME: Is this the right thing to do for DOS?
       cmd = sprintf ("%s -f %s 2> /dev/null", opts.pstoedit_binary, devopt);
     endif
   elseif (isempty (opts.pstoedit_binary))

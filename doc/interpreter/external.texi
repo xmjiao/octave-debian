@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 2007-2013 John W. Eaton and David Bateman
+@c Copyright (C) 2007-2015 John W. Eaton and David Bateman
 @c Copyright (C) 2007 Paul Thomas and Christoph Spiel
 @c
 @c This file is part of Octave.
@@ -9,12 +9,12 @@
 @c under the terms of the GNU General Public License as published by the
 @c Free Software Foundation; either version 3 of the License, or (at
 @c your option) any later version.
-@c 
+@c
 @c Octave is distributed in the hope that it will be useful, but WITHOUT
 @c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 @c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 @c for more details.
-@c 
+@c
 @c You should have received a copy of the GNU General Public License
 @c along with Octave; see the file COPYING.  If not, see
 @c <http://www.gnu.org/licenses/>.
@@ -131,7 +131,7 @@ bridge to hardware resources which often have device drivers written in C.
 * Input Parameter Checking in Oct-Files::
 * Exception and Error Handling in Oct-Files::
 * Documentation and Test of Oct-Files::
-@c * Application Programming Interface for Oct-Files::  
+@c * Application Programming Interface for Oct-Files::
 @end menu
 
 @node Getting Started with Oct-Files
@@ -299,7 +299,7 @@ DEFUN_DLD (helloworld, args, nargout,
 @end group
 @end example
 
-The first critical line is @code{#include <octave/oct.h>} which 
+The first critical line is @code{#include <octave/oct.h>} which
 makes available most of the definitions necessary for a C++ oct-file.
 Note that @file{octave/oct.h} is a C++ header and cannot be directly
 @code{#include}'ed in a C source file, nor any other language.
@@ -856,7 +856,7 @@ more similar to Octave's @code{Matrix} class than its @code{NDArray} class.
 @subsubsection Array and Sparse Class Differences
 
 The number of elements in a sparse matrix is considered to be the number
-of non-zero elements rather than the product of the dimensions.  Therefore
+of nonzero elements rather than the product of the dimensions.  Therefore
 
 @example
 @group
@@ -867,13 +867,13 @@ int nel = sm.nelem ();
 @end example
 
 @noindent
-returns the number of non-zero elements.  If the user really requires the
-number of elements in the matrix, including the non-zero elements, they
+returns the number of nonzero elements.  If the user really requires the
+number of elements in the matrix, including the nonzero elements, they
 should use @code{numel} rather than @code{nelem}.  Note that for very
 large matrices, where the product of the two dimensions is larger than
 the representation of an unsigned int, then @code{numel} can overflow.
 An example is @code{speye (1e6)} which will create a matrix with a million
-rows and columns, but only a million non-zero elements.  Therefore the
+rows and columns, but only a million nonzero elements.  Therefore the
 number of rows by the number of columns in this case is more than two
 hundred times the maximum value that can be represented by an unsigned int.
 The use of @code{numel} should therefore be avoided useless it is known
@@ -974,7 +974,7 @@ extremely memory constrained problems this may not be the best
 technique for creating a sparse matrix.
 
 The alternative is to first create a sparse matrix with the desired
-number of non-zero elements and then later fill those elements in.
+number of nonzero elements and then later fill those elements in.
 Sample code:
 
 @example
@@ -1006,7 +1006,7 @@ sm(0,0) = 1; sm(0,1) = 2; sm(1,3) = 3; sm(2,3) = 4;
 @end group
 @end example
 
-@noindent 
+@noindent
 is perfectly valid.  However, it is a very bad idea because as each new
 element is added to the sparse matrix the matrix needs to request more
 space and reallocate memory.  This is an expensive operation, that will
@@ -1015,8 +1015,8 @@ it is possible to create a sparse matrix with too much storage, so having
 @var{nz} greater than 4 is also valid.  The disadvantage is that the matrix
 occupies more memory than strictly needed.
 
-It is not always possible to know the number of non-zero elements prior
-to filling a matrix.  For this reason the additional unused storage of 
+It is not always possible to know the number of nonzero elements prior
+to filling a matrix.  For this reason the additional unused storage of
 a sparse matrix can be removed after its creation with the
 @code{maybe_compress} function.  In addition, @code{maybe_compress} can
 deallocate the unused storage, but it can also remove zero elements
@@ -1117,7 +1117,7 @@ for (int j = 1; j < nc; j++)
 sm.maybe_mutate ();  // If don't know a priori the final # of nz.
 @end example
 
-Note that both increasing and decreasing the number of non-zero elements in
+Note that both increasing and decreasing the number of nonzero elements in
 a sparse matrix is expensive as it involves memory reallocation.  Also as
 parts of the matrix, though not its entirety, exist as old and new copies
 at the same time, additional memory is needed.  Therefore, if possible this
@@ -1137,7 +1137,7 @@ following example.
 octave_value_list retval;
 
 SparseMatrix sm = args(0).sparse_matrix_value ();
-SparseComplexMatrix scm = 
+SparseComplexMatrix scm =
     args(1).sparse_complex_matrix_value ();
 SparseBoolMatrix sbm = args(2).sparse_bool_matrix_value ();
 @dots{}
@@ -1481,7 +1481,7 @@ It is quite important that each and every function have a sufficient level
 of parameter checking to ensure that Octave behaves well.
 
 The minimum requirement, as previously discussed, is to check the number
-of input arguments before using them to avoid referencing a non-existent
+of input arguments before using them to avoid referencing a nonexistent
 argument.  However, in some cases this might not be sufficient as the
 underlying code imposes further constraints.  For example, an external
 function call might be undefined if the input arguments are not
@@ -1610,6 +1610,12 @@ my_err_handler (const char *fmt, ...)
   // Do nothing!!
 }
 
+void
+my_err_with_id_handler (const char *id, const char *fmt, ...)
+{
+  // Do nothing!!
+}
+
 DEFUN_DLD (unwinddemo, args, nargout, "Unwind Demo")
 {
   octave_value retval;
@@ -1627,12 +1633,19 @@ DEFUN_DLD (unwinddemo, args, nargout, "Unwind Demo")
           // Declare unwind_protect frame which lasts as long as
           // the variable frame has scope.
           unwind_protect frame;
-          frame.protect_var (current_liboctave_warning_handler);
+          frame.add_fcn (set_liboctave_warning_handler,
+                         current_liboctave_warning_handler);
+
+          frame.add_fcn (set_liboctave_warning_with_id_handler,
+                         current_liboctave_warning_with_id_handler);
 
           set_liboctave_warning_handler (my_err_handler);
+          set_liboctave_warning_with_id_handler (my_err_with_id_handler);
+
           retval = octave_value (quotient (a, b));
         }
     }
+
   return retval;
 }
 @end verbatim
@@ -1670,7 +1683,7 @@ common is illustrated in the following example,
 
 @example
 @group
-DEFUN_DLD (do_what_i_want, args, nargout, 
+DEFUN_DLD (do_what_i_want, args, nargout,
   "-*- texinfo -*-\n\
 @@deftypefn @{Function File@} @{@} do_what_i_say (@@var@{n@})\n\
 A function that does what the user actually wants rather\n\
@@ -1712,7 +1725,7 @@ from the compiled code.  An example in an oct-file might be
 
 @c @node Application Programming Interface for Oct-Files
 @c @subsection Application Programming Interface for Oct-Files
-@c 
+@c
 @c WRITE ME, using Coda section 1.3 as a starting point.
 
 @node Mex-Files
@@ -1739,7 +1752,7 @@ be written with the oct-file interface previously discussed.
 * Structures with Mex-Files::
 * Sparse Matrices with Mex-Files::
 * Calling Other Functions in Mex-Files::
-@c * Application Programming Interface for Mex-Files::  
+@c * Application Programming Interface for Mex-Files::
 @end menu
 
 @node Getting Started with Mex-Files
@@ -1755,8 +1768,9 @@ Compiled mex-files have the extension @file{.mex}.
 @anchor{XREFmex}
 @deftypefn {Command} {} mex [options] file @dots{}
 Compile source code written in C, C++, or Fortran, to a MEX file.
+
 This is equivalent to @code{mkoctfile --mex [options] file}.
-@seealso{@ref{XREFmkoctfile,,mkoctfile}}
+@seealso{@ref{XREFmkoctfile,,mkoctfile}, @ref{XREFmexext,,mexext}}
 @end deftypefn
 
 
@@ -2151,11 +2165,11 @@ dimensional matrix, or @code{mxCreateStructArray}.
 
 @example
 @group
-mxArray *mxCreateStructArray (int ndims, int *dims, 
-                              int num_keys, 
+mxArray *mxCreateStructArray (int ndims, int *dims,
+                              int num_keys,
                               const char **keys);
-mxArray *mxCreateStructMatrix (int rows, int cols, 
-                               int num_keys, 
+mxArray *mxCreateStructMatrix (int rows, int cols,
+                               int num_keys,
                                const char **keys);
 @end group
 @end example
@@ -2168,11 +2182,11 @@ Accessing the fields of the structure can then be performed with
 @group
 mxArray *mxGetField (const mxArray *ptr, mwIndex index,
                      const char *key);
-mxArray *mxGetFieldByNumber (const mxArray *ptr, 
+mxArray *mxGetFieldByNumber (const mxArray *ptr,
                              mwIndex index, int key_num);
-void mxSetField (mxArray *ptr, mwIndex index, 
+void mxSetField (mxArray *ptr, mwIndex index,
                  const char *key, mxArray *val);
-void mxSetFieldByNumber (mxArray *ptr, mwIndex index, 
+void mxSetFieldByNumber (mxArray *ptr, mwIndex index,
                          int key_num, mxArray *val);
 @end group
 @end example
@@ -2231,7 +2245,8 @@ mexFunction (int nlhs, mxArray* plhs[],
 An example of the behavior of this function within Octave is then
 
 @example
-a(1).f1 = "f11"; a(1).f2 = "f12"; 
+@group
+a(1).f1 = "f11"; a(1).f2 = "f12";
 a(2).f1 = "f21"; a(2).f2 = "f22";
 b = mystruct (a);
 @result{}  field f1(0) = f11
@@ -2249,6 +2264,7 @@ b(3)
 
      this = this3
      that = that3
+@end group
 @end example
 
 @node Sparse Matrices with Mex-Files
@@ -2277,11 +2293,11 @@ void mxSetNzmax (mxArray *ptr, mwSize nzmax);
 
 @noindent
 @code{mxGetNzmax} gets the maximum number of elements that can be stored
-in the sparse matrix.  This is not necessarily the number of non-zero
+in the sparse matrix.  This is not necessarily the number of nonzero
 elements in the sparse matrix.  @code{mxGetJc} returns an array with one
 additional value than the number of columns in the sparse matrix.  The
 difference between consecutive values of the array returned by
-@code{mxGetJc} define the number of non-zero elements in each column of
+@code{mxGetJc} define the number of nonzero elements in each column of
 the sparse matrix.  Therefore,
 
 @example
@@ -2297,10 +2313,10 @@ nz = Jc[n];
 @end example
 
 @noindent
-returns the actual number of non-zero elements stored in the matrix in
+returns the actual number of nonzero elements stored in the matrix in
 @code{nz}.  As the arrays returned by @code{mxGetPr} and @code{mxGetPi}
-only contain the non-zero values of the matrix, we also need a pointer
-to the rows of the non-zero elements, and this is given by
+only contain the nonzero values of the matrix, we also need a pointer
+to the rows of the nonzero elements, and this is given by
 @code{mxGetIr}.  A complete example of the use of sparse matrices in
 mex-files is given by the file @file{mysparse.c} shown below.
 
@@ -2340,7 +2356,7 @@ mexFunction (int nlhs, mxArray *plhs[],
       i = n;
       while (jc[i] == jc[i-1] && i != 0) i--;
 
-      mexPrintf ("last non-zero element (%d, %d) = (%g, %g)\n",
+      mexPrintf ("last nonzero element (%d, %d) = (%g, %g)\n",
                  ir[nz-1]+ 1, i, pr[nz-1], pi[nz-1]);
 
       v = mxCreateSparse (m, n, nz, mxCOMPLEX);
@@ -2373,7 +2389,7 @@ mexFunction (int nlhs, mxArray *plhs[],
 
       i = n;
       while (jc[i] == jc[i-1] && i != 0) i--;
-      mexPrintf ("last non-zero element (%d, %d) = %d\n",
+      mexPrintf ("last nonzero element (%d, %d) = %d\n",
                  ir[nz-1]+ 1, i, pbr[nz-1]);
 
       v = mxCreateSparseLogicalMatrix (m, n, nz);
@@ -2403,7 +2419,7 @@ mexFunction (int nlhs, mxArray *plhs[],
 
       i = n;
       while (jc[i] == jc[i-1] && i != 0) i--;
-      mexPrintf ("last non-zero element (%d, %d) = %g\n",
+      mexPrintf ("last nonzero element (%d, %d) = %g\n",
                  ir[nz-1]+ 1, i, pr[nz-1]);
 
       v = mxCreateSparse (m, n, nz, mxREAL);
@@ -2435,7 +2451,7 @@ sm = sparse ([1, 0; 0, pi]);
 mysparse (sm)
 @result{}
 Matrix is 2-by-2 real sparse matrix with 2 elements
-last non-zero element (2, 2) = 3.14159
+last nonzero element (2, 2) = 3.14159
 @end group
 @end example
 
@@ -2497,7 +2513,7 @@ within a mex-file.
 
 @c @node Application Programming Interface for Mex-Files
 @c @subsection Application Programming Interface for Mex-Files
-@c 
+@c
 @c WRITE ME, refer to mex.h and mexproto.h
 
 @node Standalone Programs
@@ -2610,18 +2626,18 @@ $
 @end group
 @end example
 
-It is worth noting that, if only built-in functions are to be called from 
-a C++ standalone program, then it does not need to initialize the 
-interpreter to do so.  The general rule is that, for a built-in 
+It is worth noting that, if only built-in functions are to be called from
+a C++ standalone program, then it does not need to initialize the
+interpreter to do so.  The general rule is that, for a built-in
 function named @code{function_name} in the interpreter, there will be
-a C++ function named @code{Ffunction_name} (note the prepended capital 
-@code{F}) accessible in the C++ API@.  The declarations for all built-in 
+a C++ function named @code{Ffunction_name} (note the prepended capital
+@code{F}) accessible in the C++ API@.  The declarations for all built-in
 functions are collected in the header file @code{builtin-defun-decls.h}.
 This feature should be used with care as the list of built-in functions can
 change.  No guarantees can be made that a function that is currently built in
 won't be implemented as a .m file or as a dynamically linked function in the
-future.  An example of how to call built-in functions from C++ can be seen in the
-code
+future.  An example of how to call built-in functions from C++ can be seen in
+the code
 
 @example
 @verbatim
@@ -2639,7 +2655,7 @@ main (void)
     for (octave_idx_type j = 0; j < n; j++)
       a_matrix(i,j) = (i + 1) * 10 + (j + 1);
 
-  std::cout << "This is a matrix:" << std::endl 
+  std::cout << "This is a matrix:" << std::endl
             << a_matrix            << std::endl;
 
   octave_value_list in;
@@ -2648,9 +2664,9 @@ main (void)
   octave_value_list out = Fnorm (in, 1);
   double norm_of_the_matrix = out(0).double_value ();
 
-  std::cout << "This is the norm of the matrix:" << std::endl 
+  std::cout << "This is the norm of the matrix:" << std::endl
             << norm_of_the_matrix                << std::endl;
-  
+
   return 0;
 }
 @end verbatim
@@ -2663,7 +2679,7 @@ which, again, is compiled and run as a standalone application with
 @example
 @group
 $ mkoctfile --link-stand-alone standalonebuiltin.cc -o standalonebuiltin
-$ ./standalonebuiltin 
+$ ./standalonebuiltin
 This is a matrix:
  11 12
  21 22

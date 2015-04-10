@@ -1,26 +1,26 @@
 # Makefile for Octave
 #
-# Copyright (C) 1993-2013 John W. Eaton
+# Copyright (C) 1993-2015 John W. Eaton
 #
 # This file is part of Octave.
-# 
+#
 # Octave is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
 # Free Software Foundation; either version 3 of the License, or (at
 # your option) any later version.
-# 
+#
 # Octave is distributed in the hope that it will be useful, but WITHOUT
 # ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 # FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 # for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with Octave; see the file COPYING.  If not, see
 # <http://www.gnu.org/licenses/>.
 
 include build-aux/common.mk
 
-## Avoid making multiple subdirs in parallel which can lead 
+## Avoid making multiple subdirs in parallel which can lead
 ## to a confusing error message stream
 .NOTPARALLEL:
 
@@ -63,7 +63,6 @@ EXTRA_DIST = \
   etc/README.gnuplot \
   etc/README.kpathsea \
   etc/gdbinit \
-  etc/octave.appdata.xml \
   run-octave.in
 
 include m4/module.mk
@@ -129,12 +128,17 @@ all-local: $(noinst_SCRIPTS) $(INFO_FILES) .gdbinit
 check: all
 	$(MAKE) -C test check
 
+if AMCOND_HAVE_LLVM
+check-jit: all
+	$(MAKE) -C test check-jit
+endif
+
 run-octave: run-octave.in Makefile
-	@$(do_subst_script_vals)
+	$(AM_V_GEN)$(do_subst_script_vals) && \
 	chmod a+rx "$@"
 
 bits/stl_algo.h: build-aux/stl_algo.h-fixed
-	$(MKDIR_P) bits
+	$(AM_V_GEN)$(MKDIR_P) bits && \
 	$(INSTALL_HEADER) $< $@
 
 ## If we aren't trying to fix stl_algo.h, then try to ensure that
@@ -149,19 +153,31 @@ nonexistent-file:
 
 if AMCOND_BUILD_DOCS
 AUTHORS BUGS INSTALL.OCTAVE:
-	$(MAKE) -C doc/interpreter ../../$@
+	$(AM_V_GEN)$(MAKE) -C doc/interpreter ../../$@
 endif
 .PHONY: AUTHORS BUGS INSTALL.OCTAVE
 
+define changelog-from-hg-log
+  rm -f $@-t $@ && \
+  ( cd $(srcdir); \
+    hg log --style=build-aux/changelog.tmpl --prune=b0e60ad4ae26 --only-branch=`hg branch`; \
+    echo ""; \
+    echo "See the files in the directory etc/OLD-ChangeLogs for changes before 2011-04-19"; \
+  ) > $@-t && \
+  mv $@-t $@
+endef
+
 ChangeLog:
-	(cd $(srcdir); hg log --style=build-aux/changelog.tmpl --prune=b0e60ad4ae26 --only-branch=`hg branch`; echo ""; echo "See the files in the directory etc/OLD-ChangeLogs for changes before 2011-04-19") > $@.t
-	mv $@.t $@
+	$(AM_V_GEN)$(changelog-from-hg-log)
 .PHONY: ChangeLog
 
 octetc_DATA = \
   CITATION \
-  NEWS \
-  config.log
+  NEWS
+
+if AMCOND_INSTALL_BUILD_LOGS
+octetc_DATA += config.log
+endif
 
 doxyhtml:
 	$(MAKE) -C doc/doxyhtml doxyhtml

@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2013 John W. Eaton
+@c Copyright (C) 1996-2015 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -8,12 +8,12 @@
 @c under the terms of the GNU General Public License as published by the
 @c Free Software Foundation; either version 3 of the License, or (at
 @c your option) any later version.
-@c 
+@c
 @c Octave is distributed in the hope that it will be useful, but WITHOUT
 @c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 @c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 @c for more details.
-@c 
+@c
 @c You should have received a copy of the GNU General Public License
 @c along with Octave; see the file COPYING.  If not, see
 @c <http://www.gnu.org/licenses/>.
@@ -428,7 +428,7 @@ reversed and @var{b} rotated 180 degrees.
 @deftypefnx {Function File} {[@var{h}, @var{w}] =} freqz (@var{b}, @var{a})
 @deftypefnx {Function File} {[@var{h}, @var{w}] =} freqz (@var{b}, @var{a}, @var{n})
 @deftypefnx {Function File} {@var{h} =} freqz (@var{b}, @var{a}, @var{w})
-@deftypefnx {Function File} {[@dots{}] =} freqz (@dots{}, @var{Fs})
+@deftypefnx {Function File} {[@var{h}, @var{w}] =} freqz (@dots{}, @var{Fs})
 @deftypefnx {Function File} {} freqz (@dots{})
 
 Return the complex frequency response @var{h} of the rational IIR filter
@@ -526,7 +526,7 @@ is unspecified it defaults to the first non-singleton dimension.
 @anchor{XREFarch_fit}
 @deftypefn {Function File} {[@var{a}, @var{b}] =} arch_fit (@var{y}, @var{x}, @var{p}, @var{iter}, @var{gamma}, @var{a0}, @var{b0})
 Fit an ARCH regression model to the time series @var{y} using the
-scoring algorithm in Engle's original ARCH paper.  The model is
+scoring algorithm in @nospell{Engle's} original ARCH paper.  The model is
 
 @example
 @group
@@ -668,18 +668,27 @@ in autoregressions.
 Return the filter coefficients of a Bartlett (triangular) window of
 length @var{m}.
 
-For a definition of the Bartlett window, see e.g., A. V. Oppenheim &
-R. W. Schafer, @cite{Discrete-Time Signal Processing}.
+For a definition of the Bartlett window, see e.g.,
+@nospell{A.V. Oppenheim & R. W. Schafer},
+@cite{Discrete-Time Signal Processing}.
 @end deftypefn
 
 
 @c blackman scripts/signal/blackman.m
 @anchor{XREFblackman}
-@deftypefn {Function File} {} blackman (@var{m})
+@deftypefn  {Function File} {} blackman (@var{m})
+@deftypefnx {Function File} {} blackman (@var{m}, "periodic")
+@deftypefnx {Function File} {} blackman (@var{m}, "symmetric")
 Return the filter coefficients of a Blackman window of length @var{m}.
 
-For a definition of the Blackman window, see e.g., A. V. Oppenheim &
-R. W. Schafer, @cite{Discrete-Time Signal Processing}.
+If the optional argument @qcode{"periodic"} is given, the periodic form
+of the window is returned.  This is equivalent to the window of length
+@var{m}+1 with the last coefficient removed.  The optional argument
+@qcode{"symmetric"} is equivalent to not specifying a second argument.
+
+For a definition of the Blackman window, see e.g.,
+@nospell{A.V. Oppenheim & R. W. Schafer},
+@cite{Discrete-Time Signal Processing}.
 @end deftypefn
 
 
@@ -720,7 +729,7 @@ The estimators for all frequencies in the intervals
 described above is returned in @var{dd}.  The value of @var{d} is
 simply the mean of @var{dd}.
 
-Reference: P.J. Brockwell & R.A. Davis. @cite{Time Series:
+Reference: @nospell{P.J. Brockwell & R.A. Davis}. @cite{Time Series:
 Theory and Methods}. Springer 1987.
 @end deftypefn
 
@@ -728,7 +737,7 @@ Theory and Methods}. Springer 1987.
 @c durbinlevinson scripts/signal/durbinlevinson.m
 @anchor{XREFdurbinlevinson}
 @deftypefn {Function File} {} durbinlevinson (@var{c}, @var{oldphi}, @var{oldv})
-Perform one step of the Durbin-Levinson algorithm.
+Perform one step of the @nospell{Durbin-Levinson} algorithm.
 
 The vector @var{c} specifies the autocovariances @code{[gamma_0, @dots{},
 gamma_t]} from lag 0 to @var{t}, @var{oldphi} specifies the
@@ -787,21 +796,37 @@ denotes the lag-operator and @math{d} is greater than -1.
 
 @c hamming scripts/signal/hamming.m
 @anchor{XREFhamming}
-@deftypefn {Function File} {} hamming (@var{m})
+@deftypefn  {Function File} {} hamming (@var{m})
+@deftypefnx {Function File} {} hamming (@var{m}, "periodic")
+@deftypefnx {Function File} {} hamming (@var{m}, "symmetric")
 Return the filter coefficients of a Hamming window of length @var{m}.
 
-For a definition of the Hamming window, see e.g., A. V. Oppenheim &
-R. W. Schafer, @cite{Discrete-Time Signal Processing}.
+If the optional argument @qcode{"periodic"} is given, the periodic form
+of the window is returned.  This is equivalent to the window of length
+@var{m}+1 with the last coefficient removed.  The optional argument
+@qcode{"symmetric"} is equivalent to not specifying a second argument.
+
+For a definition of the Hamming window, see e.g.,
+@nospell{A.V. Oppenheim & R. W. Schafer},
+@cite{Discrete-Time Signal Processing}.
 @end deftypefn
 
 
 @c hanning scripts/signal/hanning.m
 @anchor{XREFhanning}
-@deftypefn {Function File} {} hanning (@var{m})
+@deftypefn  {Function File} {} hanning (@var{m})
+@deftypefnx {Function File} {} hanning (@var{m}, "periodic")
+@deftypefnx {Function File} {} hanning (@var{m}, "symmetric")
 Return the filter coefficients of a Hanning window of length @var{m}.
 
-For a definition of this window type, see e.g., A. V. Oppenheim &
-R. W. Schafer, @cite{Discrete-Time Signal Processing}.
+If the optional argument @qcode{"periodic"} is given, the periodic form
+of the window is returned.  This is equivalent to the window of length
+@var{m}+1 with the last coefficient removed.  The optional argument
+@qcode{"symmetric"} is equivalent to not specifying a second argument.
+
+For a definition of the Hanning window, see e.g.,
+@nospell{A.V. Oppenheim & R. W. Schafer},
+@cite{Discrete-Time Signal Processing}.
 @end deftypefn
 
 
@@ -856,43 +881,60 @@ compatibility.
 
 @c periodogram scripts/signal/periodogram.m
 @anchor{XREFperiodogram}
-@deftypefn {Function File} {[Pxx, @var{w}] =} periodogram (@var{x})
-For a data matrix @var{x} from a sample of size @var{n}, return the
-periodogram.  The angular frequency is returned in @var{w}.
+@deftypefn  {Function File} {[@var{Pxx}, @var{w}] =} periodogram (@var{x})
+@deftypefnx {Function File} {[@var{Pxx}, @var{w}] =} periodogram (@var{x}, @var{win})
+@deftypefnx {Function File} {[@var{Pxx}, @var{w}] =} periodogram (@var{x}, @var{win}, @var{nfft})
+@deftypefnx {Function File} {[@var{Pxx}, @var{f}] =} periodogram (@var{x}, @var{win}, @var{nfft}, @var{Fs})
+@deftypefnx {Function File} {[@var{Pxx}, @var{f}] =} periodogram (@dots{}, "@var{range}")
+@deftypefnx {Function File} {} periodogram (@dots{})
 
-[Pxx,w] = periodogram (@var{x}).
+Return the periodogram (Power Spectral Density) of @var{x}.
 
-[Pxx,w] = periodogram (@var{x},win).
+The possible inputs are:
 
-[Pxx,w] = periodogram (@var{x},win,nfft).
+@table @var
+@item x
 
-[Pxx,f] = periodogram (@var{x},win,nfft,Fs).
+data vector.  If @var{x} is real-valued a one-sided spectrum is estimated.
+If @var{x} is complex-valued, or @qcode{"@var{range}"} specifies
+@qcode{"@nospell{twosided}"}, the full spectrum is estimated.
 
-[Pxx,f] = periodogram (@var{x},win,nfft,Fs,"range").
+@item win
+window weight data.  If window is empty or unspecified a default rectangular
+window is used.  Otherwise, the window is applied to the signal
+(@code{@var{x} .* @var{win}}) before computing the periodogram.  The window
+data must be a vector of the same length as @var{x}.
 
-@itemize
-@item x: data; if real-valued a one-sided spectrum is estimated,
-if complex-valued or range indicates @qcode{"@nospell{twosided}"}, the full
-spectrum is estimated.
+@item nfft
+number of frequency bins.  The default is 256 or the next higher power of
+2 greater than the length of @var{x}
+(@code{max (256, 2.^nextpow2 (length (x)))}).  If @var{nfft} is greater
+than the length of the input then @var{x} will be zero-padded to the length
+of @var{nfft}.
 
-@item win: weight data with window, x.*win is used for further computation,
-if window is empty, a rectangular window is used.
+@item Fs
+sampling rate.  The default is 1.
 
-@item nfft: number of frequency bins, default max (256, 2.^ceil (log2 (length (x)))).
+@item range
+range of spectrum.  @qcode{"@nospell{onesided}"} computes spectrum from
+[0..nfft/2+1].  @qcode{"@nospell{twosided}"} computes spectrum from
+[0..nfft-1].
+@end table
 
-@item Fs: sampling rate, default 1.
+The optional second output @var{w} are the normalized angular frequencies.
+For a one-sided calculation @var{w} is in the range [0, pi] if @var{nfft}
+is even and [0, pi) if @var{nfft} is odd.  Similarly, for a two-sided
+calculation @var{w} is in the range [0, 2*pi] or [0, 2*pi) depending on
+@var{nfft}.
 
-@item range: @qcode{"@nospell{onesided}"} computes spectrum from [0..nfft/2+1].
-@qcode{"@nospell{twosided}"} computes spectrum from [0..nfft-1].  These
-strings can appear at any position in the list input arguments after
-window.
+If a sampling frequency is specified, @var{Fs}, then the output frequencies
+@var{f} will be in the range [0, @var{Fs}/2] or [0, @var{Fs}/2) for
+one-sided calculations.  For two-sided calculations the range will be
+[0, @var{Fs}).
 
-@item @nospell{Pxx}: one-, or two-sided power spectrum.
-
-@item w: angular frequency [0..2*pi) (two-sided) or [0..pi] one-sided.
-
-@item f: frequency [0..Fs) (two-sided) or [0..Fs/2] one-sided.
-@end itemize
+When called with no outputs the periodogram is immediately plotted in the
+current figure window.
+@seealso{@ref{XREFfft,,fft}}
 @end deftypefn
 
 

@@ -1,4 +1,4 @@
-## Copyright (C) 1996-2013 John W. Eaton
+## Copyright (C) 1996-2015 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -70,10 +70,16 @@ function h = surfc (varargin)
   endif
   unwind_protect
     hax = newplot (hax);
-    
-    htmp = surface (varargin{:});
 
-    set (htmp, "facecolor", "flat");
+    surfc_props = {"facecolor", "flat"};
+    chararg = find (cellfun ("isclass", varargin, "char"), 1);
+    if (isempty (chararg))
+      htmp = surface (varargin{:}, surfc_props{:});
+    else
+      htmp = surface (varargin{1:chararg-1}, surfc_props{:},
+                      varargin{chararg:end});
+    endif
+
     if (! ishold ())
       set (hax, "view", [-37.5, 30],
                 "xgrid", "on", "ygrid", "on", "zgrid", "on",

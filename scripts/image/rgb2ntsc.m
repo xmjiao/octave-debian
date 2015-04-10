@@ -1,4 +1,4 @@
-## Copyright (C) 1994-2013 John W. Eaton
+## Copyright (C) 1994-2015 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -28,9 +28,9 @@
 ##
 ## @example
 ## @group
-## /Y\     0.299  0.587  0.114  /R\ 
-## |I|  =  0.596 -0.274 -0.322  |G| 
-## \Q/     0.211 -0.523  0.312  \B/ 
+## /Y\     0.299  0.587  0.114  /R\
+## |I|  =  0.596 -0.274 -0.322  |G|
+## \Q/     0.211 -0.523  0.312  \B/
 ## @end group
 ## @end example
 ##
@@ -86,7 +86,7 @@ function yiq = rgb2ntsc (rgb)
             0.587, -0.274, -0.523;
             0.114, -0.322,  0.312 ];
 
-  ## Convert data. 
+  ## Convert data.
   yiq = rgb * trans;
 
   ## If input was an image, convert it back into one.
@@ -97,7 +97,7 @@ function yiq = rgb2ntsc (rgb)
 endfunction
 
 
-%% Test pure RED, GREEN, BLUE colors
+## Test pure RED, GREEN, BLUE colors
 %!assert (rgb2ntsc ([1 0 0]), [.299  .596  .211])
 %!assert (rgb2ntsc ([0 1 0]), [.587 -.274 -.523])
 %!assert (rgb2ntsc ([0 0 1]), [.114 -.322  .312])
@@ -110,7 +110,7 @@ endfunction
 %! rgb_img = rand (64, 64, 3);
 %! assert (ntsc2rgb (rgb2ntsc (rgb_img)), rgb_img, 1e-3);
 
-%% Test input validation
+## Test input validation
 %!error rgb2ntsc ()
 %!error rgb2ntsc (1,2)
 %!error <invalid data type 'cell'> rgb2ntsc ({1})

@@ -1,4 +1,4 @@
-## Copyright (C) 1996-2013 John W. Eaton
+## Copyright (C) 1996-2015 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -41,7 +41,7 @@
 ## The unscaled covariance matrix, formally equal to the inverse of
 ## @var{x'}*@var{x}, but computed in a way minimizing roundoff error
 ## propagation.
-## 
+##
 ## @item df
 ## The degrees of freedom.
 ##
@@ -114,12 +114,12 @@ function [p, s, mu] = polyfit (x, y, n)
   [q, r, k] = qr (v(:, polymask), 0);
   p = r \ (q' * y);
   p(k) = p;
-  
+
   if (n != m)
-    q = p; p = zeros (n+1, 1); 
+    q = p; p = zeros (n+1, 1);
     p(polymask) = q;
   endif
-  
+
   if (nargout > 1)
     yf = v*p;
 
@@ -128,7 +128,7 @@ function [p, s, mu] = polyfit (x, y, n)
     else
       s.yf = yf;
     endif
-    s.X = v; 
+    s.X = v;
 
     ## r.'*r is positive definite if X(:, polymask) is of full rank.
     ## Invert it by cholinv to avoid taking the square root of squared
@@ -146,7 +146,7 @@ function [p, s, mu] = polyfit (x, y, n)
       s.R = zeros (n+1, n+1); s.R(polymask, polymask) = r;
       s.C = zeros (n+1, n+1); s.C(polymask, polymask) = C;
     else
-      s.R = r; 
+      s.R = r;
       s.C = C;
     endif
     s.df = l - m - 1;
@@ -171,6 +171,7 @@ endfunction
 ## variable is not normalized properly.
 ## Also check the usage of 2nd & 3rd output arguments.
 %!test
+%! warning ("off", "Octave:nearly-singular-matrix", "local");
 %! x = [ -1196.4, -1195.2, -1194, -1192.8, -1191.6, -1190.4, -1189.2, -1188, ...
 %!       -1186.8, -1185.6, -1184.4, -1183.2, -1182];
 %! y = [ 315571.7086, 315575.9618, 315579.4195, 315582.6206, 315585.4966, ...
@@ -188,6 +189,7 @@ endfunction
 %! assert (p, p0, 1000*eps);
 
 %!test
+%! warning ("off", "Octave:nearly-singular-matrix", "local");
 %! x = 1000 + (-5:5);
 %! xn = (x - mean (x)) / std (x);
 %! pn = ones (1,5);

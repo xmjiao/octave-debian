@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2013 Paul Kienzle
+## Copyright (C) 2000-2015 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -40,7 +40,7 @@
 ## @item 6 @tab Fri @tab Friday
 ## @item 7 @tab Sat @tab Saturday
 ## @end multitable
-## 
+##
 ## @seealso{eomday, is_leap_year, calendar, datenum, datevec}
 ## @end deftypefn
 
@@ -93,7 +93,6 @@ endfunction
 %! ## Weekday of new millennium from datestr input
 %! [n, s] = weekday ("1-Jan-2000")
 
-# tests
 %!assert (weekday (728647), 2)
 ## Test vector inputs for both directions
 %!assert (weekday ([728647 728648]), [2 3])

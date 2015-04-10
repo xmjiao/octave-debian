@@ -72,9 +72,11 @@ about how to document the functions you write.
 <dt><a name="index-help"></a>Command: <em></em> <strong>help</strong> <em><var>name</var></em></dt>
 <dt><a name="index-help-1"></a>Command: <em></em> <strong>help</strong> <em><code>--list</code></em></dt>
 <dt><a name="index-help-2"></a>Command: <em></em> <strong>help</strong> <em><code>.</code></em></dt>
-<dd><p>Display the help text for <var>name</var>.  For example, the command
-<kbd>help help</kbd> prints a short message describing the <code>help</code>
-command.
+<dt><a name="index-help-3"></a>Command: <em></em> <strong>help</strong></dt>
+<dd><p>Display the help text for <var>name</var>.
+</p>
+<p>For example, the command <kbd>help help</kbd> prints a short message describing
+the <code>help</code> command.
 </p>
 <p>Given the single argument <code>--list</code>, list all operators,
 keywords, built-in functions, and loadable functions available
@@ -86,11 +88,12 @@ in the current session of Octave.
 <p>If invoked without any arguments, <code>help</code> display instructions
 on how to access help from the command line.
 </p>
-<p>The help command can give you information about operators, but not the
-comma and semicolons that are used as command separators.  To get help
-for those, you must type <kbd>help comma</kbd> or <kbd>help semicolon</kbd>.
+<p>The help command can provide information about most operators, for example
+<code>help +</code>, but not the comma and semicolon characters which are used
+by the Octave interpreter as command separators.  For help on either of
+these type <kbd>help comma</kbd> or <kbd>help semicolon</kbd>.
 </p>
-<p><strong>See also:</strong> <a href="#XREFdoc">doc</a>, <a href="#XREFlookfor">lookfor</a>, <a href="Status-of-Variables.html#XREFwhich">which</a>.
+<p><strong>See also:</strong> <a href="#XREFdoc">doc</a>, <a href="#XREFlookfor">lookfor</a>, <a href="Status-of-Variables.html#XREFwhich">which</a>, <a href="#XREFinfo">info</a>.
 </p></dd></dl>
 
 
@@ -150,6 +153,8 @@ function.
 <p>When called without an argument, display the NEWS file for Octave.
 When given a package name <var>package</var>, display the current NEWS file for
 that package.
+</p>
+<p><strong>See also:</strong> <a href="System-Information.html#XREFver">ver</a>, <a href="Installing-and-Removing-Packages.html#XREFpkg">pkg</a>.
 </p></dd></dl>
 
 
@@ -357,7 +362,7 @@ length of <var>max_len</var>, which defaults to 80.
 </p>
 <p>The optional output argument <var>status</var> returns the status reported by
 <code>makeinfo</code>.  If only one output argument is requested, and <var>status</var>
-is non-zero, a warning is displayed.
+is nonzero, a warning is displayed.
 </p>
 <p>As an example, the first sentence of this help text is
 </p>

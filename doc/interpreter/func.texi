@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2013 John W. Eaton
+@c Copyright (C) 1996-2015 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -8,12 +8,12 @@
 @c under the terms of the GNU General Public License as published by the
 @c Free Software Foundation; either version 3 of the License, or (at
 @c your option) any later version.
-@c 
+@c
 @c Octave is distributed in the hope that it will be useful, but WITHOUT
 @c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 @c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 @c for more details.
-@c 
+@c
 @c You should have received a copy of the GNU General Public License
 @c along with Octave; see the file COPYING.  If not, see
 @c <http://www.gnu.org/licenses/>.
@@ -276,9 +276,11 @@ possibilities and issue our own error message.
 @anchor{XREFnargin}
 @deftypefn  {Built-in Function} {} nargin ()
 @deftypefnx {Built-in Function} {} nargin (@var{fcn})
-Within a function, return the number of arguments passed to the function.
-At the top level, return the number of command line arguments passed to
-Octave.
+Report the number of input arguments to a function.
+
+Called from within a function, return the number of arguments passed to the
+function.  At the top level, return the number of command line arguments
+passed to Octave.
 
 If called with the optional argument @var{fcn}---a function name or handle---
 return the declared number of arguments that the function can accept.
@@ -298,7 +300,7 @@ nargin ("union")
 @end example
 
 Programming Note: @code{nargin} does not work on built-in functions.
-@seealso{@ref{XREFnargout,,nargout}, @ref{XREFvarargin,,varargin}, @ref{XREFisargout,,isargout}, @ref{XREFvarargout,,varargout}, @ref{XREFnthargout,,nthargout}}
+@seealso{@ref{XREFnargout,,nargout}, @ref{XREFnarginchk,,narginchk}, @ref{XREFvarargin,,varargin}, @ref{XREFinputname,,inputname}}
 @end deftypefn
 
 
@@ -306,7 +308,11 @@ Programming Note: @code{nargin} does not work on built-in functions.
 @anchor{XREFinputname}
 @deftypefn {Function File} {} inputname (@var{n})
 Return the name of the @var{n}-th argument to the calling function.
+
 If the argument is not a simple variable name, return an empty string.
+@code{inputname} may only be used within a function body, not at the
+command line.
+@seealso{@ref{XREFnargin,,nargin}, @ref{XREFnthargout,,nthargout}}
 @end deftypefn
 
 
@@ -477,11 +483,18 @@ along with a warning.
 @anchor{XREFnargout}
 @deftypefn  {Built-in Function} {} nargout ()
 @deftypefnx {Built-in Function} {} nargout (@var{fcn})
-Within a function, return the number of values the caller expects to
-receive.  If called with the optional argument @var{fcn}---a function
-name or handle---return the number of declared output values that the
-function can produce.  If the final output argument is @var{varargout}
-the returned value is negative.
+Report the number of output arguments from a function.
+
+Called from within a function, return the number of values the caller expects
+to receive.  At the top level, @code{nargout} with no argument is undefined
+and will produce an error.
+
+If called with the optional argument @var{fcn}---a function name or
+handle---return the number of declared output values that the function can
+produce.
+
+If the final output argument is @var{varargout} the returned value is
+negative.
 
 For example,
 
@@ -516,10 +529,9 @@ nargout (@@imread)
 will return -2, because @code{imread} has two outputs and the second is
 @var{varargout}.
 
-At the top level, @code{nargout} with no argument is undefined and will
-produce an error.  @code{nargout} does not work for built-in functions and
+Programming Note.  @code{nargout} does not work for built-in functions and
 returns -1 for all anonymous functions.
-@seealso{@ref{XREFnargin,,nargin}, @ref{XREFvarargin,,varargin}, @ref{XREFisargout,,isargout}, @ref{XREFvarargout,,varargout}, @ref{XREFnthargout,,nthargout}}
+@seealso{@ref{XREFnargin,,nargin}, @ref{XREFvarargout,,varargout}, @ref{XREFisargout,,isargout}, @ref{XREFnthargout,,nthargout}}
 @end deftypefn
 
 
@@ -538,22 +550,8 @@ endif
 which stops the function execution and prints a message about the correct
 way to call the function whenever the number of inputs is wrong.
 
-For compatibility with @sc{matlab}, @code{nargchk}, @code{narginchk} and
-@code{nargoutchk} are available which provide similar error checking.
-
-@c nargchk scripts/general/nargchk.m
-@anchor{XREFnargchk}
-@deftypefn  {Function File} {@var{msgstr} =} nargchk (@var{minargs}, @var{maxargs}, @var{nargs})
-@deftypefnx {Function File} {@var{msgstr} =} nargchk (@var{minargs}, @var{maxargs}, @var{nargs}, "string")
-@deftypefnx {Function File} {@var{msgstruct} =} nargchk (@var{minargs}, @var{maxargs}, @var{nargs}, "struct")
-Return an appropriate error message string (or structure) if the
-number of inputs requested is invalid.
-
-This is useful for checking to see that the number of input arguments
-supplied to a function is within an acceptable range.
-@seealso{@ref{XREFnargoutchk,,nargoutchk}, @ref{XREFnarginchk,,narginchk}, @ref{XREFerror,,error}, @ref{XREFnargin,,nargin}, @ref{XREFnargout,,nargout}}
-@end deftypefn
-
+For compatibility with @sc{matlab}, @code{narginchk} and @code{nargoutchk} are
+available which provide similar error checking.
 
 @c narginchk scripts/general/narginchk.m
 @anchor{XREFnarginchk}
@@ -568,7 +566,7 @@ values.  Zero, Inf and negative values are all allowed, and
 
 Note that this function evaluates @code{nargin} on the caller.
 
-@seealso{@ref{XREFnargchk,,nargchk}, @ref{XREFnargoutchk,,nargoutchk}, @ref{XREFerror,,error}, @ref{XREFnargout,,nargout}, @ref{XREFnargin,,nargin}}
+@seealso{@ref{XREFnargoutchk,,nargoutchk}, @ref{XREFerror,,error}, @ref{XREFnargout,,nargout}, @ref{XREFnargin,,nargin}}
 @end deftypefn
 
 
@@ -594,7 +592,334 @@ invalid.
 
 This is useful for checking to see that the number of output
 arguments supplied to a function is within an acceptable range.
-@seealso{@ref{XREFnargchk,,nargchk}, @ref{XREFnarginchk,,narginchk}, @ref{XREFerror,,error}, @ref{XREFnargout,,nargout}, @ref{XREFnargin,,nargin}}
+@seealso{@ref{XREFnarginchk,,narginchk}, @ref{XREFerror,,error}, @ref{XREFnargout,,nargout}, @ref{XREFnargin,,nargin}}
+@end deftypefn
+
+
+Besides the number of arguments, inputs can be checked for various properties.
+@code{validatestring} is used for string arguments and
+@code{validateattributes} for numeric arguments.
+
+@c validatestring scripts/strings/validatestring.m
+@anchor{XREFvalidatestring}
+@deftypefn  {Function File} {@var{validstr} =} validatestring (@var{str}, @var{strarray})
+@deftypefnx {Function File} {@var{validstr} =} validatestring (@var{str}, @var{strarray}, @var{funcname})
+@deftypefnx {Function File} {@var{validstr} =} validatestring (@var{str}, @var{strarray}, @var{funcname}, @var{varname})
+@deftypefnx {Function File} {@var{validstr} =} validatestring (@dots{}, @var{position})
+Verify that @var{str} is an element, or substring of an element, in
+@var{strarray}.
+
+When @var{str} is a character string to be tested, and @var{strarray} is a
+cellstr of valid values, then @var{validstr} will be the validated form
+of @var{str} where validation is defined as @var{str} being a member
+or substring of @var{validstr}.  This is useful for both verifying
+and expanding short options, such as @qcode{"r"}, to their longer forms,
+such as @qcode{"red"}.  If @var{str} is a substring of @var{validstr}, and
+there are multiple matches, the shortest match will be returned if all
+matches are substrings of each other.  Otherwise, an error will be raised
+because the expansion of @var{str} is ambiguous.  All comparisons are case
+insensitive.
+
+The additional inputs @var{funcname}, @var{varname}, and @var{position}
+are optional and will make any generated validation error message more
+specific.
+
+Examples:
+@c Set example in small font to prevent overfull line
+
+@smallexample
+@group
+validatestring ("r", @{"red", "green", "blue"@})
+@result{} "red"
+
+validatestring ("b", @{"red", "green", "blue", "black"@})
+@result{} error: validatestring: multiple unique matches were found for 'b':
+   blue, black
+@end group
+@end smallexample
+
+@seealso{@ref{XREFstrcmp,,strcmp}, @ref{XREFstrcmpi,,strcmpi}, @ref{XREFvalidateattributes,,validateattributes}, @ref{XREFinputParser,,inputParser}}
+@end deftypefn
+
+
+@c validateattributes scripts/general/validateattributes.m
+@anchor{XREFvalidateattributes}
+@deftypefn  {Function File} {} validateattributes (@var{A}, @var{classes}, @var{attributes})
+@deftypefnx {Function File} {} validateattributes (@var{A}, @var{classes}, @var{attributes}, @var{arg_idx})
+@deftypefnx {Function File} {} validateattributes (@var{A}, @var{classes}, @var{attributes}, @var{func_name})
+@deftypefnx {Function File} {} validateattributes (@var{A}, @var{classes}, @var{attributes}, @var{func_name}, @var{arg_name})
+@deftypefnx {Function File} {} validateattributes (@var{A}, @var{classes}, @var{attributes}, @var{func_name}, @var{arg_name}, @var{arg_idx})
+Check validity of input argument.
+
+Confirms that the argument @var{A} is valid by belonging to one of
+@var{classes}, and holding all of the @var{attributes}.  If it does not,
+an error is thrown, with a message formatted accordingly.  The error
+message can be made further complete by the function name @var{fun_name},
+the argument name @var{arg_name}, and its position in the input
+@var{arg_idx}.
+
+@var{classes} must be a cell array of strings (an empty cell array is
+allowed) with the name of classes (remember that a class name is case
+sensitive).  In addition to the class name, the following categories
+names are also valid:
+
+@table @asis
+@item @qcode{"float"}
+Floating point value comprising classes @qcode{"double"} and
+@qcode{"single"}.
+
+@item @qcode{"integer"}
+Integer value comprising classes (u)int8, (u)int16, (u)int32, (u)int64.
+
+@item @qcode{"numeric"}
+Numeric value comprising either a floating point or integer value.
+
+@end table
+
+@var{attributes} must be a cell array with names of checks for @var{A}.
+Some of them require an additional value to be supplied right after the
+name (see details for each below).
+
+@table @asis
+@item @qcode{"<="}
+All values are less than or equal to the following value in @var{attributes}.
+
+@item @qcode{"<"}
+All values are less than the following value in @var{attributes}.
+
+@item @qcode{">="}
+All values are greater than or equal to the following value in
+@var{attributes}.
+
+@item @qcode{">"}
+All values are greater than the following value in @var{attributes}.
+
+@item @qcode{"2d"}
+A 2-dimensional matrix.  Note that vectors and empty matrices have
+2 dimensions, one of them being of length 1, or both length 0.
+
+@item @qcode{"3d"}
+Has no more than 3 dimensions.  A 2-dimensional matrix is a 3-D matrix
+whose 3rd dimension is of length 1.
+
+@item @qcode{"binary"}
+All values are either 1 or 0.
+
+@item @qcode{"column"}
+Values are arranged in a single column.
+
+@item @qcode{"decreasing"}
+No value is @var{NaN}, and each is less than the preceding one.
+
+@item @qcode{"even"}
+All values are even numbers.
+
+@item @qcode{"finite"}
+All values are finite.
+
+@item @qcode{"increasing"}
+No value is @var{NaN}, and each is greater than the preceding one.
+
+@item @qcode{"integer"}
+All values are integer.  This is different than using @code{isinteger}
+which only checks its an integer type.  This checks that each value in
+@var{A} is an integer value, i.e., it has no decimal part.
+
+@item @qcode{"ncols"}
+Has exactly as many columns as the next value in @var{attributes}.
+
+@item @qcode{"ndims"}
+Has exactly as many dimensions as the next value in @var{attributes}.
+
+@item @qcode{"nondecreasing"}
+No value is @var{NaN}, and each is greater than or equal to the preceding
+one.
+
+@item @qcode{"nonempty"}
+It is not empty.
+
+@item @qcode{"nonincreasing"}
+No value is @var{NaN}, and each is less than or equal to the preceding one.
+
+@item @qcode{"nonnan"}
+No value is a @code{NaN}.
+
+@item @qcode{"non-negative"}
+All values are non negative.
+
+@item @qcode{"nonsparse"}
+It is not a sparse matrix.
+
+@item @qcode{"nonzero"}
+No value is zero.
+
+@item @qcode{"nrows"}
+Has exactly as many rows as the next value in @var{attributes}.
+
+@item @qcode{"numel"}
+Has exactly as many elements as the next value in @var{attributes}.
+
+@item @qcode{"odd"}
+All values are odd numbers.
+
+@item @qcode{"positive"}
+All values are positive.
+
+@item @qcode{"real"}
+It is a non-complex matrix.
+
+@item @qcode{"row"}
+Values are arranged in a single row.
+
+@item @qcode{"scalar"}
+It is a scalar.
+
+@item @qcode{"size"}
+Its size has length equal to the values of the next in @var{attributes}.
+The next value must is an array with the length for each dimension.  To
+ignore the check for a certain dimension, the value of @code{NaN} can be
+used.
+
+@item @qcode{"square"}
+Is a square matrix.
+
+@item @qcode{"vector"}
+Values are arranged in a single vector (column or vector).
+
+@end table
+
+@seealso{@ref{XREFisa,,isa}, @ref{XREFvalidatestring,,validatestring}, @ref{XREFinputParser,,inputParser}}
+@end deftypefn
+
+
+If none of the preceding functions is sufficient there is also the class
+@code{inputParser} which can perform extremely complex input checking for
+functions.
+
+@c inputParser scripts/general/inputParser.m
+@anchor{XREFinputParser}
+@deftypefn {Function File} {@var{p} =} inputParser ()
+Create object @var{p} of the inputParser class.
+
+This class is designed to allow easy parsing of function arguments.  The
+class supports four types of arguments:
+
+@enumerate
+@item mandatory (see @command{addRequired});
+
+@item optional (see @command{addOptional});
+
+@item named (see @command{addParamValue});
+
+@item switch (see @command{addSwitch}).
+@end enumerate
+
+After defining the function API with these methods, the supplied arguments
+can be parsed with the @command{parse} method and the parsing results
+accessed with the @command{Results} accessor.
+
+@end deftypefn
+@deftypefn {Accessor method} {} inputParser.Parameters
+Return list of parameter names already defined.
+
+@end deftypefn
+@deftypefn {Accessor method} {} inputParser.Results
+Return structure with argument names as fieldnames and corresponding values.
+
+@end deftypefn
+@deftypefn {Accessor method} {} inputParser.Unmatched
+Return structure similar to @command{Results}, but for unmatched parameters.
+See the @command{KeepUnmatched} property.
+
+@end deftypefn
+@deftypefn {Accessor method} {} inputParser.UsingDefaults
+Return cell array with the names of arguments that are using default values.
+
+@end deftypefn
+@deftypefn {Class property} {} inputParser.CaseSensitive = @var{boolean}
+Set whether matching of argument names should be case sensitive.  Defaults
+to false.
+
+@end deftypefn
+@deftypefn {Class property} {} inputParser.FunctionName = @var{name}
+Set function name to be used in error messages; Defaults to empty string.
+
+@end deftypefn
+@deftypefn {Class property} {} inputParser.KeepUnmatched = @var{boolean}
+Set whether an error should be given for non-defined arguments.  Defaults to
+false.  If set to true, the extra arguments can be accessed through
+@code{Unmatched} after the @code{parse} method.  Note that since
+@command{Switch} and @command{ParamValue} arguments can be mixed, it is
+not possible to know the unmatched type.  If argument is found unmatched
+it is assumed to be of the @command{ParamValue} type and it is expected to
+be followed by a value.
+
+@end deftypefn
+@deftypefn {Class property} {} inputParser.StructExpand = @var{boolean}
+Set whether a structure can be passed to the function instead of
+parameter/value pairs.  Defaults to true.  Not implemented yet.
+
+The following example shows how to use this class:
+
+@example
+@group
+function check (varargin)
+@c The next two comments need to be indented by one for alignment
+  p = inputParser ();                      # create object
+  p.FunctionName = "check";                # set function name
+  p.addRequired ("pack", @@ischar);         # mandatory argument
+  p.addOptional ("path", pwd(), @@ischar);  # optional argument
+
+  ## create a function handle to anonymous functions for validators
+  val_mat = @@(x) isvector (x) && all (x <= 1) && all (x >= 0);
+  p.addOptional ("mat", [0 0], val_mat);
+
+  ## create two arguments of type "ParamValue"
+  val_type = @@(x) any (strcmp (x, @{"linear", "quadratic"@}));
+  p.addParamValue ("type", "linear", val_type);
+  val_verb = @@(x) any (strcmp (x, @{"low", "medium", "high"@}));
+  p.addParamValue ("tolerance", "low", val_verb);
+
+  ## create a switch type of argument
+  p.addSwitch ("verbose");
+
+  p.parse (varargin@{:@});  # Run created parser on inputs
+
+  ## the rest of the function can access inputs by using p.Results.
+  ## for example, get the tolerance input with p.Results.tolerance
+endfunction
+@end group
+
+check ("mech");           # valid, use defaults for other arguments
+check ();                 # error, one argument is mandatory
+check (1);                # error, since ! ischar
+check ("mech", "~/dev");  # valid, use defaults for other arguments
+
+check ("mech", "~/dev", [0 1 0 0], "type", "linear");  # valid
+
+## following is also valid.  Note how the Switch argument type can
+## be mixed into or before the ParamValue argument type (but it
+## must still appear after any Optional argument).
+check ("mech", "~/dev", [0 1 0 0], "verbose", "tolerance", "high");
+
+## following returns an error since not all optional arguments,
+## `path' and `mat', were given before the named argument `type'.
+check ("mech", "~/dev", "type", "linear");
+@end example
+
+@emph{Note 1}: A function can have any mixture of the four API types but
+they must appear in a specific order.  @command{Required} arguments must be
+first and can be followed by any @command{Optional} arguments.  Only
+the @command{ParamValue} and @command{Switch} arguments may be mixed
+together and they must appear at the end.
+
+@emph{Note 2}: If both @command{Optional} and @command{ParamValue} arguments
+are mixed in a function API then once a string Optional argument fails to
+validate it will be considered the end of the @command{Optional}
+arguments.  The remaining arguments will be compared against any
+@command{ParamValue} or @command{Switch} arguments.
+
+@seealso{@ref{XREFnargin,,nargin}, @ref{XREFvalidateattributes,,validateattributes}, @ref{XREFvalidatestring,,validatestring}, @ref{XREFvarargin,,varargin}}
 @end deftypefn
 
 
@@ -664,7 +989,7 @@ endfunction
 This implementation handles any number of input arguments, but it's also
 a very simple solution to the problem.
 
-A slightly more complex example of @code{varargin} is a function 
+A slightly more complex example of @code{varargin} is a function
 @code{print_arguments} that prints all input arguments.  Such a function
 can be defined like this
 
@@ -727,7 +1052,7 @@ When called from an m-file function, the error is prefixed with the
 name of the caller function.
 The matching of options is case-insensitive.
 
-@seealso{@ref{XREFvarargin,,varargin}}
+@seealso{@ref{XREFvarargin,,varargin}, @ref{XREFinputParser,,inputParser}}
 @end deftypefn
 
 
@@ -770,16 +1095,18 @@ endfunction
 @anchor{XREFisargout}
 @deftypefn {Built-in Function} {} isargout (@var{k})
 Within a function, return a logical value indicating whether the argument
-@var{k} will be assigned to a variable on output.  If the result is false,
-the argument has been ignored during the function call through the use of
-the tilde (~) special output argument.  Functions can use @code{isargout} to
-avoid performing unnecessary calculations for outputs which are unwanted.
+@var{k} will be assigned to a variable on output.
+
+If the result is false, the argument has been ignored during the function
+call through the use of the tilde (~) special output argument.  Functions
+can use @code{isargout} to avoid performing unnecessary calculations for
+outputs which are unwanted.
 
 If @var{k} is outside the range @code{1:max (nargout)}, the function returns
 false.  @var{k} can also be an array, in which case the function works
 element-by-element and a logical array is returned.  At the top level,
 @code{isargout} returns an error.
-@seealso{@ref{XREFnargout,,nargout}, @ref{XREFnargin,,nargin}, @ref{XREFvarargin,,varargin}, @ref{XREFvarargout,,varargout}, @ref{XREFnthargout,,nthargout}}
+@seealso{@ref{XREFnargout,,nargout}, @ref{XREFvarargout,,varargout}, @ref{XREFnthargout,,nthargout}}
 @end deftypefn
 
 
@@ -863,6 +1190,26 @@ is equivalent to
 @example
 a = b = c = x;
 @end example
+
+Programming Note: @code{deal} is often used with comma separated lists
+derived from cell arrays or structures.  This is unnecessary as the
+interpreter can perform the same action without the overhead of a function
+call.  For example:
+
+@example
+@group
+c = @{[1 2], "Three", 4@};
+[x, y, z ] = c@{:@}
+@result{}
+   x =
+
+      1   2
+
+   y = Three
+   z =  4
+@end group
+@end example
+@seealso{@ref{XREFcell2struct,,cell2struct}, @ref{XREFstruct2cell,,struct2cell}, @ref{XREFrepmat,,repmat}}
 @end deftypefn
 
 
@@ -1038,7 +1385,7 @@ ignore the time stamps for all function files.  Passing
 Edit the named function, or change editor settings.
 
 If @code{edit} is called with the name of a file or function as
-its argument it will be opened in the text editor defined by @code{EDITOR}.
+its argument it will be opened in the text editor defined by @env{EDITOR}.
 
 @itemize @bullet
 @item
@@ -1194,7 +1541,7 @@ addpath ("~/Octave")
 
 @noindent
 After this the directory @samp{~/Octave} will be searched for functions.
- 
+
 @c addpath libinterp/corefcn/load-path.cc
 @anchor{XREFaddpath}
 @deftypefn  {Built-in Function} {} addpath (@var{dir1}, @dots{})
@@ -1247,8 +1594,20 @@ rmpath ("dir1:/dir2:~/dir3")
 @deftypefnx {Function File} {@var{status} =} savepath (@dots{})
 Save the unique portion of the current function search path that is
 not set during Octave's initialization process to @var{file}.
-If @var{file} is omitted, @file{~/.octaverc} is used.  If successful,
-@code{savepath} returns 0.
+
+If @var{file} is omitted, Octave looks in the current directory for a
+project-specific @file{.octaverc} file in which to save the path
+information.  If no such file is present then the user's configuration file
+@file{~/.octaverc} is used.
+
+If successful, @code{savepath} returns 0.
+
+The @code{savepath} function makes it simple to customize a user's
+configuration file to restore the working paths necessary for a particular
+instance of Octave.  Assuming no filename is specified, Octave will
+automatically restore the saved directory paths from the appropriate
+@file{.octaverc} file when starting up.  If a filename has been specified
+then the paths may be restored manually by calling @code{source @var{file}}.
 @seealso{@ref{XREFpath,,path}, @ref{XREFaddpath,,addpath}, @ref{XREFrmpath,,rmpath}, @ref{XREFgenpath,,genpath}, @ref{XREFpathdef,,pathdef}}
 @end deftypefn
 
@@ -1277,15 +1636,18 @@ No checks are made for duplicate elements.
 @anchor{XREFpathdef}
 @deftypefn {Function File} {@var{val} =} pathdef ()
 Return the default path for Octave.
-The path information is extracted from one of three sources.
+
+The path information is extracted from one of four sources.
 The possible sources, in order of preference, are:
 
 @enumerate
+@item @file{.octaverc}
+
 @item @file{~/.octaverc}
 
-@item @file{<octave-home>/@dots{}/<version>/m/startup/octaverc}
+@item @file{<OCTAVE_HOME>/@dots{}/<version>/m/startup/octaverc}
 
-@item Octave's path prior to changes by any octaverc.
+@item Octave's path prior to changes by any octaverc file.
 @end enumerate
 @seealso{@ref{XREFpath,,path}, @ref{XREFaddpath,,addpath}, @ref{XREFrmpath,,rmpath}, @ref{XREFgenpath,,genpath}, @ref{XREFsavepath,,savepath}}
 @end deftypefn
@@ -1323,7 +1685,7 @@ the first that matches.
 If the second optional argument @qcode{"all"} is supplied, return
 a cell array containing the list of all files that have the same
 name in the path.  If no files are found, return an empty cell array.
-@seealso{@ref{XREFfile_in_path,,file_in_path}, @ref{XREFfind_dir_in_path,,find_dir_in_path}, @ref{XREFpath,,path}}
+@seealso{@ref{XREFfile_in_path,,file_in_path}, @ref{XREFdir_in_loadpath,,dir_in_loadpath}, @ref{XREFpath,,path}}
 @end deftypefn
 
 
@@ -1345,10 +1707,10 @@ Return the command line path variable.
 @end deftypefn
 
 
-@c find_dir_in_path libinterp/corefcn/utils.cc
-@anchor{XREFfind_dir_in_path}
-@deftypefn  {Built-in Function} {} find_dir_in_path (@var{dir})
-@deftypefnx {Built-in Function} {} find_dir_in_path (@var{dir}, "all")
+@c dir_in_loadpath libinterp/corefcn/utils.cc
+@anchor{XREFdir_in_loadpath}
+@deftypefn  {Built-in Function} {} dir_in_loadpath (@var{dir})
+@deftypefnx {Built-in Function} {} dir_in_loadpath (@var{dir}, "all")
 Return the full name of the path element matching @var{dir}.  The
 match is performed at the end of each path element.  For example, if
 @var{dir} is @qcode{"foo/bar"}, it matches the path element
@@ -1416,8 +1778,8 @@ endfunction
 
 @noindent
 Then if the path to @code{func1} is @code{<directory>/func1.m}, and if
-@code{func2} is found in the directory @code{<directory>/private/func2.m}, 
-then @code{func2} is only available for use of the functions, like 
+@code{func2} is found in the directory @code{<directory>/private/func2.m},
+then @code{func2} is only available for use of the functions, like
 @code{func1}, that are found in @code{<directory>}.
 
 @node Nested Functions
@@ -1577,7 +1939,7 @@ endfunction
 Functions can be overloaded to work with different input arguments.  For
 example, the operator '+' has been overloaded in Octave to work with single,
 double, uint8, int32, and many other arguments.  The preferred way to overload
-functions is through classes and object oriented programming 
+functions is through classes and object oriented programming
 (@pxref{Function Overloading}).  Occasionally, however, one needs to undo
 user overloading and call the default function associated with a specific
 type.  The @code{builtin} function exists for this purpose.
@@ -1766,11 +2128,11 @@ used within a particular scope is given by
 A subfunction with the required function name in the given scope.
 
 @item Private function
-A function defined within a private directory of the directory 
+A function defined within a private directory of the directory
 which contains the current function.
 
 @item Class constructor
-A function that constuctors a user class as defined in chapter 
+A function that constructs a user class as defined in chapter
 @ref{Object Oriented Programming}.
 
 @item Class method
@@ -1812,7 +2174,7 @@ scope as the other variables that are visible on the command line.
 
 Even though a script file may not begin with the @code{function}
 keyword, it is possible to define more than one function in a single
-script file and load (but not execute) all of them at once.  To do 
+script file and load (but not execute) all of them at once.  To do
 this, the first token in the file (ignoring comments and other white
 space) must be something other than @code{function}.  If you have no
 other statements to evaluate, you can use a statement that has no
@@ -1914,7 +2276,7 @@ requiring the file to be named @file{@var{file}.m}.
 
 It can be very convenient store a function in a variable so that it
 can be passed to a different function.  For example, a function that
-performs numerical minimization needs access to the function that 
+performs numerical minimization needs access to the function that
 should be minimized.
 
 @menu
@@ -2100,6 +2462,34 @@ adapts a function with several parameters to the form required by
 are passed to @code{betainc} are inherited from the current
 environment.
 
+Note that for performance reasons it is better to use handles to existing
+Octave functions, rather than to define anonymous functions which wrap an
+existing function.  The integration of @code{sin (x)} is 5X faster if the code
+is written as
+
+@example
+quad (@@sin, 0, pi)
+@end example
+
+@noindent
+rather than using the anonymous function @code{@@(x) sin (x)}.  There are many
+operators which have functional equivalents that may be better choices than an
+anonymous function.  Instead of writing
+
+@example
+f = @@(x, y) x + y
+@end example
+
+@noindent
+this should be coded as
+
+@example
+f = @@plus
+@end example
+
+@xref{Operator Overloading}, for a list of operators which also have a
+functional form.
+
 @node Inline Functions
 @subsection Inline Functions
 
@@ -2114,6 +2504,11 @@ f = inline ("x^2 + 2");
 @noindent
 After this it is possible to evaluate @math{f} at any @math{x} by
 writing @code{f(x)}.
+
+@strong{Caution}: @sc{matlab} has begun the process of deprecating inline
+functions.  At some point in the future support will be dropped and eventually
+Octave will follow @sc{matlab} and also remove inline functions.  Use anonymous
+functions in all new code.
 
 @c inline libinterp/octave-value/ov-fcn-inline.cc
 @anchor{XREFinline}
@@ -2158,20 +2553,35 @@ the arguments of the inline function @var{fun}.
 @anchor{XREFformula}
 @deftypefn {Built-in Function} {} formula (@var{fun})
 Return a character string representing the inline function @var{fun}.
+
 Note that @code{char (@var{fun})} is equivalent to
 @code{formula (@var{fun})}.
-@seealso{@ref{XREFargnames,,argnames}, @ref{XREFinline,,inline}, @ref{XREFvectorize,,vectorize}}
+@seealso{@ref{XREFchar,,char}, @ref{XREFargnames,,argnames}, @ref{XREFinline,,inline}, @ref{XREFvectorize,,vectorize}}
 @end deftypefn
 
 
 @c symvar scripts/miscellaneous/symvar.m
 @anchor{XREFsymvar}
-@deftypefn {Function File} {} symvar (@var{s})
-Identify the argument names in the function defined by a string.
-Common constant names such as @code{pi}, @code{NaN}, @code{Inf},
-@code{eps}, @code{i} or @code{j} are ignored.  The arguments that are
-found are returned in a cell array of strings.  If no variables are
-found then the returned cell array is empty.
+@deftypefn {Function File} {@var{vars} =} symvar (@var{str})
+Identify the symbolic variable names in the string @var{str}.
+
+Common constant names such as @code{i}, @code{j}, @code{pi}, @code{Inf} and
+Octave functions such as @code{sin} or @code{plot} are ignored.
+
+Any names identified are returned in a cell array of strings.  The array is
+empty if no variables were found.
+
+Example:
+
+@example
+@group
+symvar ("x^2 + y^2 == 4")
+@result{} @{
+     [1,1] = x
+     [2,1] = y
+   @}
+@end group
+@end example
 @end deftypefn
 
 
@@ -2187,7 +2597,7 @@ my_command hello world
 @end example
 
 @noindent
-is equivalent to 
+is equivalent to
 
 @example
 my_command ("hello", "world")
@@ -2261,7 +2671,7 @@ Class functions for the FTP object.
 @item general
 Miscellaneous matrix manipulations, like @code{flipud}, @code{rot90},
 and @code{triu}, as well as other basic functions, like
-@code{ismatrix}, @code{nargchk}, etc.
+@code{ismatrix}, @code{narginchk}, etc.
 
 @item geometry
 Functions related to Delaunay triangulation.

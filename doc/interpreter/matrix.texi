@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2013 John W. Eaton
+@c Copyright (C) 1996-2015 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -8,12 +8,12 @@
 @c under the terms of the GNU General Public License as published by the
 @c Free Software Foundation; either version 3 of the License, or (at
 @c your option) any later version.
-@c 
+@c
 @c Octave is distributed in the hope that it will be useful, but WITHOUT
 @c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 @c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 @c for more details.
-@c 
+@c
 @c You should have received a copy of the GNU General Public License
 @c along with Octave; see the file COPYING.  If not, see
 @c <http://www.gnu.org/licenses/>.
@@ -48,11 +48,11 @@ a matrix meet a specified condition.
 @deftypefn  {Built-in Function} {} any (@var{x})
 @deftypefnx {Built-in Function} {} any (@var{x}, @var{dim})
 For a vector argument, return true (logical 1) if any element of the vector
-is non-zero.
+is nonzero.
 
 For a matrix argument, return a row vector of logical ones and
 zeros with each element indicating whether any of the elements of the
-corresponding column of the matrix are non-zero.  For example:
+corresponding column of the matrix are nonzero.  For example:
 
 @example
 @group
@@ -79,15 +79,15 @@ any (eye (2, 4), 2)
 @deftypefn  {Built-in Function} {} all (@var{x})
 @deftypefnx {Built-in Function} {} all (@var{x}, @var{dim})
 For a vector argument, return true (logical 1) if all elements of the vector
-are non-zero.
+are nonzero.
 
 For a matrix argument, return a row vector of logical ones and
 zeros with each element indicating whether all of the elements of the
-corresponding column of the matrix are non-zero.  For example:
+corresponding column of the matrix are nonzero.  For example:
 
 @example
 @group
-all ([2, 3; 1, 0]))
+all ([2, 3; 1, 0])
     @result{} [ 1, 0 ]
 @end group
 @end example
@@ -119,22 +119,32 @@ Note that in conditional contexts (like the test clause of @code{if} and
 
 @c xor scripts/miscellaneous/xor.m
 @anchor{XREFxor}
-@deftypefn {Mapping Function} {@var{z} =} xor (@var{x}, @var{y})
-Return the @dfn{exclusive or} of the entries of @var{x} and @var{y}.
+@deftypefn  {Function File} {@var{z} =} xor (@var{x}, @var{y})
+@deftypefnx {Function File} {@var{z} =} xor (@var{x1}, @var{x2}, @dots{})
+Return the @dfn{exclusive or} of @var{x} and @var{y}.
+
 For boolean expressions @var{x} and @var{y},
 @code{xor (@var{x}, @var{y})} is true if and only if one of @var{x} or
-@var{y} is true.  Otherwise, for @var{x} and @var{y} both true or both
+@var{y} is true.  Otherwise, if @var{x} and @var{y} are both true or both
 false, @code{xor} returns false.
 
 The truth table for the xor operation is
 
 @multitable @columnfractions 0.44 .03 .05 .03 0.44
 @item @tab @var{x} @tab @var{y} @tab @var{z} @tab
+@item @tab - @tab - @tab - @tab
 @item @tab 0 @tab 0 @tab 0 @tab
 @item @tab 1 @tab 0 @tab 1 @tab
 @item @tab 0 @tab 1 @tab 1 @tab
 @item @tab 1 @tab 1 @tab 0 @tab
 @end multitable
+
+If more than two arguments are given the xor operation is applied
+cumulatively from left to right:
+
+@example
+(@dots{}((x1 XOR x2) XOR x3) XOR @dots{})
+@end example
 
 @seealso{@ref{XREFand,,and}, @ref{XREFor,,or}, @ref{XREFnot,,not}}
 @end deftypefn
@@ -209,15 +219,15 @@ isnan ([13, Inf, NA, NaN])
 
 @c isfinite libinterp/corefcn/mappers.cc
 @anchor{XREFisfinite}
-@deftypefn  {Mapping Function} {} isfinite (@var{x})
-@deftypefnx {Mapping Function} {} finite (@var{x})
+@deftypefn {Mapping Function} {} isfinite (@var{x})
 Return a logical array which is true where the elements of @var{x} are
 finite values and false where they are not.
+
 For example:
 
 @example
 @group
-finite ([13, Inf, NA, NaN])
+isfinite ([13, Inf, NA, NaN])
      @result{} [ 1, 0, 0, 0 ]
 @end group
 @end example
@@ -300,7 +310,7 @@ If three inputs are given, @var{direction} should be one of
 ascending order.
 
 Note that this function is particularly useful for sparse matrices, as
-it extracts the non-zero elements as vectors, which can then be used to
+it extracts the nonzero elements as vectors, which can then be used to
 create the original matrix.  For example:
 
 @example
@@ -374,6 +384,8 @@ its elements may have, consult @ref{Status of Variables}.
 @c fliplr scripts/general/fliplr.m
 @anchor{XREFfliplr}
 @deftypefn {Function File} {} fliplr (@var{x})
+Flip array left to right.
+
 Return a copy of @var{x} with the order of the columns reversed.  In
 other words, @var{x} is flipped left-to-right about a vertical axis.  For
 example:
@@ -386,15 +398,15 @@ fliplr ([1, 2; 3, 4])
 @end group
 @end example
 
-Note that @code{fliplr} only works with 2-D arrays.  To flip N-D arrays
-use @code{flipdim} instead.
-@seealso{@ref{XREFflipud,,flipud}, @ref{XREFflipdim,,flipdim}, @ref{XREFrot90,,rot90}, @ref{XREFrotdim,,rotdim}}
+@seealso{@ref{XREFflipud,,flipud}, @ref{XREFflip,,flip}, @ref{XREFrot90,,rot90}, @ref{XREFrotdim,,rotdim}}
 @end deftypefn
 
 
 @c flipud scripts/general/flipud.m
 @anchor{XREFflipud}
 @deftypefn {Function File} {} flipud (@var{x})
+Flip array upside down.
+
 Return a copy of @var{x} with the order of the rows reversed.  In
 other words, @var{x} is flipped upside-down about a horizontal axis.  For
 example:
@@ -407,28 +419,42 @@ flipud ([1, 2; 3, 4])
 @end group
 @end example
 
-Note that @code{flipud} only works with 2-D arrays.  To flip N-D arrays
-use @code{flipdim} instead.
-@seealso{@ref{XREFfliplr,,fliplr}, @ref{XREFflipdim,,flipdim}, @ref{XREFrot90,,rot90}, @ref{XREFrotdim,,rotdim}}
+@seealso{@ref{XREFfliplr,,fliplr}, @ref{XREFflip,,flip}, @ref{XREFrot90,,rot90}, @ref{XREFrotdim,,rotdim}}
 @end deftypefn
 
 
-@c flipdim scripts/general/flipdim.m
-@anchor{XREFflipdim}
-@deftypefn  {Function File} {} flipdim (@var{x})
-@deftypefnx {Function File} {} flipdim (@var{x}, @var{dim})
+@c flip scripts/general/flip.m
+@anchor{XREFflip}
+@deftypefn  {Function File} {} flip (@var{x})
+@deftypefnx {Function File} {} flip (@var{x}, @var{dim})
+Flip array across specific dimension.
+
 Return a copy of @var{x} flipped about the dimension @var{dim}.
 @var{dim} defaults to the first non-singleton dimension.
 For example:
 
 @example
 @group
-flipdim ([1, 2; 3, 4], 2)
+flip ([1  2  3  4])
+      @result{}  4  3  2  1
+
+flip ([1; 2; 3; 4])
+      @result{}  4
+          3
+          2
+          1
+
+flip ([1 2; 3 4])
+      @result{}  3  4
+          1  2
+
+flip ([1 2; 3 4], 2)
       @result{}  2  1
           4  3
 @end group
 @end example
-@seealso{@ref{XREFfliplr,,fliplr}, @ref{XREFflipud,,flipud}, @ref{XREFrot90,,rot90}, @ref{XREFrotdim,,rotdim}}
+
+@seealso{@ref{XREFfliplr,,fliplr}, @ref{XREFflipud,,flipud}, @ref{XREFrot90,,rot90}, @ref{XREFrotdim,,rotdim}, @ref{XREFpermute,,permute}, @ref{XREFtranspose,,transpose}}
 @end deftypefn
 
 
@@ -436,6 +462,8 @@ flipdim ([1, 2; 3, 4], 2)
 @anchor{XREFrot90}
 @deftypefn  {Function File} {} rot90 (@var{A})
 @deftypefnx {Function File} {} rot90 (@var{A}, @var{k})
+Rotate array by 90 degree increments.
+
 Return a copy of @var{A} with the elements rotated counterclockwise in
 90-degree increments.  The second argument is optional, and specifies
 how many 90-degree rotations are to be applied (the default value is 1).
@@ -462,9 +490,11 @@ rot90 ([1, 2; 3, 4], 7)
 @end group
 @end example
 
-Note that @code{rot90} only works with 2-D arrays.  To rotate N-D arrays
-use @code{rotdim} instead.
-@seealso{@ref{XREFrotdim,,rotdim}, @ref{XREFflipud,,flipud}, @ref{XREFfliplr,,fliplr}, @ref{XREFflipdim,,flipdim}}
+The rotation is always performed on the plane of the first two dimensions,
+i.e., rows and columns.  To perform a rotation on any other plane, use
+@code{rotdim}.
+
+@seealso{@ref{XREFrotdim,,rotdim}, @ref{XREFfliplr,,fliplr}, @ref{XREFflipud,,flipud}, @ref{XREFflip,,flip}}
 @end deftypefn
 
 
@@ -504,7 +534,7 @@ rotdim ([1, 2; 3, 4], 3, [1, 2])
 rotdim ([1, 2; 3, 4], 7, [1, 2])
 @end group
 @end example
-@seealso{@ref{XREFrot90,,rot90}, @ref{XREFflipud,,flipud}, @ref{XREFfliplr,,fliplr}, @ref{XREFflipdim,,flipdim}}
+@seealso{@ref{XREFrot90,,rot90}, @ref{XREFfliplr,,fliplr}, @ref{XREFflipud,,flipud}, @ref{XREFflip,,flip}}
 @end deftypefn
 
 
@@ -593,6 +623,27 @@ new matrices.  For example:
 Return the generalized transpose for an N-D array object @var{A}.
 The permutation vector @var{perm} must contain the elements
 @code{1:ndims (A)} (in any order, but each element must appear only once).
+
+The @var{N}th dimension of @var{A} gets remapped to dimension 
+@code{@var{PERM}(@var{N})}.  For example:
+
+@example
+@group
+@var{x} = zeros ([2, 3, 5, 7]);
+size (@var{x})
+   @result{}  2   3   5   7
+
+size (permute (@var{x}, [2, 1, 3, 4]))
+   @result{}  3   2   5   7
+
+size (permute (@var{x}, [1, 3, 4, 2]))
+   @result{}  2   5   7   3
+
+## The identity permutation
+size (permute (@var{x}, [1, 2, 3, 4]))
+   @result{}  2   3   5   7
+@end group
+@end example
 @seealso{@ref{XREFipermute,,ipermute}}
 @end deftypefn
 
@@ -720,7 +771,7 @@ circshift (x, [0,1])
     9, 7, 8
 @end group
 @end example
-@seealso {permute, ipermute, shiftdim}
+@seealso{@ref{XREFpermute,,permute}, @ref{XREFipermute,,ipermute}, @ref{XREFshiftdim,,shiftdim}}
 @end deftypefn
 
 
@@ -766,7 +817,7 @@ size (shiftdim (x, 1))
    @result{} ns = 1
 @end group
 @end example
-@seealso {reshape, permute, ipermute, circshift, squeeze}
+@seealso{@ref{XREFreshape,,reshape}, @ref{XREFpermute,,permute}, @ref{XREFipermute,,ipermute}, @ref{XREFcircshift,,circshift}, @ref{XREFsqueeze,,squeeze}}
 @end deftypefn
 
 
@@ -918,7 +969,7 @@ starts at an offset of @var{k} diagonals above or below the main
 diagonal; above for positive @var{k} and below for negative @var{k}.
 
 The absolute value of @var{k} must not be greater than the number of
-sub-diagonals or super-diagonals.
+subdiagonals or superdiagonals.
 
 For example:
 
@@ -966,7 +1017,7 @@ This is equivalent to @code{shiftdim (@var{x}(:), 1-@var{dim})}.
 @c vech scripts/linear-algebra/vech.m
 @anchor{XREFvech}
 @deftypefn {Function File} {} vech (@var{x})
-Return the vector obtained by eliminating all supradiagonal elements of
+Return the vector obtained by eliminating all superdiagonal elements of
 the square matrix @var{x} and stacking the result one column above the
 other.  This has uses in matrix calculus where the underlying matrix
 is symmetric and it would be pointless to keep values above the main
@@ -990,6 +1041,9 @@ If @var{x} is a matrix, elements are prepended or removed from each row.
 
 If the optional argument @var{dim} is given, operate along this
 dimension.
+
+If @var{dim} is larger than the dimensions of @var{x}, the result will
+have @var{dim} dimensions.
 @seealso{@ref{XREFpostpad,,postpad}, @ref{XREFcat,,cat}, @ref{XREFresize,,resize}}
 @end deftypefn
 
@@ -1009,6 +1063,9 @@ If @var{x} is a matrix, elements are appended or removed from each row.
 
 If the optional argument @var{dim} is given, operate along this
 dimension.
+
+If @var{dim} is larger than the dimensions of @var{x}, the result will
+have @var{dim} dimensions.
 @seealso{@ref{XREFprepad,,prepad}, @ref{XREFcat,,cat}, @ref{XREFresize,,resize}}
 @end deftypefn
 
@@ -1022,8 +1079,8 @@ dimension.
 @deftypefnx {Built-in Function} {@var{v} =} diag (@var{M}, @var{k})
 Return a diagonal matrix with vector @var{v} on diagonal @var{k}.  The
 second argument is optional.  If it is positive, the vector is placed on
-the @var{k}-th super-diagonal.  If it is negative, it is placed on the
-@var{-k}-th sub-diagonal.  The default value of @var{k} is 0, and the
+the @var{k}-th superdiagonal.  If it is negative, it is placed on the
+@var{-k}-th subdiagonal.  The default value of @var{k} is 0, and the
 vector is placed on the main diagonal.  For example:
 
 @example
@@ -1090,7 +1147,7 @@ eye (2)
 @equiv{}
 eye (2, 2)
 @equiv{}
-eye (size ([1, 2; 3, 4])
+eye (size ([1, 2; 3, 4]))
 @end group
 @end example
 
@@ -1165,6 +1222,7 @@ val = zeros (m,n, "uint8")
 @anchor{XREFrepmat}
 @deftypefn  {Function File} {} repmat (@var{A}, @var{m})
 @deftypefnx {Function File} {} repmat (@var{A}, @var{m}, @var{n})
+@deftypefnx {Function File} {} repmat (@var{A}, @var{m}, @var{n}, @var{p} @dots{})
 @deftypefnx {Function File} {} repmat (@var{A}, [@var{m} @var{n}])
 @deftypefnx {Function File} {} repmat (@var{A}, [@var{m} @var{n} @var{p} @dots{}])
 Form a block matrix of size @var{m} by @var{n}, with a copy of matrix
@@ -1316,8 +1374,8 @@ behavior comparable to @sc{matlab}, initialize with a deterministic state
 vector in Octave's startup files (@pxref{Startup Files}).
 
 To compute the pseudo-random sequence, @code{rand} uses the Mersenne
-Twister with a period of @math{2^{19937}-1} (See M. Matsumoto and
-T. Nishimura,
+Twister with a period of @math{2^{19937}-1} (See
+@nospell{M. Matsumoto and T. Nishimura},
 @cite{Mersenne Twister: A 623-dimensionally equidistributed uniform
 pseudorandom number generator}, ACM Trans. on
 Modeling and Computer Simulation Vol. 8, No. 1, pp. 3-30, January 1998,
@@ -1418,17 +1476,17 @@ Return a matrix with normally distributed random
 elements having zero mean and variance one.  The arguments are
 handled the same as the arguments for @code{rand}.
 
-By default, @code{randn} uses the Marsaglia and Tsang ``Ziggurat technique''
-to transform from a uniform to a normal distribution.
+By default, @code{randn} uses the @nospell{Marsaglia and Tsang}
+``Ziggurat technique'' to transform from a uniform to a normal distribution.
 
 The class of the value returned can be controlled by a trailing
 @qcode{"double"} or @qcode{"single"} argument.  These are the only valid
 classes.
 
-Reference: G. Marsaglia and W.W. Tsang,
+Reference: @nospell{G. Marsaglia and W.W. Tsang},
 @cite{Ziggurat Method for Generating Random Variables},
 J. Statistical Software, vol 5, 2000,
-@url{http://www.jstatsoft.org/v05/i08/})
+@url{http://www.jstatsoft.org/v05/i08/}
 
 @seealso{@ref{XREFrand,,rand}, @ref{XREFrande,,rande}, @ref{XREFrandg,,randg}, @ref{XREFrandp,,randp}}
 @end deftypefn
@@ -1450,17 +1508,17 @@ J. Statistical Software, vol 5, 2000,
 Return a matrix with exponentially distributed random elements.  The
 arguments are handled the same as the arguments for @code{rand}.
 
-By default, @code{randn} uses the Marsaglia and Tsang ``Ziggurat technique''
-to transform from a uniform to an exponential distribution.
+By default, @code{randn} uses the @nospell{Marsaglia and Tsang}
+``Ziggurat technique'' to transform from a uniform to a normal distribution.
 
 The class of the value returned can be controlled by a trailing
 @qcode{"double"} or @qcode{"single"} argument.  These are the only valid
 classes.
 
-Reference: G. Marsaglia and W.W. Tsang,
+Reference: @nospell{G. Marsaglia and W.W. Tsang},
 @cite{Ziggurat Method for Generating Random Variables},
 J. Statistical Software, vol 5, 2000,
-@url{http://www.jstatsoft.org/v05/i08/})
+@url{http://www.jstatsoft.org/v05/i08/}
 
 @seealso{@ref{XREFrand,,rand}, @ref{XREFrandn,,randn}, @ref{XREFrandg,,randg}, @ref{XREFrandp,,randp}}
 @end deftypefn
@@ -1497,17 +1555,17 @@ W.H. Press, et al., @cite{Numerical Recipes in C},
 Cambridge University Press, 1992.
 
 @item For matrix @var{l} @leq{} 10, use inversion method.[2]
-E. Stadlober, et al., WinRand source code, available via FTP.
+@nospell{E. Stadlober, et al., WinRand source code}, available via FTP.
 
 @item For matrix @var{l} > 10, use patchwork rejection method.
-E. Stadlober, et al., WinRand source code, available via FTP, or
-H. Zechner, @cite{Efficient sampling from continuous and discrete
+@nospell{E. Stadlober, et al., WinRand source code}, available via FTP, or
+@nospell{H. Zechner}, @cite{Efficient sampling from continuous and discrete
 unimodal distributions}, Doctoral Dissertation, 156pp., Technical
-University Graz, Austria, 1994.
+University @nospell{Graz}, Austria, 1994.
 
 @item For @var{l} > 1e8, use normal approximation.
-L. Montanet, et al., @cite{Review of Particle Properties}, Physical Review
-D 50 p1284, 1994.
+@nospell{L. Montanet}, et al., @cite{Review of Particle Properties},
+Physical Review D 50 p1284, 1994.
 @end table
 
 The class of the value returned can be controlled by a trailing
@@ -1760,7 +1818,7 @@ Create a matrix whose columns repeat cyclically.
 @deftypefn  {Function File} {[@var{c}, @var{d}, @var{e}] =} gallery ("dorr", @var{n})
 @deftypefnx {Function File} {[@var{c}, @var{d}, @var{e}] =} gallery ("dorr", @var{n}, @var{theta})
 @deftypefnx {Function File} {@var{a} =} gallery ("dorr", @dots{})
-Create a diagonally dominant, ill conditioned, tridiagonal matrix.
+Create a diagonally dominant, ill-conditioned, tridiagonal matrix.
 
 @end deftypefn
 
@@ -1771,20 +1829,20 @@ Create a (0, 1) matrix whose inverse has large integer entries.
 @end deftypefn
 
 @deftypefn {Function File} {@var{a} =} gallery ("fiedler", @var{c})
-Create a symmetric Fiedler matrix.
+Create a symmetric @nospell{Fiedler} matrix.
 
 @end deftypefn
 
 @deftypefn  {Function File} {@var{a} =} gallery ("forsythe", @var{n})
 @deftypefnx {Function File} {@var{a} =} gallery ("forsythe", @var{n}, @var{alpha})
 @deftypefnx {Function File} {@var{a} =} gallery ("forsythe", @var{n}, @var{alpha}, @var{lambda})
-Create a Forsythe matrix (a perturbed Jordan block).
+Create a @nospell{Forsythe} matrix (a perturbed Jordan block).
 
 @end deftypefn
 
 @deftypefn  {Function File} {@var{f} =} gallery ("frank", @var{n})
 @deftypefnx {Function File} {@var{f} =} gallery ("frank", @var{n}, @var{k})
-Create a Frank matrix (ill conditioned eigenvalues).
+Create a Frank matrix (ill-conditioned eigenvalues).
 
 @end deftypefn
 
@@ -1871,13 +1929,13 @@ Create a Jordan block.
 @deftypefn  {Function File} {@var{u} =} gallery ("kahan", @var{n})
 @deftypefnx {Function File} {@var{u} =} gallery ("kahan", @var{n}, @var{theta})
 @deftypefnx {Function File} {@var{u} =} gallery ("kahan", @var{n}, @var{theta}, @var{pert})
-Create a Kahan matrix (upper trapezoidal).
+Create a @nospell{Kahan} matrix (upper trapezoidal).
 
 @end deftypefn
 
 @deftypefn  {Function File} {@var{a} =} gallery ("kms", @var{n})
 @deftypefnx {Function File} {@var{a} =} gallery ("kms", @var{n}, @var{rho})
-Create a Kac-Murdock-Szego Toeplitz matrix.
+Create a @nospell{Kac-Murdock-Szego} Toeplitz matrix.
 
 @end deftypefn
 
@@ -1890,12 +1948,12 @@ Create a Krylov matrix.
 
 @deftypefn  {Function File} {@var{a} =} gallery ("lauchli", @var{n})
 @deftypefnx {Function File} {@var{a} =} gallery ("lauchli", @var{n}, @var{mu})
-Create a Lauchli matrix (rectangular).
+Create a @nospell{Lauchli} matrix (rectangular).
 
 @end deftypefn
 
 @deftypefn {Function File} {@var{a} =} gallery ("lehmer", @var{n})
-Create a Lehmer matrix (symmetric positive definite).
+Create a @nospell{Lehmer} matrix (symmetric positive definite).
 
 @end deftypefn
 
@@ -1905,7 +1963,7 @@ Create a tridiagonal matrix with real, sensitive eigenvalues.
 @end deftypefn
 
 @deftypefn {Function File} {@var{a} =} gallery ("lotkin", @var{n})
-Create a Lotkin matrix.
+Create a @nospell{Lotkin} matrix.
 
 @end deftypefn
 
@@ -1916,7 +1974,7 @@ Create a symmetric positive definite matrix MIN(i,j).
 
 @deftypefn  {Function File} {@var{a} =} gallery ("moler", @var{n})
 @deftypefnx {Function File} {@var{a} =} gallery ("moler", @var{n}, @var{alpha})
-Create a Moler matrix (symmetric positive definite).
+Create a @nospell{Moler} matrix (symmetric positive definite).
 
 @end deftypefn
 
@@ -1951,7 +2009,8 @@ Create orthogonal and nearly orthogonal matrices.
 @end deftypefn
 
 @deftypefn {Function File} {@var{a} =} gallery ("parter", @var{n})
-Create a Parter matrix (a Toeplitz matrix with singular values near pi).
+Create a @nospell{Parter} matrix (a Toeplitz matrix with singular values
+near pi).
 
 @end deftypefn
 
@@ -1993,8 +2052,8 @@ Create a random matrix with pre-assigned singular values.
 @end deftypefn
 
 @deftypefn {Function File} {@var{a} =} gallery ("redheff", @var{n})
-Create a zero and ones matrix of Redheffer associated with the Riemann
-hypothesis.
+Create a zero and ones matrix of @nospell{Redheffer} associated with the
+Riemann hypothesis.
 
 @end deftypefn
 
@@ -2042,7 +2101,8 @@ Create a tridiagonal matrix (sparse).
 @deftypefn  {Function File} {@var{t} =} gallery ("triw", @var{n})
 @deftypefnx {Function File} {@var{t} =} gallery ("triw", @var{n}, @var{alpha})
 @deftypefnx {Function File} {@var{t} =} gallery ("triw", @var{n}, @var{alpha}, @var{k})
-Create an upper triangular matrix discussed by Kahan, Golub and Wilkinson.
+Create an upper triangular matrix discussed by
+@nospell{Kahan, Golub, and Wilkinson}.
 
 @end deftypefn
 
@@ -2067,7 +2127,7 @@ The default is @qcode{"double"}.
 
 @deftypefn  {Function File} {@var{a} =} gallery ("wathen", @var{nx}, @var{ny})
 @deftypefnx {Function File} {@var{a} =} gallery ("wathen", @var{nx}, @var{ny}, @var{k})
-Create the Wathen matrix.
+Create the @nospell{Wathen} matrix.
 
 @end deftypefn
 
@@ -2224,7 +2284,7 @@ where
 The validity of this formula can easily be checked by expanding
 the binomial coefficients in both formulas as factorials.  It can
 be derived more directly via the theory of Cauchy matrices.
-See J. W. Demmel, @cite{Applied Numerical Linear Algebra}, p. 92.
+See @nospell{J. W. Demmel}, @cite{Applied Numerical Linear Algebra}, p. 92.
 
 Compare this with the numerical calculation of @code{inverse (hilb (n))},
 which suffers from the ill-conditioning of the Hilbert matrix, and the

@@ -1,4 +1,4 @@
-## Copyright (C) 2012-2013 Rik Wehbring
+## Copyright (C) 2012-2015 Rik Wehbring
 ##
 ## This file is part of Octave.
 ##
@@ -29,11 +29,11 @@
 ## @end deftypefn
 
 function mtds = methods (obj)
-  
+
   if (nargin != 1)
     print_usage ();
   endif
-  
+
   if (isobject (obj))
     ## Call internal C++ function for Octave objects
     mtds_list = __methods__ (obj);
@@ -72,7 +72,7 @@ endfunction
 %! assert (mtds{1}, "ascii");
 
 ## test Java classname
-%!testif HAVE_JAVA 
+%!testif HAVE_JAVA
 %! mtds = methods ("java.lang.Double");
 %! search = strfind (mtds, "java.lang.Double valueOf");
 %! assert (! isempty ([search{:}]));

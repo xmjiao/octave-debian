@@ -143,7 +143,7 @@ using a single color channel from <code>ind2rgb</code>.
 </p>
 <p>The input image <var>rgb</var> can be specified as a single matrix of size
 MxNx3, or as three separate variables, <var>R</var>, <var>G</var>, and
-<var>B</var>, its three colour channels, red, green, and blue.
+<var>B</var>, its three color channels, red, green, and blue.
 </p>
 <p>It outputs an indexed image <var>x</var> and a colormap <var>map</var> to interpret
 an image exactly the same as the input.  No dithering or other form of color
@@ -313,6 +313,33 @@ a light copper tone.
 The argument <var>n</var> must be a scalar.
 If unspecified, the length of the current colormap, or 64, is used.
 </p>
+<p><strong>See also:</strong> <a href="#XREFcolormap">colormap</a>.
+</p></dd></dl>
+
+
+<a name="XREFcubehelix"></a><dl>
+<dt><a name="index-cubehelix"></a>Function File: <em><var>map</var> =</em> <strong>cubehelix</strong> <em>()</em></dt>
+<dt><a name="index-cubehelix-1"></a>Function File: <em><var>map</var> =</em> <strong>cubehelix</strong> <em>(<var>n</var>)</em></dt>
+<dd><p>Create cubehelix colormap.
+</p>
+<p>This colormap varies from black to white going though blue, green, and red
+tones while maintaining a monotonically increasing perception of intensity.
+This is achieved by transversing a color cube from black to white through
+a helix, hence the name cubehelix, while taking into account the perceived
+brightness of each channel according to the NTSC specifications from 1953.
+</p>
+<div class="example">
+<pre class="example">rgbplot (cubehelix (256))
+</pre></div>
+
+<p>The argument <var>n</var> must be a scalar and corresponds to the lenght of the
+colormap.  Defaults to the length of the current colormap.
+</p>
+<p>Development of this colormap is described in <cite>Green, D. A., 2011,
+&quot;A colour scheme for the display of astronomical intensity images&quot;,
+Bulletin of the Astronomical Society of India, 39, 289.</cite>.
+</p>
+
 <p><strong>See also:</strong> <a href="#XREFcolormap">colormap</a>.
 </p></dd></dl>
 
@@ -589,7 +616,7 @@ root properties will not be changed.
 <dd><p>Convert an input image <var>X</var> to an ouput indexed image <var>Y</var> which uses
 the smallest colormap possible <var>newmap</var>.
 </p>
-<p>When the input is an indexed image (<var>X</var> with colormap <var>map</var>) the 
+<p>When the input is an indexed image (<var>X</var> with colormap <var>map</var>) the
 output is a colormap <var>newmap</var> from which any repeated rows have been
 eliminated.  The output image, <var>Y</var>, is the original input image with
 the indices adjusted to match the new, possibly smaller, colormap.

@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2013 Kai Habel
+## Copyright (C) 2007-2015 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -68,7 +68,7 @@ function retval = surf (varargin)
   endif
   unwind_protect
     hax = newplot (hax);
-    
+
     htmp = surface (varargin{:});
 
     if (! ishold (hax))

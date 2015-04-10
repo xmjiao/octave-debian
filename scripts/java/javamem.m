@@ -1,5 +1,5 @@
 ## Copyright (C) 2010, 2013 Philip Nienhuis
-## 
+##
 ## This file is part of Octave.
 ##
 ## Octave is free software; you can redistribute it and/or modify it
@@ -36,7 +36,7 @@
 ## determined by the environment variable @w{@env{OCTAVE_JAVA_DIR}}.
 ## If unset, the directory where @file{javaaddpath.m} resides is used instead
 ## (typically
-## @file{@w{@env{OCTAVE_HOME}}/share/octave/@w{@env{OCTAVE_VERSION}}/m/java/}
+## @file{@w{@env{OCTAVE_HOME}}/share/octave/@w{@env{OCTAVE_VERSION}}/m/java/}).
 ##
 ## @file{java.opts} is a plain text file with one option per line.  The
 ## default initial memory size and default maximum memory size (which
@@ -61,7 +61,7 @@
 
 ## Author: Philip Nienhuis
 ## Created: 2010-03-25
-## Updates: 
+## Updates:
 ## 2010-03-26 Changed name to javamem & indentation to double spaces
 ## 2010-08-25 Corrected text on java memory assignments
 ## 2010-09-05 Further overhauled help text

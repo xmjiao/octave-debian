@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2013 Kai Habel
+## Copyright (C) 2007-2015 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -39,7 +39,7 @@ function spinmap (t = 5, inc = 2)
   if (nargin > 2)
     print_usage ();
   elseif (ischar (t))
-    if (strcmpi (t, "inf")) 
+    if (strcmpi (t, "inf"))
       t = Inf;
     else
       error ('spinmap: time T must be a real scalar or "inf"');

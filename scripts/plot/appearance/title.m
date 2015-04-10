@@ -1,4 +1,4 @@
-## Copyright (C) 1993-2013 John W. Eaton
+## Copyright (C) 1993-2015 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -43,7 +43,7 @@ function h = title (varargin)
   if (isempty (hax))
     hax = gca ();
   endif
-  
+
   if (rem (nargin, 2) != 1)
     print_usage ();
   endif

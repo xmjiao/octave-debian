@@ -57,8 +57,10 @@ along with Octave; see the file COPYING.  If not, see
 #include "parse.h"
 #include "variables.h"
 
-typedef jint (JNICALL *JNI_CreateJavaVM_t) (JavaVM **pvm, JNIEnv **penv, void *args);
-typedef jint (JNICALL *JNI_GetCreatedJavaVMs_t) (JavaVM **pvm, jsize bufLen, jsize *nVMs);
+typedef jint (JNICALL *JNI_CreateJavaVM_t) (JavaVM **pvm, JNIEnv **penv,
+                                            void *args);
+typedef jint (JNICALL *JNI_GetCreatedJavaVMs_t) (JavaVM **pvm, jsize bufLen,
+                                                 jsize *nVMs);
 
 extern "C"
 {
@@ -457,7 +459,8 @@ initialize_jvm (void)
           std::string regval = read_registry_string (key,value);
 
           if (regval.empty ())
-            throw std::string ("unable to find Java Runtime Environment: ") + key + "::" + value;
+            throw std::string ("unable to find Java Runtime Environment: ")
+                  + key + "::" + value;
           value = regval;
         }
 
@@ -465,7 +468,8 @@ initialize_jvm (void)
       value = "RuntimeLib";
       jvm_lib_path = read_registry_string (key, value);
       if (jvm_lib_path.empty ())
-        throw std::string ("unable to find Java Runtime Environment: ") + key + "::" + value;
+        throw std::string ("unable to find Java Runtime Environment: ")
+              + key + "::" + value;
 
       std::string jvm_bin_path;
 
@@ -500,7 +504,8 @@ initialize_jvm (void)
   octave_shlib lib (jvm_lib_path);
 
   if (!lib)
-    throw std::string ("unable to load Java Runtime Environment from ") + jvm_lib_path;
+    throw std::string ("unable to load Java Runtime Environment from ")
+          + jvm_lib_path;
 
 #if defined (__WIN32__)
 
@@ -520,7 +525,8 @@ initialize_jvm (void)
     throw std::string ("unable to find JNI_CreateJavaVM in ") + jvm_lib_path;
 
   if (!get_vm)
-    throw std::string ("unable to find JNI_GetCreatedJavaVMs in ") + jvm_lib_path;
+    throw std::string ("unable to find JNI_GetCreatedJavaVMs in ")
+          + jvm_lib_path;
 
   if (get_vm (&jvm, 1, &nVMs) == 0 && nVMs > 0)
 
@@ -537,7 +543,8 @@ initialize_jvm (void)
     {
       // At least one JVM exists, try to attach to it
 
-      switch (jvm->GetEnv (reinterpret_cast<void **> (&current_env), JNI_VERSION_1_2))
+      switch (jvm->GetEnv (reinterpret_cast<void **> (&current_env),
+                           JNI_VERSION_1_2))
         {
         case JNI_EDETACHED:
           // Attach the current thread
@@ -571,7 +578,8 @@ initialize_jvm (void)
       vm_args.add ("-Djava.class.path=" + initial_class_path ());
       vm_args.add ("-Xrs");
       vm_args.add ("-Djava.system.class.loader=org.octave.OctClassLoader");
-      vm_args.read_java_opts (initial_java_dir () + file_ops::dir_sep_str () + "java.opts");
+      vm_args.read_java_opts (initial_java_dir () + file_ops::dir_sep_str () +
+                              "java.opts");
 
 # if !defined (__APPLE__) && !defined (__MACH__)
 
@@ -714,7 +722,8 @@ find_octave_class (JNIEnv *jni_env, const char *name)
               jstring_ref js (jni_env, jni_env->NewStringUTF ("octave.class.loader"));
               js = reinterpret_cast<jstring> (jni_env->CallStaticObjectMethod (syscls, mID, jstring (js)));
               class_loader = jstring_to_string (jni_env, jstring (js));
-              std::replace (class_loader.begin (), class_loader.end (), '.', '/');
+              std::replace (class_loader.begin (), class_loader.end (),
+                            '.', '/');
             }
 
           jclass_ref uicls (jni_env, jni_env->FindClass (class_loader.c_str ()));
@@ -724,11 +733,13 @@ find_octave_class (JNIEnv *jni_env, const char *name)
               jni_env->ExceptionClear ();
 
               /* Try the netbeans way */
-              std::replace (class_loader.begin (), class_loader.end (), '/', '.');
+              std::replace (class_loader.begin (), class_loader.end (),
+                            '/', '.');
               jclass_ref jcls2 (jni_env, jni_env->FindClass ("org/openide/util/Lookup"));
               jmethodID mID = jni_env->GetStaticMethodID (jcls2, "getDefault", "()Lorg/openide/util/Lookup;");
               jobject_ref lObj (jni_env, jni_env->CallStaticObjectMethod (jcls2, mID));
-              mID = jni_env->GetMethodID (jcls2, "lookup", "(Ljava/lang/Class;)Ljava/lang/Object;");
+              mID = jni_env->GetMethodID (jcls2, "lookup",
+                                          "(Ljava/lang/Class;)Ljava/lang/Object;");
               jclass_ref cLoaderCls (jni_env, jni_env->FindClass ("java/lang/ClassLoader"));
               jobject_ref cLoader (jni_env, jni_env->CallObjectMethod (lObj, mID, jclass (cLoaderCls)));
               mID = jni_env->GetMethodID (cLoaderCls, "loadClass", "(Ljava/lang/String;)Ljava/lang/Class;");
@@ -1012,7 +1023,7 @@ box (JNIEnv* jni_env, jobject jobj, jclass jcls)
         {
           jmethodID m = jni_env->GetMethodID (cls, "charValue", "()C");
           retval = jni_env->CallCharMethod (jobj, m);
-          retval = retval.convert_to_str (false, true); 
+          retval = retval.convert_to_str (false, true);
           break;
         }
 
@@ -1150,7 +1161,8 @@ box_more (JNIEnv* jni_env, jobject jobj, jclass jcls)
           if (jni_env->IsInstanceOf (jobj, cls))
             {
               jobjectArray jarr = reinterpret_cast<jobjectArray> (jobj);
-              int rows = jni_env->GetArrayLength (jarr), cols = 0;
+              int rows = jni_env->GetArrayLength (jarr);
+              int cols = 0;
 
               if (rows > 0)
                 {
@@ -1568,7 +1580,6 @@ Java_org_octave_Octave_needThreadedInvokation (JNIEnv *env, jclass)
 
 // octave_java class definition
 
-DEFINE_OCTAVE_ALLOCATOR (octave_java);
 
 int octave_java::t_id (-1);
 
@@ -1761,7 +1772,7 @@ octave_java::convert_to_str_internal (bool, bool force, char type) const
 }
 
 void
-octave_java::print (std::ostream& os, bool) const
+octave_java::print (std::ostream& os, bool)
 {
   print_raw (os);
   newline (os);
@@ -2049,9 +2060,10 @@ x = javaObject (\"java.lang.StringBuffer\", \"Initial string\")\n\
 
       if (args.length () > 0)
         {
-          std::string classname = args(0).string_value ();
-          if (! error_state)
+          if (args(0).is_string ())
             {
+              std::string classname = args(0).string_value ();
+
               octave_value_list tmp;
               for (int i=1; i<args.length (); i++)
                 tmp(i-1) = args(i);
@@ -2113,9 +2125,10 @@ equivalent\n\
 
       if (args.length () > 1)
         {
-          std::string methodname = args(0).string_value ();
-          if (! error_state)
+          if (args(0).is_string ())
             {
+              std::string methodname = args(0).string_value ();
+
               octave_value_list tmp;
               for (int i=2; i<args.length (); i++)
                 tmp(i-2) = args(i);
@@ -2186,9 +2199,10 @@ equivalent\n\
 
       if (args.length () == 2)
         {
-          std::string name = args(1).string_value ();
-          if (! error_state)
+          if (args(1).is_string ())
             {
+              std::string name = args(1).string_value ();
+
               if (args(0).is_java ())
                 {
                   octave_java *jobj = TO_JAVA (args(0));
@@ -2248,9 +2262,10 @@ equivalent\n\
 
       if (args.length () == 3)
         {
-          std::string name = args(1).string_value ();
-          if (! error_state)
+          if (args(1).is_string ())
             {
+              std::string name = args(1).string_value ();
+
               if (args(0).is_java ())
                 {
                   octave_java *jobj = TO_JAVA (args(0));

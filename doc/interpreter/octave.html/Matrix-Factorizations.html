@@ -114,7 +114,7 @@ upper triangular part is used.
 <p>In general the lower triangular factorization is significantly faster for
 sparse matrices.
 </p>
-<p><strong>See also:</strong> <a href="#XREFhess">hess</a>, <a href="#XREFlu">lu</a>, <a href="#XREFqr">qr</a>, <a href="#XREFqz">qz</a>, <a href="#XREFschur">schur</a>, <a href="#XREFsvd">svd</a>, <a href="#XREFcholinv">cholinv</a>, <a href="#XREFchol2inv">chol2inv</a>, <a href="#XREFcholupdate">cholupdate</a>, <a href="#XREFcholinsert">cholinsert</a>, <a href="#XREFcholdelete">choldelete</a>, <a href="#XREFcholshift">cholshift</a>.
+<p><strong>See also:</strong> <a href="#XREFhess">hess</a>, <a href="#XREFlu">lu</a>, <a href="#XREFqr">qr</a>, <a href="#XREFqz">qz</a>, <a href="#XREFschur">schur</a>, <a href="#XREFsvd">svd</a>, <a href="Iterative-Techniques.html#XREFichol">ichol</a>, <a href="#XREFcholinv">cholinv</a>, <a href="#XREFchol2inv">chol2inv</a>, <a href="#XREFcholupdate">cholupdate</a>, <a href="#XREFcholinsert">cholinsert</a>, <a href="#XREFcholdelete">choldelete</a>, <a href="#XREFcholshift">cholshift</a>.
 </p></dd></dl>
 
 
@@ -232,8 +232,9 @@ transposition) and <var>H</var> is upper Hessenberg
 (<code><var>H</var>(i, j) = 0 forall i &gt;= j+1)</code>.
 </p>
 <p>The Hessenberg decomposition is usually used as the first step in an
-eigenvalue computation, but has other applications as well (see Golub,
-Nash, and Van Loan, IEEE Transactions on Automatic Control, 1979).
+eigenvalue computation, but has other applications as well
+(see Golub, Nash, and Van Loan,
+IEEE Transactions on Automatic Control, 1979).
 </p>
 <p><strong>See also:</strong> <a href="Basic-Matrix-Functions.html#XREFeig">eig</a>, <a href="#XREFchol">chol</a>, <a href="#XREFlu">lu</a>, <a href="#XREFqr">qr</a>, <a href="#XREFqz">qz</a>, <a href="#XREFschur">schur</a>, <a href="#XREFsvd">svd</a>.
 </p></dd></dl>
@@ -312,7 +313,7 @@ is embedded into <var>U</var> to give a return value similar to the full case.
 For both full and sparse matrices, <code>lu</code> loses the permutation
 information.
 </p>
-<p><strong>See also:</strong> <a href="#XREFluupdate">luupdate</a>, <a href="#XREFchol">chol</a>, <a href="#XREFhess">hess</a>, <a href="#XREFqr">qr</a>, <a href="#XREFqz">qz</a>, <a href="#XREFschur">schur</a>, <a href="#XREFsvd">svd</a>.
+<p><strong>See also:</strong> <a href="#XREFluupdate">luupdate</a>, <a href="Iterative-Techniques.html#XREFilu">ilu</a>, <a href="#XREFchol">chol</a>, <a href="#XREFhess">hess</a>, <a href="#XREFqr">qr</a>, <a href="#XREFqz">qz</a>, <a href="#XREFschur">schur</a>, <a href="#XREFsvd">svd</a>.
 </p></dd></dl>
 
 
@@ -662,7 +663,7 @@ Moler and Stewart&rsquo;s QZ&nbsp;decomposition algorithm.
 <dt><a name="index-schur-1"></a>Built-in Function: <em><var>S</var> =</em> <strong>schur</strong> <em>(<var>A</var>, &quot;real&quot;)</em></dt>
 <dt><a name="index-schur-2"></a>Built-in Function: <em><var>S</var> =</em> <strong>schur</strong> <em>(<var>A</var>, &quot;complex&quot;)</em></dt>
 <dt><a name="index-schur-3"></a>Built-in Function: <em><var>S</var> =</em> <strong>schur</strong> <em>(<var>A</var>, <var>opt</var>)</em></dt>
-<dt><a name="index-schur-4"></a>Built-in Function: <em>[<var>U</var>, <var>S</var>] =</em> <strong>schur</strong> <em>(<var>A</var>, &hellip;)</em></dt>
+<dt><a name="index-schur-4"></a>Built-in Function: <em>[<var>U</var>, <var>S</var>] =</em> <strong>schur</strong> <em>(&hellip;)</em></dt>
 <dd><a name="index-Schur-decomposition"></a>
 <p>Compute the Schur&nbsp;decomposition of <var>A</var>
 </p>
@@ -702,7 +703,7 @@ subspace corresponding to the <var>k</var> leading eigenvalues of <var>S</var>.
 square matrix, and has applications in the solution of algebraic
 Riccati equations in control (see <code>are</code> and <code>dare</code>).
 </p>
-<p><strong>See also:</strong> <a href="#XREFrsf2csf">rsf2csf</a>, <a href="#XREFlu">lu</a>, <a href="#XREFchol">chol</a>, <a href="#XREFhess">hess</a>, <a href="#XREFqr">qr</a>, <a href="#XREFqz">qz</a>, <a href="#XREFsvd">svd</a>.
+<p><strong>See also:</strong> <a href="#XREFrsf2csf">rsf2csf</a>, <a href="#XREFordschur">ordschur</a>, <a href="#XREFlu">lu</a>, <a href="#XREFchol">chol</a>, <a href="#XREFhess">hess</a>, <a href="#XREFqr">qr</a>, <a href="#XREFqz">qz</a>, <a href="#XREFsvd">svd</a>.
 </p></dd></dl>
 
 
@@ -718,6 +719,48 @@ upper triangular Schur&nbsp;form <var>T</var>.
 </p>
 <p>Note also that <var>U</var> and <var>T</var> are not unique.
 </p>
+<p><strong>See also:</strong> <a href="#XREFschur">schur</a>.
+</p></dd></dl>
+
+
+<a name="XREFordschur"></a><dl>
+<dt><a name="index-ordschur"></a>Loadable Function: <em>[<var>UR</var>, <var>SR</var>] =</em> <strong>ordschur</strong> <em>(<var>U</var>, <var>S</var>, <var>select</var>)</em></dt>
+<dd><p>Reorders the real Schur factorization (<var>U</var>,<var>S</var>) obtained with the
+<code>schur</code> function, so that selected eigenvalues appear in the upper left
+diagonal blocks of the quasi triangular Schur matrix.
+The logical vector <var>select</var> specifies the selected eigenvalues as they
+appear along <var>S</var>&rsquo;s diagonal.
+</p>
+<p>For example, given the matrix <code><var>A</var> = [1, 2; 3, 4]</code>, and its Schur
+decomposition
+</p>
+<div class="example">
+<pre class="example">[<var>U</var>, <var>S</var>] = schur (<var>A</var>)
+</pre></div>
+
+<p>which returns
+</p>
+<div class="example">
+<pre class="example"><var>U</var> =
+
+  -0.82456  -0.56577
+   0.56577  -0.82456
+
+<var>S</var> =
+
+  -0.37228  -1.00000
+   0.00000   5.37228
+
+</pre></div>
+
+<p>It is possible to reorder the decomposition so that the positive eigenvalue
+is in the upper left corner, by doing:
+</p>
+<div class="example">
+<pre class="example">[<var>U</var>, <var>S</var>] = ordschur (<var>U</var>, <var>S</var>, [0,1])
+</pre></div>
+
+
 <p><strong>See also:</strong> <a href="#XREFschur">schur</a>.
 </p></dd></dl>
 
@@ -885,9 +928,9 @@ default value is 1e-12.
 <p>If the optional parameter <var>pflg</var> is nonzero, row pivoting is used
 to improve numerical behavior.  The default value is 0.
 </p>
-<p>Reference: A. Hodel, P. Misra, <cite>Partial Pivoting in the Computation of
-Krylov Subspaces of Large Sparse Systems</cite>, Proceedings of the 42nd IEEE
-Conference on Decision and Control, December 2003.
+<p>Reference: A. Hodel, P. Misra, <cite>Partial Pivoting in the
+Computation of Krylov Subspaces of Large Sparse Systems</cite>, Proceedings of
+the 42nd IEEE Conference on Decision and Control, December 2003.
 </p></dd></dl>
 
 

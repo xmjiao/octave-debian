@@ -67,7 +67,7 @@ different information about what is in memory, as the following shows.
 <pre class="example">str = &quot;A random string&quot;;
 who -variables
      -| *** local user variables:
-     -| 
+     -|
      -| __nargin__  str
 </pre></div>
 
@@ -276,22 +276,46 @@ endif
 </pre></div>
 
 <a name="XREFexist"></a><dl>
-<dt><a name="index-exist"></a>Built-in Function: <em></em> <strong>exist</strong> <em>(<var>name</var>, <var>type</var>)</em></dt>
-<dd><p>Return 1 if the name exists as a variable, 2 if the name is an
-absolute file name, an ordinary file in Octave&rsquo;s <code>path</code>, or (after
-appending &lsquo;<samp>.m</samp>&rsquo;) a function file in Octave&rsquo;s <code>path</code>, 3 if the
-name is a &lsquo;<samp>.oct</samp>&rsquo; or &lsquo;<samp>.mex</samp>&rsquo; file in Octave&rsquo;s <code>path</code>,
-5 if the name is a built-in function, 7 if the name is a directory, or 103
-if the name is a function not associated with a file (entered on
-the command line).
+<dt><a name="index-exist"></a>Built-in Function: <em><var>c</var> =</em> <strong>exist</strong> <em>(<var>name</var>)</em></dt>
+<dt><a name="index-exist-1"></a>Built-in Function: <em><var>c</var> =</em> <strong>exist</strong> <em>(<var>name</var>, <var>type</var>)</em></dt>
+<dd><p>Check for the existence of <var>name</var> as a variable, function, file,
+directory, or class.
 </p>
-<p>Otherwise, return 0.
+<p>The return code <var>c</var> is one of
 </p>
-<p>This function also returns 2 if a regular file called <var>name</var>
-exists in Octave&rsquo;s search path.  If you want information about
-other types of files, you should use some combination of the functions
-<code>file_in_path</code> and <code>stat</code> instead.
+<dl compact="compact">
+<dt>1</dt>
+<dd><p><var>name</var> is a variable.
 </p>
+</dd>
+<dt>2</dt>
+<dd><p><var>name</var> is an absolute file name, an ordinary file in Octave&rsquo;s
+<code>path</code>, or (after appending &lsquo;<samp>.m</samp>&rsquo;) a function file in Octave&rsquo;s
+<code>path</code>.
+</p>
+</dd>
+<dt>3</dt>
+<dd><p><var>name</var> is a &lsquo;<samp>.oct</samp>&rsquo; or &lsquo;<samp>.mex</samp>&rsquo; file in Octave&rsquo;s <code>path</code>.
+</p>
+</dd>
+<dt>5</dt>
+<dd><p><var>name</var> is a built-in function.
+</p>
+</dd>
+<dt>7</dt>
+<dd><p><var>name</var> is a directory.
+</p>
+</dd>
+<dt>103</dt>
+<dd><p><var>name</var> is a function not associated with a file (entered on the command
+line).
+</p>
+</dd>
+<dt>0</dt>
+<dd><p><var>name</var> does not exist.
+</p></dd>
+</dl>
+
 <p>If the optional argument <var>type</var> is supplied, check only for
 symbols of the specified type.  Valid types are
 </p>
@@ -304,17 +328,31 @@ symbols of the specified type.  Valid types are
 <dd><p>Check only for built-in functions.
 </p>
 </dd>
+<dt><code>&quot;dir&quot;</code></dt>
+<dd><p>Check only for directories.
+</p>
+</dd>
 <dt><code>&quot;file&quot;</code></dt>
 <dd><p>Check only for files and directories.
 </p>
 </dd>
-<dt><code>&quot;dir&quot;</code></dt>
-<dd><p>Check only for directories.
+<dt><code>&quot;class&quot;</code></dt>
+<dd><p>Check only for classes.  (Note: This option is accepted, but not currently
+implemented)
 </p></dd>
 </dl>
 
+<p>If no type is given, and there are multiple possible matches for name,
+<code>exist</code> will return a code according to the following priority list:
+variable, built-in function, oct-file, directory, file, class. 
+</p>
+<p><code>exist</code> returns 2 if a regular file called <var>name</var> is present in
+Octave&rsquo;s search path.  If you want information about other types of files
+not on the search path you should use some combination of the functions
+<code>file_in_path</code> and <code>stat</code> instead.
+</p>
 
-<p><strong>See also:</strong> <a href="Manipulating-the-Load-Path.html#XREFfile_005fin_005floadpath">file_in_loadpath</a>, <a href="Filesystem-Utilities.html#XREFfile_005fin_005fpath">file_in_path</a>, <a href="Manipulating-the-Load-Path.html#XREFfind_005fdir_005fin_005fpath">find_dir_in_path</a>, <a href="Filesystem-Utilities.html#XREFstat">stat</a>.
+<p><strong>See also:</strong> <a href="Manipulating-the-Load-Path.html#XREFfile_005fin_005floadpath">file_in_loadpath</a>, <a href="Filesystem-Utilities.html#XREFfile_005fin_005fpath">file_in_path</a>, <a href="Manipulating-the-Load-Path.html#XREFdir_005fin_005floadpath">dir_in_loadpath</a>, <a href="Filesystem-Utilities.html#XREFstat">stat</a>.
 </p></dd></dl>
 
 
@@ -414,8 +452,11 @@ without the dash as well.
 
 <a name="XREFpack"></a><dl>
 <dt><a name="index-pack"></a>Function File: <em></em> <strong>pack</strong> <em>()</em></dt>
-<dd><p>Consolidate workspace memory in <small>MATLAB</small>.  This function is provided for
-compatibility, but does nothing in Octave.
+<dd><p>Consolidate workspace memory in <small>MATLAB</small>.
+</p>
+<p>This function is provided for compatibility, but does nothing in Octave.
+</p>
+<p><strong>See also:</strong> <a href="#XREFclear">clear</a>.
 </p></dd></dl>
 
 
@@ -453,11 +494,60 @@ function file, the full name of the file is also displayed.
 <dt><a name="index-what"></a>Command: <em></em> <strong>what</strong></dt>
 <dt><a name="index-what-1"></a>Command: <em></em> <strong>what</strong> <em><var>dir</var></em></dt>
 <dt><a name="index-what-2"></a>Function File: <em>w =</em> <strong>what</strong> <em>(<var>dir</var>)</em></dt>
-<dd><p>List the Octave specific files in directory <var>dir</var>.  If <var>dir</var> is
-not specified then the current directory is used.  If a return argument is
-requested, the files found are returned in the structure <var>w</var>.
+<dd><p>List the Octave specific files in directory <var>dir</var>.
 </p>
-<p><strong>See also:</strong> <a href="#XREFwhich">which</a>.
+<p>If <var>dir</var> is not specified then the current directory is used.
+</p>
+<p>If a return argument is requested, the files found are returned in the
+structure <var>w</var>.  The structure contains the following fields:
+</p>
+<dl compact="compact">
+<dt>path</dt>
+<dd><p>Full path to directory <var>dir</var>
+</p>
+</dd>
+<dt>m</dt>
+<dd><p>Cell array of m-files
+</p>
+</dd>
+<dt>mat</dt>
+<dd><p>Cell array of mat files
+</p>
+</dd>
+<dt>mex</dt>
+<dd><p>Cell array of mex files
+</p>
+</dd>
+<dt>oct</dt>
+<dd><p>Cell array of oct files
+</p>
+</dd>
+<dt>mdl</dt>
+<dd><p>Cell array of mdl files
+</p>
+</dd>
+<dt>slx</dt>
+<dd><p>Cell array of slx files
+</p>
+</dd>
+<dt>p</dt>
+<dd><p>Cell array of p-files
+</p>
+</dd>
+<dt>classes</dt>
+<dd><p>Cell array of class directories (<samp>@<var>classname</var>/</samp>)
+</p>
+</dd>
+<dt>packages</dt>
+<dd><p>Cell array of package directories (<samp>+<var>pkgname</var>/</samp>)
+</p></dd>
+</dl>
+
+<p>Compatibility Note: Octave does not support mdl, slx, and p files; nor
+does it support package directories.  <code>what</code> will always return an
+empty list for these categories.
+</p>
+<p><strong>See also:</strong> <a href="#XREFwhich">which</a>, <a href="Current-Working-Directory.html#XREFls">ls</a>, <a href="#XREFexist">exist</a>.
 </p></dd></dl>
 
 

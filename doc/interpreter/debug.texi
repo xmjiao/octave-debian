@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2013 John W. Eaton
+@c Copyright (C) 1996-2015 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -8,12 +8,12 @@
 @c under the terms of the GNU General Public License as published by the
 @c Free Software Foundation; either version 3 of the License, or (at
 @c your option) any later version.
-@c 
+@c
 @c Octave is distributed in the hope that it will be useful, but WITHOUT
 @c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 @c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 @c for more details.
-@c 
+@c
 @c You should have received a copy of the GNU General Public License
 @c along with Octave; see the file COPYING.  If not, see
 @c <http://www.gnu.org/licenses/>.
@@ -138,31 +138,36 @@ function.
 
 @c dbstop libinterp/corefcn/debug.cc
 @anchor{XREFdbstop}
-@deftypefn  {Built-in Function} {@var{rline} =} dbstop ("@var{func}")
+@deftypefn  {Command} {} dbstop @var{func}
+@deftypefnx {Command} {} dbstop @var{func} @var{line}
+@deftypefnx {Command} {} dbstop @var{func} @var{line1} @var{line2} @dots{}
+@deftypefnx {Command} {} dbstop @var{line} @dots{}
+@deftypefnx {Built-in Function} {@var{rline} =} dbstop ("@var{func}")
 @deftypefnx {Built-in Function} {@var{rline} =} dbstop ("@var{func}", @var{line})
 @deftypefnx {Built-in Function} {@var{rline} =} dbstop ("@var{func}", @var{line1}, @var{line2}, @dots{})
-Set a breakpoint in function @var{func}.
+@deftypefnx {Built-in Function} {} dbstop ("@var{func}", [@var{line1}, @dots{}])
+@deftypefnx {Built-in Function} {} dbstop (@var{line}, @dots{})
+Set a breakpoint at line number @var{line} in function @var{func}.
 
 Arguments are
 
 @table @var
 @item func
-Function name as a string variable.  When already in debug
-mode this should be left out and only the line should be given.
+Function name as a string variable.  When already in debug mode this argument
+can be omitted and the current function will be used.
 
 @item line
-Line number where the breakpoint should be set.  Multiple
-lines may be given as separate arguments or as a vector.
+Line number where the breakpoint should be set.  Multiple lines may be given
+as separate arguments or as a vector.
 @end table
 
-When called with a single argument @var{func}, the breakpoint
-is set at the first executable line in the named function.
+When called with a single argument @var{func}, the breakpoint is set at the
+first executable line in the named function.
 
-The optional output @var{rline} is the real line number where the
-breakpoint was set.  This can differ from specified line if
-the line is not executable.  For example, if a breakpoint attempted on a
-blank line then Octave will set the real breakpoint at the
-next executable line.
+The optional output @var{rline} is the real line number where the breakpoint
+was set.  This can differ from the specified line if the line is not
+executable.  For example, if a breakpoint attempted on a blank line then
+Octave will set the real breakpoint at the next executable line.
 @seealso{@ref{XREFdbclear,,dbclear}, @ref{XREFdbstatus,,dbstatus}, @ref{XREFdbstep,,dbstep}, @ref{XREFdebug_on_error,,debug_on_error}, @ref{XREFdebug_on_warning,,debug_on_warning}, @ref{XREFdebug_on_interrupt,,debug_on_interrupt}}
 @end deftypefn
 
@@ -217,6 +222,9 @@ The name of the m-file where the function code is located.
 A line number, or vector of line numbers, with a breakpoint.
 @end table
 
+Note: When @code{dbstatus} is called from the debug prompt within a function,
+the list of breakpoints is automatically trimmed to the breakpoints in the
+current function.
 @seealso{@ref{XREFdbclear,,dbclear}, @ref{XREFdbwhere,,dbwhere}}
 @end deftypefn
 
@@ -228,28 +236,38 @@ function.
 
 @c dbclear libinterp/corefcn/debug.cc
 @anchor{XREFdbclear}
-@deftypefn  {Built-in Function} {} dbclear ("@var{func}")
-@deftypefnx {Built-in Function} {} dbclear ("@var{func}", @var{line}, @dots{})
+@deftypefn  {Command} {} dbclear @var{func}
+@deftypefnx {Command} {} dbclear @var{func} @var{line}
+@deftypefnx {Command} {} dbclear @var{func} @var{line1} @var{line2} @dots{}
+@deftypefnx {Command} {} dbclear @var{line} @dots{}
+@deftypefnx {Command} {} dbclear all
+@deftypefnx {Built-in Function} {} dbclear ("@var{func}")
+@deftypefnx {Built-in Function} {} dbclear ("@var{func}", @var{line})
+@deftypefnx {Built-in Function} {} dbclear ("@var{func}", @var{line1}, @var{line2}, @dots{})
+@deftypefnx {Built-in Function} {} dbclear ("@var{func}", [@var{line1}, @dots{}])
 @deftypefnx {Built-in Function} {} dbclear (@var{line}, @dots{})
-Delete a breakpoint in the function @var{func}.
+@deftypefnx {Built-in Function} {} dbclear ("all")
+Delete a breakpoint at line number @var{line} in the function @var{func}.
 
 Arguments are
 
 @table @var
 @item func
-Function name as a string variable.  When already in debug
-mode this argument should be omitted and only the line number should be
-given.
+Function name as a string variable.  When already in debug mode this argument
+can be omitted and the current function will be used.
 
 @item line
-Line number from which to remove a breakpoint.  Multiple
-lines may be given as separate arguments or as a vector.
+Line number from which to remove a breakpoint.  Multiple lines may be given
+as separate arguments or as a vector.
 @end table
 
-When called without a line number specification all breakpoints
-in the named function are cleared.
+When called without a line number specification all breakpoints in the named
+function are cleared.
 
 If the requested line is not a breakpoint no action is performed.
+
+The special keyword @qcode{"all"} will clear all breakpoints from all
+files.
 @seealso{@ref{XREFdbstop,,dbstop}, @ref{XREFdbstatus,,dbstatus}, @ref{XREFdbwhere,,dbwhere}}
 @end deftypefn
 
@@ -460,8 +478,8 @@ struct array is currently active.
 
 @c dbup libinterp/corefcn/debug.cc
 @anchor{XREFdbup}
-@deftypefn  {Built-in Function} {} dbup
-@deftypefnx {Built-in Function} {} dbup (@var{n})
+@deftypefn  {Command} {} dbup
+@deftypefnx {Command} {} dbup @var{n}
 In debugging mode, move up the execution stack @var{n} frames.
 If @var{n} is omitted, move up one frame.
 @seealso{@ref{XREFdbstack,,dbstack}, @ref{XREFdbdown,,dbdown}}
@@ -470,8 +488,8 @@ If @var{n} is omitted, move up one frame.
 
 @c dbdown libinterp/corefcn/debug.cc
 @anchor{XREFdbdown}
-@deftypefn  {Built-in Function} {} dbdown
-@deftypefnx {Built-in Function} {} dbdown (@var{n})
+@deftypefn  {Command} {} dbdown
+@deftypefnx {Command} {} dbdown @var{n}
 In debugging mode, move down the execution stack @var{n} frames.
 If @var{n} is omitted, move down one frame.
 @seealso{@ref{XREFdbstack,,dbstack}, @ref{XREFdbup,,dbup}}
@@ -566,17 +584,20 @@ and the profiler also records that it is recursive.
 @anchor{XREFprofshow}
 @deftypefn  {Function File} {} profshow (@var{data})
 @deftypefnx {Function File} {} profshow (@var{data}, @var{n})
-Show flat profiler results.
+@deftypefnx {Function File} {} profshow ()
+@deftypefnx {Function File} {} profshow (@var{n})
+Display flat per-function profiler results.
 
-This command prints out profiler data as a flat profile.  @var{data} is the
-structure returned by @code{profile ("info")}.  If @var{n} is given, it
-specifies the number of functions to show in the profile; functions are
-sorted in descending order by total time spent in them.  If there are more
-than @var{n} included in the profile, those will not be shown.  @var{n}
+Print out profiler data (execution time, number of calls) for the most
+critical @var{n} functions.  The results are sorted in descending order by
+the total time spent in each function.  If @var{n} is unspecified it
 defaults to 20.
 
-The attribute column shows @samp{R} for recursive functions and nothing
-otherwise.
+The input @var{data} is the structure returned by @code{profile ("info")}.
+If unspecified, @code{profshow} will use the current profile dataset.
+
+The attribute column displays @samp{R} for recursive functions, and is blank
+for all other function types.
 @seealso{@ref{XREFprofexplore,,profexplore}, @ref{XREFprofile,,profile}}
 @end deftypefn
 

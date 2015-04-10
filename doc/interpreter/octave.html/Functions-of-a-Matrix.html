@@ -69,8 +69,8 @@ series
 </pre></div>
 
 <p>The Taylor series is <em>not</em> the way to compute the matrix
-exponential; see Moler and Van Loan, <cite>Nineteen Dubious Ways to
-Compute the Exponential of a Matrix</cite>, SIAM Review, 1978.  This routine
+exponential; see Moler and Van Loan, <cite>Nineteen Dubious Ways
+to Compute the Exponential of a Matrix</cite>, SIAM Review, 1978.  This routine
 uses Ward&rsquo;s diagonal Pad&eacute; approximation method with three step
 preconditioning (SIAM Journal on Numerical Analysis, 1977).  Diagonal
 Pad&eacute; approximations are rational polynomials of matrices
@@ -170,19 +170,21 @@ endfor
 </dd></dl>
 
 
-<a name="XREFsyl"></a><dl>
-<dt><a name="index-syl"></a>Built-in Function: <em><var>x</var> =</em> <strong>syl</strong> <em>(<var>A</var>, <var>B</var>, <var>C</var>)</em></dt>
+<a name="XREFsylvester"></a><dl>
+<dt><a name="index-syl"></a>Built-in Function: <em><var>X</var> =</em> <strong>syl</strong> <em>(<var>A</var>, <var>B</var>, <var>C</var>)</em></dt>
 <dd><p>Solve the Sylvester equation
 </p>
 <div class="example">
-<pre class="example">A X + X B + C = 0
+<pre class="example">A X + X B = C
 </pre></div>
 
-<p>using standard <small>LAPACK</small> subroutines.  For example:
+<p>using standard <small>LAPACK</small> subroutines.
+</p>
+<p>For example:
 </p>
 <div class="example">
-<pre class="example">syl ([1, 2; 3, 4], [5, 6; 7, 8], [9, 10; 11, 12])
-   &rArr; [ -0.50000, -0.66667; -0.66667, -0.50000 ]
+<pre class="example">sylvester ([1, 2; 3, 4], [5, 6; 7, 8], [9, 10; 11, 12])
+   &rArr; [ 0.50000, 0.66667; 0.66667, 0.50000 ]
 </pre></div>
 </dd></dl>
 

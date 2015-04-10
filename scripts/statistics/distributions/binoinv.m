@@ -1,5 +1,5 @@
 ## Copyright (C) 2012 Rik Wehbring
-## Copyright (C) 1995-2013 Kurt Hornik
+## Copyright (C) 1995-2015 Kurt Hornik
 ##
 ## This file is part of Octave.
 ##
@@ -20,7 +20,7 @@
 ## -*- texinfo -*-
 ## @deftypefn {Function File} {} binoinv (@var{x}, @var{n}, @var{p})
 ## For each element of @var{x}, compute the quantile (the inverse of
-## the CDF) at @var{x} of the binomial distribution with parameters 
+## the CDF) at @var{x} of the binomial distribution with parameters
 ## @var{n} and @var{p}, where @var{n} is the number of trials and
 ## @var{p} is the probability of success.
 ## @end deftypefn
@@ -34,7 +34,7 @@ function inv = binoinv (x, n, p)
     print_usage ();
   endif
 
-  if (!isscalar (n) || !isscalar (p))
+  if (! isscalar (n) || ! isscalar (p))
     [retval, x, n, p] = common_size (x, n, p);
     if (retval > 0)
       error ("binoinv: X, N, and P must be of common size or scalars");
@@ -95,13 +95,13 @@ endfunction
 %!assert (binoinv (x, 2, 0.5*[0 -1 NaN 3 1]), [NaN NaN NaN NaN NaN])
 %!assert (binoinv ([x(1:2) NaN x(4:5)], 2, 0.5), [NaN 0 NaN 2 NaN])
 
-%% Test class of input preserved
+## Test class of input preserved
 %!assert (binoinv ([x, NaN], 2, 0.5), [NaN 0 1 2 NaN NaN])
 %!assert (binoinv (single ([x, NaN]), 2, 0.5), single ([NaN 0 1 2 NaN NaN]))
 %!assert (binoinv ([x, NaN], single (2), 0.5), single ([NaN 0 1 2 NaN NaN]))
 %!assert (binoinv ([x, NaN], 2, single (0.5)), single ([NaN 0 1 2 NaN NaN]))
 
-%% Test input validation
+## Test input validation
 %!error binoinv ()
 %!error binoinv (1)
 %!error binoinv (1,2)

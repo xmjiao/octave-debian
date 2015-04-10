@@ -1,4 +1,4 @@
-## Copyright (C) 2005-2013 John W. Eaton
+## Copyright (C) 2005-2015 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -23,7 +23,7 @@
 ## @deftypefnx {Function File} {} clf (@var{hfig}, "reset")
 ## @deftypefnx {Function File} {@var{h} =} clf (@dots{})
 ## Clear the current figure window.
-## 
+##
 ## @code{clf} operates by deleting child graphics objects with visible
 ## handles (HandleVisibility = @qcode{"on"}).
 ##
@@ -34,7 +34,7 @@
 ##
 ## If the first argument @var{hfig} is a figure handle, then operate on
 ## this figure rather than the current figure returned by @code{gcf}.
-## 
+##
 ## The optional return value @var{h} is the graphics handle of the figure
 ## window that was cleared.
 ## @seealso{cla, close, delete, reset}
@@ -76,6 +76,10 @@ function h = clf (varargin)
   else
     ## Select only the chilren with visible handles.
     delete (get (hfig, "children"));
+
+    ## Also delete the annotation axes
+    hover = findall (hfig, "-depth", 1, "tag", "scribeoverlay");
+    delete (hover);
   endif
 
   if (nargout > 0)
@@ -106,6 +110,7 @@ endfunction
 %! end_unwind_protect
 
 %!xtest
+%! set (0, "defaultfigurevisible", "off")
 %! hf = figure ("visible", "off");
 %! unwind_protect
 %!   plot (1:10);
@@ -119,6 +124,7 @@ endfunction
 %!   assert (isempty (get (gcf, "children")));
 %!   assert (get (hf, "papertype"), "usletter");
 %! unwind_protect_cleanup
+%!   set (0, "defaultfigurevisible", "remove")
 %!   close (hf);
 %! end_unwind_protect
 

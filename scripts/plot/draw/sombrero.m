@@ -1,4 +1,4 @@
-## Copyright (C) 1993-2013 John W. Eaton
+## Copyright (C) 1993-2015 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -36,7 +36,7 @@
 ## @end ifnottex
 ## Called without a return argument, @code{sombrero} plots the surface of the
 ## above function over the meshgrid [-8,8] using @code{surf}.
-## 
+##
 ## If @var{n} is a scalar the plot is made with @var{n} grid lines.
 ## The default value for @var{n} is 41.
 ##

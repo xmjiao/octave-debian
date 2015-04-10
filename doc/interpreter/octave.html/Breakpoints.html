@@ -62,33 +62,38 @@ Next: <a href="Debug-Mode.html#Debug-Mode" accesskey="n" rel="next">Debug Mode</
 function.
 </p>
 <a name="XREFdbstop"></a><dl>
-<dt><a name="index-dbstop"></a>Built-in Function: <em><var>rline</var> =</em> <strong>dbstop</strong> <em>(&quot;<var>func</var>&quot;)</em></dt>
-<dt><a name="index-dbstop-1"></a>Built-in Function: <em><var>rline</var> =</em> <strong>dbstop</strong> <em>(&quot;<var>func</var>&quot;, <var>line</var>)</em></dt>
-<dt><a name="index-dbstop-2"></a>Built-in Function: <em><var>rline</var> =</em> <strong>dbstop</strong> <em>(&quot;<var>func</var>&quot;, <var>line1</var>, <var>line2</var>, &hellip;)</em></dt>
-<dd><p>Set a breakpoint in function <var>func</var>.
+<dt><a name="index-dbstop"></a>Command: <em></em> <strong>dbstop</strong> <em><var>func</var></em></dt>
+<dt><a name="index-dbstop-1"></a>Command: <em></em> <strong>dbstop</strong> <em><var>func</var> <var>line</var></em></dt>
+<dt><a name="index-dbstop-2"></a>Command: <em></em> <strong>dbstop</strong> <em><var>func</var> <var>line1</var> <var>line2</var> &hellip;</em></dt>
+<dt><a name="index-dbstop-3"></a>Command: <em></em> <strong>dbstop</strong> <em><var>line</var> &hellip;</em></dt>
+<dt><a name="index-dbstop-4"></a>Built-in Function: <em><var>rline</var> =</em> <strong>dbstop</strong> <em>(&quot;<var>func</var>&quot;)</em></dt>
+<dt><a name="index-dbstop-5"></a>Built-in Function: <em><var>rline</var> =</em> <strong>dbstop</strong> <em>(&quot;<var>func</var>&quot;, <var>line</var>)</em></dt>
+<dt><a name="index-dbstop-6"></a>Built-in Function: <em><var>rline</var> =</em> <strong>dbstop</strong> <em>(&quot;<var>func</var>&quot;, <var>line1</var>, <var>line2</var>, &hellip;)</em></dt>
+<dt><a name="index-dbstop-7"></a>Built-in Function: <em></em> <strong>dbstop</strong> <em>(&quot;<var>func</var>&quot;, [<var>line1</var>, &hellip;])</em></dt>
+<dt><a name="index-dbstop-8"></a>Built-in Function: <em></em> <strong>dbstop</strong> <em>(<var>line</var>, &hellip;)</em></dt>
+<dd><p>Set a breakpoint at line number <var>line</var> in function <var>func</var>.
 </p>
 <p>Arguments are
 </p>
 <dl compact="compact">
 <dt><var>func</var></dt>
-<dd><p>Function name as a string variable.  When already in debug
-mode this should be left out and only the line should be given.
+<dd><p>Function name as a string variable.  When already in debug mode this argument
+can be omitted and the current function will be used.
 </p>
 </dd>
 <dt><var>line</var></dt>
-<dd><p>Line number where the breakpoint should be set.  Multiple
-lines may be given as separate arguments or as a vector.
+<dd><p>Line number where the breakpoint should be set.  Multiple lines may be given
+as separate arguments or as a vector.
 </p></dd>
 </dl>
 
-<p>When called with a single argument <var>func</var>, the breakpoint
-is set at the first executable line in the named function.
+<p>When called with a single argument <var>func</var>, the breakpoint is set at the
+first executable line in the named function.
 </p>
-<p>The optional output <var>rline</var> is the real line number where the
-breakpoint was set.  This can differ from specified line if
-the line is not executable.  For example, if a breakpoint attempted on a
-blank line then Octave will set the real breakpoint at the
-next executable line.
+<p>The optional output <var>rline</var> is the real line number where the breakpoint
+was set.  This can differ from the specified line if the line is not
+executable.  For example, if a breakpoint attempted on a blank line then
+Octave will set the real breakpoint at the next executable line.
 </p>
 <p><strong>See also:</strong> <a href="#XREFdbclear">dbclear</a>, <a href="#XREFdbstatus">dbstatus</a>, <a href="Debug-Mode.html#XREFdbstep">dbstep</a>, <a href="Entering-Debug-Mode.html#XREFdebug_005fon_005ferror">debug_on_error</a>, <a href="Entering-Debug-Mode.html#XREFdebug_005fon_005fwarning">debug_on_warning</a>, <a href="Entering-Debug-Mode.html#XREFdebug_005fon_005finterrupt">debug_on_interrupt</a>.
 </p></dd></dl>
@@ -142,7 +147,10 @@ following fields.
 </p></dd>
 </dl>
 
-
+<p>Note: When <code>dbstatus</code> is called from the debug prompt within a function,
+the list of breakpoints is automatically trimmed to the breakpoints in the
+current function.
+</p>
 <p><strong>See also:</strong> <a href="#XREFdbclear">dbclear</a>, <a href="Debug-Mode.html#XREFdbwhere">dbwhere</a>.
 </p></dd></dl>
 
@@ -152,30 +160,40 @@ following fields.
 function.
 </p>
 <a name="XREFdbclear"></a><dl>
-<dt><a name="index-dbclear"></a>Built-in Function: <em></em> <strong>dbclear</strong> <em>(&quot;<var>func</var>&quot;)</em></dt>
-<dt><a name="index-dbclear-1"></a>Built-in Function: <em></em> <strong>dbclear</strong> <em>(&quot;<var>func</var>&quot;, <var>line</var>, &hellip;)</em></dt>
-<dt><a name="index-dbclear-2"></a>Built-in Function: <em></em> <strong>dbclear</strong> <em>(<var>line</var>, &hellip;)</em></dt>
-<dd><p>Delete a breakpoint in the function <var>func</var>.
+<dt><a name="index-dbclear"></a>Command: <em></em> <strong>dbclear</strong> <em><var>func</var></em></dt>
+<dt><a name="index-dbclear-1"></a>Command: <em></em> <strong>dbclear</strong> <em><var>func</var> <var>line</var></em></dt>
+<dt><a name="index-dbclear-2"></a>Command: <em></em> <strong>dbclear</strong> <em><var>func</var> <var>line1</var> <var>line2</var> &hellip;</em></dt>
+<dt><a name="index-dbclear-3"></a>Command: <em></em> <strong>dbclear</strong> <em><var>line</var> &hellip;</em></dt>
+<dt><a name="index-dbclear-4"></a>Command: <em></em> <strong>dbclear</strong> <em>all</em></dt>
+<dt><a name="index-dbclear-5"></a>Built-in Function: <em></em> <strong>dbclear</strong> <em>(&quot;<var>func</var>&quot;)</em></dt>
+<dt><a name="index-dbclear-6"></a>Built-in Function: <em></em> <strong>dbclear</strong> <em>(&quot;<var>func</var>&quot;, <var>line</var>)</em></dt>
+<dt><a name="index-dbclear-7"></a>Built-in Function: <em></em> <strong>dbclear</strong> <em>(&quot;<var>func</var>&quot;, <var>line1</var>, <var>line2</var>, &hellip;)</em></dt>
+<dt><a name="index-dbclear-8"></a>Built-in Function: <em></em> <strong>dbclear</strong> <em>(&quot;<var>func</var>&quot;, [<var>line1</var>, &hellip;])</em></dt>
+<dt><a name="index-dbclear-9"></a>Built-in Function: <em></em> <strong>dbclear</strong> <em>(<var>line</var>, &hellip;)</em></dt>
+<dt><a name="index-dbclear-10"></a>Built-in Function: <em></em> <strong>dbclear</strong> <em>(&quot;all&quot;)</em></dt>
+<dd><p>Delete a breakpoint at line number <var>line</var> in the function <var>func</var>.
 </p>
 <p>Arguments are
 </p>
 <dl compact="compact">
 <dt><var>func</var></dt>
-<dd><p>Function name as a string variable.  When already in debug
-mode this argument should be omitted and only the line number should be
-given.
+<dd><p>Function name as a string variable.  When already in debug mode this argument
+can be omitted and the current function will be used.
 </p>
 </dd>
 <dt><var>line</var></dt>
-<dd><p>Line number from which to remove a breakpoint.  Multiple
-lines may be given as separate arguments or as a vector.
+<dd><p>Line number from which to remove a breakpoint.  Multiple lines may be given
+as separate arguments or as a vector.
 </p></dd>
 </dl>
 
-<p>When called without a line number specification all breakpoints
-in the named function are cleared.
+<p>When called without a line number specification all breakpoints in the named
+function are cleared.
 </p>
 <p>If the requested line is not a breakpoint no action is performed.
+</p>
+<p>The special keyword <code>&quot;all&quot;</code> will clear all breakpoints from all
+files.
 </p>
 <p><strong>See also:</strong> <a href="#XREFdbstop">dbstop</a>, <a href="#XREFdbstatus">dbstatus</a>, <a href="Debug-Mode.html#XREFdbwhere">dbwhere</a>.
 </p></dd></dl>

@@ -1,5 +1,5 @@
 ## Copyright (C) 2012 Rik Wehbring
-## Copyright (C) 2007-2013 David Bateman
+## Copyright (C) 2007-2015 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -52,7 +52,7 @@ function cdf = unidcdf (x, n)
     cdf(knan) = NaN;
   endif
 
-  k = (x >= n) & !knan;  
+  k = (x >= n) & !knan;
   cdf(k) = 1;
 
   k = (x >= 1) & (x < n) & !knan;
@@ -73,12 +73,12 @@ endfunction
 %!assert (unidcdf (x, 10*[0 1 NaN 1 1]), [NaN 0.1 NaN y(4:5)])
 %!assert (unidcdf ([x(1:2) NaN Inf x(5)], 10), [y(1:2) NaN 1 y(5)])
 
-%% Test class of input preserved
+## Test class of input preserved
 %!assert (unidcdf ([x, NaN], 10), [y, NaN])
 %!assert (unidcdf (single ([x, NaN]), 10), single ([y, NaN]))
 %!assert (unidcdf ([x, NaN], single (10)), single ([y, NaN]))
 
-%% Test input validation
+## Test input validation
 %!error unidcdf ()
 %!error unidcdf (1)
 %!error unidcdf (1,2,3)

@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1996-2013 John W. Eaton
+Copyright (C) 1996-2015 John W. Eaton
 
 This file is part of Octave.
 
@@ -157,7 +157,7 @@ For that, use any of the condition number functions: @code{cond},\n\
               MatrixType mtype = rep ? rep -> matrix_type () : MatrixType ();
               FloatDET det = m.determinant (mtype, info, rcond);
               retval(1) = rcond;
-              retval(0) = info == -1 ? static_cast<float>(0.0) : det.value ();
+              retval(0) = info == -1 ? 0.0f : det.value ();
               if (rep) rep->matrix_type (mtype);
             }
         }
@@ -234,7 +234,7 @@ For that, use any of the condition number functions: @code{cond},\n\
               if (! error_state)
                 {
                   MAYBE_CAST (rep, octave_complex_matrix);
-                  MatrixType mtype = rep ? rep -> matrix_type () 
+                  MatrixType mtype = rep ? rep -> matrix_type ()
                                          : MatrixType ();
                   ComplexDET det = m.determinant (mtype, info, rcond);
                   retval(1) = rcond;

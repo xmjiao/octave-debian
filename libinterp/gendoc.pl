@@ -1,6 +1,6 @@
 #! /usr/bin/perl -w
 #
-# Copyright (C) 2012-2013 Rik Wehbring
+# Copyright (C) 2012-2015 Rik Wehbring
 #
 # This file is part of Octave.
 #
@@ -43,7 +43,7 @@ DFFILE: foreach $df_fname (@ARGV)
       $src_fname = $1;
       next LINE;
     }
-    if (/XDEF/ and ! /XDEFALIAS/) 
+    if (/XDEF/ and ! /XDEFALIAS/)
     {
       ## Decode 4 or 5 part macro definition.
       ($func, $str) = /\("?(\w+)"?,[^,]+,[^,]+,(?:[^,]+,)?\s*"(.*)"\)\s*$/ ;

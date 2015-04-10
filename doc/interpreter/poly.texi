@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2013 John W. Eaton
+@c Copyright (C) 1996-2015 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -8,12 +8,12 @@
 @c under the terms of the GNU General Public License as published by the
 @c Free Software Foundation; either version 3 of the License, or (at
 @c your option) any later version.
-@c 
+@c
 @c Octave is distributed in the hope that it will be useful, but WITHOUT
 @c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 @c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 @c for more details.
-@c 
+@c
 @c You should have received a copy of the GNU General Public License
 @c along with Octave; see the file COPYING.  If not, see
 @c <http://www.gnu.org/licenses/>.
@@ -187,9 +187,11 @@ Given an @var{n*n} matrix polynomial
 @code{@var{C}(s) = @var{C0} + @var{C1} s + @dots{} + @var{Cl} s^l}
 polyeig solves the eigenvalue problem
 @code{(@var{C0} + @var{C1} + @dots{} + @var{Cl})v = 0}.
+
 Note that the eigenvalues @var{z} are the zeros of the matrix polynomial.
-@var{z} is an @var{lxn} vector and @var{v} is an (@var{n} x @var{n})l matrix
-with columns that correspond to the eigenvectors.
+@var{z} is a row vector with @var{n*l} elements.  @var{v} is a matrix
+(@var{n} x @var{n}*@var{l}) with columns that correspond to the
+eigenvectors.
 
 @seealso{@ref{XREFeig,,eig}, @ref{XREFeigs,,eigs}, @ref{XREFcompan,,compan}}
 @end deftypefn
@@ -1076,7 +1078,7 @@ numerical performance the @code{eig} function should be used to compute
 eigenvalues.
 
 If @var{x} is a vector, @code{poly (@var{x})} is a vector of the
-coefficients of the polynomial whose roots are the elements of @var{x}. 
+coefficients of the polynomial whose roots are the elements of @var{x}.
 That is, if @var{c} is a polynomial, then the elements of @code{@var{d} =
 roots (poly (@var{c}))} are contained in @var{c}.  The vectors @var{c} and
 @var{d} are not identical, however, due to sorting and numerical errors.

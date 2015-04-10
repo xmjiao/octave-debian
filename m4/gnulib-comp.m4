@@ -1,5 +1,5 @@
 # DO NOT EDIT! GENERATED AUTOMATICALLY!
-# Copyright (C) 2002-2013 Free Software Foundation, Inc.
+# Copyright (C) 2002-2015 Free Software Foundation, Inc.
 #
 # This file is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -38,9 +38,11 @@ AC_DEFUN([gl_EARLY],
   m4_pattern_allow([^gl_LIBOBJS$])dnl a variable
   m4_pattern_allow([^gl_LTLIBOBJS$])dnl a variable
   AC_REQUIRE([gl_PROG_AR_RANLIB])
+  # Code from module absolute-header:
   # Code from module alloca:
   # Code from module alloca-opt:
   # Code from module areadlink-with-size:
+  # Code from module assure:
   # Code from module at-internal:
   # Code from module base64:
   # Code from module bitrotate:
@@ -237,6 +239,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module unistd:
   # Code from module unistd-safer:
   # Code from module unlink:
+  # Code from module unsetenv:
   # Code from module vasnprintf:
   # Code from module vasprintf:
   # Code from module verify:
@@ -801,8 +804,8 @@ AC_SUBST([LTALLOCA])
     AC_LIBOBJ([sleep])
   fi
   gl_UNISTD_MODULE_INDICATOR([sleep])
-  gl_SOCKETLIB
-  gl_SOCKETS
+  AC_REQUIRE([gl_SOCKETLIB])
+  AC_REQUIRE([gl_SOCKETS])
   gl_TYPE_SOCKLEN_T
   gt_TYPE_SSIZE_T
   gl_FUNC_STAT
@@ -871,7 +874,7 @@ AC_SUBST([LTALLOCA])
   gl_UNISTD_MODULE_INDICATOR([symlink])
   gl_HEADER_SYS_SELECT
   AC_PROG_MKDIR_P
-  gl_HEADER_SYS_SOCKET
+  AC_REQUIRE([gl_HEADER_SYS_SOCKET])
   AC_PROG_MKDIR_P
   gl_HEADER_SYS_STAT_H
   AC_PROG_MKDIR_P
@@ -928,6 +931,12 @@ AC_SUBST([LTALLOCA])
     AC_LIBOBJ([unlink])
   fi
   gl_UNISTD_MODULE_INDICATOR([unlink])
+  gl_FUNC_UNSETENV
+  if test $HAVE_UNSETENV = 0 || test $REPLACE_UNSETENV = 1; then
+    AC_LIBOBJ([unsetenv])
+    gl_PREREQ_UNSETENV
+  fi
+  gl_STDLIB_MODULE_INDICATOR([unsetenv])
   gl_FUNC_VASNPRINTF
   gl_FUNC_VASPRINTF
   gl_STDIO_MODULE_INDICATOR([vasprintf])
@@ -1087,6 +1096,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/areadlink.h
   lib/asnprintf.c
   lib/asprintf.c
+  lib/assure.h
   lib/at-func.c
   lib/base64.c
   lib/base64.h
@@ -1171,6 +1181,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/getopt_int.h
   lib/gettext.h
   lib/gettimeofday.c
+  lib/gl_openssl.h
   lib/glob-libc.h
   lib/glob.c
   lib/glob.in.h
@@ -1325,6 +1336,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/unistd.c
   lib/unistd.in.h
   lib/unlink.c
+  lib/unsetenv.c
   lib/vasnprintf.c
   lib/vasnprintf.h
   lib/vasprintf.c
@@ -1344,6 +1356,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/xstrndup.c
   lib/xstrndup.h
   m4/00gnulib.m4
+  m4/absolute-header.m4
   m4/alloca.m4
   m4/base64.m4
   m4/canonicalize.m4
@@ -1407,6 +1420,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/getlogin_r.m4
   m4/getopt.m4
   m4/gettimeofday.m4
+  m4/gl-openssl.m4
   m4/glibc21.m4
   m4/glob.m4
   m4/gnulib-common.m4
@@ -1476,6 +1490,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/save-cwd.m4
   m4/secure_getenv.m4
   m4/select.m4
+  m4/setenv.m4
   m4/sigaction.m4
   m4/signal_h.m4
   m4/signalblocking.m4

@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2013 Kai Habel
+## Copyright (C) 2000-2015 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -30,8 +30,8 @@
 ## The default option is @code{@{"Qt"@}}.
 ##
 ## If @var{options} is not present or @code{[]} then the default arguments are
-## used.  Otherwise, @var{options} replaces the default argument list. 
-## To append user options to the defaults it is necessary to repeat the 
+## used.  Otherwise, @var{options} replaces the default argument list.
+## To append user options to the defaults it is necessary to repeat the
 ## default arguments in @var{options}.  Use a null string to pass no arguments.
 ##
 ## @seealso{convhulln, delaunay, voronoi}
@@ -100,5 +100,5 @@ endfunction
 %! y = abs (sin (x));
 %! assert (convhull (x, y), [1;7;13;12;11;10;4;3;2;1]);
 
-%% FIXME: Need input validation tests
+## FIXME: Need input validation tests
 

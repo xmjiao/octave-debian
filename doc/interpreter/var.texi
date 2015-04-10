@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2013 John W. Eaton
+@c Copyright (C) 1996-2015 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -8,12 +8,12 @@
 @c under the terms of the GNU General Public License as published by the
 @c Free Software Foundation; either version 3 of the License, or (at
 @c your option) any later version.
-@c 
+@c
 @c Octave is distributed in the hope that it will be useful, but WITHOUT
 @c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 @c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 @c for more details.
-@c 
+@c
 @c You should have received a copy of the GNU General Public License
 @c along with Octave; see the file COPYING.  If not, see
 @c <http://www.gnu.org/licenses/>.
@@ -68,8 +68,10 @@ before they have been given a value.  Doing so results in an error.
 @c ans scripts/miscellaneous/ans.m
 @anchor{XREFans}
 @defvr {Automatic Variable} ans
-The most recently computed result that was not
-explicitly assigned to a variable.  For example, after the expression
+The most recently computed result that was not explicitly assigned to a
+variable.
+
+For example, after the expression
 
 @example
 3^2 + 4^2
@@ -92,23 +94,10 @@ Return true if @var{name} is a valid variable name.
 @anchor{XREFgenvarname}
 @deftypefn  {Function File} {@var{varname} =} genvarname (@var{str})
 @deftypefnx {Function File} {@var{varname} =} genvarname (@var{str}, @var{exclusions})
-Create unique variable(s) from @var{str}.  If @var{exclusions} is
-given, then the variable(s) will be unique to each other and to
-@var{exclusions} (@var{exclusions} may be either a string or a cellstr).
+Create valid unique variable name(s) from @var{str}.
 
 If @var{str} is a cellstr, then a unique variable is created for each
 cell in @var{str}.
-
-@example
-@group
-x = 3.141;
-genvarname ("x", who ())
-  @result{} x1
-@end group
-@end example
-
-If @var{wanted} is a cell array, genvarname will make sure the returned
-strings are distinct:
 
 @example
 @group
@@ -121,7 +110,19 @@ genvarname (@{"foo", "foo"@})
 @end group
 @end example
 
-Note that the result is a char array/cell array of strings, not the
+If @var{exclusions} is given, then the variable(s) will be unique to each
+other and to @var{exclusions} (@var{exclusions} may be either a string or
+a cellstr).
+
+@example
+@group
+x = 3.141;
+genvarname ("x", who ())
+  @result{} x1
+@end group
+@end example
+
+Note that the result is a char array or cell array of strings, not the
 variables themselves.  To define a variable, @code{eval()} can be
 used.  The following trivial example sets @code{x} to @code{42}.
 
@@ -133,7 +134,7 @@ eval ([name " = 42"]);
 @end group
 @end example
 
-Also, this can be useful for creating unique struct field names.
+This can be useful for creating unique struct field names.
 
 @example
 @group
@@ -150,33 +151,34 @@ endfor
 @end group
 @end example
 
-Since variable names may only contain letters, digits and underscores,
-genvarname replaces any sequence of disallowed characters with
+Since variable names may only contain letters, digits, and underscores,
+@code{genvarname} will replace any sequence of disallowed characters with
 an underscore.  Also, variables may not begin with a digit; in this
-case an underscore is added before the variable name.
+case an @samp{x} is added before the variable name.
 
 Variable names beginning and ending with two underscores @qcode{"__"} are
-valid but they are used internally by octave and should generally be
-avoided, therefore genvarname will not generate such names.
+valid, but they are used internally by Octave and should generally be
+avoided; therefore, @code{genvarname} will not generate such names.
 
-genvarname will also make sure that returned names do not clash with
+@code{genvarname} will also ensure that returned names do not clash with
 keywords such as @qcode{"for"} and @qcode{"if"}.  A number will be
 appended if necessary.  Note, however, that this does @strong{not} include
-function names, such as @qcode{"sin"}.  Such names should be included in
-@var{avoid} if necessary.
-@seealso{@ref{XREFisvarname,,isvarname}, @ref{XREFexist,,exist}, @ref{XREFtmpnam,,tmpnam}, @ref{XREFeval,,eval}}
+function names such as @qcode{"sin"}.  Such names should be included in
+@var{exclusions} if necessary.
+@seealso{@ref{XREFisvarname,,isvarname}, @ref{XREFiskeyword,,iskeyword}, @ref{XREFexist,,exist}, @ref{XREFwho,,who}, @ref{XREFtempname,,tempname}, @ref{XREFeval,,eval}}
 @end deftypefn
 
 
 @c namelengthmax scripts/miscellaneous/namelengthmax.m
 @anchor{XREFnamelengthmax}
 @deftypefn {Function File} {} namelengthmax ()
-Return the @sc{matlab} compatible maximum variable name length.  Octave is
-capable of storing strings up to @math{2^{31} - 1} in length.
-However for @sc{matlab} compatibility all variable, function,
-and structure field names should be shorter than the length supplied by
-@code{namelengthmax}.  In particular variables stored to a @sc{matlab} file
-format will have their names truncated to this length.
+Return the @sc{matlab} compatible maximum variable name length.
+
+Octave is capable of storing strings up to @math{2^{31} - 1} in length.
+However for @sc{matlab} compatibility all variable, function, and structure
+field names should be shorter than the length returned by
+@code{namelengthmax}.  In particular, variables stored to a @sc{matlab} file
+format (@file{*.mat}) will have their names truncated to this length.
 @end deftypefn
 
 
@@ -345,8 +347,7 @@ persistent d = 3 e f = 5
 @end example
 
 The behavior of persistent variables is equivalent to the behavior of
-static variables in C@.  The command @code{static} in Octave is also
-recognized and is equivalent to @code{persistent}.
+static variables in C@.
 
 Like global variables, a persistent variable may only be initialized once.
 For example, after executing the following code
@@ -439,7 +440,7 @@ different information about what is in memory, as the following shows.
 str = "A random string";
 who -variables
      @print{} *** local user variables:
-     @print{} 
+     @print{}
      @print{} __nargin__  str
 @end group
 @end example
@@ -629,21 +630,38 @@ endif
 
 @c exist libinterp/corefcn/variables.cc
 @anchor{XREFexist}
-@deftypefn {Built-in Function} {} exist (@var{name}, @var{type})
-Return 1 if the name exists as a variable, 2 if the name is an
-absolute file name, an ordinary file in Octave's @code{path}, or (after
-appending @samp{.m}) a function file in Octave's @code{path}, 3 if the
-name is a @samp{.oct} or @samp{.mex} file in Octave's @code{path},
-5 if the name is a built-in function, 7 if the name is a directory, or 103
-if the name is a function not associated with a file (entered on
-the command line).
+@deftypefn  {Built-in Function} {@var{c} =} exist (@var{name})
+@deftypefnx {Built-in Function} {@var{c} =} exist (@var{name}, @var{type})
+Check for the existence of @var{name} as a variable, function, file,
+directory, or class.
 
-Otherwise, return 0.
+The return code @var{c} is one of
 
-This function also returns 2 if a regular file called @var{name}
-exists in Octave's search path.  If you want information about
-other types of files, you should use some combination of the functions
-@code{file_in_path} and @code{stat} instead.
+@table @asis
+@item 1
+@var{name} is a variable.
+
+@item 2
+@var{name} is an absolute file name, an ordinary file in Octave's
+@code{path}, or (after appending @samp{.m}) a function file in Octave's
+@code{path}.
+
+@item 3
+@var{name} is a @samp{.oct} or @samp{.mex} file in Octave's @code{path}.
+
+@item 5
+@var{name} is a built-in function.
+
+@item 7
+@var{name} is a directory.
+
+@item 103
+@var{name} is a function not associated with a file (entered on the command
+line).
+
+@item 0
+@var{name} does not exist.
+@end table
 
 If the optional argument @var{type} is supplied, check only for
 symbols of the specified type.  Valid types are
@@ -655,14 +673,27 @@ Check only for variables.
 @item @qcode{"builtin"}
 Check only for built-in functions.
 
+@item @qcode{"dir"}
+Check only for directories.
+
 @item @qcode{"file"}
 Check only for files and directories.
 
-@item @qcode{"dir"}
-Check only for directories.
+@item @qcode{"class"}
+Check only for classes.  (Note: This option is accepted, but not currently
+implemented)
 @end table
 
-@seealso{@ref{XREFfile_in_loadpath,,file_in_loadpath}, @ref{XREFfile_in_path,,file_in_path}, @ref{XREFfind_dir_in_path,,find_dir_in_path}, @ref{XREFstat,,stat}}
+If no type is given, and there are multiple possible matches for name,
+@code{exist} will return a code according to the following priority list:
+variable, built-in function, oct-file, directory, file, class. 
+
+@code{exist} returns 2 if a regular file called @var{name} is present in
+Octave's search path.  If you want information about other types of files
+not on the search path you should use some combination of the functions
+@code{file_in_path} and @code{stat} instead.
+
+@seealso{@ref{XREFfile_in_loadpath,,file_in_loadpath}, @ref{XREFfile_in_path,,file_in_path}, @ref{XREFdir_in_loadpath,,dir_in_loadpath}, @ref{XREFstat,,stat}}
 @end deftypefn
 
 
@@ -756,8 +787,10 @@ without the dash as well.
 @c pack scripts/miscellaneous/pack.m
 @anchor{XREFpack}
 @deftypefn {Function File} {} pack ()
-Consolidate workspace memory in @sc{matlab}.  This function is provided for
-compatibility, but does nothing in Octave.
+Consolidate workspace memory in @sc{matlab}.
+
+This function is provided for compatibility, but does nothing in Octave.
+@seealso{@ref{XREFclear,,clear}}
 @end deftypefn
 
 
@@ -797,9 +830,48 @@ function file, the full name of the file is also displayed.
 @deftypefn  {Command} {} what
 @deftypefnx {Command} {} what @var{dir}
 @deftypefnx {Function File} {w =} what (@var{dir})
-List the Octave specific files in directory @var{dir}.  If @var{dir} is
-not specified then the current directory is used.  If a return argument is
-requested, the files found are returned in the structure @var{w}.
-@seealso{@ref{XREFwhich,,which}}
+List the Octave specific files in directory @var{dir}.
+
+If @var{dir} is not specified then the current directory is used.
+
+If a return argument is requested, the files found are returned in the
+structure @var{w}.  The structure contains the following fields:
+
+@table @asis
+@item path
+Full path to directory @var{dir}
+
+@item m
+Cell array of m-files
+
+@item mat
+Cell array of mat files
+
+@item mex
+Cell array of mex files
+
+@item oct
+Cell array of oct files
+
+@item mdl
+Cell array of mdl files
+
+@item slx
+Cell array of slx files
+
+@item p
+Cell array of p-files
+
+@item classes
+Cell array of class directories (@file{@@@var{classname}/})
+
+@item packages
+Cell array of package directories (@file{+@var{pkgname}/})
+@end table
+
+Compatibility Note: Octave does not support mdl, slx, and p files; nor
+does it support package directories.  @code{what} will always return an
+empty list for these categories.
+@seealso{@ref{XREFwhich,,which}, @ref{XREFls,,ls}, @ref{XREFexist,,exist}}
 @end deftypefn
 

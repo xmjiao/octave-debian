@@ -1,4 +1,4 @@
-## Copyright (C) 1999-2013 Kai Habel
+## Copyright (C) 1999-2015 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -31,16 +31,12 @@
 ## PKG_ADD: colormap ("register", "jet");
 ## PKG_DEL: colormap ("unregister", "jet");
 
-function map = jet (n)
+function map = jet (n = rows (colormap ()))
 
-  if (nargin == 0)
-    n = rows (colormap);
-  elseif (nargin == 1)
-    if (! isscalar (n))
-      error ("jet: N must be a scalar");
-    endif
-  else
+  if (nargin > 1)
     print_usage ();
+  elseif (! isscalar (n))
+    error ("jet: N must be a scalar");
   endif
 
   if (n == 1)
@@ -60,7 +56,7 @@ function map = jet (n)
     r = zeros (n, 1);
     r(idx1:idx2, 1) = [1:nel] / nel;
     r(idx2:idx3, 1) = 1;
-    nel2 = n - idx3; 
+    nel2 = n - idx3;
     r(idx3:(idx3+nel2), 1) = [nel:-1:(nel - nel2)] / nel;
 
     idx1 = idx1 - nel;          # ~1/8*n for large n
@@ -70,7 +66,7 @@ function map = jet (n)
     g = zeros (n, 1);
     g(idx1:idx2, 1) = [1:nel] / nel;
     g(idx2:idx3, 1) = 1;
-    nel2 = min (nel, n - idx3); 
+    nel2 = min (nel, n - idx3);
     g(idx3:(idx3+nel2), 1) = [nel:-1:(nel - nel2)] / nel;
 
     idx1 = max (idx2 - nel, 1); # ~1/8*n for large n
@@ -78,10 +74,10 @@ function map = jet (n)
     idx3 = idx3;                # ~5/8*n for large n
 
     b = zeros (n, 1);
-    nel2 = min (nel, idx1-1); 
+    nel2 = min (nel, idx1-1);
     b(1:idx1, 1) = [(nel - nel2):nel] / nel;
     b(idx1:idx2, 1) = 1;
-    nel2 = min (nel, n - idx3); 
+    nel2 = min (nel, n - idx3);
     b(idx2:(idx2+nel2), 1) = [nel:-1:(nel - nel2)] / nel;
 
     map = [r, g, b];

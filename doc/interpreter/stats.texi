@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2013 John W. Eaton
+@c Copyright (C) 1996-2015 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -8,12 +8,12 @@
 @c under the terms of the GNU General Public License as published by the
 @c Free Software Foundation; either version 3 of the License, or (at
 @c your option) any later version.
-@c 
+@c
 @c Octave is distributed in the hope that it will be useful, but WITHOUT
 @c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 @c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 @c for more details.
-@c 
+@c
 @c You should have received a copy of the GNU General Public License
 @c along with Octave; see the file COPYING.  If not, see
 @c <http://www.gnu.org/licenses/>.
@@ -22,7 +22,7 @@
 @chapter Statistics
 
 Octave has support for various statistical methods.  This includes
-basic descriptive statistics, probability distributions, statistical tests, 
+basic descriptive statistics, probability distributions, statistical tests,
 random number generation, and much more.
 
 The functions that analyze data all assume that multi-dimensional data
@@ -44,8 +44,8 @@ different arrangements.
 
 It should be noted that the statistics functions don't test for data
 containing NaN, NA, or Inf.  These values need to be detected and dealt
-with explicitly.  See @ref{XREFisnan,,isnan}, @ref{XREFisna,,isna}, 
-@ref{XREFisinf,,isinf}, @ref{XREFisfinite,,isfinite}. 
+with explicitly.  See @ref{XREFisnan,,isnan}, @ref{XREFisna,,isna},
+@ref{XREFisinf,,isinf}, @ref{XREFisfinite,,isfinite}.
 
 @menu
 * Descriptive Statistics::
@@ -60,9 +60,9 @@ with explicitly.  See @ref{XREFisnan,,isnan}, @ref{XREFisna,,isna},
 @node Descriptive Statistics
 @section Descriptive Statistics
 
-One principal goal of descriptive statistics is to represent the essence of a 
+One principal goal of descriptive statistics is to represent the essence of a
 large data set concisely.  Octave provides the mean, median, and mode functions
-which all summarize a data set with just a single number corresponding to 
+which all summarize a data set with just a single number corresponding to
 the central tendency of the data.
 
 @c mean scripts/statistics/base/mean.m
@@ -211,7 +211,7 @@ where $\bar{x}$ is the mean value of $x$.
 
 @example
 @group
-std (x) = 1/N SUM_i x(i)^2
+meansq (x) = 1/N SUM_i x(i)^2
 @end group
 @end example
 
@@ -311,7 +311,7 @@ variance [default]
   normalizes with @math{N}, this provides the second moment around the mean
 @end table
 
-If @math{N==1} the value of @var{opt} is ignored and normalization 
+If @math{N==1} the value of @var{opt} is ignored and normalization
 by @math{N} is used.
 
 If the optional argument @var{dim} is given, operate along this dimension.
@@ -470,7 +470,7 @@ Valid options are:
 
 @table @asis
 @item @qcode{"c"}
-  Central Moment (default). 
+  Central Moment (default).
 
 @item  @qcode{"a"}
 @itemx @qcode{"ac"}
@@ -492,7 +492,7 @@ $$
 @end ifnottex
 
 @item @qcode{"r"}
-  Raw Moment.  The moment about zero defined as 
+  Raw Moment.  The moment about zero defined as
 
 @tex
 $$
@@ -526,6 +526,7 @@ $$
 
 @end ifnottex
 @end table
+
 If the optional argument @var{dim} is given, operate along this dimension.
 
 If both @var{type} and @var{dim} are given they may appear in any order.
@@ -550,10 +551,8 @@ the @var{p}(i)th quantiles of each column of @var{x}.
 If @var{p} is unspecified, return the quantiles for
 @code{[0.00 0.25 0.50 0.75 1.00]}.
 The optional argument @var{dim} determines the dimension along which
-the quantiles are calculated.  If @var{dim} is omitted, and @var{x} is
-a vector or matrix, it defaults to 1 (column-wise quantiles).  If
-@var{x} is an N-D array, @var{dim} defaults to the first non-singleton
-dimension.
+the quantiles are calculated.  If @var{dim} is omitted it defaults to
+the first non-singleton dimension.
 
 The methods available to calculate sample quantiles are the nine methods
 used by R (@url{http://www.r-project.org/}).  The default value is
@@ -593,17 +592,17 @@ estimates are approximately unbiased for the expected order statistics if
 @var{x} is normally distributed.
 @end enumerate
 
-Hyndman and Fan (1996) recommend method 8.  Maxima, S, and R
+@nospell{Hyndman and Fan} (1996) recommend method 8.  Maxima, S, and R
 (versions prior to 2.0.0) use 7 as their default.  Minitab and SPSS
 use method 6.  @sc{matlab} uses method 5.
 
 References:
 
 @itemize @bullet
-@item Becker, R. A., Chambers, J. M. and Wilks, A. R. (1988) The New
-S Language.  Wadsworth & Brooks/Cole.
+@item @nospell{Becker, R. A., Chambers, J. M. and Wilks, A. R.} (1988)
+The New S Language.  Wadsworth & Brooks/Cole.
 
-@item Hyndman, R. J. and Fan, Y. (1996) Sample quantiles in
+@item @nospell{Hyndman, R. J. and Fan, Y.} (1996) Sample quantiles in
 statistical packages, American Statistician, 50, 361--365.
 
 @item R: A Language and Environment for Statistical Computing;
@@ -639,10 +638,8 @@ return them in a matrix, such that the i-th row of @var{y} contains the
 
 If @var{p} is unspecified, return the quantiles for @code{[0 25 50 75 100]}.
 The optional argument @var{dim} determines the dimension along which
-the percentiles are calculated.  If @var{dim} is omitted, and @var{x} is
-a vector or matrix, it defaults to 1 (column-wise quantiles).  When
-@var{x} is an N-D array, @var{dim} defaults to the first non-singleton
-dimension.
+the percentiles are calculated.  If @var{dim} is omitted it defaults to the
+the first non-singleton dimension.
 @seealso{@ref{XREFquantile,,quantile}}
 @end deftypefn
 
@@ -669,7 +666,7 @@ If the optional argument @var{dim} is given, operate along this dimension.
 @section Basic Statistical Functions
 
 Octave supports various helpful statistical functions.  Many are useful as
-initial steps to prepare a data set for further analysis.  Others provide 
+initial steps to prepare a data set for further analysis.  Others provide
 different measures from those of the basic descriptive statistics.
 
 @c center scripts/statistics/base/center.m
@@ -740,7 +737,8 @@ of @var{x} was counted.
 @deftypefn  {Function File} {@var{c} =} nchoosek (@var{n}, @var{k})
 @deftypefnx {Function File} {@var{c} =} nchoosek (@var{set}, @var{k})
 
-Compute the binomial coefficient or all combinations of a set of items.
+Compute the binomial coefficient of @var{n} or list all possible
+combinations of a @var{set} of items.
 
 If @var{n} is a scalar then calculate the binomial coefficient
 of @var{n} and @var{k} which is defined as
@@ -794,10 +792,10 @@ nchoosek (1:3, 2)
 @end group
 @end example
 
-@code{nchoosek} works only for non-negative, integer arguments.  Use
-@code{bincoeff} for non-integer and negative scalar arguments, or for
-computing many binomial coefficients at once with vector inputs
-for @var{n} or @var{k}.
+Programming Note: When calculating the binomial coefficient @code{nchoosek}
+works only for non-negative, integer arguments.  Use @code{bincoeff} for
+non-integer and negative scalar arguments, or for computing many binomial
+coefficients at once with vector inputs for @var{n} or @var{k}.
 
 @seealso{@ref{XREFbincoeff,,bincoeff}, @ref{XREFperms,,perms}}
 @end deftypefn
@@ -806,15 +804,17 @@ for @var{n} or @var{k}.
 @c perms scripts/specfun/perms.m
 @anchor{XREFperms}
 @deftypefn {Function File} {} perms (@var{v})
+Generate all permutations of @var{v} with one row per permutation.
 
-Generate all permutations of @var{v}, one row per permutation.  The
-result has size @code{factorial (@var{n}) * @var{n}}, where @var{n}
+The result has size @code{factorial (@var{n}) * @var{n}}, where @var{n}
 is the length of @var{v}.
 
-As an example, @code{perms ([1, 2, 3])} returns the matrix
+Example
 
 @example
 @group
+perms ([1, 2, 3])
+@result{}
   1   2   3
   2   1   3
   1   3   2
@@ -823,6 +823,10 @@ As an example, @code{perms ([1, 2, 3])} returns the matrix
   3   2   1
 @end group
 @end example
+
+Programming Note: The maximum length of @var{v} should be less than or
+equal to 10 to limit memory consumption.
+@seealso{@ref{XREFpermute,,permute}, @ref{XREFrandperm,,randperm}, @ref{XREFnchoosek,,nchoosek}}
 @end deftypefn
 
 
@@ -1238,12 +1242,12 @@ Octave has functions for computing the Probability Density Function
 (PDF), the Cumulative Distribution function (CDF), and the quantile
 (the inverse of the CDF) for a large number of distributions.
 
-The following table summarizes the supported distributions (in 
+The following table summarizes the supported distributions (in
 alphabetical order).
 
 @tex
 \vskip 6pt
-{\hbox to \hsize {\hfill\vbox{\offinterlineskip \tabskip=0pt 
+{\hbox to \hsize {\hfill\vbox{\offinterlineskip \tabskip=0pt
 \halign{
 \vrule height2.0ex depth1.ex width 0.6pt #\tabskip=0.3em &
 # \hfil & \vrule # & # \hfil & \vrule # & # \hfil & \vrule # & # \hfil &
@@ -1429,7 +1433,7 @@ probability of success.
 @anchor{XREFbinoinv}
 @deftypefn {Function File} {} binoinv (@var{x}, @var{n}, @var{p})
 For each element of @var{x}, compute the quantile (the inverse of
-the CDF) at @var{x} of the binomial distribution with parameters 
+the CDF) at @var{x} of the binomial distribution with parameters
 @var{n} and @var{p}, where @var{n} is the number of trials and
 @var{p} is the probability of success.
 @end deftypefn
@@ -1710,7 +1714,7 @@ with @var{m} and @var{n} not greater than @var{t}.
 @c kolmogorov_smirnov_cdf scripts/statistics/distributions/kolmogorov_smirnov_cdf.m
 @anchor{XREFkolmogorov_smirnov_cdf}
 @deftypefn {Function File} {} kolmogorov_smirnov_cdf (@var{x}, @var{tol})
-Return the cumulative distribution function (CDF) at @var{x} of the 
+Return the cumulative distribution function (CDF) at @var{x} of the
 Kolmogorov-Smirnov distribution,
 @tex
 $$ Q(x) = \sum_{k=-\infty}^\infty (-1)^k \exp (-2 k^2 x^2) $$
@@ -1983,7 +1987,7 @@ function (CDF) at @var{x} of the t (Student) distribution with
 @anchor{XREFtinv}
 @deftypefn {Function File} {} tinv (@var{x}, @var{n})
 For each element of @var{x}, compute the quantile (the inverse of
-the CDF) at @var{x} of the t (Student) distribution with @var{n} 
+the CDF) at @var{x} of the t (Student) distribution with @var{n}
 degrees of freedom.  This function is analogous to looking in a table
 for the t-value of a single-tailed distribution.
 @end deftypefn
@@ -1997,7 +2001,7 @@ For each element of @var{x}, compute the probability density function
 the integer values 1--@var{n} with equal probability.
 
 Warning: The underlying implementation uses the double class and
-will only be accurate for @var{n} @leq{} @code{bitmax} 
+will only be accurate for @var{n} @leq{} @code{bitmax}
 (@w{@math{2^{53} - 1}} on IEEE-754 compatible systems).
 @end deftypefn
 
@@ -2127,7 +2131,7 @@ table summarizes the available tests.
 
 @tex
 \vskip 6pt
-{\hbox to \hsize {\hfill\vbox{\offinterlineskip \tabskip=0pt 
+{\hbox to \hsize {\hfill\vbox{\offinterlineskip \tabskip=0pt
 \halign{
 \vrule height2.0ex depth1.ex width 0.6pt #\tabskip=0.3em &
 # \hfil & \vrule # & # \hfil & # \vrule width 0.6pt \tabskip=0pt\cr
@@ -2273,7 +2277,7 @@ Test whether two samples @var{x} and @var{y} come from uncorrelated
 populations.
 
 The optional argument string @var{alt} describes the alternative
-hypothesis, and can be @qcode{"!="} or @qcode{"<>"} (non-zero),
+hypothesis, and can be @qcode{"!="} or @qcode{"<>"} (nonzero),
 @qcode{">"} (greater than 0), or @qcode{"<"} (less than 0).  The
 default is the two-sided case.
 
@@ -2360,7 +2364,7 @@ equal covariance matrices, test the null hypothesis @code{mean
 Hotelling's two-sample @math{T^2} is returned in @var{tsq}.  Under the null,
 @tex
 $$
-{n_x+n_y-p-1) T^2 \over p(n_x+n_y-2)}
+{(n_x+n_y-p-1) T^2 \over p(n_x+n_y-2)}
 $$
 @end tex
 @ifnottex
@@ -2448,7 +2452,7 @@ If no output argument is given, the p-value is displayed.
 @c kruskal_wallis_test scripts/statistics/tests/kruskal_wallis_test.m
 @anchor{XREFkruskal_wallis_test}
 @deftypefn {Function File} {[@var{pval}, @var{k}, @var{df}] =} kruskal_wallis_test (@var{x1}, @dots{})
-Perform a Kruskal-Wallis one-factor analysis of variance.
+Perform a @nospell{Kruskal-Wallis} one-factor analysis of variance.
 
 Suppose a variable is observed for @var{k} > 1 different groups, and
 let @var{x1}, @dots{}, @var{xk} be the corresponding data vectors.
@@ -2466,8 +2470,8 @@ If the data contains ties (some value appears more than once)
 where @var{sum_ties} is the sum of @var{t}^2 - @var{t} over each group
 of ties where @var{t} is the number of ties in the group and @var{n}
 is the total number of values in the input data.  For more info on
-this adjustment see William H. Kruskal and W. Allen Wallis,
-@cite{Use of Ranks in One-Criterion Variance Analysis}, 
+this adjustment see @nospell{William H. Kruskal and W. Allen Wallis},
+@cite{Use of Ranks in One-Criterion Variance Analysis},
 Journal of the American Statistical Association, Vol. 47,
 No. 260 (Dec 1952).
 
@@ -2491,7 +2495,7 @@ The data matrix is given by @var{x}.  As usual, rows are observations
 and columns are variables.  The vector @var{g} specifies the
 corresponding group labels (e.g., numbers from 1 to @var{k}).
 
-The LR test statistic (Wilks' Lambda) and approximate p-values are
+The LR test statistic (@nospell{Wilks' Lambda}) and approximate p-values are
 computed and displayed.
 @end deftypefn
 
@@ -2500,8 +2504,8 @@ computed and displayed.
 @anchor{XREFmcnemar_test}
 @deftypefn {Function File} {[@var{pval}, @var{chisq}, @var{df}] =} mcnemar_test (@var{x})
 For a square contingency table @var{x} of data cross-classified on
-the row and column variables, McNemar's test can be used for testing
-the null hypothesis of symmetry of the classification probabilities.
+the row and column variables, @nospell{McNemar's} test can be used for
+testing the null hypothesis of symmetry of the classification probabilities.
 
 Under the null, @var{chisq} is approximately distributed as chisquare
 with @var{df} degrees of freedom.
@@ -2805,7 +2809,7 @@ The following table summarizes the available random number generators
 
 @tex
 \vskip 6pt
-{\hbox to \hsize {\hfill\vbox{\offinterlineskip \tabskip=0pt 
+{\hbox to \hsize {\hfill\vbox{\offinterlineskip \tabskip=0pt
 \halign{
 \vrule height2.0ex depth1.ex width 0.6pt #\tabskip=0.3em &
 # \hfil & \vrule # & # \hfil & # \vrule width 0.6pt \tabskip=0pt\cr

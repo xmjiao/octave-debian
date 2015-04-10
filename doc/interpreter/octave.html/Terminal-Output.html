@@ -236,18 +236,19 @@ of like this &lsquo;<samp>0.60419 + 0.60709i</samp>&rsquo;.
 integer types).
 </p>
 <dl compact="compact">
-<dt><code>+</code></dt>
-<dt><code>+ <var>chars</var></code></dt>
+<dt><code>&quot;+&quot;</code></dt>
+<dt><code>&quot;+&quot; <var>chars</var></code></dt>
 <dt><code>plus</code></dt>
 <dt><code>plus <var>chars</var></code></dt>
-<dd><p>Print a &lsquo;<samp>+</samp>&rsquo; symbol for nonzero matrix elements and a space for zero
-matrix elements.  This format can be very useful for examining the
-structure of a large sparse matrix.
+<dd><p>Print a &lsquo;<samp>+</samp>&rsquo; symbol for matrix elements greater than zero, a
+&lsquo;<samp>-</samp>&rsquo; symbol for elements less than zero and a space for zero matrix
+elements.  This format can be very useful for examining the structure
+of a large sparse matrix.
 </p>
 <p>The optional argument <var>chars</var> specifies a list of 3 characters to use
 for printing values greater than zero, less than zero and equal to zero.
-For example, with the &lsquo;<samp>+ &quot;+-.&quot;</samp>&rsquo; format, <code>[1, 0, -1; -1, 0, 1]</code>
-is displayed as
+For example, with the &lsquo;<samp>&quot;+&quot; &quot;+-.&quot;</samp>&rsquo; format,
+<code>[1, 0, -1; -1, 0, 1]</code> is displayed as
 </p>
 <div class="example">
 <pre class="example">ans =

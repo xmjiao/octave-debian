@@ -1,4 +1,4 @@
-## Copyright (C) 2006-2013 John W. Eaton
+## Copyright (C) 2006-2015 John W. Eaton
 ##
 ## This file is part of Octave.
 ##
@@ -40,7 +40,7 @@ function box (varargin)
   if (isempty (hax))
     hax = gca ();
   endif
-  
+
   if (nargs == 0)
     box_state = get (hax, "box");
     if (strcmp (box_state, "on"))

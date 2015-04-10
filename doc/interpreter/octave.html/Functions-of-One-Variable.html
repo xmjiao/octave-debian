@@ -440,9 +440,9 @@ integral.
 <dt><a name="index-quadcc-2"></a>Function File: <em><var>q</var> =</em> <strong>quadcc</strong> <em>(<var>f</var>, <var>a</var>, <var>b</var>, <var>tol</var>, <var>sing</var>)</em></dt>
 <dt><a name="index-quadcc-3"></a>Function File: <em>[<var>q</var>, <var>err</var>, <var>nr_points</var>] =</em> <strong>quadcc</strong> <em>(&hellip;)</em></dt>
 <dd><p>Numerically evaluate the integral of <var>f</var> from <var>a</var> to <var>b</var>
-using the doubly-adaptive Clenshaw-Curtis quadrature described by P. Gonnet
-in <cite>Increasing the Reliability of Adaptive Quadrature Using Explicit
-Interpolants</cite>.
+using the doubly-adaptive Clenshaw-Curtis quadrature described by
+P. Gonnet in <cite>Increasing the Reliability of Adaptive
+Quadrature Using Explicit Interpolants</cite>.
 <var>f</var> is a function handle, inline function, or string
 containing the name of the function to evaluate.
 The function <var>f</var> must be vectorized and must return a vector of output
@@ -506,7 +506,7 @@ Mathematical Software, Vol. 37, Issue 3, Article No. 3, 2010.
 which to perform an integration.  This can occur when collecting data in an
 experiment.  The <code>trapz</code> function can integrate these values as shown in
 the following example where &quot;data&quot; has been collected on the cosine function
-over the range [0, pi/2). 
+over the range [0, pi/2).
 </p>
 <div class="example">
 <pre class="example">x = 0:0.1:pi/2;  # Uniformly spaced points
@@ -516,7 +516,7 @@ trapz (x, y)
 </pre></div>
 
 <p>The answer is reasonably close to the exact value of 1.  Ordinary quadrature
-is sensitive to the characteristics of the integrand.  Empirical integration 
+is sensitive to the characteristics of the integrand.  Empirical integration
 depends not just on the integrand, but also on the particular points chosen to
 represent the function.  Repeating the example above with the sine function
 over the range [0, pi/2) produces far inferior results.

@@ -267,18 +267,18 @@ code to execute.
 <dt><a name="index-javaclasspath-2"></a>Function File: <em>[<var>dpath</var>, <var>spath</var>] =</em> <strong>javaclasspath</strong> <em>()</em></dt>
 <dt><a name="index-javaclasspath-3"></a>Function File: <em><var>clspath</var> =</em> <strong>javaclasspath</strong> <em>(<var>what</var>)</em></dt>
 <dd><p>Return the class path of the Java virtual machine in the form of a cell
-array of strings. 
+array of strings.
 </p>
 <p>If called with no inputs:
 </p>
 <ul>
-<li> If no output is requested, the dynamic and static classpaths are printed 
-to the standard output.
+<li> If no output is requested, the dynamic and static classpaths are
+printed to the standard output.
 
 </li><li> If one output value <var>dpath</var> is requested, the result is
 the dynamic classpath.
 
-</li><li> If two output values<var>dpath</var> and <var>spath</var> are 
+</li><li> If two output values<var>dpath</var> and <var>spath</var> are
 requested, the first variable will contain the dynamic classpath and
 the second will be contain the static classpath.
 </li></ul>
@@ -334,9 +334,79 @@ Multiple paths may be removed at once by specifying additional arguments.
 </p></dd></dl>
 
 
-<p>The following four functions provide information and control over the interface
+<p>The following functions provide information and control over the interface
 between Octave and the Java Virtual Machine.
 </p>
+<a name="XREFjavachk"></a><dl>
+<dt><a name="index-javachk"></a>Function File: <em></em> <strong>javachk</strong> <em>(<var>feature</var>)</em></dt>
+<dt><a name="index-javachk-1"></a>Function File: <em></em> <strong>javachk</strong> <em>(<var>feature</var>, <var>component</var>)</em></dt>
+<dt><a name="index-javachk-2"></a>Function File: <em><var>msg</var> =</em> <strong>javachk</strong> <em>(&hellip;)</em></dt>
+<dd><p>Check for the presence of the Java <var>feature</var> in the current session
+and print or return an error message if it is not.
+</p>
+<p>Possible features are:
+</p>
+<dl compact="compact">
+<dt><code>&quot;awt&quot;</code></dt>
+<dd><p>Abstract Window Toolkit for GUIs.
+</p>
+</dd>
+<dt><code>&quot;desktop&quot;</code></dt>
+<dd><p>Interactive desktop is running.
+</p>
+</dd>
+<dt><code>&quot;jvm&quot;</code></dt>
+<dd><p>Java Virtual Machine.
+</p>
+</dd>
+<dt><code>&quot;swing&quot;</code></dt>
+<dd><p>Swing components for lightweight GUIs.
+</p></dd>
+</dl>
+
+<p>If <var>feature</var> is supported and:
+</p>
+<ul>
+<li> No output argument is requested:
+
+<p>Return an empty string
+</p>
+</li><li> An output argument is requested:
+
+<p>Return a struct with fields <code>&quot;feature&quot;</code> and <code>&quot;identifier&quot;</code>
+both empty
+</p>
+</li></ul>
+
+<p>If <var>feature</var> is not supported and:
+</p>
+<ul>
+<li> No output argument is requested:
+
+<p>Emit an error message.
+</p>
+</li><li> An output argument is requested:
+
+<p>Return a struct with field <code>&quot;feature&quot;</code> set to <var>feature</var> and
+field <code>&quot;identifier&quot;</code> set to <var>component</var>
+</p>
+</li></ul>
+
+<p>The optional input <var>component</var> will be used in place of <var>feature</var>
+in any error messages for greater specificity.
+</p>
+<p><code>javachk</code> determines if specific Java features are available in an
+Octave session.  This function is provided for scripts which may alter
+their behavior based on the availability of Java.  The feature
+<code>&quot;desktop&quot;</code> is never available as Octave has no Java-based desktop.
+Other features may be available if Octave was compiled with the Java
+Interface and Java is installed.
+</p>
+
+<p><strong>See also:</strong> <a href="Raising-Errors.html#XREFerror">error</a>, <a href="#XREFusejava">usejava</a>.
+</p></dd></dl>
+
+
 <a name="XREFusejava"></a><dl>
 <dt><a name="index-usejava"></a>Function File: <em></em> <strong>usejava</strong> <em>(<var>feature</var>)</em></dt>
 <dd><p>Return true if the Java element <var>feature</var> is available.
@@ -367,6 +437,8 @@ their behavior based on the availability of Java.  The feature
 <code>&quot;desktop&quot;</code> always returns <code>false</code> as Octave has no Java-based
 desktop.  Other features may be available if Octave was compiled with the
 Java Interface and Java is installed.
+</p>
+<p><strong>See also:</strong> <a href="#XREFjavachk">javachk</a>.
 </p></dd></dl>
 
 
@@ -391,7 +463,7 @@ virtual memory / swap space on hard disk).
 determined by the environment variable <code><span class="nolinebreak">OCTAVE_JAVA_DIR</span></code><!-- /@w -->.
 If unset, the directory where <samp>javaaddpath.m</samp> resides is used instead
 (typically
-<samp><code><span class="nolinebreak">OCTAVE_HOME</span></code><!-- /@w -->/share/octave/<code><span class="nolinebreak">OCTAVE_VERSION</span></code><!-- /@w -->/m/java/</samp>
+<samp><code><span class="nolinebreak">OCTAVE_HOME</span></code><!-- /@w -->/share/octave/<code><span class="nolinebreak">OCTAVE_VERSION</span></code><!-- /@w -->/m/java/</samp>).
 </p>
 <p><samp>java.opts</samp> is a plain text file with one option per line.  The
 default initial memory size and default maximum memory size (which

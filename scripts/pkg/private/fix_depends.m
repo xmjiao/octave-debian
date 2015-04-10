@@ -1,4 +1,4 @@
-## Copyright (C) 2005-2013 Søren Hauberg
+## Copyright (C) 2005-2015 Søren Hauberg
 ## Copyright (C) 2010 VZLU Prague, a.s.
 ##
 ## This file is part of Octave.
@@ -35,7 +35,7 @@ function deps_cell = fix_depends (depends)
   for i = 1:length (deps)
     dep = deps{i};
     [start, nm] = regexp (dep, dep_pat, 'start', 'names');
-    ## Is the dependency specified 
+    ## Is the dependency specified
     ## in the correct format?
     if (! isempty (start))
       package = tolower (strtrim (nm.name));
@@ -55,7 +55,7 @@ function deps_cell = fix_depends (depends)
         operator = ">=";
         version  = "0.0.0";
       endif
-      deps_cell{i} = struct ("package", package, 
+      deps_cell{i} = struct ("package", package,
                              "operator", operator,
                              "version", version);
     else

@@ -1,4 +1,4 @@
-## Copyright (C) 2009-2013 David Bateman
+## Copyright (C) 2009-2015 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -31,17 +31,17 @@
 ## @headitem Method @tab Description
 ## @item ascii @tab Set transfer type to ascii
 ## @item binary @tab Set transfer type to binary
-## @item cd @tab Change remote working directory 
+## @item cd @tab Change remote working directory
 ## @item close @tab Close FTP connection
-## @item delete @tab Delete remote file 
-## @item dir @tab List remote directory contents 
+## @item delete @tab Delete remote file
+## @item dir @tab List remote directory contents
 ## @item mget @tab Download remote files
 ## @item mkdir @tab Create remote directory
 ## @item mput @tab Upload local files
 ## @item rename @tab Rename remote file or directory
 ## @item rmdir @tab Remove remote directory
 ## @end multitable
-## 
+##
 ## @end deftypefn
 
 function obj = ftp (host = "", username = "anonymous", password = "")
@@ -51,11 +51,15 @@ function obj = ftp (host = "", username = "anonymous", password = "")
     p.host = host;
     p.username = username;
     p.password = password;
-    p.curlhandle = tmpnam ("ftp-");
+    p.curlhandle = tempname ("ftp-");
     if (nargin > 0)
       p.curlhandle = __ftp__ (host, username, password);
     endif
     obj = class (p, "ftp");
   endif
 endfunction
+
+
+## No test possible for interactive function.
+%!assert (1)
 

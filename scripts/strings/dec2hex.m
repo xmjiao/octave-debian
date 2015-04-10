@@ -1,4 +1,4 @@
-## Copyright (C) 1996-2013 Daniel Calvelo
+## Copyright (C) 1996-2015 Daniel Calvelo
 ##
 ## This file is part of Octave.
 ##
@@ -29,7 +29,7 @@
 ## @end example
 ##
 ## If @var{d} is a matrix or cell array, return a string matrix with one
-## row per element in @var{d}, padded with leading zeros to the width of 
+## row per element in @var{d}, padded with leading zeros to the width of
 ## the largest value.
 ##
 ## The optional second argument, @var{len}, specifies the minimum
@@ -57,7 +57,7 @@ endfunction
 %!assert (dec2hex (2748, 5), "00ABC")
 %!assert (dec2hex ({2748, 2746}), ["ABC"; "ABA"])
 
-%% Test input validation
+## Test input validation
 %!error dec2hex ()
 %!error dec2hex (1, 2, 3)
 

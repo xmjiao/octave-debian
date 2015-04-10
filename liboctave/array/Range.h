@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1993-2013 John W. Eaton
+Copyright (C) 1993-2015 John W. Eaton
 
 This file is part of Octave.
 
@@ -54,7 +54,7 @@ public:
     : rng_base (b), rng_limit (b + (n-1) * i), rng_inc (i),
       rng_nelem (n), cache ()
   {
-    if (! xfinite (b) || ! xfinite (i) | ! xfinite (rng_limit))
+    if (! xfinite (b) || ! xfinite (i) || ! xfinite (rng_limit))
       rng_nelem = -2;
   }
 

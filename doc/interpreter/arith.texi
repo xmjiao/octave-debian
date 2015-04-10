@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2013 John W. Eaton
+@c Copyright (C) 1996-2015 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -8,12 +8,12 @@
 @c under the terms of the GNU General Public License as published by the
 @c Free Software Foundation; either version 3 of the License, or (at
 @c your option) any later version.
-@c 
+@c
 @c Octave is distributed in the hope that it will be useful, but WITHOUT
 @c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 @c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 @c for more details.
-@c 
+@c
 @c You should have received a copy of the GNU General Public License
 @c along with Octave; see the file COPYING.  If not, see
 @c <http://www.gnu.org/licenses/>.
@@ -23,7 +23,7 @@
 
 Unless otherwise noted, all of the functions described in this chapter
 will work for real and complex scalar, vector, or matrix arguments.  Functions
-described as @dfn{mapping functions} apply the given operation individually to 
+described as @dfn{mapping functions} apply the given operation individually to
 each element when given a matrix argument.  For example:
 
 @example
@@ -99,8 +99,10 @@ matrix logarithm, see @ref{Linear Algebra}.
 @c reallog scripts/specfun/reallog.m
 @anchor{XREFreallog}
 @deftypefn {Function File} {} reallog (@var{x})
-Return the real-valued natural logarithm of each element of @var{x}.  Report
-an error if any element results in a complex return value.
+Return the real-valued natural logarithm of each element of @var{x}.
+
+If any element results in a complex return value @code{reallog} aborts
+and issues an error.
 @seealso{@ref{XREFlog,,log}, @ref{XREFrealpow,,realpow}, @ref{XREFrealsqrt,,realsqrt}}
 @end deftypefn
 
@@ -155,9 +157,9 @@ $x = 0$, $f = e = 0$.
 
 @c pow2 scripts/specfun/pow2.m
 @anchor{XREFpow2}
-@deftypefn  {Mapping Function} {} pow2 (@var{x})
-@deftypefnx {Mapping Function} {} pow2 (@var{f}, @var{e})
-With one argument, computes
+@deftypefn  {Function File} {} pow2 (@var{x})
+@deftypefnx {Function File} {} pow2 (@var{f}, @var{e})
+With one input argument, compute
 @tex
 $2^x$
 @end tex
@@ -166,21 +168,24 @@ $2^x$
 @end ifnottex
 for each element of @var{x}.
 
-With two arguments, returns
+With two input arguments, return
 @tex
 $f \cdot 2^e$.
 @end tex
 @ifnottex
 f .* (2 .^ e).
 @end ifnottex
-@seealso{@ref{XREFlog2,,log2}, @ref{XREFnextpow2,,nextpow2}}
+@seealso{@ref{XREFlog2,,log2}, @ref{XREFnextpow2,,nextpow2}, @ref{XREFpower,,power}}
 @end deftypefn
 
 
 @c nextpow2 scripts/general/nextpow2.m
 @anchor{XREFnextpow2}
 @deftypefn {Function File} {} nextpow2 (@var{x})
-If @var{x} is a scalar, return the first integer @var{n} such that
+Compute exponent for smallest power of two larger than input.
+
+For each element in the input array @var{x}, returns the first integer
+@var{n} such that
 @tex
 $2^n \ge |x|$.
 @end tex
@@ -188,7 +193,6 @@ $2^n \ge |x|$.
 2^n @geq{} abs (x).
 @end ifnottex
 
-If @var{x} is a vector, return @code{nextpow2 (length (@var{x}))}.
 @seealso{@ref{XREFpow2,,pow2}, @ref{XREFlog2,,log2}}
 @end deftypefn
 
@@ -196,10 +200,11 @@ If @var{x} is a vector, return @code{nextpow2 (length (@var{x}))}.
 @c realpow scripts/specfun/realpow.m
 @anchor{XREFrealpow}
 @deftypefn {Function File} {} realpow (@var{x}, @var{y})
-Compute the real-valued, element-by-element power operator.  This is
-equivalent to @w{@code{@var{x} .^ @var{y}}}, except that @code{realpow}
-reports an error if any return value is complex.
-@seealso{@ref{XREFreallog,,reallog}, @ref{XREFrealsqrt,,realsqrt}}
+Compute the real-valued, element-by-element power operator.
+
+This is equivalent to @w{@code{@var{x} .^ @var{y}}}, except that
+@code{realpow} reports an error if any return value is complex.
+@seealso{@ref{XREFpower,,power}, @ref{XREFreallog,,reallog}, @ref{XREFrealsqrt,,realsqrt}}
 @end deftypefn
 
 
@@ -216,8 +221,10 @@ a complex result is returned.  To compute the matrix square root, see
 @c realsqrt scripts/specfun/realsqrt.m
 @anchor{XREFrealsqrt}
 @deftypefn {Function File} {} realsqrt (@var{x})
-Return the real-valued square root of each element of @var{x}.  Report an
-error if any element results in a complex return value.
+Return the real-valued square root of each element of @var{x}.
+
+If any element results in a complex return value @code{realsqrt} aborts
+and issues an error.
 @seealso{@ref{XREFsqrt,,sqrt}, @ref{XREFrealpow,,realpow}, @ref{XREFreallog,,reallog}}
 @end deftypefn
 
@@ -236,8 +243,13 @@ negative.
 @anchor{XREFnthroot}
 @deftypefn {Function File} {} nthroot (@var{x}, @var{n})
 
-Compute the n-th root of @var{x}, returning real results for real
-components of @var{x}.  For example:
+Compute the real (non-complex) @var{n}-th root of @var{x}.
+
+@var{x} must have all real entries and @var{n} must be a scalar.
+If @var{n} is an even integer and @var{x} has negative entries then
+@code{nthroot} aborts and issues an error.
+
+Example:
 
 @example
 @group
@@ -247,10 +259,6 @@ nthroot (-1, 3)
 @result{} 0.50000 - 0.86603i
 @end group
 @end example
-
-@var{x} must have all real entries.  @var{n} must be a scalar.
-If @var{n} is an even integer and @var{X} has negative entries, an
-error is produced.
 @seealso{@ref{XREFrealsqrt,,realsqrt}, @ref{XREFsqrt,,sqrt}, @ref{XREFcbrt,,cbrt}}
 @end deftypefn
 
@@ -336,7 +344,7 @@ $\bar{z} = x - iy$.
 Sort the numbers @var{z} into complex conjugate pairs ordered by
 increasing real part.  Place the negative imaginary complex number
 first within each pair.  Place all the real numbers (those with
-@code{abs (imag (@var{z}) / @var{z}) < @var{tol})}) after the
+@code{abs (imag (@var{z}) / @var{z}) < @var{tol}}) after the
 complex pairs.
 
 If @var{tol} is unspecified the default value is 100*@code{eps}.
@@ -713,12 +721,16 @@ Compute the inverse cotangent in degrees for each element of @var{x}.
 @deftypefnx {Built-in Function} {} sum (@dots{}, "native")
 @deftypefnx {Built-in Function} {} sum (@dots{}, "double")
 @deftypefnx {Built-in Function} {} sum (@dots{}, "extra")
-Sum of elements along dimension @var{dim}.  If @var{dim} is
-omitted, it defaults to the first non-singleton dimension.
+Sum of elements along dimension @var{dim}.
 
-If the optional argument @qcode{"native"} is given, then the sum is
-performed in the same type as the original argument, rather than in the
-default double type.  For example:
+If @var{dim} is omitted, it defaults to the first non-singleton dimension.
+
+The optional @qcode{"type"} input determines the class of the variable
+used for calculations.  If the argument @qcode{"native"} is given, then
+the operation is performed in the same type as the original argument, rather
+than the default double type.
+
+For example:
 
 @example
 @group
@@ -732,8 +744,8 @@ sum ([true, true], "native")
 On the contrary, if @qcode{"double"} is given, the sum is performed in
 double precision even for single precision inputs.
 
-For double precision inputs, @qcode{"extra"} indicates that a more accurate
-algorithm than straightforward summation is to be used.  For single precision
+For double precision inputs, the @qcode{"extra"} option will use a more
+accurate algorithm than straightforward summation.  For single precision
 inputs, @qcode{"extra"} is the same as @qcode{"double"}.  Otherwise,
 @qcode{"extra"} has no effect.
 @seealso{@ref{XREFcumsum,,cumsum}, @ref{XREFsumsq,,sumsq}, @ref{XREFprod,,prod}}
@@ -744,8 +756,30 @@ inputs, @qcode{"extra"} is the same as @qcode{"double"}.  Otherwise,
 @anchor{XREFprod}
 @deftypefn  {Built-in Function} {} prod (@var{x})
 @deftypefnx {Built-in Function} {} prod (@var{x}, @var{dim})
-Product of elements along dimension @var{dim}.  If @var{dim} is
-omitted, it defaults to the first non-singleton dimension.
+@deftypefnx {Built-in Function} {} prod (@dots{}, "native")
+@deftypefnx {Built-in Function} {} prod (@dots{}, "double")
+Product of elements along dimension @var{dim}.
+
+If @var{dim} is omitted, it defaults to the first non-singleton dimension.
+
+The optional @qcode{"type"} input determines the class of the variable
+used for calculations.  If the argument @qcode{"native"} is given, then
+the operation is performed in the same type as the original argument, rather
+than the default double type.
+
+For example:
+
+@example
+@group
+prod ([true, true])
+   @result{} 1
+prod ([true, true], "native")
+   @result{} true
+@end group
+@end example
+
+On the contrary, if @qcode{"double"} is given, the operation is performed
+in double precision even for single precision inputs.
 @seealso{@ref{XREFcumprod,,cumprod}, @ref{XREFsum,,sum}}
 @end deftypefn
 
@@ -880,15 +914,23 @@ return @code{roundb (real (@var{x})) + roundb (imag (@var{x})) * I}.
 @c max libinterp/corefcn/max.cc
 @anchor{XREFmax}
 @deftypefn  {Built-in Function} {} max (@var{x})
-@deftypefnx {Built-in Function} {} max (@var{x}, @var{y})
 @deftypefnx {Built-in Function} {} max (@var{x}, [], @var{dim})
-@deftypefnx {Built-in Function} {} max (@var{x}, @var{y}, @var{dim})
 @deftypefnx {Built-in Function} {[@var{w}, @var{iw}] =} max (@var{x})
-For a vector argument, return the maximum value.  For a matrix
-argument, return the maximum value from each column, as a row
-vector, or over the dimension @var{dim} if defined, in which case @var{y} 
-should be set to the empty matrix (it's ignored otherwise).  For two matrices
-(or a matrix and scalar), return the pair-wise maximum.
+@deftypefnx {Built-in Function} {} max (@var{x}, @var{y})
+Find maximum values in the array @var{x}.
+
+For a vector argument, return the maximum value.
+For a matrix argument, return a row vector with the maximum value of each
+column.
+For a multi-dimensional array, @code{max} operates along the first
+non-singleton dimension.
+
+If the optional third argument @var{dim} is present then operate along
+this dimension.  In this case the second argument is ignored and should be
+set to the empty matrix.
+
+For two matrices (or a matrix and a scalar), return the pairwise maximum.
+
 Thus,
 
 @example
@@ -896,7 +938,7 @@ max (max (@var{x}))
 @end example
 
 @noindent
-returns the largest element of the matrix @var{x}, and
+returns the largest element of the 2-D matrix @var{x}, and
 
 @example
 @group
@@ -906,11 +948,23 @@ max (2:5, pi)
 @end example
 
 @noindent
-compares each element of the range @code{2:5} with @code{pi}, and
-returns a row vector of the maximum values.
+compares each element of the range @code{2:5} with @code{pi}, and returns a
+row vector of the maximum values.
 
 For complex arguments, the magnitude of the elements are used for
-comparison.
+comparison.  If the magnitudes are identical, then the results are ordered
+by phase angle in the range (-pi, pi].  Hence,
+
+@example
+@group
+max ([-1 i 1 -i])
+    @result{} -1
+@end group
+@end example
+
+@noindent
+because all entries have magnitude 1, but -1 has the largest phase angle
+with value pi.
 
 If called with one input and two output arguments,
 @code{max} also returns the first index of the
@@ -930,15 +984,23 @@ maximum value(s).  Thus,
 @c min libinterp/corefcn/max.cc
 @anchor{XREFmin}
 @deftypefn  {Built-in Function} {} min (@var{x})
-@deftypefnx {Built-in Function} {} min (@var{x}, @var{y})
 @deftypefnx {Built-in Function} {} min (@var{x}, [], @var{dim})
-@deftypefnx {Built-in Function} {} min (@var{x}, @var{y}, @var{dim})
 @deftypefnx {Built-in Function} {[@var{w}, @var{iw}] =} min (@var{x})
-For a vector argument, return the minimum value.  For a matrix
-argument, return the minimum value from each column, as a row
-vector, or over the dimension @var{dim} if defined, in which case @var{y} 
-should be set to the empty matrix (it's ignored otherwise).  For two matrices
-(or a matrix and scalar), return the pair-wise minimum.
+@deftypefnx {Built-in Function} {} min (@var{x}, @var{y})
+Find minimum values in the array @var{x}.
+
+For a vector argument, return the minimum value.
+For a matrix argument, return a row vector with the minimum value of each
+column.
+For a multi-dimensional array, @code{min} operates along the first
+non-singleton dimension.
+
+If the optional third argument @var{dim} is present then operate along
+this dimension.  In this case the second argument is ignored and should be
+set to the empty matrix.
+
+For two matrices (or a matrix and a scalar), return the pairwise minimum.
+
 Thus,
 
 @example
@@ -946,7 +1008,7 @@ min (min (@var{x}))
 @end example
 
 @noindent
-returns the smallest element of @var{x}, and
+returns the smallest element of the 2-D matrix @var{x}, and
 
 @example
 @group
@@ -960,7 +1022,19 @@ compares each element of the range @code{2:5} with @code{pi}, and
 returns a row vector of the minimum values.
 
 For complex arguments, the magnitude of the elements are used for
-comparison.
+comparison.  If the magnitudes are identical, then the results are ordered
+by phase angle in the range (-pi, pi].  Hence,
+
+@example
+@group
+min ([-1 i 1 -i])
+    @result{} -i
+@end group
+@end example
+
+@noindent
+because all entries have magnitude 1, but -i has the smallest phase angle
+with value -pi/2.
 
 If called with one input and two output arguments,
 @code{min} also returns the first index of the
@@ -1262,31 +1336,36 @@ calculated from the linear extrapolation of interior points.
 @c factorial scripts/specfun/factorial.m
 @anchor{XREFfactorial}
 @deftypefn {Function File} {} factorial (@var{n})
-Return the factorial of @var{n} where @var{n} is a positive integer.  If
-@var{n} is a scalar, this is equivalent to @code{prod (1:@var{n})}.  For
+Return the factorial of @var{n} where @var{n} is a real non-negative integer.
+
+If @var{n} is a scalar, this is equivalent to @code{prod (1:@var{n})}.  For
 vector or matrix arguments, return the factorial of each element in the
-array.  For non-integers see the generalized factorial function
-@code{gamma}.
-@seealso{@ref{XREFprod,,prod}, @ref{XREFgamma,,gamma}}
+array.
+
+For non-integers see the generalized factorial function @code{gamma}.
+Note that the factorial function grows large quite quickly, and even
+with double precision values overflow will occur if @var{n} > 171.  For
+such cases consider @code{gammaln}.
+@seealso{@ref{XREFprod,,prod}, @ref{XREFgamma,,gamma}, @ref{XREFgammaln,,gammaln}}
 @end deftypefn
 
 
 @c factor scripts/specfun/factor.m
 @anchor{XREFfactor}
-@deftypefn  {Function File} {@var{p} =} factor (@var{q})
-@deftypefnx {Function File} {[@var{p}, @var{n}] =} factor (@var{q})
+@deftypefn  {Function File} {@var{pf} =} factor (@var{q})
+@deftypefnx {Function File} {[@var{pf}, @var{n}] =} factor (@var{q})
+Return the prime factorization of @var{q}.
 
-Return the prime factorization of @var{q}.  That is,
-@code{prod (@var{p}) == @var{q}} and every element of @var{p} is a prime
-number.  If @code{@var{q} == 1}, return 1.
+The prime factorization is defined as @code{prod (@var{pf}) == @var{q}}
+where every element of @var{pf} is a prime number.  If @code{@var{q} == 1},
+return 1.
 
-With two output arguments, return the unique primes @var{p} and
-their multiplicities.  That is, @code{prod (@var{p} .^ @var{n}) ==
-@var{q}}.
+With two output arguments, return the unique prime factors @var{pf} and
+their multiplicities.  That is, @code{prod (@var{pf} .^ @var{n}) == @var{q}}.
 
-Implementation Note: The input @var{q} must not be greater than
+Implementation Note: The input @var{q} must be less than
 @code{bitmax} (9.0072e+15) in order to factor correctly.
-@seealso{@ref{XREFgcd,,gcd}, @ref{XREFlcm,,lcm}, @ref{XREFisprime,,isprime}}
+@seealso{@ref{XREFgcd,,gcd}, @ref{XREFlcm,,lcm}, @ref{XREFisprime,,isprime}, @ref{XREFprimes,,primes}}
 @end deftypefn
 
 
@@ -1294,25 +1373,16 @@ Implementation Note: The input @var{q} must not be greater than
 @anchor{XREFgcd}
 @deftypefn  {Built-in Function} {@var{g} =} gcd (@var{a1}, @var{a2}, @dots{})
 @deftypefnx {Built-in Function} {[@var{g}, @var{v1}, @dots{}] =} gcd (@var{a1}, @var{a2}, @dots{})
+Compute the greatest common divisor of @var{a1}, @var{a2}, @dots{}.
 
-Compute the greatest common divisor of @var{a1}, @var{a2}, @dots{}.  If more
-than one argument is given all arguments must be the same size or scalar.
-In this case the greatest common divisor is calculated for each element
-individually.  All elements must be ordinary or Gaussian (complex)
-integers.  Note that for Gaussian integers, the gcd is not unique up to
-units (multiplication by 1, -1, @var{i} or -@var{i}), so an arbitrary
-greatest common divisor amongst four possible is returned.
+If more than one argument is given then all arguments must be the same size
+or scalar.  In this case the greatest common divisor is calculated for each
+element individually.  All elements must be ordinary or Gaussian (complex)
+integers.  Note that for Gaussian integers, the gcd is only unique up to a
+phase factor (multiplication by 1, -1, i, or -i), so an arbitrary greatest
+common divisor amongst four possible is returned.
 
-Example code:
-
-@example
-@group
-gcd ([15, 9], [20, 18])
-   @result{}  5  9
-@end group
-@end example
-
-Optional return arguments @var{v1}, etc., contain integer vectors such
+Optional return arguments @var{v1}, @dots{}, contain integer vectors such
 that,
 
 @tex
@@ -1326,7 +1396,16 @@ $g = v_1 a_1 + v_2 a_2 + \cdots$
 
 @end ifnottex
 
-@seealso{@ref{XREFlcm,,lcm}, @ref{XREFfactor,,factor}}
+Example code:
+
+@example
+@group
+gcd ([15, 9], [20, 18])
+   @result{}  5  9
+@end group
+@end example
+
+@seealso{@ref{XREFlcm,,lcm}, @ref{XREFfactor,,factor}, @ref{XREFisprime,,isprime}}
 @end deftypefn
 
 
@@ -1334,10 +1413,11 @@ $g = v_1 a_1 + v_2 a_2 + \cdots$
 @anchor{XREFlcm}
 @deftypefn  {Mapping Function} {} lcm (@var{x}, @var{y})
 @deftypefnx {Mapping Function} {} lcm (@var{x}, @var{y}, @dots{})
-Compute the least common multiple of @var{x} and @var{y},
-or of the list of all arguments.  All elements must be the same size or
-scalar.
-@seealso{@ref{XREFfactor,,factor}, @ref{XREFgcd,,gcd}}
+Compute the least common multiple of @var{x} and @var{y}, or of the list of
+all arguments.
+
+All elements must be numeric and of the same size or scalar.
+@seealso{@ref{XREFfactor,,factor}, @ref{XREFgcd,,gcd}, @ref{XREFisprime,,isprime}}
 @end deftypefn
 
 
@@ -1361,8 +1441,7 @@ chop (-pi, 5, 5)
 
 @c rem libinterp/corefcn/data.cc
 @anchor{XREFrem}
-@deftypefn  {Mapping Function} {} rem (@var{x}, @var{y})
-@deftypefnx {Mapping Function} {} fmod (@var{x}, @var{y})
+@deftypefn {Mapping Function} {} rem (@var{x}, @var{y})
 Return the remainder of the division @code{@var{x} / @var{y}}, computed
 using the expression
 
@@ -1400,12 +1479,13 @@ either of the arguments is complex.
 @c primes scripts/specfun/primes.m
 @anchor{XREFprimes}
 @deftypefn {Function File} {} primes (@var{n})
-
 Return all primes up to @var{n}.
 
-The algorithm used is the Sieve of Eratosthenes.
+The output data class (double, single, uint32, etc.) is the same as
+the input class of @var{n}.  The algorithm used is the Sieve of
+Eratosthenes.
 
-Note that if you need a specific number of primes you can use the
+Notes: If you need a specific number of primes you can use the
 fact that the distance from one prime to the next is, on average,
 proportional to the logarithm of the prime.  Integrating, one finds
 that there are about @math{k} primes less than
@@ -1415,6 +1495,9 @@ $k \log (5 k)$.
 @ifnottex
 k*log (5*k).
 @end ifnottex
+
+See also @code{list_primes} if you need a specific number @var{n} of
+primes.
 @seealso{@ref{XREFlist_primes,,list_primes}, @ref{XREFisprime,,isprime}}
 @end deftypefn
 
@@ -1423,10 +1506,9 @@ k*log (5*k).
 @anchor{XREFlist_primes}
 @deftypefn  {Function File} {} list_primes ()
 @deftypefnx {Function File} {} list_primes (@var{n})
-List the first @var{n} primes.  If @var{n} is unspecified, the first
-25 primes are listed.
+List the first @var{n} primes.
 
-The algorithm used is from page 218 of the @TeX{}book.
+If @var{n} is unspecified, the first 25 primes are listed.
 @seealso{@ref{XREFprimes,,primes}, @ref{XREFisprime,,isprime}}
 @end deftypefn
 
@@ -1468,7 +1550,7 @@ whether zero is signed, use the @code{signbit} function.
 Return logical true if the value of @var{x} has its sign bit set.
 Otherwise return logical false.  This behavior is consistent with the other
 logical functions.  See@ref{Logical Values}.  The behavior differs from the
-C language function which returns non-zero if the sign bit is set.
+C language function which returns nonzero if the sign bit is set.
 
 This is not the same as @code{x < 0.0}, because IEEE 754 floating point
 allows zero to be signed.  The comparison @code{-0.0 < 0.0} is false,
@@ -1604,7 +1686,9 @@ return @code{NaN}.
 @c beta scripts/specfun/beta.m
 @anchor{XREFbeta}
 @deftypefn {Mapping Function} {} beta (@var{a}, @var{b})
-For real inputs, return the Beta function,
+Compute the Beta function for real inputs @var{a} and @var{b}.
+
+The Beta function definition is
 @tex
 $$
  B (a, b) = {\Gamma (a) \Gamma (b) \over \Gamma (a + b)}.
@@ -1617,7 +1701,12 @@ beta (a, b) = gamma (a) * gamma (b) / gamma (a + b).
 @end example
 
 @end ifnottex
-@seealso{@ref{XREFbetaln,,betaln}, @ref{XREFbetainc,,betainc}}
+
+The Beta function can grow quite large and it is often more useful to work
+with the logarithm of the output rather than the function directly.
+@xref{XREFbetaln,,betaln}, for computing the logarithm of the Beta function
+in an efficient manner.
+@seealso{@ref{XREFbetaln,,betaln}, @ref{XREFbetainc,,betainc}, @ref{XREFbetaincinv,,betaincinv}}
 @end deftypefn
 
 
@@ -1667,7 +1756,10 @@ Compute the inverse of the incomplete Beta function, i.e., @var{x} such that
 @c betaln scripts/specfun/betaln.m
 @anchor{XREFbetaln}
 @deftypefn {Mapping Function} {} betaln (@var{a}, @var{b})
-Return the natural logarithm of the Beta function,
+Compute the natural logarithm of the Beta function for real inputs @var{a}
+and @var{b}.
+
+@code{betaln} is defined as
 @tex
 $$
  {\rm betaln} (a, b) = \ln (B (a,b)) \equiv \ln ({\Gamma (a) \Gamma (b) \over \Gamma (a + b)}).
@@ -1680,8 +1772,11 @@ betaln (a, b) = log (beta (a, b))
 @end example
 
 @end ifnottex
-calculated in a way to reduce the occurrence of underflow.
-@seealso{@ref{XREFbeta,,beta}, @ref{XREFbetainc,,betainc}, @ref{XREFgammaln,,gammaln}}
+and is calculated in a way to reduce the occurrence of underflow.
+
+The Beta function can grow quite large and it is often more useful to work
+with the logarithm of the output rather than the function directly.
+@seealso{@ref{XREFbeta,,beta}, @ref{XREFbetainc,,betainc}, @ref{XREFbetaincinv,,betaincinv}, @ref{XREFgammaln,,gammaln}}
 @end deftypefn
 
 
@@ -1772,8 +1867,8 @@ If only one argument @var{m} is given,
 @end ifnottex
  is returned.
 
-See Magnus and Neudecker (1988), @cite{Matrix Differential Calculus with
-Applications in Statistics and Econometrics.}
+See @nospell{Magnus and Neudecker} (1988), @cite{Matrix Differential
+Calculus with Applications in Statistics and Econometrics.}
 @end deftypefn
 
 
@@ -1816,8 +1911,8 @@ Return the duplication matrix
 @math{A}.
 @end ifnottex
 
-See Magnus and Neudecker (1988), Matrix differential calculus with
-applications in statistics and econometrics.
+See @nospell{Magnus and Neudecker} (1988), @cite{Matrix Differential
+Calculus with Applications in Statistics and Econometrics.}
 @end deftypefn
 
 
@@ -1874,7 +1969,7 @@ Error---no computation, algorithm termination condition not met,
 return @code{NaN}.
 @end enumerate
 
-Reference: Milton Abramowitz and Irene A Stegun,
+Reference: Milton @nospell{Abramowitz} and Irene A @nospell{Stegun},
 @cite{Handbook of Mathematical Functions}, Chapter 16 (Sections 16.4, 16.13,
 and 16.15), Dover, 1965.
 
@@ -1892,13 +1987,58 @@ E(@var{m}) kind.
 
 @var{m} must be a scalar or real array with -Inf @leq{} @var{m} @leq{} 1.
 
-The optional input @var{tol} is currently ignored (@sc{matlab} uses this
-to allow a faster, less accurate approximation).
+The optional input @var{tol} controls the stopping tolerance of the
+algorithm and defaults to @code{eps (class (@var{m}))}.  The tolerance can
+be increased to compute a faster, less accurate approximation.
 
-Called with only one output, elliptic integrals of the first kind are
+When called with one output only elliptic integrals of the first kind are
 returned.
 
-Reference: Milton Abramowitz and Irene A. Stegun,
+Mathematical Note:
+
+Elliptic integrals of the first kind are defined as
+
+@tex
+$$
+{\rm K} (m) = \int_0^1 {dt \over \sqrt{(1 - t^2) (1 - m^2 t^2)}}
+$$
+@end tex
+@ifnottex
+
+@example
+@group
+         1
+        /               dt
+K (m) = | ------------------------------
+        / sqrt ((1 - t^2)*(1 - m^2*t^2))
+       0
+@end group
+@end example
+
+@end ifnottex
+
+Elliptic integrals of the second kind are defined as
+
+@tex
+$$
+{\rm E} (m) = \int_0^1 {\sqrt{1 - m^2 t^2} \over \sqrt{1 - t^2}} dt
+$$
+@end tex
+@ifnottex
+
+@example
+@group
+         1
+        /  sqrt (1 - m^2*t^2)
+E (m) = |  ------------------ dt
+        /  sqrt (1 - t^2)
+       0
+@end group
+@end example
+
+@end ifnottex
+
+Reference: Milton @nospell{Abramowitz} and Irene A. @nospell{Stegun},
 @cite{Handbook of Mathematical Functions}, Chapter 17, Dover, 1965.
 @seealso{@ref{XREFellipj,,ellipj}}
 @end deftypefn
@@ -2085,7 +2225,13 @@ gamma (z) = | t^(z-1) exp (-t) dt.
 @end example
 
 @end ifnottex
-@seealso{@ref{XREFgammainc,,gammainc}, @ref{XREFlgamma,,lgamma}}
+
+Programming Note: The gamma function can grow quite large even for small
+input values.  In many cases it may be preferable to use the natural
+logarithm of the gamma function (@code{gammaln}) in calculations to minimize
+loss of precision.  The final result is then
+@code{exp (@var{result_using_gammaln}).}
+@seealso{@ref{XREFgammainc,,gammainc}, @ref{XREFgammaln,,gammaln}, @ref{XREFfactorial,,factorial}}
 @end deftypefn
 
 
@@ -2114,7 +2260,8 @@ gammainc (x, a) = ---------    | exp (-t) t^(a-1) dt
 
 @end ifnottex
 with the limiting value of 1 as @var{x} approaches infinity.
-The standard notation is @math{P(a,x)}, e.g., Abramowitz and Stegun (6.5.1).
+The standard notation is @math{P(a,x)}, e.g., @nospell{Abramowitz} and
+@nospell{Stegun} (6.5.1).
 
 If @var{a} is scalar, then @code{gammainc (@var{x}, @var{a})} is returned
 for each element of @var{x} and vice versa.
@@ -2129,7 +2276,7 @@ integrated from @var{x} to infinity is calculated.  It should be noted that
 @example
 gammainc (@var{x}, @var{a}) @equiv{} 1 - gammainc (@var{x}, @var{a}, "upper")
 @end example
-@seealso{@ref{XREFgamma,,gamma}, @ref{XREFlgamma,,lgamma}}
+@seealso{@ref{XREFgamma,,gamma}, @ref{XREFgammaln,,gammaln}}
 @end deftypefn
 
 
@@ -2138,15 +2285,19 @@ gammainc (@var{x}, @var{a}) @equiv{} 1 - gammainc (@var{x}, @var{a}, "upper")
 @deftypefn  {Function File} {@var{l} =} legendre (@var{n}, @var{x})
 @deftypefnx {Function File} {@var{l} =} legendre (@var{n}, @var{x}, @var{normalization})
 Compute the Legendre function of degree @var{n} and order
-@var{m} = 0 @dots{} N@.  The optional argument, @var{normalization},
-may be one of @qcode{"unnorm"}, @qcode{"sch"}, or @qcode{"norm"}.
-The default is @qcode{"unnorm"}.  The value of @var{n} must be a
-non-negative scalar integer.
+@var{m} = 0 @dots{} @var{n}.
 
-If the optional argument @var{normalization} is missing or is
-@qcode{"unnorm"}, compute the Legendre function of degree @var{n} and
-order @var{m} and return all values for @var{m} = 0 @dots{} @var{n}.
-The return value has one dimension more than @var{x}.
+The value @var{n} must be a real non-negative integer.  @var{x} is a
+vector with real-valued elements in the range [-1, 1].
+
+The optional argument @var{normalization} may be one of @qcode{"unnorm"},
+@qcode{"sch"}, or @qcode{"norm"}.  The default if no normalization is given
+is @qcode{"unnorm"}.
+
+When the optional argument @var{normalization} is @qcode{"unnorm"}, compute
+the Legendre function of degree @var{n} and order @var{m} and return all
+values for @var{m} = 0 @dots{} @var{n}.  The return value has one dimension
+more than @var{x}.
 
 The Legendre Function of degree @var{n} and order @var{m}:
 
@@ -2159,7 +2310,7 @@ $$
 
 @example
 @group
- m        m       2  m/2   d^m
+ m         m      2  m/2   d^m
 P(x) = (-1) * (1-x  )    * ----  P(x)
  n                         dx^m   n
 @end group
@@ -2201,12 +2352,12 @@ m=3 |  0.00000 | -1.24229 | -3.24000
 @end group
 @end example
 
-If the optional argument @code{normalization} is @qcode{"sch"},
+When the optional argument @code{normalization} is @qcode{"sch"},
 compute the Schmidt semi-normalized associated Legendre function.
 The Schmidt semi-normalized associated Legendre function is related
 to the unnormalized Legendre functions by the following:
 
-For Legendre functions of degree n and order 0:
+For Legendre functions of degree @var{n} and order 0:
 
 @tex
 $$
@@ -2244,7 +2395,7 @@ SP(x) = P(x) * (-1)  * [-------]
 
 @end ifnottex
 
-If the optional argument @var{normalization} is @qcode{"norm"},
+When the optional argument @var{normalization} is @qcode{"norm"},
 compute the fully normalized associated Legendre function.
 The fully normalized associated Legendre function is related
 to the unnormalized Legendre functions by the following:
@@ -2273,8 +2424,8 @@ NP(x) = P(x) * (-1)  * [-------------]
 @anchor{XREFgammaln}
 @c lgamma libinterp/corefcn/mappers.cc
 @anchor{XREFlgamma}
-@deftypefn  {Mapping Function} {} lgamma (@var{x})
-@deftypefnx {Mapping Function} {} gammaln (@var{x})
+@deftypefn  {Mapping Function} {} gammaln (@var{x})
+@deftypefnx {Mapping Function} {} lgamma (@var{x})
 Return the natural logarithm of the gamma function of @var{x}.
 @seealso{@ref{XREFgamma,,gamma}, @ref{XREFgammainc,,gammainc}}
 @end deftypefn
@@ -2320,6 +2471,9 @@ x = str2num (r)
 
 The optional second argument defines the maximum length of the string
 representing the elements of @var{x}.  By default @var{len} is 9.
+
+If the length of the smallest possible rational approximation exceeds
+@var{len}, an asterisk (*) padded with spaces will be returned instead.
 @seealso{@ref{XREFformat,,format}, @ref{XREFrat,,rat}}
 @end deftypefn
 

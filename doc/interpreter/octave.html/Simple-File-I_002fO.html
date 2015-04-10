@@ -80,7 +80,7 @@ read into memory using the <code>load</code> command.
 <pre class="example">load myfile.mat
 A
      -| A =
-     -| 
+     -|
      -|    1   2   3
      -|    4   5   6
      -|    7   8   9
@@ -91,17 +91,18 @@ A
 <dt><a name="index-save-1"></a>Command: <em></em> <strong>save</strong> <em>options file</em></dt>
 <dt><a name="index-save-2"></a>Command: <em></em> <strong>save</strong> <em>options file <var>v1</var> <var>v2</var> &hellip;</em></dt>
 <dt><a name="index-save-3"></a>Command: <em></em> <strong>save</strong> <em>options file -struct <var>STRUCT</var> <var>f1</var> <var>f2</var> &hellip;</em></dt>
+<dt><a name="index-save-4"></a>Command: <em></em> <strong>save</strong> <em><code>&quot;-&quot;</code> <var>v1</var> <var>v2</var> &hellip;</em></dt>
+<dt><a name="index-save-5"></a>Built-in Function: <em><var>s</var> =</em> <strong>save</strong> <em>(<code>&quot;-&quot;</code> <var>v1</var> <var>v2</var> &hellip;)</em></dt>
 <dd><p>Save the named variables <var>v1</var>, <var>v2</var>, &hellip;, in the file
-<var>file</var>.  The special filename &lsquo;<samp>-</samp>&rsquo; may be used to write
-output to the terminal.  If no variable names are listed, Octave saves
-all the variables in the current scope.  Otherwise, full variable names or
-pattern syntax can be used to specify the variables to save.
-If the <samp>-struct</samp> modifier is used, fields <var>f1</var> <var>f2</var> &hellip;
-of the scalar structure <var>STRUCT</var> are saved as if they were variables
-with corresponding names.
-Valid options for the <code>save</code> command are listed in the following table.
-Options that modify the output format override the format specified by
-<code>save_default_options</code>.
+<var>file</var>.  The special filename &lsquo;<samp>-</samp>&rsquo; may be used to return the
+content of the variables as a string.  If no variable names are listed,
+Octave saves all the variables in the current scope.  Otherwise, full
+variable names or pattern syntax can be used to specify the variables to
+save.  If the <samp>-struct</samp> modifier is used, fields <var>f1</var> <var>f2</var>
+&hellip; of the scalar structure <var>STRUCT</var> are saved as if they were
+variables with corresponding names.  Valid options for the <code>save</code>
+command are listed in the following table.  Options that modify the output
+format override the format specified by <code>save_default_options</code>.
 </p>
 <p>If save is invoked using the functional form
 </p>
@@ -111,6 +112,9 @@ Options that modify the output format override the format specified by
 
 <p>then the <var>options</var>, <var>file</var>, and variable name arguments
 (<var>v1</var>, &hellip;) must be specified as character strings.
+</p>
+<p>If called with a filename of <code>&quot;-&quot;</code>, write the output to stdout
+if nargout is 0, otherwise return the output in a character string.
 </p>
 <dl compact="compact">
 <dt><code>-append</code></dt>

@@ -67,13 +67,32 @@ Next: <a href="Current-Working-Directory.html#Current-Working-Directory" accessk
 </pre></div>
 
 <p>returns a string containing the value of your path.
+</p>
+<p><strong>See also:</strong> <a href="#XREFsetenv">setenv</a>, <a href="#XREFunsetenv">unsetenv</a>.
 </p></dd></dl>
 
 
-<a name="XREFputenv"></a><dl>
-<dt><a name="index-putenv"></a>Built-in Function: <em></em> <strong>putenv</strong> <em>(<var>var</var>, <var>value</var>)</em></dt>
+<a name="XREFsetenv"></a><dl>
 <dt><a name="index-setenv"></a>Built-in Function: <em></em> <strong>setenv</strong> <em>(<var>var</var>, <var>value</var>)</em></dt>
+<dt><a name="index-setenv-1"></a>Built-in Function: <em></em> <strong>setenv</strong> <em>(<var>var</var>)</em></dt>
+<dt><a name="index-putenv"></a>Built-in Function: <em></em> <strong>putenv</strong> <em>(&hellip;)</em></dt>
 <dd><p>Set the value of the environment variable <var>var</var> to <var>value</var>.
+</p>
+<p>If no <var>value</var> is specified then the variable will be assigned the null
+string.
+</p>
+<p><strong>See also:</strong> <a href="#XREFunsetenv">unsetenv</a>, <a href="#XREFgetenv">getenv</a>.
+</p></dd></dl>
+
+
+<a name="XREFunsetenv"></a><dl>
+<dt><a name="index-unsetenv"></a>Built-in Function: <em><var>status</var> =</em> <strong>unsetenv</strong> <em>(<var>var</var>)</em></dt>
+<dd><p>Delete the environment variable <var>var</var>.
+</p>
+<p>Return 0 if the variable was deleted, or did not exist, and -1 if an error
+occurred.
+</p>
+<p><strong>See also:</strong> <a href="#XREFsetenv">setenv</a>, <a href="#XREFgetenv">getenv</a>.
 </p></dd></dl>
 
 

@@ -1,4 +1,4 @@
-## Copyright (C) 2000-2013 Paul Kienzle
+## Copyright (C) 2000-2015 Paul Kienzle
 ##
 ## This file is part of Octave.
 ##
@@ -142,7 +142,7 @@
 ## computed relatively, as @code{abs ((@var{x} - @var{y}) ./ @var{y})} rather
 ## than absolutely as @code{abs (@var{x} - @var{y})}.
 ##
-## Type @kbd{example ("speed")} to see some real examples or 
+## Type @kbd{example ("speed")} to see some real examples or
 ## @kbd{demo ("speed")} to run them.
 ## @end deftypefn
 
@@ -268,10 +268,10 @@ function [__order, __test_n, __tnew, __torig] = speed (__f1, __init, __max_n = 1
   if (do_display)
     figure;
     ## Strip semicolon added to code fragments before displaying
-    __init(end) = ""; 
-    __f1(end) = ""; 
+    __init(end) = "";
+    __f1(end) = "";
     if (! isempty (__f2))
-      __f2(end) = ""; 
+      __f2(end) = "";
     endif
   endif
 
@@ -348,11 +348,11 @@ function [__order, __test_n, __tnew, __torig] = speed (__f1, __init, __max_n = 1
 endfunction
 
 
-%% FIXME: Demos with declared functions do not work.  See bug #31815.
-%%        A workaround has been hacked by not declaring the functions
-%%        but using eval to create them in the proper context.
-%%        Unfortunately, we can't remove them from the user's workspace
-%%        because of another bug (#34497).
+## FIXME: Demos with declared functions do not work.  See bug #31815.
+##        A workaround has been hacked by not declaring the functions
+##        but using eval to create them in the proper context.
+##        Unfortunately, we can't remove them from the user's workspace
+##        because of another bug (#34497).
 %!demo
 %! fstr_build_orig = cstrcat (
 %!   "function x = build_orig (n)\n",
@@ -440,7 +440,7 @@ endfunction
 %! assert (isnumeric (T_f2));
 %! assert (length (T_f2) > 10);
 
-%% Test input validation
+## Test input validation
 %!error speed ()
 %!error speed (1, 2, 3, 4, 5, 6, 7)
 

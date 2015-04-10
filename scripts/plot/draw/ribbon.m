@@ -1,4 +1,4 @@
-## Copyright (C) 2007-2013 Kai Habel
+## Copyright (C) 2007-2015 Kai Habel
 ##
 ## This file is part of Octave.
 ##
@@ -96,7 +96,7 @@ function h = ribbon (varargin)
     endfor
 
     if (! ishold ())
-      set (hax, "view", [-37.5, 30], "box", "off", 
+      set (hax, "view", [-37.5, 30], "box", "off",
                 "xgrid", "on", "ygrid", "on", "zgrid", "on");
     endif
 

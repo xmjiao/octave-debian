@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 1994-2013 John W. Eaton
+Copyright (C) 1994-2015 John W. Eaton
 
 This file is part of Octave.
 
@@ -91,7 +91,7 @@ defun_isargout (int, int, bool *);
 
 typedef bool (*octave_dld_fcn_installer) (const octave_shlib&, bool relative);
 
-typedef octave_function * 
+typedef octave_function *
   (*octave_dld_fcn_getter) (const octave_shlib&, bool relative);
 
 #define DEFINE_FUN_INSTALLER_FUN(name, doc) \

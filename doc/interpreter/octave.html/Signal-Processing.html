@@ -426,7 +426,7 @@ reversed and <var>b</var> rotated 180 degrees.
 <dt><a name="index-freqz-2"></a>Function File: <em>[<var>h</var>, <var>w</var>] =</em> <strong>freqz</strong> <em>(<var>b</var>, <var>a</var>)</em></dt>
 <dt><a name="index-freqz-3"></a>Function File: <em>[<var>h</var>, <var>w</var>] =</em> <strong>freqz</strong> <em>(<var>b</var>, <var>a</var>, <var>n</var>)</em></dt>
 <dt><a name="index-freqz-4"></a>Function File: <em><var>h</var> =</em> <strong>freqz</strong> <em>(<var>b</var>, <var>a</var>, <var>w</var>)</em></dt>
-<dt><a name="index-freqz-5"></a>Function File: <em>[&hellip;] =</em> <strong>freqz</strong> <em>(&hellip;, <var>Fs</var>)</em></dt>
+<dt><a name="index-freqz-5"></a>Function File: <em>[<var>h</var>, <var>w</var>] =</em> <strong>freqz</strong> <em>(&hellip;, <var>Fs</var>)</em></dt>
 <dt><a name="index-freqz-6"></a>Function File: <em></em> <strong>freqz</strong> <em>(&hellip;)</em></dt>
 <dd>
 <p>Return the complex frequency response <var>h</var> of the rational IIR filter
@@ -629,17 +629,26 @@ in autoregressions.
 <dd><p>Return the filter coefficients of a Bartlett (triangular) window of
 length <var>m</var>.
 </p>
-<p>For a definition of the Bartlett window, see e.g., A. V. Oppenheim &amp;
-R. W. Schafer, <cite>Discrete-Time Signal Processing</cite>.
+<p>For a definition of the Bartlett window, see e.g.,
+A.V. Oppenheim &amp; R. W. Schafer,
+<cite>Discrete-Time Signal Processing</cite>.
 </p></dd></dl>
 
 
 <a name="XREFblackman"></a><dl>
 <dt><a name="index-blackman"></a>Function File: <em></em> <strong>blackman</strong> <em>(<var>m</var>)</em></dt>
+<dt><a name="index-blackman-1"></a>Function File: <em></em> <strong>blackman</strong> <em>(<var>m</var>, &quot;periodic&quot;)</em></dt>
+<dt><a name="index-blackman-2"></a>Function File: <em></em> <strong>blackman</strong> <em>(<var>m</var>, &quot;symmetric&quot;)</em></dt>
 <dd><p>Return the filter coefficients of a Blackman window of length <var>m</var>.
 </p>
-<p>For a definition of the Blackman window, see e.g., A. V. Oppenheim &amp;
-R. W. Schafer, <cite>Discrete-Time Signal Processing</cite>.
+<p>If the optional argument <code>&quot;periodic&quot;</code> is given, the periodic form
+of the window is returned.  This is equivalent to the window of length
+<var>m</var>+1 with the last coefficient removed.  The optional argument
+<code>&quot;symmetric&quot;</code> is equivalent to not specifying a second argument.
+</p>
+<p>For a definition of the Blackman window, see e.g.,
+A.V. Oppenheim &amp; R. W. Schafer,
+<cite>Discrete-Time Signal Processing</cite>.
 </p></dd></dl>
 
 
@@ -741,19 +750,35 @@ denotes the lag-operator and <em>d</em> is greater than -1.
 
 <a name="XREFhamming"></a><dl>
 <dt><a name="index-hamming"></a>Function File: <em></em> <strong>hamming</strong> <em>(<var>m</var>)</em></dt>
+<dt><a name="index-hamming-1"></a>Function File: <em></em> <strong>hamming</strong> <em>(<var>m</var>, &quot;periodic&quot;)</em></dt>
+<dt><a name="index-hamming-2"></a>Function File: <em></em> <strong>hamming</strong> <em>(<var>m</var>, &quot;symmetric&quot;)</em></dt>
 <dd><p>Return the filter coefficients of a Hamming window of length <var>m</var>.
 </p>
-<p>For a definition of the Hamming window, see e.g., A. V. Oppenheim &amp;
-R. W. Schafer, <cite>Discrete-Time Signal Processing</cite>.
+<p>If the optional argument <code>&quot;periodic&quot;</code> is given, the periodic form
+of the window is returned.  This is equivalent to the window of length
+<var>m</var>+1 with the last coefficient removed.  The optional argument
+<code>&quot;symmetric&quot;</code> is equivalent to not specifying a second argument.
+</p>
+<p>For a definition of the Hamming window, see e.g.,
+A.V. Oppenheim &amp; R. W. Schafer,
+<cite>Discrete-Time Signal Processing</cite>.
 </p></dd></dl>
 
 
 <a name="XREFhanning"></a><dl>
 <dt><a name="index-hanning"></a>Function File: <em></em> <strong>hanning</strong> <em>(<var>m</var>)</em></dt>
+<dt><a name="index-hanning-1"></a>Function File: <em></em> <strong>hanning</strong> <em>(<var>m</var>, &quot;periodic&quot;)</em></dt>
+<dt><a name="index-hanning-2"></a>Function File: <em></em> <strong>hanning</strong> <em>(<var>m</var>, &quot;symmetric&quot;)</em></dt>
 <dd><p>Return the filter coefficients of a Hanning window of length <var>m</var>.
 </p>
-<p>For a definition of this window type, see e.g., A. V. Oppenheim &amp;
-R. W. Schafer, <cite>Discrete-Time Signal Processing</cite>.
+<p>If the optional argument <code>&quot;periodic&quot;</code> is given, the periodic form
+of the window is returned.  This is equivalent to the window of length
+<var>m</var>+1 with the last coefficient removed.  The optional argument
+<code>&quot;symmetric&quot;</code> is equivalent to not specifying a second argument.
+</p>
+<p>For a definition of the Hanning window, see e.g.,
+A.V. Oppenheim &amp; R. W. Schafer,
+<cite>Discrete-Time Signal Processing</cite>.
 </p></dd></dl>
 
 
@@ -796,44 +821,67 @@ compatibility.
 
 
 <a name="XREFperiodogram"></a><dl>
-<dt><a name="index-periodogram"></a>Function File: <em>[Pxx, <var>w</var>] =</em> <strong>periodogram</strong> <em>(<var>x</var>)</em></dt>
-<dd><p>For a data matrix <var>x</var> from a sample of size <var>n</var>, return the
-periodogram.  The angular frequency is returned in <var>w</var>.
+<dt><a name="index-periodogram"></a>Function File: <em>[<var>Pxx</var>, <var>w</var>] =</em> <strong>periodogram</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-periodogram-1"></a>Function File: <em>[<var>Pxx</var>, <var>w</var>] =</em> <strong>periodogram</strong> <em>(<var>x</var>, <var>win</var>)</em></dt>
+<dt><a name="index-periodogram-2"></a>Function File: <em>[<var>Pxx</var>, <var>w</var>] =</em> <strong>periodogram</strong> <em>(<var>x</var>, <var>win</var>, <var>nfft</var>)</em></dt>
+<dt><a name="index-periodogram-3"></a>Function File: <em>[<var>Pxx</var>, <var>f</var>] =</em> <strong>periodogram</strong> <em>(<var>x</var>, <var>win</var>, <var>nfft</var>, <var>Fs</var>)</em></dt>
+<dt><a name="index-periodogram-4"></a>Function File: <em>[<var>Pxx</var>, <var>f</var>] =</em> <strong>periodogram</strong> <em>(&hellip;, &quot;<var>range</var>&quot;)</em></dt>
+<dt><a name="index-periodogram-5"></a>Function File: <em></em> <strong>periodogram</strong> <em>(&hellip;)</em></dt>
+<dd>
+<p>Return the periodogram (Power Spectral Density) of <var>x</var>.
 </p>
-<p>[Pxx,w] = periodogram (<var>x</var>).
+<p>The possible inputs are:
 </p>
-<p>[Pxx,w] = periodogram (<var>x</var>,win).
+<dl compact="compact">
+<dt><var>x</var></dt>
+<dd>
+<p>data vector.  If <var>x</var> is real-valued a one-sided spectrum is estimated.
+If <var>x</var> is complex-valued, or <code>&quot;<var>range</var>&quot;</code> specifies
+<code>&quot;twosided&quot;</code>, the full spectrum is estimated.
 </p>
-<p>[Pxx,w] = periodogram (<var>x</var>,win,nfft).
+</dd>
+<dt><var>win</var></dt>
+<dd><p>window weight data.  If window is empty or unspecified a default rectangular
+window is used.  Otherwise, the window is applied to the signal
+(<code><var>x</var> .* <var>win</var></code>) before computing the periodogram.  The window
+data must be a vector of the same length as <var>x</var>.
 </p>
-<p>[Pxx,f] = periodogram (<var>x</var>,win,nfft,Fs).
+</dd>
+<dt><var>nfft</var></dt>
+<dd><p>number of frequency bins.  The default is 256 or the next higher power of
+2 greater than the length of <var>x</var>
+(<code>max (256, 2.^nextpow2 (length (x)))</code>).  If <var>nfft</var> is greater
+than the length of the input then <var>x</var> will be zero-padded to the length
+of <var>nfft</var>.
 </p>
-<p>[Pxx,f] = periodogram (<var>x</var>,win,nfft,Fs,&quot;range&quot;).
+</dd>
+<dt><var>Fs</var></dt>
+<dd><p>sampling rate.  The default is 1.
 </p>
-<ul>
-<li> x: data; if real-valued a one-sided spectrum is estimated,
-if complex-valued or range indicates <code>&quot;twosided&quot;</code>, the full
-spectrum is estimated.
+</dd>
+<dt><var>range</var></dt>
+<dd><p>range of spectrum.  <code>&quot;onesided&quot;</code> computes spectrum from
+[0..nfft/2+1].  <code>&quot;twosided&quot;</code> computes spectrum from
+[0..nfft-1].
+</p></dd>
+</dl>
 
-</li><li> win: weight data with window, x.*win is used for further computation,
-if window is empty, a rectangular window is used.
-
-</li><li> nfft: number of frequency bins, default max (256, 2.^ceil (log2 (length (x)))).
-
-</li><li> Fs: sampling rate, default 1.
-
-</li><li> range: <code>&quot;onesided&quot;</code> computes spectrum from [0..nfft/2+1].
-<code>&quot;twosided&quot;</code> computes spectrum from [0..nfft-1].  These
-strings can appear at any position in the list input arguments after
-window.
-
-</li><li> Pxx: one-, or two-sided power spectrum.
-
-</li><li> w: angular frequency [0..2*pi) (two-sided) or [0..pi] one-sided.
-
-</li><li> f: frequency [0..Fs) (two-sided) or [0..Fs/2] one-sided.
-</li></ul>
-</dd></dl>
+<p>The optional second output <var>w</var> are the normalized angular frequencies.
+For a one-sided calculation <var>w</var> is in the range [0, pi] if <var>nfft</var>
+is even and [0, pi) if <var>nfft</var> is odd.  Similarly, for a two-sided
+calculation <var>w</var> is in the range [0, 2*pi] or [0, 2*pi) depending on
+<var>nfft</var>.
+</p>
+<p>If a sampling frequency is specified, <var>Fs</var>, then the output frequencies
+<var>f</var> will be in the range [0, <var>Fs</var>/2] or [0, <var>Fs</var>/2) for
+one-sided calculations.  For two-sided calculations the range will be
+[0, <var>Fs</var>).
+</p>
+<p>When called with no outputs the periodogram is immediately plotted in the
+current figure window.
+</p>
+<p><strong>See also:</strong> <a href="#XREFfft">fft</a>.
+</p></dd></dl>
 
 
 <a name="XREFsinetone"></a><dl>

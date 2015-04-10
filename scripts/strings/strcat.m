@@ -1,4 +1,4 @@
-## Copyright (C) 1994-2013 John W. Eaton
+## Copyright (C) 1994-2015 John W. Eaton
 ## Copyright (C) 2009 Jaroslav Hajek
 ##
 ## This file is part of Octave.
@@ -68,7 +68,7 @@
 ##     @result{}
 ##         @{
 ##           [1,1] = ababab
-##           [2,1] = cd cd cd 
+##           [2,1] = cd cd cd
 ##         @}
 ## @end group
 ## @end example

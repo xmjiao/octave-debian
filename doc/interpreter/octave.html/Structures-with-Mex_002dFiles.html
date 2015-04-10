@@ -63,11 +63,11 @@ Next: <a href="Sparse-Matrices-with-Mex_002dFiles.html#Sparse-Matrices-with-Mex_
 dimensional matrix, or <code>mxCreateStructArray</code>.
 </p>
 <div class="example">
-<pre class="example">mxArray *mxCreateStructArray (int ndims, int *dims, 
-                              int num_keys, 
+<pre class="example">mxArray *mxCreateStructArray (int ndims, int *dims,
+                              int num_keys,
                               const char **keys);
-mxArray *mxCreateStructMatrix (int rows, int cols, 
-                               int num_keys, 
+mxArray *mxCreateStructMatrix (int rows, int cols,
+                               int num_keys,
                                const char **keys);
 </pre></div>
 
@@ -78,11 +78,11 @@ mxArray *mxCreateStructMatrix (int rows, int cols,
 <div class="example">
 <pre class="example">mxArray *mxGetField (const mxArray *ptr, mwIndex index,
                      const char *key);
-mxArray *mxGetFieldByNumber (const mxArray *ptr, 
+mxArray *mxGetFieldByNumber (const mxArray *ptr,
                              mwIndex index, int key_num);
-void mxSetField (mxArray *ptr, mwIndex index, 
+void mxSetField (mxArray *ptr, mwIndex index,
                  const char *key, mxArray *val);
-void mxSetFieldByNumber (mxArray *ptr, mwIndex index, 
+void mxSetFieldByNumber (mxArray *ptr, mwIndex index,
                          int key_num, mxArray *val);
 </pre></div>
 
@@ -138,7 +138,7 @@ mexFunction (int nlhs, mxArray* plhs[],
 <p>An example of the behavior of this function within Octave is then
 </p>
 <div class="example">
-<pre class="example">a(1).f1 = &quot;f11&quot;; a(1).f2 = &quot;f12&quot;; 
+<pre class="example">a(1).f1 = &quot;f11&quot;; a(1).f2 = &quot;f12&quot;;
 a(2).f1 = &quot;f21&quot;; a(2).f2 = &quot;f22&quot;;
 b = mystruct (a);
 &rArr;  field f1(0) = f11

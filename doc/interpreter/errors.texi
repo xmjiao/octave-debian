@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 1996-2013 John W. Eaton
+@c Copyright (C) 1996-2015 John W. Eaton
 @c
 @c This file is part of Octave.
 @c
@@ -8,12 +8,12 @@
 @c under the terms of the GNU General Public License as published by the
 @c Free Software Foundation; either version 3 of the License, or (at
 @c your option) any later version.
-@c 
+@c
 @c Octave is distributed in the hope that it will be useful, but WITHOUT
 @c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 @c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 @c for more details.
-@c 
+@c
 @c You should have received a copy of the GNU General Public License
 @c along with Octave; see the file COPYING.  If not, see
 @c <http://www.gnu.org/licenses/>.
@@ -89,7 +89,7 @@ Calling @code{error} also sets Octave's internal error state such that
 control will return to the top level without evaluating any more
 commands.  This is useful for aborting from functions or scripts.
 
-If the error message does not end with a new line character, Octave will
+If the error message does not end with a newline character, Octave will
 print a traceback of all the function calls leading to the error.  For
 example, given the following function definitions:
 
@@ -117,10 +117,10 @@ error:   f at line 1, column 15
 @end group
 @end example
 
-If the error message ends in a new line character, Octave will print the
+If the error message ends in a newline character, Octave will print the
 message but will not display any traceback messages as it returns
 control to the top level.  For example, modifying the error message
-in the previous example to end in a new line causes Octave to only print
+in the previous example to end in a newline causes Octave to only print
 a single message:
 
 @example
@@ -153,7 +153,7 @@ error (err_msg);
 which will only stop execution if an error has been found.
 
 Implementation Note: For compatibility with @sc{matlab}, escape
-sequences (e.g., @qcode{"\n"} => newline) are processed in @var{template}
+sequences (e.g., "\n" => newline) are processed in @var{template}
 regardless of whether @var{template} has been defined within single quotes
 as long as there are two or more input arguments.
 Use a second backslash to stop interpolation of the escape sequence (e.g.,
@@ -197,14 +197,14 @@ error.
 f ()
 
 @print{}  error: Invalid call to f.  Correct usage is:
-@print{}  
+@print{}
 @print{}   -- Function File: f (ARG1)
-@print{}  
-@print{}  
+@print{}
+@print{}
 @print{}  Additional help for built-in functions and operators is
 @print{}  available in the online version of the manual.  Use the command
 @print{}  `doc <topic>' to search the manual index.
-@print{}  
+@print{}
 @print{}  Help and information about Octave is also available on the WWW
 @print{}  at http://www.octave.org and via the help@@octave.org
 @print{}  mailing list.
@@ -219,36 +219,6 @@ Print the usage message for a function.  When called with no input arguments
 the @code{print_usage} function displays the usage message of the currently
 executing function.
 @seealso{@ref{XREFhelp,,help}}
-@end deftypefn
-
-
-@c usage libinterp/corefcn/error.cc
-@anchor{XREFusage}
-@deftypefn {Built-in Function} {} usage (@var{msg})
-Print the message @var{msg}, prefixed by the string @samp{usage: }, and
-set Octave's internal error state such that control will return to the
-top level without evaluating any more commands.  This is useful for
-aborting from functions.
-
-After @code{usage} is evaluated, Octave will print a traceback of all
-the function calls leading to the usage message.
-
-You should use this function for reporting problems errors that result
-from an improper call to a function, such as calling a function with an
-incorrect number of arguments, or with arguments of the wrong type.  For
-example, most functions distributed with Octave begin with code like
-this
-
-@example
-@group
-if (nargin != 2)
-  usage ("foo (a, b)");
-endif
-@end group
-@end example
-
-@noindent
-to check for the proper number of arguments.
 @end deftypefn
 
 
@@ -443,7 +413,7 @@ of input arguments.
 
 @item Octave:invalid-indexing
 Indicates that a data-type was indexed incorrectly, e.g., real-value index
-for arrays, non-existent field of a structure.
+for arrays, nonexistent field of a structure.
 
 @item Octave:bad-alloc
 Indicates that memory couldn't be allocated.
@@ -518,8 +488,8 @@ Return a structure containing the system-dependent errno values.
 @subsection Recovering From Errors
 
 Octave provides several ways of recovering from errors.  There are
-@code{try}/@code{catch} blocks, 
-@code{unwind_protect}/@code{unwind_protect_cleanup} blocks, 
+@code{try}/@code{catch} blocks,
+@code{unwind_protect}/@code{unwind_protect_cleanup} blocks,
 and finally the @code{onCleanup} command.
 
 The @code{onCleanup} command associates an ordinary Octave variable (the
@@ -537,7 +507,7 @@ For example:
 @group
 function rand42
   old_state = rand ("state");
-  restore_state = onCleanup (@@() rand ("state", old_state);
+  restore_state = onCleanup (@@() rand ("state", old_state));
   rand ("state", 42);
   @dots{}
 endfunction  # rand generator state restored by onCleanup
@@ -620,6 +590,7 @@ is available as a namespace for user's own warnings.
 @deftypefnx {Built-in Function} {} warning ("off", @var{id})
 @deftypefnx {Built-in Function} {} warning ("query", @var{id})
 @deftypefnx {Built-in Function} {} warning ("error", @var{id})
+@deftypefnx {Built-in Function} {} warning (@var{state}, "backtrace")
 @deftypefnx {Built-in Function} {} warning (@var{state}, @var{id}, "local")
 Format the optional arguments under the control of the template string
 @var{template} using the same rules as the @code{printf} family of
@@ -650,6 +621,11 @@ warning ("error");
 @end group
 @end example
 
+If the state is @qcode{"on"} or @qcode{"off"} and the third argument
+is @qcode{"backtrace"}, then a stack trace is printed along with the
+warning message when warnings occur inside function calls.  This option
+is enabled by default.
+
 If the state is @qcode{"on"}, @qcode{"off"}, or @qcode{"error"}
 and the third argument is @qcode{"local"}, then the warning state
 will be set temporarily, until the end of the current function.
@@ -660,7 +636,7 @@ function.  The @qcode{"local"} option is ignored if used in the top-level
 workspace.
 
 Implementation Note: For compatibility with @sc{matlab}, escape
-sequences (e.g., @qcode{"\n"} => newline) are processed in @var{template}
+sequences (e.g., "\n" => newline) are processed in @var{template}
 regardless of whether @var{template} has been defined within single quotes
 as long as there are two or more input arguments.
 Use a second backslash to stop interpolation of the escape sequence (e.g.,
@@ -792,11 +768,6 @@ calls in PKG_ADD files, when the PKG_ADD file is not in the same
 directory as the .oct file referred to by the autoload() command.
 By default, the @code{Octave:autoload-relative-file-name} warning is enabled.
 
-@item Octave:broadcast
-Warn when performing broadcasting operations.  By default, this is
-enabled.  See @ref{Broadcasting} in the chapter Vectorization and Faster
-Code Execution of the manual.
-
 @item Octave:built-in-variable-assignment
 By default, the @code{Octave:built-in-variable-assignment} warning is
 enabled.
@@ -836,18 +807,18 @@ If the @code{Octave:imag-to-real} warning is enabled, a warning is
 printed for implicit conversions of complex numbers to real numbers.
 By default, the @code{Octave:imag-to-real} warning is disabled.
 
+@item Octave:language-extension
+Print warnings when using features that are unique to the Octave
+language and may be still be missing in @sc{Matlab}.
+By default, the @code{Octave:language-extension} warning is disabled.
+The --traditional or --braindead startup options for Octave may also
+be of use, @pxref{Command Line Options}.
+
 @item Octave:load-file-in-path
 By default, the @code{Octave:load-file-in-path} warning is enabled.
 
 @item Octave:logical-conversion
 By default, the @code{Octave:logical-conversion} warning is enabled.
-
-@item Octave:matlab-incompatible
-Print warnings for Octave language features that may cause
-compatibility problems with @sc{matlab}.
-By default, the @code{Octave:matlab-incompatible} warning is disabled.
-The --traditional or --braindead startup options for Octave may also
-be of use, @pxref{Command Line Options}.
 
 @item Octave:md5sum-file-in-path
 By default, the @code{Octave:md5sum-file-in-path} warning is enabled.
@@ -969,8 +940,10 @@ Print warning if a single quote character is used to introduce a
 string constant.
 By default, the @code{Octave:single-quote-string} warning is disabled.
 
-@item Octave:singular-matrix-div
-By default, the @code{Octave:singular-matrix-div} warning is enabled.
+@item  Octave:nearly-singular-matrix
+@itemx Octave:singular-matrix
+By default, the @code{Octave:nearly-singular-matrix} and
+@code{Octave:singular-matrix} warnings are enabled.
 
 @item Octave:sqrtm:SingularMatrix
 By default, the @code{Octave:sqrtm:SingularMatrix} warning is enabled.
@@ -1019,7 +992,7 @@ their string identifications.  The following code will issue a warning
 
 @example
 @group
-warning ("example:non-negative-variable", 
+warning ("example:non-negative-variable",
          "'a' must be non-negative.  Setting 'a' to zero.");
 @end group
 @end example
@@ -1030,7 +1003,7 @@ while the following won't issue a warning
 @example
 @group
 warning ("off", "example:non-negative-variable");
-warning ("example:non-negative-variable", 
+warning ("example:non-negative-variable",
          "'a' must be non-negative.  Setting 'a' to zero.");
 @end group
 @end example

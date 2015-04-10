@@ -170,14 +170,21 @@ return <code>NaN</code>.
 
 <a name="XREFbeta"></a><dl>
 <dt><a name="index-beta"></a>Mapping Function: <em></em> <strong>beta</strong> <em>(<var>a</var>, <var>b</var>)</em></dt>
-<dd><p>For real inputs, return the Beta function,
+<dd><p>Compute the Beta function for real inputs <var>a</var> and <var>b</var>.
+</p>
+<p>The Beta function definition is
 </p>
 <div class="example">
 <pre class="example">beta (a, b) = gamma (a) * gamma (b) / gamma (a + b).
 </pre></div>
 
 
-<p><strong>See also:</strong> <a href="#XREFbetaln">betaln</a>, <a href="#XREFbetainc">betainc</a>.
+<p>The Beta function can grow quite large and it is often more useful to work
+with the logarithm of the output rather than the function directly.
+See <a href="#XREFbetaln">betaln</a>, for computing the logarithm of the Beta function
+in an efficient manner.
+</p>
+<p><strong>See also:</strong> <a href="#XREFbetaln">betaln</a>, <a href="#XREFbetainc">betainc</a>, <a href="#XREFbetaincinv">betaincinv</a>.
 </p></dd></dl>
 
 
@@ -216,15 +223,21 @@ compatible dimensions.
 
 <a name="XREFbetaln"></a><dl>
 <dt><a name="index-betaln"></a>Mapping Function: <em></em> <strong>betaln</strong> <em>(<var>a</var>, <var>b</var>)</em></dt>
-<dd><p>Return the natural logarithm of the Beta function,
+<dd><p>Compute the natural logarithm of the Beta function for real inputs <var>a</var>
+and <var>b</var>.
+</p>
+<p><code>betaln</code> is defined as
 </p>
 <div class="example">
 <pre class="example">betaln (a, b) = log (beta (a, b))
 </pre></div>
 
-<p>calculated in a way to reduce the occurrence of underflow.
+<p>and is calculated in a way to reduce the occurrence of underflow.
 </p>
-<p><strong>See also:</strong> <a href="#XREFbeta">beta</a>, <a href="#XREFbetainc">betainc</a>, <a href="#XREFgammaln">gammaln</a>.
+<p>The Beta function can grow quite large and it is often more useful to work
+with the logarithm of the output rather than the function directly.
+</p>
+<p><strong>See also:</strong> <a href="#XREFbeta">beta</a>, <a href="#XREFbetainc">betainc</a>, <a href="#XREFbetaincinv">betaincinv</a>, <a href="#XREFgammaln">gammaln</a>.
 </p></dd></dl>
 
 
@@ -273,8 +286,8 @@ big arguments.
 <em>K(m,m)</em>
  is returned.
 </p>
-<p>See Magnus and Neudecker (1988), <cite>Matrix Differential Calculus with
-Applications in Statistics and Econometrics.</cite>
+<p>See Magnus and Neudecker (1988), <cite>Matrix Differential
+Calculus with Applications in Statistics and Econometrics.</cite>
 </p></dd></dl>
 
 
@@ -291,8 +304,8 @@ Applications in Statistics and Econometrics.</cite>
  matrices
 <em>A</em>.
 </p>
-<p>See Magnus and Neudecker (1988), Matrix differential calculus with
-applications in statistics and econometrics.
+<p>See Magnus and Neudecker (1988), <cite>Matrix Differential
+Calculus with Applications in Statistics and Econometrics.</cite>
 </p></dd></dl>
 
 
@@ -357,12 +370,39 @@ E(<var>m</var>) kind.
 </p>
 <p><var>m</var> must be a scalar or real array with -Inf &le; <var>m</var> &le; 1.
 </p>
-<p>The optional input <var>tol</var> is currently ignored (<small>MATLAB</small> uses this
-to allow a faster, less accurate approximation).
+<p>The optional input <var>tol</var> controls the stopping tolerance of the
+algorithm and defaults to <code>eps (class (<var>m</var>))</code>.  The tolerance can
+be increased to compute a faster, less accurate approximation.
 </p>
-<p>Called with only one output, elliptic integrals of the first kind are
+<p>When called with one output only elliptic integrals of the first kind are
 returned.
 </p>
+<p>Mathematical Note:
+</p>
+<p>Elliptic integrals of the first kind are defined as
+</p>
+
+<div class="example">
+<pre class="example">         1
+        /               dt
+K (m) = | ------------------------------
+        / sqrt ((1 - t^2)*(1 - m^2*t^2))
+       0
+</pre></div>
+
+
+<p>Elliptic integrals of the second kind are defined as
+</p>
+
+<div class="example">
+<pre class="example">         1
+        /  sqrt (1 - m^2*t^2)
+E (m) = |  ------------------ dt
+        /  sqrt (1 - t^2)
+       0
+</pre></div>
+
+
 <p>Reference: Milton Abramowitz and Irene A. Stegun,
 <cite>Handbook of Mathematical Functions</cite>, Chapter 17, Dover, 1965.
 </p>
@@ -488,7 +528,13 @@ gamma (z) = | t^(z-1) exp (-t) dt.
 </pre></div>
 
 
-<p><strong>See also:</strong> <a href="#XREFgammainc">gammainc</a>, <a href="#XREFlgamma">lgamma</a>.
+<p>Programming Note: The gamma function can grow quite large even for small
+input values.  In many cases it may be preferable to use the natural
+logarithm of the gamma function (<code>gammaln</code>) in calculations to minimize
+loss of precision.  The final result is then
+<code>exp (<var>result_using_gammaln</var>).</code>
+</p>
+<p><strong>See also:</strong> <a href="#XREFgammainc">gammainc</a>, <a href="#XREFgammaln">gammaln</a>, <a href="Utility-Functions.html#XREFfactorial">factorial</a>.
 </p></dd></dl>
 
 
@@ -507,7 +553,8 @@ gammainc (x, a) = ---------    | exp (-t) t^(a-1) dt
 </pre></div>
 
 <p>with the limiting value of 1 as <var>x</var> approaches infinity.
-The standard notation is <em>P(a,x)</em>, e.g., Abramowitz and Stegun (6.5.1).
+The standard notation is <em>P(a,x)</em>, e.g., Abramowitz and
+Stegun (6.5.1).
 </p>
 <p>If <var>a</var> is scalar, then <code>gammainc (<var>x</var>, <var>a</var>)</code> is returned
 for each element of <var>x</var> and vice versa.
@@ -523,7 +570,7 @@ integrated from <var>x</var> to infinity is calculated.  It should be noted that
 <pre class="example">gammainc (<var>x</var>, <var>a</var>) &equiv; 1 - gammainc (<var>x</var>, <var>a</var>, &quot;upper&quot;)
 </pre></div>
 
-<p><strong>See also:</strong> <a href="#XREFgamma">gamma</a>, <a href="#XREFlgamma">lgamma</a>.
+<p><strong>See also:</strong> <a href="#XREFgamma">gamma</a>, <a href="#XREFgammaln">gammaln</a>.
 </p></dd></dl>
 
 
@@ -531,21 +578,25 @@ integrated from <var>x</var> to infinity is calculated.  It should be noted that
 <dt><a name="index-legendre"></a>Function File: <em><var>l</var> =</em> <strong>legendre</strong> <em>(<var>n</var>, <var>x</var>)</em></dt>
 <dt><a name="index-legendre-1"></a>Function File: <em><var>l</var> =</em> <strong>legendre</strong> <em>(<var>n</var>, <var>x</var>, <var>normalization</var>)</em></dt>
 <dd><p>Compute the Legendre function of degree <var>n</var> and order
-<var>m</var> = 0 &hellip; N.  The optional argument, <var>normalization</var>,
-may be one of <code>&quot;unnorm&quot;</code>, <code>&quot;sch&quot;</code>, or <code>&quot;norm&quot;</code>.
-The default is <code>&quot;unnorm&quot;</code>.  The value of <var>n</var> must be a
-non-negative scalar integer.
+<var>m</var> = 0 &hellip; <var>n</var>.
 </p>
-<p>If the optional argument <var>normalization</var> is missing or is
-<code>&quot;unnorm&quot;</code>, compute the Legendre function of degree <var>n</var> and
-order <var>m</var> and return all values for <var>m</var> = 0 &hellip; <var>n</var>.
-The return value has one dimension more than <var>x</var>.
+<p>The value <var>n</var> must be a real non-negative integer.  <var>x</var> is a
+vector with real-valued elements in the range [-1, 1].
+</p>
+<p>The optional argument <var>normalization</var> may be one of <code>&quot;unnorm&quot;</code>,
+<code>&quot;sch&quot;</code>, or <code>&quot;norm&quot;</code>.  The default if no normalization is given
+is <code>&quot;unnorm&quot;</code>.
+</p>
+<p>When the optional argument <var>normalization</var> is <code>&quot;unnorm&quot;</code>, compute
+the Legendre function of degree <var>n</var> and order <var>m</var> and return all
+values for <var>m</var> = 0 &hellip; <var>n</var>.  The return value has one dimension
+more than <var>x</var>.
 </p>
 <p>The Legendre Function of degree <var>n</var> and order <var>m</var>:
 </p>
 
 <div class="example">
-<pre class="example"> m        m       2  m/2   d^m
+<pre class="example"> m         m      2  m/2   d^m
 P(x) = (-1) * (1-x  )    * ----  P(x)
  n                         dx^m   n
 </pre></div>
@@ -572,12 +623,12 @@ m=2 |  0.00000 | -2.56500 | -4.32000
 m=3 |  0.00000 | -1.24229 | -3.24000
 </pre></div>
 
-<p>If the optional argument <code>normalization</code> is <code>&quot;sch&quot;</code>,
+<p>When the optional argument <code>normalization</code> is <code>&quot;sch&quot;</code>,
 compute the Schmidt semi-normalized associated Legendre function.
 The Schmidt semi-normalized associated Legendre function is related
 to the unnormalized Legendre functions by the following:
 </p>
-<p>For Legendre functions of degree n and order 0:
+<p>For Legendre functions of degree <var>n</var> and order 0:
 </p>
 
 <div class="example">
@@ -597,7 +648,7 @@ SP(x) = P(x) * (-1)  * [-------]
 </pre></div>
 
 
-<p>If the optional argument <var>normalization</var> is <code>&quot;norm&quot;</code>,
+<p>When the optional argument <var>normalization</var> is <code>&quot;norm&quot;</code>,
 compute the fully normalized associated Legendre function.
 The fully normalized associated Legendre function is related
 to the unnormalized Legendre functions by the following:
@@ -615,8 +666,8 @@ NP(x) = P(x) * (-1)  * [-------------]
 
 
 <a name="XREFgammaln"></a><a name="XREFlgamma"></a><dl>
-<dt><a name="index-lgamma"></a>Mapping Function: <em></em> <strong>lgamma</strong> <em>(<var>x</var>)</em></dt>
 <dt><a name="index-gammaln"></a>Mapping Function: <em></em> <strong>gammaln</strong> <em>(<var>x</var>)</em></dt>
+<dt><a name="index-lgamma"></a>Mapping Function: <em></em> <strong>lgamma</strong> <em>(<var>x</var>)</em></dt>
 <dd><p>Return the natural logarithm of the gamma function of <var>x</var>.
 </p>
 <p><strong>See also:</strong> <a href="#XREFgamma">gamma</a>, <a href="#XREFgammainc">gammainc</a>.

@@ -1,4 +1,4 @@
-## Copyright (C) 2005-2013 Søren Hauberg
+## Copyright (C) 2005-2015 Søren Hauberg
 ## Copyright (C) 2010 VZLU Prague, a.s.
 ##
 ## This file is part of Octave.
@@ -29,7 +29,7 @@ function create_pkgadddel (desc, packdir, nm, global_install)
   ## architecture dependent directory so that the autoload/mfilename
   ## commands work as expected. The only part that doesn't is the
   ## part in the main directory.
-  archdir = fullfile (getarchprefix (desc, global_install), 
+  archdir = fullfile (getarchprefix (desc, global_install),
                       [desc.name "-" desc.version], getarch ());
   if (exist (getarchdir (desc, global_install), "dir"))
     archpkg = fullfile (getarchdir (desc, global_install), nm);

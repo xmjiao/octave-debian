@@ -1,4 +1,4 @@
-## Copyright (C) 2012-2013 Ben Abbott, Jonas Lundgren
+## Copyright (C) 2012-2015 Ben Abbott, Jonas Lundgren
 ##
 ## This file is part of Octave.
 ##
@@ -155,7 +155,7 @@ function splineimages (nm, typ)
     ylim ([-2 2]);
     print ([nm "." typ], d_typ);
   endif
-  hide_output ();  
+  hide_output ();
 endfunction
 
 function set_print_size ()

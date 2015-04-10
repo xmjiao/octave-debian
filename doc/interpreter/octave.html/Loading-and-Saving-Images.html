@@ -73,16 +73,16 @@ imwrite (J, &quot;my_output_image.img&quot;);
 
 <a name="XREFimread"></a><dl>
 <dt><a name="index-imread"></a>Function File: <em>[<var>img</var>, <var>map</var>, <var>alpha</var>] =</em> <strong>imread</strong> <em>(<var>filename</var>)</em></dt>
-<dt><a name="index-imread-1"></a>Function File: <em>[&hellip;] =</em> <strong>imread</strong> <em>(<var>filename</var>, <var>ext</var>)</em></dt>
-<dt><a name="index-imread-2"></a>Function File: <em>[&hellip;] =</em> <strong>imread</strong> <em>(<var>url</var>)</em></dt>
+<dt><a name="index-imread-1"></a>Function File: <em>[&hellip;] =</em> <strong>imread</strong> <em>(<var>url</var>)</em></dt>
+<dt><a name="index-imread-2"></a>Function File: <em>[&hellip;] =</em> <strong>imread</strong> <em>(&hellip;, <var>ext</var>)</em></dt>
 <dt><a name="index-imread-3"></a>Function File: <em>[&hellip;] =</em> <strong>imread</strong> <em>(&hellip;, <var>idx</var>)</em></dt>
 <dt><a name="index-imread-4"></a>Function File: <em>[&hellip;] =</em> <strong>imread</strong> <em>(&hellip;, <var>param1</var>, <var>val1</var>, &hellip;)</em></dt>
 <dd><p>Read images from various file formats.
 </p>
 <p>Reads an image as a matrix from the file <var>filename</var>.  If there is
 no file <var>filename</var>, and <var>ext</var> was specified, it will look for
-a file named <var>filename</var> and extension <var>ext</var>, i.e., a file named
-<var>filename</var>.<var>ext</var>.
+a file with the extension <var>ext</var>.  Finally, it will attempt to download
+and read an image from <var>url</var>.
 </p>
 <p>The size and class of the output depends on the
 format of the image.  A color image is returned as an
@@ -127,8 +127,16 @@ use the Index option.
 <dd><p>Controls the image region that is read.  Takes as value a cell array
 with two arrays of 3 elements <code>{<var>rows</var> <var>cols</var>}</code>.  The
 elements in the array are the start, increment and end pixel to be
-read.  If the increment value is omitted, defaults to 1.
-</p></dd>
+read.  If the increment value is omitted, defaults to 1.  For example,
+the following are all equivalent:
+</p>
+<div class="example">
+<pre class="example">imread (filename, &quot;PixelRegion&quot;, {[200 600] [300 700]});
+imread (filename, &quot;PixelRegion&quot;, {[200 1 600] [300 1 700]});
+imread (filename)(200:600, 300:700);
+</pre></div>
+
+</dd>
 </dl>
 
 
@@ -169,7 +177,7 @@ opaque.
 </dd>
 <dt>&lsquo;<samp>DelayTime</samp>&rsquo;</dt>
 <dd><p>For formats that accept animations (such as GIF), controls for how long a
-frame is displayed until it moves to the next one. The value must be scalar
+frame is displayed until it moves to the next one.  The value must be scalar
 (which will applied to all frames in <var>img</var>), or a vector of length
 equal to the number of frames in <var>im</var>.  The value is in seconds, must
 be between 0 and 655.35, and defaults to 0.5.
@@ -241,8 +249,8 @@ file.
 </p>
 <a name="XREFimfinfo"></a><dl>
 <dt><a name="index-imfinfo"></a>Function File: <em><var>info</var> =</em> <strong>imfinfo</strong> <em>(<var>filename</var>)</em></dt>
-<dt><a name="index-imfinfo-1"></a>Function File: <em><var>info</var> =</em> <strong>imfinfo</strong> <em>(<var>filename</var>, <var>ext</var>)</em></dt>
-<dt><a name="index-imfinfo-2"></a>Function File: <em><var>info</var> =</em> <strong>imfinfo</strong> <em>(<var>url</var>)</em></dt>
+<dt><a name="index-imfinfo-1"></a>Function File: <em><var>info</var> =</em> <strong>imfinfo</strong> <em>(<var>url</var>)</em></dt>
+<dt><a name="index-imfinfo-2"></a>Function File: <em><var>info</var> =</em> <strong>imfinfo</strong> <em>(&hellip;, <var>ext</var>)</em></dt>
 <dd><p>Read image information from a file.
 </p>
 <p><code>imfinfo</code> returns a structure containing information about the image

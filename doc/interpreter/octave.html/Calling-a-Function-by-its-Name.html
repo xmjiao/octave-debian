@@ -61,7 +61,7 @@ Next: <a href="Evaluation-in-a-Different-Context.html#Evaluation-in-a-Different-
 <p>The <code>feval</code> function allows you to call a function from a string
 containing its name.  This is useful when writing a function that needs to
 call user-supplied functions.  The <code>feval</code> function takes the name
-of the function to call as its first argument, and the remaining 
+of the function to call as its first argument, and the remaining
 arguments are given to the function.
 </p>
 <p>The following example is a simple-minded function using <code>feval</code>
@@ -154,9 +154,10 @@ Octave will first search for a script with the <samp>&quot;.m&quot;</samp> exten
 falling back to the script name without an extension.
 </p>
 <p>Implementation Note: If <var>script</var> includes a path component, then
-<code>run</code> first changes the directory to the directory where <var>script</var>
-is found.  <code>run</code> then executes the script, and returns to the original
-directory. 
+<code>run</code> first changes the working directory to the directory where
+<var>script</var> is found.  Next, the script is executed.  Finally, <code>run</code>
+returns to the original working directory unless <code>script</code> has
+specifically changed directories.
 </p>
 <p><strong>See also:</strong> <a href="Manipulating-the-Load-Path.html#XREFpath">path</a>, <a href="Manipulating-the-Load-Path.html#XREFaddpath">addpath</a>, <a href="Script-Files.html#XREFsource">source</a>.
 </p></dd></dl>

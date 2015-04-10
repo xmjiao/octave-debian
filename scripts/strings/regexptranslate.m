@@ -1,4 +1,4 @@
-## Copyright (C) 2008-2013 David Bateman
+## Copyright (C) 2008-2015 David Bateman
 ##
 ## This file is part of Octave.
 ##
@@ -63,8 +63,8 @@ function y = regexptranslate (op, s)
 
   op = tolower (op);
   if (strcmp ("wildcard", op))
-    y = regexprep (regexprep (regexprep (s, '\.', '\.'), 
-                                            '\*', '.*'), 
+    y = regexprep (regexprep (regexprep (s, '\.', '\.'),
+                                            '\*', '.*'),
                                             '\?', '.');
   elseif (strcmp ("escape", op))
     y = regexprep (s, '([^\w])', '\\$1');
@@ -78,7 +78,7 @@ endfunction
 %!assert (regexptranslate ("wildcard", "/a*b?c."), "/a.*b.c\\.")
 %!assert (regexptranslate ("escape", '$.?[abc]'), '\$\.\?\[abc\]')
 
-%% Test input validation
+## Test input validation
 %!error <Invalid call to regexptranslate> regexptranslate ()
 %!error <Invalid call to regexptranslate> regexptranslate ("wildcard")
 %!error <Invalid call to regexptranslate> regexptranslate ("a", "b", "c")

@@ -157,12 +157,12 @@ specified by <code>TolFun</code>.
 </p>
 </dd>
 <dt>0</dt>
-<dd><p>Iteration limit exceeded&mdash;either maximum numer of algorithm iterations
+<dd><p>Iteration limit exceeded&mdash;either maximum number of algorithm iterations
 <code>MaxIter</code> or maximum number of function evaluations <code>MaxFunEvals</code>.
 </p>
 </dd>
 <dt>-1</dt>
-<dd><p>Alogrithm terminated by <code>OutputFcn</code>.
+<dd><p>Algorithm terminated by <code>OutputFcn</code>.
 </p>
 </dd>
 <dt>-3</dt>
@@ -191,11 +191,11 @@ algorithm such as <code>fminsearch</code>.
 <dd>
 <p>Find a value of <var>x</var> which minimizes the function <var>fun</var>.
 The search begins at the point <var>x0</var> and iterates using the
-Nelder &amp; Mead Simplex algorithm (a derivative-free method).  This algorithm
-is better-suited to functions which have discontinuities or for which
-a gradient-based search such as <code>fminunc</code> fails.
+Nelder &amp; Mead Simplex algorithm (a derivative-free method).  This
+algorithm is better-suited to functions which have discontinuities or for
+which a gradient-based search such as <code>fminunc</code> fails.
 </p>
-<p>Options for the search are provided in the parameter <var>options</var> using 
+<p>Options for the search are provided in the parameter <var>options</var> using
 the function <code>optimset</code>.  Currently, <code>fminsearch</code> accepts the
 options: <code>&quot;TolX&quot;</code>, <code>&quot;MaxFunEvals&quot;</code>, <code>&quot;MaxIter&quot;</code>,
 <code>&quot;Display&quot;</code>.  For a description of these options, see

@@ -1,4 +1,4 @@
-## Copyright (C) 2010-2013 Ben Abbott
+## Copyright (C) 2010-2015 Ben Abbott
 ##
 ## This file is part of Octave.
 ##
@@ -26,20 +26,20 @@
 ##
 ## The aspect ratio is a normalized 3-element vector representing the span of
 ## the x, y, and z-axis limits.
-## 
+##
 ## @code{daspect (@var{mode})}
 ##
 ## Set the data aspect ratio mode of the current axes.  @var{mode} is
 ## either @qcode{"auto"} or @qcode{"manual"}.
-## 
+##
 ## @code{daspect (@qcode{"mode"})}
 ##
 ## Return the data aspect ratio mode of the current axes.
-## 
+##
 ## @code{daspect (@var{hax}, @dots{})}
 ##
 ## Operate on the axes in handle @var{hax} instead of the current axes.
-## 
+##
 ## @seealso{axis, pbaspect, xlim, ylim, zlim}
 ## @end deftypefn
 

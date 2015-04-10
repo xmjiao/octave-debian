@@ -1,6 +1,6 @@
 @c DO NOT EDIT!  Generated automatically by munge-texi.pl.
 
-@c Copyright (C) 2008-2013 David Bateman
+@c Copyright (C) 2008-2015 David Bateman
 @c Copyright (C) 2009 VZLU Prague
 @c
 @c This file is part of Octave.
@@ -9,12 +9,12 @@
 @c under the terms of the GNU General Public License as published by the
 @c Free Software Foundation; either version 3 of the License, or (at
 @c your option) any later version.
-@c 
+@c
 @c Octave is distributed in the hope that it will be useful, but WITHOUT
 @c ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 @c FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 @c for more details.
-@c 
+@c
 @c You should have received a copy of the GNU General Public License
 @c along with Octave; see the file COPYING.  If not, see
 @c <http://www.gnu.org/licenses/>.
@@ -172,7 +172,7 @@ isa (p, "polynomial")
 @anchor{XREFisobject}
 @deftypefn {Built-in Function} {} isobject (@var{x})
 Return true if @var{x} is a class object.
-@seealso{@ref{XREFclass,,class}, @ref{XREFtypeinfo,,typeinfo}, @ref{XREFisa,,isa}, @ref{XREFismethod,,ismethod}}
+@seealso{@ref{XREFclass,,class}, @ref{XREFtypeinfo,,typeinfo}, @ref{XREFisa,,isa}, @ref{XREFismethod,,ismethod}, @ref{XREFisprop,,isprop}}
 @end deftypefn
 
 
@@ -200,8 +200,8 @@ To inquire whether a particular method is available to a user class, the
 
 @c ismethod libinterp/octave-value/ov-class.cc
 @anchor{XREFismethod}
-@deftypefn {Built-in Function} {} ismethod (@var{x}, @var{method})
-Return true if @var{x} is a class object and the string @var{method}
+@deftypefn {Built-in Function} {} ismethod (@var{obj}, @var{method})
+Return true if @var{obj} is a class object and the string @var{method}
 is a method of this class.
 @seealso{@ref{XREFisprop,,isprop}, @ref{XREFisobject,,isobject}}
 @end deftypefn
@@ -291,7 +291,7 @@ endfunction
 Note that in the display method, it makes sense to start the method
 with the line @code{fprintf ("%s =", inputname (1))} to be consistent
 with the rest of Octave and print the variable name to be displayed
-when displaying the class. 
+when displaying the class.
 
 To be consistent with the Octave graphic handle classes, a class
 should also define the @code{get} and @code{set} methods.  The
@@ -325,7 +325,7 @@ endfunction
 
 @noindent
 Similarly, the @code{set} method should taken as its first argument an
-object to modify, and then take property/value pairs to be modified. 
+object to modify, and then take property/value pairs to be modified.
 
 @example
 @verbatim
@@ -451,13 +451,13 @@ endfunction
 @node Defining Indexing And Indexed Assignment
 @subsection Defining Indexing And Indexed Assignment
 
-Objects can be indexed with parentheses, either like 
+Objects can be indexed with parentheses, either like
 @code{@var{a} (@var{idx})} or like @code{@var{a} @{@var{idx}@}}, or even
 like @code{@var{a} (@var{idx}).@var{field}}.  However, it is up to the user
 to decide what this indexing actually means.  In the case of our polynomial
-class @code{@var{p} (@var{n})} might mean either the coefficient of the 
-@var{n}-th power of the polynomial, or it might be the evaluation of the 
-polynomial at @var{n}.  The meaning of this subscripted referencing is 
+class @code{@var{p} (@var{n})} might mean either the coefficient of the
+@var{n}-th power of the polynomial, or it might be the evaluation of the
+polynomial at @var{n}.  The meaning of this subscripted referencing is
 determined by the @code{subsref} method.
 
 @c subsref libinterp/octave-value/ov.cc
@@ -547,7 +547,7 @@ endfunction
 
 @end example
 
-The equivalent functionality for subscripted assignments uses the 
+The equivalent functionality for subscripted assignments uses the
 @code{subsasgn} method.
 
 @c subsasgn libinterp/octave-value/ov.cc
@@ -607,7 +607,7 @@ responsibility of these methods to handle the rest of the chain (if needed),
 usually by forwarding it again to @code{subsref} or @code{subsasgn}.
 
 If you wish to use the @code{end} keyword in subscripted expressions
-of an object, then the user needs to define the @code{end} method for 
+of an object, then the user needs to define the @code{end} method for
 the class.  For example, the @code{end} method for our polynomial class might
 look like
 
@@ -619,7 +619,7 @@ function r = end (obj, index_pos, num_indices)
   if (num_indices != 1)
     error ("polynomial object may only have one index")
   endif
-  
+
   r = length (obj.poly) - 1;
 
 endfunction
@@ -630,7 +630,7 @@ endfunction
 
 @noindent
 which is a fairly generic @code{end} method that has a behavior similar to
-the @code{end} keyword for Octave Array classes.  It can then be used as 
+the @code{end} keyword for Octave Array classes.  It can then be used as
 follows:
 
 @example
@@ -692,29 +692,22 @@ b(a)
 Finally, objects can equally be used like ranges, using the @code{colon}
 method
 
-@c colon scripts/miscellaneous/colon.m
+@c colon libinterp/corefcn/data.cc
 @anchor{XREFcolon}
-@deftypefn  {Function File} {@var{r} =} colon (@var{a}, @var{b})
-@deftypefnx {Function File} {@var{r} =} colon (@var{a}, @var{b}, @var{c})
-Method of a class to construct a range with the @code{:} operator.  For
-example:
+@deftypefn  {Built-in Function} {@var{r} =} colon (@var{base}, @var{limit})
+@deftypefnx {Built-in Function} {@var{r} =} colon (@var{base}, @var{increment}, @var{limit})
+Return the result of the colon expression corresponding to @var{base},
+@var{limit}, and optionally, @var{increment}.
 
-@example
-@group
-a = myclass (@dots{});
-b = myclass (@dots{});
-c = a : b
-@end group
-@end example
-
-@seealso{@ref{XREFclass,,class}, @ref{XREFsubsref,,subsref}, @ref{XREFsubsasgn,,subsasgn}}
+This function is equivalent to the operator syntax @w{@code{base : limit}}
+or @w{@code{base : increment : limit}}.
 @end deftypefn
 
 
 @node Indexed Assignment Optimization
 @subsection Indexed Assignment Optimization
 
-Octave's ubiquitous lazily-copied pass-by-value semantics implies 
+Octave's ubiquitous lazily-copied pass-by-value semantics implies
 a problem for performance of user-defined subsasgn methods.  Imagine
 a call to subsasgn:
 
@@ -738,7 +731,7 @@ and the corresponding method looking like this:
 @end example
 
 The problem is that on entry to the subsasgn method, @code{x} is still
-referenced from the caller's scope, which means that the method will 
+referenced from the caller's scope, which means that the method will
 first need to unshare (copy) @code{x} and @code{x.myfield} before performing
 the assignment.  Upon completing the call, unless an error occurs,
 the result is immediately assigned to @code{x} in the caller's scope,
@@ -845,8 +838,8 @@ which allows polynomials to be plotted in the domain near the region
 of the roots of the polynomial.
 
 Functions that are of particular interest to be overloaded are the class
-conversion functions such as @code{double}.  Overloading these functions 
-allows the @code{cast} function to work with the user class and can aid 
+conversion functions such as @code{double}.  Overloading these functions
+allows the @code{cast} function to work with the user class and can aid
 in the use of methods of other classes with the user class.  An example
 @code{double} function for our polynomial class might look like.
 
@@ -900,7 +893,7 @@ endfunction
 @cindex unary minus
 
 @c Need at least one plaintext sentence here between the @node and @float
-@c table below or the two will overlap due to a bug in Texinfo. 
+@c table below or the two will overlap due to a bug in Texinfo.
 @c This is not our fault; this *is* a ridiculous kluge.
 The following table shows, for each built-in numerical operation, the
 corresponding function name to use when providing an overloaded method for a
@@ -934,10 +927,10 @@ user class.
 
 @tex
 \vskip 6pt
-{\hbox to \hsize {\hfill\vbox{\offinterlineskip \tabskip=0pt 
+{\hbox to \hsize {\hfill\vbox{\offinterlineskip \tabskip=0pt
 \halign{
 \vrule height2.0ex depth1.ex width 0.6pt #\tabskip=0.3em &
-# \hfil & \vrule # & # \hfil & \vrule # & # \hfil & # \vrule 
+# \hfil & \vrule # & # \hfil & \vrule # & # \hfil & # \vrule
 width 0.6pt \tabskip=0pt\cr
 \noalign{\hrule height 0.6pt}
 & Operation && Method && Description &\cr
@@ -1111,7 +1104,7 @@ endfunction
 @end example
 
 Note that user classes always have higher precedence than built-in
-Octave types.  So in fact marking our polynomial class higher than the 
+Octave types.  So in fact marking our polynomial class higher than the
 @qcode{"double"} class is in fact not necessary.
 
 When faced with two objects that have the same precedence, Octave will use the
@@ -1230,7 +1223,7 @@ ans =  1
 octave:4> isa (f,"polynomial")
 ans =  1
 octave:5> struct (f)
-ans = 
+ans =
 @{
 polynomial = 0.333333 + 0.333333 * X + 0.333333 * X ^ 2
 @}

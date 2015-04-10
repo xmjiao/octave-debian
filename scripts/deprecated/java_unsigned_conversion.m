@@ -1,4 +1,4 @@
-## Copyright (C) 2012-2013 Rik Wehbring
+## Copyright (C) 2012-2015 Rik Wehbring
 ##
 ## This file is part of Octave.
 ##
@@ -24,7 +24,7 @@
 ## converted when Java matrix autoconversion is enabled.  When enabled, Java
 ## arrays of class Byte or Integer are converted to matrices of class uint8 or
 ## uint32 respectively.
-## 
+##
 ## When called from inside a function with the @qcode{"local"} option, the
 ## variable is changed locally for the function and any subroutines it calls.
 ##  The original variable value is restored when exiting the function.

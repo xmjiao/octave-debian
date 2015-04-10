@@ -120,20 +120,21 @@ extern int octave_debug;
     GLOBAL = 322,
     PERSISTENT = 323,
     FCN_HANDLE = 324,
-    PROPERTIES = 325,
-    METHODS = 326,
-    EVENTS = 327,
-    ENUMERATION = 328,
-    METAQUERY = 329,
-    SUPERCLASSREF = 330,
-    GET = 331,
-    SET = 332,
-    FCN = 333,
-    END_OF_INPUT = 334,
-    LEXICAL_ERROR = 335,
-    INPUT_FILE = 336,
-    CLASSDEF = 337,
-    UNARY = 338
+    CLASSDEF = 325,
+    PROPERTIES = 326,
+    METHODS = 327,
+    EVENTS = 328,
+    ENUMERATION = 329,
+    METAQUERY = 330,
+    SUPERCLASSREF = 331,
+    FQ_IDENT = 332,
+    GET = 333,
+    SET = 334,
+    FCN = 335,
+    END_OF_INPUT = 336,
+    LEXICAL_ERROR = 337,
+    INPUT_FILE = 338,
+    UNARY = 339
   };
 #endif
 /* Tokens.  */
@@ -204,27 +205,30 @@ extern int octave_debug;
 #define GLOBAL 322
 #define PERSISTENT 323
 #define FCN_HANDLE 324
-#define PROPERTIES 325
-#define METHODS 326
-#define EVENTS 327
-#define ENUMERATION 328
-#define METAQUERY 329
-#define SUPERCLASSREF 330
-#define GET 331
-#define SET 332
-#define FCN 333
-#define END_OF_INPUT 334
-#define LEXICAL_ERROR 335
-#define INPUT_FILE 336
-#define CLASSDEF 337
-#define UNARY 338
+#define CLASSDEF 325
+#define PROPERTIES 326
+#define METHODS 327
+#define EVENTS 328
+#define ENUMERATION 329
+#define METAQUERY 330
+#define SUPERCLASSREF 331
+#define FQ_IDENT 332
+#define GET 333
+#define SET 334
+#define FCN 335
+#define END_OF_INPUT 336
+#define LEXICAL_ERROR 337
+#define INPUT_FILE 338
+#define UNARY 339
 
 /* Value type.  */
 #if ! defined OCTAVE_STYPE && ! defined OCTAVE_STYPE_IS_DECLARED
 typedef union OCTAVE_STYPE OCTAVE_STYPE;
 union OCTAVE_STYPE
 {
-#line 149 "parse-tree/oct-parse.yy" /* yacc.c:1909  */
+#line 150 "parse-tree/oct-parse.yy" /* yacc.c:1909  */
+
+  int dummy_type;
 
   // The type of the basic tokens returned by the lexer.
   token *tok_val;
@@ -233,13 +237,15 @@ union OCTAVE_STYPE
   octave_comment_list *comment_type;
 
   // Types for the nonterminals we generate.
-  char sep_type;
+  char punct_type;
   tree *tree_type;
   tree_matrix *tree_matrix_type;
   tree_cell *tree_cell_type;
   tree_expression *tree_expression_type;
   tree_constant *tree_constant_type;
   tree_fcn_handle *tree_fcn_handle_type;
+  tree_funcall *tree_funcall_type;
+  tree_function_def *tree_function_def_type;
   tree_anon_fcn_handle *tree_anon_fcn_handle_type;
   tree_identifier *tree_identifier_type;
   tree_index_expression *tree_index_expression_type;
@@ -259,9 +265,26 @@ union OCTAVE_STYPE
   tree_statement *tree_statement_type;
   tree_statement_list *tree_statement_list_type;
   octave_user_function *octave_user_function_type;
-  void *dummy_type;
 
-#line 265 "parse-tree/oct-parse.h" /* yacc.c:1909  */
+  tree_classdef *tree_classdef_type;
+  tree_classdef_attribute* tree_classdef_attribute_type;
+  tree_classdef_attribute_list* tree_classdef_attribute_list_type;
+  tree_classdef_superclass* tree_classdef_superclass_type;
+  tree_classdef_superclass_list* tree_classdef_superclass_list_type;
+  tree_classdef_body* tree_classdef_body_type;
+  tree_classdef_property* tree_classdef_property_type;
+  tree_classdef_property_list* tree_classdef_property_list_type;
+  tree_classdef_properties_block* tree_classdef_properties_block_type;
+  tree_classdef_methods_list* tree_classdef_methods_list_type;
+  tree_classdef_methods_block* tree_classdef_methods_block_type;
+  tree_classdef_event* tree_classdef_event_type;
+  tree_classdef_events_list* tree_classdef_events_list_type;
+  tree_classdef_events_block* tree_classdef_events_block_type;
+  tree_classdef_enum* tree_classdef_enum_type;
+  tree_classdef_enum_list* tree_classdef_enum_list_type;
+  tree_classdef_enum_block* tree_classdef_enum_block_type;
+
+#line 288 "parse-tree/oct-parse.h" /* yacc.c:1909  */
 };
 # define OCTAVE_STYPE_IS_TRIVIAL 1
 # define OCTAVE_STYPE_IS_DECLARED 1
