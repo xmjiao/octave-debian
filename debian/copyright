@@ -4,51 +4,51 @@ Upstream-Contact: John W. Eaton <jwe@octave.org>
 Source: http://www.octave.org
 
 Files: *
-Copyright: 1992-2014 John W. Eaton <jwe@octave.org>
-           1984-1985, 1987-2013 Free Software Foundation, Inc
-           1997-2013 David Bateman
-           2008-2013 VZLU Prague, a.s., Czech Republic
-           1995-2013 Kurt Hornik
-           2010-2013 Rik Wehbring
-           2008-2013 Jaroslav Hajek
-           1998-2013 Andy Adler
-           1999-2013 Kai Habel
-           1993-2013 Paul Kienzle
-           2007-2013 Michael Goffioul
-           1995-2013 Friedrich Leisch
-           2007-2014 Ben Abbott
-           2005-2013 Bill Denney
-           1993-2013 Shai Ayal
-           1995-2013 Andreas Weingessel
-           1996-2013 Daniel Calvelo
-           2005-2013 Søren Hauberg <hauberg@gmail.com>
-           2000-2013 Teemu Ikonen
-           2012-2013 Daniel Kraft
-           2009-2013 Martin Helm
-           2005-2013 William Poetra Yoga Hadisoeseno
-           1993-2013 Auburn University
-           2001-2013 Ben Sapp
-           2000-2013 Gabriele Pannocchia
-           2005-2013 Ivana Varekova
-           2009-2013 Jason Riedy
-           2005-2013 Nicolo' Giorgetti
-           1996-2013 A. S. Hodel
-           1993-2013 A. Scottedward Hodel
-           2006-2013 Alexander Barth
-           2009-2013 Benjamin Lindner
-           2008-2013 Radek Salac
-           2009-2013 Carlo de Falco
-           2000-2013 Etienne Grossmann
-           2008-2013 Julian Schnidder
-           2005-2013 Ludwig Schwardt, Kevin Ruland
-           2005-2013 Michael Zeising
-           2006-2013 Michel D. Schmid
-           1999-2013 Peter Ekberg
-           2004-2013 Piotr Krzyzanowski
-           2007-2013 Regents of the University of California
-           2006-2013 Sylvain Pelissier
-           2008-2013 Thorsten Meyer
-           1997-2013 Vincent Cautaerts
+Copyright: 1992-2015 John W. Eaton <jwe@octave.org>
+           1984-1985, 1987-2015 Free Software Foundation, Inc
+           1997-2015 David Bateman
+           2008-2015 VZLU Prague, a.s., Czech Republic
+           1995-2015 Kurt Hornik
+           2010-2015 Rik Wehbring
+           2008-2015 Jaroslav Hajek
+           1998-2015 Andy Adler
+           1999-2015 Kai Habel
+           1993-2015 Paul Kienzle
+           2007-2015 Michael Goffioul
+           1995-2015 Friedrich Leisch
+           2007-2015 Ben Abbott
+           2005-2015 Bill Denney
+           1993-2015 Shai Ayal
+           1995-2015 Andreas Weingessel
+           1996-2015 Daniel Calvelo
+           2005-2015 Søren Hauberg <hauberg@gmail.com>
+           2000-2015 Teemu Ikonen
+           2012-2015 Daniel Kraft
+           2009-2015 Martin Helm
+           2005-2015 William Poetra Yoga Hadisoeseno
+           1993-2015 Auburn University
+           2001-2015 Ben Sapp
+           2000-2015 Gabriele Pannocchia
+           2005-2015 Ivana Varekova
+           2009-2015 Jason Riedy
+           2005-2015 Nicolo' Giorgetti
+           1996-2015 A. S. Hodel
+           1993-2015 A. Scottedward Hodel
+           2006-2015 Alexander Barth
+           2009-2015 Benjamin Lindner
+           2008-2015 Radek Salac
+           2009-2015 Carlo de Falco
+           2000-2015 Etienne Grossmann
+           2008-2015 Julian Schnidder
+           2005-2015 Ludwig Schwardt, Kevin Ruland
+           2005-2015 Michael Zeising
+           2006-2015 Michel D. Schmid
+           1999-2015 Peter Ekberg
+           2004-2015 Piotr Krzyzanowski
+           2007-2015 Regents of the University of California
+           2006-2015 Sylvain Pelissier
+           2008-2015 Thorsten Meyer
+           1997-2015 Vincent Cautaerts
            1995, 2000-2001 Maurice LeBrun
            2000, 2002 Joao Cardoso
            2000-2002, 2004 Alan W. Irwin
@@ -56,75 +56,90 @@ Copyright: 1992-2014 John W. Eaton <jwe@octave.org>
            2004 Victor Munoz
            2003 Alberto Terruzzi
            2012 Alexander Klein
-           2004-2013 Alois Schloegl
-           2002-2013 Andreas Stahel
-           2008-2013 Thomas L. Scofield <scofield@calvin.edu>
+           2004-2015 Alois Schloegl
+           2002-2015 Andreas Stahel
+           2008-2015 Thomas L. Scofield <scofield@calvin.edu>
            2010 David Grundberg
            2005 Stefan van der Walt <stefan@sun.ac.za>
            2006 Thomas Weber <tweber@debian.ors>
            2007-2009 John Swensen
-           2011-2013 John P. Swensen
-           1998-2013 Ariel Tankus
-           2012-2013 Carnë Draug
-           2005-2013 Mohamed Kamoun
-           2008-2013 Robert Platt
-           2000-2013 Bill Lash
-           2001-2013 Cai Jianming
+           2011-2015 John P. Swensen
+           1998-2015 Ariel Tankus
+           2012-2015 Carnë Draug
+           2005-2015 Mohamed Kamoun
+           2008-2015 Robert Platt
+           2000-2015 Bill Lash
+           2001-2015 Cai Jianming
            2010 Christos Dimitrakakis
-           1999-2013 Daniel Heiserer
-           2001, 2005-2013 Laurent Mazet
-           2006-2013 Daniel Sebald
-           2007-2013 Jordi Gutiérrez Hermoso <jordigh@octave.org>
-           2006-2013 Marco Caliari <marco.caliari@univr.it>
-           1999-2013 David M. Doolin
-           1993-2013 Dirk Laurie
-           2009-2013 E. Jason Riedy
-           2009-2013 Eric Chassande-Mottin, CNRS (France)
-           2012-2013 Philip Nienhuis
-           2006-2013 Frederick (Rick) A Niles
-           2005-2013 Hoxide Ma
-           2012-2013 Iain Murray
-           2008-2013 Ivana Varekova
-           2012-2013 Jarno Rajahalme
-           2008-2013 Jonathan Stickel
-           2001-2013 Rolf Fabian
+           1999-2015 Daniel Heiserer
+           2001, 2005-2015 Laurent Mazet
+           2006-2015 Daniel Sebald
+           2007-2015 Jordi Gutiérrez Hermoso <jordigh@octave.org>
+           2006-2015 Marco Caliari <marco.caliari@univr.it>
+           1999-2015 David M. Doolin
+           1993-2015 Dirk Laurie
+           2009-2015 E. Jason Riedy
+           2009-2015 Eric Chassande-Mottin, CNRS (France)
+           2012-2015 Philip Nienhuis
+           2006-2015 Frederick (Rick) A Niles
+           2005-2015 Hoxide Ma
+           2012-2015 Iain Murray
+           2012-2015 Jarno Rajahalme
+           2008-2015 Jonathan Stickel
+           2001-2015 Rolf Fabian
            2007 Stallmanfacts.com
-           2006-2013 Keith Goodman
-           2008-2013 N.J. Higham
+           2006-2015 Keith Goodman
+           2008-2015 N.J. Higham
            2010 Richard T. Guy <guyrt7@wfu.edu>
-           2007-2013 Michael Weitzel
-           1998-2013 Nicol N. Schraudolph
-           2010-2013 Pedro Gonnet
-           2004-2013 Petr Mikulik
-           2001-2013 Ross Lippert
-           2007-2013 Thomas Treichl
-           2009-2013 Tony Richardson
-           1998-2013 Walter Gautschi
+           2007-2015 Michael Weitzel
+           1998-2015 Nicol N. Schraudolph
+           2010-2015 Pedro Gonnet
+           2004-2015 Petr Mikulik
+           2001-2015 Ross Lippert
+           2007-2015 Thomas Treichl
+           2009-2015 Tony Richardson
+           1998-2015 Walter Gautschi
            1997-2002 Makoto Matsumoto and Takuji Nishimura
-           2011-2013 Jacob Dawid
-           2012-2013 Max Brister
-           2010, 2013 Martin Hepperle
-           2013 John Donoghue
+           2011-2015 Jacob Dawid
+           2012-2015 Max Brister
+           2010-2015 Martin Hepperle
+           2013-2015 John Donoghue
            2009 P. L. Lucas
-           2012-2013 pdiribarne
+           2012-2015 Pantxo Diribarne
            2009 Nokia Corporation and/or its subsidiary(-ies)
-           2012-2013 Torsten <ttl@justmail.de>
+           2012-2015 Torsten <ttl@justmail.de>
            2008 Kristian Rumberg
-           2013 Julien Bect
+           2013-2015 Julien Bect
            2004 Josep Mones i Teixidor
-           2013 Michael D. Godfrey
-           2013 Mike Miller
-           2013 Sébastien Villemot <sebastien@debian.org>
+           2013-2015 Michael D. Godfrey
+           2013-2015 Mike Miller
+           2013-2015 Sébastien Villemot <sebastien@debian.org>
            2007 Muthiah Annamalai
-           2013 Carl Osterwisch
+           2013-2015 Carl Osterwisch
            2001, 2013 David Billinghurst
            2003, 2013 Jaakko Ruohio
-           2012-2013 Erik Kjellson
-           2012-2013 Fotios Kasolis
+           2012-2015 Erik Kjellson
+           2012-2015 Fotios Kasolis
            1993-1998 Karl Berry
-           2012-2013 Juan Pablo Carbajal
-           2013 Leopoldo Cerbaro <redbliss@libero.it>
-           2012-2013 Richard Crozier
+           2012-2015 Juan Pablo Carbajal
+           2013-2015 Leopoldo Cerbaro <redbliss@libero.it>
+           2012-2015 Richard Crozier
+           2007 Paul Thomas
+           2007 Christoph Spiel
+           2000-2015 Dirk Eddelbuettel
+           2012-2015 Jonas Lundgren
+           2014-2015 Eduardo Ramos Fernández <eduradical951@gmail.com>
+           2013-2015 Kai T. Ohlhus <k.ohlhus@gmail.com>
+           2014-2015 Andreas Weber
+           2013-2015 Vytautas Jančauskas
+           2014-2015 Nir Krakauer
+           2014-2015 Markus Bergholz
+           2014-2015 Colin Foster
+           2014-2015 Massimiliano Fasi
+           2013-2015 Arun Giridhar
+           2014-2015 Willem Atsma
+           2014-2015 Nathan Podlich
+           2009-2015 Robert T. Short
 License: GPL-3+
 
 Files: debian/*
@@ -133,7 +148,7 @@ Copyright: Andrew D. Fernandes <adfernan@cnd.mcgill.ca>
            Dirk Eddelbuettel <edd@debian.org>
            2005-2009, 2012-2014 Rafael Laboissiere <rafael@laboissiere.net>
            2006-2013 Thomas Weber <tweber@debian.org>
-           2011-2014 Sébastien Villemot <sebastien@debian.org>
+           2011-2015 Sébastien Villemot <sebastien@debian.org>
            2013-2014 Mike Miller <mtmiller@debian.org>
 License: GPL-3+           
 
@@ -258,23 +273,15 @@ License: Expat
  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 
-Files: liboctave/system/tempnam.c
-Copyright: 1991, 1993 Free Software Foundation, Inc
-License: LGPL-2+
-
-Files: liboctave/system/tempname.c
-Copyright: 1991-1993 Free Software Foundation, Inc
-License: GPL-2+
-
 Files: m4/ax_blas.m4
        m4/ax_lapack.m4
        m4/ax_pthread.m4
+       m4/ax_openmp.m4
+       m4/ax_blas_f77_func.m4
 Copyright: 2008-2009 Steven G. Johnson <stevenj@alum.mit.edu>
+           2008 Jaroslav Hajek <highegg@gmail.com>
            2011 Daniel Richard G. <skunk@iSKUNK.ORG>
-License: GPL-3+ with Autoconf exception
-
-Files: m4/ax_blas_f77_func.m4
-Copyright: 2008, Jaroslav Hajek <highegg@gmail.com>
+           2015 John W. Peterson <jwpeterson@gmail.com>
 License: GPL-3+ with Autoconf exception
 
 Files: m4/libtool.m4
@@ -306,6 +313,7 @@ License: GPL-2+ with Libtool exception
 
 Files: aclocal.m4
        m4/00gnulib.m4
+       m4/absolute_header.m4
        m4/base64.m4
        m4/canonicalize.m4
        m4/ceil.m4
@@ -367,6 +375,7 @@ Files: aclocal.m4
        m4/getlogin_r.m4
        m4/getopt.m4
        m4/gettimeofday.m4
+       m4/gl-openssl.m4
        m4/glob.m4
        m4/gnulib-common.m4
        m4/include_next.m4
@@ -424,6 +433,7 @@ Files: aclocal.m4
        m4/save-cwd.m4
        m4/secure_getenv.m4
        m4/select.m4
+       m4/setenv.m4
        m4/sigaction.m4
        m4/signal_h.m4
        m4/signalblocking.m4
@@ -483,7 +493,7 @@ Files: aclocal.m4
        m4/xgetcwd.m4
        m4/xsize.m4
        m4/xstrndup.m4
-Copyright: 1992-2013, Free Software Foundation, Inc
+Copyright: 1992-2015, Free Software Foundation, Inc
 License: other
  This file is free software; the Free Software Foundation
  gives unlimited permission to copy and/or distribute it,
@@ -531,9 +541,13 @@ Files: libgui/qterminal/libqterminal/unix/kpty.h
 Copyright: 2003, 2007, 2013 Oswald Buddenhagen <ossi@kde.org>
            2006-2007, 2013 Robert Knight <robertknight@gmail.com>
            2008 e_k (e_k@users.sourceforge.net)
-           2012-2013 Jacob Dawid <jacob.dawid@googlemail.com>
+           2012-2015 Jacob Dawid <jacob.dawid@cybercatalyst.com>
            2002, 2013 Waldo Bastian <bastian@kde.org>
 License: LGPL-2+
+
+Files: libgui/graphics/images/*
+Copyright: 2006-2007 Everaldo Coelho
+License: LGPL-3+
 
 Files: scripts/polynomial/private/__splinefit__.m
 Copyright: 2010 Jonas Lundgren
@@ -641,3 +655,20 @@ License: LGPL-2+
  .
  On Debian systems, the full text of the GNU Lesser General Public License
  version 2 can be found in the file `/usr/share/common-licenses/LGPL-2'.
+
+License: LGPL-3+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Lesser General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+ .
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Lesser General Public License for more details.
+ .
+ You should have received a copy of the GNU Lesser General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ .
+ On Debian systems, the full text of the GNU Lesser General Public License
+ version 3 can be found in the file `/usr/share/common-licenses/LGPL-3'.
