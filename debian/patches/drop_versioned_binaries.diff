@@ -1,12 +1,14 @@
-Description: Don't install binarys with a version in them
+Description: Do not install versioned binaries
  We don't need them.
 Forwarded: not-needed
 Author: Thomas Weber <tweber@debian.org>
+Reviewed-by: Rafael Laboissiere <rafael@laboissiere.net>
+Last-Update: 2015-04-17
 --- a/src/Makefile.am
 +++ b/src/Makefile.am
-@@ -141,7 +141,7 @@ mkoctfile.cc: mkoctfile.in.cc Makefile
+@@ -166,7 +166,7 @@ mkoctfile.cc: mkoctfile.in.cc Makefile
  main.cc: main.in.cc Makefile
- 	@$(do_subst_default_vals)
+ 	$(AM_V_GEN)$(do_subst_default_vals)
  
 -install-exec-hook: make-version-links
 +install-exec-hook: 
@@ -15,25 +17,16 @@ Author: Thomas Weber <tweber@debian.org>
  
 --- a/src/main.in.cc
 +++ b/src/main.in.cc
-@@ -500,7 +500,7 @@ main (int argc, char **argv)
-   std::string octave_archlibdir = get_octave_archlibdir ();
- 
+@@ -441,7 +441,7 @@ main (int argc, char **argv)
+   std::string file = octave_archlibdir + dir_sep_char + "octave-gui";
+ #else
    std::string file
--    = octave_bindir + dir_sep_char + "octave-cli-" OCTAVE_VERSION;;
-+    = octave_bindir + dir_sep_char + "octave-cli";;
+-    = octave_bindir + dir_sep_char + "octave-cli-" OCTAVE_VERSION;
++    = octave_bindir + dir_sep_char + "octave-cli";
+ #endif
  
    char **new_argv = new char * [argc + 1];
- 
-@@ -521,7 +521,7 @@ main (int argc, char **argv)
- 
-           file = octave_archlibdir + dir_sep_char + "octave-gui";
- #else
--          file = octave_bindir + dir_sep_char + "octave-cli-" OCTAVE_VERSION;
-+          file = octave_bindir + dir_sep_char + "octave-cli";
- #endif
-           new_argv[k++] = argv[i];
-         }
-@@ -566,7 +566,7 @@ main (int argc, char **argv)
+@@ -498,7 +498,7 @@ main (int argc, char **argv)
            start_gui = false;
            gui_libs = false;
  
@@ -44,27 +37,28 @@ Author: Thomas Weber <tweber@debian.org>
              {
 --- a/scripts/miscellaneous/mkoctfile.m
 +++ b/scripts/miscellaneous/mkoctfile.m
-@@ -148,7 +148,7 @@ function [output, status] = mkoctfile (v
-   bindir = octave_config_info ("bindir");
+@@ -149,7 +149,7 @@ function [output, status] = mkoctfile (v
    ext = octave_config_info ("EXEEXT");
  
--  shell_script = fullfile (bindir, sprintf ("mkoctfile-%s%s", OCTAVE_VERSION, ext));
-+  shell_script = fullfile (bindir, "mkoctfile");
+   shell_script = fullfile (bindir,
+-                           sprintf ("mkoctfile-%s%s", OCTAVE_VERSION, ext));
++                           "mkoctfile");
  
    if (! exist (shell_script, "file"))
      __gripe_missing_component__ ("mkoctfile", "mkoctfile");
 --- a/scripts/pkg/private/configure_make.m
 +++ b/scripts/pkg/private/configure_make.m
-@@ -29,9 +29,9 @@ function configure_make (desc, packdir,
-     octave_bindir = octave_config_info ("bindir");
+@@ -30,10 +30,10 @@ function configure_make (desc, packdir,
      ver = version ();
      ext = octave_config_info ("EXEEXT");
--    mkoctfile_program = fullfile (octave_bindir, sprintf ("mkoctfile-%s%s", ver, ext));
--    octave_config_program = fullfile (octave_bindir, sprintf ("octave-config-%s%s", ver, ext));
+     mkoctfile_program = fullfile (octave_bindir, ...
+-                                  sprintf ("mkoctfile-%s%s", ver, ext));
++                                  "mkoctfile");
+     octave_config_program = fullfile (octave_bindir, ...
+-                                      sprintf ("octave-config-%s%s", ver, ext));
 -    octave_binary = fullfile (octave_bindir, sprintf ("octave-%s%s", ver, ext));
-+    mkoctfile_program = fullfile (octave_bindir, "mkoctfile");
-+    octave_config_program = fullfile (octave_bindir, "octave-config");
++                                      "octave-config");
 +    octave_binary = fullfile (octave_bindir, "octave");
-     cenv = {"MKOCTFILE"; mkoctfile_program;
-             "OCTAVE_CONFIG"; octave_config_program;
-             "OCTAVE"; octave_binary;
+ 
+     if (! exist (mkoctfile_program, "file"))
+       __gripe_missing_component__ ("pkg", "mkoctfile");
