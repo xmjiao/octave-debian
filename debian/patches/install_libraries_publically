@@ -5,9 +5,11 @@ Description: Install the Octave libraries publically in /usr/lib/
  in the future.
 Forwarded: not-needed
 Author: Thomas Weber <tweber@debian.org>
+Reviewed-by: Rafael Laboissiere <rafael@laboissiere.net>
+Last-Update: 2015-04-18
 --- a/liboctave/Makefile.am
 +++ b/liboctave/Makefile.am
-@@ -38,7 +38,8 @@
+@@ -34,7 +34,8 @@
  
  AM_CXXFLAGS += $(WARN_CXXFLAGS)
  
@@ -19,7 +21,7 @@ Author: Thomas Weber <tweber@debian.org>
  
 --- a/libinterp/Makefile.am
 +++ b/libinterp/Makefile.am
-@@ -38,7 +38,8 @@
+@@ -39,7 +39,8 @@
  
  AM_CXXFLAGS += $(WARN_CXXFLAGS)
  
@@ -27,5 +29,5 @@ Author: Thomas Weber <tweber@debian.org>
 +lib_LTLIBRARIES = liboctinterp.la
 +octlib_LTLIBRARIES =
  
- ## Order matters here.  Leave builtins.cc last, because it depends on
- ## $(DEF_FILES), and building those requires all the sources
+ ## This is the subset of $(BUILT_SOURCES) that may be included by source
+ ## files that are preprocessed to make $(DEF_FILES).  This ensures that
