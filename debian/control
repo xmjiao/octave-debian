@@ -46,8 +46,10 @@ Build-Depends: automake,
   texlive-generic-recommended,
   texlive-latex-base,
   transfig,
+  unzip,
   xauth,
-  xvfb
+  xvfb,
+  zip
 Standards-Version: 3.9.6
 Homepage: http://www.octave.org/
 Vcs-Git: git://anonscm.debian.org/pkg-octave/octave.git
